@@ -19,6 +19,7 @@ it is fair to take over: ping the claimant first.
 
 | Range | Who | Claimed | Status |
 |---|---|---|---|
+| ov065 _ZN15TtcRotatingGear8BehaviorEv (0x0211b8f8, size 0x190) | lunavyqo (Grok) | 2026-07-26 | **done** — verified byte-identical + linkcheck VERIFIED (mwccarm 1.2/sp2p3); goto range form + nested clamp + named tbl + reread t/idx; from near-miss div=32→18→0; API clm_73028fcbaa82 kept |
 | ov065 func_ov065_0211704c (0x0211704c, size 0x3b8) | lunavyqo (Grok) | 2026-07-26 | **done** — verified byte-identical + linkcheck VERIFIED (mwccarm 1.2/sp2p3); kill-path Bumped/Shell + SpawnCoins 5-arg + Hurt(1,0xc000,1,0,1) + state ptr; from near-miss div=52; API clm_e0cd79b9a0cb kept |
 | ov065 _ZN6Dorrie13InitResourcesEv (0x02119228, size 0x2c0) | lunavyqo (Grok) | 2026-07-26 | **done** — verified byte-identical + linkcheck VERIFIED (mwccarm 1.2/sp2p3); abs offsets + u64-launder pos RMW + ifelse flag; from near-miss div=44→27→0; API clm_30512cb8a803 kept |
 | ov065 func_ov065_02116364 (0x02116364, size 0x224) | lunavyqo (Grok) | 2026-07-26 | **done** — verified byte-identical + linkcheck VERIFIED (mwccarm 1.2/sp2p3); pure-C ldm/stm + ApproachAngle 5-arg + u64 launder + o=0 xy then z init; from near-miss div=93→16→8→0; API clm_fae1c07336ae kept |
