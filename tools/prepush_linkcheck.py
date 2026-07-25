@@ -34,7 +34,10 @@ import sys
 REPO = pathlib.Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO / "tools"))
 
-BLOCKING = {"WRONG", "NO-REPRO"}
+# Fail closed. WRONG/NO-REPRO are false matches; ERROR means we could not get a verdict at
+# all, and a gate that waves through what it could not check is not a gate. BLIND and NO-SYM
+# stay warnings: those are symbol-coverage gaps, not evidence the bytes are wrong.
+BLOCKING = {"WRONG", "NO-REPRO", "ERROR"}
 NONMATCHING_WINDOW = 400  # bytes of head to scan for the draft banner
 
 
@@ -80,11 +83,14 @@ def verify(path):
     )
     verdict, blind, diffs = "ERROR", 0, []
     try:
-        # linkcheck prints a JSON object; take the last {...} block it emitted
+        # Decode from the FIRST '{'. Taking the last one lands inside the "diffs" array on
+        # exactly the runs that matter - a WRONG verdict carries diff objects, so rfind hit a
+        # fragment, json.loads raised, and the verdict silently degraded to ERROR. ERROR was
+        # then only a warning, so the gate waved through the false matches it exists to stop.
         text = proc.stdout
-        start = text.rfind("{")
+        start = text.find("{")
         if start != -1:
-            rec = json.loads(text[start:])
+            rec, _ = json.JSONDecoder().raw_decode(text[start:])
             verdict = rec.get("verdict", "ERROR")
             blind = rec.get("blind", 0)
             diffs = rec.get("diffs", [])
