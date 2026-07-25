@@ -19,6 +19,15 @@ it is fair to take over: ping the claimant first.
 
 | Range | Who | Claimed | Status |
 |---|---|---|---|
+| ov065 _ZN6Dorrie13InitResourcesEv (0x02119228, size 0x2c0) | lunavyqo (Grok) | 2026-07-26 | **active** — near-miss refine div=44; API clm_30512cb8a803 |
+| ov065 func_ov065_02116364 (0x02116364, size 0x224) | lunavyqo (Grok) | 2026-07-26 | **active** — batch9 match from near-miss div=93; API clm_fae1c07336ae |
+| ov065 func_ov065_02118634 (0x02118634, size 0x204) | lunavyqo (Grok) | 2026-07-26 | **active** — near-miss refine (33 instr from match); API clm_65d5da4dca12 |
+| ov065 func_ov065_02115ff0 (0x02115ff0, size 0x2d0) | lunavyqo (Grok) | 2026-07-26 | **active** — batch10 near-miss refine; API clm_b8afe691bac1 |
+| ov065 _ZN14TtcMovingCubeA8BehaviorEv (0x0211bd8c, size 0x178) | lunavyqo (Grok) | 2026-07-26 | **active** — near-miss refine from div=19; API clm_71bf7fe33574 |
+| ov065 _ZN6Dorrie8BehaviorEv (0x02118df0, size 0x2b8) | lunavyqo (Grok) | 2026-07-26 | **active** — match from near-miss (75 matching); API clm_63a8fcd20483 |
+| ov065 func_ov065_02118838 (0x02118838, size 0x414) | lunavyqo (Grok) | 2026-07-26 | **active** — batch5 near-miss refine (265 matching); API clm_0a41351e72f6 |
+| ov065 func_ov065_0211696c (0x0211696c, size 0x17c) | lunavyqo (Grok) | 2026-07-26 | **done** — verified byte-identical + linkcheck VERIFIED (mwccarm 1.2/sp2p3); u64-launder <<=3 RMW on 0x3c0/3c4/3c8 + data_020a0e68 int[]; from near-miss div=17; API clm_3ddf04da6e57 kept |
+| ov084 func_ov084_0212ec60 (0x0212ec60, size 0x2a0) | lunavyqo (Grok) | 2026-07-26 | **active** — near-miss improved 155→36→20 banked; two_step p444 + tern/smlabb yaw; residual e0/sub regperm (20w); API clm_a40ad013e985 |
 | ov084 func_ov084_0212a774 (0x0212a774, size 0x33c) | lunavyqo (Grok) | 2026-07-26 | **done** — verified byte-identical + linkcheck VERIFIED (mwccarm 1.2/sp2p3); pass-through 296cc(c)+no-p-local+u64-launder; near-miss 80→15→6→0; API clm_31e9d8e7f3f9 kept |
 | ov084 func_ov084_0212d564 (0x0212d564, size 0x308) | lunavyqo (Grok) | 2026-07-26 | **done** — verified byte-identical + strict-relocs (mwccarm 1.2/sp2p3); loop data+i reindex + u64-launder vec ptrs + flag!=false; from near-miss div=148→10→0; API clm_8f434f78e67c kept |
 | ov084 func_ov084_0212abd4 (0x0212abd4, size 0x3a0) | lunavyqo (Grok) | 2026-07-26 | **done** — verified byte-identical + linkcheck VERIFIED (mwccarm 1.2/sp2p3); m2c cond + launder RMW + bit&=1 reg color; from near-miss div=100; API clm_5c98451589eb kept |
