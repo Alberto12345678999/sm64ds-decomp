@@ -173,8 +173,15 @@ def winning_object(name, addr, size, mod):
                         candidate_syms = list(PV.funcs_in(obj).keys())
                     except Exception:
                         candidate_syms = [name]
-                    if name not in candidate_syms:
-                        candidate_syms = [name] + candidate_syms
+                    # Try the REQUESTED symbol first, always. Any-symbol acceptance is
+                    # deliberate (a source may emit its function under a near-miss name),
+                    # but it must be the fallback, not the default: when the name is already
+                    # in the list this used to leave iteration order to decide, so a TU with
+                    # byte-identical siblings returned the wrong one. The _ZThn80_*D0Ev and
+                    # *D1Ev thunks are identical except for their branch RELOC, so asking for
+                    # D1 handed back D0 and linkcheck then compared D0's relocation against
+                    # D1's ROM bytes and called a correct file WRONG.
+                    candidate_syms = [name] + [s for s in candidate_syms if s != name]
                     for sym in candidate_syms:
                         code, relocs = M.extract_func(obj, sym)
                         if code is None or len(code) != len(target):
