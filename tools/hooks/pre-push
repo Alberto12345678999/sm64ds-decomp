@@ -1,0 +1,40 @@
+#!/bin/sh
+# Pre-push gate for direct-to-main pushes.
+#
+# The `validate` CI check only runs on pull_request_target, so anything pushed straight to
+# main never gets byte-match checked. This runs the same link verification locally (this box
+# has the ROM + toolchain) and refuses the push if a src/ file does not reproduce the ROM.
+#
+# Install:
+#   cp tools/hooks/pre-push .git/hooks/pre-push && chmod +x .git/hooks/pre-push
+# Bypass once (you had better be sure):
+#   git push --no-verify
+
+remote_ref_check() {
+  # stdin: <local ref> <local sha> <remote ref> <remote sha>
+  while read -r _local_ref local_sha remote_ref remote_sha; do
+    case "$remote_ref" in
+      refs/heads/main) ;;
+      *) continue ;;   # only gate main
+    esac
+
+    # Deleting a branch, or nothing to push
+    [ "$local_sha" = "0000000000000000000000000000000000000000" ] && continue
+
+    if [ "$remote_sha" = "0000000000000000000000000000000000000000" ]; then
+      range="$local_sha"          # new branch: check everything it introduces
+    else
+      range="$remote_sha..$local_sha"
+    fi
+
+    echo "pre-push: link-verifying src/ changes in $range"
+    if ! python tools/prepush_linkcheck.py --range "$range"; then
+      echo "pre-push: REFUSING to push (see above). Override with --no-verify if you are certain." >&2
+      return 1
+    fi
+  done
+  return 0
+}
+
+remote_ref_check || exit 1
+exit 0
