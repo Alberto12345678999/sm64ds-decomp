@@ -69,6 +69,18 @@ FUNC_RE = re.compile(
 ADDR_IN_NAME = re.compile(r"func_([0-9a-fA-F]{6,8})$", re.I)
 
 
+def _addr_int(v) -> int:
+    """Parse an address that may be an int or a string. Near-miss DB records store addr as
+    a hex string like "0x02124008", so a plain int() (base 10) raised ValueError. Accept
+    ints, "0x..." hex, and decimal strings; anything unparseable sorts to -1 (no match)."""
+    if isinstance(v, int):
+        return v
+    try:
+        return int(str(v), 0)
+    except (TypeError, ValueError):
+        return -1
+
+
 def load_symbol(name: str) -> tuple[str, int, int] | None:
     """Return (module, addr, size) for symbol name, or None."""
     config = get_repo() / "config"
@@ -432,14 +444,14 @@ def main() -> None:
         db = load_db()
         key = (module, int(addr))
         if key in db or any(
-            int(r.get("addr", -1)) == int(addr) and r.get("module") == module
+            _addr_int(r.get("addr", -1)) == int(addr) and r.get("module") == module
             for r in db.values()
         ):
             # keys may be (mod, addr) tuples after load_db
             db.pop(key, None)
             for k in list(db.keys()):
                 r = db[k]
-                if r.get("module") == module and int(r.get("addr", -1)) == int(addr):
+                if r.get("module") == module and _addr_int(r.get("addr", -1)) == int(addr):
                     db.pop(k, None)
             save_db(db)
             print(f"Pruned near-miss tip for {module}:{addr:#x} from nearmiss/db.jsonl")
