@@ -19,6 +19,7 @@ it is fair to take over: ping the claimant first.
 
 | Range | Who | Claimed | Status |
 |---|---|---|---|
+| ov084 func_ov084_0212d564 (0x0212d564, size 0x308) | lunavyqo (Grok) | 2026-07-26 | **done** — verified byte-identical + strict-relocs (mwccarm 1.2/sp2p3); loop data+i reindex + u64-launder vec ptrs + flag!=false; from near-miss div=148→10→0; API clm_8f434f78e67c kept |
 | ov084 func_ov084_0212abd4 (0x0212abd4, size 0x3a0) | lunavyqo (Grok) | 2026-07-26 | **done** — verified byte-identical + linkcheck VERIFIED (mwccarm 1.2/sp2p3); m2c cond + launder RMW + bit&=1 reg color; from near-miss div=100; API clm_5c98451589eb kept |
 | ov084 func_ov084_0212a580 (0x0212a580, size 0x178) | lunavyqo (Grok) | 2026-07-26 | **done** — verified byte-identical + linkcheck VERIFIED (mwccarm 1.2/sp2p3); equal-arm ternary flips call-arg reg order; from near-miss div=15 |
 | ov084 func_ov084_0212af74 (0x0212af74, size 0x368) | lunavyqo (Grok) | 2026-07-26 | **done** — verified byte-identical + linkcheck VERIFIED (mwccarm 1.2/sp2p3); void epilogue + two-step tbl[idx]/v+spd regperm; API clm_56f819f5780e kept |
