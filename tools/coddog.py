@@ -31,6 +31,7 @@ import modules as MOD
 import sweep
 import knowledge as KB
 import worklist as WL
+import claims_md as CLM
 import ledger as L
 
 REPO = pathlib.Path(__file__).resolve().parent.parent
@@ -140,6 +141,9 @@ def main():
     ap.add_argument("--spread", action="store_true", help="round-robin modules instead of best-first global")
     ap.add_argument("--explain", default=None, help="print one function's closest matched siblings, then exit")
     ap.add_argument("--out", default=None, help="write worklist JSONL (fuzzy-scheduled). omit = summary only")
+    ap.add_argument("--ignore-claims", action="store_true",
+                    help="schedule targets even if CLAIMS.md marks them active/partial "
+                         "(default: skip them, so a batch never duplicates held work)")
     ap.add_argument("--draft", action="store_true",
                     help="attach an m2c semantic C draft (row['m2c_draft']) to rows with "
                          "coddog_sim < 0.5 and size > 0x300 -- the big low-similarity "
@@ -170,6 +174,17 @@ def main():
     # target pool: size-filtered unmatched, optionally one module
     pool = [u for u in unmatched
             if args.min <= u["size"] <= args.max and (not args.module or u["module"] == args.module)]
+
+    # Drop anything another contributor holds in CLAIMS.md. Filtering at pool construction
+    # (rather than at write time) also keeps claimed targets out of the similarity scoring,
+    # so they cannot displace schedulable work from the top of the batch.
+    if not args.ignore_claims:
+        held = CLM.held_targets()
+        before = len(pool)
+        pool = [u for u in pool if not CLM.is_held(held, u["name"], u["addr"])]
+        if before != len(pool):
+            sys.stderr.write(f"claims: skipped {before - len(pool)} target(s) held in CLAIMS.md "
+                             f"({held['rows']} active rows)\n")
 
     scored = []
     for u in pool:

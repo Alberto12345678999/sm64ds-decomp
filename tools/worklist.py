@@ -32,6 +32,7 @@ import modules as MOD
 import sweep
 import knowledge as KB
 import demangle as DM
+import claims_md as CLM
 import ledger as L
 
 REPO_SRC = pathlib.Path(__file__).resolve().parent.parent / "src"
@@ -190,6 +191,9 @@ def main():
     ap.add_argument("--list-classes", action="store_true",
                     help="print unmatched-function counts per C++ class, then exit")
     ap.add_argument("--pretty", action="store_true")
+    ap.add_argument("--ignore-claims", action="store_true",
+                    help="schedule targets even if CLAIMS.md marks them active/partial "
+                         "(default: skip them, so a batch never duplicates held work)")
     ap.add_argument("--examples", type=int, default=2,
                     help="attach up to N verified sibling sources (same mnemonic "
                          "sequence) as few-shot examples per record; 0 disables")
@@ -231,7 +235,15 @@ def main():
             print(f"  {n:4}  {cls}")
         return
 
+    # Someone else's active CLAIMS.md row means that function is taken. Scheduling it anyway
+    # is how a batch ends up duplicating work another contributor already finished.
+    held = CLM.held_targets() if not args.ignore_claims else {"names": set(), "addrs": set(), "rows": 0}
+    skipped_claimed = [0]
+
     def emit(rec):
+        if CLM.is_held(held, rec.get("name"), rec.get("addr")):
+            skipped_claimed[0] += 1
+            return
         if args.pretty:
             print(f"=== {rec['module']} {rec['name']} @ {rec['addr']} ({rec['size']}) ===")
             if rec["self"]:
