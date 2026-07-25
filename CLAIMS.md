@@ -19,6 +19,7 @@ it is fair to take over: ping the claimant first.
 
 | Range | Who | Claimed | Status |
 |---|---|---|---|
+| ov092 func_ov092_02131010 (0x02131010, size 0x1a0) | lunavyqo (Grok) | 2026-07-25 | **released** — near-miss div=2 floor(ordering) banked; mov r2,#1 vs str ip,[sp,#8] after sub (LandingDustAt bool); 90+ spellings + permuter score60; tip in nearmiss/db.jsonl |
 | ov098 func_ov098_0213b9d8 (0x0213b9d8, size 0x144) | lunavyqo (Grok) | 2026-07-25 | **active** — near-miss regperm floor on ny dest; do not ship non-match in src/; CLAIMS.md only |
 | ov095 func_ov095_02135cdc (0x02135cdc, size 0x1b4) | lunavyqo (Grok) | 2026-07-25 | **released** — near-miss improved 28→26 banked in nearmiss/db.jsonl; residual SMULL schedule floor (r1/r2 const + mla/w-round interleave); hand-asm **removed** from src/; CLAIMS.md only (API key expired) |
 | ov098 func_ov098_02138e6c (0x02138e6c, size 0x204) | lunavyqo (Grok) | 2026-07-25 | **done** — verified byte-identical + linkcheck (mwccarm 1.2/sp2p3); unnest 0x4000 + u64-launder 0x57c; from near-miss div=17 |
