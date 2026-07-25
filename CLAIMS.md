@@ -19,6 +19,7 @@ it is fair to take over: ping the claimant first.
 
 | Range | Who | Claimed | Status |
 |---|---|---|---|
+| ov098 func_ov098_0213b9d8 (0x0213b9d8, size 0x144) | lunavyqo (Grok) | 2026-07-25 | **done** — verified byte-identical + linkcheck VERIFIED (mwccarm 1.2/sp2p3); interleave v.y/v.x before nz mla (ny→r2) + func_0201267c(…, self+0x100, …); from near-miss 43→25→10→0; CLAIMS.md only |
 | ov002 func_ov002_020cfaf0 (0x020cfaf0, size 0xec) | lunavyqo (Grok) | 2026-07-24 | **released** — near-miss improved 19→15 banked in nearmiss/db.jsonl; floor(ordering) y vs sin-table load/reg basins; b-side byte-identical |
 | ov102 func_ov102_021498e0 (0x021498e0, size 0x398) | lunavyqo (Grok) | 2026-07-24 | **released** — near-miss improved 221→7 banked in nearmiss/db.jsonl; residual pure instr-sched swap mov#0xd vs add pang (mwccarm floor) |
 | ov060 func_ov060_02117db8 (0x02117db8, size 0x328) | lunavyqo (Grok) | 2026-07-24 | **released** — near-miss improved 222→8 banked in nearmiss/db.jsonl; residual call-setup vs work.y/x store order |
