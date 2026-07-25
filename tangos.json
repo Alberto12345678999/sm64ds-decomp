@@ -77,7 +77,8 @@
         "url": "https://platform.openai.com/api-keys"
       },
       "CLAIMS_API_KEY": {
-        "note": "Write key for the tangos.dev claims board, so your locks post under your handle. Optional - read-only works without it."
+        "note": "Write key for the tangos.dev claims board. Without it the schedulers still READ claims (so they will not hand you work someone else holds), but they cannot announce yours - which is how two contributors end up grinding the same overlay. Mint a service token at the link below: click \"Mint a service token\", copy it once (it is shown once and never again), and paste it here. It is claims-scoped - it can lock and release address ranges and nothing else - lasts 30 days, and is revocable from the same page. Locks post under your handle from CLAIMS_HANDLE / tools/claims_handle.txt / your OS username.",
+        "url": "https://tangos.dev/account"
       }
     }
   },
