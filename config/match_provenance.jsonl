@@ -118,3 +118,5 @@
 {"id":"ov091:0x02132380","module":"ov091","addr":34808704,"name":"func_ov091_02132380","matchProvenance":{"kind":"ai","model":"claude-opus-4-8","reasoning":"high","harness":"claude-code"},"author":"ruspecial","srcPath":"src/func_ov091_02132380.c"}
 {"id":"ov095:0x02135e90","module":"ov095","addr":34823824,"name":"func_ov095_02135e90","matchProvenance":{"kind":"ai","model":"claude-opus-4-8","reasoning":"high","harness":"claude-code"},"author":"ruspecial","srcPath":"src/func_ov095_02135e90.c"}
 {"id":"ov098:0x0213a8ec","module":"ov098","addr":34842860,"name":"func_ov098_0213a8ec","matchProvenance":{"kind":"ai","model":"claude-opus-4-8","reasoning":"high","harness":"claude-code"},"author":"ruspecial","srcPath":"src/func_ov098_0213a8ec.c"}
+{"id":"arm9:0x0205a74c","module":"arm9","addr":33924940,"name":"func_0205a74c","matchProvenance":{"kind":"human","note":"hand-written assembly"},"author":"tangosdev","srcPath":"src/func_0205a74c.c"}
+{"id":"arm9:0x0206dab4","module":"arm9","addr":34003636,"name":"func_0206dab4","matchProvenance":{"kind":"human","note":"hand-written assembly"},"author":"tangosdev","srcPath":"src/func_0206dab4.c"}
