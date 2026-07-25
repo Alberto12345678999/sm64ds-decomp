@@ -19,10 +19,11 @@ it is fair to take over: ping the claimant first.
 
 | Range | Who | Claimed | Status |
 |---|---|---|---|
+| ov065 func_ov065_0211704c (0x0211704c, size 0x3b8) | lunavyqo (Grok) | 2026-07-26 | **done** — verified byte-identical + linkcheck VERIFIED (mwccarm 1.2/sp2p3); kill-path Bumped/Shell + SpawnCoins 5-arg + Hurt(1,0xc000,1,0,1) + state ptr; from near-miss div=52; API clm_e0cd79b9a0cb kept |
 | ov065 _ZN6Dorrie13InitResourcesEv (0x02119228, size 0x2c0) | lunavyqo (Grok) | 2026-07-26 | **active** — near-miss refine div=44; API clm_30512cb8a803 |
 | ov065 func_ov065_02116364 (0x02116364, size 0x224) | lunavyqo (Grok) | 2026-07-26 | **active** — batch9 match from near-miss div=93; API clm_fae1c07336ae |
-| ov065 func_ov065_02118634 (0x02118634, size 0x204) | lunavyqo (Grok) | 2026-07-26 | **active** — near-miss refine (33 instr from match); API clm_65d5da4dca12 |
-| ov065 func_ov065_02115ff0 (0x02115ff0, size 0x2d0) | lunavyqo (Grok) | 2026-07-26 | **active** — batch10 near-miss refine; API clm_b8afe691bac1 |
+| ov065 func_ov065_02118634 (0x02118634, size 0x204) | lunavyqo (Grok) | 2026-07-26 | **done** — verified byte-identical + linkcheck VERIFIED (mwccarm 1.2/sp2p3); flip 0x1130||found SETUP; from near-miss div=33→0; API clm_65d5da4dca12 kept |
+| ov065 func_ov065_02115ff0 (0x02115ff0, size 0x2d0) | lunavyqo (Grok) | 2026-07-26 | **done** — verified byte-identical + linkcheck VERIFIED (mwccarm 1.2/sp2p3); reuse id load + u64-launder 0xbf bool + p-before-flags decl; from near-miss div=195; API clm_b8afe691bac1 kept |
 | ov065 _ZN14TtcMovingCubeA8BehaviorEv (0x0211bd8c, size 0x178) | lunavyqo (Grok) | 2026-07-26 | **active** — near-miss refine from div=19; API clm_71bf7fe33574 |
 | ov065 _ZN6Dorrie8BehaviorEv (0x02118df0, size 0x2b8) | lunavyqo (Grok) | 2026-07-26 | **active** — match from near-miss (75 matching); API clm_63a8fcd20483 |
 | ov065 func_ov065_02118838 (0x02118838, size 0x414) | lunavyqo (Grok) | 2026-07-26 | **active** — batch5 near-miss refine (265 matching); API clm_0a41351e72f6 |
