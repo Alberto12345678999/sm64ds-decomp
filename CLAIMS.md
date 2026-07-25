@@ -19,6 +19,9 @@ it is fair to take over: ping the claimant first.
 
 | Range | Who | Claimed | Status |
 |---|---|---|---|
+| ov079 func_ov079_02124008 (0x02124008, size 0x180) | lunavyqo (Grok) | 2026-07-25 | **released** — deep re-crack no_progress div=1 FLOOR(materialization); 60+ levers + permuter score 10; tip nearmiss/db.jsonl |
+| ov034 _ZN7Wiggler8BehaviorEv (0x02112b5c, size 0x6e0) | lunavyqo (Grok) | 2026-07-25 | **released** — near-miss improved 277→214→143 banked in nearmiss/db.jsonl; frame 0x74 + static off702→fp; residual body/anim r6/r7 + sincos regperm |
+| ov016 func_ov016_02111c40 (0x02111c40, size 0x2f8) | lunavyqo (Grok) | 2026-07-25 | **released** — near-miss improved 51→41 banked in nearmiss/db.jsonl; residual halfword/RMW schedule |
 | ov092 func_ov092_02131010 (0x02131010, size 0x1a0) | lunavyqo (Grok) | 2026-07-25 | **released** — near-miss div=2 floor(ordering) banked; mov r2,#1 vs str ip,[sp,#8] after sub (LandingDustAt bool); 90+ spellings + permuter score60; tip in nearmiss/db.jsonl |
 | ov098 func_ov098_0213b9d8 (0x0213b9d8, size 0x144) | lunavyqo (Grok) | 2026-07-25 | **active** — near-miss regperm floor on ny dest; do not ship non-match in src/; CLAIMS.md only |
 | ov095 func_ov095_02135cdc (0x02135cdc, size 0x1b4) | lunavyqo (Grok) | 2026-07-25 | **released** — near-miss improved 28→26 banked in nearmiss/db.jsonl; residual SMULL schedule floor (r1/r2 const + mla/w-round interleave); hand-asm **removed** from src/; CLAIMS.md only (API key expired) |
