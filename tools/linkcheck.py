@@ -51,6 +51,21 @@ import match as M            # noqa: E402
 import reloc_audit as RA     # noqa: E402
 import modules as MOD        # noqa: E402
 
+def _rel_section_for(elf, shndx):
+    """The relocation section that applies to section `shndx`, matched by sh_info.
+
+    Do NOT look this up by name. mwccarm emits ONE section per function and names them all
+    ".text", so `get_section_by_name(".rel.text")` returns whichever came first in the file -
+    some other function's relocations. Any TU that defines several functions (a C++ class with
+    D0/D1/D2 plus its this-adjusting thunks emits five) then gets its slots resolved against
+    the wrong table, which reads as a confident WRONG on a source that is actually correct.
+    sh_info is the only reliable link from a reloc section to the section it patches."""
+    for sec in elf.iter_sections():
+        if sec.header["sh_type"] in ("SHT_REL", "SHT_RELA") and sec.header["sh_info"] == shndx:
+            return sec
+    return None
+
+
 # ARM relocation types we know how to link.
 R_ARM_PC24 = 1
 R_ARM_ABS32 = 2
@@ -144,7 +159,7 @@ def func_relocs_typed(obj, func, name_index):
     sec = elf.get_section(sym["st_shndx"])
     start, size = sym["st_value"], sym["st_size"]
     secdata = sec.data()
-    rel = elf.get_section_by_name(".rel" + sec.name) or elf.get_section_by_name(".rela" + sec.name)
+    rel = _rel_section_for(elf, sym["st_shndx"])
     is_rela = rel is not None and rel.name.startswith(".rela")
     out = []
     if rel is not None:

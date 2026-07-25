@@ -79,7 +79,13 @@ def extract_func(obj: bytes, func: str):
     start, size = sym["st_value"], sym["st_size"]
     code = sec.data()[start:start + size]
     relocs = set()
-    rel = elf.get_section_by_name(".rel" + sec.name) or elf.get_section_by_name(".rela" + sec.name)
+    # Match the reloc section by sh_info, never by name: mwccarm emits one section per function
+    # and names them all ".text", so a name lookup returns some other function's relocations
+    # whenever the TU defines more than one (e.g. a C++ dtor emits D0/D1/D2 + thunks). Wrong
+    # wildcard set = a real match can read as a mismatch, or a mismatch can be wildcarded away.
+    rel = next((s for s in elf.iter_sections()
+                if s.header["sh_type"] in ("SHT_REL", "SHT_RELA")
+                and s.header["sh_info"] == sym["st_shndx"]), None)
     if rel is not None:
         for r in rel.iter_relocations():
             o = r["r_offset"] - start
