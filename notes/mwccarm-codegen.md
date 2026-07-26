@@ -1601,6 +1601,35 @@ angle (load emission order) is where a genuinely new construct class would attac
 operand-spelling space (which collapses to 4 points per slot, not 12: Q(a,b)==R(b,a),
 U==Q), pair-flip and annealing sweeps. Do not re-attempt.
 
+## 6ad. Opus batch 2 (2026-07-26, 7 arm9 matches incl. func_02048234): siblings beat grinding
+
+- **Cross-reference the callers BEFORE any coloring work** (func_02048234, 34->0, the
+  longest-standing holdout). grep config/arm9/relocs.txt for "to:<addr>", map the callers
+  to their enclosing functions, and if a matched sibling exists, TRANSCRIBE its idiom.
+  The draft's semantics were subtly wrong in ways no codegen lever could reach.
+- **Same-family scaffold port** (func_0204bbd8, 52->0): func_0204be40, matched earlier in
+  the SAME run, shared the whole actor-render scaffold; copying it verbatim fixed the
+  entire first half in one edit, and the mat[] store order came from the sibling too.
+  Schedule batches so families land together.
+- **Pin the dead scratch UP instead of pulling the live value down** (func_020729f4,
+  3->0). When two scratch webs are swapped vs ROM and precoloring the live one would
+  extend its range, give the DEAD one an affinity for the ROM's register - here by
+  passing the already-in-place value as a second call argument (zero bytes emitted).
+  Extends the 6ab dropped-argument family.
+- **Param webs outrank locals unless you break the copy coalesce** (func_020503a4,
+  60->4): natural rank is [homed params, reverse-arg][locals, reverse-decl]; a perfect
+  7-register mirror band means the ROM wanted the block order flipped (write-up in the
+  entry's DB note).
+- **Result-variable initialization order re-ranks outgoing-arg emission**
+  (func_02063e08, 5->0): `r = 0;` as a statement BEFORE the argument computations (not a
+  declaration initializer) flips pre-schedule arg emission from ascending to descending
+  register order.
+- **The u64-launder carries a PHANTOM (address,value) pair** (func_020676e0, 4->2,
+  measured): even when the laundered address folds back into [rN,#k] and emits nothing,
+  its web still reserves a color and pushes the value one rank up. Measured grid in the
+  DB note; two named open angles (8-byte aggregate store word order, phantom coalescing
+  with the base). Do not re-grind the swept axes.
+
 **`func_02072fcc` is a ONE-INSTRUCTION miss and the best hand-fix candidate in the backlog**:
 mwcc PRE-hoists a loop-invariant `b+1` whose only use is on a cold retry path into the
 preheader (`add r1,r1,#1` + in-loop `mov r3,r1`) where the ROM recomputes `add r3,r1,#1`
