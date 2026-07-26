@@ -1498,6 +1498,50 @@ demotion vanished with the pragmas, so treat guard-demotion as a symptom, not th
 immediate re-crack queue for this recipe. NOT applicable as-is to the s64/smull family
 (func_02048234-style drafts diverge in schedule, not pure coloring; different wall).
 
+## 6ab. Coloring-wall fleet levers (2026-07-25/26, 24 matches from the pure-regperm cohort)
+
+The 6aa recipe fleet ran the full pure-register-permutation near-miss class (42 targets).
+23 fleet matches plus 4 landed concurrently; all three functions previously recorded as
+confirmed allocator floors (Stage::LoadFog, func_020341a8, GX::LoadTex) FELL. New levers,
+each verified by a div->0 crack:
+
+- **A stubborn scratch-web permutation near a call can be a DROPPED ARGUMENT.** Twice in
+  one fleet: func_ov006_02108f2c (callee takes (self, idx); passing the value that already
+  sat in r1 emits zero extra bytes but extends the value's web with r1 arg affinity,
+  flipping the whole block) and func_ov006_020f7ee4 (a pass-through second argument keeps
+  r1 live through case 0, rotating every scratch web up one register). Diagnostic tell:
+  ROM temps ascend from rN+1 while yours ascend from rN, or a single reg reaches the call
+  site unclobbered on every path. Cross-check callee signatures against already-matched
+  callers BEFORE grinding coloring levers.
+- **Equal-bytes shift-extract respell is a coloring lever at call-arg sites.**
+  (unsigned short)(x >> 12) vs ((unsigned int)(x << 4)) >> 16 emit the identical
+  lsl/lsr pair but rank webs differently; restored natural right-to-left arg coloring
+  where every temp-hoist folded back (func_ov002_020d4748, div 8->0 in one step).
+- **Branch-order inversion renumbers webs; decl order arbitrates only after.** Writing
+  `if (x != k) cheap else rare` instead of the positive test rotated the loop webs, then
+  reverse-decl-order (6k) landed the exact ROM colors (Stage::LoadFog, div 10->0 after a
+  6x6 decl grid had floored at 10 under the original branch order).
+- **De-volatile via char-cast reads.** A volatile spill-array crutch stalls at a pure
+  color swap; plain array + *(int*)((char*)v + K) call-arg reads keep the memory pin
+  without perturbing the allocator (func_ov002_020ae4cc). Pair with single-def folded
+  temps (int y = load + n*0x50;) to keep the mla coalesced with its load.
+- **Late shared-base via non-encodable offsets.** Deleting the named/laundered base and
+  writing full-offset derefs (*(s16*)(c+0x334), *(s16*)(c+0x336)) makes the addressing
+  optimizer build the shared base itself as a LATE temp that colors into the scratch the
+  ROM wants; named/laundered address webs color EARLY in def order (func_ov098_0213a36c).
+  Chain RMWs through a named s16 temp loaded first to demote address CSEs to lr/ip.
+- **__sinit copy-group statement order** (struct copies before scalar stores) flips the
+  src/dst pointer pair in the final group (__sinit_ov075_0211bb00; the pragma there is
+  load-bearing, size drifts without it).
+
+Verified rank-pinning floor (the one residue class that survived): mwccarm colors
+named-local webs descending from r3 in FIRST-DEFINITION order; a web whose single
+definition must precede the load that consumes it is rank-pinned, and CSE re-merges every
+splitting attempt (func_ov006_020cb72c, 100+ variants; same signature as the previously
+asm-hatched func_02058568/func_ov007_020bfd70). Six more no-progress hypotheses from the
+fleet are in the nearmiss DB notes for their functions; the remaining unrun backlog is
+listed in CLAIMS.md.
+
 **`func_02072fcc` is a ONE-INSTRUCTION miss and the best hand-fix candidate in the backlog**:
 mwcc PRE-hoists a loop-invariant `b+1` whose only use is on a cold retry path into the
 preheader (`add r1,r1,#1` + in-loop `mov r3,r1`) where the ROM recomputes `add r3,r1,#1`
