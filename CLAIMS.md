@@ -21,7 +21,7 @@ it is fair to take over: ping the claimant first.
 |---|---|---|---|
 | ov063 func_ov063_0211a3d0 (0x0211a3d0, size 0x194) | lunavyqo (Grok) | 2026-07-26 | **released** — no_progress wall: tip remains div=5/6 in nearmiss/db.jsonl; interleaved basin pure r2/r3 regperm div=7; permuter score35 floor; API clm_24b623ac6413 released |
 | ov063 func_ov063_02117b0c (0x02117b0c, size 0x1d0) | lunavyqo (Grok) | 2026-07-26 | **active** — match from near-miss div=62; API clm_612dcbc90872 |
-| ov075 _ZN14UnknownVsEntry13InitResourcesEv (0x021156e0, size 0x314) | lunavyqo (Grok) | 2026-07-26 | **active** — batch8 near-miss refine (div~17); API clm_18b485af7149 |
+| ov075 _ZN14UnknownVsEntry13InitResourcesEv (0x021156e0, size 0x314) | lunavyqo (Grok) | 2026-07-26 | **done** — verified byte-identical + linkcheck VERIFIED (mwccarm 1.2/sp2p3); kind=*(c+8) at do-loop head + decl order int i; int kind; char* p → r5/r6/r7; from near-miss div=17→10→0; API clm_18b485af7149 kept |
 | ov063 func_ov063_02116fac (0x02116fac, size 0x2fc) | lunavyqo (Grok) | 2026-07-26 | **done** — verified byte-identical + linkcheck VERIFIED (mwccarm 1.2/sp2p3); Frame{Vec3,pad[10]} + u64-launder 0x5d4/0x5cc + SoundPlay(0xf8,c+0x74) + u32 lsrs bit; from near-miss div=98→3→2→0; API clm_ee778143841d kept |
 | ov075 func_ov075_02114560 (0x02114560, size 0x1dc) | lunavyqo (Grok) | 2026-07-26 | **done** — verified byte-identical + linkcheck VERIFIED (mwccarm 1.2/sp2p3); u64-launder L() mid/pos/p13c/p144 + 0x114 inside SetAnim if + unconditional 0x144 clamp; from near-miss div=67→0; API clm_8b4e2b34c934 kept |
 | ov063 func_ov063_021166ac (0x021166ac, size 0x318) | lunavyqo (Grok) | 2026-07-26 | **active** — batch5 near-miss refine (div=121); API clm_7c732d3826f2 |
