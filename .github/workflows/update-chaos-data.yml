@@ -60,6 +60,12 @@ jobs:
         # recover the method for ~13% of matches and no more. Declines to guess, so an
         # unlabelled commit leaves the function unstamped rather than inventing a model.
         run: python tools/stamp_landed.py
+      - name: Collapse any duplicate near-miss rows from a union merge
+        # nearmiss/db.jsonl is merge=union (.gitattributes), so two PRs banking a tip for the
+        # same function land both rows instead of conflicting. Keep the lowest-divergence row
+        # per (module, addr); the duplicate is transient, cleaned here on the way to the
+        # refresh commit below (which already includes nearmiss/db.jsonl).
+        run: python tools/nearmiss_db.py dedupe
       - name: Refresh README progress bar
         run: python tools/progress.py --write-readme --from-db _chaos_data/chaos-db.json
       - name: Regenerate treemap (README SVG + Pages HTML)
@@ -69,12 +75,12 @@ jobs:
         # from filling with a separate refresh commit per generated file.
         # safe from retrigger loops: no workflow watches README.md, docs/**, or contributions.json
         run: |
-          if git diff --quiet -- README.md docs/index.html docs/progress-treemap.svg contributions.json config/match_provenance.jsonl config/match_attempts.jsonl; then
+          if git diff --quiet -- README.md docs/index.html docs/progress-treemap.svg contributions.json config/match_provenance.jsonl config/match_attempts.jsonl nearmiss/db.jsonl; then
             echo "progress unchanged"; exit 0
           fi
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add README.md docs/index.html docs/progress-treemap.svg contributions.json config/match_provenance.jsonl config/match_attempts.jsonl
+          git add README.md docs/index.html docs/progress-treemap.svg contributions.json config/match_provenance.jsonl config/match_attempts.jsonl nearmiss/db.jsonl
           git commit -m "Refresh progress (README, treemap, contributions, provenance)"
           git pull --rebase origin main
           git push origin main
