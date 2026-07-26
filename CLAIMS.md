@@ -19,7 +19,7 @@ it is fair to take over: ping the claimant first.
 
 | Range | Who | Claimed | Status |
 |---|---|---|---|
-| arm9 Opus batch: func_0202ffec, func_0205c5e4, func_0206cf98, _ZN13RaycastGround10DetectClsnEv, _ZN22ExpandingHeapAllocator10ReallocateEPvj, func_020424c0, OAM::Render Fix12IiEi + Matrix2x2 overloads, func_02063e08, func_02072dac, func_0206de14, func_0201adfc, func_02048234, func_020490b0, func_02063718 | Tango (Opus groups of 5) | 2026-07-26 | **active** — s64/smull family lever hunt + regperm leftovers; released per-function as they resolve |
+| arm9 Opus batch (15 funcs) | Tango (Opus groups of 5) | 2026-07-26 | **released** — 9 matched byte-identical + verified (levers: notes 6ac); func_02063e08 improved 20->5 (banked); func_0202ffec + OAM Render Fix12IiEi overload floor-marked with evidence; still open, fair game: func_0206cf98 (div 6), func_0206de14 (div 16), func_02048234 (div 34) |
 | ov016 func_ov016_02111c40 (0x02111c40, size 0x2f8) | lunavyqo (Grok) | 2026-07-25 | **released** — near-miss improved 51→45→44→42 clean (idx_bone) / best **div=41** banked in nearmiss/db.jsonl; residual halfword + loop pool/RMW regperm + epi setup; CLAIMS.md only (API key expired) |
 | ov065 _ZN15TtcRotatingGear8BehaviorEv (0x0211b8f8, size 0x190) | lunavyqo (Grok) | 2026-07-26 | **done** — verified byte-identical + linkcheck VERIFIED (mwccarm 1.2/sp2p3); goto range form + nested clamp + named tbl + reread t/idx; from near-miss div=32→18→0; API clm_73028fcbaa82 kept |
 | ov065 func_ov065_0211704c (0x0211704c, size 0x3b8) | lunavyqo (Grok) | 2026-07-26 | **done** — verified byte-identical + linkcheck VERIFIED (mwccarm 1.2/sp2p3); kill-path Bumped/Shell + SpawnCoins 5-arg + Hurt(1,0xc000,1,0,1) + state ptr; from near-miss div=52; API clm_e0cd79b9a0cb kept |

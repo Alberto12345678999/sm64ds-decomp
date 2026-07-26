@@ -1542,6 +1542,60 @@ asm-hatched func_02058568/func_ov007_020bfd70). Six more no-progress hypotheses 
 fleet are in the nearmiss DB notes for their functions; the remaining unrun backlog is
 listed in CLAIMS.md.
 
+## 6ac. Opus groups-of-5 batch (2026-07-26, 9 arm9 matches): the "s64 family" was a mirage, and eight new rules
+
+Taxonomy correction first: the "s64/smull schedule family" label was a CLASSIFIER ARTIFACT.
+Three independent agents proved their targets contained no smull/s64 math at all - the
+classifier keyed on u64-LAUNDER CASTS in drafts, not on actual 64-bit code. The real
+anatomies were: IRQ RMW materialization, stack-escape aliasing, a bitmask blitter, and
+plain rank problems. Classify by ROM anatomy, not draft text. Corollary of the batch:
+every crack came from READING the ROM (pool words, register liveness at boundaries,
+instruction multisets per cluster) before spelling variants.
+
+Rules, each verified by a div->0 crack (full write-ups in the opus batch journal):
+
+- **Whole-expression launder vs base-launder decides RMW base materialization**
+  (func_0205c5e4). `(u32*)(((s64)(int)(r + 0x10)) & ~0ULL)` emits ONE `add rX, r7, #0x10`
+  and un-folds the addressing mode; laundering just the base then adding the offset
+  re-folds. Where you put the launder in the address TREE is itself the lever.
+- **Taking &arr[i] escapes the WHOLE stack array** (RaycastGround::DetectClsn). Every
+  unrelated scalar living in that array joins the alias set, its stores become ordered
+  memory ops, and LICM/outgoing-arg scheduling pin around them. Model separate concepts
+  as separate locals unless the ROM shows the pinning.
+- **Callee-saved rank classes** (ExpandingHeapAllocator::Reallocate): locals whose
+  defining RHS is param-only address arithmetic, taken as a maximal DECL PREFIX, promote
+  above param webs. Also: a rank-extraction oracle (read the register role out of fixed
+  offsets) beats div as a search signal - it stays informative when the value is wrong.
+- **`smull <magic>` + `asr #1` fixup = pointer subtraction of a 12-byte struct**
+  (func_02072dac). Read the literal pool BEFORE guessing a divisor: 0x2aaaaaab with the
+  extra asr is /12, i.e. `Ep - Ep` for a 3-word struct, not `x / 3`.
+- **`#pragma opt_loop_invariants off` STACKS on `opt_propagation off`** (func_020424c0):
+  the pair killed every SCHED word where 18 single pragmas did nothing. Plus: a loop
+  counter zeroed as the LAST statement before its do-while pins the bl/mov order.
+- **Constant-carrying launder picks the AND coalesce partner** (OAM::Render Matrix2x2
+  overload). `mask = t0 & 0xc000c000` reuses the word's register; `mask = 0xc000c000;
+  mask &= t0` reuses the constant's - the ROM's choice. AND-operand analogue of 6ab's
+  shift-extract respell.
+- **Stack-resident constants are a local ARRAY, not volatile locals** (func_020490b0).
+  volatile stores are high-priority for the list scheduler and sink to the block front;
+  a plain `s32 tmp[4]` whose address escapes via the call argument keeps the stores in
+  natural order and frees the scheduler to hoist pool loads above them.
+- **C89 all-locals-at-top re-ranks the whole callee-saved list** (func_02063718).
+  Block-scoped locals form their own LATE rank class; hoisting `int b; int i; char *ptr;`
+  out of their case blocks to the function top rewrote [.., r6, r7, r8] into the ROM's
+  [r4..r8] in one edit (div 23->0).
+- **ROM burning a scratch on a constant while r0 sits free means r0 is LIVE: the
+  function returns the callee's result** (func_02063e08, 20->5). Semantics tell, not a
+  codegen lever: `r = f(...); e[0] = 1; return r;`.
+
+New verified floor: func_0202ffec (quaternion product, 2 words). mwccarm puts the
+SECOND-EMITTED operand load into smull Rn unconditionally; commuting the source product
+renames the LOAD DESTINATIONS instead of swapping the fields (verified directly). The ROM
+needs first-emitted Rn at 2 of 16 sites = mixed per-term evaluation order, unreachable
+from C. Same rank-pin class as func_ov006_020cb72c. ~800 compiles incl. exhaustive
+operand-spelling space (which collapses to 4 points per slot, not 12: Q(a,b)==R(b,a),
+U==Q), pair-flip and annealing sweeps. Do not re-attempt.
+
 **`func_02072fcc` is a ONE-INSTRUCTION miss and the best hand-fix candidate in the backlog**:
 mwcc PRE-hoists a loop-invariant `b+1` whose only use is on a cold retry path into the
 preheader (`add r1,r1,#1` + in-loop `mov r3,r1`) where the ROM recomputes `add r3,r1,#1`
