@@ -1591,8 +1591,13 @@ Rules, each verified by a div->0 crack (full write-ups in the opus batch journal
 New verified floor: func_0202ffec (quaternion product, 2 words). mwccarm puts the
 SECOND-EMITTED operand load into smull Rn unconditionally; commuting the source product
 renames the LOAD DESTINATIONS instead of swapping the fields (verified directly). The ROM
-needs first-emitted Rn at 2 of 16 sites = mixed per-term evaluation order, unreachable
-from C. Same rank-pin class as func_ov006_020cb72c. ~800 compiles incl. exhaustive
+needs first-emitted Rn at 2 of 16 sites = mixed per-term evaluation order, with NO KNOWN
+construct that flips load emission order at those sites without moving the smull
+semantics. Same rank-pin class as func_ov006_020cb72c. Calibration note: this is a
+verified-mechanism claim bounded by known construct classes, not an impossibility proof.
+Three "confirmed floors" fell in the week of 2026-07-25 when a new lever family (6aa)
+appeared; floor marks mean "do not spend model time by default", and the recorded open
+angle (load emission order) is where a genuinely new construct class would attack. ~800 compiles incl. exhaustive
 operand-spelling space (which collapses to 4 points per slot, not 12: Q(a,b)==R(b,a),
 U==Q), pair-flip and annealing sweeps. Do not re-attempt.
 
