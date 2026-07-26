@@ -1630,6 +1630,45 @@ U==Q), pair-flip and annealing sweeps. Do not re-attempt.
   DB note; two named open angles (8-byte aggregate store word order, phantom coalescing
   with the base). Do not re-grind the swept axes.
 
+## 6ae. Opus batch 3 (2026-07-26, 9 arm9 matches): constructs, not registers
+
+- **switch-case blocks schedule differently than goto-chain blocks** (func_020676e0,
+  2->0, killing its recorded "phantom-pair" floor hypothesis). A switch case body will
+  not hoist a pc-relative pool load above a preceding store; the same statements behind
+  `if (m == k) goto ck;` dispatch DO hoist, and the dispatch bytes are identical. The
+  prior campaign's launder was a fix-construct for the switch's schedule that introduced
+  its own coloring artifact. When a case body's residual is a schedule perturbation or
+  an artifact of something you added to fix one, respell the switch as a goto chain
+  BEFORE any allocator lever. Diagnostic that found it: extract the case body into a
+  standalone micro-function, compile, compare - if the micro matches ROM, the
+  surrounding CONSTRUCT is the disease.
+- **An enum-typed conditional defeats the {0,1} boolean-set canonicalizer at zero cost**
+  (func_020503a4, 4->0). The canonicalizer that reorders `x = cond ? 0 : 1` pairs keys
+  on the TYPE of the conditional expression: `int x = (int)(cond ? FMT_A : FMT_B)` with
+  an enum never fires it, frame layout unchanged. Declaring the DESTINATION as enum also
+  suppresses it but rotates the frame slot rank (non-int locals form their own frame
+  class) - that trap is what produced the old "mutually exclusive conditions" floor
+  claim. Original source almost certainly used a real enum.
+- **Offsets in the literal pool are a shape tell** (func_02009aa8, rebuilt 999->0 in ~15
+  compiles): pool words like 0x186/0x17e that are too small to be addresses mean
+  halfword accesses past +0xff materializing their offsets - the draft's shape was
+  wrong, not its colors. Classify by SIZE DRIFT first; the whole regperm lever family is
+  inapplicable when the byte count disagrees (also func_02058308, stale DB div, same
+  lesson).
+- **Recognize library code and transcribe the reference** (func_0205e3d4, 59->0): it is
+  RFC 3174 SHA1ProcessMessageBlock; porting the reference declaration block verbatim did
+  more than any codegen lever. Check readable constants (K values, magic tables) against
+  standard algorithms before treating a big function as game logic.
+- **Read the hardware semantics off the constants** (func_02046e28, 101->0): POLYGON_ATTR
+  masks, RGB555 shift ladders and DIFF_AMB bits identified the function as the material
+  animation applier and fixed the struct layout; the sibling in the function-pointer
+  table at 0x020157a8 supplied the idiom.
+
+Batch meta: 9/15 matched, and the two lowest-div "nearly done" holdovers (020676e0 at 2,
+020503a4 at 4) both turned out to be CONSTRUCT problems whose prior floor hypotheses
+were artifacts of the fix-construct, not the compiler. Calibration keeps winning:
+mechanism claims bounded by known constructs, never impossibility.
+
 **`func_02072fcc` is a ONE-INSTRUCTION miss and the best hand-fix candidate in the backlog**:
 mwcc PRE-hoists a loop-invariant `b+1` whose only use is on a cold retry path into the
 preheader (`add r1,r1,#1` + in-loop `mov r3,r1`) where the ROM recomputes `add r3,r1,#1`
