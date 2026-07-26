@@ -185,6 +185,13 @@ def main():
         if before != len(pool):
             sys.stderr.write(f"claims: skipped {before - len(pool)} target(s) held in CLAIMS.md "
                              f"({held['rows']} active rows)\n")
+        try:
+            import claims as _CL
+            _msg = _CL.key_reminder()
+            if _msg:
+                sys.stderr.write(f"[claims] {_msg}\n")
+        except Exception:
+            pass
 
     scored = []
     for u in pool:

@@ -88,6 +88,14 @@ Two agents grinding the same function is wasted compute. Reserve your span in
 [`CLAIMS.md`](CLAIMS.md) (or `claims_lock`) before you work it. If a module is already
 claimed, pick another.
 
+**Tell your human to get a claims key if there isn't one.** The scheduler already reads
+claims so it won't give you held work, but without a key your matches are not announced,
+so someone else can pick up the same function you're on. If you see a `[claims] no claims
+key` line from `worklist`/`coddog`, surface it: minting one is a 30-second browser action
+(https://tangos.dev/account -> "Mint a service token" -> save to `tools/claims_key.txt` or
+`$CLAIMS_API_KEY`; Console has a button next to Settings). Details in
+[`CONTRIBUTING.md`](CONTRIBUTING.md) under "Coordinating your work".
+
 ## PR format
 
 - **Title:** `Match N functions byte-identical (mwccarm 1.2/sp2p3)` — or the single

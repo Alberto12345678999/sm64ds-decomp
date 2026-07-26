@@ -116,6 +116,33 @@ Fair warning: some residuals are a known compiler wall (instruction ordering,
 base-address materialization - see [`notes/mwccarm-codegen.md`](notes/mwccarm-codegen.md));
 if a 1-2 instruction gap refuses to close, it may be one of those. Ask on Discord.
 
+## Coordinating your work: get a claims key
+
+Two people matching the same function is wasted effort, and it happens more than you'd
+think on a busy day. Coordination runs through a lock service at tangos.dev, and the
+scheduler already **reads** it - it won't hand you a function someone else holds - even
+with no key. But to **announce** the functions *you* take (so nobody doubles up on you),
+you need a key.
+
+It's a 30-second browser action, and you only do it once (the token lasts 30 days):
+
+1. Sign in at **https://tangos.dev/account** (Google or GitHub).
+2. Click **"Mint a service token"** - copy it; it's shown once.
+3. Save it to **`tools/claims_key.txt`** (gitignored, never committed), or export it as
+   **`CLAIMS_API_KEY`**.
+
+That's it - `crackloop` and the schedulers pick it up automatically and lock each function
+you work. The token is claims-scoped: it can lock and release address ranges and nothing
+else. Rotate it by minting another and revoking the old one on the same page.
+
+**tangOS Console users:** the console has this built in - the key button next to Settings
+opens the same mint page and stores the key encrypted. You'll also see a banner if you're
+running without one.
+
+Without a key you still get one-way protection (you won't take held work), so it's
+optional - but if you're running batches, mint one. The tools will remind you if you
+haven't.
+
 ## Ground rules
 
 - **Never commit copyrighted material.** No ROM, no extracted assets, no `mwccarm`.

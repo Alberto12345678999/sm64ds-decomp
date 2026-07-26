@@ -238,6 +238,13 @@ def main():
     # Someone else's active CLAIMS.md row means that function is taken. Scheduling it anyway
     # is how a batch ends up duplicating work another contributor already finished.
     held = CLM.held_targets() if not args.ignore_claims else {"names": set(), "addrs": set(), "rows": 0}
+    try:
+        import claims as _CL
+        _msg = _CL.key_reminder()
+        if _msg:
+            print(f"[claims] {_msg}", file=sys.stderr)
+    except Exception:
+        pass
     skipped_claimed = [0]
 
     def emit(rec):
