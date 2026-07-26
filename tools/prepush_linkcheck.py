@@ -68,34 +68,43 @@ def is_draft(path):
     return "NONMATCHING" in p.read_text(errors="ignore")[:NONMATCHING_WINDOW]
 
 
-def verify(path):
-    """Run linkcheck for one src file. Returns a result dict."""
-    name = pathlib.Path(path).stem
-    sym = _load_symbol(name)
-    if not sym:
-        return {"file": path, "name": name, "verdict": "NO-SYM", "note": "no symbol entry"}
-    module, addr, size = sym
+def _run_linkcheck(module, name, addr, size):
+    """One linkcheck invocation -> (verdict, blind, diffs). verdict 'ERROR' if no JSON came back."""
     proc = subprocess.run(
         [sys.executable, str(REPO / "tools" / "linkcheck.py"),
          "--module", module, "--name", name,
          "--addr", hex(addr), "--size", hex(size)],
         cwd=REPO, capture_output=True, text=True,
     )
-    verdict, blind, diffs = "ERROR", 0, []
     try:
         # Decode from the FIRST '{'. Taking the last one lands inside the "diffs" array on
         # exactly the runs that matter - a WRONG verdict carries diff objects, so rfind hit a
         # fragment, json.loads raised, and the verdict silently degraded to ERROR. ERROR was
         # then only a warning, so the gate waved through the false matches it exists to stop.
-        text = proc.stdout
-        start = text.find("{")
+        start = proc.stdout.find("{")
         if start != -1:
-            rec, _ = json.JSONDecoder().raw_decode(text[start:])
-            verdict = rec.get("verdict", "ERROR")
-            blind = rec.get("blind", 0)
-            diffs = rec.get("diffs", [])
+            rec, _ = json.JSONDecoder().raw_decode(proc.stdout[start:])
+            return rec.get("verdict", "ERROR"), rec.get("blind", 0), rec.get("diffs", [])
     except (ValueError, TypeError):
         pass
+    return "ERROR", 0, []
+
+
+def verify(path):
+    """Run linkcheck for one src file. Returns a result dict.
+
+    ERROR means linkcheck produced no parseable verdict - a compile timeout or a transient
+    reverify import failure, which happens once in a while when a whole batch runs back to
+    back. It is not evidence the file is bad, so retry once before treating it as blocking;
+    a genuinely broken file (WRONG / NO-REPRO) returns a real verdict on the first try."""
+    name = pathlib.Path(path).stem
+    sym = _load_symbol(name)
+    if not sym:
+        return {"file": path, "name": name, "verdict": "NO-SYM", "note": "no symbol entry"}
+    module, addr, size = sym
+    verdict, blind, diffs = _run_linkcheck(module, name, addr, size)
+    if verdict == "ERROR":
+        verdict, blind, diffs = _run_linkcheck(module, name, addr, size)  # one retry on a flaky run
     return {"file": path, "name": name, "module": module, "addr": hex(addr),
             "verdict": verdict, "blind": blind, "diffs": diffs}
 
