@@ -1,6 +1,3 @@
-// NONMATCHING: different op / idiom (div=16). Logic verified correct vs ROM; not
-// byte-matchable from C at mwccarm 1.2/sp2p3 (see notes/matching-style.md).
-// Counts as decompiled, not matched.
 typedef unsigned char u8;
 typedef unsigned int u32;
 typedef signed short s16;
@@ -31,19 +28,26 @@ void func_ov063_0211ab68(char* obj) {
     struct Vec3 tmp;
     struct Vec3_16 rot;
     int i;
+    volatile int *p;
 
     if (!(data_ov063_0211edc0 & 1)) {
+        /* first vec: plain fields → r4=0, r3=y, early arg loads, batch stores */
         data_ov063_0211ee74.x = 0;
         data_ov063_0211ee74.y = 0x32000;
         data_ov063_0211ee74.z = 0;
         func_020731dc(&data_ov063_0211ee74, func_020072c0, &data_ov063_0211ee20);
-        data_ov063_0211ee80.x = 0xd2000;
-        data_ov063_0211ee80.y = 0x6e000;
-        data_ov063_0211ee80.z = 0xd2000;
+
+        /* second/third: volatile so stores interleave before arg loads, r3 holds shared xz */
+        p = (volatile int *)&data_ov063_0211ee80;
+        p[0] = 0xd2000;
+        p[1] = 0x6e000;
+        p[2] = 0xd2000;
         func_020731dc(&data_ov063_0211ee80, func_020072c0, &data_ov063_0211edfc);
-        data_ov063_0211ee8c.x = -0xd2000;
-        data_ov063_0211ee8c.y = 0x46000;
-        data_ov063_0211ee8c.z = -0xd2000;
+
+        p = (volatile int *)&data_ov063_0211ee8c;
+        p[0] = -0xd2000;
+        p[1] = 0x46000;
+        p[2] = -0xd2000;
         func_020731dc(&data_ov063_0211ee8c, func_020072c0, &data_ov063_0211ee08);
         data_ov063_0211edc0 |= 1;
     }
