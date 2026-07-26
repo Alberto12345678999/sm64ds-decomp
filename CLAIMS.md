@@ -19,6 +19,7 @@ it is fair to take over: ping the claimant first.
 
 | Range | Who | Claimed | Status |
 |---|---|---|---|
+| ov063 func_ov063_0211d8cc (0x0211d8cc, size 0x2d8) | lunavyqo (Grok) | 2026-07-26 | **done** — verified byte-identical + linkcheck VERIFIED (mwccarm 1.2/sp2p3); //cpp + strength_reduction off + isBf!=false + volatile proj sibling sin/cos + len>0x3ab000; from near-miss div=299→0; API clm_25c5a9a19222 kept |
 | arm9 Opus batch: func_0202ffec, func_0205c5e4, func_0206cf98, _ZN13RaycastGround10DetectClsnEv, _ZN22ExpandingHeapAllocator10ReallocateEPvj, func_020424c0, OAM::Render Fix12IiEi + Matrix2x2 overloads, func_02063e08, func_02072dac, func_0206de14, func_0201adfc, func_02048234, func_020490b0, func_02063718 | Tango (Opus groups of 5) | 2026-07-26 | **active** — s64/smull family lever hunt + regperm leftovers; released per-function as they resolve |
 | ov016 func_ov016_02111c40 (0x02111c40, size 0x2f8) | lunavyqo (Grok) | 2026-07-25 | **released** — near-miss improved 51→45→44→42 clean (idx_bone) / best **div=41** banked in nearmiss/db.jsonl; residual halfword + loop pool/RMW regperm + epi setup; CLAIMS.md only (API key expired) |
 | ov065 _ZN15TtcRotatingGear8BehaviorEv (0x0211b8f8, size 0x190) | lunavyqo (Grok) | 2026-07-26 | **done** — verified byte-identical + linkcheck VERIFIED (mwccarm 1.2/sp2p3); goto range form + nested clamp + named tbl + reread t/idx; from near-miss div=32→18→0; API clm_73028fcbaa82 kept |
