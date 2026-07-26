@@ -19,6 +19,7 @@ it is fair to take over: ping the claimant first.
 
 | Range | Who | Claimed | Status |
 |---|---|---|---|
+| ov063 func_ov063_02119960 (0x02119960, size 0xcc) | lunavyqo (Grok) | 2026-07-26 | **done** — verified byte-identical + linkcheck VERIFIED (mwccarm 1.2/sp2p3); unnest 19b1c always + u64-launder 0x5d4 + mask-left 0xfff&(ri>>16); from near-miss div=20→6→0; API clm_c1af27048edb kept |
 | ov063 func_ov063_0211a0dc (0x0211a0dc, size 0x2f4) | lunavyqo (Grok) | 2026-07-26 | **done** — verified byte-identical + linkcheck VERIFIED (mwccarm 1.2/sp2p3); u64-launder 0x19c×3 + 0x5d4 halfword pool + 0x8e ang RMW; from near-miss div=53→0; API clm_43bd7aeee4c0 kept |
 | arm9 Opus batch: func_0202ffec, func_0205c5e4, func_0206cf98, _ZN13RaycastGround10DetectClsnEv, _ZN22ExpandingHeapAllocator10ReallocateEPvj, func_020424c0, OAM::Render Fix12IiEi + Matrix2x2 overloads, func_02063e08, func_02072dac, func_0206de14, func_0201adfc, func_02048234, func_020490b0, func_02063718 | Tango (Opus groups of 5) | 2026-07-26 | **active** — s64/smull family lever hunt + regperm leftovers; released per-function as they resolve |
 | ov016 func_ov016_02111c40 (0x02111c40, size 0x2f8) | lunavyqo (Grok) | 2026-07-25 | **released** — near-miss improved 51→45→44→42 clean (idx_bone) / best **div=41** banked in nearmiss/db.jsonl; residual halfword + loop pool/RMW regperm + epi setup; CLAIMS.md only (API key expired) |
