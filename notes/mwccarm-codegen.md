@@ -1303,6 +1303,11 @@ not asm-hatch (these are compiled code, not hand-asm, so section 8 does not appl
   moves) is what **2.0** emits -- 2.0 + `-proc arm7tdmi` reaches 1 word (`ldr r3,[ip]` vs
   `ldm ip,{r3}`). These 4 are the ONLY occurrences of this staging idiom in the whole ROM
   (arm9 + all overlays scanned); nothing in the 1.2-matched corpus produces it.
+  **SOLVED 2026-07-27 (6ai):** all four match under the recovered 2004 build 0056, which
+  emits the ROM's fixed-frame staging directly. The near-miss C already in the DB matches
+  unchanged; only the compiler was wrong. The "2.0 emits it" observation was the right
+  scent from the wrong direction, since the real build predates 1.2 rather than following
+  it.
 
 **Rule**: before a long grind on a big library-looking function, check whether its TU-mates
 match at 1.2 and whether the divergent idiom appears ANYWHERE in the matched corpus. If the
@@ -1697,6 +1702,322 @@ in-loop. All 17 "divergences" are that one insn plus the +4 branch-offset ripple
 exhausted the pragma space (opt_loop_invariants / common_subs / propagation / lifetimes /
 strength_reduction / dead_assignments, optimization_level 2/3, optimize_for_size), u64
 laundering, `&b[1]`, temps, goto/nested loop forms. Do not spend more model time on it.
+
+## 6ag. First-access-fold is a COMPILER-BUILD delta, not a source construct (SetGroundFlag challenge, 2026-07-27)
+
+Ran the WithMeshClsn::SetGroundFlag (0x02035708, size 0x14) challenge to ground: find a
+source form that materializes `this+0x10` for the RMW without the u64 launder. Negative
+result, now with the mechanism identified:
+
+- ~20 new formulation classes beyond the challenge's original 10, ALL emit the folded
+  0x10 form: bitfield set (bit 4), MI second-base member, volatile member, volatile
+  OBJECT pointer, inlined arg-pass helpers (C and C++), method-on-embedded-member,
+  accessor returning ref/ptr, self-helper with mask arg, register-pinned pointer,
+  one-trip loop, statement-expr assignment, late-const index, char* two-step,
+  struct-pointer +1 scaling, int-typed address.
+- All 24 local compiler builds (1.2 base..sp4, 2.0 base..sp2p4, dsi 1.1..1.6sp2) fold,
+  C and C++ front ends both (mwccarm emits Itanium mangling natively, so .cpp method
+  candidates extract under the same _ZN name).
+- Opt levels -O1..-O4 with ,p/,s all fold; -O0 emits a frame (0x20). The fold lives in
+  the L1 core (selection/regalloc), NOT in a toggleable pass: -opt noprop / nocse /
+  nolifetimes / nodeadstore / nostrength / noloop / nodeadcode all still fold. The
+  opt_* pragmas ARE recognized by mwccarm 1.2 (verified: -w illpragmas warns on a fake
+  pragma, stays silent on opt_propagation) and are still irrelevant to this fold.
+
+The positive result is a ROM census (adjacent-word scan of arm9_dec.bin for
+ldr/ALU/str with [rB,#imm] folded twice, vs add rB,base,#imm / ldr [rB] / ALU /
+str [rB] quads):
+
+- member-base RMW: 95 materialized vs 1 folded, and the single folded site
+  (0x02070450) is a pool-loaded GLOBAL counter with a flag-setting subs feeding a
+  branch (`if (--n)`), not a this-relative RMW.
+- stack-slot RMW ([sp,#imm]): 17 folded, 0 materialized -- both compilers agree there.
+- single reads always fold: the whole 0xc getter family (IsOnGround = ldr [r0,#0x10];
+  and #0x10; bx lr) beside every 0x14 setter/clearer of the same word. Getters return
+  the raw mask (no shift), so the original source was int + mask constants, not
+  bitfields.
+
+So the target compiler NEVER folds a member address that feeds both a load and a store:
+it keeps the CSE'd address temp. Every mwccarm we have re-folds that temp
+unconditionally at O1+. That is the entire first-access-fold "floor": not a missing
+source construct, a codegen delta in whichever CW-for-DS build Nintendo actually ran
+(a pre-1.2 2004-era release; tools/mwccarm starts at 1.2). That build is now identified
+by name and its behaviour confirmed from primary artifacts; see 6ah. Consequences:
+
+- The u64 whole-expression launder (6ac: launder the WHOLE address expression, not the
+  base) is the CORRECT canonical compensation; 1,612 src files / 3,142 uses carry it
+  today. Do not spend model time hunting formulations for materialized-RMW residues.
+- If an earlier CW-for-DS build is ever sourced, expect a mechanical mass de-launder
+  across those files, and re-test the base-materialization family (6g) against it.
+- Calibration, 6ae-style: bounded mechanism claim, not an impossibility proof. But the
+  bound is hard: 95:1 in ROM, 0 reachable across 24 builds x 10 opt configs x 7 -opt
+  toggles x ~30 formulations.
+
+## 6ah. The build that compiled the ROM: CodeWarrior for NITRO V0.5-V0.6.1 (2026-07-27)
+
+6ag bounded first-access-fold to a compiler-build delta but could not name the build.
+It now has a name and a build-number range, and the fold behaviour is confirmed from
+period artifacts rather than inferred. Nintendo's 2003-2004 DS compiler ran a `V0.x`
+product numbering under two names, IRIS (the pre-NITRO codename) and NITRO. It is the
+SAME product line as everything in tools/mwccarm, just far older.
+
+Read the two version strings carefully, because they are different fields and confusing
+them sends you hunting the wrong thing. The CLI banner of the Dec-2003 compiler, from
+`docs/_private/CodeWarrior/mwccarm.help.txt` in `irisSDK-20031203.tar.gz` (verified
+directly, not secondhand):
+
+```
+Metrowerks C/C++ for Embedded ARM.
+Copyright c 2003, Metrowerks Corporation
+Version 2.0 build 36 (build 0036)
+Runtime Built: Nov 22 2003 11:16:18
+```
+
+with the linker at `Version 2.0 build 47`. So the banner says `Embedded ARM` in 2003
+exactly as it does in 2005, and the core version numbering is continuous: build 36
+(Nov 2003) through build 72 (CW-for-NITRO 1.2, 2005-06-14, our earliest) and on to 87.
+Separately, `Metrowerks C/C++ for ARM v1.0a1` is the ELF *producer stamp* written into
+`.o`/`.a` files by that era's compiler, not its banner. Both strings appear in the same
+object. Do not treat the producer stamp as a product-line tell.
+
+The install paths and producer stamps in each SDK's prebuilt `.a` libraries date the
+product line:
+
+| NitroSDK | date | producer stamp | product path |
+|---|---|---|---|
+| 1.0 | 2004-04-16 | `Metrowerks C/C++ for ARM v1.0a1` | `CodeWarrior for IRIS V0.2`, `CodeWarrior for NITRO V0.3` |
+| 2.0rc3 | 2004-12-10 | `Metrowerks C/C++ for ARM v1.0a1` | `CodeWarrior for NITRO V0.6.1` |
+| 2.2a | 2005-08-26 | `Metrowerks C/C++ for ARM 2.0.0.73` | (none recorded) |
+
+`2.0.0.73` in the Aug-2005 SDK is core build 73, one past our earliest, so by then the
+SDK is already being built by our compiler family. NitroSDK 1.0's release notes name
+"CodeWarrior Versions 0.2, 0.3, or 0.4.1"; ReleaseNotes-1.2 adds "NITRO-SDK 1.2 was
+created to be used with this V0.5". The era's build system keys off `CWFOLDER_IRIS` /
+`CWFolder_NITRO`, and installers are named `CW_NINTENDO_DS_R<ver>.exe`.
+
+The `SDK_CW_BUILD_NUMBER_LD` ladder in the SDK buildtools maps LINKER builds to
+products: 0047 = Dec-2003 IRIS base, 0050 = IRIS V0.2 hotfix 1, 0056 = NITRO V0.3,
+0057 = V0.4.1, 0058 = V0.5, 0061 = V0.5 hotfix 1, 0062 = V0.6. Dated product history:
+V0.1 Nov 2003, V0.2 Dec 2003, V0.3 Mar 2004, V0.5 May 2004, V0.6 Jul 2004, V0.6.1 Aug
+2004; by Mar 2005 the install path becomes `CW for NINTENDO DS V1.0.2`, then 1.1
+(build 70 era, ~Mar 2005) and 1.2 in June 2005.
+
+The compiler's own changelog settles the dating. `ARM_Compiler_Notes.txt` ships inside
+the 1.2sp2p3 zip and carries an unbroken build history from the beginning:
+
+| core | builds | dates |
+|---|---|---|
+| 1.0a | 0001-0006 | 0001 = 2002-10-02, "first build of ARM compiler" |
+| 1.0 | 0007-0021 | 2003-02-19 to 2003-06-19 |
+| 2.0 | 0033-0050 | 2003-09-28 to 2004-06-15 |
+| 2.0 | **0053-0062** | **2004-09-09 to 2004-12-16** |
+| 2.0 | 0063-0066 | Jan 2005, internal builds |
+| 2.0 | 0067-0071 | 2005-01-21 to 2005-03-29 |
+| 2.0 | 0072 | 2005-05-12, ships in product 1.2 |
+
+**So SM64DS (NA, gamecode ASME, shipped 2004-11-21) was compiled by CodeWarrior for
+NITRO V0.5, V0.6 or V0.6.1, whose mwccarm core is 2.0 build 0053-0062.**
+
+One structural fact makes the hunt wider than it looks: NITRO was not a fork. That
+single changelog covers one mwccarm lineage which also feeds Metrowerks' public,
+non-Nintendo "CodeWarrior for ARM" / "ARM ISA Edition" products. So a public 2004-dated
+update from that line should carry a build in the 0053-0062 range, and public products
+survive in places Nintendo-confidential ones do not.
+
+Two measurements confirm this is the ROM's compiler:
+
+1. Controlled fold census. Same SDK codebase, three compiler eras, counting RMW sites
+   as materialized (`add rA,rB,#imm` then `[rA]`) vs folded (`[rB,#imm]`):
+   Apr 2004 / IRIS V0.2 = 64.1% materialized (175 vs 98); Dec 2004 / NITRO V0.6.1 =
+   61.8% (754 vs 466); Aug 2005 / build 73 = 26.2% (192 vs 542). The behaviour collapses
+   by 2.4x exactly at the 2004-to-2005 changeover, on near-identical source. For
+   reference the ROM itself is 226 materialized vs 11 folded, and all 24 local builds
+   fold the equivalent C 100% of the time.
+2. Link fingerprint. Reloc-free `.text` sections from each SDK's `.a` libraries,
+   searched byte-identically inside the ROM images: Apr 2004 hits 46 sections /
+   4,472 bytes, Dec 2004 hits 96 / 10,076, Aug 2005 hits 72 / 6,976. The Dec-2004 SDK
+   wins on both absolute bytes and hit rate (16.9% of candidates vs 13.1% and 11.0%),
+   which puts the game's linked SDK at the V0.6.1 era.
+
+One negative result that saves future effort: there is no lost 2003-era flag to chase.
+Diffing build 36's `-help` surface against build 82's, zero options were removed and
+essentially none added (`-generic_symbol_names`, plus `-ARM`). The 2003 option set is
+the 2005 option set. Whatever changed about address folding changed inside codegen, so
+it cannot be recovered by flags on the compilers we have. Obtaining the binary is the
+only route. (The Dec-2003 SDK flag set, for reference: `-lang c -proc arm946e -nothumb
+-nopic -nopid -interworking -O4 -opt speed -inline on,noauto -msgstyle std -w all -enc
+SJIS -char unsigned -stdinc -enum int -stdkeywords off -avoid_strb all,err`. Nintendo's
+`-avoid_strb` was renamed `-avoid_byte` in V0.4 and is hidden from `-help` in both.)
+
+Availability, as of 2026-07-27: **no public archive holds any pre-2005 mwccarm.**
+Verified independently across archive.org `cw_consoles` and `ninty_curated_sdks`, the
+`twlsdk.randommeaninglesscharacters.com` mirror, the Paladin leak, the Pokemon Platinum
+leak, and `mid-kid/metroskrew` (oldest patch targets build 72). Every one floors at
+CW-DS 1.2 / build 72. What the Paladin leak's IRIS SDK does preserve is the `-help`
+dumps quoted above, which is how we know build 36 exists at all. Two known-missing
+in-family patches would also be new if found: `cw_ds_1_2_sp2_patch_20050915` (build 80)
+and `cw_ds_1_2_sp2_patch2_20050929` (build 81), plus 1.2 SP1, which no collection has.
+
+Two realistic paths to a build in range remain open.
+
+The first is the public product line, which is promising precisely because it was sold
+without an NDA. Metrowerks' own public FTP is preserved at archive.org
+(`ftp_metrowerks_updates.7z`, 5.5 GB) and its `Metrowerks/CWARM/` folder holds
+`CW_ARM_2.1.1_Update.exe`, 24,337,350 bytes, dated 2004-10-20, whose internal file
+table lists `mwccarm.exe`. That date lands inside the 0053-0062 window. The file can be
+pulled without fetching the whole 5.5 GB: read the 7z start header and end header by
+HTTP range, then fetch only the solid block holding it. The blocker is that its payload
+is an appended InstallShield cabinet starting at offset 102912 (the PE's own resources
+are only 30 KB), which 7-Zip cannot open and which needs `unshield`. Nothing here is
+verified until someone extracts it and reads the banner, so treat it as a lead, not a
+result. If it does yield a 0053-0062 mwccarm, the first thing to run is the fold probe:
+compile `*(u32*)((char*)p+0x154) |= 0x40` and check whether the address materializes.
+
+The second is a leaked or mirrored 2004-2005 DS game source tree, because those commit
+the whole CodeWarrior install under `sdk/cw/ARM_Tools/Command_Line_Tools/`. Three such
+trees are public today (two copies of `retsam_00jupc` carrying CW-DS 2.0 SP2, and
+`yin846/pokemon_dp` carrying 1.2 SP2), which proves the pattern; none is old enough yet.
+Useful search hooks: `CWFOLDER_NITRO`, `CWFOLDER_IRIS`, `"CodeWarrior for NITRO V0"`,
+`"CW for NINTENDO DS V1.0.2"`, `CW_NINTENDO_DS_R`.
+
+Metrowerks' own roadmap talk from the Nintendo DS Developer Conference, dated
+2004-09-30 (`7_Metrowerks.pdf`, "CodeWarrior for NINTENDO DS", Rafael Campana), fills
+in the rest of the 2004 line and dates it precisely. As of that talk the shipping IDE
+was 5.6, with two releases pending: "Release 0.9 (~Late September 2004)" adding overlay
+debugging, a command line debugger interface and batch pre/post linker plugins, then
+"Release 1.0 (~Early October 2004)" adding long veneer branch support, watchpoints, a
+simple profiler and a cache viewer. So a 1.0 did exist, in October 2004, and the jump
+straight to the surviving 1.2 of June 2005 is a gap in the archives rather than in the
+version numbering. SM64DS (NA) shipped 2004-11-21, which places its toolchain in the
+V0.6.1-to-1.0 window and before 1.2 by a wide margin.
+
+Worth noting for the asm-hatch work: long veneer branch support is a Release 1.0
+(Oct 2004) feature, landing right inside the game's build window. That is consistent
+with the veneer class being reachable from `#pragma long_calls on` rather than being
+hand-written assembly.
+
+Practical effect for matching: nothing changes today. V0.6.1 is not in any public
+archive (the surviving mirrors floor at the June-2005 1.2 installer), so 1.2/sp2p3
+remains the best available proxy and the u64 whole-expression launder remains the
+correct compensation. What changes is the search: anyone hunting the real build should
+look for `CodeWarrior for IRIS` / `CodeWarrior for NITRO V0.x` / the banner
+`Metrowerks C/C++ for ARM v1.0a1`, not for a "1.0" or "1.1". The 2003-2004 IRIS-era
+material is the only place it can still be hiding.
+
+A build-discrimination check worth knowing when reasoning about any of this: on a
+26-function sample of matched code, 1.2/base (72), 1.2/sp2 (79) and 1.2/sp2p3 (82) are
+completely indistinguishable, all three matching every function. sp3 (84) and sp4 (87)
+start to diverge, and the 2.0 line never matches. So "sp2p3" in this repo means "the
+72-82 family", and the true compiler sits at or below build 72.
+
+### The SDK's own build flags, and what they rule in or out
+
+NitroSDK ships the makefile fragment it built itself with,
+`build/buildtools/commondefs.cctype.CW`. It is worth reading in full because it is the
+only surviving record of how Nintendo actually drove this compiler. Highlights:
+
+- `CWFOLDER_IRIS ?= C:/Program Files/Metrowerks/CodeWarrior for NITRO V0.6.1`, with
+  `CWFOLDER_NITRO` aliased to it and tools under `ARM_Tools/Command_Line_Tools`.
+- It branches on `SDK_CW_BUILD_NUMBER_LD` with the literal values `0050 0056 0057 0058
+  0061 0062`. That is the 2004 linker build series, and it sits well below our earliest
+  build 72, independently corroborating where the V0.x line falls.
+- Per-build workaround switches exist for that era: `SDK_CW_WA_OPT4`,
+  `SDK_CW_WA_CONSTPOOLS`, `SDK_CW_WA_OPT_BLX`, plus `CW_AVOID_STRB`, which is
+  `-avoid_strb all,noerr` on builds 0050/0056 and `-avoid_byte strb -warn_byte none`
+  after. Our 1.2/sp2p3 rejects `-avoid_strb` outright and accepts `-avoid_byte`, another
+  small confirmation that `-avoid_strb` belongs to the older builds only.
+- The library flag set is `-lang c -proc arm946e -nothumb -nopic -nopid -interworking
+  -O4 -inline on,noauto -opt speed -msgstyle std -w all -enc ascii -char signed -stdinc
+  -enum int -stdkeywords off -Cpp_exceptions off`.
+
+Two results from testing those against our compiler:
+
+- `-avoid_byte strb` is NOT what the game used, and this is now settled rather than
+  assumed. The flag replaces byte stores with `swpb`, and because `swpb` has no offset
+  addressing mode it forces exactly the materialized `add rA,rB,#imm` we have been
+  chasing: `ldrb r2,[r0,#4] / add r1,r0,#4 / bic r0,r2,#1 / swpb r0,r0,[r1]` instead of
+  the folded `ldrb/bic/strb`. Tempting, but the ROM contains zero `swp` or `swpb`
+  instructions across arm9, arm7 and every overlay, so the game was not built this way.
+  Worth recording that the materialization IS reachable under some flag mode, i.e. it is
+  a codegen mode rather than something the compiler structurally cannot express.
+- `-inline on,noauto`, `-inline off` and `-stdkeywords off` are all neutral on matched
+  code (verified on three arm9 functions of 224/404/744 bytes, all still MATCH). Since
+  `-inline on,noauto` is what the SDK actually used and it costs nothing on known-good
+  functions, it is a free axis to add to the near-miss sweep, particularly for residues
+  suspected of an inlining-decision difference.
+
+## 6ai. RECOVERED: a 2004 mwccarm (build 0056), and the wall falls (2026-07-27)
+
+6ah concluded that obtaining a pre-2005 binary was the only way past first-access-fold,
+and that no archive held one. The second half was wrong, in a useful way. NITRO was not
+a fork: the same mwccarm core shipped in Metrowerks' public, non-NDA "CodeWarrior for
+ARM ISA Edition", and Metrowerks' own FTP is preserved on archive.org. Its October 2004
+update carries the compiler.
+
+```
+Metrowerks C/C++ for Embedded ARM.
+Copyright (c) 2004, Metrowerks Corporation
+Version 2.0 build 56 (build 0056)
+Runtime Built: Sep 16 2004 13:20:23
+```
+
+`tools/recover_cw2004.py` reproduces it end to end and verifies the hash, downloading
+about 24 MB rather than the archive's 5.5 GB (7z keeps its header at the end, so three
+range requests locate and pull only the solid block that holds the one file). It then
+splits the self-extractor payload and inflates the InstallShield volume in-process, so
+nothing third-party is installed and nothing is executed. Artifact: 2,248,704 bytes,
+sha1 `8eb0b9653ea1c9a589c3a4399e37e2780059a818`. Install it as `2004/b56`.
+
+**The wall falls.** On the exact probe 6ag called shape-blocked, plain C, no launder:
+
+```
+add r1, r0, #0x154 / ldr r0, [r1] / orr r0, r0, #0x40 / str r0, [r1] / bx lr
+```
+
+That is the ROM's 5-instruction materialized form. Every one of the 24 builds we had
+emits the folded 4-instruction version instead, at every opt level, under every source
+idiom tried. The difference is the compiler, exactly as 6ag predicted.
+
+Sweeping the 372-row near-miss DB through build 0056 landed **9 matches for free**,
+verified with strict reloc checking:
+
+| function | module | size | was |
+|---|---|---|---|
+| func_ov006_020ce46c | ov006 | 520 | div 6 |
+| func_ov006_020c4fa4 | ov006 | 972 | div 8 |
+| func_ov075_02116f40 | ov075 | 284 | div 13 |
+| func_ov006_020f46ec | ov006 | 236 | div 20 |
+| func_ov003_020b0894 | ov003 | 672 | div 55 |
+| func_0204322c | arm9 | 92 | size mismatch |
+| func_02043288 | arm9 | 92 | size mismatch |
+| func_020432e4 | arm9 | 120 | size mismatch |
+| func_0204335c | arm9 | 92 | size mismatch |
+
+Spot-checked against all 24 older builds: none of them match any of these. The four
+arm9 entries were not close misses, they were the wrong size entirely.
+
+This also breaks a second documented wall. Those four arm9 entries are the
+`ActorBase::Process` PTMF wrappers written up further up this file: mwccarm 1.2 forces a
+`push {fp,lr}` dynamic frame from every source form tried, giving 0x68 against the ROM's
+0x5c, and the note concluded the ROM's fixed-frame staging "is what 2.0 emits". Build
+0056 emits that staging directly and all four match on the near-miss C unchanged. The
+2.0 reading was the right scent from the wrong direction, since the behaviour belongs to
+the era before 1.2 rather than after it. Two unrelated walls falling to one binary is
+worth recording because it raises the prior on compiler era over source spelling for any
+future floor diagnosis.
+
+**Build 0056 is an ADDITION to the sweep, not a replacement for 1.2/sp2p3.** On an
+80-function sample of already-matched code, 78 matched under both, 0 under b56 alone,
+and 1 regressed: `func_ov004_020adc1c` (ov004, 32 bytes) where b56 emits 0x24 against
+the ROM's 0x20. So b56 is not the game's exact build either. The true build sits
+between 56 and 72 and, per 6ah's product ladder and the Sept-Dec 2004 window, is most
+likely 0058-0062, i.e. CodeWarrior for NITRO V0.5/V0.6/V0.6.1. Switching wholesale
+would break roughly 1% of the corpus; adding b56 to the version sweep costs nothing and
+wins the materialized family. The hunt is now much narrower: builds 0057-0062.
+
+Note for CI: the self-hosted validate box needs `2004/b56` installed before any
+b56-only match can be committed to src/, otherwise it cannot reproduce them and the
+files would land red. Run `tools/recover_cw2004.py` there first.
 
 ---
 
