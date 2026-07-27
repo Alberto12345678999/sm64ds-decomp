@@ -1669,6 +1669,27 @@ Batch meta: 9/15 matched, and the two lowest-div "nearly done" holdovers (020676
 were artifacts of the fix-construct, not the compiler. Calibration keeps winning:
 mechanism claims bounded by known constructs, never impossibility.
 
+## 6af. Opus batch 4 (2026-07-27, 4 arm9 matches, deep-pile breakthroughs)
+
+- **A probe seeded with the draft's own construct can only re-derive the draft**
+  (func_02032f9c, 10->0, killing its recorded floor). The prior floor claim rested on a
+  synthetic probe that faithfully reproduced the draft's behaviour - because it was
+  built FROM the draft's q-address spelling. The ROM's register really was free; the
+  fix was the sibling's pointer-INDEX idiom (`(u16*)(base + 0x40) + (u16)(w/8 >> 1)`)
+  vs the draft's folded byte offset - equal bytes, different webs. When writing a floor
+  hypothesis, ask what the probe inherited from the draft.
+- **Deep-pile divergence mostly means "draft never got attention"**: func_020345b0
+  (120->0), func_0206ece0 (112->0), func_0206655c (179->0) all fell in one session
+  each with ROM-first reading, and Stage::InitResources went 193->4. High div is not
+  a difficulty signal; it is an attention signal.
+- **Read-order of adjacent globals is a real lever** (func_02032f9c lever 2): naming
+  one global's read into a local FIRST and leaving the other inline flips two pool
+  pointers and a dependent pair; five c-first spellings all reach 0, the n-first order
+  never does.
+- func_020316d8 survived ~4300 compiles across 17 lever families with a byte-identical
+  div-28 residual and now carries the strongest exclusion list in the DB; treat as
+  priced-out pending a genuinely new construct class.
+
 **`func_02072fcc` is a ONE-INSTRUCTION miss and the best hand-fix candidate in the backlog**:
 mwcc PRE-hoists a loop-invariant `b+1` whose only use is on a cold retry path into the
 preheader (`add r1,r1,#1` + in-loop `mov r3,r1`) where the ROM recomputes `add r3,r1,#1`
