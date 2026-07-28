@@ -1197,7 +1197,7 @@ matched: yes</title></rect><rect x="83.44" y="127.13" width="11.41" height="5.72
 module: arm9
 addr: 0x02011268
 size: 96 bytes
-matched: yes</title></rect><rect x="94.85" y="127.13" width="9.03" height="5.72" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5ActorD1Ev
+matched: yes</title></rect><rect x="94.85" y="127.13" width="9.03" height="5.72" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5ActorD2Ev
 module: arm9
 addr: 0x020112c8
 size: 76 bytes
@@ -1205,7 +1205,7 @@ matched: yes</title></rect><rect x="103.88" y="127.13" width="11.41" height="5.7
 module: arm9
 addr: 0x02011314
 size: 96 bytes
-matched: yes</title></rect><rect x="115.29" y="127.13" width="9.03" height="5.72" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5ActorD2Ev
+matched: yes</title></rect><rect x="115.29" y="127.13" width="9.03" height="5.72" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5ActorD1Ev
 module: arm9
 addr: 0x02011374
 size: 76 bytes
@@ -7249,7 +7249,7 @@ matched: yes</title></rect><rect x="297.94" y="562.77" width="21.97" height="5.9
 module: arm9
 addr: 0x02043c88
 size: 192 bytes
-matched: yes</title></rect><rect x="319.92" y="562.77" width="5.49" height="5.94" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9ActorBaseD1Ev
+matched: yes</title></rect><rect x="319.92" y="562.77" width="5.49" height="5.94" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9ActorBaseD2Ev
 module: arm9
 addr: 0x02043d48
 size: 48 bytes
@@ -7257,7 +7257,7 @@ matched: yes</title></rect><rect x="5.00" y="568.71" width="11.00" height="4.20"
 module: arm9
 addr: 0x02043d78
 size: 68 bytes
-matched: yes</title></rect><rect x="16.00" y="568.71" width="7.77" height="4.20" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9ActorBaseD2Ev
+matched: yes</title></rect><rect x="16.00" y="568.71" width="7.77" height="4.20" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9ActorBaseD1Ev
 module: arm9
 addr: 0x02043dbc
 size: 48 bytes
