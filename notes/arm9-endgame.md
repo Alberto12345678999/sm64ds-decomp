@@ -78,7 +78,9 @@ five decl positions to rerank the webs, and 2004/b56 on every shape.
 
 ## Group B: mid-divergence, the best target for a model tier
 
-Nine functions, none floored, all with a reproducing draft in the near-miss DB. These are
+Nine functions, none floored, each with a draft in the near-miss DB. Verify the draft
+compiles before trusting its number: one entry (`func_0203e0ac`) stored a scratch-file
+path instead of C and could not reproduce anything until it was repaired. These are
 ordinary lever work: the C is roughly right and the divergence is small enough to reason
 about. Best tokens-per-match on the board.
 
@@ -175,4 +177,128 @@ ints. Re-derive the parameter list from those offsets before touching the body.
   (~25 variants), detailed above.
 - A permuter pass over the twelve closest arm9 targets at 420s each, `-j4`. Groups A and
   the top of B: no banks, no divergence improvements.
-- 2004/b56 across all 22.
+- 2004/b56 across the whole no-src set (0 wins) and across all 42 NONMATCHING files.
+
+---
+
+# Part 2: the arm9 NONMATCHING files (measured, not assumed)
+
+Two counts have circulated, 21 and 43. Both were wrong, and so was the first version of
+this section. Measuring rather than reading headers gives a much smaller number.
+
+As of 2026-07-28, 42 arm9 files carry a NONMATCHING marker. Compiling every one of them
+against 1.2/sp2p3 and 2004/b56 splits them:
+
+| | count | meaning |
+|---|---|---|
+| hand-asm primitives | 27 | reproduce; SDK assembly, count as matched by policy |
+| **stale marker** | 9 | reproduce, are not asm primitives, header is simply out of date |
+| genuinely do not reproduce | 6 | the real work |
+
+So the NONMATCHING set is **6 functions of real work**, not 43. And one of those six is a
+duplicate-file artifact (below), which makes it **5**.
+
+## The 9 stale markers — reproduce today, just mislabelled
+
+```
+func_02059d8c  func_020610fc  func_0206470c  func_02068398  func_02071644
+func_020729e8  func_020732e8  func_0207335c  func_02073584
+```
+
+All nine match under both 1.2/sp2p3 and 2004/b56. Four of them (`func_020729e8`,
+`func_020732e8`, `func_0207335c`, `func_02073584`) are the exit-stub shapes described
+below and are not C-expressible, so their marker is arguably correct in spirit; the other
+five simply reproduce and should lose the banner.
+
+## The 6 that genuinely do not reproduce
+
+| function | size | note |
+|---|---|---|
+| `_ZN8CapEnemy11GetCapStateEv` | 180 | div 4 under b56, see below |
+| `_ZN5Model27LoadCompressedTextureToVramEPcjPc` | 184 | div 13 both compilers |
+| `_ZN2GX7LoadTexEPKvjj` | 332 | div 34 both compilers |
+| `_ZN5Stage25PS_UpdateOkAndBackButtonsEb` | 340 | size mismatch both |
+| `func_02038824` | 532 | div 25 sp2p3, **div 20 under b56** |
+| `_ZN7Message30DisplayCourseNameForStarSelectEj` | 656 | **already matched** as `.cpp`; the `.c` is a stale duplicate |
+
+`_ZN8CapEnemy11GetCapStateEv` is worked in detail below and is a b56 case, not the
+"missing logic" its header claimed.
+
+## Duplicate source files (a link hazard, and why the counts kept moving)
+
+Nine symbols have BOTH a `.c` and a `.cpp` in src/. The repo convention is one file per
+symbol, so each pair is a duplicate definition and each also double-counts in any scan.
+
+| symbol | .c | .cpp | action |
+|---|---|---|---|
+| `_ZN7Message30DisplayCourseNameForStarSelectEj` | no | MATCH | delete `.c` |
+| `func_ov070_0211f6e0` | MATCH | no | delete `.cpp` |
+| `_ZN15TtcRotatingGear8BehaviorEv` | MATCH | MATCH | pick one |
+| `_ZN5Stage7PS_InitEv` | MATCH | MATCH | pick one |
+| `func_ov006_020f46ec` | MATCH | MATCH | pick one |
+| `func_ov065_02116364` | MATCH | MATCH | pick one |
+| `func_ov075_02116f40` | MATCH | MATCH | pick one |
+| `func_ov084_021298d0` | MATCH | MATCH | pick one |
+| `func_ov084_0212d564` | MATCH | MATCH | pick one |
+
+Three pairs were created by the recent b56 batches (`e8350ed1` / #783 added `.cpp` files
+while stale NONMATCHING `.c` siblings from `c31a2a63` stayed). Nothing is broken today,
+since every pair has at least one reproducing side, but this should be cleaned up before
+it bites at link time.
+
+Reproduce with `scratchpad/dups.py` and `scratchpad/stale.py`, or rerun the same two
+checks: compile each file and compare, do not read the header.
+
+## Bucket detail (for the ones that are not work)
+
+**SDK assembly primitives, 27 files.** Functions Nintendo shipped as assembly: block copy,
+byte fill, CP15, lock IDs, context switch. No original C exists, so writing C invents a
+source that never existed. Several self-declare `Counts as matched (asm-primitive policy)`
+while still carrying the blanket "does NOT count" banner on line 1, which is the main
+reason this set reads as pending work. `func_0206a928` alone is 4,960 B.
+
+**Not C-expressible.** `func_020729e8` is a bare epilogue (`add sp,#0xac; ldmia sp!,{...};
+bx lr`). `func_020732e8`, `func_02073584` and `func_0207335c` start mid-frame, using `fp`
+without ever establishing it. These are shared exit stubs the symbol table split out.
+
+## Worked attempt: func_02057078 (bucket A, and why A is bucket A)
+
+Recorded because it is the evidence that the primitives resist conversion, not just an
+assertion. It is the NitroSDK `OS_ReleaseLockID` sibling of `func_02057020`.
+
+```
+ROM:  ldr r3,=tbl / cmp r0,#0x60 / addpl r3,r3,#4 / subpl r0,r0,#0x60
+      submi r0,r0,#0x40 / mov r1,#0x80000000 / lsr r1,r1,r0
+      ldr r2,[r3] / orr r2,r2,r1 / str r2,[r3] / bx lr      (11 insns + pool)
+ours: ldr r3,[pc] / cmp r0,#0x60 / addge r3,r3,#4 / subge r0,r0,#0x60
+      ldr r2,[r3] / sublt r0,r0,#0x40 / mov r1,#0x80000000
+      orr r0,r2,r1,lsr r0 / str r0,[r3] / bx lr             (10 insns + pool)
+```
+
+Two differences and both are compiler-internal. mwccarm fuses the shift into the `orr`
+(`orr r0,r2,r1,lsr r0`) where the ROM keeps `lsr` and `orr` separate, and it selects
+GE/LT where the ROM has PL/MI. Six source spellings produce **byte-identical** output:
+plain if/else, `lockID - 0x60 >= 0` sign test, separate `bit` temp, `volatile` temp,
+compound `bit >>= lockID`, and the u64 whole-expression launder. The launder does not
+break the fusion, which is notable given how reliably it works elsewhere (6h).
+
+That is a peephole no source form reaches, which is why this was hatched. Expect the
+same for the rest of bucket A.
+
+## Correcting Part 1's scope
+
+Part 1 claims 21 with no src file. That number moves as others land matches; it was 22
+when Part 1 was written and 20 by the time Part 2 was measured. Check it, do not quote it.
+
+The complete arm9 picture, measured on 2026-07-28:
+
+| | count |
+|---|---|
+| reproducing C | 3,029 |
+| reproduce but marked NONMATCHING (27 asm primitives + 9 stale markers) | 36 |
+| genuinely not reproducing, with a src file | 5 |
+| no src file at all | 20 |
+
+So **25 functions of genuine work**, not 43 and not 33. The 5 with drafts are far cheaper
+than the 20 without, and two of them (`func_02038824` at div 20, `_ZN8CapEnemy11GetCapStateEv`
+at div 4) only reach those numbers under 2004/b56.
