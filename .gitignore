@@ -83,6 +83,7 @@ _glmwork/
 /scratch/
 .agents/
 .codex/
+.cw2004work/
 
 # emu-trace runtime capture output (tools/trace/collect.py) - regenerable data
 /traces/

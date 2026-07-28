@@ -359,6 +359,44 @@ def prune_matched(args):
           f"resynced {renamed} stale names; DB now {remaining}.")
 
 
+def dedupe(args):
+    """Collapse duplicate rows for the same (module, addr), keeping the BEST tip.
+
+    nearmiss/db.jsonl is `merge=union` in .gitattributes: two PRs that both bank a tip for
+    the same function land both rows on main instead of a merge conflict. That is the point -
+    GitHub can auto-merge concurrent match PRs - but it leaves duplicate rows for whatever
+    functions both sides touched. This is the automatic cleanup: for each (module, addr) keep
+    the row with the LOWEST divergence (a floored entry outranks a same-div non-floored one,
+    since the floor mark is the more-informed verdict), drop the rest. A merge never regresses
+    a tip anyone improved. Idempotent; run in CI after every push to main."""
+    seen, best, kept = {}, {}, []
+    dups = 0
+    for r in L.read_records(DB):                    # RAW rows, incl. union duplicates
+        key = (r.get("module"), r.get("addr"))
+        div = r.get("divergences")
+        div = div if isinstance(div, int) else 1 << 30
+        floored = 1 if r.get("floor") else 0
+        rank = (div, -floored)                       # lower div wins; floor breaks a div tie
+        if key not in seen:
+            seen[key] = rank
+            best[key] = r
+            kept.append(key)
+        else:
+            dups += 1
+            if rank < seen[key]:
+                seen[key] = rank
+                best[key] = r
+    if dups == 0:
+        print(f"no duplicate (module, addr) rows; DB has {len(kept)} entries")
+        return
+    if args.dry_run:
+        print(f"would collapse {dups} duplicate row(s) -> {len(kept)} unique entries")
+        return
+    with locked():
+        save_db({k: best[k] for k in kept})
+    print(f"collapsed {dups} duplicate row(s); DB now {len(kept)} unique entries")
+
+
 def resync_names(args):
     """Rewrite each entry's display name to the current symbol at its (module, addr).
     The DB is keyed by (module, addr); `name` is only a label and goes stale when a
@@ -464,6 +502,10 @@ def main():
     p.add_argument("--dry-run", action="store_true",
                    help="list stale names without rewriting them")
     p.set_defaults(fn=resync_names)
+    p = sub.add_parser("dedupe")
+    p.add_argument("--dry-run", action="store_true",
+                   help="report duplicate rows without collapsing them")
+    p.set_defaults(fn=dedupe)
     args = ap.parse_args()
     args.fn(args)
 

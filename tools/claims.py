@@ -1,4 +1,4 @@
-"""Coordinate decomp work via the belongto.us claims lock service so multiple bots
+"""Coordinate decomp work via the tangos.dev claims lock service so multiple bots
 do not grind the same address ranges. Programmatic sibling of CLAIMS.md.
 
 Lock flow: try-lock a (module, start, end) span -> renew while working -> release when
@@ -27,7 +27,7 @@ import sys
 import urllib.request
 import urllib.parse
 
-BASE = "https://belongto.us"
+BASE = "https://tangos.dev"
 
 
 def _load_local(env, fname):
@@ -57,6 +57,22 @@ def _default_handle():
 
 HANDLE = _default_handle()
 API_KEY = _load_local("CLAIMS_API_KEY", "claims_key.txt")
+
+
+def key_reminder():
+    """One-line nudge to print when no claims key is configured, else None.
+
+    Without a key the schedulers still READ claims (they won't hand you work someone else
+    holds), but you cannot ANNOUNCE yours, so two people can grind the same function. Any
+    tool an agent runs each batch can surface this so the human knows to mint one; the fix
+    is a 30-second browser action, not a code change. See CONTRIBUTING.md 'Coordinating your
+    work'."""
+    if API_KEY:
+        return None
+    return ("no claims key: your matches are NOT announced to other contributors, so the same "
+            "function can be worked twice. Mint one (30s) at https://tangos.dev/account -> "
+            "'Mint a service token', save it to tools/claims_key.txt or $CLAIMS_API_KEY. "
+            "In tangOS Console: the key button next to Settings.")
 
 
 def _req(path, payload=None, method="GET"):

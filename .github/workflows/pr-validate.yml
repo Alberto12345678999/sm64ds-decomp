@@ -12,7 +12,16 @@ permissions:
   pull-requests: write
 
 concurrency:
-  group: pr-validate-${{ github.event.pull_request.number }}
+  # Key on the head SHA, not the PR number. Grouping by PR number meant every new event for
+  # that PR cancelled the run already in flight, so a branch that gets pushed to repeatedly
+  # (the console auto-pushes matched batches) could never finish a validation: each check went
+  # queued -> cancelled and the PR never reached a verdict, leaving it unmergeable and, worse,
+  # looking "clean" at a glance because an unconcluded check reads as UNSTABLE rather than red.
+  # Per-SHA grouping still collapses duplicate events for the SAME commit (reopen, re-request)
+  # into one run, which is the actual waste worth avoiding; a genuinely new commit deserves its
+  # own check. Cost is that a superseded commit may finish a run nobody reads - ~30s on the
+  # build box, cheap next to a PR that can never be merged.
+  group: pr-validate-${{ github.event.pull_request.head.sha }}
   cancel-in-progress: true
 
 jobs:

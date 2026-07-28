@@ -1,6 +1,3 @@
-// NONMATCHING: different op / idiom (div=18). Logic verified correct vs ROM; not
-// byte-matchable from C at mwccarm 1.2/sp2p3 (see notes/matching-style.md).
-// Counts as decompiled, not matched.
 extern void InitialiseVramGlobals(void);
 extern void _ZN5Model8LoadFileER13SharedFilePtr(void* f);
 extern void _ZN9Animation8LoadFileER13SharedFilePtr(void* f);
@@ -49,8 +46,7 @@ struct M48 { int w[12]; };
 
 int _ZN14UnknownVsEntry13InitResourcesEv(char* c)
 {
-    char* p;
-    int i;
+    int i; int kind; char* p;
 
     InitialiseVramGlobals();
     _ZN5Model8LoadFileER13SharedFilePtr(&data_ov075_0211d3fc);
@@ -93,9 +89,8 @@ int _ZN14UnknownVsEntry13InitResourcesEv(char* c)
 
     if (*(int*)(c + 8) != 1) {
         _ZN9ModelBase7SetFileEP8BMD_Fileii(c + 0x8bc, *(void**)(&data_ov075_0211d3bc + 4), 1, -1);
+        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(c + 0x8bc, *(void**)(&data_ov075_0211d3e4 + 4), 0, 0x1000, 0);
     }
-
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(c + 0x8bc, *(void**)(&data_ov075_0211d3e4 + 4), 0, 0x1000, 0);
 
     func_ov075_0211b458(c + 0xe80, (int*)&data_ov075_0211c654, 0);
     _ZN8Particle10SysTracker10InitialiseEv(c + 0x50);
@@ -103,8 +98,9 @@ int _ZN14UnknownVsEntry13InitResourcesEv(char* c)
     p = c + 0x920;
     i = 0;
     do {
+        kind = *(int*)(c + 8);
         int r = func_ov075_02115290(c, i);
-        if (!func_ov075_02114ddc(p, *(int*)(c + 8), i, r))
+        if (!func_ov075_02114ddc(p, kind, i, r))
             return 0;
         i++;
         p += 0x158;

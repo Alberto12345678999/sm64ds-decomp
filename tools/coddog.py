@@ -31,9 +31,15 @@ import modules as MOD
 import sweep
 import knowledge as KB
 import worklist as WL
+import claims_md as CLM
 import ledger as L
 
 REPO = pathlib.Path(__file__).resolve().parent.parent
+
+# Keep in sync with refine_wl.py's --max-div default: a near-miss at or under this is the
+# refiner's job and is parked out of this scheduler's target pool; anything farther out stays
+# a fresh target here so no draft falls between the two tiers.
+REFINE_MAX_DIV = 20
 
 
 def opseq(tgt):
@@ -44,14 +50,23 @@ def jaccard(a, b):
     return len(a & b) / len(a | b) if (a or b) else 0.0
 
 
-def load_parked():
-    """(module, addr) pairs to keep out of the target pool: NONMATCHING floor and the
-    near-miss backlog. nearmiss/db.jsonl is committed (shared); nonmatching.jsonl is
-    local -- both are used if present."""
+def load_parked(refine_max_div=REFINE_MAX_DIV):
+    """(module, addr) pairs to keep out of the target pool.
+
+    Park a near-miss ONLY when some other tier will actually pick it up - i.e. it is a
+    confirmed floor, or it is close enough that refine_wl takes it (div <= refine_max_div).
+    Parking the whole backlog is what starved this scheduler: every banked draft left the
+    Drafter pool, but refine_wl only takes drafts under its threshold, so anything farther
+    out was claimed by NEITHER tier and became unschedulable. Keep the two pools
+    complementary - if the refiner won't have it, it stays a fresh target here.
+    nearmiss/db.jsonl is committed (shared); nonmatching.jsonl is local - both used if present."""
     parked = L.nonmatching_set()
     for r in L.read_records(REPO / "nearmiss" / "db.jsonl"):
         try:
-            parked.add(L.key_of(r))
+            div = r.get("divergences")
+            refinable = isinstance(div, int) and 0 < div <= refine_max_div
+            if r.get("floor") or refinable:
+                parked.add(L.key_of(r))
         except Exception:
             pass
     return parked
@@ -76,16 +91,18 @@ def build_corpus():
             rec = {"name": name, "module": label, "addr": addr, "size": size,
                    "ops": ops, "opset": frozenset(ops), "tgt": tgt}
             src = WL.read_src_text(name)
-            if src is not None:
-                # A committed src file is only an example-eligible byte-match if it is NOT a
-                # "// NONMATCHING" hatch (a decompiled-but-unmatchable wall). The banner is in
-                # the committed src, so this is portable and does not need nonmatching.jsonl.
-                # A hatch is excluded from BOTH pools: it is neither a valid sibling nor a fresh
-                # target (it is a known wall). Fixes #61.
-                if "// NONMATCHING" not in src[:200]:
-                    rec["src"] = src
-                    matched.append(rec)
+            # A committed src file is only an example-eligible byte-match if it is NOT a
+            # "// NONMATCHING" hatch (a decompiled-but-unmatchable draft). The banner is in the
+            # committed src, so this is portable and does not need nonmatching.jsonl.
+            hatch = src is not None and "// NONMATCHING" in src[:200]
+            if src is not None and not hatch:
+                rec["src"] = src
+                matched.append(rec)
             elif (label, addr) not in parked and not S.is_thunk(list(S.md.disasm(tgt, 0))):
+                # A hatch is never a valid SIBLING, but it is still a legitimate TARGET: most
+                # hatches are just old drafts, not proven walls (only a handful carry a floor
+                # mark). Dropping them from both pools hid hundreds of workable functions, so a
+                # hatch now falls through to here and is schedulable unless explicitly parked.
                 unmatched.append(rec)
     return matched, unmatched, relocs_by_mod
 
@@ -124,6 +141,9 @@ def main():
     ap.add_argument("--spread", action="store_true", help="round-robin modules instead of best-first global")
     ap.add_argument("--explain", default=None, help="print one function's closest matched siblings, then exit")
     ap.add_argument("--out", default=None, help="write worklist JSONL (fuzzy-scheduled). omit = summary only")
+    ap.add_argument("--ignore-claims", action="store_true",
+                    help="schedule targets even if CLAIMS.md marks them active/partial "
+                         "(default: skip them, so a batch never duplicates held work)")
     ap.add_argument("--draft", action="store_true",
                     help="attach an m2c semantic C draft (row['m2c_draft']) to rows with "
                          "coddog_sim < 0.5 and size > 0x300 -- the big low-similarity "
@@ -154,6 +174,24 @@ def main():
     # target pool: size-filtered unmatched, optionally one module
     pool = [u for u in unmatched
             if args.min <= u["size"] <= args.max and (not args.module or u["module"] == args.module)]
+
+    # Drop anything another contributor holds in CLAIMS.md. Filtering at pool construction
+    # (rather than at write time) also keeps claimed targets out of the similarity scoring,
+    # so they cannot displace schedulable work from the top of the batch.
+    if not args.ignore_claims:
+        held = CLM.held_targets()
+        before = len(pool)
+        pool = [u for u in pool if not CLM.is_held(held, u["name"], u["addr"])]
+        if before != len(pool):
+            sys.stderr.write(f"claims: skipped {before - len(pool)} target(s) held in CLAIMS.md "
+                             f"({held['rows']} active rows)\n")
+        try:
+            import claims as _CL
+            _msg = _CL.key_reminder()
+            if _msg:
+                sys.stderr.write(f"[claims] {_msg}\n")
+        except Exception:
+            pass
 
     scored = []
     for u in pool:

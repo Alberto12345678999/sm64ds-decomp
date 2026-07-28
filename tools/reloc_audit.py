@@ -88,6 +88,12 @@ _RUNTIME_ALIASES = {
     "_u32_div":   "__aeabi_uidiv",
     "_s32_div_f": "__aeabi_idiv",
     "_s32_div":   "__aeabi_idiv",
+    # long-long family: mwccarm lowers u64 `/` and `%` the same way (seen on
+    # func_02059a60, campaign 2026-07-18); ITCM records them as __aeabi_ul*.
+    "_ll_udiv":   "__aeabi_uldiv",
+    "_ll_umod":   "__aeabi_ulmod",
+    # 1.2 spells the u64 `%` helper _ull_mod (seen on func_02071510, 2026-07-25).
+    "_ull_mod":   "__aeabi_ulmod",
 }
 
 
@@ -146,7 +152,13 @@ def winning_object(name, addr, size, mod):
     target = RV.rom_bytes(mod, addr, size)
     if target is None:
         return None, None, "no-module-bin"
+    # Distinguish the three ways this can fail so callers do not report a missing
+    # or wrong-length source as "no-repro" (which reads as a false-match red flag).
+    # saw_source: src_texts yielded at least one candidate to try.
+    # saw_len:    a candidate compiled to a function of the expected length.
+    saw_source = saw_len = False
     for src in RV.src_texts(name, addr):
+        saw_source = True
         attempts = ([(S.CPP_FLAGS, ".cpp")] if src.startswith("//cpp")
                     else [(M.DEFAULT_FLAGS, ".c"), (S.CPP_FLAGS, ".cpp")])
         for flags, suf in attempts:
@@ -163,18 +175,30 @@ def winning_object(name, addr, size, mod):
                         candidate_syms = list(PV.funcs_in(obj).keys())
                     except Exception:
                         candidate_syms = [name]
-                    if name not in candidate_syms:
-                        candidate_syms = [name] + candidate_syms
+                    # Try the REQUESTED symbol first, always. Any-symbol acceptance is
+                    # deliberate (a source may emit its function under a near-miss name),
+                    # but it must be the fallback, not the default: when the name is already
+                    # in the list this used to leave iteration order to decide, so a TU with
+                    # byte-identical siblings returned the wrong one. The _ZThn80_*D0Ev and
+                    # *D1Ev thunks are identical except for their branch RELOC, so asking for
+                    # D1 handed back D0 and linkcheck then compared D0's relocation against
+                    # D1's ROM bytes and called a correct file WRONG.
+                    candidate_syms = [name] + [s for s in candidate_syms if s != name]
                     for sym in candidate_syms:
                         code, relocs = M.extract_func(obj, sym)
                         if code is None or len(code) != len(target):
                             continue
+                        saw_len = True
                         ok, _ = M.compare(target, code, relocs, verbose=False)
                         if ok:
                             return obj, sym, None
             finally:
                 pathlib.Path(tmp).unlink(missing_ok=True)
-    return None, None, "no-repro"
+    if not saw_source:
+        return None, None, "no-source"      # no src/<name>.c|.cpp on disk to try
+    if not saw_len:
+        return None, None, "len-mismatch"   # compiled, but never the target's length
+    return None, None, "no-repro"           # right length, but bytes never matched
 
 
 def classify(cand_name, cand_mod, cand_addr, cfg, sym_index):

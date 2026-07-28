@@ -30,7 +30,9 @@ ARM9_BASE = 0x02004000
 
 DEFAULT_FLAGS = "-O4,p -enum int -lang c99 -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc"
 SWEEP = ["1.2/base", "1.2/sp2", "1.2/sp2p3", "1.2/sp3", "1.2/sp4",
-         "2.0/base", "2.0/sp1", "2.0/sp1p2", "2.0/sp2", "2.0/sp2p2", "2.0/sp2p3"]
+         "2.0/base", "2.0/sp1", "2.0/sp1p2", "2.0/sp2", "2.0/sp2p2", "2.0/sp2p3",
+         # The recovered 2004 build 0056 (see #776 / notes 6ai):
+         "2004/b56"]
 # The CodeWarrior 1.2 trio that survived version-pinning.
 PINNED = ["1.2/base", "1.2/sp2", "1.2/sp2p3"]
 # Proven (45 probe constructs + 60 ROM functions) byte-identical across the trio,
@@ -79,7 +81,13 @@ def extract_func(obj: bytes, func: str):
     start, size = sym["st_value"], sym["st_size"]
     code = sec.data()[start:start + size]
     relocs = set()
-    rel = elf.get_section_by_name(".rel" + sec.name) or elf.get_section_by_name(".rela" + sec.name)
+    # Match the reloc section by sh_info, never by name: mwccarm emits one section per function
+    # and names them all ".text", so a name lookup returns some other function's relocations
+    # whenever the TU defines more than one (e.g. a C++ dtor emits D0/D1/D2 + thunks). Wrong
+    # wildcard set = a real match can read as a mismatch, or a mismatch can be wildcarded away.
+    rel = next((s for s in elf.iter_sections()
+                if s.header["sh_type"] in ("SHT_REL", "SHT_RELA")
+                and s.header["sh_info"] == sym["st_shndx"]), None)
     if rel is not None:
         for r in rel.iter_relocations():
             o = r["r_offset"] - start
@@ -154,6 +162,15 @@ def main():
             print(f"  (reloc-destination check unavailable: {e}; byte-only compare)")
 
     cfile = pathlib.Path(args.c)
+    # Auto-detect C++ the same way fdiff/swarm do: a leading //cpp marker means compile with
+    # -lang c++ instead of the default -lang c99, so C++ candidates stop failing to compile
+    # (the file is already .cpp, so it compiles in place - no temp copy needed).
+    flags = args.flags
+    try:
+        if cfile.read_text(encoding="utf-8").startswith("//cpp") and "-lang c99" in flags:
+            flags = flags.replace("-lang c99", "-lang c++")
+    except OSError:
+        pass  # a missing/unreadable candidate surfaces later at compile_c with a clearer error
     if args.bin:
         tgt = target_bytes(args.addr, args.size, pathlib.Path(args.bin), args.base)
     elif args.module and args.module != "arm9":
@@ -189,7 +206,7 @@ def main():
     matched = []
     closest = None  # (ndiff, version, code, relocs) for a helpful diff when nothing matches
     for v in versions:
-        obj = compile_c(cfile, v, args.flags)
+        obj = compile_c(cfile, v, flags)
         if obj is None:
             continue
         code, relocs = extract_func(obj, args.func)

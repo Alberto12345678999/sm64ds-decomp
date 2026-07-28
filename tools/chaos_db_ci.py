@@ -96,6 +96,113 @@ def first_matchers() -> dict[str, str]:
     return origin
 
 
+def match_finishers() -> dict[str, str]:
+    """{'src/name.ext': handle} crediting whoever FIRST turned a NONMATCHING draft into a
+    real byte-match -- the person who actually matched the function.
+
+    first_matchers() credits whoever added a path first, which is wrong whenever that first
+    version was an unmatched draft: the file only becomes countable once someone removes the
+    banner, so the drafter would collect credit for a match somebody else made. A bulk import
+    of hundreds of drafts made that a large-scale misattribution rather than a rare one.
+
+    A finish is identified by content, not by commit message: the path carried the
+    "// NONMATCHING" banner at some earlier point and does not at this commit. The FIRST such
+    transition wins, so re-touching an already-matched file never transfers credit.
+
+    This walks full history with per-path state rather than filtering diffs, because every
+    diff-shaped approach misses cases:
+      - `git log -- <path>` applies history simplification and silently prunes commits that
+        arrived through a merge. A match landing on a side branch that forked before the draft
+        existed is recorded as an ADD of an unbannered file, invisible to a MODIFY scan.
+      - the -G pickaxe lists only files whose own diff contains the pattern, so the newly added
+        byte-matching file -- banner-free by definition -- is never reported at all.
+    Draft state also has to follow the file across an extension change, which git records as a
+    rename when the edit is small and as a delete + add of the same base name when it is not.
+
+    Cost is one full-history log plus a single batched `git cat-file` for the blobs, so the
+    whole scan takes a couple of seconds rather than one subprocess per blob."""
+    REC, FLD, SUB = "\x01", "\x02", "\x03"
+    out = subprocess.run(
+        ["git", "log", "--full-history", "--reverse",
+         f"--format={REC}%H{FLD}%an{SUB}%ae", "--name-status", "-M", "--", "src/"],
+        cwd=REPO, capture_output=True, text=True, encoding="utf-8", errors="replace").stdout
+
+    commits: list[tuple[str, str, list]] = []
+    sha = handle = None
+    ents: list = []
+    for line in out.splitlines():
+        if line.startswith(REC):
+            if sha:
+                commits.append((sha, handle, ents))
+            sha, _, rest = line[1:].partition(FLD)
+            name, _, email = rest.partition(SUB)
+            handle, ents = _handle_from(name, email), []
+            continue
+        if not sha or not line.strip():
+            continue
+        parts = line.split("\t")
+        if len(parts) >= 2:
+            ents.append((parts[0], [x.strip() for x in parts[1:]]))
+    if sha:
+        commits.append((sha, handle, ents))
+
+    def target(code: str, paths: list[str]) -> str:
+        return paths[1] if (code.startswith("R") and len(paths) >= 2) else paths[0]
+
+    want = sorted({(s, target(c, p)) for s, _, es in commits for c, p in es
+                   if not c.startswith("D")})
+    proc = subprocess.Popen(["git", "cat-file", "--batch"], cwd=REPO,
+                            stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+    query = "".join(f"{s}:{p}" + "\n" for s, p in want).encode()
+    data, _ = proc.communicate(query)
+
+    state: dict[tuple[str, str], str | None] = {}
+    pos = idx = 0
+    while pos < len(data) and idx < len(want):
+        nl = data.find(b"\n", pos)
+        if nl < 0:
+            break
+        header = data[pos:nl].decode("utf-8", "replace")
+        pos = nl + 1
+        if header.endswith("missing"):
+            state[want[idx]] = None
+            idx += 1
+            continue
+        try:
+            size = int(header.rsplit(" ", 1)[1])
+        except (IndexError, ValueError):
+            break
+        state[want[idx]] = "draft" if b"// NONMATCHING" in data[pos:pos + 200] else "clean"
+        pos += size + 1
+        idx += 1
+
+    drafted: set[str] = set()
+    finishers: dict[str, str] = {}
+    for sha, handle, ents in commits:
+        for code, paths in ents:                       # an extension change keeps its history
+            if code.startswith("R") and len(paths) >= 2 and paths[0] in drafted:
+                drafted.add(paths[1])
+        dels = [p[0] for c, p in ents if c.startswith("D")]
+        adds = [p[0] for c, p in ents if c.startswith("A")]
+        for d in dels:                                 # ...whether git called it a rename or not
+            if d not in drafted:
+                continue
+            base = d.rsplit(".", 1)[0]
+            for a in adds:
+                if a != d and a.rsplit(".", 1)[0] == base:
+                    drafted.add(a)
+        for code, paths in ents:
+            if code.startswith("D"):
+                continue                               # a delete never clears the draft history
+            new = target(code, paths)
+            blob = state.get((sha, new))
+            if blob == "draft":
+                drafted.add(new)
+            elif blob == "clean" and new in drafted and new not in finishers:
+                finishers[new] = handle
+    return finishers
+
+
 def attribution_overrides() -> dict[str, str]:
     """Manual {'src/name.c': github_login} for matches the git-add author gets wrong -- e.g. a
     contributor's work that landed via a maintainer's consolidating PR/squash, which records the
@@ -150,6 +257,7 @@ def main():
                 except Exception:
                     continue
 
+    finishers = match_finishers()        # src path -> who turned the draft into a real match
     firstmatch = first_matchers()        # src path -> first contributor to land the match
     overrides = attribution_overrides()  # manual fixes, highest priority
     aliases = identity_aliases()         # collapse one person's split git identities -> one login
@@ -181,7 +289,10 @@ def main():
             if src_path:
                 rec["srcPath"] = src_path
                 if matched:
-                    a = overrides.get(src_path) or firstmatch.get(src_path)
+                    # Priority: manual override > whoever FINISHED the match (turned the
+                    # NONMATCHING draft byte-identical) > whoever first added the file.
+                    a = (overrides.get(src_path) or finishers.get(src_path)
+                         or firstmatch.get(src_path))
                     if a:
                         rec["author"] = canon(a)
             if matched:

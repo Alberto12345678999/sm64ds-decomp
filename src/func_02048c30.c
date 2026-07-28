@@ -23,7 +23,7 @@ void func_02048c30(int *self, int *p, int q) {
             if (lo > n) {
                 t = 0x7f;
             } else {
-                t = (hi - n) * 0x7f / (hi - lo);
+                t = (int)((hi - n) * 0x7f) / (int)(hi - lo);
             }
         } else {
             func_0204fa2c(self, 0);

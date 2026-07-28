@@ -1,7 +1,4 @@
 //cpp
-// NONMATCHING: base materialization / addressing (div=53). Logic verified correct vs ROM; not
-// byte-matchable from C at mwccarm 1.2/sp2p3 (see notes/matching-style.md).
-// Counts as decompiled, not matched.
 typedef int s32;
 typedef short s16;
 typedef unsigned int u32;
@@ -32,9 +29,8 @@ extern "C" int func_ov063_0211a0dc(char* c)
 
     if (*(s32*)(c + 0x1a4) & 0x207e0) {
         void* found;
-        u32* flagp = (u32*)(c + 0x19c);
 
-        *flagp = *flagp | 1;
+        *(u32*)(int)(((long long)(int)(c + 0x19c)) & 0xFFFFFFFFFFFFFFFFLL) |= 1;
         found = _ZN5Actor10FindWithIDEj(*(u32*)(c + 0x1a8));
         if (found) {
             *(void**)(c + 0x488) = found;
@@ -43,8 +39,7 @@ extern "C" int func_ov063_0211a0dc(char* c)
                 int isBf = (int)(*(u16*)((char*)found + 0xc) == 0xbf);
                 if (isBf) {
                     if (*(s32*)((char*)found + 8) == 3) {
-                        s32 off = 0x5d4;
-                        u16* p = (u16*)(c + off);
+                        u16* p = (u16*)(((long long)(int)(c + 0x5d4)) & 0xFFFFFFFFFFFFFFFFLL);
                         *p |= 0x40;
                     }
                 }
@@ -62,8 +57,7 @@ extern "C" int func_ov063_0211a0dc(char* c)
         return 0;
 
     if (*(u8*)((char*)r4 + 0x6f9) != 0) {
-        u32* flagp2 = (u32*)(c + 0x19c);
-        *flagp2 |= 1;
+        *(u32*)(int)(((long long)(int)(c + 0x19c)) & 0xFFFFFFFFFFFFFFFFLL) |= 1;
         *(void**)(c + 0x488) = _ZN5Actor10FindWithIDEj(*(u32*)(c + 0x1a8));
         return 1;
     }
@@ -106,9 +100,8 @@ found_kind:
         {
             void* found2;
             s16 v[3];
-            u32* flagp3 = (u32*)(c + 0x19c);
 
-            *flagp3 |= 1;
+            *(u32*)(int)(((long long)(int)(c + 0x19c)) & 0xFFFFFFFFFFFFFFFFLL) |= 1;
             found2 = _ZN5Actor10FindWithIDEj(*(u32*)(c + 0x1a8));
             if (!found2)
                 goto ret0;
@@ -120,7 +113,7 @@ found_kind:
             func_020ada40(c, v, found2, 0);
 
             {
-                s16* ap = (s16*)(c + 0x8e);
+                s16* ap = (s16*)(int)(((long long)(int)(c + 0x8e)) & 0xFFFFFFFFFFFFFFFFLL);
                 *ap = (s16)(*ap + 0x8000);
             }
             return 1;

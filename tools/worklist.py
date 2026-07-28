@@ -32,6 +32,7 @@ import modules as MOD
 import sweep
 import knowledge as KB
 import demangle as DM
+import claims_md as CLM
 import ledger as L
 
 REPO_SRC = pathlib.Path(__file__).resolve().parent.parent / "src"
@@ -62,11 +63,28 @@ def mnem_key(ins):
 
 
 def read_src_text(name):
+    # A function can end up with BOTH src/<name>.c and src/<name>.cpp -- typically a
+    # stale `// NONMATCHING` near-miss draft left behind when the real match later landed
+    # under the other extension. Returning the first-found (old behaviour: .c before .cpp)
+    # lets a stale NONMATCHING draft SHADOW a landed match, so every caller that checks
+    # "is this matched?" sees the banner and wrongly treats the function as unmatched --
+    # resurrecting it as a fan-out/permuter target and a near-miss-DB ghost. Prefer a real
+    # match over a NONMATCHING draft when both exist.
+    texts = []
     for ext in ("c", "cpp"):
         p = REPO_SRC / f"{name}.{ext}"
         if p.exists():
-            return p.read_text(encoding="utf-8")
-    return None
+            texts.append(p.read_text(encoding="utf-8"))
+    for t in texts:
+        if "// NONMATCHING" not in t[:200]:
+            return t
+    return texts[0] if texts else None
+
+
+def target_is_done(done, label, addr, name):
+    """Treat the source tree as authoritative when the generated ledger lags."""
+    return ((label, addr) in done
+            or any((REPO_SRC / f"{name}.{ext}").exists() for ext in ("c", "cpp")))
 
 
 def callee_set(addr, ins, relocs, syms):
@@ -173,6 +191,9 @@ def main():
     ap.add_argument("--list-classes", action="store_true",
                     help="print unmatched-function counts per C++ class, then exit")
     ap.add_argument("--pretty", action="store_true")
+    ap.add_argument("--ignore-claims", action="store_true",
+                    help="schedule targets even if CLAIMS.md marks them active/partial "
+                         "(default: skip them, so a batch never duplicates held work)")
     ap.add_argument("--examples", type=int, default=2,
                     help="attach up to N verified sibling sources (same mnemonic "
                          "sequence) as few-shot examples per record; 0 disables")
@@ -204,7 +225,8 @@ def main():
                 continue
             label = "arm9" if mod["name"] == "main" else mod["name"]
             for name, addr, size in sweep.funcs(mod):
-                if (label, addr) in done or not (args.min <= size <= args.max):
+                if (target_is_done(done, label, addr, name)
+                        or not (args.min <= size <= args.max)):
                     continue
                 d = DM.demangle(name)
                 if d and d["class"]:
@@ -213,7 +235,22 @@ def main():
             print(f"  {n:4}  {cls}")
         return
 
+    # Someone else's active CLAIMS.md row means that function is taken. Scheduling it anyway
+    # is how a batch ends up duplicating work another contributor already finished.
+    held = CLM.held_targets() if not args.ignore_claims else {"names": set(), "addrs": set(), "rows": 0}
+    try:
+        import claims as _CL
+        _msg = _CL.key_reminder()
+        if _msg:
+            print(f"[claims] {_msg}", file=sys.stderr)
+    except Exception:
+        pass
+    skipped_claimed = [0]
+
     def emit(rec):
+        if CLM.is_held(held, rec.get("name"), rec.get("addr")):
+            skipped_claimed[0] += 1
+            return
         if args.pretty:
             print(f"=== {rec['module']} {rec['name']} @ {rec['addr']} ({rec['size']}) ===")
             if rec["self"]:
@@ -290,7 +327,8 @@ def main():
             label = "arm9" if mod["name"] == "main" else mod["name"]
             data = mod["bin"].read_bytes()
             for name, addr, size in sweep.funcs(mod):
-                if (label, addr) in done or not (args.min <= size <= args.max):
+                if (target_is_done(done, label, addr, name)
+                        or not (args.min <= size <= args.max)):
                     continue
                 cands.append((label, name, addr, size, mod, data))
         random.shuffle(cands)
@@ -322,9 +360,10 @@ def main():
             if args.addr is not None and addr != args.addr:
                 continue
             # An exact --addr means the caller wants THAT function - a hand-picked drive target -
-            # even if it's already matched or parked as nonmatching. Only apply the done-set
-            # exclusion in list/scheduling mode (no --addr), so batch generation still skips them.
-            if (args.addr is None and (label, addr) in done) or not (args.min <= size <= args.max):
+            # even if it's already matched or parked as nonmatching. Only apply the completed-
+            # target exclusion in list/scheduling mode, so batch generation still skips them.
+            if ((args.addr is None and target_is_done(done, label, addr, name))
+                    or not (args.min <= size <= args.max)):
                 continue
             tgt = data[addr - mod["base"]:addr - mod["base"] + size]
             rec = build_rec(label, name, addr, size, tgt, relocs)
