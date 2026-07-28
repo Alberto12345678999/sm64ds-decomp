@@ -103,3 +103,34 @@ close → kill melonDS. One connection per trace session, detach cleanly.
 Launch recipe used:
 `Start-Process melonDS.exe -ArgumentList '<rom>'` with the pre-written
 `melonDS.toml`; stub binds ~6–8s after boot.
+
+## actorcam: live actor-list heartbeat (`actors.py`)
+
+Human-friendly runtime naming tool: while YOU play in melonDS, it walks the
+game's global Actor list every snapshot and prints what is alive - actor ID
+joined to the community `ActorList.h` name, vtable, uniqueID, param, world
+position - and diffs snapshots so "what spawned/despawned when X happened" is
+one keypress. Snapshots append to `traces/actors/session_*.jsonl` with your
+event labels for later vtable->name joining.
+
+Setup (once): `melonDS.toml` needs `[Gdb] Enabled=true`, `[Gdb.ARM9]
+Port=3333 BreakOnStartup=true`, `[JIT] Enable=false`; clone
+`reference/DynamicAllocationDecomp` for actor-ID names.
+
+Use:
+```
+1. start melonDS with sm64.nds        (game waits, halted, for the client)
+2. python tools/trace/actors.py       (attaches, releases the boot, prompts)
+3. play; press Enter to snapshot, or type "star exploded" + Enter to tag one
+```
+
+melonDS 1.1 stub facts this tool obeys (learned the hard way):
+- one client per emulator launch; if attach probes time out -> restart melonDS
+- memory reads work fine while the game RUNS; `?` only answers when halted
+- with BreakOnStartup the game powers on halted; the tool auto-continues
+- every reply must be ACKed - only talk to the stub through `rsp.py`
+
+Addresses are EU (this repo's ROM): actor list head `0x0209b468` (node
+embedded at actor+0x50), `LOADED_LEVEL_OVL_ID 0x02092130`; layouts credited to
+SplattyDS/DynamicAllocationDecomp (see CREDITS.md), vtable slot semantics
+validated in `tools/actor_names.py`.
