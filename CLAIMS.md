@@ -19,6 +19,8 @@ it is fair to take over: ping the claimant first.
 
 | Range | Who | Claimed | Status |
 |---|---|---|---|
+| ov009 func_ov009_0211145c (0x0211145c, size 0x17c) | lunavyqo (Grok) | 2026-07-30 | **released** — floor(ordering) **div=3** confirmed batch2; residual pool s r3 vs r0 + mov/str reorder with sound call; 45+ variants + multi-version + //cpp; tip+floor in nearmiss/db.jsonl; API key rejected (CLAIMS.md only) |
+| ov091 func_ov091_02131160 (0x02131160, size 0x1e0) | lunavyqo (Grok) | 2026-07-30 | **done** — verified byte-identical + linkcheck VERIFIED (mwccarm 1.2/sp2p3); DropShadow a=v1[b5]-round(h*32) b=h; named base/sum/py; a_arg before s2; inline d_arg; near-miss 119→42→18→6→0; API key expired (CLAIMS.md only) |
 | ov090 func_ov090_02131648 (0x02131648, size 0x42c) | lunavyqo (Grok) | 2026-07-30 | **done** — verified byte-identical + linkcheck VERIFIED (mwccarm 1.2/sp2p3); u64-launder 0x39a/0x390 + (self+0x300)+off + p39a-after-store regperm flip; from near-miss div=87→8→0; CLAIMS.md only (API key expired) |
 | ov091 func_ov091_021339fc (0x021339fc, size 0x270) | lunavyqo (Grok) | 2026-07-30 | **active** — pure-C crack of asm-hatch NONMATCHING (CLAIMS.md only; API key expired) |
 | ov009 func_ov009_0211145c (0x0211145c, size 0x17c) | lunavyqo (Grok) | 2026-07-30 | **active** — batch2 near-miss refine (div=3 pure reg+sched residual: s pool r3 vs r0); CLAIMS.md only (API key rejected) |
