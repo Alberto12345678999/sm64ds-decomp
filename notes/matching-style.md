@@ -353,12 +353,59 @@ The pattern: hill-climbing explores the axes you thought of. A matched sibling s
 did not. When a function stalls with "logic certainly correct, residual is pure regalloc", stop
 sweeping and go read the nearest matched function in the same object family or subsystem.
 
+**Two caveats on picking siblings, both learned the hard way.**
+
+**1. Filter out `// NONMATCHING` files.** ~1% of `src/` (102 files as of 2026-07-29) are asm hatches
+or non-reproducing drafts. Their codegen by definition does NOT reproduce the ROM, so spellings
+copied from one are worse than useless. "Exists in `src/`" is not the same as "is a verified match"
+-- grep the first few lines before you learn anything from a file.
+
+**2. Search by RESIDUAL SIGNATURE, not by address.** Nearest-by-address is only the first guess, and
+it has now failed three times in a row while signature search succeeded. Pick a distinctive,
+greppable feature of the *residual* and scan every matched function for it:
+
+| function | address-nearest siblings | what signature search found |
+|---|---|---|
+| `func_ov063_02119074` | nothing on frame padding | scan for prologue `push {r4,lr}; sub sp,#0x10` + near-zero sp traffic (dead frame space) -> the `volatile int dummy[N]` idiom |
+| `func_ov006_02109aac` | no useful idiom | scan matched ov006 ROM bytes for `add rD, rN, rD, lsl #3` -> `src/func_ov006_02108f2c.c`, same table/compares/callee; 7 words closed in one edit |
+| `func_ov006_021082fc` | adjacent twin 0x38 away, useless | `grep -l Matrix4x3_ApplyInPlaceToTranslation src/*.c` filtered to callers passing a stack Vec3 -> `src/func_ov006_02107ea8.c`; 11 -> 0 |
+
+Practical recipes: grep `src/` for a **callee name** your function also calls (then filter by
+argument shape); scan matched ROM bytes for a distinctive **instruction pattern** from your residual;
+or scan for a **prologue/frame signature** matching yours.
+
+Related, from the same batch: reading ONE well-chosen sibling beat a **10,000-iteration permuter
+run** on `func_ov006_02107ea8` (the permuter floored at 10 words and never got below; the sibling
+idiom took it to 0 in one edit). Do the reading before you reach for search.
+
 `func_ov002_020d869c` is the same lesson from the other direction: it was matched by resurrecting a
 banked 11-divergence near-miss whose central insight (the `~PVec(){}` trick below) had been right all
 along and was written off because of an unrelated callee-arity error. **Read `nearmiss/db.jsonl` for
 your target before starting.**
 
 **Defeating dead-store elimination -- when the ROM has stores that "shouldn't exist".**
+
+> **Four mechanisms, and they are NOT interchangeable -- pick by what else you need.**
+> This symptom (the ROM stores to a stack slot that is never reloaded, while the values
+> also go to the callee in registers) has come up four times with four different correct
+> answers. Ranked by what to try first as of 2026-07-30:
+>
+> | # | spelling | keeps stores | leaves scheduler/coloring free | use when |
+> |---|---|---|---|---|
+> | 1 | plain struct + address-laundering casts `((int*)&t)[0] = x;` | yes | **yes** | default -- try first |
+> | 2 | address **escapes** into a call (`f(&v)`) | yes | **yes** | the aggregate is already passed by address |
+> | 3 | one enclosing struct whose address is taken | yes | partly | several unrelated locals need it at once |
+> | 4 | `volatile` aggregate + named scalar locals | yes | **no** -- freezes store order | last resort |
+>
+> `volatile` is the one to reach for last: it preserves the stores but pins their order and
+> introduces extra *named webs*, which cost an 11-word rotation on `func_ov006_021082fc`
+> that no declaration-order permutation could fix. Swapping it for form #1 (taken verbatim
+> from the twin `src/func_ov006_02107ea8.c`) closed that function 11 -> 0 in one edit.
+> Form #2 beat `volatile` on `func_ov060_02117db8` for the same reason: dropping `volatile`
+> alone deleted the stores as dead, but merging two stack Vec3s into one `int v[6]` whose
+> address escapes into a call kept them *and* let the scheduler hoist the call-arg setup the
+> way the ROM does.
+
 - A local struct with a **user-declared destructor** makes it non-trivially-destructible, so mwccarm
   cannot dead-store-eliminate the stores, while field reads still forward into register args. This
   reproduces the ROM's "store x/y/z to `[sp],[sp+4],[sp+8]` **and** pass them in r1-r3":
@@ -434,3 +481,135 @@ chosen because the pragma is a global crutch that perturbs the allocator elsewhe
   three sibling functions in the same batch.
 - **Read the matched siblings and `nearmiss/db.jsonl` before starting** -- see the section at the top
   of this batch; it is the highest-yield habit here and it beat brute force on both hard functions.
+
+## Coloring residuals: what actually works (2026-07-29 retry sweep, 9 near-misses closed)
+
+A second sweep re-attacked banked near-misses from `nearmiss/db.jsonl`. Results below are each
+backed by a landed byte-identical match, and the negative results were established with controls.
+
+### FALSIFIED: "`#pragma opt_lifetimes off` gates declaration order"
+
+A plausible-sounding rule -- *decl order is inert without the pragma and load-bearing with it, so an
+inert decl sweep means the lever is gated rather than dead* -- was tested on three functions and is
+**false**:
+
+- `func_ov006_020fbcb8`: pragma toggled on/off/absent gave byte-identical output. Positive control
+  `#pragma optimization_level 0` changed the size massively, proving the harness works.
+- `func_ov007_020beb80`: full **720-permutation** decl sweep run with AND without the pragma; only
+  6 distinct outputs total, best was the natural order.
+- `func_ov006_020f13cc`: full 4! decl sweep x {pragma on, off} = 48 cells; every cell byte-identical
+  to its no-pragma twin. Web-span rank was also inert here.
+
+`notes/mwccarm-codegen.md` ~line 448 already listed `opt_lifetimes` as inert. **Treat every pragma as
+dead until proven live FOR THAT FUNCTION by a byte delta** -- mwccarm silently no-ops illegal pragmas
+and `2004/b56` ignores even `warn_illpragma`, so a byte change is the only proof. The pragmas most
+often live here are `opt_common_subs off` and `opt_loop_invariants off`. An inert decl sweep usually
+means the controlling axis is something else entirely, not that a pragma is gating it.
+
+### The lever that actually closed these: DON'T NAME THE BASE POINTER
+
+This is `notes/mwccarm-codegen.md` §6ab ("late shared-base via non-encodable offsets"), and it was
+the fix in three separate functions this sweep:
+
+A named `T *base = ...;` local colors into the early named-local band (r3/r2/r1/r0 descending) or
+strands in `ip`. The ROM frequently has **no such variable** -- it lets the addressing optimizer build
+the shared base itself as a **late temp**, which is what reaches the leftover-`r0` / callee-saved-`r6`
+colors. Delete the named pointer and write the full offset at each use:
+
+```c
+/* misses: named base colors early */          /* matches: late temp */
+int *pos = (int*)(c + 0x47f8);                 *(int *)(c + i*4 + 0x4000 + 0x7f8)
+... pos[i] ...                                 *(u16 *)(c + i*2 + 0x4f00 + 0x7c)
+```
+
+`func_ov006_020f13cc`: deleting two named bases went 28 -> 15 -> **0** words. Tell-tale sign that this
+is your bug: other blocks in the *same function* that already match are written in the full-offset
+form. `func_ov006_020d48dc` is the same lever (28 -> 5 -> 0), and it holds even when the offsets are
+out of 12-bit range and mwcc still has to split them into `add rX,base,#0x4000` + `[rX,#0x77c]`.
+
+Note this is the **inverse** of the RMW launder above: one *forces* materialization at RMW sites, the
+other *forbids naming* so the base stays a late temp. Both are the same underlying question -- where
+mwcc decides to CSE an address -- and you often need both in one function.
+
+### Other coloring levers proven this sweep
+
+- **Loop-depth-of-definition** (`notes/mwccarm-codegen.md` ~line 2154): with two scaled loop
+  invariants, defining one in the OUTER loop and the other INSIDE the inner loop is what decides which
+  web gets r6 and which gets r4. No declaration permutation reaches this axis.
+  (`func_ov006_020fbcb8`, via its twin.)
+- **Add a web to re-rank.** Function-scope locals fill r5-r7 in *reverse* declaration order while the
+  parameter takes r4. So when two webs are swapped and nothing you do to *either* helps, adding a
+  third function-scope local re-ranks the whole list and moves them both.
+  (`func_ov007_020beb80`, 34 -> 15 words.)
+- **One struct copy instead of N field stores.** Three separate `u16` stores let the scheduler hoist a
+  later load above an `umull`; `*(Vec3s *)(e + 0x3c) = dd;` emits the ROM's ld,ld,st,st,ld,st group.
+  (`func_ov007_020beb80`, 15 -> 0.) Statement reordering does NOT substitute for this.
+- **Address-escape beats `volatile` for keeping "dead" stores.** `volatile` preserves the stores but
+  freezes store order and blocks the scheduler; passing the aggregate's address to a call preserves
+  them *and* leaves the scheduler free to hoist call-arg setup as the ROM does.
+  (`func_ov060_02117db8`.)
+- **Frame padding**: when the only residual is `sub sp` short by N bytes with no extra memory traffic
+  in the ROM, `volatile int dummy[N/4]; (void)&dummy;` reserves stack and emits no code. Plain unused
+  locals, `volatile` arrays *without* `(void)&`, dead arrays and `long long` locals are all eliminated.
+  (`func_ov063_02119074`; the idiom already appears in 8 other `src/` files.)
+- **Don't hand-expand what the compiler expands idiomatically.** A seed spelling a signed halving as
+  `(s + ((unsigned)s >> 31)) >> 1` cost a match; plain `(a + b) / 2` emits the identical
+  `add rX,rX,rX,lsr#31; asr rX,#1` but without the extra pseudo-register.
+  (`func_ov063_021177b0` -- ten decl/order permutations stayed stuck at 6 words; all seven `/2`
+  variants matched immediately.)
+
+### Picking which banked near-miss to retry: rank by RESIDUAL TYPE, not word count
+
+Sorting candidates by divergence count and taking the lowest is the wrong strategy -- it is actively
+*anti*-correlated with tractability. A very low word count means everything except register coloring
+already matches, which selects precisely for the residual class with no source-level handle.
+
+Measured 2026-07-30: the two lowest-word-count candidates in the whole DB (`func_0202ffec` at 2 words,
+`func_ov075_0211a948` at 5) were both pure register-encoding/coloring swaps and both resisted every
+axis available (see the floors below). The same day, candidates that were *size-mismatched* closed
+readily -- a wrong instruction count means something in the source is still wrong, therefore still
+changeable.
+
+Rank like this:
+
+1. **Size mismatch, small delta (1-3 instructions).** Best. Missing/extra instructions have
+   source-level causes: an un-laundered RMW site, a dead store that got scalar-replaced away, a base
+   pointer named that should be anonymous. `func_ov006_021082fc` (3 short) and `func_ov006_020dd880`
+   (1 long) both landed.
+2. **Has a matched structural twin** (same callee + argument shape, same loop nest, same prologue) --
+   worth more than any lever; see the signature-search table above.
+3. **Word-only residual that is NOT a pure register permutation** -- a wrong shift, a fused-vs-split
+   compare, an idiom hand-expanded that the compiler emits itself.
+4. **Pure register rotation with no twin.** Deprioritise; these eat thousands of compiles and usually
+   floor.
+
+The ranking pass is cheap: re-compile each candidate, record `SIZE(delta)` vs `WORDS(n)`, sort on the
+above. Do not rank on the stored `divergences` field -- see below.
+
+### Two documented floors (2026-07-30) -- do not re-grind these
+
+Both are **size-exact** with a pure register-naming residual and no reachable source handle. Recorded
+with their negative evidence so nobody repeats the search. Per the caveat above, read these as
+"nobody has cracked it yet", not "provably impossible".
+
+- **`func_0202ffec`** (arm9, 0x1d8) -- **2 words**. Two `smull` instructions with Rm/Rs transposed
+  (ROM `smull r7,r8,ip,r3` vs ours `r3,ip`); the values are already in the right registers. Ruled
+  out: per-site operand swap at all 18 multiply sites (every swap made it *worse*, 3 vs 2); P/Q cast-
+  macro swap at every site both operand orders (~36 variants, all neutral); rewriting the two
+  offending terms m-first crossed with 8 declaration orders (jumps to 51 words, and **declaration
+  order is completely inert here**); 5 reassociation variants. mwccarm canonicalises `smull` operand
+  order, so the source multiply order is not the lever.
+- **`func_ov075_0211a948`** (ov075, 0xb8) -- **5 words**. A clean two-web r2/r3 swap (ROM puts the
+  `[r0,#0x88]` load in r2 and the `lsr #0x1a` value in r3; ours is reversed), cascading into the
+  `and`/`lsr` order and the final `orr`. Ruled out: **all 120 permutations** of the 5-term or-chain
+  (baseline was best), plus 6 definition-order/inlining variants (swap the two definitions, define
+  the load last, inline either value, two declaration-list orders) -- every one returned exactly 5.
+
+### Re-measure banked near-misses before trusting them
+
+The `divergences` field in `nearmiss/db.jsonl` is **not comparable across rows**. `match.py` bails
+before comparing words on a size mismatch, so a size-mismatched row reports a small or zero count that
+looks better than an honest size-exact row. Re-compile every candidate before ranking: of 8 top-ranked
+entries in this sweep, 3 turned out to be size mismatches masquerading as low divergence counts.
+**Size-exact-with-N-words is strictly better than any size mismatch** -- do not trade size exactness
+for a lower word count, and do not report "0 mismatching words" from a size-mismatched compile.
