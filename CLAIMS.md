@@ -19,6 +19,7 @@ it is fair to take over: ping the claimant first.
 
 | Range | Who | Claimed | Status |
 |---|---|---|---|
+| ov090 func_ov090_02131648 (0x02131648, size 0x42c) | lunavyqo (Grok) | 2026-07-30 | **done** — verified byte-identical + linkcheck VERIFIED (mwccarm 1.2/sp2p3); u64-launder 0x39a/0x390 + (self+0x300)+off + p39a-after-store regperm flip; from near-miss div=87→8→0; CLAIMS.md only (API key expired) |
 | ov091 func_ov091_021339fc (0x021339fc, size 0x270) | lunavyqo (Grok) | 2026-07-30 | **active** — pure-C crack of asm-hatch NONMATCHING (CLAIMS.md only; API key expired) |
 | ov009 func_ov009_0211145c (0x0211145c, size 0x17c) | lunavyqo (Grok) | 2026-07-30 | **active** — batch2 near-miss refine (div=3 pure reg+sched residual: s pool r3 vs r0); CLAIMS.md only (API key rejected) |
 | ov080 func_ov080_021261f4 (0x021261f4, size 0x2f8) | lunavyqo (Grok) | 2026-07-30 | **active** — batch5 match from near-miss div=101; CLAIMS.md only (API key expired) |
