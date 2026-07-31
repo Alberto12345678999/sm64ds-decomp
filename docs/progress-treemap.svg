@@ -1413,7 +1413,7 @@ matched: yes</title></rect><rect x="107.05" y="135.93" width="8.41" height="7.43
 module: arm9
 addr: 0x02012468
 size: 92 bytes
-matched: yes</title></rect><rect x="115.46" y="135.93" width="8.05" height="7.43" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020124c4
+matched: yes</title></rect><rect x="115.46" y="135.93" width="8.05" height="7.43" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>Sound_PlayIfNotActive
 module: arm9
 addr: 0x020124c4
 size: 88 bytes
@@ -2573,11 +2573,11 @@ matched: yes</title></rect><rect x="154.40" y="180.87" width="5.40" height="7.04
 module: arm9
 addr: 0x020178e4
 size: 56 bytes
-matched: yes</title></rect><rect x="159.80" y="180.87" width="2.32" height="7.04" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0201791c
+matched: yes</title></rect><rect x="159.80" y="180.87" width="2.32" height="7.04" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>SharedFilePtr_Destruct_TexSeq
 module: arm9
 addr: 0x0201791c
 size: 24 bytes
-matched: yes</title></rect><rect x="162.12" y="180.87" width="2.32" height="7.04" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02017934
+matched: yes</title></rect><rect x="162.12" y="180.87" width="2.32" height="7.04" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>SharedFilePtr_Construct_TexSeq
 module: arm9
 addr: 0x02017934
 size: 24 bytes
@@ -5325,7 +5325,7 @@ matched: yes</title></rect><rect x="99.24" y="464.63" width="8.38" height="1.30"
 module: arm9
 addr: 0x02037e68
 size: 16 bytes
-matched: yes</title></rect><rect x="107.61" y="464.63" width="6.28" height="1.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02037e78
+matched: yes</title></rect><rect x="107.61" y="464.63" width="6.28" height="1.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>SurfaceInfo_TestFlag0x20
 module: arm9
 addr: 0x02037e78
 size: 12 bytes
@@ -9037,7 +9037,7 @@ matched: yes</title></rect><rect x="23.26" y="902.89" width="9.70" height="8.96"
 module: arm9
 addr: 0x02054f30
 size: 128 bytes
-matched: yes</title></rect><rect x="23.26" y="911.85" width="9.70" height="9.80" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02054fb0
+matched: yes</title></rect><rect x="23.26" y="911.85" width="9.70" height="9.80" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN2G212GetBG3ScrPtrEv
 module: arm9
 addr: 0x02054fb0
 size: 140 bytes
@@ -9525,7 +9525,7 @@ matched: yes</title></rect><rect x="39.14" y="724.68" width="6.01" height="13.11
 module: arm9
 addr: 0x0205807c
 size: 116 bytes
-matched: yes</title></rect><rect x="39.14" y="737.79" width="6.01" height="11.75" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020580f0
+matched: yes</title></rect><rect x="39.14" y="737.79" width="6.01" height="11.75" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OS_SleepThread
 module: arm9
 addr: 0x020580f0
 size: 104 bytes
@@ -10845,7 +10845,7 @@ matched: yes</title></rect><rect x="87.14" y="881.27" width="8.43" height="2.26"
 module: arm9
 addr: 0x0206152c
 size: 28 bytes
-matched: yes</title></rect><rect x="87.14" y="883.53" width="8.43" height="1.29" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02061548
+matched: yes</title></rect><rect x="87.14" y="883.53" width="8.43" height="1.29" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>WM_GetSystemWork
 module: arm9
 addr: 0x02061548
 size: 16 bytes
@@ -40269,7 +40269,7 @@ matched: yes</title></rect><rect x="1206.93" y="720.67" width="2.82" height="5.4
 module: ov078
 addr: 0x02125c24
 size: 36 bytes
-matched: yes</title></rect><rect x="1209.75" y="720.67" width="6.26" height="5.41" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov078_02125c48
+matched: yes</title></rect><rect x="1209.75" y="720.67" width="6.26" height="5.41" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>KingBobOmb_SetState
 module: ov078
 addr: 0x02125c48
 size: 80 bytes
