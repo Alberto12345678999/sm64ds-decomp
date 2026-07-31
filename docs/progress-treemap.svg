@@ -3269,7 +3269,7 @@ matched: yes</title></rect><rect x="5.00" y="234.44" width="13.27" height="13.92
 module: arm9
 addr: 0x0201d590
 size: 272 bytes
-matched: yes</title></rect><rect x="18.27" y="234.44" width="21.07" height="13.92" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0201d6a0
+matched: yes</title></rect><rect x="18.27" y="234.44" width="21.07" height="13.92" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>Message_DrawCenteredLine
 module: arm9
 addr: 0x0201d6a0
 size: 432 bytes
@@ -6057,7 +6057,7 @@ matched: yes</title></rect><rect x="152.37" y="494.57" width="6.68" height="5.29
 module: arm9
 addr: 0x0203b958
 size: 52 bytes
-matched: yes</title></rect><rect x="159.04" y="494.57" width="0.51" height="5.29" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0203b98c
+matched: yes</title></rect><rect x="159.04" y="494.57" width="0.51" height="5.29" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>NoOpDestructor
 module: arm9
 addr: 0x0203b98c
 size: 4 bytes
@@ -6585,7 +6585,7 @@ matched: yes</title></rect><rect x="157.51" y="510.46" width="8.97" height="4.24
 module: arm9
 addr: 0x0203d5dc
 size: 56 bytes
-matched: yes</title></rect><rect x="166.49" y="510.46" width="4.49" height="4.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0203d614
+matched: yes</title></rect><rect x="166.49" y="510.46" width="4.49" height="4.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>Vec2_Len
 module: arm9
 addr: 0x0203d614
 size: 28 bytes
@@ -6837,7 +6837,7 @@ matched: yes</title></rect><rect x="138.00" y="530.06" width="5.29" height="7.19
 module: arm9
 addr: 0x0203fbc4
 size: 56 bytes
-matched: yes</title></rect><rect x="143.29" y="530.06" width="5.67" height="7.19" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0203fbfc
+matched: yes</title></rect><rect x="143.29" y="530.06" width="5.67" height="7.19" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>Wireless_Reset
 module: arm9
 addr: 0x0203fbfc
 size: 60 bytes
@@ -8917,7 +8917,7 @@ matched: yes</title></rect><rect x="210.13" y="688.58" width="2.63" height="5.16
 module: arm9
 addr: 0x02054018
 size: 20 bytes
-matched: yes</title></rect><rect x="212.76" y="688.58" width="25.79" height="5.16" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205402c
+matched: yes</title></rect><rect x="212.76" y="688.58" width="25.79" height="5.16" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>DisableVramBanks
 module: arm9
 addr: 0x0205402c
 size: 196 bytes
@@ -9521,7 +9521,7 @@ matched: yes</title></rect><rect x="39.14" y="718.80" width="6.01" height="5.88"
 module: arm9
 addr: 0x02058048
 size: 52 bytes
-matched: yes</title></rect><rect x="39.14" y="724.68" width="6.01" height="13.11" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205807c
+matched: yes</title></rect><rect x="39.14" y="724.68" width="6.01" height="13.11" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OS_WakeupThread
 module: arm9
 addr: 0x0205807c
 size: 116 bytes
@@ -10365,7 +10365,7 @@ matched: yes</title></rect><rect x="63.14" y="987.11" width="9.30" height="7.89"
 module: arm9
 addr: 0x0205d368
 size: 108 bytes
-matched: yes</title></rect><rect x="72.43" y="734.37" width="4.86" height="2.23" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205d3d4
+matched: yes</title></rect><rect x="72.43" y="734.37" width="4.86" height="2.23" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>FS_ReadFile
 module: arm9
 addr: 0x0205d3d4
 size: 16 bytes
@@ -12025,7 +12025,7 @@ matched: yes</title></rect><rect x="271.90" y="896.77" width="22.03" height="5.1
 module: arm9
 addr: 0x02071a50
 size: 168 bytes
-matched: yes</title></rect><rect x="293.93" y="896.77" width="22.03" height="5.18" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02071af8
+matched: yes</title></rect><rect x="293.93" y="896.77" width="22.03" height="5.18" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>ReadSignedVarInt
 module: arm9
 addr: 0x02071af8
 size: 168 bytes
@@ -18633,7 +18633,7 @@ matched: yes</title></rect><rect x="608.52" y="246.68" width="1.65" height="5.47
 module: ov004
 addr: 0x020adc4c
 size: 16 bytes
-matched: yes</title></rect><rect x="610.16" y="246.68" width="1.23" height="5.47" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov004_020adc5c
+matched: yes</title></rect><rect x="610.16" y="246.68" width="1.23" height="5.47" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>Ov004_Deallocate
 module: ov004
 addr: 0x020adc5c
 size: 12 bytes
@@ -28377,7 +28377,7 @@ matched: yes</title></rect><rect x="1555.30" y="247.33" width="39.70" height="13
 module: ov007
 addr: 0x020bf790
 size: 828 bytes
-matched: yes</title></rect><rect x="1407.22" y="260.67" width="7.68" height="3.00" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov007_020bfacc
+matched: yes</title></rect><rect x="1407.22" y="260.67" width="7.68" height="3.00" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>RequestScreenFade
 module: ov007
 addr: 0x020bfacc
 size: 36 bytes
@@ -28517,7 +28517,7 @@ matched: yes</title></rect><rect x="1414.90" y="387.61" width="6.76" height="3.4
 module: ov007
 addr: 0x020c1068
 size: 36 bytes
-matched: yes</title></rect><rect x="1414.90" y="391.01" width="6.76" height="3.40" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov007_020c108c
+matched: yes</title></rect><rect x="1414.90" y="391.01" width="6.76" height="3.40" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>Sprite_SetAnimation
 module: ov007
 addr: 0x020c108c
 size: 36 bytes
@@ -35021,7 +35021,7 @@ matched: yes</title></rect><rect x="904.66" y="680.42" width="9.87" height="5.28
 module: ov062
 addr: 0x02116c78
 size: 96 bytes
-matched: yes</title></rect><rect x="914.54" y="680.42" width="8.23" height="5.28" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov062_02116cd8
+matched: yes</title></rect><rect x="914.54" y="680.42" width="8.23" height="5.28" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>Chuckya_ChangeState
 module: ov062
 addr: 0x02116cd8
 size: 80 bytes
@@ -37605,7 +37605,7 @@ matched: yes</title></rect><rect x="1039.61" y="890.54" width="8.44" height="5.6
 module: ov070
 addr: 0x0211ffa8
 size: 120 bytes
-matched: yes</title></rect><rect x="1039.61" y="896.23" width="8.44" height="3.79" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov070_02120020
+matched: yes</title></rect><rect x="1039.61" y="896.23" width="8.44" height="3.79" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>FlyGuy_ChangeState
 module: ov070
 addr: 0x02120020
 size: 80 bytes
@@ -43761,7 +43761,7 @@ matched: yes</title></rect><rect x="1380.33" y="857.14" width="4.68" height="1.3
 module: ov098
 addr: 0x02138b18
 size: 16 bytes
-matched: yes</title></rect><rect x="1380.33" y="858.48" width="4.68" height="6.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov098_02138b28
+matched: yes</title></rect><rect x="1380.33" y="858.48" width="4.68" height="6.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>Crate_SetState
 module: ov098
 addr: 0x02138b28
 size: 72 bytes
