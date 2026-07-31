@@ -27,7 +27,7 @@ extern u8 data_020a0de9[];
 extern u8 data_020a0dea[];
 extern u8 data_020a0deb[];
 
-extern int func_020124c4(int, int, int, int);
+extern int Sound_PlayIfNotActive(int, int, int, int);
 
 void func_ov006_0211134c(Obj *c)
 {
@@ -58,7 +58,7 @@ void func_ov006_0211134c(Obj *c)
         if (c->fc <= 0xa0000)
             return;
         {
-            int *pf38 = (int *)(((int)c + 0x38) & 0xFFFFFFFFFFFFFFFFLL);
+            int *pf38 = (int *)(((int)c + 0x38));
             *pf38 = *pf38 - (c->fc - 0xa0000);
         }
         return;
@@ -74,7 +74,7 @@ void func_ov006_0211134c(Obj *c)
         c->fc = c->f40 - c->f38 + 0xa0000;
         if (c->f14 == c->fc)
             return;
-        c->f44 = func_020124c4(c->f44, 2, 0x16c, 0);
+        c->f44 = Sound_PlayIfNotActive(c->f44, 2, 0x16c, 0);
         return;
     }
 
@@ -93,11 +93,11 @@ void func_ov006_0211134c(Obj *c)
     }
 
     {
-        int *pf24 = (int *)(((int)c + 0x24) & 0xFFFFFFFFFFFFFFFFLL);
+        int *pf24 = (int *)(((int)c + 0x24));
         *pf24 = *pf24 - (c->fc - 0xa0000) / 16;
     }
     {
-        int *pfc = (int *)(((int)c + 0xc) & 0xFFFFFFFFFFFFFFFFLL);
+        int *pfc = (int *)(((int)c + 0xc));
         *pfc = *pfc + c->f24;
     }
     if (c->fc < 0xa0000) {

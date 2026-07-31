@@ -1,5 +1,7 @@
 //cpp
-#include "Fader.hpp"
+// @symbol _ZN15FaderBrightness14SetForwardTimeEj
+/* recovered: named members + shared header, real C++ method */
+#include "FaderBrightness.h"
 
 extern "C" Fix12i _ZN4cstd4fdivEii(Fix12i a, Fix12i b);
 

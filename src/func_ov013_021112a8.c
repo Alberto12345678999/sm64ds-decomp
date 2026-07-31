@@ -1,15 +1,19 @@
+// @symbol func_ov013_021112a8
+// @emits daObjClockHuriko_c_Behavior
+/* recovered: renamed to Class_Method */
+/* daObjClockHuriko_c::Behavior - recovered from vtable slot identity */
 void _ZN5Sound9PlayBank3EjRK7Vector3(unsigned int, void*);
 void func_ov013_02111238(char* t);
 extern signed char data_02092110[];
 
-int func_ov013_021112a8(char* c)
+int daObjClockHuriko_c_Behavior(char* c)
 {
     if (data_02092110[0] <= 0) {
         short* p90 = (short*)(c + 0x90);
         if (*p90 > 0) {
-            *(short*)(((long long)(int)(c + 0x124)) & 0xffffffffffffffffLL) -= 8;
+            *(short*)(((long long)(int)(c + 0x124))) -= 8;
         } else {
-            *(short*)(((long long)(int)(c + 0x124)) & 0xffffffffffffffffLL) += 8;
+            *(short*)(((long long)(int)(c + 0x124))) += 8;
         }
         *p90 = (short)(*p90 + *(short*)(c + 0x124));
         short w = *(short*)(c + 0x124);

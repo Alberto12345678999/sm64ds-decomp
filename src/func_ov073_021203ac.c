@@ -8,7 +8,7 @@ extern void MulVec3Mat4x3(void *in, void *m, void *out);
 extern int WithMeshClsn_IsOnGround(void *self);
 extern void func_ov073_0211f2c0(void *self, int v);
 extern int func_02012694(int a, void *pos);
-extern void func_ov073_0212157c(void *c, void *p);
+extern void ChiefChilly_ChangeState(void *c, void *p);
 
 extern void **data_ov073_021232a8;
 extern int data_020a0e68;
@@ -30,7 +30,7 @@ int func_ov073_021203ac(void *thiz)
         *(int *)(c + 0xa8) = 0x5a000;
         *(int *)(c + 0x9c) = -neg;
         {
-            unsigned char *p = (unsigned char *)(((long long)(int)(c + 0x4c4)) & 0xFFFFFFFFFFFFFFFFLL);
+            unsigned char *p = (unsigned char *)(((long long)(int)(c + 0x4c4)));
             *p = *p + 1;
             *p = *p & 7;
         }
@@ -76,13 +76,13 @@ mainblock:
         func_ov073_0211f2c0(c, 0x7d0000);
         func_02012694(0x16d, c + 0x74);
         {
-            int *cnt = (int *)(((long long)(int)(c + 0x4b8)) & 0xFFFFFFFFFFFFFFFFLL);
+            int *cnt = (int *)(((long long)(int)(c + 0x4b8)));
             *cnt = *cnt + 1;
         }
         if (*(int *)(c + 0x4b8) > 7) {
-            func_ov073_0212157c(c, &data_ov073_02123340);
+            ChiefChilly_ChangeState(c, &data_ov073_02123340);
         } else {
-            func_ov073_0212157c(c, &data_ov073_02123320);
+            ChiefChilly_ChangeState(c, &data_ov073_02123320);
         }
     }
     *(short *)(c + 0x8e) = *(short *)(c + 0x94);

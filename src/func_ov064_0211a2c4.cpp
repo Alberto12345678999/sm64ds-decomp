@@ -1,11 +1,15 @@
 //cpp
+// @symbol func_ov064_0211a2c4
+// @emits WaterRing_Kill
+/* recovered: shared common types, renamed to Class_Method */
+/* daWater_Ring_c::Kill - recovered from vtable slot identity */
 struct Vector3 { int x, y, z; };
 extern "C" unsigned short DecIfAbove0_Short(unsigned short* p);
 struct Actor {
     void UntrackAndSpawnStar(signed char &a, unsigned int b, const Vector3 &c, unsigned int d);
 };
 
-extern "C" void func_ov064_0211a2c4(char *thiz)
+extern "C" void WaterRing_Kill(char *thiz)
 {
     Vector3 v;
     if (*(unsigned char*)(thiz + 0x173) == 0) return;
@@ -21,5 +25,5 @@ extern "C" void func_ov064_0211a2c4(char *thiz)
             *(unsigned char*)(thiz + 0x174),
             v, 4);
     }
-    *(int*)(((int)thiz + 0xb0) & 0xFFFFFFFFFFFFFFFF) |= 1;
+    *(int*)(((int)thiz + 0xb0)) |= 1;
 }

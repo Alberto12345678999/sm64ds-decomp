@@ -1,6 +1,9 @@
+// @symbol func_ov060_021169f8
+/* recovered: shared common types */
+#include "common.h"
 typedef unsigned int u32;
-struct Vector3 { int x, y, z; };
-struct Vector3_16 { short x, y, z; };
+
+
 struct Actor;
 extern void _ZN5Actor9UpdatePosEP12CylinderClsn(char* self, void* c);
 extern void func_ov060_02116518(char* self, int a, int b, int c);
@@ -12,7 +15,7 @@ void func_ov060_021169f8(char* sl)
     int i;
     char* a;
     if (*(int*)(sl+0x360) < 0x5000) {
-        *(int*)(((int)sl + 0x360) & 0xFFFFFFFFFFFFFFFF) += 0x200;
+        *(int*)(((int)sl + 0x360)) += 0x200;
     }
     _ZN5Actor9UpdatePosEP12CylinderClsn(sl, 0);
     func_ov060_02116518(sl, 0x9a, 1, 0x78000);

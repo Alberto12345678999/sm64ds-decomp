@@ -13,7 +13,7 @@ struct Obj {
 extern "C" {
 extern void _ZN6Player11ChangeStateERNS_5StateE(char* c, void* s);
 extern int _ZN6Player7IsStateERNS_5StateE(char* c, void* s);
-extern void func_ov002_020c9e40(char* c);
+extern void Player_DisableInteraction(char* c);
 extern void func_ov002_020d7430(char* c);
 extern void func_ov002_020d8118(char* c);
 
@@ -35,7 +35,7 @@ int func_ov002_020d6790(char* self)
         if (*(u8*)(self + 0x709) != 0) goto isbf_ret0;
         if (*(u8*)(self + 0x708) != 0) goto isbf_ret0;
         _ZN6Player11ChangeStateERNS_5StateE(self, &data_ov002_02110034);
-        func_ov002_020c9e40(self);
+        Player_DisableInteraction(self);
         return 1;
 isbf_ret0:
         return 0;
@@ -72,8 +72,8 @@ isbf_ret0:
         return 1;
     case 7:
         if (*(u8*)(self + 0x714) != 0) goto case7_ret1;
-        *(int*)(((long long)(int)(*(int*)(self + 0x360) + 0xb0)) & 0xFFFFFFFFFFFFFFFFLL) |= 0x40000;
-        *(int*)(((long long)(int)(*(int*)(self + 0x360) + 0xb0)) & 0xFFFFFFFFFFFFFFFFLL) &= ~0x20000;
+        *(int*)(((long long)(int)(*(int*)(self + 0x360) + 0xb0))) |= 0x40000;
+        *(int*)(((long long)(int)(*(int*)(self + 0x360) + 0xb0))) &= ~0x20000;
         *(u8*)(self + 0x714) = 1;
 case7_ret1:
         return 1;

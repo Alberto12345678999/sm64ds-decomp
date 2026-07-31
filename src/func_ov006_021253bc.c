@@ -1,11 +1,15 @@
+// @symbol func_ov006_021253bc
+// @emits dScMgBSC_c_Render
+/* recovered: renamed to Class_Method, declarations from a shared header */
+#include "decl_common.h"
+/* recovered: renamed to Class_Method */
+/* dScMgBSC_c::Render - recovered from vtable slot identity */
 extern void func_ov006_020c0aa8(void *a0);
-extern void func_ov004_020af68c(void *a0, int a1, int a2, int a3, int a4);
-extern void func_ov004_020b6430(void);
+extern void Hud_RenderSprite(void *a0, int a1, int a2, int a3, int a4);
 extern void func_ov004_020b1bc8(void *a0, int a1, int a2, int a3);
 extern void func_ov004_020b1e34(void *a0, int a1, int a2, int a3);
 extern void func_ov006_020c1804(void *a0);
 
-extern void *data_ov006_0213fe8c[];
 
 typedef struct { int x, y; } Pair;
 typedef struct Obj {
@@ -21,18 +25,18 @@ typedef struct Obj {
     unsigned char b1[2];
 } Obj;
 
-int func_ov006_021253bc(Obj *self) {
+int dScMgBSC_c_Render(Obj *self) {
     int i;
 
     func_ov006_020c0aa8(&self->f4660);
     if (self->count >= 1) {
         for (i = 0; i < 2; i++) {
             if (self->b1[i] < 3) {
-                func_ov004_020af68c(data_ov006_0213fe8c[self->b1[i]],
+                Hud_RenderSprite(data_ov006_0213fe8c[self->b1[i]],
                                     self->pos[i].x >> 12,
                                     self->pos[i].y >> 12, -1, -1);
             } else {
-                func_ov004_020af68c(
+                Hud_RenderSprite(
                     data_ov006_0213fe8c[self->b1[i] + self->b0[i] * 2],
                     self->pos[i].x >> 12,
                     self->pos[i].y >> 12, -1, -1);

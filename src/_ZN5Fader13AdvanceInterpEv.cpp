@@ -1,5 +1,7 @@
 //cpp
-#include "Fader.hpp"
+// @symbol _ZN5Fader13AdvanceInterpEv
+/* recovered: named members + shared header, real C++ method */
+#include "Fader.h"
 
 extern "C" void func_0203ae58(Fix12i* value, Fix12i target, Fix12i step);
 

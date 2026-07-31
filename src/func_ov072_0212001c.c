@@ -1,3 +1,7 @@
+// @symbol func_ov072_0212001c
+// @emits SnowmanBody_Kill
+/* recovered: shared common types, renamed to Class_Method */
+/* daBgSnmBdy_c::Kill - recovered from vtable slot identity */
 struct Vec3 { int x, y, z; };
 extern void *_ZN5Actor13ClosestPlayerEv(void *self);
 extern int Vec3_HorzDist(void *a, void *b);
@@ -8,7 +12,7 @@ extern void *_ZN5Actor5SpawnEjjRK7Vector3PK10Vector3_16ii(unsigned id, unsigned 
 extern void _ZN9Animation7AdvanceEv(void *anim);
 extern int _Z14ApproachLinearRsss(short *p, short to, short step);
 
-int func_ov072_0212001c(char *c)
+int SnowmanBody_Kill(char *c)
 {
     struct Vec3 v;
     unsigned char *st;
@@ -22,14 +26,14 @@ int func_ov072_0212001c(char *c)
         *(void **)(c + 0x32c) = _ZN5Actor13ClosestPlayerEv(c);
         if (Vec3_HorzDist(c + 0x5c, *(char **)(c + 0x32c) + 0x5c) < 0x118000) {
             if (_ZN6Player9StartTalkER9ActorBaseb(*(void **)(c + 0x32c), c, 1)) {
-                st = (unsigned char *)(((int)c + 0x334) & 0xFFFFFFFFFFFFFFFFLL);
+                st = (unsigned char *)(((int)c + 0x334));
                 *st = *st + 1;
             }
         }
         break;
     case 1:
         if (_ZN6Player11ShowMessageER9ActorBasejPK7Vector3jj(*(void **)(c + 0x32c), c, 0xb1, &v, 0, 2)) {
-            st = (unsigned char *)(((int)c + 0x334) & 0xFFFFFFFFFFFFFFFFLL);
+            st = (unsigned char *)(((int)c + 0x334));
             *st = *st + 1;
         }
         break;
@@ -45,7 +49,7 @@ int func_ov072_0212001c(char *c)
                 0,
                 *(signed char *)(c + 0xcc),
                 -1);
-            st = (unsigned char *)(((int)c + 0x334) & 0xFFFFFFFFFFFFFFFFLL);
+            st = (unsigned char *)(((int)c + 0x334));
             *st = *st + 1;
         }
         break;

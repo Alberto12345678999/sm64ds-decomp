@@ -18,7 +18,7 @@ extern void* Actor_FindWithID(u32 id);
 extern void Player_Unk(void* self, u32 a);
 extern int WithMeshClsn_IsOnGround(void* self);
 extern void func_ov073_0211f2c0(void* self, int a);
-extern void func_ov073_0212157c(void* self, void* p);
+extern void ChiefChilly_ChangeState(void* self, void* p);
 
 extern void* data_ov073_021232b0[];
 extern int data_020a0e68[];
@@ -96,12 +96,12 @@ int func_ov073_021200e0(u8* thiz)
             if (*(int*)(thiz + 0x4b4) == 0) {
                 SetAnim(thiz + 0x30c, data_ov073_02123290[1], 4, 0x40000000, 0x1000, 0);
             }
-            *(int*)(((int)thiz + 0x4b4) & 0xFFFFFFFFFFFFFFFF) += 1;
+            *(int*)(((int)thiz + 0x4b4)) += 1;
             if (*(int*)(thiz + 0x4b4) < 0x82) {
                 return 1;
             }
         }
-        func_ov073_0212157c(thiz, data_ov073_02123380);
+        ChiefChilly_ChangeState(thiz, data_ov073_02123380);
     }
     *(s16*)(thiz + 0x8e) = *(s16*)(thiz + 0x94);
     return 1;
