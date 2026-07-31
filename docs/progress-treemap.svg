@@ -5477,7 +5477,7 @@ matched: yes</title></rect><rect x="318.04" y="465.93" width="3.68" height="2.21
 module: arm9
 addr: 0x02038414
 size: 12 bytes
-matched: yes</title></rect><rect x="321.73" y="465.93" width="3.68" height="2.21" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02038420
+matched: yes</title></rect><rect x="321.73" y="465.93" width="3.68" height="2.21" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>WithMeshClsn_UpdateDiscreteNoLava_veneer
 module: arm9
 addr: 0x02038420
 size: 12 bytes
@@ -6741,7 +6741,7 @@ matched: yes</title></rect><rect x="290.58" y="514.70" width="13.93" height="0.7
 module: arm9
 addr: 0x0203db3c
 size: 16 bytes
-matched: yes</title></rect><rect x="304.51" y="514.70" width="20.90" height="0.78" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0203db4c
+matched: yes</title></rect><rect x="304.51" y="514.70" width="20.90" height="0.78" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>GetPlayerFlagByte
 module: arm9
 addr: 0x0203db4c
 size: 24 bytes
@@ -9017,7 +9017,7 @@ matched: yes</title></rect><rect x="23.26" y="884.97" width="9.70" height="6.16"
 module: arm9
 addr: 0x02054e30
 size: 88 bytes
-matched: yes</title></rect><rect x="23.26" y="891.13" width="9.70" height="2.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02054e88
+matched: yes</title></rect><rect x="23.26" y="891.13" width="9.70" height="2.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN3G2S13GetBG1CharPtrEv
 module: arm9
 addr: 0x02054e88
 size: 32 bytes
@@ -9985,7 +9985,7 @@ matched: yes</title></rect><rect x="50.81" y="889.90" width="5.87" height="7.41"
 module: arm9
 addr: 0x0205a82c
 size: 64 bytes
-matched: yes</title></rect><rect x="50.81" y="897.31" width="5.87" height="10.19" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205a86c
+matched: yes</title></rect><rect x="50.81" y="897.31" width="5.87" height="10.19" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>Snd_SendCommand
 module: arm9
 addr: 0x0205a86c
 size: 88 bytes
@@ -10833,7 +10833,7 @@ matched: yes</title></rect><rect x="87.14" y="806.20" width="8.43" height="54.13
 module: arm9
 addr: 0x02061188
 size: 672 bytes
-matched: yes</title></rect><rect x="87.14" y="860.33" width="8.43" height="13.53" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02061428
+matched: yes</title></rect><rect x="87.14" y="860.33" width="8.43" height="13.53" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>WM_CheckStateEx
 module: arm9
 addr: 0x02061428
 size: 168 bytes
@@ -10849,11 +10849,11 @@ matched: yes</title></rect><rect x="87.14" y="883.53" width="8.43" height="1.29"
 module: arm9
 addr: 0x02061548
 size: 16 bytes
-matched: yes</title></rect><rect x="87.14" y="884.82" width="8.43" height="20.94" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02061558
+matched: yes</title></rect><rect x="87.14" y="884.82" width="8.43" height="20.94" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>WM_SendCommand
 module: arm9
 addr: 0x02061558
 size: 260 bytes
-matched: yes</title></rect><rect x="87.14" y="905.76" width="8.43" height="1.93" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206165c
+matched: yes</title></rect><rect x="87.14" y="905.76" width="8.43" height="1.93" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>WM_SetCallbackTable
 module: arm9
 addr: 0x0206165c
 size: 24 bytes
@@ -14173,7 +14173,7 @@ matched: yes</title></rect><rect x="386.80" y="219.20" width="13.86" height="2.5
 module: ov002
 addr: 0x020bf2d8
 size: 52 bytes
-matched: yes</title></rect><rect x="400.66" y="219.20" width="13.86" height="2.53" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020bf30c
+matched: yes</title></rect><rect x="400.66" y="219.20" width="13.86" height="2.53" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>Player_ScaleByCharFactor
 module: ov002
 addr: 0x020bf30c
 size: 52 bytes
@@ -18805,7 +18805,7 @@ matched: yes</title></rect><rect x="637.55" y="332.38" width="10.48" height="11.
 module: ov004
 addr: 0x020af948
 size: 216 bytes
-matched: yes</title></rect><rect x="603.58" y="343.98" width="12.05" height="11.95" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov004_020afa20
+matched: yes</title></rect><rect x="603.58" y="343.98" width="12.05" height="11.95" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>RenderOamMainScreen
 module: ov004
 addr: 0x020afa20
 size: 256 bytes
