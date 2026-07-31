@@ -12117,7 +12117,7 @@ matched: yes</title></rect><rect x="273.61" y="919.30" width="10.48" height="4.6
 module: arm9
 addr: 0x02073244
 size: 72 bytes
-matched: yes</title></rect><rect x="284.08" y="919.30" width="13.39" height="4.67" fill="#4a4d52" stroke="#393b3f" stroke-width="0.4"><title>func_0207328c
+matched: yes</title></rect><rect x="284.08" y="919.30" width="13.39" height="4.67" fill="#4a4d52" stroke="#393b3f" stroke-width="0.4"><title>__destroy_arr
 module: arm9
 addr: 0x0207328c
 size: 92 bytes
