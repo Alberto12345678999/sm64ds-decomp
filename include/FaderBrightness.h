@@ -1,19 +1,32 @@
-/* AUTO-GENERATED from matched-function evidence by tools/gen_header.py
- * class FaderBrightness: 8 matched functions, 1 evidenced fields.
- * Offsets/widths are observed, not guessed. Gaps are explicit padding.
- * Field NAMES are placeholders - renaming cannot change codegen. */
 #ifndef FADERBRIGHTNESS_H
 #define FADERBRIGHTNESS_H
-#include "types.h"
 
-struct FaderBrightness {
-    u8  pad_000[0x4];
-    s32 unk_004;            /* 0x004 */
+#include "Fader.h"
+
+/* Brightness fade: drives MASTER_BRIGHT on both engines from Fader's
+ * interpolator. It adds no members of its own -- FaderBrightness::~FaderBrightness
+ * writes the vptr and immediately tail-calls the Fader subobject destructor, so
+ * the object is exactly a Fader with a different vtable.
+ */
 #ifdef __cplusplus
-    /* methods */
-    int IsBetweenStartAndEnd();
-    void AdvanceFade();
-#endif
-};
+struct FaderBrightness : Fader {
+    virtual ~FaderBrightness();
+    virtual void AdvanceFade();
+    virtual int SetBackwardTime(u32 frames);
+    virtual int SetForwardTime(u32 frames);
+    virtual int IsAtStart();
+    virtual int IsAtEnd();
 
+    void SetToStart();
+    void SetToEnd();
+    int IsBetweenStartAndEnd();
+};
+#else
+struct FaderBrightness {
+    void*  vtable;      /* 0x00 */
+    Fix12i currInterp;  /* 0x04 (from Fader) */
+    Fix12i speed;       /* 0x08 (from Fader) */
+};
 #endif
+
+#endif /* FADERBRIGHTNESS_H */
