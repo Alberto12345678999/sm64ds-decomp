@@ -90,6 +90,7 @@ src/func_ov095_02136104.cpp:
     .text start:0x02136104 end:0x02136178
 
 src/func_ov095_02136178.c:
+    complete
     .text start:0x02136178 end:0x02136298
 
 src/func_ov095_02136298.cpp:
@@ -107,6 +108,7 @@ src/_ZN13UpDownLiftBbh6RenderEv.cpp:
     .text start:0x021364b0 end:0x021364d8
 
 src/_ZN13UpDownLiftBbh8BehaviorEv.cpp:
+    complete
     .text start:0x021364d8 end:0x021365d8
 
 src/_ZN13UpDownLiftBbh13InitResourcesEv.cpp:

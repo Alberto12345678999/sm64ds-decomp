@@ -21,21 +21,25 @@ src/func_ov080_02123858.c:
     .text start:0x02123858 end:0x02123860
 
 src/func_ov080_02123860.c:
+    complete
     .text start:0x02123860 end:0x02123924
 
 src/func_ov080_02123924.cpp:
+    complete
     .text start:0x02123924 end:0x02123a34
 
 src/func_ov080_02123a34.cpp:
     .text start:0x02123a34 end:0x02123c24
 
 src/func_ov080_02123c24.c:
+    complete
     .text start:0x02123c24 end:0x02123ecc
 
 src/func_ov080_02123ecc.cpp:
     .text start:0x02123ecc end:0x02123fcc
 
 src/func_ov080_02123fcc.cpp:
+    complete
     .text start:0x02123fcc end:0x02124088
 
 src/func_ov080_02124088.cpp:
@@ -122,6 +126,7 @@ src/func_ov080_02124edc.cpp:
     .text start:0x02124edc end:0x02124fec
 
 src/func_ov080_02124fec.c:
+    complete
     .text start:0x02124fec end:0x0212500c
 
 src/func_ov080_0212500c.cpp:

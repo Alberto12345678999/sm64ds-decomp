@@ -37,6 +37,7 @@ src/func_ov060_02112350.c:
     .text start:0x02112350 end:0x021123a0
 
 src/func_ov060_021123a0.c:
+    complete
     .text start:0x021123a0 end:0x021123c8
 
 src/func_ov060_021123c8.c:
@@ -55,9 +56,11 @@ src/func_ov060_021125f0.c:
     .text start:0x021125f0 end:0x02112724
 
 src/func_ov060_02112724.c:
+    complete
     .text start:0x02112724 end:0x021128c0
 
 src/func_ov060_021128c0.cpp:
+    complete
     .text start:0x021128c0 end:0x02112ba8
 
 src/func_ov060_02112ba8.cpp:
@@ -65,6 +68,7 @@ src/func_ov060_02112ba8.cpp:
     .text start:0x02112ba8 end:0x02112bfc
 
 src/func_ov060_02112bfc.c:
+    complete
     .text start:0x02112bfc end:0x02112d48
 
 src/func_ov060_02112d48.c:
@@ -84,6 +88,7 @@ src/func_ov060_021130c0.c:
     .text start:0x021130c0 end:0x02113260
 
 src/func_ov060_02113260.c:
+    complete
     .text start:0x02113260 end:0x021132a4
 
 src/func_ov060_021132a4.c:
@@ -91,12 +96,15 @@ src/func_ov060_021132a4.c:
     .text start:0x021132a4 end:0x02113404
 
 src/func_ov060_02113404.c:
+    complete
     .text start:0x02113404 end:0x021134ac
 
 src/func_ov060_021134ac.c:
+    complete
     .text start:0x021134ac end:0x02113564
 
 src/func_ov060_02113564.c:
+    complete
     .text start:0x02113564 end:0x021135fc
 
 src/func_ov060_021135fc.c:
@@ -108,6 +116,7 @@ src/func_ov060_02113710.c:
     .text start:0x02113710 end:0x02113740
 
 src/func_ov060_02113740.c:
+    complete
     .text start:0x02113740 end:0x02113a94
 
 src/func_ov060_02113a94.c:
@@ -115,6 +124,7 @@ src/func_ov060_02113a94.c:
     .text start:0x02113a94 end:0x02113b5c
 
 src/func_ov060_02113b5c.cpp:
+    complete
     .text start:0x02113b5c end:0x02113d20
 
 src/func_ov060_02113d20.cpp:
@@ -129,6 +139,7 @@ src/func_ov060_02113fcc.c:
     .text start:0x02113fcc end:0x02113ff4
 
 src/func_ov060_02113ff4.c:
+    complete
     .text start:0x02113ff4 end:0x021140c0
 
 src/func_ov060_021142b4.c:
@@ -136,9 +147,11 @@ src/func_ov060_021142b4.c:
     .text start:0x021142b4 end:0x02114300
 
 src/func_ov060_02114300.c:
+    complete
     .text start:0x02114300 end:0x021143b8
 
 src/func_ov060_021143b8.c:
+    complete
     .text start:0x021143b8 end:0x021145a8
 
 src/func_ov060_021145a8.c:
@@ -158,12 +171,15 @@ src/func_ov060_021146d0.c:
     .text start:0x021146d0 end:0x02114858
 
 src/func_ov060_02114858.c:
+    complete
     .text start:0x02114858 end:0x02114b60
 
 src/func_ov060_02114b60.c:
+    complete
     .text start:0x02114b60 end:0x02114d08
 
 src/func_ov060_02114d08.c:
+    complete
     .text start:0x02114d08 end:0x02114e9c
 
 src/func_ov060_02114e9c.cpp:
@@ -183,6 +199,7 @@ src/func_ov060_02115018.c:
     .text start:0x02115018 end:0x02115060
 
 src/func_ov060_02115060.c:
+    complete
     .text start:0x02115060 end:0x021150c4
 
 src/func_ov060_021150c4.c:
@@ -198,6 +215,7 @@ src/func_ov060_021151d4.c:
     .text start:0x021151d4 end:0x02115314
 
 src/func_ov060_02115314.c:
+    complete
     .text start:0x02115314 end:0x021153f8
 
 src/func_ov060_021153f8.c:
@@ -241,6 +259,7 @@ src/func_ov060_02115b0c.c:
     .text start:0x02115b0c end:0x02115b84
 
 src/func_ov060_02115b84.cpp:
+    complete
     .text start:0x02115b84 end:0x02115c1c
 
 src/func_ov060_02115c1c.c:
@@ -252,6 +271,7 @@ src/func_ov060_02115d50.c:
     .text start:0x02115d50 end:0x02115d68
 
 src/func_ov060_02115d68.cpp:
+    complete
     .text start:0x02115d68 end:0x02115e80
 
 src/_ZN6Bowser16CleanupResourcesEv.c:
@@ -312,6 +332,7 @@ src/func_ov060_02116740.cpp:
     .text start:0x02116740 end:0x021167c8
 
 src/func_ov060_021167c8.c:
+    complete
     .text start:0x021167c8 end:0x021167ec
 
 src/func_ov060_021167ec.c:
@@ -325,6 +346,7 @@ src/func_ov060_021169b0.c:
     .text start:0x021169b0 end:0x021169f8
 
 src/func_ov060_021169f8.c:
+    complete
     .text start:0x021169f8 end:0x02116b18
 
 src/func_ov060_02116b18.c:
@@ -344,6 +366,7 @@ src/func_ov060_02116f74.c:
     .text start:0x02116f74 end:0x02116f90
 
 src/func_ov060_02116f90.c:
+    complete
     .text start:0x02116f90 end:0x0211712c
 
 src/func_ov060_0211712c.c:
@@ -367,6 +390,7 @@ src/func_ov060_021172e0.cpp:
     .text start:0x021172e0 end:0x0211747c
 
 src/func_ov060_0211747c.c:
+    complete
     .text start:0x0211747c end:0x02117624
 
 src/func_ov060_02117624.cpp:
@@ -385,6 +409,7 @@ src/_ZN10BowserFire8BehaviorEv.cpp:
     .text start:0x021176d4 end:0x02117790
 
 src/_ZN10BowserFire13InitResourcesEv.cpp:
+    complete
     .text start:0x02117790 end:0x02117938
 
 src/BowserFire_Spawn.c:
@@ -433,6 +458,7 @@ src/func_ov060_02117d60.c:
     .text start:0x02117d60 end:0x02117db8
 
 src/func_ov060_02117db8.c:
+    complete
     .text start:0x02117db8 end:0x021180e0
 
 src/func_ov060_021180e0.cpp:
@@ -473,6 +499,7 @@ src/_ZN17BowserSkyPlatformD0Ev.c:
     .text start:0x02118470 end:0x021184bc
 
 src/func_ov060_021184bc.c:
+    complete
     .text start:0x021184bc end:0x02118544
 
 src/func_ov060_02118544.c:
@@ -488,6 +515,7 @@ src/func_ov060_02118690.c:
     .text start:0x02118690 end:0x021186d8
 
 src/func_ov060_021186d8.c:
+    complete
     .text start:0x021186d8 end:0x02118728
 
 src/func_ov060_02118728.c:
@@ -495,6 +523,7 @@ src/func_ov060_02118728.c:
     .text start:0x02118728 end:0x02118834
 
 src/func_ov060_02118834.c:
+    complete
     .text start:0x02118834 end:0x021188e8
 
 src/func_ov060_021188e8.c:
@@ -537,6 +566,7 @@ src/_ZN16BowserShockwaves6RenderEv.cpp:
     .text start:0x02118e1c end:0x02118eb8
 
 src/_ZN16BowserShockwaves8BehaviorEv.cpp:
+    complete
     .text start:0x02118eb8 end:0x02119004
 
 src/_ZN16BowserShockwaves13InitResourcesEv.cpp:

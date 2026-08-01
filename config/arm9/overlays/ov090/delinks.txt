@@ -22,9 +22,11 @@ src/func_ov090_02131378.cpp:
     .text start:0x02131378 end:0x021314a0
 
 src/func_ov090_021314a0.cpp:
+    complete
     .text start:0x021314a0 end:0x02131584
 
 src/func_ov090_02131584.c:
+    complete
     .text start:0x02131584 end:0x02131608
 
 src/func_ov090_02131608.cpp:
@@ -48,6 +50,7 @@ src/func_ov090_02131b94.cpp:
     .text start:0x02131b94 end:0x02131c48
 
 src/func_ov090_02131c48.c:
+    complete
     .text start:0x02131c48 end:0x02131db0
 
 src/func_ov090_02131db0.c:
@@ -132,6 +135,7 @@ src/_ZN8MantaRay6RenderEv.cpp:
     .text start:0x02132c68 end:0x02132c94
 
 src/_ZN8MantaRay8BehaviorEv.cpp:
+    complete
     .text start:0x02132c94 end:0x02132e38
 
 src/_ZN8MantaRay13InitResourcesEv.cpp:
@@ -204,6 +208,7 @@ src/_ZN5SharkD0Ev.c:
     .text start:0x021336bc end:0x02133710
 
 src/func_ov090_02133710.cpp:
+    complete
     .text start:0x02133710 end:0x02133830
 
 src/func_ov090_02133830.c:
@@ -233,6 +238,7 @@ src/_ZN5Shark6RenderEv.cpp:
     .text start:0x021339ac end:0x021339d8
 
 src/_ZN5Shark8BehaviorEv.cpp:
+    complete
     .text start:0x021339d8 end:0x02133b98
 
 src/_ZN5Shark13InitResourcesEv.cpp:

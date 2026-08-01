@@ -40,8 +40,14 @@ INCLUDE = REPO / "include"
 CONFIG = REPO / "config" / "arm9" / "config.yaml"
 BUILD = REPO / "build"
 
-# The pinned toolchain, same as tools/match.py: what verified the bytes must build them.
-VERSION = "1.2/sp2p3"
+# Default compiler for the ROM build. The repo pins 1.2/sp2p3 as the canonical
+# matching compiler, but the recovered 2004 build 0056 (notes/mwccarm-codegen.md 6ai)
+# reproduces strictly more of this corpus, so the build defaults to it and
+# config/rombuild-versions.txt carries the per-file exceptions.
+VERSION = "2004/b56"
+# 2004/b56 ships only mwccarm.exe - there is no mwldarm in it - so the link always
+# uses the 1.2/sp2p3 linker regardless of which compiler produced the objects.
+LD_VERSION = "1.2/sp2p3"
 # tools/match.py's DEFAULT_FLAGS, plus one addition the match gate never needed.
 # `-Cpp_exceptions off` suppresses the .exception/.exceptix unwind tables mwccarm
 # otherwise emits alongside almost every function. The match gate only ever compared
@@ -53,6 +59,27 @@ CFLAGS = ("-O4,p -enum int -lang c99 -char signed -interworking "
           "-proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off")
 LDFLAGS = ("-proc arm946e -nostdlib -interworking -m Entry "
            "-map closure,unused -msgstyle gcc -nodead")
+
+
+VERSIONS_FILE = REPO / "config" / "rombuild-versions.txt"
+
+
+def versions():
+    """symbol -> mwccarm version, for functions not matched under the default.
+
+    A function counts as matched if *some* toolchain version reproduces it, and
+    match.py sweeps a list - so a single-version link produces wrong bytes for the
+    ones matched elsewhere, even though the source is right. See the file's comments.
+    """
+    out = {}
+    if VERSIONS_FILE.is_file():
+        for line in VERSIONS_FILE.read_text(encoding="utf-8").splitlines():
+            line = line.strip()
+            if line and not line.startswith("#"):
+                parts = line.split()
+                if len(parts) == 2:
+                    out[parts[0]] = parts[1]
+    return out
 
 
 def launcher():
@@ -97,11 +124,12 @@ def enrolled():
     return sorted(set(files))
 
 
-def compile_one(rel):
+def compile_one(rel, vers=None):
     """Compile one enrolled source file to the object path dsd's objects.txt names."""
     src = REPO / rel
     obj = BUILD / pathlib.Path(rel).with_suffix(".o")
     obj.parent.mkdir(parents=True, exist_ok=True)
+    version = (vers or {}).get(pathlib.Path(rel).stem, VERSION)
     flags = CFLAGS
     # A leading //cpp marker means C++, matched to how match.py/fdiff compile it.
     try:
@@ -109,7 +137,7 @@ def compile_one(rel):
             flags = flags.replace("-lang c99", "-lang c++")
     except OSError:
         pass
-    cmd = [*launcher(), str(MW / VERSION / "mwccarm.exe"), *flags.split(),
+    cmd = [*launcher(), str(MW / version / "mwccarm.exe"), *flags.split(),
            "-i", str(INCLUDE), "-c", str(src), "-o", str(obj)]
     r = subprocess.run(cmd, capture_output=True, text=True,
                        env=dict(os.environ, LM_LICENSE_FILE=str(LICENSE)), cwd=REPO)
@@ -129,7 +157,7 @@ def main():
     ap.add_argument("--arm7-bios", help="passed to dsd rom build if your dump needs it")
     args = ap.parse_args()
 
-    for tool in (DSD, MW / VERSION / "mwccarm.exe", MW / VERSION / "mwldarm.exe"):
+    for tool in (DSD, MW / VERSION / "mwccarm.exe", MW / LD_VERSION / "mwldarm.exe"):
         if not tool.is_file():
             sys.exit(f"missing {tool} - see notes/setup-mwccarm.md")
     if not (REPO / "extracted" / "dsd" / "config.yaml").is_file():
@@ -144,11 +172,14 @@ def main():
     run([str(DSD), "lcf", "-c", str(CONFIG)], "dsd lcf")
 
     srcs = enrolled()
-    print(f"[3/6] mwccarm: {len(srcs)} enrolled source file(s), -j{args.jobs}")
+    vers = versions()
+    n_alt = sum(1 for s in srcs if pathlib.Path(s).stem in vers)
+    print(f"[3/6] mwccarm: {len(srcs)} enrolled source file(s), -j{args.jobs}"
+          + (f" ({n_alt} on an alternate toolchain version)" if n_alt else ""))
     failures = []
     if srcs:
         with concurrent.futures.ThreadPoolExecutor(max_workers=args.jobs) as ex:
-            for rel, err in ex.map(compile_one, srcs):
+            for rel, err in ex.map(lambda s: compile_one(s, vers), srcs):
                 if err:
                     failures.append((rel, err))
     if failures:
@@ -158,7 +189,7 @@ def main():
         sys.exit(1)
 
     print("[4/6] mwldarm")
-    run([*launcher(), str(MW / VERSION / "mwldarm.exe"), *LDFLAGS.split(),
+    run([*launcher(), str(MW / LD_VERSION / "mwldarm.exe"), *LDFLAGS.split(),
          f"@{BUILD / 'objects.txt'}", str(BUILD / "arm9.lcf"),
          "-o", str(BUILD / "final_link.o")], "mwldarm")
 

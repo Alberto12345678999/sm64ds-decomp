@@ -22,6 +22,7 @@ src/func_ov032_021113fc.cpp:
     .text start:0x021113fc end:0x02111620
 
 src/func_ov032_02111620.cpp:
+    complete
     .text start:0x02111620 end:0x02111814
 
 src/func_ov032_02111814.c:
@@ -29,9 +30,11 @@ src/func_ov032_02111814.c:
     .text start:0x02111814 end:0x02111830
 
 src/func_ov032_02111830.c:
+    complete
     .text start:0x02111830 end:0x02111b50
 
 src/func_ov032_02111b50.c:
+    complete
     .text start:0x02111b50 end:0x02111b9c
 
 src/func_ov032_02111b9c.cpp:

@@ -209,6 +209,7 @@ src/func_ov102_0214aa18.cpp:
     .text start:0x0214aa18 end:0x0214ab1c
 
 src/func_ov102_0214ab1c.c:
+    complete
     .text start:0x0214ab1c end:0x0214ad14
 
 src/func_ov102_0214ad14.c:
@@ -216,12 +217,14 @@ src/func_ov102_0214ad14.c:
     .text start:0x0214ad14 end:0x0214ad40
 
 src/func_ov102_0214ad40.c:
+    complete
     .text start:0x0214ad40 end:0x0214adc8
 
 src/func_ov102_0214adc8.c:
     .text start:0x0214adc8 end:0x0214ae1c
 
 src/func_ov102_0214ae1c.c:
+    complete
     .text start:0x0214ae1c end:0x0214b03c
 
 src/func_ov102_0214b03c.cpp:
@@ -229,6 +232,7 @@ src/func_ov102_0214b03c.cpp:
     .text start:0x0214b03c end:0x0214b128
 
 src/func_ov102_0214b128.cpp:
+    complete
     .text start:0x0214b128 end:0x0214b248
 
 src/func_ov102_0214b248.cpp:
@@ -254,6 +258,7 @@ src/func_ov102_0214b988.cpp:
     .text start:0x0214b988 end:0x0214ba30
 
 src/func_ov102_0214ba30.cpp:
+    complete
     .text start:0x0214ba30 end:0x0214baa0
 
 src/func_ov102_0214baa0.c:
@@ -273,6 +278,7 @@ src/func_ov102_0214bcc8.c:
     .text start:0x0214bcc8 end:0x0214bd20
 
 src/func_ov102_0214bd20.cpp:
+    complete
     .text start:0x0214bd20 end:0x0214bd90
 
 src/func_ov102_0214bd90.c:
@@ -284,6 +290,7 @@ src/func_ov102_0214be1c.cpp:
     .text start:0x0214be1c end:0x0214beb4
 
 src/func_ov102_0214beb4.c:
+    complete
     .text start:0x0214beb4 end:0x0214bf64
 
 src/func_ov102_0214bf64.cpp:
@@ -347,15 +354,19 @@ src/func_ov102_0214cfe4.cpp:
     .text start:0x0214cfe4 end:0x0214d020
 
 src/func_ov102_0214d020.c:
+    complete
     .text start:0x0214d020 end:0x0214d044
 
 src/func_ov102_0214d044.cpp:
+    complete
     .text start:0x0214d044 end:0x0214d0bc
 
 src/func_ov102_0214d0bc.cpp:
+    complete
     .text start:0x0214d0bc end:0x0214d114
 
 src/func_ov102_0214d114.c:
+    complete
     .text start:0x0214d114 end:0x0214d148
 
 src/func_ov102_0214d148.cpp:
@@ -367,6 +378,7 @@ src/func_ov102_0214d1b0.c:
     .text start:0x0214d1b0 end:0x0214d1b8
 
 src/func_ov102_0214d1b8.c:
+    complete
     .text start:0x0214d1b8 end:0x0214d1f8
 
 src/func_ov102_0214d1f8.cpp:

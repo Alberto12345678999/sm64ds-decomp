@@ -18,6 +18,7 @@ src/_ZN16RotatingCogSmall6RenderEv.cpp:
     .text start:0x021112c4 end:0x021112ec
 
 src/_ZN16RotatingCogSmall8BehaviorEv.cpp:
+    complete
     .text start:0x021112ec end:0x021114e0
 
 src/_ZN16RotatingCogSmall13InitResourcesEv.cpp:

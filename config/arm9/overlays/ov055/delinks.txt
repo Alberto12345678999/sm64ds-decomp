@@ -15,6 +15,7 @@ src/func_ov055_02111264.c:
     .text start:0x02111264 end:0x02111288
 
 src/func_ov055_02111288.c:
+    complete
     .text start:0x02111288 end:0x021112bc
 
 src/func_ov055_021112bc.c:

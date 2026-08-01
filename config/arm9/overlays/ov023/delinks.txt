@@ -26,6 +26,7 @@ src/_ZN8Squasher6RenderEv.cpp:
     .text start:0x02111388 end:0x021113b0
 
 src/_ZN8Squasher8BehaviorEv.c:
+    complete
     .text start:0x021113b0 end:0x02111670
 
 src/_ZN8Squasher13InitResourcesEv.cpp:

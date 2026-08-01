@@ -124,6 +124,7 @@ src/_ZN5Pokey8BehaviorEv.cpp:
     .text start:0x02136a50 end:0x02136ab0
 
 src/_ZN5Pokey13InitResourcesEv.cpp:
+    complete
     .text start:0x02136ab0 end:0x02136cd0
 
 src/func_ov096_02136cd0.c:
@@ -162,6 +163,7 @@ src/_ZN7Tornado16CleanupResourcesEv.c:
     .text start:0x021373e4 end:0x02137414
 
 src/_ZN7Tornado6RenderEv.cpp:
+    complete
     .text start:0x02137414 end:0x02137448
 
 src/_ZN7Tornado8BehaviorEv.cpp:

@@ -43,6 +43,7 @@ src/func_ov065_0211672c.c:
     .text start:0x0211672c end:0x02116744
 
 src/func_ov065_02116744.c:
+    complete
     .text start:0x02116744 end:0x021168a8
 
 src/func_ov065_021168a8.cpp:
@@ -54,6 +55,7 @@ src/func_ov065_0211691c.cpp:
     .text start:0x0211691c end:0x0211696c
 
 src/func_ov065_0211696c.c:
+    complete
     .text start:0x0211696c end:0x02116ae8
 
 src/_ZN6Snufit16CleanupResourcesEv.c:
@@ -100,6 +102,7 @@ src/func_ov065_02117404.cpp:
     .text start:0x02117404 end:0x021175b0
 
 src/func_ov065_021175b0.c:
+    complete
     .text start:0x021175b0 end:0x02117624
 
 src/func_ov065_02117624.c:
@@ -118,6 +121,7 @@ src/func_ov065_021177e4.cpp:
     .text start:0x021177e4 end:0x02117888
 
 src/func_ov065_02117888.c:
+    complete
     .text start:0x02117888 end:0x021178fc
 
 src/func_ov065_021178fc.c:
@@ -197,6 +201,7 @@ src/func_ov065_021183c8.c:
     .text start:0x021183c8 end:0x02118634
 
 src/func_ov065_02118634.c:
+    complete
     .text start:0x02118634 end:0x02118838
 
 src/func_ov065_02118c4c.c:
@@ -420,6 +425,7 @@ src/_ZN13TTC_MovingBar6RenderEv.cpp:
     .text start:0x0211b4e0 end:0x0211b508
 
 src/_ZN13TTC_MovingBar8BehaviorEv.cpp:
+    complete
     .text start:0x0211b508 end:0x0211b640
 
 src/_ZN13TTC_MovingBar13InitResourcesEv.cpp:
@@ -447,6 +453,7 @@ src/_ZN15TtcRotatingGear6RenderEv.cpp:
     .text start:0x0211b8d0 end:0x0211b8f8
 
 src/_ZN15TtcRotatingGear8BehaviorEv.c:
+    complete
     .text start:0x0211b8f8 end:0x0211ba88
 
 src/_ZN15TtcRotatingGear13InitResourcesEv.cpp:

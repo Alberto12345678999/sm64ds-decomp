@@ -166,6 +166,7 @@ src/func_ov091_02132a14.cpp:
     .text start:0x02132a14 end:0x02132ab0
 
 src/_ZN6Thwomp8BehaviorEv.cpp:
+    complete
     .text start:0x02132ab0 end:0x02132c84
 
 src/_ZN6Thwomp13InitResourcesEv.cpp:
@@ -193,6 +194,7 @@ src/func_ov091_02132e98.c:
     .text start:0x02132e98 end:0x02132f04
 
 src/func_ov091_02132f04.cpp:
+    complete
     .text start:0x02132f04 end:0x02132ff4
 
 src/func_ov091_02132ff4.c:
@@ -200,6 +202,7 @@ src/func_ov091_02132ff4.c:
     .text start:0x02132ff4 end:0x02133020
 
 src/func_ov091_02133020.c:
+    complete
     .text start:0x02133020 end:0x02133098
 
 src/func_ov091_02133098.cpp:
@@ -262,6 +265,7 @@ src/func_ov091_021339fc.c:
     .text start:0x021339fc end:0x02133c6c
 
 src/func_ov091_02133c6c.c:
+    complete
     .text start:0x02133c6c end:0x02133d1c
 
 src/func_ov091_02133d1c.c:
@@ -277,6 +281,7 @@ src/func_ov091_02133f24.c:
     .text start:0x02133f24 end:0x02133f60
 
 src/func_ov091_02133f60.c:
+    complete
     .text start:0x02133f60 end:0x0213400c
 
 src/func_ov091_0213400c.c:

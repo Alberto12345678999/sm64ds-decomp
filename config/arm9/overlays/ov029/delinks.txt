@@ -197,6 +197,7 @@ src/_ZN20SwitchActivatedPlank6RenderEv.cpp:
     .text start:0x02112794 end:0x021127cc
 
 src/_ZN20SwitchActivatedPlank8BehaviorEv.cpp:
+    complete
     .text start:0x021127cc end:0x021128b0
 
 src/_ZN20SwitchActivatedPlank13InitResourcesEv.cpp:

@@ -58,6 +58,7 @@ src/func_ov098_0213814c.cpp:
     .text start:0x0213814c end:0x021381e8
 
 src/func_ov098_021381e8.c:
+    complete
     .text start:0x021381e8 end:0x02138238
 
 src/func_ov098_02138238.c:
@@ -72,6 +73,7 @@ src/func_ov098_02138344.cpp:
     .text start:0x02138344 end:0x02138484
 
 src/func_ov098_02138484.c:
+    complete
     .text start:0x02138484 end:0x021384fc
 
 src/func_ov098_021384fc.cpp:
@@ -95,6 +97,7 @@ src/func_ov098_021388bc.cpp:
     .text start:0x021388bc end:0x021389cc
 
 src/func_ov098_021389cc.c:
+    complete
     .text start:0x021389cc end:0x021389f8
 
 src/func_ov098_021389f8.cpp:
@@ -128,6 +131,7 @@ src/func_ov098_02138e08.c:
     .text start:0x02138e08 end:0x02138e6c
 
 src/func_ov098_02138e6c.cpp:
+    complete
     .text start:0x02138e6c end:0x02139070
 
 src/func_ov098_02139070.c:
@@ -148,6 +152,7 @@ src/func_ov098_021397c8.cpp:
     .text start:0x021397c8 end:0x02139850
 
 src/func_ov098_02139850.c:
+    complete
     .text start:0x02139850 end:0x02139a50
 
 src/_ZN5Crate16CleanupResourcesEv.cpp:
@@ -248,6 +253,7 @@ src/func_ov098_0213aa28.c:
     .text start:0x0213aa28 end:0x0213ad08
 
 src/func_ov098_0213ad08.c:
+    complete
     .text start:0x0213ad08 end:0x0213ade8
 
 src/func_ov098_0213b0a4.cpp:

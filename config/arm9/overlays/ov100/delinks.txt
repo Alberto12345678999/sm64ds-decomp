@@ -52,6 +52,7 @@ src/_ZN9Butterfly6RenderEv.cpp:
     .text start:0x021419d4 end:0x02141a40
 
 src/_ZN9Butterfly8BehaviorEv.cpp:
+    complete
     .text start:0x02141a40 end:0x02141c6c
 
 src/_ZN9Butterfly13InitResourcesEv.cpp:
@@ -194,6 +195,7 @@ src/func_ov100_021444e8.c:
     .text start:0x021444e8 end:0x02144528
 
 src/func_ov100_02144528.c:
+    complete
     .text start:0x02144528 end:0x021446f8
 
 src/func_ov100_021446f8.c:
@@ -376,6 +378,7 @@ src/_ZN4FishD0Ev.c:
     .text start:0x0214623c end:0x02146280
 
 src/func_ov100_02146280.c:
+    complete
     .text start:0x02146280 end:0x0214629c
 
 src/func_ov100_0214629c.cpp:
@@ -394,6 +397,7 @@ src/func_ov100_02146468.c:
     .text start:0x02146468 end:0x021464f4
 
 src/func_ov100_021464f4.cpp:
+    complete
     .text start:0x021464f4 end:0x02146640
 
 src/func_ov100_02146640.c:

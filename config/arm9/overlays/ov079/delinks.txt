@@ -13,6 +13,7 @@ src/_ZN5WhompD0Ev.c:
     .text start:0x02123798 end:0x02123804
 
 src/func_ov079_02123804.c:
+    complete
     .text start:0x02123804 end:0x02123a8c
 
 src/func_ov079_02123a8c.cpp:
@@ -25,9 +26,11 @@ src/func_ov079_02123b60.c:
     .text start:0x02123b60 end:0x02123bcc
 
 src/func_ov079_02123bcc.c:
+    complete
     .text start:0x02123bcc end:0x02123d4c
 
 src/func_ov079_02123d4c.cpp:
+    complete
     .text start:0x02123d4c end:0x02123e60
 
 src/func_ov079_02123e60.cpp:
@@ -50,6 +53,7 @@ src/func_ov079_021243e0.c:
     .text start:0x021243e0 end:0x02124530
 
 src/func_ov079_02124530.c:
+    complete
     .text start:0x02124530 end:0x02124638
 
 src/func_ov079_02124638.c:
@@ -63,15 +67,19 @@ src/func_ov079_021246dc.c:
     .text start:0x021246dc end:0x021249f0
 
 src/func_ov079_021249f0.c:
+    complete
     .text start:0x021249f0 end:0x02124b08
 
 src/func_ov079_02124b08.c:
+    complete
     .text start:0x02124b08 end:0x02124dec
 
 src/func_ov079_02124dec.cpp:
+    complete
     .text start:0x02124dec end:0x02124ed4
 
 src/func_ov079_02124ed4.c:
+    complete
     .text start:0x02124ed4 end:0x02125058
 
 src/func_ov079_02125058.cpp:
@@ -89,6 +97,7 @@ src/func_ov079_0212538c.c:
     .text start:0x0212538c end:0x021254b4
 
 src/func_ov079_021254b4.c:
+    complete
     .text start:0x021254b4 end:0x02125504
 
 src/func_ov079_02125504.c:
@@ -100,9 +109,11 @@ src/func_ov079_021256d4.c:
     .text start:0x021256d4 end:0x021258fc
 
 src/func_ov079_021258fc.c:
+    complete
     .text start:0x021258fc end:0x02125b44
 
 src/func_ov079_02125b44.c:
+    complete
     .text start:0x02125b44 end:0x02125eb0
 
 src/_ZN5Whomp16CleanupResourcesEv.cpp:
@@ -142,9 +153,11 @@ src/func_ov079_02126704.c:
     .text start:0x02126704 end:0x02126794
 
 src/func_ov079_02126794.cpp:
+    complete
     .text start:0x02126794 end:0x0212682c
 
 src/func_ov079_0212682c.c:
+    complete
     .text start:0x0212682c end:0x02126a18
 
 src/_ZN10BulletBill16CleanupResourcesEv.c:
@@ -173,6 +186,7 @@ src/func_ov079_02126e00.c:
     .text start:0x02126e00 end:0x02126e58
 
 src/func_ov079_02126e58.cpp:
+    complete
     .text start:0x02126e58 end:0x02126ecc
 
 src/func_ov079_02126ecc.cpp:

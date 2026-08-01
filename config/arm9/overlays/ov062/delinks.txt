@@ -82,6 +82,7 @@ src/func_ov062_02116980.c:
     .text start:0x02116980 end:0x02116a08
 
 src/func_ov062_02116a08.c:
+    complete
     .text start:0x02116a08 end:0x02116b80
 
 src/func_ov062_02116b80.cpp:
@@ -127,6 +128,7 @@ src/_ZN7Chuckya6RenderEv.c:
     .text start:0x02117024 end:0x0211707c
 
 src/_ZN7Chuckya8BehaviorEv.cpp:
+    complete
     .text start:0x0211707c end:0x02117334
 
 src/_ZN7Chuckya13InitResourcesEv.c:
@@ -202,9 +204,11 @@ src/func_ov062_021180d4.c:
     .text start:0x021180d4 end:0x0211811c
 
 src/func_ov062_0211811c.c:
+    complete
     .text start:0x0211811c end:0x021181a0
 
 src/func_ov062_021181a0.c:
+    complete
     .text start:0x021181a0 end:0x02118258
 
 src/func_ov062_02118258.c:
@@ -224,6 +228,7 @@ src/func_ov062_02118588.c:
     .text start:0x02118588 end:0x02118718
 
 src/func_ov062_02118718.c:
+    complete
     .text start:0x02118718 end:0x02118a00
 
 src/func_ov062_02118a00.cpp:
@@ -235,6 +240,7 @@ src/func_ov062_02118a50.c:
     .text start:0x02118a50 end:0x02118b4c
 
 src/func_ov062_02118b4c.c:
+    complete
     .text start:0x02118b4c end:0x02118cdc
 
 src/func_ov062_02118cdc.c:
@@ -242,6 +248,7 @@ src/func_ov062_02118cdc.c:
     .text start:0x02118cdc end:0x02118de8
 
 src/func_ov062_02118de8.cpp:
+    complete
     .text start:0x02118de8 end:0x02118f04
 
 src/_ZN5Koopa16CleanupResourcesEv.cpp:
@@ -311,6 +318,7 @@ src/func_ov062_0211a168.c:
     .text start:0x0211a168 end:0x0211a1f4
 
 src/func_ov062_0211a1f4.c:
+    complete
     .text start:0x0211a1f4 end:0x0211a740
 
 src/func_ov062_0211a740.cpp:
@@ -375,6 +383,7 @@ src/_ZN6KleptoD0Ev.c:
     .text start:0x0211b298 end:0x0211b2fc
 
 src/func_ov062_0211b2fc.c:
+    complete
     .text start:0x0211b2fc end:0x0211b3ac
 
 src/func_ov062_0211b3ac.cpp:
@@ -421,6 +430,7 @@ src/func_ov062_0211c658.cpp:
     .text start:0x0211c658 end:0x0211c6a8
 
 src/func_ov062_0211c6a8.c:
+    complete
     .text start:0x0211c6a8 end:0x0211c8b0
 
 src/_ZN6Klepto16CleanupResourcesEv.c:

@@ -43,12 +43,13 @@ from elftools.elf.elffile import ELFFile
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 from enroll import candidates, CONFIG, REPO  # noqa: E402
+from rombuild import versions  # noqa: E402
 
 MW = REPO / "tools" / "mwccarm"
 LICENSE = MW / "license.dat"
 INCLUDE = REPO / "include"
 BUILD = REPO / "build"
-VERSION = "1.2/sp2p3"
+from rombuild import VERSION  # noqa: E402  (default compiler)
 # Must stay identical to tools/rombuild.py's CFLAGS - classifying with different flags
 # than the build uses would pass files the build then breaks on.
 CFLAGS = ("-O4,p -enum int -lang c99 -char signed -interworking "
@@ -70,7 +71,7 @@ def defined_symbols():
 
 
 def classify(job):
-    rel, name, addr, size, sec, known = job
+    rel, name, addr, size, sec, known, version = job
     src = REPO / rel
     obj = BUILD / pathlib.Path(rel).with_suffix(".o")
     obj.parent.mkdir(parents=True, exist_ok=True)
@@ -82,7 +83,7 @@ def classify(job):
         return rel, name, "unreadable source"
 
     cmd = [*os.environ.get("MWCCARM_LAUNCHER", "").split(),
-           str(MW / VERSION / "mwccarm.exe"), *flags.split(),
+           str(MW / version / "mwccarm.exe"), *flags.split(),
            "-i", str(INCLUDE), "-c", str(src), "-o", str(obj)]
     r = subprocess.run(cmd, capture_output=True, text=True,
                        env=dict(os.environ, LM_LICENSE_FILE=str(LICENSE)), cwd=REPO)
@@ -143,7 +144,8 @@ def main():
 
     known = defined_symbols()
     cands, _ = candidates()
-    jobs = [(rel, name, addr, size, sec, known)
+    vers = versions()
+    jobs = [(rel, name, addr, size, sec, known, vers.get(name, VERSION))
             for (_d, name, rel, addr, size, sec) in cands]
     print(f"classifying {len(jobs)} enrolled functions with -j{args.jobs} ...")
 

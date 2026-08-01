@@ -50,6 +50,7 @@ src/_ZN15FireSeaElevator8BehaviorEv.cpp:
     .text start:0x02111618 end:0x02111738
 
 src/_ZN15FireSeaElevator13InitResourcesEv.cpp:
+    complete
     .text start:0x02111738 end:0x02111808
 
 src/PoleLift_Spawn.c:

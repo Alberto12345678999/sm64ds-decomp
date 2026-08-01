@@ -15,8 +15,8 @@ that pipeline up now.
 
 **M0, M1, M2a and M2b are done. The built ROM boots and plays in melonDS.**
 `python tools/rombuild.py` produces a 16,777,216-byte `build/sm64ds.nds` in about a
-minute, with all 106 modules byte-identical to the ROM. **7,396 functions — 1,179,768
-code bytes, 53.4% of the project's total — are compiled from `src/` by mwccarm**; the
+minute, with all 106 modules byte-identical to the ROM. **7,916 functions — 1,346,916
+code bytes, 60.9% of the project's total — are compiled from `src/` by mwccarm**; the
 rest of each module is supplied from delinked ROM bytes. Only M3 (a confirmed visible
 change) is still open. Results are recorded under each milestone below.
 
@@ -25,17 +25,18 @@ python tools/eligible.py             # classify: which files may be compiled in
 python tools/enroll.py --complete-list build/eligible-names.txt
 python tools/rombuild.py             # build and verify
 python tools/rombuild_check.py       # per-function byte diff, names any culprit
+python tools/rombuild_diag.py        # explain a mismatch: which symbol does it name?
+python tools/rombuild_versions.py build/bad.txt --write   # per-file compiler overrides
 ```
 
-```
-python tools/rombuild.py            # delink, compile enrolled src, link, package, verify
-python tools/rombuild.py --no-rom   # stop after linking (fast iteration)
-python tools/rombuild.py -j 16
-```
-
-The script compiles exactly the files enrolled by a `complete` file entry in some
+`rombuild.py` compiles exactly the files enrolled by a `complete` file entry in some
 `config/**/delinks.txt`; everything else comes from ROM bytes. Enrolling more source is
-therefore a config edit, not a code change.
+therefore a config edit, not a code change. `--no-rom` stops after linking for fast
+iteration.
+
+**The compiler default is `2004/b56`** (`rombuild.VERSION`), with per-file exceptions in
+`config/rombuild-versions.txt`. The **linker** is always 1.2/sp2p3 (`LD_VERSION`) because
+the 2004 toolchain ships no `mwldarm`.
 
 ## The pipeline
 
@@ -329,50 +330,97 @@ one-command reproducible build.
 
 #### M2b result — passed
 
-**7,396 functions are compiled from `src/` and every one of the 106 modules is still
-byte-identical to the ROM.** That is 1,179,768 code bytes, **53.4%** of the project's
-2,211,124. The packaged `.nds` remains exactly 107 metadata bytes from the retail dump,
-and it boots and plays.
+**7,916 functions are compiled from `src/` and every one of the 106 modules is still
+byte-identical to the ROM.** That is 1,346,916 code bytes, **60.9%** of the project's
+2,211,124. The `.nds` remains exactly 107 metadata bytes from the retail dump. Whole
+build: ~80 seconds.
 
-Two things made this work, and neither was in the original plan.
+Four things got it there, and only the first was in the plan.
 
 **1. `-Cpp_exceptions off`.** The dominant blocker was not C++ TUs or BLIND symbols — it
 was `.exceptix`, on **8,520 of 11,090** candidates. mwccarm emits an exception-unwind
-index alongside almost every function, and the match gate never noticed because it only
-ever compares `.text`. A ROM link very much notices: that section is duplicate content
-that grows the module and shifts every later address. Retail carries just 636 bytes of
-`.exceptix` in main, so the original build had them off too. Adding `-Cpp_exceptions off`
-to the build flags cleared the extra sections on **60 of 60** sampled files with **zero
-`.text` change**, and eligibility jumped from 1,903 to 7,466. `tools/rombuild.py` and
-`tools/eligible.py` must keep identical flags for this reason.
+index alongside almost every function and the match gate never noticed, because it only
+ever compares `.text`. A ROM link very much notices: duplicate content that grows the
+module and shifts every later address. Retail carries just 636 bytes of `.exceptix` in
+main, so the original build had them off too. The flag cleared the extra sections on
+**60 of 60** sampled files with **zero `.text` change**.
 
-**2. Per-function diffing beats bisection.** Because eligibility requires the object's
+**2. The default compiler is `2004/b56`, not `1.2/sp2p3`.** The repo pins 1.2/sp2p3 as
+canonical, but a function counts as matched if *any* swept version reproduces it, and a
+link has to pick one. Defaulting to the recovered 2004 build 0056
+(`notes/mwccarm-codegen.md` 6ai) reproduces strictly more of this corpus: eligibility
+7,466 → 7,923, and post-link mismatches **70 → 14**. Note b56 ships *only* `mwccarm.exe`,
+so `LD_VERSION` keeps the link on 1.2/sp2p3's `mwldarm` regardless.
+
+**3. Per-file version overrides.** `config/rombuild-versions.txt` names the exceptions;
+`tools/rombuild_versions.py` finds them by sweeping `match.py`'s version list over
+whatever `rombuild_check.py` reported. Seven functions match only under `1.2/base`.
+
+**4. Per-function diffing beats bisection.** Because eligibility requires the object's
 `.text` to equal the declared size exactly, no function can shift its neighbours, so
-every mismatch is *confined to the function that caused it*. `tools/rombuild_check.py`
-therefore compares each source-built function's linked bytes against the ROM
-individually and names all the culprits from **one** build. It found **70 of 7,466**
-mismatching (99.06% reproducing); demoting exactly those 70 turned the build green in a
-single further iteration. No bisection, no walking the `AFTER()` order.
+every mismatch is *confined to the function that caused it*.
+`tools/rombuild_check.py` compares each source-built function against the ROM
+individually and names all the culprits from **one** build. No bisection, no walking the
+`AFTER()` order.
 
-Why the other 3,694 are not source-built yet:
+##### What the first 70 mismatches turned out to be
+
+Worth recording, because the intuitive reading was wrong. Under the old 1.2/sp2p3
+default, 70 of 7,466 did not reproduce. Running them through the repo's own oracle split
+them cleanly:
+
+- **54 were not broken at all.** `tools/match.py` rejected them under 1.2/sp2p3 but
+  *every one* matched under `2004/b56`. They were version-divergent, not wrong — which
+  is what motivated flipping the default. Their last-touching commits are mostly the
+  `readable: strip N unnecessary compiler-steering no-op masks` passes, so those passes
+  appear to have re-verified under a different version than the ROM build was using.
+- **16 were genuine wrong relocation destinations** — the class the match gate
+  structurally cannot see, because it wildcards every relocated word, so a call to the
+  wrong function with the right shape reads as a match. `tools/rombuild_diag.py` decodes
+  each differing word and resolves both sides back to symbols, turning the byte diff into
+  "the source calls X, the ROM calls Y".
+
+Nine of the sixteen were mechanical symbol repoints, applied to `src/` and verified
+individually with `match.py` before the link confirmed them:
+
+| function | source named | ROM uses |
+|---|---|---|
+| `_ZN13PrincessPeach6RenderEv` | `CommonModel::Render` | `Model::Render` |
+| `_ZN7Tornado6RenderEv`, `_ZN9WaterRing6RenderEv` | `TextureSequence::Update` | `TextureTransformer::Update` |
+| `func_ov079_02126e58` | `Actor::DisappearPoofDustAt` | `Actor::PoofDustAt` |
+| `func_ov085_0212e778` | `…ApplyInPlaceToRotationXYZExt` | `…ApplyInPlaceToRotationZXYExt` |
+| `func_ov006_0211a048`, `func_ov006_0211a5ec` | wrong `data_ov006_*` base | the adjacent one |
+| `func_ov006_02120c08` | `func_ov006_020eed68` | `func_ov006_02120a64` |
+| `func_ov002_020f23d0` | the veneer `func_0203cbc0` | `Memory::operator_delete2` |
+
+The `XYZExt` → `ZXYExt` one is a genuine behavioural bug, not just a naming slip.
+
+**Seven remain, and all seven are documented non-bugs:**
+
+- three (`_ZN5ModelD1Ev`, `_ZN5ModelD2Ev`, `_ZN14BlendModelAnimD1Ev`) call `_ZdlPv`
+  where the ROM goes through the 12-byte interworking veneer at `0x0203cbc0` in front of
+  the real `operator delete` at `0x0203cbcc`. [`link-verification.md`](link-verification.md)
+  is explicit that naming the real symbol is correct and inserting the veneer is the
+  linker's job, so renaming source to the trampoline would reproduce bytes by lying about
+  the call. Left alone deliberately.
+- three (`_ZN11MirrorLuigiD1Ev`, `_ZN15RecRoomCupboardD0Ev`, `_ZN15RecRoomCupboardD1Ev`)
+  write `((Actor *)c)->~Actor()`, for which the compiler emits the D1 complete-object
+  destructor while the ROM calls the D2 base-object one. Only real inheritance would make
+  the compiler choose D2, so this is structural, not a rename — exactly the kind of work
+  the `readable/` C++-promotion branches do.
+- one (`_ZN11ShadowModelC1Ev`) stores a vtable pointer that resolves elsewhere than
+  `_ZTV11ShadowModel`.
+
+Why the other 3,174 are not source-built yet:
 
 | count | reason |
 |---:|---|
-| 1,836 | references a symbol name `config/**/symbols.txt` does not define — the BLIND matches. No address means nothing to link to, and gap objects import weakly, so it would silently resolve to 0. |
-| 711 | the object defines a different symbol than the file/config name (e.g. `src/func_ov091_02132a0c.c` defines `daDsn_c_OnAimedAtWithEgg`) — a src/config naming drift, likely recoverable by reconciling names. |
-| 663 | compiled `st_size` ≠ the size `symbols.txt` declares |
+| ~1,800 | references a symbol name `config/**/symbols.txt` does not define — the BLIND matches. No address means nothing to link to, and gap objects import weakly, so it would silently resolve to 0. |
+| ~700 | the object defines a different symbol than the file/config name (e.g. `src/func_ov091_02132a0c.c` defines `daDsn_c_OnAimedAtWithEgg`) — a src/config naming drift, likely recoverable by reconciling names. |
+| ~350 | compiled `st_size` ≠ the size `symbols.txt` declares |
 | 301 | lives in a `.init` range, where a `File.o(.init)` selector would match nothing in an object whose code is in `.text` |
-| 88 | emits `.data` (81) or `.bss` (7) whose ROM address we do not know |
-| 70 | compiles and links but does **not** reproduce the ROM bytes |
-| 13 | multiple `.text` sections — a multi-function TU |
-| 12 | fails to compile with the build flags |
-
-**The 70 mismatches are a real finding, not just an exclusion.** They compile to the
-right size and link cleanly, so the difference is in *content* — overwhelmingly the
-wrong-relocation-destination class that `linkcheck.py` exists to catch, on functions
-whose `src/` file the match gate passes because it wildcards relocated words. They are
-listed in `build/rombuild-eligibility.json` and are the highest-value follow-up here:
-each one is a `src/` file that is subtly wrong today.
+| ~90 | emits `.data` or `.bss` whose ROM address we do not know |
+| 7 | the veneer / D1-vs-D2 / vtable cases above |
 
 ### M3 — Prove it is really our code
 

@@ -60,6 +60,7 @@ src/func_ov081_02124134.c:
     .text start:0x02124134 end:0x0212423c
 
 src/func_ov081_0212423c.c:
+    complete
     .text start:0x0212423c end:0x021243cc
 
 src/func_ov081_021243cc.cpp:
@@ -78,6 +79,7 @@ src/func_ov081_0212479c.cpp:
     .text start:0x0212479c end:0x02124894
 
 src/func_ov081_02124894.c:
+    complete
     .text start:0x02124894 end:0x0212498c
 
 src/func_ov081_0212498c.c:
@@ -136,6 +138,7 @@ src/func_ov081_02125200.c:
     .text start:0x02125200 end:0x02125208
 
 src/func_ov081_02125208.c:
+    complete
     .text start:0x02125208 end:0x0212538c
 
 src/func_ov081_0212538c.c:
@@ -147,6 +150,7 @@ src/func_ov081_02125488.cpp:
     .text start:0x02125488 end:0x021254d8
 
 src/func_ov081_021254d8.cpp:
+    complete
     .text start:0x021254d8 end:0x021257b0
 
 src/_ZN10MrBlizzard16CleanupResourcesEv.c:
@@ -255,13 +259,14 @@ src/func_ov081_02126c20.cpp:
     .text start:0x02126c20 end:0x02126c8c
 
 src/func_ov081_02126c8c.cpp:
+    complete
     .text start:0x02126c8c end:0x02126d64
 
 src/func_ov081_02126d64.c:
-    complete
     .text start:0x02126d64 end:0x02126e28
 
 src/func_ov081_02126e28.c:
+    complete
     .text start:0x02126e28 end:0x02126fa4
 
 src/func_ov081_02126fa4.cpp:
@@ -288,6 +293,7 @@ src/func_ov081_021271e8.c:
     .text start:0x021271e8 end:0x02127240
 
 src/func_ov081_02127240.cpp:
+    complete
     .text start:0x02127240 end:0x02127314
 
 src/func_ov081_02127314.cpp:

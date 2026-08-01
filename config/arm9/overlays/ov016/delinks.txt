@@ -65,6 +65,7 @@ src/_ZN5Unagi16OnPendingDestroyEv.c:
     .text start:0x02111f80 end:0x02111f84
 
 src/_ZN5Unagi6RenderEv.c:
+    complete
     .text start:0x02111f84 end:0x02112010
 
 src/_ZN5Unagi8BehaviorEv.cpp:
@@ -125,6 +126,7 @@ src/func_ov016_02112b28.cpp:
     .text start:0x02112b28 end:0x02112b50
 
 src/func_ov016_02112b50.c:
+    complete
     .text start:0x02112b50 end:0x02112e1c
 
 src/func_ov016_02112e1c.c:
@@ -163,6 +165,7 @@ src/_ZN23FloatOnWaterPlatformJrb6RenderEv.cpp:
     .text start:0x02113130 end:0x02113158
 
 src/_ZN23FloatOnWaterPlatformJrb8BehaviorEv.c:
+    complete
     .text start:0x02113158 end:0x02113434
 
 src/_ZN23FloatOnWaterPlatformJrb13InitResourcesEv.cpp:

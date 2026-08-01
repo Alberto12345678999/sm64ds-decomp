@@ -28,6 +28,7 @@ src/func_ov092_021313b0.cpp:
     .text start:0x021313b0 end:0x021314d0
 
 src/func_ov092_021314d0.c:
+    complete
     .text start:0x021314d0 end:0x02131578
 
 src/func_ov092_02131578.c:

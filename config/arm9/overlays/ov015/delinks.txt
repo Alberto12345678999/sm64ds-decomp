@@ -80,6 +80,7 @@ src/func_ov015_02111d28.c:
     .text start:0x02111d28 end:0x02111d4c
 
 src/func_ov015_02111d4c.c:
+    complete
     .text start:0x02111d4c end:0x02111d8c
 
 src/func_ov015_02111d8c.c:
@@ -94,6 +95,7 @@ src/func_ov015_02111dd4.c:
     .text start:0x02111dd4 end:0x02111df4
 
 src/func_ov015_02111df4.c:
+    complete
     .text start:0x02111df4 end:0x02111e60
 
 src/func_ov015_02111e60.c:
@@ -109,6 +111,7 @@ src/func_ov015_02111ee0.c:
     .text start:0x02111ee0 end:0x02111eec
 
 src/func_ov015_02111eec.c:
+    complete
     .text start:0x02111eec end:0x02111f4c
 
 src/func_ov015_02111f4c.c:
@@ -116,6 +119,7 @@ src/func_ov015_02111f4c.c:
     .text start:0x02111f4c end:0x02111f6c
 
 src/func_ov015_02111f6c.c:
+    complete
     .text start:0x02111f6c end:0x02111fac
 
 src/func_ov015_02111fac.c:
