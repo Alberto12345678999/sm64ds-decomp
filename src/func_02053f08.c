@@ -1,10 +1,11 @@
-#include "types.h"
 /* func_02053f08 @ 0x02053f08 -- clear BG ext-palette enable bit in sub-engine
- * DISPCNT, then disable the VRAM bank assignment via DisableVramBanks. */
-extern u16 DisableVramBanks(u16 *bankBitsPtr);
+ * DISPCNT, then disable the VRAM bank assignment via func_0205402c. */
+#include "nitro/hw/registers.h"
+
+extern u16 func_0205402c(u16 *bankBitsPtr);
 extern u16 data_020a609e;
 
 u16 func_02053f08(void) {
-    *(vu32 *)0x04001000 &= ~0x40000000;
-    return DisableVramBanks(&data_020a609e);
+    REG_DISPCNT_SUB &= ~DISPLAY_CONTROL_BG_EXT_PALETTE;
+    return func_0205402c(&data_020a609e);
 }
