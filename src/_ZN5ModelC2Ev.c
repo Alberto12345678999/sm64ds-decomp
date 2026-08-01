@@ -35,7 +35,7 @@ extern void _ZN9ModelBaseC1Ev(struct ModelBase *thiz);
 struct Model *_ZN5ModelC2Ev(struct Model *thiz)
 {
     _ZN9ModelBaseC1Ev((struct ModelBase *)thiz);
-    thiz->vtable = _ZTV5Model + 2;
+    thiz->vtable = _ZTV5Model;
     thiz->unkMatPtr = 0;
     thiz->mat4x3 = _ZN9Matrix3x38IDENTITYE;
     return thiz;
