@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1092" width="100%" font-family="Segoe UI, system-ui, sans-serif" shape-rendering="crispEdges">
   <rect x="0" y="0" width="1600" height="1092" fill="#141517" />
   <text x="6" y="30" font-size="24" font-weight="600" fill="#e6e7e9">SM64DS decompilation progress</text>
-  <text x="6" y="58" font-size="15" fill="#e6e7e9">Functions matched: 11,128 / 11,348 (98.06%)   |   Code bytes matched: 2,037,616 / 2,211,124 (92.15%)   |   Modules: 73</text>
+  <text x="6" y="58" font-size="15" fill="#e6e7e9">Functions matched: 11,128 / 11,347 (98.07%)   |   Code bytes matched: 2,037,616 / 2,211,124 (92.15%)   |   Modules: 73</text>
   <text x="6" y="80" font-size="13" fill="#a8abb0">Each rectangle is one function, sized by byte count. Green = matched, gray = unmatched.</text>
   <g transform="translate(0,92)">
     <rect x="2.00" y="2.00" width="326.41" height="996.00" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="7.00" y="17.00" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">arm9  95.8%</text><rect x="335.83" y="2.00" width="260.74" height="996.00" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="340.83" y="17.00" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov002  97.0%</text><rect x="600.58" y="2.00" width="50.45" height="197.10" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="605.58" y="17.00" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov003  43.5%</text><rect x="600.58" y="203.10" width="50.45" height="673.92" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="605.58" y="218.10" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov004  89.3%</text><rect x="600.58" y="881.01" width="50.45" height="116.99" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="605.58" y="896.01" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov005  69.7%</text><rect x="655.03" y="2.00" width="735.58" height="443.46" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="660.03" y="17.00" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov006  84.1%</text><rect x="1394.61" y="2.00" width="203.39" height="443.46" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1399.61" y="17.00" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov007  87.0%</text><rect x="655.03" y="449.46" width="48.92" height="77.88" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="660.03" y="464.46" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov009  93.7%</text><rect x="655.03" y="531.34" width="48.92" height="51.95" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="660.03" y="546.34" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov010  100.0%</text><rect x="655.03" y="587.30" width="48.92" height="19.19" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><rect x="655.03" y="610.49" width="48.92" height="15.96" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><rect x="655.03" y="630.45" width="48.92" height="114.25" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="660.03" y="645.45" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov014  100.0%</text><rect x="655.03" y="748.70" width="48.92" height="111.08" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="660.03" y="763.70" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov015  77.0%</text><rect x="655.03" y="863.78" width="48.92" height="134.22" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="660.03" y="878.78" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov016  92.5%</text><rect x="707.95" y="449.46" width="37.62" height="11.65" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><rect x="707.95" y="465.11" width="37.62" height="116.92" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="712.95" y="480.11" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov018  100.0%</text><rect x="707.95" y="586.03" width="37.62" height="109.97" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="712.95" y="601.03" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov019  100.0%</text><rect x="707.95" y="700.00" width="37.62" height="157.19" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="712.95" y="715.00" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov020  100.0%</text><rect x="707.95" y="861.19" width="37.62" height="136.81" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="712.95" y="876.19" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov021  74.8%</text><rect x="749.57" y="449.46" width="43.20" height="105.88" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="754.57" y="464.46" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov022  100.0%</text><rect x="749.57" y="559.34" width="43.20" height="20.22" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><rect x="749.57" y="583.56" width="43.20" height="25.31" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><rect x="749.57" y="612.87" width="43.20" height="83.75" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="754.57" y="627.87" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov025  100.0%</text><rect x="749.57" y="700.62" width="43.20" height="78.78" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="754.57" y="715.62" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov026  100.0%</text><rect x="749.57" y="783.40" width="43.20" height="107.97" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="754.57" y="798.40" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov027  100.0%</text><rect x="749.57" y="895.37" width="43.20" height="102.63" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="754.57" y="910.37" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov029  100.0%</text><rect x="796.77" y="449.46" width="46.59" height="210.05" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="801.77" y="464.46" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov030  88.5%</text><rect x="796.77" y="663.51" width="46.59" height="7.84" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><rect x="796.77" y="675.35" width="46.59" height="90.58" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="801.77" y="690.35" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov032  100.0%</text><rect x="796.77" y="769.93" width="46.59" height="17.97" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><rect x="796.77" y="791.90" width="46.59" height="164.62" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="801.77" y="806.90" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov034  85.1%</text><rect x="796.77" y="960.52" width="46.59" height="37.48" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="801.77" y="975.52" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov035  100.0%</text><rect x="847.36" y="449.46" width="24.79" height="151.93" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><rect x="847.36" y="605.39" width="24.79" height="10.98" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><rect x="847.36" y="620.37" width="24.79" height="55.72" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><rect x="847.36" y="680.09" width="24.79" height="6.96" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><rect x="847.36" y="691.05" width="24.79" height="94.22" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><rect x="847.36" y="789.27" width="24.79" height="48.38" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><rect x="847.36" y="841.65" width="24.79" height="45.06" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><rect x="847.36" y="890.71" width="24.79" height="43.85" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><rect x="847.36" y="938.56" width="24.79" height="25.56" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><rect x="847.36" y="968.12" width="24.79" height="29.88" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><rect x="876.15" y="449.46" width="127.79" height="187.54" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="881.15" y="464.46" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov060  97.1%</text><rect x="876.15" y="641.00" width="127.79" height="166.89" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="881.15" y="656.00" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov062  93.9%</text><rect x="876.15" y="811.89" width="127.79" height="186.11" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="881.15" y="826.89" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov063  83.8%</text><rect x="1007.94" y="449.46" width="125.86" height="121.51" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1012.94" y="464.46" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov064  97.6%</text><rect x="1007.94" y="574.97" width="125.86" height="149.22" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1012.94" y="589.97" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov065  94.8%</text><rect x="1007.94" y="728.19" width="125.86" height="105.67" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1012.94" y="743.19" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov066  100.0%</text><rect x="1007.94" y="837.86" width="125.86" height="75.77" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1012.94" y="852.86" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov070  100.0%</text><rect x="1007.94" y="917.63" width="125.86" height="80.37" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1012.94" y="932.63" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov071  83.9%</text><rect x="1137.80" y="449.46" width="77.41" height="120.97" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1142.80" y="464.46" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov072  100.0%</text><rect x="1219.21" y="449.46" width="89.68" height="120.97" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1224.21" y="464.46" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov073  100.0%</text><rect x="1312.89" y="449.46" width="86.44" height="120.97" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1317.89" y="464.46" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov074  85.6%</text><rect x="1403.33" y="449.46" width="194.67" height="120.97" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1408.33" y="464.46" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov075  80.9%</text><rect x="1137.80" y="574.44" width="106.87" height="103.74" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1142.80" y="589.44" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov077  100.0%</text><rect x="1137.80" y="682.18" width="106.87" height="85.52" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1142.80" y="697.18" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov078  100.0%</text><rect x="1137.80" y="771.69" width="106.87" height="109.69" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1142.80" y="786.69" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov079  100.0%</text><rect x="1137.80" y="885.38" width="106.87" height="112.62" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1142.80" y="900.38" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov080  94.3%</text><rect x="1248.67" y="574.44" width="88.48" height="157.91" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1253.67" y="589.44" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov081  100.0%</text><rect x="1341.15" y="574.44" width="131.40" height="157.91" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1346.15" y="589.44" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov084  100.0%</text><rect x="1476.55" y="574.44" width="121.45" height="157.91" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1481.55" y="589.44" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov085  92.4%</text><rect x="1248.67" y="736.34" width="91.92" height="49.35" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1253.67" y="751.34" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov089  100.0%</text><rect x="1248.67" y="789.69" width="91.92" height="92.11" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1253.67" y="804.69" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov090  100.0%</text><rect x="1248.67" y="885.80" width="91.92" height="112.20" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1253.67" y="900.80" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov091  100.0%</text><rect x="1344.60" y="736.34" width="44.37" height="67.69" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1349.60" y="751.34" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov092  100.0%</text><rect x="1392.97" y="736.34" width="44.37" height="67.69" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1397.97" y="751.34" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov094  100.0%</text><rect x="1441.34" y="736.34" width="68.80" height="67.69" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1446.34" y="751.34" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov095  84.2%</text><rect x="1514.14" y="736.34" width="83.86" height="67.69" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1519.14" y="751.34" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov096  100.0%</text><rect x="1344.60" y="808.03" width="171.18" height="71.21" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1349.60" y="823.03" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov098  96.2%</text><rect x="1344.60" y="883.24" width="171.18" height="114.76" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1349.60" y="898.24" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov100  100.0%</text><rect x="1519.78" y="808.03" width="78.22" height="189.97" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1524.78" y="823.03" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov102  90.8%</text>
@@ -12057,223 +12057,219 @@ matched: yes</title></rect><rect x="229.93" y="972.53" width="10.28" height="22.
 module: arm9
 addr: 0x02072014
 size: 340 bytes
-matched: yes</title></rect><rect x="240.21" y="901.95" width="85.20" height="17.35" fill="#4a4d52" stroke="#393b3f" stroke-width="0.4"><title>func_02072168
+matched: yes</title></rect><rect x="240.21" y="901.95" width="59.90" height="24.81" fill="#4a4d52" stroke="#393b3f" stroke-width="0.4"><title>func_02072168
 module: arm9
 addr: 0x02072168
-size: 2176 bytes
-matched: no</title></rect><rect x="240.21" y="919.30" width="8.40" height="0.97" fill="#4a4d52" stroke="#393b3f" stroke-width="0.4"><title>func_020729e8
-module: arm9
-addr: 0x020729e8
-size: 12 bytes
-matched: no</title></rect><rect x="240.21" y="920.27" width="8.40" height="74.73" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020729f4
+size: 2188 bytes
+matched: no</title></rect><rect x="300.11" y="901.95" width="25.30" height="24.81" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020729f4
 module: arm9
 addr: 0x020729f4
 size: 924 bytes
-matched: yes</title></rect><rect x="248.60" y="919.30" width="9.87" height="1.93" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02072d90
+matched: yes</title></rect><rect x="240.21" y="926.76" width="5.69" height="3.34" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02072d90
 module: arm9
 addr: 0x02072d90
 size: 28 bytes
-matched: yes</title></rect><rect x="248.60" y="921.22" width="9.87" height="20.10" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02072dac
+matched: yes</title></rect><rect x="240.21" y="930.10" width="5.69" height="34.84" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02072dac
 module: arm9
 addr: 0x02072dac
 size: 292 bytes
-matched: yes</title></rect><rect x="248.60" y="941.32" width="9.87" height="7.43" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02072ed0
+matched: yes</title></rect><rect x="240.21" y="964.94" width="5.69" height="12.88" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02072ed0
 module: arm9
 addr: 0x02072ed0
 size: 108 bytes
-matched: yes</title></rect><rect x="248.60" y="948.75" width="9.87" height="6.06" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02072f3c
+matched: yes</title></rect><rect x="240.21" y="977.82" width="5.69" height="10.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02072f3c
 module: arm9
 addr: 0x02072f3c
 size: 88 bytes
-matched: yes</title></rect><rect x="248.60" y="954.81" width="9.87" height="3.85" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02072f94
+matched: yes</title></rect><rect x="240.21" y="988.32" width="5.69" height="6.68" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02072f94
 module: arm9
 addr: 0x02072f94
 size: 56 bytes
-matched: yes</title></rect><rect x="248.60" y="958.66" width="9.87" height="36.34" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02072fcc
+matched: yes</title></rect><rect x="245.90" y="926.76" width="7.01" height="51.18" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02072fcc
 module: arm9
 addr: 0x02072fcc
 size: 528 bytes
-matched: yes</title></rect><rect x="258.47" y="919.30" width="4.66" height="4.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020731dc
+matched: yes</title></rect><rect x="245.90" y="977.94" width="7.01" height="3.10" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020731dc
 module: arm9
 addr: 0x020731dc
 size: 32 bytes
-matched: yes</title></rect><rect x="263.13" y="919.30" width="5.24" height="4.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020731fc
+matched: yes</title></rect><rect x="245.90" y="981.04" width="7.01" height="3.49" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020731fc
 module: arm9
 addr: 0x020731fc
 size: 36 bytes
-matched: yes</title></rect><rect x="268.37" y="919.30" width="1.75" height="4.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02073220
+matched: yes</title></rect><rect x="245.90" y="984.53" width="7.01" height="1.16" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02073220
 module: arm9
 addr: 0x02073220
 size: 12 bytes
-matched: yes</title></rect><rect x="270.11" y="919.30" width="1.75" height="4.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0207322c
+matched: yes</title></rect><rect x="245.90" y="985.69" width="7.01" height="1.16" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0207322c
 module: arm9
 addr: 0x0207322c
 size: 12 bytes
-matched: yes</title></rect><rect x="271.86" y="919.30" width="1.75" height="4.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02073238
+matched: yes</title></rect><rect x="245.90" y="986.86" width="7.01" height="1.16" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02073238
 module: arm9
 addr: 0x02073238
 size: 12 bytes
-matched: yes</title></rect><rect x="273.61" y="919.30" width="10.48" height="4.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02073244
+matched: yes</title></rect><rect x="245.90" y="988.02" width="7.01" height="6.98" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02073244
 module: arm9
 addr: 0x02073244
 size: 72 bytes
-matched: yes</title></rect><rect x="284.08" y="919.30" width="13.39" height="4.67" fill="#4a4d52" stroke="#393b3f" stroke-width="0.4"><title>__destroy_arr
+matched: yes</title></rect><rect x="252.91" y="926.76" width="6.77" height="9.23" fill="#4a4d52" stroke="#393b3f" stroke-width="0.4"><title>__destroy_arr
 module: arm9
 addr: 0x0207328c
 size: 92 bytes
-matched: no</title></rect><rect x="297.47" y="919.30" width="3.49" height="4.67" fill="#4a4d52" stroke="#393b3f" stroke-width="0.4"><title>func_020732e8
+matched: no</title></rect><rect x="252.91" y="935.99" width="6.77" height="2.41" fill="#4a4d52" stroke="#393b3f" stroke-width="0.4"><title>func_020732e8
 module: arm9
 addr: 0x020732e8
 size: 24 bytes
-matched: no</title></rect><rect x="300.96" y="919.30" width="13.39" height="4.67" fill="#4a4d52" stroke="#393b3f" stroke-width="0.4"><title>func_02073300
+matched: no</title></rect><rect x="252.91" y="938.40" width="6.77" height="9.23" fill="#4a4d52" stroke="#393b3f" stroke-width="0.4"><title>func_02073300
 module: arm9
 addr: 0x02073300
 size: 92 bytes
-matched: no</title></rect><rect x="314.35" y="919.30" width="11.06" height="4.67" fill="#4a4d52" stroke="#393b3f" stroke-width="0.4"><title>func_0207335c
+matched: no</title></rect><rect x="252.91" y="947.63" width="6.77" height="7.63" fill="#4a4d52" stroke="#393b3f" stroke-width="0.4"><title>func_0207335c
 module: arm9
 addr: 0x0207335c
 size: 76 bytes
-matched: no</title></rect><rect x="258.47" y="923.96" width="20.28" height="6.70" fill="#4a4d52" stroke="#393b3f" stroke-width="0.4"><title>func_020733a8
+matched: no</title></rect><rect x="252.91" y="955.26" width="6.77" height="20.07" fill="#4a4d52" stroke="#393b3f" stroke-width="0.4"><title>func_020733a8
 module: arm9
 addr: 0x020733a8
 size: 200 bytes
-matched: no</title></rect><rect x="278.76" y="923.96" width="19.88" height="6.70" fill="#4a4d52" stroke="#393b3f" stroke-width="0.4"><title>func_02073470
+matched: no</title></rect><rect x="252.91" y="975.33" width="6.77" height="19.67" fill="#4a4d52" stroke="#393b3f" stroke-width="0.4"><title>func_02073470
 module: arm9
 addr: 0x02073470
 size: 196 bytes
-matched: no</title></rect><rect x="298.63" y="923.96" width="8.11" height="6.70" fill="#4a4d52" stroke="#393b3f" stroke-width="0.4"><title>func_02073534
+matched: no</title></rect><rect x="259.67" y="926.76" width="11.74" height="4.63" fill="#4a4d52" stroke="#393b3f" stroke-width="0.4"><title>func_02073534
 module: arm9
 addr: 0x02073534
 size: 80 bytes
-matched: no</title></rect><rect x="306.75" y="923.96" width="2.43" height="6.70" fill="#4a4d52" stroke="#393b3f" stroke-width="0.4"><title>func_02073584
+matched: no</title></rect><rect x="271.41" y="926.76" width="3.52" height="4.63" fill="#4a4d52" stroke="#393b3f" stroke-width="0.4"><title>func_02073584
 module: arm9
 addr: 0x02073584
 size: 24 bytes
-matched: no</title></rect><rect x="309.18" y="923.96" width="4.46" height="6.70" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0207359c
+matched: no</title></rect><rect x="274.93" y="926.76" width="6.46" height="4.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0207359c
 module: arm9
 addr: 0x0207359c
 size: 44 bytes
-matched: yes</title></rect><rect x="313.64" y="923.96" width="3.65" height="6.70" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020735c8
+matched: yes</title></rect><rect x="281.39" y="926.76" width="5.28" height="4.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020735c8
 module: arm9
 addr: 0x020735c8
 size: 36 bytes
-matched: yes</title></rect><rect x="317.29" y="923.96" width="4.46" height="6.70" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020735ec
+matched: yes</title></rect><rect x="286.67" y="926.76" width="6.46" height="4.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020735ec
 module: arm9
 addr: 0x020735ec
 size: 44 bytes
-matched: yes</title></rect><rect x="321.76" y="923.96" width="3.65" height="6.70" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02073618
+matched: yes</title></rect><rect x="293.13" y="926.76" width="5.28" height="4.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02073618
 module: arm9
 addr: 0x02073618
 size: 36 bytes
-matched: yes</title></rect><rect x="258.47" y="930.66" width="1.94" height="12.59" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0207363c
+matched: yes</title></rect><rect x="298.41" y="926.76" width="5.28" height="4.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0207363c
 module: arm9
 addr: 0x0207363c
 size: 36 bytes
-matched: yes</title></rect><rect x="258.47" y="943.25" width="1.94" height="15.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02073660
+matched: yes</title></rect><rect x="303.69" y="926.76" width="6.46" height="4.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02073660
 module: arm9
 addr: 0x02073660
 size: 44 bytes
-matched: yes</title></rect><rect x="258.47" y="958.63" width="1.94" height="12.59" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0207368c
+matched: yes</title></rect><rect x="310.15" y="926.76" width="5.28" height="4.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0207368c
 module: arm9
 addr: 0x0207368c
 size: 36 bytes
-matched: yes</title></rect><rect x="258.47" y="971.22" width="1.94" height="5.59" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020736b0
+matched: yes</title></rect><rect x="315.43" y="926.76" width="2.35" height="4.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020736b0
 module: arm9
 addr: 0x020736b0
 size: 16 bytes
-matched: yes</title></rect><rect x="258.47" y="976.82" width="1.94" height="12.59" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020736c0
+matched: yes</title></rect><rect x="317.78" y="926.76" width="5.28" height="4.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020736c0
 module: arm9
 addr: 0x020736c0
 size: 36 bytes
-matched: yes</title></rect><rect x="258.47" y="989.41" width="1.94" height="5.59" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020736e4
+matched: yes</title></rect><rect x="323.06" y="926.76" width="2.35" height="4.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020736e4
 module: arm9
 addr: 0x020736e4
 size: 16 bytes
-matched: yes</title></rect><rect x="260.42" y="930.66" width="52.49" height="14.18" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_02073a24
+matched: yes</title></rect><rect x="259.67" y="931.39" width="53.09" height="14.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_02073a24
 module: arm9
 addr: 0x02073a24
 size: 1096 bytes
-matched: yes</title></rect><rect x="260.42" y="944.84" width="52.49" height="50.16" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_02073e6c
+matched: yes</title></rect><rect x="259.67" y="945.41" width="53.09" height="49.59" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_02073e6c
 module: arm9
 addr: 0x02073e6c
 size: 3876 bytes
-matched: yes</title></rect><rect x="312.91" y="930.66" width="6.25" height="2.61" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_02074d90
+matched: yes</title></rect><rect x="312.77" y="931.39" width="6.32" height="2.58" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_02074d90
 module: arm9
 addr: 0x02074d90
 size: 24 bytes
-matched: yes</title></rect><rect x="319.16" y="930.66" width="5.21" height="2.61" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_02074da8
+matched: yes</title></rect><rect x="319.09" y="931.39" width="5.27" height="2.58" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_02074da8
 module: arm9
 addr: 0x02074da8
 size: 20 bytes
-matched: yes</title></rect><rect x="324.37" y="930.66" width="1.04" height="2.61" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_02074dbc
+matched: yes</title></rect><rect x="324.35" y="931.39" width="1.05" height="2.58" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_02074dbc
 module: arm9
 addr: 0x02074dbc
 size: 4 bytes
-matched: yes</title></rect><rect x="312.91" y="933.27" width="0.66" height="4.13" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_02074dc0
+matched: yes</title></rect><rect x="312.77" y="933.97" width="0.67" height="4.08" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_02074dc0
 module: arm9
 addr: 0x02074dc0
 size: 4 bytes
-matched: yes</title></rect><rect x="313.57" y="933.27" width="11.84" height="4.13" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_02074dc4
+matched: yes</title></rect><rect x="313.43" y="933.97" width="11.98" height="4.08" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_02074dc4
 module: arm9
 addr: 0x02074dc4
 size: 72 bytes
-matched: yes</title></rect><rect x="312.91" y="937.40" width="6.03" height="6.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_02074e0c
+matched: yes</title></rect><rect x="312.77" y="938.05" width="6.10" height="6.23" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_02074e0c
 module: arm9
 addr: 0x02074e0c
 size: 56 bytes
-matched: yes</title></rect><rect x="318.94" y="937.40" width="6.47" height="6.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_02074e44
+matched: yes</title></rect><rect x="318.87" y="938.05" width="6.54" height="6.23" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_02074e44
 module: arm9
 addr: 0x02074e44
 size: 60 bytes
-matched: yes</title></rect><rect x="312.91" y="943.70" width="0.54" height="5.00" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_02074e80
+matched: yes</title></rect><rect x="312.77" y="944.28" width="0.55" height="4.94" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_02074e80
 module: arm9
 addr: 0x02074e80
 size: 4 bytes
-matched: yes</title></rect><rect x="313.45" y="943.70" width="11.96" height="5.00" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_02074e84
+matched: yes</title></rect><rect x="313.31" y="944.28" width="12.09" height="4.94" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_02074e84
 module: arm9
 addr: 0x02074e84
 size: 88 bytes
-matched: yes</title></rect><rect x="312.91" y="948.70" width="12.50" height="8.91" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_02074edc
+matched: yes</title></rect><rect x="312.77" y="949.22" width="12.64" height="8.81" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_02074edc
 module: arm9
 addr: 0x02074edc
 size: 164 bytes
-matched: yes</title></rect><rect x="312.91" y="957.61" width="7.00" height="5.43" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_02074f80
+matched: yes</title></rect><rect x="312.77" y="958.04" width="7.08" height="5.37" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_02074f80
 module: arm9
 addr: 0x02074f80
 size: 56 bytes
-matched: yes</title></rect><rect x="319.91" y="957.61" width="5.50" height="5.43" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_02074fb8
+matched: yes</title></rect><rect x="319.85" y="958.04" width="5.56" height="5.37" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_02074fb8
 module: arm9
 addr: 0x02074fb8
 size: 44 bytes
-matched: yes</title></rect><rect x="312.91" y="963.05" width="6.25" height="6.09" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_02074fe4
+matched: yes</title></rect><rect x="312.77" y="963.41" width="6.32" height="6.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_02074fe4
 module: arm9
 addr: 0x02074fe4
 size: 56 bytes
-matched: yes</title></rect><rect x="319.16" y="963.05" width="6.25" height="6.09" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_0207501c
+matched: yes</title></rect><rect x="319.09" y="963.41" width="6.32" height="6.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_0207501c
 module: arm9
 addr: 0x0207501c
 size: 56 bytes
-matched: yes</title></rect><rect x="312.91" y="969.13" width="12.50" height="5.22" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_02075054
+matched: yes</title></rect><rect x="312.77" y="969.43" width="12.64" height="5.16" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_02075054
 module: arm9
 addr: 0x02075054
 size: 96 bytes
-matched: yes</title></rect><rect x="312.91" y="974.35" width="0.89" height="3.04" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_020750b4
+matched: yes</title></rect><rect x="312.77" y="974.58" width="0.90" height="3.01" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_020750b4
 module: arm9
 addr: 0x020750b4
 size: 4 bytes
-matched: yes</title></rect><rect x="313.80" y="974.35" width="11.61" height="3.04" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_020750b8
+matched: yes</title></rect><rect x="313.67" y="974.58" width="11.74" height="3.01" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_020750b8
 module: arm9
 addr: 0x020750b8
 size: 52 bytes
-matched: yes</title></rect><rect x="312.91" y="977.39" width="6.00" height="5.43" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_020750ec
+matched: yes</title></rect><rect x="312.77" y="977.59" width="6.07" height="5.37" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_020750ec
 module: arm9
 addr: 0x020750ec
 size: 48 bytes
-matched: yes</title></rect><rect x="318.91" y="977.39" width="6.50" height="5.43" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_0207511c
+matched: yes</title></rect><rect x="318.83" y="977.59" width="6.57" height="5.37" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_0207511c
 module: arm9
 addr: 0x0207511c
 size: 52 bytes
-matched: yes</title></rect><rect x="313.13" y="982.83" width="12.28" height="12.17" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_02075154
+matched: yes</title></rect><rect x="312.99" y="982.97" width="12.42" height="12.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_02075154
 module: arm9
 addr: 0x02075154
 size: 220 bytes
