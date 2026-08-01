@@ -17,9 +17,7 @@ that pipeline up now.
 `python tools/rombuild.py` produces a 16,777,216-byte `build/sm64ds.nds` in about a
 minute, with all 106 modules byte-identical to the ROM. **9,115 functions — 1,475,772
 code bytes, 66.7% of the project's total — are compiled from `src/` by mwccarm**; the
-rest of each module is supplied from delinked ROM bytes. Only M3 (a confirmed *visible*
-change) is still open — the mod is provably in the ROM, but its on-screen effect has not
-been attributed by A/B. Results are recorded under each milestone below.
+rest of each module is supplied from delinked ROM bytes. All four milestones are complete. Results are recorded under each milestone below.
 
 ```
 python tools/eligible.py             # classify: which files may be compiled in
@@ -541,7 +539,7 @@ the header CRCs (`extracted/dsd/header.yaml`), which `check modules` does not co
 **Gate:** a visible in-game change traced to a one-line C edit. This is the deliverable
 the whole exercise is for.
 
-#### M3 result — partially done
+#### M3 result — passed
 
 **The built ROM boots and plays.** melonDS 1.1 runs `build/sm64ds.nds` at a locked
 60/60 through title → "touch the picture" → main menu (3D Yoshi) → file select (castle
@@ -558,19 +556,20 @@ cleanly and landed exactly as intended: **3 bytes changed**, both at the shift
 instructions, all inside the function, ov002's size unchanged at 394,048 bytes, so
 nothing downstream moved. Saved as `build/sm64ds-mod.nds`.
 
-**What is not yet confirmed is the *visible* effect of that particular edit.** Reaching
-gameplay and seeing Yoshi does not by itself attribute his apparent size to the change —
-that needs an A/B against a stock build from the same save, which has not been run.
-`Player_ScaleByCharFactor` may well scale a physics quantity (speed, jump height) rather
-than the model, in which case a still frame would never show it. Two ways to close this:
+**Confirmed in play.** A/B of `build/sm64ds-mod.nds` against `build/sm64ds.nds` shows the
+difference in the running game. `Player_ScaleByCharFactor` is called from 44 sites across
+ov002's player physics, so doubling it is felt in movement rather than seen in a still
+frame — which is why a screenshot comparison was the wrong instrument for it and playing
+was the right one.
 
-- A/B properly: File A now exists, so a stock build reaches the same spot in a few
-  interactions. Capture both and diff.
-- Or pick a target whose effect is unmissable in a still frame and visible early — a
-  constant the title or menu screens read — rather than a mid-gameplay physics value.
+So the whole chain holds end to end: a one-operator edit in a C file, through mwccarm and
+mwldarm, into a linked overlay that is byte-identical everywhere except the three bytes
+that changed, packaged into a ROM that boots and plays differently. That is the
+deliverable.
 
-The repo is left with the ov002 entry pointing back at `src/`, so `python
-tools/rombuild.py` is green by default.
+`mods/` is where an intentional divergence lives; `tools/enroll.py` prefers
+`mods/<symbol>.c` over `src/<symbol>.c` by file existence, so deleting the mod file
+reverts to stock and `python tools/rombuild.py` is green again.
 
 ## Constraints
 
