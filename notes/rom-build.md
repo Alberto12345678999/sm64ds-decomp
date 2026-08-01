@@ -424,8 +424,9 @@ by construction.
 **Six remain, and all six are documented non-bugs:**
 
 - three (`_ZN5ModelD1Ev`, `_ZN5ModelD2Ev`, `_ZN14BlendModelAnimD1Ev`) call `_ZdlPv`
-  where the ROM goes through the 12-byte veneer at `0x0203cbc0`. Reading that trampoline
-  (`e59fc000 e12fff1c 0203cbf0`) settles it: it jumps to **`0x0203cbf0` = `_ZdlPv`** —
+  where the ROM goes through the 12-byte veneer at `0x0203cbc0`. That trampoline is the
+  standard `LDR ip,[pc]; BX ip; .word target` shape, and its target word is
+  **`0x0203cbf0` = `_ZdlPv`** —
   the same callee the source names — passing *over* `_ZN6Memory16operator_delete2EPv` at
   `0x0203cbcc`. So ROM and source call the identical function and only the route differs.
   [`link-verification.md`](link-verification.md) is explicit that naming the real symbol
