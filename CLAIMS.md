@@ -15,6 +15,18 @@ so one claimed range per worker keeps everyone on disjoint work by construction.
 Keep one active range per worker. If a range has not moved in a couple of weeks,
 it is fair to take over: ping the claimant first.
 
+## Readable-C++ conversion claims (classes)
+
+The readable conversion works class by class (real C++ class in include/, files
+promoted to real methods, every file re-verified byte-identical), so the claim
+unit is a class or a class chain, not an address range. Claim here before you
+start converting a class; the same staleness rule applies.
+
+| Class / chain | Who | Claimed | Status |
+|---|---|---|---|
+| ActorBase -> ActorDerived -> Actor -> Player | andrewboudreau | 2026-08-01 | **active** - ActorBase landed as a real polymorphic class (#974); ActorDerived next, then Actor, then Player |
+| ModelBase -> Model (CommonModel and the ModelAnim family in later phases) | tangosdev | 2026-08-01 | **active** - real classes + method promotion, byte-verified per file with match.py + linkcheck |
+
 ## Claims
 
 | Range | Who | Claimed | Status |
