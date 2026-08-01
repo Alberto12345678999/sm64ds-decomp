@@ -11,6 +11,7 @@ src/func_ov030_021111ec.c:
     .text start:0x021111ec end:0x0211124c
 
 src/func_ov030_0211124c.cpp:
+    complete
     .text start:0x0211124c end:0x0211130c
 
 src/func_ov030_0211130c.c:
@@ -35,12 +36,15 @@ src/_ZN9UkikiCageD0Ev.c:
     .text start:0x021115ac end:0x02111610
 
 src/_ZN9UkikiCage16CleanupResourcesEv.c:
+    complete
     .text start:0x02111610 end:0x02111624
 
 src/_ZN9UkikiCage8BehaviorEv.c:
+    complete
     .text start:0x02111624 end:0x02111638
 
 src/_ZN9UkikiCage13InitResourcesEv.c:
+    complete
     .text start:0x02111638 end:0x0211164c
 
 src/RollingLogTtm_Spawn.c:
@@ -56,57 +60,72 @@ src/func_ov030_0211172c.c:
     .text start:0x0211172c end:0x02111734
 
 src/func_ov030_02111734.c:
+    complete
     .text start:0x02111734 end:0x02111890
 
 src/func_ov030_02111890.c:
+    complete
     .text start:0x02111890 end:0x02111908
 
 src/func_ov030_02111908.c:
+    complete
     .text start:0x02111908 end:0x02111a00
 
 src/func_ov030_02111a00.c:
     .text start:0x02111a00 end:0x02111b20
 
 src/func_ov030_02111b20.c:
+    complete
     .text start:0x02111b20 end:0x02111bc4
 
 src/func_ov030_02111bc4.c:
     .text start:0x02111bc4 end:0x02111dd0
 
 src/func_ov030_02111dd0.cpp:
+    complete
     .text start:0x02111dd0 end:0x02111ea4
 
 src/func_ov030_02111ea4.cpp:
+    complete
     .text start:0x02111ea4 end:0x02111f6c
 
 src/func_ov030_02111f6c.cpp:
+    complete
     .text start:0x02111f6c end:0x02112094
 
 src/func_ov030_02112094.cpp:
+    complete
     .text start:0x02112094 end:0x021122b0
 
 src/func_ov030_021122b0.cpp:
+    complete
     .text start:0x021122b0 end:0x021123a4
 
 src/func_ov030_021123a4.cpp:
+    complete
     .text start:0x021123a4 end:0x02112400
 
 src/func_ov030_02112400.cpp:
+    complete
     .text start:0x02112400 end:0x02112560
 
 src/func_ov030_02112560.c:
+    complete
     .text start:0x02112560 end:0x02112578
 
 src/func_ov030_02112578.c:
+    complete
     .text start:0x02112578 end:0x02112a14
 
 src/func_ov030_02112a14.c:
     .text start:0x02112a14 end:0x02112a84
 
 src/func_ov030_02112a84.c:
+    complete
     .text start:0x02112a84 end:0x02112c14
 
 src/func_ov030_02112c14.c:
+    complete
     .text start:0x02112c14 end:0x02112da0
 
 src/func_ov030_02112da0.c:
@@ -119,48 +138,62 @@ src/func_ov030_02113094.c:
     .text start:0x02113094 end:0x021132d4
 
 src/func_ov030_021132d4.cpp:
+    complete
     .text start:0x021132d4 end:0x02113324
 
 src/func_ov030_0211360c.cpp:
+    complete
     .text start:0x0211360c end:0x021136b0
 
 src/func_ov030_02113a80.cpp:
     .text start:0x02113a80 end:0x02113b38
 
 src/func_ov030_02113b38.cpp:
+    complete
     .text start:0x02113b38 end:0x02113be8
 
 src/func_ov030_02113be8.c:
+    complete
     .text start:0x02113be8 end:0x02113d20
 
 src/func_ov030_02113d20.c:
+    complete
     .text start:0x02113d20 end:0x02113fd8
 
 src/func_ov030_02113fd8.c:
+    complete
     .text start:0x02113fd8 end:0x02113ff0
 
 src/func_ov030_02113ff0.cpp:
+    complete
     .text start:0x02113ff0 end:0x02114124
 
 src/func_ov030_02114124.c:
+    complete
     .text start:0x02114124 end:0x02114134
 
 src/func_ov030_02114134.cpp:
+    complete
     .text start:0x02114134 end:0x02114170
 
 src/func_ov030_02114170.cpp:
+    complete
     .text start:0x02114170 end:0x021141a8
 
 src/func_ov030_021141a8.c:
+    complete
     .text start:0x021141a8 end:0x021141c4
 
 src/_ZN13RollingLogTtm16CleanupResourcesEv.c:
+    complete
     .text start:0x021141c4 end:0x0211422c
 
 src/_ZN13RollingLogTtm16OnPendingDestroyEv.c:
+    complete
     .text start:0x0211422c end:0x02114230
 
 src/_ZN13RollingLogTtm6RenderEv.cpp:
+    complete
     .text start:0x02114230 end:0x02114278
 
 src/_ZN13RollingLogTtm8BehaviorEv.cpp:
@@ -173,9 +206,11 @@ src/func_ov030_021145d4.c:
     .text start:0x021145d4 end:0x021145e0
 
 src/UkikiStar_Spawn.c:
+    complete
     .text start:0x021145e0 end:0x02114638
 
 src/UkikiThief_Spawn.c:
+    complete
     .text start:0x02114638 end:0x02114690
 
 src/__sinit_ov030_0211484c.c:

@@ -13,18 +13,18 @@ that pipeline up now.
 
 ## Status
 
-**M0, M1 and M2a are done, and the built ROM boots and plays in melonDS.**
-`python tools/rombuild.py` runs the whole pipeline and produces a 16,777,216-byte
-`build/sm64ds.nds` with all 106 modules green. **11,090 functions are enrolled as their
-own delink objects**; two of them (`AngleDiff` in main, `Player_ScaleByCharFactor` in
-ov002) are compiled from `src/` and the rest are still supplied from ROM bytes. **M2b —
-flipping `complete` on everything that qualifies — is the open work**, and it is what
-turns those 2 into thousands. Results are recorded under each milestone below.
+**M0, M1, M2a and M2b are done. The built ROM boots and plays in melonDS.**
+`python tools/rombuild.py` produces a 16,777,216-byte `build/sm64ds.nds` in about a
+minute, with all 106 modules byte-identical to the ROM. **7,396 functions — 1,179,768
+code bytes, 53.4% of the project's total — are compiled from `src/` by mwccarm**; the
+rest of each module is supplied from delinked ROM bytes. Only M3 (a confirmed visible
+change) is still open. Results are recorded under each milestone below.
 
 ```
-python tools/enroll.py --dry-run     # what would be enrolled, and what is skipped
-python tools/enroll.py               # write the file entries (rom-bytes mode)
+python tools/eligible.py             # classify: which files may be compiled in
+python tools/enroll.py --complete-list build/eligible-names.txt
 python tools/rombuild.py             # build and verify
+python tools/rombuild_check.py       # per-function byte diff, names any culprit
 ```
 
 ```
@@ -326,6 +326,53 @@ dozens of red modules mean "look upstream", not "dozens of bugs". Verdicts land 
 
 **Gate:** thousands of functions sourced from `src/`, `dsd check modules` still green,
 one-command reproducible build.
+
+#### M2b result — passed
+
+**7,396 functions are compiled from `src/` and every one of the 106 modules is still
+byte-identical to the ROM.** That is 1,179,768 code bytes, **53.4%** of the project's
+2,211,124. The packaged `.nds` remains exactly 107 metadata bytes from the retail dump,
+and it boots and plays.
+
+Two things made this work, and neither was in the original plan.
+
+**1. `-Cpp_exceptions off`.** The dominant blocker was not C++ TUs or BLIND symbols — it
+was `.exceptix`, on **8,520 of 11,090** candidates. mwccarm emits an exception-unwind
+index alongside almost every function, and the match gate never noticed because it only
+ever compares `.text`. A ROM link very much notices: that section is duplicate content
+that grows the module and shifts every later address. Retail carries just 636 bytes of
+`.exceptix` in main, so the original build had them off too. Adding `-Cpp_exceptions off`
+to the build flags cleared the extra sections on **60 of 60** sampled files with **zero
+`.text` change**, and eligibility jumped from 1,903 to 7,466. `tools/rombuild.py` and
+`tools/eligible.py` must keep identical flags for this reason.
+
+**2. Per-function diffing beats bisection.** Because eligibility requires the object's
+`.text` to equal the declared size exactly, no function can shift its neighbours, so
+every mismatch is *confined to the function that caused it*. `tools/rombuild_check.py`
+therefore compares each source-built function's linked bytes against the ROM
+individually and names all the culprits from **one** build. It found **70 of 7,466**
+mismatching (99.06% reproducing); demoting exactly those 70 turned the build green in a
+single further iteration. No bisection, no walking the `AFTER()` order.
+
+Why the other 3,694 are not source-built yet:
+
+| count | reason |
+|---:|---|
+| 1,836 | references a symbol name `config/**/symbols.txt` does not define — the BLIND matches. No address means nothing to link to, and gap objects import weakly, so it would silently resolve to 0. |
+| 711 | the object defines a different symbol than the file/config name (e.g. `src/func_ov091_02132a0c.c` defines `daDsn_c_OnAimedAtWithEgg`) — a src/config naming drift, likely recoverable by reconciling names. |
+| 663 | compiled `st_size` ≠ the size `symbols.txt` declares |
+| 301 | lives in a `.init` range, where a `File.o(.init)` selector would match nothing in an object whose code is in `.text` |
+| 88 | emits `.data` (81) or `.bss` (7) whose ROM address we do not know |
+| 70 | compiles and links but does **not** reproduce the ROM bytes |
+| 13 | multiple `.text` sections — a multi-function TU |
+| 12 | fails to compile with the build flags |
+
+**The 70 mismatches are a real finding, not just an exclusion.** They compile to the
+right size and link cleanly, so the difference is in *content* — overwhelmingly the
+wrong-relocation-destination class that `linkcheck.py` exists to catch, on functions
+whose `src/` file the match gate passes because it wildcards relocated words. They are
+listed in `build/rombuild-eligibility.json` and are the highest-value follow-up here:
+each one is a `src/` file that is subtly wrong today.
 
 ### M3 — Prove it is really our code
 

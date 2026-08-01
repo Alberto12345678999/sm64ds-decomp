@@ -14,15 +14,18 @@ src/_ZN9ShipWater16CleanupResourcesEv.cpp:
     .text start:0x0211124c end:0x02111290
 
 src/_ZN9ShipWater6RenderEv.cpp:
+    complete
     .text start:0x02111290 end:0x021112c4
 
 src/_ZN9ShipWater8BehaviorEv.cpp:
     .text start:0x021112c4 end:0x021113c0
 
 src/_ZN9ShipWater13InitResourcesEv.c:
+    complete
     .text start:0x021113c0 end:0x02111480
 
 src/ShipWater_Spawn.c:
+    complete
     .text start:0x02111480 end:0x021114b8
 
 src/__sinit_ov017_0211198c.c:

@@ -23,9 +23,11 @@ src/func_ov045_021113ec.c:
     .text start:0x021113ec end:0x021114a8
 
 src/func_ov045_021114a8.cpp:
+    complete
     .text start:0x021114a8 end:0x021114c8
 
 src/func_ov045_021114c8.c:
+    complete
     .text start:0x021114c8 end:0x021114dc
 
 src/FireSeaElevator_Spawn.c:
@@ -41,6 +43,7 @@ src/_ZN15FireSeaElevator16CleanupResourcesEv.cpp:
     .text start:0x021115b8 end:0x021115f0
 
 src/_ZN15FireSeaElevator6RenderEv.cpp:
+    complete
     .text start:0x021115f0 end:0x02111618
 
 src/_ZN15FireSeaElevator8BehaviorEv.cpp:
@@ -50,6 +53,7 @@ src/_ZN15FireSeaElevator13InitResourcesEv.cpp:
     .text start:0x02111738 end:0x02111808
 
 src/PoleLift_Spawn.c:
+    complete
     .text start:0x02111808 end:0x02111840
 
 src/_ZN8PoleLiftD1Ev.cpp:
@@ -59,27 +63,33 @@ src/_ZN8PoleLiftD0Ev.c:
     .text start:0x02111878 end:0x021118c4
 
 src/func_ov045_021118c4.cpp:
+    complete
     .text start:0x021118c4 end:0x021118f8
 
 src/func_ov045_021118f8.c:
+    complete
     .text start:0x021118f8 end:0x02111938
 
 src/_ZN8PoleLift16CleanupResourcesEv.cpp:
     .text start:0x02111938 end:0x02111970
 
 src/_ZN8PoleLift16OnPendingDestroyEv.c:
+    complete
     .text start:0x02111970 end:0x02111974
 
 src/_ZN8PoleLift6RenderEv.cpp:
+    complete
     .text start:0x02111974 end:0x021119c0
 
 src/_ZN8PoleLift8BehaviorEv.cpp:
+    complete
     .text start:0x021119c0 end:0x02111a30
 
 src/_ZN8PoleLift13InitResourcesEv.cpp:
     .text start:0x02111a30 end:0x02111ad4
 
 src/ExtendingPlatform_Spawn.c:
+    complete
     .text start:0x02111ad4 end:0x02111b14
 
 src/func_ov045_02111b14.c:

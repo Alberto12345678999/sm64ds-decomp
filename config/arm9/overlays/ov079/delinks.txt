@@ -5,9 +5,11 @@
     .data       start:0x02127ba0 end:0x02128140 kind:data align:32
     .bss        start:0x02128140 end:0x021283a0 kind:bss align:32
 src/_ZN5WhompD1Ev.c:
+    complete
     .text start:0x02123740 end:0x02123798
 
 src/_ZN5WhompD0Ev.c:
+    complete
     .text start:0x02123798 end:0x02123804
 
 src/func_ov079_02123804.c:
@@ -32,15 +34,19 @@ src/func_ov079_02123e60.cpp:
     .text start:0x02123e60 end:0x02123f34
 
 src/func_ov079_02123f34.c:
+    complete
     .text start:0x02123f34 end:0x02124008
 
 src/func_ov079_02124008.c:
+    complete
     .text start:0x02124008 end:0x02124188
 
 src/func_ov079_02124188.c:
+    complete
     .text start:0x02124188 end:0x021243e0
 
 src/func_ov079_021243e0.c:
+    complete
     .text start:0x021243e0 end:0x02124530
 
 src/func_ov079_02124530.c:
@@ -50,6 +56,7 @@ src/func_ov079_02124638.c:
     .text start:0x02124638 end:0x021246d8
 
 src/func_ov079_021246d8.c:
+    complete
     .text start:0x021246d8 end:0x021246dc
 
 src/func_ov079_021246dc.c:
@@ -68,9 +75,11 @@ src/func_ov079_02124ed4.c:
     .text start:0x02124ed4 end:0x02125058
 
 src/func_ov079_02125058.cpp:
+    complete
     .text start:0x02125058 end:0x0212522c
 
 src/func_ov079_0212522c.c:
+    complete
     .text start:0x0212522c end:0x02125240
 
 src/func_ov079_02125240.cpp:
@@ -83,9 +92,11 @@ src/func_ov079_021254b4.c:
     .text start:0x021254b4 end:0x02125504
 
 src/func_ov079_02125504.c:
+    complete
     .text start:0x02125504 end:0x021256d4
 
 src/func_ov079_021256d4.c:
+    complete
     .text start:0x021256d4 end:0x021258fc
 
 src/func_ov079_021258fc.c:
@@ -98,21 +109,26 @@ src/_ZN5Whomp16CleanupResourcesEv.cpp:
     .text start:0x02125eb0 end:0x02125f78
 
 src/_ZN5Whomp6RenderEv.cpp:
+    complete
     .text start:0x02125f78 end:0x02125fcc
 
 src/_ZN5Whomp8BehaviorEv.cpp:
+    complete
     .text start:0x02125fcc end:0x02126164
 
 src/_ZN5Whomp13InitResourcesEv.cpp:
     .text start:0x02126164 end:0x02126588
 
 src/WhompKing_Spawn.c:
+    complete
     .text start:0x02126588 end:0x021265e8
 
 src/Whomp_Spawn.c:
+    complete
     .text start:0x021265e8 end:0x02126648
 
 src/_ZN10BulletBillD1Ev.c:
+    complete
     .text start:0x02126648 end:0x02126698
 
 src/_ZN10BulletBillD0Ev.c:
@@ -122,6 +138,7 @@ src/func_ov079_021266fc.c:
     .text start:0x021266fc end:0x02126704
 
 src/func_ov079_02126704.c:
+    complete
     .text start:0x02126704 end:0x02126794
 
 src/func_ov079_02126794.cpp:
@@ -134,15 +151,19 @@ src/_ZN10BulletBill16CleanupResourcesEv.c:
     .text start:0x02126a18 end:0x02126a48
 
 src/_ZN10BulletBill6RenderEv.cpp:
+    complete
     .text start:0x02126a48 end:0x02126a84
 
 src/_ZN10BulletBill8BehaviorEv.cpp:
+    complete
     .text start:0x02126a84 end:0x02126c44
 
 src/_ZN10BulletBill13InitResourcesEv.c:
+    complete
     .text start:0x02126c44 end:0x02126d64
 
 src/BulletBill_Spawn.c:
+    complete
     .text start:0x02126d64 end:0x02126dbc
 
 src/func_ov079_02126dbc.c:
@@ -188,6 +209,7 @@ src/_ZN12FortressWall16CleanupResourcesEv.cpp:
     .text start:0x02127300 end:0x02127364
 
 src/_ZN12FortressWall6RenderEv.cpp:
+    complete
     .text start:0x02127364 end:0x021273a4
 
 src/_ZN12FortressWall8BehaviorEv.cpp:
@@ -197,9 +219,11 @@ src/_ZN12FortressWall13InitResourcesEv.cpp:
     .text start:0x02127494 end:0x0212757c
 
 src/FortressWall_Spawn.c:
+    complete
     .text start:0x0212757c end:0x021275ac
 
 src/FortressWallBreakable_Spawn.c:
+    complete
     .text start:0x021275ac end:0x021275dc
 
 src/__sinit_ov079_02127618.c:

@@ -11,12 +11,15 @@ src/func_ov025_021111e4.c:
     .text start:0x021111e4 end:0x0211123c
 
 src/func_ov025_0211123c.cpp:
+    complete
     .text start:0x0211123c end:0x021112e0
 
 src/func_ov025_021112e0.cpp:
+    complete
     .text start:0x021112e0 end:0x02111344
 
 src/func_ov025_02111344.c:
+    complete
     .text start:0x02111344 end:0x02111384
 
 src/func_ov025_02111384.cpp:
@@ -44,6 +47,7 @@ src/func_ov025_0211199c.c:
     .text start:0x0211199c end:0x021119a4
 
 src/func_ov025_021119a4.cpp:
+    complete
     .text start:0x021119a4 end:0x021119f4
 
 src/func_ov025_021119f4.c:
@@ -68,15 +72,18 @@ src/_ZN11PyramidStepD0Ev.c:
     .text start:0x02111d8c end:0x02111dec
 
 src/func_ov025_02111dec.cpp:
+    complete
     .text start:0x02111dec end:0x02111e30
 
 src/func_ov025_02111e30.c:
+    complete
     .text start:0x02111e30 end:0x02111e70
 
 src/_ZN11PyramidStep16CleanupResourcesEv.cpp:
     .text start:0x02111e70 end:0x02111ea8
 
 src/_ZN11PyramidStep6RenderEv.cpp:
+    complete
     .text start:0x02111ea8 end:0x02111ed4
 
 src/_ZN11PyramidStep8BehaviorEv.cpp:
@@ -86,18 +93,21 @@ src/_ZN11PyramidStep13InitResourcesEv.cpp:
     .text start:0x02111fa0 end:0x021120ac
 
 src/PyramidStep_Spawn.c:
+    complete
     .text start:0x021120ac end:0x021120e4
 
 src/_ZN11PyramidLiftD1Ev.cpp:
     .text start:0x021120e4 end:0x02112148
 
 src/_ZN11PyramidLiftD0Ev.c:
+    complete
     .text start:0x02112148 end:0x021121c0
 
 src/_ZN11PyramidLift16CleanupResourcesEv.c:
     .text start:0x021121c0 end:0x021121fc
 
 src/_ZN11PyramidLift6RenderEv.cpp:
+    complete
     .text start:0x021121fc end:0x02112288
 
 src/_ZN11PyramidLift8BehaviorEv.cpp:
@@ -107,12 +117,15 @@ src/_ZN11PyramidLift13InitResourcesEv.cpp:
     .text start:0x02112498 end:0x021125bc
 
 src/func_ov025_021125bc.cpp:
+    complete
     .text start:0x021125bc end:0x021125dc
 
 src/func_ov025_021125dc.c:
+    complete
     .text start:0x021125dc end:0x021125f0
 
 src/PyramidLift_Spawn.cpp:
+    complete
     .text start:0x021125f0 end:0x02112654
 
 src/__sinit_ov025_02112970.c:

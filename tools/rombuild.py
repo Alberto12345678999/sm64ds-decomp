@@ -42,8 +42,15 @@ BUILD = REPO / "build"
 
 # The pinned toolchain, same as tools/match.py: what verified the bytes must build them.
 VERSION = "1.2/sp2p3"
+# tools/match.py's DEFAULT_FLAGS, plus one addition the match gate never needed.
+# `-Cpp_exceptions off` suppresses the .exception/.exceptix unwind tables mwccarm
+# otherwise emits alongside almost every function. The match gate only ever compared
+# .text, so it never saw them; a ROM link does, and those sections would be duplicate
+# content that grows the module and shifts every later address. Retail carries just
+# 636 bytes of .exceptix in main, so the original build had them off too. Verified
+# not to perturb .text codegen (see notes/rom-build.md, M2b).
 CFLAGS = ("-O4,p -enum int -lang c99 -char signed -interworking "
-          "-proc arm946e -gccext,on -msgstyle gcc")
+          "-proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off")
 LDFLAGS = ("-proc arm946e -nostdlib -interworking -m Entry "
            "-map closure,unused -msgstyle gcc -nodead")
 

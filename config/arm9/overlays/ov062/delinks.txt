@@ -5,147 +5,186 @@
     .data       start:0x0211d900 end:0x0211dde0 kind:data align:32
     .bss        start:0x0211dde0 end:0x0211e1a0 kind:bss align:32
 src/_ZN7ChuckyaD1Ev.c:
+    complete
     .text start:0x02115ee0 end:0x02115f28
 
 src/_ZN7ChuckyaD0Ev.c:
     .text start:0x02115f28 end:0x02115f84
 
 src/func_ov062_02115f84.c:
+    complete
     .text start:0x02115f84 end:0x02116010
 
 src/func_ov062_02116010.c:
     .text start:0x02116010 end:0x021161a8
 
 src/func_ov062_021161a8.c:
+    complete
     .text start:0x021161a8 end:0x02116238
 
 src/func_ov062_02116238.c:
+    complete
     .text start:0x02116238 end:0x02116274
 
 src/func_ov062_02116274.c:
+    complete
     .text start:0x02116274 end:0x021162b8
 
 src/func_ov062_021162b8.cpp:
+    complete
     .text start:0x021162b8 end:0x0211632c
 
 src/func_ov062_0211632c.cpp:
+    complete
     .text start:0x0211632c end:0x02116368
 
 src/func_ov062_02116368.c:
+    complete
     .text start:0x02116368 end:0x021163b0
 
 src/func_ov062_021163b0.c:
+    complete
     .text start:0x021163b0 end:0x02116498
 
 src/func_ov062_02116498.c:
+    complete
     .text start:0x02116498 end:0x021164e8
 
 src/func_ov062_021164e8.cpp:
     .text start:0x021164e8 end:0x021165e0
 
 src/func_ov062_021165e0.c:
+    complete
     .text start:0x021165e0 end:0x021165e8
 
 src/func_ov062_021165e8.c:
+    complete
     .text start:0x021165e8 end:0x02116784
 
 src/func_ov062_02116784.c:
+    complete
     .text start:0x02116784 end:0x021167c0
 
 src/func_ov062_021167c0.cpp:
+    complete
     .text start:0x021167c0 end:0x02116850
 
 src/func_ov062_02116850.c:
+    complete
     .text start:0x02116850 end:0x02116894
 
 src/func_ov062_02116894.cpp:
+    complete
     .text start:0x02116894 end:0x02116980
 
 src/func_ov062_02116980.c:
+    complete
     .text start:0x02116980 end:0x02116a08
 
 src/func_ov062_02116a08.c:
     .text start:0x02116a08 end:0x02116b80
 
 src/func_ov062_02116b80.cpp:
+    complete
     .text start:0x02116b80 end:0x02116bf8
 
 src/func_ov062_02116bf8.c:
+    complete
     .text start:0x02116bf8 end:0x02116c78
 
 src/func_ov062_02116c78.cpp:
+    complete
     .text start:0x02116c78 end:0x02116cd8
 
 src/Chuckya_ChangeState.cpp:
+    complete
     .text start:0x02116cd8 end:0x02116d28
 
 src/func_ov062_02116d28.cpp:
     .text start:0x02116d28 end:0x02116dbc
 
 src/func_ov062_02116dbc.cpp:
+    complete
     .text start:0x02116dbc end:0x02116e80
 
 src/func_ov062_02116e80.c:
+    complete
     .text start:0x02116e80 end:0x02116edc
 
 src/func_ov062_02116edc.cpp:
+    complete
     .text start:0x02116edc end:0x02116fc0
 
 src/_ZN7Chuckya16CleanupResourcesEv.c:
     .text start:0x02116fc0 end:0x02117020
 
 src/_ZN7Chuckya16OnPendingDestroyEv.c:
+    complete
     .text start:0x02117020 end:0x02117024
 
 src/_ZN7Chuckya6RenderEv.c:
+    complete
     .text start:0x02117024 end:0x0211707c
 
 src/_ZN7Chuckya8BehaviorEv.cpp:
     .text start:0x0211707c end:0x02117334
 
 src/_ZN7Chuckya13InitResourcesEv.c:
+    complete
     .text start:0x02117334 end:0x02117470
 
 src/func_ov062_02117470.c:
     .text start:0x02117470 end:0x02117478
 
 src/Chuckya_Spawn.c:
+    complete
     .text start:0x02117478 end:0x021174cc
 
 src/_ZN5KoopaD1Ev.c:
+    complete
     .text start:0x021174cc end:0x02117514
 
 src/_ZN5KoopaD0Ev.c:
     .text start:0x02117514 end:0x02117570
 
 src/func_ov062_02117570.cpp:
+    complete
     .text start:0x02117570 end:0x021175c0
 
 src/func_ov062_021175c0.c:
+    complete
     .text start:0x021175c0 end:0x02117724
 
 src/func_ov062_02117994.c:
+    complete
     .text start:0x02117994 end:0x021179e4
 
 src/func_ov062_021179e4.cpp:
+    complete
     .text start:0x021179e4 end:0x02117a3c
 
 src/func_ov062_02117a3c.cpp:
+    complete
     .text start:0x02117a3c end:0x02117acc
 
 src/func_ov062_02117acc.c:
+    complete
     .text start:0x02117acc end:0x02117b48
 
 src/func_ov062_02117b48.c:
+    complete
     .text start:0x02117b48 end:0x02117b60
 
 src/func_ov062_02117b60.c:
+    complete
     .text start:0x02117b60 end:0x02117b9c
 
 src/func_ov062_02117b9c.c:
+    complete
     .text start:0x02117b9c end:0x02117bf4
 
 src/func_ov062_02117bf4.cpp:
+    complete
     .text start:0x02117bf4 end:0x02117c98
 
 src/func_ov062_02117c98.c:
@@ -155,9 +194,11 @@ src/func_ov062_02118004.cpp:
     .text start:0x02118004 end:0x02118058
 
 src/func_ov062_02118058.c:
+    complete
     .text start:0x02118058 end:0x021180d4
 
 src/func_ov062_021180d4.c:
+    complete
     .text start:0x021180d4 end:0x0211811c
 
 src/func_ov062_0211811c.c:
@@ -167,30 +208,37 @@ src/func_ov062_021181a0.c:
     .text start:0x021181a0 end:0x02118258
 
 src/func_ov062_02118258.c:
+    complete
     .text start:0x02118258 end:0x02118334
 
 src/func_ov062_02118334.c:
+    complete
     .text start:0x02118334 end:0x021183e0
 
 src/func_ov062_021183e0.c:
+    complete
     .text start:0x021183e0 end:0x02118588
 
 src/func_ov062_02118588.c:
+    complete
     .text start:0x02118588 end:0x02118718
 
 src/func_ov062_02118718.c:
     .text start:0x02118718 end:0x02118a00
 
 src/func_ov062_02118a00.cpp:
+    complete
     .text start:0x02118a00 end:0x02118a50
 
 src/func_ov062_02118a50.c:
+    complete
     .text start:0x02118a50 end:0x02118b4c
 
 src/func_ov062_02118b4c.c:
     .text start:0x02118b4c end:0x02118cdc
 
 src/func_ov062_02118cdc.c:
+    complete
     .text start:0x02118cdc end:0x02118de8
 
 src/func_ov062_02118de8.cpp:
@@ -200,6 +248,7 @@ src/_ZN5Koopa16CleanupResourcesEv.cpp:
     .text start:0x02118f04 end:0x02118f80
 
 src/_ZN5Koopa16OnPendingDestroyEv.c:
+    complete
     .text start:0x02118f80 end:0x02118f84
 
 src/_ZN5Koopa6RenderEv.cpp:
@@ -221,24 +270,30 @@ src/func_ov062_021196a8.c:
     .text start:0x021196a8 end:0x021196bc
 
 src/KoopaSmall_Spawn.c:
+    complete
     .text start:0x021196bc end:0x0211970c
 
 src/Koopa_Spawn.c:
+    complete
     .text start:0x0211970c end:0x0211975c
 
 src/_ZN13KoopaTheQuickD1Ev.c:
+    complete
     .text start:0x0211975c end:0x021197a4
 
 src/_ZN13KoopaTheQuickD0Ev.c:
     .text start:0x021197a4 end:0x02119800
 
 src/func_ov062_02119800.cpp:
+    complete
     .text start:0x02119800 end:0x02119954
 
 src/func_ov062_02119954.c:
+    complete
     .text start:0x02119954 end:0x021199ac
 
 src/func_ov062_021199ac.c:
+    complete
     .text start:0x021199ac end:0x02119af0
 
 src/func_ov062_02119af0.cpp:
@@ -248,9 +303,11 @@ src/func_ov062_02119be0.c:
     .text start:0x02119be0 end:0x0211a0f0
 
 src/func_ov062_0211a0f0.c:
+    complete
     .text start:0x0211a0f0 end:0x0211a168
 
 src/func_ov062_0211a168.c:
+    complete
     .text start:0x0211a168 end:0x0211a1f4
 
 src/func_ov062_0211a1f4.c:
@@ -263,9 +320,11 @@ src/func_ov062_0211a9c4.c:
     .text start:0x0211a9c4 end:0x0211aac0
 
 src/func_ov062_0211aac0.c:
+    complete
     .text start:0x0211aac0 end:0x0211ab50
 
 src/_ZN13KoopaTheQuick6RenderEv.cpp:
+    complete
     .text start:0x0211ab50 end:0x0211ab88
 
 src/_ZN13KoopaTheQuick8BehaviorEv.cpp:
@@ -278,6 +337,7 @@ src/_ZN13KoopaTheQuick13InitResourcesEv.cpp:
     .text start:0x0211ac94 end:0x0211aee0
 
 src/KoopaTheQuick_Spawn.c:
+    complete
     .text start:0x0211aee0 end:0x0211af38
 
 src/_ZN9KoopaFlagD1Ev.cpp:
@@ -287,12 +347,14 @@ src/_ZN9KoopaFlagD0Ev.c:
     .text start:0x0211af70 end:0x0211afbc
 
 src/func_ov062_0211afbc.c:
+    complete
     .text start:0x0211afbc end:0x0211b000
 
 src/_ZN9KoopaFlag16CleanupResourcesEv.c:
     .text start:0x0211b000 end:0x0211b030
 
 src/_ZN9KoopaFlag6RenderEv.cpp:
+    complete
     .text start:0x0211b030 end:0x0211b05c
 
 src/_ZN9KoopaFlag8BehaviorEv.cpp:
@@ -302,9 +364,11 @@ src/_ZN9KoopaFlag13InitResourcesEv.cpp:
     .text start:0x0211b168 end:0x0211b208
 
 src/KoopaFlag_Spawn.c:
+    complete
     .text start:0x0211b208 end:0x0211b248
 
 src/_ZN6KleptoD1Ev.c:
+    complete
     .text start:0x0211b248 end:0x0211b298
 
 src/_ZN6KleptoD0Ev.c:
@@ -314,18 +378,22 @@ src/func_ov062_0211b2fc.c:
     .text start:0x0211b2fc end:0x0211b3ac
 
 src/func_ov062_0211b3ac.cpp:
+    complete
     .text start:0x0211b3ac end:0x0211b51c
 
 src/func_ov062_0211b51c.c:
+    complete
     .text start:0x0211b51c end:0x0211b800
 
 src/func_ov062_0211b800.c:
+    complete
     .text start:0x0211b800 end:0x0211b880
 
 src/func_ov062_0211b880.cpp:
     .text start:0x0211b880 end:0x0211b8d8
 
 src/func_ov062_0211b8d8.cpp:
+    complete
     .text start:0x0211b8d8 end:0x0211b930
 
 src/func_ov062_0211b930.cpp:
@@ -338,15 +406,18 @@ src/func_ov062_0211bc54.cpp:
     .text start:0x0211bc54 end:0x0211bd10
 
 src/func_ov062_0211c218.c:
+    complete
     .text start:0x0211c218 end:0x0211c2f4
 
 src/func_ov062_0211c2f4.cpp:
     .text start:0x0211c2f4 end:0x0211c594
 
 src/func_ov062_0211c594.c:
+    complete
     .text start:0x0211c594 end:0x0211c658
 
 src/func_ov062_0211c658.cpp:
+    complete
     .text start:0x0211c658 end:0x0211c6a8
 
 src/func_ov062_0211c6a8.c:
@@ -356,9 +427,11 @@ src/_ZN6Klepto16CleanupResourcesEv.c:
     .text start:0x0211c8b0 end:0x0211c91c
 
 src/_ZN6Klepto16OnPendingDestroyEv.c:
+    complete
     .text start:0x0211c91c end:0x0211c920
 
 src/_ZN6Klepto6RenderEv.cpp:
+    complete
     .text start:0x0211c920 end:0x0211c94c
 
 src/_ZN6Klepto8BehaviorEv.cpp:
@@ -371,6 +444,7 @@ src/func_ov062_0211ce78.c:
     .text start:0x0211ce78 end:0x0211ce80
 
 src/Klepto_Spawn.c:
+    complete
     .text start:0x0211ce80 end:0x0211ced8
 
 src/__sinit_ov062_0211cf30.c:

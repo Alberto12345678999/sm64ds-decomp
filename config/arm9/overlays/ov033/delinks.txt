@@ -38,15 +38,18 @@ src/_ZN9TinyCover16CleanupResourcesEv.cpp:
     .text start:0x02111480 end:0x021114c4
 
 src/_ZN9TinyCover6RenderEv.cpp:
+    complete
     .text start:0x021114c4 end:0x021114f8
 
 src/_ZN9TinyCover8BehaviorEv.c:
     .text start:0x021114f8 end:0x021115bc
 
 src/_ZN9TinyCover13InitResourcesEv.cpp:
+    complete
     .text start:0x021115bc end:0x02111690
 
 src/TinyWater_Spawn.c:
+    complete
     .text start:0x02111690 end:0x021116c8
 
 src/__sinit_ov033_021119e8.c:

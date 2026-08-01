@@ -22,6 +22,7 @@ src/ShutterBob_Spawn.c:
     .text start:0x021112cc end:0x02111308
 
 src/_ZN10ChainChompD1Ev.c:
+    complete
     .text start:0x02111308 end:0x021113bc
 
 src/_ZN10ChainChompD0Ev.cpp:
@@ -31,30 +32,38 @@ src/func_ov014_02111484.c:
     .text start:0x02111484 end:0x021114d8
 
 src/func_ov014_021114d8.c:
+    complete
     .text start:0x021114d8 end:0x0211150c
 
 src/func_ov014_0211150c.c:
+    complete
     .text start:0x0211150c end:0x021115c0
 
 src/func_ov014_021115c0.c:
+    complete
     .text start:0x021115c0 end:0x021115ec
 
 src/func_ov014_021115ec.cpp:
+    complete
     .text start:0x021115ec end:0x02111a6c
 
 src/func_ov014_02111a6c.cpp:
     .text start:0x02111a6c end:0x02111af0
 
 src/func_ov014_02111af0.c:
+    complete
     .text start:0x02111af0 end:0x02111b70
 
 src/func_ov014_02111b70.c:
+    complete
     .text start:0x02111b70 end:0x02111ca8
 
 src/func_ov014_02111ca8.cpp:
+    complete
     .text start:0x02111ca8 end:0x02111dc4
 
 src/func_ov014_02111dc4.cpp:
+    complete
     .text start:0x02111dc4 end:0x02111e14
 
 src/func_ov014_02111e14.c:
@@ -64,42 +73,54 @@ src/func_ov014_02111e74.cpp:
     .text start:0x02111e74 end:0x02111ebc
 
 src/func_ov014_02111ebc.cpp:
+    complete
     .text start:0x02111ebc end:0x02111f08
 
 src/func_ov014_02111f08.cpp:
+    complete
     .text start:0x02111f08 end:0x02111f54
 
 src/func_ov014_02111f54.cpp:
+    complete
     .text start:0x02111f54 end:0x02111fb8
 
 src/func_ov014_02111fb8.c:
+    complete
     .text start:0x02111fb8 end:0x02111fe0
 
 src/func_ov014_02111fe0.c:
+    complete
     .text start:0x02111fe0 end:0x02112114
 
 src/func_ov014_02112114.c:
+    complete
     .text start:0x02112114 end:0x021122dc
 
 src/func_ov014_021122dc.c:
+    complete
     .text start:0x021122dc end:0x0211236c
 
 src/func_ov014_0211236c.c:
+    complete
     .text start:0x0211236c end:0x0211250c
 
 src/func_ov014_0211250c.c:
+    complete
     .text start:0x0211250c end:0x02112788
 
 src/func_ov014_02112788.c:
+    complete
     .text start:0x02112788 end:0x0211294c
 
 src/_ZN10ChainChomp16CleanupResourcesEv.c:
     .text start:0x0211294c end:0x02112994
 
 src/_ZN10ChainChomp6RenderEv.cpp:
+    complete
     .text start:0x02112994 end:0x021129ec
 
 src/_ZN10ChainChomp8BehaviorEv.cpp:
+    complete
     .text start:0x021129ec end:0x02112b14
 
 src/_ZN10ChainChomp13InitResourcesEv.cpp:
@@ -121,15 +142,18 @@ src/_ZN15ChainChompFence16CleanupResourcesEv.cpp:
     .text start:0x02112f3c end:0x02112f80
 
 src/_ZN15ChainChompFence6RenderEv.cpp:
+    complete
     .text start:0x02112f80 end:0x02112fc0
 
 src/_ZN15ChainChompFence8BehaviorEv.cpp:
+    complete
     .text start:0x02112fc0 end:0x02112ffc
 
 src/_ZN15ChainChompFence13InitResourcesEv.cpp:
     .text start:0x02112ffc end:0x0211307c
 
 src/ChainChompFence_Spawn.c:
+    complete
     .text start:0x0211307c end:0x021130ac
 
 src/__sinit_ov014_021130ac.c:
