@@ -75,6 +75,7 @@ src/_ZN11RollingRockD1Ev.c:
     .text start:0x021121e8 end:0x02112230
 
 src/_ZN11RollingRockD0Ev.c:
+    complete
     .text start:0x02112230 end:0x0211228c
 
 src/func_ov021_0211228c.c:
@@ -101,6 +102,7 @@ src/func_ov021_021127b4.c:
     .text start:0x021127b4 end:0x021127f8
 
 src/_ZN11RollingRock16CleanupResourcesEv.c:
+    complete
     .text start:0x021127f8 end:0x0211281c
 
 src/_ZN11RollingRock6RenderEv.cpp:

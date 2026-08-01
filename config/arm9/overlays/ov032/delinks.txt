@@ -5,12 +5,15 @@
     .data       start:0x02112ec0 end:0x02113a40 kind:data align:32
     .bss        start:0x02113a40 end:0x02113b20 kind:bss align:32
 src/func_ov032_021111a0.c:
+    complete
     .text start:0x021111a0 end:0x021111f0
 
 src/func_ov032_021111f0.c:
+    complete
     .text start:0x021111f0 end:0x02111254
 
 src/func_ov032_02111254.c:
+    complete
     .text start:0x02111254 end:0x02111350
 
 src/func_ov032_02111350.c:
@@ -69,6 +72,7 @@ src/func_ov032_02112044.cpp:
     .text start:0x02112044 end:0x02112124
 
 src/func_ov032_02112124.c:
+    complete
     .text start:0x02112124 end:0x02112160
 
 src/func_ov032_02112160.c:
@@ -92,6 +96,7 @@ src/func_ov032_02112444.c:
     .text start:0x02112444 end:0x0211244c
 
 src/func_ov032_0211244c.c:
+    complete
     .text start:0x0211244c end:0x021124a8
 
 src/func_ov032_021124a8.c:
@@ -101,6 +106,7 @@ src/func_ov032_021124ec.c:
     .text start:0x021124ec end:0x02112544
 
 src/func_ov032_02112544.c:
+    complete
     .text start:0x02112544 end:0x02112588
 
 src/func_ov032_02112588.cpp:
@@ -116,6 +122,7 @@ src/func_ov032_021125d4.cpp:
     .text start:0x021125d4 end:0x02112668
 
 src/HugeCover_Spawn.c:
+    complete
     .text start:0x02112668 end:0x02112698
 
 src/_ZN9HugeCoverD1Ev.c:

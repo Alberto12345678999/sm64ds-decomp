@@ -9,6 +9,7 @@ src/_ZN6GoombaD1Ev.c:
     .text start:0x02129020 end:0x02129070
 
 src/_ZN6GoombaD0Ev.c:
+    complete
     .text start:0x02129070 end:0x021290d4
 
 src/func_ov084_021290d4.c:
@@ -135,6 +136,7 @@ src/_ZN11BobOmbBuddyD1Ev.cpp:
     .text start:0x0212c10c end:0x0212c14c
 
 src/_ZN11BobOmbBuddyD0Ev.c:
+    complete
     .text start:0x0212c14c end:0x0212c1a0
 
 src/func_ov084_0212c1a0.c:
@@ -160,9 +162,11 @@ src/func_ov084_0212c92c.cpp:
     .text start:0x0212c92c end:0x0212c960
 
 src/func_ov084_0212c960.cpp:
+    complete
     .text start:0x0212c960 end:0x0212c9a8
 
 src/func_ov084_0212c9a8.cpp:
+    complete
     .text start:0x0212c9a8 end:0x0212c9f0
 
 src/func_ov084_0212c9f0.c:
@@ -198,6 +202,7 @@ src/func_ov084_0212ce50.cpp:
     .text start:0x0212ce50 end:0x0212cf10
 
 src/_ZN11BobOmbBuddy16CleanupResourcesEv.c:
+    complete
     .text start:0x0212cf10 end:0x0212cf40
 
 src/_ZN11BobOmbBuddy6RenderEv.cpp:
@@ -219,6 +224,7 @@ src/_ZN19FirePiranhaPlantBigD1Ev.c:
     .text start:0x0212d248 end:0x0212d288
 
 src/_ZN19FirePiranhaPlantBigD0Ev.c:
+    complete
     .text start:0x0212d288 end:0x0212d2dc
 
 src/func_ov084_0212d2dc.c:
@@ -250,6 +256,7 @@ src/func_ov084_0212ddbc.c:
     .text start:0x0212ddbc end:0x0212e010
 
 src/func_ov084_0212e010.cpp:
+    complete
     .text start:0x0212e010 end:0x0212e4e0
 
 src/func_ov084_0212e4e0.c:
@@ -300,6 +307,7 @@ src/_ZN12PiranhaPlantD1Ev.c:
     .text start:0x0212eaf0 end:0x0212eb48
 
 src/_ZN12PiranhaPlantD0Ev.c:
+    complete
     .text start:0x0212eb48 end:0x0212ebb4
 
 src/func_ov084_0212ebb4.c:

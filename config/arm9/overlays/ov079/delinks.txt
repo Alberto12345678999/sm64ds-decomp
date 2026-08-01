@@ -59,6 +59,7 @@ src/func_ov079_02124530.c:
     .text start:0x02124530 end:0x02124638
 
 src/func_ov079_02124638.c:
+    complete
     .text start:0x02124638 end:0x021246d8
 
 src/func_ov079_021246d8.c:
@@ -66,6 +67,7 @@ src/func_ov079_021246d8.c:
     .text start:0x021246d8 end:0x021246dc
 
 src/func_ov079_021246dc.c:
+    complete
     .text start:0x021246dc end:0x021249f0
 
 src/func_ov079_021249f0.c:
@@ -96,6 +98,7 @@ src/func_ov079_02125240.cpp:
     .text start:0x02125240 end:0x0212538c
 
 src/func_ov079_0212538c.c:
+    complete
     .text start:0x0212538c end:0x021254b4
 
 src/func_ov079_021254b4.c:
@@ -145,6 +148,7 @@ src/_ZN10BulletBillD1Ev.c:
     .text start:0x02126648 end:0x02126698
 
 src/_ZN10BulletBillD0Ev.c:
+    complete
     .text start:0x02126698 end:0x021266fc
 
 src/func_ov079_021266fc.c:
@@ -164,6 +168,7 @@ src/func_ov079_0212682c.c:
     .text start:0x0212682c end:0x02126a18
 
 src/_ZN10BulletBill16CleanupResourcesEv.c:
+    complete
     .text start:0x02126a18 end:0x02126a48
 
 src/_ZN10BulletBill6RenderEv.cpp:
@@ -211,6 +216,7 @@ src/func_ov079_02127090.cpp:
     .text start:0x02127090 end:0x021271b4
 
 src/BillBlaster_Spawn.c:
+    complete
     .text start:0x021271b4 end:0x021271e4
 
 src/_ZN12FortressWallD1Ev.c:

@@ -73,6 +73,7 @@ src/func_ov027_02111994.cpp:
     .text start:0x02111994 end:0x02111a28
 
 src/func_ov027_02111a28.c:
+    complete
     .text start:0x02111a28 end:0x02111b2c
 
 src/func_ov027_02111b2c.cpp:
@@ -163,6 +164,7 @@ src/func_ov027_02112618.cpp:
     .text start:0x02112618 end:0x02112700
 
 src/_ZN13SnowmanBreath16CleanupResourcesEv.c:
+    complete
     .text start:0x02112700 end:0x0211273c
 
 src/_ZN13SnowmanBreath16OnPendingDestroyEv.c:

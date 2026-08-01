@@ -8,6 +8,7 @@ src/_ZN10ScuttlebugD1Ev.cpp:
     .text start:0x0211f000 end:0x0211f048
 
 src/_ZN10ScuttlebugD0Ev.c:
+    complete
     .text start:0x0211f048 end:0x0211f0a4
 
 src/func_ov071_0211f0a4.c:
@@ -26,6 +27,7 @@ src/func_ov071_0211f148.cpp:
     .text start:0x0211f148 end:0x0211f29c
 
 src/func_ov071_0211f29c.cpp:
+    complete
     .text start:0x0211f29c end:0x0211f498
 
 src/func_ov071_0211f498.c:
@@ -119,6 +121,7 @@ src/Scuttlebug_SetState.c:
     .text start:0x021202ec end:0x02120308
 
 src/_ZN10Scuttlebug16CleanupResourcesEv.c:
+    complete
     .text start:0x02120308 end:0x02120338
 
 src/_ZN10Scuttlebug16OnPendingDestroyEv.c:
@@ -147,6 +150,7 @@ src/_ZN3MrID1Ev.cpp:
     .text start:0x02120668 end:0x021206b0
 
 src/_ZN3MrID0Ev.c:
+    complete
     .text start:0x021206b0 end:0x0212070c
 
 src/func_ov071_0212070c.c:
@@ -231,6 +235,7 @@ src/_ZN14MrI_ProjectileD1Ev.cpp:
     .text start:0x02121a6c end:0x02121aac
 
 src/_ZN14MrI_ProjectileD0Ev.c:
+    complete
     .text start:0x02121aac end:0x02121b00
 
 src/func_ov071_02121b00.c:

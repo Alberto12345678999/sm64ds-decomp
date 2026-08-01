@@ -15,8 +15,8 @@ that pipeline up now.
 
 **M0, M1, M2a and M2b are done. The built ROM boots and plays in melonDS.**
 `python tools/rombuild.py` produces a 16,777,216-byte `build/sm64ds.nds` in about a
-minute, with all 106 modules byte-identical to the ROM. **8,367 functions — 1,411,392
-code bytes, 63.8% of the project's total — are compiled from `src/` by mwccarm**; the
+minute, with all 106 modules byte-identical to the ROM. **9,115 functions — 1,475,772
+code bytes, 66.7% of the project's total — are compiled from `src/` by mwccarm**; the
 rest of each module is supplied from delinked ROM bytes. Only M3 (a confirmed *visible*
 change) is still open — the mod is provably in the ROM, but its on-screen effect has not
 been attributed by A/B. Results are recorded under each milestone below.
@@ -495,6 +495,36 @@ blocked by a second reason as well — a BLIND symbol, a size mismatch, an `.ini
 The opposite direction — adopting the recovered names into `config/**/symbols.txt` — is
 the better long-term move and is left deliberately undone: it changes the canonical symbol
 table and every reference to those names, which is a maintainer's call, not a build fix.
+
+### M2d — Resolve the BLIND references
+
+The next bucket was ~1,970 files referencing a name `config/**/symbols.txt` does not
+define. [`link-verification.md`](link-verification.md) calls these the BLIND matches and
+concludes "No static tool can verify those destinations; only a fuller symbol table
+would."
+
+That is true of a *static* tool, but the ROM build is not one. The function byte-matches,
+so the ROM's own linked word at the relocation slot **is** the destination: decode it (a
+`BL` target, or an `R_ARM_ABS32` pool word minus its addend) and look the address up.
+
+`tools/resolve_blind.py` does that per file and per relocation, which matters because the
+names come in two very different shapes and this handles both the same way:
+
+- **Shared names with one true target.** `_Z28_ZN13SharedFilePtr7ReleaseEvPv` (177 files)
+  is `_ZN13SharedFilePtr7ReleaseEv` — a double-mangling artifact, someone mangled an
+  already-mangled name. Same for `_Z39_ZN9Animation8LoadFileER13SharedFilePtrPv`,
+  `_Z31_ZN16MeshColliderBase7DisableEvPv`, `_Z10DeallocatePv` → `Deallocate`.
+- **Per-file placeholders.** `G0` appears in 480 files and means **173 different
+  addresses**; `G1` 107, `G2` 142, `G3` 111, `VT1` 42. A global rename would be actively
+  wrong here — only per-file resolution works.
+
+Of 6,238 unresolvable references, **6,238 − 65 resolve to a real symbol**. The 65 that do
+not are mostly not addresses at all (`0x04000204` is a hardware register, `0x00000006` a
+constant), so nothing is renamed for them.
+
+Every rename is byte-verified before it is kept; a file that stops matching is reverted.
+1,227 files were renamed, eligibility went 8,374 → 9,124, and source-built functions
+8,367 → **9,115** (63.8% → 66.7% of code bytes).
 
 ### M3 — Prove it is really our code
 

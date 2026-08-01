@@ -8,6 +8,7 @@ src/_ZN10KingBobOmbD1Ev.c:
     .text start:0x02123740 end:0x02123798
 
 src/_ZN10KingBobOmbD0Ev.c:
+    complete
     .text start:0x02123798 end:0x02123804
 
 src/func_ov078_02123804.c:
@@ -150,6 +151,7 @@ src/func_ov078_021259e4.c:
     .text start:0x021259e4 end:0x021259ec
 
 src/func_ov078_021259ec.c:
+    complete
     .text start:0x021259ec end:0x02125bc8
 
 src/func_ov078_02125bc8.cpp:
@@ -176,6 +178,7 @@ src/func_ov078_02125f8c.cpp:
     .text start:0x02125f8c end:0x02125ff4
 
 src/_ZN10KingBobOmb16CleanupResourcesEv.c:
+    complete
     .text start:0x02125ff4 end:0x021260a8
 
 src/_ZN10KingBobOmb16OnPendingDestroyEv.c:

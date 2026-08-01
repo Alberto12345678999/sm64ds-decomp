@@ -8,6 +8,7 @@ src/_ZN9MontyMoleD1Ev.cpp:
     .text start:0x02123740 end:0x02123778
 
 src/_ZN9MontyMoleD0Ev.c:
+    complete
     .text start:0x02123778 end:0x021237c4
 
 src/_ZN13MontyMoleRockD1Ev.c:
@@ -15,6 +16,7 @@ src/_ZN13MontyMoleRockD1Ev.c:
     .text start:0x021237c4 end:0x02123804
 
 src/_ZN13MontyMoleRockD0Ev.c:
+    complete
     .text start:0x02123804 end:0x02123858
 
 src/func_ov080_02123858.c:
@@ -66,6 +68,7 @@ src/_ZN9MontyMole16CleanupResourcesEv.c:
     .text start:0x02124458 end:0x021244b4
 
 src/_ZN13MontyMoleRock16CleanupResourcesEv.c:
+    complete
     .text start:0x021244b4 end:0x021244d8
 
 src/_ZN9MontyMole6RenderEv.cpp:
@@ -102,6 +105,7 @@ src/_ZN11CrazedCrateD1Ev.cpp:
     .text start:0x02124a20 end:0x02124a68
 
 src/_ZN11CrazedCrateD0Ev.c:
+    complete
     .text start:0x02124a68 end:0x02124ac4
 
 src/func_ov080_02124ac4.c:
@@ -153,6 +157,7 @@ src/func_ov080_0212513c.c:
     .text start:0x0212513c end:0x02125158
 
 src/_ZN11CrazedCrate16CleanupResourcesEv.c:
+    complete
     .text start:0x02125158 end:0x0212517c
 
 src/_ZN11CrazedCrate16OnPendingDestroyEv.c:
@@ -178,6 +183,7 @@ src/CrazedCrate_Spawn.c:
     .text start:0x021253b4 end:0x02125404
 
 src/func_ov080_02125404.c:
+    complete
     .text start:0x02125404 end:0x02125428
 
 src/func_ov080_02125428.c:
@@ -277,6 +283,7 @@ src/func_ov080_02126ca0.cpp:
     .text start:0x02126ca0 end:0x02126f8c
 
 src/Painting_Spawn.c:
+    complete
     .text start:0x02126f8c end:0x02126fbc
 
 src/func_ov080_02126fbc.c:

@@ -56,6 +56,7 @@ src/_ZN13RollingLogTtmD1Ev.cpp:
     .text start:0x02111688 end:0x021116d0
 
 src/_ZN13RollingLogTtmD0Ev.c:
+    complete
     .text start:0x021116d0 end:0x0211172c
 
 src/func_ov030_0211172c.c:
@@ -83,6 +84,7 @@ src/func_ov030_02111b20.c:
     .text start:0x02111b20 end:0x02111bc4
 
 src/func_ov030_02111bc4.c:
+    complete
     .text start:0x02111bc4 end:0x02111dd0
 
 src/func_ov030_02111dd0.cpp:

@@ -9,6 +9,7 @@ src/_ZN8BookShotD1Ev.c:
     .text start:0x021111a0 end:0x021111f0
 
 src/_ZN8BookShotD0Ev.c:
+    complete
     .text start:0x021111f0 end:0x02111254
 
 src/_ZN15BookShotSpawnerD1Ev.cpp:
@@ -33,6 +34,7 @@ src/func_ov020_021115ac.c:
     .text start:0x021115ac end:0x0211174c
 
 src/func_ov020_0211174c.c:
+    complete
     .text start:0x0211174c end:0x021119dc
 
 src/func_ov020_021119dc.c:
@@ -123,6 +125,7 @@ src/_ZN12HauntedChairD1Ev.cpp:
     .text start:0x02112938 end:0x02112980
 
 src/_ZN12HauntedChairD0Ev.c:
+    complete
     .text start:0x02112980 end:0x021129dc
 
 src/func_ov020_021129dc.c:
@@ -154,6 +157,7 @@ src/func_ov020_02113240.cpp:
     .text start:0x02113240 end:0x021132d8
 
 src/_ZN12HauntedChair16CleanupResourcesEv.c:
+    complete
     .text start:0x021132d8 end:0x021132fc
 
 src/_ZN12HauntedChair6RenderEv.cpp:

@@ -71,6 +71,7 @@ src/_ZN4TrapD1Ev.cpp:
     .text start:0x021119d0 end:0x02111a08
 
 src/_ZN4TrapD0Ev.c:
+    complete
     .text start:0x02111a08 end:0x02111a54
 
 src/func_ov010_02111a54.c:
@@ -78,6 +79,7 @@ src/func_ov010_02111a54.c:
     .text start:0x02111a54 end:0x02111a94
 
 src/_ZN4Trap16CleanupResourcesEv.c:
+    complete
     .text start:0x02111a94 end:0x02111ab8
 
 src/_ZN4Trap6RenderEv.cpp:
@@ -98,6 +100,7 @@ src/_ZN13PeachPaintingD1Ev.cpp:
     .text start:0x02111e10 end:0x02111e40
 
 src/_ZN13PeachPaintingD0Ev.c:
+    complete
     .text start:0x02111e40 end:0x02111e84
 
 src/func_ov010_02111e84.c:
@@ -105,6 +108,7 @@ src/func_ov010_02111e84.c:
     .text start:0x02111e84 end:0x02111ec4
 
 src/_ZN13PeachPainting16CleanupResourcesEv.c:
+    complete
     .text start:0x02111ec4 end:0x02111ee8
 
 src/_ZN13PeachPainting6RenderEv.cpp:

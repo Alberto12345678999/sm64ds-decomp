@@ -53,6 +53,7 @@ src/_ZN9ArrowLiftD1Ev.cpp:
     .text start:0x02111728 end:0x02111760
 
 src/_ZN9ArrowLiftD0Ev.c:
+    complete
     .text start:0x02111760 end:0x021117ac
 
 src/func_ov029_021117ac.cpp:
@@ -68,6 +69,7 @@ src/func_ov029_021118c8.c:
     .text start:0x021118c8 end:0x02111908
 
 src/_ZN9ArrowLift16CleanupResourcesEv.c:
+    complete
     .text start:0x02111908 end:0x0211192c
 
 src/_ZN9ArrowLift6RenderEv.cpp:
@@ -92,6 +94,7 @@ src/func_ov029_02111b08.c:
     .text start:0x02111b08 end:0x02111b60
 
 src/func_ov029_02111b60.c:
+    complete
     .text start:0x02111b60 end:0x02111ba4
 
 src/func_ov029_02111ba4.cpp:
@@ -114,6 +117,7 @@ src/func_ov029_02111e60.c:
     .text start:0x02111e60 end:0x02111e74
 
 src/CageLift_Spawn.c:
+    complete
     .text start:0x02111e74 end:0x02111ea4
 
 src/func_ov029_02111ea4.c:

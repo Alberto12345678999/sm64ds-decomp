@@ -5,9 +5,11 @@
     .data       start:0x0211b760 end:0x0211c660 kind:data align:32
     .bss        start:0x0211c660 end:0x0211ca00 kind:bss align:32
 src/func_ov064_02115ee0.c:
+    complete
     .text start:0x02115ee0 end:0x02115f28
 
 src/func_ov064_02115f28.c:
+    complete
     .text start:0x02115f28 end:0x02115f84
 
 src/func_ov064_02115f84.c:
@@ -88,6 +90,7 @@ src/_ZN5Bully6RenderEv.cpp:
     .text start:0x02116cf0 end:0x02116d1c
 
 src/func_ov064_02116d1c.cpp:
+    complete
     .text start:0x02116d1c end:0x02116ec0
 
 src/func_ov064_02116ec0.cpp:
@@ -259,6 +262,7 @@ src/_ZN10LavaBubbleD1Ev.c:
     .text start:0x021185c0 end:0x021185f8
 
 src/_ZN10LavaBubbleD0Ev.c:
+    complete
     .text start:0x021185f8 end:0x02118644
 
 src/func_ov064_02118644.c:
@@ -315,6 +319,7 @@ src/_ZN19BowserPuzzleManagerD0Ev.c:
     .text start:0x02118b94 end:0x02118bec
 
 src/func_ov064_02118bec.c:
+    complete
     .text start:0x02118bec end:0x02118c10
 
 src/func_ov064_02118c10.c:
@@ -395,6 +400,7 @@ src/func_ov064_021192bc.c:
     .text start:0x021192bc end:0x021192d0
 
 src/BowserPuzzleManager_Spawn.c:
+    complete
     .text start:0x021192d0 end:0x02119300
 
 src/BowserPuzzlePiece_Spawn.c:
@@ -406,6 +412,7 @@ src/_ZN17BowserPuzzlePieceD1Ev.c:
     .text start:0x02119330 end:0x02119368
 
 src/_ZN17BowserPuzzlePieceD0Ev.c:
+    complete
     .text start:0x02119368 end:0x021193b4
 
 src/func_ov064_021193b4.c:
@@ -425,6 +432,7 @@ src/func_ov064_0211987c.c:
     .text start:0x0211987c end:0x02119880
 
 src/_ZN17BowserPuzzlePiece16CleanupResourcesEv.c:
+    complete
     .text start:0x02119880 end:0x021198b0
 
 src/_ZN17BowserPuzzlePiece16OnPendingDestroyEv.c:
@@ -451,6 +459,7 @@ src/_ZN9WaterRingD1Ev.c:
     .text start:0x02119a58 end:0x02119aa0
 
 src/_ZN9WaterRingD0Ev.c:
+    complete
     .text start:0x02119aa0 end:0x02119afc
 
 src/func_ov064_02119afc.cpp:
@@ -481,6 +490,7 @@ src/func_ov064_02119f1c.cpp:
     .text start:0x02119f1c end:0x02119fa0
 
 src/_ZN9WaterRing16CleanupResourcesEv.c:
+    complete
     .text start:0x02119fa0 end:0x02119fc4
 
 src/_ZN9WaterRing16OnPendingDestroyEv.c:
@@ -505,6 +515,7 @@ src/_ZN13TreasureChestD1Ev.cpp:
     .text start:0x0211a200 end:0x0211a238
 
 src/_ZN13TreasureChestD0Ev.c:
+    complete
     .text start:0x0211a238 end:0x0211a284
 
 src/func_ov064_0211a284.c:
@@ -531,12 +542,15 @@ src/func_ov064_0211a6e0.c:
     .text start:0x0211a6e0 end:0x0211a6ec
 
 src/func_ov064_0211a6ec.cpp:
+    complete
     .text start:0x0211a6ec end:0x0211a734
 
 src/func_ov064_0211a734.cpp:
+    complete
     .text start:0x0211a734 end:0x0211a77c
 
 src/_ZN13TreasureChest16CleanupResourcesEv.c:
+    complete
     .text start:0x0211a77c end:0x0211a7c4
 
 src/_ZN13TreasureChest6RenderEv.cpp:
@@ -558,6 +572,7 @@ src/_ZN4ClamD1Ev.cpp:
     .text start:0x0211a930 end:0x0211a968
 
 src/_ZN4ClamD0Ev.c:
+    complete
     .text start:0x0211a968 end:0x0211a9b4
 
 src/func_ov064_0211a9b4.c:
@@ -565,6 +580,7 @@ src/func_ov064_0211a9b4.c:
     .text start:0x0211a9b4 end:0x0211a9f4
 
 src/_ZN4Clam16CleanupResourcesEv.c:
+    complete
     .text start:0x0211a9f4 end:0x0211aa30
 
 src/_ZN4Clam6RenderEv.cpp:

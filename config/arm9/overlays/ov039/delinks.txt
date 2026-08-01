@@ -7,6 +7,7 @@ src/_ZN5CloudD1Ev.cpp:
     .text start:0x021111a0 end:0x021111d0
 
 src/_ZN5CloudD0Ev.c:
+    complete
     .text start:0x021111d0 end:0x02111214
 
 src/func_ov039_02111214.c:
@@ -14,6 +15,7 @@ src/func_ov039_02111214.c:
     .text start:0x02111214 end:0x02111254
 
 src/_ZN5Cloud16CleanupResourcesEv.c:
+    complete
     .text start:0x02111254 end:0x02111278
 
 src/_ZN5Cloud6RenderEv.cpp:

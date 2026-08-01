@@ -9,6 +9,7 @@ src/_ZN9SpindriftD1Ev.c:
     .text start:0x02123740 end:0x02123788
 
 src/_ZN9SpindriftD0Ev.c:
+    complete
     .text start:0x02123788 end:0x021237e4
 
 src/func_ov081_021237e4.c:
@@ -27,6 +28,7 @@ src/func_ov081_02123b20.cpp:
     .text start:0x02123b20 end:0x02123bec
 
 src/_ZN9Spindrift16CleanupResourcesEv.c:
+    complete
     .text start:0x02123bec end:0x02123c1c
 
 src/_ZN9Spindrift6RenderEv.cpp:
@@ -56,6 +58,7 @@ src/_ZN10MrBlizzardD1Ev.c:
     .text start:0x02124090 end:0x021240d8
 
 src/_ZN10MrBlizzardD0Ev.c:
+    complete
     .text start:0x021240d8 end:0x02124134
 
 src/func_ov081_02124134.c:
@@ -116,6 +119,7 @@ src/func_ov081_02124e64.c:
     .text start:0x02124e64 end:0x02124ec0
 
 src/func_ov081_02124ec0.c:
+    complete
     .text start:0x02124ec0 end:0x02124f20
 
 src/func_ov081_02124f20.cpp:
@@ -158,6 +162,7 @@ src/func_ov081_021254d8.cpp:
     .text start:0x021254d8 end:0x021257b0
 
 src/_ZN10MrBlizzard16CleanupResourcesEv.c:
+    complete
     .text start:0x021257b0 end:0x0212581c
 
 src/_ZN10MrBlizzard16OnPendingDestroyEv.c:
@@ -186,6 +191,7 @@ src/_ZN8SnowballD1Ev.c:
     .text start:0x02125f14 end:0x02125f5c
 
 src/_ZN8SnowballD0Ev.c:
+    complete
     .text start:0x02125f5c end:0x02125fb8
 
 src/func_ov081_02125fb8.c:
@@ -209,6 +215,7 @@ src/func_ov081_02126224.c:
     .text start:0x02126224 end:0x02126298
 
 src/_ZN8Snowball16CleanupResourcesEv.c:
+    complete
     .text start:0x02126298 end:0x021262bc
 
 src/_ZN8Snowball16OnPendingDestroyEv.c:
@@ -233,6 +240,7 @@ src/_ZN8MoneybagD1Ev.cpp:
     .text start:0x02126504 end:0x02126554
 
 src/_ZN8MoneybagD0Ev.c:
+    complete
     .text start:0x02126554 end:0x021265b8
 
 src/func_ov081_021265b8.c:
@@ -252,6 +260,7 @@ src/func_ov081_02126700.cpp:
     .text start:0x02126700 end:0x02126758
 
 src/func_ov081_02126758.cpp:
+    complete
     .text start:0x02126758 end:0x02126950
 
 src/func_ov081_02126950.cpp:

@@ -11,6 +11,7 @@ src/func_ov045_021111e4.c:
     .text start:0x021111e4 end:0x0211123c
 
 src/func_ov045_0211123c.c:
+    complete
     .text start:0x0211123c end:0x02111274
 
 src/func_ov045_02111274.cpp:
@@ -34,6 +35,7 @@ src/func_ov045_021114c8.c:
     .text start:0x021114c8 end:0x021114dc
 
 src/FireSeaElevator_Spawn.c:
+    complete
     .text start:0x021114dc end:0x0211150c
 
 src/_ZN15FireSeaElevatorD1Ev.c:
@@ -64,6 +66,7 @@ src/_ZN8PoleLiftD1Ev.cpp:
     .text start:0x02111840 end:0x02111878
 
 src/_ZN8PoleLiftD0Ev.c:
+    complete
     .text start:0x02111878 end:0x021118c4
 
 src/func_ov045_021118c4.cpp:

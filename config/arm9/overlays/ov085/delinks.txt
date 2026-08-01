@@ -8,6 +8,7 @@ src/_ZN4ToadD1Ev.cpp:
     .text start:0x02129020 end:0x02129060
 
 src/_ZN4ToadD0Ev.c:
+    complete
     .text start:0x02129060 end:0x021290b4
 
 src/func_ov085_021290b4.c:
@@ -60,6 +61,7 @@ src/_ZN13PrincessPeachD1Ev.cpp:
     .text start:0x02129d18 end:0x02129d60
 
 src/_ZN13PrincessPeachD0Ev.c:
+    complete
     .text start:0x02129d60 end:0x02129dbc
 
 src/func_ov085_02129dbc.cpp:
@@ -77,6 +79,7 @@ src/func_ov085_02129fdc.cpp:
     .text start:0x02129fdc end:0x0212a0b8
 
 src/func_ov085_0212a0b8.c:
+    complete
     .text start:0x0212a0b8 end:0x0212a0e8
 
 src/func_ov085_0212a0e8.c:
@@ -154,6 +157,7 @@ src/_ZN6RabbitD1Ev.c:
     .text start:0x0212a6d4 end:0x0212a724
 
 src/_ZN6RabbitD0Ev.c:
+    complete
     .text start:0x0212a724 end:0x0212a788
 
 src/func_ov085_0212a788.c:
@@ -221,6 +225,7 @@ src/func_ov085_0212b8a0.c:
     .text start:0x0212b8a0 end:0x0212b8dc
 
 src/func_ov085_0212bc14.c:
+    complete
     .text start:0x0212bc14 end:0x0212bc78
 
 src/func_ov085_0212bc78.cpp:
@@ -239,6 +244,7 @@ src/func_ov085_0212bedc.cpp:
     .text start:0x0212bedc end:0x0212c004
 
 src/_ZN6Rabbit16CleanupResourcesEv.c:
+    complete
     .text start:0x0212c004 end:0x0212c070
 
 src/_ZN6Rabbit16OnPendingDestroyEv.c:
@@ -272,6 +278,7 @@ src/_ZN9RabbitKeyD1Ev.c:
     .text start:0x0212cc88 end:0x0212ccc0
 
 src/_ZN9RabbitKeyD0Ev.c:
+    complete
     .text start:0x0212ccc0 end:0x0212cd0c
 
 src/func_ov085_0212cd0c.cpp:
@@ -279,6 +286,7 @@ src/func_ov085_0212cd0c.cpp:
     .text start:0x0212cd0c end:0x0212cd80
 
 src/func_ov085_0212cd80.c:
+    complete
     .text start:0x0212cd80 end:0x0212d038
 
 src/func_ov085_0212d038.c:
@@ -302,6 +310,7 @@ src/func_ov085_0212d2b8.cpp:
     .text start:0x0212d2b8 end:0x0212d374
 
 src/_ZN9RabbitKey16CleanupResourcesEv.c:
+    complete
     .text start:0x0212d374 end:0x0212d398
 
 src/_ZN9RabbitKey16OnPendingDestroyEv.c:
@@ -328,6 +337,7 @@ src/_ZN9LakituBroD1Ev.c:
     .text start:0x0212d528 end:0x0212d578
 
 src/_ZN9LakituBroD0Ev.c:
+    complete
     .text start:0x0212d578 end:0x0212d5dc
 
 src/func_ov085_0212d5dc.cpp:
@@ -427,6 +437,7 @@ src/func_ov085_0212e858.c:
     .text start:0x0212e858 end:0x0212ea90
 
 src/_ZN9LakituBro16CleanupResourcesEv.c:
+    complete
     .text start:0x0212ea90 end:0x0212eacc
 
 src/_ZN9LakituBro16OnPendingDestroyEv.c:
@@ -454,6 +465,7 @@ src/_ZN8WallSignD0Ev.c:
     .text start:0x0212edf8 end:0x0212ee58
 
 src/_ZN8WallSign16CleanupResourcesEv.c:
+    complete
     .text start:0x0212ee58 end:0x0212ee7c
 
 src/_ZN8WallSign6RenderEv.cpp:

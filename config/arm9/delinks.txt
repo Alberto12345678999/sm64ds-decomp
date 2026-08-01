@@ -21,6 +21,7 @@ src/_ZN4CP1511SystemSetupEv.c:
     .text start:0x020049f0 end:0x02004ad8
 
 src/func_02005000.c:
+    complete
     .text start:0x02005000 end:0x02005060
 
 src/func_02005060.c:
@@ -43,6 +44,7 @@ src/func_02005324.c:
     .text start:0x02005324 end:0x02005348
 
 src/func_02005348.c:
+    complete
     .text start:0x02005348 end:0x02005418
 
 src/func_02005418.c:
@@ -89,21 +91,26 @@ src/_ZN8CapEnemy6AddCapEj.c:
     .text start:0x020063b0 end:0x020064e0
 
 src/_ZN8CapEnemy14UnloadCapModelEv.c:
+    complete
     .text start:0x020064e0 end:0x0200651c
 
 src/_ZN8CapEnemyD2Ev.c:
+    complete
     .text start:0x0200651c end:0x02006554
 
 src/_ZN8CapEnemyC2Ev.c:
+    complete
     .text start:0x02006554 end:0x02006588
 
 src/main.c:
     .text start:0x02007000 end:0x0200705c
 
 src/_ZN6CameraD1Ev.c:
+    complete
     .text start:0x0200705c end:0x02007098
 
 src/_ZN6CameraD0Ev.c:
+    complete
     .text start:0x02007098 end:0x020070e8
 
 src/func_020070e8.c:
@@ -115,6 +122,7 @@ src/func_020071a8.c:
     .text start:0x020071a8 end:0x020071e0
 
 src/func_020071e0.c:
+    complete
     .text start:0x020071e0 end:0x020072c0
 
 src/func_020072c0.c:
@@ -142,6 +150,7 @@ src/func_02007484.c:
     .text start:0x02007484 end:0x020074e8
 
 src/func_020074e8.c:
+    complete
     .text start:0x020074e8 end:0x0200751c
 
 src/func_0200751c.c:
@@ -201,6 +210,7 @@ src/func_02007b98.c:
     .text start:0x02007b98 end:0x02007c14
 
 src/func_02007c14.c:
+    complete
     .text start:0x02007c14 end:0x02007c9c
 
 src/func_02007c9c.c:
@@ -268,6 +278,7 @@ src/func_020082f8.c:
     .text start:0x020082f8 end:0x0200840c
 
 src/func_0200840c.c:
+    complete
     .text start:0x0200840c end:0x02008450
 
 src/func_02008450.c:
@@ -311,6 +322,7 @@ src/func_02008abc.c:
     .text start:0x02008abc end:0x02008b08
 
 src/func_02008b08.c:
+    complete
     .text start:0x02008b08 end:0x02008b4c
 
 src/func_02008b4c.c:
@@ -364,6 +376,7 @@ src/func_020094e4.c:
     .text start:0x020094e4 end:0x02009540
 
 src/func_02009540.c:
+    complete
     .text start:0x02009540 end:0x020095c4
 
 src/func_020095c4.c:
@@ -470,6 +483,7 @@ src/func_0200bec4.c:
     .text start:0x0200bec4 end:0x0200c394
 
 src/func_0200c394.c:
+    complete
     .text start:0x0200c394 end:0x0200c66c
 
 src/func_0200c66c.c:
@@ -619,9 +633,11 @@ src/func_0200d7a4.c:
     .text start:0x0200d7a4 end:0x0200d7e0
 
 src/func_0200d7e0.c:
+    complete
     .text start:0x0200d7e0 end:0x0200d81c
 
 src/func_0200d81c.c:
+    complete
     .text start:0x0200d81c end:0x0200d858
 
 src/func_0200d858.c:
@@ -641,9 +657,11 @@ src/func_0200d8ac.c:
     .text start:0x0200d8ac end:0x0200d8c8
 
 src/func_0200d8c8.c:
+    complete
     .text start:0x0200d8c8 end:0x0200d954
 
 src/func_0200d954.c:
+    complete
     .text start:0x0200d954 end:0x0200d9d0
 
 src/_ZN6Camera16CleanupResourcesEv.c:
@@ -664,6 +682,7 @@ src/_ZN6Camera13InitResourcesEv.cpp:
     .text start:0x0200e338 end:0x0200e444
 
 src/_ZN6CameraC1Ev.c:
+    complete
     .text start:0x0200e444 end:0x0200e494
 
 src/func_0200e494.c:
@@ -671,9 +690,11 @@ src/func_0200e494.c:
     .text start:0x0200e494 end:0x0200e4e4
 
 src/func_0200e4e4.c:
+    complete
     .text start:0x0200e4e4 end:0x0200e55c
 
 src/func_0200e55c.c:
+    complete
     .text start:0x0200e55c end:0x0200e5ac
 
 src/func_0200e5ac.c:
@@ -685,6 +706,7 @@ src/func_0200e5fc.c:
     .text start:0x0200e5fc end:0x0200e6d8
 
 src/func_0200e6d8.c:
+    complete
     .text start:0x0200e6d8 end:0x0200e728
 
 src/func_0200e728.c:
@@ -715,6 +737,7 @@ src/func_0200ee68.c:
     .text start:0x0200ee68 end:0x0200ee8c
 
 src/func_0200ee8c.c:
+    complete
     .text start:0x0200ee8c end:0x0200eec8
 
 src/func_0200eec8.c:
@@ -722,6 +745,7 @@ src/func_0200eec8.c:
     .text start:0x0200eec8 end:0x0200eedc
 
 src/StartIntroCutscene.c:
+    complete
     .text start:0x0200eedc end:0x0200ef04
 
 src/RunKuppaScript.c:
@@ -729,6 +753,7 @@ src/RunKuppaScript.c:
     .text start:0x0200ef04 end:0x0200ef80
 
 src/ContinueKuppaScriptIfNecessary.c:
+    complete
     .text start:0x0200ef80 end:0x0200f04c
 
 src/ResetKuppaScript.c:
@@ -764,6 +789,7 @@ src/func_0200f46c.c:
     .text start:0x0200f46c end:0x0200f470
 
 src/_Z13CopyToViewMatPK9Matrix4x3.c:
+    complete
     .text start:0x0200f470 end:0x0200f4b4
 
 src/func_0200f4b4.c:
@@ -771,6 +797,7 @@ src/func_0200f4b4.c:
     .text start:0x0200f4b4 end:0x0200f4f4
 
 src/func_0200f4f4.c:
+    complete
     .text start:0x0200f4f4 end:0x0200f558
 
 src/Initialise3dGraphics.cpp:
@@ -880,9 +907,11 @@ src/_ZN5Actor8PoofDustEv.c:
     .text start:0x0200fe3c end:0x0200fe70
 
 src/UnloadBlueCoinModel.c:
+    complete
     .text start:0x0200fe70 end:0x0200fe9c
 
 src/LoadBlueCoinModel.c:
+    complete
     .text start:0x0200fe9c end:0x0200fec8
 
 src/_ZN5Actor17GetWaterHeightWDWEv.c:
@@ -990,12 +1019,15 @@ src/_ZN5Actor12ReflectAngleE5Fix12IiES1_s.c:
     .text start:0x02010428 end:0x0201045c
 
 src/_ZN5Actor15IsPlayerInRangeERK7Vector3i.c:
+    complete
     .text start:0x0201045c end:0x02010498
 
 src/_ZN5Actor15IsPlayerInRangeE5Fix12IiES1_S1_i.c:
+    complete
     .text start:0x02010498 end:0x020104dc
 
 src/_ZN5Actor15IsPlayerInRangeEi.c:
+    complete
     .text start:0x020104dc end:0x02010518
 
 src/_ZN5Actor24BumpedUnderneathByPlayerER6Player.cpp:
@@ -1019,24 +1051,31 @@ src/_ZN5Actor10SpawnCoinsERK7Vector3j5Fix12IiEs.c:
     .text start:0x02010714 end:0x02010844
 
 src/func_02010844.c:
+    complete
     .text start:0x02010844 end:0x020108c4
 
 src/_ZN5Actor18ClosestWithActorIDEj.c:
+    complete
     .text start:0x020108c4 end:0x0201092c
 
 src/_ZN5Actor18HorzAngleToFPlayerEv.c:
+    complete
     .text start:0x0201092c end:0x02010958
 
 src/_ZN5Actor14FarthestPlayerEv.c:
+    complete
     .text start:0x02010958 end:0x0201097c
 
 src/_ZN5Actor23HorzAngleToCPlayerOrAngEv.c:
+    complete
     .text start:0x0201097c end:0x020109b8
 
 src/_ZN5Actor18HorzAngleToCPlayerEv.c:
+    complete
     .text start:0x020109b8 end:0x020109e4
 
 src/_ZN5Actor13DistToCPlayerEv.c:
+    complete
     .text start:0x020109e4 end:0x02010a08
 
 src/_ZN5Actor22ClosestNonVanishPlayerEv.c:
@@ -1076,6 +1115,7 @@ src/_ZN5Actor9SetRangesE5Fix12IiES1_S1_S1_.cpp:
     .text start:0x02010e08 end:0x02010e2c
 
 src/_ZN5Actor5SpawnEjjRK7Vector3PK10Vector3_16ii.c:
+    complete
     .text start:0x02010e2c end:0x02010e78
 
 src/func_02010e78.c:
@@ -1129,6 +1169,7 @@ src/_ZN5ActorD2Ev.cpp:
     .text start:0x020112c8 end:0x02011314
 
 src/_ZN5ActorD0Ev.c:
+    complete
     .text start:0x02011314 end:0x02011374
 
 src/_ZN5ActorD1Ev.cpp:
@@ -1215,9 +1256,11 @@ src/func_02011c54.c:
     .text start:0x02011c54 end:0x02011c8c
 
 src/func_02011c8c.c:
+    complete
     .text start:0x02011c8c end:0x02011cc8
 
 src/DisableSoundPlayersForCredits.c:
+    complete
     .text start:0x02011cc8 end:0x02011cfc
 
 src/func_02011cfc.c:
@@ -1289,6 +1332,7 @@ src/func_02011f7c.c:
     .text start:0x02011f7c end:0x02011fe8
 
 src/_ZN5Sound21UnsetPlayerVoiceGroupEv.c:
+    complete
     .text start:0x02011fe8 end:0x02011ffc
 
 src/_ZN5Sound16LoadInitialGroupEi.cpp:
@@ -1440,6 +1484,7 @@ src/_ZN5Sound17ChangeMusicVolumeEj5Fix12IiE.c:
     .text start:0x02012d2c end:0x02012d64
 
 src/func_02012d64.c:
+    complete
     .text start:0x02012d64 end:0x02012dbc
 
 src/func_02012dbc.c:
@@ -1523,9 +1568,11 @@ src/func_020135d0.c:
     .text start:0x020135d0 end:0x0201361c
 
 src/func_0201361c.c:
+    complete
     .text start:0x0201361c end:0x02013638
 
 src/func_02013638.c:
+    complete
     .text start:0x02013638 end:0x02013650
 
 src/_ZN8SaveData21SetCoinRecordIfHigherEah.c:
@@ -1533,6 +1580,7 @@ src/_ZN8SaveData21SetCoinRecordIfHigherEah.c:
     .text start:0x02013650 end:0x0201366c
 
 src/_ZN8SaveData13GetCoinRecordEj.c:
+    complete
     .text start:0x0201366c end:0x0201367c
 
 src/NumStars.c:
@@ -1572,9 +1620,11 @@ src/IsCannonOpenInLevel.c:
     .text start:0x02013818 end:0x02013834
 
 src/OpenCannon.c:
+    complete
     .text start:0x02013834 end:0x02013850
 
 src/IsCannonOpen.c:
+    complete
     .text start:0x02013850 end:0x02013868
 
 src/func_02013868.c:
@@ -1590,12 +1640,15 @@ src/func_020138dc.c:
     .text start:0x020138dc end:0x02013910
 
 src/_ZN8SaveData17SetCharacterIntroEi.c:
+    complete
     .text start:0x02013910 end:0x0201392c
 
 src/_ZN8SaveData19IsCharacterUnlockedEj.c:
+    complete
     .text start:0x0201392c end:0x02013944
 
 src/func_02013944.c:
+    complete
     .text start:0x02013944 end:0x02013984
 
 src/_ZN8SaveData22NumGlowingRabbitsFoundEv.cpp:
@@ -1603,21 +1656,27 @@ src/_ZN8SaveData22NumGlowingRabbitsFoundEv.cpp:
     .text start:0x02013984 end:0x020139b8
 
 src/func_020139b8.c:
+    complete
     .text start:0x020139b8 end:0x02013a00
 
 src/func_02013a00.c:
+    complete
     .text start:0x02013a00 end:0x02013a44
 
 src/func_02013a44.c:
+    complete
     .text start:0x02013a44 end:0x02013a88
 
 src/func_02013a88.c:
+    complete
     .text start:0x02013a88 end:0x02013ad4
 
 src/_ZN8SaveData13PlayerLoseCapEv.c:
+    complete
     .text start:0x02013ad4 end:0x02013b18
 
 src/_ZN8SaveData16HasPlayerLostCapEv.c:
+    complete
     .text start:0x02013b18 end:0x02013b5c
 
 src/_ZN8SaveData16CanPlayerHaveCapEv.cpp:
@@ -1625,6 +1684,7 @@ src/_ZN8SaveData16CanPlayerHaveCapEv.cpp:
     .text start:0x02013b5c end:0x02013b9c
 
 src/_ZN8SaveData15SaveCurrentFileEv.c:
+    complete
     .text start:0x02013b9c end:0x02013be0
 
 src/_ZN8SaveData13SaveMinigamesEP16MinigameSaveData.c:
@@ -1639,6 +1699,7 @@ src/_ZN8SaveData18SetDefaultValuesMgEP16MinigameSaveData.cpp:
     .text start:0x02013c5c end:0x02013c84
 
 src/func_02013c84.c:
+    complete
     .text start:0x02013c84 end:0x02013cd4
 
 src/_ZN8SaveData13EraseSaveFileEjPc.c:
@@ -1657,6 +1718,7 @@ src/_ZN8SaveData16SetDefaultValuesEP12FileSaveData.cpp:
     .text start:0x02013dc4 end:0x02013e0c
 
 src/_ZN8SaveData16EraseAllSaveDataEv.c:
+    complete
     .text start:0x02013e0c end:0x02013e64
 
 src/func_02013e64.c:
@@ -1664,9 +1726,11 @@ src/func_02013e64.c:
     .text start:0x02013e64 end:0x02013e80
 
 src/_ZN12ActorDerivedD1Ev.c:
+    complete
     .text start:0x02013e80 end:0x02013ea4
 
 src/_ZN12ActorDerivedD0Ev.c:
+    complete
     .text start:0x02013ea4 end:0x02013edc
 
 src/func_02013edc.c:
@@ -1709,6 +1773,7 @@ src/nds_printf.c:
     .text start:0x0201470c end:0x0201473c
 
 src/func_0201473c.c:
+    complete
     .text start:0x0201473c end:0x02014770
 
 src/nds_print.c:
@@ -1736,6 +1801,7 @@ src/_ZN19CylinderClsnWithPosD0Ev.c:
     .text start:0x02014828 end:0x02014854
 
 src/_ZN19CylinderClsnWithPosD1Ev.c:
+    complete
     .text start:0x02014854 end:0x02014878
 
 src/_ZN19CylinderClsnWithPosC1Ev.c:
@@ -1827,12 +1893,15 @@ src/_ZN12CylinderClsn4InitE5Fix12IiES1_jj.cpp:
     .text start:0x02015040 end:0x02015058
 
 src/_ZN12CylinderClsnD2Ev.c:
+    complete
     .text start:0x02015058 end:0x0201507c
 
 src/_ZN12CylinderClsnD0Ev.c:
+    complete
     .text start:0x0201507c end:0x020150a8
 
 src/_ZN12CylinderClsnD1Ev.c:
+    complete
     .text start:0x020150a8 end:0x020150cc
 
 src/_ZN12CylinderClsnC2Ev.cpp:
@@ -1883,6 +1952,7 @@ src/_ZN15MaterialChangerD0Ev.c:
     .text start:0x02015800 end:0x0201582c
 
 src/_ZN15MaterialChangerD1Ev.c:
+    complete
     .text start:0x0201582c end:0x02015850
 
 src/_ZN15MaterialChangerC1Ev.c:
@@ -1906,6 +1976,7 @@ src/_ZN18TextureTransformerD0Ev.c:
     .text start:0x02015900 end:0x0201592c
 
 src/_ZN18TextureTransformerD1Ev.c:
+    complete
     .text start:0x0201592c end:0x02015950
 
 src/_ZN18TextureTransformerC1Ev.c:
@@ -1966,12 +2037,14 @@ src/_ZN9Animation7AdvanceEv.cpp:
     .text start:0x02015c3c end:0x02015cb4
 
 src/_ZN9AnimationD2Ev.c:
+    complete
     .text start:0x02015cb4 end:0x02015cc4
 
 src/_ZN9AnimationD0Ev.c:
     .text start:0x02015cc4 end:0x02015ce8
 
 src/_ZN9AnimationD1Ev.c:
+    complete
     .text start:0x02015ce8 end:0x02015cf8
 
 src/_ZN9AnimationC1Ev.cpp:
@@ -2005,9 +2078,11 @@ src/_ZN11ShadowModel9DoSetFileEPcii.c:
     .text start:0x02015ef4 end:0x02015f80
 
 src/_ZN11ShadowModelD0Ev.c:
+    complete
     .text start:0x02015f80 end:0x02015ff8
 
 src/_ZN11ShadowModelD1Ev.c:
+    complete
     .text start:0x02015ff8 end:0x02016068
 
 src/_ZN11ShadowModelC1Ev.c:
@@ -2023,9 +2098,11 @@ src/_ZN11CommonModel13Func_020160ACEj.cpp:
     .text start:0x020160ac end:0x02016104
 
 src/_ZN11CommonModel6RenderEPK7Vector3.c:
+    complete
     .text start:0x02016104 end:0x02016144
 
 src/_ZN11CommonModel9DoSetFileEPcii.c:
+    complete
     .text start:0x02016144 end:0x020161b4
 
 src/_ZN11CommonModelD0Ev.c:
@@ -2033,9 +2110,11 @@ src/_ZN11CommonModelD0Ev.c:
     .text start:0x020161b4 end:0x020161e0
 
 src/_ZN11CommonModelD1Ev.c:
+    complete
     .text start:0x020161e0 end:0x02016204
 
 src/_ZN11CommonModelC1Ev.c:
+    complete
     .text start:0x02016204 end:0x02016254
 
 src/_ZN10ModelAnim24CopyERKS_Pcj.c:
@@ -2081,9 +2160,11 @@ src/_ZN14BlendModelAnim6RenderEPK7Vector3.c:
     .text start:0x020164e4 end:0x02016518
 
 src/_ZN14BlendModelAnim9Virtual10ER9Matrix4x3.c:
+    complete
     .text start:0x02016518 end:0x02016578
 
 src/_ZN14BlendModelAnim11UpdateVertsEv.c:
+    complete
     .text start:0x02016578 end:0x020165c4
 
 src/func_020165c4.c:
@@ -2200,6 +2281,7 @@ src/func_02016b24.c:
     .text start:0x02016b24 end:0x02016b78
 
 src/_ZN5Model6RenderEPK7Vector3.c:
+    complete
     .text start:0x02016b78 end:0x02016bb8
 
 src/_ZN5Model9Virtual10ER9Matrix4x3.c:
@@ -2225,9 +2307,11 @@ src/_ZN5ModelD1Ev.c:
     .text start:0x02016d20 end:0x02016d58
 
 src/_ZN5ModelC1Ev.c:
+    complete
     .text start:0x02016d58 end:0x02016da8
 
 src/_ZN5ModelC2Ev.c:
+    complete
     .text start:0x02016da8 end:0x02016df8
 
 src/CleanCommonModelDataArr.c:
@@ -2254,15 +2338,19 @@ src/func_02016ff4.cpp:
     .text start:0x02016ff4 end:0x02017060
 
 src/func_02017060.c:
+    complete
     .text start:0x02017060 end:0x020170b8
 
 src/_ZN9ModelBaseD2Ev.c:
+    complete
     .text start:0x020170b8 end:0x020170e8
 
 src/_ZN9ModelBaseD0Ev.c:
+    complete
     .text start:0x020170e8 end:0x02017120
 
 src/_ZN9ModelBaseD1Ev.c:
+    complete
     .text start:0x02017120 end:0x02017150
 
 src/_ZN9ModelBaseC1Ev.c:
@@ -2300,9 +2388,11 @@ src/func_0201721c.c:
     .text start:0x0201721c end:0x02017228
 
 src/func_02017228.c:
+    complete
     .text start:0x02017228 end:0x02017254
 
 src/func_02017254.c:
+    complete
     .text start:0x02017254 end:0x02017278
 
 src/func_02017278.c:
@@ -2317,6 +2407,7 @@ src/_ZN9FaderWipe11AdvanceFadeEv.cpp:
     .text start:0x020172d8 end:0x02017418
 
 src/_ZN9FaderWipeD0Ev.c:
+    complete
     .text start:0x02017418 end:0x02017450
 
 src/_ZN9FaderWipeD1Ev.c:
@@ -2324,6 +2415,7 @@ src/_ZN9FaderWipeD1Ev.c:
     .text start:0x02017450 end:0x02017480
 
 src/_ZN9FaderWipeC1Ev.c:
+    complete
     .text start:0x02017480 end:0x020174e0
 
 src/_ZN10FaderColor11AdvanceFadeEv.cpp:
@@ -2331,12 +2423,15 @@ src/_ZN10FaderColor11AdvanceFadeEv.cpp:
     .text start:0x020174e0 end:0x02017574
 
 src/_ZN5ColorD1Ev.c:
+    complete
     .text start:0x02017574 end:0x02017598
 
 src/_ZN10FaderColorD0Ev.c:
+    complete
     .text start:0x02017598 end:0x020175c4
 
 src/_ZN10FaderColorD1Ev.c:
+    complete
     .text start:0x020175c4 end:0x020175e8
 
 src/_ZN5Fader13AdvanceInterpEv.cpp:
@@ -2375,21 +2470,26 @@ src/_ZN15FaderBrightness11AdvanceFadeEv.cpp:
     .text start:0x02017720 end:0x020177c4
 
 src/func_020177c4.c:
+    complete
     .text start:0x020177c4 end:0x020177e8
 
 src/_ZN15FaderBrightnessD0Ev.c:
+    complete
     .text start:0x020177e8 end:0x02017814
 
 src/_ZN15FaderBrightnessD1Ev.c:
+    complete
     .text start:0x02017814 end:0x02017838
 
 src/func_02017838.c:
+    complete
     .text start:0x02017838 end:0x02017848
 
 src/_ZN5FaderD0Ev.c:
     .text start:0x02017848 end:0x0201786c
 
 src/_ZN5FaderD1Ev.c:
+    complete
     .text start:0x0201786c end:0x0201787c
 
 src/func_0201787c.c:
@@ -2485,6 +2585,7 @@ src/_ZN13SharedFilePtr8LoadFileEv.c:
     .text start:0x02017bc4 end:0x02017c24
 
 src/func_02017c24.c:
+    complete
     .text start:0x02017c24 end:0x02017c54
 
 src/_ZN13SharedFilePtr4LoadEv.cpp:
@@ -2592,6 +2693,7 @@ src/func_020186c0.c:
     .text start:0x020186c0 end:0x02018770
 
 src/func_02018770.c:
+    complete
     .text start:0x02018770 end:0x020187b0
 
 src/UnloadArchives.c:
@@ -2706,30 +2808,39 @@ src/func_02018efc.c:
     .text start:0x02018efc end:0x02018f38
 
 src/SetSubBg3Offset.c:
+    complete
     .text start:0x02018f38 end:0x02018f54
 
 src/SetSubBg2Offset.c:
+    complete
     .text start:0x02018f54 end:0x02018f70
 
 src/SetSubBg1Offset.c:
+    complete
     .text start:0x02018f70 end:0x02018f8c
 
 src/SetSubBg0Offset.c:
+    complete
     .text start:0x02018f8c end:0x02018fa8
 
 src/SetBg3Offset.c:
+    complete
     .text start:0x02018fa8 end:0x02018fc4
 
 src/SetBg2Offset.c:
+    complete
     .text start:0x02018fc4 end:0x02018fe0
 
 src/SetBg1Offset.c:
+    complete
     .text start:0x02018fe0 end:0x02018ffc
 
 src/SetBg0Offset.c:
+    complete
     .text start:0x02018ffc end:0x02019018
 
 src/func_02019018.c:
+    complete
     .text start:0x02019018 end:0x02019028
 
 src/func_02019028.c:
@@ -2769,6 +2880,7 @@ src/SetSoundMode.c:
     .text start:0x02019510 end:0x02019574
 
 src/GetSoundMode.c:
+    complete
     .text start:0x02019574 end:0x02019584
 
 src/_ZN5Timer7GetTimeEv.cpp:
@@ -2805,9 +2917,11 @@ src/func_0201973c.c:
     .text start:0x0201973c end:0x02019740
 
 src/Crash.c:
+    complete
     .text start:0x02019740 end:0x02019780
 
 src/func_02019780.c:
+    complete
     .text start:0x02019780 end:0x020197b8
 
 src/func_020197b8.c:
@@ -2881,6 +2995,7 @@ src/func_0201a3e4.c:
     .text start:0x0201a3e4 end:0x0201a428
 
 src/func_0201a428.c:
+    complete
     .text start:0x0201a428 end:0x0201a458
 
 src/func_0201a458.c:
@@ -2899,6 +3014,7 @@ src/func_0201a4d0.c:
     .text start:0x0201a4d0 end:0x0201a4e4
 
 src/func_0201a4e4.c:
+    complete
     .text start:0x0201a4e4 end:0x0201a534
 
 src/_ZN3IRQ13VBlankHandlerEv.c:
@@ -2976,9 +3092,11 @@ src/func_0201aaec.c:
     .text start:0x0201aaec end:0x0201ab04
 
 src/_ZN7Message7EndTalkEv.c:
+    complete
     .text start:0x0201ab04 end:0x0201ab38
 
 src/_ZN7Message11PrepareTalkEv.c:
+    complete
     .text start:0x0201ab38 end:0x0201ab6c
 
 src/func_0201ab6c.c:
@@ -2989,6 +3107,7 @@ src/func_0201aca4.c:
     .text start:0x0201aca4 end:0x0201adac
 
 src/func_0201adac.c:
+    complete
     .text start:0x0201adac end:0x0201adfc
 
 src/func_0201adfc.c:
@@ -3112,6 +3231,7 @@ src/_ZN7Message13DisplaySavingEt.cpp:
     .text start:0x0201eb94 end:0x0201ef38
 
 src/func_0201ef38.c:
+    complete
     .text start:0x0201ef38 end:0x0201ef50
 
 src/func_0201ef50.c:
@@ -3288,6 +3408,7 @@ src/_ZN3OAM5ResetEv.cpp:
     .text start:0x02021788 end:0x02021864
 
 src/_ZN3OAM5FlushEv.c:
+    complete
     .text start:0x02021864 end:0x02021898
 
 src/_ZN3OAM4LoadEv.c:
@@ -3303,6 +3424,7 @@ src/_ZN3OAM9RenderSubEP7OamAttriiii.c:
     .text start:0x0202199c end:0x020219f0
 
 src/_ZN3OAM12EnableSubOAMEv.c:
+    complete
     .text start:0x020219f0 end:0x02021a04
 
 src/func_02021a04.c:
@@ -3386,6 +3508,7 @@ src/_ZN8Particle17CheckLavaCallback14SpawnParticlesERNS_6SystemE.cpp:
     .text start:0x02022328 end:0x02022418
 
 src/_ZN8Particle22FitWaterSimpleCallback8OnUpdateERNS_6SystemEb.c:
+    complete
     .text start:0x02022418 end:0x02022464
 
 src/_ZN8Particle14BubbleCallback8OnUpdateERNS_6SystemEb.cpp:
@@ -3436,60 +3559,78 @@ src/_ZN8Particle19SetSelfDestructFlagEj.c:
     .text start:0x020226d4 end:0x020226fc
 
 src/func_020226fc.c:
+    complete
     .text start:0x020226fc end:0x02022774
 
 src/func_02022774.c:
+    complete
     .text start:0x02022774 end:0x020227ec
 
 src/func_020227ec.c:
+    complete
     .text start:0x020227ec end:0x02022864
 
 src/func_02022864.c:
+    complete
     .text start:0x02022864 end:0x020228dc
 
 src/func_020228dc.c:
+    complete
     .text start:0x020228dc end:0x0202293c
 
 src/func_0202293c.c:
+    complete
     .text start:0x0202293c end:0x02022998
 
 src/_ZN8Particle6System9NewRippleE5Fix12IiES2_S2_.c:
+    complete
     .text start:0x02022998 end:0x020229f0
 
 src/func_020229f0.c:
+    complete
     .text start:0x020229f0 end:0x02022a4c
 
 src/func_02022a4c.c:
+    complete
     .text start:0x02022a4c end:0x02022aa8
 
 src/_ZN8Particle6System12NewBigSplashE5Fix12IiES2_S2_.c:
+    complete
     .text start:0x02022aa8 end:0x02022b04
 
 src/func_02022b04.c:
+    complete
     .text start:0x02022b04 end:0x02022b58
 
 src/_ZN8Particle20RunningSlidingDustAtE5Fix12IiES1_S1_.c:
     .text start:0x02022b58 end:0x02022bb4
 
 src/_ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f.c:
+    complete
     .text start:0x02022bb4 end:0x02022bf8
 
 src/_ZN8Particle6System10NewWeatherEjj5Fix12IiES2_S2_PK11Vector3_16fj.c:
+    complete
     .text start:0x02022bf8 end:0x02022c3c
 
 src/func_02022c3c.c:
+    complete
     .text start:0x02022c3c end:0x02022c80
 
 src/func_02022c80.c:
+    complete
     .text start:0x02022c80 end:0x02022cbc
 
 src/func_02022cbc.c:
+    complete
     .text start:0x02022cbc end:0x02022d00
 
 src/func_02022d00.c:
+    complete
     .text start:0x02022d00 end:0x02022d44
 
 src/func_02022d44.c:
+    complete
     .text start:0x02022d44 end:0x02022d80
 
 src/_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE.c:
@@ -3497,9 +3638,11 @@ src/_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE.c:
     .text start:0x02022d80 end:0x02022e68
 
 src/_ZN8Particle6System12FromUniqueIDEj.c:
+    complete
     .text start:0x02022e68 end:0x02022e98
 
 src/_ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_.c:
+    complete
     .text start:0x02022e98 end:0x02022ee0
 
 src/_ZN8Particle9RenderAllEv.c:
@@ -3518,6 +3661,7 @@ src/_ZN8Particle7Texture12AllocPalVramEjb.c:
     .text start:0x020230ec end:0x02023134
 
 src/_ZN8Particle7Texture12AllocTexVramEjb.c:
+    complete
     .text start:0x02023134 end:0x02023178
 
 src/func_02023178.c:
@@ -3540,12 +3684,15 @@ src/func_020233f0.c:
     .text start:0x020233f0 end:0x020233f4
 
 src/func_020233f4.c:
+    complete
     .text start:0x020233f4 end:0x02023408
 
 src/func_02023408.c:
+    complete
     .text start:0x02023408 end:0x0202341c
 
 src/LoadDebugFont.c:
+    complete
     .text start:0x0202341c end:0x0202345c
 
 src/func_0202345c.c:
@@ -3561,6 +3708,7 @@ src/func_02023544.c:
     .text start:0x02023544 end:0x02023598
 
 src/_ZN5SceneD2Ev.c:
+    complete
     .text start:0x02023598 end:0x020235d4
 
 src/_ZN9BootSceneD0Ev.c:
@@ -3572,9 +3720,11 @@ src/func_02023624.c:
     .text start:0x02023624 end:0x02023688
 
 src/_ZN5StageD2Ev.c:
+    complete
     .text start:0x02023688 end:0x020236f0
 
 src/_ZN5StageD0Ev.c:
+    complete
     .text start:0x020236f0 end:0x0202376c
 
 src/_ZN5Stage9VE_UpdateEv.cpp:
@@ -3683,6 +3833,7 @@ src/FUN_02029a68.c:
     .text start:0x02029a68 end:0x02029ab0
 
 src/FUN_02029ab0.c:
+    complete
     .text start:0x02029ab0 end:0x02029b04
 
 src/EnterBigBoosHaunt.c:
@@ -3690,9 +3841,11 @@ src/EnterBigBoosHaunt.c:
     .text start:0x02029b04 end:0x02029b30
 
 src/KillPlayer.c:
+    complete
     .text start:0x02029b30 end:0x02029b84
 
 src/HitDeathPlane.c:
+    complete
     .text start:0x02029b84 end:0x02029bd4
 
 src/ExitLevel.c:
@@ -3708,12 +3861,15 @@ src/SetNextStar.c:
     .text start:0x02029d1c end:0x02029dbc
 
 src/DeathTable_ClearBit.c:
+    complete
     .text start:0x02029dbc end:0x02029e0c
 
 src/DeathTable_SetBit.c:
+    complete
     .text start:0x02029e0c end:0x02029e58
 
 src/DeathTable_GetBit.c:
+    complete
     .text start:0x02029e58 end:0x02029ea4
 
 src/_ZN5Event8ClearBitEj.c:
@@ -3721,9 +3877,11 @@ src/_ZN5Event8ClearBitEj.c:
     .text start:0x02029ea4 end:0x02029ec4
 
 src/_ZN5Event6SetBitEj.c:
+    complete
     .text start:0x02029ec4 end:0x02029ee0
 
 src/_ZN5Event6GetBitEj.c:
+    complete
     .text start:0x02029ee0 end:0x02029ef8
 
 src/_ZN5Stage19RenderVsModeNewStarEv.cpp:
@@ -3759,6 +3917,7 @@ src/AddSpikeBomb.c:
     .text start:0x0202a628 end:0x0202a660
 
 src/SetStarMarker.c:
+    complete
     .text start:0x0202a660 end:0x0202a67c
 
 src/OpenCannonInCurLevel.c:
@@ -3818,12 +3977,15 @@ src/_ZN5Stage11GetSkyboxIDEv.c:
     .text start:0x0202a93c end:0x0202a958
 
 src/func_0202a958.c:
+    complete
     .text start:0x0202a958 end:0x0202a96c
 
 src/func_0202a96c.c:
+    complete
     .text start:0x0202a96c end:0x0202a980
 
 src/func_0202a980.c:
+    complete
     .text start:0x0202a980 end:0x0202a994
 
 src/_Z23LoadMinimapChangeObjecti5Fix12IiEh.c:
@@ -3843,6 +4005,7 @@ src/IsAreaShowing.c:
     .text start:0x0202aa6c end:0x0202aa88
 
 src/ChangeArea.c:
+    complete
     .text start:0x0202aa88 end:0x0202aac0
 
 src/GiveLives.c:
@@ -3854,18 +4017,23 @@ src/LoadLevel.c:
     .text start:0x0202aaec end:0x0202acc0
 
 src/LoadLevelNoReturn.c:
+    complete
     .text start:0x0202acc0 end:0x0202acfc
 
 src/SetPlayerGlobals.c:
+    complete
     .text start:0x0202acfc end:0x0202ad78
 
 src/ExitMinigameMenu.c:
+    complete
     .text start:0x0202ad78 end:0x0202adf4
 
 src/StartMinigameMenu.c:
+    complete
     .text start:0x0202adf4 end:0x0202ae2c
 
 src/PrepareVsMode.c:
+    complete
     .text start:0x0202ae2c end:0x0202ae74
 
 src/func_0202ae74.c:
@@ -3873,6 +4041,7 @@ src/func_0202ae74.c:
     .text start:0x0202ae74 end:0x0202ae88
 
 src/StartFile.c:
+    complete
     .text start:0x0202ae88 end:0x0202af08
 
 src/StartWithFarCamera.c:
@@ -3888,6 +4057,7 @@ src/GetMinimapScale.c:
     .text start:0x0202af48 end:0x0202af80
 
 src/func_0202af80.c:
+    complete
     .text start:0x0202af80 end:0x0202af9c
 
 src/GetMinimapID.c:
@@ -3895,15 +4065,19 @@ src/GetMinimapID.c:
     .text start:0x0202af9c end:0x0202b044
 
 src/func_0202b044.c:
+    complete
     .text start:0x0202b044 end:0x0202b060
 
 src/func_0202b060.c:
+    complete
     .text start:0x0202b060 end:0x0202b07c
 
 src/GetTeleportDestObj.c:
+    complete
     .text start:0x0202b07c end:0x0202b090
 
 src/func_0202b090.c:
+    complete
     .text start:0x0202b090 end:0x0202b0ac
 
 src/GetViewObj.c:
@@ -3911,12 +4085,15 @@ src/GetViewObj.c:
     .text start:0x0202b0ac end:0x0202b0c4
 
 src/func_0202b0c4.c:
+    complete
     .text start:0x0202b0c4 end:0x0202b0e0
 
 src/func_0202b0e0.c:
+    complete
     .text start:0x0202b0e0 end:0x0202b0fc
 
 src/_ZN5Stage10LoadSkyboxEv.c:
+    complete
     .text start:0x0202b0fc end:0x0202b164
 
 src/_ZN5Stage22RenderModelTransparentEv.cpp:
@@ -4000,9 +4177,11 @@ src/GetSoundGroupID.c:
     .text start:0x0202de24 end:0x0202de64
 
 src/_Z19UnloadLevelOverlaysi.c:
+    complete
     .text start:0x0202de64 end:0x0202deac
 
 src/func_0202deac.c:
+    complete
     .text start:0x0202deac end:0x0202ded4
 
 src/_Z17LoadLevelOverlaysi.cpp:
@@ -4021,6 +4200,7 @@ src/func_0202e118.c:
     .text start:0x0202e118 end:0x0202e140
 
 src/_ZN5SceneD1Ev.c:
+    complete
     .text start:0x0202e140 end:0x0202e170
 
 src/_ZN5SceneD0Ev.c:
@@ -4028,6 +4208,7 @@ src/_ZN5SceneD0Ev.c:
     .text start:0x0202e170 end:0x0202e1b4
 
 src/_ZN5Scene20SetAndStopColorFaderEv.c:
+    complete
     .text start:0x0202e1b4 end:0x0202e1e0
 
 src/_ZN5Scene9SetFadersEP15FaderBrightness.cpp:
@@ -4043,6 +4224,7 @@ src/_ZN5Scene18PrepareToSpawnBootEv.c:
     .text start:0x0202e300 end:0x0202e348
 
 src/_ZN5Scene14StartSceneFadeEjjt.c:
+    complete
     .text start:0x0202e348 end:0x0202e36c
 
 src/_ZN5Scene15SetSceneToSpawnEjj.c:
@@ -4069,6 +4251,7 @@ src/_ZN5Scene21AfterCleanupResourcesEj.cpp:
     .text start:0x0202e5d0 end:0x0202e5f0
 
 src/_ZN5Scene22BeforeCleanupResourcesEv.c:
+    complete
     .text start:0x0202e5f0 end:0x0202e62c
 
 src/_ZN5Scene18AfterInitResourcesEj.cpp:
@@ -4080,6 +4263,7 @@ src/_ZN5Scene19BeforeInitResourcesEv.c:
     .text start:0x0202e638 end:0x0202e66c
 
 src/_ZN5Scene19ResetFadersAndSoundEv.c:
+    complete
     .text start:0x0202e66c end:0x0202e6c8
 
 src/_ZN5Scene20Initialise3dGraphicsEv.c:
@@ -4141,9 +4325,11 @@ src/func_0202f290.c:
     .text start:0x0202f290 end:0x0202f2c4
 
 src/func_0202f2c4.c:
+    complete
     .text start:0x0202f2c4 end:0x0202f3a4
 
 src/func_0202f3a4.c:
+    complete
     .text start:0x0202f3a4 end:0x0202f428
 
 src/func_0202f428.c:
@@ -4161,12 +4347,15 @@ src/func_0202f928.c:
     .text start:0x0202f928 end:0x0202fb30
 
 src/func_0202fb30.c:
+    complete
     .text start:0x0202fb30 end:0x0202fbc8
 
 src/func_0202fbc8.c:
+    complete
     .text start:0x0202fbc8 end:0x0202fc08
 
 src/func_0202fc08.c:
+    complete
     .text start:0x0202fc08 end:0x0202fc40
 
 src/func_0202fc40.c:
@@ -4174,9 +4363,11 @@ src/func_0202fc40.c:
     .text start:0x0202fc40 end:0x0202fc98
 
 src/_ZN4ViewD1Ev.c:
+    complete
     .text start:0x0202fc98 end:0x0202fcc8
 
 src/_ZN4ViewD0Ev.c:
+    complete
     .text start:0x0202fcc8 end:0x0202fd0c
 
 src/_ZN4View6RenderEv.c:
@@ -4184,6 +4375,7 @@ src/_ZN4View6RenderEv.c:
     .text start:0x0202fd0c end:0x0202fd2c
 
 src/func_0202fd2c.c:
+    complete
     .text start:0x0202fd2c end:0x0202fd4c
 
 src/Quaternion_FromVector3.c:
@@ -4219,6 +4411,7 @@ src/func_02030838.c:
     .text start:0x02030838 end:0x0203083c
 
 src/func_0203083c.c:
+    complete
     .text start:0x0203083c end:0x020308a8
 
 src/func_020308a8.c:
@@ -4404,6 +4597,7 @@ src/func_020345b0.c:
     .text start:0x020345b0 end:0x02034954
 
 src/LoadFont3D.c:
+    complete
     .text start:0x02034954 end:0x020349e0
 
 src/_ZN7Message10LoadTextVSEv.c:
@@ -4411,9 +4605,11 @@ src/_ZN7Message10LoadTextVSEv.c:
     .text start:0x020349e0 end:0x02034a78
 
 src/func_02034a78.c:
+    complete
     .text start:0x02034a78 end:0x02034ac0
 
 src/func_02034ac0.c:
+    complete
     .text start:0x02034ac0 end:0x02034b1c
 
 src/func_02034b1c.c:
@@ -4437,6 +4633,7 @@ src/func_02034d34.cpp:
     .text start:0x02034d34 end:0x02034d70
 
 src/func_02034d70.c:
+    complete
     .text start:0x02034d70 end:0x02034d9c
 
 src/func_02034d9c.c:
@@ -4531,12 +4728,15 @@ src/_ZN4BgCh21StopDetectingOrdinaryEv.cpp:
     .text start:0x020354bc end:0x020354d0
 
 src/func_020354d0.c:
+    complete
     .text start:0x020354d0 end:0x020354e0
 
 src/func_020354e0.c:
+    complete
     .text start:0x020354e0 end:0x02035504
 
 src/func_02035504.c:
+    complete
     .text start:0x02035504 end:0x02035514
 
 src/func_02035514.c:
@@ -4766,9 +4966,11 @@ src/_ZN12WithMeshClsn4InitEP5Actor5Fix12IiES3_P10Vector3_16S5_.c:
     .text start:0x02037388 end:0x020373b8
 
 src/func_020373b8.c:
+    complete
     .text start:0x020373b8 end:0x020373f8
 
 src/_ZN12WithMeshClsnD1Ev.c:
+    complete
     .text start:0x020373f8 end:0x02037430
 
 src/_ZN12WithMeshClsnC1Ev.c:
@@ -4791,9 +4993,11 @@ src/func_020374d4.c:
     .text start:0x020374d4 end:0x020374f0
 
 src/func_020374f0.c:
+    complete
     .text start:0x020374f0 end:0x02037534
 
 src/_ZN13RaycastGroundD1Ev.c:
+    complete
     .text start:0x02037534 end:0x02037570
 
 src/_ZN13RaycastGroundC1Ev.c:
@@ -4823,6 +5027,7 @@ src/_ZN11RaycastLine13SetObjAndLineERK7Vector3S2_P5Actor.cpp:
     .text start:0x02037670 end:0x02037710
 
 src/func_02037710.c:
+    complete
     .text start:0x02037710 end:0x02037764
 
 src/_ZN11RaycastLineD1Ev.c:
@@ -4919,6 +5124,7 @@ src/_ZN10SphereClsn15SetObjAndSphereERK7Vector35Fix12IiEP5Actor.c:
     .text start:0x02037c00 end:0x02037c40
 
 src/func_02037c40.c:
+    complete
     .text start:0x02037c40 end:0x02037cb0
 
 src/_ZN10SphereClsnD1Ev.c:
@@ -5065,18 +5271,23 @@ src/func_020380c0.c:
     .text start:0x020380c0 end:0x020380ec
 
 src/func_020380ec.c:
+    complete
     .text start:0x020380ec end:0x02038114
 
 src/func_02038114.c:
+    complete
     .text start:0x02038114 end:0x02038144
 
 src/_ZN10ClsnResultD1Ev.c:
+    complete
     .text start:0x02038144 end:0x0203816c
 
 src/_ZN10ClsnResultC1Ev.c:
+    complete
     .text start:0x0203816c end:0x0203819c
 
 src/func_0203819c.c:
+    complete
     .text start:0x0203819c end:0x020381cc
 
 src/func_020381cc.c:
@@ -5363,6 +5574,7 @@ src/_ZN12MeshColliderD1Ev.c:
     .text start:0x02039864 end:0x02039894
 
 src/_ZN12MeshColliderC1Ev.c:
+    complete
     .text start:0x02039894 end:0x020398c8
 
 src/func_020398c8.c:
@@ -5436,6 +5648,7 @@ src/func_0203a420.c:
     .text start:0x0203a420 end:0x0203a444
 
 src/_ZN18MovingMeshColliderD0Ev.c:
+    complete
     .text start:0x0203a444 end:0x0203a470
 
 src/_ZN18MovingMeshColliderD1Ev.c:
@@ -5482,6 +5695,7 @@ src/func_0203aad0.c:
     .text start:0x0203aad0 end:0x0203aad8
 
 src/_ZN21ExtendingMeshCollider9SetScaleYE5Fix12IiE.c:
+    complete
     .text start:0x0203aad8 end:0x0203ab04
 
 src/_ZN21ExtendingMeshCollider7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block.c:
@@ -5489,6 +5703,7 @@ src/_ZN21ExtendingMeshCollider7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_B
     .text start:0x0203ab04 end:0x0203ab3c
 
 src/_ZN21ExtendingMeshColliderD0Ev.c:
+    complete
     .text start:0x0203ab3c end:0x0203ab68
 
 src/_ZN21ExtendingMeshColliderD1Ev.c:
@@ -5516,18 +5731,23 @@ src/func_0203ac00.c:
     .text start:0x0203ac00 end:0x0203ac1c
 
 src/func_0203ac1c.c:
+    complete
     .text start:0x0203ac1c end:0x0203ac2c
 
 src/func_0203ac2c.c:
+    complete
     .text start:0x0203ac2c end:0x0203ac50
 
 src/func_0203ac50.c:
+    complete
     .text start:0x0203ac50 end:0x0203ac60
 
 src/func_0203ac60.c:
+    complete
     .text start:0x0203ac60 end:0x0203ac70
 
 src/func_0203ac70.c:
+    complete
     .text start:0x0203ac70 end:0x0203ac80
 
 src/_ZN7PathPtr6FromIDEj.cpp:
@@ -5535,12 +5755,15 @@ src/_ZN7PathPtr6FromIDEj.cpp:
     .text start:0x0203ac80 end:0x0203aca0
 
 src/func_0203aca0.c:
+    complete
     .text start:0x0203aca0 end:0x0203acbc
 
 src/func_0203acbc.c:
+    complete
     .text start:0x0203acbc end:0x0203accc
 
 src/func_0203accc.c:
+    complete
     .text start:0x0203accc end:0x0203acdc
 
 src/_ZNK7PathPtr7GetNodeER7Vector3j.c:
@@ -5663,6 +5886,7 @@ src/_ZN4cstd5atan2E5Fix12IiES1_.c:
     .text start:0x0203b4dc end:0x0203b684
 
 src/func_0203b684.c:
+    complete
     .text start:0x0203b684 end:0x0203b6a4
 
 src/Vec3_RotateYAndTranslate.c:
@@ -5778,6 +6002,7 @@ src/Matrix4x3_ApplyInPlaceToRotationXYZExt.c:
     .text start:0x0203c0b4 end:0x0203c148
 
 src/Matrix4x3_ApplyInPlaceToScale.c:
+    complete
     .text start:0x0203c148 end:0x0203c178
 
 src/func_0203c178.c:
@@ -5803,9 +6028,11 @@ src/_ZN6Memory10DeallocateEPvP4Heap.cpp:
     .text start:0x0203c1e8 end:0x0203c210
 
 src/_ZN6Memory8AllocateEjiP4Heap.c:
+    complete
     .text start:0x0203c210 end:0x0203c24c
 
 src/_ZN4Heap18InitializeGameHeapEjPS_.c:
+    complete
     .text start:0x0203c24c end:0x0203c274
 
 src/_ZN4Heap7_SizeofEPv.cpp:
@@ -5825,6 +6052,7 @@ src/_ZN4Heap9_AllocateEji.cpp:
     .text start:0x0203c29c end:0x0203c2a8
 
 src/_ZN4Heap20RestoreFromTemporaryEv.c:
+    complete
     .text start:0x0203c2a8 end:0x0203c2d8
 
 src/_ZN4Heap28InitializeSolidHeapAsDefaultEjPS_i.cpp:
@@ -5832,6 +6060,7 @@ src/_ZN4Heap28InitializeSolidHeapAsDefaultEjPS_i.cpp:
     .text start:0x0203c2d8 end:0x0203c2e4
 
 src/_ZN4Heap23SetupSolidHeapAsDefaultEjPS_i.c:
+    complete
     .text start:0x0203c2e4 end:0x0203c324
 
 src/_ZN4Heap10SetDefaultEv.cpp:
@@ -6015,12 +6244,15 @@ src/_ZN13ExpandingHeapD1Ev.c:
     .text start:0x0203c9ec end:0x0203ca10
 
 src/_ZN4HeapD2Ev.c:
+    complete
     .text start:0x0203ca10 end:0x0203ca20
 
 src/_ZN4HeapD0Ev.c:
+    complete
     .text start:0x0203ca20 end:0x0203ca44
 
 src/_ZN4HeapD1Ev.c:
+    complete
     .text start:0x0203ca44 end:0x0203ca54
 
 src/_ZN9SolidHeapC1EPvjP4HeapP18SolidHeapAllocator.c:
@@ -6062,6 +6294,7 @@ src/_ZdlPv.cpp:
     .text start:0x0203cbf0 end:0x0203cc0c
 
 src/func_0203cc0c.c:
+    complete
     .text start:0x0203cc0c end:0x0203cc28
 
 src/func_0203cc28.c:
@@ -6229,6 +6462,7 @@ src/_ZN4cstd4sqrtEy.c:
     .text start:0x0203d744 end:0x0203d7b8
 
 src/func_0203d7b8.c:
+    complete
     .text start:0x0203d7b8 end:0x0203d7d4
 
 src/func_0203d7d4.c:
@@ -6240,15 +6474,19 @@ src/func_0203d81c.c:
     .text start:0x0203d81c end:0x0203d854
 
 src/func_0203d854.c:
+    complete
     .text start:0x0203d854 end:0x0203d868
 
 src/func_0203d868.c:
+    complete
     .text start:0x0203d868 end:0x0203d880
 
 src/GetOwnerLanguage.c:
+    complete
     .text start:0x0203d880 end:0x0203d890
 
 src/func_0203d890.c:
+    complete
     .text start:0x0203d890 end:0x0203d8a0
 
 src/func_0203d8a0.c:
@@ -6256,9 +6494,11 @@ src/func_0203d8a0.c:
     .text start:0x0203d8a0 end:0x0203d8d4
 
 src/func_0203d8d4.c:
+    complete
     .text start:0x0203d8d4 end:0x0203d8e8
 
 src/func_0203d8e8.c:
+    complete
     .text start:0x0203d8e8 end:0x0203d8fc
 
 src/func_0203d8fc.c:
@@ -6266,6 +6506,7 @@ src/func_0203d8fc.c:
     .text start:0x0203d8fc end:0x0203d918
 
 src/func_0203d918.c:
+    complete
     .text start:0x0203d918 end:0x0203d930
 
 src/func_0203d930.c:
@@ -6289,9 +6530,11 @@ src/func_0203d9f4.c:
     .text start:0x0203d9f4 end:0x0203da2c
 
 src/func_0203da2c.c:
+    complete
     .text start:0x0203da2c end:0x0203da3c
 
 src/func_0203da3c.c:
+    complete
     .text start:0x0203da3c end:0x0203da4c
 
 src/func_0203da4c.c:
@@ -6303,9 +6546,11 @@ src/func_0203da80.c:
     .text start:0x0203da80 end:0x0203da9c
 
 src/func_0203da9c.c:
+    complete
     .text start:0x0203da9c end:0x0203daac
 
 src/func_0203daac.c:
+    complete
     .text start:0x0203daac end:0x0203dabc
 
 src/func_0203dabc.c:
@@ -6313,6 +6558,7 @@ src/func_0203dabc.c:
     .text start:0x0203dabc end:0x0203dad4
 
 src/func_0203dad4.c:
+    complete
     .text start:0x0203dad4 end:0x0203dae4
 
 src/func_0203dae4.c:
@@ -6320,6 +6566,7 @@ src/func_0203dae4.c:
     .text start:0x0203dae4 end:0x0203dafc
 
 src/func_0203dafc.c:
+    complete
     .text start:0x0203dafc end:0x0203db0c
 
 src/func_0203db0c.c:
@@ -6331,6 +6578,7 @@ src/GetAngleToCamera.c:
     .text start:0x0203db24 end:0x0203db3c
 
 src/func_0203db3c.c:
+    complete
     .text start:0x0203db3c end:0x0203db4c
 
 src/GetPlayerFlagByte.c:
@@ -6378,6 +6626,7 @@ src/func_0203f650.c:
     .text start:0x0203f650 end:0x0203f6a4
 
 src/func_0203f6a4.c:
+    complete
     .text start:0x0203f6a4 end:0x0203f6b4
 
 src/func_0203f6b4.c:
@@ -6500,6 +6749,7 @@ src/func_02040634.c:
     .text start:0x02040634 end:0x02040638
 
 src/func_02040638.c:
+    complete
     .text start:0x02040638 end:0x0204068c
 
 src/func_0204068c.c:
@@ -6511,9 +6761,11 @@ src/func_020406b4.c:
     .text start:0x020406b4 end:0x02040704
 
 src/func_02040704.c:
+    complete
     .text start:0x02040704 end:0x02040714
 
 src/func_02040714.c:
+    complete
     .text start:0x02040714 end:0x02040724
 
 src/func_02040724.c:
@@ -6533,12 +6785,15 @@ src/func_020408b0.c:
     .text start:0x020408b0 end:0x02040a5c
 
 src/func_02040a5c.c:
+    complete
     .text start:0x02040a5c end:0x02040a84
 
 src/func_02040a84.c:
+    complete
     .text start:0x02040a84 end:0x02040a94
 
 src/func_02040a94.c:
+    complete
     .text start:0x02040a94 end:0x02040aa4
 
 src/func_02040aa4.c:
@@ -6566,6 +6821,7 @@ src/func_020412f0.c:
     .text start:0x020412f0 end:0x0204175c
 
 src/func_0204175c.c:
+    complete
     .text start:0x0204175c end:0x020417d0
 
 src/func_020417d0.c:
@@ -6830,6 +7086,7 @@ src/_ZN9ActorBaseD2Ev.c:
     .text start:0x02043d48 end:0x02043d78
 
 src/_ZN9ActorBaseD0Ev.c:
+    complete
     .text start:0x02043d78 end:0x02043dbc
 
 src/_ZN9ActorBaseD1Ev.c:
@@ -6868,6 +7125,7 @@ src/func_02044120.c:
     .text start:0x02044120 end:0x020441bc
 
 src/func_020441bc.c:
+    complete
     .text start:0x020441bc end:0x020441cc
 
 src/func_020441cc.cpp:
@@ -6961,27 +7219,34 @@ src/_ZN5Model13LoadTexAndPalER8BMD_File.cpp:
     .text start:0x020458e0 end:0x02045a50
 
 src/func_02045a50.c:
+    complete
     .text start:0x02045a50 end:0x02045ad8
 
 src/func_02045ad8.c:
+    complete
     .text start:0x02045ad8 end:0x02045b58
 
 src/_ZN5Model17LoadTextureToVramEPcj.c:
+    complete
     .text start:0x02045c10 end:0x02045c60
 
 src/_ZN5Model13GetVramOffsetEj.cpp:
     .text start:0x02045c60 end:0x02045ce0
 
 src/func_02045ce0.c:
+    complete
     .text start:0x02045ce0 end:0x02045cf0
 
 src/func_02045cf0.c:
+    complete
     .text start:0x02045cf0 end:0x02045d00
 
 src/func_02045d00.c:
+    complete
     .text start:0x02045d00 end:0x02045d10
 
 src/func_02045d10.c:
+    complete
     .text start:0x02045d10 end:0x02045d20
 
 src/InitialiseVramGlobals.c:
@@ -7252,6 +7517,7 @@ src/func_02049ba8.c:
     .text start:0x02049ba8 end:0x02049c48
 
 src/func_02049c48.c:
+    complete
     .text start:0x02049c48 end:0x02049cd8
 
 src/func_02049cd8.c:
@@ -7429,6 +7695,7 @@ src/func_0204d9a0.c:
     .text start:0x0204d9a0 end:0x0204d9f0
 
 src/func_0204d9f0.c:
+    complete
     .text start:0x0204d9f0 end:0x0204da4c
 
 src/func_0204da4c.c:
@@ -7482,6 +7749,7 @@ src/_ZN13HeapAllocatorC1EjPvPvj.cpp:
     .text start:0x0204df54 end:0x0204dfe8
 
 src/_ZN18NestedHeapIterator10FindNestedEPv.c:
+    complete
     .text start:0x0204dfe8 end:0x0204e014
 
 src/_ZN18NestedHeapIterator19RecursiveFindNestedEPv.c:
@@ -7697,6 +7965,7 @@ src/func_0204f278.cpp:
     .text start:0x0204f278 end:0x0204f2d4
 
 src/func_0204f2d4.c:
+    complete
     .text start:0x0204f2d4 end:0x0204f364
 
 src/func_0204f364.c:
@@ -7708,6 +7977,7 @@ src/func_0204f3e0.c:
     .text start:0x0204f3e0 end:0x0204f400
 
 src/func_0204f400.c:
+    complete
     .text start:0x0204f400 end:0x0204f460
 
 src/func_0204f460.c:
@@ -7719,6 +7989,7 @@ src/func_0204f4bc.c:
     .text start:0x0204f4bc end:0x0204f504
 
 src/func_0204f504.c:
+    complete
     .text start:0x0204f504 end:0x0204f558
 
 src/func_0204f558.c:
@@ -7904,6 +8175,7 @@ src/func_020508a0.c:
     .text start:0x020508a0 end:0x02050950
 
 src/func_02050950.c:
+    complete
     .text start:0x02050950 end:0x02050970
 
 src/func_02050970.c:
@@ -7963,9 +8235,11 @@ src/func_02050cdc.c:
     .text start:0x02050cdc end:0x02050d2c
 
 src/func_02050d2c.c:
+    complete
     .text start:0x02050d2c end:0x02050d3c
 
 src/func_02050d3c.c:
+    complete
     .text start:0x02050d3c end:0x02050d54
 
 src/func_02050d54.c:
@@ -8116,6 +8390,7 @@ src/func_02052008.c:
     .text start:0x02052008 end:0x020520a4
 
 src/func_020520a4.c:
+    complete
     .text start:0x020520a4 end:0x020520dc
 
 src/func_020520dc.c:
@@ -8341,15 +8616,19 @@ src/func_02053e4c.c:
     .text start:0x02053e4c end:0x02053ea0
 
 src/func_02053ea0.c:
+    complete
     .text start:0x02053ea0 end:0x02053eb0
 
 src/func_02053eb0.c:
+    complete
     .text start:0x02053eb0 end:0x02053ec0
 
 src/func_02053ec0.c:
+    complete
     .text start:0x02053ec0 end:0x02053ed0
 
 src/func_02053ed0.c:
+    complete
     .text start:0x02053ed0 end:0x02053ee0
 
 src/func_02053ee0.c:
@@ -8441,24 +8720,30 @@ src/func_020541a4.c:
     .text start:0x020541a4 end:0x020541b8
 
 src/func_020541b8.c:
+    complete
     .text start:0x020541b8 end:0x020541f0
 
 src/_ZN2GX23SetBankForSubOBJExtPlttEt.c:
+    complete
     .text start:0x020541f0 end:0x0205427c
 
 src/_ZN2GX22SetBankForSubBGExtPlttEt.c:
+    complete
     .text start:0x0205427c end:0x02054308
 
 src/_ZN2GX16SetBankForSubOBJEt.c:
+    complete
     .text start:0x02054308 end:0x02054384
 
 src/_ZN2GX15SetBankForSubBGEt.c:
+    complete
     .text start:0x02054384 end:0x02054430
 
 src/func_02054430.c:
     .text start:0x02054430 end:0x02054450
 
 src/_ZN2GX17SetBankForTexPlttEt.c:
+    complete
     .text start:0x02054450 end:0x02054544
 
 src/_ZN2GX13SetBankForTexEt.cpp:
@@ -8640,9 +8925,11 @@ src/_ZN3G3i13PerspectiveW_E5Fix12IiES1_S1_S1_S1_S1_bP9Matrix4x3.c:
     .text start:0x02055bfc end:0x02055dec
 
 src/_ZN3GXS17EndLoadOBJExtPlttEv.c:
+    complete
     .text start:0x02055dec end:0x02055e38
 
 src/_ZN3GXS14LoadOBJExtPlttEPKvjj.c:
+    complete
     .text start:0x02055e38 end:0x02055eac
 
 src/_ZN3GXS19BeginLoadOBJExtPlttEv.cpp:
@@ -8650,9 +8937,11 @@ src/_ZN3GXS19BeginLoadOBJExtPlttEv.cpp:
     .text start:0x02055eac end:0x02055ed0
 
 src/_ZN3GXS16EndLoadBGExtPlttEv.c:
+    complete
     .text start:0x02055ed0 end:0x02055f1c
 
 src/_ZN3GXS13LoadBGExtPlttEPKvjj.c:
+    complete
     .text start:0x02055f1c end:0x02055f90
 
 src/_ZN3GXS18BeginLoadBGExtPlttEv.cpp:
@@ -8660,81 +8949,107 @@ src/_ZN3GXS18BeginLoadBGExtPlttEv.cpp:
     .text start:0x02055f90 end:0x02055fb4
 
 src/func_02055fb4.c:
+    complete
     .text start:0x02055fb4 end:0x02056014
 
 src/func_02056014.c:
+    complete
     .text start:0x02056014 end:0x02056074
 
 src/func_02056074.c:
+    complete
     .text start:0x02056074 end:0x020560d4
 
 src/func_020560d4.c:
+    complete
     .text start:0x020560d4 end:0x02056134
 
 src/_ZN3GXS11LoadBG1CharEPKvjj.c:
+    complete
     .text start:0x02056134 end:0x02056194
 
 src/_ZN2GX11LoadBG1CharEPKvjj.c:
+    complete
     .text start:0x02056194 end:0x020561f4
 
 src/_ZN3GXS11LoadBG0CharEPKvjj.c:
+    complete
     .text start:0x020561f4 end:0x02056254
 
 src/_ZN2GX11LoadBG0CharEPKvjj.c:
+    complete
     .text start:0x02056254 end:0x020562b4
 
 src/func_020562b4.c:
+    complete
     .text start:0x020562b4 end:0x02056314
 
 src/func_02056314.c:
+    complete
     .text start:0x02056314 end:0x02056374
 
 src/func_02056374.c:
+    complete
     .text start:0x02056374 end:0x020563d4
 
 src/func_020563d4.c:
+    complete
     .text start:0x020563d4 end:0x02056434
 
 src/func_02056434.c:
+    complete
     .text start:0x02056434 end:0x02056494
 
 src/func_02056494.c:
+    complete
     .text start:0x02056494 end:0x020564f4
 
 src/func_020564f4.c:
+    complete
     .text start:0x020564f4 end:0x02056554
 
 src/func_02056554.c:
+    complete
     .text start:0x02056554 end:0x020565b4
 
 src/func_020565b4.c:
+    complete
     .text start:0x020565b4 end:0x02056614
 
 src/_ZN2GX7LoadOBJEPKvjj.c:
+    complete
     .text start:0x02056614 end:0x02056674
 
 src/func_02056674.c:
+    complete
     .text start:0x02056674 end:0x020566dc
 
 src/func_020566dc.c:
+    complete
     .text start:0x020566dc end:0x02056738
 
 src/_ZN3GXS11LoadOBJPlttEPKvjj.c:
+    complete
     .text start:0x02056738 end:0x020567a0
 
 src/_ZN2GX11LoadOBJPlttEPKvjj.c:
+    complete
     .text start:0x020567a0 end:0x02056808
 
 src/_ZN3GXS10LoadBGPlttEPKvjj.c:
+    complete
     .text start:0x02056808 end:0x02056870
 
 src/_ZN2GX10LoadBGPlttEPKvjj.c:
+    complete
     .text start:0x02056870 end:0x020568cc
 
 src/_ZN2GX14EndLoadTexPlttEv.c:
+    complete
     .text start:0x020568cc end:0x02056924
 
 src/_ZN2GX11LoadTexPlttEPKvjj.c:
+    complete
     .text start:0x02056924 end:0x02056998
 
 src/_ZN2GX16BeginLoadTexPlttEv.c:
@@ -8742,6 +9057,7 @@ src/_ZN2GX16BeginLoadTexPlttEv.c:
     .text start:0x02056998 end:0x020569e0
 
 src/_ZN2GX10EndLoadTexEv.c:
+    complete
     .text start:0x020569e0 end:0x02056a50
 
 src/_ZN2GX7LoadTexEPKvjj.cpp:
@@ -8805,9 +9121,11 @@ src/_ZN3IRQ7SetIRQsEj.c:
     .text start:0x02056e18 end:0x02056e4c
 
 src/func_02056e4c.c:
+    complete
     .text start:0x02056e4c end:0x02056e98
 
 src/func_02056e98.c:
+    complete
     .text start:0x02056e98 end:0x02056ee4
 
 src/_ZN3IRQ13GetIRQHandlerEj.c:
@@ -8819,6 +9137,7 @@ src/_ZN3IRQ13SetIRQHandlerEjPFvvE.c:
     .text start:0x02056f70 end:0x02057000
 
 src/func_02057000.c:
+    complete
     .text start:0x02057000 end:0x02057014
 
 src/func_020570a8.c:
@@ -8858,6 +9177,7 @@ src/func_02057178.c:
     .text start:0x02057178 end:0x02057198
 
 src/func_02057198.c:
+    complete
     .text start:0x02057198 end:0x02057218
 
 src/func_02057218.c:
@@ -8912,6 +9232,7 @@ src/func_02057e34.c:
     .text start:0x02057e34 end:0x02057e48
 
 src/func_02057e48.c:
+    complete
     .text start:0x02057e48 end:0x02057e7c
 
 src/func_02057e7c.c:
@@ -8939,9 +9260,11 @@ src/func_02058048.c:
     .text start:0x02058048 end:0x0205807c
 
 src/OS_WakeupThread.c:
+    complete
     .text start:0x0205807c end:0x020580f0
 
 src/OS_SleepThread.c:
+    complete
     .text start:0x020580f0 end:0x02058158
 
 src/func_02058158.c:
@@ -9159,9 +9482,11 @@ src/func_0205947c.c:
     .text start:0x0205947c end:0x0205950c
 
 src/func_0205950c.c:
+    complete
     .text start:0x0205950c end:0x02059578
 
 src/func_02059578.c:
+    complete
     .text start:0x02059578 end:0x02059594
 
 src/func_02059594.c:
@@ -9207,9 +9532,11 @@ src/func_02059ba0.c:
     .text start:0x02059ba0 end:0x02059bb0
 
 src/func_02059bb0.c:
+    complete
     .text start:0x02059bb0 end:0x02059bc0
 
 src/func_02059bc0.c:
+    complete
     .text start:0x02059bc0 end:0x02059c18
 
 src/func_02059c18.c:
@@ -9217,6 +9544,7 @@ src/func_02059c18.c:
     .text start:0x02059c18 end:0x02059cb4
 
 src/func_02059cb4.c:
+    complete
     .text start:0x02059cb4 end:0x02059d08
 
 src/_ZN3IRQ6EnableEv.cpp:
@@ -9714,6 +10042,7 @@ src/func_0205d044.c:
     .text start:0x0205d044 end:0x0205d23c
 
 src/func_0205d23c.c:
+    complete
     .text start:0x0205d23c end:0x0205d28c
 
 src/func_0205d28c.c:
@@ -9821,6 +10150,7 @@ src/func_0205db78.c:
     .text start:0x0205db78 end:0x0205db88
 
 src/func_0205db88.c:
+    complete
     .text start:0x0205db88 end:0x0205dc0c
 
 src/func_0205dc0c.c:
@@ -9852,6 +10182,7 @@ src/func_0205dffc.c:
     .text start:0x0205dffc end:0x0205e088
 
 src/func_0205e088.c:
+    complete
     .text start:0x0205e088 end:0x0205e0b0
 
 src/func_0205e0b0.c:
@@ -9883,6 +10214,7 @@ src/func_0205e89c.c:
     .text start:0x0205e89c end:0x0205e904
 
 src/func_0205e904.c:
+    complete
     .text start:0x0205e904 end:0x0205e91c
 
 src/ARMMathLoadState.c:
@@ -9910,6 +10242,7 @@ src/func_0205eb58.c:
     .text start:0x0205eb58 end:0x0205edc8
 
 src/func_0205edc8.c:
+    complete
     .text start:0x0205edc8 end:0x0205edd8
 
 src/func_0205edd8.cpp:
@@ -10040,6 +10373,7 @@ src/func_0205ff08.c:
     .text start:0x0205ff08 end:0x0205ff20
 
 src/func_0205ff20.c:
+    complete
     .text start:0x0205ff20 end:0x0205ff70
 
 src/func_0205ff70.c:
@@ -10098,9 +10432,11 @@ src/func_020603c8.cpp:
     .text start:0x020603c8 end:0x0206045c
 
 src/func_0206045c.c:
+    complete
     .text start:0x0206045c end:0x02060470
 
 src/func_02060470.c:
+    complete
     .text start:0x02060470 end:0x02060484
 
 src/func_02060484.c:
@@ -10136,9 +10472,11 @@ src/func_0206090c.c:
     .text start:0x0206090c end:0x02060918
 
 src/func_02060918.c:
+    complete
     .text start:0x02060918 end:0x02060a30
 
 src/func_02060a30.c:
+    complete
     .text start:0x02060a30 end:0x02060a64
 
 src/func_02060a64.c:
@@ -10202,6 +10540,7 @@ src/func_0206152c.c:
     .text start:0x0206152c end:0x02061548
 
 src/WM_GetSystemWork.c:
+    complete
     .text start:0x02061548 end:0x02061558
 
 src/WM_SendCommand.c:
@@ -10561,9 +10900,11 @@ src/func_02065a4c.c:
     .text start:0x02065a4c end:0x02065a74
 
 src/func_02065a74.c:
+    complete
     .text start:0x02065a74 end:0x02065a84
 
 src/func_02065a84.c:
+    complete
     .text start:0x02065a84 end:0x02065a94
 
 src/func_02065a94.c:
@@ -10571,9 +10912,11 @@ src/func_02065a94.c:
     .text start:0x02065a94 end:0x02065ad0
 
 src/func_02065ad0.c:
+    complete
     .text start:0x02065ad0 end:0x02065ae0
 
 src/func_02065ae0.c:
+    complete
     .text start:0x02065ae0 end:0x02065af0
 
 src/func_02065af0.c:
@@ -10589,18 +10932,23 @@ src/func_02065b94.c:
     .text start:0x02065b94 end:0x02065ba0
 
 src/func_02065ba0.c:
+    complete
     .text start:0x02065ba0 end:0x02065bb0
 
 src/func_02065bb0.c:
+    complete
     .text start:0x02065bb0 end:0x02065bc0
 
 src/func_02065bc0.c:
+    complete
     .text start:0x02065bc0 end:0x02065bd0
 
 src/func_02065bd0.c:
+    complete
     .text start:0x02065bd0 end:0x02065be0
 
 src/func_02065be0.c:
+    complete
     .text start:0x02065be0 end:0x02065bf4
 
 src/func_02065bf4.c:
@@ -10608,6 +10956,7 @@ src/func_02065bf4.c:
     .text start:0x02065bf4 end:0x02065c1c
 
 src/func_02065c1c.c:
+    complete
     .text start:0x02065c1c end:0x02065c2c
 
 src/func_02065c2c.c:
@@ -10691,6 +11040,7 @@ src/func_02067250.c:
     .text start:0x02067250 end:0x020672a4
 
 src/func_020672a4.c:
+    complete
     .text start:0x020672a4 end:0x020672d0
 
 src/func_020672d0.c:
@@ -10801,9 +11151,11 @@ src/func_020687f8.c:
     .text start:0x020687f8 end:0x0206881c
 
 src/func_0206881c.c:
+    complete
     .text start:0x0206881c end:0x02068834
 
 src/func_02068834.c:
+    complete
     .text start:0x02068834 end:0x02068844
 
 src/func_02068844.c:
@@ -10811,12 +11163,15 @@ src/func_02068844.c:
     .text start:0x02068844 end:0x020688b4
 
 src/func_020688b4.c:
+    complete
     .text start:0x020688b4 end:0x020688cc
 
 src/func_020688cc.c:
+    complete
     .text start:0x020688cc end:0x020688e4
 
 src/func_020688e4.c:
+    complete
     .text start:0x020688e4 end:0x020688fc
 
 src/func_020688fc.c:
@@ -11077,6 +11432,7 @@ src/func_0206e06c.c:
     .text start:0x0206e06c end:0x0206e184
 
 src/func_0206e184.c:
+    complete
     .text start:0x0206e184 end:0x0206e218
 
 src/func_0206e218.c:
@@ -11353,33 +11709,43 @@ src/func_02073244.c:
     .text start:0x02073244 end:0x0207328c
 
 src/func_0207359c.c:
+    complete
     .text start:0x0207359c end:0x020735c8
 
 src/func_020735c8.c:
+    complete
     .text start:0x020735c8 end:0x020735ec
 
 src/func_020735ec.c:
+    complete
     .text start:0x020735ec end:0x02073618
 
 src/func_02073618.c:
+    complete
     .text start:0x02073618 end:0x0207363c
 
 src/func_0207363c.c:
+    complete
     .text start:0x0207363c end:0x02073660
 
 src/func_02073660.c:
+    complete
     .text start:0x02073660 end:0x0207368c
 
 src/func_0207368c.c:
+    complete
     .text start:0x0207368c end:0x020736b0
 
 src/func_020736b0.c:
+    complete
     .text start:0x020736b0 end:0x020736c0
 
 src/func_020736c0.c:
+    complete
     .text start:0x020736c0 end:0x020736e4
 
 src/func_020736e4.c:
+    complete
     .text start:0x020736e4 end:0x020736f4
 
 src/__sinit_02073a24.c:

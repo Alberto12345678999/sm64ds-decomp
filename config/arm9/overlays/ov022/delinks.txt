@@ -35,6 +35,7 @@ src/func_ov022_02111564.c:
     .text start:0x02111564 end:0x02111578
 
 src/VolcanoRing_Spawn.c:
+    complete
     .text start:0x02111578 end:0x021115a8
 
 src/func_ov022_021115a8.c:
@@ -109,6 +110,7 @@ src/func_ov022_02111bdc.cpp:
     .text start:0x02111bdc end:0x02111c7c
 
 src/LavaBridge_Spawn.c:
+    complete
     .text start:0x02111c7c end:0x02111cac
 
 src/func_ov022_02111cac.c:
@@ -136,6 +138,7 @@ src/func_ov022_02111ea0.cpp:
     .text start:0x02111ea0 end:0x02111f3c
 
 src/LavaSeesaw_Spawn.c:
+    complete
     .text start:0x02111f3c end:0x02111f6c
 
 src/_ZN21FloatingFloorLllSmallD1Ev.c:
@@ -220,6 +223,7 @@ src/_ZN13RollingLogLllD1Ev.cpp:
     .text start:0x021125e0 end:0x02112610
 
 src/_ZN13RollingLogLllD0Ev.c:
+    complete
     .text start:0x02112610 end:0x02112654
 
 src/func_ov022_02112654.cpp:

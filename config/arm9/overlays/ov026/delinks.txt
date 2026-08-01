@@ -19,6 +19,7 @@ src/func_ov026_021112a4.c:
     .text start:0x021112a4 end:0x021112e4
 
 src/func_ov026_021112e4.c:
+    complete
     .text start:0x021112e4 end:0x02111308
 
 src/func_ov026_02111308.cpp:
@@ -57,6 +58,7 @@ src/func_ov026_021117d8.c:
     .text start:0x021117d8 end:0x02111888
 
 src/BowserShutter_Spawn.c:
+    complete
     .text start:0x02111888 end:0x021118b8
 
 src/func_ov026_021118b8.c:
@@ -77,6 +79,7 @@ src/func_ov026_021119c0.c:
     .text start:0x021119c0 end:0x02111a70
 
 src/Submarine_Spawn.c:
+    complete
     .text start:0x02111a70 end:0x02111aa0
 
 src/_ZN9SubmarineD1Ev.c:
@@ -84,6 +87,7 @@ src/_ZN9SubmarineD1Ev.c:
     .text start:0x02111aa0 end:0x02111ad8
 
 src/_ZN9SubmarineD0Ev.c:
+    complete
     .text start:0x02111ad8 end:0x02111b24
 
 src/func_ov026_02111b24.c:
@@ -91,6 +95,7 @@ src/func_ov026_02111b24.c:
     .text start:0x02111b24 end:0x02111cb4
 
 src/func_ov026_02111cb4.c:
+    complete
     .text start:0x02111cb4 end:0x02111d4c
 
 src/func_ov026_02111d4c.cpp:
@@ -109,6 +114,7 @@ src/func_ov026_02111f30.c:
     .text start:0x02111f30 end:0x02111fa4
 
 src/_ZN9Submarine16CleanupResourcesEv.c:
+    complete
     .text start:0x02111fa4 end:0x02111fd4
 
 src/_ZN9Submarine16OnPendingDestroyEv.c:
@@ -134,6 +140,7 @@ src/_ZN12WaterSuctionD1Ev.c:
     .text start:0x021121fc end:0x02112234
 
 src/_ZN12WaterSuctionD0Ev.c:
+    complete
     .text start:0x02112234 end:0x02112280
 
 src/func_ov026_02112280.c:

@@ -8,12 +8,14 @@ src/_ZN6BowserD1Ev.cpp:
     .text start:0x02111900 end:0x02111950
 
 src/_ZN6BowserD0Ev.c:
+    complete
     .text start:0x02111950 end:0x021119b4
 
 src/_ZN10BowserTailD1Ev.cpp:
     .text start:0x021119b4 end:0x021119e4
 
 src/_ZN10BowserTailD0Ev.c:
+    complete
     .text start:0x021119e4 end:0x02111a28
 
 src/func_ov060_02111a28.cpp:
@@ -49,6 +51,7 @@ src/func_ov060_021123dc.c:
     .text start:0x021123dc end:0x02112434
 
 src/func_ov060_02112434.cpp:
+    complete
     .text start:0x02112434 end:0x021125f0
 
 src/func_ov060_021125f0.c:
@@ -321,6 +324,7 @@ src/_ZN10BowserFireD1Ev.c:
     .text start:0x02116484 end:0x021164c4
 
 src/_ZN10BowserFireD0Ev.c:
+    complete
     .text start:0x021164c4 end:0x02116518
 
 src/func_ov060_02116518.c:
@@ -494,12 +498,14 @@ src/func_ov060_021183f4.c:
     .text start:0x021183f4 end:0x02118408
 
 src/BowserSkyPlatform_Spawn.c:
+    complete
     .text start:0x02118408 end:0x02118438
 
 src/_ZN17BowserSkyPlatformD1Ev.cpp:
     .text start:0x02118438 end:0x02118470
 
 src/_ZN17BowserSkyPlatformD0Ev.c:
+    complete
     .text start:0x02118470 end:0x021184bc
 
 src/func_ov060_021184bc.c:
@@ -539,6 +545,7 @@ src/func_ov060_02118970.c:
     .text start:0x02118970 end:0x02118ab0
 
 src/_ZN17BowserSkyPlatform16CleanupResourcesEv.c:
+    complete
     .text start:0x02118ab0 end:0x02118ad4
 
 src/_ZN17BowserSkyPlatform6RenderEv.cpp:
@@ -560,9 +567,11 @@ src/_ZN16BowserShockwavesD1Ev.c:
     .text start:0x02118cfc end:0x02118d64
 
 src/_ZN16BowserShockwavesD0Ev.c:
+    complete
     .text start:0x02118d64 end:0x02118de0
 
 src/_ZN16BowserShockwaves16CleanupResourcesEv.c:
+    complete
     .text start:0x02118de0 end:0x02118e1c
 
 src/_ZN16BowserShockwaves6RenderEv.cpp:

@@ -12,6 +12,7 @@ src/func_ov013_021111d0.c:
     .text start:0x021111d0 end:0x02111214
 
 src/func_ov013_02111214.c:
+    complete
     .text start:0x02111214 end:0x02111238
 
 src/func_ov013_02111238.c:
@@ -36,6 +37,7 @@ src/_ZN22ClockPaintingHandShortD1Ev.cpp:
     .text start:0x021113bc end:0x021113ec
 
 src/_ZN22ClockPaintingHandShortD0Ev.c:
+    complete
     .text start:0x021113ec end:0x02111430
 
 src/func_ov013_02111430.c:

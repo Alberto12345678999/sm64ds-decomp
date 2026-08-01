@@ -8,6 +8,7 @@ src/_ZN13RacingPenguinD1Ev.cpp:
     .text start:0x021111a0 end:0x021111f0
 
 src/_ZN13RacingPenguinD0Ev.c:
+    complete
     .text start:0x021111f0 end:0x02111254
 
 src/func_ov019_02111254.c:
@@ -95,6 +96,7 @@ src/func_ov019_021122a4.cpp:
     .text start:0x021122a4 end:0x021122dc
 
 src/func_ov019_021122dc.c:
+    complete
     .text start:0x021122dc end:0x021122f8
 
 src/_ZN13RacingPenguin16CleanupResourcesEv.cpp:

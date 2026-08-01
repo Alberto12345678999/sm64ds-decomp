@@ -25,6 +25,7 @@ src/func_ov043_02111320.c:
     .text start:0x02111320 end:0x021113cc
 
 src/DiamondLift_Spawn.c:
+    complete
     .text start:0x021113cc end:0x021113fc
 
 src/func_ov043_021113fc.c:

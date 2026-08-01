@@ -17,12 +17,14 @@ src/_ZN7BooCageD1Ev.c:
     .text start:0x02115fc4 end:0x0211600c
 
 src/_ZN7BooCageD0Ev.c:
+    complete
     .text start:0x0211600c end:0x02116068
 
 src/_ZN10BigBooIconD1Ev.cpp:
     .text start:0x02116068 end:0x0211608c
 
 src/_ZN10BigBooIconD0Ev.c:
+    complete
     .text start:0x0211608c end:0x021160c4
 
 src/func_ov063_021160c4.c:
@@ -303,6 +305,7 @@ src/func_ov063_0211aa34.c:
     .text start:0x0211aa34 end:0x0211ab68
 
 src/func_ov063_0211ab68.c:
+    complete
     .text start:0x0211ab68 end:0x0211ad00
 
 src/func_ov063_0211ad00.c:
@@ -318,6 +321,7 @@ src/func_ov063_0211adfc.c:
     .text start:0x0211adfc end:0x0211ae1c
 
 src/_ZN7BooCage16CleanupResourcesEv.c:
+    complete
     .text start:0x0211ae1c end:0x0211ae40
 
 src/_ZN3Boo16CleanupResourcesEv.cpp:
@@ -372,6 +376,7 @@ src/_ZN12MansionStepsD1Ev.cpp:
     .text start:0x0211c600 end:0x0211c638
 
 src/_ZN12MansionStepsD0Ev.c:
+    complete
     .text start:0x0211c638 end:0x0211c684
 
 src/func_ov063_0211c684.c:
@@ -504,9 +509,11 @@ src/func_ov063_0211dd84.c:
     .text start:0x0211dd84 end:0x0211ddac
 
 src/func_ov063_0211ddac.cpp:
+    complete
     .text start:0x0211ddac end:0x0211ddf4
 
 src/func_ov063_0211ddf4.cpp:
+    complete
     .text start:0x0211ddf4 end:0x0211de3c
 
 src/_ZN8MadPiano16CleanupResourcesEv.cpp:

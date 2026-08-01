@@ -10,6 +10,6 @@ void func_ov006_020d9104(unsigned char* c){
   unsigned char* b=c+0x6000;
   *(unsigned short*)(a+0xee)=0;
   *(int*)(b+0x2d0)=0;
-  G2x_SetBlendAlpha((void*)0x4000050,1,0x1c,4,3);
+  _ZN3G2x13SetBlendAlphaEPVttttt((void*)0x4000050,1,0x1c,4,3);
   SetBg0Offset(0,0);
 }

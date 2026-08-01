@@ -28,6 +28,7 @@ src/func_ov036_0211137c.cpp:
     .text start:0x0211137c end:0x02111414
 
 src/SwingingPlatform_Spawn.c:
+    complete
     .text start:0x02111414 end:0x02111444
 
 src/func_ov036_02111444.c:
@@ -51,9 +52,11 @@ src/_ZN18RotatingPlatformRrD1Ev.cpp:
     .text start:0x02111580 end:0x021115b0
 
 src/_ZN18RotatingPlatformRrD0Ev.c:
+    complete
     .text start:0x021115b0 end:0x021115f4
 
 src/_ZN18RotatingPlatformRr16CleanupResourcesEv.c:
+    complete
     .text start:0x021115f4 end:0x02111618
 
 src/func_ov036_02111618.c:
@@ -152,6 +155,7 @@ src/TrickyTriangles_Spawn.cpp:
     .text start:0x021120c8 end:0x02112158
 
 src/func_ov036_02112158.cpp:
+    complete
     .text start:0x02112158 end:0x021121c8
 
 src/func_ov036_021121c8.cpp:

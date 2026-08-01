@@ -8,6 +8,7 @@ src/_ZN6LakituD1Ev.cpp:
     .text start:0x02123740 end:0x02123798
 
 src/_ZN6LakituD0Ev.c:
+    complete
     .text start:0x02123798 end:0x02123804
 
 src/func_ov077_02123804.c:
@@ -39,6 +40,7 @@ src/func_ov077_02123a1c.cpp:
     .text start:0x02123a1c end:0x02123a74
 
 src/func_ov077_02123a74.cpp:
+    complete
     .text start:0x02123a74 end:0x02123c6c
 
 src/func_ov077_02123c6c.cpp:
@@ -129,6 +131,7 @@ src/_ZN5SpinyD1Ev.cpp:
     .text start:0x02124b64 end:0x02124bb4
 
 src/_ZN5SpinyD0Ev.c:
+    complete
     .text start:0x02124bb4 end:0x02124c18
 
 src/func_ov077_02124c18.c:
@@ -151,6 +154,7 @@ src/func_ov077_02124d08.cpp:
     .text start:0x02124d08 end:0x02124eb0
 
 src/func_ov077_02124eb0.cpp:
+    complete
     .text start:0x02124eb0 end:0x021250a8
 
 src/func_ov077_021250a8.cpp:
@@ -229,6 +233,7 @@ src/func_ov077_02125e94.c:
     .text start:0x02125e94 end:0x02125eb0
 
 src/_ZN5Spiny16CleanupResourcesEv.c:
+    complete
     .text start:0x02125eb0 end:0x02125eec
 
 src/_ZN5Spiny16OnPendingDestroyEv.c:
@@ -259,6 +264,7 @@ src/_ZN7HeaveHoD1Ev.c:
     .text start:0x0212624c end:0x0212629c
 
 src/_ZN7HeaveHoD0Ev.c:
+    complete
     .text start:0x0212629c end:0x02126300
 
 src/func_ov077_02126300.c:
@@ -317,6 +323,7 @@ src/func_ov077_02126dac.c:
     .text start:0x02126dac end:0x02126dec
 
 src/_ZN7HeaveHo16CleanupResourcesEv.c:
+    complete
     .text start:0x02126dec end:0x02126e34
 
 src/_ZN7HeaveHo16OnPendingDestroyEv.c:

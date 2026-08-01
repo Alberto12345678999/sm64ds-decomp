@@ -243,6 +243,7 @@ src/func_ov091_02133648.cpp:
     .text start:0x02133648 end:0x021336cc
 
 src/func_ov091_021336cc.c:
+    complete
     .text start:0x021336cc end:0x02133710
 
 src/func_ov091_02133710.cpp:
@@ -257,6 +258,7 @@ src/func_ov091_021338ac.c:
     .text start:0x021338ac end:0x02133938
 
 src/Stump_Spawn.c:
+    complete
     .text start:0x02133938 end:0x02133968
 
 src/_ZN5StumpD1Ev.c:
@@ -264,6 +266,7 @@ src/_ZN5StumpD1Ev.c:
     .text start:0x02133968 end:0x021339a8
 
 src/_ZN5StumpD0Ev.c:
+    complete
     .text start:0x021339a8 end:0x021339fc
 
 src/func_ov091_021339fc.c:
@@ -290,6 +293,7 @@ src/func_ov091_02133f60.c:
     .text start:0x02133f60 end:0x0213400c
 
 src/func_ov091_0213400c.c:
+    complete
     .text start:0x0213400c end:0x02134044
 
 src/func_ov091_02134044.cpp:

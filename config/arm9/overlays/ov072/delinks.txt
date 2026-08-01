@@ -8,6 +8,7 @@ src/_ZN11SnowmanBodyD1Ev.cpp:
     .text start:0x0211f000 end:0x0211f048
 
 src/_ZN11SnowmanBodyD0Ev.c:
+    complete
     .text start:0x0211f048 end:0x0211f0a4
 
 src/func_ov072_0211f0a4.c:
@@ -94,6 +95,7 @@ src/func_ov072_0211fcb0.c:
     .text start:0x0211fcb0 end:0x0211fccc
 
 src/_ZN11SnowmanBody16CleanupResourcesEv.c:
+    complete
     .text start:0x0211fccc end:0x0211fcf0
 
 src/_ZN11SnowmanBody16OnPendingDestroyEv.c:
@@ -118,6 +120,7 @@ src/_ZN11SnowmanHeadD1Ev.cpp:
     .text start:0x0211ff34 end:0x0211ff7c
 
 src/_ZN11SnowmanHeadD0Ev.c:
+    complete
     .text start:0x0211ff7c end:0x0211ffd8
 
 src/func_ov072_0211ffd8.c:
@@ -200,6 +203,7 @@ src/func_ov072_021208d8.cpp:
     .text start:0x021208d8 end:0x02120980
 
 src/func_ov072_02120980.c:
+    complete
     .text start:0x02120980 end:0x021209bc
 
 src/func_ov072_021209bc.c:
@@ -225,6 +229,7 @@ src/_ZN11BabyPenguinD1Ev.cpp:
     .text start:0x02120c58 end:0x02120ca0
 
 src/_ZN11BabyPenguinD0Ev.c:
+    complete
     .text start:0x02120ca0 end:0x02120cfc
 
 src/func_ov072_02120cfc.c:

@@ -15,6 +15,7 @@ src/func_ov015_02111214.c:
     .text start:0x02111214 end:0x02111254
 
 src/func_ov015_02111254.c:
+    complete
     .text start:0x02111254 end:0x02111278
 
 src/func_ov015_02111278.cpp:
@@ -251,6 +252,7 @@ src/_ZN11FallBlockWf13InitResourcesEv.c:
     .text start:0x02112dbc end:0x02112dd0
 
 src/FallBlockWf_Spawn.c:
+    complete
     .text start:0x02112dd0 end:0x02112e0c
 
 src/__sinit_ov015_02112f9c.c:

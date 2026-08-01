@@ -8,6 +8,7 @@ src/_ZN7SkeeterD1Ev.c:
     .text start:0x02130f00 end:0x02130f40
 
 src/_ZN7SkeeterD0Ev.c:
+    complete
     .text start:0x02130f40 end:0x02130f94
 
 src/func_ov090_02130f94.c:
@@ -66,6 +67,7 @@ src/func_ov090_02131e50.c:
     .text start:0x02131e50 end:0x02131edc
 
 src/_ZN7Skeeter16CleanupResourcesEv.c:
+    complete
     .text start:0x02131edc end:0x02131f30
 
 src/_ZN7Skeeter16OnPendingDestroyEv.c:
@@ -80,6 +82,7 @@ src/_ZN7Skeeter8BehaviorEv.cpp:
     .text start:0x02131f88 end:0x0213235c
 
 src/_ZN7Skeeter13InitResourcesEv.cpp:
+    complete
     .text start:0x0213235c end:0x02132618
 
 src/func_ov090_02132618.c:
@@ -143,6 +146,7 @@ src/_ZN8MantaRay8BehaviorEv.cpp:
     .text start:0x02132c94 end:0x02132e38
 
 src/_ZN8MantaRay13InitResourcesEv.cpp:
+    complete
     .text start:0x02132e38 end:0x02132fe8
 
 src/MantaRay_Spawn.c:
@@ -154,6 +158,7 @@ src/_ZN10CheepCheepD1Ev.c:
     .text start:0x02133034 end:0x02133074
 
 src/_ZN10CheepCheepD0Ev.c:
+    complete
     .text start:0x02133074 end:0x021330c8
 
 src/func_ov090_021330c8.cpp:
@@ -185,6 +190,7 @@ src/func_ov090_02133338.c:
     .text start:0x02133338 end:0x021333ac
 
 src/_ZN10CheepCheep16CleanupResourcesEv.c:
+    complete
     .text start:0x021333ac end:0x021333dc
 
 src/_ZN10CheepCheep16OnPendingDestroyEv.c:
@@ -210,6 +216,7 @@ src/_ZN5SharkD1Ev.c:
     .text start:0x0213367c end:0x021336bc
 
 src/_ZN5SharkD0Ev.c:
+    complete
     .text start:0x021336bc end:0x02133710
 
 src/func_ov090_02133710.cpp:
@@ -233,6 +240,7 @@ src/func_ov090_02133904.c:
     .text start:0x02133904 end:0x02133978
 
 src/_ZN5Shark16CleanupResourcesEv.c:
+    complete
     .text start:0x02133978 end:0x021339a8
 
 src/_ZN5Shark16OnPendingDestroyEv.c:

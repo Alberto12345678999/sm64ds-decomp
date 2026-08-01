@@ -8,6 +8,7 @@ src/_ZN10HootTheOwlD1Ev.c:
     .text start:0x02135700 end:0x02135748
 
 src/_ZN10HootTheOwlD0Ev.c:
+    complete
     .text start:0x02135748 end:0x021357a4
 
 src/func_ov094_021357a4.c:
@@ -15,6 +16,7 @@ src/func_ov094_021357a4.c:
     .text start:0x021357a4 end:0x021358b4
 
 src/func_ov094_021358b4.cpp:
+    complete
     .text start:0x021358b4 end:0x0213598c
 
 src/func_ov094_0213598c.cpp:
@@ -22,6 +24,7 @@ src/func_ov094_0213598c.cpp:
     .text start:0x0213598c end:0x021359d8
 
 src/func_ov094_021359d8.cpp:
+    complete
     .text start:0x021359d8 end:0x02135bd4
 
 src/func_ov094_02135bd4.cpp:
@@ -65,6 +68,7 @@ src/func_ov094_021362e0.c:
     .text start:0x021362e0 end:0x021363e0
 
 src/_ZN10HootTheOwl16CleanupResourcesEv.c:
+    complete
     .text start:0x021363e0 end:0x02136428
 
 src/_ZN10HootTheOwl16OnPendingDestroyEv.c:

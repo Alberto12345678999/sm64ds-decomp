@@ -27,6 +27,7 @@ src/func_ov055_021112c4.cpp:
     .text start:0x021112c4 end:0x02111318
 
 src/_ZN11MirrorLuigi16CleanupResourcesEv.c:
+    complete
     .text start:0x02111318 end:0x02111354
 
 src/_ZN11MirrorLuigi16OnPendingDestroyEv.c:
