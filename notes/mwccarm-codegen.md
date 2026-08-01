@@ -2035,6 +2035,31 @@ Note for CI: the self-hosted validate box needs `2004/b56` installed before any
 b56-only match can be committed to src/, otherwise it cannot reproduce them and the
 files would land red. Run `tools/recover_cw2004.py` there first.
 
+### 6ai addendum: the 0057-0071 public hunt is EXHAUSTED (2026-08-01)
+
+A systematic enumeration closed the public-recovery route for the builds between 0056
+and 0072. Findings, so nobody re-spends this search:
+
+- The Metrowerks FTP `CWARM` folder is capped at the Oct 20 2004 update (build 56)
+  across TWO independent archive.org crawl snapshots; the folder's own index.html
+  confirms nothing was ever posted after it.
+- The `ARM_R1.2.x` updates (Dec 2002) are IDE patch cabs with no compiler, ~2 years
+  too old regardless.
+- CodeWarrior for Symbian (3.1 full installer AND the 3.1.1 update) ships NO mwccarm:
+  both cab volumes were carved 100% -- it is an IDE/debugger front end driving ARM GCC
+  via XML adapters, same as the S60 SDK (arm-epoc-pe-gcc). The era's Symbian products
+  are not mwccarm carriers at all.
+- The NitroSDK 3.0 leak's cw.zip is Jan/Apr 2006, i.e. build 72+, redundant with
+  1.2/sp2p3.
+- The dsi/ TWL builds (1.1-1.6sp2, nine of them) were swept against the floors the
+  same day: all structurally wrong-era (smaller code, 999 everywhere).
+
+Remaining routes are all non-public: a CodeWarrior for NITRO V0.5-V0.6.1 SDK leak
+surfacing, or NDA-era Nintendo/Metrowerks archives. Until one appears, the five arm9
+floors (InitResources 4, OAM::Render 2, 0202ffec 2, LoadTex 5, func_02009e70 96) are
+at their true resting state: every source-side axis is closed with evidence in the
+near-miss DB.
+
 ## 6aj. Uninit-decl split: vreg birth order follows the DECLARATION LINE, not first assignment (2026-07-27, Opus→Fable on func_ov007_020c3fe4)
 
 The decl-order rules (2, 6e, 6k, 6q) all assume declarations carry initializers, which
@@ -2783,6 +2808,13 @@ read in five declaration positions.
 **Class:** register-coalescer build delta, same family as 6ag's first-access-fold. Route it to
 the permuter, not to a construct hunt.
 
+**6av addendum (2026-08-01):** the permuter route is structurally BLOCKED here: the function
+is cpp-only (the boolean-materialization idiom at insn 9 needs the C++ frontend; c99 collapses
+it to compare-and-branch), and the permuter's mutation engine is C-only, so sweeps silently
+no-op on it. Same caveat applies to any //cpp near-miss routed to crunch.py/batch.py. Pragma
+space and sibling census are closed (see the DB row); the only remaining route is a recovered
+pre-1.2/V0.6.1 compiler build.
+
 ### 6as addendum: the recognised-pragma vocabulary, and three corrections it produced
 
 `notes/mwccarm-pragmas.txt` now holds the **246 pragma names mwccarm actually parses**,
@@ -2809,3 +2841,54 @@ Three corrections fell straight out of it, all of which had been recorded as evi
 **Practical rule:** a pragma result is evidence only if the name is in that file. Proving a
 real pragma inert is a finding; proving a fake one inert is noise that then gets cited as a
 closed avenue.
+
+## 6aw. The sub-identity beats commutative canonicalization: `a - (-b)` where `a + b` re-canonicalizes (2026-08-01, func_02072168 MATCHED)
+
+The last real divergence on func_02072168 (12 -> 0) was a 9-word scratch-register rotation
+in one two-armed statement (case 9's `b = <mem> + v1`). The mechanism, decoded from the
+assignment pattern: mwccarm canonicalizes the commutative add to +(simple, complex) --
+`a + v1` and `v1 + a` compile IDENTICALLY (both re-canonicalize to +(v1, a)) -- and then
+walks operands right-to-left assigning scratch registers. The ROM's tree is +(a, v1), so
+its walk hits v1 last (r0) where ours hit it first. No cast, unary +, `(0, v1)` comma,
+`| 0`, `+ 0`, u64 mask on either operand, or arm-local temp moved a byte: everything that
+compiles to the same value re-canonicalizes with it, and temps rotate the whole web (12 ->
+262).
+
+The lever: spell the add as a SUBTRACTION, `b = <mem> - (-v1)`. Subtraction is not
+commutative, so canonicalization leaves the operand order alone; late strength reduction
+then folds `- (-x)` back to the plain add rN,rN,rM with +(a, v1) order intact. One edit,
+9 words, byte-exact. Semantics are exact on ARM (two's-complement wraparound; the negate
+of INT_MIN folds through the same add).
+
+Scope note: this is the first known construct that steers CANONICAL OPERAND ORDER of a
+commutative op, which 0202ffec's smull floor and several ordering floors were declared
+unreachable over. When a diff shows a pure scratch-register rotation around one
+commutative op, try the sub-identity before calling it a floor.
+
+Landing note (split-symbol carriers, extends 9a(3)): func_02072168 is banked and
+re-verified at the COMBINED 0x88c extent (0x02072168..0x020729f4) because its compiled
+object also emits func_020729e8, the severed 12-byte epilogue. RESOLVED 2026-08-01: the
+symbol map now merges the pair (config/arm9/symbols.txt lists func_02072168 at size
+0x88c, the func_020729e8 row and its stub src file are gone) -- the first symbol-map
+merge of a severed fragment into its parent. Precedent for the func_02071644/
+func_02071694 pair (9a(3)'s other proven case) when someone lands that one.
+
+## 6ax. Inverse RMW-launder: demote the PLAIN read to let the RMW chain lead an interleave (2026-08-01, CapEnemy::GetCapState MATCHED)
+
+GetCapState's "leader-of-interleave" floor (two equal-height chains, registers identical,
+ROM leads A,B,A,B with the RMW-pool chain, mwcc leads B,A,B,A with the plain-load chain)
+fell to the exact INVERSE of the matching-style.md RMW rule: launder the plain single-use
+field_f4 READ with the u64 no-op mask and leave the RMW site alone.
+
+    field_b0 = *(int *)(((long long)(int)&field_f4) & 0xFFFFFFFFFFFFFFFFLL);
+
+Instruction selection is unchanged (the load still folds to ldr r1,[r4,#0xf4]) -- the mask
+only demotes the load out of its default value-numbering/scheduling class, and that demotion
+alone flips which chain leads. Every documented spelling of the RMW side (naming, casting,
+block-scoping, splitting, comma-fusing, 22 probes re-verified 2026-08-01) is inert or
+regressive.
+
+Rule amendment: "launder ONLY the RMW sites" holds for the ADDRESS-MATERIALIZATION split
+(that is what the ROM's RMW/single-use anatomy dictates). But for ORDERING residue between
+two chains, the launder is a scheduling-class demotion you can apply to EITHER side: launder
+the chain that must YIELD, not the one that must lead.
