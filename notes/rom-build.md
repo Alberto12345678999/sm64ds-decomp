@@ -1,0 +1,384 @@
+# Building a playable `.nds` from source
+
+**Goal.** Produce a bootable `build/sm64ds.nds` whose ARM9 code comes from *our* C
+wherever `src/` has a verified match, and from the ROM's delinked objects everywhere
+else. Then change a line of C, rebuild, and see the change in a running game.
+
+This is the "hybrid link" that ds-decomp is designed for. It does **not** require 100%
+matching first — at 97.9% of functions we can already source-build the overwhelming
+majority and let delinked gap objects supply the residue. Phase 1 of
+[`roadmap.md`](roadmap.md) ("`dsd rom build` turns the source back into the exact retail
+ROM") is the 100% version of the same pipeline; this document is the path to standing
+that pipeline up now.
+
+## Status
+
+**M0, M1 and M2a are done, and the built ROM boots and plays in melonDS.**
+`python tools/rombuild.py` runs the whole pipeline and produces a 16,777,216-byte
+`build/sm64ds.nds` with all 106 modules green. **11,090 functions are enrolled as their
+own delink objects**; two of them (`AngleDiff` in main, `Player_ScaleByCharFactor` in
+ov002) are compiled from `src/` and the rest are still supplied from ROM bytes. **M2b —
+flipping `complete` on everything that qualifies — is the open work**, and it is what
+turns those 2 into thousands. Results are recorded under each milestone below.
+
+```
+python tools/enroll.py --dry-run     # what would be enrolled, and what is skipped
+python tools/enroll.py               # write the file entries (rom-bytes mode)
+python tools/rombuild.py             # build and verify
+```
+
+```
+python tools/rombuild.py            # delink, compile enrolled src, link, package, verify
+python tools/rombuild.py --no-rom   # stop after linking (fast iteration)
+python tools/rombuild.py -j 16
+```
+
+The script compiles exactly the files enrolled by a `complete` file entry in some
+`config/**/delinks.txt`; everything else comes from ROM bytes. Enrolling more source is
+therefore a config edit, not a code change.
+
+## The pipeline
+
+```
+src/*.c|cpp  --mwccarm-->  build/src/*.o  ─┐
+                                           ├─ mwldarm ─> build/final_link.o (ELF)
+config/**/delinks.txt --dsd delink--> build/delinks/*.o  ─┘   + build/*.bin per region
+        │                                                          │
+        └──> dsd lcf ──> build/arm9.lcf + build/objects.txt        │
+                                                                   v
+                                        dsd rom config --elf build/final_link.o
+                                                                   │
+                                                                   v
+                                        dsd rom build ──> build/sm64ds.nds
+                                                                   │
+                                        dsd check modules ──> byte-diff vs retail
+```
+
+Commands (matching the reference dsd project, `DQIX/dqix-decomp`, adjusted for the
+0.11.0 CLI actually on disk):
+
+```
+dsd lcf        -c config/arm9/config.yaml            # writes arm9.lcf + objects.txt to build_path
+mwldarm  -proc arm946e -nostdlib -interworking -m Entry -map closure,unused \
+         -msgstyle gcc -nodead @build/objects.txt build/arm9.lcf -o build/final_link.o
+dsd rom config --elf build/final_link.o --config config/arm9/config.yaml
+dsd rom build  --config <generated rom config> --rom build/sm64ds.nds
+dsd check modules --config-path config/arm9/config.yaml --fail
+dsd check symbols --config-path config/arm9/config.yaml --elf-path build/final_link.o --fail
+```
+
+## What already exists
+
+| Piece | State |
+|---|---|
+| `dsd` (ds-decomp 0.11.0) | `tools/bin/dsd.exe` |
+| ROM extracted (`dsd rom extract`) | `extracted/dsd/` — header, banner, 2,072 asset files, arm7, arm9, overlays |
+| dsd project config | `config/arm9/config.yaml` + **106 modules** (main + itcm + dtcm + 103 overlays) of `symbols.txt` / `relocs.txt` / `delinks.txt` |
+| Delinked gap objects | `build/delinks/*.o` — **93**, because 13 overlays are empty and emit none |
+| Linker script + object list | `build/arm9.lcf`, `build/objects.txt` |
+| Compiler **and linker** | `tools/mwccarm/1.2/sp2p3/{mwccarm,mwldarm}.exe` |
+| Matched source | `src/` — 8,147 `.c` + 3,056 `.cpp`, one function per file |
+| Symbol → address map | `config/**/symbols.txt` (`name kind:function(arm,size=0x14) addr:0x...`) |
+
+Nothing has ever been linked: `build/build/` is empty. Milestone 0 exists to change that.
+
+Coverage measured for this plan: **11,197 of 11,389** function symbols have a `src/`
+file; in the main module, 3,084 of 3,090.
+
+## `delinks.txt` file-entry syntax
+
+Verified by running dsd 0.11.0 against an isolated copy of the config. A *file entry* is
+an unindented path ending in `:`, followed by indented lines:
+
+```
+    .text       start:0x02004000 end:0x020736f4 kind:code align:32
+    ...
+src/AngleDiff.c:
+    complete
+    .text start:0x0203b0e8 end:0x0203b0fc
+```
+
+Two behaviours that matter, both confirmed empirically rather than assumed:
+
+- **`align:32` is not inherited.** dsd emitted the carved object with
+  `sh_addralign=4`, and the generated lcf places gap and file objects back-to-back with
+  no `ALIGN` directive between them, under `ALIGNALL(4)`. No `align:4` override needed.
+- **`complete` selects the object source.** With `complete`, `objects.txt` points at
+  `build\src\AngleDiff.o` — our compiled object. *Without* it, dsd emits
+  `build\delinks\src\AngleDiff.o` from ROM bytes and points there instead. That second
+  mode is what M2a below exploits.
+
+Gap objects reference a carved-out symbol as **weak undefined**, so a missing compiled
+object links silently to address 0 rather than erroring. `dsd check symbols` /
+`check modules` is the safety net here, not the linker.
+
+## Milestones
+
+### M0 — Baseline relink, zero source involved
+
+Link the 93 existing gap objects exactly as they are, build a ROM, and prove it is the
+retail game. This validates linker flags, the lcf dialect, `rom config`, `rom build`,
+and the ARM7/secure-area/CRC handling *before* any of our C is in the mix.
+
+**Settle path plumbing first (30 seconds, before interpreting any error).**
+`build/objects.txt` holds repo-root-relative paths (`build\delinks\...`), the lcf's
+MEMORY block writes `> build/arm9.bin`, but `config/arm9/config.yaml` expects built
+binaries at `../../build/build/arm9.bin`. Run mwldarm from the repo root, then `ls
+build/ build/build/` to see where the region binaries actually landed. Also
+`mkdir -p build/src build/build` up front.
+
+**Gate:** `dsd check modules --fail` green for all modules, and `build/sm64ds.nds` boots
+to the title screen in melonDS.
+
+**The gate is deliberately not "the .nds hashes equal the dump."** `arm9.yaml` says
+`compressed: true`, and `overlays.yaml` has `table_signed: true` plus per-overlay
+`compressed: true, signed: true` against `arm9/hmac_sha1_key.bin`. File-level identity
+therefore depends on dsd's BLZ compressor and HMAC re-signing being bit-exact, which is
+not what this milestone is testing. `check modules` compares decompressed modules
+against the `hash:` fields in `config.yaml` and is compression-independent. If the .nds
+differs while modules are green, that is the compression/signing story — record it and
+move on.
+
+Remaining unknowns to settle here, not guess:
+- Whether 1.2/sp2p3 `mwldarm.exe` accepts this lcf dialect (`AFTER`, `ALIGNALL`,
+  `WRITEW`). A parse error naming an lcf line would be fatal to the whole approach —
+  which is exactly why this milestone is first.
+- Where `dsd rom config` writes its output.
+- Whether `dsd rom build` needs `--arm7-bios`. The secure area is already plaintext
+  (`encrypted: false`), so probably not, but confirm.
+- Benign `dsd delink` warnings ("No module for relocation … to 0x01ff…") are expected:
+  unmodeled relocs leave raw ROM bytes in the slot, which is byte-preserving at fixed
+  addresses.
+
+ARM7 (`extracted/dsd/arm7/arm7.bin`) and the asset file image (`extracted/dsd/files/`
+plus `path_order.txt`) ride through `rom build` untouched. The `.sav` is emulator-created;
+nothing to do.
+
+#### M0 result — passed
+
+Every unknown resolved favourably on the first attempt:
+
+- **mwldarm 1.2/sp2p3 accepts the lcf dialect** — `AFTER`, `ALIGNALL`, `WRITEW` and all —
+  linking 93 gap objects with exit 0 and no diagnostics.
+- **The path question answered itself.** mwldarm resolves `@build/objects.txt` entries
+  against the CWD (repo root) and the MEMORY block's `> build/arm9.bin` against the lcf's
+  own directory, so the region binaries land in `build/build/` — exactly where
+  `config.yaml` expects them. Run mwldarm from the repo root and it just works.
+- `dsd lcf -c` writes both `build/arm9.lcf` and `build/objects.txt` from `build_path`.
+- `dsd rom config` writes `build/build/rom_config.yaml` (plus per-module yaml).
+- **`--arm7-bios` is not needed.** `dsd rom build` produced a full 16,777,216-byte ROM
+  without it.
+- `dsd check modules --fail`: all 106 modules OK, exit 0.
+
+And the .nds is much closer to the dump than the gate required: **107 differing bytes out
+of 16,777,216**, all metadata, in three groups —
+
+| Offset | Count | What |
+|---|---:|---|
+| `0x06152F` + `0x20`·n | 103 | overlay table entry flag byte, `3` → `1`. dsd compresses each overlay but does not re-apply the HMAC signature, so it clears the "signed" bit and the ARM9 loader skips verification. |
+| `0x00006C` | 2 | secure area CRC, zeroed (the area is already plaintext, `encrypted: false`). |
+| `0x00015E` | 2 | header CRC16, correctly recomputed for the changed header. |
+
+Every byte of code, data, and all 2,072 asset files is identical, and dsd's BLZ
+compressor reproduces the retail compressed streams exactly. The overlay-signature bit
+is the one thing to remember: **signature verification is off in every built ROM**, which
+is what makes overlay edits possible at all, but it also means a signing bug could never
+show up as a failure here.
+
+### M1 — One function from source
+
+`AngleDiff` is a verified-good pick: `config/arm9/symbols.txt:1513`
+(`kind:function(arm,size=0x14) addr:0x0203b0e8`), the next symbol is exactly adjacent at
+`0x0203b0fc`, `src/AngleDiff.c` is pure ALU with no literal pool, no data and no calls,
+and zero relocations originate inside it.
+
+1. Add its file entry (with `complete`) to `config/arm9/delinks.txt`.
+2. `dsd delink` — the main gap object splits, regenerated without that range.
+3. Compile with the canonical toolchain and flags (`1.2/sp2p3`, `-O4,p -enum int
+   -lang c99 -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc`,
+   `-i include/`) to `build/src/AngleDiff.o`.
+4. `dsd lcf`, link, `dsd rom config`, `dsd rom build`.
+
+**Gate:** `dsd check modules` still green — a byte-identical main module where one
+function's bytes came from our C.
+
+#### M1 result — passed
+
+`config/arm9/delinks.txt` grew the three-line entry; `dsd delink` split the single
+`_dsd_gap@main_7.o` into `_dsd_gap@main_8.o` (everything before) and `_dsd_gap@main_1.o`
+(everything after), and the generated lcf placed them back-to-back around ours:
+
+```
+_dsd_gap@main_8.o(.text)
+AngleDiff.o(.text)
+_dsd_gap@main_1.o(.text)
+```
+
+`objects.txt` names `build\src\AngleDiff.o` — confirming the object-path derivation is
+`build_path` + the delink file path with a `.o` extension. Linked ARM9 is byte-identical
+to the extracted one and `check modules` stays green.
+
+**Negative control.** Because gap objects reference carved-out symbols as *weak*
+undefined, a green build could in principle mean "our object was ignored". So a
+deliberately wrong `AngleDiff` (`return d + 1`, compiled into the same object slot
+without touching `src/`) was linked: the ROM changed, confirming our bytes are really the
+ones placed. It also demonstrated the cascade to respect at M3 — the extra instruction
+grew the function past its 0x14-byte slot, shifting every later address and re-pointing
+absolute pool words throughout the module, so **305,977** bytes of `arm9.bin` differed,
+starting well *before* the edited function. Restoring the real source returned the build
+to byte-identical. **A behaviour edit must keep the function's size unchanged.**
+
+Then flip **one deliberate interworking caller** (a function whose `BL` targets a Thumb
+SDK symbol; main alone has 26 Thumb functions) and observe whether mwldarm emits `BLX`
+or synthesizes a veneer. A new veneer adds bytes, and via the lcf's `AFTER()` chains
+that moves downstream overlay origins — so this is worth knowing at M1 with one file in
+play rather than at M2 with thousands.
+
+### M2a — All candidate file entries, no `complete`
+
+Land file entries for the whole candidate set **without** `complete`, so dsd supplies
+ROM-bytes objects for every one of them. The result is byte-identical *by construction*,
+which makes this a pure scale test: it proves `dsd delink`, `dsd lcf`, and an ~11,000-object
+`mwldarm` link survive before correctness is ever in play.
+
+Scale is friendlier than the raw file count suggests. Matched functions form only **210
+contiguous runs corpus-wide (7 in main)**, and gap-object count tracks run boundaries,
+not function count — main's `.text` has just 25 inter-function holes totalling 5,878
+bytes. Object count (~11k) is fixed by the one-function-per-file convention and cannot be
+coalesced at the `delinks.txt` level without merging TUs, which the repo layout forbids.
+If mwldarm chokes, the fallback is partial-linking runs into intermediate objects
+(`mwldarm -r`, unverified) or capping enrollment per module.
+
+Ramp per module: main first (3,084 entries, 7 runs) is the cleanest stress test.
+
+#### M2a result — passed
+
+`tools/enroll.py` generates the file entries; `config/rombuild-exclude.txt` records what
+cannot be carved and why. **11,090 entries** across 73 modules, **11,390 objects** in
+`build/objects.txt`, and `mwldarm` linked the lot in ~50 s wall clock for the whole
+pipeline. All 106 modules green; the packaged `.nds` is still exactly the same **107
+metadata bytes** away from the retail dump as at M0. Carving raised the gap-object count
+from 93 to 374 — still small, as predicted by the contiguous-run analysis.
+
+The scale worry was unfounded; what actually cost the iterations were three concrete
+discoveries, none of which show up at one-function scale:
+
+1. **A local label cannot cross an object boundary.** `func_0206ce90`, `func_0206cee0`
+   and `func_0206d868` `arm_call` 0x0206d9dc and 0x0206da28 — addresses with no symbol,
+   because they are *secondary entry points* 0x10 bytes inside `func_0206d9cc` and
+   `func_0206da18`. dsd names such a target `.L_0206d9dc` and then refuses:
+   `Imported symbol .L_0206d9dc … is local, it cannot be used in relocation`.
+   Excluding just the three callers does not help — the error simply moves to the gap
+   object, because carving any function *between* caller and target splits the span. The
+   whole 12-function run has to stay in one object. Giving those two addresses real
+   symbols in `symbols.txt` would recover all twelve.
+2. **Per-entry alignment cannot be overridden.** dsd rejects it outright:
+   `attribute 'align' should be omitted as it is inherited from this file's header`.
+   Carved code sections get 4-byte alignment, so a function that does not start
+   4-aligned — the thumb SDK stubs (`Div` at 0x0200406a, `IntrWait`, `CpuSet`, …) — is
+   padded up by the linker. That inserted 2 bytes at the very first entry and shifted
+   the entire module: main came out 32 bytes long with 497,337 differing bytes. **12
+   functions** are excluded on `addr % 4 != 0`.
+
+   This refines the M1 finding. Fable verified alignment was not inherited *for a
+   4-aligned ARM function*, which was true and is why M1 passed; the inherited-align
+   problem only bites where the address is not already 4-aligned.
+3. **The `// NONMATCHING` hatch must be honoured.** 84 files have a `src/` entry but are
+   explicitly not byte-matches, so they are candidates for neither mode.
+
+Final tally: 11,090 enrolled, 191 with no `src/` file, 84 NONMATCHING, 12 unaligned, 12
+in the secondary-entry-point cluster.
+
+### M2b — Eligibility flip
+
+Now flip `complete` on, per module, for files that pass a **whitelist**. A blacklist is
+the wrong shape here: the modules also carry `.exception`, `.exceptix`, `.init` and
+`.ctor` sections, and anything unexpected grows the module and shifts every later
+address.
+
+A file enrolls only if:
+
+- its object has **exactly one non-empty section, named `.text`**, holding **exactly one
+  defined global FUNC symbol** whose `st_size` equals the declared symbol size;
+- the symbol's address lies in a `.text` range — **not `.init`**. About **301 matched
+  functions live inside `.init` ranges**; their objects emit code into a section named
+  `.text`, so a file entry declaring `.init` would generate a `File.o(.init)` selector
+  that matches nothing. Hard-exclude them;
+- every undefined reference resolves to a real, addressed symbol;
+- a **fresh strict `linkcheck` pass** rates it VERIFIED — not BENIGN, not BLIND. The
+  corpus figures in [`link-verification.md`](link-verification.md) are from 7,180
+  matches on 2026-06-29 and `src/` now holds 11,203 files, so ~4,000 matches have never
+  been linkchecked and the 1,787 BLIND count is a floor. BENIGN matters because those 26
+  cases are exactly the veneer/twin/ARM→Thumb cases that `linkcheck` waves through for
+  *match* verification but that a real relink resolves differently — silently shifting
+  bytes instead of failing loudly.
+
+Why one `.text` section and not "no extra sections": `tools/linkcheck.py` documents that
+mwccarm emits **one `.text` section per function** within a TU, and the lcf's
+`File.o(.text)` selector places *all* of them. A multi-function TU (any C++ dtor emitting
+`D0`/`D1`/`D2` plus thunks) injects extra code at the wrong addresses even when no symbol
+name collides — and `-nodead` disables the dead-stripping that might otherwise hide it.
+
+Bisection on a mismatch starts at the **earliest module in the `AFTER()` partial order**
+(`build/arm9.lcf:5–109`): a size change in ov002 shifts the origins of ov008–ov102, so
+dozens of red modules mean "look upstream", not "dozens of bugs". Verdicts land in
+`build/rombuild-eligibility.json`.
+
+**Gate:** thousands of functions sourced from `src/`, `dsd check modules` still green,
+one-command reproducible build.
+
+### M3 — Prove it is really our code
+
+Change a constant in a source-built function, rebuild, boot in melonDS, observe the
+difference, then revert and confirm the ROM returns to identical.
+
+**Put the edit in the main module.** Overlays are HMAC-signed; if dsd 0.11.0 does not
+re-sign correctly, an overlay content change can hang at overlay load while main-module
+changes work fine. Similarly, a white screen with green `check modules` points at the
+header CRCs (`extracted/dsd/header.yaml`), which `check modules` does not cover.
+
+**Gate:** a visible in-game change traced to a one-line C edit. This is the deliverable
+the whole exercise is for.
+
+#### M3 result — partially done
+
+**The built ROM boots and plays.** melonDS 1.1 runs `build/sm64ds.nds` at a locked
+60/60 through title → "touch the picture" → main menu (3D Yoshi) → file select (castle
+flyover) → the opening cutscene → gameplay on the castle grounds, with the HUD, the
+touch-screen minimap, 2D and 3D all correct. No BIOS files and no `--arm7-bios` needed.
+
+**Intentional divergences live in `mods/`, not `src/`.** `src/` must byte-reproduce the
+ROM, so a modified function goes in `mods/<Symbol>.c` and the module's `delinks.txt`
+file entry points there instead. Switching between stock and modded is a one-word path
+edit; nothing else in the pipeline changes.
+
+`mods/Player_ScaleByCharFactor.c` (shift 12 → 11, doubling the scale factor) built
+cleanly and landed exactly as intended: **3 bytes changed**, both at the shift
+instructions, all inside the function, ov002's size unchanged at 394,048 bytes, so
+nothing downstream moved. Saved as `build/sm64ds-mod.nds`.
+
+**What is not yet confirmed is the *visible* effect of that particular edit.** Reaching
+gameplay and seeing Yoshi does not by itself attribute his apparent size to the change —
+that needs an A/B against a stock build from the same save, which has not been run.
+`Player_ScaleByCharFactor` may well scale a physics quantity (speed, jump height) rather
+than the model, in which case a still frame would never show it. Two ways to close this:
+
+- A/B properly: File A now exists, so a stock build reaches the same spot in a few
+  interactions. Capture both and diff.
+- Or pick a target whose effect is unmissable in a still frame and visible early — a
+  constant the title or menu screens read — rather than a mid-gameplay physics value.
+
+The repo is left with the ov002 entry pointing back at `src/`, so `python
+tools/rombuild.py` is green by default.
+
+## Constraints
+
+- **Nothing ROM-derived is ever committed.** `build/`, `extracted/`, `*.nds`, `*.bin`
+  and `*.o` are already gitignored. The built ROM stays local, like the dump it came
+  from. Only `tools/rombuild.py`, the `delinks.txt` file entries, and this note are repo
+  content.
+- **`delinks.txt` edits are config, not matches**, and `AGENTS.md:49` keeps tooling and
+  config changes out of match batches — they go in their own PR.
+- **ARM7 is not decompiled** and passes through untouched.
+- **An emulator is required and is not installed.** melonDS is the accuracy reference;
+  DeSmuME also works.
