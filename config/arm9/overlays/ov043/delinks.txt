@@ -13,12 +13,15 @@ src/func_ov043_0211123c.c:
     .text start:0x0211123c end:0x02111280
 
 src/func_ov043_02111280.cpp:
+    complete
     .text start:0x02111280 end:0x021112a8
 
 src/func_ov043_021112a8.cpp:
+    complete
     .text start:0x021112a8 end:0x02111320
 
 src/func_ov043_02111320.c:
+    complete
     .text start:0x02111320 end:0x021113cc
 
 src/DiamondLift_Spawn.c:
@@ -31,9 +34,11 @@ src/func_ov043_0211144c.c:
     .text start:0x0211144c end:0x021114b0
 
 src/func_ov043_021114b0.c:
+    complete
     .text start:0x021114b0 end:0x021114c4
 
 src/func_ov043_021114c4.c:
+    complete
     .text start:0x021114c4 end:0x021114dc
 
 src/RickshawBdw_Spawn.c:

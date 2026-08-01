@@ -11,6 +11,7 @@ src/func_ov064_02115f28.c:
     .text start:0x02115f28 end:0x02115f84
 
 src/func_ov064_02115f84.c:
+    complete
     .text start:0x02115f84 end:0x02115f98
 
 src/func_ov064_02115f98.c:
@@ -115,9 +116,11 @@ src/func_ov064_02117168.c:
     .text start:0x02117168 end:0x021171b0
 
 src/func_ov064_021171b0.c:
+    complete
     .text start:0x021171b0 end:0x02117220
 
 src/func_ov064_02117220.cpp:
+    complete
     .text start:0x02117220 end:0x02117310
 
 src/_ZN5Bully8BehaviorEv.c:
@@ -137,6 +140,7 @@ src/_ZN8BigBullyD0Ev.c:
     .text start:0x021174f4 end:0x0211755c
 
 src/func_ov064_0211755c.c:
+    complete
     .text start:0x0211755c end:0x021175cc
 
 src/func_ov064_021175cc.cpp:
@@ -186,6 +190,7 @@ src/func_ov064_02117cc4.c:
     .text start:0x02117cc4 end:0x02117cfc
 
 src/func_ov064_02117cfc.cpp:
+    complete
     .text start:0x02117cfc end:0x02117d24
 
 src/func_ov064_02117d24.c:
@@ -265,6 +270,7 @@ src/func_ov064_0211873c.c:
     .text start:0x0211873c end:0x02118760
 
 src/func_ov064_02118760.c:
+    complete
     .text start:0x02118760 end:0x021187d0
 
 src/func_ov064_021187d0.c:
@@ -295,6 +301,7 @@ src/_ZN10LavaBubble13InitResourcesEv.cpp:
     .text start:0x021189d8 end:0x02118b08
 
 src/func_ov064_02118b08.c:
+    complete
     .text start:0x02118b08 end:0x02118b10
 
 src/LavaBubble_Spawn.c:
@@ -334,6 +341,7 @@ src/func_ov064_02118d20.c:
     .text start:0x02118d20 end:0x02118d3c
 
 src/func_ov064_02118d3c.c:
+    complete
     .text start:0x02118d3c end:0x02118da0
 
 src/func_ov064_02118da0.cpp:
@@ -368,12 +376,14 @@ src/_ZN19BowserPuzzleManager8BehaviorEv.cpp:
     .text start:0x021190b0 end:0x0211915c
 
 src/func_ov064_0211915c.c:
+    complete
     .text start:0x0211915c end:0x021191a8
 
 src/_ZN19BowserPuzzleManager13InitResourcesEv.cpp:
     .text start:0x021191a8 end:0x02119284
 
 src/func_ov064_02119284.c:
+    complete
     .text start:0x02119284 end:0x0211929c
 
 src/func_ov064_0211929c.cpp:
@@ -459,6 +469,7 @@ src/func_ov064_02119d28.c:
     .text start:0x02119d28 end:0x02119ea0
 
 src/func_ov064_02119ea0.c:
+    complete
     .text start:0x02119ea0 end:0x02119ecc
 
 src/func_ov064_02119ecc.cpp:
@@ -501,6 +512,7 @@ src/func_ov064_0211a284.c:
     .text start:0x0211a284 end:0x0211a2c4
 
 src/func_ov064_0211a2c4.cpp:
+    complete
     .text start:0x0211a2c4 end:0x0211a380
 
 src/func_ov064_0211a380.c:

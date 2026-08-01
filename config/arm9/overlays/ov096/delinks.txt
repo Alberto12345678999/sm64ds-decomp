@@ -10,9 +10,11 @@ src/_ZN5PokeyD0Ev.c:
     .text start:0x02135748 end:0x021357a4
 
 src/func_ov096_021357a4.c:
+    complete
     .text start:0x021357a4 end:0x021357ac
 
 src/func_ov096_021357ac.c:
+    complete
     .text start:0x021357ac end:0x021357b4
 
 src/func_ov096_021357b4.c:
@@ -128,6 +130,7 @@ src/_ZN5Pokey13InitResourcesEv.cpp:
     .text start:0x02136ab0 end:0x02136cd0
 
 src/func_ov096_02136cd0.c:
+    complete
     .text start:0x02136cd0 end:0x02136d10
 
 src/PokeySegment_Spawn.c:

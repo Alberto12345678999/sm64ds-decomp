@@ -12,6 +12,7 @@ src/_ZN9SpindriftD0Ev.c:
     .text start:0x02123788 end:0x021237e4
 
 src/func_ov081_021237e4.c:
+    complete
     .text start:0x021237e4 end:0x021237ec
 
 src/func_ov081_021237ec.cpp:
@@ -39,9 +40,11 @@ src/_ZN9Spindrift13InitResourcesEv.cpp:
     .text start:0x02123ed0 end:0x02123fd8
 
 src/func_ov081_02123fd8.cpp:
+    complete
     .text start:0x02123fd8 end:0x02124038
 
 src/func_ov081_02124038.c:
+    complete
     .text start:0x02124038 end:0x02124040
 
 src/Spindrift_Spawn.c:
@@ -109,6 +112,7 @@ src/func_ov081_02124dfc.c:
     .text start:0x02124dfc end:0x02124e64
 
 src/func_ov081_02124e64.c:
+    complete
     .text start:0x02124e64 end:0x02124ec0
 
 src/func_ov081_02124ec0.c:
@@ -170,6 +174,7 @@ src/_ZN10MrBlizzard13InitResourcesEv.cpp:
     .text start:0x02125ba0 end:0x02125eb8
 
 src/func_ov081_02125eb8.c:
+    complete
     .text start:0x02125eb8 end:0x02125ec0
 
 src/MrBlizzard_Spawn.c:
@@ -192,6 +197,7 @@ src/func_ov081_021260fc.cpp:
     .text start:0x021260fc end:0x021261b8
 
 src/func_ov081_021261b8.c:
+    complete
     .text start:0x021261b8 end:0x021261d4
 
 src/func_ov081_021261d4.cpp:
@@ -230,9 +236,11 @@ src/_ZN8MoneybagD0Ev.c:
     .text start:0x02126554 end:0x021265b8
 
 src/func_ov081_021265b8.c:
+    complete
     .text start:0x021265b8 end:0x021265c0
 
 src/func_ov081_021265c0.c:
+    complete
     .text start:0x021265c0 end:0x021265c8
 
 src/func_ov081_021265c8.c:
@@ -305,6 +313,7 @@ src/func_ov081_02127398.c:
     .text start:0x02127398 end:0x021273e8
 
 src/func_ov081_021273e8.c:
+    complete
     .text start:0x021273e8 end:0x02127440
 
 src/func_ov081_02127440.cpp:
@@ -354,6 +363,7 @@ src/_ZN8Moneybag13InitResourcesEv.cpp:
     .text start:0x021278a8 end:0x02127a7c
 
 src/func_ov081_02127a7c.cpp:
+    complete
     .text start:0x02127a7c end:0x02127adc
 
 src/Moneybag_Spawn.c:
@@ -370,9 +380,11 @@ src/func_ov081_02127be0.cpp:
     .text start:0x02127be0 end:0x02127ccc
 
 src/func_ov081_02127ccc.cpp:
+    complete
     .text start:0x02127ccc end:0x02127cf4
 
 src/func_ov081_02127cf4.c:
+    complete
     .text start:0x02127cf4 end:0x02127d98
 
 src/_ZN8IceBlock16CleanupResourcesEv.cpp:

@@ -87,12 +87,15 @@ src/_ZN6FlyGuy13InitResourcesEv.cpp:
     .text start:0x021203b4 end:0x021204e4
 
 src/func_ov070_021204e4.c:
+    complete
     .text start:0x021204e4 end:0x021204ec
 
 src/func_ov070_021204ec.cpp:
+    complete
     .text start:0x021204ec end:0x02120518
 
 src/func_ov070_02120518.c:
+    complete
     .text start:0x02120518 end:0x02120520
 
 src/FlyGuy_Spawn.c:
@@ -179,6 +182,7 @@ src/_ZN10FlameChompD0Ev.c:
     .text start:0x02121160 end:0x021211bc
 
 src/func_ov070_021211bc.c:
+    complete
     .text start:0x021211bc end:0x021211c4
 
 src/func_ov070_021211c4.cpp:
@@ -197,6 +201,7 @@ src/func_ov070_021213cc.c:
     .text start:0x021213cc end:0x02121438
 
 src/func_ov070_02121438.cpp:
+    complete
     .text start:0x02121438 end:0x021214f8
 
 src/func_ov070_021214f8.cpp:
@@ -270,6 +275,7 @@ src/_ZN14FlameChompFireD0Ev.c:
     .text start:0x02121b88 end:0x02121bdc
 
 src/func_ov070_02121bdc.c:
+    complete
     .text start:0x02121bdc end:0x02121be4
 
 src/func_ov070_02121be4.cpp:
@@ -304,6 +310,7 @@ src/func_ov070_02121f18.cpp:
     .text start:0x02121f18 end:0x02121fb0
 
 src/func_ov070_02121fb0.c:
+    complete
     .text start:0x02121fb0 end:0x02121fd0
 
 src/func_ov070_02121fd0.cpp:

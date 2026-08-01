@@ -47,6 +47,7 @@ src/func_ov022_0211165c.c:
     .text start:0x0211165c end:0x02111670
 
 src/func_ov022_02111670.c:
+    complete
     .text start:0x02111670 end:0x02111688
 
 src/RotatingPlatformLll_Spawn.c:
@@ -97,9 +98,11 @@ src/func_ov022_02111a64.c:
     .text start:0x02111a64 end:0x02111aa8
 
 src/func_ov022_02111aa8.cpp:
+    complete
     .text start:0x02111aa8 end:0x02111ad0
 
 src/func_ov022_02111ad0.c:
+    complete
     .text start:0x02111ad0 end:0x02111bdc
 
 src/func_ov022_02111bdc.cpp:
@@ -122,9 +125,11 @@ src/func_ov022_02111d90.c:
     .text start:0x02111d90 end:0x02111dd4
 
 src/func_ov022_02111dd4.cpp:
+    complete
     .text start:0x02111dd4 end:0x02111dfc
 
 src/func_ov022_02111dfc.c:
+    complete
     .text start:0x02111dfc end:0x02111ea0
 
 src/func_ov022_02111ea0.cpp:
@@ -222,6 +227,7 @@ src/func_ov022_02112654.cpp:
     .text start:0x02112654 end:0x021126ac
 
 src/func_ov022_021126ac.c:
+    complete
     .text start:0x021126ac end:0x02112710
 
 src/func_ov022_02112710.c:

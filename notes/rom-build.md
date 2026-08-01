@@ -15,8 +15,8 @@ that pipeline up now.
 
 **M0, M1, M2a and M2b are done. The built ROM boots and plays in melonDS.**
 `python tools/rombuild.py` produces a 16,777,216-byte `build/sm64ds.nds` in about a
-minute, with all 106 modules byte-identical to the ROM. **7,907 functions — 1,346,828
-code bytes, 60.9% of the project's total — are compiled from `src/` by mwccarm**; the
+minute, with all 106 modules byte-identical to the ROM. **8,367 functions — 1,411,392
+code bytes, 63.8% of the project's total — are compiled from `src/` by mwccarm**; the
 rest of each module is supplied from delinked ROM bytes. Only M3 (a confirmed *visible*
 change) is still open — the mod is provably in the ROM, but its on-screen effect has not
 been attributed by A/B. Results are recorded under each milestone below.
@@ -454,6 +454,47 @@ Why the rest are not source-built yet:
 | 13 | multiple `.text` sections — a multi-function TU |
 | 12 | fails to compile with the build flags |
 | 6 | the veneer / D1-vs-D2 cases above |
+
+### M2c — Reconcile the name mismatches
+
+The largest remaining bucket was 711 files whose object defined a different symbol than
+their filename. They turned out to share an annotation pair:
+
+```
+// @symbol func_ov091_02132a0c        <- the symbol at this ROM address
+// @emits  daDsn_c_OnAimedAtWithEgg   <- what the C actually defines
+```
+
+The second name is recovered knowledge, usually from a vtable slot. **Nothing in the repo
+consumes either annotation** — no tool, no CI config, no doc mentions them — and the
+divergence quietly broke two things:
+
+- **`match.py` cannot verify these files at all.** Asked for the filename's symbol it
+  reports `symbol 'func_ov091_02132a0c' not found in object`, so the byte oracle returns
+  `MATCHING VERSIONS: none` for every one of them. Meanwhile `progress.py` counts them as
+  matched, because it only checks that a `src/<name>.c` exists without a `NONMATCHING`
+  hatch. **712 files, about 6% of `src/`, were being counted as matched while being
+  unverifiable by the repo's own gate.**
+- **The ROM link cannot use them.** Gap objects import a carved-out function by its
+  `symbols.txt` name as a *weak* undefined, so a differently-named definition leaves every
+  caller silently binding to address 0 instead of erroring.
+
+`tools/reconcile_names.py` renames the emitted function to the `@symbol` name, replaces
+the now-redundant `@emits` line with `// recovered name: <name>` so the recovered identity
+is preserved, and byte-verifies each file against the ROM before keeping the edit.
+
+**711 of 712 verified and were applied.** The one holdout, `func_ov022_021123d0`, declares
+its own symbol with a conflicting signature and needs a human. Of the 711, **699 reproduce
+under the build's default `2004/b56`** and only 12 need a `1.2/base` override — further
+evidence that b56 is the right default for this corpus.
+
+Eligibility went 7,914 → 8,374 and source-built functions 7,907 → **8,367** (60.9% →
+63.8% of code bytes). The gap between +711 renamed and +460 enrolled is files that were
+blocked by a second reason as well — a BLIND symbol, a size mismatch, an `.init` home.
+
+The opposite direction — adopting the recovered names into `config/**/symbols.txt` — is
+the better long-term move and is left deliberately undone: it changes the canonical symbol
+table and every reference to those names, which is a maintainer's call, not a build fix.
 
 ### M3 — Prove it is really our code
 

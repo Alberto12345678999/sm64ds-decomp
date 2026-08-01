@@ -180,6 +180,7 @@ src/_ZN11ChiefChilly13InitResourcesEv.cpp:
     .text start:0x02121ccc end:0x02121ec0
 
 src/func_ov073_02121ec0.c:
+    complete
     .text start:0x02121ec0 end:0x02121ec8
 
 src/ChiefChilly_Spawn.cpp:
@@ -208,6 +209,7 @@ src/func_ov073_021221e0.c:
     .text start:0x021221e0 end:0x02122200
 
 src/func_ov073_02122200.cpp:
+    complete
     .text start:0x02122200 end:0x021222c8
 
 src/func_ov073_021222c8.c:
@@ -227,6 +229,7 @@ src/func_ov073_021223a4.cpp:
     .text start:0x021223a4 end:0x021223f4
 
 src/func_ov073_021223f4.cpp:
+    complete
     .text start:0x021223f4 end:0x02122464
 
 src/_ZN8CccArena16CleanupResourcesEv.cpp:

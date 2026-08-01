@@ -1,5 +1,5 @@
 // @symbol func_ov085_0212cd80
-// @emits Rabbit_Kill
+// recovered name: Rabbit_Kill
 /* recovered: shared common types, renamed to Class_Method, declarations from a shared header */
 #include "decl_Message.h"
 #include "decl_Player.h"
@@ -18,7 +18,7 @@ extern int _ZN6Player11ShowMessageER9ActorBasejPK7Vector3jj(void* self, void* ac
 extern unsigned char data_0209d684;
 extern unsigned char data_0209d660;
 
-int Rabbit_Kill(char* self)
+int func_ov085_0212cd80(char* self)
 {
     char* other = *(char**)(self + 0x18c);
     volatile struct Vector3 v;

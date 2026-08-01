@@ -95,9 +95,11 @@ src/func_ov029_02111b60.c:
     .text start:0x02111b60 end:0x02111ba4
 
 src/func_ov029_02111ba4.cpp:
+    complete
     .text start:0x02111ba4 end:0x02111bcc
 
 src/func_ov029_02111bcc.c:
+    complete
     .text start:0x02111bcc end:0x02111d6c
 
 src/func_ov029_02111d6c.cpp:

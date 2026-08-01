@@ -136,6 +136,7 @@ src/_ZN7Chuckya13InitResourcesEv.c:
     .text start:0x02117334 end:0x02117470
 
 src/func_ov062_02117470.c:
+    complete
     .text start:0x02117470 end:0x02117478
 
 src/Chuckya_Spawn.c:
@@ -268,12 +269,15 @@ src/_ZN5Koopa13InitResourcesEv.cpp:
     .text start:0x02119420 end:0x02119608
 
 src/func_ov062_02119608.cpp:
+    complete
     .text start:0x02119608 end:0x02119628
 
 src/func_ov062_02119628.cpp:
+    complete
     .text start:0x02119628 end:0x021196a8
 
 src/func_ov062_021196a8.c:
+    complete
     .text start:0x021196a8 end:0x021196bc
 
 src/KoopaSmall_Spawn.c:
@@ -322,6 +326,7 @@ src/func_ov062_0211a1f4.c:
     .text start:0x0211a1f4 end:0x0211a740
 
 src/func_ov062_0211a740.cpp:
+    complete
     .text start:0x0211a740 end:0x0211a9c4
 
 src/func_ov062_0211a9c4.c:
@@ -409,6 +414,7 @@ src/func_ov062_0211b930.cpp:
     .text start:0x0211b930 end:0x0211ba84
 
 src/func_ov062_0211ba84.c:
+    complete
     .text start:0x0211ba84 end:0x0211bc54
 
 src/func_ov062_0211bc54.cpp:
@@ -451,6 +457,7 @@ src/_ZN6Klepto13InitResourcesEv.cpp:
     .text start:0x0211cb4c end:0x0211ce78
 
 src/func_ov062_0211ce78.c:
+    complete
     .text start:0x0211ce78 end:0x0211ce80
 
 src/Klepto_Spawn.c:

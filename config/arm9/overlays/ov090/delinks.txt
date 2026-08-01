@@ -83,12 +83,15 @@ src/_ZN7Skeeter13InitResourcesEv.cpp:
     .text start:0x0213235c end:0x02132618
 
 src/func_ov090_02132618.c:
+    complete
     .text start:0x02132618 end:0x02132620
 
 src/func_ov090_02132620.cpp:
+    complete
     .text start:0x02132620 end:0x0213264c
 
 src/func_ov090_0213264c.c:
+    complete
     .text start:0x0213264c end:0x02132654
 
 src/Skeeter_Spawn.c:
@@ -108,6 +111,7 @@ src/func_ov090_02132730.cpp:
     .text start:0x02132730 end:0x021327e4
 
 src/func_ov090_021327e4.cpp:
+    complete
     .text start:0x021327e4 end:0x02132a58
 
 src/func_ov090_02132a58.cpp:
@@ -165,6 +169,7 @@ src/func_ov090_021331c4.c:
     .text start:0x021331c4 end:0x02133200
 
 src/func_ov090_02133200.c:
+    complete
     .text start:0x02133200 end:0x02133290
 
 src/func_ov090_02133290.c:
@@ -216,6 +221,7 @@ src/func_ov090_02133830.c:
     .text start:0x02133830 end:0x0213387c
 
 src/func_ov090_0213387c.c:
+    complete
     .text start:0x0213387c end:0x021338b4
 
 src/func_ov090_021338b4.cpp:

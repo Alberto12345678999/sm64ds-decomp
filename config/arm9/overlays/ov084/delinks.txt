@@ -93,6 +93,7 @@ src/func_ov084_0212b2dc.c:
     .text start:0x0212b2dc end:0x0212b30c
 
 src/func_ov084_0212b30c.cpp:
+    complete
     .text start:0x0212b30c end:0x0212b344
 
 src/func_ov084_0212b344.cpp:
@@ -115,6 +116,7 @@ src/_ZN6Goomba13InitResourcesEv.cpp:
     .text start:0x0212bc30 end:0x0212bfc0
 
 src/func_ov084_0212bfc0.cpp:
+    complete
     .text start:0x0212bfc0 end:0x0212bff8
 
 src/GoombaLarge_Spawn.c:
@@ -140,6 +142,7 @@ src/func_ov084_0212c1a0.c:
     .text start:0x0212c1a0 end:0x0212c4a0
 
 src/func_ov084_0212c4a0.c:
+    complete
     .text start:0x0212c4a0 end:0x0212c508
 
 src/func_ov084_0212c508.cpp:
@@ -269,12 +272,15 @@ src/_ZN19FirePiranhaPlantBig13InitResourcesEv.cpp:
     .text start:0x0212e774 end:0x0212e998
 
 src/func_ov084_0212e998.c:
+    complete
     .text start:0x0212e998 end:0x0212e9d4
 
 src/func_ov084_0212e9d4.cpp:
+    complete
     .text start:0x0212e9d4 end:0x0212e9f8
 
 src/func_ov084_0212e9f8.cpp:
+    complete
     .text start:0x0212e9f8 end:0x0212ea18
 
 src/FirePiranhaPlant_Spawn.c:
@@ -305,6 +311,7 @@ src/func_ov084_0212ec04.c:
     .text start:0x0212ec04 end:0x0212ec58
 
 src/func_ov084_0212ec58.c:
+    complete
     .text start:0x0212ec58 end:0x0212ec60
 
 src/func_ov084_0212ec60.c:
@@ -352,6 +359,7 @@ src/func_ov084_0212f6d8.c:
     .text start:0x0212f6d8 end:0x0212fa7c
 
 src/func_ov084_0212fa7c.c:
+    complete
     .text start:0x0212fa7c end:0x0212fc10
 
 src/func_ov084_0212fc10.c:

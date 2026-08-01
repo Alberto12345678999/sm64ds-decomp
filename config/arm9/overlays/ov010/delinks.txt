@@ -45,12 +45,15 @@ src/func_ov010_02111554.cpp:
     .text start:0x02111554 end:0x021115a8
 
 src/func_ov010_021115a8.cpp:
+    complete
     .text start:0x021115a8 end:0x021115e0
 
 src/func_ov010_021115e0.cpp:
+    complete
     .text start:0x021115e0 end:0x02111654
 
 src/func_ov010_02111654.c:
+    complete
     .text start:0x02111654 end:0x0211184c
 
 src/func_ov010_0211184c.c:

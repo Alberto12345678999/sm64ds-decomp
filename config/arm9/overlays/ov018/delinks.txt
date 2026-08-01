@@ -11,6 +11,7 @@ src/func_ov018_021111e4.c:
     .text start:0x021111e4 end:0x0211123c
 
 src/func_ov018_0211123c.cpp:
+    complete
     .text start:0x0211123c end:0x02111278
 
 src/func_ov018_02111278.cpp:
@@ -21,12 +22,15 @@ src/func_ov018_021112fc.c:
     .text start:0x021112fc end:0x02111340
 
 src/func_ov018_02111340.cpp:
+    complete
     .text start:0x02111340 end:0x02111368
 
 src/func_ov018_02111368.cpp:
+    complete
     .text start:0x02111368 end:0x021116b4
 
 src/func_ov018_021116b4.cpp:
+    complete
     .text start:0x021116b4 end:0x021117e8
 
 src/func_ov018_021117e8.cpp:
@@ -89,6 +93,7 @@ src/func_ov018_02112234.c:
     .text start:0x02112234 end:0x021122ec
 
 src/func_ov018_021122ec.c:
+    complete
     .text start:0x021122ec end:0x0211235c
 
 src/func_ov018_0211235c.cpp:
@@ -143,12 +148,15 @@ src/_ZN8IceSheetD0Ev.c:
     .text start:0x02112800 end:0x02112858
 
 src/func_ov018_02112858.cpp:
+    complete
     .text start:0x02112858 end:0x02112880
 
 src/func_ov018_02112880.cpp:
+    complete
     .text start:0x02112880 end:0x021128e0
 
 src/func_ov018_021128e0.cpp:
+    complete
     .text start:0x021128e0 end:0x02112924
 
 src/_ZN8IceSheet16CleanupResourcesEv.cpp:

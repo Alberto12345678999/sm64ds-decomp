@@ -11,6 +11,7 @@ src/_ZN10SlidingIceD0Ev.c:
     .text start:0x021111e4 end:0x0211123c
 
 src/func_ov027_0211123c.cpp:
+    complete
     .text start:0x0211123c end:0x02111264
 
 src/_ZN10SlidingIce16CleanupResourcesEv.cpp:
@@ -44,15 +45,18 @@ src/func_ov027_02111618.c:
     .text start:0x02111618 end:0x02111680
 
 src/func_ov027_02111680.c:
+    complete
     .text start:0x02111680 end:0x021116f0
 
 src/func_ov027_021116f0.cpp:
     .text start:0x021116f0 end:0x02111770
 
 src/func_ov027_02111770.c:
+    complete
     .text start:0x02111770 end:0x0211181c
 
 src/func_ov027_0211181c.cpp:
+    complete
     .text start:0x0211181c end:0x0211186c
 
 src/ChillBully_Spawn.c:
@@ -96,12 +100,15 @@ src/func_ov027_02111d70.c:
     .text start:0x02111d70 end:0x02111d8c
 
 src/func_ov027_02111d8c.c:
+    complete
     .text start:0x02111d8c end:0x02111dfc
 
 src/func_ov027_02111dfc.c:
+    complete
     .text start:0x02111dfc end:0x02111e00
 
 src/func_ov027_02111e00.cpp:
+    complete
     .text start:0x02111e00 end:0x02111e34
 
 src/func_ov027_02111e34.cpp:

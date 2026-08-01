@@ -159,6 +159,7 @@ src/_ZN6ThwompD0Ev.c:
     .text start:0x02132998 end:0x02132a0c
 
 src/func_ov091_02132a0c.c:
+    complete
     .text start:0x02132a0c end:0x02132a14
 
 src/func_ov091_02132a14.cpp:
@@ -234,21 +235,25 @@ src/func_ov091_021334b8.cpp:
     .text start:0x021334b8 end:0x021335d4
 
 src/func_ov091_021335d4.c:
+    complete
     .text start:0x021335d4 end:0x02133648
 
 src/func_ov091_02133648.cpp:
+    complete
     .text start:0x02133648 end:0x021336cc
 
 src/func_ov091_021336cc.c:
     .text start:0x021336cc end:0x02133710
 
 src/func_ov091_02133710.cpp:
+    complete
     .text start:0x02133710 end:0x02133738
 
 src/func_ov091_02133738.cpp:
     .text start:0x02133738 end:0x021338ac
 
 src/func_ov091_021338ac.c:
+    complete
     .text start:0x021338ac end:0x02133938
 
 src/Stump_Spawn.c:
@@ -313,12 +318,15 @@ src/_ZN5Stump13InitResourcesEv.cpp:
     .text start:0x02134324 end:0x02134484
 
 src/func_ov091_02134484.c:
+    complete
     .text start:0x02134484 end:0x0213448c
 
 src/func_ov091_0213448c.c:
+    complete
     .text start:0x0213448c end:0x02134498
 
 src/func_ov091_02134498.c:
+    complete
     .text start:0x02134498 end:0x021344a0
 
 src/Fwoosh_Spawn.c:

@@ -15,12 +15,15 @@ src/func_ov098_02137c8c.c:
     .text start:0x02137c8c end:0x02137ccc
 
 src/func_ov098_02137ccc.cpp:
+    complete
     .text start:0x02137ccc end:0x02137d40
 
 src/func_ov098_02137d40.cpp:
+    complete
     .text start:0x02137d40 end:0x02137d80
 
 src/func_ov098_02137d80.c:
+    complete
     .text start:0x02137d80 end:0x02137dbc
 
 src/_ZN14ArrowSignRight16CleanupResourcesEv.cpp:
@@ -66,6 +69,7 @@ src/func_ov098_02138238.c:
     .text start:0x02138238 end:0x02138318
 
 src/func_ov098_02138318.c:
+    complete
     .text start:0x02138318 end:0x02138344
 
 src/func_ov098_02138344.cpp:
@@ -135,6 +139,7 @@ src/func_ov098_02138e6c.cpp:
     .text start:0x02138e6c end:0x02139070
 
 src/func_ov098_02139070.c:
+    complete
     .text start:0x02139070 end:0x021390ec
 
 src/func_ov098_021390ec.cpp:
@@ -169,12 +174,15 @@ src/_ZN5Crate13InitResourcesEv.cpp:
     .text start:0x02139d14 end:0x02139e44
 
 src/func_ov098_02139e44.cpp:
+    complete
     .text start:0x02139e44 end:0x02139e64
 
 src/func_ov098_02139e64.c:
+    complete
     .text start:0x02139e64 end:0x02139e78
 
 src/func_ov098_02139e78.c:
+    complete
     .text start:0x02139e78 end:0x02139f04
 
 src/Crate_Spawn.cpp:
@@ -305,6 +313,7 @@ src/func_ov098_0213b6e0.cpp:
     .text start:0x0213b6e0 end:0x0213b7e8
 
 src/func_ov098_0213b7e8.c:
+    complete
     .text start:0x0213b7e8 end:0x0213b9d8
 
 src/func_ov098_0213b9d8.cpp:

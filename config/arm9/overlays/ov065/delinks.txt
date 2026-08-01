@@ -76,12 +76,15 @@ src/_ZN6Snufit13InitResourcesEv.cpp:
     .text start:0x02116e10 end:0x02116f0c
 
 src/func_ov065_02116f0c.c:
+    complete
     .text start:0x02116f0c end:0x02116f14
 
 src/func_ov065_02116f14.cpp:
+    complete
     .text start:0x02116f14 end:0x02116f40
 
 src/func_ov065_02116f40.c:
+    complete
     .text start:0x02116f40 end:0x02116f48
 
 src/Snufit_Spawn.c:
@@ -154,12 +157,15 @@ src/_ZN5Swoop13InitResourcesEv.cpp:
     .text start:0x02117d80 end:0x02117eac
 
 src/func_ov065_02117eac.c:
+    complete
     .text start:0x02117eac end:0x02117eb4
 
 src/func_ov065_02117eb4.cpp:
+    complete
     .text start:0x02117eb4 end:0x02117ee0
 
 src/func_ov065_02117ee0.c:
+    complete
     .text start:0x02117ee0 end:0x02117ee8
 
 src/Swoop_Spawn.c:
@@ -257,6 +263,7 @@ src/func_ov065_021195d0.c:
     .text start:0x021195d0 end:0x021195e4
 
 src/func_ov065_021195e4.c:
+    complete
     .text start:0x021195e4 end:0x021195ec
 
 src/DorrieCap_Spawn.c:
@@ -328,6 +335,7 @@ src/func_ov065_0211a15c.c:
     .text start:0x0211a15c end:0x0211a1a0
 
 src/func_ov065_0211a1a0.cpp:
+    complete
     .text start:0x0211a1a0 end:0x0211a1c8
 
 src/func_ov065_0211a1c8.c:
@@ -392,6 +400,7 @@ src/func_ov065_0211ad04.c:
     .text start:0x0211ad04 end:0x0211ad48
 
 src/func_ov065_0211ad48.cpp:
+    complete
     .text start:0x0211ad48 end:0x0211ad70
 
 src/func_ov065_0211ad70.c:
@@ -399,6 +408,7 @@ src/func_ov065_0211ad70.c:
     .text start:0x0211ad70 end:0x0211ae08
 
 src/func_ov065_0211ae08.c:
+    complete
     .text start:0x0211ae08 end:0x0211b1d4
 
 src/func_ov065_0211b1d4.cpp:

@@ -105,18 +105,23 @@ src/func_ov102_02149684.c:
     .text start:0x02149684 end:0x021496a4
 
 src/func_ov102_021496a4.c:
+    complete
     .text start:0x021496a4 end:0x02149710
 
 src/func_ov102_02149710.c:
+    complete
     .text start:0x02149710 end:0x02149770
 
 src/func_ov102_02149770.c:
+    complete
     .text start:0x02149770 end:0x021497c8
 
 src/func_ov102_021497c8.c:
+    complete
     .text start:0x021497c8 end:0x02149820
 
 src/func_ov102_02149820.c:
+    complete
     .text start:0x02149820 end:0x02149878
 
 src/func_ov102_02149878.c:
@@ -203,6 +208,7 @@ src/_ZN6BobOmbD0Ev.c:
     .text start:0x0214a9b4 end:0x0214aa10
 
 src/func_ov102_0214aa10.c:
+    complete
     .text start:0x0214aa10 end:0x0214aa18
 
 src/func_ov102_0214aa18.cpp:
@@ -221,6 +227,7 @@ src/func_ov102_0214ad40.c:
     .text start:0x0214ad40 end:0x0214adc8
 
 src/func_ov102_0214adc8.c:
+    complete
     .text start:0x0214adc8 end:0x0214ae1c
 
 src/func_ov102_0214ae1c.c:
@@ -315,6 +322,7 @@ src/_ZN6BobOmb13InitResourcesEv.cpp:
     .text start:0x0214c510 end:0x0214c6e4
 
 src/func_ov102_0214c6e4.c:
+    complete
     .text start:0x0214c6e4 end:0x0214c6f8
 
 src/BobOmb_Spawn.c:
@@ -351,6 +359,7 @@ src/func_ov102_0214cf98.cpp:
     .text start:0x0214cf98 end:0x0214cfe4
 
 src/func_ov102_0214cfe4.cpp:
+    complete
     .text start:0x0214cfe4 end:0x0214d020
 
 src/func_ov102_0214d020.c:
@@ -405,6 +414,7 @@ src/_ZN10KoopaShell13InitResourcesEv.cpp:
     .text start:0x0214d54c end:0x0214d6a0
 
 src/func_ov102_0214d6a0.c:
+    complete
     .text start:0x0214d6a0 end:0x0214d6b4
 
 src/KoopaShell_Spawn.c:

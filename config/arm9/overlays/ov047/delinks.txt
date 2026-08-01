@@ -10,9 +10,11 @@ src/func_ov047_021111f0.c:
     .text start:0x021111f0 end:0x02111254
 
 src/func_ov047_02111254.c:
+    complete
     .text start:0x02111254 end:0x02111268
 
 src/func_ov047_02111268.c:
+    complete
     .text start:0x02111268 end:0x02111280
 
 src/RickshawBs_Spawn.c:
@@ -42,9 +44,11 @@ src/func_ov047_02111448.c:
     .text start:0x02111448 end:0x021114ac
 
 src/func_ov047_021114ac.c:
+    complete
     .text start:0x021114ac end:0x021114c0
 
 src/func_ov047_021114c0.c:
+    complete
     .text start:0x021114c0 end:0x021114d4
 
 src/RickshawPlatformBs_Spawn.c:

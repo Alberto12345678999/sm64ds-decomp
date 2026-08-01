@@ -18,6 +18,7 @@ src/_ZN13MontyMoleRockD0Ev.c:
     .text start:0x02123804 end:0x02123858
 
 src/func_ov080_02123858.c:
+    complete
     .text start:0x02123858 end:0x02123860
 
 src/func_ov080_02123860.c:
@@ -104,6 +105,7 @@ src/_ZN11CrazedCrateD0Ev.c:
     .text start:0x02124a68 end:0x02124ac4
 
 src/func_ov080_02124ac4.c:
+    complete
     .text start:0x02124ac4 end:0x02124acc
 
 src/func_ov080_02124acc.cpp:
@@ -119,6 +121,7 @@ src/func_ov080_02124e60.c:
     .text start:0x02124e60 end:0x02124eb0
 
 src/func_ov080_02124eb0.c:
+    complete
     .text start:0x02124eb0 end:0x02124edc
 
 src/func_ov080_02124edc.cpp:
@@ -167,6 +170,7 @@ src/_ZN11CrazedCrate13InitResourcesEv.cpp:
     .text start:0x021251ec end:0x02125318
 
 src/func_ov080_02125318.cpp:
+    complete
     .text start:0x02125318 end:0x021253b4
 
 src/CrazedCrate_Spawn.c:
@@ -231,6 +235,7 @@ src/func_ov080_02126120.c:
     .text start:0x02126120 end:0x02126124
 
 src/func_ov080_02126124.c:
+    complete
     .text start:0x02126124 end:0x021261f4
 
 src/func_ov080_021264ec.c:
@@ -253,15 +258,19 @@ src/func_ov080_02126a54.c:
     .text start:0x02126a54 end:0x02126bfc
 
 src/func_ov080_02126bfc.c:
+    complete
     .text start:0x02126bfc end:0x02126c1c
 
 src/func_ov080_02126c1c.c:
+    complete
     .text start:0x02126c1c end:0x02126c20
 
 src/func_ov080_02126c20.cpp:
+    complete
     .text start:0x02126c20 end:0x02126c60
 
 src/func_ov080_02126c60.cpp:
+    complete
     .text start:0x02126c60 end:0x02126ca0
 
 src/func_ov080_02126ca0.cpp:

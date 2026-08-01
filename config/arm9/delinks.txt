@@ -46,9 +46,11 @@ src/func_02005348.c:
     .text start:0x02005348 end:0x02005418
 
 src/func_02005418.c:
+    complete
     .text start:0x02005418 end:0x02005a58
 
 src/func_02005a58.c:
+    complete
     .text start:0x02005a58 end:0x02005d94
 
 src/_ZN8CapEnemy12Unk_02005d94Ev.cpp:
@@ -1779,6 +1781,7 @@ src/_ZN18MovingCylinderClsnC2Ev.c:
     .text start:0x020149f4 end:0x02014a20
 
 src/func_02014a20.c:
+    complete
     .text start:0x02014a20 end:0x02014a2c
 
 src/_ZN25MovingCylinderClsnWithPos6GetPosEv.c:
@@ -2285,12 +2288,15 @@ src/_ZThn80_N10ModelAnim2D1Ev.cpp:
     .text start:0x020171b8 end:0x020171c8
 
 src/func_020171c8.cpp:
+    complete
     .text start:0x020171c8 end:0x020171f0
 
 src/func_020171f0.cpp:
+    complete
     .text start:0x020171f0 end:0x0201721c
 
 src/func_0201721c.c:
+    complete
     .text start:0x0201721c end:0x02017228
 
 src/func_02017228.c:
@@ -4100,6 +4106,7 @@ src/func_0202ecfc.c:
     .text start:0x0202ecfc end:0x0202ed08
 
 src/func_0202ed08.c:
+    complete
     .text start:0x0202ed08 end:0x0202ed14
 
 src/func_0202ed14.c:
@@ -4111,12 +4118,15 @@ src/func_0202ed48.c:
     .text start:0x0202ed48 end:0x0202ed7c
 
 src/func_0202ed7c.cpp:
+    complete
     .text start:0x0202ed7c end:0x0202eddc
 
 src/func_0202eddc.c:
+    complete
     .text start:0x0202eddc end:0x0202ee38
 
 src/func_0202ee38.c:
+    complete
     .text start:0x0202ee38 end:0x0202ee94
 
 src/func_0202ee94.c:
@@ -4137,6 +4147,7 @@ src/func_0202f3a4.c:
     .text start:0x0202f3a4 end:0x0202f428
 
 src/func_0202f428.c:
+    complete
     .text start:0x0202f428 end:0x0202f58c
 
 src/func_0202f58c.c:
@@ -4429,15 +4440,18 @@ src/func_02034d70.c:
     .text start:0x02034d70 end:0x02034d9c
 
 src/func_02034d9c.c:
+    complete
     .text start:0x02034d9c end:0x02034da4
 
 src/func_02034da4.c:
+    complete
     .text start:0x02034da4 end:0x02034fbc
 
 src/func_02034fbc.c:
     .text start:0x02034fbc end:0x0203506c
 
 src/func_0203506c.c:
+    complete
     .text start:0x0203506c end:0x020352b4
 
 src/func_020352b4.c:
