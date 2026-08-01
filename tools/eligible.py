@@ -50,10 +50,9 @@ LICENSE = MW / "license.dat"
 INCLUDE = REPO / "include"
 BUILD = REPO / "build"
 from rombuild import VERSION  # noqa: E402  (default compiler)
-# Must stay identical to tools/rombuild.py's CFLAGS - classifying with different flags
-# than the build uses would pass files the build then breaks on.
-CFLAGS = ("-O4,p -enum int -lang c99 -char signed -interworking "
-          "-proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off")
+# Imported, never copied: classifying with different flags than the build compiles with
+# would pass files the build then breaks on.
+from rombuild import CFLAGS  # noqa: E402
 
 ANYSYM = re.compile(r"^(\S+)\s+kind:")
 IGNORE_SECTIONS = (".comment", ".debug", ".line", ".note")
@@ -103,6 +102,10 @@ def classify(job):
             if h["sh_size"] == 0 or any(s.name.startswith(p) for p in IGNORE_SECTIONS):
                 continue
             content.append(s.name)
+        # Section size, not just symbol size: a padded .text would place extra bytes and
+        # shift the module while st_size still looked right.
+        text_sh_size = next((s.header["sh_size"] for s in elf.iter_sections()
+                             if s.name == ".text" and s.header["sh_size"]), None)
         if len(content) != 1 or content[0] != ".text":
             extra = sorted(set(content) - {".text"})
             if len(content) > 1 and not extra:
@@ -110,7 +113,7 @@ def classify(job):
             return rel, name, "extra sections: " + ",".join(extra or content)
 
         symtab = elf.get_section_by_name(".symtab")
-        defined, undefined = [], []
+        defined, undefined, other_defined = [], [], []
         for s in symtab.iter_symbols():
             info = s["st_info"]
             if info["bind"] not in ("STB_GLOBAL", "STB_WEAK"):
@@ -120,7 +123,13 @@ def classify(job):
                     undefined.append(s.name)
             elif info["type"] == "STT_FUNC":
                 defined.append((s.name, s["st_size"]))
+            elif info["type"] == "STT_OBJECT":
+                # A defined global object in the .text section would be placed too, and
+                # the FUNC-only count above would never notice it.
+                other_defined.append(s.name)
 
+        if text_sh_size is not None and text_sh_size != size:
+            return rel, name, f".text section 0x{text_sh_size:x} != declared 0x{size:x}"
         if len(defined) != 1:
             return rel, name, f"{len(defined)} defined global functions"
         dname, dsize = defined[0]
@@ -128,6 +137,8 @@ def classify(job):
             return rel, name, f"defines {dname}, expected {name}"
         if dsize != size:
             return rel, name, f"size 0x{dsize:x} != declared 0x{size:x}"
+        if other_defined:
+            return rel, name, "defines non-function globals: " + ",".join(other_defined[:3])
         missing = sorted(set(undefined) - known)
         if missing:
             return rel, name, "unresolvable: " + ",".join(missing[:3])

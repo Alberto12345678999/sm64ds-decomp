@@ -15,10 +15,11 @@ that pipeline up now.
 
 **M0, M1, M2a and M2b are done. The built ROM boots and plays in melonDS.**
 `python tools/rombuild.py` produces a 16,777,216-byte `build/sm64ds.nds` in about a
-minute, with all 106 modules byte-identical to the ROM. **7,916 functions — 1,346,916
+minute, with all 106 modules byte-identical to the ROM. **7,907 functions — 1,346,828
 code bytes, 60.9% of the project's total — are compiled from `src/` by mwccarm**; the
-rest of each module is supplied from delinked ROM bytes. Only M3 (a confirmed visible
-change) is still open. Results are recorded under each milestone below.
+rest of each module is supplied from delinked ROM bytes. Only M3 (a confirmed *visible*
+change) is still open — the mod is provably in the ROM, but its on-screen effect has not
+been attributed by A/B. Results are recorded under each milestone below.
 
 ```
 python tools/eligible.py             # classify: which files may be compiled in
@@ -81,7 +82,8 @@ dsd check symbols --config-path config/arm9/config.yaml --elf-path build/final_l
 | Matched source | `src/` — 8,147 `.c` + 3,056 `.cpp`, one function per file |
 | Symbol → address map | `config/**/symbols.txt` (`name kind:function(arm,size=0x14) addr:0x...`) |
 
-Nothing has ever been linked: `build/build/` is empty. Milestone 0 exists to change that.
+At the time this plan was written nothing had ever been linked and `build/build/` was
+empty. M0 changed that.
 
 Coverage measured for this plan: **11,197 of 11,389** function symbols have a `src/`
 file; in the main module, 3,084 of 3,090.
@@ -395,42 +397,74 @@ individually with `match.py` before the link confirmed them:
 
 The `XYZExt` → `ZXYExt` one is a genuine behavioural bug, not just a naming slip.
 
-**Seven remain, and all seven are documented non-bugs:**
+##### The vtable off-by-8 — a real bug, found by review
+
+`_ZN11ShadowModelC1Ev` was initially filed above as a non-bug. It is not. The source
+wrote `thiz->vtable = _ZTV11ShadowModel + 2;` on a `u32[]`, i.e. **symbol + 8 bytes**,
+while the ROM's pool word is the symbol **+ 0**:
+
+| function | `_ZTV*` symbol | ROM pool word |
+|---|---|---|
+| `_ZN11ShadowModelC1Ev` | `0x0208e868` | `0x0208e868` (+0) |
+| `_ZN5ModelC1Ev` | `0x0208e90c` | `0x0208e90c` (+0) |
+| `_ZN5ModelC2Ev` | `0x0208e90c` | `0x0208e90c` (+0) |
+| `_ZN11CommonModelC1Ev` | `0x0208e8a4` | `0x0208e8a4` (+0) |
+
+The `+ 2` is the Itanium-ABI reflex (skip offset-to-top and RTTI), but this ABI points
+the vptr at the vtable base, so all four were storing a vptr 8 bytes too high — virtual
+dispatch through it would index the wrong slots. Three of the four were invisible to the
+ROM build only because they are blocked upstream on an unrelated unresolvable symbol.
+
+The match gate cannot see this: the pool word is a relocation, and `match.py` wildcards
+every relocated word, so all four "matched" byte-for-byte with the bug in place. Removing
+`+ 2` keeps them byte-matching and fixes the destination. **This is the single strongest
+argument for the ROM build as a gate** — it catches a class the byte oracle is blind to
+by construction.
+
+**Six remain, and all six are documented non-bugs:**
 
 - three (`_ZN5ModelD1Ev`, `_ZN5ModelD2Ev`, `_ZN14BlendModelAnimD1Ev`) call `_ZdlPv`
-  where the ROM goes through the 12-byte interworking veneer at `0x0203cbc0` in front of
-  the real `operator delete` at `0x0203cbcc`. [`link-verification.md`](link-verification.md)
-  is explicit that naming the real symbol is correct and inserting the veneer is the
-  linker's job, so renaming source to the trampoline would reproduce bytes by lying about
-  the call. Left alone deliberately.
+  where the ROM goes through the 12-byte veneer at `0x0203cbc0`. Reading that trampoline
+  (`e59fc000 e12fff1c 0203cbf0`) settles it: it jumps to **`0x0203cbf0` = `_ZdlPv`** —
+  the same callee the source names — passing *over* `_ZN6Memory16operator_delete2EPv` at
+  `0x0203cbcc`. So ROM and source call the identical function and only the route differs.
+  [`link-verification.md`](link-verification.md) is explicit that naming the real symbol
+  is correct and inserting a veneer is the linker's job. It is also unreachable: the
+  veneer is a pre-existing ROM function living in the gap object, and mwldarm only
+  synthesizes veneers it *needs* (out-of-range or interworking, neither of which applies
+  to an in-range ARM→ARM `BL`). No linker flag routes a call through another object's
+  existing trampoline. Left alone deliberately.
 - three (`_ZN11MirrorLuigiD1Ev`, `_ZN15RecRoomCupboardD0Ev`, `_ZN15RecRoomCupboardD1Ev`)
   write `((Actor *)c)->~Actor()`, for which the compiler emits the D1 complete-object
   destructor while the ROM calls the D2 base-object one. Only real inheritance would make
   the compiler choose D2, so this is structural, not a rename — exactly the kind of work
   the `readable/` C++-promotion branches do.
-- one (`_ZN11ShadowModelC1Ev`) stores a vtable pointer that resolves elsewhere than
-  `_ZTV11ShadowModel`.
+- ~~one (`_ZN11ShadowModelC1Ev`) stores a vtable pointer that resolves elsewhere than
+  `_ZTV11ShadowModel`.~~ **This one was a real bug, not a non-bug** — see below.
 
-Why the other 3,174 are not source-built yet:
+Why the rest are not source-built yet:
 
 | count | reason |
 |---:|---|
-| ~1,800 | references a symbol name `config/**/symbols.txt` does not define — the BLIND matches. No address means nothing to link to, and gap objects import weakly, so it would silently resolve to 0. |
-| ~700 | the object defines a different symbol than the file/config name (e.g. `src/func_ov091_02132a0c.c` defines `daDsn_c_OnAimedAtWithEgg`) — a src/config naming drift, likely recoverable by reconciling names. |
-| ~350 | compiled `st_size` ≠ the size `symbols.txt` declares |
+| 1,972 | references a symbol name `config/**/symbols.txt` does not define — the BLIND matches. No address means nothing to link to, and gap objects import weakly, so it would silently resolve to 0. |
+| 711 | the object defines a different symbol than the file/config name (e.g. `src/func_ov091_02132a0c.c` defines `daDsn_c_OnAimedAtWithEgg`) — a src/config naming drift, likely recoverable by reconciling names. |
+| 70 | compiled `st_size` ≠ the size `symbols.txt` declares |
 | 301 | lives in a `.init` range, where a `File.o(.init)` selector would match nothing in an object whose code is in `.text` |
-| ~90 | emits `.data` or `.bss` whose ROM address we do not know |
-| 7 | the veneer / D1-vs-D2 / vtable cases above |
+| 88 | emits `.data` or `.bss` whose ROM address we do not know |
+| 13 | multiple `.text` sections — a multi-function TU |
+| 12 | fails to compile with the build flags |
+| 6 | the veneer / D1-vs-D2 cases above |
 
 ### M3 — Prove it is really our code
 
 Change a constant in a source-built function, rebuild, boot in melonDS, observe the
 difference, then revert and confirm the ROM returns to identical.
 
-**Put the edit in the main module.** Overlays are HMAC-signed; if dsd 0.11.0 does not
-re-sign correctly, an overlay content change can hang at overlay load while main-module
-changes work fine. Similarly, a white screen with green `check modules` points at the
-header CRCs (`extracted/dsd/header.yaml`), which `check modules` does not cover.
+**Overlay edits are fine after all.** The original worry was HMAC signing, but M0 showed
+dsd *clears* the per-overlay signed bit (the 103 flag bytes `3` → `1`), so the loader
+never verifies and an overlay edit loads normally — which the ov002 mod confirms in
+practice. Still worth knowing: a white screen with green `check modules` would point at
+the header CRCs (`extracted/dsd/header.yaml`), which `check modules` does not cover.
 
 **Gate:** a visible in-game change traced to a one-line C edit. This is the deliverable
 the whole exercise is for.

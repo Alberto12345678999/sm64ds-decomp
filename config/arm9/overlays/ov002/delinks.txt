@@ -1735,7 +1735,7 @@ src/func_ov002_020bf2d8.c:
     complete
     .text start:0x020bf2d8 end:0x020bf30c
 
-src/Player_ScaleByCharFactor.c:
+mods/Player_ScaleByCharFactor.c:
     complete
     .text start:0x020bf30c end:0x020bf340
 

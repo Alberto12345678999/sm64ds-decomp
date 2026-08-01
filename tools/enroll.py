@@ -33,6 +33,11 @@ import sys
 
 REPO = pathlib.Path(__file__).resolve().parent.parent
 CONFIG, SRC = REPO / "config", REPO / "src"
+# An intentional divergence from the ROM lives in mods/<symbol>.c and takes precedence
+# over src/<symbol>.c for that one function. Keeping it a file-existence rule (rather
+# than a hand-edited delinks.txt entry) is what makes regeneration idempotent: a mod
+# survives every enroll.py run, and deleting the file reverts to stock.
+MODS = REPO / "mods"
 
 SYM_RE = re.compile(
     r"^(\S+)\s+kind:function\((arm|thumb),size=0x([0-9a-fA-F]+)\)\s+addr:0x([0-9a-fA-F]+)")
@@ -99,14 +104,18 @@ def candidates():
 
     out, skipped = [], collections.Counter()
     for d, (secs, syms) in mods.items():
-        for (name, _mode, size, addr) in syms:
+        for (name, mode, size, addr) in syms:
             if name in skip_names:
                 skipped["on the exclude list"] += 1
                 continue
-            f = next((SRC / (name + e) for e in (".c", ".cpp") if (SRC / (name + e)).is_file()), None)
+            f = next((d2 / (name + e) for d2 in (MODS, SRC) for e in (".c", ".cpp")
+                      if (d2 / (name + e)).is_file()), None)
             if f is None:
                 skipped["no src file"] += 1
                 continue
+            is_mod = f.parent == MODS
+            if is_mod:
+                skipped["intentional mod (mods/)"] += 1
             if size == 0:
                 skipped["zero size"] += 1
                 continue
@@ -118,7 +127,15 @@ def candidates():
             if addr % 4 != 0:
                 skipped["not 4-byte aligned (thumb stub)"] += 1
                 continue
-            if "NONMATCHING" in f.read_text(encoding="utf-8", errors="ignore")[:200]:
+            # A 4-aligned Thumb function would slip past the alignment gate above and
+            # then be compiled as ARM; only the size check would bounce it. Be explicit.
+            if mode != "arm":
+                skipped["thumb function"] += 1
+                continue
+            # A mod is *meant* to diverge, so the not-a-byte-match hatch does not apply
+            # to it; every structural rule still does, because a mod that changes size
+            # or emits data would shift the module just as badly as a bad match would.
+            if not is_mod and "NONMATCHING" in f.read_text(encoding="utf-8", errors="ignore")[:200]:
                 skipped["NONMATCHING hatch"] += 1
                 continue
             if len(name_mods[name]) > 1:
@@ -159,13 +176,16 @@ def main():
         if not path.is_file():
             continue
         header, existing = read_delinks(path)
+        # Key the carried-over `complete` marks by symbol name, not path: a function
+        # that moved between src/ and mods/ is the same function and must keep its mark.
+        existing_by_name = {pathlib.Path(p2).stem: v for p2, v in existing.items()}
         lines = list(header)
 
         if not args.clear:
             # Sorted by address: delink file entries are consumed in link order.
             for (_d, name, rel, addr, size, sec) in sorted(bymod.get(d.parent, []), key=lambda x: x[3]):
                 done = (args.all_complete or name in promote
-                        or (existing.get(rel, False) and not args.demote_all))
+                        or (existing_by_name.get(name, False) and not args.demote_all))
                 lines.append(f"{rel}:")
                 if done:
                     lines.append("    complete")

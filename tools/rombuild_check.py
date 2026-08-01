@@ -71,6 +71,7 @@ def main():
     args = ap.parse_args()
 
     checked = bad = 0
+    intentional = []
     failures, per_module = [], collections.Counter()
     missing_bins = []
 
@@ -97,6 +98,15 @@ def main():
             lo, hi = addr - base, end - base
             if hi > len(retail) or hi > len(built):
                 continue
+            # A mods/ entry is a deliberate divergence; differing from the ROM is the
+            # whole point, so it is reported separately and never counted as a failure.
+            if rel.startswith("mods/"):
+                if built[lo:hi] != retail[lo:hi]:
+                    intentional.append((pathlib.Path(rel).stem, label, addr,
+                                        sum(1 for x, y in zip(built[lo:hi], retail[lo:hi]) if x != y)))
+                else:
+                    intentional.append((pathlib.Path(rel).stem, label, addr, 0))
+                continue
             checked += 1
             if built[lo:hi] != retail[lo:hi]:
                 bad += 1
@@ -105,6 +115,12 @@ def main():
                 failures.append((label, name, addr, hi - lo, nd))
                 per_module[label] += 1
 
+    if intentional:
+        print(f"intentional divergences (mods/): {len(intentional)}")
+        for (n, label, addr, nd) in intentional:
+            state = f"{nd} byte(s) differ from the ROM" if nd else "!! identical to the ROM - the mod is NOT in the build"
+            print(f"  {n} ({label}, 0x{addr:08x}): {state}")
+        print()
     print(f"source-built functions checked: {checked}")
     print(f"                    reproducing: {checked - bad}")
     print(f"                    mismatching: {bad}")
