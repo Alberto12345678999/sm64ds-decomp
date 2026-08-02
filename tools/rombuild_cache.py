@@ -8,7 +8,8 @@ tree, once for the merged tree) in order to check a handful of edited files.
 
 This is ccache's "direct mode", scoped to this build:
 
-    source key = sha256(schema, compiler version, final flags, source bytes)
+    source key = sha256(schema, source path, compiler version, compiler bytes,
+                        final flags, source bytes)
     manifest   = the header list mwccarm reported for that source key last time
     object key = sha256(source key, each dependency's repo path + content hash)
 
@@ -28,8 +29,18 @@ for source that was never built:
     ``cwd=REPO`` compile, for a C and a C++ file, before this cache was written.
   * A dependency token that does not resolve to a real file makes that compile
     uncacheable rather than cached-with-an-unknown-input. Slow is recoverable.
-  * Headers outside the repository belong to the mwccarm install, which the
-    compiler version already pins inside the source key.
+  * Headers outside the repository belong to the mwccarm install, whose bytes are
+    hashed into the source key.
+  * A manifest records the headers that WERE read, never the lookups that failed,
+    so in general a newly added header that shadows an existing one is invisible to
+    the key -- direct mode's known hole. It does not apply here: mwccarm resolves a
+    quoted include from `-i include` even when a same-named header sits beside the
+    source (checked on the build box with the build's exact flags), and there is
+    only one include root, so a PR has nowhere to introduce a shadowing header.
+    Re-check that if `-cwd` or a second `-i` is ever added to CFLAGS.
+  * A path containing a space makes its compile uncacheable, because mwccarm's .d
+    escaping cannot be told apart from a path separator. That costs speed on such a
+    checkout and shows up honestly as "0 reused" in the build's tally.
 
 Set ``ROMBUILD_CACHE`` to relocate the store, or pass ``--no-cache`` to rombuild.py
 to bypass it entirely (which restores the previous always-compile behaviour).
@@ -63,9 +74,9 @@ def _resolve_dep(token, cwd, repo):
         candidates = [os.path.join(cwd, text)]
     for candidate in candidates:
         try:
-            path = pathlib.Path(candidate)
+            path = pathlib.Path(os.path.abspath(candidate))
             if path.is_file():
-                return path.resolve()
+                return path  # absolute but NOT symlink-resolved; the caller needs both
         except OSError:
             continue
     return None
@@ -93,11 +104,27 @@ def parse_depfile(text, cwd, repo):
         path = _resolve_dep(token, cwd, repo)
         if path is None:
             return None
-        try:
-            deps.add(path.relative_to(repo).as_posix())
-        except ValueError:
+        real = path.resolve()
+        inside_lexically = _is_within(path, repo)
+        inside_really = _is_within(real, repo)
+        if inside_lexically and not inside_really:
+            # A symlink under include/ pointing out of the tree. Dropping it would
+            # leave edits to its target invisible to the key forever, so refuse the
+            # entry instead. (rombuild.enrolled already rejects symlinked sources;
+            # this is the same rule applied to headers.)
+            return None
+        if not inside_really:
             continue  # compiler-install header; the version string already pins it
+        deps.add(real.relative_to(repo).as_posix())
     return sorted(deps)
+
+
+def _is_within(path, repo):
+    try:
+        path.relative_to(repo)
+    except ValueError:
+        return False
+    return True
 
 
 class ObjectCache:
@@ -113,6 +140,7 @@ class ObjectCache:
         self.repo = pathlib.Path(repo).resolve()
         self.enabled = bool(enabled)
         self._hashes = {}  # repo-relative posix path -> sha256 of its bytes
+        self._tools = {}   # compiler exe path -> sha256 of its bytes
         self._lock = threading.Lock()
         if self.enabled:
             try:
@@ -145,7 +173,28 @@ class ObjectCache:
                 pass
 
     # --- keys -------------------------------------------------------------------
-    def source_key(self, rel, version, flags):
+    def tool_hash(self, exe):
+        """sha256 of a compiler binary, memoised for this build.
+
+        The version is a directory name, and tools/mwccarm is licensed material that
+        no repository tracks -- so nothing else would notice the box being
+        re-provisioned, or an install re-patched, under the same version string. The
+        cache is deliberately built to outlive any single build, which is exactly the
+        window in which stale objects would be reused against a compiler that no
+        longer produces those bytes. A couple of 2MB hashes per build closes that.
+        """
+        exe = str(exe)
+        got = self._tools.get(exe)
+        if got is None:
+            try:
+                got = hashlib.sha256(pathlib.Path(exe).read_bytes()).hexdigest()
+            except OSError:
+                got = "missing"
+            with self._lock:
+                self._tools[exe] = got
+        return got
+
+    def source_key(self, rel, version, flags, exe):
         """Everything about this compile that is knowable without preprocessing.
 
         The path is part of the key even though the bytes are hashed too. Two files
@@ -154,7 +203,7 @@ class ObjectCache:
         that question per mwccarm version is not worth the entry it would save.
         """
         digest = hashlib.sha256()
-        digest.update(f"{SCHEMA}\0{rel}\0{version}\0{flags}\0".encode())
+        digest.update(f"{SCHEMA}\0{rel}\0{version}\0{self.tool_hash(exe)}\0{flags}\0".encode())
         try:
             digest.update((self.repo / rel).read_bytes())
         except OSError:

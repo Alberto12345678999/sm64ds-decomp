@@ -94,6 +94,25 @@ class DepfileParsing(unittest.TestCase):
     def test_no_target_separator(self):
         self.assertIsNone(self.parse("garbage without a colon\n"))
 
+    def test_header_symlinked_out_of_the_repo_refuses_the_entry(self):
+        """A header that lives in the tree but resolves outside it is not keyable.
+
+        Dropping it as "not ours" would leave every later edit of its target
+        invisible to the key, so the compile has to become uncacheable instead."""
+        target = pathlib.Path(self.tmp.name).parent / "outside_target.h"
+        target.write_text("int outside;\n", encoding="utf-8")
+        link = self.repo / "include" / "Escapes.h"
+        try:
+            link.symlink_to(target)
+        except (OSError, NotImplementedError):
+            self.skipTest("symlink creation not permitted on this host")
+        try:
+            text = f"x.o: {compiler_path(link)} \n"
+            self.assertIsNone(self.parse(text))
+        finally:
+            link.unlink()
+            target.unlink()
+
 
 class Keys(unittest.TestCase):
     def setUp(self):
@@ -103,13 +122,15 @@ class Keys(unittest.TestCase):
         (self.repo / "src").mkdir()
         (self.repo / "src" / "A.c").write_text("int a;\n", encoding="utf-8")
         (self.repo / "include" / "A.h").write_text("int b;\n", encoding="utf-8")
+        self.exe = self.repo / "mwccarm.exe"
+        self.exe.write_bytes(b"MZ-compiler-v1")
         self.cache = RBK.ObjectCache(self.repo / "cache", self.repo)
 
     def tearDown(self):
         self.tmp.cleanup()
 
     def key(self, version="2004/b56", flags="-O4"):
-        return self.cache.source_key("src/A.c", version, flags)
+        return self.cache.source_key("src/A.c", version, flags, self.exe)
 
     def test_source_key_covers_version_flags_and_bytes(self):
         base = self.key()
@@ -119,7 +140,22 @@ class Keys(unittest.TestCase):
         self.assertNotEqual(base, self.key())
 
     def test_source_key_is_none_for_a_missing_source(self):
-        self.assertIsNone(self.cache.source_key("src/gone.c", "v", "-O4"))
+        self.assertIsNone(self.cache.source_key("src/gone.c", "v", "-O4", self.exe))
+
+    def test_source_key_covers_the_compiler_binary(self):
+        """The version is a directory name; tools/mwccarm is in no repository.
+
+        Re-provisioning the build box under the same version string must not let a
+        surviving cache serve objects the new compiler never produced."""
+        base = self.key()
+        self.exe.write_bytes(b"MZ-compiler-v2")
+        self.cache._tools.clear()  # a fresh build starts with a cold memo
+        self.assertNotEqual(base, self.key())
+
+    def test_missing_compiler_still_yields_a_key(self):
+        """A build with no compiler fails loudly later; keying must not crash first."""
+        self.assertIsNotNone(
+            self.cache.source_key("src/A.c", "v", "-O4", self.repo / "absent.exe"))
 
     def test_object_key_follows_dependency_contents(self):
         """The whole point: editing a header must move the key of every dependent."""
@@ -146,6 +182,8 @@ class Entries(unittest.TestCase):
         (self.repo / "include").mkdir()
         (self.repo / "src" / "A.c").write_text("int a;\n", encoding="utf-8")
         (self.repo / "include" / "A.h").write_text("int b;\n", encoding="utf-8")
+        self.exe = self.repo / "mwccarm.exe"
+        self.exe.write_bytes(b"MZ-compiler-v1")
         self.cache = RBK.ObjectCache(self.repo / "cache", self.repo)
         self.obj = self.repo / "A.o"
         self.obj.write_bytes(b"\x7fELF-object-bytes")
@@ -154,7 +192,7 @@ class Entries(unittest.TestCase):
         self.tmp.cleanup()
 
     def test_store_then_fetch_round_trips(self):
-        sk = self.cache.source_key("src/A.c", "2004/b56", "-O4")
+        sk = self.cache.source_key("src/A.c", "2004/b56", "-O4", self.exe)
         self.cache.put(sk, ["include/A.h"], self.obj)
         deps = self.cache.manifest(sk)
         self.assertEqual(deps, ["include/A.h"])
@@ -163,7 +201,7 @@ class Entries(unittest.TestCase):
         self.assertEqual(dest.read_bytes(), self.obj.read_bytes())
 
     def test_edited_header_misses(self):
-        sk = self.cache.source_key("src/A.c", "2004/b56", "-O4")
+        sk = self.cache.source_key("src/A.c", "2004/b56", "-O4", self.exe)
         self.cache.put(sk, ["include/A.h"], self.obj)
         (self.repo / "include" / "A.h").write_text("int b2;\n", encoding="utf-8")
         self.cache._hashes.clear()

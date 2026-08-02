@@ -227,7 +227,9 @@ def compile_one(rel, vers=None, cache=None):
     except OSError:
         pass
 
-    key = cache.source_key(rel, version, flags) if cache and cache.enabled else None
+    exe = MW / version / "mwccarm.exe"
+    key = (cache.source_key(rel, version, flags, exe)
+           if cache and cache.enabled else None)
     if key is not None:
         deps = cache.manifest(key)
         if deps is not None and cache.fetch(cache.object_key(key, deps), obj):
@@ -245,7 +247,7 @@ def compile_one(rel, vers=None, cache=None):
             scratch = tempfile.mkdtemp(dir=str(cache.scratch))
         except OSError:
             key = None  # cache directory went away; compile as if it were disabled
-    cmd = [*launcher(), str(MW / version / "mwccarm.exe"), *flags.split()]
+    cmd = [*launcher(), str(exe), *flags.split()]
     if key is not None:
         cmd.append("-MD")
     cmd += ["-i", str(INCLUDE), "-c", str(src), "-o", str(obj)]
