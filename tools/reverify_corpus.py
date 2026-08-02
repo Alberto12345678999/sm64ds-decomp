@@ -32,18 +32,28 @@ ALL_VERSIONS = [
                 "1.2/sp2p3", "1.2/base", "1.2/sp2", "1.2/sp3", "1.2/sp4",
                 "2.0/base", "2.0/sp1", "2.0/sp1p2", "2.0/sp2", "2.0/sp2p2", "2.0/sp2p3"]
 
-_modcache = {}        # module name -> dict
+_modcache = None      # module name -> dict, once fully built
 _bincache = {}        # module name -> full bytes
 
 
 def mod_for(name):
-    if not _modcache:
+    """The module registry entry for a name, built once.
+
+    Assigned only once complete: pr_linkcheck runs checks on several threads, and
+    filling the global in place would let a second thread see a non-empty but
+    partial map and get None for a module that does exist. Two threads racing the
+    build just do the same pure work twice."""
+    global _modcache
+    cache = _modcache
+    if cache is None:
+        cache = {}
         for m in MOD.modules():
-            _modcache[m["name"]] = m
+            cache[m["name"]] = m
         # matched.jsonl labels the main ARM9 module "arm9"; the registry calls it "main"
-        if "main" in _modcache:
-            _modcache["arm9"] = _modcache["main"]
-    return _modcache.get(name)
+        if "main" in cache:
+            cache["arm9"] = cache["main"]
+        _modcache = cache
+    return cache.get(name)
 
 
 def rom_bytes(modname, addr, size):

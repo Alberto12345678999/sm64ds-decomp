@@ -85,12 +85,20 @@ _RANGES = None
 
 
 def _ranges():
+    """Module images, built once. Publish only when complete.
+
+    pr_linkcheck checks files on several threads, and filling the global in place
+    would let a second thread find it non-None and read a half-built list -- so
+    addresses would come back unfound and a verified symbol would be reported
+    BLIND. Building locally and assigning once means a racing thread either builds
+    its own copy or sees the finished one."""
     global _RANGES
     if _RANGES is None:
-        _RANGES = []
+        built = []
         for m in MOD.modules():
             data = m["bin"].read_bytes()
-            _RANGES.append((m["name"], m["base"], m["base"] + len(data), data))
+            built.append((m["name"], m["base"], m["base"] + len(data), data))
+        _RANGES = built
     return _RANGES
 
 
