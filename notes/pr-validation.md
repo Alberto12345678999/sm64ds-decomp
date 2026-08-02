@@ -48,3 +48,25 @@ base becomes red, or the failure changes, validation fails.
 
 The merge gate always uses the stock profile. `--profile mods` is a developer tool for
 building intentional experiments and is never accepted as reconstruction proof.
+
+## Where a job's time goes
+
+Both ROM builds in that sequence used to recompile all 9,116 enrolled sources, and step
+4 checked its files one at a time, so a job took 10–20 minutes for a handful of edited
+files. Two changes address that, and neither weakens a verdict:
+
+- **Steps 1 and 3 reuse unchanged objects.** `rombuild.py` keys objects on their exact
+  contents (see [`rom-build.md`](rom-build.md#the-object-cache)), so a build compiles
+  only what the PR reaches. The cache lives in `build/`, which survives the worker's
+  `reset --hard` and its scoped `clean` between jobs — that persistence is the point,
+  and it is safe only because nothing in the key is a timestamp. Each report states how
+  many objects it reused, so the number is auditable rather than assumed.
+- **Step 4 checks files in parallel.** `pr_linkcheck.py` takes `-j`; every file is an
+  independent compiler-version sweep, and the classification and printing that follow
+  stay serial and in diff order, so the JSON and Markdown are identical to a `-j1` run.
+
+The worker still runs one job at a time. That is not the bottleneck it looks like: the
+container has a two-CPU quota, so concurrent jobs would divide the same cores and finish
+no sooner. Give the box more CPU before adding a second worker slot, and if a slot is
+ever added, give it its own clone — jobs share `build/` and would otherwise overwrite
+each other's objects.

@@ -22,6 +22,11 @@ Usage:
     python tools/rombuild.py --no-rom        # link and verify, skip .nds packaging
     python tools/rombuild.py --no-check      # skip fidelity analysis (unchecked output)
     python tools/rombuild.py -j 16           # parallel compiles
+    python tools/rombuild.py --no-cache      # recompile everything, ignore build/objcache
+
+Compiled objects are cached by content under `build/objcache`, so an incremental
+build only runs mwccarm for the files a change actually reaches -- see
+tools/rombuild_cache.py for the key and why it is safe to trust.
 
 See notes/rom-build.md for the milestones and the enrollment rules.
 """
@@ -31,8 +36,10 @@ import hashlib
 import json
 import os
 import pathlib
+import shutil
 import subprocess
 import sys
+import tempfile
 
 REPO = pathlib.Path(__file__).resolve().parent.parent
 DSD = REPO / "tools" / "bin" / "dsd.exe"
@@ -42,6 +49,7 @@ INCLUDE = REPO / "include"
 CONFIG_ROOT = REPO / "config" / "arm9"
 BUILD = REPO / "build"
 sys.path.insert(0, str(REPO / "tools"))
+import rombuild_cache as RBK  # noqa: E402
 import rombuild_check as RBC  # noqa: E402
 import rombuild_profile as RP  # noqa: E402
 
@@ -90,6 +98,49 @@ def versions():
 def launcher():
     """Wine prefix on the Linux build box; empty on native Windows (see match.py)."""
     return os.environ.get("MWCCARM_LAUNCHER", "").split()
+
+
+def cpu_quota():
+    """Whole CPUs this process's cgroup is allowed, or None if uncapped."""
+    # cgroup v2 keeps "<quota|max> <period>" in one file; v1 splits it across two.
+    for quota_path, period_path in (
+            ("/sys/fs/cgroup/cpu.max", None),
+            ("/sys/fs/cgroup/cpu/cpu.cfs_quota_us", "/sys/fs/cgroup/cpu/cpu.cfs_period_us")):
+        try:
+            fields = pathlib.Path(quota_path).read_text().split()
+            period = (fields[1] if period_path is None
+                      else pathlib.Path(period_path).read_text().split()[0])
+            if fields[0] == "max" or int(fields[0]) <= 0:
+                return None
+            return max(1, int(fields[0]) // int(period))
+        except (OSError, ValueError, IndexError, ZeroDivisionError):
+            continue
+    return None
+
+
+def default_jobs():
+    """How many compiles to run at once.
+
+    os.cpu_count() reports the host's cores and is blind to a cgroup quota, so in a
+    CPU-capped container it scales with hardware the build cannot use -- harmless at
+    the validator's 4-core box, pathological on a big host with a small quota.
+
+    The cap is twice the quota rather than the quota itself. These compiles are not
+    CPU-bound end to end: each one spawns a Wine process and talks to wineserver, and
+    a thread parked in that startup leaves quota unspent. Running only as many threads
+    as whole CPUs measurably underuses the allowance, so the default oversubscribes
+    enough to keep it busy -- which is also what the previous host-core default
+    happened to give this box. `-j` still overrides for anyone tuning it.
+    """
+    jobs = os.cpu_count() or 8
+    try:
+        jobs = min(jobs, len(os.sched_getaffinity(0)))
+    except (AttributeError, OSError):
+        pass
+    quota = cpu_quota()
+    if quota is not None:
+        jobs = min(jobs, 2 * quota)
+    return max(1, jobs)
 
 
 class BuildError(RuntimeError):
@@ -156,8 +207,14 @@ def enrolled(config_root=CONFIG_ROOT):
     return checked
 
 
-def compile_one(rel, vers=None):
-    """Compile one enrolled source file to the object path dsd's objects.txt names."""
+def compile_one(rel, vers=None, cache=None):
+    """Compile one enrolled source file to the object path dsd's objects.txt names.
+
+    Returns (rel, error-or-None, outcome), where outcome is how the object was
+    obtained: "hit" straight from the cache, "miss" compiled and stored,
+    "uncacheable" compiled but not storable, "error" failed to compile. See
+    rombuild_cache for why a hit reproduces the compile exactly.
+    """
     src = REPO / rel
     obj = BUILD / pathlib.Path(rel).with_suffix(".o")
     obj.parent.mkdir(parents=True, exist_ok=True)
@@ -169,20 +226,52 @@ def compile_one(rel, vers=None):
             flags = flags.replace("-lang c99", "-lang c++")
     except OSError:
         pass
-    cmd = [*launcher(), str(MW / version / "mwccarm.exe"), *flags.split(),
-           "-i", str(INCLUDE), "-c", str(src), "-o", str(obj)]
-    r = subprocess.run(cmd, capture_output=True, text=True,
-                       env=dict(os.environ, LM_LICENSE_FILE=str(LICENSE)), cwd=REPO)
-    if r.returncode != 0 or not obj.is_file():
-        detail = "\n".join(s for s in (r.stdout.strip(), r.stderr.strip()) if s)
-        return rel, detail[:400]
-    return rel, None
+
+    key = cache.source_key(rel, version, flags) if cache and cache.enabled else None
+    if key is not None:
+        deps = cache.manifest(key)
+        if deps is not None and cache.fetch(cache.object_key(key, deps), obj):
+            return rel, None, "hit"
+
+    # -MD makes mwccarm write out the headers it actually read, which is what lets the
+    # next build rebuild only the files a changed header reaches. It writes that .d
+    # into the working directory under the source's name, so misses run in a scratch
+    # directory rather than littering (and racing in) the repository root. Neither the
+    # flag nor the working directory perturbs the object bytes -- both were verified
+    # byte-identical against a plain cwd=REPO compile for C and C++ sources.
+    scratch = None
+    if key is not None:
+        try:
+            scratch = tempfile.mkdtemp(dir=str(cache.scratch))
+        except OSError:
+            key = None  # cache directory went away; compile as if it were disabled
+    cmd = [*launcher(), str(MW / version / "mwccarm.exe"), *flags.split()]
+    if key is not None:
+        cmd.append("-MD")
+    cmd += ["-i", str(INCLUDE), "-c", str(src), "-o", str(obj)]
+    try:
+        r = subprocess.run(cmd, capture_output=True, text=True,
+                           env=dict(os.environ, LM_LICENSE_FILE=str(LICENSE)),
+                           cwd=scratch or REPO)
+        if r.returncode != 0 or not obj.is_file():
+            detail = "\n".join(s for s in (r.stdout.strip(), r.stderr.strip()) if s)
+            return rel, detail[:400], "error"
+        if key is None:
+            return rel, None, "miss"
+        deps = cache.deps_from(scratch)
+        if deps is None:
+            return rel, None, "uncacheable"
+        cache.put(key, deps, obj)
+        return rel, None, "miss"
+    finally:
+        if scratch:
+            shutil.rmtree(scratch, ignore_errors=True)
 
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("-j", "--jobs", type=int, default=os.cpu_count() or 8)
+    ap.add_argument("-j", "--jobs", type=int, default=default_jobs())
     ap.add_argument("--profile", choices=RP.PROFILES, default="stock",
                     help="stock (default, verified src only) or mods (intentional divergences)")
     ap.add_argument("--rom-out", default=None,
@@ -193,6 +282,12 @@ def main():
     ap.add_argument("--no-check", action="store_true",
                     help="skip module/source fidelity analysis; report status is unchecked")
     ap.add_argument("--arm7-bios", help="passed to dsd rom build if your dump needs it")
+    ap.add_argument("--no-cache", action="store_true",
+                    help="compile every enrolled file, ignoring the object cache")
+    ap.add_argument("--cache-dir", default=os.environ.get("ROMBUILD_CACHE"),
+                    help="object cache location (default build/objcache)")
+    ap.add_argument("--cache-max-mb", type=int, default=1024,
+                    help="prune the object cache back under this size after a build")
     args = ap.parse_args()
 
     report_path = pathlib.Path(args.report_json or
@@ -240,17 +335,27 @@ def main():
         n_alt = sum(1 for s in srcs if pathlib.Path(s).stem in vers)
         report["enrolledFiles"] = len(srcs)
         report["alternateToolchainFiles"] = n_alt
+        cache = RBK.ObjectCache(args.cache_dir or (BUILD / "objcache"), REPO,
+                                enabled=not args.no_cache)
         print(f"[3/6] mwccarm: {len(srcs)} enrolled source file(s), -j{args.jobs}"
               + (f" ({n_alt} on an alternate toolchain version)" if n_alt else ""))
         failures = []
+        outcomes = {}
         if srcs:
             with concurrent.futures.ThreadPoolExecutor(max_workers=args.jobs) as ex:
-                for rel, err in ex.map(lambda s: compile_one(s, vers), srcs):
+                for rel, err, outcome in ex.map(lambda s: compile_one(s, vers, cache), srcs):
+                    outcomes[outcome] = outcomes.get(outcome, 0) + 1
                     if err:
                         failures.append((rel, err))
         if failures:
             detail = "\n".join(f"{rel}: {err}" for rel, err in failures[:10])
             raise BuildError("mwccarm", 1, detail)
+        report["objectCache"] = cache.summary(outcomes)
+        if cache.enabled:
+            print(f"      {outcomes.get('hit', 0)} reused from cache, "
+                  f"{report['objectCache']['compiled']} compiled")
+            if outcomes.get("miss") or outcomes.get("uncacheable"):
+                cache.prune(args.cache_max_mb * 1024 * 1024)
         report["phases"].append("mwccarm")
 
         print("[4/6] mwldarm")

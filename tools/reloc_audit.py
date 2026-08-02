@@ -307,15 +307,25 @@ def check_destinations(obj, sym, addr, size, mod, name_index, config_relocs, sym
 _GATE_IDX = None
 
 
+def warm_gate_index():
+    """Build the gate's three config indexes now, on the calling thread.
+
+    gate_wrong_dests builds them lazily, which is idempotent and so safe to race --
+    but a caller fanning it out across threads would have every thread build its own
+    copy and throw all but one away. Callers that intend to parallelise call this
+    once up front; everyone else can ignore it."""
+    global _GATE_IDX
+    if _GATE_IDX is None:
+        _GATE_IDX = (build_name_index(), build_config_relocs(), R.load_all_syms())
+    return _GATE_IDX
+
+
 def gate_wrong_dests(obj, sym, addr, size, mod):
     """Bank-gate wrapper around check_destinations: WRONG-DEST rows only, with the
     three config indexes built once and cached for the process. Returns [] when the
     object's reloc destinations agree with config, None when the symbol is absent
     from the object (callers treat that as a verification failure)."""
-    global _GATE_IDX
-    if _GATE_IDX is None:
-        _GATE_IDX = (build_name_index(), build_config_relocs(), R.load_all_syms())
-    name_index, config_relocs, sym_index = _GATE_IDX
+    name_index, config_relocs, sym_index = warm_gate_index()
     rows, _missing = check_destinations(obj, sym, addr, size, mod,
                                         name_index, config_relocs, sym_index)
     if rows is None:

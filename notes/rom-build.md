@@ -89,6 +89,47 @@ dsd check modules --config-path config/arm9/config.yaml --fail
 dsd check symbols --config-path config/arm9/config.yaml --elf-path build/final_link.o --fail
 ```
 
+### The object cache
+
+The compile step is the expensive one and almost none of it is compilation. A
+one-function file costs ~100 ms under Wine on the build box, nearly all of it mwccarm
+process startup, so a full build spends ~15 CPU-minutes producing 9,116 objects that
+are usually identical to last build's. The PR validator paid that twice per job — once
+for the base tree, once for the merged tree — to check a handful of edited files.
+
+`tools/rombuild_cache.py` keys each object on its exact inputs and skips the compiler
+on a hit:
+
+```
+source key = sha256(schema, compiler version, final flags, source bytes)
+manifest   = the header list mwccarm reported for that source key last time
+object key = sha256(source key, each dependency's repo path + content hash)
+```
+
+A file with no manifest compiles with `-MD`, and the `.d` mwccarm writes names the
+headers it actually read. That list is stored, so the next build computes the object
+key without preprocessing anything, and editing a header rebuilds exactly the files
+that include it. The store lives in `build/objcache` (override with `ROMBUILD_CACHE`),
+is pruned back under `--cache-max-mb`, and `--no-cache` restores the old
+compile-everything behaviour. Every build reports what it reused under `objectCache`
+in the JSON report, so a validator verdict states how much of the ROM it rebuilt
+rather than leaving that to be assumed.
+
+Three properties keep a hit as trustworthy as a compile, and are worth preserving:
+
+- **Keys are content, never mtime.** The validator's clone resets between unrelated
+  commits with `build/` surviving, so timestamps there carry no ordering meaning; an
+  mtime-driven cache would happily reuse objects from a different tree.
+- **`-MD` and the scratch working directory do not perturb codegen.** Both were
+  checked byte-identical against a plain `cwd=REPO` compile for a C and a C++ source
+  before the cache was written. Re-check if the compiler version default moves.
+- **An unresolvable dependency makes a compile uncacheable**, not cached with an
+  unknown input. Wrong-but-slow is recoverable; fast-but-wrong is a false green.
+
+`-j` now defaults to the container's CPU quota rather than `os.cpu_count()`, which
+reports host cores and had the validator starting twice as many Wine processes as it
+had quota for.
+
 ## What already exists
 
 | Piece | State |

@@ -35,6 +35,7 @@ Usage:
   python tools/pr_linkcheck.py --json out.json --fail       # CI mode
 """
 import argparse
+import concurrent.futures
 import glob
 import json
 import pathlib
@@ -230,6 +231,26 @@ def worst(results):
 _NAME_INDEX = None
 
 
+def default_jobs():
+    """Files to link-check at once. Mirrors rombuild.default_jobs' container cap."""
+    import rombuild as RB
+    return RB.default_jobs()
+
+
+def warm_shared_indexes():
+    """Populate every lazily-built index check_file reaches, on this thread.
+
+    check_file's helpers cache module images and config indexes in module globals on
+    first use. Those builds are pure and idempotent, so racing them is harmless, but
+    each one is real work and real memory -- doing it once here keeps N threads from
+    each doing it and discarding all but one result."""
+    import reloc_audit as RA
+    import reverify_corpus as RV
+    RA.warm_gate_index()
+    LC._ranges()
+    RV.mod_for("arm9")
+
+
 def main():
     global _NAME_INDEX
     ap = argparse.ArgumentParser(description=__doc__,
@@ -241,6 +262,8 @@ def main():
     ap.add_argument("--md", default=None, help="write a markdown report (for PR comments)")
     ap.add_argument("--fail", action="store_true",
                     help="exit 1 if any file is WRONG-DEST or a non-reproducing near-miss")
+    ap.add_argument("-j", "--jobs", type=int, default=default_jobs(),
+                    help="files to link-check in parallel")
     args = ap.parse_args()
 
     import reloc_audit as RA
@@ -262,7 +285,22 @@ def main():
         print("nothing compiled to check: no changed src/*.c|*.cpp, and no changed "
               "header with a source consumer")
         return
-    print(f"link-checking {len(files)} changed src file(s) ...\n")
+    jobs = max(1, min(args.jobs, len(files)))
+    print(f"link-checking {len(files)} changed src file(s), -j{jobs} ...\n")
+
+    # check_file is the whole cost here: it sweeps compiler versions to reproduce each
+    # symbol, which is seconds per file, and a 40-file PR spent longer in this loop
+    # than in the ROM build that follows it. The files are independent, the compiles
+    # underneath already use per-call temp directories, and the shared state is
+    # read-only index caches -- so fan the checks out, but keep the classification and
+    # printing below serial and in the original order so the log, the JSON and the
+    # markdown stay byte-identical to a -j1 run.
+    if jobs > 1:
+        warm_shared_indexes()
+        with concurrent.futures.ThreadPoolExecutor(max_workers=jobs) as ex:
+            checked = list(ex.map(lambda p: check_file(p, idx, ledger), files))
+    else:
+        checked = [check_file(p, idx, ledger) for p in files]
 
     # A PR "passes" only when every changed file reproduces the ROM with correct
     # relocation targets (VERIFIED/BENIGN, or BLIND where a slot is unverifiable).
@@ -270,8 +308,7 @@ def main():
     # near-miss is not a match and must not land.
     FAIL = {"WRONG", "NO-REPRO"}
     reports, bad = [], []
-    for path in files:
-        rep = check_file(path, idx, ledger)
+    for path, rep in zip(files, checked):
         reports.append(rep)
         if rep["note"] == "unresolved":
             rep["worst"] = "UNRESOLVED"
