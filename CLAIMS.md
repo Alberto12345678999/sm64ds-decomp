@@ -25,7 +25,7 @@ start converting a class; the same staleness rule applies.
 | Class / chain | Who | Claimed | Status |
 |---|---|---|---|
 | ActorBase -> ActorDerived -> Actor -> Player | andrewboudreau | 2026-08-01 | **active** - ActorBase landed as a real polymorphic class (#974); ActorDerived next, then Actor, then Player |
-| ModelBase -> Model (CommonModel and the ModelAnim family in later phases) | tangosdev | 2026-08-01 | **active** - real classes + method promotion, byte-verified per file with match.py + linkcheck |
+| ModelBase -> Model (CommonModel and the ModelAnim family in later phases) | tangosdev | 2026-08-01 | **active** - phase 1 landed (#981): ModelBase + Model real classes, 17/17 byte-match; next CommonModel + ShadowModel, then ModelAnim (second vtable, thunks) |
 
 ## Claims
 
