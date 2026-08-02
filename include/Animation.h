@@ -4,17 +4,20 @@
 #include "types.h"
 #include "math/Fix12.h"
 
-/* The animation-playback root, vtable data_0208e7e4:
+/* The animation-playback root, vtable _ZTV9Animation:
  *
  *   slot 0  0x02015ce8  ~Animation (D1)
  *   slot 1  0x02015cc4  ~Animation (D0)
- *   slot 2  0x00000000  pure virtual
  *
- * Slot 2 is null here and the MaterialChanger/TextureSequence family
- * overrides it with their Update(ModelComponents &); it keeps a neutral
- * name until that family converts and pins the signature. It is NOT
- * declared pure even though the slot is null, because ModelAnim2 embeds
- * a bare Animation as a data member.
+ * TWO slots, nothing else. The zero word after them is adjacent data,
+ * not a pure-virtual slot -- it is the offset-to-top word of the vtable
+ * that follows, and all three _ZThn80_ secondary-base tables are likewise
+ * two slots wide, which a derived table could not be if a third virtual
+ * existed. The family's Update(ModelComponents&) is a plain method, not
+ * an override. notes/model-rtti-names.md walks the pointers.
+ *
+ * The ROM's RTTI names this class dExtFrameCtrl_c -- a frame controller,
+ * i.e. the playback cursor, not the animation data.
  *
  * THE DESTRUCTOR IS DECLARED FIRST AND NEVER DEFINED AS A METHOD -- the
  * key-function arrangement from include/ModelBase.h. C1/C2/D0/D1/D2 stay
@@ -46,14 +49,8 @@ struct Animation {
     Fix12i currFrame;        /* 0x08 - 20.12 */
     Fix12i speed;            /* 0x0c - 0x1000 is 1.0 */
 
-    /* --- vtable, in ROM order. Do not reorder. --- */
+    /* --- vtable, in ROM order: the destructor pair and nothing else. --- */
     virtual ~Animation();                /* slots 0 (D1), 1 (D0) */
-    virtual void Virtual08();            /* slot 2 - null in the ROM table.
-                                            Never defined anywhere; it reads
-                                            as pure, but ModelAnim2 embeds a
-                                            bare Animation member (built with
-                                            C1), so it cannot be declared
-                                            pure here. */
 
     /* --- non-virtual --- */
     void SetAnimation(u16 numFrames, int flags, Fix12<int> speed,
