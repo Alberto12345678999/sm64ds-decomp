@@ -25,7 +25,7 @@ start converting a class; the same staleness rule applies.
 | Class / chain | Who | Claimed | Status |
 |---|---|---|---|
 | ActorBase -> ActorDerived -> Actor -> Player | andrewboudreau | 2026-08-01 | **active** - ActorBase landed as a real polymorphic class (#974); ActorDerived next, then Actor, then Player |
-| ModelBase -> Model (CommonModel and the ModelAnim family in later phases) | tangosdev | 2026-08-01 | **active** - phase 1 landed (#981): ModelBase + Model real classes, 17/17 byte-match; next CommonModel + ShadowModel, then ModelAnim (second vtable, thunks) |
+| Model chain: ModelBase, Model, CommonModel, ShadowModel, Animation, then the ModelAnim MI trio | tangosdev | 2026-08-01 | **active** - phases 1-3a landed (#981, #984): five real classes, every converted file byte-matched; left: ModelAnim / BlendModelAnim / ModelAnim2 (Animation second base at +0x50, ROM _ZThn80_ thunks) |
 
 ## Claims
 
