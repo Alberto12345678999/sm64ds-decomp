@@ -7525,7 +7525,7 @@ matched: yes</title></rect><rect x="137.14" y="588.97" width="23.80" height="7.6
 module: arm9
 addr: 0x020468a0
 size: 268 bytes
-matched: yes</title></rect><rect x="160.94" y="588.97" width="4.62" height="7.65" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9Animation17UpdateFileOffsets_ZN9AnimationER8BCA_File
+matched: yes</title></rect><rect x="160.94" y="588.97" width="4.62" height="7.65" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9Animation17UpdateFileOffsetsER8BCA_File
 module: arm9
 addr: 0x020469ac
 size: 52 bytes
