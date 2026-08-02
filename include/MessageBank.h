@@ -4,7 +4,7 @@
 #include "types.h"
 
 /* The BMG-family message bank, as the five western msg_data_*.bin carry it.
- *
+ * 
  * WHAT THE ROM PINS. ParseMessageBankSections (func_0201cb2c) does all of the
  * offset arithmetic this file encodes, and only this:
  *
