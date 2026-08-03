@@ -12,7 +12,7 @@ struct Player : ActorBase {
 
 extern "C" void _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(unsigned int, int);
 extern int _ZNK6Player14GetBodyModelIDEjb(Player const *, unsigned int, bool);
-extern int _ZNK9Animation12WillHitFrameEi(Animation const *, int);
+extern "C" int _ZNK9Animation12WillHitFrameEi(Animation const *, int);
 extern "C" void func_02012790(int);
 extern int _ZN6Player12FinishedAnimEv(Player *);
 extern "C" void func_020731dc(void *a, void *b, void *node);

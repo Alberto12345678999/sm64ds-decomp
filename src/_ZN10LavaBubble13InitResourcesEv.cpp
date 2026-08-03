@@ -4,7 +4,7 @@
 #include "LavaBubble.h"
 extern void _ZN18MovingCylinderClsn4InitEP5Actor5Fix12IiES3_jj(char* thiz, char* actor, int b, int d, unsigned int e, unsigned int f);
 extern void _ZN12WithMeshClsn4InitEP5Actor5Fix12IiES3_P10Vector3_16S5_(char* thiz, char* actor, int b, int d, void* v, int f);
-extern void _ZN12WithMeshClsn13SetLimMovFlagEv(char* thiz);
+extern "C" void _ZN12WithMeshClsn13SetLimMovFlagEv(char* thiz);
 extern void func_ov064_021187ec(char* c, void* p);
 extern char data_ov064_0211c7c8[];
 extern char data_ov064_0211c7b8[];
