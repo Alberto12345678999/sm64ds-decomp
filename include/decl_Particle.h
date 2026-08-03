@@ -4,6 +4,15 @@
 #define DECL_PARTICLE_H
 #include "common.h"
 
+
+#ifdef __cplusplus
+/* These declare ROM functions by the mangled name the ROM already uses. Compiled as
+ * C++ without this, the compiler mangles those names a SECOND time and emits
+ * references like _Z28_ZN13SharedFilePtr7ReleaseEvPv, which nothing defines -- the
+ * file still matches, but it can never be enrolled into the ROM build. */
+extern "C" {
+#endif
+
 extern u32 _ZN8Particle6System10NewWeatherEjj5Fix12IiES2_S2_PK11Vector3_16fj(u32, u32, Fix12i, Fix12i, Fix12i, const void*, u8);
 extern u32 _ZN8Particle7Texture12AllocTexVramEjb(const void*, u32);
 extern unsigned int _ZN8Particle7Texture12AllocPalVramEjb(unsigned int, unsigned int);
@@ -11,5 +20,9 @@ extern void _ZN8Particle10SysTracker10InitialiseEv(void*);
 extern void _ZN8Particle14SimpleCallbackC2Ev(char*);
 extern void _ZN8Particle6System12NewBigSplashE5Fix12IiES2_S2_(Fix12i, Fix12i, Fix12i);
 extern void _ZN8Particle9RenderAllEv(void);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

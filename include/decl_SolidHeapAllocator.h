@@ -4,11 +4,24 @@
 #define DECL_SOLIDHEAPALLOCATOR_H
 #include "common.h"
 
+
+#ifdef __cplusplus
+/* These declare ROM functions by the mangled name the ROM already uses. Compiled as
+ * C++ without this, the compiler mangles those names a SECOND time and emits
+ * references like _Z28_ZN13SharedFilePtr7ReleaseEvPv, which nothing defines -- the
+ * file still matches, but it can never be enrolled into the ROM build. */
+extern "C" {
+#endif
+
 extern unsigned int _ZN18SolidHeapAllocator10MemoryLeftEi(void*, int);
 extern void _ZN18SolidHeapAllocator10ResetStartEv(void*);
 extern void _ZN18SolidHeapAllocator5ResetEj(void*, unsigned int);
 extern void _ZN18SolidHeapAllocator8ResetEndEv(void*);
 extern void*_ZN18SolidHeapAllocator16AllocateForwardsEPvjj(void*, u32, u32);
 extern void*_ZN18SolidHeapAllocator17AllocateBackwardsEPvjj(void*, u32, u32);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

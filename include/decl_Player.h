@@ -4,6 +4,15 @@
 #define DECL_PLAYER_H
 #include "common.h"
 
+
+#ifdef __cplusplus
+/* These declare ROM functions by the mangled name the ROM already uses. Compiled as
+ * C++ without this, the compiler mangles those names a SECOND time and emits
+ * references like _Z28_ZN13SharedFilePtr7ReleaseEvPv, which nothing defines -- the
+ * file still matches, but it can never be enrolled into the ROM build. */
+extern "C" {
+#endif
+
 extern int _ZN6Player12GetHurtStateEv(void*);
 extern int _ZN6Player12Unk_020c4f40Et(int, u16);
 extern int _ZN6Player13TryTalkToDoorEh(char*, unsigned char);
@@ -20,5 +29,9 @@ extern void _ZN6Player18TurnOffToonShadingEj(char*, u32);
 extern void _ZN6Player4BurnEv(void*);
 extern void _ZN6Player6BounceE5Fix12IiE(void*, int);
 extern void _ZN6Player8BlowAwayEs(void*, short);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

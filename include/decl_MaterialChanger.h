@@ -4,8 +4,21 @@
 #define DECL_MATERIALCHANGER_H
 #include "common.h"
 
+
+#ifdef __cplusplus
+/* These declare ROM functions by the mangled name the ROM already uses. Compiled as
+ * C++ without this, the compiler mangles those names a SECOND time and emits
+ * references like _Z28_ZN13SharedFilePtr7ReleaseEvPv, which nothing defines -- the
+ * file still matches, but it can never be enrolled into the ROM build. */
+extern "C" {
+#endif
+
 extern void _ZN15MaterialChanger7PrepareER8BMD_FileR8BMA_File(void*, void*);
 extern void _ZN15MaterialChanger7SetFileER8BMA_Filei5Fix12IiEj(void*, void*, int, int, unsigned int);
 extern void _ZN15MaterialChangerC1Ev(void*);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

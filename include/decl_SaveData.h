@@ -4,11 +4,24 @@
 #define DECL_SAVEDATA_H
 #include "common.h"
 
+
+#ifdef __cplusplus
+/* These declare ROM functions by the mangled name the ROM already uses. Compiled as
+ * C++ without this, the compiler mangles those names a SECOND time and emits
+ * references like _Z28_ZN13SharedFilePtr7ReleaseEvPv, which nothing defines -- the
+ * file still matches, but it can never be enrolled into the ROM build. */
+extern "C" {
+#endif
+
 extern int _ZN8SaveData16HasPlayerLostCapEv(void);
 extern int _ZN8SaveData22NumGlowingRabbitsFoundEv(void);
 extern s32 _ZN8SaveData16ReadDataFromCartEPcjj(char*, u32, u32);
 extern unsigned int _ZN8SaveData26CountStarsCollectedInLevelEj(unsigned int);
 extern void _ZN8SaveData13PlayerLoseCapEv(void);
 extern void _ZN8SaveData16EraseAllSaveDataEv(void);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

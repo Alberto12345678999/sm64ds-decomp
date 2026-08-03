@@ -4,6 +4,15 @@
 #define DECL_ACTOR_H
 #include "common.h"
 
+
+#ifdef __cplusplus
+/* These declare ROM functions by the mangled name the ROM already uses. Compiled as
+ * C++ without this, the compiler mangles those names a SECOND time and emits
+ * references like _Z28_ZN13SharedFilePtr7ReleaseEvPv, which nothing defines -- the
+ * file still matches, but it can never be enrolled into the ROM build. */
+extern "C" {
+#endif
+
 extern char*_ZN5Actor14FarthestPlayerEv(void*);
 extern int _ZN5Actor15IsPlayerInRangeEi(void*, int);
 extern int _ZN5Actor18FindExplosionActorER12CylinderClsn(void*, void*);
@@ -13,5 +22,9 @@ extern void _ZN5Actor17TrackInDeathTableEv(void*);
 extern void _ZN5Actor19DisappearPoofDustAtERK7Vector3(void*, const struct Vector3*);
 extern void _ZN5ActorC2Ev(void*);
 extern void _ZN5ActorD2Ev(void*);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

@@ -4,6 +4,15 @@
 #define DECL_COMMON_H
 #include "common.h"
 
+
+#ifdef __cplusplus
+/* These declare ROM functions by the mangled name the ROM already uses. Compiled as
+ * C++ without this, the compiler mangles those names a SECOND time and emits
+ * references like _Z28_ZN13SharedFilePtr7ReleaseEvPv, which nothing defines -- the
+ * file still matches, but it can never be enrolled into the ROM build. */
+extern "C" {
+#endif
+
 extern Matrix4x3 data_ov021_02113a60, data_ov021_02113a80;
 extern Vector3 data_ov002_0210af00;
 extern Vector3 data_ov006_0212b890;
@@ -3157,5 +3166,9 @@ extern volatile struct Matrix4x3 data_ov006_0213ad28;
 extern volatile unsigned short data_ov002_0210c208[];
 extern vu16 reg_G2S_DB_BG3PA;
 extern vu32*data_ov006_02137560[];
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

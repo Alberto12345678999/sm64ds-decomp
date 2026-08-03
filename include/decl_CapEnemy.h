@@ -4,11 +4,24 @@
 #define DECL_CAPENEMY_H
 #include "common.h"
 
+
+#ifdef __cplusplus
+/* These declare ROM functions by the mangled name the ROM already uses. Compiled as
+ * C++ without this, the compiler mangles those names a SECOND time and emits
+ * references like _Z28_ZN13SharedFilePtr7ReleaseEvPv, which nothing defines -- the
+ * file still matches, but it can never be enrolled into the ROM build. */
+extern "C" {
+#endif
+
 extern int _ZN8CapEnemy11GetCapStateEv(char*);
 extern int _ZN8CapEnemy21DestroyIfCapNotNeededEv();
 extern int _ZN8CapEnemy6AddCapEj();
 extern void _ZN8CapEnemy12Unk_02005d94Ev(char*);
 extern void _ZN8CapEnemy14RenderCapModelEPK7Vector3(char*, const Vector3*);
 extern void _ZN8CapEnemyC2Ev(void*);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

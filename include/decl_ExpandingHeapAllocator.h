@@ -4,9 +4,22 @@
 #define DECL_EXPANDINGHEAPALLOCATOR_H
 #include "common.h"
 
+
+#ifdef __cplusplus
+/* These declare ROM functions by the mangled name the ROM already uses. Compiled as
+ * C++ without this, the compiler mangles those names a SECOND time and emits
+ * references like _Z28_ZN13SharedFilePtr7ReleaseEvPv, which nothing defines -- the
+ * file still matches, but it can never be enrolled into the ROM build. */
+extern "C" {
+#endif
+
 extern unsigned int _ZN22ExpandingHeapAllocator18MaxAllocatableSizeEi(void*, int);
 extern void _ZN22ExpandingHeapAllocator10DeallocateEPv(void*, void*);
 extern void*_ZN22ExpandingHeapAllocator16AllocateForwardsEjj(void*, u32, u32);
 extern void*_ZN22ExpandingHeapAllocator17AllocateBackwardsEjj(void*, u32, u32);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

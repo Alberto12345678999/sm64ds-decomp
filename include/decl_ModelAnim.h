@@ -4,10 +4,23 @@
 #define DECL_MODELANIM_H
 #include "common.h"
 
+
+#ifdef __cplusplus
+/* These declare ROM functions by the mangled name the ROM already uses. Compiled as
+ * C++ without this, the compiler mangles those names a SECOND time and emits
+ * references like _Z28_ZN13SharedFilePtr7ReleaseEvPv, which nothing defines -- the
+ * file still matches, but it can never be enrolled into the ROM build. */
+extern "C" {
+#endif
+
 extern void _ZN9ModelAnim4CopyERKS_Pc(void*, const void*, void*);
 extern void _ZN9ModelAnim6RenderEPK7Vector3(void*, void*);
 extern void _ZN9ModelAnimC1Ev(void*);
 extern void _ZN9ModelAnimC2Ev(void*);
 extern void _ZN9ModelAnimD1Ev(void*);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

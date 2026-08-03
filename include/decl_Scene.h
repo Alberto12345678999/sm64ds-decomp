@@ -4,6 +4,15 @@
 #define DECL_SCENE_H
 #include "common.h"
 
+
+#ifdef __cplusplus
+/* These declare ROM functions by the mangled name the ROM already uses. Compiled as
+ * C++ without this, the compiler mangles those names a SECOND time and emits
+ * references like _Z28_ZN13SharedFilePtr7ReleaseEvPv, which nothing defines -- the
+ * file still matches, but it can never be enrolled into the ROM build. */
+extern "C" {
+#endif
+
 extern int _ZN5Scene14BeforeBehaviorEv();
 extern int _ZN5Scene15SetSceneToSpawnEjj(u32, u32);
 extern int _ZN5Scene19BeforeInitResourcesEv(void*);
@@ -11,5 +20,9 @@ extern void _ZN5Scene20Initialise3dGraphicsEv(void);
 extern void _ZN5Scene20SetAndStopColorFaderEv(void);
 extern void _ZN5Scene21AfterCleanupResourcesEj(char*, unsigned int);
 extern void _ZN5Scene9SetFadersEP15FaderBrightness(void*);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

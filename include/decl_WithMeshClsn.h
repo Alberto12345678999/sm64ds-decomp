@@ -4,6 +4,15 @@
 #define DECL_WITHMESHCLSN_H
 #include "common.h"
 
+
+#ifdef __cplusplus
+/* These declare ROM functions by the mangled name the ROM already uses. Compiled as
+ * C++ without this, the compiler mangles those names a SECOND time and emits
+ * references like _Z28_ZN13SharedFilePtr7ReleaseEvPv, which nothing defines -- the
+ * file still matches, but it can never be enrolled into the ROM build. */
+extern "C" {
+#endif
+
 extern int _ZNK12WithMeshClsn15ShouldUpdatePosEv(void*);
 extern int _ZNK12WithMeshClsn16ShouldUpdatePosYEv(void*);
 extern void _ZN12WithMeshClsn12Unk_0203589cEv(void*);
@@ -16,5 +25,9 @@ extern void _ZN12WithMeshClsn22ClearJustHitGroundFlagEv(void*);
 extern void _ZN12WithMeshClsnC1Ev(void*);
 extern void _ZN12WithMeshClsnD1Ev(void*);
 extern void*_ZNK12WithMeshClsn13GetWallResultEv(void*);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
