@@ -8,14 +8,14 @@ extern "C" {
 
 struct RG { char buf[0x54]; };
 extern int WithMeshClsn_UpdateDiscreteNoLava_veneer(void* w);
-extern int _ZNK12WithMeshClsn8IsOnWallEv(void* w);
-extern int _ZNK11SurfaceInfo12CopyNormalToER7Vector3(void* s, struct Vector3* v);
-extern int _ZN13RaycastGroundC1Ev(struct RG* r);
-extern int _ZN13RaycastGround12SetObjAndPosERK7Vector3P5Actor(struct RG* r, struct Vector3* v, void* a);
-extern int _ZN4BgCh19StartDetectingWaterEv(struct RG* r);
-extern int _ZN13RaycastGround10DetectClsnEv(struct RG* r);
-extern int _ZN4BgCh18StopDetectingWaterEv(struct RG* r);
-extern int _ZN13RaycastGroundD1Ev(struct RG* r);
+extern "C" int _ZNK12WithMeshClsn8IsOnWallEv(void* w);
+extern "C" int _ZNK11SurfaceInfo12CopyNormalToER7Vector3(void* s, struct Vector3* v);
+extern "C" int _ZN13RaycastGroundC1Ev(struct RG* r);
+extern "C" int _ZN13RaycastGround12SetObjAndPosERK7Vector3P5Actor(struct RG* r, struct Vector3* v, void* a);
+extern "C" int _ZN4BgCh19StartDetectingWaterEv(struct RG* r);
+extern "C" int _ZN13RaycastGround10DetectClsnEv(struct RG* r);
+extern "C" int _ZN4BgCh18StopDetectingWaterEv(struct RG* r);
+extern "C" int _ZN13RaycastGroundD1Ev(struct RG* r);
 void func_ov077_02123c6c(char* c, void* w){
   struct Vector3 nrm;
   struct Vector3 pos;

@@ -5,7 +5,7 @@
 /* recovered: named members + shared header, real C++ method */
 #include "RotatingCogSmall.h"
 extern "C" {
-extern void _ZN13SharedFilePtr7ReleaseEv(void *);
+extern "C" void _ZN13SharedFilePtr7ReleaseEv(void *);
 extern char data_ov035_02112c78[];
 extern char data_ov035_02112c70[];
 extern char data_ov035_02112c60[];

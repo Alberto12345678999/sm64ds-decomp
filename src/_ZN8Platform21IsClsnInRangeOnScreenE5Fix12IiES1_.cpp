@@ -5,8 +5,8 @@
 /* recovered: named members + shared header */
 #include "Platform.h"
 extern "C" {
-extern void _ZN16MeshColliderBase6EnableEP5Actor(void*, void*);
-extern void* _ZN5Actor13ClosestPlayerEv(void*);
+extern "C" void _ZN16MeshColliderBase6EnableEP5Actor(void*, void*);
+extern "C" void* _ZN5Actor13ClosestPlayerEv(void*);
 extern int Vec3_Dist(void*, void*);
 int _ZN8Platform21IsClsnInRangeOnScreenE5Fix12IiES1_(struct Platform *self, int a, int b) {
   int on = (self->unk_0b0 & 8) != 0;

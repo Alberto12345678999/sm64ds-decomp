@@ -5,9 +5,9 @@
 /* recovered: named members + shared header, real C++ method */
 #include "SkiLift.h"
 extern "C" {
-extern void _ZN9Animation7AdvanceEv(void*);
-extern void _ZN12CylinderClsn5ClearEv(void*);
-extern void _ZN12CylinderClsn6UpdateEv(void*);
+extern "C" void _ZN9Animation7AdvanceEv(void*);
+extern "C" void _ZN12CylinderClsn5ClearEv(void*);
+extern "C" void _ZN12CylinderClsn6UpdateEv(void*);
 extern int func_ov018_02111d28(void*);
 }
 struct Sub { virtual void m0(); virtual void m1(); virtual void m2(); virtual void m3(); };

@@ -6,7 +6,7 @@
 #include "decl_common.h"
 /* recovered: named members + shared header, real C++ method */
 #include "EnemySwitchTag.h"
-extern u32 _ZN5Sound8PlayLongEjjjRK7Vector3j(u32 a, u32 b, u32 c, void *v, u32 e);
+extern "C" u32 _ZN5Sound8PlayLongEjjjRK7Vector3j(u32 a, u32 b, u32 c, void *v, u32 e);
 extern void *data_0209f318;
 
 int EnemySwitchTag::Behavior()

@@ -6,16 +6,16 @@
 #include "KoopaTheQuick.h"
 typedef short s16;
 
-extern void _ZN5Model8LoadFileER13SharedFilePtr(void *f);
-extern void _ZN9Animation8LoadFileER13SharedFilePtr(void *f);
-extern int _ZN9ModelBase7SetFileEP8BMD_Fileii(void *self, void *f, int a, int b);
-extern int _ZN11ShadowModel12InitCylinderEv(void *self);
-extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *self, void *bca, int n, int speed, unsigned int flags);
-extern void _ZN18MovingCylinderClsn4InitEP5Actor5Fix12IiES3_jj(void *self, void *actor, int r, int h, unsigned int d, unsigned int e);
-extern void _ZN12WithMeshClsn4InitEP5Actor5Fix12IiES3_P10Vector3_16S5_(void *self, void *actor, int r, int h, void *p, int q);
-extern void _ZN7PathPtr6FromIDEj(void *self, unsigned int id);
-extern void _ZNK7PathPtr7GetNodeER7Vector3j(void *self, void *v, unsigned int idx);
-extern unsigned char _ZN5Actor9TrackStarEjj(void *self, unsigned int a, unsigned int b);
+extern "C" void _ZN5Model8LoadFileER13SharedFilePtr(void *f);
+extern "C" void _ZN9Animation8LoadFileER13SharedFilePtr(void *f);
+extern "C" int _ZN9ModelBase7SetFileEP8BMD_Fileii(void *self, void *f, int a, int b);
+extern "C" int _ZN11ShadowModel12InitCylinderEv(void *self);
+extern "C" void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *self, void *bca, int n, int speed, unsigned int flags);
+extern "C" void _ZN18MovingCylinderClsn4InitEP5Actor5Fix12IiES3_jj(void *self, void *actor, int r, int h, unsigned int d, unsigned int e);
+extern "C" void _ZN12WithMeshClsn4InitEP5Actor5Fix12IiES3_P10Vector3_16S5_(void *self, void *actor, int r, int h, void *p, int q);
+extern "C" void _ZN7PathPtr6FromIDEj(void *self, unsigned int id);
+extern "C" void _ZNK7PathPtr7GetNodeER7Vector3j(void *self, void *v, unsigned int idx);
+extern "C" unsigned char _ZN5Actor9TrackStarEjj(void *self, unsigned int a, unsigned int b);
 
 extern char data_ov062_0211e00c[];
 extern char data_ov062_0211e014[];

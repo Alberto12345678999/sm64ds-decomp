@@ -5,7 +5,7 @@
 /* recovered: named members + shared header, real C++ method */
 #include "ShipUp.h"
 extern "C" {
-extern void _ZN13SharedFilePtr7ReleaseEv(void*);
+extern "C" void _ZN13SharedFilePtr7ReleaseEv(void*);
 }
 
 int ShipUp::CleanupResources()

@@ -4,7 +4,7 @@
 #include "decl_common.h"
 /* recovered: named members + shared header, real C++ method */
 #include "PyramidTop.h"
-extern void _ZN13SharedFilePtr7ReleaseEv(void *);
+extern "C" void _ZN13SharedFilePtr7ReleaseEv(void *);
 extern int data_ov024_02113968[];
 
 int PyramidTop::CleanupResources()

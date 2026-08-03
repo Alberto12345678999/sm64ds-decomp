@@ -34,7 +34,7 @@ extern "C" {
 
 extern void *data_ov065_0211cfd0[];
 extern void *data_ov065_0211cfd4[];
-extern void _ZN16MeshColliderBase22UpdatePosWithTransformERS_P5ActorR10ClsnResultR7Vector3P10Vector3_16S8_();
+extern "C" void _ZN16MeshColliderBase22UpdatePosWithTransformERS_P5ActorR10ClsnResultR7Vector3P10Vector3_16S8_();
 extern u8 data_0209f2c0;
 extern s32 data_020a0e68[];
 

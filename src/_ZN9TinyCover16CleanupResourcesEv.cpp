@@ -4,7 +4,7 @@
 #include "decl_common.h"
 /* recovered: named members + shared header, real C++ method */
 #include "TinyCover.h"
-extern void _ZN13SharedFilePtr7ReleaseEv(void *);
+extern "C" void _ZN13SharedFilePtr7ReleaseEv(void *);
 extern int data_ov033_021124f0[];
 
 int TinyCover::CleanupResources()

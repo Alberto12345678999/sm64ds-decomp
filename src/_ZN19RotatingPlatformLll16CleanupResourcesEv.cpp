@@ -4,7 +4,7 @@
 #include "decl_common.h"
 /* recovered: named members + shared header, real C++ method */
 #include "RotatingPlatformLll.h"
-extern void _ZN13SharedFilePtr7ReleaseEv(void *);
+extern "C" void _ZN13SharedFilePtr7ReleaseEv(void *);
 extern int data_ov022_02114558[];
 
 int RotatingPlatformLll::CleanupResources()

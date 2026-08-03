@@ -5,8 +5,8 @@
 /* recovered: named members + shared header, real C++ method */
 #include "RotatingPlatformRr.h"
 typedef short s16;
-extern void* _ZN5Model8LoadFileER13SharedFilePtr(void*);
-extern int _ZN9ModelBase7SetFileEP8BMD_Fileii(void*, void*, int, int);
+extern "C" void* _ZN5Model8LoadFileER13SharedFilePtr(void*);
+extern "C" int _ZN9ModelBase7SetFileEP8BMD_Fileii(void*, void*, int, int);
 
 int RotatingPlatformRr::InitResources()
 {

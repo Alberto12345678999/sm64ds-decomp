@@ -2,10 +2,10 @@
 // @symbol _ZN8Fireball13InitResourcesEv
 /* recovered: named members + shared header, real C++ method */
 #include "Fireball.h"
-extern int _ZN11ShadowModel12InitCylinderEv(void* thiz);
-extern void _ZN18MovingCylinderClsn4InitEP5Actor5Fix12IiES3_jj(void* thiz, void* actor, int fix12, int t, unsigned int a, unsigned int b);
-extern void _ZN12WithMeshClsn4InitEP5Actor5Fix12IiES3_P10Vector3_16S5_(void* thiz, void* actor, int fix12, int t, void* vec, int last);
-extern void _ZN12WithMeshClsn19StartDetectingWaterEv(void* thiz);
+extern "C" int _ZN11ShadowModel12InitCylinderEv(void* thiz);
+extern "C" void _ZN18MovingCylinderClsn4InitEP5Actor5Fix12IiES3_jj(void* thiz, void* actor, int fix12, int t, unsigned int a, unsigned int b);
+extern "C" void _ZN12WithMeshClsn4InitEP5Actor5Fix12IiES3_P10Vector3_16S5_(void* thiz, void* actor, int fix12, int t, void* vec, int last);
+extern "C" void _ZN12WithMeshClsn19StartDetectingWaterEv(void* thiz);
 
 int Fireball::InitResources()
 {

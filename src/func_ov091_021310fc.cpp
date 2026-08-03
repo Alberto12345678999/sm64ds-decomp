@@ -6,7 +6,7 @@
 /* recovered: renamed to Class_Method */
 /* daObjRotateUpdownLift_c::OnHitByMegaChar - recovered from vtable slot identity */
 extern "C" {
-extern void _ZN6Player16IncMegaKillCountEv(void*);
+extern "C" void _ZN6Player16IncMegaKillCountEv(void*);
 extern void func_02012694(int a, void* b);
 void func_ov091_021310fc(char* self, void* p){
   unsigned short h = *(unsigned short*)(self+0xc);

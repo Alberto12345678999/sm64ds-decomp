@@ -5,16 +5,16 @@
 #include "decl_common.h"
 /* recovered: named members + shared header, real C++ method */
 #include "RotatingPlatformWdw.h"
-extern void *_ZN5Model8LoadFileER13SharedFilePtr(void *sfp);
-extern void _ZN9ModelBase7SetFileEP8BMD_Fileii(void *m, void *f, int a, int b);
-extern void _ZN18TextureTransformer7PrepareER8BMD_FileR8BTA_File(void *bmd, void *bta);
-extern void _ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj(void *tt, void *bta, int a, int fix, unsigned int b);
-extern void _ZN8Platform21UpdateModelPosAndRotYEv(void *c);
-extern void _ZN8Platform19UpdateClsnPosAndRotEv(void *c);
-extern void *_ZN12MeshCollider8LoadFileER13SharedFilePtr(void *sfp);
-extern void _ZN18MovingMeshCollider7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
+extern "C" void *_ZN5Model8LoadFileER13SharedFilePtr(void *sfp);
+extern "C" void _ZN9ModelBase7SetFileEP8BMD_Fileii(void *m, void *f, int a, int b);
+extern "C" void _ZN18TextureTransformer7PrepareER8BMD_FileR8BTA_File(void *bmd, void *bta);
+extern "C" void _ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj(void *tt, void *bta, int a, int fix, unsigned int b);
+extern "C" void _ZN8Platform21UpdateModelPosAndRotYEv(void *c);
+extern "C" void _ZN8Platform19UpdateClsnPosAndRotEv(void *c);
+extern "C" void *_ZN12MeshCollider8LoadFileER13SharedFilePtr(void *sfp);
+extern "C" void _ZN18MovingMeshCollider7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
     void *mc, void *kcl, void *mtx, int fix, short s, void *clps);
-extern void _ZN16MeshColliderBase6EnableEP5Actor(void *mc, void *actor);
+extern "C" void _ZN16MeshColliderBase6EnableEP5Actor(void *mc, void *actor);
 
 extern u8 data_0209f2c0[];
 extern int data_0209f32c;

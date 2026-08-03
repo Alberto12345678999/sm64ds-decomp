@@ -4,7 +4,7 @@
 #include "decl_common.h"
 /* recovered: named members + shared header, real C++ method */
 #include "Toad.h"
-extern void _ZN13SharedFilePtr7ReleaseEv(void *self);
+extern "C" void _ZN13SharedFilePtr7ReleaseEv(void *self);
 extern int data_ov002_0210da40[];
 extern int data_ov002_0210d9a0[];
 extern int data_ov002_0210d9c0[];

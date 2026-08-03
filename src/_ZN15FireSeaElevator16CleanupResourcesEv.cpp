@@ -4,7 +4,7 @@
 #include "decl_common.h"
 /* recovered: named members + shared header, real C++ method */
 #include "FireSeaElevator.h"
-extern void _ZN13SharedFilePtr7ReleaseEv(void *);
+extern "C" void _ZN13SharedFilePtr7ReleaseEv(void *);
 extern int data_ov045_021131b0[];
 
 int FireSeaElevator::CleanupResources()

@@ -4,7 +4,7 @@
 #include "decl_common.h"
 /* recovered: named members + shared header, real C++ method */
 #include "Stage.h"
-extern void _ZN3Fog4InitEt5Fix12IiES1_(char *self, unsigned short color, int nearv, int farv);
+extern "C" void _ZN3Fog4InitEt5Fix12IiES1_(char *self, unsigned short color, int nearv, int farv);
 
 void Stage::LoadFog()
 {

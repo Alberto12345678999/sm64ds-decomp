@@ -7,13 +7,13 @@
 // _ZN6Player13St_Throw_MainEv at 0x020dae6c
 // Matched byte-for-byte with mwccarm 1.2/sp2p3 (ov002).
 extern "C" {
-extern int _Z14ApproachLinearRiii(int&, int, int);
-extern int _ZNK6Player14GetBodyModelIDEjb(void*, unsigned, int);
+extern "C" int _Z14ApproachLinearRiii(int&, int, int);
+extern "C" int _ZNK6Player14GetBodyModelIDEjb(void*, unsigned, int);
 extern int func_ov002_020c19d0(void*, int, int);
 extern void func_ov002_020daa74(void*);
 extern void func_ov002_020da9d4(void*);
-extern int _ZN6Player12FinishedAnimEv(void*);
-extern void _ZN6Player11ChangeStateERNS_5StateE(void*, void*);
+extern "C" int _ZN6Player12FinishedAnimEv(void*);
+extern "C" void _ZN6Player11ChangeStateERNS_5StateE(void*, void*);
 extern void Player_AdvanceAnims(void*);
 extern int data_ov002_0211013c[];
 }

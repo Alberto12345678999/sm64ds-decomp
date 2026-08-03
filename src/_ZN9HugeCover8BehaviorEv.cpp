@@ -2,9 +2,9 @@
 // @symbol _ZN9HugeCover8BehaviorEv
 /* recovered: named members + shared header, real C++ method */
 #include "HugeCover.h"
-extern void _ZN9Animation7AdvanceEv(void *);
-extern void _ZN8Platform21UpdateModelPosAndRotYEv(void *);
-extern void _ZN8Platform19UpdateClsnPosAndRotEv(void *);
+extern "C" void _ZN9Animation7AdvanceEv(void *);
+extern "C" void _ZN8Platform21UpdateModelPosAndRotYEv(void *);
+extern "C" void _ZN8Platform19UpdateClsnPosAndRotEv(void *);
 
 int HugeCover::Behavior()
 {

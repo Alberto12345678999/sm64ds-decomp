@@ -6,12 +6,12 @@
 /* recovered: shared common types, renamed to Class_Method */
 /* daBtn_c::OnHitByMegaChar - recovered from vtable slot identity */
 extern "C" {
-extern void _ZN6Player16IncMegaKillCountEv(void* thiz);
+extern "C" void _ZN6Player16IncMegaKillCountEv(void* thiz);
 extern void func_02012694(int a, void* v);
 extern void func_ov079_02123d4c(void* out, void* c);
-extern void _ZN5Actor10PoofDustAtERK7Vector3(void* thiz, const Vector3& v);
-extern void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int n, int a, int b, int c);
-extern void _ZN9ActorBase18MarkForDestructionEv(void* thiz);
+extern "C" void _ZN5Actor10PoofDustAtERK7Vector3(void* thiz, const Vector3& v);
+extern "C" void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int n, int a, int b, int c);
+extern "C" void _ZN9ActorBase18MarkForDestructionEv(void* thiz);
 
 void func_ov079_02123e60(char* c, void* player)
 {

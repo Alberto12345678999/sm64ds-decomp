@@ -4,7 +4,7 @@
 #include "decl_common.h"
 /* recovered: named members + shared header, real C++ method */
 #include "StarMarker.h"
-extern void _ZN13SharedFilePtr7ReleaseEv(void*);
+extern "C" void _ZN13SharedFilePtr7ReleaseEv(void*);
 extern char data_ov002_0211092c;
 extern char data_ov002_0210d9a8;
 

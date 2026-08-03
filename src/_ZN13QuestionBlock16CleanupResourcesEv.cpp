@@ -5,8 +5,8 @@
 /* recovered: named members + shared header, real C++ method */
 #include "QuestionBlock.h"
 extern "C" {
-extern void _ZN13SharedFilePtr7ReleaseEv(void *p);
-extern void _ZN5Actor11UntrackStarERa(void *self, void *p);
+extern "C" void _ZN13SharedFilePtr7ReleaseEv(void *p);
+extern "C" void _ZN5Actor11UntrackStarERa(void *self, void *p);
 }
 extern char data_ov002_0210da58[];
 extern char data_ov002_0210da18[];

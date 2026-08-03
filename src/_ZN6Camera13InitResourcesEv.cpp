@@ -23,7 +23,7 @@ extern void *data_0209f394[];
 
 struct ViewObj { u8 type; u8 p1; s16 x; s16 y; s16 z; };
 extern struct ViewObj *GetViewObj(int idx);
-extern void *_Znwj(u32 sz);
+extern "C" void *_Znwj(u32 sz);
 extern void ChangeArea(int areaID);
 extern void func_0200cf40(Camera *thiz);
 extern int StartWithFarCamera();
@@ -31,7 +31,7 @@ extern void func_0200d0ac(Camera *thiz, u8 id);
 }
 
 extern struct Camera_State data_0209b008[];
-extern int _ZN6Camera11ChangeStateEPNS_5StateE(Camera *thiz, Camera_State *s);
+extern "C" int _ZN6Camera11ChangeStateEPNS_5StateE(Camera *thiz, Camera_State *s);
 
 int Camera::InitResources()
 {

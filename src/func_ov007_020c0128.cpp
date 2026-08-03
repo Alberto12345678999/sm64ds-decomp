@@ -1,6 +1,6 @@
 //cpp
-extern int _ZN4cstd3divEii(int a, int b);
-extern long long _ZN4cstd4ldivEii(int a, int b);
+extern "C" int _ZN4cstd3divEii(int a, int b);
+extern "C" long long _ZN4cstd4ldivEii(int a, int b);
 extern "C" void Matrix4x3_LoadIdentity(void *m);
 extern "C" void func_02052ec8(void *p);
 

@@ -5,16 +5,16 @@
 /* recovered: named members + shared header */
 #include "Enemy.h"
 extern "C" {
-extern int _ZNK12WithMeshClsn10IsOnGroundEv(void* self);
-extern void _ZN11RaycastLineC1Ev(void* self);
-extern void _ZN11RaycastLine13SetObjAndLineERK7Vector3S2_P5Actor(void* self, void* a, void* b, void* act);
-extern void _ZN4BgCh19StartDetectingWaterEv(void* self);
-extern int _ZN11RaycastLine10DetectClsnEv(void* self);
-extern void _ZN10ClsnResultC1Ev(void* self);
-extern void _ZNK10ClsnResult6CopyToERS_(void* self, void* other);
-extern void _ZN10ClsnResultD1Ev(void* self);
-extern void _ZN11RaycastLineD1Ev(void* self);
-extern void _ZNK11SurfaceInfo12CopyNormalToER7Vector3(void* self, void* v);
+extern "C" int _ZNK12WithMeshClsn10IsOnGroundEv(void* self);
+extern "C" void _ZN11RaycastLineC1Ev(void* self);
+extern "C" void _ZN11RaycastLine13SetObjAndLineERK7Vector3S2_P5Actor(void* self, void* a, void* b, void* act);
+extern "C" void _ZN4BgCh19StartDetectingWaterEv(void* self);
+extern "C" int _ZN11RaycastLine10DetectClsnEv(void* self);
+extern "C" void _ZN10ClsnResultC1Ev(void* self);
+extern "C" void _ZNK10ClsnResult6CopyToERS_(void* self, void* other);
+extern "C" void _ZN10ClsnResultD1Ev(void* self);
+extern "C" void _ZN11RaycastLineD1Ev(void* self);
+extern "C" void _ZNK11SurfaceInfo12CopyNormalToER7Vector3(void* self, void* v);
 extern short data_02082214[];
 }
 

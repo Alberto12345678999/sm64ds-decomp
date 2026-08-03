@@ -9,8 +9,8 @@ struct Player {
     unsigned char state;
 };
 
-extern void _ZN6Player4HealEi(Player* p, int amt);
-extern void _ZN6Player11ChangeStateERNS_5StateE(Player* p, struct State* s);
+extern "C" void _ZN6Player4HealEi(Player* p, int amt);
+extern "C" void _ZN6Player11ChangeStateERNS_5StateE(Player* p, struct State* s);
 
 extern "C" void func_ov002_020c7dd0(Player* p, int i) {
     unsigned char g;

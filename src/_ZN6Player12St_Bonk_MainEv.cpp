@@ -8,12 +8,12 @@
 struct Camera;
 
 extern "C" {
-extern void _ZN5Sound9PlayBank0EjRK7Vector3(u32 a, void* v);
-extern void _ZN5Sound13PlayCharVoiceEjjRK7Vector3(u32 a, u32 b, void* v);
-extern void _Z14ApproachLinearRiii(int* a, int b, int c);
-extern int _ZNK6Player14GetBodyModelIDEjb(void* c, u32 a, int b);
-extern int _ZN6Player12FinishedAnimEv(void* c);
-extern void _ZN6Player11ChangeStateERNS_5StateE(void* c, void* s);
+extern "C" void _ZN5Sound9PlayBank0EjRK7Vector3(u32 a, void* v);
+extern "C" void _ZN5Sound13PlayCharVoiceEjjRK7Vector3(u32 a, u32 b, void* v);
+extern "C" void _Z14ApproachLinearRiii(int* a, int b, int c);
+extern "C" int _ZNK6Player14GetBodyModelIDEjb(void* c, u32 a, int b);
+extern "C" int _ZN6Player12FinishedAnimEv(void* c);
+extern "C" void _ZN6Player11ChangeStateERNS_5StateE(void* c, void* s);
 extern void Player_AdvanceAnims(void* c);
 extern void func_0200d8c8(struct Camera* cam, const struct Vector3* v, int strength);
 

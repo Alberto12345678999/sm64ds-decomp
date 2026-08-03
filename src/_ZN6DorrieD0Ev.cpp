@@ -9,7 +9,7 @@
 /* recovered: named members + shared header */
 #include "Dorrie.h"
 extern "C" {
-extern void _ZN25MovingCylinderClsnWithPosD1Ev(void *);
+extern "C" void _ZN25MovingCylinderClsnWithPosD1Ev(void *);
 extern int __destroy_arr(void *, int, int, void *);
 extern void func_ov065_021180b8();
 extern void *_ZTV6Dorrie[];

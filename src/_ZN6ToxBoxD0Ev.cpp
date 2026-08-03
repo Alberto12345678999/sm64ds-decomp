@@ -9,7 +9,7 @@
 /* recovered: named members + shared header */
 #include "ToxBox.h"
 extern "C" {
-extern void _ZN25MovingCylinderClsnWithPosD1Ev(void*);
+extern "C" void _ZN25MovingCylinderClsnWithPosD1Ev(void*);
 extern int _ZTV6ToxBox[];
 extern int _ZTV17ExclamationSwitch[];
 extern void* data_020a0eac;

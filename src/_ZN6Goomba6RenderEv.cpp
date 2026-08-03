@@ -17,7 +17,7 @@ struct Sub {
 };
 
 extern "C" {
-extern void _ZN15MaterialChanger6UpdateER15ModelComponents(char* self, void* model);
+extern "C" void _ZN15MaterialChanger6UpdateER15ModelComponents(char* self, void* model);
 }
 
 int Goomba::Render()

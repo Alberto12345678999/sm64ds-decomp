@@ -8,8 +8,8 @@
 #include "UnknownVsEntry.h"
 extern "C" {
 extern int __destroy_arr(void*, int, int, void*);
-extern void _ZN8Particle10SysTrackerD1Ev(void*);
-extern void _ZN9ActorBaseD2Ev(void*);
+extern "C" void _ZN8Particle10SysTrackerD1Ev(void*);
+extern "C" void _ZN9ActorBaseD2Ev(void*);
 extern int func_ov075_02113fdc[];
 extern int data_0208e4b8[];
 void* _ZN14UnknownVsEntryD1Ev(struct UnknownVsEntry *self) {

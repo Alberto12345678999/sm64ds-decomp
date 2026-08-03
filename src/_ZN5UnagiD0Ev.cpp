@@ -8,7 +8,7 @@
 #include "Unagi.h"
 extern "C" {
 extern int __destroy_arr(void*,int,int,void*);
-extern void _ZN25MovingCylinderClsnWithPosD1Ev(void*);
+extern "C" void _ZN25MovingCylinderClsnWithPosD1Ev(void*);
 extern int func_ov002_020aed18(int*);
 extern void func_020072c0(void);
 extern void* data_020a0eac[];

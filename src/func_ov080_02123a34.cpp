@@ -7,12 +7,12 @@
 
 
 extern "C" {
-extern void _ZN9Animation7AdvanceEv(void*);
-extern void* _ZN5Actor5SpawnEjjRK7Vector3PK10Vector3_16ii(unsigned int, unsigned int, Vector3*, Vector3_16*, int, int);
-extern int _ZN5Actor13DistToCPlayerEv(void*);
+extern "C" void _ZN9Animation7AdvanceEv(void*);
+extern "C" void* _ZN5Actor5SpawnEjjRK7Vector3PK10Vector3_16ii(unsigned int, unsigned int, Vector3*, Vector3_16*, int, int);
+extern "C" int _ZN5Actor13DistToCPlayerEv(void*);
 extern void func_0201267c(unsigned int, void*);
-extern int _ZN9Animation8FinishedEv(void*);
-extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void*, void*, int, int, unsigned int);
+extern "C" int _ZN9Animation8FinishedEv(void*);
+extern "C" void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void*, void*, int, int, unsigned int);
 extern short data_02082214[];
 extern void* data_ov080_021283e8[];
 extern void* data_ov080_021283d0[];

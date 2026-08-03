@@ -4,7 +4,7 @@
 #include "decl_common.h"
 /* recovered: named members + shared header, real C++ method */
 #include "RotatingUpDownPlatformUtm.h"
-extern void _ZN13SharedFilePtr7ReleaseEv(void *);
+extern "C" void _ZN13SharedFilePtr7ReleaseEv(void *);
 struct SFP { void *a, *b, *c; };
 extern struct SFP data_ov091_02134c30[];
 extern struct SFP data_ov091_02134c34[];

@@ -8,7 +8,7 @@
 /* recovered: renamed to Class_Method */
 /* daObjBkKillerdai_c::OnHitByMegaChar - recovered from vtable slot identity */
 extern "C" {
-extern void _ZN6Player16IncMegaKillCountEv(void*);
+extern "C" void _ZN6Player16IncMegaKillCountEv(void*);
 void func_ov079_02126ecc(char *c, void *p){
     struct daObjBkKillerdai_c *self = (struct daObjBkKillerdai_c *)(void *)c;
   _ZN6Player16IncMegaKillCountEv(p);

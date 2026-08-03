@@ -8,12 +8,12 @@ typedef short s16;
 
 
 extern "C" {
-extern void _ZN9ActorBase18MarkForDestructionEv(void* c);
-extern int _ZN5Actor13DistToCPlayerEv(void* c);
-extern void _Z14ApproachLinearRiii(int* val, int target, int step);
+extern "C" void _ZN9ActorBase18MarkForDestructionEv(void* c);
+extern "C" int _ZN5Actor13DistToCPlayerEv(void* c);
+extern "C" void _Z14ApproachLinearRiii(int* val, int target, int step);
 extern s16 Vec3_HorzAngle(const Vector3* a, const Vector3* b);
 extern int RandomIntInternal(int* seed);
-extern void _Z14ApproachLinearRsss(s16* val, s16 target, s16 step);
+extern "C" void _Z14ApproachLinearRsss(s16* val, s16 target, s16 step);
 extern int data_0209e650;
 }
 

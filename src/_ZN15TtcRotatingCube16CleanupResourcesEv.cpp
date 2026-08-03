@@ -4,7 +4,7 @@
 #include "decl_common.h"
 /* recovered: named members + shared header, real C++ method */
 #include "TtcRotatingCube.h"
-extern void _ZN13SharedFilePtr7ReleaseEv(void* self);
+extern "C" void _ZN13SharedFilePtr7ReleaseEv(void* self);
 struct E { void* p; char pad[8]; };
 extern struct E data_ov065_0211cfd0[];
 extern struct E data_ov065_0211cfd4[];

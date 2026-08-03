@@ -2,7 +2,7 @@
 // @symbol _ZN15RollingIronBall16CleanupResourcesEv
 /* recovered: named members + shared header, real C++ method */
 #include "RollingIronBall.h"
-extern void _ZN13SharedFilePtr7ReleaseEv(void *self);
+extern "C" void _ZN13SharedFilePtr7ReleaseEv(void *self);
 extern char data_ov100_02148668;
 
 int RollingIronBall::CleanupResources()

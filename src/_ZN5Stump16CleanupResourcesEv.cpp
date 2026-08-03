@@ -3,7 +3,7 @@
 /* recovered: named members + shared header, real C++ method */
 #include "Stump.h"
 struct SharedFilePtr { unsigned int data[4]; };
-extern void _ZN13SharedFilePtr7ReleaseEv(struct SharedFilePtr *self);
+extern "C" void _ZN13SharedFilePtr7ReleaseEv(struct SharedFilePtr *self);
 extern struct SharedFilePtr data_ov002_0210da40;
 extern struct SharedFilePtr data_ov002_0210d9a0;
 extern struct SharedFilePtr data_ov002_0210d9c0;
