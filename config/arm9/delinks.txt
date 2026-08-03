@@ -70,6 +70,7 @@ src/_ZN8CapEnemy21DestroyIfCapNotNeededEv.cpp:
     .text start:0x02005f0c end:0x02005fa0
 
 src/_ZN8CapEnemy11GetCapStateEv.cpp:
+    complete
     .text start:0x02005fa0 end:0x02006054
 
 src/_ZN8CapEnemy15RespawnIfHasCapEv.cpp:
@@ -2003,6 +2004,7 @@ src/_ZN15TextureSequenceD0Ev.c:
     .text start:0x02015a00 end:0x02015a2c
 
 src/_ZN15TextureSequenceD1Ev.c:
+    complete
     .text start:0x02015a2c end:0x02015a50
 
 src/_ZN15TextureSequenceC1Ev.c:
@@ -2044,6 +2046,7 @@ src/_ZN9AnimationD2Ev.c:
     .text start:0x02015cb4 end:0x02015cc4
 
 src/_ZN9AnimationD0Ev.c:
+    complete
     .text start:0x02015cc4 end:0x02015ce8
 
 src/_ZN9AnimationD1Ev.c:
@@ -2069,12 +2072,6 @@ src/_ZN11ShadowModel8CleanAllEv.cpp:
 src/_ZN11ShadowModel9InitModelEP9Matrix4x35Fix12IiES3_S3_j.c:
     complete
     .text start:0x02015e64 end:0x02015ebc
-
-src/_ZN11ShadowModel12InitCylinderEv.cpp:
-    .text start:0x02015ebc end:0x02015ed8
-
-src/_ZN11ShadowModel10InitCuboidEv.cpp:
-    .text start:0x02015ed8 end:0x02015ef4
 
 src/_ZN11ShadowModel9DoSetFileEPcii.cpp:
     complete
@@ -2157,9 +2154,11 @@ src/_ZN14BlendModelAnim7AdvanceEv.cpp:
     .text start:0x0201647c end:0x020164b0
 
 src/_ZN14BlendModelAnim9Virtual18EjPK7Vector3.cpp:
+    complete
     .text start:0x020164b0 end:0x020164e4
 
 src/_ZN14BlendModelAnim6RenderEPK7Vector3.cpp:
+    complete
     .text start:0x020164e4 end:0x02016518
 
 src/_ZN14BlendModelAnim9Virtual10ER9Matrix4x3.cpp:
@@ -2182,9 +2181,6 @@ src/_ZN14BlendModelAnimD0Ev.c:
     complete
     .text start:0x02016644 end:0x02016690
 
-src/_ZN14BlendModelAnimD1Ev.c:
-    .text start:0x02016690 end:0x020166d4
-
 src/_ZN14BlendModelAnimC1Ev.c:
     complete
     .text start:0x020166d4 end:0x02016714
@@ -2202,9 +2198,11 @@ src/func_020167a4.c:
     .text start:0x020167a4 end:0x020167c4
 
 src/_ZN9ModelAnim9Virtual18EjPK7Vector3.cpp:
+    complete
     .text start:0x020167c4 end:0x020167f8
 
 src/_ZN9ModelAnim6RenderEPK7Vector3.cpp:
+    complete
     .text start:0x020167f8 end:0x0201682c
 
 src/_ZN9ModelAnim9Virtual10ER9Matrix4x3.cpp:
@@ -2299,15 +2297,9 @@ src/_ZN5Model11UpdateVertsEv.cpp:
     complete
     .text start:0x02016c98 end:0x02016ca8
 
-src/_ZN5ModelD2Ev.c:
-    .text start:0x02016ca8 end:0x02016ce0
-
 src/_ZN5ModelD0Ev.c:
     complete
     .text start:0x02016ce0 end:0x02016d20
-
-src/_ZN5ModelD1Ev.c:
-    .text start:0x02016d20 end:0x02016d58
 
 src/_ZN5ModelC1Ev.c:
     complete
@@ -2316,9 +2308,6 @@ src/_ZN5ModelC1Ev.c:
 src/_ZN5ModelC2Ev.c:
     complete
     .text start:0x02016da8 end:0x02016df8
-
-src/CleanCommonModelDataArr.c:
-    .text start:0x02016df8 end:0x02016e70
 
 src/func_02016e70.c:
     complete
@@ -4488,9 +4477,6 @@ src/func_02031154.c:
 src/func_0203128c.c:
     .text start:0x0203128c end:0x020313d8
 
-src/func_020313d8.c:
-    .text start:0x020313d8 end:0x02031428
-
 src/func_02031428.c:
     complete
     .text start:0x02031428 end:0x020316d8
@@ -5382,6 +5368,7 @@ src/_ZN16MeshColliderBase7DisableEv.cpp:
     .text start:0x02039140 end:0x02039184
 
 src/_ZN16MeshColliderBase6EnableEP5Actor.cpp:
+    complete
     .text start:0x02039184 end:0x020391f0
 
 src/func_020391f0.c:
@@ -7086,6 +7073,7 @@ src/_ZN9ActorBase7ProcessEMS_FivEMS_FbvEMS_FvjE.cpp:
     .text start:0x02043c88 end:0x02043d48
 
 src/_ZN9ActorBaseD2Ev.c:
+    complete
     .text start:0x02043d48 end:0x02043d78
 
 src/_ZN9ActorBaseD0Ev.c:
@@ -7093,6 +7081,7 @@ src/_ZN9ActorBaseD0Ev.c:
     .text start:0x02043d78 end:0x02043dbc
 
 src/_ZN9ActorBaseD1Ev.c:
+    complete
     .text start:0x02043dbc end:0x02043dec
 
 src/_ZN9ActorBaseC1Ev.cpp:
@@ -7219,6 +7208,7 @@ src/func_020458a8.c:
     .text start:0x020458a8 end:0x020458e0
 
 src/_ZN5Model13LoadTexAndPalER8BMD_File.cpp:
+    complete
     .text start:0x020458e0 end:0x02045a50
 
 src/func_02045a50.c:
@@ -7234,6 +7224,7 @@ src/_ZN5Model17LoadTextureToVramEPcj.cpp:
     .text start:0x02045c10 end:0x02045c60
 
 src/_ZN5Model13GetVramOffsetEj.cpp:
+    complete
     .text start:0x02045c60 end:0x02045ce0
 
 src/func_02045ce0.c:
