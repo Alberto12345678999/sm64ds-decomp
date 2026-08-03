@@ -8,7 +8,7 @@ extern "C" {
 struct State;
 extern State data_ov002_021100c4;
 extern int func_ov002_020d91e0(void* c, int a, int b, int d);
-extern void _ZN6Player11ChangeStateERNS_5StateE(void* c, State* st);
+extern "C" void _ZN6Player11ChangeStateERNS_5StateE(void* c, State* st);
 }
 
 int Player::Shock(unsigned int j)

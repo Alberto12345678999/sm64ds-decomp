@@ -12,19 +12,19 @@ struct Base { virtual void v0(); virtual void v1(); virtual void v2(); virtual v
 struct Derived { char pad[0x2cc]; Base base; };
 
 extern "C" {
-extern int _ZN5Actor13DistToCPlayerEv(void *self);
-extern void _ZN14BlendModelAnim7AdvanceEv(void *self);
+extern "C" int _ZN5Actor13DistToCPlayerEv(void *self);
+extern "C" void _ZN14BlendModelAnim7AdvanceEv(void *self);
 extern unsigned short DecIfAbove0_Short(unsigned short *p);
 extern unsigned char DecIfAbove0_Byte(unsigned char *p);
-extern void _ZN5Actor9UpdatePosEP12CylinderClsn(void *self, void *clsn);
-extern void _ZN5Actor22UpdatePosWithOnlySpeedEP12CylinderClsn(void *self, void *clsn);
-extern void _ZN5Enemy12UpdateWMClsnER12WithMeshClsnj(void *self, void *wmc, unsigned int flags);
-extern int _ZNK12WithMeshClsn8IsOnWallEv(void *self);
-extern int _ZNK12WithMeshClsn10IsOnGroundEv(void *self);
+extern "C" void _ZN5Actor9UpdatePosEP12CylinderClsn(void *self, void *clsn);
+extern "C" void _ZN5Actor22UpdatePosWithOnlySpeedEP12CylinderClsn(void *self, void *clsn);
+extern "C" void _ZN5Enemy12UpdateWMClsnER12WithMeshClsnj(void *self, void *wmc, unsigned int flags);
+extern "C" int _ZNK12WithMeshClsn8IsOnWallEv(void *self);
+extern "C" int _ZNK12WithMeshClsn10IsOnGroundEv(void *self);
 extern int KingBobOmb_SetState(void *c, void *p);
-extern void _ZN25MovingCylinderClsnWithPos21SetPosRelativeToActorERK7Vector3(void *self, const Vector3 *v);
-extern void _ZN12CylinderClsn5ClearEv(void *self);
-extern void _ZN12CylinderClsn6UpdateEv(void *self);
+extern "C" void _ZN25MovingCylinderClsnWithPos21SetPosRelativeToActorERK7Vector3(void *self, const Vector3 *v);
+extern "C" void _ZN12CylinderClsn5ClearEv(void *self);
+extern "C" void _ZN12CylinderClsn6UpdateEv(void *self);
 
 extern void *data_0209f318;
 extern char data_ov078_0212707c[];

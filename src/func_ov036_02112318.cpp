@@ -1,8 +1,8 @@
 //cpp
 extern "C" {
-extern int _ZN16MeshColliderBase9IsEnabledEv(void* m);
-extern void _ZN16MeshColliderBase7DisableEv(void* m);
-extern void _ZN13SharedFilePtr7ReleaseEv(void* f);
+extern "C" int _ZN16MeshColliderBase9IsEnabledEv(void* m);
+extern "C" void _ZN16MeshColliderBase7DisableEv(void* m);
+extern "C" void _ZN13SharedFilePtr7ReleaseEv(void* f);
 extern int data_ov002_0210d9f0[];
 extern void* data_ov036_02113f58[];
 extern int data_ov036_0211419c[];

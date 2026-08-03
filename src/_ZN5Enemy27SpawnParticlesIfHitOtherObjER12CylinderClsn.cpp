@@ -1,7 +1,7 @@
 //cpp
 extern "C" {
-extern void* _ZN5Actor10FindWithIDEj(unsigned int);
-extern void _ZN5Enemy22SpawnMegaCharParticlesER5ActorPc(void* self, void* a, char* p);
+extern "C" void* _ZN5Actor10FindWithIDEj(unsigned int);
+extern "C" void _ZN5Enemy22SpawnMegaCharParticlesER5ActorPc(void* self, void* a, char* p);
 int _ZN5Enemy27SpawnParticlesIfHitOtherObjER12CylinderClsn(char* self, char* clsn) {
     int* f;
     if (*(unsigned char*)(self+0x107) != 0) {

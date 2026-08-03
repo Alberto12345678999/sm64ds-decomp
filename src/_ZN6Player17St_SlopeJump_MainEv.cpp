@@ -3,8 +3,8 @@
 /* recovered: named members + shared header, real C++ method */
 #include "Player.h"
 extern "C" {
-extern void _Z14ApproachLinearRiii(int*,int,int);
-extern int _ZN6Player11ChangeStateERNS_5StateE(void*,void*);
+extern "C" void _Z14ApproachLinearRiii(int*,int,int);
+extern "C" int _ZN6Player11ChangeStateERNS_5StateE(void*,void*);
 extern int Player_AdvanceAnims(void*);
 extern char data_ov002_0211013c[];
 extern char data_ov002_02110034[];

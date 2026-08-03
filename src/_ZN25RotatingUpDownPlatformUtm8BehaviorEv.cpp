@@ -9,27 +9,27 @@
 typedef struct Vec3 { int x, y, z; } Vec3;
 typedef struct RaycastGround { char pad[0x54]; } RaycastGround;
 
-extern void *_ZN5Actor15FindWithActorIDEjPS_(u32 id, void *p);
+extern "C" void *_ZN5Actor15FindWithActorIDEjPS_(u32 id, void *p);
 extern int Vec3_HorzDist(const Vec3 *a, const Vec3 *b);
-extern int _ZN5Actor13DistToCPlayerEv(void *thiz);
-extern int _ZN5Sound8PlayLongEjjjRK7Vector3j(u32 a, u32 b, u32 c, const Vec3 *pos, u32 e);
-extern void _ZN13RaycastGroundC1Ev(RaycastGround *rc);
-extern void _ZN13RaycastGround12SetObjAndPosERK7Vector3P5Actor(RaycastGround *rc, const Vec3 *pos, void *actor);
-extern int _ZN13RaycastGround10DetectClsnEv(RaycastGround *rc);
+extern "C" int _ZN5Actor13DistToCPlayerEv(void *thiz);
+extern "C" int _ZN5Sound8PlayLongEjjjRK7Vector3j(u32 a, u32 b, u32 c, const Vec3 *pos, u32 e);
+extern "C" void _ZN13RaycastGroundC1Ev(RaycastGround *rc);
+extern "C" void _ZN13RaycastGround12SetObjAndPosERK7Vector3P5Actor(RaycastGround *rc, const Vec3 *pos, void *actor);
+extern "C" int _ZN13RaycastGround10DetectClsnEv(RaycastGround *rc);
 extern void Matrix4x3_FromRotationY(void *m, int angle);
 extern void MulVec3Mat4x3(void *src, void *m, void *dst);
 extern void Vec3_Add(Vec3 *out, Vec3 *a, Vec3 *b);
 extern void Vec3_Sub(Vec3 *out, Vec3 *a, Vec3 *b);
 extern int LenVec3(Vec3 *v);
-extern int _ZN4cstd4fdivEii(int a, int b);
+extern "C" int _ZN4cstd4fdivEii(int a, int b);
 extern void Vec3_MulScalar(Vec3 *out, const Vec3 *in, int scale);
 extern void SubVec3(Vec3 *a, Vec3 *b, Vec3 *c);
 extern void func_ov091_02131340(char *t);
 extern void func_020393a4(int *p, int v);
 extern void func_02039394(int *p, int v);
-extern int _ZN8Platform13IsClsnInRangeE5Fix12IiES1_(void *thiz, int a, int b);
-extern void _ZN8Platform19UpdateClsnPosAndRotEv(void *thiz);
-extern void _ZN13RaycastGroundD1Ev(RaycastGround *rc);
+extern "C" int _ZN8Platform13IsClsnInRangeE5Fix12IiES1_(void *thiz, int a, int b);
+extern "C" void _ZN8Platform19UpdateClsnPosAndRotEv(void *thiz);
+extern "C" void _ZN13RaycastGroundD1Ev(RaycastGround *rc);
 
 extern char data_020a0e68[];
 

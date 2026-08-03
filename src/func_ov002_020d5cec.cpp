@@ -6,12 +6,12 @@
 #include "common.h"
 
 extern "C" {
-extern int _ZN6Player7IsStateERNS_5StateE(void* c, void* s);
-extern void _ZN6Player7SetAnimEji5Fix12IiEj(void* c, unsigned int anim, int a, int b, unsigned int d);
-extern void _ZN11RaycastLineC1Ev(void* self);
-extern void _ZN11RaycastLine13SetObjAndLineERK7Vector3S2_P5Actor(void* self, void* a, void* b, void* act);
-extern int _ZN11RaycastLine10DetectClsnEv(void* self);
-extern void _ZN11RaycastLineD1Ev(void* self);
+extern "C" int _ZN6Player7IsStateERNS_5StateE(void* c, void* s);
+extern "C" void _ZN6Player7SetAnimEji5Fix12IiEj(void* c, unsigned int anim, int a, int b, unsigned int d);
+extern "C" void _ZN11RaycastLineC1Ev(void* self);
+extern "C" void _ZN11RaycastLine13SetObjAndLineERK7Vector3S2_P5Actor(void* self, void* a, void* b, void* act);
+extern "C" int _ZN11RaycastLine10DetectClsnEv(void* self);
+extern "C" void _ZN11RaycastLineD1Ev(void* self);
 extern short data_02082214[];
 }
 

@@ -8,7 +8,7 @@ extern "C" {
 extern void Vec3_Asr(struct Vector3* d, struct Vector3* s, int sh);
 extern void Matrix4x3_FromTranslation(void* m, int x, int y, int z);
 extern void Matrix4x3_ApplyInPlaceToRotationXYZExt(void* m, int x, int y, int z);
-extern void _ZN9ModelBase12ApplyOpacityEj(void* m, unsigned int j, int k);
+extern "C" void _ZN9ModelBase12ApplyOpacityEj(void* m, unsigned int j, int k);
 extern struct Matrix4x3 data_020a0e68;
 void func_ov064_02119f1c(char* c){
   struct Vector3 v;

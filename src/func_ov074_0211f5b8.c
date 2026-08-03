@@ -11,29 +11,29 @@ typedef s32 Fix12;
 extern void* data_0209f318;
 
 extern "C" {
-extern int _ZN9Animation8FinishedEv(void* c);
+extern "C" int _ZN9Animation8FinishedEv(void* c);
 extern void func_ov074_02121a4c(char* c, int idx);
 extern void func_ov074_0211f154(char* c);
-extern int _ZN6Player12GetTalkStateEv(void* p);
-extern int _ZN6Player11ShowMessageER9ActorBasejPK7Vector3jj(void* p, void* actor, u32 id, const Vector3* v, u32 a, u32 b);
+extern "C" int _ZN6Player12GetTalkStateEv(void* p);
+extern "C" int _ZN6Player11ShowMessageER9ActorBasejPK7Vector3jj(void* p, void* actor, u32 id, const Vector3* v, u32 a, u32 b);
 extern void func_0201277c(u32 a);
 extern u16 DecIfAbove0_Short(u16* p);
-extern void* _ZN5Actor15FindWithActorIDEjPS_(u32 id, void* prev);
-extern void _ZN5Actor10PoofDustAtERK7Vector3(void* c, const Vector3* v);
-extern void _ZN9ActorBase18MarkForDestructionEv(void* a);
+extern "C" void* _ZN5Actor15FindWithActorIDEjPS_(u32 id, void* prev);
+extern "C" void _ZN5Actor10PoofDustAtERK7Vector3(void* c, const Vector3* v);
+extern "C" void _ZN9ActorBase18MarkForDestructionEv(void* a);
 extern void func_02012694(u32 a, void* b);
 extern int func_ov074_0211f38c(char* c);
 extern int func_ov074_02120474(char* c);
 extern int func_ov074_021204c0(char* c);
-extern int _ZN6Player18HasFinishedTalkingEv(void* p);
-extern void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(u32 id, Fix12 x, Fix12 y, Fix12 z);
+extern "C" int _ZN6Player18HasFinishedTalkingEv(void* p);
+extern "C" void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(u32 id, Fix12 x, Fix12 y, Fix12 z);
 extern void func_ov074_0211f344(void* r6, u8 r5);
 extern void func_ov074_0211f244(char* c);
-extern void _ZN7Message7EndTalkEv();
-extern void _ZN5Sound22StopLoadedMusic_Layer3Ev();
+extern "C" void _ZN7Message7EndTalkEv();
+extern "C" void _ZN5Sound22StopLoadedMusic_Layer3Ev();
 extern void func_02011cfc();
-extern void _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(u32 a, Fix12 f);
-extern void* _ZN5Actor5SpawnEjjRK7Vector3PK10Vector3_16ii(u32 id, u32 kind, const Vector3* v, void* v16, s32 a, s32 b);
+extern "C" void _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(u32 a, Fix12 f);
+extern "C" void* _ZN5Actor5SpawnEjjRK7Vector3PK10Vector3_16ii(u32 id, u32 kind, const Vector3* v, void* v16, s32 a, s32 b);
 }
 
 extern "C" void func_ov074_0211f5b8(char* c)

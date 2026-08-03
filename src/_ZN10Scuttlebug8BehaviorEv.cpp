@@ -6,9 +6,9 @@
 #include "Scuttlebug.h"
 extern "C" {
 extern void DecIfAbove0_Short(void* p);
-extern void _ZN5Actor19MakeVanishLuigiWorkER12CylinderClsn(char* self, void* clsn);
-extern int _ZNK12WithMeshClsn14GetResultFlag1Ev(void* self);
-extern int _ZNK12WithMeshClsn12TouchesWaterEv(void* self);
+extern "C" void _ZN5Actor19MakeVanishLuigiWorkER12CylinderClsn(char* self, void* clsn);
+extern "C" int _ZNK12WithMeshClsn14GetResultFlag1Ev(void* self);
+extern "C" int _ZNK12WithMeshClsn12TouchesWaterEv(void* self);
 extern void func_ov071_0211f524(char* c);
 }
 

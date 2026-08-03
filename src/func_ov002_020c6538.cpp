@@ -1,9 +1,9 @@
 //cpp
 extern "C" {
-extern void _ZN13RaycastGroundC1Ev(void* self);
-extern void _ZN13RaycastGround12SetObjAndPosERK7Vector3P5Actor(void* self, void* pos, void* act);
-extern int _ZN13RaycastGround10DetectClsnEv(void* self);
-extern void _ZN13RaycastGroundD1Ev(void* self);
+extern "C" void _ZN13RaycastGroundC1Ev(void* self);
+extern "C" void _ZN13RaycastGround12SetObjAndPosERK7Vector3P5Actor(void* self, void* pos, void* act);
+extern "C" int _ZN13RaycastGround10DetectClsnEv(void* self);
+extern "C" void _ZN13RaycastGroundD1Ev(void* self);
 int func_ov002_020c6538(char* c) {
     char rg[0x54];
     int v[3];

@@ -7,7 +7,7 @@
 /* dScMgFlower_c::OnYoshiTryEat - recovered from vtable slot identity */
 extern "C" {
 extern int __destroy_arr(void*, int, int, void*);
-extern void _ZN8Particle10SysTrackerD1Ev(void *);
+extern "C" void _ZN8Particle10SysTrackerD1Ev(void *);
 extern void *data_ov006_0213e448[];
 extern void *data_020a0eac;
 void *func_ov006_0212a5c8(char *c);

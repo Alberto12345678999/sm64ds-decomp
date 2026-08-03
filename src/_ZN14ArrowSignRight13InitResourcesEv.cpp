@@ -1,13 +1,13 @@
 //cpp
 extern "C" {
-extern void* _ZN5Model8LoadFileER13SharedFilePtr(void* fp);
-extern void _ZN9ModelBase7SetFileEP8BMD_Fileii(void* self, void* bmd, int a, int b);
-extern void _ZN11ShadowModel10InitCuboidEv(void* self);
-extern void _ZN8Platform21UpdateModelPosAndRotYEv(void* self);
-extern void _ZN8Platform19UpdateClsnPosAndRotEv(void* self);
+extern "C" void* _ZN5Model8LoadFileER13SharedFilePtr(void* fp);
+extern "C" void _ZN9ModelBase7SetFileEP8BMD_Fileii(void* self, void* bmd, int a, int b);
+extern "C" void _ZN11ShadowModel10InitCuboidEv(void* self);
+extern "C" void _ZN8Platform21UpdateModelPosAndRotYEv(void* self);
+extern "C" void _ZN8Platform19UpdateClsnPosAndRotEv(void* self);
 extern void func_ov098_02137c8c(char* t);
-extern void* _ZN12MeshCollider8LoadFileER13SharedFilePtr(void* fp);
-extern void _ZN18MovingMeshCollider7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(void* self, void* kcl, void* mtx, int fix, short s, void* clps);
+extern "C" void* _ZN12MeshCollider8LoadFileER13SharedFilePtr(void* fp);
+extern "C" void _ZN18MovingMeshCollider7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(void* self, void* kcl, void* mtx, int fix, short s, void* clps);
 
 struct Entry { void* a; void* b; void* c; };
 extern struct Entry data_ov098_0213c380[];

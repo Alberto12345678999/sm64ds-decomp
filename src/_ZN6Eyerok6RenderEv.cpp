@@ -3,7 +3,7 @@
 /* recovered: named members + shared header, real C++ method */
 #include "Eyerok.h"
 extern "C" {
-extern void _ZN15TextureSequence6UpdateER15ModelComponents(void* thiz, void* mc);
+extern "C" void _ZN15TextureSequence6UpdateER15ModelComponents(void* thiz, void* mc);
 extern unsigned char data_ov066_0211ae04;
 }
 struct Sub { virtual int g0(); virtual int g1(); virtual int g2(); virtual int g3(); virtual int g4(); virtual int g5(void*); };

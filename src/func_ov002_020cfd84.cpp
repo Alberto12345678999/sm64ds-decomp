@@ -3,14 +3,14 @@
 // Matched byte-for-byte with mwccarm 1.2/sp2p3 (ov002).
 extern "C" {
 struct CRData { int a,b,c,d,e; unsigned short f,g; int h,i,j; };
-extern void _ZN11RaycastLineC1Ev(void* self);
-extern void _ZN10ClsnResultC1Ev(void* self);
-extern void _ZN11RaycastLine13SetObjAndLineERK7Vector3S2_P5Actor(void* self, void* a, void* b, void* act);
-extern int _ZN11RaycastLine10DetectClsnEv(void* self);
-extern int _ZNK10ClsnResult9GetClsnIDEv(void* self);
-extern void* _ZN5Actor10FindWithIDEj(unsigned int id);
-extern void _ZN10ClsnResultD1Ev(void* self);
-extern void _ZN11RaycastLineD1Ev(void* self);
+extern "C" void _ZN11RaycastLineC1Ev(void* self);
+extern "C" void _ZN10ClsnResultC1Ev(void* self);
+extern "C" void _ZN11RaycastLine13SetObjAndLineERK7Vector3S2_P5Actor(void* self, void* a, void* b, void* act);
+extern "C" int _ZN11RaycastLine10DetectClsnEv(void* self);
+extern "C" int _ZNK10ClsnResult9GetClsnIDEv(void* self);
+extern "C" void* _ZN5Actor10FindWithIDEj(unsigned int id);
+extern "C" void _ZN10ClsnResultD1Ev(void* self);
+extern "C" void _ZN11RaycastLineD1Ev(void* self);
 
 int func_ov002_020cfd84(void* actor, void* a, void* b) {
     char rl[0x78];

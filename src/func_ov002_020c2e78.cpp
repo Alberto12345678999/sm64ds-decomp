@@ -1,7 +1,7 @@
 //cpp
 extern "C" {
 extern unsigned char IsPlayerWarping(int a0);
-extern int _ZN6Player7IsStateERNS_5StateE(void *c, void *s);
+extern "C" int _ZN6Player7IsStateERNS_5StateE(void *c, void *s);
 extern void func_02020388(int handle);
 extern char data_ov002_02110154[];
 void func_ov002_020c2e78(char* c){

@@ -5,12 +5,12 @@
 /* recovered: named members + shared header, real C++ method */
 #include "KnockDownPlank.h"
 extern "C" {
-extern int _ZN5Model8LoadFileER13SharedFilePtr(void*);
-extern int _ZN9ModelBase7SetFileEP8BMD_Fileii(void*,int,int,int);
-extern int _ZN8Platform21UpdateModelPosAndRotYEv(void*);
-extern int _ZN8Platform19UpdateClsnPosAndRotEv(void*);
-extern int _ZN12MeshCollider8LoadFileER13SharedFilePtr(void*);
-extern int _ZN18MovingMeshCollider7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(void*,int,void*,int,int,void*);
+extern "C" int _ZN5Model8LoadFileER13SharedFilePtr(void*);
+extern "C" int _ZN9ModelBase7SetFileEP8BMD_Fileii(void*,int,int,int);
+extern "C" int _ZN8Platform21UpdateModelPosAndRotYEv(void*);
+extern "C" int _ZN8Platform19UpdateClsnPosAndRotEv(void*);
+extern "C" int _ZN12MeshCollider8LoadFileER13SharedFilePtr(void*);
+extern "C" int _ZN18MovingMeshCollider7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(void*,int,void*,int,int,void*);
 extern void func_020393d4(int* p, int v);
 extern int func_01ffb0a4(void*);
 extern int data_ov015_02114534[];

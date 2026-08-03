@@ -1,7 +1,7 @@
 //cpp
 extern "C" {
 extern int WM_CheckStateEx(int count, ...);
-extern void _ZN4CP1514FlushDataCacheEjj(unsigned int a, unsigned int b);
+extern "C" void _ZN4CP1514FlushDataCacheEjj(unsigned int a, unsigned int b);
 extern void WM_SetCallbackTable(int i, int val);
 extern char *WM_GetSystemWork(void);
 extern int WM_SendCommand(short a0, unsigned short count);

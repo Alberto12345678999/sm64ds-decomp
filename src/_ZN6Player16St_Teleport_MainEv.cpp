@@ -10,15 +10,15 @@ typedef struct Obj { s16 x, y, z; u16 param; } Obj;
 extern "C" {
 extern Obj* GetTeleportDestObj(int i);
 extern void func_02035860(char* o, void* src);
-extern void _ZN5Sound13PlayCharVoiceEjjRK7Vector3(u32 a, u32 b, char* v);
-extern void _ZN5Sound9PlayBank0EjRK7Vector3(u32 a, char* v);
-extern void _ZN13RaycastGroundC1Ev(char* rc);
-extern void _ZN13RaycastGround12SetObjAndPosERK7Vector3P5Actor(char* rc, Vector3* v, char* actor);
-extern int _ZN13RaycastGround10DetectClsnEv(char* rc);
-extern void _ZN13RaycastGroundD1Ev(char* rc);
-extern void _ZN6Player11ChangeStateERNS_5StateE(char* c, void* s);
+extern "C" void _ZN5Sound13PlayCharVoiceEjjRK7Vector3(u32 a, u32 b, char* v);
+extern "C" void _ZN5Sound9PlayBank0EjRK7Vector3(u32 a, char* v);
+extern "C" void _ZN13RaycastGroundC1Ev(char* rc);
+extern "C" void _ZN13RaycastGround12SetObjAndPosERK7Vector3P5Actor(char* rc, Vector3* v, char* actor);
+extern "C" int _ZN13RaycastGround10DetectClsnEv(char* rc);
+extern "C" void _ZN13RaycastGroundD1Ev(char* rc);
+extern "C" void _ZN6Player11ChangeStateERNS_5StateE(char* c, void* s);
 extern u32 func_02012790(u32 a);
-extern void _ZN3G2x18SetBlendBrightnessEPVtts(volatile u16* p, u16 a, s16 b);
+extern "C" void _ZN3G2x18SetBlendBrightnessEPVtts(volatile u16* p, u16 a, s16 b);
 extern void Player_AdvanceAnims(char* c);
 
 extern char* data_0209f318;

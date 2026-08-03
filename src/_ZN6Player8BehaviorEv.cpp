@@ -22,13 +22,13 @@ struct G_ee90 {
 extern "C" {
 extern u16 DecIfAbove0_Short(u16 *p);
 extern s16 GetAngleToCamera(u8 playerID);
-extern void _ZN12CylinderClsn5ClearEv(void *self);
-extern void _ZN12CylinderClsn6UpdateEv(void *self);
-extern void _ZN25MovingCylinderClsnWithPos21SetPosRelativeToActorERK7Vector3(void *self, const Vector3 *v);
-extern void _ZN5Sound13PlayCharVoiceEjjRK7Vector3(u32 charID, u32 soundID, const Vector3 *pos);
-extern int _ZN6Player11ChangeStateERNS_5StateE(void *self, State *s);
-extern int _ZN6Player7IsStateERNS_5StateE(void *self, State *s);
-extern void _ZN9Animation7AdvanceEv(void *self);
+extern "C" void _ZN12CylinderClsn5ClearEv(void *self);
+extern "C" void _ZN12CylinderClsn6UpdateEv(void *self);
+extern "C" void _ZN25MovingCylinderClsnWithPos21SetPosRelativeToActorERK7Vector3(void *self, const Vector3 *v);
+extern "C" void _ZN5Sound13PlayCharVoiceEjjRK7Vector3(u32 charID, u32 soundID, const Vector3 *pos);
+extern "C" int _ZN6Player11ChangeStateERNS_5StateE(void *self, State *s);
+extern "C" int _ZN6Player7IsStateERNS_5StateE(void *self, State *s);
+extern "C" void _ZN9Animation7AdvanceEv(void *self);
 extern void func_02035684(void *p, s32 v);
 extern void func_0203568c(void *p, s32 v);
 extern void func_ov002_020ce8bc(void *self, s32 arg);

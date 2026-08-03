@@ -32,20 +32,20 @@ extern s8 data_ov066_0211ae04;
 extern s8 data_ov066_0211ae0c;
 extern char _ZN16MeshColliderBase22UpdatePosWithTransformERS_P5ActorR10ClsnResultR7Vector3P10Vector3_16S8_;
 
-extern u8 _ZN5Actor9TrackStarEjj(void* actor, u32 a, u32 b);
-extern void* _ZN5Model8LoadFileER13SharedFilePtr(void* sfp);
-extern int _ZN9ModelBase7SetFileEP8BMD_Fileii(void* thiz, void* bmd, int a, int b);
-extern void _ZN15TextureSequence8LoadFileER13SharedFilePtr(void* sfp);
-extern void _ZN9Animation8LoadFileER13SharedFilePtr(void* sfp);
-extern void _ZN12MeshCollider8LoadFileER13SharedFilePtr(void* sfp);
-extern void _ZN15TextureSequence7PrepareER8BMD_FileR8BTP_File(int bmd, int btp);
-extern void _ZN11ShadowModel12InitCylinderEv(void* thiz);
-extern void _ZN25MovingCylinderClsnWithPos4InitEP5ActorRK7Vector35Fix12IiES6_jj(void* thiz, void* actor, Vector3* v, s32 f1, s32 f2, u32 a, u32 b);
-extern void* _ZN5Actor5SpawnEjjRK7Vector3PK10Vector3_16ii(u32 id, u32 b, Vector3* pos, void* p, int e, int f);
-extern void _ZN18MovingMeshCollider7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(void* thiz, int kcl, void* mtx, s32 fix, s16 s, void* clps);
+extern "C" u8 _ZN5Actor9TrackStarEjj(void* actor, u32 a, u32 b);
+extern "C" void* _ZN5Model8LoadFileER13SharedFilePtr(void* sfp);
+extern "C" int _ZN9ModelBase7SetFileEP8BMD_Fileii(void* thiz, void* bmd, int a, int b);
+extern "C" void _ZN15TextureSequence8LoadFileER13SharedFilePtr(void* sfp);
+extern "C" void _ZN9Animation8LoadFileER13SharedFilePtr(void* sfp);
+extern "C" void _ZN12MeshCollider8LoadFileER13SharedFilePtr(void* sfp);
+extern "C" void _ZN15TextureSequence7PrepareER8BMD_FileR8BTP_File(int bmd, int btp);
+extern "C" void _ZN11ShadowModel12InitCylinderEv(void* thiz);
+extern "C" void _ZN25MovingCylinderClsnWithPos4InitEP5ActorRK7Vector35Fix12IiES6_jj(void* thiz, void* actor, Vector3* v, s32 f1, s32 f2, u32 a, u32 b);
+extern "C" void* _ZN5Actor5SpawnEjjRK7Vector3PK10Vector3_16ii(u32 id, u32 b, Vector3* pos, void* p, int e, int f);
+extern "C" void _ZN18MovingMeshCollider7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(void* thiz, int kcl, void* mtx, s32 fix, s16 s, void* clps);
 extern void func_020393d4(void* p, void* v);
 extern void func_020393c4(void* p, void* v);
-extern void _ZN16MeshColliderBase6EnableEP5Actor(void* thiz, void* actor);
+extern "C" void _ZN16MeshColliderBase6EnableEP5Actor(void* thiz, void* actor);
 
 int Eyerok::InitResources()
 {

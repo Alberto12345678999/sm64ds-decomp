@@ -7,10 +7,10 @@
 extern "C" {
 struct Vec3 { int x, y, z; };
 extern int data_020a0e68;
-extern void _ZN9Animation7AdvanceEv(void *c);
+extern "C" void _ZN9Animation7AdvanceEv(void *c);
 extern void MulVec3Mat4x3(void *in, void *mtx, void *out);
 extern void Vec3_Add(void *out, void *a, void *b);
-extern void _ZN9ModelBase12ApplyOpacityEj(void *self, unsigned int op, int z);
+extern "C" void _ZN9ModelBase12ApplyOpacityEj(void *self, unsigned int op, int z);
 extern void func_ov002_020edca4(void *c);
 }
 

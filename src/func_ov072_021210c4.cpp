@@ -5,16 +5,16 @@
 
 struct RaycastGround { char buf[0x68 - 0x18]; };
 extern "C" {
-extern int _ZN6Player14IsFrontSlidingEv(void*);
-extern int _ZN6Player17LostGrabbedObjectEv(void*);
-extern void* _ZN5Actor11UpdateCarryER6PlayerRK7Vector3(void*, void*, void*);
+extern "C" int _ZN6Player14IsFrontSlidingEv(void*);
+extern "C" int _ZN6Player17LostGrabbedObjectEv(void*);
+extern "C" void* _ZN5Actor11UpdateCarryER6PlayerRK7Vector3(void*, void*, void*);
 extern void Matrix4x3_FromRotationY(void *m, int angle);
-extern void _ZN13RaycastGroundC1Ev(struct RaycastGround *self);
-extern void _ZN13RaycastGround12SetObjAndPosERK7Vector3P5Actor(struct RaycastGround *self, const struct Vector3 *v, void *actor);
-extern int _ZN13RaycastGround10DetectClsnEv(struct RaycastGround *self);
-extern void _ZN5Actor19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
+extern "C" void _ZN13RaycastGroundC1Ev(struct RaycastGround *self);
+extern "C" void _ZN13RaycastGround12SetObjAndPosERK7Vector3P5Actor(struct RaycastGround *self, const struct Vector3 *v, void *actor);
+extern "C" int _ZN13RaycastGround10DetectClsnEv(struct RaycastGround *self);
+extern "C" void _ZN5Actor19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
     void *self, void *shadow, void *mtx, int fix, int t1, unsigned int t2);
-extern void _ZN13RaycastGroundD1Ev(struct RaycastGround *self);
+extern "C" void _ZN13RaycastGroundD1Ev(struct RaycastGround *self);
 extern char data_ov072_02122d3c[];
 
 

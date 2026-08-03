@@ -3,7 +3,7 @@
  * ldr ip, [pc]; bx ip; .word 0x203c758
  */
 extern "C" {
-extern void _ZN4Heap7DestroyEv(void);
+extern "C" void _ZN4Heap7DestroyEv(void);
 void _ZN4Heap8_DestroyEv(void) {
     _ZN4Heap7DestroyEv();
 }

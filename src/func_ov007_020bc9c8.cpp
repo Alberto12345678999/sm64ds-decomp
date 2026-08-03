@@ -4,7 +4,7 @@ extern void func_ov007_020be0dc(void *c);
 extern void DMASyncFillTransfer(int ch, int dst, int val, int n);
 extern int func_ov007_020c0b20(int *a, int b, int cc);
 extern void func_ov007_020be3bc(void);
-extern void _ZN4CP1527FlushAndInvalidateDataCacheEjj(unsigned int addr, unsigned int len);
+extern "C" void _ZN4CP1527FlushAndInvalidateDataCacheEjj(unsigned int addr, unsigned int len);
 
 struct O {
   int f0;     /* 0x0 */

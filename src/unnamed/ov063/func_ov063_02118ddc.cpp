@@ -4,7 +4,7 @@
 #include "common.h"
 extern "C" {
 
-extern int _ZN5Actor5SpawnEjjRK7Vector3PK10Vector3_16ii(unsigned int a, unsigned int b, const struct Vector3* v, const void* w, int s0, int s1);
+extern "C" int _ZN5Actor5SpawnEjjRK7Vector3PK10Vector3_16ii(unsigned int a, unsigned int b, const struct Vector3* v, const void* w, int s0, int s1);
 extern int func_02012694(int a, char* p);
 void func_ov063_02118ddc(char* c){
   struct Vector3 v;

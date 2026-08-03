@@ -3,8 +3,8 @@ extern "C" {
 extern void func_0205583c(void);
 extern void func_020554bc(void);
 extern void func_020556d0(void);
-extern void _ZN3G3X13SetClearColorEtiiib(unsigned short t, int a, int b, int c, int d);
-extern void _ZN3G3i13PerspectiveW_E5Fix12IiES1_S1_S1_S1_S1_bP9Matrix4x3(
+extern "C" void _ZN3G3X13SetClearColorEtiiib(unsigned short t, int a, int b, int c, int d);
+extern "C" void _ZN3G3i13PerspectiveW_E5Fix12IiES1_S1_S1_S1_S1_bP9Matrix4x3(
     int a, int b, int c, int d, int e, int f, int g, void *h);
 
 void Initialise3dGraphics(int arg) {

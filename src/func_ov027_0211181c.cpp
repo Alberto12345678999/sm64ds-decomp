@@ -9,7 +9,7 @@
 /* daIDonketu_c::InitResources - recovered from vtable slot identity */
 extern "C" {
 extern int func_ov064_02116ec0(void*);
-extern int _ZN5Actor9TrackStarEjj(void*, unsigned int, unsigned int);
+extern "C" int _ZN5Actor9TrackStarEjj(void*, unsigned int, unsigned int);
 int func_ov027_0211181c(char* c){
     struct daIDonketu_c *self = (struct daIDonketu_c *)(void *)c;
   self->unk_330 = (int)data_ov027_021138f4;

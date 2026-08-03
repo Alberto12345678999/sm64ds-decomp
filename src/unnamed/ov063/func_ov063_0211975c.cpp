@@ -3,8 +3,8 @@
 extern "C" int func_ov063_0211a3d0(void* p);
 extern "C" void func_0201267c(int a, char* b);
 extern "C" {
-extern char* _ZN8CapEnemy15RespawnIfHasCapEv(void* self);
-extern void _ZN5Actor24KillAndTrackInDeathTableEv(void* self);
+extern "C" char* _ZN8CapEnemy15RespawnIfHasCapEv(void* self);
+extern "C" void _ZN5Actor24KillAndTrackInDeathTableEv(void* self);
 }
 
 extern "C" void func_ov063_0211975c(char* self) {

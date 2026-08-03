@@ -3,7 +3,7 @@
 /* recovered: named members + shared header, real C++ method */
 #include "Player.h"
 extern "C" {
-extern void _ZN5Sound13PlayCharVoiceEjjRK7Vector3(unsigned, unsigned, void*);
+extern "C" void _ZN5Sound13PlayCharVoiceEjjRK7Vector3(unsigned, unsigned, void*);
 }
 
 int Player::St_MetalWaterGround_Init()

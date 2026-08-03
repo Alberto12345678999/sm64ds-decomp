@@ -1,14 +1,14 @@
 //cpp
 extern "C" {
-extern void _Z14ApproachLinearRsss(short* p, short a, short b);
-extern void _ZN5Actor9UpdatePosEP12CylinderClsn(void* a, void* b);
+extern "C" void _Z14ApproachLinearRsss(short* p, short a, short b);
+extern "C" void _ZN5Actor9UpdatePosEP12CylinderClsn(void* a, void* b);
 extern int func_ov081_02126950(void* self, void* clsn);
 extern void func_ov081_02126758(void* c);
-extern void _ZN9Animation7AdvanceEv(void* p);
+extern "C" void _ZN9Animation7AdvanceEv(void* p);
 extern unsigned char DecIfAbove0_Byte(unsigned char* p);
 extern void func_ov081_021265c8(void* c);
-extern void _ZN12CylinderClsn5ClearEv(void* p);
-extern void _ZN12CylinderClsn6UpdateEv(void* p);
+extern "C" void _ZN12CylinderClsn5ClearEv(void* p);
+extern "C" void _ZN12CylinderClsn6UpdateEv(void* p);
 int func_ov081_02127440(char* c){
   _Z14ApproachLinearRsss((short*)(c+0x8e), *(short*)(c+0x300+0xee), 0x2bc);
   *(short*)(c+0x94) = *(short*)(c+0x8e);

@@ -3,11 +3,11 @@ extern "C" {
 struct Vector3 { int x, y, z; };
 
 extern short data_02082214[];
-extern void _ZN5Actor10EarthquakeERK7Vector35Fix12IiE(void *self, struct Vector3 *v, int f);
-extern void _ZN5Sound9PlayBank3EjRK7Vector3(unsigned int id, struct Vector3 *v);
+extern "C" void _ZN5Actor10EarthquakeERK7Vector35Fix12IiE(void *self, struct Vector3 *v, int f);
+extern "C" void _ZN5Sound9PlayBank3EjRK7Vector3(unsigned int id, struct Vector3 *v);
 extern void func_ov015_0211166c(char *t);
-extern int _ZN8Platform13IsClsnInRangeE5Fix12IiES1_(void *self, int a, int b);
-extern void _ZN8Platform19UpdateClsnPosAndRotEv(void *self);
+extern "C" int _ZN8Platform13IsClsnInRangeE5Fix12IiES1_(void *self, int a, int b);
+extern "C" void _ZN8Platform19UpdateClsnPosAndRotEv(void *self);
 extern int func_ov015_021114f0(char *c);
 
 int _ZN13PoleBillboard8BehaviorEv(char *c)

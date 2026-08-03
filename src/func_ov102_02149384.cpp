@@ -5,7 +5,7 @@
 extern "C" {
 
 extern void func_ov102_02149684(void*,void*);
-extern void* _ZN5Actor5SpawnEjjRK7Vector3PK10Vector3_16ii(unsigned int,unsigned int,Vector3*,void*,int,int);
+extern "C" void* _ZN5Actor5SpawnEjjRK7Vector3PK10Vector3_16ii(unsigned int,unsigned int,Vector3*,void*,int,int);
 void* func_ov102_02149384(void* c){
   Vector3 v;
   func_ov102_02149684(&v, c);

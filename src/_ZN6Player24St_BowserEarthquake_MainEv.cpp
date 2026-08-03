@@ -2,9 +2,9 @@
 // @symbol _ZN6Player24St_BowserEarthquake_MainEv
 /* recovered: named members + shared header, real C++ method */
 #include "Player.h"
-extern void _Z14ApproachLinearRiii(int* p, int value, int speed);
-extern int _ZN6Player12FinishedAnimEv(void* c);
-extern void _ZN6Player11ChangeStateERNS_5StateE(void* c, void* state);
+extern "C" void _Z14ApproachLinearRiii(int* p, int value, int speed);
+extern "C" int _ZN6Player12FinishedAnimEv(void* c);
+extern "C" void _ZN6Player11ChangeStateERNS_5StateE(void* c, void* state);
 extern void Player_AdvanceAnims(char* self);
 extern short data_02082214[];
 extern char data_ov002_0211013c[];

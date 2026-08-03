@@ -1,6 +1,6 @@
 //cpp
 extern "C" {
-extern void _ZN18NestedHeapIterator6RemoveEP13HeapAllocator(void* self, void* node);
+extern "C" void _ZN18NestedHeapIterator6RemoveEP13HeapAllocator(void* self, void* node);
 extern void func_0204f460(void* node, void* self);
 extern void func_0204f400(void* self);
 extern char data_020a4d60[];

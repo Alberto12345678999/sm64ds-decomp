@@ -4,8 +4,8 @@
 #include "Player.h"
 typedef int Fix12i;
 extern int Player_ReleaseHeldActor(void*);
-extern int _ZN6Player7SetAnimEji5Fix12IiEj(void*, unsigned int, int, Fix12i, unsigned int);
-extern int _ZN5Sound9PlayBank0EjRK7Vector3(unsigned int, void*);
+extern "C" int _ZN6Player7SetAnimEji5Fix12IiEj(void*, unsigned int, int, Fix12i, unsigned int);
+extern "C" int _ZN5Sound9PlayBank0EjRK7Vector3(unsigned int, void*);
 
 int Player::St_GroundPound_Init()
 {

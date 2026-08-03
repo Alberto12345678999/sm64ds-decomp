@@ -1,6 +1,6 @@
 //cpp
 extern "C" {
-extern int _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void*,void*,int,int,unsigned int);
+extern "C" int _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void*,void*,int,int,unsigned int);
 extern int data_ov089_02132880[];
 void func_ov089_0213115c(char *c, int i){
     if(i==0 || i>=5){

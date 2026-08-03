@@ -26,11 +26,11 @@ extern char* data_ov006_02141a40;
 extern void* data_0209f5c0;
 
 extern int func_020179b4(SharedFilePtr* f, void* model, int a);
-extern void* _ZN9Animation8LoadFileER13SharedFilePtr(SharedFilePtr* f);
+extern "C" void* _ZN9Animation8LoadFileER13SharedFilePtr(SharedFilePtr* f);
 extern void func_ov006_020bfec0(char* p, void* q, short* s);
 extern void func_02016a14(void* self, int a);
 extern void func_02016a04(void* self, int a);
-extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void* self, void* file, int a, int b, unsigned c);
+extern "C" void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void* self, void* file, int a, int b, unsigned c);
 extern void func_ov006_020c8658(void* c);
 
 int func_ov006_020c87d0(char* c)

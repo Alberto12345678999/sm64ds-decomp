@@ -1,8 +1,8 @@
 //cpp
 extern "C" {
-extern void _ZN5Actor9UpdatePosEP12CylinderClsn(void *self, void *clsn);
+extern "C" void _ZN5Actor9UpdatePosEP12CylinderClsn(void *self, void *clsn);
 extern void func_02038414(void *p);
-extern int _ZNK12WithMeshClsn13JustHitGroundEv(void *self);
+extern "C" int _ZNK12WithMeshClsn13JustHitGroundEv(void *self);
 extern int DecIfAbove0_Byte(void *p);
 extern void func_ov096_0213585c(void *t);
 int func_ov096_021360c4(char *c) {

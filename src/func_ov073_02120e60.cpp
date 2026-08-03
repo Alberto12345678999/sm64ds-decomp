@@ -1,6 +1,6 @@
 //cpp
 extern "C" {
-extern int _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(char* self, void* bca, int a, int b, int fix, unsigned short t);
+extern "C" int _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(char* self, void* bca, int a, int b, int fix, unsigned short t);
 extern short Vec3_HorzAngle(void* a, void* b);
 extern int data_ov073_02123288[];
 int func_ov073_02120e60(char* c){

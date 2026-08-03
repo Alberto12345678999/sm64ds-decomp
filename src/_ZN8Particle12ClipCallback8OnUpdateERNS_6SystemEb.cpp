@@ -7,7 +7,7 @@ extern int data_0209f43c;
 extern int data_0209b3ec;
 extern int data_0209b41c;
 
-extern int _ZN7Clipper13Func_02015560ER9Matrix4x3R7Vector35Fix12IiES3_(void *thiz, void *mat, Vector3 *srcVec, int scale, Vector3 *dstVec);
+extern "C" int _ZN7Clipper13Func_02015560ER9Matrix4x3R7Vector35Fix12IiES3_(void *thiz, void *mat, Vector3 *srcVec, int scale, Vector3 *dstVec);
 extern void MulVec3Mat4x3(Vector3 *v, void *m, Vector3 *dst);
 
 int _ZN8Particle12ClipCallback8OnUpdateERNS_6SystemEb(char *self, char *sys, int isFlag)

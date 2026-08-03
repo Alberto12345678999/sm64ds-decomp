@@ -3,8 +3,8 @@
 /* recovered: named members + shared header, real C++ method */
 #include "SlideDecorationSilverStar.h"
 extern "C" {
-extern void* _ZN5Model8LoadFileER13SharedFilePtr(void*);
-extern void _ZN9ModelBase7SetFileEP8BMD_Fileii(void*, void*, int, int);
+extern "C" void* _ZN5Model8LoadFileER13SharedFilePtr(void*);
+extern "C" void _ZN9ModelBase7SetFileEP8BMD_Fileii(void*, void*, int, int);
 extern void func_ov044_02111214(char*);
 extern int* data_ov031_02111424[];
 }

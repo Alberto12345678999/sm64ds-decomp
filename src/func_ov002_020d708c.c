@@ -22,7 +22,7 @@ struct VObj {
 };
 
 extern "C" {
-extern char* _ZN5Actor4NextEPKS_(const char* a);
+extern "C" char* _ZN5Actor4NextEPKS_(const char* a);
 extern int Vec3_Dist(const void* a, const void* b);
 extern short Vec3_HorzAngle(const void* a, const void* b);
 extern short Vec3_VertAngle(const void* a, const void* b);

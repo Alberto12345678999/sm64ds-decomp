@@ -3,8 +3,8 @@
 /* recovered: named members + shared header, real C++ method */
 #include "Player.h"
 extern "C" {
-extern int _ZN6Player7IsStateERNS_5StateE(void*,void*);
-extern int _ZN6Player17SetNoControlStateEhih(void*,unsigned char,int,unsigned char);
+extern "C" int _ZN6Player7IsStateERNS_5StateE(void*,void*);
+extern "C" int _ZN6Player17SetNoControlStateEhih(void*,unsigned char,int,unsigned char);
 extern int data_ov002_0211013c[];
 extern int _ZN6Player7ST_WAITE[];
 extern int data_ov002_0211043c[];

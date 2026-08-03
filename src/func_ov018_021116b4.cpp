@@ -7,17 +7,17 @@
 /* daObjSm_Lift_c::InitResources - recovered from vtable slot identity */
 struct PathPtr { char b[8]; };
 extern "C" {
-extern void* _ZN5Model8LoadFileER13SharedFilePtr(void* sfp);
-extern void _ZN9ModelBase7SetFileEP8BMD_Fileii(void* th, void* f, int a, int b);
+extern "C" void* _ZN5Model8LoadFileER13SharedFilePtr(void* sfp);
+extern "C" void _ZN9ModelBase7SetFileEP8BMD_Fileii(void* th, void* f, int a, int b);
 extern void func_ov018_02111278(void* c);
-extern void _ZN8Platform19UpdateClsnPosAndRotEv(void* c);
-extern void* _ZN12MeshCollider8LoadFileER13SharedFilePtr(void* sfp);
-extern void _ZN18MovingMeshCollider7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(void* th, void* kf, void* mtx, int fx, short s, void* clps);
+extern "C" void _ZN8Platform19UpdateClsnPosAndRotEv(void* c);
+extern "C" void* _ZN12MeshCollider8LoadFileER13SharedFilePtr(void* sfp);
+extern "C" void _ZN18MovingMeshCollider7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(void* th, void* kf, void* mtx, int fx, short s, void* clps);
 extern void func_020393d4(int* p, int v);
 extern void func_020393c4(int* p, int v);
-extern void _ZN7PathPtrC1Ev(PathPtr* p);
-extern void _ZN7PathPtr6FromIDEj(PathPtr* p, unsigned int id);
-extern int _ZNK7PathPtr8NumNodesEv(PathPtr* p);
+extern "C" void _ZN7PathPtrC1Ev(PathPtr* p);
+extern "C" void _ZN7PathPtr6FromIDEj(PathPtr* p, unsigned int id);
+extern "C" int _ZNK7PathPtr8NumNodesEv(PathPtr* p);
 extern int data_ov018_02113bc8[];
 extern int data_ov018_02113bc0[];
 extern int data_ov018_02112f48[];

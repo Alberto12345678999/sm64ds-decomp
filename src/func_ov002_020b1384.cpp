@@ -1,9 +1,9 @@
 //cpp
 extern "C" {
-extern int _ZNK12WithMeshClsn8IsOnWallEv(void*);
-extern int _ZNK12WithMeshClsn13GetWallResultEv(void*);
-extern void _ZNK11SurfaceInfo12CopyNormalToER7Vector3(void*, void*);
-extern short _ZN5Actor12ReflectAngleE5Fix12IiES1_s(void*, int, int, short);
+extern "C" int _ZNK12WithMeshClsn8IsOnWallEv(void*);
+extern "C" int _ZNK12WithMeshClsn13GetWallResultEv(void*);
+extern "C" void _ZNK11SurfaceInfo12CopyNormalToER7Vector3(void*, void*);
+extern "C" short _ZN5Actor12ReflectAngleE5Fix12IiES1_s(void*, int, int, short);
 void func_ov002_020b1384(char* c){
   if(_ZNK12WithMeshClsn8IsOnWallEv(c+0x1ac)==0) return;
   int v[3];

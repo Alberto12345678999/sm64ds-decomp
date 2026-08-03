@@ -8,19 +8,19 @@
 /* recovered: named members + shared header, real C++ method */
 #include "Player.h"
 extern "C" {
-extern void* _ZN5Actor10FindWithIDEj(u32 id);
+extern "C" void* _ZN5Actor10FindWithIDEj(u32 id);
 extern void func_ov002_020eeca8(void* c, int arg);
-extern int _ZNK12WithMeshClsn8IsOnWallEv(void* c);
-extern int _ZN4cstd5atan2E5Fix12IiES1_(int a, int b);
+extern "C" int _ZNK12WithMeshClsn8IsOnWallEv(void* c);
+extern "C" int _ZN4cstd5atan2E5Fix12IiES1_(int a, int b);
 extern int func_02037e58(u32* p);
 extern void ApproachAngle(short* cur, short target, int divisor, int band, int maxStep);
-extern void _Z14ApproachLinearRiii(int* a, int b, int c);
+extern "C" void _Z14ApproachLinearRiii(int* a, int b, int c);
 extern void func_ov002_020e25f0(char* c, int a);
-extern void _ZN6Player11ChangeStateERNS_5StateE(void* c, void* s);
+extern "C" void _ZN6Player11ChangeStateERNS_5StateE(void* c, void* s);
 extern void func_ov002_020e28d4(char* c, int a, int b);
-extern int _ZN6Player12FinishedAnimEv(void* c);
-extern int _ZN6Player6IsAnimEj(void* c, u32 anim);
-extern void _ZN6Player7SetAnimEji5Fix12IiEj(void* c, u32 anim, int a, Fix12i b, u32 d);
+extern "C" int _ZN6Player12FinishedAnimEv(void* c);
+extern "C" int _ZN6Player6IsAnimEj(void* c, u32 anim);
+extern "C" void _ZN6Player7SetAnimEji5Fix12IiEj(void* c, u32 anim, int a, Fix12i b, u32 d);
 extern void Player_AdvanceAnims(char* c);
 
 extern u8 data_020a0e40;

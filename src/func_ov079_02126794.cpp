@@ -1,8 +1,8 @@
 //cpp
 extern "C" {
-extern void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int id, int a, int b, int c);
+extern "C" void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int id, int a, int b, int c);
 extern void func_02012694(int a, void* p);
-extern void _ZN9ActorBase18MarkForDestructionEv(void* a);
+extern "C" void _ZN9ActorBase18MarkForDestructionEv(void* a);
 void func_ov079_02126794(char* c) {
   if (*(unsigned short*)(c + 0x100) == 0) {
     *(int*)(c + 0x98) = -0x1e000;

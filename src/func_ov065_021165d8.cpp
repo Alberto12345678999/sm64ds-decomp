@@ -6,7 +6,7 @@
 #include "common.h"
 extern "C" {
 
-extern char* _ZN5Actor22ClosestNonVanishPlayerEv(void);
+extern "C" char* _ZN5Actor22ClosestNonVanishPlayerEv(void);
 extern short Vec3_HorzAngle(const void*,const struct Vector3*);
 extern short Vec3_VertAngle(const void*,const struct Vector3*);
 extern int Vec3_Dist(const void*,const struct Vector3*);

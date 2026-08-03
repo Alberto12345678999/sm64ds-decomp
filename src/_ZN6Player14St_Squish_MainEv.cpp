@@ -12,9 +12,9 @@ extern char data_ov002_021101b4;
 extern "C" {
 extern int func_ov002_020d91e0(char *c, int a, int b);
 extern void func_ov002_020db8bc(char *c, int a);
-extern void _ZN5Sound13PlayCharVoiceEjjRK7Vector3(unsigned int a, unsigned int b, char *v);
-extern void _ZN6Player11ChangeStateERNS_5StateE(char *c, char *s);
-extern int _ZN6Player9GetHealthEv(char *c);
+extern "C" void _ZN5Sound13PlayCharVoiceEjjRK7Vector3(unsigned int a, unsigned int b, char *v);
+extern "C" void _ZN6Player11ChangeStateERNS_5StateE(char *c, char *s);
+extern "C" int _ZN6Player9GetHealthEv(char *c);
 }
 
 int Player::St_Squish_Main()

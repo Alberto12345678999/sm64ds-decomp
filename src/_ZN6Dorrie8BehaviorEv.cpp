@@ -4,13 +4,13 @@ struct Klass; typedef void (Klass::*PMF)();
 struct M { char pad[8]; PMF pmf; };
 
 extern "C" {
-extern void _Z14ApproachLinearRiii(int* a, int b, int c);
+extern "C" void _Z14ApproachLinearRiii(int* a, int b, int c);
 extern int Vec3_HorzDist(void* a, void* b);
 extern short Vec3_HorzAngle(void* a, void* b);
 extern int AngleDiff(int a, int b);
-extern void _ZN5Actor9UpdatePosEP12CylinderClsn(void* c, void* p);
+extern "C" void _ZN5Actor9UpdatePosEP12CylinderClsn(void* c, void* p);
 extern void WithMeshClsn_UpdateContinuous_Veneer(void* p);
-extern void _ZN9Animation7AdvanceEv(void* p);
+extern "C" void _ZN9Animation7AdvanceEv(void* p);
 extern void func_ov065_02118cc4(char* c);
 extern void func_ov065_02118838(char* c);
 extern void func_ov065_02118248(char* c);

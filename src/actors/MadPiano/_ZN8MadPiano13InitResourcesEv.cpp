@@ -4,16 +4,16 @@
 #include "decl_common.h"
 /* recovered: named members + shared header, real C++ method */
 #include "MadPiano.h"
-extern void *_ZN5Model8LoadFileER13SharedFilePtr(void *);
-extern void _ZN9ModelBase7SetFileEP8BMD_Fileii(void *, void *, int, int);
-extern void _ZN11ShadowModel10InitCuboidEv(void *);
-extern void _ZN11ShadowModel12InitCylinderEv(void *);
-extern void *_ZN9Animation8LoadFileER13SharedFilePtr(void *);
-extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *, void *, int, int, unsigned int);
-extern void _ZN12WithMeshClsn4InitEP5Actor5Fix12IiES3_P10Vector3_16S5_(void *, void *, int, int, void *, int);
-extern void _ZN25MovingCylinderClsnWithPos4InitEP5ActorRK7Vector35Fix12IiES6_jj(void *, void *, void *, int, int, unsigned int, unsigned int);
-extern void *_ZN12MeshCollider8LoadFileER13SharedFilePtr(void *);
-extern void _ZN18MovingMeshCollider7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(void *, void *, void *, int, short, void *);
+extern "C" void *_ZN5Model8LoadFileER13SharedFilePtr(void *);
+extern "C" void _ZN9ModelBase7SetFileEP8BMD_Fileii(void *, void *, int, int);
+extern "C" void _ZN11ShadowModel10InitCuboidEv(void *);
+extern "C" void _ZN11ShadowModel12InitCylinderEv(void *);
+extern "C" void *_ZN9Animation8LoadFileER13SharedFilePtr(void *);
+extern "C" void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *, void *, int, int, unsigned int);
+extern "C" void _ZN12WithMeshClsn4InitEP5Actor5Fix12IiES3_P10Vector3_16S5_(void *, void *, int, int, void *, int);
+extern "C" void _ZN25MovingCylinderClsnWithPos4InitEP5ActorRK7Vector35Fix12IiES6_jj(void *, void *, void *, int, int, unsigned int, unsigned int);
+extern "C" void *_ZN12MeshCollider8LoadFileER13SharedFilePtr(void *);
+extern "C" void _ZN18MovingMeshCollider7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(void *, void *, void *, int, short, void *);
 extern void func_ov063_0211d5f4(char *);
 
 

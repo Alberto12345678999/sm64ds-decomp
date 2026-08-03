@@ -33,8 +33,6 @@ extern "C" {
     void func_02020028(int a, int b);
     void func_ov075_02116818(char* c);
     void func_ov075_0211601c(char* c, int a, int b);
-    void _ZN5Sound16LoadInitialGroupEi(int a);
-    void _ZN5Sound22LoadAndSetMusic_Layer1Ei(int a);
 }
 
 extern u8 data_0209d45c;

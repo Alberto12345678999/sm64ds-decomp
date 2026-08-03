@@ -5,7 +5,7 @@
 /* recovered: named members + shared header, real C++ method */
 #include "Lakitu.h"
 extern "C" {
-extern int _ZN5Actor22IsTooFarAwayFromPlayerE5Fix12IiE(void*, int);
+extern "C" int _ZN5Actor22IsTooFarAwayFromPlayerE5Fix12IiE(void*, int);
 extern int func_ov077_02123d40(void*);
 }
 

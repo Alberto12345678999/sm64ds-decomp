@@ -1,7 +1,7 @@
 //cpp
 extern "C" {
 extern void func_ov006_02100734(char* c, int idx);
-extern unsigned _ZN3G2S13GetBG2CharPtrEv(void);
+extern "C" unsigned _ZN3G2S13GetBG2CharPtrEv(void);
 extern void MultiStore16(unsigned short val, char* dst, int nbytes);
 extern void func_ov006_02102dbc(void* c);
 void func_ov006_0210258c(char* c) {

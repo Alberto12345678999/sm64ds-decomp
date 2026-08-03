@@ -6,8 +6,8 @@
 struct Actor;
 
 extern "C" {
-extern void _ZN6Camera9SetLookAtERK7Vector3(void* cam, const Vector3* v);
-extern void _ZN6Camera6SetPosERK7Vector3(void* cam, const Vector3* v);
+extern "C" void _ZN6Camera9SetLookAtERK7Vector3(void* cam, const Vector3* v);
+extern "C" void _ZN6Camera6SetPosERK7Vector3(void* cam, const Vector3* v);
 extern int Vec3_Dist(const Vector3* a, const Vector3* b);
 extern unsigned char IsAreaShowing(int idx);
 extern short Vec3_HorzAngle(const Vector3* a, const Vector3* b);

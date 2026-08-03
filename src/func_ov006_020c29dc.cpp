@@ -3,8 +3,8 @@ extern "C" {
 extern void func_02016a04(void *p, int a);
 extern void func_0203cd80(int *m, short angle);
 extern void func_0203ccd4(int *m, short angle);
-extern void _ZN15TextureSequence6UpdateER15ModelComponents(void *ts, void *mc);
-extern void _ZN18TextureTransformer6UpdateER15ModelComponents(void *tt, void *mc);
+extern "C" void _ZN15TextureSequence6UpdateER15ModelComponents(void *ts, void *mc);
+extern "C" void _ZN18TextureTransformer6UpdateER15ModelComponents(void *tt, void *mc);
 extern char data_ov006_0212b8fc;
 }
 struct Obj {

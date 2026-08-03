@@ -12,13 +12,13 @@ extern "C" {
 extern s32 GetGameLanguage(void);
 extern int LoadFile(int handle);
 extern void DecompressLZ16(void *src, void *dst);
-extern void _ZN2GX11LoadOBJPlttEPKvjj(void const *src, unsigned int offset, unsigned int size);
-extern s32 _ZN4cstd4fdivEii(s32 a, s32 b);
+extern "C" void _ZN2GX11LoadOBJPlttEPKvjj(void const *src, unsigned int offset, unsigned int size);
+extern "C" s32 _ZN4cstd4fdivEii(s32 a, s32 b);
 extern void Camera_UpdateMatrices(void *cam);
 extern int func_ov006_020c4684(char *ptr, int n);
 extern int func_ov006_020c7574(char *base, int count);
-extern void *_ZN5Model8LoadFileER13SharedFilePtr(void *fp);
-extern int _ZN9ModelBase7SetFileEP8BMD_Fileii(void *self, void *file, int b, int c);
+extern "C" void *_ZN5Model8LoadFileER13SharedFilePtr(void *fp);
+extern "C" int _ZN9ModelBase7SetFileEP8BMD_Fileii(void *self, void *file, int b, int c);
 extern void Matrix4x3_FromTranslation(void *m, int x, int y, int z);
 
 extern u8 data_0209d45c;

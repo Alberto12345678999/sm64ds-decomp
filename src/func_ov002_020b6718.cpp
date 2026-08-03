@@ -1,8 +1,8 @@
 //cpp
 extern "C" {
-extern void _ZN8Platform21UpdateModelPosAndRotYEv(void*);
-extern int _ZN8Platform21IsClsnInRangeOnScreenE5Fix12IiES1_(void*, int, int);
-extern void _ZN8Platform19UpdateClsnPosAndRotEv(void*);
+extern "C" void _ZN8Platform21UpdateModelPosAndRotYEv(void*);
+extern "C" int _ZN8Platform21IsClsnInRangeOnScreenE5Fix12IiES1_(void*, int, int);
+extern "C" void _ZN8Platform19UpdateClsnPosAndRotEv(void*);
 int func_ov002_020b6718(char* c) {
     short* p=(short*)(((long long)(int)(c+0x94)));
     *p = *p + *(short*)(c+0x96);

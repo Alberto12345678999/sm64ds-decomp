@@ -3,7 +3,7 @@
  * ldr ip, [pc]; bx ip; .word 0x2043b2c
  */
 extern "C" {
-extern void _ZN9ActorBase21AfterCleanupResourcesEj(void);
+extern "C" void _ZN9ActorBase21AfterCleanupResourcesEj(void);
 void _ZN5Actor21AfterCleanupResourcesEj(void) {
     _ZN9ActorBase21AfterCleanupResourcesEj();
 }

@@ -6,7 +6,7 @@ extern "C" {
 extern void Vec3_Asr(void* dst, void* src, int n);
 extern void Matrix4x3_FromTranslation(void* m, int x, int y, int z);
 extern void Matrix4x3_ApplyInPlaceToRotationXYZExt(void* m, short a, short b, short c);
-extern int _ZN5Actor19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(void* thiz, void* sm, void* m, int rad, int h, unsigned u);
+extern "C" int _ZN5Actor19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(void* thiz, void* sm, void* m, int rad, int h, unsigned u);
 
 extern struct Matrix4x3 data_020a0e68;
 int func_ov021_021122fc(char* c){

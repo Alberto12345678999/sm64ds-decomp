@@ -1,6 +1,6 @@
 //cpp
 extern "C" {
-extern void _Z14ApproachLinearRiii(int& x, int target, int step);
+extern "C" void _Z14ApproachLinearRiii(int& x, int target, int step);
 extern int RandomIntInternal(int* seed);
 extern void func_ov090_02131e00(void* c, void* p);
 extern int ApproachAngle(short* angle, int target, int invFactor, int maxDelta, int minDelta);

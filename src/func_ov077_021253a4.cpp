@@ -4,16 +4,16 @@
 #include "common.h"
 
 extern "C" {
-extern void _ZN9Animation7AdvanceEv(void*);
-extern void _ZN5Actor9UpdatePosEP12CylinderClsn(void*, void*);
+extern "C" void _ZN9Animation7AdvanceEv(void*);
+extern "C" void _ZN5Actor9UpdatePosEP12CylinderClsn(void*, void*);
 extern void WithMeshClsn_UpdateContinuous_Veneer(void*);
 extern void WithMeshClsn_UpdateDiscreteNoLava_veneer(void*);
-extern int _ZNK12WithMeshClsn13JustHitGroundEv(void*);
+extern "C" int _ZNK12WithMeshClsn13JustHitGroundEv(void*);
 extern unsigned char DecIfAbove0_Byte(unsigned char* p);
-extern void _ZN5Actor10SpawnCoinsERK7Vector3j5Fix12IiEs(void*, const Vector3*, unsigned int, int, short);
-extern void _ZN5Actor8PoofDustEv(void*);
+extern "C" void _ZN5Actor10SpawnCoinsERK7Vector3j5Fix12IiEs(void*, const Vector3*, unsigned int, int, short);
+extern "C" void _ZN5Actor8PoofDustEv(void*);
 extern void func_02012694(int a, void* b);
-extern void _ZN9ActorBase18MarkForDestructionEv(void*);
+extern "C" void _ZN9ActorBase18MarkForDestructionEv(void*);
 
 int func_ov077_021253a4(char* c)
 {

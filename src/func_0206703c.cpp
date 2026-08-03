@@ -1,8 +1,8 @@
 //cpp
 extern "C" {
 extern int data_020a9db8;
-extern int _ZN3IRQ7DisableEv(void);
-extern void _ZN3IRQ7RestoreEj(int saved);
+extern "C" int _ZN3IRQ7DisableEv(void);
+extern "C" void _ZN3IRQ7RestoreEj(int saved);
 extern int func_02065edc(unsigned int x);
 
 int func_0206703c(unsigned int arg0, int sel) {

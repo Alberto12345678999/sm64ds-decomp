@@ -9,8 +9,8 @@ typedef void (C::*PMF)();
 struct State { char pad[8]; PMF fn; };
 extern "C" {
 extern unsigned short DecIfAbove0_Short(unsigned short* p);
-extern void _ZN5Actor9UpdatePosEP12CylinderClsn(void*, void*);
-extern void _ZN9Animation7AdvanceEv(void*);
+extern "C" void _ZN5Actor9UpdatePosEP12CylinderClsn(void*, void*);
+extern "C" void _ZN9Animation7AdvanceEv(void*);
 }
 extern State data_ov085_021307d0;
 extern State data_ov085_021307e0;

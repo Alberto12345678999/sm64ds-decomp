@@ -8,9 +8,9 @@
 extern "C" {
 extern int func_ov002_020eeca8(void*, void*);
 extern int func_ov002_020e28d4(void*, int, int);
-extern int _ZN6Player11ChangeStateERNS_5StateE(void*, void*);
-extern u32 _ZNK6Player14GetBodyModelIDEjb(void*, u32, int);
-extern void _ZN5Sound9PlayBank0EjRK7Vector3(u32, void*);
+extern "C" int _ZN6Player11ChangeStateERNS_5StateE(void*, void*);
+extern "C" u32 _ZNK6Player14GetBodyModelIDEjb(void*, u32, int);
+extern "C" void _ZN5Sound9PlayBank0EjRK7Vector3(u32, void*);
 extern int Player_AdvanceAnims(void*);
 
 extern char data_ov002_02110424[];

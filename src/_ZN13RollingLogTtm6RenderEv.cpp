@@ -3,7 +3,7 @@
 /* recovered: named members + shared header, real C++ method */
 #include "RollingLogTtm.h"
 extern "C" {
-extern int _ZN5Model6RenderEPK7Vector3(void*, void*);
+extern "C" int _ZN5Model6RenderEPK7Vector3(void*, void*);
 }
 
 int RollingLogTtm::Render()

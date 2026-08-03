@@ -7,15 +7,15 @@
 /* recovered: named members + shared header, real C++ method */
 #include "RollingLogTtm.h"
 #define false 0
-extern void *_ZN5Model8LoadFileER13SharedFilePtr(void *fp);
-extern int _ZN9ModelBase7SetFileEP8BMD_Fileii(void *self, void *file, int a, int b);
-extern void *_ZN9Animation8LoadFileER13SharedFilePtr(void *fp);
-extern int _ZN11ShadowModel12InitCylinderEv(void *self);
-extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *self, void *file, int idx, int speed, u32 flags);
-extern void _ZN18MovingCylinderClsn4InitEP5Actor5Fix12IiES3_jj(void *self, void *actor, int a, int b, u32 c, u32 d);
-extern void _ZN12WithMeshClsn4InitEP5Actor5Fix12IiES3_P10Vector3_16S5_(void *self, void *actor, int a, int b, void *v0, void *v1);
-extern char *_ZN5Actor13ClosestPlayerEv(void *self);
-extern char *_ZN5Actor5SpawnEjjRK7Vector3PK10Vector3_16ii(u32 id, u32 param, void *pos, void *rot, int a, int b);
+extern "C" void *_ZN5Model8LoadFileER13SharedFilePtr(void *fp);
+extern "C" int _ZN9ModelBase7SetFileEP8BMD_Fileii(void *self, void *file, int a, int b);
+extern "C" void *_ZN9Animation8LoadFileER13SharedFilePtr(void *fp);
+extern "C" int _ZN11ShadowModel12InitCylinderEv(void *self);
+extern "C" void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *self, void *file, int idx, int speed, u32 flags);
+extern "C" void _ZN18MovingCylinderClsn4InitEP5Actor5Fix12IiES3_jj(void *self, void *actor, int a, int b, u32 c, u32 d);
+extern "C" void _ZN12WithMeshClsn4InitEP5Actor5Fix12IiES3_P10Vector3_16S5_(void *self, void *actor, int a, int b, void *v0, void *v1);
+extern "C" char *_ZN5Actor13ClosestPlayerEv(void *self);
+extern "C" char *_ZN5Actor5SpawnEjjRK7Vector3PK10Vector3_16ii(u32 id, u32 param, void *pos, void *rot, int a, int b);
 extern void func_ov030_021141a8(void *self, int a);
 extern void func_ov030_02112094(void *self);
 

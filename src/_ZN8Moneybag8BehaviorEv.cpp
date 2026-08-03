@@ -4,9 +4,9 @@
 #include "decl_common.h"
 /* recovered: named members + shared header, real C++ method */
 #include "Moneybag.h"
-extern void _ZN5Actor19MakeVanishLuigiWorkER12CylinderClsn(char* c, char* clsn);
-extern int _ZNK12WithMeshClsn14GetResultFlag1Ev(char* clsn);
-extern int _ZNK12WithMeshClsn12TouchesWaterEv(char* clsn);
+extern "C" void _ZN5Actor19MakeVanishLuigiWorkER12CylinderClsn(char* c, char* clsn);
+extern "C" int _ZNK12WithMeshClsn14GetResultFlag1Ev(char* clsn);
+extern "C" int _ZNK12WithMeshClsn12TouchesWaterEv(char* clsn);
 
 int Moneybag::Behavior()
 {

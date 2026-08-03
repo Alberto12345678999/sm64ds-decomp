@@ -1,6 +1,6 @@
 //cpp
 extern "C" {
-extern void _ZN5Actor11LandingDustEb(void* c, int b);
+extern "C" void _ZN5Actor11LandingDustEb(void* c, int b);
 extern void func_0201267c(int anim, char* p);
 extern int data_ov002_020ff17c[];
 extern int data_ov002_020ff188[];

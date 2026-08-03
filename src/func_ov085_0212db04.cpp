@@ -4,9 +4,9 @@
 #include "common.h"
 
 extern "C" {
-extern void _ZN6Camera9SetFlag_3Ev(void* cam);
-extern void _ZN6Camera9SetLookAtERK7Vector3(void* cam, Vector3* v);
-extern void _ZN6Camera6SetPosERK7Vector3(void* cam, Vector3* v);
+extern "C" void _ZN6Camera9SetFlag_3Ev(void* cam);
+extern "C" void _ZN6Camera9SetLookAtERK7Vector3(void* cam, Vector3* v);
+extern "C" void _ZN6Camera6SetPosERK7Vector3(void* cam, Vector3* v);
 extern void* data_0209f318;
 int func_ov085_0212db04(char* c) {
   Vector3 look, pos;

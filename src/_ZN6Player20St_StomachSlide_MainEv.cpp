@@ -7,24 +7,24 @@
 #include "Player.h"
 extern "C" {
 extern void func_ov002_020bf90c(void* c);
-extern int _ZN6Player7IsStateERNS_5StateE(void* c, void* s);
-extern void _ZN6Player11ChangeStateERNS_5StateE(void* c, void* s);
+extern "C" int _ZN6Player7IsStateERNS_5StateE(void* c, void* s);
+extern "C" void _ZN6Player11ChangeStateERNS_5StateE(void* c, void* s);
 extern void func_ov002_020c06fc(void* c, u32 arg);
 extern int func_ov002_020dd2f4(void* c);
 extern void func_ov002_020c0364(void* c, u32 arg);
 extern int func_ov002_020c0688(void* c);
 extern int func_ov002_020e2ea0(void* c);
-extern int _ZN6Player6IsAnimEj(void* c, u32 anim);
-extern int _ZN6Player12FinishedAnimEv(void* c);
-extern void _ZN6Player7SetAnimEji5Fix12IiEj(void* c, u32 anim, int a, Fix12i b, u32 d);
+extern "C" int _ZN6Player6IsAnimEj(void* c, u32 anim);
+extern "C" int _ZN6Player12FinishedAnimEv(void* c);
+extern "C" void _ZN6Player7SetAnimEji5Fix12IiEj(void* c, u32 anim, int a, Fix12i b, u32 d);
 extern void func_ov002_020c18b0(void* c, u32 a);
 extern void func_ov002_020e25f0(void* c, int a);
-extern void _ZN12CylinderClsn5ClearEv(void* c);
-extern void _ZN12CylinderClsn6UpdateEv(void* c);
+extern "C" void _ZN12CylinderClsn5ClearEv(void* c);
+extern "C" void _ZN12CylinderClsn6UpdateEv(void* c);
 extern void func_ov002_020dc560(void* c);
 extern int func_ov002_020e0ccc(void* c, short* st);
-extern Fix12i _ZN4cstd5atan2E5Fix12IiES1_(Fix12i a, Fix12i b);
-extern void _Z15ApproachLinear2Rsss(short* cur, short target, short step);
+extern "C" Fix12i _ZN4cstd5atan2E5Fix12IiES1_(Fix12i a, Fix12i b);
+extern "C" void _Z15ApproachLinear2Rsss(short* cur, short target, short step);
 extern void Player_AdvanceAnims(void* c);
 
 extern u8 data_020a0e40;

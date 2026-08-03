@@ -5,7 +5,7 @@
 extern "C" {
 extern int data_0209f318[];
 extern void Player_ReleaseHeldActor(char*);
-extern int _ZN6Player7SetAnimEji5Fix12IiEj(void*,unsigned int,int,int,unsigned int);
+extern "C" int _ZN6Player7SetAnimEji5Fix12IiEj(void*,unsigned int,int,int,unsigned int);
 extern void func_0200d6f0(void*,unsigned char);
 }
 

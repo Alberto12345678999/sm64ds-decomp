@@ -1,8 +1,8 @@
 //cpp
 extern "C" {
-extern int _ZN6Player12FinishedAnimEv(void* c);
+extern "C" int _ZN6Player12FinishedAnimEv(void* c);
 extern int func_ov002_020c44c4(void* c);
-extern void _ZN6Player11ChangeStateERNS_5StateE(void* c, void* st);
+extern "C" void _ZN6Player11ChangeStateERNS_5StateE(void* c, void* st);
 extern int data_ov002_02110214[];
 void func_ov002_020c7194(char* c){
   if(_ZN6Player12FinishedAnimEv(c) == 0) return;

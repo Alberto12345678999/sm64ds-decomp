@@ -1,7 +1,7 @@
 //cpp
 extern "C" {
-extern int _ZN5Actor13DistToCPlayerEv(void *self);
-extern int _ZN5Sound8PlayLongEjjjRK7Vector3j(unsigned int a, unsigned int b, unsigned int c, const void *v, unsigned int e);
+extern "C" int _ZN5Actor13DistToCPlayerEv(void *self);
+extern "C" int _ZN5Sound8PlayLongEjjjRK7Vector3j(unsigned int a, unsigned int b, unsigned int c, const void *v, unsigned int e);
 extern void func_ov096_02136e54(void *self, int n);
 
 void func_ov096_021372c0(void *self);

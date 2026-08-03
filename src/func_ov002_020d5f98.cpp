@@ -1,6 +1,6 @@
 //cpp
 extern "C" {
-extern int _ZN6Player7IsStateERNS_5StateE(void*, void*);
+extern "C" int _ZN6Player7IsStateERNS_5StateE(void*, void*);
 extern int RandomIntInternal(int* seed);
 extern char data_ov002_02110064[];
 extern int data_ov002_0210e160[];

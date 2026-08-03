@@ -24,9 +24,9 @@ extern struct OamAttr data_ov002_0210d4f0;
 extern struct OamAttr data_ov002_0210c690;
 
 
-extern void _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(
+extern "C" void _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(
     int a, struct OamAttr* attr, int x, int y, int e, int f, int g, int h, int i, int j);
-extern void _ZN2GX11LoadOBJPlttEPKvjj(const void* p, unsigned int a, unsigned int b);
+extern "C" void _ZN2GX11LoadOBJPlttEPKvjj(const void* p, unsigned int a, unsigned int b);
 }
 
 void HUD::RenderHealthMeter()

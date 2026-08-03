@@ -7,11 +7,11 @@
 /* recovered: renamed to Class_Method */
 /* daPgDfdr_c::Behavior - recovered from vtable slot identity */
 extern "C" {
-extern void _ZN8Platform21IsClsnInRangeOnScreenE5Fix12IiES1_(void* t, int a, int b);
-extern void* _ZN5Actor13ClosestPlayerEv(void* c);
-extern void _ZN9Animation7AdvanceEv(void* a);
-extern void _ZN12CylinderClsn5ClearEv(void* a);
-extern void _ZN12CylinderClsn6UpdateEv(void* a);
+extern "C" void _ZN8Platform21IsClsnInRangeOnScreenE5Fix12IiES1_(void* t, int a, int b);
+extern "C" void* _ZN5Actor13ClosestPlayerEv(void* c);
+extern "C" void _ZN9Animation7AdvanceEv(void* a);
+extern "C" void _ZN12CylinderClsn5ClearEv(void* a);
+extern "C" void _ZN12CylinderClsn6UpdateEv(void* a);
 extern void func_ov027_02111994(char* c);
 
 int func_ov027_02111e34(char* c){

@@ -5,11 +5,11 @@
 struct V3 { int x, y, z; };
 struct State;
 extern void func_ov002_020bda48(char* c);
-extern void _ZN6Player11ChangeStateERNS_5StateE(void* thiz, struct State* s);
+extern "C" void _ZN6Player11ChangeStateERNS_5StateE(void* thiz, struct State* s);
 extern void func_ov002_020bd9ec(char* c, unsigned int a);
 extern void func_ov002_020c43c4(char* c, int a);
-extern void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int id, int x, int y, int z);
-extern void _ZN5Sound9PlayBank0EjRK7Vector3(unsigned int id, void* pos);
+extern "C" void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int id, int x, int y, int z);
+extern "C" void _ZN5Sound9PlayBank0EjRK7Vector3(unsigned int id, void* pos);
 
 extern struct State data_ov002_0211028c;
 

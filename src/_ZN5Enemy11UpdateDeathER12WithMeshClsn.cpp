@@ -6,8 +6,8 @@ typedef int (Enemy::*PMF)(WithMeshClsn&);
 extern PMF data_ov002_0210dbc0[];
 extern "C" {
 extern void DecIfAbove0_Short(short *p);
-extern int _ZN5Actor9UpdatePosEP12CylinderClsn(Enemy *thiz, void *clsn);
-extern int _ZN5Enemy12UpdateWMClsnER12WithMeshClsnj(Enemy *thiz, WithMeshClsn *clsn, u32 sel);
+extern "C" int _ZN5Actor9UpdatePosEP12CylinderClsn(Enemy *thiz, void *clsn);
+extern "C" int _ZN5Enemy12UpdateWMClsnER12WithMeshClsnj(Enemy *thiz, WithMeshClsn *clsn, u32 sel);
 }
 struct Enemy { char pad[0x200]; };
 extern "C" int _ZN5Enemy11UpdateDeathER12WithMeshClsn(Enemy *thiz, WithMeshClsn *clsn)

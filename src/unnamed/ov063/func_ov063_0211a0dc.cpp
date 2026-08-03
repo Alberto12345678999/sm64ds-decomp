@@ -9,11 +9,11 @@ typedef struct { s32 x, y, z; } Vector3;
 typedef s32 Fix12;
 
 extern "C" {
-extern void* _ZN5Actor10FindWithIDEj(u32 id);
-extern int _ZN5Actor16JumpedOnByPlayerER12CylinderClsnR6Player(void* self, void* clsn, void* player);
-extern void _ZN6Player6BounceE5Fix12IiE(void* p, Fix12 f);
+extern "C" void* _ZN5Actor10FindWithIDEj(u32 id);
+extern "C" int _ZN5Actor16JumpedOnByPlayerER12CylinderClsnR6Player(void* self, void* clsn, void* player);
+extern "C" void _ZN6Player6BounceE5Fix12IiE(void* p, Fix12 f);
 extern int func_0201267c(u32 a, void* b);
-extern void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void* p, const Vector3* v, u32 a, Fix12 f, u32 b, u32 c, u32 d);
+extern "C" void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void* p, const Vector3* v, u32 a, Fix12 f, u32 b, u32 c, u32 d);
 extern void func_020ada40(void* c, void* v, void* r4, s32 flag);
 }
 

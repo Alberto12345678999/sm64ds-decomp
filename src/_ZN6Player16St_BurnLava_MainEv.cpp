@@ -13,14 +13,14 @@ extern char data_ov002_0211013c;
 
 extern "C" {
 extern void KillPlayer(void);
-extern int _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(int, unsigned int, int, int, int, s16 *, void *);
-extern int _ZN5Sound8PlayLongEjjjRK7Vector3j(int, unsigned int, unsigned int, char *, unsigned int);
+extern "C" int _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(int, unsigned int, int, int, int, s16 *, void *);
+extern "C" int _ZN5Sound8PlayLongEjjjRK7Vector3j(int, unsigned int, unsigned int, char *, unsigned int);
 extern void func_ov002_020e28d4(char *, int, int);
-extern void _ZN6Player7SetAnimEji5Fix12IiEj(char *, unsigned int, int, int, unsigned int);
-extern int _ZN6Player12FinishedAnimEv(char *);
-extern int _ZN6Player9GetHealthEv(char *);
+extern "C" void _ZN6Player7SetAnimEji5Fix12IiEj(char *, unsigned int, int, int, unsigned int);
+extern "C" int _ZN6Player12FinishedAnimEv(char *);
+extern "C" int _ZN6Player9GetHealthEv(char *);
 extern void func_ov002_020c5dec(char *, int);
-extern void _ZN6Player11ChangeStateERNS_5StateE(char *, char *);
+extern "C" void _ZN6Player11ChangeStateERNS_5StateE(char *, char *);
 extern void Player_AdvanceAnims(char *);
 
 int _ZN6Player16St_BurnLava_MainEv(char *c)

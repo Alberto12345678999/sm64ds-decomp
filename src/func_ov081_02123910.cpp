@@ -21,10 +21,10 @@ struct VObj {
 };
 
 extern "C" {
-extern void* _ZN5Actor10FindWithIDEj(unsigned int id);
-extern int _ZN5Actor16JumpedOnByPlayerER12CylinderClsnR6Player(void* self, void* cyl, void* player);
+extern "C" void* _ZN5Actor10FindWithIDEj(unsigned int id);
+extern "C" int _ZN5Actor16JumpedOnByPlayerER12CylinderClsnR6Player(void* self, void* cyl, void* player);
 extern short Vec3_HorzAngle(void* a, void* b);
-extern void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void* p, void* v, unsigned n, int f, unsigned a, unsigned b, unsigned c);
+extern "C" void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void* p, void* v, unsigned n, int f, unsigned a, unsigned b, unsigned c);
 }
 
 extern "C" void func_ov081_02123910(char* c)

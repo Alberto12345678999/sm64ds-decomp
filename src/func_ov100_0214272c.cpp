@@ -1,23 +1,23 @@
 //cpp
 extern "C" {
-extern void _ZN5Actor19MakeVanishLuigiWorkER12CylinderClsn(void*, void*);
+extern "C" void _ZN5Actor19MakeVanishLuigiWorkER12CylinderClsn(void*, void*);
 extern int func_020ad660(void*, void*, void*, int);
-extern void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int, int, int, int);
+extern "C" void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int, int, int, int);
 extern void func_02012694(int, void*);
 extern void func_ov100_02141fb0(void*);
 extern void func_ov100_02142130(void*);
-extern void _ZN5Actor14TriplePoofDustEv(void*);
-extern void _ZN9ActorBase18MarkForDestructionEv(void*);
-extern int _ZNK12WithMeshClsn10IsOnGroundEv(void*);
+extern "C" void _ZN5Actor14TriplePoofDustEv(void*);
+extern "C" void _ZN9ActorBase18MarkForDestructionEv(void*);
+extern "C" int _ZNK12WithMeshClsn10IsOnGroundEv(void*);
 extern int Vec3_HorzLen(void*);
-extern int _ZN4cstd5atan2E5Fix12IiES1_(int, int);
-extern int _ZNK12WithMeshClsn13JustHitGroundEv(void*);
-extern void _ZN5Actor11LandingDustEb(void*, int);
-extern int _ZN5Sound8PlayLongEjjjRK7Vector3j(unsigned int, unsigned int, unsigned int, void*, unsigned int);
-extern void _ZN5Actor22UpdatePosWithOnlySpeedEP12CylinderClsn(void*, int);
+extern "C" int _ZN4cstd5atan2E5Fix12IiES1_(int, int);
+extern "C" int _ZNK12WithMeshClsn13JustHitGroundEv(void*);
+extern "C" void _ZN5Actor11LandingDustEb(void*, int);
+extern "C" int _ZN5Sound8PlayLongEjjjRK7Vector3j(unsigned int, unsigned int, unsigned int, void*, unsigned int);
+extern "C" void _ZN5Actor22UpdatePosWithOnlySpeedEP12CylinderClsn(void*, int);
 extern void func_ov100_02142264(void*);
-extern void _ZN12CylinderClsn5ClearEv(void*);
-extern void _ZN12CylinderClsn6UpdateEv(void*);
+extern "C" void _ZN12CylinderClsn5ClearEv(void*);
+extern "C" void _ZN12CylinderClsn6UpdateEv(void*);
 }
 
 extern "C" void func_ov100_0214272c(char *c)

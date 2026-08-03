@@ -9,23 +9,23 @@
 extern "C" {
 
 extern u32 LoadCompressedFileAt(int fileID, void *target);
-extern char *_ZN2G213GetBG2CharPtrEv(void);
+extern "C" char *_ZN2G213GetBG2CharPtrEv(void);
 extern int LoadFile(int handle);
-extern void _ZN2GX10LoadBGPlttEPKvjj(const void *p, u32 a, u32 b);
-extern char *_ZN2G212GetBG2ScrPtrEv(void);
-extern char *_ZN2G212GetBG3ScrPtrEv(void);
-extern char *_ZN3G2S13GetBG2CharPtrEv(void);
-extern char *_ZN3G2S13GetBG0CharPtrEv(void);
-extern void _ZN3GXS10LoadBGPlttEPKvjj(const void *p, u32 a, u32 b);
-extern char *_ZN3G2S12GetBG0ScrPtrEv(void);
-extern char *_ZN3G2S12GetBG1ScrPtrEv(void);
-extern char *_ZN3G2S12GetBG2ScrPtrEv(void);
-extern char *_ZN3G2S12GetBG3ScrPtrEv(void);
+extern "C" void _ZN2GX10LoadBGPlttEPKvjj(const void *p, u32 a, u32 b);
+extern "C" char *_ZN2G212GetBG2ScrPtrEv(void);
+extern "C" char *_ZN2G212GetBG3ScrPtrEv(void);
+extern "C" char *_ZN3G2S13GetBG2CharPtrEv(void);
+extern "C" char *_ZN3G2S13GetBG0CharPtrEv(void);
+extern "C" void _ZN3GXS10LoadBGPlttEPKvjj(const void *p, u32 a, u32 b);
+extern "C" char *_ZN3G2S12GetBG0ScrPtrEv(void);
+extern "C" char *_ZN3G2S12GetBG1ScrPtrEv(void);
+extern "C" char *_ZN3G2S12GetBG2ScrPtrEv(void);
+extern "C" char *_ZN3G2S12GetBG3ScrPtrEv(void);
 extern void MultiStore16(u16 val, char *dst, int nbytes);
 extern int GetGameLanguage(void);
-extern void _ZN2GX11LoadOBJPlttEPKvjj(const void *p, u32 a, u32 b);
-extern void _ZN3GXS11LoadOBJPlttEPKvjj(const void *p, u32 a, u32 b);
-extern void _ZN3G2x13SetBlendAlphaEPVttttt(volatile u16 *p, u16 a, u16 b, u16 c, u16 d);
+extern "C" void _ZN2GX11LoadOBJPlttEPKvjj(const void *p, u32 a, u32 b);
+extern "C" void _ZN3GXS11LoadOBJPlttEPKvjj(const void *p, u32 a, u32 b);
+extern "C" void _ZN3G2x13SetBlendAlphaEPVttttt(volatile u16 *p, u16 a, u16 b, u16 c, u16 d);
 
 extern unsigned char data_0209d45c;
 extern unsigned char data_0209d454;

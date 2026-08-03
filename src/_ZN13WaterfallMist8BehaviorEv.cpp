@@ -21,17 +21,17 @@ struct Flags3eb {
 };
 
 extern "C" {
-extern void _ZN5Actor13SmallPoofDustEv(Enemy *thiz);
-extern void _Z14ApproachLinearRiii(int *x, int target, int step);
-extern void _ZN5Actor9UpdatePosEP12CylinderClsn(Enemy *thiz, void *clsn);
-extern void _ZN5Enemy12UpdateWMClsnER12WithMeshClsnj(Enemy *thiz, WithMeshClsn *wm, u32 j);
-extern int _ZNK12WithMeshClsn10IsOnGroundEv(void *thiz);
+extern "C" void _ZN5Actor13SmallPoofDustEv(Enemy *thiz);
+extern "C" void _Z14ApproachLinearRiii(int *x, int target, int step);
+extern "C" void _ZN5Actor9UpdatePosEP12CylinderClsn(Enemy *thiz, void *clsn);
+extern "C" void _ZN5Enemy12UpdateWMClsnER12WithMeshClsnj(Enemy *thiz, WithMeshClsn *wm, u32 j);
+extern "C" int _ZNK12WithMeshClsn10IsOnGroundEv(void *thiz);
 extern void func_ov002_020b7f7c(char *c);
-extern void _ZN9Animation7AdvanceEv(void *thiz);
+extern "C" void _ZN9Animation7AdvanceEv(void *thiz);
 extern void func_020167a4(char *p);
-extern int _ZN5Enemy14UpdateYoshiEatER12WithMeshClsn(Enemy *thiz, WithMeshClsn *wm);
-extern void _ZN12CylinderClsn5ClearEv(void *thiz);
-extern void _ZN12CylinderClsn6UpdateEv(void *thiz);
+extern "C" int _ZN5Enemy14UpdateYoshiEatER12WithMeshClsn(Enemy *thiz, WithMeshClsn *wm);
+extern "C" void _ZN12CylinderClsn5ClearEv(void *thiz);
+extern "C" void _ZN12CylinderClsn6UpdateEv(void *thiz);
 }
 
 int WaterfallMist::Behavior()

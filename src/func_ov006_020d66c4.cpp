@@ -1,6 +1,6 @@
 //cpp
 extern "C" {
-extern void _ZN5Sound12PlayBank2_2DEj(unsigned int id);
+extern "C" void _ZN5Sound12PlayBank2_2DEj(unsigned int id);
 extern void func_ov006_020d5d90(char *base, int idx);
 }
 

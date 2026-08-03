@@ -1,6 +1,6 @@
 //cpp
 extern "C" {
-extern void* _ZN9ActorBasenwEj(unsigned int sz);
+extern "C" void* _ZN9ActorBasenwEj(unsigned int sz);
 extern int func_ov004_020b2adc(void* p);
 extern void func_0203b9b4(int *p, int v);
 extern int data_ov006_0213bf50[];

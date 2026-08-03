@@ -9,8 +9,8 @@ struct Obj {
 };
 
 extern "C" {
-extern void _ZN6Player11ChangeStateERNS_5StateE(char* c, void* s);
-extern int _ZN6Player7IsStateERNS_5StateE(char* c, void* s);
+extern "C" void _ZN6Player11ChangeStateERNS_5StateE(char* c, void* s);
+extern "C" int _ZN6Player7IsStateERNS_5StateE(char* c, void* s);
 extern void Player_DisableInteraction(char* c);
 extern void func_ov002_020d7430(char* c);
 extern void func_ov002_020d8118(char* c);

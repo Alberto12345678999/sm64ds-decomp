@@ -1,7 +1,7 @@
 //cpp
 extern "C" {
-extern void _ZN5Sound12PlayBank2_2DEj(unsigned);
-extern void _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(void *, void *, int, int, int, unsigned short);
+extern "C" void _ZN5Sound12PlayBank2_2DEj(unsigned);
+extern "C" void _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(void *, void *, int, int, int, unsigned short);
 struct G2 { int w[2]; };
 extern struct G2 data_ov006_0213ac80;
 void func_ov006_020c0c80(void *c)

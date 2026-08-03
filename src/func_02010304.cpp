@@ -2,8 +2,8 @@
 // func_02010304 at 0x02010304
 // Matched byte-for-byte with mwccarm 1.2/sp2p3 (arm9 main).
 extern "C" {
-extern void *_ZN5Actor10FindWithIDEj(unsigned);
-extern int _ZN6Player7TryGrabER5Actor(void *, void *);
+extern "C" void *_ZN5Actor10FindWithIDEj(unsigned);
+extern "C" int _ZN6Player7TryGrabER5Actor(void *, void *);
 
 void *func_02010304(void *target, char *p) {
     unsigned id = *(unsigned *)(p + 0x24);

@@ -11,17 +11,17 @@ struct Holder { char pad[8]; PMF fn; };
 
 extern "C" {
 extern unsigned short DecIfAbove0_Short(unsigned short *p);
-extern void _Z14ApproachLinearRiii(int &x, int target, int step);
-extern void _ZN5Actor9UpdatePosEP12CylinderClsn(Actor *thiz, CylinderClsn *c);
-extern void _ZN12CylinderClsn5ClearEv(void *thiz);
-extern void _ZN12CylinderClsn6UpdateEv(void *thiz);
+extern "C" void _Z14ApproachLinearRiii(int &x, int target, int step);
+extern "C" void _ZN5Actor9UpdatePosEP12CylinderClsn(Actor *thiz, CylinderClsn *c);
+extern "C" void _ZN12CylinderClsn5ClearEv(void *thiz);
+extern "C" void _ZN12CylinderClsn6UpdateEv(void *thiz);
 extern void func_02012694(int, void *);
-extern void _ZN5Actor15HugeLandingDustEb(Actor *thiz, bool b);
-extern Actor *_ZN5Actor13ClosestPlayerEv(Actor *thiz);
-extern Actor *_ZN5Actor5SpawnEjjRK7Vector3PK10Vector3_16ii(unsigned int a, unsigned int b, const Vector3 &pos, const Vector3_16 *rot, int e, int f);
-extern void _ZN7PathPtrC1Ev(void *thiz);
-extern void _ZN7PathPtr6FromIDEj(void *thiz, unsigned int id);
-extern void _ZNK7PathPtr7GetNodeER7Vector3j(void *thiz, Vector3 &out, unsigned int idx);
+extern "C" void _ZN5Actor15HugeLandingDustEb(Actor *thiz, bool b);
+extern "C" Actor *_ZN5Actor13ClosestPlayerEv(Actor *thiz);
+extern "C" Actor *_ZN5Actor5SpawnEjjRK7Vector3PK10Vector3_16ii(unsigned int a, unsigned int b, const Vector3 &pos, const Vector3_16 *rot, int e, int f);
+extern "C" void _ZN7PathPtrC1Ev(void *thiz);
+extern "C" void _ZN7PathPtr6FromIDEj(void *thiz, unsigned int id);
+extern "C" void _ZNK7PathPtr7GetNodeER7Vector3j(void *thiz, Vector3 &out, unsigned int idx);
 extern void Vec3_Sub(Vector3 *out, Vector3 *a, Vector3 *b);
 extern int LenVec3(Vector3 *v);
 extern short Vec3_HorzAngle(const Vector3 *a, const Vector3 *b);

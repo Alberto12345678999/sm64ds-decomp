@@ -1,7 +1,7 @@
 //cpp
 extern "C" {
 extern unsigned int RandomIntInternal(void* s);
-extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void* self, void* bca, int a, int fix, unsigned int j);
+extern "C" void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void* self, void* bca, int a, int fix, unsigned int j);
 extern int data_0209e650[];
 extern int data_ov077_02127c90[];
 int func_ov077_02126cd4(char* c){

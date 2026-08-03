@@ -10,9 +10,9 @@ struct C {
   char pad[0x500];
 };
 extern "C" {
-extern int _ZN5Enemy14UpdateYoshiEatER12WithMeshClsn(char* c, char* clsn);
-extern void _ZN12CylinderClsn5ClearEv(char* c);
-extern void _ZN12CylinderClsn6UpdateEv(char* c);
+extern "C" int _ZN5Enemy14UpdateYoshiEatER12WithMeshClsn(char* c, char* clsn);
+extern "C" void _ZN12CylinderClsn5ClearEv(char* c);
+extern "C" void _ZN12CylinderClsn6UpdateEv(char* c);
 extern PMF data_ov002_0210dc00[];
 #define AT(p, off) ((void*)(int)(((long long)(int)((char*)(p) + (off)))))
 }

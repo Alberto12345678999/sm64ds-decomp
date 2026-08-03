@@ -3,11 +3,11 @@
 /* recovered: named members + shared header, real C++ method */
 #include "TowerStep.h"
 extern int DecIfAbove0_Byte(void*);
-extern int _ZN5Sound8PlayLongEjjjRK7Vector3j(unsigned,unsigned,unsigned,void*,unsigned);
-extern int _ZN8Platform21UpdateModelPosAndRotYEv(void*);
+extern "C" int _ZN5Sound8PlayLongEjjjRK7Vector3j(unsigned,unsigned,unsigned,void*,unsigned);
+extern "C" int _ZN8Platform21UpdateModelPosAndRotYEv(void*);
 extern int func_020393a4(int*,int);
-extern int _ZN8Platform13IsClsnInRangeE5Fix12IiES1_(void*,int,int);
-extern int _ZN8Platform19UpdateClsnPosAndRotEv(void*);
+extern "C" int _ZN8Platform13IsClsnInRangeE5Fix12IiES1_(void*,int,int);
+extern "C" int _ZN8Platform19UpdateClsnPosAndRotEv(void*);
 
 int TowerStep::Behavior()
 {

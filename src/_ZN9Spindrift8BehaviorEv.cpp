@@ -6,20 +6,20 @@
 /* recovered: named members + shared header, real C++ method */
 #include "Spindrift.h"
 extern "C" {
-extern int _ZN5Enemy26UpdateKillByInvincibleCharER12WithMeshClsnR9ModelAnimj(void *, void *, void *, unsigned);
-extern int _ZN5Enemy14UpdateYoshiEatER12WithMeshClsn(void *, void *);
-extern void _ZN12CylinderClsn5ClearEv(void *);
-extern void _ZN12CylinderClsn6UpdateEv(void *);
-extern void _ZN5Actor19MakeVanishLuigiWorkER12CylinderClsn(void *, void *);
-extern void _Z14ApproachLinearRiii(void *, int, int);
-extern void *_ZN5Actor13ClosestPlayerEv(void *);
+extern "C" int _ZN5Enemy26UpdateKillByInvincibleCharER12WithMeshClsnR9ModelAnimj(void *, void *, void *, unsigned);
+extern "C" int _ZN5Enemy14UpdateYoshiEatER12WithMeshClsn(void *, void *);
+extern "C" void _ZN12CylinderClsn5ClearEv(void *);
+extern "C" void _ZN12CylinderClsn6UpdateEv(void *);
+extern "C" void _ZN5Actor19MakeVanishLuigiWorkER12CylinderClsn(void *, void *);
+extern "C" void _Z14ApproachLinearRiii(void *, int, int);
+extern "C" void *_ZN5Actor13ClosestPlayerEv(void *);
 extern int Vec3_HorzDist(void *a, void *b);
 extern short Vec3_HorzAngle(void *a, void *b);
-extern void _Z14ApproachLinearRsss(void *, int, int);
-extern void _ZN9Animation7AdvanceEv(void *);
-extern void _ZN5Actor9UpdatePosEP12CylinderClsn(void *, void *);
-extern void _ZN5Enemy12UpdateWMClsnER12WithMeshClsnj(void *, void *, unsigned);
-extern int _ZN5Enemy15IsGoingOffCliffER12WithMeshClsn5Fix12IiEsbbS3_(void *, void *, int, short, int, int, int);
+extern "C" void _Z14ApproachLinearRsss(void *, int, int);
+extern "C" void _ZN9Animation7AdvanceEv(void *);
+extern "C" void _ZN5Actor9UpdatePosEP12CylinderClsn(void *, void *);
+extern "C" void _ZN5Enemy12UpdateWMClsnER12WithMeshClsnj(void *, void *, unsigned);
+extern "C" int _ZN5Enemy15IsGoingOffCliffER12WithMeshClsn5Fix12IiEsbbS3_(void *, void *, int, short, int, int, int);
 /* sig: (this, WithMeshClsn&, Fix12, short, bool, bool, Fix12) */
 }
 

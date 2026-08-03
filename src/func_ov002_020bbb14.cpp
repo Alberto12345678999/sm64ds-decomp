@@ -4,17 +4,17 @@
 /* recovered: shared common types */
 #include "common.h"
 extern "C" {
-extern void _ZN5Actor9UpdatePosEP12CylinderClsn(void* self, void* c);
+extern "C" void _ZN5Actor9UpdatePosEP12CylinderClsn(void* self, void* c);
 extern void WithMeshClsn_UpdateContinuous_Veneer(void* p);
-extern int _ZNK12WithMeshClsn10IsOnGroundEv(void* p);
-extern int _ZNK12WithMeshClsn8IsOnWallEv(void* p);
-extern int _ZNK12WithMeshClsn12TouchesWaterEv(void* p);
-extern void* _ZN5Actor10FindWithIDEj(unsigned id);
-extern void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void* thiz, void* v, unsigned a, int b, unsigned c, unsigned d, unsigned e);
-extern void _Z14ApproachLinearRiii(int* p, int a, int b);
-extern int _ZN16MeshColliderBase9IsEnabledEv(void* p);
-extern void _ZN16MeshColliderBase7DisableEv(void* p);
-extern int _ZN5Actor13DistToCPlayerEv(void* self);
+extern "C" int _ZNK12WithMeshClsn10IsOnGroundEv(void* p);
+extern "C" int _ZNK12WithMeshClsn8IsOnWallEv(void* p);
+extern "C" int _ZNK12WithMeshClsn12TouchesWaterEv(void* p);
+extern "C" void* _ZN5Actor10FindWithIDEj(unsigned id);
+extern "C" void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void* thiz, void* v, unsigned a, int b, unsigned c, unsigned d, unsigned e);
+extern "C" void _Z14ApproachLinearRiii(int* p, int a, int b);
+extern "C" int _ZN16MeshColliderBase9IsEnabledEv(void* p);
+extern "C" void _ZN16MeshColliderBase7DisableEv(void* p);
+extern "C" int _ZN5Actor13DistToCPlayerEv(void* self);
 extern void func_ov002_020bae9c(char* c);
 }
 

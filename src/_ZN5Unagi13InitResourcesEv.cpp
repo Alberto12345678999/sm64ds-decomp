@@ -9,17 +9,17 @@ struct V3 { int x, y, z; };
 struct PathPtr { char b[8]; };
 
 extern "C" {
-extern void* _ZN5Model8LoadFileER13SharedFilePtr(void* fp);
-extern void _ZN9ModelBase7SetFileEP8BMD_Fileii(char* m, void* f, int a, int b);
-extern void* _ZN9Animation8LoadFileER13SharedFilePtr(void* fp);
-extern void _ZN7PathPtrC1Ev(void* p);
-extern void _ZN7PathPtr6FromIDEj(void* p, unsigned int id);
-extern void _ZN25MovingCylinderClsnWithPos4InitEP5ActorRK7Vector35Fix12IiES6_jj(char* self, char* actor, struct V3* pos, int r3, int sp0, int sp4, int sp8);
+extern "C" void* _ZN5Model8LoadFileER13SharedFilePtr(void* fp);
+extern "C" void _ZN9ModelBase7SetFileEP8BMD_Fileii(char* m, void* f, int a, int b);
+extern "C" void* _ZN9Animation8LoadFileER13SharedFilePtr(void* fp);
+extern "C" void _ZN7PathPtrC1Ev(void* p);
+extern "C" void _ZN7PathPtr6FromIDEj(void* p, unsigned int id);
+extern "C" void _ZN25MovingCylinderClsnWithPos4InitEP5ActorRK7Vector35Fix12IiES6_jj(char* self, char* actor, struct V3* pos, int r3, int sp0, int sp4, int sp8);
 extern int IsStarCollected(int a, int b);
 extern void func_ov016_02111bf0(char* c, void* p);
-extern char* _ZN5Actor5SpawnEjjRK7Vector3PK10Vector3_16ii(unsigned int a, unsigned int b, char* pos, void* d, int sp0, int sp4);
-extern void _ZN5Actor9SetRangesE5Fix12IiES1_S1_S1_(char* a, int r1, int r2, int r3, int sp0);
-extern void _ZNK7PathPtr7GetNodeER7Vector3j(void* p, char* out, unsigned int n);
+extern "C" char* _ZN5Actor5SpawnEjjRK7Vector3PK10Vector3_16ii(unsigned int a, unsigned int b, char* pos, void* d, int sp0, int sp4);
+extern "C" void _ZN5Actor9SetRangesE5Fix12IiES1_S1_S1_(char* a, int r1, int r2, int r3, int sp0);
+extern "C" void _ZNK7PathPtr7GetNodeER7Vector3j(void* p, char* out, unsigned int n);
 extern short Vec3_HorzAngle(char* a, char* b);
 
 extern struct V3 data_ov016_02114d4c;

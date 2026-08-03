@@ -5,9 +5,9 @@
 /* recovered: named members + shared header, real C++ method */
 #include "Goomba.h"
 extern void UnloadBlueCoinModel(void* p);
-extern void _ZN13SharedFilePtr7ReleaseEv(void* p);
-extern void _ZN8CapEnemy14UnloadCapModelEv(char* c);
-extern char* _ZN5Actor10FindWithIDEj(unsigned int id);
+extern "C" void _ZN13SharedFilePtr7ReleaseEv(void* p);
+extern "C" void _ZN8CapEnemy14UnloadCapModelEv(char* c);
+extern "C" char* _ZN5Actor10FindWithIDEj(unsigned int id);
 extern char data_ov084_02130cf8[];
 extern void* data_ov084_02130278[];
 

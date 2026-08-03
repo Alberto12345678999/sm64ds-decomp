@@ -2,8 +2,8 @@
 extern "C" {
 extern int data_ov048_021115ac(char *c);
 extern void func_ov020_02112110(char *c);
-extern int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *self, void *v, unsigned int a, int fix, unsigned int b, unsigned int d, unsigned int e);
-extern int _ZN6Player6BounceE5Fix12IiE(void *self, int fix);
+extern "C" int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *self, void *v, unsigned int a, int fix, unsigned int b, unsigned int d, unsigned int e);
+extern "C" int _ZN6Player6BounceE5Fix12IiE(void *self, int fix);
 int func_ov020_02111418(char *c) {
     int r = data_ov048_021115ac(c);
     if (r == 1) { func_ov020_02112110(c); return 1; }

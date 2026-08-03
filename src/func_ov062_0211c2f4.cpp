@@ -22,7 +22,7 @@ extern int RandomIntInternal(int *seed);
 extern void Matrix4x3_FromRotationY(void *m, int angle);
 extern void MulVec3Mat4x3(Vector3 *in, void *m, void *out);
 extern void func_ov062_0211c658(void *c, void *p);
-extern int _ZN4cstd4fdivEii(int a, int b);
+extern "C" int _ZN4cstd4fdivEii(int a, int b);
 extern void Vec3_MulScalar(void *out, Vector3 *in, int s);
 extern void SubVec3(void *a, void *b, void *c);
 

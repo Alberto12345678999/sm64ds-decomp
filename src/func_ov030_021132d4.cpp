@@ -1,7 +1,7 @@
 //cpp
 extern "C" {
-extern int _ZN12CylinderClsn5ClearEv(void*);
-extern int _ZN12WithMeshClsn15ClearGroundFlagEv(void*);
+extern "C" int _ZN12CylinderClsn5ClearEv(void*);
+extern "C" int _ZN12WithMeshClsn15ClearGroundFlagEv(void*);
 int func_ov030_021132d4(char* c) {
     int* p = (int*)(((int)c + 0xb0) & 0xFFFFFFFFFFFFFFFFULL);
     int tmp = *p;

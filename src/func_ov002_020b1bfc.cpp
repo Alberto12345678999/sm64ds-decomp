@@ -2,13 +2,13 @@
 extern "C" {
 extern void func_ov002_020b13e0(char* c);
 extern void func_ov002_020b1384(char* c);
-extern int _ZNK12WithMeshClsn13JustHitGroundEv(char* c);
-extern void* _ZNK12WithMeshClsn14GetFloorResultEv(char* c);
+extern "C" int _ZNK12WithMeshClsn13JustHitGroundEv(char* c);
+extern "C" void* _ZNK12WithMeshClsn14GetFloorResultEv(char* c);
 extern int SurfaceInfo_TestFlag0x20(void* p);
-extern void _ZN5Sound9PlayBank3EjRK7Vector3(unsigned a, void* v);
-extern int _ZN5Actor13DistToCPlayerEv(char* c);
-extern int _ZN5Actor18HorzAngleToCPlayerEv(char* c);
-extern int _ZN5Actor18HorzAngleToFPlayerEv(char* c);
+extern "C" void _ZN5Sound9PlayBank3EjRK7Vector3(unsigned a, void* v);
+extern "C" int _ZN5Actor13DistToCPlayerEv(char* c);
+extern "C" int _ZN5Actor18HorzAngleToCPlayerEv(char* c);
+extern "C" int _ZN5Actor18HorzAngleToFPlayerEv(char* c);
 void func_ov002_020b1bfc(char* c) {
     func_ov002_020b13e0(c);
     func_ov002_020b1384(c);

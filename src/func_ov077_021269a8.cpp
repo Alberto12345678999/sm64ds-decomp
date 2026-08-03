@@ -1,6 +1,6 @@
 //cpp
 extern "C" {
-extern int _Z14ApproachLinearRsss(short*, short, short);
+extern "C" int _Z14ApproachLinearRsss(short*, short, short);
 extern int AngleDiff(short, short);
 extern int func_ov077_02126d5c(void*, void*);
 extern int data_ov077_02127ce8[];

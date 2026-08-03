@@ -11,7 +11,7 @@ extern int data_ov002_0210d0e8[];
 extern int data_ov002_0210d188[];
 extern int _ZN3OAM20VS_NEW_STAR_APPEAREDE[];
 extern int GetOwnerLanguage(void);
-extern void _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(int b, void* attr, int a2, int a3, int a4, int a5, int a6, int a7, int a8, int a9);
+extern "C" void _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(int b, void* attr, int a2, int a3, int a4, int a5, int a6, int a7, int a8, int a9);
 extern unsigned int func_02012790(unsigned int a);
 }
 

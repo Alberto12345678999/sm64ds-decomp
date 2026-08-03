@@ -9,19 +9,19 @@ typedef int Fix12;
 struct RaycastGround { char buf0[0x14]; int floor[12]; char buf1[0x50-0x14-0x30]; };
 
 extern "C" {
-extern void* _ZN5Model8LoadFileER13SharedFilePtr(void* fp);
-extern void _ZN9ModelBase7SetFileEP8BMD_Fileii(void* self, void* file, int a, int b);
-extern void _ZN11ShadowModel12InitCylinderEv(void* self);
-extern void* _ZN9Animation8LoadFileER13SharedFilePtr(void* fp);
-extern void _ZN18MovingCylinderClsn4InitEP5Actor5Fix12IiES3_jj(void* self, void* actor, Fix12 b, Fix12 c, unsigned int d, unsigned int e);
+extern "C" void* _ZN5Model8LoadFileER13SharedFilePtr(void* fp);
+extern "C" void _ZN9ModelBase7SetFileEP8BMD_Fileii(void* self, void* file, int a, int b);
+extern "C" void _ZN11ShadowModel12InitCylinderEv(void* self);
+extern "C" void* _ZN9Animation8LoadFileER13SharedFilePtr(void* fp);
+extern "C" void _ZN18MovingCylinderClsn4InitEP5Actor5Fix12IiES3_jj(void* self, void* actor, Fix12 b, Fix12 c, unsigned int d, unsigned int e);
 extern void func_ov084_0212c960(void* c, int i);
-extern void _ZN13RaycastGroundC1Ev(RaycastGround* self);
-extern void _ZN13RaycastGround12SetObjAndPosERK7Vector3P5Actor(RaycastGround* self, const Vector3& v, void* actor);
-extern int _ZN13RaycastGround10DetectClsnEv(RaycastGround* self);
+extern "C" void _ZN13RaycastGroundC1Ev(RaycastGround* self);
+extern "C" void _ZN13RaycastGround12SetObjAndPosERK7Vector3P5Actor(RaycastGround* self, const Vector3& v, void* actor);
+extern "C" int _ZN13RaycastGround10DetectClsnEv(RaycastGround* self);
 extern int func_ov084_0212ca60(void* p);
-extern void* _ZN5Actor13ClosestPlayerEv(void* self);
+extern "C" void* _ZN5Actor13ClosestPlayerEv(void* self);
 extern int IsStarCollected(int r0, int r1);
-extern void _ZN13RaycastGroundD1Ev(RaycastGround* self);
+extern "C" void _ZN13RaycastGroundD1Ev(RaycastGround* self);
 
 extern signed char data_0209f2f8;
 extern unsigned char data_0209f220;

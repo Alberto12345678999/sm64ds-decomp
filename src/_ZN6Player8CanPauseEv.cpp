@@ -6,7 +6,7 @@ extern "C" {
 struct State;
 extern State data_ov002_0211067c;
 extern State data_ov002_021106ac;
-extern int _ZN6Player7IsStateERNS_5StateE(void* c, State* st);
+extern "C" int _ZN6Player7IsStateERNS_5StateE(void* c, State* st);
 }
 
 int Player::CanPause()

@@ -49,7 +49,7 @@ extern void func_0201b388(int a);
 extern void func_0201adfc(void);
 extern int IsButtonInputValid(void);
 extern void func_02012790(int a);
-extern void* _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(int a, void* b, int c, int d, int e, int f, int g, int h, int i, int j);
+extern "C" void* _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(int a, void* b, int c, int d, int e, int f, int g, int h, int i, int j);
 
 class Message {
 public:

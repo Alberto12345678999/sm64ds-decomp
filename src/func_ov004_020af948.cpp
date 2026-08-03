@@ -1,7 +1,7 @@
 //cpp
 extern "C" {
 extern void* data_ov004_020beb68;
-extern void _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2(bool b, void* a, int x, int y, int z, int w, void* m);
+extern "C" void _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2(bool b, void* a, int x, int y, int z, int w, void* m);
 
 void func_ov004_020af948(void* a, int b, int c, void* m)
 {

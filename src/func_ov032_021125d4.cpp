@@ -6,13 +6,13 @@
 /* recovered: renamed to Class_Method */
 /* daObjTdFuta_c::InitResources - recovered from vtable slot identity */
 extern "C" {
-extern void* _ZN5Model8LoadFileER13SharedFilePtr(void*);
-extern void _ZN9ModelBase7SetFileEP8BMD_Fileii(void*, void*, int, int);
-extern void _ZN8Platform21UpdateModelPosAndRotYEv(void*);
-extern void _ZN8Platform19UpdateClsnPosAndRotEv(void*);
-extern void* _ZN12MeshCollider8LoadFileER13SharedFilePtr(void*);
-extern void _ZN18MovingMeshCollider7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(void*, void*, void*, int, short, void*);
-extern int _ZN5Event6GetBitEj(unsigned int);
+extern "C" void* _ZN5Model8LoadFileER13SharedFilePtr(void*);
+extern "C" void _ZN9ModelBase7SetFileEP8BMD_Fileii(void*, void*, int, int);
+extern "C" void _ZN8Platform21UpdateModelPosAndRotYEv(void*);
+extern "C" void _ZN8Platform19UpdateClsnPosAndRotEv(void*);
+extern "C" void* _ZN12MeshCollider8LoadFileER13SharedFilePtr(void*);
+extern "C" void _ZN18MovingMeshCollider7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(void*, void*, void*, int, short, void*);
+extern "C" int _ZN5Event6GetBitEj(unsigned int);
 int func_ov032_021125d4(char *c){
   void *f = _ZN5Model8LoadFileER13SharedFilePtr((void*)data_ov032_02113ad4);
   _ZN9ModelBase7SetFileEP8BMD_Fileii(c+0xd4, f, 1, -1);

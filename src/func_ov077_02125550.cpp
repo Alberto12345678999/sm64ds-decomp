@@ -10,16 +10,16 @@
 extern "C" {
 extern void WithMeshClsn_UpdateContinuous_Veneer(void* p);
 extern void WithMeshClsn_UpdateDiscreteNoLava_veneer(void* p);
-extern int _ZNK12WithMeshClsn13JustHitGroundEv(void* p);
-extern void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int n, int a, int b, int c);
+extern "C" int _ZNK12WithMeshClsn13JustHitGroundEv(void* p);
+extern "C" void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int n, int a, int b, int c);
 extern void func_0201267c(int a, void* p);
 extern void func_ov077_02125e94(void* c, int a);
-extern void _ZN5Actor8PoofDustEv(void* c);
+extern "C" void _ZN5Actor8PoofDustEv(void* c);
 extern void func_02012694(int a, void* p);
-extern void _ZN9ActorBase18MarkForDestructionEv(void* c);
-extern void _ZN5Actor9UpdatePosEP12CylinderClsn(void* c, void* p);
-extern void _ZN12CylinderClsn5ClearEv(void* p);
-extern void _ZN12CylinderClsn6UpdateEv(void* p);
+extern "C" void _ZN9ActorBase18MarkForDestructionEv(void* c);
+extern "C" void _ZN5Actor9UpdatePosEP12CylinderClsn(void* c, void* p);
+extern "C" void _ZN12CylinderClsn5ClearEv(void* p);
+extern "C" void _ZN12CylinderClsn6UpdateEv(void* p);
 }
 
 extern "C" int func_ov077_02125550(char* c)

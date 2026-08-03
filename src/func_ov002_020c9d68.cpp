@@ -1,6 +1,6 @@
 //cpp
 extern "C" {
-extern void _ZN6Player7SetAnimEji5Fix12IiEj(void* thiz, unsigned int a, int b, int fix, unsigned int d);
+extern "C" void _ZN6Player7SetAnimEji5Fix12IiEj(void* thiz, unsigned int a, int b, int fix, unsigned int d);
 extern short GetAngleToCamera(int i);
 void func_ov002_020c9d68(char* c){
   if(*(unsigned char*)(c+0x6de) == 0){

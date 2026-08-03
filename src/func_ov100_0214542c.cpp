@@ -9,7 +9,7 @@ struct V { virtual void v0(); virtual void v1(); };
 struct Elem { void* a; void* b; char pad[8]; };
 extern Elem data_ov100_02148204[];
 extern "C" {
-extern void _ZN13SharedFilePtr7ReleaseEv(void* p);
+extern "C" void _ZN13SharedFilePtr7ReleaseEv(void* p);
 extern void* data_ov100_02148744;
 int func_ov100_0214542c(char* c) {
   int idx = *(int*)(c + 8);

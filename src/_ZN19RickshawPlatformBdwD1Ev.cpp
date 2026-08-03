@@ -4,9 +4,9 @@
 #include "RickshawPlatformBdw.h"
 extern "C" {
 extern int __destroy_arr(void*,int,int,void*);
-extern int _ZN18MovingMeshColliderD1Ev(void*);
-extern int _ZN5ModelD1Ev(void*);
-extern int _ZN5ActorD2Ev(void*);
+extern "C" int _ZN18MovingMeshColliderD1Ev(void*);
+extern "C" int _ZN5ModelD1Ev(void*);
+extern "C" int _ZN5ActorD2Ev(void*);
 extern int _ZTV19RickshawPlatformBdw[];
 extern int data_ov002_02108d94[];
 extern int _ZTV17ExclamationSwitch[];

@@ -19,18 +19,18 @@ extern u16 data_0209f49e[];
 extern s16 data_0209f4a0[];
 
 extern "C" {
-extern void _ZN6Player11ChangeStateERNS_5StateE(char *c, void *st);
+extern "C" void _ZN6Player11ChangeStateERNS_5StateE(char *c, void *st);
 extern void func_02012694(unsigned int id, const void *v);
 extern int func_ov002_020d91e0(char *thiz, int damage, int doPre);
 extern void func_ov002_020c5dec(char *c, int r1);
-extern int _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
+extern "C" int _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
     unsigned int sys, unsigned int id, int x, int y, int z, const s16 *vec, void *cb);
-extern int _ZN5Sound8PlayLongEjjjRK7Vector3j(unsigned int handle, unsigned int id, unsigned int vol, const void *vec, unsigned int flags);
-extern int _ZN6Player6IsAnimEj(char *c, unsigned int a);
-extern void _ZN6Player7SetAnimEji5Fix12IiEj(char *c, unsigned int anim, int a, int b, unsigned int d);
-extern int _ZNK6Player14GetBodyModelIDEjb(char *c, unsigned int a, int b);
+extern "C" int _ZN5Sound8PlayLongEjjjRK7Vector3j(unsigned int handle, unsigned int id, unsigned int vol, const void *vec, unsigned int flags);
+extern "C" int _ZN6Player6IsAnimEj(char *c, unsigned int a);
+extern "C" void _ZN6Player7SetAnimEji5Fix12IiEj(char *c, unsigned int anim, int a, int b, unsigned int d);
+extern "C" int _ZNK6Player14GetBodyModelIDEjb(char *c, unsigned int a, int b);
 extern void ApproachAngle(short *cur, short target, int divisor, int band, int maxStep);
-extern void _Z14ApproachLinearRiii(int *cur, int target, int step);
+extern "C" void _Z14ApproachLinearRiii(int *cur, int target, int step);
 extern void Player_AdvanceAnims(char *c);
 }
 

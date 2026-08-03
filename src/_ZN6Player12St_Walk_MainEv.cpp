@@ -7,17 +7,17 @@
 /* recovered: named members + shared header, real C++ method */
 #include "Player.h"
 extern "C" {
-extern void _ZN6Player11ChangeStateERNS_5StateE(void* c, void* s);
+extern "C" void _ZN6Player11ChangeStateERNS_5StateE(void* c, void* s);
 extern int func_ov002_020c5244(void);
 extern int func_ov002_020d36d8(void* c, int a);
 extern void ApproachAngle(short* cur, short target, int divisor, int band, int maxStep);
-extern int _ZN6Player6IsAnimEj(void* c, u32 anim);
+extern "C" int _ZN6Player6IsAnimEj(void* c, u32 anim);
 extern int func_0201226c(int a0, int a1, int a2, int a3, int a4, short a5);
-extern int _ZN6Player12FinishedAnimEv(void* c);
-extern void _ZN6Player7SetAnimEji5Fix12IiEj(void* c, u32 anim, int a, Fix12i b, u32 d);
+extern "C" int _ZN6Player12FinishedAnimEv(void* c);
+extern "C" void _ZN6Player7SetAnimEji5Fix12IiEj(void* c, u32 anim, int a, Fix12i b, u32 d);
 extern void func_ov002_020d4540(void* c);
 extern void func_ov002_020cabe0(void* c);
-extern int _ZNK6Player14GetBodyModelIDEjb(void* c, u32 a, int b);
+extern "C" int _ZNK6Player14GetBodyModelIDEjb(void* c, u32 a, int b);
 extern void Player_AdvanceAnims(void* c);
 
 extern u8 data_020a0e40;

@@ -4,7 +4,7 @@
 #include "Player.h"
 struct Camera;
 extern "C" {
-extern int _ZN6Player7SetAnimEji5Fix12IiEj(void*,unsigned int,int,int,unsigned int);
+extern "C" int _ZN6Player7SetAnimEji5Fix12IiEj(void*,unsigned int,int,int,unsigned int);
 extern struct Camera* data_0209f318;
 extern void func_0200d544(struct Camera* thiz, unsigned char playerID);
 }

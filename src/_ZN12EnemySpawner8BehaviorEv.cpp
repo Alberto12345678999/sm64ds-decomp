@@ -1,7 +1,7 @@
 //cpp
 extern "C" {
-extern int _ZN5Event6GetBitEj(unsigned int bit);
-extern void* _ZN5Actor5SpawnEjjRK7Vector3PK10Vector3_16ii(
+extern "C" int _ZN5Event6GetBitEj(unsigned int bit);
+extern "C" void* _ZN5Actor5SpawnEjjRK7Vector3PK10Vector3_16ii(
   unsigned int id, unsigned int a2, void* pos, void* rot, int a5, int a6);
 extern void func_ov102_0214ad14(void* c);
 int _ZN12EnemySpawner8BehaviorEv(char* c){

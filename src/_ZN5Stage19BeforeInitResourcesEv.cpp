@@ -3,7 +3,7 @@
  * ldr ip, [pc]; bx ip; .word 0x202e66c
  */
 extern "C" {
-extern void _ZN5Scene19ResetFadersAndSoundEv(void);
+extern "C" void _ZN5Scene19ResetFadersAndSoundEv(void);
 void _ZN5Stage19BeforeInitResourcesEv(void) {
     _ZN5Scene19ResetFadersAndSoundEv();
 }

@@ -10,15 +10,15 @@ extern "C" {
 
 extern u32 LoadCompressedFileAt(u16 fileID, void *target);
 extern int LoadFile(int handle);
-extern void _ZN2GX10LoadBGPlttEPKvjj(const void *p, u32 a, u32 b);
-extern void _ZN3GXS10LoadBGPlttEPKvjj(const void *p, u32 a, u32 b);
-extern void *_ZN2G212GetBG2ScrPtrEv(void);
-extern void *_ZN3G2S13GetBG2CharPtrEv(void);
-extern void *_ZN3G2S12GetBG2ScrPtrEv(void);
-extern void _ZN4CP1527FlushAndInvalidateDataCacheEjj(u32 a, u32 b);
-extern void _ZN2GX11LoadOBJPlttEPKvjj(const void *p, u32 a, u32 b);
-extern void _ZN3GXS11LoadOBJPlttEPKvjj(const void *p, u32 a, u32 b);
-extern void _ZN3G2x13SetBlendAlphaEPVttttt(volatile u16 *p, u16 a, u16 b, u16 c, u16 d);
+extern "C" void _ZN2GX10LoadBGPlttEPKvjj(const void *p, u32 a, u32 b);
+extern "C" void _ZN3GXS10LoadBGPlttEPKvjj(const void *p, u32 a, u32 b);
+extern "C" void *_ZN2G212GetBG2ScrPtrEv(void);
+extern "C" void *_ZN3G2S13GetBG2CharPtrEv(void);
+extern "C" void *_ZN3G2S12GetBG2ScrPtrEv(void);
+extern "C" void _ZN4CP1527FlushAndInvalidateDataCacheEjj(u32 a, u32 b);
+extern "C" void _ZN2GX11LoadOBJPlttEPKvjj(const void *p, u32 a, u32 b);
+extern "C" void _ZN3GXS11LoadOBJPlttEPKvjj(const void *p, u32 a, u32 b);
+extern "C" void _ZN3G2x13SetBlendAlphaEPVttttt(volatile u16 *p, u16 a, u16 b, u16 c, u16 d);
 extern int RandomIntInternal(int *seed);
 
 extern u8 data_0209d45c;

@@ -8,7 +8,7 @@
 
 extern "C" {
 extern void func_ov102_02149684(Vector3* out, void* self);
-extern void* _ZN5Actor5SpawnEjjRK7Vector3PK10Vector3_16ii(unsigned int, unsigned int, Vector3*, Vector3_16*, int, int);
+extern "C" void* _ZN5Actor5SpawnEjjRK7Vector3PK10Vector3_16ii(unsigned int, unsigned int, Vector3*, Vector3_16*, int, int);
 extern void* func_ov102_0214b384(void*, int);
 void* func_ov102_02149220(char* c){
   Vector3 v;

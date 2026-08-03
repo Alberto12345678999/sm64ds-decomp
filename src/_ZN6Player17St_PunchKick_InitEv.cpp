@@ -5,9 +5,9 @@
 /* recovered: named members + shared header, real C++ method */
 #include "Player.h"
 extern "C" {
-extern int _ZN6Player15IsCollectingCapEv(void*);
-extern int _ZN12CylinderClsn5ClearEv(void*);
-extern int _ZN12CylinderClsn6UpdateEv(void*);
+extern "C" int _ZN6Player15IsCollectingCapEv(void*);
+extern "C" int _ZN12CylinderClsn5ClearEv(void*);
+extern "C" int _ZN12CylinderClsn6UpdateEv(void*);
 }
 
 int Player::St_PunchKick_Init()

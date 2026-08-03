@@ -10,7 +10,7 @@ extern int data_0209fd0c;
 extern u8 data_0209fc88;
 extern u8 data_0209fc7c;
 extern u8 data_0209fcdc;
-extern int _ZN2G213GetBG2CharPtrEv(void);
+extern "C" int _ZN2G213GetBG2CharPtrEv(void);
 extern void MultiStore_Int(int val, int dst, int len);
 extern void func_02031cd4(int a);
 extern void func_020318a4(int a);

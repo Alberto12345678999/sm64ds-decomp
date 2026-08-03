@@ -4,12 +4,12 @@
 #include "common.h"
 struct C; typedef void (C::*PMF)();
 extern "C" {
-extern void _Z14ApproachLinearRiii(int &, int, int);
+extern "C" void _Z14ApproachLinearRiii(int &, int, int);
 
 extern void AddVec3(struct Vector3 *a, struct Vector3 *b, struct Vector3 *c);
 extern void func_ov006_020bfec0(void* a, char* b, short* d);
 extern void func_ov006_020c76e0(char *c);
-extern void _ZN9Animation7AdvanceEv(void *);
+extern "C" void _ZN9Animation7AdvanceEv(void *);
 extern int data_ov006_0213b010;
 extern int data_ov006_0213b018;
 extern void *data_ov006_02141a40;

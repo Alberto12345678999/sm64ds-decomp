@@ -3,7 +3,7 @@
 /* recovered: named members + shared header, real C++ method */
 #include "PiranhaPlant.h"
 extern "C" {
-extern void _ZN13SharedFilePtr7ReleaseEv(void*);
+extern "C" void _ZN13SharedFilePtr7ReleaseEv(void*);
 extern void UnloadBlueCoinModel(void*);
 extern int data_ov084_02130dfc;
 extern int* data_ov084_021302f4;

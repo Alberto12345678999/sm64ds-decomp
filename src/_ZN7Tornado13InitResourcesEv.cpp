@@ -5,14 +5,14 @@
 /* recovered: named members + shared header, real C++ method */
 #include "Tornado.h"
 extern "C" {
-extern int _ZN5Model8LoadFileER13SharedFilePtr(void* sfp);
-extern void _ZN9ModelBase7SetFileEP8BMD_Fileii(void* thiz, void* f, int a, int b);
-extern int _ZN9Animation8LoadFileER13SharedFilePtr(void* sfp);
-extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void* thiz, void* f, int a, int fix, unsigned int u);
-extern void _ZN18TextureTransformer7PrepareER8BMD_FileR8BTA_File(void* a, void* b);
-extern void _ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj(void* thiz, void* f, int a, int fix, unsigned int u);
-extern void _ZN18MovingCylinderClsn4InitEP5Actor5Fix12IiES3_jj(void* thiz, void* actor, int a, int b, unsigned int c, unsigned int d);
-extern void _ZN12WithMeshClsn4InitEP5Actor5Fix12IiES3_P10Vector3_16S5_(void* thiz, void* actor, int a, int b, void* v, int e);
+extern "C" int _ZN5Model8LoadFileER13SharedFilePtr(void* sfp);
+extern "C" void _ZN9ModelBase7SetFileEP8BMD_Fileii(void* thiz, void* f, int a, int b);
+extern "C" int _ZN9Animation8LoadFileER13SharedFilePtr(void* sfp);
+extern "C" void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void* thiz, void* f, int a, int fix, unsigned int u);
+extern "C" void _ZN18TextureTransformer7PrepareER8BMD_FileR8BTA_File(void* a, void* b);
+extern "C" void _ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj(void* thiz, void* f, int a, int fix, unsigned int u);
+extern "C" void _ZN18MovingCylinderClsn4InitEP5Actor5Fix12IiES3_jj(void* thiz, void* actor, int a, int b, unsigned int c, unsigned int d);
+extern "C" void _ZN12WithMeshClsn4InitEP5Actor5Fix12IiES3_P10Vector3_16S5_(void* thiz, void* actor, int a, int b, void* v, int e);
 }
 
 int Tornado::InitResources()

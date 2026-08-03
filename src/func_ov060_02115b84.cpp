@@ -2,9 +2,9 @@
 struct C; typedef void (C::*PMF)();
 extern PMF data_ov060_0211ae9c[];
 extern "C" {
-extern char* _ZN5Actor10FindWithIDEj(unsigned int id);
-extern void _ZN12CylinderClsn5ClearEv(void* cc);
-extern void _ZN12CylinderClsn6UpdateEv(void* cc);
+extern "C" char* _ZN5Actor10FindWithIDEj(unsigned int id);
+extern "C" void _ZN12CylinderClsn5ClearEv(void* cc);
+extern "C" void _ZN12CylinderClsn6UpdateEv(void* cc);
 }
 struct C { char pad[0x800]; };
 extern "C" void func_ov060_02115b84(char* c) {

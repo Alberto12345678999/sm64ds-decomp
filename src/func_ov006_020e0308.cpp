@@ -57,13 +57,13 @@ extern Pair6 data_ov006_0213c0a8[];
 
 extern void func_ov006_020c225c(char *);
 extern int func_ov006_020c3050(char *);
-extern int _ZN3G2S13GetBG2CharPtrEv(void);
+extern "C" int _ZN3G2S13GetBG2CharPtrEv(void);
 extern void LoadCompressedFileAt(int, int);
 extern void *LoadFile(int);
-extern void _ZN3GXS10LoadBGPlttEPKvjj(void *, unsigned int, unsigned int);
-extern int _ZN3G2S12GetBG0ScrPtrEv(void);
-extern int _ZN3G2S12GetBG2ScrPtrEv(void);
-extern void _ZN3GXS11LoadOBJPlttEPKvjj(void *, unsigned int, unsigned int);
+extern "C" void _ZN3GXS10LoadBGPlttEPKvjj(void *, unsigned int, unsigned int);
+extern "C" int _ZN3G2S12GetBG0ScrPtrEv(void);
+extern "C" int _ZN3G2S12GetBG2ScrPtrEv(void);
+extern "C" void _ZN3GXS11LoadOBJPlttEPKvjj(void *, unsigned int, unsigned int);
 
 int func_ov006_020e0308(char *c)
 {

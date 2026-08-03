@@ -2,7 +2,7 @@
 typedef int Fix12i;
 typedef struct Vector3 { int x, y, z; } Vector3;
 extern "C" {
-extern int _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *self, void *bca, int a, int fx, unsigned int b);
+extern "C" int _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *self, void *bca, int a, int fx, unsigned int b);
 extern short Vec3_HorzAngle(const Vector3 *v0, const Vector3 *v1);
 extern int data_ov062_0211ddf8[];
 int func_ov062_02116c78(char *c){

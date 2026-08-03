@@ -28,20 +28,20 @@ extern "C" {
 typedef int (*VFunc)(void*);
 
 extern int func_ov002_020bea7c(char* c);
-extern int _ZN6Player15IsCollectingCapEv(char* self);
+extern "C" int _ZN6Player15IsCollectingCapEv(char* self);
 extern int func_ov002_020d6dac(char* self);
 extern void func_ov002_020d71ec(char* self, int arg1);
-extern void* _ZN5Actor10FindWithIDEj(u32 id);
+extern "C" void* _ZN5Actor10FindWithIDEj(u32 id);
 extern int func_ov002_020d6c60(char* self, void* other);
 extern s16 Vec3_HorzAngle(const struct Vector3* v0, const struct Vector3* v1);
 extern void Vec3_RotateYAndTranslate(int* out, int* in, s16 angle, int* src);
-extern void _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(u32 a, u32 b, int c, int d, int e, const void* pos, void* cb);
+extern "C" void _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(u32 a, u32 b, int c, int d, int e, const void* pos, void* cb);
 extern int func_ov002_020d7030(char* self, void* other);
 extern void Player_DisableInteraction(char* self);
-extern void _ZN5Sound13PlayCharVoiceEjjRK7Vector3(u32 a, u32 b, const struct Vector3* pos);
+extern "C" void _ZN5Sound13PlayCharVoiceEjjRK7Vector3(u32 a, u32 b, const struct Vector3* pos);
 extern void func_ov002_020db8d8(char* self);
-extern void _ZN12CylinderClsn5ClearEv(char* c);
-extern void _ZN12CylinderClsn6UpdateEv(char* c);
+extern "C" void _ZN12CylinderClsn5ClearEv(char* c);
+extern "C" void _ZN12CylinderClsn6UpdateEv(char* c);
 
 extern s16 data_02082214[];
 extern int func_ov002_020d6998(char* self);

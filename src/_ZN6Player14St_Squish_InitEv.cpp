@@ -4,7 +4,7 @@
 #include "Player.h"
 typedef int Fix12i;
 extern void Player_ReleaseHeldActor(void*);
-extern int _ZN6Player7SetAnimEji5Fix12IiEj(void*, unsigned int, int, Fix12i, unsigned int);
+extern "C" int _ZN6Player7SetAnimEji5Fix12IiEj(void*, unsigned int, int, Fix12i, unsigned int);
 
 int Player::St_Squish_Init()
 {

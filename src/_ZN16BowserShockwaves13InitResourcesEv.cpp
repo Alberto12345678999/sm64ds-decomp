@@ -6,16 +6,16 @@
 /* recovered: named members + shared header, real C++ method */
 #include "BowserShockwaves.h"
 extern "C" {
-extern int _ZN5Model8LoadFileER13SharedFilePtr(void* sfp);
-extern void _ZN9ModelBase7SetFileEP8BMD_Fileii(void* thiz, void* f, int a, int b);
-extern int _ZN9Animation8LoadFileER13SharedFilePtr(void* sfp);
-extern int _ZN15TextureSequence8LoadFileER13SharedFilePtr(void* sfp);
+extern "C" int _ZN5Model8LoadFileER13SharedFilePtr(void* sfp);
+extern "C" void _ZN9ModelBase7SetFileEP8BMD_Fileii(void* thiz, void* f, int a, int b);
+extern "C" int _ZN9Animation8LoadFileER13SharedFilePtr(void* sfp);
+extern "C" int _ZN15TextureSequence8LoadFileER13SharedFilePtr(void* sfp);
 extern void func_02016b24(void* thiz, int a);
-extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void* thiz, void* f, int a, int fix, unsigned int u);
-extern void _ZN15TextureSequence7PrepareER8BMD_FileR8BTP_File(void* a, void* b);
-extern void _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(void* thiz, void* f, int a, int fix, unsigned int u);
-extern void _ZN18TextureTransformer7PrepareER8BMD_FileR8BTA_File(void* a, void* b);
-extern void _ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj(void* thiz, void* f, int a, int fix, unsigned int u);
+extern "C" void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void* thiz, void* f, int a, int fix, unsigned int u);
+extern "C" void _ZN15TextureSequence7PrepareER8BMD_FileR8BTP_File(void* a, void* b);
+extern "C" void _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(void* thiz, void* f, int a, int fix, unsigned int u);
+extern "C" void _ZN18TextureTransformer7PrepareER8BMD_FileR8BTA_File(void* a, void* b);
+extern "C" void _ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj(void* thiz, void* f, int a, int fix, unsigned int u);
 
 }
 

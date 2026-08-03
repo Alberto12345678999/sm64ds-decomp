@@ -55,9 +55,9 @@ extern void func_ov006_0210a534(char *);
 extern void *LoadFile(int);
 extern int GetGameLanguage(void);
 extern void DecompressLZ16(void *, u32);
-extern void _ZN2GX11LoadOBJPlttEPKvjj(void *, u32, u32);
-extern void _ZN3GXS11LoadOBJPlttEPKvjj(void *, u32, u32);
-extern void _ZN3G2x13SetBlendAlphaEPVttttt(volatile u16 *, int, int, int, int);
+extern "C" void _ZN2GX11LoadOBJPlttEPKvjj(void *, u32, u32);
+extern "C" void _ZN3GXS11LoadOBJPlttEPKvjj(void *, u32, u32);
+extern "C" void _ZN3G2x13SetBlendAlphaEPVttttt(volatile u16 *, int, int, int, int);
 extern void func_ov006_020c0aa8(char *);
 extern int func_ov006_020c1a88(char *);
 

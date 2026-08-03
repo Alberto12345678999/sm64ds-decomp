@@ -2,9 +2,9 @@
 // func_ov002_020b7cec at 0x020b7d9c
 // Matched byte-for-byte with mwccarm 1.2/sp2p3 (ov002).
 extern "C" {
-extern int _ZNK12WithMeshClsn10IsOnGroundEv(void* thiz);
+extern "C" int _ZNK12WithMeshClsn10IsOnGroundEv(void* thiz);
 extern unsigned short DecIfAbove0_Short(unsigned short* p);
-extern void _ZN9ActorBase18MarkForDestructionEv(void* thiz);
+extern "C" void _ZN9ActorBase18MarkForDestructionEv(void* thiz);
 extern int data_02092138;
 
 int func_ov002_020b7cec(char* c)

@@ -4,8 +4,8 @@
 #include "Player.h"
 extern "C" {
 extern void func_ov002_020bf2d8(void*,int);
-extern void _ZN6Player7SetAnimEji5Fix12IiEj(void*,unsigned,int,int,unsigned);
-extern void _ZN5Sound9PlayBank0EjRK7Vector3(unsigned,void*);
+extern "C" void _ZN6Player7SetAnimEji5Fix12IiEj(void*,unsigned,int,int,unsigned);
+extern "C" void _ZN5Sound9PlayBank0EjRK7Vector3(unsigned,void*);
 }
 
 int Player::St_MetalWaterWater_Init()

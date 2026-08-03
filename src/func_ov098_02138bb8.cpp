@@ -1,7 +1,7 @@
 //cpp
 extern "C" {
-extern int _ZNK12WithMeshClsn10IsOnGroundEv(void *);
-extern void *_ZNK12WithMeshClsn14GetFloorResultEv(void *);
+extern "C" int _ZNK12WithMeshClsn10IsOnGroundEv(void *);
+extern "C" void *_ZNK12WithMeshClsn14GetFloorResultEv(void *);
 extern int SurfaceInfo_TestFlag0x20(int *p);
 int func_ov098_02138bb8(char *c)
 {

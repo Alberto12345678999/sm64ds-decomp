@@ -33,13 +33,13 @@ extern int data_0209caa0[];
 extern struct ActorBase* data_0209f5c0;
 
 extern struct KCL_File* LoadFile(int handle);
-extern void _ZN12MeshCollider17UpdateFileOffsetsER8KCL_File(struct KCL_File* f);
-extern void _ZN12MeshCollider7SetFileEP8KCL_FileR10CLPS_Block(struct MeshCollider* thiz, struct KCL_File* f, struct CLPS_Block* clps);
-extern int _ZNK12MeshCollider16GetOctreeOriginYEv(struct MeshCollider* thiz);
-extern int _ZNK12MeshCollider13GetUnkOctreeYEv(struct MeshCollider* thiz);
-extern void _ZN16MeshColliderBase6EnableEP5Actor(struct MeshCollider* thiz, struct Actor* a);
-extern void _Z11LoadObjectsRN11LVL_Overlay8ObjTableEij(struct ObjTable* t, int i, unsigned int p);
-extern void _ZN12ActorDerived5SpawnEjP9ActorBaseii(unsigned int id, struct ActorBase* parent, int a, int b);
+extern "C" void _ZN12MeshCollider17UpdateFileOffsetsER8KCL_File(struct KCL_File* f);
+extern "C" void _ZN12MeshCollider7SetFileEP8KCL_FileR10CLPS_Block(struct MeshCollider* thiz, struct KCL_File* f, struct CLPS_Block* clps);
+extern "C" int _ZNK12MeshCollider16GetOctreeOriginYEv(struct MeshCollider* thiz);
+extern "C" int _ZNK12MeshCollider13GetUnkOctreeYEv(struct MeshCollider* thiz);
+extern "C" void _ZN16MeshColliderBase6EnableEP5Actor(struct MeshCollider* thiz, struct Actor* a);
+extern "C" void _Z11LoadObjectsRN11LVL_Overlay8ObjTableEij(struct ObjTable* t, int i, unsigned int p);
+extern "C" void _ZN12ActorDerived5SpawnEjP9ActorBaseii(unsigned int id, struct ActorBase* parent, int a, int b);
 
 void _ZN5Stage18LoadClsnAndObjectsER11LVL_OverlayjR12MeshCollider(struct LVL_Overlay_s* ovl, unsigned int p, struct MeshCollider* mc)
 {

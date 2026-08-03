@@ -6,7 +6,7 @@ struct SharedFilePtr
 {
   unsigned int data[4];
 };
-extern void _ZN13SharedFilePtr7ReleaseEv(struct SharedFilePtr *);
+extern "C" void _ZN13SharedFilePtr7ReleaseEv(struct SharedFilePtr *);
 extern void UnloadBlueCoinModel(void *c);
 extern struct SharedFilePtr *data_ov062_0211cee0[];
 extern struct SharedFilePtr *data_ov062_0211ced8[];

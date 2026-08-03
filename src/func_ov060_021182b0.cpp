@@ -24,7 +24,7 @@ extern "C" int data_0208e738;
 extern "C" SharedFilePtr* data_ov060_02119514[];
 extern "C" SharedFilePtr* data_ov060_0211953c[];
 extern "C" CLPS_Block* data_ov060_0211a980[];
-extern void _ZN16MeshColliderBase22UpdatePosWithTransformERS_P5ActorR10ClsnResultR7Vector3P10Vector3_16S8_();
+extern "C" void _ZN16MeshColliderBase22UpdatePosWithTransformERS_P5ActorR10ClsnResultR7Vector3P10Vector3_16S8_();
 extern "C" void func_ov060_021183f4();
 
 extern "C" int func_ov060_021182b0(char* self);

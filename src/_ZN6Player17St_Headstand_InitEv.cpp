@@ -3,7 +3,7 @@
 /* recovered: named members + shared header, real C++ method */
 #include "Player.h"
 struct Camera;
-extern int _ZN6Player7SetAnimEji5Fix12IiEj(void *c, unsigned int a, int b, int f, unsigned int d);
+extern "C" int _ZN6Player7SetAnimEji5Fix12IiEj(void *c, unsigned int a, int b, int f, unsigned int d);
 extern void func_0200d580(struct Camera *thiz, int playerID);
 extern struct Camera *data_0209f318;
 

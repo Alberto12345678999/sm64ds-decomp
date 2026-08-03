@@ -1,13 +1,13 @@
 //cpp
 extern "C" {
 extern int func_ov098_02138ce0(void*);
-extern int _ZN5Actor13DistToCPlayerEv(void*);
+extern "C" int _ZN5Actor13DistToCPlayerEv(void*);
 extern int Crate_SetState(void*, int);
-extern int _ZN12CylinderClsn5ClearEv(void*);
+extern "C" int _ZN12CylinderClsn5ClearEv(void*);
 extern int func_ov098_02139850(void*);
 extern int func_ov098_021397c8(void*);
-extern int _ZN16MeshColliderBase9IsEnabledEv(void*);
-extern int _ZN16MeshColliderBase7DisableEv(void*);
+extern "C" int _ZN16MeshColliderBase9IsEnabledEv(void*);
+extern "C" int _ZN16MeshColliderBase7DisableEv(void*);
 void func_ov098_0213814c(char* c){
     func_ov098_02138ce0(c);
     unsigned b = (unsigned)((*(int*)(c+0xb0) & 8) != 0);

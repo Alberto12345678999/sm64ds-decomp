@@ -32,8 +32,8 @@ extern u16 data_0209f5e8[];
 
 extern "C" {
 extern void func_02012790(int idx);
-extern void _ZN5Scene14StartSceneFadeEjjt(u32 a, u32 b, u16 c);
-extern void _ZN5Sound22StopLoadedMusic_Layer1Ej(u32 a);
+extern "C" void _ZN5Scene14StartSceneFadeEjjt(u32 a, u32 b, u16 c);
+extern "C" void _ZN5Sound22StopLoadedMusic_Layer1Ej(u32 a);
 extern u16 DecIfAbove0_Short(u16 *p);
 extern void func_ov003_020ad6ec(char *c);
 

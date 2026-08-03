@@ -5,7 +5,7 @@
 /* recovered: named members + shared header, real C++ method */
 #include "CccArena.h"
 extern "C" {
-extern void _ZN8Platform19UpdateClsnPosAndRotEv(void* c);
+extern "C" void _ZN8Platform19UpdateClsnPosAndRotEv(void* c);
 }
 
 int CccArena::Behavior()

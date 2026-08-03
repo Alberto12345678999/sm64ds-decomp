@@ -7,8 +7,8 @@ struct Vector3_16_local { unsigned short x, y, z; };
 
 extern "C" {
 extern void Matrix4x3_FromRotationY(void* m, int angle);
-extern int _ZNK12WithMeshClsn10IsOnGroundEv(void* o);
-extern void _ZN5Actor19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(void* self, void* sm, void* mtx, int fix, int t, unsigned int j);
+extern "C" int _ZNK12WithMeshClsn10IsOnGroundEv(void* o);
+extern "C" void _ZN5Actor19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(void* self, void* sm, void* mtx, int fix, int t, unsigned int j);
 extern short data_02082214[];
 }
 

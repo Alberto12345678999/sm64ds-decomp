@@ -1,11 +1,11 @@
 //cpp
 extern "C" {
-extern void _ZN9ModelAnimD1Ev(void*);
+extern "C" void _ZN9ModelAnimD1Ev(void*);
 extern void __destroy_arr(void* arr, int count, int size, void(*dtor)(void*));
-extern void _ZN18MovingMeshColliderD1Ev(void*);
-extern void _ZN5ModelD1Ev(void*);
-extern void _ZN5ActorD2Ev(void*);
-extern void _ZN6Memory10DeallocateEPvP4Heap(void*, void*);
+extern "C" void _ZN18MovingMeshColliderD1Ev(void*);
+extern "C" void _ZN5ModelD1Ev(void*);
+extern "C" void _ZN5ActorD2Ev(void*);
+extern "C" void _ZN6Memory10DeallocateEPvP4Heap(void*, void*);
 extern void* data_ov036_02113f9c[];
 extern void* data_ov002_0210af70[];
 extern void* _ZTV17ExclamationSwitch[];

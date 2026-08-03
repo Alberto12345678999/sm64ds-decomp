@@ -3,10 +3,10 @@
 /* recovered: named members + shared header */
 #include "QuestionSwitch.h"
 extern "C" {
-extern int _ZN9ModelAnimD1Ev(char*);
-extern int _ZN18MovingMeshColliderD1Ev(char*);
-extern int _ZN5ModelD1Ev(char*);
-extern int _ZN5ActorD2Ev(char*);
+extern "C" int _ZN9ModelAnimD1Ev(char*);
+extern "C" int _ZN18MovingMeshColliderD1Ev(char*);
+extern "C" int _ZN5ModelD1Ev(char*);
+extern "C" int _ZN5ActorD2Ev(char*);
 extern int _ZTV14QuestionSwitch[];
 extern int _ZTV17ExclamationSwitch[];
 char* _ZN14QuestionSwitchD1Ev(struct QuestionSwitch *self) {

@@ -1,8 +1,8 @@
 //cpp
 extern "C" {
-extern void* _ZN5Actor15FindWithActorIDEjPS_(unsigned int, void*);
+extern "C" void* _ZN5Actor15FindWithActorIDEjPS_(unsigned int, void*);
 extern int Vec3_Dist(void*, void*);
-extern void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int, int, int, int);
+extern "C" void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int, int, int, int);
 }
 extern "C" int func_ov027_0211233c(char* c){
   void* a = _ZN5Actor15FindWithActorIDEjPS_(0x102, 0);

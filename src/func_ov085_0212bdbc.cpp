@@ -5,11 +5,11 @@
 /* recovered: shared common types */
 #include "common.h"
 extern "C" {
-extern int _ZN6Player14IsFrontSlidingEv(void*);
-extern int _ZN6Player17LostGrabbedObjectEv(void*);
-extern void* _ZN5Actor11UpdateCarryER6PlayerRK7Vector3(void*, void*, void*);
+extern "C" int _ZN6Player14IsFrontSlidingEv(void*);
+extern "C" int _ZN6Player17LostGrabbedObjectEv(void*);
+extern "C" void* _ZN5Actor11UpdateCarryER6PlayerRK7Vector3(void*, void*, void*);
 extern void Matrix4x3_FromTranslation(void* m, int x, int y, int z);
-extern void _ZN5Actor19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(void*,void*,void*,int,int,unsigned int);
+extern "C" void _ZN5Actor19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(void*,void*,void*,int,int,unsigned int);
 extern int data_020a0e68[];
 
 

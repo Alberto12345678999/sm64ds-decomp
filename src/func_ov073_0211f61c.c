@@ -18,17 +18,17 @@ extern char data_ov073_021233d0;
 
 extern "C" {
 extern u16 DecIfAbove0_Short(void* p);
-extern void* _ZN5Actor10FindWithIDEj(u32 id);
+extern "C" void* _ZN5Actor10FindWithIDEj(u32 id);
 extern void func_ov073_0211f494(void* c, void* p);
-extern int _ZN5Actor16JumpedOnByPlayerER12CylinderClsnR6Player(void* c, void* clsn, void* player);
+extern "C" int _ZN5Actor16JumpedOnByPlayerER12CylinderClsnR6Player(void* c, void* clsn, void* player);
 extern void func_02012694(int a, void* b);
 extern int RandomIntInternal(u16* seed);
-extern void* _ZN5Actor5SpawnEjjRK7Vector3PK10Vector3_16ii(u32 a, u32 b, const Vector3* v, void* rot, s32 e, s32 f);
-extern int _ZN8SaveData19IsCharacterUnlockedEj(u32 id);
+extern "C" void* _ZN5Actor5SpawnEjjRK7Vector3PK10Vector3_16ii(u32 a, u32 b, const Vector3* v, void* rot, s32 e, s32 f);
+extern "C" int _ZN8SaveData19IsCharacterUnlockedEj(u32 id);
 extern void ChiefChilly_ChangeState(void* c, void* p);
-extern int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void* p, const Vector3* v, u32 a, Fix12 f, u32 b, u32 c, u32 d);
-extern void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(u32 id, Fix12 x, Fix12 y, Fix12 z);
-extern void _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(void* thiz, struct BCA_File* f, int i, int j, Fix12 fx, u16 k);
+extern "C" int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void* p, const Vector3* v, u32 a, Fix12 f, u32 b, u32 c, u32 d);
+extern "C" void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(u32 id, Fix12 x, Fix12 y, Fix12 z);
+extern "C" void _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(void* thiz, struct BCA_File* f, int i, int j, Fix12 fx, u16 k);
 }
 
 #pragma opt_loop_invariants off

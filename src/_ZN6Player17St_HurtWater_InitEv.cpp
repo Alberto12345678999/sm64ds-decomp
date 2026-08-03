@@ -6,7 +6,7 @@
 #include "Player.h"
 extern "C" {
 extern int data_0209f318[];
-extern void _ZN6Player7SetAnimEji5Fix12IiEj(void*,unsigned,int,int,unsigned);
+extern "C" void _ZN6Player7SetAnimEji5Fix12IiEj(void*,unsigned,int,int,unsigned);
 extern void func_ov002_020d93ac(void*);
 extern void func_ov002_020d94cc(void*);
 }

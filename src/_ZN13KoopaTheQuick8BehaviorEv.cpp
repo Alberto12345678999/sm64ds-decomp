@@ -5,11 +5,11 @@
 /* recovered: named members + shared header, real C++ method */
 #include "KoopaTheQuick.h"
 extern "C" {
-extern void _ZN9Animation7AdvanceEv(void* p);
-extern void _ZN5Actor9UpdatePosEP12CylinderClsn(void* a, void* b);
-extern void _ZN5Enemy12UpdateWMClsnER12WithMeshClsnj(void* a, void* b, unsigned int j);
-extern void _ZN12CylinderClsn5ClearEv(void* p);
-extern void _ZN12CylinderClsn6UpdateEv(void* p);
+extern "C" void _ZN9Animation7AdvanceEv(void* p);
+extern "C" void _ZN5Actor9UpdatePosEP12CylinderClsn(void* a, void* b);
+extern "C" void _ZN5Enemy12UpdateWMClsnER12WithMeshClsnj(void* a, void* b, unsigned int j);
+extern "C" void _ZN12CylinderClsn5ClearEv(void* p);
+extern "C" void _ZN12CylinderClsn6UpdateEv(void* p);
 }
 
 int KoopaTheQuick::Behavior()

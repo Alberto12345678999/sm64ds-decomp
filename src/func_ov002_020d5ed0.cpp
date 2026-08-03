@@ -1,7 +1,7 @@
 //cpp
 extern "C" {
-extern int _ZN6Player7IsStateERNS_5StateE(void *c, void *s);
-extern int _ZN6Player11ChangeStateERNS_5StateE(void *c, void *s);
+extern "C" int _ZN6Player7IsStateERNS_5StateE(void *c, void *s);
+extern "C" int _ZN6Player11ChangeStateERNS_5StateE(void *c, void *s);
 extern char data_ov002_02110064[];
 extern char data_ov002_0211013c[];
 int func_ov002_020d5ed0(char* c){

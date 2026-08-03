@@ -1,7 +1,7 @@
 //cpp
 extern "C" {
 extern void Matrix4x3_FromRotationY(void* m, int angle);
-extern void _ZN5Actor18DropShadowScaleXYZER11ShadowModelR9Matrix4x35Fix12IiES5_S5_j(void* a, void* sm, void* m, int f1, int f2, int f3, unsigned int j);
+extern "C" void _ZN5Actor18DropShadowScaleXYZER11ShadowModelR9Matrix4x35Fix12IiES5_S5_j(void* a, void* sm, void* m, int f1, int f2, int f3, unsigned int j);
 void func_ov065_0211bc88(char* c) {
   int d = *(int*)(c + 0x60) - *(int*)(c + 0x330);
   if (d < 0) d = -d;

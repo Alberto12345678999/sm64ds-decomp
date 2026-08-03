@@ -5,7 +5,7 @@
 extern "C" {
 struct State;
 extern State data_ov002_021102d4;
-extern int _ZN6Player7IsStateERNS_5StateE(void* c, State* st);
+extern "C" int _ZN6Player7IsStateERNS_5StateE(void* c, State* st);
 }
 
 int Player::IsInsideOfCannon()

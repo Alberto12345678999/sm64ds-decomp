@@ -1,11 +1,11 @@
 //cpp
 extern "C" {
-extern int _ZNK12WithMeshClsn10IsOnGroundEv(char* w);
-extern void _ZN5Enemy9SpawnCoinEv(char* c);
-extern void _ZN5Actor24KillAndTrackInDeathTableEv(char* c);
-extern void* _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
+extern "C" int _ZNK12WithMeshClsn10IsOnGroundEv(char* w);
+extern "C" void _ZN5Enemy9SpawnCoinEv(char* c);
+extern "C" void _ZN5Actor24KillAndTrackInDeathTableEv(char* c);
+extern "C" void* _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
   unsigned int a, unsigned int b, int c, int d, int e, const void* f, void* g);
-extern void* _ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f(
+extern "C" void* _ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f(
   unsigned int a, unsigned int b, int c, int d, int e, const void* f);
 }
 extern "C" int func_ov002_020ae4cc(char* self, char* clsn){

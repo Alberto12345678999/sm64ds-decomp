@@ -5,9 +5,9 @@ struct Vector3;
 extern State data_ov002_021105a4;
 extern State data_ov002_021100f4;
 extern State data_ov002_0211019c;
-extern int _ZN6Player7IsStateERNS_5StateE(void* c, State* st);
-extern void _ZN5Sound13PlayCharVoiceEjjRK7Vector3(unsigned int a, unsigned int b, Vector3* v);
-extern void _ZN6Player11ChangeStateERNS_5StateE(void* c, State* st);
+extern "C" int _ZN6Player7IsStateERNS_5StateE(void* c, State* st);
+extern "C" void _ZN5Sound13PlayCharVoiceEjjRK7Vector3(unsigned int a, unsigned int b, Vector3* v);
+extern "C" void _ZN6Player11ChangeStateERNS_5StateE(void* c, State* st);
 int func_ov002_020d9298(char* c){
   if (_ZN6Player7IsStateERNS_5StateE(c, &data_ov002_021105a4)) return 0;
   _ZN5Sound13PlayCharVoiceEjjRK7Vector3(*(unsigned char*)(c+0x6d9), 0x14, (Vector3*)(c+0x74));

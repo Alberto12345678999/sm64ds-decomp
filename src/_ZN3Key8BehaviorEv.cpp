@@ -7,21 +7,21 @@
 typedef void (*VoidFn)();
 
 extern "C" {
-extern int _ZN9Animation8FinishedEv(void* a);
+extern "C" int _ZN9Animation8FinishedEv(void* a);
 extern void Matrix4x3_FromTranslation(void* m, int x, int y, int z);
 extern void Matrix4x3_ApplyInPlaceToRotationY(void* m, int ang);
 extern void MulMat4x3Mat4x3(void* d, void* a, void* b);
 extern void SubVec3(void* d, void* a, void* b);
 extern void Vec3_LslInPlace(void* v, int sh);
 extern void AddVec3(void* d, void* a, void* b);
-extern void* _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(unsigned int a, unsigned int b, int x, int y, int z, const void* v, void* cb);
-extern void _ZN9Animation7AdvanceEv(void* a);
-extern void _ZN9ActorBase18MarkForDestructionEv(void* c);
-extern int _ZN5Enemy14UpdateYoshiEatER12WithMeshClsn(void* c, void* w);
-extern void _ZN12CylinderClsn5ClearEv(void* c);
-extern void _ZN5Actor9UpdatePosEP12CylinderClsn(void* c, void* cyl);
-extern void _ZN25MovingCylinderClsnWithPos21SetPosRelativeToActorERK7Vector3(void* c, void* v);
-extern void _ZN12CylinderClsn6UpdateEv(void* c);
+extern "C" void* _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(unsigned int a, unsigned int b, int x, int y, int z, const void* v, void* cb);
+extern "C" void _ZN9Animation7AdvanceEv(void* a);
+extern "C" void _ZN9ActorBase18MarkForDestructionEv(void* c);
+extern "C" int _ZN5Enemy14UpdateYoshiEatER12WithMeshClsn(void* c, void* w);
+extern "C" void _ZN12CylinderClsn5ClearEv(void* c);
+extern "C" void _ZN5Actor9UpdatePosEP12CylinderClsn(void* c, void* cyl);
+extern "C" void _ZN25MovingCylinderClsnWithPos21SetPosRelativeToActorERK7Vector3(void* c, void* v);
+extern "C" void _ZN12CylinderClsn6UpdateEv(void* c);
 
 extern char data_020a0e68;
 extern int data_ov089_02132c40[];

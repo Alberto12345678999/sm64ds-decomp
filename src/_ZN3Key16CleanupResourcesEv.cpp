@@ -4,8 +4,8 @@
 #include "decl_common.h"
 /* recovered: named members + shared header, real C++ method */
 #include "Key.h"
-extern void _ZN13SharedFilePtr7ReleaseEv(void *self);
-extern void _ZN5Event8ClearBitEj(unsigned int b);
+extern "C" void _ZN13SharedFilePtr7ReleaseEv(void *self);
+extern "C" void _ZN5Event8ClearBitEj(unsigned int b);
 extern int data_ov002_02110964[];
 extern int data_ov089_02132c60[];
 extern int data_ov089_02132c40[];

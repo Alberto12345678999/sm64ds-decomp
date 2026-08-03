@@ -3,17 +3,17 @@
 /* recovered: shared common types */
 #include "common.h"
 extern "C" {
-extern int _ZNK12WithMeshClsn10IsOnGroundEv(void*);
-extern char* _ZNK12WithMeshClsn14GetFloorResultEv(void*);
+extern "C" int _ZNK12WithMeshClsn10IsOnGroundEv(void*);
+extern "C" char* _ZNK12WithMeshClsn14GetFloorResultEv(void*);
 extern int SurfaceInfo_TestFlag0x20(int* p);
 extern void func_ov084_021296cc(void*);
-extern void _ZN5Enemy9SpawnCoinEv(void*);
+extern "C" void _ZN5Enemy9SpawnCoinEv(void*);
 extern void func_ov084_02129498(void*);
-extern void _ZN8CapEnemy10ReleaseCapERK7Vector3(void*, void*);
-extern void _ZN8CapEnemy15RespawnIfHasCapEv(void*);
+extern "C" void _ZN8CapEnemy10ReleaseCapERK7Vector3(void*, void*);
+extern "C" void _ZN8CapEnemy15RespawnIfHasCapEv(void*);
 extern int func_02037e38(unsigned int* p);
 extern int func_02037e84(int* p);
-extern void _ZN10ClsnResultD1Ev(void*);
+extern "C" void _ZN10ClsnResultD1Ev(void*);
 extern int data_02099368[];
 }
 

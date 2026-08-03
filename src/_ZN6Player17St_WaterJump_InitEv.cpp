@@ -3,8 +3,8 @@
 /* recovered: named members + shared header, real C++ method */
 #include "Player.h"
 extern "C" {
-extern int _ZN6Player7SetAnimEji5Fix12IiEj(void*,unsigned int,int,int,unsigned int);
-extern int _ZN5Sound9PlayBank0EjRK7Vector3(unsigned int,void*);
+extern "C" int _ZN6Player7SetAnimEji5Fix12IiEj(void*,unsigned int,int,int,unsigned int);
+extern "C" int _ZN5Sound9PlayBank0EjRK7Vector3(unsigned int,void*);
 extern int func_ov002_020e25f0(void*,int);
 }
 

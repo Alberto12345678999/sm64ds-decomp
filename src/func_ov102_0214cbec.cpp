@@ -13,13 +13,13 @@ extern char data_ov102_0214ea58;
 extern char data_ov102_0214ea78;
 
 extern "C" {
-extern void* _ZN5Actor10FindWithIDEj(u32 id);
+extern "C" void* _ZN5Actor10FindWithIDEj(u32 id);
 extern void func_020ada40(void* c, void* v, void* r4, s32 flag);
-extern int _ZN6Player7TryGrabER5Actor(void* p, void* actor);
+extern "C" int _ZN6Player7TryGrabER5Actor(void* p, void* actor);
 extern void func_ov102_0214d1f8(void* c, void* p);
 extern void func_020105cc(void* c, u32 flags);
 extern int func_ov102_0214cf4c(char* c, char* p);
-extern void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void* p, const Vector3* v, u32 a, Fix12 f, u32 b, u32 c, u32 d);
+extern "C" void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void* p, const Vector3* v, u32 a, Fix12 f, u32 b, u32 c, u32 d);
 extern int func_ov002_020cc16c(void* c, void* state);
 extern int func_ov102_0214cf98(char* c, int p);
 }

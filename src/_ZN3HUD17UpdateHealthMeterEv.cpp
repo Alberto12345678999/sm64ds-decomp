@@ -5,9 +5,9 @@
 /* recovered: named members + shared header, real C++ method */
 #include "HUD.h"
 extern "C" {
-extern int _ZN5Event6GetBitEj(unsigned int bit);
+extern "C" int _ZN5Event6GetBitEj(unsigned int bit);
 extern void func_02012790(int id);
-extern int _ZN6Player7IsInAirEv(void *p);
+extern "C" int _ZN6Player7IsInAirEv(void *p);
 
 extern unsigned char data_0209f250;
 extern unsigned char data_0209f2c4;

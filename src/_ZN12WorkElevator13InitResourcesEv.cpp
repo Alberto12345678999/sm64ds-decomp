@@ -12,17 +12,17 @@ struct BMD_File; struct KCL_File; struct CLPS_Block; struct ClsnResult; struct V
 extern SharedFilePtr data_ov021_021149a0, data_ov021_021149a8, data_ov021_021149b0, data_ov021_021149b8;
 extern Matrix4x3 data_ov021_02113a60, data_ov021_02113a80;
 extern "C" {
-extern void _ZN5Model8LoadFileER13SharedFilePtr(SharedFilePtr* p);
-extern void _ZN12MeshCollider8LoadFileER13SharedFilePtr(SharedFilePtr* p);
-extern void _ZN9ModelBase7SetFileEP8BMD_Fileii(void* thiz, BMD_File* f, int a, int b);
-extern void _ZN18MovingMeshCollider7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(void* thiz, KCL_File* f, const Matrix4x3* m, Fix12 fix, s16 s, CLPS_Block* clps);
+extern "C" void _ZN5Model8LoadFileER13SharedFilePtr(SharedFilePtr* p);
+extern "C" void _ZN12MeshCollider8LoadFileER13SharedFilePtr(SharedFilePtr* p);
+extern "C" void _ZN9ModelBase7SetFileEP8BMD_Fileii(void* thiz, BMD_File* f, int a, int b);
+extern "C" void _ZN18MovingMeshCollider7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(void* thiz, KCL_File* f, const Matrix4x3* m, Fix12 fix, s16 s, CLPS_Block* clps);
 extern void func_020393d4(int* p, int v);
 extern void func_020393c4(int* p, int v);
-extern void _ZN16MeshColliderBase6EnableEP5Actor(void* thiz, void* actor);
-extern void _ZN13RaycastGroundC1Ev(void* thiz);
-extern void _ZN13RaycastGround12SetObjAndPosERK7Vector3P5Actor(void* thiz, const Vector3* pos, void* actor);
-extern int _ZN13RaycastGround10DetectClsnEv(void* thiz);
-extern void _ZN13RaycastGroundD1Ev(void* thiz);
+extern "C" void _ZN16MeshColliderBase6EnableEP5Actor(void* thiz, void* actor);
+extern "C" void _ZN13RaycastGroundC1Ev(void* thiz);
+extern "C" void _ZN13RaycastGround12SetObjAndPosERK7Vector3P5Actor(void* thiz, const Vector3* pos, void* actor);
+extern "C" int _ZN13RaycastGround10DetectClsnEv(void* thiz);
+extern "C" void _ZN13RaycastGroundD1Ev(void* thiz);
 extern void func_ov021_02111434(void* p);
 extern void func_ov021_0211129c(void* p);
 }

@@ -5,7 +5,7 @@
 /* recovered: named members + shared header, real C++ method */
 #include "Player.h"
 extern "C" {
-extern int _ZN6Player7SetAnimEji5Fix12IiEj(void*,unsigned,int,int,unsigned);
+extern "C" int _ZN6Player7SetAnimEji5Fix12IiEj(void*,unsigned,int,int,unsigned);
 extern int* data_0209f318;
 }
 

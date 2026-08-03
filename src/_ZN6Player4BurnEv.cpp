@@ -6,7 +6,7 @@
 #include "Player.h"
 extern "C" {
 extern int data_ov002_021100dc[];
-extern void _ZN6Player11ChangeStateERNS_5StateE(void*,void*);
+extern "C" void _ZN6Player11ChangeStateERNS_5StateE(void*,void*);
 }
 
 int Player::Burn()

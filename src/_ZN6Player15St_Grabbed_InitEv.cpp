@@ -4,8 +4,8 @@
 #include "Player.h"
 extern "C" {
 extern void func_ov002_020da9d4(void* c);
-extern void _ZN5Sound13PlayCharVoiceEjjRK7Vector3(unsigned int, unsigned int, void*);
-extern int _ZN6Player7SetAnimEji5Fix12IiEj(void*, unsigned int, int, int, unsigned int);
+extern "C" void _ZN5Sound13PlayCharVoiceEjjRK7Vector3(unsigned int, unsigned int, void*);
+extern "C" int _ZN6Player7SetAnimEji5Fix12IiEj(void*, unsigned int, int, int, unsigned int);
 }
 
 int Player::St_Grabbed_Init()

@@ -1,9 +1,9 @@
 //cpp
 extern "C" {
-extern void _ZN5Sound12PlayBank2_2DEj(unsigned);
-extern void _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(void*, void*, int, int, int, unsigned short);
-extern void _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(void*, void*, int, int, unsigned int);
-extern void _ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj(void*, void*, int, int, unsigned int);
+extern "C" void _ZN5Sound12PlayBank2_2DEj(unsigned);
+extern "C" void _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(void*, void*, int, int, int, unsigned short);
+extern "C" void _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(void*, void*, int, int, unsigned int);
+extern "C" void _ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj(void*, void*, int, int, unsigned int);
 struct G2 { int w[2]; };
 extern struct G2 data_ov006_0213adf8;
 extern void* data_ov006_0213ae30;

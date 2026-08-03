@@ -10,12 +10,12 @@
  * flags: -O4,p -enum int -lang c99 -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc
  */
 extern void func_020393c4(int* p, int v);
-extern int _ZN8Platform13IsClsnInRangeE5Fix12IiES1_(void* self, int a, int b);
-extern int _Z14ApproachLinearRiii(int* r, int t, int step);
+extern "C" int _ZN8Platform13IsClsnInRangeE5Fix12IiES1_(void* self, int a, int b);
+extern "C" int _Z14ApproachLinearRiii(int* r, int t, int step);
 extern u16 DecIfAbove0_Short(u16* p);
 extern int RandomIntInternal(int* seed);
-extern void _ZN9Animation7AdvanceEv(void* a);
-extern void* _ZN5Sound8PlayLongEjjjRK7Vector3j(unsigned int a, unsigned int b, unsigned int cc, void* v, unsigned int d);
+extern "C" void _ZN9Animation7AdvanceEv(void* a);
+extern "C" void* _ZN5Sound8PlayLongEjjjRK7Vector3j(unsigned int a, unsigned int b, unsigned int cc, void* v, unsigned int d);
 
 extern u8 data_0209f2c0;
 extern int func_ov065_0211aacc;

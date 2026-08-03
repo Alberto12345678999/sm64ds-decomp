@@ -3,10 +3,10 @@
 /* recovered: named members + shared header, real C++ method */
 #include "PyramidTag.h"
 extern "C" {
-extern void _ZN9ActorBase18MarkForDestructionEv(void* c);
-extern char* _ZN5Actor10FindWithIDEj(unsigned int id);
-extern void _ZN12CylinderClsn5ClearEv(void* a);
-extern void _ZN12CylinderClsn6UpdateEv(void* a);
+extern "C" void _ZN9ActorBase18MarkForDestructionEv(void* c);
+extern "C" char* _ZN5Actor10FindWithIDEj(unsigned int id);
+extern "C" void _ZN12CylinderClsn5ClearEv(void* a);
+extern "C" void _ZN12CylinderClsn6UpdateEv(void* a);
 }
 
 int PyramidTag::Behavior()

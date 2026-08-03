@@ -9,10 +9,10 @@ extern int data_0209caa0[];
 extern unsigned char data_0209f250;
 extern char *data_0209f394[];
 extern char *data_0209f318;
-extern void _Z14ApproachLinearRiii(int *r, int target, int step);
+extern "C" void _Z14ApproachLinearRiii(int *r, int target, int step);
 extern void Matrix4x3_FromTranslation(char *m, int x, int y, int z);
 extern void func_ov002_020e4374(char *c, int *p1, int *p2);
-extern void _ZN5Actor19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(char *a, char *sh, char *m, int height, int rad, unsigned int frames);
+extern "C" void _ZN5Actor19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(char *a, char *sh, char *m, int height, int rad, unsigned int frames);
 }
 
 struct C5;

@@ -10,12 +10,12 @@ typedef struct Actor Actor;
 struct RaycastGround { char buf[0x50]; };
 
 extern int func_ov064_02116ec0(void* obj);
-extern int _ZN5Actor9TrackStarEjj(Actor* self, unsigned int a, unsigned int b);
-extern void _ZN13RaycastGroundC1Ev(RaycastGround* self);
-extern void _ZN13RaycastGround12SetObjAndPosERK7Vector3P5Actor(RaycastGround* self, const Vector3* p, Actor* a);
-extern int _ZN13RaycastGround10DetectClsnEv(RaycastGround* self);
-extern void _ZN13RaycastGroundD1Ev(RaycastGround* self);
-extern Actor* _ZN5Actor5SpawnEjjRK7Vector3PK10Vector3_16ii(u32 actorID, u32 param1, const Vector3* pos, const Vector3_16* rot, s8 areaID, s16 deathTableID);
+extern "C" int _ZN5Actor9TrackStarEjj(Actor* self, unsigned int a, unsigned int b);
+extern "C" void _ZN13RaycastGroundC1Ev(RaycastGround* self);
+extern "C" void _ZN13RaycastGround12SetObjAndPosERK7Vector3P5Actor(RaycastGround* self, const Vector3* p, Actor* a);
+extern "C" int _ZN13RaycastGround10DetectClsnEv(RaycastGround* self);
+extern "C" void _ZN13RaycastGroundD1Ev(RaycastGround* self);
+extern "C" Actor* _ZN5Actor5SpawnEjjRK7Vector3PK10Vector3_16ii(u32 actorID, u32 param1, const Vector3* pos, const Vector3_16* rot, s8 areaID, s16 deathTableID);
 extern s16 data_02082214[];
 }
 

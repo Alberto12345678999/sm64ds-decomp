@@ -4,10 +4,10 @@
 /* recovered: shared common types, renamed to Class_Method */
 /* daObjBk_Lift_c::Kill - recovered from vtable slot identity */
 extern "C" {
-extern void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int, int, int, int);
-extern void _ZN5Actor10PoofDustAtERK7Vector3(void *self, void *v);
-extern void _ZN5Sound9PlayBank3EjRK7Vector3(unsigned int, void *);
-extern void _ZN9ActorBase18MarkForDestructionEv(void *);
+extern "C" void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int, int, int, int);
+extern "C" void _ZN5Actor10PoofDustAtERK7Vector3(void *self, void *v);
+extern "C" void _ZN5Sound9PlayBank3EjRK7Vector3(unsigned int, void *);
+extern "C" void _ZN9ActorBase18MarkForDestructionEv(void *);
 struct Vector3 { int x, y, z; };
 void func_ov015_0211233c(char *c)
 {

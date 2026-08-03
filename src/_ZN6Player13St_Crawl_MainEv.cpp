@@ -7,16 +7,16 @@
 /* recovered: named members + shared header, real C++ method */
 #include "Player.h"
 extern "C" {
-extern int _ZN6Player12FinishedAnimEv(void* c);
-extern void _ZN6Player7SetAnimEji5Fix12IiEj(void* c, u32 anim, int a, Fix12i b, u32 d);
-extern int _ZNK6Player14GetBodyModelIDEjb(void* c, u32 a, int b);
-extern void _ZN5Sound9PlayBank0EjRK7Vector3(u32 a, void* v);
+extern "C" int _ZN6Player12FinishedAnimEv(void* c);
+extern "C" void _ZN6Player7SetAnimEji5Fix12IiEj(void* c, u32 anim, int a, Fix12i b, u32 d);
+extern "C" int _ZNK6Player14GetBodyModelIDEjb(void* c, u32 a, int b);
+extern "C" void _ZN5Sound9PlayBank0EjRK7Vector3(u32 a, void* v);
 extern int func_ov002_020d36d8(void* c, int arg);
 extern int Player_ScaleByCharFactor(void* c, int a);
 extern int func_ov002_020bf224(void* c, int a, int b);
 extern void ApproachAngle(s16* cur, s16 target, int divisor, int band, int maxStep);
 extern void func_ov002_020c18b0(void* c, int a);
-extern void _ZN6Player11ChangeStateERNS_5StateE(void* c, void* s);
+extern "C" void _ZN6Player11ChangeStateERNS_5StateE(void* c, void* s);
 extern int func_ov002_020d4d88(void* c, int a, int b);
 extern void Player_AdvanceAnims(void* c);
 

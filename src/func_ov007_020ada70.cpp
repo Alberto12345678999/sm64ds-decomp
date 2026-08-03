@@ -1,8 +1,8 @@
 //cpp
 extern "C" {
 extern void func_ov007_020c32e8(void *a, int b, int c, int d);
-extern void _ZN4CP1527FlushAndInvalidateDataCacheEjj(unsigned int a, unsigned int b);
-extern void _ZN3GXS11LoadOBJPlttEPKvjj(const void *p, unsigned int a, unsigned int b);
+extern "C" void _ZN4CP1527FlushAndInvalidateDataCacheEjj(unsigned int a, unsigned int b);
+extern "C" void _ZN3GXS11LoadOBJPlttEPKvjj(const void *p, unsigned int a, unsigned int b);
 extern void RequestScreenFade(int a, int b, int c);
 extern void *data_ov007_0210342c;
 extern void func_ov007_020adb84(void);

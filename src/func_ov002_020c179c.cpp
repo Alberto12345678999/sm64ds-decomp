@@ -6,11 +6,11 @@
 // Matched byte-for-byte with mwccarm 1.2/sp2p3 (ov002).
 
 extern "C" {
-extern void _ZN13RaycastGroundC1Ev(void* self);
-extern void _ZN13RaycastGround12SetObjAndPosERK7Vector3P5Actor(void* self, void* pos, void* act);
-extern int _ZN13RaycastGround10DetectClsnEv(void* self);
-extern void _ZN13RaycastGroundD1Ev(void* self);
-extern int _ZN4cstd5atan2E5Fix12IiES1_(int y, int x);
+extern "C" void _ZN13RaycastGroundC1Ev(void* self);
+extern "C" void _ZN13RaycastGround12SetObjAndPosERK7Vector3P5Actor(void* self, void* pos, void* act);
+extern "C" int _ZN13RaycastGround10DetectClsnEv(void* self);
+extern "C" void _ZN13RaycastGroundD1Ev(void* self);
+extern "C" int _ZN4cstd5atan2E5Fix12IiES1_(int y, int x);
 extern short data_02082214[];
 
 int func_ov002_020c179c(char* self, int angle) {

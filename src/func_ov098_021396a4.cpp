@@ -5,13 +5,13 @@
 
 struct RaycastGround { char buf[0x68 - 0x18]; };
 extern "C" {
-extern void _ZN13RaycastGroundC1Ev(struct RaycastGround *self);
-extern void _ZN13RaycastGround12SetObjAndPosERK7Vector3P5Actor(struct RaycastGround *self, const struct Vector3 *v, void *actor);
-extern int _ZN13RaycastGround10DetectClsnEv(struct RaycastGround *self);
+extern "C" void _ZN13RaycastGroundC1Ev(struct RaycastGround *self);
+extern "C" void _ZN13RaycastGround12SetObjAndPosERK7Vector3P5Actor(struct RaycastGround *self, const struct Vector3 *v, void *actor);
+extern "C" int _ZN13RaycastGround10DetectClsnEv(struct RaycastGround *self);
 extern void Matrix4x3_FromRotationY(void *m, int angle);
-extern void _ZN5Actor18DropShadowScaleXYZER11ShadowModelR9Matrix4x35Fix12IiES5_S5_j(
+extern "C" void _ZN5Actor18DropShadowScaleXYZER11ShadowModelR9Matrix4x35Fix12IiES5_S5_j(
     void *self, void *shadow, void *mtx, int fix, int t1, int t2, unsigned int n);
-extern void _ZN13RaycastGroundD1Ev(struct RaycastGround *self);
+extern "C" void _ZN13RaycastGroundD1Ev(struct RaycastGround *self);
 void func_ov098_021396a4(void *self);
 }
 

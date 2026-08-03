@@ -5,9 +5,9 @@
 /* recovered: named members + shared header, real C++ method */
 #include "BowserSkyPlatform.h"
 extern "C" {
-extern void _ZN12CylinderClsn5ClearEv(void* p);
-extern void _ZN25MovingCylinderClsnWithPos21SetPosRelativeToActorERK7Vector3(void* p, void* v);
-extern void _ZN12CylinderClsn6UpdateEv(void* p);
+extern "C" void _ZN12CylinderClsn5ClearEv(void* p);
+extern "C" void _ZN25MovingCylinderClsnWithPos21SetPosRelativeToActorERK7Vector3(void* p, void* v);
+extern "C" void _ZN12CylinderClsn6UpdateEv(void* p);
 struct V3 { int x,y,z; };
 }
 

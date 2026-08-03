@@ -6,11 +6,11 @@
 #include "common.h"
 extern "C" {
 
-extern void _ZN5Actor9UpdatePosEP12CylinderClsn(void *c, void *clsn);
-extern unsigned _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(unsigned a, unsigned b, int f, int t1, int t2, const void *v, void *cb);
-extern unsigned _ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f(unsigned a, unsigned b, int f, int t1, int t2, const void *v);
-extern void *_ZN8Particle6System12FromUniqueIDEj(unsigned id);
-extern int _ZNK12WithMeshClsn13JustHitGroundEv(void *p);
+extern "C" void _ZN5Actor9UpdatePosEP12CylinderClsn(void *c, void *clsn);
+extern "C" unsigned _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(unsigned a, unsigned b, int f, int t1, int t2, const void *v, void *cb);
+extern "C" unsigned _ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f(unsigned a, unsigned b, int f, int t1, int t2, const void *v);
+extern "C" void *_ZN8Particle6System12FromUniqueIDEj(unsigned id);
+extern "C" int _ZNK12WithMeshClsn13JustHitGroundEv(void *p);
 
 int func_ov096_02136434(void *c)
 {

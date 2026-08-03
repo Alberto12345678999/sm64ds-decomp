@@ -4,11 +4,11 @@
 #include "Player.h"
 extern "C" {
 extern int func_ov002_020cec2c(void*);
-extern void _Z14ApproachLinearRiii(int*,int,int);
+extern "C" void _Z14ApproachLinearRiii(int*,int,int);
 extern int func_ov002_020ceaf4(void*);
-extern int _ZN6Player12FinishedAnimEv(void*);
-extern int _ZN6Player9GetHealthEv(void*);
-extern void _ZN6Player11ChangeStateERNS_5StateE(void*,void*);
+extern "C" int _ZN6Player12FinishedAnimEv(void*);
+extern "C" int _ZN6Player9GetHealthEv(void*);
+extern "C" void _ZN6Player11ChangeStateERNS_5StateE(void*,void*);
 extern void func_ov007_020c5dec(void*,int);
 extern int func_ov002_020ceb7c(void*);
 extern int Player_AdvanceAnims(void*);

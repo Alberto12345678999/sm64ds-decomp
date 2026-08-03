@@ -9,8 +9,8 @@ extern short data_0209d6d4;
 extern unsigned char data_0209d6a8;
 extern unsigned char data_0209d668;
 extern int func_0201d850(unsigned char a);
-extern int _ZN3G2S13GetBG0CharPtrEv(void);
-extern int _ZN3G2S12GetBG0ScrPtrEv(void);
+extern "C" int _ZN3G2S13GetBG0CharPtrEv(void);
+extern "C" int _ZN3G2S12GetBG0ScrPtrEv(void);
 extern void MultiStore_Int(int a, int b, int n);
 extern void MultiStore16(int a, int b, int n);
 

@@ -1,24 +1,24 @@
 //cpp
 extern "C" {
-extern int _ZN2G212GetBG0ScrPtrEv(void);
+extern "C" int _ZN2G212GetBG0ScrPtrEv(void);
 extern void MultiStore16(int val, int ptr, int n);
-extern int _ZN3G2S12GetBG0ScrPtrEv(void);
-extern int _ZN2G212GetBG1ScrPtrEv(void);
-extern int _ZN3G2S12GetBG1ScrPtrEv(void);
-extern int _ZN2G212GetBG2ScrPtrEv(void);
-extern int _ZN3G2S12GetBG2ScrPtrEv(void);
-extern int _ZN2G212GetBG3ScrPtrEv(void);
-extern int _ZN3G2S12GetBG3ScrPtrEv(void);
+extern "C" int _ZN3G2S12GetBG0ScrPtrEv(void);
+extern "C" int _ZN2G212GetBG1ScrPtrEv(void);
+extern "C" int _ZN3G2S12GetBG1ScrPtrEv(void);
+extern "C" int _ZN2G212GetBG2ScrPtrEv(void);
+extern "C" int _ZN3G2S12GetBG2ScrPtrEv(void);
+extern "C" int _ZN2G212GetBG3ScrPtrEv(void);
+extern "C" int _ZN3G2S12GetBG3ScrPtrEv(void);
 extern int func_02054efc(void);
-extern int _ZN3G2S13GetBG0CharPtrEv(void);
+extern "C" int _ZN3G2S13GetBG0CharPtrEv(void);
 extern int func_02054ea8(void);
-extern int _ZN3G2S13GetBG1CharPtrEv(void);
-extern int _ZN2G213GetBG2CharPtrEv(void);
-extern int _ZN3G2S13GetBG2CharPtrEv(void);
+extern "C" int _ZN3G2S13GetBG1CharPtrEv(void);
+extern "C" int _ZN2G213GetBG2CharPtrEv(void);
+extern "C" int _ZN3G2S13GetBG2CharPtrEv(void);
 extern int func_02054d88(void);
-extern int _ZN3G2S13GetBG3CharPtrEv(void);
-extern void _ZN2GX10LoadBGPlttEPKvjj(const void* p, unsigned int a, unsigned int b);
-extern void _ZN3GXS10LoadBGPlttEPKvjj(const void* p, unsigned int a, unsigned int b);
+extern "C" int _ZN3G2S13GetBG3CharPtrEv(void);
+extern "C" void _ZN2GX10LoadBGPlttEPKvjj(const void* p, unsigned int a, unsigned int b);
+extern "C" void _ZN3GXS10LoadBGPlttEPKvjj(const void* p, unsigned int a, unsigned int b);
 
 extern char data_ov004_020b9468;
 

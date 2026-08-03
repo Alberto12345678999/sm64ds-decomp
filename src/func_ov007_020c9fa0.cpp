@@ -3,7 +3,7 @@ extern "C" {
 extern void func_ov007_020c8440(void *p);
 extern void func_ov007_020c8098(void *p);
 extern void func_ov007_020c78dc(void *p);
-extern int _ZN6Player17St_EndingFly_MainEv(void *p);
+extern "C" int _ZN6Player17St_EndingFly_MainEv(void *p);
 
 void func_ov007_020c9fa0(char *c){
   int i;

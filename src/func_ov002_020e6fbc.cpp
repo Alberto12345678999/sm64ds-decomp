@@ -1,6 +1,6 @@
 //cpp
 extern "C" {
-extern char* _ZN5Actor13SpawnSoundObjEj(void* self, unsigned int id);
+extern "C" char* _ZN5Actor13SpawnSoundObjEj(void* self, unsigned int id);
 extern int func_ov002_020ea3a4(void* c);
 void func_ov002_020e6fbc(char* c, int arg){
   if (*(void**)(c+0x430) != 0) return;

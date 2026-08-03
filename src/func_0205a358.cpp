@@ -12,11 +12,11 @@ typedef struct {
 } Data0205;
 extern Data0205 data_020a6460;
 extern void func_02059fa8(int ch);
-extern int _ZN3IRQ7DisableEv(void);
-extern void *_ZN3IRQ13GetIRQHandlerEj(unsigned int x);
-extern void _ZN3IRQ13SetIRQHandlerEjPFvvE(unsigned int x, void (*h)(void));
-extern void _ZN3IRQ10EnableIRQsEj(unsigned int x);
-extern void _ZN3IRQ7RestoreEj(int saved);
+extern "C" int _ZN3IRQ7DisableEv(void);
+extern "C" void *_ZN3IRQ13GetIRQHandlerEj(unsigned int x);
+extern "C" void _ZN3IRQ13SetIRQHandlerEjPFvvE(unsigned int x, void (*h)(void));
+extern "C" void _ZN3IRQ10EnableIRQsEj(unsigned int x);
+extern "C" void _ZN3IRQ7RestoreEj(int saved);
 extern void func_0205a290(void);
 
 void func_0205a358(int a0, int a1, int a2, void (*a3)(int), int a4) {

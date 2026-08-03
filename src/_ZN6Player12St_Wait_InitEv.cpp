@@ -3,8 +3,8 @@
 /* recovered: named members + shared header, real C++ method */
 #include "Player.h"
 extern "C" {
-extern int _ZN6Player7SetAnimEji5Fix12IiEj(void* c, unsigned int a, int b, int d, unsigned int e);
-extern int _ZN6Player9GetHealthEv(void* c);
+extern "C" int _ZN6Player7SetAnimEji5Fix12IiEj(void* c, unsigned int a, int b, int d, unsigned int e);
+extern "C" int _ZN6Player9GetHealthEv(void* c);
 
 extern unsigned char data_0209f2d8;
 extern int data_0209caa0[];

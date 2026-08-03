@@ -1,16 +1,16 @@
 //cpp
 #include "types.h"
 extern "C" {
-extern void _ZN5Actor24KillAndTrackInDeathTableEv(void *a);
+extern "C" void _ZN5Actor24KillAndTrackInDeathTableEv(void *a);
 extern void func_0201267c(u32 id, void *p);
-extern void *_ZN8CapEnemy15RespawnIfHasCapEv(void *a);
-extern int _ZN6Player9StartTalkER9ActorBaseb(void *p, void *a, int b);
-extern void *_ZN5Actor10FindWithIDEj(u32 id);
-extern void _ZN6Player11ShowMessageER9ActorBasejPK7Vector3jj(void *p, void *a, u32 msg, void *v, u32 a4, u32 a5);
+extern "C" void *_ZN8CapEnemy15RespawnIfHasCapEv(void *a);
+extern "C" int _ZN6Player9StartTalkER9ActorBaseb(void *p, void *a, int b);
+extern "C" void *_ZN5Actor10FindWithIDEj(u32 id);
+extern "C" void _ZN6Player11ShowMessageER9ActorBasejPK7Vector3jj(void *p, void *a, u32 msg, void *v, u32 a4, u32 a5);
 extern void func_ov063_02116244(char *c);
 extern u8 data_0209d660;
-extern int _ZN5Sound15PlaySecretSoundEP5ActorPt(void *a, void *p);
-extern void _ZN9ActorBase18MarkForDestructionEv(void *a);
+extern "C" int _ZN5Sound15PlaySecretSoundEP5ActorPt(void *a, void *p);
+extern "C" void _ZN9ActorBase18MarkForDestructionEv(void *a);
 }
 
 extern "C" void func_ov063_0211934c(char *c)

@@ -5,11 +5,11 @@
 /* recovered: named members + shared header, real C++ method */
 #include "FirePiranhaPlantBig.h"
 extern "C" {
-extern void _ZN5Actor19MakeVanishLuigiWorkER12CylinderClsn(char *thiz, char *clsn);
-extern void _ZN9Animation7AdvanceEv(char *thiz);
-extern void _ZN12CylinderClsn5ClearEv(char *thiz);
-extern void _ZN12CylinderClsn6UpdateEv(char *thiz);
-extern void _ZN25MovingCylinderClsnWithPos21SetPosRelativeToActorERK7Vector3(char *thiz, char *v);
+extern "C" void _ZN5Actor19MakeVanishLuigiWorkER12CylinderClsn(char *thiz, char *clsn);
+extern "C" void _ZN9Animation7AdvanceEv(char *thiz);
+extern "C" void _ZN12CylinderClsn5ClearEv(char *thiz);
+extern "C" void _ZN12CylinderClsn6UpdateEv(char *thiz);
+extern "C" void _ZN25MovingCylinderClsnWithPos21SetPosRelativeToActorERK7Vector3(char *thiz, char *v);
 }
 
 int FirePiranhaPlantBig::Behavior()

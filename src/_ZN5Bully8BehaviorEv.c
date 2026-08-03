@@ -5,9 +5,9 @@ typedef short s16;
 struct Vector3 { int x, y, z; };
 struct Vector3_16 { s16 x, y, z; };
 extern "C" {
-extern int _ZN5Enemy26UpdateKillByInvincibleCharER12WithMeshClsnR9ModelAnimj(void* self, void* a, void* b, unsigned c);
-extern void* _ZN5Actor5SpawnEjjRK7Vector3PK10Vector3_16ii(unsigned a, unsigned b, const Vector3* pos, const Vector3_16* rot, int e, int f);
-extern void* _ZN5Actor10FindWithIDEj(unsigned id);
+extern "C" int _ZN5Enemy26UpdateKillByInvincibleCharER12WithMeshClsnR9ModelAnimj(void* self, void* a, void* b, unsigned c);
+extern "C" void* _ZN5Actor5SpawnEjjRK7Vector3PK10Vector3_16ii(unsigned a, unsigned b, const Vector3* pos, const Vector3_16* rot, int e, int f);
+extern "C" void* _ZN5Actor10FindWithIDEj(unsigned id);
 extern int RandomIntInternal(void* seed);
 extern int data_0209e650;
 extern int func_ov064_02116d1c(void* thiz);

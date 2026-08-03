@@ -12,13 +12,13 @@ extern void func_020383f0(struct WithMeshClsn *);
 extern void WithMeshClsn_UpdateDiscreteNoLava_veneer(struct WithMeshClsn *);
 extern void func_02038414(struct WithMeshClsn *);
 extern void WithMeshClsn_UpdateContinuous_Veneer(struct WithMeshClsn *);
-extern int _ZNK12WithMeshClsn10IsOnGroundEv(struct WithMeshClsn *);
-extern struct SurfaceInfo *_ZNK12WithMeshClsn14GetFloorResultEv(struct WithMeshClsn *);
-extern void _ZNK11SurfaceInfo12CopyNormalToER7Vector3(struct SurfaceInfo *, struct Vector3 *);
-extern int _ZNK12WithMeshClsn13GetLimMovFlagEv(struct WithMeshClsn *);
-extern int _ZN4cstd4fdivEii(int, int);
-extern int _ZNK12WithMeshClsn8IsOnWallEv(struct WithMeshClsn *);
-extern struct SurfaceInfo *_ZNK12WithMeshClsn13GetWallResultEv(struct WithMeshClsn *);
+extern "C" int _ZNK12WithMeshClsn10IsOnGroundEv(struct WithMeshClsn *);
+extern "C" struct SurfaceInfo *_ZNK12WithMeshClsn14GetFloorResultEv(struct WithMeshClsn *);
+extern "C" void _ZNK11SurfaceInfo12CopyNormalToER7Vector3(struct SurfaceInfo *, struct Vector3 *);
+extern "C" int _ZNK12WithMeshClsn13GetLimMovFlagEv(struct WithMeshClsn *);
+extern "C" int _ZN4cstd4fdivEii(int, int);
+extern "C" int _ZNK12WithMeshClsn8IsOnWallEv(struct WithMeshClsn *);
+extern "C" struct SurfaceInfo *_ZNK12WithMeshClsn13GetWallResultEv(struct WithMeshClsn *);
 
 struct Enemy { char pad[0x200]; };
 

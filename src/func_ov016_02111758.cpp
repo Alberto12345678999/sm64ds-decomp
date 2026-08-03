@@ -9,8 +9,8 @@ extern "C" {
 extern void Matrix4x3_FromRotationY(struct Matrix4x3 *m, short angY);
 extern void Matrix4x3_ApplyInPlaceToRotationX(struct Matrix4x3 *m, short angX);
 extern void MulVec3Mat4x3(const Vector3 *v, const struct Matrix4x3 *m, Vector3 *out);
-extern void _Z14ApproachLinearR7Vector3RKS_5Fix12IiE(Vector3 *cur, const Vector3 *tgt, int step);
-extern int _ZN9Animation8FinishedEv(void *self);
+extern "C" void _Z14ApproachLinearR7Vector3RKS_5Fix12IiE(Vector3 *cur, const Vector3 *tgt, int step);
+extern "C" int _ZN9Animation8FinishedEv(void *self);
 extern unsigned char data_0209f220;
 extern struct Matrix4x3 data_020a0e68;
 

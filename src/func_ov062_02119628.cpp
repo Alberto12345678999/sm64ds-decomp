@@ -17,10 +17,10 @@ struct Actor {
     virtual void v17(); virtual int Slot18();
     char pad[0x104]; unsigned char f108;
 };
-extern int _ZN6Player15IsCollectingCapEv(void *p);
-extern void _ZN6Player20RegisterEggCoinCountEjbb(void *p, unsigned int a, bool b, bool c);
-extern void _ZN5Actor15GivePlayerCoinsER6Playerhj(void *self, void *p, unsigned char b, unsigned int n);
-extern void _ZN5Actor24KillAndTrackInDeathTableEv(void *self);
+extern "C" int _ZN6Player15IsCollectingCapEv(void *p);
+extern "C" void _ZN6Player20RegisterEggCoinCountEjbb(void *p, unsigned int a, bool b, bool c);
+extern "C" void _ZN5Actor15GivePlayerCoinsER6Playerhj(void *self, void *p, unsigned char b, unsigned int n);
+extern "C" void _ZN5Actor24KillAndTrackInDeathTableEv(void *self);
 void func_ov062_02119628(Actor *c, void *player) {
 #pragma optimize_for_size on
     if (c->f108 == 3) {

@@ -6,7 +6,7 @@
 /* recovered: named members + shared header, real C++ method */
 #include "UnknownVsEntry.h"
 extern void func_ov075_021152d4(void* self);
-extern int _ZN9Animation7AdvanceEv(void* a);
+extern "C" int _ZN9Animation7AdvanceEv(void* a);
 extern u8 data_0209fc5c;
 
 int UnknownVsEntry::Behavior()

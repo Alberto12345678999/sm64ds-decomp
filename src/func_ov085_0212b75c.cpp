@@ -5,12 +5,12 @@
 
 
 extern "C" {
-extern char *_ZN5Actor13ClosestPlayerEv(char *);
-extern void _ZN7PathPtrC1Ev(void *);
-extern void _ZN7PathPtr6FromIDEj(void *, unsigned int);
-extern void _ZNK7PathPtr7GetNodeER7Vector3j(void *, struct Vector3 *, unsigned int);
+extern "C" char *_ZN5Actor13ClosestPlayerEv(char *);
+extern "C" void _ZN7PathPtrC1Ev(void *);
+extern "C" void _ZN7PathPtr6FromIDEj(void *, unsigned int);
+extern "C" void _ZNK7PathPtr7GetNodeER7Vector3j(void *, struct Vector3 *, unsigned int);
 extern int Vec3_Dist(const struct Vector3 *a, const struct Vector3 *b);
-extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *, void *, int, int, unsigned int);
+extern "C" void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *, void *, int, int, unsigned int);
 extern void *data_ov085_021305d0[];
 }
 

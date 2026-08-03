@@ -1,7 +1,7 @@
 //cpp
 extern "C" {
 extern int func_0203aad0(void*);
-extern int _ZN21ExtendingMeshCollider9SetScaleYE5Fix12IiE(void*,int);
+extern "C" int _ZN21ExtendingMeshCollider9SetScaleYE5Fix12IiE(void*,int);
 int _ZN8PoleLift8BehaviorEv(char* c){
   int v=func_0203aad0(c+0x158);
   if(*(unsigned char*)(c+0xd4)){

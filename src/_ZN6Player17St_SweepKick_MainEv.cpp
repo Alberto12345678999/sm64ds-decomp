@@ -5,9 +5,9 @@
 /* recovered: named members + shared header, real C++ method */
 #include "Player.h"
 extern "C" {
-extern int _ZN6Player11ChangeStateERNS_5StateE(void*,void*);
+extern "C" int _ZN6Player11ChangeStateERNS_5StateE(void*,void*);
 extern int func_ov002_020d8a50(void*,int);
-extern int _ZN6Player12FinishedAnimEv(void*);
+extern "C" int _ZN6Player12FinishedAnimEv(void*);
 extern int Player_AdvanceAnims(void*);
 extern unsigned char data_020a0e40[];
 extern unsigned short data_0209f49e[];

@@ -1,7 +1,7 @@
 //cpp
 extern "C" {
-extern void* _ZN5Model8LoadFileER13SharedFilePtr(void* f);
-extern int _ZN5Actor9TrackStarEjj(char* c, unsigned a, unsigned b);
+extern "C" void* _ZN5Model8LoadFileER13SharedFilePtr(void* f);
+extern "C" int _ZN5Actor9TrackStarEjj(char* c, unsigned a, unsigned b);
 extern void LoadSilverStarAndNumber(void);
 extern int data_ov002_0210d9d8;
 extern int data_ov002_0210da30;

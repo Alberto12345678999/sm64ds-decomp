@@ -1,8 +1,8 @@
 //cpp
 extern "C" {
 struct Vector3{int x,y,z;};
-extern int _ZN5Sound13PlayCharVoiceEjjRK7Vector3(unsigned a, unsigned b, const Vector3& v);
-extern int _ZN6Player7SetAnimEji5Fix12IiEj(void*,unsigned,int,int,unsigned);
+extern "C" int _ZN5Sound13PlayCharVoiceEjjRK7Vector3(unsigned a, unsigned b, const Vector3& v);
+extern "C" int _ZN6Player7SetAnimEji5Fix12IiEj(void*,unsigned,int,int,unsigned);
 int _ZN6Player14St_Thrown_InitEv(char* c){
   int b = (*(int*)(c+0xb0) & 0x400) ? 1 : 0;
   if(b)

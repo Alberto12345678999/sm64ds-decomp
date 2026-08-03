@@ -2,9 +2,9 @@
 struct C { char pad[4]; };
 typedef void (C::*PMF)();
 extern "C" {
-extern int _ZN9Animation7AdvanceEv(void*);
+extern "C" int _ZN9Animation7AdvanceEv(void*);
 extern void func_ov006_020e7818(void*);
-extern void* _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(unsigned int, unsigned int, int, int, int, const void*, void*);
+extern "C" void* _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(unsigned int, unsigned int, int, int, int, const void*, void*);
 extern int data_ov006_0213c704[2];
 
 #define AT(p, off) ((void*)(int)(((long long)(int)((char*)(p) + (off)))))

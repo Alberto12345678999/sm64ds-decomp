@@ -6,8 +6,8 @@
 #include "Player.h"
 typedef int Fix12i;
 extern void func_ov002_020c2f64(void *c);
-extern void _ZN6Player11ChangeStateERNS_5StateE(void *p, void *st);
-extern void _ZN8Particle20RunningSlidingDustAtE5Fix12IiES1_S1_(Fix12i x, Fix12i y, Fix12i z);
+extern "C" void _ZN6Player11ChangeStateERNS_5StateE(void *p, void *st);
+extern "C" void _ZN8Particle20RunningSlidingDustAtE5Fix12IiES1_S1_(Fix12i x, Fix12i y, Fix12i z);
 extern int func_0201226c(int a0, int a1, int a2, int a3, int a4, short a5);
 extern void Player_AdvanceAnims(void *p);
 extern unsigned char data_020a0e40;

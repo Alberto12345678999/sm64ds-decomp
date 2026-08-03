@@ -6,9 +6,9 @@
 #include "BowserSkyPlatform.h"
 
 extern "C" {
-extern void *_ZN5Model8LoadFileER13SharedFilePtr(void *sfp);
-extern void _ZN9ModelBase7SetFileEP8BMD_Fileii(void *thiz, void *f, int a, int b);
-extern void _ZN25MovingCylinderClsnWithPos4InitEP5ActorRK7Vector35Fix12IiES6_jj(
+extern "C" void *_ZN5Model8LoadFileER13SharedFilePtr(void *sfp);
+extern "C" void _ZN9ModelBase7SetFileEP8BMD_Fileii(void *thiz, void *f, int a, int b);
+extern "C" void _ZN25MovingCylinderClsnWithPos4InitEP5ActorRK7Vector35Fix12IiES6_jj(
     void *thiz, void *actor, const Vector3 &v, int radius, int height, unsigned a, unsigned b);
 extern short Vec3_HorzAngle(const Vector3 *v0, const Vector3 *v1);
 extern int Vec3_HorzLen(const Vector3 *v);

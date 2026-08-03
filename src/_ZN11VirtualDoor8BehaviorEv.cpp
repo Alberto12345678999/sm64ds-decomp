@@ -4,16 +4,16 @@ extern "C" {
 extern void MulVec3Mat4x3(void *in, void *m, void *out);
 extern void InvMat4x3(void *in, void *out);
 extern void func_ov002_020b0a0c(void *c);
-extern void _ZN5Scene20SetAndStopColorFaderEv(void);
-extern int _ZN6Player20IsStateEnteringLevelEv(void *p);
-extern int _ZN6Player12Unk_020c9e5cEh(void *p, int a);
+extern "C" void _ZN5Scene20SetAndStopColorFaderEv(void);
+extern "C" int _ZN6Player20IsStateEnteringLevelEv(void *p);
+extern "C" int _ZN6Player12Unk_020c9e5cEh(void *p, int a);
 extern void StartExitFaderWipe(int a);
-extern void _ZN6Camera9SetFlag_3Ev(void *cam);
-extern void _ZN6Player17SetNoControlStateEhih(void *p, int a, int b, int d);
-extern char *_ZN5Actor15FindWithActorIDEjPS_(unsigned int id, void *prev);
+extern "C" void _ZN6Camera9SetFlag_3Ev(void *cam);
+extern "C" void _ZN6Player17SetNoControlStateEhih(void *p, int a, int b, int d);
+extern "C" char *_ZN5Actor15FindWithActorIDEjPS_(unsigned int id, void *prev);
 extern int Vec3_Dist(void *a, void *b);
 extern void func_02012790(int id);
-extern void _ZN6Camera10LookAtExitER5Actor(void *cam, void *a);
+extern "C" void _ZN6Camera10LookAtExitER5Actor(void *cam, void *a);
 
 extern unsigned char data_0209f250;
 extern char *data_0209f394[];

@@ -1,14 +1,14 @@
 //cpp
 extern "C" {
 extern short Vec3_HorzAngle(void* v0, void* v1);
-extern void _Z14ApproachLinearRsss(short* r, short a, short b);
-extern unsigned int _ZN5Sound8PlayLongEjjjRK7Vector3j(unsigned int a, unsigned int b, unsigned int c, void* v, unsigned int d);
+extern "C" void _Z14ApproachLinearRsss(short* r, short a, short b);
+extern "C" unsigned int _ZN5Sound8PlayLongEjjjRK7Vector3j(unsigned int a, unsigned int b, unsigned int c, void* v, unsigned int d);
 extern int AngleDiff(int a, int b);
 extern int Vec3_ApproachHorz(void* out, void* a, int maxStep);
-extern void _Z14ApproachLinearRiii(int* r, int a, int b);
-extern int _ZN5Sound7PlaySubEjjj5Fix12IiEb(unsigned int a, unsigned int b, unsigned int c, int d, int e);
-extern int _ZN6Player18HasFinishedTalkingEv(void* thiz);
-extern void _ZN9ActorBase18MarkForDestructionEv(void* thiz);
+extern "C" void _Z14ApproachLinearRiii(int* r, int a, int b);
+extern "C" int _ZN5Sound7PlaySubEjjj5Fix12IiEb(unsigned int a, unsigned int b, unsigned int c, int d, int e);
+extern "C" int _ZN6Player18HasFinishedTalkingEv(void* thiz);
+extern "C" void _ZN9ActorBase18MarkForDestructionEv(void* thiz);
 extern unsigned char data_0209f284[];
 
 int func_ov085_0212e078(char* c)

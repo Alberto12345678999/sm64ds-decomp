@@ -5,7 +5,7 @@
 extern "C" {
 struct State;
 extern State data_ov002_02110424;
-extern void _ZN6Player11ChangeStateERNS_5StateE(void*,State*);
+extern "C" void _ZN6Player11ChangeStateERNS_5StateE(void*,State*);
 extern void Player_AdvanceAnims(void*);
 }
 

@@ -8,12 +8,12 @@ struct Cls { virtual void dummy(); };
 typedef void (Cls::*PMF)();
 extern PMF data_ov084_02130e80[];
 extern "C" {
-extern int _ZN5Enemy26UpdateKillByInvincibleCharER12WithMeshClsnR9ModelAnimj(void*, void*, void*, unsigned int);
-extern void _ZN5Actor19MakeVanishLuigiWorkER12CylinderClsn(void*, void*);
-extern void _ZN9Animation7AdvanceEv(void*);
-extern void _ZN12CylinderClsn5ClearEv(void*);
-extern void _ZN12CylinderClsn6UpdateEv(void*);
-extern void _ZN25MovingCylinderClsnWithPos21SetPosRelativeToActorERK7Vector3(void*, void*);
+extern "C" int _ZN5Enemy26UpdateKillByInvincibleCharER12WithMeshClsnR9ModelAnimj(void*, void*, void*, unsigned int);
+extern "C" void _ZN5Actor19MakeVanishLuigiWorkER12CylinderClsn(void*, void*);
+extern "C" void _ZN9Animation7AdvanceEv(void*);
+extern "C" void _ZN12CylinderClsn5ClearEv(void*);
+extern "C" void _ZN12CylinderClsn6UpdateEv(void*);
+extern "C" void _ZN25MovingCylinderClsnWithPos21SetPosRelativeToActorERK7Vector3(void*, void*);
 }
 
 int PiranhaPlant::Behavior()

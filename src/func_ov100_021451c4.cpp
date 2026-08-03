@@ -1,6 +1,6 @@
 //cpp
 extern "C" {
-extern int _ZN6Player12CanEnterDoorEh(void*, unsigned char);
+extern "C" int _ZN6Player12CanEnterDoorEh(void*, unsigned char);
 extern void func_020731dc(void* a, void* b, void* node);
 extern int func_ov100_02145170(void* r0, void* r1, void* a, void* b);
 extern int func_ov100_021453d8(void* c, void* p, int a2);

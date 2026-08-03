@@ -4,8 +4,8 @@
 #include "Player.h"
 extern "C" {
 extern int _ZN6Player7ST_WAITE;
-extern int _ZN6Player11ChangeStateERNS_5StateE(void*,void*);
-extern int _ZN6Player7SetAnimEji5Fix12IiEj(void*,unsigned int,int,int,unsigned int);
+extern "C" int _ZN6Player11ChangeStateERNS_5StateE(void*,void*);
+extern "C" int _ZN6Player7SetAnimEji5Fix12IiEj(void*,unsigned int,int,int,unsigned int);
 extern int func_ov007_020c5dec(void*,int);
 extern int func_ov002_020d22ec(void*,int);
 extern int Player_AdvanceAnims(void*);

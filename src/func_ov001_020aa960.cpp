@@ -1,7 +1,7 @@
 //cpp
 extern "C" {
 extern int func_ov001_020aa79c(int x);
-extern int _ZN6Player15IsCollectingCapEv(void* p);
+extern "C" int _ZN6Player15IsCollectingCapEv(void* p);
 extern unsigned char data_ov001_020ad628[];
 extern unsigned char data_ov001_020ad630[];
 

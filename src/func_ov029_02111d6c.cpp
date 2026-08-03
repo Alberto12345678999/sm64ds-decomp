@@ -8,15 +8,15 @@
 /* recovered: renamed to Class_Method */
 /* daObjWc_Obj05_c::InitResources - recovered from vtable slot identity */
 extern "C" {
-extern void* _ZN5Model8LoadFileER13SharedFilePtr(void* fp);
-extern void _ZN9ModelBase7SetFileEP8BMD_Fileii(void* thiz, void* f, int a, int b);
-extern void _ZN8Platform21UpdateModelPosAndRotYEv(void* thiz);
-extern void _ZN8Platform19UpdateClsnPosAndRotEv(void* thiz);
-extern void* _ZN12MeshCollider8LoadFileER13SharedFilePtr(void* fp);
-extern void _ZN18MovingMeshCollider7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(void* thiz, void* kcl, void* mtx, int fix, short s, void* clps);
+extern "C" void* _ZN5Model8LoadFileER13SharedFilePtr(void* fp);
+extern "C" void _ZN9ModelBase7SetFileEP8BMD_Fileii(void* thiz, void* f, int a, int b);
+extern "C" void _ZN8Platform21UpdateModelPosAndRotYEv(void* thiz);
+extern "C" void _ZN8Platform19UpdateClsnPosAndRotEv(void* thiz);
+extern "C" void* _ZN12MeshCollider8LoadFileER13SharedFilePtr(void* fp);
+extern "C" void _ZN18MovingMeshCollider7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(void* thiz, void* kcl, void* mtx, int fix, short s, void* clps);
 extern void func_020393d4(void* p, void* v);
 extern void func_020393c4(void* p, void* v);
-extern void _ZN16MeshColliderBase22UpdatePosWithTransformERS_P5ActorR10ClsnResultR7Vector3P10Vector3_16S8_(void);
+extern "C" void _ZN16MeshColliderBase22UpdatePosWithTransformERS_P5ActorR10ClsnResultR7Vector3P10Vector3_16S8_(void);
 
 int func_ov029_02111d6c(char* c)
 {

@@ -1,7 +1,7 @@
 //cpp
 extern "C" {
-extern int _ZNK6Player14GetBodyModelIDEjb(void* thiz, unsigned int a, int b);
-extern void _ZN10ModelAnim24CopyERKS_Pcj(void* dst, void* src, char* p, unsigned int n);
+extern "C" int _ZNK6Player14GetBodyModelIDEjb(void* thiz, unsigned int a, int b);
+extern "C" void _ZN10ModelAnim24CopyERKS_Pcj(void* dst, void* src, char* p, unsigned int n);
 extern void func_ov002_020bd984(char* c, int n);
 extern char* data_ov002_020ff480[];
 void func_ov002_020bdd9c(char* c){

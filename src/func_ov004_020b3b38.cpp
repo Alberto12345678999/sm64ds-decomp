@@ -2,7 +2,7 @@
 #include "types.h"
 struct M { int _00; int _01; int _10; int _11; };
 extern "C" {
-extern int _ZN4cstd4fdivEii(int, int);
+extern "C" int _ZN4cstd4fdivEii(int, int);
 extern int func_02053200(int x);
 extern void func_ov004_020b1c68(void* a0, int a1, int a2, int a3, int a4, struct M* a5);
 }

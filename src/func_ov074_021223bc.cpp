@@ -12,21 +12,21 @@ struct Matrix4x3;
 
 extern "C" {
 extern unsigned short DecIfAbove0_Short(unsigned short *p);
-extern void _ZN5Actor8PoofDustEv(void *self);
-extern void _ZN9ActorBase18MarkForDestructionEv(void *self);
-extern int _ZNK12WithMeshClsn13JustHitGroundEv(void *self);
+extern "C" void _ZN5Actor8PoofDustEv(void *self);
+extern "C" void _ZN9ActorBase18MarkForDestructionEv(void *self);
+extern "C" int _ZNK12WithMeshClsn13JustHitGroundEv(void *self);
 extern void func_02012694(int a, void *b);
-extern void _ZN13RaycastGroundC1Ev(RaycastGround *self);
-extern void _ZN4BgCh19StartDetectingWaterEv(RaycastGround *self);
-extern void _ZN4BgCh19StartDetectingToxicEv(RaycastGround *self);
-extern void _ZN4BgCh21StopDetectingOrdinaryEv(RaycastGround *self);
-extern void _ZN13RaycastGround12SetObjAndPosERK7Vector3P5Actor(RaycastGround *self, const Vector3 *v, void *actor);
-extern int _ZN13RaycastGround10DetectClsnEv(RaycastGround *self);
+extern "C" void _ZN13RaycastGroundC1Ev(RaycastGround *self);
+extern "C" void _ZN4BgCh19StartDetectingWaterEv(RaycastGround *self);
+extern "C" void _ZN4BgCh19StartDetectingToxicEv(RaycastGround *self);
+extern "C" void _ZN4BgCh21StopDetectingOrdinaryEv(RaycastGround *self);
+extern "C" void _ZN13RaycastGround12SetObjAndPosERK7Vector3P5Actor(RaycastGround *self, const Vector3 *v, void *actor);
+extern "C" int _ZN13RaycastGround10DetectClsnEv(RaycastGround *self);
 extern int func_02037e20(int *p);
-extern void _ZN13RaycastGroundD1Ev(RaycastGround *self);
-extern void _ZN5Actor9UpdatePosEP12CylinderClsn(void *self, CylinderClsn *cc);
-extern void _ZN5Enemy12UpdateWMClsnER12WithMeshClsnj(void *self, WithMeshClsn *wm, unsigned int j);
-extern void _ZN5Actor19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
+extern "C" void _ZN13RaycastGroundD1Ev(RaycastGround *self);
+extern "C" void _ZN5Actor9UpdatePosEP12CylinderClsn(void *self, CylinderClsn *cc);
+extern "C" void _ZN5Enemy12UpdateWMClsnER12WithMeshClsnj(void *self, WithMeshClsn *wm, unsigned int j);
+extern "C" void _ZN5Actor19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
     void *self, ShadowModel *sm, Matrix4x3 *mtx, Fix12i h, Fix12i g, unsigned int u);
 extern struct Blob48 { int w[12]; } data_02082128;
 

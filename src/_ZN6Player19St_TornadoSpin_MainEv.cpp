@@ -8,12 +8,12 @@ struct Vector3 { int x, y, z; };
 struct RaycastGround { int filler[21]; };
 
 extern "C" {
-extern void _ZN6Player11ChangeStateERNS_5StateE(char* self, int state);
-extern void _ZN13RaycastGroundC1Ev(struct RaycastGround* self);
-extern void _ZN13RaycastGround12SetObjAndPosERK7Vector3P5Actor(struct RaycastGround* self, const struct Vector3* pos, char* actor);
-extern int _ZN13RaycastGround10DetectClsnEv(struct RaycastGround* self);
+extern "C" void _ZN6Player11ChangeStateERNS_5StateE(char* self, int state);
+extern "C" void _ZN13RaycastGroundC1Ev(struct RaycastGround* self);
+extern "C" void _ZN13RaycastGround12SetObjAndPosERK7Vector3P5Actor(struct RaycastGround* self, const struct Vector3* pos, char* actor);
+extern "C" int _ZN13RaycastGround10DetectClsnEv(struct RaycastGround* self);
 extern void Player_AdvanceAnims(char* self);
-extern void _ZN13RaycastGroundD1Ev(struct RaycastGround* self);
+extern "C" void _ZN13RaycastGroundD1Ev(struct RaycastGround* self);
 extern int data_ov002_02110454[];
 extern short data_02082214[];
 

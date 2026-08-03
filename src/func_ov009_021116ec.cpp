@@ -6,7 +6,7 @@
 
 extern "C" {
 extern unsigned int RandomIntInternal(void* g);
-extern int _ZN5Actor5SpawnEjjRK7Vector3PK10Vector3_16ii(unsigned int a, unsigned int b, const Vector3* pos, const Vector3_16* rot, int e, int f);
+extern "C" int _ZN5Actor5SpawnEjjRK7Vector3PK10Vector3_16ii(unsigned int a, unsigned int b, const Vector3* pos, const Vector3_16* rot, int e, int f);
 extern void func_ov009_02111224(void* c, int r1);
 extern void* data_0209e650;
 }

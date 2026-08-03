@@ -3,7 +3,7 @@
 /* recovered: named members + shared header, real C++ method */
 #include "Player.h"
 extern "C" {
-extern int _ZN6Player7IsStateERNS_5StateE(void* c, void* st);
+extern "C" int _ZN6Player7IsStateERNS_5StateE(void* c, void* st);
 extern int data_ov002_02110094[];
 }
 

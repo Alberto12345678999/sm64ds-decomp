@@ -10,15 +10,15 @@ struct S18 { short a; short b; int c[5]; };
 
 extern "C" {
 extern int func_ov002_020cec2c(char *c);
-extern void _ZN6Player11ChangeStateERNS_5StateE(char *c, void *s);
+extern "C" void _ZN6Player11ChangeStateERNS_5StateE(char *c, void *s);
 extern int func_ov002_020eeca8(void *a, void *b);
 extern int func_ov002_020bf224(void *c, int a, int b);
 extern void ApproachAngle(short *p, int target, int a, int b, int d);
-extern void _Z14ApproachLinearRiii(int *v, int a, int b);
-extern void _ZN5Sound9PlayBank0EjRK7Vector3(u32 a, void *v);
-extern void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(u32 id, int x, int y, int z);
-extern void _ZN6Player7SetAnimEji5Fix12IiEj(char *c, u32 a, int b, int d, u32 e);
-extern int _ZN6Player12FinishedAnimEv(char *c);
+extern "C" void _Z14ApproachLinearRiii(int *v, int a, int b);
+extern "C" void _ZN5Sound9PlayBank0EjRK7Vector3(u32 a, void *v);
+extern "C" void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(u32 id, int x, int y, int z);
+extern "C" void _ZN6Player7SetAnimEji5Fix12IiEj(char *c, u32 a, int b, int d, u32 e);
+extern "C" int _ZN6Player12FinishedAnimEv(char *c);
 extern void Player_AdvanceAnims(char *c);
 
 extern u8 data_020a0e40;

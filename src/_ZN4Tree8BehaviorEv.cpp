@@ -1,7 +1,7 @@
 //cpp
 extern "C" {
-extern int _ZN12CylinderClsn5ClearEv(void*);
-extern int _ZN12CylinderClsn6UpdateEv(void*);
+extern "C" int _ZN12CylinderClsn5ClearEv(void*);
+extern "C" int _ZN12CylinderClsn6UpdateEv(void*);
 extern char* data_ov002_02110a48[5];
 int _ZN4Tree8BehaviorEv(void){
   char** pp = data_ov002_02110a48;

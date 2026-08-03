@@ -1,7 +1,7 @@
 //cpp
 struct State;
 extern "C" {
-extern void _ZN6Player11ChangeStateERNS_5StateE(char* c, struct State* s);
+extern "C" void _ZN6Player11ChangeStateERNS_5StateE(char* c, struct State* s);
 extern int func_ov002_020c6e14(char* c);
 extern int func_ov002_020c44c4(char* c);
 extern void func_ov002_020be008(char* c);

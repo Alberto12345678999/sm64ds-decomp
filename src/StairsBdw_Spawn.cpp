@@ -1,14 +1,14 @@
 //cpp
 extern "C" {
-extern void* _ZN9ActorBasenwEj(unsigned);
-extern void _ZN8PlatformC2Ev(void*);
+extern "C" void* _ZN9ActorBasenwEj(unsigned);
+extern "C" void _ZN8PlatformC2Ev(void*);
 extern void func_020733a8(void*,int,int,void*,void*);
 extern int data_ov002_02108d94[];
 extern int _ZTV19RickshawPlatformBdw[];
-extern void _ZN5ModelD1Ev(void*);
-extern void _ZN5ModelC1Ev(void*);
-extern void _ZN18MovingMeshColliderD1Ev(void*);
-extern void _ZN18MovingMeshColliderC1Ev(void*);
+extern "C" void _ZN5ModelD1Ev(void*);
+extern "C" void _ZN5ModelC1Ev(void*);
+extern "C" void _ZN18MovingMeshColliderD1Ev(void*);
+extern "C" void _ZN18MovingMeshColliderC1Ev(void*);
 void* StairsBdw_Spawn(void){
   char* c = (char*)_ZN9ActorBasenwEj(0xdcc);
   if(c){

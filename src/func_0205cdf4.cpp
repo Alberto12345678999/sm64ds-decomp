@@ -1,7 +1,7 @@
 //cpp
 extern "C" {
-extern unsigned int _ZN3IRQ7DisableEv(void);
-extern void _ZN3IRQ7RestoreEj(unsigned int saved);
+extern "C" unsigned int _ZN3IRQ7DisableEv(void);
+extern "C" void _ZN3IRQ7RestoreEj(unsigned int saved);
 extern void func_0205c788(char *self, int arg);
 extern void func_0205d8d8(void *node, void *list);
 extern void func_0205cfa4(char *self);

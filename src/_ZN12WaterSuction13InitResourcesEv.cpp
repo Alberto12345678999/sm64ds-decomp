@@ -6,7 +6,7 @@
 #include "WaterSuction.h"
 extern "C" {
 struct V3 { int x, y, z; };
-extern void _ZN25MovingCylinderClsnWithPos4InitEP5ActorRK7Vector35Fix12IiES6_jj(void* thiz, void* actor, V3* vec, int a, int b, unsigned int cc, unsigned int d);
+extern "C" void _ZN25MovingCylinderClsnWithPos4InitEP5ActorRK7Vector35Fix12IiES6_jj(void* thiz, void* actor, V3* vec, int a, int b, unsigned int cc, unsigned int d);
 extern V3 data_ov026_02113f4c;
 }
 

@@ -1,8 +1,8 @@
 //cpp
 extern "C" {
-extern unsigned int _ZNK6Player14GetBodyModelIDEjb(char* c, unsigned int a, int b);
-extern void _ZN9Animation7AdvanceEv(char* anim);
-extern int _ZN6Player6IsAnimEj(char* c, unsigned int a);
+extern "C" unsigned int _ZNK6Player14GetBodyModelIDEjb(char* c, unsigned int a, int b);
+extern "C" void _ZN9Animation7AdvanceEv(char* anim);
+extern "C" int _ZN6Player6IsAnimEj(char* c, unsigned int a);
 
 void Player_AdvanceAnims(char* self){
   unsigned int id = _ZNK6Player14GetBodyModelIDEjb(self, *(int*)(self+8) & 0xff, 0);

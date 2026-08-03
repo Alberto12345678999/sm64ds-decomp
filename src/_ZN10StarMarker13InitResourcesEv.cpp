@@ -8,19 +8,19 @@
 struct Vec3 { s32 x, y, z; };
 struct RaycastGround { char pad[0x50]; };
 
-extern void _ZN25MovingCylinderClsnWithPos4InitEP5ActorRK7Vector35Fix12IiES6_jj(void *self, void *actor, const void *v, int d, int e, u32 f, u32 g);
-extern void _ZN13RaycastGroundC1Ev(void *self);
-extern void _ZN4BgCh19StartDetectingWaterEv(void *self);
-extern void _ZN13RaycastGround12SetObjAndPosERK7Vector3P5Actor(void *self, const void *v, void *actor);
-extern int _ZN13RaycastGround10DetectClsnEv(void *self);
-extern void *_ZN5Actor5SpawnEjjRK7Vector3PK10Vector3_16ii(u32 a, u32 b, const void *v, const void *v16, int e, int f);
-extern void *_ZN5Model8LoadFileER13SharedFilePtr(void *fp);
-extern int _ZN9ModelBase7SetFileEP8BMD_Fileii(void *self, void *f, int a, int b);
-extern void _ZN13RaycastGroundD1Ev(void *self);
-extern int _ZN11ShadowModel12InitCylinderEv(void *self);
+extern "C" void _ZN25MovingCylinderClsnWithPos4InitEP5ActorRK7Vector35Fix12IiES6_jj(void *self, void *actor, const void *v, int d, int e, u32 f, u32 g);
+extern "C" void _ZN13RaycastGroundC1Ev(void *self);
+extern "C" void _ZN4BgCh19StartDetectingWaterEv(void *self);
+extern "C" void _ZN13RaycastGround12SetObjAndPosERK7Vector3P5Actor(void *self, const void *v, void *actor);
+extern "C" int _ZN13RaycastGround10DetectClsnEv(void *self);
+extern "C" void *_ZN5Actor5SpawnEjjRK7Vector3PK10Vector3_16ii(u32 a, u32 b, const void *v, const void *v16, int e, int f);
+extern "C" void *_ZN5Model8LoadFileER13SharedFilePtr(void *fp);
+extern "C" int _ZN9ModelBase7SetFileEP8BMD_Fileii(void *self, void *f, int a, int b);
+extern "C" void _ZN13RaycastGroundD1Ev(void *self);
+extern "C" int _ZN11ShadowModel12InitCylinderEv(void *self);
 extern int IsStarCollectedInCurLevel(u8 x);
-extern void _ZN9ActorBase18MarkForDestructionEv(void *self);
-extern int _ZN5Actor18GetBitInDeathTableEv(void *self);
+extern "C" void _ZN9ActorBase18MarkForDestructionEv(void *self);
+extern "C" int _ZN5Actor18GetBitInDeathTableEv(void *self);
 
 extern char data_ov002_0210d9a8;
 extern char data_ov002_0211092c;

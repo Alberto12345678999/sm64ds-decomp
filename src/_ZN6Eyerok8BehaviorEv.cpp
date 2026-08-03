@@ -20,17 +20,17 @@ extern u16 DecIfAbove0_Short(u16 *p);
 extern int RandomIntInternal(int *seed);
 extern void Matrix4x3_FromRotationY(void *m, int angle);
 extern void MulVec3Mat4x3(void *src, void *m, void *dst);
-extern u32 _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
+extern "C" u32 _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
     u32 a, u32 b, int x, int y, int z, const void *v, void *cb);
 extern void func_ov066_021194fc(char *c);
-extern int _ZN16MeshColliderBase9IsEnabledEv(char *c);
+extern "C" int _ZN16MeshColliderBase9IsEnabledEv(char *c);
 extern void func_ov066_021194a4(char *c);
-extern void _ZN5Actor9UpdatePosEP12CylinderClsn(char *c, void *clsn);
-extern void _ZN25MovingCylinderClsnWithPos21SetPosRelativeToActorERK7Vector3(char *c, const Vector3 *v);
-extern void _ZN12CylinderClsn5ClearEv(char *c);
-extern void _ZN12CylinderClsn6UpdateEv(char *c);
-extern void _ZN14BlendModelAnim7AdvanceEv(char *c);
-extern void _ZN9Animation7AdvanceEv(char *c);
+extern "C" void _ZN5Actor9UpdatePosEP12CylinderClsn(char *c, void *clsn);
+extern "C" void _ZN25MovingCylinderClsnWithPos21SetPosRelativeToActorERK7Vector3(char *c, const Vector3 *v);
+extern "C" void _ZN12CylinderClsn5ClearEv(char *c);
+extern "C" void _ZN12CylinderClsn6UpdateEv(char *c);
+extern "C" void _ZN14BlendModelAnim7AdvanceEv(char *c);
+extern "C" void _ZN9Animation7AdvanceEv(char *c);
 
 extern int data_0209e650;
 extern char data_ov066_0211b07c;

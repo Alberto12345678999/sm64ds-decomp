@@ -4,15 +4,15 @@
 #include "decl_common.h"
 /* recovered: named members + shared header, real C++ method */
 #include "HootTheOwl.h"
-extern void* _ZN5Model8LoadFileER13SharedFilePtr(void*);
-extern void _ZN9ModelBase7SetFileEP8BMD_Fileii(void*, void*, int, int);
-extern void _ZN11ShadowModel12InitCylinderEv(void*);
-extern void _ZN9Animation8LoadFileER13SharedFilePtr(void*);
-extern void _ZN25MovingCylinderClsnWithPos4InitEP5ActorRK7Vector35Fix12IiES6_jj(void*, void*, int*, int, int, unsigned int, unsigned int);
-extern void _ZN12WithMeshClsn4InitEP5Actor5Fix12IiES3_P10Vector3_16S5_(void*, void*, int, int, void*, int);
+extern "C" void* _ZN5Model8LoadFileER13SharedFilePtr(void*);
+extern "C" void _ZN9ModelBase7SetFileEP8BMD_Fileii(void*, void*, int, int);
+extern "C" void _ZN11ShadowModel12InitCylinderEv(void*);
+extern "C" void _ZN9Animation8LoadFileER13SharedFilePtr(void*);
+extern "C" void _ZN25MovingCylinderClsnWithPos4InitEP5ActorRK7Vector35Fix12IiES6_jj(void*, void*, int*, int, int, unsigned int, unsigned int);
+extern "C" void _ZN12WithMeshClsn4InitEP5Actor5Fix12IiES3_P10Vector3_16S5_(void*, void*, int, int, void*, int);
 extern int func_ov094_02136188(void*, void*);
 extern int IsStarCollectedInCurLevel(int);
-extern void _ZN9ActorBase18MarkForDestructionEv(void*);
+extern "C" void _ZN9ActorBase18MarkForDestructionEv(void*);
 extern void* data_ov094_02136b40;
 extern signed char data_0209f2f8;
 extern unsigned char data_0209f220;

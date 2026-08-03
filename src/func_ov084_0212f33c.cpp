@@ -5,9 +5,9 @@
 
 extern "C" {
 extern void func_02012694(unsigned int a, void *b);
-extern void *_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
+extern "C" void *_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
     unsigned int a, unsigned int b, int c, int d, int e, const void *f, void *g);
-extern void _ZN5Actor5SpawnEjjRK7Vector3PK10Vector3_16ii(
+extern "C" void _ZN5Actor5SpawnEjjRK7Vector3PK10Vector3_16ii(
     unsigned int a, unsigned int b, const struct Vector3 *c, const void *d, int e, int f);
 void func_ov084_0212f33c(void *self);
 }

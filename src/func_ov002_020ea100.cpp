@@ -2,11 +2,11 @@
 #include "types.h"
 extern "C" {
 extern int func_ov002_020e73ac(char *arg);
-extern int _ZN6Player12Unk_020c9e5cEh(void *thisPtr, int state);
+extern "C" int _ZN6Player12Unk_020c9e5cEh(void *thisPtr, int state);
 extern void func_ov002_020e6fbc(char *c, int arg);
 extern void func_ov002_020e9464(char *p);
-extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *thisPtr, int bcaFile, int fixA, int fixB, unsigned int arg4);
-extern void _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(unsigned int a, int fixA);
+extern "C" void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *thisPtr, int bcaFile, int fixA, int fixB, unsigned int arg4);
+extern "C" void _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(unsigned int a, int fixA);
 extern int func_ov002_020ca0f4(void *player);
 extern void GiveVsStars(int idx, int delta);
 extern void func_ov002_020e9448(unsigned char *p);

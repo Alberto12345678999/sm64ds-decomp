@@ -4,8 +4,8 @@
 #include "decl_common.h"
 /* recovered: named members + shared header, real C++ method */
 #include "AmbientSoundEffects.h"
-extern void* _Znwj(unsigned int);
-extern void _ZN3Fog4InitEt5Fix12IiES1_(void* thiz, unsigned short a, int b, int d);
+extern "C" void* _Znwj(unsigned int);
+extern "C" void _ZN3Fog4InitEt5Fix12IiES1_(void* thiz, unsigned short a, int b, int d);
 
 int AmbientSoundEffects::InitResources()
 {

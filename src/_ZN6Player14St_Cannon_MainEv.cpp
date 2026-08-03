@@ -9,15 +9,15 @@ extern "C" {
 extern short GetAngleToCamera(int i);
 extern void func_0200d6f0(void* thiz, u8 pid);
 extern void func_02012694(u32 id, void* v);
-extern void _ZN5Sound9PlayBank0EjRK7Vector3(u32 a, void* v);
-extern void _ZN5Sound13PlayCharVoiceEjjRK7Vector3(u32 a, u32 b, void* v);
+extern "C" void _ZN5Sound9PlayBank0EjRK7Vector3(u32 a, void* v);
+extern "C" void _ZN5Sound13PlayCharVoiceEjjRK7Vector3(u32 a, u32 b, void* v);
 extern void func_ov002_020c9e18(void* c);
-extern void _ZN6Player11ChangeStateERNS_5StateE(void* c, void* s);
-extern void _ZN6Player7SetAnimEji5Fix12IiEj(void* c, u32 anim, int a, Fix12i b, u32 d);
-extern void _ZN8Particle20RunningSlidingDustAtE5Fix12IiES1_S1_(int a, int b, int cc);
-extern int _ZN4cstd5atan2E5Fix12IiES1_(int a, int b);
+extern "C" void _ZN6Player11ChangeStateERNS_5StateE(void* c, void* s);
+extern "C" void _ZN6Player7SetAnimEji5Fix12IiEj(void* c, u32 anim, int a, Fix12i b, u32 d);
+extern "C" void _ZN8Particle20RunningSlidingDustAtE5Fix12IiES1_S1_(int a, int b, int cc);
+extern "C" int _ZN4cstd5atan2E5Fix12IiES1_(int a, int b);
 extern void Player_AdvanceAnims(void* c);
-extern int _ZN6Player12FinishedAnimEv(void* c);
+extern "C" int _ZN6Player12FinishedAnimEv(void* c);
 
 extern u8 data_020a0e40;
 extern u16 data_0209f49e[];

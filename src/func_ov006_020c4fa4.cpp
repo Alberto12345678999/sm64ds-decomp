@@ -8,9 +8,9 @@ struct VB {
 };
 
 extern "C" {
-extern int _Z14ApproachLinearRiii(int *p, int t, int r);
-extern int _Z14ApproachLinearRsss(short *p, short t, short r);
-extern int _Z15ApproachLinear2Rsss(short *p, short t, short r);
+extern "C" int _Z14ApproachLinearRiii(int *p, int t, int r);
+extern "C" int _Z14ApproachLinearRsss(short *p, short t, short r);
+extern "C" int _Z15ApproachLinear2Rsss(short *p, short t, short r);
 extern int RandomIntInternal(int *seed);
 extern int NormalizeVec3IfNonZero(Vec3 *v);
 extern int Vec3_Dist(Vec3 *a, Vec3 *b);

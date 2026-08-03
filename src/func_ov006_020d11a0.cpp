@@ -6,9 +6,9 @@
 extern "C" {
 extern void SetSubBg1Offset(int a, int b);
 extern int GetGameLanguage(void);
-extern unsigned int _ZN3G2S13GetBG1CharPtrEv(void);
+extern "C" unsigned int _ZN3G2S13GetBG1CharPtrEv(void);
 extern unsigned int LoadCompressedFileAt(int fileID, void *target);
-extern void *_ZN3G2S12GetBG1ScrPtrEv(void);
+extern "C" void *_ZN3G2S12GetBG1ScrPtrEv(void);
 extern unsigned char data_0209d454;
 extern int data_ov006_0213b838[];
 }

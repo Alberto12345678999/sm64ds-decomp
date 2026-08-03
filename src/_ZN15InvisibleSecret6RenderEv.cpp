@@ -4,9 +4,9 @@
 /* recovered: named members + shared header, real C++ method */
 #include "InvisibleSecret.h"
 extern "C" {
-extern void* _ZN5Actor15FindWithActorIDEjPS_(u32 id, void* prev);
-extern void _ZN9ActorBase18MarkForDestructionEv(void* thiz);
-extern void _ZN15TextureSequence6UpdateER15ModelComponents(void* ts, void* mc);
+extern "C" void* _ZN5Actor15FindWithActorIDEjPS_(u32 id, void* prev);
+extern "C" void _ZN9ActorBase18MarkForDestructionEv(void* thiz);
+extern "C" void _ZN15TextureSequence6UpdateER15ModelComponents(void* ts, void* mc);
 extern int data_0209b454;
 }
 

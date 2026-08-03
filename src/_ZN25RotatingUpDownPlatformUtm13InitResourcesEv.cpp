@@ -8,23 +8,23 @@ enum Bool { FALSE, TRUE };
 
 struct RaycastGround { char buf[0x44]; int f44; char rest[8]; };
 
-extern void _ZN5Actor9SetRangesE5Fix12IiES1_S1_S1_(void *self, int a, int b, int c, int d);
-extern int _ZN11ShadowModel10InitCuboidEv(void *self);
+extern "C" void _ZN5Actor9SetRangesE5Fix12IiES1_S1_S1_(void *self, int a, int b, int c, int d);
+extern "C" int _ZN11ShadowModel10InitCuboidEv(void *self);
 extern void Vec3_Add(Vector3 *out, Vector3 *a, Vector3 *b);
-extern int _ZN5Actor5SpawnEjjRK7Vector3PK10Vector3_16ii(unsigned int a, unsigned int b, void *pos, void *rot, int e, int f);
+extern "C" int _ZN5Actor5SpawnEjjRK7Vector3PK10Vector3_16ii(unsigned int a, unsigned int b, void *pos, void *rot, int e, int f);
 extern void Matrix4x3_FromRotationY(struct Matrix4x3 *m, short angY);
 extern void MulVec3Mat4x3(const Vector3 *v, const struct Matrix4x3 *m, Vector3 *out);
-extern void *_ZN5Model8LoadFileER13SharedFilePtr(void *f);
-extern void _ZN9ModelBase7SetFileEP8BMD_Fileii(void *self, void *bmd, int a, int b);
+extern "C" void *_ZN5Model8LoadFileER13SharedFilePtr(void *f);
+extern "C" void _ZN9ModelBase7SetFileEP8BMD_Fileii(void *self, void *bmd, int a, int b);
 extern void func_ov091_02131340(void *c);
-extern void _ZN8Platform19UpdateClsnPosAndRotEv(void *self);
-extern void *_ZN12MeshCollider8LoadFileER13SharedFilePtr(void *f);
-extern void _ZN18MovingMeshCollider7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(void *self, void *kcl, void *mtx, int fix, short s, void *clps);
+extern "C" void _ZN8Platform19UpdateClsnPosAndRotEv(void *self);
+extern "C" void *_ZN12MeshCollider8LoadFileER13SharedFilePtr(void *f);
+extern "C" void _ZN18MovingMeshCollider7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(void *self, void *kcl, void *mtx, int fix, short s, void *clps);
 extern void func_020393d4(void *p, void *v);
-extern void _ZN13RaycastGroundC1Ev(struct RaycastGround *self);
-extern void _ZN13RaycastGround12SetObjAndPosERK7Vector3P5Actor(struct RaycastGround *self, const Vector3 *v, void *a);
-extern int _ZN13RaycastGround10DetectClsnEv(struct RaycastGround *self);
-extern void _ZN13RaycastGroundD1Ev(struct RaycastGround *self);
+extern "C" void _ZN13RaycastGroundC1Ev(struct RaycastGround *self);
+extern "C" void _ZN13RaycastGround12SetObjAndPosERK7Vector3P5Actor(struct RaycastGround *self, const Vector3 *v, void *a);
+extern "C" int _ZN13RaycastGround10DetectClsnEv(struct RaycastGround *self);
+extern "C" void _ZN13RaycastGroundD1Ev(struct RaycastGround *self);
 
 extern signed char data_0209f2f8;
 extern struct Matrix4x3 data_020a0e68;

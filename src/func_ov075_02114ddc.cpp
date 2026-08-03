@@ -1,13 +1,13 @@
 //cpp
 extern "C" {
-extern void _ZN9ModelBase7SetFileEP8BMD_Fileii(void *o, void *f, int a, int b);
-extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *o, void *f, int a, int fx, unsigned j);
-extern void _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(void *o, void *f, int a, int b, int fx, unsigned short t);
-extern void _ZN15TextureSequence7PrepareER8BMD_FileR8BTP_File(void *a, void *b);
-extern void _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(void *o, void *f, int a, int fx, unsigned j);
+extern "C" void _ZN9ModelBase7SetFileEP8BMD_Fileii(void *o, void *f, int a, int b);
+extern "C" void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *o, void *f, int a, int fx, unsigned j);
+extern "C" void _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(void *o, void *f, int a, int b, int fx, unsigned short t);
+extern "C" void _ZN15TextureSequence7PrepareER8BMD_FileR8BTP_File(void *a, void *b);
+extern "C" void _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(void *o, void *f, int a, int fx, unsigned j);
 extern int RandomIntInternal(void *seed);
-extern int _ZNK9Animation13GetFrameCountEv(void *o);
-extern int _ZN11ShadowModel12InitCylinderEv(void *o);
+extern "C" int _ZNK9Animation13GetFrameCountEv(void *o);
+extern "C" int _ZN11ShadowModel12InitCylinderEv(void *o);
 extern char data_ov075_0211d404;
 extern char data_ov075_0211d3c4;
 extern char data_ov075_0211d414;

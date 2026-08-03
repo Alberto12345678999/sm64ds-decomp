@@ -1,15 +1,15 @@
 //cpp
 extern "C" {
-extern int _ZN6Player9StartTalkER9ActorBaseb(void *pl, void *a, int b);
-extern int _ZN6Player12GetTalkStateEv(void *pl);
+extern "C" int _ZN6Player9StartTalkER9ActorBaseb(void *pl, void *a, int b);
+extern "C" int _ZN6Player12GetTalkStateEv(void *pl);
 extern unsigned char NumStars(void);
-extern int _ZN6Player11ShowMessageER9ActorBasejPK7Vector3jj(
+extern "C" int _ZN6Player11ShowMessageER9ActorBasejPK7Vector3jj(
     void *pl, void *a, unsigned m, void *v, unsigned d, unsigned e);
-extern void _ZN7Message11PrepareTalkEv(void);
-extern void _ZN5Sound22StopLoadedMusic_Layer1Ej(unsigned a);
+extern "C" void _ZN7Message11PrepareTalkEv(void);
+extern "C" void _ZN5Sound22StopLoadedMusic_Layer1Ej(unsigned a);
 extern void func_ov060_021135fc(void *c);
 extern void func_ov060_02111cc0(void *c, int a, int b, int d);
-extern void *_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
+extern "C" void *_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
     unsigned a, unsigned b, int x, int y, int z, void *v, void *cb);
 extern void func_ov060_02113260(void *c);
 }

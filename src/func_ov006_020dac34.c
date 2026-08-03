@@ -7,7 +7,7 @@ extern "C" {
     extern int func_ov006_020c1718(void *r0);
     extern int func_ov006_020da834(void *p);
     extern int func_ov006_020da860(void *p, int v);
-    extern void _ZN5Sound12PlayBank2_2DEj(unsigned int id);
+    extern "C" void _ZN5Sound12PlayBank2_2DEj(unsigned int id);
     extern void func_ov004_020ad79c(int r0arg, int r1arg);
     extern int func_ov006_020da88c(void *p, int v);
     extern void func_ov006_020c1420(void *c, short arg1, void *arg2);

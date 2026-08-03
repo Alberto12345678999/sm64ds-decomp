@@ -3,7 +3,7 @@
 /* recovered: named members + shared header, real C++ method */
 #include "Player.h"
 extern int Player_DisableInteraction(void* c);
-extern int _ZN6Player7SetAnimEji5Fix12IiEj(void* c, unsigned int a, int b, int f, unsigned int g);
+extern "C" int _ZN6Player7SetAnimEji5Fix12IiEj(void* c, unsigned int a, int b, int f, unsigned int g);
 
 int Player::St_EndingFly_Init()
 {

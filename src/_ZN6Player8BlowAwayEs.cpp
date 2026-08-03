@@ -5,7 +5,7 @@
 /* recovered: named members + shared header, real C++ method */
 #include "Player.h"
 extern "C" {
-extern void _ZN6Player11ChangeStateERNS_5StateE(void*,void*);
+extern "C" void _ZN6Player11ChangeStateERNS_5StateE(void*,void*);
 }
 
 void Player::BlowAway(short v)

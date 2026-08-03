@@ -5,12 +5,12 @@
 /* daObjBkKillerdai_c::InitResources - recovered from vtable slot identity */
 struct SharedFilePtr { int x; };
 extern "C" {
-extern void *_ZN5Model8LoadFileER13SharedFilePtr(struct SharedFilePtr &f);
-extern void _ZN9ModelBase7SetFileEP8BMD_Fileii(void *self, void *file, int a, int b);
-extern void _ZN8Platform21UpdateModelPosAndRotYEv(void *self);
-extern void _ZN8Platform19UpdateClsnPosAndRotEv(void *self);
-extern void *_ZN12MeshCollider8LoadFileER13SharedFilePtr(struct SharedFilePtr &f);
-extern void _ZN18MovingMeshCollider7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
+extern "C" void *_ZN5Model8LoadFileER13SharedFilePtr(struct SharedFilePtr &f);
+extern "C" void _ZN9ModelBase7SetFileEP8BMD_Fileii(void *self, void *file, int a, int b);
+extern "C" void _ZN8Platform21UpdateModelPosAndRotYEv(void *self);
+extern "C" void _ZN8Platform19UpdateClsnPosAndRotEv(void *self);
+extern "C" void *_ZN12MeshCollider8LoadFileER13SharedFilePtr(struct SharedFilePtr &f);
+extern "C" void _ZN18MovingMeshCollider7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
     void *self, void *kcl, const void *mtx, int fix, short s, void *clps);
 extern int IsStarCollectedInCurLevel(int a);
 extern struct SharedFilePtr data_ov079_02128300;

@@ -16,9 +16,9 @@ struct Target {
   int end;
 };
 
-extern void* _ZN22ExpandingHeapAllocator10UnlinkNodeEP10MemoryNodeS1_(void* c, MemoryNode* node);
-extern MemoryNode* _ZN22ExpandingHeapAllocator10CreateNodeEPN10MemoryNode6TargetEt(Target* t, unsigned short tt);
-extern void* _ZN22ExpandingHeapAllocator8LinkNodeEP10MemoryNodeS1_S1_(void* c, MemoryNode* node, MemoryNode* r2);
+extern "C" void* _ZN22ExpandingHeapAllocator10UnlinkNodeEP10MemoryNodeS1_(void* c, MemoryNode* node);
+extern "C" MemoryNode* _ZN22ExpandingHeapAllocator10CreateNodeEPN10MemoryNode6TargetEt(Target* t, unsigned short tt);
+extern "C" void* _ZN22ExpandingHeapAllocator8LinkNodeEP10MemoryNodeS1_S1_(void* c, MemoryNode* node, MemoryNode* r2);
 
 int _ZN22ExpandingHeapAllocator8FreeNodeEP10MemoryNodePNS0_6TargetE(int* c, Target* node, void* target) {
   Target tgt = *node;

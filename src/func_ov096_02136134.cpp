@@ -36,12 +36,12 @@ struct Obj {
   virtual int GetY();
 };
 extern "C" {
-extern int _ZN5Actor5SpawnEjjRK7Vector3PK10Vector3_16ii(unsigned int, unsigned int, struct Vector3*, void*, int, int);
-extern void _ZN5Sound9PlayBank0EjRK7Vector3(unsigned int, void*);
+extern "C" int _ZN5Actor5SpawnEjjRK7Vector3PK10Vector3_16ii(unsigned int, unsigned int, struct Vector3*, void*, int, int);
+extern "C" void _ZN5Sound9PlayBank0EjRK7Vector3(unsigned int, void*);
 extern int func_ov096_02135800(char* c);
 extern short Vec3_HorzAngle(void*, void*);
 extern int RandomIntInternal(void*);
-extern void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int, int, int, int);
+extern "C" void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int, int, int, int);
 extern int data_0209e650[];
 }
 extern "C" int func_ov096_02136134(char* c){

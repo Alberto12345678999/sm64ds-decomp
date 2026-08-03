@@ -10,11 +10,11 @@
 enum Bool { FALSE, TRUE };
 
 extern "C" {
-extern int _ZN6Camera11ChangeStateEPNS_5StateE(void *thiz, void *state);
+extern "C" int _ZN6Camera11ChangeStateEPNS_5StateE(void *thiz, void *state);
 extern short Vec3_HorzAngle(const void *v0, const void *v1);
 extern short Vec3_VertAngle(const void *v1, const void *v0);
-extern void _Z14ApproachLinearRiii(int &dst, int target, int step);
-extern int _Z15ApproachLinear2Rsss(short &dst, short target, short step);
+extern "C" void _Z14ApproachLinearRiii(int &dst, int target, int step);
+extern "C" int _Z15ApproachLinear2Rsss(short &dst, short target, short step);
 extern void MulVec3Mat4x3(void *dst, void *src, void *out);
 extern int *Vec3_LslInPlace(int *v, int sh);
 }

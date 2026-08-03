@@ -3,7 +3,7 @@
  * ldr ip, [pc]; bx ip; .word 0x203cbf0
  */
 extern "C" {
-extern void _ZdlPv(void);
+extern "C" void _ZdlPv(void);
 void _ZN6Memory16operator_delete2EPv(void) {
     _ZdlPv();
 }

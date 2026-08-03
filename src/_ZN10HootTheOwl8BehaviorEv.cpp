@@ -9,12 +9,12 @@ typedef void (C3::*Fn)();
 struct Obj { char pad[8]; Fn fn; };
 extern "C" {
 extern void DecIfAbove0_Short(void*);
-extern void _ZN9Animation7AdvanceEv(void*);
+extern "C" void _ZN9Animation7AdvanceEv(void*);
 extern void func_02012694(int, void*);
-extern void _ZN5Enemy12UpdateWMClsnER12WithMeshClsnj(void*, void*, unsigned int);
-extern void _ZN5Actor22UpdatePosWithOnlySpeedEP12CylinderClsn(void*, void*);
-extern void _ZN12CylinderClsn5ClearEv(void*);
-extern void _ZN12CylinderClsn6UpdateEv(void*);
+extern "C" void _ZN5Enemy12UpdateWMClsnER12WithMeshClsnj(void*, void*, unsigned int);
+extern "C" void _ZN5Actor22UpdatePosWithOnlySpeedEP12CylinderClsn(void*, void*);
+extern "C" void _ZN12CylinderClsn5ClearEv(void*);
+extern "C" void _ZN12CylinderClsn6UpdateEv(void*);
 
 extern char data_ov094_02136b40[];
 extern char data_ov094_02136b60[];

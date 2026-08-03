@@ -6,10 +6,10 @@
 #include "BookShot.h"
 extern "C" {
 extern void func_0200f760(void* a, void* b);
-extern int _ZN5Enemy14UpdateYoshiEatER12WithMeshClsn(void* thiz, void* w);
-extern void _ZN12CylinderClsn5ClearEv(void* thiz);
-extern void _ZN25MovingCylinderClsnWithPos21SetPosRelativeToActorERK7Vector3(void* thiz, const Vector3& v);
-extern void _ZN12CylinderClsn6UpdateEv(void* thiz);
+extern "C" int _ZN5Enemy14UpdateYoshiEatER12WithMeshClsn(void* thiz, void* w);
+extern "C" void _ZN12CylinderClsn5ClearEv(void* thiz);
+extern "C" void _ZN25MovingCylinderClsnWithPos21SetPosRelativeToActorERK7Vector3(void* thiz, const Vector3& v);
+extern "C" void _ZN12CylinderClsn6UpdateEv(void* thiz);
 }
 
 int BookShot::Behavior()

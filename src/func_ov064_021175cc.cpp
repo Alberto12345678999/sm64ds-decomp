@@ -8,8 +8,8 @@
 /* recovered: renamed to Class_Method */
 /* daBDonketu_c::AfterClsn - recovered from vtable slot identity */
 extern "C" {
-extern void _ZN5Actor14TriplePoofDustEv(void*);
-extern void _ZN5Actor19UntrackAndSpawnStarERajRK7Vector3j(void*,void*,unsigned int,void*,unsigned int);
+extern "C" void _ZN5Actor14TriplePoofDustEv(void*);
+extern "C" void _ZN5Actor19UntrackAndSpawnStarERajRK7Vector3j(void*,void*,unsigned int,void*,unsigned int);
 int func_ov064_021175cc(char* c){
     struct daBDonketu_c *self = (struct daBDonketu_c *)(void *)c;
   int r=func_ov064_0211616c(c);

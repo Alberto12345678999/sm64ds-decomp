@@ -6,12 +6,12 @@
 #include "WaterBomb.h"
 extern "C" {
 extern void func_ov098_0213b63c(char* c);
-extern void _ZN5Actor9UpdatePosEP12CylinderClsn(void* a, void* b);
-extern void _ZN5Enemy12UpdateWMClsnER12WithMeshClsnj(void* a, void* b, unsigned int j);
-extern int _ZNK12WithMeshClsn8IsOnWallEv(void* p);
-extern void _ZN12CylinderClsn5ClearEv(void* p);
-extern void _ZN12CylinderClsn6UpdateEv(void* p);
-extern void _ZN9ActorBase18MarkForDestructionEv(void* p);
+extern "C" void _ZN5Actor9UpdatePosEP12CylinderClsn(void* a, void* b);
+extern "C" void _ZN5Enemy12UpdateWMClsnER12WithMeshClsnj(void* a, void* b, unsigned int j);
+extern "C" int _ZNK12WithMeshClsn8IsOnWallEv(void* p);
+extern "C" void _ZN12CylinderClsn5ClearEv(void* p);
+extern "C" void _ZN12CylinderClsn6UpdateEv(void* p);
+extern "C" void _ZN9ActorBase18MarkForDestructionEv(void* p);
 extern unsigned short DecIfAbove0_Short(unsigned short* p);
 }
 

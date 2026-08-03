@@ -1,7 +1,7 @@
 //cpp
 extern "C" {
-extern void *_ZN5Actor10FindWithIDEj(unsigned int id);
-extern int _ZN6Player9StartTalkER9ActorBaseb(void *self, void *actor, bool b);
+extern "C" void *_ZN5Actor10FindWithIDEj(unsigned int id);
+extern "C" int _ZN6Player9StartTalkER9ActorBaseb(void *self, void *actor, bool b);
 extern void func_ov085_0212a4a4(void *self, int i);
 int func_ov085_0212a37c(char *c) {
     if (*(int*)(c+0x180) & 0x8000000) {

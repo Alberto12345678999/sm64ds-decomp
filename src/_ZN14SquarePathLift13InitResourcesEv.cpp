@@ -3,14 +3,14 @@
 /* recovered: named members + shared header, real C++ method */
 #include "SquarePathLift.h"
 extern "C" {
-extern void* _ZN5Model8LoadFileER13SharedFilePtr(void* sfp);
-extern void _ZN9ModelBase7SetFileEP8BMD_Fileii(void* self, void* f, int a, int b);
-extern int _ZN8Platform21UpdateModelPosAndRotYEv(void*);
-extern int _ZN8Platform19UpdateClsnPosAndRotEv(void*);
-extern void* _ZN12MeshCollider8LoadFileER13SharedFilePtr(void* sfp);
-extern void _ZN18MovingMeshCollider7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(void* self, void* kcl, void* mtx, int fix, short s, void* clps);
+extern "C" void* _ZN5Model8LoadFileER13SharedFilePtr(void* sfp);
+extern "C" void _ZN9ModelBase7SetFileEP8BMD_Fileii(void* self, void* f, int a, int b);
+extern "C" int _ZN8Platform21UpdateModelPosAndRotYEv(void*);
+extern "C" int _ZN8Platform19UpdateClsnPosAndRotEv(void*);
+extern "C" void* _ZN12MeshCollider8LoadFileER13SharedFilePtr(void* sfp);
+extern "C" void _ZN18MovingMeshCollider7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(void* self, void* kcl, void* mtx, int fix, short s, void* clps);
 extern void func_020393d4(int* p, void* v);
-extern void _ZN7PathPtr6FromIDEj(void* self, unsigned int id);
+extern "C" void _ZN7PathPtr6FromIDEj(void* self, unsigned int id);
 extern int _ZN16MeshColliderBase22UpdatePosWithTransformERS_P5ActorR10ClsnResultR7Vector3P10Vector3_16S8_;
 struct SFP { void* a; void* b; void* c; };
 extern struct SFP data_ov052_021125a0;

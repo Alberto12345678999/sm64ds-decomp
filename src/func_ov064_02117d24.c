@@ -5,10 +5,10 @@ struct Entry { PMF pmf; };
 extern Entry data_ov064_0211c750[];
 extern short data_02082214[];
 extern "C" {
-extern int _Z14ApproachLinearRiii(int* a, int b, int c);
-extern void _ZN8Platform21UpdateModelPosAndRotYEv(void*);
-extern int _ZN8Platform13IsClsnInRangeE5Fix12IiES1_(void*, int, int);
-extern void _ZN8Platform19UpdateClsnPosAndRotEv(void*);
+extern "C" int _Z14ApproachLinearRiii(int* a, int b, int c);
+extern "C" void _ZN8Platform21UpdateModelPosAndRotYEv(void*);
+extern "C" int _ZN8Platform13IsClsnInRangeE5Fix12IiES1_(void*, int, int);
+extern "C" void _ZN8Platform19UpdateClsnPosAndRotEv(void*);
 }
 
 extern "C" int func_ov064_02117d24(char* c) {

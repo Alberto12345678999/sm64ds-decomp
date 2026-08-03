@@ -6,8 +6,8 @@
 /* recovered: renamed to Class_Method */
 /* daObjClockHuriko_c::InitResources - recovered from vtable slot identity */
 extern "C" {
-extern void* _ZN5Model8LoadFileER13SharedFilePtr(void*);
-extern void _ZN9ModelBase7SetFileEP8BMD_Fileii(void*, void*, int, int);
+extern "C" void* _ZN5Model8LoadFileER13SharedFilePtr(void*);
+extern "C" void _ZN9ModelBase7SetFileEP8BMD_Fileii(void*, void*, int, int);
 extern int __sinit_ov045_02112280[];
 int func_ov013_0211133c(char *c){
   void *f = _ZN5Model8LoadFileER13SharedFilePtr((void*)__sinit_ov045_02112280);

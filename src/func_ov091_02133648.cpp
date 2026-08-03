@@ -6,7 +6,7 @@
 /* recovered: renamed to Class_Method */
 /* daObjPile_c::OnGroundPounded - recovered from vtable slot identity */
 extern "C" {
-extern void _ZN5Sound9PlayBank3EjRK7Vector3(unsigned int id, void* v);
+extern "C" void _ZN5Sound9PlayBank3EjRK7Vector3(unsigned int id, void* v);
 extern void func_ov091_021334b8(void* c, int f);
 void func_ov091_02133648(char* c, void* arg){
     struct daObjPile_c *self = (struct daObjPile_c *)(void *)c;

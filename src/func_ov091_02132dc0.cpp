@@ -14,10 +14,10 @@ struct Actor {
     virtual void f28(); virtual int f29();
 };
 extern "C" {
-extern void* _ZN5Actor18ClosestWithActorIDEj(void*, unsigned int);
+extern "C" void* _ZN5Actor18ClosestWithActorIDEj(void*, unsigned int);
 extern int Vec3_Dist(void*, void*);
-extern int _ZN16MeshColliderBase9IsEnabledEv(void*);
-extern void _ZN16MeshColliderBase6EnableEP5Actor(void*, void*);
+extern "C" int _ZN16MeshColliderBase9IsEnabledEv(void*);
+extern "C" void _ZN16MeshColliderBase6EnableEP5Actor(void*, void*);
 
 int func_ov091_02132dc0(char* c) {
     void* p = _ZN5Actor18ClosestWithActorIDEj(c, 9);

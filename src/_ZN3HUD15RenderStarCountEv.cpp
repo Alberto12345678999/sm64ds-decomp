@@ -26,8 +26,8 @@ extern struct OamAttr func_020ab9c8;
 extern struct OamAttr func_020abad0;
 
 extern unsigned char NumStars(void);
-extern void _ZN3HUD15CalculateDigitsEt(HUD_s* thisptr, unsigned short n);
-extern void _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2(int b, struct OamAttr* attr, int x, int y, int a, int c, struct Matrix2x2* m);
+extern "C" void _ZN3HUD15CalculateDigitsEt(HUD_s* thisptr, unsigned short n);
+extern "C" void _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2(int b, struct OamAttr* attr, int x, int y, int a, int c, struct Matrix2x2* m);
 
 void _ZN3HUD15RenderStarCountEv(HUD_s* thisptr)
 {

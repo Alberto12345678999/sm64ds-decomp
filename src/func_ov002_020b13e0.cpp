@@ -2,17 +2,17 @@
 extern "C" {
 extern unsigned char DecIfAbove0_Byte(unsigned char* p);
 extern unsigned short DecIfAbove0_Short(unsigned short* p);
-extern void _ZN5Actor24KillAndTrackInDeathTableEv(char* c);
-extern void _ZN5Actor9UpdatePosEP12CylinderClsn(char* self, void* cyl);
+extern "C" void _ZN5Actor24KillAndTrackInDeathTableEv(char* c);
+extern "C" void _ZN5Actor9UpdatePosEP12CylinderClsn(char* self, void* cyl);
 extern int LenVec3(void* v);
 extern void WithMeshClsn_UpdateContinuous_Veneer(void* p);
 extern void WithMeshClsn_UpdateDiscreteNoLava_veneer(void* p);
-extern int _ZNK12WithMeshClsn10IsOnGroundEv(char* w);
-extern char* _ZNK12WithMeshClsn14GetFloorResultEv(char* w);
+extern "C" int _ZNK12WithMeshClsn10IsOnGroundEv(char* w);
+extern "C" char* _ZNK12WithMeshClsn14GetFloorResultEv(char* w);
 extern int SurfaceInfo_TestFlag0x20(void* p);
 extern void func_02012694(int a, void* p);
-extern void _ZN8Particle6System12NewBigSplashE5Fix12IiES2_S2_(int a, int b, int c);
-extern void _ZN12WithMeshClsn18StopDetectingWaterEv(char* w);
+extern "C" void _ZN8Particle6System12NewBigSplashE5Fix12IiES2_S2_(int a, int b, int c);
+extern "C" void _ZN12WithMeshClsn18StopDetectingWaterEv(char* w);
 
 void func_ov002_020b13e0(char* self){
   DecIfAbove0_Byte((unsigned char*)(self+0x3aa));

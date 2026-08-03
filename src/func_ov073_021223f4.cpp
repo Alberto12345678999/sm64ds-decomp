@@ -7,9 +7,9 @@
 // Matched byte-for-byte with mwccarm 1.2/sp2p3 (ov073).
 struct Vector3 { int x, y, z; };
 extern "C" {
-extern void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int id, int x, int y, int z);
-extern void _ZN5Actor10PoofDustAtERK7Vector3(void* self, const Vector3& vec);
-extern void _ZN5Sound9PlayBank3EjRK7Vector3(unsigned int id, const Vector3& pos);
+extern "C" void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int id, int x, int y, int z);
+extern "C" void _ZN5Actor10PoofDustAtERK7Vector3(void* self, const Vector3& vec);
+extern "C" void _ZN5Sound9PlayBank3EjRK7Vector3(unsigned int id, const Vector3& pos);
 }
 extern "C" void func_ov073_021223f4(char* c);
 void func_ov073_021223f4(char* c) {

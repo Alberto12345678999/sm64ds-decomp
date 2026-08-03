@@ -2,8 +2,8 @@
 #include "types.h"
 extern "C" {
 extern void func_0201eaac(void);
-extern int _ZN3G2S13GetBG0CharPtrEv(void);
-extern int _ZN3G2S12GetBG0ScrPtrEv(void);
+extern "C" int _ZN3G2S13GetBG0CharPtrEv(void);
+extern "C" int _ZN3G2S12GetBG0ScrPtrEv(void);
 extern void MultiStore_Int(int a, int b, int n);
 extern void MultiStore16(int a, int b, int n);
 extern void func_0201d418(int a, int b);

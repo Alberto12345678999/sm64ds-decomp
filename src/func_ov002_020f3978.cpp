@@ -1,6 +1,6 @@
 //cpp
 extern "C" {
-extern void _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2(int, void*, int, int, int, int, void*);
+extern "C" void _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2(int, void*, int, int, int, int, void*);
 extern void* data_ov002_0210b998[];
 void func_ov002_020f3978(char* c){
   int i;

@@ -1,6 +1,6 @@
 //cpp
 extern "C" {
-extern int _ZN18TextureTransformer6UpdateER15ModelComponents(void*, void*);
+extern "C" int _ZN18TextureTransformer6UpdateER15ModelComponents(void*, void*);
 }
 struct Sub { virtual int g0(); virtual int g1(); virtual int g2(); virtual int g3(); virtual int g4(); virtual int g5(void*); };
 extern "C" {

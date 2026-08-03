@@ -3,7 +3,7 @@
  * ldr ip, [pc]; bx ip; .word 0x203c538
  */
 extern "C" {
-extern void _ZN4Heap10DeallocateEPv(void);
+extern "C" void _ZN4Heap10DeallocateEPv(void);
 void _ZN4Heap11_DeallocateEPv(void) {
     _ZN4Heap10DeallocateEPv();
 }

@@ -5,7 +5,7 @@
 extern "C" {
 extern int Player_DisableInteraction(void*);
 extern int Player_ReleaseHeldActor(void*);
-extern int _ZN6Player7SetAnimEji5Fix12IiEj(void*,unsigned int,int,int,unsigned int);
+extern "C" int _ZN6Player7SetAnimEji5Fix12IiEj(void*,unsigned int,int,int,unsigned int);
 }
 
 int Player::St_Cannon_Init()

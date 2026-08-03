@@ -11,13 +11,13 @@ typedef void (Enemy::*PMF)();
 struct Holder { char pad[8]; PMF fn; };
 
 extern "C" {
-extern int _ZN5Enemy14UpdateYoshiEatER12WithMeshClsn(Enemy *thiz, WithMeshClsn *c);
-extern void _ZN12CylinderClsn5ClearEv(void *thiz);
-extern void _ZN12CylinderClsn6UpdateEv(void *thiz);
+extern "C" int _ZN5Enemy14UpdateYoshiEatER12WithMeshClsn(Enemy *thiz, WithMeshClsn *c);
+extern "C" void _ZN12CylinderClsn5ClearEv(void *thiz);
+extern "C" void _ZN12CylinderClsn6UpdateEv(void *thiz);
 extern unsigned short DecIfAbove0_Short(unsigned short *p);
-extern void _ZN5Actor22UpdatePosWithOnlySpeedEP12CylinderClsn(Enemy *thiz, void *clsn);
-extern void _ZN5Enemy12UpdateWMClsnER12WithMeshClsnj(Enemy *thiz, WithMeshClsn *wm, unsigned int j);
-extern void _ZN9Animation7AdvanceEv(void *thiz);
+extern "C" void _ZN5Actor22UpdatePosWithOnlySpeedEP12CylinderClsn(Enemy *thiz, void *clsn);
+extern "C" void _ZN5Enemy12UpdateWMClsnER12WithMeshClsnj(Enemy *thiz, WithMeshClsn *wm, unsigned int j);
+extern "C" void _ZN9Animation7AdvanceEv(void *thiz);
 }
 
 struct Enemy { char pad[0x800]; };

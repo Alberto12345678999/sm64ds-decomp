@@ -1,7 +1,7 @@
 //cpp
 extern "C" {
-extern int _ZNK12WithMeshClsn8IsOnWallEv(void *clsn);
-extern short _ZN5Actor12ReflectAngleE5Fix12IiES1_s(void *actor, int a, int b, short c);
+extern "C" int _ZNK12WithMeshClsn8IsOnWallEv(void *clsn);
+extern "C" short _ZN5Actor12ReflectAngleE5Fix12IiES1_s(void *actor, int a, int b, short c);
 int _ZN5Enemy24AngleAwayFromWallOrCliffER12WithMeshClsnRs(void *thisp, void *clsn, short *outAngle)
 {
     if (_ZNK12WithMeshClsn8IsOnWallEv(clsn)) {

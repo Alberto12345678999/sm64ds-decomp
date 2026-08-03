@@ -12,9 +12,9 @@ struct Obj {
 };
 
 extern "C" {
-extern int _ZN6Player12FinishedAnimEv(void* c);
-extern int _ZN6Player7SetAnimEji5Fix12IiEj(void* c, unsigned int a, int b, int d, unsigned int e);
-extern void _ZN6Player11ChangeStateERNS_5StateE(void* c, void* state);
+extern "C" int _ZN6Player12FinishedAnimEv(void* c);
+extern "C" int _ZN6Player7SetAnimEji5Fix12IiEj(void* c, unsigned int a, int b, int d, unsigned int e);
+extern "C" void _ZN6Player11ChangeStateERNS_5StateE(void* c, void* state);
 extern void Player_AdvanceAnims(void* c);
 
 extern u8 data_020a0e40;

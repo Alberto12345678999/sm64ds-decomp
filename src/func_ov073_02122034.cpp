@@ -4,7 +4,7 @@
 #include "common.h"
 
 extern "C" {
-extern void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int, int, int, int);
+extern "C" void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int, int, int, int);
 extern int func_02012694(int, const Vector3&);
 }
 extern "C" int func_ov073_02122034(char* c);

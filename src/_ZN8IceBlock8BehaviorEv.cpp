@@ -18,16 +18,16 @@ struct VObj {
 };
 
 extern "C" {
-extern void _ZN8Platform21IsClsnInRangeOnScreenE5Fix12IiES1_(void* c, int a, int b);
-extern int _ZN4cstd4fdivEii(int a, int b);
+extern "C" void _ZN8Platform21IsClsnInRangeOnScreenE5Fix12IiES1_(void* c, int a, int b);
+extern "C" int _ZN4cstd4fdivEii(int a, int b);
 extern unsigned char DecIfAbove0_Byte(unsigned char* p);
-extern void _ZN9ActorBase18MarkForDestructionEv(void* c);
-extern unsigned int _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
+extern "C" void _ZN9ActorBase18MarkForDestructionEv(void* c);
+extern "C" unsigned int _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
     unsigned int a, unsigned int b, int x, int y, int z, void* v, void* cb);
-extern void* _ZN8Particle6System12FromUniqueIDEj(unsigned int id);
+extern "C" void* _ZN8Particle6System12FromUniqueIDEj(unsigned int id);
 extern void func_02012694(int a, void* p);
-extern void _ZN12CylinderClsn5ClearEv(void* p);
-extern void _ZN12CylinderClsn6UpdateEv(void* p);
+extern "C" void _ZN12CylinderClsn5ClearEv(void* p);
+extern "C" void _ZN12CylinderClsn6UpdateEv(void* p);
 }
 
 int IceBlock::Behavior()

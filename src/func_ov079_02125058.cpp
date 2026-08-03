@@ -10,7 +10,7 @@ typedef s32 Fix12;
 extern "C" {
 extern int func_ov002_020dd8b8(void* c);
 extern unsigned char DecIfAbove0_Byte(unsigned char* p);
-extern void _ZN5Actor10SpawnCoinsERK7Vector3j5Fix12IiEs(void* self, const Vector3* v, u32 n, Fix12 f, short s);
+extern "C" void _ZN5Actor10SpawnCoinsERK7Vector3j5Fix12IiEs(void* self, const Vector3* v, u32 n, Fix12 f, short s);
 }
 
 extern "C" void func_ov079_02125058(char* c, char* a)

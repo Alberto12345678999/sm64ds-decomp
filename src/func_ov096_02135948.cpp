@@ -12,18 +12,18 @@ typedef long long s64;
 
 
 extern "C" {
-extern void _ZN5Sound9PlayBank0EjRK7Vector3(unsigned int id, void* pos);
+extern "C" void _ZN5Sound9PlayBank0EjRK7Vector3(unsigned int id, void* pos);
 extern void func_ov096_02135800(void* c);
-extern void* _ZN5Actor5SpawnEjjRK7Vector3PK10Vector3_16ii(unsigned int a, unsigned int b, void* pos, const void* rot, int e, int f);
-extern void* _ZN5Actor10FindWithIDEj(unsigned int id);
+extern "C" void* _ZN5Actor5SpawnEjjRK7Vector3PK10Vector3_16ii(unsigned int a, unsigned int b, void* pos, const void* rot, int e, int f);
+extern "C" void* _ZN5Actor10FindWithIDEj(unsigned int id);
 extern int Vec3_HorzDist(const void* a, const void* b);
 extern int Vec3_HorzAngle(const void* a, const void* b);
 extern s16 data_02082214[];
-extern unsigned _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(unsigned a, unsigned b, int f, int t1, int t2, const void* v, void* cb);
-extern unsigned _ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f(unsigned a, unsigned b, int f, int t1, int t2, const void* v);
-extern void _ZN6Player16IncMegaKillCountEv(void* p);
-extern void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void* p, void* v, unsigned int a, int fix, unsigned int b, unsigned int d, unsigned int e);
-extern int _ZNK12WithMeshClsn10IsOnGroundEv(void* thiz);
+extern "C" unsigned _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(unsigned a, unsigned b, int f, int t1, int t2, const void* v, void* cb);
+extern "C" unsigned _ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f(unsigned a, unsigned b, int f, int t1, int t2, const void* v);
+extern "C" void _ZN6Player16IncMegaKillCountEv(void* p);
+extern "C" void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void* p, void* v, unsigned int a, int fix, unsigned int b, unsigned int d, unsigned int e);
+extern "C" int _ZNK12WithMeshClsn10IsOnGroundEv(void* thiz);
 
 void func_ov096_02135948(char* c)
 {

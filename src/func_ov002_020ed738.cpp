@@ -4,11 +4,11 @@
 #include "common.h"
 
 extern "C" {
-extern int _ZNK12WithMeshClsn10IsOnGroundEv(void* self);
-extern void* _ZNK12WithMeshClsn14GetFloorResultEv(void* self);
-extern void _ZNK11SurfaceInfo12CopyNormalToER7Vector3(void* self, struct Vector3* out);
+extern "C" int _ZNK12WithMeshClsn10IsOnGroundEv(void* self);
+extern "C" void* _ZNK12WithMeshClsn14GetFloorResultEv(void* self);
+extern "C" void _ZNK11SurfaceInfo12CopyNormalToER7Vector3(void* self, struct Vector3* out);
 extern int func_02010844(void* unused, struct Vector3* v, short angle);
-extern void _Z11UpdateAngleRssis(short* a, int b, int c, short d);
+extern "C" void _Z11UpdateAngleRssis(short* a, int b, int c, short d);
 void func_ov002_020ed738(char* c) {
     int e4 = 0;
     int e6 = 0;

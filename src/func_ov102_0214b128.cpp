@@ -1,13 +1,13 @@
 //cpp
 extern "C" {
-extern int _ZN5Actor7FindEggER12CylinderClsn(void*, void*);
+extern "C" int _ZN5Actor7FindEggER12CylinderClsn(void*, void*);
 extern int func_02010304(void* target, char* p);
 extern void func_ov102_0214b3f0(void* c, int a1);
 extern void func_ov102_0214b384(void* c, int a1);
-extern void* _ZN5Actor10FindWithIDEj(unsigned int);
+extern "C" void* _ZN5Actor10FindWithIDEj(unsigned int);
 extern void func_ov102_0214bc20(void* c);
-extern void _ZN5Actor9UpdatePosEP12CylinderClsn(void*, void*);
-extern void _ZN12WithMeshClsn15ClearGroundFlagEv(void*);
+extern "C" void _ZN5Actor9UpdatePosEP12CylinderClsn(void*, void*);
+extern "C" void _ZN12WithMeshClsn15ClearGroundFlagEv(void*);
 void func_ov102_0214b128(char* c) {
     int t;
     if (_ZN5Actor7FindEggER12CylinderClsn(c, c + 0x110) || (*(int*)(c + 0x130) & 0x20000)) {

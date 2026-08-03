@@ -8,15 +8,15 @@ struct Vector3 { int x, y, z; };
 
 extern short data_02082214[];
 extern void func_ov002_020e28d4(void*, int, int);
-extern int _ZN4cstd5atan2E5Fix12IiES1_(int, int);
+extern "C" int _ZN4cstd5atan2E5Fix12IiES1_(int, int);
 extern int AngleDiff(int, int);
 extern void func_ov002_020e0f38(void*, int);
-extern void _ZN9ActorBase18MarkForDestructionEv(void*);
-extern void _ZN5Actor10SpawnCoinsERK7Vector3j5Fix12IiEs(void*, const Vector3&, unsigned int, int, short);
+extern "C" void _ZN9ActorBase18MarkForDestructionEv(void*);
+extern "C" void _ZN5Actor10SpawnCoinsERK7Vector3j5Fix12IiEs(void*, const Vector3&, unsigned int, int, short);
 extern void func_ov002_020d718c(void*);
 extern void Player_ReleaseHeldActor(void*);
-extern void _ZN6Player11ChangeStateERNS_5StateE(void*, void*);
-extern void _ZN6Player7SetAnimEji5Fix12IiEj(void*, unsigned int, int, int, unsigned int);
+extern "C" void _ZN6Player11ChangeStateERNS_5StateE(void*, void*);
+extern "C" void _ZN6Player7SetAnimEji5Fix12IiEj(void*, unsigned int, int, int, unsigned int);
 extern char data_ov002_0211031c;
 
 class Player {

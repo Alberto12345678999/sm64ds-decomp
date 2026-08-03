@@ -5,10 +5,10 @@
 /* recovered: shared common types */
 #include "common.h"
 extern "C" {
-extern int _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(void* self, void* bca, int a, int b, int fix, unsigned short t);
+extern "C" int _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(void* self, void* bca, int a, int b, int fix, unsigned short t);
 extern int KingBobOmb_SetState(void* c, void* p);
 extern int Vec3_Dist(const void* a, const void* b);
-extern void _ZN6Player9DropActorEv(void* self);
+extern "C" void _ZN6Player9DropActorEv(void* self);
 extern int data_ov078_02126ee0[];
 
 

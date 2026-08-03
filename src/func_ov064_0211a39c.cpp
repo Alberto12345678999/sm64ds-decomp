@@ -7,11 +7,11 @@
 
 struct Vec3_16 {};
 extern "C" {
-extern void _ZN9Animation7AdvanceEv(char*);
-extern char* _ZN5Actor13ClosestPlayerEv(char*);
-extern void _ZN5Actor11SpawnNumberERK7Vector3jbtPS_(char*, Vector3*, unsigned int, int, unsigned short, char*);
-extern char* _ZN5Actor5SpawnEjjRK7Vector3PK10Vector3_16ii(unsigned int, unsigned int, Vector3*, Vec3_16*, int, int);
-extern int _ZN9Animation8FinishedEv(char*);
+extern "C" void _ZN9Animation7AdvanceEv(char*);
+extern "C" char* _ZN5Actor13ClosestPlayerEv(char*);
+extern "C" void _ZN5Actor11SpawnNumberERK7Vector3jbtPS_(char*, Vector3*, unsigned int, int, unsigned short, char*);
+extern "C" char* _ZN5Actor5SpawnEjjRK7Vector3PK10Vector3_16ii(unsigned int, unsigned int, Vector3*, Vec3_16*, int, int);
+extern "C" int _ZN9Animation8FinishedEv(char*);
 
 void func_ov064_0211a39c(char* c)
 {

@@ -1,14 +1,14 @@
 //cpp
 extern "C" {
 extern void func_0201267c(int, void*);
-extern int _ZNK12WithMeshClsn13JustHitGroundEv(void*);
+extern "C" int _ZNK12WithMeshClsn13JustHitGroundEv(void*);
 extern void func_ov081_021265c8(void*);
-extern void _ZN9Animation7AdvanceEv(void*);
-extern void _ZN5Actor9UpdatePosEP12CylinderClsn(void*, void*);
+extern "C" void _ZN9Animation7AdvanceEv(void*);
+extern "C" void _ZN5Actor9UpdatePosEP12CylinderClsn(void*, void*);
 extern int func_ov081_02126950(void*, void*);
 extern void func_ov081_02126758(void*);
-extern void _ZN12CylinderClsn5ClearEv(void*);
-extern void _ZN12CylinderClsn6UpdateEv(void*);
+extern "C" void _ZN12CylinderClsn5ClearEv(void*);
+extern "C" void _ZN12CylinderClsn6UpdateEv(void*);
 int func_ov081_02127240(char* c){
   switch(*(unsigned char*)(c+0x3f1)){
   case 0:

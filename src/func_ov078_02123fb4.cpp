@@ -1,6 +1,6 @@
 //cpp
 extern "C" {
-extern void _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(void*, void*, int, int, int, unsigned short);
+extern "C" void _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(void*, void*, int, int, int, unsigned short);
 extern void* data_ov078_02126f18[];
 int func_ov078_02123fb4(char *c){
   *(int*)(c+0x9c) = -0x2000;

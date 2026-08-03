@@ -1,9 +1,9 @@
 //cpp
 extern "C" {
-extern unsigned int _ZN5Sound8PlayLongEjjjRK7Vector3j(unsigned int, unsigned int, unsigned int, void*, unsigned int);
-extern void _ZN6Camera9SetFlag_3Ev(void*);
+extern "C" unsigned int _ZN5Sound8PlayLongEjjjRK7Vector3j(unsigned int, unsigned int, unsigned int, void*, unsigned int);
+extern "C" void _ZN6Camera9SetFlag_3Ev(void*);
 extern void func_ov073_0211f144(void*);
-extern int _ZN6Player12GetTalkStateEv(void*);
+extern "C" int _ZN6Player12GetTalkStateEv(void*);
 extern void ChiefChilly_ChangeState(void*, void*);
 extern void* data_0209f318;
 extern int data_ov073_02123370[];

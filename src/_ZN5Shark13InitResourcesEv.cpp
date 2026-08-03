@@ -6,14 +6,14 @@
 /* recovered: named members + shared header, real C++ method */
 #include "Shark.h"
 extern "C" {
-extern void* _ZN5Model8LoadFileER13SharedFilePtr(void* f);
-extern void _ZN9ModelBase7SetFileEP8BMD_Fileii(void* thiz, void* file, int a, int b);
-extern void _ZN9Animation8LoadFileER13SharedFilePtr(void* f);
-extern void _ZN7PathPtrC1Ev(void* thiz);
-extern void _ZN7PathPtr6FromIDEj(void* thiz, unsigned int id);
-extern void _ZN25MovingCylinderClsnWithPos4InitEP5ActorRK7Vector35Fix12IiES6_jj(
+extern "C" void* _ZN5Model8LoadFileER13SharedFilePtr(void* f);
+extern "C" void _ZN9ModelBase7SetFileEP8BMD_Fileii(void* thiz, void* file, int a, int b);
+extern "C" void _ZN9Animation8LoadFileER13SharedFilePtr(void* f);
+extern "C" void _ZN7PathPtrC1Ev(void* thiz);
+extern "C" void _ZN7PathPtr6FromIDEj(void* thiz, unsigned int id);
+extern "C" void _ZN25MovingCylinderClsnWithPos4InitEP5ActorRK7Vector35Fix12IiES6_jj(
     void* thiz, void* actor, void* pos, int f, int g, unsigned int h, unsigned int i);
-extern void _ZNK7PathPtr7GetNodeER7Vector3j(void* thiz, void* out, unsigned int j);
+extern "C" void _ZNK7PathPtr7GetNodeER7Vector3j(void* thiz, void* out, unsigned int j);
 
 extern char data_ov090_021345ac[];
 

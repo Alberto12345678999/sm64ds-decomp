@@ -4,9 +4,9 @@
 #include "common.h"
 
 extern "C" {
-extern void _ZN5Actor9UpdatePosEP12CylinderClsn(void* thiz, void* cc);
-extern void _ZN5Actor10EarthquakeERK7Vector35Fix12IiE(void* thiz, const Vector3& v, int f);
-extern void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int n, int x, int y, int z);
+extern "C" void _ZN5Actor9UpdatePosEP12CylinderClsn(void* thiz, void* cc);
+extern "C" void _ZN5Actor10EarthquakeERK7Vector35Fix12IiE(void* thiz, const Vector3& v, int f);
+extern "C" void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int n, int x, int y, int z);
 extern void func_0201267c(int a, void* v);
 
 void func_ov025_02111a84(char* c)

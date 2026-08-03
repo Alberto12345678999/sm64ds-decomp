@@ -11,12 +11,12 @@ struct Obj {
   virtual int v16(); virtual int v17(); virtual int v18(); virtual int v19(char* c);
 };
 extern "C" {
-extern void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(char* c, Vector3* v, unsigned int a, int fix, unsigned int b, unsigned int d, unsigned int e);
+extern "C" void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(char* c, Vector3* v, unsigned int a, int fix, unsigned int b, unsigned int d, unsigned int e);
 extern void func_ov002_020c9e18(char* c);
-extern int _ZN6Player7IsStateERNS_5StateE(char* c, void* s);
-extern void _ZN6Player11ChangeStateERNS_5StateE(char* c, void* s);
+extern "C" int _ZN6Player7IsStateERNS_5StateE(char* c, void* s);
+extern "C" void _ZN6Player11ChangeStateERNS_5StateE(char* c, void* s);
 extern void func_ov002_020d718c(char* c);
-extern void _ZN5Sound13PlayCharVoiceEjjRK7Vector3(unsigned int a, unsigned int b, void* v);
+extern "C" void _ZN5Sound13PlayCharVoiceEjjRK7Vector3(unsigned int a, unsigned int b, void* v);
 extern char data_ov002_02110034;
 extern char data_ov002_0211013c;
 void func_ov002_020d7430(char* c){

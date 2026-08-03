@@ -8,11 +8,11 @@
 /* daObjWlPolelift_c::InitResources - recovered from vtable slot identity */
 struct V3 { int x,y,z; V3(){} V3(const V3&o){x=o.x;y=o.y;z=o.z;} };
 extern "C" {
-extern void* _ZN5Model8LoadFileER13SharedFilePtr(void*);
-extern void _ZN9ModelBase7SetFileEP8BMD_Fileii(void*, void*, int, int);
-extern void _ZN11ShadowModel10InitCuboidEv(void*);
-extern void _ZN7PathPtr6FromIDEj(void*, unsigned int);
-extern void _ZN25MovingCylinderClsnWithPos4InitEP5ActorRK7Vector35Fix12IiES6_jj(void*, void*, V3*, int, int, unsigned int, unsigned int);
+extern "C" void* _ZN5Model8LoadFileER13SharedFilePtr(void*);
+extern "C" void _ZN9ModelBase7SetFileEP8BMD_Fileii(void*, void*, int, int);
+extern "C" void _ZN11ShadowModel10InitCuboidEv(void*);
+extern "C" void _ZN7PathPtr6FromIDEj(void*, unsigned int);
+extern "C" void _ZN25MovingCylinderClsnWithPos4InitEP5ActorRK7Vector35Fix12IiES6_jj(void*, void*, V3*, int, int, unsigned int, unsigned int);
 extern int data_0209caa0[];
 extern V3 data_ov032_02113a9c;
 int func_ov026_02111598(char *c){

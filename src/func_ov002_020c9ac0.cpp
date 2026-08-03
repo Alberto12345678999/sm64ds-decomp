@@ -1,6 +1,6 @@
 //cpp
 extern "C" {
-extern void _ZN6Player7SetAnimEji5Fix12IiEj(void* c, unsigned int a, int b, int f, unsigned int g);
+extern "C" void _ZN6Player7SetAnimEji5Fix12IiEj(void* c, unsigned int a, int b, int f, unsigned int g);
 void func_ov002_020c9ac0(char* c){
   *(unsigned char*)(c+0x743)=1;
   *(unsigned char*)(c+0x716)=1;

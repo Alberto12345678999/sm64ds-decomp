@@ -47,7 +47,7 @@ extern SFP data_ov079_02128168;
 extern SFP data_ov079_02128178;
 extern void *data_ov079_02128170[];
 extern void *data_ov079_021275ec[];
-extern void _ZN16MeshColliderBase16UpdatePosAndAngsERS_P5ActorR10ClsnResultR7Vector3P10Vector3_16S8_();
+extern "C" void _ZN16MeshColliderBase16UpdatePosAndAngsERS_P5ActorR10ClsnResultR7Vector3P10Vector3_16S8_();
 extern u8 data_0209f21c;
 extern s32 data_0209f394[];
 extern signed char data_0209f2f8;

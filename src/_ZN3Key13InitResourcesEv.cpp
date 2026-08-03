@@ -6,14 +6,14 @@
 /* recovered: named members + shared header, real C++ method */
 #include "Key.h"
 extern void LoadKeyModels(int idx);
-extern void _ZN9Animation8LoadFileER13SharedFilePtr(void* sfp);
-extern int _ZN9ModelBase7SetFileEP8BMD_Fileii(void* thiz, void* bmd, int a, int b);
-extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void* thiz, void* bca, int a, int fx, unsigned int f);
-extern void _ZN25MovingCylinderClsnWithPos4InitEP5ActorRK7Vector35Fix12IiES6_jj(void* thiz, void* actor, void* pos, int r, int s, unsigned int a, unsigned int b);
-extern void _ZN12WithMeshClsn4InitEP5Actor5Fix12IiES3_P10Vector3_16S5_(void* thiz, void* actor, int a, int b, void* v, void* w);
-extern void _ZN5Sound9PlayBank3EjRK7Vector3(unsigned int id, void* pos);
-extern int _ZN11ShadowModel12InitCylinderEv(void* thiz);
-extern void _ZN5Event8ClearBitEj(unsigned int n);
+extern "C" void _ZN9Animation8LoadFileER13SharedFilePtr(void* sfp);
+extern "C" int _ZN9ModelBase7SetFileEP8BMD_Fileii(void* thiz, void* bmd, int a, int b);
+extern "C" void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void* thiz, void* bca, int a, int fx, unsigned int f);
+extern "C" void _ZN25MovingCylinderClsnWithPos4InitEP5ActorRK7Vector35Fix12IiES6_jj(void* thiz, void* actor, void* pos, int r, int s, unsigned int a, unsigned int b);
+extern "C" void _ZN12WithMeshClsn4InitEP5Actor5Fix12IiES3_P10Vector3_16S5_(void* thiz, void* actor, int a, int b, void* v, void* w);
+extern "C" void _ZN5Sound9PlayBank3EjRK7Vector3(unsigned int id, void* pos);
+extern "C" int _ZN11ShadowModel12InitCylinderEv(void* thiz);
+extern "C" void _ZN5Event8ClearBitEj(unsigned int n);
 
 extern char data_ov002_02110964;
 extern char data_ov002_0211094c;

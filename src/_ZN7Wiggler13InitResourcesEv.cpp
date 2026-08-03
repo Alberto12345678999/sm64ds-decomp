@@ -5,20 +5,20 @@
 #include "decl_common.h"
 /* recovered: named members + shared header, real C++ method */
 #include "Wiggler.h"
-extern int _ZN5Actor9TrackStarEjj(void *self, u32 a, u32 b);
-extern void _ZN5Model8LoadFileER13SharedFilePtr(void *shared);
-extern void _ZN15TextureSequence8LoadFileER13SharedFilePtr(void *shared);
-extern void _ZN9Animation8LoadFileER13SharedFilePtr(void *shared);
-extern void _ZN9ModelBase7SetFileEP8BMD_Fileii(void *mb, void *bmd, int a, int b);
-extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *ma, void *bca, int i, int fix, u32 j);
-extern void _ZN15TextureSequence7PrepareER8BMD_FileR8BTP_File(void *bmd, void *btp);
-extern void _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(void *ts, void *btp, int i, int fix, u32 j);
+extern "C" int _ZN5Actor9TrackStarEjj(void *self, u32 a, u32 b);
+extern "C" void _ZN5Model8LoadFileER13SharedFilePtr(void *shared);
+extern "C" void _ZN15TextureSequence8LoadFileER13SharedFilePtr(void *shared);
+extern "C" void _ZN9Animation8LoadFileER13SharedFilePtr(void *shared);
+extern "C" void _ZN9ModelBase7SetFileEP8BMD_Fileii(void *mb, void *bmd, int a, int b);
+extern "C" void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *ma, void *bca, int i, int fix, u32 j);
+extern "C" void _ZN15TextureSequence7PrepareER8BMD_FileR8BTP_File(void *bmd, void *btp);
+extern "C" void _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(void *ts, void *btp, int i, int fix, u32 j);
 extern void Matrix4x3_FromRotationY(void *m, int angle);
 extern void MulVec3Mat4x3(void *dst, void *mtx, void *src);
 extern void Vec3_Add(void *out, void *a, void *b);
-extern void _ZN25MovingCylinderClsnWithPos4InitEP5ActorRK7Vector35Fix12IiES6_jj(void *self, void *actor, void *pos, int fix, u32 a, u32 b, u32 cc);
+extern "C" void _ZN25MovingCylinderClsnWithPos4InitEP5ActorRK7Vector35Fix12IiES6_jj(void *self, void *actor, void *pos, int fix, u32 a, u32 b, u32 cc);
 extern void func_ov034_021125b8(void *c, int i);
-extern void _ZN12WithMeshClsn4InitEP5Actor5Fix12IiES3_P10Vector3_16S5_(void *self, void *actor, int fix1, int fix2, void *v, int t);
+extern "C" void _ZN12WithMeshClsn4InitEP5Actor5Fix12IiES3_P10Vector3_16S5_(void *self, void *actor, int fix1, int fix2, void *v, int t);
 
 extern s32 data_ov034_021138c4[];
 extern s32 data_020a0e68[];

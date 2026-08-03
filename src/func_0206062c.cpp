@@ -1,8 +1,8 @@
 //cpp
 extern "C" {
 extern void CpuCopy8(int dst, int src, unsigned int n);
-extern void _ZN4CP1527FlushAndInvalidateDataCacheEjj(unsigned int a, unsigned int b);
-extern void _ZN4CP1516DrainWriteBufferEv(void);
+extern "C" void _ZN4CP1527FlushAndInvalidateDataCacheEjj(unsigned int a, unsigned int b);
+extern "C" void _ZN4CP1516DrainWriteBufferEv(void);
 extern int func_02060f60(void *o, int a, int b);
 extern void func_0206081c(void *o);
 

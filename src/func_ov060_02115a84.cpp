@@ -4,8 +4,8 @@
 #include "common.h"
 extern "C" {
 
-extern int _ZNK12WithMeshClsn13JustHitGroundEv(void* p);
-extern void _ZN5Actor13LandingDustAtER7Vector3b(void* a, struct Vector3* v, int b);
+extern "C" int _ZNK12WithMeshClsn13JustHitGroundEv(void* p);
+extern "C" void _ZN5Actor13LandingDustAtER7Vector3b(void* a, struct Vector3* v, int b);
 extern void func_02012694(int id, void* p);
 void func_ov060_02115a84(char* c, char* arg){
   if(_ZNK12WithMeshClsn13JustHitGroundEv(c+0x14c)==0) return;

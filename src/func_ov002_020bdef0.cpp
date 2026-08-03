@@ -1,6 +1,6 @@
 //cpp
 extern "C" {
-extern int _ZN15TextureSequence6UpdateER15ModelComponents(void*, void*);
+extern "C" int _ZN15TextureSequence6UpdateER15ModelComponents(void*, void*);
 extern int func_ov002_020bd984(void*, int);
 void func_ov002_020bdef0(char* c){
   if(*(unsigned char*)(c+0x6fb)==0) return;

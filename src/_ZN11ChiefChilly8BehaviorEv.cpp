@@ -27,27 +27,27 @@ extern char data_ov073_021233f0[];
 extern char data_ov073_02123400[];
 
 extern unsigned short DecIfAbove0_Short(unsigned short *p);
-extern void _ZN5Actor9UpdatePosEP12CylinderClsn(void *self, void *clsn);
-extern void _ZN5Actor22UpdatePosWithOnlySpeedEP12CylinderClsn(void *self, void *clsn);
-extern int _ZNK9Animation12WillHitFrameEi(void *self, int f);
+extern "C" void _ZN5Actor9UpdatePosEP12CylinderClsn(void *self, void *clsn);
+extern "C" void _ZN5Actor22UpdatePosWithOnlySpeedEP12CylinderClsn(void *self, void *clsn);
+extern "C" int _ZNK9Animation12WillHitFrameEi(void *self, int f);
 extern void MulMat4x3Mat4x3(void *d, void *a, void *b);
 extern void Vec3_Lsl(Vector3 *d, Vector3 *s, int sh);
 extern void func_02012694(int a, void *b);
-extern void _ZN5Actor17HugeLandingDustAtER7Vector3b(void *self, Vector3 *v, int b);
-extern void _ZN11RaycastLineC1Ev(void *self);
+extern "C" void _ZN5Actor17HugeLandingDustAtER7Vector3b(void *self, Vector3 *v, int b);
+extern "C" void _ZN11RaycastLineC1Ev(void *self);
 extern void Matrix4x3_FromRotationY(void *m, int angle);
 extern void Matrix4x3_ApplyInPlaceToRotationX(void *m, int angX);
 extern void MulVec3Mat4x3(void *a, void *m, void *out);
-extern void _ZN11RaycastLine13SetObjAndLineERK7Vector3S2_P5Actor(void *self, const Vector3 *a, const Vector3 *b, void *actor);
-extern int _ZN11RaycastLine10DetectClsnEv(void *self);
-extern void _ZN11RaycastLineD1Ev(void *self);
-extern void _ZN5Enemy12UpdateWMClsnER12WithMeshClsnj(void *self, void *wmc, unsigned int flags);
-extern void _ZN25MovingCylinderClsnWithPos21SetPosRelativeToActorERK7Vector3(void *self, const Vector3 *v);
+extern "C" void _ZN11RaycastLine13SetObjAndLineERK7Vector3S2_P5Actor(void *self, const Vector3 *a, const Vector3 *b, void *actor);
+extern "C" int _ZN11RaycastLine10DetectClsnEv(void *self);
+extern "C" void _ZN11RaycastLineD1Ev(void *self);
+extern "C" void _ZN5Enemy12UpdateWMClsnER12WithMeshClsnj(void *self, void *wmc, unsigned int flags);
+extern "C" void _ZN25MovingCylinderClsnWithPos21SetPosRelativeToActorERK7Vector3(void *self, const Vector3 *v);
 extern void func_ov073_0211f61c(void *self);
-extern void _ZN12CylinderClsn5ClearEv(void *self);
-extern void _ZN12CylinderClsn6UpdateEv(void *self);
+extern "C" void _ZN12CylinderClsn5ClearEv(void *self);
+extern "C" void _ZN12CylinderClsn6UpdateEv(void *self);
 extern void func_ov073_021215cc(void *self);
-extern void _ZN14BlendModelAnim7AdvanceEv(void *self);
+extern "C" void _ZN14BlendModelAnim7AdvanceEv(void *self);
 }
 
 extern "C" int _ZN11ChiefChilly8BehaviorEv(C *c)

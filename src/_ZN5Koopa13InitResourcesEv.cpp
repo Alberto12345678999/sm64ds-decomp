@@ -13,13 +13,13 @@ extern SharedFilePtr* data_ov062_0211cee8[9];
 extern SharedFilePtr* data_ov062_0211ced8[2];
 extern SharedFilePtr* data_ov062_0211cee0[2];
 
-extern void* _ZN9Animation8LoadFileER13SharedFilePtr(SharedFilePtr* f);
-extern BMD_File* _ZN5Model8LoadFileER13SharedFilePtr(SharedFilePtr* f);
-extern int _ZN9ModelBase7SetFileEP8BMD_Fileii(void* self, BMD_File* f, int a, int b);
-extern int _ZN11ShadowModel12InitCylinderEv(void* self);
-extern void _ZN18MovingCylinderClsn4InitEP5Actor5Fix12IiES3_jj(void* self, Actor* a, Fix12 r, Fix12 h, unsigned int e, unsigned int g);
-extern void _ZN12WithMeshClsn4InitEP5Actor5Fix12IiES3_P10Vector3_16S5_(void* self, Actor* a, Fix12 r, Fix12 h, Vector3_16* p, Fix12 q);
-extern void _ZN12WithMeshClsn19StartDetectingWaterEv(void* self);
+extern "C" void* _ZN9Animation8LoadFileER13SharedFilePtr(SharedFilePtr* f);
+extern "C" BMD_File* _ZN5Model8LoadFileER13SharedFilePtr(SharedFilePtr* f);
+extern "C" int _ZN9ModelBase7SetFileEP8BMD_Fileii(void* self, BMD_File* f, int a, int b);
+extern "C" int _ZN11ShadowModel12InitCylinderEv(void* self);
+extern "C" void _ZN18MovingCylinderClsn4InitEP5Actor5Fix12IiES3_jj(void* self, Actor* a, Fix12 r, Fix12 h, unsigned int e, unsigned int g);
+extern "C" void _ZN12WithMeshClsn4InitEP5Actor5Fix12IiES3_P10Vector3_16S5_(void* self, Actor* a, Fix12 r, Fix12 h, Vector3_16* p, Fix12 q);
+extern "C" void _ZN12WithMeshClsn19StartDetectingWaterEv(void* self);
 extern void LoadBlueCoinModel(void* c);
 
 int Koopa::InitResources()

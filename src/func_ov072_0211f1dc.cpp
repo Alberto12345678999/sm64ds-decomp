@@ -1,10 +1,10 @@
 //cpp
 extern "C" {
-extern int _ZNK7PathPtr7GetNodeER7Vector3j(void* self, void* v, unsigned int n);
+extern "C" int _ZNK7PathPtr7GetNodeER7Vector3j(void* self, void* v, unsigned int n);
 extern int Vec3_HorzDist(void* a, void* b);
 extern short Vec3_HorzAngle(void* a, void* b);
-extern int _Z11UpdateAngleRssis(short* a, short b, int c, short d);
-extern int _ZNK7PathPtr8NumNodesEv(void* self);
+extern "C" int _Z11UpdateAngleRssis(short* a, short b, int c, short d);
+extern "C" int _ZNK7PathPtr8NumNodesEv(void* self);
 int func_ov072_0211f1dc(char* c){
   int v[3];
   int *idx;

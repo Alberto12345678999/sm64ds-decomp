@@ -6,9 +6,9 @@
 #include "common.h"
 extern "C" {
 
-extern void _ZN5Sound9PlayBank0EjRK7Vector3(unsigned int n, const Vector3& v);
-extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void* thiz, void* f, int a, int b, unsigned int e);
-extern void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int n, int a, int b, int c);
+extern "C" void _ZN5Sound9PlayBank0EjRK7Vector3(unsigned int n, const Vector3& v);
+extern "C" void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void* thiz, void* f, int a, int b, unsigned int e);
+extern "C" void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int n, int a, int b, int c);
 
 int func_ov070_02120910(char* c)
 {

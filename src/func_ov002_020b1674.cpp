@@ -1,9 +1,9 @@
 //cpp
 extern "C" {
-extern void _ZN5Actor24KillAndTrackInDeathTableEv(void*);
+extern "C" void _ZN5Actor24KillAndTrackInDeathTableEv(void*);
 extern int func_02012694(int, void*);
 extern int GiveCoins(int, int);
-extern int _ZN6Player4HealEi(void*, int);
+extern "C" int _ZN6Player4HealEi(void*, int);
 void func_ov002_020b1674(char* c, char* p){
   *(short*)(c+0x3a8)=0;
   _ZN5Actor24KillAndTrackInDeathTableEv(c);

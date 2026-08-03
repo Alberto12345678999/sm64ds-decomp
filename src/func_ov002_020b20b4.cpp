@@ -6,8 +6,8 @@ struct BF3ae {
 };
 extern "C" {
 extern void func_ov002_020b1008(void* c);
-extern int _ZN5Event6GetBitEj(unsigned int b);
-extern void* _ZN5Actor15FindWithActorIDEjPS_(unsigned int id, void* start);
+extern "C" int _ZN5Event6GetBitEj(unsigned int b);
+extern "C" void* _ZN5Actor15FindWithActorIDEjPS_(unsigned int id, void* start);
 void func_ov002_020b20b4(char* c){
   func_ov002_020b1008(c);
   if (((struct BF3ae*)(c+0x3ae))->b0) return;

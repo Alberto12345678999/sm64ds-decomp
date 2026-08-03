@@ -8,8 +8,8 @@ typedef int Fix12;
 
 
 extern "C" {
-extern int _ZN5Actor5SpawnEjjRK7Vector3PK10Vector3_16ii(unsigned a, unsigned b, const struct Vector3 *pos, const struct Vector3_16 *rot, int i, int j);
-extern void _ZN5Actor9SetRangesE5Fix12IiES1_S1_S1_(void *c, Fix12 a, Fix12 b, Fix12 d, Fix12 e);
+extern "C" int _ZN5Actor5SpawnEjjRK7Vector3PK10Vector3_16ii(unsigned a, unsigned b, const struct Vector3 *pos, const struct Vector3_16 *rot, int i, int j);
+extern "C" void _ZN5Actor9SetRangesE5Fix12IiES1_S1_S1_(void *c, Fix12 a, Fix12 b, Fix12 d, Fix12 e);
 
 void func_ov100_0214109c(void *t) {
     char *c = (char*)t;

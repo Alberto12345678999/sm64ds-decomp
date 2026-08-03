@@ -6,8 +6,8 @@
 #include "Player.h"
 extern "C" {
 extern void Player_ReleaseHeldActor(void*);
-extern void _ZN5Sound13PlayCharVoiceEjjRK7Vector3(unsigned,unsigned,void*);
-extern void _ZN6Player7SetAnimEji5Fix12IiEj(void*,unsigned,int,int,unsigned);
+extern "C" void _ZN5Sound13PlayCharVoiceEjjRK7Vector3(unsigned,unsigned,void*);
+extern "C" void _ZN6Player7SetAnimEji5Fix12IiEj(void*,unsigned,int,int,unsigned);
 extern int data_0209f318[];
 }
 

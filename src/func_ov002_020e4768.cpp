@@ -1,9 +1,9 @@
 //cpp
 extern "C" {
-extern unsigned int _ZNK6Player14GetBodyModelIDEjb(void* self, unsigned int idx, int flag);
+extern "C" unsigned int _ZNK6Player14GetBodyModelIDEjb(void* self, unsigned int idx, int flag);
 extern void func_020167a4(void* p);
 extern void func_ov002_020e640c(void* self);
-extern void _ZN15ModelComponents21UpdateVertsUsingBonesEv(void* self);
+extern "C" void _ZN15ModelComponents21UpdateVertsUsingBonesEv(void* self);
 extern int func_ov002_020becf4(void* self, unsigned int idx, int flag);
 extern void MulMat4x3Mat4x3(void* dst, void* a, void* b);
 extern int data_020a0e68[12];

@@ -4,8 +4,8 @@
 #include "Bowser.h"
 struct Obj { virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3(); virtual void v4(); virtual void m(void*); };
 extern "C" {
-extern void _ZN9Animation7AdvanceEv(void* a);
-extern void _ZN15TextureSequence6UpdateER15ModelComponents(void* a, void* b);
+extern "C" void _ZN9Animation7AdvanceEv(void* a);
+extern "C" void _ZN15TextureSequence6UpdateER15ModelComponents(void* a, void* b);
 }
 
 int Bowser::Render()

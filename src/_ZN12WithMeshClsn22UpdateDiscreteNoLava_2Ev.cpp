@@ -8,8 +8,8 @@
 extern "C" {
 
 
-extern int _ZNK12WithMeshClsn10IsOnGroundEv(void *self);
-extern void _ZN10SphereClsn15SetObjAndSphereERK7Vector35Fix12IiEP5Actor(void *self, struct Vector3 *v, int fix, void *actor);
+extern "C" int _ZNK12WithMeshClsn10IsOnGroundEv(void *self);
+extern "C" void _ZN10SphereClsn15SetObjAndSphereERK7Vector35Fix12IiEP5Actor(void *self, struct Vector3 *v, int fix, void *actor);
 extern void func_020356d4(char *self);
 }
 

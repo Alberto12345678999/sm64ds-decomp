@@ -7,8 +7,8 @@
 /* recovered: named members + shared header */
 #include "HeapAllocator.h"
 extern "C" {
-extern void* _ZN18NestedHeapIterator10FindNestedEPv(void* ptr);
-extern void _ZN18NestedHeapIterator7AddLastEP13HeapAllocator(void* iter, void* node);
+extern "C" void* _ZN18NestedHeapIterator10FindNestedEPv(void* ptr);
+extern "C" void _ZN18NestedHeapIterator7AddLastEP13HeapAllocator(void* iter, void* node);
 
 
 void _ZN13HeapAllocatorC1EjPvPvj(struct HeapAllocator *self, u32 magic, void* a, void* b, unsigned short size) {

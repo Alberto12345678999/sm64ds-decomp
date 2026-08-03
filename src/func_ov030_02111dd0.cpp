@@ -1,10 +1,10 @@
 //cpp
 extern "C" {
-extern int _ZNK12WithMeshClsn10IsOnGroundEv(void* thiz);
-extern void _ZN13RaycastGroundC1Ev(void* self);
-extern void _ZN13RaycastGround12SetObjAndPosERK7Vector3P5Actor(void* self, void* pos, void* act);
+extern "C" int _ZNK12WithMeshClsn10IsOnGroundEv(void* thiz);
+extern "C" void _ZN13RaycastGroundC1Ev(void* self);
+extern "C" void _ZN13RaycastGround12SetObjAndPosERK7Vector3P5Actor(void* self, void* pos, void* act);
 extern int func_02038ea4(void* thiz);
-extern void _ZN13RaycastGroundD1Ev(void* self);
+extern "C" void _ZN13RaycastGroundD1Ev(void* self);
 
 int func_ov030_02111dd0(char* c)
 {

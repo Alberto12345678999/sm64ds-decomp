@@ -3,7 +3,7 @@
  * ldr ip, [pc]; bx ip; .word 0x204df38
  */
 extern "C" {
-extern void _ZN13HeapAllocator6RemoveEv(void);
+extern "C" void _ZN13HeapAllocator6RemoveEv(void);
 void _ZN13HeapAllocator7DestroyEv(void) {
     _ZN13HeapAllocator6RemoveEv();
 }

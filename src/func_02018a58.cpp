@@ -1,6 +1,6 @@
 //cpp
 extern "C" {
-extern void* _ZN6Memory8AllocateEj(unsigned int);
+extern "C" void* _ZN6Memory8AllocateEj(unsigned int);
 extern void func_0205a588(void*, int, unsigned int);
 extern void *data_0209d3b8;
 extern int data_0209d3b0;

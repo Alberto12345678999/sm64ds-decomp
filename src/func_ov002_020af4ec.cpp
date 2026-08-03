@@ -8,12 +8,12 @@ extern "C" {
 extern void Matrix4x3_FromRotationY(void* m, int angle);
 extern void Vec3_Asr(struct Vector3* d, struct Vector3* s, int sh);
 extern void Matrix4x3_FromTranslation(void* m, int x, int y, int z);
-extern int _ZNK12WithMeshClsn10IsOnGroundEv(void* self);
-extern void _ZN13RaycastGroundC1Ev(struct RaycastGround* self);
-extern void _ZN13RaycastGround12SetObjAndPosERK7Vector3P5Actor(struct RaycastGround* self, const struct Vector3* v, void* actor);
-extern int _ZN13RaycastGround10DetectClsnEv(struct RaycastGround* self);
-extern void _ZN13RaycastGroundD1Ev(struct RaycastGround* self);
-extern void _ZN5Actor19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(void* self, void* shadow, void* mtx, int height, int rad, unsigned int x);
+extern "C" int _ZNK12WithMeshClsn10IsOnGroundEv(void* self);
+extern "C" void _ZN13RaycastGroundC1Ev(struct RaycastGround* self);
+extern "C" void _ZN13RaycastGround12SetObjAndPosERK7Vector3P5Actor(struct RaycastGround* self, const struct Vector3* v, void* actor);
+extern "C" int _ZN13RaycastGround10DetectClsnEv(struct RaycastGround* self);
+extern "C" void _ZN13RaycastGroundD1Ev(struct RaycastGround* self);
+extern "C" void _ZN5Actor19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(void* self, void* shadow, void* mtx, int height, int rad, unsigned int x);
 void func_ov002_020af4ec(void* self);
 }
 

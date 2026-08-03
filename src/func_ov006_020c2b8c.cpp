@@ -3,8 +3,8 @@ extern "C" {
 struct C;
 typedef void (C::*PMF)();
 extern int func_ov006_020c2be8(C* c);
-extern void _ZN9Animation7AdvanceEv(char* a);
-extern void _ZN14BlendModelAnim7AdvanceEv(char* b);
+extern "C" void _ZN9Animation7AdvanceEv(char* a);
+extern "C" void _ZN14BlendModelAnim7AdvanceEv(char* b);
 extern int func_ov006_020c2290(C* c);
 struct C { PMF pmf; };
 void func_ov006_020c2b8c(C* c) {

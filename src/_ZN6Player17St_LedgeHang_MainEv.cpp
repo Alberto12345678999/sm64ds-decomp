@@ -6,9 +6,9 @@
 /* recovered: named members + shared header, real C++ method */
 #include "Player.h"
 extern "C" {
-extern int _ZN6Player12FinishedAnimEv(void* c);
-extern void _ZN6Player7SetAnimEji5Fix12IiEj(void* c, u32 anim, int a, Fix12i b, u32 d);
-extern void _ZN6Player11ChangeStateERNS_5StateE(void* c, void* s);
+extern "C" int _ZN6Player12FinishedAnimEv(void* c);
+extern "C" void _ZN6Player7SetAnimEji5Fix12IiEj(void* c, u32 anim, int a, Fix12i b, u32 d);
+extern "C" void _ZN6Player11ChangeStateERNS_5StateE(void* c, void* s);
 extern void Player_AdvanceAnims(void* c);
 
 extern u8 data_020a0e40;

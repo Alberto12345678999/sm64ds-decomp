@@ -1,7 +1,7 @@
 //cpp
 extern "C" {
 extern void KingBobOmb_SetState(void* c, void* p);
-extern int _ZNK12WithMeshClsn10IsOnGroundEv(void* thiz);
+extern "C" int _ZNK12WithMeshClsn10IsOnGroundEv(void* thiz);
 extern void func_ov078_02125c24(void* c, int n);
 extern void func_0200fa8c(void* t, int a);
 extern void func_02012694(int a, void* v);

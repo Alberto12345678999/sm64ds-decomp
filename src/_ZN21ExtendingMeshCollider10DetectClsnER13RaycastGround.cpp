@@ -6,14 +6,14 @@ struct RaycastLine { char data[0x78]; };
 
 extern void func_020374b8(int *a, int *b);
 extern void func_0203aa74(void *thiz, Vector3 *v, Vector3 *res);
-extern void _ZN11RaycastLineC1Ev(RaycastLine *);
-extern void _ZN11RaycastLine13SetObjAndLineERK7Vector3S2_P5Actor(RaycastLine *, const Vector3 *, const Vector3 *, Actor *);
+extern "C" void _ZN11RaycastLineC1Ev(RaycastLine *);
+extern "C" void _ZN11RaycastLine13SetObjAndLineERK7Vector3S2_P5Actor(RaycastLine *, const Vector3 *, const Vector3 *, Actor *);
 extern void func_02035394(RaycastLine *, void *);
-extern int _ZN12MeshCollider10DetectClsnER11RaycastLine(void *, RaycastLine *);
-extern Vector3 *_ZN11RaycastLine10GetClsnPosEv(Vector3 *, RaycastLine *);
+extern "C" int _ZN12MeshCollider10DetectClsnER11RaycastLine(void *, RaycastLine *);
+extern "C" Vector3 *_ZN11RaycastLine10GetClsnPosEv(Vector3 *, RaycastLine *);
 extern void func_0203aa10(void *thiz, const Vector3 *v, Vector3 *res);
-extern void _ZN10ClsnResultaSERKS_(void *, const void *);
-extern void _ZN11RaycastLineD1Ev(RaycastLine *);
+extern "C" void _ZN10ClsnResultaSERKS_(void *, const void *);
+extern "C" void _ZN11RaycastLineD1Ev(RaycastLine *);
 
 int _ZN21ExtendingMeshCollider10DetectClsnER13RaycastGround(void *self, char *ground)
 {

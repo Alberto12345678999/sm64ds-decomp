@@ -1,11 +1,11 @@
 //cpp
 struct RaycastGround { char pad[0x44]; int hit; char pad2[0x8]; };
 extern "C" {
-extern void _ZN13RaycastGroundC1Ev(RaycastGround* r);
-extern void _ZN13RaycastGround12SetObjAndPosERK7Vector3P5Actor(RaycastGround* r, void* v, void* a);
-extern int _ZN13RaycastGround10DetectClsnEv(RaycastGround* r);
-extern void _ZN5Actor19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(void* a, void* sm, void* m, int f1, int f2, unsigned int j);
-extern void _ZN13RaycastGroundD1Ev(RaycastGround* r);
+extern "C" void _ZN13RaycastGroundC1Ev(RaycastGround* r);
+extern "C" void _ZN13RaycastGround12SetObjAndPosERK7Vector3P5Actor(RaycastGround* r, void* v, void* a);
+extern "C" int _ZN13RaycastGround10DetectClsnEv(RaycastGround* r);
+extern "C" void _ZN5Actor19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(void* a, void* sm, void* m, int f1, int f2, unsigned int j);
+extern "C" void _ZN13RaycastGroundD1Ev(RaycastGround* r);
 void func_ov071_02121c6c(char* c) {
   RaycastGround rg;
   int f;

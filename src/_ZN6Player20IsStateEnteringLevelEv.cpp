@@ -6,7 +6,7 @@
 #include "Player.h"
 extern "C" {
 extern int data_ov002_021104b4[];
-extern int _ZN6Player7IsStateERNS_5StateE(char*c, void*s);
+extern "C" int _ZN6Player7IsStateERNS_5StateE(char*c, void*s);
 }
 
 int Player::IsStateEnteringLevel()

@@ -1,8 +1,8 @@
 //cpp
 struct Vector3 { int x,y,z; };
 extern "C" {
-extern int _ZN6Player7SetAnimEji5Fix12IiEj(void*,unsigned int,int,int,unsigned int);
-extern int _ZN5Sound13PlayCharVoiceEjjRK7Vector3(unsigned int,unsigned int,struct Vector3*);
+extern "C" int _ZN6Player7SetAnimEji5Fix12IiEj(void*,unsigned int,int,int,unsigned int);
+extern "C" int _ZN5Sound13PlayCharVoiceEjjRK7Vector3(unsigned int,unsigned int,struct Vector3*);
 int _ZN6Player16St_BurnFire_InitEv(char* c){
   *(char*)(c+0x708)=1;
   *(char*)(c+0x6de)=1;

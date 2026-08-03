@@ -10,8 +10,8 @@ extern int data_ov002_0210f344[3];
 extern int data_ov002_0210f308;
 extern void func_020072c0(void);
 
-extern int _ZN6Player7IsStateERNS_5StateE(void *c, State *st);
-extern int _ZN6Player17SetNoControlStateEhih(void *c, unsigned char a, int b, unsigned char d);
+extern "C" int _ZN6Player7IsStateERNS_5StateE(void *c, State *st);
+extern "C" int _ZN6Player17SetNoControlStateEhih(void *c, unsigned char a, int b, unsigned char d);
 extern void func_020731dc(int a, int b, void **node);
 extern void Vec3_RotateYAndTranslate(void *out, void *trans, short angle, int *vec);
 extern short Vec3_HorzAngle(const void *v0, const void *v1);

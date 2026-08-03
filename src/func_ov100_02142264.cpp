@@ -1,7 +1,7 @@
 //cpp
 extern "C" {
-extern int _ZNK12WithMeshClsn10IsOnGroundEv(void* thiz);
-extern void _ZN5Actor19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(void* thiz, void* sm, void* mtx, int f, int g, unsigned int h);
+extern "C" int _ZNK12WithMeshClsn10IsOnGroundEv(void* thiz);
+extern "C" void _ZN5Actor19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(void* thiz, void* sm, void* mtx, int f, int g, unsigned int h);
 extern int data_02082128[];
 
 typedef struct { int w[12]; } M48;

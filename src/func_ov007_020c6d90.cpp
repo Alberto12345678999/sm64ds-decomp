@@ -15,7 +15,7 @@ struct O {
 
 extern "C" {
 extern void func_ov007_020c78dc(void* o);
-extern void _ZN6Player17St_EndingFly_MainEv(void* o);
+extern "C" void _ZN6Player17St_EndingFly_MainEv(void* o);
 extern void func_ov007_020c8098(void* o);
 extern void func_ov007_020c2bf8(void* o);
 }

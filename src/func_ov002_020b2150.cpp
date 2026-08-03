@@ -6,8 +6,8 @@
 /* recovered: renamed to Class_Method */
 /* daChScene_c::Kill - recovered from vtable slot identity */
 extern "C" {
-extern int _ZNK12WithMeshClsn8IsOnWallEv(void*);
-extern int _ZNK12WithMeshClsn10IsOnGroundEv(void*);
+extern "C" int _ZNK12WithMeshClsn8IsOnWallEv(void*);
+extern "C" int _ZNK12WithMeshClsn10IsOnGroundEv(void*);
 void func_ov002_020b2150(char* c){
   func_ov002_020b13e0(c);
   if(_ZNK12WithMeshClsn8IsOnWallEv(c+0x1ac)) *(int*)(c+0x98)=0;

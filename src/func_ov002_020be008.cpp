@@ -4,9 +4,9 @@ extern unsigned char data_0209f2d8;
 extern int data_ov002_021104b4;
 extern signed char data_02092114;
 extern int func_ov002_020e3078(char* self, void* s);
-extern void _ZN6Player18SetNewHatCharacterEjjb(char* self, unsigned int a, unsigned int b, int c);
-extern void _ZN6Player17SetNoControlStateEhih(char* self, unsigned char a, int b, unsigned char c);
-extern void* _ZN5Actor5SpawnEjjRK7Vector3PK10Vector3_16ii(
+extern "C" void _ZN6Player18SetNewHatCharacterEjjb(char* self, unsigned int a, unsigned int b, int c);
+extern "C" void _ZN6Player17SetNoControlStateEhih(char* self, unsigned char a, int b, unsigned char c);
+extern "C" void* _ZN5Actor5SpawnEjjRK7Vector3PK10Vector3_16ii(
   unsigned int id, unsigned int a2, void* pos, void* rot, int a5, int a6);
 
 void func_ov002_020be008(char* self){

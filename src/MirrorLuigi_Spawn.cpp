@@ -1,14 +1,14 @@
 //cpp
 extern "C" {
-extern void* _ZN9ActorBasenwEj(unsigned int sz);
-extern void _ZN5ActorC2Ev(void* c);
-extern void _ZN9ModelAnimC1Ev(void* c);
-extern void _ZN5ModelC1Ev(void* c);
-extern void _ZN11ShadowModelC1Ev(void* c);
+extern "C" void* _ZN9ActorBasenwEj(unsigned int sz);
+extern "C" void _ZN5ActorC2Ev(void* c);
+extern "C" void _ZN9ModelAnimC1Ev(void* c);
+extern "C" void _ZN5ModelC1Ev(void* c);
+extern "C" void _ZN11ShadowModelC1Ev(void* c);
 extern void* func_020733a8(void* a, int b, int n, void* ctor, void* dtor);
 extern int _ZTV11MirrorLuigi[];
-extern void _ZN15TextureSequenceD1Ev(void*);
-extern void _ZN15TextureSequenceC1Ev(void*);
+extern "C" void _ZN15TextureSequenceD1Ev(void*);
+extern "C" void _ZN15TextureSequenceC1Ev(void*);
 void* MirrorLuigi_Spawn(void){
   char* c = (char*)_ZN9ActorBasenwEj(0x20c);
   if (c) {

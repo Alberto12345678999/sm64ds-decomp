@@ -4,7 +4,7 @@
 #include "decl_common.h"
 /* recovered: named members + shared header, real C++ method */
 #include "KingBobOmb.h"
-extern int _ZN5Model6RenderEPK7Vector3(void *m, void *v);
+extern "C" int _ZN5Model6RenderEPK7Vector3(void *m, void *v);
 
 int KingBobOmb::Render()
 {

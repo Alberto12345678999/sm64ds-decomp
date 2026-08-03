@@ -1,8 +1,8 @@
 //cpp
 extern "C" {
-extern char* _ZN5Actor15FindWithActorIDEjPS_(unsigned int id, char* prev);
-extern void _ZN6Camera9SetLookAtERK7Vector3(void* cam, void* v);
-extern void _ZN6Camera6SetPosERK7Vector3(void* cam, void* v);
+extern "C" char* _ZN5Actor15FindWithActorIDEjPS_(unsigned int id, char* prev);
+extern "C" void _ZN6Camera9SetLookAtERK7Vector3(void* cam, void* v);
+extern "C" void _ZN6Camera6SetPosERK7Vector3(void* cam, void* v);
 int func_ov002_020e7c90(char* c, void* cam){
   char* a = 0;
   for(;;){

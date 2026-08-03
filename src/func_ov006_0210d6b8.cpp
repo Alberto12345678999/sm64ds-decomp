@@ -4,7 +4,7 @@
  * flags: -O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc
  */
 extern "C" {
-extern void *_ZN9ActorBasenwEj(unsigned int sz);
+extern "C" void *_ZN9ActorBasenwEj(unsigned int sz);
 extern void func_ov004_020b2adc(void *);
 extern void func_ov006_0210c2b0(char *p);
 extern void func_ov006_0210c208(char *p);

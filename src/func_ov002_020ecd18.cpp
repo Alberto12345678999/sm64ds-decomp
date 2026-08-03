@@ -3,20 +3,20 @@
 struct Vec3 { s32 x, y, z; Vec3() {} Vec3(const Vec3 &o) { x = o.x; y = o.y; z = o.z; } };
 
 extern "C" {
-extern char *_ZN5Actor10FindWithIDEj(u32 id);
+extern "C" char *_ZN5Actor10FindWithIDEj(u32 id);
 extern void func_ov002_020ed63c(void *self, s32 a);
-extern s32 _ZNK12WithMeshClsn14GetResultFlag1Ev(void *self);
+extern "C" s32 _ZNK12WithMeshClsn14GetResultFlag1Ev(void *self);
 extern void func_ov002_020ec670(void *self, void *clsn);
 extern void func_ov002_020edca4(void *self);
-extern s32 _Z14ApproachLinearR7Vector3RKS_5Fix12IiE(struct Vec3 *dst, struct Vec3 *src, s32 step);
+extern "C" s32 _Z14ApproachLinearR7Vector3RKS_5Fix12IiE(struct Vec3 *dst, struct Vec3 *src, s32 step);
 extern void func_ov002_020ec728(void *self);
 extern s16 Vec3_HorzAngle(struct Vec3 *a, struct Vec3 *b);
-extern void _ZN8Particle20RunningSlidingDustAtE5Fix12IiES1_S1_(s32 x, s32 y, s32 z);
+extern "C" void _ZN8Particle20RunningSlidingDustAtE5Fix12IiES1_S1_(s32 x, s32 y, s32 z);
 extern s32 func_ov002_020eddc4(void *self);
 extern s32 func_ov002_020ed6cc(void *self);
-extern void _ZN12CylinderClsn5ClearEv(void *self);
-extern void _ZN12CylinderClsn6UpdateEv(void *self);
-extern void _ZN5Actor9UpdatePosEP12CylinderClsn(void *self, void *cc);
+extern "C" void _ZN12CylinderClsn5ClearEv(void *self);
+extern "C" void _ZN12CylinderClsn6UpdateEv(void *self);
+extern "C" void _ZN5Actor9UpdatePosEP12CylinderClsn(void *self, void *cc);
 extern void WithMeshClsn_UpdateContinuous_Veneer(void *self);
 }
 struct VObj {

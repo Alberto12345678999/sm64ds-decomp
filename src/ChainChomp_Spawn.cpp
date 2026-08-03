@@ -7,9 +7,9 @@ int _ZN9ModelAnimC1Ev(void*);
 int _ZN11ShadowModelC1Ev(void*);
 int func_020733a8(void*, int, int, void*, void*);
 extern int _ZTV10ChainChomp[];
-extern void _ZN5ModelD1Ev();
-extern void _ZN5ModelC1Ev();
-extern void _ZN11ShadowModelD1Ev();
+extern "C" void _ZN5ModelD1Ev();
+extern "C" void _ZN5ModelC1Ev();
+extern "C" void _ZN11ShadowModelD1Ev();
 extern void func_020072c0();
 extern void func_0203d384();
 void* ChainChomp_Spawn(void){

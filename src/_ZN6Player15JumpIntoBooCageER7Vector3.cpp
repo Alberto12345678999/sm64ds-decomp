@@ -1,7 +1,7 @@
 //cpp
 extern "C" {
 struct Vector3 { int x,y,z; };
-extern int _ZN6Player17SetNoControlStateEhih(void*,unsigned char,int,unsigned char);
+extern "C" int _ZN6Player17SetNoControlStateEhih(void*,unsigned char,int,unsigned char);
 extern short Vec3_HorzAngle(const struct Vector3*, const struct Vector3*);
 int _ZN6Player15JumpIntoBooCageER7Vector3(void* c, struct Vector3* v){
   if(*(unsigned char*)((char*)c+0x6de)){

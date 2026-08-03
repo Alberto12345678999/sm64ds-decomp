@@ -1,6 +1,6 @@
 //cpp
 extern "C" {
-extern int _ZN9Animation7AdvanceEv(void *);
+extern "C" int _ZN9Animation7AdvanceEv(void *);
 extern int func_ov006_020c35e8(void *);
 void func_ov006_020c3d18(char *c)
 {

@@ -4,7 +4,7 @@
 #include "RabbitKey.h"
 extern "C" {
 extern unsigned short DecIfAbove0_Short(unsigned short* p);
-extern void _ZN5Actor22UpdatePosWithOnlySpeedEP12CylinderClsn(void* a, void* b);
+extern "C" void _ZN5Actor22UpdatePosWithOnlySpeedEP12CylinderClsn(void* a, void* b);
 }
 
 int RabbitKey::Behavior()

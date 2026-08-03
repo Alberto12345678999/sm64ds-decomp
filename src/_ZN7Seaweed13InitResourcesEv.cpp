@@ -9,11 +9,11 @@ typedef int Fix12i;
 struct SharedFilePtr; struct BMD_File; struct BCA_File;
 extern SharedFilePtr data_ov002_0210e104;
 extern SharedFilePtr data_ov002_0210e0fc;
-extern BMD_File* _ZN5Model8LoadFileER13SharedFilePtr(SharedFilePtr& f);
-extern void _ZN9ModelBase7SetFileEP8BMD_Fileii(void* m, BMD_File* f, int a, int b);
-extern BCA_File* _ZN9Animation8LoadFileER13SharedFilePtr(SharedFilePtr& f);
-extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void* m, BCA_File* f, int a, Fix12i b, unsigned int c);
-extern void _ZN18MovingCylinderClsn4InitEP5Actor5Fix12IiES3_jj(void* m, void* a, Fix12i r, Fix12i h, unsigned int f1, unsigned int f2);
+extern "C" BMD_File* _ZN5Model8LoadFileER13SharedFilePtr(SharedFilePtr& f);
+extern "C" void _ZN9ModelBase7SetFileEP8BMD_Fileii(void* m, BMD_File* f, int a, int b);
+extern "C" BCA_File* _ZN9Animation8LoadFileER13SharedFilePtr(SharedFilePtr& f);
+extern "C" void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void* m, BCA_File* f, int a, Fix12i b, unsigned int c);
+extern "C" void _ZN18MovingCylinderClsn4InitEP5Actor5Fix12IiES3_jj(void* m, void* a, Fix12i r, Fix12i h, unsigned int f1, unsigned int f2);
 }
 
 int Seaweed::InitResources()

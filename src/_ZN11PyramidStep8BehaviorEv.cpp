@@ -4,7 +4,7 @@
 #include "decl_common.h"
 /* recovered: named members + shared header, real C++ method */
 #include "PyramidStep.h"
-extern int _ZN8Platform13IsClsnInRangeE5Fix12IiES1_(void* p, int a, int b);
+extern "C" int _ZN8Platform13IsClsnInRangeE5Fix12IiES1_(void* p, int a, int b);
 
 int PyramidStep::Behavior()
 {

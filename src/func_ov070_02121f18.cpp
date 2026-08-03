@@ -2,15 +2,15 @@
 extern "C" {
 extern unsigned char DecIfAbove0_Byte(unsigned char* p);
 extern void func_ov070_02121c8c(void* c);
-extern void* _ZN5Actor22ClosestNonVanishPlayerEv(void* c);
+extern "C" void* _ZN5Actor22ClosestNonVanishPlayerEv(void* c);
 extern short Vec3_HorzAngle(void* v0, void* v1);
-extern void _Z14ApproachLinearRsss(short* p, short t, short step);
-extern void _ZN5Actor9UpdatePosEP12CylinderClsn(void* c, void* cc);
+extern "C" void _Z14ApproachLinearRsss(short* p, short t, short step);
+extern "C" void _ZN5Actor9UpdatePosEP12CylinderClsn(void* c, void* cc);
 extern void func_ov070_02121be4(void* c);
 extern void func_ov070_02121d50(void* c, void* p);
 extern void func_ov070_02121cbc(void* c);
-extern void _ZN12CylinderClsn5ClearEv(void* cc);
-extern void _ZN12CylinderClsn6UpdateEv(void* cc);
+extern "C" void _ZN12CylinderClsn5ClearEv(void* cc);
+extern "C" void _ZN12CylinderClsn6UpdateEv(void* cc);
 int func_ov070_02121f18(char* c) {
   char* p;
   if (DecIfAbove0_Byte((unsigned char*)(c + 0x32c)) == 0)

@@ -1,7 +1,7 @@
 //cpp
 extern "C" {
 extern int data_ov002_020ff480[];
-extern int _ZN13SharedFilePtr7ReleaseEv(void*);
+extern "C" int _ZN13SharedFilePtr7ReleaseEv(void*);
 void func_ov002_020bebd4(void){
   int i;
   for(i=0x44;i<0x1c8;i+=4){

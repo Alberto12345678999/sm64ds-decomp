@@ -15,7 +15,7 @@ struct Obj154 { char pad[0x154]; u32 f154; };
 extern u32 data_0209b454;
 extern Obj154* data_0209f318;
 
-extern void _ZN5Sound22LoadAndSetMusic_Layer1Ei(int);
+extern "C" void _ZN5Sound22LoadAndSetMusic_Layer1Ei(int);
 
 int _ZN6Player15St_Talk_CleanupEv(Player* this_)
 {

@@ -8,13 +8,13 @@ typedef struct { int x, y, z; } Vector3;
 typedef struct { short x, y, z; } Vector3_16;
 
 extern "C" {
-extern int _ZN6Player6IsAnimEj(void *self, unsigned int id);
-extern int _ZNK6Player14GetBodyModelIDEjb(void *self, unsigned int a, int b);
-extern int _ZNK9Animation12WillHitFrameEi(void *anim, int frame);
-extern void _ZN5Sound13PlayCharVoiceEjjRK7Vector3(unsigned int a, unsigned int b, Vector3 *v);
-extern int _ZN6Player12FinishedAnimEv(void *self);
-extern void _ZN6Player7SetAnimEji5Fix12IiEj(void *self, unsigned int anim, int a, int b, unsigned int d);
-extern void *_ZN5Actor5SpawnEjjRK7Vector3PK10Vector3_16ii(unsigned int a, unsigned int b, Vector3 *v, Vector3_16 *v2, int e, int f);
+extern "C" int _ZN6Player6IsAnimEj(void *self, unsigned int id);
+extern "C" int _ZNK6Player14GetBodyModelIDEjb(void *self, unsigned int a, int b);
+extern "C" int _ZNK9Animation12WillHitFrameEi(void *anim, int frame);
+extern "C" void _ZN5Sound13PlayCharVoiceEjjRK7Vector3(unsigned int a, unsigned int b, Vector3 *v);
+extern "C" int _ZN6Player12FinishedAnimEv(void *self);
+extern "C" void _ZN6Player7SetAnimEji5Fix12IiEj(void *self, unsigned int anim, int a, int b, unsigned int d);
+extern "C" void *_ZN5Actor5SpawnEjjRK7Vector3PK10Vector3_16ii(unsigned int a, unsigned int b, Vector3 *v, Vector3_16 *v2, int e, int f);
 extern void func_ov089_0213115c(void *actor, int i);
 
 extern u8 data_0209f20c;

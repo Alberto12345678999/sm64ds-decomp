@@ -6,20 +6,20 @@
 #include "decl_common.h"
 /* recovered: named members + shared header, real C++ method */
 #include "Koopa.h"
-extern int _ZN5Enemy26UpdateKillByInvincibleCharER12WithMeshClsnR9ModelAnimj(void *self, void *wm, void *ma, unsigned int j);
-extern void _ZN5Actor19MakeVanishLuigiWorkER12CylinderClsn(void *self, void *c);
-extern int _ZN5Enemy14UpdateYoshiEatER12WithMeshClsn(void *self, void *c);
-extern void _ZN5Actor8PoofDustEv(void *self);
-extern void _ZN5Actor24KillAndTrackInDeathTableEv(void *self);
-extern void _ZN12CylinderClsn5ClearEv(void *c);
-extern void _ZN12CylinderClsn6UpdateEv(void *c);
-extern int _ZNK12WithMeshClsn10IsOnGroundEv(void *c);
-extern int _ZN5Actor22IsTooFarAwayFromPlayerE5Fix12IiE(void *self, int d);
-extern void _ZN9Animation7AdvanceEv(void *a);
-extern void _ZN5Actor9UpdatePosEP12CylinderClsn(void *self, void *c);
-extern int _ZN5Enemy15IsGoingOffCliffER12WithMeshClsn5Fix12IiEsbbS3_(void *self, void *wm, int a, s16 b, int c, int d, int e);
-extern void _ZN5Enemy12UpdateWMClsnER12WithMeshClsnj(void *self, void *wm, unsigned int j);
-extern void _ZN5Enemy11UpdateDeathER12WithMeshClsn(void *self, void *wm);
+extern "C" int _ZN5Enemy26UpdateKillByInvincibleCharER12WithMeshClsnR9ModelAnimj(void *self, void *wm, void *ma, unsigned int j);
+extern "C" void _ZN5Actor19MakeVanishLuigiWorkER12CylinderClsn(void *self, void *c);
+extern "C" int _ZN5Enemy14UpdateYoshiEatER12WithMeshClsn(void *self, void *c);
+extern "C" void _ZN5Actor8PoofDustEv(void *self);
+extern "C" void _ZN5Actor24KillAndTrackInDeathTableEv(void *self);
+extern "C" void _ZN12CylinderClsn5ClearEv(void *c);
+extern "C" void _ZN12CylinderClsn6UpdateEv(void *c);
+extern "C" int _ZNK12WithMeshClsn10IsOnGroundEv(void *c);
+extern "C" int _ZN5Actor22IsTooFarAwayFromPlayerE5Fix12IiE(void *self, int d);
+extern "C" void _ZN9Animation7AdvanceEv(void *a);
+extern "C" void _ZN5Actor9UpdatePosEP12CylinderClsn(void *self, void *c);
+extern "C" int _ZN5Enemy15IsGoingOffCliffER12WithMeshClsn5Fix12IiEsbbS3_(void *self, void *wm, int a, s16 b, int c, int d, int e);
+extern "C" void _ZN5Enemy12UpdateWMClsnER12WithMeshClsnj(void *self, void *wm, unsigned int j);
+extern "C" void _ZN5Enemy11UpdateDeathER12WithMeshClsn(void *self, void *wm);
 
 int Koopa::Behavior()
 {

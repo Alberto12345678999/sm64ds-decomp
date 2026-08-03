@@ -9,8 +9,8 @@ extern int data_0209f318;
 extern int data_0209f43c;
 extern int data_0209b3ec;
 extern void Matrix4x3_FromRotationY(void *m, int angle);
-extern int _ZN7Clipper13Func_02015560ER9Matrix4x3R7Vector35Fix12IiES3_(void *a, void *b, void *c, int d, void *e);
-extern void _ZN9ModelBase12ApplyOpacityEj(void *self, unsigned int op, int z);
+extern "C" int _ZN7Clipper13Func_02015560ER9Matrix4x3R7Vector35Fix12IiES3_(void *a, void *b, void *c, int d, void *e);
+extern "C" void _ZN9ModelBase12ApplyOpacityEj(void *self, unsigned int op, int z);
 }
 
 struct ModelBase {

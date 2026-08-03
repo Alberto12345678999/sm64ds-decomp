@@ -3,8 +3,8 @@ extern "C" {
 typedef int Fix12i;
 struct Vector3 { int x, y, z; ~Vector3(){} };
 extern void func_ov002_020bd984(void* c, unsigned int r1);
-extern void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int id, Fix12i a, Fix12i b, Fix12i d);
-extern void _ZN5Sound9PlayBank0EjRK7Vector3(unsigned int id, Vector3* v);
+extern "C" void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int id, Fix12i a, Fix12i b, Fix12i d);
+extern "C" void _ZN5Sound9PlayBank0EjRK7Vector3(unsigned int id, Vector3* v);
 void func_ov002_020de968(char* c){
   *(short*)(c+0x6c0) = 0;
   if (*(unsigned char*)(c+0x6fd) != 1) return;

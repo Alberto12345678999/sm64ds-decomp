@@ -3,8 +3,8 @@
 /* recovered: named members + shared header, real C++ method */
 #include "RotatingUpDownPlatform.h"
 extern "C" {
-extern int _ZN13SharedFilePtr7ReleaseEv(void*);
-extern int _ZN16MeshColliderBase7DisableEv(void*);
+extern "C" int _ZN13SharedFilePtr7ReleaseEv(void*);
+extern "C" int _ZN16MeshColliderBase7DisableEv(void*);
 extern void* data_ov091_021344fc[];
 extern void* data_ov091_021344f4[];
 }

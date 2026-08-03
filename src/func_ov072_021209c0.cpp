@@ -4,7 +4,7 @@
 /* recovered: renamed to Class_Method */
 /* daBgSnwmn_c::Render - recovered from vtable slot identity */
 extern "C" {
-extern int _ZN15TextureSequence6UpdateER15ModelComponents(void*, void*);
+extern "C" int _ZN15TextureSequence6UpdateER15ModelComponents(void*, void*);
 }
 struct Sub { virtual int g0(); virtual int g1(); virtual int g2(); virtual int g3(); virtual int g4(); virtual int g5(void*); };
 extern "C" {

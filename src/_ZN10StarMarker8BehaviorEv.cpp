@@ -8,11 +8,11 @@ typedef struct Mtx { int m[12]; } Mtx;
 extern "C" {
 extern void Matrix4x3_FromTranslation(void *m, int x, int y, int z);
 extern void Matrix4x3_FromRotationY(void *m, int ang);
-extern void _ZN5Actor19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
+extern "C" void _ZN5Actor19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
     void *self, void *sm, void *mtx, int rad, int h, unsigned int g);
-extern char *_ZN5Actor10FindWithIDEj(unsigned int id);
-extern void _ZN12CylinderClsn5ClearEv(void *p);
-extern void _ZN12CylinderClsn6UpdateEv(void *p);
+extern "C" char *_ZN5Actor10FindWithIDEj(unsigned int id);
+extern "C" void _ZN12CylinderClsn5ClearEv(void *p);
+extern "C" void _ZN12CylinderClsn6UpdateEv(void *p);
 
 extern unsigned char data_0209f208;
 extern unsigned char *data_0209f344;

@@ -16,23 +16,23 @@ typedef s32 Fix12;
 
 extern s8 data_0209f2f8;
 
-extern void _ZN5Actor8PoofDustEv(char* c);
-extern int _ZN5Actor22IsTooFarAwayFromPlayerE5Fix12IiE(char* c, Fix12 f);
-extern int _ZN5Enemy26UpdateKillByInvincibleCharER12WithMeshClsnR9ModelAnimj(char* c, void* w, void* m, u32 j);
+extern "C" void _ZN5Actor8PoofDustEv(char* c);
+extern "C" int _ZN5Actor22IsTooFarAwayFromPlayerE5Fix12IiE(char* c, Fix12 f);
+extern "C" int _ZN5Enemy26UpdateKillByInvincibleCharER12WithMeshClsnR9ModelAnimj(char* c, void* w, void* m, u32 j);
 extern void func_ov084_02129498(char* c);
-extern void _ZN8CapEnemy10ReleaseCapERK7Vector3(char* c, Vector3* v);
-extern void _ZN8CapEnemy15RespawnIfHasCapEv(char* c);
+extern "C" void _ZN8CapEnemy10ReleaseCapERK7Vector3(char* c, Vector3* v);
+extern "C" void _ZN8CapEnemy15RespawnIfHasCapEv(char* c);
 extern void func_ov084_021296cc(char* c);
-extern int _ZN4cstd4fdivEii(int a, int b);
-extern void _ZN5Actor19MakeVanishLuigiWorkER12CylinderClsn(char* c, void* cyl);
-extern void _ZN9Animation7AdvanceEv(void* c);
-extern void _ZN5Actor9UpdatePosEP12CylinderClsn(char* c, void* cyl);
-extern int _ZN5Enemy15IsGoingOffCliffER12WithMeshClsn5Fix12IiEsbbS3_(char* c, void* w, Fix12 f, int s, int b1, int b2, Fix12 g);
-extern void _ZN5Enemy12UpdateWMClsnER12WithMeshClsnj(char* c, void* w, u32 j);
-extern void _ZN12CylinderClsn5ClearEv(void* c);
-extern void _ZN12CylinderClsn6UpdateEv(void* c);
+extern "C" int _ZN4cstd4fdivEii(int a, int b);
+extern "C" void _ZN5Actor19MakeVanishLuigiWorkER12CylinderClsn(char* c, void* cyl);
+extern "C" void _ZN9Animation7AdvanceEv(void* c);
+extern "C" void _ZN5Actor9UpdatePosEP12CylinderClsn(char* c, void* cyl);
+extern "C" int _ZN5Enemy15IsGoingOffCliffER12WithMeshClsn5Fix12IiEsbbS3_(char* c, void* w, Fix12 f, int s, int b1, int b2, Fix12 g);
+extern "C" void _ZN5Enemy12UpdateWMClsnER12WithMeshClsnj(char* c, void* w, u32 j);
+extern "C" void _ZN12CylinderClsn5ClearEv(void* c);
+extern "C" void _ZN12CylinderClsn6UpdateEv(void* c);
 extern int Vec3_Dist(const Vector3* a, const Vector3* b);
-extern void _ZN5Enemy9SpawnCoinEv(char* c);
+extern "C" void _ZN5Enemy9SpawnCoinEv(char* c);
 
 int Goomba::Behavior()
 {

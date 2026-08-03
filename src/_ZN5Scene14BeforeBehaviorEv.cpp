@@ -28,12 +28,12 @@ struct FaderBrightness {
 };
 
 extern "C" {
-extern int _ZN9ActorBase14BeforeBehaviorEv(void* self);
+extern "C" int _ZN9ActorBase14BeforeBehaviorEv(void* self);
 extern void func_02023544(void);
-extern void _ZN15FaderBrightness14SetForwardTimeEj(FaderBrightness* self, unsigned int t);
-extern int _ZN15FaderBrightness7IsAtEndEv(FaderBrightness* self);
-extern void _ZN5Scene14StartSceneFadeEjjt(unsigned int a, unsigned int b, u16 c);
-extern void _ZN9ActorBase18MarkForDestructionEv(void* self);
+extern "C" void _ZN15FaderBrightness14SetForwardTimeEj(FaderBrightness* self, unsigned int t);
+extern "C" int _ZN15FaderBrightness7IsAtEndEv(FaderBrightness* self);
+extern "C" void _ZN5Scene14StartSceneFadeEjjt(unsigned int a, unsigned int b, u16 c);
+extern "C" void _ZN9ActorBase18MarkForDestructionEv(void* self);
 extern int func_020431c4(void* thiz);
 
 extern u8 data_0209f1e0;

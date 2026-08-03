@@ -1,7 +1,7 @@
 //cpp
 extern "C" {
-extern void _Z14ApproachLinearRsss(short* p, short t, short step);
-extern void _ZN9Animation7AdvanceEv(void* a);
+extern "C" void _Z14ApproachLinearRsss(short* p, short t, short step);
+extern "C" void _ZN9Animation7AdvanceEv(void* a);
 extern void func_ov102_0214c0b8(void* c);
 void func_ov102_0214be1c(char* c) {
   if (*(int*)(c + 0x38c) == 0) {

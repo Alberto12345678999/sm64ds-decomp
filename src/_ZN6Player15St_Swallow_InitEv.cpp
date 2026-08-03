@@ -4,9 +4,9 @@
 #include "Player.h"
 extern "C" {
 struct State; extern State data_ov002_02110034;
-extern void _ZN6Player11ChangeStateERNS_5StateE(void*,State*);
+extern "C" void _ZN6Player11ChangeStateERNS_5StateE(void*,State*);
 extern int Player_DisableInteraction(void*);
-extern void _ZN6Player7SetAnimEji5Fix12IiEj(void*,unsigned int,int,int,unsigned int);
+extern "C" void _ZN6Player7SetAnimEji5Fix12IiEj(void*,unsigned int,int,int,unsigned int);
 }
 
 int Player::St_Swallow_Init()

@@ -3,13 +3,13 @@
 struct Matrix2x2 { int m[4]; };
 
 extern "C" {
-extern void _ZN2GX15DisableAllBanksEv(void);
+extern "C" void _ZN2GX15DisableAllBanksEv(void);
 extern int func_02053c10(int enable);
 extern int func_02053be0(int enable);
-extern void _ZN2GX15SetGraphicsModeEiii(int a, int b, int c);
-extern void _ZN3G2x12SetBGyAffineEPVtP9Matrix2x2iiii(volatile void* p, Matrix2x2* m, int a, int b, int c, int d);
+extern "C" void _ZN2GX15SetGraphicsModeEiii(int a, int b, int c);
+extern "C" void _ZN3G2x12SetBGyAffineEPVtP9Matrix2x2iiii(volatile void* p, Matrix2x2* m, int a, int b, int c, int d);
 extern void func_02053a90(u16* out, int v);
-extern void _ZN3GXS15SetGraphicsModeEi(int a);
+extern "C" void _ZN3GXS15SetGraphicsModeEi(int a);
 extern Matrix2x2 data_02092668;
 }
 

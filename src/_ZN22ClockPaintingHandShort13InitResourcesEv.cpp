@@ -5,8 +5,8 @@
 #include "decl_common.h"
 /* recovered: named members + shared header, real C++ method */
 #include "ClockPaintingHandShort.h"
-extern int _ZN5Model8LoadFileER13SharedFilePtr(void*);
-extern int _ZN9ModelBase7SetFileEP8BMD_Fileii(void*, int, int, int);
+extern "C" int _ZN5Model8LoadFileER13SharedFilePtr(void*);
+extern "C" int _ZN9ModelBase7SetFileEP8BMD_Fileii(void*, int, int, int);
 
 int ClockPaintingHandShort::InitResources()
 {

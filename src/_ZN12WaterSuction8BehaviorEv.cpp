@@ -6,9 +6,9 @@
 #include "WaterSuction.h"
 extern "C" {
 extern unsigned short DecIfAbove0_Short(unsigned short* p);
-extern void _ZN5Actor9UpdatePosEP12CylinderClsn(void* thiz, void* clsn);
-extern void _ZN12CylinderClsn5ClearEv(void* a);
-extern void _ZN12CylinderClsn6UpdateEv(void* a);
+extern "C" void _ZN5Actor9UpdatePosEP12CylinderClsn(void* thiz, void* clsn);
+extern "C" void _ZN12CylinderClsn5ClearEv(void* a);
+extern "C" void _ZN12CylinderClsn6UpdateEv(void* a);
 }
 
 struct C;

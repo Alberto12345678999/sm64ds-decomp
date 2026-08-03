@@ -6,7 +6,7 @@ struct Callback {
 typedef struct { short x, y, z; } Vec3s;
 
 extern "C" {
-extern void *_ZN8Particle7Manager9AddSystemEiR7Vector3(void *thiz, int id, void *pos);
+extern "C" void *_ZN8Particle7Manager9AddSystemEiR7Vector3(void *thiz, int id, void *pos);
 extern void *data_0209ee74;
 int func_02021d1c(char *self, int a1, int id, void *pos, Vec3s *p5, Callback *p6);
 }

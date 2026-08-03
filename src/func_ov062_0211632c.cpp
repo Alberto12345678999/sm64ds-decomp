@@ -1,6 +1,6 @@
 //cpp
 extern "C" {
-extern int _ZN9Animation8FinishedEv(void*);
+extern "C" int _ZN9Animation8FinishedEv(void*);
 extern int Chuckya_ChangeState(void*, void*);
 extern int data_ov062_0211de80[];
 int func_ov062_0211632c(void* c){

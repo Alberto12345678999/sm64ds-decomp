@@ -9,7 +9,7 @@ extern void Vec3_Asr(Vector3* d, Vector3* s, int sh);
 extern void Matrix4x3_FromTranslation(void* m, int x, int y, int z);
 extern void Matrix4x3_ApplyInPlaceToTranslation(void* m, int x, int y, int z);
 extern void Matrix4x3_ApplyInPlaceToRotationZXYExt(void* m, int x, int y, int z);
-extern void _ZN15MaterialChanger6UpdateER15ModelComponents(void*, void*);
+extern "C" void _ZN15MaterialChanger6UpdateER15ModelComponents(void*, void*);
 extern Matrix4x3 data_020a0e68;
 }
 

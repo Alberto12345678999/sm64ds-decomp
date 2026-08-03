@@ -10,7 +10,6 @@ extern int data_020a0eac[];
 extern int _ZN19CylinderClsnWithPosD1Ev[];
 void __destroy_arr(void*, int, int, void*);
 void _ZN5ActorD2Ev(void*);
-void _ZN6Memory10DeallocateEPvP4Heap(void*, void*);
 void* _ZN12FlamethrowerD0Ev(char* c){
   *(int*)c = (int)_ZTV12Flamethrower;
   __destroy_arr(c+0x3a4, 0xc, 0xc, (void*)func_020072c0);

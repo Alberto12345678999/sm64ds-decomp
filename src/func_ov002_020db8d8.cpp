@@ -5,7 +5,7 @@
 extern "C" {
 
 extern unsigned char data_0209f2d8;
-extern int _ZNK6Player14GetBodyModelIDEjb(void *c, unsigned int a, bool b);
+extern "C" int _ZNK6Player14GetBodyModelIDEjb(void *c, unsigned int a, bool b);
 extern void MulVec3Mat4x3(void *out, void *mtx, void *vec);
 extern void Vec3_MulScalar(void *out, void *vec, int s);
 extern void func_ov002_020dc174(char *c, void *r1, int r2, int r3, unsigned int a5, unsigned int a6);

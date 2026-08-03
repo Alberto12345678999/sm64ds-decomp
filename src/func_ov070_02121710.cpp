@@ -2,12 +2,12 @@
 extern "C" {
 extern unsigned char DecIfAbove0_Byte(unsigned char* p);
 extern void func_ov070_02121880(void* c, int a);
-extern void _ZN9Animation7AdvanceEv(void* a);
+extern "C" void _ZN9Animation7AdvanceEv(void* a);
 extern int func_ov070_02121a64(void* p);
 extern void func_ov070_02121298(char* c);
 extern void func_ov070_021211c4(char* c);
-extern void _ZN12CylinderClsn5ClearEv(void* cc);
-extern void _ZN12CylinderClsn6UpdateEv(void* cc);
+extern "C" void _ZN12CylinderClsn5ClearEv(void* cc);
+extern "C" void _ZN12CylinderClsn6UpdateEv(void* cc);
 extern int data_0209f32c;
 int func_ov070_02121710(char* c) {
   int r;

@@ -1,9 +1,9 @@
 //cpp
 struct SEnt { short a, b; };
 extern "C" {
-extern void _ZN8Platform21UpdateModelPosAndRotYEv(void *);
-extern int _ZN8Platform13IsClsnInRangeE5Fix12IiES1_(void *, int, int);
-extern void _ZN8Platform19UpdateClsnPosAndRotEv(void *);
+extern "C" void _ZN8Platform21UpdateModelPosAndRotYEv(void *);
+extern "C" int _ZN8Platform13IsClsnInRangeE5Fix12IiES1_(void *, int, int);
+extern "C" void _ZN8Platform19UpdateClsnPosAndRotEv(void *);
 }
 extern SEnt data_02082214[];
 extern "C" int _ZN19FloatingFloorLllBig8BehaviorEv(char *c)

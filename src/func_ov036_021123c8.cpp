@@ -1,11 +1,11 @@
 //cpp
 extern "C" {
-extern void _Z14ApproachLinearRiii(int* p, int target, int step);
-extern void _ZN8PathLift12BaseBehaviorEv(void* c);
-extern void _ZN9Animation7AdvanceEv(void* a);
+extern "C" void _Z14ApproachLinearRiii(int* p, int target, int step);
+extern "C" void _ZN8PathLift12BaseBehaviorEv(void* c);
+extern "C" void _ZN9Animation7AdvanceEv(void* a);
 extern void func_ov036_021122c0(char* c);
 extern void func_ov036_0211224c(char* c);
-extern void _ZN8Platform13IsClsnInRangeE5Fix12IiES1_(void* t, int a, int b);
+extern "C" void _ZN8Platform13IsClsnInRangeE5Fix12IiES1_(void* t, int a, int b);
 }
 
 extern "C" int func_ov036_021123c8(char* c){

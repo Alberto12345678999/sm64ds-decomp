@@ -4,8 +4,8 @@
 #include "common.h"
 
 extern "C" {
-extern void _ZN5Sound9PlayBank3EjRK7Vector3(unsigned int id, Vector3* v);
-extern void _ZN5Actor10EarthquakeERK7Vector35Fix12IiE(void* self, Vector3* v, int fix);
+extern "C" void _ZN5Sound9PlayBank3EjRK7Vector3(unsigned int id, Vector3* v);
+extern "C" void _ZN5Actor10EarthquakeERK7Vector35Fix12IiE(void* self, Vector3* v, int fix);
 void func_ov095_02136104(char* c){
   *(int*)(c+0xa8) = 0;
   if(*(unsigned short*)(c+0x344) == 0){

@@ -8,8 +8,8 @@ extern "C" {
 typedef int Fix12i;
 extern int func_ov002_020eeca8(void*, void*);
 extern int func_ov002_020e28d4(void*, int, int);
-extern int _ZN6Player11ChangeStateERNS_5StateE(void*, void*);
-extern int _ZN6Player7IsStateERNS_5StateE(void*, void*);
+extern "C" int _ZN6Player11ChangeStateERNS_5StateE(void*, void*);
+extern "C" int _ZN6Player7IsStateERNS_5StateE(void*, void*);
 extern int Player_AdvanceAnims(void*);
 extern char data_ov002_02110424[];
 extern unsigned char data_020a0e40[];

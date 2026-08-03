@@ -5,14 +5,14 @@
 /* recovered: named members + shared header, real C++ method */
 #include "Lakitu.h"
 extern "C" {
-extern void *_ZN5Model8LoadFileER13SharedFilePtr(void *f);
-extern void _ZN9ModelBase7SetFileEP8BMD_Fileii(void *self, void *f, int a, int b);
-extern void *_ZN9Animation8LoadFileER13SharedFilePtr(void *f);
-extern void *_ZN15TextureSequence8LoadFileER13SharedFilePtr(void *f);
-extern void _ZN15TextureSequence7PrepareER8BMD_FileR8BTP_File(void *bmd, void *btp);
-extern int _ZN11ShadowModel12InitCylinderEv(void *self);
-extern void _ZN25MovingCylinderClsnWithPos4InitEP5ActorRK7Vector35Fix12IiES6_jj(void *self, void *a, void *v, int b, int c, unsigned int d, unsigned int e);
-extern void _ZN12WithMeshClsn4InitEP5Actor5Fix12IiES3_P10Vector3_16S5_(void *self, void *a, int b, int c, void *d, void *e);
+extern "C" void *_ZN5Model8LoadFileER13SharedFilePtr(void *f);
+extern "C" void _ZN9ModelBase7SetFileEP8BMD_Fileii(void *self, void *f, int a, int b);
+extern "C" void *_ZN9Animation8LoadFileER13SharedFilePtr(void *f);
+extern "C" void *_ZN15TextureSequence8LoadFileER13SharedFilePtr(void *f);
+extern "C" void _ZN15TextureSequence7PrepareER8BMD_FileR8BTP_File(void *bmd, void *btp);
+extern "C" int _ZN11ShadowModel12InitCylinderEv(void *self);
+extern "C" void _ZN25MovingCylinderClsnWithPos4InitEP5ActorRK7Vector35Fix12IiES6_jj(void *self, void *a, void *v, int b, int c, unsigned int d, unsigned int e);
+extern "C" void _ZN12WithMeshClsn4InitEP5Actor5Fix12IiES3_P10Vector3_16S5_(void *self, void *a, int b, int c, void *d, void *e);
 extern void func_ov077_02123d40(void *c);
 extern int data_ov077_02127b38[];
 extern int data_ov077_02127b48[];

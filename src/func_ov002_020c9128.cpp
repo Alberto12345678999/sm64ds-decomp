@@ -2,8 +2,8 @@
 extern "C" {
 struct State;
 extern State data_ov002_0211013c;
-extern short _Z15ApproachLinear2Rsss(short& v, short t, short s);
-extern void _ZN6Player11ChangeStateERNS_5StateE(void* c, State* st);
+extern "C" short _Z15ApproachLinear2Rsss(short& v, short t, short s);
+extern "C" void _ZN6Player11ChangeStateERNS_5StateE(void* c, State* st);
 int func_ov002_020c9128(char* c){
   if (*(unsigned char*)(c+0x6e3) == 4) {
     _Z15ApproachLinear2Rsss(*(short*)(c+0x69c), 0x1000, 0x400);

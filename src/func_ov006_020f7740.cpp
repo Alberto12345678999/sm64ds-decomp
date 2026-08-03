@@ -18,7 +18,7 @@ extern Node* data_ov006_02142508;
 extern short data_ov006_021424ec;
 extern int data_ov006_0213d570;
 extern int data_ov006_0213d574;
-extern void _Z14ApproachLinearRiii(int& x, int t, int s);
+extern "C" void _Z14ApproachLinearRiii(int& x, int t, int s);
 }
 
 extern "C" void func_ov006_020f7740(void) {

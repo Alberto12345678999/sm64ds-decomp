@@ -15,7 +15,7 @@ int _ZN12MeshCollider8LoadFileER13SharedFilePtr(void* f);
 void _ZN18MovingMeshCollider7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(void* mc, int kcl, struct Matrix4x3* mtx, int scale, short s, void* clps);
 void func_020393d4(int* p, int v);
 void _ZN16MeshColliderBase6EnableEP5Actor(void* mc, void* a);
-extern void _ZN16MeshColliderBase22UpdatePosWithTransformERS_P5ActorR10ClsnResultR7Vector3P10Vector3_16S8_(void);
+extern "C" void _ZN16MeshColliderBase22UpdatePosWithTransformERS_P5ActorR10ClsnResultR7Vector3P10Vector3_16S8_(void);
 }
 
 int Squasher::InitResources()

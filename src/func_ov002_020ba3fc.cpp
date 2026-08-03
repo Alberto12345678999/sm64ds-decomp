@@ -1,7 +1,7 @@
 //cpp
 struct Actor;
 extern "C" {
-extern struct Actor* _ZN5Actor15FindWithActorIDEjPS_(unsigned id, struct Actor* prev);
+extern "C" struct Actor* _ZN5Actor15FindWithActorIDEjPS_(unsigned id, struct Actor* prev);
 void func_ov002_020ba3fc(char* c) {
     int ok = 1;
     struct Actor* p;

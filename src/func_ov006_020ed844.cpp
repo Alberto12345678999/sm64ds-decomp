@@ -1,6 +1,6 @@
 //cpp
 extern "C" {
-extern int _Z14ApproachLinearRiii(int &v, int a, int b);
+extern "C" int _Z14ApproachLinearRiii(int &v, int a, int b);
 extern void FreeGfxSlotsById(int x);
 extern void func_ov006_020ed81c(char *p);
 

@@ -4,16 +4,16 @@
 struct PVec { s32 x, y, z; ~PVec() {} };
 
 extern "C" {
-extern char *_ZN5Actor10FindWithIDEj(u32 id);
+extern "C" char *_ZN5Actor10FindWithIDEj(u32 id);
 extern int func_ov002_020d85fc(char *self, char *arg, int flags);
 extern int func_ov002_020d8360(void *self, void *other, u32 flags);
-extern int _ZN5Actor16JumpedOnByPlayerER12CylinderClsnR6Player(char *self, void *clsn, char *player);
-extern int _ZN6Player7IsInAirEv(char *p);
+extern "C" int _ZN5Actor16JumpedOnByPlayerER12CylinderClsnR6Player(char *self, void *clsn, char *player);
+extern "C" int _ZN6Player7IsInAirEv(char *p);
 extern int func_ov002_020d9298(char *c);
 extern void func_ov002_020db8bc(u8 *p, u8 val);
-extern void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(u32 id, Fix12i x, Fix12i y, Fix12i z);
-extern void _ZN5Sound9PlayBank0EjRK7Vector3(u32 id, const Vector3 *pos);
-extern void _ZN5Sound13PlayCharVoiceEjjRK7Vector3(u32 a, u32 b, const Vector3 *pos);
+extern "C" void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(u32 id, Fix12i x, Fix12i y, Fix12i z);
+extern "C" void _ZN5Sound9PlayBank0EjRK7Vector3(u32 id, const Vector3 *pos);
+extern "C" void _ZN5Sound13PlayCharVoiceEjjRK7Vector3(u32 a, u32 b, const Vector3 *pos);
 }
 
 extern "C" int func_ov002_020d869c(char *c)

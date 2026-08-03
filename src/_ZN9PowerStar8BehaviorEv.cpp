@@ -10,12 +10,12 @@ typedef void (C::*PMF)();
 struct V3 { int x, y, z; };
 
 extern "C" {
-extern int _ZN5Enemy14UpdateYoshiEatER12WithMeshClsn(char *c, char *clsn);
+extern "C" int _ZN5Enemy14UpdateYoshiEatER12WithMeshClsn(char *c, char *clsn);
 extern void func_ov002_020d718c(void *p);
-extern void _ZN12CylinderClsn5ClearEv(char *c);
-extern void _ZN5Actor9UpdatePosEP12CylinderClsn(char *c, void *clsn);
-extern void _ZN25MovingCylinderClsnWithPos21SetPosRelativeToActorERK7Vector3(char *c, const void *v);
-extern void _ZN12CylinderClsn6UpdateEv(char *c);
+extern "C" void _ZN12CylinderClsn5ClearEv(char *c);
+extern "C" void _ZN5Actor9UpdatePosEP12CylinderClsn(char *c, void *clsn);
+extern "C" void _ZN25MovingCylinderClsnWithPos21SetPosRelativeToActorERK7Vector3(char *c, const void *v);
+extern "C" void _ZN12CylinderClsn6UpdateEv(char *c);
 extern int data_0209b454;
 extern int data_ov002_0210aa0c[3];
 }

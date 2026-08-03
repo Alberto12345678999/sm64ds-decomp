@@ -1,7 +1,7 @@
 //cpp
 extern "C" {
 extern short Vec3_HorzAngle(void* a, void* b);
-extern int _Z14ApproachLinearRsss(short* a, short b, short c);
+extern "C" int _Z14ApproachLinearRsss(short* a, short b, short c);
 extern int func_ov075_02114a6c(char* c);
 void func_ov075_021147d4(char* c){
   if (*(int*)(c+0x118) != *(int*)(c+0x124)) {

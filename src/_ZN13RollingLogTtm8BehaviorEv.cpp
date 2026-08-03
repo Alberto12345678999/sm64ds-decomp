@@ -11,9 +11,9 @@ struct Vector3_16;
 struct Actor;
 
 extern "C" {
-extern int _ZN5Actor22IsTooFarAwayFromPlayerE5Fix12IiE(Actor *thiz, int d);
-extern Actor *_ZN5Actor13ClosestPlayerEv(Actor *thiz);
-extern void *_ZN5Actor5SpawnEjjRK7Vector3PK10Vector3_16ii(u32 a, u32 b, const Vector3 *c, const Vector3_16 *d, int e, int f);
+extern "C" int _ZN5Actor22IsTooFarAwayFromPlayerE5Fix12IiE(Actor *thiz, int d);
+extern "C" Actor *_ZN5Actor13ClosestPlayerEv(Actor *thiz);
+extern "C" void *_ZN5Actor5SpawnEjjRK7Vector3PK10Vector3_16ii(u32 a, u32 b, const Vector3 *c, const Vector3_16 *d, int e, int f);
 extern void func_ov030_021141a8(Actor *c);
 extern void func_ov030_02114134(Actor *c);
 extern void func_ov030_02112094(Actor *c);

@@ -1,15 +1,15 @@
 //cpp
 extern "C" {
 extern int func_02029408(void);
-extern void _ZN5Stage20RenderBouncingArrowsEv(void);
-extern void _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(int, void*, int, int, int, int, int, int, int, int);
+extern "C" void _ZN5Stage20RenderBouncingArrowsEv(void);
+extern "C" void _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(int, void*, int, int, int, int, int, int, int, int);
 extern int SublevelToLevel(int);
 extern unsigned char CountStarsCollectedInLevelToDisplay(int);
 extern int IsStarCollected(int, int);
-extern void _ZN3OAM9RenderSubEP7OamAttrii(void*, int, int);
-extern void _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2(int, void*, int, int, int, int, void*);
-extern unsigned char _ZN8SaveData13GetCoinRecordEj(unsigned int);
-extern void _ZN5Stage12RenderNumberEhiibi(unsigned char, int, int, int, int);
+extern "C" void _ZN3OAM9RenderSubEP7OamAttrii(void*, int, int);
+extern "C" void _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2(int, void*, int, int, int, int, void*);
+extern "C" unsigned char _ZN8SaveData13GetCoinRecordEj(unsigned int);
+extern "C" void _ZN5Stage12RenderNumberEhiibi(unsigned char, int, int, int, int);
 extern int GetOwnerLanguage(void);
 
 extern unsigned char data_0209f250;

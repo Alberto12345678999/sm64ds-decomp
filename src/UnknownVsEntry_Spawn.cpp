@@ -1,10 +1,10 @@
 //cpp
 extern "C" {
-extern void* _ZN9ActorBasenwEj(unsigned int sz);
-extern void _ZN9ActorBaseC1Ev(void* p);
-extern void _ZN8Particle10SysTrackerC1Ev(void* p);
-extern void _ZN5ModelC1Ev(void* p);
-extern void _ZN9ModelAnimC1Ev(void* p);
+extern "C" void* _ZN9ActorBasenwEj(unsigned int sz);
+extern "C" void _ZN9ActorBaseC1Ev(void* p);
+extern "C" void _ZN8Particle10SysTrackerC1Ev(void* p);
+extern "C" void _ZN5ModelC1Ev(void* p);
+extern "C" void _ZN9ModelAnimC1Ev(void* p);
 extern void func_020733a8(void* a, int b, int c, void* d, void* e);
 extern void* data_0208e4b8;
 extern void* _ZTV14UnknownVsEntry;

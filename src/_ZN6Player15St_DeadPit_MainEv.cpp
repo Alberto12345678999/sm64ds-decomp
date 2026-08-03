@@ -6,10 +6,10 @@
 /* recovered: named members + shared header, real C++ method */
 #include "Player.h"
 extern "C" {
-extern int _ZN6Player12FinishedAnimEv(void* c);
-extern void _ZN6Player11ChangeStateERNS_5StateE(void* c, void* s);
-extern u32 _ZN5Sound8PlayLongEjjjRK7Vector3j(u32 a, u32 b, u32 c, int* pos, u32 d);
-extern void _ZN5Sound13PlayCharVoiceEjjRK7Vector3(u32 a, u32 b, int* pos);
+extern "C" int _ZN6Player12FinishedAnimEv(void* c);
+extern "C" void _ZN6Player11ChangeStateERNS_5StateE(void* c, void* s);
+extern "C" u32 _ZN5Sound8PlayLongEjjjRK7Vector3j(u32 a, u32 b, u32 c, int* pos, u32 d);
+extern "C" void _ZN5Sound13PlayCharVoiceEjjRK7Vector3(u32 a, u32 b, int* pos);
 extern void Vec3_RotateYAndTranslate(int* out, int* in, s16 angle, int* src);
 extern void func_ov002_020c9718(u8* c);
 extern void Player_AdvanceAnims(char* c);

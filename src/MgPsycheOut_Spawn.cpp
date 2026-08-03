@@ -1,11 +1,11 @@
 //cpp
 extern "C" {
-extern void *_ZN9ActorBasenwEj(unsigned int sz);
+extern "C" void *_ZN9ActorBasenwEj(unsigned int sz);
 extern int func_ov004_020b2adc(void *p);
-extern void _ZN8Particle10SysTrackerC1Ev(void *);
-extern void _ZN5ModelC1Ev(void *);
+extern "C" void _ZN8Particle10SysTrackerC1Ev(void *);
+extern "C" void _ZN5ModelC1Ev(void *);
 extern void func_ov006_020e814c(void *);
-extern void _ZN18TextureTransformerC1Ev(void *);
+extern "C" void _ZN18TextureTransformerC1Ev(void *);
 extern int data_ov006_0213e448[];
 extern int data_ov006_0213c8c4[];
 void *MgPsycheOut_Spawn(void);

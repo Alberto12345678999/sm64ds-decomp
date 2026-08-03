@@ -12,7 +12,7 @@ typedef struct { int a, b; } P2;
 
 extern "C" {
 extern P2 data_ov065_0211d6a0;
-extern int _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *self, int file, int frame, int speed, unsigned int flags);
+extern "C" int _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *self, int file, int frame, int speed, unsigned int flags);
 extern void func_02012694(int id, void *pos);
 extern int func_ov065_021177e4(int *t);
 }

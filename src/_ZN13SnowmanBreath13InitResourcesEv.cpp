@@ -4,7 +4,7 @@
 #include "SnowmanBreath.h"
 extern "C" {
 struct Vec3 { int x, y, z; };
-extern void* _ZN5Model8LoadFileER13SharedFilePtr(void* fp);
+extern "C" void* _ZN5Model8LoadFileER13SharedFilePtr(void* fp);
 extern void Vec3_Asr(void* d, void* s, int sh);
 extern void Matrix4x3_FromTranslation(void* m, int x, int y, int z);
 extern void Matrix4x3_ApplyInPlaceToRotationY(void* m, short angY);

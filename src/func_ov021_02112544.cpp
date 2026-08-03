@@ -9,21 +9,21 @@ struct Vec3 {
 extern "C" {
 
 extern void WithMeshClsn_UpdateContinuous_Veneer(void* p);
-extern int _ZNK12WithMeshClsn10IsOnGroundEv(void* p);
-extern void* _ZNK12WithMeshClsn14GetFloorResultEv(void* p);
-extern void _ZNK11SurfaceInfo12CopyNormalToER7Vector3(void* info, Vec3* out);
-extern int _ZNK12WithMeshClsn13JustHitGroundEv(void* p);
-extern void* _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int id, int a, int b, int c);
+extern "C" int _ZNK12WithMeshClsn10IsOnGroundEv(void* p);
+extern "C" void* _ZNK12WithMeshClsn14GetFloorResultEv(void* p);
+extern "C" void _ZNK11SurfaceInfo12CopyNormalToER7Vector3(void* info, Vec3* out);
+extern "C" int _ZNK12WithMeshClsn13JustHitGroundEv(void* p);
+extern "C" void* _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int id, int a, int b, int c);
 extern void func_0201267c(int a, void* p);
-extern void* _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(unsigned int a, unsigned int b, int c, int d, int e, void* v, void* cb);
-extern void* _ZN5Sound8PlayLongEjjjRK7Vector3j(unsigned int a, unsigned int b, unsigned int c, void* v, unsigned int d);
+extern "C" void* _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(unsigned int a, unsigned int b, int c, int d, int e, void* v, void* cb);
+extern "C" void* _ZN5Sound8PlayLongEjjjRK7Vector3j(unsigned int a, unsigned int b, unsigned int c, void* v, unsigned int d);
 extern int Vec3_HorzLen(void* v);
-extern int _ZN4cstd5atan2E5Fix12IiES1_(int a, int b);
-extern int _ZNK12WithMeshClsn8IsOnWallEv(void* p);
-extern void* _ZNK12WithMeshClsn13GetWallResultEv(void* p);
-extern int _ZN5Actor14GetSubtractionEss(void* a, s16 x, int y);
-extern s16 _ZN5Actor12ReflectAngleE5Fix12IiES1_s(void* a, int x, int y, s16 ang);
-extern void _ZN5Actor28UpdatePosWithHorzSpeedAndAngEv(void* a);
+extern "C" int _ZN4cstd5atan2E5Fix12IiES1_(int a, int b);
+extern "C" int _ZNK12WithMeshClsn8IsOnWallEv(void* p);
+extern "C" void* _ZNK12WithMeshClsn13GetWallResultEv(void* p);
+extern "C" int _ZN5Actor14GetSubtractionEss(void* a, s16 x, int y);
+extern "C" s16 _ZN5Actor12ReflectAngleE5Fix12IiES1_s(void* a, int x, int y, s16 ang);
+extern "C" void _ZN5Actor28UpdatePosWithHorzSpeedAndAngEv(void* a);
 
 extern s16 data_02082214[];
 

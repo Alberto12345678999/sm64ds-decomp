@@ -1,8 +1,8 @@
 //cpp
 extern "C" {
-extern void* _ZN5Actor10FindWithIDEj(unsigned int id);
+extern "C" void* _ZN5Actor10FindWithIDEj(unsigned int id);
 extern void func_ov092_02131878(void* a, void* b, int n);
-extern int _ZN5Actor24BumpedUnderneathByPlayerER6Player(void* thiz, void* p);
+extern "C" int _ZN5Actor24BumpedUnderneathByPlayerER6Player(void* thiz, void* p);
 
 void func_ov092_021319b0(char* c)
 {

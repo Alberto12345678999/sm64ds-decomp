@@ -1,8 +1,8 @@
 //cpp
 #include "types.h"
 extern "C" {
-extern int _Z14ApproachLinearRiii(int *a, int b, int c);
-extern int _Z15ApproachLinear2Rsss(s16 *a, s16 b, s16 c);
+extern "C" int _Z14ApproachLinearRiii(int *a, int b, int c);
+extern "C" int _Z15ApproachLinear2Rsss(s16 *a, s16 b, s16 c);
 extern int func_ov006_020da8e4(void);
 }
 

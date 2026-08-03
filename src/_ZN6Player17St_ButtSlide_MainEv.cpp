@@ -10,14 +10,14 @@ extern void func_ov002_020bf90c(char* c);
 extern void func_ov002_020c06fc(char* c, u32 a);
 extern int func_ov002_020dd2f4(char* c);
 extern int func_ov002_020c0688(char* c);
-extern void _ZN6Player11ChangeStateERNS_5StateE(char* c, void* s);
+extern "C" void _ZN6Player11ChangeStateERNS_5StateE(char* c, void* s);
 extern int func_0201226c(int a0, int a1, int a2, char* a3, int a4, int a5);
 extern void func_ov002_020e25f0(char* c, int a);
 extern void func_ov002_020c18b0(char* c, int a);
-extern void _ZN5Sound9PlayBank0EjRK7Vector3(u32 a, char* v);
+extern "C" void _ZN5Sound9PlayBank0EjRK7Vector3(u32 a, char* v);
 extern void func_ov002_020dc560(char* c);
-extern void _ZN6Player7SetAnimEji5Fix12IiEj(char* c, u32 anim, int a, Fix12i b, u32 d);
-extern int _ZN6Player12FinishedAnimEv(char* c);
+extern "C" void _ZN6Player7SetAnimEji5Fix12IiEj(char* c, u32 anim, int a, Fix12i b, u32 d);
+extern "C" int _ZN6Player12FinishedAnimEv(char* c);
 extern void Player_AdvanceAnims(char* c);
 
 extern u8 data_020a0e40;

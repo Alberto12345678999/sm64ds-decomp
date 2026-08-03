@@ -21,36 +21,36 @@ extern struct SharedFilePtr data_ov002_02110954;
 extern struct SharedFilePtr data_ov002_0211095c;
 extern struct SharedFilePtr data_ov002_02110964;
 
-extern void _ZN9Animation8LoadFileER13SharedFilePtr(struct SharedFilePtr *f);
-extern s32 _ZN9ModelBase7SetFileEP8BMD_Fileii(void *self, void *f, s32 a, s32 b);
+extern "C" void _ZN9Animation8LoadFileER13SharedFilePtr(struct SharedFilePtr *f);
+extern "C" s32 _ZN9ModelBase7SetFileEP8BMD_Fileii(void *self, void *f, s32 a, s32 b);
 extern void LoadSilverStarAndNumber(void);
 extern void func_ov002_020e6edc(void *self);
 extern void func_ov002_020e6df8(void *self);
 extern s32 SublevelToLevel(s32 sub);
-extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *self, void *f, s32 a, s32 spd, u32 g);
-extern s32 _ZN11ShadowModel12InitCylinderEv(void *self);
-extern void _ZN25MovingCylinderClsnWithPos4InitEP5ActorRK7Vector35Fix12IiES6_jj(
+extern "C" void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *self, void *f, s32 a, s32 spd, u32 g);
+extern "C" s32 _ZN11ShadowModel12InitCylinderEv(void *self);
+extern "C" void _ZN25MovingCylinderClsnWithPos4InitEP5ActorRK7Vector35Fix12IiES6_jj(
     void *self, void *actor, struct Vec3 *v, s32 a, s32 b, u32 c, u32 d);
-extern void _ZN12WithMeshClsn4InitEP5Actor5Fix12IiES3_P10Vector3_16S5_(
+extern "C" void _ZN12WithMeshClsn4InitEP5Actor5Fix12IiES3_P10Vector3_16S5_(
     void *self, void *actor, s32 a, s32 b, void *p1, void *p2);
-extern void _ZN12WithMeshClsn13SetLimMovFlagEv(void *self);
-extern char *_ZN5Actor5SpawnEjjRK7Vector3PK10Vector3_16ii(
+extern "C" void _ZN12WithMeshClsn13SetLimMovFlagEv(void *self);
+extern "C" char *_ZN5Actor5SpawnEjjRK7Vector3PK10Vector3_16ii(
     u32 id, u32 param, struct Vec3 *pos, void *rot, s32 a, s32 b);
 extern s32 NumVsStarsObtained(void);
 extern void func_ov002_020e9448(void *self);
-extern void _ZN12WithMeshClsn19StartDetectingWaterEv(void *self);
+extern "C" void _ZN12WithMeshClsn19StartDetectingWaterEv(void *self);
 extern s32 IsStarCollectedInCurLevel(u32 idx);
-extern void _ZN9ActorBase18MarkForDestructionEv(void *self);
+extern "C" void _ZN9ActorBase18MarkForDestructionEv(void *self);
 extern void func_ov002_020e8dd8(void *self);
 extern void func_ov002_020e7d08(void *self);
-extern void _ZN5Event8ClearBitEj(u32 bit);
-extern char *_ZN5Actor10FindWithIDEj(u32 id);
+extern "C" void _ZN5Event8ClearBitEj(u32 bit);
+extern "C" char *_ZN5Actor10FindWithIDEj(u32 id);
 extern void LinkSilverStarAndStarMarker(void *a, void *b);
 extern s32 IsStarCollected(s32 level, s32 idx);
-extern s32 _ZN5Actor18GetBitInDeathTableEv(void *self);
-extern void _ZN5Actor24KillAndTrackInDeathTableEv(void *self);
+extern "C" s32 _ZN5Actor18GetBitInDeathTableEv(void *self);
+extern "C" void _ZN5Actor24KillAndTrackInDeathTableEv(void *self);
 
-extern s32 _ZN9PowerStar13InitResourcesEv(void *arg0);
+extern "C" s32 _ZN9PowerStar13InitResourcesEv(void *arg0);
 }
 
 #define U8(o) (*(u8 *)(t + (o)))

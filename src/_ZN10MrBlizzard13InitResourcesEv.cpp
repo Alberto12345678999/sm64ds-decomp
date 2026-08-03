@@ -9,19 +9,19 @@
 #include "MrBlizzard.h"
 struct Vec3 { int x, y, z; };
 
-extern void *_ZN5Model8LoadFileER13SharedFilePtr(void *fp);
-extern void _ZN9ModelBase7SetFileEP8BMD_Fileii(void *self, void *f, int a, int b);
-extern void _ZN11ShadowModel12InitCylinderEv(void *self);
-extern void *_ZN9Animation8LoadFileER13SharedFilePtr(void *fp);
-extern int _ZN5Actor18GetBitInDeathTableEv(void *self);
-extern void _ZN5Actor5SpawnEjjRK7Vector3PK10Vector3_16ii(u32 a, u32 b, const void *v, const void *v16, int e, int f);
-extern void _ZN7PathPtrC1Ev(void *self);
-extern void _ZN7PathPtr6FromIDEj(void *self, u32 id);
-extern void _ZN25MovingCylinderClsnWithPos4InitEP5ActorRK7Vector35Fix12IiES6_jj(
+extern "C" void *_ZN5Model8LoadFileER13SharedFilePtr(void *fp);
+extern "C" void _ZN9ModelBase7SetFileEP8BMD_Fileii(void *self, void *f, int a, int b);
+extern "C" void _ZN11ShadowModel12InitCylinderEv(void *self);
+extern "C" void *_ZN9Animation8LoadFileER13SharedFilePtr(void *fp);
+extern "C" int _ZN5Actor18GetBitInDeathTableEv(void *self);
+extern "C" void _ZN5Actor5SpawnEjjRK7Vector3PK10Vector3_16ii(u32 a, u32 b, const void *v, const void *v16, int e, int f);
+extern "C" void _ZN7PathPtrC1Ev(void *self);
+extern "C" void _ZN7PathPtr6FromIDEj(void *self, u32 id);
+extern "C" void _ZN25MovingCylinderClsnWithPos4InitEP5ActorRK7Vector35Fix12IiES6_jj(
     void *self, void *actor, const void *v, int d, int e, u32 f, u32 g);
-extern void _ZN12WithMeshClsn4InitEP5Actor5Fix12IiES3_P10Vector3_16S5_(
+extern "C" void _ZN12WithMeshClsn4InitEP5Actor5Fix12IiES3_P10Vector3_16S5_(
     void *self, void *actor, int b, int c, void *v16, int e);
-extern void _ZNK7PathPtr7GetNodeER7Vector3j(void *self, void *v, u32 idx);
+extern "C" void _ZNK7PathPtr7GetNodeER7Vector3j(void *self, void *v, u32 idx);
 extern void func_ov081_02125488(void *c, void *p);
 
 extern void *data_ov081_02128d90;

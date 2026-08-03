@@ -7,7 +7,7 @@ extern "C" {
 extern int Vec3_Dist(const Vector3* a, const Vector3* b);
 extern unsigned short DecIfAbove0_Short(unsigned short* p);
 extern void Vec3_Asr(Vector3* d, Vector3* s, int sh);
-extern int _ZN7Clipper13Func_02015560ER9Matrix4x3R7Vector35Fix12IiES3_(void* m, void* v, Vector3* a, int b, Vector3* e);
+extern "C" int _ZN7Clipper13Func_02015560ER9Matrix4x3R7Vector35Fix12IiES3_(void* m, void* v, Vector3* a, int b, Vector3* e);
 extern int data_0209f43c[];
 extern int data_0209b3ec[];
 }

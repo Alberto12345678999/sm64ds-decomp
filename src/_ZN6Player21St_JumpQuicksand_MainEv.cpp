@@ -6,7 +6,7 @@
 extern char data_ov002_02110424;
 
 extern "C" {
-extern void _ZN6Player11ChangeStateERNS_5StateE(char *, char *);
+extern "C" void _ZN6Player11ChangeStateERNS_5StateE(char *, char *);
 extern void Player_AdvanceAnims(char *);
 }
 

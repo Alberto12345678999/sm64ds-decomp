@@ -1,9 +1,9 @@
 //cpp
 extern "C" {
-extern void* _ZN9ActorBasenwEj(unsigned int);
-extern void _ZN5ActorC2Ev(void*);
-extern void _ZN5ModelD1Ev(void*);
-extern void _ZN5ModelC1Ev(void*);
+extern "C" void* _ZN9ActorBasenwEj(unsigned int);
+extern "C" void _ZN5ActorC2Ev(void*);
+extern "C" void _ZN5ModelD1Ev(void*);
+extern "C" void _ZN5ModelC1Ev(void*);
 extern void func_020733a8(void* arr, int count, int size, void(*ctor)(void*), void(*dtor)(void*));
 extern void* _ZTV4Tree[];
 int* Tree_Spawn(void){

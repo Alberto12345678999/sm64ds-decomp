@@ -6,12 +6,12 @@
 /* recovered: named members + shared header */
 #include "Player.h"
 extern "C" {
-extern int _ZN6Player8HasNoCapEv(char* c);
-extern void _ZN5Sound13PlayCharVoiceEjjRK7Vector3(u32 a, u32 b, void* v);
+extern "C" int _ZN6Player8HasNoCapEv(char* c);
+extern "C" void _ZN5Sound13PlayCharVoiceEjjRK7Vector3(u32 a, u32 b, void* v);
 extern void func_ov002_020d5cec(char* c);
 extern s16 Vec3_HorzAngle(const void* v0, const void* v1);
-extern void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(u32 id, int a, int b, int cc);
-extern void _ZN6Player11ChangeStateERNS_5StateE(char* c, void* st);
+extern "C" void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(u32 id, int a, int b, int cc);
+extern "C" void _ZN6Player11ChangeStateERNS_5StateE(char* c, void* st);
 extern int func_ov002_020d91e0(char* thiz, int damage, int doPre);
 
 extern int data_ov002_02110094;

@@ -7,7 +7,7 @@
 
 extern "C" {
 extern void Vec3_Sub(struct Vector3* out, struct Vector3* a, struct Vector3* b);
-extern int _ZN4cstd4fdivEii(int a, int b);
+extern "C" int _ZN4cstd4fdivEii(int a, int b);
 extern signed char data_0209f2f8;
 
 void _ZN7Minimap21FixTHIPaintingRoomPosER7Vector3(struct Vector3* v)

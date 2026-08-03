@@ -1,7 +1,7 @@
 //cpp
 extern "C" {
 extern void func_ov002_020aefb8(char* c);
-extern void _ZN5Sound9PlayBank3EjRK7Vector3(unsigned a, void* v);
+extern "C" void _ZN5Sound9PlayBank3EjRK7Vector3(unsigned a, void* v);
 extern void func_ov002_020af474(char* c);
 extern void func_ov002_020afde4(char* c);
 extern int func_ov002_020af248(char* c, int n);

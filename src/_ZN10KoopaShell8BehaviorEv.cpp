@@ -19,22 +19,22 @@ extern char data_ov102_0214ea78;
 
 extern "C" {
 extern int func_ov002_020ad660(char *, char *, char *, int);
-extern int _ZN5Enemy14UpdateYoshiEatER12WithMeshClsn(char *, char *);
+extern "C" int _ZN5Enemy14UpdateYoshiEatER12WithMeshClsn(char *, char *);
 extern void func_ov102_0214d1f8(char *, void *);
 extern void func_ov102_0214ce60(char *);
-extern void _ZN12CylinderClsn5ClearEv(char *);
+extern "C" void _ZN12CylinderClsn5ClearEv(char *);
 extern int DecIfAbove0_Byte(char *);
-extern void _ZN9ActorBase18MarkForDestructionEv(char *);
+extern "C" void _ZN9ActorBase18MarkForDestructionEv(char *);
 extern int DecIfAbove0_Short(char *);
 extern void func_ov102_0214cbec(char *);
-extern void _ZN5Actor9UpdatePosEP12CylinderClsn(char *, char *);
-extern void _ZN5Enemy12UpdateWMClsnER12WithMeshClsnj(char *, char *, u32);
-extern int _ZNK12WithMeshClsn10IsOnGroundEv(char *);
-extern int _ZNK12WithMeshClsn8IsOnWallEv(char *);
-extern void _ZN5Actor8PoofDustEv(char *);
+extern "C" void _ZN5Actor9UpdatePosEP12CylinderClsn(char *, char *);
+extern "C" void _ZN5Enemy12UpdateWMClsnER12WithMeshClsnj(char *, char *, u32);
+extern "C" int _ZNK12WithMeshClsn10IsOnGroundEv(char *);
+extern "C" int _ZNK12WithMeshClsn8IsOnWallEv(char *);
+extern "C" void _ZN5Actor8PoofDustEv(char *);
 extern void func_ov102_0214c7fc(char *);
 extern void func_ov102_0214c84c(char *);
-extern void _ZN12CylinderClsn6UpdateEv(char *);
+extern "C" void _ZN12CylinderClsn6UpdateEv(char *);
 
 int _ZN10KoopaShell8BehaviorEv(char *c)
 {

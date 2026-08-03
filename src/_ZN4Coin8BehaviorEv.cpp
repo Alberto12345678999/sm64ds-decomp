@@ -15,10 +15,10 @@ extern PMF data_ov002_0210dc70[];
 extern unsigned char data_0209f2d8;
 
 extern "C" {
-extern void _ZN5Sound9PlayBank3EjRK7Vector3(unsigned int id, char *pos);
-extern void _ZN12CylinderClsn5ClearEv(char *c);
+extern "C" void _ZN5Sound9PlayBank3EjRK7Vector3(unsigned int id, char *pos);
+extern "C" void _ZN12CylinderClsn5ClearEv(char *c);
 extern int LenVec3(char *v);
-extern void _ZN12CylinderClsn6UpdateEv(char *c);
+extern "C" void _ZN12CylinderClsn6UpdateEv(char *c);
 }
 
 int Coin::Behavior()

@@ -11,12 +11,12 @@ struct KCL_File;
 struct Matrix4x3;
 struct CLPS_Block;
 
-extern struct BMD_File *_ZN5Model8LoadFileER13SharedFilePtr(struct SharedFilePtr &);
-extern void _ZN9ModelBase7SetFileEP8BMD_Fileii(void *thisp, struct BMD_File *, int, int);
-extern void _ZN11ShadowModel10InitCuboidEv(void *thisp);
-extern void _ZN8Platform19UpdateClsnPosAndRotEv(void *thisp);
-extern struct KCL_File *_ZN12MeshCollider8LoadFileER13SharedFilePtr(struct SharedFilePtr &);
-extern void _ZN18MovingMeshCollider7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
+extern "C" struct BMD_File *_ZN5Model8LoadFileER13SharedFilePtr(struct SharedFilePtr &);
+extern "C" void _ZN9ModelBase7SetFileEP8BMD_Fileii(void *thisp, struct BMD_File *, int, int);
+extern "C" void _ZN11ShadowModel10InitCuboidEv(void *thisp);
+extern "C" void _ZN8Platform19UpdateClsnPosAndRotEv(void *thisp);
+extern "C" struct KCL_File *_ZN12MeshCollider8LoadFileER13SharedFilePtr(struct SharedFilePtr &);
+extern "C" void _ZN18MovingMeshCollider7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
     void *thisp, struct KCL_File *, struct Matrix4x3 const &, int, short, struct CLPS_Block &);
 extern "C" void func_020393a4(int *p, int v);
 extern "C" void func_02039394(int *p, int v);
@@ -25,7 +25,7 @@ extern "C" void func_020393d4(int *p, int v);
 extern struct SharedFilePtr data_ov065_0211d88c;
 extern struct SharedFilePtr data_ov065_0211d894;
 extern unsigned char data_0209f2c0;
-extern void _ZN16MeshColliderBase22UpdatePosWithTransformERS_P5ActorR10ClsnResultR7Vector3P10Vector3_16S8_(void);
+extern "C" void _ZN16MeshColliderBase22UpdatePosWithTransformERS_P5ActorR10ClsnResultR7Vector3P10Vector3_16S8_(void);
 
 extern "C" int func_ov065_0211a358(char *self) {
     struct BMD_File *bmd;

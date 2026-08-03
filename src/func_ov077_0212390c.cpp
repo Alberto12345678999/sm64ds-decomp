@@ -1,13 +1,13 @@
 //cpp
 extern "C" {
-extern char* _ZN5Actor22ClosestNonVanishPlayerEv(void);
+extern "C" char* _ZN5Actor22ClosestNonVanishPlayerEv(void);
 extern int Vec3_HorzDist(void* a, void* b);
 extern short Vec3_HorzAngle(void* a, void* b);
-extern void _Z14ApproachLinearRsss(void* a, short b, short c);
+extern "C" void _Z14ApproachLinearRsss(void* a, short b, short c);
 extern int func_ov077_021238bc(int unused, int x);
-extern void _Z14ApproachLinearRiii(void* a, int b, int c);
-extern void _ZN5Actor9UpdatePosEP12CylinderClsn(void* a, void* b);
-extern int _ZN9Spindrift8BehaviorEv(void* a, void* b);
+extern "C" void _Z14ApproachLinearRiii(void* a, int b, int c);
+extern "C" void _ZN5Actor9UpdatePosEP12CylinderClsn(void* a, void* b);
+extern "C" int _ZN9Spindrift8BehaviorEv(void* a, void* b);
 void func_ov077_0212390c(char* c){
   char* p = _ZN5Actor22ClosestNonVanishPlayerEv();
   char* tgt;

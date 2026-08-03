@@ -8,13 +8,13 @@
 extern "C" {
 extern void func_ov002_020c0364(char* c, unsigned int arg);
 extern int func_ov002_020c5244(void);
-extern void _ZN6Player11ChangeStateERNS_5StateE(void* c, void* state);
-extern int _ZNK6Player14GetBodyModelIDEjb(void* c, unsigned int a, int b);
-extern void _ZN5Sound13PlayCharVoiceEjjRK7Vector3(unsigned int a, unsigned int b, void* v);
+extern "C" void _ZN6Player11ChangeStateERNS_5StateE(void* c, void* state);
+extern "C" int _ZNK6Player14GetBodyModelIDEjb(void* c, unsigned int a, int b);
+extern "C" void _ZN5Sound13PlayCharVoiceEjjRK7Vector3(unsigned int a, unsigned int b, void* v);
 extern int func_ov002_020d22ec(char* c, int arg);
-extern int _ZN6Player7SetAnimEji5Fix12IiEj(void* c, unsigned int a, int b, int d, unsigned int e);
-extern int _ZN6Player12FinishedAnimEv(void* c);
-extern void _ZN5Sound9PlayBank0EjRK7Vector3(unsigned int a, void* v);
+extern "C" int _ZN6Player7SetAnimEji5Fix12IiEj(void* c, unsigned int a, int b, int d, unsigned int e);
+extern "C" int _ZN6Player12FinishedAnimEv(void* c);
+extern "C" void _ZN5Sound9PlayBank0EjRK7Vector3(unsigned int a, void* v);
 extern void func_ov002_020cabe0(void* c);
 extern void Player_AdvanceAnims(void* c);
 

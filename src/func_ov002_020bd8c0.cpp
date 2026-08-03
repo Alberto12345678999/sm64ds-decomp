@@ -1,7 +1,7 @@
 //cpp
 extern "C" {
-extern int _ZN5Sound8EndMusicEjj(unsigned char);
-extern int _ZN5Sound8SetMusicEjj(unsigned char, unsigned int);
+extern "C" int _ZN5Sound8EndMusicEjj(unsigned char);
+extern "C" int _ZN5Sound8SetMusicEjj(unsigned char, unsigned int);
 void func_ov002_020bd8c0(char* c, unsigned int r1){
   unsigned int r2=*(unsigned int*)(c+0x678);
   if(r2==0){

@@ -7,10 +7,10 @@
 /* daObjKm1_Ukishima_c::Behavior - recovered from vtable slot identity */
 extern "C" {
 extern unsigned char DecIfAbove0_Byte(unsigned char *p);
-extern void _ZN5Actor9UpdatePosEP12CylinderClsn(void *self, void *clsn);
-extern void _ZN8Platform21UpdateModelPosAndRotYEv(void *);
-extern int _ZN8Platform13IsClsnInRangeE5Fix12IiES1_(void *, int, int);
-extern void _ZN8Platform19UpdateClsnPosAndRotEv(void *);
+extern "C" void _ZN5Actor9UpdatePosEP12CylinderClsn(void *self, void *clsn);
+extern "C" void _ZN8Platform21UpdateModelPosAndRotYEv(void *);
+extern "C" int _ZN8Platform13IsClsnInRangeE5Fix12IiES1_(void *, int, int);
+extern "C" void _ZN8Platform19UpdateClsnPosAndRotEv(void *);
 int func_ov043_021112a8(char *c)
 {
     struct daObjKm1_Ukishima_c *self = (struct daObjKm1_Ukishima_c *)(void *)c;

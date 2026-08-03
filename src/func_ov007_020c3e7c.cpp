@@ -1,7 +1,7 @@
 //cpp
 extern "C" {
 extern void func_ov007_020c40b4(void *c);
-extern int _ZN6Player17St_EndingFly_MainEv(void *p);
+extern "C" int _ZN6Player17St_EndingFly_MainEv(void *p);
 extern int func_ov007_020c1180(char *c);
 
 void func_ov007_020c3e7c(char *c){

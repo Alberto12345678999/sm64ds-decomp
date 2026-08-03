@@ -3,7 +3,7 @@
  * ldr ip, [pc]; bx ip; .word 0x203c454
  */
 extern "C" {
-extern void _ZN4Heap6SizeofEPv(void);
+extern "C" void _ZN4Heap6SizeofEPv(void);
 void _ZN4Heap7_SizeofEPv(void) {
     _ZN4Heap6SizeofEPv();
 }

@@ -4,13 +4,13 @@
 /* recovered: named members + shared header, real C++ method */
 #include "Player.h"
 extern "C" {
-extern int _ZN6Player12FinishedAnimEv(char* c);
-extern void _ZN6Player7SetAnimEji5Fix12IiEj(char* c, u32 anim, int a, Fix12i b, u32 d);
-extern void _ZN5Sound13PlayCharVoiceEjjRK7Vector3(u32 a, u32 b, void* v);
+extern "C" int _ZN6Player12FinishedAnimEv(char* c);
+extern "C" void _ZN6Player7SetAnimEji5Fix12IiEj(char* c, u32 anim, int a, Fix12i b, u32 d);
+extern "C" void _ZN5Sound13PlayCharVoiceEjjRK7Vector3(u32 a, u32 b, void* v);
 extern void func_ov002_020daa74(char* c);
-extern void _Z15ApproachLinear2Rsss(s16* ref, s16 target, s16 step);
+extern "C" void _Z15ApproachLinear2Rsss(s16* ref, s16 target, s16 step);
 extern void func_02012694(u32 id, void* v);
-extern void _ZN6Player11ChangeStateERNS_5StateE(char* c, void* s);
+extern "C" void _ZN6Player11ChangeStateERNS_5StateE(char* c, void* s);
 extern void Player_AdvanceAnims(char* c);
 
 extern u8 data_020a0e40;

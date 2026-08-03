@@ -4,13 +4,13 @@ extern "C" {
 extern void func_ov002_020d9a4c(char *c);
 extern void func_ov002_020d99a4(unsigned char *self);
 extern void func_ov002_020d9aac(char* c);
-extern void _ZN5Sound9PlayBank0EjRK7Vector3(unsigned int a, void* v);
-extern void _ZN5Sound13PlayCharVoiceEjjRK7Vector3(unsigned int a, unsigned int b, void* v);
+extern "C" void _ZN5Sound9PlayBank0EjRK7Vector3(unsigned int a, void* v);
+extern "C" void _ZN5Sound13PlayCharVoiceEjjRK7Vector3(unsigned int a, unsigned int b, void* v);
 extern void func_ov002_020d94cc(char *self);
 extern void func_ov002_020bf9d4(char* c);
 extern void func_ov002_020d98b4(char* self);
-extern int _ZN6Player12FinishedAnimEv(char* c);
-extern void _ZN6Player11ChangeStateERNS_5StateE(char* c, void* s);
+extern "C" int _ZN6Player12FinishedAnimEv(char* c);
+extern "C" void _ZN6Player11ChangeStateERNS_5StateE(char* c, void* s);
 extern void Player_AdvanceAnims(char* c);
 extern int func_ov002_020e2c84(char *self);
 

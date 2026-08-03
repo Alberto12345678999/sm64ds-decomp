@@ -11,9 +11,9 @@ extern G data_ov060_0211ace0;
 extern G data_ov060_0211aca0;
 extern G data_ov060_0211abf8;
 extern G data_ov060_0211ac90;
-extern void _ZN5Actor17HugeLandingDustAtER7Vector3b(void *a, void *v, int b);
-extern void _ZN5Sound4PlayEjjRK7Vector3(unsigned a, unsigned b, void *v);
-extern void _ZN5Actor10EarthquakeERK7Vector35Fix12IiE(void *a, void *v, int f);
+extern "C" void _ZN5Actor17HugeLandingDustAtER7Vector3b(void *a, void *v, int b);
+extern "C" void _ZN5Sound4PlayEjjRK7Vector3(unsigned a, unsigned b, void *v);
+extern "C" void _ZN5Actor10EarthquakeERK7Vector35Fix12IiE(void *a, void *v, int f);
 
 void func_ov060_02111a28(char *c)
 {

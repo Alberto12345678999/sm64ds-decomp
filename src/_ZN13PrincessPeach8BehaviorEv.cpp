@@ -5,9 +5,9 @@
 /* recovered: named members + shared header, real C++ method */
 #include "PrincessPeach.h"
 extern "C" {
-extern void _ZN9Animation7AdvanceEv(void *a);
-extern void _ZN12CylinderClsn5ClearEv(void *);
-extern void _ZN12CylinderClsn6UpdateEv(void *);
+extern "C" void _ZN9Animation7AdvanceEv(void *a);
+extern "C" void _ZN12CylinderClsn5ClearEv(void *);
+extern "C" void _ZN12CylinderClsn6UpdateEv(void *);
 extern int func_ov085_02129fdc(void *c);
 }
 struct Sub { virtual int g0(); virtual int g1(); virtual int g2(); virtual int g3(); };

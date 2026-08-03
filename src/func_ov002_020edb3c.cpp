@@ -2,7 +2,7 @@
 extern "C" {
 extern int func_ov002_020ec654(unsigned char *p);
 extern void func_ov002_020edca4(char *self);
-extern void *_ZN5Actor4NextEPKS_(const void *prev);
+extern "C" void *_ZN5Actor4NextEPKS_(const void *prev);
 extern int Vec3_Dist(const void *a, const void *b);
 
 struct VObj { virtual int s0(); virtual int s1(); virtual int s2(); virtual int s3(); virtual int s4(); virtual int s5(); virtual int s6(); virtual int s7(); virtual int s8(); virtual int s9(); virtual int s10(); virtual int s11(); virtual int s12(); virtual int s13(); virtual int s14(); virtual int s15(); virtual int s16(); virtual int s17(); virtual int s18(); virtual int s19(); virtual int s20(); };

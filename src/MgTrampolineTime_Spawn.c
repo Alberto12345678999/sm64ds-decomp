@@ -1,8 +1,8 @@
 //cpp
 extern "C" {
-extern void *_ZN9ActorBasenwEj(unsigned int sz);
+extern "C" void *_ZN9ActorBasenwEj(unsigned int sz);
 extern int func_ov004_020b2adc(void *p);
-extern void _ZN8Particle10SysTrackerC1Ev(void *);
+extern "C" void _ZN8Particle10SysTrackerC1Ev(void *);
 extern void func_020733a8(void *p, int a, int b, void *f1, void *f2);
 extern int _ZTV17MgBounceAndPounce[];
 extern int data_ov006_0213fb34[];

@@ -1,10 +1,10 @@
 //cpp
 extern "C" {
-extern char* _ZN5Actor13ClosestPlayerEv(char*);
+extern "C" char* _ZN5Actor13ClosestPlayerEv(char*);
 extern short Vec3_HorzAngle(void*, void*);
 extern void func_ov002_020af3a8(char*);
-extern int _ZNK12WithMeshClsn8IsOnWallEv(char*);
-extern int _ZN5Actor15IsPlayerInRangeEi(char*, int);
+extern "C" int _ZNK12WithMeshClsn8IsOnWallEv(char*);
+extern "C" int _ZN5Actor15IsPlayerInRangeEi(char*, int);
 void func_ov002_020afde4(char* c){
   char* p = _ZN5Actor13ClosestPlayerEv(c);
   if(p){

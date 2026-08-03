@@ -9,12 +9,12 @@ extern unsigned int data_0209b454[];
 extern unsigned int data_0209b464[];
 extern unsigned char data_0209f294[];
 extern unsigned char data_0209f290[];
-extern void _ZN7Message17DisplayVsExitTextEt(unsigned short n);
-extern void _ZN5Stage17UpdateMenuButtonsEb(bool b);
+extern "C" void _ZN7Message17DisplayVsExitTextEt(unsigned short n);
+extern "C" void _ZN5Stage17UpdateMenuButtonsEb(bool b);
 extern void SetBg2Offset(int a, int b);
 extern void SetSubBg0Offset(int a, int b);
 extern void SetSubBg1Offset(int a, int b);
-extern void _ZN3G2x18SetBlendBrightnessEPVtts(volatile unsigned short *p, int val, short amt);
+extern "C" void _ZN3G2x18SetBlendBrightnessEPVtts(volatile unsigned short *p, int val, short amt);
 
 void _ZN5Stage7VE_InitEv(void)
 {

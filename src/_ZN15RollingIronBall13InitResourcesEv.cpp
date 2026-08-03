@@ -6,15 +6,15 @@
 #include "decl_common.h"
 /* recovered: named members + shared header, real C++ method */
 #include "RollingIronBall.h"
-extern void *_ZN5Model8LoadFileER13SharedFilePtr(void *fp);
-extern int _ZN9ModelBase7SetFileEP8BMD_Fileii(void *self, void *file, int a, int b);
-extern int _ZN11ShadowModel12InitCylinderEv(void *self);
-extern void _ZN7PathPtr6FromIDEj(void *self, unsigned int id);
-extern void _ZNK7PathPtr7GetNodeER7Vector3j(void *self, void *v, unsigned int idx);
+extern "C" void *_ZN5Model8LoadFileER13SharedFilePtr(void *fp);
+extern "C" int _ZN9ModelBase7SetFileEP8BMD_Fileii(void *self, void *file, int a, int b);
+extern "C" int _ZN11ShadowModel12InitCylinderEv(void *self);
+extern "C" void _ZN7PathPtr6FromIDEj(void *self, unsigned int id);
+extern "C" void _ZNK7PathPtr7GetNodeER7Vector3j(void *self, void *v, unsigned int idx);
 extern int Vec3_Equal(void *a, void *b);
-extern void _ZN18MovingCylinderClsn4InitEP5Actor5Fix12IiES3_jj(void *self, void *actor, int a, int b, unsigned int c, unsigned int d);
-extern void _ZN12WithMeshClsn4InitEP5Actor5Fix12IiES3_P10Vector3_16S5_(void *self, void *actor, int a, int b, void *v0, int v1);
-extern void _ZN5Actor9UpdatePosEP12CylinderClsn(void *self, void *c);
+extern "C" void _ZN18MovingCylinderClsn4InitEP5Actor5Fix12IiES3_jj(void *self, void *actor, int a, int b, unsigned int c, unsigned int d);
+extern "C" void _ZN12WithMeshClsn4InitEP5Actor5Fix12IiES3_P10Vector3_16S5_(void *self, void *actor, int a, int b, void *v0, int v1);
+extern "C" void _ZN5Actor9UpdatePosEP12CylinderClsn(void *self, void *c);
 
 extern char data_ov100_02148668;
 extern int data_02092138;

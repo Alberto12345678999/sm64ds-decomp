@@ -3,9 +3,9 @@
 /* recovered: named members + shared header, real C++ method */
 #include "DonutBlock.h"
 extern "C" {
-extern int _ZN16MeshColliderBase9IsEnabledEv(void*);
-extern int _ZN16MeshColliderBase7DisableEv(void*);
-extern int _ZN13SharedFilePtr7ReleaseEv(void*);
+extern "C" int _ZN16MeshColliderBase9IsEnabledEv(void*);
+extern "C" int _ZN16MeshColliderBase7DisableEv(void*);
+extern "C" int _ZN13SharedFilePtr7ReleaseEv(void*);
 extern int* data_ov036_02113d78[];
 }
 

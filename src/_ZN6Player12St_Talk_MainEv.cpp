@@ -6,13 +6,13 @@
 /* recovered: named members + shared header, real C++ method */
 #include "Player.h"
 extern "C" {
-extern int _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(u32 vol, int t);
-extern int _ZN6Player6IsAnimEj(void* c, u32 a);
+extern "C" int _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(u32 vol, int t);
+extern "C" int _ZN6Player6IsAnimEj(void* c, u32 a);
 extern void func_0201f32c(s16 a);
 extern void func_0200d3f8(void* cam, u8 playerID, void* ptr);
-extern int _Z15ApproachLinear2Rsss(s16* v, s16 target, s16 step);
+extern "C" int _Z15ApproachLinear2Rsss(s16* v, s16 target, s16 step);
 extern void func_0200d81c(void* cam, u8 playerID);
-extern void _ZN6Player11ChangeStateERNS_5StateE(void* c, void* s);
+extern "C" void _ZN6Player11ChangeStateERNS_5StateE(void* c, void* s);
 extern void Player_AdvanceAnims(char* c);
 
 extern int data_0209b454;

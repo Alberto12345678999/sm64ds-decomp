@@ -3,7 +3,7 @@
 /* recovered: named members + shared header, real C++ method */
 #include "DockPole.h"
 extern "C" {
-extern void _ZN9Animation7AdvanceEv(void* c);
+extern "C" void _ZN9Animation7AdvanceEv(void* c);
 extern void Matrix4x3_FromRotationY(void* m, short angle);
 }
 

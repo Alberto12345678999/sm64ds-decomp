@@ -6,26 +6,26 @@
 /* recovered: renamed to Class_Method */
 /* daPgDfdr_c::InitResources - recovered from vtable slot identity */
 extern "C" {
-extern void *_ZN5Model8LoadFileER13SharedFilePtr(void *fp);
-extern void _ZN9ModelBase7SetFileEP8BMD_Fileii(void *o, void *f, int a, int b);
-extern void *_ZN9Animation8LoadFileER13SharedFilePtr(void *fp);
-extern void *_ZN15TextureSequence8LoadFileER13SharedFilePtr(void *fp);
-extern void _ZN15TextureSequence7PrepareER8BMD_FileR8BTP_File(void *a, void *b);
-extern void _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(void *o, void *f, int i, int fx, unsigned j);
+extern "C" void *_ZN5Model8LoadFileER13SharedFilePtr(void *fp);
+extern "C" void _ZN9ModelBase7SetFileEP8BMD_Fileii(void *o, void *f, int a, int b);
+extern "C" void *_ZN9Animation8LoadFileER13SharedFilePtr(void *fp);
+extern "C" void *_ZN15TextureSequence8LoadFileER13SharedFilePtr(void *fp);
+extern "C" void _ZN15TextureSequence7PrepareER8BMD_FileR8BTP_File(void *a, void *b);
+extern "C" void _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(void *o, void *f, int i, int fx, unsigned j);
 extern void func_ov027_02111994(void *c);
-extern void *_ZN12MeshCollider8LoadFileER13SharedFilePtr(void *fp);
-extern void _ZN18MovingMeshCollider7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(void *o, void *kcl, void *m, int fx, short s, void *clps);
+extern "C" void *_ZN12MeshCollider8LoadFileER13SharedFilePtr(void *fp);
+extern "C" void _ZN18MovingMeshCollider7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(void *o, void *kcl, void *m, int fx, short s, void *clps);
 extern void func_020393d4(void *p, int v);
-extern void _ZN18MovingCylinderClsn4InitEP5Actor5Fix12IiES3_jj(void *o, void *act, int a, int b, unsigned c, unsigned d);
-extern void _ZN13RaycastGroundC1Ev(void *o);
-extern void _ZN13RaycastGround12SetObjAndPosERK7Vector3P5Actor(void *o, void *v, void *act);
-extern int _ZN13RaycastGround10DetectClsnEv(void *o);
-extern void _ZN13RaycastGroundD1Ev(void *o);
+extern "C" void _ZN18MovingCylinderClsn4InitEP5Actor5Fix12IiES3_jj(void *o, void *act, int a, int b, unsigned c, unsigned d);
+extern "C" void _ZN13RaycastGroundC1Ev(void *o);
+extern "C" void _ZN13RaycastGround12SetObjAndPosERK7Vector3P5Actor(void *o, void *v, void *act);
+extern "C" int _ZN13RaycastGround10DetectClsnEv(void *o);
+extern "C" void _ZN13RaycastGroundD1Ev(void *o);
 
 extern char data_ov027_02113c7c;
 extern char data_ov027_02113c94;
 extern char data_ov027_02113c6c;
-extern void _ZN16MeshColliderBase16UpdatePosAndAngsERS_P5ActorR10ClsnResultR7Vector3P10Vector3_16S8_(void);
+extern "C" void _ZN16MeshColliderBase16UpdatePosAndAngsERS_P5ActorR10ClsnResultR7Vector3P10Vector3_16S8_(void);
 
 struct RG { char pad[0x54]; };
 

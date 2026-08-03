@@ -4,9 +4,9 @@
 #include "decl_common.h"
 /* recovered: named members + shared header, real C++ method */
 #include "RacingPenguin.h"
-extern void _ZN9Animation7AdvanceEv(char *c);
-extern void _ZN12CylinderClsn5ClearEv(char *c);
-extern void _ZN12CylinderClsn6UpdateEv(char *c);
+extern "C" void _ZN9Animation7AdvanceEv(char *c);
+extern "C" void _ZN12CylinderClsn5ClearEv(char *c);
+extern "C" void _ZN12CylinderClsn6UpdateEv(char *c);
 
 int RacingPenguin::Behavior()
 {

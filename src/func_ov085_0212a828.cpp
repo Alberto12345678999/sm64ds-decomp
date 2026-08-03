@@ -1,7 +1,7 @@
 //cpp
 extern "C" {
-extern void* _ZN5Actor10FindWithIDEj(unsigned int id);
-extern int _ZN6Player7TryGrabER5Actor(void* thiz, void* a);
+extern "C" void* _ZN5Actor10FindWithIDEj(unsigned int id);
+extern "C" int _ZN6Player7TryGrabER5Actor(void* thiz, void* a);
 extern void func_ov085_0212bc78(void* c, void* p);
 extern int data_ov085_021306ac[];
 extern int data_ov085_021306bc[];

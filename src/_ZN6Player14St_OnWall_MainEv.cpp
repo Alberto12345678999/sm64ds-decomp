@@ -11,11 +11,11 @@ extern void func_ov002_020c0364(char* c, u32 a);
 extern void func_ov002_020cabe0(char* c);
 extern int func_ov002_020c5244();
 extern int func_ov002_020d36d8(char* c, int a);
-extern void _ZN6Player11ChangeStateERNS_5StateE(void* c, void* s);
-extern int _ZN4cstd5atan2E5Fix12IiES1_(Fix12i a, int b);
-extern void _Z14ApproachLinearRsss(s16* v, s16 t, s16 s);
+extern "C" void _ZN6Player11ChangeStateERNS_5StateE(void* c, void* s);
+extern "C" int _ZN4cstd5atan2E5Fix12IiES1_(Fix12i a, int b);
+extern "C" void _Z14ApproachLinearRsss(s16* v, s16 t, s16 s);
 extern int func_ov002_020bf224(char* c, int a, int b);
-extern void _ZN6Player7SetAnimEji5Fix12IiEj(void* c, u32 anim, int a, Fix12i b, u32 d);
+extern "C" void _ZN6Player7SetAnimEji5Fix12IiEj(void* c, u32 anim, int a, Fix12i b, u32 d);
 extern int func_ov002_020d4d88(char* c, int a, int b);
 extern void Player_AdvanceAnims(char* c);
 

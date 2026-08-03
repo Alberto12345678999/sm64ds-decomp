@@ -7,7 +7,7 @@
 struct Actor;
 
 extern "C" {
-extern struct Actor *_ZN5Actor5SpawnEjjRK7Vector3PK10Vector3_16ii(
+extern "C" struct Actor *_ZN5Actor5SpawnEjjRK7Vector3PK10Vector3_16ii(
     unsigned int a1, unsigned int a2, const struct Vector3 *a3,
     const struct Vector3_16 *a4, int a5, int a6);
 }

@@ -1,9 +1,9 @@
 //cpp
 extern "C" {
-extern char* _ZN5Actor22ClosestNonVanishPlayerEv();
+extern "C" char* _ZN5Actor22ClosestNonVanishPlayerEv();
 extern int Vec3_Dist(void* a, void* b);
 extern short Vec3_HorzAngle(void* a, void* b);
-extern void _Z14ApproachLinearRsss(short* p, short target, short step);
+extern "C" void _Z14ApproachLinearRsss(short* p, short target, short step);
 }
 
 extern "C" void func_ov070_02121298(char* c){

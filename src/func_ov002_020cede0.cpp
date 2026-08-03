@@ -6,13 +6,13 @@
 #include "common.h"
 
 extern "C" {
-extern void _ZN13RaycastGroundC1Ev(void* self);
-extern void _ZN4BgCh19StartDetectingWaterEv(void* self);
-extern void _ZN4BgCh21StopDetectingOrdinaryEv(void* self);
-extern void _ZN13RaycastGround12SetObjAndPosERK7Vector3P5Actor(void* self, void* v, void* act);
-extern int _ZN13RaycastGround10DetectClsnEv(void* self);
+extern "C" void _ZN13RaycastGroundC1Ev(void* self);
+extern "C" void _ZN4BgCh19StartDetectingWaterEv(void* self);
+extern "C" void _ZN4BgCh21StopDetectingOrdinaryEv(void* self);
+extern "C" void _ZN13RaycastGround12SetObjAndPosERK7Vector3P5Actor(void* self, void* v, void* act);
+extern "C" int _ZN13RaycastGround10DetectClsnEv(void* self);
 extern int SurfaceInfo_TestFlag0x20(int* p);
-extern void _ZN13RaycastGroundD1Ev(void* self);
+extern "C" void _ZN13RaycastGroundD1Ev(void* self);
 extern int data_0209f32c;
 extern signed char data_0209f2f8;
 }

@@ -5,7 +5,7 @@
 
 
 extern "C" {
-extern void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int, int, int, int);
+extern "C" void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int, int, int, int);
 extern int func_02012694(unsigned int id, const Vector3 *v);
 extern char *data_0209f318;
 }

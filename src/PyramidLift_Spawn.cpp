@@ -1,8 +1,8 @@
 //cpp
 extern "C" {
-extern void* _ZN9ActorBasenwEj(unsigned int);
-extern void _ZN8PlatformC2Ev(void*);
-extern void _ZN5ModelC1Ev(void*);
+extern "C" void* _ZN9ActorBasenwEj(unsigned int);
+extern "C" void _ZN8PlatformC2Ev(void*);
+extern "C" void _ZN5ModelC1Ev(void*);
 extern int func_020733a8(void*,int,int,void*,void*);
 extern void* data_ov027_021139d4;
 extern void func_020072c0(void);

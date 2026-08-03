@@ -1,10 +1,10 @@
 //cpp
 #include "types.h"
 extern "C" {
-extern void _ZN5Sound7PlaySubEjjj5Fix12IiEb(unsigned, unsigned, unsigned, int, int);
-extern void *_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
+extern "C" void _ZN5Sound7PlaySubEjjj5Fix12IiEb(unsigned, unsigned, unsigned, int, int);
+extern "C" void *_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
     u32, u32, int, int, int, const void *, void *);
-extern int _ZN9Animation8FinishedEv(void *);
+extern "C" int _ZN9Animation8FinishedEv(void *);
 extern s16 data_02082214[];
 extern int data_ov084_0213030c[];
 extern int data_ov084_02130334[];

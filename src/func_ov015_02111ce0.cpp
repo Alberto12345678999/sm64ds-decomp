@@ -1,6 +1,6 @@
 //cpp
 extern "C" {
-extern void _ZN5Actor22UpdatePosWithOnlySpeedEP12CylinderClsn(void*, void*);
+extern "C" void _ZN5Actor22UpdatePosWithOnlySpeedEP12CylinderClsn(void*, void*);
 extern void func_ov015_02111fb8(void*, int);
 void func_ov015_02111ce0(char* c){
   _ZN5Actor22UpdatePosWithOnlySpeedEP12CylinderClsn(c, 0);

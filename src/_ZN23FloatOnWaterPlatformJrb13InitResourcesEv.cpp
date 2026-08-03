@@ -5,14 +5,14 @@
 /* recovered: named members + shared header, real C++ method */
 #include "FloatOnWaterPlatformJrb.h"
 extern "C" {
-extern void* _ZN5Model8LoadFileER13SharedFilePtr(void* fp);
-extern void _ZN9ModelBase7SetFileEP8BMD_Fileii(void* thiz, void* f, int a, int b);
-extern void _ZN8Platform19UpdateClsnPosAndRotEv(void* thiz);
-extern void* _ZN12MeshCollider8LoadFileER13SharedFilePtr(void* fp);
-extern void _ZN18MovingMeshCollider7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(void* thiz, void* kcl, void* mtx, int fix, short s, void* clps);
+extern "C" void* _ZN5Model8LoadFileER13SharedFilePtr(void* fp);
+extern "C" void _ZN9ModelBase7SetFileEP8BMD_Fileii(void* thiz, void* f, int a, int b);
+extern "C" void _ZN8Platform19UpdateClsnPosAndRotEv(void* thiz);
+extern "C" void* _ZN12MeshCollider8LoadFileER13SharedFilePtr(void* fp);
+extern "C" void _ZN18MovingMeshCollider7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(void* thiz, void* kcl, void* mtx, int fix, short s, void* clps);
 extern void func_020393d4(void* p, void* v);
-extern void _ZN12WithMeshClsn4InitEP5Actor5Fix12IiES3_P10Vector3_16S5_(void* thiz, void* act, int fix, int t, void* vr, int t2);
-extern void _ZN16MeshColliderBase22UpdatePosWithTransformERS_P5ActorR10ClsnResultR7Vector3P10Vector3_16S8_(void);
+extern "C" void _ZN12WithMeshClsn4InitEP5Actor5Fix12IiES3_P10Vector3_16S5_(void* thiz, void* act, int fix, int t, void* vr, int t2);
+extern "C" void _ZN16MeshColliderBase22UpdatePosWithTransformERS_P5ActorR10ClsnResultR7Vector3P10Vector3_16S8_(void);
 }
 
 int FloatOnWaterPlatformJrb::InitResources()

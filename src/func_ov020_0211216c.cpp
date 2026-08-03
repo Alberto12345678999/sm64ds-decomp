@@ -1,7 +1,7 @@
 //cpp
 extern "C" {
 extern void Matrix4x3_FromRotationZXYExt(void* m, int x, int y, int z);
-extern void _ZN5Actor19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(void* thiz, void* sm, void* mtx, int f, int g, unsigned int h);
+extern "C" void _ZN5Actor19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(void* thiz, void* sm, void* mtx, int f, int g, unsigned int h);
 
 void func_ov020_0211216c(char* c)
 {

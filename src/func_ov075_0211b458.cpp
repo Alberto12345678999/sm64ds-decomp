@@ -6,10 +6,10 @@
 struct Foo;
 typedef void (Foo::*PMF)();
 extern "C" {
-extern void* _ZN6Memory13operator_new2Ej(unsigned int sz);
+extern "C" void* _ZN6Memory13operator_new2Ej(unsigned int sz);
 extern void* func_0201787c(void* sfp);
 extern void func_ov075_0211aa94(void* a, void* b);
-extern void _ZN13SharedFilePtr7ReleaseEv(void* sfp);
+extern "C" void _ZN13SharedFilePtr7ReleaseEv(void* sfp);
 extern void func_ov075_0211aa00(char* r4);
 extern char data_ov075_0211d980;
 }

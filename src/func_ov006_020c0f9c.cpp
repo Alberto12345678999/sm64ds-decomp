@@ -1,10 +1,10 @@
 //cpp
 extern "C" {
-extern int _ZNK9Animation12WillHitFrameEi(void *o, int f);
-extern void _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(void *o, void *bca, int a, int b, int fx, unsigned short t);
-extern void _ZN5Sound12PlayBank2_2DEj(unsigned a);
+extern "C" int _ZNK9Animation12WillHitFrameEi(void *o, int f);
+extern "C" void _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(void *o, void *bca, int a, int b, int fx, unsigned short t);
+extern "C" void _ZN5Sound12PlayBank2_2DEj(unsigned a);
 extern void func_ov006_020c1764(void *c);
-extern int _ZN9Animation8FinishedEv(void *o);
+extern "C" int _ZN9Animation8FinishedEv(void *o);
 }
 
 extern "C" void func_ov006_020c0f9c(void *cc)

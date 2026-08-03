@@ -1,9 +1,9 @@
 //cpp
 extern "C" {
 extern int SublevelToLevel(int i);
-extern int _ZN8SaveData13GetCoinRecordEj(unsigned int);
+extern "C" int _ZN8SaveData13GetCoinRecordEj(unsigned int);
 extern void func_ov003_020ae1a4(void* sl, int r);
-extern void _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2(int b, void* attr, int x, int y, int a, int c, void* m);
+extern "C" void _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2(int b, void* attr, int x, int y, int a, int c, void* m);
 extern signed char data_02092110[];
 extern void* func_020aba70[];
 extern void* func_020ab9c8[];

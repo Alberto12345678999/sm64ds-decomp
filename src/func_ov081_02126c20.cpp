@@ -1,9 +1,9 @@
 //cpp
 extern "C" {
-extern void _ZN9Animation7AdvanceEv(void* a);
-extern void _ZN5Actor9UpdatePosEP12CylinderClsn(void* a, void* cyl);
+extern "C" void _ZN9Animation7AdvanceEv(void* a);
+extern "C" void _ZN5Actor9UpdatePosEP12CylinderClsn(void* a, void* cyl);
 extern void func_02038414(void* a);
-extern int _ZNK12WithMeshClsn13JustHitGroundEv(void* a);
+extern "C" int _ZNK12WithMeshClsn13JustHitGroundEv(void* a);
 extern int DecIfAbove0_Byte(void* p);
 extern void func_ov081_02126700(char* c);
 int func_ov081_02126c20(char* c){

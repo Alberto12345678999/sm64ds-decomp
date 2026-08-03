@@ -11,13 +11,13 @@ typedef struct M4x3 { int w[12]; } M4x3;
 struct Bundle { Vector3_16 rot; short _p; Vector3 trans; int _tail[2]; };
 
 extern "C" {
-extern int _ZN6Player14IsFrontSlidingEv(void*);
-extern int _ZN6Player17LostGrabbedObjectEv(void*);
-extern void* _ZN5Actor11UpdateCarryER6PlayerRK7Vector3(void*, void*, void*);
+extern "C" int _ZN6Player14IsFrontSlidingEv(void*);
+extern "C" int _ZN6Player17LostGrabbedObjectEv(void*);
+extern "C" void* _ZN5Actor11UpdateCarryER6PlayerRK7Vector3(void*, void*, void*);
 extern void Matrix4x3_FromRotationY(void* m, int angle);
-extern void _ZN5Actor19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
+extern "C" void _ZN5Actor19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
     void* self, void* shadow, void* mtx, int rad, int height, unsigned int flags);
-extern void* _ZN5Actor10FindWithIDEj(unsigned int id);
+extern "C" void* _ZN5Actor10FindWithIDEj(unsigned int id);
 extern void MulMat4x3Mat4x3(void* a, void* b, void* out);
 extern void Matrix4x3_ApplyInPlaceToTranslation(void* m, int x, int y, int z);
 extern void Matrix4x3_ApplyInPlaceToRotationXYZExt(void* m, int x, int y, int z);

@@ -1,8 +1,8 @@
 //cpp
 extern "C" {
-extern void *_ZN5Actor10FindWithIDEj(unsigned int);
-extern int _ZN6Player9StartTalkER9ActorBaseb(void*,void*,char);
-extern int _ZN7Message11PrepareTalkEv(void);
+extern "C" void *_ZN5Actor10FindWithIDEj(unsigned int);
+extern "C" int _ZN6Player9StartTalkER9ActorBaseb(void*,void*,char);
+extern "C" int _ZN7Message11PrepareTalkEv(void);
 extern int func_ov085_02129524(void*,int);
 void func_ov085_02129470(char *c){
     if((*(int*)(c+0xf4) & 0x8000000)==0) return;

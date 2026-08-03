@@ -4,7 +4,7 @@
 #include "decl_common.h"
 /* recovered: named members + shared header, real C++ method */
 #include "UnknownVsEntry.h"
-extern int _ZN13SharedFilePtr7ReleaseEv(void*);
+extern "C" int _ZN13SharedFilePtr7ReleaseEv(void*);
 extern char data_ov075_0211d404[];
 extern char data_ov075_0211d3c4[];
 extern char data_ov075_0211d414[];

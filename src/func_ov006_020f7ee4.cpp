@@ -19,10 +19,10 @@ extern void func_ov006_020f8320(void *c, int event);
 extern int func_ov006_020f8154(void *c);
 extern int func_ov006_020f8224(void *a, void *b);
 extern unsigned int func_02012790(unsigned int a);
-extern void _ZN5Sound12PlayBank2_2DEj(unsigned int a);
-extern void _Z14ApproachLinearRiii(int *a, int b, int c);
+extern "C" void _ZN5Sound12PlayBank2_2DEj(unsigned int a);
+extern "C" void _Z14ApproachLinearRiii(int *a, int b, int c);
 extern int func_0203d5dc(void *a, void *b);
-extern int _Z15ApproachLinear2Rsss(short *a, short b, short c);
+extern "C" int _Z15ApproachLinear2Rsss(short *a, short b, short c);
 
 void func_ov006_020f7ee4(char *c, int event)
 {

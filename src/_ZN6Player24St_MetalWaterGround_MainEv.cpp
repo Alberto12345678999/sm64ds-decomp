@@ -7,14 +7,14 @@
 #include "Player.h"
 extern "C" {
 extern int func_ov002_020cec2c(void*);
-extern void _ZN6Player11ChangeStateERNS_5StateE(void*,void*);
+extern "C" void _ZN6Player11ChangeStateERNS_5StateE(void*,void*);
 extern void ApproachAngle(void*,short,int,int,int);
 extern int func_ov002_020bf224(void*,int,int);
-extern void _Z14ApproachLinearRiii(int*,int,int);
-extern void _ZN6Player7SetAnimEji5Fix12IiEj(void*,unsigned int,int,int,unsigned int);
-extern int _ZN6Player6IsAnimEj(void*,unsigned int);
-extern int _ZN6Player12FinishedAnimEv(void*);
-extern int _ZNK6Player14GetBodyModelIDEjb(void*,unsigned int,int);
+extern "C" void _Z14ApproachLinearRiii(int*,int,int);
+extern "C" void _ZN6Player7SetAnimEji5Fix12IiEj(void*,unsigned int,int,int,unsigned int);
+extern "C" int _ZN6Player6IsAnimEj(void*,unsigned int);
+extern "C" int _ZN6Player12FinishedAnimEv(void*);
+extern "C" int _ZNK6Player14GetBodyModelIDEjb(void*,unsigned int,int);
 extern void func_0201251c(int,int,void*,int);
 extern void Player_AdvanceAnims(void*);
 extern int data_0209f32c;

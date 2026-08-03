@@ -1,6 +1,6 @@
 //cpp
 extern "C" {
-extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void* ma, void* bca, int a, int f, unsigned int j);
+extern "C" void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void* ma, void* bca, int a, int f, unsigned int j);
 extern void func_02035684(int* p, int v);
 extern int RandomIntInternal(int* seed);
 extern void* data_ov077_02127c14[];

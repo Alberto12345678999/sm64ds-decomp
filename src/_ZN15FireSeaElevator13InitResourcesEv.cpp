@@ -5,13 +5,13 @@
 /* recovered: named members + shared header, real C++ method */
 #include "FireSeaElevator.h"
 extern "C" {
-extern void* _ZN5Model8LoadFileER13SharedFilePtr(void* fp);
-extern void _ZN9ModelBase7SetFileEP8BMD_Fileii(void* thiz, void* f, int a, int b);
-extern void _ZN8Platform21UpdateModelPosAndRotYEv(void* thiz);
-extern void _ZN8Platform19UpdateClsnPosAndRotEv(void* thiz);
-extern void* _ZN12MeshCollider8LoadFileER13SharedFilePtr(void* fp);
-extern void _ZN18MovingMeshCollider7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(void* thiz, void* kcl, void* mtx, int fix, short s, void* clps);
-extern void _ZN18MovingCylinderClsn4InitEP5Actor5Fix12IiES3_jj(void* thiz, void* act, int fix, int t, unsigned int a, unsigned int b);
+extern "C" void* _ZN5Model8LoadFileER13SharedFilePtr(void* fp);
+extern "C" void _ZN9ModelBase7SetFileEP8BMD_Fileii(void* thiz, void* f, int a, int b);
+extern "C" void _ZN8Platform21UpdateModelPosAndRotYEv(void* thiz);
+extern "C" void _ZN8Platform19UpdateClsnPosAndRotEv(void* thiz);
+extern "C" void* _ZN12MeshCollider8LoadFileER13SharedFilePtr(void* fp);
+extern "C" void _ZN18MovingMeshCollider7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(void* thiz, void* kcl, void* mtx, int fix, short s, void* clps);
+extern "C" void _ZN18MovingCylinderClsn4InitEP5Actor5Fix12IiES3_jj(void* thiz, void* act, int fix, int t, unsigned int a, unsigned int b);
 }
 
 int FireSeaElevator::InitResources()

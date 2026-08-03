@@ -6,12 +6,12 @@ extern unsigned char data_0209f2a8;
 extern int data_0208ee44;
 extern unsigned char data_0209f20c;
 extern int LoadFile(int handle);
-extern void _ZN2GX11LoadOBJPlttEPKvjj(const void*, unsigned int, unsigned int);
+extern "C" void _ZN2GX11LoadOBJPlttEPKvjj(const void*, unsigned int, unsigned int);
 extern void Deallocate(void* ptr);
 extern char data_02092124;
 extern int SublevelToLevel(int i);
 extern int GetOwnerLanguage(void);
-extern int _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(int, void*, int, int, int, int, int, int, int, int);
+extern "C" int _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(int, void*, int, int, int, int, int, int, int, int);
 extern int data_ov002_0210cea8;
 extern int data_ov002_0210cee8;
 extern int data_ov002_0210cf28;
@@ -24,7 +24,7 @@ extern int data_ov002_0210cf08;
 extern int data_ov002_0210cfa0;
 extern int data_ov002_0210caf4;
 extern unsigned char data_0209f2d4;
-extern void _ZN5Stage20RenderBouncingArrowsEv(void);
+extern "C" void _ZN5Stage20RenderBouncingArrowsEv(void);
 }
 
 extern "C" void _ZN5Stage9LC_RenderEv(void) {

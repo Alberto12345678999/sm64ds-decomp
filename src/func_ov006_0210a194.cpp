@@ -40,13 +40,13 @@ extern u8 data_0209d45c;
 extern u8 data_0209d454;
 
 extern void *LoadFile(int);
-extern int _ZN3G2S13GetBG2CharPtrEv(void);
+extern "C" int _ZN3G2S13GetBG2CharPtrEv(void);
 extern void DecompressLZ16(void *, int);
-extern int _ZN3G2S12GetBG2ScrPtrEv(void);
-extern int _ZN3G2S12GetBG0ScrPtrEv(void);
-extern void _ZN3GXS10LoadBGPlttEPKvjj(void *, unsigned int, unsigned int);
-extern void _ZN2GX11LoadOBJPlttEPKvjj(void *, unsigned int, unsigned int);
-extern void _ZN3GXS11LoadOBJPlttEPKvjj(void *, unsigned int, unsigned int);
+extern "C" int _ZN3G2S12GetBG2ScrPtrEv(void);
+extern "C" int _ZN3G2S12GetBG0ScrPtrEv(void);
+extern "C" void _ZN3GXS10LoadBGPlttEPKvjj(void *, unsigned int, unsigned int);
+extern "C" void _ZN2GX11LoadOBJPlttEPKvjj(void *, unsigned int, unsigned int);
+extern "C" void _ZN3GXS11LoadOBJPlttEPKvjj(void *, unsigned int, unsigned int);
 extern void func_ov006_020c0aa8(char *);
 extern int func_ov006_020c1a88(char *);
 

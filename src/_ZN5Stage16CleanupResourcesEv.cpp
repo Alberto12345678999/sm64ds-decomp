@@ -26,22 +26,22 @@ extern u8 data_0209f244;
 extern u8 data_0209f2b0;
 extern u8 data_0209f20c;
 
-extern void _ZN13SharedFilePtr7ReleaseEv(void *);
-extern void _ZN5Sound21ResetPlayerVoiceGroupEv(void);
+extern "C" void _ZN13SharedFilePtr7ReleaseEv(void *);
+extern "C" void _ZN5Sound21ResetPlayerVoiceGroupEv(void);
 extern void EndKuppaScript(void);
-extern void _ZN6Memory16operator_delete2EPv(void *);
-extern void _ZN5Scene20SetAndStopColorFaderEv(void);
+extern "C" void _ZN6Memory16operator_delete2EPv(void *);
+extern "C" void _ZN5Scene20SetAndStopColorFaderEv(void);
 extern void func_02073244(void *, int, int, void (*)(void *));
-extern void _ZN9FaderWipeD1Ev(void *);
+extern "C" void _ZN9FaderWipeD1Ev(void *);
 extern void CleanCommonModelDataArr(void);
-extern void _ZN16MeshColliderBase7DisableEv(void *);
-extern void _ZN5Stage18ResetMeshCollidersEv(void);
+extern "C" void _ZN16MeshColliderBase7DisableEv(void *);
+extern "C" void _ZN5Stage18ResetMeshCollidersEv(void);
 extern void func_01ffb0c8(void *);
 extern void Deallocate(void);
-extern void _Z19UnloadLevelOverlaysi(int);
+extern "C" void _Z19UnloadLevelOverlaysi(int);
 extern void UnloadArchive(int);
-extern void _ZN7Message15ResetAllGlobalsEv(void);
-extern void _ZN5Sound6Player19SetPlayableSeqCountEii(int, int);
+extern "C" void _ZN7Message15ResetAllGlobalsEv(void);
+extern "C" void _ZN5Sound6Player19SetPlayableSeqCountEii(int, int);
 
 static inline void DestroyVirt(void **o)
 {

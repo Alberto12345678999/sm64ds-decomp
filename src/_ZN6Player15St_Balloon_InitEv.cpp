@@ -8,7 +8,7 @@ extern "C" {
 extern int Player_ReleaseHeldActor(void*);
 extern int data_0209f318[];
 extern int data_ov002_0210e750[];
-extern int _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void*,void*,int,int,unsigned int);
+extern "C" int _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void*,void*,int,int,unsigned int);
 }
 
 int Player::St_Balloon_Init()

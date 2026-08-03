@@ -5,19 +5,19 @@
 /* recovered: named members + shared header, real C++ method */
 #include "SkiLift.h"
 extern "C" {
-extern void *_ZN5Model8LoadFileER13SharedFilePtr(void *f);
-extern void _ZN9ModelBase7SetFileEP8BMD_Fileii(void *self, void *f, int a, int b);
-extern void *_ZN9Animation8LoadFileER13SharedFilePtr(void *f);
-extern void *_ZN15TextureSequence8LoadFileER13SharedFilePtr(void *f);
-extern void _ZN15TextureSequence7PrepareER8BMD_FileR8BTP_File(void *bmd, void *btp);
-extern int _ZN11ShadowModel12InitCylinderEv(void *self);
-extern void _ZN18MovingCylinderClsn4InitEP5Actor5Fix12IiES3_jj(void *self, void *act, int a, int b, unsigned int c2, unsigned int d);
-extern void _ZN12WithMeshClsn4InitEP5Actor5Fix12IiES3_P10Vector3_16S5_(void *self, void *act, int a, int b, void *c2, void *d);
-extern void _ZN13RaycastGroundC1Ev(void *self);
-extern void _ZN13RaycastGround12SetObjAndPosERK7Vector3P5Actor(void *self, void *pos, void *act);
-extern int _ZN13RaycastGround10DetectClsnEv(void *self);
+extern "C" void *_ZN5Model8LoadFileER13SharedFilePtr(void *f);
+extern "C" void _ZN9ModelBase7SetFileEP8BMD_Fileii(void *self, void *f, int a, int b);
+extern "C" void *_ZN9Animation8LoadFileER13SharedFilePtr(void *f);
+extern "C" void *_ZN15TextureSequence8LoadFileER13SharedFilePtr(void *f);
+extern "C" void _ZN15TextureSequence7PrepareER8BMD_FileR8BTP_File(void *bmd, void *btp);
+extern "C" int _ZN11ShadowModel12InitCylinderEv(void *self);
+extern "C" void _ZN18MovingCylinderClsn4InitEP5Actor5Fix12IiES3_jj(void *self, void *act, int a, int b, unsigned int c2, unsigned int d);
+extern "C" void _ZN12WithMeshClsn4InitEP5Actor5Fix12IiES3_P10Vector3_16S5_(void *self, void *act, int a, int b, void *c2, void *d);
+extern "C" void _ZN13RaycastGroundC1Ev(void *self);
+extern "C" void _ZN13RaycastGround12SetObjAndPosERK7Vector3P5Actor(void *self, void *pos, void *act);
+extern "C" int _ZN13RaycastGround10DetectClsnEv(void *self);
 extern void func_ov018_02111d28(char *c, int r1);
-extern void _ZN13RaycastGroundD1Ev(void *self);
+extern "C" void _ZN13RaycastGroundD1Ev(void *self);
 }
 
 int SkiLift::InitResources()

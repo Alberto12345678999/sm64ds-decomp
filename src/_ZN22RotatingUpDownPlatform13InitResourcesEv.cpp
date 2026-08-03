@@ -5,15 +5,15 @@
 #include "decl_common.h"
 /* recovered: named members + shared header, real C++ method */
 #include "RotatingUpDownPlatform.h"
-extern void* _ZN5Model8LoadFileER13SharedFilePtr(void* sfp);
-extern void _ZN9ModelBase7SetFileEP8BMD_Fileii(void* self, void* file, int a, int b);
-extern void* _ZN12MeshCollider8LoadFileER13SharedFilePtr(void* sfp);
-extern void _ZN18MovingMeshCollider7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(void* self, void* kcl, void* mtx, int fix, short s, void* clps);
-extern void _ZN8Platform19UpdateClsnPosAndRotEv(void* c);
+extern "C" void* _ZN5Model8LoadFileER13SharedFilePtr(void* sfp);
+extern "C" void _ZN9ModelBase7SetFileEP8BMD_Fileii(void* self, void* file, int a, int b);
+extern "C" void* _ZN12MeshCollider8LoadFileER13SharedFilePtr(void* sfp);
+extern "C" void _ZN18MovingMeshCollider7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(void* self, void* kcl, void* mtx, int fix, short s, void* clps);
+extern "C" void _ZN8Platform19UpdateClsnPosAndRotEv(void* c);
 extern void func_020393d4(void* p, void* v);
 extern void func_020393c4(void* p, void* v);
-extern void _ZN7PathPtr6FromIDEj(void* self, unsigned int id);
-extern void _ZNK7PathPtr7GetNodeER7Vector3j(void* self, void* out, unsigned int idx);
+extern "C" void _ZN7PathPtr6FromIDEj(void* self, unsigned int id);
+extern "C" void _ZNK7PathPtr7GetNodeER7Vector3j(void* self, void* out, unsigned int idx);
 
 extern int data_ov091_021344fc[];
 extern int data_ov091_021344f4[];

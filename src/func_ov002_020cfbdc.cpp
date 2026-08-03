@@ -8,14 +8,14 @@
 
 
 extern "C" {
-extern int _ZNK12WithMeshClsn10IsOnGroundEv(void *self);
-extern void *_ZNK12WithMeshClsn14GetFloorResultEv(void *self);
-extern void *_ZN5Actor10FindWithIDEj(unsigned int id);
-extern void _ZN11RaycastLineC1Ev(void *self);
-extern void _ZN11RaycastLine13SetObjAndLineERK7Vector3S2_P5Actor(void *self, void *a, void *b, void *act);
-extern int _ZN11RaycastLine10DetectClsnEv(void *self);
-extern void _ZN11RaycastLineD1Ev(void *self);
-extern void _ZN6Player11ChangeStateERNS_5StateE(void *self, void *st);
+extern "C" int _ZNK12WithMeshClsn10IsOnGroundEv(void *self);
+extern "C" void *_ZNK12WithMeshClsn14GetFloorResultEv(void *self);
+extern "C" void *_ZN5Actor10FindWithIDEj(unsigned int id);
+extern "C" void _ZN11RaycastLineC1Ev(void *self);
+extern "C" void _ZN11RaycastLine13SetObjAndLineERK7Vector3S2_P5Actor(void *self, void *a, void *b, void *act);
+extern "C" int _ZN11RaycastLine10DetectClsnEv(void *self);
+extern "C" void _ZN11RaycastLineD1Ev(void *self);
+extern "C" void _ZN6Player11ChangeStateERNS_5StateE(void *self, void *st);
 extern short data_02082214[];
 extern int data_ov002_021101b4;
 }

@@ -5,8 +5,8 @@
 /* daObjSeesaw_c::AfterClsn - recovered from vtable slot identity */
 extern "C" {
 struct Vector3 { int x, y, z; };
-extern unsigned int _ZN5Sound8PlayLongEjjjRK7Vector3j(unsigned int a, unsigned int b, unsigned int d, const Vector3& v, unsigned int e);
-extern void _Z14ApproachLinearRiii(int& x, int target, int step);
+extern "C" unsigned int _ZN5Sound8PlayLongEjjjRK7Vector3j(unsigned int a, unsigned int b, unsigned int d, const Vector3& v, unsigned int e);
+extern "C" void _Z14ApproachLinearRiii(int& x, int target, int step);
 
 void func_ov095_02136298(char* c)
 {

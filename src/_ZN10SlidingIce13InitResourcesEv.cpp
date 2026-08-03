@@ -1,13 +1,13 @@
 //cpp
 extern "C" {
-extern int _ZN5Model8LoadFileER13SharedFilePtr(void *);
-extern int _ZN12MeshCollider8LoadFileER13SharedFilePtr(void *);
-extern int _ZN9ModelBase7SetFileEP8BMD_Fileii(void *, int, int, int);
-extern void _ZN8Platform21UpdateModelPosAndRotYEv(void *);
-extern void _ZN8Platform19UpdateClsnPosAndRotEv(void *);
-extern void _ZN18MovingMeshCollider7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(void *, int, void *, int, int, void *);
+extern "C" int _ZN5Model8LoadFileER13SharedFilePtr(void *);
+extern "C" int _ZN12MeshCollider8LoadFileER13SharedFilePtr(void *);
+extern "C" int _ZN9ModelBase7SetFileEP8BMD_Fileii(void *, int, int, int);
+extern "C" void _ZN8Platform21UpdateModelPosAndRotYEv(void *);
+extern "C" void _ZN8Platform19UpdateClsnPosAndRotEv(void *);
+extern "C" void _ZN18MovingMeshCollider7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(void *, int, void *, int, int, void *);
 extern void func_020393d4(int *p, int v);
-extern void _ZN16MeshColliderBase6EnableEP5Actor(void *, void *);
+extern "C" void _ZN16MeshColliderBase6EnableEP5Actor(void *, void *);
 extern int func_ov030_02113be8[];
 extern char data_ov027_02113be0[];
 extern char data_ov027_02113108[];

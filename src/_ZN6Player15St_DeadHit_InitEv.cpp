@@ -7,7 +7,7 @@
 extern "C" {
 extern void Player_DisableInteraction(char*c);
 extern char* data_0209f318;
-extern int _ZN6Player7SetAnimEji5Fix12IiEj(void*,unsigned,int,int,unsigned);
+extern "C" int _ZN6Player7SetAnimEji5Fix12IiEj(void*,unsigned,int,int,unsigned);
 }
 
 int Player::St_DeadHit_Init()

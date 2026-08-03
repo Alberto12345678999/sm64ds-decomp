@@ -9,7 +9,7 @@ extern "C" {
 extern void Matrix4x3_FromRotationY(struct Matrix4x3 *m, short angY);
 extern void Matrix4x3_ApplyInPlaceToRotationX(struct Matrix4x3 *m, short angX);
 extern void MulVec3Mat4x3(const Vector3 *v, const struct Matrix4x3 *m, Vector3 *out);
-extern void _Z14ApproachLinearR7Vector3RKS_5Fix12IiE(Vector3 *cur, const Vector3 *tgt, int step);
+extern "C" void _Z14ApproachLinearR7Vector3RKS_5Fix12IiE(Vector3 *cur, const Vector3 *tgt, int step);
 extern int Vec3_Dist(const Vector3 *a, const Vector3 *b);
 extern int func_02012694(unsigned int id, void *pos);
 extern struct Matrix4x3 data_020a0e68;

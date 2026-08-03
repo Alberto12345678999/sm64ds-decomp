@@ -5,8 +5,8 @@
 #include "decl_common.h"
 /* recovered: named members + shared header, real C++ method */
 #include "PyramidTop.h"
-extern int _ZN5Sound15PlaySecretSoundEP5ActorPt(void* actor, void* pt);
-extern void _ZN5Sound9PlayBank3EjRK7Vector3(unsigned int bank, void* pos);
+extern "C" int _ZN5Sound15PlaySecretSoundEP5ActorPt(void* actor, void* pt);
+extern "C" void _ZN5Sound9PlayBank3EjRK7Vector3(unsigned int bank, void* pos);
 
 int PyramidTop::Behavior()
 {

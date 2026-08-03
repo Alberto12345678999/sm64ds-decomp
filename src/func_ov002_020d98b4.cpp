@@ -6,10 +6,10 @@
 #include "common.h"
 extern "C" {
 
-extern unsigned int _ZNK6Player14GetBodyModelIDEjb(char* c, unsigned int a, int b);
+extern "C" unsigned int _ZNK6Player14GetBodyModelIDEjb(char* c, unsigned int a, int b);
 extern void MulVec3Mat4x3(void* a, void* b, struct Vector3* out);
 extern void Vec3_MulScalar(struct Vector3* out, struct Vector3* in, int s);
-extern void* _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
+extern "C" void* _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
   unsigned int a, unsigned int b, int c, int d, int e, const void* f, void* g);
 
 void func_ov002_020d98b4(char* self){

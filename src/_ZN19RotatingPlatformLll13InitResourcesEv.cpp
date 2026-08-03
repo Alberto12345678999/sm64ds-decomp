@@ -5,16 +5,16 @@
 /* recovered: named members + shared header, real C++ method */
 #include "RotatingPlatformLll.h"
 typedef int Fix12;
-extern void* _ZN5Model8LoadFileER13SharedFilePtr(void*);
-extern int _ZN9ModelBase7SetFileEP8BMD_Fileii(void*, void*, int, int);
-extern int _ZN8Platform21UpdateModelPosAndRotYEv(void*);
-extern int _ZN8Platform19UpdateClsnPosAndRotEv(void*);
-extern void* _ZN12MeshCollider8LoadFileER13SharedFilePtr(void*);
-extern int _ZN18MovingMeshCollider7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(void*, void*, void*, Fix12, short, void*);
+extern "C" void* _ZN5Model8LoadFileER13SharedFilePtr(void*);
+extern "C" int _ZN9ModelBase7SetFileEP8BMD_Fileii(void*, void*, int, int);
+extern "C" int _ZN8Platform21UpdateModelPosAndRotYEv(void*);
+extern "C" int _ZN8Platform19UpdateClsnPosAndRotEv(void*);
+extern "C" void* _ZN12MeshCollider8LoadFileER13SharedFilePtr(void*);
+extern "C" int _ZN18MovingMeshCollider7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(void*, void*, void*, Fix12, short, void*);
 extern int func_020393d4(void*, void*);
 extern int func_020393c4(void*, void*);
 extern char data_ov022_02114558[];
-extern int _ZN16MeshColliderBase21UpdatePosWithVelocityERS_P5ActorR10ClsnResultR7Vector3P10Vector3_16S8_(void);
+extern "C" int _ZN16MeshColliderBase21UpdatePosWithVelocityERS_P5ActorR10ClsnResultR7Vector3P10Vector3_16S8_(void);
 
 int RotatingPlatformLll::InitResources()
 {

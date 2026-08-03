@@ -7,8 +7,6 @@
 /* daDgr_c::CleanupResources - recovered from vtable slot identity */
 extern "C" {
 void _ZN13SharedFilePtr7ReleaseEv(void* self);
-int _ZN16MeshColliderBase9IsEnabledEv(void* self);
-void _ZN16MeshColliderBase7DisableEv(void* self);
 extern int data_ov025_02113a68[];
 int func_ov025_02111384(char* c) {
   _ZN13SharedFilePtr7ReleaseEv(data_ov025_02113a68);

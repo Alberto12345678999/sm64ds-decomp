@@ -4,7 +4,7 @@ int ApproachLinear(int&, int, int);
 extern "C" {
 extern int func_ov004_020b04c0(void);
 extern void func_ov004_020b5108(char* c, int* in);
-extern void _ZN5Sound12PlayBank2_2DEj(unsigned int id);
+extern "C" void _ZN5Sound12PlayBank2_2DEj(unsigned int id);
 
 extern int data_ov004_020bfa00;
 extern int data_ov004_020bfa04;

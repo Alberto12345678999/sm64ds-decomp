@@ -1,7 +1,7 @@
 //cpp
 extern "C" {
 extern int data_ov002_02110484[];
-extern void _ZN6Player11ChangeStateERNS_5StateE(void*, void*);
+extern "C" void _ZN6Player11ChangeStateERNS_5StateE(void*, void*);
 int func_ov002_020e0ccc(char* c, short* st){
   int b;
   if(st==0) return 0;

@@ -2,11 +2,11 @@
 extern "C" {
 struct Vector3 { int x, y, z; };
 struct Vector3_16 { short x, y, z; };
-extern void *_ZN5Actor13ClosestPlayerEv(void *thiz);
+extern "C" void *_ZN5Actor13ClosestPlayerEv(void *thiz);
 extern int Vec3_HorzDist(const Vector3 *a, const Vector3 *b);
 extern short Vec3_HorzAngle(const Vector3 *a, const Vector3 *b);
-extern int _ZN5Actor14GetSubtractionEss(void *thiz, short a, short b);
-extern void *_ZN5Actor5SpawnEjjRK7Vector3PK10Vector3_16ii(unsigned int a, unsigned int b, const Vector3 *pos, const Vector3_16 *r, int e, int f);
+extern "C" int _ZN5Actor14GetSubtractionEss(void *thiz, short a, short b);
+extern "C" void *_ZN5Actor5SpawnEjjRK7Vector3PK10Vector3_16ii(unsigned int a, unsigned int b, const Vector3 *pos, const Vector3_16 *r, int e, int f);
 
 int _ZN15BookShotSpawner8BehaviorEv(char *c)
 {

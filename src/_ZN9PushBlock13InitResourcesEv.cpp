@@ -7,17 +7,17 @@
 #include "PushBlock.h"
 typedef int Fix12;
 
-extern void *_ZN5Model8LoadFileER13SharedFilePtr(void *f);
-extern int _ZN9ModelBase7SetFileEP8BMD_Fileii(void *self, void *f, int a, int b);
-extern int _ZN11ShadowModel12InitCylinderEv(void *self);
-extern void _ZN18MovingCylinderClsn4InitEP5Actor5Fix12IiES3_jj(void *self, void *act, Fix12 a, Fix12 b, unsigned int c2, unsigned int d);
-extern void _ZN12WithMeshClsn4InitEP5Actor5Fix12IiES3_P10Vector3_16S5_(void *self, void *act, Fix12 a, Fix12 b, void *d, void *e);
-extern void _ZN12WithMeshClsn19StartDetectingWaterEv(void *self);
-extern void _ZN13RaycastGroundC1Ev(void *self);
-extern void _ZN13RaycastGround12SetObjAndPosERK7Vector3P5Actor(void *self, const struct Vector3 *pos, void *act);
-extern int _ZN13RaycastGround10DetectClsnEv(void *self);
-extern void *_ZN5Actor13ClosestPlayerEv(void *self);
-extern void _ZN13RaycastGroundD1Ev(void *self);
+extern "C" void *_ZN5Model8LoadFileER13SharedFilePtr(void *f);
+extern "C" int _ZN9ModelBase7SetFileEP8BMD_Fileii(void *self, void *f, int a, int b);
+extern "C" int _ZN11ShadowModel12InitCylinderEv(void *self);
+extern "C" void _ZN18MovingCylinderClsn4InitEP5Actor5Fix12IiES3_jj(void *self, void *act, Fix12 a, Fix12 b, unsigned int c2, unsigned int d);
+extern "C" void _ZN12WithMeshClsn4InitEP5Actor5Fix12IiES3_P10Vector3_16S5_(void *self, void *act, Fix12 a, Fix12 b, void *d, void *e);
+extern "C" void _ZN12WithMeshClsn19StartDetectingWaterEv(void *self);
+extern "C" void _ZN13RaycastGroundC1Ev(void *self);
+extern "C" void _ZN13RaycastGround12SetObjAndPosERK7Vector3P5Actor(void *self, const struct Vector3 *pos, void *act);
+extern "C" int _ZN13RaycastGround10DetectClsnEv(void *self);
+extern "C" void *_ZN5Actor13ClosestPlayerEv(void *self);
+extern "C" void _ZN13RaycastGroundD1Ev(void *self);
 
 extern void *data_ov002_0210d9d0[];
 extern void *data_ov002_0210d9b0[];

@@ -12,16 +12,16 @@
 #define LI(v) ((int)(((long long)(v))))
 
 
-extern void _ZN8Platform21UpdateModelPosAndRotYEv(void* c);
+extern "C" void _ZN8Platform21UpdateModelPosAndRotYEv(void* c);
 extern void Matrix4x3_FromRotationY(void* m, int angle);
 extern void MulVec3Mat4x3(void* a, void* m, void* b);
 extern void AddVec3(void* a, void* b, void* c);
-extern void* _ZN5Actor10FindWithIDEj(unsigned int id);
-extern u32 _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(u32 a, u32 b, int x, int y, int z, int v, int cb);
-extern void _ZN12CylinderClsn5ClearEv(void* p);
-extern void _ZN12CylinderClsn6UpdateEv(void* p);
-extern int _ZN8Platform13IsClsnInRangeE5Fix12IiES1_(void* c, int a, int b);
-extern void _ZN8Platform19UpdateClsnPosAndRotEv(void* c);
+extern "C" void* _ZN5Actor10FindWithIDEj(unsigned int id);
+extern "C" u32 _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(u32 a, u32 b, int x, int y, int z, int v, int cb);
+extern "C" void _ZN12CylinderClsn5ClearEv(void* p);
+extern "C" void _ZN12CylinderClsn6UpdateEv(void* p);
+extern "C" int _ZN8Platform13IsClsnInRangeE5Fix12IiES1_(void* c, int a, int b);
+extern "C" void _ZN8Platform19UpdateClsnPosAndRotEv(void* c);
 
 extern int data_020a0e68[];
 

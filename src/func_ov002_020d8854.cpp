@@ -4,7 +4,7 @@
 #include "common.h"
 extern "C" {
 
-extern void* _ZN5Actor10FindWithIDEj(unsigned int id);
+extern "C" void* _ZN5Actor10FindWithIDEj(unsigned int id);
 extern void Vec3_RotateYAndTranslate(struct Vector3* out, struct Vector3* in, int ang, struct Vector3* tr);
 extern int func_ov002_020d8944(char* a, char* b, char* other);
 extern void func_ov002_020d8d10(char* self, struct Vector3* v);

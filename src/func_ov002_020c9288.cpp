@@ -2,7 +2,7 @@
 extern "C" {
 extern int func_ov002_020bea7c(char* c);
 extern void func_ov002_020c43c4(void* c, int a);
-extern void _ZN6Player11ChangeStateERNS_5StateE(void*, void*);
+extern "C" void _ZN6Player11ChangeStateERNS_5StateE(void*, void*);
 extern char data_ov002_0211067c[];
 extern char data_ov002_0211013c[];
 int func_ov002_020c9288(char* c){

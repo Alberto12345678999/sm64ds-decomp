@@ -1,7 +1,7 @@
 //cpp
 typedef struct Pair { int a, b; } Pair;
 extern "C" {
-extern void _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(void*, void*, int, int, int, unsigned short);
+extern "C" void _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(void*, void*, int, int, int, unsigned short);
 extern void Vec3_Sub(void* out, void* a, void* b);
 extern int NormalizeVec3IfNonZero(void* v);
 extern int Vec3_HorzAngle(void* a, void* b);

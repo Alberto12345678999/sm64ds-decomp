@@ -6,9 +6,9 @@
 #include "common.h"
 extern "C" {
 
-extern void* _ZN5Actor10FindWithIDEj(unsigned int id);
+extern "C" void* _ZN5Actor10FindWithIDEj(unsigned int id);
 extern short Vec3_HorzAngle(const Vector3* a, const Vector3* b);
-extern void _ZN6Player16IncMegaKillCountEv(void* thiz);
+extern "C" void _ZN6Player16IncMegaKillCountEv(void* thiz);
 
 void func_ov070_021211c4(char* c)
 {

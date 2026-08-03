@@ -29,7 +29,7 @@ void func_020393d4(int* p, int v);
 void func_020efaf0(char* c);
 }
 extern int data_ov002_0210d9f0;
-extern void _ZN16MeshColliderBase16UpdatePosAndAngsERS_P5ActorR10ClsnResultR7Vector3P10Vector3_16S8_();
+extern "C" void _ZN16MeshColliderBase16UpdatePosAndAngsERS_P5ActorR10ClsnResultR7Vector3P10Vector3_16S8_();
 extern unsigned char data_0209f2d8;
 
 extern "C" int func_ov100_021471e0(char* c) {

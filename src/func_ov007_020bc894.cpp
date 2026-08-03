@@ -1,7 +1,7 @@
 //cpp
 extern "C" {
 extern void func_ov007_020c9110(void*);
-extern void _ZN15ModelComponents11UpdateBonesEP8BCA_Filei(void*, void*, int);
+extern "C" void _ZN15ModelComponents11UpdateBonesEP8BCA_Filei(void*, void*, int);
 extern void func_02046bbc(void*, void*, int);
 extern void func_020469e8(void*, void*, int);
 void func_ov007_020bc894(char* c){

@@ -1,6 +1,6 @@
 //cpp
 extern int func_ov100_02145014(void);
-extern int _ZN5Sound7PlaySubEjjj5Fix12IiEb(unsigned int, unsigned int, unsigned int, int, int);
+extern "C" int _ZN5Sound7PlaySubEjjj5Fix12IiEb(unsigned int, unsigned int, unsigned int, int, int);
 extern "C" int func_ov100_02144fcc(void) {
   int r = func_ov100_02145014();
   if (r == 0) return 0;

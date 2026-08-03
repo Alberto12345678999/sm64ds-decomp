@@ -4,7 +4,7 @@
 #include "decl_common.h"
 /* recovered: named members + shared header, real C++ method */
 #include "BrickBlock.h"
-extern int _ZN13SharedFilePtr7ReleaseEv(void*);
+extern "C" int _ZN13SharedFilePtr7ReleaseEv(void*);
 extern char data_ov002_0210d9d8[];
 extern char data_ov002_0210da30[];
 extern char data_ov002_0210da18[];

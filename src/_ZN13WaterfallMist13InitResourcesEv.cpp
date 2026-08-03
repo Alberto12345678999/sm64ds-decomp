@@ -5,13 +5,13 @@
 #include "decl_common.h"
 /* recovered: named members + shared header, real C++ method */
 #include "WaterfallMist.h"
-extern void _ZN9Animation8LoadFileER13SharedFilePtr(void *sfp);
-extern void *_ZN5Model8LoadFileER13SharedFilePtr(void *sfp);
-extern int _ZN9ModelBase7SetFileEP8BMD_Fileii(void *thiz, void *bmd, int a, int b);
-extern int _ZN11ShadowModel12InitCylinderEv(void *thiz);
-extern void _ZN18MovingCylinderClsn4InitEP5Actor5Fix12IiES3_jj(void *thiz, void *actor, s32 f1, s32 f2, u32 a, u32 b);
-extern void _ZN12WithMeshClsn4InitEP5Actor5Fix12IiES3_P10Vector3_16S5_(void *thiz, void *actor, s32 f1, s32 f2, void *v, void *w);
-extern int _ZN5Actor13ClosestPlayerEv(void *thiz);
+extern "C" void _ZN9Animation8LoadFileER13SharedFilePtr(void *sfp);
+extern "C" void *_ZN5Model8LoadFileER13SharedFilePtr(void *sfp);
+extern "C" int _ZN9ModelBase7SetFileEP8BMD_Fileii(void *thiz, void *bmd, int a, int b);
+extern "C" int _ZN11ShadowModel12InitCylinderEv(void *thiz);
+extern "C" void _ZN18MovingCylinderClsn4InitEP5Actor5Fix12IiES3_jj(void *thiz, void *actor, s32 f1, s32 f2, u32 a, u32 b);
+extern "C" void _ZN12WithMeshClsn4InitEP5Actor5Fix12IiES3_P10Vector3_16S5_(void *thiz, void *actor, s32 f1, s32 f2, void *v, void *w);
+extern "C" int _ZN5Actor13ClosestPlayerEv(void *thiz);
 extern void func_ov002_020b7f2c(void *c, void *p);
 extern void func_ov002_020b7f7c(void *thiz);
 extern void func_ov001_020ab228(void *c, void *a1, int idx, int a3, int a5);

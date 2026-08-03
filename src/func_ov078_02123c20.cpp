@@ -1,11 +1,11 @@
 //cpp
 extern "C" {
-extern int* _ZN13MontyMoleRockD0Ev(int* t);
+extern "C" int* _ZN13MontyMoleRockD0Ev(int* t);
 extern void func_ov078_02123864(char* r7);
 extern void func_ov002_020db54c(int a, int b, int c, int d);
-extern int _ZNK9Animation12WillHitFrameEi(void* self, int f);
+extern "C" int _ZNK9Animation12WillHitFrameEi(void* self, int f);
 extern void func_02012694(int a, char* b, int c);
-extern int _ZN9Animation8FinishedEv(void* self);
+extern "C" int _ZN9Animation8FinishedEv(void* self);
 extern void KingBobOmb_SetState(char* c, void* p);
 extern int data_ov078_021270fc[];
 

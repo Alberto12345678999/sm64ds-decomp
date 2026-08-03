@@ -1,6 +1,6 @@
 //cpp
 extern "C" {
-extern int _ZNK12WithMeshClsn10IsOnGroundEv(void*);
+extern "C" int _ZNK12WithMeshClsn10IsOnGroundEv(void*);
 int func_ov060_02112ba8(char* c){
   int s = *(int*)(c+0x40c);
   if(s != 2 && s != 0x13){

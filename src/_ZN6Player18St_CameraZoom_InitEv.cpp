@@ -8,7 +8,7 @@ struct Camera;
 extern "C" {
 extern int func_0200d064(struct Camera* thiz, int playerID);
 extern void func_0200d7e0(struct Camera* thiz, int playerID);
-extern int _ZN6Player7SetAnimEji5Fix12IiEj(void*,unsigned int,int,int,unsigned int);
+extern "C" int _ZN6Player7SetAnimEji5Fix12IiEj(void*,unsigned int,int,int,unsigned int);
 extern struct Camera* data_0209f318;
 }
 

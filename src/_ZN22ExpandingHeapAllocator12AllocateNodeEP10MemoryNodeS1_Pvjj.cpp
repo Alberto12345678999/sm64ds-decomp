@@ -3,10 +3,10 @@ extern "C" {
 
 struct Target { int start; int end; };
 
-extern void _ZN10MemoryNode6TargetC1EP10MemoryNode(struct Target* thiz, void* node);
-extern void* _ZN22ExpandingHeapAllocator10UnlinkNodeEP10MemoryNodeS1_(void* c, void* node);
-extern void* _ZN22ExpandingHeapAllocator10CreateNodeEPN10MemoryNode6TargetEt(struct Target* t, unsigned short tt);
-extern void* _ZN22ExpandingHeapAllocator8LinkNodeEP10MemoryNodeS1_S1_(void* c, void* node, void* link);
+extern "C" void _ZN10MemoryNode6TargetC1EP10MemoryNode(struct Target* thiz, void* node);
+extern "C" void* _ZN22ExpandingHeapAllocator10UnlinkNodeEP10MemoryNodeS1_(void* c, void* node);
+extern "C" void* _ZN22ExpandingHeapAllocator10CreateNodeEPN10MemoryNode6TargetEt(struct Target* t, unsigned short tt);
+extern "C" void* _ZN22ExpandingHeapAllocator8LinkNodeEP10MemoryNodeS1_S1_(void* c, void* node, void* link);
 extern void MultiStore_Int(int val, int* dst, int len);
 
 void* _ZN22ExpandingHeapAllocator12AllocateNodeEP10MemoryNodeS1_Pvjj(void* c, void* node, void* target, unsigned int size, unsigned short z)

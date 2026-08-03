@@ -7,11 +7,11 @@ struct V316 { short x,y,z; };
 extern "C" {
 extern int DecIfAbove0_Short(void*);
 extern int DecIfAbove0_Byte(void*);
-extern int _Z14ApproachLinearRiii(int*, int, int);
-extern void _ZN9ActorBase18MarkForDestructionEv(void*);
-extern void _ZN5Actor9UpdatePosEP12CylinderClsn(void*, void*);
-extern int _ZN5Sound8PlayLongEjjjRK7Vector3j(unsigned int, unsigned int, unsigned int, void*, unsigned int);
-extern int _ZN5Actor5SpawnEjjRK7Vector3PK10Vector3_16ii(unsigned int, unsigned int, void*, void*, int, int);
+extern "C" int _Z14ApproachLinearRiii(int*, int, int);
+extern "C" void _ZN9ActorBase18MarkForDestructionEv(void*);
+extern "C" void _ZN5Actor9UpdatePosEP12CylinderClsn(void*, void*);
+extern "C" int _ZN5Sound8PlayLongEjjjRK7Vector3j(unsigned int, unsigned int, unsigned int, void*, unsigned int);
+extern "C" int _ZN5Actor5SpawnEjjRK7Vector3PK10Vector3_16ii(unsigned int, unsigned int, void*, void*, int, int);
 }
 
 int SlidingIce::Behavior()

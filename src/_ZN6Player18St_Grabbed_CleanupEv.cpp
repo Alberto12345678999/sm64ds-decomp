@@ -17,7 +17,7 @@ struct Player {
     struct Actor* held;   /* 0x35c */
 };
 
-extern void _ZN6Player9DropActorEv(struct Actor* a);
+extern "C" void _ZN6Player9DropActorEv(struct Actor* a);
 
 int _ZN6Player18St_Grabbed_CleanupEv(struct Player* this_)
 {

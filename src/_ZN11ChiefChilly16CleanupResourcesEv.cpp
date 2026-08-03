@@ -1,7 +1,7 @@
 //cpp
 extern "C" {
 extern void UnloadKeyModels(int i);
-extern void _ZN13SharedFilePtr7ReleaseEv(void*);
+extern "C" void _ZN13SharedFilePtr7ReleaseEv(void*);
 extern void* data_ov073_02123280;
 extern void* data_ov073_021232a0;
 extern void* data_ov073_02123288;

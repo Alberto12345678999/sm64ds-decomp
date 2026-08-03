@@ -23,12 +23,12 @@ typedef struct M34 { int m[12]; } M34;
 
 extern "C" {
 
-extern int _ZN6Player7IsStateERNS_5StateE(char* self, void* state);
-extern int _ZNK6Player14GetBodyModelIDEjb(char* self, u32 a, int b);
+extern "C" int _ZN6Player7IsStateERNS_5StateE(char* self, void* state);
+extern "C" int _ZNK6Player14GetBodyModelIDEjb(char* self, u32 a, int b);
 extern int func_ov002_020becf4(char* self, u32 a, int b);
-extern void _ZN9ModelBase12ApplyOpacityEj(void* self, u32 a, int b);
-extern void _ZN5Model6RenderEPK7Vector3(void* self, void* pos);
-extern void _ZN15TextureSequence6UpdateER15ModelComponents(void* self, void* mc);
+extern "C" void _ZN9ModelBase12ApplyOpacityEj(void* self, u32 a, int b);
+extern "C" void _ZN5Model6RenderEPK7Vector3(void* self, void* pos);
+extern "C" void _ZN15TextureSequence6UpdateER15ModelComponents(void* self, void* mc);
 extern void Matrix4x3_FromTranslation(void* m, int x, int y, int z);
 extern void Matrix4x3_ApplyInPlaceToRotationZ(void* m, int ang);
 extern void MulMat4x3Mat4x3(void* a, void* b, void* c);

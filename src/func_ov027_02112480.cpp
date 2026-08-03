@@ -4,8 +4,8 @@ extern int DecIfAbove0_Byte(void*);
 extern void data_ov053_021123b0(void*);
 extern void data_ov033_0211233c(void*);
 extern void func_ov027_02112170(void*);
-extern void _ZN12CylinderClsn5ClearEv(void*);
-extern void _ZN12CylinderClsn6UpdateEv(void*);
+extern "C" void _ZN12CylinderClsn5ClearEv(void*);
+extern "C" void _ZN12CylinderClsn6UpdateEv(void*);
 void func_ov027_02112480(char* c){
   if(DecIfAbove0_Byte(c+0x5e)==0) return;
   data_ov053_021123b0(c);

@@ -4,7 +4,7 @@
 #include "decl_common.h"
 /* recovered: named members + shared header, real C++ method */
 #include "StarMarker.h"
-extern void* _ZN5Actor10FindWithIDEj(unsigned int id);
+extern "C" void* _ZN5Actor10FindWithIDEj(unsigned int id);
 
 void StarMarker::OnPendingDestroy()
 {

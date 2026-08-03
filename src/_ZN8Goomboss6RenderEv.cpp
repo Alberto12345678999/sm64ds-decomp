@@ -5,9 +5,9 @@
 /* recovered: named members + shared header, real C++ method */
 #include "Goomboss.h"
 extern "C" {
-extern void _ZN15TextureSequence6UpdateER15ModelComponents(void* a, void* b);
-extern void _ZN15MaterialChanger6UpdateER15ModelComponents(void* a, void* b);
-extern void _ZN18TextureTransformer6UpdateER15ModelComponents(void* a, void* b);
+extern "C" void _ZN15TextureSequence6UpdateER15ModelComponents(void* a, void* b);
+extern "C" void _ZN15MaterialChanger6UpdateER15ModelComponents(void* a, void* b);
+extern "C" void _ZN18TextureTransformer6UpdateER15ModelComponents(void* a, void* b);
 }
 struct Sub {
   virtual void v0(); virtual void v1(); virtual void v2();

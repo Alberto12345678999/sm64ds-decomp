@@ -1,8 +1,8 @@
 //cpp
 extern "C" {
-extern void* _ZN5Actor10FindWithIDEj(unsigned int);
-extern void _ZN6Player4BurnEv(void*);
-extern void _ZN9ActorBase18MarkForDestructionEv(void*);
+extern "C" void* _ZN5Actor10FindWithIDEj(unsigned int);
+extern "C" void _ZN6Player4BurnEv(void*);
+extern "C" void _ZN9ActorBase18MarkForDestructionEv(void*);
 void func_ov022_02112654(char* c){
   if(*(unsigned int*)(c+0xf8)==0) return;
   void* a=_ZN5Actor10FindWithIDEj(*(unsigned int*)(c+0xf8));

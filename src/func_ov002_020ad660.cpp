@@ -3,12 +3,12 @@
 /* recovered: shared common types */
 #include "common.h"
 extern "C" {
-extern int _ZNK12WithMeshClsn10IsOnGroundEv(void *o);
-extern int _ZNK12WithMeshClsn8IsOnWallEv(void *o);
-extern void _ZN5Enemy9SpawnCoinEv(void *o);
-extern void _ZN5Actor24KillAndTrackInDeathTableEv(void *o);
-extern void _ZN5Actor9UpdatePosEP12CylinderClsn(void *o, void *cc);
-extern void _ZN5Enemy12UpdateWMClsnER12WithMeshClsnj(void *o, void *w, unsigned int j);
+extern "C" int _ZNK12WithMeshClsn10IsOnGroundEv(void *o);
+extern "C" int _ZNK12WithMeshClsn8IsOnWallEv(void *o);
+extern "C" void _ZN5Enemy9SpawnCoinEv(void *o);
+extern "C" void _ZN5Actor24KillAndTrackInDeathTableEv(void *o);
+extern "C" void _ZN5Actor9UpdatePosEP12CylinderClsn(void *o, void *cc);
+extern "C" void _ZN5Enemy12UpdateWMClsnER12WithMeshClsnj(void *o, void *w, unsigned int j);
 extern void Vec3_Asr(void *d, const void *s, int sh);
 extern void Matrix4x3_FromTranslation(void *m, int x, int y, int z);
 extern void Matrix4x3_ApplyInPlaceToTranslation(void *m, int x, int y, int z);

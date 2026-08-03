@@ -19,12 +19,12 @@ typedef struct
 {
   char pad[0x50];
 } RaycastGround;
-extern void _ZN5Actor22UpdatePosWithOnlySpeedEP12CylinderClsn(void *c, void *cyl);
-extern void _ZN5Actor9UpdatePosEP12CylinderClsn(void *c, void *cyl);
-extern void _ZN13RaycastGroundC1Ev(RaycastGround *rc);
-extern void _ZN13RaycastGround12SetObjAndPosERK7Vector3P5Actor(RaycastGround *rc, const Vec3 *v, void *actor);
-extern s32 _ZN13RaycastGround10DetectClsnEv(RaycastGround *rc);
-extern void _ZN13RaycastGroundD1Ev(RaycastGround *rc);
+extern "C" void _ZN5Actor22UpdatePosWithOnlySpeedEP12CylinderClsn(void *c, void *cyl);
+extern "C" void _ZN5Actor9UpdatePosEP12CylinderClsn(void *c, void *cyl);
+extern "C" void _ZN13RaycastGroundC1Ev(RaycastGround *rc);
+extern "C" void _ZN13RaycastGround12SetObjAndPosERK7Vector3P5Actor(RaycastGround *rc, const Vec3 *v, void *actor);
+extern "C" s32 _ZN13RaycastGround10DetectClsnEv(RaycastGround *rc);
+extern "C" void _ZN13RaycastGroundD1Ev(RaycastGround *rc);
 extern void Vec3_Asr(Vec3 *d, Vec3 *s, int sh);
 extern void Matrix4x3_FromTranslation(Mtx43 *m, s32 x, s32 y, s32 z);
 extern void Matrix4x3_ApplyInPlaceToRotationZXYExt(void *m, s32 x, s32 y, s32 z);

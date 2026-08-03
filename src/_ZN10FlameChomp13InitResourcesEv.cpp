@@ -8,18 +8,18 @@ typedef int Fix12;
 struct RG { char pad[0x44]; int f44; char pad2[8]; };
 struct Blk { int w[12]; };
 
-extern void* _ZN5Model8LoadFileER13SharedFilePtr(void* f);
-extern int _ZN9ModelBase7SetFileEP8BMD_Fileii(void* self, void* f, int a, int b);
-extern int _ZN11ShadowModel12InitCylinderEv(void* self);
-extern void _ZN25MovingCylinderClsnWithPos4InitEP5ActorRK7Vector35Fix12IiES6_jj(
+extern "C" void* _ZN5Model8LoadFileER13SharedFilePtr(void* f);
+extern "C" int _ZN9ModelBase7SetFileEP8BMD_Fileii(void* self, void* f, int a, int b);
+extern "C" int _ZN11ShadowModel12InitCylinderEv(void* self);
+extern "C" void _ZN25MovingCylinderClsnWithPos4InitEP5ActorRK7Vector35Fix12IiES6_jj(
     void* self, void* actor, const struct Vector3* v, Fix12 a, int b, unsigned int c, unsigned int d);
-extern void _ZN12WithMeshClsn4InitEP5Actor5Fix12IiES3_P10Vector3_16S5_(
+extern "C" void _ZN12WithMeshClsn4InitEP5Actor5Fix12IiES3_P10Vector3_16S5_(
     void* self, void* actor, Fix12 a, int b, void* v, int c);
-extern void _ZN13RaycastGroundC1Ev(struct RG* rg);
-extern void _ZN13RaycastGround12SetObjAndPosERK7Vector3P5Actor(struct RG* rg, const struct Vector3* v, void* a);
-extern int _ZN13RaycastGround10DetectClsnEv(struct RG* rg);
+extern "C" void _ZN13RaycastGroundC1Ev(struct RG* rg);
+extern "C" void _ZN13RaycastGround12SetObjAndPosERK7Vector3P5Actor(struct RG* rg, const struct Vector3* v, void* a);
+extern "C" int _ZN13RaycastGround10DetectClsnEv(struct RG* rg);
 extern void func_ov070_02121310(void* c);
-extern void _ZN13RaycastGroundD1Ev(struct RG* rg);
+extern "C" void _ZN13RaycastGroundD1Ev(struct RG* rg);
 
 extern struct Blk data_02082128;
 

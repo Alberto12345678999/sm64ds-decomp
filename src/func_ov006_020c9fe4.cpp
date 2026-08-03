@@ -1,8 +1,8 @@
 //cpp
 extern "C" {
 extern void func_ov006_020e6e3c(int a, int b);
-extern void _ZN5Sound12PlayBank2_2DEj(unsigned int);
-extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void*, void*, int, int, unsigned int);
+extern "C" void _ZN5Sound12PlayBank2_2DEj(unsigned int);
+extern "C" void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void*, void*, int, int, unsigned int);
 extern int data_ov006_0213b0f0[];
 extern void *data_ov006_02140540;
 extern double data_ov006_0213b154;

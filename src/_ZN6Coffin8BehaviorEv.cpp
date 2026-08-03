@@ -5,8 +5,8 @@
 /* recovered: named members + shared header, real C++ method */
 #include "Coffin.h"
 extern "C" {
-extern int _ZN8Platform13IsClsnInRangeE5Fix12IiES1_(char *self, int a, int b);
-extern void _ZN8Platform19UpdateClsnPosAndRotEv(char *self);
+extern "C" int _ZN8Platform13IsClsnInRangeE5Fix12IiES1_(char *self, int a, int b);
+extern "C" void _ZN8Platform19UpdateClsnPosAndRotEv(char *self);
 }
 
 int Coffin::Behavior()

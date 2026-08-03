@@ -1,17 +1,17 @@
 //cpp
 extern "C" {
-extern void* _ZN9ActorBasenwEj(unsigned int);
+extern "C" void* _ZN9ActorBasenwEj(unsigned int);
 extern void func_020aed98(void*);
 extern void func_020733a8(void* arr, int count, int size, void(*ctor)(void*), void(*dtor)(void*));
-extern void _ZN9ModelAnimC1Ev(void*);
-extern void _ZN15MaterialChangerC1Ev(void*);
-extern void _ZN15TextureSequenceC1Ev(void*);
-extern void _ZN18TextureTransformerC1Ev(void*);
-extern void _ZN12WithMeshClsnC1Ev(void*);
-extern void _ZN25MovingCylinderClsnWithPosD1Ev(void*);
-extern void _ZN25MovingCylinderClsnWithPosC1Ev(void*);
-extern void _ZN11ShadowModelD1Ev(void*);
-extern void _ZN11ShadowModelC1Ev(void*);
+extern "C" void _ZN9ModelAnimC1Ev(void*);
+extern "C" void _ZN15MaterialChangerC1Ev(void*);
+extern "C" void _ZN15TextureSequenceC1Ev(void*);
+extern "C" void _ZN18TextureTransformerC1Ev(void*);
+extern "C" void _ZN12WithMeshClsnC1Ev(void*);
+extern "C" void _ZN25MovingCylinderClsnWithPosD1Ev(void*);
+extern "C" void _ZN25MovingCylinderClsnWithPosC1Ev(void*);
+extern "C" void _ZN11ShadowModelD1Ev(void*);
+extern "C" void _ZN11ShadowModelC1Ev(void*);
 extern void func_020072c0(void*);
 extern void func_0203d384(void*);
 extern void* _ZTV8Goomboss[];

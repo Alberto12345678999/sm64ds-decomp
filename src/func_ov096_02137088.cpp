@@ -10,15 +10,15 @@ extern "C" {
 extern short Vec3_HorzAngle(const void *a, const void *b);
 extern int Vec3_HorzDist(const void *a, const void *b);
 extern int Vec3_Dist(const void *a, const void *b);
-extern unsigned _ZN5Sound8PlayLongEjjjRK7Vector3j(unsigned a, unsigned b, unsigned c, const void *v, unsigned e);
-extern void *_ZN5Actor13ClosestPlayerEv(void *self);
-extern void _Z14ApproachLinearRsss(short *v, short target, short step);
-extern void _ZN5Actor9UpdatePosEP12CylinderClsn(void *self, void *clsn);
+extern "C" unsigned _ZN5Sound8PlayLongEjjjRK7Vector3j(unsigned a, unsigned b, unsigned c, const void *v, unsigned e);
+extern "C" void *_ZN5Actor13ClosestPlayerEv(void *self);
+extern "C" void _Z14ApproachLinearRsss(short *v, short target, short step);
+extern "C" void _ZN5Actor9UpdatePosEP12CylinderClsn(void *self, void *clsn);
 extern void WithMeshClsn_UpdateContinuous_Veneer(void *p);
-extern int _ZNK12WithMeshClsn8IsOnWallEv(void *p);
-extern void _ZNK11SurfaceInfo12CopyNormalToER7Vector3(void *s, int *out);
-extern short _ZN4cstd5atan2E5Fix12IiES1_(int y, int x);
-extern unsigned _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(unsigned a, unsigned b, int x, int y, int z, const void *v, void *cb);
+extern "C" int _ZNK12WithMeshClsn8IsOnWallEv(void *p);
+extern "C" void _ZNK11SurfaceInfo12CopyNormalToER7Vector3(void *s, int *out);
+extern "C" short _ZN4cstd5atan2E5Fix12IiES1_(int y, int x);
+extern "C" unsigned _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(unsigned a, unsigned b, int x, int y, int z, const void *v, void *cb);
 void func_ov096_02137088(char *c);
 }
 #define M(p) ((long long)(int)(p))

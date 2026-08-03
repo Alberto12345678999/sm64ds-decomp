@@ -7,7 +7,7 @@
 extern "C" {
 extern unsigned char data_0209f250;
 extern signed char data_02092110;
-extern void _ZN6Camera11ChangeStateEPNS_5StateE(void *self, void *st);
+extern "C" void _ZN6Camera11ChangeStateEPNS_5StateE(void *self, void *st);
 }
 
 void Camera::GoBehindPlayer(unsigned int j)

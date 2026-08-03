@@ -5,14 +5,14 @@
 #include "decl_common.h"
 /* recovered: named members + shared header, real C++ method */
 #include "QuestionSwitch.h"
-extern void *_ZN5Model8LoadFileER13SharedFilePtr(void *fp);
-extern void _ZN9ModelBase7SetFileEP8BMD_Fileii(void *self, void *f, int b, int c);
-extern void *_ZN9Animation8LoadFileER13SharedFilePtr(void *fp);
-extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *self, void *f, int b, int c, unsigned int d);
-extern void *_ZN12MeshCollider8LoadFileER13SharedFilePtr(void *fp);
-extern void _ZN18MovingMeshCollider7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(void *self, void *f, void *m, int fix, short sh, void *b);
+extern "C" void *_ZN5Model8LoadFileER13SharedFilePtr(void *fp);
+extern "C" void _ZN9ModelBase7SetFileEP8BMD_Fileii(void *self, void *f, int b, int c);
+extern "C" void *_ZN9Animation8LoadFileER13SharedFilePtr(void *fp);
+extern "C" void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *self, void *f, int b, int c, unsigned int d);
+extern "C" void *_ZN12MeshCollider8LoadFileER13SharedFilePtr(void *fp);
+extern "C" void _ZN18MovingMeshCollider7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(void *self, void *f, void *m, int fix, short sh, void *b);
 extern void func_020393c4(int *p, int v);
-extern void _ZN9Animation7AdvanceEv(void *self);
+extern "C" void _ZN9Animation7AdvanceEv(void *self);
 
 extern int data_ov002_0210dd60;
 extern int data_ov002_0210dd68;

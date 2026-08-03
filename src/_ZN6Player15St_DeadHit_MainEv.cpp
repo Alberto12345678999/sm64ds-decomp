@@ -8,12 +8,12 @@
 #include "Player.h"
 extern "C" {
 extern void func_ov002_020d94cc(char *c);
-extern void _ZN5Sound9PlayBank0EjRK7Vector3(u32 a, void *v);
-extern void _ZN5Sound13PlayCharVoiceEjjRK7Vector3(u32 a, u32 b, void *v);
-extern void _Z14ApproachLinearRiii(int *v, int a, int b);
-extern u32 _ZNK6Player14GetBodyModelIDEjb(char *c, u32 a, bool b);
-extern void _ZN6Player7SetAnimEji5Fix12IiEj(char *c, u32 a, int b, int d, u32 e);
-extern int _ZN6Player12FinishedAnimEv(char *c);
+extern "C" void _ZN5Sound9PlayBank0EjRK7Vector3(u32 a, void *v);
+extern "C" void _ZN5Sound13PlayCharVoiceEjjRK7Vector3(u32 a, u32 b, void *v);
+extern "C" void _Z14ApproachLinearRiii(int *v, int a, int b);
+extern "C" u32 _ZNK6Player14GetBodyModelIDEjb(char *c, u32 a, bool b);
+extern "C" void _ZN6Player7SetAnimEji5Fix12IiEj(char *c, u32 a, int b, int d, u32 e);
+extern "C" int _ZN6Player12FinishedAnimEv(char *c);
 extern void Player_AdvanceAnims(char *c);
 
 extern u8 data_ov002_0211117c;

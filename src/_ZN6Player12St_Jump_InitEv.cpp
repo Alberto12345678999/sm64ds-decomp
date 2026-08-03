@@ -4,10 +4,10 @@ extern "C" {
 extern int func_ov002_020e2be4(char *c);
 extern int func_ov002_020e2b6c(char *c);
 extern int Player_ScaleByCharFactor(char *c, int a);
-extern void _ZN6Player11ChangeStateERNS_5StateE(char *c, void *s);
+extern "C" void _ZN6Player11ChangeStateERNS_5StateE(char *c, void *s);
 extern void func_ov002_020bf2d8(char *c, int a);
 extern void func_ov002_020e2ad0(char *c);
-extern void _ZN6Player7SetAnimEji5Fix12IiEj(char *c, u32 a, int b, int fx, u32 d);
+extern "C" void _ZN6Player7SetAnimEji5Fix12IiEj(char *c, u32 a, int b, int fx, u32 d);
 extern int AngleDiff(int a, int b);
 extern int func_ov002_020c19d0(char *c, int a, int b);
 extern void func_ov002_020e25f0(char *c, int a);

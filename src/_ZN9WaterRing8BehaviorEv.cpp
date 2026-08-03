@@ -6,10 +6,10 @@
 #include "WaterRing.h"
 extern "C" {
 extern unsigned short DecIfAbove0_Short(unsigned short* p);
-extern void _ZN5Actor9UpdatePosEP12CylinderClsn(char* self, char* cc);
-extern void _ZN12CylinderClsn5ClearEv(char* c);
-extern void _ZN12CylinderClsn6UpdateEv(char* c);
-extern void _ZN9Animation7AdvanceEv(char* c);
+extern "C" void _ZN5Actor9UpdatePosEP12CylinderClsn(char* self, char* cc);
+extern "C" void _ZN12CylinderClsn5ClearEv(char* c);
+extern "C" void _ZN12CylinderClsn6UpdateEv(char* c);
+extern "C" void _ZN9Animation7AdvanceEv(char* c);
 }
 struct C;
 typedef void (C::*PMF)();

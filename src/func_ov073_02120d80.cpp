@@ -1,7 +1,7 @@
 //cpp
 extern "C" {
-extern void _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(void *self, void *file, int a, int b, int c, unsigned short d);
-extern short _ZN5Actor18HorzAngleToCPlayerEv(void *self);
+extern "C" void _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(void *self, void *file, int a, int b, int c, unsigned short d);
+extern "C" short _ZN5Actor18HorzAngleToCPlayerEv(void *self);
 extern void *data_ov073_021232a8[];
 
 int func_ov073_02120d80(char *c)

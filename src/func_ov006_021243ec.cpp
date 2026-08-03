@@ -9,7 +9,7 @@
 /* recovered: renamed to Class_Method */
 /* dScMgTrampoline2_c::InitResources - recovered from vtable slot identity */
 extern "C" {
-extern s32 _ZN4cstd4fdivEii(s32 a, s32 b);
+extern "C" s32 _ZN4cstd4fdivEii(s32 a, s32 b);
 extern void Camera_UpdateMatrices(void *cam);
 
 extern u8 data_0209d45c;

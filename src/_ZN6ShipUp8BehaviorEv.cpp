@@ -4,11 +4,11 @@
 #include "decl_common.h"
 /* recovered: named members + shared header, real C++ method */
 #include "ShipUp.h"
-extern int _ZN16MeshColliderBase6EnableEP5Actor(void* m, void* a);
+extern "C" int _ZN16MeshColliderBase6EnableEP5Actor(void* m, void* a);
 extern void func_020393a4(int* p, int v);
-extern int _ZN5Actor13DistToCPlayerEv(void* a);
-extern int _ZN5Sound8PlayLongEjjjRK7Vector3j(unsigned int a, unsigned int b, unsigned int cc, void* v, unsigned int e);
-extern int _ZN8Platform19UpdateClsnPosAndRotEv(void* a);
+extern "C" int _ZN5Actor13DistToCPlayerEv(void* a);
+extern "C" int _ZN5Sound8PlayLongEjjjRK7Vector3j(unsigned int a, unsigned int b, unsigned int cc, void* v, unsigned int e);
+extern "C" int _ZN8Platform19UpdateClsnPosAndRotEv(void* a);
 extern short data_02082214[];
 
 int ShipUp::Behavior()

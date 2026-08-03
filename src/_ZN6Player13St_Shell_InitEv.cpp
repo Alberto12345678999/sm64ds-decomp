@@ -4,7 +4,7 @@
 #include "Player.h"
 extern "C" {
 extern int Player_ReleaseHeldActor(void*);
-extern int _ZN6Player7SetAnimEji5Fix12IiEj(void*,unsigned int,int,int,unsigned int);
+extern "C" int _ZN6Player7SetAnimEji5Fix12IiEj(void*,unsigned int,int,int,unsigned int);
 extern int func_ov002_020bd928(void*,int);
 }
 

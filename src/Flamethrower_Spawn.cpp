@@ -1,9 +1,9 @@
 //cpp
 extern "C" {
-extern void* _ZN9ActorBasenwEj(unsigned int);
-extern void _ZN5ActorC2Ev(void*);
-extern void _ZN19CylinderClsnWithPosD1Ev(void*);
-extern void _ZN19CylinderClsnWithPosC1Ev(void*);
+extern "C" void* _ZN9ActorBasenwEj(unsigned int);
+extern "C" void _ZN5ActorC2Ev(void*);
+extern "C" void _ZN19CylinderClsnWithPosD1Ev(void*);
+extern "C" void _ZN19CylinderClsnWithPosC1Ev(void*);
 extern void func_020072c0(void*);
 extern void func_0203d384(void*);
 extern void func_020733a8(void* arr, int count, int size, void(*ctor)(void*), void(*dtor)(void*));

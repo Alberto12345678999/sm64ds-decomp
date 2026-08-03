@@ -30,7 +30,7 @@ extern unsigned char data_020a0de8[];
 extern unsigned char data_020a0de9[];
 
 extern void func_ov006_020e8d08(char *c);
-extern void _ZN5Sound12PlayBank2_2DEj(unsigned int);
+extern "C" void _ZN5Sound12PlayBank2_2DEj(unsigned int);
 extern unsigned int func_02012790(unsigned int);
 extern void func_ov004_020adb1c(int);
 extern void func_ov004_020b67e8(int);

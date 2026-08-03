@@ -3,7 +3,7 @@
  * ldr ip, [pc]; bx ip; .word 0x2043ac4
  */
 extern "C" {
-extern void _ZN9ActorBase11AfterRenderEj(void);
+extern "C" void _ZN9ActorBase11AfterRenderEj(void);
 void _ZN5Scene11AfterRenderEj(void) {
     _ZN9ActorBase11AfterRenderEj();
 }

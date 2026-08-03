@@ -13,12 +13,12 @@ struct Obj {
 extern "C" {
 extern void func_02012790(int a);
 extern int func_ov004_020b8f78(char* p);
-extern int _Z15ApproachLinear2Rsss(short* v, short a, short b);
+extern "C" int _Z15ApproachLinear2Rsss(short* v, short a, short b);
 extern void func_0203b958(short* o, short* a, short* b);
-extern int _Z14ApproachLinearRiii(int* v, int a, int b);
-extern void _ZN5Scene9SetFadersEP15FaderBrightness(void* f);
+extern "C" int _Z14ApproachLinearRiii(int* v, int a, int b);
+extern "C" void _ZN5Scene9SetFadersEP15FaderBrightness(void* f);
 extern void func_0202ec9c(void* f, int a);
-extern void _ZN5Scene14StartSceneFadeEjjt(unsigned a, unsigned b, unsigned short c);
+extern "C" void _ZN5Scene14StartSceneFadeEjjt(unsigned a, unsigned b, unsigned short c);
 extern void func_02012dd0(int a);
 extern void func_ov004_020b9220(char* p);
 

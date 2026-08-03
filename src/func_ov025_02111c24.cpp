@@ -9,11 +9,11 @@
 /* daDkk_c::InitResources - recovered from vtable slot identity */
 extern "C" {
 extern int func_ov091_02133254(void* c);
-extern void _ZN11RaycastLineC1Ev(void* self);
-extern void _ZN11RaycastLine13SetObjAndLineERK7Vector3S2_P5Actor(void* self, void* a, void* b, void* act);
-extern int _ZN11RaycastLine10DetectClsnEv(void* self);
-extern void _ZN11RaycastLine10GetClsnPosEv(void* out, void* self);
-extern void _ZN11RaycastLineD1Ev(void* self);
+extern "C" void _ZN11RaycastLineC1Ev(void* self);
+extern "C" void _ZN11RaycastLine13SetObjAndLineERK7Vector3S2_P5Actor(void* self, void* a, void* b, void* act);
+extern "C" int _ZN11RaycastLine10DetectClsnEv(void* self);
+extern "C" void _ZN11RaycastLine10GetClsnPosEv(void* out, void* self);
+extern "C" void _ZN11RaycastLineD1Ev(void* self);
 int func_ov025_02111c24(char* c)
 {
     struct daDkk_c *self = (struct daDkk_c *)(void *)c;

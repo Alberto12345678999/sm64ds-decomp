@@ -13,7 +13,7 @@ int _ZN6Memory10DeallocateEPvP4Heap(void*, void*);
 extern int _ZTV14UnchainedChomp[];
 extern void func_02011508();
 extern void func_020072c0();
-extern void _ZN5ModelD1Ev();
+extern "C" void _ZN5ModelD1Ev();
 extern int data_020a0eac[];
 void* _ZN14UnchainedChompD0Ev(struct UnchainedChomp *self) {
   *(int**)((char*)self) = _ZTV14UnchainedChomp;

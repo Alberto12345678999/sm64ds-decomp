@@ -4,12 +4,12 @@
 #include "common.h"
 extern "C" {
 
-extern void _ZN11RaycastLineC1Ev(void* self);
-extern void _ZN11RaycastLine13SetObjAndLineERK7Vector3S2_P5Actor(void* self, void* a, void* b, void* act);
-extern int _ZN11RaycastLine10DetectClsnEv(void* self);
+extern "C" void _ZN11RaycastLineC1Ev(void* self);
+extern "C" void _ZN11RaycastLine13SetObjAndLineERK7Vector3S2_P5Actor(void* self, void* a, void* b, void* act);
+extern "C" int _ZN11RaycastLine10DetectClsnEv(void* self);
 extern int func_02037e58(unsigned int* p);
-extern void _ZN11RaycastLine10GetClsnPosEv(void* res, void* self);
-extern void _ZN11RaycastLineD1Ev(void* self);
+extern "C" void _ZN11RaycastLine10GetClsnPosEv(void* res, void* self);
+extern "C" void _ZN11RaycastLineD1Ev(void* self);
 
 int func_ov002_020c2270(void* c, void* p1, void* p2) {
     char rl[0x78];

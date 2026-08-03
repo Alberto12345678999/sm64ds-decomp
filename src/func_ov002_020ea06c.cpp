@@ -1,9 +1,9 @@
 //cpp
 extern "C" {
 typedef int Fix12i;
-extern void _ZN9Animation7AdvanceEv(void* a);
+extern "C" void _ZN9Animation7AdvanceEv(void* a);
 extern void func_ov002_020e8098(void* c);
-extern void _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(unsigned int a, Fix12i v);
+extern "C" void _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(unsigned int a, Fix12i v);
 void func_ov002_020ea06c(char* c){
   int* s = (int*)(((int)*(void**)(c+0x438) + 0x5c));
   *(int*)(c+0x5c) = s[0];

@@ -11,15 +11,15 @@ typedef struct {
 } ClsnResultTmp;
 
 extern "C" {
-extern void _ZN11RaycastLineC1Ev(void *self);
-extern void _ZN11RaycastLineD1Ev(void *self);
-extern void _ZN11RaycastLine13SetObjAndLineERK7Vector3S2_P5Actor(
+extern "C" void _ZN11RaycastLineC1Ev(void *self);
+extern "C" void _ZN11RaycastLineD1Ev(void *self);
+extern "C" void _ZN11RaycastLine13SetObjAndLineERK7Vector3S2_P5Actor(
     void *self, void *a, void *b, void *act);
-extern int _ZN11RaycastLine10DetectClsnEv(void *self);
+extern "C" int _ZN11RaycastLine10DetectClsnEv(void *self);
 extern void func_ov002_020d8838(void *actor);
-extern unsigned _ZNK10ClsnResult9GetClsnIDEv(void *self);
-extern void *_ZN5Actor10FindWithIDEj(unsigned id);
-extern void _ZN10ClsnResultD1Ev(void *self);
+extern "C" unsigned _ZNK10ClsnResult9GetClsnIDEv(void *self);
+extern "C" void *_ZN5Actor10FindWithIDEj(unsigned id);
+extern "C" void _ZN10ClsnResultD1Ev(void *self);
 
 extern int data_02099368;
 extern short data_02082214[];
