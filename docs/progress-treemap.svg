@@ -17241,27 +17241,27 @@ matched: yes</title></rect><rect x="348.84" y="775.08" width="6.64" height="6.49
 module: ov002
 addr: 0x020f1170
 size: 64 bytes
-matched: yes</title></rect><rect x="348.84" y="781.58" width="6.64" height="6.90" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020f11b0
+matched: yes</title></rect><rect x="348.84" y="781.58" width="6.64" height="6.90" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14BlueCoinSwitchD1Ev
 module: ov002
 addr: 0x020f11b0
 size: 68 bytes
-matched: yes</title></rect><rect x="348.84" y="788.47" width="6.64" height="8.93" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020f11f4
+matched: yes</title></rect><rect x="348.84" y="788.47" width="6.64" height="8.93" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14BlueCoinSwitchD0Ev
 module: ov002
 addr: 0x020f11f4
 size: 88 bytes
-matched: yes</title></rect><rect x="348.84" y="797.40" width="6.64" height="6.90" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020f124c
+matched: yes</title></rect><rect x="348.84" y="797.40" width="6.64" height="6.90" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14BlueCoinSwitch16CleanupResourcesEv
 module: ov002
 addr: 0x020f124c
 size: 68 bytes
-matched: yes</title></rect><rect x="348.84" y="804.30" width="6.64" height="5.68" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020f1290
+matched: yes</title></rect><rect x="348.84" y="804.30" width="6.64" height="5.68" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14BlueCoinSwitch6RenderEv
 module: ov002
 addr: 0x020f1290
 size: 56 bytes
-matched: yes</title></rect><rect x="348.84" y="809.98" width="6.64" height="42.20" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020f12c8
+matched: yes</title></rect><rect x="348.84" y="809.98" width="6.64" height="42.20" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14BlueCoinSwitch8BehaviorEv
 module: ov002
 addr: 0x020f12c8
 size: 416 bytes
-matched: yes</title></rect><rect x="348.84" y="852.18" width="6.64" height="27.59" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020f1468
+matched: yes</title></rect><rect x="348.84" y="852.18" width="6.64" height="27.59" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14BlueCoinSwitch13InitResourcesEv
 module: ov002
 addr: 0x020f1468
 size: 272 bytes
@@ -17277,11 +17277,11 @@ matched: yes</title></rect><rect x="348.84" y="888.29" width="6.64" height="4.87
 module: ov002
 addr: 0x020f15cc
 size: 48 bytes
-matched: yes</title></rect><rect x="348.84" y="893.16" width="6.64" height="4.87" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14BlueCoinSwitchD1Ev
+matched: yes</title></rect><rect x="348.84" y="893.16" width="6.64" height="4.87" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14EnemySwitchTagD1Ev
 module: ov002
 addr: 0x020f15fc
 size: 48 bytes
-matched: yes</title></rect><rect x="348.84" y="898.03" width="6.64" height="6.90" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14BlueCoinSwitchD0Ev
+matched: yes</title></rect><rect x="348.84" y="898.03" width="6.64" height="6.90" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14EnemySwitchTagD0Ev
 module: ov002
 addr: 0x020f162c
 size: 68 bytes
@@ -17293,7 +17293,7 @@ matched: yes</title></rect><rect x="348.84" y="908.58" width="6.64" height="5.68
 module: ov002
 addr: 0x020f1694
 size: 56 bytes
-matched: yes</title></rect><rect x="348.84" y="914.26" width="6.64" height="3.25" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14BlueCoinSwitch16CleanupResourcesEv
+matched: yes</title></rect><rect x="348.84" y="914.26" width="6.64" height="3.25" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14EnemySwitchTag16CleanupResourcesEv
 module: ov002
 addr: 0x020f16cc
 size: 32 bytes
@@ -17301,7 +17301,7 @@ matched: yes</title></rect><rect x="348.84" y="917.50" width="6.64" height="11.7
 module: ov002
 addr: 0x020f16ec
 size: 116 bytes
-matched: yes</title></rect><rect x="348.84" y="929.27" width="6.64" height="18.26" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14BlueCoinSwitch8BehaviorEv
+matched: yes</title></rect><rect x="348.84" y="929.27" width="6.64" height="18.26" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14EnemySwitchTag8BehaviorEv
 module: ov002
 addr: 0x020f1760
 size: 180 bytes
@@ -17313,7 +17313,7 @@ matched: yes</title></rect><rect x="348.84" y="951.18" width="6.64" height="6.49
 module: ov002
 addr: 0x020f1838
 size: 64 bytes
-matched: yes</title></rect><rect x="348.84" y="957.67" width="6.64" height="17.45" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14BlueCoinSwitch13InitResourcesEv
+matched: yes</title></rect><rect x="348.84" y="957.67" width="6.64" height="17.45" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14EnemySwitchTag13InitResourcesEv
 module: ov002
 addr: 0x020f1878
 size: 172 bytes
@@ -17325,31 +17325,31 @@ matched: yes</title></rect><rect x="348.84" y="979.99" width="6.64" height="5.68
 module: ov002
 addr: 0x020f1954
 size: 56 bytes
-matched: yes</title></rect><rect x="348.84" y="985.67" width="6.64" height="3.65" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14EnemySwitchTagD1Ev
+matched: yes</title></rect><rect x="348.84" y="985.67" width="6.64" height="3.65" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN19AmbientSoundEffectsD1Ev
 module: ov002
 addr: 0x020f198c
 size: 36 bytes
-matched: yes</title></rect><rect x="348.84" y="989.32" width="6.64" height="5.68" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14EnemySwitchTagD0Ev
+matched: yes</title></rect><rect x="348.84" y="989.32" width="6.64" height="5.68" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN19AmbientSoundEffectsD0Ev
 module: ov002
 addr: 0x020f19b0
 size: 56 bytes
-matched: yes</title></rect><rect x="355.49" y="750.33" width="0.91" height="5.91" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14EnemySwitchTag16CleanupResourcesEv
+matched: yes</title></rect><rect x="355.49" y="750.33" width="0.91" height="5.91" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN19AmbientSoundEffects16CleanupResourcesEv
 module: ov002
 addr: 0x020f19e8
 size: 8 bytes
-matched: yes</title></rect><rect x="356.40" y="750.33" width="0.46" height="5.91" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14EnemySwitchTag16OnPendingDestroyEv
+matched: yes</title></rect><rect x="356.40" y="750.33" width="0.46" height="5.91" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN19AmbientSoundEffects16OnPendingDestroyEv
 module: ov002
 addr: 0x020f19f0
 size: 4 bytes
-matched: yes</title></rect><rect x="356.85" y="750.33" width="0.91" height="5.91" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14EnemySwitchTag6RenderEv
+matched: yes</title></rect><rect x="356.85" y="750.33" width="0.91" height="5.91" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN19AmbientSoundEffects6RenderEv
 module: ov002
 addr: 0x020f19f4
 size: 8 bytes
-matched: yes</title></rect><rect x="357.77" y="750.33" width="22.81" height="5.91" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14EnemySwitchTag8BehaviorEv
+matched: yes</title></rect><rect x="357.77" y="750.33" width="22.81" height="5.91" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN19AmbientSoundEffects8BehaviorEv
 module: ov002
 addr: 0x020f19fc
 size: 200 bytes
-matched: yes</title></rect><rect x="380.57" y="750.33" width="23.72" height="5.91" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14EnemySwitchTag13InitResourcesEv
+matched: yes</title></rect><rect x="380.57" y="750.33" width="23.72" height="5.91" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN19AmbientSoundEffects13InitResourcesEv
 module: ov002
 addr: 0x020f1ac4
 size: 208 bytes
@@ -17357,11 +17357,11 @@ matched: yes</title></rect><rect x="404.29" y="750.33" width="5.47" height="5.91
 module: ov002
 addr: 0x020f1b94
 size: 48 bytes
-matched: yes</title></rect><rect x="409.76" y="750.33" width="4.10" height="5.91" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN19AmbientSoundEffectsD1Ev
+matched: yes</title></rect><rect x="409.76" y="750.33" width="4.10" height="5.91" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8MugenBgmD1Ev
 module: ov002
 addr: 0x020f1bc4
 size: 36 bytes
-matched: yes</title></rect><rect x="413.87" y="750.33" width="6.39" height="5.91" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN19AmbientSoundEffectsD0Ev
+matched: yes</title></rect><rect x="413.87" y="750.33" width="6.39" height="5.91" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8MugenBgmD0Ev
 module: ov002
 addr: 0x020f1be8
 size: 56 bytes
@@ -17369,23 +17369,23 @@ matched: yes</title></rect><rect x="420.25" y="750.33" width="5.47" height="5.91
 module: ov002
 addr: 0x020f1c20
 size: 48 bytes
-matched: yes</title></rect><rect x="425.73" y="750.33" width="0.91" height="5.91" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN19AmbientSoundEffects16CleanupResourcesEv
+matched: yes</title></rect><rect x="425.73" y="750.33" width="0.91" height="5.91" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8MugenBgm16CleanupResourcesEv
 module: ov002
 addr: 0x020f1c50
 size: 8 bytes
-matched: yes</title></rect><rect x="426.64" y="750.33" width="0.46" height="5.91" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN19AmbientSoundEffects16OnPendingDestroyEv
+matched: yes</title></rect><rect x="426.64" y="750.33" width="0.46" height="5.91" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8MugenBgm16OnPendingDestroyEv
 module: ov002
 addr: 0x020f1c58
 size: 4 bytes
-matched: yes</title></rect><rect x="427.10" y="750.33" width="0.91" height="5.91" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN19AmbientSoundEffects6RenderEv
+matched: yes</title></rect><rect x="427.10" y="750.33" width="0.91" height="5.91" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8MugenBgm6RenderEv
 module: ov002
 addr: 0x020f1c5c
 size: 8 bytes
-matched: yes</title></rect><rect x="428.01" y="750.33" width="67.50" height="5.91" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN19AmbientSoundEffects8BehaviorEv
+matched: yes</title></rect><rect x="428.01" y="750.33" width="67.50" height="5.91" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8MugenBgm8BehaviorEv
 module: ov002
 addr: 0x020f1c64
 size: 592 bytes
-matched: yes</title></rect><rect x="495.51" y="750.33" width="15.96" height="5.91" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN19AmbientSoundEffects13InitResourcesEv
+matched: yes</title></rect><rect x="495.51" y="750.33" width="15.96" height="5.91" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8MugenBgm13InitResourcesEv
 module: ov002
 addr: 0x020f1eb4
 size: 140 bytes
@@ -17393,11 +17393,11 @@ matched: yes</title></rect><rect x="511.48" y="750.33" width="5.47" height="5.91
 module: ov002
 addr: 0x020f1f40
 size: 48 bytes
-matched: yes</title></rect><rect x="516.95" y="750.33" width="4.10" height="5.91" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8MugenBgmD1Ev
+matched: yes</title></rect><rect x="516.95" y="750.33" width="4.10" height="5.91" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14CutsceneObjectD1Ev
 module: ov002
 addr: 0x020f1f70
 size: 36 bytes
-matched: yes</title></rect><rect x="521.05" y="750.33" width="6.39" height="5.91" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8MugenBgmD0Ev
+matched: yes</title></rect><rect x="521.05" y="750.33" width="6.39" height="5.91" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14CutsceneObjectD0Ev
 module: ov002
 addr: 0x020f1f94
 size: 56 bytes
@@ -17953,23 +17953,23 @@ matched: yes</title></rect><rect x="536.19" y="787.62" width="48.43" height="9.6
 module: ov002
 addr: 0x020f7d74
 size: 692 bytes
-matched: yes</title></rect><rect x="584.62" y="787.62" width="8.96" height="9.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8MugenBgm16CleanupResourcesEv
+matched: yes</title></rect><rect x="584.62" y="787.62" width="8.96" height="9.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14CutsceneObject16CleanupResourcesEv
 module: ov002
 addr: 0x020f8028
 size: 128 bytes
-matched: yes</title></rect><rect x="388.66" y="797.25" width="6.71" height="0.40" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8MugenBgm16OnPendingDestroyEv
+matched: yes</title></rect><rect x="388.66" y="797.25" width="6.71" height="0.40" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14CutsceneObject16OnPendingDestroyEv
 module: ov002
 addr: 0x020f80a8
 size: 4 bytes
-matched: yes</title></rect><rect x="388.66" y="797.65" width="6.71" height="28.14" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8MugenBgm6RenderEv
+matched: yes</title></rect><rect x="388.66" y="797.65" width="6.71" height="28.14" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14CutsceneObject6RenderEv
 module: ov002
 addr: 0x020f80ac
 size: 280 bytes
-matched: yes</title></rect><rect x="388.66" y="825.79" width="6.71" height="48.23" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8MugenBgm8BehaviorEv
+matched: yes</title></rect><rect x="388.66" y="825.79" width="6.71" height="48.23" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14CutsceneObject8BehaviorEv
 module: ov002
 addr: 0x020f81c4
 size: 480 bytes
-matched: yes</title></rect><rect x="388.66" y="874.02" width="6.71" height="112.94" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8MugenBgm13InitResourcesEv
+matched: yes</title></rect><rect x="388.66" y="874.02" width="6.71" height="112.94" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14CutsceneObject13InitResourcesEv
 module: ov002
 addr: 0x020f83a4
 size: 1124 bytes
@@ -18025,11 +18025,11 @@ matched: yes</title></rect><rect x="418.95" y="797.25" width="4.26" height="11.3
 module: ov002
 addr: 0x020f9304
 size: 72 bytes
-matched: yes</title></rect><rect x="423.21" y="797.25" width="2.13" height="11.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020f934c
+matched: yes</title></rect><rect x="423.21" y="797.25" width="2.13" height="11.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11SoundObjectD1Ev
 module: ov002
 addr: 0x020f934c
 size: 36 bytes
-matched: yes</title></rect><rect x="425.33" y="797.25" width="3.31" height="11.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020f9370
+matched: yes</title></rect><rect x="425.33" y="797.25" width="3.31" height="11.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11SoundObjectD0Ev
 module: ov002
 addr: 0x020f9370
 size: 56 bytes
@@ -18041,11 +18041,11 @@ matched: yes</title></rect><rect x="440.01" y="797.25" width="8.76" height="11.3
 module: ov002
 addr: 0x020f9468
 size: 148 bytes
-matched: yes</title></rect><rect x="448.76" y="797.25" width="13.49" height="11.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020f94fc
+matched: yes</title></rect><rect x="448.76" y="797.25" width="13.49" height="11.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11SoundObject8BehaviorEv
 module: ov002
 addr: 0x020f94fc
 size: 228 bytes
-matched: yes</title></rect><rect x="462.25" y="797.25" width="19.64" height="11.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020f95e0
+matched: yes</title></rect><rect x="462.25" y="797.25" width="19.64" height="11.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11SoundObject13InitResourcesEv
 module: ov002
 addr: 0x020f95e0
 size: 332 bytes
