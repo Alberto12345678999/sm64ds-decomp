@@ -12397,7 +12397,7 @@ matched: yes</title></rect><rect x="513.80" y="39.27" width="4.95" height="4.90"
 module: ov002
 addr: 0x020aed74
 size: 36 bytes
-matched: yes</title></rect><rect x="518.75" y="39.27" width="4.95" height="4.90" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020aed98
+matched: yes</title></rect><rect x="518.75" y="39.27" width="4.95" height="4.90" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5EnemyC2Ev
 module: ov002
 addr: 0x020aed98
 size: 36 bytes
@@ -14613,7 +14613,7 @@ matched: yes</title></rect><rect x="393.59" y="303.15" width="1.52" height="3.55
 module: ov002
 addr: 0x020c6f34
 size: 8 bytes
-matched: yes</title></rect><rect x="395.11" y="303.15" width="31.94" height="3.55" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020c6f3c
+matched: yes</title></rect><rect x="395.11" y="303.15" width="31.94" height="3.55" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN6Player18St_LevelEnter_MainEv
 module: ov002
 addr: 0x020c6f3c
 size: 168 bytes
@@ -20337,7 +20337,7 @@ matched: yes</title></rect><rect x="702.08" y="125.34" width="6.36" height="25.0
 module: ov006
 addr: 0x020c6e4c
 size: 240 bytes
-matched: yes</title></rect><rect x="702.08" y="150.35" width="6.36" height="5.42" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN6Player18St_LevelEnter_MainEv
+matched: yes</title></rect><rect x="702.08" y="150.35" width="6.36" height="5.42" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_020c6f3c
 module: ov006
 addr: 0x020c6f3c
 size: 52 bytes
@@ -27393,7 +27393,7 @@ matched: yes</title></rect><rect x="1538.65" y="39.41" width="19.80" height="8.4
 module: ov007
 addr: 0x020aec94
 size: 260 bytes
-matched: yes</title></rect><rect x="1558.45" y="39.41" width="36.55" height="8.40" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5EnemyC2Ev
+matched: yes</title></rect><rect x="1558.45" y="39.41" width="36.55" height="8.40" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov007_020aed98
 module: ov007
 addr: 0x020aed98
 size: 480 bytes
