@@ -184,6 +184,30 @@ symbol at the same address (the shape `_ZTV5Actor` / `data_0208e3a4` already use
 files at once. Do not *rename* `__aeabi_idiv`: `tools/reloc_audit.py` maps the two spellings onto
 each other and wants both.
 
+**An alias must carry `size=0x0` (2026-08-04).** The aliases originally repeated the real size,
+and that is a latent link-breaker. `mwldarm` checks, per gap object, that the sum of every
+symbol's size fits inside the section — it does not notice that two symbols share an address, so
+an alias with a size is counted a second time. The two aliases over-declared ITCM by
+0x20c + 0x1e4 = **1,008 bytes**. Nothing failed at the time only because the ITCM symbol table
+still had 1,476 bytes of unattributed gaps, and the shortfall stayed larger than the excess. The
+moment the gap-closing in this file's "Count, settled by coverage" section landed, the slack fell
+to 36 bytes and the link died:
+
+```
+mwldarm.exe: In section .text in file _dsd_gap@itcm_0.o ,
+mwldarm.exe: the sum of all symbol sizes exceed section size.
+```
+
+0x3448 declared against a 0x307c section — an overflow of exactly 972, which is 1,008 minus the
+36 bytes of gap left. Sizing both aliases `0x0` drops the sum to 0x3058 and it fits. The link
+still resolves every `bl _s32_div_f`, because a relocation needs the symbol's *address*, never
+its size — the whole 106/106 module-exact build is the proof.
+
+The general rule, for any future second name on an existing address: **the symbol that owns the
+bytes carries the size; every alias carries `size=0x0`.** Two sized symbols at one address is a
+defect that will not surface until something unrelated tightens the same section, and then it
+surfaces as a linker error naming neither symbol.
+
 Do not confuse these with `cstd::div` / `cstd::mod` (0x02052f4c / 0x02052ef4). Those are
 Nintendo's own wrappers over the **hardware divider** — `DIVCNT = 0`, numerator to `DIV_NUMER`,
 denominator to `DIV_DENOM`, spin on bit 15, read `DIV_RESULT` (`cstd::mod` reads `DIVREM_RESULT`
@@ -274,8 +298,59 @@ These make their functions unmatchable *by construction*, which is why nothing h
 | `func_01ffa344` + `func_01ffa3e0` | two symbols | `a3e0` has **zero** incoming branches or calls anywhere; its only entry is fallthrough from `a344` | one symbol, `size=0xfc` |
 | `func_01ffa440` | `size=0x148` | `0x01ffa4bc` has **4 external callers** (ov002 x2, ov074, arm9, all `module:none`) and no symbol | `0x78` + a new symbol at 0x01ffa4bc |
 
-So ITCM has **42** functions, not 41. Fixing these is a prerequisite for anyone working the
-soft-float block, not an optional tidy-up.
+**Count, settled by coverage rather than arithmetic (2026-08-03).** I got this wrong twice --
+first "42" by summing two agents' findings without redoing the sum, then "41" by correcting the
+arithmetic while still missing entries. The answer is **43**, and the proof is not a sum: after
+the fixes below the ITCM symbol table runs 0x01ff8000..0x01ffdf3c with **zero overlaps between
+functions**, ending exactly on the `.text` end in `config/arm9/itcm/delinks.txt`. That is
+checkable in one pass and cannot be fudged.
+
+Coverage is contiguous *in bytes accounted for*, but two of the entries below are `kind:label`,
+not `kind:function`, so 0x24 bytes sit in no function's declared range. That is deliberate, and
+the reason is in the next paragraph -- an earlier revision of this work declared them as
+functions to make the range literally gap-free, and it broke the build.
+
+41 declared, minus 1 (func_01ffa3e0 merged into func_01ffa344), plus 3 previously undeclared
+entries:
+
+* **0x01ff8df8** (0x18) -- xor-swaps both double argument pairs, then falls through into
+  func_01ff8e10 (soft-double subtract). The library's reverse-subtract entry.
+* **0x01ffa4bc** (0xcc) -- the signed half of the int-to-float pair. It has **4 external
+  callers** (ov002 x2, ov074, arm9) all recorded `module:none`, which is the resolution
+  breakage this symbol fixes.
+* **0x01ffa588** (0xc) -- xor-swaps the single-precision pair, falls through into func_01ffa594.
+
+The two fallthrough entries have zero callers anywhere -- no relocs, no intra-ITCM branches --
+and are correct only while adjacent to the routine they fall into, so neither may ever be
+carved into its own delink object.
+
+**They must be declared `kind:label`, not `kind:function`.** This cost a red validation run to
+learn. `dsd delink` analyses every function symbol and refuses one whose entry is not a
+prologue, so declaring 0x01ff8df8 a function fails the whole build at step 1 of 6:
+
+```
+Error: function func_01ff8df8 could not be analyzed:
+  InvalidStart { address: 1ff8df8, ins: Arm(Ins { code: e0211003, op: Eor }) }
+```
+
+The first instruction is `eor r1, r1, r3` -- an argument swap, not a frame setup. A label makes
+no claim dsd has to verify, and it also gets the placement right for free: unanalysed bytes stay
+in the module's gap object, which is precisely where a fallthrough entry has to live. Note that
+`config/rombuild-exclude.txt` does **not** solve this; it gates enrollment, not dsd's analysis,
+so a function symbol listed there still breaks delink. `.L_01ffadf8`, an alternate entry inside
+`__aeabi_uidiv` further down the same file, is the existing precedent for the label form.
+
+A candidate I checked and rejected: 0x01ffa1bc has its own `push {ip,lr}` prologue but zero
+external callers and **20** incoming branches from inside func_01ff97d8's declared body. It is
+a shared error tail, not a function.
+
+Fixing these is a prerequisite for anyone working the soft-float block, not an optional
+tidy-up. **And it is not sufficient on its own:** `worklist.py --module itcm` already serves
+`func_01ff859c`, `func_01ffa344`, `func_01ffa3e0` and `func_01ffa440` as cold-match candidates
+— the soft-float block this file says not to route cold C at. Correcting the symbol sizes turns
+`func_01ff8708` into a fresh, well-formed 0x6f0 candidate too. A config fix must ship with a
+worklist/eligibility exclusion for 0x01ff8000..0x01ffa9dc or the next fan-out spends a batch on
+vendor code.
 
 ### Routing for whoever goes next
 
@@ -376,6 +451,13 @@ aggregates minus the 13 temp slots scalarization was using = +14 = 0x38.
 
 **The lever: a local vector type with a user-declared destructor** (`struct DVec { s32 x,y,z;
 ~DVec(){} };`) blocks SROA. Dead `&x` statements, references and launders do not.
+
+This is a *variant*, not a discovery: `notes/matching-style.md` (from PR #815, 2026-07-29)
+already documents the `~PVec(){}` dead-store-elimination defeat and the enclosing
+address-taken struct that blocks SROA, with a ranked table of four mechanisms. Read that
+first. What is new here is only the application — putting the destructor on the vector type
+itself so that N aggregate locals stay un-SROA'd together, which is what moves a whole frame
+rather than a single store.
 
 `sub sp,#0xfc` now matches the ROM under both 1.2/sp2p3 and 2004/b56, and the divergence halved
 476 -> 238. What remains is one register rank 3-cycle -- see the banked floor in
