@@ -1,3 +1,4 @@
+//cpp
 #include "types.h"
 struct Fader {
     Fix12i currInterp;
@@ -29,11 +30,16 @@ struct FaderWipe : Fader {
     virtual void SetToStart();
 };
 
-extern FaderWipe* WIPES;
+/* The fader wipe array. Stage::InitResources fills this with
+   func_02073470(7, 0x60, 8, &FaderWipeC1, &FaderWipeD1): seven objects of 0x60,
+   which is sizeof(FaderWipe). Stage::CleanupResources tears the array down and
+   zeroes it. Named data_0209f324 because that is the symbol; every other
+   consumer of this address spells it the same way. */
+extern FaderWipe* data_0209f324;
 extern "C" void _ZN5Scene9SetFadersEP15FaderBrightness(FaderWipe* f);
 
-extern "C" void StartExitFaderWipe(int index) {
-    FaderWipe* f = &WIPES[index];
+extern "C" void StartEntranceFaderWipe(int index) {
+    FaderWipe* f = &data_0209f324[index];
     _ZN5Scene9SetFadersEP15FaderBrightness(f);
-    f->SetToStart();
+    f->SetToEnd();
 }
