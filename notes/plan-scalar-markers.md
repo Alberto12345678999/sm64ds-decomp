@@ -34,34 +34,68 @@ of a definite width. Those are the 72 this note is about.
 33 of the 71 are backed by both the history pass and the ROM pass independently; the
 rest by one. 34 classes, 121 includer files in `src/`.
 
-## 3. Signedness is not evidenced, and that is measured, not assumed
+## 3. Signedness is not evidenced -- and two claims made here were wrong
 
-**Zero of the 72 have an ancestor that declares the same offset**, so the hierarchy
-cannot supply a type. Only **one** has any ROM signedness signal at all -- a 4-byte
-load does not reveal signedness, and 64 of these are 4-byte.
+> **Correction.** Two statements in this section and in the #1129 commit message were
+> false. They are struck through below rather than deleted, because the commit message
+> is permanent and someone will read it. Adversarial review caught both.
 
-So the `s32`/`s16` spelling is not a finding. To establish what it is, the whole
-batch was applied twice and taken through the full gate both ways:
+### 3a. "Zero of the 72 have an ancestor that declares the same offset" -- WITHDRAWN
+
+~~Zero of the 72 have an ancestor that declares the same offset.~~
+
+That was a **recall limit reported as a zero** -- exactly the failure this programme
+exists to prevent. The hierarchy pass has no entry at all for 7 of the 34 retyped
+classes, so for those the question was never asked, let alone answered.
+
+`FaderWipe` is the counterexample and it is not a marginal one. ROM RTTI places
+`Fader <- FaderBrightness <- FaderColor <- FaderWipe`, and `include/Fader.h:34-35` --
+de-bannered, hand-reconstructed, the strongest reference in the tree -- declares
+`Fix12i currInterp /* 0x04 */` and `Fix12i speed /* 0x08 */`. Those are precisely the
+two FaderWipe offsets retyped as "no ancestor". The generator's own input at
+`5ddf7d2d~1:src/_ZN9FaderWipeC1Ev.c` names them too.
+
+Both are now declared `Fix12i` (a typedef of `s32`, so byte-identical). So is
+`HeapAllocator` 0x018/0x01c, which its own constructor stores `void*` into.
+
+**A pass that cannot see a class must say so, not return zero.**
+
+### 3b. "No sub-word load" -- WITHDRAWN
+
+~~No includer uses any of these fields in a way that distinguishes signed from
+unsigned -- no sub-word load, no comparison, no right shift, no division.~~
+
+There is a sub-word access: `src/_ZN20SwitchActivatedPlank8BehaviorEv.cpp:35` does an
+`unsigned short*` read-modify-write on retyped `unk_3a0`. The correct statement is
+narrower and is what the experiment actually shows: **no access whose codegen depends
+on the declared type.** Every compiled reference to these fields goes through an
+address-cast (`*(int*)((char*)&self->unk_018)`), and a cast ignores the declaration.
+
+### 3c. What the experiment does and does not prove
+
+The whole batch was applied twice and taken through the full gate both ways:
 
 | spelling | eligible | module fidelity |
 |---|---|---|
 | `s32`/`s16` | 10667 | 106/106 exact, PASS |
 | `u32`/`u16` | 10667 | 106/106 exact, PASS |
 
-**Identical.** No includer uses any of these fields in a way that distinguishes
-signed from unsigned -- no sub-word load, no comparison, no right shift, no division.
-Signedness here is *unobservable*, not merely unknown.
+Review reproduced this at object level, which is stronger: all 119 includers compiled
+under both spellings, **117/117 byte-identical** (2 fail identically before and after),
+plus a positive control -- a scratch TU doing `>> 4` and `/ 2` on these fields *does*
+produce different bytes, so the method detects sign-sensitivity when it exists.
 
-That is worth stating precisely, because the two are not the same:
+What that proves is **harmlessness**, not width:
 
-- the **width** fix is proven -- `u8` contradicted the evidence and now agrees with it
-- the **signedness** is a convention, chosen to match `Actor.h`, and the byte gate
-  cannot confirm or refute it
+- the **width** rests on the evidence passes, not on the gate. After the arm9 base
+  fix (#1132), **52 of 71** are backed independently by both passes, up from the 33
+  published; none lost its backing.
+- the **signedness** is a convention matching `Actor.h`. The gate cannot confirm or
+  refute it, and saying "the gate proved the width" would have been wrong.
 
 `runbook-type-reconstruction.md` §2 warns that `s32 -> u32` flips `movgt/movle` to
-`movhi/movls` and `asr` to `lsr`. That is exactly why this had to be measured rather
-than reasoned about: the warning is real, it just does not bite where nothing reads
-the field.
+`movhi/movls` and `asr` to `lsr`. The warning is real; it does not bite where every
+access is cast anyway.
 
 ## 4. Preserving offsets
 
