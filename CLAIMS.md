@@ -33,6 +33,8 @@ start converting a class; the same staleness rule applies.
 
 | Range | Who | Claimed | Status |
 | ov004 __sinit_ov004_020b955c (0x020b955c, size 0x574) | lunavyqo (Grok) | 2026-08-05 | **done** — verified byte-identical + linkcheck VERIFIED (mwccarm **2004/b56**); levers: field-load `tmp.a/b` from `data_02086b58` then `w[0]/w[1]` copy; mid-stream `p0.a=w[0]` / fills / `p0.b=w[1]` + bf4f8 p1-p4+p11=tmp; from near-miss 299→142→22→0; API clm_05b55ea60b6a kept |
+| ov007 func_ov007_020c49bc (0x020c49bc, size 0x440) | lunavyqo (Grok) | 2026-08-05 | **done** — verified byte-identical (mwccarm 2004/b56); strength_reduction off + 6k decl sl/sb + sp4C-before-sp30 + else-path name-swap r6/r7; API clm_671dd186507f kept |
+| ov007 func_ov007_020c9688 (0x020c9688, size 0x300) | lunavyqo (Grok) | 2026-08-06 | **active** — continue grind from near-miss div=33; API clm_601e7964eeb4 |
 | ov006 func_ov006_020dac34 (0x020dac34, size 0xab8) | lunavyqo (Grok) | 2026-08-05 | **released** — near-miss tip **div=2** FLOOR(ordering) reconfirmed on **mwccarm 2004/b56** (same residual under 1.2/sp2p3). case-11 `mov r3,#0` stall-slot hoist across bne; 40+ spellings no win. tip in nearmiss/db.jsonl |
 | ov004 func_ov004_020b2220 (0x020b2220, size 0x224) | lunavyqo (Grok) | 2026-08-05 | **released** — near-miss **68→34** banked (struct M + opt_propagation off; residual pure prologue sb/sl home order + th r1 vs r0). tip in nearmiss/db.jsonl; API clm_b9c82ad78f5d released |
 | ov074 func_ov074_02121800 (0x02121800, size 0x15c) | lunavyqo (Grok) | 2026-08-05 | **done** — verified byte-identical + linkcheck VERIFIED (mwccarm 2004/b56); levers: clamp-before-matrix, r3_318=fp capture, fused 310, (r3?r2:r2)>>3 for 314, fp reuse for 3b4; API clm_bd03dd24beff kept |
