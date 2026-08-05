@@ -33,6 +33,12 @@ start converting a class; the same staleness rule applies.
 
 | Range | Who | Claimed | Status |
 | ov004 __sinit_ov004_020b955c (0x020b955c, size 0x574) | lunavyqo (Grok) | 2026-08-05 | **done** — verified byte-identical + linkcheck VERIFIED (mwccarm **2004/b56**); levers: field-load `tmp.a/b` from `data_02086b58` then `w[0]/w[1]` copy; mid-stream `p0.a=w[0]` / fills / `p0.b=w[1]` + bf4f8 p1-p4+p11=tmp; from near-miss 299→142→22→0; API clm_05b55ea60b6a kept |
+| ov007 func_ov007_020c7d60 (0x020c7d60, size 0x2b0) | lunavyqo (Grok) | 2026-08-05 | **active** — match from near-miss div=162; CLAIMS.md only (API key rejected) |
+| ov007 func_ov007_020caeac (0x020caeac, size 0x530) | lunavyqo (Grok) | 2026-08-05 | **released** — near-miss improved **110→108** (mwccarm 2004/b56); size 0x528 vs 0x530; residual missing colStart stack home (CSE merges with uZero → moveq vs ldreq) + cascade; tip in nearmiss/db.jsonl; API clm_2496d697ed36 released |
+| ov007 func_ov007_020c49bc (0x020c49bc, size 0x440) | lunavyqo (Grok) | 2026-08-05 | **active** — match from near-miss div=112; API clm_671dd186507f |
+| ov007 func_ov007_020c9688 (0x020c9688, size 0x300) | lunavyqo (Grok) | 2026-08-05 | **active** — match from near-miss div=41; API clm_3b6bda45cb20 |
+| ov004 func_ov004_020ae5c4 (0x020ae5c4, size 0x294) | lunavyqo (Grok) | 2026-08-05 | **active** — near-miss **196→70→59→58→57** (size-exact). Levers: prop off; yy1-between; eq oneline (`str a4` first); two-step vtable in loops; load-both+branchless adx. Residual: eq `mov r3,r0` (want `ldr r4,[r0]`), loop call a3-before-a4, abs eor vs rsbmi. tip in nearmiss; API clm_ff48850f598d |
+| ov007 func_ov007_020c6e68 (0x020c6e68, size 0x1e4) | lunavyqo (Grok) | 2026-08-05 | **active** — match from near-miss div=53; API clm_3883d50456ae |
 | ov062 func_ov062_02117724 (0x02117724, size 0x270) | lunavyqo (Grok) | 2026-08-05 | **released** — no_progress FLOOR(ordering/sched) **div=5** reconfirmed (match.py 7 words). Residual pure instr-sched mul/sub interleave + else ldrsh order. 100+ variants+permuter score335 no win. tip+floor in nearmiss/db.jsonl; API released |
 | ov085 func_ov085_0212b8dc (0x0212b8dc, size 0x338) | lunavyqo (Grok) | 2026-08-05 | **released** — no match; tip re-scored **div=112** (was 130) size 0x320 vs ROM 0x338. try7 size 0x334 no scorable win. tip in nearmiss/db.jsonl; API released |
 | ov007 func_ov007_020cb4b0 (0x020cb4b0, size 0x310) | lunavyqo (Grok) | 2026-08-05 | **active** — match from near-miss div=214; API clm_887572e9e5c3 |
