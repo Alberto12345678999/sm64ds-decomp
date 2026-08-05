@@ -213,7 +213,10 @@ def main():
                 for ln in p.read_text(errors="replace").splitlines():
                     g = FIELD.match(ln)
                     if g and not g.group(3).startswith("pad_"):
-                        got[int(g.group(5), 16)] = g.group(1).strip()
+                        typ, ptr, _nm, arr, off = g.groups()
+                        w = (4 if ptr else DECLARED_WIDTH.get(typ.strip(), 1)) \
+                            * (int(arr.strip("[]"), 0) if arr else 1)
+                        got[int(off, 16)] = (typ.strip(), w)
             any_fields_cache[name] = got
         return any_fields_cache[name]
 
@@ -233,11 +236,26 @@ def main():
         pc = collections.Counter()
 
         def ancestor_type(off, _cls=cls):
+            """Does any ancestor already account for this offset?
+
+            Matched by EXTENT, not by exact start: an offset landing inside an
+            ancestor's `u8 sceneNode[0x14]` is that field's interior, not a discovery.
+            Exact-offset matching filed those as novel.
+            """
             for a in ancestors(_cls):
-                t = any_fields(a).get(off)
+                af = any_fields(a)
+                t = af.get(off)
                 if t is not None:
                     return a, t
+                for ao, (atyp, aw) in af.items():
+                    if ao < off < ao + aw:
+                        return a, atyp
             return None
+
+        # A class the hierarchy pass could not place has NO ancestors to consult, so
+        # "no ancestor declares this" is unasked, not answered. Counted separately --
+        # reporting an unasked question as a zero is how #1129 shipped a false claim.
+        hierarchy_blind = cls not in chain_of
         for off, (typ, ptr, arr, name, where, placeholder, span) in sorted(fields.items()):
             dw = declared_width(typ, ptr, arr)
             obs = widths_for(passes, cls, off)
@@ -282,6 +300,17 @@ def main():
                 bucket = "unknown-type"
                 findings[bucket].append({"cls": cls, "offset": hex(off),
                                          "field": name, "declared": typ, "where": where})
+            elif len(obs) > 1 and len({w for v in obs.values() for w in v}) > 1:
+                # The passes disagree with each other. `dw in allw` unions them, so the
+                # pass that happens to agree wins and the disagreement disappears --
+                # Timer 0x0 was "confirmed" as s32 because the ROM sees the 4-byte
+                # halves of an s64 (ARM has no 64-bit register, so it cannot see
+                # otherwise) while history reads the real s64 from source. Plan 4 sends
+                # conflicting evidence to a person; it must not be resolved by union.
+                bucket = "cross-pass width disagreement"
+                findings[bucket].append({
+                    "cls": cls, "offset": hex(off), "field": name, "declared": typ,
+                    "observed": {k: sorted(v) for k, v in obs.items()}, "where": where})
             elif dw in allw:
                 bucket = "confirmed"
                 # signedness: only a sub-word LOAD proves it, and only ldrs* proves signed
@@ -322,11 +351,14 @@ def main():
             if data:
                 seen |= {int(o, 16) for o in data.get("classes", {}).get(cls, {})}
 
-        # what each declared field actually covers
+        # What each declared field actually covers. A trailing marker (span None) has
+        # no pad because its object runs to the end of the struct -- load_headers says
+        # so explicitly -- so giving it one byte here contradicted this file's own
+        # semantics and pushed ~76 interior offsets into "novel".
         extents = []
         for o, (typ, ptr, arr, name, where, ph, span) in fields.items():
-            if ph and span:
-                extents.append((o, o + span))
+            if ph:
+                extents.append((o, o + span if span else float("inf")))
             else:
                 w = declared_width(typ, ptr, arr) or 1
                 n = int(arr.strip("[]"), 0) if arr else 1
@@ -339,6 +371,8 @@ def main():
                 b = "new: interior to a declared field"
             elif ancestor_type(off) is not None:
                 b = "new: declared by an ancestor"
+            elif hierarchy_blind:
+                b = "new: unresolved (class not placed in hierarchy)"
             elif not widths_for(passes, cls, off):
                 b = "new: address-only"
             else:
@@ -363,15 +397,27 @@ def main():
         print(f"passes MISSING : {', '.join(missing)}   <- results below are partial")
     print(f"headers        : {len(headers)}   declared fields: {total}")
     print()
-    order = ["confirmed", "width-contradicted", "signedness-contradicted",
-             "base-conflict", "base-conflict (weak: base unverified)",
-             "base-sign-conflict", "base-sign-conflict (weak: base unverified)",
-             "marker: scalar-sized, retype", "marker: object, extent unknown",
-             "offset-corroborated (width unverified)", "unreached by any pass",
-             "unknown-type",
-             "new: novel field", "new: declared by an ancestor",
-             "new: interior to a declared field", "new: vtable slot",
-             "new: address-only"]
+    order = [
+        "confirmed",
+        "width-contradicted",
+        "signedness-contradicted",
+        "base-conflict",
+        "base-conflict (weak: base unverified)",
+        "base-sign-conflict",
+        "base-sign-conflict (weak: base unverified)",
+        "cross-pass width disagreement",
+        "marker: scalar-sized, retype",
+        "marker: object, extent unknown",
+        "offset-corroborated (width unverified)",
+        "unreached by any pass",
+        "unknown-type",
+        "new: novel field",
+        "new: unresolved (class not placed in hierarchy)",
+        "new: declared by an ancestor",
+        "new: interior to a declared field",
+        "new: vtable slot",
+        "new: address-only",
+    ]
     for b in order:
         n = buckets.get(b, 0)
         if b.startswith("new") and n:
@@ -380,9 +426,7 @@ def main():
             print(f"  {b:<38} {n:>6}  ({100*n/max(1,total):5.1f}%)")
 
 
-    for b in ("base-conflict", "base-conflict (weak: base unverified)",
-              "width-contradicted", "signedness-contradicted",
-              "marker: scalar-sized, retype"):
+    for b in ("base-conflict", "base-conflict (weak: base unverified)", "width-contradicted", "signedness-contradicted", "cross-pass width disagreement", "marker: scalar-sized, retype"):
         f = findings.get(b)
         if not f:
             continue
@@ -394,6 +438,9 @@ def main():
             elif b == "width-contradicted":
                 print(f"  {x['cls']}.{x['field']} @{x['offset']}: declared {x['declared']} "
                       f"({x['declared_width']}B), observed {x['observed']}  [{x['where']}]")
+            elif b == "cross-pass width disagreement":
+                print(f"  {x['cls']}.{x['field']} @{x['offset']}: declared {x['declared']}, "
+                      f"passes disagree {x['observed']}  [{x['where']}]")
             elif b.startswith("marker:"):
                 print(f"  {x['cls']}.{x['field']} @{x['offset']}: u8 marker spanning "
                       f"{x['span']}B, observed {x['observed']}  [{x['where']}]")
