@@ -33,6 +33,7 @@ start converting a class; the same staleness rule applies.
 
 | Range | Who | Claimed | Status |
 | ov004 __sinit_ov004_020b955c (0x020b955c, size 0x574) | lunavyqo (Grok) | 2026-08-05 | **done** — verified byte-identical + linkcheck VERIFIED (mwccarm **2004/b56**); levers: field-load `tmp.a/b` from `data_02086b58` then `w[0]/w[1]` copy; mid-stream `p0.a=w[0]` / fills / `p0.b=w[1]` + bf4f8 p1-p4+p11=tmp; from near-miss 299→142→22→0; API clm_05b55ea60b6a kept |
+| ov007 func_ov007_020cb4b0 (0x020cb4b0, size 0x310) | lunavyqo (Grok) | 2026-08-05 | **released** — near-miss improved **214→7→5** (match.py words). Levers: p2-odd=`p2[1]` (not base[0]); even/idx prologue; u64 launder on idx → mla r6 + moveq schedule. Residual pure **r7↔r8 regperm** (arg4 vs idx*2); 200+ variants + permuter score25 floor. tip in nearmiss/db.jsonl; API clm_887572e9e5c3 released |
 | ov007 func_ov007_020c7d60 (0x020c7d60, size 0x2b0) | lunavyqo (Grok) | 2026-08-05 | **active** — match from near-miss div=162; CLAIMS.md only (API key rejected) |
 | ov007 func_ov007_020caeac (0x020caeac, size 0x530) | lunavyqo (Grok) | 2026-08-05 | **released** — near-miss improved **110→108** (mwccarm 2004/b56); size 0x528 vs 0x530; residual missing colStart stack home (CSE merges with uZero → moveq vs ldreq) + cascade; tip in nearmiss/db.jsonl; API clm_2496d697ed36 released |
 | ov007 func_ov007_020c49bc (0x020c49bc, size 0x440) | lunavyqo (Grok) | 2026-08-05 | **active** — match from near-miss div=112; API clm_671dd186507f |
