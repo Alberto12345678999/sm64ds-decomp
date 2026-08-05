@@ -33,7 +33,7 @@ start converting a class; the same staleness rule applies.
 
 | Range | Who | Claimed | Status |
 | ov004 __sinit_ov004_020b955c (0x020b955c, size 0x574) | lunavyqo (Grok) | 2026-08-05 | **done** — verified byte-identical + linkcheck VERIFIED (mwccarm **2004/b56**); levers: field-load `tmp.a/b` from `data_02086b58` then `w[0]/w[1]` copy; mid-stream `p0.a=w[0]` / fills / `p0.b=w[1]` + bf4f8 p1-p4+p11=tmp; from near-miss 299→142→22→0; API clm_05b55ea60b6a kept |
-| ov007 func_ov007_020c7d60 (0x020c7d60, size 0x2b0) | lunavyqo (Grok) | 2026-08-06 | **released** — near-miss **162→25→22→2** banked. Scale regperm fixed (unnamed `t=sqrt_raw**(s64*)0x40002a0`). Residual **only** 2 words: y/x distsq load offsets after SubVec3. tip in nearmiss/db.jsonl |
+| ov007 func_ov007_020c7d60 (0x020c7d60, size 0x2b0) | lunavyqo (Grok) | 2026-08-06 | **matched** — byte-identical + linkcheck VERIFIED. DistSq-style `(d.x)*(d.x)` x-first source emits y-first loads; unnamed scale. |
 | ov007 func_ov007_020c49bc (0x020c49bc, size 0x440) | lunavyqo (Grok) | 2026-08-05 | **done** — verified byte-identical (mwccarm 2004/b56); strength_reduction off + 6k decl sl/sb + sp4C-before-sp30 + else-path name-swap r6/r7; API clm_671dd186507f kept |
 | ov007 func_ov007_020c9688 (0x020c9688, size 0x300) | lunavyqo (Grok) | 2026-08-06 | **active** — continue grind from near-miss div=33; API clm_601e7964eeb4 |
 | ov006 func_ov006_020dac34 (0x020dac34, size 0xab8) | lunavyqo (Grok) | 2026-08-05 | **released** — near-miss tip **div=2** FLOOR(ordering) reconfirmed on **mwccarm 2004/b56** (same residual under 1.2/sp2p3). case-11 `mov r3,#0` stall-slot hoist across bne; 40+ spellings no win. tip in nearmiss/db.jsonl |
