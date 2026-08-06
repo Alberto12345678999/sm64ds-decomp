@@ -61,8 +61,13 @@ python tools/marker_census.py           # the operative worklist
 | ...all of which are **blocked**, see §5 | |
 
 Merged: **#1151** (131 markers + the `Matrix4x3` guard), **#1153** (census + the
-transforms), plus the earlier programme (#1118, #1121, #1129, #1131, #1132, #1134,
-#1137). Open and green: **#1156** (bucketing fix + 167 markers).
+transforms), **#1156** (the bucketing fix, and *only* that), plus the earlier programme
+(#1118, #1121, #1129, #1131, #1132, #1134, #1137).
+
+The marker batch this note was written alongside, and this note itself, are landing
+separately. They were committed to #1156's branch *after* that PR squash-merged, so they
+never reached main -- the §7 trap, third occurrence, caught by comparing the census
+against this table's own numbers. Read the table as the state after that re-land.
 
 Build state throughout: `106/106 exact, PASS`, eligible **10672**, attribution 0/0.
 
