@@ -32,6 +32,7 @@ start converting a class; the same staleness rule applies.
 
 
 | Range | Who | Claimed | Status |
+| ov006 func_ov006_020ddf9c (0x020ddf9c, size 0x144) | lunavyqo (Grok) | 2026-08-07 | **released** — no_progress FLOOR(regperm) **div=20** reconfirmed (mwccarm 2004/b56). Residual pure r2↔r3 on loop2 store-zero (`mov r2,#0` vs ROM `mov r3,#0`) cascading mid+loop3; loop1/loop4/tail byte-identical. 30+ variants this session + prior 80+/permuter no win. tip in nearmiss/db.jsonl; API clm_e36876bd3aef released |
 | ov006 func_ov006_020ddf9c (0x020ddf9c, size 0x144) | lunavyqo (Grok) | 2026-08-06 | **released** — pure regperm floor **div=20** (loop2 zero `mov r2,#0` vs ROM `mov r3,#0` + cascade). 80+ spellings + 2x permuter + 6aq/struct/z-as-ctr; tip in nearmiss/db.jsonl; API released |
 | ov004 __sinit_ov004_020b955c (0x020b955c, size 0x574) | lunavyqo (Grok) | 2026-08-05 | **done** — verified byte-identical + linkcheck VERIFIED (mwccarm **2004/b56**); levers: field-load `tmp.a/b` from `data_02086b58` then `w[0]/w[1]` copy; mid-stream `p0.a=w[0]` / fills / `p0.b=w[1]` + bf4f8 p1-p4+p11=tmp; from near-miss 299→142→22→0; API clm_05b55ea60b6a kept |
 | ov007 func_ov007_020c49bc (0x020c49bc, size 0x440) | lunavyqo (Grok) | 2026-08-05 | **done** — verified byte-identical (mwccarm 2004/b56); strength_reduction off + 6k decl sl/sb + sp4C-before-sp30 + else-path name-swap r6/r7; API clm_671dd186507f kept |
