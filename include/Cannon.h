@@ -5,11 +5,14 @@
 #ifndef CANNON_H
 #define CANNON_H
 #include "types.h"
+#include "Model.h"
 
 struct Cannon {
     u8  pad_000[0xd4];
-    u8  mModel;            /* 0x0d4 */
-    u8  pad_0d5[0x4f];
+    /* Model member, named by the class's own destructor calling
+       Model's D1 at +0x0d4 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN6CannonD0Ev.c] */
+    Model mModel;            /* 0x0d4 */
     u8  mMovingCylinderClsn;            /* 0x124 */
     u8  pad_125[0x5b];
     s32 unk_180;            /* 0x180 */

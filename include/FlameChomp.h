@@ -6,6 +6,9 @@
 #define FLAMECHOMP_H
 #include "types.h"
 #include "ModelAnim.h"
+#include "ShadowModel.h"
+#include "MovingCylinderClsnWithPos.h"
+#include "WithMeshClsn.h"
 
 struct FlameChomp {
     u8  pad_000[0x5c];
@@ -23,12 +26,18 @@ struct FlameChomp {
     /* ModelAnim member, named by _ZN9ModelAnimD1Ev at +0xd4 -- a relocation the ROM build checks.
        D1 and not D2, so it is this type and not an inlined base. Was a u8 marker. */
     ModelAnim mModelAnim;            /* 0x0d4 */
-    u8  mShadowModel;            /* 0x138 */
-    u8  pad_139[0x27];
-    u8  mMovingCylinderClsnWithPos;            /* 0x160 */
-    u8  pad_161[0x3f];
-    u8  mWithMeshClsn;            /* 0x1a0 */
-    u8  pad_1a1[0x1bb];
+    /* ShadowModel member, named by the class's own destructor calling
+       ShadowModel's D1 at +0x138 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN10FlameChompD0Ev.c] */
+    ShadowModel mShadowModel;            /* 0x138 */
+    /* MovingCylinderClsnWithPos member, named by the class's own destructor calling
+       MovingCylinderClsnWithPos's D1 at +0x160 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN10FlameChompD0Ev.c] */
+    MovingCylinderClsnWithPos mMovingCylinderClsnWithPos;            /* 0x160 */
+    /* WithMeshClsn member, named by the class's own destructor calling
+       WithMeshClsn's D1 at +0x1a0 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN10FlameChompD0Ev.c] */
+    WithMeshClsn mWithMeshClsn;            /* 0x1a0 */
     u8  unk_35c;            /* 0x35c */
     u8  pad_35d[0x4b];
     s32 unk_3a8;            /* 0x3a8 */

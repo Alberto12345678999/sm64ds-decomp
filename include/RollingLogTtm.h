@@ -6,6 +6,8 @@
 #define ROLLINGLOGTTM_H
 #include "types.h"
 #include "ModelAnim.h"
+#include "ShadowModel.h"
+#include "MovingCylinderClsn.h"
 
 struct RollingLogTtm {
     u8  pad_000[0xc];
@@ -31,10 +33,14 @@ struct RollingLogTtm {
        stopped short of the object, so the member also takes over unk_130 (+0x5c = speed),
        which the header declared separately inside it. */
     ModelAnim mModelAnim;            /* 0x0d4 */
-    u8  mShadowModel;            /* 0x138 */
-    u8  pad_139[0x27];
-    u8  mMovingCylinderClsn;            /* 0x160 */
-    u8  pad_161[0x33];
+    /* ShadowModel member, named by the class's own destructor calling
+       ShadowModel's D1 at +0x138 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN13RollingLogTtmD0Ev.c] */
+    ShadowModel mShadowModel;            /* 0x138 */
+    /* MovingCylinderClsn member, named by the class's own destructor calling
+       MovingCylinderClsn's D1 at +0x160 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN13RollingLogTtmD0Ev.c] */
+    MovingCylinderClsn mMovingCylinderClsn;            /* 0x160 */
     u8  mWithMeshClsn;            /* 0x194 */
     u8  pad_195[0x1eb];
     s32 unk_380;            /* 0x380 */

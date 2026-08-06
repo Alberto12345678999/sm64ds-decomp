@@ -5,6 +5,11 @@
 #ifndef SPINY_H
 #define SPINY_H
 #include "types.h"
+#include "Model.h"
+#include "ModelAnim.h"
+#include "ShadowModel.h"
+#include "MovingCylinderClsn.h"
+#include "WithMeshClsn.h"
 
 struct Spiny {
     u8  pad_000[0x60];
@@ -42,16 +47,26 @@ struct Spiny {
     u8  pad_0cd[0x1];
     s16 unk_0ce;                 /* 0x0ce */
     u8  pad_0d0[0x4];
-    u8  mModel;            /* 0x0d4 */
-    u8  pad_0d5[0x4f];
-    u8  mModelAnim;            /* 0x124 */
-    u8  pad_125[0x63];
-    u8  mShadowModel;            /* 0x188 */
-    u8  pad_189[0x27];
-    u8  mMovingCylinderClsn;            /* 0x1b0 */
-    u8  pad_1b1[0x33];
-    u8  mWithMeshClsn;            /* 0x1e4 */
-    u8  pad_1e5[0x1bb];
+    /* Model member, named by the class's own destructor calling
+       Model's D1 at +0x0d4 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN5SpinyD0Ev.c] */
+    Model mModel;            /* 0x0d4 */
+    /* ModelAnim member, named by the class's own destructor calling
+       ModelAnim's D1 at +0x124 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN5SpinyD0Ev.c] */
+    ModelAnim mModelAnim;            /* 0x124 */
+    /* ShadowModel member, named by the class's own destructor calling
+       ShadowModel's D1 at +0x188 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN5SpinyD0Ev.c] */
+    ShadowModel mShadowModel;            /* 0x188 */
+    /* MovingCylinderClsn member, named by the class's own destructor calling
+       MovingCylinderClsn's D1 at +0x1b0 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN5SpinyD0Ev.c] */
+    MovingCylinderClsn mMovingCylinderClsn;            /* 0x1b0 */
+    /* WithMeshClsn member, named by the class's own destructor calling
+       WithMeshClsn's D1 at +0x1e4 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN5SpinyD0Ev.c] */
+    WithMeshClsn mWithMeshClsn;            /* 0x1e4 */
     u8  unk_3a0;            /* 0x3a0 */
     u8  pad_3a1[0x37];
     s32 unk_3d8;            /* 0x3d8 */

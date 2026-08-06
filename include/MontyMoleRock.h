@@ -6,6 +6,8 @@
 #define MONTYMOLEROCK_H
 #include "types.h"
 #include "Model.h"
+#include "MovingCylinderClsn.h"
+#include "WithMeshClsn.h"
 
 struct MontyMoleRock {
     u8  pad_000[0x8];
@@ -21,10 +23,14 @@ struct MontyMoleRock {
     /* Model member, named by _ZN5ModelD1Ev at +0x110 -- a relocation the ROM build checks.
        D1 and not D2, so it is this type and not an inlined base. Was a u8 marker. */
     Model mModel;            /* 0x110 */
-    u8  mMovingCylinderClsn;            /* 0x160 */
-    u8  pad_161[0x33];
-    u8  mWithMeshClsn;            /* 0x194 */
-    u8  pad_195[0x1bb];
+    /* MovingCylinderClsn member, named by the class's own destructor calling
+       MovingCylinderClsn's D1 at +0x160 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN13MontyMoleRockD1Ev.c] */
+    MovingCylinderClsn mMovingCylinderClsn;            /* 0x160 */
+    /* WithMeshClsn member, named by the class's own destructor calling
+       WithMeshClsn's D1 at +0x194 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN13MontyMoleRockD1Ev.c] */
+    WithMeshClsn mWithMeshClsn;            /* 0x194 */
     u8  unk_350;            /* 0x350 */
 #ifdef __cplusplus
     /* methods */

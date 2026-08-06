@@ -5,6 +5,7 @@
 #ifndef ROTATINGPLATFORMRR_H
 #define ROTATINGPLATFORMRR_H
 #include "types.h"
+#include "CommonModel.h"
 
 struct RotatingPlatformRr {
     u8  pad_000[0x8];
@@ -14,8 +15,10 @@ struct RotatingPlatformRr {
     s16 unk_08e;            /* 0x08e */
     s16 unk_090;            /* 0x090 */
     u8  pad_092[0x42];
-    u8  mCommonModel;            /* 0x0d4 */
-    u8  pad_0d5[0x3b];
+    /* CommonModel member, named by the class's own destructor calling
+       CommonModel's D1 at +0x0d4 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN18RotatingPlatformRrD0Ev.c] */
+    CommonModel mCommonModel;            /* 0x0d4 */
     s16 unk_110;            /* 0x110 */
     s16 unk_112;            /* 0x112 */
     s16 unk_114;            /* 0x114 */

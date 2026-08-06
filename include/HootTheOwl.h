@@ -5,6 +5,7 @@
 #ifndef HOOTTHEOWL_H
 #define HOOTTHEOWL_H
 #include "types.h"
+#include "WithMeshClsn.h"
 
 struct HootTheOwl {
     u8  pad_000[0x8c];
@@ -27,8 +28,10 @@ struct HootTheOwl {
     u8  pad_111[0x17];
     u8  unk_128;            /* 0x128 */
     u8  pad_129[0x27];
-    u8  mWithMeshClsn;            /* 0x150 */
-    u8  pad_151[0x1bb];
+    /* WithMeshClsn member, named by the class's own destructor calling
+       WithMeshClsn's D1 at +0x150 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN10HootTheOwlD1Ev.c] */
+    WithMeshClsn mWithMeshClsn;            /* 0x150 */
     u8  mModelAnim;            /* 0x30c */
     u8  pad_30d[0x4f];
     u8  mAnimation;            /* 0x35c */

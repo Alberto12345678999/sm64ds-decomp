@@ -6,6 +6,7 @@
 #define TINYCOVER_H
 #include "types.h"
 #include "Model.h"
+#include "TextureTransformer.h"
 
 struct TinyCover {
     u8  pad_000[0x60];
@@ -20,8 +21,10 @@ struct TinyCover {
     Model mModel;            /* 0x0d4 */
     u8  mMeshCollider;            /* 0x124 */
     u8  pad_125[0x1fb];
-    u8  mTextureTransformer;            /* 0x320 */
-    u8  pad_321[0x13];
+    /* TextureTransformer member, named by the class's own destructor calling
+       TextureTransformer's D1 at +0x320 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN9TinyCoverD1Ev.c] */
+    TextureTransformer mTextureTransformer;            /* 0x320 */
     s32 unk_334;            /* 0x334 */
     u8  pad_338[0x4];
     u8  unk_33c;            /* 0x33c */

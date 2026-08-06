@@ -5,6 +5,7 @@
 #ifndef WINGFEATHER_H
 #define WINGFEATHER_H
 #include "types.h"
+#include "Model.h"
 
 struct WingFeather {
     u8  pad_000[0x5c];
@@ -22,8 +23,10 @@ struct WingFeather {
     u8  pad_0a4[0x4];
     s32 unk_0a8;            /* 0x0a8 */
     u8  pad_0ac[0x28];
-    u8  mModel;            /* 0x0d4 */
-    u8  pad_0d5[0x4f];
+    /* Model member, named by the class's own destructor calling
+       Model's D1 at +0x0d4 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN11WingFeatherD0Ev.c] */
+    Model mModel;            /* 0x0d4 */
     u8  mMovingCylinderClsn;            /* 0x124 */
     u8  pad_125[0x23];
     u32 unk_148;            /* 0x148 */

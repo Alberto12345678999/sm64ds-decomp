@@ -5,6 +5,7 @@
 #ifndef LAVABUBBLE_H
 #define LAVABUBBLE_H
 #include "types.h"
+#include "WithMeshClsn.h"
 
 struct LavaBubble {
     u8  pad_000[0x8];
@@ -28,8 +29,10 @@ struct LavaBubble {
     s32 unk_130;            /* 0x130 */
     u32 unk_134;            /* 0x134 */
     u8  pad_138[0xc];
-    u8  mWithMeshClsn;            /* 0x144 */
-    u8  pad_145[0x1bb];
+    /* WithMeshClsn member, named by the class's own destructor calling
+       WithMeshClsn's D1 at +0x144 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN10LavaBubbleD1Ev.c] */
+    WithMeshClsn mWithMeshClsn;            /* 0x144 */
     s32 unk_300;            /* 0x300 */
     s32 unk_304;            /* 0x304 */
     s32 unk_308;            /* 0x308 */

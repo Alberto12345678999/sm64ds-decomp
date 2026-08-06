@@ -6,6 +6,7 @@
 #define ARROWLIFT_H
 #include "types.h"
 #include "Model.h"
+#include "MovingCylinderClsn.h"
 
 struct ArrowLift {
     u8  pad_000[0x8];
@@ -18,8 +19,10 @@ struct ArrowLift {
     /* Model member, named by _ZN5ModelD1Ev at +0xd4 -- a relocation the ROM build checks.
        D1 and not D2, so it is this type and not an inlined base. Was a u8 marker. */
     Model mModel;            /* 0x0d4 */
-    u8  mMovingCylinderClsn;            /* 0x124 */
-    u8  pad_125[0x33];
+    /* MovingCylinderClsn member, named by the class's own destructor calling
+       MovingCylinderClsn's D1 at +0x124 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN9ArrowLiftD0Ev.c] */
+    MovingCylinderClsn mMovingCylinderClsn;            /* 0x124 */
     s32 unk_158;            /* 0x158 */
     s8  unk_15c;            /* 0x15c */
     u8  unk_15d;            /* 0x15d */

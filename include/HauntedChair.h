@@ -6,6 +6,9 @@
 #define HAUNTEDCHAIR_H
 #include "types.h"
 #include "Model.h"
+#include "ShadowModel.h"
+#include "MovingCylinderClsnWithPos.h"
+#include "WithMeshClsn.h"
 
 struct HauntedChair {
     u8  pad_000[0x5c];
@@ -16,14 +19,20 @@ struct HauntedChair {
     /* Model member, named by _ZN5ModelD1Ev at +0xd4 -- a relocation the ROM build checks.
        D1 and not D2, so it is this type and not an inlined base. Was a u8 marker. */
     Model mModel;            /* 0x0d4 */
-    u8  mShadowModel;            /* 0x124 */
-    u8  pad_125[0x27];
+    /* ShadowModel member, named by the class's own destructor calling
+       ShadowModel's D1 at +0x124 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN12HauntedChairD0Ev.c] */
+    ShadowModel mShadowModel;            /* 0x124 */
     u8  unk_14c;            /* 0x14c */
     u8  pad_14d[0x2f];
-    u8  mMovingCylinderClsnWithPos;            /* 0x17c */
-    u8  pad_17d[0x3f];
-    u8  mWithMeshClsn;            /* 0x1bc */
-    u8  pad_1bd[0x1bb];
+    /* MovingCylinderClsnWithPos member, named by the class's own destructor calling
+       MovingCylinderClsnWithPos's D1 at +0x17c -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN12HauntedChairD0Ev.c] */
+    MovingCylinderClsnWithPos mMovingCylinderClsnWithPos;            /* 0x17c */
+    /* WithMeshClsn member, named by the class's own destructor calling
+       WithMeshClsn's D1 at +0x1bc -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN12HauntedChairD0Ev.c] */
+    WithMeshClsn mWithMeshClsn;            /* 0x1bc */
     s32 unk_378;            /* 0x378 */
     u8  pad_37c[0x4];
     s32 unk_380;            /* 0x380 */

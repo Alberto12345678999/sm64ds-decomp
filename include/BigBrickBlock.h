@@ -5,6 +5,7 @@
 #ifndef BIGBRICKBLOCK_H
 #define BIGBRICKBLOCK_H
 #include "types.h"
+#include "Model.h"
 
 /* Actor is only ever pointed at from here, so a declaration is enough --
  * no definition is pulled in. The typedef keeps the member spelled the
@@ -19,8 +20,10 @@ struct BigBrickBlock {
     u8  pad_000[0xc];
     u16 mActorId;            /* 0x00c */
     u8  pad_00e[0xc6];
-    u8  mModel;            /* 0x0d4 */
-    u8  pad_0d5[0x4f];
+    /* Model member, named by the class's own destructor calling
+       Model's D1 at +0x0d4 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN13BigBrickBlockD1Ev.c] */
+    Model mModel;            /* 0x0d4 */
     u8  mMeshCollider;            /* 0x124 */
     u8  pad_125[0x1f9];
     u8  unk_31e;            /* 0x31e */

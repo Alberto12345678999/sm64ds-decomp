@@ -6,6 +6,9 @@
 #define KOOPATHEQUICK_H
 #include "types.h"
 #include "ModelAnim.h"
+#include "MovingCylinderClsn.h"
+#include "WithMeshClsn.h"
+#include "ShadowModel.h"
 
 struct KoopaTheQuick {
     u8  pad_000[0x8];
@@ -67,17 +70,23 @@ struct KoopaTheQuick {
     u8  pad_0cd[0x1];
     s16 unk_0ce;                 /* 0x0ce */
     u8  pad_0d0[0x40];
-    u8  mMovingCylinderClsn;            /* 0x110 */
-    u8  pad_111[0x33];
-    u8  mWithMeshClsn;            /* 0x144 */
-    u8  pad_145[0x1bb];
+    /* MovingCylinderClsn member, named by the class's own destructor calling
+       MovingCylinderClsn's D1 at +0x110 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN13KoopaTheQuickD1Ev.c] */
+    MovingCylinderClsn mMovingCylinderClsn;            /* 0x110 */
+    /* WithMeshClsn member, named by the class's own destructor calling
+       WithMeshClsn's D1 at +0x144 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN13KoopaTheQuickD1Ev.c] */
+    WithMeshClsn mWithMeshClsn;            /* 0x144 */
     /* ModelAnim member, named by _ZN9ModelAnimD1Ev at +0x300 -- a relocation the ROM build
        checks. D1 and not D2, so it is this type and not an inlined base. The marker's pad
        stopped short of the object, so the member also takes over unk_350 (+0x50 = the
        Animation base), which the header declared separately inside it. */
     ModelAnim mModelAnim;            /* 0x300 */
-    u8  mShadowModel;            /* 0x364 */
-    u8  pad_365[0x27];
+    /* ShadowModel member, named by the class's own destructor calling
+       ShadowModel's D1 at +0x364 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN13KoopaTheQuickD1Ev.c] */
+    ShadowModel mShadowModel;            /* 0x364 */
     s32 unk_38c;            /* 0x38c */
     u8  pad_390[0x4];
     s32 unk_394;            /* 0x394 */
