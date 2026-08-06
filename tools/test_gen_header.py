@@ -76,14 +76,35 @@ def test_calls_are_matched_by_instruction_id_not_string_prefix():
     assert 'mnem.startswith("bl")' not in src, "string-prefix call matching is back"
 
 
+def test_memory_ops_are_matched_by_instruction_id_not_string_prefix():
+    """`strhs` is `str` with the HS condition, not `strh`. Capstone appends the
+    condition code, so a prefix test files a 4-byte conditional store as a 2-byte one.
+
+    Four such stores were the ENTIRE cross-pass-disagreement bucket -- ov064:0x02119974
+    `strhi`, ov025:0x02112444 and 0x0211243c `strhs`, ov065:0x0211a7d0 `strhs`. This
+    file documents the identical trap for branches and still committed it for memory.
+    """
+    src = (TOOLS / "evidence_rom.py").read_text(errors="replace")
+    assert "MEMOPS" in src, "memory ops must be keyed on instruction id"
+    for dead in ("MNEMONICS", 'mnem.startswith(m)', "in LOADS"):
+        assert dead not in src, f"string-prefix memory matching is back: {dead}"
+    # the collisions that motivated it, stated so the reason survives the code
+    for cond, base in (("strhs", "strh"), ("strhi", "strh"),
+                       ("ldrhs", "ldrh"), ("ldrhi", "ldrh")):
+        assert cond.startswith(base), "premise of this test is wrong"
+
+
 def test_stores_never_prove_signedness():
     """There is no `strsh`. A store writes the low bits whatever the source type, so
     treating one as evidence for `s16` would manufacture the exact codegen error the
     tool exists to find."""
-    for mnem, (_w, sign) in ER.STORES.items():
-        assert sign is None, f"{mnem} must not carry signedness"
-    assert ER.LOADS["ldrsh"][1] == "s" and ER.LOADS["ldrsb"][1] == "s"
-    assert ER.LOADS["ldr"][1] is None, "a word load says nothing about signedness"
+    from capstone.arm import (ARM_INS_STRH, ARM_INS_STRB, ARM_INS_STR,
+                              ARM_INS_LDRSH, ARM_INS_LDRSB, ARM_INS_LDR)
+    for iid in (ARM_INS_STRH, ARM_INS_STRB, ARM_INS_STR):
+        assert ER.MEMOPS[iid][1] is None, "a store must not carry signedness"
+        assert ER.MEMOPS[iid][2] is False
+    assert ER.MEMOPS[ARM_INS_LDRSH][1] == "s" and ER.MEMOPS[ARM_INS_LDRSB][1] == "s"
+    assert ER.MEMOPS[ARM_INS_LDR][1] is None, "a word load says nothing about sign"
 
 
 # ------------------------------------------------------------------ gen_header
