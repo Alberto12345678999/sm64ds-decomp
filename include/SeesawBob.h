@@ -13,7 +13,7 @@ struct SeesawBob {
     s16 unk_08c;            /* 0x08c */
     s16 unk_08e;            /* 0x08e */
     u8  pad_090[0x20];
-    s32 unk_0b0;            /* 0x0b0 */
+    u32 unk_0b0;            /* 0x0b0 */
     u8  pad_0b4[0x20];
     u8  mModel;            /* 0x0d4 */
     u8  pad_0d5[0x4f];

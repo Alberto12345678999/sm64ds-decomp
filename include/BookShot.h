@@ -29,7 +29,7 @@ struct BookShot {
     u8  pad_09c[0xc];
     s32 unk_0a8;            /* 0x0a8 */
     u8  pad_0ac[0x4];
-    s32 unk_0b0;            /* 0x0b0 */
+    u32 unk_0b0;            /* 0x0b0 */
     u8  pad_0b4[0x50];
     u16 unk_104;            /* 0x104 */
     u8  pad_106[0x1];

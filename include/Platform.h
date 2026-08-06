@@ -34,7 +34,7 @@ struct Platform {
     u8  pad_0a4[0x4];
     s32 unk_0a8;            /* 0x0a8 */
     u8  pad_0ac[0x4];
-    s32 unk_0b0;            /* 0x0b0 */
+    u32 unk_0b0;            /* 0x0b0 */
     s32 unk_0b4;            /* 0x0b4 */
     s32 unk_0b8;            /* 0x0b8 */
     u8  pad_0bc[0x18];

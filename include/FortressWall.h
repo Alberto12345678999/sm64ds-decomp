@@ -8,7 +8,7 @@
 
 struct FortressWall {
     u8  pad_000[0x8];
-    s32 mParam;            /* 0x008 */
+    u32 mParam;            /* 0x008 */
     u16 mActorID;            /* 0x00c */
     u8  pad_00e[0x4e];
     /* Actor::mPosX -- Actor.h declares s32 here, and it is de-bannered (hand-reconstructed). */
@@ -30,7 +30,7 @@ struct FortressWall {
     s16 mAngleX;                 /* 0x08c */
     s16 mAngleY;            /* 0x08e */
     u8  pad_090[0x3c];
-    u8  mAreaId;            /* 0x0cc */
+    s8  mAreaId;            /* 0x0cc */
     u8  pad_0cd[0x7];
     u8  mModel;            /* 0x0d4 */
     u8  pad_0d5[0x4f];

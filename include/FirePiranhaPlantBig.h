@@ -8,10 +8,10 @@
 
 struct FirePiranhaPlantBig {
     u8  pad_000[0x8];
-    s32 unk_008;            /* 0x008 */
+    u32 unk_008;            /* 0x008 */
     u16 unk_00c;            /* 0x00c */
     u8  pad_00e[0xa2];
-    s32 unk_0b0;            /* 0x0b0 */
+    u32 unk_0b0;            /* 0x0b0 */
     u8  pad_0b4[0x5c];
     u8  mModelAnim;            /* 0x110 */
     u8  pad_111[0x4f];

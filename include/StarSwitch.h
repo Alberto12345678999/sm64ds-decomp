@@ -36,7 +36,7 @@ struct StarSwitch {
     s32 unk_0c0;                 /* 0x0c0 */
     u8  unk_0c4;                 /* 0x0c4 */
     u8  pad_0c5[0x7];
-    u8  mAreaId;            /* 0x0cc */
+    s8  mAreaId;            /* 0x0cc */
     u8  pad_0cd[0x7];
     u8  mModel;            /* 0x0d4 */
     u8  pad_0d5[0x4f];

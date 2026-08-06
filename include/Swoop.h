@@ -20,7 +20,7 @@ struct Swoop {
     u8  pad_096[0xa];
     s32 unk_0a0;            /* 0x0a0 */
     u8  pad_0a4[0xc];
-    s32 unk_0b0;            /* 0x0b0 */
+    u32 unk_0b0;            /* 0x0b0 */
     u8  pad_0b4[0x54];
     u8  unk_108;            /* 0x108 */
     u8  pad_109[0x7];

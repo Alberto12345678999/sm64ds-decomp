@@ -8,7 +8,7 @@
 
 struct Koopa {
     u8  pad_000[0x8];
-    s32 mParam;            /* 0x008 */
+    u32 mParam;            /* 0x008 */
     u16 mActorID;            /* 0x00c */
     u8  pad_00e[0x4e];
     s32 mPosX;            /* 0x05c */
@@ -26,7 +26,7 @@ struct Koopa {
     s32 unk_09c;            /* 0x09c */
     s32 unk_0a0;            /* 0x0a0 */
     u8  pad_0a4[0xc];
-    s32 unk_0b0;            /* 0x0b0 */
+    u32 unk_0b0;            /* 0x0b0 */
     u8  pad_0b4[0x4c];
     s16 unk_100;            /* 0x100 */
     u8  pad_102[0x2];

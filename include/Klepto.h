@@ -26,7 +26,7 @@ struct Klepto {
     u8  pad_0a4[0x4];
     s32 unk_0a8;            /* 0x0a8 */
     s32 unk_0ac;            /* 0x0ac */
-    s32 unk_0b0;            /* 0x0b0 */
+    u32 unk_0b0;            /* 0x0b0 */
     u8  pad_0b4[0x18];
     s8  mAreaId;            /* 0x0cc */
     u8  pad_0cd[0x33];

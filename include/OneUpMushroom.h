@@ -8,7 +8,7 @@
 
 struct OneUpMushroom {
     u8  pad_000[0x8];
-    s32 mParam;            /* 0x008 */
+    u32 mParam;            /* 0x008 */
     u16 mActorID;            /* 0x00c */
     u8  pad_00e[0x4e];
     s32 mPosX;            /* 0x05c */

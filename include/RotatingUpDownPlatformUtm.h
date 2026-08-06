@@ -8,7 +8,7 @@
 
 struct RotatingUpDownPlatformUtm {
     u8  pad_000[0x8];
-    s32 mSpawnParam;            /* 0x008 */
+    u32 mSpawnParam;            /* 0x008 */
     u16 mActorID;            /* 0x00c */
     u8  pad_00e[0x4e];
     s32 mPosX;            /* 0x05c */
@@ -27,7 +27,7 @@ struct RotatingUpDownPlatformUtm {
     s16 mAngleY;            /* 0x08e */
     s16 mAngleZ;            /* 0x090 */
     u8  pad_092[0x1e];
-    s32 unk_0b0;            /* 0x0b0 */
+    u32 unk_0b0;            /* 0x0b0 */
     u8  pad_0b4[0x18];
     s8  mAreaId;            /* 0x0cc */
     u8  pad_0cd[0x7];

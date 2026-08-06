@@ -8,7 +8,7 @@
 
 struct Bird {
     u8  pad_000[0x4];
-    s32 unk_004;            /* 0x004 */
+    u32 unk_004;            /* 0x004 */
     u8  pad_008[0x54];
     s32 mPosX;            /* 0x05c */
     s32 mPosY;            /* 0x060 */

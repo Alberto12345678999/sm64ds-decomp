@@ -15,7 +15,7 @@ struct DorrieCap {
     s16 mAngleX;            /* 0x08c */
     s16 mAngleY;            /* 0x08e */
     u8  pad_090[0x20];
-    s32 unk_0b0;            /* 0x0b0 */
+    u32 unk_0b0;            /* 0x0b0 */
     u8  pad_0b4[0x18];
     s8  mAreaId;            /* 0x0cc */
     u8  pad_0cd[0x3];

@@ -8,7 +8,7 @@
 
 struct Fireball {
     u8  pad_000[0x8];
-    s32 unk_008;            /* 0x008 */
+    u32 unk_008;            /* 0x008 */
     u8  pad_00c[0xf4];
     u16 unk_100;            /* 0x100 */
     u8  pad_102[0xe];

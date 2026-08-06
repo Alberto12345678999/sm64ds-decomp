@@ -8,7 +8,7 @@
 
 struct VirtualDoor {
     u8  pad_000[0x8];
-    s32 mParam;            /* 0x008 */
+    u32 mParam;            /* 0x008 */
     u8  pad_00c[0x50];
     s32 mPosX;            /* 0x05c */
     s32 mPosY;            /* 0x060 */
@@ -19,7 +19,7 @@ struct VirtualDoor {
     s32 mScaleZ;            /* 0x088 */
     s16 mAngleX;            /* 0x08c */
     s16 mAngleY;            /* 0x08e */
-    u16 mAngleZ;            /* 0x090 */
+    s16 mAngleZ;            /* 0x090 */
     u8  pad_092[0x6];
     s32 unk_098;            /* 0x098 */
     u8  pad_09c[0x38];

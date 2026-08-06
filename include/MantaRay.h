@@ -8,7 +8,7 @@
 
 struct MantaRay {
     u8  pad_000[0x8];
-    s32 mParam;            /* 0x008 */
+    u32 mParam;            /* 0x008 */
     u8  pad_00c[0x50];
     s32 mPosX;            /* 0x05c */
     s32 mPosY;            /* 0x060 */
@@ -27,7 +27,7 @@ struct MantaRay {
     u8  pad_0a5[0x3];
     s32 unk_0a8;            /* 0x0a8 */
     s32 unk_0ac;            /* 0x0ac */
-    s32 unk_0b0;            /* 0x0b0 */
+    u32 unk_0b0;            /* 0x0b0 */
     u8  pad_0b4[0x4c];
     u8  unk_100;            /* 0x100 */
     u8  pad_101[0xf];

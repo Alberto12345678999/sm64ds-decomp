@@ -8,7 +8,7 @@
 
 struct Bullet {
     u8  pad_000[0x8];
-    s32 unk_008;            /* 0x008 */
+    u32 unk_008;            /* 0x008 */
     u8  pad_00c[0x82];
     s16 unk_08e;            /* 0x08e */
     u8  pad_090[0x4];

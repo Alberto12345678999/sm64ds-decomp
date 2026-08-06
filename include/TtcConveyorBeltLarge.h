@@ -16,7 +16,7 @@ struct TtcConveyorBeltLarge {
     u8  pad_068[0x26];
     s16 mAngleY;            /* 0x08e */
     u8  pad_090[0x20];
-    s32 unk_0b0;            /* 0x0b0 */
+    u32 unk_0b0;            /* 0x0b0 */
     u8  pad_0b4[0x20];
     u8  mModel;            /* 0x0d4 */
     u8  pad_0d5[0x7];

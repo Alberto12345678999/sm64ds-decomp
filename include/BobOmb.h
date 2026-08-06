@@ -22,7 +22,7 @@ struct BobOmb {
     s32 unk_098;            /* 0x098 */
     s32 unk_09c;            /* 0x09c */
     u8  pad_0a0[0x10];
-    s32 unk_0b0;            /* 0x0b0 */
+    u32 unk_0b0;            /* 0x0b0 */
     u8  pad_0b4[0x58];
     s32 unk_10c;            /* 0x10c */
     u8  mCylinderClsn;            /* 0x110 */

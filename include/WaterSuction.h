@@ -8,7 +8,7 @@
 
 struct WaterSuction {
     u8  pad_000[0x8];
-    s32 unk_008;            /* 0x008 */
+    u32 unk_008;            /* 0x008 */
     u8  pad_00c[0x80];
     s16 unk_08c;            /* 0x08c */
     s16 unk_08e;            /* 0x08e */

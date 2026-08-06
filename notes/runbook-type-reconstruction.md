@@ -123,6 +123,14 @@ cannot be reasoned out -- it has to be measured:
 Done for the 71 retypes in #1129: 119 includers, 117/117 byte-identical under `s32/s16`
 and `u32/u16` alike, control diverging as expected.
 
+It also works as a **decision procedure**, not only an inertness check. Adopting the
+ancestor's signedness across 97 fields (#1138) took the ROM build to
+`module fidelity: 105/106, FAIL` on one function: `Rabbit::InitResources` does
+`(unk_008 & 0xf00) >> 8`, and a right shift is precisely where `s32` emits `asr` and
+`u32` emits `lsr`. The ROM reproduces with `s32` and not with `u32`, so for that field
+the answer is settled by the binary -- against the reference header. 96 of the 97 were
+byte-unobservable; one was not, and the gate is what told them apart.
+
 **A/B proves harmlessness, not correctness.** It cannot confirm a width -- that rests on
 the evidence passes -- and it cannot confirm signedness at all, because what it has just
 shown is that nothing depends on it. "The gate proved the width" is the overclaim this

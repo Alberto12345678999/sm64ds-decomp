@@ -8,7 +8,7 @@
 
 struct Lakitu {
     u8  pad_000[0x8];
-    s32 mParam;            /* 0x008 */
+    u32 mParam;            /* 0x008 */
     u8  pad_00c[0x50];
     /* Actor::mPosX -- Actor.h declares s32 here, and it is de-bannered (hand-reconstructed). */
     s32 unk_05c;            /* 0x05c */
@@ -35,7 +35,7 @@ struct Lakitu {
     u8  pad_0a4[0x4];
     s32 mVertSpeed;              /* 0x0a8 */
     u8  pad_0ac[0x4];
-    s32 unk_0b0;            /* 0x0b0 */
+    u32 unk_0b0;            /* 0x0b0 */
     u8  pad_0b4[0x20];
     u8  mModelAnim;            /* 0x0d4 */
     u8  pad_0d5[0x7];

@@ -8,7 +8,7 @@
 
 struct Fish {
     u8  pad_000[0x4];
-    s32 unk_004;            /* 0x004 */
+    u32 unk_004;            /* 0x004 */
     u32 mParam;            /* 0x008 */
     u8  pad_00c[0x54];
     s32 mPosY;            /* 0x060 */

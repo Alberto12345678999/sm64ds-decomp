@@ -14,8 +14,8 @@ struct Butterfly {
     u8  pad_08c[0x2];
     s16 unk_08e;            /* 0x08e */
     u8  pad_090[0x2];
-    u16 unk_092;            /* 0x092 */
-    u16 unk_094;            /* 0x094 */
+    s16 unk_092;            /* 0x092 */
+    s16 unk_094;            /* 0x094 */
     u8  pad_096[0x2];
     s32 unk_098;            /* 0x098 */
     u8  pad_09c[0x8];

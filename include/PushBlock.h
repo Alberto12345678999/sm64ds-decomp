@@ -8,7 +8,7 @@
 
 struct PushBlock {
     u8  pad_000[0x8];
-    s32 mParam;            /* 0x008 */
+    u32 mParam;            /* 0x008 */
     u8  pad_00c[0x50];
     s32 mPosX;            /* 0x05c */
     s32 mPosY;            /* 0x060 */
@@ -29,7 +29,7 @@ struct PushBlock {
     s32 unk_09c;            /* 0x09c */
     s32 unk_0a0;            /* 0x0a0 */
     u8  pad_0a4[0xc];
-    s32 unk_0b0;            /* 0x0b0 */
+    u32 unk_0b0;            /* 0x0b0 */
     u8  pad_0b4[0x20];
     u8  mModel1;            /* 0x0d4 */
     u8  pad_0d5[0x4f];

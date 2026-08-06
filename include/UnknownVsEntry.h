@@ -8,7 +8,7 @@
 
 struct UnknownVsEntry {
     u8  pad_000[0x8];
-    s32 mParam;            /* 0x008 */
+    u32 mParam;            /* 0x008 */
     u8  pad_00c[0x44];
     u8  mParticle;            /* 0x050 */
     u8  pad_051[0x81b];

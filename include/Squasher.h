@@ -21,7 +21,7 @@ struct Squasher {
     s32 mScaleY;                 /* 0x084 */
     s32 mScaleZ;                 /* 0x088 */
     s16 mAngleX;            /* 0x08c */
-    u16 mAngleY;            /* 0x08e */
+    s16 mAngleY;            /* 0x08e */
     u8  pad_090[0x44];
     u8  mModel;            /* 0x0d4 */
     u8  pad_0d5[0x4f];

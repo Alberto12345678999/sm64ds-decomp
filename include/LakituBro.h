@@ -8,7 +8,7 @@
 
 struct LakituBro {
     u8  pad_000[0x8];
-    s32 unk_008;            /* 0x008 */
+    u32 unk_008;            /* 0x008 */
     u8  pad_00c[0x104];
     u8  mModelAnim1;            /* 0x110 */
     u8  pad_111[0x5b];

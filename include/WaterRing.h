@@ -8,7 +8,7 @@
 
 struct WaterRing {
     u8  pad_000[0x8];
-    s32 unk_008;            /* 0x008 */
+    u32 unk_008;            /* 0x008 */
     u8  pad_00c[0x74];
     s32 unk_080;            /* 0x080 */
     s32 unk_084;            /* 0x084 */

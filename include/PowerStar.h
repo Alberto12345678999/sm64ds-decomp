@@ -10,7 +10,7 @@ struct PowerStar {
     u8  pad_000[0xc];
     u16 unk_00c;            /* 0x00c */
     u8  pad_00e[0xa2];
-    s32 unk_0b0;            /* 0x0b0 */
+    u32 unk_0b0;            /* 0x0b0 */
     u8  pad_0b4[0x1c];
     s32 mEatingPlayer;            /* 0x0d0 */
     u8  pad_0d4[0x3c];

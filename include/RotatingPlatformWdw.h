@@ -8,7 +8,7 @@
 
 struct RotatingPlatformWdw {
     u8  pad_000[0x8];
-    s32 mParam;            /* 0x008 */
+    u32 mParam;            /* 0x008 */
     u8  pad_00c[0x54];
     s32 mPosY;            /* 0x060 */
     u8  pad_064[0x8];
