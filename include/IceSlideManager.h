@@ -8,10 +8,10 @@
 
 struct IceSlideManager {
     u8  pad_000[0x5c];
-    u8  unk_05c;            /* 0x05c */
-    u8  pad_05d[0x3];
-    u8  unk_060;            /* 0x060 */
-    u8  pad_061[0x3];
+    /* Actor::mPosX -- Actor.h declares s32 here, and it is de-bannered (hand-reconstructed). */
+    s32 unk_05c;            /* 0x05c */
+    /* Actor::mPosY -- Actor.h declares s32 here, and it is de-bannered (hand-reconstructed). */
+    s32 unk_060;            /* 0x060 */
     u8  unk_064;            /* 0x064 */
     u8  pad_065[0x6f];
     s16 unk_0d4;            /* 0x0d4 */

@@ -11,10 +11,10 @@ struct FortressWall {
     s32 mParam;            /* 0x008 */
     u16 mActorID;            /* 0x00c */
     u8  pad_00e[0x4e];
-    u8  unk_05c;            /* 0x05c */
-    u8  pad_05d[0x3];
-    u8  unk_060;            /* 0x060 */
-    u8  pad_061[0x3];
+    /* Actor::mPosX -- Actor.h declares s32 here, and it is de-bannered (hand-reconstructed). */
+    s32 unk_05c;            /* 0x05c */
+    /* Actor::mPosY -- Actor.h declares s32 here, and it is de-bannered (hand-reconstructed). */
+    s32 unk_060;            /* 0x060 */
     u8  unk_064;            /* 0x064 */
     u8  pad_065[0x29];
     s16 mAngleY;            /* 0x08e */

@@ -10,16 +10,16 @@ struct BowserPuzzlePiece {
     u8  pad_000[0x8];
     u32 unk_008;            /* 0x008 */
     u8  pad_00c[0x80];
-    u8  unk_08c;            /* 0x08c */
-    u8  pad_08d[0x1];
-    u8  unk_08e;            /* 0x08e */
-    u8  pad_08f[0x1];
-    u8  unk_090;            /* 0x090 */
-    u8  pad_091[0x1];
-    u8  unk_092;            /* 0x092 */
-    u8  pad_093[0x1];
-    u8  unk_094;            /* 0x094 */
-    u8  pad_095[0x1];
+    /* Actor::mAngleX -- Actor.h declares s16 here, and it is de-bannered (hand-reconstructed). */
+    s16 unk_08c;            /* 0x08c */
+    /* Actor::mAngleY -- Actor.h declares s16 here, and it is de-bannered (hand-reconstructed). */
+    s16 unk_08e;            /* 0x08e */
+    /* Actor::mAngleZ -- Actor.h declares s16 here, and it is de-bannered (hand-reconstructed). */
+    s16 unk_090;            /* 0x090 */
+    /* Actor::mPrevAngleX -- Actor.h declares s16 here, and it is de-bannered (hand-reconstructed). */
+    s16 unk_092;            /* 0x092 */
+    /* Actor::mPrevAngleY -- Actor.h declares s16 here, and it is de-bannered (hand-reconstructed). */
+    s16 unk_094;            /* 0x094 */
     u8  unk_096;            /* 0x096 */
     u8  pad_097[0x69];
     u8  unk_100;            /* 0x100 */

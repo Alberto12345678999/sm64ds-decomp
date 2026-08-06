@@ -10,18 +10,18 @@ struct Lakitu {
     u8  pad_000[0x8];
     s32 mParam;            /* 0x008 */
     u8  pad_00c[0x50];
-    u8  unk_05c;            /* 0x05c */
-    u8  pad_05d[0x3];
-    u8  unk_060;            /* 0x060 */
-    u8  pad_061[0x3];
+    /* Actor::mPosX -- Actor.h declares s32 here, and it is de-bannered (hand-reconstructed). */
+    s32 unk_05c;            /* 0x05c */
+    /* Actor::mPosY -- Actor.h declares s32 here, and it is de-bannered (hand-reconstructed). */
+    s32 unk_060;            /* 0x060 */
     u8  unk_064;            /* 0x064 */
     u8  pad_065[0x1b];
     s32 mScaleX;            /* 0x080 */
     s32 mScaleY;            /* 0x084 */
     s32 mScaleZ;            /* 0x088 */
     u8  pad_08c[0x10];
-    u8  unk_09c;            /* 0x09c */
-    u8  pad_09d[0x3];
+    /* Actor::mVertAccel -- Actor.h declares s32 here, and it is de-bannered (hand-reconstructed). */
+    s32 unk_09c;            /* 0x09c */
     u8  unk_0a0;            /* 0x0a0 */
     u8  pad_0a1[0xf];
     s32 unk_0b0;            /* 0x0b0 */

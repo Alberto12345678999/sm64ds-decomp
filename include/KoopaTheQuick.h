@@ -10,26 +10,26 @@ struct KoopaTheQuick {
     u8  pad_000[0x8];
     u8  mParam;            /* 0x008 */
     u8  pad_009[0x53];
-    u8  unk_05c;            /* 0x05c */
-    u8  pad_05d[0x3];
-    u8  unk_060;            /* 0x060 */
-    u8  pad_061[0x3];
+    /* Actor::mPosX -- Actor.h declares s32 here, and it is de-bannered (hand-reconstructed). */
+    s32 unk_05c;            /* 0x05c */
+    /* Actor::mPosY -- Actor.h declares s32 here, and it is de-bannered (hand-reconstructed). */
+    s32 unk_060;            /* 0x060 */
     u8  unk_064;            /* 0x064 */
     u8  pad_065[0x1b];
-    u8  mScaleX;            /* 0x080 */
-    u8  pad_081[0x3];
-    u8  mScaleY;            /* 0x084 */
-    u8  pad_085[0x3];
-    u8  mScaleZ;            /* 0x088 */
-    u8  pad_089[0x3];
-    u8  unk_08c;            /* 0x08c */
-    u8  pad_08d[0x1];
+    /* Actor::mScaleX -- Actor.h declares s32 here, and it is de-bannered (hand-reconstructed). */
+    s32 mScaleX;            /* 0x080 */
+    /* Actor::mScaleY -- Actor.h declares s32 here, and it is de-bannered (hand-reconstructed). */
+    s32 mScaleY;            /* 0x084 */
+    /* Actor::mScaleZ -- Actor.h declares s32 here, and it is de-bannered (hand-reconstructed). */
+    s32 mScaleZ;            /* 0x088 */
+    /* Actor::mAngleX -- Actor.h declares s16 here, and it is de-bannered (hand-reconstructed). */
+    s16 unk_08c;            /* 0x08c */
     s16 mAngleY;            /* 0x08e */
     u8  pad_090[0x4];
     s16 mPrevAngleY;            /* 0x094 */
     u8  pad_096[0x6];
-    u8  unk_09c;            /* 0x09c */
-    u8  pad_09d[0x3];
+    /* Actor::mVertAccel -- Actor.h declares s32 here, and it is de-bannered (hand-reconstructed). */
+    s32 unk_09c;            /* 0x09c */
     u8  unk_0a0;            /* 0x0a0 */
     u8  pad_0a1[0x6f];
     u8  mMovingCylinderClsn;            /* 0x110 */

@@ -10,10 +10,10 @@ struct KnockDownPlank {
     u8  pad_000[0xc];
     u8  unk_00c;            /* 0x00c */
     u8  pad_00d[0x4f];
-    u8  unk_05c;            /* 0x05c */
-    u8  pad_05d[0x3];
-    u8  unk_060;            /* 0x060 */
-    u8  pad_061[0x3];
+    /* Actor::mPosX -- Actor.h declares s32 here, and it is de-bannered (hand-reconstructed). */
+    s32 unk_05c;            /* 0x05c */
+    /* Actor::mPosY -- Actor.h declares s32 here, and it is de-bannered (hand-reconstructed). */
+    s32 unk_060;            /* 0x060 */
     u8  unk_064;            /* 0x064 */
     u8  pad_065[0x29];
     s16 mAngleY;            /* 0x08e */
