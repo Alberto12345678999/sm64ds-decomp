@@ -244,9 +244,9 @@ def main():
             """
             for a in ancestors(_cls):
                 af = any_fields(a)
-                t = af.get(off)
-                if t is not None:
-                    return a, t
+                hit = af.get(off)
+                if hit is not None:
+                    return a, hit[0]          # (type, width) -> type
                 for ao, (atyp, aw) in af.items():
                     if ao < off < ao + aw:
                         return a, atyp
@@ -295,7 +295,15 @@ def main():
                 if addr_only:
                     bucket = "offset-corroborated (width unverified)"
                 else:
-                    bucket = "unreached by any pass"
+                    # A field adopted from a de-bannered ancestor is not unreached --
+                    # its evidence is the ancestor's, and the passes look per class, so
+                    # the derived class need never touch it. Counting those as unreached
+                    # overstates uncertainty in exactly the way this report exists to
+                    # prevent: adopting 546 verified fields would read as a 14x regression.
+                    at = ancestor_type(off)
+                    bucket = ("adopted from a verified ancestor"
+                              if at and at[0] not in bannered and at[1] == typ
+                              else "unreached by any pass")
             elif dw is None:
                 bucket = "unknown-type"
                 findings[bucket].append({"cls": cls, "offset": hex(off),
@@ -408,6 +416,7 @@ def main():
         "cross-pass width disagreement",
         "marker: scalar-sized, retype",
         "marker: object, extent unknown",
+        "adopted from a verified ancestor",
         "offset-corroborated (width unverified)",
         "unreached by any pass",
         "unknown-type",
