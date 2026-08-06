@@ -1,3 +1,11 @@
+//cpp
+// @symbol _ZN2GX15SetBankForSubBGEt
+/* GX::SetBankForSubBG() -- language-mode migration only (phase 1 of
+ * notes/plan-cpp-language-mode.md). GX is a namespace, not a class: no
+ * `this`, no vtable, no layout, so nothing outside this file can shift.
+ * The body and every callee declaration are unchanged from the C version;
+ * the symbol is now mangled by the compiler instead of spelled by hand.
+ */
 #include "types.h"
 struct VramReg
 {
@@ -6,9 +14,13 @@ struct VramReg
   u16 f12;
 };
 extern struct VramReg data_020a6088;
+
+extern "C" {
 extern void Vram__Map(u16 bits);
-void _ZN2GX15SetBankForSubBGEt(u16 x)
-{
+}
+
+namespace GX {
+void SetBankForSubBG(u16 x){
   int s = (int) x;
   int new_var;
   unsigned int notx = ~((unsigned int) x);
@@ -44,4 +56,5 @@ void _ZN2GX15SetBankForSubBGEt(u16 x)
   done:
   Vram__Map(data_020a6088.w0);
 
+}
 }
