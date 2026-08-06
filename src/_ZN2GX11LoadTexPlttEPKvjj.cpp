@@ -21,9 +21,8 @@
 extern u32 data_020a60b0;   /* 0x020a60b0: palette VRAM base address */
 extern s32 data_02099fd0;   /* 0x02099fd0: DMA channel (-1 if none) */
 
-extern void MultiCopy_Int(const void *src, void *dst, u32 size);  /* 0x0205a490 */
-
 extern "C" {
+extern void MultiCopy_Int(const void *src, void *dst, u32 size);  /* 0x0205a490 */
 extern void func_02059fd0(s32 dmaChannel, const void *src, void *dst, u32 size, u32 arg4, u32 arg5);
 }
 
