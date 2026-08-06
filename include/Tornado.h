@@ -6,6 +6,8 @@
 #define TORNADO_H
 #include "types.h"
 #include "ModelAnim.h"
+#include "WithMeshClsn.h"
+#include "TextureTransformer.h"
 
 struct Tornado {
     u8  pad_000[0x8];
@@ -35,15 +37,19 @@ struct Tornado {
     s32 unk_0f4;            /* 0x0f4 */
     u32 unk_0f8;            /* 0x0f8 */
     u8  pad_0fc[0xc];
-    u8  mWithMeshClsn;            /* 0x108 */
-    u8  pad_109[0x1bb];
+    /* WithMeshClsn member, named by the class's own destructor calling
+       WithMeshClsn's D1 at +0x108 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN7TornadoD0Ev.c] */
+    WithMeshClsn mWithMeshClsn;            /* 0x108 */
     /* ModelAnim member, named by _ZN9ModelAnimD1Ev at +0x2c4 -- a relocation the ROM build
        checks. D1 and not D2, so it is this type and not an inlined base. The marker's pad
        stopped short of the object, so the member also takes over mAnimation (+0x50 = the
        Animation base), which the header declared separately inside it. */
     ModelAnim mModelAnim;            /* 0x2c4 */
-    u8  mTextureTransformer;            /* 0x328 */
-    u8  pad_329[0x13];
+    /* TextureTransformer member, named by the class's own destructor calling
+       TextureTransformer's D1 at +0x328 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN7TornadoD0Ev.c] */
+    TextureTransformer mTextureTransformer;            /* 0x328 */
     s32 unk_33c;            /* 0x33c */
     s32 unk_340;            /* 0x340 */
     s32 unk_344;            /* 0x344 */

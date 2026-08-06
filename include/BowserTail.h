@@ -5,6 +5,7 @@
 #ifndef BOWSERTAIL_H
 #define BOWSERTAIL_H
 #include "types.h"
+#include "MovingCylinderClsn.h"
 
 struct BowserTail {
     u8  pad_000[0x5c];
@@ -12,8 +13,10 @@ struct BowserTail {
     s32 mPosY;            /* 0x060 */
     s32 mPosZ;            /* 0x064 */
     u8  pad_068[0x6c];
-    u8  mMovingCylinderClsn;            /* 0x0d4 */
-    u8  pad_0d5[0x33];
+    /* MovingCylinderClsn member, named by the class's own destructor calling
+       MovingCylinderClsn's D1 at +0x0d4 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN10BowserTailD0Ev.c] */
+    MovingCylinderClsn mMovingCylinderClsn;            /* 0x0d4 */
     u32 unk_108;            /* 0x108 */
 #ifdef __cplusplus
     /* methods */

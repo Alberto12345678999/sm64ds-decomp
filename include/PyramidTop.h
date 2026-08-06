@@ -24,8 +24,10 @@ struct PyramidTop {
     s16 mAngleX;                 /* 0x08c */
     s16 mAngleY;            /* 0x08e */
     u8  pad_090[0x44];
-    u8  mModel1;            /* 0x0d4 */
-    u8  pad_0d5[0x4f];
+    /* Model member, named by the class's own destructor calling
+       Model's D1 at +0x0d4 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN10PyramidTopD1Ev.c] */
+    Model mModel1;            /* 0x0d4 */
     u8  mMeshCollider;            /* 0x124 */
     u8  pad_125[0x1fb];
     /* Model member, named by _ZN5ModelD1Ev at +0x320 -- a relocation the ROM build checks.

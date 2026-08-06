@@ -6,6 +6,8 @@
 #define ROLLINGROCK_H
 #include "types.h"
 #include "Model.h"
+#include "MovingCylinderClsnWithPos.h"
+#include "WithMeshClsn.h"
 
 struct RollingRock {
     u8  pad_000[0x4];
@@ -35,10 +37,14 @@ struct RollingRock {
     Model mModel;            /* 0x110 */
     u8  mShadowModel;            /* 0x160 */
     u8  pad_161[0x57];
-    u8  mMovingCylinderClsnWithPos;            /* 0x1b8 */
-    u8  pad_1b9[0x3f];
-    u8  mWithMeshClsn;            /* 0x1f8 */
-    u8  pad_1f9[0x1bb];
+    /* MovingCylinderClsnWithPos member, named by the class's own destructor calling
+       MovingCylinderClsnWithPos's D1 at +0x1b8 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN11RollingRockD1Ev.c] */
+    MovingCylinderClsnWithPos mMovingCylinderClsnWithPos;            /* 0x1b8 */
+    /* WithMeshClsn member, named by the class's own destructor calling
+       WithMeshClsn's D1 at +0x1f8 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN11RollingRockD1Ev.c] */
+    WithMeshClsn mWithMeshClsn;            /* 0x1f8 */
     u32 unk_3b4;            /* 0x3b4 */
     u8  pad_3b8[0x6];
     u8  mType;            /* 0x3be */

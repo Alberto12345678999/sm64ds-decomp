@@ -5,6 +5,7 @@
 #ifndef WATERSUCTION_H
 #define WATERSUCTION_H
 #include "types.h"
+#include "MovingCylinderClsnWithPos.h"
 
 struct WaterSuction {
     u8  pad_000[0x8];
@@ -19,8 +20,10 @@ struct WaterSuction {
     u8  pad_098[0x68];
     u8  unk_100;            /* 0x100 */
     u8  pad_101[0xf];
-    u8  mMovingCylinderClsnWithPos;            /* 0x110 */
-    u8  pad_111[0x3f];
+    /* MovingCylinderClsnWithPos member, named by the class's own destructor calling
+       MovingCylinderClsnWithPos's D1 at +0x110 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN12WaterSuctionD1Ev.c] */
+    MovingCylinderClsnWithPos mMovingCylinderClsnWithPos;            /* 0x110 */
     u8  mWithMeshClsn;            /* 0x150 */
     u8  pad_151[0x1c3];
     s32 unk_314;            /* 0x314 */

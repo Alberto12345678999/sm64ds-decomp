@@ -5,6 +5,7 @@
 #ifndef FIREBALL_H
 #define FIREBALL_H
 #include "types.h"
+#include "WithMeshClsn.h"
 
 struct Fireball {
     u8  pad_000[0x8];
@@ -16,8 +17,10 @@ struct Fireball {
     u8  pad_111[0x1b];
     u8  unk_12c;            /* 0x12c */
     u8  pad_12d[0x17];
-    u8  mWithMeshClsn;            /* 0x144 */
-    u8  pad_145[0x1bb];
+    /* WithMeshClsn member, named by the class's own destructor calling
+       WithMeshClsn's D1 at +0x144 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN8FireballD1Ev.c] */
+    WithMeshClsn mWithMeshClsn;            /* 0x144 */
     u8  mShadowModel;            /* 0x300 */
     u8  pad_301[0x5f];
     s32 unk_360;            /* 0x360 */

@@ -6,6 +6,7 @@
 #define ARROWSIGNRIGHT_H
 #include "types.h"
 #include "Model.h"
+#include "ShadowModel.h"
 
 struct ArrowSignRight {
     u8  pad_000[0xc];
@@ -18,8 +19,10 @@ struct ArrowSignRight {
     Model mModel;            /* 0x0d4 */
     u8  mMeshCollider;            /* 0x124 */
     u8  pad_125[0x1fb];
-    u8  mShadowModel;            /* 0x320 */
-    u8  pad_321[0x27];
+    /* ShadowModel member, named by the class's own destructor calling
+       ShadowModel's D1 at +0x320 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN14ArrowSignRightD1Ev.c] */
+    ShadowModel mShadowModel;            /* 0x320 */
     u8  unk_348;            /* 0x348 */
     u8  pad_349[0x33];
     u8  unk_37c;            /* 0x37c */

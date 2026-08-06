@@ -6,6 +6,8 @@
 #define SKEETER_H
 #include "types.h"
 #include "ModelAnim.h"
+#include "MovingCylinderClsnWithPos.h"
+#include "WithMeshClsn.h"
 
 struct Skeeter {
     u8  pad_000[0x5c];
@@ -28,10 +30,14 @@ struct Skeeter {
     u8  pad_109[0x1];
     u8  unk_10a;            /* 0x10a */
     u8  pad_10b[0x5];
-    u8  mMovingCylinderClsnWithPos;            /* 0x110 */
-    u8  pad_111[0x3f];
-    u8  mWithMeshClsn;            /* 0x150 */
-    u8  pad_151[0x1bb];
+    /* MovingCylinderClsnWithPos member, named by the class's own destructor calling
+       MovingCylinderClsnWithPos's D1 at +0x110 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN7SkeeterD1Ev.c] */
+    MovingCylinderClsnWithPos mMovingCylinderClsnWithPos;            /* 0x110 */
+    /* WithMeshClsn member, named by the class's own destructor calling
+       WithMeshClsn's D1 at +0x150 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN7SkeeterD1Ev.c] */
+    WithMeshClsn mWithMeshClsn;            /* 0x150 */
     /* ModelAnim member, named by _ZN9ModelAnimD1Ev at +0x30c -- a relocation the ROM build
        checks. D1 and not D2, so it is this type and not an inlined base. The marker's pad
        ran 0x4 bytes PAST the end of the object; that space is not evidenced and stays

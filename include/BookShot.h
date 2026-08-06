@@ -6,6 +6,9 @@
 #define BOOKSHOT_H
 #include "types.h"
 #include "ModelAnim.h"
+#include "Model.h"
+#include "ShadowModel.h"
+#include "WithMeshClsn.h"
 
 struct BookShot {
     u8  pad_000[0xc];
@@ -40,10 +43,14 @@ struct BookShot {
     /* ModelAnim member, named by _ZN9ModelAnimD1Ev at +0x110 -- a relocation the ROM build checks.
        D1 and not D2, so it is this type and not an inlined base. Was a u8 marker. */
     ModelAnim mModelAnim;            /* 0x110 */
-    u8  mModel;            /* 0x174 */
-    u8  pad_175[0x4f];
-    u8  mShadowModel;            /* 0x1c4 */
-    u8  pad_1c5[0x27];
+    /* Model member, named by the class's own destructor calling
+       Model's D1 at +0x174 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN8BookShotD1Ev.c] */
+    Model mModel;            /* 0x174 */
+    /* ShadowModel member, named by the class's own destructor calling
+       ShadowModel's D1 at +0x1c4 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN8BookShotD1Ev.c] */
+    ShadowModel mShadowModel;            /* 0x1c4 */
     u8  unk_1ec;            /* 0x1ec */
     u8  pad_1ed[0x2f];
     u8  mMovingCylinderClsnWithPos;            /* 0x21c */
@@ -52,8 +59,10 @@ struct BookShot {
     u8  pad_235[0x3];
     u8  unk_238;            /* 0x238 */
     u8  pad_239[0x23];
-    u8  mWithMeshClsn;            /* 0x25c */
-    u8  pad_25d[0x1bb];
+    /* WithMeshClsn member, named by the class's own destructor calling
+       WithMeshClsn's D1 at +0x25c -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN8BookShotD1Ev.c] */
+    WithMeshClsn mWithMeshClsn;            /* 0x25c */
     s32 unk_418;            /* 0x418 */
     s32 unk_41c;            /* 0x41c */
     s32 unk_420;            /* 0x420 */

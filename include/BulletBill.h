@@ -6,6 +6,8 @@
 #define BULLETBILL_H
 #include "types.h"
 #include "Model.h"
+#include "WithMeshClsn.h"
+#include "ShadowModel.h"
 
 struct BulletBill {
     u8  pad_000[0x5c];
@@ -35,16 +37,20 @@ struct BulletBill {
     s32 unk_130;            /* 0x130 */
     u32 unk_134;            /* 0x134 */
     u8  pad_138[0x18];
-    u8  mWithMeshClsn;            /* 0x150 */
-    u8  pad_151[0x1bb];
+    /* WithMeshClsn member, named by the class's own destructor calling
+       WithMeshClsn's D1 at +0x150 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN10BulletBillD1Ev.c] */
+    WithMeshClsn mWithMeshClsn;            /* 0x150 */
     /* Model member, named by _ZN5ModelD1Ev at +0x30c -- a relocation the ROM build checks.
        D1 and not D2, so it is this type and not an inlined base. Was a u8 marker. */
     Model mModel1;            /* 0x30c */
     /* Model member, named by _ZN5ModelD1Ev at +0x35c -- a relocation the ROM build checks.
        D1 and not D2, so it is this type and not an inlined base. Was a u8 marker. */
     Model mModel2;            /* 0x35c */
-    u8  mShadowModel;            /* 0x3ac */
-    u8  pad_3ad[0x27];
+    /* ShadowModel member, named by the class's own destructor calling
+       ShadowModel's D1 at +0x3ac -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN10BulletBillD1Ev.c] */
+    ShadowModel mShadowModel;            /* 0x3ac */
     s32 mState;            /* 0x3d4 */
     s32 unk_3d8;            /* 0x3d8 */
 #ifdef __cplusplus

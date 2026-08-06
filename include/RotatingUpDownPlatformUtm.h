@@ -5,6 +5,7 @@
 #ifndef ROTATINGUPDOWNPLATFORMUTM_H
 #define ROTATINGUPDOWNPLATFORMUTM_H
 #include "types.h"
+#include "Model.h"
 
 struct RotatingUpDownPlatformUtm {
     u8  pad_000[0x8];
@@ -31,8 +32,10 @@ struct RotatingUpDownPlatformUtm {
     u8  pad_0b4[0x18];
     s8  mAreaId;            /* 0x0cc */
     u8  pad_0cd[0x7];
-    u8  mModel;            /* 0x0d4 */
-    u8  pad_0d5[0x4f];
+    /* Model member, named by the class's own destructor calling
+       Model's D1 at +0x0d4 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN25RotatingUpDownPlatformUtmD1Ev.c] */
+    Model mModel;            /* 0x0d4 */
     u8  mMeshCollider;            /* 0x124 */
     u8  pad_125[0x1db];
     u8  unk_300;            /* 0x300 */

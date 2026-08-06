@@ -5,6 +5,9 @@
 #ifndef FLAMECHOMPFIRE_H
 #define FLAMECHOMPFIRE_H
 #include "types.h"
+#include "ShadowModel.h"
+#include "MovingCylinderClsn.h"
+#include "WithMeshClsn.h"
 
 struct FlameChompFire {
     u8  pad_000[0x5c];
@@ -21,12 +24,18 @@ struct FlameChompFire {
     u8  pad_0a4[0xc];
     s32 unk_0b0;            /* 0x0b0 */
     u8  pad_0b4[0x20];
-    u8  mShadowModel;            /* 0x0d4 */
-    u8  pad_0d5[0x27];
-    u8  mMovingCylinderClsn;            /* 0x0fc */
-    u8  pad_0fd[0x33];
-    u8  mWithMeshClsn;            /* 0x130 */
-    u8  pad_131[0x1bb];
+    /* ShadowModel member, named by the class's own destructor calling
+       ShadowModel's D1 at +0x0d4 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN14FlameChompFireD0Ev.c] */
+    ShadowModel mShadowModel;            /* 0x0d4 */
+    /* MovingCylinderClsn member, named by the class's own destructor calling
+       MovingCylinderClsn's D1 at +0x0fc -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN14FlameChompFireD0Ev.c] */
+    MovingCylinderClsn mMovingCylinderClsn;            /* 0x0fc */
+    /* WithMeshClsn member, named by the class's own destructor calling
+       WithMeshClsn's D1 at +0x130 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN14FlameChompFireD0Ev.c] */
+    WithMeshClsn mWithMeshClsn;            /* 0x130 */
     u8  unk_2ec;            /* 0x2ec */
     u8  pad_2ed[0x37];
     s32 unk_324;            /* 0x324 */

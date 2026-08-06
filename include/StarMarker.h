@@ -6,6 +6,7 @@
 #define STARMARKER_H
 #include "types.h"
 #include "Model.h"
+#include "ShadowModel.h"
 
 struct StarMarker {
     u8  pad_000[0x4];
@@ -31,8 +32,10 @@ struct StarMarker {
        unk_158 (+0x44 = mat4x3.t.y), unk_15c (+0x48 = mat4x3.t.z), which the header
        declared separately inside it. */
     Model mModel;            /* 0x114 */
-    u8  mShadowModel;            /* 0x164 */
-    u8  pad_165[0x27];
+    /* ShadowModel member, named by the class's own destructor calling
+       ShadowModel's D1 at +0x164 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN10StarMarkerD0Ev.c] */
+    ShadowModel mShadowModel;            /* 0x164 */
     u8  unk_18c;            /* 0x18c */
     u8  pad_18d[0x23];
     s32 unk_1b0;            /* 0x1b0 */

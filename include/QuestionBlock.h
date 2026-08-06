@@ -6,6 +6,7 @@
 #define QUESTIONBLOCK_H
 #include "types.h"
 #include "ModelAnim.h"
+#include "ShadowModel.h"
 
 struct QuestionBlock {
     u8  pad_000[0x8];
@@ -33,8 +34,10 @@ struct QuestionBlock {
        stopped short of the object, so the member also takes over mAnimation (+0x50 = the
        Animation base), which the header declared separately inside it. */
     ModelAnim mModelAnim;            /* 0x320 */
-    u8  mShadowModel;            /* 0x384 */
-    u8  pad_385[0x27];
+    /* ShadowModel member, named by the class's own destructor calling
+       ShadowModel's D1 at +0x384 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN13QuestionBlockD1Ev.c] */
+    ShadowModel mShadowModel;            /* 0x384 */
     u8  unk_3ac;            /* 0x3ac */
     u8  pad_3ad[0x33];
     s32 unk_3e0;            /* 0x3e0 */

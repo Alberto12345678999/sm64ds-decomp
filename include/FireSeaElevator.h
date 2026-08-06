@@ -6,6 +6,7 @@
 #define FIRESEAELEVATOR_H
 #include "types.h"
 #include "Model.h"
+#include "MovingCylinderClsn.h"
 
 struct FireSeaElevator {
     u8  pad_000[0x8];
@@ -18,8 +19,10 @@ struct FireSeaElevator {
     Model mModel;            /* 0x0d4 */
     u8  mMovingMeshCollider;            /* 0x124 */
     u8  pad_125[0x1fb];
-    u8  mMovingCylinderClsn;            /* 0x320 */
-    u8  pad_321[0x33];
+    /* MovingCylinderClsn member, named by the class's own destructor calling
+       MovingCylinderClsn's D1 at +0x320 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN15FireSeaElevatorD1Ev.c] */
+    MovingCylinderClsn mMovingCylinderClsn;            /* 0x320 */
     u16 unk_354;            /* 0x354 */
 #ifdef __cplusplus
     /* methods */

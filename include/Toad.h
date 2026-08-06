@@ -6,6 +6,7 @@
 #define TOAD_H
 #include "types.h"
 #include "ModelAnim.h"
+#include "MovingCylinderClsn.h"
 
 struct Toad {
     u8  pad_000[0x8];
@@ -19,8 +20,10 @@ struct Toad {
     u8  pad_08e[0x3e];
     s8  mAreaId;            /* 0x0cc */
     u8  pad_0cd[0x7];
-    u8  mMovingCylinderClsn;            /* 0x0d4 */
-    u8  pad_0d5[0x33];
+    /* MovingCylinderClsn member, named by the class's own destructor calling
+       MovingCylinderClsn's D1 at +0x0d4 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN4ToadD0Ev.c] */
+    MovingCylinderClsn mMovingCylinderClsn;            /* 0x0d4 */
     /* ModelAnim member, named by _ZN9ModelAnimD1Ev at +0x108 -- a relocation the ROM build checks.
        D1 and not D2, so it is this type and not an inlined base. Was a u8 marker. */
     ModelAnim mModelAnim;            /* 0x108 */

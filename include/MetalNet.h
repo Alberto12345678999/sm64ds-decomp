@@ -6,6 +6,7 @@
 #define METALNET_H
 #include "types.h"
 #include "Model.h"
+#include "MovingMeshCollider.h"
 
 struct MetalNet {
     u8  pad_000[0x8];
@@ -16,8 +17,10 @@ struct MetalNet {
     /* Model member, named by _ZN5ModelD1Ev at +0xd4 -- a relocation the ROM build checks.
        D1 and not D2, so it is this type and not an inlined base. Was a u8 marker. */
     Model mModel;            /* 0x0d4 */
-    u8  mMovingMeshCollider;            /* 0x124 */
-    u8  pad_125[0x1c7];
+    /* MovingMeshCollider member, named by the class's own destructor calling
+       MovingMeshCollider's D1 at +0x124 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN8MetalNetD1Ev.c] */
+    MovingMeshCollider mMovingMeshCollider;            /* 0x124 */
     u8  unk_2ec;            /* 0x2ec */
 #ifdef __cplusplus
     /* methods */

@@ -6,6 +6,8 @@
 #define PUSHBLOCK_H
 #include "types.h"
 #include "Model.h"
+#include "MovingCylinderClsn.h"
+#include "WithMeshClsn.h"
 
 struct PushBlock {
     u8  pad_000[0x8];
@@ -35,14 +37,20 @@ struct PushBlock {
     /* Model member, named by _ZN5ModelD1Ev at +0xd4 -- a relocation the ROM build checks.
        D1 and not D2, so it is this type and not an inlined base. Was a u8 marker. */
     Model mModel1;            /* 0x0d4 */
-    u8  mModel2;            /* 0x124 */
-    u8  pad_125[0x4f];
+    /* Model member, named by the class's own destructor calling
+       Model's D1 at +0x124 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN9PushBlockD0Ev.c] */
+    Model mModel2;            /* 0x124 */
     u8  mShadowModel;            /* 0x174 */
     u8  pad_175[0x57];
-    u8  mMovingCylinderClsn;            /* 0x1cc */
-    u8  pad_1cd[0x33];
-    u8  mWithMeshClsn;            /* 0x200 */
-    u8  pad_201[0x1bb];
+    /* MovingCylinderClsn member, named by the class's own destructor calling
+       MovingCylinderClsn's D1 at +0x1cc -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN9PushBlockD0Ev.c] */
+    MovingCylinderClsn mMovingCylinderClsn;            /* 0x1cc */
+    /* WithMeshClsn member, named by the class's own destructor calling
+       WithMeshClsn's D1 at +0x200 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN9PushBlockD0Ev.c] */
+    WithMeshClsn mWithMeshClsn;            /* 0x200 */
     s32 unk_3bc;            /* 0x3bc */
     s32 unk_3c0;            /* 0x3c0 */
     u8  pad_3c4[0x6];
