@@ -1017,3 +1017,193 @@ splitting them would force copies the ROM does not make.
 The split is kept anyway, because three distinct stack offsets holding three distinct
 quantities is direct evidence about the source even when the metric is flat — but it is not
 progress on the frame and should not be reported as such.
+
+### The 12 surplus frame words are SCALARS, and the aggregates are already exact (2026-08-06)
+
+Hunted by enumerating every `[sp, #N]` in both disassemblies. The ROM touches **99** distinct
+slots, this draft **112** — and the whole difference sits above `0x1ac`, which is the ROM's
+highest slot.
+
+Both frames decompose the same way, and that is what settles it:
+
+| | scalars | aggregates | frame |
+|---|---|---|---|
+| ROM | `0x000`..`0x16c` = **91 words** | `0x16c`..`0x1b0` = 17 words | `0x1b4` = 109 |
+| draft | `0x000`..`0x1a0` = **104 words** | 17 words | `0x1e4` = 121 |
+
+**The aggregate region is exactly 17 words on both sides.** So the previous section's
+suspicion — that `nrm[3]`, `tp[3]`, `vb[3]`, `vc[3]`, `cr[3]` and `Vector3 sn` were the
+surplus — is wrong. They are the right size and the right count; they merely sit 0x58 higher
+because 13 *scalar* words are wedged underneath them.
+
+The ROM's aggregate block, read straight off the frame and now mirrored in the draft's
+declaration order (byte-neutral, but it is the known-correct answer so there is no reason to
+hold a different one):
+
+```
+0x16c  cr[3]   s16, 2 words   the cross scratch, reused by both KCL_VERTEX rounds
+0x174  nrm[3]                 the DotVec3 argument in the unk_35 branch
+0x180  sn                     the surface normal
+0x18c  triPos[3]              the KCL position at << 6
+0x198  vb[3]                  reconstructed vertex 2
+0x1a4  vc[3]                  reconstructed vertex 3
+```
+
+`nrm` is proof the two frames really are the same shape here: the ROM's `0x1ffbdb0`..`0x1ffbddc`
+and the draft's `+0x53c`..`+0x568` are instruction-for-instruction identical, differing only in
+that one is `sp+0x174` and the other `sp+0x1cc`.
+
+**So the target is 13 scalar locals that spill here and do not in the ROM.** Not a
+declaration-order problem — reordering was already shown byte-neutral twice. The draft
+carries scalars the ROM never materialises: `size`, `mask`, `cy`, `cz`, `one`, `r`, `stepX`,
+`z`, `t`, `u`, `vx`, `vy`, `vz`, `cd`, `ck`, `lo`, `hi`, plus `dsq` and `lensq` at two words
+each. Thirteen of those are spilling. The next move is to fold them into their uses one at a
+time and watch `sub sp, sp, #N`, which is a direct readout and far cheaper than scoring each
+attempt on the alignment ratio.
+
+### Chasing the frame directly is a dead end — it is register pressure (2026-08-06)
+
+Every declaration-level lever was swept against `sub sp, sp, #N` directly. Baseline `0x1e4`,
+ROM `0x1b4`:
+
+| attempt | frame | verdict |
+|---|---|---|
+| fold `one` into its two uses | `0x1e4` | inert |
+| fold `mask` into its three uses | `0x1e4` | inert |
+| fold `size` into its four uses | `0x1e4` | inert |
+| fold `lensq` into `dsq` | `0x1e4` | inert |
+| fold `stepX` into its use | `0x1ec` | **worse** |
+| re-scope the wall-block locals into the wall block | `0x1e4` | inert |
+| order the aggregates as the ROM does | `0x1e4` | inert |
+
+Folding a declared local does not free a slot, so mwccarm is not allocating one per
+declaration here — it allocates by need, and the conveniences were already register-resident.
+Re-scoping does not free one either, so C scope is not driving slot reuse.
+
+And the decisive measurement:
+
+```
+below 0x180 : ROM 87   cand 87
+below 0x1a0 : ROM 95   cand 95
+below 0x1b0 : ROM 99   cand 99      <- ROM's highest slot is 0x1ac
+cand also holds 0x1b0 0x1b4 0x1b8 0x1bc 0x1c0 0x1c4 0x1c8 0x1cc 0x1d0 0x1d4 0x1d8 0x1dc 0x1e0
+```
+
+**The two frames are identically dense everywhere the ROM has slots at all.** The draft simply
+needs thirteen more live values spilled, stacked on top. That is register pressure from the
+code being structurally different, not a frame or declaration problem — the surviving thirteen
+are the three `den`s, `nrm[3]`, `sn`, a three-word wall-block group and one more, all of which
+the ROM also has and fits underneath `0x1ac` by keeping fewer things live at once.
+
+**So stop optimising the frame.** It is a symptom, not a cause; it will close when the code
+converges, and no rearrangement of declarations will close it first. The sqrt is not implicated
+either — four expansions on both sides, same shape, both loading their `0` and `1` from hoisted
+frame slots.
+
+Reusable harness for this kind of question: `scratchpad/sweep.py` applies a list of textual
+folds independently and prints frame / ratio / equal per variant, which is far cheaper than
+editing and scoring by hand.
+
+### "Declaration order IS the frame" does not hold for this function (2026-08-06)
+
+Four independent classes of declaration-level lever have now been swept against this draft,
+each with a positive control proving the harness live, and **every one is byte-neutral**:
+
+| lever | variants | result |
+|---|---|---|
+| hoist all locals into one C89 block | 1 | inert on both metrics |
+| permute the block to the ROM's frame map | 2 | inert (the `f`-first move is the exception, below) |
+| re-scope wall-block locals into their block | 1 | inert |
+| fold conveniences into their uses | 5 | 4 inert, 1 worse |
+| move `en1`/`en2` to steer callee-saved allocation | 6 | all six byte-identical |
+
+The one declaration change that ever mattered was moving `KCL_File *f = kclFile;` ahead of the
+block, which is not really an ordering effect — it is the difference between a pre-block
+initialised pointer and a block member, and it moved `f` from `sp+0xb8` to `sp+0x0c`.
+
+**So the matched RaycastGround twin's first matching note — "Declaration order IS the stack
+layout... mwccarm hands out spill slots in declaration order" — is true for that function and
+NOT true for this one.** The twin is `0x498`; this is `0x1bc8`. Whatever the allocator does
+above some size or pressure threshold, it stops being steerable from the declaration block.
+Do not spend another session permuting declarations here; five sweeps and nineteen variants
+say it does nothing.
+
+### Where the structural churn actually is (2026-08-06)
+
+179 shape-alignment change ranges. The largest, by size:
+
+| words | kind | ROM address | region |
+|---|---|---|---|
+| 96 | draft has extra | `0x01ffbeb8` | the dispatch |
+| 89 | draft has extra | `0x01ffbfc8` | the dispatch |
+| 77 | ROM has extra | `0x01ffc720` | V23 |
+| 58 | draft has extra | `0x01ffbec8` | the dispatch |
+| 47 | replace | `0x01ffc57c` | E3 |
+| 45 | ROM has extra | `0x01ffcb1c` | the wall block |
+
+The dispatch accounts for ~240 surplus words on its own, and the visible cause is that the
+draft reloads the edge-normal pointers from the frame — `ldr r0,[sp,#0xc4]` three times inside
+ten instructions — where the ROM holds `en1` in `r5` and `en2` in `r4` across the whole prism
+body and only ever spills `en3`. That is the same register pressure the frame hunt landed on,
+seen from the other side, and the `en1`/`en2` sweep above shows it cannot be steered by
+declaration position.
+
+The remaining levers are therefore genuine source-shape changes that reduce how many values
+are live at once across the prism body — not anything in the declaration block.
+
+### Loop control is already converged — it is not the pressure source (2026-08-06)
+
+The theory was that the draft holds loop state in registers where the ROM spills it, starving
+the prism body. **It does not.** The ROM's loop tails are pure memory traffic:
+
+```
+0x1ffd314  ldr r0,[sp,#0x88] ; ldrh r2,[r0,#2]! ; str r0,[sp,#0x88] ; cmp r2,#0 -> body
+0x1ffd328  x += [sp+0x68] ; cmp against [sp+0x14]      (x at 0x84, stepX 0x68, hiX 0x14)
+0x1ffd344  y += [sp+0x6c] ; cmp against [sp+0x1c]      (y at 0x80, stepY 0x6c, hiY 0x1c)
+0x1ffd378  z += [sp+0x70] ; cmp against [sp+0x24]      (z at 0x20, stepZ 0x70, hiZ 0x24)
+```
+
+and the draft emits `ldr r0,[sp,#0x88] ; ldrh r2,[r0,#2]! ; str r0,[sp,#0x88] ; cmp r2,#0`
+**instruction-identical and in the same slot**. `f` at `0x0c`, `tri` at `0x8c` and `vtx` at
+`0x90` match the ROM exactly too. Nothing about loop control needs changing.
+
+Two frame-map entries fall out of this and complete section 5 of the handoff:
+
+* **`stepX` is `sp+0x68`** — the gap previously marked `?` between `rsq` (`0x60`/`0x64`) and
+  `stepY`/`stepZ` (`0x6c`/`0x70`).
+* **`z` reuses the `loZ` slot at `sp+0x20`** (`ldr r1,[sp,#0x20] ; add ; str r1,[sp,#0x20]`,
+  compared against `hiZ` at `0x24`), where `x` and `y` get their own slots at `0x84`/`0x80`.
+  So the AABB block really is `loX 0x10, hiX 0x14, loY 0x18, hiY 0x1c, loZ 0x20, hiZ 0x24`.
+
+One real layout difference does remain, and it is not liveness: the ROM's leaf loop is
+**rotated** — body first from `0x1ffbc30`, test last at `0x1ffd314` branching backwards, with
+every `continue` in the prism body targeting that bottom test. The draft emits the test at the
+top with a forward exit branch and the body after it. That offsets the whole body against the
+target and is a plausible contributor to the large INSERT/DELETE ranges, but it is a loop-
+rotation question, not a register-pressure one.
+
+### CORRECTION: the leaf loop was never unrotated — I misread my own grep (2026-08-06)
+
+The previous section claimed the draft emits the leaf-loop test at the top where the ROM
+rotates it to the bottom, and offered that as a contributor to the large INSERT/DELETE ranges.
+**That is wrong.** Rewriting the source as the explicitly rotated
+
+```c
+if (*++leaf) do { ... } while (*++leaf);
+```
+
+produces output **byte-identical** to `while (*++leaf) { ... }`. Both already contain *two*
+copies of `ldrh r2,[r0,#2]!` — an entry test at `+0x3b8` branching to the x-step and a second
+at `+0x1a18` branching back into the body — which is exactly the ROM's `0x1ffbc1c` /
+`0x1ffbc30` / `0x1ffd314` shape. mwccarm rotates this loop on its own and always did.
+
+The error was mine and it was a tooling slip, not a reasoning one: the grep that produced the
+diagnosis ended in `| head -1`, so it showed the entry test and hid the bottom copy, and I
+read "one test, at the top" off a command that could only ever print one. **When a structural
+claim rests on a count, print the count.**
+
+So loop rotation joins loop control, declaration order, frame layout and the inlined sqrt on
+the list of things already converged. The draft and the ROM agree on every structural
+question anyone has thought to ask so far; what is left is 179 small shape ranges that are
+register allocation and scheduling, and the only lever proven to move those on this function
+remains a matched sibling with the same shape.
