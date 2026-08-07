@@ -18,6 +18,7 @@ struct WallSign {
 #ifdef __cplusplus
     /* methods */
     int InitResources();
+    int Behavior();
     int Render();
 #endif
 };
