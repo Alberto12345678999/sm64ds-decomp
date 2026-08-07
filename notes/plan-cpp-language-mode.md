@@ -49,11 +49,19 @@ honestly:
 By symbol kind, with what is actually *proven* — a genuinely migrated file that is not a
 `// NONMATCHING` draft:
 
-| kind | unmigrated | proven | status |
+> **"proven" in this table means *compiles as real C++*, not *lands*.** For the
+> destructor rows it does not mean landed and never did: all 72 `D1`s and 3 `D0`s
+> are rejected by `eligible.py` (`extra sections: .data`, or a multi-function TU) and
+> none appears in `build/eligible-names.txt`. **Enrolled destructor migrations in this
+> tree: zero.** Two blockers cause it, and neither is codegen —
+> `notes/dtor-variant-audit.md` §7 and `runbook-type-reconstruction.md` §7. The
+> `plain methods` row is unaffected and genuinely does land.
+
+| kind | unmigrated | compiles | status |
 |---|---|---|---|
-| plain methods | 842 | 1,079 | **proven at scale** |
-| `D1` complete dtor | 188 | 72 | **proven** |
-| `D0` deleting dtor | 258 | 3 | **barely proven** — treat as near-research |
+| plain methods | 842 | 1,079 | **proven at scale, and enrollable** |
+| `D1` complete dtor | 188 | 72 | compiles; **0 enrolled** — blocked, see above |
+| `D0` deleting dtor | 258 | 3 | compiles; **0 enrolled** — blocked, see above |
 | `D2` base dtor | 17 | 0 | **UNPROVEN** |
 | `C1` complete ctor | 41 | 0 | **UNPROVEN** |
 | `C2` base ctor | 11 | 0 | **UNPROVEN** |
@@ -62,6 +70,14 @@ By symbol kind, with what is actually *proven* — a genuinely migrated file tha
 **57 files are excluded, not backlog:** they take a class by value, the runbook §7 dead
 end (mwccarm homes `r0-r3` to the stack, +0x14, on all 25 sweep versions at every
 optimization level). `--list excluded` names them.
+
+> **The `D2` row does not mean what it says.** `tools/dtor_variant_audit.py` shows **7 of
+> the 17** named D2 symbols occupy a vtable slot, which a base-object destructor never
+> does — they are D1s, and one of them (`_ZN5SceneD2Ev`) belongs to a different class
+> (`BootScene`). Two symbols named `D1` are conversely D2s, and the Fader family holds
+> three genuine D2s carrying no D2 name at all. Read `notes/dtor-variant-audit.md` before
+> scheduling any D2 work, and before trusting the per-class `D2:1` entries below — five of
+> the six pilot classes carry an impostor.
 
 "Unproven" is literal and it survived scrutiny. Every `.cpp` file for every constructor
 variant still hand-spells its symbol; `src/_ZN9ActorBaseC1Ev.cpp` is hand-written `asm`
@@ -176,10 +192,17 @@ Pilot targets — highest unmigrated count *and* an existing reconstructed heade
 | `Scene` | 23 | `D0:1 D1:1 D2:1 method:20` |
 | `Heap` | 19 | `C1:1 D0:1 D1:1 D2:1 method:15` |
 
-Start with **`Scene`**. Its header is already mostly named, so the slice tests the
+~~Start with **`Scene`**. Its header is already mostly named, so the slice tests the
 *migration* rather than migration plus field reconstruction at once, and it carries one of
 each dtor variant — exactly the `D0`/`D2` evidence Phase 2 is missing — without dragging in
-a constructor. `Actor` is the prize (65 files, base of the actor hierarchy) and also the
+a constructor.~~
+
+**Retracted; both claims were false.** `include/Scene.h` declares **one** field
+(`u8 unk_013` behind `0x13` of padding) under the fabricated `gen_header.py` banner — it is
+a rung-0 skeleton, not a named header — and all three Scene destructors are shadow-struct
+files that do not include it. Nor does Scene carry one of each variant: `_ZN5SceneD2Ev` is
+`BootScene`'s D1 (`notes/dtor-variant-audit.md`). Pick the pilot from `--by-class` output
+that has been through that audit. `Actor` is the prize (65 files, base of the actor hierarchy) and also the
 widest blast radius in the tree: take it third or fourth, once the procedure is boring.
 Note that `Actor`, `Player`, `Stage` and `Heap` each carry a ctor variant, which is Phase 5
 research — split those files out of the slice rather than letting them block it.
@@ -187,7 +210,17 @@ research — split those files out of the slice rather than letting them block i
 Heed the runbook's warning on the C side: a polymorphic class needs an explicit
 `void* vtable; /* 0x00 */` under `#else`, or every C includer's offsets shift by 4.
 
-### Phase 3 — Plain methods *(842, less the 57 excluded)*
+### Phase 3 — Plain methods *(842, less the 57 excluded)* — **do this BEFORE Phase 2**
+
+**Reordered.** Phase 2 is blocked on tooling that does not exist (a delink model that
+can bind one file to a multi-function range); Phase 3 is not blocked at all. Defining a
+non-key virtual against a real header emits a single clean `.text` — verified on
+`2004/b56` — so these files land today while destructors cannot. Scheduling 463
+unlandable files ahead of 757 landable ones was an artifact of not knowing the blocker.
+
+Good first slices are classes with **no destructor rows at all**, so the blocker cannot
+bite: `SaveData` (16 files, 11 TUs) then `Message` (18 files, 14 TUs). Both have
+headers, neither has an RTTI record, so neither is polymorphic.
 
 Same slices, same classes, after that class's dtors are done. Includes converting raw
 mangled sibling calls into real calls where the callee now has a proper declaration —
