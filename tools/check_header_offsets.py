@@ -15,8 +15,76 @@ first gate on any header edit; see notes/plan-scalar-markers.md 4.
 import re, sys, pathlib
 SZ = {"u8":1,"s8":1,"char":1,"u16":2,"s16":2,"short":2,"u32":4,"s32":4,"int":4,
       "unsigned":4,"long":4,"Fix12i":4,"float":4,"u64":8,"s64":8,"double":8}
-# `void *p;` / `Model* m;` -- any pointer is 4 bytes on this target
-DECL = re.compile(r"^\s*([A-Za-z_]\w*)\s*(\**)\s*(\w+)\s*"
+# Alignment is NOT the same as width once aggregates are in play: a Vector3 is 12
+# bytes wide but 4-aligned, and using the width for the padding test would invent
+# padding before every one.
+#
+# Scalars are self-aligned only up to 4. mwccarm 2004/b56 -proc arm946e aligns
+# `long long` and `double` to 4, not 8 -- measured, not assumed:
+#     struct { char c; long long v; };   /* sizeof == 12, not 16 */
+#     struct { char c; double d; };      /* sizeof == 12, not 16 */
+# (Asserting 16 instead is rejected by the compiler, so the probe discriminates.)
+# This is what lets `s64 unk_004;` sit at 0x004 in include/ClsnResult.h.
+ALIGN = {t: min(w, 4) for t, w in SZ.items()}
+
+REPO = pathlib.Path(__file__).resolve().parent.parent
+# A simple aggregate body: no nested braces, no methods.
+AGG = re.compile(r"(?:typedef\s+)?struct\s+(\w+)\s*\{([^{}]*)\}", re.S)
+# `Fix12i x, y, z;` -- one type, several declarators, optional array bounds.
+MEMBERS = re.compile(r"^\s*([A-Za-z_]\w*)\s+([^;]+);", re.M)
+
+
+def learn_aggregates(*paths):
+    """Teach SZ/ALIGN the widths of simple project aggregates.
+
+    Without this a `Vector3 pos;` field is unrecognised, and the tool's own rule --
+    an unrecognised declaration leaves the running offset short, so every later
+    field silently matches at the wrong place -- means it cannot gate ANY header
+    that uses one. include/RaycastGround.h has carried `Vector3 pos;` since it was
+    hand-extended and has been unparseable that whole time.
+
+    Deliberately narrow: only brace-free bodies whose members are already-known
+    types, so nothing is guessed. Anything else stays unknown and still reports
+    UNPARSED rather than being silently mis-sized.
+    """
+    for path in paths:
+        try:
+            txt = pathlib.Path(path).read_text(errors="replace")
+        except OSError:
+            continue
+        for name, body in AGG.findall(txt):
+            if name in SZ:
+                continue
+            off = align = 0
+            for typ, decls in MEMBERS.findall(body):
+                ptr = "*" in decls
+                w = 4 if ptr else SZ.get(typ)
+                a = 4 if ptr else ALIGN.get(typ)
+                if w is None:
+                    off = None
+                    break
+                for d in decls.split(","):
+                    arr = re.search(r"\[\s*(0x[0-9a-fA-F]+|\d+)\s*\]", d)
+                    if off % a:
+                        off += a - (off % a)
+                    off += w * (int(arr.group(1), 0) if arr else 1)
+                    align = max(align, a)
+            if off and align:
+                if off % align:
+                    off += align - (off % align)   # tail padding
+                SZ[name], ALIGN[name] = off, align
+
+
+learn_aggregates(REPO / "include" / "types.h")
+
+# `void *p;` / `Model* m;` -- any pointer is 4 bytes on this target.
+# The leading `struct`/`union`/`class`/`enum` is an elaborated type specifier and
+# names the same type as the bare tag: `struct Matrix4x3 mat4x3;` is a Matrix4x3.
+# Without it these were the ONLY unparsed declarations left in include/, and an
+# unparsed one stops the gate reporting mismatches for the rest of the header --
+# so a handful of `struct X y;` lines were suppressing the check on 8 files.
+# An unknown tag still fails: the keyword makes the shape parseable, not the size.
+DECL = re.compile(r"^\s*(?:(?:struct|union|class|enum)\s+)?([A-Za-z_]\w*)\s*(\**)\s*(\w+)\s*"
                   r"(?:\[\s*(0x[0-9a-fA-F]+|\d+)\s*\])?\s*;"
                   r"(?:\s*/\*\s*(0x[0-9a-fA-F]+))?")
 # lines inside a struct body that are legitimately not declarations
@@ -26,8 +94,10 @@ IGNORABLE = re.compile(r"^\s*($|/\*|\*|//|\}|#)")
 #   typedef char ModelAnim_size_must_be_0x64[...]
 # Without these an embedded member is an unknown type, which this checker skips --
 # and skipping without advancing the offset makes every later field mismatch.
+# rglob, not glob: Matrix4x3 and Matrix3x3 assert their sizes in include/math/,
+# so a non-recursive scan missed exactly the two that Model.h and friends embed.
 CLASS_SIZES = {}
-for _h in pathlib.Path(__file__).resolve().parents[1].joinpath("include").glob("*.h"):
+for _h in pathlib.Path(__file__).resolve().parents[1].joinpath("include").rglob("*.h"):
     for _m in re.finditer(r"(\w+)_size_must_be_(0x[0-9a-fA-F]+)",
                           _h.read_text(errors="replace")):
         CLASS_SIZES[_m.group(1)] = int(_m.group(2), 16)
@@ -36,7 +106,8 @@ SZ.update(CLASS_SIZES)
 rc = 0
 for path in sys.argv[1:]:
     txt = pathlib.Path(path).read_text(errors="replace")
-    off, bad, n, skipped = 0, 0, 0, []
+    off, bad, n, skipped, pending = 0, 0, 0, [], []
+    trusted = True
     started = in_comment = unmodelled = False
     for lineno, line in enumerate(txt.splitlines(), 1):
         if not started:
@@ -59,6 +130,13 @@ for path in sys.argv[1:]:
         if re.match(r"^\s*(virtual\b|[A-Za-z_][\w:<>, &*]*\([^;]*\)\s*(const)?\s*;)", line):
             unmodelled = True
             break
+        # A declaration can carry a trailing comment that runs onto later lines:
+        #     u8 unk_010;   /* 0x010 - first byte of the 0x28-byte ClsnResult
+        #                              the hit is written into ... */
+        # Those continuation lines are prose, not declarations. Without this they
+        # were reported UNPARSED and the header failed the gate on its own comments.
+        if line.count("/*") > line.count("*/"):
+            in_comment = True
         m = DECL.match(line)
         typ = m.group(1) if m else None
         w = 4 if (m and m.group(2)) else SZ.get(typ)
@@ -67,19 +145,36 @@ for path in sys.argv[1:]:
             # running offset short, so every later field silently "matches" at the
             # wrong place. Say so rather than quietly carrying on.
             skipped.append(f"{lineno}: {line.strip()}")
+            # ...and stop claiming MISMATCH from here on. The running offset is now
+            # known-wrong, so every later comparison is against a meaningless number:
+            # `struct CylinderClsn base;` is unparseable, which made the very next
+            # field report "comment 0x30, computed 0x000". Those are artifacts of the
+            # skip, not defects in the header. UNPARSED already fails the gate, so
+            # nothing is being hidden -- the difference is that what it prints is true.
+            trusted = False
             continue
         _, _, name, arr, decl = m.groups()
         # Alignment is the strictest MEMBER alignment, never the type's size: a
         # 100-byte ModelAnim aligns to 4, not to 100. Aligning to size padded 0xd4
         # out to 0x12c and made every later field in the header mismatch.
-        align = min(w, 4)
-        if off % align:                   # compiler would insert padding here
-            off += align - (off % align)
-        if decl is not None:
+        #
+        # Prefer a computed alignment when we have one: learn_aggregates knows a
+        # Vector3 is 4-aligned because its members are. Fall back to min(w, 4) for
+        # a type known only by its `_size_must_be_` assertion -- the size alone
+        # cannot give the alignment, and no member of any struct here exceeds 4.
+        a = 4 if (m and m.group(2)) else ALIGN.get(typ, min(w, 4))
+        if off % a:                       # compiler would insert padding here
+            off += a - (off % a)
+        if decl is not None and trusted:
             n += 1
             if int(decl, 16) != off:
-                print(f"  MISMATCH {path}:{lineno} {name}: comment {decl}, "
-                      f"computed 0x{off:03x}")
+                # Buffered, not printed: a polymorphic struct declares its virtuals
+                # AFTER its fields, so we only learn the layout is unmodelled once
+                # every field has already been compared against an offset that is
+                # short by the implicit vptr. Printing as we went emitted a screen of
+                # MISMATCHes for a header the tool then correctly skipped.
+                pending.append(f"  MISMATCH {path}:{lineno} {name}: comment {decl}, "
+                               f"computed 0x{off:03x}")
                 bad += 1
         off += w * (int(arr, 0) if arr else 1)
     if unmodelled:
@@ -87,6 +182,8 @@ for path in sys.argv[1:]:
         # hand-written polymorphic one has layout the text does not determine
         print(f"{path}: skipped -- polymorphic C++ struct, implicit vptr not modelled")
         continue
+    for msg in pending:
+        print(msg)
     for s in skipped:
         print(f"  UNPARSED {path}:{s}")
     print(f"{path}: {n} commented fields, {bad} mismatched, "
