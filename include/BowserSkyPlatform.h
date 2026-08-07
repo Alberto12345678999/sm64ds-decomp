@@ -5,6 +5,7 @@
 #ifndef BOWSERSKYPLATFORM_H
 #define BOWSERSKYPLATFORM_H
 #include "types.h"
+#include "Model.h"
 
 struct BowserSkyPlatform {
     u8  pad_000[0x5c];
@@ -16,8 +17,10 @@ struct BowserSkyPlatform {
     s32 mScaleY;            /* 0x084 */
     s32 mScaleZ;            /* 0x088 */
     u8  pad_08c[0x48];
-    u8  mModel;            /* 0x0d4 */
-    u8  pad_0d5[0x4f];
+    /* Model member, named by the class's own destructor calling
+       Model's D1 at +0x0d4 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN17BowserSkyPlatformD0Ev.c] */
+    Model mModel;            /* 0x0d4 */
     u8  mMovingCylinderClsnWithPos;            /* 0x124 */
     u8  pad_125[0x4b];
     s32 unk_170;            /* 0x170 */

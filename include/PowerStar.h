@@ -6,6 +6,8 @@
 #define POWERSTAR_H
 #include "types.h"
 #include "ModelAnim.h"
+#include "MovingCylinderClsnWithPos.h"
+#include "WithMeshClsn.h"
 
 struct PowerStar {
     u8  pad_000[0xc];
@@ -15,10 +17,14 @@ struct PowerStar {
     u8  pad_0b4[0x1c];
     s32 mEatingPlayer;            /* 0x0d0 */
     u8  pad_0d4[0x3c];
-    u8  mCylinderClsn;            /* 0x110 */
-    u8  pad_111[0x3f];
-    u8  mWithMeshClsn;            /* 0x150 */
-    u8  pad_151[0x1bb];
+    /* MovingCylinderClsnWithPos member, named by the class's own destructor calling
+       MovingCylinderClsnWithPos's D1 at +0x110 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN9PowerStarD1Ev.c] */
+    MovingCylinderClsnWithPos mCylinderClsn;            /* 0x110 */
+    /* WithMeshClsn member, named by the class's own destructor calling
+       WithMeshClsn's D1 at +0x150 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN9PowerStarD1Ev.c] */
+    WithMeshClsn mWithMeshClsn;            /* 0x150 */
     /* ModelAnim member, named by _ZN9ModelAnimD1Ev at +0x30c -- a relocation the ROM build checks.
        D1 and not D2, so it is this type and not an inlined base. Was a u8 marker. */
     ModelAnim mModelAnim1;            /* 0x30c */

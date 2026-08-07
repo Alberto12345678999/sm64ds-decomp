@@ -5,6 +5,10 @@
 #ifndef COIN_H
 #define COIN_H
 #include "types.h"
+#include "CommonModel.h"
+#include "ShadowModel.h"
+#include "MovingCylinderClsn.h"
+#include "WithMeshClsn.h"
 
 struct Coin {
     u8  pad_000[0x8];
@@ -45,16 +49,26 @@ struct Coin {
     u8  pad_0cd[0x3];
     s32 mEatingPlayer;            /* 0x0d0 */
     s32 unk_0d4;            /* 0x0d4 */
-    u8  mCommonModel1;            /* 0x0d8 */
-    u8  pad_0d9[0x3b];
-    u8  mCommonModel2;            /* 0x114 */
-    u8  pad_115[0x3b];
-    u8  mShadowModel;            /* 0x150 */
-    u8  pad_151[0x27];
-    u8  mCylinderClsn;            /* 0x178 */
-    u8  pad_179[0x33];
-    u8  mWithMeshClsn;            /* 0x1ac */
-    u8  pad_1ad[0x1bb];
+    /* CommonModel member, named by the class's own destructor calling
+       CommonModel's D1 at +0x0d8 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN4CoinD0Ev.c] */
+    CommonModel mCommonModel1;            /* 0x0d8 */
+    /* CommonModel member, named by the class's own destructor calling
+       CommonModel's D1 at +0x114 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN4CoinD0Ev.c] */
+    CommonModel mCommonModel2;            /* 0x114 */
+    /* ShadowModel member, named by the class's own destructor calling
+       ShadowModel's D1 at +0x150 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN4CoinD0Ev.c] */
+    ShadowModel mShadowModel;            /* 0x150 */
+    /* MovingCylinderClsn member, named by the class's own destructor calling
+       MovingCylinderClsn's D1 at +0x178 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN4CoinD0Ev.c] */
+    MovingCylinderClsn mCylinderClsn;            /* 0x178 */
+    /* WithMeshClsn member, named by the class's own destructor calling
+       WithMeshClsn's D1 at +0x1ac -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN4CoinD0Ev.c] */
+    WithMeshClsn mWithMeshClsn;            /* 0x1ac */
     u8  unk_368;            /* 0x368 */
     u8  pad_369[0x2f];
     s32 unk_398;            /* 0x398 */

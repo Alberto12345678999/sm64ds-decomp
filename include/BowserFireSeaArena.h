@@ -11,8 +11,10 @@ struct BowserFireSeaArena {
     u8  pad_000[0x8e];
     s16 unk_08e;            /* 0x08e */
     u8  pad_090[0x44];
-    u8  mModel1;            /* 0x0d4 */
-    u8  pad_0d5[0x4f];
+    /* Model member, named by the class's own destructor calling
+       Model's D1 at +0x0d4 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN18BowserFireSeaArenaD1Ev.c] */
+    Model mModel1;            /* 0x0d4 */
     u8  mMovingMeshCollider1;            /* 0x124 */
     u8  pad_125[0x1f9];
     s16 unk_31e;            /* 0x31e */

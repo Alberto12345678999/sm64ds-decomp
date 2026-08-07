@@ -5,6 +5,9 @@
 #ifndef HEAVEHO_H
 #define HEAVEHO_H
 #include "types.h"
+#include "MovingCylinderClsn.h"
+#include "MovingCylinderClsnWithPos.h"
+#include "WithMeshClsn.h"
 
 struct HeaveHo {
     u8  pad_000[0x5c];
@@ -21,12 +24,18 @@ struct HeaveHo {
     u8  pad_0a4[0x5c];
     u8  unk_100;            /* 0x100 */
     u8  pad_101[0xf];
-    u8  mMovingCylinderClsn;            /* 0x110 */
-    u8  pad_111[0x33];
-    u8  mMovingCylinderClsnWithPos;            /* 0x144 */
-    u8  pad_145[0x3f];
-    u8  mWithMeshClsn;            /* 0x184 */
-    u8  pad_185[0x1bb];
+    /* MovingCylinderClsn member, named by the class's own destructor calling
+       MovingCylinderClsn's D1 at +0x110 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN7HeaveHoD1Ev.c] */
+    MovingCylinderClsn mMovingCylinderClsn;            /* 0x110 */
+    /* MovingCylinderClsnWithPos member, named by the class's own destructor calling
+       MovingCylinderClsnWithPos's D1 at +0x144 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN7HeaveHoD1Ev.c] */
+    MovingCylinderClsnWithPos mMovingCylinderClsnWithPos;            /* 0x144 */
+    /* WithMeshClsn member, named by the class's own destructor calling
+       WithMeshClsn's D1 at +0x184 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN7HeaveHoD1Ev.c] */
+    WithMeshClsn mWithMeshClsn;            /* 0x184 */
     u8  mModelAnim;            /* 0x340 */
     u8  pad_341[0x4f];
     u8  mAnimation;            /* 0x390 */

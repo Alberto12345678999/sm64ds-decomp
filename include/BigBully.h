@@ -6,6 +6,8 @@
 #define BIGBULLY_H
 #include "types.h"
 #include "ModelAnim.h"
+#include "WithMeshClsn.h"
+#include "MovingCylinderClsn.h"
 
 struct BigBully {
     u8  pad_000[0x4];
@@ -26,12 +28,16 @@ struct BigBully {
     /* ModelAnim member, named by _ZN9ModelAnimD1Ev at +0x110 -- a relocation the ROM build checks.
        D1 and not D2, so it is this type and not an inlined base. Was a u8 marker. */
     ModelAnim mModelAnim;            /* 0x110 */
-    u8  mWithMeshClsn;            /* 0x174 */
-    u8  pad_175[0x1bb];
+    /* WithMeshClsn member, named by the class's own destructor calling
+       WithMeshClsn's D1 at +0x174 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN8BigBullyD1Ev.c] */
+    WithMeshClsn mWithMeshClsn;            /* 0x174 */
     u8  unk_330;            /* 0x330 */
     u8  pad_331[0xb];
-    u8  mMovingCylinderClsn;            /* 0x33c */
-    u8  pad_33d[0x33];
+    /* MovingCylinderClsn member, named by the class's own destructor calling
+       MovingCylinderClsn's D1 at +0x33c -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN8BigBullyD1Ev.c] */
+    MovingCylinderClsn mMovingCylinderClsn;            /* 0x33c */
     u8  mShadowModel;            /* 0x370 */
     u8  pad_371[0x89];
     u16 mSecretSoundCounter;            /* 0x3fa */

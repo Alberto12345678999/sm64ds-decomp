@@ -7,6 +7,8 @@
 #include "types.h"
 #include "ModelAnim.h"
 #include "Model.h"
+#include "ShadowModel.h"
+#include "WithMeshClsn.h"
 
 struct Butterfly {
     u8  pad_000[0x80];
@@ -36,12 +38,18 @@ struct Butterfly {
        short of the object, so the member also takes over unk_154 (+0x1c = mat4x3), which
        the header declared separately inside it. */
     Model mModel;            /* 0x138 */
-    u8  mShadowModel1;            /* 0x188 */
-    u8  pad_189[0x27];
-    u8  mShadowModel2;            /* 0x1b0 */
-    u8  pad_1b1[0x27];
-    u8  mWithMeshClsn;            /* 0x1d8 */
-    u8  pad_1d9[0x1bb];
+    /* ShadowModel member, named by the class's own destructor calling
+       ShadowModel's D1 at +0x188 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN9ButterflyD0Ev.c] */
+    ShadowModel mShadowModel1;            /* 0x188 */
+    /* ShadowModel member, named by the class's own destructor calling
+       ShadowModel's D1 at +0x1b0 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN9ButterflyD0Ev.c] */
+    ShadowModel mShadowModel2;            /* 0x1b0 */
+    /* WithMeshClsn member, named by the class's own destructor calling
+       WithMeshClsn's D1 at +0x1d8 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN9ButterflyD0Ev.c] */
+    WithMeshClsn mWithMeshClsn;            /* 0x1d8 */
     u8  mMovingCylinderClsnWithPos;            /* 0x394 */
     u8  pad_395[0x4b];
     s32 unk_3e0;            /* 0x3e0 */

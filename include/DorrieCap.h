@@ -5,6 +5,8 @@
 #ifndef DORRIECAP_H
 #define DORRIECAP_H
 #include "types.h"
+#include "Model.h"
+#include "MovingCylinderClsn.h"
 
 struct DorrieCap {
     u8  pad_000[0x5c];
@@ -23,10 +25,14 @@ struct DorrieCap {
     u8  unk_0d4;            /* 0x0d4 */
     u8  pad_0d5[0x1a];
     u8  unk_0ef;            /* 0x0ef */
-    u8  mModel;            /* 0x0f0 */
-    u8  pad_0f1[0x4f];
-    u8  mMovingCylinderClsn;            /* 0x140 */
-    u8  pad_141[0x33];
+    /* Model member, named by the class's own destructor calling
+       Model's D1 at +0x0f0 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN9DorrieCapD1Ev.c] */
+    Model mModel;            /* 0x0f0 */
+    /* MovingCylinderClsn member, named by the class's own destructor calling
+       MovingCylinderClsn's D1 at +0x140 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN9DorrieCapD1Ev.c] */
+    MovingCylinderClsn mMovingCylinderClsn;            /* 0x140 */
     s32 unk_174;            /* 0x174 */
 #ifdef __cplusplus
     /* methods */

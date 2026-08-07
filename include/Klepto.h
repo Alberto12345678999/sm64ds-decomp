@@ -6,6 +6,8 @@
 #define KLEPTO_H
 #include "types.h"
 #include "BlendModelAnim.h"
+#include "MovingCylinderClsn.h"
+#include "WithMeshClsn.h"
 
 struct Klepto {
     u8  pad_000[0x8];
@@ -33,12 +35,18 @@ struct Klepto {
     u8  pad_0cd[0x33];
     u8  unk_100;            /* 0x100 */
     u8  pad_101[0xf];
-    u8  mMovingCylinderClsn1;            /* 0x110 */
-    u8  pad_111[0x33];
-    u8  mMovingCylinderClsn2;            /* 0x144 */
-    u8  pad_145[0x33];
-    u8  mWithMeshClsn;            /* 0x178 */
-    u8  pad_179[0x1bb];
+    /* MovingCylinderClsn member, named by the class's own destructor calling
+       MovingCylinderClsn's D1 at +0x110 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN6KleptoD1Ev.c] */
+    MovingCylinderClsn mMovingCylinderClsn1;            /* 0x110 */
+    /* MovingCylinderClsn member, named by the class's own destructor calling
+       MovingCylinderClsn's D1 at +0x144 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN6KleptoD1Ev.c] */
+    MovingCylinderClsn mMovingCylinderClsn2;            /* 0x144 */
+    /* WithMeshClsn member, named by the class's own destructor calling
+       WithMeshClsn's D1 at +0x178 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN6KleptoD1Ev.c] */
+    WithMeshClsn mWithMeshClsn;            /* 0x178 */
     /* BlendModelAnim member, named by _ZN14BlendModelAnimD1Ev at +0x334 -- a relocation
        the ROM build checks. D1 and not D2, so it is this type and not an inlined base. The
        marker's pad stopped short of the object, so the member also takes over unk_390

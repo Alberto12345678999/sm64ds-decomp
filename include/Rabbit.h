@@ -5,6 +5,8 @@
 #ifndef RABBIT_H
 #define RABBIT_H
 #include "types.h"
+#include "MovingCylinderClsn.h"
+#include "WithMeshClsn.h"
 
 struct Rabbit {
     u8  pad_000[0x8];
@@ -23,10 +25,14 @@ struct Rabbit {
     u8  pad_0cd[0x3];
     s32 unk_0d0;            /* 0x0d0 */
     u8  pad_0d4[0x3c];
-    u8  mMovingCylinderClsn;            /* 0x110 */
-    u8  pad_111[0x33];
-    u8  mWithMeshClsn;            /* 0x144 */
-    u8  pad_145[0x1bb];
+    /* MovingCylinderClsn member, named by the class's own destructor calling
+       MovingCylinderClsn's D1 at +0x110 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN6RabbitD1Ev.c] */
+    MovingCylinderClsn mMovingCylinderClsn;            /* 0x110 */
+    /* WithMeshClsn member, named by the class's own destructor calling
+       WithMeshClsn's D1 at +0x144 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN6RabbitD1Ev.c] */
+    WithMeshClsn mWithMeshClsn;            /* 0x144 */
     u8  mModelAnim;            /* 0x300 */
     u8  pad_301[0x7];
     u8  unk_308;            /* 0x308 */

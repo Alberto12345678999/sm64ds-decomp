@@ -6,6 +6,8 @@
 #define ROLLINGIRONBALL_H
 #include "types.h"
 #include "Model.h"
+#include "WithMeshClsn.h"
+#include "MovingCylinderClsn.h"
 
 struct RollingIronBall {
     u8  pad_000[0x8];
@@ -25,15 +27,19 @@ struct RollingIronBall {
     u8  pad_102[0x6];
     u8  unk_108;            /* 0x108 */
     u8  pad_109[0x7];
-    u8  mWithMeshClsn;            /* 0x110 */
-    u8  pad_111[0x1bb];
+    /* WithMeshClsn member, named by the class's own destructor calling
+       WithMeshClsn's D1 at +0x110 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN15RollingIronBallD1Ev.c] */
+    WithMeshClsn mWithMeshClsn;            /* 0x110 */
     /* Model member, named by _ZN5ModelD1Ev at +0x2cc -- a relocation the ROM build checks.
        D1 and not D2, so it is this type and not an inlined base. Was a u8 marker. */
     Model mModel;            /* 0x2cc */
     u8  mShadowModel;            /* 0x31c */
     u8  pad_31d[0x57];
-    u8  mMovingCylinderClsn;            /* 0x374 */
-    u8  pad_375[0x33];
+    /* MovingCylinderClsn member, named by the class's own destructor calling
+       MovingCylinderClsn's D1 at +0x374 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN15RollingIronBallD1Ev.c] */
+    MovingCylinderClsn mMovingCylinderClsn;            /* 0x374 */
     s32 unk_3a8;            /* 0x3a8 */
     s32 unk_3ac;            /* 0x3ac */
     s32 unk_3b0;            /* 0x3b0 */

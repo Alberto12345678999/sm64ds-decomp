@@ -6,6 +6,8 @@
 #define SHARK_H
 #include "types.h"
 #include "ModelAnim.h"
+#include "MovingCylinderClsnWithPos.h"
+#include "WithMeshClsn.h"
 
 struct Shark {
     u8  pad_000[0x8];
@@ -41,10 +43,14 @@ struct Shark {
     u8  pad_0b0[0x50];
     u8  unk_100;            /* 0x100 */
     u8  pad_101[0xf];
-    u8  mMovingCylinderClsnWithPos;            /* 0x110 */
-    u8  pad_111[0x3f];
-    u8  mWithMeshClsn;            /* 0x150 */
-    u8  pad_151[0x1bb];
+    /* MovingCylinderClsnWithPos member, named by the class's own destructor calling
+       MovingCylinderClsnWithPos's D1 at +0x110 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN5SharkD1Ev.c] */
+    MovingCylinderClsnWithPos mMovingCylinderClsnWithPos;            /* 0x110 */
+    /* WithMeshClsn member, named by the class's own destructor calling
+       WithMeshClsn's D1 at +0x150 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN5SharkD1Ev.c] */
+    WithMeshClsn mWithMeshClsn;            /* 0x150 */
     /* ModelAnim member, named by _ZN9ModelAnimD1Ev at +0x30c -- a relocation the ROM build checks.
        D1 and not D2, so it is this type and not an inlined base. Was a u8 marker. */
     ModelAnim mModelAnim;            /* 0x30c */

@@ -5,6 +5,10 @@
 #ifndef PIRANHAPLANT_H
 #define PIRANHAPLANT_H
 #include "types.h"
+#include "Model.h"
+#include "WithMeshClsn.h"
+#include "MovingCylinderClsn.h"
+#include "MovingCylinderClsnWithPos.h"
 
 struct PiranhaPlant {
     u8  pad_000[0x5c];
@@ -42,16 +46,26 @@ struct PiranhaPlant {
     u8  mAnimation;            /* 0x160 */
     u8  pad_161[0xf];
     s32 unk_170;            /* 0x170 */
-    u8  mModel;            /* 0x174 */
-    u8  pad_175[0x4f];
-    u8  mWithMeshClsn;            /* 0x1c4 */
-    u8  pad_1c5[0x1bb];
-    u8  mMovingCylinderClsn1;            /* 0x380 */
-    u8  pad_381[0x33];
-    u8  mMovingCylinderClsn2;            /* 0x3b4 */
-    u8  pad_3b5[0x33];
-    u8  mMovingCylinderClsnWithPos;            /* 0x3e8 */
-    u8  pad_3e9[0x3f];
+    /* Model member, named by the class's own destructor calling
+       Model's D1 at +0x174 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN12PiranhaPlantD1Ev.c] */
+    Model mModel;            /* 0x174 */
+    /* WithMeshClsn member, named by the class's own destructor calling
+       WithMeshClsn's D1 at +0x1c4 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN12PiranhaPlantD1Ev.c] */
+    WithMeshClsn mWithMeshClsn;            /* 0x1c4 */
+    /* MovingCylinderClsn member, named by the class's own destructor calling
+       MovingCylinderClsn's D1 at +0x380 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN12PiranhaPlantD1Ev.c] */
+    MovingCylinderClsn mMovingCylinderClsn1;            /* 0x380 */
+    /* MovingCylinderClsn member, named by the class's own destructor calling
+       MovingCylinderClsn's D1 at +0x3b4 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN12PiranhaPlantD1Ev.c] */
+    MovingCylinderClsn mMovingCylinderClsn2;            /* 0x3b4 */
+    /* MovingCylinderClsnWithPos member, named by the class's own destructor calling
+       MovingCylinderClsnWithPos's D1 at +0x3e8 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN12PiranhaPlantD1Ev.c] */
+    MovingCylinderClsnWithPos mMovingCylinderClsnWithPos;            /* 0x3e8 */
     u8  unk_428;            /* 0x428 */
     u8  pad_429[0xb];
     s32 unk_434;            /* 0x434 */

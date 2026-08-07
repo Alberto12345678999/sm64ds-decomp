@@ -5,6 +5,8 @@
 #ifndef CHEEPCHEEP_H
 #define CHEEPCHEEP_H
 #include "types.h"
+#include "MovingCylinderClsnWithPos.h"
+#include "WithMeshClsn.h"
 
 struct CheepCheep {
     u8  pad_000[0x5c];
@@ -18,10 +20,14 @@ struct CheepCheep {
     u8  pad_096[0x1a];
     u32 unk_0b0;            /* 0x0b0 */
     u8  pad_0b4[0x5c];
-    u8  mMovingCylinderClsnWithPos;            /* 0x110 */
-    u8  pad_111[0x3f];
-    u8  mWithMeshClsn;            /* 0x150 */
-    u8  pad_151[0x1bb];
+    /* MovingCylinderClsnWithPos member, named by the class's own destructor calling
+       MovingCylinderClsnWithPos's D1 at +0x110 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN10CheepCheepD1Ev.c] */
+    MovingCylinderClsnWithPos mMovingCylinderClsnWithPos;            /* 0x110 */
+    /* WithMeshClsn member, named by the class's own destructor calling
+       WithMeshClsn's D1 at +0x150 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN10CheepCheepD1Ev.c] */
+    WithMeshClsn mWithMeshClsn;            /* 0x150 */
     u8  mModelAnim;            /* 0x30c */
     u8  pad_30d[0x67];
     s32 unk_374;            /* 0x374 */

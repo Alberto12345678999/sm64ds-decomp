@@ -6,6 +6,9 @@
 #define POKEY_H
 #include "types.h"
 #include "Model.h"
+#include "ShadowModel.h"
+#include "MovingCylinderClsn.h"
+#include "WithMeshClsn.h"
 
 struct Pokey {
     u8  pad_000[0x8];
@@ -27,12 +30,18 @@ struct Pokey {
     /* Model member, named by _ZN5ModelD1Ev at +0xd4 -- a relocation the ROM build checks.
        D1 and not D2, so it is this type and not an inlined base. Was a u8 marker. */
     Model mModel;            /* 0x0d4 */
-    u8  mShadowModel;            /* 0x124 */
-    u8  pad_125[0x27];
-    u8  mMovingCylinderClsn;            /* 0x14c */
-    u8  pad_14d[0x33];
-    u8  mWithMeshClsn;            /* 0x180 */
-    u8  pad_181[0x1bb];
+    /* ShadowModel member, named by the class's own destructor calling
+       ShadowModel's D1 at +0x124 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN5PokeyD0Ev.c] */
+    ShadowModel mShadowModel;            /* 0x124 */
+    /* MovingCylinderClsn member, named by the class's own destructor calling
+       MovingCylinderClsn's D1 at +0x14c -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN5PokeyD0Ev.c] */
+    MovingCylinderClsn mMovingCylinderClsn;            /* 0x14c */
+    /* WithMeshClsn member, named by the class's own destructor calling
+       WithMeshClsn's D1 at +0x180 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN5PokeyD0Ev.c] */
+    WithMeshClsn mWithMeshClsn;            /* 0x180 */
     u8  unk_33c;            /* 0x33c */
     u8  pad_33d[0x2f];
     s32 unk_36c;            /* 0x36c */

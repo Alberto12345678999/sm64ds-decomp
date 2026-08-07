@@ -6,6 +6,7 @@
 #define SHIPWING_H
 #include "types.h"
 #include "Model.h"
+#include "WithMeshClsn.h"
 
 struct ShipWing {
     u8  pad_000[0x5c];
@@ -25,8 +26,10 @@ struct ShipWing {
     Model mModel;            /* 0x0d4 */
     u8  mMeshCollider;            /* 0x124 */
     u8  pad_125[0x1fb];
-    u8  mWithMeshClsn;            /* 0x320 */
-    u8  pad_321[0x1bb];
+    /* WithMeshClsn member, named by the class's own destructor calling
+       WithMeshClsn's D1 at +0x320 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN8ShipWingD1Ev.c] */
+    WithMeshClsn mWithMeshClsn;            /* 0x320 */
     s32 unk_4dc;            /* 0x4dc */
     s32 unk_4e0;            /* 0x4e0 */
     s32 unk_4e4;            /* 0x4e4 */

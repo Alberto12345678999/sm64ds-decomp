@@ -5,6 +5,11 @@
 #ifndef MONEYBAG_H
 #define MONEYBAG_H
 #include "types.h"
+#include "ModelAnim.h"
+#include "Model.h"
+#include "ShadowModel.h"
+#include "MovingCylinderClsn.h"
+#include "WithMeshClsn.h"
 
 struct Moneybag {
     u8  pad_000[0x5c];
@@ -21,16 +26,26 @@ struct Moneybag {
     u8  pad_0a4[0xc];
     s32 unk_0b0;            /* 0x0b0 */
     u8  pad_0b4[0x20];
-    u8  mModelAnim;            /* 0x0d4 */
-    u8  pad_0d5[0x63];
-    u8  mModel;            /* 0x138 */
-    u8  pad_139[0x4f];
-    u8  mShadowModel;            /* 0x188 */
-    u8  pad_189[0x27];
-    u8  mMovingCylinderClsn;            /* 0x1b0 */
-    u8  pad_1b1[0x33];
-    u8  mWithMeshClsn;            /* 0x1e4 */
-    u8  pad_1e5[0x1bb];
+    /* ModelAnim member, named by the class's own destructor calling
+       ModelAnim's D1 at +0x0d4 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN8MoneybagD0Ev.c] */
+    ModelAnim mModelAnim;            /* 0x0d4 */
+    /* Model member, named by the class's own destructor calling
+       Model's D1 at +0x138 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN8MoneybagD0Ev.c] */
+    Model mModel;            /* 0x138 */
+    /* ShadowModel member, named by the class's own destructor calling
+       ShadowModel's D1 at +0x188 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN8MoneybagD0Ev.c] */
+    ShadowModel mShadowModel;            /* 0x188 */
+    /* MovingCylinderClsn member, named by the class's own destructor calling
+       MovingCylinderClsn's D1 at +0x1b0 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN8MoneybagD0Ev.c] */
+    MovingCylinderClsn mMovingCylinderClsn;            /* 0x1b0 */
+    /* WithMeshClsn member, named by the class's own destructor calling
+       WithMeshClsn's D1 at +0x1e4 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN8MoneybagD0Ev.c] */
+    WithMeshClsn mWithMeshClsn;            /* 0x1e4 */
     u8  unk_3a0;            /* 0x3a0 */
     u8  pad_3a1[0x2f];
     s32 unk_3d0;            /* 0x3d0 */

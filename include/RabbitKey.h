@@ -6,6 +6,7 @@
 #define RABBITKEY_H
 #include "types.h"
 #include "Model.h"
+#include "ShadowModel.h"
 
 struct RabbitKey {
     u8  pad_000[0x8];
@@ -30,8 +31,10 @@ struct RabbitKey {
     /* Model member, named by _ZN5ModelD1Ev at +0x110 -- a relocation the ROM build checks.
        D1 and not D2, so it is this type and not an inlined base. Was a u8 marker. */
     Model mModel;            /* 0x110 */
-    u8  mShadowModel;            /* 0x160 */
-    u8  pad_161[0x27];
+    /* ShadowModel member, named by the class's own destructor calling
+       ShadowModel's D1 at +0x160 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN9RabbitKeyD1Ev.c] */
+    ShadowModel mShadowModel;            /* 0x160 */
     u8  unk_188;            /* 0x188 */
     u8  pad_189[0x7];
     s32 unk_190;            /* 0x190 */

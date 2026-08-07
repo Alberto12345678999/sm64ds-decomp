@@ -6,6 +6,9 @@
 #define RACINGPENGUIN_H
 #include "types.h"
 #include "ModelAnim.h"
+#include "TextureSequence.h"
+#include "ShadowModel.h"
+#include "MovingCylinderClsn.h"
 
 struct RacingPenguin {
     u8  pad_000[0x80];
@@ -42,12 +45,18 @@ struct RacingPenguin {
        stopped short of the object, so the member also takes over mAnimation (+0x50 = the
        Animation base), which the header declared separately inside it. */
     ModelAnim mModelAnim;            /* 0x0d4 */
-    u8  mTextureSequence;            /* 0x138 */
-    u8  pad_139[0x13];
-    u8  mShadowModel;            /* 0x14c */
-    u8  pad_14d[0x27];
-    u8  mMovingCylinderClsn;            /* 0x174 */
-    u8  pad_175[0x33];
+    /* TextureSequence member, named by the class's own destructor calling
+       TextureSequence's D1 at +0x138 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN13RacingPenguinD0Ev.c] */
+    TextureSequence mTextureSequence;            /* 0x138 */
+    /* ShadowModel member, named by the class's own destructor calling
+       ShadowModel's D1 at +0x14c -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN13RacingPenguinD0Ev.c] */
+    ShadowModel mShadowModel;            /* 0x14c */
+    /* MovingCylinderClsn member, named by the class's own destructor calling
+       MovingCylinderClsn's D1 at +0x174 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN13RacingPenguinD0Ev.c] */
+    MovingCylinderClsn mMovingCylinderClsn;            /* 0x174 */
     u8  mWithMeshClsn;            /* 0x1a8 */
 #ifdef __cplusplus
     /* methods */

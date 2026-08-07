@@ -6,6 +6,7 @@
 #define BIRD_H
 #include "types.h"
 #include "ModelAnim.h"
+#include "ShadowModel.h"
 
 struct Bird {
     u8  pad_000[0x4];
@@ -29,8 +30,10 @@ struct Bird {
        mAnimation (+0x50 = the Animation base), which the header declared separately inside
        it. */
     ModelAnim mModelAnim;            /* 0x0d4 */
-    u8  mShadowModel;            /* 0x138 */
-    u8  pad_139[0x27];
+    /* ShadowModel member, named by the class's own destructor calling
+       ShadowModel's D1 at +0x138 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN4BirdD0Ev.c] */
+    ShadowModel mShadowModel;            /* 0x138 */
     s32 unk_160;            /* 0x160 */
     s32 unk_164;            /* 0x164 */
     s32 unk_168;            /* 0x168 */

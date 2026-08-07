@@ -5,6 +5,7 @@
 #ifndef WATERFALLMIST_H
 #define WATERFALLMIST_H
 #include "types.h"
+#include "WithMeshClsn.h"
 
 struct WaterfallMist {
     u8  pad_000[0x8];
@@ -32,8 +33,10 @@ struct WaterfallMist {
     u8  pad_11c[0x10];
     u8  unk_12c;            /* 0x12c */
     u8  pad_12d[0x17];
-    u8  mWithMeshClsn;            /* 0x144 */
-    u8  pad_145[0x1bb];
+    /* WithMeshClsn member, named by the class's own destructor calling
+       WithMeshClsn's D1 at +0x144 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN13WaterfallMistD1Ev.c] */
+    WithMeshClsn mWithMeshClsn;            /* 0x144 */
     u8  mModelAnim;            /* 0x300 */
     u8  pad_301[0x5b];
     s32 unk_35c;            /* 0x35c */

@@ -6,6 +6,9 @@
 #define SNOWBALL_H
 #include "types.h"
 #include "Model.h"
+#include "MovingCylinderClsn.h"
+#include "WithMeshClsn.h"
+#include "ShadowModel.h"
 
 struct Snowball {
     u8  pad_000[0x5c];
@@ -25,15 +28,21 @@ struct Snowball {
     u8  pad_0b0[0x50];
     u8  unk_100;            /* 0x100 */
     u8  pad_101[0xf];
-    u8  mMovingCylinderClsn;            /* 0x110 */
-    u8  pad_111[0x33];
-    u8  mWithMeshClsn;            /* 0x144 */
-    u8  pad_145[0x1bb];
+    /* MovingCylinderClsn member, named by the class's own destructor calling
+       MovingCylinderClsn's D1 at +0x110 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN8SnowballD1Ev.c] */
+    MovingCylinderClsn mMovingCylinderClsn;            /* 0x110 */
+    /* WithMeshClsn member, named by the class's own destructor calling
+       WithMeshClsn's D1 at +0x144 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN8SnowballD1Ev.c] */
+    WithMeshClsn mWithMeshClsn;            /* 0x144 */
     /* Model member, named by _ZN5ModelD1Ev at +0x300 -- a relocation the ROM build checks.
        D1 and not D2, so it is this type and not an inlined base. Was a u8 marker. */
     Model mModel;            /* 0x300 */
-    u8  mShadowModel;            /* 0x350 */
-    u8  pad_351[0x27];
+    /* ShadowModel member, named by the class's own destructor calling
+       ShadowModel's D1 at +0x350 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN8SnowballD1Ev.c] */
+    ShadowModel mShadowModel;            /* 0x350 */
     s32 unk_378;            /* 0x378 */
     s32 unk_37c;            /* 0x37c */
     s32 unk_380;            /* 0x380 */

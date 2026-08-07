@@ -5,6 +5,9 @@
 #ifndef CRAZEDCRATE_H
 #define CRAZEDCRATE_H
 #include "types.h"
+#include "Model.h"
+#include "ShadowModel.h"
+#include "MovingCylinderClsn.h"
 
 struct CrazedCrate {
     u8  pad_000[0x5c];
@@ -21,12 +24,18 @@ struct CrazedCrate {
     u8  pad_0a4[0xc];
     s32 unk_0b0;            /* 0x0b0 */
     u8  pad_0b4[0x20];
-    u8  mModel;            /* 0x0d4 */
-    u8  pad_0d5[0x4f];
-    u8  mShadowModel;            /* 0x124 */
-    u8  pad_125[0x27];
-    u8  mMovingCylinderClsn;            /* 0x14c */
-    u8  pad_14d[0x33];
+    /* Model member, named by the class's own destructor calling
+       Model's D1 at +0x0d4 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN11CrazedCrateD0Ev.c] */
+    Model mModel;            /* 0x0d4 */
+    /* ShadowModel member, named by the class's own destructor calling
+       ShadowModel's D1 at +0x124 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN11CrazedCrateD0Ev.c] */
+    ShadowModel mShadowModel;            /* 0x124 */
+    /* MovingCylinderClsn member, named by the class's own destructor calling
+       MovingCylinderClsn's D1 at +0x14c -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN11CrazedCrateD0Ev.c] */
+    MovingCylinderClsn mMovingCylinderClsn;            /* 0x14c */
     u8  mWithMeshClsn;            /* 0x180 */
     u8  pad_181[0x1f3];
     s32 unk_374;            /* 0x374 */

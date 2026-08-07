@@ -6,6 +6,9 @@
 #define BABYPENGUIN_H
 #include "types.h"
 #include "ModelAnim.h"
+#include "ShadowModel.h"
+#include "MovingCylinderClsn.h"
+#include "WithMeshClsn.h"
 
 struct BabyPenguin {
     u8  pad_000[0x5c];
@@ -24,12 +27,18 @@ struct BabyPenguin {
     /* ModelAnim member, named by _ZN9ModelAnimD1Ev at +0xd4 -- a relocation the ROM build checks.
        D1 and not D2, so it is this type and not an inlined base. Was a u8 marker. */
     ModelAnim mModelAnim;            /* 0x0d4 */
-    u8  mShadowModel;            /* 0x138 */
-    u8  pad_139[0x27];
-    u8  mMovingCylinderClsn;            /* 0x160 */
-    u8  pad_161[0x33];
-    u8  mWithMeshClsn;            /* 0x194 */
-    u8  pad_195[0x1bb];
+    /* ShadowModel member, named by the class's own destructor calling
+       ShadowModel's D1 at +0x138 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN11BabyPenguinD0Ev.c] */
+    ShadowModel mShadowModel;            /* 0x138 */
+    /* MovingCylinderClsn member, named by the class's own destructor calling
+       MovingCylinderClsn's D1 at +0x160 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN11BabyPenguinD0Ev.c] */
+    MovingCylinderClsn mMovingCylinderClsn;            /* 0x160 */
+    /* WithMeshClsn member, named by the class's own destructor calling
+       WithMeshClsn's D1 at +0x194 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN11BabyPenguinD0Ev.c] */
+    WithMeshClsn mWithMeshClsn;            /* 0x194 */
     s32 unk_350;            /* 0x350 */
     s32 unk_354;            /* 0x354 */
     s32 unk_358;            /* 0x358 */

@@ -7,6 +7,11 @@
 #include "types.h"
 #include "ModelAnim.h"
 #include "Model.h"
+#include "TextureSequence.h"
+#include "TextureTransformer.h"
+#include "ShadowModel.h"
+#include "MovingCylinderClsnWithPos.h"
+#include "WithMeshClsn.h"
 
 struct Amp {
     u8  pad_000[0x8];
@@ -33,16 +38,26 @@ struct Amp {
     /* Model member, named by _ZN5ModelD1Ev at +0x138 -- a relocation the ROM build checks.
        D1 and not D2, so it is this type and not an inlined base. Was a u8 marker. */
     Model mModel;            /* 0x138 */
-    u8  mTextureSequence;            /* 0x188 */
-    u8  pad_189[0x13];
-    u8  mTextureTransformer;            /* 0x19c */
-    u8  pad_19d[0x13];
-    u8  mShadowModel;            /* 0x1b0 */
-    u8  pad_1b1[0x27];
-    u8  mMovingCylinderClsnWithPos;            /* 0x1d8 */
-    u8  pad_1d9[0x3f];
-    u8  mWithMeshClsn;            /* 0x218 */
-    u8  pad_219[0x1bb];
+    /* TextureSequence member, named by the class's own destructor calling
+       TextureSequence's D1 at +0x188 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN3AmpD0Ev.c] */
+    TextureSequence mTextureSequence;            /* 0x188 */
+    /* TextureTransformer member, named by the class's own destructor calling
+       TextureTransformer's D1 at +0x19c -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN3AmpD0Ev.c] */
+    TextureTransformer mTextureTransformer;            /* 0x19c */
+    /* ShadowModel member, named by the class's own destructor calling
+       ShadowModel's D1 at +0x1b0 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN3AmpD0Ev.c] */
+    ShadowModel mShadowModel;            /* 0x1b0 */
+    /* MovingCylinderClsnWithPos member, named by the class's own destructor calling
+       MovingCylinderClsnWithPos's D1 at +0x1d8 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN3AmpD0Ev.c] */
+    MovingCylinderClsnWithPos mMovingCylinderClsnWithPos;            /* 0x1d8 */
+    /* WithMeshClsn member, named by the class's own destructor calling
+       WithMeshClsn's D1 at +0x218 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN3AmpD0Ev.c] */
+    WithMeshClsn mWithMeshClsn;            /* 0x218 */
     u8  unk_3d4;            /* 0x3d4 */
     u8  pad_3d5[0x4b];
     s32 unk_420;            /* 0x420 */

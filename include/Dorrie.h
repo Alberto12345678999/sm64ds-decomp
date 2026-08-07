@@ -6,6 +6,9 @@
 #define DORRIE_H
 #include "types.h"
 #include "ModelAnim.h"
+#include "WithMeshClsn.h"
+#include "MovingCylinderClsn.h"
+#include "MovingCylinderClsnWithPos.h"
 
 struct Dorrie {
     u8  pad_000[0x8];
@@ -35,12 +38,18 @@ struct Dorrie {
        accounted for even though nothing names the element type. */
     ModelAnim mModelAnim;            /* 0x0ec */
     u8  pad_150[0xe00];
-    u8  mWithMeshClsn;            /* 0xf50 */
-    u8  pad_f51[0x1bb];
-    u8  unk_110c;           /* 0x110c */
-    u8  pad_110d[0x33];
-    u8  unk_1140;           /* 0x1140 */
-    u8  pad_1141[0x3f];
+    /* WithMeshClsn member, named by the class's own destructor calling
+       WithMeshClsn's D1 at +0xf50 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN6DorrieD1Ev.cpp] */
+    WithMeshClsn mWithMeshClsn;            /* 0xf50 */
+    /* MovingCylinderClsn member, named by the class's own destructor calling
+       MovingCylinderClsn's D1 at +0x110c -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN6DorrieD1Ev.cpp] */
+    MovingCylinderClsn unk_110c;           /* 0x110c */
+    /* MovingCylinderClsnWithPos member, named by the class's own destructor calling
+       MovingCylinderClsnWithPos's D1 at +0x1140 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN6DorrieD1Ev.cpp] */
+    MovingCylinderClsnWithPos unk_1140;           /* 0x1140 */
     s32 unk_1180;           /* 0x1180 */
     s32 unk_1184;           /* 0x1184 */
     s32 unk_1188;           /* 0x1188 */

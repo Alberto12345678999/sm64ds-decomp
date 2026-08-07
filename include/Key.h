@@ -5,6 +5,9 @@
 #ifndef KEY_H
 #define KEY_H
 #include "types.h"
+#include "Model.h"
+#include "MovingCylinderClsnWithPos.h"
+#include "WithMeshClsn.h"
 
 struct Key {
     u8  pad_000[0x8];
@@ -41,14 +44,20 @@ struct Key {
     u8  mAnimation;            /* 0x164 */
     u8  pad_165[0xf];
     s32 unk_174;            /* 0x174 */
-    u8  mModel;            /* 0x178 */
-    u8  pad_179[0x4f];
+    /* Model member, named by the class's own destructor calling
+       Model's D1 at +0x178 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN3KeyD1Ev.c] */
+    Model mModel;            /* 0x178 */
     u8  mShadowModel;            /* 0x1c8 */
     u8  pad_1c9[0x57];
-    u8  mMovingCylinderClsnWithPos;            /* 0x220 */
-    u8  pad_221[0x3f];
-    u8  mWithMeshClsn;            /* 0x260 */
-    u8  pad_261[0x1bb];
+    /* MovingCylinderClsnWithPos member, named by the class's own destructor calling
+       MovingCylinderClsnWithPos's D1 at +0x220 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN3KeyD1Ev.c] */
+    MovingCylinderClsnWithPos mMovingCylinderClsnWithPos;            /* 0x220 */
+    /* WithMeshClsn member, named by the class's own destructor calling
+       WithMeshClsn's D1 at +0x260 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN3KeyD1Ev.c] */
+    WithMeshClsn mWithMeshClsn;            /* 0x260 */
     s32 unk_41c;            /* 0x41c */
     s32 unk_420;            /* 0x420 */
     s32 unk_424;            /* 0x424 */

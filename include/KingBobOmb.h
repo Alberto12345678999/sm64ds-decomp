@@ -6,6 +6,9 @@
 #define KINGBOBOMB_H
 #include "types.h"
 #include "BlendModelAnim.h"
+#include "WithMeshClsn.h"
+#include "MovingCylinderClsnWithPos.h"
+#include "CommonModel.h"
 
 struct KingBobOmb {
     u8  pad_000[0x8];
@@ -33,17 +36,25 @@ struct KingBobOmb {
     u8  pad_0cd[0x1];
     s16 unk_0ce;                 /* 0x0ce */
     u8  pad_0d0[0x40];
-    u8  mWithMeshClsn;            /* 0x110 */
-    u8  pad_111[0x1bb];
+    /* WithMeshClsn member, named by the class's own destructor calling
+       WithMeshClsn's D1 at +0x110 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN10KingBobOmbD1Ev.c] */
+    WithMeshClsn mWithMeshClsn;            /* 0x110 */
     /* BlendModelAnim member, named by _ZN14BlendModelAnimD1Ev at +0x2cc -- a relocation the ROM build checks.
        D1 and not D2, so it is this type and not an inlined base. Was a u8 marker. */
     BlendModelAnim mBlendModelAnim;            /* 0x2cc */
-    u8  mMovingCylinderClsnWithPos1;            /* 0x33c */
-    u8  pad_33d[0x3f];
-    u8  mMovingCylinderClsnWithPos2;            /* 0x37c */
-    u8  pad_37d[0x3f];
-    u8  mCommonModel;            /* 0x3bc */
-    u8  pad_3bd[0x3b];
+    /* MovingCylinderClsnWithPos member, named by the class's own destructor calling
+       MovingCylinderClsnWithPos's D1 at +0x33c -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN10KingBobOmbD1Ev.c] */
+    MovingCylinderClsnWithPos mMovingCylinderClsnWithPos1;            /* 0x33c */
+    /* MovingCylinderClsnWithPos member, named by the class's own destructor calling
+       MovingCylinderClsnWithPos's D1 at +0x37c -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN10KingBobOmbD1Ev.c] */
+    MovingCylinderClsnWithPos mMovingCylinderClsnWithPos2;            /* 0x37c */
+    /* CommonModel member, named by the class's own destructor calling
+       CommonModel's D1 at +0x3bc -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN10KingBobOmbD1Ev.c] */
+    CommonModel mCommonModel;            /* 0x3bc */
     u8  mShadowModel;            /* 0x3f8 */
     u8  pad_3f9[0x9b];
     s32 unk_494;            /* 0x494 */
