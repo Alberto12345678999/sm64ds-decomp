@@ -32,6 +32,7 @@ start converting a class; the same staleness rule applies.
 
 
 | Range | Who | Claimed | Status |
+| ov006 func_ov006_020f3e68 (0x020f3e68, size 0xa8) | lunavyqo (Grok) | 2026-08-07 | **released** — no_progress FLOOR(regperm+flag-sched) **match.py words=23** reconfirmed (session 2). Residual: i in sb vs r4 (+ table/neg/fixed cascade) + early moveq/movne/str vs ROM delayed movne after mla/ldrh. 40+ pure-C variants no beat tip. tip in nearmiss/db.jsonl; API clm_4a9cf99efe6c released |
 | ov006 func_ov006_020f3e68 (0x020f3e68, size 0xa8) | lunavyqo (Grok) | 2026-08-06 | **released** — no_progress FLOOR(regperm+flag-sched) **match.py words=23** reconfirmed. Residual: i in sb vs r4 (+ table/neg/fixed cascade) + early moveq/movne/str vs ROM delayed movne after mla/ldrh. ~40 pure-C + permuter ~300it score1110→1020 no word-div beat. tip stands in nearmiss/db.jsonl; API clm_fd0e071b8ed2 released |
 | ov004 __sinit_ov004_020b955c (0x020b955c, size 0x574) | lunavyqo (Grok) | 2026-08-05 | **done** — verified byte-identical + linkcheck VERIFIED (mwccarm **2004/b56**); levers: field-load `tmp.a/b` from `data_02086b58` then `w[0]/w[1]` copy; mid-stream `p0.a=w[0]` / fills / `p0.b=w[1]` + bf4f8 p1-p4+p11=tmp; from near-miss 299→142→22→0; API clm_05b55ea60b6a kept |
 | ov007 func_ov007_020c49bc (0x020c49bc, size 0x440) | lunavyqo (Grok) | 2026-08-05 | **done** — verified byte-identical (mwccarm 2004/b56); strength_reduction off + 6k decl sl/sb + sp4C-before-sp30 + else-path name-swap r6/r7; API clm_671dd186507f kept |
