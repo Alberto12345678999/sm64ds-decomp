@@ -663,3 +663,357 @@ entry, AABB, radius square, march, descent, step, leaf caches, sorted insert, re
 depth, classify, pass-through filter, Voronoi dispatch, edge/vertex discriminator, record,
 accumulate, epilogue. What remains is transcribing three symmetric blocks of fixed-point
 arithmetic whose inputs, comparison and output are all known.
+
+### Step 5 is six shared blocks, not three symmetric ones (2026-08-06)
+
+The previous section's model -- "three symmetric branches, each doing the edge/vertex
+distance, three copies of the same ~300-word block" -- is **wrong in a way that matters for
+how the source is spelled**. Transcribing it as three self-contained branches cannot
+reproduce the ROM's control flow.
+
+What is actually there:
+
+```
+0x1ffbea8   dispatch: which of dot1/dot2/dot3 is largest      -> 3 blocks
+0x1ffc1ec   E1   closest point is on edge 1                   \
+0x1ffc35c   E2   closest point is on edge 2                    > 3 EDGE blocks
+0x1ffc4cc   E3   closest point is on edge 3                   /
+0x1ffc63c   V12  closest point is the vertex of edges 1 and 2 \
+0x1ffc750   V23  closest point is the vertex of edges 2 and 3  > 3 VERTEX blocks
+0x1ffc89c   V31  closest point is the vertex of edges 3 and 1 /
+0x1ffca30   the shared tail: sqrt, depth, sign check
+0x1ffcaa4   the face case joins here
+0x1ffd314   the reject (`continue`)
+```
+
+**The distance blocks are shared, and that is why the ROM branches to labels instead of
+falling through.** Each edge's dispatch tests its edge against *both* neighbours; failing
+either test means the closest point has passed the vertex the two edges share, so edge 1's
+en2 test and edge 2's en1 test both land on V12. Likewise the edge-3 dispatch at 0x1ffc0d0
+is entered from both halves of the top-level comparison. Six labels, nine predecessors.
+
+Confirmed exhaustively -- every dispatch target, both arms:
+
+| largest | neighbour test | ble (vertex) | else (edge) |
+|---|---|---|---|
+| dot1 | vs en2 | V12 `0x1ffc63c` | E1 `0x1ffc1ec` |
+| dot1 | vs en3 | V31 `0x1ffc89c` | E1 `0x1ffc1ec` |
+| dot2 | vs en3 | V23 `0x1ffc750` | E2 `0x1ffc35c` |
+| dot2 | vs en1 | V12 `0x1ffc63c` | E2 `0x1ffc35c` |
+| dot3 | vs en1 | V31 `0x1ffc89c` | E3 `0x1ffc4cc` |
+| dot3 | vs en2 | V23 `0x1ffc750` | E3 `0x1ffc4cc` |
+
+### The depth formula is not `rsc - faceDot` outside the face case (2026-08-06)
+
+`rsc - faceDot`, stored to `sp+0x9c` at `0x1ffbe3c` before the dispatch, is **only the face
+case's answer**. Every edge and vertex region overwrites it in the shared tail at
+`0x1ffca80`:
+
+```
+depth = SqrtRaw(rsq - d*d) - faceDot;      /* d = the winning edge dot */
+if (depth < 0) continue;                    /* `bmi 0x1ffd314` */
+```
+
+so `sp+0x9c` is one variable assigned twice, and the 64-bit `rsq - d*d` computed by each
+block (`umull`/`mla`/`mla` -- the full signed 64x64 square, using the sign-extension word
+each dispatch parked at `sp+0xd8`/`0xe0`/`0xe8`) exists to be square-rooted, not compared.
+The earlier note's "compares it against the squared radius" is the wrong operation.
+
+### The inlined square root is NOT cstd::sqrt(u64) (2026-08-06)
+
+Four sites (`0x1ffc2d8`, `0x1ffc448`, `0x1ffc5b8`, `0x1ffca78`) inline the DS hardware sqrt:
+save IME, `SQRTCNT = 1`, 64-bit `SQRT_PARAM`, restore IME, spin on `SQRTCNT & 0x8000`, read
+`SQRT_RESULT`. But `cstd::sqrt(u64)` at `0x0203d744` (matched, `src/_ZN4cstd4sqrtEy.cpp`)
+pre-shifts `x << 2` and rounds its result `(r + 1) >> 1`. **Neither appears here.** So this
+is a separate raw inline helper, not that function -- and the `0` and `1` it writes come from
+frame slots `sp+0x118` and `sp+0x10c` rather than immediates, which is what four expansions
+of one `inline` function look like on this compiler.
+
+### What the edge blocks actually do, and five more named fields (2026-08-06)
+
+Each edge block runs a filter before its distance is taken:
+
+```c
+if (sphere.flags & 2)          { cls==1 ? (d > faceDot) : (d > faceDot >> unk_48) -> reject }
+else if (cls == 1)             { func_02037e58(&surface)==1 || unk_4d
+                                   ? (d > faceDot >> unk_48) : (d > faceDot) -> reject }
+else if (d > (faceDot >> unk_48)) {
+    if (cls != 0) reject;                       /* only a floor gets the slow path */
+    if (sphere.flags & 0x20) reject;
+    hyp = SqrtRaw((d>>4)^2 + (faceDot>>4)^2);   /* a real hypotenuse */
+    if (func_020397dc(hyp)) reject;             /* |hyp| <= 8: divisor about to vanish */
+    if (DotVec3(&surfaceNormal, &this->unk_28) > cstd::fdiv(faceDot >> 4, hyp)) reject;
+}
+```
+
+* **`MeshCollider::unk_48` is a SHIFT COUNT, not a value** (init 2). The test is "is the
+  lateral distance outside this edge more than `faceDot >> unk_48`" -- a slope tolerance
+  expressed as a fraction of the penetration.
+* **`unk_4d`** (init 0) selects the tolerant form of that test for walls.
+* **`unk_28`/`unk_2c`/`unk_30` are one `Vector3`**, not three scalars: `DotVec3` is handed
+  `sl+0x28` as a vector. `include/MeshCollider.h` types them as separate `Fix12i`/`s32`.
+* **`SphereClsn` flags bit 2 and bit 0x20** gate the filter and the slow path.
+* **`SphereClsn+0x108`** is a `normal.y` floor the hit must clear, checked at the face label.
+
+Call census for the whole function: `cstd::fdiv` x8, `func_020397dc` x8, `DotVec3` x4,
+`func_02037e58` x3. `func_020397dc(x)` is `|x| <= 8` -- a near-zero divisor guard, and it
+precedes every `fdiv`.
+
+### Register model, for reading any of these blocks (2026-08-06)
+
+| | | | |
+|---|---|---|---|
+| `r8` `r7` `r6` | dot1 dot2 dot3 | `r5` `r4` `[sp+0x94]` | en1 en2 en3 |
+| `sb` | **faceDot**, from `0x1ffbd74` on | `[sp+0x98]` | face normal |
+| `ip` `sb` `r3` | dx dy dz, but only until `0x1ffbd74` | `[sp+0xa4]` | cls |
+| `[sp+0x104]` | rsc | `[sp+0x9c]` | depth |
+| `[sp+0x60/0x64]` | rsq, 64-bit | `[sp+0x180]` | surface normal |
+
+`sb` holding dy and then faceDot is the trap: the dispatch's `cmp r8, sb, asr r0` is
+*dot1 vs faceDot >> unk_48*, not anything to do with dy.
+
+### V12's prologue, decoded (2026-08-06)
+
+The vertex blocks are the remaining work. V12 (`0x1ffc63c`) begins:
+
+```c
+if (func_020397dc(MUL10(nn, nn) - 0x400)) continue;   /* edges within 8 of parallel */
+t = cstd::fdiv(MUL10(nn, dot2) - dot1, MUL10(nn, nn) - 0x400) >> 2;
+```
+
+then builds the offset to the vertex from `t`, `en1` and `en2` (`smull`/`>>10` pairs against
+each component of both normals, and `dot2 - MUL10(t, nn)` as the second coefficient) before
+joining the shared tail at `0x1ffc9cc`. The vector half is not transcribed yet.
+
+### Tooling: `mismatches=N/M` is frozen while the sizes differ (2026-08-06)
+
+`fdiff.py` reports `mismatches=999/1778` for *every* draft of this function, before and after
+a change that added 513 instructions -- `match.compare` does not produce a meaningful count
+until the candidate is the target's size. Score the intermediate drafts with the alignment
+ratio instead, and note that `--align-shape` is a *modifier*: without `--align` it prints
+nothing at all and you get a silent no-op.
+
+```
+python tools/fdiff.py --c <draft> --name _ZN12MeshCollider10DetectClsnER10SphereClsn \
+  --module itcm --addr 0x01ffb830 --size 0x1bc8 --version 2004/b56 \
+  --align --align-shape --align-changes 0 --quiet
+```
+
+Draft progress on that metric: **0x8cc / ratio 0.3494 / 409 shape-equal -> 0x10d0 / ratio
+0.5011 / 715 shape-equal**, with the dispatch, the three edge blocks, the filter, the raw
+sqrt and the shared tail written and the three vertex blocks still open.
+
+### There is a ~336-word wall block after the face test, and it was never in the map (2026-08-06)
+
+With step 5 written, the alignment still reports `delete: 815` — target instructions with no
+counterpart at all. Most of them are one region the handoff's inventory does not mention:
+**`0x1ffcaa4`..`0x1ffcfe4`, about 336 words**, entered right after the face test and rejoining
+at `0x1ffcfe4`. Section 1 of the handoff lists "the classify, the pass-through filter, the
+record, the accumulate, the epilogue" as written; this sits between them and is not any of
+them.
+
+It is gated four ways, all of which must pass:
+
+```
+sphere.unk_108 >= surfaceNormal.y      0x1ffcaa4   (already in the draft)
+sphere.unk_ec  >  0                    0x1ffcab4
+cls == 1                               0x1ffcac0   walls only
+(tri->length & 0xf0000000) == 0        0x1ffcacc   no flags in the high nibble
+```
+
+and what it then does is **reconstruct the triangle's real geometry from the KCL prism**:
+
+* `[sp+0x90]` (the vertex position) is re-read and each component taken `<< 6` into
+  `sp+0x18c`/`0x190`/`0x194` — the position at full Fix12i scale rather than the 1/64 units
+  the walk uses;
+* then a **cross product**, `faceNormal x en2`, componentwise as `MUL10` pairs subtracted and
+  stored as three `s16` into a 6-byte vector at `sp+0x16c` (`0x1ffcb0c`..`0x1ffcbb0`), and
+  further cross/dot work against `en3` (`sp+0x94`) after it.
+
+That is the standard way to recover a KCL triangle's edges and vertices from
+(position, face normal, three edge normals, length), so this is a precise wall contact test
+that only runs once the cheap tests have already accepted the prism.
+
+**Do not treat this as part of step 5.** It is a separate mechanism with its own gate, and it
+is now the single largest unwritten region in the function.
+
+### The wall block, mapped end to end (2026-08-06)
+
+`0x1ffcaa4`..`0x1ffcfe4`. Gate, in ROM order — the first is a reject, the other three skip the
+block and rejoin at `0x1ffcfe4`:
+
+```c
+if (sphere.unk_108 < surfaceNormal.y) continue;      /* 0x1ffcaa4, already drafted */
+if (sphere.unk_ec > 0 && cls == 1 && !(tri->length & 0xf0000000)) {
+    ... the block ...
+}
+```
+
+`[sp+0x8c]` is the `tri` pointer and `[r0]` off it is `tri->length`, so the last gate is a
+high-nibble flag test on the length word.
+
+**Step 1 — reconstruct the triangle's vertices from the KCL prism.** A KCL prism stores a
+position, a face normal, three edge normals and a length; the actual vertices come back as
+`pos + cross(fn, en_i) * (length / dot(cross(fn, en_i), en3))`. The ROM does this three
+times, reusing one 6-byte `s16` scratch vector at `sp+0x16c` for the cross each round:
+
+```c
+cr[0] = MUL10(fn[1], ea[2]) - MUL10(fn[2], ea[1]);      /* 0x1ffcb0c, 0x1ffcc8c, ... */
+cr[1] = MUL10(fn[2], ea[0]) - MUL10(fn[0], ea[2]);      /* stored as s16 to sp+0x16c */
+cr[2] = MUL10(fn[0], ea[1]) - MUL10(fn[1], ea[0]);
+cd = MUL10(cr[0], en3[0]) + MUL10(cr[1], en3[1]) + MUL10(cr[2], en3[2]);
+if (func_020397dc(cd)) continue;                         /* degenerate prism */
+ck = cstd::fdiv(tri->length, cd) >> 2;
+v[i] = triPos[i] + (s32)(((s64)cr[i] * ck) >> 14);       /* lsr #0xe + orr lsl #18 */
+```
+
+`triPos` is `[sp+0x90]` re-read with each component `<< 6` into `sp+0x18c`/`0x190`/`0x194` —
+the position at full Fix12i scale, not the 1/64 units the octree walk uses. The three
+reconstructed vertices land at `sp+0x198`/`0x19c`/`0x1a0`, `sp+0x1a4`/`0x1a8`/`0x1ac` and
+back into `sp+0x18c`/`0x190`/`0x194`. `ea` is `en2` for the first, `en1` for the second.
+
+**Step 2 — a slab test along the collider's axis.** Each vertex has the sphere centre
+(`[sp+0xc4]`) subtracted from it, and the result is dotted with the `Vector3` at
+`MeshCollider+0x28` using the *rounded* Fix12 multiply, `(a*b + 0x800) >> 12`
+(`smull` / `adds #0x800` / `adc` / `lsr #0xc` / `orr lsl #20`) — note this is a different
+multiply from the `>> 10` used everywhere else in the function, because the axis is Fix12i
+and the edge normals are not.
+
+The three dots are then compared against `+/- (sphere.unk_ec + sphere.radius)`
+(`0x1ffcf9c`: `ldr r6,[fp,#0xec]`, `ldr r3,[fp,#0x48]`, `add r1,r6,r3`, `rsb r2,r1,#0`) —
+i.e. a symmetric slab of half-width `unk_ec + radius` about the sphere centre, along the
+collider's preferred axis. A wall whose reconstructed triangle lies wholly outside that slab
+is not a real contact.
+
+This closes the last unmapped mechanism in the function. Everything from entry to epilogue now
+has a description; what remains is transcription, and the two multiplies (`>> 10` unrounded
+for normals, `+0x800 >> 12` rounded for the axis) must not be conflated.
+
+### `SphereClsn` fields this block names (2026-08-06)
+
+| offset | meaning |
+|---|---|
+| `0x48` | radius (already known) |
+| `0xec` | slab half-width tolerance, and the block's own enable — `<= 0` skips it |
+| `0x108` | a `normal.y` floor the hit must clear |
+| flags `0x40` | disables the vertex regions |
+| flags `2`, `0x20` | gate the edge filter and its slow path |
+
+### The pass-through filter's last argument is `cls == 1` (2026-08-06)
+
+Not a constant. `0x1ffbe78` builds it straight off the classify with
+`cmp r0,#1 / ldreq r3,[sp+0x10c] / movne r3,r0` — 1 for a wall, 0 otherwise — so
+`BgCh::ShouldPassThroughImpl(collider, surface, query, isWall)`. The draft passed a literal
+zero, which read as correct only because the block around it had never been exercised. Worth
+a look at the RaycastGround and RaycastLine twins, which pass the same argument.
+
+### The twin read: four levers tried, all four inert (2026-08-06)
+
+`src/_ZN12MeshCollider10DetectClsnER13RaycastGround.cpp` re-verified `match=True 0/294` on
+`2004/b56`, and its header documents four load-bearing levers found by bisection. Applied to
+the SphereClsn draft, **all four are byte-neutral** — 1744 instructions, ratio 0.5968, 1051
+shape-equal, before and after each:
+
+| lever from the twin | result here |
+|---|---|
+| every local in one C89 block at function top, none nested in loops | inert |
+| `cstd::fdiv` declared `Fix12i` rather than `s32` | inert — `typedef s32 Fix12i` |
+| leaf terminator spelled `word & 0x7fffffff` not `& ~0x80000000` | inert — same constant |
+| `while (*++leaf)` re-reading rather than caching the index | inert — CSE'd |
+
+**The harness was proven live before any of that was believed.** Positive control
+`#pragma optimization_level 1` moved the draft 1744 -> 1648 and the ratio 0.5968 -> 0.5382,
+so the compile is real and these nulls are real. Per the standing rule — treat a lever as
+dead until a byte delta proves it live *for this function* — none of these four is worth
+re-running.
+
+**The hoist is kept anyway**, for two reasons that are not codegen: it matches the matched
+twin's shape, and *declaration ORDER cannot be experimented with until the declarations are
+in one block*. That is the distinction the twin's note actually draws — the lever is the
+order, and the hoist preserved relative order, which is exactly why it changed nothing.
+
+**So the next lever to try is a reorder, not another idiom.** Handoff section 5 has the frame
+map (`0x28`-`0x3c` the penetration pairs, `0x40`/`0x44` the flags, `0x48`-`0x5c` the two leaf
+triples, `0x60`/`0x64` rsq, `0x74`-`0x7c` the top-3 scores, `0x9c` depth, `0xa0` triID,
+`0xa4` cls, `0xa8` contact kind, `0xc4` `&centre`, `0xc8`-`0xd0` rawX/Y/Z, `0x104` rsc) and
+the block should be permuted to match it. That is a targeted permutation against a known
+answer, not a blind sweep.
+
+
+### CORRECTION: `--align-shape` cannot see the frame, and I scored four levers with it (2026-08-06)
+
+The previous section concluded "four levers tried, all four inert". **The measurement was
+wrong for the one that mattered.** `--align-shape` normalises away register names *and stack
+offsets* — that is its documented purpose — so it is structurally incapable of detecting a
+change to the frame layout, which is exactly what a declaration reorder is. Scoring decl-order
+work with it reports 1051/0.5968 no matter what the frame does.
+
+Measured again with plain `--align` (operand-sensitive), on the same three files:
+
+| draft | `--align` ratio | exactly-equal |
+|---|---|---|
+| before the hoist | 0.1658 | 292 |
+| after the hoist | 0.1658 | 292 |
+| after the frame-order permutation | **0.2084** | **367** |
+
+So the hoist really is inert on both metrics — that conclusion survives. But **the reorder is
+not inert; it is the largest single gain of the session**, +75 exactly-matching instructions,
+and the earlier note called it dead.
+
+**Use `--align` for frame and register work; `--align-shape` only for structure.** Shape was
+the right metric while blocks were still missing and the wrong one the moment the work turned
+into codegen. Section 1 of the handoff has been corrected.
+
+### What the frame comparison actually shows (2026-08-06)
+
+```
+ROM        sub sp, sp, #0x1b4     f -> sp+0x0c      &centre -> sp+0xc4
+candidate  sub sp, sp, #0x1dc     f -> sp+0x0c      &centre -> sp+0x10
+```
+
+`f` at `0x0c` is the ROM's *first* slot, and it only lands there when `KCL_File *f = kclFile;`
+is declared ahead of the whole C89 block — the same shape the matched RaycastGround twin uses
+for its `file` and `pos`. Leaving it at the bottom of the block parked it at `0xb8` and was
+why the first permutation attempt looked inert.
+
+The frame is still **0x28 bytes too big** (`0x1dc` vs `0x1b4`), so there are about ten surplus
+words. Declaring `c` late to chase `0xc4` was tried and is slightly *worse* (0.2084 -> 0.2039),
+so the remaining gap is not simply that one slot.
+
+**A concrete lead on the surplus:** the ROM has *three* separate `den` slots for the vertex
+blocks (`sp+0xb8`, `0xbc`, `0xc0`) where this draft shares one variable across all three, and
+similarly distinct nn spill slots. Each vertex block having its own locals — rather than the
+draft's shared `den`/`t`/`u`/`vx`/`vy`/`vz` — is the most likely source of both the offset
+mismatch and some of the surplus.
+
+### The surplus-frame hypothesis is dead: splitting the vertex locals makes it worse (2026-08-06)
+
+The previous section's lead — that the draft's shared `den` accounts for the surplus frame
+words, because the ROM has three slots (`sp+0xb8`, `0xbc`, `0xc0`) — is **wrong**, and the
+same goes for the `nn` spills (`0xf0`, `0xf4`/`0xf8`, `0xfc`/`0x100`).
+
+| draft | frame | `--align` ratio | equal | size |
+|---|---|---|---|---|
+| shared `nn`/`den` | `0x1dc` | 0.2084 | 367 | 1744 |
+| split, one pair per vertex block | `0x1e4` | 0.2095 | 367 | 1725 |
+
+Splitting adds two slots and moves the frame **further** from the ROM's `0x1b4`, not closer.
+Exactly-matching instructions do not move at all. The ratio ticks up only because the
+`replace` bucket shrinks with the smaller candidate.
+
+The inference that actually follows: the ROM fits *three* `den` variables into `0x1b4` while
+this draft fits *one* into `0x1dc`, so there are roughly twelve surplus words that have
+nothing to do with the vertex blocks. Look elsewhere — the `nrm[3]`, `tp[3]`, `vb[3]`,
+`vc[3]`, `cr[3]` arrays and the `Vector3 sn` are the obvious suspects, since aggregates get
+whole slots and the ROM may be holding those in registers or reusing one scratch.
+
+**`t`/`u` were split too and it is byte-neutral** — they never leave registers in any of the
+three blocks, so there is no evidence either way and the draft keeps them shared.
+
+**`vx`/`vy`/`vz` must NOT be split.** All three vertex blocks branch to one shared tail at
+`0x1ffc9cc` which consumes the vector out of r0/r2/r6, so they are genuinely one variable;
+splitting them would force copies the ROM does not make.
+
+The split is kept anyway, because three distinct stack offsets holding three distinct
+quantities is direct evidence about the source even when the metric is flat — but it is not
+progress on the frame and should not be reported as such.
