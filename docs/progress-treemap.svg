@@ -1401,7 +1401,7 @@ matched: yes</title></rect><rect x="74.80" y="135.93" width="2.17" height="7.43"
 module: arm9
 addr: 0x02012310
 size: 24 bytes
-matched: yes</title></rect><rect x="76.97" y="135.93" width="14.47" height="7.43" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Sound8PlayLongEjjjRK7Vector3j
+matched: yes</title></rect><rect x="76.97" y="135.93" width="14.47" height="7.43" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Sound8PlayLongEjjjRK7Vector3s
 module: arm9
 addr: 0x02012328
 size: 160 bytes
