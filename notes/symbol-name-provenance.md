@@ -43,7 +43,7 @@ Repo-wide: **31,757 symbols across 106 modules.**
 |---|---|---|---|
 | E | `func_<addr>` / `data_<addr>` placeholders | 26,162 | 82.4% |
 | D | mangled `_Z…` methods and free functions | 2,663 | 8.4% |
-| — | plain identifiers (SDK signatures + local C-style names) | 1,697 | 5.3% |
+| — | plain identifiers (SDK signatures, local C-style names, and 308 `.L_`/`.p__sinit_` compiler labels) | 1,697 | 5.3% |
 | A | `_ZTI…` type_info records | 426 | 1.3% |
 | A | `_ZTS…` type-name strings | 422 | 1.3% |
 | B | `_ZTV…` vtables | 387 | 1.2% |
