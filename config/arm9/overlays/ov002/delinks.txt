@@ -1777,7 +1777,7 @@ src/func_ov002_020bdef0.cpp:
     complete
     .text start:0x020bdef0 end:0x020bdf4c
 
-src/_ZN6Player15InitVanishLuigiEv.c:
+src/_ZN6Player15InitVanishLuigiEv.cpp:
     complete
     .text start:0x020bdf4c end:0x020bdf8c
 
@@ -3144,7 +3144,7 @@ src/_ZN6Player4BurnEv.cpp:
     complete
     .text start:0x020d57d8 end:0x020d5834
 
-src/_ZN6Player19St_Electrocute_MainEv.c:
+src/_ZN6Player19St_Electrocute_MainEv.cpp:
     complete
     .text start:0x020d5834 end:0x020d59b0
 
@@ -3858,7 +3858,7 @@ src/_ZN6Player15St_Spin_CleanupEv.cpp:
     complete
     .text start:0x020e10d4 end:0x020e10ec
 
-src/_ZN6Player12St_Spin_MainEv.c:
+src/_ZN6Player12St_Spin_MainEv.cpp:
     complete
     .text start:0x020e10ec end:0x020e119c
 

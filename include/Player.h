@@ -153,7 +153,15 @@ struct Player : Actor {
     u8  unk_37c;            /* 0x37c */
     u8  pad_37d[0x3];
     u8  mMeshClsn;            /* 0x380 */
-    u8  pad_381[0x1c7];
+    u8  pad_381[0x1bb];
+    /* The spawn point, saved once and restored on death. Player::InitResources
+       writes all four from the live values (0x53c..0x544 <- mPosX/Y/Z, and
+       mSpawnAngleY <- mAngleY); St_Respawn_Init reads them back the other way.
+       Two functions, opposite directions, the same four slots -- which is what
+       makes these names evidenced rather than guessed. */
+    s32 mSpawnPosX;            /* 0x53c */
+    s32 mSpawnPosY;            /* 0x540 */
+    s32 mSpawnPosZ;            /* 0x544 */
     s32 unk_548;            /* 0x548 */
     s32 unk_54c;            /* 0x54c */
     s32 unk_550;            /* 0x550 */
@@ -223,7 +231,7 @@ struct Player : Actor {
     s32 mSinkDepth;            /* 0x68c */
     s32 unk_690;            /* 0x690 */
     s32 unk_694;            /* 0x694 */
-    u8  pad_698[0x2];
+    s16 mSpawnAngleY;            /* 0x698 */
     /* Downhill direction of the current floor, binary angle (0x10000 per turn).
      * Player::SetFloorSurfaceInfo computes it as cstd::atan2(mFloorNormalX,
      * mFloorNormalZ) and stores it with a 16-bit strh at 0x020c178c (written
@@ -237,7 +245,13 @@ struct Player : Actor {
     u16 unk_6a2;            /* 0x6a2 */
     u16 mStateTimer;            /* 0x6a4 */
     u16 mStateWaitTimer;            /* 0x6a6 */
-    s16 mJumpComboTimer;            /* 0x6a8 */
+    /* u16, not s16: every load of this slot in the ROM is an ldrh. Declared
+       signed, St_Hurt_Main's `!= 0` test compiles to ldrsh and the function
+       misses by exactly one word. Nothing anywhere reads it signed -- the
+       other five users either store, or cast to u16* first (including
+       Behavior's DecIfAbove0_Short(u16*)). Same defect class as the imported
+       parameter widths in Actor.h: a declared type nothing had checked. */
+    u16 mJumpComboTimer;            /* 0x6a8 */
     u16 unk_6aa;            /* 0x6aa */
     u8  unk_6ac;            /* 0x6ac */
     u8  pad_6ad[0x1];
@@ -254,7 +268,15 @@ struct Player : Actor {
     u8  unk_6bc;            /* 0x6bc */
     u8  pad_6bd[0x1];
     u16 unk_6be;            /* 0x6be */
-    s16 unk_6c0;            /* 0x6c0 */
+    /* u16, not s16: every READ of this slot in the ROM is an ldrh --
+       func_ov002_020e4bb8 tests `< 0x3f` and `& 1`, Behavior passes it to
+       DecIfAbove0_Short(u16*), St_Balloon_Main tests `== 0`. Only the stores
+       use short, and a store cannot distinguish the two. Declared signed,
+       St_Balloon_Main misses by one word. Same defect as mJumpComboTimer.
+       Named for what those five uses do: InitBalloonMario sets it to 0x258,
+       Behavior counts it down, St_Balloon_Main exits when it reaches 0, and
+       020e4bb8 blinks the balloon below 0x3f. */
+    u16 mBalloonTimer;            /* 0x6c0 */
     u8  unk_6c2;            /* 0x6c2 */
     u8  pad_6c3[0x1];
     u8  unk_6c4;            /* 0x6c4 */
@@ -338,7 +360,7 @@ struct Player : Actor {
     u8  unk_722;            /* 0x722 */
     u8  unk_723;            /* 0x723 */
     u8  unk_724;            /* 0x724 */
-    u8  pad_725[0x1];
+    u8  unk_725;            /* 0x725  latch: St_Talk_Cleanup reloads music layer 1 when set */
     s8  unk_726;            /* 0x726 */
     u8  unk_727;            /* 0x727 */
     u8  unk_728;            /* 0x728 */
@@ -347,12 +369,16 @@ struct Player : Actor {
     u8  pad_73e[0x4];
     u8  unk_742;            /* 0x742 */
     u8  unk_743;            /* 0x743 */
-    u8  unk_744;            /* 0x744 */
-    u8  pad_745[0x3];
-    u8  unk_748;            /* 0x748 */
-    u8  pad_749[0x3];
-    u8  unk_74c;            /* 0x74c */
-    u8  pad_74d[0x3];
+    /* 0x744..0x74c is a Vector3, not three bytes: five files cast it as one
+       -- ShowMessage2, TryEnterStarDoor, func_ov002_020c47f4 and
+       func_ov002_020c8a4c all spell (Vector3*)(this + 0x744), and
+       JumpIntoBooCage writes all three as int. Declared u8, any natural
+       access is an ldrb. Widths only; the names stay unk_ because what the
+       vector MEANS is not settled -- 0x750 is the anchor and 0x744 the point
+       Vec3_RotateYAndTranslate derives from it. */
+    s32 unk_744;            /* 0x744 */
+    s32 unk_748;            /* 0x748 */
+    s32 unk_74c;            /* 0x74c */
     s32 unk_750;            /* 0x750 */
     s32 unk_754;            /* 0x754 */
     s32 unk_758;            /* 0x758 */
@@ -391,6 +417,7 @@ struct Player : Actor {
 
     int * TryExitCharacterDoorWithIntro();
     int Burn();
+    int CanEnterDoor(unsigned char door);
     int CanPause();
     int CanWarp();
     int DropActor();
@@ -413,6 +440,7 @@ struct Player : Actor {
     int IsOpeningDoorWithStar();
     /* Pointer identity against mState. bool, not int: the ROM normalises with
        a moveq #1 / movne #0 pair rather than returning a raw value. */
+    int ChangeState(State &state);
     bool IsState(State &state);
     int IsStateEnteringLevel();
     int JumpIntoBooCage(Vector3 & v_);
@@ -428,16 +456,20 @@ struct Player : Actor {
     int St_BackFlip_Init();
     int St_Balloon_Cleanup();
     int St_Balloon_Init();
+    s32 St_Balloon_Main();
     int St_Bonk_Init();
     int St_Bonk_Main();
     int St_BowserEarthquake_Init();
     int St_BowserEarthquake_Main();
     int St_BurnFire_Init();
+    int St_BurnFire_Main();
     int St_BurnLava_Init();
+    int St_BurnLava_Main();
     int St_ButtSlide_Init();
     int St_ButtSlide_Main();
     int St_CameraZoom_Cleanup();
     int St_CameraZoom_Init();
+    int St_CameraZoom_Main();
     int St_Cannon_Cleanup();
     int St_Cannon_Init();
     int St_Cannon_Main();
@@ -458,6 +490,7 @@ struct Player : Actor {
     int St_DebugFly_Main();
     int St_Dive_Init();
     int St_DizzyStars_Init();
+    int St_DizzyStars_Main();
     int St_Electrocute_Init();
     int St_Electrocute_Main();
     int St_EndingFly_Init();
@@ -467,10 +500,12 @@ struct Player : Actor {
     int St_GrabBowserTail_Cleanup();
     int St_GrabBowserTail_Init();
     int St_GrabBowserTail_Main();
+    int St_Grabbed_Cleanup();
     int St_Grabbed_Init();
     int St_Grabbed_Main();
     int St_GroundPound_Cleanup();
     int St_GroundPound_Init();
+    int St_GroundPound_Main();
     int St_HeadstandJump_Init();
     int St_Headstand_Init();
     int St_Headstand_Main();
@@ -483,10 +518,12 @@ struct Player : Actor {
     int St_HurtWater_Main();
     int St_Hurt_Cleanup();
     int St_Hurt_Init();
+    int St_Hurt_Main();
     int St_InYoshiMouth_Init();
     int St_InYoshiMouth_Main();
     int St_JumpQuicksand_Init();
     int St_JumpQuicksand_Main();
+    int St_Jump_Init();
     int St_Jump_Main();
     int St_Land_Main();
     int St_LedgeGrab_Init();
@@ -514,6 +551,7 @@ struct Player : Actor {
     int St_Owl_Main();
     int St_PunchKick_Init();
     int St_PunchKick_Main();
+    int St_Respawn_Init();
     int St_Respawn_Main();
     int St_Shell_Cleanup();
     int St_Shell_Init();
@@ -529,6 +567,7 @@ struct Player : Actor {
     int St_SmallLaunchUp_Main();
     int St_Spin_Cleanup();
     int St_Spin_Init();
+    int St_Spin_Main();
     int St_Squish_Cleanup();
     int St_Squish_Init();
     int St_Squish_Main();
@@ -542,8 +581,10 @@ struct Player : Actor {
     int St_SweepKick_Main();
     int St_Swim_Cleanup();
     int St_Swim_Init();
+    int St_Swim_Main();
     int St_SwingPlayer_Cleanup();
     int St_SwingPlayer_Init();
+    int St_Talk_Cleanup();
     int St_Talk_Init();
     int St_Talk_Main();
     int St_Teleport_Init();
@@ -571,6 +612,7 @@ struct Player : Actor {
     int St_WindCarry_Init();
     int St_YoshiPower_Cleanup();
     int St_YoshiPower_Init();
+    int St_YoshiPower_Main();
     int StartTalk(ActorBase & actor_, bool b_);
     int TryEnterStarDoor(Vector3 & pos_, short kind);
     int TryExitWhiteDoorWithStar();
