@@ -949,7 +949,7 @@ matched: yes</title></rect><rect x="223.29" y="116.92" width="36.70" height="1.3
 module: arm9
 addr: 0x0200fec8
 size: 76 bytes
-matched: yes</title></rect><rect x="259.99" y="116.92" width="36.70" height="1.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Actor19UntrackAndSpawnStarERajRK7Vector3j
+matched: yes</title></rect><rect x="259.99" y="116.92" width="36.70" height="1.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Actor19UntrackAndSpawnStarERajRK7Vector3h
 module: arm9
 addr: 0x0200ff14
 size: 76 bytes
