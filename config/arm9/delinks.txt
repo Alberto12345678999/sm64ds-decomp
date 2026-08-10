@@ -2376,21 +2376,27 @@ src/_ZN9ModelBaseC1Ev.c:
     .text start:0x02017150 end:0x02017168
 
 src/_ZThn80_N9ModelAnimD0Ev.cpp:
+    complete
     .text start:0x02017168 end:0x02017178
 
 src/_ZThn80_N9ModelAnimD1Ev.cpp:
+    complete
     .text start:0x02017178 end:0x02017188
 
 src/_ZThn80_N14BlendModelAnimD0Ev.cpp:
+    complete
     .text start:0x02017188 end:0x02017198
 
 src/_ZThn80_N14BlendModelAnimD1Ev.cpp:
+    complete
     .text start:0x02017198 end:0x020171a8
 
 src/_ZThn80_N10ModelAnim2D0Ev.cpp:
+    complete
     .text start:0x020171a8 end:0x020171b8
 
 src/_ZThn80_N10ModelAnim2D1Ev.cpp:
+    complete
     .text start:0x020171b8 end:0x020171c8
 
 src/func_020171c8.cpp:
@@ -4241,7 +4247,7 @@ src/func_0202e118.c:
     complete
     .text start:0x0202e118 end:0x0202e140
 
-src/_ZN5SceneD1Ev.c:
+src/_ZN5SceneD1Ev.cpp:
     complete
     .text start:0x0202e140 end:0x0202e170
 

@@ -171,7 +171,17 @@ def classify(job):
         defined, undefined, other_defined = [], [], []
         for s in symtab.iter_symbols():
             info = s["st_info"]
-            if info["bind"] not in ("STB_GLOBAL", "STB_WEAK"):
+            # STB_LOPROC is mwcc's COMDAT binding, and it is how the OUT-OF-LINE
+            # COPY OF AN INLINE FUNCTION arrives. A destructor defined in the class
+            # body gets it -- which is the shape the ROM's own sources used, since
+            # every derived destructor inlines its base's vptr store. Treating it as
+            # invisible reported "0 defined global functions" for a file whose
+            # symbol is defined, the right size, and in the kept section.
+            #
+            # It is deduplication metadata, not a weaker definition: exactly one
+            # object in this build defines any given address, so there is nothing to
+            # dedupe against. rombuild's byte compare is what stands behind that.
+            if info["bind"] not in ("STB_GLOBAL", "STB_WEAK", "STB_LOPROC"):
                 continue
             if s["st_shndx"] == "SHN_UNDEF":
                 if s.name:

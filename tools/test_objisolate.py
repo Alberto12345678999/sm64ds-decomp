@@ -100,27 +100,55 @@ class Isolate(unittest.TestCase):
                         out.append(r["r_addend"])
         return out
 
-    def test_refuses_ctor_only_tu(self):
+    def test_corrects_ctor_only_tu(self):
         """A constructor's TU references the vtable without defining it.
 
         The vtable's key function is the DESTRUCTOR, so a TU defining only `V::V()`
-        leaves `_ZTV1V` UNDEF -- which means it is never a candidate for
-        externalisation, and a guard that only inspects externalised symbols never
-        looks at it. The addend is still 8. Refusing keeps this out of the pass list
-        instead of letting it link and write the vptr one slot high."""
+        leaves `_ZTV1V` UNDEF -- never a candidate for externalisation, so a guard
+        that only inspects externalised symbols never looks at it. The addend is
+        still 8, and it needs the same correction every other vtable store gets:
+        the ROM's symbol IS the slot array. This was refused while no enrolled
+        instance existed to verify the correction against; see the next test."""
         obj = self.build("struct V { int p[4]; V(); virtual ~V(); virtual void f(); };\n"
                          "V::V(){}\n")
-        self.assertIn("_ZTV1V", OI.plan(obj.read_bytes(), "_ZN1VC1Ev")["error"])
+        self.assertIsNone(OI.plan(obj.read_bytes(), "_ZN1VC1Ev")["error"])
+        OI.isolate(obj, "_ZN1VC1Ev")
+        self.assertEqual(sorted(set(self._vtable_addends(obj, "_ZN1VC1Ev"))), [0])
 
-    def test_refuses_inlined_base_vtable_store(self):
+    def test_corrects_inlined_base_vtable_store(self):
         """A derived dtor over an INLINE base dtor stores the base's vptr too.
 
         The object's own `_ZTV1D` is in a dropped section and gets corrected; the
-        inlined `_ZTV1B` store is UNDEF and would not have been."""
+        inlined `_ZTV1B` store is UNDEF and used to be refused. Both are addend 8
+        against a symbol the ROM defines as the slot array, so both drop to 0.
+
+        This is the shape `Scene::~Scene()` has, and it is what the correction was
+        verified on -- rombuild links the module and byte-compares it against the
+        ROM, the only check that caught the original 8-high vptr bug."""
         obj = self.build("struct B { int p[4]; virtual ~B(){} virtual void f(); };\n"
                          "struct D : B { virtual ~D(); };\n"
                          "D::~D(){}\n")
-        self.assertIn("_ZTV1B", OI.plan(obj.read_bytes(), "_ZN1DD1Ev")["error"])
+        self.assertIsNone(OI.plan(obj.read_bytes(), "_ZN1DD1Ev")["error"])
+        OI.isolate(obj, "_ZN1DD1Ev")
+        self.assertEqual(sorted(set(self._vtable_addends(obj, "_ZN1DD1Ev"))), [0])
+        # Idempotent: re-running must not subtract another 8.
+        OI.isolate(obj, "_ZN1DD1Ev")
+        self.assertEqual(sorted(set(self._vtable_addends(obj, "_ZN1DD1Ev"))), [0])
+
+    def test_still_refuses_an_unsurveyed_vtable_addend(self):
+        """Only the preamble skip of 8 is correctable; anything else is refused.
+
+        Multiple inheritance produces a secondary vptr store pointing into the
+        middle of the vtable object -- addend 44 for `ModelAnim` -- and there is no
+        enrolled instance to verify that correction against. Fail-closed costs one
+        function; fail-open corrupts a module."""
+        obj = self.build("struct B1 { int p[4]; virtual ~B1(){} virtual void f(); };\n"
+                         "struct B2 { int q[4]; virtual ~B2(){} virtual void g(); };\n"
+                         "struct M : B1, B2 { virtual ~M(); };\n"
+                         "M::~M(){}\n")
+        err = OI.plan(obj.read_bytes(), "_ZN1MD1Ev")["error"]
+        self.assertIsNotNone(err)
+        self.assertIn("_ZTV", err)
 
     def test_local_static_is_reported_not_silently_dropped(self):
         """A function-local static cannot be isolated away.
