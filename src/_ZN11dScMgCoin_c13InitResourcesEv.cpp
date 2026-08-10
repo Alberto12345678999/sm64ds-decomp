@@ -1,10 +1,11 @@
+//cpp
+// @symbol _ZN11dScMgCoin_c13InitResourcesEv
+/* dScMgCoin_c::InitResources - recovered from ROM RTTI and vtable slot identity. */
 #include "types.h"
-// @symbol func_ov006_020de704
-// recovered name: dScMgCoin_c_InitResources
-/* recovered: renamed to Class_Method, declarations from a shared header */
+#include "dScMgCoin_c.h"
 #include "decl_common.h"
-/* recovered: renamed to Class_Method */
-/* dScMgCoin_c::InitResources - recovered from vtable slot identity */
+
+extern "C" {
 extern int LoadFile(int handle);
 extern void DecompressLZ16(int src, void *dst);
 extern void _ZN2GX10LoadBGPlttEPKvjj(const void *p, u32 a, u32 b);
@@ -15,9 +16,11 @@ extern int func_ov004_020adc1c(void);
 extern u8 data_0209d45c;
 extern u8 data_0209d454;
 extern int data_0208ee44;
+}
 
-int func_ov006_020de704(void *arg0) {
-    char *c = (char*)arg0;
+int dScMgCoin_c::InitResources() {
+    dScMgCoin_c *self = this;
+    char *c = (char*)self;
     int a, b, d;
 
     data_0209d45c |= 8;
@@ -62,17 +65,17 @@ int func_ov006_020de704(void *arg0) {
     Deallocate((void*)b);
     Deallocate((void*)a);
 
-    *(int*)(c + 0xa8) = 0;
-    *(int*)(c + 0xac) = *(int*)(c + 0xa8);
+    self->unk_0a8 = 0;
+    self->unk_0ac = self->unk_0a8;
     data_0208ee44 = 1;
     func_ov006_020ddf9c(c);
     func_ov006_020dd334(c);
     func_ov006_020dc7b4(c);
     func_ov006_020dc2f8(c);
-    *(u8*)(c + 0x5000 + 0x1da) = 0;
-    *(u8*)(c + 0x5000 + 0x1dc) = 2;
+    self->unk_51da = 0;
+    self->unk_51dc = 2;
     func_ov004_020b04d0(0x20);
-    *(int*)(c + 0x5000 + 0x1d4) = func_ov004_020adc1c();
-    *(int*)(c + 0xa4) = 1;
+    self->unk_51d4 = func_ov004_020adc1c();
+    self->unk_0a4 = 1;
     return 1;
 }
