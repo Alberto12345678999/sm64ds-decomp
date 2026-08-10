@@ -1,6 +1,10 @@
 # The D2 backlog is 41% mislabelled
 
 **Status:** answered, and reproducible — `python tools/dtor_variant_audit.py`.
+The original seven renames landed in #1203. **§8 adds the D0/D1 slot-order assertion
+§6 asked for, and with it an 8th impostor the first sweep could not see:
+`_ZN8CapEnemyD2Ev` sits in `dCapEnemy_c` slot 16 and wants renaming to
+`_ZN8CapEnemyD1Ev`.** That rename is not done.
 **Scope:** which destructor variant a symbol actually is. Nothing here renames anything.
 **Provoked by:** picking `Scene` as the Phase-2 pilot per `notes/plan-cpp-language-mode.md`,
 and finding its `D2` is not a D2 and not Scene's.
@@ -163,10 +167,8 @@ choice needs re-deriving from `--by-class` output that has been through this aud
 
 ## 6. What is not covered
 
-The rule decides `D2` versus `{D0, D1}`. It does **not** separate D0 from D1 — both
-sit in vtables — so a D0/D1 swap would pass silently. Slot position distinguishes
-them (D1 then D0, adjacent), which the table in §2 uses but the tool does not yet
-check. That is the obvious next assertion to add.
+~~The rule decides `D2` versus `{D0, D1}`. It does **not** separate D0 from D1.~~
+**Added — see §8.** Slot position now decides it: D1 at slot N, D0 at slot N+1.
 
 The polymorphism test is a **one-way** guarantee. Storing a vtable VA proves the
 class is polymorphic; not storing one is only evidence, since a size-0 symbol or a
@@ -191,6 +193,11 @@ points at it, it stores a vtable address, and every caller reaches it by `bl`. A
 class's vptr.
 
     11 D2 candidates    9 C2 candidates    33 undecided
+
+> **Now reads `2 D2, 9 C2, 33 undecided`.** Nine of the eleven have since been
+> named — the named-`D2` count went 17 → 20 over the same span. The drift is the
+> tree moving, not the rule changing: the tool at the commit this section describes
+> prints the same 2 today. Re-run before quoting the number.
 
 It reproduces both of `include/MeshColliderBase.h`'s hand-derived claims exactly —
 `func_02039658` is `MeshColliderBase`'s D2, `func_020397fc` is `MeshCollider`'s —
@@ -349,3 +356,86 @@ contiguous range in the right order; nothing can currently *bind* it.
   those print the class and stop.
 - Nothing here is renamed. Each candidate still wants its size compared against the
   class's D1/C1 and its callers read.
+
+## 8. The D0/D1 assertion §6 asked for — and the 8th impostor it found
+
+    python tools/dtor_variant_audit.py        # slot-order section is part of the default run
+
+§6 recorded the gap: the D2 rule decides `D2` versus `{D0, D1}` and stops, because
+a D0 and a D1 both sit in a vtable and the reloc kind is identical for the two. A
+D0/D1 swap passed it silently. The missing assertion is the one §2's table was
+already using informally:
+
+    the ABI emits the destructor pair adjacently, complete first
+      -> slot N is the D1 and slot N+1 is the D0, never the reverse
+
+Read the same way as everything else here: a `kind:load` reloc *from* an address
+inside a known vtable *to* a function is one slot, and `build/rtti.json` bounds the
+table, so the slot index is exact rather than inferred from a name.
+
+**Current result: 260 pairs, all D1-then-D0, zero swaps.** Combined with §2's
+renames having landed (#1203), both original lists are now empty too.
+
+### The rule was tested by planting the error
+
+A check that has never fired proves nothing, which is the same objection §3 answers
+for the forward rule with a control. Here the control is direct: swap the two
+*names* on `Scene`'s destructor pair in `config/arm9/symbols.txt`, leaving addresses
+and sizes alone, and the rule must find it.
+
+    SWAPPED  _ZN5SceneD0Ev at slot 16, above _ZN5SceneD1Ev at slot 17
+        in: arm9/dScene_c
+
+It does, and names both bodies. The plant was reverted; `symbols.txt` is untouched.
+
+### Findings are keyed by body, not by table
+
+A derived class that does not override its destructor reuses the base's two
+function addresses in its own slots. Keying by table would report one swap in a
+base class once per descendant — the shape that makes a two-row finding read as a
+forty-row one. Pairs are therefore deduplicated by the pair of symbols, with the
+tables they appear in listed underneath.
+
+### 6 unpaired slots, and one of them was a real D2-in-a-vtable
+
+A destructor sitting in a vtable slot whose neighbour is *not* a destructor cannot
+be judged by slot order, so those are reported separately and are not a finding.
+Six exist, and reading them was worth more than the rule itself:
+
+- **Five are unnamed D0s.** `ClsnResult`, `SphereClsn`, `RaycastLine`,
+  `WithMeshClsn` and `RaycastGround` each have a named `D1` at slot 0 with a
+  `func_*` at slot 1 — `func_02038114`, `func_02037c40`, `func_02037710`,
+  `func_020373b8`, `func_020374f0`. That slot is the D0 by position. This is §7's
+  discovery direction reached from the other side, and `--discover` cannot see them
+  because a D0 *is* in a vtable. Blocked on the same ratchet as §7's eleven.
+- **One is an impostor the first sweep missed.** `_ZN8CapEnemyD2Ev` occupies
+  `dCapEnemy_c` **slot 16** — a D1 slot. It is an 8th member of §2's table, found
+  three years of tooling later, and `_ZN8CapEnemyD1Ev` is free, so the rename is
+  one-for-one exactly like the seven.
+
+### Why §2's sweep missed it: module scope, not the rule
+
+The forward rule was never wrong. `referenced()` was looking in the wrong place.
+
+`_ZN8CapEnemyD2Ev` is defined in **arm9** (`0x0200651c`); the vtable slot that
+points at it is in **ov002**. The lookup searched the symbol's own module plus
+arm9 — which for an arm9 symbol means arm9 alone — so an arm9 function referenced
+from an *overlay* vtable had no reloc pointing at it as far as the tool could see.
+Every one of §2's seven happened to be referenced from its own module, so the blind
+spot never showed.
+
+The scope now depends on where the target lives, because overlays share address
+ranges and arm9 does not:
+
+| target in | modules searched | why |
+|---|---|---|
+| arm9 | **all** | arm9 is always mapped and no overlay is mapped over it, so an ov002 reloc to an arm9 VA can only mean that arm9 function |
+| an overlay | that overlay + arm9 | a reloc from a *different* overlay to the same VA addresses whatever its own module has there |
+
+Widening it produced exactly one new finding and no new noise — the §3 control (D1
+symbols in no vtable whose class is polymorphic) stayed empty.
+
+**The lesson is the same one §5 records twice.** The disproof came from the reloc
+kind, which was right from the start. What was wrong was the *lookup* — first a
+fixed-size window that mis-attributed 2 of 7, now a module scope that hid an 8th.
+Both times the rule survived and the plumbing was the defect.

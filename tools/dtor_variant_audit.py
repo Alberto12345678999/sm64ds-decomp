@@ -42,6 +42,20 @@ For every offender the tool resolves the referencing address back through
 `build/rtti.json` to the owning class and slot index, which names what the
 symbol should have been.
 
+That rule decides `D2` versus `{D0, D1}` and stops there.  It cannot separate a
+D0 from a D1, because both sit in a vtable, so a D0/D1 swap passes it silently.
+**Slot position is what separates them**, and it is the same kind of structural
+fact rather than a heuristic:
+
+    the ABI emits the destructor pair adjacently, complete first
+      -> slot N is the D1 and slot N+1 is the D0, never the reverse
+
+so a vtable holding a `...D0Ev` immediately above a `...D1Ev` has the two names
+on the wrong bodies.  A pair is checked once per *body*, not once per table:
+a derived class that does not override its destructor inherits the base's two
+slots verbatim, so one swap in a base would otherwise be reported once for every
+class beneath it.
+
     python tools/dtor_variant_audit.py            # report
     python tools/dtor_variant_audit.py --json     # machine-readable
 
@@ -168,6 +182,107 @@ def locate(vtables, mod, addr):
     return None
 
 
+def dtor_kind(name):
+    """D0/D1/D2 for a destructor-variant symbol, else None."""
+    for suffix in ("D0Ev", "D1Ev", "D2Ev"):
+        if name.endswith(suffix):
+            return suffix[:2]
+    return None
+
+
+def slot_order():
+    """Check the vtable destructor pair: D1 at slot N, D0 at slot N+1.
+
+    `audit()` decides D2 versus {D0, D1}. It cannot go further, because both a D0
+    and a D1 sit in a vtable and the reloc kind is identical for the two. Slot
+    order is the remaining structural signal: the ABI lays the pair down
+    adjacently with the complete destructor first, so a table holding D0 above D1
+    has the names swapped.
+
+    Read the same way as the rest of this tool -- from the ROM. A `kind:load`
+    reloc *from* an address inside a known vtable *to* a function is one slot, and
+    `build/rtti.json` bounds the table, so the slot index is exact rather than
+    inferred from a name.
+
+    Results are keyed by the pair of *bodies*, not by the table they appear in.
+    A derived class that does not override its destructor reuses the base's two
+    function addresses in its own slots, so a single swap in a base class would
+    otherwise be reported once per descendant -- the shape that makes a two-row
+    finding look like a forty-row one.
+
+    Returns None when build/rtti.json is absent; there is no slot index without it.
+    """
+    funcs = load_functions()
+    vtables = load_vtables()
+    outgoing = load_outgoing()
+    if not vtables:
+        return None
+
+    def sym_at(mod, addr):
+        """The function symbol at a vtable slot's target, same-module then arm9.
+
+        Not a flat address map: overlays share address ranges, so a global lookup
+        would resolve an ov002 slot to whatever overlay happened to be indexed
+        last at that VA.
+        """
+        hit = funcs.get(mod, {}).get(addr)
+        if hit is None and mod != "arm9":
+            hit = funcs.get("arm9", {}).get(addr)
+        return hit[0] if hit else None
+
+    # (module, class) -> {slot: (symbol, kind)}, destructor slots only.
+    tables = collections.defaultdict(dict)
+    for mod, entries in outgoing.items():
+        for frm, tgt in entries:
+            loc = locate(vtables, mod, frm)
+            if not loc:
+                continue
+            name = sym_at(mod, tgt)
+            if not name:
+                continue
+            kind = dtor_kind(name)
+            # D2s in a vtable are the other rule's finding; including them here
+            # would report #1203's category a second time under a new name.
+            if kind in ("D0", "D1"):
+                tables[(mod, loc[0])][loc[1]] = (name, kind)
+
+    swapped, anomalous, unpaired = {}, {}, {}
+    counts = collections.Counter()
+    for (mod, cls), slots in sorted(tables.items()):
+        paired = set()
+        for slot in sorted(slots):
+            if slot in paired or slot + 1 not in slots:
+                continue
+            paired.add(slot)
+            paired.add(slot + 1)
+            (lo_sym, lo_kind), (hi_sym, hi_kind) = slots[slot], slots[slot + 1]
+            key = (lo_sym, hi_sym)
+            row = {"low": {"symbol": lo_sym, "kind": lo_kind, "slot": slot},
+                   "high": {"symbol": hi_sym, "kind": hi_kind, "slot": slot + 1}}
+            if lo_kind == "D1" and hi_kind == "D0":
+                counts["pairs_ok"] += 1
+                continue
+            bucket = swapped if (lo_kind == "D0" and hi_kind == "D1") else anomalous
+            bucket.setdefault(key, dict(row, tables=[]))["tables"].append(
+                {"module": mod, "class": cls})
+        for slot in sorted(slots):
+            if slot not in paired:
+                sym, kind = slots[slot]
+                unpaired.setdefault(sym, {"symbol": sym, "kind": kind, "tables": []})
+                unpaired[sym]["tables"].append(
+                    {"module": mod, "class": cls, "slot": slot})
+
+    def rows(d):
+        return sorted(d.values(), key=lambda r: r.get("symbol") or r["low"]["symbol"])
+
+    return {
+        "counts": dict(counts),
+        "swapped": rows(swapped),
+        "anomalous_pairs": rows(anomalous),
+        "unpaired": rows(unpaired),
+    }
+
+
 def audit():
     funcs = load_functions()
     refs = load_data_refs()
@@ -182,10 +297,28 @@ def audit():
                 vtable_vas.add(va)
 
     def referenced(mod, addr):
-        """Every load-reloc pointing at addr, from this module or from arm9."""
+        """Every load-reloc pointing at addr, from any module that can mean it.
+
+        Which modules count depends on where the *target* lives, because overlays
+        share address ranges and arm9 does not:
+
+          target in arm9      every module. arm9 is always mapped and no overlay
+                              is mapped over it, so an ov002 reloc to an arm9 VA
+                              can only mean that arm9 function. Searching just
+                              {arm9} here hid `_ZN8CapEnemyD2Ev` -- an arm9 D2
+                              sitting in ov002's `dCapEnemy_c` vtable, which is a
+                              D2-in-a-vtable that the first sweep never saw.
+          target in an overlay  that overlay, plus arm9. A reloc from a *different*
+                              overlay to the same VA addresses whatever its own
+                              module has there, not this function.
+        """
+        if mod == "arm9":
+            hits = []
+            for hmod in refs:
+                hits += refs[hmod].get(addr, [])
+            return hits
         hits = list(refs.get(mod, {}).get(addr, []))
-        if mod != "arm9":
-            hits += refs.get("arm9", {}).get(addr, [])
+        hits += refs.get("arm9", {}).get(addr, [])
         return hits
 
     def writes_vptr(mod, addr, size):
@@ -409,6 +542,7 @@ def main():
         return 0
 
     res = audit()
+    res["slot_order"] = slot_order()
     if args.json:
         print(json.dumps(res, indent=2))
         return 0
@@ -446,6 +580,35 @@ def main():
     print()
     print("These two lists are each other's control. A rule that fired on noise would")
     print("put ordinary destructors in the second list.")
+
+    slots = res["slot_order"]
+    print()
+    if slots is None:
+        print("slot order: not checked (build/rtti.json absent)")
+        return 0
+
+    ok = slots["counts"].get("pairs_ok", 0)
+    print("D0/D1 slot order -- the ABI lays the pair down D1 first, D0 next (%d pairs ok):"
+          % ok)
+    for r in slots["swapped"]:
+        print("  SWAPPED  %s at slot %d, above %s at slot %d"
+              % (r["low"]["symbol"], r["low"]["slot"],
+                 r["high"]["symbol"], r["high"]["slot"]))
+        print("      in: %s" % ", ".join("%s/%s" % (t["module"], t["class"])
+                                         for t in r["tables"][:5]))
+    for r in slots["anomalous_pairs"]:
+        print("  ODD PAIR %s(%s) then %s(%s) at slots %d,%d"
+              % (r["low"]["symbol"], r["low"]["kind"],
+                 r["high"]["symbol"], r["high"]["kind"],
+                 r["low"]["slot"], r["high"]["slot"]))
+        print("      in: %s" % ", ".join("%s/%s" % (t["module"], t["class"])
+                                         for t in r["tables"][:5]))
+    if not slots["swapped"] and not slots["anomalous_pairs"]:
+        print("  none -- every destructor pair in every known vtable is D1 then D0")
+    if slots["unpaired"]:
+        print("  (%d destructor symbols sit in a vtable slot with no destructor in the"
+              % len(slots["unpaired"]))
+        print("   adjacent slot; the rule cannot judge those, so they are not a finding)")
     return 0
 
 
