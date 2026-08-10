@@ -196,7 +196,16 @@ def plan(raw, keep_symbol):
                     return {"error": f"{sym.name}: unexpected reloc "
                                      f"type={r['r_info_type']} addend={addend}"}
             elif shndx == "SHN_UNDEF" or shndx == SHN_UNDEF:
-                if addend:
+                # The predicted case above, now real: an INLINE BASE DESTRUCTOR.
+                # `Scene::~Scene()` inlines ~ActorDerived, so the object stores
+                # _ZTV12ActorDerived without ever defining it -- UNDEF from the
+                # start, addend 8, never a candidate for externalisation. The
+                # correction is the same arithmetic the externalise path uses, and
+                # it is verified the same way: rombuild byte-compares the linked
+                # module, which is the only thing that caught the original 8-high
+                # vptr bug. A different addend is still refused.
+                if addend and not (sym.name.startswith("_ZTV")
+                                   and addend == VTABLE_PREAMBLE):
                     return {"error": f"{sym.name}: undefined RTTI reference with "
                                      f"addend {addend}; the ROM symbol is already the "
                                      f"slot array, so this would land {addend} past it"}
@@ -308,10 +317,15 @@ def isolate(obj, keep_symbol):
         if s.name in ext_or_visible(s):
             struct.pack_into(endian + "H", raw, ent + 14, SHN_UNDEF)
 
-    # Drop the preamble skip from every externalised vtable reference, now that the
-    # symbol it binds to already points at the slot array. Elf32_Rela is 12 bytes:
+    # Drop the preamble skip from every vtable reference, now that the symbol it
+    # binds to already points at the slot array. Elf32_Rela is 12 bytes:
     # r_offset(4) r_info(4) r_addend(4). `plan` has already refused anything whose
     # type/addend is not the surveyed shape, so this only ever rewrites 8 -> 0.
+    #
+    # Two kinds reach here and both need the same correction. A vtable this object
+    # DEFINED and is now externalising, and one it never defined at all -- the
+    # inline-base-destructor case, where the store comes from a body inlined out of
+    # a header, so the symbol is UNDEF from the start and is not in `externalise`.
     ext = set(p["externalise"])
     for s in elf.iter_sections():
         if not isinstance(s, RelocationSection) or s.header["sh_info"] != p["keep"]:
@@ -321,7 +335,10 @@ def isolate(obj, keep_symbol):
         roff = s.header["sh_offset"]
         for i, r in enumerate(s.iter_relocations()):
             sym = symtab.get_symbol(r["r_info_sym"])
-            if sym.name in ext and sym.name.startswith("_ZTV"):
+            if not sym.name.startswith("_ZTV"):
+                continue
+            undef = sym["st_shndx"] in ("SHN_UNDEF", SHN_UNDEF)
+            if (sym.name in ext or undef) and r["r_addend"] == VTABLE_PREAMBLE:
                 struct.pack_into(endian + "i", raw, roff + i * 12 + 8,
                                  r["r_addend"] - VTABLE_PREAMBLE)
 
