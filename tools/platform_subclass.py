@@ -30,6 +30,9 @@ FIELD = re.compile(r"^\s*([A-Za-z_][\w:<>]*)\s+(\**)(\w+)(\[[^\]]*\])?\s*;\s*/\*
 # the four classes that rule out reading the class as 0x324.
 PLATFORM_DSIZE = 0x31e
 
+# build_header fills this: marker name -> (member, byte offset into it, type).
+SWALLOWED = {}
+
 
 def inherited_names():
     """offset -> (name, type) Actor.h / Platform.h gives that offset."""
@@ -106,6 +109,11 @@ def build_header(cls, old, sizes=None):
     covered = set()
     for o, (ty, sz) in dtor_members.items():
         covered.update(range(o, o + sz))
+    SWALLOWED.clear()
+    for o, ty, star, nm in own:
+        if o in covered:
+            base_off = max(b for b in dtor_members if b <= o)
+            SWALLOWED[nm] = (f"m{dtor_members[base_off][0]}", o - base_off, ty)
     own = [f for f in own if f[0] not in covered]
     seen = set()
     for o, (ty, sz) in sorted(dtor_members.items()):
@@ -188,8 +196,17 @@ def patch_source(text, oldmap, names, types=None, itypes=None):
     fields again and nothing should reach it.
     """
     types, itypes = types or {}, itypes or {}
+    # A marker the generated header declared INSIDE a member the destructor
+    # typed is not a field of its own -- it is bytes of that member. The header
+    # no longer declares it, so its uses have to reach into the member instead.
+    # SwitchPillar's unk_32c is twelve bytes into the TextureTransformer at
+    # 0x320; ShipWater and RotatingPlatformWdw have the same shape.
+    for nm, (member, delta, ty) in sorted(SWALLOWED.items(), key=lambda kv: -len(kv[0])):
+        repl = (f"(*({ty} *)((char *)&{member} + 0x{delta:x}))" if delta
+                else f"(*({ty} *)&{member})")
+        text = re.sub(r"\b" + re.escape(nm) + r"\b", repl, text)
     for nm, o in sorted(oldmap.items(), key=lambda kv: -len(kv[0])):
-        if o >= PLATFORM_DSIZE or o not in names:
+        if nm in SWALLOWED or o >= PLATFORM_DSIZE or o not in names:
             continue
         base = names[o]
         mine, theirs = types.get(nm), itypes.get(base)
