@@ -256,8 +256,7 @@ def build_header(cls, old, sizes=None):
 #define {guard}
 
 #include "types.h"
-#include "{base}.h"
-{incs}
+
 /* Derives from {base}: the destructor stores this class's vtable, then the
  * base's, then destroys whatever the base owns before chaining further up.
  * Everything this header used to restate below 0x{bdsize:x} belonged to the
@@ -269,6 +268,14 @@ def build_header(cls, old, sizes=None):
 
 #ifdef __cplusplus
 
+/* THE BASE INCLUDE BELONGS INSIDE THIS GUARD. A subclass's D0 is a C
+   translation unit that includes this header for the flat struct below, and
+   pulling the base in unconditionally hands a C compiler `extern "C"` and
+   `struct X : Y` -- include/Enemy.h carries both and has no guard of its own,
+   so it answered with "declaration syntax error" on four lines at once. The C
+   side needs no base: it spells the whole layout flat. */
+#include "{base}.h"
+{incs}
 struct {cls} : {base} {{
 {body}
 

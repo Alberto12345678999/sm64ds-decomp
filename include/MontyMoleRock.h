@@ -2,10 +2,6 @@
 #define MONTYMOLEROCK_H
 
 #include "types.h"
-#include "Enemy.h"
-#include "Model.h"
-#include "MovingCylinderClsn.h"
-#include "WithMeshClsn.h"
 
 /* Derives from Enemy: the destructor stores this class's vtable, then the
  * base's, then destroys whatever the base owns before chaining further up.
@@ -17,6 +13,11 @@
  */
 
 #ifdef __cplusplus
+
+#include "Enemy.h"
+#include "Model.h"
+#include "MovingCylinderClsn.h"
+#include "WithMeshClsn.h"
 
 struct MontyMoleRock : Enemy {
     Model mModel;                     /* 0x110 */
