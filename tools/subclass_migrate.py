@@ -88,6 +88,24 @@ def base_data_size(base):
     return last or class_sizes().get(base, 0)
 
 
+def base_virtuals():
+    """method name -> the base chain's own declaration of it.
+
+    A generated header spells these from the disassembly and guesses `int`,
+    but ActorBase declares `virtual s32 InitResources()` and s32 is not int to
+    C++ -- so the override is rejected as "differs from virtual base
+    'ActorBase::InitResources()' in return type only". The base's spelling is
+    the correct one by definition: an override cannot differ from it.
+    """
+    out = {}
+    for h, _, _ in chain_ranges():
+        for m in re.finditer(r"^\s*virtual\s+([\w:<>]+)\s+(\**\w+)\s*\(([^)]*)\)\s*(?:=\s*0\s*)?;",
+                             (REPO / h).read_text(errors="replace"), re.M):
+            ret, name, args = m.group(1), m.group(2).lstrip("*"), m.group(3)
+            out.setdefault(name, f"virtual {ret} {name}({args})")
+    return out
+
+
 def base_member_offsets(base):
     """Offsets of members the BASE destroys -- a subclass must not claim them."""
     out = set()
@@ -210,6 +228,10 @@ def build_header(cls, old, sizes=None):
     # the class then fails on "undefined identifier" in its own source.
     meths = re.findall(r"^\s{4}((?:static\s+|virtual\s+|const\s+)*"
                        r"[A-Za-z_][\w:<>]*\s+\**\w+\([^)]*\));", old, re.M)
+    # An override must match the base's declaration exactly, so take the base's
+    # spelling wherever the name is one of its virtuals -- see base_virtuals().
+    bv = base_virtuals()
+    meths = [bv.get(re.search(r"(\w+)\s*\(", m).group(1), m) for m in meths]
     guard = cls.upper() + "_H"
     incs = "".join('#include "%s.h"\n' % ty
                    for ty in sorted({t2 for _, (t2, _) in dtor_members.items()})
@@ -279,6 +301,16 @@ def patch_source(text, oldmap, names, types=None, itypes=None, cls=None):
     fields again and nothing should reach it.
     """
     types, itypes = types or {}, itypes or {}
+    # If the header took the base's spelling for an override (see
+    # base_virtuals), the DEFINITION has to agree or mwcc reports the method
+    # "redeclared ... was declared as 'int ()', now declared as 'void ()'".
+    # The generated headers guessed these return types; the base's is the one an
+    # override is allowed to have.
+    if cls:
+        for name, decl in base_virtuals().items():
+            ret = decl.split()[1]
+            text = re.sub(r"^[A-Za-z_][\w:<>]*\s+(\**)" + re.escape(f"{cls}::{name}") + r"\s*\(",
+                          lambda m, r=ret: f"{r} {m.group(1)}{cls}::{name}(", text, flags=re.M)
     # A marker the generated header declared INSIDE a member the destructor
     # typed is not a field of its own -- it is bytes of that member. The header
     # no longer declares it, so its uses have to reach into the member instead.

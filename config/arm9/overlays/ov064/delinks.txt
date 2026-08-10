@@ -435,11 +435,11 @@ src/BowserPuzzlePiece_Spawn.c:
     complete
     .text start:0x02119300 end:0x02119330
 
-src/_ZN17BowserPuzzlePieceD1Ev.c:
+src/_ZN17BowserPuzzlePieceD1Ev.cpp:
     complete
     .text start:0x02119330 end:0x02119368
 
-src/_ZN17BowserPuzzlePieceD0Ev.c:
+src/_ZN17BowserPuzzlePieceD0Ev.cpp:
     complete
     .text start:0x02119368 end:0x021193b4
 
