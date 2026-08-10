@@ -118,7 +118,7 @@ src/_ZN17SlidingPlatformWfD1Ev.cpp:
     complete
     .text start:0x02132404 end:0x02132448
 
-src/_ZN17SlidingPlatformWfD0Ev.c:
+src/_ZN17SlidingPlatformWfD0Ev.cpp:
     complete
     .text start:0x02132448 end:0x021324a0
 
