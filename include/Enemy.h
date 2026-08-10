@@ -35,7 +35,13 @@ struct Enemy : Actor {
 
        Actor is 0xd0, so Enemy's own fields start there and its 0x110 closes
        exactly on the subclasses that follow it. */
-    u8  pad_0d0[0x4];
+    /* FIVE FIELDS BELOW WERE PADDING HERE and are named on the same kind of
+       evidence that took Actor's 0x0a4/0x0ac: the subclasses declare them and
+       read them, and `X : Enemy` cannot compile unless they exist. The counts
+       are how many of Enemy's 51 subclasses declare each -- 0x100 is in
+       twenty-eight of them, which is not a coincidence. The names stay unk_
+       where the meaning is unevidenced. */
+    s32 mEatingPlayer;            /* 0x0d0 -- 4 subclasses */
     s32 mFloorNormalX;            /* 0x0d4 */
     s32 mFloorNormalY;            /* 0x0d8 */
     s32 mFloorNormalZ;            /* 0x0dc */
@@ -45,12 +51,16 @@ struct Enemy : Actor {
     s16 mSpinRateX;               /* 0x0ec */
     s16 mSpinRateY;               /* 0x0ee */
     s16 mSpinRateZ;               /* 0x0f0 */
-    u8  pad_0f2[0x10];
+    u8  pad_0f2[0xe];
+    s16 unk_100;                  /* 0x100 -- 28 subclasses */
     u16 mDeathTimer;              /* 0x102 */
-    u8  pad_104[0x2];
+    u16 unk_104;                  /* 0x104 -- 5 subclasses */
     u8 unk_106;                   /* 0x106 */
     u8 unk_107;                   /* 0x107 */
-    u8  pad_108[0x4];
+    u8  unk_108;                  /* 0x108 -- 10 subclasses */
+    u8  pad_109[0x1];
+    u8  unk_10a;                  /* 0x10a -- 5 subclasses */
+    u8  pad_10b[0x1];
     s32 mDeathState;              /* 0x10c */
 
     virtual ~Enemy();                   /* slots 0 (D1), 1 (D0) */
