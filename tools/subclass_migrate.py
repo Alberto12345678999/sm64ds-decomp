@@ -233,9 +233,15 @@ def build_header(cls, old, sizes=None):
     bv = base_virtuals()
     meths = [bv.get(re.search(r"(\w+)\s*\(", m).group(1), m) for m in meths]
     guard = cls.upper() + "_H"
+    # Every member type needs its declaration, not just the ones the destructor
+    # named. A generated header can declare `BlendModelAnim mBlendModelAnim;`
+    # for a class whose destructor is never called here, and regenerating
+    # without the include leaves that field as "undefined identifier".
+    member_types = {t2 for _, (t2, _) in dtor_members.items()}
+    member_types |= {f[1] for f in own if not f[2] and f[1] not in W}
     incs = "".join('#include "%s.h"\n' % ty
-                   for ty in sorted({t2 for _, (t2, _) in dtor_members.items()})
-                   if (REPO / "include" / f"{ty}.h").exists())
+                   for ty in sorted(member_types)
+                   if ty != cls and (REPO / "include" / f"{ty}.h").exists())
     body = "\n".join(lines) if lines else "    /* no fields of its own */"
     tail = "".join(f"\n    {m};" for m in meths)
 
@@ -249,6 +255,18 @@ def build_header(cls, old, sizes=None):
     cbody = cbody[:cbody.index("\n};") + 3]
     cbody = re.sub(r"#ifdef __cplusplus.*?#endif\n", "", cbody, flags=re.S)
     cbody = re.sub(r"\n\s*/\* methods \*/\n", "\n", cbody)
+
+    # A CLASS-TYPED MEMBER BECOMES BYTES ON THE C SIDE. That side exists because
+    # the D0 file is a C translation unit, and it cannot see a C++ class -- the
+    # member includes are inside the guard, where they belong. Spelling the
+    # member as a byte array of its asserted size keeps every later offset right
+    # and says exactly what a C reader can know about it.
+    def _flatten(m):
+        ty, nm = m.group(1), m.group(2)
+        sz = sizes.get(ty)
+        return (f"    u8  {nm}[0x{sz:x}];" if sz else m.group(0))
+
+    cbody = re.sub(r"^\s*([A-Z]\w+)\s+(\w+)\s*;", _flatten, cbody, flags=re.M)
 
     base = BASE[0]
     bdsize = BASE_DSIZE[0]
