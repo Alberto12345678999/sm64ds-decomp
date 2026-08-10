@@ -27,7 +27,27 @@ typedef s32 Fix12i;
 
 typedef struct Vector3 {
     Fix12i x, y, z;
+#ifdef __cplusplus
+    /* DECLARED, AND EMPTY, BECAUSE THE ROM DESTROYS ARRAYS OF IT. A POD array
+       needs no cleanup, so ChiefChilly's
+       `__destroy_arr(this + 0x3e8, 8, 0xc, func_020072c0)` can only exist if
+       the element type declares a destructor -- and 0x020072c0 is four bytes,
+       `bx lr`, an empty one. config/arm9/symbols.txt names it
+       _ZN7Vector3D1Ev.
+
+       This makes Vector3 non-POD everywhere, which is nearly free but not
+       quite: 10,812 of 10,813 enrolled functions are byte-identical either way,
+       and Rabbit::Behavior grows 8 bytes (0x5cc -> 0x5d4). That one is the
+       price of the six destructors this unblocks. */
+    ~Vector3() {}
+#endif
 } Vector3;
+
+#ifdef __cplusplus
+/* 0xc, and the ROM agrees twice over: ChiefChilly's arrays stride by 0xc and
+   its __destroy_arr calls pass 0xc as the element size. */
+typedef char Vector3_size_must_be_0xc[sizeof(Vector3) == 0xc ? 1 : -1];
+#endif
 
 typedef struct Vector3s {
     s16 x, y, z;

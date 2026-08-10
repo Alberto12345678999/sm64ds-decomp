@@ -13,13 +13,13 @@ extern int __destroy_arr(void *p, int a, int b, void *fn);
 extern void _ZN25MovingCylinderClsnWithPosD1Ev(void *p);
 extern int _ZN5EnemyD2Ev(int *x);
 extern int _ZTV10ChainChomp[];
-extern int func_020072c0(void);
+extern int _ZN7Vector3D1Ev(void);
 extern int data_020a0eac;
 
 void *_ZN10ChainChompD0Ev(struct ChainChomp *self) {
     *(int**)((char *)self) = _ZTV10ChainChomp;
-    __destroy_arr(((char *)self) + 0x578, 7, 0xc, (void*)func_020072c0);
-    __destroy_arr(((char *)self) + 0x524, 7, 0xc, (void*)func_020072c0);
+    __destroy_arr(((char *)self) + 0x578, 7, 0xc, (void*)_ZN7Vector3D1Ev);
+    __destroy_arr(((char *)self) + 0x524, 7, 0xc, (void*)_ZN7Vector3D1Ev);
     __destroy_arr(((char *)self) + 0x40c, 7, 0x28, (void*)_ZN11ShadowModelD1Ev);
     __destroy_arr(((char *)self) + 0x1dc, 7, 0x50, (void*)_ZN5ModelD1Ev);
     _ZN11ShadowModelD1Ev((char *)&self->mShadowModel);
