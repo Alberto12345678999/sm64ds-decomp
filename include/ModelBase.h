@@ -78,6 +78,8 @@ struct ModelComponents {
     void Render(Matrix4x3 *mat, Vector3 *scale); /* 0x020443c8 */
 };
 
+extern "C" void _ZN6Memory16operator_delete2EPv(void *);
+
 struct ModelBase {
     /* 0x00 is the vptr, placed implicitly by the first virtual declaration. */
     BMD_File *modelFile;    /* 0x04 - owned; the destructors Deallocate it */
@@ -87,8 +89,30 @@ struct ModelBase {
     virtual int DoSetFile(char *file, int a, int b) = 0;  /* slot 2, null here */
 
     /* --- non-virtual --- */
-    void SetFile(BMD_File *file, int a, int b);      /* dispatches DoSetFile */
+    /* RETURNS int, not void. The definition at 0x02016fd4 is eight
+       instructions: load the vtable, `blx` slot 2 (DoSetFile, which returns
+       int), then the epilogue -- r0 is never touched after the call, so it
+       flows straight out. Callers corroborate: KoopaShell::InitResources tests
+       the result and bails on 0. */
+    int SetFile(BMD_File *file, int a, int b);       /* dispatches DoSetFile */
     void ApplyOpacity(u32 a);
+
+    /* WHAT LETS A REAL `~Class()` REPRODUCE THE ROM'S DELETING DESTRUCTOR.
+       The compiler generates D0 as "run the destructor body, then call operator
+       delete on the class". Without this it emits the global `_ZdlPv`, which
+       exists nowhere in this image, and the D0 comes out one relocated word
+       different from the ROM -- a difference build_pin.verify CANNOT SEE,
+       because it wildcards relocated words. Only the link catches it.
+
+       This family deallocates through Memory::operator_delete2, not the actor
+       heap: every D0 below ends with a call to 0x0203cbcc. Actor's copy of this
+       member calls Memory::Deallocate instead, which is why each needs its own.
+
+       Inline, and in the IMMEDIATE base -- mwcc inlines it only when it finds it
+       in the class or one level up, as include/Actor.h records. No layout
+       effect: a non-virtual inline member adds no field and no vtable slot. */
+    void operator delete(void *ptr) { _ZN6Memory16operator_delete2EPv(ptr); }
+
 };
 
 typedef char ModelComponents_size_must_be_0x14[sizeof(ModelComponents) == 0x14 ? 1 : -1];
