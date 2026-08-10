@@ -171,29 +171,35 @@ def build_header(cls, old, sizes=None):
     """(text, size, own-field-count) for the rewritten header."""
     sizes = sizes or {}
     dtor_members = members_from_destructor(cls, sizes)
-    own = sorted((int(o, 16), ty, star, nm)
+    # `arr` is carried through: the offset walk always used the array length,
+    # but the emitted declaration dropped the `[N]`, so every class with an
+    # array field got a struct whose fields were right only until the first one
+    # -- and the source then failed on `illegal operands 'int' [ 'int'` where it
+    # subscripted what had silently become a scalar.
+    own = sorted((int(o, 16), ty, star, nm, arr)
                  for ty, star, nm, arr, o in FIELD.findall(old)
                  if int(o, 16) >= BASE_DSIZE[0] and not nm.startswith("pad_"))
     covered = set()
     for o, (ty, sz) in dtor_members.items():
         covered.update(range(o, o + sz))
     SWALLOWED.clear()
-    for o, ty, star, nm in own:
+    for o, ty, star, nm, arr in own:
         if o in covered:
             base_off = max(b for b in dtor_members if b <= o)
             SWALLOWED[nm] = (f"m{dtor_members[base_off][0]}", o - base_off, ty)
     own = [f for f in own if f[0] not in covered]
     seen = set()
     for o, (ty, sz) in sorted(dtor_members.items()):
-        own.append((o, ty, "", f"m{ty}" if ty not in seen else f"m{ty}_{o:03x}"))
+        own.append((o, ty, "", f"m{ty}" if ty not in seen else f"m{ty}_{o:03x}", ""))
         seen.add(ty)
     own.sort()
     lines, cur = [], BASE_DSIZE[0]
-    for o, ty, star, nm in own:
+    for o, ty, star, nm, arr in own:
         if o > cur:
             lines.append(f"    u8  pad_{cur:03x}[0x{o - cur:x}];")
-        lines.append(f"    {ty} {star}{nm};".ljust(38) + f"/* 0x{o:03x} */")
-        cur = o + (4 if star else sizes.get(ty) or W.get(ty, 4))
+        lines.append(f"    {ty} {star}{nm}{arr};".ljust(38) + f"/* 0x{o:03x} */")
+        n = int(arr.strip("[]"), 0) if arr else 1
+        cur = o + (4 if star else sizes.get(ty) or W.get(ty, 4)) * n
     # The floor is the BASE's sizeof, not a constant -- this read 0x320,
     # Platform's, left behind when the tool was generalised. For any other
     # base it asserted a size the class does not have and every source

@@ -5719,7 +5719,7 @@ src/SoundObject_Spawn.c:
     complete
     .text start:0x020f972c end:0x020f975c
 
-src/_ZN7MinimapD1Ev.c:
+src/_ZN7MinimapD1Ev.cpp:
     complete
     .text start:0x020f975c end:0x020f978c
 
@@ -5767,7 +5767,7 @@ src/_ZN7MinimapC1Ev.c:
     complete
     .text start:0x020fb8bc end:0x020fb8f8
 
-src/_ZN3HUDD1Ev.c:
+src/_ZN3HUDD1Ev.cpp:
     complete
     .text start:0x020fb8f8 end:0x020fb928
 
