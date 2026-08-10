@@ -123,8 +123,18 @@ def load_rom_evidence():
         if m:
             enrolled.add(m.group(1))
 
+    # build/rombuild-eligibility.json has two vintages: a bare list, and the
+    # stamped {commit, dirty, files} shape eligible.py writes now. Iterating the
+    # stamped one as a list yields its KEYS -- three strings -- and the first
+    # thing done to a row is `.get`, so it dies with AttributeError on a str
+    # rather than saying the format moved. tools/eligible.py:load_report is the
+    # reader that knows both; use it rather than keeping a third opinion.
+    sys.path.insert(0, str(REPO / "tools"))
+    import eligible as ELIG                                       # noqa: E402
+    rows, _commit, _dirty = ELIG.load_report(elig)
+
     reasons = {}
-    for row in json.loads(elig.read_text(encoding="utf-8", errors="replace")):
+    for row in rows:
         reasons[row["file"].replace("\\", "/")] = row.get("reason")
     return enrolled, reasons, report
 
