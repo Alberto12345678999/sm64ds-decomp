@@ -16,10 +16,10 @@ extern int _ZN5Actor5SpawnEjjRK7Vector3PK10Vector3_16as(unsigned int, unsigned i
 
 int SlidingIce::Behavior()
 {
-  int isType = (mActorID == 0x5d);
+  int isType = (actorID == 0x5d);
   if(isType){
     if(DecIfAbove0_Short((char *)&unk_31e) == 0){
-      _Z14ApproachLinearRiii((int*)((char *)&unk_098), 0, 0x3000);
+      _Z14ApproachLinearRiii((int*)((char *)&mHorzSpeed), 0, 0x3000);
       if(_Z14ApproachLinearRiii((int*)((char *)&mPosY), unk_324, 0xa000) != 0){
         _ZN9ActorBase18MarkForDestructionEv(((char *)this));
       }
@@ -33,13 +33,13 @@ int SlidingIce::Behavior()
       pos.y = mPosY;
       pos.z = mPosZ;
       int spawnType = 1;
-      if(DecIfAbove0_Byte((char *)&unk_320) == 0){
-        unk_320 = 5;
+      if(DecIfAbove0_Byte((char *)&(*(s8 *)&unk_320)) == 0){
+        (*(s8 *)&unk_320) = 5;
         spawnType = 2;
       } else {
         pos.y -= 0x50000;
       }
-      unsigned char cnt = unk_320;
+      unsigned char cnt = (*(s8 *)&unk_320);
       unk_31e = (cnt + 1) * 0x14;
       _ZN5Actor5SpawnEjjRK7Vector3PK10Vector3_16as(0x5d, spawnType, &pos, ((char *)this)+0x8c, mAreaId, -1);
     }

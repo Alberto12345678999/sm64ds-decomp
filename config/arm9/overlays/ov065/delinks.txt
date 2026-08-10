@@ -485,7 +485,7 @@ src/TtcRotatingGear_Spawn.c:
     complete
     .text start:0x0211b7b8 end:0x0211b7f0
 
-src/_ZN15TtcRotatingGearD1Ev.c:
+src/_ZN15TtcRotatingGearD1Ev.cpp:
     complete
     .text start:0x0211b7f0 end:0x0211b834
 

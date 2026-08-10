@@ -1,32 +1,37 @@
-/* AUTO-GENERATED from matched-function evidence by tools/gen_header.py
- * class FloatingFloorLllBig: 6 matched functions, 7 evidenced fields.
- * Offsets/widths are observed, not guessed. Gaps are explicit padding.
- * Field NAMES are placeholders - renaming cannot change codegen. */
 #ifndef FLOATINGFLOORLLLBIG_H
 #define FLOATINGFLOORLLLBIG_H
-#include "types.h"
-#include "Model.h"
 
-struct FloatingFloorLllBig {
-    u8  pad_000[0x60];
-    s32 mPosY;            /* 0x060 */
-    u8  pad_064[0x28];
-    s16 mAngleX;            /* 0x08c */
-    s16 mAngleY;            /* 0x08e */
-    u8  pad_090[0x44];
-    /* Model member, named by _ZN5ModelD1Ev at +0xd4 -- a relocation the ROM build checks.
-       D1 and not D2, so it is this type and not an inlined base. Was a u8 marker. */
-    Model mModel;            /* 0x0d4 */
-    u8  mMeshCollider;            /* 0x124 */
-    u8  pad_125[0x1fb];
-    s32 unk_320;            /* 0x320 */
-    s16 unk_324;            /* 0x324 */
+#include "types.h"
+#include "Platform.h"
+
+/* Derives from Platform: the destructor stores this class's vtable, then
+ * Platform's -- inlined -- then destroys the MovingMeshCollider at 0x124 and
+ * the Model at 0xd4 before chaining to Actor. All three belong to Platform.
+ *
+ * ONE FIELD OF ITS OWN. Everything this header used to declare below 0x324 was
+ * Actor's and Platform's; unk_324 is the first byte past Platform, which
+ * BowserFireSeaArena independently pins by starting its own Model there.
+ *
+ * The 0x320 that the generated header called an s32 is Platform's, and
+ * Platform spells those bytes as two s16. InitResources writes them as one
+ * word; see the note in that file.
+ */
+
 #ifdef __cplusplus
-    /* methods */
+
+struct FloatingFloorLllBig : Platform {
+    s16 unk_324;            /* 0x324 */
+
+    /* --- vtable --- */
+    virtual ~FloatingFloorLllBig();
+
     int CleanupResources();
     int InitResources();
     int Render();
-#endif
 };
 
-#endif
+typedef char FloatingFloorLllBig_size_must_be_0x328[sizeof(FloatingFloorLllBig) == 0x328 ? 1 : -1];
+
+#endif /* __cplusplus */
+
+#endif /* FLOATINGFLOORLLLBIG_H */

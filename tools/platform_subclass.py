@@ -33,14 +33,16 @@ PLATFORM_DSIZE = 0x324
 
 
 def inherited_names():
-    """offset -> the name Actor.h / Platform.h gives that offset."""
-    out = {}
+    """offset -> (name, type) Actor.h / Platform.h gives that offset."""
+    out, ty_out = {}, {}
     for h, lo, hi in (("include/Actor.h", 0, 0xd0), ("include/Platform.h", 0xd0, 0x324)):
         for ty, star, name, arr, off in FIELD.findall((REPO / h).read_text(errors="replace")):
             o = int(off, 16)
             if lo <= o < hi and not name.startswith("pad_"):
-                out.setdefault(o, name)
-    return out
+                if o not in out:
+                    out[o] = name
+                    ty_out[name] = ty + ("*" if star else "")
+    return out, ty_out
 
 
 def symbol_index():
@@ -123,10 +125,30 @@ typedef char {cls}_size_must_be_0x{size:x}[sizeof({cls}) == 0x{size:x} ? 1 : -1]
 """
 
 
-def patch_source(text, oldmap, names):
-    """Repoint one source at the names Actor and Platform already give it."""
+def patch_source(text, oldmap, names, types=None, itypes=None):
+    """Repoint one source at the names Actor and Platform already give it.
+
+    THE WIDTH CONFLICT IN PLATFORM'S TAIL. Platform owns 0x31e..0x323 --
+    BowserFireSeaArena derives from it directly and starts its own Model at
+    0x324, which pins the extent -- but how those six bytes DIVIDE is not
+    settled. Platform spells them as three s16, from BowserFireSeaArena's
+    halfword accesses, while FloatingFloorLllBig, BlueCoinSwitch and
+    TtcRotatingGear each observed a full WORD at 0x320.
+
+    A subclass that needs a different width therefore goes through a cast at
+    the point of use, rather than the base being re-spelled to suit it. That
+    reproduces the ROM while asserting nothing about which reading is right.
+    """
+    types, itypes = types or {}, itypes or {}
     for nm, o in sorted(oldmap.items(), key=lambda kv: -len(kv[0])):
-        if o < PLATFORM_DSIZE and o in names and names[o] != nm:
+        if o >= PLATFORM_DSIZE or o not in names:
+            continue
+        base = names[o]
+        mine, theirs = types.get(nm), itypes.get(base)
+        if mine and theirs and mine != theirs:
+            text = re.sub(r"\b" + re.escape(nm) + r"\b", f"(*({mine} *)&{base})", text)
+            continue
+        if base != nm:
             text = re.sub(r"\b" + re.escape(nm) + r"\b", names[o], text)
     # A local `typedef int Fix12` shadows the real Fix12 template the moment
     # Platform.h makes it visible.
@@ -149,7 +171,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("classes", nargs="+")
     args = ap.parse_args()
-    names, idx = inherited_names(), symbol_index()
+    (names, itypes), idx = inherited_names(), symbol_index()
     kept, dropped = [], []
 
     for cls in args.classes:
@@ -160,6 +182,7 @@ def main():
             continue
         old = hpath.read_text(errors="replace")
         oldmap = {nm: int(o, 16) for ty, star, nm, arr, o in FIELD.findall(old)}
+        oldtypes = {nm: ty + ('*' if star else '') for ty, star, nm, arr, o in FIELD.findall(old)}
         srcs = sources_for(cls)
         saved = {p: p.read_text(errors="replace") for p in srcs}
         saved[hpath] = old
@@ -167,7 +190,7 @@ def main():
         hpath.write_text(build_header(cls, old))
         for p in srcs:
             if p.suffix == ".cpp":
-                p.write_text(patch_source(saved[p], oldmap, names))
+                p.write_text(patch_source(saved[p], oldmap, names, oldtypes, itypes))
 
         d1 = REPO / "src" / f"_ZN{len(cls)}{cls}D1Ev.cpp"
         d1c = REPO / "src" / f"_ZN{len(cls)}{cls}D1Ev.c"

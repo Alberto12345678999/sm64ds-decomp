@@ -7,8 +7,8 @@
  *
  * Once pressed: mAreaId is set to -1 (the switch stops claiming its area, which
  * is why init stashed the original in unk_32e), the music ducks, and mPosY
- * walks down 0x14000 a frame toward unk_320. On arrival it snaps exactly to
- * unk_320, sets its event bit, arms the countdown from unk_32a, disables the
+ * walks down 0x14000 a frame toward (*(s32 *)&unk_320). On arrival it snaps exactly to
+ * (*(s32 *)&unk_320), sets its event bit, arms the countdown from unk_32a, disables the
  * collider and poofs -- so the sinking animation and the "switch is now on"
  * moment are the same event.
  *
@@ -62,13 +62,13 @@ s32 BlueCoinSwitch::Behavior()
             _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(0x7f, 0x3f000);
     }
     if (unk_32c == 1) {
-        if (mPosY > unk_320) {
+        if (mPosY > (*(s32 *)&unk_320)) {
             mPosY = mPosY - 0x14000;
-            if (mPosY <= unk_320) {
-                mPosY = unk_320;
+            if (mPosY <= (*(s32 *)&unk_320)) {
+                mPosY = (*(s32 *)&unk_320);
                 _ZN5Event6SetBitEj(unk_32d);
                 unk_328 = unk_32a;
-                _ZN16MeshColliderBase7DisableEv(&mMeshCollider);
+                _ZN16MeshColliderBase7DisableEv(&(*(u8 *)&mMeshCollider));
                 _ZN5Actor8PoofDustEv(c);
             }
         }

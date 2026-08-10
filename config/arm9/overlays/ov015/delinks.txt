@@ -220,7 +220,7 @@ src/TowerStep_Spawn.c:
     complete
     .text start:0x0211290c end:0x02112944
 
-src/_ZN9TowerStepD1Ev.c:
+src/_ZN9TowerStepD1Ev.cpp:
     complete
     .text start:0x02112944 end:0x02112988
 
