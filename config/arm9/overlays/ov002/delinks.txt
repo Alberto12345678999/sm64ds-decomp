@@ -4728,11 +4728,11 @@ src/func_ov002_020ef2a4.cpp:
     complete
     .text start:0x020ef2a4 end:0x020ef320
 
-src/_ZN8PathLiftD0Ev.c:
+src/_ZN8PathLiftD0Ev.cpp:
     complete
     .text start:0x020ef320 end:0x020ef390
 
-src/_ZN8PathLiftD1Ev.c:
+src/_ZN8PathLiftD1Ev.cpp:
     complete
     .text start:0x020ef390 end:0x020ef3ec
 
