@@ -69,7 +69,14 @@ def chain_ranges():
 
 
 def base_data_size(base):
-    """End of the base's last declared field -- where a subclass's own start."""
+    """End of the base's last declared field -- where a subclass's own start.
+
+    A class that declares NO fields of its own (ActorDerived exists to carry one
+    overridden vtable slot) has no last field, and returning 0 for it puts every
+    subclass field at the wrong offset -- the size assertion then fails as
+    "illegal constant expression" and the whole class is refused. Fall back to
+    its sizeof, which for such a class is exactly its base's.
+    """
     h = REPO / "include" / f"{base}.h"
     last = 0
     for ty, star, nm, arr, off in FIELD.findall(h.read_text(errors="replace")):
@@ -78,7 +85,7 @@ def base_data_size(base):
         w = 4 if star else W.get(ty, 4)
         n = int(arr.strip("[]"), 0) if arr else 1
         last = max(last, int(off, 16) + w * n)
-    return last
+    return last or class_sizes().get(base, 0)
 
 
 def base_member_offsets(base):
@@ -187,8 +194,16 @@ def build_header(cls, old, sizes=None):
             lines.append(f"    u8  pad_{cur:03x}[0x{o - cur:x}];")
         lines.append(f"    {ty} {star}{nm};".ljust(38) + f"/* 0x{o:03x} */")
         cur = o + (4 if star else sizes.get(ty) or W.get(ty, 4))
-    size = max(0x320, (cur + 3) & ~3)
-    meths = re.findall(r"^\s{4}([A-Za-z_][\w:<>]*\s+\**\w+\([^)]*\));", old, re.M)
+    # The floor is the BASE's sizeof, not a constant -- this read 0x320,
+    # Platform's, left behind when the tool was generalised. For any other
+    # base it asserted a size the class does not have and every source
+    # failed with "illegal constant expression".
+    size = max(sizes.get(BASE[0], BASE_DSIZE[0]), (cur + 3) & ~3)
+    # `static void FixTHIPaintingRoomPos(Vector3 &)` has two words before the
+    # name; a pattern demanding exactly `type name(...)` drops it silently and
+    # the class then fails on "undefined identifier" in its own source.
+    meths = re.findall(r"^\s{4}((?:static\s+|virtual\s+|const\s+)*"
+                       r"[A-Za-z_][\w:<>]*\s+\**\w+\([^)]*\));", old, re.M)
     guard = cls.upper() + "_H"
     incs = "".join('#include "%s.h"\n' % ty
                    for ty in sorted({t2 for _, (t2, _) in dtor_members.items()})
@@ -307,11 +322,15 @@ def patch_source(text, oldmap, names, types=None, itypes=None, cls=None):
                 anchor + "".join('#include "%s.h"\n' % d for d in dict.fromkeys(dropped)),
                 1)
 
-    # A local `typedef int Fix12` shadows the real Fix12 template the moment
-    # Platform.h makes it visible.
-    text = text.replace("typedef int Fix12;\n", "")
-    text = re.sub(r"\bFix12\s+(\w+)(?=\s*[,)])", r"int \1", text)
-    text = re.sub(r"\bFix12(?=\s*[,)])", "int", text)
+    # A local `typedef int Fix12` shadows the real Fix12 template the moment the
+    # base header makes it visible. Deleting it means EVERY use of the alias has
+    # to go too, not just the ones in parameter lists -- a return type
+    # (`extern Fix12 _ZN4cstd4fdivEii(...)`) and a local declaration were both
+    # left behind as "undefined identifier". `\b` keeps this away from the
+    # mangled names containing `5Fix12IiE`, where the token follows a digit.
+    if "typedef int Fix12;\n" in text:
+        text = text.replace("typedef int Fix12;\n", "")
+        text = re.sub(r"\bFix12\b", "int", text)
     # `&mModel` reads better than `(char *)&mModel` and is what most sources
     # want. But plenty of the extern declarations these files carry were written
     # against the raw offset and take `char *`, and C++ will not convert a
