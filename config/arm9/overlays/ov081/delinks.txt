@@ -391,7 +391,7 @@ src/Moneybag_Spawn.c:
     complete
     .text start:0x02127adc end:0x02127b34
 
-src/_ZN8IceBlockD1Ev.c:
+src/_ZN8IceBlockD1Ev.cpp:
     complete
     .text start:0x02127b34 end:0x02127b80
 

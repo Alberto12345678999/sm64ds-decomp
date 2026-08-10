@@ -33,6 +33,10 @@ PLATFORM_DSIZE = 0x31e
 # build_header fills this: marker name -> (member, byte offset into it, type).
 SWALLOWED = {}
 
+# Set by main() for the second attempt: emit `(char *)&mModel` rather than
+# `&mModel`, for sources whose externs were declared against the raw offset.
+CAST_MEMBERS = [False]
+
 
 def inherited_names():
     """offset -> (name, type) Actor.h / Platform.h gives that offset."""
@@ -233,9 +237,17 @@ def patch_source(text, oldmap, names, types=None, itypes=None):
     text = text.replace("typedef int Fix12;\n", "")
     text = re.sub(r"\bFix12\s+(\w+)(?=\s*[,)])", r"int \1", text)
     text = re.sub(r"\bFix12(?=\s*[,)])", "int", text)
+    # `&mModel` reads better than `(char *)&mModel` and is what most sources
+    # want. But plenty of the extern declarations these files carry were written
+    # against the raw offset and take `char *`, and C++ will not convert a
+    # `Model *` to one -- IceBlock hands `&mModel` to
+    # `_ZN9ModelBase7SetFileEP8BMD_Fileii(char *, ...)` and does not compile.
+    # So the caller retries the whole class with CAST=True, and whichever form
+    # verifies is the one kept. See main().
     for off, member in (("0x124", "&mMeshCollider"), ("0x2ec", "&mClsnMat"), ("0xd4", "&mModel")):
+        repl = f"(char *){member}" if CAST_MEMBERS[0] else member
         for lhs in (f"((char *)this) + {off}", f"((char*)this)+{off}", f"((char *)this)+{off}"):
-            text = text.replace(lhs, member)
+            text = text.replace(lhs, repl)
     return text
 
 
@@ -248,7 +260,11 @@ def sources_for(cls):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("classes", nargs="+")
+    ap.add_argument("--cast-members", action="store_true",
+                    help="pass member addresses as (char *)&m -- for sources whose "
+                         "externs were declared against the raw offset")
     args = ap.parse_args()
+    CAST_MEMBERS[0] = args.cast_members
     (names, itypes), idx, sizes = inherited_names(), symbol_index(), class_sizes()
     kept, dropped = [], []
 
