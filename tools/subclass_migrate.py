@@ -249,7 +249,7 @@ typedef char {cls}_size_must_be_0x{size:x}[sizeof({cls}) == 0x{size:x} ? 1 : -1]
 """
 
 
-def patch_source(text, oldmap, names, types=None, itypes=None):
+def patch_source(text, oldmap, names, types=None, itypes=None, cls=None):
     """Repoint one source at the names Actor and Platform already give it.
 
     The width-cast branch below is a leftover safety net. It fired when Platform
@@ -284,11 +284,28 @@ def patch_source(text, oldmap, names, types=None, itypes=None):
     # and mwcc answers some of them with an internal compiler error rather than
     # a diagnostic. Drop any single-line placeholder whose name the tree really
     # declares; anything it does NOT declare is a genuine local type and stays.
+    dropped = []
+
     def _drop_placeholder(m):
         name = m.group(1)
-        return "" if (REPO / "include" / f"{name}.h").exists() else m.group(0)
+        if (REPO / "include" / f"{name}.h").exists():
+            dropped.append(name)
+            return ""
+        return m.group(0)
 
-    text = re.sub(r"^struct (\w+) \{[^{}]*\};[ \t]*\n", _drop_placeholder, text, flags=re.M)
+    text = re.sub(r"^struct (\w+) \{[^{}]*?\};[ \t]*\n", _drop_placeholder,
+                  text, flags=re.M | re.S)
+    # Deleting the placeholder leaves the name only forward-declared, so bring in
+    # the real declaration too -- otherwise the source trades a redefinition for
+    # "illegal use of incomplete struct". RollingRock's
+    # `struct SharedFilePtr { void *file; void *bmd; };` is the live case.
+    if dropped and cls:
+        anchor = '#include "%s.h"\n' % cls
+        if anchor in text:
+            text = text.replace(
+                anchor,
+                anchor + "".join('#include "%s.h"\n' % d for d in dict.fromkeys(dropped)),
+                1)
 
     # A local `typedef int Fix12` shadows the real Fix12 template the moment
     # Platform.h makes it visible.
@@ -347,7 +364,7 @@ def main():
         hpath.write_text(build_header(cls, old, sizes))
         for p in srcs:
             if p.suffix == ".cpp":
-                p.write_text(patch_source(saved[p], oldmap, names, oldtypes, itypes))
+                p.write_text(patch_source(saved[p], oldmap, names, oldtypes, itypes, cls))
 
         d1 = REPO / "src" / f"_ZN{len(cls)}{cls}D1Ev.cpp"
         d1c = REPO / "src" / f"_ZN{len(cls)}{cls}D1Ev.c"
