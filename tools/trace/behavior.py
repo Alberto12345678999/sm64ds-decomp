@@ -94,7 +94,9 @@ def capture_one(cli, tgt, n_cases, window, per_case_timeout=4.0):
             "lr": regs["lr"],
         }
         lr = regs["lr"]
-        cli.set_breakpoint(lr)
+        return_addr = lr & ~1
+        return_kind = 2 if lr & 1 else 4
+        cli.set_breakpoint(return_addr, return_kind)
         # --- run to return ---
         deadline = time.time() + per_case_timeout
         got = False
@@ -106,7 +108,7 @@ def capture_one(cli, tgt, n_cases, window, per_case_timeout=4.0):
             except (RspError, OSError):
                 break
             r = cli.read_registers()
-            if r["pc"] == lr:
+            if r["pc"] in (lr, return_addr):
                 case["out"] = {"r0": r["r0"], "r1": r["r1"]}
                 case["out_mem"] = _read_regions(cli, in_ptrs, window)
                 got = True
@@ -115,7 +117,7 @@ def capture_one(cli, tgt, n_cases, window, per_case_timeout=4.0):
                 recursed = True  # re-entered before returning: v1 can't pair this
                 break
             # some other breakpoint (shouldn't happen: only entry+lr armed)
-        cli.clear_breakpoint(lr)
+        cli.clear_breakpoint(return_addr, return_kind)
         if got:
             cases.append(case)
         elif recursed:
@@ -138,7 +140,7 @@ def main():
 
     targets, missing = bplist.from_names(args.names.split(","))
     if missing:
-        print(f"  ! not in nearmiss DB: {missing}", file=sys.stderr)
+        print(f"  ! unresolved symbol(s) or unavailable ROM canary: {missing}", file=sys.stderr)
     if not targets:
         return 2
     outdir = pathlib.Path(args.out)
@@ -156,10 +158,10 @@ def main():
         for tgt in targets:
             # one function at a time: only its entry bp armed, so the lr-return
             # trick is unambiguous.
-            cli.set_breakpoint(tgt["addr"])
+            cli.set_breakpoint(tgt["addr"], tgt.get("breakpoint_kind", 4))
             print(f"[*] {tgt['name']}: capturing up to {args.cases} cases ...", flush=True)
             cases, rec = capture_one(cli, tgt, args.cases, args.window)
-            cli.clear_breakpoint(tgt["addr"])
+            cli.clear_breakpoint(tgt["addr"], tgt.get("breakpoint_kind", 4))
             path = outdir / f"{tgt['name']}.jsonl"
             with open(path, "w", encoding="utf-8") as f:
                 for c in cases:

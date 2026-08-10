@@ -136,7 +136,8 @@ def main():
     try:
         r0 = cli.read_registers()
         print(f"[*] attached (running); pc={r0['pc']:#010x}. arming {len(targets)} bps ...")
-        armed = sum(1 for t in targets if cli.set_breakpoint(t["addr"]))
+        armed = sum(1 for t in targets
+                    if cli.set_breakpoint(t["addr"], t.get("breakpoint_kind", 4)))
         print(f"[*] armed {armed}/{len(targets)}; collecting "
               f"(<= {args.duration:.0f}s, idle-stop {args.idle:.0f}s) ...")
         cli.cont()
@@ -175,7 +176,8 @@ def main():
                 if hits[tgt["name"]] == 1:
                     t_last_new = time.time()
                 if hits[tgt["name"]] >= args.hits:
-                    cli.clear_breakpoint(tgt["addr"])  # tail-friendly: free the slot
+                    cli.clear_breakpoint(
+                        tgt["addr"], tgt.get("breakpoint_kind", 4))  # tail-friendly
                     remaining -= 1
             cli.cont()
 

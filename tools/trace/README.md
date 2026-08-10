@@ -12,6 +12,10 @@ Status: **Phase 0 spike** (attach + breakpoint + canary + register/mem dump).
   used to resolve a captured `lr` to a caller name.
 - `gdb_harness.py` — the Phase-0 spike runner. Breaks at always-resident arm9
   functions and validates the pipeline against ground truth.
+- `cpp_probe.py` — question-oriented readable-C++ probe. Resolves a matched or
+  unmatched symbol, discovers its class/header fields, captures `this` before
+  and after calls, and reports named field changes, values, callers, returns,
+  and vtable slots.
 
 ## Prerequisites: melonDS GDB stub
 
@@ -103,6 +107,91 @@ close → kill melonDS. One connection per trace session, detach cleanly.
 Launch recipe used:
 `Start-Process melonDS.exe -ArgumentList '<rom>'` with the pre-written
 `melonDS.toml`; stub binds ~6–8s after boot.
+
+## cpp-probe: answer readable-C++ questions (`cpp_probe.py`)
+
+The raw collector is designed for batches and emits register/memory records.
+`cpp_probe.py` is the single-method, human-facing layer for questions that arise
+during the C-to-real-C++ conversion:
+
+- Does the proposed method actually receive an object in `r0`?
+- Which concrete object/vtable implementations reach it?
+- Which reconstructed fields change across the call?
+- What values and ranges does a proposed `Fix12i`, timer, flag, or pointer take
+  during real gameplay?
+- Which callers and vtable slot targets are observed?
+
+For a ready-to-copy contributor or agent assignment that requires a runtime
+answer and a verified deliverable, use [`CPP_PROBE_JOB.md`](CPP_PROBE_JOB.md).
+
+First check resolution without occupying melonDS's one GDB session:
+
+```
+python tools/trace/cpp_probe.py _ZN5Fader13AdvanceInterpEv --resolve-only
+```
+
+This resolves the config symbol to an address plus an eight-byte ROM canary,
+demangles `Fader`, reads `include/Fader.h`, and lists every field it can decode.
+Unlike the older breakpoint-list path, it works for already-matched functions,
+not only records still present in `nearmiss/db.jsonl`. In a linked worktree it
+automatically borrows the primary checkout's gitignored `extracted/`; set
+`SM64DS_EXTRACTED` (or pass `--extracted`) for a different layout.
+
+Then start melonDS, load a scene/savestate that reaches the method, and ask the
+runtime question:
+
+```
+python tools/trace/cpp_probe.py _ZN5Fader13AdvanceInterpEv \
+  --hits 8 \
+  --ask "which Fader fields change while the fade advances?"
+```
+
+The default is `--this-reg auto`: the tool checks the source definition's arity
+or real method form and enables `this=r0` only when that evidence says this is an
+instance method. Mangling alone cannot distinguish a static member from an
+instance method; an undecided result leaves object capture disabled until you
+explicitly pass `--this-reg r0`. The tool sets the entry breakpoint,
+canary-gates every hit against overlay aliasing, snapshots the object, catches
+the return at `lr`, re-reads the same object, prints the answer, and saves the
+full evidence to `traces/questions/` (gitignored). Re-render an evidence file
+without reconnecting:
+
+```
+python tools/trace/cpp_probe.py --input traces/questions/Fader_AdvanceInterp.json
+```
+
+Useful overrides:
+
+```
+# Add a field the header has not named yet, or override its interpretation.
+python tools/trace/cpp_probe.py <symbol> --field 0x5c:Vector3:position
+
+# A static/namespace function has no implicit object.
+python tools/trace/cpp_probe.py <symbol> --this-reg none
+
+# Large classes are auto-capped at 0x400 bytes; opt in to a wider object window.
+python tools/trace/cpp_probe.py <symbol> --object-size 0x900
+
+# Entry-only capture avoids the lr-return pairing on recursion/non-returning code.
+python tools/trace/cpp_probe.py <symbol> --no-return
+```
+
+Automatic decoders are deliberately narrow: integer widths/signs, pointers,
+`Fix12i`, `Vector3`, and `Vector3_16`. Unknown header types are listed instead
+of assigned a guessed width; add an explicit `--field` decoder when the width is
+known.
+
+### What the answer proves
+
+The saved report is runtime evidence: an observed caller, value, vtable, or
+write is real for the captured path. Absence is not proof—the gameplay path may
+not have exercised it. Runtime values also cannot prove byte-unobservable C++
+properties such as signedness when no executed operation distinguishes it. Keep
+the normal gates: header-wide affected-source checks, byte matching, strict
+relocations, and the full ROM build. For retail-vs-recompiled behavioral
+equivalence on identical inputs, continue to use `behavior.py` plus
+`behavior_diff.py`; `cpp_probe.py` answers the interpretation question for one
+runtime.
 
 ## actorcam: live actor-list heartbeat (`actors.py`)
 

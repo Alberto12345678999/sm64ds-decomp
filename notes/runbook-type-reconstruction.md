@@ -335,9 +335,35 @@ python tools/check_references.py --update    # bank the starting point
    see your class says so; `notes/plan-scalar-markers.md` §3a is what happens when that
    distinction is ignored -- a class the hierarchy could not place was reported as
    "no ancestor declares this offset", and it was wrong.
-3. **Name and type the fields.** Same width unless you intend a codegen change. Write
+3. **Ask the emulator when the remaining question is runtime-observable.** Static
+   evidence tells you which offsets and operations exist; it often cannot tell you which
+   concrete object arrives, which path is live, what a fixed-point value's real range is,
+   or which fields change during the operation. Use the question-oriented probe rather
+   than trying to squeeze those answers out of another decompiler pass:
+
+   ```sh
+   # Check the symbol/class/header/field mapping without starting the emulator.
+   python tools/trace/cpp_probe.py <symbol> --resolve-only
+
+   # Then run melonDS on a scene that reaches it (GDB stub on, JIT off).
+   python tools/trace/cpp_probe.py <symbol> --hits 8 \
+       --ask "which named fields change across this method?"
+
+   # Supply a candidate field before the header has a usable declaration.
+   python tools/trace/cpp_probe.py <symbol> --field 0x5c:Vector3:position
+   ```
+
+   It resolves matched functions as well as near-misses, canary-gates overlay hits,
+   captures the same `this` object at entry and return, joins values to reconstructed
+   header fields, and saves the evidence under `traces/questions/`. See
+   `tools/trace/README.md` for setup and the report workflow.
+
+   **Keep the claim narrow:** an observed value/write/vtable is real for that gameplay
+   path; an unobserved one is not disproven. Runtime observation does not settle
+   byte-unobservable signedness or width, and it never replaces the byte/build gates.
+4. **Name and type the fields.** Same width unless you intend a codegen change. Write
    the *why* in a comment -- range, encoding, what selects each branch.
-4. **Migrate one function.** Rung 2 -> rung 3. Keep the `// @symbol` line.
+5. **Migrate one function.** Rung 2 -> rung 3. Keep the `// @symbol` line.
 
    If the member signature will not reproduce, suspect the *name* before you contort the
    body. Roughly 1,349 mangled names are verbatim imports whose parameter types were never
@@ -346,7 +372,7 @@ python tools/check_references.py --update    # bank the starting point
    `notes/symbol-name-provenance.md` says which parts of a name to trust and what the
    divergent instruction is telling you (`ldrh` vs `ldr` = declared width; a `blx` with no
    preceding load = function pointer, not pointer-to-one).
-5. **Byte-verify that function**, then the whole build, because the header is shared:
+6. **Byte-verify that function**, then the whole build, because the header is shared:
 
 ```sh
 # --addr and --size come from config/**/symbols.txt for that symbol.
@@ -376,7 +402,7 @@ un-match a non-enrolled includer while 106/106 still passes. Bracket every heade
 with `tools/eligible.py` on a clean tree, before and after, and diff. **That bracket is
 the check the ROM build cannot report**, and it is why the baseline is step 0.
 
-6. Repeat per function. Move to a subdirectory only in a **separate commit**.
+7. Repeat per function. Move to a subdirectory only in a **separate commit**.
 
 ## 6. Definition of done
 
