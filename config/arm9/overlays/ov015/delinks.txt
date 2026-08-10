@@ -76,7 +76,7 @@ src/KnockDownPlank_Spawn.c:
     complete
     .text start:0x02111b68 end:0x02111ba0
 
-src/_ZN14KnockDownPlankD1Ev.c:
+src/_ZN14KnockDownPlankD1Ev.cpp:
     complete
     .text start:0x02111ba0 end:0x02111be4
 

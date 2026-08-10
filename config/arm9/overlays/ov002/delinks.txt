@@ -1334,7 +1334,7 @@ src/PowerFlower_Spawn.c:
     complete
     .text start:0x020b9e0c end:0x020b9e64
 
-src/_ZN10StarSwitchD1Ev.c:
+src/_ZN10StarSwitchD1Ev.cpp:
     complete
     .text start:0x020b9e64 end:0x020b9ea8
 
@@ -3248,6 +3248,7 @@ src/func_ov002_020d6998.cpp:
     .text start:0x020d6998 end:0x020d6c60
 
 src/func_ov002_020d6c60.cpp:
+    complete
     .text start:0x020d6c60 end:0x020d6dac
 
 src/func_ov002_020d6dac.c:

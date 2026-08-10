@@ -1,12 +1,56 @@
-/* AUTO-GENERATED from matched-function evidence by tools/gen_header.py
- * class StarSwitch: 6 matched functions, 24 evidenced fields.
- * Offsets/widths are observed, not guessed. Gaps are explicit padding.
- * Field NAMES are placeholders - renaming cannot change codegen. */
 #ifndef STARSWITCH_H
 #define STARSWITCH_H
-#include "types.h"
-#include "Model.h"
 
+#include "types.h"
+#include "Platform.h"
+
+/* Derives from Platform: the destructor stores this class's vtable, then
+ * Platform's -- inlined -- then destroys the MovingMeshCollider at 0x124 and
+ * the Model at 0xd4 before chaining to Actor. All three belong to Platform.
+ * Everything this header used to restate below 0x324 was Actor's and
+ * Platform's, and is inherited now.
+ *
+ * SIZE IS THE OBSERVED FIELD SPAN, rounded up. It guards this declaration; it
+ * is not independent evidence about the ROM.
+ */
+
+#ifdef __cplusplus
+
+struct StarSwitch : Platform {
+    s32 unk_324;                      /* 0x324 */
+    s32 unk_328;                      /* 0x328 */
+    u8  pad_32c[0x8];
+    s32 unk_334;                      /* 0x334 */
+    s16 unk_338;                      /* 0x338 */
+    u16 unk_33a;                      /* 0x33a */
+    s32 unk_33c;                      /* 0x33c */
+    u8  pad_340[0x4];
+    u32 mTargetActorID;               /* 0x344 */
+    s32 unk_348;                      /* 0x348 */
+    u8 unk_34c;                       /* 0x34c */
+    u8 unk_34d;                       /* 0x34d */
+    u8 unk_34e;                       /* 0x34e */
+    u8 unk_34f;                       /* 0x34f */
+    u8 unk_350;                       /* 0x350 */
+    u8 unk_351;                       /* 0x351 */
+    u8  pad_352[0x1];
+    s8 unk_353;                       /* 0x353 */
+
+    /* --- vtable --- */
+    virtual ~StarSwitch();
+
+    int Behavior();
+    int CleanupResources();
+    int Render();
+};
+
+typedef char StarSwitch_size_must_be_0x354[sizeof(StarSwitch) == 0x354 ? 1 : -1];
+
+#else
+
+/* The C spelling of the same object, flat. Kept because the D0 file is a C
+   translation unit that reads these fields, and D0 is compiler-generated so it
+   can never be migrated. Same arrangement as include/ShadowModel.h. */
 struct StarSwitch {
     u8  pad_000[0x8];
     u32 mParam;            /* 0x008 */
@@ -63,12 +107,8 @@ struct StarSwitch {
     u8  unk_351;            /* 0x351 */
     u8  pad_352[0x1];
     s8  unk_353;            /* 0x353 */
-#ifdef __cplusplus
-    /* methods */
-    int Behavior();
-    int CleanupResources();
-    int Render();
-#endif
 };
 
-#endif
+#endif /* __cplusplus */
+
+#endif /* STARSWITCH_H */
