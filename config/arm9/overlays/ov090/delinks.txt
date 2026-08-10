@@ -157,7 +157,7 @@ src/_ZN10CheepCheepD1Ev.cpp:
     complete
     .text start:0x02133034 end:0x02133074
 
-src/_ZN10CheepCheepD0Ev.c:
+src/_ZN10CheepCheepD0Ev.cpp:
     complete
     .text start:0x02133074 end:0x021330c8
 
