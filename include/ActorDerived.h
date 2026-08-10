@@ -22,22 +22,38 @@
  * ActorBase.h relies on is that src/_ZN9ActorBase13InitResourcesEv.cpp defines
  * it as an extern "C" free function rather than a method.
  *
- * ActorDerived gets there more cheaply. An override takes its base's slot
- * whatever order it is declared in, so the destructor can be declared FIRST and
- * become the key function -- and ~ActorDerived is only ever defined as an
- * extern "C" free function, in D0Ev.c and D1Ev.c, so no TU is the key
- * function's definition. That is what lets AfterInitResources be a real method
- * here.
+ * ActorDerived used to get there cheaply: the destructor was declared FIRST,
+ * making it the key function, and it was never defined as a method, so no TU
+ * was the key function's definition. tools/objisolate.py has since made a
+ * key-function TU eligible anyway -- it drops the vtable the TU emits and
+ * rebinds the reference to the ROM's own _ZTV symbol -- so that is no longer
+ * what protects anything. See include/ModelBase.h.
  *
- * The generalisation: a class whose first-declared virtual is the destructor
- * gets this for free, because destructors in this tree are never written as
- * C++ methods. A root class cannot rely on that if its slot order forces some
- * other virtual first.
+ * THE DESTRUCTOR IS DEFINED INLINE, AND THAT IS LOAD-BEARING FOR SUBCLASSES.
+ * Scene::~Scene in the ROM stores two vptrs and then calls ActorBase's
+ * destructor directly:
+ *
+ *     str r2, [r4]        ; _ZTV5Scene
+ *     str r1, [r4]        ; _ZTV12ActorDerived   <- this destructor, INLINED
+ *     bl  ActorBase::~ActorBase
+ *
+ * A merely DECLARED `virtual ~ActorDerived();` cannot produce that: the
+ * compiler has no body to inline and emits `bl _ZN12ActorDerivedD2Ev` instead,
+ * one store where the ROM has two. So the original source defined it in the
+ * class body, and every derived destructor inlined it. Moving this definition
+ * back out of the class un-matches Scene, Stage and every actor destructor
+ * below them.
+ *
+ * The cost is that src/_ZN12ActorDerivedD1Ev.cpp can no longer define it --
+ * that would be a redefinition -- and a TU that merely includes this header
+ * emits nothing. That file therefore carries a forcing function instead; see
+ * the note in it.
  */
 struct ActorDerived : ActorBase {
     /* Declared first, deliberately -- see KEY FUNCTION above. Overrides slots
-       16 (D1) and 17 (D0); the position in this list does not affect that. */
-    virtual ~ActorDerived();
+       16 (D1) and 17 (D0); the position in this list does not affect that.
+       DEFINED INLINE on purpose: subclass destructors inline it. */
+    virtual ~ActorDerived() {}
 
     /* slot 2 -- marks the actor for destruction when init failed, then chains. */
     virtual void AfterInitResources(u32 vfSuccess);
