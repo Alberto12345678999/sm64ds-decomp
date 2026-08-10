@@ -11,7 +11,7 @@ extern void _ZN5ModelD1Ev(void);
 extern void _ZN11ShadowModelD1Ev(void);
 extern void _ZN7Vector3D1Ev(void);
 extern void func_0203d384(void);
-extern void func_02011508(void);
+extern void _ZN8Vector3sD1Ev(void);
 extern void func_0203d73c(void);
 
 void *UnchainedChomp_Spawn(void)
@@ -28,7 +28,7 @@ void *UnchainedChomp_Spawn(void)
         _ZN11ShadowModelC1Ev(p + 0x640);
         func_020733a8(p + 0x6d8, 6, 0xc, (void *)func_0203d384, (void *)_ZN7Vector3D1Ev);
         func_020733a8(p + 0x720, 6, 0xc, (void *)func_0203d384, (void *)_ZN7Vector3D1Ev);
-        func_020733a8(p + 0x768, 6, 6, (void *)func_0203d73c, (void *)func_02011508);
+        func_020733a8(p + 0x768, 6, 6, (void *)func_0203d73c, (void *)_ZN8Vector3sD1Ev);
     }
     return p;
 }

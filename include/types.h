@@ -51,7 +51,18 @@ typedef char Vector3_size_must_be_0xc[sizeof(Vector3) == 0xc ? 1 : -1];
 
 typedef struct Vector3s {
     s16 x, y, z;
+#ifdef __cplusplus
+    /* Declared and empty, for the same reason Vector3's is: Wiggler destroys an
+       array of a 6-byte type through
+       __destroy_arr(this + 0x444, 5, 6, func_02011508), a POD array needs no
+       cleanup, and 0x02011508 is four bytes of `bx lr`. 6 is sizeof(Vector3s). */
+    ~Vector3s() {}
+#endif
 } Vector3s;
+
+#ifdef __cplusplus
+typedef char Vector3s_size_must_be_0x6[sizeof(Vector3s) == 6 ? 1 : -1];
+#endif
 
 
 /* Floating-point aliases. */
