@@ -215,6 +215,19 @@ def patch_source(text, oldmap, names, types=None, itypes=None):
             continue
         if base != nm:
             text = re.sub(r"\b" + re.escape(nm) + r"\b", names[o], text)
+    # STAND-IN STRUCTS COLLIDE WITH THE REAL TYPES. A source that predates the
+    # real header often carries its own one-line placeholder --
+    # `struct MeshCollider { int d; };` -- purely so an offset cast has a type
+    # to name. Once Platform.h drags the real class in, that is a redefinition,
+    # and mwcc answers some of them with an internal compiler error rather than
+    # a diagnostic. Drop any single-line placeholder whose name the tree really
+    # declares; anything it does NOT declare is a genuine local type and stays.
+    def _drop_placeholder(m):
+        name = m.group(1)
+        return "" if (REPO / "include" / f"{name}.h").exists() else m.group(0)
+
+    text = re.sub(r"^struct (\w+) \{[^{}]*\};[ \t]*\n", _drop_placeholder, text, flags=re.M)
+
     # A local `typedef int Fix12` shadows the real Fix12 template the moment
     # Platform.h makes it visible.
     text = text.replace("typedef int Fix12;\n", "")
