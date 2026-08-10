@@ -24,18 +24,17 @@ W = {"u8": 1, "s8": 1, "char": 1, "bool": 1, "u16": 2, "s16": 2, "short": 2,
      "u32": 4, "s32": 4, "int": 4, "Fix12i": 4, "PathPtr": 8}
 FIELD = re.compile(r"^\s*([A-Za-z_][\w:<>]*)\s+(\**)(\w+)(\[[^\]]*\])?\s*;\s*/\*\s*(0x[0-9a-fA-F]+)", re.M)
 
-# Platform's data size. Its last field (unk_322, s16) ends exactly here, and
-# sizeof(Platform) is 0x324 too, so there is NO tail padding for a subclass to
-# reuse -- an earlier revision of this tool believed there was, on a misreading
-# of DonutBlock. include/Platform.h carries the real evidence: BowserFireSeaArena
-# reads unk_31e/0x320/0x322 and starts its own fields at 0x324.
-PLATFORM_DSIZE = 0x324
+# Platform's DATA size: its last field (unk_31d) ends here, and sizeof rounds to
+# 0x320. So a subclass field can sit at 0x31e/0x31f in the base's tail padding,
+# which the Itanium ABI allows for a non-POD base. include/Platform.h records
+# the four classes that rule out reading the class as 0x324.
+PLATFORM_DSIZE = 0x31e
 
 
 def inherited_names():
     """offset -> (name, type) Actor.h / Platform.h gives that offset."""
     out, ty_out = {}, {}
-    for h, lo, hi in (("include/Actor.h", 0, 0xd0), ("include/Platform.h", 0xd0, 0x324)):
+    for h, lo, hi in (("include/Actor.h", 0, 0xd0), ("include/Platform.h", 0xd0, 0x31e)):
         for ty, star, name, arr, off in FIELD.findall((REPO / h).read_text(errors="replace")):
             o = int(off, 16)
             if lo <= o < hi and not name.startswith("pad_"):
@@ -56,20 +55,75 @@ def symbol_index():
     return idx
 
 
-def build_header(cls, old):
+def class_sizes():
+    """Class -> sizeof, from the tree's own compile-time assertions."""
+    out = {}
+    for h in (REPO / "include").rglob("*.h"):
+        for m in re.finditer(r"(\w+)_size_must_be_(0x[0-9a-fA-F]+)", h.read_text(errors="replace")):
+            out[m.group(1)] = int(m.group(2), 16)
+    return out
+
+
+def members_from_destructor(cls, sizes):
+    """offset -> (type, sizeof) for the members the ROM's own D1 destroys.
+
+    THE DESTRUCTOR NAMES ITS VICTIMS AND THEIR TYPES. A generated header calls
+    the thing at 0x320 `u8 mModel2` and the compiler emits nothing for it, so an
+    empty destructor body comes out short. The ROM's destructor calls
+    `_ZN5ModelD1Ev(this + 0x320)`, which says the member is a Model; declaring
+    it as one is what makes the empty body reproduce. That type's own size
+    assertion then has to close on the next field, which is a second and
+    independent check on the offset.
+
+    Platform's two (0xd4, 0x124) are skipped -- they belong to the base.
+    """
+    out = {}
+    for suffix in (".c", ".cpp"):
+        p = REPO / "src" / f"_ZN{len(cls)}{cls}D1Ev{suffix}"
+        if not p.exists():
+            continue
+        for mangled, off in re.findall(
+                r"_ZN(\d+\w+?)D[12]Ev\s*\(\s*\(?\s*char\s*\*\s*\)?\s*(?:t|self|thiz|this)\s*\+\s*(0x[0-9a-fA-F]+)",
+                p.read_text(errors="replace")):
+            m = re.match(r"(\d+)(\w+)$", mangled)
+            if not m:
+                continue
+            n, o = int(m.group(1)), int(off, 16)
+            name = m.group(2)[:n]
+            if len(name) != n or o in (0xd4, 0x124) or name not in sizes:
+                continue
+            out[o] = (name, sizes[name])
+    return out
+
+
+def build_header(cls, old, sizes=None):
     """(text, size, own-field-count) for the rewritten header."""
+    sizes = sizes or {}
+    dtor_members = members_from_destructor(cls, sizes)
     own = sorted((int(o, 16), ty, star, nm)
                  for ty, star, nm, arr, o in FIELD.findall(old)
                  if int(o, 16) >= PLATFORM_DSIZE and not nm.startswith("pad_"))
+    covered = set()
+    for o, (ty, sz) in dtor_members.items():
+        covered.update(range(o, o + sz))
+    own = [f for f in own if f[0] not in covered]
+    seen = set()
+    for o, (ty, sz) in sorted(dtor_members.items()):
+        own.append((o, ty, "", f"m{ty}" if ty not in seen else f"m{ty}_{o:03x}"))
+        seen.add(ty)
+    own.sort()
     lines, cur = [], PLATFORM_DSIZE
     for o, ty, star, nm in own:
         if o > cur:
             lines.append(f"    u8  pad_{cur:03x}[0x{o - cur:x}];")
         lines.append(f"    {ty} {star}{nm};".ljust(38) + f"/* 0x{o:03x} */")
-        cur = o + (4 if star else W.get(ty, 4))
-    size = max(0x324, (cur + 3) & ~3)
+        cur = o + (4 if star else sizes.get(ty) or W.get(ty, 4))
+    size = max(0x320, (cur + 3) & ~3)
     meths = re.findall(r"^\s{4}([A-Za-z_][\w:<>]*\s+\**\w+\([^)]*\));", old, re.M)
     guard = cls.upper() + "_H"
+    incs = "".join('#include "%s.h"\n' % ty
+                   for ty in sorted({t2 for _, (t2, _) in dtor_members.items()})
+                   if (REPO / "include" / f"{ty}.h").exists())
     body = "\n".join(lines) if lines else "    /* no fields of its own */"
     tail = "".join(f"\n    {m};" for m in meths)
 
@@ -89,11 +143,11 @@ def build_header(cls, old):
 
 #include "types.h"
 #include "Platform.h"
-
+{incs}
 /* Derives from Platform: the destructor stores this class's vtable, then
  * Platform's -- inlined -- then destroys the MovingMeshCollider at 0x124 and
  * the Model at 0xd4 before chaining to Actor. All three belong to Platform.
- * Everything this header used to restate below 0x324 was Actor's and
+ * Everything this header used to restate below 0x31e was Actor's and
  * Platform's, and is inherited now.
  *
  * SIZE IS THE OBSERVED FIELD SPAN, rounded up. It guards this declaration; it
@@ -128,16 +182,10 @@ typedef char {cls}_size_must_be_0x{size:x}[sizeof({cls}) == 0x{size:x} ? 1 : -1]
 def patch_source(text, oldmap, names, types=None, itypes=None):
     """Repoint one source at the names Actor and Platform already give it.
 
-    THE WIDTH CONFLICT IN PLATFORM'S TAIL. Platform owns 0x31e..0x323 --
-    BowserFireSeaArena derives from it directly and starts its own Model at
-    0x324, which pins the extent -- but how those six bytes DIVIDE is not
-    settled. Platform spells them as three s16, from BowserFireSeaArena's
-    halfword accesses, while FloatingFloorLllBig, BlueCoinSwitch and
-    TtcRotatingGear each observed a full WORD at 0x320.
-
-    A subclass that needs a different width therefore goes through a cast at
-    the point of use, rather than the base being re-spelled to suit it. That
-    reproduces the ROM while asserting nothing about which reading is right.
+    The width-cast branch below is a leftover safety net. It fired when Platform
+    was briefly read as ending at 0x324 and subclass fields at 0x31e..0x323
+    looked inherited; with the base ending at 0x31e those are the subclass's own
+    fields again and nothing should reach it.
     """
     types, itypes = types or {}, itypes or {}
     for nm, o in sorted(oldmap.items(), key=lambda kv: -len(kv[0])):
@@ -171,7 +219,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("classes", nargs="+")
     args = ap.parse_args()
-    (names, itypes), idx = inherited_names(), symbol_index()
+    (names, itypes), idx, sizes = inherited_names(), symbol_index(), class_sizes()
     kept, dropped = [], []
 
     for cls in args.classes:
@@ -187,7 +235,7 @@ def main():
         saved = {p: p.read_text(errors="replace") for p in srcs}
         saved[hpath] = old
 
-        hpath.write_text(build_header(cls, old))
+        hpath.write_text(build_header(cls, old, sizes))
         for p in srcs:
             if p.suffix == ".cpp":
                 p.write_text(patch_source(saved[p], oldmap, names, oldtypes, itypes))

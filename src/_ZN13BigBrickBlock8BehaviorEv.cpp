@@ -14,7 +14,7 @@ extern "C" void _ZN8Platform21IsClsnInRangeOnScreenE5Fix12IiES1_(void *self, int
 
 int BigBrickBlock::Behavior()
 {
-    int is13 = (int)(mActorId == 0x13);
+    int is13 = (int)(actorID == 0x13);
     if (is13 != 0) {
         if (unk_31f != _ZN5Event6GetBitEj(mEventID))
             unk_31e = 0;
@@ -29,11 +29,11 @@ int BigBrickBlock::Behavior()
         }
 
         if (_ZN5Event6GetBitEj(mEventID) == 0 || unk_31e != 0) {
-            if (((MeshColliderBase *)((char *)&mMeshCollider))->IsEnabled() != 0)
-                ((MeshColliderBase *)((char *)&mMeshCollider))->Disable();
+            if (((MeshColliderBase *)((char *)&(*(u8 *)&mMeshCollider)))->IsEnabled() != 0)
+                ((MeshColliderBase *)((char *)&(*(u8 *)&mMeshCollider)))->Disable();
         } else {
-            func_020393a4((int *)((char *)&mMeshCollider), 0x15e000);
-            func_02039394((int *)((char *)&mMeshCollider), 0x64000);
+            func_020393a4((int *)((char *)&(*(u8 *)&mMeshCollider)), 0x15e000);
+            func_02039394((int *)((char *)&(*(u8 *)&mMeshCollider)), 0x64000);
             _ZN8Platform21IsClsnInRangeOnScreenE5Fix12IiES1_(((char *)this), 0x150000, 0);
         }
 
@@ -42,14 +42,14 @@ int BigBrickBlock::Behavior()
         int v1 = 0x15e000;
         int v5 = 0x64000;
         int t;
-        if ((t = (int)(mActorId == 0x10)) != 0 ||
-            (t = (int)(mActorId == 0x11)) != 0 ||
-            (t = (int)(mActorId == 0x2e)) != 0) {
+        if ((t = (int)(actorID == 0x10)) != 0 ||
+            (t = (int)(actorID == 0x11)) != 0 ||
+            (t = (int)(actorID == 0x2e)) != 0) {
             v1 = 0x1c2000;
             v5 = 0x96000;
         }
-        func_020393a4((int *)((char *)&mMeshCollider), v1);
-        func_02039394((int *)((char *)&mMeshCollider), v5);
+        func_020393a4((int *)((char *)&(*(u8 *)&mMeshCollider)), v1);
+        func_02039394((int *)((char *)&(*(u8 *)&mMeshCollider)), v5);
         _ZN8Platform21IsClsnInRangeOnScreenE5Fix12IiES1_(((char *)this), 0x600000, 0);
     }
     return 1;

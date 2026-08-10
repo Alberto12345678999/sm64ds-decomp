@@ -26,6 +26,6 @@ int TowerStep::InitResources()
   _ZN18MovingMeshCollider7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
       ((char*)this) + 0x124, f, ((char*)this) + 0x2ec, 0x199, mAngleY, &data_ov015_02113654);
   func_020393d4((int*)((char*)&(*(u8 *)&mMeshCollider)), (void*)&_ZN16MeshColliderBase16UpdatePosAndAngsERS_P5ActorR10ClsnResultR7Vector3P10Vector3_16S8_);
-  (*(s8 *)&unk_31e) = 0x3c;
+  unk_31e = 0x3c;
   return 1;
 }

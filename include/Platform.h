@@ -18,9 +18,27 @@
  * (0x0d4 + 0x40 / +0x44 / +0x48). They were declared as siblings of a `u8 mModel`
  * marker whose pad stopped short of the real object.
  *
- * sizeof is 0x324, and the evidence is the derived classes: BowserFireSeaArena's
- * own first member sits at 0x324, and its destructor reproduces the ROM only if
- * this class ends exactly there.
+ * SIZEOF IS 0x320, and it takes more than one derived class to see why.
+ * BowserFireSeaArena starts its own Model at 0x324, which alone reads like the
+ * class ending there. But FOUR classes derive from Platform DIRECTLY -- one
+ * non-Platform vtable store each, so no intermediate -- and each places a
+ * 4-byte-aligned CLASS member at 0x320, impossible if this class occupied
+ * 0x320..0x323:
+ *
+ *     PyramidTop      daObjDlPyramid_c   Model                      @ 0x320
+ *     SwitchPillar    daObjC0Water_c     TextureTransformer         @ 0x320
+ *     MovingBarSmall  daObjBk_Lift_c     ShadowModel                @ 0x320
+ *     WallSign        daObjKanban_c      MovingCylinderClsnWithPos  @ 0x320
+ *
+ * Each is read straight off that class's destructor, which destroys its own
+ * member at 0x320 before storing _ZTV8Platform and running the base.
+ *
+ * One layout satisfies all five: data ends 0x31e, sizeof 0x320. The four above
+ * align up from 0x31e to 0x320; BowserFireSeaArena puts its OWN three s16 at
+ * 0x31e/0x320/0x322 so its Model lands at 0x324; DonutBlock puts a single s16
+ * at 0x31e, in this class's tail padding, and its Behavior reads this+0x31e
+ * and reproduces. Ending at 0x324 satisfies BowserFireSeaArena and contradicts
+ * the other four.
  *
  * Field NAMES for the unk_ entries are placeholders. */
 #ifndef PLATFORM_H
@@ -63,11 +81,8 @@ struct Platform : Actor {
     Matrix4x3 mClsnMat;     /* 0x2ec */
     u8  unk_31c;            /* 0x31c */
     u8  unk_31d;            /* 0x31d */
-    /* 0x31e..0x324: evidenced from BowserFireSeaArena, which reads all three and
-       whose own first member starts at 0x324. They are Platform's, not its. */
-    s16 unk_31e;            /* 0x31e */
-    s16 unk_320;            /* 0x320 */
-    s16 unk_322;            /* 0x322 */
+    /* THE CLASS ENDS HERE, at 0x31e; sizeof rounds to 0x320. See the header
+       comment: three s16 used to sit here, and they are BowserFireSeaArena's. */
 
     /* --- vtable, in ROM order. Do not reorder. --- */
     /* INLINE ON PURPOSE. Every Platform subclass's destructor inlines this body
@@ -84,7 +99,7 @@ struct Platform : Actor {
     void UpdateModelPosAndRotY();
 };
 
-typedef char Platform_size_must_be_0x324[sizeof(Platform) == 0x324 ? 1 : -1];
+typedef char Platform_size_must_be_0x320[sizeof(Platform) == 0x320 ? 1 : -1];
 
 #else
 
@@ -132,11 +147,7 @@ struct Platform {
     struct Matrix4x3 mClsnMat;    /* 0x2ec */
     u8  unk_31c;            /* 0x31c */
     u8  unk_31d;            /* 0x31d */
-    /* 0x31e..0x324: evidenced from BowserFireSeaArena, which reads all three and
-       whose own first member starts at 0x324. They are Platform's, not its. */
-    s16 unk_31e;            /* 0x31e */
-    s16 unk_320;            /* 0x320 */
-    s16 unk_322;            /* 0x322 */
+    /* Ends at 0x31e; sizeof rounds to 0x320. See the C++ half. */
 };
 
 #endif /* __cplusplus */

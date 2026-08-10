@@ -7,7 +7,7 @@
 /* Derives from Platform: the destructor stores this class's vtable, then
  * Platform's -- inlined -- then destroys the MovingMeshCollider at 0x124 and
  * the Model at 0xd4 before chaining to Actor. All three belong to Platform.
- * Everything this header used to restate below 0x324 was Actor's and
+ * Everything this header used to restate below 0x31e was Actor's and
  * Platform's, and is inherited now.
  *
  * SIZE IS THE OBSERVED FIELD SPAN, rounded up. It guards this declaration; it
@@ -17,6 +17,8 @@
 #ifdef __cplusplus
 
 struct KnockDownPlank : Platform {
+    u8  pad_31e[0x2];
+    s32 unk_320;                      /* 0x320 */
     s32 unk_324;                      /* 0x324 */
     s32 unk_328;                      /* 0x328 */
     s32 mVariant;                     /* 0x32c */

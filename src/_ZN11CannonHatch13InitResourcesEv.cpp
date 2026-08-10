@@ -30,7 +30,7 @@ int CannonHatch::InitResources()
             ((unsigned char *)this) + 0x124, kcl, *(struct Matrix4x3 *)((unsigned char *)&(*(u8 *)&mClsnMat)), 0x199,
             mAngleY, data_ov002_0210d7f4);
     }
-    (*(s32 *)&unk_320) = mPosX;
+    unk_320 = mPosX;
     unk_324 = mPosY;
     unk_328 = mPosZ;
     if (IsCannonOpenInCurLevel() != 0) {

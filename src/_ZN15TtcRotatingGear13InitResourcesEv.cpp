@@ -29,7 +29,7 @@ int TtcRotatingGear::InitResources()
     kcl = _ZN12MeshCollider8LoadFileER13SharedFilePtr(data_ov065_0211d97c);
     _ZN18MovingMeshCollider7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
         ((char*)this) + 0x124, kcl, ((char*)this) + 0x2ec, 0x199, mAngleY, func_021121b8);
-    (*(s32 *)&unk_320) = mPosX;
+    unk_320 = mPosX;
     unk_324 = mPosY;
     unk_328 = mPosZ;
     mMoveDir = 0;

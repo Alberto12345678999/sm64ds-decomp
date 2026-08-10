@@ -7,7 +7,7 @@
 /* Derives from Platform: the destructor stores this class's vtable, then
  * Platform's -- inlined -- then destroys the MovingMeshCollider at 0x124 and
  * the Model at 0xd4 before chaining to Actor. All three belong to Platform.
- * Everything this header used to restate below 0x324 was Actor's and
+ * Everything this header used to restate below 0x31e was Actor's and
  * Platform's, and is inherited now.
  *
  * SIZE IS THE OBSERVED FIELD SPAN, rounded up. It guards this declaration; it
@@ -17,7 +17,10 @@
 #ifdef __cplusplus
 
 struct SlidingPlatformWf : Platform {
-    /* no fields of its own */
+    u8 unk_31e;                       /* 0x31e */
+    u8  pad_31f[0x1];
+    s16 unk_320;                      /* 0x320 */
+    u8 unk_322;                       /* 0x322 */
 
     /* --- vtable --- */
     virtual ~SlidingPlatformWf();

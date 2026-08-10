@@ -33,6 +33,12 @@
 #include "Platform.h"
 
 struct BowserFireSeaArena : Platform {
+    /* THIS CLASS'S OWN, not Platform's -- Platform ends at 0x31e. They are what
+       push mModel2 from 0x320 to 0x324, and the first two sit in the base's
+       tail padding. */
+    s16 unk_31e;                                /* 0x31e */
+    s16 unk_320;                                /* 0x320 */
+    s16 unk_322;                                /* 0x322 */
     Model mModel2;                              /* 0x324 */
     MovingMeshCollider mMovingMeshCollider2;    /* 0x374 */
     u8  pad_53c[0x30];

@@ -33,13 +33,13 @@ int SlidingIce::Behavior()
       pos.y = mPosY;
       pos.z = mPosZ;
       int spawnType = 1;
-      if(DecIfAbove0_Byte((char *)&(*(s8 *)&unk_320)) == 0){
-        (*(s8 *)&unk_320) = 5;
+      if(DecIfAbove0_Byte((char *)&unk_320) == 0){
+        unk_320 = 5;
         spawnType = 2;
       } else {
         pos.y -= 0x50000;
       }
-      unsigned char cnt = (*(s8 *)&unk_320);
+      unsigned char cnt = unk_320;
       unk_31e = (cnt + 1) * 0x14;
       _ZN5Actor5SpawnEjjRK7Vector3PK10Vector3_16as(0x5d, spawnType, &pos, ((char *)this)+0x8c, mAreaId, -1);
     }

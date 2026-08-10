@@ -15,8 +15,8 @@ extern char data_ov035_02112c60[];
 int RotatingCogSmall::CleanupResources()
 {
   if(mRotationState==0){
-    if(((MeshColliderBase *)((char *)&mMeshCollider))->IsEnabled())
-      ((MeshColliderBase *)((char *)&mMeshCollider))->Disable();
+    if(((MeshColliderBase *)((char *)&(*(u8 *)&mMeshCollider)))->IsEnabled())
+      ((MeshColliderBase *)((char *)&(*(u8 *)&mMeshCollider)))->Disable();
     ((SharedFilePtr *)(data_ov035_02112c78))->Release();
     ((SharedFilePtr *)(data_ov035_02112c68))->Release();
   } else {

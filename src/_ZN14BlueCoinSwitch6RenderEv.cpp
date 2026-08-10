@@ -3,7 +3,7 @@
 /* recovered: named members + shared header, real C++ method
  *
  * Draws the switch only while it is still above its stop. Behavior sinks mPosY
- * toward (*(s32 *)&unk_320) once pressed, so this comparison IS the visibility rule --
+ * toward unk_320 once pressed, so this comparison IS the visibility rule --
  * the switch vanishes exactly when it bottoms out, with no separate flag.
  */
 #include "BlueCoinSwitch.h"
@@ -19,7 +19,7 @@ struct Base {
 
 int BlueCoinSwitch::Render()
 {
-    if (mPosY > (*(s32 *)&unk_320)) {
+    if (mPosY > unk_320) {
         Base *bp = (Base *)&(*(u8 *)&mModel);
         bp->m(0);
     }

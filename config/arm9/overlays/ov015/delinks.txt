@@ -32,7 +32,7 @@ src/PoleBillboard_Spawn.c:
     complete
     .text start:0x021112dc end:0x02111314
 
-src/_ZN13PoleBillboardD1Ev.c:
+src/_ZN13PoleBillboardD1Ev.cpp:
     complete
     .text start:0x02111314 end:0x02111360
 
@@ -176,7 +176,7 @@ src/MovingBarSmall_Spawn.c:
     complete
     .text start:0x02112260 end:0x02112290
 
-src/_ZN14MovingBarSmallD1Ev.c:
+src/_ZN14MovingBarSmallD1Ev.cpp:
     complete
     .text start:0x02112290 end:0x021122dc
 

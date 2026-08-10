@@ -12,7 +12,7 @@
  * -- it is multiplied by 10 here -- and a byte of 0 or 0xff means "use the
  * default 0xfa" instead.
  *
- * (*(s32 *)&unk_320) is just mPosY - 0x64000, so the switch always sinks the same distance
+ * unk_320 is just mPosY - 0x64000, so the switch always sinks the same distance
  * from wherever it was placed rather than to a fixed height.
  *
  * mAreaId is copied into unk_32e before Behavior sets mAreaId to -1, which is
@@ -81,7 +81,7 @@ int BlueCoinSwitch::InitResources()
     /* Keep p out of the mid-block so y colors r1 and c+0x300 colors r0,
        and so set_fa rematerializes add r0,r4,#0x300 after ldrh clobbers r0. */
     y = mPosY;
-    (*(s32 *)&unk_320) = y - 0x64000;
+    unk_320 = y - 0x64000;
     x = param1;
     unk_32a = (x >> 8) & 0xff;
     unk_32e = mAreaId;

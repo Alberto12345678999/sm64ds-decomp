@@ -1,21 +1,44 @@
-/* AUTO-GENERATED from matched-function evidence by tools/gen_header.py
- * class BigBrickBlock: 6 matched functions, 7 evidenced fields.
- * Offsets/widths are observed, not guessed. Gaps are explicit padding.
- * Field NAMES are placeholders - renaming cannot change codegen. */
 #ifndef BIGBRICKBLOCK_H
 #define BIGBRICKBLOCK_H
+
 #include "types.h"
-#include "Model.h"
+#include "Platform.h"
 
-/* Actor is only ever pointed at from here, so a declaration is enough --
- * no definition is pulled in. The typedef keeps the member spelled the
- * same in C and in C++; the guard is common.h's idiom for the same job. */
-#ifndef ACTOR_FWD_DECLARED
-#define ACTOR_FWD_DECLARED
-struct Actor;
-typedef struct Actor Actor;
-#endif
+/* Derives from Platform: the destructor stores this class's vtable, then
+ * Platform's -- inlined -- then destroys the MovingMeshCollider at 0x124 and
+ * the Model at 0xd4 before chaining to Actor. All three belong to Platform.
+ * Everything this header used to restate below 0x31e was Actor's and
+ * Platform's, and is inherited now.
+ *
+ * SIZE IS THE OBSERVED FIELD SPAN, rounded up. It guards this declaration; it
+ * is not independent evidence about the ROM.
+ */
 
+#ifdef __cplusplus
+
+struct BigBrickBlock : Platform {
+    u8 unk_31e;                       /* 0x31e */
+    u8 unk_31f;                       /* 0x31f */
+    u8 mEventID;                      /* 0x320 */
+    u8  pad_321[0x3];
+    Actor *mSwitch;                   /* 0x324 */
+
+    /* --- vtable --- */
+    virtual ~BigBrickBlock();
+
+    int Behavior();
+    int CleanupResources();
+    int InitResources();
+    int Render();
+};
+
+typedef char BigBrickBlock_size_must_be_0x328[sizeof(BigBrickBlock) == 0x328 ? 1 : -1];
+
+#else
+
+/* The C spelling of the same object, flat. Kept because the D0 file is a C
+   translation unit that reads these fields, and D0 is compiler-generated so it
+   can never be migrated. Same arrangement as include/ShadowModel.h. */
 struct BigBrickBlock {
     u8  pad_000[0xc];
     u16 mActorId;            /* 0x00c */
@@ -35,13 +58,8 @@ struct BigBrickBlock {
        says nothing about the rest of the marker's span, which stays explicit padding. Was
        a u8 marker. */
     Actor *mSwitch;            /* 0x324 */
-#ifdef __cplusplus
-    /* methods */
-    int Behavior();
-    int CleanupResources();
-    int InitResources();
-    int Render();
-#endif
 };
 
-#endif
+#endif /* __cplusplus */
+
+#endif /* BIGBRICKBLOCK_H */

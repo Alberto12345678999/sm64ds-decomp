@@ -29,8 +29,8 @@ int SeesawBob::Behavior()
         int s = unk_324;
         if (s < 0) s = (short)-s;
         if (s > 0xa) {
-            (*(s32 *)&unk_320) = _ZN5Sound8PlayLongEjjjRK7Vector3s(
-                (*(s32 *)&unk_320), 3, 0x8b, ((char*)this) + 0x74, 0);
+            unk_320 = _ZN5Sound8PlayLongEjjjRK7Vector3s(
+                unk_320, 3, 0x8b, ((char*)this) + 0x74, 0);
         }
     }
     if (mAngleX > 0x2000) mAngleX = 0x2000;
