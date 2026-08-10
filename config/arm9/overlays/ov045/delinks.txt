@@ -69,6 +69,7 @@ src/PoleLift_Spawn.c:
     .text start:0x02111808 end:0x02111840
 
 src/_ZN8PoleLiftD1Ev.cpp:
+    complete
     .text start:0x02111840 end:0x02111878
 
 src/_ZN8PoleLiftD0Ev.c:
@@ -144,9 +145,11 @@ src/TiltingPlatformBfs_Spawn.c:
     .text start:0x02111d0c end:0x02111d48
 
 src/_ZN12FallBlockBfsD1Ev.c:
+    complete
     .text start:0x02111d48 end:0x02111d98
 
 src/_ZN12FallBlockBfsD0Ev.c:
+    complete
     .text start:0x02111d98 end:0x02111dfc
 
 src/_ZN12FallBlockBfs16CleanupResourcesEv.c:
@@ -156,6 +159,7 @@ src/_ZN12FallBlockBfs13InitResourcesEv.c:
     .text start:0x02111e10 end:0x02111e24
 
 src/FallBlockBfs_Spawn.c:
+    complete
     .text start:0x02111e24 end:0x02111e60
 
 src/__sinit_ov045_021121a8.c:

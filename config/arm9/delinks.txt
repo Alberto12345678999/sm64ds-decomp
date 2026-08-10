@@ -112,6 +112,7 @@ src/_ZN8CapEnemyC2Ev.c:
     .text start:0x02006554 end:0x02006588
 
 src/main.c:
+    complete
     .text start:0x02007000 end:0x0200705c
 
 src/_ZN6CameraD1Ev.c:
@@ -358,6 +359,7 @@ src/func_020092c4.c:
     .text start:0x020092c4 end:0x02009374
 
 src/func_02009374.c:
+    complete
     .text start:0x02009374 end:0x020093d4
 
 src/func_020093d4.c:
@@ -1165,6 +1167,7 @@ src/_ZN5Actor13AfterBehaviorEj.cpp:
     .text start:0x02010fc8 end:0x02010fd4
 
 src/_ZN5Actor14BeforeBehaviorEv.cpp:
+    complete
     .text start:0x02010fd4 end:0x02011214
 
 src/_ZN5Actor21AfterCleanupResourcesEj.cpp:
@@ -1900,6 +1903,7 @@ src/func_02014f44.c:
     .text start:0x02014f44 end:0x02014f5c
 
 src/func_02014f5c.c:
+    complete
     .text start:0x02014f5c end:0x02014fa4
 
 src/func_02014fa4.c:
@@ -3169,6 +3173,7 @@ src/engine/message/func_0201cb2c.c:
     .text start:0x0201cb2c end:0x0201cb7c
 
 src/_ZN5Stage13UpdateMessageEv.cpp:
+    complete
     .text start:0x0201cb7c end:0x0201cd08
 
 src/func_0201cd08.cpp:
@@ -6403,7 +6408,7 @@ src/Vec3_HorzLen.c:
     complete
     .text start:0x0203cf78 end:0x0203cf94
 
-src/func_0203cf94.c:
+src/Vec3_DistSq.c:
     complete
     .text start:0x0203cf94 end:0x0203cfdc
 
