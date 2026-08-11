@@ -196,6 +196,16 @@ class _Syms:
         return ["arm9:_ZTV5Thing"] if addr == 0x02018000 else []
 
 
+def test_code_pointers_resolve_exactly_but_lr_resolves_the_callsite():
+    class Adjacent:
+        ranges = [(0x02010000, 0x02010004, "Previous"),
+                  (0x02010004, 0x02010100, "Current")]
+
+    assert CP._resolve_at(Adjacent(), 0x02010004) == ["Current"]
+    assert CP._resolve_caller(Adjacent(), 0x02010008) == ["Current"]
+    assert CP._resolve_caller(Adjacent(), 0x02010007) == ["Current"]
+
+
 class _FakeClient:
     def __init__(self):
         self.after = False
@@ -269,10 +279,15 @@ def test_summary_and_report_call_out_named_write():
         "cases": [{
             "status": "returned",
             "entry": {"caller_addr": 0x02012004, "caller_symbols": ["Caller"],
+                      "regs": {"r0": 0x02020000, "r1": 0x1e, "r2": 0, "r3": 0},
                       "object": {"addr": 0x02020000, "hex": before,
                                  "vtable": {"addr": 0x02018000, "plausible": True,
                                             "symbols": ["arm9:_ZTV5Thing"],
-                                            "slots": []}}},
+                                            "slots": [{
+                                                "slot": 5,
+                                                "addr": 0x02013000,
+                                                "symbols": ["_ZN15FaderBrightness7IsAtEndEv"],
+                                            }]}}},
             "exit": {"regs": {"r0": 0, "r1": 0},
                      "object": {"addr": 0x02020000, "hex": after, "vtable": None}},
         }],
@@ -285,6 +300,8 @@ def test_summary_and_report_call_out_named_write():
     assert any(r["start"] <= 5 <= r["end"] and r["named"]
                for r in evidence["summary"]["write_ranges"])
     assert "currInterp" in report
+    assert "r1=0x0000001e" in report
     assert "arm9:_ZTV5Thing @ 0x02018000" in report
+    assert "method-owner hints (not concrete type proof): FaderBrightness (1)" in report
     assert "changed 1/1" in report
     assert "does AdvanceInterp change currInterp?" in report

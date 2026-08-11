@@ -193,6 +193,20 @@ equivalence on identical inputs, continue to use `behavior.py` plus
 `behavior_diff.py`; `cpp_probe.py` answers the interpretation question for one
 runtime.
 
+### Confirmed live probe (2026-08-10, melonDS 1.1)
+
+`Fader::AdvanceInterp` was captured for 900 entry/return pairs with a ROM-clean
+canary and no overlay rejects. The idle title-screen object at `0x02189b68`
+used vtable `data_0208ea6c`, arrived from `func_02018efc`, held
+`currInterp=0`, `speed=-1.0`, and returned true without writing the object.
+That proves the observed endpoint path, not that active fades never write it.
+
+The session also confirmed two reporting rules. A vtable entry is an exact code
+pointer and must not be resolved like a link-register return address; doing so
+falsely added the preceding function at adjacent boundaries. Also, class names
+seen on virtual methods are reported only as **method-owner hints**. They do not
+rename a generic `data_*` vtable or prove the object's concrete class.
+
 ## actorcam: live actor-list heartbeat (`actors.py`)
 
 Human-friendly runtime naming tool: while YOU play in melonDS, it walks the

@@ -283,11 +283,17 @@ def _read(cli, addr, size):
         return None
 
 
-def _resolve_all(syms, addr):
-    names = set()
-    for probe in (addr, addr - 4, addr - 2):
-        names.update(name for lo, hi, name in syms.ranges if lo <= probe < hi)
-    return sorted(names)
+def _resolve_at(syms, addr):
+    """Resolve an actual code pointer, without treating it as a return PC."""
+    pc = addr & ~1
+    return sorted({name for lo, hi, name in syms.ranges if lo <= pc < hi})
+
+
+def _resolve_caller(syms, lr):
+    """Resolve the call instruction immediately before an ARM/Thumb LR."""
+    return_addr = lr & ~1
+    callsite = return_addr - (2 if lr & 1 else 4)
+    return _resolve_at(syms, callsite)
 
 
 def _resolve_exact(syms, addr):
@@ -328,7 +334,7 @@ def _snapshot_object(cli, regs, layout, syms, vtable_slots):
             slots.append({
                 "slot": i // 4,
                 "addr": target,
-                "symbols": _resolve_all(syms, target) if _in_code(target) else [],
+                "symbols": _resolve_at(syms, target) if _in_code(target) else [],
             })
     out["vtable"] = {"addr": vt, "symbols": vt_symbols,
                      "slots": slots, "plausible": True}
@@ -346,7 +352,7 @@ def capture_case(cli, target, regs, layout, syms, vtable_slots=12,
         "entry": {
             "regs": {k: regs[k] for k in ("r0", "r1", "r2", "r3", "sp", "lr", "pc")},
             "caller_addr": regs["lr"],
-            "caller_symbols": _resolve_all(syms, regs["lr"]),
+            "caller_symbols": _resolve_caller(syms, regs["lr"]),
             "object": _snapshot_object(cli, regs, layout, syms, vtable_slots),
         },
         "status": "entry-only" if not capture_return else "waiting-return",
@@ -506,6 +512,14 @@ def summarize(evidence):
     summary["objects"] = dict(objects)
     summary["vtables"] = dict(vtables)
 
+    entry_registers = Counter()
+    for case in cases:
+        regs = case.get("entry", {}).get("regs")
+        if regs:
+            entry_registers[" ".join(
+                f"{reg}=0x{regs[reg]:08x}" for reg in ("r0", "r1", "r2", "r3"))] += 1
+    summary["entry_registers"] = dict(entry_registers)
+
     field_rows = []
     covered = set()
     for field in layout.get("fields", []):
@@ -558,6 +572,17 @@ def _format_counts(counts):
     return ", ".join(f"{name} ({count})" for name, count in counts.items()) or "none"
 
 
+def _slot_class_counts(slots):
+    """Method-owner hints from resolved slots; not concrete-vtable claims."""
+    counts = Counter()
+    for slot in slots:
+        for symbol in slot.get("symbols", []):
+            info = demangle.demangle(symbol)
+            if info and info.get("class"):
+                counts[info["class"]] += 1
+    return dict(counts)
+
+
 def render_report(evidence):
     target = evidence["target"]
     layout = evidence["layout"]
@@ -583,6 +608,8 @@ def render_report(evidence):
     if summary.get("statuses"):
         lines.append("Statuses: " + _format_counts(summary["statuses"]))
     lines.append("Callers: " + _format_counts(summary.get("callers", {})))
+    if summary.get("entry_registers"):
+        lines.append("Entry registers: " + _format_counts(summary["entry_registers"]))
     if layout.get("this_reg"):
         lines.append("Objects: " + _format_counts(summary.get("objects", {})))
         lines.append("Vtables: " + _format_counts(summary.get("vtables", {})))
@@ -612,6 +639,10 @@ def render_report(evidence):
 
     for vt, slots in summary.get("vtable_slots", {}).items():
         lines.append(f"Vtable {vt}:")
+        slot_classes = _slot_class_counts(slots)
+        if slot_classes:
+            lines.append("  method-owner hints (not concrete type proof): "
+                         + _format_counts(slot_classes))
         for slot in slots:
             names = " | ".join(slot["symbols"]) or "unresolved"
             lines.append(f"  [{slot['slot']:02d}] 0x{slot['addr']:08x} {names}")
