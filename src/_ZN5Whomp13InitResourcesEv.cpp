@@ -5,6 +5,7 @@
 #include "decl_common.h"
 /* recovered: named members + shared header, real C++ method */
 #include "Whomp.h"
+#include "TextureSequence.h"
 struct SharedFilePtr;
 struct BMD_File;
 struct BTP_File;
@@ -24,7 +25,6 @@ extern "C" {
     void *_ZN15TextureSequence8LoadFileER13SharedFilePtr(void *shared);
     void *_ZN12MeshCollider8LoadFileER13SharedFilePtr(void *shared);
     int _ZN11ShadowModel10InitCuboidEv(void *self);
-    void _ZN15TextureSequence7PrepareER8BMD_FileR8BTP_File(void *bmd, void *btp);
     void _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(void *self, void *btp, int a, int fix, unsigned int b);
     void _ZN9Animation8SetFlagsEi(void *self, int flags);
     u8 _ZN5Actor9TrackStarEjj(void *self, unsigned int a, unsigned int b);
@@ -45,7 +45,11 @@ extern SFP data_ov079_02128168;
 extern SFP data_ov079_02128178;
 extern void *data_ov079_02128170[];
 extern void *data_ov079_021275ec[];
-extern void _ZN16MeshColliderBase16UpdatePosAndAngsERS_P5ActorR10ClsnResultR7Vector3P10Vector3_16S8_();
+/* extern "C" is load-bearing: this sits OUTSIDE the extern "C" block above, so a
+   bare `extern` mangles the already-mangled name a second time and the address
+   taken below points at a _Z88_ZN16... that does not exist. The byte gate cannot
+   see it -- relocated words are wildcards -- only check_references can. */
+extern "C" void _ZN16MeshColliderBase16UpdatePosAndAngsERS_P5ActorR10ClsnResultR7Vector3P10Vector3_16S8_();
 extern u8 data_0209f21c;
 extern s32 data_0209f394[];
 extern signed char data_0209f2f8;
@@ -106,7 +110,8 @@ int Whomp::InitResources()
 
     if (mIsKing != 0) {
         unk_401 = 3;
-        _ZN15TextureSequence7PrepareER8BMD_FileR8BTP_File(data_ov079_02128168.unk4, data_ov079_02128178.unk4);
+        TextureSequence::Prepare(*(BMD_File *)data_ov079_02128168.unk4,
+                                 *(BTP_File *)data_ov079_02128178.unk4);
         _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
             ((char *)this) + 0x330, data_ov079_02128178.unk4, 0, 0x1000, 0);
         _ZN9Animation8SetFlagsEi(((char *)this) + 0x330, 0x40000000);

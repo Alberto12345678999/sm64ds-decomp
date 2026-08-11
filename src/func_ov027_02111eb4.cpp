@@ -3,14 +3,16 @@
 // recovered name: daPgDfdr_c_InitResources
 /* recovered: renamed to Class_Method, declarations from a shared header */
 #include "decl_common.h"
+#include "TextureSequence.h"
 /* recovered: renamed to Class_Method */
 /* daPgDfdr_c::InitResources - recovered from vtable slot identity */
+struct BMD_File;
+struct BTP_File;
 extern "C" {
 extern void *_ZN5Model8LoadFileER13SharedFilePtr(void *fp);
 extern void _ZN9ModelBase7SetFileEP8BMD_Fileii(void *o, void *f, int a, int b);
 extern void *_ZN9Animation8LoadFileER13SharedFilePtr(void *fp);
 extern void *_ZN15TextureSequence8LoadFileER13SharedFilePtr(void *fp);
-extern void _ZN15TextureSequence7PrepareER8BMD_FileR8BTP_File(void *a, void *b);
 extern void _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(void *o, void *f, int i, int fx, unsigned j);
 extern void func_ov027_02111994(void *c);
 extern void *_ZN12MeshCollider8LoadFileER13SharedFilePtr(void *fp);
@@ -45,7 +47,8 @@ int func_ov027_02111eb4(void *cc)
         _ZN9Animation8LoadFileER13SharedFilePtr(data_ov027_02112ca4[i]);
 
     _ZN15TextureSequence8LoadFileER13SharedFilePtr(&data_ov027_02113c94);
-    _ZN15TextureSequence7PrepareER8BMD_FileR8BTP_File(*(void**)(&data_ov027_02113c7c + 4), *(void**)(&data_ov027_02113c94 + 4));
+    TextureSequence::Prepare(**(BMD_File**)(&data_ov027_02113c7c + 4),
+                             **(BTP_File**)(&data_ov027_02113c94 + 4));
     _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(c + 0x384, *(void**)(&data_ov027_02113c94 + 4), 0, 0x1000, 0);
 
     *(short*)(c + 0x8e) = (short)0xdd30;
