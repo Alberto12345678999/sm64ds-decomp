@@ -210,6 +210,35 @@ def from_names(names, repo=REPO, extracted=None):
     return out, missing
 
 
+def from_address(module, addr, name=None, repo=REPO, extracted=None,
+                 instruction_set="arm", size=4):
+    """Build a ROM-canary breakpoint target for an exact module address."""
+    extracted = pathlib.Path(extracted) if extracted else find_extracted(repo)
+    if extracted is None:
+        return None
+    addr = int(addr)
+    for source_module, symbols, blob_path, fixed_base in _symbol_sources(repo, extracted):
+        if source_module != module or not (symbols.is_file() and blob_path.is_file()):
+            continue
+        base = _module_base(symbols, fixed_base)
+        blob = blob_path.read_bytes()
+        off = addr - base
+        if off < 0 or off + 8 > len(blob):
+            return None
+        instruction_set = instruction_set.lower()
+        return {
+            "name": name or f"{module}_callsite_{addr:08x}",
+            "addr": addr,
+            "module": module,
+            "size": size,
+            "canary": blob[off:off + 8].hex(),
+            "canary_source": "rom-address",
+            "instruction_set": instruction_set,
+            "breakpoint_kind": 2 if instruction_set == "thumb" else 4,
+        }
+    return None
+
+
 def from_worklist(path):
     """Read names from a worklist file: one per line, or a JSON list, or a
     JSONL of records with a 'name' field. '#' comments and blanks ignored."""

@@ -16,6 +16,9 @@ Status: **Phase 0 spike** (attach + breakpoint + canary + register/mem dump).
   unmatched symbol, discovers its class/header fields, captures `this` before
   and after calls, and reports named field changes, values, callers, returns,
   and vtable slots.
+- `scenario.py` + `input_win.py` — one-session automation layer. Arms a probe,
+  drives configured melonDS controls from a small JSON scenario, and records
+  the exact input recipe with the runtime evidence.
 
 ## Prerequisites: melonDS GDB stub
 
@@ -207,6 +210,56 @@ falsely added the preceding function at adjacent boundaries. Also, class names
 seen on virtual methods are reported only as **method-owner hints**. They do not
 rename a generic `data_*` vtable or prove the object's concrete class.
 
+## scenario runner: drive a reproducible question (`scenario.py`)
+
+`scenario.py` is the first automation layer above `cpp_probe.py`.  A scenario
+combines one target/question with a short sequence of configured DS controls.
+The runner arms the target breakpoint first, then focuses melonDS and executes
+the controls, and finally saves the normal question evidence plus the exact
+input recipe.  Input and capture stay in one process because melonDS exposes
+only one usable GDB client session.
+
+Input failures abort the capture on its next short debugger poll instead of
+leaving a broken scenario waiting for the full capture duration.
+
+Optional `setup_steps` run before the trigger steps.  After setup (normally a
+savestate load), the runner reads the target's live canary through the same GDB
+session and records whether the requested overlay is actually resident.  This
+makes a no-hit result distinguishable from a wrong-overlay setup.
+
+For ambiguous overlay calls, `target` may instead be an exact always-resident
+ARM9 address object.  An `observe` list resolves candidate symbols that share an
+address and reads that address on every callsite hit, reporting which candidate
+canary was live.  This avoids depending on a breakpoint inside an overlay that
+is not resident during scenario setup.
+
+The included pilot answers the camera-spline ambiguity from a reproducible
+start state.  It expects melonDS slot 5 at Bob-omb Battlefield's `TOUCH ME`
+screen.  Then restart melonDS and make the scenario runner the first GDB
+client:
+
+```powershell
+python tools/trace/scenario.py `
+  tools/trace/scenarios/bobomb_camera_spline.json `
+  --dry-run
+
+python tools/trace/scenario.py `
+  tools/trace/scenarios/bobomb_camera_spline.json
+```
+
+The manifest loads slot 5, clicks Yoshi on the touchscreen prompt, lets the entry camera
+play, and captures eight canary-clean calls.  Scenario steps support `focus`,
+`wait`, `tap`, `hold`, and `touch`; touch coordinates are normalized to the
+melonDS client area so they survive ordinary window moves and uniform resizes.
+They still depend on the configured screen layout.  `--input-only` tests a
+scenario's controls without occupying the GDB stub.  Scenario evidence is
+written under `traces/scenarios/` (gitignored).
+
+This is intentionally a deterministic scenario runner, not yet a general game
+solver.  The next layer should reuse `actors.py`'s player/world-position reads
+for waypoint steering and stuck detection, then choose scenarios/savestates
+from the overlay-residency backlog.
+
 ## actorcam: live actor-list heartbeat (`actors.py`)
 
 Human-friendly runtime naming tool: while YOU play in melonDS, it walks the
@@ -229,6 +282,8 @@ Use:
 
 melonDS 1.1 stub facts this tool obeys (learned the hard way):
 - one client per emulator launch; if attach probes time out -> restart melonDS
+- do **not** use `Test-NetConnection`, telnet, or a raw socket as a port check;
+  that consumes the one session without sending RSP detach and wedges the stub
 - memory reads work fine while the game RUNS; `?` only answers when halted
 - with BreakOnStartup the game powers on halted; the tool auto-continues
 - every reply must be ACKed - only talk to the stub through `rsp.py`

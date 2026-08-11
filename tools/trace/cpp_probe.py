@@ -357,6 +357,23 @@ def capture_case(cli, target, regs, layout, syms, vtable_slots=12,
         },
         "status": "entry-only" if not capture_return else "waiting-return",
     }
+    observations = []
+    for spec in layout.get("memory_reads", []):
+        raw = _read(cli, spec["addr"], spec.get("size", 8))
+        seen = raw.hex().lower() if raw is not None else None
+        matches = [
+            candidate["qualified_name"]
+            for candidate in spec.get("candidates", [])
+            if seen is not None and seen.startswith(candidate["canary"].lower())
+        ]
+        observations.append({
+            "name": spec["name"],
+            "addr": spec["addr"],
+            "bytes": seen,
+            "matches": matches,
+        })
+    if observations:
+        case["observations"] = observations
     if not capture_return:
         return case, False
 
@@ -398,7 +415,8 @@ def capture_case(cli, target, regs, layout, syms, vtable_slots=12,
 
 def collect(target, layout, host="127.0.0.1", port=3333, hits=5,
             duration=90.0, idle=20.0, poll_timeout=2.0, vtable_slots=12,
-            capture_return=True, client_factory=RspClient):
+            capture_return=True, client_factory=RspClient, on_ready=None,
+            should_abort=None):
     syms = symindex.get()
     cli = client_factory(host, port, timeout=poll_timeout)
     cases = []
@@ -411,12 +429,18 @@ def collect(target, layout, host="127.0.0.1", port=3333, hits=5,
         if not cli.set_breakpoint(target["addr"], bp_kind):
             raise RspError(f"stub refused breakpoint at {target['addr']:#x}")
         cli.cont()
+        if on_ready is not None:
+            on_ready(cli)
         while len(cases) < hits and time.time() - started < duration:
+            if should_abort is not None and should_abort():
+                raise RuntimeError("runtime probe aborted by scenario input failure")
             if time.time() - last_hit >= idle:
                 break
             try:
                 cli.wait_for_stop()
             except (RspError, OSError, TimeoutError):
+                if should_abort is not None and should_abort():
+                    raise RuntimeError("runtime probe aborted by scenario input failure")
                 continue
             regs = cli.read_registers()
             if regs["pc"] != target["addr"]:
@@ -520,6 +544,17 @@ def summarize(evidence):
                 f"{reg}=0x{regs[reg]:08x}" for reg in ("r0", "r1", "r2", "r3"))] += 1
     summary["entry_registers"] = dict(entry_registers)
 
+    observations = {}
+    for case in cases:
+        for item in case.get("observations", []):
+            label = " | ".join(item.get("matches", []))
+            if not label:
+                label = item.get("bytes") or "unread"
+            observations.setdefault(item["name"], Counter())[label] += 1
+    summary["observations"] = {
+        name: dict(counts) for name, counts in observations.items()
+    }
+
     field_rows = []
     covered = set()
     for field in layout.get("fields", []):
@@ -610,6 +645,8 @@ def render_report(evidence):
     lines.append("Callers: " + _format_counts(summary.get("callers", {})))
     if summary.get("entry_registers"):
         lines.append("Entry registers: " + _format_counts(summary["entry_registers"]))
+    for name, counts in summary.get("observations", {}).items():
+        lines.append(f"Observed {name}: " + _format_counts(counts))
     if layout.get("this_reg"):
         lines.append("Objects: " + _format_counts(summary.get("objects", {})))
         lines.append("Vtables: " + _format_counts(summary.get("vtables", {})))
