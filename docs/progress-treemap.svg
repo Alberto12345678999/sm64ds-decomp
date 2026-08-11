@@ -19093,27 +19093,27 @@ matched: yes</title></rect><rect x="968.03" y="27.00" width="4.05" height="0.57"
 module: ov004
 addr: 0x020b04e0
 size: 8 bytes
-matched: yes</title></rect><rect x="968.03" y="27.86" width="4.05" height="0.57" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov004_020b04ec
+matched: yes</title></rect><rect x="968.03" y="27.86" width="4.05" height="0.57" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11dScMgBase_c6RenderEv
 module: ov004
 addr: 0x020b04ec
 size: 8 bytes
-matched: yes</title></rect><rect x="968.03" y="28.43" width="4.05" height="20.94" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov004_020b04f4
+matched: yes</title></rect><rect x="968.03" y="28.43" width="4.05" height="20.94" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11dScMgBase_c12BeforeRenderEv
 module: ov004
 addr: 0x020b04f4
 size: 292 bytes
-matched: yes</title></rect><rect x="972.08" y="27.32" width="7.16" height="22.05" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov004_020b0620
+matched: yes</title></rect><rect x="972.08" y="27.32" width="7.16" height="22.05" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11dScMgBase_c14BeforeBehaviorEv
 module: ov004
 addr: 0x020b0620
 size: 544 bytes
-matched: yes</title></rect><rect x="979.24" y="27.00" width="6.54" height="7.81" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov004_020b0840
+matched: yes</title></rect><rect x="979.24" y="27.00" width="6.54" height="7.81" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11dScMgBase_c21AfterCleanupResourcesEj
 module: ov004
 addr: 0x020b0840
 size: 176 bytes
-matched: yes</title></rect><rect x="979.24" y="34.81" width="6.54" height="2.84" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov004_020b08f0
+matched: yes</title></rect><rect x="979.24" y="34.81" width="6.54" height="2.84" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11dScMgBase_c18AfterInitResourcesEj
 module: ov004
 addr: 0x020b08f0
 size: 64 bytes
-matched: yes</title></rect><rect x="979.24" y="37.65" width="6.54" height="11.72" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov004_020b0930
+matched: yes</title></rect><rect x="979.24" y="37.65" width="6.54" height="11.72" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11dScMgBase_c19BeforeInitResourcesEv
 module: ov004
 addr: 0x020b0930
 size: 264 bytes
@@ -19277,11 +19277,11 @@ matched: yes</title></rect><rect x="1089.62" y="36.42" width="1.97" height="12.9
 module: ov004
 addr: 0x020b29c0
 size: 88 bytes
-matched: yes</title></rect><rect x="1091.59" y="27.00" width="7.47" height="4.19" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov004_020b2a18
+matched: yes</title></rect><rect x="1091.59" y="27.00" width="7.47" height="4.19" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11dScMgBase_cD0Ev
 module: ov004
 addr: 0x020b2a18
 size: 108 bytes
-matched: yes</title></rect><rect x="1091.59" y="31.19" width="7.47" height="3.42" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov004_020b2a84
+matched: yes</title></rect><rect x="1091.59" y="31.19" width="7.47" height="3.42" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11dScMgBase_cD1Ev
 module: ov004
 addr: 0x020b2a84
 size: 88 bytes
