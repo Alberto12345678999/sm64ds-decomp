@@ -364,7 +364,7 @@ void hal_sub_screen_frame_begin(void)
 void hal_sub_screen_present(unsigned int *dst, int w, int h)
 {
     /* SM64DS_SUB_SCALE is a divisor: 1 = full DS size (a quarter of the 2x
-       window, Brennen's "super in the way"), 2 = half size (1/16 of the
+       window, Tango's "super in the way"), 2 = half size (1/16 of the
        window, the default), up to 4. */
     {
         static int init;

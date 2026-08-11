@@ -4,7 +4,7 @@
 // CylinderClsn::Process, whose notify bit reaches func_ov002_020caf98, which
 // sets Player+0x37c to the cylinder and changes to this state.
 //
-// ALL THREE HALVES WERE UNHOSTED, and that is Brennen's freeze-then-slide:
+// ALL THREE HALVES WERE UNHOSTED, and that is Tango's freeze-then-slide:
 //   St_Climb_Init    0x020cbd34  matched src, was in no slice manifest
 //   St_Climb_Main    0x020cb5bc  matched src (was the last unhosted half)
 //   St_Climb_Cleanup 0x020cb568  matched src, was in no slice manifest

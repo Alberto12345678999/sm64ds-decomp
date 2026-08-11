@@ -117,7 +117,7 @@ void port_fader_watch(void *actor)
 }
 
 /* ===========================================================================
- * PER-ACTOR FAULT QUARANTINE (Brennen's ask #2)
+ * PER-ACTOR FAULT QUARANTINE (Tango's ask #2)
  *
  * The two walks below call each actor's phase callback through fn(actor). A
  * bad actor -- a stale vtable, a half-initialised pointer, a resource that did

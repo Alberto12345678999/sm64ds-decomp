@@ -341,7 +341,7 @@ void hal_render_player_world(void *player)
        and all four parts of that matter. An earlier pass here drew
        *(ModelAnim **)(c + 0x160) -- the pointer func_ov002_020d71ec SetAnims,
        which is NOT the object Render walks -- with the body's own scene matrix,
-       through Render (slot 4), with no gate at all. What Brennen saw was a
+       through Render (slot 4), with no gate at all. What Tango saw was a
        model upside down under every character's feet, on Mario as much as on
        Yoshi: the probe said 198 polygons on frame 0 of a plain Mario boot,
        from the same object either way.

@@ -1544,7 +1544,7 @@ int main(void)
     static char stdout_buf[1 << 16];
     setvbuf(stdout, stdout_buf, _IOFBF, sizeof stdout_buf);
     atexit(stdout_flush_atexit);
-    /* FLIGHT RECORDER (Brennen's ask): every diagnostic this program
+    /* FLIGHT RECORDER (Tango's ask): every diagnostic this program
        writes to stderr -- unhosted states, spawn skips, fault dumps
        with registers and stack, the traces below -- lands in a
        timestamped file under playlog/, unbuffered so a hard crash
@@ -2690,7 +2690,7 @@ int main(void)
             if (key_live(VK_CONTROL)) btn |= 0x400;
             if (key_live('X')) btn |= 1;
             if (pad_live) {
-                /* Xbox layout per Brennen: A jump, X run, B punch,
+                /* Xbox layout per Tango: A jump, X run, B punch,
                    bumpers rotate the camera. RT is meant to be crouch,
                    but the old "crouch = 0x100" binding was a GUESS and
                    0x100 is provably the camera rotate-right bit
@@ -2985,7 +2985,7 @@ int main(void)
             }
         }
         /* SM64DS_FORCE_STATE=walljump -- the walljump crash probe.
-           Brennen walljumped in the live game and the process died with no
+           Tango walljumped in the live game and the process died with no
            fault-probe dump, because St_WallJump_Main dispatches the
            per-character airborne-gravity function out of the sinit-built
            table data_ov002_0211073c and (unlike St_Jump_Main) called row[0]
