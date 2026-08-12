@@ -36217,15 +36217,15 @@ matched: yes</title></rect><rect x="1585.97" y="387.24" width="9.03" height="14.
 module: ov063
 addr: 0x0211e5fc
 size: 256 bytes
-matched: yes</title></rect><rect x="1057.70" y="433.79" width="6.85" height="4.97" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov064_02115ee0
+matched: yes</title></rect><rect x="1057.70" y="433.79" width="6.85" height="4.97" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7daOts_cD1Ev
 module: ov064
 addr: 0x02115ee0
 size: 72 bytes
-matched: yes</title></rect><rect x="1057.70" y="438.76" width="6.85" height="6.35" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov064_02115f28
+matched: yes</title></rect><rect x="1057.70" y="438.76" width="6.85" height="6.35" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7daOts_cD0Ev
 module: ov064
 addr: 0x02115f28
 size: 92 bytes
-matched: yes</title></rect><rect x="1057.70" y="445.11" width="6.85" height="1.38" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov064_02115f84
+matched: yes</title></rect><rect x="1057.70" y="445.11" width="6.85" height="1.38" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7daOts_c16OnAimedAtWithEggEv
 module: ov064
 addr: 0x02115f84
 size: 20 bytes
@@ -36297,11 +36297,11 @@ matched: yes</title></rect><rect x="1070.84" y="479.36" width="11.53" height="10
 module: ov064
 addr: 0x02116bac
 size: 244 bytes
-matched: yes</title></rect><rect x="1070.84" y="489.36" width="11.53" height="3.28" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Bully16CleanupResourcesEv
+matched: yes</title></rect><rect x="1070.84" y="489.36" width="11.53" height="3.28" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7daOts_c16CleanupResourcesEv
 module: ov064
 addr: 0x02116ca0
 size: 80 bytes
-matched: yes</title></rect><rect x="1070.84" y="492.64" width="11.53" height="1.80" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Bully6RenderEv
+matched: yes</title></rect><rect x="1070.84" y="492.64" width="11.53" height="1.80" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7daOts_c6RenderEv
 module: ov064
 addr: 0x02116cf0
 size: 44 bytes
