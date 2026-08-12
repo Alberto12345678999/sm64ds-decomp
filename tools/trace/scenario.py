@@ -14,11 +14,14 @@ question.
 from __future__ import annotations
 
 import argparse
+from collections import Counter
 import datetime as dt
 import json
+import os
 import pathlib
 import sys
 import threading
+import time
 
 TRACE_DIR = pathlib.Path(__file__).resolve().parent
 TOOLS_DIR = TRACE_DIR.parent
@@ -29,10 +32,18 @@ sys.path.insert(0, str(TOOLS_DIR))
 import bplist  # noqa: E402
 import cpp_probe  # noqa: E402
 from input_win import Win32MelonInput, load_bindings, run_steps  # noqa: E402
+from melon_control import ControlMelonInput  # noqa: E402
 from rsp import RspError  # noqa: E402
 
 
 SCHEMA = "sm64ds-emulator-scenario-v1"
+REGISTER_READ_TYPES = {
+    "u8": 1, "s8": 1,
+    "u16": 2, "s16": 2,
+    "u32": 4, "s32": 4,
+    "hex": None,
+}
+READ_REGISTERS = {"r0", "r1", "r2", "r3", "sp", "lr"}
 
 
 def load_scenario(path):
@@ -57,6 +68,19 @@ def load_scenario(path):
         for index, step in enumerate(group, 1):
             if not isinstance(step, dict) or not isinstance(step.get("action"), str):
                 raise ValueError(f"{path}: {group_name} {index} requires an action")
+    for index, spec in enumerate(data.get("observe_args", []), 1):
+        if spec.get("register") not in READ_REGISTERS:
+            raise ValueError(f"{path}: observe_args {index} has invalid register")
+        if spec.get("type", "hex") not in REGISTER_READ_TYPES:
+            raise ValueError(f"{path}: observe_args {index} has invalid type")
+    for index, spec in enumerate(data.get("observe_registers", []), 1):
+        if spec.get("register") not in READ_REGISTERS:
+            raise ValueError(f"{path}: observe_registers {index} has invalid register")
+    for index, spec in enumerate(data.get("setup_memory", []), 1):
+        ops = [name for name in ("value", "set_bits", "clear_bits") if name in spec]
+        if "address" not in spec or len(ops) != 1:
+            raise ValueError(
+                f"{path}: setup_memory {index} needs address and exactly one operation")
     return data
 
 
@@ -110,7 +134,106 @@ def resolve_scenario(data, extracted=None):
             ],
         })
     layout["memory_reads"] = memory_reads
+    register_reads = []
+    for spec in data.get("observe_args", []):
+        typ = spec.get("type", "hex")
+        size = spec.get("size", REGISTER_READ_TYPES[typ])
+        if not isinstance(size, int) or size < 1 or size > 64:
+            raise ValueError(f"invalid observe_args size: {spec!r}")
+        register_reads.append({
+            "name": spec.get("name") or
+                    f"{spec['register']}{_as_int(spec.get('offset', 0)):+#x}",
+            "register": spec["register"],
+            "offset": _as_int(spec.get("offset", 0)),
+            "size": size,
+            "type": typ,
+        })
+    layout["register_reads"] = register_reads
+    layout["register_values"] = [
+        {
+            "name": spec.get("name") or spec["register"],
+            "register": spec["register"],
+            "display": spec.get("display", "hex"),
+        }
+        for spec in data.get("observe_registers", [])
+    ]
     return target, layout
+
+
+def _as_int(value):
+    return int(value, 0) if isinstance(value, str) else int(value)
+
+
+def apply_memory_setup(cli, specs):
+    """Apply small, verified RAM setup operations and return their audit trail."""
+    events = []
+    for spec in specs:
+        address = _as_int(spec["address"])
+        size = int(spec.get("size", 1))
+        if size not in (1, 2, 4):
+            raise ValueError(f"setup_memory size must be 1, 2, or 4: {spec!r}")
+        before_raw = cli.read_mem(address, size)
+        before = int.from_bytes(before_raw, "little")
+        mask = (1 << (size * 8)) - 1
+        if "value" in spec:
+            after = _as_int(spec["value"])
+        elif "set_bits" in spec:
+            after = before | _as_int(spec["set_bits"])
+        else:
+            after = before & ~_as_int(spec["clear_bits"])
+        after &= mask
+        after_raw = after.to_bytes(size, "little")
+        if not cli.write_mem(address, after_raw):
+            raise RuntimeError(f"stub refused setup_memory write at {address:#010x}")
+        verified = cli.read_mem(address, size)
+        if verified != after_raw:
+            raise RuntimeError(
+                f"setup_memory verification failed at {address:#010x}: "
+                f"wrote {after_raw.hex()}, read {verified.hex()}")
+        events.append({
+            "name": spec.get("name") or f"memory_{address:08x}",
+            "address": address,
+            "size": size,
+            "before": before_raw.hex(),
+            "after": verified.hex(),
+        })
+    return events
+
+
+def unique_observation_filter(name, max_per_value=1):
+    counts = Counter()
+
+    def accept(case):
+        item = next((item for item in case.get("observations", [])
+                     if item.get("name") == name), None)
+        if item is None:
+            key = "missing"
+        else:
+            key = json.dumps(item.get("value", item.get("bytes")), sort_keys=True)
+        if counts[key] >= max_per_value:
+            return False
+        counts[key] += 1
+        return True
+
+    return accept, counts
+
+
+def evaluate_expectations(specs, summary):
+    results = []
+    observations = summary.get("observations", {})
+    for spec in specs:
+        name = spec.get("observation")
+        value = str(spec.get("value"))
+        minimum = int(spec.get("min_count", 1))
+        actual = int(observations.get(name, {}).get(value, 0))
+        results.append({
+            "observation": name,
+            "value": value,
+            "min_count": minimum,
+            "actual_count": actual,
+            "passed": actual >= minimum,
+        })
+    return results
 
 
 class InputThread:
@@ -129,6 +252,7 @@ class InputThread:
     def _run(self):
         try:
             run_steps(self.driver, self.steps,
+                      sleep=getattr(self.driver, "sleep", time.sleep),
                       should_stop=self.stop_event.is_set,
                       announce=self.announce)
         except BaseException as exc:  # carry thread failures to the main result
@@ -182,6 +306,13 @@ def main(argv=None):
     ap.add_argument("--port", type=int, default=3333)
     ap.add_argument("--melon-config", help="melonDS.toml (auto-detected by default)")
     ap.add_argument("--window-title", default="melonDS")
+    ap.add_argument("--input-backend", choices=("control", "win32"),
+                    default="control",
+                    help="input path; control is deterministic and needs the instrumented fork")
+    ap.add_argument("--control-port", type=int, default=45987)
+    ap.add_argument("--control-token", default=os.getenv("MELONDS_CONTROL_TOKEN"))
+    ap.add_argument("--state-root",
+                    help="base directory for relative load_state paths")
     ap.add_argument("--extracted", help="ROM extract directory")
     ap.add_argument("--out", help="evidence JSON path")
     ap.add_argument("--dry-run", action="store_true",
@@ -193,7 +324,8 @@ def main(argv=None):
     try:
         data = load_scenario(args.scenario)
         target, layout = resolve_scenario(data, args.extracted)
-        bindings = load_bindings(args.melon_config)
+        bindings = (load_bindings(args.melon_config)
+                    if args.input_backend == "win32" else {})
     except (OSError, RuntimeError, ValueError, json.JSONDecodeError) as exc:
         print(f"[!] scenario setup failed: {exc}", file=sys.stderr)
         return 2
@@ -203,31 +335,55 @@ def main(argv=None):
         return 0
 
     try:
-        driver = Win32MelonInput(
-            bindings=bindings, title_contains=args.window_title)
+        if args.input_backend == "control":
+            driver = ControlMelonInput(
+                host=args.host, port=args.control_port,
+                token=args.control_token, state_root=args.state_root)
+        else:
+            driver = Win32MelonInput(
+                bindings=bindings, title_contains=args.window_title)
     except (OSError, RuntimeError, ValueError) as exc:
         print(f"[!] input setup failed: {exc}", file=sys.stderr)
         return 2
 
     if args.input_only:
         try:
-            run_steps(driver, data.get("setup_steps", []) + data["steps"])
+            run_steps(driver, data.get("setup_steps", []) + data["steps"],
+                      sleep=getattr(driver, "sleep", time.sleep))
         except (OSError, RuntimeError, ValueError) as exc:
             print(f"[!] input script failed: {exc}", file=sys.stderr)
             return 3
+        finally:
+            if hasattr(driver, "close"):
+                driver.close()
         return 0
 
     capture = data.get("capture", {})
     setup_events = []
+    memory_setup_events = []
     residency = {}
     script = InputThread(driver, data["steps"])
 
-    def prepare_and_start(cli):
+    def prepare_setup():
         def announce(message):
             setup_events.append(message)
             print(message)
 
-        run_steps(driver, data.get("setup_steps", []), announce=announce)
+        run_steps(driver, data.get("setup_steps", []), announce=announce,
+                  sleep=getattr(driver, "sleep", time.sleep))
+        # Exact control-API stepping returns paused. The GDB listener accepts
+        # a socket while paused but the ARM core cannot service its first
+        # memory command until emulation is resumed. Setup is complete here;
+        # the target-specific trigger has not started yet.
+        if hasattr(driver, "resume"):
+            driver.resume()
+
+    def prepare_target(cli):
+        memory_setup_events.extend(
+            apply_memory_setup(cli, data.get("setup_memory", [])))
+        for event in memory_setup_events:
+            print(f"[*] setup memory: {event['name']} {event['before']} -> "
+                  f"{event['after']} at {event['address']:#010x}")
         expected = target["canary"].lower()
         observed = cli.read_mem(target["addr"], len(expected) // 2).hex().lower()
         residency.update({
@@ -239,10 +395,25 @@ def main(argv=None):
         state = "target resident" if observed == expected else "different overlay resident"
         print(f"[*] pre-trigger overlay check: {state} at {target['addr']:#010x} "
               f"(observed {observed})")
+
+    def start_trigger(_cli):
         script.start()
     print(cpp_probe.resolution_report(target, layout))
     print(f"[*] question: {data.get('question') or '-'}")
+    print("[*] preparing savestate/input before attaching the GDB client")
+    try:
+        prepare_setup()
+    except (OSError, RuntimeError, ValueError) as exc:
+        if hasattr(driver, "close"):
+            driver.close()
+        print(f"[!] scenario setup input failed: {exc}", file=sys.stderr)
+        return 3
     print("[*] connecting; scripted input starts after the target breakpoint is armed")
+    accept_case = None
+    unique_counts = None
+    if capture.get("unique_by"):
+        accept_case, unique_counts = unique_observation_filter(
+            capture["unique_by"], int(capture.get("max_per_value", 1)))
     try:
         cases, alias_rejects, elapsed = cpp_probe.collect(
             target, layout, args.host, args.port,
@@ -252,8 +423,10 @@ def main(argv=None):
             poll_timeout=capture.get("poll_timeout", 2.0),
             vtable_slots=capture.get("vtable_slots", 12),
             capture_return=capture.get("capture_return", True),
-            on_ready=prepare_and_start,
-            should_abort=lambda: script.error is not None)
+            on_pre_arm=prepare_target,
+            on_ready=start_trigger,
+            should_abort=lambda: script.error is not None,
+            accept_case=accept_case)
     except (OSError, RspError, RuntimeError, TimeoutError, ValueError) as exc:
         print(f"[!] emulator scenario failed: {exc}\n"
               "    Restart melonDS and make this runner its first GDB client.",
@@ -261,6 +434,8 @@ def main(argv=None):
         return 3
     finally:
         script.stop()
+        if hasattr(driver, "close"):
+            driver.close()
 
     evidence = {
         "schema": cpp_probe.SCHEMA,
@@ -279,27 +454,43 @@ def main(argv=None):
         "automation": {
             "scenario_schema": SCHEMA,
             "scenario_name": data["name"],
+            "input_backend": args.input_backend,
+            "control_port": (args.control_port
+                             if args.input_backend == "control" else None),
             "start_state": data.get("start_state"),
             "setup_steps": data.get("setup_steps", []),
             "setup_events": setup_events,
+            "setup_memory": data.get("setup_memory", []),
+            "setup_memory_events": memory_setup_events,
             "pretrigger_target": residency,
             "steps": data["steps"],
             "events": script.events,
             "input_error": repr(script.error) if script.error else None,
         },
         "alias_rejects": alias_rejects,
+        "unique_observation_counts": dict(unique_counts or {}),
         "cases": cases,
     }
     evidence["summary"] = cpp_probe.summarize(evidence)
+    evidence["expectations"] = evaluate_expectations(
+        data.get("expect", []), evidence["summary"])
     out = pathlib.Path(args.out) if args.out else _default_output(data["name"])
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps(evidence, indent=2) + "\n", encoding="utf-8")
     print()
     print(cpp_probe.render_report(evidence))
+    if evidence["expectations"]:
+        print("\nScenario assertions:")
+        for item in evidence["expectations"]:
+            state = "PASS" if item["passed"] else "FAIL"
+            print(f"  [{state}] {item['observation']} == {item['value']}: "
+                  f"{item['actual_count']} >= {item['min_count']}")
     print(f"\n[=] scenario evidence saved to {out}")
     if script.error:
         print(f"[!] input script error: {script.error}", file=sys.stderr)
         return 5
+    if any(not item["passed"] for item in evidence["expectations"]):
+        return 6
     return 0 if cases else 4
 
 

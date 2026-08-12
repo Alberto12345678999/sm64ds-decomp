@@ -18,45 +18,67 @@
       ]
     }
   ],
-  "start_state": "melonDS slot 5 at Bob-omb Battlefield's TOUCH ME screen",
+  "start_state": "sm64.ml5 at Bob-omb Battlefield's TOUCH ME screen",
   "view": {
     "this_reg": "none"
   },
   "capture": {
-    "hits": 8,
-    "duration": 90,
-    "idle": 90,
+    "hits": 1,
+    "duration": 30,
+    "idle": 30,
     "capture_return": false
   },
+  "expect": [
+    {
+      "observation": "callee overlay at 0x020effb8",
+      "value": "ov002:func_ov002_020effb8",
+      "min_count": 1
+    }
+  ],
   "setup_steps": [
     {
-      "action": "focus",
-      "note": "focus melonDS"
-    },
-    {
-      "action": "tap",
-      "key": "hotkey_load_slot_5",
-      "seconds": 0.1,
-      "note": "load the prepared pre-trigger slot 5"
+      "action": "load_state",
+      "path": "sm64.ml5",
+      "note": "load the prepared pre-trigger savestate through the control API"
     },
     {
       "action": "wait",
-      "seconds": 1.5,
+      "frames": 90,
       "note": "allow the savestate to settle"
+    }
+  ],
+  "setup_memory": [
+    {
+      "name": "clear pending course-select script continuation",
+      "address": "0x0209fc4c",
+      "size": 4,
+      "value": "0x00000000"
+    },
+    {
+      "name": "force normal level-intro mode gate",
+      "address": "0x0209f2d8",
+      "size": 1,
+      "value": "0x00"
+    },
+    {
+      "name": "rearm first-level intro cutscene",
+      "address": "0x0209caa8",
+      "size": 4,
+      "clear_bits": "0x80"
     }
   ],
   "steps": [
     {
       "action": "touch",
       "x": 0.5,
-      "y": 0.78,
-      "seconds": 0.12,
+      "y": 0.55,
+      "seconds": 0.1,
       "note": "touch Yoshi on the TOUCH ME lower screen"
     },
     {
       "action": "wait",
-      "seconds": 30.0,
-      "note": "let the course-entry camera sequence play"
+      "frames": 1200,
+      "note": "let the rearmed level-intro camera script play"
     }
   ]
 }

@@ -9,6 +9,7 @@ Only the handful of packets the tracer needs are implemented:
   <0x03>      interrupt (halt a running target)
   g           read all registers
   m addr,len  read memory
+  M addr,len  write memory
   Z0/z0       set/clear software breakpoint
   c           continue
   D           detach
@@ -183,6 +184,13 @@ class RspClient:
         if r.startswith("E"):
             raise RspError(f"m{addr:x},{length:x} -> {r}")
         return bytes.fromhex(r)
+
+    def write_mem(self, addr: int, data: bytes) -> bool:
+        data = bytes(data)
+        r = self.send_packet(f"M{addr:x},{len(data):x}:{data.hex()}")
+        if r.startswith("E"):
+            raise RspError(f"M{addr:x},{len(data):x} -> {r}")
+        return r == "OK"
 
     def read_registers(self) -> dict:
         """Return {'raw', 'words', 'r0'..'r15', 'sp','lr','pc', 'cpsr', 'cpsr_src'}.

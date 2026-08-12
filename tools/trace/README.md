@@ -214,10 +214,12 @@ rename a generic `data_*` vtable or prove the object's concrete class.
 
 `scenario.py` is the first automation layer above `cpp_probe.py`.  A scenario
 combines one target/question with a short sequence of configured DS controls.
-The runner arms the target breakpoint first, then focuses melonDS and executes
-the controls, and finally saves the normal question evidence plus the exact
-input recipe.  Input and capture stay in one process because melonDS exposes
-only one usable GDB client session.
+The runner arms the target breakpoint first, then drives the instrumented
+melonDS localhost control API and finally saves the normal question evidence
+plus the exact input recipe. Input and capture stay in one process because the
+GDB stub still exposes only one usable debugger client session. The control API
+is a separate socket, so it can supply deterministic input and frame stepping
+without competing for that session or requiring window focus.
 
 Input failures abort the capture on its next short debugger poll instead of
 leaving a broken scenario waiting for the full capture duration.
@@ -227,16 +229,37 @@ savestate load), the runner reads the target's live canary through the same GDB
 session and records whether the requested overlay is actually resident.  This
 makes a no-hit result distinguishable from a wrong-overlay setup.
 
+Optional `setup_memory` entries make small, explicit 1/2/4-byte RAM changes
+after the savestate load.  Each entry supports `value`, `set_bits`, or
+`clear_bits`; the runner records the before/after bytes and reads the value back
+before continuing.  Use this for a known cutscene or event gate, not to invent
+the behavior being tested.
+
 For ambiguous overlay calls, `target` may instead be an exact always-resident
 ARM9 address object.  An `observe` list resolves candidate symbols that share an
 address and reads that address on every callsite hit, reporting which candidate
 canary was live.  This avoids depending on a breakpoint inside an overlay that
 is not resident during scenario setup.
 
-The included pilot answers the camera-spline ambiguity from a reproducible
-start state.  It expects melonDS slot 5 at Bob-omb Battlefield's `TOUCH ME`
-screen.  Then restart melonDS and make the scenario runner the first GDB
-client:
+`observe_args` reads a typed value at `register + offset` on each hit, while
+`observe_registers` records a register value directly.  `capture.unique_by`
+can retain only a bounded number of cases per observation value, which makes a
+dispatcher or actor-spawn inventory useful without storing every repeated
+frame.  An `expect` list turns observation counts into saved, machine-checkable
+PASS/FAIL assertions; an unmet assertion exits with status 6.
+
+The included pilot answers the camera-spline ambiguity from the proven quick
+slot state `sm64.ml5` at Bob-omb Battlefield's `TOUCH ME` screen. Build and
+start the control fork first (the server remains localhost-only):
+
+```powershell
+$env:MELONDS_CONTROL_TOKEN = 'sm64-research'
+C:\tmp\melonds-ai-controller\tools\start_control.ps1 `
+  -Rom C:\Users\andre\source\tangosdev\sm64ds-decomp\sm64.nds
+```
+
+Then make the scenario runner the first GDB client and provide the directory
+containing the relative savestate path:
 
 ```powershell
 python tools/trace/scenario.py `
@@ -244,16 +267,36 @@ python tools/trace/scenario.py `
   --dry-run
 
 python tools/trace/scenario.py `
-  tools/trace/scenarios/bobomb_camera_spline.json
+  tools/trace/scenarios/bobomb_camera_spline.json `
+  --state-root C:\Users\andre\source\tangosdev\sm64ds-decomp
 ```
 
-The manifest loads slot 5, clicks Yoshi on the touchscreen prompt, lets the entry camera
-play, and captures eight canary-clean calls.  Scenario steps support `focus`,
-`wait`, `tap`, `hold`, and `touch`; touch coordinates are normalized to the
-melonDS client area so they survive ordinary window moves and uniform resizes.
-They still depend on the configured screen layout.  `--input-only` tests a
-scenario's controls without occupying the GDB stub.  Scenario evidence is
-written under `traces/scenarios/` (gitignored).
+The manifest loads the state directly, clears the exact saved-game bit that
+suppresses the first-level intro, touches Yoshi, and captures one canary-clean
+hit at the original ARM9 callsite. Scenario steps support `load_state`,
+`focus` (a socket ping under this backend), `wait`, `tap`, `hold`, and `touch`.
+`wait`/`tap`/`hold` may specify exact `frames`; touch coordinates are normalized
+to the 256x192 DS touch screen and are independent of window layout. Use
+`--input-backend win32` only as a compatibility fallback for an unmodified
+melonDS build. `--input-only` tests controls without occupying the GDB stub.
+Scenario evidence is written under `traces/scenarios/` (gitignored).
+
+Confirmed live on 2026-08-11: `bobomb_intro_camera_commands.json` observed
+`ProcessKuppaScript` dispatch message `0x020890fb` as opcode 4, camera command
+6.  The command-6 PMF is `func_020082a0`; it reached callsite `0x02008c18` from
+`func_02009414`, where the shared `0x020effb8` bytes matched
+`ov002:func_ov002_020effb8`.  The direct evidence file was
+`traces/scenarios/bobomb-camera-spline_20260811_204245.json`.
+
+The control-backend replay was independently verified the same day with direct
+`sm64.ml5` loading and exact frame steps; its passing evidence is
+`traces/scenarios/bobomb-camera-spline_20260811_222253.json`. It required no
+foreground window, Win32 key event, or manual intervention.
+
+`bobomb_actor_spawn_inventory.json` is the coverage companion.  The same
+automated course entry retained 33 distinct actor IDs, and every spawn observed
+ov002 in the shared overlay slot.  It is a useful first check that a scenario
+really crossed into level loading before debugging a darker target.
 
 This is intentionally a deterministic scenario runner, not yet a general game
 solver.  The next layer should reuse `actors.py`'s player/world-position reads

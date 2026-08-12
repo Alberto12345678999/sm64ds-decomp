@@ -374,6 +374,40 @@ def capture_case(cli, target, regs, layout, syms, vtable_slots=12,
         })
     if observations:
         case["observations"] = observations
+    for spec in layout.get("register_reads", []):
+        base = regs[spec["register"]]
+        addr = base + spec.get("offset", 0)
+        raw = _read(cli, addr, spec["size"]) if _in_ram(addr) else None
+        seen = raw.hex().lower() if raw is not None else None
+        value = None
+        display = None
+        if raw is not None:
+            typ = spec["type"]
+            if typ == "hex":
+                value = seen
+                display = seen
+            else:
+                signed = typ.startswith("s")
+                value = int.from_bytes(raw, "little", signed=signed)
+                display = str(value)
+        case.setdefault("observations", []).append({
+            "name": spec["name"],
+            "register": spec["register"],
+            "offset": spec.get("offset", 0),
+            "addr": addr,
+            "bytes": seen,
+            "value": value,
+            "display": display,
+        })
+    for spec in layout.get("register_values", []):
+        value = regs[spec["register"]]
+        display = str(value) if spec.get("display") == "decimal" else f"0x{value:08x}"
+        case.setdefault("observations", []).append({
+            "name": spec["name"],
+            "register": spec["register"],
+            "value": value,
+            "display": display,
+        })
     if not capture_return:
         return case, False
 
@@ -415,8 +449,9 @@ def capture_case(cli, target, regs, layout, syms, vtable_slots=12,
 
 def collect(target, layout, host="127.0.0.1", port=3333, hits=5,
             duration=90.0, idle=20.0, poll_timeout=2.0, vtable_slots=12,
-            capture_return=True, client_factory=RspClient, on_ready=None,
-            should_abort=None):
+            capture_return=True, client_factory=RspClient, on_pre_arm=None,
+            on_ready=None,
+            should_abort=None, accept_case=None):
     syms = symindex.get()
     cli = client_factory(host, port, timeout=poll_timeout)
     cases = []
@@ -425,12 +460,16 @@ def collect(target, layout, host="127.0.0.1", port=3333, hits=5,
     last_hit = started
     try:
         cli.connect()
+        if on_pre_arm is not None:
+            on_pre_arm(cli)
         bp_kind = target.get("breakpoint_kind", 4)
         if not cli.set_breakpoint(target["addr"], bp_kind):
             raise RspError(f"stub refused breakpoint at {target['addr']:#x}")
         cli.cont()
         if on_ready is not None:
             on_ready(cli)
+        started = time.time()
+        last_hit = started
         while len(cases) < hits and time.time() - started < duration:
             if should_abort is not None and should_abort():
                 raise RuntimeError("runtime probe aborted by scenario input failure")
@@ -454,8 +493,9 @@ def collect(target, layout, host="127.0.0.1", port=3333, hits=5,
                 continue
             case, running = capture_case(
                 cli, target, regs, layout, syms, vtable_slots, capture_return)
-            cases.append(case)
             last_hit = time.time()
+            if accept_case is None or accept_case(case):
+                cases.append(case)
             if not running:
                 cli.cont()
     finally:
@@ -549,7 +589,7 @@ def summarize(evidence):
         for item in case.get("observations", []):
             label = " | ".join(item.get("matches", []))
             if not label:
-                label = item.get("bytes") or "unread"
+                label = item.get("display") or item.get("bytes") or "unread"
             observations.setdefault(item["name"], Counter())[label] += 1
     summary["observations"] = {
         name: dict(counts) for name, counts in observations.items()

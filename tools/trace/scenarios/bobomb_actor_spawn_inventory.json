@@ -1,0 +1,73 @@
+{
+  "schema": "sm64ds-emulator-scenario-v1",
+  "name": "bobomb-actor-spawn-inventory",
+  "question": "Which distinct actor IDs spawn during automated Bob-omb Battlefield entry, and which overlay owns 0x020effb8 when they spawn?",
+  "start_state": "sm64.ml5: Bob-omb Battlefield TOUCH ME screen",
+  "target": "_ZN12ActorDerived5SpawnEjP9ActorBaseii",
+  "view": {
+    "this_reg": "none"
+  },
+  "observe": [
+    {
+      "name": "shared overlay slot at 0x020effb8",
+      "candidates": [
+        "ov002:func_ov002_020effb8",
+        "ov006:func_ov006_020effb8"
+      ],
+      "size": 8
+    }
+  ],
+  "observe_registers": [
+    {
+      "name": "actor id",
+      "register": "r0",
+      "display": "hex"
+    }
+  ],
+  "capture": {
+    "hits": 128,
+    "duration": 45,
+    "idle": 45,
+    "capture_return": false,
+    "unique_by": "actor id",
+    "max_per_value": 1
+  },
+  "expect": [
+    {
+      "observation": "shared overlay slot at 0x020effb8",
+      "value": "ov002:func_ov002_020effb8",
+      "min_count": 1
+    }
+  ],
+  "setup_steps": [
+    {
+      "action": "focus",
+      "note": "focus melonDS"
+    },
+    {
+      "action": "tap",
+      "key": "hotkey_load_slot_5",
+      "seconds": 0.1,
+      "note": "load the prepared TOUCH ME savestate"
+    },
+    {
+      "action": "wait",
+      "seconds": 1.5,
+      "note": "allow the savestate to settle"
+    }
+  ],
+  "steps": [
+    {
+      "action": "touch",
+      "x": 0.5,
+      "y": 0.78,
+      "seconds": 0.12,
+      "note": "touch Yoshi to enter Bob-omb Battlefield"
+    },
+    {
+      "action": "wait",
+      "seconds": 30,
+      "note": "allow level objects and actors to spawn"
+    }
+  ]
+}

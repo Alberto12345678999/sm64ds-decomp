@@ -1,0 +1,111 @@
+{
+  "schema": "sm64ds-emulator-scenario-v1",
+  "name": "bobomb-intro-camera-commands",
+  "question": "Which KuppaScript camera command IDs run during the Bob-omb Battlefield intro, and do IDs 6 or 12 execute while ov002 owns 0x020effb8?",
+  "start_state": "sm64.ml5: Bob-omb Battlefield TOUCH ME screen",
+  "target": "func_02008550",
+  "view": {
+    "this_reg": "none"
+  },
+  "observe": [
+    {
+      "name": "spline callee overlay",
+      "candidates": [
+        "ov002:func_ov002_020effb8",
+        "ov006:func_ov006_020effb8"
+      ],
+      "size": 8
+    }
+  ],
+  "observe_args": [
+    {
+      "name": "message length",
+      "register": "r1",
+      "offset": 0,
+      "type": "u8"
+    },
+    {
+      "name": "message opcode",
+      "register": "r1",
+      "offset": 1,
+      "type": "u8"
+    },
+    {
+      "name": "camera command",
+      "register": "r1",
+      "offset": 6,
+      "type": "u8"
+    }
+  ],
+  "capture": {
+    "hits": 1,
+    "duration": 30,
+    "idle": 30,
+    "capture_return": false,
+    "unique_by": "camera command",
+    "max_per_value": 1
+  },
+  "expect": [
+    {
+      "observation": "camera command",
+      "value": "6",
+      "min_count": 1
+    },
+    {
+      "observation": "spline callee overlay",
+      "value": "ov002:func_ov002_020effb8",
+      "min_count": 1
+    }
+  ],
+  "setup_steps": [
+    {
+      "action": "focus",
+      "note": "focus melonDS"
+    },
+    {
+      "action": "tap",
+      "key": "hotkey_load_slot_5",
+      "seconds": 0.1,
+      "note": "load the prepared TOUCH ME savestate"
+    },
+    {
+      "action": "wait",
+      "seconds": 1.5,
+      "note": "allow the savestate to settle"
+    }
+  ],
+  "setup_memory": [
+    {
+      "name": "clear pending course-select script continuation",
+      "address": "0x0209fc4c",
+      "size": 4,
+      "value": "0x00000000"
+    },
+    {
+      "name": "force normal level-intro mode gate",
+      "address": "0x0209f2d8",
+      "size": 1,
+      "value": "0x00"
+    },
+    {
+      "name": "rearm first-level intro cutscene",
+      "address": "0x0209caa8",
+      "size": 4,
+      "clear_bits": "0x80"
+    }
+  ],
+  "steps": [
+    {
+      "action": "touch",
+      "x": 0.5,
+      "y": 0.78,
+      "seconds": 0.12,
+      "note": "touch Yoshi to enter Bob-omb Battlefield"
+    },
+    {
+      "action": "wait",
+      "seconds": 20,
+      "note": "let the rearmed level-intro camera script finish"
+    }
+  ]
+}

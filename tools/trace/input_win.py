@@ -61,6 +61,7 @@ _MOUSEEVENTF_LEFTUP = 0x0004
 _INPUT_MOUSE = 0
 _INPUT_KEYBOARD = 1
 _SW_RESTORE = 9
+_VK_MENU = 0x12
 
 
 def qt_key_to_vk(value: int) -> int:
@@ -189,10 +190,28 @@ class Win32MelonInput:
     def focus(self):
         user32 = ctypes.windll.user32
         user32.ShowWindow(self.hwnd, _SW_RESTORE)
-        if not user32.SetForegroundWindow(self.hwnd):
-            raise RuntimeError(
-                "Windows refused to focus melonDS; click its window once and retry")
-        time.sleep(0.1)
+        if user32.GetForegroundWindow() != self.hwnd:
+            # SetForegroundWindow is intentionally rate-limited by Windows and
+            # can return false for a just-launched GUI even when this process
+            # is driving an explicit user-requested scenario.  A transient Alt
+            # press is the documented foreground-unlock gesture used by GUI
+            # automation; verify the actual foreground hwnd instead of trusting
+            # the API's advisory return value.
+            self._send_vk(_VK_MENU)
+            try:
+                user32.BringWindowToTop(self.hwnd)
+                user32.SetForegroundWindow(self.hwnd)
+            finally:
+                self._send_vk(_VK_MENU, key_up=True)
+        for _ in range(10):
+            if user32.GetForegroundWindow() == self.hwnd:
+                time.sleep(0.1)
+                return
+            user32.BringWindowToTop(self.hwnd)
+            user32.SetForegroundWindow(self.hwnd)
+            time.sleep(0.05)
+        raise RuntimeError(
+            "Windows refused to focus melonDS after foreground-unlock retries")
 
     @staticmethod
     def _send_vk(vk, key_up=False):
@@ -286,8 +305,20 @@ def run_steps(driver, steps, sleep=time.sleep, should_stop=lambda: False,
                 announce(f"[*] input step {index}: {note}")
             if action == "focus":
                 driver.focus()
+            elif action == "load_state":
+                path = step.get("path")
+                if not isinstance(path, str) or not path:
+                    raise ValueError(f"load_state step requires path: {step!r}")
+                driver.load_state(path)
             elif action == "wait":
-                _sleep_interruptibly(step.get("seconds", 0), sleep, should_stop)
+                if "frames" in step:
+                    frames = int(step["frames"])
+                    while frames > 0 and not should_stop():
+                        chunk = min(frames, 60)
+                        driver.step_frames(chunk)
+                        frames -= chunk
+                else:
+                    _sleep_interruptibly(step.get("seconds", 0), sleep, should_stop)
             elif action == "touch":
                 driver.touch(step.get("x"), step.get("y"),
                              step.get("seconds", 0.08))
@@ -296,10 +327,18 @@ def run_steps(driver, steps, sleep=time.sleep, should_stop=lambda: False,
                 for control in controls:
                     driver.key_down(control)
                 try:
-                    seconds = step.get("seconds", 0.08 if action == "tap" else None)
-                    if seconds is None:
-                        raise ValueError(f"hold step requires seconds: {step!r}")
-                    _sleep_interruptibly(seconds, sleep, should_stop)
+                    if "frames" in step:
+                        frames = int(step["frames"])
+                        while frames > 0 and not should_stop():
+                            chunk = min(frames, 60)
+                            driver.step_frames(chunk)
+                            frames -= chunk
+                    else:
+                        seconds = step.get(
+                            "seconds", 0.08 if action == "tap" else None)
+                        if seconds is None:
+                            raise ValueError(f"hold step requires seconds: {step!r}")
+                        _sleep_interruptibly(seconds, sleep, should_stop)
                 finally:
                     for control in reversed(controls):
                         driver.key_up(control)
