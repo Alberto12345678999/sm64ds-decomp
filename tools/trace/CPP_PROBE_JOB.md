@@ -86,6 +86,17 @@ distinguish it.
    edit. Never place a near-miss in `src/`, and never mix tooling changes into a
    source-match PR.
 
+For a resumable static + runtime workspace, assemble the result into a C++ job
+instead of editing `src/` directly:
+
+```sh
+python tools/cpp_job.py create <symbol> \
+  --runtime-evidence traces/questions/<capture>.json
+```
+
+Edit the generated `candidate.cpp` and use `cpp_job.py verify` until its
+linked-byte verdict is `VERIFIED`. See `notes/cpp-research-jobs.md`.
+
 ## Validation
 
 For a source change, run the exact per-function `tools/match.py` command with

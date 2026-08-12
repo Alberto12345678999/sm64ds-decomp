@@ -3,6 +3,11 @@
 Runtime-trace tooling for the emulator-assisted matching/labeling plan.
 Strategy: `notes/emu-trace-plan.md`. Build spec: `notes/emu-trace-build.md`.
 
+To carry a saved runtime answer into a complete static-source research bundle,
+use `tools/cpp_job.py` and `notes/cpp-research-jobs.md`. The job tool combines
+these traces with ROM bytes, relocations, headers, prior work, a private
+candidate, and a canonical linked-byte verifier.
+
 Status: protocol-2 deterministic scenarios and readable-C++ probes are working;
 the original GDB Phase-0 harness remains as a legacy diagnostic.
 
