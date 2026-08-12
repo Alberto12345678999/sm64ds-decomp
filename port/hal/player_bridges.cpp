@@ -4,6 +4,13 @@
 // defining TUs compile them as real methods against the shared headers.
 // Same hop as gate 9 (cxxname_bridge.cpp), split into its own TU because
 // Player.h drags a wider include surface than the gate-9 file wants.
+/* PORT_ALIGN / PORT_GROUPED_DECL live here. The Linux build force-includes
+   this header from CMake, so a TU using those macros compiles there without
+   naming it -- but MSVC never gets the force-include, so the include has to
+   be explicit or the Windows build fails on an undefined macro. The header is
+   include-guarded and its keyword shims are inside #ifndef _MSC_VER, so this
+   is inert on Windows beyond the two macro definitions. */
+#include "port_msvc_compat.h"
 #include <cstdio>
 #include <cstdlib>
 
@@ -366,7 +373,7 @@ void hal_render_player_world(void *player)
        and all four parts of that matter. An earlier pass here drew
        *(ModelAnim **)(c + 0x160) -- the pointer func_ov002_020d71ec SetAnims,
        which is NOT the object Render walks -- with the body's own scene matrix,
-       through Render (slot 4), with no gate at all. What Brennen saw was a
+       through Render (slot 4), with no gate at all. What Tango saw was a
        model upside down under every character's feet, on Mario as much as on
        Yoshi: the probe said 198 polygons on frame 0 of a plain Mario boot,
        from the same object either way.

@@ -25,7 +25,7 @@
     case 0x020cb15c: return ((Player *)self)->Player::St_Headstand_Main();
     case 0x020cb2f0: return ((Player *)self)->Player::St_Headstand_Init();
     /* ST_CLIMB (record 0x021106dc) -- the tree/pole grab, and the freeze
-       Brennen hit on a bush. Init reaches its matched source through a
+       Tango hit on a bush. Init reaches its matched source through a
        shadow class and Main through a forwarding bridge; both are in
        port/unmatched/Player_St_Climb.cpp. */
     case 0x020cbd34: return port_player_st_climb_init((void *)self);
@@ -132,7 +132,7 @@
     case 0x020d0824: return ((Player *)self)->Player::St_LedgeGrab_Main();
     case 0x020d08b0: return ((Player *)self)->Player::St_LedgeGrab_Init();
     /* LedgeHang -- state data_ov002_0210ffec, the HANG. This is what
-       Brennen hit on the hedge maze: func_ov002_020d0580 sees a ledge under
+       Tango hit on the hedge maze: func_ov002_020d0580 sees a ledge under
        a falling Mario and changes into this state, and all three halves
        were unhosted, so the mapper no-op'd Main every frame (the flood of
        "unhosted state fn 0x020d0a44"). Init is what seats the hang anim
