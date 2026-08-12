@@ -32,19 +32,36 @@
  * the identical type; consolidating all three is a separate change with
  * its own blast radius, not this slice's problem to fix.
  *
- * 0x4660..0x471b (0xbc bytes) HAS NO MATCHED ACCESS YET -- none of the 13
- * descendants have any source file at all, so there is no witness to draw
- * from. Left as padding; the first descendant that touches it will need
- * to split the pad, the same way MgBounceAndPounce did for dScMgBase_c.
+ * 0x4700..0x4718 (seven fields) IS NOW SPLIT OUT of the former
+ * pad_4660[0xbc]: dScMgRoulette_c's own Render (src/func_ov006_02109834.c)
+ * and dScMg3DEsp_c's own Render (src/func_ov006_020e9d1c.cpp) both write
+ * these exact offsets, so they're this class's own fields, not either
+ * leaf's. Their comments deliberately do NOT use this tree's usual
+ * comment-open-then-immediate-hex-literal style: tools/check_header_offsets.py's
+ * DATA_SIZE precompute walks a
+ * struct's own commented fields by regex to find where a DERIVED class's
+ * fields start, and that regex can't parse the namespaced
+ * `Particle::SysTracker mSysTracker` a few lines down -- it silently
+ * stops at the last field it CAN parse. Before these seven fields existed,
+ * nothing in this struct matched that regex at all, so every dependent
+ * derived header correctly fell back to this class's asserted `sizeof`.
+ * Giving these seven fields the usual hex-comment style made the regex
+ * succeed partway through and stop there, undercounting every derived
+ * class's own field offsets by nearly the whole SysTracker member --
+ * measured directly on dScMgRoulette_c.h, 22/22 fields "mismatched" by
+ * exactly that delta before this comment style was changed.
  *
- * THE DESTRUCTOR IS NOT DEFINED INLINE, same reasoning as dScMgBase_c.h's
- * own note: its body is non-trivial (member destruction plus an implicit
- * chain to ~dScMgBase_c()), and mwcc does not inline a body this size into
- * a different translation unit. Defined for real in
- * src/_ZN19dScMgSingle3DBase_cD1Ev.cpp and .../_D0Ev.cpp instead. No
- * separate operator delete copy is needed -- dScMgBase_c, this class's
- * IMMEDIATE base, already provides one (see its own header note), and
- * mwcc's inline-D0 route only needs to reach the immediate base. */
+ * 0x4718..0x471b (2 bytes, pad_471a) still HAS NO MATCHED ACCESS -- left
+ * as padding.
+ *
+ * THE DESTRUCTOR IS NOW DEFINED INLINE (fixed after this file's first
+ * landing, #1421) -- same fix, same reason, as include/Scene.h's own note:
+ * this class has 13 direct RTTI children and every one needs to inline
+ * this destructor's body to reproduce its own D1. See the class body's own
+ * note for the measurement that caught it. No separate operator delete
+ * copy is needed -- dScMgBase_c, this class's IMMEDIATE base, already
+ * provides one (see its own header note), and mwcc's inline-D0 route only
+ * needs to reach the immediate base. */
 #ifndef DSCMGSINGLE3DBASE_C_H
 #define DSCMGSINGLE3DBASE_C_H
 #include "dScMgBase_c.h"
@@ -116,8 +133,25 @@ typedef char SysTracker_size_must_be_0x81c[sizeof(SysTracker) == 0x81c ? 1 : -1]
 
 struct dScMgSingle3DBase_c : dScMgBase_c {
     /* Declared first, deliberately -- see dScMgBase_c.h's own KEY FUNCTION
-       note for why. Overrides slots 16 (D1) and 17 (D0). */
-    virtual ~dScMgSingle3DBase_c();
+       note for why. Overrides slots 16 (D1) and 17 (D0).
+
+       DEFINED INLINE -- same fix, same reason, as include/Scene.h's own
+       note: this class has 13 direct RTTI children, and every one of them
+       inlines THIS destructor's vptr store + mSysTracker destruction +
+       chain to ~dScMgBase_c(), the same way Stage inlines Scene's. Measured
+       directly on dScMgMemory_c (one of the 8 in this slice): a merely
+       declared `virtual ~dScMgSingle3DBase_c();` compiles a derived
+       destructor that references `_ZN19dScMgSingle3DBase_cD2Ev` as an
+       undefined external -- no such symbol exists anywhere in the ROM.
+       The RAW (pre-migration) recovered destructors confirm why: e.g.
+       func_ov006_020f3834 (dScMgMemory_c's own D1, before this slice)
+       destroys `_ZN8Particle10SysTrackerD1Ev(c+0x471c)` -- THIS class's
+       own member -- directly inline, then calls `_ZN11dScMgBase_cD2Ev(c)`
+       directly, with no call to any dScMgSingle3DBase_c-specific
+       destructor at all. The out-of-line definition landed in #1421
+       because that slice never tested a real descendant; it is a latent
+       bug this slice fixes, not a design change. */
+    virtual ~dScMgSingle3DBase_c() {}
 
     /* --- re-overrides of dScMgBase_c's own virtuals, same signature,
            in _ZTV order. Slots 26 and 33 are new at this class; both are
@@ -129,7 +163,18 @@ struct dScMgSingle3DBase_c : dScMgBase_c {
     virtual int  BeforeBehavior();                  /* slot  7 */
     virtual int  BeforeRender();                    /* slot 10 */
 
-    u8  pad_4660[0xbc];
+    /* unk_4700..unk_4718 (offset 0x4700): real matched access, see the
+     * file banner's own note on why these comments don't use the usual
+     * hex-offset style. */
+    u8  pad_4660[0xa0];
+    s32 unk_4700; /* offset 0x4700 */
+    s32 unk_4704; /* offset 0x4704 */
+    s32 unk_4708; /* offset 0x4708 */
+    s32 unk_470c; /* offset 0x470c */
+    s32 unk_4710; /* offset 0x4710 */
+    s32 unk_4714; /* offset 0x4714 */
+    s16 unk_4718; /* offset 0x4718 */
+    u8  pad_471a[0x2];
     Particle::SysTracker mSysTracker; /* 0x471c */
 };
 

@@ -108,10 +108,17 @@ struct dScMgBase_c : Scene {
     u8  pad_060[0x44];
     s32 unk_0a4;            /* 0x0a4 */
     s32 unk_0a8;            /* 0x0a8 */
-    u8  pad_0ac[0x8];
+    s32 unk_0ac;            /* 0x0ac -- real matched access, e.g. dScMgCard_c's own
+                                InitResources (src/func_ov006_020dbaf0.cpp) and
+                                dScMgMCarlo2_c's own (func_ov006_020fa56c.cpp) both
+                                write `self->unk_0ac = self->unk_0a8;` */
+    u8  pad_0b0[0x4];
     s32 unk_0b4;            /* 0x0b4 */
     s32 unk_0b8;            /* 0x0b8 */
-    u8  pad_0bc[0x7];
+    u32 unk_0bc;            /* 0x0bc -- real matched access, dScMg3DEsp_c's own
+                                OnYoshiTryEat (src/func_ov006_020e9c20.c) reads
+                                and writes it as a 4-byte int */
+    u8  pad_0c0[0x3];
     u8  unk_0c3;            /* 0x0c3 */
     u8  pad_0c4[0x4];
     s32 unk_0c8;            /* 0x0c8 */
