@@ -137,6 +137,105 @@ def test_create_job_assembles_context_without_overwriting_candidate(tmp_path, mo
     assert "linked-byte `VERIFIED`" in (job_dir / "TASK.md").read_text(encoding="utf-8")
 
 
+def test_runtime_evidence_discovery_requires_module_identity(tmp_path):
+    direct = tmp_path / "direct.json"
+    direct.write_text(json.dumps({
+        "target": {"name": "Same", "module": "ov002"},
+    }), encoding="utf-8")
+    observed = tmp_path / "observed.json"
+    observed.write_text(json.dumps({
+        "target": {"name": "callsite", "module": "arm9"},
+        "observations": [{"value": "ov002:Same"}],
+    }), encoding="utf-8")
+    wrong_overlay = tmp_path / "wrong.json"
+    wrong_overlay.write_text(json.dumps({
+        "target": {"name": "Same", "module": "ov006"},
+        "observations": [{"address": 0x02010000}],
+    }), encoding="utf-8")
+    broken = tmp_path / "broken.json"
+    broken.write_text("{", encoding="utf-8")
+    scenario_old = tmp_path / "scenario_old.json"
+    scenario_old.write_text(json.dumps({
+        "created_at": "2026-01-01T00:00:00+00:00",
+        "target": {"name": "callsite", "module": "arm9"},
+        "automation": {"scenario_name": "observe-same"},
+        "observations": [{"value": "ov002:Same"}],
+        "cases": [],
+    }), encoding="utf-8")
+    scenario_new = tmp_path / "scenario_new.json"
+    scenario_new.write_text(json.dumps({
+        "created_at": "2026-01-02T00:00:00+00:00",
+        "target": {"name": "callsite", "module": "arm9"},
+        "automation": {"scenario_name": "observe-same"},
+        "observations": [{"value": "ov002:Same"}],
+        "cases": [{"hit": 1}],
+        "expectations": [{"passed": True}],
+    }), encoding="utf-8")
+
+    matches = J.discover_runtime_evidence(
+        {"name": "Same", "module": "ov002", "addr": 0x02010000},
+        roots=[tmp_path])
+
+    assert matches == [direct.resolve(), observed.resolve(), scenario_new.resolve()]
+
+
+def test_target_specs_loads_files_and_deduplicates(tmp_path):
+    targets = tmp_path / "targets.txt"
+    targets.write_text(
+        "# planned batch\n"
+        "ov002:One\n"
+        "Two # inline note\n"
+        "ov002:One\n",
+        encoding="utf-8")
+
+    assert J._target_specs(["Initial", "Two"], [str(targets)]) == [
+        "Initial", "Two", "ov002:One"]
+
+
+def test_batch_jobs_preserves_order_verifies_and_continues_after_error(
+        tmp_path, monkeypatch):
+    root = tmp_path / "queue"
+
+    def resolve(spec, _extracted=None):
+        if spec == "Missing":
+            raise J.JobError("not configured")
+        return {"name": spec, "module": "arm9", "addr": 0x02004000,
+                "size": 4}
+
+    def create(spec, out=None, **_kwargs):
+        job_dir = pathlib.Path(out)
+        job_dir.mkdir(parents=True, exist_ok=True)
+        _manifest(job_dir)
+        job = json.loads((job_dir / "job.json").read_text(encoding="utf-8"))
+        job["target"]["name"] = spec
+        job["source"]["candidate"]["seed"] = "existing-c-to-cpp"
+        J._write_json(job_dir / "job.json", job)
+        (job_dir / "TASK.md").write_text("task\n", encoding="utf-8")
+        return job_dir
+
+    monkeypatch.setattr(J, "resolve_target", resolve)
+    monkeypatch.setattr(J, "discover_runtime_evidence", lambda _target: [tmp_path / "trace.json"])
+    monkeypatch.setattr(J, "create_job", create)
+    monkeypatch.setattr(J, "verify_job", lambda path: {
+        "verdict": "VERIFIED" if pathlib.Path(path).name == "Ready" else "NO-BYTE-MATCH",
+        "promotion_ready": pathlib.Path(path).name == "Ready",
+    })
+
+    result_root, batch = J.batch_jobs(
+        ["Ready", "NeedsWork", "Missing"], out_root=str(root))
+
+    assert result_root == root.resolve()
+    assert [row["state"] for row in batch["jobs"]] == [
+        "promotion-ready", "reconstruction-needed", "error"]
+    assert batch["counts"] == {
+        "total": 3, "promotion_ready": 1, "reconstruction_needed": 1,
+        "not_verified": 0, "errors": 1}
+    assert json.loads((root / "batch.json").read_text(encoding="utf-8"))["schema"] == J.BATCH_SCHEMA
+    queue = (root / "QUEUE.md").read_text(encoding="utf-8")
+    assert "arm9/Ready/TASK.md" in queue
+    assert "Missing" in queue
+
+
 def test_verify_requires_canonical_byte_and_link_match(tmp_path, monkeypatch):
     target = b"\x01\x02\x03\x04"
     _manifest(tmp_path, target)

@@ -6,7 +6,8 @@ the ROM-backed target, relocations, current source/header context, prior match
 attempts, optional emulator evidence, and an m2c semantic draft.  A contributor
 or agent edits only ``candidate.cpp``.  ``verify`` compiles that candidate with
 the canonical mwccarm build and requires linked-byte verification before it
-marks the job promotion-ready.
+marks the job promotion-ready.  ``batch`` discovers saved runtime evidence and
+turns a target list into a resumable, independently verifiable work queue.
 
 This tool never writes to ``src/``.  A verified candidate can be promoted in a
 separate, deliberate change using ``tools/srcpath.py`` and the normal claims,
@@ -46,6 +47,7 @@ import swarm as S  # noqa: E402
 
 SCHEMA = "sm64ds-cpp-research-job-v1"
 VERIFY_SCHEMA = "sm64ds-cpp-verification-v1"
+BATCH_SCHEMA = "sm64ds-cpp-research-batch-v1"
 
 
 class JobError(RuntimeError):
@@ -240,6 +242,84 @@ def _copy_runtime_evidence(job_dir: pathlib.Path,
     return result
 
 
+def _contains_qualified_target(value: Any, qualified: str) -> bool:
+    """Find an explicit module-qualified target in structured trace evidence."""
+    if isinstance(value, str):
+        return value == qualified
+    if isinstance(value, list):
+        return any(_contains_qualified_target(item, qualified) for item in value)
+    if isinstance(value, dict):
+        return any(_contains_qualified_target(item, qualified)
+                   for item in value.values())
+    return False
+
+
+def _runtime_evidence_matches(data: dict[str, Any],
+                              target: dict[str, Any]) -> bool:
+    """True when a trace directly targets or explicitly observes this symbol.
+
+    Overlay code reuses virtual addresses, so an address appearing in a capture
+    is not enough.  A secondary observation must carry ``module:symbol``; only
+    the capture's primary target may use separate name/module fields.
+    """
+    direct = data.get("target")
+    direct = direct if isinstance(direct, dict) else {}
+    if (direct.get("name") == target["name"] and
+            direct.get("module", "arm9") == target["module"]):
+        return True
+    qualified = f"{target['module']}:{target['name']}"
+    return _contains_qualified_target(data, qualified)
+
+
+def discover_runtime_evidence(
+        target: dict[str, Any],
+        roots: list[pathlib.Path] | None = None) -> list[pathlib.Path]:
+    """Locate useful saved traces that explicitly identify ``target``.
+
+    Repeated scenario tuning can leave many failed and superseded captures.
+    Keep the best (successful/useful, then newest) result per scenario while
+    retaining distinct ad-hoc questions.
+    """
+    roots = roots or [REPO / "traces" / "questions",
+                      REPO / "traces" / "scenarios"]
+    matches: dict[tuple[str, str], tuple[tuple[Any, ...], pathlib.Path]] = {}
+    seen = set()
+    for root in roots:
+        root = pathlib.Path(root)
+        if not root.is_dir():
+            continue
+        for path in sorted(root.rglob("*.json")):
+            resolved = path.resolve()
+            if resolved in seen:
+                continue
+            try:
+                data = json.loads(path.read_text(encoding="utf-8"))
+            except (OSError, json.JSONDecodeError):
+                continue
+            if not isinstance(data, dict) or not _runtime_evidence_matches(data, target):
+                continue
+            seen.add(resolved)
+            automation = data.get("automation")
+            automation = automation if isinstance(automation, dict) else {}
+            scenario = automation.get("scenario_name")
+            if scenario:
+                group = ("scenario", str(scenario))
+            else:
+                group = ("question", str(data.get("question") or resolved.stem))
+            cases = data.get("cases") if isinstance(data.get("cases"), list) else []
+            expectations = data.get("expectations")
+            expectations = expectations if isinstance(expectations, list) else []
+            outcomes = [item["passed"] for item in expectations
+                        if isinstance(item, dict) and "passed" in item]
+            passed = bool(cases) and (all(outcomes) if outcomes else True)
+            useful = bool(cases) or any(outcomes)
+            quality = (passed, useful, str(data.get("created_at") or ""), len(cases))
+            previous = matches.get(group)
+            if previous is None or quality > previous[0]:
+                matches[group] = (quality, resolved)
+    return sorted(item[1] for item in matches.values())
+
+
 def _c_to_cpp_seed(text: str, target: dict[str, Any],
                    relocations: list[dict[str, Any]]) -> str:
     """Preserve ROM linkage while turning a one-function C TU into a C++ seed."""
@@ -334,7 +414,7 @@ def _task_markdown(job: dict[str, Any]) -> str:
         "## Work loop",
         "",
         "1. Read `target.s`, `relocations.json`, the source snapshot, reconstructed header, "
-        "and every file under `runtime/`.",
+        "and each runtime capture listed in `job.json`.",
         "2. Edit only `candidate.cpp`. Treat runtime observations as constraints, not proof "
         "of unobserved paths, names, signedness, or byte identity.",
         "3. Run the verifier after each coherent candidate:",
@@ -360,7 +440,8 @@ def _task_markdown(job: dict[str, Any]) -> str:
 
 def create_job(spec: str, out: str | None = None, extracted: str | None = None,
                runtime_evidence: list[str] | None = None,
-               reset_candidate: bool = False) -> pathlib.Path:
+               reset_candidate: bool = False,
+               replace_runtime_evidence: bool = False) -> pathlib.Path:
     target = resolve_target(spec, extracted)
     target_data, module = _target_bytes(target)
     default = REPO / "progress" / "cpp-jobs" / target["module"] / _safe_name(target["name"])
@@ -387,7 +468,9 @@ def create_job(spec: str, out: str | None = None, extracted: str | None = None,
     copied_runtime = _copy_runtime_evidence(job_dir, runtime_evidence or [])
     runtime = []
     seen_runtime = set()
-    for item in [*existing_job.get("runtime_evidence", []), *copied_runtime]:
+    existing_runtime = ([] if replace_runtime_evidence else
+                        existing_job.get("runtime_evidence", []))
+    for item in [*existing_runtime, *copied_runtime]:
         key = item.get("sha256") or item.get("path")
         if key not in seen_runtime:
             seen_runtime.add(key)
@@ -444,6 +527,139 @@ def create_job(spec: str, out: str | None = None, extracted: str | None = None,
     _write_json(job_dir / "job.json", job)
     (job_dir / "TASK.md").write_text(_task_markdown(job), encoding="utf-8")
     return job_dir
+
+
+def _batch_markdown(batch: dict[str, Any]) -> str:
+    counts = batch["counts"]
+    lines = [
+        "# Readable-C++ research queue",
+        "",
+        "This is a local, resumable queue. Give a worker the `TASK.md` from one",
+        "job at a time; each worker edits only that job's `candidate.cpp` and",
+        "returns it with a fresh `verification.json`. Do not copy a candidate to",
+        "`src/` unless its verdict is `VERIFIED` with `blind: 0`.",
+        "",
+        f"Jobs: {counts['total']}; promotion-ready seeds: {counts['promotion_ready']}; "
+        f"reconstruction needed: {counts['reconstruction_needed']}; "
+        f"not verified: {counts['not_verified']}; errors: {counts['errors']}.",
+        "",
+        "| State | Target | Seed | Runtime | Verdict | Assignment |",
+        "|---|---|---:|---:|---|---|",
+    ]
+    for item in batch["jobs"]:
+        if item["state"] == "error":
+            lines.append(
+                f"| error | `{item['requested']}` | - | - | "
+                f"`{item.get('error', 'unknown')}` | - |")
+            continue
+        task = pathlib.PurePosixPath(item["task"])
+        lines.append(
+            f"| {item['state']} | `{item['target']}` | `{item['seed']}` | "
+            f"{item['runtime_evidence']} | `{item['verdict']}` | "
+            f"[`TASK.md`]({task.as_posix()}) |")
+    lines.extend([
+        "",
+        "The queue order is the input order. Re-running the same batch refreshes",
+        "static/runtime context while preserving hand-edited candidates and valid",
+        "verification results unless `--reset-candidates` is explicitly passed.",
+        "",
+    ])
+    return "\n".join(lines)
+
+
+def batch_jobs(specs: list[str], out_root: str | None = None,
+               extracted: str | None = None, discover_runtime: bool = True,
+               verify_seeds: bool = True,
+               reset_candidates: bool = False) -> tuple[pathlib.Path, dict[str, Any]]:
+    """Assemble and optionally seed-verify an independent job for every target."""
+    root = (pathlib.Path(out_root).resolve() if out_root else
+            (REPO / "progress" / "cpp-jobs").resolve())
+    root.mkdir(parents=True, exist_ok=True)
+    rows = []
+    for spec in specs:
+        row: dict[str, Any] = {"requested": spec, "state": "error"}
+        try:
+            target = resolve_target(spec, extracted)
+            evidence = (discover_runtime_evidence(target)
+                        if discover_runtime else [])
+            job_dir = root / target["module"] / _safe_name(target["name"])
+            created = create_job(
+                spec, out=str(job_dir), extracted=extracted,
+                runtime_evidence=[str(path) for path in evidence],
+                reset_candidate=reset_candidates,
+                replace_runtime_evidence=discover_runtime)
+            _created, job = _read_job(created)
+            verification = (verify_job(str(created)) if verify_seeds else
+                            (job.get("verification") or {}))
+            verdict = verification.get("verdict", "NOT-RUN")
+            if verification.get("promotion_ready"):
+                state = "promotion-ready"
+            elif verify_seeds:
+                state = "reconstruction-needed"
+            else:
+                state = "not-verified"
+            row.update({
+                "state": state,
+                "target": f"{target['module']}:{target['name']}",
+                "module": target["module"],
+                "name": target["name"],
+                "address": f"0x{target['addr']:08x}",
+                "size": target["size"],
+                "job": _relative(created),
+                "task": _relative(created / "TASK.md", root),
+                "seed": job["source"]["candidate"]["seed"],
+                "runtime_evidence": len(job.get("runtime_evidence", [])),
+                "verdict": verdict,
+                "promotion_ready": bool(verification.get("promotion_ready")),
+            })
+        except (JobError, OSError, ValueError, json.JSONDecodeError) as exc:
+            row["error"] = str(exc)
+        rows.append(row)
+
+    counts = {
+        "total": len(rows),
+        "promotion_ready": sum(row["state"] == "promotion-ready" for row in rows),
+        "reconstruction_needed": sum(
+            row["state"] == "reconstruction-needed" for row in rows),
+        "not_verified": sum(row["state"] == "not-verified" for row in rows),
+        "errors": sum(row["state"] == "error" for row in rows),
+    }
+    batch = {
+        "schema": BATCH_SCHEMA,
+        "created_at": _now(),
+        "root": _relative(root),
+        "discover_runtime": discover_runtime,
+        "verify_seeds": verify_seeds,
+        "counts": counts,
+        "jobs": rows,
+    }
+    _write_json(root / "batch.json", batch)
+    (root / "QUEUE.md").write_text(_batch_markdown(batch), encoding="utf-8")
+    return root, batch
+
+
+def _target_specs(positional: list[str], files: list[str]) -> list[str]:
+    """Load an ordered, de-duplicated symbol list from CLI args and text files."""
+    result = []
+    seen = set()
+
+    def add(value: str) -> None:
+        value = value.split("#", 1)[0].strip()
+        if value and value not in seen:
+            seen.add(value)
+            result.append(value)
+
+    for value in positional:
+        add(value)
+    for raw in files:
+        path = pathlib.Path(raw)
+        if not path.is_file():
+            raise JobError(f"target list not found: {path}")
+        for line in path.read_text(encoding="utf-8").splitlines():
+            add(line)
+    if not result:
+        raise JobError("batch needs at least one target or --targets-file")
+    return result
 
 
 def _candidate_functions(obj: bytes, requested: str | None = None) -> list[str]:
@@ -594,6 +810,21 @@ def main(argv: list[str] | None = None) -> int:
     verify.add_argument("--candidate-symbol",
                         help="emitted symbol to verify when the TU has multiple matches")
 
+    batch = sub.add_parser(
+        "batch", help="assemble a resumable queue and verify every initial seed")
+    batch.add_argument("targets", nargs="*", help="symbol or module:symbol")
+    batch.add_argument("--targets-file", action="append", default=[],
+                       help="text file with one target per line (repeatable)")
+    batch.add_argument("--out-root",
+                       help="queue root (default progress/cpp-jobs)")
+    batch.add_argument("--extracted", help="ROM extraction directory")
+    batch.add_argument("--no-discover-runtime", action="store_true",
+                       help="do not attach matching traces/questions or traces/scenarios")
+    batch.add_argument("--no-verify", action="store_true",
+                       help="assemble jobs without compiling their initial candidates")
+    batch.add_argument("--reset-candidates", action="store_true",
+                       help="replace every candidate from current source/prior work")
+
     status = sub.add_parser("status", help="summarize a job and its last verification")
     status.add_argument("job", help="job directory or job.json")
 
@@ -611,6 +842,22 @@ def main(argv: list[str] | None = None) -> int:
             result = verify_job(args.job, args.candidate, args.candidate_symbol)
             print(json.dumps(result, indent=2, sort_keys=True))
             return 0 if result.get("promotion_ready") else 1
+        if args.command == "batch":
+            specs = _target_specs(args.targets, args.targets_file)
+            root, result = batch_jobs(
+                specs, args.out_root, args.extracted,
+                not args.no_discover_runtime, not args.no_verify,
+                args.reset_candidates)
+            counts = result["counts"]
+            print(f"queue: {root / 'QUEUE.md'}")
+            print(f"jobs: {counts['total']}  promotion-ready: "
+                  f"{counts['promotion_ready']}  reconstruction-needed: "
+                  f"{counts['reconstruction_needed']}  not-verified: "
+                  f"{counts['not_verified']}  errors: {counts['errors']}")
+            for row in result["jobs"]:
+                if row["state"] == "error":
+                    print(f"error: {row['requested']}: {row['error']}", file=sys.stderr)
+            return 1 if counts["errors"] else 0
         job_dir, job = _read_job(pathlib.Path(args.job))
         print_status(job_dir, job)
         return 0

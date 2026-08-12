@@ -88,6 +88,42 @@ python tools\cpp_job.py status `
   progress\cpp-jobs\arm9\_ZN5Fader13AdvanceInterpEv
 ```
 
+## Build a queue
+
+For several targets, put one `symbol` or `module:symbol` on each line:
+
+```text
+_ZN5Fader13AdvanceInterpEv
+ov002:func_ov002_020effb8
+```
+
+Then assemble and test all initial candidates:
+
+```powershell
+python tools\cpp_job.py batch --targets-file progress\cpp-targets.txt
+```
+
+`batch` continues when one target cannot be resolved, automatically attaches
+saved JSON under `traces/questions/` and `traces/scenarios/` that explicitly
+identifies the target, and runs the canonical verifier on every seed. Repeated
+runs of one scenario are reduced to the newest successful/useful capture while
+distinct research questions are retained. Because overlay virtual addresses
+are reused, evidence discovery requires a matching module plus symbol; an
+address alone is never joined.
+
+The result is `progress/cpp-jobs/QUEUE.md` for humans/agents and
+`progress/cpp-jobs/batch.json` for orchestration. Each row is one of:
+
+- `promotion-ready`: the initial candidate is already `VERIFIED`, `blind: 0`;
+- `reconstruction-needed`: the job is complete but its candidate needs work;
+- `not-verified`: assembly only, when `--no-verify` was requested; or
+- `error`: that target failed setup without stopping the rest of the queue.
+
+Re-running the batch refreshes evidence without overwriting edited candidates.
+Use `--reset-candidates` only to deliberately throw those edits away. `QUEUE.md`
+is vendor-neutral: hand one linked `TASK.md` to Codex, Claude, or a human, then
+rerun `verify` on the returned candidate.
+
 ## Promotion boundary
 
 The tool deliberately does not copy anything into `src/`. A job's local
