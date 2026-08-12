@@ -32,11 +32,11 @@ src/PoleBillboard_Spawn.c:
     complete
     .text start:0x021112dc end:0x02111314
 
-src/_ZN13PoleBillboardD1Ev.cpp:
+src/_ZN14KnockDownPlankD1Ev.cpp:
     complete
     .text start:0x02111314 end:0x02111360
 
-src/_ZN13PoleBillboardD0Ev.cpp:
+src/_ZN14KnockDownPlankD0Ev.cpp:
     complete
     .text start:0x02111360 end:0x021113c0
 
@@ -60,15 +60,15 @@ src/func_ov015_0211166c.c:
     complete
     .text start:0x0211166c end:0x021116b4
 
-src/_ZN13PoleBillboard16CleanupResourcesEv.cpp:
+src/_ZN14KnockDownPlank16CleanupResourcesEv.cpp:
     complete
     .text start:0x021116b4 end:0x021116f8
 
-src/_ZN13PoleBillboard6RenderEv.cpp:
+src/_ZN14KnockDownPlank6RenderEv.cpp:
     complete
     .text start:0x021116f8 end:0x02111720
 
-src/_ZN13PoleBillboard8BehaviorEv.cpp:
+src/_ZN14KnockDownPlank8BehaviorEv.cpp:
     complete
     .text start:0x02111720 end:0x02111960
 
@@ -76,11 +76,11 @@ src/KnockDownPlank_Spawn.c:
     complete
     .text start:0x02111b68 end:0x02111ba0
 
-src/_ZN14KnockDownPlankD1Ev.cpp:
+src/_ZN9MovingBarD1Ev.cpp:
     complete
     .text start:0x02111ba0 end:0x02111be4
 
-src/_ZN14KnockDownPlankD0Ev.cpp:
+src/_ZN9MovingBarD0Ev.cpp:
     complete
     .text start:0x02111be4 end:0x02111c3c
 
@@ -152,19 +152,19 @@ src/func_ov015_02111fb8.c:
     complete
     .text start:0x02111fb8 end:0x02112004
 
-src/_ZN14KnockDownPlank16CleanupResourcesEv.cpp:
+src/_ZN9MovingBar16CleanupResourcesEv.cpp:
     complete
     .text start:0x02112004 end:0x02112068
 
-src/_ZN14KnockDownPlank6RenderEv.cpp:
+src/_ZN9MovingBar6RenderEv.cpp:
     complete
     .text start:0x02112068 end:0x02112090
 
-src/_ZN14KnockDownPlank8BehaviorEv.cpp:
+src/_ZN9MovingBar8BehaviorEv.cpp:
     complete
     .text start:0x02112090 end:0x021120fc
 
-src/_ZN14KnockDownPlank13InitResourcesEv.cpp:
+src/_ZN9MovingBar13InitResourcesEv.cpp:
     complete
     .text start:0x021120fc end:0x02112230
 
@@ -176,11 +176,11 @@ src/MovingBarSmall_Spawn.c:
     complete
     .text start:0x02112260 end:0x02112290
 
-src/_ZN14MovingBarSmallD1Ev.cpp:
+src/_ZN9TowerStepD1Ev.cpp:
     complete
     .text start:0x02112290 end:0x021122dc
 
-src/_ZN14MovingBarSmallD0Ev.cpp:
+src/_ZN9TowerStepD0Ev.cpp:
     complete
     .text start:0x021122dc end:0x0211233c
 
@@ -196,15 +196,15 @@ src/func_ov015_021123c8.cpp:
     complete
     .text start:0x021123c8 end:0x02112464
 
-src/_ZN14MovingBarSmall16CleanupResourcesEv.cpp:
+src/_ZN9TowerStep16CleanupResourcesEv.cpp:
     complete
     .text start:0x02112464 end:0x021124a8
 
-src/_ZN14MovingBarSmall6RenderEv.cpp:
+src/_ZN9TowerStep6RenderEv.cpp:
     complete
     .text start:0x021124a8 end:0x021124d0
 
-src/_ZN14MovingBarSmall13InitResourcesEv.cpp:
+src/_ZN9TowerStep13InitResourcesEv.cpp:
     complete
     .text start:0x0211269c end:0x021128e8
 
@@ -220,27 +220,27 @@ src/TowerStep_Spawn.c:
     complete
     .text start:0x0211290c end:0x02112944
 
-src/_ZN9TowerStepD1Ev.cpp:
+src/_ZN14RotatingBridgeD1Ev.cpp:
     complete
     .text start:0x02112944 end:0x02112988
 
-src/_ZN9TowerStepD0Ev.cpp:
+src/_ZN14RotatingBridgeD0Ev.cpp:
     complete
     .text start:0x02112988 end:0x021129e0
 
-src/_ZN9TowerStep16CleanupResourcesEv.cpp:
+src/_ZN14RotatingBridge16CleanupResourcesEv.cpp:
     complete
     .text start:0x021129e0 end:0x02112a24
 
-src/_ZN9TowerStep6RenderEv.cpp:
+src/_ZN14RotatingBridge6RenderEv.cpp:
     complete
     .text start:0x02112a24 end:0x02112a4c
 
-src/_ZN9TowerStep8BehaviorEv.cpp:
+src/_ZN14RotatingBridge8BehaviorEv.cpp:
     complete
     .text start:0x02112a4c end:0x02112b04
 
-src/_ZN9TowerStep13InitResourcesEv.cpp:
+src/_ZN14RotatingBridge13InitResourcesEv.cpp:
     complete
     .text start:0x02112b04 end:0x02112ba0
 

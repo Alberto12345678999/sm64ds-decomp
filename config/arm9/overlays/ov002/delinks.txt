@@ -319,31 +319,31 @@ src/InvisiblePole_Spawn.c:
     complete
     .text start:0x020b0710 end:0x020b0748
 
-src/_ZN13InvisiblePoleD1Ev.cpp:
+src/_ZN9CameraTagD1Ev.cpp:
     complete
     .text start:0x020b0748 end:0x020b076c
 
-src/_ZN13InvisiblePoleD0Ev.c:
+src/_ZN9CameraTagD0Ev.c:
     complete
     .text start:0x020b076c end:0x020b07a4
 
-src/_ZN13InvisiblePole16CleanupResourcesEv.cpp:
+src/_ZN9CameraTag16CleanupResourcesEv.cpp:
     complete
     .text start:0x020b07a4 end:0x020b07ac
 
-src/_ZN13InvisiblePole16OnPendingDestroyEv.cpp:
+src/_ZN9CameraTag16OnPendingDestroyEv.cpp:
     complete
     .text start:0x020b07ac end:0x020b07b0
 
-src/_ZN13InvisiblePole6RenderEv.cpp:
+src/_ZN9CameraTag6RenderEv.cpp:
     complete
     .text start:0x020b07b0 end:0x020b07b8
 
-src/_ZN13InvisiblePole8BehaviorEv.cpp:
+src/_ZN9CameraTag8BehaviorEv.cpp:
     complete
     .text start:0x020b07b8 end:0x020b07c0
 
-src/_ZN13InvisiblePole13InitResourcesEv.cpp:
+src/_ZN9CameraTag13InitResourcesEv.cpp:
     complete
     .text start:0x020b07c0 end:0x020b07c8
 
@@ -351,31 +351,31 @@ src/CameraTag_Spawn.c:
     complete
     .text start:0x020b07c8 end:0x020b07f8
 
-src/_ZN9CameraTagD1Ev.cpp:
+src/_ZN11VirtualDoorD1Ev.cpp:
     complete
     .text start:0x020b07f8 end:0x020b081c
 
-src/_ZN9CameraTagD0Ev.c:
+src/_ZN11VirtualDoorD0Ev.c:
     complete
     .text start:0x020b081c end:0x020b0854
 
-src/_ZN9CameraTag16CleanupResourcesEv.c:
+src/_ZN11VirtualDoor16CleanupResourcesEv.c:
     complete
     .text start:0x020b0854 end:0x020b085c
 
-src/_ZN9CameraTag16OnPendingDestroyEv.c:
+src/_ZN11VirtualDoor16OnPendingDestroyEv.c:
     complete
     .text start:0x020b085c end:0x020b0860
 
-src/_ZN9CameraTag6RenderEv.c:
+src/_ZN11VirtualDoor6RenderEv.c:
     complete
     .text start:0x020b0860 end:0x020b0868
 
-src/_ZN9CameraTag8BehaviorEv.cpp:
+src/_ZN11VirtualDoor8BehaviorEv.cpp:
     complete
     .text start:0x020b0868 end:0x020b0938
 
-src/_ZN9CameraTag13InitResourcesEv.cpp:
+src/_ZN11VirtualDoor13InitResourcesEv.cpp:
     complete
     .text start:0x020b0938 end:0x020b0980
 
@@ -383,11 +383,11 @@ src/VirtualDoor_Spawn.c:
     complete
     .text start:0x020b0980 end:0x020b09b0
 
-src/_ZN11VirtualDoorD1Ev.cpp:
+src/_ZN4ExitD1Ev.cpp:
     complete
     .text start:0x020b09b0 end:0x020b09d4
 
-src/_ZN11VirtualDoorD0Ev.c:
+src/_ZN4ExitD0Ev.c:
     complete
     .text start:0x020b09d4 end:0x020b0a0c
 
@@ -395,23 +395,23 @@ src/func_ov002_020b0a0c.c:
     complete
     .text start:0x020b0a0c end:0x020b0a70
 
-src/_ZN11VirtualDoor16CleanupResourcesEv.cpp:
+src/_ZN4Exit16CleanupResourcesEv.cpp:
     complete
     .text start:0x020b0a70 end:0x020b0a78
 
-src/_ZN11VirtualDoor16OnPendingDestroyEv.cpp:
+src/_ZN4Exit16OnPendingDestroyEv.cpp:
     complete
     .text start:0x020b0a78 end:0x020b0a7c
 
-src/_ZN11VirtualDoor6RenderEv.cpp:
+src/_ZN4Exit6RenderEv.cpp:
     complete
     .text start:0x020b0a7c end:0x020b0a84
 
-src/_ZN11VirtualDoor8BehaviorEv.cpp:
+src/_ZN4Exit8BehaviorEv.cpp:
     complete
     .text start:0x020b0a84 end:0x020b0d88
 
-src/_ZN11VirtualDoor13InitResourcesEv.cpp:
+src/_ZN4Exit13InitResourcesEv.cpp:
     complete
     .text start:0x020b0d88 end:0x020b0f24
 
