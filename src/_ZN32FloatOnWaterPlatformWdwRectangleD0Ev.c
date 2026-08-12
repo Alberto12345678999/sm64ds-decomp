@@ -1,10 +1,11 @@
-// @symbol func_ov026_0211170c
+// @symbol _ZN32FloatOnWaterPlatformWdwRectangleD0Ev
 /* recovered: vtable identified, renamed to Class_Method, declarations from a shared header */
 #include "decl_Actor.h"
 #include "decl_Model.h"
 #include "decl_MovingMeshCollider.h"
 #include "decl_common.h"
-extern int data_ov026_02113ba4[];
+extern int _ZTV32FloatOnWaterPlatformWdwRectangle[];
+extern int data_ov002_02108fdc[];
 extern int _ZTV8Platform[];
 /* recovered: vtable identified, renamed to Class_Method */
 /* The DELETING DESTRUCTOR, vtable slot 17. The old comment here called it
@@ -12,9 +13,10 @@ extern int _ZTV8Platform[];
    vtable, destroys the members and calls Memory::Deallocate; no eat handler
    does any of that. */
 extern void *data_020a0eac;
-int *func_ov026_0211170c(int *t)
+int *_ZN32FloatOnWaterPlatformWdwRectangleD0Ev(int *t)
 {
-    t[0] = (int)data_ov026_02113ba4;
+    t[0] = (int)_ZTV32FloatOnWaterPlatformWdwRectangle;
+    t[0] = (int)data_ov002_02108fdc;
     t[0] = (int)_ZTV8Platform;
     _ZN18MovingMeshColliderD1Ev((char *)t + 0x124);
     _ZN5ModelD1Ev((char *)t + 0xd4);
