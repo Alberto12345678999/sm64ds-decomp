@@ -1,5 +1,4 @@
 // @symbol func_ov029_021111f0
-// recovered name: daObjWcObj01_c_OnYoshiTryEat
 /* recovered: vtable identified, renamed to Class_Method, declarations from a shared header */
 #include "decl_Actor.h"
 #include "decl_Model.h"
@@ -9,7 +8,10 @@ extern int data_ov029_02113c2c[];
 extern int data_ov002_02108fdc[];
 extern int _ZTV8Platform[];
 /* recovered: vtable identified, renamed to Class_Method */
-/* daObjWcObj01_c::OnYoshiTryEat - recovered from vtable slot identity */
+/* The DELETING DESTRUCTOR, vtable slot 17. The old comment here called it
+   OnYoshiTryEat, which is slot 18 -- off by one. This body stores the class
+   vtable, destroys the members and calls Memory::Deallocate; no eat handler
+   does any of that. */
 extern void *data_020a0eac;
 int *func_ov029_021111f0(int *t)
 {
