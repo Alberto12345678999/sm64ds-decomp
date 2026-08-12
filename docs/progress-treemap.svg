@@ -32473,11 +32473,11 @@ matched: yes</title></rect><rect x="1402.45" y="175.78" width="3.26" height="3.0
 module: ov027
 addr: 0x02111594
 size: 48 bytes
-matched: yes</title></rect><rect x="1402.45" y="178.86" width="3.26" height="5.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov027_021115c4
+matched: yes</title></rect><rect x="1402.45" y="178.86" width="3.26" height="5.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10ChillBullyD1Ev
 module: ov027
 addr: 0x021115c4
 size: 84 bytes
-matched: yes</title></rect><rect x="1402.45" y="184.25" width="3.26" height="6.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov027_02111618
+matched: yes</title></rect><rect x="1402.45" y="184.25" width="3.26" height="6.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10ChillBullyD0Ev
 module: ov027
 addr: 0x02111618
 size: 104 bytes
@@ -32489,11 +32489,11 @@ matched: yes</title></rect><rect x="1405.71" y="179.90" width="5.69" height="4.7
 module: ov027
 addr: 0x021116f0
 size: 128 bytes
-matched: yes</title></rect><rect x="1405.71" y="184.60" width="5.69" height="6.32" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov027_02111770
+matched: yes</title></rect><rect x="1405.71" y="184.60" width="5.69" height="6.32" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10ChillBully8BehaviorEv
 module: ov027
 addr: 0x02111770
 size: 172 bytes
-matched: yes</title></rect><rect x="1411.41" y="175.78" width="3.65" height="4.59" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov027_0211181c
+matched: yes</title></rect><rect x="1411.41" y="175.78" width="3.65" height="4.59" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10ChillBully13InitResourcesEv
 module: ov027
 addr: 0x0211181c
 size: 80 bytes
