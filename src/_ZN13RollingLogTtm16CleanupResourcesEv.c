@@ -1,22 +1,11 @@
-#include "types.h"
-struct SharedFilePtr { u32 data[4]; };
+// Cross-overlay tail-call veneer. #pragma long_calls forces mwccarm to emit the pooled
+// `ldr ip,[pc]; bx ip` indirect tail-call (a plain near `b` otherwise) that the ROM uses
+// to reach another overlay. Loads the data pointer into r1; this stays in r0.
+#pragma long_calls on
+extern int func_ov080_021270dc(void *thisp, void *data);
+extern char data_ov030_02115a04[];
 
-extern void _ZN13SharedFilePtr7ReleaseEv(struct SharedFilePtr *self);
-
-extern struct SharedFilePtr data_ov002_0210da40;
-extern struct SharedFilePtr data_ov002_0210d9a0;
-extern struct SharedFilePtr data_ov002_0210d9c0;
-extern struct SharedFilePtr data_ov030_02115d00;
-extern struct SharedFilePtr *data_ov030_02114824[10];
-
-int _ZN13RollingLogTtm16CleanupResourcesEv(void)
+int _ZN13RollingLogTtm16CleanupResourcesEv(void *thisp)
 {
-    int i;
-    _ZN13SharedFilePtr7ReleaseEv(&data_ov002_0210da40);
-    _ZN13SharedFilePtr7ReleaseEv(&data_ov002_0210d9a0);
-    _ZN13SharedFilePtr7ReleaseEv(&data_ov002_0210d9c0);
-    _ZN13SharedFilePtr7ReleaseEv(&data_ov030_02115d00);
-    for (i = 0; i < 10; i++)
-        _ZN13SharedFilePtr7ReleaseEv(data_ov030_02114824[i]);
-    return 1;
+    return func_ov080_021270dc(thisp, data_ov030_02115a04);
 }

@@ -55,15 +55,15 @@ src/RotatingPlatformRr_Spawn.c:
     complete
     .text start:0x02111544 end:0x02111580
 
-src/_ZN18RotatingPlatformRrD1Ev.cpp:
+src/_ZN8ShipWingD1Ev.cpp:
     complete
     .text start:0x02111580 end:0x021115b0
 
-src/_ZN18RotatingPlatformRrD0Ev.c:
+src/_ZN8ShipWingD0Ev.c:
     complete
     .text start:0x021115b0 end:0x021115f4
 
-src/_ZN18RotatingPlatformRr16CleanupResourcesEv.c:
+src/_ZN8ShipWing16CleanupResourcesEv.c:
     complete
     .text start:0x021115f4 end:0x02111618
 
@@ -71,15 +71,15 @@ src/func_ov036_02111618.c:
     complete
     .text start:0x02111618 end:0x0211169c
 
-src/_ZN18RotatingPlatformRr6RenderEv.cpp:
+src/_ZN8ShipWing6RenderEv.cpp:
     complete
     .text start:0x0211169c end:0x021116c0
 
-src/_ZN18RotatingPlatformRr8BehaviorEv.cpp:
+src/_ZN8ShipWing8BehaviorEv.cpp:
     complete
     .text start:0x021116c0 end:0x02111854
 
-src/_ZN18RotatingPlatformRr13InitResourcesEv.cpp:
+src/_ZN8ShipWing13InitResourcesEv.cpp:
     complete
     .text start:0x02111854 end:0x02111904
 
@@ -87,31 +87,31 @@ src/ShipWing_Spawn.c:
     complete
     .text start:0x02111904 end:0x0211193c
 
-src/_ZN8ShipWingD1Ev.cpp:
+src/_ZN10DonutBlockD1Ev.cpp:
     complete
     .text start:0x0211193c end:0x02111988
 
-src/_ZN8ShipWingD0Ev.cpp:
+src/_ZN10DonutBlockD0Ev.cpp:
     complete
     .text start:0x02111988 end:0x021119e8
 
-src/_ZN8ShipWing16CleanupResourcesEv.cpp:
+src/_ZN10DonutBlock16CleanupResourcesEv.cpp:
     complete
     .text start:0x021119e8 end:0x02111a2c
 
-src/_ZN8ShipWing16OnPendingDestroyEv.c:
+src/_ZN10DonutBlock16OnPendingDestroyEv.c:
     complete
     .text start:0x02111a2c end:0x02111a30
 
-src/_ZN8ShipWing6RenderEv.cpp:
+src/_ZN10DonutBlock6RenderEv.cpp:
     complete
     .text start:0x02111a30 end:0x02111a64
 
-src/_ZN8ShipWing8BehaviorEv.cpp:
+src/_ZN10DonutBlock8BehaviorEv.cpp:
     complete
     .text start:0x02111a64 end:0x02111bb8
 
-src/_ZN8ShipWing13InitResourcesEv.cpp:
+src/_ZN10DonutBlock13InitResourcesEv.cpp:
     complete
     .text start:0x02111bb8 end:0x02111ca4
 
@@ -127,27 +127,27 @@ src/DonutBlock_Spawn.c:
     complete
     .text start:0x02111cd8 end:0x02111d14
 
-src/_ZN10DonutBlockD1Ev.cpp:
+src/_ZN21ArmedRotatingPlatformD1Ev.cpp:
     complete
     .text start:0x02111d14 end:0x02111d58
 
-src/_ZN10DonutBlockD0Ev.cpp:
+src/_ZN21ArmedRotatingPlatformD0Ev.cpp:
     complete
     .text start:0x02111d58 end:0x02111db0
 
-src/_ZN10DonutBlock16CleanupResourcesEv.cpp:
+src/_ZN21ArmedRotatingPlatform16CleanupResourcesEv.cpp:
     complete
     .text start:0x02111db0 end:0x02111df8
 
-src/_ZN10DonutBlock6RenderEv.cpp:
+src/_ZN21ArmedRotatingPlatform6RenderEv.cpp:
     complete
     .text start:0x02111df8 end:0x02111e20
 
-src/_ZN10DonutBlock8BehaviorEv.cpp:
+src/_ZN21ArmedRotatingPlatform8BehaviorEv.cpp:
     complete
     .text start:0x02111e20 end:0x02111eb0
 
-src/_ZN10DonutBlock13InitResourcesEv.cpp:
+src/_ZN21ArmedRotatingPlatform13InitResourcesEv.cpp:
     complete
     .text start:0x02111eb0 end:0x02111f5c
 
@@ -155,19 +155,19 @@ src/ArmedRotatingPlatform_Spawn.c:
     complete
     .text start:0x02111f5c end:0x02111f8c
 
-src/_ZN21ArmedRotatingPlatformD1Ev.cpp:
+src/_ZN16daObjRc_Dorifu_cD1Ev.cpp:
     complete
     .text start:0x02111f8c end:0x0211200c
 
-src/_ZN21ArmedRotatingPlatformD0Ev.c:
+src/_ZN16daObjRc_Dorifu_cD0Ev.c:
     complete
     .text start:0x0211200c end:0x021120a0
 
-src/_ZN21ArmedRotatingPlatform16CleanupResourcesEv.cpp:
+src/_ZN16daObjRc_Dorifu_c16CleanupResourcesEv.cpp:
     complete
     .text start:0x021120a0 end:0x021120b4
 
-src/_ZN21ArmedRotatingPlatform13InitResourcesEv.cpp:
+src/_ZN16daObjRc_Dorifu_c13InitResourcesEv.cpp:
     complete
     .text start:0x021120b4 end:0x021120c8
 

@@ -1,33 +1,37 @@
 //cpp
 // @symbol _ZN10DonutBlock13InitResourcesEv
+/* recovered: named members + shared header, real C++ method, declarations from a shared header */
+#include "decl_common.h"
 /* recovered: named members + shared header, real C++ method */
 #include "DonutBlock.h"
 extern "C" {
-extern void* _ZN5Model8LoadFileER13SharedFilePtr(void*);
-extern int _ZN9ModelBase7SetFileEP8BMD_Fileii(void*, void*, int, int);
-extern int _ZN8Platform21UpdateModelPosAndRotYEv(void*);
-extern int _ZN8Platform19UpdateClsnPosAndRotEv(void*);
-extern void* _ZN12MeshCollider8LoadFileER13SharedFilePtr(void*);
-extern int _ZN18MovingMeshCollider7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(void*, void*, void*, int, short, void*);
-extern int func_020393d4(void*, void*);
-}
-extern void* data_ov036_02113d78[];
-extern "C" {
-extern int _ZN16MeshColliderBase16UpdatePosAndAngsERS_P5ActorR10ClsnResultR7Vector3P10Vector3_16S8_(void);
+int _ZN5Model8LoadFileER13SharedFilePtr(void*);
+int _ZN9ModelBase7SetFileEP8BMD_Fileii(void*,int,int,int);
+int _ZN8Platform21UpdateModelPosAndRotYEv(void*);
+int _ZN8Platform19UpdateClsnPosAndRotEv(void*);
+int _ZN12MeshCollider8LoadFileER13SharedFilePtr(void*);
+int _ZN18MovingMeshCollider7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(void*,int,void*,int,int,void*);
+void func_020393d4(void* p, void* v);
+void func_020393c4(void* p, void* v);
+int _ZN12WithMeshClsn4InitEP5Actor5Fix12IiES3_P10Vector3_16S5_(void*,void*,int,int,int,int);
+extern void _ZN16MeshColliderBase21UpdatePosWithVelocityERS_P5ActorR10ClsnResultR7Vector3P10Vector3_16S8_();
 }
 
 int DonutBlock::InitResources()
 {
-  void* mdl;
-  void* kcl;
-  mdl = _ZN5Model8LoadFileER13SharedFilePtr(data_ov036_02113d78[0]);
-  _ZN9ModelBase7SetFileEP8BMD_Fileii(&mModel, mdl, 1, -1);
-  _ZN8Platform21UpdateModelPosAndRotYEv(this);
-  _ZN8Platform19UpdateClsnPosAndRotEv(this);
-  kcl = _ZN12MeshCollider8LoadFileER13SharedFilePtr(data_ov036_02113d78[1]);
-  _ZN18MovingMeshCollider7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(&mMeshCollider, kcl, &mClsnMat, 0x1000, mAngleY, data_ov036_02113d78[2]);
-  func_020393d4(&mMeshCollider, &_ZN16MeshColliderBase16UpdatePosAndAngsERS_P5ActorR10ClsnResultR7Vector3P10Vector3_16S8_);
-  unk_31e = -0x80;
-  if (mAngleZ != 0) unk_31e = mAngleZ;
+  int m = _ZN5Model8LoadFileER13SharedFilePtr(data_ov036_0211408c);
+  _ZN9ModelBase7SetFileEP8BMD_Fileii(&mModel, m, 1, -1);
+  _ZN8Platform21UpdateModelPosAndRotYEv(((char*)this));
+  _ZN8Platform19UpdateClsnPosAndRotEv(((char*)this));
+  int k = _ZN12MeshCollider8LoadFileER13SharedFilePtr(data_ov036_02114084);
+  _ZN18MovingMeshCollider7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(&mMeshCollider, k, &mClsnMat, 0x1000, mAngleY, data_ov036_02112b48);
+  func_020393d4(&mMeshCollider, (void*)_ZN16MeshColliderBase21UpdatePosWithVelocityERS_P5ActorR10ClsnResultR7Vector3P10Vector3_16S8_);
+  func_020393c4(&mMeshCollider, (void*)func_ov036_02111cc4);
+  _ZN12WithMeshClsn4InitEP5Actor5Fix12IiES3_P10Vector3_16S5_(((char*)this)+0x320, ((char*)this), 0x32000, 0x64000, 0, 0);
+  mTerminalVelocity = -0x1e000;
+  mVertAccel = ~0x198;
+  unk_4dc = mPosX;
+  unk_4e0 = mPosY;
+  unk_4e4 = mPosZ;
   return 1;
 }

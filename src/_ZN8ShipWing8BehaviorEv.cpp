@@ -1,62 +1,37 @@
 //cpp
+#include "types.h"
 // @symbol _ZN8ShipWing8BehaviorEv
+/* recovered: named members + shared header, real C++ method, declarations from a shared header */
+#include "decl_common.h"
 /* recovered: named members + shared header, real C++ method */
 #include "ShipWing.h"
-#include "MeshColliderBase.h"
+extern s16 data_02082214[];
 extern "C" {
-void _ZN5Actor9UpdatePosEP12CylinderClsn(void* thiz, void* clsn);
-void WithMeshClsn_UpdateContinuous_Veneer(void* p);
-int _ZNK12WithMeshClsn10IsOnGroundEv(void* p);
-int _ZN5Actor13DistToCPlayerEv(void* p);
-void _ZN5Actor14TriplePoofDustEv(void* p);
-void _ZN8Platform21UpdateModelPosAndRotYEv(void* p);
-int _ZN8Platform13IsClsnInRangeE5Fix12IiES1_(void* p, int a, int b);
-void _ZN8Platform19UpdateClsnPosAndRotEv(void* p);
+extern void _ZN5Sound9PlayBank3EjRK7Vector3(unsigned int id, void* v);
 }
 
 int ShipWing::Behavior()
 {
-    switch (mState) {
-    case 0:
-        if (unk_4e8 == 0) {
-            unk_4e9 = 0;
-        } else {
-            unsigned char* pc9 = (unsigned char*)(((int)((char*)this) + 0x4e9));
-            *pc9 = *pc9 + 1;
-            unk_4e8 = 0;
-        }
-        if (unk_4e9 >= 0xf) mState = 1;
-        break;
-    case 1:
-        _ZN5Actor9UpdatePosEP12CylinderClsn(((char*)this), 0);
-        WithMeshClsn_UpdateContinuous_Veneer((char*)&mWithMeshClsn);
-        if (_ZNK12WithMeshClsn10IsOnGroundEv((char*)&mWithMeshClsn) == 0) {
-            if (_ZN5Actor13DistToCPlayerEv(((char*)this)) <= 0x9c4000) break;
-        }
-        _ZN5Actor14TriplePoofDustEv(((char*)this));
-        if (((MeshColliderBase *)((char*)&(*(u8 *)&mMeshCollider)))->IsEnabled() != 0) ((MeshColliderBase *)((char*)&(*(u8 *)&mMeshCollider)))->Disable();
-        mPosX = unk_4dc;
-        mPosY = unk_4e0;
-        mPosZ = unk_4e4;
-        mState = 2;
-        break;
-    case 2: {
-        int d = _ZN5Actor13DistToCPlayerEv(((char*)this));
-        if (d <= 0x3e8000) break;
-        if (d < 0x7d0000) {
-            mVertSpeed = 0;
-            unk_4e9 = 0;
-            unk_4e8 = 0;
-            mState = 0;
-        }
-        break;
+    s16 a = unk_116 << 10;
+    if (unk_118 == 0) {
+        int idx = ((u16)a >> 4) * 2;
+        unk_08e = unk_112 + (int)((((s64)data_02082214[idx] << 13) + 0x800) >> 12);
+        unk_08c = unk_110 + (int)((((s64)data_02082214[idx + 1] << 11) + 0x800) >> 12);
+    } else {
+        int idx = ((u16)a >> 4) * 2;
+        unk_08e = unk_112 - (int)((((s64)data_02082214[idx] << 13) + 0x800) >> 12);
+        unk_08c = unk_110 + (int)((((s64)data_02082214[idx + 1] << 11) + 0x800) >> 12);
     }
+    {
+        u16 *p = (u16 *)(((int)((char*)this) + 0x116));
+        *p = *p + 1;
     }
-    _ZN8Platform21UpdateModelPosAndRotYEv(((char*)this));
-    if (mState != 2) {
-        if (_ZN8Platform13IsClsnInRangeE5Fix12IiES1_(((char*)this), 0x5dc000, 0) != 0) {
-            _ZN8Platform19UpdateClsnPosAndRotEv(((char*)this));
+    if (unk_119 != 0) {
+        if (unk_116 == 0x40) {
+            _ZN5Sound9PlayBank3EjRK7Vector3(0x75, ((char*)this) + 0x74);
+            unk_116 = 0;
         }
     }
+    func_ov036_02111618(((char*)this));
     return 1;
 }

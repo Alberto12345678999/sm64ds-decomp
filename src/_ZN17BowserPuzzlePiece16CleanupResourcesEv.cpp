@@ -1,23 +1,20 @@
 //cpp
 // @symbol _ZN17BowserPuzzlePiece16CleanupResourcesEv
-/* recovered: shared header, real C++ method
- *
- * Gives back the two shared files the piece renders from. Both live in ov002,
- * not in this overlay -- the puzzle pieces borrow models the always-resident
- * module owns, so the handles are released rather than freed.
- *
- * `SharedFilePtr::Release` is now spelt as the member call it is, so the
- * compiler emits _ZN13SharedFilePtr7ReleaseEv itself.
- */
+/* recovered: named members + shared header, real C++ method, declarations from a shared header */
+#include "decl_common.h"
+/* recovered: named members + shared header, real C++ method */
 #include "BowserPuzzlePiece.h"
 #include "SharedFilePtr.h"
+#include "MeshColliderBase.h"
+extern void *data_ov064_0211adc8[];
+extern void *data_ov064_0211c800;
 
-extern char data_ov002_0210da10;
-extern char data_ov002_0210d9a8;
-
-s32 BowserPuzzlePiece::CleanupResources()
+int BowserPuzzlePiece::CleanupResources()
 {
-    ((SharedFilePtr *)(&data_ov002_0210da10))->Release();
-    ((SharedFilePtr *)(&data_ov002_0210d9a8))->Release();
+    unsigned char idx;
+    ((MeshColliderBase *)((char *)&mMovingMeshCollider))->Disable();
+    idx = *(unsigned char *)((char *)&unk_337);
+    ((SharedFilePtr *)(data_ov064_0211adc8[idx]))->Release();
+    ((SharedFilePtr *)(&data_ov064_0211c800))->Release();
     return 1;
 }
