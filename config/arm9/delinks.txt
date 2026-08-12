@@ -806,7 +806,7 @@ src/func_0200f46c.c:
     complete
     .text start:0x0200f46c end:0x0200f470
 
-src/_Z13CopyToViewMatPK9Matrix4x3.c:
+src/_Z13CopyToViewMatPK9Matrix4x3.cpp:
     complete
     .text start:0x0200f470 end:0x0200f4b4
 
@@ -842,11 +842,11 @@ src/func_0200f7f0.c:
     complete
     .text start:0x0200f7f0 end:0x0200f874
 
-src/_ZN5Sound20PlaySmallSecretSoundEP5ActorPt.c:
+src/_ZN5Sound20PlaySmallSecretSoundEP5ActorPt.cpp:
     complete
     .text start:0x0200f874 end:0x0200f8f8
 
-src/_ZN5Sound15PlaySecretSoundEP5ActorPt.c:
+src/_ZN5Sound15PlaySecretSoundEP5ActorPt.cpp:
     complete
     .text start:0x0200f8f8 end:0x0200f97c
 
@@ -11460,7 +11460,7 @@ src/func_0206ccd8.c:
     complete
     .text start:0x0206ccd8 end:0x0206cd44
 
-src/_ZN4cstd8__assertEPKcPKcPKci.cpp:
+src/_ZN4cstd8__assertEPKcS1_S1_i.cpp:
     complete
     .text start:0x0206cd44 end:0x0206cd9c
 
@@ -11496,7 +11496,7 @@ src/func_0206dab4.c:
     complete
     .text start:0x0206dab4 end:0x0206dabc
 
-src/_ZN4cstd14__builtin_trapEv.c:
+src/_ZN4cstd14__builtin_trapEv.cpp:
     complete
     .text start:0x0206dabc end:0x0206dac4
 
@@ -11641,7 +11641,7 @@ src/_ZN4cstd6strcmpEPKcS1_.cpp:
     complete
     .text start:0x02070508 end:0x0207063c
 
-src/_ZN4cstd7strncpyEPcPKcj.c:
+src/_ZN4cstd7strncpyEPcPKcj.cpp:
     complete
     .text start:0x0207063c end:0x020706b0
 
@@ -11649,7 +11649,7 @@ src/func_020706b0.c:
     complete
     .text start:0x020706b0 end:0x02070788
 
-src/_ZN4cstd6strlenEPKc.c:
+src/_ZN4cstd6strlenEPKc.cpp:
     complete
     .text start:0x02070788 end:0x020707a4
 
