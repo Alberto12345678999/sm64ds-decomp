@@ -84,9 +84,23 @@ learn_aggregates(REPO / "include" / "types.h")
 # unparsed one stops the gate reporting mismatches for the rest of the header --
 # so a handful of `struct X y;` lines were suppressing the check on 8 files.
 # An unknown tag still fails: the keyword makes the shape parseable, not the size.
-DECL = re.compile(r"^\s*(?:(?:struct|union|class|enum)\s+)?([A-Za-z_]\w*)\s*(\**)\s*(\w+)\s*"
-                  r"(?:\[\s*(0x[0-9a-fA-F]+|\d+)\s*\])?\s*;"
+# `Particle::SysTracker mSysTracker;` -- a namespace-qualified type. Without the
+# `(?:\w+::)*` prefix this failed to match at all (`::` fits nowhere in the
+# plain-identifier type group), which is a WORSE failure mode than an
+# unrecognised type: the line never reached the "unrecognised declaration"
+# path either, just fell through silently mismatched against every regex
+# below it. The type is still looked up by its bare final segment (SZ has no
+# way to record a qualified name), which is exactly what a
+# `Name_size_must_be_0xN` assertion of the same class also has to do.
+# `u8 touchIcon_0f4[8][0x24];` -- a 2-D array (dScMgBase_c's __destroy_arr
+# element block). One `(?:\[...\])?` group only ever captured the FIRST
+# dimension and left `[0x24];` dangling after what should have been the
+# terminating `;`, so the whole match failed. Capture every bracket group as
+# one blob instead and multiply the dimensions in ARR_DIMS below.
+DECL = re.compile(r"^\s*(?:(?:struct|union|class|enum)\s+)?((?:\w+::)*[A-Za-z_]\w*)\s*(\**)\s*(\w+)\s*"
+                  r"((?:\[\s*(?:0x[0-9a-fA-F]+|\d+)\s*\])*)\s*;"
                   r"(?:\s*/\*\s*(0x[0-9a-fA-F]+))?")
+ARR_DIMS = re.compile(r"\[\s*(0x[0-9a-fA-F]+|\d+)\s*\]")
 # lines inside a struct body that are legitimately not declarations
 IGNORABLE = re.compile(r"^\s*($|/\*|\*|//|\}|#)")
 
@@ -149,10 +163,24 @@ for path in sys.argv[1:]:
     txt = pathlib.Path(path).read_text(errors="replace")
     off, bad, n, skipped, pending = 0, 0, 0, [], []
     trusted = True
-    started = in_comment = unmodelled = nested = False
+    started = in_comment = unmodelled = nested = skip_other = False
+    skip_body = 0
     unknown_base = derived_from = None
+    expected = pathlib.Path(path).stem
     for lineno, line in enumerate(txt.splitlines(), 1):
         if not started:
+            # A struct-with-body BEFORE the file's own class is a helper type
+            # (ActorBase_SceneNode in ActorBase.h, KCL_Tri in MeshCollider.h,
+            # Particle::SysTracker's namespace-nested body in Stage.h), not the
+            # struct this file is named for. Without this check the FIRST
+            # struct-with-body wins regardless of name, and the tool silently
+            # checks the helper instead of the class the header exists to
+            # verify -- confirmed tree-wide: 13 headers had this shape, most
+            # already reporting a false "0 unparsed" pass on the wrong struct.
+            if skip_other:
+                if re.match(r"^\s*\};", line):
+                    skip_other = False
+                continue
             # `struct X {` or `struct X : Base {`. Without the second form this
             # tool never started on a derived struct at all, and reported
             # "0 commented fields ... struct spans 0x0" -- which reads exactly
@@ -160,6 +188,19 @@ for path in sys.argv[1:]:
             # derived struct, so that silence covered the growing majority.
             m0 = re.match(r"^\s*struct (\w+)\s*(?::\s*(?:public\s+)?(\w+)\s*)?\{", line)
             if m0:
+                if m0.group(1) != expected:
+                    # `struct BMA_File { u16 numFrames; };` -- opens AND closes on
+                    # the same line. Setting skip_other here and never checking
+                    # THIS line for the closing brace left it permanently stuck:
+                    # the real target struct's own opening line was then read
+                    # while still "skipping", so it was silently swallowed whole
+                    # -- MaterialChanger.h and TextureTransformer.h went from an
+                    # honest UNPARSED failure to a hollow "0 fields, 0 unparsed"
+                    # pass, checking nothing at all. Only skip forward if this
+                    # line's own body does NOT already close it.
+                    if not re.search(r"\};", line):
+                        skip_other = True
+                    continue
                 started = True
                 base = m0.group(2)
                 if base is not None:
@@ -178,6 +219,15 @@ for path in sys.argv[1:]:
         if in_comment:
             if "*/" in line:
                 in_comment = False
+            continue
+        # An inline method BODY (`virtual ~dScMgBase_c() { ...; }`), being
+        # skipped over by the methods-declared-first branch below. Track brace
+        # depth across lines the same way `nested`/`in_comment` already do,
+        # rather than assuming a method is always one line -- an unbalanced
+        # line here would otherwise fall through to DECL parsing and get
+        # reported UNPARSED against the tool's own skipped-method text.
+        if skip_body:
+            skip_body += line.count("{") - line.count("}")
             continue
         # A NESTED type definition -- `struct State { ... };` inside Player -- is a
         # type, not a field: it occupies no space and advances no offset. Consume it
@@ -219,13 +269,35 @@ for path in sys.argv[1:]:
         # A polymorphic C++ struct carries an implicit vptr at offset 0 that no
         # declaration mentions, so the running offset cannot be derived from the text.
         # Say the struct is unmodelled rather than emit a mismatch per field.
-        if re.match(r"^\s*(virtual\b|[A-Za-z_][\w:<>, &*]*\([^;]*\)\s*(const)?\s*;)", line):
+        #
+        # `~Name(...)` (a bare, non-virtual destructor declaration -- Particle::
+        # SysTracker in include/Stage.h is the first instance) starts with `~`,
+        # which the type-name alternative below never matches (`~` is not in
+        # `[A-Za-z_]`), so without this alternative it fell through to UNPARSED.
+        if re.match(r"^\s*(virtual\b|~\w+\s*\([^;]*\)\s*;|[A-Za-z_][\w:<>, &*]*\([^;]*\)\s*(const)?\s*;)", line):
             # ...unless we started from a base whose size is asserted. A derived
             # class places no vptr of its own -- it inherits the base's, and the
             # base's asserted size already counts it. The running offset is sound,
             # so the member functions merely end the field list.
             if derived_from is None:
                 unmodelled = True
+                break
+            # A derived class can ALSO declare its destructor/overrides FIRST
+            # (Scene.h's KEY FUNCTION convention -- "the destructor is declared
+            # first, which is safe for a derived class"). Before any real field
+            # has been seen, a method line doesn't end the list, it's still the
+            # header's front matter -- without this, dScMgBase_c.h (destructor +
+            # 8 overrides, THEN ~30 fields) reported "0 commented fields ...
+            # struct spans 0x50", the exact same silent-no-op shape as every
+            # other bug this file documents, just arrived at from the opposite
+            # direction. Once a field HAS been seen, a method line ends the
+            # list as before -- that's the generated-header convention
+            # (Stage.h: fields, then methods).
+            if n == 0:
+                depth = line.count("{") - line.count("}")
+                if depth > 0:
+                    skip_body = depth
+                continue
             break
         # A declaration can carry a trailing comment that runs onto later lines:
         #     u8 unk_010;   /* 0x010 - first byte of the 0x28-byte ClsnResult
@@ -235,7 +307,7 @@ for path in sys.argv[1:]:
         if line.count("/*") > line.count("*/"):
             in_comment = True
         m = DECL.match(line)
-        typ = m.group(1) if m else None
+        typ = m.group(1).rsplit("::", 1)[-1] if m else None
         w = 4 if (m and m.group(2)) else SZ.get(typ)
         if w is None:
             # An unrecognised declaration is NOT harmless: skipping it leaves the
@@ -273,7 +345,10 @@ for path in sys.argv[1:]:
                 pending.append(f"  MISMATCH {path}:{lineno} {name}: comment {decl}, "
                                f"computed 0x{off:03x}")
                 bad += 1
-        off += w * (int(arr, 0) if arr else 1)
+        arr_n = 1
+        for d in ARR_DIMS.findall(arr):
+            arr_n *= int(d, 0)
+        off += w * arr_n
     if unknown_base:
         # Not a pass and not a failure: a statement of what is missing. Adding
         # `typedef char X_size_must_be_0xN[sizeof(X) == 0xN ? 1 : -1];` to the

@@ -5,6 +5,7 @@
 #include "decl_common.h"
 /* recovered: named members + shared header, real C++ method */
 #include "Whomp.h"
+#include "TextureSequence.h"
 struct SharedFilePtr;
 struct BMD_File;
 struct BTP_File;
@@ -24,7 +25,6 @@ extern "C" {
     void *_ZN15TextureSequence8LoadFileER13SharedFilePtr(void *shared);
     void *_ZN12MeshCollider8LoadFileER13SharedFilePtr(void *shared);
     int _ZN11ShadowModel10InitCuboidEv(void *self);
-    void _ZN15TextureSequence7PrepareER8BMD_FileR8BTP_File(void *bmd, void *btp);
     void _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(void *self, void *btp, int a, int fix, unsigned int b);
     void _ZN9Animation8SetFlagsEi(void *self, int flags);
     u8 _ZN5Actor9TrackStarEjj(void *self, unsigned int a, unsigned int b);
@@ -34,8 +34,6 @@ extern "C" {
         void *mc, void *kcl, void *mtx, int fix, s16 s, void *clps);
     void func_01ffb0bc(void *self);
     void func_020393d4(void *p, void *v);
-    void func_01ffb07c(void *self, s32 *sp);
-    void func_020396d0(void *self, int v);
     void _ZN12WithMeshClsn4InitEP5Actor5Fix12IiES3_P10Vector3_16S5_(void *self, void *actor, int a, int b, void *c, void *d);
     void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *self, void *bca, int a, int fix, unsigned int b);
     int IsStarCollectedInCurLevel(int a);
@@ -47,7 +45,11 @@ extern SFP data_ov079_02128168;
 extern SFP data_ov079_02128178;
 extern void *data_ov079_02128170[];
 extern void *data_ov079_021275ec[];
-extern void _ZN16MeshColliderBase16UpdatePosAndAngsERS_P5ActorR10ClsnResultR7Vector3P10Vector3_16S8_();
+/* extern "C" is load-bearing: this sits OUTSIDE the extern "C" block above, so a
+   bare `extern` mangles the already-mangled name a second time and the address
+   taken below points at a _Z88_ZN16... that does not exist. The byte gate cannot
+   see it -- relocated words are wildcards -- only check_references can. */
+extern "C" void _ZN16MeshColliderBase16UpdatePosAndAngsERS_P5ActorR10ClsnResultR7Vector3P10Vector3_16S8_();
 extern u8 data_0209f21c;
 extern s32 data_0209f394[];
 extern signed char data_0209f2f8;
@@ -73,7 +75,7 @@ int Whomp::InitResources()
     void *anim;
     int i;
 
-    id = mActorID;
+    id = actorID;
     int b = (id == 0xa5);
     if (b) {
         mIsKing = 1;
@@ -108,13 +110,14 @@ int Whomp::InitResources()
 
     if (mIsKing != 0) {
         unk_401 = 3;
-        _ZN15TextureSequence7PrepareER8BMD_FileR8BTP_File(data_ov079_02128168.unk4, data_ov079_02128178.unk4);
+        TextureSequence::Prepare(*(BMD_File *)data_ov079_02128168.unk4,
+                                 *(BTP_File *)data_ov079_02128178.unk4);
         _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
             ((char *)this) + 0x330, data_ov079_02128178.unk4, 0, 0x1000, 0);
         _ZN9Animation8SetFlagsEi(((char *)this) + 0x330, 0x40000000);
-        unk_33c = 0x1000;
-        unk_338 = 0;
-        unk_409 = (u8)(mParam & 0xf);
+        mTextureSequence.speed = 0x1000;
+        mTextureSequence.currFrame = 0;
+        unk_409 = (u8)(param1 & 0xf);
         unk_408 = _ZN5Actor9TrackStarEjj(((char *)this), unk_409, 2);
     } else {
         unk_401 = 1;
@@ -142,10 +145,10 @@ int Whomp::InitResources()
         sp[0] = 0;
         sp[1] = 0;
         sp[2] = 0x1000;
-        func_01ffb07c(((char *)this) + 0x418, sp);
+        func_01ffb07c(&mMovingMeshCollider, sp);
     }
 
-    func_020396d0(((char *)this) + 0x418, 0xb50);
+    func_020396d0((int *)&mMovingMeshCollider, 0xb50);
 
     _ZN12WithMeshClsn4InitEP5Actor5Fix12IiES3_P10Vector3_16S5_(((char *)this) + 0x110, ((char *)this), 0x32000, 0x32000, 0, 0);
 
@@ -166,11 +169,11 @@ int Whomp::InitResources()
     *(s16 *)(((char *)this) + 0x300 + 0xea) = mAngleZ;
 
     if (mIsKing != 0) {
-        unk_09c = -0x8000;
+        mVertAccel = -0x8000;
     } else {
-        unk_09c = -0x4800;
+        mVertAccel = -0x4800;
     }
-    unk_0a0 = -0x31000;
+    mTerminalVelocity = -0x31000;
 
     unk_402 = 0;
     unk_403 = 0;

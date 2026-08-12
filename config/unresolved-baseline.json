@@ -1,12 +1,6 @@
 {
- "eligible": 10805,
+ "eligible": 10817,
  "unresolved": {
-  "arm9:0x020063b0": {
-   "name": "_ZN8CapEnemy6AddCapEj",
-   "missing": [
-    "func_020ff028"
-   ]
-  },
   "arm9:0x02008b4c": {
    "name": "func_02008b4c",
    "missing": [
@@ -245,7 +239,8 @@
   "arm9:0x02057410": {
    "name": "func_02057410",
    "missing": [
-    "_ll_mod"
+    "_ll_udiv",
+    "_ull_mod"
    ]
   },
   "arm9:0x02058308": {
@@ -356,7 +351,6 @@
   "ov002:0x020c8a4c": {
    "name": "func_ov002_020c8a4c",
    "missing": [
-    "_Z13func_020072c0v",
     "_ZN6Player7SetAnimEjiij"
    ]
   },
@@ -1399,7 +1393,6 @@
     "_Z39_ZN9Animation8LoadFileER13SharedFilePtrPv",
     "_Z43_ZN12MeshCollider8LoadFileER13SharedFilePtrPv",
     "_Z46_ZN15TextureSequence8LoadFileER13SharedFilePtrPv",
-    "_Z49_ZN15TextureSequence7PrepareER8BMD_FileR8BTP_Fileii",
     "_Z67_ZN25MovingCylinderClsnWithPos4InitEP5ActorRK7Vector35Fix12IiES6_jjPvS_P7Vector3iijj",
     "_Z77_ZN18MovingMeshCollider7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_BlockPviS_isS_",
     "func_02112c08",
@@ -1474,6 +1467,12 @@
     "overlay_66"
    ]
   },
+  "ov079:0x02126164": {
+   "name": "_ZN5Whomp13InitResourcesEv",
+   "missing": [
+    "func_021135d4"
+   ]
+  },
   "ov080:0x0212459c": {
    "name": "_ZN13MontyMoleRock8BehaviorEv",
    "missing": [
@@ -1486,16 +1485,6 @@
     "Enemy_UpdateWMClsn",
     "Player_Hurt",
     "WithMeshClsn_IsOnGround"
-   ]
-  },
-  "ov081:0x02123ed0": {
-   "name": "_ZN9Spindrift13InitResourcesEv",
-   "missing": [
-    "AnimLoadFile",
-    "ModelLoadFile",
-    "_ZN12WithMeshClsn4InitEP5ActoriiPvi",
-    "_ZN18MovingCylinderClsn4InitEP5Actoriijj",
-    "_ZN9ModelAnim7SetAnimEP8BCA_Fileiij"
    ]
   },
   "ov081:0x021243cc": {
@@ -1594,12 +1583,6 @@
     "_Z35_ZN8Platform19UpdateClsnPosAndRotEvPv",
     "_Z43_ZN12MeshCollider8LoadFileER13SharedFilePtrPv",
     "_Z77_ZN18MovingMeshCollider7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_BlockPvS_S_isS_"
-   ]
-  },
-  "ov091:0x021339fc": {
-   "name": "func_ov091_021339fc",
-   "missing": [
-    "func_020aea30"
    ]
   },
   "ov096:0x02137564": {
