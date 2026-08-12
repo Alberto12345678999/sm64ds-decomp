@@ -123,9 +123,10 @@ BobOmbBuddy, KingBobOmb, ChainChomp, ChainChompFence, Minimap, and HUD.
 
 ## Harness work that unlocks the five
 
-1. **Done:** control-backed `setup_steps` now load and settle a savestate before
-   the GDB client attaches; RAM setup and residency checks happen after attach,
-   and the target breakpoint is armed only before trigger steps.
+1. **Done:** control-backed `setup_steps` load and settle a savestate before
+   the target is armed. Protocol-2 managed breakpoints now capture registers,
+   memory, and calls without the GDB stub; exact-frame stepping pauses safely
+   across a hit and completes its remaining frame budget after capture.
 2. Add fixed-address typed observations (not only candidate-canary groups) for
    the loaded level-overlay ID and shared resource pointers.
 3. Build a savestate catalog containing level, star, actor-spawn inventory,

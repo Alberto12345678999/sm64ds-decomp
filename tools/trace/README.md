@@ -3,11 +3,14 @@
 Runtime-trace tooling for the emulator-assisted matching/labeling plan.
 Strategy: `notes/emu-trace-plan.md`. Build spec: `notes/emu-trace-build.md`.
 
-Status: **Phase 0 spike** (attach + breakpoint + canary + register/mem dump).
+Status: protocol-2 deterministic scenarios and readable-C++ probes are working;
+the original GDB Phase-0 harness remains as a legacy diagnostic.
 
 ## Files
-- `rsp.py` — minimal GDB Remote Serial Protocol client over a TCP socket (no
-  gdb dependency). Set/clear breakpoints, read registers/memory, continue.
+- `melon_control.py` — protocol-2 input, memory, savestate, and managed
+  breakpoint clients for the controller-enabled melonDS fork.
+- `rsp.py` — legacy GDB Remote Serial Protocol client for emulator builds that
+  do not expose protocol 2.
 - `symindex.py` — addr→symbol index from `config/**/symbols.txt` + `nearmiss/db.jsonl`,
   used to resolve a captured `lr` to a caller name.
 - `gdb_harness.py` — the Phase-0 spike runner. Breaks at always-resident arm9
@@ -16,30 +19,25 @@ Status: **Phase 0 spike** (attach + breakpoint + canary + register/mem dump).
   unmatched symbol, discovers its class/header fields, captures `this` before
   and after calls, and reports named field changes, values, callers, returns,
   and vtable slots.
-- `scenario.py` + `input_win.py` — one-session automation layer. Arms a probe,
+- `scenario.py` + `input_win.py` — deterministic automation layer. Arms a probe,
   drives configured melonDS controls from a small JSON scenario, and records
   the exact input recipe with the runtime evidence.
 
-## Prerequisites: melonDS GDB stub
+## Prerequisites: controller-enabled melonDS
 
-1. Install melonDS (Qt frontend — the GDB stub lives there).
-2. Emu settings → enable the GDB stub. In `melonDS.ini` the keys are roughly:
-   ```
-   GdbEnabled=1
-   GdbPortARM9=3333
-   GdbPortARM7=3334
-   JIT_Enable=0          ; REQUIRED — the stub needs the interpreter core
-   ```
-   (Exact key names vary by melonDS version — confirm in the UI. The two that
-   matter: stub ON, JIT OFF.)
-3. Load `sm64.nds` and **load a savestate / let the game run past boot** so the
-   CPU is actually executing game code (otherwise the arm9 targets never fire).
-   melonDS suspends the CPU while a GDB client is attached, then resumes on
-   `continue` — that's expected.
+1. Build or obtain the `ai/control-api` melonDS worktree documented in
+   `notes/emulator-control-handoff.md`.
+2. Launch it with `--control-port 45987`, an optional local token, and JIT off.
+3. Load `sm64.nds` and a savestate/scene that reaches the target.
+4. Confirm `ping` reports protocol 2 and `status` reports
+   `managed_breakpoints_available: true`.
 
-DeSmuME fallback: launch with `--arm9gdb=3333`; everything below is identical.
+The normal `cpp_probe.py` and `scenario.py` paths do not require GDB. For a
+legacy emulator, pass `--backend gdb --port 3333` to `cpp_probe.py` or
+`--breakpoint-backend gdb --port 3333` to `scenario.py`. DeSmuME can expose
+that fallback with `--arm9gdb=3333`.
 
-## Run the spike
+## Run the legacy GDB spike
 
 ```
 # default: 6 small always-resident arm9 funcs, 20s window
@@ -56,7 +54,7 @@ python tools/trace/gdb_harness.py --duration 30 --out traces/spike.jsonl
 python tools/trace/gdb_harness.py --negative 0x0211640c
 ```
 
-## What to look for (Phase-0 acceptance gates)
+## What to look for in the legacy Phase-0 harness
 
 The run prints a summary. Report these back:
 
@@ -127,7 +125,7 @@ during the C-to-real-C++ conversion:
 For a ready-to-copy contributor or agent assignment that requires a runtime
 answer and a verified deliverable, use [`CPP_PROBE_JOB.md`](CPP_PROBE_JOB.md).
 
-First check resolution without occupying melonDS's one GDB session:
+First check resolution without connecting to melonDS:
 
 ```
 python tools/trace/cpp_probe.py _ZN5Fader13AdvanceInterpEv --resolve-only
@@ -158,6 +156,12 @@ canary-gates every hit against overlay aliasing, snapshots the object, catches
 the return at `lr`, re-reads the same object, prints the answer, and saves the
 full evidence to `traces/questions/` (gitignored). Re-render an evidence file
 without reconnecting:
+
+On the protocol-2 backend, an entry hit also joins the captured receiver
+pointer to the hit-time live actor list. The report keeps the actor catalog's
+ID/class label beside the decomp config's exact vtable and behavior symbols.
+When those sources disagree, the contradiction is evidence to investigate;
+the tool does not silently choose one name.
 
 ```
 python tools/trace/cpp_probe.py --input traces/questions/Fader_AdvanceInterp.json
@@ -216,17 +220,16 @@ rename a generic `data_*` vtable or prove the object's concrete class.
 combines one target/question with a short sequence of configured DS controls.
 The runner arms the target breakpoint first, then drives the instrumented
 melonDS localhost control API and finally saves the normal question evidence
-plus the exact input recipe. Input and capture stay in one process because the
-GDB stub still exposes only one usable debugger client session. The control API
-is a separate socket, so it can supply deterministic input and frame stepping
-without competing for that session or requiring window focus.
+plus the exact input recipe. Protocol 2 supplies deterministic input, exact
+frame stepping, ARM9 memory, registers, and managed breakpoints without window
+focus or a GDB client.
 
-Input failures abort the capture on its next short debugger poll instead of
+Input failures abort the capture on its next short breakpoint poll instead of
 leaving a broken scenario waiting for the full capture duration.
 
 Optional `setup_steps` run before the trigger steps.  After setup (normally a
-savestate load), the runner reads the target's live canary through the same GDB
-session and records whether the requested overlay is actually resident.  This
+savestate load), the runner reads the target's live canary through the control
+API and records whether the requested overlay is actually resident.  This
 makes a no-hit result distinguishable from a wrong-overlay setup.
 
 Optional `setup_memory` entries make small, explicit 1/2/4-byte RAM changes
@@ -258,8 +261,7 @@ C:\tmp\melonds-ai-controller\tools\start_control.ps1 `
   -Rom C:\Users\andre\source\tangosdev\sm64ds-decomp\sm64.nds
 ```
 
-Then make the scenario runner the first GDB client and provide the directory
-containing the relative savestate path:
+Then provide the directory containing the relative savestate path:
 
 ```powershell
 python tools/trace/scenario.py `
@@ -278,7 +280,7 @@ hit at the original ARM9 callsite. Scenario steps support `load_state`,
 `wait`/`tap`/`hold` may specify exact `frames`; touch coordinates are normalized
 to the 256x192 DS touch screen and are independent of window layout. Use
 `--input-backend win32` only as a compatibility fallback for an unmodified
-melonDS build. `--input-only` tests controls without occupying the GDB stub.
+melonDS build. `--input-only` tests controls without arming a breakpoint.
 Scenario evidence is written under `traces/scenarios/` (gitignored).
 
 Confirmed live on 2026-08-11: `bobomb_intro_camera_commands.json` observed
@@ -292,6 +294,12 @@ The control-backend replay was independently verified the same day with direct
 `sm64.ml5` loading and exact frame steps; its passing evidence is
 `traces/scenarios/bobomb-camera-spline_20260811_222253.json`. It required no
 foreground window, Win32 key event, or manual intervention.
+
+Verified again on 2026-08-12 with protocol-2 managed breakpoints as the default
+capture backend: the assertion passed, the runner exited zero, and the saved
+evidence was
+`traces/scenarios/bobomb-camera-spline_20260812_021946.json`. No GDB listener,
+restart, or single-session handshake was involved.
 
 `bobomb_actor_spawn_inventory.json` is the coverage companion.  The same
 automated course entry retained 33 distinct actor IDs, and every spawn observed

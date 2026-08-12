@@ -108,9 +108,16 @@ def test_control_driver_maps_buttons_touch_and_frame_chunks(tmp_path):
     class FakeControl:
         def __init__(self):
             self.requests = []
+            self.completed_frames = 0
 
         def request(self, command, **parameters):
             self.requests.append((command, parameters))
+            if command == "status":
+                return {"ok": True, "state": "paused",
+                        "completed_frames": self.completed_frames}
+            if command == "step":
+                self.completed_frames += parameters["frames"]
+                return {"ok": True, "completed_frames": self.completed_frames}
             return {"ok": True}
 
     driver = melon_control.ControlMelonInput.__new__(
@@ -134,14 +141,107 @@ def test_control_driver_maps_buttons_touch_and_frame_chunks(tmp_path):
         ("set_input", {"buttons": ["A", "Up"]}),
         ("set_input", {
             "buttons": ["A", "Up"], "touch": {"x": 128, "y": 48}}),
+        ("status", {}),
         ("step", {"frames": 6}),
         ("set_input", {"buttons": ["A", "Up"]}),
+        ("status", {}),
         ("step", {"frames": 600}),
         ("step", {"frames": 1}),
         ("release_input", {}),
         ("resume", {}),
         ("clear_input_override", {}),
     ]
+
+
+def test_control_driver_finishes_frame_budget_after_managed_breakpoint():
+    class FakeControl:
+        def __init__(self):
+            self.requests = []
+            self.statuses = [
+                {"state": "running", "completed_frames": 10},
+                {"state": "breakpoint", "completed_frames": 12},
+                {"state": "running", "completed_frames": 12},
+            ]
+            self.first_step = True
+
+        def request(self, command, **parameters):
+            self.requests.append((command, parameters))
+            if command == "status":
+                return self.statuses.pop(0)
+            if command == "step" and self.first_step:
+                self.first_step = False
+                raise melon_control.ControlError(
+                    "managed breakpoint hit before frame step completed")
+            if command == "step":
+                return {"completed_frames": 15}
+            return {"ok": True}
+
+    driver = melon_control.ControlMelonInput.__new__(
+        melon_control.ControlMelonInput)
+    driver.client = FakeControl()
+    driver.step_frames(5)
+
+    assert driver.client.requests == [
+        ("status", {}),
+        ("step", {"frames": 5}),
+        ("status", {}),
+        ("status", {}),
+        ("step", {"frames": 3}),
+    ]
+
+
+def test_control_breakpoint_adapter_captures_new_hit_without_gdb():
+    registers = {f"r{i}": f"0x{0x02000000 + i:08x}" for i in range(16)}
+    registers["r15"] = "0x02008c18"
+    registers["cpsr"] = "0x6000001f"
+
+    class FakeControl:
+        def __init__(self):
+            self.requests = []
+            self.statuses = [
+                {"state": "running", "managed_breakpoints_available": True,
+                 "last_breakpoint_hit": {"sequence": 4, "address": "0x02000010"}},
+                {"state": "running", "managed_breakpoints_available": True,
+                 "last_breakpoint_hit": {"sequence": 4, "address": "0x02000010"}},
+                {"state": "breakpoint", "managed_breakpoints_available": True,
+                 "last_breakpoint_hit": {"sequence": 5, "address": "0x02008c18"}},
+                {"state": "running", "managed_breakpoints_available": True,
+                 "last_breakpoint_hit": {"sequence": 5, "address": "0x02008c18"}},
+            ]
+
+        def request(self, command, **parameters):
+            self.requests.append((command, parameters))
+            if command == "ping":
+                return {"ok": True, "protocol": 2}
+            if command == "status":
+                return self.statuses.pop(0)
+            if command == "breakpoint_list":
+                return {"last_breakpoint_hit": {
+                    "sequence": 5, "address": "0x02008c18",
+                    "registers": registers}}
+            if command == "read_memory":
+                return {"data": "f04f2de91cd04de2"}
+            return {"ok": True}
+
+    client = melon_control.ControlBreakpointClient(timeout=0.1, poll_interval=0)
+    client.control = FakeControl()
+    client.connect()
+    assert client.set_breakpoint(0x02008C18)
+    client.cont()
+    assert client.wait_for_stop() == "T05"
+    captured = client.read_registers()
+    assert captured["pc"] == 0x02008C18
+    assert captured["r0"] == 0x02000000
+    assert captured["cpsr_src"] == "control-api"
+    assert client.read_mem(0x02008C18, 8).hex() == "f04f2de91cd04de2"
+    assert client.write_mem(0x0209CAA8, b"\x08\x02\x03\x00")
+    assert client.clear_breakpoint(0x02008C18)
+    client.detach()
+
+    assert ("breakpoint_add", {"address": "0x02008c18"}) in client.control.requests
+    assert ("breakpoint_remove", {"address": "0x02008c18"}) in client.control.requests
+    assert ("write_memory", {
+        "address": "0x0209caa8", "data": "08020300"}) in client.control.requests
 
 
 def test_scenario_manifest_requires_one_target_and_steps(tmp_path):
@@ -388,18 +488,24 @@ def test_capture_case_records_direct_register_value():
 
 
 def test_scenario_expectations_are_machine_checkable():
-    summary = {"observations": {
-        "callee overlay": {"ov002:func_ov002_020effb8": 1},
-        "camera command": {"6": 1},
-    }}
+    summary = {
+        "observations": {
+            "callee overlay": {"ov002:func_ov002_020effb8": 1},
+            "camera command": {"6": 1},
+        },
+        "actor_classes": {"Goomba": 3},
+    }
     results = scenario.evaluate_expectations([
         {
             "observation": "callee overlay",
             "value": "ov002:func_ov002_020effb8",
         },
         {"observation": "camera command", "value": 12},
+        {"summary": "actor_classes", "value": "Goomba", "min_count": 2},
     ], summary)
 
     assert results[0]["passed"] is True
     assert results[1]["passed"] is False
     assert results[1]["actual_count"] == 0
+    assert results[2]["passed"] is True
+    assert results[2]["source"] == "summary.actor_classes"

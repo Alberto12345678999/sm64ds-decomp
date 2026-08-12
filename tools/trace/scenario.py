@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Run one emulator research question with scripted gameplay input.
 
-The runner intentionally combines breakpoint evidence and input automation in
-one process.  melonDS 1.1 exposes only one usable GDB client session, so a
-separate actor watcher/probe/controller trio will wedge or race the stub.
+The runner combines breakpoint evidence and input automation in one process.
+Controller-enabled melonDS supplies both through protocol 2; the old GDB stub
+remains available only as an explicit fallback for other emulator builds.
 
 A scenario is a small JSON document: one configured function target, capture
 limits, and a deterministic sequence of DS controls.  It is not a general game
@@ -32,7 +32,7 @@ sys.path.insert(0, str(TOOLS_DIR))
 import bplist  # noqa: E402
 import cpp_probe  # noqa: E402
 from input_win import Win32MelonInput, load_bindings, run_steps  # noqa: E402
-from melon_control import ControlMelonInput  # noqa: E402
+from melon_control import ControlBreakpointClient, ControlMelonInput  # noqa: E402
 from rsp import RspError  # noqa: E402
 
 
@@ -222,12 +222,19 @@ def evaluate_expectations(specs, summary):
     results = []
     observations = summary.get("observations", {})
     for spec in specs:
+        summary_group = spec.get("summary")
         name = spec.get("observation")
         value = str(spec.get("value"))
         minimum = int(spec.get("min_count", 1))
-        actual = int(observations.get(name, {}).get(value, 0))
+        if summary_group:
+            actual = int(summary.get(summary_group, {}).get(value, 0))
+            source = f"summary.{summary_group}"
+        else:
+            actual = int(observations.get(name, {}).get(value, 0))
+            source = name
         results.append({
             "observation": name,
+            "source": source,
             "value": value,
             "min_count": minimum,
             "actual_count": actual,
@@ -303,7 +310,11 @@ def main(argv=None):
         description="drive one reproducible melonDS scene and capture runtime evidence")
     ap.add_argument("scenario", help="scenario JSON")
     ap.add_argument("--host", default="127.0.0.1")
-    ap.add_argument("--port", type=int, default=3333)
+    ap.add_argument("--breakpoint-backend", choices=("control", "gdb"),
+                    default="control",
+                    help="control uses in-process breakpoints; gdb is the legacy fallback")
+    ap.add_argument("--port", type=int, default=3333,
+                    help="legacy ARM9 GDB port")
     ap.add_argument("--melon-config", help="melonDS.toml (auto-detected by default)")
     ap.add_argument("--window-title", default="melonDS")
     ap.add_argument("--input-backend", choices=("control", "win32"),
@@ -371,9 +382,7 @@ def main(argv=None):
 
         run_steps(driver, data.get("setup_steps", []), announce=announce,
                   sleep=getattr(driver, "sleep", time.sleep))
-        # Exact control-API stepping returns paused. The GDB listener accepts
-        # a socket while paused but the ARM core cannot service its first
-        # memory command until emulation is resumed. Setup is complete here;
+        # Exact control-API stepping returns paused. Setup is complete here;
         # the target-specific trigger has not started yet.
         if hasattr(driver, "resume"):
             driver.resume()
@@ -400,7 +409,7 @@ def main(argv=None):
         script.start()
     print(cpp_probe.resolution_report(target, layout))
     print(f"[*] question: {data.get('question') or '-'}")
-    print("[*] preparing savestate/input before attaching the GDB client")
+    print("[*] preparing savestate/input before arming the breakpoint backend")
     try:
         prepare_setup()
     except (OSError, RuntimeError, ValueError) as exc:
@@ -408,7 +417,15 @@ def main(argv=None):
             driver.close()
         print(f"[!] scenario setup input failed: {exc}", file=sys.stderr)
         return 3
-    print("[*] connecting; scripted input starts after the target breakpoint is armed")
+    backend_port = (args.control_port if args.breakpoint_backend == "control"
+                    else args.port)
+    if args.breakpoint_backend == "control":
+        client_factory = lambda host, port, timeout: ControlBreakpointClient(
+            host, port, timeout=timeout, token=args.control_token)
+    else:
+        client_factory = cpp_probe.RspClient
+    print(f"[*] connecting to {args.breakpoint_backend} backend at "
+          f"{args.host}:{backend_port}; scripted input starts after arming")
     accept_case = None
     unique_counts = None
     if capture.get("unique_by"):
@@ -416,20 +433,22 @@ def main(argv=None):
             capture["unique_by"], int(capture.get("max_per_value", 1)))
     try:
         cases, alias_rejects, elapsed = cpp_probe.collect(
-            target, layout, args.host, args.port,
+            target, layout, args.host, backend_port,
             hits=capture.get("hits", 5),
             duration=capture.get("duration", 120.0),
             idle=capture.get("idle", capture.get("duration", 120.0)),
             poll_timeout=capture.get("poll_timeout", 2.0),
             vtable_slots=capture.get("vtable_slots", 12),
             capture_return=capture.get("capture_return", True),
+            client_factory=client_factory,
             on_pre_arm=prepare_target,
             on_ready=start_trigger,
             should_abort=lambda: script.error is not None,
             accept_case=accept_case)
     except (OSError, RspError, RuntimeError, TimeoutError, ValueError) as exc:
         print(f"[!] emulator scenario failed: {exc}\n"
-              "    Restart melonDS and make this runner its first GDB client.",
+              "    Start controller-enabled melonDS with JIT off; use the GDB backend only\n"
+              "    when protocol 2 is unavailable.",
               file=sys.stderr)
         return 3
     finally:
@@ -444,8 +463,9 @@ def main(argv=None):
         "target": target,
         "layout": layout,
         "capture": {
+            "backend": args.breakpoint_backend,
             "host": args.host,
-            "port": args.port,
+            "port": backend_port,
             "requested_hits": capture.get("hits", 5),
             "elapsed_seconds": elapsed,
             "capture_return": capture.get("capture_return", True),
@@ -483,7 +503,7 @@ def main(argv=None):
         print("\nScenario assertions:")
         for item in evidence["expectations"]:
             state = "PASS" if item["passed"] else "FAIL"
-            print(f"  [{state}] {item['observation']} == {item['value']}: "
+            print(f"  [{state}] {item['source']} == {item['value']}: "
                   f"{item['actual_count']} >= {item['min_count']}")
     print(f"\n[=] scenario evidence saved to {out}")
     if script.error:

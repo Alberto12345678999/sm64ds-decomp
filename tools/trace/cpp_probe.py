@@ -2,7 +2,8 @@
 """Question-oriented runtime probe for readable-C++ reconstruction.
 
 The matching/decompiler workflow answers *what instructions exist*.  This tool
-uses a running melonDS/DeSmuME GDB stub to answer the complementary runtime
+uses melonDS's protocol-2 managed breakpoints (or a legacy GDB stub) to answer
+the complementary runtime
 questions that come up while turning those instructions into honest C++:
 
 * Is r0 really a ``this`` pointer, and which concrete objects/vtables arrive?
@@ -16,7 +17,7 @@ and after the call, then prints and saves a compact evidence report.  Runtime
 evidence constrains a type/layout hypothesis; it does not replace byte matching
 or prove byte-unobservable properties such as signedness at an inert access.
 
-Examples (melonDS running with its ARM9 GDB stub on port 3333):
+Examples (controller-enabled melonDS running on port 45987):
 
   python tools/trace/cpp_probe.py _ZN5Fader13AdvanceInterpEv --hits 8 \
       --ask "which Fader fields change while the fade advances?"
@@ -31,6 +32,7 @@ import argparse
 from collections import Counter
 import datetime as dt
 import json
+import os
 import pathlib
 import re
 import sys
@@ -45,6 +47,7 @@ sys.path.insert(0, str(TOOLS_DIR))
 import bplist  # noqa: E402
 import demangle  # noqa: E402
 import fieldmap  # noqa: E402
+from melon_control import ControlBreakpointClient  # noqa: E402
 from rsp import RspClient, RspError  # noqa: E402
 import static_symbols  # noqa: E402
 import symindex  # noqa: E402
@@ -308,6 +311,50 @@ def _vtable_label(vtable):
     return f"{names} @ {address}" if names else address
 
 
+def _live_actor_receiver(cli, addr, syms):
+    """Join a receiver pointer to melonDS's hit-time live actor snapshot."""
+    snapshot_fn = getattr(cli, "research_snapshot", None)
+    if snapshot_fn is None or addr is None:
+        return None
+    try:
+        snapshot = snapshot_fn()
+    except (RspError, OSError, ValueError):
+        return None
+    for actor in snapshot.get("actors", []):
+        actor_addr = actor.get("address")
+        actor_addr = int(actor_addr, 0) if isinstance(actor_addr, str) else actor_addr
+        if actor_addr != addr:
+            continue
+        result = {
+            "address": actor_addr,
+            "id": actor.get("id"),
+            "name": actor.get("name"),
+            "kind": actor.get("kind"),
+            "class": actor.get("class"),
+            "vtable": actor.get("vtable"),
+            "vtable_symbol": actor.get("vtable_symbol"),
+            "vtable_module": actor.get("vtable_module"),
+            "behavior": actor.get("behavior"),
+            "behavior_name": actor.get("behavior_name"),
+            "behavior_symbol": actor.get("behavior_symbol"),
+            "behavior_module": actor.get("behavior_module"),
+            "position": actor.get("position"),
+            "level_overlay": snapshot.get("level_overlay"),
+            "profile": snapshot.get("profile"),
+        }
+        vtable = actor.get("vtable")
+        behavior = actor.get("behavior")
+        vtable_addr = int(vtable, 0) if isinstance(vtable, str) and vtable else vtable
+        behavior_addr = (int(behavior, 0)
+                         if isinstance(behavior, str) and behavior else behavior)
+        result["configured_vtable_symbols"] = (
+            _resolve_exact(syms, vtable_addr) if vtable_addr is not None else [])
+        result["configured_behavior_symbols"] = (
+            _resolve_at(syms, behavior_addr) if behavior_addr is not None else [])
+        return result
+    return None
+
+
 def _snapshot_object(cli, regs, layout, syms, vtable_slots):
     reg = layout.get("this_reg")
     if not reg:
@@ -348,12 +395,14 @@ def capture_case(cli, target, regs, layout, syms, vtable_slots=12,
     Returns ``(case, running)``.  ``running`` tells the outer loop whether this
     function timed out after continuing, so it must not send a duplicate ``c``.
     """
+    entry_object = _snapshot_object(cli, regs, layout, syms, vtable_slots)
     case = {
         "entry": {
             "regs": {k: regs[k] for k in ("r0", "r1", "r2", "r3", "sp", "lr", "pc")},
             "caller_addr": regs["lr"],
             "caller_symbols": _resolve_caller(syms, regs["lr"]),
-            "object": _snapshot_object(cli, regs, layout, syms, vtable_slots),
+            "object": entry_object,
+            "actor": _live_actor_receiver(cli, entry_object.get("addr"), syms),
         },
         "status": "entry-only" if not capture_return else "waiting-return",
     }
@@ -562,6 +611,10 @@ def summarize(evidence):
     callers = Counter()
     objects = Counter()
     vtables = Counter()
+    actors = Counter()
+    actor_classes = Counter()
+    actor_ids = Counter()
+    actor_identities = Counter()
     for case in cases:
         entry = case.get("entry", {})
         names = entry.get("caller_symbols") or [f"0x{entry.get('caller_addr', 0):08x}"]
@@ -572,9 +625,28 @@ def summarize(evidence):
         vt = obj.get("vtable") or {}
         if vt.get("addr") is not None:
             vtables[_vtable_label(vt)] += 1
+        actor = entry.get("actor") or {}
+        if actor.get("address") is not None:
+            label = actor.get("class") or actor.get("name") or f"actor_{actor.get('id')}"
+            actors[f"{label} @ 0x{actor['address']:08x}"] += 1
+            actor_classes[label] += 1
+            actor_ids[f"{actor.get('id')}:{actor.get('name') or label}"] += 1
+            configured_vtable = " | ".join(
+                actor.get("configured_vtable_symbols") or []) or "unresolved"
+            configured_behavior = " | ".join(
+                actor.get("configured_behavior_symbols") or []) or "unresolved"
+            actor_identities[
+                f"ID {actor.get('id')} {actor.get('name') or '-'}; "
+                f"catalog={actor.get('class') or '-'}; "
+                f"config-vtable={configured_vtable}; "
+                f"config-behavior={configured_behavior}"] += 1
     summary["callers"] = dict(callers)
     summary["objects"] = dict(objects)
     summary["vtables"] = dict(vtables)
+    summary["actors"] = dict(actors)
+    summary["actor_classes"] = dict(actor_classes)
+    summary["actor_ids"] = dict(actor_ids)
+    summary["actor_identities"] = dict(actor_identities)
 
     entry_registers = Counter()
     for case in cases:
@@ -690,6 +762,11 @@ def render_report(evidence):
     if layout.get("this_reg"):
         lines.append("Objects: " + _format_counts(summary.get("objects", {})))
         lines.append("Vtables: " + _format_counts(summary.get("vtables", {})))
+        if summary.get("actors"):
+            lines.append("Live actor receivers (catalog labels): " +
+                         _format_counts(summary.get("actors", {})))
+        for identity, count in summary.get("actor_identities", {}).items():
+            lines.append(f"  receiver identity: {identity} ({count})")
 
     if summary.get("fields"):
         lines.append("Named field observations:")
@@ -789,7 +866,12 @@ def main(argv=None):
     ap.add_argument("--no-return", action="store_true",
                     help="entry-only capture for recursive/non-returning/hot functions")
     ap.add_argument("--host", default="127.0.0.1")
-    ap.add_argument("--port", type=int, default=3333)
+    ap.add_argument("--backend", choices=("control", "gdb"), default="control",
+                    help="breakpoint transport (control avoids the GDB single-session stub)")
+    ap.add_argument("--port", type=int,
+                    help="backend port (default: 45987 for control, 3333 for gdb)")
+    ap.add_argument("--control-token", default=os.getenv("MELONDS_CONTROL_TOKEN"),
+                    help="protocol-2 token (defaults from MELONDS_CONTROL_TOKEN)")
     ap.add_argument("--extracted", help="ROM extract directory (else auto-find/SM64DS_EXTRACTED)")
     ap.add_argument("--out", help="evidence JSON path (default traces/questions/<method>.json)")
     ap.add_argument("--resolve-only", action="store_true",
@@ -829,15 +911,23 @@ def main(argv=None):
     if args.resolve_only:
         return 0
 
-    print(f"[*] connecting to {args.host}:{args.port}; play/load the scene that calls the target ...")
+    port = args.port if args.port is not None else (45987 if args.backend == "control" else 3333)
+    if args.backend == "control":
+        client_factory = lambda host, port, timeout: ControlBreakpointClient(
+            host, port, timeout=timeout, token=args.control_token)
+    else:
+        client_factory = RspClient
+    print(f"[*] connecting to {args.backend} backend at {args.host}:{port}; "
+          "play/load the scene that calls the target ...")
     try:
         cases, alias_rejects, elapsed = collect(
-            target, layout, args.host, args.port, args.hits, args.duration,
-            args.idle, args.poll_timeout, args.vtable_slots, not args.no_return)
+            target, layout, args.host, port, args.hits, args.duration,
+            args.idle, args.poll_timeout, args.vtable_slots, not args.no_return,
+            client_factory=client_factory)
     except (OSError, RspError, TimeoutError) as exc:
         print(f"[!] emulator probe failed: {exc}\n"
-              "    Start melonDS with [Gdb.ARM9] enabled, JIT off, and restart it if a\n"
-              "    previous client used the stub's single session.", file=sys.stderr)
+              "    Start the controller-enabled melonDS with --control-port and JIT off.\n"
+              "    Use --backend gdb only for an unported legacy emulator.", file=sys.stderr)
         return 3
 
     evidence = {
@@ -847,7 +937,8 @@ def main(argv=None):
         "target": target,
         "layout": layout,
         "capture": {
-            "host": args.host, "port": args.port, "requested_hits": args.hits,
+            "backend": args.backend, "host": args.host, "port": port,
+            "requested_hits": args.hits,
             "elapsed_seconds": elapsed, "capture_return": not args.no_return,
             "vtable_slots": args.vtable_slots,
         },

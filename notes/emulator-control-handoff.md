@@ -8,10 +8,11 @@ buttons, touch exact DS-screen coordinates, advance an exact number of frames,
 and read or write ARM9 memory without focusing the emulator window or sending
 Windows key events.
 
-The decomp repo's scenario runner combines that control API with melonDS's ARM9
-GDB stub. It can arm a ROM-backed breakpoint, execute a repeatable gameplay
-trigger, capture registers/objects/live overlay bytes, and turn the result into
-a saved PASS/FAIL assertion.
+The decomp repo's scenario runner uses that same control API for melonDS's
+in-process ARM9 breakpoints. It can arm a ROM-backed breakpoint, execute a
+repeatable gameplay trigger, capture registers/objects/live overlay bytes, and
+turn the result into a saved PASS/FAIL assertion without the GDB stub's
+single-session timeout failure.
 
 This does **not** replace matching or relocation verification. It supplies
 runtime evidence when static reading leaves questions such as:
@@ -28,8 +29,8 @@ On the current workstation:
 
 | Part | Location | Branch / commit |
 |---|---|---|
-| Instrumented melonDS 1.1 fork | `C:\tmp\melonds-ai-controller` | `ai/control-api` / `92e6bd4b` |
-| Decomp scenario tooling | `C:\tmp\sm64ds-emulator-cpp-query` | `tools/emulator-cpp-query` / `b57731ec` |
+| Instrumented melonDS 1.1 fork | `C:\tmp\melonds-ai-controller` | `ai/control-api` |
+| Decomp scenario tooling | `C:\tmp\sm64ds-emulator-cpp-query` | `tools/emulator-cpp-query` |
 | Research backlog | `notes/emulator-research-queue.md` | five concrete questions |
 | Scenario manifests | `tools/trace/scenarios/` | reusable JSON jobs |
 | Runtime evidence | `traces/scenarios/` | local and gitignored |
@@ -42,16 +43,8 @@ fork/branches copied or published before the paths below will exist.
 The fork is built with melonDS's documented MSYS2 UCRT64 toolchain. Its local
 build is `C:\tmp\melonds-ai-controller\build\ai-ucrt64\melonDS.exe`.
 
-Enable the ARM9 GDB stub in that build's `melonDS.toml` and keep JIT disabled:
-
-```toml
-[Instance0.Gdb]
-Enabled = true
-
-[Instance0.Gdb.ARM9]
-BreakOnStartup = false
-Port = 3333
-```
+Keep JIT disabled; managed ARM9 breakpoints run in the interpreter. The normal
+workflow does not require the GDB stub to be enabled.
 
 Start the controller-enabled emulator:
 
@@ -69,14 +62,13 @@ python C:\tmp\melonds-ai-controller\tools\control_client.py `
   --token sm64-research status
 ```
 
-The default ports are `45987` for control and `3333` for ARM9 GDB. The control
-server is disabled unless `--control-port` is supplied and binds only to
-localhost.
+The default control port is `45987`. The server is disabled unless
+`--control-port` is supplied and binds only to localhost. Legacy emulators can
+still use `--breakpoint-backend gdb --port 3333` explicitly.
 
 ## Run the proven example
 
-Start from a fresh emulator process because melonDS's GDB stub effectively has
-one debugger session. Then run:
+With the controller-enabled emulator running, run:
 
 ```powershell
 cd C:\tmp\sm64ds-emulator-cpp-query
@@ -149,10 +141,10 @@ Work on the tools/emulator-cpp-query branch; do not add speculative files to
 src/. Pick one unclaimed runtime question from the queue and turn it into a
 reproducible tools/trace/scenarios JSON job. Use the controller-enabled melonDS
 fork for direct savestate loading, exact-frame DS input, and ARM9 memory access;
-use the GDB stub for the breakpoint/register capture. Include a ROM-backed
-canary, an explicit expect assertion, tests for any harness change, and report
-the exact command plus saved evidence path. A covered negative result is valid;
-an unexplained timeout is not.
+use its protocol-2 managed breakpoints for register capture. Include a
+ROM-backed canary, an explicit expect assertion, tests for any harness change,
+and report the exact command plus saved evidence path. A covered negative
+result is valid; an unexplained timeout is not.
 ```
 
 ## Near-term direction

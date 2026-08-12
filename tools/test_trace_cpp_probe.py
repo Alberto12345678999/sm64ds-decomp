@@ -260,6 +260,41 @@ def test_capture_pairs_entry_and_return_and_rereads_same_object():
     assert cli.cleared == [0x02012004]
 
 
+def test_capture_joins_receiver_to_protocol_actor_snapshot():
+    class ActorClient:
+        def read_mem(self, addr, size):
+            assert addr == 0x02020000
+            return bytes(size)
+
+        def research_snapshot(self):
+            return {
+                "profile": "ASMP",
+                "level_overlay": 2,
+                "actors": [{
+                    "address": "0x02020000", "id": 74, "name": "Goomba",
+                    "kind": "enemy", "class": "Goomba",
+                    "vtable": "0x020f1234", "behavior": "0x020e4d24",
+                    "behavior_name": "Goomba::Behavior()",
+                    "position": {"x": 1.0, "y": 2.0, "z": 3.0},
+                }],
+            }
+
+    regs = {"r0": 0x02020000, "r1": 0, "r2": 0, "r3": 0,
+            "sp": 0x023FF000, "lr": 0x02012004, "pc": 0x02011000}
+    layout = {"this_reg": "r0", "object_size": 0x10, "has_vtable": False}
+
+    case, running = CP.capture_case(
+        ActorClient(), {"addr": 0x02011000}, regs, layout, _Syms(),
+        capture_return=False)
+
+    assert not running
+    assert case["entry"]["actor"]["class"] == "Goomba"
+    assert case["entry"]["actor"]["level_overlay"] == 2
+    assert case["entry"]["actor"]["position"]["z"] == 3.0
+    assert case["entry"]["actor"]["configured_vtable_symbols"] == []
+    assert case["entry"]["actor"]["configured_behavior_symbols"] == []
+
+
 def test_summary_and_report_call_out_named_write():
     before = _object(curr=0x400).hex()
     after = _object(curr=0x800).hex()
@@ -280,6 +315,11 @@ def test_summary_and_report_call_out_named_write():
             "status": "returned",
             "entry": {"caller_addr": 0x02012004, "caller_symbols": ["Caller"],
                       "regs": {"r0": 0x02020000, "r1": 0x1e, "r2": 0, "r3": 0},
+                      "actor": {"address": 0x02020000, "id": 74,
+                                "name": "Goomba", "class": "Goomba",
+                                "configured_vtable_symbols": ["ov084:_ZTV6Goomba"],
+                                "configured_behavior_symbols": [
+                                    "ov084:_ZN6Goomba8BehaviorEv"]},
                       "object": {"addr": 0x02020000, "hex": before,
                                  "vtable": {"addr": 0x02018000, "plausible": True,
                                             "symbols": ["arm9:_ZTV5Thing"],
@@ -303,5 +343,8 @@ def test_summary_and_report_call_out_named_write():
     assert "r1=0x0000001e" in report
     assert "arm9:_ZTV5Thing @ 0x02018000" in report
     assert "method-owner hints (not concrete type proof): FaderBrightness (1)" in report
+    assert "Live actor receivers (catalog labels): Goomba @ 0x02020000 (1)" in report
+    assert "config-vtable=ov084:_ZTV6Goomba" in report
+    assert "config-behavior=ov084:_ZN6Goomba8BehaviorEv" in report
     assert "changed 1/1" in report
     assert "does AdvanceInterp change currInterp?" in report

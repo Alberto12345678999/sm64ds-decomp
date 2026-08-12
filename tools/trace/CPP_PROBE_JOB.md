@@ -32,8 +32,8 @@ distinguish it.
    `notes/matching-style.md`, and `tools/trace/README.md`. Claim the target
    before changing source or headers.
 2. Confirm the configured address, module, instruction set, reconstructed
-   class, receiver classification, and decodable fields without occupying the
-   emulator's GDB session:
+   class, receiver classification, and decodable fields without connecting to
+   the emulator:
 
    ```sh
    python tools/trace/cpp_probe.py <symbol> --resolve-only
@@ -42,8 +42,10 @@ distinguish it.
    Use `module:<symbol>` if the name is ambiguous. If automatic receiver
    classification is undecided, inspect the source signature before choosing
    `--this-reg`; do not assume that a mangled name makes `r0` an object pointer.
-3. Start melonDS with the ARM9 GDB stub enabled on port 3333 and JIT disabled.
-   Load a savestate or gameplay scene that reaches the target.
+3. Start the controller-enabled melonDS with `--control-port 45987` and JIT
+   disabled. Set `MELONDS_CONTROL_TOKEN` to the launch token. Load a savestate
+   or gameplay scene that reaches the target. The normal path does not require
+   or consume the ARM9 GDB stub.
 4. Capture real calls while exercising the relevant behavior:
 
    ```sh
@@ -64,11 +66,15 @@ distinguish it.
    Use `--no-return` only for recursive, non-returning, or very hot functions
    where entry/return pairing is unsuitable. Do not stop after
    `--resolve-only`; this job requires runtime evidence.
+
+   Use `--backend gdb --port 3333` only with an emulator that lacks protocol 2.
 5. Inspect the report and its JSON under `traces/questions/`. Record:
 
    - accepted hits and overlay-alias rejects;
    - observed callers and return registers;
    - object addresses and module-qualified vtable candidates;
+   - live actor ID/catalog class plus the decomp config's symbols for the same
+     vtable and behavior pointers, including any contradiction;
    - entry and exit values for named fields;
    - named and unnamed changed byte ranges;
    - which gameplay path was exercised.

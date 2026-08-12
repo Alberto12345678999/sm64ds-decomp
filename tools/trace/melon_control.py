@@ -5,6 +5,9 @@ import json
 import math
 import pathlib
 import socket
+import time
+
+from rsp import RspError
 
 
 BUTTONS = {
@@ -25,6 +28,10 @@ BUTTONS = {
 
 class ControlError(RuntimeError):
     pass
+
+
+def _address(value):
+    return int(value, 0) if isinstance(value, str) else int(value)
 
 
 class MelonControl:
@@ -55,6 +62,158 @@ class MelonControl:
         if not response.get("ok"):
             raise ControlError(response.get("error", "melonDS control request failed"))
         return response
+
+
+class ControlBreakpointClient:
+    """Expose protocol-2 managed breakpoints through cpp_probe's client API.
+
+    ``cpp_probe`` originally spoke the GDB remote protocol directly.  Keeping
+    the tiny adapter interface lets its capture and report code use melonDS's
+    in-process breakpoint engine without maintaining a second implementation.
+    Each protocol request uses a short-lived localhost socket, so there is no
+    single-client session to wedge or detach.
+    """
+
+    def __init__(self, host="127.0.0.1", port=45987, timeout=2.0,
+                 token=None, poll_interval=0.01):
+        self.control = MelonControl(host, port, token, timeout)
+        self.timeout = float(timeout)
+        self.poll_interval = float(poll_interval)
+        self._last_sequence = 0
+        self._last_hit = None
+        self._owned_breakpoints = set()
+
+    @staticmethod
+    def _hit(response):
+        hit = response.get("last_breakpoint_hit") or None
+        if not hit:
+            return None
+        return {
+            **hit,
+            "sequence": int(hit.get("sequence", 0)),
+            "address": _address(hit["address"]),
+        }
+
+    def connect(self, retries=1, retry_delay=0.0):
+        del retries, retry_delay
+        try:
+            ping = self.control.request("ping")
+            if ping.get("protocol") != 2:
+                raise RspError(
+                    f"melonDS control protocol 2 required, got {ping.get('protocol')!r}")
+            status = self.control.request("status")
+        except (ControlError, OSError, ValueError) as exc:
+            raise RspError(f"melonDS control connection failed: {exc}") from exc
+        if not status.get("managed_breakpoints_available"):
+            raise RspError("managed ARM9 breakpoints are unavailable; disable JIT")
+        hit = self._hit(status)
+        self._last_sequence = hit["sequence"] if hit else 0
+        self._last_hit = hit
+        return self
+
+    def close(self):
+        pass
+
+    def set_breakpoint(self, addr, kind=4):
+        # The in-process engine normalizes ARM/Thumb addresses itself.  Keep
+        # accepting GDB's kind argument so cpp_probe needs no transport branch.
+        del kind
+        try:
+            self.control.request("breakpoint_add", address=f"0x{addr:08x}")
+        except (ControlError, OSError, ValueError) as exc:
+            raise RspError(f"could not add managed breakpoint at {addr:#x}: {exc}") from exc
+        self._owned_breakpoints.add(addr & ~1)
+        return True
+
+    def clear_breakpoint(self, addr, kind=4):
+        del kind
+        try:
+            self.control.request("breakpoint_remove", address=f"0x{addr:08x}")
+        except (ControlError, OSError, ValueError) as exc:
+            raise RspError(f"could not remove managed breakpoint at {addr:#x}: {exc}") from exc
+        self._owned_breakpoints.discard(addr & ~1)
+        return True
+
+    def read_mem(self, addr, length):
+        try:
+            response = self.control.request(
+                "read_memory", address=f"0x{addr:08x}", size=int(length))
+            return bytes.fromhex(response["data"])
+        except (ControlError, OSError, KeyError, ValueError) as exc:
+            raise RspError(f"could not read {length} byte(s) at {addr:#x}: {exc}") from exc
+
+    def write_mem(self, addr, data):
+        try:
+            self.control.request(
+                "write_memory", address=f"0x{addr:08x}", data=bytes(data).hex())
+        except (ControlError, OSError, ValueError) as exc:
+            raise RspError(f"could not write memory at {addr:#x}: {exc}") from exc
+        return True
+
+    def cont(self, expect_reply=False):
+        del expect_reply
+        try:
+            status = self.control.request("status")
+            hit = self._hit(status)
+            if hit:
+                self._last_sequence = max(self._last_sequence, hit["sequence"])
+            self.control.request("resume")
+        except (ControlError, OSError, ValueError) as exc:
+            raise RspError(f"could not resume emulation: {exc}") from exc
+        return ""
+
+    def wait_for_stop(self):
+        deadline = time.monotonic() + self.timeout
+        while time.monotonic() < deadline:
+            try:
+                status = self.control.request("status")
+            except (ControlError, OSError, ValueError) as exc:
+                raise RspError(f"could not poll breakpoint status: {exc}") from exc
+            hit = self._hit(status)
+            if (status.get("state") == "breakpoint" and hit and
+                    hit["sequence"] > self._last_sequence):
+                try:
+                    detail = self.control.request("breakpoint_list")
+                except (ControlError, OSError, ValueError) as exc:
+                    raise RspError(f"could not read breakpoint hit: {exc}") from exc
+                self._last_hit = self._hit(detail)
+                self._last_sequence = hit["sequence"]
+                return "T05"
+            time.sleep(self.poll_interval)
+        raise TimeoutError("timed out waiting for a managed breakpoint")
+
+    def read_registers(self):
+        hit = self._last_hit
+        if not hit or not hit.get("registers"):
+            try:
+                hit = self._hit(self.control.request("breakpoint_list"))
+            except (ControlError, OSError, ValueError) as exc:
+                raise RspError(f"could not read breakpoint registers: {exc}") from exc
+        if not hit or not hit.get("registers"):
+            raise RspError("no managed breakpoint register snapshot is available")
+        raw_regs = hit["registers"]
+        out = {f"r{i}": _address(raw_regs[f"r{i}"]) for i in range(16)}
+        out["sp"], out["lr"], out["pc"] = out["r13"], out["r14"], out["r15"]
+        out["cpsr"] = _address(raw_regs["cpsr"])
+        out["cpsr_src"] = "control-api"
+        out["words"] = [out[f"r{i}"] for i in range(16)] + [out["cpsr"]]
+        out["raw"] = ""
+        return out
+
+    def research_snapshot(self):
+        try:
+            return self.control.request("research_snapshot")
+        except (ControlError, OSError, ValueError) as exc:
+            raise RspError(f"could not read research snapshot: {exc}") from exc
+
+    def detach(self):
+        # Match RSP detach's useful behavior: do not leave the emulator stopped.
+        try:
+            status = self.control.request("status")
+            if status.get("state") == "breakpoint":
+                self.control.request("resume")
+        except (ControlError, OSError, ValueError):
+            pass
 
 
 class ControlMelonInput:
@@ -111,13 +270,32 @@ class ControlMelonInput:
         self.client.request("clear_input_override")
 
     def step_frames(self, frames):
-        remaining = int(frames)
-        if remaining < 0:
+        requested = int(frames)
+        if requested < 0:
             raise ValueError("frame count cannot be negative")
-        while remaining:
-            chunk = min(remaining, 600)
-            self.client.request("step", frames=chunk)
-            remaining -= chunk
+        if requested == 0:
+            return
+
+        status = self.client.request("status")
+        completed = int(status["completed_frames"])
+        target = completed + requested
+        while completed < target:
+            chunk = min(target - completed, 600)
+            try:
+                response = self.client.request("step", frames=chunk)
+                completed = int(response["completed_frames"])
+            except ControlError as exc:
+                if "managed breakpoint hit before frame step completed" not in str(exc):
+                    raise
+                # The collector needs the CPU stopped long enough to capture
+                # registers and object memory.  Wait until it resumes the hit,
+                # then finish the exact frame budget from the monotonic counter.
+                while True:
+                    status = self.client.request("status")
+                    completed = int(status["completed_frames"])
+                    if status.get("state") != "breakpoint":
+                        break
+                    time.sleep(0.005)
 
     def sleep(self, seconds):
         exact = self._fractional_frames + max(0.0, float(seconds)) * self.fps
