@@ -123,9 +123,9 @@ BobOmbBuddy, KingBobOmb, ChainChomp, ChainChompFence, Minimap, and HUD.
 
 ## Harness work that unlocks the five
 
-1. Add `preconnect_steps` or a deferred `arm_when_resident` mode so an overlay
-   savestate can load before its software breakpoint is installed.  Loading a
-   savestate after arming can overwrite an overlay breakpoint.
+1. **Done:** control-backed `setup_steps` now load and settle a savestate before
+   the GDB client attaches; RAM setup and residency checks happen after attach,
+   and the target breakpoint is armed only before trigger steps.
 2. Add fixed-address typed observations (not only candidate-canary groups) for
    the loaded level-overlay ID and shared resource pointers.
 3. Build a savestate catalog containing level, star, actor-spawn inventory,
