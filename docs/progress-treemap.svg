@@ -21353,11 +21353,11 @@ matched: yes</title></rect><rect x="614.80" y="189.45" width="0.95" height="8.49
 module: ov006
 addr: 0x020d100c
 size: 12 bytes
-matched: yes</title></rect><rect x="615.74" y="189.45" width="12.61" height="8.49" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_020d1018
+matched: yes</title></rect><rect x="615.74" y="189.45" width="12.61" height="8.49" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dScMgAmida_cD1Ev
 module: ov006
 addr: 0x020d1018
 size: 160 bytes
-matched: yes</title></rect><rect x="628.35" y="189.45" width="14.19" height="8.49" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_020d10b8
+matched: yes</title></rect><rect x="628.35" y="189.45" width="14.19" height="8.49" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dScMgAmida_cD0Ev
 module: ov006
 addr: 0x020d10b8
 size: 180 bytes
@@ -21365,7 +21365,7 @@ matched: yes</title></rect><rect x="642.86" y="189.45" width="1.89" height="8.49
 module: ov006
 addr: 0x020d1170
 size: 24 bytes
-matched: yes</title></rect><rect x="644.75" y="189.45" width="1.89" height="8.49" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_020d1188
+matched: yes</title></rect><rect x="644.75" y="189.45" width="1.89" height="8.49" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dScMgAmida_c5Unk36Ev
 module: ov006
 addr: 0x020d1188
 size: 24 bytes
@@ -21433,11 +21433,11 @@ matched: yes</title></rect><rect x="942.97" y="197.94" width="8.64" height="17.9
 module: ov006
 addr: 0x020d47f4
 size: 232 bytes
-matched: yes</title></rect><rect x="951.61" y="197.94" width="25.03" height="17.97" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_020d48dc
+matched: yes</title></rect><rect x="951.61" y="197.94" width="25.03" height="17.97" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dScMgAmida_c6RenderEv
 module: ov006
 addr: 0x020d48dc
 size: 672 bytes
-matched: yes</title></rect><rect x="976.64" y="197.94" width="71.06" height="17.97" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_020d4b7c
+matched: yes</title></rect><rect x="976.64" y="197.94" width="71.06" height="17.97" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dScMgAmida_c8BehaviorEv
 module: ov006
 addr: 0x020d4b7c
 size: 1908 bytes
@@ -21445,11 +21445,11 @@ matched: yes</title></rect><rect x="614.48" y="215.91" width="14.04" height="7.0
 module: ov006
 addr: 0x020d52f0
 size: 148 bytes
-matched: yes</title></rect><rect x="628.52" y="215.91" width="136.57" height="7.06" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_020d5384
+matched: yes</title></rect><rect x="628.52" y="215.91" width="136.57" height="7.06" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dScMgAmida_c13InitResourcesEv
 module: ov006
 addr: 0x020d5384
 size: 1440 bytes
-matched: yes</title></rect><rect x="765.08" y="215.91" width="7.59" height="7.06" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_020d5924
+matched: yes</title></rect><rect x="765.08" y="215.91" width="7.59" height="7.06" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dScMgAmida_c21AfterCleanupResourcesEj
 module: ov006
 addr: 0x020d5924
 size: 80 bytes
