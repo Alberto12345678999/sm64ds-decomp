@@ -81,17 +81,17 @@ extern void func_ov006_02114dd0(char *c);
 extern void NullDestructor_0203d47c(void);
 extern void func_0203d738(void);
 
-extern int data_ov006_0213ec98[];
+extern int _ZTV19cMgSmartball_ball_c[];
 extern int _ZTV21cMgSmartball_object_c[];
-extern int data_ov006_0213ed4c[];
-extern int data_ov006_0213ed88[];
-extern int data_ov006_0213ece8[];
-extern int data_ov006_0213ecac[];
-extern int data_ov006_0213ed9c[];
-extern int data_ov006_0213ed38[];
-extern int data_ov006_0213ed74[];
+extern int _ZTV18cMgSmartball_ana_c[];
+extern int _ZTV21cMgSmartball_kinoko_c[];
+extern int _ZTV24cMgSmartball_propeller_c[];
+extern int _ZTV20cMgSmartball_dokan_c[];
+extern int _ZTV21cMgSmartball_pakkun_c[];
+extern int _ZTV25cMgSmartball_pushswitch_c[];
+extern int _ZTV19cMgSmartball_slot_c[];
 extern int data_ov006_0213ed60[];
-extern int data_ov006_0213ed24[];
+extern int _ZTV19cMgSmartball_wing_c[];
 extern int data_ov006_02142c40[];
 extern int data_ov006_0213ef8c[];
 extern int data_ov006_0213efb8[];
@@ -121,7 +121,7 @@ void func_ov006_02115b0c(char *c)
         int *p = *slot;
         if (p != 0) {
             if (p != 0) {
-                *(int volatile *)p = (int)data_ov006_0213ec98;
+                *(int volatile *)p = (int)_ZTV19cMgSmartball_ball_c;
                 *(int volatile *)p = (int)_ZTV21cMgSmartball_object_c;
                 _ZN6Memory16operator_delete2EPv(p);
             }
@@ -133,7 +133,7 @@ void func_ov006_02115b0c(char *c)
         int *p = *slot;
         if (p != 0) {
             if (p != 0) {
-                *(int volatile *)p = (int)data_ov006_0213ed4c;
+                *(int volatile *)p = (int)_ZTV18cMgSmartball_ana_c;
                 *(int volatile *)p = (int)_ZTV21cMgSmartball_object_c;
                 _ZN6Memory16operator_delete2EPv(p);
             }
@@ -145,7 +145,7 @@ void func_ov006_02115b0c(char *c)
         int *p = *slot;
         if (p != 0) {
             if (p != 0) {
-                *(int volatile *)p = (int)data_ov006_0213ed88;
+                *(int volatile *)p = (int)_ZTV21cMgSmartball_kinoko_c;
                 *(int volatile *)p = (int)_ZTV21cMgSmartball_object_c;
                 _ZN6Memory16operator_delete2EPv(p);
             }
@@ -157,7 +157,7 @@ void func_ov006_02115b0c(char *c)
         int *p = *slot;
         if (p != 0) {
             if (p != 0) {
-                *(int volatile *)p = (int)data_ov006_0213ece8;
+                *(int volatile *)p = (int)_ZTV24cMgSmartball_propeller_c;
                 *(int volatile *)p = (int)_ZTV21cMgSmartball_object_c;
                 _ZN6Memory16operator_delete2EPv(p);
             }
@@ -169,7 +169,7 @@ void func_ov006_02115b0c(char *c)
         int *p = *slot;
         if (p != 0) {
             if (p != 0) {
-                *(int volatile *)p = (int)data_ov006_0213ecac;
+                *(int volatile *)p = (int)_ZTV20cMgSmartball_dokan_c;
                 *(int volatile *)p = (int)_ZTV21cMgSmartball_object_c;
                 _ZN6Memory16operator_delete2EPv(p);
             }
@@ -181,7 +181,7 @@ void func_ov006_02115b0c(char *c)
         int *p = *slot;
         if (p != 0) {
             if (p != 0) {
-                *(int volatile *)p = (int)data_ov006_0213ed9c;
+                *(int volatile *)p = (int)_ZTV21cMgSmartball_pakkun_c;
                 *(int volatile *)p = (int)_ZTV21cMgSmartball_object_c;
                 _ZN6Memory16operator_delete2EPv(p);
             }
@@ -193,7 +193,7 @@ void func_ov006_02115b0c(char *c)
         int *p = *slot;
         if (p != 0) {
             if (p != 0) {
-                *(int volatile *)p = (int)data_ov006_0213ed38;
+                *(int volatile *)p = (int)_ZTV25cMgSmartball_pushswitch_c;
                 *(int volatile *)p = (int)_ZTV21cMgSmartball_object_c;
                 _ZN6Memory16operator_delete2EPv(p);
             }
@@ -205,7 +205,7 @@ void func_ov006_02115b0c(char *c)
         int *p = *(int **)(c + 0x4000 + 0x778);
         if (p != 0) {
             if (p != 0) {
-                *p = (int)data_ov006_0213ed74;
+                *p = (int)_ZTV19cMgSmartball_slot_c;
                 __destroy_arr((char *)p + 0x4c, 3, 8, NullDestructor_0203d47c);
                 __destroy_arr((char *)p + 0x34, 3, 8, NullDestructor_0203d47c);
                 *(int volatile *)p = (int)_ZTV21cMgSmartball_object_c;
@@ -229,7 +229,7 @@ void func_ov006_02115b0c(char *c)
         int *p = *(int **)(c + 0x4000 + 0x780);
         if (p != 0) {
             if (p != 0) {
-                *p = (int)data_ov006_0213ed24;
+                *p = (int)_ZTV19cMgSmartball_wing_c;
                 *(int volatile *)p = (int)_ZTV21cMgSmartball_object_c;
                 _ZN6Memory16operator_delete2EPv(p);
             }

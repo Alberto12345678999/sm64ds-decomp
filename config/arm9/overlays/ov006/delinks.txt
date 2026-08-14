@@ -5441,15 +5441,15 @@ src/func_ov006_0210dbb0.c:
     complete
     .text start:0x0210dbb0 end:0x0210ddf0
 
-src/func_ov006_0210ddf0.c:
+src/_ZN19cMgSmartball_wing_c6UpdateEv.cpp:
     complete
     .text start:0x0210ddf0 end:0x0210e014
 
-src/func_ov006_0210e014.c:
+src/_ZN19cMgSmartball_wing_c12SaveSnapshotEv.cpp:
     complete
     .text start:0x0210e014 end:0x0210e098
 
-src/func_ov006_0210e098.c:
+src/_ZN19cMgSmartball_wing_c14RestoreInitialEv.cpp:
     complete
     .text start:0x0210e098 end:0x0210e0d0
 
@@ -5465,15 +5465,15 @@ src/func_ov006_0210e1fc.c:
     complete
     .text start:0x0210e1fc end:0x0210e364
 
-src/func_ov006_0210e364.c:
+src/_ZN25cMgSmartball_pushswitch_c6UpdateEv.cpp:
     complete
     .text start:0x0210e364 end:0x0210e3e8
 
-src/func_ov006_0210e3e8.c:
+src/_ZN25cMgSmartball_pushswitch_c12SaveSnapshotEv.cpp:
     complete
     .text start:0x0210e3e8 end:0x0210e460
 
-src/func_ov006_0210e460.c:
+src/_ZN25cMgSmartball_pushswitch_c14RestoreInitialEv.cpp:
     complete
     .text start:0x0210e460 end:0x0210e480
 
@@ -5525,15 +5525,15 @@ src/func_ov006_0210fb58.c:
     complete
     .text start:0x0210fb58 end:0x0210ff1c
 
-src/func_ov006_0210ff1c.c:
+src/_ZN19cMgSmartball_slot_c6UpdateEv.cpp:
     complete
     .text start:0x0210ff1c end:0x021100a8
 
-src/func_ov006_021100a8.c:
+src/_ZN19cMgSmartball_slot_c12SaveSnapshotEv.cpp:
     complete
     .text start:0x021100a8 end:0x02110154
 
-src/func_ov006_02110154.cpp:
+src/_ZN19cMgSmartball_slot_c14RestoreInitialEv.cpp:
     complete
     .text start:0x02110154 end:0x021101bc
 
@@ -5545,15 +5545,15 @@ src/func_ov006_02110244.c:
     complete
     .text start:0x02110244 end:0x021104c0
 
-src/func_ov006_021104c0.c:
+src/_ZN21cMgSmartball_pakkun_c6UpdateEv.cpp:
     complete
     .text start:0x021104c0 end:0x021106b4
 
-src/func_ov006_021106b4.c:
+src/_ZN21cMgSmartball_pakkun_c12SaveSnapshotEv.cpp:
     complete
     .text start:0x021106b4 end:0x02110850
 
-src/func_ov006_02110850.c:
+src/_ZN21cMgSmartball_pakkun_c14RestoreInitialEv.cpp:
     complete
     .text start:0x02110850 end:0x02110874
 
@@ -5565,15 +5565,15 @@ src/func_ov006_021108bc.c:
     complete
     .text start:0x021108bc end:0x02110928
 
-src/func_ov006_02110928.c:
+src/_ZN20cMgSmartball_dokan_c6UpdateEv.cpp:
     complete
     .text start:0x02110928 end:0x02110a20
 
-src/func_ov006_02110a20.cpp:
+src/_ZN20cMgSmartball_dokan_c12SaveSnapshotEv.cpp:
     complete
     .text start:0x02110a20 end:0x02110bb4
 
-src/func_ov006_02110bb4.c:
+src/_ZN20cMgSmartball_dokan_c14RestoreInitialEv.cpp:
     complete
     .text start:0x02110bb4 end:0x02110bc0
 
@@ -5589,15 +5589,15 @@ src/func_ov006_02110e28.c:
     complete
     .text start:0x02110e28 end:0x0211102c
 
-src/func_ov006_0211102c.c:
+src/_ZN24cMgSmartball_propeller_c6UpdateEv.cpp:
     complete
     .text start:0x0211102c end:0x02111144
 
-src/START_INTRO_MINIMAP_ZOOM.c:
+src/_ZN24cMgSmartball_propeller_c12SaveSnapshotEv.cpp:
     complete
     .text start:0x02111144 end:0x021111f0
 
-src/func_ov006_021111f0.c:
+src/_ZN24cMgSmartball_propeller_c14RestoreInitialEv.cpp:
     complete
     .text start:0x021111f0 end:0x02111220
 
@@ -5605,15 +5605,15 @@ src/func_ov006_02111220.c:
     complete
     .text start:0x02111220 end:0x02111268
 
-src/func_ov006_02111268.c:
+src/_ZN21cMgSmartball_spring_c6UpdateEv.cpp:
     complete
     .text start:0x02111268 end:0x0211134c
 
-src/func_ov006_0211134c.c:
+src/_ZN21cMgSmartball_spring_c12SaveSnapshotEv.cpp:
     complete
     .text start:0x0211134c end:0x02111560
 
-src/func_ov006_02111560.c:
+src/_ZN21cMgSmartball_spring_c14RestoreInitialEv.cpp:
     complete
     .text start:0x02111560 end:0x0211157c
 
@@ -5629,15 +5629,15 @@ src/func_ov006_021115cc.c:
     complete
     .text start:0x021115cc end:0x02111654
 
-src/func_ov006_02111654.c:
+src/_ZN18cMgSmartball_ana_c6UpdateEv.cpp:
     complete
     .text start:0x02111654 end:0x021116f0
 
-src/func_ov006_021116f0.c:
+src/_ZN18cMgSmartball_ana_c12SaveSnapshotEv.cpp:
     complete
     .text start:0x021116f0 end:0x02111750
 
-src/func_ov006_02111750.c:
+src/_ZN18cMgSmartball_ana_c14RestoreInitialEv.cpp:
     complete
     .text start:0x02111750 end:0x02111774
 
@@ -5645,15 +5645,15 @@ src/func_ov006_02111774.c:
     complete
     .text start:0x02111774 end:0x021117bc
 
-src/func_ov006_021117bc.c:
+src/_ZN21cMgSmartball_kinoko_c6UpdateEv.cpp:
     complete
     .text start:0x021117bc end:0x0211192c
 
-src/func_ov006_0211192c.c:
+src/_ZN21cMgSmartball_kinoko_c12SaveSnapshotEv.cpp:
     complete
     .text start:0x0211192c end:0x02111b20
 
-src/func_ov006_02111b20.c:
+src/_ZN21cMgSmartball_kinoko_c14RestoreInitialEv.cpp:
     complete
     .text start:0x02111b20 end:0x02111b40
 
@@ -5745,15 +5745,15 @@ src/func_ov006_02113c14.c:
     complete
     .text start:0x02113c14 end:0x02113e54
 
-src/func_ov006_02113e54.c:
+src/_ZN19cMgSmartball_ball_c6UpdateEv.cpp:
     complete
     .text start:0x02113e54 end:0x02113f1c
 
-src/func_ov006_02113f1c.c:
+src/_ZN19cMgSmartball_ball_c12SaveSnapshotEv.cpp:
     complete
     .text start:0x02113f1c end:0x02114458
 
-src/func_ov006_02114458.c:
+src/_ZN19cMgSmartball_ball_c14RestoreInitialEv.cpp:
     complete
     .text start:0x02114458 end:0x02114548
 
