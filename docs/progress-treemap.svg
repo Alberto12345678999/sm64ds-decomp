@@ -23321,11 +23321,11 @@ matched: yes</title></rect><rect x="942.05" y="359.95" width="6.63" height="6.46
 module: ov006
 addr: 0x020ede80
 size: 64 bytes
-matched: yes</title></rect><rect x="948.68" y="359.95" width="15.33" height="6.46" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_020edec0
+matched: yes</title></rect><rect x="948.68" y="359.95" width="15.33" height="6.46" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11dScMgJump_cD1Ev
 module: ov006
 addr: 0x020edec0
 size: 148 bytes
-matched: yes</title></rect><rect x="964.01" y="359.95" width="17.40" height="6.46" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_020edf54
+matched: yes</title></rect><rect x="964.01" y="359.95" width="17.40" height="6.46" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11dScMgJump_cD0Ev
 module: ov006
 addr: 0x020edf54
 size: 168 bytes
@@ -23397,11 +23397,11 @@ matched: no</title></rect><rect x="622.21" y="624.62" width="5.64" height="28.00
 module: ov006
 addr: 0x020eeafc
 size: 236 bytes
-matched: yes</title></rect><rect x="622.21" y="652.63" width="5.64" height="21.36" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_020eebe8
+matched: yes</title></rect><rect x="622.21" y="652.63" width="5.64" height="21.36" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dScMgJump2_cD1Ev
 module: ov006
 addr: 0x020eebe8
 size: 180 bytes
-matched: yes</title></rect><rect x="622.21" y="673.99" width="5.64" height="23.73" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_020eec9c
+matched: yes</title></rect><rect x="622.21" y="673.99" width="5.64" height="23.73" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dScMgJump2_cD0Ev
 module: ov006
 addr: 0x020eec9c
 size: 200 bytes
@@ -26781,11 +26781,11 @@ matched: yes</title></rect><rect x="841.54" y="703.74" width="6.23" height="5.58
 module: ov006
 addr: 0x021207a8
 size: 52 bytes
-matched: yes</title></rect><rect x="841.54" y="709.33" width="6.23" height="17.61" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_021207dc
+matched: yes</title></rect><rect x="841.54" y="709.33" width="6.23" height="17.61" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN17dScMgTrampoline_cD1Ev
 module: ov006
 addr: 0x021207dc
 size: 164 bytes
-matched: yes</title></rect><rect x="841.54" y="726.93" width="6.23" height="19.75" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_02120880
+matched: yes</title></rect><rect x="841.54" y="726.93" width="6.23" height="19.75" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN17dScMgTrampoline_cD0Ev
 module: ov006
 addr: 0x02120880
 size: 184 bytes
@@ -26953,11 +26953,11 @@ matched: yes</title></rect><rect x="854.51" y="600.27" width="5.01" height="0.53
 module: ov006
 addr: 0x021225a8
 size: 4 bytes
-matched: yes</title></rect><rect x="854.51" y="600.81" width="5.01" height="34.75" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_021225ac
+matched: yes</title></rect><rect x="854.51" y="600.81" width="5.01" height="34.75" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN18dScMgTrampoline2_cD1Ev
 module: ov006
 addr: 0x021225ac
 size: 260 bytes
-matched: yes</title></rect><rect x="854.51" y="635.56" width="5.01" height="37.42" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_021226b0
+matched: yes</title></rect><rect x="854.51" y="635.56" width="5.01" height="37.42" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN18dScMgTrampoline2_cD0Ev
 module: ov006
 addr: 0x021226b0
 size: 280 bytes
