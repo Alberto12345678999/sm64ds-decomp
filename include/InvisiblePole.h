@@ -1,45 +1,48 @@
-/* Hand-written from matched-function evidence:
- * class InvisiblePole, ov002 0x020b0710-0x020b07c8 (8 functions, no other class
- * in the TU -- tu_map.py).
- *
- * ALL FIVE of its virtual overrides are STUBS -- InitResources, Behavior,
- * Render and CleanupResources are `return 1`, OnPendingDestroy is empty, and
- * not one of them reads `this`. The class exists to BE somewhere: it is an
- * Actor carrying a MovingCylinderClsn and nothing else, so what it does is
- * occupy a collision volume that other code queries. Overriding every hook to
- * do nothing is how it stays inert while still being a full actor.
- *
- * The layout therefore comes from the spawner and the constructor, not from
- * the methods -- none of them touches a field:
- *
- *   InvisiblePole_Spawn allocates 264 == 0x108 bytes, so that is sizeof.
- *   It then runs MovingCylinderClsn's constructor at +0xd4, and Actor is
- *   0xd0, so the sub-object begins on the first 4-aligned offset past the
- *   base and runs to the end: 0x108 - 0xd4 == 0x34.
- *
- * That 0x34 is corroborated independently -- KoopaShell puts a
- * MovingCylinderClsn at 0x110 and its next member at 0x144, the same span.
- *
- * Field NAMES are placeholders - renaming cannot change codegen.
- */
 #ifndef INVISIBLEPOLE_H
 #define INVISIBLEPOLE_H
-#include "types.h"
 
-struct InvisiblePole {
-    u8  pad_000[0xd4];
-    /* MovingCylinderClsn, 0x34 bytes, running to the end of the object. Kept
-       as a byte marker: nothing in this class ever looks inside it. */
-    u8  mCylinderClsn;            /* 0x0d4 */
-    u8  pad_0d5[0x33];
-#ifdef __cplusplus
-    /* methods -- every one a stub; see the note above */
-    int Behavior();
-    int CleanupResources();
-    int InitResources();
-    void OnPendingDestroy();
-    int Render();
-#endif
+#include "types.h"
+#include "Actor.h"
+#include "MovingCylinderClsn.h"
+
+/* daBar_c in the ROM's RTTI -- the invisible climbing pole. The decomp's own name is
+ * kept, as it is for every other actor whose factory names it: InvisiblePole_Spawn
+ * builds this class, and that is what makes the name this class's rather than the
+ * next one's (see the naming series, #1418 onwards).
+ *
+ * TWO WITNESSES, and they close on each other exactly:
+ *
+ *   InvisiblePole_Spawn  ActorBase::operator new(264 = 0x108), Actor::Actor(),
+ *                        stores _ZTV13InvisiblePole, then MovingCylinderClsn at 0xd4.
+ *   ~InvisiblePole       the same vtable store, MovingCylinderClsn::~MovingCylinderClsn
+ *                        at 0xd4, then Actor::~Actor.
+ *
+ * SIZE 0x108, the factory's own literal. Actor ends at 0xd0, the one member starts at
+ * 0xd4 and MovingCylinderClsn is 0x34, so 0xd4 + 0x34 = 0x108 closes the object with
+ * nothing left over. The four bytes at 0xd0 are the only padding this class has, and
+ * they are padding because both witnesses skip them.
+ *
+ * THE VTABLE, at ov002 0x02108480, diffed slot by slot against _ZTV5Actor. Five slots
+ * differ, and they are the five declared below; every other slot holds Actor's own
+ * word and is inherited, so it is deliberately NOT redeclared here.
+ *
+ * No `operator delete` member is needed for the deleting destructor: mwcc inlines it
+ * from the class or its IMMEDIATE base, and Actor -- this class's immediate base --
+ * carries one. See the long note in include/Actor.h.
+ */
+struct InvisiblePole : Actor {
+    u8                  pad_0d0[0x4];
+    MovingCylinderClsn  mClsn;           /* 0x0d4 */
+
+    virtual ~InvisiblePole();            /* slots 16 (D1), 17 (D0) */
+
+    virtual s32  InitResources();        /* slot  0 */
+    virtual s32  CleanupResources();     /* slot  3 */
+    virtual s32  Behavior();             /* slot  6 */
+    virtual s32  Render();               /* slot  9 */
+    virtual void OnPendingDestroy();     /* slot 12 */
 };
 
-#endif
+typedef char InvisiblePole_size_must_be_0x108[sizeof(InvisiblePole) == 0x108 ? 1 : -1];
+
+#endif /* INVISIBLEPOLE_H */

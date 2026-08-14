@@ -1,0 +1,28 @@
+//cpp
+// @symbol _ZN14RotatingBridge8BehaviorEv
+/* recovered: named members + shared header, real C++ method */
+#include "RotatingBridge.h"
+extern "C" {
+extern int DecIfAbove0_Byte(void*);
+extern int _ZN5Sound8PlayLongEjjjRK7Vector3s(unsigned,unsigned,unsigned,void*,unsigned);
+extern int _ZN8Platform21UpdateModelPosAndRotYEv(void*);
+extern int func_020393a4(int*,int);
+extern int _ZN8Platform13IsClsnInRangeE5Fix12IiES1_(void*,int,int);
+extern int _ZN8Platform19UpdateClsnPosAndRotEv(void*);
+}
+
+int RotatingBridge::Behavior()
+{
+  if (DecIfAbove0_Byte((char*)&unk_31e) == 0) {
+    short* p = (short*)(((int)((char*)this) + 0x94));
+    *p = *p + 0x100;
+    mAngleY = mPrevAngleY;
+    unk_320 = _ZN5Sound8PlayLongEjjjRK7Vector3s(unk_320, 3, 0x88, (void*)((char*)&mCamSpacePosX), 0);
+    if ((mPrevAngleY & 0x7fff) == 0) unk_31e = 0x3c;
+  }
+  _ZN8Platform21UpdateModelPosAndRotYEv(((char*)this));
+  func_020393a4((int*)((char*)&(*(u8 *)&mMeshCollider)), 0x320000);
+  if (_ZN8Platform13IsClsnInRangeE5Fix12IiES1_(((char*)this), 0x320000, 0))
+    _ZN8Platform19UpdateClsnPosAndRotEv(((char*)this));
+  return 1;
+}

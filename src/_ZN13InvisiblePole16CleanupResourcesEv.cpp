@@ -1,13 +1,9 @@
 //cpp
 // @symbol _ZN13InvisiblePole16CleanupResourcesEv
-/* recovered: shared header, real C++ method
- *
- * `return 1`. InitResources claimed nothing, so there is nothing to release --
- * the pair stays balanced by both doing nothing.
- */
+/* Vtable slot 3. Nothing to give back -- the pole owns no file. */
 #include "InvisiblePole.h"
 
-int InvisiblePole::CleanupResources()
+s32 InvisiblePole::CleanupResources()
 {
     return 1;
 }

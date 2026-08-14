@@ -4,35 +4,41 @@
 #include "decl_common.h"
 /* recovered: named members + shared header, real C++ method */
 #include "BowserPuzzlePiece.h"
-#include "MovingCylinderClsn.h"
-typedef int Fix12i;
-struct SharedFilePtr;
-struct Actor;
-namespace Model { void LoadFile(SharedFilePtr& f); }
-extern "C" int IsStarCollected(int r0, int r1);
-/* Signature deliberately copied from the local declaration above: the
-   ROM name carries by-value class parameters (e.g. Fix12<int>), which
-   mwccarm passes differently at the call site, so declaring the true
-   types breaks the byte match. See notes/mwccarm-codegen.md 6az. */
-extern "C" void _ZN18MovingCylinderClsn4InitEP5Actor5Fix12IiES3_jj(void *, Actor* a, Fix12i b, int c, unsigned int d, unsigned int e);
+struct SharedFilePtr { int x; };
+struct BMD_File;
+struct KCL_File;
+struct CLPS_Block { int x; };
+extern "C" {
+BMD_File* _ZN5Model8LoadFileER13SharedFilePtr(SharedFilePtr&);
+void _ZN9ModelBase7SetFileEP8BMD_Fileii(void* thiz, BMD_File*, int, int);
+void func_ov064_02119010(char* c);
+void func_ov064_02118fa4(void* c);
+KCL_File* _ZN12MeshCollider8LoadFileER13SharedFilePtr(SharedFilePtr&);
+void _ZN18MovingMeshCollider7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(void* thiz, KCL_File*, const Matrix4x3&, int fix, short s, CLPS_Block&);
+void func_020393c4(int* p, int v);
+}
+extern SharedFilePtr* data_ov064_0211adc8[];
+extern SharedFilePtr data_ov064_0211c800;
+extern CLPS_Block data_ov064_0211baac;
 
-
-extern SharedFilePtr data_ov002_0210da10;
-extern SharedFilePtr data_ov002_0210d9a8;
-extern signed char data_0209f2f8;
-extern unsigned char data_0209f220;
-
-s32 BowserPuzzlePiece::InitResources()
+void BowserPuzzlePiece::InitResources()
 {
-    Model::LoadFile(data_ov002_0210da10);
-    Model::LoadFile(data_ov002_0210d9a8);
-    unk_314 = (param1 >> 0xc) & 0xf;
-    unk_318 = param1 & 1;
-    if ((param1 & 0xf) > 1) unk_318 = 0;
-    if (data_0209f2f8 == 8 && (data_0209f220 == 1 || IsStarCollected(SublevelToLevel(8), 1) == 0)) {
-        return 0;
-    }
-    _ZN18MovingCylinderClsn4InitEP5Actor5Fix12IiES3_jj((MovingCylinderClsn*)((char*)&(*(u8 *)&mMovingCylinderClsn)), (Actor*)((char*)this), 0xc8000, 0x190000, 0x800004, 0);
-    func_ov064_0211982c(((char*)this), &data_ov064_0211c934);
-    return 1;
+    unk_337 = unk_008 & 0xf;
+    _ZN9ModelBase7SetFileEP8BMD_Fileii(((char*)this) + 0xd4,
+        _ZN5Model8LoadFileER13SharedFilePtr(*data_ov064_0211adc8[unk_337]), 1, -1);
+    func_ov064_02119010(((char*)this));
+    func_ov064_02118fa4(((char*)this));
+    _ZN18MovingMeshCollider7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
+        ((char*)this) + 0x124,
+        _ZN12MeshCollider8LoadFileER13SharedFilePtr(data_ov064_0211c800),
+        *(const Matrix4x3*)((char*)&unk_2ec), 0x1000, unk_08e, data_ov064_0211baac);
+    func_020393c4((int*)((char*)&mMovingMeshCollider), (int)&func_ov064_021192bc);
+    unk_324 = data_ov064_0211c198[unk_337];
+    unk_328 = 0;
+    unk_32c = 0;
+    unk_334 = 0;
+    unk_338 = 0;
+    unk_339 = 1;
+    unk_336 = 0;
+    unk_33a = 1;
 }

@@ -1,6 +1,5 @@
 //cpp
 // @symbol func_ov100_02146dec
-// recovered name: daObjPathLift_c_OnYoshiTryEat
 /* recovered: renamed to Class_Method, declarations from a shared header */
 #include "decl_Actor.h"
 #include "decl_Model.h"
@@ -8,7 +7,6 @@
 #include "decl_ShadowModel.h"
 #include "decl_common.h"
 /* recovered: renamed to Class_Method */
-/* daObjPathLift_c::OnYoshiTryEat - recovered from vtable slot identity */
 extern "C" {
 extern void __destroy_arr(void* arr, int count, int size, void(*dtor)(void*));
 extern void* data_ov002_0210af70[];

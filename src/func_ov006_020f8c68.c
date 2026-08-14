@@ -1,11 +1,13 @@
+//cpp
 // @symbol func_ov006_020f8c68
 /* recovered: renamed to Class_Method, RTTI class fields named, declarations from a shared header */
 #include "decl_common.h"
 /* recovered: renamed to Class_Method, RTTI class fields named */
 #include "dScMgMCarlo_c.h"
+
+extern "C" {
 // recovered name: dScMgMCarlo_c_OnYoshiTryEat_020f8c68
 /* recovered: renamed to Class_Method */
-/* dScMgMCarlo_c::OnYoshiTryEat - recovered from vtable slot identity */
 void func_ov006_020f7c10(char* p);
 void func_ov006_020c1604(char* c, int unused, short a2, int a3);
 void func_ov004_020b66d4(char* p);
@@ -24,4 +26,5 @@ void func_ov006_020f8c68(char* c)
     self->unk_60a8 = 1;
     func_ov004_020b66d4(c + 0x6000);
     func_020bc7d4 = 1;
+}
 }

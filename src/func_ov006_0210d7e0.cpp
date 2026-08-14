@@ -1,10 +1,8 @@
 //cpp
 // @symbol func_ov006_0210d7e0
-// recovered name: dScMgSmartball_c_OnYoshiTryEat
 /* recovered: renamed to Class_Method, declarations from a shared header */
 #include "decl_common.h"
 /* recovered: renamed to Class_Method */
-/* dScMgSmartball_c::OnYoshiTryEat - recovered from vtable slot identity */
 extern "C" void __destroy_arr(void* p, int a, int b, void* fn);
 extern "C" void NullDestructor_0203d47c(void);
 extern "C" void* data_020a0eac;

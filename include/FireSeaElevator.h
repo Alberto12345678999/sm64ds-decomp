@@ -2,61 +2,31 @@
 #define FIRESEAELEVATOR_H
 
 #include "types.h"
-
-/* Derives from Platform: the destructor stores this class's vtable, then
- * Platform's -- inlined -- then destroys the MovingMeshCollider at 0x124 and
- * the Model at 0xd4 before chaining to Actor. All three belong to Platform.
- * Everything this header used to restate below 0x31e was Actor's and
- * Platform's, and is inherited now.
- *
- * SIZE IS THE OBSERVED FIELD SPAN, rounded up. It guards this declaration; it
- * is not independent evidence about the ROM.
- */
-
-#ifdef __cplusplus
-
 #include "Platform.h"
-#include "MovingCylinderClsn.h"
 
+/* TWO WITNESSES, and they close on each other:
+ *
+ *   FireSeaElevator_Spawn  ActorBase::operator new(808 = 0x328), Platform::Platform(), stores _ZTV15FireSeaElevator,
+ *                 then the members below in this order.
+ *   ~FireSeaElevator   the same members destroyed in reverse, then ~Platform.
+ *
+ * SIZE 0x328 is the factory's own literal, and the last member closes exactly on it.
+ *
+ * THE VTABLE was diffed slot by slot against _ZTV8Platform. Only the slots declared
+ * below differ; every other slot holds the base's own word and is inherited, so it
+ * is deliberately not redeclared here.
+ */
 struct FireSeaElevator : Platform {
-    u8  pad_31e[0x2];
-    MovingCylinderClsn mMovingCylinderClsn;/* 0x320 */
-    u16 unk_354;                      /* 0x354 */
+    u8  pad_320[0x8];
 
-    /* --- vtable --- */
-    virtual ~FireSeaElevator();
+    virtual ~FireSeaElevator();            /* slots 16 (D1), 17 (D0) */
 
-    int Behavior();
-    int CleanupResources();
-    int InitResources();
-    int Render();
+    virtual s32   InitResources();         /* slot  0 */
+    virtual s32   CleanupResources();      /* slot  3 */
+    virtual s32   Behavior();              /* slot  6 */
+    virtual s32   Render();                /* slot  9 */
 };
 
-typedef char FireSeaElevator_size_must_be_0x358[sizeof(FireSeaElevator) == 0x358 ? 1 : -1];
-
-#else
-
-/* The C spelling of the same object, flat. Kept because the D0 file is a C
-   translation unit that reads these fields, and D0 is compiler-generated so it
-   can never be migrated. Same arrangement as include/ShadowModel.h. */
-struct FireSeaElevator {
-    u8  pad_000[0x8];
-    s32 unk_008;            /* 0x008 */
-    u8  pad_00c[0x82];
-    s16 unk_08e;            /* 0x08e */
-    u8  pad_090[0x44];
-    /* Model member, named by _ZN5ModelD1Ev at +0xd4 -- a relocation the ROM build checks.
-       D1 and not D2, so it is this type and not an inlined base. Was a u8 marker. */
-    Model mModel;            /* 0x0d4 */
-    u8  mMovingMeshCollider;            /* 0x124 */
-    u8  pad_125[0x1fb];
-    /* MovingCylinderClsn member, named by the class's own destructor calling
-       MovingCylinderClsn's D1 at +0x320 -- a relocation the ROM build
-       checks. Was a u8 marker. [_ZN15FireSeaElevatorD1Ev.c] */
-    MovingCylinderClsn mMovingCylinderClsn;            /* 0x320 */
-    u16 unk_354;            /* 0x354 */
-};
-
-#endif /* __cplusplus */
+typedef char FireSeaElevator_size_must_be_0x328[sizeof(FireSeaElevator) == 0x328 ? 1 : -1];
 
 #endif /* FIRESEAELEVATOR_H */

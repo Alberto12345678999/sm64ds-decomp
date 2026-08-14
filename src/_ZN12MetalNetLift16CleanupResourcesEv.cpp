@@ -1,25 +1,21 @@
 //cpp
 // @symbol _ZN12MetalNetLift16CleanupResourcesEv
-/* recovered: shared header, real C++ method
- *
- * Cross-overlay tail-call veneer. #pragma long_calls forces mwccarm to emit
- * the pooled `ldr ip,[pc]; bx ip` indirect tail-call (a plain near `b`
- * otherwise) that the ROM uses to reach another overlay. Loads the data
- * pointer into r1; this stays in r0.
- *
- * Same table as InitResources -- data_ov064_0211adb0 is handed to the load
- * worker and to the release worker alike, which is what makes the pair a
- * matched set rather than two unrelated veneers.
- */
-#pragma long_calls on
 #include "MetalNetLift.h"
-
+// recovered name: daObjFl_Amilift_c_CleanupResources
+/* recovered: renamed to Class_Method, declarations from a shared header */
+#include "decl_common.h"
+extern int data_ov064_0211c728[];
+/* recovered: renamed to Class_Method */
+/* daObjFl_Amilift_c::CleanupResources - recovered from vtable slot identity */
 extern "C" {
-extern int func_ov002_020b60fc(void *thisp, void *data);
-extern char data_ov064_0211adb0[];
+extern void _ZN13SharedFilePtr7ReleaseEv(void *);
+extern int data_ov064_0211c730[];
 }
 
-int MetalNetLift::CleanupResources()
-{
-    return func_ov002_020b60fc(this, data_ov064_0211adb0);
+s32 MetalNetLift::CleanupResources() {
+    void * t = (void *)this;
+    _ZN16MeshColliderBase7DisableEv((char *)t + 0x124);
+    _ZN13SharedFilePtr7ReleaseEv(data_ov064_0211c730);
+    _ZN13SharedFilePtr7ReleaseEv(data_ov064_0211c728);
+    return 1;
 }

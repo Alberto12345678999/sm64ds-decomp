@@ -45,8 +45,8 @@ _ZN11CrazedCrate8BehaviorEv kind:function(arm,size=0x20) addr:0x021251cc
 _ZN11CrazedCrate13InitResourcesEv kind:function(arm,size=0x12c) addr:0x021251ec
 func_ov080_02125318 kind:function(arm,size=0x9c) addr:0x02125318
 CrazedCrate_Spawn kind:function(arm,size=0x50) addr:0x021253b4
-func_ov080_02125404 kind:function(arm,size=0x24) addr:0x02125404
-func_ov080_02125428 kind:function(arm,size=0x38) addr:0x02125428
+_ZN8PaintingD1Ev kind:function(arm,size=0x24) addr:0x02125404
+_ZN8PaintingD0Ev kind:function(arm,size=0x38) addr:0x02125428
 func_ov080_02125460 kind:function(arm,size=0xfc) addr:0x02125460
 func_ov080_0212555c kind:function(arm,size=0xd4) addr:0x0212555c
 func_ov080_02125630 kind:function(arm,size=0xc8) addr:0x02125630
@@ -68,11 +68,11 @@ func_ov080_021265ec kind:function(arm,size=0x190) addr:0x021265ec
 func_ov080_0212677c kind:function(arm,size=0x23c) addr:0x0212677c
 func_ov080_021269b8 kind:function(arm,size=0x9c) addr:0x021269b8
 func_ov080_02126a54 kind:function(arm,size=0x1a8) addr:0x02126a54
-func_ov080_02126bfc kind:function(arm,size=0x20) addr:0x02126bfc
-func_ov080_02126c1c kind:function(arm,size=0x4) addr:0x02126c1c
-func_ov080_02126c20 kind:function(arm,size=0x40) addr:0x02126c20
-func_ov080_02126c60 kind:function(arm,size=0x40) addr:0x02126c60
-func_ov080_02126ca0 kind:function(arm,size=0x2ec) addr:0x02126ca0
+_ZN8Painting16CleanupResourcesEv kind:function(arm,size=0x20) addr:0x02126bfc
+_ZN8Painting16OnPendingDestroyEv kind:function(arm,size=0x4) addr:0x02126c1c
+_ZN8Painting6RenderEv kind:function(arm,size=0x40) addr:0x02126c20
+_ZN8Painting8BehaviorEv kind:function(arm,size=0x40) addr:0x02126c60
+_ZN8Painting13InitResourcesEv kind:function(arm,size=0x2ec) addr:0x02126ca0
 Painting_Spawn kind:function(arm,size=0x30) addr:0x02126f8c
 func_ov080_02126fbc kind:function(arm,size=0x58) addr:0x02126fbc
 func_ov080_02127014 kind:function(arm,size=0x44) addr:0x02127014
@@ -144,7 +144,7 @@ data_ov080_0212826c kind:data(any) addr:0x0212826c
 _ZTI11daPicGate_c kind:data(any) addr:0x02128274
 _ZTS11daPicGate_c kind:data(any) addr:0x02128280
 Painting_SpawnInfo kind:data(any) addr:0x02128290 ambiguous
-data_ov080_021282b4 kind:data(any) addr:0x021282b4
+_ZTV8Painting kind:data(any) addr:0x021282b4
 data_ov080_02128338 kind:data(any) addr:0x02128338
 data_ov080_021283c0 kind:bss addr:0x021283c0
 data_ov080_021283c8 kind:bss addr:0x021283c8

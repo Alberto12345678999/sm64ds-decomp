@@ -6,13 +6,15 @@
 #include "KnockDownPlank.h"
 #include "SharedFilePtr.h"
 #include "MeshColliderBase.h"
-extern char data_ov015_02114534[];
+extern int PoleBillboard_ClsnFile[];
+extern int PoleBillboard_ModelFile[];
 
 int KnockDownPlank::CleanupResources()
 {
-    if (((MeshColliderBase *)((char *)&(*(u8 *)&mMeshCollider)))->IsEnabled())
+    if (((MeshColliderBase *)((char *)&(*(u8 *)&mMeshCollider)))->IsEnabled()) {
         ((MeshColliderBase *)((char *)&(*(u8 *)&mMeshCollider)))->Disable();
-    ((SharedFilePtr *)(*(void **)(data_ov015_02114534 + mVariant * 0xc)))->Release();
-    ((SharedFilePtr *)(*(void **)(data_ov015_02114538 + mVariant * 0xc)))->Release();
+    }
+    ((SharedFilePtr *)(PoleBillboard_ModelFile))->Release();
+    ((SharedFilePtr *)(PoleBillboard_ClsnFile))->Release();
     return 1;
 }

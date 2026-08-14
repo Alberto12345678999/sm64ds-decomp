@@ -2,7 +2,6 @@
 // @symbol func_ov006_02120248
 // recovered name: dScMgTeresa_c_OnYoshiTryEat_02120248
 /* recovered: renamed to Class_Method */
-/* dScMgTeresa_c::OnYoshiTryEat - recovered from vtable slot identity */
 extern "C" {
 void func_ov006_0211fbf8(char* p);
 void func_ov006_0211dd6c(char* p);

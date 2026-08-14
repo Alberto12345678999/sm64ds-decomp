@@ -1,42 +1,62 @@
 //cpp
 // @symbol _ZN10DonutBlock8BehaviorEv
-/* recovered: named members + shared header, real C++ method
- *
- * Spin by unk_31e a frame; stop and switch the collider off once the actor is
- * flagged; otherwise follow the model and, when the player is close enough to
- * matter, the collision mesh too.
- *
- * Three shadow declarations are gone -- a `typedef int Fix12` and stand-in
- * `MeshColliderBase` and `Platform` structs -- along with the raw offsets they
- * served. `this + 0x8e` is Actor::mAngleY, and the `t[0x1e/2]` read off
- * `this + 0x300` was this class's own unk_31e reached the long way round.
- *
- * IsClsnInRange keeps its mangled spelling: the name carries Fix12<int> by
- * value, wall 6az, so a real call would not reproduce the call site.
- */
+/* recovered: named members + shared header, real C++ method */
 #include "DonutBlock.h"
-
-extern "C" bool _ZN8Platform13IsClsnInRangeE5Fix12IiES1_(void *self, int a, int b);
+#include "MeshColliderBase.h"
+extern "C" {
+void _ZN5Actor9UpdatePosEP12CylinderClsn(void* thiz, void* clsn);
+void WithMeshClsn_UpdateContinuous_Veneer(void* p);
+int _ZNK12WithMeshClsn10IsOnGroundEv(void* p);
+int _ZN5Actor13DistToCPlayerEv(void* p);
+void _ZN5Actor14TriplePoofDustEv(void* p);
+void _ZN8Platform21UpdateModelPosAndRotYEv(void* p);
+int _ZN8Platform13IsClsnInRangeE5Fix12IiES1_(void* p, int a, int b);
+void _ZN8Platform19UpdateClsnPosAndRotEv(void* p);
+}
 
 int DonutBlock::Behavior()
 {
-    /* `+=`, not `mAngleY = mAngleY + ...`: the compound form CSEs the field
-       address into a register and reuses it for the load and the store, which
-       is what the ROM does here. That is a per-SITE fact -- the expanded
-       spelling is the matching one in Player::St_WallJump_Init. */
-    mAngleY += unk_31e;
-
-    /* The temporary is load-bearing: the ROM materialises the predicate with
-       movne/moveq and then tests it, where a direct `if` folds the two. */
-    int flagged = (int)((mFlags & 8) != 0);
-    if (flagged != 0) {
-        if (mMeshCollider.IsEnabled())
-            mMeshCollider.Disable();
-        return 1;
+    switch (mState) {
+    case 0:
+        if (unk_4e8 == 0) {
+            unk_4e9 = 0;
+        } else {
+            unsigned char* pc9 = (unsigned char*)(((int)((char*)this) + 0x4e9));
+            *pc9 = *pc9 + 1;
+            unk_4e8 = 0;
+        }
+        if (unk_4e9 >= 0xf) mState = 1;
+        break;
+    case 1:
+        _ZN5Actor9UpdatePosEP12CylinderClsn(((char*)this), 0);
+        WithMeshClsn_UpdateContinuous_Veneer((char*)&mWithMeshClsn);
+        if (_ZNK12WithMeshClsn10IsOnGroundEv((char*)&mWithMeshClsn) == 0) {
+            if (_ZN5Actor13DistToCPlayerEv(((char*)this)) <= 0x9c4000) break;
+        }
+        _ZN5Actor14TriplePoofDustEv(((char*)this));
+        if (((MeshColliderBase *)((char*)&(*(u8 *)&mMeshCollider)))->IsEnabled() != 0) ((MeshColliderBase *)((char*)&(*(u8 *)&mMeshCollider)))->Disable();
+        mPosX = unk_4dc;
+        mPosY = unk_4e0;
+        mPosZ = unk_4e4;
+        mState = 2;
+        break;
+    case 2: {
+        int d = _ZN5Actor13DistToCPlayerEv(((char*)this));
+        if (d <= 0x3e8000) break;
+        if (d < 0x7d0000) {
+            mVertSpeed = 0;
+            unk_4e9 = 0;
+            unk_4e8 = 0;
+            mState = 0;
+        }
+        break;
     }
-
-    UpdateModelPosAndRotY();
-    if (_ZN8Platform13IsClsnInRangeE5Fix12IiES1_(this, 0, 0))
-        UpdateClsnPosAndRot();
+    }
+    _ZN8Platform21UpdateModelPosAndRotYEv(((char*)this));
+    if (mState != 2) {
+        if (_ZN8Platform13IsClsnInRangeE5Fix12IiES1_(((char*)this), 0x5dc000, 0) != 0) {
+            _ZN8Platform19UpdateClsnPosAndRotEv(((char*)this));
+        }
+    }
     return 1;
 }

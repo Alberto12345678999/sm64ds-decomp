@@ -1,24 +1,29 @@
-/* AUTO-GENERATED from matched-function evidence by tools/gen_header.py
- * class PoppingLavaBubbles: 4 matched functions, 5 evidenced fields.
- * Offsets/widths are observed, not guessed. Gaps are explicit padding.
- * Field NAMES are placeholders - renaming cannot change codegen. */
 #ifndef POPPINGLAVABUBBLES_H
 #define POPPINGLAVABUBBLES_H
-#include "types.h"
 
-struct PoppingLavaBubbles {
-    u8  pad_000[0x5c];
-    s32 mPosX;            /* 0x05c */
-    s32 mPosY;            /* 0x060 */
-    s32 mPosZ;            /* 0x064 */
-    u8  pad_068[0x6c];
-    s16 unk_0d4;            /* 0x0d4 */
-    u8  pad_0d6[0x2];
-    u8  unk_0d8;            /* 0x0d8 */
-#ifdef __cplusplus
-    /* methods */
-    int InitResources();
-#endif
+#include "types.h"
+#include "Actor.h"
+
+/* TWO WITNESSES, and they close on each other:
+ *
+ *   PoppingLavaBubbles_Spawn  ActorBase::operator new(216 = 0xd8), Actor::Actor(), stores _ZTV18PoppingLavaBubbles,
+ *                 then the members below in this order.
+ *   ~PoppingLavaBubbles   the same members destroyed in reverse, then ~Actor.
+ *
+ * SIZE 0xd8 is the factory's own literal, and the last member closes exactly on it.
+ *
+ * THE VTABLE was diffed slot by slot against _ZTV5Actor. Only the slots declared
+ * below differ; every other slot holds the base's own word and is inherited, so it
+ * is deliberately not redeclared here.
+ */
+struct PoppingLavaBubbles : Actor {
+    u8  pad_0d0[0x8];
+
+    virtual ~PoppingLavaBubbles();            /* slots 16 (D1), 17 (D0) */
+
+    virtual s32   InitResources();         /* slot  0 */
 };
 
-#endif
+typedef char PoppingLavaBubbles_size_must_be_0xd8[sizeof(PoppingLavaBubbles) == 0xd8 ? 1 : -1];
+
+#endif /* POPPINGLAVABUBBLES_H */

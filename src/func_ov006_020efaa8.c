@@ -3,7 +3,6 @@
 /* recovered: renamed to Class_Method, declarations from a shared header */
 #include "decl_common.h"
 /* recovered: renamed to Class_Method */
-/* dScMgJump2_c::OnYoshiTryEat - recovered from vtable slot identity */
 void func_ov006_020efaa8(char* c){
   func_ov006_020c72b4();
   func_ov006_020c719c(0, 0);

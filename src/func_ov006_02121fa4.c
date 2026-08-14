@@ -5,7 +5,6 @@
 #include "dScMgTrampoline_c.h"
 // recovered name: dScMgTrampoline_c_OnYoshiTryEat_02121fa4
 /* recovered: renamed to Class_Method */
-/* dScMgTrampoline_c::OnYoshiTryEat - recovered from vtable slot identity */
 extern void _ZN3G2x13SetBlendAlphaEPVttttt(volatile void *reg,
     unsigned short a, unsigned short b, int c, unsigned short d);
 extern void func_ov006_020d0b04(int a);

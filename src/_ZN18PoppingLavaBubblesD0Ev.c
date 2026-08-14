@@ -1,11 +1,14 @@
 // @symbol _ZN18PoppingLavaBubblesD0Ev
-/* recovered: named members + shared header, declarations from a shared header */
+/* recovered: renamed to Class_Method, declarations from a shared header */
 #include "decl_Actor.h"
 #include "decl_common.h"
-/* recovered: named members + shared header */
-#include "PoppingLavaBubbles.h"
 extern void* data_020a0eac;
 extern int _ZTV18PoppingLavaBubbles[];
+/* recovered: renamed to Class_Method */
+/* The DELETING DESTRUCTOR, vtable slot 17. The old comment here called it
+   OnYoshiTryEat, which is slot 18 -- off by one. This body stores the class
+   vtable, destroys the members and calls Memory::Deallocate; no eat handler
+   does any of that. */
 int *_ZN18PoppingLavaBubblesD0Ev(int *t)
 {
     t[0] = (int)_ZTV18PoppingLavaBubbles;

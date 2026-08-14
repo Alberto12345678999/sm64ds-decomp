@@ -175,7 +175,7 @@ src/func_ov002_020af2b0.c:
     complete
     .text start:0x020af2b0 end:0x020af3a0
 
-src/func_ov002_020af3a0.c:
+src/_ZN13OneUpMushroom13OnYoshiTryEatEv.cpp:
     complete
     .text start:0x020af3a0 end:0x020af3a8
 
@@ -287,31 +287,31 @@ src/OneUpMushroom_Spawn.c:
     complete
     .text start:0x020b0580 end:0x020b05d0
 
-src/func_ov002_020b05d0.c:
+src/_ZN13InvisiblePoleD1Ev.cpp:
     complete
     .text start:0x020b05d0 end:0x020b0600
 
-src/func_ov002_020b0600.c:
+src/_ZN13InvisiblePoleD0Ev.c:
     complete
     .text start:0x020b0600 end:0x020b0644
 
-src/func_ov002_020b0644.c:
+src/_ZN13InvisiblePole16CleanupResourcesEv.cpp:
     complete
     .text start:0x020b0644 end:0x020b064c
 
-src/func_ov002_020b064c.c:
+src/_ZN13InvisiblePole16OnPendingDestroyEv.cpp:
     complete
     .text start:0x020b064c end:0x020b0650
 
-src/func_ov002_020b0650.c:
+src/_ZN13InvisiblePole6RenderEv.cpp:
     complete
     .text start:0x020b0650 end:0x020b0658
 
-src/func_ov002_020b0658.cpp:
+src/_ZN13InvisiblePole8BehaviorEv.cpp:
     complete
     .text start:0x020b0658 end:0x020b067c
 
-src/func_ov002_020b067c.c:
+src/_ZN13InvisiblePole13InitResourcesEv.cpp:
     complete
     .text start:0x020b067c end:0x020b0710
 
@@ -319,31 +319,31 @@ src/InvisiblePole_Spawn.c:
     complete
     .text start:0x020b0710 end:0x020b0748
 
-src/_ZN13InvisiblePoleD1Ev.cpp:
+src/_ZN9CameraTagD1Ev.cpp:
     complete
     .text start:0x020b0748 end:0x020b076c
 
-src/_ZN13InvisiblePoleD0Ev.c:
+src/_ZN9CameraTagD0Ev.c:
     complete
     .text start:0x020b076c end:0x020b07a4
 
-src/_ZN13InvisiblePole16CleanupResourcesEv.cpp:
+src/_ZN9CameraTag16CleanupResourcesEv.cpp:
     complete
     .text start:0x020b07a4 end:0x020b07ac
 
-src/_ZN13InvisiblePole16OnPendingDestroyEv.cpp:
+src/_ZN9CameraTag16OnPendingDestroyEv.cpp:
     complete
     .text start:0x020b07ac end:0x020b07b0
 
-src/_ZN13InvisiblePole6RenderEv.cpp:
+src/_ZN9CameraTag6RenderEv.cpp:
     complete
     .text start:0x020b07b0 end:0x020b07b8
 
-src/_ZN13InvisiblePole8BehaviorEv.cpp:
+src/_ZN9CameraTag8BehaviorEv.cpp:
     complete
     .text start:0x020b07b8 end:0x020b07c0
 
-src/_ZN13InvisiblePole13InitResourcesEv.cpp:
+src/_ZN9CameraTag13InitResourcesEv.cpp:
     complete
     .text start:0x020b07c0 end:0x020b07c8
 
@@ -351,31 +351,31 @@ src/CameraTag_Spawn.c:
     complete
     .text start:0x020b07c8 end:0x020b07f8
 
-src/_ZN9CameraTagD1Ev.cpp:
+src/_ZN11VirtualDoorD1Ev.cpp:
     complete
     .text start:0x020b07f8 end:0x020b081c
 
-src/_ZN9CameraTagD0Ev.c:
+src/_ZN11VirtualDoorD0Ev.c:
     complete
     .text start:0x020b081c end:0x020b0854
 
-src/_ZN9CameraTag16CleanupResourcesEv.c:
+src/_ZN11VirtualDoor16CleanupResourcesEv.c:
     complete
     .text start:0x020b0854 end:0x020b085c
 
-src/_ZN9CameraTag16OnPendingDestroyEv.c:
+src/_ZN11VirtualDoor16OnPendingDestroyEv.c:
     complete
     .text start:0x020b085c end:0x020b0860
 
-src/_ZN9CameraTag6RenderEv.c:
+src/_ZN11VirtualDoor6RenderEv.c:
     complete
     .text start:0x020b0860 end:0x020b0868
 
-src/_ZN9CameraTag8BehaviorEv.cpp:
+src/_ZN11VirtualDoor8BehaviorEv.cpp:
     complete
     .text start:0x020b0868 end:0x020b0938
 
-src/_ZN9CameraTag13InitResourcesEv.cpp:
+src/_ZN11VirtualDoor13InitResourcesEv.cpp:
     complete
     .text start:0x020b0938 end:0x020b0980
 
@@ -383,11 +383,11 @@ src/VirtualDoor_Spawn.c:
     complete
     .text start:0x020b0980 end:0x020b09b0
 
-src/_ZN11VirtualDoorD1Ev.cpp:
+src/_ZN4ExitD1Ev.cpp:
     complete
     .text start:0x020b09b0 end:0x020b09d4
 
-src/_ZN11VirtualDoorD0Ev.c:
+src/_ZN4ExitD0Ev.c:
     complete
     .text start:0x020b09d4 end:0x020b0a0c
 
@@ -395,23 +395,23 @@ src/func_ov002_020b0a0c.c:
     complete
     .text start:0x020b0a0c end:0x020b0a70
 
-src/_ZN11VirtualDoor16CleanupResourcesEv.cpp:
+src/_ZN4Exit16CleanupResourcesEv.cpp:
     complete
     .text start:0x020b0a70 end:0x020b0a78
 
-src/_ZN11VirtualDoor16OnPendingDestroyEv.cpp:
+src/_ZN4Exit16OnPendingDestroyEv.cpp:
     complete
     .text start:0x020b0a78 end:0x020b0a7c
 
-src/_ZN11VirtualDoor6RenderEv.cpp:
+src/_ZN4Exit6RenderEv.cpp:
     complete
     .text start:0x020b0a7c end:0x020b0a84
 
-src/_ZN11VirtualDoor8BehaviorEv.cpp:
+src/_ZN4Exit8BehaviorEv.cpp:
     complete
     .text start:0x020b0a84 end:0x020b0d88
 
-src/_ZN11VirtualDoor13InitResourcesEv.cpp:
+src/_ZN4Exit13InitResourcesEv.cpp:
     complete
     .text start:0x020b0d88 end:0x020b0f24
 
@@ -575,11 +575,11 @@ src/WingFeather_Spawn.c:
     complete
     .text start:0x020b3248 end:0x020b3298
 
-src/func_ov002_020b3298.c:
+src/_ZN6BubbleD1Ev.c:
     complete
     .text start:0x020b3298 end:0x020b32c8
 
-src/func_ov002_020b32c8.c:
+src/_ZN6BubbleD0Ev.c:
     complete
     .text start:0x020b32c8 end:0x020b330c
 
@@ -867,7 +867,7 @@ src/func_ov002_020b599c.c:
     complete
     .text start:0x020b599c end:0x020b59a0
 
-src/func_ov002_020b59a0.c:
+src/_ZN9BlueFlame13OnYoshiTryEatEv.cpp:
     complete
     .text start:0x020b59a0 end:0x020b59a8
 
@@ -1055,11 +1055,11 @@ src/func_ov002_020b6c54.c:
     complete
     .text start:0x020b6c54 end:0x020b6d28
 
-src/func_ov002_020b6d28.c:
+src/_ZN18PoppingLavaBubblesD1Ev.cpp:
     complete
     .text start:0x020b6d28 end:0x020b6d4c
 
-src/func_ov002_020b6d4c.c:
+src/_ZN18PoppingLavaBubblesD0Ev.c:
     complete
     .text start:0x020b6d4c end:0x020b6d84
 
@@ -1067,7 +1067,7 @@ src/func_ov002_020b6d84.c:
     complete
     .text start:0x020b6d84 end:0x020b6dd0
 
-src/func_ov002_020b6dd0.c:
+src/_ZN18PoppingLavaBubbles13InitResourcesEv.cpp:
     complete
     .text start:0x020b6dd0 end:0x020b6dd8
 
@@ -1075,19 +1075,19 @@ src/PoppingLavaBubbles_Spawn.c:
     complete
     .text start:0x020b6dd8 end:0x020b6e08
 
-src/_ZN18PoppingLavaBubblesD1Ev.cpp:
+src/_ZN13WaterfallMistD1Ev.cpp:
     complete
     .text start:0x020b6e08 end:0x020b6e2c
 
-src/_ZN18PoppingLavaBubblesD0Ev.c:
+src/_ZN13WaterfallMistD0Ev.c:
     complete
     .text start:0x020b6e2c end:0x020b6e64
 
-src/_ZN18PoppingLavaBubbles8BehaviorEv.cpp:
+src/_ZN13WaterfallMist8BehaviorEv.cpp:
     complete
     .text start:0x020b6e64 end:0x020b6eac
 
-src/_ZN18PoppingLavaBubbles13InitResourcesEv.cpp:
+src/_ZN13WaterfallMist13InitResourcesEv.cpp:
     complete
     .text start:0x020b6eac end:0x020b6ee8
 
@@ -1095,11 +1095,11 @@ src/WaterfallMist_Spawn.c:
     complete
     .text start:0x020b6ee8 end:0x020b6f18
 
-src/_ZN13WaterfallMistD1Ev.c:
+src/_ZN15daObjMarioCap_cD1Ev.cpp:
     complete
     .text start:0x020b6f18 end:0x020b6f68
 
-src/_ZN13WaterfallMistD0Ev.c:
+src/_ZN15daObjMarioCap_cD0Ev.c:
     complete
     .text start:0x020b6f68 end:0x020b6fcc
 
@@ -1191,38 +1191,38 @@ src/func_ov002_020b81e0.c:
     complete
     .text start:0x020b81e0 end:0x020b8270
 
-src/func_ov002_020b8270.c:
+src/_ZN15daObjMarioCap_c13OnYoshiTryEatEv.cpp:
     complete
     .text start:0x020b8270 end:0x020b8284
 
-src/_ZN13WaterfallMist16CleanupResourcesEv.cpp:
+src/_ZN15daObjMarioCap_c16CleanupResourcesEv.cpp:
     complete
     .text start:0x020b8284 end:0x020b8394
 
-src/_ZN13WaterfallMist16OnPendingDestroyEv.c:
+src/_ZN15daObjMarioCap_c16OnPendingDestroyEv.c:
     complete
     .text start:0x020b8394 end:0x020b83c4
 
-src/_ZN13WaterfallMist6RenderEv.cpp:
+src/_ZN15daObjMarioCap_c6RenderEv.cpp:
     complete
     .text start:0x020b83c4 end:0x020b84a8
 
-src/_ZN13WaterfallMist8BehaviorEv.cpp:
+src/_ZN15daObjMarioCap_c8BehaviorEv.cpp:
     complete
     .text start:0x020b84a8 end:0x020b86d0
 
-src/_ZN13WaterfallMist13InitResourcesEv.cpp:
+src/_ZN15daObjMarioCap_c13InitResourcesEv.cpp:
     .text start:0x020b86d0 end:0x020b8b98
 
 src/Cap_Spawn.c:
     complete
     .text start:0x020b8b98 end:0x020b8bf0
 
-src/func_ov002_020b8bf0.c:
+src/_ZN9PushBlockD1Ev.c:
     complete
     .text start:0x020b8bf0 end:0x020b8c3c
 
-src/func_ov002_020b8c3c.c:
+src/_ZN9PushBlockD0Ev.c:
     complete
     .text start:0x020b8c3c end:0x020b8c9c
 
@@ -1258,11 +1258,11 @@ src/PushBlock_Spawn.c:
     complete
     .text start:0x020b910c end:0x020b9148
 
-src/_ZN9PushBlockD1Ev.cpp:
+src/_ZN11PowerFlowerD1Ev.cpp:
     complete
     .text start:0x020b9148 end:0x020b9198
 
-src/_ZN9PushBlockD0Ev.c:
+src/_ZN11PowerFlowerD0Ev.c:
     complete
     .text start:0x020b9198 end:0x020b91fc
 
@@ -1310,19 +1310,19 @@ src/func_ov002_020b9a1c.c:
     complete
     .text start:0x020b9a1c end:0x020b9a7c
 
-src/_ZN9PushBlock16CleanupResourcesEv.c:
+src/_ZN11PowerFlower16CleanupResourcesEv.c:
     complete
     .text start:0x020b9a7c end:0x020b9aac
 
-src/_ZN9PushBlock6RenderEv.cpp:
+src/_ZN11PowerFlower6RenderEv.cpp:
     complete
     .text start:0x020b9aac end:0x020b9b70
 
-src/_ZN9PushBlock8BehaviorEv.cpp:
+src/_ZN11PowerFlower8BehaviorEv.cpp:
     complete
     .text start:0x020b9b70 end:0x020b9c00
 
-src/_ZN9PushBlock13InitResourcesEv.cpp:
+src/_ZN11PowerFlower13InitResourcesEv.cpp:
     complete
     .text start:0x020b9c00 end:0x020b9e04
 
@@ -1565,11 +1565,11 @@ src/SignPost_Spawn.c:
     complete
     .text start:0x020bc3c8 end:0x020bc414
 
-src/func_ov002_020bc414.c:
+src/_ZN7SeaweedD1Ev.cpp:
     complete
     .text start:0x020bc414 end:0x020bc444
 
-src/func_ov002_020bc444.c:
+src/_ZN7SeaweedD0Ev.c:
     complete
     .text start:0x020bc444 end:0x020bc488
 
@@ -1577,19 +1577,19 @@ src/func_ov002_020bc488.c:
     complete
     .text start:0x020bc488 end:0x020bc4c8
 
-src/func_ov002_020bc4c8.c:
+src/_ZN7Seaweed16CleanupResourcesEv.cpp:
     complete
     .text start:0x020bc4c8 end:0x020bc4f8
 
-src/func_ov002_020bc4f8.cpp:
+src/_ZN7Seaweed6RenderEv.cpp:
     complete
     .text start:0x020bc4f8 end:0x020bc520
 
-src/func_ov002_020bc520.c:
+src/_ZN7Seaweed8BehaviorEv.cpp:
     complete
     .text start:0x020bc520 end:0x020bc540
 
-src/func_ov002_020bc540.cpp:
+src/_ZN7Seaweed13InitResourcesEv.cpp:
     complete
     .text start:0x020bc540 end:0x020bc5a8
 
@@ -1597,11 +1597,11 @@ src/Seaweed_Spawn.c:
     complete
     .text start:0x020bc5a8 end:0x020bc5e0
 
-src/_ZN7SeaweedD1Ev.cpp:
+src/_ZN12HealingHeartD1Ev.cpp:
     complete
     .text start:0x020bc5e0 end:0x020bc618
 
-src/_ZN7SeaweedD0Ev.c:
+src/_ZN12HealingHeartD0Ev.c:
     complete
     .text start:0x020bc618 end:0x020bc664
 
@@ -1609,19 +1609,19 @@ src/func_ov002_020bc664.c:
     complete
     .text start:0x020bc664 end:0x020bc6a4
 
-src/_ZN7Seaweed16CleanupResourcesEv.c:
+src/_ZN12HealingHeart16CleanupResourcesEv.c:
     complete
     .text start:0x020bc6a4 end:0x020bc6d4
 
-src/_ZN7Seaweed6RenderEv.cpp:
+src/_ZN12HealingHeart6RenderEv.cpp:
     complete
     .text start:0x020bc6d4 end:0x020bc6fc
 
-src/_ZN7Seaweed8BehaviorEv.c:
+src/_ZN12HealingHeart8BehaviorEv.c:
     complete
     .text start:0x020bc6fc end:0x020bc81c
 
-src/_ZN7Seaweed13InitResourcesEv.cpp:
+src/_ZN12HealingHeart13InitResourcesEv.cpp:
     complete
     .text start:0x020bc81c end:0x020bc8b4
 
@@ -2411,6 +2411,7 @@ src/func_ov002_020c897c.c:
     .text start:0x020c897c end:0x020c8a4c
 
 src/func_ov002_020c8a4c.cpp:
+    complete
     .text start:0x020c8a4c end:0x020c8b54
 
 src/func_ov002_020c8b54.c:
@@ -4311,7 +4312,7 @@ src/func_ov002_020e8edc.c:
     complete
     .text start:0x020e8edc end:0x020e8ee8
 
-src/func_ov002_020e8ee8.c:
+src/_ZN9PowerStar13OnYoshiTryEatEv.cpp:
     complete
     .text start:0x020e8ee8 end:0x020e8ef0
 
@@ -4486,23 +4487,23 @@ src/Tree_Spawn.cpp:
     complete
     .text start:0x020ec32c end:0x020ec388
 
-src/func_ov002_020ec388.c:
+src/_ZN4WarpD1Ev.cpp:
     complete
     .text start:0x020ec388 end:0x020ec3b8
 
-src/func_ov002_020ec3b8.c:
+src/_ZN4WarpD0Ev.c:
     complete
     .text start:0x020ec3b8 end:0x020ec3fc
 
-src/func_ov002_020ec3fc.c:
+src/_ZN4Warp16CleanupResourcesEv.cpp:
     complete
     .text start:0x020ec3fc end:0x020ec404
 
-src/func_ov002_020ec404.c:
+src/_ZN4Warp16OnPendingDestroyEv.cpp:
     complete
     .text start:0x020ec404 end:0x020ec408
 
-src/func_ov002_020ec408.c:
+src/_ZN4Warp6RenderEv.cpp:
     complete
     .text start:0x020ec408 end:0x020ec410
 
@@ -4510,7 +4511,7 @@ src/func_ov002_020ec410.cpp:
     complete
     .text start:0x020ec410 end:0x020ec4c4
 
-src/func_ov002_020ec4c4.c:
+src/_ZN4Warp13InitResourcesEv.cpp:
     complete
     .text start:0x020ec4c4 end:0x020ec534
 
@@ -4518,7 +4519,7 @@ src/Warp_Spawn.c:
     complete
     .text start:0x020ec534 end:0x020ec56c
 
-src/_ZN8YoshiEggD1Ev.c:
+src/_ZN8YoshiEggD1Ev.cpp:
     complete
     .text start:0x020ec56c end:0x020ec5b4
 
@@ -4641,7 +4642,7 @@ src/_ZN8YoshiEgg8BehaviorEv.cpp:
     complete
     .text start:0x020ee010 end:0x020ee144
 
-src/_ZN8YoshiEgg13InitResourcesEv.c:
+src/_ZN8YoshiEgg13InitResourcesEv.cpp:
     complete
     .text start:0x020ee144 end:0x020ee3d8
 
@@ -4833,11 +4834,11 @@ src/func_ov002_020f035c.c:
     complete
     .text start:0x020f035c end:0x020f03c4
 
-src/func_ov002_020f03c4.c:
+src/_ZN15InvisibleSecretD1Ev.c:
     complete
     .text start:0x020f03c4 end:0x020f03f4
 
-src/func_ov002_020f03f4.c:
+src/_ZN15InvisibleSecretD0Ev.c:
     complete
     .text start:0x020f03f4 end:0x020f0438
 
@@ -4868,11 +4869,11 @@ src/InvisibleSecret_Spawn.c:
     complete
     .text start:0x020f085c end:0x020f0894
 
-src/_ZN15InvisibleSecretD1Ev.cpp:
+src/_ZN6NumberD1Ev.cpp:
     complete
     .text start:0x020f0894 end:0x020f08cc
 
-src/_ZN15InvisibleSecretD0Ev.c:
+src/_ZN6NumberD0Ev.c:
     complete
     .text start:0x020f08cc end:0x020f0918
 
@@ -4880,19 +4881,19 @@ src/func_ov002_020f0918.c:
     complete
     .text start:0x020f0918 end:0x020f093c
 
-src/_ZN15InvisibleSecret16CleanupResourcesEv.cpp:
+src/_ZN6Number16CleanupResourcesEv.cpp:
     complete
     .text start:0x020f093c end:0x020f0994
 
-src/_ZN15InvisibleSecret6RenderEv.cpp:
+src/_ZN6Number6RenderEv.cpp:
     complete
     .text start:0x020f0994 end:0x020f0a60
 
-src/_ZN15InvisibleSecret8BehaviorEv.cpp:
+src/_ZN6Number8BehaviorEv.cpp:
     complete
     .text start:0x020f0a60 end:0x020f0bd4
 
-src/_ZN15InvisibleSecret13InitResourcesEv.cpp:
+src/_ZN6Number13InitResourcesEv.cpp:
     complete
     .text start:0x020f0bd4 end:0x020f0d90
 
@@ -5684,7 +5685,7 @@ src/_ZN8Fireball13InitResourcesEv.cpp:
     complete
     .text start:0x020f9204 end:0x020f92e4
 
-src/func_ov002_020f92e4.c:
+src/_ZN8Fireball13OnYoshiTryEatEv.cpp:
     complete
     .text start:0x020f92e4 end:0x020f9304
 
@@ -5692,7 +5693,7 @@ src/Fireball_Spawn.c:
     complete
     .text start:0x020f9304 end:0x020f934c
 
-src/_ZN11SoundObjectD1Ev.c:
+src/_ZN11SoundObjectD1Ev.cpp:
     complete
     .text start:0x020f934c end:0x020f9370
 
@@ -5784,6 +5785,7 @@ src/_ZN3HUD15CalculateDigitsEt.cpp:
     .text start:0x020fbdac end:0x020fbe38
 
 src/_ZN3HUD15RenderLifeCountEv.cpp:
+    complete
     .text start:0x020fbe38 end:0x020fc04c
 
 src/_ZN3HUD19RenderCameraButtonsEv.cpp:
@@ -5795,6 +5797,7 @@ src/_ZN3HUD17RenderSilverStarsEv.cpp:
     .text start:0x020fc3c4 end:0x020fc458
 
 src/_ZN3HUD15RenderStarCountEv.cpp:
+    complete
     .text start:0x020fc458 end:0x020fc77c
 
 src/_ZN3HUD14RenderRedCoinsEv.cpp:
@@ -5802,6 +5805,7 @@ src/_ZN3HUD14RenderRedCoinsEv.cpp:
     .text start:0x020fc77c end:0x020fc81c
 
 src/_ZN3HUD15RenderCoinCountEv.cpp:
+    complete
     .text start:0x020fc81c end:0x020fca18
 
 src/_ZN3HUD13RenderVsTimerEv.cpp:

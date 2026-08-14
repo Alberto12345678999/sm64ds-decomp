@@ -1,13 +1,11 @@
 //cpp
 // @symbol _ZN13InvisiblePole8BehaviorEv
-/* recovered: shared header, real C++ method
- *
- * `return 1`. The pole never moves and never thinks; it is queried, not
- * ticked.
- */
+/* Vtable slot 6. Rebuild the climbing cylinder every frame. */
 #include "InvisiblePole.h"
 
-int InvisiblePole::Behavior()
+s32 InvisiblePole::Behavior()
 {
+    mClsn.Clear();
+    mClsn.Update();
     return 1;
 }

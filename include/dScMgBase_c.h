@@ -69,10 +69,10 @@ struct dScMgBase_c : Scene {
        NOT DEFINED INLINE -- unlike Scene's, which is trivial (an empty
        body) and unconditionally inlined by every child. This body has
        real work (a global write, a function call), and measured against
-       MgBounceAndPounce -- the first real descendant -- mwcc does NOT
-       inline it: the ROM's own MgBounceAndPounce D1 (0x38 bytes) calls
+       dScMgD3DBase_c -- the first real descendant -- mwcc does NOT
+       inline it: the ROM's own dScMgD3DBase_c D1 (0x38 bytes) calls
        `_ZN11dScMgBase_cD2Ev` as a real `bl`, not a fully-inlined 0x84-byte
-       body (measured directly: compiling MgBounceAndPounce's destructor
+       body (measured directly: compiling dScMgD3DBase_c's destructor
        against an INLINE-defined dScMgBase_c dtor produced exactly 0x84
        bytes, `999 word(s) differ` against the ROM's 0x38). Defined for
        real in src/_ZN11dScMgBase_cD1Ev.cpp and .../_D0Ev.cpp instead --
@@ -108,12 +108,34 @@ struct dScMgBase_c : Scene {
     u8  pad_060[0x44];
     s32 unk_0a4;            /* 0x0a4 */
     s32 unk_0a8;            /* 0x0a8 */
-    u8  pad_0ac[0x8];
+    s32 unk_0ac;            /* 0x0ac -- real matched access, e.g. dScMgCard_c's own
+                                InitResources (src/func_ov006_020dbaf0.cpp) and
+                                dScMgMCarlo2_c's own (func_ov006_020fa56c.cpp) both
+                                write `self->unk_0ac = self->unk_0a8;` */
+    u8  pad_0b0[0x4];
     s32 unk_0b4;            /* 0x0b4 */
     s32 unk_0b8;            /* 0x0b8 */
-    u8  pad_0bc[0x7];
+    u32 unk_0bc;            /* 0x0bc -- real matched access, dScMg3DEsp_c's own
+                                OnYoshiTryEat (src/func_ov006_020e9c20.c) reads
+                                and writes it as a 4-byte int */
+    u16 unk_0c0;            /* 0x0c0 -- a 16-bit counter. WIDTH AND SIGNEDNESS come
+                                from this class's OWN render path, not from a
+                                descendant: src/_ZN11dScMgBase_c12BeforeRenderEv.cpp
+                                passes `this` to func_ov004_020b0de0, which
+                                increments it and compares it UNSIGNED against 0x30
+                                and 0x18. Split out of the former pad_0c0[0x3]. */
+    u8  pad_0c2[0x1];
     u8  unk_0c3;            /* 0x0c3 */
-    u8  pad_0c4[0x4];
+    u8  unk_0c4;            /* 0x0c4 -- a 1-byte counter, compared `< 4U` in that
+                                same base render path. Split out of the former
+                                pad_0c4[0x4]. */
+    u8  pad_0c5[0x3];
+    /* Both were already spelled by raw offset in roughly 25 pre-existing ov006
+       files -- dScMgFlower_c's, dScMgSnowball_c's and dScMgMCarlo_c's own
+       Behaviors all carry the identical `if (0xc4 == 0) { 0xc3 = 1; 0xc4 = 1;
+       *(s16*)0xc0 = 0; }` idiom. Naming them here is what lets those files stop
+       spelling raw offsets; it is not a discovery, and an earlier draft of this
+       comment wrongly called dScMgFlower_c "the first descendant to touch it". */
     s32 unk_0c8;            /* 0x0c8 */
     u8  pad_0cc[0x24];
     s32 unk_0f0;            /* 0x0f0 */
@@ -142,12 +164,11 @@ struct dScMgBase_c : Scene {
 };
 
 /* NOT a claim that the object ends here -- dScMgBase_c has 32 RTTI
-   descendants (notes/dscene-c-siblings-census.md), and MgBounceAndPounce
-   (one of them, real ROM class dScMgD3DBase_c) is the first to need a
-   number to start its own fields at. 0x465c is the last field any matched
+   descendants (notes/dscene-c-siblings-census.md), and dScMgD3DBase_c
+   (one of them) is the first to need a number to start its own fields at. 0x465c is the last field any matched
    function has observed; asserting its rounded size (0x4660, 4-byte
    alignment) is the minimum claim that unblocks a derived class -- if it
-   is short, MgBounceAndPounce's own fields would land on the wrong bytes
+   is short, dScMgD3DBase_c's own fields would land on the wrong bytes
    and build_pin would catch it immediately, the same safety net
    check_header_offsets.py's own DATA_SIZE comment describes. */
 typedef char dScMgBase_c_size_must_be_0x4660[sizeof(dScMgBase_c) == 0x4660 ? 1 : -1];

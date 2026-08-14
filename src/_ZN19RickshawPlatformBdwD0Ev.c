@@ -1,24 +1,23 @@
 // @symbol _ZN19RickshawPlatformBdwD0Ev
-/* recovered: named members + shared header */
-#include "RickshawPlatformBdw.h"
-extern int __destroy_arr(void *p, int a, int b, void *f);
-extern int _ZN18MovingMeshColliderD1Ev(void *p);
-extern int _ZN5ModelD1Ev(void *p);
-extern int _ZN5ActorD2Ev(void *p);
-extern int _ZN6Memory10DeallocateEPvP4Heap(void *p, void *h);
+/* recovered: named members + shared header, vtable identified, declarations from a shared header */
+#include "decl_Actor.h"
+#include "decl_Model.h"
+#include "decl_MovingMeshCollider.h"
+#include "decl_common.h"
 extern int _ZTV19RickshawPlatformBdw[];
-extern int data_ov002_02108d94[];
+extern int data_ov002_02109278[];
 extern int _ZTV8Platform[];
-extern int *data_020a0eac;
-int _ZN19RickshawPlatformBdwD0Ev(struct RickshawPlatformBdw *self) {
-    *(int**)(((char *)self)) = _ZTV19RickshawPlatformBdw;
-    *(int**)(((char *)self)) = data_ov002_02108d94;
-    __destroy_arr(((char *)self)+0x4b0, 5, 0x1c8, _ZN18MovingMeshColliderD1Ev);
-    __destroy_arr(((char *)self)+0x320, 5, 0x50, _ZN5ModelD1Ev);
-    *(int**)(((char *)self)) = _ZTV8Platform;
-    _ZN18MovingMeshColliderD1Ev((char *)&self->mMovingMeshCollider);
-    _ZN5ModelD1Ev((char *)&self->mModel);
-    _ZN5ActorD2Ev(((char *)self));
-    _ZN6Memory10DeallocateEPvP4Heap(((char *)self), data_020a0eac);
-    return (int)((char *)self);
+/* recovered: named members + shared header, vtable identified */
+/* vtable identified: VT0 = _ZTV19RickshawPlatformBdw; VT1 = data_ov002_02109278 */
+extern void *data_020a0eac;
+int *_ZN19RickshawPlatformBdwD0Ev(int *t)
+{
+    t[0] = (int)_ZTV19RickshawPlatformBdw;
+    t[0] = (int)data_ov002_02109278;
+    t[0] = (int)_ZTV8Platform;
+    _ZN18MovingMeshColliderD1Ev((char *)t + 0x124);
+    _ZN5ModelD1Ev((char *)t + 0xd4);
+    _ZN5ActorD2Ev(t);
+    _ZN6Memory10DeallocateEPvP4Heap(t, data_020a0eac);
+    return t;
 }

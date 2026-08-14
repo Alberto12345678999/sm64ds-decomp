@@ -5,7 +5,6 @@
 /* recovered: renamed to Class_Method, declarations from a shared header */
 #include "decl_common.h"
 /* recovered: renamed to Class_Method */
-/* dScMgTrampoline2_c::OnYoshiTryEat - recovered from vtable slot identity */
 typedef struct {
     u8 pad0[0xbc];
     u32 unkBC;

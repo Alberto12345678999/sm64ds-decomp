@@ -6,7 +6,6 @@
 #include "decl_MovingMeshCollider.h"
 #include "decl_common.h"
 /* recovered: vtable identified, renamed to Class_Method */
-/* daObjFl_Fall_Block_c::OnYoshiTryEat - recovered from vtable slot identity */
 extern void *G0;
 int *daObjFl_Fall_Block_c_OnYoshiTryEat(int *t)
 {

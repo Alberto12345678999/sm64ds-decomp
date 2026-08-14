@@ -1,23 +1,23 @@
 //cpp
 // @symbol _ZN9Submarine16CleanupResourcesEv
-/* recovered: shared header, real C++ method
- *
- * Releases the 2 shared file(s) InitResources claimed.
- *
- * TOUCHES NO FIELD. The ROM body takes no `this`; as a method it now receives
- * one and ignores it, which measured byte-free.
- */
 #include "Submarine.h"
-#include "SharedFilePtr.h"
-
+// recovered name: daObjWlSubmarine_c_CleanupResources
+/* recovered: renamed to Class_Method, declarations from a shared header */
+#include "decl_common.h"
+extern int Submarine_ClsnFile[];
+/* recovered: renamed to Class_Method */
+/* daObjWlSubmarine_c::CleanupResources - recovered from vtable slot identity */
 extern "C" {
-extern int data_ov026_02113f0c[];
-extern int data_ov026_02113f04[];
+extern void _ZN13SharedFilePtr7ReleaseEv(void *);
+extern int Submarine_ModelFile[];
 }
 
-int Submarine::CleanupResources()
-{
-    ((SharedFilePtr *)data_ov026_02113f0c)->Release();
-    ((SharedFilePtr *)data_ov026_02113f04)->Release();
+s32 Submarine::CleanupResources() {
+    void * t = (void *)this;
+    if (_ZN16MeshColliderBase9IsEnabledEv((char *)t + 0x124)) {
+        _ZN16MeshColliderBase7DisableEv((char *)t + 0x124);
+    }
+    _ZN13SharedFilePtr7ReleaseEv(Submarine_ModelFile);
+    _ZN13SharedFilePtr7ReleaseEv(Submarine_ClsnFile);
     return 1;
 }

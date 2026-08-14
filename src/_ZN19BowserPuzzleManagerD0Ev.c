@@ -1,20 +1,13 @@
 // @symbol _ZN19BowserPuzzleManagerD0Ev
-/* recovered: named members + shared header, vtable identified, declarations from a shared header */
+/* recovered: renamed to Class_Method, declarations from a shared header */
 #include "decl_Actor.h"
-#include "decl_Model.h"
-#include "decl_MovingMeshCollider.h"
 #include "decl_common.h"
+extern void* data_020a0eac;
 extern int _ZTV19BowserPuzzleManager[];
-extern int _ZTV8Platform[];
-/* recovered: named members + shared header, vtable identified */
-/* vtable identified: VT0 = _ZTV19BowserPuzzleManager; VT1 = _ZTV8Platform */
-extern void *data_020a0eac;
+/* recovered: renamed to Class_Method */
 int *_ZN19BowserPuzzleManagerD0Ev(int *t)
 {
     t[0] = (int)_ZTV19BowserPuzzleManager;
-    t[0] = (int)_ZTV8Platform;
-    _ZN18MovingMeshColliderD1Ev((char *)t + 0x124);
-    _ZN5ModelD1Ev((char *)t + 0xd4);
     _ZN5ActorD2Ev(t);
     _ZN6Memory10DeallocateEPvP4Heap(t, data_020a0eac);
     return t;

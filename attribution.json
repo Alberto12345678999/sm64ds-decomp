@@ -8,8 +8,8 @@
     "mitch.cairns": "mitchellcairns"
   },
   "overrides": {
-    "src/_ZN13PoleBillboard8BehaviorEv.c": "lunavyqo",
-    "src/_ZN13PoleBillboard8BehaviorEv.cpp": "lunavyqo",
+    "src/_ZN14KnockDownPlank8BehaviorEv.c": "lunavyqo",
+    "src/_ZN14KnockDownPlank8BehaviorEv.cpp": "lunavyqo",
     "src/_ZN14BlueCoinSwitch13InitResourcesEv.c": "lunavyqo",
     "src/_ZN15TtcRotatingGear8BehaviorEv.c": "lunavyqo",
     "src/_ZN15TtcRotatingGear8BehaviorEv.cpp": "lunavyqo",
@@ -44,6 +44,23 @@
     "src/func_ov084_021298d0.c": "tangosdev",
     "src/func_ov084_021298d0.cpp": "tangosdev",
     "src/func_ov084_0212d564.c": "ruspecial",
-    "src/func_ov084_0212d564.cpp": "ruspecial"
+    "src/func_ov084_0212d564.cpp": "ruspecial",
+    "src/_ZN19dScMgSingle3DBase_cD1Ev.cpp": "tangosdev",
+    "src/_ZN19dScMgSingle3DBase_cD0Ev.cpp": "tangosdev",
+    "src/_ZN10dScMgBSC_cD0Ev.cpp": "tangosdev",
+    "src/_ZN10dScMgBSC_cD1Ev.cpp": "tangosdev",
+    "src/_ZN11dScMgCard_cD0Ev.cpp": "tangosdev",
+    "src/_ZN11dScMgCard_cD1Ev.cpp": "tangosdev",
+    "src/_ZN12dScMg3DEsp_cD0Ev.cpp": "tangosdev",
+    "src/_ZN12dScMg3DEsp_cD1Ev.cpp": "tangosdev",
+    "src/_ZN12dScMgSound_cD0Ev.cpp": "tangosdev",
+    "src/_ZN12dScMgSound_cD1Ev.cpp": "tangosdev",
+    "src/_ZN14dScMgMCarlo2_cD0Ev.cpp": "tangosdev",
+    "src/_ZN14dScMgMCarlo2_cD1Ev.cpp": "tangosdev",
+    "src/_ZN15dScMgRoulette_cD0Ev.cpp": "tangosdev",
+    "src/_ZN15dScMgRoulette_cD1Ev.cpp": "tangosdev",
+    "src/_ZN12MetalNetLift16CleanupResourcesEv.cpp": "tangosdev",
+    "src/_ZN12MetalNetLift13InitResourcesEv.cpp": "tangosdev",
+    "src/_ZN12SwitchPillar8BehaviorEv.cpp": "tangosdev"
   }
 }

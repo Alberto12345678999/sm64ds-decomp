@@ -3,7 +3,6 @@
 /* recovered: renamed to Class_Method, declarations from a shared header */
 #include "decl_common.h"
 /* recovered: renamed to Class_Method */
-/* dScMgPachinko2_c::OnYoshiTryEat - recovered from vtable slot identity */
 extern void FreeGfxSlotsById(int n);
 void func_ov006_02103cbc(char *c, int n){
     *(int*)(c+0x5000+0x660) = 0;

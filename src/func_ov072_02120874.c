@@ -1,5 +1,4 @@
 // @symbol func_ov072_02120874
-// recovered name: daBgSnwmn_c_OnYoshiTryEat
 /* recovered: vtable identified, renamed to Class_Method, declarations from a shared header */
 #include "decl_Actor.h"
 #include "decl_Model.h"
@@ -7,7 +6,6 @@
 #include "decl_common.h"
 extern int data_ov072_02122978[];
 /* recovered: vtable identified, renamed to Class_Method */
-/* daBgSnwmn_c::OnYoshiTryEat - recovered from vtable slot identity */
 extern void _ZN25MovingCylinderClsnWithPosD1Ev(void *);
 extern void _ZN15TextureSequenceD1Ev(void *);
 extern void *data_020a0eac;

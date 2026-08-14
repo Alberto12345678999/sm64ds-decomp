@@ -2,13 +2,14 @@
 // @symbol _ZN10DonutBlockD0Ev
 /* recovered: real C++ deleting destructor -- the compiler emits the whole body
  *
- * D0 is vtable slot 17: destroy through this class and its Platform base --
- * which is why two vptr stores appear -- then return the object to the actor
- * heap. The deallocation is Actor's inline operator delete, so nothing here
- * mentions a heap either.
+ * D0 is the DELETING destructor: destroy through this class and its bases --
+ * which is why more than one vptr store appears -- then return the object to
+ * its heap. Nobody writes that; declaring `~DonutBlock()` is enough, because mwcc
+ * emits D2, D0 and D1 together and objisolate keeps the one this file is bound
+ * to.
  *
- * The body is the same `~DonutBlock()` the D1 file declares; mwcc emits D2, D0
- * and D1 together and objisolate keeps whichever one the file is bound to.
+ * The deallocation is an inline operator delete, which is why nothing below
+ * mentions a heap.
  */
 #include "DonutBlock.h"
 

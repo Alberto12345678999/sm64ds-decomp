@@ -3,7 +3,6 @@
 // @symbol func_ov006_02118a8c
 // recovered name: dScMgSmartball_c_OnYoshiTryEat_02118a8c
 /* recovered: renamed to Class_Method */
-/* dScMgSmartball_c::OnYoshiTryEat - recovered from vtable slot identity */
 extern "C" {
 void func_ov006_02115b0c(void);
 void _ZN3G2x13SetBlendAlphaEPVttttt(volatile void* p, u16 a, u16 b, u16 c, u16 d);

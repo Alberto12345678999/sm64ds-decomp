@@ -17,9 +17,9 @@ _ZN6Snufit16OnPendingDestroyEv kind:function(arm,size=0x4) addr:0x02116b30
 _ZN6Snufit6RenderEv kind:function(arm,size=0x50) addr:0x02116b34
 _ZN6Snufit8BehaviorEv kind:function(arm,size=0x28c) addr:0x02116b84
 _ZN6Snufit13InitResourcesEv kind:function(arm,size=0xfc) addr:0x02116e10
-func_ov065_02116f0c kind:function(arm,size=0x8) addr:0x02116f0c
+_ZN6Snufit16OnAimedAtWithEggEv kind:function(arm,size=0x8) addr:0x02116f0c
 func_ov065_02116f14 kind:function(arm,size=0x2c) addr:0x02116f14
-func_ov065_02116f40 kind:function(arm,size=0x8) addr:0x02116f40
+_ZN6Snufit13OnYoshiTryEatEv kind:function(arm,size=0x8) addr:0x02116f40
 Snufit_Spawn kind:function(arm,size=0x50) addr:0x02116f48
 _ZN5SwoopD1Ev kind:function(arm,size=0x50) addr:0x02116f98
 _ZN5SwoopD0Ev kind:function(arm,size=0x64) addr:0x02116fe8
@@ -39,9 +39,9 @@ _ZN5Swoop16OnPendingDestroyEv kind:function(arm,size=0x4) addr:0x02117aec
 _ZN5Swoop6RenderEv kind:function(arm,size=0x74) addr:0x02117af0
 _ZN5Swoop8BehaviorEv kind:function(arm,size=0x21c) addr:0x02117b64
 _ZN5Swoop13InitResourcesEv kind:function(arm,size=0x12c) addr:0x02117d80
-func_ov065_02117eac kind:function(arm,size=0x8) addr:0x02117eac
+_ZN5Swoop16OnAimedAtWithEggEv kind:function(arm,size=0x8) addr:0x02117eac
 func_ov065_02117eb4 kind:function(arm,size=0x2c) addr:0x02117eb4
-func_ov065_02117ee0 kind:function(arm,size=0x8) addr:0x02117ee0
+_ZN5Swoop13OnYoshiTryEatEv kind:function(arm,size=0x8) addr:0x02117ee0
 Swoop_Spawn kind:function(arm,size=0x58) addr:0x02117ee8
 _ZN6DorrieD1Ev kind:function(arm,size=0x68) addr:0x02117f40
 _ZN6DorrieD0Ev kind:function(arm,size=0x7c) addr:0x02117fa8
@@ -129,13 +129,13 @@ _ZN15TtcRotatingGear8BehaviorEv kind:function(arm,size=0x190) addr:0x0211b8f8
 _ZN15TtcRotatingGear13InitResourcesEv kind:function(arm,size=0xf4) addr:0x0211ba88
 TtcMovingCubeB_Spawn kind:function(arm,size=0x30) addr:0x0211bb7c
 TtcMovingCubeA_Spawn kind:function(arm,size=0x30) addr:0x0211bbac
-_ZN14TtcMovingCubeAD1Ev kind:function(arm,size=0x4c) addr:0x0211bbdc
-_ZN14TtcMovingCubeAD0Ev kind:function(arm,size=0x60) addr:0x0211bc28
+_ZN14TTC_MovingBeamD1Ev kind:function(arm,size=0x4c) addr:0x0211bbdc
+_ZN14TTC_MovingBeamD0Ev kind:function(arm,size=0x60) addr:0x0211bc28
 func_ov065_0211bc88 kind:function(arm,size=0x98) addr:0x0211bc88
-_ZN14TtcMovingCubeA16CleanupResourcesEv kind:function(arm,size=0x44) addr:0x0211bd20
-_ZN14TtcMovingCubeA6RenderEv kind:function(arm,size=0x28) addr:0x0211bd64
-_ZN14TtcMovingCubeA8BehaviorEv kind:function(arm,size=0x178) addr:0x0211bd8c
-_ZN14TtcMovingCubeA13InitResourcesEv kind:function(arm,size=0x13c) addr:0x0211bf04
+_ZN14TTC_MovingBeam16CleanupResourcesEv kind:function(arm,size=0x44) addr:0x0211bd20
+_ZN14TTC_MovingBeam6RenderEv kind:function(arm,size=0x28) addr:0x0211bd64
+_ZN14TTC_MovingBeam8BehaviorEv kind:function(arm,size=0x178) addr:0x0211bd8c
+_ZN14TTC_MovingBeam13InitResourcesEv kind:function(arm,size=0x13c) addr:0x0211bf04
 TTC_MovingBeam_Spawn kind:function(arm,size=0x38) addr:0x0211c040
 data_ov065_0211c078 kind:data(any) addr:0x0211c078
 data_ov065_0211c080 kind:data(any) addr:0x0211c080
@@ -261,7 +261,7 @@ _ZTI16daObjCtMecha09_c kind:data(any) addr:0x0211d514
 data_ov065_0211d520 kind:data(any) addr:0x0211d520
 _ZTS16daObjCtMecha09_c kind:data(any) addr:0x0211d530
 TTC_MovingBeam_SpawnInfo kind:data(any) addr:0x0211d544 ambiguous
-_ZTV14TtcMovingCubeA kind:data(any) addr:0x0211d568
+_ZTV14TTC_MovingBeam kind:data(any) addr:0x0211d568
 _ZTV16daObjCtMecha09_c kind:data(any) addr:0x0211d568
 data_ov065_0211d600 kind:bss addr:0x0211d600
 data_ov065_0211d608 kind:bss addr:0x0211d608

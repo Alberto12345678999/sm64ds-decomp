@@ -1,19 +1,24 @@
 //cpp
 // @symbol _ZN17BowserSkyPlatform16CleanupResourcesEv
-/* recovered: shared header, real C++ method
- *
- * One release -- the platform's own model.
- *
- * `SharedFilePtr::Release` is spelt as the member call it is, so the compiler
- * emits _ZN13SharedFilePtr7ReleaseEv itself.
- */
 #include "BowserSkyPlatform.h"
-#include "SharedFilePtr.h"
+/* recovered: renamed to Class_Method, RTTI class fields named, declarations from a shared header */
+#include "decl_common.h"
+/* recovered: renamed to Class_Method, RTTI class fields named */
+#include "daKpa3Bg_c.h"
+// recovered name: daKpa3Bg_c_CleanupResources
+/* recovered: renamed to Class_Method */
+/* daKpa3Bg_c::CleanupResources - recovered from vtable slot identity */
+extern "C" {
+extern void _ZN13SharedFilePtr7ReleaseEv(void *);
+extern void *data_ov060_02119514[];
+extern void *data_ov060_0211953c[];
+}
 
-extern char data_ov060_0211b1c4;
-
-int BowserSkyPlatform::CleanupResources()
-{
-    ((SharedFilePtr *)(&data_ov060_0211b1c4))->Release();
+s32 BowserSkyPlatform::CleanupResources() {
+    char * c = (char *)this;
+    struct daKpa3Bg_c *self = (struct daKpa3Bg_c *)(void *)c;
+    _ZN16MeshColliderBase7DisableEv(c + 0x124);
+    _ZN13SharedFilePtr7ReleaseEv(data_ov060_02119514[self->unk_329]);
+    _ZN13SharedFilePtr7ReleaseEv(data_ov060_0211953c[self->unk_329]);
     return 1;
 }

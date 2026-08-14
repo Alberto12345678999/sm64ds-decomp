@@ -79,7 +79,7 @@ src/_ZN6Snufit13InitResourcesEv.cpp:
     complete
     .text start:0x02116e10 end:0x02116f0c
 
-src/func_ov065_02116f0c.c:
+src/_ZN6Snufit16OnAimedAtWithEggEv.cpp:
     complete
     .text start:0x02116f0c end:0x02116f14
 
@@ -87,7 +87,7 @@ src/func_ov065_02116f14.cpp:
     complete
     .text start:0x02116f14 end:0x02116f40
 
-src/func_ov065_02116f40.c:
+src/_ZN6Snufit13OnYoshiTryEatEv.cpp:
     complete
     .text start:0x02116f40 end:0x02116f48
 
@@ -166,7 +166,7 @@ src/_ZN5Swoop13InitResourcesEv.cpp:
     complete
     .text start:0x02117d80 end:0x02117eac
 
-src/func_ov065_02117eac.c:
+src/_ZN5Swoop16OnAimedAtWithEggEv.cpp:
     complete
     .text start:0x02117eac end:0x02117eb4
 
@@ -174,7 +174,7 @@ src/func_ov065_02117eb4.cpp:
     complete
     .text start:0x02117eb4 end:0x02117ee0
 
-src/func_ov065_02117ee0.c:
+src/_ZN5Swoop13OnYoshiTryEatEv.cpp:
     complete
     .text start:0x02117ee0 end:0x02117ee8
 
@@ -516,11 +516,11 @@ src/TtcMovingCubeA_Spawn.c:
     complete
     .text start:0x0211bbac end:0x0211bbdc
 
-src/_ZN14TtcMovingCubeAD1Ev.cpp:
+src/_ZN14TTC_MovingBeamD1Ev.cpp:
     complete
     .text start:0x0211bbdc end:0x0211bc28
 
-src/_ZN14TtcMovingCubeAD0Ev.cpp:
+src/_ZN14TTC_MovingBeamD0Ev.cpp:
     complete
     .text start:0x0211bc28 end:0x0211bc88
 
@@ -528,15 +528,15 @@ src/func_ov065_0211bc88.cpp:
     complete
     .text start:0x0211bc88 end:0x0211bd20
 
-src/_ZN14TtcMovingCubeA16CleanupResourcesEv.cpp:
+src/_ZN14TTC_MovingBeam16CleanupResourcesEv.cpp:
     complete
     .text start:0x0211bd20 end:0x0211bd64
 
-src/_ZN14TtcMovingCubeA6RenderEv.cpp:
+src/_ZN14TTC_MovingBeam6RenderEv.cpp:
     complete
     .text start:0x0211bd64 end:0x0211bd8c
 
-src/_ZN14TtcMovingCubeA13InitResourcesEv.cpp:
+src/_ZN14TTC_MovingBeam13InitResourcesEv.cpp:
     .text start:0x0211bf04 end:0x0211c040
 
 src/TTC_MovingBeam_Spawn.c:

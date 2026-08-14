@@ -1,5 +1,4 @@
 // @symbol func_ov027_02111924
-// recovered name: daPgDfdr_c_OnYoshiTryEat
 /* recovered: vtable identified, renamed to Class_Method, declarations from a shared header */
 #include "decl_Actor.h"
 #include "decl_Model.h"
@@ -10,7 +9,6 @@
 extern int data_ov027_02113a90[];
 extern int _ZTV8Platform[];
 /* recovered: vtable identified, renamed to Class_Method */
-/* daPgDfdr_c::OnYoshiTryEat - recovered from vtable slot identity */
 extern void _ZN15TextureSequenceD1Ev(void *);
 extern void *data_020a0eac;
 int *func_ov027_02111924(int *t)

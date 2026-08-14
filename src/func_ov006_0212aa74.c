@@ -3,7 +3,6 @@
 /* recovered: renamed to Class_Method, declarations from a shared header */
 #include "decl_common.h"
 /* recovered: renamed to Class_Method */
-/* dScMgFlower_c::OnYoshiTryEat - recovered from vtable slot identity */
 /* func_ov006_0212aa74 at 0x0212aa74
  *
  * Wraps a counter at this+0x5fe4 (increments while <= 0x14, else resets

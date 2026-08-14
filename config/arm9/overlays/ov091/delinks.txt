@@ -242,11 +242,11 @@ src/func_ov091_02133254.cpp:
     complete
     .text start:0x02133254 end:0x021333fc
 
-src/func_ov091_021333fc.c:
+src/_ZN5StumpD1Ev.cpp:
     complete
     .text start:0x021333fc end:0x02133440
 
-src/func_ov091_02133440.c:
+src/_ZN5StumpD0Ev.c:
     complete
     .text start:0x02133440 end:0x02133498
 
@@ -266,11 +266,11 @@ src/func_ov091_02133648.cpp:
     complete
     .text start:0x02133648 end:0x021336cc
 
-src/func_ov091_021336cc.c:
+src/_ZN5Stump16CleanupResourcesEv.cpp:
     complete
     .text start:0x021336cc end:0x02133710
 
-src/func_ov091_02133710.cpp:
+src/_ZN5Stump6RenderEv.cpp:
     complete
     .text start:0x02133710 end:0x02133738
 
@@ -286,13 +286,17 @@ src/Stump_Spawn.c:
     complete
     .text start:0x02133938 end:0x02133968
 
-src/_ZN5StumpD1Ev.cpp:
+src/_ZN6FwooshD1Ev.cpp:
     complete
     .text start:0x02133968 end:0x021339a8
 
-src/_ZN5StumpD0Ev.cpp:
+src/_ZN6FwooshD0Ev.cpp:
     complete
     .text start:0x021339a8 end:0x021339fc
+
+src/func_ov091_021339fc.c:
+    complete
+    .text start:0x021339fc end:0x02133c6c
 
 src/func_ov091_02133c6c.cpp:
     complete
@@ -326,27 +330,27 @@ src/func_ov091_02134094.c:
     complete
     .text start:0x02134094 end:0x02134108
 
-src/_ZN5Stump16CleanupResourcesEv.cpp:
+src/_ZN6Fwoosh16CleanupResourcesEv.cpp:
     complete
     .text start:0x02134108 end:0x02134180
 
-src/_ZN5Stump16OnPendingDestroyEv.c:
+src/_ZN6Fwoosh16OnPendingDestroyEv.c:
     complete
     .text start:0x02134180 end:0x02134184
 
-src/_ZN5Stump6RenderEv.cpp:
+src/_ZN6Fwoosh6RenderEv.cpp:
     complete
     .text start:0x02134184 end:0x021341ec
 
-src/_ZN5Stump8BehaviorEv.cpp:
+src/_ZN6Fwoosh8BehaviorEv.cpp:
     complete
     .text start:0x021341ec end:0x02134324
 
-src/_ZN5Stump13InitResourcesEv.cpp:
+src/_ZN6Fwoosh13InitResourcesEv.cpp:
     complete
     .text start:0x02134324 end:0x02134484
 
-src/func_ov091_02134484.c:
+src/_ZN6Fwoosh16OnAimedAtWithEggEv.cpp:
     complete
     .text start:0x02134484 end:0x0213448c
 
@@ -354,7 +358,7 @@ src/func_ov091_0213448c.c:
     complete
     .text start:0x0213448c end:0x02134498
 
-src/func_ov091_02134498.c:
+src/_ZN6Fwoosh13OnYoshiTryEatEv.cpp:
     complete
     .text start:0x02134498 end:0x021344a0
 

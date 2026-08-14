@@ -1,16 +1,18 @@
 // @symbol _ZN7SeaweedD0Ev
-/* recovered: named members + shared header, vtable identified, declarations from a shared header */
+/* recovered: vtable identified, renamed to Class_Method, declarations from a shared header */
 #include "decl_Actor.h"
 #include "decl_ModelAnim.h"
-#include "decl_MovingCylinderClsn.h"
 #include "decl_common.h"
-/* recovered: named members + shared header, vtable identified */
-/* vtable identified: VT0 = _ZTV12daObjHeart_c */
+extern int _ZTV7Seaweed[];
+/* recovered: vtable identified, renamed to Class_Method */
+/* The DELETING DESTRUCTOR, vtable slot 17. The old comment here called it
+   OnYoshiTryEat, which is slot 18 -- off by one. This body stores the class
+   vtable, destroys the members and calls Memory::Deallocate; no eat handler
+   does any of that. */
 extern void *data_020a0eac;
 int *_ZN7SeaweedD0Ev(int *t)
 {
-    t[0] = (int)_ZTV12daObjHeart_c;
-    _ZN18MovingCylinderClsnD1Ev((char *)t + 0x138);
+    t[0] = (int)_ZTV7Seaweed;
     _ZN9ModelAnimD1Ev((char *)t + 0xd4);
     _ZN5ActorD2Ev(t);
     _ZN6Memory10DeallocateEPvP4Heap(t, data_020a0eac);

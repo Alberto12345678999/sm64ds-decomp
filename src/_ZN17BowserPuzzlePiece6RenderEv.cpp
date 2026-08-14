@@ -1,14 +1,11 @@
 //cpp
 // @symbol _ZN17BowserPuzzlePiece6RenderEv
-/* recovered: shared header, real C++ method
- *
- * `return 1` and nothing else -- the whole ROM body is `mov r0,#1; bx lr`.
- * The piece draws nothing of its own from the render slot; whatever puts it
- * on screen is not this override.
- */
+/* recovered: named members + shared header, real C++ method */
 #include "BowserPuzzlePiece.h"
+struct Base { virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3(); virtual void v4(); virtual void m(int); };
+struct Derived { char pad[0xd4]; Base base; };
 
-s32 BowserPuzzlePiece::Render()
+int BowserPuzzlePiece::Render()
 {
-    return 1;
+ Base *b = &((Derived *)this)->base; b->m(0); return 1;
 }

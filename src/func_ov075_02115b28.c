@@ -1,9 +1,7 @@
 // @symbol func_ov075_02115b28
-// recovered name: dScEntry_c_OnYoshiTryEat
 /* recovered: renamed to Class_Method, declarations from a shared header */
 #include "decl_common.h"
 /* recovered: renamed to Class_Method */
-/* dScEntry_c::OnYoshiTryEat - recovered from vtable slot identity */
 extern void*_ZTV5Scene[];
 extern int data_0208e4b8[];
 extern void __destroy_arr(void*, int, int, void*);

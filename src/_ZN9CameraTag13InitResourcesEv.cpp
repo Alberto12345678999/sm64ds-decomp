@@ -1,13 +1,14 @@
 //cpp
 // @symbol _ZN9CameraTag13InitResourcesEv
-/* recovered: named members + shared header, real C++ method */
+/* recovered: shared header, real C++ method
+ *
+ * `return 1`. Nothing to load: the pole has no model and no animation, only
+ * the MovingCylinderClsn its spawner already constructed. Reporting success
+ * without doing anything is the whole point -- see include/CameraTag.h.
+ */
 #include "CameraTag.h"
-
 
 int CameraTag::InitResources()
 {
-  mScaleX=(((mParam&0xf)+1)*0x64000)>>1;
-  mScaleY=(((mParam>>4&0xf)+1)*0x64000);
-  mAngleY=-mAngleY;
-  return 1;
+    return 1;
 }

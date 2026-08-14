@@ -3,7 +3,6 @@
 /* recovered: renamed to Class_Method, declarations from a shared header */
 #include "decl_common.h"
 /* recovered: renamed to Class_Method */
-/* dScMgPanel_c::OnYoshiTryEat - recovered from vtable slot identity */
 extern void FreeGfxSlotsById(int arg);
 extern void func_ov006_021067a4(char *p);
 extern void func_ov006_021063a0(char *p);

@@ -1,13 +1,10 @@
 //cpp
 // @symbol _ZN13InvisiblePole6RenderEv
-/* recovered: shared header, real C++ method
- *
- * `return 1` -- which is what makes it INVISIBLE. There is no model to draw,
- * and the override exists so the base never tries.
- */
+/* Vtable slot 9. The pole is invisible, so rendering it is a no-op that still
+ * reports success. */
 #include "InvisiblePole.h"
 
-int InvisiblePole::Render()
+s32 InvisiblePole::Render()
 {
     return 1;
 }

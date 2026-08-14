@@ -4,7 +4,6 @@
 /* recovered: renamed to Class_Method, declarations from a shared header */
 #include "decl_common.h"
 /* recovered: renamed to Class_Method */
-/* dScMgSlot3_c::OnYoshiTryEat - recovered from vtable slot identity */
 extern int RandomIntInternal(int *seed);
 extern int data_0209e650;
 extern void func_02012790(unsigned int id);

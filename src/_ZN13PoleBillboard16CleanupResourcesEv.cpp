@@ -1,20 +1,15 @@
 //cpp
 // @symbol _ZN13PoleBillboard16CleanupResourcesEv
-/* recovered: named members + shared header, real C++ method, declarations from a shared header */
-#include "decl_common.h"
-/* recovered: named members + shared header, real C++ method */
 #include "PoleBillboard.h"
-#include "SharedFilePtr.h"
-#include "MeshColliderBase.h"
-extern int PoleBillboard_ClsnFile[];
-extern int PoleBillboard_ModelFile[];
+// recovered name: daObjBkBillboard_c_CleanupResources
+/* recovered: renamed to Class_Method */
+/* daObjBkBillboard_c::CleanupResources - recovered from vtable slot identity */
+extern "C" {
+extern void _ZN13SharedFilePtr7ReleaseEv(void *);
+extern int data_ov015_02114960[];
+}
 
-int PoleBillboard::CleanupResources()
-{
-    if (((MeshColliderBase *)((char *)&(*(u8 *)&mMeshCollider)))->IsEnabled()) {
-        ((MeshColliderBase *)((char *)&(*(u8 *)&mMeshCollider)))->Disable();
-    }
-    ((SharedFilePtr *)(PoleBillboard_ModelFile))->Release();
-    ((SharedFilePtr *)(PoleBillboard_ClsnFile))->Release();
+s32 PoleBillboard::CleanupResources() {
+    _ZN13SharedFilePtr7ReleaseEv(data_ov015_02114960);
     return 1;
 }

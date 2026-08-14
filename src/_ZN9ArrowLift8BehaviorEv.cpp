@@ -1,38 +1,79 @@
 //cpp
+#include "types.h"
 // @symbol _ZN9ArrowLift8BehaviorEv
-/* recovered: named members + shared header, real C++ method, declarations from a shared header */
-#include "decl_common.h"
 /* recovered: named members + shared header, real C++ method */
 #include "ArrowLift.h"
-typedef short s16;
 extern "C" {
-extern char* _ZN5Actor10FindWithIDEj(unsigned int id);
-extern void _ZN12CylinderClsn5ClearEv(void* self);
-extern void _ZN12CylinderClsn6UpdateEv(void* self);
+extern void func_02012694(int a, void* p);
+extern void _ZN5Actor9UpdatePosEP12CylinderClsn(void* self, void* clsn);
+extern void _ZN8Platform21UpdateModelPosAndRotYEv(void* self);
+extern int _ZN8Platform21IsClsnInRangeOnScreenE5Fix12IiES1_(void* self, int a, int b);
+extern void _ZN8Platform19UpdateClsnPosAndRotEv(void* self);
 }
 
 int ArrowLift::Behavior()
 {
-    func_ov029_02111850(((char*)this));
-    if (unk_158 == 0) return 1;
-    func_ov029_021117ac(((char*)this));
-    if (unk_15d != 0) {
-        char* p;
-        s16* a = (s16*)(((int)((char*)this) + 0x8e));
-        *a = *a + 0x400;
-        p = _ZN5Actor10FindWithIDEj(unk_158);
-        if (p != 0) {
-            if (mPosY == *(int*)(p+0x60)) {
-                if (mAngleY == 0) unk_15d = 0;
-            }
-            if (mPosY != *(int*)(p+0x334)) {
-                unk_15d = 0;
-                mAngleY = 0;
+    switch (((u8*)this)[0x327]) {
+    case 0:
+        if (((u8*)this)[0x326] != 0) {
+            func_02012694(0x17b, ((u8*)this) + 0x74);
+            {
+                u8* p = (u8*)(((int)((u8*)this) + 0x327));
+                *p = *p + 1;
             }
         }
+        unk_098 = 0xa000;
+        break;
+    case 1:
+    case 3:
+        _ZN5Actor9UpdatePosEP12CylinderClsn(((u8*)this), 0);
+        {
+            int* p = (int*)(((int)((u8*)this) + 0x320));
+            *p = *p + unk_098;
+        }
+        if (unk_320 >= 0x177000) {
+            unk_320 = 0;
+            {
+                u8* p = (u8*)(((int)((u8*)this) + 0x327));
+                *p = *p + 1;
+            }
+            {
+                u8* base = (u8*)(((int)((u8*)this) + 0x300));
+                *(u16*)(base + 0x24) = 0;
+            }
+        }
+        break;
+    case 2:
+    case 4:
+        if (*(u16*)((u8*)(((unsigned)((u8*)this) + 0x300)) + 0x24) >= 0x3c) {
+            {
+                s16* p = (s16*)(((int)((u8*)this) + 0x94));
+                *p = *p + 0x8000;
+            }
+            if (((u8*)this)[0x327] == 4) {
+                ((u8*)this)[0x327] = 0;
+            } else {
+                {
+                    u8* p = (u8*)(((int)((u8*)this) + 0x327));
+                    *p = *p + 1;
+                }
+                func_02012694(0x17b, ((u8*)this) + 0x74);
+            }
+            {
+                u8* b2 = (u8*)(((int)((u8*)this) + 0x300));
+                *(u16*)(b2 + 0x24) = 0;
+            }
+        } else {
+            u16* p = (u16*)(((int)((u8*)this) + 0x324));
+            *p = *p + 1;
+        }
+        break;
     }
-    func_ov029_021118c8(((char*)this));
-    _ZN12CylinderClsn5ClearEv((void*)((char*)&mMovingCylinderClsn));
-    _ZN12CylinderClsn6UpdateEv((void*)((char*)&mMovingCylinderClsn));
+
+    _ZN8Platform21UpdateModelPosAndRotYEv(((u8*)this));
+    if (_ZN8Platform21IsClsnInRangeOnScreenE5Fix12IiES1_(((u8*)this), 0x100000, 0) != 0) {
+        _ZN8Platform19UpdateClsnPosAndRotEv(((u8*)this));
+    }
+    ((u8*)this)[0x326] = 0;
     return 1;
 }

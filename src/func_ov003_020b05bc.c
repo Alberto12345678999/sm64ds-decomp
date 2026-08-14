@@ -1,9 +1,7 @@
 // @symbol func_ov003_020b05bc
-// recovered name: dScGameOver_c_OnYoshiTryEat
 /* recovered: vtable identified, renamed to Class_Method, declarations from a shared header */
 #include "decl_common.h"
 /* recovered: vtable identified, renamed to Class_Method */
-/* dScGameOver_c::OnYoshiTryEat - recovered from vtable slot identity */
 extern void _ZN9ActorBaseD2Ev(void *);
 extern void *GAME_HEAP_PTR;
 int *func_ov003_020b05bc(int *t)

@@ -1,0 +1,68 @@
+/* AUTO-GENERATED from matched-function evidence by tools/gen_header.py
+ * class Ukiki: 5 matched functions, 27 evidenced fields.
+ * Offsets/widths are observed, not guessed. Gaps are explicit padding.
+ * Field NAMES are placeholders - renaming cannot change codegen. */
+#ifndef UKIKI_H
+#define UKIKI_H
+#include "types.h"
+#include "ModelAnim.h"
+#include "ShadowModel.h"
+#include "MovingCylinderClsn.h"
+
+struct Ukiki {
+    u8  pad_000[0xc];
+    u16 mActorID;            /* 0x00c */
+    u8  pad_00e[0x4e];
+    s32 mPosX;            /* 0x05c */
+    s32 mPosY;            /* 0x060 */
+    s32 mPosZ;            /* 0x064 */
+    u8  pad_068[0x18];
+    s32 mScaleX;            /* 0x080 */
+    s32 mScaleY;            /* 0x084 */
+    s32 mScaleZ;            /* 0x088 */
+    u8  pad_08c[0x10];
+    s32 unk_09c;            /* 0x09c */
+    s32 unk_0a0;            /* 0x0a0 */
+    u8  pad_0a4[0xc];
+    s32 unk_0b0;            /* 0x0b0 */
+    u8  pad_0b4[0x18];
+    s8  mAreaId;            /* 0x0cc */
+    u8  pad_0cd[0x7];
+    /* ModelAnim member, named by _ZN9ModelAnimD1Ev at +0xd4 -- a relocation the ROM build
+       checks. D1 and not D2, so it is this type and not an inlined base. The marker's pad
+       stopped short of the object, so the member also takes over unk_130 (+0x5c = speed),
+       which the header declared separately inside it. */
+    ModelAnim mModelAnim;            /* 0x0d4 */
+    /* ShadowModel member, named by the class's own destructor calling
+       ShadowModel's D1 at +0x138 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN5UkikiD0Ev.c] */
+    ShadowModel mShadowModel;            /* 0x138 */
+    /* MovingCylinderClsn member, named by the class's own destructor calling
+       MovingCylinderClsn's D1 at +0x160 -- a relocation the ROM build
+       checks. Was a u8 marker. [_ZN5UkikiD0Ev.c] */
+    MovingCylinderClsn mMovingCylinderClsn;            /* 0x160 */
+    u8  mWithMeshClsn;            /* 0x194 */
+    u8  pad_195[0x1eb];
+    s32 unk_380;            /* 0x380 */
+    s32 unk_384;            /* 0x384 */
+    s32 unk_388;            /* 0x388 */
+    s32 unk_38c;            /* 0x38c */
+    s32 unk_390;            /* 0x390 */
+    s32 unk_394;            /* 0x394 */
+    u8  pad_398[0x10];
+    s32 unk_3a8;            /* 0x3a8 */
+    s32 unk_3ac;            /* 0x3ac */
+    u32 unk_3b0;            /* 0x3b0 */
+    u8  pad_3b4[0x14];
+    u8  unk_3c8;            /* 0x3c8 */
+    u8  pad_3c9[0x2];
+    u8  unk_3cb;            /* 0x3cb */
+#ifdef __cplusplus
+    /* methods */
+    int Behavior();
+    int InitResources();
+    int Render();
+#endif
+};
+
+#endif

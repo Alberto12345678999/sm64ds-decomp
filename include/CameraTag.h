@@ -1,36 +1,44 @@
-/* AUTO-GENERATED from matched-function evidence by tools/gen_header.py
- * class CameraTag: 4 matched functions, 7 evidenced fields.
- * Offsets/widths are observed, not guessed. Gaps are explicit padding.
- * Field NAMES are placeholders - renaming cannot change codegen. */
+/* Hand-written from matched-function evidence:
+ * class CameraTag, ov002 0x020b0710-0x020b07c8 (8 functions, no other class
+ * in the TU -- tu_map.py).
+ *
+ * ALL FIVE of its virtual overrides are STUBS -- InitResources, Behavior,
+ * Render and CleanupResources are `return 1`, OnPendingDestroy is empty, and
+ * not one of them reads `this`. The class exists to BE somewhere: it is an
+ * Actor carrying a MovingCylinderClsn and nothing else, so what it does is
+ * occupy a collision volume that other code queries. Overriding every hook to
+ * do nothing is how it stays inert while still being a full actor.
+ *
+ * The layout therefore comes from the spawner and the constructor, not from
+ * the methods -- none of them touches a field:
+ *
+ *   InvisiblePole_Spawn allocates 264 == 0x108 bytes, so that is sizeof.
+ *   It then runs MovingCylinderClsn's constructor at +0xd4, and Actor is
+ *   0xd0, so the sub-object begins on the first 4-aligned offset past the
+ *   base and runs to the end: 0x108 - 0xd4 == 0x34.
+ *
+ * That 0x34 is corroborated independently -- KoopaShell puts a
+ * MovingCylinderClsn at 0x110 and its next member at 0x144, the same span.
+ *
+ * Field NAMES are placeholders - renaming cannot change codegen.
+ */
 #ifndef CAMERATAG_H
 #define CAMERATAG_H
 #include "types.h"
 
 struct CameraTag {
-    u8  pad_000[0x8];
-    u32 mParam;            /* 0x008 */
-    u8  pad_00c[0x50];
-    /* 0x05c..0x080 is Actor's, and Actor.h is de-bannered -- hand-reconstructed, not generated. Was one u8
-       marker over the whole range. */
-    s32 unk_05c;                 /* 0x05c */
-    s32 mPosY;                   /* 0x060 */
-    s32 mPosZ;                   /* 0x064 */
-    s32 unk_068;                 /* 0x068 */
-    s32 unk_06c;                 /* 0x06c */
-    s32 unk_070;                 /* 0x070 */
-    s32 mCamSpacePosX;           /* 0x074 */
-    s32 mCamSpacePosY;           /* 0x078 */
-    s32 mCamSpacePosZ;           /* 0x07c */
-    s32 mScaleX;            /* 0x080 */
-    s32 mScaleY;            /* 0x084 */
-    u8  pad_088[0x4];
-    s16 mAngleX;            /* 0x08c */
-    s16 mAngleY;            /* 0x08e */
-    s16 mAngleZ;            /* 0x090 */
+    u8  pad_000[0xd4];
+    /* MovingCylinderClsn, 0x34 bytes, running to the end of the object. Kept
+       as a byte marker: nothing in this class ever looks inside it. */
+    u8  mCylinderClsn;            /* 0x0d4 */
+    u8  pad_0d5[0x33];
 #ifdef __cplusplus
-    /* methods */
+    /* methods -- every one a stub; see the note above */
     int Behavior();
+    int CleanupResources();
     int InitResources();
+    void OnPendingDestroy();
+    int Render();
 #endif
 };
 

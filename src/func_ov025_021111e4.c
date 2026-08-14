@@ -1,5 +1,4 @@
 // @symbol func_ov025_021111e4
-// recovered name: daDgr_c_OnYoshiTryEat
 /* recovered: vtable identified, renamed to Class_Method, declarations from a shared header */
 #include "decl_Actor.h"
 #include "decl_Model.h"
@@ -8,7 +7,6 @@
 extern int data_ov025_02113760[];
 extern int _ZTV8Platform[];
 /* recovered: vtable identified, renamed to Class_Method */
-/* daDgr_c::OnYoshiTryEat - recovered from vtable slot identity */
 extern void *data_020a0eac;
 int *func_ov025_021111e4(int *t)
 {

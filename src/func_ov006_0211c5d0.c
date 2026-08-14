@@ -3,7 +3,6 @@
 /* recovered: renamed to Class_Method, declarations from a shared header */
 #include "decl_common.h"
 /* recovered: renamed to Class_Method */
-/* dScMgSound_c::OnYoshiTryEat - recovered from vtable slot identity */
 extern void func_ov006_0211c478(int self);
 extern void func_ov006_0211c080(int self);
 

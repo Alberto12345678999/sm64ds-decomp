@@ -6,7 +6,6 @@
 #include "dScMgMCarlo2_c.h"
 // recovered name: dScMgMCarlo2_c_OnYoshiTryEat_020fa4d4
 /* recovered: renamed to Class_Method */
-/* dScMgMCarlo2_c::OnYoshiTryEat - recovered from vtable slot identity */
 extern "C" {
 extern void func_ov006_020c1604(char* c, int unused, short a2, void* a3);
 void func_ov006_020fa4d4(char* c) {

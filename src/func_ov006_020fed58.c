@@ -3,7 +3,6 @@
 /* recovered: renamed to Class_Method, declarations from a shared header */
 #include "decl_common.h"
 /* recovered: renamed to Class_Method */
-/* dScMgPachinko_c::OnYoshiTryEat - recovered from vtable slot identity */
 void func_ov006_020fed58(char *c, int n){
     *(int*)(c+0x5000+0xc10) = 0;
     if(n == 9){

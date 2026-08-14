@@ -3,7 +3,6 @@
 /* recovered: renamed to Class_Method, declarations from a shared header */
 #include "decl_common.h"
 /* recovered: renamed to Class_Method */
-/* dScMgSnowball_c::OnYoshiTryEat - recovered from vtable slot identity */
 extern void func_ov006_02126a98(void* a);
 void func_ov006_0212921c(void* c, int i){
   func_ov004_020adb1c(0);

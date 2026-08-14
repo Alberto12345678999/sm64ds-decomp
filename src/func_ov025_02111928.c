@@ -1,5 +1,4 @@
 // @symbol func_ov025_02111928
-// recovered name: daDkk_c_OnYoshiTryEat
 /* recovered: vtable identified, renamed to Class_Method, declarations from a shared header */
 #include "decl_Actor.h"
 #include "decl_Model.h"
@@ -7,7 +6,6 @@
 #include "decl_ShadowModel.h"
 #include "decl_common.h"
 /* recovered: vtable identified, renamed to Class_Method */
-/* daDkk_c::OnYoshiTryEat - recovered from vtable slot identity */
 extern void _ZN15TextureSequenceD1Ev(void *);
 extern void *G0;
 int *func_ov025_02111928(int *t)

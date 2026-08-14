@@ -1,11 +1,7 @@
-// @symbol _ZN9CameraTagD0Ev
-/* recovered: named members + shared header, declarations from a shared header */
-#include "decl_Actor.h"
-#include "decl_common.h"
-/* recovered: named members + shared header */
-#include "CameraTag.h"
-extern void* data_020a0eac;
 extern int _ZTV9CameraTag[];
+extern void _ZN5ActorD2Ev(void *);
+extern void _ZN6Memory10DeallocateEPvP4Heap(void *, void *);
+extern void *data_020a0eac;
 int *_ZN9CameraTagD0Ev(int *t)
 {
     t[0] = (int)_ZTV9CameraTag;

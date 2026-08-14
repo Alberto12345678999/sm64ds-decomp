@@ -5,7 +5,6 @@
 #include "dScEntry_c.h"
 // recovered name: dScEntry_c_OnYoshiTryEat_0211b1cc
 /* recovered: renamed to Class_Method */
-/* dScEntry_c::OnYoshiTryEat - recovered from vtable slot identity */
 extern unsigned short DecIfAbove0_Short(unsigned short* p);
 struct E { char pad[8]; int r8; int rc; char pad2[8]; };
 void func_ov075_0211b1cc(char* c) {

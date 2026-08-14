@@ -1,9 +1,7 @@
 // @symbol func_ov003_020ad69c
-// recovered name: dScTitle_c_OnYoshiTryEat
 /* recovered: renamed to Class_Method, declarations from a shared header */
 #include "decl_common.h"
 /* recovered: renamed to Class_Method */
-/* dScTitle_c::OnYoshiTryEat - recovered from vtable slot identity */
 extern void _ZN9ActorBaseD2Ev(void *self);
 extern void*_ZTV5Scene[];
 extern int data_0208e4b8[];

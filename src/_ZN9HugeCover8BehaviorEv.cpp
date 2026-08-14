@@ -1,18 +1,13 @@
 //cpp
 // @symbol _ZN9HugeCover8BehaviorEv
-/* recovered: named members + shared header, real C++ method */
 #include "HugeCover.h"
-extern "C" {
-extern void _ZN9Animation7AdvanceEv(void *);
-extern void _ZN8Platform21UpdateModelPosAndRotYEv(void *);
-extern void _ZN8Platform19UpdateClsnPosAndRotEv(void *);
-}
+// recovered name: daObjTdFuta_c_Behavior
+/* recovered: renamed to Class_Method */
+/* daObjTdFuta_c::Behavior - recovered from vtable slot identity */
+extern "C" int _ZN8Platform13IsClsnInRangeE5Fix12IiES1_(void *self, int a, int b);
 
-int HugeCover::Behavior()
-{
-    (*(s32 *)((char *)&mTextureTransformer + 0xc)) = 4096;
-    _ZN9Animation7AdvanceEv((char *)&(*(u8 *)&mTextureTransformer));
-    _ZN8Platform21UpdateModelPosAndRotYEv(((char *)this));
-    _ZN8Platform19UpdateClsnPosAndRotEv(((char *)this));
+s32 HugeCover::Behavior() {
+    void * c = (void *)this;
+    _ZN8Platform13IsClsnInRangeE5Fix12IiES1_(c, 0, 0);
     return 1;
 }

@@ -3,7 +3,6 @@
 /* recovered: renamed to Class_Method, declarations from a shared header */
 #include "decl_common.h"
 /* recovered: renamed to Class_Method */
-/* dScMgBomroom_c::OnYoshiTryEat - recovered from vtable slot identity */
 void func_ov006_020d9104(unsigned char* c){
   func_ov006_020d907c(c);
   unsigned char* a=c+0x6200;

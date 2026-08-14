@@ -1,5 +1,4 @@
 // @symbol func_ov065_0211abac
-// recovered name: daObjCtMecha05_c_OnYoshiTryEat
 /* recovered: vtable identified, renamed to Class_Method, declarations from a shared header */
 #include "decl_Actor.h"
 #include "decl_Model.h"
@@ -9,7 +8,6 @@
 extern int data_ov065_0211d2b4[];
 extern int _ZTV8Platform[];
 /* recovered: vtable identified, renamed to Class_Method */
-/* daObjCtMecha05_c::OnYoshiTryEat - recovered from vtable slot identity */
 extern void *data_020a0eac;
 int *func_ov065_0211abac(int *t)
 {
