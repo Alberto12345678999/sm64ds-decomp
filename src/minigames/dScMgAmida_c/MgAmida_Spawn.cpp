@@ -8,8 +8,8 @@ extern void func_0203d738(void *);
 extern void NullDestructor_0203d47c(void *);
 extern void func_ov006_020d5a50(void *);
 extern void func_ov006_020d116c(void *);
-void *func_ov006_020d5974(void);
-void *func_ov006_020d5974(void) {
+void *MgAmida_Spawn(void);
+void *MgAmida_Spawn(void) {
     char *o = (char *)_ZN9ActorBasenwEj(0x53fc);
     if (o != 0) {
         func_ov004_020b2adc(o);

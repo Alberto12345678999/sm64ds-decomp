@@ -148,7 +148,7 @@ typedef char dScMgAmida_c_Piece_size_must_be_0x18[sizeof(dScMgAmida_c_Piece) == 
    stay inside a pad, same discipline as every prior sibling. The class's
    true allocation size, 0x53fc, is independently confirmed (not just the
    last-named-field's rounded end) by the untouched constructor's own
-   `_ZN9ActorBasenwEj(0x53fc)` call (src/func_ov006_020d5974.cpp), which
+   `_ZN9ActorBasenwEj(0x53fc)` call (src/minigames/dScMgAmida_c/MgAmida_Spawn.cpp), which
    also independently corroborates all four destroyed-array offsets/sizes
    via its own construction-side func_020733a8 calls. */
 struct dScMgAmida_c : dScMgBase_c {
