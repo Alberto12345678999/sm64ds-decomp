@@ -11,7 +11,7 @@ extern "C" void func_ov006_020e0634(void);
 extern "C" void NullDestructor_0203d47c(void);
 extern "C" void func_0203d738(void);
 
-extern "C" void *func_ov006_020e0574(void)
+extern "C" void *MgCup_Spawn(void)
 {
     char *p = (char *)_ZN9ActorBasenwEj(0x5470);
     if (p) {

@@ -11,7 +11,7 @@
  * header.
  *
  * SIZE 0x5470, from the factory's own `_ZN9ActorBasenwEj(0x5470)`
- * (src/func_ov006_020e0574.cpp).
+ * (src/minigames/dScMgCup_c/MgCup_Spawn.cpp).
  *
  * THE FACTORY AND THE DESTRUCTOR AGREE MEMBER FOR MEMBER, which is the
  * bar this tree sets (see include/dScMgCard_c.h's own note). The factory

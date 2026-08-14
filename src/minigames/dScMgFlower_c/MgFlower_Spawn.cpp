@@ -8,7 +8,7 @@ extern int _ZTV19dScMgSingle3DBase_c;
 extern int _ZTV13dScMgFlower_c;
 extern "C" void func_ov006_0212a650(void);
 extern "C" void func_ov006_0212b88c(void);
-extern "C" void* func_ov006_0212b7f8(void){
+extern "C" void* MgFlower_Spawn(void){
   char* p = (char*)_ZN9ActorBasenwEj(0x5ff8);
   if (p) {
     func_ov004_020b2adc(p);
