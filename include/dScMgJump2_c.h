@@ -2,17 +2,21 @@
  * dScMgJump2_c : dScMgD3DBase_c, single edge, offset 0 (build/rtti.json).
  * Its own vtable is ov006:0x0213ccfc.
  *
- * SIZE 0x5a78 -- AND ITS FACTORY IS CARRYING ANOTHER CLASS'S NAME ENTIRELY.
- * The allocation lives in `_ZN8PathLift17BaseInitResourcesEv`
- * (ov006:0x020efaf0), which is neither a PathLift method nor a
- * BaseInitResources: its body is `operator new(0x5a78)`, dScMgBase_c's
- * constructor, dScMgD3DBase_c's vtable, mSysTracker, then THIS class's
- * vtable and every member below. A real `PathLift` class does exist -- in
- * ov002, `_ZN8PathLiftD1Ev` and friends at 0x020ef320..0x020eff18 -- so
- * this is a name matched across an OVERLAY BOUNDARY at a near-identical
- * address, not a coined one like MgBounceAndPounce was. Renaming it is a
- * separate change from this slice; it is recorded here so the next reader
- * is not misled, and so nobody concludes PathLift builds minigame scenes.
+ * SIZE 0x5a78. The factory is `MgBounceAndTrounce_Spawn` (ov006:0x020efaf0,
+ * still `complete`/byte-matched -- this was a rename, not a rematch): its
+ * body is `operator new(0x5a78)`, dScMgBase_c's constructor,
+ * dScMgD3DBase_c's vtable, mSysTracker, then THIS class's vtable and every
+ * member below. It had been carrying a wrong name, `_ZN8PathLift17BaseInit
+ * ResourcesEv` -- neither a PathLift method nor a BaseInitResources; the
+ * real `PathLift` class lives in ov002 (`_ZN8PathLiftD1Ev` and friends at
+ * 0x020ef320..0x020eff18), and this was a name matched across an OVERLAY
+ * BOUNDARY at a near-identical address. The identification comes from this
+ * class's own MgBounceAndTrounce_SpawnInfo entry (ov006:0x0213cc7c): its
+ * first field is a raw function pointer, and it points at exactly this
+ * address -- same layout as MgBounceAndPounce_SpawnInfo pointing at
+ * dScMgJump_c's already-named MgBounceAndPounce_Spawn, its sibling class
+ * under the same base. "Bounce and Trounce" is the multiplayer half of
+ * "Bounce and Pounce," per the mariowiki minigame list.
  *
  * mModel IS DELIBERATELY RAW BYTES, and this is the interesting contrast
  * with dScMgJump_c. The ROM's destructor here destroys the Model FIRST,
