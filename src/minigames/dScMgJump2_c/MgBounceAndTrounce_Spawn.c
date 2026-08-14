@@ -13,7 +13,7 @@ void func_ov006_020eed64();
 void func_ov006_020efc08();
 void func_ov006_020c6f3c();
 
-void *_ZN8PathLift17BaseInitResourcesEv()
+void *MgBounceAndTrounce_Spawn()
 {
     char *p = (char *)_ZN9ActorBasenwEj(0x5a78);
     if (p) {
