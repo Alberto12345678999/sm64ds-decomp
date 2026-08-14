@@ -25597,11 +25597,11 @@ matched: yes</title></rect><rect x="744.12" y="479.48" width="15.50" height="5.8
 module: ov006
 addr: 0x0210d6b8
 size: 136 bytes
-matched: yes</title></rect><rect x="759.61" y="479.48" width="18.23" height="5.87" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_0210d740
+matched: yes</title></rect><rect x="759.61" y="479.48" width="18.23" height="5.87" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN16dScMgSmartball_cD1Ev
 module: ov006
 addr: 0x0210d740
 size: 160 bytes
-matched: yes</title></rect><rect x="777.85" y="479.48" width="20.51" height="5.87" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_0210d7e0
+matched: yes</title></rect><rect x="777.85" y="479.48" width="20.51" height="5.87" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN16dScMgSmartball_cD0Ev
 module: ov006
 addr: 0x0210d7e0
 size: 180 bytes
