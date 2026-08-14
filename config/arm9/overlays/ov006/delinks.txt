@@ -1436,7 +1436,7 @@ src/minigames/dScMgAmida_c/_ZN12dScMgAmida_c21AfterCleanupResourcesEj.cpp:
     complete
     .text start:0x020d5924 end:0x020d5974
 
-src/func_ov006_020d5974.cpp:
+src/minigames/dScMgAmida_c/MgAmida_Spawn.cpp:
     complete
     .text start:0x020d5974 end:0x020d5a50
 
