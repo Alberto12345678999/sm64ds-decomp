@@ -34,7 +34,7 @@
  * taken from that class's OWN render path instead. See its note.
  *
  * THE DESTRUCTOR IS NOT DEFINED INLINE -- a leaf, no RTTI descendants of
- * its own. Defined for real in src/_ZN13dScMgFlower_cD1Ev.cpp; D0Ev.cpp
+ * its own. Defined for real in src/minigames/dScMgFlower_c/_ZN13dScMgFlower_cD1Ev.cpp; D0Ev.cpp
  * carries an identical copy. No separate operator delete is needed --
  * dScMgBase_c, two levels up, already provides one. */
 #ifndef DSCMGFLOWER_C_H

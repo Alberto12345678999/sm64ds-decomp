@@ -1344,11 +1344,11 @@ src/func_ov006_020d100c.c:
     complete
     .text start:0x020d100c end:0x020d1018
 
-src/_ZN12dScMgAmida_cD1Ev.cpp:
+src/minigames/dScMgAmida_c/_ZN12dScMgAmida_cD1Ev.cpp:
     complete
     .text start:0x020d1018 end:0x020d10b8
 
-src/_ZN12dScMgAmida_cD0Ev.cpp:
+src/minigames/dScMgAmida_c/_ZN12dScMgAmida_cD0Ev.cpp:
     complete
     .text start:0x020d10b8 end:0x020d116c
 
@@ -1360,7 +1360,7 @@ src/func_ov006_020d1170.c:
     complete
     .text start:0x020d1170 end:0x020d1188
 
-src/_ZN12dScMgAmida_c5Unk36Ev.cpp:
+src/minigames/dScMgAmida_c/_ZN12dScMgAmida_c5Unk36Ev.cpp:
     complete
     .text start:0x020d1188 end:0x020d11a0
 
@@ -1416,11 +1416,11 @@ src/func_ov006_020d47f4.c:
     complete
     .text start:0x020d47f4 end:0x020d48dc
 
-src/_ZN12dScMgAmida_c6RenderEv.cpp:
+src/minigames/dScMgAmida_c/_ZN12dScMgAmida_c6RenderEv.cpp:
     complete
     .text start:0x020d48dc end:0x020d4b7c
 
-src/_ZN12dScMgAmida_c8BehaviorEv.cpp:
+src/minigames/dScMgAmida_c/_ZN12dScMgAmida_c8BehaviorEv.cpp:
     complete
     .text start:0x020d4b7c end:0x020d52f0
 
@@ -1428,11 +1428,11 @@ src/func_ov006_020d52f0.c:
     complete
     .text start:0x020d52f0 end:0x020d5384
 
-src/_ZN12dScMgAmida_c13InitResourcesEv.cpp:
+src/minigames/dScMgAmida_c/_ZN12dScMgAmida_c13InitResourcesEv.cpp:
     complete
     .text start:0x020d5384 end:0x020d5924
 
-src/_ZN12dScMgAmida_c21AfterCleanupResourcesEj.cpp:
+src/minigames/dScMgAmida_c/_ZN12dScMgAmida_c21AfterCleanupResourcesEj.cpp:
     complete
     .text start:0x020d5924 end:0x020d5974
 
@@ -1444,11 +1444,11 @@ src/func_ov006_020d5a50.c:
     complete
     .text start:0x020d5a50 end:0x020d5a54
 
-src/_ZN14dScMgBomroom_cD1Ev.cpp:
+src/minigames/dScMgBomroom_c/_ZN14dScMgBomroom_cD1Ev.cpp:
     complete
     .text start:0x020d5a54 end:0x020d5a78
 
-src/_ZN14dScMgBomroom_cD0Ev.cpp:
+src/minigames/dScMgBomroom_c/_ZN14dScMgBomroom_cD0Ev.cpp:
     complete
     .text start:0x020d5a78 end:0x020d5ab0
 
@@ -1737,27 +1737,27 @@ src/func_ov006_020d9104.c:
     complete
     .text start:0x020d9104 end:0x020d9160
 
-src/_ZN14dScMgBomroom_c6RenderEv.cpp:
+src/minigames/dScMgBomroom_c/_ZN14dScMgBomroom_c6RenderEv.cpp:
     complete
     .text start:0x020d9160 end:0x020d91b0
 
-src/_ZN14dScMgBomroom_c8BehaviorEv.cpp:
+src/minigames/dScMgBomroom_c/_ZN14dScMgBomroom_c8BehaviorEv.cpp:
     complete
     .text start:0x020d91b0 end:0x020d9244
 
-src/_ZN14dScMgBomroom_c13InitResourcesEv.cpp:
+src/minigames/dScMgBomroom_c/_ZN14dScMgBomroom_c13InitResourcesEv.cpp:
     complete
     .text start:0x020d9244 end:0x020d9574
 
-src/MgSortOrSplode_Spawn.c:
+src/minigames/dScMgBomroom_c/MgSortOrSplode_Spawn.c:
     complete
     .text start:0x020d9574 end:0x020d95a4
 
-src/_ZN11dScMgCard_cD1Ev.cpp:
+src/minigames/dScMgCard_c/_ZN11dScMgCard_cD1Ev.cpp:
     complete
     .text start:0x020d95a4 end:0x020d9638
 
-src/_ZN11dScMgCard_cD0Ev.cpp:
+src/minigames/dScMgCard_c/_ZN11dScMgCard_cD0Ev.cpp:
     complete
     .text start:0x020d9638 end:0x020d96e0
 
@@ -1882,7 +1882,7 @@ src/func_ov006_020db9dc.cpp:
 src/func_ov006_020dbaf0.cpp:
     .text start:0x020dbaf0 end:0x020dbd54
 
-src/MgPicturePoker_Spawn.cpp:
+src/minigames/dScMgCard_c/MgPicturePoker_Spawn.cpp:
     complete
     .text start:0x020dbd54 end:0x020dbe14
 
@@ -1894,11 +1894,11 @@ src/func_ov006_020dbe30.c:
     complete
     .text start:0x020dbe30 end:0x020dbe40
 
-src/_ZN11dScMgCoin_cD1Ev.cpp:
+src/minigames/dScMgCoin_c/_ZN11dScMgCoin_cD1Ev.cpp:
     complete
     .text start:0x020dbe40 end:0x020dbe64
 
-src/_ZN11dScMgCoin_cD0Ev.cpp:
+src/minigames/dScMgCoin_c/_ZN11dScMgCoin_cD0Ev.cpp:
     complete
     .text start:0x020dbe64 end:0x020dbe9c
 
@@ -2113,31 +2113,31 @@ src/func_ov006_020de5ac.c:
     complete
     .text start:0x020de5ac end:0x020de5b0
 
-src/_ZN11dScMgCoin_c13OnYoshiTryEatEv.cpp:
+src/minigames/dScMgCoin_c/_ZN11dScMgCoin_c13OnYoshiTryEatEv.cpp:
     complete
     .text start:0x020de5b0 end:0x020de63c
 
-src/_ZN11dScMgCoin_c6RenderEv.cpp:
+src/minigames/dScMgCoin_c/_ZN11dScMgCoin_c6RenderEv.cpp:
     complete
     .text start:0x020de63c end:0x020de69c
 
-src/_ZN11dScMgCoin_c8BehaviorEv.cpp:
+src/minigames/dScMgCoin_c/_ZN11dScMgCoin_c8BehaviorEv.cpp:
     complete
     .text start:0x020de69c end:0x020de704
 
-src/_ZN11dScMgCoin_c13InitResourcesEv.cpp:
+src/minigames/dScMgCoin_c/_ZN11dScMgCoin_c13InitResourcesEv.cpp:
     complete
     .text start:0x020de704 end:0x020de940
 
-src/MgCoincentration_Spawn.cpp:
+src/minigames/dScMgCoin_c/MgCoincentration_Spawn.cpp:
     complete
     .text start:0x020de940 end:0x020de988
 
-src/_ZN10dScMgCup_cD1Ev.cpp:
+src/minigames/dScMgCup_c/_ZN10dScMgCup_cD1Ev.cpp:
     complete
     .text start:0x020de988 end:0x020dea1c
 
-src/_ZN10dScMgCup_cD0Ev.cpp:
+src/minigames/dScMgCup_c/_ZN10dScMgCup_cD0Ev.cpp:
     complete
     .text start:0x020dea1c end:0x020deac4
 
@@ -2260,11 +2260,11 @@ src/func_ov006_020e0634.c:
     complete
     .text start:0x020e0634 end:0x020e0638
 
-src/_ZN14dScMgCurling_cD1Ev.cpp:
+src/minigames/dScMgCurling_c/_ZN14dScMgCurling_cD1Ev.cpp:
     complete
     .text start:0x020e0638 end:0x020e065c
 
-src/_ZN14dScMgCurling_cD0Ev.cpp:
+src/minigames/dScMgCurling_c/_ZN14dScMgCurling_cD0Ev.cpp:
     complete
     .text start:0x020e065c end:0x020e0694
 
@@ -2419,26 +2419,26 @@ src/func_ov006_020e3470.cpp:
     complete
     .text start:0x020e3470 end:0x020e34ec
 
-src/_ZN14dScMgCurling_c6RenderEv.cpp:
+src/minigames/dScMgCurling_c/_ZN14dScMgCurling_c6RenderEv.cpp:
     complete
     .text start:0x020e34ec end:0x020e3528
 
-src/_ZN14dScMgCurling_c8BehaviorEv.cpp:
+src/minigames/dScMgCurling_c/_ZN14dScMgCurling_c8BehaviorEv.cpp:
     complete
     .text start:0x020e3528 end:0x020e3578
 
-src/_ZN14dScMgCurling_c13InitResourcesEv.cpp:
+src/minigames/dScMgCurling_c/_ZN14dScMgCurling_c13InitResourcesEv.cpp:
     .text start:0x020e3578 end:0x020e3820
 
-src/MgShuffleShell_Spawn.c:
+src/minigames/dScMgCurling_c/MgShuffleShell_Spawn.c:
     complete
     .text start:0x020e3820 end:0x020e3854
 
-src/_ZN15dScMgCurling2_cD1Ev.cpp:
+src/minigames/dScMgCurling2_c/_ZN15dScMgCurling2_cD1Ev.cpp:
     complete
     .text start:0x020e3854 end:0x020e3878
 
-src/_ZN15dScMgCurling2_cD0Ev.cpp:
+src/minigames/dScMgCurling2_c/_ZN15dScMgCurling2_cD0Ev.cpp:
     complete
     .text start:0x020e3878 end:0x020e38b0
 
@@ -2617,26 +2617,26 @@ src/func_ov006_020e6774.cpp:
     complete
     .text start:0x020e6774 end:0x020e67f0
 
-src/_ZN15dScMgCurling2_c6RenderEv.cpp:
+src/minigames/dScMgCurling2_c/_ZN15dScMgCurling2_c6RenderEv.cpp:
     complete
     .text start:0x020e67f0 end:0x020e683c
 
-src/_ZN15dScMgCurling2_c8BehaviorEv.cpp:
+src/minigames/dScMgCurling2_c/_ZN15dScMgCurling2_c8BehaviorEv.cpp:
     complete
     .text start:0x020e683c end:0x020e6894
 
-src/_ZN15dScMgCurling2_c13InitResourcesEv.cpp:
+src/minigames/dScMgCurling2_c/_ZN15dScMgCurling2_c13InitResourcesEv.cpp:
     .text start:0x020e6894 end:0x020e6bf4
 
 src/func_ov006_020e6bf4.c:
     complete
     .text start:0x020e6bf4 end:0x020e6c28
 
-src/_ZN14dScMgD3DBase_cD1Ev.cpp:
+src/minigames/dScMgD3DBase_c/_ZN14dScMgD3DBase_cD1Ev.cpp:
     complete
     .text start:0x020e6c28 end:0x020e6c60
 
-src/_ZN14dScMgD3DBase_cD0Ev.cpp:
+src/minigames/dScMgD3DBase_c/_ZN14dScMgD3DBase_cD0Ev.cpp:
     complete
     .text start:0x020e6c60 end:0x020e6cac
 
@@ -2683,27 +2683,27 @@ src/func_ov006_020e6e54.c:
 src/func_ov006_020e6e78.cpp:
     .text start:0x020e6e78 end:0x020e6f60
 
-src/_ZN14dScMgD3DBase_c21AfterCleanupResourcesEj.cpp:
+src/minigames/dScMgD3DBase_c/_ZN14dScMgD3DBase_c21AfterCleanupResourcesEj.cpp:
     complete
     .text start:0x020e6f60 end:0x020e700c
 
-src/_ZN14dScMgD3DBase_c11AfterRenderEj.cpp:
+src/minigames/dScMgD3DBase_c/_ZN14dScMgD3DBase_c11AfterRenderEj.cpp:
     complete
     .text start:0x020e700c end:0x020e7040
 
-src/_ZN14dScMgD3DBase_c12BeforeRenderEv.cpp:
+src/minigames/dScMgD3DBase_c/_ZN14dScMgD3DBase_c12BeforeRenderEv.cpp:
     complete
     .text start:0x020e7040 end:0x020e7074
 
-src/_ZN14dScMgD3DBase_c14BeforeBehaviorEv.cpp:
+src/minigames/dScMgD3DBase_c/_ZN14dScMgD3DBase_c14BeforeBehaviorEv.cpp:
     complete
     .text start:0x020e7074 end:0x020e70c0
 
-src/_ZN14dScMgD3DBase_c18AfterInitResourcesEj.cpp:
+src/minigames/dScMgD3DBase_c/_ZN14dScMgD3DBase_c18AfterInitResourcesEj.cpp:
     complete
     .text start:0x020e70c0 end:0x020e70e4
 
-src/_ZN14dScMgD3DBase_c19BeforeInitResourcesEv.cpp:
+src/minigames/dScMgD3DBase_c/_ZN14dScMgD3DBase_c19BeforeInitResourcesEv.cpp:
     complete
     .text start:0x020e70e4 end:0x020e7110
 
@@ -2738,11 +2738,11 @@ src/func_ov006_020e759c.c:
     complete
     .text start:0x020e759c end:0x020e7660
 
-src/_ZN12dScMg3DEsp_cD1Ev.cpp:
+src/minigames/dScMg3DEsp_c/_ZN12dScMg3DEsp_cD1Ev.cpp:
     complete
     .text start:0x020e7660 end:0x020e76e4
 
-src/_ZN12dScMg3DEsp_cD0Ev.cpp:
+src/minigames/dScMg3DEsp_c/_ZN12dScMg3DEsp_cD0Ev.cpp:
     complete
     .text start:0x020e76e4 end:0x020e777c
 
@@ -3003,15 +3003,15 @@ src/func_ov006_020e9e70.cpp:
     complete
     .text start:0x020e9e70 end:0x020ea1f0
 
-src/MgPsycheOut_Spawn.cpp:
+src/minigames/dScMg3DEsp_c/MgPsycheOut_Spawn.cpp:
     complete
     .text start:0x020ea1f0 end:0x020ea280
 
-src/_ZN15dScMgHanachan_cD1Ev.cpp:
+src/minigames/dScMgHanachan_c/_ZN15dScMgHanachan_cD1Ev.cpp:
     complete
     .text start:0x020ea280 end:0x020ea2c8
 
-src/_ZN15dScMgHanachan_cD0Ev.cpp:
+src/minigames/dScMgHanachan_c/_ZN15dScMgHanachan_cD0Ev.cpp:
     complete
     .text start:0x020ea2c8 end:0x020ea324
 
@@ -3178,15 +3178,15 @@ src/func_ov006_020ecdb8.c:
     complete
     .text start:0x020ecdb8 end:0x020ecec8
 
-src/_ZN15dScMgHanachan_c16CleanupResourcesEv.cpp:
+src/minigames/dScMgHanachan_c/_ZN15dScMgHanachan_c16CleanupResourcesEv.cpp:
     complete
     .text start:0x020ecec8 end:0x020ecee4
 
-src/_ZN15dScMgHanachan_c6RenderEv.cpp:
+src/minigames/dScMgHanachan_c/_ZN15dScMgHanachan_c6RenderEv.cpp:
     complete
     .text start:0x020ecee4 end:0x020ed18c
 
-src/_ZN15dScMgHanachan_c8BehaviorEv.cpp:
+src/minigames/dScMgHanachan_c/_ZN15dScMgHanachan_c8BehaviorEv.cpp:
     complete
     .text start:0x020ed18c end:0x020ed270
 
@@ -3237,7 +3237,7 @@ src/func_ov006_020ed8a4.c:
 src/func_ov006_020eda48.c:
     .text start:0x020eda48 end:0x020edb04
 
-src/_ZN15dScMgHanachan_c13InitResourcesEv.cpp:
+src/minigames/dScMgHanachan_c/_ZN15dScMgHanachan_c13InitResourcesEv.cpp:
     complete
     .text start:0x020edb04 end:0x020edcb0
 
@@ -3245,7 +3245,7 @@ src/func_ov006_020edcb0.c:
     complete
     .text start:0x020edcb0 end:0x020ede18
 
-src/MgWhichWiggler_Spawn.cpp:
+src/minigames/dScMgHanachan_c/MgWhichWiggler_Spawn.cpp:
     complete
     .text start:0x020ede18 end:0x020ede80
 
@@ -3253,11 +3253,11 @@ src/func_ov006_020ede80.c:
     complete
     .text start:0x020ede80 end:0x020edec0
 
-src/_ZN11dScMgJump_cD1Ev.cpp:
+src/minigames/dScMgJump_c/_ZN11dScMgJump_cD1Ev.cpp:
     complete
     .text start:0x020edec0 end:0x020edf54
 
-src/_ZN11dScMgJump_cD0Ev.cpp:
+src/minigames/dScMgJump_c/_ZN11dScMgJump_cD0Ev.cpp:
     complete
     .text start:0x020edf54 end:0x020edffc
 
@@ -3320,15 +3320,15 @@ src/func_ov006_020ee8dc.cpp:
     complete
     .text start:0x020ee8dc end:0x020ee994
 
-src/MgBounceAndPounce_Spawn.cpp:
+src/minigames/dScMgJump_c/MgBounceAndPounce_Spawn.cpp:
     complete
     .text start:0x020eeafc end:0x020eebe8
 
-src/_ZN12dScMgJump2_cD1Ev.cpp:
+src/minigames/dScMgJump2_c/_ZN12dScMgJump2_cD1Ev.cpp:
     complete
     .text start:0x020eebe8 end:0x020eec9c
 
-src/_ZN12dScMgJump2_cD0Ev.cpp:
+src/minigames/dScMgJump2_c/_ZN12dScMgJump2_cD0Ev.cpp:
     complete
     .text start:0x020eec9c end:0x020eed64
 
@@ -3444,15 +3444,15 @@ src/func_ov006_020efc08.c:
     complete
     .text start:0x020efc08 end:0x020efc0c
 
-src/_ZN12dScMgLuigi_cD1Ev.cpp:
+src/minigames/dScMgLuigi_c/_ZN12dScMgLuigi_cD1Ev.cpp:
     complete
     .text start:0x020efc0c end:0x020efc30
 
-src/_ZN12dScMgLuigi_cD0Ev.cpp:
+src/minigames/dScMgLuigi_c/_ZN12dScMgLuigi_cD0Ev.cpp:
     complete
     .text start:0x020efc30 end:0x020efc68
 
-src/_ZN12dScMgLuigi_c21AfterCleanupResourcesEj.cpp:
+src/minigames/dScMgLuigi_c/_ZN12dScMgLuigi_c21AfterCleanupResourcesEj.cpp:
     complete
     .text start:0x020efc68 end:0x020efcf8
 
@@ -3638,26 +3638,26 @@ src/func_ov006_020f3260.c:
 src/func_ov006_020f3294.c:
     .text start:0x020f3294 end:0x020f33c0
 
-src/_ZN12dScMgLuigi_c6RenderEv.cpp:
+src/minigames/dScMgLuigi_c/_ZN12dScMgLuigi_c6RenderEv.cpp:
     complete
     .text start:0x020f33c0 end:0x020f3414
 
-src/_ZN12dScMgLuigi_c8BehaviorEv.cpp:
+src/minigames/dScMgLuigi_c/_ZN12dScMgLuigi_c8BehaviorEv.cpp:
     complete
     .text start:0x020f3414 end:0x020f3460
 
-src/_ZN12dScMgLuigi_c13InitResourcesEv.cpp:
+src/minigames/dScMgLuigi_c/_ZN12dScMgLuigi_c13InitResourcesEv.cpp:
     .text start:0x020f3460 end:0x020f3800
 
-src/MgWanted_Spawn.c:
+src/minigames/dScMgLuigi_c/MgWanted_Spawn.c:
     complete
     .text start:0x020f3800 end:0x020f3834
 
-src/_ZN13dScMgMemory_cD1Ev.cpp:
+src/minigames/dScMgMemory_c/_ZN13dScMgMemory_cD1Ev.cpp:
     complete
     .text start:0x020f3834 end:0x020f3888
 
-src/_ZN13dScMgMemory_cD0Ev.cpp:
+src/minigames/dScMgMemory_c/_ZN13dScMgMemory_cD0Ev.cpp:
     complete
     .text start:0x020f3888 end:0x020f38f0
 
@@ -3829,15 +3829,15 @@ src/func_ov006_020f5388.cpp:
 src/func_ov006_020f53e4.cpp:
     .text start:0x020f53e4 end:0x020f5504
 
-src/MgMemoryMatch_Spawn.c:
+src/minigames/dScMgMemory_c/MgMemoryMatch_Spawn.c:
     complete
     .text start:0x020f5504 end:0x020f5564
 
-src/_ZN14dScMgMemory2_cD1Ev.cpp:
+src/minigames/dScMgMemory2_c/_ZN14dScMgMemory2_cD1Ev.cpp:
     complete
     .text start:0x020f5564 end:0x020f55b8
 
-src/_ZN14dScMgMemory2_cD0Ev.cpp:
+src/minigames/dScMgMemory2_c/_ZN14dScMgMemory2_cD0Ev.cpp:
     complete
     .text start:0x020f55b8 end:0x020f5620
 
@@ -4029,15 +4029,15 @@ src/func_ov006_020f7458.cpp:
 src/func_ov006_020f74b4.cpp:
     .text start:0x020f74b4 end:0x020f75d4
 
-src/MgMemoryMaster_Spawn.c:
+src/minigames/dScMgMemory2_c/MgMemoryMaster_Spawn.c:
     complete
     .text start:0x020f75d4 end:0x020f7634
 
-src/_ZN13dScMgMCarlo_cD1Ev.cpp:
+src/minigames/dScMgMCarlo_c/_ZN13dScMgMCarlo_cD1Ev.cpp:
     complete
     .text start:0x020f7634 end:0x020f76a8
 
-src/_ZN13dScMgMCarlo_cD0Ev.cpp:
+src/minigames/dScMgMCarlo_c/_ZN13dScMgMCarlo_cD0Ev.cpp:
     complete
     .text start:0x020f76a8 end:0x020f7730
 
@@ -4128,11 +4128,11 @@ src/func_ov006_020f8ed8.c:
     complete
     .text start:0x020f8ed8 end:0x020f8ef4
 
-src/_ZN14dScMgMCarlo2_cD1Ev.cpp:
+src/minigames/dScMgMCarlo2_c/_ZN14dScMgMCarlo2_cD1Ev.cpp:
     complete
     .text start:0x020f8ef4 end:0x020f8f68
 
-src/_ZN14dScMgMCarlo2_cD0Ev.cpp:
+src/minigames/dScMgMCarlo2_c/_ZN14dScMgMCarlo2_cD0Ev.cpp:
     complete
     .text start:0x020f8f68 end:0x020f8ff0
 
@@ -4220,7 +4220,7 @@ src/func_ov006_020fa56c.cpp:
     complete
     .text start:0x020fa56c end:0x020fa6ac
 
-src/MgPairAGoneAndOn_Spawn.cpp:
+src/minigames/dScMgMCarlo2_c/MgPairAGoneAndOn_Spawn.cpp:
     complete
     .text start:0x020fa6ac end:0x020fa740
 
@@ -4228,11 +4228,11 @@ src/func_ov006_020fa740.c:
     complete
     .text start:0x020fa740 end:0x020fa75c
 
-src/_ZN15dScMgPachinko_cD1Ev.cpp:
+src/minigames/dScMgPachinko_c/_ZN15dScMgPachinko_cD1Ev.cpp:
     complete
     .text start:0x020fa75c end:0x020fa780
 
-src/_ZN15dScMgPachinko_cD0Ev.cpp:
+src/minigames/dScMgPachinko_c/_ZN15dScMgPachinko_cD0Ev.cpp:
     complete
     .text start:0x020fa780 end:0x020fa7b8
 
@@ -4490,27 +4490,27 @@ src/func_ov006_020feba8.c:
 src/func_ov006_020fed58.c:
     .text start:0x020fed58 end:0x020fedc4
 
-src/_ZN15dScMgPachinko_c6RenderEv.cpp:
+src/minigames/dScMgPachinko_c/_ZN15dScMgPachinko_c6RenderEv.cpp:
     complete
     .text start:0x020fedc4 end:0x020fee24
 
-src/_ZN15dScMgPachinko_c8BehaviorEv.cpp:
+src/minigames/dScMgPachinko_c/_ZN15dScMgPachinko_c8BehaviorEv.cpp:
     complete
     .text start:0x020fee24 end:0x020fefc0
 
-src/_ZN15dScMgPachinko_c13InitResourcesEv.cpp:
+src/minigames/dScMgPachinko_c/_ZN15dScMgPachinko_c13InitResourcesEv.cpp:
     complete
     .text start:0x020fefc0 end:0x020ff3ec
 
-src/MgBobOmbSquad_Spawn.c:
+src/minigames/dScMgPachinko_c/MgBobOmbSquad_Spawn.c:
     complete
     .text start:0x020ff3ec end:0x020ff420
 
-src/_ZN16dScMgPachinko2_cD1Ev.cpp:
+src/minigames/dScMgPachinko2_c/_ZN16dScMgPachinko2_cD1Ev.cpp:
     complete
     .text start:0x020ff420 end:0x020ff444
 
-src/_ZN16dScMgPachinko2_cD0Ev.cpp:
+src/minigames/dScMgPachinko2_c/_ZN16dScMgPachinko2_cD0Ev.cpp:
     complete
     .text start:0x020ff444 end:0x020ff47c
 
@@ -4776,27 +4776,27 @@ src/func_ov006_02103bfc.c:
 src/func_ov006_02103cbc.c:
     .text start:0x02103cbc end:0x02103d28
 
-src/_ZN16dScMgPachinko2_c6RenderEv.cpp:
+src/minigames/dScMgPachinko2_c/_ZN16dScMgPachinko2_c6RenderEv.cpp:
     complete
     .text start:0x02103d28 end:0x02103d78
 
-src/_ZN16dScMgPachinko2_c8BehaviorEv.cpp:
+src/minigames/dScMgPachinko2_c/_ZN16dScMgPachinko2_c8BehaviorEv.cpp:
     complete
     .text start:0x02103d78 end:0x02103ed0
 
-src/_ZN16dScMgPachinko2_c13InitResourcesEv.cpp:
+src/minigames/dScMgPachinko2_c/_ZN16dScMgPachinko2_c13InitResourcesEv.cpp:
     complete
     .text start:0x02103ed0 end:0x02104258
 
-src/MgLakituLaunch_Spawn.c:
+src/minigames/dScMgPachinko2_c/MgLakituLaunch_Spawn.c:
     complete
     .text start:0x02104258 end:0x0210428c
 
-src/_ZN12dScMgPanel_cD1Ev.cpp:
+src/minigames/dScMgPanel_c/_ZN12dScMgPanel_cD1Ev.cpp:
     complete
     .text start:0x0210428c end:0x021042b0
 
-src/_ZN12dScMgPanel_cD0Ev.cpp:
+src/minigames/dScMgPanel_c/_ZN12dScMgPanel_cD0Ev.cpp:
     complete
     .text start:0x021042b0 end:0x021042e8
 
@@ -5043,27 +5043,27 @@ src/func_ov006_021071d4.c:
 src/func_ov006_021071fc.c:
     .text start:0x021071fc end:0x0210730c
 
-src/_ZN12dScMgPanel_c6RenderEv.cpp:
+src/minigames/dScMgPanel_c/_ZN12dScMgPanel_c6RenderEv.cpp:
     complete
     .text start:0x0210730c end:0x02107358
 
-src/_ZN12dScMgPanel_c8BehaviorEv.cpp:
+src/minigames/dScMgPanel_c/_ZN12dScMgPanel_c8BehaviorEv.cpp:
     complete
     .text start:0x02107358 end:0x021073b0
 
-src/_ZN12dScMgPanel_c13InitResourcesEv.cpp:
+src/minigames/dScMgPanel_c/_ZN12dScMgPanel_c13InitResourcesEv.cpp:
     complete
     .text start:0x021073b0 end:0x02107858
 
-src/MgPuzzlePanelPuzzlePanic_Spawn.c:
+src/minigames/dScMgPanel_c/MgPuzzlePanelPuzzlePanic_Spawn.c:
     complete
     .text start:0x02107858 end:0x0210788c
 
-src/_ZN15dScMgRoulette_cD1Ev.cpp:
+src/minigames/dScMgRoulette_c/_ZN15dScMgRoulette_cD1Ev.cpp:
     complete
     .text start:0x0210788c end:0x02107920
 
-src/_ZN15dScMgRoulette_cD0Ev.cpp:
+src/minigames/dScMgRoulette_c/_ZN15dScMgRoulette_cD0Ev.cpp:
     complete
     .text start:0x02107920 end:0x021079c8
 
@@ -5212,7 +5212,7 @@ src/func_ov006_0210a194.cpp:
     complete
     .text start:0x0210a194 end:0x0210a400
 
-src/MgMushroomRoulette_Spawn.cpp:
+src/minigames/dScMgRoulette_c/MgMushroomRoulette_Spawn.cpp:
     complete
     .text start:0x0210a400 end:0x0210a4ac
 
@@ -5220,11 +5220,11 @@ src/func_ov006_0210a4ac.c:
     complete
     .text start:0x0210a4ac end:0x0210a4b0
 
-src/_ZN19dScMgSingle3DBase_cD1Ev.cpp:
+src/minigames/dScMgSingle3DBase_c/_ZN19dScMgSingle3DBase_cD1Ev.cpp:
     complete
     .text start:0x0210a4b0 end:0x0210a4e8
 
-src/_ZN19dScMgSingle3DBase_cD0Ev.cpp:
+src/minigames/dScMgSingle3DBase_c/_ZN19dScMgSingle3DBase_cD0Ev.cpp:
     complete
     .text start:0x0210a4e8 end:0x0210a534
 
@@ -5255,17 +5255,17 @@ src/func_ov006_0210a6e4.cpp:
 src/func_ov006_0210a708.c:
     .text start:0x0210a708 end:0x0210a8c0
 
-src/_ZN12dScMgSlot1_cD1Ev.cpp:
+src/minigames/dScMgSlot1_c/_ZN12dScMgSlot1_cD1Ev.cpp:
     .text start:0x0210a8c0 end:0x0210a900
 
-src/_ZN12dScMgSlot1_cD0Ev.cpp:
+src/minigames/dScMgSlot1_c/_ZN12dScMgSlot1_cD0Ev.cpp:
     .text start:0x0210a900 end:0x0210a954
 
-src/_ZN12dScMgSlot3_cD1Ev.cpp:
+src/minigames/dScMgSlot3_c/_ZN12dScMgSlot3_cD1Ev.cpp:
     complete
     .text start:0x0210a954 end:0x0210a9a8
 
-src/_ZN12dScMgSlot3_cD0Ev.cpp:
+src/minigames/dScMgSlot3_c/_ZN12dScMgSlot3_cD0Ev.cpp:
     complete
     .text start:0x0210a9a8 end:0x0210aa10
 
@@ -5383,11 +5383,11 @@ src/func_ov006_0210c478.c:
     complete
     .text start:0x0210c478 end:0x0210c4b8
 
-src/_ZN12dScMgSlot1_c19OnHitFromUnderneathER5Actor.cpp:
+src/minigames/dScMgSlot1_c/_ZN12dScMgSlot1_c19OnHitFromUnderneathER5Actor.cpp:
     complete
     .text start:0x0210c4b8 end:0x0210c4dc
 
-src/_ZN12dScMgSlot1_c15OnHitByMegaCharER6Player.cpp:
+src/minigames/dScMgSlot1_c/_ZN12dScMgSlot1_c15OnHitByMegaCharER6Player.cpp:
     complete
     .text start:0x0210c4dc end:0x0210c500
 
@@ -5403,21 +5403,21 @@ src/func_ov006_0210c674.c:
     complete
     .text start:0x0210c674 end:0x0210c6c0
 
-src/_ZN12dScMgSlot1_c6RenderEv.cpp:
+src/minigames/dScMgSlot1_c/_ZN12dScMgSlot1_c6RenderEv.cpp:
     complete
     .text start:0x0210c6c0 end:0x0210c9e0
 
-src/_ZN12dScMgSlot1_c13InitResourcesEv.cpp:
+src/minigames/dScMgSlot1_c/_ZN12dScMgSlot1_c13InitResourcesEv.cpp:
     .text start:0x0210d1fc end:0x0210d6b8
 
 src/func_ov006_0210d6b8.cpp:
     .text start:0x0210d6b8 end:0x0210d740
 
-src/_ZN16dScMgSmartball_cD1Ev.cpp:
+src/minigames/dScMgSmartball_c/_ZN16dScMgSmartball_cD1Ev.cpp:
     complete
     .text start:0x0210d740 end:0x0210d7e0
 
-src/_ZN16dScMgSmartball_cD0Ev.cpp:
+src/minigames/dScMgSmartball_c/_ZN16dScMgSmartball_cD0Ev.cpp:
     complete
     .text start:0x0210d7e0 end:0x0210d894
 
@@ -5915,7 +5915,7 @@ src/func_ov006_0211944c.c:
     complete
     .text start:0x0211944c end:0x02119824
 
-src/MgBingoBallSlotsShot_Spawn.cpp:
+src/minigames/dScMgSmartball_c/MgBingoBallSlotsShot_Spawn.cpp:
     complete
     .text start:0x02119824 end:0x02119900
 
@@ -5923,11 +5923,11 @@ src/func_ov006_02119900.c:
     complete
     .text start:0x02119900 end:0x02119904
 
-src/_ZN12dScMgSound_cD1Ev.cpp:
+src/minigames/dScMgSound_c/_ZN12dScMgSound_cD1Ev.cpp:
     complete
     .text start:0x02119904 end:0x02119958
 
-src/_ZN12dScMgSound_cD0Ev.cpp:
+src/minigames/dScMgSound_c/_ZN12dScMgSound_cD0Ev.cpp:
     complete
     .text start:0x02119958 end:0x021199c0
 
@@ -6238,15 +6238,15 @@ src/func_ov006_0211c984.c:
     complete
     .text start:0x0211c984 end:0x0211cb70
 
-src/MgBoomBox_Spawn.cpp:
+src/minigames/dScMgSound_c/MgBoomBox_Spawn.cpp:
     complete
     .text start:0x0211cb70 end:0x0211cbd0
 
-src/_ZN13dScMgTeresa_cD1Ev.cpp:
+src/minigames/dScMgTeresa_c/_ZN13dScMgTeresa_cD1Ev.cpp:
     complete
     .text start:0x0211cbd0 end:0x0211cbf4
 
-src/_ZN13dScMgTeresa_cD0Ev.cpp:
+src/minigames/dScMgTeresa_c/_ZN13dScMgTeresa_cD0Ev.cpp:
     complete
     .text start:0x0211cbf4 end:0x0211cc2c
 
@@ -6539,26 +6539,26 @@ src/func_ov006_02120238.c:
 src/func_ov006_02120248.cpp:
     .text start:0x02120248 end:0x02120348
 
-src/_ZN13dScMgTeresa_c6RenderEv.cpp:
+src/minigames/dScMgTeresa_c/_ZN13dScMgTeresa_c6RenderEv.cpp:
     complete
     .text start:0x02120348 end:0x021203ac
 
-src/_ZN13dScMgTeresa_c8BehaviorEv.cpp:
+src/minigames/dScMgTeresa_c/_ZN13dScMgTeresa_c8BehaviorEv.cpp:
     complete
     .text start:0x021203ac end:0x021203fc
 
-src/_ZN13dScMgTeresa_c13InitResourcesEv.cpp:
+src/minigames/dScMgTeresa_c/_ZN13dScMgTeresa_c13InitResourcesEv.cpp:
     .text start:0x021203fc end:0x021207a8
 
-src/MgHideAndBooSeek_Spawn.c:
+src/minigames/dScMgTeresa_c/MgHideAndBooSeek_Spawn.c:
     complete
     .text start:0x021207a8 end:0x021207dc
 
-src/_ZN17dScMgTrampoline_cD1Ev.cpp:
+src/minigames/dScMgTrampoline_c/_ZN17dScMgTrampoline_cD1Ev.cpp:
     complete
     .text start:0x021207dc end:0x02120880
 
-src/_ZN17dScMgTrampoline_cD0Ev.cpp:
+src/minigames/dScMgTrampoline_c/_ZN17dScMgTrampoline_cD0Ev.cpp:
     complete
     .text start:0x02120880 end:0x02120938
 
@@ -6721,7 +6721,7 @@ src/func_ov006_0212231c.c:
     complete
     .text start:0x0212231c end:0x02122490
 
-src/MgTrampolineTime_Spawn.cpp:
+src/minigames/dScMgTrampoline_c/MgTrampolineTime_Spawn.cpp:
     complete
     .text start:0x02122490 end:0x021225a8
 
@@ -6729,11 +6729,11 @@ src/func_ov006_021225a8.c:
     complete
     .text start:0x021225a8 end:0x021225ac
 
-src/_ZN18dScMgTrampoline2_cD1Ev.cpp:
+src/minigames/dScMgTrampoline2_c/_ZN18dScMgTrampoline2_cD1Ev.cpp:
     complete
     .text start:0x021225ac end:0x021226b0
 
-src/_ZN18dScMgTrampoline2_cD0Ev.cpp:
+src/minigames/dScMgTrampoline2_c/_ZN18dScMgTrampoline2_cD0Ev.cpp:
     complete
     .text start:0x021226b0 end:0x021227c8
 
@@ -6885,7 +6885,7 @@ src/func_ov006_021245a8.c:
     complete
     .text start:0x021245a8 end:0x0212471c
 
-src/MgTrampolineTerror_Spawn.cpp:
+src/minigames/dScMgTrampoline2_c/MgTrampolineTerror_Spawn.cpp:
     complete
     .text start:0x0212471c end:0x021248a8
 
@@ -6893,11 +6893,11 @@ src/func_ov006_021248a8.cpp:
     complete
     .text start:0x021248a8 end:0x02124908
 
-src/_ZN10dScMgBSC_cD1Ev.cpp:
+src/minigames/dScMgBSC_c/_ZN10dScMgBSC_cD1Ev.cpp:
     complete
     .text start:0x02124908 end:0x0212497c
 
-src/_ZN10dScMgBSC_cD0Ev.cpp:
+src/minigames/dScMgBSC_c/_ZN10dScMgBSC_cD0Ev.cpp:
     complete
     .text start:0x0212497c end:0x02124a04
 
@@ -6968,15 +6968,15 @@ src/func_ov006_0212551c.cpp:
     complete
     .text start:0x0212551c end:0x021255f8
 
-src/MgLuckyStars_Spawn.cpp:
+src/minigames/dScMgBSC_c/MgLuckyStars_Spawn.cpp:
     complete
     .text start:0x021255f8 end:0x0212568c
 
-src/_ZN15dScMgSnowball_cD1Ev.cpp:
+src/minigames/dScMgSnowball_c/_ZN15dScMgSnowball_cD1Ev.cpp:
     complete
     .text start:0x0212568c end:0x0212573c
 
-src/_ZN15dScMgSnowball_cD0Ev.cpp:
+src/minigames/dScMgSnowball_c/_ZN15dScMgSnowball_cD0Ev.cpp:
     complete
     .text start:0x0212573c end:0x02125800
 
@@ -7126,15 +7126,15 @@ src/func_ov006_0212a3c0.c:
     complete
     .text start:0x0212a3c0 end:0x0212a520
 
-src/MgSnowballSlalom_Spawn.cpp:
+src/minigames/dScMgSnowball_c/MgSnowballSlalom_Spawn.cpp:
     complete
     .text start:0x0212a520 end:0x0212a554
 
-src/_ZN13dScMgFlower_cD1Ev.cpp:
+src/minigames/dScMgFlower_c/_ZN13dScMgFlower_cD1Ev.cpp:
     complete
     .text start:0x0212a554 end:0x0212a5c8
 
-src/_ZN13dScMgFlower_cD0Ev.cpp:
+src/minigames/dScMgFlower_c/_ZN13dScMgFlower_cD0Ev.cpp:
     complete
     .text start:0x0212a5c8 end:0x0212a650
 

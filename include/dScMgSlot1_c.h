@@ -60,7 +60,7 @@
  * starts at this+0x4684, so betIcon_c is exactly 0x24 bytes, the same size
  * as dMgPsOpt_c::TouchIcon_c. Render also confirms it is genuinely
  * polymorphic: it calls `((SomeVtbl*)(this+0x4660))->Virtual4()` (slot 1)
- * directly (src/_ZN12dScMgSlot1_c6RenderEv.cpp). Neither betIcon_c nor
+ * directly (src/minigames/dScMgSlot1_c/_ZN12dScMgSlot1_c6RenderEv.cpp). Neither betIcon_c nor
  * dThIcon_c has a header yet (same as dScMgBase_c's own TouchIcon_c/
  * dThIcon_c), so it stays raw bytes here too, and the destructor writes the
  * two vtables explicitly by hand instead of relying on a member destructor

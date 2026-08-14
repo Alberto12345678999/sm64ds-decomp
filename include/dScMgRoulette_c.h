@@ -39,7 +39,7 @@
  * own vtable methods).
  *
  * THE DESTRUCTOR IS NOT DEFINED INLINE -- a leaf, no RTTI descendants of
- * its own. Defined for real in src/_ZN15dScMgRoulette_cD1Ev.cpp; D0Ev.cpp
+ * its own. Defined for real in src/minigames/dScMgRoulette_c/_ZN15dScMgRoulette_cD1Ev.cpp; D0Ev.cpp
  * carries an identical copy. No separate operator delete is needed --
  * dScMgBase_c, two levels up, already provides one. */
 #ifndef DSCMGROULETTE_C_H

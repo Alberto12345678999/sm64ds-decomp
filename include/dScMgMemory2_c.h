@@ -29,7 +29,7 @@
  * old header declared below 0x4f38 are dScMgBase_c's own.
  *
  * THE DESTRUCTOR IS NOT DEFINED INLINE -- a leaf, no RTTI descendants of
- * its own. Defined for real in src/_ZN14dScMgMemory2_cD1Ev.cpp; D0Ev.cpp
+ * its own. Defined for real in src/minigames/dScMgMemory2_c/_ZN14dScMgMemory2_cD1Ev.cpp; D0Ev.cpp
  * carries an identical copy. No separate operator delete is needed --
  * dScMgBase_c, two levels up, already provides one. */
 #ifndef DSCMGMEMORY2_C_H

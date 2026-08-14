@@ -22,7 +22,7 @@
  * (src/func_ov006_0212527c.cpp, .../02125364.c), the rest stays pad.
  *
  * THE DESTRUCTOR IS NOT DEFINED INLINE -- a leaf, no RTTI descendants of
- * its own. Defined for real in src/_ZN10dScMgBSC_cD1Ev.cpp; D0Ev.cpp
+ * its own. Defined for real in src/minigames/dScMgBSC_c/_ZN10dScMgBSC_cD1Ev.cpp; D0Ev.cpp
  * carries an identical copy. No separate operator delete is needed --
  * dScMgBase_c, two levels up, already provides one. */
 #ifndef DSCMGBSC_C_H

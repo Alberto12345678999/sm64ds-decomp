@@ -5,7 +5,7 @@
 /* __destroy_arr / func_ov006_020d116c / NullDestructor_0203d47c: the same
    __destroy_arr(p, count, elemSize, dtor) idiom dScMgBase_c's own D1/D0 use
    for touchIcon_0f4 (see dScMgBase_c.h's file banner and
-   src/_ZN11dScMgBase_cD1Ev.cpp) -- declared here, not per-destructor-file,
+   src/minigames/dScMgBase_c/_ZN11dScMgBase_cD1Ev.cpp) -- declared here, not per-destructor-file,
    matching dScMgHanachan_c.h's own placement. */
 extern "C" void __destroy_arr(void *arr, int count, int elemSize, void *dtor);
 extern "C" void func_ov006_020d116c(void);
@@ -94,7 +94,7 @@ typedef char dScMgAmida_c_Piece_size_must_be_0x18[sizeof(dScMgAmida_c_Piece) == 
 
    THE DESTRUCTOR IS NON-TRIVIAL: unlike most siblings, this class explicitly
    destroys FOUR arrays via __destroy_arr, in this exact order, in BOTH D1
-   and D0 (src/_ZN12dScMgAmida_cD1Ev.cpp and .../_D0Ev.cpp carry an identical
+   and D0 (src/minigames/dScMgAmida_c/_ZN12dScMgAmida_cD1Ev.cpp and .../_D0Ev.cpp carry an identical
    body, same shape dScMgHanachan_c's own D1/D0 pair uses): the 0x80x0x18
    dScMgAmida_c_Piece array at 0x4768 (own per-element dtor
    func_ov006_020d116c, a no-op -- the element type needs no real cleanup),

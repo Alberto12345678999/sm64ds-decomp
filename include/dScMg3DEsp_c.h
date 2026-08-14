@@ -35,7 +35,7 @@
  * include/dScMgRoulette_c.h's own note.
  *
  * THE DESTRUCTOR IS NOT DEFINED INLINE -- a leaf, no RTTI descendants of
- * its own. Defined for real in src/_ZN12dScMg3DEsp_cD1Ev.cpp; D0Ev.cpp
+ * its own. Defined for real in src/minigames/dScMg3DEsp_c/_ZN12dScMg3DEsp_cD1Ev.cpp; D0Ev.cpp
  * carries an identical copy. No separate operator delete is needed --
  * dScMgBase_c, two levels up, already provides one. */
 #ifndef DSCMG3DESP_C_H

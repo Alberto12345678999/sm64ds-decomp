@@ -31,7 +31,7 @@
  * are already declared there.
  *
  * THE DESTRUCTOR IS NOT DEFINED INLINE -- a leaf, no RTTI descendants of
- * its own. Defined for real in src/_ZN13dScMgMCarlo_cD1Ev.cpp; D0Ev.cpp
+ * its own. Defined for real in src/minigames/dScMgMCarlo_c/_ZN13dScMgMCarlo_cD1Ev.cpp; D0Ev.cpp
  * carries an identical copy. No separate operator delete is needed --
  * dScMgBase_c, two levels up, already provides one. */
 #ifndef DSCMGMCARLO_C_H

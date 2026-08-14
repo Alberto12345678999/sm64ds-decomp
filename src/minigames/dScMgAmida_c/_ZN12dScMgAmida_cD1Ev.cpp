@@ -3,7 +3,7 @@
 /* ~dScMgAmida_c() (D1, complete-object destructor) -- explicitly destroys
    FOUR arrays via __destroy_arr, in this exact order, same idiom
    dScMgBase_c's own D1 uses for its touchIcon_0f4 array (see
-   dScMgBase_c.h's file banner and src/_ZN11dScMgBase_cD1Ev.cpp) and
+   dScMgBase_c.h's file banner and src/minigames/dScMgBase_c/_ZN11dScMgBase_cD1Ev.cpp) and
    dScMgHanachan_c's own D1/D0 pair uses for its single array -- just four
    calls instead of one here. See the class header banner
    (include/dScMgAmida_c.h) for each array's shape. The base-D2 call and

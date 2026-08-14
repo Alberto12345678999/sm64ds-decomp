@@ -30,7 +30,7 @@
  * all four are dScMgBase_c's own and are already declared there.
  *
  * THE DESTRUCTOR IS NOT DEFINED INLINE -- a leaf, no RTTI descendants of
- * its own. Defined for real in src/_ZN12dScMgSlot3_cD1Ev.cpp; D0Ev.cpp
+ * its own. Defined for real in src/minigames/dScMgSlot3_c/_ZN12dScMgSlot3_cD1Ev.cpp; D0Ev.cpp
  * carries an identical copy. No separate operator delete is needed --
  * dScMgBase_c, two levels up, already provides one. */
 #ifndef DSCMGSLOT3_C_H

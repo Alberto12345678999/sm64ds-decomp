@@ -57,7 +57,7 @@
  * working because it inherits it.
  *
  * THE DESTRUCTOR IS NOT DEFINED INLINE -- a leaf, no RTTI descendants of
- * its own. Defined for real in src/_ZN15dScMgSnowball_cD1Ev.cpp; D0Ev.cpp
+ * its own. Defined for real in src/minigames/dScMgSnowball_c/_ZN15dScMgSnowball_cD1Ev.cpp; D0Ev.cpp
  * carries an identical copy. No separate operator delete is needed --
  * dScMgBase_c, two levels up, already provides one. */
 #ifndef DSCMGSNOWBALL_C_H

@@ -37,7 +37,7 @@
  * not a claim that nothing reads it.
  *
  * THE DESTRUCTOR IS NOT DEFINED INLINE -- a leaf, no RTTI descendants of
- * its own. Defined for real in src/_ZN16dScMgSmartball_cD1Ev.cpp; D0Ev.cpp
+ * its own. Defined for real in src/minigames/dScMgSmartball_c/_ZN16dScMgSmartball_cD1Ev.cpp; D0Ev.cpp
  * carries an identical copy. No separate operator delete is needed --
  * dScMgBase_c, the immediate base, already provides one. */
 #ifndef DSCMGSMARTBALL_C_H

@@ -44,7 +44,7 @@
  * but the span and the literal AGREE here, which the first draft denied.
  *
  * THE DESTRUCTOR IS NOT DEFINED INLINE -- a leaf, no RTTI descendants of
- * its own. Defined for real in src/_ZN10dScMgCup_cD1Ev.cpp; D0Ev.cpp
+ * its own. Defined for real in src/minigames/dScMgCup_c/_ZN10dScMgCup_cD1Ev.cpp; D0Ev.cpp
  * carries an identical copy. No separate operator delete is needed --
  * dScMgBase_c, two levels up, already provides one. */
 #ifndef DSCMGCUP_C_H

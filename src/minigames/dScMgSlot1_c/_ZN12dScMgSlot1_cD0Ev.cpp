@@ -1,7 +1,7 @@
 //cpp
 // @symbol _ZN12dScMgSlot1_cD0Ev
 /* Real out-of-line definition, identical body to
-   src/_ZN12dScMgSlot1_cD1Ev.cpp -- see that file's note and
+   src/minigames/dScMgSlot1_c/_ZN12dScMgSlot1_cD1Ev.cpp -- see that file's note and
    include/dScMgSlot1_c.h's own note. dScMgBase_c's own operator delete
    (its immediate base) covers the Memory::Deallocate call the
    pre-migration source made explicitly; no per-class copy needed, same

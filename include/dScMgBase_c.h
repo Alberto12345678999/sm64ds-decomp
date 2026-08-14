@@ -28,7 +28,7 @@
  * include/Scene.h for the full mechanics; this is the same rule applied one
  * level further from the root.
  *
- * 0x0f4 IS hand-verified, from _ZN11dScMgBase_cD2Ev (src/_ZN11dScMgBase_cD2Ev.cpp):
+ * 0x0f4 IS hand-verified, from _ZN11dScMgBase_cD2Ev (src/minigames/dScMgBase_c/_ZN11dScMgBase_cD2Ev.cpp):
  * it calls func_ov004_020b929c(c + 0xf4), which is
  *     __destroy_arr(p, count=8, elem_size=0x24, func_ov004_020b9280)
  * (0x0207328c is __destroy_arr / __cxa_vec_cleanup, config/arm9/symbols.txt:3050-3051).
@@ -75,7 +75,7 @@ struct dScMgBase_c : Scene {
        body (measured directly: compiling dScMgD3DBase_c's destructor
        against an INLINE-defined dScMgBase_c dtor produced exactly 0x84
        bytes, `999 word(s) differ` against the ROM's 0x38). Defined for
-       real in src/_ZN11dScMgBase_cD1Ev.cpp and .../_D0Ev.cpp instead --
+       real in src/minigames/dScMgBase_c/_ZN11dScMgBase_cD1Ev.cpp and .../_D0Ev.cpp instead --
        same shape Stage.h documents for a leaf, except dScMgBase_c is not
        a leaf; its descendants simply don't inline a body this size. */
     virtual ~dScMgBase_c();
@@ -123,7 +123,7 @@ struct dScMgBase_c : Scene {
                                 and writes it as a 4-byte int */
     u16 unk_0c0;            /* 0x0c0 -- a 16-bit counter. WIDTH AND SIGNEDNESS come
                                 from this class's OWN render path, not from a
-                                descendant: src/_ZN11dScMgBase_c12BeforeRenderEv.cpp
+                                descendant: src/minigames/dScMgBase_c/_ZN11dScMgBase_c12BeforeRenderEv.cpp
                                 passes `this` to func_ov004_020b0de0, which
                                 increments it and compares it UNSIGNED against 0x30
                                 and 0x18. Split out of the former pad_0c0[0x3]. */
