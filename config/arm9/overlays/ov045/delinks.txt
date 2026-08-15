@@ -126,11 +126,11 @@ src/FloatingFloorBfs_Spawn.c:
     complete
     .text start:0x02111bf4 end:0x02111c30
 
-src/_ZN18TiltingPlatformBfsD1Ev.c:
+src/_ZN18TiltingPlatformBfsD1Ev.cpp:
     complete
     .text start:0x02111c30 end:0x02111c80
 
-src/_ZN18TiltingPlatformBfsD0Ev.c:
+src/_ZN18TiltingPlatformBfsD0Ev.cpp:
     complete
     .text start:0x02111c80 end:0x02111ce4
 

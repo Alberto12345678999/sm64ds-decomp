@@ -2,41 +2,39 @@
 #define DAOBJGURAGURA_C_H
 
 #include "types.h"
+#include "Platform.h"
 
-/* daObjGuragura_c -- an intermediate class the ROM's RTTI names and the tree
- * did not.  Base: dBgActor_c (the tree calls it Platform).
+/* daObjGuragura_c -- an intermediate the ROM's RTTI names and the tree did not.
  *
- * typeinfo 0x0210905c (ov002), vtable 0x02109084 (ov002), 32 slots (base has 32).
- * Abstract -- pure-virtual (null) slots: 0, 3
- * Own overrides at slots: 6, 9, 16, 17
- * 2 known descendant(s): daObjFl_Gura_c, daObjKm2_Gura_c
+ *     Actor -> Platform -> daObjGuragura_c -> TiltingPlatformBfs
+ *                                          -> TiltingPlatformLll
  *
- * The fields below are the offsets this class's OWN vtable overrides
- * touch that no named ancestor declares.  A method of a class can
- * reach its own members and its ancestors', never a descendant's, so
- * an offset seen here and owned by no ancestor belongs to this class.
- * Read from these byte-matched functions:
- *   func_ov002_020b616c
- *   func_ov002_020b6144
- *   func_ov002_020b6030
- *   func_ov002_020b5fd8
+ * guragura (ぐらぐら) is "wobbling/unsteady" -- both children are tilting
+ * platforms.
  *
- * The space below 0x330 is left as padding.  It is NOT all the base's:
- * this class's own subobjects live in there too -- daObjDorifu_c's
- * destructor destroys a Model[5] at 0x320 and a MeshCollider[5] at
- * 0x4b0, both its own.  Padding means unobserved, not inherited.
- * The struct is flat like the rest of the generated corpus rather than
- * inheriting because this pass knows offsets, not sizeof(base).
- * Regenerate: python tools/rtti_vtables.py --emit-headers */
+ * SIZE 0x350. Both children's factories allocate the literal 848 = 0x350 and
+ * store _ZTV15daObjGuragura_c before their own vtable, so the chain is confirmed
+ * from the constructor side as well as from the three vtable stores in each
+ * destructor. The 0x30 tail is attributed to this shared base because two
+ * independent children agree on the total; that split is the parsimonious read,
+ * the TOTAL is what is measured.
+ *
+ * 0x30 is exactly the width of a Matrix4x3, and a shadow Matrix4x3 is the usual
+ * occupant of a gap this size in this family. That is a HYPOTHESIS and is left
+ * unnamed here rather than declared as fact -- nothing in either child's TU
+ * touches the span.
+ *
+ * DESTRUCTOR IS INLINE, like Platform's above it: no child's destructor contains
+ * a `bl` to this one.
+ */
 
-struct daObjGuragura_c {
-    u8  pad_000[0x330];
-    s32 unk_330;            /* 0x330 */
-    s32 unk_334;            /* 0x334 */
-    s32 unk_338;            /* 0x338 */
-    s32 unk_33c;            /* 0x33c */
-    u8  pad_340[0xc];
-    u8  unk_34c;            /* 0x34c */
+struct daObjGuragura_c : Platform {
+    u8  pad_31e[0x2];        /* Platform's tail padding, reused */
+    u8  unk_320[0x30];       /* 0x320 -- span evidenced by both factory literals */
+
+    virtual ~daObjGuragura_c() {}
 };
+
+typedef char daObjGuragura_c_size_must_be_0x350[sizeof(daObjGuragura_c) == 0x350 ? 1 : -1];
 
 #endif
