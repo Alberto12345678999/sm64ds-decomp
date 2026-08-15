@@ -25,10 +25,10 @@ int Thwomp::Behavior()
     }
     switch (mState) {
     case 0: {
-        unsigned short cnt = (unsigned short)(unk_32c >> 12);
+        unsigned short cnt = (unsigned short)(mTextureSequence.currFrame >> 12);
         if (cnt != 0) {
-            unk_32c = (int)((((unsigned)cnt - 1) << 16) >> 4);
-            cnt = (unsigned short)(unk_32c >> 12);
+            mTextureSequence.currFrame = (int)((((unsigned)cnt - 1) << 16) >> 4);
+            cnt = (unsigned short)(mTextureSequence.currFrame >> 12);
             if (cnt == 0) {
                 char *p = ((char *)this) + 0x300;
                 *(unsigned short *)(p + 0xa0) = 0xa;
@@ -50,7 +50,7 @@ int Thwomp::Behavior()
         break;
     case 2:
         if (mTriggered != 0) {
-            unk_32c = 0;
+            mTextureSequence.currFrame = 0;
             func_ov091_02132f04(((char *)this));
         } else {
             _ZN9Animation7AdvanceEv((char *)&mTextureSequence);
