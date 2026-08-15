@@ -52,9 +52,9 @@ src/func_020395fc.c
 src/ActorBase_BeforeInitResources.cpp
 src/_ZN9ActorBase18AfterInitResourcesEj.cpp
 src/_ZN9ActorBase22BeforeCleanupResourcesEv.cpp
-src/_ZN9ActorBase14BeforeBehaviorEv.cpp
+src/ActorBase_BeforeBehavior.cpp
 src/ActorBase_AfterBehavior.cpp
-src/_ZN9ActorBase12BeforeRenderEv.cpp
+src/ActorBase_BeforeRender.cpp
 src/ActorBase_AfterRender.cpp
 src/ActorBase_OnPendingDestroy.cpp
 src/ActorBase_OnHeapCreated.cpp

@@ -7122,7 +7122,7 @@ src/ActorBase_AfterRender.cpp:
     complete
     .text start:0x02043ac4 end:0x02043ac8
 
-src/_ZN9ActorBase12BeforeRenderEv.cpp:
+src/ActorBase_BeforeRender.cpp:
     complete
     .text start:0x02043ac8 end:0x02043af0
 
@@ -7134,7 +7134,7 @@ src/ActorBase_AfterBehavior.cpp:
     complete
     .text start:0x02043af8 end:0x02043afc
 
-src/_ZN9ActorBase14BeforeBehaviorEv.cpp:
+src/ActorBase_BeforeBehavior.cpp:
     complete
     .text start:0x02043afc end:0x02043b24
 
