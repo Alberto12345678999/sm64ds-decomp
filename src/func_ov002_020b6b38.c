@@ -15,6 +15,13 @@ extern void _ZN8Platform19UpdateClsnPosAndRotEv(void*);
 extern Vector3 data_ov002_0210ddd0[4];
 extern char data_020a0e68[0x30];
 
+/* This is slot 6 of _ZTV17daObjKurumajiku_c, so `Obj` is a local model of
+   daObjKurumajiku_c -- see include/daObjKurumajiku_c.h, for which this function
+   is the evidence. Everything up to 0xb4 is Actor's (mPos 0x5c, mAngleX/Y/Z
+   0x8c/0x8e/0x90, mFlags 0xb0); the four IDs at 0x320 are the intermediate's own
+   and they end at 0x330, which is the literal both children's factories allocate.
+   The shadow stays because this is a .c file and the real class is C++-only;
+   swapping it in would change the language mode, not just the spelling. */
 struct Obj {
     char pad0[0x5c];
     Vector3 pos;              /* 0x5c */
@@ -25,7 +32,7 @@ struct Obj {
     char pad2[0xb0 - 0x92];
     u32 flags;                /* 0xb0 */
     char pad3[0x320 - 0xb4];
-    u32 ids[4];                /* 0x320 */
+    u32 mCarriedIds[4];       /* 0x320 */
 };
 
 int func_ov002_020b6b38(struct Obj* c)
@@ -40,8 +47,8 @@ int func_ov002_020b6b38(struct Obj* c)
         if (b != 0) return 1;
     }
     for (i = 0; i < 4; i++) {
-        if (c->ids[i]) {
-            void* a = _ZN5Actor10FindWithIDEj(c->ids[i]);
+        if (c->mCarriedIds[i]) {
+            void* a = _ZN5Actor10FindWithIDEj(c->mCarriedIds[i]);
             if (a) {
                 mid.x = 0;
                 mid.y = 0;
