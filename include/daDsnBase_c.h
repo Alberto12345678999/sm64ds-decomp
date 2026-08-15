@@ -16,8 +16,11 @@
  * "slab that slams down" behaviour both of them are.
  *
  * type_info 0x021137f8 (ov025), vtable 0x021351fc (ov091).  The two live in
- * different overlays because ov091 is the key-function TU: this class's own
- * destructor pair is emitted there, at slots 16/17 of that table.
+ * different overlays: the vtable and this class's own destructor pair are
+ * emitted in ov091, at slots 16/17 of that table.  Not because ov091 holds a key
+ * function -- the destructor below is inline, so this class has none -- but
+ * because a vtable still needs one address per slot, and those copies are what
+ * the linker kept.
  *
  * THIS CLASS'S OWN DESTRUCTOR IS THE EVIDENCE FOR ITS MEMBERS, and it is the
  * cleanest kind there is.  func_ov091_02132d6c IS daDsnBase_c::~daDsnBase_c --
@@ -35,19 +38,27 @@
  * vtable.  Everything between the two vtable stores is this class's constructor,
  * inlined.
  *
- * mFileTable AT 0x320 IS THIS CLASS'S TOO, read off its own methods rather than
- * a child's.  Slots 3 and 9 of the table above -- the functions the tree still
- * files under Thwomp::CleanupResources and Thwomp::Render -- both dereference
- * it, and neither child overrides either slot.  A method can reach its own
- * class's members and its ancestors', never a descendant's, so an offset above
- * Platform's 0x320 end that a daDsnBase_c method touches is daDsnBase_c's.
+ * mFileTable AT 0x320 IS THIS CLASS'S TOO, and BOTH CHILDREN RUNNING THE SAME
+ * CODE is what settles it.  Slots 3 and 9 of the table above -- the functions the
+ * tree still files under Thwomp::CleanupResources and Thwomp::Render -- both
+ * dereference 0x320, and daDkk_c's vtable carries those same two addresses at
+ * those same two slots.  One shared function reached through two different
+ * derived types can only be reading storage the common base owns.  (The weaker
+ * form of this argument, that a method never reaches a descendant's members, is
+ * not true in general -- a downcast reaches anything -- so it is the shared slot
+ * and not the method's own scope that does the work here.)  Platform ends at
+ * 0x320, so the word belongs to this class.
  *
- * SIZE 0x360 IS A FIELD SPAN, NOT A FACTORY LITERAL -- this class has no factory
- * of its own.  mShadowModel ends at 0x338 + 0x28 = 0x360, which is already
- * 4-aligned, so there is no trailing padding for sizeof to round away.  Both
- * children allocate more (Grindel 928 = 0x3a0, Thwomp 932 = 0x3a4) and both
- * place their own first observed member well above 0x360, which is consistent
- * but does not by itself pin the split -- the destructor above does.
+ * SIZE 0x360 IS A LOWER BOUND MADE EXACT BY CONVENTION, NOT A MEASUREMENT.  This
+ * class has no factory of its own, so there is no literal to read.  The
+ * destructor proves sizeof >= 0x360: mShadowModel ends at 0x338 + 0x28 = 0x360,
+ * already 4-aligned, so nothing rounds away.  What the destructor CANNOT see is a
+ * plain POD member -- nothing constructs or destroys one -- so daDsnBase_c owning
+ * further words somewhere in 0x360..0x398 is not excluded by any evidence here.
+ * 0x360 is the parsimonious read, the same convention the seven earlier
+ * intermediates were modelled under, and it is what makes both children's
+ * factory literals (Grindel 928 = 0x3a0, Thwomp 932 = 0x3a4) come out right.
+ * Nothing about the byte match depends on where the split is drawn.
  *
  * DESTRUCTOR IS INLINE, like Platform's above it: neither child's destructor
  * contains a `bl` to this one -- each stores this vptr and then runs this body

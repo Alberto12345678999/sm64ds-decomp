@@ -4,10 +4,11 @@
 #include "decl_Platform.h"
 #include "decl_common.h"
 extern int _ZTV12FallBlockBbh[];
+extern int _ZTV16daObjFallBlock_c[];
 /* recovered: vtable identified */
-/* Resolved from config/**/relocs.txt: this store targets 0x0213c5bc, which is
-   daObjFallBlock_c's vtable. The previous spelling existed in no symbols.txt, so this
-   file never linked.
+/* The first store was resolved from the reloc table rather than from the name it
+   used to carry: it targets 0x0213c5bc, which is daObjFallBlock_c's vtable. The
+   spelling it had before existed in no symbols.txt, so this file never linked.
    vtable identified: VT0 = _ZTV16daObjFallBlock_c */
 int *FallBlockBbh_Spawn(void)
 {

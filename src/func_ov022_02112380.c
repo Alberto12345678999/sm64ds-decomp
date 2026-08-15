@@ -4,11 +4,14 @@
 #include "decl_Model.h"
 #include "decl_MovingMeshCollider.h"
 #include "decl_common.h"
+extern int _ZTV20daObjFl_Fall_Block_c[];
+extern int _ZTV16daObjFallBlock_c[];
 extern int _ZTV8Platform[];
 /* recovered: vtable identified */
-/* Resolved from config/**/relocs.txt: this store targets 0x0213c5bc, which is
-   daObjFallBlock_c's vtable. The previous spelling existed in no symbols.txt, so this
-   file never linked.
+/* This is daObjFl_Fall_Block_c::~daObjFl_Fall_Block_c. The second store was
+   resolved from the reloc table rather than from the name it used to carry: it
+   targets 0x0213c5bc, which is daObjFallBlock_c's vtable. The spelling it had
+   before existed in no symbols.txt, so this file never linked.
    vtable identified: VT0 = _ZTV20daObjFl_Fall_Block_c; VT1 = _ZTV16daObjFallBlock_c */
 int *func_ov022_02112380(int *t)
 {

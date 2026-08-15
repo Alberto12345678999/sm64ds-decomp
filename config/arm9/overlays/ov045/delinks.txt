@@ -108,11 +108,11 @@ src/ExtendingPlatform_Spawn.c:
     complete
     .text start:0x02111ad4 end:0x02111b14
 
-src/_ZN16FloatingFloorBfsD1Ev.c:
+src/_ZN16FloatingFloorBfsD1Ev.cpp:
     complete
     .text start:0x02111b14 end:0x02111b64
 
-src/_ZN16FloatingFloorBfsD0Ev.c:
+src/_ZN16FloatingFloorBfsD0Ev.cpp:
     complete
     .text start:0x02111b64 end:0x02111bc8
 
