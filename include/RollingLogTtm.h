@@ -1,10 +1,10 @@
-#ifndef ROLLING_LOG_LLL_H
-#define ROLLING_LOG_LLL_H
+#ifndef ROLLING_LOG_TTM_H
+#define ROLLING_LOG_TTM_H
 
 #include "types.h"
 #include "daObjMaruta_c.h"
 
-/* class RollingLogLll -- Lethal Lava Land's falling/rolling platform (ov022).
+/* class RollingLogTtm -- Tall, Tall Mountain's falling/rolling platform (ov030).
  *
  * Base is daObjMaruta_c, NOT Platform. Its destructor stores three vtables in chain
  * order and its factory allocates 836 = 0x344, storing _ZTV13daObjMaruta_c before
@@ -14,14 +14,10 @@
  * 0xd4 and MovingMeshCollider at 0x124 and nothing else.
  */
 
-struct RollingLogLll : daObjMaruta_c {
-    virtual ~RollingLogLll();
-
-    int Behavior();
-    int CleanupResources();
-    int InitResources();
+struct RollingLogTtm : daObjMaruta_c {
+    virtual ~RollingLogTtm();
 };
 
-typedef char RollingLogLll_size_must_be_0x344[sizeof(RollingLogLll) == 0x344 ? 1 : -1];
+typedef char RollingLogTtm_size_must_be_0x344[sizeof(RollingLogTtm) == 0x344 ? 1 : -1];
 
 #endif

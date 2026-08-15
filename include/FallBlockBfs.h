@@ -1,10 +1,10 @@
-#ifndef FALL_BLOCK_BBH_H
-#define FALL_BLOCK_BBH_H
+#ifndef FALL_BLOCK_BFS_H
+#define FALL_BLOCK_BFS_H
 
 #include "types.h"
 #include "daObjFallBlock_c.h"
 
-/* class FallBlockBbh -- Big Boo's Haunt's falling/rolling platform (ov063).
+/* class FallBlockBfs -- Bob-omb Battlefield's falling/rolling platform (ov045).
  *
  * Base is daObjFallBlock_c, NOT Platform. Its destructor stores three vtables in chain
  * order and its factory allocates 844 = 0x34c, storing _ZTV16daObjFallBlock_c before
@@ -14,13 +14,10 @@
  * 0xd4 and MovingMeshCollider at 0x124 and nothing else.
  */
 
-struct FallBlockBbh : daObjFallBlock_c {
-    virtual ~FallBlockBbh();
-
-    int CleanupResources();
-    int InitResources();
+struct FallBlockBfs : daObjFallBlock_c {
+    virtual ~FallBlockBfs();
 };
 
-typedef char FallBlockBbh_size_must_be_0x34c[sizeof(FallBlockBbh) == 0x34c ? 1 : -1];
+typedef char FallBlockBfs_size_must_be_0x34c[sizeof(FallBlockBfs) == 0x34c ? 1 : -1];
 
 #endif

@@ -7,12 +7,15 @@
 #include "decl_common.h"
 extern int _ZTV8Platform[];
 /* recovered: vtable identified */
-/* vtable identified: VT0 = _ZTV7daDkk_c; VT1 = _ZTV10dBgActor_c */
+/* Resolved from config/**/relocs.txt: this store targets 0x021351fc, which is
+   daDsnBase_c's vtable. The previous spelling existed in no symbols.txt, so this
+   file never linked.
+   vtable identified: VT0 = _ZTV7daDkk_c; VT1 = _ZTV11daDsnBase_c */
 extern void _ZN15TextureSequenceD1Ev(void *);
 int *func_ov025_021118c8(int *t)
 {
     t[0] = (int)_ZTV7daDkk_c;
-    t[0] = (int)_ZTV10dBgActor_c;
+    t[0] = (int)_ZTV11daDsnBase_c;
     _ZN11ShadowModelD1Ev((char *)t + 0x338);
     _ZN15TextureSequenceD1Ev((char *)t + 0x324);
     t[0] = (int)_ZTV8Platform;
