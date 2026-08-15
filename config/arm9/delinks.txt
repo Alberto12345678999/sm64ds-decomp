@@ -7098,7 +7098,7 @@ src/ActorBase_Virtual38.cpp:
     complete
     .text start:0x0204349c end:0x0204357c
 
-src/_ZN9ActorBase9Virtual34Ejj.cpp:
+src/ActorBase_Virtual34.cpp:
     complete
     .text start:0x0204357c end:0x02043810
 
