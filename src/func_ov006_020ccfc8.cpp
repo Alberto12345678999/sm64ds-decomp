@@ -9,12 +9,12 @@ extern int data_ov006_02140590, data_ov006_02140560, data_ov006_02140580,
     data_ov006_021405c0, data_ov006_0214054c, data_ov006_02140564, data_ov006_021405a0,
     data_ov006_0214057c, data_ov006_0214056c, data_ov006_02140568, data_ov006_0214059c,
     data_ov006_02140540;
-extern int data_ov006_0213b2c4;
-extern int data_ov006_0213b3c4;
+extern int _ZTV18dMgTrmpln3DMario_c;
+extern int _ZTV19dMgTrmpObjAdapter_c;
 
 extern "C" void* func_ov006_020ccfc8(int* c)
 {
-    *c = (int)&data_ov006_0213b2c4;
+    *c = (int)&_ZTV18dMgTrmpln3DMario_c;
     data_ov006_021405f8.Release();
     data_ov006_02140608.Release();
     data_ov006_021405d0.Release();
@@ -41,6 +41,6 @@ extern "C" void* func_ov006_020ccfc8(int* c)
     data_ov006_0214059c = 0;
     data_ov006_02140540 = 0;
     ((ModelAnim*)((char*)c+0x6c))->~ModelAnim();
-    *c = (int)&data_ov006_0213b3c4;
+    *c = (int)&_ZTV19dMgTrmpObjAdapter_c;
     return c;
 }

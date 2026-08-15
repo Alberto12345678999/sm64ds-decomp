@@ -102,7 +102,7 @@ data_ov033_0211227c kind:data(any) addr:0x0211227c ambiguous
 data_ov033_02112294 kind:data(any) addr:0x02112294 ambiguous
 data_ov033_0211229c kind:data(any) addr:0x0211229c ambiguous
 data_ov033_02112320 kind:data(any) addr:0x02112320 ambiguous
-data_ov033_0211233c kind:data(any) addr:0x0211233c
+_ZTI13daObjTtFuta_c kind:data(any) addr:0x0211233c
 _ZTS13daObjTtFuta_c kind:data(any) addr:0x02112348
 TinyCover_SpawnInfo kind:data(any) addr:0x02112358 ambiguous
 data_ov033_02112368 kind:data(any) addr:0x02112368 ambiguous

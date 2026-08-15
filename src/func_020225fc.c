@@ -6,12 +6,12 @@ struct Obj {
 };
 
 extern void func_020226a4(char *p);
-extern int data_0208f414;
+extern int _ZTVN5dPa_c7level_c15scaleCallback_cE;
 
 struct Obj *func_020225fc(struct Obj *thiz)
 {
     func_020226a4((char *)thiz);
-    thiz->vt = &data_0208f414;
+    thiz->vt = &_ZTVN5dPa_c7level_c15scaleCallback_cE;
     thiz->f6 = 0x1000;
     thiz->f8 = 0;
     return thiz;

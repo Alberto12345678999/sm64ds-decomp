@@ -226,7 +226,7 @@ _ZTV20daObjCtRotateBlock_c kind:data(any) addr:0x0211d028
 _ZTI16daObjCtMecha03_c kind:data(any) addr:0x0211d0a8
 _ZTS16daObjCtMecha03_c kind:data(any) addr:0x0211d0b4
 data_ov065_0211d0c8 kind:data(any) addr:0x0211d0c8 ambiguous
-data_ov065_0211d0ec kind:data(any) addr:0x0211d0ec
+_ZTV16daObjCtMecha03_c kind:data(any) addr:0x0211d0ec
 data_ov065_0211d16c kind:data(any) addr:0x0211d16c
 _ZTI16daObjCtMecha04_c kind:data(any) addr:0x0211d174
 _ZTS16daObjCtMecha04_c kind:data(any) addr:0x0211d180
@@ -241,7 +241,7 @@ data_ov065_0211d26c kind:data(any) addr:0x0211d26c
 _ZTI16daObjCtMecha05_c kind:data(any) addr:0x0211d270
 _ZTS16daObjCtMecha05_c kind:data(any) addr:0x0211d27c
 TTC_MovingBar_SpawnInfo kind:data(any) addr:0x0211d290 ambiguous
-data_ov065_0211d2b4 kind:data(any) addr:0x0211d2b4
+_ZTV16daObjCtMecha05_c kind:data(any) addr:0x0211d2b4
 data_ov065_0211d334 kind:data(any) addr:0x0211d334
 _ZTI18daObjCtKaitendai_c kind:data(any) addr:0x0211d338
 _ZTS18daObjCtKaitendai_c kind:data(any) addr:0x0211d344

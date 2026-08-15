@@ -1,5 +1,5 @@
-extern int data_ov006_0213b3c4[];
+extern int _ZTV19dMgTrmpObjAdapter_c[];
 void func_ov006_020cd72c(int *c){
-  *c=(int)data_ov006_0213b3c4;
+  *c=(int)_ZTV19dMgTrmpObjAdapter_c;
   *(short*)((char*)c+0x18)=0;
 }

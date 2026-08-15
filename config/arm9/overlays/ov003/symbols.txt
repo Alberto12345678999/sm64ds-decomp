@@ -110,7 +110,7 @@ _ZTI12dScStarSel_c kind:data(any) addr:0x020b16bc
 data_ov003_020b16c8 kind:data(any) addr:0x020b16c8
 _ZTS12dScStarSel_c kind:data(any) addr:0x020b16d4
 data_ov003_020b16e4 kind:data(any) addr:0x020b16e4
-data_ov003_020b1704 kind:data(any) addr:0x020b1704
+_ZTV12dScStarSel_c kind:data(any) addr:0x020b1704
 data_ov003_020b174c kind:data(any) addr:0x020b174c
 data_ov003_020b1750 kind:data(any) addr:0x020b1750 ambiguous
 _ZTI13dScGameOver_c kind:data(any) addr:0x020b1758

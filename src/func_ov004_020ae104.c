@@ -1,8 +1,8 @@
 
-extern int data_0208ee14[];
-extern int data_ov004_020bc03c[];
+extern int _ZTVN8dGraph_c10callback_cE[];
+extern int _ZTVN11dScMgBase_c15graphCallback_cE[];
 void func_ov004_020ae104(void *c) {
-    *(int*)c = (int)data_0208ee14;
-    *(int*)c = (int)data_ov004_020bc03c;
+    *(int*)c = (int)_ZTVN8dGraph_c10callback_cE;
+    *(int*)c = (int)_ZTVN11dScMgBase_c15graphCallback_cE;
     *(int*)((char*)c+4) = 0;
 }

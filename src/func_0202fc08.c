@@ -11,14 +11,14 @@ struct Obj {
     unsigned char unkF; /* 0xf */
 };
 
-extern void *data_020926f0[];
+extern void *_ZTV7dWipe_c[];
 
 extern void func_0202fb30(struct Obj *thiz);    /* 0x0202fb30 */
 extern void *_ZN10FaderColorD2Ev(struct Obj *thiz);   /* 0x02017574 */
 
 struct Obj *func_0202fc08(struct Obj *thiz)
 {
-    thiz->vtable = (void **)data_020926f0;
+    thiz->vtable = (void **)_ZTV7dWipe_c;
     if (thiz->unkF == 1)
         func_0202fb30(thiz);
     _ZN10FaderColorD2Ev(thiz);

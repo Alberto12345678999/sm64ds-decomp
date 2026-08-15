@@ -11,19 +11,19 @@
  * This file was the only evidence for Player.h's `mModelAnim2` at 0x078, so
  * that field can now be dropped and the offset returned to Actor.
  *
- * The vptr it stores is the invented symbol data_ov006_0213b2e0, which carries no address --
+ * The vptr it stores is the invented symbol _ZTV17dMgTrmpln2Mario_c, which carries no address --
  * a separate problem, left alone here.
  *
  * Detached from Player.h; see func_ov006_020d6084.cpp.
  */
 #include "decl_ModelAnim.h"
 #include "decl_common.h"
-extern int data_ov006_0213b2e0[];
+extern int _ZTV17dMgTrmpln2Mario_c[];
 
 extern "C" int *_ZN6Player29TryExitCharacterDoorWithIntroEv(int *self)
 {
     func_ov006_020cd6f4(self);
-    self[0] = (int)data_ov006_0213b2e0;
+    self[0] = (int)_ZTV17dMgTrmpln2Mario_c;
     _ZN9ModelAnimC1Ev((char *)self + 0x78);
     return self;
 }

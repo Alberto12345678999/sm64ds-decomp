@@ -5,7 +5,7 @@
 #include "BMD_File.h"
 #include "math/Matrix.h"
 
-/* The root of the model hierarchy, vtable at 0x0208e87c (data_0208e87c).
+/* The root of the model hierarchy, vtable at 0x0208e87c (_ZTV11dExtModel_c).
  *
  * The chain is ModelBase -> Model -> (the ModelAnim family), with CommonModel
  * and ShadowModel as further ModelBase-derived siblings. Model derives from

@@ -5,12 +5,12 @@
 #include "decl_MovingMeshCollider.h"
 #include "decl_common.h"
 extern int _ZTV8Platform[];
-extern int data_ov025_02113760[];
+extern int _ZTV7daDgr_c[];
 /* recovered: vtable identified */
-/* vtable identified: VT0 = data_ov025_02113760; VT1 = _ZTV8Platform */
+/* vtable identified: VT0 = _ZTV7daDgr_c; VT1 = _ZTV8Platform */
 int *func_ov025_021111a0(int *t)
 {
-    t[0] = (int)data_ov025_02113760;
+    t[0] = (int)_ZTV7daDgr_c;
     t[0] = (int)_ZTV8Platform;
     _ZN18MovingMeshColliderD1Ev((char *)t + 0x124);
     _ZN5ModelD1Ev((char *)t + 0xd4);

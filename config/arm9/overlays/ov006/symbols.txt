@@ -3279,7 +3279,7 @@ data_ov006_0213afb0 kind:data(any) addr:0x0213afb0
 data_ov006_0213afb8 kind:data(any) addr:0x0213afb8
 data_ov006_0213afc0 kind:data(any) addr:0x0213afc0
 data_ov006_0213afc8 kind:data(any) addr:0x0213afc8
-data_ov006_0213afd8 kind:data(any) addr:0x0213afd8
+_ZTV22dMg3DHeyhoObjAdapter_c kind:data(any) addr:0x0213afd8
 _ZTS22dMg3DHeyhoObjAdapter_c kind:data(any) addr:0x0213afe4
 _ZTI22dMg3DHeyhoObjAdapter_c kind:data(any) addr:0x0213b000
 data_ov006_0213b008 kind:data(any) addr:0x0213b008
@@ -3306,7 +3306,7 @@ data_ov006_0213b090 kind:data(any) addr:0x0213b090
 data_ov006_0213b098 kind:data(any) addr:0x0213b098
 _ZTI16dMgJump3DMario_c kind:data(any) addr:0x0213b0a4
 _ZTS16dMgJump3DMario_c kind:data(any) addr:0x0213b0b0
-data_ov006_0213b0cc kind:data(any) addr:0x0213b0cc
+_ZTV16dMgJump3DMario_c kind:data(any) addr:0x0213b0cc
 data_ov006_0213b0d8 kind:data(any) addr:0x0213b0d8
 data_ov006_0213b0ec kind:data(any) addr:0x0213b0ec
 data_ov006_0213b0f0 kind:data(any) addr:0x0213b0f0
@@ -3357,8 +3357,8 @@ _ZTS17dMgTrmpln2Mario_c kind:data(any) addr:0x0213b25c
 _ZTS18dMgTrmpln3DMario_c kind:data(any) addr:0x0213b270
 _ZTS19dMgTrmpObjAdapter_c kind:data(any) addr:0x0213b288
 _ZTS23dMgTrmpRingObjAdapter_c kind:data(any) addr:0x0213b2a0
-data_ov006_0213b2c4 kind:data(any) addr:0x0213b2c4
-data_ov006_0213b2e0 kind:data(any) addr:0x0213b2e0
+_ZTV18dMgTrmpln3DMario_c kind:data(any) addr:0x0213b2c4
+_ZTV17dMgTrmpln2Mario_c kind:data(any) addr:0x0213b2e0
 data_ov006_0213b2f4 kind:data(any) addr:0x0213b2f4
 data_ov006_0213b2f8 kind:data(any) addr:0x0213b2f8
 data_ov006_0213b2fc kind:data(any) addr:0x0213b2fc
@@ -3386,8 +3386,8 @@ data_ov006_0213b38c kind:data(any) addr:0x0213b38c
 data_ov006_0213b394 kind:data(any) addr:0x0213b394
 data_ov006_0213b39c kind:data(any) addr:0x0213b39c
 data_ov006_0213b3a4 kind:data(any) addr:0x0213b3a4
-data_ov006_0213b3c4 kind:data(any) addr:0x0213b3c4
-data_ov006_0213b3e0 kind:data(any) addr:0x0213b3e0
+_ZTV19dMgTrmpObjAdapter_c kind:data(any) addr:0x0213b3c4
+_ZTV23dMgTrmpRingObjAdapter_c kind:data(any) addr:0x0213b3e0
 data_ov006_0213b3f4 kind:data(any) addr:0x0213b3f4
 data_ov006_0213b414 kind:data(any) addr:0x0213b414
 data_ov006_0213b814 kind:data(any) addr:0x0213b814
@@ -3464,9 +3464,9 @@ _ZTS11dScMgCard_c kind:data(any) addr:0x0213bc7c
 _ZTS12dMgCardObj_c kind:data(any) addr:0x0213bc8c
 _ZTS17dMgDilarCardObj_c kind:data(any) addr:0x0213bc9c
 data_ov006_0213bcb0 kind:data(any) addr:0x0213bcb0
-data_ov006_0213bccc kind:data(any) addr:0x0213bccc
+_ZTV12dMgCardObj_c kind:data(any) addr:0x0213bccc
 data_ov006_0213bcd8 kind:data(any) addr:0x0213bcd8
-data_ov006_0213bcf4 kind:data(any) addr:0x0213bcf4
+_ZTV17dMgDilarCardObj_c kind:data(any) addr:0x0213bcf4
 _ZTS19dScMgSingle3DBase_c kind:data(any) addr:0x0213bd00
 data_ov006_0213bd18 kind:data(any) addr:0x0213bd18
 data_ov006_0213bd30 kind:data(any) addr:0x0213bd30
@@ -3847,7 +3847,7 @@ _ZTI18dMgMCarloCardObj_c kind:data(any) addr:0x0213d578
 data_ov006_0213d580 kind:data(any) addr:0x0213d580 ambiguous
 _ZTI13dScMgMCarlo_c kind:data(any) addr:0x0213d588
 _ZTS13dScMgMCarlo_c kind:data(any) addr:0x0213d594
-data_ov006_0213d5ac kind:data(any) addr:0x0213d5ac
+_ZTV18dMgMCarloCardObj_c kind:data(any) addr:0x0213d5ac
 data_ov006_0213d5b4 kind:data(any) addr:0x0213d5b4
 _ZTS18dMgMCarloCardObj_c kind:data(any) addr:0x0213d5c8
 data_ov006_0213d5e0 kind:data(any) addr:0x0213d5e0
@@ -3860,7 +3860,7 @@ data_ov006_0213d700 kind:data(any) addr:0x0213d700
 _ZTI19dMgMCarlo2CardObj_c kind:data(any) addr:0x0213d704
 MgPairAGoneAndOn_SpawnInfo kind:data(any) addr:0x0213d70c ambiguous
 _ZTI14dScMgMCarlo2_c kind:data(any) addr:0x0213d714
-data_ov006_0213d728 kind:data(any) addr:0x0213d728
+_ZTV19dMgMCarlo2CardObj_c kind:data(any) addr:0x0213d728
 _ZTS14dScMgMCarlo2_c kind:data(any) addr:0x0213d730
 data_ov006_0213d744 kind:data(any) addr:0x0213d744
 _ZTS19dMgMCarlo2CardObj_c kind:data(any) addr:0x0213d758
@@ -4054,7 +4054,7 @@ _ZTIN12dScMgSlot1_c9betIcon_cE kind:data(any) addr:0x0213e594
 _ZTI12dScMgSlot1_c kind:data(any) addr:0x0213e5a0
 _ZTS12dScMgSlot3_c kind:data(any) addr:0x0213e5ac
 _ZTS12dScMgSlot1_c kind:data(any) addr:0x0213e5bc
-data_ov006_0213e5d4 kind:data(any) addr:0x0213e5d4
+_ZTVN12dScMgSlot1_c9betIcon_cE kind:data(any) addr:0x0213e5d4
 data_ov006_0213e5dc kind:data(any) addr:0x0213e5dc
 data_ov006_0213e5ec kind:data(any) addr:0x0213e5ec
 data_ov006_0213e600 kind:data(any) addr:0x0213e600
@@ -4121,7 +4121,7 @@ _ZTV21cMgSmartball_object_c kind:data(any) addr:0x0213ed10
 _ZTV19cMgSmartball_wing_c kind:data(any) addr:0x0213ed24
 _ZTV25cMgSmartball_pushswitch_c kind:data(any) addr:0x0213ed38
 _ZTV18cMgSmartball_ana_c kind:data(any) addr:0x0213ed4c
-data_ov006_0213ed60 kind:data(any) addr:0x0213ed60
+_ZTV20cMgSmartball_board_c kind:data(any) addr:0x0213ed60
 _ZTV19cMgSmartball_slot_c kind:data(any) addr:0x0213ed74
 _ZTV21cMgSmartball_kinoko_c kind:data(any) addr:0x0213ed88
 _ZTV21cMgSmartball_pakkun_c kind:data(any) addr:0x0213ed9c

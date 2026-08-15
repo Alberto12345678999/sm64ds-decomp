@@ -13,7 +13,7 @@ struct HeapS {
     u32 flags;
 };
 void _ZN4HeapC1EPvjP4Heap(struct HeapS *heap, void *start, u32 size, struct Heap *root) {
-  heap->vtable = &data_02099d90;
+  heap->vtable = &_ZTVN5mHeap6Heap_tE;
   heap->heapStart = start;
   heap->heapSize = size;
   heap->parentHeap = root;

@@ -1,7 +1,7 @@
 //cpp
 #include "SharedFilePtr.h"
 extern "C" {
-extern int data_ov002_0210bcc4[];
+extern int _ZTVN8daDemo_c10anmModel_cE[];
 extern int data_ov002_0210bce8[];
 extern int _ZN7Vector3D1Ev[];
 void _ZN9ModelAnimD2Ev(void*);
@@ -10,7 +10,7 @@ typedef void (*VFN)(void*);
 void* func_ov002_020f6870(char* c){
   void* p;
   int i;
-  *(int*)c = (int)data_ov002_0210bcc4;
+  *(int*)c = (int)_ZTVN8daDemo_c10anmModel_cE;
   *(int*)(c+0x50) = (int)data_ov002_0210bce8;
   p = *(void**)(c+0x70);
   if (p != 0) ((SharedFilePtr *)(p))->Release();

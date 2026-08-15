@@ -9,7 +9,7 @@ extern int data_0208e4b8[];
 extern void _ZN9ActorBaseD2Ev(void*);
 extern void* data_020a0eac;
 int* func_ov003_020ade54(int* t){
-  t[0]=(int)data_ov003_020b1704;
+  t[0]=(int)_ZTV12dScStarSel_c;
   __destroy_arr((char*)t+0x64, 2, 0x50, (void*)_ZN5ModelD1Ev);
   t[0]=(int)_ZTV5Scene;
   t[0]=(int)data_0208e4b8;

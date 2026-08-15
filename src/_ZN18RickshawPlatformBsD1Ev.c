@@ -2,7 +2,7 @@
 /* recovered: named members + shared header */
 #include "RickshawPlatformBs.h"
 extern int _ZTV18RickshawPlatformBs[];
-extern int data_ov002_02108d94[];
+extern int _ZTV13daObjDorifu_c[];
 extern int _ZTV8Platform[];
 extern int __destroy_arr(void*,int,int,void*);
 extern int _ZN18MovingMeshColliderD1Ev(void*);
@@ -10,7 +10,7 @@ extern int _ZN5ModelD1Ev(void*);
 extern int _ZN5ActorD2Ev(void*);
 int _ZN18RickshawPlatformBsD1Ev(struct RickshawPlatformBs *self) {
   *(int*)((char*)self)=(int)_ZTV18RickshawPlatformBs;
-  *(int*)((char*)self)=(int)data_ov002_02108d94;
+  *(int*)((char*)self)=(int)_ZTV13daObjDorifu_c;
   __destroy_arr(((char*)self)+0x4b0,5,0x1c8,(void*)_ZN18MovingMeshColliderD1Ev);
   __destroy_arr(((char*)self)+0x320,5,0x50,(void*)_ZN5ModelD1Ev);
   *(int*)((char*)self)=(int)_ZTV8Platform;

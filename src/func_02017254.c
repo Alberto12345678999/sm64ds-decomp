@@ -2,11 +2,11 @@
  * Single-vtable destructor: write own vtable, call base/helper destructor (0x02017574), return this.
  */
 struct Obj { void *vtable; };
-extern void *data_0208ea6c[];
+extern void *_ZTV10dFdDummy_c[];
 extern void _ZN10FaderColorD2Ev(struct Obj *thiz); /* 0x02017574 */
 struct Obj *func_02017254(struct Obj *thiz)
 {
-    thiz->vtable = (void *)data_0208ea6c;
+    thiz->vtable = (void *)_ZTV10dFdDummy_c;
     _ZN10FaderColorD2Ev(thiz);
     return thiz;
 }

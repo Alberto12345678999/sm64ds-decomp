@@ -141,7 +141,7 @@ void func_ov006_0211944c(char *c, int mode)
         int *p = *(int **)(c + 0x4000 + 0x77c);
         if (p != 0) {
             if (p != 0) {
-                *p = (int)data_ov006_0213ed60;
+                *p = (int)_ZTV20cMgSmartball_board_c;
                 *(int volatile *)p = (int)_ZTV21cMgSmartball_object_c;
                 _ZN6Memory16operator_delete2EPv(p);
             }

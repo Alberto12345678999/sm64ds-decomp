@@ -140,7 +140,7 @@ data_ov032_021138f0 kind:data(any) addr:0x021138f0 ambiguous
 data_ov032_021138fc kind:data(any) addr:0x021138fc ambiguous
 data_ov032_02113934 kind:data(any) addr:0x02113934 ambiguous
 _ZTI14daObjTdWater_c kind:data(any) addr:0x02113960
-data_ov032_0211396c kind:data(any) addr:0x0211396c
+_ZTS14daObjTdWater_c kind:data(any) addr:0x0211396c
 HugeWater_SpawnInfo kind:data(any) addr:0x02113980 ambiguous
 data_ov032_02113998 kind:data(any) addr:0x02113998 ambiguous
 _ZTV9HugeWater kind:data(any) addr:0x021139a4

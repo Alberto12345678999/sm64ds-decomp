@@ -2,7 +2,7 @@
 /* recovered: renamed to Class_Method */
 struct MultiBootScene { void **vtable; };
 struct Heap;
-extern void *data_020943c4[];
+extern void *_ZTV7dScMB_c[];
 extern void *_ZTV5Scene[];
 extern void *data_0208e4b8[];
 extern void _ZN10FaderColorD1Ev(void *thiz);
@@ -12,7 +12,7 @@ extern struct Heap *data_020a0eac;
 
 struct MultiBootScene *func_02034ac0(struct MultiBootScene *thiz)
 {
-    thiz->vtable = (void **)data_020943c4;
+    thiz->vtable = (void **)_ZTV7dScMB_c;
     _ZN10FaderColorD1Ev((char *)thiz + 0x50);
     thiz->vtable = (void **)_ZTV5Scene;
     thiz->vtable = (void **)data_0208e4b8;

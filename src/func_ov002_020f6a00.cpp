@@ -1,13 +1,13 @@
 //cpp
 #include "SharedFilePtr.h"
 extern "C" {
-extern int data_ov002_0210bae4[];
+extern int _ZTVN8daDemo_c13simpleModel_cE[];
 extern int _ZN7Vector3D1Ev[];
 void _ZN5ModelD2Ev(void*);
 void __destroy_arr(void*, int, int, void*);
 void* func_ov002_020f6a00(char* c){
   void* p;
-  *(int*)c = (int)data_ov002_0210bae4;
+  *(int*)c = (int)_ZTVN8daDemo_c13simpleModel_cE;
   p = *(void**)(c+0x5c);
   if(p!=0){
     ((SharedFilePtr *)(p))->Release();

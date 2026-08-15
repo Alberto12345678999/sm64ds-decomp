@@ -9,8 +9,8 @@ extern void func_02017278(int *p);
 extern int data_0208e4b8[];
 extern int _ZTV5Scene[];
 extern int data_ov007_021032e8[];
-extern int data_0208ee14[];
-extern int data_ov007_021032b0[];
+extern int _ZTVN8dGraph_c10callback_cE[];
+extern int _ZTVN9dScDSMT_c15graphCallback_cE[];
 
 int *func_ov007_020ccad0(void)
 {
@@ -24,8 +24,8 @@ int *func_ov007_020ccad0(void)
         *f |= 1;
         *f |= 4;
         p[0] = (int)data_ov007_021032e8;
-        p[0x50 / 4] = (int)data_0208ee14;
-        p[0x50 / 4] = (int)data_ov007_021032b0;
+        p[0x50 / 4] = (int)_ZTVN8dGraph_c10callback_cE;
+        p[0x50 / 4] = (int)_ZTVN9dScDSMT_c15graphCallback_cE;
         func_02017278(p + 0x54 / 4);
     }
     return p;

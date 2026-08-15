@@ -93,13 +93,13 @@ _ZTI13daObjEmmLog_c kind:data(any) addr:0x021124e0
 _ZTS13daObjEmmLog_c kind:data(any) addr:0x021124ec
 data_ov052_021124f8 kind:data(any) addr:0x021124f8 ambiguous
 data_ov052_021124fc kind:data(any) addr:0x021124fc ambiguous
-data_ov052_02112520 kind:data(any) addr:0x02112520
+_ZTV13daObjEmmLog_c kind:data(any) addr:0x02112520
 data_ov052_02112530 kind:data(any) addr:0x02112530 ambiguous
 data_ov052_02112570 kind:data(any) addr:0x02112570 ambiguous
 data_ov052_02112590 kind:data(any) addr:0x02112590 ambiguous
 data_ov052_021125a0 kind:data(any) addr:0x021125a0
 _ZTI14daObjEmmYuka_c kind:data(any) addr:0x021125ac
-data_ov052_021125b8 kind:data(any) addr:0x021125b8
+_ZTS14daObjEmmYuka_c kind:data(any) addr:0x021125b8
 SquarePathLift_SpawnInfo kind:data(any) addr:0x021125cc ambiguous
 _ZTV14SquarePathLift kind:data(any) addr:0x021125f0
 _ZTV14daObjEmmYuka_c kind:data(any) addr:0x021125f0

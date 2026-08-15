@@ -6,7 +6,7 @@ void func_020733a8(void*, int, int, void*, void*);
 void _ZN7PathPtrC1Ev(void*);
 void _ZN9ModelAnimC1Ev(void*);
 extern int data_ov002_0210af70[];
-extern int data_ov036_02113f9c[];
+extern int _ZTV15daObjRcCarpet_c[];
 void _ZN5ModelD1Ev(void*);
 void _ZN5ModelC1Ev(void*);
 void* FlyingCarpet_Spawn(void){
@@ -16,7 +16,7 @@ void* FlyingCarpet_Spawn(void){
     *(int*)c = (int)data_ov002_0210af70;
     func_020733a8(c+0x320, 3, 0x50, (void*)_ZN5ModelC1Ev, (void*)_ZN5ModelD1Ev);
     _ZN7PathPtrC1Ev(c+0x430);
-    *(int*)c = (int)data_ov036_02113f9c;
+    *(int*)c = (int)_ZTV15daObjRcCarpet_c;
     _ZN9ModelAnimC1Ev(c+0x450);
   }
   return c;

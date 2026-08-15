@@ -1,6 +1,6 @@
 void func_ov004_020b9280(void* c){
-  extern int data_ov004_020bca7c[];
-  extern int data_ov001_020ad494[];
-  *(int*)c=(int)data_ov004_020bca7c;
-  *(int*)c=(int)data_ov001_020ad494;
+  extern int _ZTVN10dMgPsOpt_c11TouchIcon_cE[];
+  extern int _ZTV9dThIcon_c[];
+  *(int*)c=(int)_ZTVN10dMgPsOpt_c11TouchIcon_cE;
+  *(int*)c=(int)_ZTV9dThIcon_c;
 }

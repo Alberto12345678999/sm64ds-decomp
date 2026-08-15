@@ -19,7 +19,7 @@ int _ZN4cstd4fdivEii(int a, int b);
 int _ZNK12WithMeshClsn8IsOnWallEv(WithMeshClsn* w);
 struct ClsnResult* _ZNK12WithMeshClsn13GetWallResultEv(WithMeshClsn* w);
 void _ZN10ClsnResultD1Ev(struct ClsnResult* r);
-extern void* data_02099368;
+extern void* _ZTV5dBgPi;
 
 void func_ov018_02111bf0(char* c, WithMeshClsn* w){
   WithMeshClsn_UpdateDiscreteNoLava_veneer(w);
@@ -43,7 +43,7 @@ void func_ov018_02111bf0(char* c, WithMeshClsn* w){
     *(int*)((char*)dst + 0) = b ? a : a;
     *(int*)((char*)dst + 4) = b;
     int t = *(int*)((char*)src + 0xc);
-    void* vt = &data_02099368;
+    void* vt = &_ZTV5dBgPi;
     *(int*)((char*)dst + 8) = t;
     t = *(int*)((char*)src + 0x10);
     *(int*)((char*)dst + 0xc) = t;

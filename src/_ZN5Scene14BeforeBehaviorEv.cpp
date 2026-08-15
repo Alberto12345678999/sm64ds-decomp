@@ -21,7 +21,7 @@
  * is one parameter. Calling them through the real class would drop the `mov r2,#0`
  * and stop matching, so the ROM's own Scene translation unit must have been built
  * against a two-argument prototype. The names below are the ROM's -- read out of
- * data_0208eb2c -- and only the arity is this file's.
+ * _ZTV10dFdColor_c -- and only the arity is this file's.
  *
  * Recording it here rather than papering over it: the fader family's headers are
  * known to be wrong in the other direction too (they declare seven vtable slots
@@ -29,10 +29,11 @@
 #include "Scene.h"
 #include "FaderBrightness.h"
 
-/* The ROM's fader vtable at data_0208eb2c, with the arity the call sites above
+/* The ROM's fader vtable at _ZTV10dFdColor_c, with the arity the call sites above
    prove this TU was compiled against. Slots 0/1 are D1/D0. The slot names come
-   from what the table's own entries resolve to -- the tree has no _ZTV symbol
-   for this address, only the data_ placeholder. */
+   from what the table's own entries resolve to; the symbol itself is now the real
+   one, read from the ROM's type_info record -- dFdColor_c is EAD's name for the
+   class this tree calls FaderColor. */
 struct FaderVTable {
     void (*D1)(void *);
     void (*D0)(void *);

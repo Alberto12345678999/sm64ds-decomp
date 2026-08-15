@@ -1,8 +1,8 @@
-extern void *data_0208f3b4;
-extern void *data_0208f3c4;
+extern void *_ZTVN5dPa_c7level_c10callback_cE;
+extern void *_ZTVN5dPa_c7level_c16simpleCallback_cE;
 void func_020226a4(char *p)
 {
-    *(void **)p = &data_0208f3b4;
-    *(void **)p = &data_0208f3c4;
+    *(void **)p = &_ZTVN5dPa_c7level_c10callback_cE;
+    *(void **)p = &_ZTVN5dPa_c7level_c16simpleCallback_cE;
     *(short *)(p + 4) = 0;
 }

@@ -1,6 +1,6 @@
 //cpp
 extern "C" {
-extern int data_ov036_02113f9c[];
+extern int _ZTV15daObjRcCarpet_c[];
 extern int data_ov002_0210af70[];
 extern int _ZTV8Platform[];
 void _ZN9ModelAnimD1Ev(void*);
@@ -10,7 +10,7 @@ void _ZN5ModelD1Ev(void*);
 void _ZN5ActorD2Ev(void*);
 }
 extern "C" int func_ov036_02112158(char* c){
-  *(int**)c=(int*)data_ov036_02113f9c;
+  *(int**)c=(int*)_ZTV15daObjRcCarpet_c;
   _ZN9ModelAnimD1Ev(c+0x450);
   *(int**)c=(int*)data_ov002_0210af70;
   __destroy_arr(c+0x320,3,0x50,(void*)_ZN5ModelD1Ev);

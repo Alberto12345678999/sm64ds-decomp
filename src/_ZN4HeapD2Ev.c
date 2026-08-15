@@ -6,13 +6,13 @@
  * (at offset 0x00) back to Heap's own vtable before the base subobject is torn
  * down. Returns void.
  *
- * data_02099d90 is the Itanium vtable symbol for Heap. The stored address is a
+ * _ZTVN5mHeap6Heap_tE is the Itanium vtable symbol for Heap. The stored address is a
  * pooled wildcard reloc, so the extern name is not byte-verified -- it is named
  * by convention. */
 
-extern int data_02099d90[]; /* vtable for Heap */
+extern int _ZTVN5mHeap6Heap_tE[]; /* vtable for Heap */
 
 void _ZN4HeapD2Ev(int *self)
 {
-    self[0] = (int)data_02099d90; /* reset vptr at +0x00 */
+    self[0] = (int)_ZTVN5mHeap6Heap_tE; /* reset vptr at +0x00 */
 }

@@ -3,7 +3,7 @@
 #include "decl_ActorBase.h"
 #include "decl_Platform.h"
 #include "decl_common.h"
-extern int data_ov022_021142c4[];
+extern int _ZTV20daObjFl_Fall_Block_c[];
 /* recovered: vtable identified */
 /* vtable identified: VT0 = _ZTV20daObjFl_Fall_Block_c */
 int *FallBlockLll_Spawn(void)
@@ -12,7 +12,7 @@ int *FallBlockLll_Spawn(void)
     if (p) {
         _ZN8PlatformC2Ev(p);
         p[0] = (int)_ZTV20daObjFl_Fall_Block_c;
-        p[0] = (int)data_ov022_021142c4;
+        p[0] = (int)_ZTV20daObjFl_Fall_Block_c;
     }
     return p;
 }

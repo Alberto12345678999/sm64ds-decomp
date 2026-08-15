@@ -153,7 +153,7 @@ data_ov036_021139f4 kind:data(any) addr:0x021139f4 ambiguous
 data_ov036_02113a00 kind:data(any) addr:0x02113a00 ambiguous
 data_ov036_02113a50 kind:data(any) addr:0x02113a50 ambiguous
 _ZTI16daObjRcBuranko_c kind:data(any) addr:0x02113a54
-data_ov036_02113a60 kind:data(any) addr:0x02113a60
+_ZTS16daObjRcBuranko_c kind:data(any) addr:0x02113a60
 SwingingPlatform_SpawnInfo kind:data(any) addr:0x02113a74 ambiguous
 _ZTV16SwingingPlatform kind:data(any) addr:0x02113a98
 data_ov036_02113aa0 kind:data(any) addr:0x02113aa0 ambiguous
@@ -170,7 +170,7 @@ data_ov036_02113b7c kind:data(any) addr:0x02113b7c ambiguous
 data_ov036_02113b80 kind:data(any) addr:0x02113b80 ambiguous
 data_ov036_02113b90 kind:data(any) addr:0x02113b90 ambiguous
 _ZTI14daObjRc_Hane_c kind:data(any) addr:0x02113bf4
-data_ov036_02113c00 kind:data(any) addr:0x02113c00
+_ZTS14daObjRc_Hane_c kind:data(any) addr:0x02113c00
 data_ov036_02113c08 kind:data(any) addr:0x02113c08 ambiguous
 ShipWing_SpawnInfo kind:data(any) addr:0x02113c14 ambiguous
 data_ov036_02113c20 kind:data(any) addr:0x02113c20 ambiguous
@@ -178,8 +178,8 @@ data_ov036_02113c28 kind:data(any) addr:0x02113c28 ambiguous
 _ZTV8ShipWing kind:data(any) addr:0x02113c38
 _ZTV14daObjRc_Hane_c kind:data(any) addr:0x02113c38
 data_ov036_02113c48 kind:data(any) addr:0x02113c48 ambiguous
-data_ov036_02113cb4 kind:data(any) addr:0x02113cb4
-data_ov036_02113cc0 kind:data(any) addr:0x02113cc0
+_ZTI16daObjRc_Tikuwa_c kind:data(any) addr:0x02113cb4
+_ZTS16daObjRc_Tikuwa_c kind:data(any) addr:0x02113cc0
 data_ov036_02113ccc kind:data(any) addr:0x02113ccc ambiguous
 DonutBlock_SpawnInfo kind:data(any) addr:0x02113cd4 ambiguous
 data_ov036_02113cec kind:data(any) addr:0x02113cec ambiguous
@@ -205,7 +205,7 @@ _ZTI15daObjRcCarpet_c kind:data(any) addr:0x02113f4c
 data_ov036_02113f58 kind:data(any) addr:0x02113f58
 _ZTS15daObjRcCarpet_c kind:data(any) addr:0x02113f64
 FlyingCarpet_SpawnInfo kind:data(any) addr:0x02113f78 ambiguous
-data_ov036_02113f9c kind:data(any) addr:0x02113f9c
+_ZTV15daObjRcCarpet_c kind:data(any) addr:0x02113f9c
 data_ov036_02113ff4 kind:data(any) addr:0x02113ff4 ambiguous
 data_ov036_02114010 kind:data(any) addr:0x02114010 ambiguous
 data_ov036_02114020 kind:bss addr:0x02114020

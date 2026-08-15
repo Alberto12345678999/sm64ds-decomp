@@ -35,7 +35,7 @@ int CutsceneObject::InitResources()
         if (p) {
             func_ov002_020f6a50((char *)p + 0x64);
             _ZN9ModelAnimC2Ev(p);
-            *(void **)p = &data_ov002_0210bcc4;
+            *(void **)p = &_ZTVN8daDemo_c10anmModel_cE;
             *(void **)((char *)p + 0x50) = &data_ov002_0210bce8;
         }
         ((Obj *)this)->unkE0 = p;
@@ -46,7 +46,7 @@ int CutsceneObject::InitResources()
         if (p) {
             func_ov002_020f6a50((char *)p + 0x64);
             _ZN9ModelAnimC2Ev(p);
-            *(void **)p = &data_ov002_0210bcc4;
+            *(void **)p = &_ZTVN8daDemo_c10anmModel_cE;
             *(void **)((char *)p + 0x50) = &data_ov002_0210bce8;
         }
         ((Obj *)this)->unkE0 = p;
@@ -62,7 +62,7 @@ int CutsceneObject::InitResources()
         if (p) {
             func_ov002_020f6a50((char *)p + 0x50);
             _ZN5ModelC2Ev(p);
-            *(void **)p = &data_ov002_0210bae4;
+            *(void **)p = &_ZTVN8daDemo_c13simpleModel_cE;
         }
         ((Obj *)this)->unkDC = p;
         if (((Obj *)this)->unkDC == 0) return 0;
@@ -72,7 +72,7 @@ int CutsceneObject::InitResources()
         if (p) {
             func_ov002_020f6a50((char *)p + 0x50);
             _ZN5ModelC2Ev(p);
-            *(void **)p = &data_ov002_0210bae4;
+            *(void **)p = &_ZTVN8daDemo_c13simpleModel_cE;
         }
         ((Obj *)this)->unkDC = p;
         if (((Obj *)this)->unkDC == 0) return 0;
@@ -82,7 +82,7 @@ int CutsceneObject::InitResources()
         if (p) {
             func_ov002_020f6a50((char *)p + 0x50);
             _ZN5ModelC2Ev(p);
-            *(void **)p = &data_ov002_0210bae4;
+            *(void **)p = &_ZTVN8daDemo_c13simpleModel_cE;
         }
         ((Obj *)this)->unkDC = p;
         if (((Obj *)this)->unkDC == 0) return 0;
@@ -92,7 +92,7 @@ int CutsceneObject::InitResources()
         if (p) {
             func_ov002_020f6a50((char *)p + 0x50);
             _ZN5ModelC2Ev(p);
-            *(void **)p = &data_ov002_0210bae4;
+            *(void **)p = &_ZTVN8daDemo_c13simpleModel_cE;
         }
         ((Obj *)this)->unkDC = p;
         if (((Obj *)this)->unkDC == 0) return 0;
@@ -102,7 +102,7 @@ int CutsceneObject::InitResources()
         if (p) {
             func_ov002_020f6a50((char *)p + 0x64);
             _ZN9ModelAnimC2Ev(p);
-            *(void **)p = &data_ov002_0210bcc4;
+            *(void **)p = &_ZTVN8daDemo_c10anmModel_cE;
             *(void **)((char *)p + 0x50) = &data_ov002_0210bce8;
         }
         ((Obj *)this)->unkE0 = p;

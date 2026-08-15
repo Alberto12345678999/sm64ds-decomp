@@ -4,14 +4,14 @@
 #include "decl_Model.h"
 #include "decl_ShadowModel.h"
 #include "decl_common.h"
-extern int data_ov072_02122978[];
+extern int _ZTV11daBgSnwmn_c[];
 /* recovered: vtable identified, renamed to Class_Method */
 extern void _ZN25MovingCylinderClsnWithPosD1Ev(void *);
 extern void _ZN15TextureSequenceD1Ev(void *);
 extern void *data_020a0eac;
 int *func_ov072_02120874(int *t)
 {
-    t[0] = (int)data_ov072_02122978;
+    t[0] = (int)_ZTV11daBgSnwmn_c;
     _ZN25MovingCylinderClsnWithPosD1Ev((char *)t + 0x1b0);
     _ZN11ShadowModelD1Ev((char *)t + 0x188);
     _ZN15TextureSequenceD1Ev((char *)t + 0x174);

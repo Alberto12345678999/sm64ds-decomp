@@ -250,7 +250,7 @@ _ZTS10dScEntry_c kind:data(any) addr:0x0211c904
 data_ov075_0211c914 kind:data(any) addr:0x0211c914
 data_ov075_0211c924 kind:data(any) addr:0x0211c924
 data_ov075_0211c934 kind:data(any) addr:0x0211c934
-data_ov075_0211c94c kind:data(any) addr:0x0211c94c
+_ZTVN10dScEntry_c6icon_cE kind:data(any) addr:0x0211c94c
 data_ov075_0211c954 kind:data(any) addr:0x0211c954
 data_ov075_0211c968 kind:data(any) addr:0x0211c968
 data_ov075_0211c97c kind:data(any) addr:0x0211c97c
@@ -262,7 +262,7 @@ data_ov075_0211c9e0 kind:data(any) addr:0x0211c9e0
 data_ov075_0211c9f4 kind:data(any) addr:0x0211c9f4
 data_ov075_0211ca08 kind:data(any) addr:0x0211ca08
 _ZTSN10dScEntry_c6icon_cE kind:data(any) addr:0x0211ca1c
-data_ov075_0211ca3c kind:data(any) addr:0x0211ca3c
+_ZTVN10dScEntry_c15graphCallback_cE kind:data(any) addr:0x0211ca3c
 data_ov075_0211ca4c kind:data(any) addr:0x0211ca4c
 data_ov075_0211ca64 kind:data(any) addr:0x0211ca64
 data_ov075_0211ca6c kind:data(any) addr:0x0211ca6c
@@ -328,7 +328,7 @@ data_ov075_0211d21c kind:data(any) addr:0x0211d21c
 data_ov075_0211d264 kind:data(any) addr:0x0211d264
 data_ov075_0211d290 kind:data(any) addr:0x0211d290 ambiguous
 data_ov075_0211d2ac kind:data(any) addr:0x0211d2ac
-data_ov075_0211d304 kind:data(any) addr:0x0211d304
+_ZTV10dScEntry_c kind:data(any) addr:0x0211d304
 data_ov075_0211d34c kind:data(any) addr:0x0211d34c
 data_ov075_0211d354 kind:data(any) addr:0x0211d354
 data_ov075_0211d35c kind:data(any) addr:0x0211d35c

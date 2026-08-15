@@ -9,8 +9,8 @@
  * the object is exactly a Fader with a different vtable.
  *
  * It is the only concrete implementation in the family: its vtable at
- * data_0208eacc fills all eight of the slots Fader leaves null, and both
- * data_0208eb2c (FaderColor's) and _ZTV9FaderWipe still point at these functions
+ * _ZTV15dFdBrightness_c fills all eight of the slots Fader leaves null, and both
+ * _ZTV10dFdColor_c (FaderColor's) and _ZTV9FaderWipe still point at these functions
  * for everything except AdvanceFade. On why three of the four are spelled as
  * addresses rather than _ZTV names, see include/Fader.h.
  *

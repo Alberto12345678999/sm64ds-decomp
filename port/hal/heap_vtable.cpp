@@ -37,7 +37,10 @@ struct ExpandingHeapAllocator {
 extern "C" {
 void *data_020a0e9c;   /* Heap::rootHeap */
 void *data_020a0ea0;   /* Memory::defaultHeapPtr */
-int data_02099d90;     /* heap bring-up state flag */
+/* Was annotated "heap bring-up state flag". The ROM's RTTI disagrees: 0x02099d90
+   is mHeap::Heap_t's vtable. Storage only -- the host port never dispatches
+   through it, so the declared type is left as it was. */
+int _ZTVN5mHeap6Heap_tE;
 }
 
 // ---- allocator methods -> the C-linkage definitions from gate 2 ----------

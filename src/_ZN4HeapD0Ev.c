@@ -1,4 +1,4 @@
-extern void *data_02099d90;
+extern void *_ZTVN5mHeap6Heap_tE;
 extern void _ZN6Memory16operator_delete2EPv(void *ptr);
 
 struct Heap {
@@ -7,7 +7,7 @@ struct Heap {
 
 void *_ZN4HeapD0Ev(struct Heap *self)
 {
-    self->vtable = &data_02099d90;
+    self->vtable = &_ZTVN5mHeap6Heap_tE;
     _ZN6Memory16operator_delete2EPv(self);
     return self;
 }

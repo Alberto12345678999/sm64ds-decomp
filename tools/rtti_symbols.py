@@ -99,35 +99,63 @@ def all_symbol_names():
     return names
 
 
-def plan(stats):
+def plan(stats, vtables=False):
     rtti = json.loads(RTTI.read_text(encoding="utf-8"))
     syms = load_symbols()
     existing = all_symbol_names()
 
+    # An address that hosts a record or vtable in MORE THAN ONE module cannot be
+    # renamed: the placeholder names one overlay, and asserting the class name on it
+    # states that this overlay's data is that class's, which nothing here proves.
+    # 17 such addresses exist; 2 of the 80 vtables land on one. This is the same
+    # hazard the deferral rule was written for, made mechanical instead of listed.
+    hosts = collections.defaultdict(set)
+    for r in rtti["records"].values():
+        hosts[int(r["addr"], 16)].add(r["module"])
+        hosts[int(r["name_addr"], 16)].add(r["module"])
+        if r["vtable"]:
+            hosts[int(r["vtable"], 16)].add(r["vtable_module"] or r["module"])
+    ambiguous = {a for a, m in hosts.items() if len(m) > 1}
+    stats["addresses_hosting_more_than_one_module"] = len(ambiguous)
+
     proposals = {}          # old name -> (new name, module, addr, what, class)
     blocked = []
     for key, r in sorted(rtti["records"].items()):
-        for addr_s, what in ((r["addr"], "_ZTI"), (r["name_addr"], "_ZTS")):
+        targets = [(r["addr"], "_ZTI", r["module"]),
+                   (r["name_addr"], "_ZTS", r["module"])]
+        if vtables and r["vtable"]:
+            # NOT r["module"]: four classes -- daDsnBase_c, daObjFallBlock_c,
+            # daObjMaruta_c, daOts_c -- keep their vtable in a different, non-
+            # overlapping overlay from their record. Looking it up in the record's
+            # own module finds either nothing or the wrong overlay's symbol.
+            targets.append((r["vtable"], "_ZTV", r["vtable_module"] or r["module"]))
+        for addr_s, what, mod in targets:
             addr = int(addr_s, 16)
-            here = syms.get(r["module"], {}).get(addr, [])
+            here = syms.get(mod, {}).get(addr, [])
             new = what + r["mangled"]
+            if addr in ambiguous:
+                blocked.append((mod, addr_s, new,
+                                "address hosts records in %d modules -- overlay-"
+                                "ambiguous, renaming would assert something unproven"
+                                % len(hosts[addr])))
+                continue
             if len(here) != 1:
-                blocked.append((r["module"], addr_s, new,
+                blocked.append((mod, addr_s, new,
                                 "address carries %d symbols, not 1" % len(here)))
                 continue
             old = here[0][0]
             if not PLACEHOLDER.match(old):
-                blocked.append((r["module"], addr_s, new,
+                blocked.append((mod, addr_s, new,
                                 "already named %s -- never clobber" % old))
                 continue
             if new in existing:
-                blocked.append((r["module"], addr_s, new, "name already used in config"))
+                blocked.append((mod, addr_s, new, "name already used in config"))
                 continue
             if old in proposals:
-                blocked.append((r["module"], addr_s, new,
+                blocked.append((mod, addr_s, new,
                                 "placeholder %s claimed twice" % old))
                 continue
-            proposals[old] = (new, r["module"], addr_s, what, r["name"])
+            proposals[old] = (new, mod, addr_s, what, r["name"])
     stats["proposed"] = len(proposals)
     stats["blocked"] = len(blocked)
 
@@ -221,11 +249,53 @@ def rewrite(mapping, apply, reverse=False):
     return changed
 
 
+def rewrite_references(mapping, refs, apply):
+    """Rewrite `data_*` mentions in src/, include/ and port/ to the new names.
+
+    This pass has always refused to do this, and the refusal was right while the only
+    reason to rename a referenced symbol was tidiness. A vtable is different: leaving
+    it spelled `data_ov002_021091d4` is *why* 24 classes read as direct children of
+    Platform in the source when the ROM says they descend through an intermediate.
+    Here the name is the finding, so the referencing files come along.
+
+    A rename is not a relocation: the symbol keeps its address, dsd's gap object still
+    supplies the bytes, and the link resolves the new spelling from the same
+    symbols.txt line. Byte-neutrality is not *argued* from that, though -- it is
+    checked by rombuild.py, and the overlay-ambiguous addresses are refused outright
+    in plan() rather than rewritten hopefully.
+
+    Whole-word match only, so a placeholder never matches inside a longer identifier.
+    """
+    pairs = {k: v[0] for k, v in mapping.items()}
+    if not pairs:
+        return collections.Counter()
+    pat = re.compile(r"\b(%s)\b" % "|".join(re.escape(k) for k in sorted(pairs)))
+    touched = collections.Counter()
+    for rel in sorted({f for v in refs.values() for f in v}):
+        f = REPO / rel
+        try:
+            text = f.read_bytes().decode("utf-8")
+        except (OSError, UnicodeDecodeError):
+            continue
+        new, n = pat.subn(lambda m: pairs[m.group(1)], text)
+        if n and apply:
+            f.write_bytes(new.encode("utf-8"))
+        if n:
+            touched[rel.split("/")[0]] += n
+    return touched
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--apply", action="store_true")
     ap.add_argument("--revert", action="store_true")
     ap.add_argument("--report", action="store_true")
+    ap.add_argument("--vtables", action="store_true",
+                    help="also propose _ZTV names for the 80 vtables still sitting "
+                         "as data_ placeholders (Phase 2)")
+    ap.add_argument("--rewrite-references", action="store_true",
+                    help="with --include-referenced: also rewrite the data_ mentions "
+                         "in src/, include/ and port/ so the tree stays linkable")
     ap.add_argument("--include-referenced", action="store_true",
                     help="also rename the deferred ones (does NOT rewrite src -- "
                          "you must fix the referencing files yourself)")
@@ -236,7 +306,7 @@ def main():
         target = revert_plan(stats)
         refs, proposals, blocked, dupes = {}, target, [], []
     else:
-        clean, refs, proposals, blocked, dupes = plan(stats)
+        clean, refs, proposals, blocked, dupes = plan(stats, vtables=a.vtables)
         target = proposals if a.include_referenced else clean
 
     if a.report:
@@ -263,6 +333,11 @@ def main():
         return 1
 
     changed = rewrite(target, a.apply, reverse=a.revert)
+    if a.rewrite_references and not a.revert:
+        t = rewrite_references(target, refs, a.apply)
+        print("%s %d reference(s) in %s"
+              % ("rewrote" if a.apply else "would rewrite", sum(t.values()),
+                 ", ".join("%s/ (%d)" % (k, v) for k, v in sorted(t.items())) or "-"))
     verb = "renamed" if a.apply else "would rename"
     if a.revert:
         verb = "reverted" if a.apply else "would revert"

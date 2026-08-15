@@ -237,7 +237,7 @@ _ZTI20daObjFl_Fall_Block_c kind:data(any) addr:0x02114270
 data_ov022_0211427c kind:data(any) addr:0x0211427c
 _ZTS20daObjFl_Fall_Block_c kind:data(any) addr:0x02114288
 FallBlockLll_SpawnInfo kind:data(any) addr:0x021142a0 ambiguous
-data_ov022_021142c4 kind:data(any) addr:0x021142c4
+_ZTV20daObjFl_Fall_Block_c kind:data(any) addr:0x021142c4
 data_ov022_0211433c kind:data(any) addr:0x0211433c ambiguous
 _ZTI15daObjFlMaruta_c kind:data(any) addr:0x02114344
 _ZTI13daObjMaruta_c kind:data(any) addr:0x02114350

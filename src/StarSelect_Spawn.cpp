@@ -7,7 +7,7 @@ extern void _ZN5ModelC1Ev(void*);
 extern void func_020733a8(void* arr, int count, int size, void(*ctor)(void*), void(*dtor)(void*));
 extern void* data_0208e4b8[];
 extern void* _ZTV5Scene[];
-extern void* data_ov003_020b1704[];
+extern void* _ZTV12dScStarSel_c[];
 
 void* StarSelect_Spawn(void){
   char* p = (char*)_ZN9ActorBasenwEj(0x13c);
@@ -18,7 +18,7 @@ void* StarSelect_Spawn(void){
     unsigned char* fl = (unsigned char*)(((int)p + 0x13));
     *fl |= 1;
     *fl |= 4;
-    *(void***)p = (void**)data_ov003_020b1704;
+    *(void***)p = (void**)_ZTV12dScStarSel_c;
     func_020733a8(p+0x64, 2, 0x50, _ZN5ModelC1Ev, _ZN5ModelD1Ev);
   }
   return p;

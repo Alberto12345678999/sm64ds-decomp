@@ -5,7 +5,7 @@
 #include "decl_ShadowModel.h"
 #include "decl_TextureSequence.h"
 #include "decl_common.h"
-extern int data_ov025_02113850[];
+extern int _ZTV7daDkk_c[];
 /* recovered: vtable identified */
 /* vtable identified: VT0 = _ZTV7daDkk_c */
 int *Grindel_Spawn(void)
@@ -16,7 +16,7 @@ int *Grindel_Spawn(void)
         p[0] = (int)_ZTV7daDkk_c;
         _ZN15TextureSequenceC1Ev((char *)p + 0x324);
         _ZN11ShadowModelC1Ev((char *)p + 0x338);
-        p[0] = (int)data_ov025_02113850;
+        p[0] = (int)_ZTV7daDkk_c;
     }
     return p;
 }

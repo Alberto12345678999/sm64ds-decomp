@@ -7,12 +7,12 @@
  * (ARM C++ dtor ABI). FaderBrightness adds no members of its own.
  */
 
-extern int data_0208eacc[]; /* vtable for FaderBrightness */
+extern int _ZTV15dFdBrightness_c[]; /* vtable for FaderBrightness */
 extern int _ZN5FaderD2Ev(int *self);  /* base (Fader) subobject destructor */
 
 int _ZN15FaderBrightnessD1Ev(int *self)
 {
-    self[0] = (int)data_0208eacc;  /* +0x00 vptr */
+    self[0] = (int)_ZTV15dFdBrightness_c;  /* +0x00 vptr */
     _ZN5FaderD2Ev(self);
     return (int)self;
 }
