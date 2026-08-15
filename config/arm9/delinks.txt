@@ -7094,7 +7094,7 @@ src/ActorBase_OnHeapCreated.cpp:
     complete
     .text start:0x02043494 end:0x0204349c
 
-src/_ZN9ActorBase9Virtual38Ejj.cpp:
+src/ActorBase_Virtual38.cpp:
     complete
     .text start:0x0204349c end:0x0204357c
 
@@ -7142,7 +7142,7 @@ src/ActorBase_Behavior.cpp:
     complete
     .text start:0x02043b24 end:0x02043b2c
 
-src/_ZN9ActorBase21AfterCleanupResourcesEj.cpp:
+src/ActorBase_AfterCleanupResources.cpp:
     .text start:0x02043b2c end:0x02043bac
 
 src/_ZN9ActorBase22BeforeCleanupResourcesEv.cpp:
