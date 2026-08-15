@@ -256,11 +256,11 @@ src/RotatingBridge_Spawn.c:
     complete
     .text start:0x02112ba0 end:0x02112bd0
 
-src/_ZN18RotatingPlatformWfD1Ev.c:
+src/_ZN18RotatingPlatformWfD1Ev.cpp:
     complete
     .text start:0x02112bd0 end:0x02112c20
 
-src/_ZN18RotatingPlatformWfD0Ev.c:
+src/_ZN18RotatingPlatformWfD0Ev.cpp:
     complete
     .text start:0x02112c20 end:0x02112c84
 

@@ -40,11 +40,11 @@ src/VolcanoRing_Spawn.c:
     complete
     .text start:0x02111578 end:0x021115a8
 
-src/_ZN19RotatingPlatformLllD1Ev.c:
+src/_ZN19RotatingPlatformLllD1Ev.cpp:
     complete
     .text start:0x021115a8 end:0x021115f8
 
-src/_ZN19RotatingPlatformLllD0Ev.c:
+src/_ZN19RotatingPlatformLllD0Ev.cpp:
     complete
     .text start:0x021115f8 end:0x0211165c
 

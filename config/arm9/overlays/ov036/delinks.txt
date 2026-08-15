@@ -35,11 +35,11 @@ src/SwingingPlatform_Spawn.c:
     complete
     .text start:0x02111414 end:0x02111444
 
-src/_ZN18RotatingPlatformRrD1Ev.c:
+src/_ZN18RotatingPlatformRrD1Ev.cpp:
     complete
     .text start:0x02111444 end:0x02111494
 
-src/_ZN18RotatingPlatformRrD0Ev.c:
+src/_ZN18RotatingPlatformRrD0Ev.cpp:
     complete
     .text start:0x02111494 end:0x021114f8
 
