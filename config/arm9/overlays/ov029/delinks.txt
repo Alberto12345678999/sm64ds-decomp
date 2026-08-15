@@ -4,11 +4,11 @@
     .ctor       start:0x02112e68 end:0x02112e88 kind:rodata align:4
     .data       start:0x02112ea0 end:0x02114220 kind:data align:32
     .bss        start:0x02114220 end:0x02114360 kind:bss align:32
-src/_ZN29FloatOnWaterPlatformWdwSquareD1Ev.c:
+src/_ZN29FloatOnWaterPlatformWdwSquareD1Ev.cpp:
     complete
     .text start:0x021111a0 end:0x021111f0
 
-src/_ZN29FloatOnWaterPlatformWdwSquareD0Ev.c:
+src/_ZN29FloatOnWaterPlatformWdwSquareD0Ev.cpp:
     complete
     .text start:0x021111f0 end:0x02111254
 
@@ -132,11 +132,11 @@ src/CageLift_Spawn.c:
     complete
     .text start:0x02111e74 end:0x02111ea4
 
-src/_ZN32FloatOnWaterPlatformWdwRectangleD1Ev.c:
+src/_ZN32FloatOnWaterPlatformWdwRectangleD1Ev.cpp:
     complete
     .text start:0x02111ea4 end:0x02111ef4
 
-src/_ZN32FloatOnWaterPlatformWdwRectangleD0Ev.c:
+src/_ZN32FloatOnWaterPlatformWdwRectangleD0Ev.cpp:
     complete
     .text start:0x02111ef4 end:0x02111f58
 
