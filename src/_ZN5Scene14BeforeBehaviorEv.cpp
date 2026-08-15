@@ -91,10 +91,10 @@ int Scene::BeforeBehavior()
         return 1;
     }
 
-    if ((unk_013 & 1) != 0) {
+    if ((mSpawnFlags & 1) != 0) {
         if (func_020431c4(this) == 0) {
-            unk_013 &= ~1;
-            unk_013 &= ~4;
+            mSpawnFlags &= ~1;
+            mSpawnFlags &= ~4;
         }
         return 0;
     } else {

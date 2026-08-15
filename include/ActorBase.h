@@ -61,7 +61,11 @@ struct ActorBase {
     u8  unk_010;                              /* 0x10 */
     u8  unk_011;                              /* 0x11 */
     u8  unk_012;                              /* 0x12 */
-    u8  unk_013;                              /* 0x13 -- bits 1 and 3 from spawn flags */
+    u8  mSpawnFlags;                          /* 0x13 -- bit 1 gates Behavior, bit 3
+                                                  gates Render (see BeforeBehavior/
+                                                  BeforeRender); Scene::BeforeBehavior
+                                                  also tests bit 0 and clears bits 0
+                                                  and 2. Other bits unevidenced. */
     ActorBase_SceneNode sceneNode;            /* 0x14 */
     ActorBase_ProcessingListNode behavNode;   /* 0x28 */
     ActorBase_ProcessingListNode renderNode;  /* 0x38 */
@@ -109,7 +113,7 @@ struct ActorBase {
     u8  unk_010;            /* 0x10 */
     u8  unk_011;            /* 0x11 */
     u8  unk_012;            /* 0x12 */
-    u8  unk_013;            /* 0x13 */
+    u8  mSpawnFlags;         /* 0x13 */
     u8  sceneNode[0x14];    /* 0x14 */
     u8  behavNode[0x10];    /* 0x28 */
     u8  renderNode[0x10];   /* 0x38 */
