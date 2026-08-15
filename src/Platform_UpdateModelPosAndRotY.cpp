@@ -1,6 +1,5 @@
 //cpp
-// @symbol _ZN8Platform21UpdateModelPosAndRotYEv
-/* recovered: named members + shared header, real C++ method
+/* Platform::UpdateModelPosAndRotY() at 0x020ee830 (ov002).
  *
  * `((char *)this) + 0xf0` and the three unk_114/118/11c writes were the same object
  * reached two different ways: 0xf0 is mModel.mat4x3, and 0x114/0x118/0x11c are its

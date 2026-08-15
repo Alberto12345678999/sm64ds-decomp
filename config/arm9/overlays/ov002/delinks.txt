@@ -4678,7 +4678,7 @@ src/_ZN8Platform19UpdateClsnPosAndRotEv.cpp:
     complete
     .text start:0x020ee7cc end:0x020ee830
 
-src/_ZN8Platform21UpdateModelPosAndRotYEv.cpp:
+src/Platform_UpdateModelPosAndRotY.cpp:
     complete
     .text start:0x020ee830 end:0x020ee870
 

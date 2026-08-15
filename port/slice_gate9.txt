@@ -22,7 +22,7 @@ src/_ZN18MovingMeshCollider7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Bloc
 src/_ZN5Actor9SetRangesE5Fix12IiES1_S1_S1_.cpp
 src/_ZN8Platform19UpdateClsnPosAndRotEv.cpp
 src/_ZN8Platform21IsClsnInRangeOnScreenE5Fix12IiES1_.cpp
-src/_ZN8Platform21UpdateModelPosAndRotYEv.cpp
+src/Platform_UpdateModelPosAndRotY.cpp
 src/_ZN9ModelBase7SetFileEP8BMD_Fileii.cpp
 src/func_02039394.c
 src/func_020393a4.c
