@@ -1,5 +1,4 @@
 //cpp
-// @symbol _ZN5Actor11UntrackStarERa
 /* Actor::UntrackStar(s8 &starID) at 0x0200ff60.
  *
  * Releases the star-marker slot named by starID and writes -1 back through the

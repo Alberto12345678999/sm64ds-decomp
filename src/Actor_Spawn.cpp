@@ -1,5 +1,4 @@
 //cpp
-// @symbol _ZN5Actor5SpawnEjjRK7Vector3PK10Vector3_16as
 /* Actor::Spawn(u32 actorID, u32 spawnParam, const Vector3 &pos,
  *              const Vector3_16 *rot, s8 areaID, s16 deathTableID)
  * at 0x02010e2c.

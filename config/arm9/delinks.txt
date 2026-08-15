@@ -834,7 +834,7 @@ src/func_0200f760.c:
     complete
     .text start:0x0200f760 end:0x0200f7a8
 
-src/_ZN5Actor19MakeVanishLuigiWorkER12CylinderClsn.cpp:
+src/Actor_MakeVanishLuigiWork.cpp:
     complete
     .text start:0x0200f7a8 end:0x0200f7f0
 
@@ -854,19 +854,19 @@ src/_ZN5Actor13SpawnSoundObjEj.cpp:
     complete
     .text start:0x0200f97c end:0x0200f9b8
 
-src/_ZN5Actor24KillAndTrackInDeathTableEv.cpp:
+src/Actor_KillAndTrackInDeathTable.cpp:
     complete
     .text start:0x0200f9b8 end:0x0200f9d4
 
-src/_ZN5Actor19UntrackInDeathTableEv.cpp:
+src/Actor_UntrackInDeathTable.cpp:
     complete
     .text start:0x0200f9d4 end:0x0200f9e4
 
-src/_ZN5Actor17TrackInDeathTableEv.cpp:
+src/Actor_TrackInDeathTable.cpp:
     complete
     .text start:0x0200f9e4 end:0x0200f9f4
 
-src/_ZN5Actor18GetBitInDeathTableEv.cpp:
+src/Actor_GetBitInDeathTable.cpp:
     complete
     .text start:0x0200f9f4 end:0x0200fa04
 
@@ -882,7 +882,7 @@ src/_ZN5Actor13LandingDustAtER7Vector3b.cpp:
     complete
     .text start:0x0200fac4 end:0x0200fb4c
 
-src/_ZN5Actor15HugeLandingDustEb.cpp:
+src/Actor_HugeLandingDust.cpp:
     complete
     .text start:0x0200fb4c end:0x0200fb84
 
@@ -890,7 +890,7 @@ src/_ZN5Actor17HugeLandingDustAtER7Vector3b.cpp:
     complete
     .text start:0x0200fb84 end:0x0200fc0c
 
-src/_ZN5Actor11LandingDustEb.cpp:
+src/Actor_LandingDust.cpp:
     complete
     .text start:0x0200fc0c end:0x0200fc44
 
@@ -906,7 +906,7 @@ src/_ZN5Actor19DisappearPoofDustAtERK7Vector3.cpp:
     complete
     .text start:0x0200fd04 end:0x0200fd40
 
-src/_ZN5Actor13SmallPoofDustEv.cpp:
+src/Actor_SmallPoofDust.cpp:
     complete
     .text start:0x0200fd40 end:0x0200fd74
 
@@ -914,7 +914,7 @@ src/_ZN5Actor16TriplePoofDustAtERK7Vector3.cpp:
     complete
     .text start:0x0200fd74 end:0x0200fdc8
 
-src/_ZN5Actor14TriplePoofDustEv.cpp:
+src/Actor_TriplePoofDust.cpp:
     complete
     .text start:0x0200fdc8 end:0x0200fdfc
 
@@ -922,7 +922,7 @@ src/_ZN5Actor10PoofDustAtERK7Vector3.cpp:
     complete
     .text start:0x0200fdfc end:0x0200fe3c
 
-src/_ZN5Actor8PoofDustEv.cpp:
+src/Actor_PoofDust.cpp:
     complete
     .text start:0x0200fe3c end:0x0200fe70
 
@@ -934,19 +934,19 @@ src/LoadBlueCoinModel.c:
     complete
     .text start:0x0200fe9c end:0x0200fec8
 
-src/_ZN5Actor17GetWaterHeightWDWEv.cpp:
+src/Actor_GetWaterHeightWDW.cpp:
     complete
     .text start:0x0200fec8 end:0x0200ff14
 
-src/_ZN5Actor19UntrackAndSpawnStarERajRK7Vector3h.cpp:
+src/Actor_UntrackAndSpawnStar.cpp:
     complete
     .text start:0x0200ff14 end:0x0200ff60
 
-src/_ZN5Actor11UntrackStarERa.cpp:
+src/Actor_UntrackStar.cpp:
     complete
     .text start:0x0200ff60 end:0x0200ff94
 
-src/_ZN5Actor9TrackStarEjj.cpp:
+src/Actor_TrackStar.cpp:
     complete
     .text start:0x0200ff94 end:0x02010044
 
@@ -958,51 +958,51 @@ src/_ZN5Actor25OnAimedAtWithEggReturnVecEv.cpp:
     complete
     .text start:0x020100dc end:0x02010124
 
-src/_ZN5Actor16OnAimedAtWithEggEv.cpp:
+src/Actor_OnAimedAtWithEgg.cpp:
     complete
     .text start:0x02010124 end:0x0201012c
 
-src/_ZN5Actor19OnHitFromUnderneathERS_.cpp:
+src/Actor_OnHitFromUnderneath.cpp:
     complete
     .text start:0x0201012c end:0x02010130
 
-src/_ZN5Actor15OnHitByMegaCharER6Player.cpp:
+src/Actor_OnHitByMegaChar.cpp:
     complete
     .text start:0x02010130 end:0x02010134
 
-src/_ZN5Actor24OnHitByCannonBlastedCharERS_.cpp:
+src/Actor_OnHitByCannonBlastedChar.cpp:
     complete
     .text start:0x02010134 end:0x02010138
 
-src/_ZN5Actor8OnPushedERS_.cpp:
+src/Actor_OnPushed.cpp:
     complete
     .text start:0x02010138 end:0x0201013c
 
-src/_ZN5Actor8OnKickedERS_.cpp:
+src/Actor_OnKicked.cpp:
     complete
     .text start:0x0201013c end:0x02010140
 
-src/_ZN5Actor11OnAttacked2ERS_.cpp:
+src/Actor_OnAttacked2.cpp:
     complete
     .text start:0x02010140 end:0x02010144
 
-src/_ZN5Actor11OnAttacked1ERS_.cpp:
+src/Actor_OnAttacked1.cpp:
     complete
     .text start:0x02010144 end:0x02010148
 
-src/_ZN5Actor15OnGroundPoundedERS_.cpp:
+src/Actor_OnGroundPounded.cpp:
     complete
     .text start:0x02010148 end:0x0201014c
 
-src/_ZN5Actor9Virtual50Ev.cpp:
+src/Actor_Virtual50.cpp:
     complete
     .text start:0x0201014c end:0x02010154
 
-src/_ZN5Actor13OnTurnIntoEggER6Player.cpp:
+src/Actor_OnTurnIntoEgg.cpp:
     complete
     .text start:0x02010154 end:0x02010160
 
-src/_ZN5Actor13OnYoshiTryEatEv.cpp:
+src/Actor_OnYoshiTryEat.cpp:
     complete
     .text start:0x02010160 end:0x02010168
 
@@ -1022,15 +1022,15 @@ src/func_02010304.cpp:
     complete
     .text start:0x02010304 end:0x02010374
 
-src/_ZN5Actor18FindExplosionActorER12CylinderClsn.cpp:
+src/Actor_FindExplosionActor.cpp:
     complete
     .text start:0x02010374 end:0x020103b4
 
-src/_ZN5Actor7FindEggER12CylinderClsn.cpp:
+src/Actor_FindEgg.cpp:
     complete
     .text start:0x020103b4 end:0x020103f4
 
-src/_ZN5Actor14GetSubtractionEss.cpp:
+src/Actor_GetSubtraction.cpp:
     complete
     .text start:0x020103f4 end:0x02010428
 
@@ -1038,7 +1038,7 @@ src/_ZN5Actor12ReflectAngleE5Fix12IiES1_s.c:
     complete
     .text start:0x02010428 end:0x0201045c
 
-src/_ZN5Actor15IsPlayerInRangeERK7Vector3i.cpp:
+src/Actor_IsPlayerInRangeAt.cpp:
     complete
     .text start:0x0201045c end:0x02010498
 
@@ -1046,7 +1046,7 @@ src/_ZN5Actor15IsPlayerInRangeE5Fix12IiES1_S1_i.c:
     complete
     .text start:0x02010498 end:0x020104dc
 
-src/_ZN5Actor15IsPlayerInRangeEi.cpp:
+src/Actor_IsPlayerInRange.cpp:
     complete
     .text start:0x020104dc end:0x02010518
 
@@ -1074,11 +1074,11 @@ src/func_02010844.c:
     complete
     .text start:0x02010844 end:0x020108c4
 
-src/_ZN5Actor18ClosestWithActorIDEj.cpp:
+src/Actor_ClosestWithActorID.cpp:
     complete
     .text start:0x020108c4 end:0x0201092c
 
-src/_ZN5Actor18HorzAngleToFPlayerEv.cpp:
+src/Actor_HorzAngleToFPlayer.cpp:
     complete
     .text start:0x0201092c end:0x02010958
 
@@ -1086,11 +1086,11 @@ src/_ZN5Actor14FarthestPlayerEv.cpp:
     complete
     .text start:0x02010958 end:0x0201097c
 
-src/_ZN5Actor23HorzAngleToCPlayerOrAngEv.cpp:
+src/Actor_HorzAngleToCPlayerOrAng.cpp:
     complete
     .text start:0x0201097c end:0x020109b8
 
-src/_ZN5Actor18HorzAngleToCPlayerEv.cpp:
+src/Actor_HorzAngleToCPlayer.cpp:
     complete
     .text start:0x020109b8 end:0x020109e4
 
@@ -1122,7 +1122,7 @@ src/_ZN5Actor28UpdatePosWithHorzSpeedAndAngEv.cpp:
     complete
     .text start:0x02010c5c end:0x02010d40
 
-src/_ZN5Actor22UpdatePosWithOnlySpeedEP12CylinderClsn.cpp:
+src/Actor_UpdatePosWithOnlySpeed.cpp:
     complete
     .text start:0x02010d40 end:0x02010da4
 
@@ -1134,7 +1134,7 @@ src/_ZN5Actor9SetRangesE5Fix12IiES1_S1_S1_.cpp:
     complete
     .text start:0x02010e08 end:0x02010e2c
 
-src/_ZN5Actor5SpawnEjjRK7Vector3PK10Vector3_16as.cpp:
+src/Actor_Spawn.cpp:
     complete
     .text start:0x02010e2c end:0x02010e78
 
@@ -1146,23 +1146,23 @@ src/_ZN5Actor4NextEPKS_.cpp:
     complete
     .text start:0x02010ecc end:0x02010ef0
 
-src/_ZN5Actor15FindWithActorIDEjPS_.cpp:
+src/Actor_FindWithActorID.cpp:
     complete
     .text start:0x02010ef0 end:0x02010f3c
 
-src/_ZN5Actor10FindWithIDEj.cpp:
+src/Actor_FindWithID.cpp:
     complete
     .text start:0x02010f3c end:0x02010f6c
 
-src/_ZN5Actor11AfterRenderEj.cpp:
+src/Actor_AfterRender.cpp:
     complete
     .text start:0x02010f6c end:0x02010f78
 
-src/_ZN5Actor12BeforeRenderEv.cpp:
+src/Actor_BeforeRender.cpp:
     complete
     .text start:0x02010f78 end:0x02010fc8
 
-src/_ZN5Actor13AfterBehaviorEj.cpp:
+src/Actor_AfterBehavior.cpp:
     complete
     .text start:0x02010fc8 end:0x02010fd4
 
@@ -1170,19 +1170,19 @@ src/_ZN5Actor14BeforeBehaviorEv.cpp:
     complete
     .text start:0x02010fd4 end:0x02011214
 
-src/_ZN5Actor21AfterCleanupResourcesEj.cpp:
+src/Actor_AfterCleanupResources.cpp:
     complete
     .text start:0x02011214 end:0x02011220
 
-src/_ZN5Actor22BeforeCleanupResourcesEv.cpp:
+src/Actor_BeforeCleanupResources.cpp:
     complete
     .text start:0x02011220 end:0x02011244
 
-src/_ZN5Actor18AfterInitResourcesEj.cpp:
+src/Actor_AfterInitResources.cpp:
     complete
     .text start:0x02011244 end:0x02011268
 
-src/_ZN5Actor19BeforeInitResourcesEv.cpp:
+src/Actor_BeforeInitResources.cpp:
     complete
     .text start:0x02011268 end:0x020112c8
 

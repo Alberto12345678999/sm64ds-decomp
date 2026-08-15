@@ -1,5 +1,4 @@
 //cpp
-// @symbol _ZN5Actor14GetSubtractionEss
 #include "Actor.h"
 /* recovered: named members + shared header */
 

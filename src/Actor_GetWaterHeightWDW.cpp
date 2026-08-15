@@ -1,5 +1,4 @@
 //cpp
-// @symbol _ZN5Actor17GetWaterHeightWDWEv
 /* Actor::GetWaterHeightWDW() at 0x02010b70.
  *
  * Normally the actor's own Y. In Wet-Dry World (level 0x15) and only for actors

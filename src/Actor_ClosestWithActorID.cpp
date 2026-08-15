@@ -1,5 +1,4 @@
 //cpp
-// @symbol _ZN5Actor18ClosestWithActorIDEj
 /* Actor::ClosestWithActorID(u32 actorID) at 0x020108c4.
  *
  * Walks every live actor carrying `actorID` and returns whichever is nearest

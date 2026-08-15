@@ -1,5 +1,4 @@
 //cpp
-// @symbol _ZN5Actor9TrackStarEjj
 /* Actor::TrackStar(u32 starIdx, u32 markerType) at 0x0200ff94.
  *
  * Registers this actor in STAR_MARKERS, the twelve-slot table of actors

@@ -1,6 +1,5 @@
 //cpp
 #include "Actor.h"
-// @symbol _ZN5Actor15FindWithActorIDEjPS_
 /* recovered: named members + shared header, declarations from a shared header */
 #include "decl_common.h"
 /* recovered: named members + shared header */

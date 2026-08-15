@@ -1,5 +1,4 @@
 //cpp
-// @symbol _ZN5Actor22BeforeCleanupResourcesEv
 /* Actor::BeforeCleanupResources() at 0x02011220 -- vtable slot 4.
  *
  * Normalises the ActorBase result to 0 or 1.

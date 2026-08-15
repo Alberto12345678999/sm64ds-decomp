@@ -1,5 +1,4 @@
 //cpp
-// @symbol _ZN5Actor18AfterInitResourcesEj
 /* Actor::AfterInitResources(u32) at 0x02011244 -- vtable slot 2.
  *
  * Chains to the ActorDerived implementation, then sets the three flag bits that

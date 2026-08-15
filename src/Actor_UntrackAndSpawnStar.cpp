@@ -1,5 +1,4 @@
 //cpp
-// @symbol _ZN5Actor19UntrackAndSpawnStarERajRK7Vector3h
 /* Actor::UntrackAndSpawnStar(s8 &trackStarID, u32 starID,
  *                            const Vector3 &spawnPos, u8 howToSpawnStar)
  * at 0x0200ff14.

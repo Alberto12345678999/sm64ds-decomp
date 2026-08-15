@@ -1,5 +1,4 @@
 //cpp
-// @symbol _ZN5Actor10FindWithIDEj
 /* Actor::FindWithID(u32) at 0x02010c40.
  *
  * Static: searches the live-actor list rather than acting on an instance, which
