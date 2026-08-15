@@ -1762,7 +1762,7 @@ src/func_02013edc.c:
     complete
     .text start:0x02013edc end:0x02013ee8
 
-src/_ZN12ActorDerived5SpawnEjP9ActorBaseii.cpp:
+src/ActorDerived_Spawn.cpp:
     complete
     .text start:0x02013ee8 end:0x02013ef4
 
