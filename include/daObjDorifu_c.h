@@ -33,8 +33,19 @@
  * are exactly sizeof(Model) and sizeof(MovingMeshCollider). Five models from
  * 0x320 end at 0x4b0, where the colliders start; five colliders end at 0xd98.
  *
- * THE FOUR CONTROL BYTES ARE READ OFF THIS CLASS'S OWN TU, which is what makes
- * the tail above 0xd98 the base's rather than each child's:
+ * BEING BETWEEN THE TWO VPTR STORES IS WHAT MAKES THEM THE BASE'S, and that is
+ * airtight rather than merely suggestive: C++ sets the vptr to the class under
+ * construction on entry to each constructor, so everything between the store of
+ * this class's vtable and the store of the child's is, by the language's own
+ * rules, this class's constructor body. Three children independently agreeing on
+ * the same two calls at the same two offsets then rules out coincidence.
+ *
+ * THE FOUR CONTROL BYTES ARE THE BASE'S BECAUSE ALL THREE CHILDREN SHARE THE
+ * CODE THAT READS THEM. Diffing each child's vtable against this one, all three
+ * override only slots 0, 3, 16 and 17 -- so slots 6 and 9 are inherited, and the
+ * two functions below are reached through three different derived types.
+ * Storage a shared function reads must belong to the common base. ("Read off the
+ * class's own TU" would be the weaker form of this, and a downcast defeats it.)
  *
  *     0xdc8  mActiveIndex  0..4 -- indexes both arrays, in slot 6 and slot 9
  *     0xdc9  mStepDelay    reloaded to 2 between steps

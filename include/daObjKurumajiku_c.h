@@ -24,6 +24,13 @@
  * the literal 816 that BOTH children's factories allocate. The member evidence
  * and the size evidence are independent and they meet.
  *
+ * And the field is the base's rather than each child's because BOTH CHILDREN
+ * SHARE THE CODE THAT READS IT: diffing either child's vtable against this one,
+ * each overrides only slots 0, 3, 16 and 17, so slot 6 is inherited and that one
+ * function is reached through both derived types. Storage a shared function
+ * reads must belong to the common base. ("Read off the class's own TU" is the
+ * weaker form of this, and a downcast defeats it.)
+ *
  * That is a stronger footing than the earlier intermediates in this family had.
  * daObjFallBlock_c's tail, for instance, is only a total that three children
  * agree on; here the base's own code names the field.

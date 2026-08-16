@@ -18,12 +18,21 @@
  *
  *     if (DecIfAbove0_Short(&mDwellTimer)) return;      // paused this frame
  *     mPhase += 0x100;                                  // one step round the table
- *     mPosY  -= (mAmplitude * data_02082214[(mPhase >> 4) * 2]) >> 12;
+ *     mPosY  -= (mAmplitude * data_02082214[(mPhase >> 4) * 2] + 0x800) >> 12;
  *     if (mPosY - mRestPosY == 0) mDwellTimer = 0x3c;   // rest for 60 frames
  *
  * -- so mRestPosY is the height it settles back to, mAmplitude scales the table,
  * mPhase is the angle, and mDwellTimer is the pause. The names are read off that
- * arithmetic; the offsets and widths are the measurement.
+ * arithmetic; the offsets and widths are the measurement. (The +0x800 is
+ * round-to-nearest on the 20.12 shift, not a field.)
+ *
+ * THEY ARE THIS CLASS'S FIELDS AND NOT EACH CHILD'S BECAUSE BOTH CHILDREN SHARE
+ * THE CODE. Diffing the two child vtables against this one, each overrides only
+ * slots 0, 3, 16 and 17 -- so slots 6 and 9 are inherited, and the single
+ * function above is reached through both derived types. Storage that one shared
+ * function reads must belong to the common base. That is a stronger argument
+ * than "it was read off the class's own TU", which a downcast would defeat, and
+ * it is the same one include/daDsnBase_c.h uses for mFileTable.
  *
  * SIZE 0x32c, AND THE TWO CHILDREN DISAGREEING IS WHAT PROVES IT. They allocate
  * different literals -- FloatingFloorBfs 812 = 0x32c, FloatingFloorLllSmall
@@ -34,6 +43,14 @@
  * in the larger child is that child's own -- a u8 at 0x32c, see
  * include/FloatingFloorLllSmall.h. Two children that agreed on one literal could
  * not have separated the base from its tail this cleanly.
+ *
+ * The upper bound is a measurement and nothing can hide under it: both 0x320 and
+ * 0x32c are 4-aligned, so there is no rounding gap for extra base size to sit in,
+ * and anything above 0x32c would contradict FloatingFloorBfs's literal outright.
+ * The EQUALITY rests on one thing no gate in this tree could check: that the four
+ * fields are the base's rather than identical fields both children happen to
+ * declare separately. The shared slots above are what make that the only sane
+ * read. Nothing about the byte match depends on it either way.
  *
  * DESTRUCTOR IS INLINE, like Platform's above it: neither child's destructor
  * contains a `bl` to this one. The out-of-line pair at 0x020b63e0 (D1) and
