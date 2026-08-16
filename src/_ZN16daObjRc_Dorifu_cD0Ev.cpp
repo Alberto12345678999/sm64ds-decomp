@@ -1,5 +1,5 @@
 //cpp
-// @symbol _ZN16daObjRc_Dorifu_cD1Ev
+// @symbol _ZN16daObjRc_Dorifu_cD0Ev
 /* recovered: real C++ destructor -- the compiler emits the whole body
  *
  * THREE vtable stores, TWO array teardowns and three destructor calls, every one
@@ -10,6 +10,8 @@
  * mModels[5]; the compiler emits them from the array members, in reverse
  * declaration order. Then Platform's own Model and MovingMeshCollider, then
  * Actor.
+ * D0 is vtable slot 17: it then returns the object to the actor heap through
+ * Actor's inline operator delete.
  */
 #include "daObjRc_Dorifu_c.h"
 

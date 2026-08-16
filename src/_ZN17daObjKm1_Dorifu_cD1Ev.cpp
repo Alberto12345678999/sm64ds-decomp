@@ -1,24 +1,18 @@
 //cpp
 // @symbol _ZN17daObjKm1_Dorifu_cD1Ev
-/* recovered: named members + shared header */
+/* recovered: real C++ destructor -- the compiler emits the whole body
+ *
+ * THREE vtable stores, TWO array teardowns and three destructor calls, every one
+ * a consequence of `struct daObjKm1_Dorifu_c : daObjDorifu_c : Platform`: its own
+ * vptr, then daObjDorifu_c's and then Platform's -- both inlined, because both of
+ * those destructors are defined in their class bodies. The two __destroy_arr
+ * calls between the second and third store are daObjDorifu_c's mColliders[5] and
+ * mModels[5]; the compiler emits them from the array members, in reverse
+ * declaration order. Then Platform's own Model and MovingMeshCollider, then
+ * Actor.
+ */
 #include "daObjKm1_Dorifu_c.h"
-extern "C" {
-extern int __destroy_arr(void*,int,int,void*);
-extern int _ZN18MovingMeshColliderD1Ev(void*);
-extern int _ZN5ModelD1Ev(void*);
-extern int _ZN5ActorD2Ev(void*);
-extern int _ZTV17daObjKm1_Dorifu_c[];
-extern int _ZTV13daObjDorifu_c[];
-extern int _ZTV8Platform[];
-void* _ZN17daObjKm1_Dorifu_cD1Ev(struct daObjKm1_Dorifu_c *self) {
-  *(int**)((char*)self)=_ZTV17daObjKm1_Dorifu_c;
-  *(int**)((char*)self)=_ZTV13daObjDorifu_c;
-  __destroy_arr(((char*)self)+0x4b0,5,0x1c8,(void*)_ZN18MovingMeshColliderD1Ev);
-  __destroy_arr(((char*)self)+0x320,5,0x50,(void*)_ZN5ModelD1Ev);
-  *(int**)((char*)self)=_ZTV8Platform;
-  _ZN18MovingMeshColliderD1Ev((char*)&self->mMovingMeshCollider);
-  _ZN5ModelD1Ev((char*)&self->mModel);
-  _ZN5ActorD2Ev(((char*)self));
-  return ((char*)self);
-}
+
+daObjKm1_Dorifu_c::~daObjKm1_Dorifu_c()
+{
 }

@@ -1,9 +1,9 @@
 //cpp
-// @symbol _ZN16daObjRc_Dorifu_cD1Ev
+// @symbol _ZN18RickshawPlatformBsD1Ev
 /* recovered: real C++ destructor -- the compiler emits the whole body
  *
  * THREE vtable stores, TWO array teardowns and three destructor calls, every one
- * a consequence of `struct daObjRc_Dorifu_c : daObjDorifu_c : Platform`: its own
+ * a consequence of `struct RickshawPlatformBs : daObjDorifu_c : Platform`: its own
  * vptr, then daObjDorifu_c's and then Platform's -- both inlined, because both of
  * those destructors are defined in their class bodies. The two __destroy_arr
  * calls between the second and third store are daObjDorifu_c's mColliders[5] and
@@ -11,8 +11,8 @@
  * declaration order. Then Platform's own Model and MovingMeshCollider, then
  * Actor.
  */
-#include "daObjRc_Dorifu_c.h"
+#include "RickshawPlatformBs.h"
 
-daObjRc_Dorifu_c::~daObjRc_Dorifu_c()
+RickshawPlatformBs::~RickshawPlatformBs()
 {
 }
