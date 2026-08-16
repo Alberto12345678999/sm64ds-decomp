@@ -47,16 +47,29 @@ def module_label(d, config_root):
     return rel
 
 
-def module_binaries(d, config_root=CONFIG):
-    """(built, retail) binary paths for a module config directory."""
+def module_binaries(d, config_root=CONFIG, build_root=None):
+    """(built, retail) binary paths for a module config directory.
+
+    `build_root` is where the link deposited its module images -- `build/build/`
+    for the production build, and a scratch directory for an isolated link such as
+    `tools/tubuild.py linkcheck`'s. The retail side always comes from `extracted/`.
+
+    None means "this module's BUILD", resolved at CALL time and deliberately not as a
+    default argument value: tools/test_rombuild_check.py rebinds `RBC.BUILD` to a
+    temporary directory in setUp, and a default bound at def time would freeze the
+    real one and silently compare the tests' fake config against this repository's
+    actual module images.
+    """
+    build_root = pathlib.Path(build_root) if build_root is not None else BUILD
     rel = _arm9_relative(d, config_root)
     if rel == ".":
-        return BUILD / "arm9.bin", EXTRACTED / "arm9" / "arm9.bin"
+        return build_root / "arm9.bin", EXTRACTED / "arm9" / "arm9.bin"
     if rel in ("itcm", "dtcm"):
-        return BUILD / f"{rel}.bin", EXTRACTED / "arm9" / f"{rel}.bin"
+        return build_root / f"{rel}.bin", EXTRACTED / "arm9" / f"{rel}.bin"
     m = re.fullmatch(r"overlays/(ov\d+)", rel)
     if m:
-        return BUILD / f"arm9_{m.group(1)}.bin", EXTRACTED / "arm9_overlays" / f"{m.group(1)}.bin"
+        return (build_root / f"arm9_{m.group(1)}.bin",
+                EXTRACTED / "arm9_overlays" / f"{m.group(1)}.bin")
     return None, None
 
 
@@ -103,6 +116,29 @@ def _code_totals(config_root):
     return funcs, size
 
 
+def _module_code_bytes(sym_path):
+    """Bytes this module's symbols.txt accounts for as functions.
+
+    Everything else in the module image -- vtables, RTTI records, jump tables, string
+    and data tables -- is DATA, and no part of this pipeline reconstructs it. Delink
+    entries carve out functions; `objisolate` then reduces each compiled object to the
+    single `.text` its entry names and zeroes every other content section, so even the
+    `.data` a C++ TU does emit is dropped and re-imported from the ROM's gap object.
+
+    Subtracting this from the module image size is what makes that boundary a number
+    instead of an unstated assumption. Computed per module rather than from
+    `_code_totals`, which excludes itcm/dtcm from the published denominator while
+    `moduleFidelity` still compares them -- mixing the two would misattribute their
+    whole size to data.
+    """
+    total = 0
+    for line in sym_path.read_text(encoding="utf-8", errors="ignore").splitlines():
+        m = FUNC_RE.match(line)
+        if m:
+            total += int(m.group(2), 16)
+    return total
+
+
 def _diff_counts(built, retail, allowed=()):
     common = min(len(built), len(retail))
     differing = unexpected = 0
@@ -116,8 +152,9 @@ def _diff_counts(built, retail, allowed=()):
     return differing + extra, unexpected + extra
 
 
-def analyze(config_root=DEFAULT_CONFIG_ROOT, profile="stock"):
+def analyze(config_root=DEFAULT_CONFIG_ROOT, profile="stock", build_root=None):
     config_root = pathlib.Path(config_root).resolve()
+    build_root = pathlib.Path(build_root) if build_root is not None else BUILD
     failures, intentional, module_results = [], [], []
     missing_bins = []
     per_module_bad = collections.Counter()
@@ -130,7 +167,7 @@ def analyze(config_root=DEFAULT_CONFIG_ROOT, profile="stock"):
         if not dl.is_file():
             continue
         entries = complete_entries(dl)
-        built_p, retail_p = module_binaries(d, config_root)
+        built_p, retail_p = module_binaries(d, config_root, build_root)
         label = module_label(d, config_root)
         if not built_p or not built_p.is_file() or not retail_p.is_file():
             missing_bins.append(label)
@@ -147,6 +184,7 @@ def analyze(config_root=DEFAULT_CONFIG_ROOT, profile="stock"):
         module_results.append({
             "module": label,
             "comparedBytes": max(len(built), len(retail)),
+            "codeBytes": _module_code_bytes(sym),
             "differingBytes": module_diff,
             "unexpectedDifferingBytes": unexpected_diff,
             "exact": module_diff == 0,
@@ -189,6 +227,7 @@ def analyze(config_root=DEFAULT_CONFIG_ROOT, profile="stock"):
 
     total_functions, total_code_bytes = _code_totals(config_root)
     compared_module_bytes = sum(m["comparedBytes"] for m in module_results)
+    module_code_bytes = sum(m["codeBytes"] for m in module_results)
     differing_module_bytes = sum(m["differingBytes"] for m in module_results)
     unexpected_module_bytes = sum(m["unexpectedDifferingBytes"] for m in module_results)
     compiled_functions = source_functions + mod_functions
@@ -211,6 +250,23 @@ def analyze(config_root=DEFAULT_CONFIG_ROOT, profile="stock"):
             "percent": (100.0 * (compared_module_bytes - differing_module_bytes)
                         / compared_module_bytes) if compared_module_bytes else 0.0,
             "results": module_results,
+        },
+        # What the 106 module images are MADE OF, so the headline percentages cannot be
+        # read as coverage of the cartridge. `moduleFidelity.percent` is 100% whenever
+        # the build is green, but only `sourceBytes` of these bytes came from source --
+        # every other byte is one dsd handed back from the ROM, compared against itself.
+        # `dataBytes` is the part no delink entry can reach at all today.
+        "moduleComposition": {
+            "moduleBytes": compared_module_bytes,
+            "codeBytes": module_code_bytes,
+            "dataBytes": compared_module_bytes - module_code_bytes,
+            "sourceBytes": source_bytes,
+            "sourceBytesOfModulePercent": (100.0 * source_bytes / compared_module_bytes
+                                           if compared_module_bytes else 0.0),
+            "dataBytesVerified": 0,
+            "dataBytesOfModulePercent": (100.0 * (compared_module_bytes - module_code_bytes)
+                                         / compared_module_bytes
+                                         if compared_module_bytes else 0.0),
         },
         "sourceBuild": {
             "totalCodeFunctions": total_functions,
@@ -252,6 +308,15 @@ def print_report(report, show=12):
     print(f"  mismatching: {sf['mismatchingFunctions']:,}")
     print(f"module fidelity: {mf['modulesExact']}/{mf['modulesChecked']} exact, "
           f"{mf['percent']:.6f}% of compared bytes")
+    mc = report.get("moduleComposition")
+    if mc:
+        # Printed right under the 100.000000%, because that figure is exact by
+        # construction for every byte dsd supplies from the ROM and says nothing at all
+        # about them. This line is what it is a percentage OF.
+        print(f"  of {mc['moduleBytes']:,} module bytes: {mc['sourceBytes']:,} "
+              f"({mc['sourceBytesOfModulePercent']:.1f}%) built from source, "
+              f"{mc['dataBytes']:,} ({mc['dataBytesOfModulePercent']:.1f}%) are data "
+              f"no delink entry reaches ({mc['dataBytesVerified']:,} verified)")
     if report["missingModuleBinaries"]:
         print(f"missing module binaries: {report['missingModuleBinaries'][:8]}")
     for f in report["failures"][:show]:
@@ -267,9 +332,11 @@ def main():
     ap.add_argument("--config-root", default=str(DEFAULT_CONFIG_ROOT),
                     help="ARM9 config directory used for the build")
     ap.add_argument("--profile", choices=("stock", "mods"), default="stock")
+    ap.add_argument("--build-root", default=None,
+                    help="where the link wrote its module images (default build/build)")
     ap.add_argument("--show", type=int, default=12)
     args = ap.parse_args()
-    report = analyze(args.config_root, args.profile)
+    report = analyze(args.config_root, args.profile, args.build_root)
     print_report(report, args.show)
     if args.out:
         pathlib.Path(args.out).write_text(
