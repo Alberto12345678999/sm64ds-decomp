@@ -21,8 +21,8 @@
  * sentence in src/_ZN19dScMgSingle3DBase_cD0Ev.cpp, which has had a key
  * function since #1544.
  *
- * D0 is the deleting half: destroy through Platform and Actor, then hand the
- * object back through Actor's inline operator delete, which is why nothing
+ * D0 is the deleting half: destroy through Platform and dActor_c, then hand the
+ * object back through dActor_c's inline operator delete, which is why nothing
  * here mentions a heap.
  */
 #include "Platform.h"

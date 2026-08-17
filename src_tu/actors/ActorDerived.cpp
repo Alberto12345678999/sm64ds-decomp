@@ -90,7 +90,7 @@ extern void *_ZTV7dBase_c[];
  * goes through. The DECLARATION in the class is still required -- removing it
  * would delete slot 2 and shift the sixteen below it. Same arrangement
  * include/ActorBase.h uses for InitResources, and the same one that let
- * arm9/Actor and arm9/ActorBase reach link-verified.
+ * arm9/dActor_c and arm9/ActorBase reach link-verified.
  *
  * The qualified `self->ActorBase::AfterInitResources(...)` is a direct `bl`, not
  * a virtual dispatch -- which is what the ROM does, and what the method form's
@@ -165,7 +165,7 @@ extern "C" void func_02013edc(int a, int b, int c)
  *     symbols.txt names, `-nodead` keeps it, and it lands inside this span.
  *
  * So the vague-linkage symbols are spelled directly under their mangled names,
- * which is what the arm9/Actor rebuild found. Byte-for-byte the same code the
+ * which is what the arm9/dActor_c rebuild found. Byte-for-byte the same code the
  * compiler would have produced -- D1 stores the vptr and chains to ActorBase's
  * D2; D0 does that and then returns the object to the actor heap, which is what
  * the inline operator delete on ActorBase compiles to.

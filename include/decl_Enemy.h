@@ -22,7 +22,7 @@ extern "C" {
 
 extern int _ZN5Enemy27SpawnParticlesIfHitOtherObjER12CylinderClsn(void*, void*);
 extern void _ZN5Enemy20KillByInvincibleCharERK10Vector3_16R6Player(void*, Vector3_16*, void*, int);
-extern void _ZN5Enemy22SpawnMegaCharParticlesER5ActorPc(void*, void*, char*);
+extern void _ZN5Enemy22SpawnMegaCharParticlesER8dActor_cPc(void*, void*, char*);
 extern void _ZN5EnemyC2Ev(void*);
 
 

@@ -8,6 +8,6 @@
 int *OneUpMushroomBlockTag_Spawn(void)
 {
     int *p = (int *)_ZN9ActorBasenwEj(220);
-    if (p) { _ZN5ActorC2Ev(p); p[0] = (int)_ZTV10BrickBlock; }
+    if (p) { _ZN8dActor_cC2Ev(p); p[0] = (int)_ZTV10BrickBlock; }
     return p;
 }

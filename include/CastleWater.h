@@ -10,7 +10,7 @@
  * is the one methods can be defined against.
  *
  * It is a Platform: InitResources calls Platform::UpdateModelPosAndRotY and
- * Platform::UpdateClsnPosAndRot on itself, and mPos/mAngleY sit at Actor's
+ * Platform::UpdateClsnPosAndRot on itself, and mPos/mAngleY sit at dActor_c's
  * offsets. Written FLAT with the inherited slots restated, as every other
  * generated header here is.
  *

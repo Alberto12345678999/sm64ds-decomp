@@ -6,7 +6,7 @@
  * `struct daObjRc_Dorifu_c : daObjDorifu_c : Platform`: its own vptr, then
  * daObjDorifu_c's, then that class's MovingMeshCollider[5] at 0x4b0 and Model[5]
  * at 0x320 through __destroy_arr, then Platform's vptr and Platform's own
- * MovingMeshCollider and Model, then Actor.
+ * MovingMeshCollider and Model, then dActor_c.
  */
 #include "daObjRc_Dorifu_c.h"
 

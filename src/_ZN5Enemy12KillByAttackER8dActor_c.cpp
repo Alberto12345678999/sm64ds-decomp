@@ -1,11 +1,11 @@
 //cpp
 #include "types.h"
-// @symbol _ZN5Enemy12KillByAttackER5Actor
+// @symbol _ZN5Enemy12KillByAttackER8dActor_c
 /* recovered: named members + shared header, declarations from a shared header */
 #include "decl_common.h"
 /* recovered: named members + shared header */
 #include "Enemy.h"
-extern "C" void _ZN5Enemy12KillByAttackER5Actor(void *self, void *actor, void *c2, void *c3)
+extern "C" void _ZN5Enemy12KillByAttackER8dActor_c(void *self, void *actor, void *c2, void *c3)
 {
     void *r8 = self;
     void *r7 = actor;

@@ -2,7 +2,7 @@
 // @symbol _ZN8Platform4KillEv
 /* Platform::Kill() at ov002 0x020ee55c, 0x74 bytes -- vtable slot 31.
  *
- * THE SLOT THIS CLASS ADDS. Actor's table ends at slot 30; Kill is the one new
+ * THE SLOT THIS CLASS ADDS. dActor_c's table ends at slot 30; Kill is the one new
  * virtual Platform declares, and 97 of the 101 classes deriving from it have
  * exactly 32 slots because of this function. See include/Platform.h.
  *
@@ -20,7 +20,7 @@
  * Particle::System::NewSimple stays spelled as its mangled name: its parameters
  * are Fix12<int> BY VALUE, and declaring the true types changes how the caller
  * passes them and breaks the bytes. Same reason, same note, as
- * src/_ZN5Actor10PoofDustAtERK7Vector3.cpp -- notes/mwccarm-codegen.md 6az. */
+ * src/_ZN8dActor_c10PoofDustAtERK7Vector3.cpp -- notes/mwccarm-codegen.md 6az. */
 #include "Platform.h"
 #include "Sound.h"
 

@@ -5,7 +5,7 @@
 #ifndef ENEMY_H
 #define ENEMY_H
 #include "types.h"
-#include "Actor.h"
+#include "dActor_c.h"
 
 /* fwd */
 struct CylinderClsn;
@@ -21,22 +21,22 @@ struct mm_;
 struct outAngle_;
 struct ww_;
 /* The actor heap and its deallocator, for the inline operator delete below.
-   Spelt exactly as include/decl_common.h spells it -- see the note in Actor.h. */
+   Spelt exactly as include/decl_common.h spells it -- see the note in dActor_c.h. */
 extern "C" void _ZN6Memory10DeallocateEPvP4Heap(void *, void *);
 extern "C" void *data_020a0eac;
 
-struct Enemy : Actor {
-    /* DERIVES FROM Actor, at last -- this header used to restate Actor's whole
-       layout, and its own note said `Enemy : Actor` was "the real fix and is
-       its own slice". Everything below 0x0d0 is Actor's and is inherited now;
-       the thirteen fields that were duplicated here resolve through Actor.h,
+struct Enemy : dActor_c {
+    /* DERIVES FROM dActor_c, at last -- this header used to restate dActor_c's whole
+       layout, and its own note said `Enemy : dActor_c` was "the real fix and is
+       its own slice". Everything below 0x0d0 is dActor_c's and is inherited now;
+       the thirteen fields that were duplicated here resolve through dActor_c.h,
        two of which (0x0a4, 0x0ac) were padding there until this class proved
        they are real.
 
-       Actor is 0xd0, so Enemy's own fields start there and its 0x110 closes
+       dActor_c is 0xd0, so Enemy's own fields start there and its 0x110 closes
        exactly on the subclasses that follow it. */
     /* FIVE FIELDS BELOW WERE PADDING HERE and are named on the same kind of
-       evidence that took Actor's 0x0a4/0x0ac: the subclasses declare them and
+       evidence that took dActor_c's 0x0a4/0x0ac: the subclasses declare them and
        read them, and `X : Enemy` cannot compile unless they exist. The counts
        are how many of Enemy's 51 subclasses declare each -- 0x100 is in
        twenty-eight of them, which is not a coincidence. The names stay unk_
@@ -65,23 +65,23 @@ struct Enemy : Actor {
 
     /* DECLARED, NEVER DEFINED HERE. Without it the compiler synthesises a
        constructor and inlines it into every subclass that has one, turning a
-       single `bl _ZN5EnemyC2Ev` into the whole Actor/ActorBase vtable-store
+       single `bl _ZN5EnemyC2Ev` into the whole dActor_c/ActorBase vtable-store
        chain written out in place. The ROM calls it at 0x020aed98. Same
        reasoning as the note on Model(); see include/Model.h. */
     Enemy();
 
     virtual ~Enemy();                   /* slots 0 (D1), 1 (D0) */
 
-    /* Enemy's own copy of Actor's inline operator delete, and it MUST STAY even
-       though Enemy now derives from Actor. mwcc inlines the operator only when it
+    /* Enemy's own copy of dActor_c's inline operator delete, and it MUST STAY even
+       though Enemy now derives from dActor_c. mwcc inlines the operator only when it
        finds it in the class itself or its IMMEDIATE base, and for a subclass of
-       Enemy the immediate base is Enemy -- Actor is the grandparent, so Actor's
+       Enemy the immediate base is Enemy -- dActor_c is the grandparent, so dActor_c's
        copy is out of reach. Deleting this costs every Enemy subclass its D0.
 
        An earlier revision of this comment said the opposite: that Enemy was "still
        a flattened struct" and this copy should go once Enemy gained its real base.
        Enemy gained it, and following that instruction would have broken the D0
-       route for 51 subclasses. See the long comment in Actor.h for why an inline
+       route for 51 subclasses. See the long comment in dActor_c.h for why an inline
        member is what the ROM shows. */
     void operator delete(void *ptr) { _ZN6Memory10DeallocateEPvP4Heap(ptr, data_020a0eac); }
 
@@ -90,7 +90,7 @@ struct Enemy : Actor {
     int UpdateDeath(WithMeshClsn & clsn_);
     void UpdateWMClsn(WithMeshClsn & clsn_, unsigned int sel);
     /* Already a real method -- its own file builds _ZN5Enemy9SpawnCoinEv from a
-       local `struct Enemy : Actor` shadow. Declared here so callers need not
+       local `struct Enemy : dActor_c` shadow. Declared here so callers need not
        spell the mangled name. */
     void SpawnCoin();
     int SpawnParticlesIfHitOtherObj(CylinderClsn & clsn_);
@@ -101,7 +101,7 @@ struct Enemy : Actor {
        is Enemy's key function; ~Enemy is still the first virtual declared. The
        second parameter is the CylinderClsn the caller was handed, passed as raw
        bytes because that class has no header here. */
-    void SpawnMegaCharParticles(Actor & a, char * p);
+    void SpawnMegaCharParticles(dActor_c & a, char * p);
     int UpdateKillByInvincibleChar(WithMeshClsn & ww_, ModelAnim & mm_, unsigned int flags);
     /* PROVISIONAL SIGNATURE -- do not migrate a caller against it yet. Two
        separate problems, both caller-side:

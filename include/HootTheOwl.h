@@ -7,7 +7,7 @@
  * `_ZN10HootTheOwlD1Ev` stores this vtable, destroys the four members below in
  * reverse declaration order, then calls `Enemy::~Enemy`. Everything this header
  * used to restate below 0x110 belongs to that chain and is inherited now --
- * nine of those markers turned out to be named Actor/Enemy fields (mAngleX,
+ * nine of those markers turned out to be named dActor_c/Enemy fields (mAngleX,
  * mPrevAngleX, mVertAccel, mTerminalVelocity, mVertSpeed, ...).
  *
  * THE FOUR MEMBERS CLOSE EXACTLY ON EACH OTHER, which is four independent

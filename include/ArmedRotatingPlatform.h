@@ -5,11 +5,11 @@
 
 /* A donut lift: stands still until ridden, then shakes, falls and respawns.
  *
- * Everything this header used to declare below 0x31e was Actor's and
+ * Everything this header used to declare below 0x31e was dActor_c's and
  * Platform's, restated. It derives from Platform now, which the destructor
  * evidences the usual way -- it stores ArmedRotatingPlatform's vtable, then Platform's,
  * then destroys the MovingMeshCollider at 0x124 and the Model at 0xd4 and
- * chains to Actor. Those three are Platform's own.
+ * chains to dActor_c. Those three are Platform's own.
  *
  * unk_31e sits at 0x31e, in Platform's TAIL PADDING: Platform's last field
  * ends at 0x31e and its size rounds to 0x320, and the Itanium ABI lets a
