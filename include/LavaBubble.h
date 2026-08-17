@@ -3,11 +3,11 @@
 
 #include "types.h"
 
-/* Derives from Enemy, and TWO INDEPENDENT WITNESSES agree on the layout:
+/* Derives from dEnemyBase_c, and TWO INDEPENDENT WITNESSES agree on the layout:
  * the class's own destructor `_ZN10LavaBubbleD1Ev` destroys each member, and
  * `LavaBubble_Spawn` constructs the same types at the same offsets before
  * storing `_ZTV10LavaBubble`. Everything this header used to restate below
- * 0x110 belongs to Enemy and Actor and is inherited now.
+ * 0x110 belongs to dEnemyBase_c and Actor and is inherited now.
  *
  * The members close on each other, which is what makes the layout a
  * reading rather than a guess:
@@ -25,11 +25,11 @@
  * vtable, so that literal IS this class's sizeof.
  */
 
-#include "Enemy.h"
+#include "dEnemyBase_c.h"
 #include "MovingCylinderClsn.h"
 #include "WithMeshClsn.h"
 
-struct LavaBubble : Enemy {
+struct LavaBubble : dEnemyBase_c {
     MovingCylinderClsn           mMovingCylinderClsn;   /* 0x110 */
     WithMeshClsn                 mWithMeshClsn;         /* 0x144 */
     s32                          unk_300;               /* 0x300 */

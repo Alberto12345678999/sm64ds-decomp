@@ -5,7 +5,7 @@
 /* daObjMarioCap_c::OnTurnIntoEgg -- vtable slot 19, ov002 0x020b81e0.
  *
  * Named from the table: 0x020b81e0 is the word slot 19 of
- * _ZTV15daObjMarioCap_c holds where _ZTV5Enemy holds something else, so it is
+ * _ZTV15daObjMarioCap_c holds where _ZTV12dEnemyBase_c holds something else, so it is
  * this class's own override of the virtual Actor declares.
  *
  * THE OLD `recovered name:` COMMENT SAID WaterfallMist_OnTurnIntoEgg, WHICH IS

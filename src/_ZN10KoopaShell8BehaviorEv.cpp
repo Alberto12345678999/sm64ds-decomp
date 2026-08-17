@@ -40,7 +40,7 @@ extern char data_ov102_0214ea78;
 
 extern "C" {
 extern int func_ov002_020ad660(char *, char *, char *, int);
-extern int _ZN5Enemy14UpdateYoshiEatER12WithMeshClsn(char *, char *);
+extern int _ZN12dEnemyBase_c14UpdateYoshiEatER12WithMeshClsn(char *, char *);
 extern void func_ov102_0214d1f8(char *, void *);
 extern void func_ov102_0214ce60(char *);
 extern void _ZN12CylinderClsn5ClearEv(char *);
@@ -49,7 +49,7 @@ extern void _ZN9ActorBase18MarkForDestructionEv(char *);
 extern int DecIfAbove0_Short(char *);
 extern void func_ov102_0214cbec(char *);
 extern void _ZN5Actor9UpdatePosEP12CylinderClsn(char *, char *);
-extern void _ZN5Enemy12UpdateWMClsnER12WithMeshClsnj(char *, char *, u32);
+extern void _ZN12dEnemyBase_c12UpdateWMClsnER12WithMeshClsnj(char *, char *, u32);
 extern int _ZNK12WithMeshClsn10IsOnGroundEv(char *);
 extern int _ZNK12WithMeshClsn8IsOnWallEv(char *);
 extern void _ZN5Actor8PoofDustEv(char *);
@@ -65,7 +65,7 @@ int KoopaShell::Behavior()
     if (func_ov002_020ad660(c, (char *)&mMeshClsn, (char *)&mModel, 3) != 0)
         return 1;
 
-    if (_ZN5Enemy14UpdateYoshiEatER12WithMeshClsn(c, (char *)&mMeshClsn) != 0) {
+    if (_ZN12dEnemyBase_c14UpdateYoshiEatER12WithMeshClsn(c, (char *)&mMeshClsn) != 0) {
         if (unk_107 != 0) {
             mSpawnAngleY = mPrevAngleY;
             func_ov102_0214d1f8(c, &data_ov102_0214ea78);
@@ -104,7 +104,7 @@ int KoopaShell::Behavior()
 
     if (mVertAccel != 0) {
         _ZN5Actor9UpdatePosEP12CylinderClsn(c, (char *)&mCylinderClsn);
-        _ZN5Enemy12UpdateWMClsnER12WithMeshClsnj(c, (char *)&mMeshClsn, 0);
+        _ZN12dEnemyBase_c12UpdateWMClsnER12WithMeshClsnj(c, (char *)&mMeshClsn, 0);
         if (_ZNK12WithMeshClsn10IsOnGroundEv((char *)&mMeshClsn) != 0 ||
             _ZNK12WithMeshClsn8IsOnWallEv((char *)&mMeshClsn) != 0) {
             if (_ZNK12WithMeshClsn8IsOnWallEv((char *)&mMeshClsn) != 0) {

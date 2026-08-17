@@ -32,7 +32,7 @@ extern "C" void _ZN4BgCh21StopDetectingOrdinaryEv(void *);
 extern "C" {
 int _ZNK12WithMeshClsn10IsOnGroundEv(void* p);
 int func_02037e20(int* p);
-void _ZN5Enemy9SpawnCoinEv(void* p);
+void _ZN12dEnemyBase_c9SpawnCoinEv(void* p);
 void _ZN5Actor8PoofDustEv(void* p);
 void func_ov084_02129498(char* r0);
 void _ZN8CapEnemy10ReleaseCapERK7Vector3(void* thiz, const Vector3* v);
@@ -62,7 +62,7 @@ void func_ov084_02129238(char* c)
             if (func_02037e20(&rg.field14) != 0) {
                 if (rg.field44 != (int)0x80000000) {
                     if (*(int*)(c + 0x60) < rg.field44) {
-                        _ZN5Enemy9SpawnCoinEv(c);
+                        _ZN12dEnemyBase_c9SpawnCoinEv(c);
                         _ZN5Actor8PoofDustEv(c);
                         func_ov084_02129498(c);
                         {

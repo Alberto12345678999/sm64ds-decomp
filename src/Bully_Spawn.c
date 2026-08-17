@@ -15,7 +15,7 @@ int *Bully_Spawn(void)
 {
     int *p = (int *)_ZN9ActorBasenwEj(1024);
     if (p) {
-        _ZN5EnemyC2Ev(p);
+        _ZN12dEnemyBase_cC2Ev(p);
         p[0] = (int)data_ov064_0211b768;
         _ZN9ModelAnimC1Ev((char *)p + 0x110);
         _ZN12WithMeshClsnC1Ev((char *)p + 0x174);

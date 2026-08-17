@@ -4,7 +4,7 @@
  *
  * The stand-in typedefs this file used to carry (`typedef int Fix12;`, a
  * two-word SharedFilePtr, a three-short Vector3_16, opaque Actor/BMD_File)
- * all name real types now that Swoop.h pulls in the Enemy chain, so they are
+ * all name real types now that Swoop.h pulls in the dEnemyBase_c chain, so they are
  * gone. Both ModelAnims are loaded here, which is the other half of the
  * evidence that 0x300 and 0x364 are two members and not one and a gap.
  *

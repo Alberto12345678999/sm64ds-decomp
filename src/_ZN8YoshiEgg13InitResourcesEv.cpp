@@ -5,7 +5,7 @@
  * Vtable slot 0. This was the last YoshiEgg function still written as a C free
  * function reaching every field through a raw offset -- it named not one member,
  * which is why it could not even include its own header once YoshiEgg became a
- * real Enemy subclass.
+ * real dEnemyBase_c subclass.
  */
 #include "YoshiEgg.h"
 #include "SharedFilePtr.h"

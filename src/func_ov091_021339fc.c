@@ -48,7 +48,7 @@ void func_ov091_021339fc(char *c)
         if ((fl & 0x10) == 0)
             return;
         _ZN5Actor8PoofDustEv(c);
-        _ZN5Enemy22SpawnMegaCharParticlesER5ActorPc(c, a, 0);
+        _ZN12dEnemyBase_c22SpawnMegaCharParticlesER5ActorPc(c, a, 0);
         _ZN6Player16IncMegaKillCountEv(a);
         func_02012694(0x1d, c + 0x74);
         _ZN9ActorBase18MarkForDestructionEv(c);

@@ -11,7 +11,7 @@ int *RabbitKey_Spawn(void)
 {
     int *p = (int *)_ZN9ActorBasenwEj(416);
     if (p) {
-        _ZN5EnemyC2Ev(p);
+        _ZN12dEnemyBase_cC2Ev(p);
         p[0] = (int)_ZTV9RabbitKey;
         _ZN5ModelC1Ev((char *)p + 0x110);
         _ZN11ShadowModelC1Ev((char *)p + 0x160);

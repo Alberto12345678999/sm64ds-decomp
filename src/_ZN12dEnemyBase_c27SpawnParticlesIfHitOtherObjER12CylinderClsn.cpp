@@ -1,5 +1,5 @@
 //cpp
-// @symbol _ZN5Enemy27SpawnParticlesIfHitOtherObjER12CylinderClsn
+// @symbol _ZN12dEnemyBase_c27SpawnParticlesIfHitOtherObjER12CylinderClsn
 /* recovered: named members + shared header, real C++ method
  *
  * While unk_107 is set, a cylinder collision against anything other than actor
@@ -9,13 +9,13 @@
  * The clsn offsets stay raw: CylinderClsn has no header here, and +0x18 and
  * +0x24 are the only two slots this function evidences.
  */
-#include "Enemy.h"
+#include "dEnemyBase_c.h"
 extern "C" {
 extern void* _ZN5Actor10FindWithIDEj(unsigned int);
-extern void _ZN5Enemy22SpawnMegaCharParticlesER5ActorPc(void* self, void* a, char* p);
+extern void _ZN12dEnemyBase_c22SpawnMegaCharParticlesER5ActorPc(void* self, void* a, char* p);
 }
 
-int Enemy::SpawnParticlesIfHitOtherObj(CylinderClsn & clsn_)
+int dEnemyBase_c::SpawnParticlesIfHitOtherObj(CylinderClsn & clsn_)
 {
     char* clsn = (char*)&clsn_;
     int* f;
@@ -29,7 +29,7 @@ int Enemy::SpawnParticlesIfHitOtherObj(CylinderClsn & clsn_)
                 if (e1 == 0) {
                     int e2 = (t == 0x121);
                     if (e2 == 0) {
-                        _ZN5Enemy22SpawnMegaCharParticlesER5ActorPc(this, a, clsn);
+                        _ZN12dEnemyBase_c22SpawnMegaCharParticlesER5ActorPc(this, a, clsn);
                         return 1;
                     }
                 }

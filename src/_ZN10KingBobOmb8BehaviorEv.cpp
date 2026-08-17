@@ -18,7 +18,7 @@ extern unsigned short DecIfAbove0_Short(unsigned short *p);
 extern unsigned char DecIfAbove0_Byte(unsigned char *p);
 extern void _ZN5Actor9UpdatePosEP12CylinderClsn(void *self, void *clsn);
 extern void _ZN5Actor22UpdatePosWithOnlySpeedEP12CylinderClsn(void *self, void *clsn);
-extern void _ZN5Enemy12UpdateWMClsnER12WithMeshClsnj(void *self, void *wmc, unsigned int flags);
+extern void _ZN12dEnemyBase_c12UpdateWMClsnER12WithMeshClsnj(void *self, void *wmc, unsigned int flags);
 extern int _ZNK12WithMeshClsn8IsOnWallEv(void *self);
 extern int _ZNK12WithMeshClsn10IsOnGroundEv(void *self);
 extern int KingBobOmb_SetState(void *c, void *p);
@@ -78,7 +78,7 @@ int KingBobOmb::Behavior()
     }
 
     if ((char *)((C *)this)->pp != data_ov078_021270bc || *(unsigned char *)(self + 0x499) == 1) {
-        _ZN5Enemy12UpdateWMClsnER12WithMeshClsnj(self, self + 0x110, 0);
+        _ZN12dEnemyBase_c12UpdateWMClsnER12WithMeshClsnj(self, self + 0x110, 0);
     }
 
     if ((char *)((C *)this)->pp == data_ov078_0212703c || (char *)((C *)this)->pp == data_ov078_021270fc) {

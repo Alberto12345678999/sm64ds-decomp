@@ -3,11 +3,11 @@
 
 #include "types.h"
 
-/* Derives from Enemy, and TWO INDEPENDENT WITNESSES agree on the layout: the
+/* Derives from dEnemyBase_c, and TWO INDEPENDENT WITNESSES agree on the layout: the
  * class's own destructor `_ZN13OneUpMushroomD1Ev` destroys each member, and
  * `OneUpMushroom_Spawn` constructs the same types at the same offsets before
  * storing `_ZTV13OneUpMushroom`. Everything this header used to restate below 0x110
- * belongs to Enemy and Actor and is inherited now.
+ * belongs to dEnemyBase_c and Actor and is inherited now.
  *
  * The members close on each other, which is what makes the layout a reading
  * rather than a guess:
@@ -24,13 +24,13 @@
  * The ROM's RTTI names this class da1up_c.
  */
 
-#include "Enemy.h"
+#include "dEnemyBase_c.h"
 #include "Model.h"
 #include "MovingCylinderClsn.h"
 #include "ShadowModel.h"
 #include "WithMeshClsn.h"
 
-struct OneUpMushroom : Enemy {
+struct OneUpMushroom : dEnemyBase_c {
     MovingCylinderClsn           mMovingCylinderClsn;   /* 0x110 */
     WithMeshClsn                 mWithMeshClsn;         /* 0x144 */
     Model                        mModel;                /* 0x300 */

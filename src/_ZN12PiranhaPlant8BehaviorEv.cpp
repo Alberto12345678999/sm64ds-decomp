@@ -8,7 +8,7 @@ struct Cls { virtual void dummy(); };
 typedef void (Cls::*PMF)();
 extern PMF data_ov084_02130e80[];
 extern "C" {
-extern int _ZN5Enemy26UpdateKillByInvincibleCharER12WithMeshClsnR9ModelAnimj(void*, void*, void*, unsigned int);
+extern int _ZN12dEnemyBase_c26UpdateKillByInvincibleCharER12WithMeshClsnR9ModelAnimj(void*, void*, void*, unsigned int);
 extern void _ZN5Actor19MakeVanishLuigiWorkER12CylinderClsn(void*, void*);
 extern void _ZN12CylinderClsn5ClearEv(void*);
 extern void _ZN12CylinderClsn6UpdateEv(void*);
@@ -20,7 +20,7 @@ int PiranhaPlant::Behavior()
     int r;
     int old;
     int cur;
-    r = _ZN5Enemy26UpdateKillByInvincibleCharER12WithMeshClsnR9ModelAnimj(((char*)this), ((char*)this) + 0x1c4, ((char*)this) + 0x110, 1);
+    r = _ZN12dEnemyBase_c26UpdateKillByInvincibleCharER12WithMeshClsnR9ModelAnimj(((char*)this), ((char*)this) + 0x1c4, ((char*)this) + 0x110, 1);
     if (r != 0) {
         if (r == 2) {
             unk_108 = 0;

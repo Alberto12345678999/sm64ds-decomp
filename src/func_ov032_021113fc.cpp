@@ -8,7 +8,7 @@
 extern "C" {
     void _ZN25MovingCylinderClsnWithPos21SetPosRelativeToActorERK7Vector3(void* c, void* v);
     void* _ZN5Actor10FindWithIDEj(u32 id);
-    void _ZN5Enemy22SpawnMegaCharParticlesER5ActorPc(void* self, void* a, void* p);
+    void _ZN12dEnemyBase_c22SpawnMegaCharParticlesER5ActorPc(void* self, void* a, void* p);
     void _ZN5Actor8PoofDustEv(void* self);
     void _ZN6Player16IncMegaKillCountEv(void* p);
     void func_02012694(int a, void* p);
@@ -37,7 +37,7 @@ extern "C" void func_ov032_021113fc(void* self)
         if (isbf) {
             if (*(u8*)(f+0x6fb) != 0) return;
             if (*(s32*)(c+0x130) & 0x10) {
-                _ZN5Enemy22SpawnMegaCharParticlesER5ActorPc(self, f, 0);
+                _ZN12dEnemyBase_c22SpawnMegaCharParticlesER5ActorPc(self, f, 0);
                 _ZN5Actor8PoofDustEv(self);
                 _ZN6Player16IncMegaKillCountEv(f);
                 func_02012694(0x1e, (void*)(c+0x74));
@@ -66,7 +66,7 @@ extern "C" void func_ov032_021113fc(void* self)
     if (isbf2 == 0) return;
 
     if (*(s32*)(c+0x170) & 0x10) {
-        _ZN5Enemy22SpawnMegaCharParticlesER5ActorPc(self, f2, 0);
+        _ZN12dEnemyBase_c22SpawnMegaCharParticlesER5ActorPc(self, f2, 0);
         _ZN5Actor8PoofDustEv(self);
         _ZN6Player16IncMegaKillCountEv(f2);
         _ZN5Actor24KillAndTrackInDeathTableEv(self);

@@ -5,7 +5,7 @@
 struct CylinderClsn { void Clear(); void Update(); };
 struct WithMeshClsn;
 struct Actor { void UpdatePos(CylinderClsn *c); };
-struct Enemy { void UpdateWMClsn(WithMeshClsn &w, unsigned int j); };
+struct dEnemyBase_c { void UpdateWMClsn(WithMeshClsn &w, unsigned int j); };
 struct WithMeshClsn2 { int JustHitGround() const; int IsOnGround() const; };
 /* Signature deliberately copied from the local declaration above: the
    ROM name carries by-value class parameters (e.g. Fix12<int>), which
@@ -30,7 +30,7 @@ extern "C" int func_ov102_0214aa18(Actor *self)
             return 1;
         }
         self->UpdatePos((CylinderClsn*)(s + 0x110));
-        ((Enemy*)self)->UpdateWMClsn(*(WithMeshClsn*)(s + 0x144), 0);
+        ((dEnemyBase_c*)self)->UpdateWMClsn(*(WithMeshClsn*)(s + 0x144), 0);
         func_ov102_0214b53c(s);
         func_ov102_0214ad40(s);
         ((CylinderClsn*)(s + 0x110))->Clear();

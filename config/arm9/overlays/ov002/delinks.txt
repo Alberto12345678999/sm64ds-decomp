@@ -8,7 +8,7 @@ src/func_ov002_020ad660.cpp:
     complete
     .text start:0x020ad660 end:0x020ad838
 
-src/_ZN5Enemy26UpdateKillByInvincibleCharER12WithMeshClsnR9ModelAnimj.cpp:
+src/_ZN12dEnemyBase_c26UpdateKillByInvincibleCharER12WithMeshClsnR9ModelAnimj.cpp:
     complete
     .text start:0x020ad838 end:0x020ada40
 
@@ -16,19 +16,19 @@ src/func_ov002_020ada40.cpp:
     complete
     .text start:0x020ada40 end:0x020adb40
 
-src/_ZN5Enemy22SpawnMegaCharParticlesER5ActorPc.cpp:
+src/_ZN12dEnemyBase_c22SpawnMegaCharParticlesER5ActorPc.cpp:
     complete
     .text start:0x020adb40 end:0x020addc0
 
-src/_ZN5Enemy27SpawnParticlesIfHitOtherObjER12CylinderClsn.cpp:
+src/_ZN12dEnemyBase_c27SpawnParticlesIfHitOtherObjER12CylinderClsn.cpp:
     complete
     .text start:0x020addc0 end:0x020ade78
 
-src/_ZN5Enemy24AngleAwayFromWallOrCliffER12WithMeshClsnRs.cpp:
+src/_ZN12dEnemyBase_c24AngleAwayFromWallOrCliffER12WithMeshClsnRs.cpp:
     complete
     .text start:0x020ae244 end:0x020ae2b8
 
-src/_ZN5Enemy15IsGoingOffCliffER12WithMeshClsn5Fix12IiEsbbS3_.cpp:
+src/_ZN12dEnemyBase_c15IsGoingOffCliffER12WithMeshClsn5Fix12IiEsbbS3_.cpp:
     complete
     .text start:0x020ae2b8 end:0x020ae454
 
@@ -52,7 +52,7 @@ src/func_ov002_020ae64c.c:
     complete
     .text start:0x020ae64c end:0x020ae6a8
 
-src/_ZN5Enemy11UpdateDeathER12WithMeshClsn.cpp:
+src/_ZN12dEnemyBase_c11UpdateDeathER12WithMeshClsn.cpp:
     complete
     .text start:0x020ae6a8 end:0x020ae73c
 
@@ -104,27 +104,27 @@ src/func_ov002_020aea30.cpp:
     complete
     .text start:0x020aea30 end:0x020aeabc
 
-src/_ZN5Enemy9SpawnCoinEv.cpp:
+src/_ZN12dEnemyBase_c9SpawnCoinEv.cpp:
     complete
     .text start:0x020aeabc end:0x020aebf8
 
-src/_ZN5Enemy12UpdateWMClsnER12WithMeshClsnj.cpp:
+src/_ZN12dEnemyBase_c12UpdateWMClsnER12WithMeshClsnj.cpp:
     complete
     .text start:0x020aebf8 end:0x020aed18
 
-src/_ZN5EnemyD2Ev.c:
+src/_ZN12dEnemyBase_cD2Ev.c:
     complete
     .text start:0x020aed18 end:0x020aed3c
 
-src/_ZN5EnemyD0Ev.cpp:
+src/_ZN12dEnemyBase_cD0Ev.cpp:
     complete
     .text start:0x020aed3c end:0x020aed74
 
-src/_ZN5EnemyD1Ev.cpp:
+src/_ZN12dEnemyBase_cD1Ev.cpp:
     complete
     .text start:0x020aed74 end:0x020aed98
 
-src/_ZN5EnemyC2Ev.cpp:
+src/_ZN12dEnemyBase_cC2Ev.cpp:
     complete
     .text start:0x020aed98 end:0x020aedbc
 

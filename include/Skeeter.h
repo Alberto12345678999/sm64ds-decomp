@@ -3,11 +3,11 @@
 
 #include "types.h"
 
-/* Derives from Enemy, and TWO INDEPENDENT WITNESSES agree on the layout:
+/* Derives from dEnemyBase_c, and TWO INDEPENDENT WITNESSES agree on the layout:
  * the class's own destructor `_ZN7SkeeterD1Ev` destroys each member, and
  * `Skeeter_Spawn` constructs the same types at the same offsets before
  * storing `_ZTV7Skeeter`. Everything this header used to restate below
- * 0x110 belongs to Enemy and Actor and is inherited now.
+ * 0x110 belongs to dEnemyBase_c and Actor and is inherited now.
  *
  * The members close on each other, which is what makes the layout a
  * reading rather than a guess:
@@ -21,12 +21,12 @@
  * vtable, so that literal IS this class's sizeof.
  */
 
-#include "Enemy.h"
+#include "dEnemyBase_c.h"
 #include "ModelAnim.h"
 #include "MovingCylinderClsnWithPos.h"
 #include "WithMeshClsn.h"
 
-struct Skeeter : Enemy {
+struct Skeeter : dEnemyBase_c {
     MovingCylinderClsnWithPos    mMovingCylinderClsnWithPos; /* 0x110 */
     WithMeshClsn                 mWithMeshClsn;         /* 0x150 */
     ModelAnim                    mModelAnim;            /* 0x30c */

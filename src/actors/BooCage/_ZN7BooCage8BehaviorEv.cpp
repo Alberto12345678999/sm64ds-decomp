@@ -15,7 +15,7 @@ struct Actor {
 struct Player {
     void JumpIntoBooCage(Vector3& v);
 };
-struct Enemy {
+struct dEnemyBase_c {
     void UpdateWMClsn(WithMeshClsn& w, unsigned int f);
 };
 struct CylinderClsn {
@@ -69,7 +69,7 @@ int BooCage::Behavior()
     }
 
     ((Actor*)self)->UpdatePos(0);
-    ((Enemy*)self)->UpdateWMClsn(*(WithMeshClsn*)(self + 0x144), 0);
+    ((dEnemyBase_c*)self)->UpdateWMClsn(*(WithMeshClsn*)(self + 0x144), 0);
     func_ov063_021169c4(self);
     ((CylinderClsn*)(self + 0x110))->Clear();
     ((CylinderClsn*)(self + 0x110))->Update();

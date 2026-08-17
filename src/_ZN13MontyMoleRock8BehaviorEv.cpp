@@ -10,7 +10,7 @@ extern "C" void _ZN5Actor19MakeVanishLuigiWorkER12CylinderClsn(void*, void*);
 extern "C" void _ZN5Actor9UpdatePosEP12CylinderClsn(void*, void*);
 extern "C" void _ZN12CylinderClsn5ClearEv(void*);
 extern "C" void _ZN12CylinderClsn6UpdateEv(void*);
-extern "C" void _ZN5Enemy12UpdateWMClsnER12WithMeshClsnj(void*, void*, unsigned int);
+extern "C" void _ZN12dEnemyBase_c12UpdateWMClsnER12WithMeshClsnj(void*, void*, unsigned int);
 extern "C" void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void*, void*, unsigned int, int, unsigned int, unsigned int, unsigned int);
 extern "C" int _ZNK12WithMeshClsn10IsOnGroundEv(void*);
 extern "C" void *_ZN5Actor5SpawnEjjRK7Vector3PK10Vector3_16as(unsigned int a, unsigned int b, void *pos, void *v16, int e, int f);
@@ -76,7 +76,7 @@ s32 MontyMoleRock::Behavior()
     }
 
     _ZN5Actor9UpdatePosEP12CylinderClsn(c, 0);
-    _ZN5Enemy12UpdateWMClsnER12WithMeshClsnj(c, c + 0x194, 0);
+    _ZN12dEnemyBase_c12UpdateWMClsnER12WithMeshClsnj(c, c + 0x194, 0);
     func_ov080_02124418(c);
     _ZN12CylinderClsn5ClearEv(c + 0x160);
     _ZN12CylinderClsn6UpdateEv(c + 0x160);

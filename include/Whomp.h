@@ -3,11 +3,11 @@
 
 #include "types.h"
 
-/* Derives from Enemy, and TWO INDEPENDENT WITNESSES agree on the layout:
+/* Derives from dEnemyBase_c, and TWO INDEPENDENT WITNESSES agree on the layout:
  * the class's own destructor `_ZN5WhompD1Ev` destroys each member, and
  * `Whomp_Spawn` constructs the same types at the same offsets before
  * storing `_ZTV5Whomp`. Everything this header used to restate below
- * 0x110 belongs to Enemy and Actor and is inherited now.
+ * 0x110 belongs to dEnemyBase_c and Actor and is inherited now.
  *
  * The members close on each other, which is what makes the layout a
  * reading rather than a guess:
@@ -27,14 +27,14 @@
  * vtable, so that literal IS this class's sizeof.
  */
 
-#include "Enemy.h"
+#include "dEnemyBase_c.h"
 #include "ModelAnim.h"
 #include "MovingMeshCollider.h"
 #include "ShadowModel.h"
 #include "TextureSequence.h"
 #include "WithMeshClsn.h"
 
-struct Whomp : Enemy {
+struct Whomp : dEnemyBase_c {
     WithMeshClsn                 mWithMeshClsn;         /* 0x110 */
     ModelAnim                    mModelAnim;            /* 0x2cc */
     TextureSequence              mTextureSequence;      /* 0x330 */

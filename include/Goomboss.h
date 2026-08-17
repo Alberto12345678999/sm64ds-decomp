@@ -6,7 +6,7 @@
 /* The Goomboss. Its destructor is the layout, and eight boundaries close on
  * sizes other headers assert:
  *
- *     Enemy                        ends 0x110
+ *     dEnemyBase_c                        ends 0x110
  *     MovingCylinderClsnWithPos[4] 0x110 + 4*0x40 = 0x210  -> ModelAnim
  *     ModelAnim                    0x210 +   0x64 = 0x274  -> the shadows
  *     ShadowModel[3]               0x274 + 3*0x28 = 0x2ec
@@ -25,7 +25,7 @@
 
 #ifdef __cplusplus
 
-#include "Enemy.h"
+#include "dEnemyBase_c.h"
 #include "ModelAnim.h"
 #include "ShadowModel.h"
 #include "MaterialChanger.h"
@@ -34,7 +34,7 @@
 #include "WithMeshClsn.h"
 #include "MovingCylinderClsnWithPos.h"
 
-struct Goomboss : Enemy {
+struct Goomboss : dEnemyBase_c {
     MovingCylinderClsnWithPos mCylinderClsns[4];  /* 0x110 */
     ModelAnim mModelAnim;                         /* 0x210 */
     ShadowModel mShadowModels[3];                 /* 0x274 */

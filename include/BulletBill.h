@@ -5,7 +5,7 @@
 
 /* Five boundaries close on sizes other headers assert:
  *
- *     Enemy                     ends 0x110
+ *     dEnemyBase_c                     ends 0x110
  *     MovingCylinderClsnWithPos 0x110 + 0x040 = 0x150  -> WithMeshClsn
  *     WithMeshClsn              0x150 + 0x1bc = 0x30c  -> the first Model
  *     Model                     0x30c + 0x050 = 0x35c  -> the second
@@ -21,13 +21,13 @@
 
 #ifdef __cplusplus
 
-#include "Enemy.h"
+#include "dEnemyBase_c.h"
 #include "Model.h"
 #include "ShadowModel.h"
 #include "WithMeshClsn.h"
 #include "MovingCylinderClsnWithPos.h"
 
-struct BulletBill : Enemy {
+struct BulletBill : dEnemyBase_c {
     MovingCylinderClsnWithPos mMovingCylinderClsnWithPos;  /* 0x110 */
     WithMeshClsn mWithMeshClsn;                            /* 0x150 */
     Model mModel1;                                         /* 0x30c */

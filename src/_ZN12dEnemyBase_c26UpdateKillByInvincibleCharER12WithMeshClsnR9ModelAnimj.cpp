@@ -1,9 +1,9 @@
 //cpp
-// @symbol _ZN5Enemy26UpdateKillByInvincibleCharER12WithMeshClsnR9ModelAnimj
+// @symbol _ZN12dEnemyBase_c26UpdateKillByInvincibleCharER12WithMeshClsnR9ModelAnimj
 /* recovered: named members + shared header, real C++ method
  *
  * One frame of the death an invincible (mega) character inflicts.
- * Enemy::KillByInvincibleChar -- ov002 0x020ada40, still named
+ * dEnemyBase_c::KillByInvincibleChar -- ov002 0x020ada40, still named
  * func_ov002_020ada40 in this tree -- starts it by writing mDeathState = 8 and
  * mDeathTimer = 0x1e; this runs only in that state and ends it either when the
  * timer expires or when the corpse lands (on ground while falling).
@@ -21,7 +21,7 @@
  * how the ROM's check is spelled (see the note in include/Actor.h). Measured
  * under this family's pin, 2004/b56.
  */
-#include "Enemy.h"
+#include "dEnemyBase_c.h"
 
 extern "C" {
 extern int _ZNK12WithMeshClsn10IsOnGroundEv(void *clsn);
@@ -38,9 +38,9 @@ extern void Matrix4x3_ApplyInPlaceToRotationZXYExt(void *m, int x, int y, int z)
 extern char data_020a0e68;
 }
 
-/* Enemy.h is a flat struct with no base, so the class carries no vtable to call
+/* dEnemyBase_c.h is a flat struct with no base, so the class carries no vtable to call
    through; this stand-in exists only to reach one slot, and goes away when
-   Enemy is rebased on Actor.
+   dEnemyBase_c is rebased on Actor.
 
    WHAT that slot is, is left open on purpose. The ROM loads vtable+0x74 -- slot
    29, since Actor.h pins slot 20 at vtable+0x50 -- and uses the returned int,
@@ -91,7 +91,7 @@ struct M48 { int w[12]; };
 
 #define LAUNDER(p) ((int)(p))
 
-int Enemy::UpdateKillByInvincibleChar(WithMeshClsn & ww_, ModelAnim & mm_, unsigned int flags)
+int dEnemyBase_c::UpdateKillByInvincibleChar(WithMeshClsn & ww_, ModelAnim & mm_, unsigned int flags)
 {
     WithMeshClsn *clsn = &ww_;
     ModelAnim *anim = &mm_;

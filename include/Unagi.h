@@ -6,7 +6,7 @@
 /* The eel. Its destructor is the layout, and every member closes exactly on
  * the next field:
  *
- *     Enemy                     ends 0x110
+ *     dEnemyBase_c                     ends 0x110
  *     MovingCylinderClsnWithPos 0x110 + 0x040 = 0x150  -> the second one
  *     MovingCylinderClsnWithPos 0x150 + 0x040 = 0x190  -> WithMeshClsn
  *     WithMeshClsn              0x190 + 0x1bc = 0x34c  -> unk_34c
@@ -24,12 +24,12 @@
 
 #ifdef __cplusplus
 
-#include "Enemy.h"
+#include "dEnemyBase_c.h"
 #include "BlendModelAnim.h"
 #include "WithMeshClsn.h"
 #include "MovingCylinderClsnWithPos.h"
 
-struct Unagi : Enemy {
+struct Unagi : dEnemyBase_c {
     MovingCylinderClsnWithPos mMovingCylinderClsnWithPos1;  /* 0x110 */
     MovingCylinderClsnWithPos mMovingCylinderClsnWithPos2;  /* 0x150 */
     WithMeshClsn mWithMeshClsn;                             /* 0x190 */

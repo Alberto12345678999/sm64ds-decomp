@@ -12,7 +12,7 @@ struct Actor {
     static Actor *Spawn(u32 id, u32 b, const Vector3 &pos, const Vector3_16 *r, signed char e, short f);
     void PoofDust();
 };
-struct Enemy : Actor {
+struct dEnemyBase_c : Actor {
     void SpawnCoin();
 };
 
@@ -20,7 +20,7 @@ extern "C" int RandomIntInternal(int *seed);
 extern u16 data_ov002_020ff014;
 extern int data_0209e650;
 
-void Enemy::SpawnCoin()
+void dEnemyBase_c::SpawnCoin()
 {
     char *t = (char *)this;
     int i;

@@ -576,7 +576,7 @@ def recover_fields(tables):
     # as a NOVEL field of the derived class -- a fully populated, self-consistent,
     # wrong answer, which is the exact failure this tree has been bitten by before.
     # Fail loudly instead.
-    for n in ("Platform", "Actor", "ActorBase", "dBase_c", "Enemy"):
+    for n in ("Platform", "Actor", "ActorBase", "dBase_c", "dEnemyBase_c"):
         p = REPO / "include" / (n + ".h")
         if not p.is_file():
             raise SystemExit(

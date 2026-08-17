@@ -8,7 +8,7 @@ typedef long long s64;
 
 extern "C" {
 extern void _ZN5Actor9UpdatePosEP12CylinderClsn(void *thiz, void *clsn);
-extern void _ZN5Enemy12UpdateWMClsnER12WithMeshClsnj(void *thiz, void *clsn, unsigned int a);
+extern void _ZN12dEnemyBase_c12UpdateWMClsnER12WithMeshClsnj(void *thiz, void *clsn, unsigned int a);
 extern void _ZN12CylinderClsn5ClearEv(void *c);
 extern void _ZN12CylinderClsn6UpdateEv(void *c);
 extern void _ZN5Actor17HugeLandingDustAtER7Vector3b(void *thiz, Vector3 *v, int b);
@@ -40,7 +40,7 @@ int Goomboss::Behavior()
     func_ov074_0212199c(((char *)this));
     func_ov074_0212042c(((char *)this));
     _ZN5Actor9UpdatePosEP12CylinderClsn(((char *)this), 0);
-    _ZN5Enemy12UpdateWMClsnER12WithMeshClsnj(((char *)this), ((char *)this) + 0x40c, 0);
+    _ZN12dEnemyBase_c12UpdateWMClsnER12WithMeshClsnj(((char *)this), ((char *)this) + 0x40c, 0);
     func_ov074_02120d74(((char *)this));
     func_ov074_02121380(((char *)this));
 
