@@ -8,11 +8,11 @@ typedef unsigned int u32;
 struct Vector3 { int x, y, z; };
 struct Vector3_16;
 
-struct Actor {
-    static Actor *Spawn(u32 id, u32 b, const Vector3 &pos, const Vector3_16 *r, signed char e, short f);
+struct dActor_c {
+    static dActor_c *Spawn(u32 id, u32 b, const Vector3 &pos, const Vector3_16 *r, signed char e, short f);
     void PoofDust();
 };
-struct Enemy : Actor {
+struct dEnemyBase_c : dActor_c {
     void SpawnCoin();
 };
 
@@ -20,7 +20,7 @@ extern "C" int RandomIntInternal(int *seed);
 extern u16 data_ov002_020ff014;
 extern int data_0209e650;
 
-void Enemy::SpawnCoin()
+void dEnemyBase_c::SpawnCoin()
 {
     char *t = (char *)this;
     int i;
@@ -35,7 +35,7 @@ void Enemy::SpawnCoin()
         if (*(u8 *)(t + 0x108) >= 4)
             *(u8 *)(t + 0x108) = 1;
         for (i = 0; i < *(u8 *)(t + 0x10a) + 1; i++) {
-            Actor *coin = Actor::Spawn(
+            dActor_c *coin = dActor_c::Spawn(
                 (&data_ov002_020ff014)[*(u8 *)(t + 0x108) - 1],
                 0xf2, v, 0, *(s8 *)(t + 0xcc), -1);
             if (coin != 0) {

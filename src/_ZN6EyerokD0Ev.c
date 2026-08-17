@@ -8,11 +8,11 @@ extern void _ZN11ShadowModelD1Ev(void*);
 extern void _ZN5ModelD1Ev(void*);
 extern void _ZN14BlendModelAnimD1Ev(void*);
 extern void _ZN25MovingCylinderClsnWithPosD1Ev(void*);
-extern void _ZN5ActorD2Ev(void*);
+extern void _ZN8dActor_cD2Ev(void*);
 extern void* _ZN6Memory10DeallocateEPvP4Heap(void*, void*);
 extern int _ZTV6Eyerok[];
 extern int _ZN7Vector3D1Ev[];
-extern int _ZTV8Platform[];
+extern int _ZTV10dBgActor_c[];
 extern void* data_020a0eac;
 void* _ZN6EyerokD0Ev(struct Eyerok *self) {
     *(int**)((char*)self) = _ZTV6Eyerok;
@@ -23,10 +23,10 @@ void* _ZN6EyerokD0Ev(struct Eyerok *self) {
     _ZN5ModelD1Ev((char*)&self->mModel2);
     _ZN14BlendModelAnimD1Ev((char*)&self->mBlendModelAnim);
     _ZN25MovingCylinderClsnWithPosD1Ev((char*)&self->mMovingCylinderClsnWithPos);
-    *(int**)((char*)self) = _ZTV8Platform;
+    *(int**)((char*)self) = _ZTV10dBgActor_c;
     _ZN18MovingMeshColliderD1Ev((char*)&self->unk_124);
     _ZN5ModelD1Ev((char*)&self->mModel1);
-    _ZN5ActorD2Ev(((char*)self));
+    _ZN8dActor_cD2Ev(((char*)self));
     _ZN6Memory10DeallocateEPvP4Heap(((char*)self), data_020a0eac);
     return ((char*)self);
 }

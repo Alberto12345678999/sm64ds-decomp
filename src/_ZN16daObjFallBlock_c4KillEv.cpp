@@ -3,8 +3,8 @@
 /* daObjFallBlock_c::Kill() at ov098 0x0213a17c, 0xc0 bytes -- vtable slot 31.
  *
  * ATTRIBUTED BY THE VTABLE. _ZTV16daObjFallBlock_c (ov098 0x0213c5bc) carries
- * 0x0213a17c at slot 31 and _ZTV8Platform carries _ZN8Platform4KillEv at the
- * same slot, so this is this class's own override of Platform's Kill. The
+ * 0x0213a17c at slot 31 and _ZTV10dBgActor_c carries _ZN10dBgActor_c4KillEv at the
+ * same slot, so this is this class's own override of dBgActor_c's Kill. The
  * header's own note lists the same six own-slots independently: 6, 9, 16, 17,
  * 27 and 31.
  *
@@ -14,14 +14,14 @@
  * why there is no MarkForDestruction here and why the other thirteen slot-31
  * overrides in this family end with one.
  *
- * Actor id 0x8b gets particle 0x49 instead of 0x48.
+ * dActor_c id 0x8b gets particle 0x49 instead of 0x48.
  *
  * The second Vector3 is memberwise on purpose: Vector3 declares a destructor
  * (types.h), so a whole-object assignment compiles to an ldm/stm pair, four
  * instructions where the ROM has six. Particle::System::NewSimple stays spelled
  * as its mangled name -- its parameters are Fix12<int> BY VALUE and declaring
  * the true types changes how the caller passes them. Both points are argued in
- * full in src/_ZN8Platform4KillEv.cpp. */
+ * full in src/_ZN10dBgActor_c4KillEv.cpp. */
 #include "daObjFallBlock_c.h"
 #include "Sound.h"
 

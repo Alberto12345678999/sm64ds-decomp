@@ -1,7 +1,7 @@
 //cpp
 extern "C" {
-void* _ZN9ActorBasenwEj(unsigned int);
-void _ZN8PlatformC2Ev(void*);
+void* _ZN7fBase_cnwEj(unsigned int);
+void _ZN10dBgActor_cC2Ev(void*);
 void func_020733a8(void*, int, int, void*, void*);
 void _ZN7PathPtrC1Ev(void*);
 void _ZN9ModelAnimC1Ev(void*);
@@ -10,9 +10,9 @@ extern int data_ov036_02113f9c[];
 void _ZN5ModelD1Ev(void*);
 void _ZN5ModelC1Ev(void*);
 void* FlyingCarpet_Spawn(void){
-  char* c = (char*)_ZN9ActorBasenwEj(0x4c0);
+  char* c = (char*)_ZN7fBase_cnwEj(0x4c0);
   if(c){
-    _ZN8PlatformC2Ev(c);
+    _ZN10dBgActor_cC2Ev(c);
     *(int*)c = (int)data_ov002_0210af70;
     func_020733a8(c+0x320, 3, 0x50, (void*)_ZN5ModelC1Ev, (void*)_ZN5ModelD1Ev);
     _ZN7PathPtrC1Ev(c+0x430);

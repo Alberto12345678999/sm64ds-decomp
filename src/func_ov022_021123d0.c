@@ -8,16 +8,16 @@
 /* recovered: vtable identified, renamed to Class_Method */
 extern void *data_020a0eac;
 extern int _ZTV16daObjFallBlock_c[];
-extern int _ZTV8Platform[];
+extern int _ZTV10dBgActor_c[];
 extern int data_ov022_021142c4[];
 int *daObjFl_Fall_Block_c_OnYoshiTryEat(int *t)
 {
     t[0] = (int)data_ov022_021142c4;
     t[0] = (int)_ZTV16daObjFallBlock_c;
-    t[0] = (int)_ZTV8Platform;
+    t[0] = (int)_ZTV10dBgActor_c;
     _ZN18MovingMeshColliderD1Ev((char *)t + 0x124);
     _ZN5ModelD1Ev((char *)t + 0xd4);
-    _ZN5ActorD2Ev(t);
+    _ZN8dActor_cD2Ev(t);
     _ZN6Memory10DeallocateEPvP4Heap(t, data_020a0eac);
     return t;
 }

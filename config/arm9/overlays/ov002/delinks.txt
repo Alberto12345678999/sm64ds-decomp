@@ -8,7 +8,7 @@ src/func_ov002_020ad660.cpp:
     complete
     .text start:0x020ad660 end:0x020ad838
 
-src/_ZN5Enemy26UpdateKillByInvincibleCharER12WithMeshClsnR9ModelAnimj.cpp:
+src/_ZN12dEnemyBase_c26UpdateKillByInvincibleCharER12WithMeshClsnR9ModelAnimj.cpp:
     complete
     .text start:0x020ad838 end:0x020ada40
 
@@ -16,19 +16,19 @@ src/func_ov002_020ada40.cpp:
     complete
     .text start:0x020ada40 end:0x020adb40
 
-src/_ZN5Enemy22SpawnMegaCharParticlesER5ActorPc.cpp:
+src/_ZN12dEnemyBase_c22SpawnMegaCharParticlesER8dActor_cPc.cpp:
     complete
     .text start:0x020adb40 end:0x020addc0
 
-src/_ZN5Enemy27SpawnParticlesIfHitOtherObjER12CylinderClsn.cpp:
+src/_ZN12dEnemyBase_c27SpawnParticlesIfHitOtherObjER12CylinderClsn.cpp:
     complete
     .text start:0x020addc0 end:0x020ade78
 
-src/_ZN5Enemy24AngleAwayFromWallOrCliffER12WithMeshClsnRs.cpp:
+src/_ZN12dEnemyBase_c24AngleAwayFromWallOrCliffER12WithMeshClsnRs.cpp:
     complete
     .text start:0x020ae244 end:0x020ae2b8
 
-src/_ZN5Enemy15IsGoingOffCliffER12WithMeshClsn5Fix12IiEsbbS3_.cpp:
+src/_ZN12dEnemyBase_c15IsGoingOffCliffER12WithMeshClsn5Fix12IiEsbbS3_.cpp:
     complete
     .text start:0x020ae2b8 end:0x020ae454
 
@@ -52,7 +52,7 @@ src/func_ov002_020ae64c.c:
     complete
     .text start:0x020ae64c end:0x020ae6a8
 
-src/_ZN5Enemy11UpdateDeathER12WithMeshClsn.cpp:
+src/_ZN12dEnemyBase_c11UpdateDeathER12WithMeshClsn.cpp:
     complete
     .text start:0x020ae6a8 end:0x020ae73c
 
@@ -104,27 +104,27 @@ src/func_ov002_020aea30.cpp:
     complete
     .text start:0x020aea30 end:0x020aeabc
 
-src/_ZN5Enemy9SpawnCoinEv.cpp:
+src/_ZN12dEnemyBase_c9SpawnCoinEv.cpp:
     complete
     .text start:0x020aeabc end:0x020aebf8
 
-src/_ZN5Enemy12UpdateWMClsnER12WithMeshClsnj.cpp:
+src/_ZN12dEnemyBase_c12UpdateWMClsnER12WithMeshClsnj.cpp:
     complete
     .text start:0x020aebf8 end:0x020aed18
 
-src/_ZN5EnemyD2Ev.c:
+src/_ZN12dEnemyBase_cD2Ev.c:
     complete
     .text start:0x020aed18 end:0x020aed3c
 
-src/_ZN5EnemyD0Ev.cpp:
+src/_ZN12dEnemyBase_cD0Ev.cpp:
     complete
     .text start:0x020aed3c end:0x020aed74
 
-src/_ZN5EnemyD1Ev.cpp:
+src/_ZN12dEnemyBase_cD1Ev.cpp:
     complete
     .text start:0x020aed74 end:0x020aed98
 
-src/_ZN5EnemyC2Ev.cpp:
+src/_ZN12dEnemyBase_cC2Ev.cpp:
     complete
     .text start:0x020aed98 end:0x020aedbc
 
@@ -2181,11 +2181,11 @@ src/_ZN6Player12St_Talk_InitEv.cpp:
     complete
     .text start:0x020c4bd8 end:0x020c4c60
 
-src/_ZN6Player12ShowMessage2ER9ActorBasejPK7Vector3hh.cpp:
+src/_ZN6Player12ShowMessage2ER7fBase_cjPK7Vector3hh.cpp:
     complete
     .text start:0x020c4c60 end:0x020c4ec0
 
-src/_ZN6Player11ShowMessageER9ActorBasejPK7Vector3hh.cpp:
+src/_ZN6Player11ShowMessageER7fBase_cjPK7Vector3hh.cpp:
     complete
     .text start:0x020c4ec0 end:0x020c4efc
 
@@ -2197,7 +2197,7 @@ src/_ZN6Player12Unk_020c4f40Et.cpp:
     complete
     .text start:0x020c4f40 end:0x020c4fa0
 
-src/_ZN6Player9StartTalkER9ActorBaseb.cpp:
+src/_ZN6Player9StartTalkER7fBase_cb.cpp:
     complete
     .text start:0x020c4fa0 end:0x020c51d0
 
@@ -3471,7 +3471,7 @@ src/Player_ReleaseHeldActor.c:
     complete
     .text start:0x020dab14 end:0x020daba0
 
-src/_ZN6Player7TryGrabER5Actor.cpp:
+src/_ZN6Player7TryGrabER8dActor_c.cpp:
     complete
     .text start:0x020daba0 end:0x020dacb4
 
@@ -4654,19 +4654,19 @@ src/YoshiEgg_Spawn.c:
     complete
     .text start:0x020ee3d8 end:0x020ee42c
 
-src/_ZN8PlatformD1Ev.cpp:
+src/_ZN10dBgActor_cD1Ev.cpp:
     complete
     .text start:0x020ee42c end:0x020ee464
 
-src/_ZN8PlatformD0Ev.cpp:
+src/_ZN10dBgActor_cD0Ev.cpp:
     complete
     .text start:0x020ee464 end:0x020ee4b0
 
-src/_ZN8Platform14KillByMegaCharER6Player.c:
+src/_ZN10dBgActor_c14KillByMegaCharER6Player.c:
     complete
     .text start:0x020ee4b0 end:0x020ee55c
 
-src/_ZN8Platform4KillEv.cpp:
+src/_ZN10dBgActor_c4KillEv.cpp:
     complete
     .text start:0x020ee55c end:0x020ee5d0
 
@@ -4674,27 +4674,27 @@ src/func_ov002_020ee5d0.c:
     complete
     .text start:0x020ee5d0 end:0x020ee674
 
-src/_ZN8Platform20UpdateKillByMegaCharEsss5Fix12IiE.cpp:
+src/_ZN10dBgActor_c20UpdateKillByMegaCharEsss5Fix12IiE.cpp:
     complete
     .text start:0x020ee674 end:0x020ee7cc
 
-src/_ZN8Platform19UpdateClsnPosAndRotEv.cpp:
+src/_ZN10dBgActor_c19UpdateClsnPosAndRotEv.cpp:
     complete
     .text start:0x020ee7cc end:0x020ee830
 
-src/_ZN8Platform21UpdateModelPosAndRotYEv.cpp:
+src/_ZN10dBgActor_c21UpdateModelPosAndRotYEv.cpp:
     complete
     .text start:0x020ee830 end:0x020ee870
 
-src/_ZN8Platform13IsClsnInRangeE5Fix12IiES1_.cpp:
+src/_ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_.cpp:
     complete
     .text start:0x020ee870 end:0x020ee934
 
-src/_ZN8Platform21IsClsnInRangeOnScreenE5Fix12IiES1_.cpp:
+src/_ZN10dBgActor_c21IsClsnInRangeOnScreenE5Fix12IiES1_.cpp:
     complete
     .text start:0x020ee934 end:0x020eea50
 
-src/_ZN8PlatformC2Ev.c:
+src/_ZN10dBgActor_cC2Ev.c:
     complete
     .text start:0x020eea50 end:0x020eea84
 

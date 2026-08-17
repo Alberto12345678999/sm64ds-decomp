@@ -3,19 +3,19 @@ typedef unsigned short u16;
 typedef unsigned char u8;
 typedef long long s64;
 struct Vector3 { int x, y, z; };
-extern void *_ZN5Actor13ClosestPlayerEv(void *self);
+extern void *_ZN8dActor_c13ClosestPlayerEv(void *self);
 extern int Vec3_Dist(const void *a, const void *b);
 extern void _ZN5Sound9PlayBank3EjRK7Vector3(unsigned int id, const void *pos);
 extern s16 Vec3_HorzAngle(const void *a, const void *b);
 extern int _Z14ApproachLinearRsss(s16 *dst, s16 target, s16 step);
 extern int DecIfAbove0_Byte(u8 *p);
 extern void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int id, int x, int y, int z);
-extern void _ZN5Actor13LandingDustAtER7Vector3b(void *self, struct Vector3 *v, int flag);
+extern void _ZN8dActor_c13LandingDustAtER7Vector3b(void *self, struct Vector3 *v, int flag);
 extern void func_0200d8c8(void *cam, const void *v, int strength);
-extern void _ZN9ActorBase18MarkForDestructionEv(void *self);
+extern void _ZN7fBase_c18MarkForDestructionEv(void *self);
 extern void func_ov016_02112a9c(void *self);
-extern int _ZN8Platform13IsClsnInRangeE5Fix12IiES1_(void *self, int a, int b);
-extern void _ZN8Platform19UpdateClsnPosAndRotEv(void *self);
+extern int _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(void *self, int a, int b);
+extern void _ZN10dBgActor_c19UpdateClsnPosAndRotEv(void *self);
 extern s16 data_02082214[];
 extern void *data_0209f318;
 #pragma opt_common_subs off
@@ -37,7 +37,7 @@ int func_ov016_02112b50(char *c)
   }
   switch (*(u8 *)(c + 0x31e)) {
   case 0:
-    *(void **)(c + 0x324) = _ZN5Actor13ClosestPlayerEv(c);
+    *(void **)(c + 0x324) = _ZN8dActor_c13ClosestPlayerEv(c);
     if (*(void **)(c + 0x324) != 0) {
       if (Vec3_Dist(c + 0x5c, &pos) < 0x514000) {
         u8 *p = (u8 *)inline_fn((int)c + 0x31e);
@@ -88,17 +88,17 @@ int func_ov016_02112b50(char *c)
       part.z = z;
       _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(id, x, y, z);
       dust.x = part.x; dust.y = part.y; dust.z = part.z;
-      _ZN5Actor13LandingDustAtER7Vector3b(c, &dust, 1);
+      _ZN8dActor_c13LandingDustAtER7Vector3b(c, &dust, 1);
       func_0200d8c8(data_0209f318, c + 0x5c, 0x5dc000);
       _ZN5Sound9PlayBank3EjRK7Vector3(0x41, c + 0x74);
-      _ZN9ActorBase18MarkForDestructionEv(c);
+      _ZN7fBase_c18MarkForDestructionEv(c);
     }
 
     break;
   }
   }
   func_ov016_02112a9c(c);
-  if (_ZN8Platform13IsClsnInRangeE5Fix12IiES1_(c, 0, 0) != 0)
-    _ZN8Platform19UpdateClsnPosAndRotEv(c);
+  if (_ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(c, 0, 0) != 0)
+    _ZN10dBgActor_c19UpdateClsnPosAndRotEv(c);
   return 1;
 }

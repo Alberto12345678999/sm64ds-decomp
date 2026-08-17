@@ -9,9 +9,9 @@ extern int data_ov065_0211d0ec[];
 /* vtable identified: VT0 = data_ov065_0211d0ec */
 int *func_ov065_0211a45c(void)
 {
-    int *p = (int *)_ZN9ActorBasenwEj(904);
+    int *p = (int *)_ZN7fBase_cnwEj(904);
     if (p) {
-        _ZN8PlatformC2Ev(p);
+        _ZN10dBgActor_cC2Ev(p);
         p[0] = (int)data_ov065_0211d0ec;
         _ZN11ShadowModelC1Ev((char *)p + 0x330);
     }

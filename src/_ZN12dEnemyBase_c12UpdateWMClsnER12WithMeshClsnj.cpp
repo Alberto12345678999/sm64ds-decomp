@@ -1,5 +1,5 @@
 //cpp
-// @symbol _ZN5Enemy12UpdateWMClsnER12WithMeshClsnj
+// @symbol _ZN12dEnemyBase_c12UpdateWMClsnER12WithMeshClsnj
 /* recovered: named members + shared header, real C++ method
  *
  * Runs the mesh collision (sel picks which of four update flavours), then
@@ -11,7 +11,7 @@
  * re-derived so the motion stays in the floor plane -- the dot product of the
  * horizontal normal and velocity components, divided by the normal's Y.
  */
-#include "Enemy.h"
+#include "dEnemyBase_c.h"
 
 struct SurfaceInfo { s32 pad; };
 
@@ -29,7 +29,7 @@ extern int _ZNK12WithMeshClsn8IsOnWallEv(WithMeshClsn *);
 extern struct SurfaceInfo *_ZNK12WithMeshClsn13GetWallResultEv(WithMeshClsn *);
 }
 
-void Enemy::UpdateWMClsn(WithMeshClsn & clsn_, unsigned int sel)
+void dEnemyBase_c::UpdateWMClsn(WithMeshClsn & clsn_, unsigned int sel)
 {
     WithMeshClsn *clsn = &clsn_;
 

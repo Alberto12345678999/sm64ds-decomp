@@ -6,7 +6,7 @@
  * Two sub-objects, each checked twice -- once by that class's own size assertion,
  * once by closing exactly on the next named field:
  *
- *     Actor                      0x000 + 0x0d0 = 0x0d0   -> pad_0d0
+ *     dActor_c                      0x000 + 0x0d0 = 0x0d0   -> pad_0d0
  *     Model                      0x0d4 + 0x050 = 0x124   -> mMovingCylinderClsnWithPos
  *     MovingCylinderClsnWithPos  0x124 + 0x040 = 0x164   -> padding, then unk_170
  *
@@ -20,7 +20,7 @@
  * It used to say 0x32c, "not inferred from the fields", on the authority of
  * BowserSkyPlatform_Spawn -- a DIFFERENT CLASS's factory. That is the pair-by-name
  * error: SpikeBomb_Spawn is the factory that stores _ZTV9SpikeBomb, and it asks
- * ActorBase::operator new for 0x1b0. BowserSkyPlatform's own assert is 0x32c and is
+ * fBase_c::operator new for 0x1b0. BowserSkyPlatform's own assert is 0x32c and is
  * correct; this class simply inherited its number, and 0x17d bytes of tail padding
  * were invented to reach it.
  *
@@ -33,9 +33,9 @@
 
 #ifdef __cplusplus
 
-#include "Actor.h"
+#include "dActor_c.h"
 
-struct SpikeBomb : Actor {
+struct SpikeBomb : dActor_c {
     u8  pad_0d0[0x4];
     /* Named by the class's own destructor calling Model's D1 at +0x0d4 -- a
        relocation the ROM build checks. */

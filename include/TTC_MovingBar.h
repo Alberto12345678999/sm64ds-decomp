@@ -3,11 +3,11 @@
 
 #include "types.h"
 
-/* Derives from Platform: the destructor stores this class's vtable, then
- * Platform's -- inlined -- then destroys the MovingMeshCollider at 0x124 and
- * the Model at 0xd4 before chaining to Actor. All three belong to Platform.
- * Everything this header used to restate below 0x31e was Actor's and
- * Platform's, and is inherited now.
+/* Derives from dBgActor_c: the destructor stores this class's vtable, then
+ * dBgActor_c's -- inlined -- then destroys the MovingMeshCollider at 0x124 and
+ * the Model at 0xd4 before chaining to dActor_c. All three belong to dBgActor_c.
+ * Everything this header used to restate below 0x31e was dActor_c's and
+ * dBgActor_c's, and is inherited now.
  *
  * SIZE IS THE OBSERVED FIELD SPAN, rounded up. It guards this declaration; it
  * is not independent evidence about the ROM.
@@ -15,10 +15,10 @@
 
 #ifdef __cplusplus
 
-#include "Platform.h"
+#include "dBgActor_c.h"
 #include "ShadowModel.h"
 
-struct TTC_MovingBar : Platform {
+struct TTC_MovingBar : dBgActor_c {
     u8 unk_31e;                       /* 0x31e */
     u8  pad_31f[0x1];
     s32 unk_320;                      /* 0x320 */
@@ -32,7 +32,7 @@ struct TTC_MovingBar : Platform {
     int Render();
 
     /* Tail padding. The field span stops short of the real size: TtcRotatingGear_Spawn and TtcRotatingTriangle_Spawn
-       call ActorBase::operator new(0x37c), read off the retail
+       call fBase_c::operator new(0x37c), read off the retail
        instruction. A span is only a LOWER BOUND. */
     u8 pad_34c[0x30];      /* 0x34c, to the ROM's 0x37c */
 };

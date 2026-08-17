@@ -225,14 +225,14 @@ dScMgBase_c::~dScMgBase_c()
 /* NO SEPARATE DEFINITION. In the merged TU the one ~dScMgBase_c() below emits
    the whole D1/D0/D2 variant group; a second definition of the same destructor
    is ill-formed. dScMgBase_c.h's inline `operator delete` is what lets mwcc
-   emit D0 at all (see include/Actor.h's D0 route note). */
+   emit D0 at all (see include/dActor_c.h's D0 route note). */
 
 /* -------------------------------------------------------------------------- */
 /* ROM ordinal 55 -- _ZN11dScMgBase_cD2Ev, 0x020b29c0, size 0x58 */
 /* -------------------------------------------------------------------------- */
 /* NO SEPARATE DEFINITION -- emitted by the ~dScMgBase_c() above. The legacy
    free-function form hand-wrote what mwcc generates for D2 on its own: the
-   two vtable stores and the `bl _ZN9ActorBaseD2Ev`. Writing it out here as
+   two vtable stores and the `bl _ZN7fBase_cD2Ev`. Writing it out here as
    well would define the symbol twice. */
 
 /* -------------------------------------------------------------------------- */

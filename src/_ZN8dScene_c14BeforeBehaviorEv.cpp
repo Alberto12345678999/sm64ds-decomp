@@ -1,7 +1,7 @@
 //cpp
-/* Scene::BeforeBehavior() at 0x0202e3d4, 0x1fc bytes -- vtable slot 7.
+/* dScene_c::BeforeBehavior() at 0x0202e3d4, 0x1fc bytes -- vtable slot 7.
  *
- * Chains to ActorBase's, then runs the scene-transition state machine: hold the
+ * Chains to fBase_c's, then runs the scene-transition state machine: hold the
  * screen while a fade is in flight, and once the brightness fader reaches the end,
  * queue the next scene and mark this one for destruction.
  *
@@ -19,14 +19,14 @@
  * and the same shape at 0x0202e58c for slot 3. But the functions those slots hold
  * are _ZN15FaderBrightness14SetForwardTimeEj and ...15SetBackwardTimeEj, and `Ej`
  * is one parameter. Calling them through the real class would drop the `mov r2,#0`
- * and stop matching, so the ROM's own Scene translation unit must have been built
+ * and stop matching, so the ROM's own dScene_c translation unit must have been built
  * against a two-argument prototype. The names below are the ROM's -- read out of
  * data_0208eb2c -- and only the arity is this file's.
  *
  * Recording it here rather than papering over it: the fader family's headers are
  * known to be wrong in the other direction too (they declare seven vtable slots
  * where the ROM has ten), and that is a separate, larger correction. */
-#include "Scene.h"
+#include "dScene_c.h"
 #include "FaderBrightness.h"
 
 /* The ROM's fader vtable at data_0208eb2c, with the arity the call sites above
@@ -47,7 +47,7 @@ struct FaderObject { FaderVTable *vt; };
 extern "C" {
 extern u8   data_0209f1e0;
 extern void *data_0209f1e4;
-extern ActorBase   *data_0209f5c0;
+extern fBase_c   *data_0209f5c0;
 extern FaderObject *data_0209f5bc;   /* the currently installed fader */
 extern FaderBrightness data_0209f5d0;
 extern FaderObject  data_0209f5e8;   /* really a FaderColor */
@@ -56,12 +56,12 @@ extern u16  data_02092664;           /* pending scene ID; 0x187 means none */
 extern void func_02023544(void);
 extern void _ZN15FaderBrightness14SetForwardTimeEj(FaderBrightness *self, u32 frames);
 extern int  _ZN15FaderBrightness7IsAtEndEv(FaderBrightness *self);
-extern int  func_020431c4(ActorBase *self);
+extern int  func_020431c4(fBase_c *self);
 }
 
-int Scene::BeforeBehavior()
+int dScene_c::BeforeBehavior()
 {
-    if (!ActorBase::BeforeBehavior())
+    if (!fBase_c::BeforeBehavior())
         return 0;
 
     if (data_0209f1e0 != 0) {

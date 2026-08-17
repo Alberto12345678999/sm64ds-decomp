@@ -5,7 +5,7 @@
 /* daSCre_c::Behavior - recovered from vtable slot identity */
 struct Vector3 { int x,y,z; };
 struct Vector3_16 { short x,y,z; };
-struct Actor {
+struct dActor_c {
   int DistToCPlayer();
   static int Spawn(unsigned int, unsigned int, const Vector3&, const Vector3_16*, signed char, short);
   void MarkForDestruction();
@@ -14,12 +14,12 @@ struct Actor {
    ROM name carries by-value class parameters (e.g. Fix12<int>), which
    mwccarm passes differently at the call site, so declaring the true
    types breaks the byte match. See notes/mwccarm-codegen.md 6az. */
-extern "C" void _ZN9ActorBase18MarkForDestructionEv(void *);
+extern "C" void _ZN7fBase_c18MarkForDestructionEv(void *);
 
-extern "C" int func_ov018_02112730(Actor* c){
+extern "C" int func_ov018_02112730(dActor_c* c){
   if (c->DistToCPlayer() < 0x64000) {
-    Actor::Spawn(0xb2, (*(int*)((char*)c+8) & 0xf) | 0x40, *(Vector3*)((char*)c+0x5c), 0, *(signed char*)((char*)c+0xcc), -1);
+    dActor_c::Spawn(0xb2, (*(int*)((char*)c+8) & 0xf) | 0x40, *(Vector3*)((char*)c+0x5c), 0, *(signed char*)((char*)c+0xcc), -1);
   }
-  _ZN9ActorBase18MarkForDestructionEv(c);
+  _ZN7fBase_c18MarkForDestructionEv(c);
   return 1;
 }

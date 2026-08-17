@@ -10,7 +10,12 @@
 #include "Crate.h"
 extern void _ZN25MovingCylinderClsnWithPosD1Ev(void*);
 extern void* _ZTV5Crate;
-extern void* _ZTV8Platform;
+/* _ZTV10dBgActor_c is NOT declared here any more. include/decl_common.h already
+   declares it as `extern int _ZTV10dBgActor_c[];`. While this class still carried the
+   tree's coined name the two spellings were different identifiers, so the duplicate
+   went unnoticed; under one name they are a redeclaration with a conflicting type,
+   which mwcc rejects. Same symbol, same address, same relocation -- an array name
+   already IS the address, so the `&` at the use site goes too. */
 extern void* data_020a0eac[];
 
 void* _ZN5CrateD0Ev(struct Crate *self) {
@@ -19,10 +24,10 @@ void* _ZN5CrateD0Ev(struct Crate *self) {
     _ZN25MovingCylinderClsnWithPosD1Ev((char*)&self->mMovingCylinderClsnWithPos1);
     _ZN11ShadowModelD1Ev((char*)&self->mShadowModel);
     _ZN12WithMeshClsnD1Ev((char*)&self->mWithMeshClsn);
-    *(void**)((char*)self) = &_ZTV8Platform;
+    *(void**)((char*)self) = (void*)_ZTV10dBgActor_c;
     _ZN18MovingMeshColliderD1Ev((char*)&self->mMeshCollider);
     _ZN5ModelD1Ev((char*)&self->mModel);
-    _ZN5ActorD2Ev(((char*)self));
+    _ZN8dActor_cD2Ev(((char*)self));
     _ZN6Memory10DeallocateEPvP4Heap(((char*)self), data_020a0eac[0]);
     return ((char*)self);
 }

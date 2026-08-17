@@ -3,7 +3,7 @@
 
 #include "types.h"
 
-/* Derives from Enemy: the destructor stores this class's vtable, then the
+/* Derives from dEnemyBase_c: the destructor stores this class's vtable, then the
  * base's, then destroys whatever the base owns before chaining further up.
  * Everything this header used to restate below 0x110 belonged to the
  * chain above and is inherited now.
@@ -14,12 +14,12 @@
 
 #ifdef __cplusplus
 
-#include "Enemy.h"
+#include "dEnemyBase_c.h"
 #include "ModelAnim.h"
 #include "MovingCylinderClsn.h"
 #include "WithMeshClsn.h"
 
-struct Fwoosh : Enemy {
+struct Fwoosh : dEnemyBase_c {
     MovingCylinderClsn mMovingCylinderClsn;/* 0x110 */
     WithMeshClsn mWithMeshClsn;       /* 0x144 */
     ModelAnim mModelAnim;             /* 0x300 */

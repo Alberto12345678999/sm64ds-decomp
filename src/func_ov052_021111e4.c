@@ -5,16 +5,16 @@
 #include "decl_MovingMeshCollider.h"
 #include "decl_common.h"
 extern int data_ov052_02112520[];
-extern int _ZTV8Platform[];
+extern int _ZTV10dBgActor_c[];
 /* recovered: vtable identified, renamed to Class_Method */
 extern void *data_020a0eac;
 int *func_ov052_021111e4(int *t)
 {
     t[0] = (int)data_ov052_02112520;
-    t[0] = (int)_ZTV8Platform;
+    t[0] = (int)_ZTV10dBgActor_c;
     _ZN18MovingMeshColliderD1Ev((char *)t + 0x124);
     _ZN5ModelD1Ev((char *)t + 0xd4);
-    _ZN5ActorD2Ev(t);
+    _ZN8dActor_cD2Ev(t);
     _ZN6Memory10DeallocateEPvP4Heap(t, data_020a0eac);
     return t;
 }
