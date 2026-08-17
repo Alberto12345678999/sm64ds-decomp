@@ -36,11 +36,13 @@ from __future__ import annotations
 
 import argparse
 import collections
+import hashlib
 import html
 import json
 import pathlib
 import re
 import sys
+import time
 
 REPO = pathlib.Path(__file__).resolve().parent.parent
 RTTI = REPO / "build" / "rtti.json"
@@ -54,6 +56,97 @@ OVERLAY_ACTORS = REPO / "symbols" / "overlay_actors.md"
 OUT = REPO / "docs" / "class-reference.html"
 
 CONF_ORDER = {"high": 0, "medium": 1, "low": 2}
+
+# --------------------------------------------------------------------------
+# where this page sits, and where the things it names live
+# --------------------------------------------------------------------------
+# Every `src/...` path on this page came out of tools/srcpath.py, i.e. it is a real
+# file in this repo -- so it can be a link, and a reference that names 2,560 source
+# files without linking one of them is making the reader grep.
+REPO_URL = "https://github.com/tangosdev/sm64ds-decomp"
+GITHUB_BLOB = REPO_URL + "/blob/main/"
+REFERENCE_PAGE = "class-reference.html"
+HIERARCHY_PAGE = "class-hierarchy.html"
+TREEMAP_PAGE = "index.html"
+
+NAV = [(TREEMAP_PAGE, "Progress treemap"),
+       (REFERENCE_PAGE, "Class reference"),
+       (HIERARCHY_PAGE, "Class hierarchy"),
+       (REPO_URL, "Repository ↗")]
+
+# Directories that are TRACKED.  `build/` is deliberately absent: it is gitignored, so
+# a link to build/rtti.json would 404 on github.com while resolving fine on the disk
+# of whoever generated the page -- the exact shape of dead link this project keeps
+# finding in its own symbol tables.
+LINKABLE_ROOTS = ("src/", "tools/", "include/", "notes/", "config/", "symbols/",
+                  "docs/", ".github/")
+PATH_IN_CODE = re.compile(r"<code>([A-Za-z0-9_.][\w./+-]*/[\w./+-]+)</code>")
+
+
+def nav_html(current):
+    """The one shared nav bar.  Identical link set on both RTTI pages."""
+    parts = []
+    for href, label in NAV:
+        if href == current:
+            parts.append('<span class="here" aria-current="page">%s</span>'
+                         % html.escape(label))
+        else:
+            parts.append('<a href="%s">%s</a>'
+                         % (html.escape(href), html.escape(label)))
+    return ('<nav class="nav" aria-label="SM64DS decomp documentation">%s</nav>'
+            % "".join(parts))
+
+
+def link_paths(doc):
+    """Turn `<code>notes/foo.md</code>` in prose into a link to that file on GitHub.
+
+    Gated on the file EXISTING on disk under a tracked root, which makes the pass
+    self-validating: a renamed note silently loses its link instead of shipping a 404.
+    Safe to run over the whole document because `<code>` appears only in prose here --
+    never in the CSS, the JS, or the slotdata JSON.
+    """
+    n = [0]
+
+    def sub(m):
+        p = m.group(1)
+        if not p.startswith(LINKABLE_ROOTS) or not (REPO / p).exists():
+            return m.group(0)
+        n[0] += 1
+        return '<code><a href="%s%s">%s</a></code>' % (GITHUB_BLOB, p, p)
+
+    return PATH_IN_CODE.sub(sub, doc), n[0]
+
+
+def provenance(paths):
+    """(date, digest, [names]) describing the inputs, with NO wall clock read.
+
+    `datetime.now()` was the obvious thing to stamp and it is the wrong thing.  This
+    page is a committed 2 MB artefact; a clock in the output means every re-run
+    rewrites it, so `git diff` can no longer separate "regenerated, nothing moved"
+    from "the ROM reading changed".  Neither stamp below reads a clock, but only the
+    digest is a pure function of the input BYTES:
+
+        date    UTC date of the NEWEST input's mtime.  Answers "how old is the data",
+                which is the question a reader of a generated page actually has, and
+                is unchanged by re-running this script on the same checkout.  It is
+                NOT reproducible across machines: mtimes do not survive a clone, so
+                two checkouts with byte-identical inputs can stamp different dates.
+                Treat it as a human-readable hint; the digest is the real signal.
+        digest  sha256 over the input bytes, 12 hex.  Changes if and only if an input
+                changed, so it is the staleness signal for THIS page.  It is not
+                comparable with class-hierarchy.html's digest: that page reads a
+                different set of files, so the two are expected to differ even when
+                both were built from the same ROM reading.
+    """
+    live = [p for p in paths if p.is_file()]
+    h = hashlib.sha256()
+    for p in live:
+        h.update(p.name.encode("utf-8"))
+        h.update(p.read_bytes())
+    newest = max((p.stat().st_mtime for p in live), default=0.0)
+    # time.gmtime of a MEASURED mtime, not of time.time() -- deterministic.
+    return (time.strftime("%Y-%m-%d", time.gmtime(newest)),
+            h.hexdigest()[:12], [p.name for p in live])
 
 
 # --------------------------------------------------------------------------
@@ -429,6 +522,15 @@ code,.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font
 .tree pre{margin:0;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.85rem;line-height:1.5}
 a{color:var(--acc);text-decoration:none}
 a:hover{text-decoration:underline}
+/* ---- nav: same link set as class-hierarchy.html ---------------------- */
+.nav{display:flex;flex-wrap:wrap;gap:.15rem 1.15rem;align-items:baseline;
+ font-size:.85rem;padding:0 0 .7rem;margin:0 0 1.3rem;border-bottom:1px solid var(--line)}
+.nav .here{color:var(--mut);font-weight:600}
+.prov{color:var(--mut);font-size:.8rem;margin:.2rem 0 1.4rem}
+.prov code{font-size:.95em}
+footer{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--line);
+ color:var(--mut);font-size:.82rem}
+footer p{margin:0 0 .4rem}
 table{border-collapse:collapse;width:100%;font-size:.88rem}
 th,td{text-align:left;padding:.4rem .55rem;border-bottom:1px solid var(--line);vertical-align:top}
 th{color:var(--mut);font-weight:600;font-size:.8rem;text-transform:uppercase;letter-spacing:.03em}
@@ -519,6 +621,15 @@ JS = """
  function slots(){ if(SD===null){ var s=document.getElementById('slotdata');
    SD = s ? JSON.parse(s.textContent) : {}; } return SD; }
  function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;'); }
+ /* Every source path in the slot tables is a real file in the repo, so it links to
+    the blob. Built here rather than baked into the JSON: 2,560 distinct paths would
+    otherwise carry the 66-character prefix ~10,000 times, for ~700 KB of nothing. */
+ var BLOB='__BLOB__';
+ function srccell(p){ if(!p) return '\\u2014';
+   /* esc() the href too, not just the text: encodeURI leaves `&` alone and a bare `&`
+      in an attribute is an unterminated entity reference. No path in this ROM has one
+      today, which is exactly why it would be missed later. */
+   return '<a href="'+esc(BLOB+encodeURI(p))+'">'+esc(p)+'</a>'; }
  document.addEventListener('toggle',function(e){
    var d=e.target; if(d.tagName!=='DETAILS'||!d.open) return;
    var box=d.querySelector('.slotbox'); if(!box||box.dataset.done) return;
@@ -531,7 +642,7 @@ JS = """
        '</td><td>\\u2014</td><td colspan="3">pure virtual (null in ROM)</td></tr>'); continue; }
      h.push('<tr><td class="mono'+own+'">'+r[0]+'</td><td class="mono">'+esc(r[1])+
        '</td><td class="mono'+own+'">'+esc(r[2]||'\\u2014')+'</td><td class="mono">'+
-       esc(r[3]||'\\u2014')+'</td><td>'+(r[4]?'<span class="tick">\\u2713</span>':
+       srccell(r[3])+'</td><td>'+(r[4]?'<span class="tick">\\u2713</span>':
        '<span class="cross">\\u00b7</span>')+'</td></tr>');
    }
    h.push('</table></div>');
@@ -619,15 +730,35 @@ def render(rtti, vt, gl, rec, ovl, join, fidelity):
     st = rtti["meta"]["stats"]
     out = []
     A = out.append
+    gen_date, gen_digest, _gen_inputs = provenance(
+        [RTTI, VTABLES, RECONCILE, GLOSSARY, ELIGIBLE, ROMBUILD])
+
+    # No doctype meant quirks mode, which is not a theoretical concern for a page this
+    # dense: quirks changes the box model and the default line-height under every one
+    # of the 429 cards. It goes FIRST -- a comment before it parses fine per spec, but
+    # "doctype on line 1" is what every validator and reviewer looks for.
+    A("<!doctype html>")
     A("<!-- GENERATED by tools/rtti_reference.py -- do not edit by hand -->")
-    A("<html><head><meta charset='utf-8'>")
+    A("<html lang='en'><head><meta charset='utf-8'>")
     A("<meta name='viewport' content='width=device-width,initial-scale=1'>")
     A("<title>SM64DS engine class reference</title><style>%s</style></head><body><div class='wrap'>" % CSS)
+    A(nav_html(REFERENCE_PAGE))
     A("<h1>SM64DS engine class reference</h1>")
     A("<p class='sub'>Every class the ROM's RTTI names, its real inheritance, and what the "
       "names mean. Generated from <code>build/rtti.json</code> — read out of the binary, "
       "not transcribed. Glosses come from <code>config/rom-name-glossary.json</code> and are "
-      "the only hand-authored part of this page.</p>")
+      "the only hand-authored part of this page. The same records drawn as a graph, edge by "
+      "edge, are in <a href='%s'>the class hierarchy</a>.</p>" % e(HIERARCHY_PAGE))
+    A("<p class='prov'><b>Data extracted %s</b> (UTC date of the newest input) · input "
+      "digest <code>%s</code> (sha256 of <code>build/rtti.json</code>, "
+      "<code>build/rtti_vtables.json</code>, <code>build/rtti_reconcile.json</code>, the "
+      "glossary, the enrolled-file list and the rombuild report, 12 hex). No wall-clock "
+      "time is stamped on this page: re-running the generator over unchanged inputs "
+      "reproduces it byte for byte on the same checkout, so a diff means the data moved, "
+      "and a digest that differs from a fresh extractor run means this copy is stale. "
+      "The digest is the authoritative half — the date is derived from file mtimes, which "
+      "a fresh clone resets. Source paths link to the file on GitHub; class names in "
+      "the tree jump to that class's card below.</p>" % (e(gen_date), e(gen_digest)))
 
     # aggregate the join once -- every headline number below is derived, never typed
     tot_slots = sum(j["live"] for j in join.values())
@@ -1041,11 +1172,32 @@ def render(rtti, vt, gl, rec, ovl, join, fidelity):
       "has the reason — <code>eligible.py</code> rejects the three-<code>.text</code> object "
       "a <code>~Class()</code> definition always emits.</li>")
     A("</ul>")
-    A("<script id='slotdata' type='application/json'>%s</script>"
-      % json.dumps(slotdata, separators=(",", ":")).replace("</", "<\\/"))
-    A("<script>%s</script>" % JS)
-    A("</div></body></html>")
-    return "\n".join(out) + "\n"
+
+    A("<footer>")
+    A("<p>Generated by <code>tools/rtti_reference.py</code> from "
+      "<code>build/rtti.json</code> and <code>build/rtti_vtables.json</code>, joined "
+      "against <code>config/*/symbols.txt</code> and <code>build/eligible-names.txt</code>. "
+      "Data extracted %s · input digest <code>%s</code>.</p>" % (e(gen_date), e(gen_digest)))
+    A("<p><a href='%s'>Class hierarchy</a> — the same 429 records as a graph, with the "
+      "evidence tier on every edge. <a href='%s'>Progress treemap</a> — what is matched, "
+      "by module. <a href='%s'>Repository</a>.</p>"
+      % (e(HIERARCHY_PAGE), e(TREEMAP_PAGE), e(REPO_URL)))
+    A("</footer>")
+
+    # Prose paths become links LAST, over the whole assembled body, so the footer and
+    # every section get the same treatment. `<code>` appears only in prose here -- never
+    # in the CSS, the JS or the slotdata JSON -- so a document-wide pass is safe, and the
+    # scripts are appended after it rather than being exposed to it at all.
+    doc, nlinked = link_paths("\n".join(out))
+    print("prose repo paths linked: %d" % nlinked)
+    tail = [
+        "<script id='slotdata' type='application/json'>%s</script>"
+        % json.dumps(slotdata, separators=(",", ":")).replace("</", "<\\/"),
+        # The blob prefix is injected rather than %-formatted: the JS is full of regex
+        # literals and a %-format over it would be one stray `%` from a ValueError.
+        "<script>%s</script>" % JS.replace("__BLOB__", GITHUB_BLOB),
+        "</div></body></html>"]
+    return doc + "\n" + "\n".join(tail) + "\n"
 
 
 def main():

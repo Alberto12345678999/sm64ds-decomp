@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Pass 2 of notes/plan-gen-header.md -- the *hierarchy* evidence pass.
+"""Pass 2 of notes/archive/plan-gen-header.md -- the *hierarchy* evidence pass.
 
 Two jobs, one output file (build/evidence_hierarchy.json):
 
@@ -1654,7 +1654,7 @@ def report(doc, stream=sys.stdout):
 
 def main(argv=None):
     ap = argparse.ArgumentParser(
-        description="Pass 2 (hierarchy) of notes/plan-gen-header.md.")
+        description="Pass 2 (hierarchy) of notes/archive/plan-gen-header.md.")
     here = os.path.dirname(os.path.abspath(__file__))
     ap.add_argument("--root", default=os.path.dirname(here),
                     help="repo root (default: the parent of tools/)")

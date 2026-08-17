@@ -1,4 +1,7 @@
-<title>The fBase Tree</title>
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The fBase Tree — SM64DS class hierarchy</title>
 <style>
 *,*::before,*::after{box-sizing:border-box}
 :root{
@@ -59,6 +62,14 @@ a{color:var(--proven)}
 a:focus-visible,summary:focus-visible{outline:2px solid var(--proven); outline-offset:2px}
 code,.m{font-family:var(--mono); font-size:.92em}
 
+/* ---- nav: same link set as class-reference.html ---- */
+.nav{display:flex; flex-wrap:wrap; gap:2px 18px; align-items:baseline;
+  padding:14px 0 11px; border-bottom:1px solid var(--rule);
+  font-size:13px; letter-spacing:.01em}
+.nav a{text-decoration:none}
+.nav a:hover{text-decoration:underline}
+.nav .here{color:var(--mute); font-weight:600}
+
 /* ---- evidence system ---- */
 .legend{display:flex; flex-wrap:wrap; gap:8px; margin:18px 0 4px}
 .tag{display:inline-flex; align-items:center; gap:7px; font:600 11px/1 var(--sans);
@@ -96,6 +107,11 @@ td.m,th.m{font-family:var(--mono)}
 .tree .ct{color:var(--contra)}
 .tree .dim{color:var(--mute)}
 .tree .cnt{color:var(--mute); font-size:11.5px}
+/* A linked class name must keep its EVIDENCE colour, not turn link-blue: in this
+   document colour is the tier. `.tree .pv` (two classes) outranks `a` (one type),
+   so the cascade already does that; this only removes the underline. */
+.tree a{text-decoration:none}
+.tree a:hover{text-decoration:underline}
 details{border:1px solid var(--rule-soft); background:var(--card); margin:10px 0}
 summary{cursor:pointer; padding:11px 16px; font:600 13px/1.4 var(--sans);
   list-style:none; display:flex; justify-content:space-between; gap:12px}
@@ -110,6 +126,8 @@ details .tree{border:0; margin:0}
 figure{margin:22px 0}
 figcaption{font-size:12.5px; color:var(--mute); margin-top:9px; max-width:var(--measure)}
 svg{max-width:100%; height:auto; display:block}
+svg a{cursor:pointer}
+svg a:hover text{text-decoration:underline}
 footer{margin-top:72px; padding-top:18px; border-top:1.5px solid var(--ink);
   font-size:12.5px; color:var(--mute)}
 @media(max-width:640px){
@@ -118,7 +136,9 @@ footer{margin-top:72px; padding-top:18px; border-top:1.5px solid var(--ink);
 }
 @media(prefers-reduced-motion:reduce){*{animation:none!important; transition:none!important}}
 </style>
+</head><body>
 <div class="wrap">
+<nav class="nav" aria-label="SM64DS decomp documentation"><a href="index.html">Progress treemap</a><a href="class-reference.html">Class reference</a><span class="here" aria-current="page">Class hierarchy</span><a href="https://github.com/tangosdev/sm64ds-decomp">Repository ↗</a></nav>
 <div class="block"><div class="block-t"><div>
 <h1>The fBase Tree</h1>
 <p class="sub">Every class in Super Mario 64 DS that the ROM itself can name, how they descend from one another, and — edge by edge — what makes each relationship true.</p>
@@ -128,7 +148,8 @@ footer{margin-top:72px; padding-top:18px; border-top:1.5px solid var(--ink);
 <div class="f"><dt>Classes</dt><dd>429 named by the ROM</dd></div>
 <div class="f"><dt>Edges</dt><dd>413 proven · 56 inferred</dd></div>
 <div class="f"><dt>Deepest chain</dt><dd>5 levels</dd></div>
-<div class="f"><dt>Generated</dt><dd>tools/rtti_hierarchy_page.py</dd></div>
+<div class="f"><dt>Data extracted</dt><dd>2026-08-17</dd></div>
+<div class="f"><dt>Input digest</dt><dd>aafcd4154e96</dd></div>
 </dl></div>
 <div class="legend">
 <span class="tag t-proven"><span class="swatch"></span>Proven</span>
@@ -147,167 +168,167 @@ footer{margin-top:72px; padding-top:18px; border-top:1.5px solid var(--ink);
 <div class="note">The ROM stores 429 type_info records and 413 base pointers, and <strong>every one of those pointers resolves</strong> — 293 of them across an overlay boundary. Where this page is silent it is because the ROM is silent, not because the reading was hard.</div>
 </section><section><div class="sec-h"><span class="sec-n">§2</span><h2>The spine</h2></div>
 <p>Of the 429 classes, 338 hang off a single root. Strip out everything with fewer than two children and the framework EAD actually built is four levels deep and fits on a screen.</p>
-<div class="tree"><span class="dim"></span><span class="cls pv">fBase_c</span><span class="cnt">  337 below</span>
-<span class="dim">└─ </span><span class="cls pv">dBase_c</span><span class="cnt">  336 below</span>
-   <span class="dim">├─ </span><span class="cls pv">dActor_c</span><span class="cnt">  287 below</span>
-   │  <span class="dim">├─ </span><span class="cls pv">dBgActor_c</span><span class="cnt">  132 below</span>
-   │  <span class="dim">└─ </span><span class="cls pv">dEnemyBase_c</span><span class="cnt">  60 below</span>
-   <span class="dim">├─ </span><span class="cls pv">dScene_c</span><span class="cnt">  42 below</span>
-   │  <span class="dim">└─ </span><span class="cls pv">dScMgBase_c</span><span class="cnt">  32 below</span>
-   <span class="dim">├─ </span><span class="cls pv">dView_c</span>
-   <span class="dim">├─ </span><span class="cls pv">dEntObj_c</span>
-   <span class="dim">├─ </span><span class="cls pv">dMap_c</span>
-   <span class="dim">└─ </span><span class="cls pv">dMeter_c</span></div>
+<div class="tree"><span class="dim"></span><a class="cls pv" href="class-reference.html#c-fBase_c">fBase_c</a><span class="cnt">  337 below</span>
+<span class="dim">└─ </span><a class="cls pv" href="class-reference.html#c-dBase_c">dBase_c</a><span class="cnt">  336 below</span>
+   <span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-dActor_c">dActor_c</a><span class="cnt">  287 below</span>
+   │  <span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-dBgActor_c">dBgActor_c</a><span class="cnt">  132 below</span>
+   │  <span class="dim">└─ </span><a class="cls pv" href="class-reference.html#c-dEnemyBase_c">dEnemyBase_c</a><span class="cnt">  60 below</span>
+   <span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-dScene_c">dScene_c</a><span class="cnt">  42 below</span>
+   │  <span class="dim">└─ </span><a class="cls pv" href="class-reference.html#c-dScMgBase_c">dScMgBase_c</a><span class="cnt">  32 below</span>
+   <span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-dView_c">dView_c</a>
+   <span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-dEntObj_c">dEntObj_c</a>
+   <span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-dMap_c">dMap_c</a>
+   <span class="dim">└─ </span><a class="cls pv" href="class-reference.html#c-dMeter_c">dMeter_c</a></div>
 <div class="note"><strong>fBase_c</strong> is the framework root — the same name, in the same position, as in EAD's GameCube codebases. Everything the game draws, updates or scenes through descends from it, and the two great families below <code>dActor_c</code> account for 156 of its descendants.</div>
 </section><section><div class="sec-h"><span class="sec-n">§3</span><h2>The families</h2></div>
 <p>Fan-out is extremely uneven. Twelve classes carry almost the whole game; the rest are leaves.</p>
 <div class="scroll"><table><thead><tr><th>Base class</th><th>Direct</th><th>Whole subtree</th><th></th><th>Module</th></tr></thead><tbody>
-<tr><td class="m">dBgActor_c</td><td class="n">101</td><td class="n">132</td><td style="width:34%"><div class="bar" style="width:100.0%"></div></td><td class="m">ov002</td></tr>
-<tr><td class="m">dActor_c</td><td class="n">95</td><td class="n">287</td><td style="width:34%"><div class="bar" style="width:94.1%"></div></td><td class="m">arm9</td></tr>
-<tr><td class="m">dEnemyBase_c</td><td class="n">55</td><td class="n">60</td><td style="width:34%"><div class="bar" style="width:54.5%"></div></td><td class="m">ov002</td></tr>
-<tr><td class="m">dScMgBase_c</td><td class="n">15</td><td class="n">32</td><td style="width:34%"><div class="bar" style="width:14.9%"></div></td><td class="m">ov004</td></tr>
-<tr><td class="m">dScMgSingle3DBase_c</td><td class="n">13</td><td class="n">13</td><td style="width:34%"><div class="bar" style="width:12.9%"></div></td><td class="m">ov006</td></tr>
-<tr><td class="m">cMgSmartball_object_c</td><td class="n">11</td><td class="n">11</td><td style="width:34%"><div class="bar" style="width:10.9%"></div></td><td class="m">ov006</td></tr>
-<tr><td class="m">dScene_c</td><td class="n">10</td><td class="n">42</td><td style="width:34%"><div class="bar" style="width:9.9%"></div></td><td class="m">arm9</td></tr>
-<tr><td class="m">dBase_c</td><td class="n">6</td><td class="n">336</td><td style="width:34%"><div class="bar" style="width:5.9%"></div></td><td class="m">arm9</td></tr>
-<tr><td class="m">dPa_c::level_c::callback_c</td><td class="n">6</td><td class="n">12</td><td style="width:34%"><div class="bar" style="width:5.9%"></div></td><td class="m">arm9</td></tr>
-<tr><td class="m">dPa_c::level_c::simpleCallback_c</td><td class="n">6</td><td class="n">6</td><td style="width:34%"><div class="bar" style="width:5.9%"></div></td><td class="m">arm9</td></tr>
-<tr><td class="m">dGraph_c::callback_c</td><td class="n">5</td><td class="n">5</td><td style="width:34%"><div class="bar" style="width:5.0%"></div></td><td class="m">arm9</td></tr>
-<tr><td class="m">daObjKaitendai_c</td><td class="n">5</td><td class="n">5</td><td style="width:34%"><div class="bar" style="width:5.0%"></div></td><td class="m">ov002</td></tr>
+<tr><td class="m"><a href="class-reference.html#c-dBgActor_c">dBgActor_c</a></td><td class="n">101</td><td class="n">132</td><td style="width:34%"><div class="bar" style="width:100.0%"></div></td><td class="m">ov002</td></tr>
+<tr><td class="m"><a href="class-reference.html#c-dActor_c">dActor_c</a></td><td class="n">95</td><td class="n">287</td><td style="width:34%"><div class="bar" style="width:94.1%"></div></td><td class="m">arm9</td></tr>
+<tr><td class="m"><a href="class-reference.html#c-dEnemyBase_c">dEnemyBase_c</a></td><td class="n">55</td><td class="n">60</td><td style="width:34%"><div class="bar" style="width:54.5%"></div></td><td class="m">ov002</td></tr>
+<tr><td class="m"><a href="class-reference.html#c-dScMgBase_c">dScMgBase_c</a></td><td class="n">15</td><td class="n">32</td><td style="width:34%"><div class="bar" style="width:14.9%"></div></td><td class="m">ov004</td></tr>
+<tr><td class="m"><a href="class-reference.html#c-dScMgSingle3DBase_c">dScMgSingle3DBase_c</a></td><td class="n">13</td><td class="n">13</td><td style="width:34%"><div class="bar" style="width:12.9%"></div></td><td class="m">ov006</td></tr>
+<tr><td class="m"><a href="class-reference.html#c-cMgSmartball_object_c">cMgSmartball_object_c</a></td><td class="n">11</td><td class="n">11</td><td style="width:34%"><div class="bar" style="width:10.9%"></div></td><td class="m">ov006</td></tr>
+<tr><td class="m"><a href="class-reference.html#c-dScene_c">dScene_c</a></td><td class="n">10</td><td class="n">42</td><td style="width:34%"><div class="bar" style="width:9.9%"></div></td><td class="m">arm9</td></tr>
+<tr><td class="m"><a href="class-reference.html#c-dBase_c">dBase_c</a></td><td class="n">6</td><td class="n">336</td><td style="width:34%"><div class="bar" style="width:5.9%"></div></td><td class="m">arm9</td></tr>
+<tr><td class="m"><a href="class-reference.html#c-dPa_c::level_c::callback_c">dPa_c::level_c::callback_c</a></td><td class="n">6</td><td class="n">12</td><td style="width:34%"><div class="bar" style="width:5.9%"></div></td><td class="m">arm9</td></tr>
+<tr><td class="m"><a href="class-reference.html#c-dPa_c::level_c::simpleCallback_c">dPa_c::level_c::simpleCallback_c</a></td><td class="n">6</td><td class="n">6</td><td style="width:34%"><div class="bar" style="width:5.9%"></div></td><td class="m">arm9</td></tr>
+<tr><td class="m"><a href="class-reference.html#c-dGraph_c::callback_c">dGraph_c::callback_c</a></td><td class="n">5</td><td class="n">5</td><td style="width:34%"><div class="bar" style="width:5.0%"></div></td><td class="m">arm9</td></tr>
+<tr><td class="m"><a href="class-reference.html#c-daObjKaitendai_c">daObjKaitendai_c</a></td><td class="n">5</td><td class="n">5</td><td style="width:34%"><div class="bar" style="width:5.0%"></div></td><td class="m">ov002</td></tr>
 </tbody></table></div>
-<details><summary>dBgActor_c — 101 direct children, 132 in the subtree</summary><div class="tree"><span class="dim"></span><span class="cls pv">dBgActor_c</span><span class="cnt">  132 below</span>
-<span class="dim">├─ </span><span class="cls pv">daObjKaitendai_c</span><span class="cnt">  5 below</span>
-│  <span class="dim">├─ </span><span class="cls pv">daObjBk_Ukisima_c</span>
-│  <span class="dim">├─ </span><span class="cls pv">daObjFl_Koma_D_c</span>
-│  <span class="dim">├─ </span><span class="cls pv">daObjKm3_Kaitendai_c</span>
-│  <span class="dim">├─ </span><span class="cls pv">daObjRc_Kaitendai_c</span>
-│  <span class="dim">└─ </span><span class="cls pv">daObjWc_Obj07_c</span>
-<span class="dim">├─ </span><span class="cls pv">daObjFallBlock_c</span><span class="cnt">  4 below</span>
-│  <span class="dim">├─ </span><span class="cls pv">daObjBk_Fall_Block_c</span>
-│  <span class="dim">├─ </span><span class="cls pv">daObjFl_Fall_Block_c</span>
-│  <span class="dim">├─ </span><span class="cls pv">daObjKm2_Fall_Block_c</span>
-│  <span class="dim">└─ </span><span class="cls pv">daObjTh_Fall_Block_c</span>
-<span class="dim">├─ </span><span class="cls pv">daObjDorifu_c</span><span class="cnt">  3 below</span>
-│  <span class="dim">├─ </span><span class="cls pv">daObjKm1_Dorifu_c</span>
-│  <span class="dim">├─ </span><span class="cls pv">daObjKm3_Dorifu_c</span>
-│  <span class="dim">└─ </span><span class="cls pv">daObjRc_Dorifu_c</span>
-<span class="dim">├─ </span><span class="cls pv">daObjFloatBoard_c</span><span class="cnt">  3 below</span>
-│  <span class="dim">├─ </span><span class="cls pv">daObjKi_Ita_c</span>
-│  <span class="dim">├─ </span><span class="cls pv">daObjWcObj01_c</span>
-│  <span class="dim">└─ </span><span class="cls pv">daObjWcObj06_c</span>
-<span class="dim">├─ </span><span class="cls pv">dPathLiftActor_c</span><span class="cnt">  2 below</span>
-│  <span class="dim">├─ </span><span class="cls pv">daObjPathLift_c</span>
-│  <span class="dim">└─ </span><span class="cls pv">daObjRcCarpet_c</span>
-<span class="dim">├─ </span><span class="cls pv">daDsnBase_c</span><span class="cnt">  2 below</span>
-│  <span class="dim">├─ </span><span class="cls pv">daDkk_c</span>
-│  <span class="dim">└─ </span><span class="cls pv">daDsn_c</span>
-<span class="dim">├─ </span><span class="cls pv">daObjGuragura_c</span><span class="cnt">  2 below</span>
-│  <span class="dim">├─ </span><span class="cls pv">daObjFl_Gura_c</span>
-│  <span class="dim">└─ </span><span class="cls pv">daObjKm2_Gura_c</span>
-<span class="dim">├─ </span><span class="cls pv">daObjKuruma_c</span><span class="cnt">  2 below</span>
-│  <span class="dim">├─ </span><span class="cls pv">daObjKm1_Kuruma_c</span>
-│  <span class="dim">└─ </span><span class="cls pv">daObjKm3_Kuruma_c</span>
-<span class="dim">├─ </span><span class="cls pv">daObjKurumajiku_c</span><span class="cnt">  2 below</span>
-│  <span class="dim">├─ </span><span class="cls pv">daObjKm1_Kurumajiku_c</span>
-│  <span class="dim">└─ </span><span class="cls pv">daObjKm3_Kurumajiku_c</span>
-<span class="dim">├─ </span><span class="cls pv">daObjMaruta_c</span><span class="cnt">  2 below</span>
-│  <span class="dim">├─ </span><span class="cls pv">daObjFlMaruta_c</span>
-│  <span class="dim">└─ </span><span class="cls pv">daObjHmMaruta_c</span>
-<span class="dim">├─ </span><span class="cls pv">daObjSwdoor_c</span><span class="cnt">  2 below</span>
-│  <span class="dim">├─ </span><span class="cls pv">daObjBSwdoor_c</span>
-│  <span class="dim">└─ </span><span class="cls pv">daObjCvShutter_c</span>
-<span class="dim">├─ </span><span class="cls pv">daObjUkiyuka_c</span><span class="cnt">  2 below</span>
-│  <span class="dim">├─ </span><span class="cls pv">daObjFl_Ukiyuka_c</span>
-│  <span class="dim">└─ </span><span class="cls pv">daObjKm2_Ukishima_c</span>
-<span class="dim">├─ </span><span class="cls pv">daDgr_c</span>
-<span class="dim">├─ </span><span class="cls pv">daDpLift_c</span>
-<span class="dim">├─ </span><span class="cls pv">daIwante_c</span>
-<span class="dim">├─ </span><span class="cls pv">daKpa2Bg_c</span>
-<span class="dim">├─ </span><span class="cls pv">daKpa3Bg_c</span>
-<span class="dim">├─ </span><span class="cls pv">daLinelift2_c</span>
-<span class="dim">├─ </span><span class="cls pv">daObjBC_Switch_c</span>
-<span class="dim">├─ </span><span class="cls pv">daObjBkKillerdai_c</span>
-<span class="dim">├─ </span><span class="cls pv">daObjBk_Botaosi_c</span>
-<span class="dim">├─ </span><span class="cls pv">daObjBk_Dossunbar_c</span>
-<span class="dim">├─ </span><span class="cls pv">daObjBk_Kabe_c</span>
-<span class="dim">├─ </span><span class="cls pv">daObjBk_Lift_c</span>
-<span class="dim">├─ </span><span class="cls pv">daObjBk_Rotebar_c</span>
-<span class="dim">├─ </span><span class="cls pv">daObjBlockL_c</span>
-<span class="dim">├─ </span><span class="cls pv">daObjBlockS_c</span>
-<span class="dim">├─ </span><span class="cls pv">daObjC0Water_c</span>
-<span class="dim">├─ </span><span class="cls pv">daObjC0_Switch_c</span>
-<span class="dim">├─ </span><span class="cls pv">daObjC1_Trap_c</span>
-<span class="dim">├─ </span><span class="cls pv">daObjCannonShutter_c</span>
-<span class="dim">├─ </span><span class="cls pv">daObjCasket_c</span>
-<span class="dim">├─ </span><span class="cls pv">daObjCtKaitendai_c</span>
-<span class="dim">├─ </span><span class="cls pv">daObjCtMecha03_c</span>
-<span class="dim">├─ </span><span class="cls pv">daObjCtMecha04_c</span>
-<span class="dim">├─ </span><span class="cls pv">daObjCtMecha05_c</span>
-<span class="dim">├─ </span><span class="cls pv">daObjCtMecha08_c</span>
-<span class="dim">├─ </span><span class="cls pv">daObjCtMecha09_c</span>
-<span class="dim">├─ </span><span class="cls pv">daObjCtMecha10_c</span>
-<span class="dim">├─ </span><span class="cls pv">daObjCtMecha11_c</span>
-<span class="dim">├─ </span><span class="cls pv">daObjCtRotateBlock_c</span>
-<span class="dim">├─ </span><span class="cls pv">daObjCvNewsLift_c</span>
-<span class="dim">├─ </span><span class="cls pv">daObjDlPyramid_c</span>
-<span class="dim">├─ </span><span class="cls pv">daObjDpBrock_c</span>
-<span class="dim">├─ </span><span class="cls pv">daObjEmmLog_c</span>
-<span class="dim">├─ </span><span class="cls pv">daObjEmmYuka_c</span>
-<span class="dim">├─ </span><span class="cls pv">daObjEwbIce_c</span>
-<span class="dim">├─ </span><span class="cls pv">daObjEwmIceBlock_c</span>
-<span class="dim">├─ </span><span class="cls pv">daObjFl_Amilift_c</span>
-<span class="dim">├─ </span><span class="cls pv">daObjFl_Block_c</span>
-<span class="dim">├─ </span><span class="cls pv">daObjFl_KomaU_c</span>
-<span class="dim">├─ </span><span class="cls pv">daObjFl_London_c</span>
-<span class="dim">├─ </span><span class="cls pv">daObjFl_Puzzle_c</span>
-<span class="dim">├─ </span><span class="cls pv">daObjFl_Ring_c</span>
-<span class="dim">├─ </span><span class="cls pv">daObjFl_Seesaw_c</span>
-<span class="dim">├─ </span><span class="cls pv">daObjFl_UkiKi_c</span>
-<span class="dim">├─ </span><span class="cls pv">daObjFm_Battan_c</span>
-<span class="dim">├─ </span><span class="cls pv">daObjHatenaBlock_c</span>
-<span class="dim">├─ </span><span class="cls pv">daObjHatenaSwitch_c</span>
-<span class="dim">├─ </span><span class="cls pv">daObjHmBskt_c</span>
-<span class="dim">├─ </span><span class="cls pv">daObjIceBlock_c</span>
-<span class="dim">├─ </span><span class="cls pv">daObjIceBoard_c</span>
-<span class="dim">├─ </span><span class="cls pv">daObjKanban_c</span>
-<span class="dim">├─ </span><span class="cls pv">daObjKi_Fune_c</span>
-<span class="dim">├─ </span><span class="cls pv">daObjKi_Hasira_c</span>
-<span class="dim">├─ </span><span class="cls pv">daObjKm1_Ukishima_c</span>
-<span class="dim">├─ </span><span class="cls pv">daObjKm2_Agaru_c</span>
-<span class="dim">├─ </span><span class="cls pv">daObjKm2_Ami_Bou_c</span>
-<span class="dim">├─ </span><span class="cls pv">daObjKsWater_c</span>
-<span class="dim">├─ </span><span class="cls pv">daObjMcWater_c</span>
-<span class="dim">├─ </span><span class="cls pv">daObjMc_Metalnet_c</span>
-<span class="dim">├─ </span><span class="cls pv">daObjPile_c</span>
-<span class="dim">├─ </span><span class="cls pv">daObjPushblock_c</span>
-<span class="dim">├─ </span><span class="cls pv">daObjRcBuranko_c</span>
-<span class="dim">├─ </span><span class="cls pv">daObjRc_Guruguru_c</span>
-<span class="dim">├─ </span><span class="cls pv">daObjRc_Tikuwa_c</span>
-<span class="dim">├─ </span><span class="cls pv">daObjRotateUpdownLift_c</span>
-<span class="dim">├─ </span><span class="cls pv">daObjSeesaw_c</span>
-<span class="dim">├─ </span><span class="cls pv">daObjSimpleBg_c</span>
-<span class="dim">├─ </span><span class="cls pv">daObjSimpleLift_c</span>
-<span class="dim">├─ </span><span class="cls pv">daObjSlIceBlock_c</span>
-<span class="dim">├─ </span><span class="cls pv">daObjSm_Lift_c</span>
-<span class="dim">├─ </span><span class="cls pv">daObjSwitch_c</span>
-<span class="dim">├─ </span><span class="cls pv">daObjTatefuda_c</span>
-<span class="dim">├─ </span><span class="cls pv">daObjTdFuta_c</span>
-<span class="dim">├─ </span><span class="cls pv">daObjTdWater_c</span>
-<span class="dim">├─ </span><span class="cls pv">daObjTtFuta_c</span>
-<span class="dim">├─ </span><span class="cls pv">daObjTtWater_c</span>
-<span class="dim">├─ </span><span class="cls pv">daObjWanwanShutter_c</span>
-<span class="dim">├─ </span><span class="cls pv">daObjWc_Mizu_c</span>
-<span class="dim">├─ </span><span class="cls pv">daObjWc_Obj02_c</span>
-<span class="dim">├─ </span><span class="cls pv">daObjWc_Obj04_c</span>
-<span class="dim">├─ </span><span class="cls pv">daObjWc_Obj05_c</span>
-<span class="dim">├─ </span><span class="cls pv">daObjWlKoopaShutter_c</span>
-<span class="dim">├─ </span><span class="cls pv">daObjWlSubmarine_c</span>
-<span class="dim">├─ </span><span class="cls pv">daObjYajirusi_c</span>
-<span class="dim">├─ </span><span class="cls pv">daOnms_c</span>
-<span class="dim">├─ </span><span class="cls pv">daPgDfdr_c</span>
-<span class="dim">├─ </span><span class="cls pv">daPiano_c</span>
-<span class="dim">├─ </span><span class="cls pv">daSlide_Box_c</span>
-<span class="dim">└─ </span><span class="cls pv">daUdlift_c</span>
+<details><summary>dBgActor_c — 101 direct children, 132 in the subtree</summary><div class="tree"><span class="dim"></span><a class="cls pv" href="class-reference.html#c-dBgActor_c">dBgActor_c</a><span class="cnt">  132 below</span>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjKaitendai_c">daObjKaitendai_c</a><span class="cnt">  5 below</span>
+│  <span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjBk_Ukisima_c">daObjBk_Ukisima_c</a>
+│  <span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjFl_Koma_D_c">daObjFl_Koma_D_c</a>
+│  <span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjKm3_Kaitendai_c">daObjKm3_Kaitendai_c</a>
+│  <span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjRc_Kaitendai_c">daObjRc_Kaitendai_c</a>
+│  <span class="dim">└─ </span><a class="cls pv" href="class-reference.html#c-daObjWc_Obj07_c">daObjWc_Obj07_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjFallBlock_c">daObjFallBlock_c</a><span class="cnt">  4 below</span>
+│  <span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjBk_Fall_Block_c">daObjBk_Fall_Block_c</a>
+│  <span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjFl_Fall_Block_c">daObjFl_Fall_Block_c</a>
+│  <span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjKm2_Fall_Block_c">daObjKm2_Fall_Block_c</a>
+│  <span class="dim">└─ </span><a class="cls pv" href="class-reference.html#c-daObjTh_Fall_Block_c">daObjTh_Fall_Block_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjDorifu_c">daObjDorifu_c</a><span class="cnt">  3 below</span>
+│  <span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjKm1_Dorifu_c">daObjKm1_Dorifu_c</a>
+│  <span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjKm3_Dorifu_c">daObjKm3_Dorifu_c</a>
+│  <span class="dim">└─ </span><a class="cls pv" href="class-reference.html#c-daObjRc_Dorifu_c">daObjRc_Dorifu_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjFloatBoard_c">daObjFloatBoard_c</a><span class="cnt">  3 below</span>
+│  <span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjKi_Ita_c">daObjKi_Ita_c</a>
+│  <span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjWcObj01_c">daObjWcObj01_c</a>
+│  <span class="dim">└─ </span><a class="cls pv" href="class-reference.html#c-daObjWcObj06_c">daObjWcObj06_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-dPathLiftActor_c">dPathLiftActor_c</a><span class="cnt">  2 below</span>
+│  <span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjPathLift_c">daObjPathLift_c</a>
+│  <span class="dim">└─ </span><a class="cls pv" href="class-reference.html#c-daObjRcCarpet_c">daObjRcCarpet_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daDsnBase_c">daDsnBase_c</a><span class="cnt">  2 below</span>
+│  <span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daDkk_c">daDkk_c</a>
+│  <span class="dim">└─ </span><a class="cls pv" href="class-reference.html#c-daDsn_c">daDsn_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjGuragura_c">daObjGuragura_c</a><span class="cnt">  2 below</span>
+│  <span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjFl_Gura_c">daObjFl_Gura_c</a>
+│  <span class="dim">└─ </span><a class="cls pv" href="class-reference.html#c-daObjKm2_Gura_c">daObjKm2_Gura_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjKuruma_c">daObjKuruma_c</a><span class="cnt">  2 below</span>
+│  <span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjKm1_Kuruma_c">daObjKm1_Kuruma_c</a>
+│  <span class="dim">└─ </span><a class="cls pv" href="class-reference.html#c-daObjKm3_Kuruma_c">daObjKm3_Kuruma_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjKurumajiku_c">daObjKurumajiku_c</a><span class="cnt">  2 below</span>
+│  <span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjKm1_Kurumajiku_c">daObjKm1_Kurumajiku_c</a>
+│  <span class="dim">└─ </span><a class="cls pv" href="class-reference.html#c-daObjKm3_Kurumajiku_c">daObjKm3_Kurumajiku_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjMaruta_c">daObjMaruta_c</a><span class="cnt">  2 below</span>
+│  <span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjFlMaruta_c">daObjFlMaruta_c</a>
+│  <span class="dim">└─ </span><a class="cls pv" href="class-reference.html#c-daObjHmMaruta_c">daObjHmMaruta_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjSwdoor_c">daObjSwdoor_c</a><span class="cnt">  2 below</span>
+│  <span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjBSwdoor_c">daObjBSwdoor_c</a>
+│  <span class="dim">└─ </span><a class="cls pv" href="class-reference.html#c-daObjCvShutter_c">daObjCvShutter_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjUkiyuka_c">daObjUkiyuka_c</a><span class="cnt">  2 below</span>
+│  <span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjFl_Ukiyuka_c">daObjFl_Ukiyuka_c</a>
+│  <span class="dim">└─ </span><a class="cls pv" href="class-reference.html#c-daObjKm2_Ukishima_c">daObjKm2_Ukishima_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daDgr_c">daDgr_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daDpLift_c">daDpLift_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daIwante_c">daIwante_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daKpa2Bg_c">daKpa2Bg_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daKpa3Bg_c">daKpa3Bg_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daLinelift2_c">daLinelift2_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjBC_Switch_c">daObjBC_Switch_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjBkKillerdai_c">daObjBkKillerdai_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjBk_Botaosi_c">daObjBk_Botaosi_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjBk_Dossunbar_c">daObjBk_Dossunbar_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjBk_Kabe_c">daObjBk_Kabe_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjBk_Lift_c">daObjBk_Lift_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjBk_Rotebar_c">daObjBk_Rotebar_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjBlockL_c">daObjBlockL_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjBlockS_c">daObjBlockS_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjC0Water_c">daObjC0Water_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjC0_Switch_c">daObjC0_Switch_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjC1_Trap_c">daObjC1_Trap_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjCannonShutter_c">daObjCannonShutter_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjCasket_c">daObjCasket_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjCtKaitendai_c">daObjCtKaitendai_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjCtMecha03_c">daObjCtMecha03_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjCtMecha04_c">daObjCtMecha04_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjCtMecha05_c">daObjCtMecha05_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjCtMecha08_c">daObjCtMecha08_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjCtMecha09_c">daObjCtMecha09_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjCtMecha10_c">daObjCtMecha10_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjCtMecha11_c">daObjCtMecha11_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjCtRotateBlock_c">daObjCtRotateBlock_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjCvNewsLift_c">daObjCvNewsLift_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjDlPyramid_c">daObjDlPyramid_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjDpBrock_c">daObjDpBrock_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjEmmLog_c">daObjEmmLog_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjEmmYuka_c">daObjEmmYuka_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjEwbIce_c">daObjEwbIce_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjEwmIceBlock_c">daObjEwmIceBlock_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjFl_Amilift_c">daObjFl_Amilift_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjFl_Block_c">daObjFl_Block_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjFl_KomaU_c">daObjFl_KomaU_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjFl_London_c">daObjFl_London_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjFl_Puzzle_c">daObjFl_Puzzle_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjFl_Ring_c">daObjFl_Ring_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjFl_Seesaw_c">daObjFl_Seesaw_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjFl_UkiKi_c">daObjFl_UkiKi_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjFm_Battan_c">daObjFm_Battan_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjHatenaBlock_c">daObjHatenaBlock_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjHatenaSwitch_c">daObjHatenaSwitch_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjHmBskt_c">daObjHmBskt_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjIceBlock_c">daObjIceBlock_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjIceBoard_c">daObjIceBoard_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjKanban_c">daObjKanban_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjKi_Fune_c">daObjKi_Fune_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjKi_Hasira_c">daObjKi_Hasira_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjKm1_Ukishima_c">daObjKm1_Ukishima_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjKm2_Agaru_c">daObjKm2_Agaru_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjKm2_Ami_Bou_c">daObjKm2_Ami_Bou_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjKsWater_c">daObjKsWater_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjMcWater_c">daObjMcWater_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjMc_Metalnet_c">daObjMc_Metalnet_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjPile_c">daObjPile_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjPushblock_c">daObjPushblock_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjRcBuranko_c">daObjRcBuranko_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjRc_Guruguru_c">daObjRc_Guruguru_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjRc_Tikuwa_c">daObjRc_Tikuwa_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjRotateUpdownLift_c">daObjRotateUpdownLift_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjSeesaw_c">daObjSeesaw_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjSimpleBg_c">daObjSimpleBg_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjSimpleLift_c">daObjSimpleLift_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjSlIceBlock_c">daObjSlIceBlock_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjSm_Lift_c">daObjSm_Lift_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjSwitch_c">daObjSwitch_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjTatefuda_c">daObjTatefuda_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjTdFuta_c">daObjTdFuta_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjTdWater_c">daObjTdWater_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjTtFuta_c">daObjTtFuta_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjTtWater_c">daObjTtWater_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjWanwanShutter_c">daObjWanwanShutter_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjWc_Mizu_c">daObjWc_Mizu_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjWc_Obj02_c">daObjWc_Obj02_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjWc_Obj04_c">daObjWc_Obj04_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjWc_Obj05_c">daObjWc_Obj05_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjWlKoopaShutter_c">daObjWlKoopaShutter_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjWlSubmarine_c">daObjWlSubmarine_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjYajirusi_c">daObjYajirusi_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daOnms_c">daOnms_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daPgDfdr_c">daPgDfdr_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daPiano_c">daPiano_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daSlide_Box_c">daSlide_Box_c</a>
+<span class="dim">└─ </span><a class="cls pv" href="class-reference.html#c-daUdlift_c">daUdlift_c</a>
 <span class="inf">├┈ BowserFireSeaArena</span><span class="cnt">  inferred · high</span>
 <span class="inf">├┈ HugeWater</span><span class="cnt">  inferred · high</span>
 <span class="inf">├┈ IceBlock</span><span class="cnt">  inferred · high</span>
@@ -325,67 +346,67 @@ footer{margin-top:72px; padding-top:18px; border-top:1.5px solid var(--ink);
 <span class="inf">├┈ daDsnBase_c</span><span class="cnt">  inferred · high</span>
 <span class="inf">├┈ daObjFallBlock_c</span><span class="cnt">  inferred · high</span>
 <span class="inf">└┈ daObjMaruta_c</span><span class="cnt">  inferred · high</span></div></details>
-<details><summary>dEnemyBase_c — 55 direct children, 60 in the subtree</summary><div class="tree"><span class="dim"></span><span class="cls pv">dEnemyBase_c</span><span class="cnt">  60 below</span>
-<span class="dim">├─ </span><span class="cls pv">daOts_c</span><span class="cnt">  3 below</span>
-│  <span class="dim">├─ </span><span class="cls pv">daBDonketu_c</span>
-│  <span class="dim">├─ </span><span class="cls pv">daDonketu_c</span>
-│  <span class="dim">└─ </span><span class="cls pv">daIDonketu_c</span>
-<span class="dim">├─ </span><span class="cls pv">dCapEnemy_c</span><span class="cnt">  2 below</span>
-│  <span class="dim">├─ </span><span class="cls pv">daKrb_c</span>
-│  <span class="dim">└─ </span><span class="cls pv">daTrs_c</span>
-<span class="dim">├─ </span><span class="cls pv">da1up_c</span>
-<span class="dim">├─ </span><span class="cls pv">daBakubaku_c</span>
-<span class="dim">├─ </span><span class="cls pv">daBasabasa_c</span>
-<span class="dim">├─ </span><span class="cls pv">daBbl_c</span>
-<span class="dim">├─ </span><span class="cls pv">daBmb_c</span>
-<span class="dim">├─ </span><span class="cls pv">daBombking_c</span>
-<span class="dim">├─ </span><span class="cls pv">daBook_c</span>
-<span class="dim">├─ </span><span class="cls pv">daBtn_c</span>
-<span class="dim">├─ </span><span class="cls pv">daC_Jugem_c</span>
-<span class="dim">├─ </span><span class="cls pv">daChoro_Rock_c</span>
-<span class="dim">├─ </span><span class="cls pv">daFPknBall_c</span>
-<span class="dim">├─ </span><span class="cls pv">daFPkn_c</span>
-<span class="dim">├─ </span><span class="cls pv">daGrock_c</span>
-<span class="dim">├─ </span><span class="cls pv">daHanachan_c</span>
-<span class="dim">├─ </span><span class="cls pv">daHolhei_c</span>
-<span class="dim">├─ </span><span class="cls pv">daHuwa_c</span>
-<span class="dim">├─ </span><span class="cls pv">daHyuhyu_c</span>
-<span class="dim">├─ </span><span class="cls pv">daIbl_c</span>
-<span class="dim">├─ </span><span class="cls pv">daJango_c</span>
-<span class="dim">├─ </span><span class="cls pv">daKing_Donketu_c</span>
-<span class="dim">├─ </span><span class="cls pv">daKlr_c</span>
-<span class="dim">├─ </span><span class="cls pv">daKpaFire_c</span>
-<span class="dim">├─ </span><span class="cls pv">daKuriKing_c</span>
-<span class="dim">├─ </span><span class="cls pv">daManta_c</span>
-<span class="dim">├─ </span><span class="cls pv">daMenbo_c</span>
-<span class="dim">├─ </span><span class="cls pv">daMip_c</span>
-<span class="dim">├─ </span><span class="cls pv">daMoray_c</span>
-<span class="dim">├─ </span><span class="cls pv">daNknk_c</span>
-<span class="dim">├─ </span><span class="cls pv">daObjKey_c</span>
-<span class="dim">├─ </span><span class="cls pv">daObjMarioCap_c</span>
-<span class="dim">├─ </span><span class="cls pv">daObj_Mip_Key_c</span>
-<span class="dim">├─ </span><span class="cls pv">daOwl_c</span>
-<span class="dim">├─ </span><span class="cls pv">daPkn_c</span>
-<span class="dim">├─ </span><span class="cls pv">daPopoi_c</span>
-<span class="dim">├─ </span><span class="cls pv">daPropeller_Heyho_Fire_c</span>
-<span class="dim">├─ </span><span class="cls pv">daPropeller_Heyho_c</span>
-<span class="dim">├─ </span><span class="cls pv">daPukupuku_c</span>
-<span class="dim">├─ </span><span class="cls pv">daRNk_c</span>
-<span class="dim">├─ </span><span class="cls pv">daShark_c</span>
-<span class="dim">├─ </span><span class="cls pv">daShl_c</span>
-<span class="dim">├─ </span><span class="cls pv">daSnowball_c</span>
-<span class="dim">├─ </span><span class="cls pv">daSnowman_c</span>
-<span class="dim">├─ </span><span class="cls pv">daStar_c</span>
-<span class="dim">├─ </span><span class="cls pv">daTBasket_c</span>
-<span class="dim">├─ </span><span class="cls pv">daWanwan2_c</span>
-<span class="dim">├─ </span><span class="cls pv">daWanwan_c</span>
-<span class="dim">├─ </span><span class="cls pv">daWater_Hakidasi_c</span>
-<span class="dim">├─ </span><span class="cls pv">daWater_Ring_c</span>
-<span class="dim">├─ </span><span class="cls pv">daWater_Suikomi_c</span>
-<span class="dim">├─ </span><span class="cls pv">daWater_Tatumaki_c</span>
-<span class="dim">├─ </span><span class="cls pv">daWbm_c</span>
-<span class="dim">├─ </span><span class="cls pv">daYegg_c</span>
-<span class="dim">└─ </span><span class="cls pv">daYurei_Mucho_c</span>
+<details><summary>dEnemyBase_c — 55 direct children, 60 in the subtree</summary><div class="tree"><span class="dim"></span><a class="cls pv" href="class-reference.html#c-dEnemyBase_c">dEnemyBase_c</a><span class="cnt">  60 below</span>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daOts_c">daOts_c</a><span class="cnt">  3 below</span>
+│  <span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daBDonketu_c">daBDonketu_c</a>
+│  <span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daDonketu_c">daDonketu_c</a>
+│  <span class="dim">└─ </span><a class="cls pv" href="class-reference.html#c-daIDonketu_c">daIDonketu_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-dCapEnemy_c">dCapEnemy_c</a><span class="cnt">  2 below</span>
+│  <span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daKrb_c">daKrb_c</a>
+│  <span class="dim">└─ </span><a class="cls pv" href="class-reference.html#c-daTrs_c">daTrs_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-da1up_c">da1up_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daBakubaku_c">daBakubaku_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daBasabasa_c">daBasabasa_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daBbl_c">daBbl_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daBmb_c">daBmb_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daBombking_c">daBombking_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daBook_c">daBook_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daBtn_c">daBtn_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daC_Jugem_c">daC_Jugem_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daChoro_Rock_c">daChoro_Rock_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daFPknBall_c">daFPknBall_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daFPkn_c">daFPkn_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daGrock_c">daGrock_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daHanachan_c">daHanachan_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daHolhei_c">daHolhei_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daHuwa_c">daHuwa_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daHyuhyu_c">daHyuhyu_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daIbl_c">daIbl_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daJango_c">daJango_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daKing_Donketu_c">daKing_Donketu_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daKlr_c">daKlr_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daKpaFire_c">daKpaFire_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daKuriKing_c">daKuriKing_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daManta_c">daManta_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daMenbo_c">daMenbo_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daMip_c">daMip_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daMoray_c">daMoray_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daNknk_c">daNknk_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjKey_c">daObjKey_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObjMarioCap_c">daObjMarioCap_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daObj_Mip_Key_c">daObj_Mip_Key_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daOwl_c">daOwl_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daPkn_c">daPkn_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daPopoi_c">daPopoi_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daPropeller_Heyho_Fire_c">daPropeller_Heyho_Fire_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daPropeller_Heyho_c">daPropeller_Heyho_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daPukupuku_c">daPukupuku_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daRNk_c">daRNk_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daShark_c">daShark_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daShl_c">daShl_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daSnowball_c">daSnowball_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daSnowman_c">daSnowman_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daStar_c">daStar_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daTBasket_c">daTBasket_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daWanwan2_c">daWanwan2_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daWanwan_c">daWanwan_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daWater_Hakidasi_c">daWater_Hakidasi_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daWater_Ring_c">daWater_Ring_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daWater_Suikomi_c">daWater_Suikomi_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daWater_Tatumaki_c">daWater_Tatumaki_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daWbm_c">daWbm_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-daYegg_c">daYegg_c</a>
+<span class="dim">└─ </span><a class="cls pv" href="class-reference.html#c-daYurei_Mucho_c">daYurei_Mucho_c</a>
 <span class="inf">├┈ BooCage</span><span class="cnt">  inferred · high</span>
 <span class="inf">├┈ Bullet</span><span class="cnt">  inferred · high</span>
 <span class="inf">├┈ Chuckya</span><span class="cnt">  inferred · high</span>
@@ -405,53 +426,53 @@ footer{margin-top:72px; padding-top:18px; border-top:1.5px solid var(--ink);
 <span class="inf">├┈ WaterRing</span><span class="cnt">  inferred · high</span>
 <span class="inf">├┈ Whirlpool</span><span class="cnt">  inferred · high</span>
 <span class="inf">└┈ daOts_c</span><span class="cnt">  inferred · high</span></div></details>
-<details><summary>dScMgBase_c — 15 direct children, 32 in the subtree</summary><div class="tree"><span class="dim"></span><span class="cls pv">dScMgBase_c</span><span class="cnt">  32 below</span>
-<span class="dim">├─ </span><span class="cls pv">dScMgSingle3DBase_c</span><span class="cnt">  13 below</span>
-│  <span class="dim">├─ </span><span class="cls pv">dScMg3DEsp_c</span>
-│  <span class="dim">├─ </span><span class="cls pv">dScMgBSC_c</span>
-│  <span class="dim">├─ </span><span class="cls pv">dScMgCard_c</span>
-│  <span class="dim">├─ </span><span class="cls pv">dScMgCup_c</span>
-│  <span class="dim">├─ </span><span class="cls pv">dScMgFlower_c</span>
-│  <span class="dim">├─ </span><span class="cls pv">dScMgMCarlo2_c</span>
-│  <span class="dim">├─ </span><span class="cls pv">dScMgMCarlo_c</span>
-│  <span class="dim">├─ </span><span class="cls pv">dScMgMemory2_c</span>
-│  <span class="dim">├─ </span><span class="cls pv">dScMgMemory_c</span>
-│  <span class="dim">├─ </span><span class="cls pv">dScMgRoulette_c</span>
-│  <span class="dim">├─ </span><span class="cls pv">dScMgSlot3_c</span>
-│  <span class="dim">├─ </span><span class="cls pv">dScMgSnowball_c</span>
-│  <span class="dim">└─ </span><span class="cls pv">dScMgSound_c</span>
-<span class="dim">├─ </span><span class="cls pv">dScMgD3DBase_c</span><span class="cnt">  4 below</span>
-│  <span class="dim">├─ </span><span class="cls pv">dScMgJump2_c</span>
-│  <span class="dim">├─ </span><span class="cls pv">dScMgJump_c</span>
-│  <span class="dim">├─ </span><span class="cls pv">dScMgTrampoline2_c</span>
-│  <span class="dim">└─ </span><span class="cls pv">dScMgTrampoline_c</span>
-<span class="dim">├─ </span><span class="cls pv">dScMgAmida_c</span>
-<span class="dim">├─ </span><span class="cls pv">dScMgBomroom_c</span>
-<span class="dim">├─ </span><span class="cls pv">dScMgCoin_c</span>
-<span class="dim">├─ </span><span class="cls pv">dScMgCurling2_c</span>
-<span class="dim">├─ </span><span class="cls pv">dScMgCurling_c</span>
-<span class="dim">├─ </span><span class="cls pv">dScMgHanachan_c</span>
-<span class="dim">├─ </span><span class="cls pv">dScMgLuigi_c</span>
-<span class="dim">├─ </span><span class="cls pv">dScMgPachinko2_c</span>
-<span class="dim">├─ </span><span class="cls pv">dScMgPachinko_c</span>
-<span class="dim">├─ </span><span class="cls pv">dScMgPanel_c</span>
-<span class="dim">├─ </span><span class="cls pv">dScMgSlot1_c</span>
-<span class="dim">├─ </span><span class="cls pv">dScMgSmartball_c</span>
-<span class="dim">└─ </span><span class="cls pv">dScMgTeresa_c</span></div></details>
+<details><summary>dScMgBase_c — 15 direct children, 32 in the subtree</summary><div class="tree"><span class="dim"></span><a class="cls pv" href="class-reference.html#c-dScMgBase_c">dScMgBase_c</a><span class="cnt">  32 below</span>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-dScMgSingle3DBase_c">dScMgSingle3DBase_c</a><span class="cnt">  13 below</span>
+│  <span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-dScMg3DEsp_c">dScMg3DEsp_c</a>
+│  <span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-dScMgBSC_c">dScMgBSC_c</a>
+│  <span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-dScMgCard_c">dScMgCard_c</a>
+│  <span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-dScMgCup_c">dScMgCup_c</a>
+│  <span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-dScMgFlower_c">dScMgFlower_c</a>
+│  <span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-dScMgMCarlo2_c">dScMgMCarlo2_c</a>
+│  <span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-dScMgMCarlo_c">dScMgMCarlo_c</a>
+│  <span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-dScMgMemory2_c">dScMgMemory2_c</a>
+│  <span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-dScMgMemory_c">dScMgMemory_c</a>
+│  <span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-dScMgRoulette_c">dScMgRoulette_c</a>
+│  <span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-dScMgSlot3_c">dScMgSlot3_c</a>
+│  <span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-dScMgSnowball_c">dScMgSnowball_c</a>
+│  <span class="dim">└─ </span><a class="cls pv" href="class-reference.html#c-dScMgSound_c">dScMgSound_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-dScMgD3DBase_c">dScMgD3DBase_c</a><span class="cnt">  4 below</span>
+│  <span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-dScMgJump2_c">dScMgJump2_c</a>
+│  <span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-dScMgJump_c">dScMgJump_c</a>
+│  <span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-dScMgTrampoline2_c">dScMgTrampoline2_c</a>
+│  <span class="dim">└─ </span><a class="cls pv" href="class-reference.html#c-dScMgTrampoline_c">dScMgTrampoline_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-dScMgAmida_c">dScMgAmida_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-dScMgBomroom_c">dScMgBomroom_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-dScMgCoin_c">dScMgCoin_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-dScMgCurling2_c">dScMgCurling2_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-dScMgCurling_c">dScMgCurling_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-dScMgHanachan_c">dScMgHanachan_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-dScMgLuigi_c">dScMgLuigi_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-dScMgPachinko2_c">dScMgPachinko2_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-dScMgPachinko_c">dScMgPachinko_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-dScMgPanel_c">dScMgPanel_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-dScMgSlot1_c">dScMgSlot1_c</a>
+<span class="dim">├─ </span><a class="cls pv" href="class-reference.html#c-dScMgSmartball_c">dScMgSmartball_c</a>
+<span class="dim">└─ </span><a class="cls pv" href="class-reference.html#c-dScMgTeresa_c">dScMgTeresa_c</a></div></details>
 </section><section><div class="sec-h"><span class="sec-n">§4</span><h2>Where a class has two parents</h2></div>
 <p>Exactly 6 classes use multiple inheritance, and the ROM records the byte offset of each base subobject. The base at <code>+0x0</code> is the primary — and it is <em>not</em> always the first one listed, which is a trap that has already cost this project one wrong reading.</p>
-<figure><svg viewBox="0 0 900 448" role="img" aria-label="Base subobject offsets for the six classes with multiple inheritance"><text x="0" y="16" font-size="11" font-weight="700" letter-spacing="1.3" fill="var(--mute)">DERIVED CLASS</text><text x="210" y="16" font-size="11" font-weight="700" letter-spacing="1.3" fill="var(--mute)">BASE SUBOBJECTS, PLACED AT THEIR RECORDED OFFSET</text><line x1="0" y1="26" x2="900" y2="26" stroke="var(--rule)"/><text x="0" y="50" font-size="13" font-family="var(--mono)" font-weight="600" fill="var(--ink)">dBgCh_Lin</text><rect x="210.0" y="32" width="64.0" height="24" rx="2" fill="var(--proven-bg)" stroke="var(--proven)" stroke-width="1.6"/><text x="218.0" y="48" font-size="11.5" font-family="var(--mono)" fill="var(--proven)">dBgCh</text><text x="210.0" y="27" font-size="10" font-family="var(--mono)" fill="var(--mute)">+0x0</text><rect x="243.6" y="32" width="64.0" height="24" rx="2" fill="none" stroke="var(--proven)" stroke-width="1"/><text x="251.6" y="48" font-size="11.5" font-family="var(--mono)" fill="var(--proven)">dBgPi</text><text x="243.6" y="27" font-size="10" font-family="var(--mono)" fill="var(--mute)">+0x10</text><rect x="327.6" y="32" width="75.2" height="24" rx="2" fill="none" stroke="var(--proven)" stroke-width="1"/><text x="335.6" y="48" font-size="11.5" font-family="var(--mono)" fill="var(--proven)">dM3dGLin</text><text x="327.6" y="27" font-size="10" font-family="var(--mono)" fill="var(--mute)">+0x38</text><line x1="0" y1="68" x2="900" y2="68" stroke="var(--rule-soft)"/><text x="0" y="114" font-size="13" font-family="var(--mono)" font-weight="600" fill="var(--ink)">dBgCh_SphCrr</text><rect x="210.0" y="96" width="64.0" height="24" rx="2" fill="var(--proven-bg)" stroke="var(--proven)" stroke-width="1.6"/><text x="218.0" y="112" font-size="11.5" font-family="var(--mono)" fill="var(--proven)">dBgCh</text><text x="210.0" y="91" font-size="10" font-family="var(--mono)" fill="var(--mute)">+0x0</text><rect x="243.6" y="96" width="64.0" height="24" rx="2" fill="none" stroke="var(--proven)" stroke-width="1"/><text x="251.6" y="112" font-size="11.5" font-family="var(--mono)" fill="var(--proven)">dBgPi</text><text x="243.6" y="91" font-size="10" font-family="var(--mono)" fill="var(--mute)">+0x10</text><rect x="327.6" y="96" width="75.2" height="24" rx="2" fill="none" stroke="var(--proven)" stroke-width="1"/><text x="335.6" y="112" font-size="11.5" font-family="var(--mono)" fill="var(--proven)">dM3dGSph</text><text x="327.6" y="91" font-size="10" font-family="var(--mono)" fill="var(--mute)">+0x38</text><line x1="0" y1="132" x2="900" y2="132" stroke="var(--rule-soft)"/><text x="0" y="178" font-size="13" font-family="var(--mono)" font-weight="600" fill="var(--ink)">dBgCh_Gnd</text><rect x="210.0" y="160" width="64.0" height="24" rx="2" fill="var(--proven-bg)" stroke="var(--proven)" stroke-width="1.6"/><text x="218.0" y="176" font-size="11.5" font-family="var(--mono)" fill="var(--proven)">dBgCh</text><text x="210.0" y="155" font-size="10" font-family="var(--mono)" fill="var(--mute)">+0x0</text><rect x="243.6" y="160" width="64.0" height="24" rx="2" fill="none" stroke="var(--proven)" stroke-width="1"/><text x="251.6" y="176" font-size="11.5" font-family="var(--mono)" fill="var(--proven)">dBgPi</text><text x="243.6" y="155" font-size="10" font-family="var(--mono)" fill="var(--mute)">+0x10</text><line x1="0" y1="196" x2="900" y2="196" stroke="var(--rule-soft)"/><text x="0" y="242" font-size="13" font-family="var(--mono)" font-weight="600" fill="var(--ink)">dExtAnmModel_c</text><rect x="210.0" y="224" width="141.8" height="24" rx="2" fill="var(--proven-bg)" stroke="var(--proven)" stroke-width="1.6"/><text x="218.0" y="240" font-size="11.5" font-family="var(--mono)" fill="var(--proven)">dExtSimpleModel_c</text><text x="210.0" y="219" font-size="10" font-family="var(--mono)" fill="var(--mute)">+0x0</text><rect x="378.0" y="224" width="127.0" height="24" rx="2" fill="none" stroke="var(--proven)" stroke-width="1"/><text x="386.0" y="240" font-size="11.5" font-family="var(--mono)" fill="var(--proven)">dExtFrameCtrl_c</text><text x="378.0" y="219" font-size="10" font-family="var(--mono)" fill="var(--mute)">+0x50</text><line x1="0" y1="260" x2="900" y2="260" stroke="var(--rule-soft)"/><text x="0" y="306" font-size="13" font-family="var(--mono)" font-weight="600" fill="var(--ink)">daDemo_c::anmModel_c</text><rect x="210.0" y="288" width="119.6" height="24" rx="2" fill="var(--proven-bg)" stroke="var(--proven)" stroke-width="1.6"/><text x="218.0" y="304" font-size="11.5" font-family="var(--mono)" fill="var(--proven)">dExtAnmModel_c</text><text x="210.0" y="283" font-size="10" font-family="var(--mono)" fill="var(--mute)">+0x0</text><rect x="420.0" y="288" width="141.8" height="24" rx="2" fill="none" stroke="var(--proven)" stroke-width="1"/><text x="428.0" y="304" font-size="11.5" font-family="var(--mono)" fill="var(--proven)">daDemo_c::param_c</text><text x="420.0" y="283" font-size="10" font-family="var(--mono)" fill="var(--mute)">+0x64</text><line x1="0" y1="324" x2="900" y2="324" stroke="var(--rule-soft)"/><text x="0" y="370" font-size="13" font-family="var(--mono)" font-weight="600" fill="var(--ink)">daDemo_c::simpleModel_c</text><rect x="210.0" y="352" width="141.8" height="24" rx="2" fill="var(--proven-bg)" stroke="var(--proven)" stroke-width="1.6"/><text x="218.0" y="368" font-size="11.5" font-family="var(--mono)" fill="var(--proven)">dExtSimpleModel_c</text><text x="210.0" y="347" font-size="10" font-family="var(--mono)" fill="var(--mute)">+0x0</text><rect x="378.0" y="352" width="141.8" height="24" rx="2" fill="none" stroke="var(--proven)" stroke-width="1"/><text x="386.0" y="368" font-size="11.5" font-family="var(--mono)" fill="var(--proven)">daDemo_c::param_c</text><text x="378.0" y="347" font-size="10" font-family="var(--mono)" fill="var(--mute)">+0x50</text><line x1="0" y1="388" x2="900" y2="388" stroke="var(--rule-soft)"/></svg><figcaption>Base subobjects drawn at their recorded offsets. The filled box is the primary base at offset 0. <code>dExtAnmModel_c</code> lists <code>dExtFrameCtrl_c</code> (+0x50) before <code>dExtSimpleModel_c</code> (+0x0): list order is not offset order.</figcaption></figure>
+<figure><svg viewBox="0 0 900 448" role="img" aria-label="Base subobject offsets for the six classes with multiple inheritance"><text x="0" y="16" font-size="11" font-weight="700" letter-spacing="1.3" fill="var(--mute)">DERIVED CLASS</text><text x="210" y="16" font-size="11" font-weight="700" letter-spacing="1.3" fill="var(--mute)">BASE SUBOBJECTS, PLACED AT THEIR RECORDED OFFSET</text><line x1="0" y1="26" x2="900" y2="26" stroke="var(--rule)"/><a href="class-reference.html#c-dBgCh_Lin"><text x="0" y="50" font-size="13" font-family="var(--mono)" font-weight="600" fill="var(--ink)">dBgCh_Lin</text></a><rect x="210.0" y="32" width="64.0" height="24" rx="2" fill="var(--proven-bg)" stroke="var(--proven)" stroke-width="1.6"/><a href="class-reference.html#c-dBgCh"><text x="218.0" y="48" font-size="11.5" font-family="var(--mono)" fill="var(--proven)">dBgCh</text></a><text x="210.0" y="27" font-size="10" font-family="var(--mono)" fill="var(--mute)">+0x0</text><rect x="243.6" y="32" width="64.0" height="24" rx="2" fill="none" stroke="var(--proven)" stroke-width="1"/><a href="class-reference.html#c-dBgPi"><text x="251.6" y="48" font-size="11.5" font-family="var(--mono)" fill="var(--proven)">dBgPi</text></a><text x="243.6" y="27" font-size="10" font-family="var(--mono)" fill="var(--mute)">+0x10</text><rect x="327.6" y="32" width="75.2" height="24" rx="2" fill="none" stroke="var(--proven)" stroke-width="1"/><a href="class-reference.html#c-dM3dGLin"><text x="335.6" y="48" font-size="11.5" font-family="var(--mono)" fill="var(--proven)">dM3dGLin</text></a><text x="327.6" y="27" font-size="10" font-family="var(--mono)" fill="var(--mute)">+0x38</text><line x1="0" y1="68" x2="900" y2="68" stroke="var(--rule-soft)"/><a href="class-reference.html#c-dBgCh_SphCrr"><text x="0" y="114" font-size="13" font-family="var(--mono)" font-weight="600" fill="var(--ink)">dBgCh_SphCrr</text></a><rect x="210.0" y="96" width="64.0" height="24" rx="2" fill="var(--proven-bg)" stroke="var(--proven)" stroke-width="1.6"/><a href="class-reference.html#c-dBgCh"><text x="218.0" y="112" font-size="11.5" font-family="var(--mono)" fill="var(--proven)">dBgCh</text></a><text x="210.0" y="91" font-size="10" font-family="var(--mono)" fill="var(--mute)">+0x0</text><rect x="243.6" y="96" width="64.0" height="24" rx="2" fill="none" stroke="var(--proven)" stroke-width="1"/><a href="class-reference.html#c-dBgPi"><text x="251.6" y="112" font-size="11.5" font-family="var(--mono)" fill="var(--proven)">dBgPi</text></a><text x="243.6" y="91" font-size="10" font-family="var(--mono)" fill="var(--mute)">+0x10</text><rect x="327.6" y="96" width="75.2" height="24" rx="2" fill="none" stroke="var(--proven)" stroke-width="1"/><a href="class-reference.html#c-dM3dGSph"><text x="335.6" y="112" font-size="11.5" font-family="var(--mono)" fill="var(--proven)">dM3dGSph</text></a><text x="327.6" y="91" font-size="10" font-family="var(--mono)" fill="var(--mute)">+0x38</text><line x1="0" y1="132" x2="900" y2="132" stroke="var(--rule-soft)"/><a href="class-reference.html#c-dBgCh_Gnd"><text x="0" y="178" font-size="13" font-family="var(--mono)" font-weight="600" fill="var(--ink)">dBgCh_Gnd</text></a><rect x="210.0" y="160" width="64.0" height="24" rx="2" fill="var(--proven-bg)" stroke="var(--proven)" stroke-width="1.6"/><a href="class-reference.html#c-dBgCh"><text x="218.0" y="176" font-size="11.5" font-family="var(--mono)" fill="var(--proven)">dBgCh</text></a><text x="210.0" y="155" font-size="10" font-family="var(--mono)" fill="var(--mute)">+0x0</text><rect x="243.6" y="160" width="64.0" height="24" rx="2" fill="none" stroke="var(--proven)" stroke-width="1"/><a href="class-reference.html#c-dBgPi"><text x="251.6" y="176" font-size="11.5" font-family="var(--mono)" fill="var(--proven)">dBgPi</text></a><text x="243.6" y="155" font-size="10" font-family="var(--mono)" fill="var(--mute)">+0x10</text><line x1="0" y1="196" x2="900" y2="196" stroke="var(--rule-soft)"/><a href="class-reference.html#c-dExtAnmModel_c"><text x="0" y="242" font-size="13" font-family="var(--mono)" font-weight="600" fill="var(--ink)">dExtAnmModel_c</text></a><rect x="210.0" y="224" width="141.8" height="24" rx="2" fill="var(--proven-bg)" stroke="var(--proven)" stroke-width="1.6"/><a href="class-reference.html#c-dExtSimpleModel_c"><text x="218.0" y="240" font-size="11.5" font-family="var(--mono)" fill="var(--proven)">dExtSimpleModel_c</text></a><text x="210.0" y="219" font-size="10" font-family="var(--mono)" fill="var(--mute)">+0x0</text><rect x="378.0" y="224" width="127.0" height="24" rx="2" fill="none" stroke="var(--proven)" stroke-width="1"/><a href="class-reference.html#c-dExtFrameCtrl_c"><text x="386.0" y="240" font-size="11.5" font-family="var(--mono)" fill="var(--proven)">dExtFrameCtrl_c</text></a><text x="378.0" y="219" font-size="10" font-family="var(--mono)" fill="var(--mute)">+0x50</text><line x1="0" y1="260" x2="900" y2="260" stroke="var(--rule-soft)"/><a href="class-reference.html#c-daDemo_c::anmModel_c"><text x="0" y="306" font-size="13" font-family="var(--mono)" font-weight="600" fill="var(--ink)">daDemo_c::anmModel_c</text></a><rect x="210.0" y="288" width="119.6" height="24" rx="2" fill="var(--proven-bg)" stroke="var(--proven)" stroke-width="1.6"/><a href="class-reference.html#c-dExtAnmModel_c"><text x="218.0" y="304" font-size="11.5" font-family="var(--mono)" fill="var(--proven)">dExtAnmModel_c</text></a><text x="210.0" y="283" font-size="10" font-family="var(--mono)" fill="var(--mute)">+0x0</text><rect x="420.0" y="288" width="141.8" height="24" rx="2" fill="none" stroke="var(--proven)" stroke-width="1"/><a href="class-reference.html#c-daDemo_c::param_c"><text x="428.0" y="304" font-size="11.5" font-family="var(--mono)" fill="var(--proven)">daDemo_c::param_c</text></a><text x="420.0" y="283" font-size="10" font-family="var(--mono)" fill="var(--mute)">+0x64</text><line x1="0" y1="324" x2="900" y2="324" stroke="var(--rule-soft)"/><a href="class-reference.html#c-daDemo_c::simpleModel_c"><text x="0" y="370" font-size="13" font-family="var(--mono)" font-weight="600" fill="var(--ink)">daDemo_c::simpleModel_c</text></a><rect x="210.0" y="352" width="141.8" height="24" rx="2" fill="var(--proven-bg)" stroke="var(--proven)" stroke-width="1.6"/><a href="class-reference.html#c-dExtSimpleModel_c"><text x="218.0" y="368" font-size="11.5" font-family="var(--mono)" fill="var(--proven)">dExtSimpleModel_c</text></a><text x="210.0" y="347" font-size="10" font-family="var(--mono)" fill="var(--mute)">+0x0</text><rect x="378.0" y="352" width="141.8" height="24" rx="2" fill="none" stroke="var(--proven)" stroke-width="1"/><a href="class-reference.html#c-daDemo_c::param_c"><text x="386.0" y="368" font-size="11.5" font-family="var(--mono)" fill="var(--proven)">daDemo_c::param_c</text></a><text x="378.0" y="347" font-size="10" font-family="var(--mono)" fill="var(--mute)">+0x50</text><line x1="0" y1="388" x2="900" y2="388" stroke="var(--rule-soft)"/></svg><figcaption>Base subobjects drawn at their recorded offsets. The filled box is the primary base at offset 0. <code>dExtAnmModel_c</code> lists <code>dExtFrameCtrl_c</code> (+0x50) before <code>dExtSimpleModel_c</code> (+0x0): list order is not offset order.</figcaption></figure>
 </section><section><div class="sec-h"><span class="sec-n">§5</span><h2>Where the repo's headers are wrong</h2></div>
 <p><strong>Nowhere.</strong> Every class the repo both names and holds a belief about names the <em>immediate</em> base the ROM records. Not one header names a class absent from the ROM's ancestor chain, and — the weaker failure this section was built to catch — not one names a genuine ancestor further up the chain than the real parent.</p>
 <p>The chain-flattening this section reports comes from modelling a class's grandparent as its parent, which happens when the intermediate has no header and the evidence for the edge is a destructor vptr store that skips it. It is therefore retired by writing the intermediate down, not by correcting the children.</p>
-<div class="note">Empty because the finding was acted on, not because the test was relaxed: the same comparison still runs against all 429 records. 201 of them are parented by a hand-written <code>struct D : B</code> in a de-bannered header rather than by a base pointer the ROM supplied, and those are the only rows that <em>can</em> disagree with the ROM. None does.</div>
+<div class="note">Empty because the finding was acted on, not because the test was relaxed: the same comparison still runs against all 429 records. 202 of them are parented by a hand-written <code>struct D : B</code> in a de-bannered header rather than by a base pointer the ROM supplied, and those are the only rows that <em>can</em> disagree with the ROM. None does.</div>
 </section><section><div class="sec-h"><span class="sec-n">§6</span><h2>What is still guessed</h2></div>
 <p>60 classes the repo knows have no <code>type_info</code> record at all. They are not polymorphic, or their vtable was never emitted, so RTTI cannot speak to them and their placement rests entirely on constructor evidence. 56 of them have an inferred base; 4 have none.</p>
 <div class="scroll"><table><thead><tr><th>Status</th><th>Count</th><th>Classes</th></tr></thead><tbody>
 <tr><td style="color:var(--inferred)"><strong>Inferred base</strong></td><td class="n">56</td><td class="m">BlueFlame, BooCage, BowserFireSeaArena, Bullet, Chuckya, Clam, ClockPaintingHandShort, Cloud, DorrieCap, EnemySwitchTag, Fireball, Flag, FlyGuy, Fwoosh, HugeWater, IceBlock, JetStream, Key, LakituBro, LightBeam, MansionSteps, MegaMushroomCreateTag, MetalNet, MontyMole, MotherPenguin, Number, OneUpLogo, PoleLift, PowerStar, RabbitKey, RacingPenguin, RotatingUpDownPlatform, RotatingUpDownPlatformUtm, ShipWater, ShipWing, SignPost, SlideDecorationSilverStar, Snowball, Snufit, Spindrift, StarDoor, SwitchActivatedPlank, Swoop, Toad, TowerStep, TreasureChest, TtcConveyorBeltLarge, WDW_Water, WallSign, WaterBomb, WaterRing, Whirlpool, daDsnBase_c, daObjFallBlock_c, daObjMaruta_c, daOts_c</td></tr>
 <tr><td><strong>No placement</strong></td><td class="n">4</td><td class="m">FaderBrightness, FaderColor, RaycastGround, WithMeshClsn</td></tr>
 </tbody></table></div>
-<p>Separately, 76 ROM classes have no name in the repo at all — the ROM knows them, the project has never given them a header. They are proven within this graph and invisible outside it.</p>
+<p>Separately, 75 ROM classes have no name in the repo at all — the ROM knows them, the project has never given them a header. They are proven within this graph and invisible outside it.</p>
 </section><section><div class="sec-h"><span class="sec-n">§7</span><h2>What this document cannot tell you</h2></div>
 <p>The ROM's RTTI carries class <em>names</em> and base <em>pointers</em>. That is all it carries. Specifically:</p>
 <div class="scroll"><table><thead><tr><th>Not available</th><th>Why</th></tr></thead><tbody>
@@ -461,5 +482,9 @@ footer{margin-top:72px; padding-top:18px; border-top:1.5px solid var(--ink);
 <tr><td><strong>Original filenames</strong></td><td>Exactly one <code>__FILE__</code> string survives ROM-wide — <code>isdoverlay.c</code>, Nintendo's debugger SDK. Game code was built with asserts stripped.</td></tr>
 <tr><td><strong>Non-polymorphic classes</strong></td><td>A class with no virtual function gets no vtable and no record. The 60 inferred classes in §6 are exactly this population.</td></tr>
 </tbody></table></div></section>
-<footer>Generated by <code>tools/rtti_hierarchy_page.py</code> from <code>build/rtti.json</code>, <code>build/rtti_reconcile.json</code> and <code>build/evidence_hierarchy.json</code>. Every count, edge and offset on this page is joined at generation time; nothing is typed by hand. Re-run <code>tools/rtti_extract.py --check</code> to re-prove the census before trusting a number here.</footer>
-</div>
+<footer>
+<p>Generated by <code>tools/rtti_hierarchy_page.py</code> from <code>build/rtti.json</code>, <code>build/evidence_hierarchy.json</code>, <code>build/rtti_reconcile.json</code>. Every count, edge and offset on this page is joined at generation time; nothing is typed by hand. Re-run <code>tools/rtti_extract.py --check</code> to re-prove the census before trusting a number here.</p>
+<p><b>Data extracted 2026-08-17</b> (UTC date of the newest input) · input digest <code>aafcd4154e96</code> (sha256 of the inputs, 12 hex). No wall-clock time is stamped anywhere on this page: re-running the generator over unchanged inputs reproduces it byte for byte, so a diff here means the data moved. A page whose digest differs from a fresh <code>tools/rtti_extract.py</code> run is stale.</p>
+<p>Class names above link to their per-class card in <a href="class-reference.html">class-reference.html</a> — ROM address, vtable span, and every virtual slot joined out to a source file. Names shown in the inferred colour have no <code>type_info</code> record and therefore no card, so they are not links. <a href="https://github.com/tangosdev/sm64ds-decomp">Repository</a> · <a href="index.html">progress treemap</a>.</p>
+</footer>
+</div></body></html>

@@ -7,7 +7,7 @@ nothing else in the build would notice -- a header is not compiled on its own, a
 the byte gate cannot see a field no source file happens to read.
 
 This walks the declarations, applies natural alignment, and compares. Used as the
-first gate on any header edit; see notes/plan-scalar-markers.md 4.
+first gate on any header edit; see notes/archive/plan-scalar-markers.md 4.
 
     python tools/check_header_offsets.py include/Enemy.h include/Camera.h
     python tools/check_header_offsets.py --changed              # vs origin/main

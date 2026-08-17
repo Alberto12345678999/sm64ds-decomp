@@ -22,6 +22,21 @@ Conservative rules (mirrors import_symbols.py):
 Usage:
   python tools/actor_names.py            # dry run: writes actor_renames.tsv + report
   python tools/actor_names.py --apply    # rewrite config/**/symbols.txt in place
+
+Inputs (all gitignored, so a fresh worktree has none of them): extracted/arm9_dec.bin,
+extracted/overlays/, extracted/dsd/arm9_overlays/overlays.yaml, and the external
+reference/DynamicAllocationDecomp checkout.  config/**/symbols.txt is tracked.
+
+WARNING -- a plain re-run is DESTRUCTIVE today, and silently so.  propose() only
+renames symbols still spelled func_<addr>/data_<addr>, and the 2,241 renames in
+symbols/actor_renames.tsv were --apply'd to config/**/symbols.txt back in 4172a92ee
+(re-checked 2026-08-17: 2241 of 2241 of those addresses now hold real names, 0
+placeholders left).  So re-running rewrites actor_renames.tsv down to its header row
+and deletes the addr -> mangled-name map that tools/cpp_index.py and
+tools/cpp_rename.py read -- both are .is_file()-guarded and degrade to empty without
+an error.  Regenerate the tsv only from a checkout whose config still carries the
+placeholders, or restore it afterwards.  overlay_actors.md is safe to regenerate: it
+is built from the spawn table before any rename is proposed.
 """
 import argparse
 import collections
@@ -120,6 +135,62 @@ def load_config():
     for d in sorted((REPO / "config/arm9/overlays").iterdir()):
         load(d / "symbols.txt", d.name)
     return syms, all_names, files, fn_sizes
+
+
+def render_overlay_actors_md(overlay_actors):
+    """symbols/overlay_actors.md, in full.  `overlay_actors` is module -> [(id, enum, cls)].
+
+    This is a MACHINE input despite the .md extension.
+    tools/rtti_reference.py:load_overlay_levels() matches, per line:
+        ^- \\*\\*(\\w+)\\*\\*:\\s*(.+)$
+    and splits the tail on commas.  Two constraints follow, and neither can fail
+    loudly -- the reader is .is_file()-guarded and just yields fewer entries:
+      1. no header line may begin "- **word**:";
+      2. each module's actor list must stay on ONE physical line.  Hard-wrapping
+         renders identically in Markdown and drops every actor after the first
+         physical line.  Reflowing these lines requires teaching that parser to
+         fold continuations first.
+    """
+    n_actors = sum(len(v) for v in overlay_actors.values())
+    md = [
+        f"# Overlay -> actor map (from ACTOR_SPAWN_TABLE @ {TABLE:#010x})",
+        "",
+        "GENERATED; do not hand-edit -- edits are lost on the next run.",
+        "Regenerate: `python tools/actor_names.py` (needs the gitignored",
+        "`extracted/` dump and the external `reference/DynamicAllocationDecomp`).",
+        "",
+        "**Careful:** that same run also rewrites `symbols/actor_renames.tsv`, and",
+        "doing so today is destructive -- every one of its 2,241 renames has already",
+        "been applied to `config/**/symbols.txt`, so `propose()` now finds nothing and",
+        "truncates the file to its header. See `symbols/README.md` before regenerating.",
+        "",
+        "**What this is.** Which actor classes each module spawns. Derived from the EU",
+        f"arm9's statically linked ACTOR_SPAWN_TABLE at {TABLE:#010x} ({N_ACTORS} `SpawnInfo*`",
+        "slots, holder 0x020A4BB8). An actor is filed under the module that owns its *spawn",
+        "function*, so an arm9-owned spawner stays under `arm9` even when its `SpawnInfo`",
+        "lives in an overlay. Names are the `*_ACTOR_ID` enum names from",
+        "`reference/DynamicAllocationDecomp/include/List/ActorList.h`; the parenthesised",
+        "number is the actor id, i.e. the spawn-table index.",
+        "",
+        f"**Contents.** {n_actors} actors across {len(overlay_actors)} modules, "
+        f"resolved out of {N_ACTORS} spawn-table slots.",
+        "",
+        "**This `.md` file is parsed by a program.**",
+        "`tools/rtti_reference.py:load_overlay_levels()` regexes the bullets below to fill",
+        "the actor column of `docs/class-reference.html`, and it is `.is_file()`-guarded, so",
+        "a shape it no longer matches blanks that column with no error. It wants one line per",
+        "module, exactly `<dash> <b>module</b>: NAME(id), NAME(id), ...`. Hard-wrapping a",
+        "bullet renders identically in Markdown but silently drops every actor after the",
+        "first physical line -- which is why the lines below are long, and why they must stay",
+        "long until that parser learns to fold continuation lines.",
+        "",
+        "## Modules",
+        "",
+    ]
+    for mod in sorted(overlay_actors):
+        acts = ", ".join(f"{n}({i})" for i, n, c in overlay_actors[mod])
+        md.append(f"- **{mod}**: {acts}")
+    return "\n".join(md) + "\n"
 
 
 def main():
@@ -281,17 +352,29 @@ def main():
     out_dir.mkdir(exist_ok=True)
     tsv = out_dir / "actor_renames.tsv"
     with tsv.open("w") as f:
+        # One header row naming the five columns, and deliberately NOT a `#`
+        # comment block: tools/cpp_index.py:89 and tools/cpp_rename.py:45 both
+        # read this with `.splitlines()[1:]`, i.e. they skip exactly one line.
+        # Any extra preamble here is ingested as data.
         f.write("module\taddr\told\tnew\twhy\n")
         for mod, addr, old, new, why in sorted(renames):
             f.write(f"{mod}\t{addr:#010x}\t{old}\t{new}\t{why}\n")
     rep = out_dir / "actor_renames_report.txt"
-    rep.write_text("\n".join(report) + "\n")
+    rep_hdr = [
+        "# actor_renames_report.txt -- audit trail for tools/actor_names.py.",
+        "# GENERATED; do not hand-edit.  Regenerate: python tools/actor_names.py",
+        "# No program reads this file.  It records what the namer declined to do:",
+        "#   UNRESOLVED  no valid SpawnInfo at the spawn-table pointer",
+        "#   NOVTABLE    spawn func installs its vtable indirectly, so it is unsafe to guess",
+        "#   AMBIG       the SpawnInfo validates in more than one module",
+        "#   SKIP        name already taken, address already claimed by a lower actor id,",
+        "#               or no symbol at the address at all",
+        f"# {len(report)} findings.",
+        "",
+    ]
+    rep.write_text("\n".join(rep_hdr + report) + "\n")
 
-    md = ["# Overlay -> actor map (from ACTOR_SPAWN_TABLE @ 0x02090864)\n"]
-    for mod in sorted(overlay_actors):
-        acts = ", ".join(f"{n}({i})" for i, n, c in overlay_actors[mod])
-        md.append(f"- **{mod}**: {acts}")
-    (out_dir / "overlay_actors.md").write_text("\n".join(md) + "\n")
+    (out_dir / "overlay_actors.md").write_text(render_overlay_actors_md(overlay_actors))
 
     print(f"renames={len(renames)} report_lines={len(report)}")
     print(f"modules touched: {len({r[0] for r in renames})}")

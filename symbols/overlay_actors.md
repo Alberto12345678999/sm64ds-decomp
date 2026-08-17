@@ -1,5 +1,35 @@
 # Overlay -> actor map (from ACTOR_SPAWN_TABLE @ 0x02090864)
 
+GENERATED; do not hand-edit -- edits are lost on the next run.
+Regenerate: `python tools/actor_names.py` (needs the gitignored
+`extracted/` dump and the external `reference/DynamicAllocationDecomp`).
+
+**Careful:** that same run also rewrites `symbols/actor_renames.tsv`, and
+doing so today is destructive -- every one of its 2,241 renames has already
+been applied to `config/**/symbols.txt`, so `propose()` now finds nothing and
+truncates the file to its header. See `symbols/README.md` before regenerating.
+
+**What this is.** Which actor classes each module spawns. Derived from the EU
+arm9's statically linked ACTOR_SPAWN_TABLE at 0x02090864 (391 `SpawnInfo*`
+slots, holder 0x020A4BB8). An actor is filed under the module that owns its *spawn
+function*, so an arm9-owned spawner stays under `arm9` even when its `SpawnInfo`
+lives in an overlay. Names are the `*_ACTOR_ID` enum names from
+`reference/DynamicAllocationDecomp/include/List/ActorList.h`; the parenthesised
+number is the actor id, i.e. the spawn-table index.
+
+**Contents.** 374 actors across 68 modules, resolved out of 391 spawn-table slots.
+
+**This `.md` file is parsed by a program.**
+`tools/rtti_reference.py:load_overlay_levels()` regexes the bullets below to fill
+the actor column of `docs/class-reference.html`, and it is `.is_file()`-guarded, so
+a shape it no longer matches blanks that column with no error. It wants one line per
+module, exactly `<dash> <b>module</b>: NAME(id), NAME(id), ...`. Hard-wrapping a
+bullet renders identically in Markdown but silently drops every actor after the
+first physical line -- which is why the lines below are long, and why they must stay
+long until that parser learns to fold continuation lines.
+
+## Modules
+
 - **arm9**: STAGE(3), CAMERA(332), MG_SHELL_SMASH(375)
 - **ov002**: YOSHI_EGG(9), BLUE_COIN_SWITCH(10), EXCLAMATION_SWITCH(11), STAR_SWITCH(12), CANNON_HATCH(14), BRICK_BLOCK(15), BIG_BRICK_BLOCK(16), BLACK_BRICK_BLOCK(17), BRICK_BLOCK_SWITCH_ACTIVATED(19), QUESTION_SWITCH(26), FORTRESS_TOWER_WALL(46), STAR_CAMERA(177), POWER_STAR(178), SILVER_STAR(179), STAR_MARKER(180), SIGN_POST(184), PLAYER(191), PUSH_BLOCK(192), POPPING_LAVA_BUBBLES(196), WATERFALL_MIST(197), BULLET(233), FIREBALL(254), CAP(269), ONE_UP_MUSHROOM(276), MEGA_MUSHROOM(277), TREE(286), INVISIBLE_POLE(287), COIN(288), RED_COIN(289), BLUE_COIN(290), BUBBLE(291), SEAWEED(296), HEALING_HEART(297), POWER_FLOWER(306), RED_FLAME(316), BLUE_FLAME(317), MEGA_MUSHROOM_CREATE_TAG(319), MEGA_MUSHROOM_TAG(320), ONE_UP_MUSHROOM_BLOCK_TAG(321), MEGA_MUSHROOM_BLOCK_TAG(322), GREEN_SHELL_BLOCK_TAG(323), SILVER_STAR_BLOCK_TAG(324), INVISIBLE_SECRET(329), NUMBER(330), ONE_UP_LOGO(331), CAMERA_TAG(333), MINIMAP(335), WING_FEATHER(345), WARP(347), VIRTUAL_DOOR(348), EXIT(349), AMBIENT_SOUND_EFFECTS(350), MUGEN_BGM(351), CUTSCENE_OBJECT(352), ENEMY_SWITCH_TAG(357), ENEMY_SPAWNER(358), SOUND_OBJECT(359)
 - **ov003**: STAR_SELECT(4)

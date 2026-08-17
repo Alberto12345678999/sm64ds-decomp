@@ -39,10 +39,12 @@ from __future__ import annotations
 
 import argparse
 import collections
+import hashlib
 import html
 import json
 import pathlib
 import sys
+import time
 
 REPO = pathlib.Path(__file__).resolve().parent.parent
 RTTI = REPO / "build" / "rtti.json"
@@ -53,6 +55,99 @@ GLOSSARY = REPO / "config" / "rom-name-glossary.json"
 OUT = REPO / "docs" / "class-hierarchy.html"
 
 E = html.escape
+
+# --------------------------------------------------------------------------
+# where this page sits, and where the other pages are
+# --------------------------------------------------------------------------
+# The two RTTI pages are published side by side under docs/ on GitHub Pages, so the
+# cross-links are plain relative filenames -- they work on the Pages site, in a local
+# `python -m http.server docs`, and from `file://` with no rewriting.
+REPO_URL = "https://github.com/tangosdev/sm64ds-decomp"
+REFERENCE_PAGE = "class-reference.html"
+HIERARCHY_PAGE = "class-hierarchy.html"
+TREEMAP_PAGE = "index.html"
+
+NAV = [(TREEMAP_PAGE, "Progress treemap"),
+       (REFERENCE_PAGE, "Class reference"),
+       (HIERARCHY_PAGE, "Class hierarchy"),
+       (REPO_URL, "Repository ↗")]
+
+
+def nav_html(current):
+    """The one shared nav bar.  Identical link set on both RTTI pages."""
+    parts = []
+    for href, label in NAV:
+        if href == current:
+            parts.append('<span class="here" aria-current="page">%s</span>' % E(label))
+        else:
+            parts.append('<a href="%s">%s</a>' % (E(href), E(label)))
+    return ('<nav class="nav" aria-label="SM64DS decomp documentation">%s</nav>'
+            % "".join(parts))
+
+
+def provenance(paths):
+    """(date, digest, [names]) describing the inputs, with NO wall clock read.
+
+    `datetime.now()` was the obvious thing to stamp and it is the wrong thing.  These
+    pages are committed artefacts; a clock in the output means every re-run rewrites
+    them, so `git diff` can no longer distinguish "regenerated, nothing moved" from
+    "the ROM reading changed" -- on a 2 MB file that is the difference between a
+    reviewable diff and none.  Both stamps below are pure functions of the inputs:
+
+        date    UTC date of the NEWEST input's mtime.  Answers "how old is the data",
+                which is the question a reader of a generated page actually has.
+                Unchanged by re-running this script.
+        digest  sha256 over the input bytes, 12 hex.  Changes if and only if an input
+                changed, so it is the staleness signal -- two pages with the same
+                digest were built from the same ROM reading, whatever their dates.
+    """
+    live = [p for p in paths if p.is_file()]
+    h = hashlib.sha256()
+    for p in live:
+        h.update(p.name.encode("utf-8"))
+        h.update(p.read_bytes())
+    newest = max((p.stat().st_mtime for p in live), default=0.0)
+    # time.gmtime of a MEASURED mtime, not of time.time() -- deterministic.
+    return (time.strftime("%Y-%m-%d", time.gmtime(newest)),
+            h.hexdigest()[:12], [p.name for p in live])
+
+
+def class_href(name):
+    """Anchor of `name`'s card in class-reference.html.
+
+    rtti_reference.py emits one `<details class='cls' id='c-NAME'>` per record in
+    build/rtti.json, escaped with html.escape and otherwise verbatim -- so the anchor
+    is `c-` + the ROM name.  32 names contain `::` (`dPa_c::level_c::clipCallback_c`),
+    which is a legal fragment character (RFC 3986 pchar) and a legal `id`; percent-
+    encoding it would only risk the reference page's own decodeURIComponent handler
+    seeing a different string than the browser's native scroll-to-id.  Left as-is,
+    matching the in-page links that page already emits.
+    """
+    return "%s#c-%s" % (REFERENCE_PAGE, E(name))
+
+
+def class_link(name, carded, cls=None):
+    """`name` linked to its reference card -- or plain text when it has no card.
+
+    Both pages read the same build/rtti.json, so "has a card" is exactly "is a
+    type_info record".  The INFERRED classes (§6, and the dotted rows in the trees)
+    are precisely the population with no record, so linking them would emit hundreds
+    of dead anchors into a document whose entire subject is what is and is not
+    proven.  They stay plain.
+
+    Four of them -- daDsnBase_c, daObjFallBlock_c, daObjMaruta_c, daOts_c -- are
+    spelled EXACTLY like a ROM record that does have a card, and they are still not
+    linked, deliberately.  rtti_reconcile.py joins by vtable address, not by name, and
+    it left both halves unjoined: the ROM record's verdict is `unknown_class` with
+    tree_name None, while the repo class sits in tree_only_classes.  Linking on the
+    matching spelling would publish an identity the reconciler refused, which is the
+    same mistake as pairing a class to a factory by name.  Do not "fix" this by
+    falling back to a name match.
+    """
+    attr = (' class="%s"' % E(cls)) if cls else ""
+    if name not in carded:
+        return "<span%s>%s</span>" % (attr, E(name))
+    return '<a%s href="%s">%s</a>' % (attr, class_href(name), E(name))
 
 
 # --------------------------------------------------------------------------
@@ -226,6 +321,14 @@ a{color:var(--proven)}
 a:focus-visible,summary:focus-visible{outline:2px solid var(--proven); outline-offset:2px}
 code,.m{font-family:var(--mono); font-size:.92em}
 
+/* ---- nav: same link set as class-reference.html ---- */
+.nav{display:flex; flex-wrap:wrap; gap:2px 18px; align-items:baseline;
+  padding:14px 0 11px; border-bottom:1px solid var(--rule);
+  font-size:13px; letter-spacing:.01em}
+.nav a{text-decoration:none}
+.nav a:hover{text-decoration:underline}
+.nav .here{color:var(--mute); font-weight:600}
+
 /* ---- evidence system ---- */
 .legend{display:flex; flex-wrap:wrap; gap:8px; margin:18px 0 4px}
 .tag{display:inline-flex; align-items:center; gap:7px; font:600 11px/1 var(--sans);
@@ -263,6 +366,11 @@ td.m,th.m{font-family:var(--mono)}
 .tree .ct{color:var(--contra)}
 .tree .dim{color:var(--mute)}
 .tree .cnt{color:var(--mute); font-size:11.5px}
+/* A linked class name must keep its EVIDENCE colour, not turn link-blue: in this
+   document colour is the tier. `.tree .pv` (two classes) outranks `a` (one type),
+   so the cascade already does that; this only removes the underline. */
+.tree a{text-decoration:none}
+.tree a:hover{text-decoration:underline}
 details{border:1px solid var(--rule-soft); background:var(--card); margin:10px 0}
 summary{cursor:pointer; padding:11px 16px; font:600 13px/1.4 var(--sans);
   list-style:none; display:flex; justify-content:space-between; gap:12px}
@@ -277,6 +385,8 @@ details .tree{border:0; margin:0}
 figure{margin:22px 0}
 figcaption{font-size:12.5px; color:var(--mute); margin-top:9px; max-width:var(--measure)}
 svg{max-width:100%; height:auto; display:block}
+svg a{cursor:pointer}
+svg a:hover text{text-decoration:underline}
 footer{margin-top:72px; padding-top:18px; border-top:1.5px solid var(--ink);
   font-size:12.5px; color:var(--mute)}
 @media(max-width:640px){
@@ -291,8 +401,15 @@ footer{margin-top:72px; padding-top:18px; border-top:1.5px solid var(--ink);
 # rendering
 # --------------------------------------------------------------------------
 
-def tree_lines(g, root, contra, inferred_children, max_depth=99):
-    """Unicode tree with evidence-coded connectors."""
+def tree_lines(g, root, contra, inferred_children, carded=frozenset(), max_depth=99):
+    """Unicode tree with evidence-coded connectors.
+
+    Alignment note, because this block is `white-space:pre` monospace and a skewed
+    tree is the classic way to break one: every column here comes from `prefix` and
+    `conn`, which are built from DEPTH alone and never from a name's length.  So
+    wrapping a name in an `<a>` (zero text characters) cannot move anything.  Do not
+    introduce ljust/rjust padding computed on markup -- pad the text, then tag it.
+    """
     out = []
 
     def walk(k, prefix, last, depth):
@@ -301,8 +418,9 @@ def tree_lines(g, root, contra, inferred_children, max_depth=99):
         n = g.subtree_size(k) - 1
         cnt = ('<span class="cnt">  %d below</span>' % n) if n > 1 else ""
         cls = "ct" if g.name[k] in contra else "pv"
-        out.append('%s<span class="dim">%s</span><span class="cls %s">%s</span>%s'
-                   % (E(prefix), E(conn), cls, E(g.name[k]), cnt))
+        out.append('%s<span class="dim">%s</span>%s%s'
+                   % (E(prefix), E(conn),
+                      class_link(g.name[k], carded, "cls %s" % cls), cnt))
         if depth >= max_depth:
             if kids:
                 out.append('%s<span class="dim">%s   … %d more</span>'
@@ -321,7 +439,18 @@ def tree_lines(g, root, contra, inferred_children, max_depth=99):
     return "\n".join(out)
 
 
-def mi_diagram(g):
+def svg_link(name, carded, inner):
+    """Wrap an SVG fragment in a link to the class's reference card.
+
+    SVG2's bare `href` on `<a>`, which every current browser honours for inline SVG;
+    no xlink namespace is needed and none is declared.
+    """
+    if name not in carded:
+        return inner
+    return '<a href="%s">%s</a>' % (class_href(name), inner)
+
+
+def mi_diagram(g, carded=frozenset()):
     """The six multiple-inheritance records, drawn with their real base offsets."""
     cases = [(k, v) for k, v in g.parents.items() if len(v) > 1]
     cases.sort(key=lambda kv: (-len(kv[1]), g.name[kv[0]]))
@@ -339,9 +468,11 @@ def mi_diagram(g):
     parts.append('<line x1="0" y1="26" x2="900" y2="26" stroke="var(--rule)"/>')
     for i, (k, bases) in enumerate(cases):
         y = top + i * rowh
-        parts.append('<text x="0" y="%d" font-size="13" font-family="var(--mono)" '
-                     'font-weight="600" fill="var(--ink)">%s</text>'
-                     % (y + 4, E(g.name[k])))
+        parts.append(svg_link(
+            g.name[k], carded,
+            '<text x="0" y="%d" font-size="13" font-family="var(--mono)" '
+            'font-weight="600" fill="var(--ink)">%s</text>'
+            % (y + 4, E(g.name[k]))))
         for bk, off in sorted(bases, key=lambda b: b[1]):
             x = lblw + off * px_per_byte
             w = max(len(g.name[bk]) * 7.4 + 16, 64)
@@ -351,9 +482,10 @@ def mi_diagram(g):
                 'fill="%s" stroke="var(--proven)" stroke-width="%s"/>'
                 % (x, y - 14, w, "var(--proven-bg)" if primary else "none",
                    "1.6" if primary else "1"))
-            parts.append(
+            parts.append(svg_link(
+                g.name[bk], carded,
                 '<text x="%.1f" y="%d" font-size="11.5" font-family="var(--mono)" '
-                'fill="var(--proven)">%s</text>' % (x + 8, y + 2, E(g.name[bk])))
+                'fill="var(--proven)">%s</text>' % (x + 8, y + 2, E(g.name[bk]))))
             parts.append(
                 '<text x="%.1f" y="%d" font-size="10" font-family="var(--mono)" '
                 'fill="var(--mute)">+0x%x</text>' % (x, y - 19, off))
@@ -401,11 +533,27 @@ def build(d):
     n_cross = sum(1 for e in d["rtti"]["edges"]
                   if g.module[e["derived_key"]] != g.module[e["base_key"]])
 
+    # Every ROM class gets a `<details class='cls' id='c-NAME'>` card in
+    # class-reference.html; nothing else does.  This is the link whitelist.
+    carded = frozenset(g.name.values())
+    # Exactly the files build() reads.  load() also parses tu_names.json and the
+    # glossary, but nothing below consumes them, so digesting them would make the
+    # staleness signal fire on changes that cannot alter a single character here.
+    gen_date, gen_digest, gen_inputs = provenance([RTTI, EVIDENCE, RECONCILE])
+
     H = []
     A = H.append
-    A('<title>The fBase Tree</title>')
+    # This page shipped with no doctype and no charset, so a browser served it from
+    # file:// or from a header-less host guessed the encoding -- and the page is full
+    # of U+2014, U+00A7 and box-drawing characters. Declared explicitly now.
+    A('<!doctype html>')
+    A('<html lang="en"><head><meta charset="utf-8">')
+    A('<meta name="viewport" content="width=device-width,initial-scale=1">')
+    A('<title>The fBase Tree — SM64DS class hierarchy</title>')
     A("<style>%s</style>" % CSS)
+    A('</head><body>')
     A('<div class="wrap">')
+    A(nav_html(HIERARCHY_PAGE))
 
     # ---- title block
     A('<div class="block"><div class="block-t"><div>')
@@ -420,7 +568,8 @@ def build(d):
         ("Classes", "%d named by the ROM" % n_rec),
         ("Edges", "%d proven · %d inferred" % (n_edges, len(tree_only) - len(unplaced))),
         ("Deepest chain", "%d levels" % max(g.depth(k) for k in g.name)),
-        ("Generated", "tools/rtti_hierarchy_page.py"),
+        ("Data extracted", gen_date),
+        ("Input digest", gen_digest),
     ]:
         A('<div class="f"><dt>%s</dt><dd>%s</dd></div>' % (E(label), E(val)))
     A("</dl></div>")
@@ -494,7 +643,7 @@ def build(d):
         mark(fbase, 0)
         saved, g.children = g.children, {
             k: [c for c in v if c in spine] for k, v in g.children.items()}
-        A('<div class="tree">%s</div>' % tree_lines(g, fbase, contra, {}))
+        A('<div class="tree">%s</div>' % tree_lines(g, fbase, contra, {}, carded))
         g.children = saved
     A('<div class="note"><strong>fBase_c</strong> is the framework root — the same '
       "name, in the same position, as in EAD's GameCube codebases. Everything the "
@@ -517,7 +666,7 @@ def build(d):
         A('<tr><td class="m">%s</td><td class="n">%d</td><td class="n">%d</td>'
           '<td style="width:34%%"><div class="bar" style="width:%.1f%%"></div></td>'
           '<td class="m">%s</td></tr>'
-          % (E(g.name[k]), n, g.subtree_size(k) - 1, 100.0 * n / mx,
+          % (class_link(g.name[k], carded), n, g.subtree_size(k) - 1, 100.0 * n / mx,
              E(g.module[k])))
     A("</tbody></table></div>")
 
@@ -528,7 +677,7 @@ def build(d):
         A("<details><summary>%s — %d direct children, %d in the subtree"
           "</summary><div class=\"tree\">%s</div></details>"
           % (E(nm), len(g.children.get(k, [])), g.subtree_size(k) - 1,
-             tree_lines(g, k, contra, inferred_children)))
+             tree_lines(g, k, contra, inferred_children, carded)))
 
     # ---- §4 multiple inheritance
     A('</section><section><div class="sec-h"><span class="sec-n">§4</span>'
@@ -542,7 +691,7 @@ def build(d):
       "filled box is the primary base at offset 0. <code>dExtAnmModel_c</code> lists "
       "<code>dExtFrameCtrl_c</code> (+0x50) before <code>dExtSimpleModel_c</code> "
       "(+0x0): list order is not offset order.</figcaption></figure>"
-      % mi_diagram(g))
+      % mi_diagram(g, carded))
 
     # ---- §5 contradicted
     #
@@ -589,8 +738,9 @@ def build(d):
             A('<tr><td class="m">%s</td><td class="m">%s</td>'
               '<td class="m" style="color:var(--contra)">%s</td>'
               '<td class="m" style="color:var(--proven)">%s</td></tr>'
-              % (E(r["rom_name"]), E(r["tree_name"] or "—"), E(r["tree_base"] or "—"),
-                 E(", ".join(r["rom_bases"]))))
+              % (class_link(r["rom_name"], carded), E(r["tree_name"] or "—"),
+                 E(r["tree_base"] or "—"),
+                 ", ".join(class_link(b, carded) for b in r["rom_bases"]) or "—"))
         A("</tbody></table></div>")
         inter = collections.Counter(r["rom_bases"][0] for r in by_verdict["flattened"])
         A('<div class="note">Those %d rows collapse to <strong>%d missing intermediate '
@@ -652,13 +802,26 @@ def build(d):
         A("<tr><td><strong>%s</strong></td><td>%s</td></tr>" % (E(what), why))
     A("</tbody></table></div></section>")
 
-    A("<footer>Generated by <code>tools/rtti_hierarchy_page.py</code> from "
-      "<code>build/rtti.json</code>, <code>build/rtti_reconcile.json</code> and "
-      "<code>build/evidence_hierarchy.json</code>. Every count, edge and offset on "
-      "this page is joined at generation time; nothing is typed by hand. Re-run "
-      "<code>tools/rtti_extract.py --check</code> to re-prove the census before "
-      "trusting a number here.</footer>")
-    A("</div>")
+    A("<footer>")
+    A("<p>Generated by <code>tools/rtti_hierarchy_page.py</code> from %s. Every "
+      "count, edge and offset on this page is joined at generation time; nothing is "
+      "typed by hand. Re-run <code>tools/rtti_extract.py --check</code> to re-prove "
+      "the census before trusting a number here.</p>"
+      % ", ".join("<code>build/%s</code>" % E(n) for n in gen_inputs))
+    A("<p><b>Data extracted %s</b> (UTC date of the newest input) · input digest "
+      "<code>%s</code> (sha256 of the inputs, 12 hex). No wall-clock time is stamped "
+      "anywhere on this page: re-running the generator over unchanged inputs "
+      "reproduces it byte for byte, so a diff here means the data moved. A page whose "
+      "digest differs from a fresh <code>tools/rtti_extract.py</code> run is stale.</p>"
+      % (E(gen_date), E(gen_digest)))
+    A('<p>Class names above link to their per-class card in '
+      '<a href="%s">class-reference.html</a> — ROM address, vtable span, and every '
+      "virtual slot joined out to a source file. Names shown in the inferred colour "
+      "have no <code>type_info</code> record and therefore no card, so they are not "
+      "links. <a href=\"%s\">Repository</a> · <a href=\"%s\">progress treemap</a>.</p>"
+      % (E(REFERENCE_PAGE), E(REPO_URL), E(TREEMAP_PAGE)))
+    A("</footer>")
+    A("</div></body></html>")
     return "\n".join(H)
 
 

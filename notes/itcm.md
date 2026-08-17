@@ -415,7 +415,7 @@ the header — matched byte-for-byte immediately.
 
 Declaration order, hoisting the prism pointer, caching the attribute in a local, `KCL_File`
 temporaries and the whole version sweep were all inert against that word. Recorded in
-`notes/pret-idioms.md` as idiom 11.
+`notes/mwccarm-codegen.md` §6bc (vcall spelling as a homing-rank lever).
 
 ## The octree walks (updated 2026-08-03)
 

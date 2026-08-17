@@ -1,0 +1,237 @@
+# Are docs/class-reference.html and docs/class-hierarchy.html older than the tools
+# that generate them?
+#
+# WHY THIS IS A STALENESS CHECK AND NOT A REGENERATION JOB
+# -------------------------------------------------------
+# Every other generated view in this repo is refreshed by update-chaos-data.yml,
+# which rebuilds it ROM-free from committed data (`--from-db _chaos_data/chaos-db.json`).
+# These two pages cannot join it. Their whole input chain lives under build/, and
+# build/ is gitignored -- `git ls-files build` is empty -- because the root of the
+# chain reads the ROM itself:
+#
+#   tools/rtti_reference.py       reads build/rtti.json, build/rtti_vtables.json,
+#                                       build/rtti_reconcile.json,
+#                                       build/eligible-names.txt,
+#                                       build/rombuild-report.json
+#   tools/rtti_hierarchy_page.py  reads build/rtti.json, build/rtti_reconcile.json,
+#                                       build/evidence_hierarchy.json,
+#                                       build/tu_names.json
+#   tools/rtti_extract.py         reads extracted/arm9_dec.bin + extracted/overlays
+#
+# extracted/ is the private ROM dump and is gitignored for copyright reasons; it can
+# never exist on a hosted runner. build/eligible-names.txt additionally needs
+# tools/mwccarm (gitignored, non-redistributable) and build/rombuild-report.json needs
+# a full ROM rebuild. The chaos-data branch banks only chaos-db.json, details/*.json
+# and langmode-baseline.json -- no RTTI data -- so there is nothing to rebuild from
+# there either, and every runner in this repo is `ubuntu-latest`. The self-hosted
+# worker behind pr-validate.yml does hold the ROM, but it is reachable only as a
+# fire-and-forget POST to the validation relay and has no publish path back.
+#
+# So CI cannot produce these pages. What it CAN do is refuse to let them rot in
+# silence, which is the actual failure this guards: class-reference.html was last
+# built 2026-08-07 and still prints "106/106 modules exact / 10324 slots enrolled"
+# as though it were describing today. Nothing anywhere noticed.
+#
+# HOW STALENESS IS DECIDED
+# ------------------------
+# mtimes do not survive a clone, and the real inputs are not committed -- but the
+# GENERATORS are. A page committed before the tool that produces its input was last
+# changed was rendered from a build/ state that no longer exists. That is a git
+# history question, and it needs no ROM to answer:
+#
+#     last commit touching the page   <   last commit touching any of its inputs
+#
+# The input list is the WHOLE chain, not just the renderer, and it is listed in
+# dependency order because that is the order a refresh must run in:
+#
+#     rtti_extract.py  ->  evidence_hierarchy.py  ->  rtti_reconcile.py  ->  page
+#
+# Running those out of order is the documented trap: it yields a fully populated,
+# internally consistent, WRONG page (a §5 full of CONTRADICTED rows accusing headers
+# that are right), and the generators' own --check passed on that state. So a change
+# to ANY stage invalidates the page, and every stage is watched here.
+#
+# TO CLEAR A FAILURE (needs a local checkout with extracted/ and tools/mwccarm):
+#
+#     python tools/rtti_extract.py            # ROM      -> build/rtti.json
+#     python tools/rtti_vtables.py            #          -> build/rtti_vtables.json
+#     python tools/evidence_hierarchy.py      # + src/   -> build/evidence_hierarchy.json
+#     python tools/rtti_reconcile.py          #          -> build/rtti_reconcile.json
+#     python tools/rtti_reference.py          #          -> docs/class-reference.html
+#     python tools/rtti_hierarchy_page.py     #          -> docs/class-hierarchy.html
+#
+# then commit both pages. IN THAT ORDER -- see the trap above.
+#
+# NOT ON pull_request, on purpose. A contributor without the ROM cannot regenerate
+# these, so blocking their PR would be a gate nobody can clear. This runs after the
+# merge, where the maintainer who does have the ROM is the one who sees it.
+#
+# ADVISORY ONLY -- IT NEVER FAILS THE BUILD, AND THAT IS DELIBERATE
+# ----------------------------------------------------------------
+# An earlier draft hard-failed on "page older than input". That is unclearable, and
+# the reason is worth writing down so nobody re-tightens it:
+#
+#   A comment-only edit to a watched tool (a docstring, a --help string) moves that
+#   tool's commit timestamp but cannot change the rendered page. Regenerating then
+#   produces a BYTE-IDENTICAL file by design -- the provenance stamp is a digest of
+#   the inputs with no wall clock in it, precisely so `git diff` can tell "rebuilt,
+#   nothing moved" from "the data moved". So there is nothing to commit, the page's
+#   timestamp never advances, and the red persists forever.
+#
+# More fundamentally: the honest staleness signal is "the committed HTML no longer
+# matches what the current inputs would render", and CI cannot evaluate that -- the
+# inputs start at a ROM it will never have. Every timestamp rule is a proxy, and a
+# proxy that blocks merges teaches people to ignore a red check. So this reports and
+# does not block. It is also trivially launderable: any one-character edit to the
+# HTML resets its timestamp without proving a regeneration happened.
+#
+# To make this enforceable later, commit an input-digest stamp next to the pages
+# (the generators already compute one) and compare THAT instead of commit times.
+name: rtti pages freshness (advisory)
+
+on:
+  push:
+    branches: [main]
+    # Only the paths that can change the answer. src/** is deliberately absent: it
+    # moves the enrolled/rombuild counts baked into class-reference.html, but CI
+    # cannot tell whether those numbers actually moved and cannot fix them either
+    # way, so that half is reported as a warning on the weekly run below rather
+    # than firing this job on every merge.
+    paths:
+      - "docs/class-reference.html"
+      - "docs/class-hierarchy.html"
+      - "tools/rtti_reference.py"
+      - "tools/rtti_hierarchy_page.py"
+      - "tools/rtti_extract.py"
+      - "tools/rtti_vtables.py"
+      - "tools/evidence_hierarchy.py"
+      - "tools/rtti_reconcile.py"
+      - "tools/tu_names.py"
+      - "config/rom-name-glossary.json"
+      - "config/**/symbols.txt"
+      - "symbols/overlay_actors.md"
+      - ".github/workflows/rtti-pages-staleness.yml"
+  # The derived-from-src half (enrolled slots and the rombuild snapshot on the
+  # reference page, INFERRED edges on the hierarchy page) drifts with every match that
+  # lands and trips no path filter. Weekly is the cadence at which that drift gets
+  # said out loud; it is a warning, never red.
+  schedule:
+    - cron: "0 6 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: rtti-pages-staleness-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  staleness:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # `git log -1 -- <path>` answers from whatever history is present, so a
+          # shallow clone would silently report every file as never touched.
+          fetch-depth: 0
+      - name: Pages are no older than the tools that generate them
+        run: |
+          set -uo pipefail
+
+          # Dependency order, upstream first. Any of these moving invalidates the page.
+          REF_INPUTS="tools/rtti_extract.py tools/rtti_vtables.py tools/evidence_hierarchy.py tools/rtti_reconcile.py tools/rtti_reference.py config/rom-name-glossary.json symbols/overlay_actors.md"
+          HIER_INPUTS="tools/rtti_extract.py tools/evidence_hierarchy.py tools/rtti_reconcile.py tools/tu_names.py tools/rtti_hierarchy_page.py config/rom-name-glossary.json"
+
+          # config/**/symbols.txt is a REAL input to the reference page -- rtti_reference.py
+          # rglobs it (see load_symbols) to build the (module, addr) -> name join that fills
+          # the symbol column of every slot table. It is handled below as a commit COUNT
+          # rather than in REF_INPUTS, because symbol renames are the single most frequent
+          # change in this repo: as a timestamp input it would report stale within a day of
+          # every refresh and drown the signal.
+
+          ts()   { git log -1 --format=%ct -- "$1"; }
+          date_() { git log -1 --format=%cs -- "$1"; }
+
+          {
+            echo "## RTTI page freshness (advisory)"
+            echo
+            echo "These pages cannot be regenerated on CI (the chain starts at the gitignored"
+            echo "ROM dump), so this job only reports whether the committed HTML predates the"
+            echo "tools that produced it. It never fails the build - see the header of this"
+            echo "workflow for why, and for the local refresh recipe."
+            echo
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          for pair in "docs/class-reference.html:$REF_INPUTS" "docs/class-hierarchy.html:$HIER_INPUTS"; do
+            page=${pair%%:*}
+            inputs=${pair#*:}
+
+            page_ts=$(ts "$page")
+            if [ -z "$page_ts" ]; then
+              echo "::warning file=$page::$page has no commit history - cannot judge freshness"
+              continue
+            fi
+
+            {
+              echo "### \`$page\`"
+              echo
+              echo "Last regenerated **$(date_ "$page")**."
+              echo
+              echo "| input | last changed | |"
+              echo "|---|---|---|"
+            } >> "$GITHUB_STEP_SUMMARY"
+
+            stale=""
+            for input in $inputs; do
+              in_ts=$(ts "$input")
+              if [ -z "$in_ts" ]; then
+                # A path with no history is almost always a typo in the list above, or a
+                # tool that got renamed. Without this it would silently read as "ok" and
+                # quietly stop being watched - the same invisible-failure shape this job
+                # exists to catch.
+                echo "::warning::$input is listed as an input to $page but has no commit history - typo, or renamed tool? It is not being watched."
+                mark="NO HISTORY"
+              # Equal timestamps are the refresh commit itself touching page and tool
+              # together, which is fresh, not stale - hence a strict comparison.
+              elif [ "$in_ts" -gt "$page_ts" ]; then
+                stale="$stale $input"
+                mark="**STALE**"
+              else
+                mark="ok"
+              fi
+              echo "| \`$input\` | $(date_ "$input") | $mark |" >> "$GITHUB_STEP_SUMMARY"
+            done
+            echo >> "$GITHUB_STEP_SUMMARY"
+
+            if [ -n "$stale" ]; then
+              echo "::warning file=$page::$page was committed $(date_ "$page") and is older than:$stale - regenerate it (recipe in .github/workflows/rtti-pages-staleness.yml)"
+              echo "> Regenerate: the chain above changed after this page was last built." >> "$GITHUB_STEP_SUMMARY"
+            fi
+
+            # Advisory only, and it applies to both pages: evidence_hierarchy.py reads
+            # include/ and src/ (so INFERRED edges move with them), and the enrolled /
+            # rombuild counts on class-reference.html come from build/ artifacts that
+            # track src/. None of that is visible from a checkout, so this counts the
+            # commits rather than claiming the page is wrong.
+            page_sha=$(git log -1 --format=%H -- "$page")
+            src_commits=$(git rev-list --count "$page_sha..HEAD" -- src/ include/)
+            if [ "${src_commits:-0}" -gt 0 ]; then
+              echo "::warning file=$page::$src_commits commit(s) have touched src/ or include/ since this page was last built; anything it derives from them may have moved"
+              echo "> $src_commits commit(s) touched \`src/\` or \`include/\` since the last build. CI cannot tell whether the derived numbers actually moved." >> "$GITHUB_STEP_SUMMARY"
+            fi
+
+            # Symbol renames land constantly and move the symbol column of every slot
+            # table on the reference page. Counted, not timestamped - see the note above.
+            if [ "$page" = "docs/class-reference.html" ]; then
+              sym_commits=$(git rev-list --count "$page_sha..HEAD" -- "config/**/symbols.txt")
+              if [ "${sym_commits:-0}" -gt 0 ]; then
+                echo "::warning file=$page::$sym_commits commit(s) have touched config/**/symbols.txt since this page was last built; the slot tables' symbol column is joined from those files"
+                echo "> $sym_commits commit(s) touched \`config/**/symbols.txt\` since the last build - the symbol column is joined from those." >> "$GITHUB_STEP_SUMMARY"
+              fi
+            fi
+            echo >> "$GITHUB_STEP_SUMMARY"
+          done
+
+          # Advisory by design - see the header. Never fails the build.
+          exit 0

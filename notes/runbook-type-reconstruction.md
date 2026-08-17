@@ -92,7 +92,7 @@ A tool of that name exists now, but it is **not** a regenerator. `tools/gen_head
 --report` emits a *differential* between what these headers declare and what three
 independent evidence passes can prove, bucketed per field; it writes nothing to
 `include/`. Headers are still edited by hand -- but now against a report instead of
-against nothing. See `notes/plan-gen-header.md`.
+against nothing. See `notes/archive/plan-gen-header.md`.
 
 **There is a second banner family, and it has no report.** 59 further headers -- the
 `d*_c.h` set, `include/dWipe_c.h` among them -- carry a different fabricated attribution:
@@ -180,7 +180,7 @@ and `u32/u16` alike, control diverging as expected.
 **A/B proves harmlessness, not correctness.** It cannot confirm a width -- that rests on
 the evidence passes -- and it cannot confirm signedness at all, because what it has just
 shown is that nothing depends on it. "The gate proved the width" is the overclaim this
-method invites, and `notes/plan-scalar-markers.md` §3 is the retraction of exactly that.
+method invites, and `notes/archive/plan-scalar-markers.md` §3 is the retraction of exactly that.
 Write **byte-unobservable**, not *verified*.
 
 ## 3. The ladder, with the tree's own before/after
@@ -332,7 +332,7 @@ python tools/check_references.py --update    # bank the starting point
    cross-check an earlier revision of this runbook told you to do by hand *is* pass 2.
 
    **Read the recall line before concluding anything from a zero.** A pass that could not
-   see your class says so; `notes/plan-scalar-markers.md` §3a is what happens when that
+   see your class says so; `notes/archive/plan-scalar-markers.md` §3a is what happens when that
    distinction is ignored -- a class the hierarchy could not place was reported as
    "no ancestor declares this offset", and it was wrong.
 3. **Name and type the fields.** Same width unless you intend a codegen change. Write

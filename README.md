@@ -32,6 +32,21 @@ by module.
 For an interactive version where you can hover any function for its name, address,
 size, and status, see the [progress treemap on GitHub Pages](https://tangosdev.github.io/sm64ds-decomp/).
 
+## Reference
+
+Two pages built from the cartridge's own RTTI, not from this repo's headers — they
+grade our headers against the ROM, so where they disagree, the ROM is right:
+
+- **[Class reference](https://tangosdev.github.io/sm64ds-decomp/class-reference.html)**
+  — all 429 classes the ROM names, each with its typeinfo and vtable addresses and a
+  per-slot table giving every virtual's ROM address, symbol, and source file.
+- **[The fBase tree](https://tangosdev.github.io/sm64ds-decomp/class-hierarchy.html)**
+  — the inheritance graph, with each edge marked proven, inferred, or contradicted,
+  and a section on what the RTTI cannot tell you.
+
+Regenerate with `python tools/rtti_reference.py` and `python tools/rtti_hierarchy_page.py`
+after a build; both take `--check` to verify their inputs first.
+
 ## The three tiers
 
 The bar above measures one thing: whether the C compiles to the ROM's exact bytes.
@@ -169,10 +184,15 @@ is in [CONTRIBUTING.md](CONTRIBUTING.md) and
 Short version:
 
 ```
-pip install ndspy capstone pyelftools
-# get mwccarm per notes/setup-mwccarm.md, then:
+pip install ndspy capstone pyelftools py7zr pefile
+# get mwccarm per notes/setup-mwccarm.md and extract to tools/mwccarm/, then:
+python tools/recover_cw2004.py                        # -> tools/mwccarm/2004/b56/
 python tools/unpack.py "path/to/your-own-sm64ds.nds"
 ```
+
+Do not skip `recover_cw2004.py`: `rombuild.py` and `build_pin.verify` only accept
+mwccarm `2004/b56`, which the zip does not carry. Without it a hit under any other
+compiler version is iteration, never a verdict.
 
 ## How you can help
 

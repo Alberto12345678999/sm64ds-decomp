@@ -1,7 +1,7 @@
 """Differential between the committed struct headers and the evidence for them.
 
 241 headers in include/ say "AUTO-GENERATED from matched-function evidence". No
-generator has ever existed in this repo (notes/plan-gen-header.md 1), so nothing has
+generator has ever existed in this repo (notes/archive/plan-gen-header.md 1), so nothing has
 ever checked them. This does.
 
 It does not write headers. Phase 1 of the plan is a worklist, not a code change:

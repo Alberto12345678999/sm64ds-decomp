@@ -44,3 +44,58 @@ modulo CRLF/LF). I found it via `git status`, confirmed the content, and
 renamed it back to `notes/overlay-ambiguous-references.md`. No data was lost,
 but it's the reason I independently re-verified every claimed move in this
 pass rather than trusting agent self-reports at face value.
+
+## Second pass: #1511 (2026-08-15), and one revert
+
+`bc93fa767` ("cleanup and archive outdated docs", #1511) archived six more files
+without amending this log, so the tables above understated the archive by 6 of 7
+entries until now:
+
+| File | Status |
+|---|---|
+| `crack-loop-runbook.md` | archived by #1511 |
+| `func_02059d8c-asm-origin.md` | archived by #1511 |
+| `func_ov079_02124008-floor.md` | archived by #1511 |
+| `plan-gen-header.md` | archived by #1511 |
+| `plan-scalar-markers.md` | archived by #1511 — **contradicts** the "Needs a human decision (left in place)" row above; no human decision is recorded |
+| `pret-idioms.md` | archived by #1511 — **correctly**, on content; see below |
+
+### `pret-idioms.md`: #1511 was right about the file and wrong about the links
+
+The "Kept" section above names `pret-idioms.md` as a canonical reference, so it
+was briefly restored to `notes/` on that basis. That was a process argument, not
+a content judgement. On the content it does not survive:
+
+- **Six of its eleven idioms are verbatim duplicates.** `matching-style.md:289`
+  ("Reference-decomp ground truth", 2026-06-21) mined the same two repos —
+  pret/pokediamond and pret/pokeplatinum — eight days earlier, quoting the same
+  in-source comment strings, *and* did the version triage this note never does
+  (`matching-style.md:315` names two reference levers as 2.0-series and
+  inapplicable to us).
+- **Two are contradicted by our own measurements.** Its idiom 5 recommends
+  `register`-qualified locals; `mwccarm-codegen.md` records that knob as inert at
+  `:24`, `:616`, `:1017`, and `:3036`, and `matching-style.md:348` says decl order
+  and `register` have "*zero* effect". Its idiom 6 says keep ternaries as
+  ternaries; `matching-style.md:453` says that guidance "**is not universal**" and
+  that rewriting one as `if/else` fixed a 20-instruction coloring residual.
+- **None of its idioms are unique.** Idiom 11 is ours, not pret's, and already
+  lives at `mwccarm-codegen.md` §6bc.
+- **It names no compiler build.** pokediamond is 1.2-series and pokeplatinum
+  2.0-series; we pin 2004/b56. Every register-allocation idiom is therefore
+  unattributed on the one axis our corpus proves is build-sensitive. Its framing
+  is pre-b56 throughout ("wall #1 remains largely unsolved"), a wall
+  `mwccarm-codegen.md` §6ai reports as fallen once b56 was recovered.
+
+The cost was not passive. Four of its referrers were **agent prompt text** —
+`tangos.json`, `tools/chaosviewer.config.json`, `tools/refine_run.js`,
+`tools/sched_run.js` — and `tools/sched_run.js:50` handed it to an agent
+precisely when stalled, pointing it at the two levers our corpus disproved.
+
+All eight live referrers have been repointed at `mwccarm-codegen.md` or
+`matching-style.md`: the four above, plus `AGENTS.md`, `CONTRIBUTING.md`,
+`notes/itcm.md`, and `notes/levers.jsonl`. The two already-archived referrers
+(`tools/archive/crack_pr104.js`, `archive/crack-loop-runbook.md`) were left alone.
+
+The lesson for future passes: **archiving is a rename, and a rename breaks every
+inbound link.** Before moving a note, grep its basename across the repo and fix
+the referrers in the same commit. Nothing in CI checks this.
