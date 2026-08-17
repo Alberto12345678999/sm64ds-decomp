@@ -3090,6 +3090,469 @@
         },
         "axisNote": "This does NOT make the TU link-verified (plan sec 6): the range is still linked from N per-function contributions, and the vtable/RTTI ownership question is untouched. It is stronger than `partial` alone, because a real mwldarm link resolved every reference and the ROM came out bit-identical to the control."
       }
+    },
+    {
+      "id": "arm9/ActorDerived",
+      "module": "arm9",
+      "source": "src_tu/actors/ActorDerived.cpp",
+      "promoted_source": "src/actors/ActorDerived.cpp",
+      "status": "link-verified",
+      "boundary_confidence": "high",
+      "boundary_evidence": [
+        "NOT FROM tu_map. tools/tu_map.py reports the arm9 `main` module as UNDER-SEGMENTED: one unit 0x20049f0..0x20707a4 carrying 2984 functions and 73 class labels, because the module's class address-spans interleave and cluster() unions them all. There is no tu_map boundary here and no `tubuild.py create` candidate id; every line below is hand-derived and independently checkable.",
+        "contiguous linker run 0x02013e80..0x02013f28: the five functions tile the span exactly -- 0x24+0x38+0xc+0xc+0x34 = 0xa8 = end-start -- with no hole and no tail (recomputed from config/arm9/symbols.txt, not asserted).",
+        "no foreign symbol inside the span: config/arm9/symbols.txt lists exactly these five function symbols in [0x02013e80,0x02013f28) and nothing else.",
+        "class-label homogeneity: 4 of the 5 carry the _ZN12ActorDerived prefix. The fifth, func_02013edc, is unnamed and is ENCLOSED by named members on both sides (D0 ends at it, Spawn begins after it), so no cut can exclude it without splitting the class's own run.",
+        "the run is the class's WHOLE run: grep of every config/**/symbols.txt in the image finds exactly four _ZN12ActorDerived* function symbols and they are the four here. The class has no code anywhere else, so no competing span exists.",
+        "neighbour below: func_02013e64 (0x02013e64..0x02013e80), and the six functions before it are all _ZN8SaveData* (0x02013cd4..0x02013e64) -- a different class. Neighbour above: func_02013f28 (0x02013f28..0x02013f4c) then func_02013f4c. Both neighbours carry a different label from this run, so the run is bracketed rather than merely cut out of a uniform stretch.",
+        "key-function corroboration: ActorDerived declares exactly two virtuals of its own -- the destructor, defined INLINE in the header, and AfterInitResources. AfterInitResources is therefore the key function, and MEASURED HERE, defining it as a real method emits _ZTV12ActorDerived and pulls the destructor's two vague-linkage out-of-line copies into existence for free (5/5 MATCH, no forcing scaffold). That is a direct demonstration that D1, D0 and AfterInitResources belong to ONE translation unit: compiling the key function is what makes the two destructor bodies exist at all, and it produces them in the ROM's own order. The shipped file then spells all three as extern \"C\" instead, because the emitted vtable collides with the gap object's copy and blocks the link -- but the boundary evidence stands on the first measurement, not on the workaround.",
+        "destructor-variant order corroborates the source form independently of any of the above. mwcc emits an OUT-OF-LINE destructor definition as the fixed group D2,D0,D1 (notes/tu-reconstruction-pilot-report.md sec 3), and ActorBase -- destructor defined out of line -- has exactly that in the ROM (0x02043d48 D2, 0x02043d78 D0, 0x02043dbc D1). An INLINE destructor's vague-linkage copies come out D1-then-D0 with no D2, which is what the pilot measured for Platform. This class has D1 (0x02013e80) then D0 (0x02013ea4) and no D2 anywhere in the image -- matching the inline form include/ActorDerived.h documents, and NOT matching a second out-of-line definition.",
+        "static-initialiser attribution: NO HELP, stated rather than skipped. build/tu_map.json gives main 23 sinits / 23 .ctor entries with sinit_vs_tu 'ok' but corroborated=false, and nothing in this run touches dynamically-initialised static storage, so no sinit can be pinned to it. This boundary rests on the four lines above, not on sinit counting."
+      ],
+      "sections": [
+        {
+          "name": ".text",
+          "start": "0x02013e80",
+          "end": "0x02013f28"
+        }
+      ],
+      "functions": [
+        {
+          "symbol": "_ZN12ActorDerivedD1Ev",
+          "address": "0x02013e80",
+          "size": "0x00000024",
+          "legacy_source": "src/_ZN12ActorDerivedD1Ev.cpp",
+          "ordinal": 0
+        },
+        {
+          "symbol": "_ZN12ActorDerivedD0Ev",
+          "address": "0x02013ea4",
+          "size": "0x00000038",
+          "legacy_source": "src/_ZN12ActorDerivedD0Ev.c",
+          "ordinal": 1
+        },
+        {
+          "symbol": "func_02013edc",
+          "address": "0x02013edc",
+          "size": "0x0000000c",
+          "legacy_source": "src/func_02013edc.c",
+          "ordinal": 2
+        },
+        {
+          "symbol": "_ZN12ActorDerived5SpawnEjP9ActorBaseii",
+          "address": "0x02013ee8",
+          "size": "0x0000000c",
+          "legacy_source": "src/_ZN12ActorDerived5SpawnEjP9ActorBaseii.cpp",
+          "ordinal": 3
+        },
+        {
+          "symbol": "_ZN12ActorDerived18AfterInitResourcesEj",
+          "address": "0x02013ef4",
+          "size": "0x00000034",
+          "legacy_source": "src/_ZN12ActorDerived18AfterInitResourcesEj.cpp",
+          "ordinal": 4
+        }
+      ],
+      "data": [],
+      "bss": [],
+      "notes": [
+        "Hand-assembled, not generated by `tubuild.py create`: tu_map cannot segment arm9/main (see boundary_evidence line 1), so there was no candidate id to create from. The manifest entry was still built through tubuild.build_manifest_entry so the schema is the tool's own; boundary_confidence and boundary_evidence were then replaced with hand-derived values, because the tool's generated lines cite a tu_map unit that does not describe this run.",
+        "NEITHER OF THE CLASS'S OWN VIRTUALS IS DEFINED AS A METHOD HERE, deliberately. AfterInitResources is the key function (the only non-inline virtual ActorDerived declares), so a real method definition emits _ZTV12ActorDerived, which collides with the module gap object's copy of the ROM vtable: the link aborts with 'Multiply-defined: virtual table for ActorDerived ... Previously defined in _dsd_gap@main_44.o'. Both forms were measured. Method form: 5/5 MATCH, 5 unlicensed .data symbols, link ABORTS. extern \"C\" form (shipped): 5/5 MATCH, 0 unlicensed anything, LINK-VERIFIED with the 168-byte range IDENTICAL. The class declarations in include/ActorDerived.h are untouched -- they are what give the class its slots.",
+        "The destructor's out-of-line copies are spelled directly under their mangled names rather than forced into existence by a scaffold. A never-called `p->~ActorDerived()` (what src/_ZN12ActorDerivedD1Ev.cpp uses) is .text that no symbols.txt entry names: objisolate strips it per function, but a merged object cannot be reduced that way, `-nodead` keeps it, and it would land inside this span. include/ActorDerived.h's inline definition of ~ActorDerived is UNCHANGED and still load-bearing for Scene, Stage and every actor destructor below them.",
+        "_ZN12ActorDerivedD2Ev does not exist in the ROM and is not emitted here -- an inline destructor's vague-linkage copies are D1 and D0 only, which is itself the evidence that the header's inline definition is the right source form. ActorBase, whose destructor IS out of line, has the full D2,D0,D1 group at 0x02043d48/0x02043d78/0x02043dbc."
+      ],
+      "verification": {
+        "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
+        "toolchain": "tools/mwccarm/2004/b56/mwccarm.exe",
+        "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
+        "object": "build/tu/arm9-ActorDerived/ActorDerived.o (gitignored)",
+        "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
+        "functions_matched": 5,
+        "functions_declared": 5,
+        "criteria": {
+          "every_declared_function_defined": "PASS",
+          "every_declared_function_bytes_match": "PASS",
+          "declared_function_set_equals_defined_function_set": "PASS",
+          "functions_occur_in_expected_order": "PASS",
+          "relocation_destinations_verified": "PASS"
+        },
+        "linkcheck": {
+          "round": "tools/tubuild.py linkcheck -- scratch dsd delink+lcf, whole-tree mwccarm, mwldarm link, linked-range and module byte comparison, dsd check symbols --fail, full ROM build",
+          "result": "link-verified",
+          "scratch": "build/tu/arm9-ActorDerived/link (gitignored)",
+          "phases": {
+            "delink": true,
+            "lcf": true,
+            "compile": true,
+            "link": true,
+            "checkModules": true,
+            "checkSymbols": false,
+            "rom": true
+          },
+          "tuRange": {
+            "start": "0x02013e80",
+            "end": "0x02013f28",
+            "differingBytes": 0,
+            "firstDiff": null
+          },
+          "objectAudit": {
+            "counts": {
+              "LICENSED": 5
+            },
+            "emittedTextOrderIsRomAscending": true,
+            "nonLicensedSymbols": [],
+            "unlicensedSections": []
+          },
+          "symbolCheckNewVsBaseline": [],
+          "linkerOutput": null
+        }
+      }
+    },
+    {
+      "id": "arm9/ActorBase",
+      "module": "arm9",
+      "source": "src_tu/actors/ActorBase.cpp",
+      "promoted_source": "src/actors/ActorBase.cpp",
+      "status": "link-verified",
+      "boundary_confidence": "high",
+      "boundary_evidence": [
+        "NOT FROM tu_map. tools/tu_map.py reports the arm9 `main` module as UNDER-SEGMENTED: one unit 0x20049f0..0x20707a4 with 2984 functions and 73 class labels, because the module's class address-spans interleave and cluster() unions them all. There is no tu_map boundary here and no `tubuild.py create` candidate id; every line below is hand-derived and independently checkable.",
+        "THE CLASS'S FULL CONTIGUOUS RUN IS 0x02043444..0x02043f4c, 25 functions, and it tiles that span exactly with no hole and no overlap (recomputed from config/arm9/symbols.txt). The lower bound is _ZN9ActorBasenwEj at 0x02043444; the byte before it, 0x02043443, is the last byte of func_020433b8, which carries no class label. The upper bound is 0x02043f4c, which is the first byte of func_02043f4c, likewise unlabelled. So the run is bracketed by unlabelled neighbours on both sides.",
+        "no foreign symbol inside the run: config/arm9/symbols.txt lists exactly 25 function symbols in [0x02043444,0x02043f4c) -- 23 with the _ZN9ActorBase prefix plus func_02043810 and func_02043880 -- and nothing else. Both func_* are ENCLOSED by named members (func_02043810 sits between Virtual34 and MarkForDestruction, func_02043880 between MarkForDestruction and OnPendingDestroy), so no cut can exclude either without splitting the class's own run. Both also read the ActorBase layout directly: func_02043810 follows sceneNode (+0x14) to the owner back-pointer the constructor writes at its +0x10, and func_02043880 touches aliveState (0x0e), shouldBeKilled (0x0f), the flag byte (0x13) and both ProcessingListNodes (0x28, 0x38).",
+        "the run is the class's WHOLE run, bar one nested-class outlier: grep of every config/**/symbols.txt in the image finds 25 _ZN9ActorBase* function symbols, 23 of them here and 2 elsewhere -- _ZN9ActorBase9SceneNode5ResetEv (0x0203b4ac) and _ZN9ActorBase9SceneNodeC1Ev (0x0203b4c4). Those two are the NESTED class ActorBase::SceneNode, not ActorBase, they are 0x8000 bytes away, and they sit immediately below _ZN4cstd5atan2E5Fix12IiES1_ inside the 0x0203b2xx-0x0203b4xx stretch that holds the very list primitives this run calls (func_0203b20c, func_0203b244, func_0203b27c, func_0203b3c0). They are a different TU and are deliberately NOT claimed here; see notes.",
+        "DESTRUCTOR-VARIANT ORDER CORROBORATES THE SOURCE FORM. mwcc emits an out-of-line destructor definition as the fixed group D2,D0,D1 (notes/tu-reconstruction-pilot-report.md sec 3). This class has exactly that in the ROM -- 0x02043d48 D2, 0x02043d78 D0, 0x02043dbc D1, contiguous -- so the three were emitted together from one object, which is only possible if they shared a TU. Contrast ActorDerived, whose destructor is defined INLINE in the header: its vague-linkage copies come out D1-then-D0 with no D2 (0x02013e80, 0x02013ea4). Two classes, two source forms, both readable straight off the cartridge.",
+        "KEY-FUNCTION CONSISTENCY, and it is a NEGATIVE that had to hold: ActorBase's first declared virtual is InitResources (slot 0), so any TU defining it as a real method emits _ZTV9ActorBase and collides with the gap object's copy of the ROM vtable. This TU keeps it an extern \"C\" free function, and the compiled object emits NO .data section at all -- no _ZTV, no _ZTI, no _ZTS. That is the check that the 23 other members can be real C++ methods in one TU without the vtable following them.",
+        "VPTR ADDEND, from the cartridge: the literal pools of all three destructor variants hold exactly 0x02099edc (0x02043d74 -> 0x02099edc, 0x02043db4 -> 0x02099edc, 0x02043de8 -> 0x02099edc), which is config's `_ZTV9ActorBase`, i.e. the SLOT ARRAY. A real C++ ~ActorBase() would store mwcc's own _ZTV9ActorBase + 8 (that symbol names the vtable OBJECT, two words of Itanium preamble earlier) and, with the vtable external because of the line above, would land eight bytes high. This is why the three variants are spelled as extern \"C\" free functions here and not as one method.",
+        "static-initialiser attribution: NO HELP, stated rather than skipped. build/tu_map.json gives main 23 sinits / 23 .ctor entries with sinit_vs_tu 'ok' but corroborated=false, and nothing in this run touches dynamically-initialised static storage -- the object emits no .init and no .bss. This boundary rests on the contiguity, enclosure and destructor-group lines above, not on sinit counting."
+      ],
+      "sections": [
+        {
+          "name": ".text",
+          "start": "0x02043444",
+          "end": "0x02043dec"
+        }
+      ],
+      "functions": [
+        {
+          "symbol": "_ZN9ActorBasenwEj",
+          "address": "0x02043444",
+          "size": "0x00000050",
+          "legacy_source": "src/_ZN9ActorBasenwEj.cpp",
+          "ordinal": 0
+        },
+        {
+          "symbol": "_ZN9ActorBase13OnHeapCreatedEv",
+          "address": "0x02043494",
+          "size": "0x00000008",
+          "legacy_source": "src/_ZN9ActorBase13OnHeapCreatedEv.cpp",
+          "ordinal": 1
+        },
+        {
+          "symbol": "_ZN9ActorBase9Virtual38Ejj",
+          "address": "0x0204349c",
+          "size": "0x000000e0",
+          "legacy_source": "src/_ZN9ActorBase9Virtual38Ejj.cpp",
+          "ordinal": 2
+        },
+        {
+          "symbol": "_ZN9ActorBase9Virtual34Ejj",
+          "address": "0x0204357c",
+          "size": "0x00000294",
+          "legacy_source": "src/_ZN9ActorBase9Virtual34Ejj.cpp",
+          "ordinal": 3
+        },
+        {
+          "symbol": "func_02043810",
+          "address": "0x02043810",
+          "size": "0x00000014",
+          "legacy_source": "src/func_02043810.c",
+          "ordinal": 4
+        },
+        {
+          "symbol": "_ZN9ActorBase18MarkForDestructionEv",
+          "address": "0x02043824",
+          "size": "0x0000005c",
+          "legacy_source": "src/_ZN9ActorBase18MarkForDestructionEv.cpp",
+          "ordinal": 5
+        },
+        {
+          "symbol": "func_02043880",
+          "address": "0x02043880",
+          "size": "0x00000240",
+          "legacy_source": "src/func_02043880.c",
+          "ordinal": 6
+        },
+        {
+          "symbol": "_ZN9ActorBase16OnPendingDestroyEv",
+          "address": "0x02043ac0",
+          "size": "0x00000004",
+          "legacy_source": "src/_ZN9ActorBase16OnPendingDestroyEv.cpp",
+          "ordinal": 7
+        },
+        {
+          "symbol": "_ZN9ActorBase11AfterRenderEj",
+          "address": "0x02043ac4",
+          "size": "0x00000004",
+          "legacy_source": "src/_ZN9ActorBase11AfterRenderEj.cpp",
+          "ordinal": 8
+        },
+        {
+          "symbol": "_ZN9ActorBase12BeforeRenderEv",
+          "address": "0x02043ac8",
+          "size": "0x00000028",
+          "legacy_source": "src/_ZN9ActorBase12BeforeRenderEv.cpp",
+          "ordinal": 9
+        },
+        {
+          "symbol": "_ZN9ActorBase6RenderEv",
+          "address": "0x02043af0",
+          "size": "0x00000008",
+          "legacy_source": "src/_ZN9ActorBase6RenderEv.cpp",
+          "ordinal": 10
+        },
+        {
+          "symbol": "_ZN9ActorBase13AfterBehaviorEj",
+          "address": "0x02043af8",
+          "size": "0x00000004",
+          "legacy_source": "src/_ZN9ActorBase13AfterBehaviorEj.cpp",
+          "ordinal": 11
+        },
+        {
+          "symbol": "_ZN9ActorBase14BeforeBehaviorEv",
+          "address": "0x02043afc",
+          "size": "0x00000028",
+          "legacy_source": "src/_ZN9ActorBase14BeforeBehaviorEv.cpp",
+          "ordinal": 12
+        },
+        {
+          "symbol": "_ZN9ActorBase8BehaviorEv",
+          "address": "0x02043b24",
+          "size": "0x00000008",
+          "legacy_source": "src/_ZN9ActorBase8BehaviorEv.cpp",
+          "ordinal": 13
+        },
+        {
+          "symbol": "_ZN9ActorBase21AfterCleanupResourcesEj",
+          "address": "0x02043b2c",
+          "size": "0x00000080",
+          "legacy_source": "src/_ZN9ActorBase21AfterCleanupResourcesEj.cpp",
+          "ordinal": 14
+        },
+        {
+          "symbol": "_ZN9ActorBase22BeforeCleanupResourcesEv",
+          "address": "0x02043bac",
+          "size": "0x00000044",
+          "legacy_source": "src/_ZN9ActorBase22BeforeCleanupResourcesEv.cpp",
+          "ordinal": 15
+        },
+        {
+          "symbol": "_ZN9ActorBase16CleanupResourcesEv",
+          "address": "0x02043bf0",
+          "size": "0x00000008",
+          "legacy_source": "src/_ZN9ActorBase16CleanupResourcesEv.cpp",
+          "ordinal": 16
+        },
+        {
+          "symbol": "_ZN9ActorBase18AfterInitResourcesEj",
+          "address": "0x02043bf8",
+          "size": "0x00000080",
+          "legacy_source": "src/_ZN9ActorBase18AfterInitResourcesEj.cpp",
+          "ordinal": 17
+        },
+        {
+          "symbol": "_ZN9ActorBase19BeforeInitResourcesEv",
+          "address": "0x02043c78",
+          "size": "0x00000008",
+          "legacy_source": "src/_ZN9ActorBase19BeforeInitResourcesEv.cpp",
+          "ordinal": 18
+        },
+        {
+          "symbol": "_ZN9ActorBase13InitResourcesEv",
+          "address": "0x02043c80",
+          "size": "0x00000008",
+          "legacy_source": "src/_ZN9ActorBase13InitResourcesEv.cpp",
+          "ordinal": 19
+        },
+        {
+          "symbol": "_ZN9ActorBase7ProcessEMS_FivEMS_FbvEMS_FvjE",
+          "address": "0x02043c88",
+          "size": "0x000000c0",
+          "legacy_source": "src/_ZN9ActorBase7ProcessEMS_FivEMS_FbvEMS_FvjE.cpp",
+          "ordinal": 20
+        },
+        {
+          "symbol": "_ZN9ActorBaseD2Ev",
+          "address": "0x02043d48",
+          "size": "0x00000030",
+          "legacy_source": "src/_ZN9ActorBaseD2Ev.c",
+          "ordinal": 21
+        },
+        {
+          "symbol": "_ZN9ActorBaseD0Ev",
+          "address": "0x02043d78",
+          "size": "0x00000044",
+          "legacy_source": "src/_ZN9ActorBaseD0Ev.c",
+          "ordinal": 22
+        },
+        {
+          "symbol": "_ZN9ActorBaseD1Ev",
+          "address": "0x02043dbc",
+          "size": "0x00000030",
+          "legacy_source": "src/_ZN9ActorBaseD1Ev.c",
+          "ordinal": 23
+        }
+      ],
+      "data": [],
+      "bss": [],
+      "notes": [
+        "Hand-assembled, not generated by `tubuild.py create`: tu_map cannot segment arm9/main (see boundary_evidence line 1), so there was no candidate id to create from. The manifest entry was still built through tubuild.build_manifest_entry so the schema is the tool's own; boundary_confidence and boundary_evidence were then replaced with hand-derived values.",
+        "LICENSED SPAN IS 0x02043444..0x02043dec, 24 of the run's 25 functions. The 25th, _ZN9ActorBaseC1Ev (0x02043dec, size 0x160), belongs to this TU by every boundary test but is NOT admitted: the tree has no C++ for it. src/_ZN9ActorBaseC1Ev.cpp is a whole-function hand-written `asm` transcription whose own banner reads 'NONMATCHING ... does NOT count as matched', and config/arm9/delinks.txt has NO entry for it at all -- it is neither compiled nor enrolled today, which is why no gate has ever reported its absence. Admitting asm would let this TU claim a range it has not reproduced from source.",
+        "include/ActorBase.h's banner used to describe the class as 0x02043494..0x02043e04. Both ends were wrong and have been corrected to 0x02043444..0x02043f4c: the old start excluded _ZN9ActorBasenwEj (0x02043444, 0x50, the class's own operator new), and the old end, 0x02043e04, is not a function boundary at all -- it falls 0x18 bytes inside _ZN9ActorBaseC1Ev (0x02043dec..0x02043f4c), cutting the constructor in half.",
+        "_ZN9ActorBase9SceneNode5ResetEv (0x0203b4ac) and _ZN9ActorBase9SceneNodeC1Ev (0x0203b4c4) are the nested class ActorBase::SceneNode and are a SEPARATE TU, 0x8000 bytes away in the list-primitive stretch this run calls into. Not claimed by this entry. They are contiguous with each other (0x0203b4ac..0x0203b4dc, 0x30 total) and bracketed by func_0203b438 below and _ZN4cstd5atan2E5Fix12IiES1_ above, so they are a defensible 2-function run of their own -- but a 2-function TU whose neighbours are an unnamed function and a cstd math routine is a weaker boundary claim than this one, and merging them into ActorBase's TU would require the linker to have placed one TU's text in two places 0x8000 apart, which it does not do.",
+        "include/decl_common.h is deliberately NOT included. It declares func_0203b27c as (int, int) and data_020a4b6c as `int` where this class's own sources pass two pointers and take the address of a list head; from one TU those are two incompatible extern \"C\" declarations of one name, which mwcc rejects as 'illegal function overloading'. The few lines it supplied are restated in the file's own reconciled extern \"C\" block, keeping the most complete observation of each.",
+        "_ZN9ActorBase21AfterCleanupResourcesEj is the one admitted member whose legacy file is NOT marked `complete` in config/arm9/delinks.txt: the ROM build does not compile it today and dsd supplies its bytes from the cartridge. It reproduces under the pin both as the legacy file and in TU context, but it was never enrolled -- 'matching' and 'enrolled' are different questions."
+      ],
+      "verification": {
+        "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
+        "toolchain": "tools/mwccarm/2004/b56/mwccarm.exe",
+        "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
+        "object": "build/tu/arm9-ActorBase/ActorBase.o (gitignored)",
+        "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
+        "functions_matched": 24,
+        "functions_declared": 24,
+        "criteria": {
+          "every_declared_function_defined": "PASS",
+          "every_declared_function_bytes_match": "PASS",
+          "declared_function_set_equals_defined_function_set": "PASS",
+          "functions_occur_in_expected_order": "PASS",
+          "relocation_destinations_verified": "PASS"
+        },
+        "linkcheck": {
+          "round": "tools/tubuild.py linkcheck -- scratch dsd delink+lcf, whole-tree mwccarm, mwldarm link, linked-range and module byte comparison, dsd check symbols --fail, full ROM build",
+          "result": "link-verified",
+          "scratch": "build/tu/arm9-ActorBase/link (gitignored)",
+          "phases": {
+            "delink": true,
+            "lcf": true,
+            "compile": true,
+            "link": true,
+            "checkModules": true,
+            "checkSymbols": false,
+            "rom": true
+          },
+          "tuRange": {
+            "start": "0x02043444",
+            "end": "0x02043dec",
+            "differingBytes": 0,
+            "firstDiff": null
+          },
+          "objectAudit": {
+            "counts": {
+              "LICENSED": 24
+            },
+            "emittedTextOrderIsRomAscending": true,
+            "nonLicensedSymbols": [],
+            "unlicensedSections": []
+          },
+          "symbolCheckNewVsBaseline": [],
+          "linkerOutput": null
+        }
+      }
+    },
+    {
+      "id": "arm9/ActorBase_SceneNode",
+      "module": "arm9",
+      "source": "src_tu/actors/ActorBase_SceneNode.cpp",
+      "promoted_source": "src/actors/ActorBase_SceneNode.cpp",
+      "status": "link-verified",
+      "boundary_confidence": "medium",
+      "boundary_evidence": [
+        "NOT FROM tu_map. tools/tu_map.py reports the arm9 `main` module as UNDER-SEGMENTED -- one unit 0x20049f0..0x20707a4 with 2984 functions and 73 class labels -- so there is no tu_map boundary and no `tubuild.py create` candidate id. Every line below is hand-derived.",
+        "contiguous run 0x0203b4ac..0x0203b4dc: the two functions tile the span exactly, 0x18 + 0x18 = 0x30 = end-start, no hole and no tail (recomputed from config/arm9/symbols.txt). No foreign symbol lies inside it.",
+        "class-label homogeneity is total: both symbols are _ZN9ActorBase9SceneNode*, i.e. members of the NESTED class ActorBase::SceneNode, and there are no others anywhere in the image.",
+        "SEPARATE FROM ActorBase'S OWN TU, and this is the load-bearing negative. These are the only two _ZN9ActorBase* functions outside the class's main run at 0x02043444..0x02043f4c, and they sit 0x8000 bytes below it. A single object's .text is placed contiguously by the linker, so one TU cannot occupy two regions 0x8000 apart -- merging them into arm9/ActorBase would require exactly that. arm9/ActorBase is independently LINK-VERIFIED over 0x02043444..0x02043dec without them, which confirms the split from the other side.",
+        "neighbourhood attribution: 0x0203b2xx-0x0203b4xx is the intrusive-list primitive stretch -- func_0203b20c, func_0203b244, func_0203b27c and func_0203b3c0 all live there, and every one of them is called from ActorBase's own members (AfterInitResources, AfterCleanupResources, func_02043880). This pair sits at the TOP of that stretch, which is consistent with a scene-graph-node TU adjacent to the list code it is built on.",
+        "neighbours on both sides carry a different label: func_0203b438 ends at 0x0203b4ac below, and _ZN4cstd5atan2E5Fix12IiES1_ begins at 0x0203b4dc above -- a cstd math routine, which is certainly a different TU.",
+        "CONFIDENCE IS medium, NOT high, and the reason is stated rather than hidden: the run is only two functions and BOTH its neighbours are unlabelled-or-unrelated, so nothing positively attributes the functions immediately below it to this same TU. The lower boundary at 0x0203b4ac is therefore a floor supported by a label change, not by a positive claim about func_0203b438. The upper boundary at 0x0203b4dc is strong (a cstd template instantiation cannot share a TU with an actor scene node). It is entirely possible the original .cpp also contained some of the list primitives below; this entry licenses only what it can defend.",
+        "static-initialiser attribution: no help. main has 23 sinits / 23 .ctor entries, sinit_vs_tu 'ok', corroborated=false, and this run touches no dynamically-initialised static storage -- the object emits no .init, no .bss and no .data."
+      ],
+      "sections": [
+        {
+          "name": ".text",
+          "start": "0x0203b4ac",
+          "end": "0x0203b4dc"
+        }
+      ],
+      "functions": [
+        {
+          "symbol": "_ZN9ActorBase9SceneNode5ResetEv",
+          "address": "0x0203b4ac",
+          "size": "0x00000018",
+          "legacy_source": "src/_ZN9ActorBase9SceneNode5ResetEv.c",
+          "ordinal": 0
+        },
+        {
+          "symbol": "_ZN9ActorBase9SceneNodeC1Ev",
+          "address": "0x0203b4c4",
+          "size": "0x00000018",
+          "legacy_source": "src/_ZN9ActorBase9SceneNodeC1Ev.c",
+          "ordinal": 1
+        }
+      ],
+      "data": [],
+      "bss": [],
+      "notes": [
+        "Hand-assembled, not generated by `tubuild.py create`: tu_map cannot segment arm9/main. The entry was built through tubuild.build_manifest_entry so the schema is the tool's own; boundary_confidence and boundary_evidence were then replaced with hand-derived values.",
+        "This is the 0x30-byte OUTLIER of the ActorBase assignment: 25 _ZN9ActorBase* function symbols exist in the image, 23 in the main run (see arm9/ActorBase) and these 2 here. include/ActorBase.h now records the split.",
+        "BOTH MEMBERS ARE extern \"C\" RATHER THAN REAL ActorBase::SceneNode:: METHODS, on purpose. The mangled names say they are members of a class nested inside ActorBase, but include/ActorBase.h spells that type at top level as `ActorBase_SceneNode`. Making real methods possible means nesting it and declaring a constructor on the nested type -- which makes ActorBase's implicit default constructor non-trivial, in a header 1,393 enrolled C++ TUs include, several of whose classes have compiler-generated constructors that would then have to call it. That is the implicit-constructor hazard, and it deserves its own change and its own sweep rather than riding on a 0x30-byte TU. FOLLOW-UP, not a defect.",
+        "The type used is ActorBase.h's `ActorBase_SceneNode` (0x14 bytes, five fields) rather than the auto-generated include/ActorBase__SceneNode.h (0x10 bytes, four fields), which is the less complete of the tree's two spellings and is now referenced by nothing else. Reset() clears only the first four words and deliberately leaves the owner back-pointer at +0x10 alone; ActorBase's constructor writes that one."
+      ],
+      "verification": {
+        "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
+        "toolchain": "tools/mwccarm/2004/b56/mwccarm.exe",
+        "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
+        "object": "build/tu/arm9-ActorBase_SceneNode/ActorBase_SceneNode.o (gitignored)",
+        "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
+        "functions_matched": 2,
+        "functions_declared": 2,
+        "criteria": {
+          "every_declared_function_defined": "PASS",
+          "every_declared_function_bytes_match": "PASS",
+          "declared_function_set_equals_defined_function_set": "PASS",
+          "functions_occur_in_expected_order": "PASS",
+          "relocation_destinations_verified": "PASS"
+        },
+        "linkcheck": {
+          "round": "tools/tubuild.py linkcheck -- scratch dsd delink+lcf, whole-tree mwccarm, mwldarm link, linked-range and module byte comparison, dsd check symbols --fail, full ROM build",
+          "result": "link-verified",
+          "scratch": "build/tu/arm9-ActorBase_SceneNode/link (gitignored)",
+          "phases": {
+            "delink": true,
+            "lcf": true,
+            "compile": true,
+            "link": true,
+            "checkModules": true,
+            "checkSymbols": false,
+            "rom": true
+          },
+          "tuRange": {
+            "start": "0x0203b4ac",
+            "end": "0x0203b4dc",
+            "differingBytes": 0,
+            "firstDiff": null
+          },
+          "objectAudit": {
+            "counts": {
+              "LICENSED": 2
+            },
+            "emittedTextOrderIsRomAscending": true,
+            "nonLicensedSymbols": [],
+            "unlicensedSections": []
+          },
+          "symbolCheckNewVsBaseline": [],
+          "linkerOutput": null
+        }
+      }
     }
   ]
 }
