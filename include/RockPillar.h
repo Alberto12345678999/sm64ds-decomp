@@ -6,7 +6,7 @@
 
 /* TWO WITNESSES, and they close on each other:
  *
- *   RockPillar_Spawn  ActorBase::operator new(808 = 0x328), Platform::Platform(), stores _ZTV10RockPillar,
+ *   RockPillar_Spawn  fBase_c::operator new(808 = 0x328), Platform::Platform(), stores _ZTV10RockPillar,
  *                 then the members below in this order.
  *   ~RockPillar   the same members destroyed in reverse, then ~Platform.
  *

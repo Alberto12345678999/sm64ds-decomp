@@ -6,7 +6,7 @@
 
 /* TWO WITNESSES, and they close on each other:
  *
- *   SwitchPillar_Spawn  ActorBase::operator new(800 = 0x320), Platform::Platform(), stores _ZTV12SwitchPillar,
+ *   SwitchPillar_Spawn  fBase_c::operator new(800 = 0x320), Platform::Platform(), stores _ZTV12SwitchPillar,
  *                 then the members below in this order.
  *   ~SwitchPillar   the same members destroyed in reverse, then ~Platform.
  *

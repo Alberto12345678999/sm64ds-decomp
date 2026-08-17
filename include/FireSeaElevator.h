@@ -6,7 +6,7 @@
 
 /* TWO WITNESSES, and they close on each other:
  *
- *   FireSeaElevator_Spawn  ActorBase::operator new(808 = 0x328), Platform::Platform(), stores _ZTV15FireSeaElevator,
+ *   FireSeaElevator_Spawn  fBase_c::operator new(808 = 0x328), Platform::Platform(), stores _ZTV15FireSeaElevator,
  *                 then the members below in this order.
  *   ~FireSeaElevator   the same members destroyed in reverse, then ~Platform.
  *

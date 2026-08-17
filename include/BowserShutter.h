@@ -6,7 +6,7 @@
 
 /* TWO WITNESSES, and they close on each other:
  *
- *   BowserShutter_Spawn  ActorBase::operator new(800 = 0x320), Platform::Platform(), stores _ZTV13BowserShutter,
+ *   BowserShutter_Spawn  fBase_c::operator new(800 = 0x320), Platform::Platform(), stores _ZTV13BowserShutter,
  *                 then the members below in this order.
  *   ~BowserShutter   the same members destroyed in reverse, then ~Platform.
  *

@@ -6,7 +6,7 @@
 
 /* TWO WITNESSES, and they close on each other:
  *
- *   Submarine_Spawn  ActorBase::operator new(800 = 0x320), Platform::Platform(), stores _ZTV9Submarine,
+ *   Submarine_Spawn  fBase_c::operator new(800 = 0x320), Platform::Platform(), stores _ZTV9Submarine,
  *                 then the members below in this order.
  *   ~Submarine   the same members destroyed in reverse, then ~Platform.
  *

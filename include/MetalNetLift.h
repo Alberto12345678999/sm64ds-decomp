@@ -7,7 +7,7 @@
 
 /* TWO WITNESSES, and they close on each other:
  *
- *   MetalNetLift_Spawn  ActorBase::operator new(872 = 0x368), Platform::Platform(), stores _ZTV12MetalNetLift,
+ *   MetalNetLift_Spawn  fBase_c::operator new(872 = 0x368), Platform::Platform(), stores _ZTV12MetalNetLift,
  *                 then the member below in this order.
  *   ~MetalNetLift   the same member destroyed in reverse, then ~Platform.
  *
