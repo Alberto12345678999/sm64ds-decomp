@@ -149,6 +149,7 @@ src/func_ov098_02139070.c:
     .text start:0x02139070 end:0x021390ec
 
 src/func_ov098_021390ec.cpp:
+    complete
     .text start:0x021390ec end:0x02139228
 
 src/func_ov098_02139228.cpp:
@@ -248,6 +249,7 @@ src/func_ov098_0213a36c.cpp:
     .text start:0x0213a36c end:0x0213a794
 
 src/func_ov098_0213a794.cpp:
+    complete
     .text start:0x0213a794 end:0x0213a8e0
 
 src/func_ov098_0213a8e0.c:
