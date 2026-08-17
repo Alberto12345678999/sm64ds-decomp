@@ -25673,7 +25673,7 @@ matched: yes</title></rect><rect x="744.12" y="531.53" width="13.56" height="2.1
 module: ov006
 addr: 0x0210e4c8
 size: 44 bytes
-matched: yes</title></rect><rect x="744.12" y="533.70" width="13.56" height="97.10" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_0210e4f4
+matched: yes</title></rect><rect x="744.12" y="533.70" width="13.56" height="97.10" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN20cMgSmartball_board_c6UpdateEv
 module: ov006
 addr: 0x0210e4f4
 size: 1968 bytes
@@ -25685,11 +25685,11 @@ matched: yes</title></rect><rect x="744.12" y="664.16" width="13.56" height="77.
 module: ov006
 addr: 0x0210ef48
 size: 1564 bytes
-matched: yes</title></rect><rect x="744.12" y="741.33" width="13.56" height="46.58" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_0210f564
+matched: yes</title></rect><rect x="744.12" y="741.33" width="13.56" height="46.58" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN20cMgSmartball_board_c12SaveSnapshotEv
 module: ov006
 addr: 0x0210f564
 size: 944 bytes
-matched: yes</title></rect><rect x="757.68" y="485.35" width="8.03" height="11.00" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_0210f914
+matched: yes</title></rect><rect x="757.68" y="485.35" width="8.03" height="11.00" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN20cMgSmartball_board_c14RestoreInitialEv
 module: ov006
 addr: 0x0210f914
 size: 132 bytes
