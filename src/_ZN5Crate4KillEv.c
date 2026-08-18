@@ -1,4 +1,4 @@
-// @symbol func_ov098_02139070
+// @symbol _ZN5Crate4KillEv
 // recovered name: Crate_Kill
 /* recovered: shared common types, renamed to Class_Method, declarations from a shared header */
 #include "decl_Actor.h"
@@ -14,7 +14,7 @@ extern void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int id, int 
 extern void _ZN5Sound9PlayBank3EjRK7Vector3(unsigned int id, const struct Vector3* pos);
 extern void Crate_SetState(char* c, int i);
 
-void func_ov098_02139070(char* self) {
+void _ZN5Crate4KillEv(char* self) {
     struct Vector3 vec;
     struct Vector3 vec2;
     int x, y, z;
