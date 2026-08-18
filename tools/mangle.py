@@ -24,9 +24,22 @@ from dataclasses import asdict, dataclass
 from elftools.elf.elffile import ELFFile
 
 import match as M
+from rombuild import CFLAGS as _BUILD_CFLAGS
 
 
-CPP_FLAGS = M.DEFAULT_FLAGS.replace("-lang c99", "-lang c++")
+# The BUILD's flags, not match.DEFAULT_FLAGS, for the reason build_pin.py
+# gives at length: an oracle answered with different flags than the link uses
+# can bless -- or condemn -- something the build then disagrees with.
+#
+# The concrete miss: rombuild carries `-Cpp_exceptions off` and DEFAULT_FLAGS
+# does not.  With exceptions on, `void operator delete(void *)` is rejected as
+# an "exception specification list mismatch" against the implicit throw()
+# declaration.  Asked through this tool, CodeWarrior therefore appeared to
+# refuse a plain operator delete, and the tree recorded that refusal as a
+# compiler restriction (src/_Znwj.cpp, include/ActorBase.h) when it is purely
+# an artefact of the wrong flag set.  Under the build's own flags it compiles
+# and emits _ZdlPv.
+CPP_FLAGS = _BUILD_CFLAGS.replace("-lang c99", "-lang c++")
 SECTION_ORDER = {".text": 0, ".init": 1, ".data": 2, ".bss": 3}
 
 
@@ -41,6 +54,24 @@ class EmittedSymbol:
 
 def _section_rank(name: str) -> tuple[int, str]:
     return SECTION_ORDER.get(name, len(SECTION_ORDER)), name
+
+
+# mwccarm marks its coalesced RTTI records (_ZTS.../_ZTI...) with a
+# processor-specific binding, not STB_GLOBAL/STB_WEAK.  pyelftools renders the
+# first of those as 'STB_LOPROC' and leaves the rest as raw integers.  Filtering
+# to GLOBAL/WEAK therefore hid every typeinfo symbol the compiler emits, which
+# made "does the compiler produce _ZTI4Heap?" unanswerable through this reader.
+# They are defined and externally visible, so they belong in the answer.
+_EXTERNAL_BINDINGS = {"STB_GLOBAL", "STB_WEAK"}
+_PROC_BINDING_RANGE = range(10, 16)      # STB_LOOS .. STB_HIPROC
+
+
+def _is_external(binding) -> bool:
+    if isinstance(binding, int):
+        return binding in _PROC_BINDING_RANGE
+    if binding in _EXTERNAL_BINDINGS:
+        return True
+    return binding.startswith(("STB_LOPROC", "STB_HIPROC", "STB_LOOS", "STB_HIOS"))
 
 
 def defined_symbols(obj: bytes) -> list[EmittedSymbol]:
@@ -58,7 +89,7 @@ def defined_symbols(obj: bytes) -> list[EmittedSymbol]:
         kind = symbol.entry["st_info"]["type"]
         if not name or not isinstance(section_index, int):
             continue
-        if binding not in ("STB_GLOBAL", "STB_WEAK"):
+        if not _is_external(binding):
             continue
         if kind in ("STT_FILE", "STT_SECTION"):
             continue
@@ -68,8 +99,8 @@ def defined_symbols(obj: bytes) -> list[EmittedSymbol]:
         found.add(EmittedSymbol(
             section=section.name,
             name=name,
-            kind=kind.removeprefix("STT_"),
-            binding=binding.removeprefix("STB_"),
+            kind=str(kind).removeprefix("STT_"),
+            binding=str(binding).removeprefix("STB_"),
             size=int(symbol.entry["st_size"]),
         ))
 
