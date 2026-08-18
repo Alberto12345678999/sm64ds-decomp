@@ -1773,7 +1773,7 @@ matched: yes</title></rect><rect x="286.61" y="150.76" width="3.77" height="2.14
 module: arm9
 addr: 0x02013edc
 size: 12 bytes
-matched: yes</title></rect><rect x="290.38" y="150.76" width="3.77" height="2.14" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7dBase_c5SpawnEjP9ActorBaseii
+matched: yes</title></rect><rect x="290.38" y="150.76" width="3.77" height="2.14" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7dBase_c5SpawnEjP7fBase_cii
 module: arm9
 addr: 0x02013ee8
 size: 12 bytes
@@ -6017,11 +6017,11 @@ matched: yes</title></rect><rect x="279.77" y="491.94" width="29.73" height="2.6
 module: arm9
 addr: 0x0203b438
 size: 116 bytes
-matched: yes</title></rect><rect x="309.51" y="491.94" width="6.15" height="2.62" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9ActorBase9SceneNode5ResetEv
+matched: yes</title></rect><rect x="309.51" y="491.94" width="6.15" height="2.62" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7fBase_c9SceneNode5ResetEv
 module: arm9
 addr: 0x0203b4ac
 size: 24 bytes
-matched: yes</title></rect><rect x="315.66" y="491.94" width="6.15" height="2.62" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9ActorBase9SceneNodeC1Ev
+matched: yes</title></rect><rect x="315.66" y="491.94" width="6.15" height="2.62" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7fBase_c9SceneNodeC1Ev
 module: arm9
 addr: 0x0203b4c4
 size: 24 bytes
@@ -7165,19 +7165,19 @@ matched: yes</title></rect><rect x="49.11" y="562.57" width="15.60" height="6.03
 module: arm9
 addr: 0x020433b8
 size: 140 bytes
-matched: yes</title></rect><rect x="64.71" y="562.57" width="8.91" height="6.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9ActorBasenwEj
+matched: yes</title></rect><rect x="64.71" y="562.57" width="8.91" height="6.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7fBase_cnwEj
 module: arm9
 addr: 0x02043444
 size: 80 bytes
-matched: yes</title></rect><rect x="73.62" y="562.57" width="0.89" height="6.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9ActorBase13OnHeapCreatedEv
+matched: yes</title></rect><rect x="73.62" y="562.57" width="0.89" height="6.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7fBase_c13OnHeapCreatedEv
 module: arm9
 addr: 0x02043494
 size: 8 bytes
-matched: yes</title></rect><rect x="74.51" y="562.57" width="24.95" height="6.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9ActorBase9Virtual38Ejj
+matched: yes</title></rect><rect x="74.51" y="562.57" width="24.95" height="6.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7fBase_c9Virtual38Ejj
 module: arm9
 addr: 0x0204349c
 size: 224 bytes
-matched: yes</title></rect><rect x="99.46" y="562.57" width="73.52" height="6.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9ActorBase9Virtual34Ejj
+matched: yes</title></rect><rect x="99.46" y="562.57" width="73.52" height="6.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7fBase_c9Virtual34Ejj
 module: arm9
 addr: 0x0204357c
 size: 660 bytes
@@ -7185,7 +7185,7 @@ matched: yes</title></rect><rect x="172.98" y="562.57" width="2.23" height="6.03
 module: arm9
 addr: 0x02043810
 size: 20 bytes
-matched: yes</title></rect><rect x="175.21" y="562.57" width="10.25" height="6.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9ActorBase18MarkForDestructionEv
+matched: yes</title></rect><rect x="175.21" y="562.57" width="10.25" height="6.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7fBase_c18MarkForDestructionEv
 module: arm9
 addr: 0x02043824
 size: 92 bytes
@@ -7193,75 +7193,75 @@ matched: yes</title></rect><rect x="185.46" y="562.57" width="64.16" height="6.0
 module: arm9
 addr: 0x02043880
 size: 576 bytes
-matched: yes</title></rect><rect x="249.63" y="562.57" width="0.45" height="6.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9ActorBase16OnPendingDestroyEv
+matched: yes</title></rect><rect x="249.63" y="562.57" width="0.45" height="6.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7fBase_c16OnPendingDestroyEv
 module: arm9
 addr: 0x02043ac0
 size: 4 bytes
-matched: yes</title></rect><rect x="250.07" y="562.57" width="0.45" height="6.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9ActorBase11AfterRenderEj
+matched: yes</title></rect><rect x="250.07" y="562.57" width="0.45" height="6.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7fBase_c11AfterRenderEj
 module: arm9
 addr: 0x02043ac4
 size: 4 bytes
-matched: yes</title></rect><rect x="250.52" y="562.57" width="4.46" height="6.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9ActorBase12BeforeRenderEv
+matched: yes</title></rect><rect x="250.52" y="562.57" width="4.46" height="6.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7fBase_c12BeforeRenderEv
 module: arm9
 addr: 0x02043ac8
 size: 40 bytes
-matched: yes</title></rect><rect x="254.97" y="562.57" width="0.89" height="6.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9ActorBase6RenderEv
+matched: yes</title></rect><rect x="254.97" y="562.57" width="0.89" height="6.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7fBase_c6RenderEv
 module: arm9
 addr: 0x02043af0
 size: 8 bytes
-matched: yes</title></rect><rect x="255.86" y="562.57" width="0.45" height="6.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9ActorBase13AfterBehaviorEj
+matched: yes</title></rect><rect x="255.86" y="562.57" width="0.45" height="6.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7fBase_c13AfterBehaviorEj
 module: arm9
 addr: 0x02043af8
 size: 4 bytes
-matched: yes</title></rect><rect x="256.31" y="562.57" width="4.46" height="6.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9ActorBase14BeforeBehaviorEv
+matched: yes</title></rect><rect x="256.31" y="562.57" width="4.46" height="6.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7fBase_c14BeforeBehaviorEv
 module: arm9
 addr: 0x02043afc
 size: 40 bytes
-matched: yes</title></rect><rect x="260.76" y="562.57" width="0.89" height="6.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9ActorBase8BehaviorEv
+matched: yes</title></rect><rect x="260.76" y="562.57" width="0.89" height="6.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7fBase_c8BehaviorEv
 module: arm9
 addr: 0x02043b24
 size: 8 bytes
-matched: yes</title></rect><rect x="261.66" y="562.57" width="14.26" height="6.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9ActorBase21AfterCleanupResourcesEj
+matched: yes</title></rect><rect x="261.66" y="562.57" width="14.26" height="6.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7fBase_c21AfterCleanupResourcesEj
 module: arm9
 addr: 0x02043b2c
 size: 128 bytes
-matched: yes</title></rect><rect x="275.91" y="562.57" width="7.57" height="6.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9ActorBase22BeforeCleanupResourcesEv
+matched: yes</title></rect><rect x="275.91" y="562.57" width="7.57" height="6.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7fBase_c22BeforeCleanupResourcesEv
 module: arm9
 addr: 0x02043bac
 size: 68 bytes
-matched: yes</title></rect><rect x="283.49" y="562.57" width="0.89" height="6.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9ActorBase16CleanupResourcesEv
+matched: yes</title></rect><rect x="283.49" y="562.57" width="0.89" height="6.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7fBase_c16CleanupResourcesEv
 module: arm9
 addr: 0x02043bf0
 size: 8 bytes
-matched: yes</title></rect><rect x="284.38" y="562.57" width="14.26" height="6.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9ActorBase18AfterInitResourcesEj
+matched: yes</title></rect><rect x="284.38" y="562.57" width="14.26" height="6.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7fBase_c18AfterInitResourcesEj
 module: arm9
 addr: 0x02043bf8
 size: 128 bytes
-matched: yes</title></rect><rect x="298.64" y="562.57" width="0.89" height="6.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9ActorBase19BeforeInitResourcesEv
+matched: yes</title></rect><rect x="298.64" y="562.57" width="0.89" height="6.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7fBase_c19BeforeInitResourcesEv
 module: arm9
 addr: 0x02043c78
 size: 8 bytes
-matched: yes</title></rect><rect x="299.53" y="562.57" width="0.89" height="6.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9ActorBase13InitResourcesEv
+matched: yes</title></rect><rect x="299.53" y="562.57" width="0.89" height="6.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7fBase_c13InitResourcesEv
 module: arm9
 addr: 0x02043c80
 size: 8 bytes
-matched: yes</title></rect><rect x="300.42" y="562.57" width="21.39" height="6.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9ActorBase7ProcessEMS_FivEMS_FbvEMS_FvjE
+matched: yes</title></rect><rect x="300.42" y="562.57" width="21.39" height="6.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7fBase_c7ProcessEMS_FivEMS_FbvEMS_FvjE
 module: arm9
 addr: 0x02043c88
 size: 192 bytes
-matched: yes</title></rect><rect x="5.00" y="568.60" width="7.50" height="4.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9ActorBaseD2Ev
+matched: yes</title></rect><rect x="5.00" y="568.60" width="7.50" height="4.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7fBase_cD2Ev
 module: arm9
 addr: 0x02043d48
 size: 48 bytes
-matched: yes</title></rect><rect x="12.50" y="568.60" width="10.62" height="4.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9ActorBaseD0Ev
+matched: yes</title></rect><rect x="12.50" y="568.60" width="10.62" height="4.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7fBase_cD0Ev
 module: arm9
 addr: 0x02043d78
 size: 68 bytes
-matched: yes</title></rect><rect x="23.12" y="568.60" width="7.50" height="4.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9ActorBaseD1Ev
+matched: yes</title></rect><rect x="23.12" y="568.60" width="7.50" height="4.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7fBase_cD1Ev
 module: arm9
 addr: 0x02043dbc
 size: 48 bytes
-matched: yes</title></rect><rect x="30.62" y="568.60" width="54.99" height="4.30" fill="#4a4d52" stroke="#393b3f" stroke-width="0.4"><title>_ZN9ActorBaseC1Ev
+matched: yes</title></rect><rect x="30.62" y="568.60" width="54.99" height="4.30" fill="#4a4d52" stroke="#393b3f" stroke-width="0.4"><title>_ZN7fBase_cC1Ev
 module: arm9
 addr: 0x02043dec
 size: 352 bytes
@@ -14721,11 +14721,11 @@ matched: yes</title></rect><rect x="513.28" y="272.30" width="7.54" height="12.0
 module: ov002
 addr: 0x020c4bd8
 size: 136 bytes
-matched: yes</title></rect><rect x="520.82" y="272.30" width="33.73" height="12.01" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN6Player12ShowMessage2ER9ActorBasejPK7Vector3hh
+matched: yes</title></rect><rect x="520.82" y="272.30" width="33.73" height="12.01" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN6Player12ShowMessage2ER7fBase_cjPK7Vector3hh
 module: ov002
 addr: 0x020c4c60
 size: 608 bytes
-matched: yes</title></rect><rect x="554.55" y="272.30" width="3.33" height="12.01" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN6Player11ShowMessageER9ActorBasejPK7Vector3hh
+matched: yes</title></rect><rect x="554.55" y="272.30" width="3.33" height="12.01" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN6Player11ShowMessageER7fBase_cjPK7Vector3hh
 module: ov002
 addr: 0x020c4ec0
 size: 60 bytes
@@ -14737,7 +14737,7 @@ matched: yes</title></rect><rect x="561.65" y="272.30" width="5.33" height="12.0
 module: ov002
 addr: 0x020c4f40
 size: 96 bytes
-matched: yes</title></rect><rect x="566.98" y="272.30" width="31.07" height="12.01" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN6Player9StartTalkER9ActorBaseb
+matched: yes</title></rect><rect x="566.98" y="272.30" width="31.07" height="12.01" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN6Player9StartTalkER7fBase_cb
 module: ov002
 addr: 0x020c4fa0
 size: 560 bytes
