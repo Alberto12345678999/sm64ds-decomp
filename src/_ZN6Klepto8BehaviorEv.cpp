@@ -11,7 +11,7 @@ struct WithMeshClsn;
 extern "C" {
 unsigned short DecIfAbove0_Short(unsigned short *p);
 void _ZN5Actor22UpdatePosWithOnlySpeedEP12CylinderClsn(void *self, CylinderClsn *cc);
-void _ZN5Enemy12UpdateWMClsnER12WithMeshClsnj(void *self, WithMeshClsn *wm, unsigned int j);
+void _ZN12dEnemyBase_c12UpdateWMClsnER12WithMeshClsnj(void *self, WithMeshClsn *wm, unsigned int j);
 void func_ov062_0211c6a8(void *self);
 void *_ZN5Actor10FindWithIDEj(unsigned int id);
 void func_02012790(int a, int b);
@@ -46,7 +46,7 @@ int Klepto::Behavior()
         unk_0ac = t;
     }
     _ZN5Actor22UpdatePosWithOnlySpeedEP12CylinderClsn(((char *)this), (CylinderClsn *)((char *)&mMovingCylinderClsn1));
-    _ZN5Enemy12UpdateWMClsnER12WithMeshClsnj(((char *)this), (WithMeshClsn *)((char *)&mWithMeshClsn), 0);
+    _ZN12dEnemyBase_c12UpdateWMClsnER12WithMeshClsnj(((char *)this), (WithMeshClsn *)((char *)&mWithMeshClsn), 0);
 
     mAngleX = mPrevAngleX;
     mAngleY = mPrevAngleY;

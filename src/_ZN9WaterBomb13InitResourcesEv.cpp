@@ -3,7 +3,7 @@
 /* recovered: named members + shared header, real C++ method
  *
  * The local `Obj` shadow struct this file used to cast `this` to is gone --
- * `struct WaterBomb : Enemy` types every offset it restated. Its tail fields
+ * `struct WaterBomb : dEnemyBase_c` types every offset it restated. Its tail fields
  * (0x3a8..0x3b6) moved into the header, since the shadow was the only place
  * they were ever written down.
  */

@@ -10,8 +10,8 @@ extern "C" {
 int _ZN5Actor13DistToCPlayerEv(Actor* self);
 void func_ov079_02123f34(Actor* self);
 void _ZN5Actor9UpdatePosEP12CylinderClsn(Actor* self, CylinderClsn* c);
-int _ZN5Enemy15IsGoingOffCliffER12WithMeshClsn5Fix12IiEsbbS3_(Actor* self, WithMeshClsn* w, int a, short b, int c, int d, void* e);
-void _ZN5Enemy12UpdateWMClsnER12WithMeshClsnj(Actor* self, WithMeshClsn* w, unsigned int n);
+int _ZN12dEnemyBase_c15IsGoingOffCliffER12WithMeshClsn5Fix12IiEsbbS3_(Actor* self, WithMeshClsn* w, int a, short b, int c, int d, void* e);
+void _ZN12dEnemyBase_c12UpdateWMClsnER12WithMeshClsnj(Actor* self, WithMeshClsn* w, unsigned int n);
 void func_ov079_02124188(Actor* self);
 int func_ov079_021243e0(char* c, int r4);
 int func_ov079_02123a8c(Actor* self);
@@ -35,7 +35,7 @@ int Whomp::Behavior()
     _ZN5Actor9UpdatePosEP12CylinderClsn(((Actor*)this), 0);
 
     if (*(int*)(c + 0x98) != 0) {
-        if (_ZN5Enemy15IsGoingOffCliffER12WithMeshClsn5Fix12IiEsbbS3_(((Actor*)this), (WithMeshClsn*)(c + 0x110), 0x3c000, (short)0x2888, 0, 0, (void*)0x32000)) {
+        if (_ZN12dEnemyBase_c15IsGoingOffCliffER12WithMeshClsn5Fix12IiEsbbS3_(((Actor*)this), (WithMeshClsn*)(c + 0x110), 0x3c000, (short)0x2888, 0, 0, (void*)0x32000)) {
             *(int*)(c + 0x5c) = *(int*)(c + 0x3d4);
             *(int*)(c + 0x60) = *(int*)(c + 0x3d8);
             *(int*)(c + 0x64) = *(int*)(c + 0x3dc);
@@ -50,7 +50,7 @@ int Whomp::Behavior()
         *(int*)(c + 0x3dc) = *(int*)(c + 0x64);
     }
 
-    _ZN5Enemy12UpdateWMClsnER12WithMeshClsnj(((Actor*)this), (WithMeshClsn*)(c + 0x110), 0);
+    _ZN12dEnemyBase_c12UpdateWMClsnER12WithMeshClsnj(((Actor*)this), (WithMeshClsn*)(c + 0x110), 0);
 
     {
         int idx = *(int*)(c + 0x3b0);

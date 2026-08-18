@@ -2,7 +2,7 @@
 // @symbol _ZN5UnagiD0Ev
 /* recovered: real C++ deleting destructor -- the compiler emits the whole body
  *
- * Destroy through Unagi and Enemy, then hand the object back through Actor's
+ * Destroy through Unagi and dEnemyBase_c, then hand the object back through Actor's
  * inline operator delete, which is why nothing here mentions a heap. The array
  * cleanup at 0x448 is Vector3[7]; see the note in the D1 file.
  *

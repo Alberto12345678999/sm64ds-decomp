@@ -4,7 +4,7 @@
  *
  * The stand-in typedefs this file used to carry (`typedef int Fix12;`, a
  * two-word SharedFilePtr, a three-short Vector3_16, opaque Actor/BMD_File)
- * all name real types now that Snufit.h pulls in the Enemy chain, so they are
+ * all name real types now that Snufit.h pulls in the dEnemyBase_c chain, so they are
  * gone. MovingCylinderClsn::Init and WithMeshClsn::Init are still reached
  * through their mangled names because neither is declared as a method yet.
  */

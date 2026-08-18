@@ -12,7 +12,7 @@ int *MantaRay_Spawn(void)
 {
     int *p = (int *)_ZN9ActorBasenwEj(1028);
     if (p) {
-        _ZN5EnemyC2Ev(p);
+        _ZN12dEnemyBase_cC2Ev(p);
         p[0] = (int)_ZTV8MantaRay;
         _ZN25MovingCylinderClsnWithPosC1Ev((char *)p + 0x110);
         _ZN12WithMeshClsnC1Ev((char *)p + 0x150);

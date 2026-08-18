@@ -16,7 +16,7 @@ struct Actor {
    types breaks the byte match. See notes/mwccarm-codegen.md 6az. */
 extern "C" short _ZN5Actor12ReflectAngleE5Fix12IiES1_s(void *, int, int, short);
 
-struct Enemy : Actor {
+struct dEnemyBase_c : Actor {
     void UpdateWMClsn(WithMeshClsn&, unsigned int);
 };
 extern "C" int Vec3_HorzLen(void*);
@@ -42,7 +42,7 @@ void func_ov002_020aefb8(char* self) {
         }
     }
     ((Actor*)self)->UpdatePosWithOnlySpeed((CylinderClsn*)(self + 0x110));
-    ((Enemy*)self)->UpdateWMClsn(*(WithMeshClsn*)(self + 0x144), 0);
+    ((dEnemyBase_c*)self)->UpdateWMClsn(*(WithMeshClsn*)(self + 0x144), 0);
     if (!((WithMeshClsn*)(self + 0x144))->IsOnWall()) return;
     *(short*)(self + 0x94) = _ZN5Actor12ReflectAngleE5Fix12IiES1_s((Actor*)self, *(int*)(self + 0xe0), *(int*)(self + 0xe8), *(short*)(self + 0x94));
 }

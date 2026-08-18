@@ -15,7 +15,7 @@ unsigned short DecIfAbove0_Short(unsigned short* p);
 void* _ZN5Actor10FindWithIDEj(unsigned int id);
 void _ZN6Player4BurnEv(void* self);
 void _ZN5Actor9UpdatePosEP12CylinderClsn(void* self, CylinderClsn* cc);
-void _ZN5Enemy12UpdateWMClsnER12WithMeshClsnj(void* self, WithMeshClsn* wm, unsigned int j);
+void _ZN12dEnemyBase_c12UpdateWMClsnER12WithMeshClsnj(void* self, WithMeshClsn* wm, unsigned int j);
 void _ZN12CylinderClsn5ClearEv(CylinderClsn* self);
 void _ZN12CylinderClsn6UpdateEv(CylinderClsn* self);
 }
@@ -71,7 +71,7 @@ int LavaBubble::Behavior()
     _ZN5Actor9UpdatePosEP12CylinderClsn(((char*)this), (CylinderClsn*)((char*)&mMovingCylinderClsn));
 
     if (mVertAccel != 0)
-        _ZN5Enemy12UpdateWMClsnER12WithMeshClsnj(((char*)this), (WithMeshClsn*)((char*)&mWithMeshClsn), 0);
+        _ZN12dEnemyBase_c12UpdateWMClsnER12WithMeshClsnj(((char*)this), (WithMeshClsn*)((char*)&mWithMeshClsn), 0);
 
     _ZN12CylinderClsn5ClearEv((CylinderClsn*)((char*)&mMovingCylinderClsn));
     _ZN12CylinderClsn6UpdateEv((CylinderClsn*)((char*)&mMovingCylinderClsn));

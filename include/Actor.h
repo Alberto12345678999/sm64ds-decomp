@@ -116,8 +116,8 @@ struct Actor : dBase_c {
     s32 mVertAccel;         /* 0x09c -- fix12, negative (gravity) */
     s32 mTerminalVelocity;  /* 0x0a0 -- fix12, negative */
     /* 0x0a4 and 0x0ac were padding "likely the same physics block; unproven".
-       They are real, and Enemy is the evidence: its generated header declared
-       both as s32 and its sources read them, so once `Enemy : Actor` they have
+       They are real, and dEnemyBase_c is the evidence: its generated header declared
+       both as s32 and its sources read them, so once `dEnemyBase_c : Actor` they have
        to exist here. Still unnamed -- what they mean is not evidenced, only
        that they are Actor's and four bytes wide. */
     s32 unk_0a4;            /* 0x0a4 */
@@ -448,7 +448,7 @@ struct Actor : dBase_c {
        DECLARED HERE AND NOT ON ActorBase, and the difference is load-bearing: mwcc
        inlines it only when it is found in the class itself or its IMMEDIATE base.
        On ActorBase, every Actor-derived D0 emits an out-of-line call instead and
-       misses. Enemy carries its own copy for the same reason -- it is a flattened
+       misses. dEnemyBase_c carries its own copy for the same reason -- it is a flattened
        struct that does not derive from Actor in these headers, so this one is not
        even in scope for the classes under it.
 

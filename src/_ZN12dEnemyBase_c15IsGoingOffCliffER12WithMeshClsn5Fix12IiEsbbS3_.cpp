@@ -1,9 +1,9 @@
 //cpp
-// @symbol _ZN5Enemy15IsGoingOffCliffER12WithMeshClsn5Fix12IiEsbbS3_
+// @symbol _ZN12dEnemyBase_c15IsGoingOffCliffER12WithMeshClsn5Fix12IiEsbbS3_
 /* recovered: named members + shared header, declarations from a shared header */
 #include "decl_ClsnResult.h"
 /* recovered: named members + shared header */
-#include "Enemy.h"
+#include "dEnemyBase_c.h"
 extern "C" {
 extern int _ZNK12WithMeshClsn10IsOnGroundEv(void* self);
 extern void _ZN11RaycastLineC1Ev(void* self);
@@ -18,7 +18,7 @@ extern void _ZNK11SurfaceInfo12CopyNormalToER7Vector3(void* self, void* v);
 extern short data_02082214[];
 }
 
-extern "C" int _ZN5Enemy15IsGoingOffCliffER12WithMeshClsn5Fix12IiEsbbS3_(struct Enemy *self, void* clsn, int fix2, short a3, unsigned char a4, unsigned char a5, int fix6) {
+extern "C" int _ZN12dEnemyBase_c15IsGoingOffCliffER12WithMeshClsn5Fix12IiEsbbS3_(struct dEnemyBase_c *self, void* clsn, int fix2, short a3, unsigned char a4, unsigned char a5, int fix6) {
   Vector3 v1;
   Vector3 v2;
   char cr[0x28];

@@ -4,14 +4,14 @@ typedef unsigned char u8;
 
 typedef struct Vector3 { int x, y, z; } Vector3;
 
-extern int _ZN5Enemy14UpdateYoshiEatER12WithMeshClsn(void *self, void *clsn);
+extern int _ZN12dEnemyBase_c14UpdateYoshiEatER12WithMeshClsn(void *self, void *clsn);
 extern int _ZN8CapEnemy16GetCapEatenOffItERK7Vector3(void *self, Vector3 *v);
 extern void func_ov084_02129168(char *c, char *actor);
 extern void _ZN15MaterialChanger7PrepareER8BMD_FileR8BMA_File(void *bmd, void *bma);
 extern void _ZN15MaterialChanger7SetFileER8BMA_Filei5Fix12IiEj(void *m, void *f, int a, int fix, unsigned int j);
 extern void _ZN12CylinderClsn5ClearEv(void *self);
 extern int _ZNK12WithMeshClsn10IsOnGroundEv(void *self);
-extern int _ZN5Enemy27SpawnParticlesIfHitOtherObjER12CylinderClsn(void *self, void *clsn);
+extern int _ZN12dEnemyBase_c27SpawnParticlesIfHitOtherObjER12CylinderClsn(void *self, void *clsn);
 extern void *_ZN5Actor10FindWithIDEj(unsigned int id);
 extern void func_ov002_020aea30(void *self, void *actor, void *clsn, int a);
 extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *m, void *f, int a, int fix, unsigned int j);
@@ -27,7 +27,7 @@ extern int *data_ov084_0213088c;
 extern int *data_ov084_02130ce0;
 
 int func_ov084_02129a00(char *self) {
-    int r4 = _ZN5Enemy14UpdateYoshiEatER12WithMeshClsn(self, self + 0x1b4);
+    int r4 = _ZN12dEnemyBase_c14UpdateYoshiEatER12WithMeshClsn(self, self + 0x1b4);
     if (r4 == 0)
         goto ret0;
     if (r4 == 1) {
@@ -51,7 +51,7 @@ int func_ov084_02129a00(char *self) {
             *(int *)(((int)self + 0x98)) >>= 1;
     }
 
-    if (_ZN5Enemy27SpawnParticlesIfHitOtherObjER12CylinderClsn(self, self + 0x180) != 0) {
+    if (_ZN12dEnemyBase_c27SpawnParticlesIfHitOtherObjER12CylinderClsn(self, self + 0x180) != 0) {
         void *actor = _ZN5Actor10FindWithIDEj(*(int *)(self + 0x1a4));
         *(int *)(self + 0x10c) = 7;
         func_ov002_020aea30(self, actor, self + 0x1b4, 7);

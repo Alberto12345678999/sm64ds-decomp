@@ -5,7 +5,7 @@ struct Vec3
   int y;
   int z;
 };
-extern void _ZN5Enemy12UpdateWMClsnER12WithMeshClsnj(void *self, void *wm, u32 a);
+extern void _ZN12dEnemyBase_c12UpdateWMClsnER12WithMeshClsnj(void *self, void *wm, u32 a);
 extern void _ZN5Actor28UpdatePosWithHorzSpeedAndAngEv(void *c);
 extern void Vec3_Add(struct Vec3 *out, struct Vec3 *a, struct Vec3 *b);
 extern void *_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(u32 a, u32 b, int d, int e, int f, void *v16, void *cb);
@@ -43,7 +43,7 @@ void func_ov079_0212682c(char *c)
     }
     return;
   }
-  _ZN5Enemy12UpdateWMClsnER12WithMeshClsnj(c, c + 0x150, 0);
+  _ZN12dEnemyBase_c12UpdateWMClsnER12WithMeshClsnj(c, c + 0x150, 0);
   *((s32 *) (c + 0x98)) = -0x1e000;
   _ZN5Actor28UpdatePosWithHorzSpeedAndAngEv(c);
   Vec3_Add(&sum, (struct Vec3 *) (c + 0x5c), (struct Vec3 *) (c + 0xa4));

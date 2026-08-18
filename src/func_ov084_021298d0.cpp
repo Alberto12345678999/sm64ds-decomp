@@ -1,9 +1,9 @@
 //cpp
 extern "C" {
-int _ZN5Enemy11UpdateDeathER12WithMeshClsn(void* self, void* wm);
+int _ZN12dEnemyBase_c11UpdateDeathER12WithMeshClsn(void* self, void* wm);
 void _ZN9Animation7AdvanceEv(void* self);
 char* _ZN5Actor10FindWithIDEj(unsigned int id);
-void _ZN5Enemy9SpawnCoinEv(void* self);
+void _ZN12dEnemyBase_c9SpawnCoinEv(void* self);
 void func_ov084_02129498(char* r0);
 void _ZN12CylinderClsn5ClearEv(void* self);
 void _ZN12CylinderClsn6UpdateEv(void* self);
@@ -14,7 +14,7 @@ void _ZN5Actor19UntrackInDeathTableEv(void* self);
 extern int data_ov084_02130218[];
 
 int func_ov084_021298d0(char* c){
-    int r4 = _ZN5Enemy11UpdateDeathER12WithMeshClsn(c, c + 0x1b4);
+    int r4 = _ZN12dEnemyBase_c11UpdateDeathER12WithMeshClsn(c, c + 0x1b4);
     if ((unsigned int)(*(int*)(c + 0x10c) - 2) > 4) goto L_a4;
     *(int*)(c + 0x3cc) = 0x1000;
     _ZN9Animation7AdvanceEv(c + 0x3c0);
@@ -27,7 +27,7 @@ int func_ov084_021298d0(char* c){
         if (r != 0) {
             int b = (*(unsigned short*)(r + 0xc) == 0xc6);
             if (b != 0) {
-                _ZN5Enemy9SpawnCoinEv(c);
+                _ZN12dEnemyBase_c9SpawnCoinEv(c);
                 func_ov084_02129498(c);
             }
         }

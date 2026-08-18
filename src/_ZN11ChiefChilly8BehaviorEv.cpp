@@ -70,7 +70,7 @@ extern void MulVec3Mat4x3(void *a, void *m, void *out);
 extern void _ZN11RaycastLine13SetObjAndLineERK7Vector3S2_P5Actor(void *self, const Vector3 *a, const Vector3 *b, void *actor);
 extern int _ZN11RaycastLine10DetectClsnEv(void *self);
 extern void _ZN11RaycastLineD1Ev(void *self);
-extern void _ZN5Enemy12UpdateWMClsnER12WithMeshClsnj(void *self, void *wmc, unsigned int flags);
+extern void _ZN12dEnemyBase_c12UpdateWMClsnER12WithMeshClsnj(void *self, void *wmc, unsigned int flags);
 extern void _ZN25MovingCylinderClsnWithPos21SetPosRelativeToActorERK7Vector3(void *self, const Vector3 *v);
 extern void func_ov073_0211f61c(void *self);
 extern void _ZN12CylinderClsn5ClearEv(void *self);
@@ -92,7 +92,7 @@ int ChiefChilly::Behavior()
     int line[0x1f];
 
     *(C **)((char *)data_0209f318 + 0x114) = c;
-    /* Enemy declares unk_100 as s16 -- 28 of its subclasses' generated headers
+    /* dEnemyBase_c declares unk_100 as s16 -- 28 of its subclasses' generated headers
        say so -- while this file's own extern for the helper says u16*. Both are
        recovered guesses and nothing here settles which; the cast reproduces the
        ROM without asserting either. */
@@ -194,7 +194,7 @@ int ChiefChilly::Behavior()
         _ZN11RaycastLineD1Ev(line);
     }
 
-    _ZN5Enemy12UpdateWMClsnER12WithMeshClsnj(self, &mWithMeshClsn, 0);
+    _ZN12dEnemyBase_c12UpdateWMClsnER12WithMeshClsnj(self, &mWithMeshClsn, 0);
 
     v54 = data_ov073_02123040;
     _ZN25MovingCylinderClsnWithPos21SetPosRelativeToActorERK7Vector3(&mMovingCylinderClsnWithPos, &v54);

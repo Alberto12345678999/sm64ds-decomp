@@ -3,7 +3,7 @@
 /* recovered: named members + shared header, real C++ method
  *
  * This file used to carry a `struct Obj` restating BobOmb's whole layout and
- * cast `this` to it for every access. BobOmb.h now derives from Enemy and
+ * cast `this` to it for every access. BobOmb.h now derives from dEnemyBase_c and
  * declares the dozen fields that shadow was hiding, so the cast is gone.
  *
  * param1's low three bits pick the variant: 2 is the one that starts inert --

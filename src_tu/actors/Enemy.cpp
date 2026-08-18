@@ -1,9 +1,9 @@
 //cpp
-/* Recovered translation unit -- ov002/Enemy  (Nintendo's dEnemyBase_c)
+/* Recovered translation unit -- ov002/dEnemyBase_c  (Nintendo's dEnemyBase_c)
  *
  * .text span 0x020ad838..0x020aedbc, 31 functions in build/tu_map.json.
  * THIRTY of them are assembled here; ordinal 4,
- * _ZN5Enemy14UpdateYoshiEatER12WithMeshClsn (0x020ade78, 0x3cc), has no source
+ * _ZN12dEnemyBase_c14UpdateYoshiEatER12WithMeshClsn (0x020ade78, 0x3cc), has no source
  * anywhere under src/ and is the module's one unmatched member, so it is a hole
  * in the middle of this run. That is why the manifest declares 30 functions and
  * why this TU can never be link-verified as it stands.
@@ -13,9 +13,9 @@
  *
  * FUNCTION ORDER IS THE REVERSE OF THE ROM'S. mwccarm 2004/b56 emits one .text
  * section per function in the reverse of source order, so the HIGHEST-address
- * ROM function (_ZN5EnemyC2Ev, 0x020aed98) is written FIRST and the lowest
- * (Enemy::UpdateKillByInvincibleChar, 0x020ad838) LAST. Do not reorder. The one
- * exception is the destructor: a single `Enemy::~Enemy()` emits D2, D0 and D1 as
+ * ROM function (_ZN12dEnemyBase_cC2Ev, 0x020aed98) is written FIRST and the lowest
+ * (dEnemyBase_c::UpdateKillByInvincibleChar, 0x020ad838) LAST. Do not reorder. The one
+ * exception is the destructor: a single `dEnemyBase_c::~dEnemyBase_c()` emits D2, D0 and D1 as
  * three sections in a compiler-chosen order, which here happens to be exactly
  * the ROM's (0x020aed18 D2, 0x020aed3c D0, 0x020aed74 D1).
  *
@@ -25,15 +25,15 @@
  * is still tubuild's own (tubuild.build_manifest_entry).
  *
  * WHAT THE MERGE FORCED, and nothing else was changed:
- *   1. Local shadow `struct Enemy` / `struct Actor` (SpawnMegaCharParticles,
- *      SpawnCoin) replaced by include/Enemy.h's real classes -- two globally
- *      visible types named `Enemy` and `Actor` cannot survive in one TU.
+ *   1. Local shadow `struct dEnemyBase_c` / `struct Actor` (SpawnMegaCharParticles,
+ *      SpawnCoin) replaced by include/dEnemyBase_c.h's real classes -- two globally
+ *      visible types named `dEnemyBase_c` and `Actor` cannot survive in one TU.
  *   2. Duplicate local helper types renamed apart per block (UnkA/UnkB appeared
  *      twice with identical bodies; two files declared their own POD `Vector3`
  *      that collides with types.h's non-POD one). Renaming a file-local type
  *      cannot change codegen; keeping the POD spelling deliberately does not.
  *   3. `enum { false, true };` deleted -- both are keywords in C++.
- *   4. Three members are real Enemy methods here, so the four call sites that
+ *   4. Three members are real dEnemyBase_c methods here, so the four call sites that
  *      used to reach them through `extern "C"` mangled-name declarations call
  *      them as methods instead. Non-virtual, so still a direct `bl`.
  *   5. Same extern declared with different signatures in different files ->
@@ -42,28 +42,28 @@
  *      func_ov002_020ae968 as `int (void*, void*)` while the definition below
  *      is `void (char*, char*)`.
  *
- * KEY-FUNCTION SIDE EFFECT: Enemy's first non-inline virtual is ~Enemy, and this
- * TU defines it, so the object also carries _ZTV5Enemy/_ZTI5Enemy/_ZTS5Enemy and
+ * KEY-FUNCTION SIDE EFFECT: dEnemyBase_c's first non-inline virtual is ~dEnemyBase_c, and this
+ * TU defines it, so the object also carries _ZTV12dEnemyBase_c/_ZTI12dEnemyBase_c/_ZTS12dEnemyBase_c and
  * the inherited RTTI records. Expected, unlicensed, and inventoried by
  * `tubuild.py verify` -- their correctness is NOT claimed here.
  */
-#include "Enemy.h"
+#include "dEnemyBase_c.h"
 #include "decl_ClsnResult.h"
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 30 -- _ZN5EnemyC2Ev, 0x020aed98, size 0x24                      */
+/* ROM ordinal 30 -- _ZN12dEnemyBase_cC2Ev, 0x020aed98, size 0x24                      */
 /* -------------------------------------------------------------------------- */
 /* Left as an extern "C" free function under its mangled name, NOT written as
-   `Enemy::Enemy() {}`. Enemy.h declares `Enemy();` precisely so the compiler
+   `dEnemyBase_c::dEnemyBase_c() {}`. dEnemyBase_c.h declares `dEnemyBase_c();` precisely so the compiler
    never synthesises and inlines one into the 51 subclasses; defining it as a
    real method here would undo that. The vptr is stored through
-   data_ov002_021081e4 -- the alias ov002/symbols.txt gives _ZTV5Enemy's ROM
-   address -- rather than through the locally emitted _ZTV5Enemy, so the addend
+   data_ov002_021081e4 -- the alias ov002/symbols.txt gives _ZTV12dEnemyBase_c's ROM
+   address -- rather than through the locally emitted _ZTV12dEnemyBase_c, so the addend
    stays 0 and the pilot report's sec 5.1 vtable-preamble trap does not apply. */
 extern "C" {
 extern int _ZN5ActorC2Ev(void *);
 extern int data_ov002_021081e4[];
-int _ZN5EnemyC2Ev(void *c)
+int _ZN12dEnemyBase_cC2Ev(void *c)
 {
     _ZN5ActorC2Ev(c);
     *(int *)c = (int)data_ov002_021081e4;
@@ -72,20 +72,20 @@ int _ZN5EnemyC2Ev(void *c)
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinals 27/28/29 -- _ZN5EnemyD2Ev 0x020aed18, _ZN5EnemyD0Ev 0x020aed3c, */
-/* _ZN5EnemyD1Ev 0x020aed74.  ONE definition, three emitted sections.          */
+/* ROM ordinals 27/28/29 -- _ZN12dEnemyBase_cD2Ev 0x020aed18, _ZN12dEnemyBase_cD0Ev 0x020aed3c, */
+/* _ZN12dEnemyBase_cD1Ev 0x020aed74.  ONE definition, three emitted sections.          */
 /* -------------------------------------------------------------------------- */
 /* Store this class's vtable over the one Actor's constructor left, then run the
    Actor subobject destructor. D0 additionally returns the object to the actor
-   heap through Enemy's own inline operator delete (see include/Enemy.h). The
+   heap through dEnemyBase_c's own inline operator delete (see include/dEnemyBase_c.h). The
    three legacy files each spelled one variant; the compiler emits all three from
    this. */
-Enemy::~Enemy()
+dEnemyBase_c::~dEnemyBase_c()
 {
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 26 -- _ZN5Enemy12UpdateWMClsnER12WithMeshClsnj, 0x020aebf8, 0x120 */
+/* ROM ordinal 26 -- _ZN12dEnemyBase_c12UpdateWMClsnER12WithMeshClsnj, 0x020aebf8, 0x120 */
 /* -------------------------------------------------------------------------- */
 /* Runs the mesh collision (sel picks which of four update flavours), then caches
    whichever surface normals came back: the floor result's into mFloorNormal*,
@@ -110,7 +110,7 @@ extern int _ZNK12WithMeshClsn8IsOnWallEv(void *);
 extern struct SurfaceInfo *_ZNK12WithMeshClsn13GetWallResultEv(WithMeshClsn *);
 }
 
-void Enemy::UpdateWMClsn(WithMeshClsn & clsn_, unsigned int sel)
+void dEnemyBase_c::UpdateWMClsn(WithMeshClsn & clsn_, unsigned int sel)
 {
     WithMeshClsn *clsn = &clsn_;
 
@@ -145,9 +145,9 @@ void Enemy::UpdateWMClsn(WithMeshClsn & clsn_, unsigned int sel)
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 25 -- _ZN5Enemy9SpawnCoinEv, 0x020aeabc, size 0x13c             */
+/* ROM ordinal 25 -- _ZN12dEnemyBase_c9SpawnCoinEv, 0x020aeabc, size 0x13c             */
 /* -------------------------------------------------------------------------- */
-/* Its legacy file built this from a local `struct Enemy : Actor` shadow with a
+/* Its legacy file built this from a local `struct dEnemyBase_c : Actor` shadow with a
    local POD `struct Vector3`; both are the real ones now. Measured: using
    types.h's Vector3 -- which declares ~Vector3(){} and is therefore NOT a POD --
    for the local `v` costs nothing here, all 0x13c bytes reproduce, which is what
@@ -156,7 +156,7 @@ extern "C" int RandomIntInternal(int *seed);
 extern u16 data_ov002_020ff014;
 extern int data_0209e650;
 
-void Enemy::SpawnCoin()
+void dEnemyBase_c::SpawnCoin()
 {
     char *t = (char *)this;
     int i;
@@ -197,8 +197,8 @@ void Enemy::SpawnCoin()
    data_ov002_0210db80[index-1] (forwarding both int args), then writes -0x2000
    to +0x9c and clears the +0xb0 bit again.
 
-   The receiver stays a file-local shadow (`Aea30C`) rather than Enemy: the
-   pointer-to-member type is what selects the call sequence, and Enemy has a
+   The receiver stays a file-local shadow (`Aea30C`) rather than dEnemyBase_c: the
+   pointer-to-member type is what selects the call sequence, and dEnemyBase_c has a
    polymorphic base, so retyping it is a codegen change, not a rename. */
 struct Aea30C;
 typedef void (Aea30C::*Aea30PMF)(int, int);
@@ -393,18 +393,18 @@ extern "C" void func_ov002_020ae73c(char* c, char* arg)
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 12 -- _ZN5Enemy11UpdateDeathER12WithMeshClsn, 0x020ae6a8, 0x94  */
+/* ROM ordinal 12 -- _ZN12dEnemyBase_c11UpdateDeathER12WithMeshClsn, 0x020ae6a8, 0x94  */
 /* -------------------------------------------------------------------------- */
 /* unk_10c selects which death handler from a table of POINTERS TO MEMBER
    FUNCTION, then the position and mesh collision are updated regardless. */
-extern int (Enemy::*data_ov002_0210dbc0[])(WithMeshClsn &);
+extern int (dEnemyBase_c::*data_ov002_0210dbc0[])(WithMeshClsn &);
 
 extern "C" {
 extern void DecIfAbove0_Short(unsigned short *p);
 extern int _ZN5Actor9UpdatePosEP12CylinderClsn(void *thiz, void *clsn);
 }
 
-int Enemy::UpdateDeath(WithMeshClsn & clsn_)
+int dEnemyBase_c::UpdateDeath(WithMeshClsn & clsn_)
 {
     WithMeshClsn *clsn = &clsn_;
     int ret;
@@ -449,8 +449,8 @@ extern "C" int func_ov002_020ae64c(char* c, int x){
 /* -------------------------------------------------------------------------- */
 extern "C" int func_ov002_020ae608(void* c, void* a){
   if(_ZNK12WithMeshClsn10IsOnGroundEv(a)==0) return 0;
-  ((Enemy *)c)->SpawnCoin();
-  ((Enemy *)c)->KillAndTrackInDeathTable();
+  ((dEnemyBase_c *)c)->SpawnCoin();
+  ((dEnemyBase_c *)c)->KillAndTrackInDeathTable();
   *(int*)((char*)c+0x10c)=0;
   return 1;
 }
@@ -462,8 +462,8 @@ extern "C" int func_ov002_020ae608(void* c, void* a){
 extern "C" int func_ov002_020ae5c8(void* c, int x){
   unsigned short* p=(unsigned short*)((char*)c+0x100);
   if(p[1]!=0) return 0;
-  ((Enemy *)c)->SpawnCoin();
-  ((Enemy *)c)->KillAndTrackInDeathTable();
+  ((dEnemyBase_c *)c)->SpawnCoin();
+  ((dEnemyBase_c *)c)->KillAndTrackInDeathTable();
   *(int*)((char*)c+0x10c)=0;
   return 1;
 }
@@ -497,8 +497,8 @@ extern "C" int func_ov002_020ae4cc(char* self, char* clsn){
     v[2] = z;
   }
   if (_ZNK12WithMeshClsn10IsOnGroundEv(clsn)) {
-    ((Enemy *)self)->SpawnCoin();
-    ((Enemy *)self)->KillAndTrackInDeathTable();
+    ((dEnemyBase_c *)self)->SpawnCoin();
+    ((dEnemyBase_c *)self)->KillAndTrackInDeathTable();
     *(int*)(self+0x10c) = 0;
     return 1;
   }
@@ -514,8 +514,8 @@ extern "C" int func_ov002_020ae4cc(char* self, char* clsn){
 /* -------------------------------------------------------------------------- */
 extern "C" int func_ov002_020ae454(char* c, void* a){
   if(*(unsigned short*)(c+0x102)==0 || _ZNK12WithMeshClsn10IsOnGroundEv(a)!=0 || _ZNK12WithMeshClsn8IsOnWallEv(a)!=0){
-    ((Enemy *)c)->SpawnCoin();
-    ((Enemy *)c)->KillAndTrackInDeathTable();
+    ((dEnemyBase_c *)c)->SpawnCoin();
+    ((dEnemyBase_c *)c)->KillAndTrackInDeathTable();
     *(int*)(c+0x10c)=0;
     return 1;
   }
@@ -523,7 +523,7 @@ extern "C" int func_ov002_020ae454(char* c, void* a){
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 6 -- _ZN5Enemy15IsGoingOffCliffER12WithMeshClsn5Fix12IiEsbbS3_ */
+/* ROM ordinal 6 -- _ZN12dEnemyBase_c15IsGoingOffCliffER12WithMeshClsn5Fix12IiEsbbS3_ */
 /* 0x020ae2b8, size 0x19c                                                     */
 /* -------------------------------------------------------------------------- */
 /* Stays an extern "C" free function under its mangled name: the symbol claims
@@ -540,7 +540,7 @@ extern void _ZN11RaycastLineD1Ev(void* self);
 extern short data_02082214[];
 }
 
-extern "C" int _ZN5Enemy15IsGoingOffCliffER12WithMeshClsn5Fix12IiEsbbS3_(struct Enemy *self, void* clsn, int fix2, short a3, unsigned char a4, unsigned char a5, int fix6) {
+extern "C" int _ZN12dEnemyBase_c15IsGoingOffCliffER12WithMeshClsn5Fix12IiEsbbS3_(struct dEnemyBase_c *self, void* clsn, int fix2, short a3, unsigned char a4, unsigned char a5, int fix6) {
   Vector3 v1;
   Vector3 v2;
   char cr[0x28];
@@ -588,7 +588,7 @@ extern "C" int _ZN5Enemy15IsGoingOffCliffER12WithMeshClsn5Fix12IiEsbbS3_(struct 
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 5 -- _ZN5Enemy24AngleAwayFromWallOrCliffER12WithMeshClsnRs      */
+/* ROM ordinal 5 -- _ZN12dEnemyBase_c24AngleAwayFromWallOrCliffER12WithMeshClsnRs      */
 /* 0x020ae244, size 0x74                                                      */
 /* -------------------------------------------------------------------------- */
 /* On a wall, reflect the heading off it; on a cliff edge (unk_106), turn
@@ -599,7 +599,7 @@ extern "C" {
 extern short _ZN5Actor12ReflectAngleE5Fix12IiES1_s(void *actor, int a, int b, short c);
 }
 
-int Enemy::AngleAwayFromWallOrCliff(WithMeshClsn & clsn_, short & outAngle_)
+int dEnemyBase_c::AngleAwayFromWallOrCliff(WithMeshClsn & clsn_, short & outAngle_)
 {
     void *clsn = &clsn_;
     short *outAngle = &outAngle_;
@@ -615,14 +615,14 @@ int Enemy::AngleAwayFromWallOrCliff(WithMeshClsn & clsn_, short & outAngle_)
 }
 
 /* ========================================================================== */
-/* HOLE: ROM ordinal 4 -- _ZN5Enemy14UpdateYoshiEatER12WithMeshClsn,          */
+/* HOLE: ROM ordinal 4 -- _ZN12dEnemyBase_c14UpdateYoshiEatER12WithMeshClsn,          */
 /* 0x020ade78, size 0x3cc. No source exists anywhere under src/; this is      */
 /* ov002's one unmatched member inside the span. Nothing is written for it,    */
 /* which is why this TU cannot be link-verified.                              */
 /* ========================================================================== */
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 3 -- _ZN5Enemy27SpawnParticlesIfHitOtherObjER12CylinderClsn     */
+/* ROM ordinal 3 -- _ZN12dEnemyBase_c27SpawnParticlesIfHitOtherObjER12CylinderClsn     */
 /* 0x020addc0, size 0xb8                                                      */
 /* -------------------------------------------------------------------------- */
 /* While unk_107 is set, a cylinder collision against anything other than actor
@@ -632,7 +632,7 @@ extern "C" {
 extern void* _ZN5Actor10FindWithIDEj(unsigned int);
 }
 
-int Enemy::SpawnParticlesIfHitOtherObj(CylinderClsn & clsn_)
+int dEnemyBase_c::SpawnParticlesIfHitOtherObj(CylinderClsn & clsn_)
 {
     char* clsn = (char*)&clsn_;
     int* f;
@@ -663,7 +663,7 @@ done:
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 2 -- _ZN5Enemy22SpawnMegaCharParticlesER5ActorPc               */
+/* ROM ordinal 2 -- _ZN12dEnemyBase_c22SpawnMegaCharParticlesER5ActorPc               */
 /* 0x020adb40, size 0x280                                                     */
 /* -------------------------------------------------------------------------- */
 /* MegaV3 is deliberately a POD copy of Vector3: types.h's Vector3 declares
@@ -678,7 +678,7 @@ extern s16 _ZN4cstd5atan2E5Fix12IiES1_(s32 y, s32 x);
 extern s32 *Vec3_AsrInPlace(s32 *v, s32 sh);
 }
 
-void Enemy::SpawnMegaCharParticles(Actor &a, char *p)
+void dEnemyBase_c::SpawnMegaCharParticles(Actor &a, char *p)
 {
     char *self = (char *)this;
     char *ap = (char *)&a;
@@ -752,7 +752,7 @@ void Enemy::SpawnMegaCharParticles(Actor &a, char *p)
 /* -------------------------------------------------------------------------- */
 /* ROM ordinal 1 -- func_ov002_020ada40, 0x020ada40, size 0x100               */
 /* -------------------------------------------------------------------------- */
-/* include/Enemy.h identifies this address as Enemy::KillByInvincibleChar, but
+/* include/dEnemyBase_c.h identifies this address as dEnemyBase_c::KillByInvincibleChar, but
    naming is out of scope for this TU, so the placeholder symbol stands and the
    receiver stays a file-local shadow. */
 struct A40Obj {
@@ -820,7 +820,7 @@ extern "C" void func_ov002_020ada40(A40Player* r0, short* r1, void* r2) {
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 0 -- _ZN5Enemy26UpdateKillByInvincibleCharER12WithMeshClsn      */
+/* ROM ordinal 0 -- _ZN12dEnemyBase_c26UpdateKillByInvincibleCharER12WithMeshClsn      */
 /*                  R9ModelAnimj, 0x020ad838, size 0x208                      */
 /* -------------------------------------------------------------------------- */
 /* One frame of the death an invincible (mega) character inflicts. `flags` is a
@@ -879,7 +879,7 @@ struct KbicM48 { int w[12]; };
 
 #define LAUNDER(p) ((int)(p))
 
-int Enemy::UpdateKillByInvincibleChar(WithMeshClsn & ww_, ModelAnim & mm_, unsigned int flags)
+int dEnemyBase_c::UpdateKillByInvincibleChar(WithMeshClsn & ww_, ModelAnim & mm_, unsigned int flags)
 {
     WithMeshClsn *clsn = &ww_;
     ModelAnim *anim = &mm_;

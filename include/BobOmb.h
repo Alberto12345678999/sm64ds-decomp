@@ -3,9 +3,9 @@
 
 #include "types.h"
 
-/* Derives from Enemy, on the evidence of its own destructor: `_ZN6BobOmbD1Ev`
+/* Derives from dEnemyBase_c, on the evidence of its own destructor: `_ZN6BobOmbD1Ev`
  * stores this vtable, destroys its members in reverse declaration order, then
- * calls `Enemy::~Enemy`. Everything this header used to restate below 0x110
+ * calls `dEnemyBase_c::~dEnemyBase_c`. Everything this header used to restate below 0x110
  * belongs to that chain and is inherited now.
  *
  * The members close exactly on one another:
@@ -29,7 +29,7 @@
  * 0x3f8; the difference is trailing space no source reads.
  */
 
-#include "Enemy.h"
+#include "dEnemyBase_c.h"
 #include "Model.h"
 #include "ModelAnim.h"
 #include "MovingCylinderClsn.h"
@@ -38,7 +38,7 @@
 #include "TextureTransformer.h"
 #include "WithMeshClsn.h"
 
-struct BobOmb : Enemy {
+struct BobOmb : dEnemyBase_c {
     MovingCylinderClsn           mCylinderClsn;         /* 0x110 */
     WithMeshClsn                 mWithMeshClsn;         /* 0x144 */
     ModelAnim                    mModelAnim;            /* 0x300 */

@@ -21,14 +21,14 @@ extern void *_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8Callba
 
 extern s16 data_02082214[];
 
-struct Enemy
+struct dEnemyBase_c
 {
     char pad[0x100];
 
     void SpawnMegaCharParticles(Actor &a, char *p);
 };
 
-void Enemy::SpawnMegaCharParticles(Actor &a, char *p)
+void dEnemyBase_c::SpawnMegaCharParticles(Actor &a, char *p)
 {
     char *self = (char *)this;
     char *ap = (char *)&a;

@@ -1,7 +1,7 @@
 #include "types.h"
 extern void func_02012694(u32 id, void *pos);
 extern void _ZN5Sound9PlayBank0EjRK7Vector3(u32 id, void *pos);
-extern void _ZN5Enemy9SpawnCoinEv(char *self);
+extern void _ZN12dEnemyBase_c9SpawnCoinEv(char *self);
 extern void _ZN5Actor24KillAndTrackInDeathTableEv(char *self);
 extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *thiz, void *anim, int a, int fix, u32 flags);
 extern char *_ZN5Actor10FindWithIDEj(u32 id);
@@ -36,7 +36,7 @@ void func_ov084_0212d86c(char *r5)
         t = (int)(*(u16 *)(r5 + 0xc) == 0xfc);
         if (t != 0) {
             *(u8 *)(r5 + 0x108) = 1;
-            _ZN5Enemy9SpawnCoinEv(r5);
+            _ZN12dEnemyBase_c9SpawnCoinEv(r5);
             _ZN5Actor24KillAndTrackInDeathTableEv(r5);
             _ZN5Sound9PlayBank0EjRK7Vector3(0xa, r5 + 0x74);
         } else {

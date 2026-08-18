@@ -2,16 +2,16 @@
 #define YOSHIEGG_H
 
 #include "types.h"
-#include "Enemy.h"
+#include "dEnemyBase_c.h"
 #include "ModelAnim.h"
 #include "MovingCylinderClsn.h"
 #include "ShadowModel.h"
 #include "WithMeshClsn.h"
 
-/* daYegg_c in the ROM's RTTI. Derives from Enemy, and both witnesses agree:
- * YoshiEgg_Spawn allocates 0x42c, calls _ZN5EnemyC2Ev, stores _ZTV8YoshiEgg and
+/* daYegg_c in the ROM's RTTI. Derives from dEnemyBase_c, and both witnesses agree:
+ * YoshiEgg_Spawn allocates 0x42c, calls _ZN12dEnemyBase_cC2Ev, stores _ZTV8YoshiEgg and
  * constructs the four members below in order; _ZN8YoshiEggD1Ev destroys the same four
- * in reverse and chains to _ZN5EnemyD2Ev.
+ * in reverse and chains to _ZN12dEnemyBase_cD2Ev.
  *
  * SIZE 0x42c, the literal in the factory's ActorBase::operator new. ShadowModel ends
  * at 0x38c, so everything below that is this class's own.
@@ -21,7 +21,7 @@
  * the Animation base sits at +0x50, so 0x300 + 0x50 is mModelAnim's Animation
  * subobject. It disappears here because the type expresses it.
  */
-struct YoshiEgg : Enemy {
+struct YoshiEgg : dEnemyBase_c {
     MovingCylinderClsn  mMovingCylinderClsn;    /* 0x110 */
     WithMeshClsn        mWithMeshClsn;          /* 0x144 */
     ModelAnim           mModelAnim;             /* 0x300 */
