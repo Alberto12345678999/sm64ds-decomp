@@ -20,11 +20,13 @@
  * warning in include/dBgActor_c.h and include/dActor_c.h about CW homing
  * class-typed by-value parameters to the stack).
  *
- * ModelLoadFile, MeshColliderLoadFile and UpdatePosWithTransformSym are all
- * pre-existing phantom references (present in
- * config/unresolved-baseline.json, absent from every symbols.txt) that this
- * migration does not introduce and must not try to "fix" by guessing a real
- * target.
+ * ModelLoadFile, MeshColliderLoadFile and UpdatePosWithTransformSym WERE
+ * phantom references -- names no module defines, which the byte gate cannot
+ * see because match.py compares relocated words as wildcards. This branch read
+ * the cartridge and established the real ROM symbols behind them, so the calls
+ * below name those directly -- the same idiom daObjCtMecha03_c::InitResources
+ * (its sibling in this class's own migration) and SignPost::InitResources
+ * (#1554) already use. decl_common.h no longer declares the phantoms.
  *
  * func_02112258 is the same kind of shared-but-locally-unowned CLPS_Block
  * symbol the daObjCtMecha03_c pass found at func_02112198: it is an
@@ -46,6 +48,9 @@ extern void _ZN10dBgActor_c21UpdateModelPosAndRotYEv(void *thisp);
 extern void _ZN10dBgActor_c19UpdateClsnPosAndRotEv(void *thisp);
 extern void _ZN18MovingMeshCollider7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
     void *thisp, void *kcl, void *mtx, int fix, short sh, void *clps);
+extern void *_ZN5Model8LoadFileER13SharedFilePtr(void *fp);
+extern void *_ZN12MeshCollider8LoadFileER13SharedFilePtr(void *fp);
+extern void _ZN16MeshColliderBase22UpdatePosWithTransformERS_P8dActor_cR10ClsnResultR7Vector3P10Vector3_16S8_();
 extern void func_020393d4(void *p, void *v);
 extern void func_020393a4(void *p, int v);
 extern void func_02039394(void *p, int v);
@@ -70,15 +75,16 @@ int daObjCtMecha05_c::InitResources()
 {
     char *self = (char *)this;
 
-    void *mf = ModelLoadFile(&data_ov065_0211d904);
+    void *mf = _ZN5Model8LoadFileER13SharedFilePtr(&data_ov065_0211d904);
     _ZN9ModelBase7SetFileEP8BMD_Fileii(self + 0xd4, mf, 1, -1);
     _ZN11ShadowModel10InitCuboidEv(self + 0x33c);
     _ZN10dBgActor_c21UpdateModelPosAndRotYEv(self);
     _ZN10dBgActor_c19UpdateClsnPosAndRotEv(self);
-    void *kf = MeshColliderLoadFile(&data_ov065_0211d90c);
+    void *kf = _ZN12MeshCollider8LoadFileER13SharedFilePtr(&data_ov065_0211d90c);
     _ZN18MovingMeshCollider7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
         self + 0x124, kf, self + 0x2ec, 0x199, *(short*)(self + 0x8e), (void*)&func_02112258);
-    func_020393d4(self + 0x124, (void*)&UpdatePosWithTransformSym);
+    func_020393d4(self + 0x124,
+        (void*)&_ZN16MeshColliderBase22UpdatePosWithTransformERS_P8dActor_cR10ClsnResultR7Vector3P10Vector3_16S8_);
     func_020393a4(self + 0x124, 0x1c0000);
     func_02039394(self + 0x124, 0x1000);
     *(short*)(self + 0x94) = *(short*)(self + 0x8e);
