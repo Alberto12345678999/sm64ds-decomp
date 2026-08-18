@@ -585,7 +585,7 @@ matched: yes</title></rect><rect x="111.11" y="90.80" width="5.66" height="7.11"
 module: arm9
 addr: 0x0200d148
 size: 60 bytes
-matched: yes</title></rect><rect x="116.77" y="90.80" width="9.06" height="7.11" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN6Camera10LookAtExitER5Actor
+matched: yes</title></rect><rect x="116.77" y="90.80" width="9.06" height="7.11" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN6Camera10LookAtExitER8dActor_c
 module: arm9
 addr: 0x0200d184
 size: 96 bytes
@@ -833,11 +833,11 @@ matched: yes</title></rect><rect x="39.50" y="112.25" width="36.80" height="4.67
 module: arm9
 addr: 0x0200f558
 size: 256 bytes
-matched: yes</title></rect><rect x="76.30" y="112.25" width="25.87" height="4.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Actor17DetectRaycastClsnER7Vector3S1_b
+matched: yes</title></rect><rect x="76.30" y="112.25" width="25.87" height="4.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dActor_c17DetectRaycastClsnER7Vector3S1_b
 module: arm9
 addr: 0x0200f658
 size: 180 bytes
-matched: yes</title></rect><rect x="102.17" y="112.25" width="12.07" height="4.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Actor22IsTooFarAwayFromPlayerE5Fix12IiE
+matched: yes</title></rect><rect x="102.17" y="112.25" width="12.07" height="4.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dActor_c22IsTooFarAwayFromPlayerE5Fix12IiE
 module: arm9
 addr: 0x0200f70c
 size: 84 bytes
@@ -845,7 +845,7 @@ matched: yes</title></rect><rect x="114.24" y="112.25" width="10.35" height="4.6
 module: arm9
 addr: 0x0200f760
 size: 72 bytes
-matched: yes</title></rect><rect x="124.59" y="112.25" width="10.35" height="4.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Actor19MakeVanishLuigiWorkER12CylinderClsn
+matched: yes</title></rect><rect x="124.59" y="112.25" width="10.35" height="4.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dActor_c19MakeVanishLuigiWorkER12CylinderClsn
 module: arm9
 addr: 0x0200f7a8
 size: 72 bytes
@@ -853,31 +853,31 @@ matched: yes</title></rect><rect x="134.94" y="112.25" width="18.97" height="4.6
 module: arm9
 addr: 0x0200f7f0
 size: 132 bytes
-matched: yes</title></rect><rect x="153.92" y="112.25" width="18.97" height="4.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Sound20PlaySmallSecretSoundEP5ActorPt
+matched: yes</title></rect><rect x="153.92" y="112.25" width="18.97" height="4.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Sound20PlaySmallSecretSoundEP8dActor_cPt
 module: arm9
 addr: 0x0200f874
 size: 132 bytes
-matched: yes</title></rect><rect x="172.89" y="112.25" width="18.97" height="4.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Sound15PlaySecretSoundEP5ActorPt
+matched: yes</title></rect><rect x="172.89" y="112.25" width="18.97" height="4.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Sound15PlaySecretSoundEP8dActor_cPt
 module: arm9
 addr: 0x0200f8f8
 size: 132 bytes
-matched: yes</title></rect><rect x="191.87" y="112.25" width="8.62" height="4.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Actor13SpawnSoundObjEj
+matched: yes</title></rect><rect x="191.87" y="112.25" width="8.62" height="4.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dActor_c13SpawnSoundObjEj
 module: arm9
 addr: 0x0200f97c
 size: 60 bytes
-matched: yes</title></rect><rect x="200.49" y="112.25" width="4.02" height="4.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Actor24KillAndTrackInDeathTableEv
+matched: yes</title></rect><rect x="200.49" y="112.25" width="4.02" height="4.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dActor_c24KillAndTrackInDeathTableEv
 module: arm9
 addr: 0x0200f9b8
 size: 28 bytes
-matched: yes</title></rect><rect x="204.52" y="112.25" width="2.30" height="4.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Actor19UntrackInDeathTableEv
+matched: yes</title></rect><rect x="204.52" y="112.25" width="2.30" height="4.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dActor_c19UntrackInDeathTableEv
 module: arm9
 addr: 0x0200f9d4
 size: 16 bytes
-matched: yes</title></rect><rect x="206.82" y="112.25" width="2.30" height="4.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Actor17TrackInDeathTableEv
+matched: yes</title></rect><rect x="206.82" y="112.25" width="2.30" height="4.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dActor_c17TrackInDeathTableEv
 module: arm9
 addr: 0x0200f9e4
 size: 16 bytes
-matched: yes</title></rect><rect x="209.12" y="112.25" width="2.30" height="4.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Actor18GetBitInDeathTableEv
+matched: yes</title></rect><rect x="209.12" y="112.25" width="2.30" height="4.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dActor_c18GetBitInDeathTableEv
 module: arm9
 addr: 0x0200f9f4
 size: 16 bytes
@@ -889,19 +889,19 @@ matched: yes</title></rect><rect x="230.96" y="112.25" width="8.05" height="4.67
 module: arm9
 addr: 0x0200fa8c
 size: 56 bytes
-matched: yes</title></rect><rect x="239.01" y="112.25" width="19.55" height="4.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Actor13LandingDustAtER7Vector3b
+matched: yes</title></rect><rect x="239.01" y="112.25" width="19.55" height="4.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dActor_c13LandingDustAtER7Vector3b
 module: arm9
 addr: 0x0200fac4
 size: 136 bytes
-matched: yes</title></rect><rect x="258.56" y="112.25" width="8.05" height="4.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Actor15HugeLandingDustEb
+matched: yes</title></rect><rect x="258.56" y="112.25" width="8.05" height="4.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dActor_c15HugeLandingDustEb
 module: arm9
 addr: 0x0200fb4c
 size: 56 bytes
-matched: yes</title></rect><rect x="266.61" y="112.25" width="19.55" height="4.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Actor17HugeLandingDustAtER7Vector3b
+matched: yes</title></rect><rect x="266.61" y="112.25" width="19.55" height="4.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dActor_c17HugeLandingDustAtER7Vector3b
 module: arm9
 addr: 0x0200fb84
 size: 136 bytes
-matched: yes</title></rect><rect x="286.16" y="112.25" width="8.05" height="4.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Actor11LandingDustEb
+matched: yes</title></rect><rect x="286.16" y="112.25" width="8.05" height="4.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dActor_c11LandingDustEb
 module: arm9
 addr: 0x0200fc0c
 size: 56 bytes
@@ -913,27 +913,27 @@ matched: yes</title></rect><rect x="313.76" y="112.25" width="8.05" height="4.67
 module: arm9
 addr: 0x0200fccc
 size: 56 bytes
-matched: yes</title></rect><rect x="5.00" y="116.92" width="28.98" height="1.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Actor19DisappearPoofDustAtERK7Vector3
+matched: yes</title></rect><rect x="5.00" y="116.92" width="28.98" height="1.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dActor_c19DisappearPoofDustAtERK7Vector3
 module: arm9
 addr: 0x0200fd04
 size: 60 bytes
-matched: yes</title></rect><rect x="33.98" y="116.92" width="25.11" height="1.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Actor13SmallPoofDustEv
+matched: yes</title></rect><rect x="33.98" y="116.92" width="25.11" height="1.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dActor_c13SmallPoofDustEv
 module: arm9
 addr: 0x0200fd40
 size: 52 bytes
-matched: yes</title></rect><rect x="59.09" y="116.92" width="40.57" height="1.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Actor16TriplePoofDustAtERK7Vector3
+matched: yes</title></rect><rect x="59.09" y="116.92" width="40.57" height="1.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dActor_c16TriplePoofDustAtERK7Vector3
 module: arm9
 addr: 0x0200fd74
 size: 84 bytes
-matched: yes</title></rect><rect x="99.66" y="116.92" width="25.11" height="1.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Actor14TriplePoofDustEv
+matched: yes</title></rect><rect x="99.66" y="116.92" width="25.11" height="1.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dActor_c14TriplePoofDustEv
 module: arm9
 addr: 0x0200fdc8
 size: 52 bytes
-matched: yes</title></rect><rect x="124.77" y="116.92" width="30.91" height="1.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Actor10PoofDustAtERK7Vector3
+matched: yes</title></rect><rect x="124.77" y="116.92" width="30.91" height="1.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dActor_c10PoofDustAtERK7Vector3
 module: arm9
 addr: 0x0200fdfc
 size: 64 bytes
-matched: yes</title></rect><rect x="155.68" y="116.92" width="25.11" height="1.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Actor8PoofDustEv
+matched: yes</title></rect><rect x="155.68" y="116.92" width="25.11" height="1.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dActor_c8PoofDustEv
 module: arm9
 addr: 0x0200fe3c
 size: 52 bytes
@@ -945,87 +945,87 @@ matched: yes</title></rect><rect x="202.04" y="116.92" width="21.25" height="1.3
 module: arm9
 addr: 0x0200fe9c
 size: 44 bytes
-matched: yes</title></rect><rect x="223.29" y="116.92" width="36.70" height="1.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Actor17GetWaterHeightWDWEv
+matched: yes</title></rect><rect x="223.29" y="116.92" width="36.70" height="1.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dActor_c17GetWaterHeightWDWEv
 module: arm9
 addr: 0x0200fec8
 size: 76 bytes
-matched: yes</title></rect><rect x="259.99" y="116.92" width="36.70" height="1.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Actor19UntrackAndSpawnStarERajRK7Vector3h
+matched: yes</title></rect><rect x="259.99" y="116.92" width="36.70" height="1.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dActor_c19UntrackAndSpawnStarERajRK7Vector3h
 module: arm9
 addr: 0x0200ff14
 size: 76 bytes
-matched: yes</title></rect><rect x="296.70" y="116.92" width="25.11" height="1.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Actor11UntrackStarERa
+matched: yes</title></rect><rect x="296.70" y="116.92" width="25.11" height="1.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dActor_c11UntrackStarERa
 module: arm9
 addr: 0x0200ff60
 size: 52 bytes
-matched: yes</title></rect><rect x="5.00" y="118.31" width="25.07" height="4.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Actor9TrackStarEjj
+matched: yes</title></rect><rect x="5.00" y="118.31" width="25.07" height="4.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dActor_c9TrackStarEjj
 module: arm9
 addr: 0x0200ff94
 size: 176 bytes
-matched: yes</title></rect><rect x="30.07" y="118.31" width="21.65" height="4.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Actor11SpawnNumberERK7Vector3jbtPS_
+matched: yes</title></rect><rect x="30.07" y="118.31" width="21.65" height="4.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dActor_c11SpawnNumberERK7Vector3jbtPS_
 module: arm9
 addr: 0x02010044
 size: 152 bytes
-matched: yes</title></rect><rect x="51.72" y="118.31" width="10.26" height="4.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Actor25OnAimedAtWithEggReturnVecEv
+matched: yes</title></rect><rect x="51.72" y="118.31" width="10.26" height="4.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dActor_c25OnAimedAtWithEggReturnVecEv
 module: arm9
 addr: 0x020100dc
 size: 72 bytes
-matched: yes</title></rect><rect x="61.98" y="118.31" width="1.14" height="4.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Actor16OnAimedAtWithEggEv
+matched: yes</title></rect><rect x="61.98" y="118.31" width="1.14" height="4.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dActor_c16OnAimedAtWithEggEv
 module: arm9
 addr: 0x02010124
 size: 8 bytes
-matched: yes</title></rect><rect x="63.12" y="118.31" width="0.57" height="4.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Actor19OnHitFromUnderneathERS_
+matched: yes</title></rect><rect x="63.12" y="118.31" width="0.57" height="4.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dActor_c19OnHitFromUnderneathERS_
 module: arm9
 addr: 0x0201012c
 size: 4 bytes
-matched: yes</title></rect><rect x="63.69" y="118.31" width="0.57" height="4.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Actor15OnHitByMegaCharER6Player
+matched: yes</title></rect><rect x="63.69" y="118.31" width="0.57" height="4.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dActor_c15OnHitByMegaCharER6Player
 module: arm9
 addr: 0x02010130
 size: 4 bytes
-matched: yes</title></rect><rect x="64.26" y="118.31" width="0.57" height="4.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Actor24OnHitByCannonBlastedCharERS_
+matched: yes</title></rect><rect x="64.26" y="118.31" width="0.57" height="4.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dActor_c24OnHitByCannonBlastedCharERS_
 module: arm9
 addr: 0x02010134
 size: 4 bytes
-matched: yes</title></rect><rect x="64.83" y="118.31" width="0.57" height="4.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Actor8OnPushedERS_
+matched: yes</title></rect><rect x="64.83" y="118.31" width="0.57" height="4.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dActor_c8OnPushedERS_
 module: arm9
 addr: 0x02010138
 size: 4 bytes
-matched: yes</title></rect><rect x="65.40" y="118.31" width="0.57" height="4.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Actor8OnKickedERS_
+matched: yes</title></rect><rect x="65.40" y="118.31" width="0.57" height="4.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dActor_c8OnKickedERS_
 module: arm9
 addr: 0x0201013c
 size: 4 bytes
-matched: yes</title></rect><rect x="65.97" y="118.31" width="0.57" height="4.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Actor11OnAttacked2ERS_
+matched: yes</title></rect><rect x="65.97" y="118.31" width="0.57" height="4.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dActor_c11OnAttacked2ERS_
 module: arm9
 addr: 0x02010140
 size: 4 bytes
-matched: yes</title></rect><rect x="66.54" y="118.31" width="0.57" height="4.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Actor11OnAttacked1ERS_
+matched: yes</title></rect><rect x="66.54" y="118.31" width="0.57" height="4.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dActor_c11OnAttacked1ERS_
 module: arm9
 addr: 0x02010144
 size: 4 bytes
-matched: yes</title></rect><rect x="67.11" y="118.31" width="0.57" height="4.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Actor15OnGroundPoundedERS_
+matched: yes</title></rect><rect x="67.11" y="118.31" width="0.57" height="4.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dActor_c15OnGroundPoundedERS_
 module: arm9
 addr: 0x02010148
 size: 4 bytes
-matched: yes</title></rect><rect x="67.68" y="118.31" width="1.14" height="4.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Actor9Virtual50Ev
+matched: yes</title></rect><rect x="67.68" y="118.31" width="1.14" height="4.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dActor_c9Virtual50Ev
 module: arm9
 addr: 0x0201014c
 size: 8 bytes
-matched: yes</title></rect><rect x="68.82" y="118.31" width="1.71" height="4.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Actor13OnTurnIntoEggER6Player
+matched: yes</title></rect><rect x="68.82" y="118.31" width="1.71" height="4.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dActor_c13OnTurnIntoEggER6Player
 module: arm9
 addr: 0x02010154
 size: 12 bytes
-matched: yes</title></rect><rect x="70.53" y="118.31" width="1.14" height="4.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Actor13OnYoshiTryEatEv
+matched: yes</title></rect><rect x="70.53" y="118.31" width="1.14" height="4.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dActor_c13OnYoshiTryEatEv
 module: arm9
 addr: 0x02010160
 size: 8 bytes
-matched: yes</title></rect><rect x="71.67" y="118.31" width="3.42" height="4.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Actor10EarthquakeERK7Vector35Fix12IiE
+matched: yes</title></rect><rect x="71.67" y="118.31" width="3.42" height="4.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE
 module: arm9
 addr: 0x02010168
 size: 24 bytes
-matched: yes</title></rect><rect x="75.09" y="118.31" width="43.30" height="4.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Actor11UpdateCarryER6PlayerRK7Vector3
+matched: yes</title></rect><rect x="75.09" y="118.31" width="43.30" height="4.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dActor_c11UpdateCarryER6PlayerRK7Vector3
 module: arm9
 addr: 0x02010180
 size: 304 bytes
-matched: yes</title></rect><rect x="118.39" y="118.31" width="11.97" height="4.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Actor13SpawnFireballERK7Vector3PK10Vector3_165Fix12IiES7_j
+matched: yes</title></rect><rect x="118.39" y="118.31" width="11.97" height="4.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dActor_c13SpawnFireballERK7Vector3PK10Vector3_165Fix12IiES7_j
 module: arm9
 addr: 0x020102b0
 size: 84 bytes
@@ -1033,39 +1033,39 @@ matched: yes</title></rect><rect x="130.36" y="118.31" width="15.95" height="4.7
 module: arm9
 addr: 0x02010304
 size: 112 bytes
-matched: yes</title></rect><rect x="146.31" y="118.31" width="9.12" height="4.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Actor18FindExplosionActorER12CylinderClsn
+matched: yes</title></rect><rect x="146.31" y="118.31" width="9.12" height="4.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dActor_c18FindExplosionActorER12CylinderClsn
 module: arm9
 addr: 0x02010374
 size: 64 bytes
-matched: yes</title></rect><rect x="155.43" y="118.31" width="9.12" height="4.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Actor7FindEggER12CylinderClsn
+matched: yes</title></rect><rect x="155.43" y="118.31" width="9.12" height="4.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dActor_c7FindEggER12CylinderClsn
 module: arm9
 addr: 0x020103b4
 size: 64 bytes
-matched: yes</title></rect><rect x="164.54" y="118.31" width="7.41" height="4.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Actor14GetSubtractionEss
+matched: yes</title></rect><rect x="164.54" y="118.31" width="7.41" height="4.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dActor_c14GetSubtractionEss
 module: arm9
 addr: 0x020103f4
 size: 52 bytes
-matched: yes</title></rect><rect x="171.95" y="118.31" width="7.41" height="4.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Actor12ReflectAngleE5Fix12IiES1_s
+matched: yes</title></rect><rect x="171.95" y="118.31" width="7.41" height="4.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dActor_c12ReflectAngleE5Fix12IiES1_s
 module: arm9
 addr: 0x02010428
 size: 52 bytes
-matched: yes</title></rect><rect x="179.36" y="118.31" width="8.55" height="4.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Actor15IsPlayerInRangeERK7Vector3i
+matched: yes</title></rect><rect x="179.36" y="118.31" width="8.55" height="4.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dActor_c15IsPlayerInRangeERK7Vector3i
 module: arm9
 addr: 0x0201045c
 size: 60 bytes
-matched: yes</title></rect><rect x="187.91" y="118.31" width="9.69" height="4.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Actor15IsPlayerInRangeE5Fix12IiES1_S1_i
+matched: yes</title></rect><rect x="187.91" y="118.31" width="9.69" height="4.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dActor_c15IsPlayerInRangeE5Fix12IiES1_S1_i
 module: arm9
 addr: 0x02010498
 size: 68 bytes
-matched: yes</title></rect><rect x="197.59" y="118.31" width="8.55" height="4.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Actor15IsPlayerInRangeEi
+matched: yes</title></rect><rect x="197.59" y="118.31" width="8.55" height="4.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dActor_c15IsPlayerInRangeEi
 module: arm9
 addr: 0x020104dc
 size: 60 bytes
-matched: yes</title></rect><rect x="206.14" y="118.31" width="7.41" height="4.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Actor24BumpedUnderneathByPlayerER6Player
+matched: yes</title></rect><rect x="206.14" y="118.31" width="7.41" height="4.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dActor_c24BumpedUnderneathByPlayerER6Player
 module: arm9
 addr: 0x02010518
 size: 52 bytes
-matched: yes</title></rect><rect x="213.55" y="118.31" width="18.23" height="4.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Actor16JumpedOnByPlayerER12CylinderClsnR6Player
+matched: yes</title></rect><rect x="213.55" y="118.31" width="18.23" height="4.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dActor_c16JumpedOnByPlayerER12CylinderClsnR6Player
 module: arm9
 addr: 0x0201054c
 size: 128 bytes
@@ -1073,11 +1073,11 @@ matched: yes</title></rect><rect x="231.78" y="118.31" width="11.40" height="4.7
 module: arm9
 addr: 0x020105cc
 size: 80 bytes
-matched: yes</title></rect><rect x="243.18" y="118.31" width="35.33" height="4.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Actor15GivePlayerCoinsER6Playerhj
+matched: yes</title></rect><rect x="243.18" y="118.31" width="35.33" height="4.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dActor_c15GivePlayerCoinsER6Playerhj
 module: arm9
 addr: 0x0201061c
 size: 248 bytes
-matched: yes</title></rect><rect x="278.50" y="118.31" width="43.30" height="4.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Actor10SpawnCoinsERK7Vector3j5Fix12IiEs
+matched: yes</title></rect><rect x="278.50" y="118.31" width="43.30" height="4.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs
 module: arm9
 addr: 0x02010714
 size: 304 bytes
@@ -1085,55 +1085,55 @@ matched: yes</title></rect><rect x="5.00" y="123.03" width="20.95" height="4.10"
 module: arm9
 addr: 0x02010844
 size: 128 bytes
-matched: yes</title></rect><rect x="25.95" y="123.03" width="17.02" height="4.10" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Actor18ClosestWithActorIDEj
+matched: yes</title></rect><rect x="25.95" y="123.03" width="17.02" height="4.10" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dActor_c18ClosestWithActorIDEj
 module: arm9
 addr: 0x020108c4
 size: 104 bytes
-matched: yes</title></rect><rect x="42.96" y="123.03" width="7.20" height="4.10" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Actor18HorzAngleToFPlayerEv
+matched: yes</title></rect><rect x="42.96" y="123.03" width="7.20" height="4.10" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dActor_c18HorzAngleToFPlayerEv
 module: arm9
 addr: 0x0201092c
 size: 44 bytes
-matched: yes</title></rect><rect x="50.17" y="123.03" width="5.89" height="4.10" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Actor14FarthestPlayerEv
+matched: yes</title></rect><rect x="50.17" y="123.03" width="5.89" height="4.10" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dActor_c14FarthestPlayerEv
 module: arm9
 addr: 0x02010958
 size: 36 bytes
-matched: yes</title></rect><rect x="56.06" y="123.03" width="9.82" height="4.10" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Actor23HorzAngleToCPlayerOrAngEv
+matched: yes</title></rect><rect x="56.06" y="123.03" width="9.82" height="4.10" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dActor_c23HorzAngleToCPlayerOrAngEv
 module: arm9
 addr: 0x0201097c
 size: 60 bytes
-matched: yes</title></rect><rect x="65.87" y="123.03" width="7.20" height="4.10" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Actor18HorzAngleToCPlayerEv
+matched: yes</title></rect><rect x="65.87" y="123.03" width="7.20" height="4.10" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dActor_c18HorzAngleToCPlayerEv
 module: arm9
 addr: 0x020109b8
 size: 44 bytes
-matched: yes</title></rect><rect x="73.07" y="123.03" width="5.89" height="4.10" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Actor13DistToCPlayerEv
+matched: yes</title></rect><rect x="73.07" y="123.03" width="5.89" height="4.10" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dActor_c13DistToCPlayerEv
 module: arm9
 addr: 0x020109e4
 size: 36 bytes
-matched: yes</title></rect><rect x="78.97" y="123.03" width="34.04" height="4.10" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Actor22ClosestNonVanishPlayerEv
+matched: yes</title></rect><rect x="78.97" y="123.03" width="34.04" height="4.10" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dActor_c22ClosestNonVanishPlayerEv
 module: arm9
 addr: 0x02010a08
 size: 208 bytes
-matched: yes</title></rect><rect x="113.00" y="123.03" width="32.07" height="4.10" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Actor13ClosestPlayerEv
+matched: yes</title></rect><rect x="113.00" y="123.03" width="32.07" height="4.10" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dActor_c13ClosestPlayerEv
 module: arm9
 addr: 0x02010ad8
 size: 196 bytes
-matched: yes</title></rect><rect x="145.08" y="123.03" width="12.44" height="4.10" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Actor18DropShadowScaleXYZER11ShadowModelR9Matrix4x35Fix12IiES5_S5_j
+matched: yes</title></rect><rect x="145.08" y="123.03" width="12.44" height="4.10" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dActor_c18DropShadowScaleXYZER11ShadowModelR9Matrix4x35Fix12IiES5_S5_j
 module: arm9
 addr: 0x02010b9c
 size: 76 bytes
-matched: yes</title></rect><rect x="157.51" y="123.03" width="11.78" height="4.10" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Actor19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j
+matched: yes</title></rect><rect x="157.51" y="123.03" width="11.78" height="4.10" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j
 module: arm9
 addr: 0x02010be8
 size: 72 bytes
-matched: yes</title></rect><rect x="169.30" y="123.03" width="7.20" height="4.10" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Actor9UpdatePosEP12CylinderClsn
+matched: yes</title></rect><rect x="169.30" y="123.03" width="7.20" height="4.10" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dActor_c9UpdatePosEP12CylinderClsn
 module: arm9
 addr: 0x02010c30
 size: 44 bytes
-matched: yes</title></rect><rect x="176.50" y="123.03" width="37.31" height="4.10" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Actor28UpdatePosWithHorzSpeedAndAngEv
+matched: yes</title></rect><rect x="176.50" y="123.03" width="37.31" height="4.10" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dActor_c28UpdatePosWithHorzSpeedAndAngEv
 module: arm9
 addr: 0x02010c5c
 size: 228 bytes
-matched: yes</title></rect><rect x="213.81" y="123.03" width="16.36" height="4.10" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Actor22UpdatePosWithOnlySpeedEP12CylinderClsn
+matched: yes</title></rect><rect x="213.81" y="123.03" width="16.36" height="4.10" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dActor_c22UpdatePosWithOnlySpeedEP12CylinderClsn
 module: arm9
 addr: 0x02010d40
 size: 100 bytes
@@ -1141,11 +1141,11 @@ matched: yes</title></rect><rect x="230.17" y="123.03" width="16.36" height="4.1
 module: arm9
 addr: 0x02010da4
 size: 100 bytes
-matched: yes</title></rect><rect x="246.53" y="123.03" width="5.89" height="4.10" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Actor9SetRangesE5Fix12IiES1_S1_S1_
+matched: yes</title></rect><rect x="246.53" y="123.03" width="5.89" height="4.10" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dActor_c9SetRangesE5Fix12IiES1_S1_S1_
 module: arm9
 addr: 0x02010e08
 size: 36 bytes
-matched: yes</title></rect><rect x="252.43" y="123.03" width="12.44" height="4.10" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Actor5SpawnEjjRK7Vector3PK10Vector3_16as
+matched: yes</title></rect><rect x="252.43" y="123.03" width="12.44" height="4.10" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as
 module: arm9
 addr: 0x02010e2c
 size: 76 bytes
@@ -1153,63 +1153,63 @@ matched: yes</title></rect><rect x="264.86" y="123.03" width="13.75" height="4.1
 module: arm9
 addr: 0x02010e78
 size: 84 bytes
-matched: yes</title></rect><rect x="278.61" y="123.03" width="5.89" height="4.10" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Actor4NextEPKS_
+matched: yes</title></rect><rect x="278.61" y="123.03" width="5.89" height="4.10" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dActor_c4NextEPKS_
 module: arm9
 addr: 0x02010ecc
 size: 36 bytes
-matched: yes</title></rect><rect x="284.50" y="123.03" width="12.44" height="4.10" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Actor15FindWithActorIDEjPS_
+matched: yes</title></rect><rect x="284.50" y="123.03" width="12.44" height="4.10" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dActor_c15FindWithActorIDEjPS_
 module: arm9
 addr: 0x02010ef0
 size: 76 bytes
-matched: yes</title></rect><rect x="296.94" y="123.03" width="7.85" height="4.10" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Actor10FindWithIDEj
+matched: yes</title></rect><rect x="296.94" y="123.03" width="7.85" height="4.10" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dActor_c10FindWithIDEj
 module: arm9
 addr: 0x02010f3c
 size: 48 bytes
-matched: yes</title></rect><rect x="304.79" y="123.03" width="1.96" height="4.10" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Actor11AfterRenderEj
+matched: yes</title></rect><rect x="304.79" y="123.03" width="1.96" height="4.10" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dActor_c11AfterRenderEj
 module: arm9
 addr: 0x02010f6c
 size: 12 bytes
-matched: yes</title></rect><rect x="306.75" y="123.03" width="13.09" height="4.10" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Actor12BeforeRenderEv
+matched: yes</title></rect><rect x="306.75" y="123.03" width="13.09" height="4.10" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dActor_c12BeforeRenderEv
 module: arm9
 addr: 0x02010f78
 size: 80 bytes
-matched: yes</title></rect><rect x="319.85" y="123.03" width="1.96" height="4.10" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Actor13AfterBehaviorEj
+matched: yes</title></rect><rect x="319.85" y="123.03" width="1.96" height="4.10" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dActor_c13AfterBehaviorEj
 module: arm9
 addr: 0x02010fc8
 size: 12 bytes
-matched: yes</title></rect><rect x="5.00" y="127.13" width="67.69" height="5.72" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Actor14BeforeBehaviorEv
+matched: yes</title></rect><rect x="5.00" y="127.13" width="67.69" height="5.72" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dActor_c14BeforeBehaviorEv
 module: arm9
 addr: 0x02010fd4
 size: 576 bytes
-matched: yes</title></rect><rect x="72.69" y="127.13" width="1.41" height="5.72" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Actor21AfterCleanupResourcesEj
+matched: yes</title></rect><rect x="72.69" y="127.13" width="1.41" height="5.72" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dActor_c21AfterCleanupResourcesEj
 module: arm9
 addr: 0x02011214
 size: 12 bytes
-matched: yes</title></rect><rect x="74.10" y="127.13" width="4.23" height="5.72" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Actor22BeforeCleanupResourcesEv
+matched: yes</title></rect><rect x="74.10" y="127.13" width="4.23" height="5.72" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dActor_c22BeforeCleanupResourcesEv
 module: arm9
 addr: 0x02011220
 size: 36 bytes
-matched: yes</title></rect><rect x="78.33" y="127.13" width="4.23" height="5.72" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Actor18AfterInitResourcesEj
+matched: yes</title></rect><rect x="78.33" y="127.13" width="4.23" height="5.72" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dActor_c18AfterInitResourcesEj
 module: arm9
 addr: 0x02011244
 size: 36 bytes
-matched: yes</title></rect><rect x="82.56" y="127.13" width="11.28" height="5.72" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Actor19BeforeInitResourcesEv
+matched: yes</title></rect><rect x="82.56" y="127.13" width="11.28" height="5.72" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dActor_c19BeforeInitResourcesEv
 module: arm9
 addr: 0x02011268
 size: 96 bytes
-matched: yes</title></rect><rect x="93.84" y="127.13" width="8.93" height="5.72" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5ActorD2Ev
+matched: yes</title></rect><rect x="93.84" y="127.13" width="8.93" height="5.72" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dActor_cD2Ev
 module: arm9
 addr: 0x020112c8
 size: 76 bytes
-matched: yes</title></rect><rect x="102.77" y="127.13" width="11.28" height="5.72" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5ActorD0Ev
+matched: yes</title></rect><rect x="102.77" y="127.13" width="11.28" height="5.72" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dActor_cD0Ev
 module: arm9
 addr: 0x02011314
 size: 96 bytes
-matched: yes</title></rect><rect x="114.05" y="127.13" width="8.93" height="5.72" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5ActorD1Ev
+matched: yes</title></rect><rect x="114.05" y="127.13" width="8.93" height="5.72" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dActor_cD1Ev
 module: arm9
 addr: 0x02011374
 size: 76 bytes
-matched: yes</title></rect><rect x="122.98" y="127.13" width="38.54" height="5.72" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5ActorC1Ev
+matched: yes</title></rect><rect x="122.98" y="127.13" width="38.54" height="5.72" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dActor_cC1Ev
 module: arm9
 addr: 0x020113c0
 size: 328 bytes
@@ -1217,7 +1217,7 @@ matched: yes</title></rect><rect x="161.52" y="127.13" width="0.47" height="5.72
 module: arm9
 addr: 0x02011508
 size: 4 bytes
-matched: yes</title></rect><rect x="161.99" y="127.13" width="38.54" height="5.72" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5ActorC2Ev
+matched: yes</title></rect><rect x="161.99" y="127.13" width="38.54" height="5.72" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dActor_cC2Ev
 module: arm9
 addr: 0x0201150c
 size: 328 bytes
@@ -1849,11 +1849,11 @@ matched: yes</title></rect><rect x="189.75" y="152.89" width="3.41" height="8.67
 module: arm9
 addr: 0x0201489c
 size: 44 bytes
-matched: yes</title></rect><rect x="193.16" y="152.89" width="5.27" height="8.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN25MovingCylinderClsnWithPos4InitEP5ActorRK7Vector35Fix12IiES6_jj
+matched: yes</title></rect><rect x="193.16" y="152.89" width="5.27" height="8.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN25MovingCylinderClsnWithPos4InitEP8dActor_cRK7Vector35Fix12IiES6_jj
 module: arm9
 addr: 0x020148c8
 size: 68 bytes
-matched: yes</title></rect><rect x="198.43" y="152.89" width="3.72" height="8.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN18MovingCylinderClsn4InitEP5Actor5Fix12IiES3_jj
+matched: yes</title></rect><rect x="198.43" y="152.89" width="3.72" height="8.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN18MovingCylinderClsn4InitEP8dActor_c5Fix12IiES3_jj
 module: arm9
 addr: 0x0201490c
 size: 48 bytes
@@ -5089,7 +5089,7 @@ matched: yes</title></rect><rect x="306.99" y="444.53" width="5.00" height="15.0
 module: arm9
 addr: 0x02037318
 size: 112 bytes
-matched: yes</title></rect><rect x="311.99" y="444.53" width="2.14" height="15.04" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12WithMeshClsn4InitEP5Actor5Fix12IiES3_P10Vector3_16S5_
+matched: yes</title></rect><rect x="311.99" y="444.53" width="2.14" height="15.04" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12WithMeshClsn4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_
 module: arm9
 addr: 0x02037388
 size: 48 bytes
@@ -5109,7 +5109,7 @@ matched: yes</title></rect><rect x="5.00" y="459.58" width="5.35" height="5.02" 
 module: arm9
 addr: 0x02037464
 size: 40 bytes
-matched: yes</title></rect><rect x="10.35" y="459.58" width="5.89" height="5.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN13RaycastGround12SetObjAndPosERK7Vector3P5Actor
+matched: yes</title></rect><rect x="10.35" y="459.58" width="5.89" height="5.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN13RaycastGround12SetObjAndPosERK7Vector3P8dActor_c
 module: arm9
 addr: 0x0203748c
 size: 44 bytes
@@ -5153,7 +5153,7 @@ matched: yes</title></rect><rect x="61.19" y="459.58" width="13.91" height="5.02
 module: arm9
 addr: 0x02037608
 size: 104 bytes
-matched: yes</title></rect><rect x="75.10" y="459.58" width="21.41" height="5.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11RaycastLine13SetObjAndLineERK7Vector3S2_P5Actor
+matched: yes</title></rect><rect x="75.10" y="459.58" width="21.41" height="5.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11RaycastLine13SetObjAndLineERK7Vector3S2_P8dActor_c
 module: arm9
 addr: 0x02037670
 size: 160 bytes
@@ -5253,7 +5253,7 @@ matched: yes</title></rect><rect x="243.68" y="459.58" width="21.94" height="5.0
 module: arm9
 addr: 0x02037b5c
 size: 164 bytes
-matched: yes</title></rect><rect x="265.62" y="459.58" width="8.56" height="5.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10SphereClsn15SetObjAndSphereERK7Vector35Fix12IiEP5Actor
+matched: yes</title></rect><rect x="265.62" y="459.58" width="8.56" height="5.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10SphereClsn15SetObjAndSphereERK7Vector35Fix12IiEP8dActor_c
 module: arm9
 addr: 0x02037c00
 size: 64 bytes
@@ -5517,7 +5517,7 @@ matched: yes</title></rect><rect x="305.99" y="468.14" width="6.11" height="7.47
 module: arm9
 addr: 0x02039140
 size: 68 bytes
-matched: yes</title></rect><rect x="312.10" y="468.14" width="9.71" height="7.47" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN16MeshColliderBase6EnableEP5Actor
+matched: yes</title></rect><rect x="312.10" y="468.14" width="9.71" height="7.47" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN16MeshColliderBase6EnableEP8dActor_c
 module: arm9
 addr: 0x02039184
 size: 108 bytes
@@ -5533,19 +5533,19 @@ matched: yes</title></rect><rect x="24.08" y="475.61" width="17.18" height="1.41
 module: arm9
 addr: 0x02039218
 size: 36 bytes
-matched: yes</title></rect><rect x="41.26" y="475.61" width="45.80" height="1.41" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN16MeshColliderBase21UpdatePosWithVelocityERS_P5ActorR10ClsnResultR7Vector3P10Vector3_16S8_
+matched: yes</title></rect><rect x="41.26" y="475.61" width="45.80" height="1.41" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN16MeshColliderBase21UpdatePosWithVelocityERS_P8dActor_cR10ClsnResultR7Vector3P10Vector3_16S8_
 module: arm9
 addr: 0x0203923c
 size: 96 bytes
-matched: yes</title></rect><rect x="87.07" y="475.61" width="43.90" height="1.41" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN16MeshColliderBase16UpdatePosAndAngsERS_P5ActorR10ClsnResultR7Vector3P10Vector3_16S8_
+matched: yes</title></rect><rect x="87.07" y="475.61" width="43.90" height="1.41" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN16MeshColliderBase16UpdatePosAndAngsERS_P8dActor_cR10ClsnResultR7Vector3P10Vector3_16S8_
 module: arm9
 addr: 0x0203929c
 size: 92 bytes
-matched: yes</title></rect><rect x="130.96" y="475.61" width="38.17" height="1.41" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN16MeshColliderBase25UpdateAngsWithAngularVelYERS_P5ActorR10ClsnResultR7Vector3P10Vector3_16S8_
+matched: yes</title></rect><rect x="130.96" y="475.61" width="38.17" height="1.41" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN16MeshColliderBase25UpdateAngsWithAngularVelYERS_P8dActor_cR10ClsnResultR7Vector3P10Vector3_16S8_
 module: arm9
 addr: 0x020392f8
 size: 80 bytes
-matched: yes</title></rect><rect x="169.13" y="475.61" width="32.44" height="1.41" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN16MeshColliderBase22UpdatePosWithTransformERS_P5ActorR10ClsnResultR7Vector3P10Vector3_16S8_
+matched: yes</title></rect><rect x="169.13" y="475.61" width="32.44" height="1.41" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN16MeshColliderBase22UpdatePosWithTransformERS_P8dActor_cR10ClsnResultR7Vector3P10Vector3_16S8_
 module: arm9
 addr: 0x02039348
 size: 68 bytes
@@ -5617,7 +5617,7 @@ matched: yes</title></rect><rect x="279.82" y="475.61" width="3.82" height="1.41
 module: arm9
 addr: 0x02039430
 size: 8 bytes
-matched: yes</title></rect><rect x="283.64" y="475.61" width="26.72" height="1.41" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN16MeshColliderBase10BeforeClsnER10ClsnResultP5ActorR7Vector3P10Vector3_16S7_
+matched: yes</title></rect><rect x="283.64" y="475.61" width="26.72" height="1.41" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN16MeshColliderBase10BeforeClsnER10ClsnResultP8dActor_cR7Vector3P10Vector3_16S7_
 module: arm9
 addr: 0x02039438
 size: 56 bytes
@@ -12541,7 +12541,7 @@ matched: yes</title></rect><rect x="406.52" y="27.00" width="13.91" height="12.2
 module: ov002
 addr: 0x020ada40
 size: 256 bytes
-matched: yes</title></rect><rect x="420.42" y="27.00" width="34.77" height="12.27" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dEnemyBase_c22SpawnMegaCharParticlesER5ActorPc
+matched: yes</title></rect><rect x="420.42" y="27.00" width="34.77" height="12.27" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dEnemyBase_c22SpawnMegaCharParticlesER8dActor_cPc
 module: ov002
 addr: 0x020adb40
 size: 640 bytes
@@ -16025,7 +16025,7 @@ matched: yes</title></rect><rect x="530.00" y="510.20" width="8.57" height="10.8
 module: ov002
 addr: 0x020dab14
 size: 140 bytes
-matched: yes</title></rect><rect x="538.58" y="510.20" width="16.90" height="10.88" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN6Player7TryGrabER5Actor
+matched: yes</title></rect><rect x="538.58" y="510.20" width="16.90" height="10.88" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN6Player7TryGrabER8dActor_c
 module: ov002
 addr: 0x020daba0
 size: 276 bytes
@@ -18997,7 +18997,7 @@ matched: no</title></rect><rect x="873.32" y="27.00" width="7.05" height="19.41"
 module: ov004
 addr: 0x020ae858
 size: 472 bytes
-matched: yes</title></rect><rect x="873.32" y="46.41" width="7.05" height="2.96" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dEnemyBase_c12KillByAttackER5Actor
+matched: yes</title></rect><rect x="873.32" y="46.41" width="7.05" height="2.96" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dEnemyBase_c12KillByAttackER8dActor_c
 module: ov004
 addr: 0x020aea30
 size: 72 bytes
@@ -25565,7 +25565,7 @@ matched: yes</title></rect><rect x="732.87" y="509.94" width="11.25" height="3.8
 module: ov006
 addr: 0x0210c478
 size: 64 bytes
-matched: yes</title></rect><rect x="732.87" y="513.75" width="11.25" height="2.14" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dScMgSlot1_c19OnHitFromUnderneathER5Actor
+matched: yes</title></rect><rect x="732.87" y="513.75" width="11.25" height="2.14" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dScMgSlot1_c19OnHitFromUnderneathER8dActor_c
 module: ov006
 addr: 0x0210c4b8
 size: 36 bytes
