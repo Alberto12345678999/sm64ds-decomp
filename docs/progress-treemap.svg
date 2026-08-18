@@ -12533,7 +12533,7 @@ matched: yes</title></rect><rect x="352.62" y="27.00" width="25.64" height="12.2
 module: ov002
 addr: 0x020ad660
 size: 472 bytes
-matched: yes</title></rect><rect x="378.27" y="27.00" width="28.25" height="12.27" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Enemy26UpdateKillByInvincibleCharER12WithMeshClsnR9ModelAnimj
+matched: yes</title></rect><rect x="378.27" y="27.00" width="28.25" height="12.27" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dEnemyBase_c26UpdateKillByInvincibleCharER12WithMeshClsnR9ModelAnimj
 module: ov002
 addr: 0x020ad838
 size: 520 bytes
@@ -12541,23 +12541,23 @@ matched: yes</title></rect><rect x="406.52" y="27.00" width="13.91" height="12.2
 module: ov002
 addr: 0x020ada40
 size: 256 bytes
-matched: yes</title></rect><rect x="420.42" y="27.00" width="34.77" height="12.27" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Enemy22SpawnMegaCharParticlesER5ActorPc
+matched: yes</title></rect><rect x="420.42" y="27.00" width="34.77" height="12.27" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dEnemyBase_c22SpawnMegaCharParticlesER5ActorPc
 module: ov002
 addr: 0x020adb40
 size: 640 bytes
-matched: yes</title></rect><rect x="455.19" y="27.00" width="10.00" height="12.27" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Enemy27SpawnParticlesIfHitOtherObjER12CylinderClsn
+matched: yes</title></rect><rect x="455.19" y="27.00" width="10.00" height="12.27" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dEnemyBase_c27SpawnParticlesIfHitOtherObjER12CylinderClsn
 module: ov002
 addr: 0x020addc0
 size: 184 bytes
-matched: yes</title></rect><rect x="465.19" y="27.00" width="52.81" height="12.27" fill="#4a4d52" stroke="#393b3f" stroke-width="0.4"><title>_ZN5Enemy14UpdateYoshiEatER12WithMeshClsn
+matched: yes</title></rect><rect x="465.19" y="27.00" width="52.81" height="12.27" fill="#4a4d52" stroke="#393b3f" stroke-width="0.4"><title>_ZN12dEnemyBase_c14UpdateYoshiEatER12WithMeshClsn
 module: ov002
 addr: 0x020ade78
 size: 972 bytes
-matched: no</title></rect><rect x="517.99" y="27.00" width="6.30" height="12.27" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Enemy24AngleAwayFromWallOrCliffER12WithMeshClsnRs
+matched: no</title></rect><rect x="517.99" y="27.00" width="6.30" height="12.27" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dEnemyBase_c24AngleAwayFromWallOrCliffER12WithMeshClsnRs
 module: ov002
 addr: 0x020ae244
 size: 116 bytes
-matched: yes</title></rect><rect x="524.30" y="27.00" width="22.38" height="12.27" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Enemy15IsGoingOffCliffER12WithMeshClsn5Fix12IiEsbbS3_
+matched: yes</title></rect><rect x="524.30" y="27.00" width="22.38" height="12.27" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dEnemyBase_c15IsGoingOffCliffER12WithMeshClsn5Fix12IiEsbbS3_
 module: ov002
 addr: 0x020ae2b8
 size: 412 bytes
@@ -12581,7 +12581,7 @@ matched: yes</title></rect><rect x="574.06" y="27.00" width="5.00" height="12.27
 module: ov002
 addr: 0x020ae64c
 size: 92 bytes
-matched: yes</title></rect><rect x="579.06" y="27.00" width="8.04" height="12.27" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Enemy11UpdateDeathER12WithMeshClsn
+matched: yes</title></rect><rect x="579.06" y="27.00" width="8.04" height="12.27" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dEnemyBase_c11UpdateDeathER12WithMeshClsn
 module: ov002
 addr: 0x020ae6a8
 size: 148 bytes
@@ -12633,27 +12633,27 @@ matched: yes</title></rect><rect x="412.56" y="39.27" width="19.25" height="4.85
 module: ov002
 addr: 0x020aea30
 size: 140 bytes
-matched: yes</title></rect><rect x="431.81" y="39.27" width="43.44" height="4.85" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Enemy9SpawnCoinEv
+matched: yes</title></rect><rect x="431.81" y="39.27" width="43.44" height="4.85" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dEnemyBase_c9SpawnCoinEv
 module: ov002
 addr: 0x020aeabc
 size: 316 bytes
-matched: yes</title></rect><rect x="475.25" y="39.27" width="39.59" height="4.85" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Enemy12UpdateWMClsnER12WithMeshClsnj
+matched: yes</title></rect><rect x="475.25" y="39.27" width="39.59" height="4.85" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dEnemyBase_c12UpdateWMClsnER12WithMeshClsnj
 module: ov002
 addr: 0x020aebf8
 size: 288 bytes
-matched: yes</title></rect><rect x="514.85" y="39.27" width="4.95" height="4.85" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5EnemyD2Ev
+matched: yes</title></rect><rect x="514.85" y="39.27" width="4.95" height="4.85" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dEnemyBase_cD2Ev
 module: ov002
 addr: 0x020aed18
 size: 36 bytes
-matched: yes</title></rect><rect x="519.80" y="39.27" width="7.70" height="4.85" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5EnemyD0Ev
+matched: yes</title></rect><rect x="519.80" y="39.27" width="7.70" height="4.85" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dEnemyBase_cD0Ev
 module: ov002
 addr: 0x020aed3c
 size: 56 bytes
-matched: yes</title></rect><rect x="527.49" y="39.27" width="4.95" height="4.85" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5EnemyD1Ev
+matched: yes</title></rect><rect x="527.49" y="39.27" width="4.95" height="4.85" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dEnemyBase_cD1Ev
 module: ov002
 addr: 0x020aed74
 size: 36 bytes
-matched: yes</title></rect><rect x="532.44" y="39.27" width="4.95" height="4.85" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5EnemyC2Ev
+matched: yes</title></rect><rect x="532.44" y="39.27" width="4.95" height="4.85" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dEnemyBase_cC2Ev
 module: ov002
 addr: 0x020aed98
 size: 36 bytes
@@ -18841,7 +18841,7 @@ matched: yes</title></rect><rect x="823.21" y="38.29" width="5.76" height="1.61"
 module: ov004
 addr: 0x020ada20
 size: 32 bytes
-matched: yes</title></rect><rect x="823.21" y="39.90" width="5.76" height="9.47" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Enemy20KillByInvincibleCharERK10Vector3_16R6Player
+matched: yes</title></rect><rect x="823.21" y="39.90" width="5.76" height="9.47" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Player
 module: ov004
 addr: 0x020ada40
 size: 188 bytes
@@ -18997,7 +18997,7 @@ matched: no</title></rect><rect x="873.32" y="27.00" width="7.05" height="19.41"
 module: ov004
 addr: 0x020ae858
 size: 472 bytes
-matched: yes</title></rect><rect x="873.32" y="46.41" width="7.05" height="2.96" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Enemy12KillByAttackER5Actor
+matched: yes</title></rect><rect x="873.32" y="46.41" width="7.05" height="2.96" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dEnemyBase_c12KillByAttackER5Actor
 module: ov004
 addr: 0x020aea30
 size: 72 bytes
