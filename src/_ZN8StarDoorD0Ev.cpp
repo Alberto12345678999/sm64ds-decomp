@@ -1,5 +1,5 @@
 //cpp
-// @symbol _ZN8StarDoorD1Ev
+// @symbol _ZN8StarDoorD0Ev
 
 #include "StarDoor.h"
 

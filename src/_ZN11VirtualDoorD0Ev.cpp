@@ -1,5 +1,5 @@
 //cpp
-// @symbol _ZN11VirtualDoorD1Ev
+// @symbol _ZN11VirtualDoorD0Ev
 
 #include "VirtualDoor.h"
 
