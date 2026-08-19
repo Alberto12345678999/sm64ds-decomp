@@ -1,5 +1,5 @@
 //cpp
-// @symbol _ZN3AmpD1Ev
+// @symbol _ZN3AmpD0Ev
 
 #include "Amp.h"
 
