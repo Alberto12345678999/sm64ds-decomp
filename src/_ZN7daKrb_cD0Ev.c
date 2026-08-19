@@ -1,9 +1,9 @@
 // @symbol _ZN7daKrb_cD0Ev
 /* recovered: named members + shared header, vtable identified, declarations from a shared header */
 #include "decl_ModelAnim.h"
-#include "decl_MovingCylinderClsn.h"
+#include "decl_dCcAc_c.h"
 #include "decl_ShadowModel.h"
-#include "decl_WithMeshClsn.h"
+#include "decl_dBgCh_Actr.h"
 #include "decl_common.h"
 /* recovered: named members + shared header, vtable identified */
 /* vtable identified: VT0 = _ZTV7daKrb_c */
@@ -16,8 +16,8 @@ int *_ZN7daKrb_cD0Ev(int *t)
     _ZN15MaterialChangerD1Ev((char *)t + 0x3fc);
     _ZN11ShadowModelD1Ev((char *)t + 0x3d4);
     _ZN9ModelAnimD1Ev((char *)t + 0x370);
-    _ZN12WithMeshClsnD1Ev((char *)t + 0x1b4);
-    _ZN18MovingCylinderClsnD1Ev((char *)t + 0x180);
+    _ZN10dBgCh_ActrD1Ev((char *)t + 0x1b4);
+    _ZN7dCcAc_cD1Ev((char *)t + 0x180);
     func_ov002_020aedbc(t);
     _ZN6Memory10DeallocateEPvP4Heap(t, data_020a0eac);
     return t;

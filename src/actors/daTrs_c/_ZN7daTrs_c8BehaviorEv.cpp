@@ -33,13 +33,13 @@
  * unk_* raw offsets beyond the typed members follow the same convention as
  * the sibling daTrs_c files (see _ZN7daTrs_c6RenderEv.cpp). */
 #include "daTrs_c.h"
-#include "RaycastGround.h"
+#include "dBgCh_Gnd.h"
 
 extern "C" {
 void func_0200f760(void *thiz, void *cyl);
 void *_ZN8dActor_c10FindWithIDEj(u32 id);
 int _ZN11dCapEnemy_c11GetCapStateEv(char *c);
-int _ZN12dEnemyBase_c26UpdateKillByInvincibleCharER12WithMeshClsnR9ModelAnimj(char *c, void *w, void *m, u32 j);
+int _ZN12dEnemyBase_c26UpdateKillByInvincibleCharER10dBgCh_ActrR9ModelAnimj(char *c, void *w, void *m, u32 j);
 void _ZN8dActor_c8PoofDustEv(char *c);
 void _ZN8dActor_c24KillAndTrackInDeathTableEv(char *c);
 void func_0201267c(u32 a, void *b);
@@ -47,14 +47,14 @@ void *_ZN11dCapEnemy_c15RespawnIfHasCapEv(char *c);
 u8 IsAreaShowing(s8 idx);
 int func_ov063_02116190(char *c);
 void _ZN11dCapEnemy_c12Unk_02005d94Ev(char *c);
-int _ZN12dEnemyBase_c14UpdateYoshiEatER12WithMeshClsn(char *c, void *w);
+int _ZN12dEnemyBase_c14UpdateYoshiEatER10dBgCh_Actr(char *c, void *w);
 int _ZN11dCapEnemy_c16GetCapEatenOffItERK7Vector3(char *c, const Vector3 *v);
 void func_ov063_02119ab0(char *c);
 int _ZN6Player11ShowMessageER7fBase_cjPK7Vector3hh(void *plr, void *base, u32 id, const void *pos, u32 e, u32 f);
 int _ZN6Player12GetTalkStateEv(void *plr);
 void _ZN6Player9DropActorEv(void *plr);
 void func_ov063_021166ac(char *c);
-void _ZN12CylinderClsn5ClearEv(void *cyl);
+void _ZN5dCc_c5ClearEv(void *cyl);
 void *_ZN8dActor_c13ClosestPlayerEv(char *c);
 s16 Vec3_HorzAngle(const Vector3 *a, const Vector3 *b);
 s32 Vec3_HorzDist(const Vector3 *a, const Vector3 *b);
@@ -68,15 +68,15 @@ void func_ov063_021172a8(char *c);
 void func_ov063_02119274(char *c);
 void func_ov063_02116fac(char *c);
 u16 DecIfAbove0_Short(void *p);
-void _ZN8dActor_c9UpdatePosEP12CylinderClsn(char *c, void *cyl);
-void _ZN13RaycastGroundC1Ev(RaycastGround *rc);
-void _ZN13RaycastGround12SetObjAndPosERK7Vector3P8dActor_c(RaycastGround *rc, const Vector3 *v, void *actor);
-int _ZN13RaycastGround10DetectClsnEv(RaycastGround *rc);
-void _ZN12dEnemyBase_c12UpdateWMClsnER12WithMeshClsnj(char *c, void *w, u32 j);
-void _ZN13RaycastGroundD1Ev(RaycastGround *rc);
+void _ZN8dActor_c9UpdatePosEP5dCc_c(char *c, void *cyl);
+void _ZN9dBgCh_GndC1Ev(dBgCh_Gnd *rc);
+void _ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c(dBgCh_Gnd *rc, const Vector3 *v, void *actor);
+int _ZN9dBgCh_Gnd10DetectClsnEv(dBgCh_Gnd *rc);
+void _ZN12dEnemyBase_c12UpdateWMClsnER10dBgCh_Actrj(char *c, void *w, u32 j);
+void _ZN9dBgCh_GndD1Ev(dBgCh_Gnd *rc);
 void _ZN9Animation7AdvanceEv(void *anim);
-void _ZN25MovingCylinderClsnWithPos21SetPosRelativeToActorERK7Vector3(void *cyl, void *v);
-void _ZN12CylinderClsn6UpdateEv(void *cyl);
+void _ZN10dCcAcPos_c21SetPosRelativeToActorERK7Vector3(void *cyl, void *v);
+void _ZN5dCc_c6UpdateEv(void *cyl);
 }
 
 int daTrs_c::Behavior()
@@ -86,8 +86,8 @@ int daTrs_c::Behavior()
     Vector3 v1;
     Vector3 v2;
     Vector3 ve;
-    RaycastGround rc1;
-    RaycastGround rc2;
+    dBgCh_Gnd rc1;
+    dBgCh_Gnd rc2;
     int t;
     void *p;
     char *q;
@@ -117,7 +117,7 @@ int daTrs_c::Behavior()
     if (_ZN11dCapEnemy_c11GetCapStateEv(c) == 0)
         return 1;
 
-    t = _ZN12dEnemyBase_c26UpdateKillByInvincibleCharER12WithMeshClsnR9ModelAnimj(c, c + 0x1c4, c + 0x380, 0);
+    t = _ZN12dEnemyBase_c26UpdateKillByInvincibleCharER10dBgCh_ActrR9ModelAnimj(c, c + 0x1c4, c + 0x380, 0);
     if (t != 0) {
         if (t == 2) {
             _ZN8dActor_c8PoofDustEv(c);
@@ -183,7 +183,7 @@ int daTrs_c::Behavior()
         }
     }
     _ZN11dCapEnemy_c12Unk_02005d94Ev(c);
-    t = _ZN12dEnemyBase_c14UpdateYoshiEatER12WithMeshClsn(c, c + 0x1c4);
+    t = _ZN12dEnemyBase_c14UpdateYoshiEatER10dBgCh_Actr(c, c + 0x1c4);
     if (t != 0) {
         if (t == 1) {
             ve.x = *(s32 *)(c + 0x564);
@@ -226,7 +226,7 @@ int daTrs_c::Behavior()
             }
         }
         func_ov063_021166ac(c);
-        _ZN12CylinderClsn5ClearEv(c + 0x184);
+        _ZN5dCc_c5ClearEv(c + 0x184);
         return 1;
     }
 block_39:
@@ -297,11 +297,11 @@ block_39:
     if ((*(u8 *)(c + 0x5cd)) != (*(u8 *)(c + 0x5cc)))
         *(u16 *)(c + 0x100) = 0;
     if ((*(u8 *)(c + 0x5cf)) != 3) {
-        _ZN8dActor_c9UpdatePosEP12CylinderClsn(c, c + 0x184);
+        _ZN8dActor_c9UpdatePosEP5dCc_c(c, c + 0x184);
         func_ov063_02119ab0(c);
         if (((((u32)((*(u16 *)(c + 0x5d4)) << 0x1f)) >> 0x1f) != 0) && ((*(s32 *)(c + 0x64)) < -0x12c000))
             *(s32 *)(c + 0x64) = -0x12c000;
-        _ZN13RaycastGroundC1Ev(&rc1);
+        _ZN9dBgCh_GndC1Ev(&rc1);
         y = *(s32 *)(c + 0x60);
         z = *(s32 *)(c + 0x64);
         w = y + 0x32000;
@@ -309,14 +309,14 @@ block_39:
         v1.x = x;
         v1.y = w;
         v1.z = z;
-        _ZN13RaycastGround12SetObjAndPosERK7Vector3P8dActor_c(&rc1, &v1, c);
-        if (_ZN13RaycastGround10DetectClsnEv(&rc1) != 0) {
+        _ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c(&rc1, &v1, c);
+        if (_ZN9dBgCh_Gnd10DetectClsnEv(&rc1) != 0) {
             s32 ground = (*(s32 *)(((char *)&rc1) + 0x44)) + 0x2000;
             if ((*(s32 *)(c + 0x60)) < ground)
                 *(s32 *)(c + 0x60) = ground;
         }
         if (((*(u8 *)(c + 0x5cf)) != 4) && ((*(u8 *)(c + 0x5cf)) != 0xb)) {
-            _ZN13RaycastGroundC1Ev(&rc2);
+            _ZN9dBgCh_GndC1Ev(&rc2);
             y = *(s32 *)(c + 0x60);
             z = *(s32 *)(c + 0x64);
             w = y + 0x32000;
@@ -324,12 +324,12 @@ block_39:
             v2.x = x;
             v2.y = w;
             v2.z = z;
-            _ZN13RaycastGround12SetObjAndPosERK7Vector3P8dActor_c(&rc2, &v2, c);
+            _ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c(&rc2, &v2, c);
             d1 = (int)((*(u16 *)(c + 0xc)) == 0xd1);
             if (d1 != 0) {
                 if ((*(u8 *)(c + 0x5cf)) < 8) {
                     if ((((u32)((*(u16 *)(c + 0x5d4))) << 0x1a) >> 0x1f) != 0) {
-                        if ((_ZN13RaycastGround10DetectClsnEv(&rc2) == 0) ||
+                        if ((_ZN9dBgCh_Gnd10DetectClsnEv(&rc2) == 0) ||
                             (((*(s32 *)(c + 0x60)) - (*(s32 *)(((char *)&rc2) + 0x44))) > 0x12c000)) {
                             *(s32 *)(c + 0x5c) = *(s32 *)(c + 0x528);
                             *(s32 *)(c + 0x60) = *(s32 *)(c + 0x52c);
@@ -347,7 +347,7 @@ block_39:
                 }
             } else {
             ray_e:
-                if ((_ZN13RaycastGround10DetectClsnEv(&rc2) != 0) &&
+                if ((_ZN9dBgCh_Gnd10DetectClsnEv(&rc2) != 0) &&
                     (((*(s32 *)(c + 0x60)) - (*(s32 *)(((char *)&rc2) + 0x44))) < 0x12c000)) {
                     fp = (u16 *)(c + 0x5d4);
                     *fp = (*fp) | 0x20;
@@ -356,18 +356,18 @@ block_39:
                     *(s32 *)(c + 0x530) = *(s32 *)(c + 0x64);
                 }
             }
-            _ZN12dEnemyBase_c12UpdateWMClsnER12WithMeshClsnj(c, c + 0x1c4, 0);
-            _ZN13RaycastGroundD1Ev(&rc2);
+            _ZN12dEnemyBase_c12UpdateWMClsnER10dBgCh_Actrj(c, c + 0x1c4, 0);
+            _ZN9dBgCh_GndD1Ev(&rc2);
         }
-        _ZN13RaycastGroundD1Ev(&rc1);
+        _ZN9dBgCh_GndD1Ev(&rc1);
     }
     if (((((*(u8 *)(c + 0x5cc)) != 3) && ((*(u8 *)(c + 0x5cc)) != 3)) && ((*(u8 *)(c + 0x5cc)) != 3)) && ((*(u8 *)(c + 0x5cc)) != 3))
         _ZN9Animation7AdvanceEv(c + 0x3d0);
     func_ov063_021166ac(c);
-    _ZN12CylinderClsn5ClearEv(c + 0x184);
+    _ZN5dCc_c5ClearEv(c + 0x184);
     if ((*(u8 *)(c + 0x5c8)) == 0xff) {
-        _ZN25MovingCylinderClsnWithPos21SetPosRelativeToActorERK7Vector3(c + 0x184, c + 0x534);
-        _ZN12CylinderClsn6UpdateEv(c + 0x184);
+        _ZN10dCcAcPos_c21SetPosRelativeToActorERK7Vector3(c + 0x184, c + 0x534);
+        _ZN5dCc_c6UpdateEv(c + 0x184);
     }
     return 1;
 }

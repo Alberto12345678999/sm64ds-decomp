@@ -3,11 +3,11 @@
 
 #include "Model.h"
 #include "ModelAnim.h"
-#include "MovingCylinderClsnWithPos.h"
+#include "dCcAcPos_c.h"
 #include "ShadowModel.h"
 #include "TextureSequence.h"
 #include "TextureTransformer.h"
-#include "WithMeshClsn.h"
+#include "dBgCh_Actr.h"
 #include "dActor_c.h"
 
 /* Amp_Spawn allocates 0x434 bytes, constructs dActor_c, then constructs the
@@ -22,8 +22,8 @@ struct Amp : dActor_c {
     TextureSequence           mTextureSequence;              /* 0x188 */
     TextureTransformer        mTextureTransformer;           /* 0x19c */
     ShadowModel               mShadowModel;                  /* 0x1b0 */
-    MovingCylinderClsnWithPos mMovingCylinderClsnWithPos;    /* 0x1d8 */
-    WithMeshClsn              mWithMeshClsn;                 /* 0x218 */
+    dCcAcPos_c mdCcAcPos_c;    /* 0x1d8 */
+    dBgCh_Actr              mWithMeshClsn;                 /* 0x218 */
     /* Matrix4x3, on three witnesses: InitResources block-copies the identity
        matrix data_02082128 (0x30 bytes) into it; the state handlers write the
        position (>>3) at +0x24/+0x28/+0x2c -- exactly the translation row; and

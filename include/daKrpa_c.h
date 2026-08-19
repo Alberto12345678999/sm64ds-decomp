@@ -2,9 +2,9 @@
 #define DAKRPA_C_H
 
 #include "ModelAnim.h"
-#include "MovingCylinderClsnWithPos.h"
+#include "dCcAcPos_c.h"
 #include "ShadowModel.h"
-#include "WithMeshClsn.h"
+#include "dBgCh_Actr.h"
 #include "dActor_c.h"
 
 /* daKrpa_c is the ROM's own RTTI name for this class (this tree once coined it
@@ -33,8 +33,8 @@ struct daKrpa_c : dActor_c {
     u8                        pad_0d0[0x4];
     ModelAnim                 mModelAnim;                    /* 0x0d4 */
     ShadowModel               mShadowModel;                  /* 0x138 */
-    MovingCylinderClsnWithPos mMovingCylinderClsnWithPos;    /* 0x160 */
-    WithMeshClsn              mWithMeshClsn;                 /* 0x1a0 */
+    dCcAcPos_c mdCcAcPos_c;    /* 0x160 */
+    dBgCh_Actr              mWithMeshClsn;                 /* 0x1a0 */
     u8                        unk_35c;                       /* 0x35c */
     u8                        pad_35d[0x4b];
     s32                       unk_3a8;                       /* 0x3a8 */

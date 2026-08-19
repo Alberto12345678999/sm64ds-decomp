@@ -3,7 +3,7 @@
 
 #include "CapIcon.h"
 #include "Model.h"
-#include "MovingCylinderClsn.h"
+#include "dCcAc_c.h"
 #include "dActor_c.h"
 
 /* daDossyCap_c is the ROM's own RTTI name for this class (this tree once
@@ -28,7 +28,7 @@
  * daKrpa_c/daKpFr_c/daEyBm_c siblings.
  *
  * THE DESTRUCTORS STAY UNMIGRATED, and the reason is order: D1 destroys
- * MovingCylinderClsn, then Model, then the CapIcon -- exact reverse
+ * dCcAc_c, then Model, then the CapIcon -- exact reverse
  * declaration order -- but CapIcon's destructor is still spelt
  * func_ov001_020ab3a0 rather than CapIcon::~CapIcon, so a real ~daDossyCap_c()
  * would have to call it in the body, which runs BEFORE the implicit member
@@ -51,7 +51,7 @@ struct daDossyCap_c : dActor_c {
     s32                mEatingPlayer;           /* 0x0d0 */
     CapIcon            mCapIcon;                /* 0x0d4 */
     Model              mModel;                  /* 0x0f0 */
-    MovingCylinderClsn mMovingCylinderClsn;     /* 0x140 */
+    dCcAc_c mdCcAc_c;     /* 0x140 */
     s32                unk_174;                 /* 0x174 */
     u8                 pad_178[0xc];
 

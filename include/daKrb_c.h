@@ -30,12 +30,12 @@
  * OWN MEMBERS start at 0x180, where dCapEnemy_c ends -- a derived member cannot start
  * inside its base, so this is both floor and ceiling, same argument dCapEnemy_c.h makes
  * one level up. Five spans are typed sub-objects, evidenced by both witnesses:
- * Goomba_Spawn constructs them forward (MovingCylinderClsn, WithMeshClsn, ModelAnim,
+ * Goomba_Spawn constructs them forward (dCcAc_c, dBgCh_Actr, ModelAnim,
  * ShadowModel, MaterialChanger) and _ZN7daKrb_cD1Ev tears them down in the opposite
  * order at the same offsets, before chaining to the base. They stay untyped, one
  * placeholder byte per span plus the sub-fields already evidenced inside them, rather
  * than named typed members: every existing consumer already reaches them through the
- * free C1/D1 functions on raw offsets (`_ZN18MovingCylinderClsnC1Ev((char*)p + 0x180)`),
+ * free C1/D1 functions on raw offsets (`_ZN7dCcAc_cC1Ev((char*)p + 0x180)`),
  * not through member access, so typing the whole span is a follow-on with no byte-shape
  * payoff yet and its own risk of silently mis-offsetting a nested field.
  *
@@ -64,9 +64,9 @@
  * All other slots hold dCapEnemy_c's (or an ancestor's) word and are inherited.
  */
 struct daKrb_c : dCapEnemy_c {
-    u8  mMovingCylinderClsn;            /* 0x180 -- MovingCylinderClsn, 0x34 bytes */
+    u8  mdCcAc_c;            /* 0x180 -- dCcAc_c, 0x34 bytes */
     u8  pad_181[0x33];
-    u8  mWithMeshClsn;            /* 0x1b4 -- WithMeshClsn, 0x1bc bytes */
+    u8  mWithMeshClsn;            /* 0x1b4 -- dBgCh_Actr, 0x1bc bytes */
     u8  pad_1b5[0x1bb];
     u8  mModelAnim;            /* 0x370 -- ModelAnim, 0x64 bytes */
     u8  pad_371[0x4f];

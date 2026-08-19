@@ -1,9 +1,9 @@
 #ifndef DAEYBM_C_H
 #define DAEYBM_C_H
 
-#include "MovingCylinderClsnWithPos.h"
+#include "dCcAcPos_c.h"
 #include "ShadowModel.h"
-#include "WithMeshClsn.h"
+#include "dBgCh_Actr.h"
 #include "dActor_c.h"
 
 /* daEyBm_c is the ROM's own RTTI name for this class (this tree once coined it
@@ -32,8 +32,8 @@
 struct daEyBm_c : dActor_c {
     u8                        pad_0d0[0x4];
     ShadowModel               mShadowModel;                  /* 0x0d4 */
-    MovingCylinderClsnWithPos mMovingCylinderClsnWithPos;    /* 0x0fc */
-    WithMeshClsn              mWithMeshClsn;                 /* 0x13c */
+    dCcAcPos_c mdCcAcPos_c;    /* 0x0fc */
+    dBgCh_Actr              mWithMeshClsn;                 /* 0x13c */
     u8                        unk_2f8;                       /* 0x2f8 */
     u8                        pad_2f9[0x2f];
     s32                       unk_328;                       /* 0x328 */
