@@ -1,5 +1,5 @@
 //cpp
-// @symbol _ZN19AmbientSoundEffectsD1Ev
+// @symbol _ZN19AmbientSoundEffectsD0Ev
 
 #include "AmbientSoundEffects.h"
 

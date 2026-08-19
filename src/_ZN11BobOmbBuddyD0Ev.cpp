@@ -1,5 +1,5 @@
 //cpp
-// @symbol _ZN11BobOmbBuddyD1Ev
+// @symbol _ZN11BobOmbBuddyD0Ev
 
 #include "BobOmbBuddy.h"
 
