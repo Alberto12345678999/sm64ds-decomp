@@ -1,5 +1,5 @@
 //cpp
-// @symbol _ZN9OneUpLogoD1Ev
+// @symbol _ZN9OneUpLogoD0Ev
 
 #include "OneUpLogo.h"
 

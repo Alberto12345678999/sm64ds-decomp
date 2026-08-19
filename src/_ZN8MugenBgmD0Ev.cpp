@@ -1,5 +1,5 @@
 //cpp
-// @symbol _ZN8MugenBgmD1Ev
+// @symbol _ZN8MugenBgmD0Ev
 
 #include "MugenBgm.h"
 
