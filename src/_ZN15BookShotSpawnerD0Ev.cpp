@@ -1,5 +1,5 @@
 //cpp
-// @symbol _ZN15BookShotSpawnerD1Ev
+// @symbol _ZN15BookShotSpawnerD0Ev
 
 #include "BookShotSpawner.h"
 

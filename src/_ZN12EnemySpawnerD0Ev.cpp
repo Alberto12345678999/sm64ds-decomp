@@ -1,5 +1,5 @@
 //cpp
-// @symbol _ZN12EnemySpawnerD1Ev
+// @symbol _ZN12EnemySpawnerD0Ev
 
 #include "EnemySpawner.h"
 
