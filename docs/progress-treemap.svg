@@ -35681,7 +35681,7 @@ matched: yes</title></rect><rect x="1416.92" y="344.81" width="5.14" height="5.5
 module: ov063
 addr: 0x0211608c
 size: 56 bytes
-matched: yes</title></rect><rect x="1416.92" y="350.39" width="5.14" height="1.59" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov063_021160c4
+matched: yes</title></rect><rect x="1416.92" y="350.39" width="5.14" height="1.59" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN3Boo16OnAimedAtWithEggEv
 module: ov063
 addr: 0x021160c4
 size: 16 bytes
@@ -36021,7 +36021,7 @@ matched: yes</title></rect><rect x="1524.36" y="355.78" width="6.41" height="4.7
 module: ov063
 addr: 0x0211c444
 size: 60 bytes
-matched: yes</title></rect><rect x="1524.36" y="360.57" width="6.41" height="2.56" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov063_0211c480
+matched: yes</title></rect><rect x="1524.36" y="360.57" width="6.41" height="2.56" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN3Boo13OnYoshiTryEatEv
 module: ov063
 addr: 0x0211c480
 size: 32 bytes
@@ -37193,7 +37193,7 @@ matched: yes</title></rect><rect x="1285.40" y="510.07" width="6.02" height="1.5
 module: ov065
 addr: 0x021195d0
 size: 20 bytes
-matched: yes</title></rect><rect x="1291.42" y="433.79" width="4.96" height="0.77" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov065_021195e4
+matched: yes</title></rect><rect x="1291.42" y="433.79" width="4.96" height="0.77" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9DorrieCap13OnYoshiTryEatEv
 module: ov065
 addr: 0x021195e4
 size: 8 bytes
@@ -37961,7 +37961,7 @@ matched: yes</title></rect><rect x="1539.82" y="504.96" width="6.21" height="6.7
 module: ov070
 addr: 0x02121160
 size: 92 bytes
-matched: yes</title></rect><rect x="1546.03" y="459.20" width="0.74" height="4.88" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov070_021211bc
+matched: yes</title></rect><rect x="1546.03" y="459.20" width="0.74" height="4.88" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10FlameChomp13OnYoshiTryEatEv
 module: ov070
 addr: 0x021211bc
 size: 8 bytes
@@ -38057,7 +38057,7 @@ matched: yes</title></rect><rect x="1553.14" y="503.30" width="4.54" height="8.3
 module: ov070
 addr: 0x02121b88
 size: 84 bytes
-matched: yes</title></rect><rect x="1557.68" y="474.23" width="0.80" height="4.51" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov070_02121bdc
+matched: yes</title></rect><rect x="1557.68" y="474.23" width="0.80" height="4.51" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14FlameChompFire13OnYoshiTryEatEv
 module: ov070
 addr: 0x02121bdc
 size: 8 bytes
@@ -38405,7 +38405,7 @@ matched: yes</title></rect><rect x="1089.49" y="627.43" width="9.35" height="4.1
 module: ov071
 addr: 0x02121aac
 size: 84 bytes
-matched: yes</title></rect><rect x="1098.83" y="583.15" width="0.87" height="4.27" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov071_02121b00
+matched: yes</title></rect><rect x="1098.83" y="583.15" width="0.87" height="4.27" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14MrI_Projectile13OnYoshiTryEatEv
 module: ov071
 addr: 0x02121b00
 size: 8 bytes
