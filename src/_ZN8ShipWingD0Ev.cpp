@@ -1,5 +1,5 @@
 //cpp
-// @symbol _ZN8ShipWingD1Ev
+// @symbol _ZN8ShipWingD0Ev
 
 #include "ShipWing.h"
 
