@@ -12,6 +12,7 @@ extracted ROM is not present, the same guard tools/test_build_pin.py uses.
 Usage:
     python tools/test_tubuild.py
 """
+import os
 import pathlib
 import shutil
 import subprocess
@@ -898,6 +899,7 @@ def test_exact_vague_externalization_rejects_wrong_binding_and_vtables():
     if not _toolchain():
         return
     import io
+    import struct
     from elftools.elf.elffile import ELFFile
 
     obj, entry, homes, cfg, _targets, reader, name_index = \
@@ -946,6 +948,277 @@ def test_scratch_and_no_rom_results_are_not_promotion_ready():
     no_rom = dict(ready, verification={"linkcheck": {
         "result": "link-verified", "phases": {"rom": None}, "rom": {}}})
     assert any("full-ROM phase" in reason for reason in tubuild.promotion_refusals(no_rom))
+
+
+def test_partitioned_delinks_addition_is_gap_only_and_same_section_name_only():
+    text = (
+        "    .text start:0x00001000 end:0x00001100 kind:code align:4\n"
+        "    .data start:0x00002000 end:0x00002100 kind:data align:4\n"
+        "\n"
+        "src/f.cpp:\n    complete\n"
+        "    .text start:0x00001000 end:0x00001010\n\n"
+        "src/g.cpp:\n    complete\n"
+        "    .text start:0x00001010 end:0x00001020\n")
+    entry = {"source": "src_tu/T.cpp", "functions": [
+        {"legacy_source": "src/f.cpp"}, {"legacy_source": "src/g.cpp"}]}
+    claims = [{"name": ".text", "module_section": ".text",
+               "start": 0x1000, "end": 0x1020},
+              {"name": ".data", "module_section": ".data",
+               "start": 0x2040, "end": 0x2050}]
+    with tempfile.TemporaryDirectory() as td:
+        path = pathlib.Path(td) / "delinks.txt"
+        path.write_text(text, encoding="utf-8")
+        replaced, reasons = tubuild.add_partitioned_tu_entry(
+            path, 0x1000, 0x1020, entry["source"],
+            [row["legacy_source"] for row in entry["functions"]], claims)
+        assert reasons == [] and replaced == ["src/f.cpp", "src/g.cpp"]
+        written = path.read_text(encoding="utf-8")
+        assert written.count("src/f.cpp:") == 1 and written.count("src/g.cpp:") == 1
+        assert "src_tu/T.cpp:\n    complete\n    .data start:0x00002040" in written
+        assert "src_tu/T.cpp:\n    complete\n    .text" not in written
+
+        mapped = pathlib.Path(td) / "mapped.txt"
+        mapped.write_text(text, encoding="utf-8")
+        bad_claims = [claims[0], {"name": ".rodata", "module_section": ".data",
+                                  "start": 0x2040, "end": 0x2050}]
+        before = mapped.read_bytes()
+        replaced, reasons = tubuild.add_partitioned_tu_entry(
+            mapped, 0x1000, 0x1020, entry["source"],
+            [row["legacy_source"] for row in entry["functions"]], bad_claims)
+        assert replaced is None
+        assert any("retargeting" in reason for reason in reasons)
+        assert mapped.read_bytes() == before
+
+
+def test_partitioned_artifact_audit_uses_exact_selectors_and_object_paths():
+    entry = {"source": "src_tu/actors/T.cpp", "functions": [
+        {"legacy_source": "src/f.cpp"}, {"legacy_source": "src/g.cpp"}]}
+    claims = [{"name": ".text", "module_section": ".text",
+               "start": 0x1000, "end": 0x1020},
+              {"name": ".data", "module_section": ".data",
+               "start": 0x2000, "end": 0x2010}]
+    with tempfile.TemporaryDirectory() as td:
+        root = pathlib.Path(td)
+        lcf, objects = root / "arm9.lcf", root / "objects.txt"
+        expected_paths = [root / "src" / "f.o", root / "src" / "g.o",
+                          root / "src_tu" / "actors" / "T.o"]
+        objects.write_text("\n".join(str(path.resolve()) for path in expected_paths) + "\n",
+                           encoding="utf-8")
+        good_lines = ["f.o(.text)", "g.o(.text)", "T.o(.data)"]
+        lcf.write_text("\n".join(good_lines) + "\n", encoding="utf-8")
+        result = tubuild.validate_partitioned_link_artifacts(lcf, objects, entry, claims)
+        assert result["ok"], result["errors"]
+        assert result["observedTuSelectors"] == ["T.o(.data)"]
+        assert result["objectCount"] == 3
+        assert len(result["selectorListSha256"]) == 64
+        assert len(result["objectListSha256"]) == 64
+
+        lcf.write_text("Xf.o(.text)\ng.o(.text)\nT.o(.data)\n", encoding="utf-8")
+        result = tubuild.validate_partitioned_link_artifacts(lcf, objects, entry, claims)
+        assert not result["ok"]
+        assert any("0 exact lines f.o(.text)" in reason for reason in result["errors"])
+
+        lcf.write_text("\n".join(good_lines + ["T.o(.ctor)"]) + "\n", encoding="utf-8")
+        result = tubuild.validate_partitioned_link_artifacts(lcf, objects, entry, claims)
+        assert not result["ok"]
+        assert any("TU selector set" in reason for reason in result["errors"])
+
+        lcf.write_text("\n".join(good_lines) + "\n", encoding="utf-8")
+        objects.write_text("\n".join(str(path.resolve()) for path in expected_paths[:-1])
+                           + f"\n{(root / 'wrong' / 'T.o').resolve()}\n", encoding="utf-8")
+        result = tubuild.validate_partitioned_link_artifacts(lcf, objects, entry, claims)
+        assert not result["ok"]
+        assert any("exact paths" in reason for reason in result["errors"])
+
+        objects.write_text("\n".join(str(path.resolve()) for path in expected_paths)
+                           + f"\n{(root / 'other' / 'T.o').resolve()}\n", encoding="utf-8")
+        result = tubuild.validate_partitioned_link_artifacts(lcf, objects, entry, claims)
+        assert not result["ok"]
+        assert any("2 objects named T.o" in reason for reason in result["errors"])
+
+
+def test_partitioned_vtable_rebias_needs_one_unique_configured_public_home():
+    entry = {"module": "ov999", "functions": [], "data": [{
+        "symbol": "_ZTV1P", "address": "0x2008",
+        "emitted_storage_address": "0x2000", "address_point_bias": "0x8",
+        "size": "0x20"}], "bss": []}
+    claims = [{"name": ".data", "start": 0x2000, "end": 0x2020}]
+    original = tubuild.all_symbol_homes
+    try:
+        tubuild.all_symbol_homes = lambda: {"_ZTV1P": [("ov999", 0x2008)]}
+        policies, reasons = tubuild.partition_vtable_rebiases(entry, claims)
+        assert reasons == []
+        assert policies["_ZTV1P"]["publicAddress"] == 0x2008
+
+        tubuild.all_symbol_homes = lambda: {
+            "_ZTV1P": [("ov999", 0x2008), ("arm9", 0x2008)]}
+        _policies, reasons = tubuild.partition_vtable_rebiases(entry, claims)
+        assert any("one unique configured public home" in reason for reason in reasons)
+
+        alias_entry = {"module": "ov999", "functions": [],
+                       "compiler_only_output": [{"symbol": "_ZN1PD2Ev",
+                                                  "disposition": "deadstrip",
+                                                  "reason": "compiler-only D2"}],
+                       "data": [{
+                           "symbol": "_ZTV1P", "address": "0x2008",
+                           "emitted_storage_address": "0x2000",
+                           "address_point_bias": "0x8", "size": "0x20",
+                           "storage_alias": {
+                               "symbol": "data_2000", "address": "0x2000",
+                               "size": "0x8", "binding": "STB_GLOBAL",
+                               "type": "STT_OBJECT", "visibility": "STV_DEFAULT",
+                               "reuse_compiler_only_symbol": "_ZN1PD2Ev"}}], "bss": []}
+        baseline = {
+            "data_2000": [{"address": 0x2000, "size": 8,
+                           "binding": "STB_GLOBAL", "type": "STT_OBJECT",
+                           "visibility": "STV_DEFAULT",
+                           "sectionIndex": 4, "section": ".data"}],
+            "_ZTV1P": [{"address": 0x2008, "size": 0x18,
+                        "binding": "STB_GLOBAL", "type": "STT_OBJECT",
+                        "visibility": "STV_DEFAULT",
+                        "sectionIndex": 4, "section": ".data"}],
+        }
+        tubuild.all_symbol_homes = lambda: {
+            "_ZTV1P": [("ov999", 0x2008)], "data_2000": [("ov999", 0x2000)]}
+        policies, reasons = tubuild.partition_vtable_rebiases(
+            alias_entry, claims, baseline_symbols=baseline, baseline_sha256="a" * 64)
+        assert reasons == []
+        alias = policies["_ZTV1P"]["storageAlias"]
+        assert alias["donor"] == "_ZN1PD2Ev"
+        assert alias["baseline"]["elfSha256"] == "a" * 64
+        assert tubuild.manifest_storage_alias_rows(alias_entry)[0][1]["size"] == "0x8"
+
+        wrong = {key: [dict(row) for row in value] for key, value in baseline.items()}
+        wrong["data_2000"][0]["size"] = 0
+        _policies, reasons = tubuild.partition_vtable_rebiases(
+            alias_entry, claims, baseline_symbols=wrong, baseline_sha256="b" * 64)
+        assert any("baseline metadata differs" in reason for reason in reasons)
+
+        original_linked = tubuild.linked_symbol_rows
+        try:
+            tubuild.linked_symbol_rows = lambda _path, _names: (baseline, None)
+            proof = tubuild.verify_linked_storage_aliases("ignored.o", policies)
+            assert proof["ok"] and proof["rows"][0]["exact"]
+            tubuild.linked_symbol_rows = lambda _path, _names: (wrong, None)
+            proof = tubuild.verify_linked_storage_aliases("ignored.o", policies)
+            assert not proof["ok"]
+        finally:
+            tubuild.linked_symbol_rows = original_linked
+    finally:
+        tubuild.all_symbol_homes = original
+
+
+def test_partition_baseline_evidence_is_content_bound_not_mtime_bound():
+    with tempfile.TemporaryDirectory() as td:
+        root = pathlib.Path(td)
+        config = root / "config"
+        config.mkdir()
+        cfg = config / "symbols.txt"
+        linked, dsd, linker = root / "base.o", root / "dsd.exe", root / "mwld.exe"
+        cfg.write_bytes(b"one")
+        linked.write_bytes(b"ELF")
+        dsd.write_bytes(b"DSD")
+        linker.write_bytes(b"MWL")
+        evidence = tubuild.partition_baseline_fingerprints(
+            linked, config, dsd_path=dsd, linker_path=linker)
+        report = {"baselineEvidence": evidence}
+        digest, error = tubuild.validate_partition_baseline_evidence(
+            report, linked, config, dsd_path=dsd, linker_path=linker)
+        assert error is None and digest == evidence["linkedElfSha256"]
+
+        stamp = cfg.stat().st_mtime_ns
+        cfg.write_bytes(b"two")
+        os.utime(cfg, ns=(stamp, stamp))
+        _digest, error = tubuild.validate_partition_baseline_evidence(
+            report, linked, config, dsd_path=dsd, linker_path=linker)
+        assert "configArm9Sha256" in error
+
+        cfg.write_bytes(b"one")
+        linked_stamp = linked.stat().st_mtime_ns
+        linked.write_bytes(b"BAD")
+        os.utime(linked, ns=(linked_stamp, linked_stamp))
+        _digest, error = tubuild.validate_partition_baseline_evidence(
+            report, linked, config, dsd_path=dsd, linker_path=linker)
+        assert "linkedElfSha256" in error
+
+
+def test_partitioned_result_gate_requires_every_full_rom_proof():
+    good = dict(equivalent=True, data_ok=True, storage_aliases_ok=True,
+                artifacts_ok=True, module_ok=True,
+                modules_check_ok=True, symbols_ok=True, rom_ok=True,
+                rom_identical=True, no_stray_outputs=True)
+    assert tubuild.partitioned_link_ready(**good)
+    for key in good:
+        bad = dict(good)
+        bad[key] = None if key == "rom_ok" else False
+        assert not tubuild.partitioned_link_ready(**bad), key
+
+
+def test_partitioned_recorder_is_compact_orthogonal_and_preserves_verified_evidence():
+    entry = {"id": "ov999/T", "status": "data-verified"}
+    data = {"entries": [entry]}
+    report = {
+        "result": "partitioned-link-verified", "scratch": "build/tu/T/link-partitioned",
+        "partial": {"toolchain": "2004/b56", "flags": ["-O4"], "mergedBytes": 100,
+                    "contributionEquivalent": "1/1", "substituted": ["src/f.cpp"],
+                    "rows": [{"ordinal": 0, "symbol": "f", "identical": True,
+                              "relocCount": 0, "differences": []}]},
+        "compilerOnlyOutput": {"requested": ["D2"], "deadstripped": ["D2"],
+                               "droppedSections": [4]},
+        "externalizedOutput": {"requested": ["_ZTI1B"],
+                               "externalized": ["_ZTI1B"], "droppedSections": [6],
+                               "verification": {"ok": True, "errors": []}},
+        "nontextPartition": {"requestedSections": [".data"],
+                             "licensedSymbols": ["_ZTV1T"],
+                             "deferredOutputs": [{"symbol": "f", "section": ".text",
+                                                  "size": 4}],
+                             "liveSections": [{"name": ".data", "size": 16}],
+                             "objisolate": {"keeps": [2], "drop": [3],
+                                            "externalise": ["f"], "dead": [],
+                                            "error": None}},
+        "ownedSectionsBeforePartition": {"ok": True, "rows": [], "errors": []},
+        "ownedSections": {"ok": True, "rows": [], "errors": []},
+        "vtableRebias": {"rebased": [{"symbol": "_ZTV1T", "bias": 8}],
+                            "error": None},
+        "partitionedObjects": {"rawTuSha256": "a" * 64,
+                               "linkedDataSha256": "b" * 64},
+        "partitionedArtifacts": {"ok": True, "errors": [],
+                                 "expectedTuSelectors": ["T.o(.data)"],
+                                 "observedTuSelectors": ["T.o(.data)"],
+                                 "expectedLegacyCount": 1, "selectorCount": 100,
+                                 "objectCount": 10800, "selectorListSha256": "c" * 64,
+                                 "objectListSha256": "d" * 64,
+                                 "observedSelectors": ["huge"] * 100,
+                                 "observedObjects": ["huge"] * 10800},
+        "phases": {"link": {"ok": True}, "rom": {"ok": True}},
+        "analysis": {"passed": True}, "symbolsNew": [],
+        "rom": {"matchesStockRom": True}, "tuRanges": [],
+    }
+    original = tubuild.save_manifest
+    try:
+        tubuild.save_manifest = lambda _data: None
+        tubuild._record_partitioned(data, entry, report)
+        block = entry["partitioned_link"]
+        assert entry["status"] == "data-verified"
+        assert block["state"] == "partitioned-link-verified"
+        assert block["lastVerified"]["artifactAudit"]["objectCount"] == 10800
+        assert "observedObjects" not in block["lastVerified"]["artifactAudit"]
+        assert block["lastVerified"]["nontextPartition"]["deferredOutputs"][0]["symbol"] == "f"
+
+        failed = dict(report, result="failed", rom={})
+        tubuild._record_partitioned(data, entry, failed)
+        assert block["state"] == "partitioned-link-verified"
+        assert block["lastAttempt"]["result"] == "failed"
+        assert block["lastVerified"]["result"] == "partitioned-link-verified"
+        assert entry["status"] == "data-verified"
+    finally:
+        tubuild.save_manifest = original
+
+
+def test_partitioned_cli_modes_are_mutually_exclusive_before_any_build():
+    code, out = _run("linkcheck", "ov045/PoleLift", "--partial", "--partitioned")
+    assert code != 0
+    assert "not allowed with argument" in out or "mutually exclusive" in out
 
 # ---------------------------------------------------------------- create repairs
 # The three assemble_shadow_source behaviors proven by six modules of
