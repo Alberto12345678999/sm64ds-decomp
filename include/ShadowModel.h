@@ -24,7 +24,7 @@
  * D1 carries the unlink logic and is now the only place it is written.
  * D0 and D2 stay C files.
  *
- * LAYOUT evidence: C1 calls ModelBase::C1, stores the vptr, zeroes mat,
+ * LAYOUT evidence: C1 calls ModelBase::C2, stores the vptr, zeroes mat,
  * prev and next; InitModel fills mat/scale/opacity and links; the D1
  * unlink pins prev at 0x20 and next at 0x24.
  *
@@ -52,6 +52,12 @@ struct ShadowModel : ModelBase {
     u8 unk_1f;
     ShadowModel *prev;         /* 0x20 */
     ShadowModel *next;         /* 0x24 */
+
+    /* DECLARED, NEVER DEFINED HERE -- same reasoning as Model (include/Model.h)
+       and ModelBase: undeclared, the compiler synthesises this constructor and
+       INLINES it into every holder; the ROM calls _ZN11ShadowModelC1Ev
+       (0x02016068) out of line instead. */
+    ShadowModel();
 
     /* --- vtable, in ROM order. Do not reorder. --- */
     virtual ~ShadowModel();                           /* slots 0 (D1), 1 (D0) */
