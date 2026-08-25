@@ -473,84 +473,27 @@ asm transcription, or absent.
    `ModelAnim2C1Ev` 0x020163a0 · `BlendModelAnimC1Ev` 0x020166d4.
    (`Model::C2` stays hand-written until someone wants it real; nothing
    calls it as a complete object.)
-6. **dCc response family**: `dCcPos_cC1Ev` 0x02014878 ·
-   `dCcAc_cC1/C2Ev` 0x020149c8/f4 · `dCcAcPos_cC1Ev` 0x02014a84 ·
-   `dCc_cC2Ev` 0x020150cc. Small bodies; blocked only on their headers
-   declaring bases.
+6. ~~**dCc response family**~~ DONE (2026-08-24): `dCcPos_cC1Ev`,
+   `dCcAc_cC1/C2Ev` and `dCcAcPos_cC1Ev` are real C++ -- empty bodies over
+   declared base steps, `dCcAc_c`'s `owner(0)` in the init list. `dCc_cC2Ev`
+   stays hand-written extern "C" (its vtable data symbol is spelt
+   `data_0208e6ec`), and declaring `dCc_c()` in the header is what lets the
+   derived ones emit the base step by name. `dBgPcC2Ev` landed the same day:
+   byte-identical to its C1 sibling, same five stores.
 7. **Hierarchy-rooted, hardest last**: `fBase_c9SceneNodeC1Ev` 0x0203b4c4
    (nested class, independent of the chain — try early if 3–6 stall);
    `fBase_cC2Ev` 0x02043dec is a 0x160 NONMATCHING asm transcription today —
    reproducing it from real C++ needs the `dBase_c` intermediate declared
    (§5b/§5e facts) and is the root of everything below it:
    `dActor_cC1/C2Ev` 0x020113c0/0x0201150c · `dEnemyBase_cC2Ev` 0x020aed98 ·
-   `dBgActor_cC2Ev` 0x020eea50.
+   ~~`dBgActor_cC2Ev` 0x020eea50~~ DONE (2026-08-24): real and empty-bodied
+   once `dActor_c()` was DECLARED in include/dActor_c.h -- the declaration
+   points at the hand-spelt extern "C" C1/C2 pair (not the key function, so
+   no TU coins a vtable), and the derived constructor emits
+   `bl _ZN8dActor_cC2Ev` instead of inlining the base. The remaining two are
+   rich bodies that still need that treatment one level down.
 8. **Overlays**: `PlayerC1Ev` 0x020e68f4 · `MinimapC1Ev` 0x020fb8bc ·
    `HUDC1Ev` 0x020fe154. Minimap and HUD looked like genuine receive-`this`
    ctors during the §4b caller sweep — shape-check, then §6.
 9. **Settled, do not retry** (the §5c factory wall): `PlayerC3Ev`,
    `StageC3Ev`, `CameraC1Ev`.
-
-## 8. Waves two through four — the dBgW family, the leaves, and the first typed-subobject ctor (2026-08-24)
-
-Eleven more constructors landed after this note was written, taking the tree
-from nine to twenty: **dBgW C2, dBgW_Kc C1, dBgW_KcMbg C1,
-dBgW_KcMbgSclY C1** (the Kc trio inherits through dBgW/dBgCh exactly like
-Gnd); the five config-module leaves **Animation C1/C2, MaterialChanger,
-TextureTransformer, TextureSequence**; **Clipper**; and **dBgCh_Actr**,
-the first constructor whose class holds typed sub-objects. Three lessons
-from those waves that §1–7 do not already carry:
-
-**Typed members are what make a derived ctor free.** dBgCh_Actr's ROM
-constructor is four synthesized steps (`bl dBgChC2`, vptr store, `bl
-dBgCh_SphCrrC1` at +0x20, `bl dBgCh_LinC1` at +0x134) and its source is now
-literally `dBgCh_Actr::dBgCh_Actr() {}`. That only compiles once the header
-declares the two members AS THEMSELVES (`dBgCh_SphCrr mSphereClsn;
-dBgCh_Lin mRaycastLine;`) instead of flat byte blobs — an empty body
-synthesizes base step, vptr store and every member construction in the ROM's
-order (§6's measured sequence) whenever the member classes have declared
-out-of-line ctors. The cost is not the .cpp; it is the blast radius: a dozen
-already-matched consumers reached into those interiors by absolute offset
-and had to be rewritten to named paths (`mSphereClsn.disp`, `.flags`,
-`.unk_108`, `.unk_10c`) before anything matched again. Budget the consumers,
-not the constructor.
-
-**Size-pin both language branches before promoting a header.** The two
-sub-object sizes were settled by embedding evidence, not standalone
-footprints: `sizeof(dBgCh_SphCrr)` = **0x110** (KcMbg::DetectClsn gives its
-local query an exact 0x110 stack slot; compiling against 0x110 vs 0x10c
-differs by a word), and `sizeof(dBgCh_Lin)` = **0x84** (Actr embeds it at
-0x134 with Actr's own next word at 0x1b8). Standalone stack-slot footprints
-(0x78/0x7c for Lin locals) are UNRELIABLE — mwcc lifetime-shares stack slots
-across unrelated locals, so a footprint measures the frame, not the type.
-The asserts are spelled `typedef char X_size_must_be_0xNNN[sizeof(struct X)
-== 0xNNN ? 1 : -1];` AFTER the `#endif /* __cplusplus */`, struct-tag style,
-so one line pins BOTH branches — and each branch must independently have the
-bytes to reach the pinned size, or the .c TUs break first.
-
-**Local shadow structs collide with promoted headers.** Consumer TUs that
-predate a promotion often declare dumb local shadows of OTHER classes
-(`typedef struct { char pad[0x28]; } dBgPi;`-shaped things). Once the real
-header enters the include chain these are redefinitions, and "fixing" them by
-using the real type silently changes codegen — a real-typed local auto-invokes
-the newly declared ctor/dtor. The working fix is RENAME, not retype:
-`dBgPiLoc` / `dBgCh_LinLoc` keep the bytes identical while clearing the name.
-Grep the consumer's own file for shadow definitions of every class your
-promoted header pulls in BEFORE compiling.
-
-**The strict-reloc gate needed one more MI extension.** After the Lin/SphCrr
-promotions, per-file `match.py --strict-relocs` began reporting "bytes match
-but 1 reloc destination(s) WRONG" on their constructors — including on
-pristine HEAD sources, so not a regression but a gate blind spot exposed by
-the third `_ZTV` block. `reloc_audit.object_reloc_dests` resolved every
-relocation by SYMBOL NAME alone and ignored addends entirely; a synthesized
-secondary-vptr store names the SAME `_ZTV<C>` symbol as the primary store and
-distinguishes blocks only by RELA addend (8 primary, +0x10 per secondary).
-The fix makes `_ZTV`-named data relocs addend-aware — destination =
-sym + addend − 8 for raw objects, sym + addend post-objisolate — selected by
-an explicit `vt_form="raw"|"isolated"` parameter threaded through
-check_destinations/gate_wrong_dests, because the two forms carry different
-addends and no local test can tell them apart. Branch relocs keep name-only
-resolution (their −8 is PC bias, not addressing). Measured on all four shapes
-in-tree: three-block SphCrr, two-block Lin, single-inheritance Clipper,
-no-base Animation, plus ModelAnim2 D0 (the documented 44-addend case) — all
-MATCH under strict relocs now, where the MI ones could never pass before.

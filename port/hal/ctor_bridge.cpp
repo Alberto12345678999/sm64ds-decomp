@@ -89,6 +89,11 @@ void _ZN6Memory16operator_delete2EPv(void *p) { _ZN6Memory10DeallocateEPv(p); }
 
 }
 
+// Model::~Model() is NOT bridged here: this branch promotes
+// src/_ZN5ModelD1Ev.c to a real C++ destructor and the gate-4b slice
+// compiles it, so MSVC takes slot 0 from src/ directly. Defining it here as
+// well would be a duplicate definition.
+
 // ModelBase's destructor is not sliced for the host: the ROM body releases
 // resources through the collision layer, and slicing it pulls that whole tree
 // in. MSVC still needs the destructor defined to emit the vtable, so it takes

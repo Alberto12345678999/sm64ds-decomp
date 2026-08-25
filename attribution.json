@@ -580,6 +580,24 @@
     "src/_ZN5dBgPiD1Ev.cpp": "tangosdev",
     "src/_ZN8dM3dGSphD0Ev.c": "tangosdev",
     "src/_ZN8dM3dGSphD1Ev.cpp": "tangosdev",
-    "src/_ZN8dM3dGSphC2Ev.c": "tangosdev"
+    "src/_ZN8dM3dGSphC2Ev.c": "tangosdev",
+    "src/daObjCannonShutter_c_Spawn.c": "tangosdev",
+    "src/daObjCannonShutter_c_Spawn.cpp": "tangosdev",
+    "src/_ZN20daObjCannonShutter_c16CleanupResourcesEv.c": "tangosdev",
+    "src/_ZN20daObjCannonShutter_c16CleanupResourcesEv.cpp": "tangosdev",
+    "src/_ZN20daObjCannonShutter_c6RenderEv.c": "tangosdev",
+    "src/_ZN20daObjCannonShutter_c6RenderEv.cpp": "tangosdev",
+    "src/_ZN20daObjCannonShutter_c8BehaviorEv.c": "tangosdev",
+    "src/_ZN20daObjCannonShutter_c8BehaviorEv.cpp": "tangosdev",
+    "src/_ZN20daObjCannonShutter_cD1Ev.c": "tangosdev",
+    "src/_ZN20daObjCannonShutter_cD1Ev.cpp": "tangosdev",
+    "src/_ZN20daObjCannonShutter_cD0Ev.c": "tangosdev",
+    "src/_ZN20daObjCannonShutter_cD0Ev.cpp": "tangosdev",
+    "src/_ZN20daObjCannonShutter_c13InitResourcesEv.c": "tangosdev",
+    "src/_ZN20daObjCannonShutter_c13InitResourcesEv.cpp": "tangosdev",
+    "src/_ZN5ModelD1Ev.c": "tangosdev",
+    "src/_ZN5ModelD1Ev.cpp": "tangosdev",
+    "src/_ZN8dM3dGLin3SetERK7Vector3S2_.c": "tangosdev",
+    "src/_ZN8dM3dGLin3SetERK7Vector3S2_.cpp": "tangosdev"
   }
 }
