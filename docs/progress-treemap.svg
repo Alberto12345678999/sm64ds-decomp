@@ -13153,11 +13153,11 @@ matched: yes</title></rect><rect x="550.00" y="85.18" width="7.00" height="8.37"
 module: ov002
 addr: 0x020b35e4
 size: 88 bytes
-matched: yes</title></rect><rect x="556.99" y="85.18" width="7.95" height="8.37" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020b363c
+matched: yes</title></rect><rect x="556.99" y="85.18" width="7.95" height="8.37" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN13BigBrickBlock17NotifyLinkedActorEv
 module: ov002
 addr: 0x020b363c
 size: 100 bytes
-matched: yes</title></rect><rect x="564.94" y="85.18" width="1.59" height="8.37" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020b36a0
+matched: yes</title></rect><rect x="564.94" y="85.18" width="1.59" height="8.37" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN13BigBrickBlock16HasNonzeroAngleXEv
 module: ov002
 addr: 0x020b36a0
 size: 20 bytes
