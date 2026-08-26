@@ -1,5 +1,5 @@
 //cpp
-// @symbol _ZN10PyramidTagD1Ev
+// @symbol _ZN10PyramidTagD0Ev
 
 #include "PyramidTag.h"
 
