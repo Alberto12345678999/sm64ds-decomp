@@ -272,7 +272,7 @@ ov002	0x02108ba0	data_ov002_02108ba0	MegaMushroomBlockTag_SpawnInfo	spawninfo
 ov002	0x02108bbc	data_ov002_02108bbc	GreenShellBlockTag_SpawnInfo	spawninfo
 ov002	0x02108bd8	data_ov002_02108bd8	SilverStarBlockTag_SpawnInfo	spawninfo
 ov002	0x02108bf4	data_ov002_02108bf4	OneUpMushroomBlockTag_SpawnInfo	spawninfo
-ov002	0x02108c18	data_ov002_02108c18	_ZTV10BrickBlock	vtable alloc=0x330
+ov002	0x02108c18	data_ov002_02108c18	_ZTV10BrickBlock	vtable alloc=0xdc
 ov002	0x02108cb4	data_ov002_02108cb4	MegaMushroomTag_SpawnInfo	spawninfo
 ov002	0x02108cd0	data_ov002_02108cd0	MegaMushroomCreateTag_SpawnInfo	spawninfo
 ov002	0x02108cf4	data_ov002_02108cf4	_ZTV21MegaMushroomCreateTag	vtable alloc=0x110
@@ -2312,3 +2312,8 @@ ov027	0x02112480	func_ov027_02112480	_ZN21SnowmanBreathParticle8BehaviorEv	infer
 ov027	0x021124e4	func_ov027_021124e4	_ZN21SnowmanBreathParticle8TrySpawnER6Player	inferred helper name and Player reference parameter; owner and call shape proven by TU calls
 ov027	0x021125a8	func_ov027_021125a8	_ZN21SnowmanBreathParticleC1Ev	50-element SnowmanBreath helper array constructor target; stride 0x60
 ov027	0x02112618	func_ov027_02112618	_ZN13SnowmanBreath15IsPlayerInRangeEv	inferred helper name; SnowmanBreath-only Behavior caller and this owner proven
+ov002	0x020b41b8	func_ov002_020b41b8	_ZN10BrickBlock11GetSpawnPosER7Vector3RS_	inferred helper ownership: four BrickBlock action callers; destination and owner references
+ov002	0x020b41f8	func_ov002_020b41f8	_ZN10BrickBlock15SpawnKoopaShellEv	PMF action table entry index 2; spawns KoopaShell
+ov002	0x020b4250	func_ov002_020b4250	_ZN10BrickBlock17SpawnMegaMushroomEv	PMF action table entry index 1; spawns MegaMushroom
+ov002	0x020b429c	func_ov002_020b429c	_ZN10BrickBlock18SpawnOneUpMushroomEv	PMF action table entry index 0; spawns OneUpMushroom
+ov002	0x020b42e4	func_ov002_020b42e4	_ZN10BrickBlock15SpawnSilverStarEv	PMF action table entry index 3; spawns SilverStar and marker
