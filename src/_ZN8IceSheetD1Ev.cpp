@@ -1,13 +1,9 @@
 //cpp
 // @symbol _ZN8IceSheetD1Ev
-/* recovered: real C++ destructor -- the compiler emits the whole body
- *
- * Two vtable stores and three destructor calls, every one a consequence of
- * `struct IceSheet : dBgActor_c`: its own vptr, then dBgActor_c's -- inlined,
- * because dBgActor_c's destructor is defined in its class body -- then
- * dBgActor_c's Model and dBgW_KcMbg, then dActor_c. This class adds no
- * member with a destructor of its own.
- */
+/* The out-of-line definition makes mwccarm materialize the genuine complete
+ * destructor. This per-symbol source also retains the verified vtable/base
+ * RTTI contribution that the one-function build measured before migration;
+ * objisolate keeps D1 and discards the unlicensed variants and data. */
 #include "IceSheet.h"
 
 IceSheet::~IceSheet()
