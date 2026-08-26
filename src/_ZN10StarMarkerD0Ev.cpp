@@ -1,5 +1,5 @@
 //cpp
-// @symbol _ZN10StarMarkerD1Ev
+// @symbol _ZN10StarMarkerD0Ev
 
 #include "StarMarker.h"
 
