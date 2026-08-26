@@ -1,4 +1,8 @@
 //cpp
+// @symbol _ZN4Tree8BehaviorEv
+/* recovered: real class-form method. It walks the heap-allocated dCcPos_c
+ * node list shared through data_ov002_02110a48 and touches none of this
+ * class's own storage. */
 #include "Tree.h"
 
 extern "C" {

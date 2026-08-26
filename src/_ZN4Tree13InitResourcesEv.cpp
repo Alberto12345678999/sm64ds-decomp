@@ -1,4 +1,5 @@
 //cpp
+// @symbol _ZN4Tree13InitResourcesEv
 #include "Tree.h"
 
 /* Keep this low-level declaration even though dCcPos_c has a class model: the
