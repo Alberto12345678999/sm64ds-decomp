@@ -1,20 +1,25 @@
+//cpp
 // @symbol TtcConveyorBeltSmall_Spawn
-/* recovered: vtable identified, globals resolved, declarations from a shared header */
-#include "decl_ActorBase.h"
-#include "decl_Platform.h"
-#include "decl_ShadowModel.h"
-#include "decl_TextureTransformer.h"
-#include "decl_common.h"
-/* recovered: vtable identified, globals resolved */
-/* resolved: VT0 = _ZTV16daObjCtMecha04_c */
-int *TtcConveyorBeltSmall_Spawn(void)
+#include "daObjCtMecha04_c.h"
+
+/* The small conveyor is a second spawn entry for the same RTTI class. */
+extern "C" {
+void *_ZN7fBase_cnwEj(unsigned int size);
+void _ZN10dBgActor_cC2Ev(void *self);
+void _ZN18TextureTransformerC1Ev(void *self);
+void _ZN11ShadowModelC1Ev(void *self);
+extern void *_ZTV16daObjCtMecha04_c;
+}
+
+extern "C" daObjCtMecha04_c *TtcConveyorBeltSmall_Spawn()
 {
-    int *p = (int *)_ZN7fBase_cnwEj(928);
-    if (p) {
-        _ZN10dBgActor_cC2Ev(p);
-        p[0] = (int)_ZTV16daObjCtMecha04_c;
-        _ZN18TextureTransformerC1Ev((char *)p + 0x320);
-        _ZN11ShadowModelC1Ev((char *)p + 0x334);
+    daObjCtMecha04_c *actor =
+        (daObjCtMecha04_c *)_ZN7fBase_cnwEj(sizeof(daObjCtMecha04_c));
+    if (actor) {
+        _ZN10dBgActor_cC2Ev(actor);
+        *(void **)actor = &_ZTV16daObjCtMecha04_c;
+        _ZN18TextureTransformerC1Ev(&actor->mTextureTransformer);
+        _ZN11ShadowModelC1Ev(&actor->mShadowModel);
     }
-    return p;
+    return actor;
 }

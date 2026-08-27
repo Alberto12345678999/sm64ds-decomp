@@ -11,9 +11,9 @@ extern char data_ov065_0211d198[];
 
 int daObjCtMecha04_c::CleanupResources()
 {
-  if(((dBgW *)((char *)&mMeshCollider))->IsEnabled())
-    ((dBgW *)((char *)&mMeshCollider))->Disable();
-  ((SharedFilePtr *)(*(void**)(data_ov065_0211d194 + (unsigned char)((char *)this)[0x39e]*0xc)))->Release();
-  ((SharedFilePtr *)(*(void**)(data_ov065_0211d198 + (unsigned char)((char *)this)[0x39e]*0xc)))->Release();
-  return 1;
+    if (mMeshCollider.IsEnabled())
+        mMeshCollider.Disable();
+    ((SharedFilePtr *)(*(void **)(data_ov065_0211d194 + mVariant * 0xc)))->Release();
+    ((SharedFilePtr *)(*(void **)(data_ov065_0211d198 + mVariant * 0xc)))->Release();
+    return 1;
 }

@@ -1,22 +1,10 @@
+//cpp
 // @symbol _ZN16daObjCtMecha04_cD1Ev
-/* recovered: named members + shared header, vtable identified, declarations from a shared header */
-#include "decl_Actor.h"
-#include "decl_Model.h"
-#include "decl_dBgW_KcMbg.h"
-#include "decl_ShadowModel.h"
-#include "decl_TextureTransformer.h"
-#include "decl_common.h"
-extern int _ZTV10dBgActor_c[];
-/* recovered: named members + shared header, vtable identified */
-/* vtable identified: VT0 = _ZTV16daObjCtMecha04_c; VT1 = _ZTV10dBgActor_c */
-int *_ZN16daObjCtMecha04_cD1Ev(int *t)
+/* The compiler emits the complete destructor from the real base and member
+ * declarations: ShadowModel, TextureTransformer, then the inlined
+ * dBgActor_c chain. */
+#include "daObjCtMecha04_c.h"
+
+daObjCtMecha04_c::~daObjCtMecha04_c()
 {
-    t[0] = (int)_ZTV16daObjCtMecha04_c;
-    _ZN11ShadowModelD1Ev((char *)t + 0x334);
-    _ZN18TextureTransformerD1Ev((char *)t + 0x320);
-    t[0] = (int)_ZTV10dBgActor_c;
-    _ZN10dBgW_KcMbgD1Ev((char *)t + 0x124);
-    _ZN5ModelD1Ev((char *)t + 0xd4);
-    _ZN8dActor_cD2Ev(t);
-    return t;
 }

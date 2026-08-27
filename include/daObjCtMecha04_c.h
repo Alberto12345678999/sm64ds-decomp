@@ -1,66 +1,45 @@
-/* AUTO-GENERATED from matched-function evidence by tools/gen_header.py
- * class daObjCtMecha04_c: 6 matched functions, 19 evidenced fields.
- * Offsets/widths are observed, not guessed. Gaps are explicit padding.
- * Field NAMES are placeholders - renaming cannot change codegen. */
+/* The cartridge's RTTI names this Tick Tock Clock conveyor class
+ * daObjCtMecha04_c. Both the large and small spawn entries construct the same
+ * class and select the resource set through actorID in InitResources.
+ *
+ * The inheritance and ownership are visible in both lifecycle directions:
+ * the factories construct dBgActor_c, then TextureTransformer at 0x320 and
+ * ShadowModel at 0x334; the destructor tears those members down in reverse
+ * order before inlining dBgActor_c's destruction. The allocation literal in
+ * both factories is 0x3a0, independently fixing the complete object size. */
 #ifndef DAOBJCTMECHA04_C_H
 #define DAOBJCTMECHA04_C_H
 #include "types.h"
-#include "Model.h"
-#include "dBgW_KcMbg.h"
+#ifdef __cplusplus
+#include "dBgActor_c.h"
 #include "ShadowModel.h"
 #include "TextureTransformer.h"
 
-struct daObjCtMecha04_c {
-    u8  pad_000[0xc];
-    u16 mActorID;            /* 0x00c */
-    u8  pad_00e[0x4e];
-    s32 mPosX;            /* 0x05c */
-    s32 mPosY;            /* 0x060 */
-    s32 mPosZ;            /* 0x064 */
-    u8  pad_068[0x26];
-    s16 mAngleY;            /* 0x08e */
-    u8  pad_090[0x20];
-    s32 mFlags;            /* 0x0b0 */
-    u8  pad_0b4[0x20];
-    /* Model member, named by _ZN5ModelD1Ev at +0xd4 -- a relocation the ROM build checks.
-       D1 and not D2, so it is this type and not an inlined base. The marker's pad stopped
-       short of the object, so the member also takes over unk_0dc (+0x8 = data), which the
-       header declared separately inside it. */
-    Model mModel;            /* 0x0d4 */
-    /* dBgW_KcMbg member. The cartridge's own ~daObjCtMecha04_c calls
-       _ZN10dBgW_KcMbgD1Ev at +0x124 (D0/D1), a relocation the ROM build checks;
-       recovered by tools/dtor_members.py. D1 and not D2, so it is this type and not an
-       inlined base. */
-    dBgW_KcMbg mMeshCollider;            /* 0x124 */
-    u8  mClsnMat;            /* 0x2ec */
-    u8  pad_2ed[0x33];
-    /* TextureTransformer member. The cartridge's own ~daObjCtMecha04_c calls
-       _ZN18TextureTransformerD1Ev at +0x320 (D0/D1), a relocation the ROM build checks;
-       recovered by tools/dtor_members.py. D1 and not D2, so it is this type and not an
-       inlined base. */
-    TextureTransformer mTextureTransformer;            /* 0x320 */
-    /* ShadowModel member. The cartridge's own ~daObjCtMecha04_c calls
-       _ZN11ShadowModelD1Ev at +0x334 (D0/D1), a relocation the ROM build checks;
-       recovered by tools/dtor_members.py. D1 and not D2, so it is this type and not an
-       inlined base. */
-    ShadowModel mShadowModel;            /* 0x334 */
-    u8  pad_35c[0x30];
-    s32 mBeltSpeed;            /* 0x38c */
-    s32 mTargetBeltSpeed;            /* 0x390 */
-    s32 mGroundY;            /* 0x394 */
-    s32 mSoundHandle;            /* 0x398 */
-    s16 mDirectionTimer;            /* 0x39c */
-    u8  mVariant;            /* 0x39e */
-#ifdef __cplusplus
-    /* methods */
+struct daObjCtMecha04_c : dBgActor_c {
+    TextureTransformer mTextureTransformer; /* 0x320 */
+    ShadowModel mShadowModel;                /* 0x334 */
+    /* UpdateShadow builds this from mAngleY, then writes the actor's X/Z and
+     * ground Y into its translation before passing it to DropShadowScaleXYZ. */
+    Matrix4x3 mShadowMat;                    /* 0x35c */
+    s32 mBeltSpeed;                         /* 0x38c */
+    s32 mTargetBeltSpeed;                   /* 0x390 */
+    s32 mGroundY;                           /* 0x394 */
+    s32 mSoundHandle;                       /* 0x398 */
+    s16 mDirectionTimer;                    /* 0x39c */
+    u8  mVariant;                           /* 0x39e */
+
+    /* --- vtable --- */
+    virtual ~daObjCtMecha04_c();
+
     int Behavior();
     int CleanupResources();
     int InitResources();
     int Render();
-#endif
 };
 
 typedef char daObjCtMecha04_c_size_must_be_0x3a0[
-    sizeof(struct daObjCtMecha04_c) == 0x3a0 ? 1 : -1];
+    sizeof(daObjCtMecha04_c) == 0x3a0 ? 1 : -1];
 
-#endif
+#endif /* __cplusplus */
+
+#endif /* DAOBJCTMECHA04_C_H */

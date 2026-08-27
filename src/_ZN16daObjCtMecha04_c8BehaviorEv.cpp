@@ -15,7 +15,6 @@ extern int _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(void* self, int a, int b)
 extern int _Z14ApproachLinearRiii(int* r, int t, int step);
 extern u16 DecIfAbove0_Short(u16* p);
 extern int RandomIntInternal(int* seed);
-extern void _ZN9Animation7AdvanceEv(void* a);
 extern void* _ZN5Sound8PlayLongEjjjRK7Vector3s(unsigned int a, unsigned int b, unsigned int cc, void* v, unsigned int d);
 }
 
@@ -39,7 +38,7 @@ int daObjCtMecha04_c::Behavior()
                 if (_Z14ApproachLinearRiii((int*)((char*)&mBeltSpeed), mTargetBeltSpeed, 0xcc) != 0
                     && DecIfAbove0_Short((u16*)((char*)&mDirectionTimer)) == 0) {
                     unsigned int r = (u16)((unsigned int)RandomIntInternal(&data_0209e650) >> 0x10);
-                    *(s16*)(((char*)this) + 0x300 + 0x9c) = (s16)(((int)r % 7) * 0x14 + 0xa);
+                    mDirectionTimer = (s16)(((int)r % 7) * 0x14 + 0xa);
                     if (r >= 0x7fff) {
                         mTargetBeltSpeed = 0x1000;
                     } else {
@@ -52,7 +51,7 @@ int daObjCtMecha04_c::Behavior()
 
             /* +0xc inside the TextureTransformer at 0x320: its Animation base's speed. */
             mTextureTransformer.speed = mBeltSpeed;
-            _ZN9Animation7AdvanceEv((char*)&mTextureTransformer);
+            mTextureTransformer.Advance();
             if (mBeltSpeed != 0) {
                 mSoundHandle = (int)_ZN5Sound8PlayLongEjjjRK7Vector3s(mSoundHandle, 3, 0x88, ((char*)this) + 0x74, 0);
             }
