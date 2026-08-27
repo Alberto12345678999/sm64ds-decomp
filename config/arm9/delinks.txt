@@ -116,11 +116,11 @@ src/main.c:
     complete
     .text start:0x02007000 end:0x0200705c
 
-src/_ZN6CameraD1Ev.c:
+src/_ZN6CameraD1Ev.cpp:
     complete
     .text start:0x0200705c end:0x02007098
 
-src/_ZN6CameraD0Ev.c:
+src/_ZN6CameraD0Ev.cpp:
     complete
     .text start:0x02007098 end:0x020070e8
 
@@ -700,7 +700,7 @@ src/_ZN6Camera13InitResourcesEv.cpp:
     complete
     .text start:0x0200e338 end:0x0200e444
 
-src/_ZN6CameraC1Ev.c:
+src/_ZN6CameraC1Ev.cpp:
     complete
     .text start:0x0200e444 end:0x0200e494
 
