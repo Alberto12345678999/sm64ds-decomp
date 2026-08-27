@@ -397,7 +397,7 @@ destructor and derives from the non-polymorphic dBgPc. With no dynamic primary
 base, the compiler places dBgPi's own vptr at +0x00 and its dBgPc base at +0x04.
 The generated C2 sequence therefore constructs dBgPc at +0x04 before storing
 dBgPi's vptr. C1 now lives in `src/_ZN5dBgPiC1Ev.cpp` as real C++; the separately
-enrolled C2 ABI variant remains in `src/_ZN5dBgPiC2Ev.c`.
+enrolled C2 ABI variant remains in `src/_ZN5dBgPiC2Ev.cpp`.
 
 ## 6. The recipe, condensed
 
