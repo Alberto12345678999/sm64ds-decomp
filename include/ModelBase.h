@@ -42,7 +42,8 @@
  * definition wherever the layout is known. D2 and D0 are compiler-generated,
  * not separately writable methods; the one-function intake format repeats the
  * real definition and objisolate keeps the enrolled ABI variant. ModelBase's
- * own three remain hand-spelled until that root lifecycle is proven.
+ * own D2/D0/D1 are now retained this way too: one destructor body owns the
+ * model-file release, while the compiler supplies the vptr and delete paths.
  *
  * What has NOT changed is the declaration order. The destructor stays first,
  * because for a root class vtable slot order IS declaration order.

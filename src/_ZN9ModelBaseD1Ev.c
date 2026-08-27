@@ -1,18 +1,16 @@
-/* _ZN9ModelBaseD1Ev at 0x02017120
- * ModelBase destructor: write own vtable; if member at +4 is non-null,
- * call cleanup(member) (0x02018144); return this.
+//cpp
+// @symbol _ZN9ModelBaseD1Ev
+/* recovered: real C++ ModelBase destructor, D1 retained by objisolate
+ *
+ * The compiler owns the ABI scaffolding. The period-authentic source body is
+ * just the release of ModelBase's owned model file.
  */
-struct ModelBase {
-    void *vtable; /* 0x00 */
-    void *res;    /* 0x04 */
-};
-extern void *_ZTV9ModelBase[];
-extern void Deallocate(void *res); /* 0x02018144 */
-struct ModelBase *_ZN9ModelBaseD1Ev(struct ModelBase *thiz)
+#include "ModelBase.h"
+
+extern "C" void Deallocate(void *ptr);
+
+ModelBase::~ModelBase()
 {
-    thiz->vtable = (void *)_ZTV9ModelBase;
-    if (thiz->res != 0) {
-        Deallocate(thiz->res);
-    }
-    return thiz;
+    if (modelFile)
+        Deallocate(modelFile);
 }

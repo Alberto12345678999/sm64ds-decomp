@@ -1,18 +1,16 @@
-/* _ZN9ModelBaseD2Ev at 0x020170b8
- * ModelBase destructor: write own vtable; if member at +4 is non-null,
- * call cleanup(member) (0x02018144); return this.
+//cpp
+// @symbol _ZN9ModelBaseD2Ev
+/* recovered: real C++ ModelBase destructor, D2 retained by objisolate
+ *
+ * Only releasing the owned model file belongs in the source body. mwccarm
+ * emits the ModelBase vptr reset and this-return convention around it.
  */
-struct ModelBase {
-    void *vtable; /* 0x00 */
-    void *res;    /* 0x04 */
-};
-extern void *_ZTV9ModelBase[];
-extern void Deallocate(void *res); /* 0x02018144 */
-struct ModelBase *_ZN9ModelBaseD2Ev(struct ModelBase *thiz)
+#include "ModelBase.h"
+
+extern "C" void Deallocate(void *ptr);
+
+ModelBase::~ModelBase()
 {
-    thiz->vtable = (void *)_ZTV9ModelBase;
-    if (thiz->res != 0) {
-        Deallocate(thiz->res);
-    }
-    return thiz;
+    if (modelFile)
+        Deallocate(modelFile);
 }

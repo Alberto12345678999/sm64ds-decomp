@@ -1,25 +1,17 @@
-/* ModelBase::~ModelBase (D0/deleting) at 0x020170e8
+//cpp
+// @symbol _ZN9ModelBaseD0Ev
+/* recovered: deleting ABI variant emitted from the real C++ destructor
  *
- *   [this+0]  = _ZTV9ModelBase (0x0208e87c)
- *   ptr = this->unk4; if (ptr) Deallocate(ptr);
- *   Memory::operator_delete2(this);
- *   return this;
+ * The source body owns only the model-file release. mwccarm supplies the vptr
+ * reset and routes deletion through ModelBase::operator delete, which is why
+ * this definition also reproduces the ROM's Memory::operator_delete2 call.
  */
+#include "ModelBase.h"
 
-struct ModelBase {
-    void **vtable;   /* 0x00 */
-    void *unk4;      /* 0x04 */
-};
+extern "C" void Deallocate(void *ptr);
 
-extern void *_ZTV9ModelBase[];
-extern void Deallocate(void *ptr);                  /* 0x02018144 */
-extern void _ZN6Memory16operator_delete2EPv(void *p); /* 0x0203cbcc */
-
-struct ModelBase *_ZN9ModelBaseD0Ev(struct ModelBase *thiz)
+ModelBase::~ModelBase()
 {
-    thiz->vtable = (void **)_ZTV9ModelBase;
-    if (thiz->unk4)
-        Deallocate(thiz->unk4);
-    _ZN6Memory16operator_delete2EPv(thiz);
-    return thiz;
+    if (modelFile)
+        Deallocate(modelFile);
 }
