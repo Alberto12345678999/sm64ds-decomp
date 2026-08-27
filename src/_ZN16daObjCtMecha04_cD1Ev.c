@@ -1,4 +1,4 @@
-// @symbol _ZN20TtcConveyorBeltLargeD1Ev
+// @symbol _ZN16daObjCtMecha04_cD1Ev
 /* recovered: named members + shared header, vtable identified, declarations from a shared header */
 #include "decl_Actor.h"
 #include "decl_Model.h"
@@ -9,7 +9,7 @@
 extern int _ZTV10dBgActor_c[];
 /* recovered: named members + shared header, vtable identified */
 /* vtable identified: VT0 = _ZTV16daObjCtMecha04_c; VT1 = _ZTV10dBgActor_c */
-int *_ZN20TtcConveyorBeltLargeD1Ev(int *t)
+int *_ZN16daObjCtMecha04_cD1Ev(int *t)
 {
     t[0] = (int)_ZTV16daObjCtMecha04_c;
     _ZN11ShadowModelD1Ev((char *)t + 0x334);

@@ -1,9 +1,9 @@
 //cpp
-// @symbol _ZN20TtcConveyorBeltLarge13InitResourcesEv
+// @symbol _ZN16daObjCtMecha04_c13InitResourcesEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 #include "decl_common.h"
 /* recovered: named members + shared header, real C++ method */
-#include "TtcConveyorBeltLarge.h"
+#include "daObjCtMecha04_c.h"
 struct BMD_File;
 struct BTA_File;
 struct KCL_File;
@@ -14,7 +14,7 @@ struct CLPS_Block;
 
 extern "C" void *_ZN5Model8LoadFileER13SharedFilePtr(void *fp);
 
-/* ModelBase is the real class now, through TtcConveyorBeltLarge.h. */
+/* ModelBase is the real class now, through daObjCtMecha04_c.h. */
 
 /* ShadowModel is the real class now, through this actor's header, and it
    declares InitCuboid itself. */
@@ -82,7 +82,7 @@ struct V3 {
     int z;
 };
 
-int TtcConveyorBeltLarge::InitResources()
+int daObjCtMecha04_c::InitResources()
 {
     void *locbuf[2];
     V3 v;
@@ -132,7 +132,7 @@ int TtcConveyorBeltLarge::InitResources()
     *(void **)((char *)&mBeltSpeed) =
         *(void **)((char *)&mTargetBeltSpeed);
     /* 0x32c is +0xc inside the TextureTransformer at 0x320 -- its Animation base's
-       speed. The cartridge's own ~TtcConveyorBeltLarge proves the extent; see
+       speed. The cartridge's own ~daObjCtMecha04_c proves the extent; see
        tools/dtor_members.py. */
     *(void **)((char *)&mTextureTransformer.speed) =
         *(void **)((char *)&mBeltSpeed);

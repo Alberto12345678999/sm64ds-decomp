@@ -1,16 +1,16 @@
 /* AUTO-GENERATED from matched-function evidence by tools/gen_header.py
- * class TtcConveyorBeltLarge: 6 matched functions, 19 evidenced fields.
+ * class daObjCtMecha04_c: 6 matched functions, 19 evidenced fields.
  * Offsets/widths are observed, not guessed. Gaps are explicit padding.
  * Field NAMES are placeholders - renaming cannot change codegen. */
-#ifndef TTCCONVEYORBELTLARGE_H
-#define TTCCONVEYORBELTLARGE_H
+#ifndef DAOBJCTMECHA04_C_H
+#define DAOBJCTMECHA04_C_H
 #include "types.h"
 #include "Model.h"
 #include "dBgW_KcMbg.h"
 #include "ShadowModel.h"
 #include "TextureTransformer.h"
 
-struct TtcConveyorBeltLarge {
+struct daObjCtMecha04_c {
     u8  pad_000[0xc];
     u16 mActorID;            /* 0x00c */
     u8  pad_00e[0x4e];
@@ -27,19 +27,19 @@ struct TtcConveyorBeltLarge {
        short of the object, so the member also takes over unk_0dc (+0x8 = data), which the
        header declared separately inside it. */
     Model mModel;            /* 0x0d4 */
-    /* dBgW_KcMbg member. The cartridge's own ~TtcConveyorBeltLarge calls
+    /* dBgW_KcMbg member. The cartridge's own ~daObjCtMecha04_c calls
        _ZN10dBgW_KcMbgD1Ev at +0x124 (D0/D1), a relocation the ROM build checks;
        recovered by tools/dtor_members.py. D1 and not D2, so it is this type and not an
        inlined base. */
     dBgW_KcMbg mMeshCollider;            /* 0x124 */
     u8  mClsnMat;            /* 0x2ec */
     u8  pad_2ed[0x33];
-    /* TextureTransformer member. The cartridge's own ~TtcConveyorBeltLarge calls
+    /* TextureTransformer member. The cartridge's own ~daObjCtMecha04_c calls
        _ZN18TextureTransformerD1Ev at +0x320 (D0/D1), a relocation the ROM build checks;
        recovered by tools/dtor_members.py. D1 and not D2, so it is this type and not an
        inlined base. */
     TextureTransformer mTextureTransformer;            /* 0x320 */
-    /* ShadowModel member. The cartridge's own ~TtcConveyorBeltLarge calls
+    /* ShadowModel member. The cartridge's own ~daObjCtMecha04_c calls
        _ZN11ShadowModelD1Ev at +0x334 (D0/D1), a relocation the ROM build checks;
        recovered by tools/dtor_members.py. D1 and not D2, so it is this type and not an
        inlined base. */
@@ -60,7 +60,7 @@ struct TtcConveyorBeltLarge {
 #endif
 };
 
-typedef char TtcConveyorBeltLarge_size_must_be_0x3a0[
-    sizeof(struct TtcConveyorBeltLarge) == 0x3a0 ? 1 : -1];
+typedef char daObjCtMecha04_c_size_must_be_0x3a0[
+    sizeof(struct daObjCtMecha04_c) == 0x3a0 ? 1 : -1];
 
 #endif

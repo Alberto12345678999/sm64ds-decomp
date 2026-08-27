@@ -6,13 +6,13 @@
 #include "decl_TextureTransformer.h"
 #include "decl_common.h"
 /* recovered: vtable identified, globals resolved */
-/* resolved: VT0 = _ZTV20TtcConveyorBeltLarge */
+/* resolved: VT0 = _ZTV16daObjCtMecha04_c */
 int *TtcConveyorBeltLarge_Spawn(void)
 {
     int *p = (int *)_ZN7fBase_cnwEj(928);
     if (p) {
         _ZN10dBgActor_cC2Ev(p);
-        p[0] = (int)_ZTV20TtcConveyorBeltLarge;
+        p[0] = (int)_ZTV16daObjCtMecha04_c;
         _ZN18TextureTransformerC1Ev((char *)p + 0x320);
         _ZN11ShadowModelC1Ev((char *)p + 0x334);
     }

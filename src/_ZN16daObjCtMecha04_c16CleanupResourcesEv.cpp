@@ -1,15 +1,15 @@
 //cpp
-// @symbol _ZN20TtcConveyorBeltLarge16CleanupResourcesEv
+// @symbol _ZN16daObjCtMecha04_c16CleanupResourcesEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 #include "decl_common.h"
 /* recovered: named members + shared header, real C++ method */
-#include "TtcConveyorBeltLarge.h"
+#include "daObjCtMecha04_c.h"
 #include "SharedFilePtr.h"
 #include "dBgW.h"
 extern char data_ov065_0211d194[];
 extern char data_ov065_0211d198[];
 
-int TtcConveyorBeltLarge::CleanupResources()
+int daObjCtMecha04_c::CleanupResources()
 {
   if(((dBgW *)((char *)&mMeshCollider))->IsEnabled())
     ((dBgW *)((char *)&mMeshCollider))->Disable();

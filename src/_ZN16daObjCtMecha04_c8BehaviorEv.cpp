@@ -1,11 +1,11 @@
 //cpp
 #include "types.h"
-// @symbol _ZN20TtcConveyorBeltLarge8BehaviorEv
+// @symbol _ZN16daObjCtMecha04_c8BehaviorEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 #include "decl_common.h"
 /* recovered: named members + shared header, real C++ method */
-#include "TtcConveyorBeltLarge.h"
-/* _ZN20TtcConveyorBeltLarge8BehaviorEv at 0x0211a6d0 (ov065), size 0x1a0
+#include "daObjCtMecha04_c.h"
+/* _ZN16daObjCtMecha04_c8BehaviorEv at 0x0211a6d0 (ov065), size 0x1a0
  * Matched byte-for-byte with mwccarm 1.2/sp2p3.
  * flags: -O4,p -enum int -lang c99 -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc
  */
@@ -24,7 +24,7 @@ extern int func_ov065_0211aacc;
 extern int data_0209e650;
 extern int data_ov065_0211c0b8[];
 
-int TtcConveyorBeltLarge::Behavior()
+int daObjCtMecha04_c::Behavior()
 {
     if (data_0209f2c0 == 3) {
         func_020393c4((int*)((char*)&mMeshCollider), 0);
