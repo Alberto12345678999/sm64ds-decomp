@@ -49,7 +49,6 @@ struct Entry3 {
 extern "C" Entry3 data_ov065_0211d194[];
 extern "C" Entry3 data_ov065_0211d198[];
 extern "C" Entry3 data_ov065_0211d19c[];
-extern "C" void _ZN16daObjCtMecha04_c17AfterClsnCallbackEP4dBgWP8dActor_cS3_();
 extern "C" unsigned char data_0209f2c0;
 extern "C" void *data_ov065_0211c0b8[];
 
@@ -96,7 +95,7 @@ int daObjCtMecha04_c::InitResources()
 
     func_020393c4(
         &mMeshCollider,
-        (void *)&_ZN16daObjCtMecha04_c17AfterClsnCallbackEP4dBgWP8dActor_cS3_);
+        (void *)&daObjCtMecha04_c::AfterClsnCallback);
 
     *(void **)((char *)&mTargetBeltSpeed) =
         data_ov065_0211c0b8[data_0209f2c0];

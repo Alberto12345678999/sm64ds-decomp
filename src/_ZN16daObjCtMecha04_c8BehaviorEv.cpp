@@ -19,7 +19,6 @@ extern void* _ZN5Sound8PlayLongEjjjRK7Vector3s(unsigned int a, unsigned int b, u
 }
 
 extern u8 data_0209f2c0;
-extern int _ZN16daObjCtMecha04_c17AfterClsnCallbackEP4dBgWP8dActor_cS3_;
 extern int data_0209e650;
 extern int data_ov065_0211c0b8[];
 
@@ -31,7 +30,8 @@ int daObjCtMecha04_c::Behavior()
     } else {
         if (((mFlags & 8) ? 1 : 0) == 0) {
             if (func_020393bc((int*)((char*)&mMeshCollider)) == 0) {
-                func_020393c4((int*)((char*)&mMeshCollider), (int)&_ZN16daObjCtMecha04_c17AfterClsnCallbackEP4dBgWP8dActor_cS3_);
+                func_020393c4((int*)((char*)&mMeshCollider),
+                              (int)&daObjCtMecha04_c::AfterClsnCallback);
             }
 
             if (data_0209f2c0 == 2) {
@@ -60,6 +60,6 @@ int daObjCtMecha04_c::Behavior()
         _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(((char*)this), 0, 0);
     }
 
-    _ZN16daObjCtMecha04_c12UpdateShadowEv(((char*)this));
+    UpdateShadow();
     return 1;
 }

@@ -1,15 +1,38 @@
-extern void Matrix4x3_FromRotationY(void *m, short ang);
-extern int _ZN8dActor_c18DropShadowScaleXYZER11ShadowModelR9Matrix4x35Fix12IiES5_S5_j(void *self, void *sm, void *mtx, int a, int b, int d, unsigned int e);
-int _ZN16daObjCtMecha04_c12UpdateShadowEv(char *c) {
-    int d1 = *(int*)(c+0x60) - *(int*)(c+0x394);
-    int ad = d1 < 0 ? -d1 : d1;
-    if (ad > 0x7d0000) return ad;
-    Matrix4x3_FromRotationY(c+0x35c, *(short*)(c+0x8e));
-    *(int*)(c+0x380) = *(int*)(c+0x5c) >> 3;
-    *(int*)(c+0x384) = (*(int*)(c+0x394) + 0x1000) >> 3;
-    *(int*)(c+0x388) = *(int*)(c+0x64) >> 3;
-    int b = (int)(*(unsigned short*)(c+0xc) == 0x6f);
-    if (b != 0)
-        return _ZN8dActor_c18DropShadowScaleXYZER11ShadowModelR9Matrix4x35Fix12IiES5_S5_j(c, c+0x334, c+0x35c, 0x1f4000, 0x32000, 0x3e8000, 0xf);
-    return _ZN8dActor_c18DropShadowScaleXYZER11ShadowModelR9Matrix4x35Fix12IiES5_S5_j(c, c+0x334, c+0x35c, 0x1f4000, 0x32000, 0x320000, 0xf);
+//cpp
+// @symbol _ZN16daObjCtMecha04_c12UpdateShadowEv
+/* Inferred descriptive name. The owned ShadowModel and its matrix are fixed by
+ * the destructor, field accesses, and dActor_c::DropShadowScaleXYZ call. */
+#include "daObjCtMecha04_c.h"
+
+extern "C" void Matrix4x3_FromRotationY(Matrix4x3 *matrix, s16 angle);
+/* The real declaration takes three Fix12<int> values by value. This compiler
+ * homes those class-typed arguments in the caller, unlike the cartridge call;
+ * keep the measured register/stack ABI at this one boundary (notes 6az). */
+extern "C" void _ZN8dActor_c18DropShadowScaleXYZER11ShadowModelR9Matrix4x35Fix12IiES5_S5_j(
+    dActor_c *actor, ShadowModel *shadow, Matrix4x3 *matrix,
+    int scaleX, int scaleY, int scaleZ, u32 opacity);
+
+void daObjCtMecha04_c::UpdateShadow()
+{
+    int heightDiff = mPosY - mGroundY;
+    int absHeightDiff = heightDiff < 0 ? -heightDiff : heightDiff;
+    if (absHeightDiff > 0x7d0000)
+        return;
+
+    Matrix4x3_FromRotationY(&mShadowMat, mAngleY);
+    mShadowMat.m[9] = mPosX >> 3;
+    mShadowMat.m[10] = (mGroundY + 0x1000) >> 3;
+    mShadowMat.m[11] = mPosZ >> 3;
+
+    int isLarge = (int)(actorID == 0x6f);
+    if (isLarge != 0) {
+        _ZN8dActor_c18DropShadowScaleXYZER11ShadowModelR9Matrix4x35Fix12IiES5_S5_j(
+            this, &mShadowModel, &mShadowMat,
+            0x1f4000, 0x32000, 0x3e8000, 0xf);
+        return;
+    }
+
+    _ZN8dActor_c18DropShadowScaleXYZER11ShadowModelR9Matrix4x35Fix12IiES5_S5_j(
+        this, &mShadowModel, &mShadowMat,
+        0x1f4000, 0x32000, 0x320000, 0xf);
 }

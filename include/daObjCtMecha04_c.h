@@ -35,6 +35,10 @@ struct daObjCtMecha04_c : dBgActor_c {
     int CleanupResources();
     int InitResources();
     int Render();
+    void UpdateShadow();
+    void MoveActorOnBelt(dActor_c &actor);
+    static void AfterClsnCallback(dBgW *collider, dActor_c *owner,
+                                  dActor_c *other);
 };
 
 typedef char daObjCtMecha04_c_size_must_be_0x3a0[

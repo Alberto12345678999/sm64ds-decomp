@@ -1546,7 +1546,6 @@ extern int func_ov064_0211616c(void*);
 extern int func_ov065_021180d4(char*);
 extern int func_ov065_02119210(int);
 extern int func_ov065_0211a114(char*);
-extern int _ZN16daObjCtMecha04_c12UpdateShadowEv(char*);
 extern int func_ov070_0211f0a4(void*);
 extern int func_ov072_0211f0a4(char*);
 extern int func_ov072_0211f1dc(char*);
