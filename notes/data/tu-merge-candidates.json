@@ -3271,8 +3271,8 @@
    "n_functions_map": 16,
    "n_files": 16,
    "files": [
-    "src/_ZN13UpDownLiftBbhD1Ev.c",
-    "src/_ZN13UpDownLiftBbhD0Ev.c",
+    "src/_ZN13UpDownLiftBbhD1Ev.cpp",
+    "src/_ZN13UpDownLiftBbhD0Ev.cpp",
     "src/func_ov095_02136090.cpp",
     "src/func_ov095_02136104.cpp",
     "src/func_ov095_02136178.c",
