@@ -2300,7 +2300,7 @@ extern void func_ov002_020f15b8(void*, void*, void*);
 extern void func_ov002_020f64ac(void*, void*);
 extern void func_ov002_020f6514(unsigned char*, void*, unsigned char);
 extern void func_ov002_020f6a50(void*);
-extern void func_ov002_020feab8(void*);
+extern void _ZN8dM3dGLinD2Ev(void*);
 extern void func_ov002_020fed2c(char*, void*);
 extern void func_ov002_020fed7c(char*);
 extern void func_ov003_020adfc8(char*);

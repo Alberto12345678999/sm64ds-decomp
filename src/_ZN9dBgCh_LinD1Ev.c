@@ -1,16 +1,14 @@
+//cpp
 // @symbol _ZN9dBgCh_LinD1Ev
-/* recovered: named members + shared header, declarations from a shared header */
-#include "decl_common.h"
-/* recovered: named members + shared header */
+/* recovered: real C++ destructor -- the compiler emits the complete MI teardown
+ *
+ * The old C body manually restored both dBgCh_Lin vptr blocks, destroyed the
+ * dM3dGSph member, then tore down dM3dGLin, dBgPi, and dBgCh in reverse
+ * declaration order. All of that follows from the shared class declaration,
+ * so the period-accurate source body is empty.
+ */
 #include "dBgCh_Lin.h"
-extern int _ZTV9dBgCh_Lin[];
-extern int VTable_dBgPi_dBgCh_LinThunk[];
-int *_ZN9dBgCh_LinD1Ev(struct dBgCh_Lin *self) {
-    ((int *)self)[0] = (int)_ZTV9dBgCh_Lin;
-    *(int *)((char *)&self->mBgPiBase) = (int)VTable_dBgPi_dBgCh_LinThunk;
-    _ZN8dM3dGSphD1Ev((char *)&self->mBoundSphere);
-    func_ov002_020feab8((char *)&self->mLineBase);
-    _ZN5dBgPiD2Ev((char *)&self->mBgPiBase);
-    _ZN5dBgChD2Ev(((int *)self));
-    return ((int *)self);
+
+dBgCh_Lin::~dBgCh_Lin()
+{
 }
