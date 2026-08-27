@@ -38,9 +38,24 @@ struct FaderColor : FaderBrightness {
        gives this field, so it is named for that now. */
     u16 color;
 
+    /* Inline, and it owns exactly one store. In _ZN9FaderWipeC1Ev the
+       `strh r2, [r4,#0xc]` that zeroes this field comes after this class's own
+       vtable store and before FaderWipe's, which is what places it in
+       FaderColor's constructor rather than a neighbour's. Inline for the same
+       reason as FaderBrightness's: the ROM has no out-of-line constructor for
+       this class either. */
+    FaderColor();
+
     virtual ~FaderColor();          /* key function; see above */
     virtual void AdvanceFade();     /* slot 2 -- the only override */
 };
+
+/* Defined out of line so the declaration inside the struct is a plain
+   declaration -- tools/check_header_offsets.py cannot parse a member with an
+   inline body and reports the whole header UNPARSED. `inline` keeps the
+   emission identical: the body still goes wherever it is used, and the ROM
+   has no out-of-line constructor for this class. */
+inline FaderColor::FaderColor() { color = 0; }
 
 typedef char FaderColor_size_must_be_0x10[sizeof(FaderColor) == 0x10 ? 1 : -1];
 #else

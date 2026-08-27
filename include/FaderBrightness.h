@@ -23,8 +23,20 @@
  */
 #ifdef __cplusplus
 struct FaderBrightness : Fader {
-    /* Declared first -- key function. The D0/D1/D2 sources now define the real
-       destructor and isolate the requested variant from mwcc's emitted group. */
+    /* Inline, and this is where the interpolator's initial state is set. The
+       ROM's evidence is the order inside _ZN9FaderWipeC1Ev (0x02017480), the
+       chain's only surviving constructor: Fader's vtable, then THIS class's
+       vtable, and only THEN `currInterp = 0x1000; speed = 0`. A field write
+       that follows a sub-object's own vptr store belongs to that sub-object's
+       constructor, so those two are FaderBrightness's, not Fader's. A fade
+       therefore starts fully opaque and stationary. Inline because the ROM has
+       no out-of-line constructor for this class: it is emitted into
+       FaderWipe's. */
+    FaderBrightness();
+
+    /* Declared first among the virtuals -- key function. The D0/D1/D2 sources
+       now define the real destructor and isolate the requested variant from
+       mwcc's emitted group. */
     virtual ~FaderBrightness();
 
     virtual void AdvanceFade();                 /* slot 2 */
@@ -36,6 +48,13 @@ struct FaderBrightness : Fader {
     virtual void SetToEnd();                    /* slot 8 */
     virtual void SetToStart();                  /* slot 9 */
 };
+
+/* Defined out of line so the declaration inside the struct is a plain
+   declaration -- tools/check_header_offsets.py cannot parse a member with an
+   inline body and reports the whole header UNPARSED. `inline` keeps the
+   emission identical: the body still goes wherever it is used, and the ROM
+   has no out-of-line constructor for this class. */
+inline FaderBrightness::FaderBrightness() { currInterp = 0x1000; speed = 0; }
 
 typedef char FaderBrightness_size_must_be_0xc[sizeof(FaderBrightness) == 0xc ? 1 : -1];
 #else
