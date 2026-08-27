@@ -1,6 +1,6 @@
 extern void Matrix4x3_FromRotationY(void *m, short ang);
 extern int _ZN8dActor_c18DropShadowScaleXYZER11ShadowModelR9Matrix4x35Fix12IiES5_S5_j(void *self, void *sm, void *mtx, int a, int b, int d, unsigned int e);
-int func_ov065_0211a550(char *c) {
+int _ZN16daObjCtMecha04_c12UpdateShadowEv(char *c) {
     int d1 = *(int*)(c+0x60) - *(int*)(c+0x394);
     int ad = d1 < 0 ? -d1 : d1;
     if (ad > 0x7d0000) return ad;

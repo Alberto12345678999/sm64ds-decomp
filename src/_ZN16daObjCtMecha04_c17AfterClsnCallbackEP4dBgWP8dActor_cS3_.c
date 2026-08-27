@@ -4,9 +4,9 @@
 // `#pragma long_calls on` with a comment crediting it, but long_calls is not a pragma
 // mwccarm recognises (verified with -w illpragmas, see notes 6as) -- it was silently
 // ignored, and the function matches on all 12 builds without it.
-extern int func_ov065_0211aa38(void *b, void *c);
+extern int _ZN16daObjCtMecha04_c15MoveActorOnBeltER8dActor_c(void *b, void *c);
 
-int func_ov065_0211aacc(void *a, void *b, void *c)
+int _ZN16daObjCtMecha04_c17AfterClsnCallbackEP4dBgWP8dActor_cS3_(void *a, void *b, void *c)
 {
-    return func_ov065_0211aa38(b, c);
+    return _ZN16daObjCtMecha04_c15MoveActorOnBeltER8dActor_c(b, c);
 }

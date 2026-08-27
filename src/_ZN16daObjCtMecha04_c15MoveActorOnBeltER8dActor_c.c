@@ -1,6 +1,6 @@
 
 extern short data_02082214[];
-void func_ov065_0211aa38(char *r0, char *r1)
+void _ZN16daObjCtMecha04_c15MoveActorOnBeltER8dActor_c(char *r0, char *r1)
 {
   unsigned short ang = *((unsigned short *) (r0 + 0x8e));
   int idx = ang >> 4;

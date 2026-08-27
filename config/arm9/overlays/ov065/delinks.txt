@@ -384,7 +384,7 @@ src/_ZN16daObjCtMecha04_cD0Ev.cpp:
     complete
     .text start:0x0211a4e8 end:0x0211a550
 
-src/func_ov065_0211a550.c:
+src/_ZN16daObjCtMecha04_c12UpdateShadowEv.c:
     complete
     .text start:0x0211a550 end:0x0211a638
 
@@ -404,11 +404,11 @@ src/_ZN16daObjCtMecha04_c13InitResourcesEv.cpp:
     complete
     .text start:0x0211a870 end:0x0211aa38
 
-src/func_ov065_0211aa38.c:
+src/_ZN16daObjCtMecha04_c15MoveActorOnBeltER8dActor_c.c:
     complete
     .text start:0x0211aa38 end:0x0211aacc
 
-src/func_ov065_0211aacc.c:
+src/_ZN16daObjCtMecha04_c17AfterClsnCallbackEP4dBgWP8dActor_cS3_.c:
     complete
     .text start:0x0211aacc end:0x0211aae0
 
