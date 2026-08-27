@@ -5098,11 +5098,11 @@ src/_ZN9dBgCh_Lin13SetObjAndLineERK7Vector3S2_P8dActor_c.cpp:
     complete
     .text start:0x02037670 end:0x02037710
 
-src/func_02037710.c:
+src/_ZN9dBgCh_LinD0Ev.cpp:
     complete
     .text start:0x02037710 end:0x02037764
 
-src/_ZN9dBgCh_LinD1Ev.c:
+src/_ZN9dBgCh_LinD1Ev.cpp:
     complete
     .text start:0x02037764 end:0x020377b0
 

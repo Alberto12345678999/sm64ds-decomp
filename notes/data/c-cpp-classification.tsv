@@ -3876,7 +3876,7 @@ src/func_ov002_020f8b24.c	WEAK-refs-only	ov002				1		None		-
 src/func_ov002_020f9468.c	WEAK-refs-only	ov002				1		None		-
 src/func_ov002_020fea4c.c	PURE-C	ov002				1		None		-
 src/func_ov002_020fea68.c	PURE-C	ov002				1		None		-
-src/func_ov002_020feab8.c	PURE-C	ov002				1		None		-
+src/_ZN8dM3dGLinD2Ev.cpp	CPP	ov002				1		None		-
 src/func_ov002_020fec94.c	WEAK-refs-only	ov002				1		None		-
 src/func_ov002_020fed18.c	PURE-C	ov002				1		None		-
 src/func_ov002_020fed7c.c	PURE-C	ov002				1		None		-
