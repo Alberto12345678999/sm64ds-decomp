@@ -4444,7 +4444,7 @@ src/_ZN4ViewD0Ev.cpp:
     complete
     .text start:0x0202fcc8 end:0x0202fd0c
 
-src/_ZN4View6RenderEv.c:
+src/_ZN4View6RenderEv.cpp:
     complete
     .text start:0x0202fd0c end:0x0202fd2c
 
