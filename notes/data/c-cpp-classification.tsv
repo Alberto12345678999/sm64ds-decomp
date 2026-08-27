@@ -941,8 +941,8 @@ src/_ZN5FaderD2Ev.c	DTOR-ONLY	arm9		Fader	_ZN5FaderD2Ev	1		True		-
 src/_ZN5ModelC1Ev.c	P3-mangled-method-only	arm9		Model	_ZN5ModelC1Ev	1		True	_ZTV5Model	-
 src/_ZN5ModelC2Ev.cpp	P3-mangled-method-only	arm9		Model	_ZN5ModelC2Ev	1		True	_ZTV5Model	-
 src/_ZN5ModelD0Ev.cpp	DTOR-ONLY	arm9	dExtSimpleModel_c	Model/dExtSimpleModel_c	_ZN5ModelD0Ev	1		True	_ZTV5Model	-
-src/_ZN5ModelD1Ev.c	DTOR-ONLY			Model	_ZN5ModelD1Ev	0		True	_ZTV5Model	not-in-delinks
-src/_ZN5ModelD2Ev.cpp	DTOR-ONLY			Model	_ZN5ModelD2Ev	0		True	_ZTV5Model	not-in-delinks
+src/_ZN5ModelD1Ev.cpp	DTOR-ONLY	arm9		Model	_ZN5ModelD1Ev	1		True	_ZTV5Model	-
+src/_ZN5ModelD2Ev.cpp	DTOR-ONLY	arm9		Model	_ZN5ModelD2Ev	1		True	_ZTV5Model	-
 src/_ZN5PokeyD0Ev.c	DTOR-ONLY	ov096	daSanbo_c	Pokey/daSanbo_c	_ZN5PokeyD0Ev	1		True		-
 src/_ZN5Sound17ChangeMusicVolumeEj5Fix12IiE.c	P3-mangled-method-only	arm9		Sound	_ZN5Sound17ChangeMusicVolumeEj5Fix12IiE	1		True		by-value-class-param
 src/_ZN5Sound4PlayEjjRK7Vector3.c	P3-mangled-method-only	arm9		Sound	_ZN5Sound4PlayEjjRK7Vector3	1	active	True		-
@@ -3876,7 +3876,7 @@ src/func_ov002_020f8b24.c	WEAK-refs-only	ov002				1		None		-
 src/func_ov002_020f9468.c	WEAK-refs-only	ov002				1		None		-
 src/func_ov002_020fea4c.c	PURE-C	ov002				1		None		-
 src/func_ov002_020fea68.c	PURE-C	ov002				1		None		-
-src/func_ov002_020feab8.c	PURE-C	ov002				1		None		-
+src/_ZN8dM3dGLinD2Ev.cpp	CPP	ov002				1		None		-
 src/func_ov002_020fec94.c	WEAK-refs-only	ov002				1		None		-
 src/func_ov002_020fed18.c	PURE-C	ov002				1		None		-
 src/func_ov002_020fed7c.c	PURE-C	ov002				1		None		-
