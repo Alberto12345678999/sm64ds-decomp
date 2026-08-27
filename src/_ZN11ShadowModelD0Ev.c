@@ -1,30 +1,25 @@
-struct ShadowModel {
-    void **vtable;       /* 0x0  */
-    char pad[0x1c];
-    struct ShadowModel *prev;   /* 0x20 */
-    struct ShadowModel *next;   /* 0x24 */
-};
-extern void *_ZTV11ShadowModel[];
-extern struct ShadowModel *data_0209cef4;   /* 0x0209cef4 */
-extern void _ZN9ModelBaseD2Ev(struct ShadowModel *thiz);
-extern void _ZN6Memory16operator_delete2EPv(void *ptr);
+//cpp
+// @symbol _ZN11ShadowModelD0Ev
+/* recovered: the deleting ABI variant emitted from the real C++ destructor
+ *
+ * The source body is intentionally the same as D1. mwccarm supplies the vptr
+ * reset, ModelBase subobject teardown and Memory::operator delete wrapper that
+ * distinguish D0 from D1; the 2004 EAD source only had this destructor body.
+ */
+#include "ShadowModel.h"
 
-struct ShadowModel *_ZN11ShadowModelD0Ev(struct ShadowModel *thiz)
+extern ShadowModel *data_0209cef4;  /* head of the live-shadow list */
+
+ShadowModel::~ShadowModel()
 {
-    thiz->vtable = (void **)_ZTV11ShadowModel;
+    if (prev)
+        prev->next = next;
+    else if (data_0209cef4 == this)
+        data_0209cef4 = next;
 
-    if (thiz->prev)
-        thiz->prev->next = thiz->next;
-    else if (data_0209cef4 == thiz)
-        data_0209cef4 = thiz->next;
+    if (next)
+        next->prev = prev;
 
-    if (thiz->next)
-        thiz->next->prev = thiz->prev;
-
-    thiz->prev = 0;
-    thiz->next = 0;
-
-    _ZN9ModelBaseD2Ev(thiz);
-    _ZN6Memory16operator_delete2EPv(thiz);
-    return thiz;
+    prev = 0;
+    next = 0;
 }
