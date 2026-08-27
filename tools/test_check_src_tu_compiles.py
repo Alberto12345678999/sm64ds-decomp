@@ -191,6 +191,19 @@ class WorkListTests(unittest.TestCase):
             self.assertFalse(report["ok"])
             self.assertTrue(failures_of(report, "coverage"))
 
+    def test_a_promoted_source_may_live_outside_the_shadow_root(self):
+        """The manifest also describes production TUs under src/. Coverage must
+        check those at their repo-relative path, not pretend every source belongs
+        beneath the src_tu shadow root."""
+        with Scratch() as s:
+            s.write("Probe.h", HEADER_OK).write("Probe.cpp", UNIT)
+            shadow_root = s.dir / "shadow"
+            shadow_root.mkdir()
+            report = CC.check(s.manifest(s.entry()), shadow_root,
+                              include_dirs=[s.dir])
+            self.assertTrue(report["ok"], report["failures"])
+            self.assertEqual(report["checked"]["compiled"], 1)
+
     def test_a_missing_manifest_fails(self):
         report = CC.check(REPO / "build" / "no-such-manifest.json", REPO / "src_tu")
         self.assertFalse(report["ok"])
