@@ -2372,15 +2372,15 @@ src/func_02017060.c:
     complete
     .text start:0x02017060 end:0x020170b8
 
-src/_ZN9ModelBaseD2Ev.c:
+src/_ZN9ModelBaseD2Ev.cpp:
     complete
     .text start:0x020170b8 end:0x020170e8
 
-src/_ZN9ModelBaseD0Ev.c:
+src/_ZN9ModelBaseD0Ev.cpp:
     complete
     .text start:0x020170e8 end:0x02017120
 
-src/_ZN9ModelBaseD1Ev.c:
+src/_ZN9ModelBaseD1Ev.cpp:
     complete
     .text start:0x02017120 end:0x02017150
 
