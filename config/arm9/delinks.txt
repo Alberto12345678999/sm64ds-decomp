@@ -1924,15 +1924,15 @@ src/_ZN5dCc_c4InitE5Fix12IiES1_jj.cpp:
     complete
     .text start:0x02015040 end:0x02015058
 
-src/_ZN5dCc_cD2Ev.c:
+src/_ZN5dCc_cD2Ev.cpp:
     complete
     .text start:0x02015058 end:0x0201507c
 
-src/_ZN5dCc_cD0Ev.c:
+src/_ZN5dCc_cD0Ev.cpp:
     complete
     .text start:0x0201507c end:0x020150a8
 
-src/_ZN5dCc_cD1Ev.c:
+src/_ZN5dCc_cD1Ev.cpp:
     complete
     .text start:0x020150a8 end:0x020150cc
 
