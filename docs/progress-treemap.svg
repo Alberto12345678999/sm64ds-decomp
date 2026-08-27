@@ -6421,7 +6421,7 @@ matched: yes</title></rect><rect x="91.51" y="504.75" width="5.17" height="5.71"
 module: arm9
 addr: 0x0203ca80
 size: 44 bytes
-matched: yes</title></rect><rect x="96.68" y="504.75" width="7.05" height="5.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN4HeapC1EPvjPS_
+matched: yes</title></rect><rect x="96.68" y="504.75" width="7.05" height="5.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN4HeapC2EPvjPS_
 module: arm9
 addr: 0x0203caac
 size: 60 bytes
