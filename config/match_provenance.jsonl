@@ -444,3 +444,4 @@
 {"id":"arm9:0x02015ce8","module":"arm9","addr":33643752,"name":"_ZN9AnimationD1Ev","matchProvenance":{"kind":"ai","model":"gpt-5","reasoning":"high","harness":"codex"},"author":"tangosdev","srcPath":"src/_ZN9AnimationD1Ev.cpp"}
 {"id":"arm9:0x02016ca8","module":"arm9","addr":33647784,"name":"_ZN5ModelD2Ev","matchProvenance":{"kind":"ai","model":"gpt-5","reasoning":"high","harness":"codex"},"author":"tangosdev","srcPath":"src/_ZN5ModelD2Ev.cpp"}
 {"id":"arm9:0x02016ce0","module":"arm9","addr":33647840,"name":"_ZN5ModelD0Ev","matchProvenance":{"kind":"ai","model":"gpt-5","reasoning":"high","harness":"codex"},"author":"tangosdev","srcPath":"src/_ZN5ModelD0Ev.cpp"}
+{"id":"arm9:0x02015f80","module":"arm9","addr":33644416,"name":"_ZN11ShadowModelD0Ev","matchProvenance":{"kind":"ai","model":"gpt-5","reasoning":"high","harness":"codex"},"author":"tangosdev","srcPath":"src/_ZN11ShadowModelD0Ev.cpp"}
