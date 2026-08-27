@@ -2328,7 +2328,10 @@ src/_ZN5Model11UpdateVertsEv.cpp:
     complete
     .text start:0x02016c98 end:0x02016ca8
 
-src/_ZN5ModelD0Ev.c:
+src/_ZN5ModelD2Ev.cpp:
+    .text start:0x02016ca8 end:0x02016ce0
+
+src/_ZN5ModelD0Ev.cpp:
     complete
     .text start:0x02016ce0 end:0x02016d20
 

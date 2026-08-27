@@ -11649,7 +11649,7 @@
     "src/_ZN5Model9Virtual10ER9Matrix4x3.cpp",
     "src/_ZN5Model9DoSetFileEPcii.cpp",
     "src/_ZN5Model11UpdateVertsEv.cpp",
-    "src/_ZN5ModelD0Ev.c",
+    "src/_ZN5ModelD0Ev.cpp",
     "src/_ZN5ModelC1Ev.c",
     "src/_ZN5ModelC2Ev.c",
     "src/func_02016e70.c",
