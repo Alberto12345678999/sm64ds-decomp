@@ -700,7 +700,7 @@ src/_ZN6Camera13InitResourcesEv.cpp:
     complete
     .text start:0x0200e338 end:0x0200e444
 
-src/_ZN6CameraC1Ev.cpp:
+src/_ZN6CameraC1Ev.c:
     complete
     .text start:0x0200e444 end:0x0200e494
 
