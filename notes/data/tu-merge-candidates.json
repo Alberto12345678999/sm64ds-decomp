@@ -11594,7 +11594,7 @@
     "src/_ZN11ShadowModel8CleanAllEv.cpp",
     "src/_ZN11ShadowModel9InitModelEP9Matrix4x35Fix12IiES3_S3_j.c",
     "src/_ZN11ShadowModel9DoSetFileEPcii.cpp",
-    "src/_ZN11ShadowModelD0Ev.c",
+    "src/_ZN11ShadowModelD0Ev.cpp",
     "src/_ZN11ShadowModelD1Ev.cpp",
     "src/_ZN11ShadowModelC1Ev.c",
     "src/_ZN11CommonModel12SetPolygonIDEj.cpp",

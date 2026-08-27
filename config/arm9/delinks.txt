@@ -2108,7 +2108,7 @@ src/_ZN11ShadowModel9DoSetFileEPcii.cpp:
     complete
     .text start:0x02015ef4 end:0x02015f80
 
-src/_ZN11ShadowModelD0Ev.c:
+src/_ZN11ShadowModelD0Ev.cpp:
     complete
     .text start:0x02015f80 end:0x02015ff8
 
