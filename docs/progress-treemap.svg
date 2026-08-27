@@ -5157,7 +5157,7 @@ matched: yes</title></rect><rect x="75.02" y="459.58" width="21.38" height="5.02
 module: arm9
 addr: 0x02037670
 size: 160 bytes
-matched: yes</title></rect><rect x="96.40" y="459.58" width="11.22" height="5.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02037710
+matched: yes</title></rect><rect x="96.40" y="459.58" width="11.22" height="5.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9dBgCh_LinD0Ev
 module: arm9
 addr: 0x02037710
 size: 84 bytes
@@ -18521,7 +18521,7 @@ matched: yes</title></rect><rect x="453.74" y="990.32" width="7.40" height="4.68
 module: ov002
 addr: 0x020fea84
 size: 52 bytes
-matched: yes</title></rect><rect x="461.14" y="843.15" width="0.53" height="4.99" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020feab8
+matched: yes</title></rect><rect x="461.14" y="843.15" width="0.53" height="4.99" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dM3dGLinD2Ev
 module: ov002
 addr: 0x020feab8
 size: 4 bytes
@@ -37289,39 +37289,39 @@ matched: yes</title></rect><rect x="1303.77" y="463.51" width="6.24" height="4.2
 module: ov065
 addr: 0x0211a45c
 size: 56 bytes
-matched: yes</title></rect><rect x="1303.77" y="467.80" width="6.24" height="6.44" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN20TtcConveyorBeltLargeD1Ev
+matched: yes</title></rect><rect x="1303.77" y="467.80" width="6.24" height="6.44" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN16daObjCtMecha04_cD1Ev
 module: ov065
 addr: 0x0211a494
 size: 84 bytes
-matched: yes</title></rect><rect x="1303.77" y="474.24" width="6.24" height="7.97" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN20TtcConveyorBeltLargeD0Ev
+matched: yes</title></rect><rect x="1303.77" y="474.24" width="6.24" height="7.97" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN16daObjCtMecha04_cD0Ev
 module: ov065
 addr: 0x0211a4e8
 size: 104 bytes
-matched: yes</title></rect><rect x="1303.77" y="482.22" width="6.24" height="17.79" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov065_0211a550
+matched: yes</title></rect><rect x="1303.77" y="482.22" width="6.24" height="17.79" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN16daObjCtMecha04_c12UpdateShadowEv
 module: ov065
 addr: 0x0211a550
 size: 232 bytes
-matched: yes</title></rect><rect x="1303.77" y="500.00" width="6.24" height="7.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN20TtcConveyorBeltLarge16CleanupResourcesEv
+matched: yes</title></rect><rect x="1303.77" y="500.00" width="6.24" height="7.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN16daObjCtMecha04_c16CleanupResourcesEv
 module: ov065
 addr: 0x0211a638
 size: 100 bytes
-matched: yes</title></rect><rect x="1303.77" y="507.67" width="6.24" height="3.99" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN20TtcConveyorBeltLarge6RenderEv
+matched: yes</title></rect><rect x="1303.77" y="507.67" width="6.24" height="3.99" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN16daObjCtMecha04_c6RenderEv
 module: ov065
 addr: 0x0211a69c
 size: 52 bytes
-matched: yes</title></rect><rect x="1310.01" y="443.57" width="26.02" height="7.65" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN20TtcConveyorBeltLarge8BehaviorEv
+matched: yes</title></rect><rect x="1310.01" y="443.57" width="26.02" height="7.65" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN16daObjCtMecha04_c8BehaviorEv
 module: ov065
 addr: 0x0211a6d0
 size: 416 bytes
-matched: yes</title></rect><rect x="1336.03" y="443.57" width="28.52" height="7.65" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN20TtcConveyorBeltLarge13InitResourcesEv
+matched: yes</title></rect><rect x="1336.03" y="443.57" width="28.52" height="7.65" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN16daObjCtMecha04_c13InitResourcesEv
 module: ov065
 addr: 0x0211a870
 size: 456 bytes
-matched: yes</title></rect><rect x="1364.55" y="443.57" width="9.26" height="7.65" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov065_0211aa38
+matched: yes</title></rect><rect x="1364.55" y="443.57" width="9.26" height="7.65" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN16daObjCtMecha04_c15MoveActorOnBeltER8dActor_c
 module: ov065
 addr: 0x0211aa38
 size: 148 bytes
-matched: yes</title></rect><rect x="1310.01" y="451.22" width="5.35" height="1.79" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov065_0211aacc
+matched: yes</title></rect><rect x="1310.01" y="451.22" width="5.35" height="1.79" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN16daObjCtMecha04_c17AfterClsnCallbackEP4dBgWP8dActor_cS3_
 module: ov065
 addr: 0x0211aacc
 size: 20 bytes
@@ -39397,7 +39397,7 @@ matched: yes</title></rect><rect x="1148.57" y="554.28" width="5.55" height="12.
 module: ov075
 addr: 0x02113f54
 size: 136 bytes
-matched: yes</title></rect><rect x="1148.57" y="566.74" width="5.55" height="4.76" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov075_02113fdc
+matched: yes</title></rect><rect x="1148.57" y="566.74" width="5.55" height="4.76" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15UnknownVsPlayerD1Ev
 module: ov075
 addr: 0x02113fdc
 size: 52 bytes
@@ -39553,7 +39553,7 @@ matched: yes</title></rect><rect x="1178.19" y="615.93" width="9.29" height="8.1
 module: ov075
 addr: 0x021159f4
 size: 148 bytes
-matched: yes</title></rect><rect x="1178.19" y="624.04" width="9.29" height="2.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov075_02115a88
+matched: yes</title></rect><rect x="1178.19" y="624.04" width="9.29" height="2.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15UnknownVsPlayerC1Ev
 module: ov075
 addr: 0x02115a88
 size: 48 bytes
