@@ -304,11 +304,11 @@ s32 fBase_c::CleanupResources()
 /* ------------------------------------------------------------------------- */
 /* ROM ordinal 15 -- fBase_c::BeforeCleanupResources, 0x02043bac, 0x44     */
 /* ------------------------------------------------------------------------- */
-/* vtable slot 4. Refuses cleanup while unk_048 is still busy, or once the
+/* vtable slot 4. Refuses cleanup while lifecycleState is still busy, or once the
  * scene node has been unlinked. */
 int fBase_c::BeforeCleanupResources()
 {
-    int v = (int)unk_048;
+    int v = (int)lifecycleState;
     if (v != 0) {
         if (func_0204424c(v) == 0)
             goto ret0;
@@ -326,7 +326,7 @@ ret1:
 /* ------------------------------------------------------------------------- */
 /* vtable slot 5, and the one member that destroys the object. Only runs on
  * VS_SUCCESS (2): unlink the scene node and the behaviour node, tear down the
- * actor's own heap and unk_048, then run the destructor and free.
+ * actor's own heap and lifecycle state, then run the destructor and free.
  *
  * THE DESTRUCTOR CALL IS A VIRTUAL DISPATCH THROUGH vtable+0x40, AND THAT IS
  * SLOT 16 -- the D1 complete-object destructor, NOT OnPendingDestroy, which is
@@ -355,8 +355,8 @@ void fBase_c::AfterCleanupResources(u32 vfSuccess)
     func_0203b27c(data_020a4ba8, &manager.behaviorNode);
     if (heap)
         _ZN4Heap8_DestroyEv(heap);
-    if (unk_048)
-        func_02044334(unk_048);
+    if (lifecycleState)
+        func_02044334(lifecycleState);
     this->~fBase_c();   /* vtable+0x40 = slot 16 = D1 */
     _ZN6Memory10DeallocateEPvP4Heap(this, data_020a0eac);
 }

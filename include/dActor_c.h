@@ -284,7 +284,7 @@ struct dActor_c {
     u8  sceneNode[0x14];    /* 0x014 */
     u8  behavNode[0x10];    /* 0x028 */
     u8  renderNode[0x10];   /* 0x038 */
-    void *unk_048;          /* 0x048 */
+    void *lifecycleState;   /* 0x048 */
     void *heap;             /* 0x04c */
     void *mListPrev;        /* 0x050 */
     void *mListNext;        /* 0x054 */

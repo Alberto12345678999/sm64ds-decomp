@@ -31,8 +31,8 @@ void fBase_c::AfterCleanupResources(u32 vfSuccess)
 
     if (heap)
         static_cast<Heap *>(heap)->_Destroy();
-    if (unk_048)
-        func_02044334(unk_048);
+    if (lifecycleState)
+        func_02044334(lifecycleState);
 
     this->~fBase_c();
     fBase_c::operator delete(this);

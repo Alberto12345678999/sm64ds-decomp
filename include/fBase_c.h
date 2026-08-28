@@ -90,7 +90,10 @@ struct fBase_c {
        parent's 1|2 and 4|8 down. BeforeBehavior gates on 2, BeforeRender on 8. */
     u8  pauseFlags;                           /* 0x13 */
     Manager manager;                          /* 0x14 */
-    void *unk_048;                            /* 0x48 */
+    /* Optional lifecycle-operation sequence. BeforeCleanupResources waits for
+       it to leave its pending state, and AfterCleanupResources drains it.
+       The role is ROM-proven; the original member spelling is not. */
+    void *lifecycleState;                     /* 0x48 */
     void *heap;                               /* 0x4c -- Heap*, owned */
 
     fBase_c();
@@ -146,7 +149,7 @@ struct fBase_c {
     u8  unk_012;            /* 0x12 */
     u8  pauseFlags;         /* 0x13 */
     u8  manager[0x34];      /* 0x14 */
-    void *unk_048;          /* 0x48 */
+    void *lifecycleState;   /* 0x48 */
     void *heap;             /* 0x4c */
 };
 
