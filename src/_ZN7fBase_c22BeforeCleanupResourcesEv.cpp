@@ -11,7 +11,7 @@ int fBase_c::BeforeCleanupResources()
   if(v!=0){
     if(func_0204424c(v)==0) goto ret0;
   }
-  if(sceneNode.unk_004==0) goto ret1;
+  if(manager.sceneNode.child==0) goto ret1;
 ret0:
   return 0;
 ret1:

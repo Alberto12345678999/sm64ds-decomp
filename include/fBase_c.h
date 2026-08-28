@@ -28,9 +28,10 @@
  *               the old end cut that function in half.
  *
  * Offsets, widths and vtable slots are pinned by the bytes; field names are not
- * and are safe to improve. Provenance for all of it, including how the 0x14-byte
- * sceneNode and the two 0x10-byte process nodes were read out of the
- * constructor: notes/actor-core-provenance.md, notes/actor-vtables.md.
+ * and are safe to improve. The 0x34-byte manager at 0x14 owns the scene-tree
+ * node and the two process-list nodes, matching both the constructor's retained
+ * manager address and the later EAD engine's independently recovered fManager_c
+ * organization. See notes/actor-core-provenance.md and notes/actor-vtables.md.
  */
 
 #ifdef __cplusplus
@@ -43,23 +44,36 @@
 extern "C" void _ZN6Memory10DeallocateEPvP4Heap(void *, void *);
 extern "C" void *data_020a0eac;
 
-/* 0x10 bytes. Two per fBase_c; the destructor tears them down through
-   0x020440e8 in reverse order. */
+struct fBase_c;
+
+/* Intrusive process-list node. Two per fBase_c; the destructor tears them down
+   through 0x020440e8 in reverse order. */
 struct ActorBase_ProcessingListNode {
-    u8 raw[0x10];
+    ActorBase_ProcessingListNode *prev;
+    ActorBase_ProcessingListNode *next;
+    fBase_c *owner;
+    u16 currentPriority;
+    u16 nextPriority;
 };
 
 struct fBase_c {
     /* Intrusive scene-graph node owned by every actor. */
     struct SceneNode {
-        s32 unk_000;
-        s32 unk_004;
-        s32 unk_008;
-        s32 unk_00c;
+        SceneNode *parent;
+        SceneNode *child;
+        SceneNode *prev;
+        SceneNode *next;
         fBase_c *owner;                         /* 0x10 */
 
         SceneNode();
         void Reset();
+    };
+
+    /* Process bookkeeping kept together as one manager subobject. */
+    struct Manager {
+        SceneNode sceneNode;
+        ActorBase_ProcessingListNode behaviorNode;
+        ActorBase_ProcessingListNode renderNode;
     };
 
     /* 0x00 is the vptr, placed implicitly by the first virtual declaration. */
@@ -75,9 +89,7 @@ struct fBase_c {
        8 are the effective versions, which the constructor seeds by OR-ing the
        parent's 1|2 and 4|8 down. BeforeBehavior gates on 2, BeforeRender on 8. */
     u8  pauseFlags;                           /* 0x13 */
-    SceneNode sceneNode;                      /* 0x14 */
-    ActorBase_ProcessingListNode behavNode;   /* 0x28 */
-    ActorBase_ProcessingListNode renderNode;  /* 0x38 */
+    Manager manager;                          /* 0x14 */
     void *unk_048;                            /* 0x48 */
     void *heap;                               /* 0x4c -- Heap*, owned */
 
@@ -133,9 +145,7 @@ struct fBase_c {
     u8  unk_011;            /* 0x11 */
     u8  unk_012;            /* 0x12 */
     u8  pauseFlags;         /* 0x13 */
-    u8  sceneNode[0x14];    /* 0x14 */
-    u8  behavNode[0x10];    /* 0x28 */
-    u8  renderNode[0x10];   /* 0x38 */
+    u8  manager[0x34];      /* 0x14 */
     void *unk_048;          /* 0x48 */
     void *heap;             /* 0x4c */
 };
