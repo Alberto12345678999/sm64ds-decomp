@@ -251,6 +251,24 @@ _VERDICT_RANK = {UNNAMED: 0, PARTIAL: 1, VERIFIED: 2}
 
 
 def summarize(records):
+    """Counts of ROM DATA SYMBOLS, not of compiled object records.
+
+    A record is one emitted data symbol in one object, and vague linkage means the
+    same symbol is emitted by every object that needs it: five sources destroying a
+    Vector3 produce five ``_ZTI7fBase_c`` records proving the same cartridge bytes.
+    Counting records made the headline number a function of how many FILES the tree
+    happens to be split into, so merging eight per-function sources into the one
+    translation unit the original build had -- which is the whole point of TU
+    reconstruction -- read as ROM data losing verification. Measured on the first
+    promotion: 28 records vanished, 6 of them VERIFIED, and not one symbol dropped a
+    grade. The ratchet in validate_merge reads `verified`, so it has to mean symbols.
+
+    ``verified``/``partial``/``unnamed`` are unique symbols at their BEST verdict.
+    ``differs`` is deliberately the opposite -- any symbol with at least one differing
+    record -- so a newly wrong copy can never hide behind a correct sibling. The
+    per-record totals stay available under ``*Records`` for anyone comparing against
+    an older report.
+    """
     counts = collections.Counter(r["verdict"] for r in records)
 
     # One verdict per unique data symbol: DIFFERS wins outright over every other record
