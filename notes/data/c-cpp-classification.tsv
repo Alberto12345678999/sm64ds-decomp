@@ -71,7 +71,6 @@ src/Chuckya_Spawn.c	WEAK-refs-only	ov062				1		None		-
 src/CleanCommonModelDataArr.c	WEAK-refs-only					0		None		not-in-delinks
 src/ClearSpikeBomb.c	PURE-C	arm9				1		None		-
 src/ClockPaintingHandLong_Spawn.c	WEAK-refs-only	ov013				1		None		-
-src/ClockPaintingHandShort_Spawn.c	WEAK-refs-only	ov013				1		None		-
 src/ClockPaintingPendulum_Spawn.c	S1-stores-rom-vptr	ov013			stores _ZTV21ClockPaintingPendulum	1		None	_ZTV21ClockPaintingPendulum	-
 src/Cloud_Spawn.c	WEAK-refs-only	ov039				1		None		-
 src/Coffin_Spawn.c	WEAK-refs-only	ov071				1		None		-

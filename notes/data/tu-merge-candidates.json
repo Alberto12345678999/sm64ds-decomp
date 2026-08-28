@@ -5911,7 +5911,7 @@
     "src/_ZN22ClockPaintingHandShort6RenderEv.cpp",
     "src/_ZN22ClockPaintingHandShort8BehaviorEv.cpp",
     "src/_ZN22ClockPaintingHandShort13InitResourcesEv.cpp",
-    "src/ClockPaintingHandShort_Spawn.c"
+    "src/ClockPaintingHandShort_Spawn.cpp"
    ],
    "ext_mix": {
     ".cpp": 5,
