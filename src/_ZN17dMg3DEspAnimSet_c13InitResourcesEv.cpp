@@ -1,19 +1,25 @@
+//cpp
+// @symbol _ZN17dMg3DEspAnimSet_c13InitResourcesEv
+#include "dMg3DEspAnimSet_c.h"
 #include "types.h"
 #pragma opt_strength_reduction off
-extern int _ZN5Model8LoadFileER13SharedFilePtr(void *p);
-extern int _ZN9Animation8LoadFileER13SharedFilePtr(void *p);
-extern void _ZN15MaterialChanger7PrepareER8BMD_FileR8BMA_File(int bmd, void *bma);
-extern void _ZN9ModelBase7SetFileEP8BMD_Fileii(char *t, int f, int a, int b);
-extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(char *t, int f, int a, int b, unsigned u);
-extern void _ZN15MaterialChanger7SetFileER8BMA_Filei5Fix12IiEj(char *t, void *f, int a, int b, unsigned u);
-extern void _ZN5Model12SetPolygonIDEi(char *t, int id);
+extern "C" {
+int _ZN5Model8LoadFileER13SharedFilePtr(void *p);
+int _ZN9Animation8LoadFileER13SharedFilePtr(void *p);
+void _ZN15MaterialChanger7PrepareER8BMD_FileR8BMA_File(int bmd, void *bma);
+void _ZN9ModelBase7SetFileEP8BMD_Fileii(char *t, int f, int a, int b);
+void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(char *t, int f, int a, int b, unsigned u);
+void _ZN15MaterialChanger7SetFileER8BMA_Filei5Fix12IiEj(char *t, void *f, int a, int b, unsigned u);
+void _ZN5Model12SetPolygonIDEi(char *t, int id);
 
 extern int data_ov006_02141e94;
 extern int data_ov006_02141e6c;
 extern int data_ov006_0213c7f4;
+}
 
-void func_ov006_020e7954(char *o)
+void dMg3DEspAnimSet_c::InitResources()
 {
+    char *o = (char *)this;
     int bca;
     int m1 = -1;
     int z1 = 0;

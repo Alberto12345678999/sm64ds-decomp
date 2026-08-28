@@ -1,9 +1,16 @@
-extern int _Z15ApproachLinear2Rsss(short* p, short a, short b);
-extern void _ZN9Animation7AdvanceEv(void* a);
-extern int _ZN9Animation8FinishedEv(void* a);
+//cpp
+// @symbol _ZN17dMg3DEspAnimSet_c8BehaviorEv
+#include "dMg3DEspAnimSet_c.h"
 
-void func_ov006_020e7818(char* self)
+extern "C" {
+int _Z15ApproachLinear2Rsss(short* p, short a, short b);
+void _ZN9Animation7AdvanceEv(void* a);
+int _ZN9Animation8FinishedEv(void* a);
+}
+
+void dMg3DEspAnimSet_c::Behavior()
 {
+    char *self = (char *)this;
     int sb = 0;
     if (*(short*)(self + 0x178) != 0) {
         if (_Z15ApproachLinear2Rsss((short*)(self + 0x17a), 0, 1)) {

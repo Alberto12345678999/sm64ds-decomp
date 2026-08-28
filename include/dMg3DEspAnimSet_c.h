@@ -4,14 +4,20 @@
 #include "MaterialChanger.h"
 #include "ModelAnim.h"
 
-/* The source spelling is inferred from the sole owning minigame. The object
- * boundary and member order are compiler-proven: its paired helpers construct
+/* The source spelling and ordinary method names are inferred from the sole
+ * owning minigame and each method's role. The object boundary and member order
+ * are compiler-proven: its paired helpers construct
  * three ModelAnim objects followed by three MaterialChanger objects, and tear
  * them down in reverse order. The ordinary methods then prove the trailing
  * 0x18 bytes of per-animation state. */
 struct dMg3DEspAnimSet_c {
     dMg3DEspAnimSet_c();
     ~dMg3DEspAnimSet_c();
+
+    void Reset();
+    void Behavior();
+    void Render();
+    void InitResources();
 
     ModelAnim mModels[3];                 /* 0x000 */
     MaterialChanger mMaterialChangers[3]; /* 0x12c */

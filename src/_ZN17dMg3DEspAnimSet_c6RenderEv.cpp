@@ -1,24 +1,24 @@
 //cpp
-// @symbol func_ov006_020e777c
+// @symbol _ZN17dMg3DEspAnimSet_c6RenderEv
 /* recovered: shared common types */
 #include "common.h"
+#include "dMg3DEspAnimSet_c.h"
 extern "C" {
 
 extern Matrix4x3 data_020a0e68;
 void Matrix4x3_FromTranslation(void* m, int x, int y, int z);
 }
 struct ModelComponents;
-struct MaterialChanger { void Update(ModelComponents&); };
 struct Obj {
     void* vt;
     virtual void v0(); virtual void v1(); virtual void v2();
     virtual void v3(); virtual void v4();
     virtual void m(void* arg);
 };
-extern "C" void func_ov006_020e777c(char *c);
 #pragma opt_strength_reduction off
-void func_ov006_020e777c(char *c)
+void dMg3DEspAnimSet_c::Render()
 {
+    char *c = (char *)this;
     int i;
     char *r5;
     char *r4;
