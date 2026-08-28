@@ -3714,11 +3714,11 @@ src/_ZN8Particle10SysTracker10InitialiseEv.cpp:
     complete
     .text start:0x02022f40 end:0x020230ec
 
-src/_ZN8Particle7Texture12AllocPalVramEjb.c:
+src/_ZN8Particle7Texture12AllocPalVramEjb.cpp:
     complete
     .text start:0x020230ec end:0x02023134
 
-src/_ZN8Particle7Texture12AllocTexVramEjb.c:
+src/_ZN8Particle7Texture12AllocTexVramEjb.cpp:
     complete
     .text start:0x02023134 end:0x02023178
 
