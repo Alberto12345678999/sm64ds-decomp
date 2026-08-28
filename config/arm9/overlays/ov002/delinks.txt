@@ -5659,6 +5659,14 @@ src/CutsceneObject_Spawn.c:
     complete
     .text start:0x020f8808 end:0x020f8838
 
+src/_ZThn80_N8daDemo_c10anmModel_cD0Ev.cpp:
+    complete
+    .text start:0x020f8838 end:0x020f8848
+
+src/_ZThn80_N8daDemo_c10anmModel_cD1Ev.cpp:
+    complete
+    .text start:0x020f8848 end:0x020f8858
+
 src/_ZN8FireballD1Ev.cpp:
     complete
     .text start:0x020f8858 end:0x020f8898
