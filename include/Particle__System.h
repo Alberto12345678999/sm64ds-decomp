@@ -6,9 +6,15 @@
 
 namespace Particle {
 
-/* The list element's exact source type is not RTTI-backed. OnUpdate only
- * proves that System owns two ordinary two-word list heads. */
-struct ParticleNode;
+/* The list element's exact source type and member spellings are not
+ * RTTI-backed. The water callbacks prove the intrusive link and the two
+ * ASR-3 position vectors below; the names are descriptive. */
+struct ParticleNode {
+    ParticleNode *next;          /* 0x00 */
+    ParticleNode *previous;      /* 0x04 */
+    Vector3 positionAsr3;        /* 0x08 */
+    Vector3 offsetAsr3;          /* 0x14 */
+};
 
 struct ParticleList {
     ParticleNode *head;
