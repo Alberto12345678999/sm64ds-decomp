@@ -1,15 +1,20 @@
-struct Pair { int a, b; };
-extern struct Pair data_ov006_0213b058;
-extern struct Pair data_ov006_0213b070;
+//cpp
+// @symbol _ZN16dMgJump3DMario_c12Unk_020c762cEv
+#include "dMgJump3DMario_c.h"
 
-int func_ov006_020c762c(char *c)
+struct Pair { int a, b; };
+extern "C" Pair data_ov006_0213b058;
+extern "C" Pair data_ov006_0213b070;
+
+int dMgJump3DMario_c::Unk_020c762c()
 {
-    struct Pair *p;
-    struct Pair *g;
+    Pair *p;
+    Pair *g;
     int r = 0;
     int m = 1;
+    char *c = (char *)this;
 
-    p = (struct Pair *)((int)c + 0x3c);
+    p = (Pair *)((int)c + 0x3c);
     g = &data_ov006_0213b058;
     if (p->a == g->a) {
         if (p->b == g->b)
@@ -21,7 +26,7 @@ cl1:
     }
     if (m != 0) {
         m = 1;
-        p = (struct Pair *)(c + 0x3c);
+        p = (Pair *)(c + 0x3c);
         g = &data_ov006_0213b070;
         if (p->a == g->a) {
             if (p->b == g->b)

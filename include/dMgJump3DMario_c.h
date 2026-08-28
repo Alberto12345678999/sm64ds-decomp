@@ -21,7 +21,7 @@ struct dMg3DHeyhoObjAdapter_c {
 
     virtual void *Unk_020c76d8() = 0; /* slot 0 */
     virtual void *Unk_020c76d0() = 0; /* slot 1 */
-    virtual bool Unk_020c762c() = 0;  /* slot 2 */
+    virtual int Unk_020c762c() = 0;   /* slot 2 */
 
     u8 unk_004[0x0c]; /* 0x04 */
     s16 unk_010;      /* 0x10 */
@@ -34,7 +34,7 @@ struct dMgJump3DMario_c : dMg3DHeyhoObjAdapter_c {
 
     virtual void *Unk_020c76d8(); /* slot 0 */
     virtual void *Unk_020c76d0(); /* slot 1 */
-    virtual bool Unk_020c762c();  /* slot 2 */
+    virtual int Unk_020c762c();   /* slot 2 */
 
     ModelAnim mModelAnim; /* 0x4c */
     u8 unk_0b0[0x08];     /* 0xb0 */

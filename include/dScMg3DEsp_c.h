@@ -15,7 +15,7 @@
  *
  *   - TWO MODELS at 0x4f38 and 0x4f88, 0x50 bytes each (include/Model.h).
  *   - AN UNTYPED BLOCK at 0x4fd8, size 0x21c: destroyed via
- *     func_ov006_020e80d8 (ModelAnim @ +0xc, TextureSequence @ +0x70, a
+ *     _ZN15dMg3DEspModel_cD1Ev (ModelAnim @ +0xc, TextureSequence @ +0x70, a
  *     helper @ +0x84, plus six Release() calls on unrelated GLOBAL
  *     SharedFilePtr singletons, not per-instance data). One field within
  *     it is real matched access -- unk_51e4 (src/func_ov006_020e9c20.c)
@@ -44,7 +44,7 @@
 
 extern "C" void _ZN5ModelD1Ev(void *);
 extern "C" void _ZN18TextureTransformerD1Ev(void *);
-extern "C" void func_ov006_020e80d8(void *c); /* decl_common.h's own signature */
+extern "C" void _ZN15dMg3DEspModel_cD1Ev(void *c);
 
 struct dScMg3DEsp_c : dScMgSingle3DBase_c {
     virtual ~dScMg3DEsp_c();

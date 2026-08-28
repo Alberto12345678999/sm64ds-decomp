@@ -621,15 +621,15 @@ src/func_ov006_020c7574.c:
     complete
     .text start:0x020c7574 end:0x020c762c
 
-src/func_ov006_020c762c.c:
+src/_ZN16dMgJump3DMario_c12Unk_020c762cEv.cpp:
     complete
     .text start:0x020c762c end:0x020c76d0
 
-src/func_ov006_020c76d0.c:
+src/_ZN16dMgJump3DMario_c12Unk_020c76d0Ev.cpp:
     complete
     .text start:0x020c76d0 end:0x020c76d8
 
-src/func_ov006_020c76d8.c:
+src/_ZN16dMgJump3DMario_c12Unk_020c76d8Ev.cpp:
     complete
     .text start:0x020c76d8 end:0x020c76e0
 
@@ -2795,11 +2795,11 @@ src/func_ov006_020e7954.c:
     complete
     .text start:0x020e7954 end:0x020e7a50
 
-src/func_ov006_020e7a50.cpp:
+src/_ZN17dMg3DEspAnimSet_cD1Ev.cpp:
     complete
     .text start:0x020e7a50 end:0x020e7aac
 
-src/func_ov006_020e7aac.c:
+src/_ZN17dMg3DEspAnimSet_cC1Ev.cpp:
     complete
     .text start:0x020e7aac end:0x020e7b0c
 
@@ -2851,11 +2851,11 @@ src/func_ov006_020e7fe8.cpp:
     complete
     .text start:0x020e7fe8 end:0x020e80d8
 
-src/func_ov006_020e80d8.cpp:
+src/_ZN15dMg3DEspModel_cD1Ev.cpp:
     complete
     .text start:0x020e80d8 end:0x020e814c
 
-src/func_ov006_020e814c.c:
+src/_ZN15dMg3DEspModel_cC1Ev.cpp:
     complete
     .text start:0x020e814c end:0x020e81a4
 
