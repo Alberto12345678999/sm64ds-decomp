@@ -6,9 +6,8 @@
 #define DSCMGBASE_C_H
 #include "dScene_c.h"
 #include "dGraph_c.h"
+#include "dMgPsOpt_c.h"
 
-/* Destroys the touch-icon array; returns its argument. */
-extern "C" void *func_ov004_020b929c(void *);
 extern "C" void *data_ov004_020beb68;
 
 struct dScMgBase_c : dScene_c {
@@ -65,8 +64,7 @@ struct dScMgBase_c : dScene_c {
     s32 unk_0c8;            /* 0x0c8 */
     u8  pad_0cc[0x24];
     s32 unk_0f0;            /* 0x0f0 */
-    u8  touchIcon_0f4[8][0x24]; /* 0x0f4 -- 8x dMgPsOpt_c::TouchIcon_c */
-    u8  pad_214[0x8];       /* 0x214 */
+    dMgPsOpt_c mTouchOptions; /* 0x0f4 -- eight polymorphic touch icons */
     u32 mSavedMainBgBits;   /* 0x21c -- func_ov004_020af094 saves data_0209d45c
                                 here and func_ov004_020aeed8 restores it */
     u32 mSavedSubBgBits;    /* 0x220 -- the same pair for data_0209d454 */

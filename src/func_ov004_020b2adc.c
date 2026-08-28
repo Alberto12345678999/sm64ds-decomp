@@ -1,6 +1,6 @@
 extern void _ZN7fBase_cC2Ev(void *self);
 extern void func_ov004_020b8a70(unsigned char *p);
-extern char *func_ov004_020b92c4(char *c);
+extern char *_ZN10dMgPsOpt_cC1Ev(char *c);
 extern int func_ov004_020adc3c(void *c);
 extern int func_02013580(int a, int b);
 extern void func_ov004_020adc00(int v);
@@ -27,7 +27,7 @@ void *func_ov004_020b2adc(char *self)
     *(unsigned char *)(self + 0xc2) = 1;
 
     func_ov004_020b8a70((unsigned char *)(self + 0xcc));
-    func_ov004_020b92c4(self + 0xf4);
+    _ZN10dMgPsOpt_cC1Ev(self + 0xf4);
 
     *(int *)(self + 0x4628) = 0;
     *(int *)(self + 0x462c) = 0;

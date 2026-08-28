@@ -350,7 +350,7 @@
   "partial_isolation": {
     "round": "tools/tubuild.py partial -- one compile of the consolidated source, objisolate.derive per licensed function, compared against rombuild.compile_one + objisolate.isolate of each legacy source",
     "derivedObjects": 41,
-    "contributionEquivalent": "39/41",
+    "contributionEquivalent": "40/41",
     "comparedFields": [
       "keptSection",
       "keptBytes",

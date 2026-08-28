@@ -3055,6 +3055,7 @@ func_020732e8 kind:function(arm,size=0x18) addr:0x020732e8
 func_02073300 kind:function(arm,size=0x5c) addr:0x02073300
 func_0207335c kind:function(arm,size=0x4c) addr:0x0207335c
 func_020733a8 kind:function(arm,size=0xc8) addr:0x020733a8
+__cxa_vec_ctor kind:function(arm,size=0xc8) addr:0x020733a8
 func_02073470 kind:function(arm,size=0xc4) addr:0x02073470
 func_02073534 kind:function(arm,size=0x50) addr:0x02073534
 func_02073584 kind:function(arm,size=0x18) addr:0x02073584

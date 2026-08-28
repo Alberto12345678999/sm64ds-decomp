@@ -181,7 +181,6 @@ extern unsigned int LoadCompressedFileAt(int fileID, void *target);
 extern unsigned int _ZN3G2S13GetBG1CharPtrEv(void);
 extern void *_ZN3G2S12GetBG1ScrPtrEv(void);
 extern void _ZN2GX15DisableAllBanksEv(void);
-extern void *func_ov004_020b929c(void *);
 /* TUBUILD CONFLICT -- alternate declaration of data_ov004_020beb68, from the legacy file for func_ov004_020b0b1c, NOT applied: extern int data_ov004_020beb68; */
 /* TUBUILD CONFLICT -- alternate declaration of GetGameLanguage, from the legacy file for func_ov004_020b0e84, NOT applied: extern "C" int GetGameLanguage(void); */
 /* TUBUILD CONFLICT -- alternate declaration of GetGameLanguage, from the legacy file for func_ov004_020b1710, NOT applied: extern int GetGameLanguage(void); */
@@ -216,7 +215,6 @@ extern void *func_ov004_020b929c(void *);
 dScMgBase_c::~dScMgBase_c()
 {
     data_ov004_020beb68 = 0;
-    func_ov004_020b929c((char *)this + 0xf4);
 }
 
 /* -------------------------------------------------------------------------- */
