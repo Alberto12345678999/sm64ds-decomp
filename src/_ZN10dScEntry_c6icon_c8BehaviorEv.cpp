@@ -1,16 +1,21 @@
 //cpp
-extern "C" int _Z15ApproachLinear2Rsss(short *, short, short);
-extern "C" int _ZN9dThIcon_c8BehaviorEv(void *);
+// @symbol _ZN10dScEntry_c6icon_c8BehaviorEv
+#include "dScEntry_c.h"
+
+extern "C" {
+int _Z15ApproachLinear2Rsss(short *, short, short);
 extern unsigned char data_0209b2e4[];
-extern "C" int func_ov075_02115e1c(char *c)
+}
+
+void dScEntry_c::icon_c::Behavior()
 {
-    if (*(int *)(c + 0x1c) == 0xd) {
-        if (*(int *)(c + 0x20) == data_0209b2e4[0]) {
-            _Z15ApproachLinear2Rsss((short *)(c + 6), 0x14, 8);
+    if (unk_01c == 0xd) {
+        if (unk_020 == data_0209b2e4[0]) {
+            _Z15ApproachLinear2Rsss(&unk_006, 0x14, 8);
         } else {
-            if (_Z15ApproachLinear2Rsss((short *)(c + 6), -0x24, 8) != 0)
-                *(int *)(c + 0x20) = data_0209b2e4[0];
+            if (_Z15ApproachLinear2Rsss(&unk_006, -0x24, 8) != 0)
+                unk_020 = data_0209b2e4[0];
         }
     }
-    return _ZN9dThIcon_c8BehaviorEv(c);
+    dThIcon_c::Behavior();
 }

@@ -10,7 +10,8 @@
 struct dThIcon_c {
     s16 unk_004;
     s16 unk_006;
-    u8 pad_008[0x4];
+    s16 unk_008;
+    s16 unk_00a;
     s32 unk_00c;
     u8 unk_010;
     u8 unk_011;

@@ -3683,6 +3683,7 @@ data_0208edf8 kind:data(any) addr:0x0208edf8
 data_0208ee00 kind:data(any) addr:0x0208ee00
 _ZTIN8dGraph_c10callback_cE kind:data(any) addr:0x0208ee04
 data_0208ee14 kind:data(any) addr:0x0208ee14
+_ZTVN8dGraph_c10callback_cE kind:data(any) addr:0x0208ee14
 _ZTSN8dGraph_c10callback_cE kind:data(any) addr:0x0208ee24
 data_0208ee3c kind:data(any) addr:0x0208ee3c
 data_0208ee40 kind:data(any) addr:0x0208ee40
