@@ -5071,7 +5071,7 @@ src/func_020374d4.c:
     complete
     .text start:0x020374d4 end:0x020374f0
 
-src/func_020374f0.c:
+src/_ZN9dBgCh_GndD0Ev.cpp:
     complete
     .text start:0x020374f0 end:0x02037534
 
@@ -5083,8 +5083,13 @@ src/_ZN9dBgCh_GndC1Ev.cpp:
     complete
     .text start:0x02037570 end:0x020375b0
 
-src/func_020375b0.cpp:
+src/_ZThn16_N9dBgCh_GndD0Ev.cpp:
+    complete
     .text start:0x020375b0 end:0x020375c0
+
+src/_ZThn16_N9dBgCh_GndD1Ev.cpp:
+    complete
+    .text start:0x020375c0 end:0x020375d0
 
 src/_ZN9dBgCh_Lin10GetClsnPosEv.cpp:
     complete
@@ -5114,8 +5119,13 @@ src/_ZN9dBgCh_LinC1Ev.cpp:
     complete
     .text start:0x020377b0 end:0x0203780c
 
-src/func_0203780c.cpp:
+src/_ZThn16_N9dBgCh_LinD0Ev.cpp:
+    complete
     .text start:0x0203780c end:0x0203781c
+
+src/_ZThn16_N9dBgCh_LinD1Ev.cpp:
+    complete
+    .text start:0x0203781c end:0x0203782c
 
 src/func_0203782c.c:
     complete
@@ -5197,7 +5207,7 @@ src/_ZN12dBgCh_SphCrr15SetObjAndSphereERK7Vector35Fix12IiEP8dActor_c.cpp:
     complete
     .text start:0x02037c00 end:0x02037c40
 
-src/func_02037c40.c:
+src/_ZN12dBgCh_SphCrrD0Ev.cpp:
     complete
     .text start:0x02037c40 end:0x02037cb0
 
@@ -5209,11 +5219,21 @@ src/_ZN12dBgCh_SphCrrC1Ev.cpp:
     complete
     .text start:0x02037d18 end:0x02037d84
 
-src/func_02037d84.cpp:
+src/_ZThn16_N12dBgCh_SphCrrD0Ev.cpp:
+    complete
     .text start:0x02037d84 end:0x02037d94
 
-src/func_02037da4.cpp:
+src/_ZThn16_N12dBgCh_SphCrrD1Ev.cpp:
+    complete
+    .text start:0x02037d94 end:0x02037da4
+
+src/_ZThn56_N12dBgCh_SphCrrD0Ev.cpp:
+    complete
     .text start:0x02037da4 end:0x02037db4
+
+src/_ZThn56_N12dBgCh_SphCrrD1Ev.cpp:
+    complete
+    .text start:0x02037db4 end:0x02037dc4
 
 src/func_02037dc4.c:
     complete
