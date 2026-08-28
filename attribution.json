@@ -8,6 +8,8 @@
     "mitch.cairns": "mitchellcairns"
   },
   "overrides": {
+    "src/_ZN10dBgCh_ActrD0Ev.cpp": "tangosdev",
+    "src/_ZN10dBgCh_ActrD0Ev.cpp#func_020373b8": "tangosdev",
     "src/_ZN11dCapEnemy_cD0Ev.cpp": "tangosdev",
     "src/_ZN11dCapEnemy_cD1Ev.cpp": "tangosdev",
     "src/_ZN11dCapEnemy_cD1Ev.cpp#func_ov002_020aedbc": "tangosdev",

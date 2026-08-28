@@ -5043,7 +5043,7 @@ src/_ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_.c:
     complete
     .text start:0x02037388 end:0x020373b8
 
-src/func_020373b8.c:
+src/_ZN10dBgCh_ActrD0Ev.cpp:
     complete
     .text start:0x020373b8 end:0x020373f8
 
