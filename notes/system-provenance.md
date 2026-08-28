@@ -98,7 +98,7 @@ until separate evidence supports its historical type name.
 different fields, and `SomeGlobal`). All but one now declare it
 `struct Particle *` and reach members by name; every one was re-verified
 byte-identical. The exception is
-`src/_ZN8Particle14SimpleCallback14SpawnParticlesERNS_6SystemE.cpp`, which
+`src/_ZN5dPa_c7level_c16simpleCallback_c14SpawnParticlesERN8Particle6SystemE.cpp`, which
 opens `namespace Particle { ... }` — including `Particle.h` there makes the
 struct name and the namespace name collide, so it keeps its local shadow.
 
@@ -131,7 +131,7 @@ with `build_pin`'s `verify`, from `tools/build_pin.py`).
 What is still NOT merged is the three *declarations* into one. `include/Stage.h`
 must keep its own copy because `Stage` embeds the object by value and needs the
 declared-never-defined destructor, and
-`src/_ZN8Particle14SimpleCallback14SpawnParticlesERNS_6SystemE.cpp` opens
+`src/_ZN5dPa_c7level_c16simpleCallback_c14SpawnParticlesERN8Particle6SystemE.cpp` opens
 `namespace Particle { ... }`, so a header declaring a struct of that name
 collides there. Those two reasons are unchanged by this pass; only the names
 converged. `include/Stage.h`'s own header comment still describes the third
