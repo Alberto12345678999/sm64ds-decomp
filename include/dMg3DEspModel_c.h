@@ -18,7 +18,6 @@ struct dMg3DEspModel_c {
     ModelAnim mModelAnim;             /* 0x00c */
     TextureSequence mTextureSequence; /* 0x070 */
     dMg3DEspAnimSet_c mAnimSet;       /* 0x084 */
-    u8 pad_1ec[0x18];                 /* 0x1ec */
     u32 unk_204;                      /* 0x204 */
     s32 unk_208;                      /* 0x208 */
     s32 unk_20c;                      /* 0x20c */
