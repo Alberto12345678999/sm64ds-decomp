@@ -20,11 +20,11 @@ src/actors/BooCage/_ZN7BooCageD0Ev.c:
     complete
     .text start:0x0211600c end:0x02116068
 
-src/actors/BigBooIcon/_ZN10BigBooIconD1Ev.cpp:
+src/actors/BigBooIcon/_ZN11daTrsIcon_cD1Ev.cpp:
     complete
     .text start:0x02116068 end:0x0211608c
 
-src/actors/BigBooIcon/_ZN10BigBooIconD0Ev.cpp:
+src/actors/BigBooIcon/_ZN11daTrsIcon_cD0Ev.cpp:
     complete
     .text start:0x0211608c end:0x021160c4
 
@@ -383,11 +383,11 @@ src/actors/daTrs_c/Boo_Spawn.cpp:
     complete
     .text start:0x0211c590 end:0x0211c600
 
-src/actors/MansionSteps/_ZN12MansionStepsD1Ev.cpp:
+src/actors/MansionSteps/_ZN11daTrsTrap_cD1Ev.cpp:
     complete
     .text start:0x0211c600 end:0x0211c638
 
-src/actors/MansionSteps/_ZN12MansionStepsD0Ev.cpp:
+src/actors/MansionSteps/_ZN11daTrsTrap_cD0Ev.cpp:
     complete
     .text start:0x0211c638 end:0x0211c684
 
