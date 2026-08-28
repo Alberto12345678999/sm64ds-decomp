@@ -7206,7 +7206,7 @@ src/_ZN11fLiNdBaPr_cD1Ev.cpp:
     complete
     .text start:0x020440e8 end:0x02044104
 
-src/func_02044104.c:
+src/_ZN9fLiNdBa_cD1Ev.cpp:
     complete
     .text start:0x02044104 end:0x02044120
 
