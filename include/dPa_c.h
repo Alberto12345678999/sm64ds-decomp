@@ -107,6 +107,12 @@ struct dPa_c {
             virtual void SpawnParticles(Particle::System& system);
             virtual int OnUpdate(Particle::System& system, bool active);
         };
+
+        class cleanParticleCallback_c : public callback_c {
+        public:
+            virtual void SpawnParticles(Particle::System& system);
+            virtual int OnUpdate(Particle::System& system, bool done);
+        };
     };
 };
 
@@ -132,5 +138,7 @@ typedef char dPa_splashCallback_c_size_must_be_0x8[
     sizeof(dPa_c::level_c::splashCallback_c) == 0x8 ? 1 : -1];
 typedef char dPa_clipCallback_c_size_must_be_0x8[
     sizeof(dPa_c::level_c::clipCallback_c) == 0x8 ? 1 : -1];
+typedef char dPa_cleanParticleCallback_c_size_must_be_0x4[
+    sizeof(dPa_c::level_c::cleanParticleCallback_c) == 0x4 ? 1 : -1];
 
 #endif
