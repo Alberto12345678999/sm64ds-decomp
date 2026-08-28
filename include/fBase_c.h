@@ -36,6 +36,8 @@
 
 #ifdef __cplusplus
 
+#include "fListNode.h"
+
 /* The actor heap and its deallocator, for the inline operator delete at the end
    of the class. data_020a0eac is the heap every actor is allocated from. Spelt
    exactly as include/decl_common.h and include/dActor_c.h spell them -- the
@@ -43,18 +45,6 @@
    declarations of one name in a single TU, which mwcc rejects. */
 extern "C" void _ZN6Memory10DeallocateEPvP4Heap(void *, void *);
 extern "C" void *data_020a0eac;
-
-struct fBase_c;
-
-/* Intrusive process-list node. Two per fBase_c; the destructor tears them down
-   through 0x020440e8 in reverse order. */
-struct ActorBase_ProcessingListNode {
-    ActorBase_ProcessingListNode *prev;
-    ActorBase_ProcessingListNode *next;
-    fBase_c *owner;
-    u16 currentPriority;
-    u16 nextPriority;
-};
 
 struct fBase_c {
     /* Intrusive scene-graph node owned by every actor. */
@@ -72,8 +62,8 @@ struct fBase_c {
     /* Process bookkeeping kept together as one manager subobject. */
     struct Manager {
         SceneNode sceneNode;
-        ActorBase_ProcessingListNode behaviorNode;
-        ActorBase_ProcessingListNode renderNode;
+        fLiNdBaPr_c behaviorNode;
+        fLiNdBaPr_c renderNode;
     };
 
     /* 0x00 is the vptr, placed implicitly by the first virtual declaration. */
