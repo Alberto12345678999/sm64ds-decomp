@@ -3570,7 +3570,7 @@ src/_ZN5dPa_c7level_c16bubbleCallback_c8OnUpdateERN8Particle6SystemEb.cpp:
     complete
     .text start:0x02022464 end:0x020224fc
 
-src/_ZN8Particle14SplashCallback8OnUpdateERNS_6SystemEb.cpp:
+src/_ZN5dPa_c7level_c16splashCallback_c8OnUpdateERN8Particle6SystemEb.cpp:
     complete
     .text start:0x020224fc end:0x020225a8
 
