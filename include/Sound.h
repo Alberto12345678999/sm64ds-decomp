@@ -46,6 +46,16 @@ struct InfoSequenceEntry {
     static InfoSequenceEntry *GetWithID(u32 id);
 };
 
+/* Instrument-bank archive metadata. Every recovered consumer treats the first
+   word as the bank file and the following four halfwords as optional wave
+   archive IDs, with 0xffff marking an unused slot. */
+struct InfoInstrumentBankEntry {
+    u32 fileId;
+    u16 waveArchiveIds[4];
+
+    static InfoInstrumentBankEntry *GetWithID(u32 id);
+};
+
 struct Player {
     /* STATIC, and the bytes are what say so. A non-static member would take
      * `this` in r0; the ROM body multiplies r0 by 0x1c and uses it as a table
