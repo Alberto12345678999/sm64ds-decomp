@@ -32,8 +32,10 @@ struct dPa_c {
 
         class scaleCallback_c : public simpleCallback_c {
         public:
+            /* Descriptive names; the offsets and uses are body-proven. */
             s16 scale;              /* 0x006 - reuses base tail padding */
             s16 velocity;           /* 0x008 */
+            u8 timer;               /* 0x00a */
             scaleCallback_c();
 
             virtual void SpawnParticles(Particle::System& system);
