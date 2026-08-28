@@ -1,6 +1,6 @@
 #include "types.h"
 void *_ZN7fBase_cnwEj(u32 sz);
-void func_ov004_020b2adc(void *p);
+void _ZN11dScMgBase_cC2Ev(void *p);
 void func_020733a8(void *o, int a, int b, void *f1, void *f2);
 void _ZN8Particle10SysTrackerC1Ev(void *p);
 void _ZN5ModelC1Ev(void *p);
@@ -30,7 +30,7 @@ void *dScMgJump2_c_Spawn()
     if (p) {
         char *e;
         char *end;
-        func_ov004_020b2adc(p);
+        _ZN11dScMgBase_cC2Ev(p);
         *(char **)p = _ZTV14dScMgD3DBase_c;
         *(u16 *)(p + 0x4664) = 0;
         e = p + 0x466c;

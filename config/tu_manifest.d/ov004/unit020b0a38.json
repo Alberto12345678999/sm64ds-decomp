@@ -29,7 +29,7 @@
       "symbol": "func_ov004_020b0a54",
       "address": "0x020b0a54",
       "size": "0x0000004c",
-      "legacy_source": "src/func_ov004_020b0a54.c",
+      "legacy_source": "src/func_ov004_020b0a54.cpp",
       "ordinal": 17
     },
     {

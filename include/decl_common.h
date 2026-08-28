@@ -2328,7 +2328,7 @@ extern void func_ov004_020b1a5c(int, int);
 extern void func_ov004_020b1ea4(int, int, int, int, int, int, int);
 extern void func_ov004_020b2444(int, int, int, int, int, int, int);
 extern void _ZN11dScMgBase_cD2Ev(void*);
-extern void func_ov004_020b2adc(void*);
+extern void _ZN11dScMgBase_cC2Ev(void*);
 extern void func_ov004_020b2c84(void);
 extern void func_ov004_020b2cb8(void);
 extern void func_ov004_020b31b4(void*);
