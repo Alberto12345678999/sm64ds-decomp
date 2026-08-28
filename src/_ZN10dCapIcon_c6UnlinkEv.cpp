@@ -1,61 +1,48 @@
-extern int data_0209f3e8[];
-extern int data_ov001_020ad634[];
-extern char data_ov001_020ad630[];
-extern void func_ov001_020aa6b0(int *r0, int r1);
-extern void func_ov001_020aa6cc(int r0);
+//cpp
+// @symbol _ZN10dCapIcon_c6UnlinkEv
+/* Unlinks this cap icon from its per-character list and restores the detached
+ * defaults. The role is ROM-proven; the member spelling `Unlink` is inferred. */
+#include "CapIcon.h"
 
-static inline int *inline_fn(char *arg0, int arg1)
-{
-    return (int *)(arg0 + arg1);
-}
+extern dActor_c *data_0209f3e8[];
+extern dCapIcon_c *data_ov001_020ad634[];
+extern u8 data_ov001_020ad630[];
 
-static inline int inline_fn2(char *arg0)
-{
-    return (int)arg0;
-}
+extern "C" void func_ov001_020aa6b0(dCapIcon_c *icon, int value);
+extern "C" void func_ov001_020aa6cc(int character);
 
-void func_ov001_020ab110(char *r4)
+void dCapIcon_c::Unlink()
 {
-    char *new_var;
-    if (((unsigned)(*((unsigned char *)(r4 + 0x1b)) << 0x1d)) >> 0x1f) {
+    if (((u32)mFlags << 29) >> 31)
         return;
-    }
-    int f14 = *((int *)(r4 + 0x14));
-    if (f14 != -1) {
-        if (data_0209f3e8[f14] == (*inline_fn(r4, 4))) {
-            func_ov001_020aa6b0((int *)r4, 0);
-            data_0209f3e8[*inline_fn(r4, 0x14)] = 0;
-            func_ov001_020aa6cc(*((unsigned char *)(r4 + 0x18)));
+
+    if (mSlot != -1) {
+        if (data_0209f3e8[mSlot] == mOwner) {
+            func_ov001_020aa6b0(this, 0);
+            data_0209f3e8[mSlot] = 0;
+            func_ov001_020aa6cc(mCharacter);
         }
     }
-    int prev = *((int *)(r4 + 0xc));
-    if (prev != 0) {
-        *((int *)(prev + 0x10)) = *inline_fn(r4, 0x10);
-    } else {
-        unsigned char idx = *((unsigned char *)(r4 + 0x18));
-        if (inline_fn2(r4) == data_ov001_020ad634[idx]) {
-            data_ov001_020ad634[idx] = *inline_fn(r4, 0x10);
-        }
-    }
-    int next = *inline_fn(r4, 0x10);
-    if (next != 0) {
-        *((int *)(next + 0xc)) = *((int *)(r4 + 0xc));
-    }
-    func_ov001_020aa6b0((int *)r4, 0);
-    *((int *)(r4 + 4)) = 0;
-    *inline_fn(r4, 8) = 0;
-    *inline_fn(r4, 0xc) = 0;
-    *((int *)(r4 + 0x10)) = 0;
-    *inline_fn(r4, 0x14) = -1;
-    *((unsigned char *)(r4 + 0x1b)) = 0;
-    unsigned char *flag = (unsigned char *)(((long long)(int)(r4 + 0x1b)));
-    *flag |= 4;
-    new_var = r4 + 0x18;
-    *((unsigned char *)new_var) = 3;
-    *((unsigned char *)(r4 + 0x19)) = 0;
-    unsigned char i = *((unsigned char *)new_var);
-    unsigned char v = data_ov001_020ad630[i];
-    if (v != 0) {
-        data_ov001_020ad630[i] = v - 1;
-    }
+
+    if (mPrev)
+        mPrev->mNext = mNext;
+    else if (data_ov001_020ad634[mCharacter] == this)
+        data_ov001_020ad634[mCharacter] = mNext;
+
+    if (mNext)
+        mNext->mPrev = mPrev;
+
+    func_ov001_020aa6b0(this, 0);
+    mOwner = 0;
+    mOwnerUniqueID = 0;
+    mPrev = 0;
+    mNext = 0;
+    mSlot = -1;
+    mFlags = 0;
+    mFlags |= 4;
+    mCharacter = 3;
+    unk_19 = 0;
+
+    if (data_ov001_020ad630[mCharacter])
+        --data_ov001_020ad630[mCharacter];
 }
