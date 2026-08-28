@@ -6,6 +6,15 @@
 
 namespace Particle {
 
+/* The list element's exact source type is not RTTI-backed. OnUpdate only
+ * proves that System owns two ordinary two-word list heads. */
+struct ParticleNode;
+
+struct ParticleList {
+    ParticleNode *head;
+    s32 count;
+};
+
 struct System {
     struct Flags {
         u32 unk_000 : 6;
@@ -14,7 +23,10 @@ struct System {
         u32 unused  : 14;
     };
 
-    u8 pad_000[0x18];
+    void *previous;              /* 0x00 */
+    void *next;                  /* 0x04 */
+    ParticleList particles;      /* 0x08 */
+    ParticleList particles2;     /* 0x10 */
     SystemDefinition *mDefinition; /* 0x18 */
     /* Callback virtuals toggle bit 1 while spawning or suppressing particles. */
     u32 callbackFlags;             /* 0x1c */

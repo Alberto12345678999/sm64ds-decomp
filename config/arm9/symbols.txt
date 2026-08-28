@@ -916,7 +916,7 @@ _ZN5dPa_c7level_c20edStarKiraCallback_c8OnUpdateERN8Particle6SystemEb kind:funct
 _ZN5dPa_c7level_c20edStarKiraCallback_c14SpawnParticlesERN8Particle6SystemE kind:function(arm,size=0x34) addr:0x0202222c
 func_02022260 kind:function(arm,size=0x38) addr:0x02022260
 _ZN5dPa_c7level_c20edStarKiraCallback_cC1Ev kind:function(arm,size=0x58) addr:0x02022298
-_ZN8Particle17CheckLavaCallback8OnUpdateERNS_6SystemEb kind:function(arm,size=0x38) addr:0x020222f0
+_ZN5dPa_c7level_c20checkYoganCallback_c8OnUpdateERN8Particle6SystemEb kind:function(arm,size=0x38) addr:0x020222f0
 _ZN8Particle17CheckLavaCallback14SpawnParticlesERNS_6SystemE kind:function(arm,size=0xf0) addr:0x02022328
 _ZN8Particle22FitWaterSimpleCallback8OnUpdateERNS_6SystemEb kind:function(arm,size=0x4c) addr:0x02022418
 _ZN8Particle14BubbleCallback8OnUpdateERNS_6SystemEb kind:function(arm,size=0x98) addr:0x02022464

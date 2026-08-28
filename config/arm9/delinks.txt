@@ -3554,7 +3554,7 @@ src/_ZN5dPa_c7level_c20edStarKiraCallback_cC1Ev.cpp:
     complete
     .text start:0x02022298 end:0x020222f0
 
-src/_ZN8Particle17CheckLavaCallback8OnUpdateERNS_6SystemEb.c:
+src/_ZN5dPa_c7level_c20checkYoganCallback_c8OnUpdateERN8Particle6SystemEb.cpp:
     complete
     .text start:0x020222f0 end:0x02022328
 
