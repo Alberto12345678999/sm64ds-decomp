@@ -1,4 +1,6 @@
-void func_02038228(int *p)
-{
-    p[0] = 0;
-}
+//cpp
+// @symbol _ZN13CLPS_BlockRefC1Ev
+/* The value lifetime is ROM-proven; the wrapper spelling is inferred. */
+#include "CLPS_BlockRef.h"
+
+CLPS_BlockRef::CLPS_BlockRef() : ptr(0) {}

@@ -5363,15 +5363,15 @@ src/func_020381cc.c:
     complete
     .text start:0x020381cc end:0x0203821c
 
-src/func_0203821c.c:
+src/_ZN13CLPS_BlockRefaSER10CLPS_Block.cpp:
     complete
     .text start:0x0203821c end:0x02038224
 
-src/func_02038224.c:
+src/_ZN13CLPS_BlockRefD1Ev.cpp:
     complete
     .text start:0x02038224 end:0x02038228
 
-src/func_02038228.c:
+src/_ZN13CLPS_BlockRefC1Ev.cpp:
     complete
     .text start:0x02038228 end:0x02038234
 
