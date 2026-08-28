@@ -18,7 +18,7 @@ struct Node {
 
 extern "C" int data_0209f32c;
 extern "C" unsigned int _ZN8Particle6System9NewRippleE5Fix12IiES2_S2_(Fix12i x, Fix12i y, Fix12i z);
-extern "C" int _ZN8Particle14SimpleCallback8OnUpdateERNS_6SystemEb(char *self, char *sys, int b);
+extern "C" int _ZN5dPa_c7level_c16simpleCallback_c8OnUpdateERN8Particle6SystemEb(char *self, char *sys, int b);
 
 extern "C" int _ZN8Particle14SplashCallback8OnUpdateERNS_6SystemEb(char *self, char *sys, int b)
 {
@@ -36,5 +36,5 @@ extern "C" int _ZN8Particle14SplashCallback8OnUpdateERNS_6SystemEb(char *self, c
         }
         node = node->next;
     }
-    return _ZN8Particle14SimpleCallback8OnUpdateERNS_6SystemEb(self, sys, b);
+    return _ZN5dPa_c7level_c16simpleCallback_c8OnUpdateERN8Particle6SystemEb(self, sys, b);
 }

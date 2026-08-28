@@ -31,7 +31,7 @@ typedef struct ParticleSys {
 
 extern s32 data_0209f32c;
 
-extern int _ZN8Particle14SimpleCallback8OnUpdateERNS_6SystemEb(void* cb, ParticleSys* sys, int active);
+extern int _ZN5dPa_c7level_c16simpleCallback_c8OnUpdateERN8Particle6SystemEb(void* cb, ParticleSys* sys, int active);
 
 int _ZN8Particle22FitWaterSimpleCallback8OnUpdateERNS_6SystemEb(void* cb, ParticleSys* sys, int active)
 {
@@ -48,5 +48,5 @@ int _ZN8Particle22FitWaterSimpleCallback8OnUpdateERNS_6SystemEb(void* cb, Partic
             p = (Particle*)p->node.next;
         } while (p != 0);
     }
-    return _ZN8Particle14SimpleCallback8OnUpdateERNS_6SystemEb(cb, sys, active);
+    return _ZN5dPa_c7level_c16simpleCallback_c8OnUpdateERN8Particle6SystemEb(cb, sys, active);
 }

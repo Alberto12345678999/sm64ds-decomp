@@ -11,10 +11,10 @@ struct ScaleCallback {
 
 typedef struct ScaleCallback ScaleCallback;
 
-extern int _ZN8Particle14SimpleCallback8OnUpdateERNS_6SystemEb(ScaleCallback* self, struct System* sys, int active);
+extern int _ZN5dPa_c7level_c16simpleCallback_c8OnUpdateERN8Particle6SystemEb(ScaleCallback* self, struct System* sys, int active);
 extern u8 DecIfAbove0_Byte(u8* p);
 
 int _ZN8Particle13ScaleCallback8OnUpdateERNS_6SystemEb(ScaleCallback* self, struct System* sys, int active) {
-    _ZN8Particle14SimpleCallback8OnUpdateERNS_6SystemEb(self, sys, active);
+    _ZN5dPa_c7level_c16simpleCallback_c8OnUpdateERN8Particle6SystemEb(self, sys, active);
     return DecIfAbove0_Byte(&self->unk0a) != 0;
 }

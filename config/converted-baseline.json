@@ -1427,7 +1427,7 @@
     "src/_ZN8Painting8BehaviorEv.cpp",
     "src/_ZN8PaintingD0Ev.cpp",
     "src/_ZN8PaintingD1Ev.cpp",
-    "src/_ZN8Particle14SimpleCallback14SpawnParticlesERNS_6SystemE.cpp",
+    "src/_ZN5dPa_c7level_c16simpleCallback_c14SpawnParticlesERN8Particle6SystemE.cpp",
     "src/_ZN8Particle17CheckLavaCallback14SpawnParticlesERNS_6SystemE.cpp",
     "src/_ZN8PathLiftD0Ev.cpp",
     "src/_ZN8PathLiftD1Ev.cpp",

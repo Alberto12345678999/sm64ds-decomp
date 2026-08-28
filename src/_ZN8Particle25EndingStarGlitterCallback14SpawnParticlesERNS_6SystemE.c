@@ -25,7 +25,7 @@ struct StarGlitterSystem {
     s32   unk48;        /* 0x48 */
 };
 
-extern void _ZN8Particle14SimpleCallback14SpawnParticlesERNS_6SystemE(void* cb, struct StarGlitterSystem* sys);
+extern void _ZN5dPa_c7level_c16simpleCallback_c14SpawnParticlesERN8Particle6SystemE(void* cb, struct StarGlitterSystem* sys);
 
 void _ZN8Particle25EndingStarGlitterCallback14SpawnParticlesERNS_6SystemE(struct Particle__EndingStarGlitterCallback *self, struct StarGlitterSystem* sys) {
     void** p;
@@ -39,5 +39,5 @@ void _ZN8Particle25EndingStarGlitterCallback14SpawnParticlesERNS_6SystemE(struct
     val = *(s16*)((char*)&self->unk_30c);
     sys->unk48 = val;
 
-    _ZN8Particle14SimpleCallback14SpawnParticlesERNS_6SystemE(((void*)self), sys);
+    _ZN5dPa_c7level_c16simpleCallback_c14SpawnParticlesERN8Particle6SystemE(((void*)self), sys);
 }
