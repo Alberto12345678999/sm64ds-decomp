@@ -12,21 +12,8 @@
  * The base holds only the array. The remaining fields are read at raw offsets
  * rather than declared, because a declared member would sit BEFORE the virtual
  * base in the layout and push the array off 0x50/0x64. */
-#include "Model.h"
+#include "daDemo_c.h"
 #include "SharedFilePtr.h"
-
-extern "C" void _ZN6Memory16operator_delete2EPv(void *);
-
-struct ScaleHolder {
-    Vector3 mScale[1];          /* 0x50 */
-};
-
-struct daDemo_c {
-    struct simpleModel_c : Model, virtual ScaleHolder {
-        virtual ~simpleModel_c();
-        void operator delete(void *ptr) { _ZN6Memory16operator_delete2EPv(ptr); }
-    };
-};
 
 daDemo_c::simpleModel_c::~simpleModel_c()
 {

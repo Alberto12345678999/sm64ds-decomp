@@ -1,10 +1,8 @@
 //cpp
-// @symbol _ZN8daDemo_c10anmModel_cD0Ev
-/* D0, the deleting destructor. Same class shape as the D1 file beside this one;
- * one destructor definition emits D0/D1/D2 and objisolate keeps the variant this
- * file's delinks entry names. The class operator delete is what routes the tail
- * call to Memory::operator_delete2 (0x0203cbcc) rather than the global _ZdlPv --
- * without it the bytes still match and only the relocation destination differs. */
+// @symbol _ZThn80_N8daDemo_c10anmModel_cD0Ev
+/* Compiler-owned deleting-destructor adjustment thunk. The source describes
+   the real destructor; mwccarm emits the -0x50 thunk named by this file as a
+   byproduct of the virtual ScaleHolder base in daDemo_c.h. */
 #include "daDemo_c.h"
 #include "SharedFilePtr.h"
 
