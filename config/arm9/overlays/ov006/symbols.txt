@@ -91,7 +91,7 @@ func_ov006_020c3e54 kind:function(arm,size=0x1c) addr:0x020c3e54
 func_ov006_020c3e70 kind:function(arm,size=0xe4) addr:0x020c3e70
 func_ov006_020c3f54 kind:function(arm,size=0xd8) addr:0x020c3f54
 func_ov006_020c402c kind:function(arm,size=0x1c) addr:0x020c402c
-func_ov006_020c4048 kind:function(arm,size=0x18) addr:0x020c4048
+_ZN22dMg3DHeyhoObjAdapter_cC2Ev kind:function(arm,size=0x18) addr:0x020c4048
 func_ov006_020c4060 kind:function(arm,size=0x88) addr:0x020c4060
 func_ov006_020c40e8 kind:function(arm,size=0x60) addr:0x020c40e8
 func_ov006_020c4148 kind:function(arm,size=0x114) addr:0x020c4148
@@ -179,8 +179,8 @@ func_ov006_020c8658 kind:function(arm,size=0x28) addr:0x020c8658
 func_ov006_020c8680 kind:function(arm,size=0xe8) addr:0x020c8680
 func_ov006_020c8768 kind:function(arm,size=0x68) addr:0x020c8768
 func_ov006_020c87d0 kind:function(arm,size=0x16c) addr:0x020c87d0
-func_ov006_020c893c kind:function(arm,size=0xc8) addr:0x020c893c
-func_ov006_020c8a04 kind:function(arm,size=0x2c) addr:0x020c8a04
+_ZN16dMgJump3DMario_cD1Ev kind:function(arm,size=0xc8) addr:0x020c893c
+_ZN16dMgJump3DMario_cC1Ev kind:function(arm,size=0x2c) addr:0x020c8a04
 func_ov006_020c8a30 kind:function(arm,size=0x34) addr:0x020c8a30
 func_ov006_020c8a64 kind:function(arm,size=0x38) addr:0x020c8a64
 func_ov006_020c8a9c kind:function(arm,size=0x58) addr:0x020c8a9c
@@ -3279,7 +3279,7 @@ data_ov006_0213afb0 kind:data(any) addr:0x0213afb0
 data_ov006_0213afb8 kind:data(any) addr:0x0213afb8
 data_ov006_0213afc0 kind:data(any) addr:0x0213afc0
 data_ov006_0213afc8 kind:data(any) addr:0x0213afc8
-data_ov006_0213afd8 kind:data(any) addr:0x0213afd8
+_ZTV22dMg3DHeyhoObjAdapter_c kind:data(any) addr:0x0213afd8
 _ZTS22dMg3DHeyhoObjAdapter_c kind:data(any) addr:0x0213afe4
 _ZTI22dMg3DHeyhoObjAdapter_c kind:data(any) addr:0x0213b000
 data_ov006_0213b008 kind:data(any) addr:0x0213b008
@@ -3306,7 +3306,7 @@ data_ov006_0213b090 kind:data(any) addr:0x0213b090
 data_ov006_0213b098 kind:data(any) addr:0x0213b098
 _ZTI16dMgJump3DMario_c kind:data(any) addr:0x0213b0a4
 _ZTS16dMgJump3DMario_c kind:data(any) addr:0x0213b0b0
-data_ov006_0213b0cc kind:data(any) addr:0x0213b0cc
+_ZTV16dMgJump3DMario_c kind:data(any) addr:0x0213b0cc
 data_ov006_0213b0d8 kind:data(any) addr:0x0213b0d8
 data_ov006_0213b0ec kind:data(any) addr:0x0213b0ec
 data_ov006_0213b0f0 kind:data(any) addr:0x0213b0f0

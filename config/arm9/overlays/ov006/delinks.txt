@@ -374,7 +374,7 @@ src/func_ov006_020c402c.c:
     complete
     .text start:0x020c402c end:0x020c4048
 
-src/func_ov006_020c4048.c:
+src/_ZN22dMg3DHeyhoObjAdapter_cC2Ev.cpp:
     complete
     .text start:0x020c4048 end:0x020c4060
 
@@ -725,11 +725,11 @@ src/func_ov006_020c87d0.cpp:
     complete
     .text start:0x020c87d0 end:0x020c893c
 
-src/func_ov006_020c893c.cpp:
+src/_ZN16dMgJump3DMario_cD1Ev.cpp:
     complete
     .text start:0x020c893c end:0x020c8a04
 
-src/func_ov006_020c8a04.c:
+src/_ZN16dMgJump3DMario_cC1Ev.cpp:
     complete
     .text start:0x020c8a04 end:0x020c8a30
 
