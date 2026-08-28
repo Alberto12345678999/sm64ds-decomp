@@ -1,16 +1,22 @@
-extern void* data_0209cee8;
-void func_02014fa4(char* c){
-  void* prev = *(void**)(c+0x28);
-  if(prev){
-    *(void**)((char*)prev+0x2c) = *(void**)(c+0x2c);
-  } else {
-    if(data_0209cee8 == (void*)c)
-      data_0209cee8 = *(void**)(c+0x2c);
-  }
-  void* next = *(void**)(c+0x2c);
-  if(next){
-    *(void**)((char*)next+0x28) = *(void**)(c+0x28);
-  }
-  *(void**)(c+0x28) = 0;
-  *(void**)(c+0x2c) = 0;
+//cpp
+// @symbol _ZN5dCc_c6UnlinkEv
+/* Removes this collision node from the global intrusive list. The member role
+ * is proven by the prev/next rewiring; the original spelling `Unlink` is an
+ * evidence-bounded reconstruction. */
+#include "dCc_c.h"
+
+extern dCc_c *data_0209cee8;
+
+void dCc_c::Unlink()
+{
+    if (prev)
+        prev->next = next;
+    else if (data_0209cee8 == this)
+        data_0209cee8 = next;
+
+    if (next)
+        next->prev = prev;
+
+    prev = 0;
+    next = 0;
 }
