@@ -5314,9 +5314,11 @@ src/func_ov006_0210a708.c:
     .text start:0x0210a708 end:0x0210a8c0
 
 src/_ZN12dScMgSlot1_cD1Ev.cpp:
+    complete
     .text start:0x0210a8c0 end:0x0210a900
 
 src/_ZN12dScMgSlot1_cD0Ev.cpp:
+    complete
     .text start:0x0210a900 end:0x0210a954
 
 src/_ZN12dScMgSlot3_cD1Ev.cpp:
@@ -5430,11 +5432,11 @@ src/func_ov006_0210c354.c:
     complete
     .text start:0x0210c354 end:0x0210c374
 
-src/func_ov006_0210c374.cpp:
+src/_ZN12dScMgSlot1_c9betIcon_c6RenderEv.cpp:
     complete
     .text start:0x0210c374 end:0x0210c410
 
-src/func_ov006_0210c410.c:
+src/_ZN12dScMgSlot1_c9betIcon_c8BehaviorEv.cpp:
     complete
     .text start:0x0210c410 end:0x0210c478
 

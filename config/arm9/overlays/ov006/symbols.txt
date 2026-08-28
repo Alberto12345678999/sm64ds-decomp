@@ -1396,8 +1396,8 @@ func_ov006_0210c2b0 kind:function(arm,size=0x10) addr:0x0210c2b0
 func_ov006_0210c2c0 kind:function(arm,size=0x14) addr:0x0210c2c0
 func_ov006_0210c2d4 kind:function(arm,size=0x80) addr:0x0210c2d4
 func_ov006_0210c354 kind:function(arm,size=0x20) addr:0x0210c354
-func_ov006_0210c374 kind:function(arm,size=0x9c) addr:0x0210c374
-func_ov006_0210c410 kind:function(arm,size=0x68) addr:0x0210c410
+_ZN12dScMgSlot1_c9betIcon_c6RenderEv kind:function(arm,size=0x9c) addr:0x0210c374
+_ZN12dScMgSlot1_c9betIcon_c8BehaviorEv kind:function(arm,size=0x68) addr:0x0210c410
 func_ov006_0210c478 kind:function(arm,size=0x40) addr:0x0210c478
 _ZN12dScMgSlot1_c19OnHitFromUnderneathER8dActor_c kind:function(arm,size=0x24) addr:0x0210c4b8
 _ZN12dScMgSlot1_c15OnHitByMegaCharER6Player kind:function(arm,size=0x24) addr:0x0210c4dc
@@ -4054,7 +4054,7 @@ _ZTIN12dScMgSlot1_c9betIcon_cE kind:data(any) addr:0x0213e594
 _ZTI12dScMgSlot1_c kind:data(any) addr:0x0213e5a0
 _ZTS12dScMgSlot3_c kind:data(any) addr:0x0213e5ac
 _ZTS12dScMgSlot1_c kind:data(any) addr:0x0213e5bc
-data_ov006_0213e5d4 kind:data(any) addr:0x0213e5d4
+_ZTVN12dScMgSlot1_c9betIcon_cE kind:data(any) addr:0x0213e5d4
 data_ov006_0213e5dc kind:data(any) addr:0x0213e5dc
 data_ov006_0213e5ec kind:data(any) addr:0x0213e5ec
 data_ov006_0213e600 kind:data(any) addr:0x0213e600

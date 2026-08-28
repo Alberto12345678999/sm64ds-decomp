@@ -1,6 +1,6 @@
 //cpp
 extern "C" int _Z15ApproachLinear2Rsss(short *, short, short);
-extern "C" int func_ov001_020ab550(void *);
+extern "C" int _ZN9dThIcon_c8BehaviorEv(void *);
 extern unsigned char data_0209b2e4[];
 extern "C" int func_ov075_02115e1c(char *c)
 {
@@ -12,5 +12,5 @@ extern "C" int func_ov075_02115e1c(char *c)
                 *(int *)(c + 0x20) = data_0209b2e4[0];
         }
     }
-    return func_ov001_020ab550(c);
+    return _ZN9dThIcon_c8BehaviorEv(c);
 }

@@ -5,11 +5,12 @@
 
 /* The minigame pause/options touch controls embedded in dScMgBase_c. The ROM
  * constructs and destroys eight polymorphic TouchIcon_c elements as one member.
- * TouchIcon_c's nested name and dThIcon_c base are RTTI-proven. */
+ * TouchIcon_c's nested name and dThIcon_c base are RTTI-proven. dThIcon_c's
+ * ROM vtable proves this nested class has an ordinary nonvirtual destructor. */
 struct dMgPsOpt_c {
     struct TouchIcon_c : dThIcon_c {
         TouchIcon_c();
-        virtual ~TouchIcon_c();
+        ~TouchIcon_c();
     };
 
     TouchIcon_c mIcons[8];
