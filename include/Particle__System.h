@@ -21,7 +21,12 @@ struct System {
     u8 pad_020[0x1a];
     /* simpleCallback_c copies this value in both directions. */
     s16 callbackValue;             /* 0x3a */
-    u8 pad_03c[0x38];
+    u8 pad_03c[0x0c];
+    /* Descriptive names for callback-owned, body-proven fields. */
+    s32 callbackParam;             /* 0x48 */
+    s32 callbackVelocity;          /* 0x4c */
+    s32 callbackScale;             /* 0x50 */
+    u8 pad_054[0x20];
     Flags flags;                   /* 0x74 */
 
     static System *FromUniqueID(u32 uniqueID);

@@ -3574,11 +3574,11 @@ src/_ZN8Particle14SplashCallback8OnUpdateERNS_6SystemEb.cpp:
     complete
     .text start:0x020224fc end:0x020225a8
 
-src/_ZN8Particle13ScaleCallback8OnUpdateERNS_6SystemEb.c:
+src/_ZN5dPa_c7level_c15scaleCallback_c8OnUpdateERN8Particle6SystemEb.cpp:
     complete
     .text start:0x020225a8 end:0x020225d0
 
-src/_ZN8Particle13ScaleCallback14SpawnParticlesERNS_6SystemE.c:
+src/_ZN5dPa_c7level_c15scaleCallback_c14SpawnParticlesERN8Particle6SystemE.cpp:
     complete
     .text start:0x020225d0 end:0x020225fc
 
