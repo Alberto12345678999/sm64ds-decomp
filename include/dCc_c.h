@@ -55,13 +55,31 @@
 extern "C" void _ZN6Memory16operator_delete2EPv(void *);
 
 struct dCc_c {
+    /* Bit meanings below are a best-effort reading, not pinned by the ROM the
+     * way the offsets are -- same caveat as the field NAMES note atop this
+     * file. Two are proven by our own matched code: bit 0x2000 matches
+     * dActor_c::FindEgg's mask, and bit 0x4000 matches
+     * dActor_c::FindExplosionActor's. The rest are a plausible reading from
+     * the surrounding game mechanics, not independently verified.
+     *
+     * vulnFlags (which kinds of hit this clsn can register) and hitFlags
+     * (which of those actually hit it this frame) share the same bit table:
+     *   0x0001 disabled           0x0002 char movement        0x0004 char projectile
+     *   0x0008 char body          0x0010 mega character       0x0020 spin/ground-pound
+     *   0x0040 punch              0x0080 kick                 0x0100 breakdance
+     *   0x0200 slide kick         0x0400 dive                 0x1000 grab
+     *   0x2000 egg (PROVEN)       0x4000 explosion (PROVEN)   0x8000 yoshi tongue
+     *   0x40000 fire              0x100000 collectable        0x200000 enemy
+     *   0x400000 player           0x800000 player interact    0x1000000 tree
+     *   0x2000000 handstand */
+
     /* 0x00 is the vptr, placed implicitly by the first virtual declaration. */
     Fix12i radius;          /* 0x04 - Init arg 1 */
     Fix12i height;          /* 0x08 - Init arg 2 */
     Vector3 pushback;       /* 0x0c - cleared by Clear */
-    u32 flags;              /* 0x18 - Init arg 3; bit 0 makes Update bail */
-    u32 vulnFlags;          /* 0x1c - Init arg 4 */
-    u32 hitFlags;           /* 0x20 - cleared by Clear */
+    u32 flags;              /* 0x18 - Init arg 3; bit 0x1 makes Update bail */
+    u32 vulnFlags;          /* 0x1c - Init arg 4; see the bit table above */
+    u32 hitFlags;           /* 0x20 - cleared by Clear; see the bit table above */
     u32 otherOwner;         /* 0x24 - cleared by Clear */
     dCc_c *prev;     /* 0x28 - intrusive list, zeroed by C2 */
     dCc_c *next;     /* 0x2c - intrusive list, zeroed by C2 */
