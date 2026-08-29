@@ -709,7 +709,7 @@ matched: yes</title></rect><rect x="232.12" y="97.92" width="25.79" height="6.97
 module: arm9
 addr: 0x0200e338
 size: 268 bytes
-matched: yes</title></rect><rect x="257.91" y="97.92" width="7.70" height="6.97" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN6CameraC1Ev
+matched: yes</title></rect><rect x="257.91" y="97.92" width="7.70" height="6.97" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>Camera_Spawn
 module: arm9
 addr: 0x0200e444
 size: 80 bytes
@@ -1961,7 +1961,7 @@ matched: yes</title></rect><rect x="95.97" y="162.45" width="24.18" height="8.88
 module: arm9
 addr: 0x0201559c
 size: 320 bytes
-matched: yes</title></rect><rect x="120.15" y="162.45" width="2.42" height="8.88" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7Clipper13Func_020156DCEv
+matched: yes</title></rect><rect x="120.15" y="162.45" width="2.42" height="8.88" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7Clipper13Func_020156DCEitii
 module: arm9
 addr: 0x020156dc
 size: 32 bytes
@@ -4301,7 +4301,7 @@ matched: yes</title></rect><rect x="91.67" y="377.84" width="57.23" height="3.28
 module: arm9
 addr: 0x0202df70
 size: 280 bytes
-matched: yes</title></rect><rect x="148.90" y="377.84" width="29.43" height="3.28" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5StageC3Ev
+matched: yes</title></rect><rect x="148.90" y="377.84" width="29.43" height="3.28" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>Stage_Spawn
 module: arm9
 addr: 0x0202e088
 size: 144 bytes
@@ -9073,7 +9073,7 @@ matched: yes</title></rect><rect x="283.90" y="694.42" width="2.50" height="9.65
 module: arm9
 addr: 0x02055238
 size: 36 bytes
-matched: yes</title></rect><rect x="286.40" y="694.42" width="1.95" height="9.65" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN3G2x13SetBlendAlphaEPVttttt
+matched: yes</title></rect><rect x="286.40" y="694.42" width="1.95" height="9.65" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN3G2x13SetBlendAlphaEPVttttj
 module: arm9
 addr: 0x0205525c
 size: 28 bytes
@@ -16697,7 +16697,7 @@ matched: yes</title></rect><rect x="552.42" y="642.57" width="8.38" height="7.30
 module: ov002
 addr: 0x020e6bb0
 size: 92 bytes
-matched: yes</title></rect><rect x="560.81" y="642.57" width="4.74" height="7.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN6PlayerC3Ev
+matched: yes</title></rect><rect x="560.81" y="642.57" width="4.74" height="7.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>Player_Spawn
 module: ov002
 addr: 0x020e6c0c
 size: 52 bytes
@@ -18357,7 +18357,7 @@ matched: yes</title></rect><rect x="420.38" y="989.00" width="17.31" height="3.6
 module: ov002
 addr: 0x020fb85c
 size: 96 bytes
-matched: yes</title></rect><rect x="420.38" y="992.69" width="17.31" height="2.31" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7MinimapC1Ev
+matched: yes</title></rect><rect x="420.38" y="992.69" width="17.31" height="2.31" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>Minimap_Spawn
 module: ov002
 addr: 0x020fb8bc
 size: 60 bytes
@@ -18437,7 +18437,7 @@ matched: yes</title></rect><rect x="442.39" y="843.15" width="11.34" height="109
 module: ov002
 addr: 0x020fda04
 size: 1872 bytes
-matched: yes</title></rect><rect x="442.39" y="952.99" width="11.34" height="3.52" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN3HUDC1Ev
+matched: yes</title></rect><rect x="442.39" y="952.99" width="11.34" height="3.52" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>HUD_Spawn
 module: ov002
 addr: 0x020fe154
 size: 60 bytes
@@ -32497,11 +32497,11 @@ matched: yes</title></rect><rect x="1402.69" y="184.25" width="3.26" height="6.6
 module: ov027
 addr: 0x02111618
 size: 104 bytes
-matched: yes</title></rect><rect x="1405.95" y="175.78" width="5.68" height="4.11" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov027_02111680
+matched: yes</title></rect><rect x="1405.95" y="175.78" width="5.68" height="4.11" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10ChillBully14UpdateRunStateEv
 module: ov027
 addr: 0x02111680
 size: 112 bytes
-matched: yes</title></rect><rect x="1405.95" y="179.90" width="5.68" height="4.70" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov027_021116f0
+matched: yes</title></rect><rect x="1405.95" y="179.90" width="5.68" height="4.70" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10ChillBully16UpdateDeathStateEv
 module: ov027
 addr: 0x021116f0
 size: 128 bytes
@@ -36261,23 +36261,23 @@ matched: yes</title></rect><rect x="1058.35" y="491.22" width="6.84" height="20.
 module: ov064
 addr: 0x02116220
 size: 296 bytes
-matched: yes</title></rect><rect x="1065.18" y="433.79" width="3.95" height="2.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov064_02116348
+matched: yes</title></rect><rect x="1065.18" y="433.79" width="3.95" height="2.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7daOts_c14PlayDeathSoundEv
 module: ov064
 addr: 0x02116348
 size: 20 bytes
-matched: yes</title></rect><rect x="1065.18" y="436.18" width="3.95" height="0.48" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov064_0211635c
+matched: yes</title></rect><rect x="1065.18" y="436.18" width="3.95" height="0.48" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7daOts_c17PlayShellHitSoundEv
 module: ov064
 addr: 0x0211635c
 size: 4 bytes
-matched: yes</title></rect><rect x="1065.18" y="436.65" width="3.95" height="2.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov064_02116360
+matched: yes</title></rect><rect x="1065.18" y="436.65" width="3.95" height="2.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7daOts_c12PlayHitSoundEv
 module: ov064
 addr: 0x02116360
 size: 20 bytes
-matched: yes</title></rect><rect x="1065.18" y="439.04" width="3.95" height="8.60" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov064_02116374
+matched: yes</title></rect><rect x="1065.18" y="439.04" width="3.95" height="8.60" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7daOts_c13PlayStepSoundEv
 module: ov064
 addr: 0x02116374
 size: 72 bytes
-matched: yes</title></rect><rect x="1065.18" y="447.64" width="3.95" height="0.48" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov064_021163bc
+matched: yes</title></rect><rect x="1065.18" y="447.64" width="3.95" height="0.48" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7daOts_c16UpdateDeathStateEv
 module: ov064
 addr: 0x021163bc
 size: 4 bytes
@@ -36293,7 +36293,7 @@ matched: yes</title></rect><rect x="1065.18" y="497.80" width="3.95" height="13.
 module: ov064
 addr: 0x02116560
 size: 116 bytes
-matched: yes</title></rect><rect x="1069.14" y="433.79" width="2.33" height="0.81" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov064_021165d4
+matched: yes</title></rect><rect x="1069.14" y="433.79" width="2.33" height="0.81" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7daOts_c14UpdateRunStateEv
 module: ov064
 addr: 0x021165d4
 size: 4 bytes
@@ -36337,27 +36337,27 @@ matched: yes</title></rect><rect x="1082.98" y="470.18" width="6.69" height="7.3
 module: ov064
 addr: 0x021170c4
 size: 104 bytes
-matched: yes</title></rect><rect x="1082.98" y="477.52" width="6.69" height="1.41" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov064_0211712c
+matched: yes</title></rect><rect x="1082.98" y="477.52" width="6.69" height="1.41" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Bully14PlayDeathSoundEv
 module: ov064
 addr: 0x0211712c
 size: 20 bytes
-matched: yes</title></rect><rect x="1082.98" y="478.93" width="6.69" height="1.41" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov064_02117140
+matched: yes</title></rect><rect x="1082.98" y="478.93" width="6.69" height="1.41" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Bully17PlayShellHitSoundEv
 module: ov064
 addr: 0x02117140
 size: 20 bytes
-matched: yes</title></rect><rect x="1082.98" y="480.34" width="6.69" height="1.41" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov064_02117154
+matched: yes</title></rect><rect x="1082.98" y="480.34" width="6.69" height="1.41" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Bully12PlayHitSoundEv
 module: ov064
 addr: 0x02117154
 size: 20 bytes
-matched: yes</title></rect><rect x="1082.98" y="481.75" width="6.69" height="5.08" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov064_02117168
+matched: yes</title></rect><rect x="1082.98" y="481.75" width="6.69" height="5.08" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Bully13PlayStepSoundEv
 module: ov064
 addr: 0x02117168
 size: 72 bytes
-matched: yes</title></rect><rect x="1082.98" y="486.83" width="6.69" height="7.90" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov064_021171b0
+matched: yes</title></rect><rect x="1082.98" y="486.83" width="6.69" height="7.90" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Bully14UpdateRunStateEv
 module: ov064
 addr: 0x021171b0
 size: 112 bytes
-matched: yes</title></rect><rect x="1082.98" y="494.73" width="6.69" height="16.93" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov064_02117220
+matched: yes</title></rect><rect x="1082.98" y="494.73" width="6.69" height="16.93" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Bully16UpdateDeathStateEv
 module: ov064
 addr: 0x02117220
 size: 240 bytes
@@ -36381,11 +36381,11 @@ matched: yes</title></rect><rect x="1089.68" y="466.85" width="6.91" height="7.1
 module: ov064
 addr: 0x021174f4
 size: 104 bytes
-matched: yes</title></rect><rect x="1089.68" y="473.95" width="6.91" height="7.65" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov064_0211755c
+matched: yes</title></rect><rect x="1089.68" y="473.95" width="6.91" height="7.65" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8BigBully14UpdateRunStateEv
 module: ov064
 addr: 0x0211755c
 size: 112 bytes
-matched: yes</title></rect><rect x="1089.68" y="481.60" width="6.91" height="8.74" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov064_021175cc
+matched: yes</title></rect><rect x="1089.68" y="481.60" width="6.91" height="8.74" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8BigBully16UpdateDeathStateEv
 module: ov064
 addr: 0x021175cc
 size: 128 bytes
