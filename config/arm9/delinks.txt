@@ -3586,11 +3586,11 @@ src/_ZN5dPa_c7level_c15scaleCallback_cC1Ev.cpp:
     complete
     .text start:0x020225fc end:0x02022630
 
-src/_ZN8Particle14SimpleCallback8OnUpdateERNS_6SystemEb.cpp:
+src/_ZN5dPa_c7level_c16simpleCallback_c8OnUpdateERN8Particle6SystemEb.cpp:
     complete
     .text start:0x02022630 end:0x02022640
 
-src/_ZN8Particle14SimpleCallback14SpawnParticlesERNS_6SystemE.cpp:
+src/_ZN5dPa_c7level_c16simpleCallback_c14SpawnParticlesERN8Particle6SystemE.cpp:
     complete
     .text start:0x02022640 end:0x02022680
 

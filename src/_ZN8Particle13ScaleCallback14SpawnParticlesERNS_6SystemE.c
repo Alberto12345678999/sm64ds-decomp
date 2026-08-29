@@ -24,12 +24,12 @@ struct ScaleSystem {
     u32   unk50;        /* 0x50 */
 };
 
-extern void _ZN8Particle14SimpleCallback14SpawnParticlesERNS_6SystemE(ScaleCallback* cb, struct ScaleSystem* sys);
+extern void _ZN5dPa_c7level_c16simpleCallback_c14SpawnParticlesERN8Particle6SystemE(ScaleCallback* cb, struct ScaleSystem* sys);
 
 void _ZN8Particle13ScaleCallback14SpawnParticlesERNS_6SystemE(ScaleCallback* self, struct ScaleSystem* sys)
 {
     sys->unk50 = self->unk06;
     sys->unk4c = self->unk08;
-    _ZN8Particle14SimpleCallback14SpawnParticlesERNS_6SystemE(self, sys);
+    _ZN5dPa_c7level_c16simpleCallback_c14SpawnParticlesERN8Particle6SystemE(self, sys);
     self->unk0a = 0x10;
 }

@@ -16,7 +16,12 @@ struct System {
 
     u8 pad_000[0x18];
     SystemDefinition *mDefinition; /* 0x18 */
-    u8 pad_01c[0x58];
+    /* Callback virtuals toggle bit 1 while spawning or suppressing particles. */
+    u32 callbackFlags;             /* 0x1c */
+    u8 pad_020[0x1a];
+    /* simpleCallback_c copies this value in both directions. */
+    s16 callbackValue;             /* 0x3a */
+    u8 pad_03c[0x38];
     Flags flags;                   /* 0x74 */
 
     static System *FromUniqueID(u32 uniqueID);
