@@ -1,26 +1,24 @@
 //cpp
-struct Vector3 { int x, y, z; };
-struct dActor_c;
+#include "dBgCh_Lin.h"
 
 extern "C" {
-void _ZN8dM3dGLin3SetERK7Vector3S2_(void *line, const Vector3 *a, const Vector3 *b);
-void func_020353b0(char *c, void *p);
-void func_02037608(char *thiz);
-void func_0203abd4(int *dst, Vector3 *mid, int w);
+void func_020353b0(dBgCh *query, dActor_c *actor);
+void func_02037608(dBgCh_Lin *query);
+void func_0203abd4(dM3dGSph *sphere, Vector3 *centre, Fix12i radius);
 }
 
-extern "C" void _ZN9dBgCh_Lin13SetObjAndLineERK7Vector3S2_P8dActor_c(
-    char *thiz, const Vector3 *a, const Vector3 *b, dActor_c *obj)
+void dBgCh_Lin::SetObjAndLine(const Vector3 &start, const Vector3 &end,
+                              dActor_c *actor)
 {
     Vector3 mid;
-    _ZN8dM3dGLin3SetERK7Vector3S2_(thiz + 0x38, a, b);
-    func_020353b0(thiz, obj);
-    func_02037608(thiz);
-    mid.x = a->x + b->x;
-    mid.y = a->y + b->y;
-    mid.z = a->z + b->z;
+    dM3dGLin::Set(start, end);
+    func_020353b0(this, actor);
+    func_02037608(this);
+    mid.x = start.x + end.x;
+    mid.y = start.y + end.y;
+    mid.z = start.z + end.z;
     mid.x >>= 1;
     mid.y >>= 1;
     mid.z >>= 1;
-    func_0203abd4((int *)(thiz + 0x64), &mid, (*(int *)(thiz + 0x60) >> 1) + 0x1000);
+    func_0203abd4(&mBoundSphere, &mid, (clsnDist >> 1) + 0x1000);
 }
