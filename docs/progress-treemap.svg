@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1092" width="100%" font-family="Segoe UI, system-ui, sans-serif" shape-rendering="crispEdges">
   <rect x="0" y="0" width="1600" height="1092" fill="#141517" />
   <text x="6" y="30" font-size="24" font-weight="600" fill="#e6e7e9">SM64DS decompilation progress</text>
-  <text x="6" y="58" font-size="15" fill="#e6e7e9">Functions matched: 11,234 / 11,401 (98.54%)   |   Code bytes matched: 2,118,600 / 2,238,108 (94.66%)   |   Modules: 74</text>
+  <text x="6" y="58" font-size="15" fill="#e6e7e9">Functions matched: 11,242 / 11,402 (98.60%)   |   Code bytes matched: 2,118,728 / 2,238,108 (94.67%)   |   Modules: 74</text>
   <text x="6" y="80" font-size="13" fill="#a8abb0">Each rectangle is one function, sized by byte count. Green = matched, gray = unmatched.</text>
   <g transform="translate(0,92)">
     <rect x="2.00" y="2.00" width="322.42" height="996.00" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="7.00" y="17.00" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">arm9  96.2%</text><rect x="328.42" y="2.00" width="18.68" height="846.69" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><rect x="328.42" y="852.69" width="18.68" height="1.30" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><rect x="328.42" y="857.99" width="18.68" height="140.01" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><rect x="351.10" y="2.00" width="257.55" height="996.00" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="356.10" y="17.00" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov002  97.6%</text><rect x="612.65" y="2.00" width="194.95" height="50.37" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="617.65" y="17.00" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov003  43.5%</text><rect x="811.60" y="2.00" width="666.70" height="50.37" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="816.60" y="17.00" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov004  97.6%</text><rect x="1482.30" y="2.00" width="115.70" height="50.37" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1487.30" y="17.00" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov005  78.8%</text><rect x="612.65" y="56.37" width="438.70" height="734.53" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="617.65" y="71.37" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov006  90.0%</text><rect x="612.65" y="794.90" width="438.70" height="203.10" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="617.65" y="809.90" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov007  94.1%</text><rect x="1055.35" y="56.37" width="77.01" height="48.84" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1060.35" y="71.37" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov009  93.7%</text><rect x="1136.35" y="56.37" width="51.36" height="48.84" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1141.35" y="71.37" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov010  100.0%</text><rect x="1191.71" y="56.37" width="18.94" height="48.84" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><rect x="1214.66" y="56.37" width="15.75" height="48.84" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><rect x="1234.41" y="56.37" width="112.99" height="48.84" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1239.41" y="71.37" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov014  100.0%</text><rect x="1351.40" y="56.37" width="109.85" height="48.84" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1356.40" y="71.37" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov015  95.5%</text><rect x="1465.26" y="56.37" width="132.74" height="48.84" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1470.26" y="71.37" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov016  92.5%</text><rect x="1055.35" y="109.22" width="11.48" height="37.57" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><rect x="1070.82" y="109.22" width="115.64" height="37.57" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1075.82" y="124.22" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov018  100.0%</text><rect x="1190.46" y="109.22" width="108.76" height="37.57" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1195.46" y="124.22" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov019  100.0%</text><rect x="1303.22" y="109.22" width="155.47" height="37.57" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1308.22" y="124.22" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov020  100.0%</text><rect x="1462.69" y="109.22" width="135.31" height="37.57" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1467.69" y="124.22" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov021  82.2%</text><rect x="1055.35" y="150.78" width="104.71" height="43.14" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1060.35" y="165.78" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov022  100.0%</text><rect x="1164.06" y="150.78" width="19.96" height="43.14" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><rect x="1188.02" y="150.78" width="25.00" height="43.14" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><rect x="1217.02" y="150.78" width="82.81" height="43.14" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1222.02" y="165.78" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov025  100.0%</text><rect x="1303.83" y="150.78" width="77.90" height="43.14" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1308.83" y="165.78" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov026  100.0%</text><rect x="1385.73" y="150.78" width="106.77" height="43.14" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1390.73" y="165.78" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov027  100.0%</text><rect x="1496.50" y="150.78" width="101.50" height="43.14" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1501.50" y="165.78" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov029  100.0%</text><rect x="1055.35" y="197.92" width="207.77" height="46.52" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1060.35" y="212.92" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov030  100.0%</text><rect x="1267.11" y="197.92" width="7.72" height="46.52" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><rect x="1278.83" y="197.92" width="89.57" height="46.52" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1283.83" y="212.92" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov032  100.0%</text><rect x="1372.40" y="197.92" width="17.74" height="46.52" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><rect x="1394.14" y="197.92" width="162.82" height="46.52" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1399.14" y="212.92" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov034  85.1%</text><rect x="1560.96" y="197.92" width="37.04" height="46.52" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1565.96" y="212.92" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov035  100.0%</text><rect x="1055.35" y="248.44" width="150.27" height="24.75" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><rect x="1209.61" y="248.44" width="10.82" height="24.75" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><rect x="1224.43" y="248.44" width="55.08" height="24.75" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><rect x="1283.52" y="248.44" width="6.84" height="24.75" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><rect x="1294.36" y="248.44" width="93.18" height="24.75" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><rect x="1391.53" y="248.44" width="47.82" height="24.75" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><rect x="1443.35" y="248.44" width="44.54" height="24.75" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><rect x="1491.89" y="248.44" width="43.34" height="24.75" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><rect x="1539.24" y="248.44" width="25.24" height="24.75" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><rect x="1568.48" y="248.44" width="29.52" height="24.75" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><rect x="1055.35" y="277.18" width="185.50" height="127.60" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1060.35" y="292.18" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov060  98.6%</text><rect x="1244.84" y="277.18" width="165.07" height="127.60" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1249.84" y="292.18" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov062  100.0%</text><rect x="1413.92" y="277.18" width="184.08" height="127.60" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1418.92" y="292.18" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov063  89.6%</text><rect x="1055.35" y="408.79" width="142.55" height="105.87" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1060.35" y="423.79" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov064  100.0%</text><rect x="1201.90" y="408.79" width="174.90" height="105.87" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1206.90" y="423.79" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov065  94.8%</text><rect x="1380.80" y="408.79" width="124.05" height="105.87" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1385.80" y="423.79" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov066  100.0%</text><rect x="1508.85" y="408.79" width="89.15" height="105.87" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1513.85" y="423.79" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov070  100.0%</text><rect x="1055.35" y="518.66" width="86.22" height="115.96" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1060.35" y="533.66" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov071  90.4%</text><rect x="1055.35" y="638.62" width="86.22" height="107.41" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1060.35" y="653.62" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov072  100.0%</text><rect x="1055.35" y="750.03" width="86.22" height="124.20" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1060.35" y="765.03" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov073  100.0%</text><rect x="1055.35" y="878.23" width="86.22" height="119.77" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1060.35" y="893.23" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov074  87.8%</text><rect x="1145.57" y="518.66" width="187.09" height="124.36" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1150.57" y="533.66" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov075  91.3%</text><rect x="1336.66" y="518.66" width="87.94" height="124.36" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1341.66" y="533.66" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov077  100.0%</text><rect x="1428.60" y="518.66" width="72.39" height="124.36" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1433.60" y="533.66" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov078  100.0%</text><rect x="1504.98" y="518.66" width="93.02" height="124.36" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1509.98" y="533.66" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov079  100.0%</text><rect x="1145.57" y="647.02" width="134.67" height="88.12" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1150.57" y="662.02" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov080  95.7%</text><rect x="1145.57" y="739.14" width="134.67" height="102.67" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1150.57" y="754.14" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov081  100.0%</text><rect x="1145.57" y="845.81" width="134.67" height="152.19" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1150.57" y="860.81" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov084  97.0%</text><rect x="1284.24" y="647.02" width="182.28" height="103.72" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1289.24" y="662.02" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov085  100.0%</text><rect x="1470.51" y="647.02" width="42.93" height="103.72" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1475.51" y="662.02" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov089  100.0%</text><rect x="1517.45" y="647.02" width="80.55" height="103.72" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1522.45" y="662.02" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov090  100.0%</text><rect x="1284.24" y="754.74" width="68.25" height="148.42" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1289.24" y="769.74" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov091  100.0%</text><rect x="1284.24" y="907.17" width="68.25" height="43.42" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1289.24" y="922.17" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov092  100.0%</text><rect x="1284.24" y="954.58" width="68.25" height="43.42" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1289.24" y="969.58" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov094  100.0%</text><rect x="1356.48" y="754.74" width="47.89" height="95.36" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1361.48" y="769.74" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov095  100.0%</text><rect x="1408.37" y="754.74" width="58.62" height="95.36" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1413.37" y="769.74" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov096  100.0%</text><rect x="1471.00" y="754.74" width="127.00" height="95.36" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1476.00" y="769.74" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov098  100.0%</text><rect x="1356.48" y="854.10" width="134.98" height="143.90" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1361.48" y="869.10" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov100  100.0%</text><rect x="1495.46" y="854.10" width="102.54" height="143.90" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1500.46" y="869.10" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov102  100.0%</text>
@@ -1917,7 +1917,7 @@ matched: yes</title></rect><rect x="23.08" y="161.56" width="54.24" height="0.89
 module: arm9
 addr: 0x02014f5c
 size: 72 bytes
-matched: yes</title></rect><rect x="77.33" y="161.56" width="57.26" height="0.89" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02014fa4
+matched: yes</title></rect><rect x="77.33" y="161.56" width="57.26" height="0.89" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5dCc_c6UnlinkEv
 module: arm9
 addr: 0x02014fa4
 size: 76 bytes
@@ -3857,27 +3857,27 @@ matched: yes</title></rect><rect x="227.69" y="287.29" width="93.74" height="20.
 module: arm9
 addr: 0x020251d0
 size: 2896 bytes
-matched: yes</title></rect><rect x="5.00" y="308.02" width="7.65" height="29.80" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Stage25PS_UpdateOkAndBackButtonsEb
+matched: yes</title></rect><rect x="5.00" y="308.01" width="7.65" height="29.80" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Stage25PS_UpdateOkAndBackButtonsEb
 module: arm9
 addr: 0x02025d20
 size: 340 bytes
-matched: yes</title></rect><rect x="12.65" y="308.02" width="5.31" height="29.80" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Stage17PS_UpdateSaveMenuEb
+matched: yes</title></rect><rect x="12.65" y="308.01" width="5.31" height="29.80" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Stage17PS_UpdateSaveMenuEb
 module: arm9
 addr: 0x02025e74
 size: 236 bytes
-matched: yes</title></rect><rect x="17.97" y="308.02" width="10.99" height="29.80" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Stage20PS_UpdateOptionsMenuEv
+matched: yes</title></rect><rect x="17.97" y="308.01" width="10.99" height="29.80" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Stage20PS_UpdateOptionsMenuEv
 module: arm9
 addr: 0x02025f60
 size: 488 bytes
-matched: yes</title></rect><rect x="28.95" y="308.02" width="7.38" height="29.80" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Stage17UpdateMenuButtonsEb
+matched: yes</title></rect><rect x="28.95" y="308.01" width="7.38" height="29.80" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Stage17UpdateMenuButtonsEb
 module: arm9
 addr: 0x02026148
 size: 328 bytes
-matched: yes</title></rect><rect x="36.34" y="308.02" width="4.59" height="29.80" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Stage10PS_CleanupEv
+matched: yes</title></rect><rect x="36.34" y="308.01" width="4.59" height="29.80" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Stage10PS_CleanupEv
 module: arm9
 addr: 0x02026290
 size: 204 bytes
-matched: yes</title></rect><rect x="40.93" y="308.02" width="280.50" height="29.80" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Stage9PS_UpdateEv
+matched: yes</title></rect><rect x="40.93" y="308.01" width="280.50" height="29.80" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Stage9PS_UpdateEv
 module: arm9
 addr: 0x0202635c
 size: 12460 bytes
@@ -4713,71 +4713,71 @@ matched: yes</title></rect><rect x="311.65" y="417.40" width="9.78" height="16.4
 module: arm9
 addr: 0x02034414
 size: 240 bytes
-matched: yes</title></rect><rect x="5.00" y="433.87" width="14.85" height="7.77" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02034504
+matched: yes</title></rect><rect x="5.00" y="433.86" width="14.85" height="7.77" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02034504
 module: arm9
 addr: 0x02034504
 size: 172 bytes
-matched: yes</title></rect><rect x="19.85" y="433.87" width="80.49" height="7.77" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020345b0
+matched: yes</title></rect><rect x="19.85" y="433.86" width="80.49" height="7.77" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020345b0
 module: arm9
 addr: 0x020345b0
 size: 932 bytes
-matched: yes</title></rect><rect x="100.34" y="433.87" width="12.09" height="7.77" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>LoadFont3D
+matched: yes</title></rect><rect x="100.34" y="433.86" width="12.09" height="7.77" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>LoadFont3D
 module: arm9
 addr: 0x02034954
 size: 140 bytes
-matched: yes</title></rect><rect x="112.43" y="433.87" width="13.13" height="7.77" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7Message10LoadTextVSEv
+matched: yes</title></rect><rect x="112.43" y="433.86" width="13.13" height="7.77" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7Message10LoadTextVSEv
 module: arm9
 addr: 0x020349e0
 size: 152 bytes
-matched: yes</title></rect><rect x="125.56" y="433.87" width="6.22" height="7.77" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7dScMB_cD1Ev
+matched: yes</title></rect><rect x="125.56" y="433.86" width="6.22" height="7.77" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7dScMB_cD1Ev
 module: arm9
 addr: 0x02034a78
 size: 72 bytes
-matched: yes</title></rect><rect x="131.78" y="433.87" width="7.95" height="7.77" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7dScMB_cD0Ev
+matched: yes</title></rect><rect x="131.78" y="433.86" width="7.95" height="7.77" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7dScMB_cD0Ev
 module: arm9
 addr: 0x02034ac0
 size: 92 bytes
-matched: yes</title></rect><rect x="139.72" y="433.87" width="3.11" height="7.77" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02034b1c
+matched: yes</title></rect><rect x="139.72" y="433.86" width="3.11" height="7.77" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02034b1c
 module: arm9
 addr: 0x02034b1c
 size: 36 bytes
-matched: yes</title></rect><rect x="142.83" y="433.87" width="41.80" height="7.77" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7dScMB_c15graphCallback_c14GraphCallback3Ev
+matched: yes</title></rect><rect x="142.83" y="433.86" width="41.80" height="7.77" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7dScMB_c15graphCallback_c14GraphCallback3Ev
 module: arm9
 addr: 0x02034b40
 size: 484 bytes
-matched: yes</title></rect><rect x="184.63" y="433.87" width="0.69" height="7.77" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7dScMB_c15graphCallback_c14GraphCallback2Ev
+matched: yes</title></rect><rect x="184.63" y="433.86" width="0.69" height="7.77" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7dScMB_c15graphCallback_c14GraphCallback2Ev
 module: arm9
 addr: 0x02034d24
 size: 8 bytes
-matched: yes</title></rect><rect x="185.32" y="433.87" width="0.69" height="7.77" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7dScMB_c15graphCallback_c14GraphCallback0Ev
+matched: yes</title></rect><rect x="185.32" y="433.86" width="0.69" height="7.77" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7dScMB_c15graphCallback_c14GraphCallback0Ev
 module: arm9
 addr: 0x02034d2c
 size: 8 bytes
-matched: yes</title></rect><rect x="186.01" y="433.87" width="5.18" height="7.77" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02034d34
+matched: yes</title></rect><rect x="186.01" y="433.86" width="5.18" height="7.77" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02034d34
 module: arm9
 addr: 0x02034d34
 size: 60 bytes
-matched: yes</title></rect><rect x="191.19" y="433.87" width="3.80" height="7.77" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7dScMB_c16CleanupResourcesEv
+matched: yes</title></rect><rect x="191.19" y="433.86" width="3.80" height="7.77" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7dScMB_c16CleanupResourcesEv
 module: arm9
 addr: 0x02034d70
 size: 44 bytes
-matched: yes</title></rect><rect x="194.99" y="433.87" width="0.69" height="7.77" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7dScMB_c6RenderEv
+matched: yes</title></rect><rect x="194.99" y="433.86" width="0.69" height="7.77" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7dScMB_c6RenderEv
 module: arm9
 addr: 0x02034d9c
 size: 8 bytes
-matched: yes</title></rect><rect x="195.68" y="433.87" width="46.29" height="7.77" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7dScMB_c8BehaviorEv
+matched: yes</title></rect><rect x="195.68" y="433.86" width="46.29" height="7.77" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7dScMB_c8BehaviorEv
 module: arm9
 addr: 0x02034da4
 size: 536 bytes
-matched: yes</title></rect><rect x="241.97" y="433.87" width="15.20" height="7.77" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02034fbc
+matched: yes</title></rect><rect x="241.97" y="433.86" width="15.20" height="7.77" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02034fbc
 module: arm9
 addr: 0x02034fbc
 size: 176 bytes
-matched: yes</title></rect><rect x="257.17" y="433.87" width="50.43" height="7.77" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7dScMB_c13InitResourcesEv
+matched: yes</title></rect><rect x="257.17" y="433.86" width="50.43" height="7.77" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7dScMB_c13InitResourcesEv
 module: arm9
 addr: 0x0203506c
 size: 584 bytes
-matched: yes</title></rect><rect x="307.61" y="433.87" width="13.82" height="7.77" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020352b4
+matched: yes</title></rect><rect x="307.61" y="433.86" width="13.82" height="7.77" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020352b4
 module: arm9
 addr: 0x020352b4
 size: 160 bytes
@@ -5093,7 +5093,7 @@ matched: yes</title></rect><rect x="311.61" y="444.53" width="2.14" height="15.0
 module: arm9
 addr: 0x02037388
 size: 48 bytes
-matched: yes</title></rect><rect x="313.75" y="444.53" width="2.85" height="15.04" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020373b8
+matched: yes</title></rect><rect x="313.75" y="444.53" width="2.85" height="15.04" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10dBgCh_ActrD0Ev
 module: arm9
 addr: 0x020373b8
 size: 64 bytes
@@ -5121,7 +5121,7 @@ matched: yes</title></rect><rect x="19.97" y="459.58" width="3.74" height="5.02"
 module: arm9
 addr: 0x020374d4
 size: 28 bytes
-matched: yes</title></rect><rect x="23.71" y="459.58" width="9.09" height="5.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020374f0
+matched: yes</title></rect><rect x="23.71" y="459.58" width="9.09" height="5.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9dBgCh_GndD0Ev
 module: arm9
 addr: 0x020374f0
 size: 68 bytes
@@ -5133,15 +5133,15 @@ matched: yes</title></rect><rect x="40.81" y="459.58" width="8.55" height="5.02"
 module: arm9
 addr: 0x02037570
 size: 64 bytes
-matched: yes</title></rect><rect x="49.36" y="459.58" width="2.14" height="5.02" fill="#4a4d52" stroke="#393b3f" stroke-width="0.4"><title>func_020375b0
+matched: yes</title></rect><rect x="49.36" y="459.58" width="2.14" height="5.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZThn16_N9dBgCh_GndD0Ev
 module: arm9
 addr: 0x020375b0
 size: 16 bytes
-matched: no</title></rect><rect x="51.50" y="459.58" width="2.14" height="5.02" fill="#4a4d52" stroke="#393b3f" stroke-width="0.4"><title>func_020375c0
+matched: yes</title></rect><rect x="51.50" y="459.58" width="2.14" height="5.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZThn16_N9dBgCh_GndD1Ev
 module: arm9
 addr: 0x020375c0
 size: 16 bytes
-matched: no</title></rect><rect x="53.64" y="459.58" width="3.74" height="5.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9dBgCh_Lin10GetClsnPosEv
+matched: yes</title></rect><rect x="53.64" y="459.58" width="3.74" height="5.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9dBgCh_Lin10GetClsnPosEv
 module: arm9
 addr: 0x020375d0
 size: 28 bytes
@@ -5169,15 +5169,15 @@ matched: yes</title></rect><rect x="117.78" y="459.58" width="12.29" height="5.0
 module: arm9
 addr: 0x020377b0
 size: 92 bytes
-matched: yes</title></rect><rect x="130.07" y="459.58" width="2.14" height="5.02" fill="#4a4d52" stroke="#393b3f" stroke-width="0.4"><title>func_0203780c
+matched: yes</title></rect><rect x="130.07" y="459.58" width="2.14" height="5.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZThn16_N9dBgCh_LinD0Ev
 module: arm9
 addr: 0x0203780c
 size: 16 bytes
-matched: no</title></rect><rect x="132.21" y="459.58" width="2.14" height="5.02" fill="#4a4d52" stroke="#393b3f" stroke-width="0.4"><title>func_0203781c
+matched: yes</title></rect><rect x="132.21" y="459.58" width="2.14" height="5.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZThn16_N9dBgCh_LinD1Ev
 module: arm9
 addr: 0x0203781c
 size: 16 bytes
-matched: no</title></rect><rect x="134.35" y="459.58" width="11.22" height="5.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0203782c
+matched: yes</title></rect><rect x="134.35" y="459.58" width="11.22" height="5.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0203782c
 module: arm9
 addr: 0x0203782c
 size: 84 bytes
@@ -5257,7 +5257,7 @@ matched: yes</title></rect><rect x="265.30" y="459.58" width="8.55" height="5.02
 module: arm9
 addr: 0x02037c00
 size: 64 bytes
-matched: yes</title></rect><rect x="273.85" y="459.58" width="14.97" height="5.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02037c40
+matched: yes</title></rect><rect x="273.85" y="459.58" width="14.97" height="5.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dBgCh_SphCrrD0Ev
 module: arm9
 addr: 0x02037c40
 size: 112 bytes
@@ -5269,23 +5269,23 @@ matched: yes</title></rect><rect x="302.72" y="459.58" width="14.43" height="5.0
 module: arm9
 addr: 0x02037d18
 size: 108 bytes
-matched: yes</title></rect><rect x="317.15" y="459.58" width="2.14" height="5.02" fill="#4a4d52" stroke="#393b3f" stroke-width="0.4"><title>func_02037d84
+matched: yes</title></rect><rect x="317.15" y="459.58" width="2.14" height="5.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZThn16_N12dBgCh_SphCrrD0Ev
 module: arm9
 addr: 0x02037d84
 size: 16 bytes
-matched: no</title></rect><rect x="319.29" y="459.58" width="2.14" height="5.02" fill="#4a4d52" stroke="#393b3f" stroke-width="0.4"><title>func_02037d94
+matched: yes</title></rect><rect x="319.29" y="459.58" width="2.14" height="5.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZThn16_N12dBgCh_SphCrrD1Ev
 module: arm9
 addr: 0x02037d94
 size: 16 bytes
-matched: no</title></rect><rect x="5.00" y="464.60" width="8.06" height="1.33" fill="#4a4d52" stroke="#393b3f" stroke-width="0.4"><title>func_02037da4
+matched: yes</title></rect><rect x="5.00" y="464.60" width="8.06" height="1.33" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZThn56_N12dBgCh_SphCrrD0Ev
 module: arm9
 addr: 0x02037da4
 size: 16 bytes
-matched: no</title></rect><rect x="13.06" y="464.60" width="8.06" height="1.33" fill="#4a4d52" stroke="#393b3f" stroke-width="0.4"><title>func_02037db4
+matched: yes</title></rect><rect x="13.06" y="464.60" width="8.06" height="1.33" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZThn56_N12dBgCh_SphCrrD1Ev
 module: arm9
 addr: 0x02037db4
 size: 16 bytes
-matched: no</title></rect><rect x="21.12" y="464.60" width="4.03" height="1.33" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02037dc4
+matched: yes</title></rect><rect x="21.12" y="464.60" width="4.03" height="1.33" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02037dc4
 module: arm9
 addr: 0x02037dc4
 size: 8 bytes
@@ -5433,15 +5433,15 @@ matched: yes</title></rect><rect x="137.15" y="465.93" width="24.25" height="2.2
 module: arm9
 addr: 0x020381cc
 size: 80 bytes
-matched: yes</title></rect><rect x="161.39" y="465.93" width="2.42" height="2.21" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0203821c
+matched: yes</title></rect><rect x="161.39" y="465.93" width="2.42" height="2.21" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN13CLPS_BlockRefaSER10CLPS_Block
 module: arm9
 addr: 0x0203821c
 size: 8 bytes
-matched: yes</title></rect><rect x="163.82" y="465.93" width="1.21" height="2.21" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02038224
+matched: yes</title></rect><rect x="163.82" y="465.93" width="1.21" height="2.21" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN13CLPS_BlockRefD1Ev
 module: arm9
 addr: 0x02038224
 size: 4 bytes
-matched: yes</title></rect><rect x="165.03" y="465.93" width="3.64" height="2.21" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02038228
+matched: yes</title></rect><rect x="165.03" y="465.93" width="3.64" height="2.21" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN13CLPS_BlockRefC1Ev
 module: arm9
 addr: 0x02038228
 size: 12 bytes
@@ -5825,147 +5825,147 @@ matched: yes</title></rect><rect x="320.97" y="482.77" width="0.45" height="5.94
 module: arm9
 addr: 0x0203aa0c
 size: 4 bytes
-matched: yes</title></rect><rect x="5.00" y="488.71" width="20.71" height="3.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0203aa10
+matched: yes</title></rect><rect x="5.00" y="488.70" width="20.71" height="3.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0203aa10
 module: arm9
 addr: 0x0203aa10
 size: 100 bytes
-matched: yes</title></rect><rect x="25.71" y="488.71" width="19.05" height="3.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0203aa74
+matched: yes</title></rect><rect x="25.71" y="488.70" width="19.05" height="3.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0203aa74
 module: arm9
 addr: 0x0203aa74
 size: 92 bytes
-matched: yes</title></rect><rect x="44.76" y="488.71" width="1.66" height="3.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0203aad0
+matched: yes</title></rect><rect x="44.76" y="488.70" width="1.66" height="3.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0203aad0
 module: arm9
 addr: 0x0203aad0
 size: 8 bytes
-matched: yes</title></rect><rect x="46.42" y="488.71" width="9.11" height="3.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14dBgW_KcMbgSclY9SetScaleYE5Fix12IiE
+matched: yes</title></rect><rect x="46.42" y="488.70" width="9.11" height="3.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14dBgW_KcMbgSclY9SetScaleYE5Fix12IiE
 module: arm9
 addr: 0x0203aad8
 size: 44 bytes
-matched: yes</title></rect><rect x="55.53" y="488.71" width="11.60" height="3.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14dBgW_KcMbgSclY7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block
+matched: yes</title></rect><rect x="55.53" y="488.70" width="11.60" height="3.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14dBgW_KcMbgSclY7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block
 module: arm9
 addr: 0x0203ab04
 size: 56 bytes
-matched: yes</title></rect><rect x="67.13" y="488.71" width="9.11" height="3.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14dBgW_KcMbgSclYD0Ev
+matched: yes</title></rect><rect x="67.13" y="488.70" width="9.11" height="3.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14dBgW_KcMbgSclYD0Ev
 module: arm9
 addr: 0x0203ab3c
 size: 44 bytes
-matched: yes</title></rect><rect x="76.24" y="488.71" width="7.46" height="3.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14dBgW_KcMbgSclYD1Ev
+matched: yes</title></rect><rect x="76.24" y="488.70" width="7.46" height="3.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14dBgW_KcMbgSclYD1Ev
 module: arm9
 addr: 0x0203ab68
 size: 36 bytes
-matched: yes</title></rect><rect x="83.69" y="488.71" width="7.46" height="3.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14dBgW_KcMbgSclYC1Ev
+matched: yes</title></rect><rect x="83.69" y="488.70" width="7.46" height="3.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14dBgW_KcMbgSclYC1Ev
 module: arm9
 addr: 0x0203ab8c
 size: 36 bytes
-matched: yes</title></rect><rect x="91.15" y="488.71" width="5.80" height="3.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0203abb0
+matched: yes</title></rect><rect x="91.15" y="488.70" width="5.80" height="3.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0203abb0
 module: arm9
 addr: 0x0203abb0
 size: 28 bytes
-matched: yes</title></rect><rect x="96.95" y="488.71" width="1.66" height="3.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0203abcc
+matched: yes</title></rect><rect x="96.95" y="488.70" width="1.66" height="3.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0203abcc
 module: arm9
 addr: 0x0203abcc
 size: 8 bytes
-matched: yes</title></rect><rect x="98.60" y="488.71" width="9.11" height="3.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0203abd4
+matched: yes</title></rect><rect x="98.60" y="488.70" width="9.11" height="3.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0203abd4
 module: arm9
 addr: 0x0203abd4
 size: 44 bytes
-matched: yes</title></rect><rect x="107.71" y="488.71" width="5.80" height="3.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0203ac00
+matched: yes</title></rect><rect x="107.71" y="488.70" width="5.80" height="3.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0203ac00
 module: arm9
 addr: 0x0203ac00
 size: 28 bytes
-matched: yes</title></rect><rect x="113.51" y="488.71" width="3.31" height="3.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dM3dGSphD2Ev
+matched: yes</title></rect><rect x="113.51" y="488.70" width="3.31" height="3.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dM3dGSphD2Ev
 module: arm9
 addr: 0x0203ac1c
 size: 16 bytes
-matched: yes</title></rect><rect x="116.83" y="488.71" width="7.46" height="3.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dM3dGSphD0Ev
+matched: yes</title></rect><rect x="116.83" y="488.70" width="7.46" height="3.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dM3dGSphD0Ev
 module: arm9
 addr: 0x0203ac2c
 size: 36 bytes
-matched: yes</title></rect><rect x="124.28" y="488.71" width="3.31" height="3.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dM3dGSphD1Ev
+matched: yes</title></rect><rect x="124.28" y="488.70" width="3.31" height="3.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dM3dGSphD1Ev
 module: arm9
 addr: 0x0203ac50
 size: 16 bytes
-matched: yes</title></rect><rect x="127.59" y="488.71" width="3.31" height="3.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dM3dGSphC1Ev
+matched: yes</title></rect><rect x="127.59" y="488.70" width="3.31" height="3.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dM3dGSphC1Ev
 module: arm9
 addr: 0x0203ac60
 size: 16 bytes
-matched: yes</title></rect><rect x="130.91" y="488.71" width="3.31" height="3.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dM3dGSphC2Ev
+matched: yes</title></rect><rect x="130.91" y="488.70" width="3.31" height="3.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8dM3dGSphC2Ev
 module: arm9
 addr: 0x0203ac70
 size: 16 bytes
-matched: yes</title></rect><rect x="134.22" y="488.71" width="6.63" height="3.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7PathPtr6FromIDEj
+matched: yes</title></rect><rect x="134.22" y="488.70" width="6.63" height="3.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7PathPtr6FromIDEj
 module: arm9
 addr: 0x0203ac80
 size: 32 bytes
-matched: yes</title></rect><rect x="140.85" y="488.71" width="5.80" height="3.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0203aca0
+matched: yes</title></rect><rect x="140.85" y="488.70" width="5.80" height="3.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0203aca0
 module: arm9
 addr: 0x0203aca0
 size: 28 bytes
-matched: yes</title></rect><rect x="146.65" y="488.71" width="3.31" height="3.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0203acbc
+matched: yes</title></rect><rect x="146.65" y="488.70" width="3.31" height="3.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0203acbc
 module: arm9
 addr: 0x0203acbc
 size: 16 bytes
-matched: yes</title></rect><rect x="149.96" y="488.71" width="3.31" height="3.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0203accc
+matched: yes</title></rect><rect x="149.96" y="488.70" width="3.31" height="3.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0203accc
 module: arm9
 addr: 0x0203accc
 size: 16 bytes
-matched: yes</title></rect><rect x="153.27" y="488.71" width="18.22" height="3.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZNK7PathPtr7GetNodeER7Vector3j
+matched: yes</title></rect><rect x="153.27" y="488.70" width="18.22" height="3.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZNK7PathPtr7GetNodeER7Vector3j
 module: arm9
 addr: 0x0203acdc
 size: 88 bytes
-matched: yes</title></rect><rect x="171.50" y="488.71" width="3.31" height="3.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZNK7PathPtr5LoopsEv
+matched: yes</title></rect><rect x="171.50" y="488.70" width="3.31" height="3.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZNK7PathPtr5LoopsEv
 module: arm9
 addr: 0x0203ad34
 size: 16 bytes
-matched: yes</title></rect><rect x="174.81" y="488.71" width="3.31" height="3.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0203ad44
+matched: yes</title></rect><rect x="174.81" y="488.70" width="3.31" height="3.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0203ad44
 module: arm9
 addr: 0x0203ad44
 size: 16 bytes
-matched: yes</title></rect><rect x="178.12" y="488.71" width="2.49" height="3.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0203ad54
+matched: yes</title></rect><rect x="178.12" y="488.70" width="2.49" height="3.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0203ad54
 module: arm9
 addr: 0x0203ad54
 size: 12 bytes
-matched: yes</title></rect><rect x="180.61" y="488.71" width="2.49" height="3.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZNK7PathPtr8NumNodesEv
+matched: yes</title></rect><rect x="180.61" y="488.70" width="2.49" height="3.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZNK7PathPtr8NumNodesEv
 module: arm9
 addr: 0x0203ad60
 size: 12 bytes
-matched: yes</title></rect><rect x="183.09" y="488.71" width="1.66" height="3.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0203ad6c
+matched: yes</title></rect><rect x="183.09" y="488.70" width="1.66" height="3.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0203ad6c
 module: arm9
 addr: 0x0203ad6c
 size: 8 bytes
-matched: yes</title></rect><rect x="184.75" y="488.71" width="3.31" height="3.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7PathPtrC1Ev
+matched: yes</title></rect><rect x="184.75" y="488.70" width="3.31" height="3.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7PathPtrC1Ev
 module: arm9
 addr: 0x0203ad74
 size: 16 bytes
-matched: yes</title></rect><rect x="188.06" y="488.71" width="11.60" height="3.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0203ad84
+matched: yes</title></rect><rect x="188.06" y="488.70" width="11.60" height="3.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0203ad84
 module: arm9
 addr: 0x0203ad84
 size: 56 bytes
-matched: yes</title></rect><rect x="199.66" y="488.71" width="4.97" height="3.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>DecIfAbove0_Short
+matched: yes</title></rect><rect x="199.66" y="488.70" width="4.97" height="3.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>DecIfAbove0_Short
 module: arm9
 addr: 0x0203adbc
 size: 24 bytes
-matched: yes</title></rect><rect x="204.63" y="488.71" width="4.97" height="3.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>DecIfAbove0_Byte
+matched: yes</title></rect><rect x="204.63" y="488.70" width="4.97" height="3.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>DecIfAbove0_Byte
 module: arm9
 addr: 0x0203add4
 size: 24 bytes
-matched: yes</title></rect><rect x="209.60" y="488.71" width="22.37" height="3.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_Z14ApproachLinearRsss
+matched: yes</title></rect><rect x="209.60" y="488.70" width="22.37" height="3.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_Z14ApproachLinearRsss
 module: arm9
 addr: 0x0203adec
 size: 108 bytes
-matched: yes</title></rect><rect x="231.96" y="488.71" width="26.51" height="3.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_Z14ApproachLinearRiii
+matched: yes</title></rect><rect x="231.96" y="488.70" width="26.51" height="3.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_Z14ApproachLinearRiii
 module: arm9
 addr: 0x0203ae58
 size: 128 bytes
-matched: yes</title></rect><rect x="258.47" y="488.71" width="19.05" height="3.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_Z15ApproachLinear2Rsss
+matched: yes</title></rect><rect x="258.47" y="488.70" width="19.05" height="3.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_Z15ApproachLinear2Rsss
 module: arm9
 addr: 0x0203aed8
 size: 92 bytes
-matched: yes</title></rect><rect x="277.52" y="488.71" width="19.05" height="3.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_Z15ApproachLinear2Riii
+matched: yes</title></rect><rect x="277.52" y="488.70" width="19.05" height="3.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_Z15ApproachLinear2Riii
 module: arm9
 addr: 0x0203af34
 size: 92 bytes
-matched: yes</title></rect><rect x="296.57" y="488.71" width="24.85" height="3.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_Z11UpdateAngleRssis
+matched: yes</title></rect><rect x="296.57" y="488.70" width="24.85" height="3.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_Z11UpdateAngleRssis
 module: arm9
 addr: 0x0203af90
 size: 120 bytes
@@ -6333,43 +6333,43 @@ matched: yes</title></rect><rect x="316.30" y="499.86" width="5.12" height="4.19
 module: arm9
 addr: 0x0203c634
 size: 32 bytes
-matched: yes</title></rect><rect x="5.00" y="504.05" width="7.62" height="0.70" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9SolidHeap7VIntactEv
+matched: yes</title></rect><rect x="5.00" y="504.04" width="7.62" height="0.70" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9SolidHeap7VIntactEv
 module: arm9
 addr: 0x0203c654
 size: 8 bytes
-matched: yes</title></rect><rect x="12.62" y="504.05" width="7.62" height="0.70" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN13ExpandingHeap7VIntactEv
+matched: yes</title></rect><rect x="12.62" y="504.04" width="7.62" height="0.70" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN13ExpandingHeap7VIntactEv
 module: arm9
 addr: 0x0203c65c
 size: 8 bytes
-matched: yes</title></rect><rect x="20.25" y="504.05" width="68.62" height="0.70" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN4Heap6IntactEv
+matched: yes</title></rect><rect x="20.25" y="504.04" width="68.62" height="0.70" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN4Heap6IntactEv
 module: arm9
 addr: 0x0203c664
 size: 72 bytes
-matched: yes</title></rect><rect x="88.87" y="504.05" width="15.25" height="0.70" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9SolidHeap9VAllocateEji
+matched: yes</title></rect><rect x="88.87" y="504.04" width="15.25" height="0.70" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9SolidHeap9VAllocateEji
 module: arm9
 addr: 0x0203c6ac
 size: 16 bytes
-matched: yes</title></rect><rect x="104.12" y="504.05" width="15.25" height="0.70" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN13ExpandingHeap9VAllocateEji
+matched: yes</title></rect><rect x="104.12" y="504.04" width="15.25" height="0.70" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN13ExpandingHeap9VAllocateEji
 module: arm9
 addr: 0x0203c6bc
 size: 16 bytes
-matched: yes</title></rect><rect x="119.37" y="504.05" width="61.00" height="0.70" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN4Heap8AllocateEji
+matched: yes</title></rect><rect x="119.37" y="504.04" width="61.00" height="0.70" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN4Heap8AllocateEji
 module: arm9
 addr: 0x0203c6cc
 size: 64 bytes
-matched: yes</title></rect><rect x="180.37" y="504.05" width="30.50" height="0.70" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9SolidHeap8VDestroyEv
+matched: yes</title></rect><rect x="180.37" y="504.04" width="30.50" height="0.70" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9SolidHeap8VDestroyEv
 module: arm9
 addr: 0x0203c70c
 size: 32 bytes
-matched: yes</title></rect><rect x="210.87" y="504.05" width="30.50" height="0.70" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN13ExpandingHeap8VDestroyEv
+matched: yes</title></rect><rect x="210.87" y="504.04" width="30.50" height="0.70" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN13ExpandingHeap8VDestroyEv
 module: arm9
 addr: 0x0203c72c
 size: 32 bytes
-matched: yes</title></rect><rect x="241.37" y="504.05" width="11.44" height="0.70" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN4Heap8_DestroyEv
+matched: yes</title></rect><rect x="241.37" y="504.04" width="11.44" height="0.70" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN4Heap8_DestroyEv
 module: arm9
 addr: 0x0203c74c
 size: 12 bytes
-matched: yes</title></rect><rect x="252.80" y="504.05" width="68.62" height="0.70" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN4Heap7DestroyEv
+matched: yes</title></rect><rect x="252.80" y="504.04" width="68.62" height="0.70" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN4Heap7DestroyEv
 module: arm9
 addr: 0x0203c758
 size: 72 bytes
@@ -7281,11 +7281,11 @@ matched: yes</title></rect><rect x="127.95" y="568.60" width="21.84" height="4.3
 module: arm9
 addr: 0x0204405c
 size: 140 bytes
-matched: yes</title></rect><rect x="149.79" y="568.60" width="4.37" height="4.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020440e8
+matched: yes</title></rect><rect x="149.79" y="568.60" width="4.37" height="4.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11fLiNdBaPr_cD1Ev
 module: arm9
 addr: 0x020440e8
 size: 28 bytes
-matched: yes</title></rect><rect x="154.16" y="568.60" width="4.37" height="4.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02044104
+matched: yes</title></rect><rect x="154.16" y="568.60" width="4.37" height="4.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9fLiNdBa_cD1Ev
 module: arm9
 addr: 0x02044104
 size: 28 bytes
@@ -7897,79 +7897,79 @@ matched: yes</title></rect><rect x="318.26" y="642.54" width="3.16" height="12.7
 module: arm9
 addr: 0x0204dcc0
 size: 60 bytes
-matched: yes</title></rect><rect x="5.00" y="655.28" width="5.02" height="2.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN18NestedHeapIterator8PreviousEP13HeapAllocator
+matched: yes</title></rect><rect x="5.00" y="655.27" width="5.02" height="2.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN18NestedHeapIterator8PreviousEP13HeapAllocator
 module: arm9
 addr: 0x0204dcfc
 size: 20 bytes
-matched: yes</title></rect><rect x="10.02" y="655.28" width="6.03" height="2.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN18NestedHeapIterator4NextEP13HeapAllocator
+matched: yes</title></rect><rect x="10.02" y="655.27" width="6.03" height="2.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN18NestedHeapIterator4NextEP13HeapAllocator
 module: arm9
 addr: 0x0204dd10
 size: 24 bytes
-matched: yes</title></rect><rect x="16.05" y="655.28" width="28.13" height="2.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN18NestedHeapIterator6RemoveEP13HeapAllocator
+matched: yes</title></rect><rect x="16.05" y="655.27" width="28.13" height="2.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN18NestedHeapIterator6RemoveEP13HeapAllocator
 module: arm9
 addr: 0x0204dd28
 size: 112 bytes
-matched: yes</title></rect><rect x="44.18" y="655.28" width="29.13" height="2.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN18NestedHeapIterator5AddAtEP13HeapAllocatorS1_
+matched: yes</title></rect><rect x="44.18" y="655.27" width="29.13" height="2.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN18NestedHeapIterator5AddAtEP13HeapAllocatorS1_
 module: arm9
 addr: 0x0204dd98
 size: 116 bytes
-matched: yes</title></rect><rect x="73.31" y="655.28" width="26.12" height="2.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN18NestedHeapIterator8AddFirstEP13HeapAllocator
+matched: yes</title></rect><rect x="73.31" y="655.27" width="26.12" height="2.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN18NestedHeapIterator8AddFirstEP13HeapAllocator
 module: arm9
 addr: 0x0204de0c
 size: 104 bytes
-matched: yes</title></rect><rect x="99.43" y="655.28" width="27.12" height="2.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN18NestedHeapIterator7AddLastEP13HeapAllocator
+matched: yes</title></rect><rect x="99.43" y="655.27" width="27.12" height="2.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN18NestedHeapIterator7AddLastEP13HeapAllocator
 module: arm9
 addr: 0x0204de74
 size: 108 bytes
-matched: yes</title></rect><rect x="126.55" y="655.28" width="16.07" height="2.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN18NestedHeapIterator4InitEP13HeapAllocator
+matched: yes</title></rect><rect x="126.55" y="655.27" width="16.07" height="2.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN18NestedHeapIterator4InitEP13HeapAllocator
 module: arm9
 addr: 0x0204dee0
 size: 64 bytes
-matched: yes</title></rect><rect x="142.62" y="655.28" width="6.03" height="2.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN18NestedHeapIteratorC1Ej
+matched: yes</title></rect><rect x="142.62" y="655.27" width="6.03" height="2.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN18NestedHeapIteratorC1Ej
 module: arm9
 addr: 0x0204df20
 size: 24 bytes
-matched: yes</title></rect><rect x="148.65" y="655.28" width="7.03" height="2.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN13HeapAllocator6RemoveEv
+matched: yes</title></rect><rect x="148.65" y="655.27" width="7.03" height="2.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN13HeapAllocator6RemoveEv
 module: arm9
 addr: 0x0204df38
 size: 28 bytes
-matched: yes</title></rect><rect x="155.68" y="655.28" width="37.17" height="2.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204df54
+matched: yes</title></rect><rect x="155.68" y="655.27" width="37.17" height="2.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204df54
 module: arm9
 addr: 0x0204df54
 size: 148 bytes
-matched: yes</title></rect><rect x="192.85" y="655.28" width="11.05" height="2.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN18NestedHeapIterator10FindNestedEPv
+matched: yes</title></rect><rect x="192.85" y="655.27" width="11.05" height="2.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN18NestedHeapIterator10FindNestedEPv
 module: arm9
 addr: 0x0204dfe8
 size: 44 bytes
-matched: yes</title></rect><rect x="203.90" y="655.28" width="28.13" height="2.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN18NestedHeapIterator19RecursiveFindNestedEPv
+matched: yes</title></rect><rect x="203.90" y="655.27" width="28.13" height="2.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN18NestedHeapIterator19RecursiveFindNestedEPv
 module: arm9
 addr: 0x0204e014
 size: 112 bytes
-matched: yes</title></rect><rect x="232.02" y="655.28" width="2.01" height="2.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN22ExpandingHeapAllocator14SizeofInternalEPv
+matched: yes</title></rect><rect x="232.02" y="655.27" width="2.01" height="2.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN22ExpandingHeapAllocator14SizeofInternalEPv
 module: arm9
 addr: 0x0204e084
 size: 8 bytes
-matched: yes</title></rect><rect x="234.03" y="655.28" width="21.09" height="2.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN22ExpandingHeapAllocator13DeallocateAllEPFvPvPS_jEj
+matched: yes</title></rect><rect x="234.03" y="655.27" width="21.09" height="2.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN22ExpandingHeapAllocator13DeallocateAllEPFvPvPS_jEj
 module: arm9
 addr: 0x0204e08c
 size: 84 bytes
-matched: yes</title></rect><rect x="255.13" y="655.28" width="2.01" height="2.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN22ExpandingHeapAllocator9GetNodeIDEv
+matched: yes</title></rect><rect x="255.13" y="655.27" width="2.01" height="2.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN22ExpandingHeapAllocator9GetNodeIDEv
 module: arm9
 addr: 0x0204e0e0
 size: 8 bytes
-matched: yes</title></rect><rect x="257.13" y="655.28" width="4.02" height="2.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN22ExpandingHeapAllocator9SetNodeIDEj
+matched: yes</title></rect><rect x="257.13" y="655.27" width="4.02" height="2.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN22ExpandingHeapAllocator9SetNodeIDEj
 module: arm9
 addr: 0x0204e0e8
 size: 16 bytes
-matched: yes</title></rect><rect x="261.15" y="655.28" width="34.15" height="2.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN22ExpandingHeapAllocator18MaxAllocatableSizeEi
+matched: yes</title></rect><rect x="261.15" y="655.27" width="34.15" height="2.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN22ExpandingHeapAllocator18MaxAllocatableSizeEi
 module: arm9
 addr: 0x0204e0f8
 size: 136 bytes
-matched: yes</title></rect><rect x="295.31" y="655.28" width="10.05" height="2.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN22ExpandingHeapAllocator10MemoryLeftEv
+matched: yes</title></rect><rect x="295.31" y="655.27" width="10.05" height="2.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN22ExpandingHeapAllocator10MemoryLeftEv
 module: arm9
 addr: 0x0204e180
 size: 40 bytes
-matched: yes</title></rect><rect x="305.35" y="655.28" width="16.07" height="2.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN22ExpandingHeapAllocator10DeallocateEPv
+matched: yes</title></rect><rect x="305.35" y="655.27" width="16.07" height="2.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN22ExpandingHeapAllocator10DeallocateEPv
 module: arm9
 addr: 0x0204e1a8
 size: 64 bytes
@@ -8093,183 +8093,183 @@ matched: yes</title></rect><rect x="316.62" y="657.95" width="4.81" height="6.70
 module: arm9
 addr: 0x0204ee10
 size: 48 bytes
-matched: yes</title></rect><rect x="5.00" y="664.65" width="35.89" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204ee40
+matched: yes</title></rect><rect x="5.00" y="664.64" width="35.89" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204ee40
 module: arm9
 addr: 0x0204ee40
 size: 348 bytes
-matched: yes</title></rect><rect x="40.89" y="664.65" width="7.01" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204ef9c
+matched: yes</title></rect><rect x="40.89" y="664.64" width="7.01" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204ef9c
 module: arm9
 addr: 0x0204ef9c
 size: 68 bytes
-matched: yes</title></rect><rect x="47.90" y="664.65" width="2.89" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204efe0
+matched: yes</title></rect><rect x="47.90" y="664.64" width="2.89" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204efe0
 module: arm9
 addr: 0x0204efe0
 size: 28 bytes
-matched: yes</title></rect><rect x="50.79" y="664.65" width="6.60" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204effc
+matched: yes</title></rect><rect x="50.79" y="664.64" width="6.60" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204effc
 module: arm9
 addr: 0x0204effc
 size: 64 bytes
-matched: yes</title></rect><rect x="57.39" y="664.65" width="5.36" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f03c
+matched: yes</title></rect><rect x="57.39" y="664.64" width="5.36" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f03c
 module: arm9
 addr: 0x0204f03c
 size: 52 bytes
-matched: yes</title></rect><rect x="62.76" y="664.65" width="7.43" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f070
+matched: yes</title></rect><rect x="62.76" y="664.64" width="7.43" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f070
 module: arm9
 addr: 0x0204f070
 size: 72 bytes
-matched: yes</title></rect><rect x="70.18" y="664.65" width="3.30" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f0b8
+matched: yes</title></rect><rect x="70.18" y="664.64" width="3.30" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f0b8
 module: arm9
 addr: 0x0204f0b8
 size: 32 bytes
-matched: yes</title></rect><rect x="73.48" y="664.65" width="7.01" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f0d8
+matched: yes</title></rect><rect x="73.48" y="664.64" width="7.01" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f0d8
 module: arm9
 addr: 0x0204f0d8
 size: 68 bytes
-matched: yes</title></rect><rect x="80.50" y="664.65" width="2.89" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f11c
+matched: yes</title></rect><rect x="80.50" y="664.64" width="2.89" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f11c
 module: arm9
 addr: 0x0204f11c
 size: 28 bytes
-matched: yes</title></rect><rect x="83.38" y="664.65" width="3.71" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f138
+matched: yes</title></rect><rect x="83.38" y="664.64" width="3.71" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f138
 module: arm9
 addr: 0x0204f138
 size: 36 bytes
-matched: yes</title></rect><rect x="87.10" y="664.65" width="5.78" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f15c
+matched: yes</title></rect><rect x="87.10" y="664.64" width="5.78" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f15c
 module: arm9
 addr: 0x0204f15c
 size: 56 bytes
-matched: yes</title></rect><rect x="92.87" y="664.65" width="8.66" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f194
+matched: yes</title></rect><rect x="92.87" y="664.64" width="8.66" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f194
 module: arm9
 addr: 0x0204f194
 size: 84 bytes
-matched: yes</title></rect><rect x="101.54" y="664.65" width="4.54" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f1e8
+matched: yes</title></rect><rect x="101.54" y="664.64" width="4.54" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f1e8
 module: arm9
 addr: 0x0204f1e8
 size: 44 bytes
-matched: yes</title></rect><rect x="106.07" y="664.65" width="10.31" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f214
+matched: yes</title></rect><rect x="106.07" y="664.64" width="10.31" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f214
 module: arm9
 addr: 0x0204f214
 size: 100 bytes
-matched: yes</title></rect><rect x="116.39" y="664.65" width="9.49" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f278
+matched: yes</title></rect><rect x="116.39" y="664.64" width="9.49" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f278
 module: arm9
 addr: 0x0204f278
 size: 92 bytes
-matched: yes</title></rect><rect x="125.88" y="664.65" width="14.85" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f2d4
+matched: yes</title></rect><rect x="125.88" y="664.64" width="14.85" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f2d4
 module: arm9
 addr: 0x0204f2d4
 size: 144 bytes
-matched: yes</title></rect><rect x="140.73" y="664.65" width="12.79" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f364
+matched: yes</title></rect><rect x="140.73" y="664.64" width="12.79" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f364
 module: arm9
 addr: 0x0204f364
 size: 124 bytes
-matched: yes</title></rect><rect x="153.52" y="664.65" width="3.30" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f3e0
+matched: yes</title></rect><rect x="153.52" y="664.64" width="3.30" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f3e0
 module: arm9
 addr: 0x0204f3e0
 size: 32 bytes
-matched: yes</title></rect><rect x="156.82" y="664.65" width="9.90" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f400
+matched: yes</title></rect><rect x="156.82" y="664.64" width="9.90" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f400
 module: arm9
 addr: 0x0204f400
 size: 96 bytes
-matched: yes</title></rect><rect x="166.72" y="664.65" width="9.49" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f460
+matched: yes</title></rect><rect x="166.72" y="664.64" width="9.49" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f460
 module: arm9
 addr: 0x0204f460
 size: 92 bytes
-matched: yes</title></rect><rect x="176.21" y="664.65" width="7.43" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f4bc
+matched: yes</title></rect><rect x="176.21" y="664.64" width="7.43" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f4bc
 module: arm9
 addr: 0x0204f4bc
 size: 72 bytes
-matched: yes</title></rect><rect x="183.63" y="664.65" width="8.66" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f504
+matched: yes</title></rect><rect x="183.63" y="664.64" width="8.66" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f504
 module: arm9
 addr: 0x0204f504
 size: 84 bytes
-matched: yes</title></rect><rect x="192.30" y="664.65" width="7.43" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f558
+matched: yes</title></rect><rect x="192.30" y="664.64" width="7.43" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f558
 module: arm9
 addr: 0x0204f558
 size: 72 bytes
-matched: yes</title></rect><rect x="199.72" y="664.65" width="9.90" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f5a0
+matched: yes</title></rect><rect x="199.72" y="664.64" width="9.90" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f5a0
 module: arm9
 addr: 0x0204f5a0
 size: 96 bytes
-matched: yes</title></rect><rect x="209.62" y="664.65" width="4.95" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f600
+matched: yes</title></rect><rect x="209.62" y="664.64" width="4.95" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f600
 module: arm9
 addr: 0x0204f600
 size: 48 bytes
-matched: yes</title></rect><rect x="214.57" y="664.65" width="1.24" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f630
+matched: yes</title></rect><rect x="214.57" y="664.64" width="1.24" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f630
 module: arm9
 addr: 0x0204f630
 size: 12 bytes
-matched: yes</title></rect><rect x="215.81" y="664.65" width="19.39" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f63c
+matched: yes</title></rect><rect x="215.81" y="664.64" width="19.39" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f63c
 module: arm9
 addr: 0x0204f63c
 size: 188 bytes
-matched: yes</title></rect><rect x="235.20" y="664.65" width="4.13" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f6f8
+matched: yes</title></rect><rect x="235.20" y="664.64" width="4.13" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f6f8
 module: arm9
 addr: 0x0204f6f8
 size: 40 bytes
-matched: yes</title></rect><rect x="239.33" y="664.65" width="2.89" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f720
+matched: yes</title></rect><rect x="239.33" y="664.64" width="2.89" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f720
 module: arm9
 addr: 0x0204f720
 size: 28 bytes
-matched: yes</title></rect><rect x="242.22" y="664.65" width="4.95" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f73c
+matched: yes</title></rect><rect x="242.22" y="664.64" width="4.95" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f73c
 module: arm9
 addr: 0x0204f73c
 size: 48 bytes
-matched: yes</title></rect><rect x="247.17" y="664.65" width="4.95" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f76c
+matched: yes</title></rect><rect x="247.17" y="664.64" width="4.95" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f76c
 module: arm9
 addr: 0x0204f76c
 size: 48 bytes
-matched: yes</title></rect><rect x="252.12" y="664.65" width="4.95" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f79c
+matched: yes</title></rect><rect x="252.12" y="664.64" width="4.95" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f79c
 module: arm9
 addr: 0x0204f79c
 size: 48 bytes
-matched: yes</title></rect><rect x="257.07" y="664.65" width="4.95" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f7cc
+matched: yes</title></rect><rect x="257.07" y="664.64" width="4.95" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f7cc
 module: arm9
 addr: 0x0204f7cc
 size: 48 bytes
-matched: yes</title></rect><rect x="262.02" y="664.65" width="4.95" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f7fc
+matched: yes</title></rect><rect x="262.02" y="664.64" width="4.95" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f7fc
 module: arm9
 addr: 0x0204f7fc
 size: 48 bytes
-matched: yes</title></rect><rect x="266.97" y="664.65" width="6.60" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f82c
+matched: yes</title></rect><rect x="266.97" y="664.64" width="6.60" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f82c
 module: arm9
 addr: 0x0204f82c
 size: 64 bytes
-matched: yes</title></rect><rect x="273.57" y="664.65" width="4.95" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f86c
+matched: yes</title></rect><rect x="273.57" y="664.64" width="4.95" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f86c
 module: arm9
 addr: 0x0204f86c
 size: 48 bytes
-matched: yes</title></rect><rect x="278.52" y="664.65" width="4.95" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f89c
+matched: yes</title></rect><rect x="278.52" y="664.64" width="4.95" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f89c
 module: arm9
 addr: 0x0204f89c
 size: 48 bytes
-matched: yes</title></rect><rect x="283.47" y="664.65" width="7.43" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f8cc
+matched: yes</title></rect><rect x="283.47" y="664.64" width="7.43" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f8cc
 module: arm9
 addr: 0x0204f8cc
 size: 72 bytes
-matched: yes</title></rect><rect x="290.90" y="664.65" width="1.65" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f914
+matched: yes</title></rect><rect x="290.90" y="664.64" width="1.65" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f914
 module: arm9
 addr: 0x0204f914
 size: 16 bytes
-matched: yes</title></rect><rect x="292.55" y="664.65" width="1.65" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f924
+matched: yes</title></rect><rect x="292.55" y="664.64" width="1.65" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f924
 module: arm9
 addr: 0x0204f924
 size: 16 bytes
-matched: yes</title></rect><rect x="294.20" y="664.65" width="2.48" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f934
+matched: yes</title></rect><rect x="294.20" y="664.64" width="2.48" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f934
 module: arm9
 addr: 0x0204f934
 size: 24 bytes
-matched: yes</title></rect><rect x="296.67" y="664.65" width="1.24" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f94c
+matched: yes</title></rect><rect x="296.67" y="664.64" width="1.24" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f94c
 module: arm9
 addr: 0x0204f94c
 size: 12 bytes
-matched: yes</title></rect><rect x="297.91" y="664.65" width="11.14" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f958
+matched: yes</title></rect><rect x="297.91" y="664.64" width="11.14" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f958
 module: arm9
 addr: 0x0204f958
 size: 108 bytes
-matched: yes</title></rect><rect x="309.05" y="664.65" width="10.73" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f9c4
+matched: yes</title></rect><rect x="309.05" y="664.64" width="10.73" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204f9c4
 module: arm9
 addr: 0x0204f9c4
 size: 104 bytes
-matched: yes</title></rect><rect x="319.77" y="664.65" width="1.65" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204fa2c
+matched: yes</title></rect><rect x="319.77" y="664.64" width="1.65" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0204fa2c
 module: arm9
 addr: 0x0204fa2c
 size: 16 bytes
@@ -8345,135 +8345,135 @@ matched: yes</title></rect><rect x="290.41" y="671.15" width="31.01" height="5.1
 module: arm9
 addr: 0x020502b8
 size: 236 bytes
-matched: yes</title></rect><rect x="5.00" y="676.26" width="69.17" height="8.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020503a4
+matched: yes</title></rect><rect x="5.00" y="676.25" width="69.17" height="8.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020503a4
 module: arm9
 addr: 0x020503a4
 size: 856 bytes
-matched: yes</title></rect><rect x="74.17" y="676.26" width="12.61" height="8.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020506fc
+matched: yes</title></rect><rect x="74.17" y="676.25" width="12.61" height="8.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020506fc
 module: arm9
 addr: 0x020506fc
 size: 156 bytes
-matched: yes</title></rect><rect x="86.77" y="676.26" width="5.82" height="8.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02050798
+matched: yes</title></rect><rect x="86.77" y="676.25" width="5.82" height="8.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02050798
 module: arm9
 addr: 0x02050798
 size: 72 bytes
-matched: yes</title></rect><rect x="92.59" y="676.26" width="15.51" height="8.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020507e0
+matched: yes</title></rect><rect x="92.59" y="676.25" width="15.51" height="8.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020507e0
 module: arm9
 addr: 0x020507e0
 size: 192 bytes
-matched: yes</title></rect><rect x="108.10" y="676.26" width="14.22" height="8.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020508a0
+matched: yes</title></rect><rect x="108.10" y="676.25" width="14.22" height="8.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020508a0
 module: arm9
 addr: 0x020508a0
 size: 176 bytes
-matched: yes</title></rect><rect x="122.33" y="676.26" width="2.59" height="8.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02050950
+matched: yes</title></rect><rect x="122.33" y="676.25" width="2.59" height="8.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02050950
 module: arm9
 addr: 0x02050950
 size: 32 bytes
-matched: yes</title></rect><rect x="124.91" y="676.26" width="0.97" height="8.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02050970
+matched: yes</title></rect><rect x="124.91" y="676.25" width="0.97" height="8.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02050970
 module: arm9
 addr: 0x02050970
 size: 12 bytes
-matched: yes</title></rect><rect x="125.88" y="676.26" width="0.97" height="8.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205097c
+matched: yes</title></rect><rect x="125.88" y="676.25" width="0.97" height="8.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205097c
 module: arm9
 addr: 0x0205097c
 size: 12 bytes
-matched: yes</title></rect><rect x="126.85" y="676.26" width="0.97" height="8.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02050988
+matched: yes</title></rect><rect x="126.85" y="676.25" width="0.97" height="8.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02050988
 module: arm9
 addr: 0x02050988
 size: 12 bytes
-matched: yes</title></rect><rect x="127.82" y="676.26" width="2.26" height="8.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02050994
+matched: yes</title></rect><rect x="127.82" y="676.25" width="2.26" height="8.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02050994
 module: arm9
 addr: 0x02050994
 size: 28 bytes
-matched: yes</title></rect><rect x="130.08" y="676.26" width="3.23" height="8.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020509b0
+matched: yes</title></rect><rect x="130.08" y="676.25" width="3.23" height="8.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020509b0
 module: arm9
 addr: 0x020509b0
 size: 40 bytes
-matched: yes</title></rect><rect x="133.32" y="676.26" width="10.67" height="8.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020509d8
+matched: yes</title></rect><rect x="133.32" y="676.25" width="10.67" height="8.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020509d8
 module: arm9
 addr: 0x020509d8
 size: 132 bytes
-matched: yes</title></rect><rect x="143.98" y="676.26" width="3.23" height="8.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02050a5c
+matched: yes</title></rect><rect x="143.98" y="676.25" width="3.23" height="8.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02050a5c
 module: arm9
 addr: 0x02050a5c
 size: 40 bytes
-matched: yes</title></rect><rect x="147.21" y="676.26" width="8.08" height="8.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02050a84
+matched: yes</title></rect><rect x="147.21" y="676.25" width="8.08" height="8.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02050a84
 module: arm9
 addr: 0x02050a84
 size: 100 bytes
-matched: yes</title></rect><rect x="155.29" y="676.26" width="8.08" height="8.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02050ae8
+matched: yes</title></rect><rect x="155.29" y="676.25" width="8.08" height="8.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02050ae8
 module: arm9
 addr: 0x02050ae8
 size: 100 bytes
-matched: yes</title></rect><rect x="163.37" y="676.26" width="8.08" height="8.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02050b4c
+matched: yes</title></rect><rect x="163.37" y="676.25" width="8.08" height="8.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02050b4c
 module: arm9
 addr: 0x02050b4c
 size: 100 bytes
-matched: yes</title></rect><rect x="171.45" y="676.26" width="8.08" height="8.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Sound23InfoInstrumentBankEntry9GetWithIDEj
+matched: yes</title></rect><rect x="171.45" y="676.25" width="8.08" height="8.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Sound23InfoInstrumentBankEntry9GetWithIDEj
 module: arm9
 addr: 0x02050bb0
 size: 100 bytes
-matched: yes</title></rect><rect x="179.53" y="676.26" width="8.08" height="8.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02050c14
+matched: yes</title></rect><rect x="179.53" y="676.25" width="8.08" height="8.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02050c14
 module: arm9
 addr: 0x02050c14
 size: 100 bytes
-matched: yes</title></rect><rect x="187.61" y="676.26" width="8.08" height="8.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Sound17InfoSequenceEntry9GetWithIDEj
+matched: yes</title></rect><rect x="187.61" y="676.25" width="8.08" height="8.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Sound17InfoSequenceEntry9GetWithIDEj
 module: arm9
 addr: 0x02050c78
 size: 100 bytes
-matched: yes</title></rect><rect x="195.69" y="676.26" width="6.46" height="8.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02050cdc
+matched: yes</title></rect><rect x="195.69" y="676.25" width="6.46" height="8.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02050cdc
 module: arm9
 addr: 0x02050cdc
 size: 80 bytes
-matched: yes</title></rect><rect x="202.16" y="676.26" width="1.29" height="8.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02050d2c
+matched: yes</title></rect><rect x="202.16" y="676.25" width="1.29" height="8.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02050d2c
 module: arm9
 addr: 0x02050d2c
 size: 16 bytes
-matched: yes</title></rect><rect x="203.45" y="676.26" width="1.94" height="8.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02050d3c
+matched: yes</title></rect><rect x="203.45" y="676.25" width="1.94" height="8.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02050d3c
 module: arm9
 addr: 0x02050d3c
 size: 24 bytes
-matched: yes</title></rect><rect x="205.39" y="676.26" width="38.79" height="8.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02050d54
+matched: yes</title></rect><rect x="205.39" y="676.25" width="38.79" height="8.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02050d54
 module: arm9
 addr: 0x02050d54
 size: 480 bytes
-matched: yes</title></rect><rect x="244.18" y="676.26" width="10.02" height="8.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02050f34
+matched: yes</title></rect><rect x="244.18" y="676.25" width="10.02" height="8.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02050f34
 module: arm9
 addr: 0x02050f34
 size: 124 bytes
-matched: yes</title></rect><rect x="254.20" y="676.26" width="2.91" height="8.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02050fb0
+matched: yes</title></rect><rect x="254.20" y="676.25" width="2.91" height="8.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02050fb0
 module: arm9
 addr: 0x02050fb0
 size: 36 bytes
-matched: yes</title></rect><rect x="257.11" y="676.26" width="6.46" height="8.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02050fd4
+matched: yes</title></rect><rect x="257.11" y="676.25" width="6.46" height="8.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02050fd4
 module: arm9
 addr: 0x02050fd4
 size: 80 bytes
-matched: yes</title></rect><rect x="263.57" y="676.26" width="5.17" height="8.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02051024
+matched: yes</title></rect><rect x="263.57" y="676.25" width="5.17" height="8.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02051024
 module: arm9
 addr: 0x02051024
 size: 64 bytes
-matched: yes</title></rect><rect x="268.74" y="676.26" width="1.29" height="8.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02051064
+matched: yes</title></rect><rect x="268.74" y="676.25" width="1.29" height="8.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02051064
 module: arm9
 addr: 0x02051064
 size: 16 bytes
-matched: yes</title></rect><rect x="270.03" y="676.26" width="3.88" height="8.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02051074
+matched: yes</title></rect><rect x="270.03" y="676.25" width="3.88" height="8.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02051074
 module: arm9
 addr: 0x02051074
 size: 48 bytes
-matched: yes</title></rect><rect x="273.91" y="676.26" width="17.45" height="8.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020510a4
+matched: yes</title></rect><rect x="273.91" y="676.25" width="17.45" height="8.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020510a4
 module: arm9
 addr: 0x020510a4
 size: 216 bytes
-matched: yes</title></rect><rect x="291.37" y="676.26" width="7.11" height="8.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205117c
+matched: yes</title></rect><rect x="291.37" y="676.25" width="7.11" height="8.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205117c
 module: arm9
 addr: 0x0205117c
 size: 88 bytes
-matched: yes</title></rect><rect x="298.48" y="676.26" width="9.05" height="8.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020511d4
+matched: yes</title></rect><rect x="298.48" y="676.25" width="9.05" height="8.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020511d4
 module: arm9
 addr: 0x020511d4
 size: 112 bytes
-matched: yes</title></rect><rect x="307.53" y="676.26" width="13.90" height="8.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02051244
+matched: yes</title></rect><rect x="307.53" y="676.25" width="13.90" height="8.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02051244
 module: arm9
 addr: 0x02051244
 size: 172 bytes
@@ -8493,7 +8493,7 @@ matched: yes</title></rect><rect x="5.00" y="717.90" width="4.91" height="8.20" 
 module: arm9
 addr: 0x020513e4
 size: 60 bytes
-matched: yes</title></rect><rect x="5.00" y="726.10" width="4.91" height="7.11" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02051420
+matched: yes</title></rect><rect x="5.00" y="726.09" width="4.91" height="7.11" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02051420
 module: arm9
 addr: 0x02051420
 size: 52 bytes
@@ -8505,7 +8505,7 @@ matched: yes</title></rect><rect x="5.00" y="746.32" width="4.91" height="13.12"
 module: arm9
 addr: 0x020514b4
 size: 96 bytes
-matched: yes</title></rect><rect x="5.00" y="759.44" width="4.91" height="13.12" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02051514
+matched: yes</title></rect><rect x="5.00" y="759.43" width="4.91" height="13.12" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02051514
 module: arm9
 addr: 0x02051514
 size: 96 bytes
@@ -8541,7 +8541,7 @@ matched: yes</title></rect><rect x="5.00" y="899.90" width="4.91" height="37.17"
 module: arm9
 addr: 0x02051918
 size: 272 bytes
-matched: yes</title></rect><rect x="5.00" y="937.07" width="4.91" height="4.37" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02051a28
+matched: yes</title></rect><rect x="5.00" y="937.06" width="4.91" height="4.37" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02051a28
 module: arm9
 addr: 0x02051a28
 size: 32 bytes
@@ -8617,7 +8617,7 @@ matched: yes</title></rect><rect x="9.91" y="879.55" width="7.32" height="2.20" 
 module: arm9
 addr: 0x02052420
 size: 24 bytes
-matched: yes</title></rect><rect x="9.91" y="881.75" width="7.32" height="2.93" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02052438
+matched: yes</title></rect><rect x="9.91" y="881.74" width="7.32" height="2.93" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02052438
 module: arm9
 addr: 0x02052438
 size: 32 bytes
@@ -8625,7 +8625,7 @@ matched: yes</title></rect><rect x="9.91" y="884.68" width="7.32" height="5.50" 
 module: arm9
 addr: 0x02052458
 size: 60 bytes
-matched: yes</title></rect><rect x="9.91" y="890.18" width="7.32" height="4.40" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02052494
+matched: yes</title></rect><rect x="9.91" y="890.17" width="7.32" height="4.40" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02052494
 module: arm9
 addr: 0x02052494
 size: 48 bytes
@@ -8637,7 +8637,7 @@ matched: yes</title></rect><rect x="9.91" y="897.51" width="7.32" height="1.10" 
 module: arm9
 addr: 0x020524e4
 size: 12 bytes
-matched: yes</title></rect><rect x="9.91" y="898.61" width="7.32" height="3.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>Matrix3x3_LoadIdentity
+matched: yes</title></rect><rect x="9.91" y="898.60" width="7.32" height="3.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>Matrix3x3_LoadIdentity
 module: arm9
 addr: 0x020524f0
 size: 36 bytes
@@ -8841,7 +8841,7 @@ matched: yes</title></rect><rect x="17.23" y="813.81" width="5.12" height="3.14"
 module: arm9
 addr: 0x02053e1c
 size: 24 bytes
-matched: yes</title></rect><rect x="17.23" y="816.96" width="5.12" height="3.14" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02053e34
+matched: yes</title></rect><rect x="17.23" y="816.95" width="5.12" height="3.14" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02053e34
 module: arm9
 addr: 0x02053e34
 size: 24 bytes
@@ -9129,7 +9129,7 @@ matched: yes</title></rect><rect x="22.35" y="808.81" width="2.31" height="5.82"
 module: arm9
 addr: 0x020555bc
 size: 20 bytes
-matched: yes</title></rect><rect x="22.35" y="814.63" width="2.31" height="24.44" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN3G3X6SetFogEbiii
+matched: yes</title></rect><rect x="22.35" y="814.62" width="2.31" height="24.44" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN3G3X6SetFogEbiii
 module: arm9
 addr: 0x020555d0
 size: 84 bytes
@@ -9325,7 +9325,7 @@ matched: yes</title></rect><rect x="104.69" y="705.19" width="2.14" height="5.03
 module: arm9
 addr: 0x02056c60
 size: 16 bytes
-matched: yes</title></rect><rect x="106.83" y="705.19" width="2.14" height="5.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN3IRQ19Tim0OverflowHandlerEv
+matched: yes</title></rect><rect x="106.82" y="705.19" width="2.14" height="5.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN3IRQ19Tim0OverflowHandlerEv
 module: arm9
 addr: 0x02056c70
 size: 16 bytes
@@ -9509,7 +9509,7 @@ matched: yes</title></rect><rect x="34.22" y="976.06" width="8.07" height="2.33"
 module: arm9
 addr: 0x02057f38
 size: 28 bytes
-matched: yes</title></rect><rect x="34.22" y="978.39" width="8.07" height="16.61" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02057f54
+matched: yes</title></rect><rect x="34.22" y="978.38" width="8.07" height="16.62" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02057f54
 module: arm9
 addr: 0x02057f54
 size: 200 bytes
@@ -9629,7 +9629,7 @@ matched: yes</title></rect><rect x="42.30" y="779.15" width="3.28" height="30.25
 module: arm9
 addr: 0x02058b08
 size: 148 bytes
-matched: yes</title></rect><rect x="42.30" y="809.41" width="3.28" height="4.09" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02058b9c
+matched: yes</title></rect><rect x="42.30" y="809.40" width="3.28" height="4.09" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02058b9c
 module: arm9
 addr: 0x02058b9c
 size: 20 bytes
@@ -9681,7 +9681,7 @@ matched: yes</title></rect><rect x="42.30" y="908.33" width="3.28" height="23.71
 module: arm9
 addr: 0x02058d80
 size: 116 bytes
-matched: yes</title></rect><rect x="42.30" y="932.05" width="3.28" height="35.16" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02058df4
+matched: yes</title></rect><rect x="42.30" y="932.04" width="3.28" height="35.16" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02058df4
 module: arm9
 addr: 0x02058df4
 size: 172 bytes
@@ -9797,7 +9797,7 @@ matched: no</title></rect><rect x="45.58" y="721.83" width="6.51" height="29.25"
 module: arm9
 addr: 0x02059834
 size: 284 bytes
-matched: yes</title></rect><rect x="45.58" y="751.09" width="6.51" height="15.66" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02059950
+matched: yes</title></rect><rect x="45.58" y="751.08" width="6.51" height="15.66" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02059950
 module: arm9
 addr: 0x02059950
 size: 152 bytes
@@ -9829,15 +9829,15 @@ matched: yes</title></rect><rect x="45.58" y="840.49" width="6.51" height="8.65"
 module: arm9
 addr: 0x02059cb4
 size: 84 bytes
-matched: yes</title></rect><rect x="45.58" y="849.15" width="6.51" height="2.06" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN3IRQ6EnableEv
+matched: yes</title></rect><rect x="45.58" y="849.14" width="6.51" height="2.06" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN3IRQ6EnableEv
 module: arm9
 addr: 0x02059d08
 size: 20 bytes
-matched: yes</title></rect><rect x="45.58" y="851.21" width="6.51" height="2.06" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN3IRQ7DisableEv
+matched: yes</title></rect><rect x="45.58" y="851.20" width="6.51" height="2.06" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN3IRQ7DisableEv
 module: arm9
 addr: 0x02059d1c
 size: 20 bytes
-matched: yes</title></rect><rect x="45.58" y="853.27" width="6.51" height="2.47" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN3IRQ7RestoreEj
+matched: yes</title></rect><rect x="45.58" y="853.26" width="6.51" height="2.47" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN3IRQ7RestoreEj
 module: arm9
 addr: 0x02059d30
 size: 24 bytes
@@ -10049,7 +10049,7 @@ matched: yes</title></rect><rect x="52.09" y="727.67" width="3.03" height="24.79
 module: arm9
 addr: 0x0205abb8
 size: 112 bytes
-matched: yes</title></rect><rect x="52.09" y="752.46" width="3.03" height="11.51" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205ac28
+matched: yes</title></rect><rect x="52.09" y="752.45" width="3.03" height="11.51" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205ac28
 module: arm9
 addr: 0x0205ac28
 size: 52 bytes
@@ -10081,7 +10081,7 @@ matched: yes</title></rect><rect x="52.09" y="813.53" width="3.03" height="5.31"
 module: arm9
 addr: 0x0205ad3c
 size: 24 bytes
-matched: yes</title></rect><rect x="52.09" y="818.85" width="3.03" height="5.31" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205ad54
+matched: yes</title></rect><rect x="52.09" y="818.84" width="3.03" height="5.31" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205ad54
 module: arm9
 addr: 0x0205ad54
 size: 24 bytes
@@ -10229,11 +10229,11 @@ matched: yes</title></rect><rect x="55.12" y="767.41" width="7.57" height="0.71"
 module: arm9
 addr: 0x0205bbdc
 size: 8 bytes
-matched: yes</title></rect><rect x="55.12" y="768.12" width="7.57" height="3.54" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205bbe4
+matched: yes</title></rect><rect x="55.12" y="768.12" width="7.57" height="3.55" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205bbe4
 module: arm9
 addr: 0x0205bbe4
 size: 40 bytes
-matched: yes</title></rect><rect x="55.12" y="771.67" width="7.57" height="10.99" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205bc0c
+matched: yes</title></rect><rect x="55.12" y="771.66" width="7.57" height="10.99" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205bc0c
 module: arm9
 addr: 0x0205bc0c
 size: 124 bytes
@@ -10429,7 +10429,7 @@ matched: yes</title></rect><rect x="64.91" y="806.03" width="6.08" height="3.53"
 module: arm9
 addr: 0x0205d94c
 size: 32 bytes
-matched: yes</title></rect><rect x="64.91" y="809.57" width="6.08" height="32.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205d96c
+matched: yes</title></rect><rect x="64.91" y="809.56" width="6.08" height="32.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205d96c
 module: arm9
 addr: 0x0205d96c
 size: 296 bytes
@@ -10565,7 +10565,7 @@ matched: yes</title></rect><rect x="70.99" y="867.37" width="3.70" height="29.01
 module: arm9
 addr: 0x0205f040
 size: 160 bytes
-matched: yes</title></rect><rect x="70.99" y="896.38" width="3.70" height="47.13" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205f0e0
+matched: yes</title></rect><rect x="70.99" y="896.38" width="3.70" height="47.14" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0205f0e0
 module: arm9
 addr: 0x0205f0e0
 size: 260 bytes
@@ -10753,7 +10753,7 @@ matched: yes</title></rect><rect x="83.20" y="757.97" width="6.67" height="24.15
 module: arm9
 addr: 0x0206062c
 size: 240 bytes
-matched: yes</title></rect><rect x="83.20" y="782.12" width="6.67" height="20.52" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206071c
+matched: yes</title></rect><rect x="83.20" y="782.11" width="6.67" height="20.52" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206071c
 module: arm9
 addr: 0x0206071c
 size: 204 bytes
@@ -10781,7 +10781,7 @@ matched: yes</title></rect><rect x="83.20" y="861.39" width="6.67" height="5.23"
 module: arm9
 addr: 0x02060a30
 size: 52 bytes
-matched: yes</title></rect><rect x="83.20" y="866.63" width="6.67" height="25.76" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02060a64
+matched: yes</title></rect><rect x="83.20" y="866.62" width="6.67" height="25.76" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02060a64
 module: arm9
 addr: 0x02060a64
 size: 256 bytes
@@ -10809,7 +10809,7 @@ matched: yes</title></rect><rect x="83.20" y="978.50" width="6.67" height="16.50
 module: arm9
 addr: 0x02060ebc
 size: 164 bytes
-matched: yes</title></rect><rect x="89.87" y="757.97" width="26.55" height="8.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02060f60
+matched: yes</title></rect><rect x="89.86" y="757.97" width="26.55" height="8.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02060f60
 module: arm9
 addr: 0x02060f60
 size: 332 bytes
@@ -10877,79 +10877,79 @@ matched: yes</title></rect><rect x="300.64" y="757.97" width="20.79" height="8.3
 module: arm9
 addr: 0x020619ac
 size: 260 bytes
-matched: yes</title></rect><rect x="89.87" y="766.36" width="7.11" height="22.26" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02061ab0
+matched: yes</title></rect><rect x="89.86" y="766.36" width="7.11" height="22.26" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02061ab0
 module: arm9
 addr: 0x02061ab0
 size: 236 bytes
-matched: yes</title></rect><rect x="89.87" y="788.62" width="7.11" height="12.45" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02061b9c
+matched: yes</title></rect><rect x="89.86" y="788.62" width="7.11" height="12.45" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02061b9c
 module: arm9
 addr: 0x02061b9c
 size: 132 bytes
-matched: yes</title></rect><rect x="89.87" y="801.07" width="7.11" height="9.81" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02061c20
+matched: yes</title></rect><rect x="89.86" y="801.07" width="7.11" height="9.81" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02061c20
 module: arm9
 addr: 0x02061c20
 size: 104 bytes
-matched: yes</title></rect><rect x="89.87" y="810.88" width="7.11" height="8.68" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02061c88
+matched: yes</title></rect><rect x="89.86" y="810.88" width="7.11" height="8.68" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02061c88
 module: arm9
 addr: 0x02061c88
 size: 92 bytes
-matched: yes</title></rect><rect x="89.87" y="819.56" width="7.11" height="7.17" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02061ce4
+matched: yes</title></rect><rect x="89.86" y="819.56" width="7.11" height="7.17" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02061ce4
 module: arm9
 addr: 0x02061ce4
 size: 76 bytes
-matched: yes</title></rect><rect x="89.87" y="826.73" width="7.11" height="24.90" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02061d30
+matched: yes</title></rect><rect x="89.86" y="826.73" width="7.11" height="24.90" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02061d30
 module: arm9
 addr: 0x02061d30
 size: 264 bytes
-matched: yes</title></rect><rect x="89.87" y="851.63" width="7.11" height="16.22" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02061e38
+matched: yes</title></rect><rect x="89.86" y="851.63" width="7.11" height="16.22" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02061e38
 module: arm9
 addr: 0x02061e38
 size: 172 bytes
-matched: yes</title></rect><rect x="89.87" y="867.85" width="7.11" height="23.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02061ee4
+matched: yes</title></rect><rect x="89.86" y="867.85" width="7.11" height="23.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02061ee4
 module: arm9
 addr: 0x02061ee4
 size: 248 bytes
-matched: yes</title></rect><rect x="89.87" y="891.24" width="7.11" height="6.79" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02061fdc
+matched: yes</title></rect><rect x="89.86" y="891.24" width="7.11" height="6.79" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02061fdc
 module: arm9
 addr: 0x02061fdc
 size: 72 bytes
-matched: yes</title></rect><rect x="89.87" y="898.04" width="7.11" height="13.21" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02062024
+matched: yes</title></rect><rect x="89.86" y="898.03" width="7.11" height="13.21" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02062024
 module: arm9
 addr: 0x02062024
 size: 140 bytes
-matched: yes</title></rect><rect x="89.87" y="911.24" width="7.11" height="24.90" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020620b0
+matched: yes</title></rect><rect x="89.86" y="911.24" width="7.11" height="24.90" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020620b0
 module: arm9
 addr: 0x020620b0
 size: 264 bytes
-matched: yes</title></rect><rect x="89.87" y="936.14" width="7.11" height="6.79" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020621b8
+matched: yes</title></rect><rect x="89.86" y="936.14" width="7.11" height="6.79" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020621b8
 module: arm9
 addr: 0x020621b8
 size: 72 bytes
-matched: yes</title></rect><rect x="89.87" y="942.93" width="7.11" height="6.04" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02062200
+matched: yes</title></rect><rect x="89.86" y="942.93" width="7.11" height="6.04" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02062200
 module: arm9
 addr: 0x02062200
 size: 64 bytes
-matched: yes</title></rect><rect x="89.87" y="948.97" width="7.11" height="9.81" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02062240
+matched: yes</title></rect><rect x="89.86" y="948.97" width="7.11" height="9.81" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02062240
 module: arm9
 addr: 0x02062240
 size: 104 bytes
-matched: yes</title></rect><rect x="89.87" y="958.78" width="7.11" height="6.79" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020622a8
+matched: yes</title></rect><rect x="89.86" y="958.78" width="7.11" height="6.79" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020622a8
 module: arm9
 addr: 0x020622a8
 size: 72 bytes
-matched: yes</title></rect><rect x="89.87" y="965.57" width="7.11" height="6.79" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020622f0
+matched: yes</title></rect><rect x="89.86" y="965.57" width="7.11" height="6.79" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020622f0
 module: arm9
 addr: 0x020622f0
 size: 72 bytes
-matched: yes</title></rect><rect x="89.87" y="972.36" width="7.11" height="6.79" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02062338
+matched: yes</title></rect><rect x="89.86" y="972.36" width="7.11" height="6.79" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02062338
 module: arm9
 addr: 0x02062338
 size: 72 bytes
-matched: yes</title></rect><rect x="89.87" y="979.15" width="7.11" height="10.19" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02062380
+matched: yes</title></rect><rect x="89.86" y="979.15" width="7.11" height="10.19" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02062380
 module: arm9
 addr: 0x02062380
 size: 108 bytes
-matched: yes</title></rect><rect x="89.87" y="989.34" width="7.11" height="5.66" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020623ec
+matched: yes</title></rect><rect x="89.86" y="989.34" width="7.11" height="5.66" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020623ec
 module: arm9
 addr: 0x020623ec
 size: 60 bytes
@@ -11061,7 +11061,7 @@ matched: yes</title></rect><rect x="216.76" y="773.84" width="8.13" height="12.5
 module: arm9
 addr: 0x02064674
 size: 152 bytes
-matched: yes</title></rect><rect x="224.90" y="773.84" width="8.13" height="12.54" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206470c
+matched: yes</title></rect><rect x="224.89" y="773.84" width="8.13" height="12.54" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206470c
 module: arm9
 addr: 0x0206470c
 size: 152 bytes
@@ -11113,59 +11113,59 @@ matched: yes</title></rect><rect x="312.22" y="773.84" width="9.20" height="12.5
 module: arm9
 addr: 0x02064d6c
 size: 172 bytes
-matched: yes</title></rect><rect x="109.96" y="786.38" width="5.87" height="16.93" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02064e18
+matched: yes</title></rect><rect x="109.96" y="786.38" width="5.86" height="16.93" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02064e18
 module: arm9
 addr: 0x02064e18
 size: 148 bytes
-matched: yes</title></rect><rect x="109.96" y="803.31" width="5.87" height="19.22" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02064eac
+matched: yes</title></rect><rect x="109.96" y="803.31" width="5.86" height="19.22" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02064eac
 module: arm9
 addr: 0x02064eac
 size: 168 bytes
-matched: yes</title></rect><rect x="109.96" y="822.52" width="5.87" height="16.93" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02064f54
+matched: yes</title></rect><rect x="109.96" y="822.52" width="5.86" height="16.93" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02064f54
 module: arm9
 addr: 0x02064f54
 size: 148 bytes
-matched: yes</title></rect><rect x="109.96" y="839.45" width="5.87" height="11.90" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02064fe8
+matched: yes</title></rect><rect x="109.96" y="839.45" width="5.86" height="11.90" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02064fe8
 module: arm9
 addr: 0x02064fe8
 size: 104 bytes
-matched: yes</title></rect><rect x="109.96" y="851.34" width="5.87" height="9.15" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02065050
+matched: yes</title></rect><rect x="109.96" y="851.34" width="5.86" height="9.15" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02065050
 module: arm9
 addr: 0x02065050
 size: 80 bytes
-matched: yes</title></rect><rect x="109.96" y="860.49" width="5.87" height="6.41" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020650a0
+matched: yes</title></rect><rect x="109.96" y="860.49" width="5.86" height="6.41" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020650a0
 module: arm9
 addr: 0x020650a0
 size: 56 bytes
-matched: yes</title></rect><rect x="109.96" y="866.90" width="5.87" height="10.98" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020650d8
+matched: yes</title></rect><rect x="109.96" y="866.90" width="5.86" height="10.98" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020650d8
 module: arm9
 addr: 0x020650d8
 size: 96 bytes
-matched: yes</title></rect><rect x="109.96" y="877.88" width="5.87" height="6.41" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02065138
+matched: yes</title></rect><rect x="109.96" y="877.88" width="5.86" height="6.41" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02065138
 module: arm9
 addr: 0x02065138
 size: 56 bytes
-matched: yes</title></rect><rect x="109.96" y="884.28" width="5.87" height="22.42" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02065170
+matched: yes</title></rect><rect x="109.96" y="884.28" width="5.86" height="22.42" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02065170
 module: arm9
 addr: 0x02065170
 size: 196 bytes
-matched: yes</title></rect><rect x="109.96" y="906.70" width="5.87" height="22.88" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02065234
+matched: yes</title></rect><rect x="109.96" y="906.70" width="5.86" height="22.88" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02065234
 module: arm9
 addr: 0x02065234
 size: 200 bytes
-matched: yes</title></rect><rect x="109.96" y="929.58" width="5.87" height="23.79" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020652fc
+matched: yes</title></rect><rect x="109.96" y="929.58" width="5.86" height="23.79" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020652fc
 module: arm9
 addr: 0x020652fc
 size: 208 bytes
-matched: yes</title></rect><rect x="109.96" y="953.37" width="5.87" height="29.74" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020653cc
+matched: yes</title></rect><rect x="109.96" y="953.37" width="5.86" height="29.74" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020653cc
 module: arm9
 addr: 0x020653cc
 size: 260 bytes
-matched: yes</title></rect><rect x="109.96" y="983.10" width="5.87" height="5.49" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020654d0
+matched: yes</title></rect><rect x="109.96" y="983.10" width="5.86" height="5.49" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020654d0
 module: arm9
 addr: 0x020654d0
 size: 48 bytes
-matched: yes</title></rect><rect x="109.96" y="988.59" width="5.87" height="6.41" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02065500
+matched: yes</title></rect><rect x="109.96" y="988.59" width="5.86" height="6.41" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02065500
 module: arm9
 addr: 0x02065500
 size: 56 bytes
@@ -11297,7 +11297,7 @@ matched: yes</title></rect><rect x="115.82" y="833.78" width="6.81" height="1.58
 module: arm9
 addr: 0x02065ef8
 size: 16 bytes
-matched: yes</title></rect><rect x="115.82" y="835.36" width="6.81" height="11.04" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02065f08
+matched: yes</title></rect><rect x="115.82" y="835.35" width="6.81" height="11.04" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02065f08
 module: arm9
 addr: 0x02065f08
 size: 112 bytes
@@ -11305,7 +11305,7 @@ matched: yes</title></rect><rect x="115.82" y="846.39" width="6.81" height="39.8
 module: arm9
 addr: 0x02065f78
 size: 404 bytes
-matched: yes</title></rect><rect x="115.82" y="886.21" width="6.81" height="42.97" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206610c
+matched: yes</title></rect><rect x="115.82" y="886.20" width="6.81" height="42.97" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206610c
 module: arm9
 addr: 0x0206610c
 size: 436 bytes
@@ -11369,7 +11369,7 @@ matched: yes</title></rect><rect x="122.63" y="814.00" width="11.37" height="16.
 module: arm9
 addr: 0x0206736c
 size: 276 bytes
-matched: yes</title></rect><rect x="122.63" y="830.29" width="11.37" height="10.38" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02067480
+matched: yes</title></rect><rect x="122.63" y="830.28" width="11.37" height="10.38" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02067480
 module: arm9
 addr: 0x02067480
 size: 176 bytes
@@ -11377,11 +11377,11 @@ matched: yes</title></rect><rect x="122.63" y="840.67" width="11.37" height="12.
 module: arm9
 addr: 0x02067530
 size: 212 bytes
-matched: yes</title></rect><rect x="122.63" y="853.18" width="11.37" height="12.98" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02067604
+matched: yes</title></rect><rect x="122.63" y="853.17" width="11.37" height="12.98" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02067604
 module: arm9
 addr: 0x02067604
 size: 220 bytes
-matched: yes</title></rect><rect x="122.63" y="866.16" width="11.37" height="26.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020676e0
+matched: yes</title></rect><rect x="122.63" y="866.15" width="11.37" height="26.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020676e0
 module: arm9
 addr: 0x020676e0
 size: 452 bytes
@@ -11445,7 +11445,7 @@ matched: yes</title></rect><rect x="245.86" y="804.80" width="3.33" height="8.06
 module: arm9
 addr: 0x020684a8
 size: 40 bytes
-matched: yes</title></rect><rect x="249.19" y="804.80" width="5.66" height="8.06" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020684d0
+matched: yes</title></rect><rect x="249.18" y="804.80" width="5.66" height="8.06" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020684d0
 module: arm9
 addr: 0x020684d0
 size: 68 bytes
@@ -11561,11 +11561,11 @@ matched: yes</title></rect><rect x="141.56" y="830.88" width="6.34" height="10.5
 module: arm9
 addr: 0x0206a318
 size: 100 bytes
-matched: yes</title></rect><rect x="141.56" y="841.46" width="6.34" height="4.23" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206a37c
+matched: yes</title></rect><rect x="141.56" y="841.45" width="6.34" height="4.23" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206a37c
 module: arm9
 addr: 0x0206a37c
 size: 40 bytes
-matched: yes</title></rect><rect x="141.56" y="845.69" width="6.34" height="13.54" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206a3a4
+matched: yes</title></rect><rect x="141.56" y="845.68" width="6.34" height="13.54" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206a3a4
 module: arm9
 addr: 0x0206a3a4
 size: 128 bytes
@@ -11577,7 +11577,7 @@ matched: yes</title></rect><rect x="141.56" y="864.72" width="6.34" height="7.61
 module: arm9
 addr: 0x0206a458
 size: 72 bytes
-matched: yes</title></rect><rect x="141.56" y="872.33" width="6.34" height="30.45" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206a4a0
+matched: yes</title></rect><rect x="141.56" y="872.33" width="6.34" height="30.46" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206a4a0
 module: arm9
 addr: 0x0206a4a0
 size: 288 bytes
@@ -11589,7 +11589,7 @@ matched: yes</title></rect><rect x="141.56" y="909.56" width="6.34" height="5.50
 module: arm9
 addr: 0x0206a600
 size: 52 bytes
-matched: yes</title></rect><rect x="141.56" y="915.06" width="6.34" height="10.15" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206a634
+matched: yes</title></rect><rect x="141.56" y="915.05" width="6.34" height="10.15" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206a634
 module: arm9
 addr: 0x0206a634
 size: 96 bytes
@@ -11621,7 +11621,7 @@ matched: yes</title></rect><rect x="147.90" y="978.29" width="29.23" height="16.
 module: arm9
 addr: 0x0206c244
 size: 728 bytes
-matched: yes</title></rect><rect x="177.14" y="830.88" width="53.79" height="11.47" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206c51c
+matched: yes</title></rect><rect x="177.13" y="830.88" width="53.79" height="11.47" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206c51c
 module: arm9
 addr: 0x0206c51c
 size: 920 bytes
@@ -11677,95 +11677,95 @@ matched: yes</title></rect><rect x="318.62" y="830.88" width="2.81" height="11.4
 module: arm9
 addr: 0x0206ce90
 size: 48 bytes
-matched: yes</title></rect><rect x="177.14" y="842.36" width="1.87" height="11.49" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206cec0
+matched: yes</title></rect><rect x="177.13" y="842.35" width="1.87" height="11.49" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206cec0
 module: arm9
 addr: 0x0206cec0
 size: 32 bytes
-matched: yes</title></rect><rect x="179.00" y="842.36" width="9.11" height="11.49" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206cee0
+matched: yes</title></rect><rect x="179.00" y="842.35" width="9.11" height="11.49" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206cee0
 module: arm9
 addr: 0x0206cee0
 size: 156 bytes
-matched: yes</title></rect><rect x="188.11" y="842.36" width="1.63" height="11.49" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206cf7c
+matched: yes</title></rect><rect x="188.11" y="842.35" width="1.63" height="11.49" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206cf7c
 module: arm9
 addr: 0x0206cf7c
 size: 28 bytes
-matched: yes</title></rect><rect x="189.74" y="842.36" width="53.47" height="11.49" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206cf98
+matched: yes</title></rect><rect x="189.74" y="842.35" width="53.47" height="11.49" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206cf98
 module: arm9
 addr: 0x0206cf98
 size: 916 bytes
-matched: yes</title></rect><rect x="243.21" y="842.36" width="78.21" height="11.49" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206d32c
+matched: yes</title></rect><rect x="243.21" y="842.35" width="78.22" height="11.49" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206d32c
 module: arm9
 addr: 0x0206d32c
 size: 1340 bytes
-matched: yes</title></rect><rect x="177.14" y="853.85" width="5.82" height="4.61" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206d868
+matched: yes</title></rect><rect x="177.13" y="853.85" width="5.82" height="4.61" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206d868
 module: arm9
 addr: 0x0206d868
 size: 40 bytes
-matched: yes</title></rect><rect x="177.14" y="858.46" width="5.82" height="6.00" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206d890
+matched: yes</title></rect><rect x="177.13" y="858.46" width="5.82" height="6.00" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206d890
 module: arm9
 addr: 0x0206d890
 size: 52 bytes
-matched: yes</title></rect><rect x="177.14" y="864.46" width="5.82" height="14.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206d8c4
+matched: yes</title></rect><rect x="177.13" y="864.46" width="5.82" height="14.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206d8c4
 module: arm9
 addr: 0x0206d8c4
 size: 124 bytes
-matched: yes</title></rect><rect x="177.14" y="878.76" width="5.82" height="16.14" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206d940
+matched: yes</title></rect><rect x="177.13" y="878.76" width="5.82" height="16.15" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206d940
 module: arm9
 addr: 0x0206d940
 size: 140 bytes
-matched: yes</title></rect><rect x="177.14" y="894.90" width="5.82" height="8.76" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206d9cc
+matched: yes</title></rect><rect x="177.13" y="894.90" width="5.82" height="8.76" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206d9cc
 module: arm9
 addr: 0x0206d9cc
 size: 76 bytes
-matched: yes</title></rect><rect x="177.14" y="903.67" width="5.82" height="8.76" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206da18
+matched: yes</title></rect><rect x="177.13" y="903.67" width="5.82" height="8.76" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206da18
 module: arm9
 addr: 0x0206da18
 size: 76 bytes
-matched: yes</title></rect><rect x="177.14" y="912.43" width="5.82" height="5.54" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206da64
+matched: yes</title></rect><rect x="177.13" y="912.43" width="5.82" height="5.54" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206da64
 module: arm9
 addr: 0x0206da64
 size: 48 bytes
-matched: yes</title></rect><rect x="177.14" y="917.97" width="5.82" height="0.92" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206da94
+matched: yes</title></rect><rect x="177.13" y="917.96" width="5.82" height="0.92" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206da94
 module: arm9
 addr: 0x0206da94
 size: 8 bytes
-matched: yes</title></rect><rect x="177.14" y="918.89" width="5.82" height="0.92" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206da9c
+matched: yes</title></rect><rect x="177.13" y="918.89" width="5.82" height="0.92" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206da9c
 module: arm9
 addr: 0x0206da9c
 size: 8 bytes
-matched: yes</title></rect><rect x="177.14" y="919.81" width="5.82" height="0.92" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN4CP1517MPUGetDataRegion7Ev
+matched: yes</title></rect><rect x="177.13" y="919.81" width="5.82" height="0.92" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN4CP1517MPUGetDataRegion7Ev
 module: arm9
 addr: 0x0206daa4
 size: 8 bytes
-matched: yes</title></rect><rect x="177.14" y="920.73" width="5.82" height="0.92" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN4CP1514MPUDataRegion7Ej
+matched: yes</title></rect><rect x="177.13" y="920.73" width="5.82" height="0.92" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN4CP1514MPUDataRegion7Ej
 module: arm9
 addr: 0x0206daac
 size: 8 bytes
-matched: yes</title></rect><rect x="177.14" y="921.66" width="5.82" height="0.92" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206dab4
+matched: yes</title></rect><rect x="177.13" y="921.66" width="5.82" height="0.92" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206dab4
 module: arm9
 addr: 0x0206dab4
 size: 8 bytes
-matched: yes</title></rect><rect x="177.14" y="922.58" width="5.82" height="0.92" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN4cstd14__builtin_trapEv
+matched: yes</title></rect><rect x="177.13" y="922.58" width="5.82" height="0.92" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN4cstd14__builtin_trapEv
 module: arm9
 addr: 0x0206dabc
 size: 8 bytes
-matched: yes</title></rect><rect x="177.14" y="923.50" width="5.82" height="35.52" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206dac4
+matched: yes</title></rect><rect x="177.13" y="923.50" width="5.82" height="35.52" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206dac4
 module: arm9
 addr: 0x0206dac4
 size: 308 bytes
-matched: yes</title></rect><rect x="177.14" y="959.02" width="5.82" height="9.69" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206dbf8
+matched: yes</title></rect><rect x="177.13" y="959.02" width="5.82" height="9.69" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206dbf8
 module: arm9
 addr: 0x0206dbf8
 size: 84 bytes
-matched: yes</title></rect><rect x="177.14" y="968.71" width="5.82" height="5.54" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206dc4c
+matched: yes</title></rect><rect x="177.13" y="968.71" width="5.82" height="5.54" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206dc4c
 module: arm9
 addr: 0x0206dc4c
 size: 48 bytes
-matched: yes</title></rect><rect x="177.14" y="974.24" width="5.82" height="10.15" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206dc7c
+matched: yes</title></rect><rect x="177.13" y="974.24" width="5.82" height="10.15" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206dc7c
 module: arm9
 addr: 0x0206dc7c
 size: 88 bytes
-matched: yes</title></rect><rect x="177.14" y="984.39" width="5.82" height="10.61" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206dcd4
+matched: yes</title></rect><rect x="177.13" y="984.39" width="5.82" height="10.61" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206dcd4
 module: arm9
 addr: 0x0206dcd4
 size: 92 bytes
@@ -11785,11 +11785,11 @@ matched: yes</title></rect><rect x="221.08" y="853.85" width="42.81" height="4.0
 module: arm9
 addr: 0x0206de14
 size: 256 bytes
-matched: yes</title></rect><rect x="263.90" y="853.85" width="18.73" height="4.01" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206df14
+matched: yes</title></rect><rect x="263.89" y="853.85" width="18.73" height="4.01" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206df14
 module: arm9
 addr: 0x0206df14
 size: 112 bytes
-matched: yes</title></rect><rect x="282.63" y="853.85" width="2.01" height="4.01" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN4cstd3absEi
+matched: yes</title></rect><rect x="282.62" y="853.85" width="2.01" height="4.01" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN4cstd3absEi
 module: arm9
 addr: 0x0206df84
 size: 12 bytes
@@ -11805,7 +11805,7 @@ matched: yes</title></rect><rect x="320.76" y="853.85" width="0.67" height="4.01
 module: arm9
 addr: 0x0206e068
 size: 4 bytes
-matched: yes</title></rect><rect x="182.95" y="857.86" width="5.28" height="35.55" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206e06c
+matched: yes</title></rect><rect x="182.95" y="857.86" width="5.28" height="35.56" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206e06c
 module: arm9
 addr: 0x0206e06c
 size: 280 bytes
@@ -11853,7 +11853,7 @@ matched: yes</title></rect><rect x="182.95" y="984.33" width="5.28" height="10.6
 module: arm9
 addr: 0x0206e450
 size: 84 bytes
-matched: yes</title></rect><rect x="188.24" y="857.86" width="56.29" height="25.12" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206e4a4
+matched: yes</title></rect><rect x="188.23" y="857.86" width="56.29" height="25.12" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206e4a4
 module: arm9
 addr: 0x0206e4a4
 size: 2108 bytes
@@ -11869,15 +11869,15 @@ matched: yes</title></rect><rect x="296.11" y="857.86" width="25.31" height="25.
 module: arm9
 addr: 0x0206f46c
 size: 948 bytes
-matched: yes</title></rect><rect x="188.24" y="882.98" width="17.10" height="29.18" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206f820
+matched: yes</title></rect><rect x="188.23" y="882.98" width="17.10" height="29.18" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206f820
 module: arm9
 addr: 0x0206f820
 size: 744 bytes
-matched: yes</title></rect><rect x="188.24" y="912.16" width="17.10" height="24.00" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206fb08
+matched: yes</title></rect><rect x="188.23" y="912.16" width="17.10" height="24.00" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206fb08
 module: arm9
 addr: 0x0206fb08
 size: 612 bytes
-matched: yes</title></rect><rect x="188.24" y="936.17" width="17.10" height="58.83" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206fd6c
+matched: yes</title></rect><rect x="188.23" y="936.17" width="17.10" height="58.83" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0206fd6c
 module: arm9
 addr: 0x0206fd6c
 size: 1500 bytes
@@ -11889,7 +11889,7 @@ matched: yes</title></rect><rect x="205.34" y="887.18" width="8.31" height="27.1
 module: arm9
 addr: 0x0207037c
 size: 336 bytes
-matched: yes</title></rect><rect x="205.34" y="914.30" width="8.31" height="4.84" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN4cstd6strchrEPKcc
+matched: yes</title></rect><rect x="205.34" y="914.29" width="8.31" height="4.84" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN4cstd6strchrEPKcc
 module: arm9
 addr: 0x020704cc
 size: 60 bytes
@@ -11929,7 +11929,7 @@ matched: yes</title></rect><rect x="242.80" y="882.98" width="8.19" height="17.0
 module: arm9
 addr: 0x02070b98
 size: 208 bytes
-matched: yes</title></rect><rect x="250.99" y="882.98" width="23.63" height="17.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02070c68
+matched: yes</title></rect><rect x="250.99" y="882.98" width="23.64" height="17.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02070c68
 module: arm9
 addr: 0x02070c68
 size: 600 bytes
@@ -11965,11 +11965,11 @@ matched: yes</title></rect><rect x="219.41" y="900.61" width="4.49" height="16.7
 module: arm9
 addr: 0x02071698
 size: 112 bytes
-matched: yes</title></rect><rect x="219.41" y="917.34" width="4.49" height="18.52" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02071708
+matched: yes</title></rect><rect x="219.41" y="917.33" width="4.49" height="18.52" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02071708
 module: arm9
 addr: 0x02071708
 size: 124 bytes
-matched: yes</title></rect><rect x="219.41" y="935.86" width="4.49" height="1.79" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02071784
+matched: yes</title></rect><rect x="219.41" y="935.85" width="4.49" height="1.79" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02071784
 module: arm9
 addr: 0x02071784
 size: 12 bytes
@@ -12009,7 +12009,7 @@ matched: yes</title></rect><rect x="223.90" y="918.28" width="5.14" height="2.09
 module: arm9
 addr: 0x0207199c
 size: 16 bytes
-matched: yes</title></rect><rect x="223.90" y="920.37" width="5.14" height="1.04" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020719ac
+matched: yes</title></rect><rect x="223.90" y="920.36" width="5.14" height="1.04" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020719ac
 module: arm9
 addr: 0x020719ac
 size: 8 bytes
@@ -12017,7 +12017,7 @@ matched: yes</title></rect><rect x="223.90" y="921.41" width="5.14" height="7.31
 module: arm9
 addr: 0x020719b4
 size: 56 bytes
-matched: yes</title></rect><rect x="223.90" y="928.72" width="5.14" height="13.05" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020719ec
+matched: yes</title></rect><rect x="223.90" y="928.71" width="5.14" height="13.05" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020719ec
 module: arm9
 addr: 0x020719ec
 size: 100 bytes
@@ -12025,7 +12025,7 @@ matched: yes</title></rect><rect x="223.90" y="941.76" width="5.14" height="21.9
 module: arm9
 addr: 0x02071a50
 size: 168 bytes
-matched: yes</title></rect><rect x="223.90" y="963.69" width="5.14" height="21.92" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>ReadSignedVarInt
+matched: yes</title></rect><rect x="223.90" y="963.68" width="5.14" height="21.92" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>ReadSignedVarInt
 module: arm9
 addr: 0x02071af8
 size: 168 bytes
@@ -12033,7 +12033,7 @@ matched: yes</title></rect><rect x="223.90" y="985.61" width="5.14" height="9.39
 module: arm9
 addr: 0x02071ba0
 size: 72 bytes
-matched: yes</title></rect><rect x="229.05" y="900.01" width="14.96" height="10.22" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02071be8
+matched: yes</title></rect><rect x="229.04" y="900.01" width="14.96" height="10.22" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02071be8
 module: arm9
 addr: 0x02071be8
 size: 228 bytes
@@ -12045,7 +12045,7 @@ matched: yes</title></rect><rect x="251.35" y="900.01" width="31.49" height="10.
 module: arm9
 addr: 0x02071d3c
 size: 480 bytes
-matched: yes</title></rect><rect x="282.85" y="900.01" width="7.09" height="10.22" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02071f1c
+matched: yes</title></rect><rect x="282.84" y="900.01" width="7.09" height="10.22" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02071f1c
 module: arm9
 addr: 0x02071f1c
 size: 108 bytes
@@ -12057,219 +12057,219 @@ matched: yes</title></rect><rect x="299.12" y="900.01" width="22.31" height="10.
 module: arm9
 addr: 0x02072014
 size: 340 bytes
-matched: yes</title></rect><rect x="229.05" y="910.24" width="24.63" height="59.60" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02072168
+matched: yes</title></rect><rect x="229.04" y="910.23" width="24.63" height="59.60" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02072168
 module: arm9
 addr: 0x02072168
 size: 2188 bytes
-matched: yes</title></rect><rect x="229.05" y="969.83" width="24.63" height="25.17" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020729f4
+matched: yes</title></rect><rect x="229.04" y="969.83" width="24.63" height="25.17" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020729f4
 module: arm9
 addr: 0x020729f4
 size: 924 bytes
-matched: yes</title></rect><rect x="253.67" y="910.24" width="3.32" height="5.66" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02072d90
+matched: yes</title></rect><rect x="253.67" y="910.23" width="3.32" height="5.66" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02072d90
 module: arm9
 addr: 0x02072d90
 size: 28 bytes
-matched: yes</title></rect><rect x="256.99" y="910.24" width="34.59" height="5.66" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02072dac
+matched: yes</title></rect><rect x="256.99" y="910.23" width="34.59" height="5.66" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02072dac
 module: arm9
 addr: 0x02072dac
 size: 292 bytes
-matched: yes</title></rect><rect x="291.58" y="910.24" width="12.79" height="5.66" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02072ed0
+matched: yes</title></rect><rect x="291.57" y="910.23" width="12.79" height="5.66" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02072ed0
 module: arm9
 addr: 0x02072ed0
 size: 108 bytes
-matched: yes</title></rect><rect x="304.37" y="910.24" width="10.42" height="5.66" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02072f3c
+matched: yes</title></rect><rect x="304.37" y="910.23" width="10.42" height="5.66" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02072f3c
 module: arm9
 addr: 0x02072f3c
 size: 88 bytes
-matched: yes</title></rect><rect x="314.79" y="910.24" width="6.63" height="5.66" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02072f94
+matched: yes</title></rect><rect x="314.79" y="910.23" width="6.63" height="5.66" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02072f94
 module: arm9
 addr: 0x02072f94
 size: 56 bytes
-matched: yes</title></rect><rect x="253.67" y="915.90" width="50.81" height="6.97" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02072fcc
+matched: yes</title></rect><rect x="253.67" y="915.89" width="50.82" height="6.97" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02072fcc
 module: arm9
 addr: 0x02072fcc
 size: 528 bytes
-matched: yes</title></rect><rect x="304.49" y="915.90" width="3.08" height="6.97" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020731dc
+matched: yes</title></rect><rect x="304.49" y="915.89" width="3.08" height="6.97" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020731dc
 module: arm9
 addr: 0x020731dc
 size: 32 bytes
-matched: yes</title></rect><rect x="307.57" y="915.90" width="3.46" height="6.97" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020731fc
+matched: yes</title></rect><rect x="307.57" y="915.89" width="3.46" height="6.97" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020731fc
 module: arm9
 addr: 0x020731fc
 size: 36 bytes
-matched: yes</title></rect><rect x="311.03" y="915.90" width="1.15" height="6.97" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02073220
+matched: yes</title></rect><rect x="311.03" y="915.89" width="1.15" height="6.97" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02073220
 module: arm9
 addr: 0x02073220
 size: 12 bytes
-matched: yes</title></rect><rect x="312.19" y="915.90" width="1.15" height="6.97" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0207322c
+matched: yes</title></rect><rect x="312.18" y="915.89" width="1.15" height="6.97" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0207322c
 module: arm9
 addr: 0x0207322c
 size: 12 bytes
-matched: yes</title></rect><rect x="313.34" y="915.90" width="1.15" height="6.97" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02073238
+matched: yes</title></rect><rect x="313.34" y="915.89" width="1.15" height="6.97" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02073238
 module: arm9
 addr: 0x02073238
 size: 12 bytes
-matched: yes</title></rect><rect x="314.50" y="915.90" width="6.93" height="6.97" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02073244
+matched: yes</title></rect><rect x="314.49" y="915.89" width="6.93" height="6.97" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02073244
 module: arm9
 addr: 0x02073244
 size: 72 bytes
-matched: yes</title></rect><rect x="253.67" y="922.87" width="21.87" height="2.82" fill="#4a4d52" stroke="#393b3f" stroke-width="0.4"><title>__destroy_arr
+matched: yes</title></rect><rect x="253.67" y="922.86" width="21.87" height="2.82" fill="#4a4d52" stroke="#393b3f" stroke-width="0.4"><title>__destroy_arr
 module: arm9
 addr: 0x0207328c
 size: 92 bytes
-matched: no</title></rect><rect x="275.78" y="922.87" width="5.71" height="2.82" fill="#4a4d52" stroke="#393b3f" stroke-width="0.4"><title>func_020732e8
+matched: no</title></rect><rect x="275.78" y="922.86" width="5.71" height="2.82" fill="#4a4d52" stroke="#393b3f" stroke-width="0.4"><title>func_020732e8
 module: arm9
 addr: 0x020732e8
 size: 24 bytes
-matched: no</title></rect><rect x="281.49" y="922.87" width="21.87" height="2.82" fill="#4a4d52" stroke="#393b3f" stroke-width="0.4"><title>func_02073300
+matched: no</title></rect><rect x="281.48" y="922.86" width="21.87" height="2.82" fill="#4a4d52" stroke="#393b3f" stroke-width="0.4"><title>func_02073300
 module: arm9
 addr: 0x02073300
 size: 92 bytes
-matched: no</title></rect><rect x="303.36" y="922.87" width="18.07" height="2.82" fill="#4a4d52" stroke="#393b3f" stroke-width="0.4"><title>func_0207335c
+matched: no</title></rect><rect x="303.36" y="922.86" width="18.07" height="2.82" fill="#4a4d52" stroke="#393b3f" stroke-width="0.4"><title>func_0207335c
 module: arm9
 addr: 0x0207335c
 size: 76 bytes
-matched: no</title></rect><rect x="253.67" y="925.69" width="19.47" height="6.89" fill="#4a4d52" stroke="#393b3f" stroke-width="0.4"><title>func_020733a8
+matched: no</title></rect><rect x="253.67" y="925.69" width="34.13" height="3.93" fill="#4a4d52" stroke="#393b3f" stroke-width="0.4"><title>func_020733a8
 module: arm9
 addr: 0x020733a8
 size: 200 bytes
-matched: no</title></rect><rect x="273.14" y="925.69" width="19.08" height="6.89" fill="#4a4d52" stroke="#393b3f" stroke-width="0.4"><title>func_02073470
+matched: no</title></rect><rect x="287.97" y="925.69" width="33.45" height="3.93" fill="#4a4d52" stroke="#393b3f" stroke-width="0.4"><title>func_02073470
 module: arm9
 addr: 0x02073470
 size: 196 bytes
-matched: no</title></rect><rect x="292.22" y="925.69" width="7.79" height="6.89" fill="#4a4d52" stroke="#393b3f" stroke-width="0.4"><title>func_02073534
+matched: no</title></rect><rect x="253.67" y="929.62" width="4.60" height="11.68" fill="#4a4d52" stroke="#393b3f" stroke-width="0.4"><title>func_02073534
 module: arm9
 addr: 0x02073534
 size: 80 bytes
-matched: no</title></rect><rect x="300.01" y="925.69" width="2.34" height="6.89" fill="#4a4d52" stroke="#393b3f" stroke-width="0.4"><title>func_02073584
+matched: no</title></rect><rect x="253.67" y="941.29" width="4.60" height="3.50" fill="#4a4d52" stroke="#393b3f" stroke-width="0.4"><title>func_02073584
 module: arm9
 addr: 0x02073584
 size: 24 bytes
-matched: no</title></rect><rect x="302.35" y="925.69" width="4.28" height="6.89" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0207359c
+matched: no</title></rect><rect x="253.67" y="944.80" width="4.60" height="6.42" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN3abi21__vmi_class_type_infoD0Ev
 module: arm9
 addr: 0x0207359c
 size: 44 bytes
-matched: yes</title></rect><rect x="306.63" y="925.69" width="3.50" height="6.89" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020735c8
+matched: yes</title></rect><rect x="253.67" y="951.22" width="4.60" height="5.25" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN3abi21__vmi_class_type_infoD1Ev
 module: arm9
 addr: 0x020735c8
 size: 36 bytes
-matched: yes</title></rect><rect x="310.13" y="925.69" width="4.28" height="6.89" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020735ec
+matched: yes</title></rect><rect x="253.67" y="956.47" width="4.60" height="6.42" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN3abi20__si_class_type_infoD0Ev
 module: arm9
 addr: 0x020735ec
 size: 44 bytes
-matched: yes</title></rect><rect x="314.42" y="925.69" width="3.50" height="6.89" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02073618
+matched: yes</title></rect><rect x="253.67" y="962.89" width="4.60" height="5.25" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN3abi20__si_class_type_infoD1Ev
 module: arm9
 addr: 0x02073618
 size: 36 bytes
-matched: yes</title></rect><rect x="317.92" y="925.69" width="3.50" height="6.89" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0207363c
+matched: yes</title></rect><rect x="253.67" y="968.15" width="4.60" height="5.25" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN3abi17__class_type_infoD2Ev
 module: arm9
 addr: 0x0207363c
 size: 36 bytes
-matched: yes</title></rect><rect x="253.67" y="932.58" width="1.59" height="18.56" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02073660
+matched: yes</title></rect><rect x="253.67" y="973.40" width="4.60" height="6.42" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN3abi17__class_type_infoD0Ev
 module: arm9
 addr: 0x02073660
 size: 44 bytes
-matched: yes</title></rect><rect x="253.67" y="951.14" width="1.59" height="15.18" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_0207368c
+matched: yes</title></rect><rect x="253.67" y="979.82" width="4.60" height="5.25" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN3abi17__class_type_infoD1Ev
 module: arm9
 addr: 0x0207368c
 size: 36 bytes
-matched: yes</title></rect><rect x="253.67" y="966.32" width="1.59" height="6.75" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020736b0
+matched: yes</title></rect><rect x="253.67" y="985.08" width="4.60" height="2.34" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZNSt9type_infoD2Ev
 module: arm9
 addr: 0x020736b0
 size: 16 bytes
-matched: yes</title></rect><rect x="253.67" y="973.07" width="1.59" height="15.18" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020736c0
+matched: yes</title></rect><rect x="253.67" y="987.41" width="4.60" height="5.25" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZNSt9type_infoD0Ev
 module: arm9
 addr: 0x020736c0
 size: 36 bytes
-matched: yes</title></rect><rect x="253.67" y="988.25" width="1.59" height="6.75" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020736e4
+matched: yes</title></rect><rect x="253.67" y="992.66" width="4.60" height="2.34" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZNSt9type_infoD1Ev
 module: arm9
 addr: 0x020736e4
 size: 16 bytes
-matched: yes</title></rect><rect x="255.26" y="932.58" width="53.44" height="13.76" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_02073a24
+matched: yes</title></rect><rect x="258.27" y="929.62" width="13.92" height="52.81" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_02073a24
 module: arm9
 addr: 0x02073a24
 size: 1096 bytes
-matched: yes</title></rect><rect x="255.26" y="946.34" width="53.44" height="48.66" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_02073e6c
+matched: yes</title></rect><rect x="272.19" y="929.62" width="49.24" height="52.81" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_02073e6c
 module: arm9
 addr: 0x02073e6c
 size: 3876 bytes
-matched: yes</title></rect><rect x="308.70" y="932.58" width="6.36" height="2.53" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_02074d90
+matched: yes</title></rect><rect x="258.27" y="982.42" width="2.56" height="6.29" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_02074d90
 module: arm9
 addr: 0x02074d90
 size: 24 bytes
-matched: yes</title></rect><rect x="315.06" y="932.58" width="5.30" height="2.53" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_02074da8
+matched: yes</title></rect><rect x="258.27" y="988.71" width="2.56" height="5.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_02074da8
 module: arm9
 addr: 0x02074da8
 size: 20 bytes
-matched: yes</title></rect><rect x="320.36" y="932.58" width="1.06" height="2.53" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_02074dbc
+matched: yes</title></rect><rect x="258.27" y="993.95" width="2.56" height="1.05" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_02074dbc
 module: arm9
 addr: 0x02074dbc
 size: 4 bytes
-matched: yes</title></rect><rect x="308.70" y="935.11" width="0.67" height="4.01" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_02074dc0
+matched: yes</title></rect><rect x="260.83" y="982.42" width="4.05" height="0.66" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_02074dc0
 module: arm9
 addr: 0x02074dc0
 size: 4 bytes
-matched: yes</title></rect><rect x="309.37" y="935.11" width="12.06" height="4.01" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_02074dc4
+matched: yes</title></rect><rect x="260.83" y="983.09" width="4.05" height="11.91" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_02074dc4
 module: arm9
 addr: 0x02074dc4
 size: 72 bytes
-matched: yes</title></rect><rect x="308.70" y="939.12" width="6.14" height="6.12" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_02074e0c
+matched: yes</title></rect><rect x="264.88" y="982.42" width="6.19" height="6.07" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_02074e0c
 module: arm9
 addr: 0x02074e0c
 size: 56 bytes
-matched: yes</title></rect><rect x="314.84" y="939.12" width="6.58" height="6.12" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_02074e44
+matched: yes</title></rect><rect x="264.88" y="988.50" width="6.19" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_02074e44
 module: arm9
 addr: 0x02074e44
 size: 60 bytes
-matched: yes</title></rect><rect x="308.70" y="945.23" width="0.55" height="4.85" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_02074e80
+matched: yes</title></rect><rect x="271.07" y="982.42" width="4.91" height="0.55" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_02074e80
 module: arm9
 addr: 0x02074e80
 size: 4 bytes
-matched: yes</title></rect><rect x="309.25" y="945.23" width="12.17" height="4.85" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_02074e84
+matched: yes</title></rect><rect x="271.07" y="982.97" width="4.91" height="12.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_02074e84
 module: arm9
 addr: 0x02074e84
 size: 88 bytes
-matched: yes</title></rect><rect x="308.70" y="950.08" width="12.72" height="8.65" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_02074edc
+matched: yes</title></rect><rect x="275.98" y="982.42" width="8.75" height="12.58" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_02074edc
 module: arm9
 addr: 0x02074edc
 size: 164 bytes
-matched: yes</title></rect><rect x="308.70" y="958.73" width="7.13" height="5.27" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_02074f80
+matched: yes</title></rect><rect x="284.72" y="982.42" width="5.33" height="7.04" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_02074f80
 module: arm9
 addr: 0x02074f80
 size: 56 bytes
-matched: yes</title></rect><rect x="315.83" y="958.73" width="5.60" height="5.27" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_02074fb8
+matched: yes</title></rect><rect x="284.72" y="989.47" width="5.33" height="5.53" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_02074fb8
 module: arm9
 addr: 0x02074fb8
 size: 44 bytes
-matched: yes</title></rect><rect x="308.70" y="964.00" width="6.36" height="5.90" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_02074fe4
+matched: yes</title></rect><rect x="290.06" y="982.42" width="5.97" height="6.29" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_02074fe4
 module: arm9
 addr: 0x02074fe4
 size: 56 bytes
-matched: yes</title></rect><rect x="315.06" y="964.00" width="6.36" height="5.90" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_0207501c
+matched: yes</title></rect><rect x="290.06" y="988.71" width="5.97" height="6.29" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_0207501c
 module: arm9
 addr: 0x0207501c
 size: 56 bytes
-matched: yes</title></rect><rect x="308.70" y="969.91" width="12.72" height="5.06" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_02075054
+matched: yes</title></rect><rect x="296.03" y="982.42" width="5.12" height="12.58" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_02075054
 module: arm9
 addr: 0x02075054
 size: 96 bytes
-matched: yes</title></rect><rect x="308.70" y="974.97" width="0.91" height="2.95" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_020750b4
+matched: yes</title></rect><rect x="301.15" y="982.42" width="2.99" height="0.90" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_020750b4
 module: arm9
 addr: 0x020750b4
 size: 4 bytes
-matched: yes</title></rect><rect x="309.61" y="974.97" width="11.82" height="2.95" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_020750b8
+matched: yes</title></rect><rect x="301.15" y="983.32" width="2.99" height="11.68" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_020750b8
 module: arm9
 addr: 0x020750b8
 size: 52 bytes
-matched: yes</title></rect><rect x="308.70" y="977.92" width="6.11" height="5.27" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_020750ec
+matched: yes</title></rect><rect x="304.14" y="982.42" width="5.33" height="6.04" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_020750ec
 module: arm9
 addr: 0x020750ec
 size: 48 bytes
-matched: yes</title></rect><rect x="314.81" y="977.92" width="6.62" height="5.27" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_0207511c
+matched: yes</title></rect><rect x="304.14" y="988.46" width="5.33" height="6.54" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_0207511c
 module: arm9
 addr: 0x0207511c
 size: 52 bytes
-matched: yes</title></rect><rect x="308.93" y="983.19" width="12.50" height="11.81" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_02075154
+matched: yes</title></rect><rect x="309.48" y="982.65" width="11.95" height="12.35" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>__sinit_02075154
 module: arm9
 addr: 0x02075154
 size: 220 bytes
@@ -12497,7 +12497,7 @@ matched: yes</title></rect><rect x="331.42" y="944.54" width="12.68" height="13.
 module: ov001
 addr: 0x020aaf40
 size: 464 bytes
-matched: yes</title></rect><rect x="331.42" y="958.15" width="12.68" height="8.21" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov001_020ab110
+matched: yes</title></rect><rect x="331.42" y="958.15" width="12.68" height="8.21" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10dCapIcon_c6UnlinkEv
 module: ov001
 addr: 0x020ab110
 size: 280 bytes
@@ -12533,7 +12533,7 @@ matched: yes</title></rect><rect x="331.42" y="982.56" width="7.53" height="12.4
 module: ov001
 addr: 0x020ab450
 size: 252 bytes
-matched: yes</title></rect><rect x="338.96" y="982.85" width="5.14" height="6.94" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov001_020ab550
+matched: yes</title></rect><rect x="338.96" y="982.85" width="5.14" height="6.94" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9dThIcon_c8BehaviorEv
 module: ov001
 addr: 0x020ab550
 size: 96 bytes
@@ -19301,7 +19301,7 @@ matched: yes</title></rect><rect x="1092.19" y="31.19" width="7.46" height="3.42
 module: ov004
 addr: 0x020b2a84
 size: 88 bytes
-matched: yes</title></rect><rect x="1092.19" y="34.61" width="7.46" height="14.76" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov004_020b2adc
+matched: yes</title></rect><rect x="1092.19" y="34.61" width="7.46" height="14.76" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11dScMgBase_cC2Ev
 module: ov004
 addr: 0x020b2adc
 size: 380 bytes
@@ -19841,19 +19841,19 @@ matched: yes</title></rect><rect x="1394.85" y="39.36" width="6.94" height="5.84
 module: ov004
 addr: 0x020b8688
 size: 140 bytes
-matched: yes</title></rect><rect x="1394.85" y="45.20" width="6.94" height="4.17" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov004_020b8714
+matched: yes</title></rect><rect x="1394.85" y="45.20" width="6.94" height="4.17" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10dMgState_c6RenderEv
 module: ov004
 addr: 0x020b8714
 size: 100 bytes
-matched: yes</title></rect><rect x="1401.79" y="27.00" width="9.84" height="3.06" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov004_020b8778
+matched: yes</title></rect><rect x="1401.79" y="27.00" width="9.84" height="3.06" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10dMgState_c8BehaviorEv
 module: ov004
 addr: 0x020b8778
 size: 104 bytes
-matched: yes</title></rect><rect x="1401.79" y="30.06" width="9.84" height="19.31" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov004_020b87e0
+matched: yes</title></rect><rect x="1401.79" y="30.06" width="9.84" height="19.31" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10dMgState_c8SetStateEi
 module: ov004
 addr: 0x020b87e0
 size: 656 bytes
-matched: yes</title></rect><rect x="1411.63" y="27.00" width="5.49" height="1.48" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov004_020b8a70
+matched: yes</title></rect><rect x="1411.63" y="27.00" width="5.49" height="1.48" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10dMgState_cC1Ev
 module: ov004
 addr: 0x020b8a70
 size: 28 bytes
@@ -19889,19 +19889,19 @@ matched: yes</title></rect><rect x="1436.65" y="31.03" width="2.59" height="10.7
 module: ov004
 addr: 0x020b9220
 size: 96 bytes
-matched: yes</title></rect><rect x="1436.65" y="41.77" width="2.59" height="3.13" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov004_020b9280
+matched: yes</title></rect><rect x="1436.65" y="41.77" width="2.59" height="3.13" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10dMgPsOpt_c11TouchIcon_cD1Ev
 module: ov004
 addr: 0x020b9280
 size: 28 bytes
-matched: yes</title></rect><rect x="1436.65" y="44.90" width="2.59" height="4.47" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov004_020b929c
+matched: yes</title></rect><rect x="1436.65" y="44.90" width="2.59" height="4.47" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10dMgPsOpt_cD1Ev
 module: ov004
 addr: 0x020b929c
 size: 40 bytes
-matched: yes</title></rect><rect x="1439.24" y="27.00" width="5.08" height="20.78" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov004_020b92c4
+matched: yes</title></rect><rect x="1439.24" y="27.00" width="5.08" height="20.78" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10dMgPsOpt_cC1Ev
 module: ov004
 addr: 0x020b92c4
 size: 364 bytes
-matched: yes</title></rect><rect x="1439.24" y="47.78" width="5.08" height="1.60" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov004_020b9430
+matched: yes</title></rect><rect x="1439.24" y="47.78" width="5.08" height="1.60" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10dMgPsOpt_c11TouchIcon_cC1Ev
 module: ov004
 addr: 0x020b9430
 size: 28 bytes
@@ -20385,7 +20385,7 @@ matched: yes</title></rect><rect x="907.83" y="105.14" width="6.00" height="3.12
 module: ov006
 addr: 0x020c402c
 size: 28 bytes
-matched: yes</title></rect><rect x="913.82" y="105.14" width="5.14" height="3.12" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_020c4048
+matched: yes</title></rect><rect x="913.82" y="105.14" width="5.14" height="3.12" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN22dMg3DHeyhoObjAdapter_cC2Ev
 module: ov006
 addr: 0x020c4048
 size: 24 bytes
@@ -20633,15 +20633,15 @@ matched: yes</title></rect><rect x="857.51" y="124.83" width="19.73" height="6.2
 module: ov006
 addr: 0x020c7574
 size: 184 bytes
-matched: yes</title></rect><rect x="877.24" y="124.83" width="17.58" height="6.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_020c762c
+matched: yes</title></rect><rect x="877.24" y="124.83" width="17.58" height="6.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN16dMgJump3DMario_c12Unk_020c762cEv
 module: ov006
 addr: 0x020c762c
 size: 164 bytes
-matched: yes</title></rect><rect x="894.82" y="124.83" width="0.86" height="6.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_020c76d0
+matched: yes</title></rect><rect x="894.82" y="124.83" width="0.86" height="6.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN16dMgJump3DMario_c12Unk_020c76d0Ev
 module: ov006
 addr: 0x020c76d0
 size: 8 bytes
-matched: yes</title></rect><rect x="895.68" y="124.83" width="0.86" height="6.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_020c76d8
+matched: yes</title></rect><rect x="895.68" y="124.83" width="0.86" height="6.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN16dMgJump3DMario_c12Unk_020c76d8Ev
 module: ov006
 addr: 0x020c76d8
 size: 8 bytes
@@ -20737,11 +20737,11 @@ matched: yes</title></rect><rect x="899.45" y="131.07" width="35.38" height="6.8
 module: ov006
 addr: 0x020c87d0
 size: 364 bytes
-matched: yes</title></rect><rect x="934.83" y="131.07" width="19.44" height="6.88" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_020c893c
+matched: yes</title></rect><rect x="934.83" y="131.07" width="19.44" height="6.88" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN16dMgJump3DMario_cD1Ev
 module: ov006
 addr: 0x020c893c
 size: 200 bytes
-matched: yes</title></rect><rect x="954.26" y="131.07" width="4.28" height="6.88" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_020c8a04
+matched: yes</title></rect><rect x="954.26" y="131.07" width="4.28" height="6.88" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN16dMgJump3DMario_cC1Ev
 module: ov006
 addr: 0x020c8a04
 size: 44 bytes
@@ -22821,15 +22821,15 @@ matched: yes</title></rect><rect x="947.05" y="325.72" width="13.75" height="7.3
 module: ov006
 addr: 0x020e76e4
 size: 152 bytes
-matched: yes</title></rect><rect x="960.79" y="325.72" width="14.11" height="7.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_020e777c
+matched: yes</title></rect><rect x="960.79" y="325.72" width="14.11" height="7.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN17dMg3DEspAnimSet_c6RenderEv
 module: ov006
 addr: 0x020e777c
 size: 156 bytes
-matched: yes</title></rect><rect x="974.90" y="325.72" width="22.43" height="7.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_020e7818
+matched: yes</title></rect><rect x="974.90" y="325.72" width="22.43" height="7.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN17dMg3DEspAnimSet_c8BehaviorEv
 module: ov006
 addr: 0x020e7818
 size: 248 bytes
-matched: yes</title></rect><rect x="997.33" y="325.72" width="2.53" height="7.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_020e7910
+matched: yes</title></rect><rect x="997.33" y="325.72" width="2.53" height="7.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN17dMg3DEspAnimSet_c5ResetEv
 module: ov006
 addr: 0x020e7910
 size: 28 bytes
@@ -22845,27 +22845,27 @@ matched: yes</title></rect><rect x="1002.76" y="325.72" width="0.72" height="7.3
 module: ov006
 addr: 0x020e794c
 size: 8 bytes
-matched: yes</title></rect><rect x="1003.48" y="325.72" width="22.79" height="7.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_020e7954
+matched: yes</title></rect><rect x="1003.48" y="325.72" width="22.79" height="7.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN17dMg3DEspAnimSet_c13InitResourcesEv
 module: ov006
 addr: 0x020e7954
 size: 252 bytes
-matched: yes</title></rect><rect x="1026.28" y="325.72" width="8.32" height="7.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_020e7a50
+matched: yes</title></rect><rect x="1026.28" y="325.72" width="8.32" height="7.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN17dMg3DEspAnimSet_cD1Ev
 module: ov006
 addr: 0x020e7a50
 size: 92 bytes
-matched: yes</title></rect><rect x="1034.60" y="325.72" width="8.68" height="7.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_020e7aac
+matched: yes</title></rect><rect x="1034.60" y="325.72" width="8.68" height="7.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN17dMg3DEspAnimSet_cC1Ev
 module: ov006
 addr: 0x020e7aac
 size: 96 bytes
-matched: yes</title></rect><rect x="1043.28" y="325.72" width="5.07" height="7.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_020e7b0c
+matched: yes</title></rect><rect x="1043.28" y="325.72" width="5.07" height="7.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15dMg3DEspModel_c14ResetTransformEv
 module: ov006
 addr: 0x020e7b0c
 size: 56 bytes
-matched: yes</title></rect><rect x="615.65" y="333.11" width="23.31" height="4.70" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_020e7b44
+matched: yes</title></rect><rect x="615.65" y="333.11" width="23.31" height="4.70" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15dMg3DEspModel_c6RenderEv
 module: ov006
 addr: 0x020e7b44
 size: 164 bytes
-matched: yes</title></rect><rect x="638.96" y="333.11" width="30.70" height="4.70" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_020e7be8
+matched: yes</title></rect><rect x="638.96" y="333.11" width="30.70" height="4.70" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15dMg3DEspModel_c8BehaviorEv
 module: ov006
 addr: 0x020e7be8
 size: 216 bytes
@@ -22897,19 +22897,19 @@ matched: yes</title></rect><rect x="775.99" y="333.11" width="0.57" height="4.70
 module: ov006
 addr: 0x020e7fac
 size: 4 bytes
-matched: yes</title></rect><rect x="776.56" y="333.11" width="7.96" height="4.70" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_020e7fb0
+matched: yes</title></rect><rect x="776.56" y="333.11" width="7.96" height="4.70" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15dMg3DEspModel_c5ResetEv
 module: ov006
 addr: 0x020e7fb0
 size: 56 bytes
-matched: yes</title></rect><rect x="784.52" y="333.11" width="34.12" height="4.70" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_020e7fe8
+matched: yes</title></rect><rect x="784.52" y="333.11" width="34.12" height="4.70" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15dMg3DEspModel_c13InitResourcesEv
 module: ov006
 addr: 0x020e7fe8
 size: 240 bytes
-matched: yes</title></rect><rect x="818.64" y="333.11" width="16.49" height="4.70" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_020e80d8
+matched: yes</title></rect><rect x="818.64" y="333.11" width="16.49" height="4.70" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15dMg3DEspModel_cD1Ev
 module: ov006
 addr: 0x020e80d8
 size: 116 bytes
-matched: yes</title></rect><rect x="835.13" y="333.11" width="12.51" height="4.70" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_020e814c
+matched: yes</title></rect><rect x="835.13" y="333.11" width="12.51" height="4.70" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15dMg3DEspModel_cC1Ev
 module: ov006
 addr: 0x020e814c
 size: 88 bytes
@@ -25565,11 +25565,11 @@ matched: yes</title></rect><rect x="753.34" y="473.09" width="1.90" height="11.2
 module: ov006
 addr: 0x0210c354
 size: 32 bytes
-matched: yes</title></rect><rect x="755.25" y="473.09" width="9.27" height="11.25" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_0210c374
+matched: yes</title></rect><rect x="755.25" y="473.09" width="9.27" height="11.25" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dScMgSlot1_c9betIcon_c6RenderEv
 module: ov006
 addr: 0x0210c374
 size: 156 bytes
-matched: yes</title></rect><rect x="764.52" y="473.09" width="6.18" height="11.25" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_0210c410
+matched: yes</title></rect><rect x="764.52" y="473.09" width="6.18" height="11.25" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dScMgSlot1_c9betIcon_c8BehaviorEv
 module: ov006
 addr: 0x0210c410
 size: 104 bytes
@@ -39565,15 +39565,15 @@ matched: yes</title></rect><rect x="1178.19" y="632.80" width="9.29" height="7.2
 module: ov075
 addr: 0x02115b28
 size: 132 bytes
-matched: yes</title></rect><rect x="1187.48" y="543.66" width="6.00" height="2.38" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov075_02115bac
+matched: yes</title></rect><rect x="1187.48" y="543.66" width="6.00" height="2.38" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10dScEntry_c6icon_cD1Ev
 module: ov075
 addr: 0x02115bac
 size: 28 bytes
-matched: yes</title></rect><rect x="1187.48" y="546.37" width="6.00" height="50.22" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov075_02115bcc
+matched: yes</title></rect><rect x="1187.48" y="546.37" width="6.00" height="50.22" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10dScEntry_c6icon_c6RenderEv
 module: ov075
 addr: 0x02115bcc
 size: 592 bytes
-matched: yes</title></rect><rect x="1187.48" y="596.59" width="6.00" height="9.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov075_02115e1c
+matched: yes</title></rect><rect x="1187.48" y="596.59" width="6.00" height="9.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10dScEntry_c6icon_c8BehaviorEv
 module: ov075
 addr: 0x02115e1c
 size: 112 bytes
@@ -39597,7 +39597,7 @@ matched: yes</title></rect><rect x="1193.47" y="546.09" width="7.54" height="7.8
 module: ov075
 addr: 0x02116040
 size: 116 bytes
-matched: yes</title></rect><rect x="1193.47" y="553.92" width="7.54" height="2.70" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov075_021160b4
+matched: yes</title></rect><rect x="1193.47" y="553.92" width="7.54" height="2.70" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10dScEntry_c15graphCallback_cC1Ev
 module: ov075
 addr: 0x021160b4
 size: 40 bytes
@@ -39877,7 +39877,7 @@ matched: yes</title></rect><rect x="1298.86" y="574.87" width="0.45" height="4.5
 module: ov075
 addr: 0x0211a834
 size: 4 bytes
-matched: yes</title></rect><rect x="1299.31" y="574.87" width="3.12" height="4.56" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov075_0211a838
+matched: yes</title></rect><rect x="1299.31" y="574.87" width="3.12" height="4.56" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10dScEntry_c6icon_cC1Ev
 module: ov075
 addr: 0x0211a838
 size: 28 bytes
