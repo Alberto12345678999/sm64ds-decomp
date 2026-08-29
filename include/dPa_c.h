@@ -98,6 +98,15 @@ struct dPa_c {
             virtual void SpawnParticles(Particle::System& system);
             virtual int OnUpdate(Particle::System& system, bool active);
         };
+
+        class clipCallback_c : public callback_c {
+        public:
+            /* Zero expires every active particle; nonzero clips them. */
+            u8 enabled;             /* 0x004 */
+
+            virtual void SpawnParticles(Particle::System& system);
+            virtual int OnUpdate(Particle::System& system, bool active);
+        };
     };
 };
 
@@ -121,5 +130,7 @@ typedef char dPa_bubbleCallback_c_size_must_be_0x8[
     sizeof(dPa_c::level_c::bubbleCallback_c) == 0x8 ? 1 : -1];
 typedef char dPa_splashCallback_c_size_must_be_0x8[
     sizeof(dPa_c::level_c::splashCallback_c) == 0x8 ? 1 : -1];
+typedef char dPa_clipCallback_c_size_must_be_0x8[
+    sizeof(dPa_c::level_c::clipCallback_c) == 0x8 ? 1 : -1];
 
 #endif

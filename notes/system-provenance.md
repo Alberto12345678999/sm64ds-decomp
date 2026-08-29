@@ -137,7 +137,8 @@ declared-never-defined destructor. The second reason has since lapsed: the
 simple callback's `SpawnParticles` no longer opens `namespace Particle`, so a
 header declaring a struct of that name no longer collides there and the
 function takes the shared declaration from `include/Particle__System.h`. Only
-the `Stage.h` copy is still held apart; the names converged. `include/Stage.h`'s own header comment still describes the third
+the `Stage.h` copy is still held apart; the names converged.
+`include/Stage.h`'s own header comment still describes the third
 shadow as spelling `unk_`, which is now out of date — that file was frozen for
 the pass that made this change.
 

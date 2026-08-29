@@ -69,7 +69,7 @@ struct Clipper {
        scalar args. A true-signature declaration for callers is fine and is
        tracked separately. */
     int  Func_020150E8(Vector3 &v, Fix12<int> clip, u8 *hint);
-    void Func_02015560(Matrix4x3 &mat, Vector3 &srcVec, Fix12<int> scale, Vector3 &dstVec);
+    int Func_02015560(Matrix4x3 &mat, Vector3 &srcVec, Fix12<int> scale, Vector3 &dstVec);
 
     /* D0 calls 0x0203cbcc, Memory::operator_delete2, rather than the global
        delete at 0x0203cbf0. Inline class lookup makes that choice exactly. */
