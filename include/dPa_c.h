@@ -71,6 +71,15 @@ struct dPa_c {
             virtual void SpawnParticles(Particle::System& system);
             virtual int OnUpdate(Particle::System& system, bool active);
         };
+
+        class fitWaterCallback_c : public callback_c {
+        public:
+            /* Descriptive name; the offset and water-height use are body-proven. */
+            s32 waterOffset;         /* 0x004 */
+
+            virtual void SpawnParticles(Particle::System& system);
+            virtual int OnUpdate(Particle::System& system, bool active);
+        };
     };
 };
 
@@ -86,5 +95,7 @@ typedef char dPa_checkYoganCallback_c_size_must_be_0x8[
     sizeof(dPa_c::level_c::checkYoganCallback_c) == 0x8 ? 1 : -1];
 typedef char dPa_fitWaterSimpleCallback_c_size_must_be_0x8[
     sizeof(dPa_c::level_c::fitWaterSimpleCallback_c) == 0x8 ? 1 : -1];
+typedef char dPa_fitWaterCallback_c_size_must_be_0x8[
+    sizeof(dPa_c::level_c::fitWaterCallback_c) == 0x8 ? 1 : -1];
 
 #endif
