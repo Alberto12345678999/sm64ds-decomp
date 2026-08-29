@@ -224,6 +224,7 @@ struct dActor_c : dBase_c {
     void UntrackInDeathTable();
     void SpawnSoundObj(u32 soundObjParam);
     s32  GetWaterHeightWDW();
+    bool DetectRaycastClsn(Vector3 &start, Vector3 &end, bool storeHitPos);
 
     static dActor_c *FindWithID(u32 id);
 

@@ -1033,8 +1033,6 @@ src/_ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_.c	P3-mangled-method-only	arm9
 src/_ZN8Particle7Manager9AddSystemEiR7Vector3.c	P3-mangled-method-only	arm9		Manager	_ZN8Particle7Manager9AddSystemEiR7Vector3	1		False		no-header:Manager
 src/_ZN8Particle7Texture12AllocPalVramEjb.c	P3-mangled-method-only	arm9		Texture	_ZN8Particle7Texture12AllocPalVramEjb	1		False		no-header:Texture
 src/_ZN8Particle7Texture12AllocTexVramEjb.c	P3-mangled-method-only	arm9		Texture	_ZN8Particle7Texture12AllocTexVramEjb	1		False		no-header:Texture
-src/_ZN8Particle8Callback14SpawnParticlesERNS_6SystemE.c	P1-vtable+mangled	arm9	dPa_c::level_c::callback_c	Callback/dPa_c	vtable dPa_c::level_c::callback_c slot 0 @0x20226d0 | _ZN8Particle8Callback14SpawnParticlesERNS_6SystemE	1		False		no-header:Callback/dPa_c
-src/_ZN8Particle8Callback8OnUpdateERNS_6SystemEb.c	P1-vtable+mangled	arm9	dPa_c::level_c::callback_c	Callback/dPa_c	vtable dPa_c::level_c::callback_c slot 1 @0x20226c8 | _ZN8Particle8Callback8OnUpdateERNS_6SystemEb	1		False		no-header:Callback/dPa_c
 src/_ZN8Particle9RenderAllEv.c	P3-mangled-method-only	arm9		Particle	_ZN8Particle9RenderAllEv	1		True		-
 src/_ZN8SignPostD0Ev.c	DTOR-ONLY	ov002	daObjTatefuda_c	SignPost/daObjTatefuda_c	_ZN8SignPostD0Ev	1		True	_ZTV10dBgActor_c	-
 src/_ZN8SignPostD1Ev.c	DTOR-ONLY	ov002	daObjTatefuda_c	SignPost/daObjTatefuda_c	_ZN8SignPostD1Ev	1		True	_ZTV10dBgActor_c	-

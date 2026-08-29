@@ -3518,31 +3518,31 @@ src/func_02021d1c.cpp:
     complete
     .text start:0x02021d1c end:0x02021e40
 
-src/_ZN8Particle21CleanParticleCallback8OnUpdateERNS_6SystemEb.cpp:
+src/_ZN5dPa_c7level_c23cleanParticleCallback_c8OnUpdateERN8Particle6SystemEb.cpp:
     complete
     .text start:0x02021e40 end:0x02021e70
 
-src/_ZN8Particle12ClipCallback8OnUpdateERNS_6SystemEb.cpp:
+src/_ZN5dPa_c7level_c14clipCallback_c8OnUpdateERN8Particle6SystemEb.cpp:
     complete
     .text start:0x02021e70 end:0x0202202c
 
-src/_ZN8Particle16FitWaterCallback8OnUpdateERNS_6SystemEb.cpp:
+src/_ZN5dPa_c7level_c18fitWaterCallback_c8OnUpdateERN8Particle6SystemEb.cpp:
     complete
     .text start:0x0202202c end:0x020220a4
 
-src/_ZN8Particle24CheckWaterRippleCallback8OnUpdateERNS_6SystemEb.cpp:
+src/_ZN5dPa_c7level_c26checkWaterRippleCallback_c8OnUpdateERN8Particle6SystemEb.cpp:
     complete
     .text start:0x020220a4 end:0x02022160
 
-src/_ZN8Particle18CheckWaterCallback8OnUpdateERNS_6SystemEb.cpp:
+src/_ZN5dPa_c7level_c20checkWaterCallback_c8OnUpdateERN8Particle6SystemEb.cpp:
     complete
     .text start:0x02022160 end:0x020221dc
 
-src/_ZN8Particle25EndingStarGlitterCallback8OnUpdateERNS_6SystemEb.c:
+src/_ZN5dPa_c7level_c20edStarKiraCallback_c8OnUpdateERN8Particle6SystemEb.cpp:
     complete
     .text start:0x020221dc end:0x0202222c
 
-src/_ZN8Particle25EndingStarGlitterCallback14SpawnParticlesERNS_6SystemE.c:
+src/_ZN5dPa_c7level_c20edStarKiraCallback_c14SpawnParticlesERN8Particle6SystemE.cpp:
     complete
     .text start:0x0202222c end:0x02022260
 
@@ -3554,7 +3554,7 @@ src/_ZN5dPa_c7level_c20edStarKiraCallback_cC1Ev.cpp:
     complete
     .text start:0x02022298 end:0x020222f0
 
-src/_ZN8Particle17CheckLavaCallback8OnUpdateERNS_6SystemEb.c:
+src/_ZN5dPa_c7level_c20checkYoganCallback_c8OnUpdateERN8Particle6SystemEb.cpp:
     complete
     .text start:0x020222f0 end:0x02022328
 
@@ -3562,23 +3562,23 @@ src/_ZN8Particle17CheckLavaCallback14SpawnParticlesERNS_6SystemE.cpp:
     complete
     .text start:0x02022328 end:0x02022418
 
-src/_ZN8Particle22FitWaterSimpleCallback8OnUpdateERNS_6SystemEb.c:
+src/_ZN5dPa_c7level_c24fitWaterSimpleCallback_c8OnUpdateERN8Particle6SystemEb.cpp:
     complete
     .text start:0x02022418 end:0x02022464
 
-src/_ZN8Particle14BubbleCallback8OnUpdateERNS_6SystemEb.cpp:
+src/_ZN5dPa_c7level_c16bubbleCallback_c8OnUpdateERN8Particle6SystemEb.cpp:
     complete
     .text start:0x02022464 end:0x020224fc
 
-src/_ZN8Particle14SplashCallback8OnUpdateERNS_6SystemEb.cpp:
+src/_ZN5dPa_c7level_c16splashCallback_c8OnUpdateERN8Particle6SystemEb.cpp:
     complete
     .text start:0x020224fc end:0x020225a8
 
-src/_ZN8Particle13ScaleCallback8OnUpdateERNS_6SystemEb.c:
+src/_ZN5dPa_c7level_c15scaleCallback_c8OnUpdateERN8Particle6SystemEb.cpp:
     complete
     .text start:0x020225a8 end:0x020225d0
 
-src/_ZN8Particle13ScaleCallback14SpawnParticlesERNS_6SystemE.c:
+src/_ZN5dPa_c7level_c15scaleCallback_c14SpawnParticlesERN8Particle6SystemE.cpp:
     complete
     .text start:0x020225d0 end:0x020225fc
 
@@ -3586,11 +3586,11 @@ src/_ZN5dPa_c7level_c15scaleCallback_cC1Ev.cpp:
     complete
     .text start:0x020225fc end:0x02022630
 
-src/_ZN8Particle14SimpleCallback8OnUpdateERNS_6SystemEb.cpp:
+src/_ZN5dPa_c7level_c16simpleCallback_c8OnUpdateERN8Particle6SystemEb.cpp:
     complete
     .text start:0x02022630 end:0x02022640
 
-src/_ZN8Particle14SimpleCallback14SpawnParticlesERNS_6SystemE.cpp:
+src/_ZN5dPa_c7level_c16simpleCallback_c14SpawnParticlesERN8Particle6SystemE.cpp:
     complete
     .text start:0x02022640 end:0x02022680
 
@@ -3602,11 +3602,11 @@ src/_ZN5dPa_c7level_c16simpleCallback_cC2Ev.cpp:
     complete
     .text start:0x020226a4 end:0x020226c8
 
-src/_ZN8Particle8Callback8OnUpdateERNS_6SystemEb.c:
+src/_ZN5dPa_c7level_c10callback_c8OnUpdateERN8Particle6SystemEb.cpp:
     complete
     .text start:0x020226c8 end:0x020226d0
 
-src/_ZN8Particle8Callback14SpawnParticlesERNS_6SystemE.c:
+src/_ZN5dPa_c7level_c10callback_c14SpawnParticlesERN8Particle6SystemE.cpp:
     complete
     .text start:0x020226d0 end:0x020226d4
 

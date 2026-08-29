@@ -37,6 +37,8 @@
 #include "dM3dGLin.h"
 #include "dM3dGSph.h"
 
+struct dActor_c;
+
 struct dBgCh_Lin : dBgCh, dBgPi, dM3dGLin {
     /* Set to 1 on the hit path by dBgW_Kc::DetectClsn(dBgCh_Lin&)
        (`strb r0,[r1,#0x50]`); the role dBgCh_Gnd already names at its 0x48. */
@@ -82,17 +84,11 @@ struct dBgCh_Lin : dBgCh, dBgPi, dM3dGLin {
        member alone carries the struct to 0x78. */
     dM3dGSph mBoundSphere;  /* 0x064 */
 
-    u8  pad_078[0xc];       /* 0x078 through 0x083. PINNED AT 0x84 by the
-                               embedding: dBgCh_Actr holds this class at 0x134
-                               and its next word at 0x1b8, which is treated as
-                               Actr's own field (Init sets 0x1000 there; the
-                               alternative reading -- that 0x1b8 is this
-                               class's last member, size 0x88 -- is byte-safe
-                               either way because every access to that word
-                               today goes through Actr). The standalone stack
-                               footprints measured in ov029 (0x7c) and the
-                               hand shadows elsewhere are slot-sharing
-                               artefacts, not sizeof evidence. */
+    /* The class ends at 0x78. dActor_c::DetectRaycastClsn reserves exactly
+       0x78 bytes for a local, passes that storage to this class's constructor
+       and destructor, and has no other local whose lifetime can share the
+       slot. The former 0x0c tail came from dBgCh_Actr's embedding gap; that
+       padding belongs to the holder and now lives in dBgCh_Actr.h. */
 
     /* --- vtable, in ROM order. Do not reorder. --- */
     /* Defined as real C++ in separate D1/D0 source files. Dedicated TUs with
@@ -121,6 +117,8 @@ struct dBgCh_Lin : dBgCh, dBgPi, dM3dGLin {
 
     /* methods */
     Vector3 GetClsnPos();
+    void SetObjAndLine(const Vector3 &start, const Vector3 &end, dActor_c *actor);
+    bool DetectClsn();
 };
 
 #else
@@ -155,18 +153,13 @@ struct dBgCh_Lin {
                                check_header_offsets cannot size a struct-typed
                                member and goes UNPARSED, which blinds it to the
                                rest of the header. */
-    u8  pad_078[0xc];       /* 0x078 - same pin as the C++ branch; no member
-                               offsets above this move */
 };
 
 #endif /* __cplusplus */
 
-/* SIZE PINNED AT 0x84 on the C++ branch (see pad_078 above). The C branch
-   still ends at mBoundSphere because .c translation units reach into these
-   interiors by the old member names; it may only trail while nothing embeds
-   the class by value through the C view. Spelled struct-tag-style so the
-   assert holds in both languages. */
-typedef char dBgCh_Lin_size_must_be_0x84[
-    sizeof(struct dBgCh_Lin) == 0x84 ? 1 : -1];
+/* The standalone stack object in dActor_c::DetectRaycastClsn pins both
+   language views to 0x78. */
+typedef char dBgCh_Lin_size_must_be_0x78[
+    sizeof(struct dBgCh_Lin) == 0x78 ? 1 : -1];
 
 #endif /* DBGCH_LIN_H */
