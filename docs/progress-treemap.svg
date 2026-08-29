@@ -3557,7 +3557,7 @@ matched: yes</title></rect><rect x="125.43" y="270.25" width="24.63" height="7.9
 module: arm9
 addr: 0x02021d1c
 size: 292 bytes
-matched: yes</title></rect><rect x="150.06" y="270.25" width="4.05" height="7.95" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8Particle21CleanParticleCallback8OnUpdateERNS_6SystemEb
+matched: yes</title></rect><rect x="150.06" y="270.25" width="4.05" height="7.95" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5dPa_c7level_c23cleanParticleCallback_c8OnUpdateERN8Particle6SystemEb
 module: arm9
 addr: 0x02021e40
 size: 48 bytes
@@ -3569,7 +3569,7 @@ matched: yes</title></rect><rect x="191.55" y="270.25" width="10.12" height="7.9
 module: arm9
 addr: 0x0202202c
 size: 120 bytes
-matched: yes</title></rect><rect x="201.67" y="270.25" width="15.85" height="7.95" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8Particle24CheckWaterRippleCallback8OnUpdateERNS_6SystemEb
+matched: yes</title></rect><rect x="201.67" y="270.25" width="15.85" height="7.95" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5dPa_c7level_c26checkWaterRippleCallback_c8OnUpdateERN8Particle6SystemEb
 module: arm9
 addr: 0x020220a4
 size: 188 bytes
