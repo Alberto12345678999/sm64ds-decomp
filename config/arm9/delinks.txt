@@ -700,7 +700,7 @@ src/_ZN6Camera13InitResourcesEv.cpp:
     complete
     .text start:0x0200e338 end:0x0200e444
 
-src/_ZN6CameraC1Ev.c:
+src/Camera_Spawn.cpp:
     complete
     .text start:0x0200e444 end:0x0200e494
 
@@ -1952,7 +1952,7 @@ src/_ZN7Clipper13Func_0201559CEv.cpp:
     complete
     .text start:0x0201559c end:0x020156dc
 
-src/_ZN7Clipper13Func_020156DCEv.cpp:
+src/_ZN7Clipper13Func_020156DCEitii.cpp:
     complete
     .text start:0x020156dc end:0x020156fc
 
@@ -4260,7 +4260,7 @@ src/_Z17LoadLevelOverlaysi.cpp:
 src/_Z26LoadOrUnloadObjectOverlaysPFviEi.cpp:
     .text start:0x0202df70 end:0x0202e088
 
-src/_ZN5StageC3Ev.c:
+src/Stage_Spawn.cpp:
     complete
     .text start:0x0202e088 end:0x0202e118
 
@@ -8974,7 +8974,7 @@ src/_ZN3G2x18SetBlendBrightnessEPVtts.cpp:
     complete
     .text start:0x02055238 end:0x0205525c
 
-src/_ZN3G2x13SetBlendAlphaEPVttttt.cpp:
+src/_ZN3G2x13SetBlendAlphaEPVttttj.cpp:
     complete
     .text start:0x0205525c end:0x02055278
 
