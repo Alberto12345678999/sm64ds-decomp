@@ -14,7 +14,8 @@ struct ParticleNode {
     ParticleNode *previous;      /* 0x04 */
     Vector3 positionAsr3;        /* 0x08 */
     Vector3 offsetAsr3;          /* 0x14 */
-    u8 pad_020[0x0c];
+    /* Splash callbacks test the y component before expiring the particle. */
+    Vector3 velocityAsr3;        /* 0x20 */
     /* Water/lava boundary callbacks expire a particle by copying the first
      * value into the second. Roles and spellings are descriptive/inferred. */
     u16 lifetime;                /* 0x2c */

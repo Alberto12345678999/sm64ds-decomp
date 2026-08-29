@@ -133,6 +133,8 @@
     "src/_ZN5dPa_c7level_c18fitWaterCallback_c8OnUpdateERN8Particle6SystemEb.cpp#_ZN8Particle16FitWaterCallback8OnUpdateERNS_6SystemEb": "tangosdev",
     "src/_ZN5dPa_c7level_c20checkWaterCallback_c8OnUpdateERN8Particle6SystemEb.cpp": "andrewboudreau",
     "src/_ZN5dPa_c7level_c20checkWaterCallback_c8OnUpdateERN8Particle6SystemEb.cpp#_ZN8Particle18CheckWaterCallback8OnUpdateERNS_6SystemEb": "andrewboudreau",
+    "src/_ZN5dPa_c7level_c16bubbleCallback_c8OnUpdateERN8Particle6SystemEb.cpp": "tangosdev",
+    "src/_ZN5dPa_c7level_c16bubbleCallback_c8OnUpdateERN8Particle6SystemEb.cpp#_ZN8Particle14BubbleCallback8OnUpdateERNS_6SystemEb": "tangosdev",
     "src/_ZN5dPa_c7level_c15scaleCallback_cC1Ev.cpp": "tangosdev",
     "src/_ZN5dPa_c7level_c15scaleCallback_cC1Ev.cpp#func_020225fc": "tangosdev",
     "src/_ZN5dPa_c7level_c15scaleCallback_c14SpawnParticlesERN8Particle6SystemE.cpp": "tangosdev",

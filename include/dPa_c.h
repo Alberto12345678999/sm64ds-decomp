@@ -86,6 +86,12 @@ struct dPa_c {
             virtual void SpawnParticles(Particle::System& system);
             virtual int OnUpdate(Particle::System& system, bool active);
         };
+
+        class bubbleCallback_c : public simpleCallback_c {
+        public:
+            virtual void SpawnParticles(Particle::System& system);
+            virtual int OnUpdate(Particle::System& system, bool active);
+        };
     };
 };
 
@@ -105,5 +111,7 @@ typedef char dPa_fitWaterCallback_c_size_must_be_0x8[
     sizeof(dPa_c::level_c::fitWaterCallback_c) == 0x8 ? 1 : -1];
 typedef char dPa_checkWaterCallback_c_size_must_be_0x4[
     sizeof(dPa_c::level_c::checkWaterCallback_c) == 0x4 ? 1 : -1];
+typedef char dPa_bubbleCallback_c_size_must_be_0x8[
+    sizeof(dPa_c::level_c::bubbleCallback_c) == 0x8 ? 1 : -1];
 
 #endif
