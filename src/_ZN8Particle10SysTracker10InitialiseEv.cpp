@@ -6,9 +6,8 @@
 #include "decl_common.h"
 /* recovered: real class form -- the compiler spells the mangled name */
 #include "Particle__SysTracker.h"
+#include "Particle__Texture.h"
 
-extern "C" extern u32 _ZN8Particle7Texture12AllocTexVramEjb(const void*, u32);
-extern "C" extern unsigned int _ZN8Particle7Texture12AllocPalVramEjb(unsigned int, unsigned int);
 extern "C" void DecompressLZ16(const void* src, void* dst);
 
 
@@ -62,8 +61,10 @@ void SysTracker::Initialise()
     }
 
     func_0204a17c(mManager, mResourceFile);
-    func_0204a0dc(mManager, _ZN8Particle7Texture12AllocTexVramEjb);
-    func_0204a028(mManager, _ZN8Particle7Texture12AllocPalVramEjb);
+    func_0204a0dc(mManager,
+        (u32 (*)(const void *, u32))Texture::AllocTexVram);
+    func_0204a028(mManager,
+        (u32 (*)(u32, u32))Texture::AllocPalVram);
 
     if (mResourceFile != data_02075f14) {
         void* heap = (void*)(int)M(data_020a0ea0);

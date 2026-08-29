@@ -1,5 +1,6 @@
 //cpp
-struct Vector3 { int x, y, z; };
+#include "dPa_c.h"
+
 struct dActor_c;
 
 struct dBgCh_Gnd {
@@ -31,7 +32,7 @@ extern "C" int func_02037e38(unsigned int *p);
 
 namespace Particle {
 struct System {};
-struct SimpleCallback { void SpawnParticles(System &sys); };
+typedef dPa_c::level_c::simpleCallback_c SimpleCallback;
 struct CheckLavaCallback : SimpleCallback { void SpawnParticles(System &sys); };
 
 void CheckLavaCallback::SpawnParticles(System &sys)
