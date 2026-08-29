@@ -94,7 +94,8 @@ struct dBgCh_Actr : dBgCh {
        0x110, so 0x130 falls outside the sub-object (include/dBgCh_SphCrr.h). */
     dBgCh_SphCrr mSphereClsn;   /* 0x020 - spans [0x20,0x130) */
     s32 unk_130;                /* 0x130 - Init stores its Vector3_16 * arg 5 */
-    dBgCh_Lin mRaycastLine;     /* 0x134 - spans [0x134,0x1b8) */
+    dBgCh_Lin mRaycastLine;     /* 0x134 - spans [0x134,0x1ac) */
+    u8 pad_1ac[0xc];            /* holder alignment/padding to 0x1b8 */
     Fix12i mScale;              /* 0x1b8 - (?) Init sets 0x1000 */
 
     /* --- vtable, in ROM order. Do not reorder. --- */
