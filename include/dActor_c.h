@@ -80,7 +80,16 @@ struct dActor_c : dBase_c {
     s32 unk_0a4;            /* 0x0a4 */
     s32 mVertSpeed;         /* 0x0a8 */
     s32 unk_0ac;            /* 0x0ac */
-    u32 mFlags;             /* 0x0b0 -- bit 0x10000 suppresses behaviour */
+    /* Bit meanings below are a best-effort reading, not pinned by the ROM the
+     * way the offsets are. Only 0x10000 is proven; the rest are a plausible
+     * reading from the surrounding game mechanics, not independently
+     * verified:
+     *   0x000001 skip behavior while unseen   0x000002 skip render while unseen
+     *   0x000008 unseen                       0x000010 past shadow range
+     *   0x000020 area mismatch                0x010000 suppress behavior (PROVEN)
+     *   0x020000 entering yoshi's mouth        0x040000 inside yoshi's mouth
+     *   0x2000000 squishable                   0x10000000 targetable by egg */
+    u32 mFlags;             /* 0x0b0 -- bit 0x10000 suppresses behaviour; see the bit table above */
     /* The clip volume, all four set together by SetRanges out of the actor's
        entry in the spawn-info table. BeforeBehavior projects
        (mPosX, mPosY + mClipOffsetY, mPosZ) into camera space and hands the
