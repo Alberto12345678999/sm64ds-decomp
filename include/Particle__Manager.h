@@ -13,6 +13,7 @@ struct System;
 struct SystemDefinition {
     struct Data {
         u32 flags;          /* 0x00 - bit 14 requests self-destruction */
+        u32 callbackParam;  /* 0x04 - written by edStarKiraCallback_c */
     };
 
     Data *data;             /* 0x00 */
