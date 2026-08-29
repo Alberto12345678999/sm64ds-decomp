@@ -7,15 +7,18 @@
  * class names and the single-inheritance edge below. Their address-point
  * vtables at 0x0208f3b4 and 0x0208f3c4 each contain two virtual slots.
  *
- * The imported Particle::System parameter spelling is not RTTI-backed, so the
- * virtual parameters stay opaque here. Do not bind their method symbols from
- * this declaration until each body has proved its parameter types. */
+ * The callback bodies and dispatch ABI prove that their first explicit
+ * parameter is a reference-sized Particle system object. `Particle::System`
+ * is the established imported spelling, but unlike the callback class names
+ * it is not RTTI-backed and remains an inferred exact-source spelling. */
+namespace Particle { struct System; }
+
 struct dPa_c {
     struct level_c {
         class callback_c {
         public:
-            virtual void SpawnParticles(void* system);
-            virtual int OnUpdate(void* system, bool active);
+            virtual void SpawnParticles(Particle::System& system);
+            virtual int OnUpdate(Particle::System& system, bool active);
         };
 
         class simpleCallback_c : public callback_c {
@@ -23,8 +26,8 @@ struct dPa_c {
             s16 value;              /* 0x004 */
             simpleCallback_c();
 
-            virtual void SpawnParticles(void* system);
-            virtual int OnUpdate(void* system, bool active);
+            virtual void SpawnParticles(Particle::System& system);
+            virtual int OnUpdate(Particle::System& system, bool active);
         };
 
         class scaleCallback_c : public simpleCallback_c {
@@ -33,8 +36,8 @@ struct dPa_c {
             s16 velocity;           /* 0x008 */
             scaleCallback_c();
 
-            virtual void SpawnParticles(void* system);
-            virtual int OnUpdate(void* system, bool active);
+            virtual void SpawnParticles(Particle::System& system);
+            virtual int OnUpdate(Particle::System& system, bool active);
         };
 
         class edStarKiraCallback_c : public simpleCallback_c {
@@ -51,8 +54,8 @@ struct dPa_c {
 
             edStarKiraCallback_c();
 
-            virtual void SpawnParticles(void* system);
-            virtual int OnUpdate(void* system, bool active);
+            virtual void SpawnParticles(Particle::System& system);
+            virtual int OnUpdate(Particle::System& system, bool active);
         };
     };
 };
