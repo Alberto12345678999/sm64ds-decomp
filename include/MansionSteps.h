@@ -39,6 +39,7 @@ struct MansionSteps {
     int Behavior();
     int CleanupResources();
     int Render();
+    void OnPendingDestroy();
 #endif
 };
 
