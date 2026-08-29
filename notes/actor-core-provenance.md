@@ -1,12 +1,12 @@
 # Actor core: provenance
 
-Everything here was moved out of `include/dActor_c.h`, `include/fBase_c.h` and the
+Everything here was moved out of [include/dActor_c.h](../include/dActor_c.h), [include/fBase_c.h](../include/fBase_c.h) and the
 `dActor_c`/`fBase_c` constructor sources so that those files read like game source
 rather than a lab notebook. Nothing was deleted: the matching constraints those
 essays carried are still stated, condensed, at their site in the header, and the
 long form is below.
 
-See also `notes/actor-vtables.md`, `notes/mwccarm-codegen.md`, `notes/actor-naming.md`.
+See also [notes/actor-vtables.md](../notes/actor-vtables.md), [notes/mwccarm-codegen.md](../notes/mwccarm-codegen.md), [notes/actor-naming.md](../notes/actor-naming.md).
 
 ---
 
@@ -15,13 +15,13 @@ See also `notes/actor-vtables.md`, `notes/mwccarm-codegen.md`, `notes/actor-nami
 `fBase_c`'s code is one contiguous run, `0x02043444..0x02043f4c`, 25 functions.
 
 That range is a correction. The banner used to say `0x02043494..0x02043e04` and
-both ends were wrong; `src_tu/actors/ActorBase.cpp` reconciled it against the
+both ends were wrong; [src_tu/actors/ActorBase.cpp](../src_tu/actors/ActorBase.cpp) reconciled it against the
 cartridge while rebuilding the translation unit.
 
 * `0x02043444` is the real start: `_ZN7fBase_cnwEj`, this class's own
   `operator new` (size `0x50`). The old `0x02043494` began at `OnHeapCreated`
   and excluded it.
-* `0x02043f4c` is the real end -- the byte after `_ZN7fBase_cC2Ev`, and the
+* `0x02043f4c` is the real end -- the byte after [src/_ZN7fBase_cC2Ev.cpp](../src/_ZN7fBase_cC2Ev.cpp), and the
   address of `func_02043f4c`, the next unrelated function.
 * `0x02043e04` was not a function boundary at all. It falls `0x18` bytes INSIDE
   the constructor (`_ZN7fBase_cC2Ev`, `0x02043dec`, size `0x160`), so the old
@@ -31,7 +31,7 @@ The run is bracketed by unlabelled neighbours on both sides -- `func_020433b8`
 ends at `0x02043444`, `func_02043f4c` begins at `0x02043f4c` -- and contains
 exactly two unnamed functions, `func_02043810` and `func_02043880`, both enclosed
 by named members and both reading this layout directly. All 25 are byte-verified
-together as one TU. The former exception, `_ZN7fBase_cC2Ev`, is now a real
+together as one TU. The former exception, [src/_ZN7fBase_cC2Ev.cpp](../src/_ZN7fBase_cC2Ev.cpp), is now a real
 `fBase_c::fBase_c()` definition: the compiler supplies the vptr and member
 lifecycle, while the body performs the ROM-proven registration, priority and
 pause-state work. Its one-function source is enrolled at `0x02043dec..0x02043f4c`.
@@ -46,14 +46,14 @@ primitives this class calls. Different translation unit; not part of the run abo
 The same constructor does `add r5, r4, #0x14` and passes r5 to
 `SceneNode::SceneNode`, then writes an owner back-pointer with `str r4, [r5, #0x10]`
 -- which pins `sceneNode` at `0x14` and makes it `0x14` bytes, not the `0x10`
-that `include/ActorBase__SceneNode.h` describes. It then initialises two identical
+that [include/ActorBase__SceneNode.h](../include/ActorBase__SceneNode.h) describes. It then initialises two identical
 `0x10`-byte nodes at `r5+0x14` (`0x28`) and `r5+0x24` (`0x38`), the two the
 destructor tears down in reverse order.
 
 ## 3. `fBase_c` vtable order
 
 Read directly out of `_ZTV7fBase_c` (`0x02099edc`, 18 slots). Every slot resolves
-to a named function, so no inference was needed here -- unlike `include/Fader.h`.
+to a named function, so no inference was needed here -- unlike [include/Fader.h](../include/Fader.h).
 Two consequences, both easy to get wrong:
 
 * The destructor is at slots 16/17, NOT 0/1. Slot index follows declaration
@@ -70,7 +70,7 @@ Two consequences, both easy to get wrong:
 The chain is `fBase_c -> dBase_c -> dActor_c`. `dActor_c` is NOT a direct child of
 `fBase_c`: `dActor_c::dActor_c` calls `fBase_c::fBase_c`, stores `dBase_c`'s vptr,
 then immediately overwrites it with its own. Two consecutive vptr stores is what
-an inlined intermediate-base constructor looks like. See `notes/actor-vtables.md`.
+an inlined intermediate-base constructor looks like. See [notes/actor-vtables.md](../notes/actor-vtables.md).
 
 `fBase_c` occupies `0x00..0x4f`, so `dActor_c`'s own fields begin at `0x50`. The
 generated header this replaces duplicated `fBase_c`'s fields inline -- `uniqueID`
@@ -93,19 +93,19 @@ virtuals still take 18..30 from their declaration order, because new slots appen
 after the inherited table.
 
 What makes that safe is NOT that the destructor lives in a C translation unit --
-`src/_ZN8dActor_cD1Ev.cpp` and `_ZN8dActor_cD2Ev.cpp` are C++ and do include the
-header; only `_ZN8dActor_cD0Ev.cpp` is C. The invariant is that all three define
+[src/_ZN8dActor_cD1Ev.cpp](../src/_ZN8dActor_cD1Ev.cpp) and [src/_ZN8dActor_cD2Ev.cpp](../src/_ZN8dActor_cD2Ev.cpp) are C++ and do include the
+header; only [src/_ZN8dActor_cD0Ev.cpp](../src/_ZN8dActor_cD0Ev.cpp) is C. The invariant is that all three define
 `extern "C"` free functions under the mangled names and none defines
 `dActor_c::~dActor_c`, so no TU is ever the key function's definition.
 
 Stated precisely: the key function -- the first non-inline virtual declared --
 must never be defined as a real method in any translation unit. Declaring the
 destructor first pins that role to TUs which by construction never will.
-`include/fBase_c.h` reaches the same end differently: it does declare
-`InitResources` (slot 0) in-class, but `src/_ZN7fBase_c13InitResourcesEv.cpp`
-deliberately defines it as an `extern "C"` free function rather than a method. Do
-not "fix" that file into a real method, and do not remove the declaration from
-`fBase_c.h` -- removing it would delete slot 0 and shift all 18 slots.
+[include/fBase_c.h](../include/fBase_c.h) reaches the same end differently: it does declare
+`InitResources` (slot 0) in-class, but [src/_ZN7fBase_c13InitResourcesEv.cpp](../src/_ZN7fBase_c13InitResourcesEv.cpp) deliberately defines it as an `extern "C"` free function rather than a method.
+
+Do not "fix" that file into a real method, and do not remove the declaration from
+[include/fBase_c.h](../include/fBase_c.h) -- removing it would delete slot 0 and shift all 18 slots.
 
 ## 6. `operator delete`, inline, on both classes
 
@@ -126,7 +126,7 @@ D1 body plus those instructions:
     fBase_c::~fBase_c [D0]  0x02043d78  0x44 = D1's 0x30 + 0x14
     dBase_c::~dBase_c [D0]  0x02013ea4  0x38 = D1's 0x24 + 0x14
 
-Compiled without the declaration, `src/actors/ActorDerived.cpp`'s D0 came out the
+Compiled without the declaration, [src_tu/actors/ActorDerived.cpp](../src_tu/actors/ActorDerived.cpp)'s D0 came out the
 wrong SIZE (`999 word(s) differ`); with it, 5/5 MATCH.
 
 Why it is declared on `dActor_c` as well as on `fBase_c`: mwcc inlines
@@ -145,25 +145,24 @@ and the `0x50` / `0xd0` size assertions still hold.
 
 ### 6a. Why the deallocator is declared with a `void *` second parameter
 
-`_ZN6Memory10DeallocateEPvP4Heap` is spelt in `dActor_c.h` and `fBase_c.h`
-EXACTLY as `include/decl_common.h` spells it, deliberately. The mangled name says
-the second parameter is a `Heap*`, and `decl_common.h` says `void*`; declaring the
+`_ZN6Memory10DeallocateEPvP4Heap` is spelt in [include/dActor_c.h](../include/dActor_c.h) and [include/fBase_c.h](../include/fBase_c.h) EXACTLY as [include/decl_common.h](../include/decl_common.h) spells it, deliberately.
+
+The mangled name says the second parameter is a `Heap*`, and `decl_common.h` says `void*`; declaring the
 honest type in the actor headers instead makes two incompatible `extern "C"`
 declarations of one name visible in the same translation unit, which mwcc rejects
 as "illegal function overloading". That cost 105 files their eligibility when it
-was tried. Correcting the parameter type is worth doing -- in `decl_common.h`,
-once, for every caller at the same time.
+was tried. Correcting the parameter type is worth doing -- in [include/decl_common.h](../include/decl_common.h), once, for every caller at the same time.
 
 ### 6b. Why `operator new` is not declared in-class
 
 CW 1.2 rejects an in-class declaration of `operator new` ("illegal 'operator'
 declaration"), and it is neither virtual nor layout-affecting, so
-`src/_ZN7fBase_cnwEj.cpp` defines it under its mangled name instead.
+[src/_ZN7fBase_cnwEj.cpp](../src/_ZN7fBase_cnwEj.cpp) defines it under its mangled name instead.
 
 ## 7. `dActor_c` field widths -- the `0x080..0x0ab` block
 
 `0x080..0x08b` and the `0x098..0x0ab` block were bare padding and `u8`
-placeholders in `dActor_c.h`, while `Player.h` -- describing the same bytes --
+placeholders in [include/dActor_c.h](../include/dActor_c.h), while [include/Player.h](../include/Player.h) -- describing the same bytes --
 named them and typed them `s32`. Player is right, and the evidence is outside
 Player: `BooCage::InitResources` and `MadPiano::InitResources` write `-0x4000`
 and `-0x2000` to `0x09c` and `-0x46000` / `-0x3c000` to `0x0a0`, which are fix12
@@ -183,13 +182,13 @@ they are `dActor_c`'s and four bytes wide.
 
 The `#else` C branch carried `pad_0a4`/`pad_0ac` long after the C++ branch above
 promoted them to real `s32` fields -- a drift no gate could catch, because until
-`include/Door.h`'s own C branch nested this struct, NO C translation unit in the
+[include/Door.h](../include/Door.h)'s own C branch nested this struct, NO C translation unit in the
 tree included the header at all and the whole `#else` was dead. The two spellings
 now agree field for field.
 
 ## 8. `dActor_c` field names recovered in this pass
 
-Named from matched bodies only. See `include/dActor_c.h` for the short form.
+Named from matched bodies only. See [include/dActor_c.h](../include/dActor_c.h) for the short form.
 
 | offset | name | evidence |
 | --- | --- | --- |
@@ -197,8 +196,8 @@ Named from matched bodies only. See `include/dActor_c.h` for the short form.
 | `0x054` | `mListNext` | `dActor_c::Next(const dActor_c *)` reads `self->0x54` to get the next NODE, then dereferences `node + 8` to recover that node's actor. Forward link, therefore, is `+4`. |
 | `0x058` | `mListOwner` | the constructor stores `this` there; `Next` reads `node + 8` and returns it as a `dActor_c *`. Same owner-back-pointer shape as `fBase_c::sceneNode.owner` at `0x24`. |
 | `0x068`/`0x06c`/`0x070` | `mPrevPosX/Y/Z` | `dActor_c::BeforeBehavior` ends by copying `mPosX/Y/Z` into them, on every path that lets the actor think. |
-| `0x0b4` | `mClipOffsetY` | `BeforeBehavior` builds the point it hands to the camera transform as `(mPosX, mPosY + 0xb4, mPosZ) >> 3` -- a vertical offset from the actor's origin to the centre of its clip volume. It is the one of the four `SetRanges` arguments stored WITHOUT the `>> 3`, i.e. it is in position units, not clip units. `Platform.cpp` adds it to a `Vector3`'s `y` for the same purpose. |
-| `0x0b8` | `mClipRadius` | passed as `Clipper::Func_020150E8`'s radius argument; zero skips the camera transform entirely ("no clip volume"). `Platform.cpp` reads it back `<< 3`. |
+| `0x0b4` | `mClipOffsetY` | `BeforeBehavior` builds the point it hands to the camera transform as `(mPosX, mPosY + 0xb4, mPosZ) >> 3` -- a vertical offset from the actor's origin to the centre of its clip volume. It is the one of the four `SetRanges` arguments stored WITHOUT the `>> 3`, i.e. it is in position units, not clip units. [Platform.cpp](../src/Platform.cpp) adds it to a `Vector3`'s `y` for the same purpose. |
+| `0x0b8` | `mClipRadius` | passed as `Clipper::Func_020150E8`'s radius argument; zero skips the camera transform entirely ("no clip volume"). [Platform.cpp](../src/Platform.cpp) reads it back `<< 3`. |
 | `0x0bc` | `mClipDistance` | `BeforeBehavior` sets flags `0x18` (off screen + far away) when the clipper's answer exceeds it; `data_0209f274` doubles the threshold. |
 | `0x0c0` | `mFarDistance` | the shorter of the two thresholds: exceeding it sets only flag `0x10`, "far away". |
 | `0x0c4` | `mClipResult` | the `u8 *` out-parameter `BeforeBehavior` hands to `Clipper::Func_020150E8`. |
@@ -227,7 +226,7 @@ read nor set -- measured by building both, not assumed.
   locals and two early returns. See `include/BigBrickBlock.h`.
 * slot 27 `OnHitByMegaChar` -- `Stump::OnHitByMegaChar` ([ov091](../config/arm9/overlays/ov091/symbols.txt) `0x021335d4`):
   four early-return field checks, 6-word register mismatch under `int`, exact
-  match under `void`. See `include/Stump.h`. The two already-landed overrides,
+  match under `void`. See [include/Stump.h](../include/Stump.h). The two already-landed overrides,
   `dScMgSlot1_c`'s and `daObjMaruta_c`'s, have no locals or early returns, so the
   correction is a re-verified no-op for them.
 * slot 30 `OnAimedAtWithEggReturnVec` returns a `Vector3` BY VALUE, and the ROM
@@ -235,7 +234,7 @@ read nor set -- measured by building both, not assumed.
   reads every field off r1, which is the AAPCS indirect-return shape -- r0 is the
   caller's return slot, and `this` has been pushed along to r1. A method returning
   `int` would have had `this` in r0 and nothing in r1. Returning a class by value
-  is NOT the by-value-PARAMETER trap of `notes/mwccarm-codegen.md` 6az; an
+  is NOT the by-value-PARAMETER trap of [notes/mwccarm-codegen.md](../notes/mwccarm-codegen.md) 6az; an
   indirect return costs nothing here and byte-matches.
 
 ## 10. Static vs member, and the premise the argument rests on
@@ -310,7 +309,7 @@ name. Recorded, deliberately not renamed.
 ## 13. The cylinder-collision group
 
 `0x0200f7a8..0x02010c5c`. Everything here reads a `dCc_c` the caller already has;
-see `include/dCc_c.h` for the layout (`0x18` flags, `0x20` hitFlags, `0x24`
+see [include/dCc_c.h](../include/dCc_c.h) for the layout (`0x18` flags, `0x20` hitFlags, `0x24`
 otherOwner).
 
 `FindEgg` and `FindExplosionActor` are the same function twice over. Both ask
@@ -404,7 +403,7 @@ and is visible only there.
 
 Methods whose mangled names carry a by-value class parameter (`5Fix12IiE`, and the
 `Vector3` forms) are deliberately not declared in `dActor_c` as methods that any
-TU could define -- see `notes/mwccarm-codegen.md` 6az. CW homes class-typed
+TU could define -- see [notes/mwccarm-codegen.md](../notes/mwccarm-codegen.md) 6az. CW homes class-typed
 by-value parameters to the stack, costing `+0x14`, so those keep `extern "C"`
 definitions with scalar args. A true-signature declaration for callers is fine and
 is tracked separately.
@@ -419,8 +418,8 @@ Read what they do and do not claim. `0xd0` is the size the header's own field li
 computes -- it is NOT independent ROM evidence that a `dActor_c` is `0xd0` bytes.
 What it buys is real all the same: the two spellings are held to each other, a
 field retyped without shrinking the pad after it stops compiling, and
-`include/Player.h` becomes checkable -- a derived struct's fields start at its
-base's size, and `tools/check_header_offsets.py` will not guess that number.
+[include/Player.h](../include/Player.h) becomes checkable -- a derived struct's fields start at its
+base's size, and [tools/check_header_offsets.py](../tools/check_header_offsets.py) will not guess that number.
 
 ## 19. `dActor_c::BeforeBehavior` -- flag bits, and a dead lever
 
@@ -454,12 +453,12 @@ only the objects do.
 
 ## 20. `decl_*.h` C linkage
 
-`include/decl_Actor.h` and `include/decl_ActorBase.h` (and their siblings) declare
+[include/decl_Actor.h](../include/decl_Actor.h) and [include/decl_ActorBase.h](../include/decl_ActorBase.h) (and their siblings) declare
 ROM symbols by their exact final names, so a C++ translation unit including them
 must not mangle them -- a bare `void Foo(int);` seen from C++ emits `_Z3Fooi`,
-which exists nowhere. The file still byte-matches, because `match.py` compares
+which exists nowhere. The file still byte-matches, because [tools/match.py](../tools/match.py) compares
 relocated words as wildcards, so nothing catches it until the ROM link -- and
-`eligible.py` refuses to enrol a file with unresolvable references, so the link
+[tools/eligible.py](../tools/eligible.py) refuses to enrol a file with unresolvable references, so the link
 never sees it either. Hence the `extern "C"` guard those generated headers carry.
 
 Verified safe: of the 1,644 function names declared across the `decl_*.h` headers,
