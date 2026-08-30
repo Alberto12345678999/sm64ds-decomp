@@ -81,19 +81,41 @@ TWO FAILURE MODES OF `langmode_audit.py` THIS IS BUILT NOT TO REPEAT
      file in the tree at a fixed path, readable and writable with no git plumbing, and
      `--baseline PATH` points anywhere for a CI job or a test.
 
-     In-tree is safe here in a way a COUNTER is not, because staleness only ever runs one
+     In-tree is safe here in a way a COUNTER is not, because staleness normally runs one
      way: `--check` fails on removals alone, so a baseline that has not caught up with
      newly converted files is permissive, never falsely red. No PR needs to re-bank in
      order to pass, so the baseline is not in every PR's diff and does not conflict the
      way a counter did. Re-bank it occasionally, on its own, to bank recent gains.
 
-NOT WIRED INTO ANYTHING YET -- deliberately. Do not add it to `tools/hooks/pre-push`.
-The langmode ratchet's pre-push wiring is the one that has been observed to get stuck,
-and a local hook that a contributor cannot get past is worse than no gate. The
-recommended next step is a CI-only job mirroring `.github/workflows/langmode-ratchet.yml`
-(checkout, setup-python, run `--check`), on `pull_request` paths `src/**`,
-`tools/tiers.py`, `tools/tiers_ratchet.py`, `config/converted-baseline.json`. Prove it
-does not get stuck across a few weeks of real PRs before anyone discusses a hook.
+     STALENESS HAS ONE EXCEPTION, AND IT COST A DAY. A path that LEAVES the tree fails
+     `--check` even when nothing regressed. Two ways that happens legitimately:
+
+       - TU promotion absorbs a file. `classify_missing()` handles this: it resolves the
+         gone path through `tools/tu_manifest.py` and reports
+         `MOVED -- absorbed into <file> by TU promotion (<tu_id>)`. When the absorbing
+         file is itself CONVERTED the removal is `absorbed_clean` -- no `--reason`, no
+         exception row. The banked COUNT drops, and that is correct; a promotion batch
+         is expected to lower it. There is no floor number to defend.
+
+       - A plain file rename. `classify_missing()` has NO rename detection, so a move
+         reports `GONE -- not a tracked source file any more` and demands a `--reason`,
+         which would write a permanent fake backslide row. Until that is fixed, apply
+         the renames to the parent's banked set FIRST, then regenerate.
+
+WIRED INTO CI, NOT INTO THE HOOK. `.github/workflows/converted-ratchet.yml` runs
+`--check` on `pull_request` and on `push: main`, over `src/**`, this file, `tiers.py`,
+`delaunder.py`, the TU manifest, and the baseline itself (that workflow's `on:` block is
+the authoritative list -- do not re-enumerate it here). It reads the baseline from the
+tree under test; there is no second checkout.
+
+Do NOT add it to `tools/hooks/pre-push`. The langmode ratchet's pre-push wiring is the
+one that has been observed to get stuck, and a local hook a contributor cannot get past
+is worse than no gate. Prove the CI job does not get stuck across a few weeks of real
+PRs before anyone discusses a hook.
+
+A CI red here is usually a BASE desync, not a regression: a PR cut before a re-bank
+lands merges against a baseline that predates it and inherits the red. Fix by merging
+main into the branch, never by lowering the pin.
 
 Usage:
     python tools/tiers_ratchet.py                 # summary; no exit-code meaning
