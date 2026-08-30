@@ -3,7 +3,7 @@
 **Status: partially applied.** Confirmed current main's ROM-proven
 `CannonHatch` -> `daObjCannonShutter_c` rename and updated the actor gloss from
 `CANNON_HATCH` to `CANNON_SHUTTER`. Bumped: `Kumo`
-medium -> high in config/rom-name-glossary.json. Added: new `Mip` term
+medium -> high in [config/rom-name-glossary.json](../config/rom-name-glossary.json). Added: new `Mip` term
 (high confidence). Added to [overlay_actors.md](../symbols/overlay_actors.md): the RTTI-resolved
 new-ground entries below (BOOT, DSMT, TITLE, MINIGAME, ENTRY, RESULT,
 GAME_OVER, CT_MECHA03, BIG_SNOWMAN, METER, MULTIBOOT, MG_CUP, MG_SLOT1,
