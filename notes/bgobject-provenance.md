@@ -731,7 +731,7 @@ same offsets:
 * `include/PoleLift.h` — `param1`, `mAngleY`.
 * `include/IceSheet.h` and `include/RotatingFirebar.h` — `mAngleY`, and `mFlags`
   (0x0b0).
-* `include/Squasher.h` — `mCamSpacePosX` (0x074), `mClsnMat` (0x2ec).
+* `include/daObjFm_Battan_c.h` — `mCamSpacePosX` (0x074), `mClsnMat` (0x2ec).
 * `include/FortressTower.h` — `actorID` (0x00c).
 * `include/BasementWater.h` — `mCamSpacePosX`.
 * `include/TTC_MovingBeam.h` — `mTerminalVelocity`, `mVertSpeed`, `mClsnMat`.
