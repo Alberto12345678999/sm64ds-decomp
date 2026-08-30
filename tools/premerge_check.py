@@ -28,7 +28,7 @@ landed against a base that had moved).
 `.github/workflows/source-coverage.yml` is the one job that partly closes the hole:
 it also runs on push to main against `github.event.before`, main's previous tip. But
 that fires AFTER the merge. It tells you main is broken; it cannot tell you not to
-break it. And it is one metric out of the seven gates below.
+break it. And it is one metric out of the eight gates below.
 
 The gap this fills is therefore narrow and specific: the static gates, on the merge
 result, BEFORE the merge.
