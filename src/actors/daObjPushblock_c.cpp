@@ -119,14 +119,13 @@ int daObjPushblock_c::InitResources()
  * load/register order without raw field offsets. */
 int daObjPushblock_c::Behavior()
 {
-    char *c = (char *)this;
     daObjPushblock_c *self = this;
     Vector3 v;
     Vector3 dst;
     volatile Vector3 pos;
     dActor_c *q;
 
-    if (_ZN10dBgActor_c20UpdateKillByMegaCharEsss5Fix12IiE(c, 0x1800, 0, 0, 0x96000) != 0) {
+    if (_ZN10dBgActor_c20UpdateKillByMegaCharEsss5Fix12IiE(this, 0x1800, 0, 0, 0x96000) != 0) {
         return 1;
     }
 
@@ -157,7 +156,7 @@ int daObjPushblock_c::Behavior()
 
     func_020393a4((int *)&self->mMeshCollider, 0x12c000);
     func_02039394((int *)&self->mMeshCollider, 0x96000);
-    _ZN10dBgActor_c21IsClsnInRangeOnScreenE5Fix12IiES1_(c, 0x3e8000, 0x96000);
+    _ZN10dBgActor_c21IsClsnInRangeOnScreenE5Fix12IiES1_(this, 0x3e8000, 0x96000);
 
     if (self->mHorzSpeed != 0 && Vec3_Dist((Vector3 *)&self->mPosX, (Vector3 *)&self->mPrevPosX) != 0) {
         self->mSlideSound = Sound::PlayLong(
