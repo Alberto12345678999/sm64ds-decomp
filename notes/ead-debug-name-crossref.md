@@ -189,7 +189,7 @@ gloss exists yet.
 
 ---
 
-## Confidence-bump candidates for [config/rom-name-glossary.json](config/rom-name-glossary.json)
+## Confidence-bump candidates for [config/rom-name-glossary.json](../config/rom-name-glossary.json)
 
 - **`Kumo`: medium → high.** Index 314's debug string `OBJ_KUMO` plus the
   existing `CLOUD(314)` entry in [overlay_actors.md](../symbols/overlay_actors.md) doubly corroborate the
