@@ -1,10 +1,10 @@
 //cpp
-// @symbol _ZN13WaterfallMist13InitResourcesEv
+// @symbol _ZN16daObjWaterfall_c13InitResourcesEv
 /* recovered: named members + shared header, real C++ method */
-#include "WaterfallMist.h"
+#include "daObjWaterfall_c.h"
 extern signed char data_0209f2f8;
 
-int WaterfallMist::InitResources()
+int daObjWaterfall_c::InitResources()
 {
     signed char v;
     mParticleID = 0x24;
