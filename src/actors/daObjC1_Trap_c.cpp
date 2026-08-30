@@ -336,9 +336,8 @@ void daObjC1_Trap_c::State1()
         return;
 
     spawner->mTrapActive = 0;
-    s16 *openSpeed = (s16 *)&mOpenSpeed;
-    *openSpeed = *openSpeed - 0x100;
-    mAngleZ += *(volatile s16 *)&mOpenSpeed;
+    mOpenSpeed -= 0x100;
+    mAngleZ += mOpenSpeed;
     if (mAngleZ < -0x3d00) {
         mAngleZ = -0x3d00;
         mState = 2;

@@ -227,7 +227,7 @@
     }
   ],
   "notes": [
-    "The genuine class source defines five compiler-spelled state methods, GetSpawner, UpdateCollisionTransform, UpdateModelTransform, and OnCollision. Behavior dispatches through the typed PMF table initialized by the separately retained __sinit source.",
+    "State0..State4, GetSpawner, UpdateCollisionTransform, UpdateModelTransform, and OnCollision are inferred class-anchored aliases: the class identity, relationships, relocations, and codegen are proven, but the original private source spellings are not. Behavior dispatches through the typed PMF table initialized by the separately retained __sinit source.",
     "The inline virtual destructor plus out-of-line InitResources key function emits retail's D1 then D0 pair with no D2 and no forcing or dummy output. A POD position local avoids introducing Vector3's unrelated vague-linkage destructor helper.",
     "Trap_Spawn and func_ov010_02111984 retain their proven C ABI spellings. The factory keeps the exact actor allocator/base/member constructor/vptr sequence because natural new selects the wrong allocator; the adapter is the measured three-argument callback boundary and immediately calls typed OnCollision.",
     "The PMF descriptor band, deferred initializer, SharedFilePtr resources, CLPS block, ctor pointer, and BSS remain externally owned. A natural initializer probe matched, but its resource special-member relocation identities are not yet proven, so this promotion deliberately claims none of those ranges."

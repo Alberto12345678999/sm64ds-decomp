@@ -19,7 +19,7 @@ struct daObjC1_Trap_c : dBgActor_c {
     Matrix4x3 mDoorMat;               /* 0x370 */
     s32 mState;                         /* 0x3a0 */
     s32 mPlayerDist;                    /* 0x3a4 */
-    u16 mOpenSpeed;                     /* 0x3a8 */
+    s16 mOpenSpeed;                     /* 0x3a8 */
     u8  mTrapActive;                    /* 0x3aa -- set when a player enters the trap */
     u8  mIsSpawner;                     /* 0x3ab -- invisible paired-door controller */
     s32 mSpawnerID;                     /* 0x3ac -- unique ID of the controller */
