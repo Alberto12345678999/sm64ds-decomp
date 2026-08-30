@@ -119,7 +119,6 @@ int daObjPushblock_c::InitResources()
  * load/register order without raw field offsets. */
 int daObjPushblock_c::Behavior()
 {
-    daObjPushblock_c *self = this;
     Vector3 v;
     Vector3 dst;
     volatile Vector3 pos;
@@ -129,48 +128,48 @@ int daObjPushblock_c::Behavior()
         return 1;
     }
 
-    if (self->mHorzSpeed != 0) {
+    if (mHorzSpeed != 0) {
         v.x = 0;
         dst.x = 0;
         dst.y = 0;
         dst.z = 0;
         v.y = 0x96000;
         v.z = 0x96000;
-        Matrix4x3_FromRotationY(&data_020a0e68, self->mPrevAngleY);
+        Matrix4x3_FromRotationY(&data_020a0e68, mPrevAngleY);
         MulVec3Mat4x3(&v, &data_020a0e68, &dst);
-        AddVec3(&dst, (Vector3 *)&self->mPosX, &dst);
+        AddVec3(&dst, (Vector3 *)&mPosX, &dst);
         dBgCh_Gnd ray;
         ray.SetObjAndPos(dst, 0);
         if (ray.DetectClsn()) {
-            if (self->mGroundY != ray.clsnY) {
-                self->mHorzSpeed = 0;
+            if (mGroundY != ray.clsnY) {
+                mHorzSpeed = 0;
             }
         } else {
-            self->mHorzSpeed = 0;
+            mHorzSpeed = 0;
         }
         UpdatePos(0);
-        dBgCh_Actr_UpdateContinuous_Veneer(&self->mWithMeshClsn);
+        dBgCh_Actr_UpdateContinuous_Veneer(&mWithMeshClsn);
         UpdateModelPosAndRotY();
         UpdateClsnPosAndRot();
     }
 
-    func_020393a4((int *)&self->mMeshCollider, 0x12c000);
-    func_02039394((int *)&self->mMeshCollider, 0x96000);
+    func_020393a4((int *)&mMeshCollider, 0x12c000);
+    func_02039394((int *)&mMeshCollider, 0x96000);
     _ZN10dBgActor_c21IsClsnInRangeOnScreenE5Fix12IiES1_(this, 0x3e8000, 0x96000);
 
-    if (self->mHorzSpeed != 0 && Vec3_Dist((Vector3 *)&self->mPosX, (Vector3 *)&self->mPrevPosX) != 0) {
-        self->mSlideSound = Sound::PlayLong(
-            self->mSlideSound, 3, 0x97, *(Vector3 *)&self->mCamSpacePosX, 0);
+    if (mHorzSpeed != 0 && Vec3_Dist((Vector3 *)&mPosX, (Vector3 *)&mPrevPosX) != 0) {
+        mSlideSound = Sound::PlayLong(
+            mSlideSound, 3, 0x97, *(Vector3 *)&mCamSpacePosX, 0);
     }
 
-    if (Vec3_HorzDist((Vector3 *)&self->mHomePosX, (Vector3 *)&self->mPosX) >= 0x12c000) {
-        if (self->mLinkedActor != 0) {
-            if (self->mLinkedActor->actorID == 0x149) {
-                const int homeX = self->mHomePosX;
+    if (Vec3_HorzDist((Vector3 *)&mHomePosX, (Vector3 *)&mPosX) >= 0x12c000) {
+        if (mLinkedActor != 0) {
+            if (mLinkedActor->actorID == 0x149) {
+                const int homeX = mHomePosX;
                 pos.x = homeX;
-                const int homeY = self->mHomePosY;
+                const int homeY = mHomePosY;
                 pos.y = homeY;
-                const int homeZ = self->mHomePosZ;
+                const int homeZ = mHomePosZ;
                 pos.z = homeZ;
                 pos.y = homeY + 0x96000;
                 /* This one late reload stays raw: spelling it as the named
@@ -180,13 +179,13 @@ int daObjPushblock_c::Behavior()
                 q->mPosX = homeX;
                 q->mPosY = pos.y;
                 q->mPosZ = pos.z;
-                func_ov002_020f0438((void *)self->mLinkedActor);
+                func_ov002_020f0438(mLinkedActor);
             }
-            self->mLinkedActor = 0;
+            mLinkedActor = 0;
         }
     }
 
-    self->mHorzSpeed = 0;
+    mHorzSpeed = 0;
     return 1;
 }
 
