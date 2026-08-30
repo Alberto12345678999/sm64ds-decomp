@@ -6,10 +6,11 @@
   "status": "promoted",
   "boundary_confidence": "high",
   "boundary_evidence": [
-    "contiguous linker run: 0x020b8bf0..0x020b910c, 9 function(s), from build/tu_map.json (tools/tu_map.py)",
+    "contiguous linker run: 0x020b8bf0..0x020b9148, 10 function(s), from build/tu_map.json (tools/tu_map.py)",
     "class label(s): daObjPushblock_c",
-    "high-confidence left cut at 0x020b8bf0 and right cut at 0x020b910c in build/tu_map.json",
-    "the adjacent high-confidence PushBlock_Spawn candidate begins at 0x020b910c and is deliberately excluded"
+    "high-confidence left cut at 0x020b8bf0 and right cut at 0x020b9148 in build/tu_map.json",
+    "PushBlock_Spawn is the tenth function of that one mapped run, not an adjacent candidate: build/tu_map.json reports no cut at 0x020b910c",
+    "this promotion licenses the first nine functions of the run (0x020b8bf0..0x020b910c) and defers PushBlock_Spawn, so the licensed range is a prefix of the mapped run rather than a mapped boundary"
   ],
   "sections": [
     {
