@@ -38,7 +38,9 @@ closest-first worklist).
 - `eval_pin.json` (committed, next to the DB) records the evaluator of the last full
   re-evaluation pass. Every ranking consumer warns on stderr when the live evaluator
   no longer matches it, and `tools/test_nearmiss_db.py` fails CI when
-  `match.CANONICAL` or `nearmiss_db.METRIC_REV` moves without a fresh pass.
+  `match.CANONICAL`, `match.DEFAULT_FLAGS` or `nearmiss_db.METRIC_REV` moves without a
+  fresh pass. Flags are gated as well as the compiler and the metric: `-O4,p` -> `-O2`
+  re-scores every stored source far harder than a compiler bump does.
 - `python tools/nearmiss_db.py reeval` is that pass: it re-scores every row, stamps
   each with the evaluator fingerprint, and rewrites the pin. Run it on a MAIN-TIP
   checkout only (stale-lane rule) and commit `db.jsonl` + `eval_pin.json` together.
@@ -49,6 +51,15 @@ closest-first worklist).
 - Union merges can resurrect a pre-reeval copy of a corrected row (this file is
   `merge=union`); the dedupe collapse prefers a row stamped by the current pin over
   any unstamped or stale-stamped copy, so corrections survive the next refresh.
+  Scope, precisely: `merge=union` is a **local** merge driver. GitHub does not honour
+  it (`.gitattributes` says so), so on the server two PRs touching this file conflict
+  visibly. The stamp-first collapse therefore protects the *local resolve-and-push*
+  path -- someone running `git merge origin/main` here, or the update-chaos-data
+  workflow rewriting `db.jsonl` on main -- not the PR merge itself.
+- One consumer is outside that net: `tools/refine_wl.py` reads `db.jsonl` with a raw
+  `json.loads` per line instead of `load_db`, so after a local union merge it sees
+  BOTH copies and orders them with `seed_rank`, which has no stamp term. Run
+  `python tools/nearmiss_db.py dedupe` after any union merge before trusting its pool.
 
 ## Standing rule: every batch feeds this DB
 

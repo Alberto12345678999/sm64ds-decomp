@@ -66,6 +66,13 @@ def main():
     args = ap.parse_args()
     NDB.warn_stale_pin()         # a stale evaluator means this whole pool is mis-ranked
 
+    # NOTE: this reads the file directly rather than through NDB.load_db, so it is the
+    # ONE ranking consumer the duplicate-collapse safety net does not cover. After a
+    # LOCAL union merge (db.jsonl is merge=union) the file can hold two rows for one
+    # (module, addr); load_db collapses them stamp-first, this does not -- it sees both
+    # and orders them with seed_rank, which has no stamp term, so a resurrected
+    # stale-lower-divergence copy can top the pool. Run
+    # `python tools/nearmiss_db.py dedupe` after any union merge before trusting this.
     rows = [json.loads(l) for l in (REPO / "nearmiss" / "db.jsonl")
             .read_text(encoding="utf-8").splitlines() if l.strip()]
     for r in rows:                       # addr/size are hex strings in some records

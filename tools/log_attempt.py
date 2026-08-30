@@ -62,6 +62,24 @@ def load_symbol(name: str):
     return mod, _int(addr), _int(size)
 
 
+def _evaluator_available() -> bool:
+    """True only when the WHOLE evaluator is present: the Python stack (capstone,
+    pyelftools) AND the canonical mwccarm on disk.
+
+    The ImportError guard below covers the Python half only. With capstone and
+    pyelftools importable but tools/mwccarm/<CANONICAL>/mwccarm.exe absent,
+    match.compile_c returns None, evaluate_full reports status="noncompile", and the
+    upsert REFUSES every tip -- a compiler-less lane stops recording near misses
+    altogether instead of falling back to the lane's own claimed number. Loud
+    (compile_c prints the failure) but still wrong. nearmiss_db.reeval guards its pass
+    with the same exe.is_file() check; this is that check on the ingest side."""
+    try:
+        import match as M
+    except ImportError:
+        return False
+    return (M.MW / M.CANONICAL / "mwccarm.exe").is_file()
+
+
 def upsert_near_miss_tip(*, src_file, module, addr, name, divergences, size, source):
     """Best-tip upsert into SM64DS nearmiss/db.jsonl.
 
@@ -93,7 +111,7 @@ def upsert_near_miss_tip(*, src_file, module, addr, name, divergences, size, sou
         _a, _s, _m, thex = meta
         rec["target_hex"] = thex
         rec["size"] = rec.get("size") or _s
-    if rec.get("target_hex"):
+    if rec.get("target_hex") and _evaluator_available():
         try:                            # evaluate OUTSIDE the lock; it compiles
             full = NDB.evaluate_full(c_source, name, bytes.fromhex(rec["target_hex"]))
         except ImportError:             # bare environment: the lane's word, unstamped
