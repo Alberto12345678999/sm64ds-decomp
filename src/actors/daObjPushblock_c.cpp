@@ -124,7 +124,7 @@ int daObjPushblock_c::Behavior()
     Vector3 v;
     Vector3 dst;
     volatile Vector3 pos;
-    char *q;
+    dActor_c *q;
 
     if (_ZN10dBgActor_c20UpdateKillByMegaCharEsss5Fix12IiE(c, 0x1800, 0, 0, 0x96000) != 0) {
         return 1;
@@ -177,10 +177,10 @@ int daObjPushblock_c::Behavior()
                 /* This one late reload stays raw: spelling it as the named
                    mLinkedActor read after the volatile position setup costs
                    the function its size -- measured at this site. */
-                q = *(char **)((char *)this + 0x4f0);
-                *(int *)(q + 0x5c) = homeX;
-                *(int *)(q + 0x60) = pos.y;
-                *(int *)(q + 0x64) = pos.z;
+                q = *(dActor_c **)((char *)this + 0x4f0);
+                q->mPosX = homeX;
+                q->mPosY = pos.y;
+                q->mPosZ = pos.z;
                 func_ov002_020f0438((void *)self->mLinkedActor);
             }
             self->mLinkedActor = 0;
