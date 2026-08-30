@@ -7,7 +7,7 @@
     "no_codegen_trick",
     "no_mangled_refs"
   ],
-  "count": 2534,
+  "count": 2530,
   "converted": [
     "src/ARMMathLoadState.c",
     "src/ARMMathSaveState.c",
@@ -1973,10 +1973,6 @@
     "src/_ZN8Snowball6RenderEv.cpp",
     "src/_ZN8SnowballD0Ev.cpp",
     "src/_ZN8SnowballD1Ev.cpp",
-    "src/_ZN8Squasher16CleanupResourcesEv.cpp",
-    "src/_ZN8Squasher6RenderEv.cpp",
-    "src/_ZN8SquasherD0Ev.cpp",
-    "src/_ZN8SquasherD1Ev.cpp",
     "src/_ZN8StarDoor13InitResourcesEv.cpp",
     "src/_ZN8StarDoor16CleanupResourcesEv.cpp",
     "src/_ZN8StarDoor16OnPendingDestroyEv.cpp",
