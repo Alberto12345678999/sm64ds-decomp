@@ -13,20 +13,6 @@
 
 #include "daBar_c.h"
 
-struct DaBarSpawnInfo {
-    daBar_c *(*spawn)();
-    s16 behaviorPriority;
-    s16 renderPriority;
-    u32 flags;
-    Fix12i rangeOffsetY;
-    Fix12i range;
-    Fix12i drawDistance;
-    u32 unk_18;
-};
-
-typedef char DaBarSpawnInfo_size_must_be_0x1c[
-    sizeof(DaBarSpawnInfo) == 0x1c ? 1 : -1];
-
 /* Natural new targets the wrong global allocator for actor factories. The
  * measured allocator/base/member construction sequence and the two Fix12-by-
  * value calls therefore remain narrow ABI seams. */

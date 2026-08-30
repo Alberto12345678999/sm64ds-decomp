@@ -29,4 +29,20 @@ struct daBar_c : dActor_c {
 typedef char daBar_c_size_must_be_0x108[
     sizeof(daBar_c) == 0x108 ? 1 : -1];
 
+/* Typed owner for the ROM descriptor at ov002:0x0210845c. Its retained
+ * InvisiblePole spelling is an evidence-bounded C ABI alias. */
+struct DaBarSpawnInfo {
+    daBar_c *(*spawn)();
+    s16 behaviorPriority;
+    s16 renderPriority;
+    u32 flags;
+    Fix12i rangeOffsetY;
+    Fix12i range;
+    Fix12i drawDistance;
+    u32 unk_18;
+};
+
+typedef char DaBarSpawnInfo_size_must_be_0x1c[
+    sizeof(DaBarSpawnInfo) == 0x1c ? 1 : -1];
+
 #endif /* DABAR_C_H */
