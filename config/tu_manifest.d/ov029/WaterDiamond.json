@@ -36,21 +36,21 @@
       "symbol": "func_ov029_021117ac",
       "address": "0x021117ac",
       "size": "0x000000a4",
-      "legacy_source": "src/func_ov029_021117ac.cpp",
+      "legacy_source": "src/_ZN12WaterDiamond19CheckClsnWithPlayerEv.cpp",
       "ordinal": 2
     },
     {
       "symbol": "func_ov029_02111850",
       "address": "0x02111850",
       "size": "0x00000078",
-      "legacy_source": "src/func_ov029_02111850.cpp",
+      "legacy_source": "src/_ZN12WaterDiamond10SetWaterIDEv.cpp",
       "ordinal": 3
     },
     {
       "symbol": "func_ov029_021118c8",
       "address": "0x021118c8",
       "size": "0x00000040",
-      "legacy_source": "src/func_ov029_021118c8.c",
+      "legacy_source": "src/_ZN12WaterDiamond20UpdateModelTransformEv.cpp",
       "ordinal": 4
     },
     {

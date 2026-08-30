@@ -31,7 +31,7 @@
       "symbol": "func_ov002_020ada40",
       "address": "0x020ada40",
       "size": "0x00000100",
-      "legacy_source": "src/func_ov002_020ada40.cpp",
+      "legacy_source": "src/_ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Player5Fix12IiE.cpp",
       "ordinal": 1
     },
     {

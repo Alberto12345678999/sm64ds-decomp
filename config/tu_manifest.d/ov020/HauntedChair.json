@@ -36,49 +36,49 @@
       "symbol": "func_ov020_021129dc",
       "address": "0x021129dc",
       "size": "0x00000124",
-      "legacy_source": "src/func_ov020_021129dc.c",
+      "legacy_source": "src/_ZN12HauntedChair6State3Ev.cpp",
       "ordinal": 2
     },
     {
       "symbol": "func_ov020_02112b00",
       "address": "0x02112b00",
       "size": "0x00000394",
-      "legacy_source": "src/func_ov020_02112b00.c",
+      "legacy_source": "src/_ZN12HauntedChair6State2Ev.cpp",
       "ordinal": 3
     },
     {
       "symbol": "func_ov020_02112e94",
       "address": "0x02112e94",
       "size": "0x00000234",
-      "legacy_source": "src/func_ov020_02112e94.c",
+      "legacy_source": "src/_ZN12HauntedChair6State1Ev.cpp",
       "ordinal": 4
     },
     {
       "symbol": "func_ov020_021130c8",
       "address": "0x021130c8",
       "size": "0x00000080",
-      "legacy_source": "src/func_ov020_021130c8.c",
+      "legacy_source": "src/_ZN12HauntedChair6State0Ev.cpp",
       "ordinal": 5
     },
     {
       "symbol": "func_ov020_02113148",
       "address": "0x02113148",
       "size": "0x000000b0",
-      "legacy_source": "src/func_ov020_02113148.c",
+      "legacy_source": "src/_ZN12HauntedChair18ApproachStateValueEPsS0_isis.cpp",
       "ordinal": 6
     },
     {
       "symbol": "func_ov020_021131f8",
       "address": "0x021131f8",
       "size": "0x00000048",
-      "legacy_source": "src/func_ov020_021131f8.c",
+      "legacy_source": "src/_ZN12HauntedChair5BreakEv.cpp",
       "ordinal": 7
     },
     {
       "symbol": "func_ov020_02113240",
       "address": "0x02113240",
       "size": "0x00000098",
-      "legacy_source": "src/func_ov020_02113240.cpp",
+      "legacy_source": "src/_ZN12HauntedChair11UpdateModelEv.cpp",
       "ordinal": 8
     },
     {

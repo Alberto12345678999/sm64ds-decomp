@@ -36,7 +36,7 @@
       "symbol": "func_ov010_02111e84",
       "address": "0x02111e84",
       "size": "0x00000040",
-      "legacy_source": "src/func_ov010_02111e84.c",
+      "legacy_source": "src/_ZN13PeachPainting20UpdateModelTransformEv.cpp",
       "ordinal": 2
     },
     {
