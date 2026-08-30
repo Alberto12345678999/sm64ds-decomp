@@ -709,6 +709,54 @@ def test_compiler_only_policy_reduces_data_before_its_duplicate_destructors():
     assert report["dataExternalized"] == data
 
 
+def test_plain_deadstrip_is_refused_for_an_rtti_record():
+    """The intact-object mirror of the rombuild guard.
+
+    A plain ``deadstrip`` is the one disposition never compared against the
+    cartridge, and the ``elif homes.get(sym)`` arm below cannot catch a COINED
+    class name: ``homes`` is keyed on the symbols.txt spelling while _ZTI/_ZTS
+    are LENGTH-PREFIXED mangled strings, so a coined name misses on both the
+    prefix and the body and the miss reads as "the ROM has no such record".
+    This path must refuse on its own -- ``_isolate`` returns before rombuild's
+    copy of the guard ever runs.
+    """
+    if not _toolchain():
+        return
+    obj = _compile_tu_fixture(
+        "struct B { virtual ~B() {} };\n"
+        "struct D : B { virtual ~D() {} virtual void f(); };\n"
+        "void D::f() {}\n")
+    assert obj is not None
+    symbols = {s["name"]: s for s in tubuild.elf_inventory(obj)["symbols"]
+               if s["name"] and not s["name"].startswith("$")}
+    duplicates = sorted(n for n, s in symbols.items()
+                        if s["type"] == "STT_FUNC" and n.startswith("_ZN1BD"))
+    data = sorted(n for n, s in symbols.items()
+                  if s["type"] == "STT_OBJECT"
+                  and n.startswith(("_ZTV", "_ZTI", "_ZTS")))
+    assert data, "fixture must emit RTTI records"
+    licensed = sorted(n for n, s in symbols.items()
+                      if s["type"] == "STT_FUNC" and n not in duplicates)
+    policy = [
+        {"symbol": n, "disposition": "deadstrip-duplicate",
+         "reason": "vague base destructor with a canonical cartridge copy"}
+        for n in duplicates
+    ] + [
+        {"symbol": n, "disposition": "deadstrip", "reason": "no ROM symbol"}
+        for n in data
+    ]
+    homes = {n: [("arm9", 0x02010000 + i * 0x20)]
+             for i, n in enumerate(duplicates)}
+    entry = {"functions": [{"symbol": n} for n in licensed],
+             "data": [], "bss": [], "compiler_only_output": policy}
+
+    out, _report, reasons = tubuild.apply_compiler_only_policy(
+        obj, entry, homes=homes)
+    assert out is None
+    assert all(any(n in r and "never compared against the cartridge" in r
+                   for r in reasons) for n in data), reasons
+
+
 def test_unknown_id_fails_closed_with_a_clear_reason():
     code, out = _run("inspect", "ov999/NoSuchClass")
     assert code != 0

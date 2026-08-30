@@ -700,6 +700,30 @@ def compiler_only_policies(enrolled=None, manifest=None, homes=None):
                                       f"source claims must be built, not discarded")
                     else:
                         data.append(symbol)
+            elif (disposition == "deadstrip"
+                  and symbol[:4] in ("_ZTI", "_ZTS", "_ZTV")):
+                # A plain ``deadstrip`` is the ONE disposition never compared
+                # against the cartridge: ``deadstrip-data`` reaches pol["data"]
+                # and ``deadstrip-duplicate`` reaches ``expect``; this reaches
+                # neither, and OI.derive_deadstrip simply zeroes the words.
+                #
+                # The guard below only fires when a home is configured, and a
+                # COINED class name has none.  ``homes`` is keyed on the
+                # spelling in symbols.txt, while an _ZTI/_ZTS record is a
+                # LENGTH-PREFIXED mangled string, so a coined name misses on
+                # both the prefix and the body.  That miss reads as "the ROM
+                # has no such record" -- false for every coined class -- and
+                # romdata_check.verify_data_symbol then returns UNNAMED/0
+                # bytes, so the romData ratchet does not move either.  Silent
+                # coverage loss, which is why every gate stays green.
+                errors.append(f"{source}: {symbol} is an RTTI/vtable record "
+                              f"banked as a plain deadstrip, which is never "
+                              f"compared against the cartridge. If the class "
+                              f"carries a coined name, rename it to the "
+                              f"cartridge's RTTI spelling so the row resolves "
+                              f"as deadstrip-data; if the ROM genuinely has no "
+                              f"such record, drop the row. Do not reword the "
+                              f"reason -- the reason is not what is checked")
             elif disposition == "deadstrip" and homes.get(symbol):
                 errors.append(f"{source}: {symbol} has configured ROM home(s) "
                               f"{homes[symbol]}; declare it deadstrip-duplicate (a "
