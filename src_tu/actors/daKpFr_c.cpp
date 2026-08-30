@@ -1,6 +1,7 @@
 //cpp
 #include "daKpFr_c.h"
 #include "dBgCh_Gnd.h"
+#include "Particle__System.h"
 #include "Player.h"
 #include "SurfaceInfo.h"
 
@@ -133,8 +134,10 @@ int daKpFr_c::Behavior()
 /* ROM ordinal 17 -- _ZN8daKpFr_c6RenderEv, 0x0212206c, size 0x98 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN8daKpFr_c6RenderEv
+/* Particle__System.h owns Vector3_16f but does not yet declare this member;
+ * retain its typed, exact-spelling ABI import rather than widening that
+ * shared header in a class-source lane. */
 extern "C" {
-struct Vector3_16f;
 extern u32 _ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f(
     u32 handle, u32 effectID, Fix12i x, Fix12i y, Fix12i z,
     const Vector3_16f *rotation);
@@ -221,11 +224,12 @@ int func_ov070_02121fb0(char *raw)
 /* -------------------------------------------------------------------------- */
 /* ROM ordinal 10 -- func_ov070_02121f18, 0x02121f18, size 0x98 */
 /* -------------------------------------------------------------------------- */
+int ApproachLinear(short &value, short target, short step);
+
 extern "C" {
 extern unsigned char DecIfAbove0_Byte(unsigned char* p);
 extern void func_ov070_02121c8c(void* c);
 extern short Vec3_HorzAngle(void* v0, void* v1);
-extern void _Z14ApproachLinearRsss(short* p, short t, short step);
 extern void func_ov070_02121be4(void* c);
 extern void func_ov070_02121d50(void* c, void* p);
 extern void func_ov070_02121cbc(char* c);
@@ -237,7 +241,7 @@ int func_ov070_02121f18(char* raw) {
   player = self->ClosestNonVanishPlayer();
   if (player) {
     short ang = Vec3_HorzAngle(&self->mPosX, &player->mPosX);
-    _Z14ApproachLinearRsss(&self->mAngleY, ang, 0x180);
+    ApproachLinear(self->mAngleY, ang, 0x180);
     self->mPrevAngleY = self->mAngleY;
   }
   self->UpdatePos(&self->mdCcAc_c);
