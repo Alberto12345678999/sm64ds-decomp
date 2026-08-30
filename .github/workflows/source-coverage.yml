@@ -59,9 +59,28 @@ on:
 permissions:
   contents: read
 
+# Cancelling is safe for a PR and DESTRUCTIVE for a push, so the two are keyed apart.
+#
+# A PR run is superseded when a newer commit arrives -- the old verdict is about code that
+# no longer exists, so cancelling it costs nothing. Grouping by PR NUMBER is what makes
+# that possible; the previous `head.sha` key was unique per commit, so every PR run sat in
+# its own group and `cancel-in-progress` could never actually fire for a pull request.
+#
+# A push run is NOT superseded by the next push. Each one checks a DIFFERENT range --
+# `--base ${{ github.event.before }}`, i.e. exactly its own before..head -- and no other
+# run ever revisits it. Cancel push run X (A..B) because push Y (B..C) arrived, and Y
+# checks B..C while A..B is never checked by anything, ever. A merge that handed bytes
+# back to the cartridge inside that window is then invisible, which is the precise failure
+# this whole workflow exists to catch. Runs take ~26s, so the window is small but wholly
+# reachable when a merge queue is drained back to back.
+#
+# Note that `cancel-in-progress: false` alone would NOT have been enough: GitHub keeps at
+# most one PENDING run per group and cancels any earlier pending one, so three rapid
+# pushes would still drop the middle range. Pushes therefore get a group key that is
+# unique per commit (`github.sha`) and can never collide in the first place.
 concurrency:
-  group: source-coverage-${{ github.event.pull_request.head.sha || github.ref }}
-  cancel-in-progress: true
+  group: source-coverage-${{ github.event.pull_request.number || github.sha }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   coverage:
