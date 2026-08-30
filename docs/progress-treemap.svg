@@ -29905,35 +29905,35 @@ matched: yes</title></rect><rect x="1139.35" y="87.11" width="3.06" height="7.25
 module: ov010
 addr: 0x021111ec
 size: 96 bytes
-matched: yes</title></rect><rect x="1139.35" y="94.36" width="3.06" height="1.21" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov010_0211124c
+matched: yes</title></rect><rect x="1139.35" y="94.36" width="3.06" height="1.21" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14daObjC1_Trap_c6State4Ev
 module: ov010
 addr: 0x0211124c
 size: 16 bytes
-matched: yes</title></rect><rect x="1139.35" y="95.57" width="3.06" height="3.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov010_0211125c
+matched: yes</title></rect><rect x="1139.35" y="95.57" width="3.06" height="3.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14daObjC1_Trap_c6State3Ev
 module: ov010
 addr: 0x0211125c
 size: 40 bytes
-matched: yes</title></rect><rect x="1139.35" y="98.59" width="3.06" height="3.62" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov010_02111284
+matched: yes</title></rect><rect x="1139.35" y="98.59" width="3.06" height="3.62" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14daObjC1_Trap_c6State2Ev
 module: ov010
 addr: 0x02111284
 size: 48 bytes
-matched: yes</title></rect><rect x="1142.41" y="81.37" width="4.88" height="5.12" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov010_021112b4
+matched: yes</title></rect><rect x="1142.41" y="81.37" width="4.88" height="5.12" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14daObjC1_Trap_c6State1Ev
 module: ov010
 addr: 0x021112b4
 size: 108 bytes
-matched: yes</title></rect><rect x="1142.41" y="86.49" width="4.88" height="5.87" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov010_02111320
+matched: yes</title></rect><rect x="1142.41" y="86.49" width="4.88" height="5.87" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14daObjC1_Trap_c6State0Ev
 module: ov010
 addr: 0x02111320
 size: 124 bytes
-matched: yes</title></rect><rect x="1142.41" y="92.36" width="4.88" height="3.98" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov010_0211139c
+matched: yes</title></rect><rect x="1142.41" y="92.36" width="4.88" height="3.98" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14daObjC1_Trap_c10GetSpawnerEv
 module: ov010
 addr: 0x0211139c
 size: 84 bytes
-matched: yes</title></rect><rect x="1142.41" y="96.34" width="4.88" height="5.87" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov010_021113f0
+matched: yes</title></rect><rect x="1142.41" y="96.34" width="4.88" height="5.87" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14daObjC1_Trap_c24UpdateCollisionTransformEv
 module: ov010
 addr: 0x021113f0
 size: 124 bytes
-matched: yes</title></rect><rect x="1147.29" y="81.37" width="5.41" height="9.91" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov010_0211146c
+matched: yes</title></rect><rect x="1147.29" y="81.37" width="5.41" height="9.91" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14daObjC1_Trap_c20UpdateModelTransformEv
 module: ov010
 addr: 0x0211146c
 size: 232 bytes
@@ -29953,7 +29953,7 @@ matched: yes</title></rect><rect x="1152.70" y="81.37" width="9.05" height="12.8
 module: ov010
 addr: 0x02111654
 size: 504 bytes
-matched: yes</title></rect><rect x="1152.70" y="94.25" width="9.05" height="7.97" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov010_0211184c
+matched: yes</title></rect><rect x="1152.70" y="94.25" width="9.05" height="7.97" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14daObjC1_Trap_c11OnCollisionER8dActor_c
 module: ov010
 addr: 0x0211184c
 size: 312 bytes
