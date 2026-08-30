@@ -28,7 +28,6 @@
 #include "daObjWaterfall_c.h"
 
 extern "C" {
-extern int _ZTV16daObjWaterfall_c[];
 extern void *_ZN7fBase_cnwEj(unsigned);
 extern void _ZN8dActor_cC2Ev(void *);
 extern void *_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(

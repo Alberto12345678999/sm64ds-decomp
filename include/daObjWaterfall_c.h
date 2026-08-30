@@ -3,6 +3,11 @@
 
 #include "dActor_c.h"
 
+/* Retail public vtable address point used by the allocation seam below. The
+ * class definition remains the authority that makes this a modeled vtable,
+ * rather than a factory-local shadow declaration. */
+extern "C" int _ZTV16daObjWaterfall_c[];
+
 /* The retail RTTI record at ov002:0x0210945c spells daObjWaterfall_c and
  * points to the vtable whose address point is 0x021094a0. WaterfallMist_Spawn
  * allocates 0xdc bytes and installs that table; its C ABI name is retained
