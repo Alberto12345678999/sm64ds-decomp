@@ -221,8 +221,9 @@ Sources: `src/_ZN12HealingHeart13InitResourcesEv.cpp`,
 | 0x380 | `mParticle` | the particle-handle shape above, effect 0x4a. |
 | 0x384 | `mLifeTimer` | 0xb4 at init, counted down only while on the ground, destroys at 0, blinks below 0x2d. |
 
-Sources: `src/_ZN11WingFeather13InitResourcesEv.cpp`,
-`src/_ZN11WingFeather8BehaviorEv.cpp`, `src/_ZN11WingFeather6RenderEv.cpp`,
+Sources: `src/game/actors/WingFeather/_ZN11WingFeather13InitResourcesEv.cpp`,
+`src/game/actors/WingFeather/_ZN11WingFeather8BehaviorEv.cpp`,
+`src/game/actors/WingFeather/_ZN11WingFeather6RenderEv.cpp`,
 `src_tu/actors/WingFeather.cpp`.
 
 ## daObjAbuku_c -- include/daObjAbuku_c.h
