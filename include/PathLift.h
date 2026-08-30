@@ -4,6 +4,7 @@
 #include "types.h"
 #include "Model.h"
 #include "dBgW_KcMbg.h"
+#include "PathPtr.h"
 
 /* A lift that runs along a path. Derives from dBgActor_c, and its own data starts
  * in the base's tail padding at 0x31e (dBgActor_c's last field ends there and its
@@ -23,10 +24,17 @@
 struct PathLift : dBgActor_c {
     u8  pad_31e[0x2];
     Model mModels[3];                     /* 0x320 */
-    u8  pad_410[0x1a];
+    u8  pad_410[0x18];
+    u16 unk_428;                          /* 0x428 */
     u8  mAfterClsnRan;                    /* 0x42a -- set by AfterClsn, cleared by the last statement of BaseBehavior */
     u8  mTriggerDelay;                    /* 0x42b -- DecIfAbove0_Byte; AfterClsn only fires the state change at 0 */
-    u8  pad_42c[0x20];
+    u8  unk_42c;                          /* 0x42c */
+    u8  pad_42d[0x3];
+    PathPtr mPath;                        /* 0x430 */
+    u8  pad_438[0x4];
+    s32 unk_43c;                          /* 0x43c */
+    s32 unk_440;                          /* 0x440 */
+    u8  pad_444[0x8];
     s32 mState;                          /* 0x44c */
 
     /* DEFINED INLINE, and that is the point. The ROM's daObjPathLift_c
@@ -61,10 +69,17 @@ struct PathLift {
        +0x124 (D0/D1), a relocation the ROM build checks; recovered by
        tools/dtor_members.py. D1 and not D2, so it is this type and not an inlined base. */
     dBgW_KcMbg mMovingMeshCollider;            /* 0x124 */
-    u8  pad_2ec[0x13e];
+    u8  pad_2ec[0x13c];
+    u16 unk_428;            /* 0x428 */
     u8  mAfterClsnRan;            /* 0x42a */
     u8  mTriggerDelay;            /* 0x42b */
-    u8  pad_42c[0x20];
+    u8  unk_42c;            /* 0x42c */
+    u8  pad_42d[0x3];
+    struct PathPtr mPath;    /* 0x430 */
+    u8  pad_438[0x4];
+    s32 unk_43c;            /* 0x43c */
+    s32 unk_440;            /* 0x440 */
+    u8  pad_444[0x8];
     s32 mState;            /* 0x44c */
 };
 
