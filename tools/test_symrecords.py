@@ -203,10 +203,15 @@ class RestampWritesOnlyThePlan(unittest.TestCase):
 
 class OnlyAllowlistedToolsOpenTheImportMirror(unittest.TestCase):
     """The policy half of the incident fix: nothing new joins the records by
-    name because nothing new reads verified.tsv at all -- a tool that wants
-    both records goes through symrecords' address-keyed API. If this test
-    just failed on a file you added, import symrecords instead of opening
-    symbols/verified.tsv, or make the case for the allowlist in review."""
+    name because nothing new in `tools/` reads verified.tsv at all -- a tool
+    that wants both records goes through symrecords' address-keyed API. If
+    this test just failed on a file you added, import symrecords instead of
+    opening symbols/verified.tsv, or make the case for the allowlist in review.
+
+    The scope of the claim is exactly what the glob below covers: `tools/*.py`,
+    non-recursively. `tools/archive/*.py` and any reader living outside
+    `tools/` are invisible to it, so this test is a guard on new tooling, not
+    a proof that the repo has no other direct readers."""
 
     ALLOWED = {"import_symbols.py",   # writes the mirror; the importer itself
                "symrecords.py",       # the address join this test protects
@@ -220,6 +225,81 @@ class OnlyAllowlistedToolsOpenTheImportMirror(unittest.TestCase):
             if p.name not in self.ALLOWED
             and "verified.tsv" in p.read_text(encoding="utf-8", errors="ignore"))
         self.assertEqual(offenders, [])
+
+
+class SharedOverlaySlotIsNotAutomaticallyAmbiguous(unittest.TestCase):
+    """Do NOT widen `ambiguous-module` to "more than one module has an entry".
+
+    Overlay slots alternate, so a single address legitimately carries a row in
+    two modules' symbols.txt. That alone does not make the mirror's row
+    ambiguous: what makes it ambiguous is two modules both ASSERTING a real
+    name there, because then nothing says which of them the mirror mirrors.
+    When the other module's slot is still a `func_`/`data_` placeholder, only
+    one module has made a claim and the mirror's own old name identifies which
+    class it belongs to.
+
+    Three live rows have exactly that shape and are correctly proposed. They
+    are recorded here rather than asserted directly, because #2039 restamps
+    them and the rows then stop existing -- a pin on the addresses would be a
+    test that deletes itself:
+
+      0x020ada40  mirror _ZN5Enemy20KillByInvincibleChar...   ov002
+                  _ZN12dEnemyBase_c20KillByInvincibleChar..., ov004
+                  func_ov004_020ada40 (placeholder)
+      0x020aed98  mirror _ZN5EnemyC2Ev; ov002 _ZN12dEnemyBase_cC2Ev,
+                  ov007 func_ov007_020aed98 (placeholder)
+      0x020ee55c  mirror _ZN8Platform4KillEv; ov002 _ZN10dBgActor_c4KillEv,
+                  ov007 data_ov007_020ee55c (placeholder, kind:data)
+
+    In each, the mirror's own old name is a real class-bearing name from the
+    previous naming wave, and `Enemy -> dEnemyBase_c` / `Platform ->
+    dBgActor_c` are corroborated by many other rows in that wave. Refusing
+    these would refuse three provably right restamps. The floor that already
+    exists is the right one: a proposal needs the old name to map through
+    `cmap`, so a mirror row carrying a PLACEHOLDER old name at a shared
+    address refuses for lack of a cmap entry, with no module rule needed.
+    """
+
+    # One module claims a name, another leaves a placeholder: proposable.
+    ONE_CLAIM = {
+        0x100: [("ov002", "_ZN3New3RunEv", "function"),
+                ("ov004", "func_ov004_00000100", "function")],
+        0x200: [("ov002", "_ZN3New4StepEv", "function"),
+                ("ov007", "data_ov007_00000200", "data")],
+    }
+    MIRROR = {0x100: ("_ZN3Old3RunEv", "function"),
+              0x200: ("_ZN3Old4StepEv", "function")}
+
+    def test_placeholder_on_the_other_module_still_proposes(self):
+        rows = rows_by_addr(self.ONE_CLAIM, self.MIRROR)
+        for addr, want in (("0x00000100", "_ZN3New3RunEv"),
+                           ("0x00000200", "_ZN3New4StepEv")):
+            self.assertEqual(rows[addr]["verdict"], "class-rename", addr)
+            self.assertEqual(rows[addr]["proposed"], want, addr)
+
+    def test_two_real_names_at_one_address_still_refuse(self):
+        """The other direction, so narrowing is caught as fast as widening."""
+        config = dict(self.ONE_CLAIM)
+        config[0x100] = [("ov002", "_ZN3New3RunEv", "function"),
+                         ("ov004", "_ZN5Other3RunEv", "function")]
+        rows = rows_by_addr(config, self.MIRROR)
+        self.assertEqual(rows["0x00000100"]["verdict"], "ambiguous-module")
+        self.assertEqual(rows["0x00000100"]["proposed"], "")
+
+    def test_ambiguous_address_supplies_no_rename_evidence(self):
+        """class_rename_map() applies the same floor compare() does.
+
+        Without it a two-real-name address feeds the class map even though no
+        row at that address may be explained -- evidence a reviewer reading
+        the report can never see, because the row is refused.
+        """
+        config = {0x100: [("ov002", "_ZN3New3RunEv", "function"),
+                          ("ov004", "_ZN5Other3RunEv", "function")]}
+        verified = {0x100: ("_ZN3Old3RunEv", "function")}
+        self.assertEqual(SR.class_rename_map(config, verified), {})
+        # The identical pair at an unambiguous address is still evidence.
+        config[0x100] = [("ov002", "_ZN3New3RunEv", "function")]
+        self.assertEqual(SR.class_rename_map(config, verified), {"Old": "New"})
 
 
 class LiveTreeInvariants(unittest.TestCase):

@@ -238,7 +238,9 @@ def class_rename_map(config, verified):
     are routinely byte-identical across unrelated classes (the #774 lesson), so a
     lone dtor row must not manufacture its own rename evidence -- its class pair
     has to be corroborated by a method row. A verified class seen mapping to two
-    different config classes proves nothing mechanical and is dropped entirely.
+    different config classes proves nothing mechanical and is dropped entirely,
+    and an address where two modules both assert a real name is skipped outright
+    -- compare() refuses to explain such a row, so it may not feed one either.
 
     Two passes: the first from exact argument agreement, the second re-admitting
     rows whose arguments agree once the first pass's renames are applied to them
@@ -252,7 +254,17 @@ def class_rename_map(config, verified):
             vp = _parts(vname)
             if vp is None or vp["special"] or vp["dtor"] or vp["ctor"]:
                 continue
-            for _mod, cname, _ckind in config.get(addr, ()):
+            entries = config.get(addr, ())
+            # The same floor compare() applies before it will explain a row.
+            # Overlay slots alternate, so one address can be two unrelated
+            # functions; when two modules both assert a REAL name there, the
+            # mirror's single row cannot say which of them it mirrors.
+            # compare() calls that "ambiguous-module" and proposes nothing --
+            # an address it refuses to draw a conclusion FOR must not supply
+            # evidence to conclusions ABOUT other addresses either.
+            if len({n for _m, n, _k in entries if not is_placeholder(n)}) > 1:
+                continue
+            for _mod, cname, _ckind in entries:
                 cp = _parts(cname)
                 if cp is None or cp["special"] or cp["dtor"] or cp["ctor"]:
                     continue
