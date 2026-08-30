@@ -1,0 +1,182 @@
+# Who tests the tools that nobody runs?
+#
+# `tools/` holds 57 `test_*.py` modules. Before this workflow, SIX of them ran in CI:
+# test_tiers (converted-ratchet.yml), test_check_dead_references (dead-references.yml),
+# test_check_header_offsets (header-offsets.yml), test_check_python_names
+# (python-names.yml), test_source_coverage (source-coverage.yml) and test_check_src_tu
+# (src-tu-refs.yml). The other 51 ran only when a human remembered to run them.
+#
+# That is the same shape as every incident this repo keeps writing workflows about. A
+# gate's FAILURE branch is the one path a green run never exercises: no ROM build can
+# reach it, because these tools are not compiled into the ROM. src-tu-refs.yml exists
+# because #1643 broke 26 translation units while every byte gate stayed green, and the
+# only thing that noticed was a test suite a human had to run. This job runs 312 of
+# those assertions on every PR that touches `tools/`, so the next one is noticed by CI.
+#
+# WHAT THIS DOES NOT COVER, and why. Three groups are deliberately absent.
+#
+#   1. NEEDS THE TOOLCHAIN. mwccarm and the extracted ROM are not on a GitHub runner;
+#      they live on the private build box pr-validate.yml relays to. Measured in a
+#      checkout with `extracted/`, `tools/mwccarm/` and `tools/bin/` absent:
+#      test_objisolate skips all 32 of its tests, test_rombuild skips 3 of 32, and
+#      test_check_src_tu_compiles FAILS 8. Wiring those here would buy a green that
+#      means nothing. Also absent for the same reason: test_build_pin, test_dtor_members,
+#      test_fdiff_version, test_gen_header, test_opnew_sizes, test_tubuild.
+#
+#   2. NEEDS A PIP DEPENDENCY. A bare runner has no pyelftools, capstone or ndspy, and
+#      this repo has no requirements file to pin them from. That import wall -- not the
+#      compiler -- is what actually stops most of `tools/` on a runner: 24 modules die
+#      on `No module named 'elftools'` alone (test_rombuild, test_romdata_check,
+#      test_check_references, test_tu_config, test_tu_production, test_reloc_audit_*,
+#      test_mangle, test_name_roundtrip, test_pr_linkcheck_*, and more), test_swarm and
+#      test_worklist on capstone, test_bmg on ndspy. Pinning those is a fair follow-up;
+#      it is a different change from this one, and it should come with a requirements
+#      file rather than a version invented in a `run:` line.
+#
+#   3. RED ON MAIN RIGHT NOW. `python -m unittest tools.test_dead_references` and
+#      `tools.test_pr_monitor` both fail on a clean origin/main with ImportError -- they
+#      use bare `from check_dead_references import ...` / `from pr_monitor import ...`,
+#      which only resolves with `tools/` on sys.path. Both are PYTEST modules that pass
+#      when invoked as `python tools/test_X.py` (their __main__ calls pytest.main), so
+#      this is an invocation mismatch, not a broken tool. They are named here rather
+#      than fixed: repairing them is a `tools/` change and this workflow deliberately
+#      touches nothing but itself.
+#
+# WHY THE LIST IS SPELLED OUT AND NOT A GLOB. `python -m unittest discover` would absorb
+# every future test_*.py automatically -- including one that needs mwccarm, which does
+# not fail on a runner but SELF-SKIPS, turning this job's green hollow with no diff to
+# review. There is a sharper version of the same trap already in the tree: eleven of the
+# 57 modules are pytest-style bare functions with no unittest.TestCase, so
+# `python -m unittest tools.test_tubuild` prints "Ran 0 tests ... OK" and exits 0. That
+# is 158 test functions that a glob would have silently counted as passing. Four of them
+# -- test_build_pin, test_dtor_members, test_opnew_sizes, test_tubuild -- also carry the
+# bare-`return` toolchain guard that reports PASS rather than SKIP when the compiler is
+# missing. An explicit list makes adding a module a reviewed decision.
+#
+# Costs nothing: stdlib unittest over the working tree, no compiler, no ROM, no pip step
+# and no network. Measured at 5.3s for all 312 tests on a runner-equivalent container
+# (python:3.12, Linux, none of the three inputs present). The whole-suite timings are
+# dominated by Windows filesystem overhead and do not apply here -- test_tiers alone
+# takes 71s on a Windows checkout and 1.3s on Linux.
+#
+# SIX SKIPS ARE EXPECTED and are honest ones that name their own reason: four in
+# test_stamp_provenance_verify ("needs extracted/ (ROM dump)", a real @skipUnless) and
+# two in test_match_provenance ("no src samples"). 306 of the 312 assert something.
+name: tool tests
+
+on:
+  pull_request:
+    paths:
+      - "tools/**"
+      - ".github/workflows/tool-tests.yml"
+  push:
+    branches: [main]
+    paths:
+      - "tools/**"
+      - ".github/workflows/tool-tests.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: tool-tests-${{ github.event.pull_request.head.sha || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  tools:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # Full history, like source-coverage.yml and header-offsets.yml. Several of
+          # these suites read git history rather than the working tree --
+          # test_attribution walks commits, test_validate_merge reads a committed merge,
+          # test_srcpath and test_bytegate resolve tracked paths -- and a shallow
+          # checkout makes those assert against a one-commit repository.
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        # Stdlib only, no pip step. Pinned for the same reason python-names.yml pins
+        # pyflakes: a runner's default python moving under a gate that touched no Python
+        # is indistinguishable from a regression.
+        with:
+          python-version: "3.12"
+
+      - name: The tools' own tests
+        # ONE unittest invocation, so a single "Ran N tests" line in the log is the
+        # whole claim and a module that stops contributing tests is visible as a drop in
+        # N. Enumerated on purpose -- see the header. Test counts below are from a
+        # toolchain-free python:3.12 container; they are the number to compare against
+        # if this job's total ever moves without a module being added or removed here.
+        run: |
+          python -m unittest -v \
+            tools.test_affected_src \
+            tools.test_asm_policy \
+            tools.test_asset_catalog \
+            tools.test_attribution \
+            tools.test_bytegate \
+            tools.test_cpp_rename_verify \
+            tools.test_delaunder \
+            tools.test_enroll \
+            tools.test_layout \
+            tools.test_match_attempts \
+            tools.test_match_provenance \
+            tools.test_message_bank \
+            tools.test_nearmiss_db \
+            tools.test_progress \
+            tools.test_rombuild_cache \
+            tools.test_rombuild_check \
+            tools.test_rombuild_profile \
+            tools.test_sinit_owners \
+            tools.test_srcpath \
+            tools.test_stamp_provenance_verify \
+            tools.test_validate_merge
+
+# What each module protects, in the order it runs above:
+#
+#   test_affected_src            (1)   affected_src.py -- which src/ files a changed
+#                                      local header drags into the validation compile.
+#   test_asm_policy             (14)   asm_policy.py -- the one shared answer to "is this
+#                                      an asm transcription?". Guards the VACUOUS match.
+#   test_asset_catalog           (7)   asset_catalog.py -- NitroFS catalog build and the
+#                                      source references into it.
+#   test_attribution            (17)   chaos_db_ci.py -- rebuilds chaos-db.json from
+#                                      COMMITTED history; the credit data the site reads.
+#   test_bytegate               (18)   bytegate.py -- the byte-gate-failure half of the
+#                                      matched test, over layout_check/relocs/srcpath.
+#   test_cpp_rename_verify      (16)   cpp_rename.py -- func_ADDR -> demangled _ZN name
+#                                      renames. A wrong substitution here is silent.
+#   test_delaunder              (25)   delaunder.py -- removing launder idioms one site
+#                                      at a time, each verified against the ROM.
+#   test_enroll                 (11)   enroll.py -- writes src/ entries into
+#                                      config/**/delinks.txt; a bad entry fails closed
+#                                      TREE-WIDE, blocking every module's build.
+#   test_layout                 (11)   layout_check.py -- the invariants that make src/
+#                                      trustworthy; L1 is the one the ROM build cannot
+#                                      catch.
+#   test_match_attempts         (10)   match_attempts.py -- append-only log of every
+#                                      matching attempt.
+#   test_match_provenance       (20)   match_provenance.py -- the durable how-record and
+#                                      ledger behind every banked match. (2 skip)
+#   test_message_bank            (5)   message_bank.py -- message-bank export/rebuild
+#                                      must round-trip to the exact original bytes.
+#   test_nearmiss_db            (12)   nearmiss_db.py -- the persistent near-miss DB, so
+#                                      close attempts are never thrown away.
+#   test_progress                (4)   progress.py -- matched functions/bytes vs the
+#                                      whole game; the number the README reports.
+#   test_rombuild_cache         (19)   rombuild_cache.py -- the content-addressed object
+#                                      cache. A stale-key bug here silently serves the
+#                                      WRONG object into a byte-gate run.
+#   test_rombuild_check          (6)   rombuild_check.py -- turns a source-built ROM into
+#                                      the fidelity metrics every gate quotes.
+#   test_rombuild_profile        (6)   rombuild_profile.py -- isolated stock and
+#                                      intentional-mod build configs.
+#   test_sinit_owners            (9)   sinit_owners.py -- ranks the likely original TU
+#                                      owner of each __sinit_*.
+#   test_srcpath                (47)   srcpath.py -- the one place that answers "where
+#                                      does symbol X live in src/". Everything downstream
+#                                      of enrollment trusts it.
+#   test_stamp_provenance_verify(19)   stamp_provenance.py -- requires, verifies and
+#                                      records the provenance of a match. (4 skip)
+#   test_validate_merge         (35)   validate_merge.py -- builds the machine-readable
+#                                      PR validation report the validator comment renders.
