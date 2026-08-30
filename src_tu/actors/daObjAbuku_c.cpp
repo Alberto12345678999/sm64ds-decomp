@@ -3,13 +3,16 @@
  *
  * NOT ENROLLED and NOT CANONICAL: this readable C++ source is a research
  * artifact under src_tu/.  The seven licensed text functions are retained
- * from the legacy sources, but their class members now use the real
+ * from the legacy sources, but their class members use the real
  * daObjAbuku_c : dActor_c declaration and the real dCcAc_c subobject.
  *
  * mwccarm 2004/b56 emits one .text section per function in reverse source
- * order.  Keep the ROM-high function first below.  The compiler-owned
- * destructor at the end intentionally emits D0, D1, D2, vtable, and RTTI;
- * tubuild inventory records those extra sections instead of hiding them.
+ * order. Keep the ROM-high function first below. InitResources is the class's
+ * key function, so the vtable it emits naturally references the inline
+ * destructor in daObjAbuku_c.h. That makes mwccarm emit retail's D1 then D0
+ * and no D2, without an out-of-line definition or forcing helper. The raw
+ * vtable/RTTI output is audited before production isolation discards its exact
+ * gap-owned copies.
  *
  * Legacy sources covered by the seven licensed text ranges (ROM order):
  *   [0] 0x020b3298  src/_ZN12daObjAbuku_cD1Ev.c
@@ -70,12 +73,9 @@ extern "C" {
 extern int _ZTV12daObjAbuku_c[];
 extern void func_ov002_020b330c(daObjAbuku_c *);
 extern int func_ov002_020b3344(daObjAbuku_c *);
-extern void *data_020a0eac;
 extern void *_ZN7fBase_cnwEj(unsigned int);
 extern void _ZN8dActor_cC2Ev(void *);
 extern void _ZN7dCcAc_cC1Ev(void *);
-extern void _ZN7dCcAc_cD1Ev(void *);
-extern void _ZN8dActor_cD2Ev(void *);
 extern int _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
     dCcAc_c *, dActor_c *, Fix12i, Fix12i, unsigned int, unsigned int);
 extern void _ZN9dBgCh_GndC1Ev(struct RG*);
@@ -101,10 +101,10 @@ extern "C" daObjAbuku_c *daObjAbuku_c_Spawn();
  * Bubble_Spawn -- renamed to match the RTTI class name
  * (_ZTS12daObjAbuku_c), see include/daObjAbuku_c.h. */
 /* vtable identified: VT0 = _ZTV12daObjAbuku_c */
-extern "C" {  /* .c-derived member: C linkage for the whole block */
+extern "C" {  /* Actor-table factory: genuine C ABI boundary. */
 daObjAbuku_c *daObjAbuku_c_Spawn(void)
 {
-    daObjAbuku_c *p = (daObjAbuku_c *)_ZN7fBase_cnwEj(276);
+    daObjAbuku_c *p = (daObjAbuku_c *)_ZN7fBase_cnwEj(sizeof(daObjAbuku_c));
     if (p) {
         _ZN8dActor_cC2Ev(p);
         /* A compiler-emitted Itanium vtable names its -2/-1 preamble at
@@ -115,7 +115,6 @@ daObjAbuku_c *daObjAbuku_c_Spawn(void)
     return p;
 }
 }
-
 /* 0x02108940..0x0210895c, immediately before the vtable object. */
 extern "C" AbukuSpawnInfo Bubble_SpawnInfo = {
     daObjAbuku_c_Spawn,
@@ -221,13 +220,3 @@ void func_ov002_020b330c(daObjAbuku_c *c){
   c->MarkForDestruction();
 }
 }
-
-/* -------------------------------------------------------------------------- */
-/* Compiler-owned destructor variants.                                      */
-/*                                                                            */
-/* mwccarm emits the complete (D1), deleting (D0), and base (D2) variants    */
-/* from this one class definition.  D2 and the class vtable/RTTI are kept in  */
-/* the object inventory even though the ROM text map currently owns only D0   */
-/* and D1; hiding those emissions would make this TU unsafe to promote.       */
-/* -------------------------------------------------------------------------- */
-daObjAbuku_c::~daObjAbuku_c() {}

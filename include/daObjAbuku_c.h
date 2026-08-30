@@ -39,11 +39,10 @@
  * slots in dActor_c -- CleanupResources, Render, OnPendingDestroy,
  * OnYoshiTryEat and OnTurnIntoEgg are all still the base's own words.
  * The readable src_tu shadow defines InitResources and Behavior as real member
- * functions and defines one ordinary destructor, from which mwccarm emits D1,
- * D0, D2, RTTI, and the vtable. Only the seven licensed text contributions are
- * currently used for verification. Production still keeps the pre-existing
- * one-function sources and ROM-supplied vtable/data until whole-TU ownership is
- * proven safe.
+ * functions. InitResources is the key function: defining it in that TU emits
+ * the class vtable, whose inline destructor slots naturally make mwccarm emit
+ * retail's D1-then-D0 pair with no D2 and no forcing scaffold. Production still
+ * keeps the pre-existing one-function sources until the TU is promoted.
  */
 struct daObjAbuku_c : dActor_c {
     u8  pad_0d0[0x4];
@@ -64,7 +63,7 @@ struct daObjAbuku_c : dActor_c {
     s16 mLifeTimer;            /* 0x10e */
     s32 mParticle;            /* 0x110 */
 
-    virtual ~daObjAbuku_c();            /* slots 16 (D1), 17 (D0) */
+    virtual ~daObjAbuku_c() {}            /* slots 16 (D1), 17 (D0) */
 
     virtual s32  InitResources();         /* slot  0 */
     virtual s32  Behavior();         /* slot  6 */
