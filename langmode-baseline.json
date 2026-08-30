@@ -3,70 +3,65 @@
   "codegen_hacks": {
     "cv_launder": 3,
     "cv_launder_sites": 6,
-    "extern_vtable": 157,
-    "extern_vtable_classes": 157,
+    "extern_vtable": 155,
+    "extern_vtable_classes": 159,
     "inline_asm": 13,
-    "launder_or_forced": 212,
-    "launder_sites": 442
+    "launder_or_forced": 211,
+    "launder_sites": 441
   },
   "exclusions": {
-    "by_value_class_param": 55
+    "by_value_class_param": 54
   },
   "language_mode": {
     "by_kind": {
       "C1": {
         "draft": 0,
-        "migrated": 32,
-        "unmigrated": 12
+        "migrated": 53,
+        "unmigrated": 1
       },
       "C2": {
-        "draft": 1,
-        "migrated": 13,
-        "unmigrated": 6
-      },
-      "C3": {
-        "draft": 0,
-        "migrated": 0,
-        "unmigrated": 2
-      },
-      "D0": {
-        "draft": 1,
-        "migrated": 374,
-        "unmigrated": 3
-      },
-      "D1": {
-        "draft": 1,
-        "migrated": 384,
-        "unmigrated": 3
-      },
-      "D2": {
         "draft": 0,
         "migrated": 22,
         "unmigrated": 0
       },
+      "D0": {
+        "draft": 0,
+        "migrated": 389,
+        "unmigrated": 0
+      },
+      "D1": {
+        "draft": 0,
+        "migrated": 406,
+        "unmigrated": 0
+      },
+      "D2": {
+        "draft": 0,
+        "migrated": 25,
+        "unmigrated": 0
+      },
       "method": {
         "draft": 11,
-        "migrated": 2475,
-        "unmigrated": 134
+        "migrated": 2590,
+        "unmigrated": 71
       }
     },
-    "cpp_still_handspelled": 97,
-    "mangled_c": 63,
-    "mangled_cpp": 3400,
-    "mangled_total": 3463,
-    "nonmatching_drafts": 14,
-    "unmigrated_total": 160
+    "cpp_still_handspelled": 41,
+    "mangled_c": 31,
+    "mangled_cpp": 3529,
+    "mangled_total": 3560,
+    "nonmatching_drafts": 11,
+    "unmigrated_total": 72
   },
   "shadow_decls": {
-    "local_body_no_include": 1216,
-    "local_body_no_include_cpp": 527,
-    "local_struct_body": 2166,
-    "local_struct_body_cpp": 1223,
-    "pad_layout": 545
+    "local_body_no_include": 1100,
+    "local_body_no_include_cpp": 429,
+    "local_struct_body": 1979,
+    "local_struct_body_cpp": 1065,
+    "pad_layout": 490
   },
   "totals": {
-    "c_extension": 6513,
-    "cpp_extension": 4789,
-    "src_files": 11302
+    "c_extension": 6375,
+    "cpp_extension": 4877,
+    "src_files": 11252
   }
 }
