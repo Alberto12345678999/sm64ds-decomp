@@ -166,7 +166,7 @@ int daObjPushblock_c::Behavior()
 
     if (Vec3_HorzDist((Vector3 *)&self->mHomePosX, (Vector3 *)&self->mPosX) >= 0x12c000) {
         if (self->mLinkedActor != 0) {
-            if (*(unsigned short *)(self->mLinkedActor + 0xc) == 0x149) {
+            if (self->mLinkedActor->actorID == 0x149) {
                 const int homeX = self->mHomePosX;
                 pos.x = homeX;
                 const int homeY = self->mHomePosY;
@@ -174,9 +174,9 @@ int daObjPushblock_c::Behavior()
                 const int homeZ = self->mHomePosZ;
                 pos.z = homeZ;
                 pos.y = homeY + 0x96000;
-                /* This ONE read of mLinkedActor stays raw: spelling it
-                   `(char *)self->mLinkedActor` like the three sites around it
-                   costs the function its size -- measured, per site. */
+                /* This one late reload stays raw: spelling it as the named
+                   mLinkedActor read after the volatile position setup costs
+                   the function its size -- measured at this site. */
                 q = *(char **)((char *)this + 0x4f0);
                 *(int *)(q + 0x5c) = homeX;
                 *(int *)(q + 0x60) = pos.y;

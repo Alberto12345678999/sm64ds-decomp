@@ -28,7 +28,7 @@ struct daObjPushblock_c : dBgActor_c {
     s32 mHomePosZ;                      /* 0x4e4 */
     s32 mGroundY;                      /* 0x4e8 */
     u32 mSlideSound;                      /* 0x4ec */
-    s32 mLinkedActor;                      /* 0x4f0 */
+    dActor_c *mLinkedActor;                 /* 0x4f0 */
 
     /* --- vtable --- */
     virtual ~daObjPushblock_c() {}          /* slots 16 (D1), 17 (D0) */
