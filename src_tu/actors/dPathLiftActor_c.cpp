@@ -16,8 +16,8 @@
  * exception (a destructor's D0/D1/D2 group has compiler-chosen order).
  *
  * Assembled from these legacy one-function sources (ROM address order):
- *   [0] 0x020ef320  src/_ZN8PathLiftD0Ev.cpp
- *   [1] 0x020ef390  src/_ZN8PathLiftD1Ev.cpp
+ *   [0] 0x020ef320  src/_ZN16dPathLiftActor_cD0Ev.cpp
+ *   [1] 0x020ef390  src/_ZN16dPathLiftActor_cD1Ev.cpp
  *   [2] 0x020ef3ec  src/func_ov002_020ef3ec.c
  *   [3] 0x020ef3f0  src/func_ov002_020ef3f0.c
  *   [4] 0x020ef408  src/func_ov002_020ef408.c
@@ -25,7 +25,7 @@
  *   [6] 0x020ef670  src/func_ov002_020ef670.c
  *   [7] 0x020efa44  src/func_ov002_020efa44.c
  *   [8] 0x020efa54  src/func_ov002_020efa54.cpp
- *   [9] 0x020efaa0  src/_ZN8PathLift12BaseBehaviorEv.cpp
+ *   [9] 0x020efaa0  src/_ZN16dPathLiftActor_c12BaseBehaviorEv.cpp
  *   [10] 0x020efaf0  src/func_ov002_020efaf0.cpp
  *   [11] 0x020efbdc  src/func_ov002_020efbdc.c
  *   [12] 0x020efc74  src/func_ov002_020efc74.cpp
@@ -36,7 +36,7 @@
  *   [17] 0x020efebc  src/func_ov002_020efebc.c
  *   [18] 0x020efedc  src/func_ov002_020efedc.c
  *   [19] 0x020eff04  src/func_ov002_020eff04.cpp
- *   [20] 0x020eff18  src/_ZN8PathLift9AfterClsnEv.cpp
+ *   [20] 0x020eff18  src/_ZN16dPathLiftActor_c9AfterClsnEi.cpp
  *   [21] 0x020eff90  src/func_ov002_020eff90.cpp
  */
 
@@ -99,9 +99,9 @@ extern "C" void func_ov002_020eff90(int unused, dPathLiftActor_c* lift, int x) {
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 20 -- _ZN8PathLift9AfterClsnEv, 0x020eff18, size 0x78 */
+/* ROM ordinal 20 -- _ZN16dPathLiftActor_c9AfterClsnEi, 0x020eff18, size 0x78 */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN8PathLift9AfterClsnEv
+// @symbol _ZN16dPathLiftActor_c9AfterClsnEi
 /* recovered: named members + shared header, real C++ method */
 void dPathLiftActor_c::AfterClsn(int)
 {
@@ -299,7 +299,7 @@ void dPathLiftActor_c::BaseInitResources()
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 9 -- _ZN8PathLift12BaseBehaviorEv, 0x020efaa0, size 0x50 */
+/* ROM ordinal 9 -- _ZN16dPathLiftActor_c12BaseBehaviorEv, 0x020efaa0, size 0x50 */
 /* -------------------------------------------------------------------------- */
 void dPathLiftActor_c::BaseBehavior()
 {

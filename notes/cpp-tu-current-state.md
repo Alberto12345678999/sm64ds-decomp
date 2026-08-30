@@ -20,7 +20,7 @@ python tools/cpp_tu_state.py --check-note
 | --- | ---: |
 | MATCHED functions | 11246 / 11402 (98.63%) |
 | MATCHED code bytes | 2120876 / 2238108 (94.76%) |
-| Strict CONVERTED source functions | 2498 / 11309 (22.09%) |
+| Strict CONVERTED source functions | 2499 / 11309 (22.10%) |
 | Physical production source files | 11257 |
 
 MATCHED is recomputed from committed config symbols and `src/` through
@@ -71,17 +71,17 @@ partition to add to the migrated and unmigrated rows.
 
 | Measure | Live value |
 | --- | ---: |
-| Tracked `src_tu/` source files | 84 |
-| Manifest entries | 88 |
-| Functions named by manifest entries | 1086 |
-| Unique functions named by the manifest | 1086 |
+| Tracked `src_tu/` source files | 85 |
+| Manifest entries | 89 |
+| Functions named by manifest entries | 1108 |
+| Unique functions named by the manifest | 1108 |
 | Modules represented | 27 |
-| Manifest shadow sources present in git | 88 |
+| Manifest shadow sources present in git | 89 |
 | Entries licensing non-text sections | 3 |
 | Entries actually production-enrolled at `promoted_source` | 4 |
 | Existing promotion paths that disagree with delinks | 0 |
 
-Manifest statuses: `link-verified` 5, `promoted` 4, `text-verified` 79.
+Manifest statuses: `link-verified` 5, `promoted` 4, `text-verified` 80.
 
 `config/tu_manifest.d/` records reconstruction evidence and licensed ranges. It does
 not enroll a TU. The production number above counts an entry as promoted only when every
