@@ -1,9 +1,9 @@
 {
   "id": "ov070/daKpFr_c",
   "module": "ov070",
-  "source": "src_tu/actors/daKpFr_c.cpp",
+  "source": "src/actors/daKpFr_c.cpp",
   "promoted_source": "src/actors/daKpFr_c.cpp",
-  "status": "text-verified",
+  "status": "promoted",
   "boundary_confidence": "high",
   "boundary_evidence": [
     "contiguous linker run: 0x2121b48..0x2122244, 21 function(s), from build/tu_map.json (tools/tu_map.py)",

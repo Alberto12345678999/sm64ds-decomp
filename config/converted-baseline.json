@@ -7,7 +7,7 @@
     "no_codegen_trick",
     "no_mangled_refs"
   ],
-  "count": 1958,
+  "count": 1951,
   "converted": [
     "src/ARMProcessorMode.c",
     "src/ARMRestoreContext.c",
@@ -1557,12 +1557,6 @@
     "src/_ZN8daEyBm_c16OnPendingDestroyEv.cpp",
     "src/_ZN8daEyBm_cD0Ev.cpp",
     "src/_ZN8daEyBm_cD1Ev.cpp",
-    "src/_ZN8daKpFr_c13OnYoshiTryEatEv.cpp",
-    "src/_ZN8daKpFr_c16CleanupResourcesEv.cpp",
-    "src/_ZN8daKpFr_c16OnPendingDestroyEv.cpp",
-    "src/_ZN8daKpFr_c8BehaviorEv.cpp",
-    "src/_ZN8daKpFr_cD0Ev.cpp",
-    "src/_ZN8daKpFr_cD1Ev.cpp",
     "src/_ZN8daKrpa_c13OnYoshiTryEatEv.cpp",
     "src/_ZN8daKrpa_c16CleanupResourcesEv.cpp",
     "src/_ZN8daKrpa_c16OnPendingDestroyEv.cpp",

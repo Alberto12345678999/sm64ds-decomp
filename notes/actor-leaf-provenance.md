@@ -260,8 +260,7 @@ Sources: `src/_ZN8daEyBm_c13InitResourcesEv.cpp`,
 | 0x324 | `mParticle1` | particle-handle shape, effect 0x7f, emitted at `mPosY + 0x4b000`. |
 | 0x328 | `mParticle2` | same, effect 0x80. |
 
-Sources: `src/_ZN8daKpFr_c13InitResourcesEv.cpp`,
-`src/_ZN8daKpFr_c6RenderEv.cpp`, `src_tu/actors/daKpFr_c.cpp`.
+Source: `src/actors/daKpFr_c.cpp`.
 
 ## daKrpa_c -- include/daKrpa_c.h
 

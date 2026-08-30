@@ -288,90 +288,6 @@ src/daKrpa_c_Spawn.c:
     complete
     .text start:0x02121af8 end:0x02121b48
 
-src/_ZN8daKpFr_cD1Ev.cpp:
-    complete
-    .text start:0x02121b48 end:0x02121b88
-
-src/_ZN8daKpFr_cD0Ev.cpp:
-    complete
-    .text start:0x02121b88 end:0x02121bdc
-
-src/_ZN8daKpFr_c13OnYoshiTryEatEv.cpp:
-    complete
-    .text start:0x02121bdc end:0x02121be4
-
-src/func_ov070_02121be4.cpp:
-    complete
-    .text start:0x02121be4 end:0x02121c8c
-
-src/func_ov070_02121c8c.c:
-    complete
-    .text start:0x02121c8c end:0x02121cbc
-
-src/func_ov070_02121cbc.c:
-    complete
-    .text start:0x02121cbc end:0x02121d50
-
-src/func_ov070_02121d50.cpp:
-    complete
-    .text start:0x02121d50 end:0x02121e14
-
-src/func_ov070_02121e14.cpp:
-    complete
-    .text start:0x02121e14 end:0x02121eb0
-
-src/func_ov070_02121eb0.c:
-    complete
-    .text start:0x02121eb0 end:0x02121ef8
-
-src/func_ov070_02121ef8.c:
-    complete
-    .text start:0x02121ef8 end:0x02121f18
-
-src/func_ov070_02121f18.cpp:
-    complete
-    .text start:0x02121f18 end:0x02121fb0
-
-src/func_ov070_02121fb0.c:
-    complete
-    .text start:0x02121fb0 end:0x02121fd0
-
-src/func_ov070_02121fd0.cpp:
-    complete
-    .text start:0x02121fd0 end:0x0212200c
-
-src/func_ov070_0212200c.cpp:
-    complete
-    .text start:0x0212200c end:0x02122044
-
-src/func_ov070_02122044.c:
-    complete
-    .text start:0x02122044 end:0x02122060
-
-src/_ZN8daKpFr_c16CleanupResourcesEv.cpp:
-    complete
-    .text start:0x02122060 end:0x02122068
-
-src/_ZN8daKpFr_c16OnPendingDestroyEv.cpp:
-    complete
-    .text start:0x02122068 end:0x0212206c
-
-src/_ZN8daKpFr_c6RenderEv.cpp:
-    complete
-    .text start:0x0212206c end:0x02122104
-
-src/_ZN8daKpFr_c8BehaviorEv.cpp:
-    complete
-    .text start:0x02122104 end:0x02122124
-
-src/_ZN8daKpFr_c13InitResourcesEv.cpp:
-    complete
-    .text start:0x02122124 end:0x021221fc
-
-src/daKpFr_c_Spawn.c:
-    complete
-    .text start:0x021221fc end:0x02122244
-
 src/__sinit_ov070_02122afc.c:
     complete
     .init start:0x02122afc end:0x02122d80
@@ -387,3 +303,7 @@ src/__sinit_ov070_02122f30.c:
 src/__sinit_ov070_02123030.c:
     complete
     .init start:0x02123030 end:0x021230a4
+
+src/actors/daKpFr_c.cpp:
+    complete
+    .text start:0x02121b48 end:0x02122244
