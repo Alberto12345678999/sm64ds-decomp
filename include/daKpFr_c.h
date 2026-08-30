@@ -1,7 +1,6 @@
 #ifndef DAKPFR_C_H
 #define DAKPFR_C_H
 
-#include "common.h"
 #include "dCcAc_c.h"
 #include "ShadowModel.h"
 #include "dBgCh_Actr.h"
@@ -12,9 +11,11 @@
  * 0x02123418 names dActor_c as the sole base at offset 0, and the class's
  * vtable at 0x02123448 (31 slots, same count as dActor_c's) is what pairs it
  * to daKpFr_c_Spawn (renamed with the class; was FlameChompFire_Spawn).
- * A genuine `new daKpFr_c` reproduces the factory's 0x330 allocation through
- * the retail global operator new, base/member construction, and vptr store
- * exactly.
+ * A natural `new daKpFr_c` was measured and rejected: its instruction bytes
+ * match after relocation masking, but it targets the unresolved global
+ * `_Znwm` rather than retail's fBase_c::operator new. The actor-table factory
+ * therefore keeps an explicit typed construction seam for the allocator,
+ * base/member constructors, and vptr store.
  *
  * The Spawn constructs the three owned subobjects below at 0xd4..0x130 in
  * declaration order; D1 destroys them in exactly the reverse order before
@@ -55,12 +56,12 @@ struct daKpFr_c : dActor_c {
     /* Two particle handles, effects 0x7f and 0x80, both fed back into
        Particle::System::NewUnkCallback818 every Render, at mPosY + 0x4b000.
        [_ZN8daKpFr_c6RenderEv.cpp] */
-    s32                mParticle1;                /* 0x324 */
-    s32                mParticle2;                /* 0x328 */
+    u32                mParticle1;             /* 0x324 */
+    u32                mParticle2;             /* 0x328 */
     u8                 mStateTimer;            /* 0x32c */
     u8                 pad_32d[0x3];
 
-    /* Inline plus actual construction is load-bearing: mwcc emits retail's
+    /* Inline plus vtable instantiation is load-bearing: mwcc emits retail's
        D1 then D0 pair, with no homeless D2. InitResources is the first
        out-of-line virtual and anchors this TU's vtable/RTTI group. */
     virtual ~daKpFr_c() {}

@@ -22,10 +22,10 @@ typedef char daKpFrSpawnInfo_size_must_be_0x1c[
 /* Manually curated translation unit -- ov070/daKpFr_c (21 function(s)).
  * tubuild create refused this TU (legacy bodies wrapped in extern "C" { }),
  * so it began as a reverse-ROM-order concatenation. It now uses the real
- * class, typed members, Player/collision headers, genuine natural new, and
- * compiler-owned inline lifecycle. mwcc emits one .text section per ordinary
- * definition in reverse source order; the destructor variant group is emitted
- * first as retail D1 then D0, with no D2.
+ * class, typed members, Player/collision headers, a typed retail factory seam,
+ * and compiler-owned inline lifecycle. mwcc emits one .text section per
+ * ordinary definition in reverse source order; the destructor variant group
+ * is emitted first as retail D1 then D0, with no D2.
  *
  * Assembled from these legacy one-function sources (ROM address order):
  *   [0] 0x02121b48  src/_ZN8daKpFr_cD1Ev.cpp
@@ -54,9 +54,28 @@ typedef char daKpFrSpawnInfo_size_must_be_0x1c[
 /* -------------------------------------------------------------------------- */
 /* ROM ordinal 20 -- daKpFr_c_Spawn, 0x021221fc, size 0x48 */
 /* -------------------------------------------------------------------------- */
-extern "C" daKpFr_c *daKpFr_c_Spawn(void)
+/* Natural `new daKpFr_c` targets `_Znwm`, not the retail actor allocator.
+ * Keep this one typed C-ABI construction seam at the actor-table boundary. */
+extern "C" {
+extern void *_ZN7fBase_cnwEj(u32 size);
+extern void _ZN8dActor_cC2Ev(dActor_c *actor);
+extern void _ZN11ShadowModelC1Ev(ShadowModel *shadow);
+extern void _ZN7dCcAc_cC1Ev(dCcAc_c *clsn);
+extern void _ZN10dBgCh_ActrC1Ev(dBgCh_Actr *clsn);
+extern int _ZTV8daKpFr_c[];
+
+daKpFr_c *daKpFr_c_Spawn(void)
 {
-    return new daKpFr_c;
+    daKpFr_c *actor = (daKpFr_c *)_ZN7fBase_cnwEj(sizeof(daKpFr_c));
+    if (actor) {
+        _ZN8dActor_cC2Ev(actor);
+        *(int *)actor = (int)&_ZTV8daKpFr_c[2];
+        _ZN11ShadowModelC1Ev(&actor->mShadowModel);
+        _ZN7dCcAc_cC1Ev(&actor->mdCcAc_c);
+        _ZN10dBgCh_ActrC1Ev(&actor->mWithMeshClsn);
+    }
+    return actor;
+}
 }
 
 extern "C" daKpFrSpawnInfo daKpFr_c_SpawnInfo = {
@@ -115,7 +134,10 @@ int daKpFr_c::Behavior()
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN8daKpFr_c6RenderEv
 extern "C" {
-extern int _ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f(unsigned int a, unsigned int b, int c, int d, int e, void* f);
+struct Vector3_16f;
+extern u32 _ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f(
+    u32 handle, u32 effectID, Fix12i x, Fix12i y, Fix12i z,
+    const Vector3_16f *rotation);
 }
 
 int daKpFr_c::Render()
@@ -151,7 +173,7 @@ int daKpFr_c::CleanupResources()
 /* -------------------------------------------------------------------------- */
 /* ROM ordinal 14 -- func_ov070_02122044, 0x02122044, size 0x1c */
 /* -------------------------------------------------------------------------- */
-extern "C" {  /* ROM-proven unmangled free-function ABI */
+extern "C" {  /* Unresolved func_ placeholder; retain its current C ABI spelling. */
 extern "C" daKpFrState data_ov070_021236ec[];
 extern void func_ov070_0212200c(void *self);
 
@@ -184,7 +206,7 @@ extern "C" void func_ov070_02121fd0(char *raw) {
 /* -------------------------------------------------------------------------- */
 /* ROM ordinal 11 -- func_ov070_02121fb0, 0x02121fb0, size 0x20 */
 /* -------------------------------------------------------------------------- */
-extern "C" {  /* ROM-proven unmangled free-function ABI */
+extern "C" {  /* Unresolved func_ placeholder; retain its current C ABI spelling. */
 // @symbol func_ov070_02121fb0
 int func_ov070_02121fb0(char *raw)
 {
@@ -214,7 +236,7 @@ int func_ov070_02121f18(char* raw) {
     func_ov070_02121c8c(self);
   player = self->ClosestNonVanishPlayer();
   if (player) {
-    short ang = Vec3_HorzAngle(&self->mPosX, (char*)player + 0x5c);
+    short ang = Vec3_HorzAngle(&self->mPosX, &player->mPosX);
     _Z14ApproachLinearRsss(&self->mAngleY, ang, 0x180);
     self->mPrevAngleY = self->mAngleY;
   }
@@ -231,7 +253,7 @@ int func_ov070_02121f18(char* raw) {
 /* -------------------------------------------------------------------------- */
 /* ROM ordinal 9 -- func_ov070_02121ef8, 0x02121ef8, size 0x20 */
 /* -------------------------------------------------------------------------- */
-extern "C" {  /* ROM-proven unmangled free-function ABI */
+extern "C" {  /* Unresolved func_ placeholder; retain its current C ABI spelling. */
 int func_ov070_02121ef8(char *raw)
 {
     daKpFr_c *self = (daKpFr_c *)raw;
@@ -244,7 +266,7 @@ int func_ov070_02121ef8(char *raw)
 /* -------------------------------------------------------------------------- */
 /* ROM ordinal 8 -- func_ov070_02121eb0, 0x02121eb0, size 0x48 */
 /* -------------------------------------------------------------------------- */
-extern "C" {  /* ROM-proven unmangled free-function ABI */
+extern "C" {  /* Unresolved func_ placeholder; retain its current C ABI spelling. */
 extern void func_ov070_02121c8c(void *t);
 int func_ov070_02121eb0(void *c) {
     daKpFr_c *self = (daKpFr_c *)c;
@@ -263,19 +285,23 @@ int func_ov070_02121eb0(void *c) {
 /* ROM ordinal 7 -- func_ov070_02121e14, 0x02121e14, size 0x9c */
 /* -------------------------------------------------------------------------- */
 extern "C" {
-extern void _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(void* a, void* sm, void* m, int f1, int f2, unsigned int j);
-void func_ov070_02121e14(char* raw) {
+extern void _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
+    dActor_c *actor, ShadowModel *shadow, Matrix4x3 *matrix,
+    Fix12i radius, Fix12i depth, u32 opacity);
+void func_ov070_02121e14(char *raw) {
+  daKpFr_c *self = (daKpFr_c *)raw;
   int f;
-  *(int*)(raw + 0x310) = *(int*)(raw + 0x5c) >> 3;
-  *(int*)(raw + 0x314) = *(int*)(raw + 0x60) >> 3;
-  *(int*)(raw + 0x318) = *(int*)(raw + 0x64) >> 3;
+  self->mMatrix.t.x = self->mPosX >> 3;
+  self->mMatrix.t.y = self->mPosY >> 3;
+  self->mMatrix.t.z = self->mPosZ >> 3;
   dBgCh_Gnd rg;
-  rg.SetObjAndPos(*(Vector3*)(raw + 0x5c), (dActor_c*)raw);
+  rg.SetObjAndPos(*(Vector3*)&self->mPosX, self);
   if (rg.DetectClsn() != 0)
-    f = (*(int*)(raw + 0x60) - rg.clsnY) + 0x1e000;
+    f = (self->mPosY - rg.clsnY) + 0x1e000;
   else
     f = 0x12c000;
-  _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(raw, raw + 0xd4, raw + 0x2ec, 0x64000, f, 0xf);
+  _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
+      self, &self->mShadowModel, &self->mMatrix, 0x64000, f, 0xf);
 }
 }
 
@@ -310,7 +336,7 @@ extern "C" void func_ov070_02121d50(void* vself, void* vclsn) {
 /* -------------------------------------------------------------------------- */
 /* ROM ordinal 5 -- func_ov070_02121cbc, 0x02121cbc, size 0x94 */
 /* -------------------------------------------------------------------------- */
-extern "C" {  /* ROM-proven unmangled free-function ABI */
+extern "C" {  /* Unresolved func_ placeholder; retain its current C ABI spelling. */
 extern void func_ov070_02122044(void* c, int a);
 extern void func_ov070_02121c8c(void* c);
 
@@ -319,7 +345,7 @@ void func_ov070_02121cbc(char* raw){
   dActor_c* found;
   Player* player;
   int b;
-  unsigned int id = *(unsigned int*)(raw + 0x120);
+  unsigned int id = self->mdCcAc_c.otherOwner;
   if (id == 0) return;
   found = dActor_c::FindWithID(id);
   if (found == 0) return;
@@ -340,7 +366,7 @@ void func_ov070_02121cbc(char* raw){
 /* -------------------------------------------------------------------------- */
 /* ROM ordinal 4 -- func_ov070_02121c8c, 0x02121c8c, size 0x30 */
 /* -------------------------------------------------------------------------- */
-extern "C" {  /* ROM-proven unmangled free-function ABI */
+extern "C" {  /* Unresolved func_ placeholder; retain its current C ABI spelling. */
 extern void func_02012694(int id, void *pos);
 void func_ov070_02121c8c(void *c)
 {
@@ -395,7 +421,7 @@ int daKpFr_c::OnYoshiTryEat()
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN8daKpFr_cD0Ev
 
-/* No separate body: the inline class destructor plus natural construction
+/* No separate body: the inline class destructor plus vtable instantiation
  * makes mwcc emit the retail deleting variant after D1. */
 
 /* -------------------------------------------------------------------------- */
