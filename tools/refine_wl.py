@@ -27,6 +27,7 @@ import categorize_misses as CAT
 import knowledge as KB
 import ledger as L
 import modules as MOD
+import nearmiss_db as NDB
 import relocs as R
 import worklist as WL
 
@@ -63,6 +64,7 @@ def main():
                     help="do not skip names in refine_attempted.txt (mass sweeps by a "
                          "DIFFERENT model tier that never saw them)")
     args = ap.parse_args()
+    NDB.warn_stale_pin()         # a stale evaluator means this whole pool is mis-ranked
 
     rows = [json.loads(l) for l in (REPO / "nearmiss" / "db.jsonl")
             .read_text(encoding="utf-8").splitlines() if l.strip()]
@@ -92,7 +94,7 @@ def main():
             and (min_size is None or r["size"] >= min_size)
             and (max_size is None or r["size"] < max_size)
             and unmatched(r["name"])]
-    pool.sort(key=lambda r: r["divergences"])
+    pool.sort(key=NDB.seed_rank)   # closest first; size gap breaks divergence ties
 
     cache = json.loads(CACHE.read_text()) if CACHE.exists() else {}
     chosen, checked = [], 0
