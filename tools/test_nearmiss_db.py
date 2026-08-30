@@ -17,7 +17,6 @@ import contextlib
 import io
 import json
 import pathlib
-import re
 import subprocess
 import sys
 import tempfile
@@ -238,9 +237,41 @@ class EvalPinGuardTests(unittest.TestCase):
     `python tools/nearmiss_db.py reeval` on a main-tip checkout and commits the
     re-scored db.jsonl together with the refreshed nearmiss/eval_pin.json.
 
-    CANONICAL is parsed out of tools/match.py statically because this suite runs on a
-    bare interpreter (tool-tests.yml: no capstone/pyelftools), where match.py cannot
-    be imported."""
+    CANONICAL and DEFAULT_FLAGS are read out of tools/match.py statically because this
+    suite runs on a bare interpreter (tool-tests.yml: no capstone/pyelftools), where
+    match.py cannot be imported. Statically via the AST, and asserting EXACTLY ONE
+    module-level assignment per name: a regex `search` returns the FIRST match, so a
+    second `CANONICAL = ...` further down the file -- the shape a careless edit or a
+    bad merge actually produces -- left this guard green while the live evaluator was
+    something else entirely."""
+
+    @staticmethod
+    def _module_constants(path, names):
+        """{name: literal value} for module-level `NAME = <literal>` in a source file.
+        Fails if a name is assigned zero or 2+ times at module level, or is not a
+        plain literal: the guard must never silently read a value that is not the one
+        the tools actually use."""
+        import ast
+        path = pathlib.Path(path)
+        tree = ast.parse(path.read_text(encoding="utf-8"))
+        out = {}
+        for name in names:
+            hits = [n.value for n in tree.body
+                    if isinstance(n, ast.Assign)
+                    and any(isinstance(t, ast.Name) and t.id == name for t in n.targets)]
+            if len(hits) != 1:
+                raise AssertionError(
+                    f"{path.name} has {len(hits)} module-level assignments to {name}; "
+                    f"expected exactly 1. Fix the source -- a shadow re-assignment "
+                    f"makes every reader of {name} a coin flip -- or fix this parser "
+                    f"AND re-check the eval pin.")
+            try:
+                out[name] = ast.literal_eval(hits[0])
+            except ValueError as e:
+                raise AssertionError(
+                    f"{name} in {path.name} is no longer a plain literal ({e}); fix "
+                    f"this test's parser AND re-check the eval pin.")
+        return out
 
     def test_eval_pin_matches_the_live_evaluator(self):
         pin_path = TOOLS.parent / "nearmiss" / "eval_pin.json"
@@ -249,15 +280,18 @@ class EvalPinGuardTests(unittest.TestCase):
                         "evaluator. Run `python tools/nearmiss_db.py reeval` on a "
                         "main-tip checkout and commit db.jsonl + eval_pin.json.")
         pin = json.loads(pin_path.read_text(encoding="utf-8"))
-        text = (TOOLS / "match.py").read_text(encoding="utf-8")
-        m = re.search(r'^CANONICAL\s*=\s*"([^"]+)"', text, re.M)
-        self.assertIsNotNone(
-            m, "tools/match.py no longer declares CANONICAL as a plain string "
-               "literal; fix this test's parser AND re-check the eval pin.")
+        live = self._module_constants(TOOLS / "match.py", ("CANONICAL", "DEFAULT_FLAGS"))
+        # Flags are gated too, not just the compiler and the metric. -O4,p -> -O2
+        # re-scores every stored source far harder than a compiler bump does, and the
+        # pin already records `flags`, so leaving it out of the assertion made the
+        # pin's own field decorative. cpp_flags is derived from DEFAULT_FLAGS
+        # (swarm.CPP_FLAGS), so gating flags covers the C++ lane as well.
         self.assertEqual(
-            (pin.get("canonical"), pin.get("metric")), (m.group(1), NDB.METRIC_REV),
-            "the near-miss DB was last re-scored under a different evaluator, so "
-            "every stored divergence is stale relative to the live one. Run "
+            (pin.get("canonical"), pin.get("metric"), pin.get("flags")),
+            (live["CANONICAL"], NDB.METRIC_REV, live["DEFAULT_FLAGS"]),
+            "the near-miss DB was last re-scored under a different evaluator "
+            "(compiler, metric revision, or build flags), so every stored divergence "
+            "is stale relative to the live one. Run "
             "`python tools/nearmiss_db.py reeval` on a main-tip checkout and commit "
             "db.jsonl + eval_pin.json together with this change.")
 
