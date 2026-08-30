@@ -11,10 +11,44 @@ so the final push is fast and cheap instead of starting from scratch.
 
 One record per (module, addr), keeping the CLOSEST candidate:
   {module, addr, name, size, target_hex, lang, divergences, c_source, source}
+plus `cand_size` (the candidate's assembled byte size; `size` is the TARGET's) and
+`evaluator` (the fingerprint of the compiler+metric that produced `divergences`, e.g.
+`2004/b56|m1`) on every row the evaluator has touched. "Closest" is the combined key
+(divergences, |cand_size - size|): edit distance leads and an upsert never regresses
+it, but of two equally-close drafts the one assembling nearer the target size wins --
+edit distance alone is non-monotonic in candidate size (a ten-instruction-short draft
+has scored 225 while the one-instruction-off draft of the same function scored 267),
+and the permuter cannot add or remove instructions, so the size-closer draft is the
+better fuel. Worklists (`export-close`, `crunch.py`, `refine_wl.py`) rank by the same
+key.
 
-Managed by `tools/nearmiss_db.py` (ingest / stats / list / export-close / bank-matches).
-Run `python tools/permuter/crunch.py` to grind the closest ones through the permuter locally
-(free), banking any that reach a match.
+Managed by `tools/nearmiss_db.py` (ingest / stats / list / export-close / bank-matches
+/ reeval). Run `python tools/permuter/crunch.py` to grind the closest ones through the
+permuter locally (free), banking any that reach a match.
+
+## Score integrity: the eval pin
+
+Stored divergences are only comparable while the evaluator that produced them still
+exists. `include/` churn under the stored sources, a canonical-compiler bump, or a
+metric change all re-score unchanged rows silently (2026-08-30 audit: 5 of 8 sampled
+rows re-scored differently -- one recorded at 230 re-evaluated to 354 -- and two rows
+recorded at divergence 13 no longer compiled at all, poisoned bait atop any
+closest-first worklist).
+
+- `eval_pin.json` (committed, next to the DB) records the evaluator of the last full
+  re-evaluation pass. Every ranking consumer warns on stderr when the live evaluator
+  no longer matches it, and `tools/test_nearmiss_db.py` fails CI when
+  `match.CANONICAL` or `nearmiss_db.METRIC_REV` moves without a fresh pass.
+- `python tools/nearmiss_db.py reeval` is that pass: it re-scores every row, stamps
+  each with the evaluator fingerprint, and rewrites the pin. Run it on a MAIN-TIP
+  checkout only (stale-lane rule) and commit `db.jsonl` + `eval_pin.json` together.
+- A row whose stored source no longer scores is KEPT but marked -- `status`
+  ("noncompile" / "func-absent"), `error`, `divergences: null`, the last good score in
+  `stale_divergences` -- so it ranks last everywhere instead of topping the queue. A
+  later strictly-improving ingest replaces it and clears the mark.
+- Union merges can resurrect a pre-reeval copy of a corrected row (this file is
+  `merge=union`); the dedupe collapse prefers a row stamped by the current pin over
+  any unstamped or stale-stamped copy, so corrections survive the next refresh.
 
 ## Standing rule: every batch feeds this DB
 
