@@ -1,10 +1,19 @@
 //cpp
 #include "daObjCtMecha05_c.h"
 
-/* TTC_MovingBar_Spawn is the cartridge's proven C ABI spelling even though
- * the object it constructs is daObjCtMecha05_c. Natural `new` selects the
- * unresolved global allocator, so this boundary keeps retail's actor
- * allocator and measured base/member construction sequence explicitly. */
+/* The name TTC_MovingBar_Spawn is project convention, not the cartridge's:
+ * the string "TTC_MovingBar" occurs in no ROM binary. What is ROM-proven is
+ * the ADDRESS, 0x0211b328, and that the object constructed there is
+ * daObjCtMecha05_c -- the store writes this class's vtable. The spelling is
+ * assigned in config/arm9/overlays/ov065/symbols.txt; the unmangled, C ABI
+ * shape is likewise a project choice the cartridge cannot confirm or deny,
+ * because the image carries no symbol names at all.
+ *
+ * This function is a separate file because tu_map.py puts 0x0211b328 at the
+ * start of the NEXT translation unit, not in daObjCtMecha05_c's
+ * 0x211ab60..0x211b328 run. Natural `new` here would select the unresolved
+ * global allocator, so the body keeps retail's actor allocator and the
+ * measured base/member construction sequence explicitly. */
 extern "C" {
 extern void *_ZN7fBase_cnwEj(u32 size);
 extern void _ZN10dBgActor_cC2Ev(dBgActor_c *actor);

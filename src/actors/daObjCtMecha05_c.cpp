@@ -270,9 +270,15 @@ int daObjCtMecha05_c::Render()
 /* ROM ordinal 3 -- _ZN16daObjCtMecha05_c16CleanupResourcesEv, 0x0211ad04, size 0x44 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN16daObjCtMecha05_c16CleanupResourcesEv
-/* The ROM's own bss symbol names for this class's model/collision files really
-   are spelled TTC_MovingBar_ModelFile / TTC_MovingBar_ClsnFile -- not a naming
-   error carried over from the neighbouring class, just shared overlay data. */
+/* The two bss slots released here are ROM-proven by ADDRESS, not by name.
+   0x0211d904 and 0x0211d90c appear as literal-pool words in the cartridge's
+   overlay_0065.bin (file offsets 0x4e60/0x4e64, 0x542c/0x5430, 0x69fc/0x6a0c),
+   so the overlay really does share these two slots with the neighbouring class
+   -- that is fact, not a naming error carried over from it.
+   The SPELLING TTC_MovingBar_* is project convention, not the cartridge's: the
+   string "TTC_MovingBar" occurs nowhere in arm9, arm7 or any of the 103 overlay
+   binaries. These names are assigned by us, at those two addresses, in
+   config/arm9/overlays/ov065/symbols.txt. Read them as labels, not evidence. */
 int daObjCtMecha05_c::CleanupResources()
 {
     if (mMeshCollider.IsEnabled())
