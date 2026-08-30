@@ -172,10 +172,7 @@ int daObjPushblock_c::Behavior()
                 const int homeZ = mHomePosZ;
                 pos.z = homeZ;
                 pos.y = homeY + 0x96000;
-                /* This one late reload stays raw: spelling it as the named
-                   mLinkedActor read after the volatile position setup costs
-                   the function its size -- measured at this site. */
-                q = *(dActor_c **)((char *)this + 0x4f0);
+                q = mLinkedActor;
                 q->mPosX = homeX;
                 q->mPosY = pos.y;
                 q->mPosZ = pos.z;
@@ -249,10 +246,10 @@ int daObjPushblock_c::CleanupResources()
  * not a `return 0;` here, which would desync the bytes. */
 int daObjPushblock_c::OnPushed(dActor_c &other)
 {
-    char *r1 = (char *)&other;
-    if (r1 == 0) return;
-    mPrevAngleY = *(short *)(r1 + 0x8e);
-    if (*(int *)(r1 + 8) == 2) mHorzSpeed = 0x8000;
+    dActor_c *pusher = &other;
+    if (pusher == 0) return;
+    mPrevAngleY = pusher->mAngleY;
+    if (pusher->param1 == 2) mHorzSpeed = 0x8000;
     else mHorzSpeed = 0x4000;
 }
 
