@@ -45,7 +45,6 @@ extern void func_020393a4(int *p, int v);
 extern void func_02039394(int *p, int v);
 extern int _ZN10dBgActor_c21IsClsnInRangeOnScreenE5Fix12IiES1_(void *thiz, int a, int b);
 extern int Vec3_Dist(Vector3 *a, Vector3 *b);
-extern unsigned int _ZN5Sound8PlayLongEjjjRK7Vector3s(unsigned int a, unsigned int b, unsigned int c, Vector3 *pos, unsigned int e);
 extern int Vec3_HorzDist(Vector3 *a, Vector3 *b);
 void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
     void *self, KCL_File *k, void *m, int fix, short s, void *clps);
@@ -53,6 +52,10 @@ void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
     void *self, void *a, int b, int c, void *d, int e);
 extern SharedFilePtr data_ov002_0210df9c;
 extern SharedFilePtr data_ov002_0210df94;
+}
+
+namespace Sound {
+u32 PlayLong(u32 handle, u32 bank, u32 soundId, const Vector3 &pos, s16 pitch);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -157,7 +160,8 @@ int daObjPushblock_c::Behavior()
     _ZN10dBgActor_c21IsClsnInRangeOnScreenE5Fix12IiES1_(c, 0x3e8000, 0x96000);
 
     if (self->mHorzSpeed != 0 && Vec3_Dist((Vector3 *)&self->mPosX, (Vector3 *)&self->mPrevPosX) != 0) {
-        self->mSlideSound = _ZN5Sound8PlayLongEjjjRK7Vector3s(self->mSlideSound, 3, 0x97, (Vector3 *)&self->mCamSpacePosX, 0);
+        self->mSlideSound = Sound::PlayLong(
+            self->mSlideSound, 3, 0x97, *(Vector3 *)&self->mCamSpacePosX, 0);
     }
 
     if (Vec3_HorzDist((Vector3 *)&self->mHomePosX, (Vector3 *)&self->mPosX) >= 0x12c000) {
