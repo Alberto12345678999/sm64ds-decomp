@@ -10,7 +10,7 @@ GAME_OVER, CT_MECHA03, BIG_SNOWMAN, METER, MULTIBOOT, MG_CUP, MG_SLOT1,
 MG_SLOT3, MG_AMIDA, MG_MCARLO, MG_FLOWER). **Not applied, on purpose:** the
 `Guragura` -> `Guruguru` suggestion below (§2, idx 132) — checked and
 rejected. `Guragura` is already a real, independently RTTI-verified class
-([daObjGuragura_c.h](../include/daObjGuragura_c.h),[ov002](../config/arm9/overlays/ov002/symbols.txt):1784 `_ZTI15daObjGuragura_c`) with its own header and
+([daObjGuragura_c.h](../include/daObjGuragura_c.h), [ov002](../config/arm9/overlays/ov002/symbols.txt):1784 `_ZTI15daObjGuragura_c`) with its own header and
 matched methods; it is a *different actor* from index 132's `RC_GURUGURU`
 (ov036). The two just happen to romanize similarly. Left as-is rather than
 risk conflating two unrelated classes. The remaining §2 divergences (STARBASE,
