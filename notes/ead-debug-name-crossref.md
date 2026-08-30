@@ -55,7 +55,7 @@ for what wasn't hand-reviewed.
 **Important asymmetry check performed and worth flagging:** file order inside
 a `symbols.txt` overlay does **not** reliably follow `ACTOR_SPAWN_TABLE`
 index order. `StarSwitch_Spawn` (index 12) appears *before*
-`ExclamationSwitch_Spawn` (index 11) in [ov002/symbols.txt](../config/arm9/ov002/symbols.txt). Any future join
+`ExclamationSwitch_Spawn` (index 11) in [ov002/symbols.txt](../config/arm9/overlays/ov002/symbols.txt). Any future join
 that infers index order from symbol-file order (as I initially tried for the
 slide-decoration case below) needs a real table walk, not a file-order
 assumption.
