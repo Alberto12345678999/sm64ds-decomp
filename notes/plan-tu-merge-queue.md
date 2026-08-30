@@ -332,7 +332,8 @@ per *batch*, serially, at merge time. `rombuild.py` is the final verdict, not `b
 `_EXTERN_C_BLOCK_RE` matches `extern "C" {` on its own line; `consume_block` runs to the
 balancing brace and appends every interior line to `externs`. When the definition is
 *inside* that block it is consumed as a declaration, `body_start` stays `None`, and
-`create` raises `SystemExit`. Example, `src/func_ov010_0211139c.cpp`:
+`create` raises `SystemExit`. Before its class-TU promotion, the one-function source for
+`func_ov010_0211139c` provided this example:
 
 ```c
 //cpp
