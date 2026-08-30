@@ -188,106 +188,6 @@ src/Amp_Spawn.c:
     complete
     .text start:0x021210ac end:0x02121118
 
-src/_ZN8daKrpa_cD1Ev.cpp:
-    complete
-    .text start:0x02121118 end:0x02121160
-
-src/_ZN8daKrpa_cD0Ev.cpp:
-    complete
-    .text start:0x02121160 end:0x021211bc
-
-src/_ZN8daKrpa_c13OnYoshiTryEatEv.cpp:
-    complete
-    .text start:0x021211bc end:0x021211c4
-
-src/func_ov070_021211c4.cpp:
-    complete
-    .text start:0x021211c4 end:0x02121298
-
-src/func_ov070_02121298.cpp:
-    complete
-    .text start:0x02121298 end:0x02121310
-
-src/func_ov070_02121310.cpp:
-    complete
-    .text start:0x02121310 end:0x021213cc
-
-src/func_ov070_021213cc.c:
-    complete
-    .text start:0x021213cc end:0x02121438
-
-src/func_ov070_02121438.cpp:
-    complete
-    .text start:0x02121438 end:0x021214f8
-
-src/func_ov070_021214f8.cpp:
-    complete
-    .text start:0x021214f8 end:0x02121548
-
-src/func_ov070_02121548.c:
-    complete
-    .text start:0x02121548 end:0x0212156c
-
-src/func_ov070_0212156c.c:
-    complete
-    .text start:0x0212156c end:0x021216b8
-
-src/func_ov070_021216b8.c:
-    complete
-    .text start:0x021216b8 end:0x02121710
-
-src/func_ov070_02121710.cpp:
-    complete
-    .text start:0x02121710 end:0x021217ac
-
-src/func_ov070_021217ac.c:
-    complete
-    .text start:0x021217ac end:0x0212180c
-
-src/func_ov070_0212180c.cpp:
-    complete
-    .text start:0x0212180c end:0x02121848
-
-src/func_ov070_02121848.cpp:
-    complete
-    .text start:0x02121848 end:0x02121880
-
-src/func_ov070_02121880.c:
-    complete
-    .text start:0x02121880 end:0x0212189c
-
-src/_ZN8daKrpa_c16CleanupResourcesEv.cpp:
-    complete
-    .text start:0x0212189c end:0x021218c0
-
-src/_ZN8daKrpa_c16OnPendingDestroyEv.cpp:
-    complete
-    .text start:0x021218c0 end:0x021218c4
-
-src/_ZN8daKrpa_c6RenderEv.cpp:
-    complete
-    .text start:0x021218c4 end:0x021218f4
-
-src/_ZN8daKrpa_c8BehaviorEv.cpp:
-    complete
-    .text start:0x021218f4 end:0x02121914
-
-src/_ZN8daKrpa_c13InitResourcesEv.cpp:
-    complete
-    .text start:0x02121914 end:0x02121a64
-
-src/func_ov070_02121a64.c:
-    complete
-    .text start:0x02121a64 end:0x02121ae0
-
-src/func_ov070_02121ae0.c:
-    complete
-    .text start:0x02121ae0 end:0x02121af8
-
-src/daKrpa_c_Spawn.c:
-    complete
-    .text start:0x02121af8 end:0x02121b48
-
 src/__sinit_ov070_02122afc.c:
     complete
     .init start:0x02122afc end:0x02122d80
@@ -303,6 +203,10 @@ src/__sinit_ov070_02122f30.c:
 src/__sinit_ov070_02123030.c:
     complete
     .init start:0x02123030 end:0x021230a4
+
+src/actors/daKrpa_c.cpp:
+    complete
+    .text start:0x02121118 end:0x02121b48
 
 src/actors/daKpFr_c.cpp:
     complete
