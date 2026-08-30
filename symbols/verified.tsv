@@ -1732,11 +1732,11 @@
 0x020ee870	_ZN8Platform13IsClsnInRangeE5Fix12IiES1_	function
 0x020ee934	_ZN8Platform21IsClsnInRangeOnScreenE5Fix12IiES1_	function
 0x020eea50	_ZN8PlatformC2Ev	function
-0x020ef320	_ZN8PathLiftD0Ev	function
-0x020ef390	_ZN8PathLiftD2Ev	function
-0x020efaa0	_ZN8PathLift12BaseBehaviorEv	function
+0x020ef320	_ZN16dPathLiftActor_cD0Ev	function
+0x020ef390	_ZN16dPathLiftActor_cD1Ev	function
+0x020efaa0	_ZN16dPathLiftActor_c12BaseBehaviorEv	function
 0x020efaf0	dScMgJump2_c_Spawn	function
-0x020eff18	_ZN8PathLift9AfterClsnEv	function
+0x020eff18	_ZN16dPathLiftActor_c9AfterClsnEi	function
 0x020f975c	_ZN7MinimapD1Ev	function
 0x020f978c	_ZN7MinimapD0Ev	function
 0x020f97d0	_ZN7Minimap21FixTHIPaintingRoomPosER7Vector3	function
@@ -1792,7 +1792,7 @@
 0x020ff480	_ZN6Player9ANIM_PTRSE	data
 0x0210a83c	_ZTV6Player	data
 0x0210ae38	_ZTV8Platform	data
-0x0210af70	_ZTV8PathLift	data
+0x0210af70	_ZTV16dPathLiftActor_c	data
 0x0210c160	_ZN7Minimap9spawnDataE	data
 0x0210c174	_ZN3OAM15MM_PLAYER_ICONSE	data
 0x0210c1c0	_ZTV7Minimap	data
