@@ -859,6 +859,27 @@
     "src/actors/daObjPathLift_c.cpp#_ZN15daObjPathLift_cD0Ev": "tangosdev",
     "src/actors/daObjPathLift_c.cpp#_ZN15daObjPathLift_cD1Ev": "tangosdev",
     "src/actors/daObjPathLift_c.cpp#func_ov100_02146e70": "aitddlabs",
-    "src/actors/daObjPathLift_c.cpp#func_ov100_0214700c": "tangosdev"
+    "src/actors/daObjPathLift_c.cpp#func_ov100_0214700c": "tangosdev",
+    "src/actors/daKpFr_c.cpp#_ZN8daKpFr_c13InitResourcesEv": "tangosdev",
+    "src/actors/daKpFr_c.cpp#_ZN8daKpFr_c13OnYoshiTryEatEv": "andrewboudreau",
+    "src/actors/daKpFr_c.cpp#_ZN8daKpFr_c16CleanupResourcesEv": "andrewboudreau",
+    "src/actors/daKpFr_c.cpp#_ZN8daKpFr_c16OnPendingDestroyEv": "andrewboudreau",
+    "src/actors/daKpFr_c.cpp#_ZN8daKpFr_c6RenderEv": "tangosdev",
+    "src/actors/daKpFr_c.cpp#_ZN8daKpFr_c8BehaviorEv": "tangosdev",
+    "src/actors/daKpFr_c.cpp#_ZN8daKpFr_cD0Ev": "andrewboudreau",
+    "src/actors/daKpFr_c.cpp#_ZN8daKpFr_cD1Ev": "andrewboudreau",
+    "src/actors/daKpFr_c.cpp#daKpFr_c_Spawn": "tangosdev",
+    "src/actors/daKpFr_c.cpp#func_ov070_02121be4": "tangosdev",
+    "src/actors/daKpFr_c.cpp#func_ov070_02121c8c": "tangosdev",
+    "src/actors/daKpFr_c.cpp#func_ov070_02121cbc": "tangosdev",
+    "src/actors/daKpFr_c.cpp#func_ov070_02121d50": "tangosdev",
+    "src/actors/daKpFr_c.cpp#func_ov070_02121e14": "tangosdev",
+    "src/actors/daKpFr_c.cpp#func_ov070_02121eb0": "tangosdev",
+    "src/actors/daKpFr_c.cpp#func_ov070_02121ef8": "tangosdev",
+    "src/actors/daKpFr_c.cpp#func_ov070_02121f18": "tangosdev",
+    "src/actors/daKpFr_c.cpp#func_ov070_02121fb0": "tangosdev",
+    "src/actors/daKpFr_c.cpp#func_ov070_02121fd0": "tangosdev",
+    "src/actors/daKpFr_c.cpp#func_ov070_0212200c": "tangosdev",
+    "src/actors/daKpFr_c.cpp#func_ov070_02122044": "ruspecial"
   }
 }

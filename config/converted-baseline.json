@@ -7,7 +7,7 @@
     "no_codegen_trick",
     "no_mangled_refs"
   ],
-  "count": 2565,
+  "count": 2559,
   "converted": [
     "src/ARMMathLoadState.c",
     "src/ARMMathSaveState.c",
@@ -2103,12 +2103,6 @@
     "src/_ZN8daEyBm_c16OnPendingDestroyEv.cpp",
     "src/_ZN8daEyBm_cD0Ev.cpp",
     "src/_ZN8daEyBm_cD1Ev.cpp",
-    "src/_ZN8daKpFr_c13OnYoshiTryEatEv.cpp",
-    "src/_ZN8daKpFr_c16CleanupResourcesEv.cpp",
-    "src/_ZN8daKpFr_c16OnPendingDestroyEv.cpp",
-    "src/_ZN8daKpFr_c8BehaviorEv.cpp",
-    "src/_ZN8daKpFr_cD0Ev.cpp",
-    "src/_ZN8daKpFr_cD1Ev.cpp",
     "src/_ZN8daKrpa_c13OnYoshiTryEatEv.cpp",
     "src/_ZN8daKrpa_c16CleanupResourcesEv.cpp",
     "src/_ZN8daKrpa_c16OnPendingDestroyEv.cpp",
