@@ -61,13 +61,13 @@
 # Costs nothing: stdlib unittest over the working tree, no compiler, no ROM, no pip step
 # and no network. Measured at 5.3s for the 312 tests that predate
 # tools.test_premerge_check, on a runner-equivalent container (python:3.12, Linux,
-# none of the three inputs present); that module adds 47, timed at 5.6s on Windows.
+# none of the three inputs present); that module adds 87, timed at 9.7s on Windows.
 # The whole-suite timings are dominated by Windows filesystem overhead and do not
 # apply here -- test_tiers alone takes 71s on a Windows checkout and 1.3s on Linux.
 #
 # SIX SKIPS ARE EXPECTED and are honest ones that name their own reason: four in
 # test_stamp_provenance_verify ("needs extracted/ (ROM dump)", a real @skipUnless) and
-# two in test_match_provenance ("no src samples"). 353 of the 359 assert something.
+# two in test_match_provenance ("no src samples"). 393 of the 399 assert something.
 name: tool tests
 
 on:
@@ -169,10 +169,11 @@ jobs:
 #                                      must round-trip to the exact original bytes.
 #   test_nearmiss_db            (12)   nearmiss_db.py -- the persistent near-miss DB, so
 #                                      close attempts are never thrown away.
-#   test_premerge_check         (47)   premerge_check.py -- runs the static gates on
+#   test_premerge_check         (87)   premerge_check.py -- runs the static gates on
 #                                      the git merge-tree RESULT, the one tree no CI
 #                                      job ever builds. Pure functions over verdict
-#                                      dicts; one honest skipTest needs a git binary.
+#                                      dicts and a stubbed main(); four honest
+#                                      skipTests need a git binary.
 #   test_progress                (4)   progress.py -- matched functions/bytes vs the
 #                                      whole game; the number the README reports.
 #   test_rombuild_cache         (19)   rombuild_cache.py -- the content-addressed object

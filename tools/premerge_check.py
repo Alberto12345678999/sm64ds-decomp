@@ -86,8 +86,21 @@ parsing.
 
 The cost of that is stated honestly rather than hidden: this tool cannot see a byte
 regression. A merge result that breaks the ROM link, or that makes a function stop
-reproducing, is invisible here and always will be. What it sees is the seven static
-gates, which is seven more than run today.
+reproducing, is invisible here and always will be. What it sees is the eight static
+gates, which is eight more than run today.
+
+THE OTHER BLIND SPOT: THE MERGE TREE'S OWN GATES ARE WHAT RUN
+--------------------------------------------------------------
+Every gate below is invoked as `python tools/<gate>.py` INSIDE the exported merge
+result, so the script that judges the merge is the script the merge contains. That is
+the correct design -- it is the same choice #1994 made for the external validator, so
+that a PR which changes a gate is tested by the gate it ships rather than by the one
+it replaces -- but it is a real hole and it is named here rather than discovered
+later: **a merge result that WEAKENS a gate reports pass on both sides.** A commit
+that makes `check_dead_references.py` exit 0 unconditionally is, to this tool,
+indistinguishable from a tree with no dead references. Nothing here can close that;
+reading the gate's own diff is the only thing that can. `--json` carries every gate's
+`rc` and `summary` so a reviewer can at least see when a gate's output changed shape.
 
 THE GATES, AND WHICH ONES WERE VERIFIED TOOLCHAIN-FREE
 ------------------------------------------------------
@@ -102,8 +115,15 @@ a fast green that means nothing. Included:
                       absent baseline with exit 2 rather than treating it as an
                       empty set, so it cannot pass vacuously. ~70s, the slow one.
 
-  source-coverage     tools/source_coverage.py --json
+  source-coverage     tools/source_coverage.py --check --base <base> --ref <tree>
                       A DELTA gate, handled specially: see BYTES, BELOW.
+
+  langmode-ratchet    tools/langmode_audit.py --check langmode-baseline.json
+                      Pure text over `git ls-files` and the tree. A ratchet against a
+                      banked baseline, which is exactly the class of gate a moved base
+                      breaks, so it belongs here more than most. ~70s, the other slow
+                      one -- this gate and converted-ratchet are essentially the whole
+                      runtime. See THE LANGMODE BASELINE IS NOT ALWAYS THERE.
 
   dead-references     tools/check_dead_references.py
                       Pure text over prose files. Carries its own anti-hollow guard
@@ -144,27 +164,70 @@ and including one would buy a green that means nothing:
   check_src_tu_compiles.py    needs mwccarm.
   rombuild.py, eligible.py    forbidden outright, see above.
 
-BYTES, BELOW: WHY source_coverage IS NOT RUN WITH `--check`
------------------------------------------------------------
-`source_coverage.py --check` wants a git ref to compare against, and the merge
-result is a bare tree with no commit -- there is no ref to hand it. So it is run in
-its no-base reporting mode (`--json`) on BOTH trees and the numbers are subtracted
-here. This is the one gate whose base verdict is `pass` by construction -- it is the
-reference the merge result is measured against, so it has no independent verdict of
-its own, and the table says `(ref)` rather than `pass` to keep that visible.
+BYTES, BELOW: WHY source_coverage IS RUN WITH `--check`, AND HOW
+-----------------------------------------------------------------
+THE UNIT IS THE COVERED BYTE **SET**, NOT A BYTE COUNT. An earlier draft of this
+tool ran `source_coverage.py --json` on both trees and subtracted `currentBytes` and
+the `bySection` totals. That is a strictly weaker question than the one CI asks, and
+the gap was measured rather than argued: relocating a single `.rodata` range in
+`config/arm9/delinks.txt` by `+0x400000` -- 71,984 bytes of claimed coverage moved
+to an address the cartridge does not have -- leaves `currentBytes` at 2,067,148 on
+both sides, every `bySection` total identical, and the count-based check saying `ok`,
+while `source_coverage.py --check` reports 71,984 B handed back to the cartridge.
+Two PRs editing the same module's `delinks.txt` merge cleanly at the text level and
+can trade ranges exactly like that, which makes it merge-shaped and therefore this
+tool's business.
 
-THE UNIT IS THE BYTE, AND ONLY THE BYTE. `currentBytes` and the per-section map
-decide the verdict; `entries` and `modules` are printed as context and can never
-fail a run. That distinction is not fastidiousness, it is a measurement. The first
-version of this tool failed on a decrease in ANY of the four numbers, and the first
-time it was pointed at real PRs it called two of them red -- #2023 (`entries` 11025
--> 11011) and #2024 (11025 -> 11017) -- with `currentBytes` and every per-section
-total UNCHANGED. Both are TU promotions, and that is exactly the false alarm
-`source_coverage.py` exists to avoid: promotion re-partitions the address space, so
-thirty-eight per-function delinks entries become three merged ones covering the same
-bytes and the entry count falls by construction with nothing handed back to the
-cartridge. A gate that goes red on every TU promotion is a gate people learn to
+So the comparison is not reimplemented here. `source_coverage.py` merges each side
+into disjoint intervals keyed by `(module, section)` and subtracts the SETS, honours
+`config/source-coverage-exceptions.jsonl`, and blames each lost range on the entry
+that used to own it. All of that is reused verbatim, because a second implementation
+of interval arithmetic is a second thing to drift:
+
+    <merge export>/tools/source_coverage.py --check --json
+        --repo <this repo> --base <base sha> --ref <merge tree sha>
+
+The one thing the earlier draft got right about `--check` was that it needs a base;
+what it got wrong was that the merge result has nothing to hand it. `--ref` is passed
+straight to `git ls-tree`, which resolves a bare TREE perfectly well, so the merge
+tree that has never had a commit is a legitimate `--ref`. `--base` does take a
+commit, and `origin/main` is one. That pairing asks precisely the question the
+push-to-main job in `source-coverage.yml` asks -- "did main lose bytes at the moment
+this merged?" -- one merge earlier.
+
+The base side gets the same command with `--ref <base tree>`, which is a
+self-comparison and therefore zero by construction. It is run anyway, and it is not
+ceremony: it is the reference that keeps a broken `source_coverage.py` ON MAIN from
+being charged to a PR. If the base self-check errors, coverage is `pre-existing` and
+cannot fail the run. If the base self-check passes and the merge check errors, that
+IS a fact about the merge result and it is a REGRESSION -- the same rule `classify()`
+applies to every other gate, and the reason coverage is no longer routed around it.
+An unmeasurable gate is never a pass here, and `--json` says so explicitly in
+`coverageMeasured`.
+
+`entries` and `modules` are still measured, on both sides, and are printed as context
+that can never fail a run. That distinction is not fastidiousness, it is a
+measurement. The first version of this tool failed on a decrease in ANY of the four
+numbers `--json` reports, and the first time it was pointed at real PRs it called two
+of them red -- #2023 (`entries` 11025 -> 11011) and #2024 (11025 -> 11017) -- with
+every byte total UNCHANGED. Both are TU promotions, and that is exactly the false
+alarm `source_coverage.py` exists to avoid: promotion re-partitions the address
+space, so thirty-eight per-function delinks entries become three merged ones covering
+the same bytes and the entry count falls by construction with nothing handed back to
+the cartridge. A gate that goes red on every TU promotion is a gate people learn to
 click past, which is the same failure as a gate that never goes red at all.
+
+THE LANGMODE BASELINE IS NOT ALWAYS THERE
+------------------------------------------
+`langmode-ratchet.yml` reads a ROOT `langmode-baseline.json` when one is present and
+otherwise falls back to `_chaos_data/langmode-baseline.json`, checked out from the
+`chaos-data` BRANCH. That fallback cannot be reproduced here: `_chaos_data/` is not
+tracked, so it is absent from any `checkout-index` export, and the root file is a
+temporary escape hatch that is meant to be deleted once a booked rise has landed.
+When the root file is missing the gate is recorded as an ERROR, never a pass -- and
+because the base export is missing it too in that case, the pair classifies as
+`pre-existing` and no PR is blamed for it. What this must never do is report a green
+langmode ratchet because it could not find the thing to ratchet against.
 
 THE `git init` STEP, WHICH IS NOT OPTIONAL
 ------------------------------------------
@@ -174,6 +237,24 @@ exit 128 -- reported by the gate as an error, or in the worst shape as an empty 
 list. So each export gets a `git init` and a copy of the temporary index the export
 was made from. That index is the whole point: it is what makes `ls-files` enumerate
 the merge result's files rather than nothing.
+
+AND THE EXPORT IS COUNTED, FOR THE SAME REASON check_dead_references COUNTS
+---------------------------------------------------------------------------
+An export that is empty, truncated, or left over from a previous run makes every gate
+ERROR on BOTH sides, which classifies as `pre-existing`, exits 0, and prints "Safe to
+merge". That is the hollow green this whole tool exists to prevent, arriving through
+its own front door. So `export_tree` asserts three things before handing the
+directory back: the tree names at least EXPORT_FLOOR files (main carries ~12,770, and
+anything under a few thousand is not this repository); the index the export carries
+enumerates exactly the tree's path set; and every one of those paths is on disk. A
+short export is a TOOL ERROR, exit 2, not a gate verdict.
+
+Each export directory is also removed before it is written, not merged into -- the
+first version used `mkdir(exist_ok=True)` plus `checkout-index -f`, which overwrites
+every file the new tree has and silently keeps every file it does NOT, so a reused
+directory reported gate verdicts for a tree corresponding to no commit. And each run
+gets its own subdirectory under `--tmp`, so two concurrent runs sharing one `--tmp`
+neither collide nor `rmtree` each other's exports on the way out.
 
 WHAT A LEGITIMATE FAILURE LOOKS LIKE
 -------------------------------------
@@ -210,6 +291,12 @@ that is a named error with the `git fetch origin pull/N/head` to fix it, not a
 `merge-tree` failure about "something we can merge". The default is not to touch the
 network -- or the object store -- unless asked.
 
+`--fetch` ALSO refreshes the base. That matters more than it sounds: the entire
+premise of this tool is "your base moved and you did not notice", and reading a
+stale `origin/main` out of the local object store answers the question against a main
+that no longer exists. Without `--fetch` the base's age is printed on every run, and
+a base older than BASE_STALE_HOURS is called out by name.
+
 The base export and its gate run happen ONCE and are reused by every target, so six
 PRs in one invocation cost roughly one base run plus six merge runs, not twelve runs.
 
@@ -218,6 +305,12 @@ Exit codes:
     1   at least one REGRESSION
     2   the tool could not answer (bad ref, gh missing, git too old, export failed)
     3   at least one target CONFLICTS and nothing regressed
+
+ONE exit code covers the WHOLE run, and it is the worst target's. `premerge_check.py
+2001 2024` exits 1 because #2001 regresses, even though #2024 is clean. That is the
+right answer for a person -- the run as a whole is not safe to act on -- but anything
+consuming the exit code alone cannot tell which target was at fault. Pass one target
+per invocation, or read `--json`, where every target carries its own `outcome`.
 
 Stdlib only. Exported trees are removed with `shutil.rmtree`; git's own removal is
 never used, because in this repo a worktree's `extracted/` is an NTFS junction to
@@ -232,14 +325,24 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import time
 
 REPO = pathlib.Path(__file__).resolve().parent.parent
 
-# Per-gate wall clock. converted-ratchet is ~70s on this tree; the rest are seconds.
+# Per-gate wall clock. converted-ratchet and langmode-ratchet are ~70s each on this
+# tree; the rest are seconds.
 GATE_TIMEOUT = 900
 
 # `git ls-files` can hand back 500+ headers and Windows caps a command line at 32k.
 HEADER_BATCH = 120
+
+# An export smaller than this is not this repository. main carries ~12,770 tracked
+# files; the floor is deliberately far below that, because the failure this guards
+# against is a truncated or empty export, not a tree that legitimately shrank.
+EXPORT_FLOOR = 4000
+
+# How old `origin/main` may be before the run says so out loud.
+BASE_STALE_HOURS = 12
 
 
 # --------------------------------------------------------------------------- #
@@ -273,11 +376,38 @@ def _header_commands(tree):
             for i in range(0, len(hdrs), HEADER_BATCH)]
 
 
+LANGMODE_BASELINE = "langmode-baseline.json"
+
+
+def _langmode_commands(tree):
+    """The ratchet, but only when the thing to ratchet against is IN the tree.
+
+    `langmode-ratchet.yml` falls back to `_chaos_data/langmode-baseline.json` -- a
+    second checkout of the `chaos-data` branch -- when the root override is absent.
+    That path is untracked and therefore cannot exist in a `checkout-index` export, so
+    the fallback is unreproducible here. Raising makes run_gate record an ERROR; the
+    one thing that must not happen is a green langmode ratchet measured against
+    nothing, which is what returning a `--check` of a missing file would produce.
+    """
+    if not (pathlib.Path(tree) / LANGMODE_BASELINE).is_file():
+        raise RuntimeError(
+            f"{LANGMODE_BASELINE} is not in this tree. CI falls back to "
+            f"_chaos_data/{LANGMODE_BASELINE}, checked out from the chaos-data "
+            f"BRANCH, which is untracked and cannot appear in an export -- so the "
+            f"ratchet cannot be answered here. Not a pass.")
+    return [[sys.executable, "tools/langmode_audit.py", "--check", LANGMODE_BASELINE]]
+
+
 GATES = [
     {
         "key": "converted-ratchet",
         "commands": lambda t: [[sys.executable, "tools/tiers_ratchet.py", "--check"]],
         "note": "pure python; needs git ls-files; refuses an absent baseline",
+    },
+    {
+        "key": "langmode-ratchet",
+        "commands": _langmode_commands,
+        "note": "pure python; a missing root baseline is an ERROR, not a pass",
     },
     {
         "key": "dead-references",
@@ -306,13 +436,14 @@ GATES = [
     },
 ]
 
-# Handled outside GATES: it has no verdict of its own, only a delta. See BYTES, BELOW.
+# Handled outside GATES: it is a DELTA between two trees, so its command line needs
+# both shas and cannot be built from one. It goes through classify() like every other
+# gate all the same. See BYTES, BELOW.
 COVERAGE_GATE = "source-coverage"
 
-# THE UNIT IS THE BYTE, AND ONLY THE BYTE. `entries` and `modules` are reported as
-# context and can never fail a run -- see coverage_context() for the measurement that
-# proved this, on real PRs, the first time this tool was pointed at them.
-COVERAGE_BYTE_KEYS = ("currentBytes",)
+# Reported, never fatal -- see coverage_context() for the measurement that proved this
+# on real PRs the first time this tool was pointed at them. The verdict comes from
+# source_coverage.py's own byte-SET subtraction, never from a count.
 COVERAGE_CONTEXT_KEYS = ("entries", "modules")
 
 
@@ -361,31 +492,39 @@ def regressions(rows):
     return [r for r in rows if r["verdict"] == "REGRESSION"]
 
 
-def coverage_regressions(base_metrics, merge_metrics):
-    """Every BYTE counter that went DOWN from base to merge result, as prose lines.
+def coverage_lines(findings, limit=12):
+    """`source_coverage.py --check --json` findings -> the prose a reader needs.
 
-    `currentBytes` and every key of the per-section map -- and deliberately NOT
-    `entries` or `modules`; see coverage_context().
-
-    Increases and new sections are silent: adding coverage is the point. A section
-    that DISAPPEARS is a decrease to zero and is reported as one -- that is exactly
-    the shape of a delinks entry deleted outright, which `layout_check` reports as
-    INFO and can never fail on.
+    Presentation only. Every number here was computed by `source_coverage.py` from the
+    subtraction of two merged interval SETS, and every `why` string is its own
+    `blame()`. Nothing in this file re-derives a byte, on purpose: the measurement
+    that motivated this shape -- a `.rodata` range relocated by +0x400000, 71,984 B
+    handed back, with `currentBytes` and every `bySection` total IDENTICAL on both
+    sides -- is invisible to any comparison of counts, and the way not to have two
+    interval implementations drift apart is not to write the second one.
     """
-    if base_metrics is None or merge_metrics is None:
+    if not findings:
         return []
-    out = []
-    for key in COVERAGE_BYTE_KEYS:
-        b, m = base_metrics.get(key), merge_metrics.get(key)
-        if isinstance(b, int) and isinstance(m, int) and m < b:
-            out.append(f"{key}: {b} -> {m} ({m - b})")
-    b_sec = base_metrics.get("bySection") or {}
-    m_sec = merge_metrics.get("bySection") or {}
-    for sec in sorted(b_sec):
-        b = b_sec.get(sec, 0)
-        m = m_sec.get(sec, 0)
-        if m < b:
-            out.append(f"bySection[{sec}]: {b} -> {m} ({m - b})")
+    lost = findings.get("unwaivedLostBytes") or 0
+    if not lost:
+        return []
+    out = [f"{lost:,} B stopped being built from source "
+           f"(base {findings.get('baseBytes', 0):,} B -> "
+           f"{findings.get('currentBytes', 0):,} B)"]
+    ranges = findings.get("lost") or []
+    for r in ranges[:limit]:
+        out.append(f"-{r.get('bytes', 0):>8,} B  {r.get('module', '?'):<8} "
+                   f"{r.get('section', '?'):<7} {r.get('start')}-{r.get('end')}")
+        for owner in (r.get("owners") or [])[:2]:
+            out.append(f"             was: {owner.get('path')}")
+            out.append(f"             why: {owner.get('why')}")
+    if len(ranges) > limit:
+        out.append(f"... and {len(ranges) - limit} more range(s); run "
+                   f"source_coverage.py --check for the lot")
+    waived = findings.get("waived") or []
+    if waived:
+        out.append(f"({sum(w.get('bytes', 0) for w in waived):,} B in {len(waived)} "
+                   f"range(s) waived by config/source-coverage-exceptions.jsonl)")
     return out
 
 
@@ -404,10 +543,14 @@ def coverage_context(base_metrics, merge_metrics, byte_regressions=()):
     by construction and NOTHING has been handed back to the cartridge. Comparing
     entry counts reports every consolidation as a loss.
 
-    So the unit is the covered byte set, exactly as it is in the tool being wrapped.
+    So the unit is the covered byte SET, exactly as it is in the tool being wrapped --
+    and it is that tool's own subtraction that produces it, see coverage_lines().
     `entries` and `modules` are still shown, because a large swing in either is worth
     a glance, but they cannot fail a run. A gate that reddens on every TU promotion
     is a gate people learn to click past.
+
+    `byte_regressions` is coverage_lines()' output: the reassuring "consolidation"
+    reading is only available when the byte set really is flat.
     """
     if base_metrics is None or merge_metrics is None:
         return []
@@ -449,8 +592,20 @@ def is_pr_number(spec):
     return bool(re.fullmatch(r"#?\d+", spec.strip()))
 
 
-def resolve_pr(spec, runner=subprocess.run):
-    """PR number -> (head_sha, label). Raises ValueError with a sentence, never a traceback.
+def resolve_pr(spec, runner=subprocess.run, repo=None):
+    """PR number -> (head_sha, label, info). ValueError with a sentence, never a traceback.
+
+    `repo` is the LOCAL checkout, and it is passed as gh's working directory. Without
+    it gh resolves the PR against whatever repository the shell happens to be sitting
+    in -- so `--repo /some/other/clone` silently asked GitHub about the wrong project,
+    or about no project at all, and the failure message blamed authentication for what
+    was a working-directory problem. `gh` derives owner/name from that directory's
+    remotes, which is the right answer for every clone of this repo including a
+    worktree.
+
+    `info` carries `state` and `baseRefName`, which the caller acts on: a CLOSED or
+    MERGED PR, or one targeting a branch other than the base being merged into, would
+    otherwise produce a confident green about a merge nobody is going to perform.
 
     `runner` is injected so the failure paths -- gh absent, gh unauthenticated, PR
     not found -- are testable with no gh installed. That matters more than usual
@@ -459,8 +614,11 @@ def resolve_pr(spec, runner=subprocess.run):
     """
     num = spec.strip().lstrip("#")
     argv = ["gh", "pr", "view", num, "--json", "headRefOid,title,state,baseRefName"]
+    kwargs = {"capture_output": True, "text": True}
+    if repo is not None:
+        kwargs["cwd"] = str(repo)
     try:
-        out = runner(argv, capture_output=True, text=True)
+        out = runner(argv, **kwargs)
     except FileNotFoundError:
         raise ValueError(
             f"cannot resolve PR #{num}: the `gh` CLI is not on PATH.\n"
@@ -471,10 +629,12 @@ def resolve_pr(spec, runner=subprocess.run):
     if out.returncode != 0:
         err = (out.stderr or "").strip().splitlines()
         hint = err[-1] if err else f"gh exited {out.returncode}"
+        where = f" (asked from {repo})" if repo is not None else ""
         raise ValueError(
-            f"cannot resolve PR #{num}: {hint}\n"
-            f"  If this is an auth problem, `gh auth login`. If the PR is in another\n"
-            f"  repository, pass the head sha directly instead of a number.")
+            f"cannot resolve PR #{num}: {hint}{where}\n"
+            f"  gh reads the repository from that directory's git remotes. If that is\n"
+            f"  not the project the PR lives in, pass the head sha directly instead of\n"
+            f"  a number. If it IS, and this is an auth problem, `gh auth login`.")
     try:
         data = json.loads(out.stdout)
     except (ValueError, TypeError):
@@ -484,7 +644,33 @@ def resolve_pr(spec, runner=subprocess.run):
         raise ValueError(f"cannot resolve PR #{num}: gh reported no headRefOid")
     title = (data.get("title") or "").strip()
     label = f"#{num} {title}"[:72] if title else f"#{num}"
-    return sha, label
+    info = {"state": (data.get("state") or "").strip().upper() or None,
+            "baseRefName": (data.get("baseRefName") or "").strip() or None}
+    return sha, label, info
+
+
+def pr_warnings(num, info, base_ref):
+    """The `state`/`baseRefName` facts worth interrupting a green run for.
+
+    Both were already being requested from gh and neither was read. A merged PR gates
+    a merge that has already happened -- and whose result may be the base itself -- and
+    a PR targeting `port` or a stacked branch is not merging into `origin/main` at all,
+    so a clean verdict against origin/main is an answer to a question nobody asked.
+    Reported as warnings rather than errors: the run is still meaningful, it just is
+    not the run the reader thinks it is.
+    """
+    out = []
+    state = (info or {}).get("state")
+    if state and state != "OPEN":
+        out.append(f"PR #{num} is {state}, not OPEN. This gates a merge that is not "
+                   f"pending; if it has already landed, the base below may contain it.")
+    target = (info or {}).get("baseRefName")
+    if target:
+        short = base_ref.rsplit("/", 1)[-1]
+        if target != short:
+            out.append(f"PR #{num} targets `{target}`, but this run merges it into "
+                       f"`{base_ref}`. That is not the merge GitHub would perform.")
+    return out
 
 
 # --------------------------------------------------------------------------- #
@@ -499,22 +685,131 @@ def git(repo, *args, check=False):
     return out
 
 
+def base_age(repo, sha, now=None):
+    """(hours_old_or_None, a phrase for the header line).
+
+    `origin/main` is read out of the local object store and NOTHING refreshes it. A
+    base fetched three days ago is a base three days of merges out of date, and every
+    verdict below is measured against it. The tool cannot make the fetch decision for
+    the reader, but it can refuse to let the reader assume.
+    """
+    out = git(repo, "log", "-1", "--format=%ct", sha)
+    if out.returncode != 0 or not out.stdout.strip().isdigit():
+        return None, "(age unknown)"
+    hours = ((now if now is not None else time.time())
+             - int(out.stdout.strip())) / 3600.0
+    if hours < 0:
+        return 0.0, "(committed just now)"
+    if hours < 1:
+        return hours, f"(committed {hours * 60:.0f}m ago)"
+    if hours < 48:
+        return hours, f"(committed {hours:.0f}h ago)"
+    return hours, f"(committed {hours / 24:.1f} DAYS ago)"
+
+
 def git_supports_write_tree(repo):
     out = git(repo, "merge-tree", "-h")
     return "--write-tree" in (out.stdout + out.stderr)
 
 
-def export_tree(repo, tree_sha, dest, scratch):
+def _paths_z(out):
+    return {p for p in out.split("\0") if p}
+
+
+def verify_export(repo, tree_sha, dest, floor=EXPORT_FLOOR):
+    """Raise unless `dest` is a COMPLETE materialisation of `tree_sha`.
+
+    The same reasoning `check_dead_references.py` records for its own `SCAN TOO SMALL`
+    guard, applied one level up. An empty or truncated export makes every gate ERROR
+    on BOTH sides, `classify()` reads that as `pre-existing`, the run exits 0 and
+    prints "Safe to merge". A gate that cannot see the tree must say so, not shrug.
+
+    Three assertions, each catching a different way it has actually gone wrong:
+      * the FLOOR    -- a tree with a few hundred files is not this repository, so
+                        something upstream (a bad tree sha, a partial merge result)
+                        handed us the wrong object;
+      * INDEX vs TREE -- the copied index is what `git ls-files` answers from, and four
+                        gates shell out to it. If the copy failed or came from another
+                        export, the gates enumerate somebody else's file list;
+      * TREE vs DISK -- `checkout-index` stopping part-way leaves an index that still
+                        promises files nothing wrote, which is precisely the shape that
+                        makes a gate ERROR for a reason that has nothing to do with the
+                        merge.
+    """
+    listing = subprocess.run(
+        ["git", "-C", str(repo), "ls-tree", "-r", "-z", "--name-only", tree_sha],
+        capture_output=True, text=True)
+    if listing.returncode != 0:
+        raise RuntimeError(f"export {tree_sha[:12]}: cannot list the tree: "
+                           f"{listing.stderr.strip()}")
+    expected = _paths_z(listing.stdout)
+    if len(expected) < floor:
+        raise RuntimeError(
+            f"export {tree_sha[:12]}: EXPORT TOO SMALL -- the tree names "
+            f"{len(expected)} file(s), under the {floor} floor. This repository "
+            f"carries ~12,770. Refusing to run gates over it: every gate would error "
+            f"on both sides and the run would report 'pre-existing' and exit 0.")
+
+    indexed = subprocess.run(["git", "-C", str(dest), "ls-files", "-z"],
+                             capture_output=True, text=True)
+    if indexed.returncode != 0:
+        raise RuntimeError(f"export {tree_sha[:12]}: `git ls-files` does not work in "
+                           f"the export: {indexed.stderr.strip()}")
+    got = _paths_z(indexed.stdout)
+    if got != expected:
+        only_tree = sorted(expected - got)[:5]
+        only_idx = sorted(got - expected)[:5]
+        raise RuntimeError(
+            f"export {tree_sha[:12]}: the export's index does not match the tree "
+            f"({len(got)} indexed vs {len(expected)} in the tree). "
+            f"missing: {only_tree or '-'}; unexpected: {only_idx or '-'}")
+
+    on_disk = set()
+    dest = pathlib.Path(dest)
+    for root, dirs, files in os.walk(dest):
+        if ".git" in dirs:
+            dirs.remove(".git")
+        base = pathlib.Path(root)
+        for f in files:
+            on_disk.add((base / f).relative_to(dest).as_posix())
+    absent = expected - on_disk
+    if absent:
+        raise RuntimeError(
+            f"export {tree_sha[:12]}: {len(absent)} of {len(expected)} tracked file(s) "
+            f"are in the index but not on disk -- a truncated checkout-index. "
+            f"e.g. {sorted(absent)[:5]}")
+    return len(expected)
+
+
+def export_tree(repo, tree_sha, dest, scratch, floor=EXPORT_FLOOR):
     """Materialise a tree at `dest`, with a working `git ls-files`.
 
-    Three steps, and the third is the one people rediscover the hard way. A tree
-    checked out with `checkout-index --prefix=` is a plain directory: `git -C dest
-    ls-files` exits 128 there, and four of the gates shell out to exactly that. So
-    the directory gets its own `.git` and the index the export was made FROM is
+    Four steps, and the last two are the ones people rediscover the hard way.
+
+    `dest` is REMOVED first, never merged into. `mkdir(exist_ok=True)` plus
+    `checkout-index -a -f` overwrites every path the new tree has and silently keeps
+    every path it does not, so a reused directory is the union of two trees and
+    corresponds to no commit. A file deleted by the merge is still there, and a gate
+    that reads the filesystem -- duplicate-sources, layout-check -- reports on it.
+
+    And a tree checked out with `checkout-index --prefix=` is a plain directory: `git
+    -C dest ls-files` exits 128 there, and four of the gates shell out to exactly that.
+    So the directory gets its own `.git` and the index the export was made FROM is
     copied into it. Nothing is ever committed; the index alone answers ls-files.
+
+    Finally verify_export() refuses to hand back a short or inconsistent export.
     """
     dest = pathlib.Path(dest)
-    dest.mkdir(parents=True, exist_ok=True)
+    if dest.exists():
+        # shutil, never `git worktree remove`: in this repo an export's neighbours can
+        # be NTFS junctions to the only surviving ROM dump and git's remover recurses
+        # through them. This directory is ours and holds nothing else.
+        shutil.rmtree(dest, ignore_errors=True)
+        if dest.exists():
+            raise RuntimeError(f"export {tree_sha[:12]}: {dest} already exists and "
+                               f"could not be removed; refusing to write a tree into "
+                               f"another tree's directory")
+    dest.mkdir(parents=True)
     idx = pathlib.Path(scratch) / (dest.name + ".index")
     env = dict(os.environ, GIT_INDEX_FILE=str(idx))
 
@@ -531,13 +826,45 @@ def export_tree(repo, tree_sha, dest, scratch):
                          capture_output=True, text=True)
     if out.returncode != 0:
         raise RuntimeError(f"export {tree_sha[:12]}: git init: {out.stderr.strip()}")
-    shutil.copyfile(idx, dest / ".git" / "index")
+    try:
+        shutil.copyfile(idx, dest / ".git" / "index")
+    except OSError as exc:
+        # Callers catch RuntimeError. An OSError escaping here reached the top level
+        # as a traceback and exit 1 -- indistinguishable, to anything reading the exit
+        # code, from a REGRESSION the PR is answerable for.
+        raise RuntimeError(f"export {tree_sha[:12]}: could not install the index "
+                           f"({exc}); `git ls-files` would enumerate nothing and four "
+                           f"gates would silently check an empty file list")
+    verify_export(repo, tree_sha, dest, floor)
     return dest
 
 
 # --------------------------------------------------------------------------- #
 # Running the gates.
 # --------------------------------------------------------------------------- #
+
+def worst_rc(codes):
+    """The return code that should decide a batched gate's verdict.
+
+    NOT `max()`. On POSIX a child killed by a signal has a NEGATIVE returncode, so
+    `max(0, -11)` is 0 and a batch that was OOM-killed among passing batches reported
+    a clean PASS. `header-offsets` runs five batches of ~120 headers and CI is Linux,
+    which is exactly where that arrives first. Any non-zero code is a failure; a
+    negative one, or anything above 1, is an ERROR rather than a gate saying `no`.
+    """
+    nonzero = [c for c in codes if c != 0]
+    if not nonzero:
+        return 0
+    abnormal = [c for c in nonzero if c < 0 or c > 1]
+    return abnormal[0] if abnormal else 1
+
+
+def status_for_rc(rc):
+    """0 pass, 1 fail, anything else -- including a negative signal code -- error."""
+    if rc == 0:
+        return "pass"
+    return "fail" if rc == 1 else "error"
+
 
 def run_gate(gate, tree):
     """One gate against one exported tree -> {status, rc, summary, output}."""
@@ -551,7 +878,7 @@ def run_gate(gate, tree):
                 "summary": "no work to do -- refusing to report a pass "
                            "over an empty input set", "output": ""}
 
-    worst, chunks = 0, []
+    codes, chunks = [], []
     for argv in cmds:
         try:
             out = subprocess.run(argv, cwd=str(tree), capture_output=True,
@@ -563,11 +890,14 @@ def run_gate(gate, tree):
             return {"status": "error", "rc": None,
                     "summary": f"could not run: {exc}", "output": ""}
         chunks.append((out.stdout or "") + (out.stderr or ""))
-        worst = max(worst, out.returncode)
+        codes.append(out.returncode)
 
     text = "\n".join(c for c in chunks if c.strip())
     lines = [ln for ln in text.splitlines() if ln.strip()]
-    status = "pass" if worst == 0 else ("fail" if worst == 1 else "error")
+    worst = worst_rc(codes)
+    status = status_for_rc(worst)
+    if worst < 0:
+        lines.append(f"a batch was killed by signal {-worst}")
     return {"status": status, "rc": worst,
             "summary": summarise(lines, status), "output": text}
 
@@ -596,44 +926,124 @@ def run_all_gates(tree):
     return {g["key"]: run_gate(g, tree) for g in GATES}
 
 
-def coverage_metrics(tree):
-    """source_coverage.py --json on a tree, or None if it could not be measured."""
+def _run_coverage(tree, extra):
+    """<tree>'s own source_coverage.py -> (rc, parsed_json_or_None, output_text).
+
+    The child's stdout AND stderr are kept. The first version of this threw them away
+    and returned a bare None, so `not measured on both trees -- see above` printed with
+    nothing above it: the one thing a reader needed -- the Python traceback, the
+    `unrecognized arguments`, the malformed-waiver complaint -- had been discarded by
+    the function that saw it.
+    """
+    argv = [sys.executable, "tools/source_coverage.py", *extra]
     try:
-        out = subprocess.run([sys.executable, "tools/source_coverage.py", "--json"],
-                             cwd=str(tree), capture_output=True, text=True,
+        out = subprocess.run(argv, cwd=str(tree), capture_output=True, text=True,
                              errors="replace", timeout=GATE_TIMEOUT)
-    except (OSError, subprocess.TimeoutExpired):
-        return None
-    if out.returncode != 0:
-        return None
+    except subprocess.TimeoutExpired:
+        return None, None, f"source_coverage.py timed out after {GATE_TIMEOUT}s"
+    except OSError as exc:
+        return None, None, f"could not run source_coverage.py: {exc}"
+    text = (out.stdout or "") + (out.stderr or "")
     try:
-        return json.loads(out.stdout)
+        data = json.loads(out.stdout)
     except ValueError:
-        return None
+        data = None
+    return out.returncode, data, text
+
+
+def coverage_metrics(tree):
+    """The no-base measurement of one tree -> {"data": .. or None, "output": str}.
+
+    Context ONLY -- `entries` and `modules`. It carries no verdict and cannot fail a
+    run; coverage_check() is what decides. Kept separate because the two questions are
+    genuinely different: this one is "how big is this tree", that one is "what did the
+    merge hand back".
+    """
+    rc, data, text = _run_coverage(tree, ["--json"])
+    if rc != 0:
+        data = None
+    if rc == 0 and data is not None:
+        summary = ""
+    elif rc is None:
+        summary = text.strip()[:200]
+    else:
+        summary = (f"source_coverage.py --json exited {rc}: "
+                   + " / ".join(ln.strip() for ln in text.splitlines()
+                                if ln.strip())[:160])
+    return {"data": data, "output": text, "summary": summary}
+
+
+def coverage_check(tree, repo, ref, base_ref):
+    """The VERDICT. `<tree>`'s own source_coverage.py, comparing base_ref -> ref.
+
+    `--ref` goes straight to `git ls-tree`, which resolves a bare TREE, so the merge
+    result -- a tree with no commit -- is a perfectly good `--ref`. `--base` wants a
+    commit and gets one. Everything about the comparison, including the interval
+    subtraction and `config/source-coverage-exceptions.jsonl`, is the wrapped tool's;
+    nothing is re-derived here.
+
+    -> {status, rc, summary, output, findings}. `error` is not `pass`: see classify().
+    """
+    rc, data, text = _run_coverage(
+        tree, ["--check", "--json", "--repo", str(repo), "--base", base_ref,
+               "--ref", ref])
+    if rc is None:
+        return {"status": "error", "rc": None, "summary": text.strip()[:200],
+                "output": text, "findings": None}
+    status = status_for_rc(rc)
+    if status != "error" and data is None:
+        # rc said it ran; the document is unreadable. That is not a pass either.
+        status, summary = "error", ("source_coverage.py exited "
+                                    f"{rc} but wrote no usable JSON")
+    elif status == "error":
+        summary = (f"source_coverage.py --check exited {rc}: "
+                   + " / ".join(ln.strip() for ln in text.splitlines()
+                                if ln.strip())[:160])
+    else:
+        lost = (data or {}).get("unwaivedLostBytes") or 0
+        summary = (f"{lost:,} B stopped being built from source" if lost
+                   else f"source-built bytes flat or up "
+                        f"({(data or {}).get('currentBytes', 0):,} B)")
+    return {"status": status, "rc": rc, "summary": summary, "output": text,
+            "findings": data}
 
 
 # --------------------------------------------------------------------------- #
 # Reporting.
 # --------------------------------------------------------------------------- #
 
-def print_table(rows, cov_lines, cov_measured, say=print, cov_context=()):
+def coverage_row(base_check, merge_check):
+    """The coverage gate's row, through the same classify() as everything else.
+
+    It used to be routed around classify() entirely, with a base verdict of `(ref)` and
+    an `error` merge verdict that contributed nothing to the exit code -- the precise
+    treatment classify()'s own docstring forbids, in the same file. It is a gate. It is
+    classified like a gate.
+    """
+    b = (base_check or {}).get("status", "absent")
+    m = (merge_check or {}).get("status", "absent")
+    return {"gate": COVERAGE_GATE, "base": b, "merge": m, "verdict": classify(b, m)}
+
+
+def print_table(rows, cov_row, cov_lines=(), cov_context=(), cov_detail=(), say=print):
     width = max([len(r["gate"]) for r in rows] + [len(COVERAGE_GATE), 18])
     say(f"  {'gate'.ljust(width)}  {'base':<7}  {'merge':<7}  verdict")
     say(f"  {'-' * width}  {'-' * 7}  {'-' * 7}  {'-' * 12}")
     for r in rows:
         say(f"  {r['gate'].ljust(width)}  {r['base']:<7}  {r['merge']:<7}  "
             f"{r['verdict']}")
-    if cov_measured:
-        cov_verdict = "REGRESSION" if cov_lines else "ok"
-        say(f"  {COVERAGE_GATE.ljust(width)}  {'(ref)':<7}  "
-            f"{'FAIL' if cov_lines else 'pass':<7}  {cov_verdict}")
-        for line in cov_lines:
-            say(f"  {' ' * width}      {line}")
-        for line in cov_context:
-            say(f"  {' ' * width}      info: {line}")
-    else:
-        say(f"  {COVERAGE_GATE.ljust(width)}  {'(ref)':<7}  {'error':<7}  "
-            f"not measured on both trees -- see above")
+    if cov_row is None:
+        return
+    say(f"  {cov_row['gate'].ljust(width)}  {cov_row['base']:<7}  "
+        f"{cov_row['merge']:<7}  {cov_row['verdict']}")
+    for line in cov_lines:
+        say(f"  {' ' * width}      {line}")
+    # The reason a gate could not be measured, printed HERE, where the row is. The
+    # first version said "see above" and had thrown the child's output away.
+    for line in cov_detail:
+        say(f"  {' ' * width}      ! {line}")
+    for line in cov_context:
+        say(f"  {' ' * width}      info: {line}")
 
 
 def main(argv=None):
@@ -654,10 +1064,12 @@ def main(argv=None):
     ap.add_argument("--tmp", default=None, metavar="DIR",
                     help="where to export trees (default: a system temp dir)")
     ap.add_argument("--fetch", action="store_true",
-                    help="fetch a PR head that is not in the local object store "
-                         "(`git fetch origin pull/N/head`). Off by default: a tool "
-                         "that reads should not touch the network, or the object "
-                         "store, unless asked")
+                    help="refresh the BASE ref, and fetch a PR head that is not in the "
+                         "local object store (`git fetch origin pull/N/head`). Off by "
+                         "default: a tool that reads should not touch the network, or "
+                         "the object store, unless asked -- but a stale base is the "
+                         "exact failure this tool exists to catch, so its age is "
+                         "always printed")
     args = ap.parse_args(argv)
 
     try:
@@ -684,23 +1096,33 @@ def main(argv=None):
               "exists to avoid.", file=sys.stderr)
         return 2
 
+    # The base, and how old it is. The whole premise of this tool is "your base moved
+    # and you did not notice", so answering the question against a base that moved
+    # last week would be the tool committing its own subject matter. --fetch refreshes
+    # it; without --fetch its age is printed and a stale one is named.
+    if args.fetch and "/" in args.base:
+        remote, _, branch = args.base.partition("/")
+        git(repo, "fetch", "--quiet", remote, branch)
     base_out = git(repo, "rev-parse", args.base + "^{commit}")
     if base_out.returncode != 0:
         print(f"base ref {args.base!r} does not resolve. Try `git fetch origin`.",
               file=sys.stderr)
         return 2
     base_sha = base_out.stdout.strip()
+    base_age_hours, base_age_note = base_age(repo, base_sha)
 
     # Resolve every target BEFORE exporting anything: a typo on the third argument
     # should not cost a 90-second base export first.
     targets = []
+    warnings = []
     for spec in args.targets:
         if is_pr_number(spec):
             try:
-                sha, label = resolve_pr(spec)
+                sha, label, info = resolve_pr(spec, repo=repo)
             except ValueError as exc:
                 print(str(exc), file=sys.stderr)
                 return 2
+            warnings += pr_warnings(spec.strip().lstrip("#"), info, args.base)
             # `gh` knows the head sha; this clone may not have the object. Say so
             # precisely, with the command that fixes it, rather than letting
             # merge-tree fail with "not something we can merge".
@@ -725,14 +1147,33 @@ def main(argv=None):
                 print(f"{spec!r} is neither a PR number nor a commit-ish that "
                       f"resolves here.", file=sys.stderr)
                 return 2
-            sha, label = out.stdout.strip(), spec
-        targets.append({"spec": spec, "label": label, "head": sha})
+            sha, label, info = out.stdout.strip(), spec, {}
+        targets.append({"spec": spec, "label": label, "head": sha, "pr": info})
 
-    scratch = pathlib.Path(args.tmp) if args.tmp else pathlib.Path(
+    # A run-unique subdirectory, even under an explicit --tmp. `scratch/"base"` was a
+    # fixed name: two concurrent runs sharing one --tmp wrote into each other's export
+    # and each rmtree'd the other's on the way out.
+    run_id = f"{os.getpid()}-{int(time.time()) & 0xffffff:06x}"
+    root = pathlib.Path(args.tmp) if args.tmp else pathlib.Path(
         tempfile.mkdtemp(prefix="premerge-"))
+    root.mkdir(parents=True, exist_ok=True)
+    if args.tmp:
+        # A hard kill skips the `finally`, so a --tmp accumulates ~12,700-file exports
+        # from runs nobody can find again. Not removed automatically -- another run may
+        # be using one right now -- but named, which is the difference between a leak
+        # and a note.
+        stale = sorted(p for p in root.glob("premerge-run-*") if p.is_dir())
+        if stale:
+            say(f"note   {len(stale)} export directory(ies) already under {root} "
+                f"(e.g. {stale[0].name}).")
+            say(f"       Leftovers from --keep-trees or a killed run, unless another "
+                f"run is live. Remove when idle.")
+    scratch = root / f"premerge-run-{run_id}"
     scratch.mkdir(parents=True, exist_ok=True)
     made = []
-    report = {"base": {"ref": args.base, "sha": base_sha}, "targets": []}
+    report = {"base": {"ref": args.base, "sha": base_sha,
+                       "ageHours": base_age_hours}, "targets": [],
+              "warnings": warnings}
     exit_code = 0
 
     def cleanup():
@@ -744,15 +1185,24 @@ def main(argv=None):
                 (scratch / (pathlib.Path(path).name + ".index")).unlink()
             except OSError:
                 pass
+        shutil.rmtree(scratch, ignore_errors=True)
         if not args.tmp:
-            shutil.rmtree(scratch, ignore_errors=True)
+            shutil.rmtree(root, ignore_errors=True)
 
     try:
         base_tree_sha = git(repo, "rev-parse", base_sha + "^{tree}").stdout.strip()
-        say(f"base   {args.base} @ {base_sha[:12]}")
+        say(f"base   {args.base} @ {base_sha[:12]}   {base_age_note}")
+        if base_age_hours is not None and base_age_hours > BASE_STALE_HOURS:
+            say(f"       This base is {base_age_hours:.0f}h old. It is the thing every "
+                f"verdict below is measured against;")
+            say(f"       re-run with --fetch, or `git -C {repo} fetch origin`, if main "
+                f"has moved since.")
+        for w in warnings:
+            say(f"       WARNING: {w}")
         try:
-            base_dir = export_tree(repo, base_tree_sha, scratch / "base", scratch)
-        except RuntimeError as exc:
+            base_dir = export_tree(repo, base_tree_sha, scratch / f"base-{run_id}",
+                                   scratch)
+        except (RuntimeError, OSError) as exc:
             print(str(exc), file=sys.stderr)
             cleanup()
             return 2
@@ -761,11 +1211,22 @@ def main(argv=None):
         # Once, and reused by every target. This is why several PRs in one run costs
         # far less than the same PRs one at a time.
         base_verdicts = run_all_gates(base_dir)
-        base_cov = coverage_metrics(base_dir)
+        base_metrics = coverage_metrics(base_dir)
+        base_cov = base_metrics["data"]
+        # base-vs-base: zero by construction. Run anyway -- it is the reference that
+        # keeps a source_coverage.py already broken ON MAIN from being charged to a PR.
+        base_cov_check = coverage_check(base_dir, repo, base_tree_sha, base_sha)
         report["base"]["gates"] = {k: {kk: v[kk] for kk in ("status", "rc", "summary")}
                                    for k, v in base_verdicts.items()}
         report["base"]["coverage"] = base_cov
+        report["base"]["coverageMeasured"] = base_cov_check["status"] != "error"
+        report["base"]["coverageStatus"] = base_cov_check["status"]
         already_red = [k for k, v in base_verdicts.items() if v["status"] != "pass"]
+        if base_cov_check["status"] == "error":
+            already_red = already_red + [COVERAGE_GATE]
+            say(f"       source_coverage.py cannot run on the base itself:")
+            for line in (base_cov_check["output"] or "").splitlines()[:10]:
+                say(f"         | {line}")
         if already_red:
             say(f"       NOTE: {len(already_red)} gate(s) already red on the base "
                   f"({', '.join(already_red)}).")
@@ -800,8 +1261,8 @@ def main(argv=None):
 
             try:
                 d = export_tree(repo, tree_sha,
-                                scratch / f"merge-{t['head'][:12]}", scratch)
-            except RuntimeError as exc:
+                                scratch / f"merge-{t['head'][:12]}-{run_id}", scratch)
+            except (RuntimeError, OSError) as exc:
                 say(f"  TOOL ERROR: {exc}\n")
                 t.update(outcome="error", detail=str(exc))
                 report["targets"].append(t)
@@ -810,18 +1271,34 @@ def main(argv=None):
             made.append(d)
 
             merge_verdicts = run_all_gates(d)
-            merge_cov = coverage_metrics(d)
+            merge_metrics = coverage_metrics(d)
+            merge_cov = merge_metrics["data"]
+            merge_cov_check = coverage_check(d, repo, tree_sha, base_sha)
             rows = diff_verdicts(base_verdicts, merge_verdicts)
-            cov_lines = coverage_regressions(base_cov, merge_cov)
+            cov_row = coverage_row(base_cov_check, merge_cov_check)
+            cov_lines = coverage_lines(merge_cov_check["findings"])
             cov_ctx = coverage_context(base_cov, merge_cov, cov_lines)
-            cov_measured = base_cov is not None and merge_cov is not None
+            cov_measured = merge_cov_check["status"] != "error"
+            # The reason, printed where the row is. Never discarded: a coverage gate
+            # that could not run is the failure mode this whole row exists to catch.
+            cov_detail = []
+            if not cov_measured:
+                cov_detail.append(merge_cov_check["summary"])
+                cov_detail += [ln for ln in
+                               (merge_cov_check["output"] or "").splitlines()[:10]
+                               if ln.strip()]
+            if merge_cov is None and merge_metrics["output"]:
+                cov_ctx = list(cov_ctx) + [
+                    "entries/modules not measured: " + merge_metrics["summary"]]
 
             say(f"  merge tree {tree_sha[:12]}")
-            print_table(rows, cov_lines, cov_measured, say, cov_ctx)
+            print_table(rows, cov_row, cov_lines, cov_ctx, cov_detail, say)
 
-            regs = regressions(rows)
+            all_rows = rows + [cov_row]
+            regs = regressions(all_rows)
             for r in regs:
-                v = merge_verdicts.get(r["gate"], {})
+                v = (merge_cov_check if r["gate"] == COVERAGE_GATE
+                     else merge_verdicts.get(r["gate"], {}))
                 say(f"\n  {r['gate']}: green on {args.base}, {r['merge'].upper()} on "
                       f"the merge result.")
                 body = (v.get("output") or "").splitlines()
@@ -833,19 +1310,39 @@ def main(argv=None):
                     say(f"      {summary}")
                 for line in body[:25]:
                     say(f"      | {line}")
-            if cov_lines:
-                regs = regs + [{"gate": COVERAGE_GATE}]
-                say(f"\n  {COVERAGE_GATE}: the merge result builds FEWER bytes from "
-                      f"source than {args.base}.")
+
+            # A pre-existing failure contributes nothing to the exit code, and that
+            # reasoning stands. But `fail`/`fail` was printed as one word and NEITHER
+            # side's summary was shown, so `backslide: 1 file` on the base and
+            # `backslide: 500 files` on the merge result read identically. The exit
+            # code does not change; what the reader is told does.
+            for r in all_rows:
+                if r["verdict"] != "pre-existing":
+                    continue
+                bv = (base_cov_check if r["gate"] == COVERAGE_GATE
+                      else base_verdicts.get(r["gate"], {}))
+                mv = (merge_cov_check if r["gate"] == COVERAGE_GATE
+                      else merge_verdicts.get(r["gate"], {}))
+                bs, ms = bv.get("summary", ""), mv.get("summary", "")
+                if bs == ms:
+                    continue
+                say(f"\n  {r['gate']}: red on BOTH sides, but not in the same way. "
+                    f"Not this PR's to own -- and worth a look.")
+                say(f"      base:  {bs}")
+                say(f"      merge: {ms}")
 
             t.update(outcome="regression" if regs else "clean",
                      mergeTree=tree_sha,
                      gates={k: {kk: v[kk] for kk in ("status", "rc", "summary")}
                             for k, v in merge_verdicts.items()},
                      coverage=merge_cov,
+                     coverageMeasured=cov_measured,
+                     coverageStatus=merge_cov_check["status"],
+                     coverageFindings=merge_cov_check["findings"],
                      coverageRegressions=cov_lines,
+                     coverageDetail=cov_detail,
                      coverageContext=cov_ctx,
-                     rows=rows)
+                     rows=all_rows)
             report["targets"].append(t)
 
             if regs:
