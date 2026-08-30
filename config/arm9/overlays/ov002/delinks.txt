@@ -1052,23 +1052,23 @@ src/PoppingLavaBubbles_Spawn.c:
     complete
     .text start:0x020b6dd8 end:0x020b6e08
 
-src/_ZN13WaterfallMistD1Ev.cpp:
+src/_ZN16daObjWaterfall_cD1Ev.cpp:
     complete
     .text start:0x020b6e08 end:0x020b6e2c
 
-src/_ZN13WaterfallMistD0Ev.cpp:
+src/_ZN16daObjWaterfall_cD0Ev.cpp:
     complete
     .text start:0x020b6e2c end:0x020b6e64
 
-src/_ZN13WaterfallMist8BehaviorEv.cpp:
+src/_ZN16daObjWaterfall_c8BehaviorEv.cpp:
     complete
     .text start:0x020b6e64 end:0x020b6eac
 
-src/_ZN13WaterfallMist13InitResourcesEv.cpp:
+src/_ZN16daObjWaterfall_c13InitResourcesEv.cpp:
     complete
     .text start:0x020b6eac end:0x020b6ee8
 
-src/WaterfallMist_Spawn.c:
+src/WaterfallMist_Spawn.cpp:
     complete
     .text start:0x020b6ee8 end:0x020b6f18
 

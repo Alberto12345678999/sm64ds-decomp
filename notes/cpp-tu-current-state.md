@@ -33,8 +33,8 @@ weighted by enrolled function ownership so TU consolidation does not move it.
 | Measure | Live value |
 | --- | ---: |
 | Tracked production source files | 11250 |
-| Tracked `.c` files | 6375 |
-| Tracked `.cpp` files | 4875 |
+| Tracked `.c` files | 6374 |
+| Tracked `.cpp` files | 4876 |
 | `.cpp` files missing first-line `//cpp` | 0 |
 | Mangled-symbol source files | 3559 |
 | Genuinely migrated C++ symbol files | 3484 |
