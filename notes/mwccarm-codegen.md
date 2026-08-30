@@ -3997,3 +3997,234 @@ Banked as a live near-miss, not marked as a floor: what would break it is a leve
 keeps a variable's pre-shift and post-shift values in ONE web across an in-place shift,
 or one that outranks a call-return-coalesced web against a loop-invariant one. No rule in
 6k / 6q / 6y / 6ab / 6bf spells either yet.
+
+## 6bq. Three homing levers and a store-order rank lever (ov074 daKuriKing_c, two MATCHED, one at div 11, 2026-08-30)
+
+The Goomboss overlay's three unsourced bodies. Two fell on the first day; the third is
+one lever short. What they share is that every single blocker was a question about
+which locals mwccarm keeps IN MEMORY, and in what order the source touches them.
+
+**1. A struct local assigned FIELD BY FIELD is scalarized; assigned as a COPY it stays
+homed.** `func_ov074_021201f0` reads the boss's `Vector3_16` facing, bumps the y by
+0x7fff and writes it to the player. Written as
+
+```c
+ang.x = *(unsigned short *)(c + 0x8c);   /* ... y, z */
+```
+
+mwccarm removes `ang` entirely and the body comes out eight instructions (0x20) short of
+the ROM. Written as one struct copy
+
+```c
+ang = *(struct Vector3_16 *)(c + 0x8c);
+```
+
+the same three `ldrh`/`strh` pairs appear, the local keeps its frame slot at sp+8, and
+every later read of a member comes back as `ldrsh` from memory. That difference is the
+whole match. The tell in the ROM is mixed load signedness on the SAME logical value:
+`ldrh` out of the object (the copy, which does not care about signedness) and `ldrsh` out
+of the frame slot (a member read promoted to int). One value read two ways means a
+memory-homed struct sits between them.
+
+**2. A homed struct whose address never escapes needs the address taken AT THE READ.**
+`func_ov074_021204c0` builds a particle position in a `Vector3` and passes its three
+members as separate scalars. There is no call taking `&v`, so the field form scalarizes
+again (four instructions short). Neither `&v` in the increment, a `pv = &v` pointer, a
+struct copy (which turns into `ldm`/`stm`), a by-value wrapper, nor an inline helper
+reproduces the ROM: the copy changes the loads, and every form that keeps a live pointer
+costs one extra `add rN, sp, #imm`. What works is taking the address only in the reads
+that feed the call:
+
+```c
+NewSimple(0xb1, ((int *)&v)[0], ((int *)&v)[1], ((int *)&v)[2]);
+```
+
+The address is folded to sp offsets, so no pointer survives, but the local is homed and
+the three dead stores the ROM emits come back. This is the missing half of 6bi/6bj: what
+homes a struct is any address-taking use, and a use that constant-folds still counts.
+
+**3. Statement order, not declaration order, settled a 10-word register identity.** The
+tail of the same function computes an index `k` and an interpolation delta `d`, then uses
+both. All six declaration orders of `d` and `k`, and every naming of the twice-read
+`f_5e4`, returned div=10 with the identical register assignment - the 6bg signature. The
+lever was writing `k = ...;` BEFORE `d = ...;`. With `d` first the index web takes r2 and
+the object-field web takes r3; with `k` first they swap, which is the ROM, and the count
+goes to zero. Worth carrying because 6ab / 6bf / 6bg all frame the rank rule around
+DECLARATION order; here the declaration list was inert across every permutation and the
+assignment order was the whole lever.
+
+**4. The rank of hoisted array base pointers follows the source order of the STORES that
+consume them.** `func_ov074_02121380` rebuilds three collision cylinders in a loop over
+three bones, reading three parallel 3-element arrays. The ROM colours the four hoisted
+base pointers strictly descending by frame address - `yoff`@0x28 -> sl, `rad`@0x34 -> sb,
+`hgt`@0x40 -> r8, the output vector@0x64 -> r7. Every honest first draft produces the
+same set rotated by one: rad -> sl, hgt -> sb, out -> r8, yoff -> r7.
+
+Measuring the identity rather than the count (6bg) showed the map is a function of the
+ROLE, not the frame address: permuting the three arrays' DECLARATION order moves them in
+memory but leaves each array on the same register. It is also flatly invariant under all
+24 declaration permutations, 125 element-type combinations, eight loop-body shapes, six
+prologue write orders, both `Vector3 v[3]` / `int buf[9]` / nested-struct spellings of the
+frame region, `while` / `do-while` / `for` / pointer-indexing loop forms, and 14 pragmas
+plus 91 pragma pairs.
+
+The one lever that moves it is the order the five record stores are WRITTEN IN THE
+SOURCE. The stores go to five distinct offsets off one base, so all 120 orders are
+semantically identical and the scheduler is free to re-emit them; but the order the
+source presents them in decides the rank of the base webs that feed them. Only source
+order `0x114, 0x144, 0x118, 0x148, 0x14c` (paired with computing the position temps
+z, y, x) reaches the ROM's map, and it takes the residue from 25 words to 11. The natural
+order `0x114, 0x118, 0x144, 0x148, 0x14c` NEVER reaches it, under any of the levers above.
+
+That leaves the two-source-shape conflict this function is currently stuck on, in the
+shape of 6bn: the store order that gives the ROM's registers emits the 0x144 store three
+slots early, and the store order that emits the schedule correctly gives the rotated
+registers. What would break it is a lever that reorders emitted stores without reordering
+them in the source, or one that ranks a base web by something other than its consumer's
+source position.
+
+**One thing this function is still modelled, not proven, on.** Its frame carries 24 bytes
+between the last array and the output vector that no instruction ever touches, and a
+further word above the output vector. mwccarm drops a local that is never referenced --
+verified with unused scalars, unused structs, `volatile` unused locals, arrays whose every
+store is dead, and address-taken-but-folded forms, none of which reserve a byte. The only
+shapes that reproduce the frame are ones where the untouched bytes belong to the SAME
+object as the output vector, which is used: `Vector3 out[3]` with `&out[2]` passed, a
+three-member struct with its last member passed, or `int buf[9]` with the vector at
+`buf[6]`. All three give the identical object, so the bytes are right and the original
+declaration is a guess. Anyone resuming this should treat the array-index-2 spelling as a
+placeholder, not as recovered source.
+
+**The near-miss DB will print a smaller number than the gate, and neither is wrong.**
+This body reads div=9 in `nearmiss/db.jsonl` and 11 under `tools/match.py`. It is not a
+difference in what gets wildcarded -- both sides wildcard the same two reloc slots
+(offsets 0x1c8 and 0x370), checked by comparing the candidate object's own relocations
+against the ones `config/arm9/overlays/ov074/relocs.txt` implies. The gate counts
+differing words PER OFFSET; `nearmiss_db.evaluate` disassembles both sides to mnemonic
+strings and scores a `difflib.SequenceMatcher` alignment over that sequence, so a block
+that is merely REORDERED realigns and is charged once instead of at every offset it
+shifted. Expect the DB to under-report exactly on a residue like this one, whose whole
+remainder is a reordering. Score merges by the gate.
+
+**Cheap diagnostic worth reusing.** For a residue in a loop over several arrays, print the
+`add rN, sp, #imm` instructions from the candidate object and read off the frame-offset ->
+register map, then compare with the ROM's. Four lines of capstone, and it turns "25 words
+diverge" into "these four webs are rotated by one", which is a claim a sweep can falsify.
+## 6bp. A named local holding an ADDRESS outranks the compiler's own address temp, and that rotates every register below it (`_ZN7Wiggler8BehaviorEv`, div 122 -> 20, 2026-08-30)
+
+The Wiggler's `Behavior` (ov034, 0x02112b5c, 0x6e0, 440 words) sat banked at div 122
+with a floor claim about "a global r6/r7 vs cylinder r5/r4/r6 allocation tradeoff". The
+tradeoff was real but it was a symptom. One source change moved 85 of the 102 words that
+eventually fell.
+
+**The lever.** `ldrh` carries only an 8-bit immediate offset. The angle field this
+function reads lives at `c + 0x446`, which does not fit, so mwccarm *must* materialise a
+base register and then load at `[base, #0x46]`. The cartridge's base is a
+**compiler-generated address temp**. The draft spelled the same value as a named local,
+`char *angbase = c + 0x400`, and a named local does not take the same rank in the scratch
+file as the temp the compiler would have invented. Measured on this body: as a named
+local the web landed in **r4, the TOP of the contended group**; the cartridge has it in
+**r0, the bottom**. Every other web in the group shifted one slot to compensate, so both
+blocks that used it came out as a clean uniform rotation:
+
+    ROM      angbase=r0  round=r1  zero=r2  hx=r3  hz=r4  scale=r5  tbl=r8
+    named    round=r0    zero=r1   hx=r2    hz=r3  angbase=r4  scale=r5  tbl=r8
+
+Deleting the local and writing `*(u16 *)(c + 0x446)` inline at both use sites took the
+head block 23 -> 2 and the particle block 48 -> 2, total **105 -> 37**. The same lever
+applied to the row cursor `char *p2 = c + (i << 1)` (spelled inline at its two uses) took
+**27 -> 20**. Both are the identical shape: *an address the compiler was going to
+materialise anyway must not be given a name*.
+
+This generalises past this function. Any field past an addressing-mode limit forces
+materialisation - 8 bits for `ldrh`/`ldrsh`/`strh`, 12 for `ldr`/`str`/`ldrb` - so any
+struct member above 0xFF (halfword) or 0xFFF (word) is a candidate. When a residue is a
+uniform rotation of the low registers, look for a named local holding a base address
+before reaching for declaration order.
+
+**Declaration order was not the lever, and 6bf's neighbourhood does not contain the one
+that was.** The full pairwise-transposition climb over all 14 declarations (74 compiles)
+found nothing, twice, at two different divergence levels. What worked was a different
+operator: **relocating a single statement a long distance**. Moving
+`angbase = c + 0x400` out of its block to before an earlier call was worth 131 -> 107 on
+its own, and no transposition of adjacent declarations contains that move. A relocation
+neighbourhood is cheap to build (only `local = expr;` with no memory or call on the
+right-hand side, at conditional depth 0, moved between the last writer of what it reads
+and the first reader of what it writes) and it is worth having beside 6bf's transposition
+climb. Watch one trap while building it: a **declaration line is not a reader**, and
+counting it as one gives every candidate zero legal positions and a silently empty search
+(the first version of this tool reported "local optimum" after 118 candidates because of
+exactly that).
+
+**A pragma's value is SHAPE-DEPENDENT, and measuring it on the wrong shape is how a
+sweep lies to you.** A 1024-point product sweep (every subset of the eight verified
+pragmas x four source shapes, scored per address region per 6bf) found
+`opt_strength_reduction off` load-bearing and `opt_common_subs off` apparently inert, and
+that second reading was carried forward as "the draft has been hauling a dead crutch". It
+was wrong, and the way it was wrong is the transferable part. Every shape in that sweep
+was seeded at or near the div-122 draft - i.e. BEFORE the named-address locals came out.
+Re-measured through the gate on both bodies:
+
+    div-122 draft   with `opt_common_subs off` 122   without 122   -> genuinely inert
+    shipped body    with `opt_common_subs off`  20   without  27   -> worth 7 words
+
+So the pragma did not start out dead and stay dead: it **became load-bearing once the
+named-address locals were deleted**. Removing `angbase` and `p2` is exactly what stops the
+source from pre-sharing those addresses by hand, which is what leaves a common
+subexpression for the pragma to have an opinion about in the first place. The two levers
+are coupled, and a single-axis pragma sweep run before the source-shape lever cannot see
+it.
+
+Two rules out of this. A pragma sweep is only valid for the source shape it was run on -
+re-run it after any structural lever, never carry the verdict across. And never write
+"inert" unqualified: say inert *on which body, measured through which gate*.
+Measured that way on both bodies: `scheduling off` is genuinely inert (122/122 and
+20/20), and `opt_lifetimes off` is catastrophic on both (159 on the draft, 122 on the
+shipped body). Only `opt_common_subs off` flipped -- and it flipped because a source
+lever, not a pragma, changed what it had to work on.
+
+**What the residue is, and why the permuter is the wrong tool for it.** 16 of the final
+20 words are pure REORDER: our exact instruction, with the registers already correct,
+appears in the cartridge a few words away. decomp-permuter's stock scorer charges 60 per
+reorder against 5 per regalloc, and on this body it duly found a "better" candidate -
+545 against a 755 base - whose actual byte divergence is **36, worse than the 20 it
+started from**. That is the upstream author's own caveat (quoted in
+notes/research-matching-levers.md F4.1) reproduced as a measurement: when the residue is
+ordering rather than allocation, the permuter's score and the byte oracle point in
+different directions, and following the score walks away from the match.
+
+### 6bp addendum: three bugs a differential-execution harness hides unless you make it fail first
+
+The NONMATCHING body ships with a differential-execution audit (an ARM interpreter over
+capstone's detailed decode - no unicorn on the build box - running the cartridge bytes
+and the candidate's compiled bytes over the same randomised state). The five
+deliberately-broken control candidates were not a formality: they caught three bugs, and
+every one of them was invisible from the PASS side because it hit both sides equally.
+
+1. **capstone's condition codes are 1=EQ, 2=NE.** Having those two swapped inverted every
+   conditional in both runs at once, so a correct candidate still compared equal while
+   the branches actually executed were the wrong ones.
+2. **capstone renders `lsl rd, rn, #k` with TWO operands**, carrying the amount in
+   `ops[1].shift` (it is MOV-with-shift underneath). Reading `ops[1]` as the amount makes
+   a *register* the shift count, so the two schedules shifted by different amounts.
+3. **The function's own bytes must be mapped as DATA.** Every `ldr rN, [pc, #k]` reads the
+   literal pool at the tail of the function; without the code image in memory those loads
+   return noise, so every pooled constant and every global address is garbage and the
+   pool-dependent branches are unreachable.
+
+Two design points worth carrying: compare the **final value of every written byte**, not
+the write sequence, because two correct schedules legitimately reorder independent stores
+(call *order* is semantic and should still be compared); and truncate each recorded call's
+arguments to that callee's **arity**, because registers above it hold caller garbage that
+differs harmlessly. Finally, uniform random memory is not enough - a rare-path control
+(`state == 2`, one in 256) went undetected until the discriminating fields were driven
+through their interesting values deliberately, and a call stub that always returns
+non-zero leaves every `if (f() != 0)` else-arm unreachable. Coverage was 21 of 22 callees
+before the harness was trusted (a reviewer's independent re-run read 22 of 22).
+
+State the harness's guarantee precisely, per control. Four of the five controls here are
+size-neutral and are caught by EXECUTION; control 2 (dropping the `+ 1` on the second
+sincos index) changes the instruction count, so it is caught by SIZE alone and never
+exercises the comparator. A control that the byte gate would have rejected anyway proves
+nothing about the interpreter, so count only the size-neutral ones when claiming what the
+audit can detect.
