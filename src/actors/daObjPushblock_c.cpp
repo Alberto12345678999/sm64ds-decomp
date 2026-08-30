@@ -121,7 +121,7 @@ int daObjPushblock_c::Behavior()
 {
     Vector3 v;
     Vector3 dst;
-    volatile Vector3 pos;
+    Vector3 pos;
     dActor_c *q;
 
     if (_ZN10dBgActor_c20UpdateKillByMegaCharEsss5Fix12IiE(this, 0x1800, 0, 0, 0x96000) != 0) {
