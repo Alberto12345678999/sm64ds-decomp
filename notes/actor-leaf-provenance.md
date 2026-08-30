@@ -221,8 +221,9 @@ Sources: `src/_ZN12HealingHeart13InitResourcesEv.cpp`,
 | 0x380 | `mParticle` | the particle-handle shape above, effect 0x4a. |
 | 0x384 | `mLifeTimer` | 0xb4 at init, counted down only while on the ground, destroys at 0, blinks below 0x2d. |
 
-Sources: `src/_ZN11WingFeather13InitResourcesEv.cpp`,
-`src/_ZN11WingFeather8BehaviorEv.cpp`, `src/_ZN11WingFeather6RenderEv.cpp`,
+Sources: `src/game/actors/WingFeather/_ZN11WingFeather13InitResourcesEv.cpp`,
+`src/game/actors/WingFeather/_ZN11WingFeather8BehaviorEv.cpp`,
+`src/game/actors/WingFeather/_ZN11WingFeather6RenderEv.cpp`,
 `src_tu/actors/WingFeather.cpp`.
 
 ## daObjAbuku_c -- include/daObjAbuku_c.h
@@ -259,8 +260,7 @@ Sources: `src/_ZN8daEyBm_c13InitResourcesEv.cpp`,
 | 0x324 | `mParticle1` | particle-handle shape, effect 0x7f, emitted at `mPosY + 0x4b000`. |
 | 0x328 | `mParticle2` | same, effect 0x80. |
 
-Sources: `src/_ZN8daKpFr_c13InitResourcesEv.cpp`,
-`src/_ZN8daKpFr_c6RenderEv.cpp`, `src_tu/actors/daKpFr_c.cpp`.
+Source: `src/actors/daKpFr_c.cpp`.
 
 ## daKrpa_c -- include/daKrpa_c.h
 
@@ -269,7 +269,7 @@ Sources: `src/_ZN8daKpFr_c13InitResourcesEv.cpp`,
 | 0x35c | `mMatrix` | identity-matrix shape. |
 | 0x3a8 | `mHeightAboveGnd` | `InitResources` raycasts a `dBgCh_Gnd` down from `mPos` and stores `(mPosY - hit height) + 0x1e000`, or the constant 0x1f4000 when nothing is hit. |
 
-Sources: `src/_ZN8daKrpa_c13InitResourcesEv.cpp`, `src_tu/actors/daKrpa_c.cpp`.
+Source: `src/actors/daKrpa_c.cpp`.
 
 ## Spiny -- include/Spiny.h
 
