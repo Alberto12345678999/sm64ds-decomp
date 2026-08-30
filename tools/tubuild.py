@@ -2005,6 +2005,17 @@ def apply_compiler_only_policy(obj_bytes, entry, homes=None):
     inconsistent.  Reducing the whole declared compiler-only set in one plan both
     models production and lets objisolate prove that no retained section depends on
     content the policy removes.
+
+    A data row must say WHICH kind it is, and an RTTI/vtable record may not take the
+    plain ``deadstrip``.  "A policy cannot hide a configured ROM symbol" holds only
+    for symbols whose spelling reaches ``all_symbol_homes()``; a class carrying a
+    COINED name reaches nothing, because an _ZTI/_ZTS record is a length-prefixed
+    mangled string and a coined name misses on both the prefix and the body.  The
+    miss reads as "the ROM has no such record", which is exactly backwards, and a
+    plain ``deadstrip`` then reaches neither the duplicate-body proof nor the
+    cartridge word compare -- so the record is dropped unverified while every gate
+    stays green.  Rename the class to the cartridge's RTTI spelling (the row then
+    resolves as ``deadstrip-data`` and is compared) or drop the row.
     """
     inv = elf_inventory(obj_bytes)
     licensed = {f["symbol"] for f in entry.get("functions", [])}
@@ -2082,7 +2093,22 @@ def apply_compiler_only_policy(obj_bytes, entry, homes=None):
             reasons.append(f"compiler_only_output {sym} has configured ROM home(s) "
                            f"{homes[sym]}; it is not compiler-only")
     for sym, disposition in data_rows:
-        if disposition == "deadstrip-data":
+        if disposition == "deadstrip" and sym[:4] in ("_ZTI", "_ZTS", "_ZTV"):
+            # Mirrors the rombuild.py guard, and must: the intact-object path
+            # returns before rombuild's copy runs, so a guard there alone leaves
+            # this route uncovered.  A plain ``deadstrip`` is the one disposition
+            # never compared against the cartridge, and the ``elif homes.get(sym)``
+            # below cannot catch a COINED class name because ``homes`` is keyed on
+            # the symbols.txt spelling while _ZTI/_ZTS are LENGTH-PREFIXED mangled
+            # strings -- a coined name misses on both the prefix and the body, and
+            # the miss reads as "the ROM has no such record".
+            reasons.append(f"compiler_only_output {sym} is an RTTI/vtable record "
+                           f"banked as a plain deadstrip, which is never compared "
+                           f"against the cartridge. If the class carries a coined "
+                           f"name, rename it to the cartridge's RTTI spelling so "
+                           f"the row resolves as deadstrip-data; if the ROM "
+                           f"genuinely has no such record, drop the row")
+        elif disposition == "deadstrip-data":
             if not homes.get(sym):
                 reasons.append(f"compiler_only_output {sym} is declared compiler-only "
                                f"data but has no configured ROM home; a homeless "

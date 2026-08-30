@@ -167,6 +167,41 @@ class RomBuildEnrollment(unittest.TestCase):
             RB.compiler_only_policies(manifest=manifest, homes={}),
             {"src/Pair.cpp": {"deadstrip": ["_ZN4PairC2Ev"], "expect": {}, "data": [], "homes": {}}})
 
+    def test_plain_deadstrip_is_refused_for_an_rtti_record(self):
+        """The coverage hole this guard closes.
+
+        A plain ``deadstrip`` reaches neither ``pol["data"]`` nor ``expect``, so it
+        is the one disposition never compared against the cartridge.  The
+        ``homes.get(symbol)`` guard cannot catch it for a COINED class name: an
+        _ZTI/_ZTS record is a LENGTH-PREFIXED mangled string, so a coined spelling
+        misses symbols.txt on both the prefix and the body, and the miss reads as
+        "the ROM has no such record".  romdata_check then returns UNNAMED/0 bytes,
+        so the romData ratchet does not move either and every gate stays green.
+        """
+        for symbol in ("_ZTV4Pair", "_ZTI4Pair", "_ZTS4Pair"):
+            with self.subTest(symbol=symbol):
+                manifest = self._data_manifest(symbol=symbol,
+                                               disposition="deadstrip")
+                with self.assertRaises(RB.BuildError) as raised:
+                    RB.compiler_only_policies(manifest=manifest, homes={})
+                self.assertIn("never compared against the cartridge",
+                              raised.exception.output)
+
+    def test_plain_deadstrip_still_accepted_for_a_non_rtti_symbol(self):
+        """Control: the guard is scoped to RTTI/vtable records, nothing wider."""
+        manifest = {"entries": [{
+            "id": "arm9/Pair",
+            "source": "src/Pair.cpp",
+            "functions": [{"symbol": "First"}],
+            "compiler_only_output": [{
+                "symbol": "_ZN4PairC2Ev", "disposition": "deadstrip",
+                "reason": "compiler-generated constructor variant"
+            }]
+        }]}
+        self.assertEqual(
+            RB.compiler_only_policies(manifest=manifest, homes={})
+            ["src/Pair.cpp"]["deadstrip"], ["_ZN4PairC2Ev"])
+
     def test_duplicate_disposition_requires_a_rom_home(self):
         """The two dispositions have opposite preconditions, deliberately."""
         manifest = {"entries": [{
