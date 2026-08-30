@@ -641,7 +641,6 @@ extern int _ZTV17daObjSlIceBlock_c[];
 extern int _ZTV17daObjWlPolelift_c[];
 extern int _ZTV17daWater_Suikomi_c[];
 extern int _ZTV18BowserFireSeaArena[];
-extern int _ZTV13WaterfallMist[];
 extern int _ZTV18RickshawPlatformBs[];
 extern int _ZTV8ShipWing[];
 extern int _ZTV18dMgTrmpln3DMario_c[];
