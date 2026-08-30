@@ -283,10 +283,10 @@ re-verified. Two were rejected by the ROM and are documented in place:
 
 ## daObjPushblock_c (`include/daObjPushblock_c.h`, ov002, size 0x4f4)
 
-Bodies read: `src/_ZN16daObjPushblock_c13InitResourcesEv.cpp`,
-`src/_ZN16daObjPushblock_c8BehaviorEv.c`, `src/_ZN16daObjPushblock_c6RenderEv.cpp`,
-`src/_ZN16daObjPushblock_c8OnPushedER8dActor_c.cpp`, `src/_ZN16daObjPushblock_c4KillEv.cpp`,
-`src/_ZN16daObjPushblock_c15OnHitByMegaCharER6Player.cpp`.
+Bodies read: `_ZN16daObjPushblock_c13InitResourcesEv`,
+`_ZN16daObjPushblock_c8BehaviorEv`, `_ZN16daObjPushblock_c6RenderEv`,
+`_ZN16daObjPushblock_c8OnPushedER8dActor_c`, `_ZN16daObjPushblock_c4KillEv`, and
+`_ZN16daObjPushblock_c15OnHitByMegaCharER6Player`.
 
 | Offset | Name | Evidence |
 | --- | --- | --- |
@@ -305,7 +305,7 @@ carried: `mPrevPosX/Y/Z` (0x068) and `mCamSpacePosX/Y/Z` (0x074), both of which
 `mClsnMat` (0x2ec) and `mWithMeshClsn` (0x320) as `u8` markers, which is the idiom the
 other twins in this family use.
 
-`src/_ZN16daObjPushblock_c13InitResourcesEv.cpp` was an `extern "C"` free function over a raw
+`_ZN16daObjPushblock_c13InitResourcesEv` was an `extern "C"` free function over a raw
 `char *self`; it is a real `int daObjPushblock_c::InitResources()` now, byte-exact, with all
 fourteen hand offsets on named members. `tools/eligible.py` is unchanged by it.
 
