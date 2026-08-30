@@ -6,7 +6,8 @@ import sys
 import tempfile
 import pytest
 
-from check_dead_references import (
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+from check_dead_references import (  # noqa: E402
     collect, dead_references, _git_tracked, _git_ignored, _tree_paths,
     _normalise, REPO, NUL
 )

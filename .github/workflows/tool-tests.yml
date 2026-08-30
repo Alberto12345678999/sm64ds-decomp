@@ -33,14 +33,19 @@
 #      it is a different change from this one, and it should come with a requirements
 #      file rather than a version invented in a `run:` line.
 #
-#   3. RED ON MAIN RIGHT NOW. `python -m unittest tools.test_dead_references` and
-#      `tools.test_pr_monitor` both fail on a clean origin/main with ImportError -- they
-#      use bare `from check_dead_references import ...` / `from pr_monitor import ...`,
-#      which only resolves with `tools/` on sys.path. Both are PYTEST modules that pass
-#      when invoked as `python tools/test_X.py` (their __main__ calls pytest.main), so
-#      this is an invocation mismatch, not a broken tool. They are named here rather
-#      than fixed: repairing them is a `tools/` change and this workflow deliberately
-#      touches nothing but itself.
+#   3. PYTEST-ONLY, SO UNITTEST CANNOT SEE THEM. test_dead_references (24 tests) and
+#      test_pr_monitor (4) used to fail on a clean origin/main with ImportError -- they
+#      used bare `from check_dead_references import ...` / `from pr_monitor import ...`,
+#      which only resolves with `tools/` on sys.path. That import is fixed now (they
+#      carry the same `sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))`
+#      bootstrap that 38 other test modules in `tools/` already spell verbatim), but
+#      fixing it does NOT make them wirable: both are pytest-style -- bare
+#      `class TestX:` and bare `def test_*()`, no unittest.TestCase anywhere -- so
+#      `python -m unittest tools.test_dead_references` now prints "Ran 0 tests ... OK"
+#      and exits 0. Adding them to the list below would buy 28 tests' worth of nothing.
+#      They are two of the eleven modules described in the next paragraph, and wiring
+#      them means converting them to TestCase classes, which is a real change to the
+#      tests rather than to how they are invoked.
 #
 # WHY THE LIST IS SPELLED OUT AND NOT A GLOB. `python -m unittest discover` would absorb
 # every future test_*.py automatically -- including one that needs mwccarm, which does
