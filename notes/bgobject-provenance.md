@@ -724,9 +724,8 @@ same offsets:
 * `include/ShipWater.h` — `mAngleY` (0x08e), `mClipOffsetY`, `mClipRadius`,
   `mClipDistance`, `mFarDistance` (0x0b4..0x0c0), `mClipResult` (0x0c4),
   `mDeathTableID` (0x0ce).
-* `include/daObjC1_Trap_c.h` — `mPosX/Y/Z` (0x05c), `mAngleY` (0x08e), `mAreaId` (0x0cc).
-  The same five carried into the TU-local `struct TrapFlat` in
-  `src_tu/actors/daObjC1_Trap_c.cpp`, which `tools/check_src_tu_compiles.py` proves.
+* `include/daObjC1_Trap_c.h` — its production class TU uses inherited `mPosX/Y/Z`
+  (0x05c), `mAngleY` (0x08e), and `mAreaId` (0x0cc) directly through `dActor_c`.
 * `include/TowerStep.h` — `mHorzSpeed`, `mTerminalVelocity`, `mVertSpeed`.
 * `include/MetalNet.h` — `param1` (0x008), `mAngleY`, `mClsnMat` (0x2ec).
 * `include/PoleLift.h` — `param1`, `mAngleY`.
