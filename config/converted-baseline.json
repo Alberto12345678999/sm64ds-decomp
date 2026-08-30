@@ -7,7 +7,7 @@
     "no_codegen_trick",
     "no_mangled_refs"
   ],
-  "count": 2539,
+  "count": 2534,
   "converted": [
     "src/ARMMathLoadState.c",
     "src/ARMMathSaveState.c",
@@ -887,11 +887,6 @@
     "src/_ZN14dScMgD3DBase_cD1Ev.cpp",
     "src/_ZN14dScMgMCarlo2_c16CleanupResourcesEv.cpp",
     "src/_ZN14dScMgMemory2_c6RenderEv.cpp",
-    "src/_ZN14daObjC1_Trap_c16CleanupResourcesEv.cpp",
-    "src/_ZN14daObjC1_Trap_c6RenderEv.cpp",
-    "src/_ZN14daObjC1_Trap_c8BehaviorEv.cpp",
-    "src/_ZN14daObjC1_Trap_cD0Ev.cpp",
-    "src/_ZN14daObjC1_Trap_cD1Ev.cpp",
     "src/_ZN14daObjUkiyuka_c6RenderEv.cpp",
     "src/_ZN14daObjUkiyuka_cD0Ev.cpp",
     "src/_ZN14daObjUkiyuka_cD1Ev.cpp",
