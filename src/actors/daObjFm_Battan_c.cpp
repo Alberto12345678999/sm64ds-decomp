@@ -164,12 +164,12 @@ int daObjFm_Battan_c::Behavior()
         break;
 
     case 2:
-        if ((u16)mStateTimer >= 0x3c) {
+        if (mStateTimer >= 0x3c) {
             mAngVelX = 0x80;
             mState++;
             Sound::PlayBank3(0x45, *(Vector3 *)&mCamSpacePosX);
         } else {
-            (*(u16 *)&mStateTimer)++;
+            mStateTimer++;
         }
         break;
 
@@ -184,10 +184,10 @@ int daObjFm_Battan_c::Behavior()
         break;
 
     case 4:
-        if ((u16)mStateTimer >= 0x3c)
+        if (mStateTimer >= 0x3c)
             mState = 0;
         else
-            (*(u16 *)&mStateTimer)++;
+            mStateTimer++;
         break;
     }
 

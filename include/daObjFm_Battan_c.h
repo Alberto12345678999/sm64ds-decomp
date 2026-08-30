@@ -8,7 +8,7 @@
  * _ZTS16daObjFm_Battan_c at ov023:0x02111fa0/0x02111fac. */
 struct daObjFm_Battan_c : dBgActor_c {
     s16 mAngVelX;                 /* 0x31e */
-    s16 mStateTimer;              /* 0x320 */
+    u16 mStateTimer;              /* 0x320 */
     u8 mState;                    /* 0x322 */
     u8 pad_323;
     ShadowModel mShadowModel;     /* 0x324 */
