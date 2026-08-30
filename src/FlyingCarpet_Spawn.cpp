@@ -11,7 +11,7 @@ void _ZN5ModelD1Ev(void*);
 void _ZN5ModelC1Ev(void*);
 /* Factory for daObjRcCarpet_c (include/daObjRcCarpet_c.h): still hand-rolled,
    not `return new daObjRcCarpet_c()`, matching the daObjPathLift_c precedent
-   (#1589) -- the PathPtr constructed at c+0x430 sits inside PathLift's own
+   (#1589) -- the PathPtr constructed at c+0x430 sits inside dPathLiftActor_c's
    generic tail padding, not in any derived class's own storage, so the real
    compiler-synthesised constructor cannot place it there. */
 void* FlyingCarpet_Spawn(void){

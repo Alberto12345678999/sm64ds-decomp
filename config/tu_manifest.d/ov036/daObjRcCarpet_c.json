@@ -84,6 +84,12 @@
   ],
   "data": [
     {
+      "symbol": "_ZTI15daObjRcCarpet_c",
+      "address": "0x02113f4c",
+      "size": "0x0c",
+      "evidence": "compiler-emitted single-inheritance RTTI record; its base relocation resolves to the ROM-proven dPathLiftActor_c typeinfo at ov002:0x0210af0c"
+    },
+    {
       "symbol": "data_ov036_02113f58",
       "address": "0x02113f58",
       "size": "0x0c",
@@ -117,7 +123,7 @@
     "tubuild create warning: RAW: src/func_ov036_0211224c.cpp (func_ov036_0211224c) did not split (scanned to end of file without finding a function body); carried verbatim -- its own includes/declarations stay inside its member block",
     "tubuild create warning: RAW: src/func_ov036_021122c0.cpp (func_ov036_021122c0) did not split (scanned to end of file without finding a function body); carried verbatim -- its own includes/declarations stay inside its member block",
     "tubuild create warning: RAW: src/FlyingCarpet_Spawn.cpp (FlyingCarpet_Spawn) did not split (scanned to end of file without finding a function body); carried verbatim -- its own includes/declarations stay inside its member block",
-    "Promotion prerequisite: this source-level base is named PathLift so mwcc emits _ZTI8PathLift, but the ov036 daObjRcCarpet_c RTTI record relocates to ov002:0x0210af0c _ZTI16dPathLiftActor_c. A typedef alias experiment emitted dPathLiftActor_c method symbols along with the desired RTTI and therefore could not preserve the established _ZN8PathLift... ABI. _ZTS8PathLift, _ZTI8PathLift, and _ZTI15daObjRcCarpet_c remain deliberately unlicensed; do not promote or hand-author RTTI until the base-class identity is resolved honestly."
+    "The base class is now the ROM-proven dPathLiftActor_c identity. The compiler naturally emits daObjRcCarpet_c RTTI with its base relocation to ov002:0x0210af0c; no RTTI or lifecycle data is hand-authored."
   ],
   "verification": {
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
@@ -128,33 +134,24 @@
     "functions_matched": 9,
     "functions_declared": 9,
     "compilerOnlyOutput": {
-      "requested": [
-        "_ZN8PathLiftD0Ev",
-        "_ZN8PathLiftD1Ev"
-      ],
-      "deadstripped": [
-        "_ZN8PathLiftD0Ev",
-        "_ZN8PathLiftD1Ev"
-      ],
+      "requested": [],
+      "deadstripped": [],
       "droppedSections": [
         5,
         6,
         7,
         8,
+        9,
         10,
         11,
         12,
         13,
-        14,
+        16,
+        17,
+        18,
         19,
-        20,
-        23,
-        46,
-        47,
-        48,
-        49,
-        50,
-        51
+        22,
+        24
       ],
       "data": [
         "_ZTI7fBase_c",
@@ -163,45 +160,33 @@
         "_ZTS8dActor_c",
         "_ZTI10dBgActor_c",
         "_ZTS10dBgActor_c",
+        "_ZTI16dPathLiftActor_c",
+        "_ZTS16dPathLiftActor_c",
         "_ZTI8dActor_c",
-        "_ZTI7dBase_c",
-        "_ZTV8PathLift"
+        "_ZTI7dBase_c"
       ],
       "dataExternalized": [
         "_ZTI10dBgActor_c",
+        "_ZTI16dPathLiftActor_c",
         "_ZTI7dBase_c",
         "_ZTI7fBase_c",
         "_ZTI8dActor_c",
         "_ZTS10dBgActor_c",
+        "_ZTS16dPathLiftActor_c",
         "_ZTS7dBase_c",
         "_ZTS7fBase_c",
-        "_ZTS8dActor_c",
-        "_ZTV8PathLift"
+        "_ZTS8dActor_c"
       ]
     },
     "criteria": {
       "every_declared_function_defined": "PASS",
       "every_declared_function_bytes_match": "PASS",
-      "declared_function_set_equals_defined_function_set": "FAIL-BY-DESIGN -- 3 unlicensed section/symbol(s), 0 compiler-only policy error(s)",
+      "declared_function_set_equals_defined_function_set": "PASS",
       "functions_occur_in_expected_order": "PASS",
       "relocation_destinations_verified": "PASS"
     }
   },
   "compiler_only_output": [
-    {
-      "symbol": "_ZN8PathLiftD0Ev",
-      "disposition": "deadstrip-duplicate",
-      "canonical_module": "ov002",
-      "canonical_address": "0x020ef320",
-      "reason": "vague-linkage copy of _ZN8PathLiftD0Ev, re-emitted by every TU that needs it; the cartridge keeps one at ov002:0x020ef320 and another enrolled source owns it. rombuild proves this object's body against the cartridge before discarding it."
-    },
-    {
-      "symbol": "_ZN8PathLiftD1Ev",
-      "disposition": "deadstrip-duplicate",
-      "canonical_module": "ov002",
-      "canonical_address": "0x020ef390",
-      "reason": "vague-linkage copy of _ZN8PathLiftD1Ev, re-emitted by every TU that needs it; the cartridge keeps one at ov002:0x020ef390 and another enrolled source owns it. rombuild proves this object's body against the cartridge before discarding it."
-    },
     {
       "symbol": "_ZTI7fBase_c",
       "disposition": "deadstrip-data",
@@ -245,6 +230,20 @@
       "reason": "Inherited dBgActor_c type-name string emitted as vague linkage; its compiler-sized string payload is identical to the canonical ov002 bytes."
     },
     {
+      "symbol": "_ZTI16dPathLiftActor_c",
+      "disposition": "deadstrip-data",
+      "canonical_module": "ov002",
+      "canonical_address": "0x0210af0c",
+      "reason": "Inherited dPathLiftActor_c typeinfo emitted as vague linkage. romdata_check verifies the complete 12-byte single-inheritance record and all three relocations at its canonical ov002 home."
+    },
+    {
+      "symbol": "_ZTS16dPathLiftActor_c",
+      "disposition": "deadstrip-data",
+      "canonical_module": "ov002",
+      "canonical_address": "0x0210af18",
+      "reason": "Inherited dPathLiftActor_c type-name string emitted as vague linkage; its compiler-sized string payload is identical to the canonical ov002 bytes."
+    },
+    {
       "symbol": "_ZTI8dActor_c",
       "disposition": "deadstrip-data",
       "canonical_module": "arm9",
@@ -257,13 +256,6 @@
       "canonical_module": "arm9",
       "canonical_address": "0x02086e78",
       "reason": "Inherited dBase_c typeinfo emitted as vague linkage. romdata_check verifies the complete 12-byte single-inheritance record and all three relocations at its canonical arm9 home."
-    },
-    {
-      "symbol": "_ZTV8PathLift",
-      "disposition": "deadstrip-data",
-      "canonical_module": "ov002",
-      "canonical_address": "0x0210af70",
-      "reason": "The inline base destructor makes this TU re-emit the inherited PathLift vtable. Its complete slot payload agrees with the canonical ov002 table; it is dropped with the duplicate PathLift lifecycle pair."
     }
   ]
 }

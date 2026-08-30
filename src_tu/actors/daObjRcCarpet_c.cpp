@@ -68,7 +68,7 @@ extern int _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block
     dBgW_KcMbg *collider, KCL_File *file, const Matrix4x3 *matrix,
     Fix12i scale, s16 angle, CLPS_Block *clps);
 extern void func_020393d4(dBgW_KcMbg *collider, void *callback);
-extern void func_ov002_020efaf0(PathLift *lift);
+extern void func_ov002_020efaf0(dPathLiftActor_c *lift);
 extern void _ZN4dBgW16UpdatePosAndAngsERS_P8dActor_cR5dBgPiR7Vector3P10Vector3_16S8_();
 extern void _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(
     dBgActor_c *actor, Fix12i low, Fix12i high);
@@ -136,10 +136,10 @@ int daObjRcCarpet_c::InitResources()
     func_020393d4(
         &mMeshCollider,
         (void *)_ZN4dBgW16UpdatePosAndAngsERS_P8dActor_cR5dBgPiR7Vector3P10Vector3_16S8_);
-    unk_440 = 0xa000;
-    mHorzSpeed = unk_440;
+    mPathSpeed = 0xa000;
+    mHorzSpeed = mPathSpeed;
     func_ov002_020efaf0(this);
-    unk_43c = 1;
+    mPathDirection = 1;
     unk_42c = 1;
     return 1;
 }
@@ -166,7 +166,7 @@ int daObjRcCarpet_c::Behavior()
 /* -------------------------------------------------------------------------- */
 int daObjRcCarpet_c::Render()
 {
-    if (unk_428 < 0x5a && (unk_428 & 1))
+    if (mWaitTimer < 0x5a && (mWaitTimer & 1))
         return 1;
     mModelAnim.Render(0);
     return 1;

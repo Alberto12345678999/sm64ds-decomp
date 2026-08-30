@@ -1,6 +1,6 @@
 //cpp
-// @symbol _ZN8PathLiftD1Ev
-/* PathLift's destructor is defined INLINE in include/PathLift.h, so that
+// @symbol _ZN16dPathLiftActor_cD1Ev
+/* dPathLiftActor_c's destructor is defined INLINE in include/PathLift.h, so that
  * subclasses inline its cleanup the way the ROM's daObjPathLift_c and
  * daObjRcCarpet_c do. The vtable still needs an out-of-line address for slot
  * 0, and this uncalled helper is what makes mwcc materialise it; objisolate
@@ -8,7 +8,7 @@
  */
 #include "PathLift.h"
 
-void PathLift_EmitDestructor(PathLift *p)
+void dPathLiftActor_c_EmitDestructor(dPathLiftActor_c *p)
 {
-    p->~PathLift();
+    p->~dPathLiftActor_c();
 }

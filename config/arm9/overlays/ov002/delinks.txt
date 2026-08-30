@@ -4735,11 +4735,11 @@ src/func_ov002_020ef2a4.cpp:
     complete
     .text start:0x020ef2a4 end:0x020ef320
 
-src/_ZN8PathLiftD0Ev.cpp:
+src/_ZN16dPathLiftActor_cD0Ev.cpp:
     complete
     .text start:0x020ef320 end:0x020ef390
 
-src/_ZN8PathLiftD1Ev.cpp:
+src/_ZN16dPathLiftActor_cD1Ev.cpp:
     complete
     .text start:0x020ef390 end:0x020ef3ec
 
@@ -4771,7 +4771,7 @@ src/func_ov002_020efa54.cpp:
     complete
     .text start:0x020efa54 end:0x020efaa0
 
-src/_ZN8PathLift12BaseBehaviorEv.cpp:
+src/_ZN16dPathLiftActor_c12BaseBehaviorEv.cpp:
     complete
     .text start:0x020efaa0 end:0x020efaf0
 
@@ -4815,7 +4815,7 @@ src/func_ov002_020eff04.cpp:
     complete
     .text start:0x020eff04 end:0x020eff18
 
-src/_ZN8PathLift9AfterClsnEv.cpp:
+src/_ZN16dPathLiftActor_c9AfterClsnEi.cpp:
     complete
     .text start:0x020eff18 end:0x020eff90
 
