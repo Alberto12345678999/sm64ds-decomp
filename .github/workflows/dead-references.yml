@@ -20,6 +20,16 @@
 # than announcing a clean tree. That guard exists because this repo has already shipped
 # a gate that reported a pass after a reformat took its match count to zero.
 #
+# THE FILTER COVERS EVERY WORKFLOW FILE, not just this one. The tool reads workflow
+# comments and `run:` lines as prose, but the trigger below used to name only
+# `dead-references.yml`, so a PR touching a SIBLING workflow never ran this gate. #2027
+# merged as `e9de9103a` naming a `test_X.py` under tools/ in a `tool-tests.yml` comment
+# -- a path that has never existed -- and the main-push run list for that commit reads
+# `src_tu references`, `tool tests`, `pages`, with no `dead references` among them. The
+# dead reference then sat on main until it turned #2030's `references` check red for a
+# defect #2030 did not introduce; `b309f5d3f` (#2031) removed the string. A gate that
+# reads a file must be triggered by that file.
+#
 # Costs nothing: static analysis over the working tree, no compiler and no ROM.
 name: dead references
 
@@ -32,7 +42,7 @@ on:
       - "src/**"
       - "src_tu/**"
       - "config/dead-reference-baseline.json"
-      - ".github/workflows/dead-references.yml"
+      - ".github/workflows/**"
   push:
     branches: [main]
     paths:
@@ -42,7 +52,7 @@ on:
       - "src/**"
       - "src_tu/**"
       - "config/dead-reference-baseline.json"
-      - ".github/workflows/dead-references.yml"
+      - ".github/workflows/**"
   workflow_dispatch:
 
 permissions:
