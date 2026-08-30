@@ -24,6 +24,19 @@
 # pass, so the file is not in every PR's diff and does not conflict. Re-bank it
 # occasionally, on its own, to bank recent gains.
 #
+# ONE-WAY STALENESS HAS AN EXCEPTION, AND IT COST A DAY. A TU promotion REMOVES banked
+# paths: `tubuild.py` consolidates N per-symbol files into one, and the absorbing file
+# structurally cannot pass `no_mangled_refs`. So a promotion leaves the baseline stale in
+# the FAILING direction. Measured: PR #1996 promoted `ov002/daObjAbuku_c` while its own
+# checks were green -- they had run against a base predating the re-bank that first
+# banked the two files it deletes. Main went out of sync the moment it merged, and the
+# next unrelated PR to touch `src/**` (#1978) is the one that turned red for it.
+#
+# Hence the `push:` trigger below. It does not gate anything -- there is no branch
+# protection here and a red main is advisory -- but it attributes the breakage to the
+# merge that caused it instead of to whoever opens the next PR. Re-bank with
+# `--update --reason` naming the promotion; that is the designed path, not a workaround.
+#
 # Hence: no second checkout, and no root-file override the way langmode has one. The
 # escape hatch is a flag on the tool, used LOCALLY before you push.
 #
@@ -52,6 +65,24 @@ on:
       - "tools/tiers.py"
       - "tools/tiers_ratchet.py"
       - "tools/delaunder.py"
+      # The checker resolves a GONE path through the TU manifest before it calls that
+      # path a deletion, so the manifest reader and the manifest itself are inputs to
+      # the verdict now. A promotion PR trips `src/**` anyway (it deletes N files and
+      # adds one), but a PR that only re-labels an entry `"status": "promoted"` would
+      # not, and that alone changes what this gate says about an existing baseline.
+      - "tools/tu_manifest.py"
+      - "config/tu_manifest.d/**"
+      - "config/converted-baseline.json"
+      - ".github/workflows/converted-ratchet.yml"
+  push:
+    branches: [main]
+    paths:
+      - "src/**"
+      - "tools/tiers.py"
+      - "tools/tiers_ratchet.py"
+      - "tools/delaunder.py"
+      - "tools/tu_manifest.py"
+      - "config/tu_manifest.d/**"
       - "config/converted-baseline.json"
       - ".github/workflows/converted-ratchet.yml"
   workflow_dispatch:
@@ -77,6 +108,12 @@ jobs:
         # moving under a gate that touched no Python is indistinguishable from a regression.
         with:
           python-version: "3.12"
+      - name: Classifier unit tests
+        # The criteria decide a published percentage, so the two readings that were
+        # measurably wrong once are pinned in BOTH directions: MMIO must not score as a
+        # codegen trick, a volatile match hack still must, a TU promotion must read as a
+        # MOVE, and a move into a file that fails a criterion must still fail the gate.
+        run: python -m unittest tools.test_tiers -v
       - name: Current CONVERTED state
         # Report only, no exit-code meaning: prints the tier percentage and names anything
         # that backslid, so the log says what happened before the gate says whether it passed.
