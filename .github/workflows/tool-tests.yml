@@ -10,8 +10,9 @@
 # gate's FAILURE branch is the one path a green run never exercises: no ROM build can
 # reach it, because these tools are not compiled into the ROM. src-tu-refs.yml exists
 # because #1643 broke 26 translation units while every byte gate stayed green, and the
-# only thing that noticed was a test suite a human had to run. This job runs 423 of
-# those assertions on every PR that touches `tools/`, so the next one is noticed by CI.
+# only thing that noticed was a test suite a human had to run. This job runs 432 of
+# those assertions on every PR that touches `tools/` or `nearmiss/`, so the next one is
+# noticed by CI.
 #
 # WHAT THIS DOES NOT COVER, and why. Three groups are deliberately absent.
 #
@@ -70,19 +71,27 @@
 # SIX SKIPS ARE EXPECTED and are honest ones that name their own reason: four in
 # test_stamp_provenance_verify ("needs extracted/ (ROM dump)", a real @skipUnless) and
 # two in test_match_provenance ("no src samples"). test_premerge_check adds none on a
-# runner with git installed, and test_symrecords adds none anywhere.
-# 417 of the 423 assert something.
+# runner with git installed, and test_symrecords and test_nearmiss_db add none anywhere.
+# 426 of the 432 assert something.
 name: tool tests
 
 on:
   pull_request:
     paths:
       - "tools/**"
+      # nearmiss/** too, not just tools/**: test_nearmiss_db holds nearmiss/eval_pin.json
+      # to match.CANONICAL/DEFAULT_FLAGS and nearmiss_db.METRIC_REV, so the guard's whole
+      # job is to fail when the DB and the evaluator disagree -- and a PR that edits only
+      # nearmiss/db.jsonl, or DELETES eval_pin.json, matched neither filter and never ran
+      # it. update-chaos-data.yml rewrites db.jsonl on main, so that is a live path, not a
+      # hypothetical one. A missing check reads exactly like a passing one.
+      - "nearmiss/**"
       - ".github/workflows/tool-tests.yml"
   push:
     branches: [main]
     paths:
       - "tools/**"
+      - "nearmiss/**"
       - ".github/workflows/tool-tests.yml"
   workflow_dispatch:
 
@@ -172,8 +181,10 @@ jobs:
 #                                      ledger behind every banked match. (2 skip)
 #   test_message_bank            (5)   message_bank.py -- message-bank export/rebuild
 #                                      must round-trip to the exact original bytes.
-#   test_nearmiss_db            (12)   nearmiss_db.py -- the persistent near-miss DB, so
-#                                      close attempts are never thrown away.
+#   test_nearmiss_db            (21)   nearmiss_db.py -- the persistent near-miss DB, so
+#                                      close attempts are never thrown away, plus the
+#                                      eval-pin guard: stored divergences are only
+#                                      comparable while their evaluator still exists.
 #   test_premerge_check         (87)   premerge_check.py -- runs the static gates on
 #                                      the git merge-tree RESULT, the one tree no CI
 #                                      job ever builds. Pure functions over verdict
