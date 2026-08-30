@@ -269,7 +269,7 @@ Source: `src/actors/daKpFr_c.cpp`.
 | 0x35c | `mMatrix` | identity-matrix shape. |
 | 0x3a8 | `mHeightAboveGnd` | `InitResources` raycasts a `dBgCh_Gnd` down from `mPos` and stores `(mPosY - hit height) + 0x1e000`, or the constant 0x1f4000 when nothing is hit. |
 
-Sources: `src/_ZN8daKrpa_c13InitResourcesEv.cpp`, `src_tu/actors/daKrpa_c.cpp`.
+Source: `src/actors/daKrpa_c.cpp`.
 
 ## Spiny -- include/Spiny.h
 
