@@ -1,7 +1,7 @@
 //cpp
 #include "PathLift.h"
 
-typedef void (PathLift::*PathLiftStateFn)();
+typedef void (dPathLiftActor_c::*PathLiftStateFn)();
 
 struct PathLiftState {
     char pad_00[8];
@@ -11,7 +11,7 @@ struct PathLiftState {
 
 extern "C" PathLiftState data_ov002_0210af2c[];
 
-void PathLift::BaseBehavior()
+void dPathLiftActor_c::BaseBehavior()
 {
     PathLiftState &state = data_ov002_0210af2c[mState];
     (this->*state.behavior)();
