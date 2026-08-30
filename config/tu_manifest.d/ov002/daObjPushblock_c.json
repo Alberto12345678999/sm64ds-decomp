@@ -154,21 +154,21 @@
       "disposition": "deadstrip-data",
       "canonical_module": "ov002",
       "canonical_address": "0x0210966c",
-      "reason": "The out-of-line destructor makes this the class key-function TU and naturally emits daObjPushblock_c's own typeinfo record; romdata_check proves its configured cartridge home before the text-only promotion discards the copy."
+      "reason": "InitResources is the class key function; together with the inline virtual destructor it naturally emits daObjPushblock_c's own typeinfo record. romdata_check proves its configured cartridge home before the text-only promotion discards the copy."
     },
     {
       "symbol": "_ZTS16daObjPushblock_c",
       "disposition": "deadstrip-data",
       "canonical_module": "ov002",
       "canonical_address": "0x02109678",
-      "reason": "The out-of-line destructor naturally emits daObjPushblock_c's own type name; romdata_check proves its configured cartridge home before the text-only promotion discards the copy."
+      "reason": "InitResources is the class key function; together with the inline virtual destructor it naturally emits daObjPushblock_c's own type name. romdata_check proves its configured cartridge home before the text-only promotion discards the copy."
     },
     {
       "symbol": "_ZTV16daObjPushblock_c",
       "disposition": "deadstrip-data",
       "canonical_module": "ov002",
       "canonical_address": "0x021096b0",
-      "reason": "The out-of-line destructor naturally emits the complete class vtable including its ABI preamble. romdata_check applies the measured eight-byte public-address-point convention and proves every slot before the text-only promotion discards the copy."
+      "reason": "InitResources is the class key function; together with the inline virtual destructor it naturally emits the complete class vtable including its ABI preamble. romdata_check applies the measured eight-byte public-address-point convention and proves every slot before the text-only promotion discards the copy."
     }
   ],
   "notes": [
