@@ -182,9 +182,17 @@ def evaluate_full(src, name, target):
     ok           true RELOC-AWARE oracle match (reloc slots wildcarded, NOT raw equality)
     cand_size    assembled byte size of the candidate function, None if unscorable
     status/error None on a scorable row; "noncompile"/"func-absent" + detail otherwise
+    resolved   the symbol actually scored, when it is not the row's stored `name`
     ONE compile: the oracle object is reused for the divergence count, so the metric and
     the oracle can never disagree about what the compiler emitted (the old two-compile
-    shape also doubled the cost of every ingest/bank-matches/reeval pass)."""
+    shape also doubled the cost of every ingest/bank-matches/reeval pass).
+
+    A name miss falls back to the object's SOLE sized STT_FUNC before it is called an
+    absence: the stored `name` goes stale against its own `c_source` (a symbol import
+    renames the row to the C++ symbol while the source still spells func_<addr>), and
+    the repo's substitution-compressed manglings are not the spelling mwccarm emits.
+    Both look identical to an exact-string lookup and both demote a perfectly good,
+    often size-exact seed to last place in every worklist. See match.sole_func_symbol."""
     import contextlib
     import difflib
     import io
@@ -192,12 +200,22 @@ def evaluate_full(src, name, target):
     import swarm as S
     unscorable = {"divergences": None, "ok": False, "cand_size": None}
     chat = io.StringIO()
+    resolved = None
     try:
         with contextlib.redirect_stdout(chat):    # compile_c prints; capture the detail
             ok, obj = S.oracle_check(src, name, target)
         if obj is None:
             return dict(unscorable, status="noncompile", error=_trim_error(chat.getvalue()))
         cand, crel = M.extract_func(obj, name)
+        if cand is None:
+            # oracle_check looked the same name up and returned ok=False for the same
+            # reason, so the byte verdict has to be recomputed against the resolved
+            # symbol -- otherwise a fallback row could never read as a match.
+            resolved = M.sole_func_symbol(obj)
+            if resolved is not None:
+                cand, crel = M.extract_func(obj, resolved)
+                ok, _ = M.compare(target, cand, crel or set(), verbose=False) \
+                    if cand is not None and len(cand) == len(target) else (False, 0)
     except Exception as e:                        # malformed object, ELF parse crash, ...
         return dict(unscorable, status="noncompile",
                     error=_trim_error(f"{type(e).__name__}: {e}"))
@@ -206,14 +224,14 @@ def evaluate_full(src, name, target):
                     error=f"function {name!r} absent from the compiled object")
     if ok:
         return {"divergences": 0, "ok": True, "cand_size": len(cand),
-                "status": None, "error": None}
+                "status": None, "error": None, "resolved": resolved}
     crel = crel or set()
     c = _disasm(cand, crel)
     t = _disasm(target, crel)
     sm = difflib.SequenceMatcher(a=c, b=t, autojunk=False)
     div = sum(max(i2 - i1, j2 - j1) for op, i1, i2, j1, j2 in sm.get_opcodes() if op != "equal")
     return {"divergences": div, "ok": False, "cand_size": len(cand),
-            "status": None, "error": None}
+            "status": None, "error": None, "resolved": resolved}
 
 
 def evaluate(src, name, target):
@@ -280,14 +298,20 @@ def seed_rank(r):
 
 def _rank(r):
     """Collapse order for duplicate rows of one (module, addr). A row stamped by the
-    CURRENT eval pin outranks any other row FIRST: union merges resurrect copies scored
-    under an older evaluator (or never re-scored), and their stale -- typically lower --
-    divergences would otherwise win the collapse and silently undo a reeval correction
-    (drift runs upward: 230->354, 205->217, and two div-13 rows to not-compiling-at-all
-    in the 2026-08-30 audit). Then lower divergences wins; a floor mark breaks a
-    divergence tie (the more-informed verdict); a smaller size gap breaks what remains.
-    Unscored rows rank last within their stamp class. With no pin recorded this reduces
-    to the old order."""
+    CURRENT eval pin outranks any other row FIRST: a LOCAL union merge (db.jsonl is
+    merge=union; GitHub does not honour the driver, so on the server this shows as a
+    real conflict instead) resurrects copies scored under an older evaluator, or never
+    re-scored at all, and a stale score that happens to be LOWER would otherwise win
+    the collapse and silently undo a reeval correction.
+
+    Stale is not a synonym for lower -- drift goes both ways, measured 25 up / 22 down
+    across the 2026-08-30 full pass (230->354 and 205->217 up; ov015 78->18 down). The
+    stamp is what makes the collapse safe, not an assumed direction: it prefers the
+    row scored by the evaluator we can still reproduce, whichever number is smaller.
+
+    Then lower divergences wins; a floor mark breaks a divergence tie (the more-informed
+    verdict); a smaller size gap breaks what remains. Unscored rows rank last within
+    their stamp class. With no pin recorded this reduces to the old order."""
     pin = pin_fingerprint()
     stamped = 0 if (pin is not None and r.get("evaluator") == pin) else 1
     div = r.get("divergences")
@@ -634,10 +658,13 @@ def prune_matched(args):
 def dedupe(args):
     """Collapse duplicate rows for the same (module, addr), keeping the BEST tip.
 
-    nearmiss/db.jsonl is `merge=union` in .gitattributes: two PRs that both bank a tip for
-    the same function land both rows on main instead of a merge conflict. That is the point -
-    GitHub can auto-merge concurrent match PRs - but it leaves duplicate rows for whatever
-    functions both sides touched. This is the automatic cleanup: for each (module, addr) keep
+    nearmiss/db.jsonl is `merge=union` in .gitattributes: two sides that both bank a tip for
+    the same function land both rows instead of a merge conflict. That is the point - a LOCAL
+    merge of concurrent match work resolves itself - but it leaves duplicate rows for whatever
+    functions both sides touched. (Only local: GitHub's own merge does not honour the union
+    driver and shows a real conflict, see .gitattributes.) This is the automatic cleanup, and
+    the update-chaos-data workflow's rewrite of this file on main goes through it: for each
+    (module, addr) keep
     the row with the LOWEST divergence (a floored entry outranks a same-div non-floored one,
     since the floor mark is the more-informed verdict), drop the rest. A merge never regresses
     a tip anyone improved. Idempotent; run in CI after every push to main.
@@ -799,6 +826,11 @@ def reeval(args):
         results[key] = (r["c_source"], full)
         old, new = r.get("divergences"), full["divergences"]
         label = f"[{i}/{n}] {r['module']:6} {r['name'][:46]:46}"
+        if full.get("resolved"):
+            # the stored name did not resolve but the object holds exactly one function;
+            # say so, because the row is now scored against a symbol it does not spell
+            print(f"{label} NAME: scored against {full['resolved']!r} "
+                  f"(stored name absent from the object)", flush=True)
         if full["status"]:
             broke += 1
             print(f"{label} div {old} -> UNSCORABLE {full['status']}: {full['error']}",
