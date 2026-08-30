@@ -1,6 +1,7 @@
 #ifndef DAKPFR_C_H
 #define DAKPFR_C_H
 
+#include "common.h"
 #include "dCcAc_c.h"
 #include "ShadowModel.h"
 #include "dBgCh_Actr.h"
@@ -10,8 +11,10 @@
  * FlameChompFire): the typeinfo at ov070
  * 0x02123418 names dActor_c as the sole base at offset 0, and the class's
  * vtable at 0x02123448 (31 slots, same count as dActor_c's) is what pairs it
- * to daKpFr_c_Spawn (renamed with the class; was FlameChompFire_Spawn), which stores that address after allocating 0x330
- * bytes via fBase_c::operator new.
+ * to daKpFr_c_Spawn (renamed with the class; was FlameChompFire_Spawn).
+ * A genuine `new daKpFr_c` reproduces the factory's 0x330 allocation through
+ * the retail global operator new, base/member construction, and vptr store
+ * exactly.
  *
  * The Spawn constructs the three owned subobjects below at 0xd4..0x130 in
  * declaration order; D1 destroys them in exactly the reverse order before
@@ -28,26 +31,39 @@
  * non-derived struct a virtual would have inserted a vptr and shifted every
  * offset. Deriving from dActor_c is what makes the declarations below honest.
  */
+struct daKpFr_c;
+typedef void (daKpFr_c::*daKpFrStateMethod)();
+
+struct daKpFrState {
+    daKpFrStateMethod init;
+    daKpFrStateMethod behavior;
+};
+
+typedef char daKpFrState_size_must_be_0x10[
+    sizeof(daKpFrState) == 0x10 ? 1 : -1];
+
 struct daKpFr_c : dActor_c {
     u8                 pad_0d0[0x4];
     ShadowModel        mShadowModel;           /* 0x0d4 */
     dCcAc_c mdCcAc_c;    /* 0x0fc */
     dBgCh_Actr       mWithMeshClsn;          /* 0x130 */
-    /* InitResources assigns IDENTITY_MATRIX4X3 into this slot, so it begins a
-       Matrix4x3. Still spelt u8 + pad so the header need not pull in
-       math/Matrix.h. [_ZN8daKpFr_c13InitResourcesEv.cpp] */
-    u8                 mMatrix;                /* 0x2ec */
-    u8                 pad_2ed[0x37];
+    /* InitResources assigns IDENTITY_MATRIX4X3 into this slot, Render passes
+       it to DropShadowRadHeight, and its translation lives at 0x310. */
+    Matrix4x3          mMatrix;                /* 0x2ec */
+    daKpFrState       *mStateMethods;          /* 0x31c */
+    s32                mStateResult;           /* 0x320 */
     /* Two particle handles, effects 0x7f and 0x80, both fed back into
        Particle::System::NewUnkCallback818 every Render, at mPosY + 0x4b000.
        [_ZN8daKpFr_c6RenderEv.cpp] */
     s32                mParticle1;                /* 0x324 */
     s32                mParticle2;                /* 0x328 */
-    u8                 pad_32c[0x4];
+    u8                 mStateTimer;            /* 0x32c */
+    u8                 pad_32d[0x3];
 
-    /* Declared first on purpose, same reasoning as dActor_c.h: the key
-       function pins where mwcc anchors the vtable. */
-    virtual ~daKpFr_c();
+    /* Inline plus actual construction is load-bearing: mwcc emits retail's
+       D1 then D0 pair, with no homeless D2. InitResources is the first
+       out-of-line virtual and anchors this TU's vtable/RTTI group. */
+    virtual ~daKpFr_c() {}
 
     virtual s32  InitResources();       /* slot 0 */
     virtual s32  CleanupResources();    /* slot 3 */
