@@ -445,7 +445,7 @@
     "src/_ZN11VolcanoRing16CleanupResourcesEv.cpp",
     "src/_ZN11VolcanoRing6RenderEv.cpp",
     "src/_ZN11VolcanoRingD1Ev.cpp",
-    "src/_ZN11WingFeatherD1Ev.cpp",
+    "src/game/actors/WingFeather/_ZN11WingFeatherD1Ev.cpp",
     "src/_ZN11dCapEnemy_c14RenderCapModelEPK7Vector3.cpp",
     "src/_ZN11dCapEnemy_cC2Ev.cpp",
     "src/_ZN11dCapEnemy_cD1Ev.cpp",

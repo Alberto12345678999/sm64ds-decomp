@@ -790,7 +790,7 @@
     "src/_ZN11RickshawBdwD0Ev.cpp": "tangosdev",
     "src/_ZN11SoundObjectD0Ev.cpp": "tangosdev",
     "src/_ZN11VolcanoRingD0Ev.cpp": "tangosdev",
-    "src/_ZN11WingFeatherD0Ev.cpp": "tangosdev",
+    "src/game/actors/WingFeather/_ZN11WingFeatherD0Ev.cpp": "tangosdev",
     "src/_ZN11dScMiniGm_cD0Ev.cpp": "tangosdev",
     "src/_ZN11daBgSnwmn_cD0Ev.cpp": "tangosdev",
     "src/_ZN12FallBlockBfsD0Ev.cpp": "tangosdev",
