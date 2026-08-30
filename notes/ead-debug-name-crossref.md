@@ -66,7 +66,7 @@ assumption.
 
 Exact or near-exact matches between the ROM string and the existing gloss.
 None of these are currently below `high` confidence in
-[config/rom-name-glossary.json](../config/rom-name-glossary.json), themselves, but two matches below strengthen
+[config/rom-name-glossary.json](../config/rom-name-glossary.json) themselves, but two matches below strengthen
 a `terms` entry that *is* below high — see "Confidence-bump candidates."
 
 ### Exact matches (30 of 30 listed)
