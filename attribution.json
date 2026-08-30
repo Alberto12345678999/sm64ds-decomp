@@ -905,6 +905,11 @@
     "src/actors/daKrpa_c.cpp#func_ov070_02121848": "tangosdev",
     "src/actors/daKrpa_c.cpp#func_ov070_02121880": "tangosdev",
     "src/actors/daKrpa_c.cpp#func_ov070_02121a64": "tangosdev",
-    "src/actors/daKrpa_c.cpp#func_ov070_02121ae0": "tangosdev"
+    "src/actors/daKrpa_c.cpp#func_ov070_02121ae0": "tangosdev",
+    "src/actors/ActorDerived.cpp#_ZN7dBase_c18AfterInitResourcesEj": "tangosdev",
+    "src/actors/ActorDerived.cpp#_ZN7dBase_c5SpawnEjP7fBase_cii": "andrewboudreau",
+    "src/actors/ActorDerived.cpp#_ZN7dBase_cD0Ev": "andrewboudreau",
+    "src/actors/ActorDerived.cpp#_ZN7dBase_cD1Ev": "tangosdev",
+    "src/actors/ActorDerived.cpp#func_02013edc": "ruspecial"
   }
 }
