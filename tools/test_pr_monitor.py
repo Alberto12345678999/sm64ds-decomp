@@ -1,6 +1,9 @@
 import datetime as dt
+import pathlib
+import sys
 
-from pr_monitor import classify
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+from pr_monitor import classify  # noqa: E402
 
 
 NOW = dt.datetime(2026, 8, 23, 12, tzinfo=dt.timezone.utc)
