@@ -634,7 +634,7 @@
     "src/_ZN12dScMgPanel_c6RenderEv.cpp",
     "src/_ZN12dScMgPanel_cD0Ev.cpp",
     "src/_ZN12dScMgPanel_cD1Ev.cpp",
-    "src/_ZN12dScMgSlot1_c15OnHitByMegaCharER6Player.cpp",
+    "src/_ZN12dScMgSlot1_c15OnHitByMegaCharEv.cpp",
     "src/_ZN12dScMgSlot1_c19OnHitFromUnderneathER8dActor_c.cpp",
     "src/_ZN12dScMgSlot1_cD0Ev.cpp",
     "src/_ZN12dScMgSlot1_cD1Ev.cpp",

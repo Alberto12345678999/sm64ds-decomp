@@ -15,7 +15,7 @@
  * OnHitByMegaChar(Player &player)` -- `int` until Stump::OnHitByMegaChar
  * (include/Stump.h) proved it wrong tree-wide; a no-op re-verify for this
  * file, which has neither locals nor an early return, same reading
- * src/_ZN12dScMgSlot1_c15OnHitByMegaCharER6Player.cpp records for its own
+ * src/_ZN12dScMgSlot1_c15OnHitByMegaCharEv.cpp records for its own
  * slot 27.
  *
  * dBgActor_c::KillByMegaChar is declared non-virtual in include/dBgActor_c.h, so

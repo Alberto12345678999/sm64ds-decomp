@@ -110,7 +110,11 @@ virtual int  OnAttacked2(dActor_c &other);              /* slot 23 */
 virtual void OnKicked(dActor_c &other);                 /* slot 24 */
 virtual int  OnPushed(dActor_c &other);                 /* slot 25 */
 virtual int  OnHitByCannonBlastedChar(dActor_c &other); /* slot 26 */
-virtual void OnHitByMegaChar(Player &player);           /* slot 27 */
+/* The `Player &` this block proposed for slot 27 was dActor_c.h's and is
+   MEASURED WRONG: both real bodies open `mov r4, r0` and then write r1 before
+   reading it, so no second argument register is live on entry. Declared and
+   landed as the no-parameter form. */
+virtual void OnHitByMegaChar();                         /* slot 27 */
 virtual int  OnHitFromUnderneath(dActor_c &other);      /* slot 28 */
 virtual int  OnAimedAtWithEgg();                        /* slot 29 */
 /* Returns a Vector3 by value ... the AAPCS indirect-return shape. */
@@ -219,8 +223,8 @@ every slot also carries the base declaration and the ov004 base-body rename.
 | 24 | `OnKicked` | 0x020ae140 | 6 |
 | 25 | `OnPushed` | 0x020ae128 | 7 |
 | 26 | `OnHitByCannonBlastedChar` | 0x020b04e0 | 19 |
-| 27 | `OnHitByMegaChar` | 0x020af27c | 6 |
-| 28 | `OnHitFromUnderneath` | 0x020af04c | 6 |
+| 27 | `OnHitByMegaChar` | 0x020af27c | 6 - **DONE**, 2 declarations |
+| 28 | `OnHitFromUnderneath` | 0x020af04c | 6 - **signature trap, see slot 27** |
 | 29 | `OnAimedAtWithEgg` | 0x020af094 | 6 |
 | 30 | `OnAimedAtWithEggReturnVec` | 0x020aeed8 | 6 |
 | 31 | `Kill` | 0x020b2880 | 7 |

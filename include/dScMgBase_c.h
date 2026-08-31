@@ -147,7 +147,7 @@ struct dScMgBase_c : dScene_c {
            24  int  / void  DIFFER  OnKicked's body ends `return 1;`
            25  int  / int   agree   OnPushed returns `mMenuOpen == 0`
            26  int  / int   agree   three bodies, three constants: 0, 1, 2
-           27  void / void  agree   func_ov004_020af27c, early bare return
+           27  void / void  agree   MEASURED here: bare return, sets no r0
        Slot 24 is the one that matters, because dActor_c.h names 24 as one of
        its three MEASURED voids -- and it is right about its own hierarchy;
        Stump and BigBrickBlock proved it there.  dScMgBase_c's slot-24 body
@@ -165,7 +165,12 @@ struct dScMgBase_c : dScene_c {
        not a measurement.  Flipping all four overrides between `int` and `void`
        was tried and moves no ROM byte, so nothing in the cartridge rides on
        the choice -- but a later override with an early return would settle it,
-       and that override would outrank this count. */
+       and that override would outrank this count.
+       Slot 27 is now that case, for its own index only.  dScMgBase_c's own
+       body there takes an early `popne {r4,lr}; bxne lr` with nothing setting
+       r0 on either path out, so 27's `void` is MEASURED and the row above says
+       so rather than `agree`.  It settles 27 and nothing else; the other seven
+       rows are still the count. */
     virtual void OnGroundPounded();                    /* slot 21 */
 /* Slot 22 -- OnAttacked1.  Name from the ov004 body's own
    `recovered name: dScMgBase_c_OnAttacked1` comment, agreeing with
@@ -308,10 +313,59 @@ struct dScMgBase_c : dScene_c {
            and it is why every slot in this campaign reconciles DISTINCT
            ADDRESSES against declarations and the table count separately. */
     virtual int  OnHitByCannonBlastedChar();           /* slot 26 */
+    /* Slot 27 -- OnHitByMegaChar.  Name from the ov004 body's own
+       `recovered name: dScMgBase_c_OnHitByMegaChar` comment, agreeing with
+       include/dActor_c.h:144 on the parallel branch and with dScMgSlot1_c's
+       independently recovered override.
+         return type: void, MEASURED, and this is the one slot where the table
+           above records dActor_c.h's `void` as a measurement here rather than
+           a hint.  ov004:0x020af27c takes an early exit at 0x020af290 --
+           `popne {r4,lr}; bxne lr` -- with r0 still holding the field it has
+           just loaded and tested, and nothing sets a return value on either
+           path out.
+         arity: no explicit parameters, MEASURED TWICE, and it matters more
+           here than at any other slot.  Both real bodies open `mov r4, r0` and
+           then WRITE r1 before ever reading it -- the base fills the menu-item
+           coordinates through r1 from 0x020af2a0 onwards, and dScMgSlot1_c's
+           override at ov006:0x0210c4dc zeroes r0/r1 for SetSubBg1Offset.  No
+           second argument register is live on entry to either.  dActor_c.h:144
+           spells `Player &player` and include/dScMgSlot1_c.h had copied it.
+         overrides: SIX tables, TWO declarations.  dScMgD3DBase_c's own body at
+           ov006:0x020e6d98 backs its table and all four of its children's;
+           dScMgSlot1_c has its own at ov006:0x0210c4dc.
+         THE RECONCILIATION, and the reason this slot is not the shape of the
+           twenty-six before it.  dScMgSlot1_c already carried this member,
+           declared as a NEW virtual with dActor_c.h's parameter list and
+           landing on index 27 by arithmetic because the base stopped at 26.
+           Declaring it here without touching that header would have made the
+           two DIFFERENT functions: this one would take 27, dScMgSlot1_c's
+           would become a new slot at 28, OnHitFromUnderneath would be pushed
+           to 29, and _ZTV12dScMgSlot1_c would go straight back to DIFFERS --
+           with rombuild green throughout.  Both declarations change in this
+           one commit, and romdata_check is what says they were reconciled.
+         NAME CORRECTION, the fourth on dScMgD3DBase_c and the fifth in this
+           campaign: 0x020e6d98 carried
+           `recovered name: dScMgTrampoline2_c_OnHitByMegaChar`.  Five tables
+           reference it -- dScMgD3DBase_c's and all four of its children's --
+           so it is dScMgD3DBase_c's.  Its twelve bytes are a long-branch
+           veneer into this class's own body, which is what a forwarding
+           override compiles to from ov006; the vtable word is NOT a linker
+           artifact, because the twenty-six tables that do not override this
+           slot hold 0x020af27c directly. */
+    virtual void OnHitByMegaChar();                    /* slot 27 */
 
-    /* Slots 27-35 are added the same way: one slot per change, together with
+    /* Slots 28-35 are added the same way: one slot per change, together with
        every descendant override of that slot. Until then they stay undeclared
-       and the emitted tables stop at slot 26. */
+       and the emitted tables stop at slot 27.
+
+       SLOT 28 CARRIES THE SAME TRAP SLOT 27 DID, and it is already loaded:
+       include/dScMgSlot1_c.h declares `OnHitFromUnderneath(dActor_c &other)`
+       as a new virtual that lands on 28 by arithmetic, and
+       src/_ZN12dScMgSlot1_c19OnHitFromUnderneathER8dActor_c.cpp is banked in
+       config/converted-baseline.json under that name.  Measure the parameter
+       list off the bodies, reconcile that header in the same commit, and
+       remember the rename has to reach converted-baseline.json (the ratchet
+       has no rename detection) and any prose path that names the file. */
 
     s32 unk_050;            /* 0x050 */
     s32 unk_054;            /* 0x054 */
