@@ -286,12 +286,20 @@ reconstructed tree-wide now.  Left as a raw helper by THIS migration and
 picked up later, when the slot-34 keystone commit named the base slot --
 it never includes this header either).
 
-rtti_vtables.py --own ALSO reports slot 35 (func_ov006_020d1170, a
-one-line `((*(int*)((char*)c+8))&0xff)==1` check, same shape as slot 36
-below but for a different constant) -- unlike slot 36, nothing in
-InitResources/AfterCleanupResources/Behavior/Render/D1/D0 calls it (no
-cross-reference anywhere in src/ besides its own file), so it is left
-completely alone: not declared, not renamed, not even touched.
+rtti_vtables.py --own ALSO reports slot 35, now `Virtual8C`
+(src/_ZN12dScMgAmida_c9Virtual8CEv.c, a one-line
+`((*(int*)((char*)c+8))&0xff)==1` check, same shape as slot 36 below but
+for a different constant).  The observation recorded here -- that nothing
+in InitResources/AfterCleanupResources/Behavior/Render/D1/D0 calls it, and
+that there is no cross-reference anywhere in src/ besides its own file --
+is correct and is why it was left alone through this migration.  It is
+also why "nothing calls it" was the wrong conclusion to draw: the slot is
+dispatched thirteen times in ov006, virtually, so no call site names the
+symbol.  All thirteen are in FOUR OTHER leaf classes (dScMgCoin_c,
+dScMgPanel_c, dScMgSound_c, dScMgSnowball_c), each asking the question of
+itself.  The word being tested is fBase_c::param1 at +0x08; the base
+answers `!= 0` and this class narrows it to `== 1`.  Declared and renamed
+by the slot-35 keystone commit, which closed the 18-35 range.
 
 SLOT 36 IS DIFFERENT FROM EVERY SIBLING'S SLOT 18+: it is a brand-new
 own slot (dScMgBase_c's own vtable is 36 slots, 0-35; Amida's is 37,
