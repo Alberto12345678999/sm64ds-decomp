@@ -3694,7 +3694,7 @@ src/func_ov006_020f51f0.c:
     complete
     .text start:0x020f51f0 end:0x020f523c
 
-src/func_ov006_020f523c.c:
+src/_ZN13dScMgMemory_c15OnGroundPoundedEv.c:
     complete
     .text start:0x020f523c end:0x020f5250
 
@@ -3897,7 +3897,7 @@ src/func_ov006_020f72c0.c:
     complete
     .text start:0x020f72c0 end:0x020f730c
 
-src/func_ov006_020f730c.c:
+src/_ZN14dScMgMemory2_c15OnGroundPoundedEv.c:
     complete
     .text start:0x020f730c end:0x020f7320
 

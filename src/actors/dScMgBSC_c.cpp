@@ -143,7 +143,7 @@ extern int data_ov004_020bf9ec;
 extern int RandomIntInternal(int* seed);
 extern void func_ov006_020c1604(char* c, int unused, short a2, int a3);
 extern int data_0209e650;
-extern "C" int func_ov006_02125248(void *thisPtr);
+extern "C" void _ZN10dScMgBSC_c15OnGroundPoundedEv(void *thisPtr);
 extern "C" void FreeGfxSlotsById(int arg);
 extern "C" void func_ov004_020b66d4(void);
 void func_ov006_020c0aa8(void *camera);
@@ -336,22 +336,22 @@ do1:
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 13 -- func_ov006_02125248, 0x02125248, size 0x34 */
+/* ROM ordinal 13 -- _ZN10dScMgBSC_c15OnGroundPoundedEv, 0x02125248, size 0x34 */
 /* -------------------------------------------------------------------------- */
-// @symbol func_ov006_02125248
+// @symbol _ZN10dScMgBSC_c15OnGroundPoundedEv
 /* recovered: renamed to Class_Method, RTTI class fields named, declarations from a shared header */
 /* recovered: renamed to Class_Method, RTTI class fields named */
 // recovered name: dScMgBSC_c_OnGroundPounded
 /* recovered: renamed to Class_Method */
 /* dScMgBSC_c::OnGroundPounded - recovered from vtable slot identity */
-int func_ov006_02125248(void *thisPtr) {
+void _ZN10dScMgBSC_c15OnGroundPoundedEv(void *thisPtr) {
     struct dScMgBSC_c *self = (struct dScMgBSC_c *)(void *)thisPtr;
     int x = self->mHudScore;
     int v = x / 5;
     if ((unsigned int)v > 3) {
         v = 3;
     }
-    return func_ov004_020b6324(v + 1);
+    func_ov004_020b6324(v + 1);
 }
 
 /* -------------------------------------------------------------------------- */

@@ -55,6 +55,7 @@ struct dScMgMemory_c : dScMgSingle3DBase_c {
     virtual ~dScMgMemory_c();
     virtual int  OnYoshiTryEat(int arg);               /* slot 18 */
     virtual int  OnTurnIntoEgg(int mode);              /* slot 19 */
+    virtual void OnGroundPounded();                    /* slot 21 */
 
     u8  pad_4f38[0x270];   /* 0x4f38 -- shared table, opaque here; see banner */
     u8  pad_51a8[0x16c];   /* 0x51a8 -- no matched access, see banner */

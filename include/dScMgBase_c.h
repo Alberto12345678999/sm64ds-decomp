@@ -110,13 +110,65 @@ struct dScMgBase_c : dScene_c {
            overrides are single tail calls -- both emit identical code under
            `int` and under `void`, so the dereference-versus-compare trick that
            settled slot 19 has nothing to bite on.  This takes
-           dActor_c.h:133's `int`; if a later override with an early return
-           shows otherwise, that override is the evidence and this changes. */
+           dActor_c.h:133's `int` as a hint that has held five times out of
+           six; the count, and why it is a count and not an authority, is
+           worked out under slot 21 below.  If a later override with an early
+           return shows otherwise, that override is the evidence and this
+           changes. */
     virtual int  Virtual50();                          /* slot 20 */
+/* Slot 21 -- OnGroundPounded.  The name comes from all five bodies' own
+   `recovered name: <class>_OnGroundPounded` comments AND from
+   include/dActor_c.h:138, which is a different hierarchy that shares slot
+   indices; two sources, but the second has already been measured wrong twice
+   in this campaign (slot 18's arity, slot 19's parameter type), so treat it as
+   a hint that agrees rather than as a second measurement.
+     arity: no explicit parameters.  The ov004 base body is empty and none of
+       the four overrides reads a second argument register -- dScMgBSC_c and
+       dScMgCard_c both branch on `this->mHudScore` alone, and the two Memory
+       classes tail-call on one field of `this`.  dActor_c.h:138 spells a
+       `dActor_c &` here; nothing in these five bodies would emit differently
+       with or without it, so it is not carried.
+     return type: NOT determined by these five bodies.  All four overrides
+       converge on a single tail call, and a tail call emits the same `b` under
+       `int` and under `void`, so the discriminator that settled nothing at
+       slot 20 finds nothing here either.  This takes `void` from
+       dActor_c.h:138, whose comment records that slots 21, 24 and 27 were
+       MEASURED to return void via an override with early returns -- in that
+       hierarchy.
+       How much that is worth is a count, not a rule, and an earlier draft of
+       this comment got the count wrong.  It said dActor_c.h had been right on
+       every return type this campaign checked.  It has not.  Of the six
+       dScMgBase_c slots with a body of their own that pins a return type,
+       dActor_c.h's type matches five and differs on one:
+           18  int  / int   agree   sets r0 on a constant-return path
+           19  int  / int   agree   sets r0 on a constant-return path
+           22  int  / int   agree   func_ov004_020ae198, `return 1;`
+           23  int  / int   agree   func_ov004_020ae1a0, `return 1;`
+           24  int  / void  DIFFER  func_ov004_020ae140.cpp ends `return 1;`
+           27  void / void  agree   func_ov004_020af27c, early bare return
+       Slot 24 is the one that matters, because dActor_c.h names 24 as one of
+       its three MEASURED voids -- and it is right about its own hierarchy;
+       Stump and BigBrickBlock proved it there.  dScMgBase_c's slot-24 body
+       sets r0 to 1 and reproduces byte-exact, so this hierarchy returns `int`
+       at that same index.  Both measurements stand.  The two hierarchies
+       simply do not hold the same function at slot 24: they are parallel
+       branches that each began adding virtuals at 18 -- dActor_c off dBase_c
+       directly, this class off dBase_c through dScene_c -- and the
+       `recovered name:` comments that make the slots look paired were assigned
+       BY that index, so they cannot also be evidence for it.
+       So dActor_c.h transfers no better on return types than on parameter
+       lists; it is five-for-six rather than wrong-every-time, which is why
+       this line still follows it where the arity line above does not.
+       Five-for-six is the whole case for `void` here and is offered as a hint,
+       not a measurement.  Flipping all four overrides between `int` and `void`
+       was tried and moves no ROM byte, so nothing in the cartridge rides on
+       the choice -- but a later override with an early return would settle it,
+       and that override would outrank this count. */
+    virtual void OnGroundPounded();                    /* slot 21 */
 
-    /* Slots 21-35 are added the same way: one slot per change, together with
+    /* Slots 22-35 are added the same way: one slot per change, together with
        every descendant override of that slot. Until then they stay undeclared
-       and the emitted tables stop at slot 20. */
+       and the emitted tables stop at slot 21. */
 
     s32 unk_050;            /* 0x050 */
     s32 unk_054;            /* 0x054 */
