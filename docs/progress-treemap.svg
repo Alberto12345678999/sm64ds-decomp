@@ -19273,7 +19273,7 @@ matched: yes</title></rect><rect x="1090.22" y="28.77" width="1.97" height="0.59
 module: ov004
 addr: 0x020b298c
 size: 4 bytes
-matched: yes</title></rect><rect x="1090.22" y="29.36" width="1.97" height="0.59" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov004_020b2990
+matched: yes</title></rect><rect x="1090.22" y="29.36" width="1.97" height="0.59" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11dScMgBase_c9Virtual50Ev
 module: ov004
 addr: 0x020b2990
 size: 4 bytes
@@ -22281,7 +22281,7 @@ matched: yes</title></rect><rect x="784.40" y="280.29" width="34.52" height="7.6
 module: ov006
 addr: 0x020dfd48
 size: 396 bytes
-matched: yes</title></rect><rect x="818.92" y="280.29" width="2.09" height="7.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_020dfed4
+matched: yes</title></rect><rect x="818.92" y="280.29" width="2.09" height="7.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10dScMgCup_c9Virtual50Ev
 module: ov006
 addr: 0x020dfed4
 size: 24 bytes
@@ -23057,7 +23057,7 @@ matched: yes</title></rect><rect x="855.22" y="340.94" width="6.21" height="9.04
 module: ov006
 addr: 0x020e9bbc
 size: 84 bytes
-matched: yes</title></rect><rect x="861.43" y="340.94" width="1.18" height="9.04" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_020e9c10
+matched: yes</title></rect><rect x="861.43" y="340.94" width="1.18" height="9.04" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dScMg3DEsp_c9Virtual50Ev
 module: ov006
 addr: 0x020e9c10
 size: 16 bytes
@@ -26445,7 +26445,7 @@ matched: yes</title></rect><rect x="969.77" y="554.13" width="19.46" height="10.
 module: ov006
 addr: 0x0211c478
 size: 320 bytes
-matched: yes</title></rect><rect x="989.23" y="554.13" width="1.46" height="10.99" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_0211c5b8
+matched: yes</title></rect><rect x="989.23" y="554.13" width="1.46" height="10.99" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dScMgSound_c9Virtual50Ev
 module: ov006
 addr: 0x0211c5b8
 size: 24 bytes
@@ -26773,7 +26773,7 @@ matched: yes</title></rect><rect x="836.47" y="734.20" width="7.72" height="30.1
 module: ov006
 addr: 0x021200dc
 size: 348 bytes
-matched: yes</title></rect><rect x="836.47" y="764.34" width="7.72" height="1.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_02120238
+matched: yes</title></rect><rect x="836.47" y="764.34" width="7.72" height="1.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN13dScMgTeresa_c9Virtual50Ev
 module: ov006
 addr: 0x02120238
 size: 16 bytes
