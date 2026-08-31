@@ -276,7 +276,7 @@ every slot also carries the base declaration and the ov004 base-body rename.
 | 30 | `OnAimedAtWithEggReturnVec` | 0x020aeed8 | 6 - **DONE**, 2 declarations; the slot that settles 29 (it restores, word for word, what 29 saves) and the first whose name the ROM refutes in BOTH halves |
 | 31 | `Virtual7C` | 0x020b2880 | 7 - **DONE**, 3 declarations; the first slot ABOVE `dActor_c`'s table, which is what proves the borrowed names never applied -- `dScMgBase_c` is a SCENE, a sibling branch, not an actor |
 | 32 | `Virtual80` | 0x020b27f4 | 1 - **DONE**, 1 declaration; the MAIN-engine twin of 31, and the cheapest slot in the campaign after 22 |
-| 33 | `Virtual84` | 0x020b265c | 19 |
+| 33 | `Virtual84` | 0x020b265c | 19 - **DONE**, 2 declarations; structurally slot 26 again (same 19 tables, same two owning classes, 17 inherited) and the first slot whose override lives inside a PROMOTED intact-object TU |
 | 34 | `Virtual88` | 0x020ae3b4 | 4 |
 | 35 | `Virtual8C` | 0x020ad660 | 1 |
 
@@ -290,7 +290,13 @@ defines them under their old `func_ov004_*` names and whose manifest
 gates that read it -- `check_src_tu_compiles.py` and `tiers_ratchet.promoted_moves()`,
 the latter only looking at `"status": "promoted"` entries -- are green.  But the
 unit is stale, and it will be stale again after 32 and after 33.  Regenerate it ONCE,
-through `tools/tubuild.py`, after slot 33 lands, rather than three times.
+through `tools/tubuild.py`, rather than three times.
+
+**That regeneration is DUE as of slot 33** -- all three base bodies carry their
+mangled names now.  It is deliberately NOT folded into the slot-33 commit: one slot
+per change is the whole safety argument for this campaign, and regenerating a
+`src_tu/` unit touches a different tree read by a different gate.  It is a follow-up
+PR of its own.
 
 
 134 descendant overrides plus the base's 18 declarations. Slot 18 was the outlier;

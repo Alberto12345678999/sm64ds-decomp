@@ -2591,7 +2591,7 @@ src/func_ov006_020e7110.c:
     complete
     .text start:0x020e7110 end:0x020e7124
 
-src/func_ov006_020e7124.c:
+src/_ZN14dScMgD3DBase_c9Virtual84Ev.c:
     complete
     .text start:0x020e7124 end:0x020e72c0
 

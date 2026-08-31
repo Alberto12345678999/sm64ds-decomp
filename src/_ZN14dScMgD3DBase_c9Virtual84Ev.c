@@ -1,3 +1,24 @@
+// @symbol _ZN14dScMgD3DBase_c9Virtual84Ev
+/* dScMgD3DBase_c::Virtual84 - slot 33, this class's own override.  It backs
+   five vtables: its own and the four children that inherit it unchanged
+   (dScMgJump_c, dScMgJump2_c, dScMgTrampoline_c, dScMgTrampoline2_c).
+
+   See the slot-33 block in include/dScMgBase_c.h for why the base slot has no
+   ROM name.  Unlike slots 30 and 31 on this class, there is no misattribution
+   to fix here -- this file never carried a `recovered name:` line at all.
+
+   It is the base's engine bring-up rewritten for 3D, not a wrapper around it.
+   GX::DisableAllBanks() first, then banks reassigned with texture and texture-
+   palette banks in the mix (SetBankForTex, SetBankForTexPltt) where the 2D base
+   only needs BG and OBJ; graphics modes come out 1/0/1 and GXS 5 rather than
+   1/0/0 and 0.  It keeps the decompressed file pointers alive in
+   data_ov006_02141a4c / _02141a48 instead of freeing them, runs
+   InitialiseVramGlobals(), and publishes three of the object's own buffers
+   (+0x466c twice and +0x4728) into data_ov006_02141a44 / _40 / _50.
+
+   dScMgSingle3DBase_c's override at ov006:0x0210a708 is the third body of this
+   slot -- same job again, and it lives inside that class's promoted
+   intact-object TU, src/actors/dScMgSingle3DBase_c.cpp. */
 #include "types.h"
 extern void func_ov004_020b290c(void);
 extern void func_ov004_020b2980(void);
@@ -31,7 +52,7 @@ extern void *data_ov006_02141a50;
 extern int data_ov004_020beb74[];
 extern void *data_0209d4a8;
 
-void func_ov006_020e7124(char *obj)
+void _ZN14dScMgD3DBase_c9Virtual84Ev(char *obj)
 {
     void *p;
 
