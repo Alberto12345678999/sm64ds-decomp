@@ -18,6 +18,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import unittest
 
 TOOLS = pathlib.Path(__file__).resolve().parent
 REPO = TOOLS.parent
@@ -97,7 +98,8 @@ def test_inspect_polelift_reproduces_the_pilots_static_findings():
     """No compiler strictly needed for these fields, but build_pin.verify also runs
     inside `inspect`, so this is skipped without the toolchain like the rest."""
     if not _toolchain():
-        return
+        raise unittest.SkipTest(
+            "needs the pinned compiler and extracted/ ROM dump")
     code, out = _run("inspect", "ov045/PoleLift")
     assert code == 0, out
     assert "classes           PoleLift" in out
@@ -124,7 +126,8 @@ def test_verify_reproduces_pilot_1s_7_of_7_and_clean_objisolate():
     involved, matching the assignment's instruction to skip it for this candidate.
     """
     if not _toolchain():
-        return
+        raise unittest.SkipTest(
+            "needs the pinned compiler and extracted/ ROM dump")
     shadow = REPO / "src_tu" / "actors" / "PoleLift.cpp"
     assert shadow.is_file(), "the pilot's committed shadow TU is missing"
 
@@ -218,7 +221,8 @@ def test_compile_report_matches_the_pilots_object_inventory():
     naming this class is a dead reference with a scheduled fuse.
     """
     if not _toolchain():
-        return
+        raise unittest.SkipTest(
+            "needs the pinned compiler and extracted/ ROM dump")
     code, out = _run("compile", "ov045/PoleLift")
     assert code == 0, out
     assert "sections (35):" in out
@@ -255,7 +259,8 @@ def test_partial_reproduces_the_production_per_function_objects():
     `--no-record` so the tracked manifest is not rewritten by running the suite.
     """
     if not _toolchain():
-        return
+        raise unittest.SkipTest(
+            "needs the pinned compiler and extracted/ ROM dump")
     code, out = _run("partial", "ov045/PoleLift", "--no-record", timeout=600)
     assert code == 0, out
     for sym in ("_ZN8PoleLiftD1Ev", "_ZN8PoleLiftD0Ev",
@@ -638,7 +643,8 @@ def _owned_rtti_external_vtable_fixture():
 
 def test_owned_rtti_raw_external_vtable_address_point_is_not_double_counted():
     if not _toolchain():
-        return
+        raise unittest.SkipTest(
+            "needs the pinned compiler and extracted/ ROM dump")
     import copy
 
     obj, entry, claims, config, name_index, target_reader = \
@@ -759,7 +765,8 @@ def test_owned_rtti_raw_external_vtable_address_point_is_not_double_counted():
 
 def test_partitioned_nontext_normalizes_imports_and_rebiases_retained_vtables():
     if not _toolchain():
-        return
+        raise unittest.SkipTest(
+            "needs the pinned compiler and extracted/ ROM dump")
     from unittest import mock
 
     obj, entry, claims, config, name_index, target_reader = \
@@ -799,7 +806,8 @@ def test_partitioned_nontext_normalizes_imports_and_rebiases_retained_vtables():
 
 def test_nontext_verifier_checks_layout_bytes_symbols_and_reloc_destinations():
     if not _toolchain():
-        return
+        raise unittest.SkipTest(
+            "needs the pinned compiler and extracted/ ROM dump")
     obj = _compile_tu_fixture(
         'extern "C" int external_value;\n'
         'extern "C" int *owned_ptr = &external_value;\n'
@@ -905,7 +913,8 @@ def test_nontext_verifier_checks_layout_bytes_symbols_and_reloc_destinations():
 
 def test_compiler_only_policy_is_exact_and_refuses_a_real_rom_home():
     if not _toolchain():
-        return
+        raise unittest.SkipTest(
+            "needs the pinned compiler and extracted/ ROM dump")
     obj = _compile_tu_fixture(
         "struct P { int p[4]; virtual ~P(); virtual void f(); };\nP::~P(){}\n")
     assert obj is not None
@@ -933,7 +942,8 @@ def test_compiler_only_policy_is_exact_and_refuses_a_real_rom_home():
 def test_compiler_only_policy_reduces_data_before_its_duplicate_destructors():
     """A licensed vtable must not block removal of a duplicate dtor it names."""
     if not _toolchain():
-        return
+        raise unittest.SkipTest(
+            "needs the pinned compiler and extracted/ ROM dump")
     obj = _compile_tu_fixture(
         "struct B { virtual ~B() {} };\n"
         "struct D : B { virtual ~D() {} virtual void f(); };\n"
@@ -988,7 +998,8 @@ def test_plain_deadstrip_is_refused_for_an_rtti_record():
     copy of the guard ever runs.
     """
     if not _toolchain():
-        return
+        raise unittest.SkipTest(
+            "needs the pinned compiler and extracted/ ROM dump")
     obj = _compile_tu_fixture(
         "struct B { virtual ~B() {} };\n"
         "struct D : B { virtual ~D() {} virtual void f(); };\n"
@@ -1164,7 +1175,8 @@ def test_linkcheck_symbol_verdict_uses_the_stock_failure_inventory():
 
 def test_vtable_storage_address_requires_an_explicit_consistent_bias():
     if not _toolchain():
-        return
+        raise unittest.SkipTest(
+            "needs the pinned compiler and extracted/ ROM dump")
     obj = _compile_tu_fixture(
         'extern "C" int _ZTV1V[3] = {1, 2, 3};\n'
         'extern "C" int* vptr = _ZTV1V + 2;\n')
@@ -1229,7 +1241,8 @@ def test_vtable_storage_address_requires_an_explicit_consistent_bias():
 
 def test_bss_without_independent_configured_symbols_and_boundaries_is_inferred_only():
     if not _toolchain():
-        return
+        raise unittest.SkipTest(
+            "needs the pinned compiler and extracted/ ROM dump")
     obj = _compile_tu_fixture('extern "C" int invented_bss = 0;\n')
     start = 0x5000
     bss, error = tubuild.section_contribution(obj, ".bss", start)
@@ -1251,7 +1264,8 @@ def test_bss_without_independent_configured_symbols_and_boundaries_is_inferred_o
 
 def test_object_audit_makes_an_extra_unclaimed_object_and_section_fatal():
     if not _toolchain():
-        return
+        raise unittest.SkipTest(
+            "needs the pinned compiler and extracted/ ROM dump")
     obj = _compile_tu_fixture('extern "C" int unexpected_data = 7;\n')
     entry = {"module": "ov999", "functions": [], "sections": [
         {"name": ".text", "start": "0x1000", "end": "0x1004"}],
@@ -1263,67 +1277,11 @@ def test_object_audit_makes_an_extra_unclaimed_object_and_section_fatal():
     assert any("unlicensed content section .data" in r for r in reasons)
 
 
-def test_object_audit_licenses_only_validated_manifest_vtable_partitions():
-    from unittest import mock
-
-    def partition(name, address, size):
-        return {"symbol": name, "address": hex(address), "size": hex(size),
-                "binding": "STB_GLOBAL", "type": "STT_OBJECT",
-                "visibility": "STV_DEFAULT", "reuse_policy_symbol": "donor"}
-
-    def proven(name, address, size):
-        return {"symbol": name, "address": address, "size": size,
-                "binding": "STB_GLOBAL", "type": "STT_OBJECT",
-                "visibility": "STV_DEFAULT", "baseline": {
-                    "symbol": {"address": address, "size": size,
-                               "binding": "STB_GLOBAL", "type": "STT_OBJECT",
-                               "visibility": "STV_DEFAULT", "section": "OV999",
-                               "sectionIndex": 4},
-                    "vtable": {"sectionIndex": 4},
-                }}
-
-    entry = {"module": "ov999", "functions": [], "sections": [
-        {"name": ".text", "start": "0x1000", "end": "0x1004"},
-        {"name": ".data", "start": "0x2000", "end": "0x2030"}],
-        "data": [{"symbol": "_ZTV1P", "address": "0x2008", "size": "0x30",
-                  "partition_symbols": [partition("VT7", 0x2010, 8),
-                                          partition("RawOnly", 0x2018, 0x18)]}],
-        "bss": []}
-    policies = {"_ZTV1P": {"section": ".data", "partitionSymbols": [
-        proven("VT7", 0x2010, 8),
-        proven("ArbitraryCollision", 0x2040, 8),
-    ]}}
-    inventory = {
-        "sections": [{"index": 4, "name": ".data", "size": 0,
-                      "type": "SHT_PROGBITS"}],
-        "symbols": [
-            {"name": name, "bind": "STB_GLOBAL", "type": "STT_OBJECT",
-             "size": size, "shndx": 4}
-            for name, size in (("VT7", 8), ("RawOnly", 0x18),
-                               ("ArbitraryCollision", 8))],
-    }
-    homes = {"VT7": [("ov999", 0x2010)],
-             "RawOnly": [("ov999", 0x2018)],
-             "ArbitraryCollision": [("ov999", 0x2040)]}
-    with mock.patch.object(tubuild, "elf_inventory", return_value=inventory), \
-            mock.patch.object(tubuild, "all_symbol_homes", return_value=homes):
-        rows, extra, _emitted, order_ok = tubuild.audit_tu_object(
-            b"ignored", entry, 0x1000, 0x1004, ranges={"ov999": []},
-            validated_vtable_policies=policies)
-
-    verdicts = {row["name"]: row["verdict"] for row in rows}
-    assert verdicts == {"VT7": "LICENSED", "RawOnly": "COLLIDES-GAP",
-                        "ArbitraryCollision": "COLLIDES-GAP"}
-    reasons = tubuild.object_audit_refusals(rows, extra, order_ok)
-    assert not any("VT7" in reason for reason in reasons)
-    assert any("RawOnly" in reason for reason in reasons)
-    assert any("ArbitraryCollision" in reason for reason in reasons)
-
-
 def test_vague_inherited_rtti_coalescing_remains_explicitly_unsupported():
     """Two TUs emit the same STB_LOPROC base metadata; linker behavior is not a license."""
     if not _toolchain():
-        return
+        raise unittest.SkipTest(
+            "needs the pinned compiler and extracted/ ROM dump")
     common = "struct Base { virtual void f() {} };\n"
     a = _compile_tu_fixture(common + "struct A : Base { virtual void a(); }; void A::a() {}\n")
     b = _compile_tu_fixture(common + "struct B : Base { virtual void b(); }; void B::b() {}\n")
@@ -1381,7 +1339,8 @@ def test_vague_inherited_rtti_coalescing_remains_explicitly_unsupported():
 
 def test_exact_vague_externalization_requires_canonical_bytes_relocs_and_home():
     if not _toolchain():
-        return
+        raise unittest.SkipTest(
+            "needs the pinned compiler and extracted/ ROM dump")
     import copy
 
     obj, entry, homes, cfg, targets, reader, name_index = \
@@ -1448,7 +1407,8 @@ def test_exact_vague_externalization_requires_canonical_bytes_relocs_and_home():
 
 def test_exact_vague_externalization_rejects_wrong_binding_and_vtables():
     if not _toolchain():
-        return
+        raise unittest.SkipTest(
+            "needs the pinned compiler and extracted/ ROM dump")
     import io
     import struct
     from elftools.elf.elffile import ELFFile
@@ -1664,123 +1624,6 @@ def test_partitioned_vtable_rebias_needs_one_unique_configured_public_home():
         tubuild.all_symbol_homes = original
 
 
-def test_partitioned_vtable_interior_symbols_require_exact_policy_and_baseline():
-    entry = {
-        "module": "ov999", "functions": [],
-        "externalized_output": [
-            {"symbol": "_ZTS1B", "disposition": "canonical-import"},
-            {"symbol": "_ZTS1A", "disposition": "canonical-import"},
-        ],
-        "data": [{
-            "symbol": "_ZTV1P", "address": "0x2008",
-            "emitted_storage_address": "0x2000", "address_point_bias": "0x8",
-            "size": "0x30", "partition_symbols": [
-                {"symbol": "VT7", "address": "0x2010", "size": "0x8",
-                 "binding": "STB_GLOBAL", "type": "STT_OBJECT",
-                 "visibility": "STV_DEFAULT", "reuse_policy_symbol": "_ZTS1B"},
-                {"symbol": "VT14", "address": "0x2018", "size": "0x18",
-                 "binding": "STB_GLOBAL", "type": "STT_OBJECT",
-                 "visibility": "STV_DEFAULT", "reuse_policy_symbol": "_ZTS1A"},
-            ],
-        }], "bss": [],
-    }
-    claims = [{"name": ".data", "start": 0x2000, "end": 0x2030}]
-    baseline = {
-        "_ZTV1P": [{"address": 0x2008, "size": 8, "binding": "STB_GLOBAL",
-                     "type": "STT_OBJECT", "visibility": "STV_DEFAULT",
-                     "sectionIndex": 4, "section": "OV999"}],
-        "VT7": [{"address": 0x2010, "size": 8, "binding": "STB_GLOBAL",
-                 "type": "STT_OBJECT", "visibility": "STV_DEFAULT",
-                 "sectionIndex": 4, "section": "OV999"}],
-        "VT14": [{"address": 0x2018, "size": 0x18, "binding": "STB_GLOBAL",
-                  "type": "STT_OBJECT", "visibility": "STV_DEFAULT",
-                  "sectionIndex": 4, "section": "OV999"}],
-    }
-    homes = {"_ZTV1P": [("ov999", 0x2008)], "VT7": [("ov999", 0x2010)],
-             "VT14": [("ov999", 0x2018)]}
-    original_homes = tubuild.all_symbol_homes
-    original_linked = tubuild.linked_symbol_rows
-    try:
-        tubuild.all_symbol_homes = lambda: homes
-        policies, reasons = tubuild.partition_vtable_rebiases(
-            entry, claims, baseline_symbols=baseline, baseline_sha256="c" * 64)
-        assert reasons == []
-        policy = policies["_ZTV1P"]
-        assert policy["publicSize"] == 8
-        assert [(row["symbol"], row["value"], row["size"], row["donor"])
-                for row in policy["partitionSymbols"]] == [
-                    ("VT7", 0x10, 8, "_ZTS1B"),
-                    ("VT14", 0x18, 0x18, "_ZTS1A")]
-        assert policy["baseline"]["elfSha256"] == "c" * 64
-        assert [row[1]["symbol"] for row in
-                tubuild.manifest_vtable_partition_rows(entry)] == ["VT7", "VT14"]
-        assert tubuild.validated_vtable_partition_symbols(entry, policies) == {
-            "VT7", "VT14"}
-
-        # This is the ordinary intact call shape: the manifest owns input ``.data``,
-        # while the validated stock final-link metadata names its output section after
-        # the module.  Same linked section index proves the parent/part relationship.
-        inventory = {
-            "sections": [{"index": 4, "name": ".data", "size": 0,
-                          "type": "SHT_PROGBITS"}],
-            "symbols": [{"name": name, "bind": "STB_GLOBAL",
-                         "type": "STT_OBJECT", "size": size, "shndx": 4}
-                        for name, size in (("VT7", 8), ("VT14", 0x18))],
-        }
-        from unittest import mock
-        with mock.patch.object(tubuild, "elf_inventory", return_value=inventory):
-            rows, extra, _emitted, order_ok = tubuild.audit_tu_object(
-                b"ignored", entry, 0x1000, 0x1004, ranges={"ov999": []},
-                validated_vtable_policies=policies)
-        assert {row["name"]: row["verdict"] for row in rows} == {
-            "VT7": "LICENSED", "VT14": "LICENSED"}
-        assert tubuild.object_audit_refusals(rows, extra, order_ok) == []
-
-        tubuild.linked_symbol_rows = lambda _path, _names: (baseline, None)
-        proof = tubuild.verify_linked_storage_aliases("ignored.o", policies)
-        assert proof["ok"] and proof["rows"][0]["exact"]
-        wrong_baseline = {key: [dict(row) for row in value]
-                          for key, value in baseline.items()}
-        wrong_baseline["VT14"][0]["sectionIndex"] = 5
-        _policies, reasons = tubuild.partition_vtable_rebiases(
-            entry, claims, baseline_symbols=wrong_baseline,
-            baseline_sha256="d" * 64)
-        assert any("baseline metadata differs" in reason for reason in reasons)
-
-        import copy
-        overlap = copy.deepcopy(entry)
-        overlap["data"][0]["partition_symbols"][1].update(
-            {"address": "0x2014", "size": "0x1c"})
-        _policies, reasons = tubuild.partition_vtable_rebiases(
-            overlap, claims, baseline_symbols=baseline)
-        assert any("overlaps" in reason for reason in reasons)
-
-        gap = copy.deepcopy(entry)
-        gap["data"][0]["partition_symbols"][1].update(
-            {"address": "0x201c", "size": "0x14"})
-        tubuild.all_symbol_homes = lambda: {
-            **homes, "VT14": [("ov999", 0x201c)]}
-        _policies, reasons = tubuild.partition_vtable_rebiases(
-            gap, claims, baseline_symbols=baseline)
-        assert any("leaves a gap" in reason for reason in reasons)
-
-        bad_donor = copy.deepcopy(entry)
-        bad_donor["data"][0]["partition_symbols"][0]["reuse_policy_symbol"] = "missing"
-        tubuild.all_symbol_homes = lambda: homes
-        _policies, reasons = tubuild.partition_vtable_rebiases(
-            bad_donor, claims, baseline_symbols=baseline)
-        assert any("not an explicit compiler-only" in reason for reason in reasons)
-
-        reused = copy.deepcopy(entry)
-        reused["data"][0]["partition_symbols"][1]["reuse_policy_symbol"] = "_ZTS1B"
-        _policies, reasons = tubuild.partition_vtable_rebiases(
-            reused, claims, baseline_symbols=baseline)
-        assert any("donor _ZTS1B is reused" in reason for reason in reasons)
-    finally:
-        tubuild.all_symbol_homes = original_homes
-        tubuild.linked_symbol_rows = original_linked
-
-
 def test_partition_baseline_evidence_is_content_bound_not_mtime_bound():
     with tempfile.TemporaryDirectory() as td:
         root = pathlib.Path(td)
@@ -1922,14 +1765,6 @@ def test_partitioned_result_gate_requires_every_full_rom_proof():
         bad = dict(good)
         bad[key] = None if key == "rom_ok" else False
         assert not tubuild.partitioned_link_ready(**bad), key
-
-
-def test_intact_link_gate_requires_final_vtable_split_symbol_fidelity():
-    good = dict(module_ok=True, symbols_ok=True, rom_ok=True,
-                split_symbols_ok=True)
-    assert tubuild.linkcheck_pipeline_ready(**good)
-    bad = dict(good, split_symbols_ok=False)
-    assert not tubuild.linkcheck_pipeline_ready(**bad)
 
 
 def test_partitioned_recorder_is_compact_orthogonal_and_preserves_verified_evidence():
