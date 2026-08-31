@@ -546,3 +546,128 @@ struct Widget {
                     unittest.mock.patch.dict(C.CLASS_SIZE_SRC, {"Manager": own}):
                 self.assertEqual(r.run("include/Widget.h"), 0,
                                  "a size asserted in this very header must still count")
+
+
+# ------------------------------------- defect 4: nested tags that DO assert their size
+#
+# _shadowed_by_nested (above) made the gate refuse rather than guess whenever a class
+# nested in the struct under test shared its tag with an unrelated top-level one. That
+# is the right call when the size is genuinely unknown -- but for nine of the headers it
+# refused, the size is not unknown at all. The tree had already invented an
+# outer-qualified assertion name to dodge exactly this collision:
+#
+#   typedef char dMgPsOpt_TouchIcon_c_size_must_be_0x24[
+#       sizeof(dMgPsOpt_c::TouchIcon_c) == 0x24 ? 1 : -1];
+#
+# The lookup only ever read the bare tag, so it never found it, and include/dMgPsOpt_c.h
+# sat in config/header-offset-known-issues.txt reporting `struct spans 0x8`.
+#
+# The identifier is NOT a mechanical composition -- `dMgPsOpt_TouchIcon_c` drops the
+# outer's `_c` -- so nothing derives the qualified name from it without guessing. The
+# `sizeof(...)` operand IS the qualified name, by construction: the compiler resolves it
+# or the header does not build. That is what CLASS_SIZES_QUALIFIED reads.
+#
+# Every case below is planted the same way: the fixture is run with the qualified table
+# emptied, which is the pre-fix state exactly, and again with it populated.
+
+# `Manager` is nested in the struct under test and asserted ONLY under its qualified
+# name, so the bare-tag table cannot answer and the shadow check refuses. 8 bytes.
+QUALIFIED_GOOD = """\
+struct Widget {
+\tstruct Manager {
+\t\tu32 a;
+\t\tu32 b;
+\t};
+
+\tu32 first;         /* 0x000 */
+\tManager manager;   /* 0x004 */
+\tu32 last;          /* 0x00c */
+};
+"""
+# The same header with `last` written as though Manager were the 0x3c-byte top-level
+# class -- i.e. what a comment author working from the wrong model would produce.
+QUALIFIED_BROKEN = QUALIFIED_GOOD.replace("/* 0x00c */", "/* 0x040 */")
+
+
+class QualifiedSizeAssertTests(unittest.TestCase):
+    def test_a_qualified_assertion_is_read_where_the_bare_tag_cannot_answer(self):
+        with Repo() as r:
+            r.write("include/Widget.h", QUALIFIED_GOOD)
+            # Pre-fix: no qualified table. The bare tag is unknown, the nested body
+            # shadows, and the field goes UNPARSED -- which is a non-zero exit and,
+            # worse, suppresses the field walk for the whole header.
+            with unittest.mock.patch.dict(C.SZ, {}, clear=False), \
+                    unittest.mock.patch.dict(C.CLASS_SIZES_QUALIFIED, {}, clear=True):
+                self.assertEqual(r.run("include/Widget.h"), 1,
+                                 "precondition: the old lookup could not size this")
+            # With the assertion read out of its own sizeof() operand.
+            with unittest.mock.patch.dict(C.CLASS_SIZES_QUALIFIED,
+                                          {"Widget::Manager": 8}):
+                self.assertEqual(r.run("include/Widget.h"), 0)
+
+    def test_a_wrong_comment_is_still_caught_once_the_size_is_known(self):
+        """The point of retiring a waiver is to start CHECKING the header, not to
+        start passing it. A size the gate can resolve has to be able to fail."""
+        with Repo() as r:
+            r.write("include/Widget.h", QUALIFIED_BROKEN)
+            with unittest.mock.patch.dict(C.CLASS_SIZES_QUALIFIED,
+                                          {"Widget::Manager": 8}):
+                self.assertEqual(r.run("include/Widget.h"), 1)
+
+    def test_a_qualified_name_outranks_a_same_tagged_top_level_class(self):
+        """This is C++ name lookup, not a heuristic. `Manager` written inside Widget
+        names Widget::Manager whenever one exists, whatever unrelated top-level
+        Manager the tree also declares -- so the qualified answer must WIN, not merely
+        fill in where the bare table is silent. Getting this backwards reintroduces
+        the fBase_c::Manager bug the shadow check was added to stop."""
+        with Repo() as r:
+            r.write("include/Widget.h", QUALIFIED_GOOD)
+            elsewhere = pathlib.Path(REPO) / "include" / "Elsewhere.h"
+            with unittest.mock.patch.dict(C.SZ, {"Manager": 0x3c}), \
+                    unittest.mock.patch.dict(C.CLASS_SIZE_SRC, {"Manager": elsewhere}), \
+                    unittest.mock.patch.dict(C.CLASS_SIZES_QUALIFIED,
+                                             {"Widget::Manager": 8}):
+                self.assertEqual(r.run("include/Widget.h"), 0,
+                                 "the unrelated top-level size was preferred")
+
+    def test_an_ambiguous_deeper_nesting_refuses_instead_of_picking_one(self):
+        """The field walk does not track intermediate scopes, so `Outer::*::Inner` is
+        matched by suffix. Two different classes can end in the same tag -- and two
+        wrong guesses are not better than one. Refusing puts the header back on the
+        shadow path, which reports UNPARSED rather than a confident wrong number."""
+        with Repo() as r:
+            r.write("include/Widget.h", QUALIFIED_GOOD)
+            with unittest.mock.patch.dict(C.CLASS_SIZES_QUALIFIED,
+                                          {"Widget::alpha_c::Manager": 8,
+                                           "Widget::beta_c::Manager": 0x20},
+                                          clear=True):
+                self.assertEqual(r.run("include/Widget.h"), 1,
+                                 "an ambiguous suffix match was resolved by guessing")
+            # One candidate is not ambiguous, and the suffix form has to answer -- a
+            # nested type declared in an intermediate scope is the reason it exists.
+            with unittest.mock.patch.dict(C.CLASS_SIZES_QUALIFIED,
+                                          {"Widget::alpha_c::Manager": 8}, clear=True):
+                self.assertEqual(r.run("include/Widget.h"), 0)
+
+    def test_the_two_sizes_in_every_real_assertion_agree(self):
+        """The identifier carries the size as a `_0xN` suffix and the expression
+        carries it again as the compared constant. This reads the first and keys it by
+        the second's operand, which is only sound while the two never disagree. They
+        do not, in any of the tree's assertions -- and if a future header makes them
+        disagree, that header is the thing to fix, not this table."""
+        disagreements = []
+        for h in sorted((pathlib.Path(REPO) / "include").rglob("*.h")):
+            for m in C._SIZE_ASSERT_FULL.finditer(h.read_text(errors="replace")):
+                if int(m.group(2), 16) != int(m.group(4), 0):
+                    disagreements.append(f"{h.name}: {m.group(1)} vs {m.group(4)}")
+        self.assertEqual(disagreements, [])
+
+    def test_the_waiver_this_change_retires_now_checks_clean(self):
+        """include/dMgPsOpt_c.h is the live case: `TouchIcon_c mIcons[8];`, sized only
+        by `sizeof(dMgPsOpt_c::TouchIcon_c) == 0x24`. It reported `struct spans 0x8`
+        and was waived. The span it walks to now, 0x128, is independently asserted by
+        the header's own dMgPsOpt_c_size_must_be_0x128 -- so the size being read here
+        is corroborated by something other than the comments it is checking."""
+        self.assertNotIn("include/dMgPsOpt_c.h", C._known_issues(),
+                         "the waiver is back; this test guards its retirement")
+        self.assertEqual(C.main(["include/dMgPsOpt_c.h"], REPO), 0)

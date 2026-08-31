@@ -13,10 +13,10 @@ struct dMgPsOpt_c {
         ~TouchIcon_c();
     };
 
-    TouchIcon_c mIcons[8];
-    s32 mSelectedIcon;
-    u8 mActive;
-    u8 pad_125[0x3];
+    TouchIcon_c mIcons[8];   /* 0x000..0x120 */
+    s32 mSelectedIcon;       /* 0x120 */
+    u8 mActive;              /* 0x124 */
+    u8 pad_125[0x3];         /* 0x125 */
 
     dMgPsOpt_c();
     ~dMgPsOpt_c();
