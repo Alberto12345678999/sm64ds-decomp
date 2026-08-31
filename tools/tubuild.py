@@ -1894,7 +1894,8 @@ def complete_ranges(config_root):
     return out
 
 
-def audit_tu_object(obj_bytes, entry, span_start, span_end, ranges=None):
+def audit_tu_object(obj_bytes, entry, span_start, span_end, ranges=None,
+                    validated_vtable_policies=None):
     """What the linker is about to be handed, judged against the config, BEFORE linking.
 
     plan sec 4.5 -- "a compiled object is eligible only when every defined function,
@@ -1915,6 +1916,8 @@ def audit_tu_object(obj_bytes, entry, span_start, span_end, ranges=None):
     homes = all_symbol_homes()
     licensed = {f["symbol"] for f in entry["functions"]}
     licensed |= {row["symbol"] for _sec, row in manifest_owned_symbol_rows(entry)}
+    licensed |= validated_vtable_partition_symbols(
+        entry, validated_vtable_policies)
     secname = {s["index"]: s["name"] for s in inv["sections"]}
     rows = []
     for s in inv["symbols"]:
@@ -2999,6 +3002,77 @@ def manifest_vtable_partition_rows(entry):
                                        "address": part.get("address"),
                                        "size": part.get("size")}))
     return rows
+
+
+def validated_vtable_partition_symbols(entry, policies):
+    """Names proven by successful ``partition_vtable_rebiases`` output.
+
+    Raw nested manifest rows are deliberately insufficient: a misspelled or otherwise
+    invalid partition must remain an unlicensed collision.  Callers pass policies only
+    after the validator returned no reasons, and this final boundary independently
+    cross-checks the manifest coordinates and content-bound baseline symbol metadata.
+    """
+    if not isinstance(policies, dict):
+        return set()
+    configured = {}
+    for section, owner in manifest_owned_symbol_rows(entry):
+        owner_name = owner.get("symbol")
+        partitions = owner.get("partition_symbols")
+        if not isinstance(owner_name, str) or not owner_name.startswith("_ZTV") \
+                or not isinstance(partitions, list):
+            continue
+        for part in partitions:
+            if not isinstance(part, dict):
+                continue
+            try:
+                name = str(part["symbol"])
+                address = (int(part["address"], 0) if isinstance(part["address"], str)
+                           else int(part["address"]))
+                size = int(part["size"], 0) if isinstance(part["size"], str) \
+                    else int(part["size"])
+            except (KeyError, TypeError, ValueError):
+                continue
+            configured[(owner_name, name, address, size)] = (
+                section, part.get("binding"), part.get("type"),
+                part.get("visibility"))
+
+    licensed = set()
+    for owner_name, policy in policies.items():
+        if not isinstance(policy, dict):
+            continue
+        partitions = policy.get("partitionSymbols")
+        if not isinstance(partitions, list):
+            continue
+        for part in partitions:
+            if not isinstance(part, dict):
+                continue
+            try:
+                name = str(part["symbol"])
+                address, size = int(part["address"]), int(part["size"])
+            except (KeyError, TypeError, ValueError):
+                continue
+            expected = configured.get((owner_name, name, address, size))
+            if expected != (policy.get("section"), "STB_GLOBAL", "STT_OBJECT",
+                             "STV_DEFAULT"):
+                continue
+            if (part.get("binding"), part.get("type"), part.get("visibility")) != \
+                    ("STB_GLOBAL", "STT_OBJECT", "STV_DEFAULT"):
+                continue
+            proof = part.get("baseline")
+            baseline = proof.get("symbol") if isinstance(proof, dict) else None
+            vtable = proof.get("vtable") if isinstance(proof, dict) else None
+            if not isinstance(baseline, dict) or not isinstance(vtable, dict):
+                continue
+            metadata = (baseline.get("address"), baseline.get("size"),
+                        baseline.get("binding"), baseline.get("type"),
+                        baseline.get("visibility"), baseline.get("section"))
+            if metadata != (address, size, "STB_GLOBAL", "STT_OBJECT",
+                            "STV_DEFAULT", policy.get("section")):
+                continue
+            if baseline.get("sectionIndex") != vtable.get("sectionIndex"):
+                continue
+            licensed.add(name)
+    return licensed
 
 
 def linked_symbol_rows(path, names):
@@ -4608,7 +4682,8 @@ def cmd_linkcheck(args):
             return 1
 
         rows, extra_secs, emitted, order_ok = audit_tu_object(
-            linked_tu, entry, span_start, span_end, complete_ranges(cfg_root))
+            linked_tu, entry, span_start, span_end, complete_ranges(cfg_root),
+            validated_vtable_policies=vtable_policies)
         buckets = print_object_audit(rows, extra_secs, emitted, order_ok, entry)
         report["objectAudit"] = {
             "counts": dict(buckets), "orderOk": order_ok,
@@ -4673,7 +4748,10 @@ def cmd_linkcheck(args):
             scratch / "final_link.o", config_root=cfg_root,
             tracked_config_root=CFG_ARM9)
 
-    if partitioned:
+    has_vtable_splits = any(
+        policy.get("storageAlias") or policy.get("partitionSymbols")
+        for policy in vtable_policies.values())
+    if has_vtable_splits:
         linked_aliases = verify_linked_storage_aliases(
             scratch / "final_link.o", vtable_policies)
         report["linkedStorageAliases"] = linked_aliases
@@ -4843,7 +4921,9 @@ def cmd_linkcheck(args):
     # ------------------------------------------------------------------------ verdict
     symbols_verdict = linkcheck_symbol_verdict(baseline, symbols_ok, symbols_new)
     equivalent = all(v["identical"] for _o, _s, v in partial_rows) if partial_rows else False
-    verified = bool(module_ok and symbols_verdict and (rom_ok is not False))
+    verified = linkcheck_pipeline_ready(
+        module_ok=module_ok, symbols_ok=symbols_verdict, rom_ok=rom_ok,
+        split_symbols_ok=storage_aliases_ok)
     if partitioned:
         verified = partitioned_link_ready(
             equivalent=bool(equivalent and partial_rows), data_ok=partition_data_ok,
@@ -4967,6 +5047,13 @@ def partitioned_link_ready(*, equivalent, data_ok, storage_aliases_ok, artifacts
     return all((equivalent, data_ok, storage_aliases_ok, artifacts_ok, module_ok,
                 modules_check_ok,
                 symbols_ok, rom_ok is True, rom_identical, no_stray_outputs))
+
+
+def linkcheck_pipeline_ready(*, module_ok, symbols_ok, rom_ok,
+                             split_symbols_ok=True):
+    """Shared link gate, including exact final-ELF vtable split metadata."""
+    return bool(module_ok and symbols_ok and (rom_ok is not False)
+                and split_symbols_ok)
 
 
 def classify_link_result(has_nontext, pipeline_ok, rom_ok, scratch_rewrite=False):
@@ -5124,6 +5211,7 @@ def _record_linkcheck(data, entry, report, baseline):
                 for r in audit.get("nonLicensed", [])],
             "unlicensedSections": audit.get("unlicensedSections"),
         },
+        "linkedStorageAliases": report.get("linkedStorageAliases"),
         "symbolCheckNewVsBaseline": report.get("symbolsNew"),
         "symbolCheckErrors": (((report.get("phases") or {}).get("checkSymbols") or {})
                               .get("errors")),

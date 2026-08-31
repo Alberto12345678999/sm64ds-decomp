@@ -228,12 +228,15 @@ class ProductionTuObjects(unittest.TestCase):
                                   return_value=(b"linked", {"error": None})) as rebias, \
                 mock.patch.object(TP.TB, "complete_ranges", return_value={}), \
                 mock.patch.object(TP.TB, "audit_tu_object",
-                                  return_value=([], [], [], True)), \
+                                  return_value=([], [], [], True)) as audit, \
                 mock.patch.object(TP.TB, "object_audit_refusals", return_value=[]):
             output, evidence = TP.prepare_intact_object(b"raw", entry)
         self.assertEqual(output, b"linked")
         rebias.assert_called_once_with(
             b"external", {"_ZTV1T": {"bias": 8}}, normalize_undefined=True)
+        audit.assert_called_once_with(
+            b"linked", entry, 0x1000, 0x1010, {},
+            validated_vtable_policies={"_ZTV1T": {"bias": 8}})
         self.assertEqual(verify.call_args_list, [
             mock.call(b"external", entry, claims),
             mock.call(b"linked", entry, claims, public_address_points=True,

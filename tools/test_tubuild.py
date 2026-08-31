@@ -1263,6 +1263,63 @@ def test_object_audit_makes_an_extra_unclaimed_object_and_section_fatal():
     assert any("unlicensed content section .data" in r for r in reasons)
 
 
+def test_object_audit_licenses_only_validated_manifest_vtable_partitions():
+    from unittest import mock
+
+    def partition(name, address, size):
+        return {"symbol": name, "address": hex(address), "size": hex(size),
+                "binding": "STB_GLOBAL", "type": "STT_OBJECT",
+                "visibility": "STV_DEFAULT", "reuse_policy_symbol": "donor"}
+
+    def proven(name, address, size):
+        return {"symbol": name, "address": address, "size": size,
+                "binding": "STB_GLOBAL", "type": "STT_OBJECT",
+                "visibility": "STV_DEFAULT", "baseline": {
+                    "symbol": {"address": address, "size": size,
+                               "binding": "STB_GLOBAL", "type": "STT_OBJECT",
+                               "visibility": "STV_DEFAULT", "section": ".data",
+                               "sectionIndex": 4},
+                    "vtable": {"sectionIndex": 4},
+                }}
+
+    entry = {"module": "ov999", "functions": [], "sections": [
+        {"name": ".text", "start": "0x1000", "end": "0x1004"},
+        {"name": ".data", "start": "0x2000", "end": "0x2030"}],
+        "data": [{"symbol": "_ZTV1P", "address": "0x2008", "size": "0x30",
+                  "partition_symbols": [partition("VT7", 0x2010, 8),
+                                          partition("RawOnly", 0x2018, 0x18)]}],
+        "bss": []}
+    policies = {"_ZTV1P": {"section": ".data", "partitionSymbols": [
+        proven("VT7", 0x2010, 8),
+        proven("ArbitraryCollision", 0x2040, 8),
+    ]}}
+    inventory = {
+        "sections": [{"index": 4, "name": ".data", "size": 0,
+                      "type": "SHT_PROGBITS"}],
+        "symbols": [
+            {"name": name, "bind": "STB_GLOBAL", "type": "STT_OBJECT",
+             "size": size, "shndx": 4}
+            for name, size in (("VT7", 8), ("RawOnly", 0x18),
+                               ("ArbitraryCollision", 8))],
+    }
+    homes = {"VT7": [("ov999", 0x2010)],
+             "RawOnly": [("ov999", 0x2018)],
+             "ArbitraryCollision": [("ov999", 0x2040)]}
+    with mock.patch.object(tubuild, "elf_inventory", return_value=inventory), \
+            mock.patch.object(tubuild, "all_symbol_homes", return_value=homes):
+        rows, extra, _emitted, order_ok = tubuild.audit_tu_object(
+            b"ignored", entry, 0x1000, 0x1004, ranges={"ov999": []},
+            validated_vtable_policies=policies)
+
+    verdicts = {row["name"]: row["verdict"] for row in rows}
+    assert verdicts == {"VT7": "LICENSED", "RawOnly": "COLLIDES-GAP",
+                        "ArbitraryCollision": "COLLIDES-GAP"}
+    reasons = tubuild.object_audit_refusals(rows, extra, order_ok)
+    assert not any("VT7" in reason for reason in reasons)
+    assert any("RawOnly" in reason for reason in reasons)
+    assert any("ArbitraryCollision" in reason for reason in reasons)
+
+
 def test_vague_inherited_rtti_coalescing_remains_explicitly_unsupported():
     """Two TUs emit the same STB_LOPROC base metadata; linker behavior is not a license."""
     if not _toolchain():
@@ -1846,6 +1903,14 @@ def test_partitioned_result_gate_requires_every_full_rom_proof():
         assert not tubuild.partitioned_link_ready(**bad), key
 
 
+def test_intact_link_gate_requires_final_vtable_split_symbol_fidelity():
+    good = dict(module_ok=True, symbols_ok=True, rom_ok=True,
+                split_symbols_ok=True)
+    assert tubuild.linkcheck_pipeline_ready(**good)
+    bad = dict(good, split_symbols_ok=False)
+    assert not tubuild.linkcheck_pipeline_ready(**bad)
+
+
 def test_partitioned_recorder_is_compact_orthogonal_and_preserves_verified_evidence():
     entry = {"id": "ov999/T", "status": "data-verified"}
     data = {"entries": [entry]}
@@ -1925,6 +1990,8 @@ def test_record_linkcheck_preserves_all_owned_ranges():
             {"section": ".data", "differingBytes": 0},
         ],
         "objectAudit": {},
+        "linkedStorageAliases": {"ok": True, "rows": [{"exact": True}],
+                                  "errors": []},
         "symbolsNew": [],
         "analysis": {"moduleFidelity": {"moduleSetSha256": "b" * 64}},
         "rom": {"matchesStockRom": True, "sha256": "a" * 64},
@@ -1940,6 +2007,7 @@ def test_record_linkcheck_preserves_all_owned_ranges():
     assert recorded["tuRange"] == report["tuRange"]
     assert recorded["tuRanges"] == report["tuRanges"]
     assert recorded["moduleSetSha256"] == "b" * 64
+    assert recorded["linkedStorageAliases"] == report["linkedStorageAliases"]
 
 # ---------------------------------------------------------------- create repairs
 # The three assemble_shadow_source behaviors proven by six modules of

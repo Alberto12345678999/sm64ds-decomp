@@ -69,7 +69,8 @@ def prepare_intact_object(raw, entry):
 
     span_start, span_end = text[0]["start"], text[0]["end"]
     rows, extra, emitted, order_ok = TB.audit_tu_object(
-        linked_obj, entry, span_start, span_end, TB.complete_ranges(TB.CFG_ARM9))
+        linked_obj, entry, span_start, span_end, TB.complete_ranges(TB.CFG_ARM9),
+        validated_vtable_policies=biases)
     audit_errors = TB.object_audit_refusals(rows, extra, order_ok)
     if audit_errors:
         _raise(f"{entry['id']} production object audit", audit_errors)
