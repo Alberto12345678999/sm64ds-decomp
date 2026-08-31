@@ -757,6 +757,46 @@ def test_owned_rtti_raw_external_vtable_address_point_is_not_double_counted():
                 if int(row["source"], 0) == si_source)["verdict"] == "WRONG-DEST"
 
 
+def test_partitioned_nontext_normalizes_imports_and_rebiases_retained_vtables():
+    if not _toolchain():
+        return
+    from unittest import mock
+
+    obj, entry, claims, config, name_index, target_reader = \
+        _owned_rtti_external_vtable_fixture()
+    biases = {
+        row["symbol"]: {
+            "bias": 8, "size": int(row["size"], 0), "section": ".data"}
+        for row in entry["data"] if row["symbol"].startswith("_ZTV")
+    }
+    real_verify = tubuild.verify_owned_sections
+
+    def verify(candidate_obj, candidate_entry, candidate_claims, **kwargs):
+        assert kwargs == {
+            "public_address_points": True,
+            "normalized_undefined_vtables": True,
+        }
+        return real_verify(
+            candidate_obj, candidate_entry, candidate_claims,
+            name_index=name_index, config_relocs=config, sym_index={},
+            target_reader=target_reader, symbol_homes={}, bss_boundaries=set(),
+            **kwargs)
+
+    with mock.patch.object(tubuild, "verify_owned_sections", verify):
+        prepared, rebias, owned = tubuild.prepare_partitioned_nontext_vtables(
+            obj, entry, claims, biases)
+
+    assert prepared is not None, rebias
+    assert owned["ok"], owned["errors"]
+    assert rebias["rebased"]
+    assert all(row["newValue"] - row["oldValue"] == 8
+               for row in rebias["rebased"])
+    assert any(row["symbol"].startswith("_ZTVN3abi")
+               and row["oldAddend"] == 8 and row["newAddend"] == 0
+               and row["mode"] == "undefined-public-import"
+               for row in rebias["relocations"])
+
+
 def test_nontext_verifier_checks_layout_bytes_symbols_and_reloc_destinations():
     if not _toolchain():
         return

@@ -3280,6 +3280,18 @@ def partition_vtable_rebiases(entry, claims, baseline_symbols=None,
     return biases, reasons
 
 
+def prepare_partitioned_nontext_vtables(data_tu, entry, claims, biases):
+    """Normalize retained and imported vtables for the partitioned link object."""
+    data_tu, bias_report = OI.rebias_object_symbols(
+        data_tu, biases, normalize_undefined=True)
+    if data_tu is None:
+        return None, bias_report, None
+    owned = verify_owned_sections(
+        data_tu, entry, claims, public_address_points=True,
+        normalized_undefined_vtables=True)
+    return data_tu, bias_report, owned
+
+
 def verify_linked_storage_aliases(linked_elf, biases):
     """Require final-link alias/vtable metadata to reproduce the baseline pair."""
     pairs = [(name, policy["storageAlias"]) for name, policy in biases.items()
@@ -4308,7 +4320,8 @@ def cmd_linkcheck(args):
                 _write_link_report(scratch, report)
                 _record_partitioned(data, entry, report)
                 return 1
-            data_tu, bias_report = OI.rebias_object_symbols(data_tu, biases)
+            data_tu, bias_report, owned = prepare_partitioned_nontext_vtables(
+                data_tu, entry, claims, biases)
             report["vtableRebias"] = bias_report
             if data_tu is None:
                 print(f"      REFUSED -- vtable symbol rebias: {bias_report.get('error')}")
@@ -4319,8 +4332,6 @@ def cmd_linkcheck(args):
             report["partitionedObjects"]["linkedDataSha256"] = \
                 hashlib.sha256(data_tu).hexdigest()
 
-            owned = verify_owned_sections(data_tu, entry, claims,
-                                           public_address_points=True)
             report["ownedSections"] = owned
             for row in owned["rows"]:
                 print(f"      {row['section']:8} {row.get('start', '-')}.."
