@@ -63,6 +63,7 @@ struct dScMgBSC_c : dScMgSingle3DBase_c {
     virtual s32 Render();     /* slot 9 -- ov006 0x021253bc */
     virtual int  OnYoshiTryEat(int arg);               /* slot 18 */
     virtual int  OnTurnIntoEgg(int mode);              /* slot 19 */
+    virtual void OnGroundPounded();                    /* slot 21 */
 
     u8  mTable[0x270];   /* 0x4f38 -- ctor func_ov006_020c1d80, dtor func_ov006_020c1c64 */
     u8  mArray[0x10];     /* 0x51a8 -- 2 * 8 bytes, ctor func_0203d738, dtor NullDestructor_0203d47c */

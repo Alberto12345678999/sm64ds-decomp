@@ -1,5 +1,5 @@
 //cpp
-// @symbol func_ov006_020f523c
+// @symbol _ZN13dScMgMemory_c15OnGroundPoundedEv
 /* recovered: renamed to Class_Method, RTTI class fields named, declarations from a shared header */
 #include "decl_common.h"
 /* recovered: renamed to Class_Method, RTTI class fields named */
@@ -10,8 +10,8 @@ extern "C" {
 /* recovered: renamed to Class_Method */
 /* dScMgMemory_c::OnGroundPounded - recovered from vtable slot identity */
 
-int func_ov006_020f523c(char* p) {
+void _ZN13dScMgMemory_c15OnGroundPoundedEv(char* p) {
     struct dScMgMemory_c *self = (struct dScMgMemory_c *)(void *)p;
-    return func_ov004_020b63a0(self->unk_533b);
+    func_ov004_020b63a0(self->unk_533b);
 }
 }

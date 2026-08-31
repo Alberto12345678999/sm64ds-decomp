@@ -51,7 +51,7 @@
  *   [28] 0x020da9c4  _ZN11dScMgCard_c6RenderEv
  *   [29] 0x020dabec  _ZN11dScMgCard_c8BehaviorEv
  *   [30] 0x020dac34  func_ov006_020dac34
- *   [31] 0x020db6ec  func_ov006_020db6ec
+ *   [31] 0x020db6ec  _ZN11dScMgCard_c15OnGroundPoundedEv
  *   [32] 0x020db720  _ZN11dScMgCard_c13OnTurnIntoEggEi
  *   [33] 0x020db9dc  _ZN11dScMgCard_c13OnYoshiTryEatEi
  *   [34] 0x020dbaf0  _ZN11dScMgCard_c13InitResourcesEv
@@ -255,7 +255,7 @@ extern int data_ov004_020bf9ec;
 extern int data_ov006_0213bc44;
 extern int data_ov004_020bfa18;
 extern int data_ov006_0213bd48[];
-extern "C" int func_ov006_020db6ec(void *thisPtr);
+extern "C" void _ZN11dScMgCard_c15OnGroundPoundedEv(void *thisPtr);
 extern void FreeGfxSlotsById(int arg);
 extern void func_ov004_020b56c8(int a);
 /* already the mangled Itanium name in the ROM's own symbols.txt --
@@ -526,15 +526,15 @@ int _ZN11dScMgCard_c13OnTurnIntoEggEi(char* c)
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 31 -- func_ov006_020db6ec, 0x020db6ec, size 0x34 */
+/* ROM ordinal 31 -- _ZN11dScMgCard_c15OnGroundPoundedEv, 0x020db6ec, size 0x34 */
 /* -------------------------------------------------------------------------- */
-// @symbol func_ov006_020db6ec
+// @symbol _ZN11dScMgCard_c15OnGroundPoundedEv
 /* recovered: renamed to Class_Method, RTTI class fields named, declarations from a shared header */
 /* recovered: renamed to Class_Method, RTTI class fields named */
 // recovered name: dScMgCard_c_OnGroundPounded
 /* recovered: renamed to Class_Method */
 /* dScMgCard_c::OnGroundPounded - recovered from vtable slot identity */
-int func_ov006_020db6ec(void *thisPtr) {
+void _ZN11dScMgCard_c15OnGroundPoundedEv(void *thisPtr) {
     struct dScMgCard_c *self = (struct dScMgCard_c *)(void *)thisPtr;
     int x = self->mHudScore;
     int v;
@@ -547,7 +547,7 @@ int func_ov006_020db6ec(void *thisPtr) {
     } else {
         v = 4;
     }
-    return func_ov004_020b6324(v);
+    func_ov004_020b6324(v);
 }
 
 /* -------------------------------------------------------------------------- */
