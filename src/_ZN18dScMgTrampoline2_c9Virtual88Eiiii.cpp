@@ -1,3 +1,5 @@
+//cpp
+#include "dScMgTrampoline2_c.h"
 // @symbol _ZN18dScMgTrampoline2_c9Virtual88Eiiii
 /* dScMgTrampoline2_c::Virtual88 - slot 34.
 
@@ -7,16 +9,22 @@
    ancestor body for them to inherit. */
 #pragma opt_loop_invariants off
 
+extern "C" {
 extern int data_ov006_02142f78[];
+}
 
+extern "C" {
 extern void *func_02054efc(void);
 extern void *func_02054ea8(void);
 extern void *_ZN2G213GetBG2CharPtrEv(void);
 extern int func_02054d88(void);
 extern void MultiCopy_Int(int *dst, int *src, int len);
+}
 
-void _ZN18dScMgTrampoline2_c9Virtual88Eiiii(void *obj, int x_base, int y, int val, int n)
+void dScMgTrampoline2_c::Virtual88(int x_base, int y, int val, int n)
 {
+    void *obj = (void *)this;
+
     int half;
     int x0;
     int j;
