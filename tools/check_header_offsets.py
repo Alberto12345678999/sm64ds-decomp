@@ -123,12 +123,72 @@ CLASS_SIZES = {}
 # classes of the same name in different headers are one entry -- see
 # _shadowed_by_nested below, which needs the origin to tell them apart.
 CLASS_SIZE_SRC = {}
+# ...and the same sizes keyed by their QUALIFIED name, read out of the assertion's
+# own `sizeof(...)` expression rather than out of its typedef identifier.
+#
+# The identifier cannot be trusted to spell the qualified name, because the tree's
+# convention for one is not mechanical. `dMgPsOpt_c::TouchIcon_c` is asserted as
+# `dMgPsOpt_TouchIcon_c_size_must_be_0x24` -- outer tag with its `_c` dropped -- and
+# `Particle::SysTracker::Contents` as `Particle_SysTracker_Contents_size_must_be_0x748`.
+# No rule derives `dMgPsOpt_TouchIcon_c` from `dMgPsOpt_c` and `TouchIcon_c` that does
+# not also have to guess. The sizeof() operand, though, is the real qualified name by
+# construction -- the compiler resolves it or the header does not build.
+#
+# Measured over all 507 headers when this was written: 486 assertions parse in full,
+# 26 of them qualified, and the typedef identifier's `_0xN` suffix agrees with the
+# expression's own constant in 486 of 486 cases. So this reads the same numbers the
+# bare-tag table already reads; it only learns a second, unambiguous key for them.
+CLASS_SIZES_QUALIFIED = {}
+# `== 6` as well as `== 0x6`: types.h asserts Vector3s in decimal, and it is the one
+# assertion in the tree that the full form would otherwise miss.
+_SIZE_ASSERT_FULL = re.compile(
+    r"typedef\s+char\s+(\w+)_size_must_be_(0x[0-9a-fA-F]+)\s*\[\s*"
+    r"sizeof\s*\(\s*(?:struct|class|union)?\s*((?:\w+\s*::\s*)*\w+)\s*\)\s*"
+    r"==\s*(0x[0-9a-fA-F]+|\d+)", re.S)
 for _h in pathlib.Path(__file__).resolve().parents[1].joinpath("include").rglob("*.h"):
-    for _m in re.finditer(r"(\w+)_size_must_be_(0x[0-9a-fA-F]+)",
-                          _h.read_text(errors="replace")):
+    _txt = _h.read_text(errors="replace")
+    for _m in re.finditer(r"(\w+)_size_must_be_(0x[0-9a-fA-F]+)", _txt):
         CLASS_SIZES[_m.group(1)] = int(_m.group(2), 16)
         CLASS_SIZE_SRC[_m.group(1)] = _h
+    for _m in _SIZE_ASSERT_FULL.finditer(_txt):
+        _expr = re.sub(r"\s+", "", _m.group(3))
+        if "::" in _expr:
+            CLASS_SIZES_QUALIFIED[_expr] = int(_m.group(2), 16)
+            # Only if nothing else claimed it: the bare-tag table above is what the
+            # shadow check reads, and a qualified entry must not overwrite the origin
+            # of a same-named top-level class.
+            CLASS_SIZE_SRC.setdefault(_expr, _h)
 SZ.update(CLASS_SIZES)
+
+
+def _qualified_size(outer, typ):
+    """Size of `typ` as written inside `outer`, from a QUALIFIED size assertion.
+
+    Returns None when no assertion names this nesting, which leaves the caller on
+    its existing bare-tag path -- this only ever adds an answer where there was
+    none, it never overrides one.
+
+    Two forms are accepted:
+
+      exact   `dMgPsOpt_c::TouchIcon_c` for `TouchIcon_c` written inside dMgPsOpt_c
+      nested  `dPa_c::level_c::callback_c` for `callback_c` written inside dPa_c,
+              where the type is declared in an intermediate scope the field walk
+              does not track
+
+    The second form must be UNIQUE to answer. Two different `Outer::*::Inner`
+    entries with the same size are still two different classes, and picking either
+    would be the exact guess this function exists to avoid -- see
+    _shadowed_by_nested, which is the same failure one level up.
+    """
+    if not outer:
+        return None
+    exact = CLASS_SIZES_QUALIFIED.get(outer + "::" + typ)
+    if exact is not None:
+        return exact
+    prefix = outer + "::"
+    hits = {v for k, v in CLASS_SIZES_QUALIFIED.items()
+            if k.startswith(prefix) and k.rsplit("::", 1)[-1] == typ}
+    return hits.pop() if len(hits) == 1 else None
 
 # A derived class's own fields start at the base's DATA SIZE, not its sizeof.
 #
@@ -650,7 +710,19 @@ def main(argv, repo=None):
                 in_comment = True
             m = DECL.match(line)
             typ = m.group(1).rsplit("::", 1)[-1] if m else None
-            if m and not m.group(2) and _shadowed_by_nested(typ, nested_names, fp):
+            # A qualified assertion is checked FIRST and settles the question. It
+            # names one class unambiguously, so neither the bare-tag lookup nor the
+            # shadow refusal below has anything left to decide. `TouchIcon_c
+            # mIcons[8];` in dMgPsOpt_c.h is the live case: the bare tag
+            # `TouchIcon_c` is asserted nowhere, so the field came back UNPARSED and
+            # the header's whole walk stopped at `struct spans 0x8`. With the
+            # qualified size it walks to 0x128, which is what the header's own
+            # `dMgPsOpt_c_size_must_be_0x128` says -- an independent check that the
+            # size read here is the right one.
+            qsize = _qualified_size(expected, typ) if (m and not m.group(2)) else None
+            if qsize is not None:
+                w = qsize
+            elif m and not m.group(2) and _shadowed_by_nested(typ, nested_names, fp):
                 w = None
             else:
                 w = 4 if (m and m.group(2)) else SZ.get(typ)

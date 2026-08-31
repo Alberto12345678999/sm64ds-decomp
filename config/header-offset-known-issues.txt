@@ -57,12 +57,10 @@ include/fBase_c.h
 include/dMgState_c.h
 include/dMg3DEspModel_c.h
 
-# `TouchIcon_c mIcons[8];`. The type DOES assert its size, as
-# `dMgPsOpt_TouchIcon_c_size_must_be_0x24` -- the tree already invented an
-# outer-qualified assert name to keep a nested tag from colliding with a top-level one,
-# which is the very collision fBase_c::Manager fell into. The tool only ever looks up
-# the bare tag, so it never finds it. Teaching the lookup that convention retires this.
-include/dMgPsOpt_c.h
+# RETIRED from this list: include/dMgPsOpt_c.h. The lookup now reads the qualified
+# name out of the assertion's own sizeof() operand instead of trying to derive it from
+# the typedef identifier, so `dMgPsOpt_c::TouchIcon_c` resolves and the header walks to
+# `struct spans 0x128` -- exactly its own dMgPsOpt_c_size_must_be_0x128.
 
 # `class X : public Y {` nested inside dPa_c. The nested-type consumer matches `struct`
 # only, so the body is not consumed and its `public:` falls through as a declaration.
