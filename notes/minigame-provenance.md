@@ -267,10 +267,11 @@ every other dScMgBase_c leaf's slot 18; it no longer includes this
 header at all -- its one
 inherited-field access at 0xbc is dScMgBase_c's own pad_0bc, not a named
 field there either, so it now reaches it via a raw char* offset, the same
-idiom dScMgPachinko_c's own slot 18 helper already uses), 31 ("Kill",
-src/func_ov006_020d11a0.cpp -- takes no parameters and never touches
-`this` at all, pure hardware-register/global reset; left as a raw helper,
-untouched by this migration), 34 (src/func_ov006_020d14c0.c -- takes
+idiom dScMgPachinko_c's own slot 18 helper already uses), 31 (now
+`Virtual7C`, src/_ZN12dScMgAmida_c9Virtual7CEv.cpp -- takes no parameters
+and never touches `this` at all, pure hardware-register/global reset; it
+was left as a raw helper by THIS migration and picked up later, when the
+slot-31 keystone commit named the base slot), 34 (src/func_ov006_020d14c0.c -- takes
 three extra parameters (y, x, arg3) beyond `this` and draws a HUD
 digit/glyph into its own private Ctx-shaped state; same multi-argument
 shape dScMgTeresa_c's own slot 34 documents, left as a raw helper,

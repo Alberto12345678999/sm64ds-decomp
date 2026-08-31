@@ -97,20 +97,21 @@ struct dScMgD3DBase_c : dScMgBase_c {
     virtual int  OnHitFromUnderneath();                /* slot 28 */
     virtual int  OnAimedAtWithEgg();                   /* slot 29 */
     virtual int  OnAimedAtWithEggReturnVec();          /* slot 30 */
+    virtual int  Virtual7C();                          /* slot 31 */
 
-    /* Three more of dScMgBase_c's own 18 new slots (18-35) are overridden
-       here too (slots 31, 33 per tools/rtti_vtables.py --own
-       dScMgD3DBase_c) -- left undeclared, same as dScMgBase_c.h's own slots
-       31-35: their targets are matched source but dScMgBase_c hasn't named
-       or given signatures to the slots they'd be overriding yet, and a
-       derived override can't be declared before its base is.
+    /* ONE more of dScMgBase_c's own 18 new slots (18-35) is overridden here
+       too -- slot 33, per tools/rtti_vtables.py --own dScMgD3DBase_c -- and it
+       stays undeclared, same as dScMgBase_c.h's own slots 32-35: its target is
+       matched source, but dScMgBase_c has not named the slot it would be
+       overriding or given it a signature yet, and a derived override cannot be
+       declared before its base is.
 
-       Slots 24, 25, 26, 27, 28 and 29 above came off that list, and they are
-       the same case seven times over: dScMgJump_c and dScMgJump2_c both point
-       at THIS class's body for each of them, so the declaration belongs here
-       and neither child declares any of them.  Slots 26 through 30 widen that
-       to all four children -- dScMgTrampoline_c and dScMgTrampoline2_c point here
-       too, where at 24 and 25 they had bodies of their own. */
+       Slots 24 through 31 above came off that list, and they are the same case
+       eight times over: dScMgJump_c and dScMgJump2_c both point at THIS class's
+       body for each of them, so the declaration belongs here and neither child
+       declares any of them.  Slots 26 through 31 widen that to all four
+       children -- dScMgTrampoline_c and dScMgTrampoline2_c point here too,
+       where at 24 and 25 they had bodies of their own. */
 
     s32  unk_4660;                    /* 0x4660 */
     u16  unk_4664;                    /* 0x4664 -- both factories zero it right

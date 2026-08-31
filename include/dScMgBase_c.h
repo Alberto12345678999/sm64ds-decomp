@@ -575,10 +575,81 @@ struct dScMgBase_c : dScene_c {
            three-item overlay menu going up and slot 30 is it coming back down;
            neither has anything to do with a Yoshi egg or with a vector. */
     virtual int  OnAimedAtWithEggReturnVec();          /* slot 30 */
+    /* Slot 31 -- Virtual7C, and the name is a deliberate NON-name.  This is the
+       first slot above dActor_c's table, and reaching it settles what the
+       thirteen slots below it only hinted at.
+         WHY THE NAME CHANGES HERE.  Slots 18-30 carry dActor_c's names because
+           they sit at dActor_c's indices.  That is the whole of the argument,
+           and at this slot it runs out: include/dActor_c.h stops at 30.  What
+           the two tables actually share is their BASE, not their tail --
+           include/fBase_c.h declares slots 0-15 plus the destructor pair at
+           16/17, and dBase_c adds no virtual of its own, so both branches begin
+           appending at 18:
+               fBase_c -> dBase_c -> dActor_c                  (adds 18-30)
+               fBase_c -> dBase_c -> dScene_c -> dScMgBase_c   (adds 18-35)
+           dScMgBase_c is a SCENE, not an actor; dScene_c and dActor_c are
+           siblings under dBase_c and dScene_c declares nothing above slot 11.
+           Two independent extensions of the same 18-slot base land on the same
+           indices for the same reason two books have a page 19.  That is the
+           root cause behind every semantic contradiction recorded at slots 26,
+           29 and 30, and it applies to all eighteen.
+         WHERE `Kill` CAME FROM, since the sources still say it.  ov002 really
+           does carry _ZN10dBgActor_c4KillEv at 0x020ee55c -- a genuine mangled
+           ROM symbol, and notes/actor-vtables.md derives it independently.  But
+           dBgActor_c derives from dActor_c: it is a NEPHEW of this branch, and
+           Kill is the one new virtual IT appends at ITS slot 31.  The name was
+           carried across a fork, not down a chain.  Nothing in the cartridge
+           names this function.  Virtual7C is the spelling fBase_c already uses
+           for the same situation (Virtual34, Virtual38) and the one slots 33,
+           34 and 35 are recorded under in
+           notes/dScMgBase_c-slots-18-35.md, so it costs no new convention.
+         return type: int, A HINT, the third consecutive slot no body pins.
+           ov004:0x020b2880 sets r0 to #0 on its second instruction -- as
+           SetSubBg1Offset's first argument, before anything reads it -- and
+           never assigns a result; whatever falls out is LoadCompressedFileAt's
+           return.  The one caller discards it (below).
+         arity: no explicit parameters, MEASURED at the only in-family call
+           site.  Scanning arm9 and all 103 overlays for `ldr rN,[rM,#0x7c]`
+           immediately followed by `blx rN` -- the dispatch pair, not any load
+           at +0x7c -- finds 39 sites, of which exactly ONE is in ov004 or
+           ov006: ov004:0x020b0a0c, inside dScMgBase_c::BeforeInitResources.
+           It reads `mov r0,r4; ldr r1,[r0]; ldr r1,[r1,#0x7c]; blx r1`, so r1
+           is the loaded pointer and cannot also be a second argument.  The
+           other thirty-eight sites are in ov002, ov015, ov018, ov027, ov064,
+           ov079, ov081 and ov098 -- dBgActor_c's Kill, on the other branch.
+           The base body does not even read `this`; dScMgD3DBase_c's override
+           does (unk_4660, unk_0a0), which is what fixes r0 as the object.
+         WHAT IT DOES.  All four bodies are one shape.  Three read-modify-writes
+           on the sub engine's BG1CNT at 0x0400100a (`& 0x43`, `| X`, `& ~0x40`,
+           `& ~3`) leave the register holding exactly X: priority 0, no mosaic,
+           and the class's own base-block bits -- 0x10 here, 0x800 in
+           dScMgD3DBase_c, 4 in both dScMgAmida_c and dScMgSmartball_c.  Then
+           SetSubBg1Offset(0, 0) resets the layer's scroll, `data_0209d454 &= ~2`
+           clears BG1's bit in the sub BG-enable shadow that slot 30 restores
+           the sub DISPCNT from, and two LoadCompressedFileAt calls install a
+           language-indexed character file at G2S::GetBG1CharPtr() and the
+           shared screen map, file 0x5b, at G2S::GetBG1ScrPtr().  Each class
+           differs only in X and in its own language table.  It installs this
+           minigame's touch-screen background; it destroys nothing.
+         WHEN IT RUNS.  BeforeInitResources (ov004:0x020b0930) calls slot 33 at
+           +0x84, zeroes data_0209d460 and data_0209d458 -- the main/sub pair
+           slot 30 restores the DISPCNT layer bits from -- calls THIS slot last,
+           and returns a literal 1 without touching the result.  Setup, at scene
+           construction.
+         overrides: SEVEN tables, THREE declarations, no reconciliation.
+           dScMgD3DBase_c's body at ov006:0x020e72c0 backs its table and all
+           four children's; dScMgAmida_c (ov006:0x020d11a0) and
+           dScMgSmartball_c (ov006:0x02118ae4) each have their own.
+         NAME CORRECTION, the ninth in this campaign and the eighth on
+           dScMgD3DBase_c: 0x020e72c0 carried
+           `recovered name: dScMgTrampoline2_c_Kill` and included
+           dScMgTrampoline2_c.h.  Five tables reference that address, so it is
+           dScMgD3DBase_c's.  Fixed here along with the type it casts `this` to. */
+    virtual int  Virtual7C();                          /* slot 31 */
 
-    /* Slots 31-35 are added the same way: one slot per change, together with
+    /* Slots 32-35 are added the same way: one slot per change, together with
        every descendant override of that slot. Until then they stay undeclared
-       and the emitted tables stop at slot 30.
+       and the emitted tables stop at slot 31.
 
        THE OCCUPIED-SLOT TRAP IS NO LONGER LOADED IN dScMgSlot1_c -- slots 27
        and 28 were both of its early declarations and both are reconciled --

@@ -1,8 +1,12 @@
 //cpp
-// @symbol func_ov006_020d11a0
-// recovered name: dScMgAmida_c_Kill
+// @symbol _ZN12dScMgAmida_c9Virtual7CEv
+// recovered name: dScMgAmida_c_Kill  -- WRONG, see below
 /* recovered: renamed to Class_Method */
-/* dScMgAmida_c::Kill - recovered from vtable slot identity */
+/* dScMgAmida_c::Virtual7C - slot 31, this class's own override.
+
+   Not a Kill: see the slot-31 block in include/dScMgBase_c.h for why the base
+   slot has no ROM name at all.  Same shape as the base, with 4 for the BG1CNT
+   base bits and this class's own language table. */
 extern "C" {
 extern void SetSubBg1Offset(int a, int b);
 extern int GetGameLanguage(void);
@@ -12,8 +16,8 @@ extern void *_ZN3G2S12GetBG1ScrPtrEv(void);
 extern unsigned char data_0209d454;
 extern int data_ov006_0213b838[];
 }
-extern "C" void func_ov006_020d11a0(void);
-extern "C" void func_ov006_020d11a0(void) {
+extern "C" void _ZN12dScMgAmida_c9Virtual7CEv(void);
+extern "C" void _ZN12dScMgAmida_c9Virtual7CEv(void) {
     volatile unsigned short *reg = (volatile unsigned short*)0x400100a;
     int id;
     void *t;
