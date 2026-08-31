@@ -1449,7 +1449,7 @@ extern int func_ov003_020adf50(char*);
 extern int func_ov004_020ad878(void);
 extern int func_ov004_020ad8b8(void);
 extern int func_ov004_020ae128(void*);
-extern int func_ov004_020ae1a0(void*);
+extern int _ZN11dScMgBase_c11OnAttacked2Ev(void*);
 extern int func_ov004_020ae858(void*);
 extern int func_ov004_020aea78(void*, void*, void*, void*);
 extern int func_ov004_020b04c0(void);

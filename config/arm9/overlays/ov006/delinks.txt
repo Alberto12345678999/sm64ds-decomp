@@ -6349,7 +6349,7 @@ src/func_ov006_02120f18.c:
     complete
     .text start:0x02120f18 end:0x0212101c
 
-src/func_ov006_0212101c.c:
+src/_ZN17dScMgTrampoline_c11OnAttacked2Ev.c:
     complete
     .text start:0x0212101c end:0x021211bc
 
@@ -6509,7 +6509,7 @@ src/func_ov006_02122e20.c:
     complete
     .text start:0x02122e20 end:0x02122f24
 
-src/func_ov006_02122f24.c:
+src/_ZN18dScMgTrampoline2_c11OnAttacked2Ev.c:
     complete
     .text start:0x02122f24 end:0x021230c4
 
@@ -6676,7 +6676,7 @@ src/func_ov006_021291b0.c:
     complete
     .text start:0x021291b0 end:0x021291d4
 
-src/func_ov006_021291d4.c:
+src/_ZN15dScMgSnowball_c11OnAttacked2Ev.c:
     complete
     .text start:0x021291d4 end:0x021291f8
 

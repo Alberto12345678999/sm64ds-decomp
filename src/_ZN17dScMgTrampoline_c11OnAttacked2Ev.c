@@ -1,5 +1,5 @@
 #include "types.h"
-// @symbol func_ov006_0212101c
+// @symbol _ZN17dScMgTrampoline_c11OnAttacked2Ev
 // recovered name: dScMgTrampoline_c_OnAttacked2
 /* recovered: renamed to Class_Method */
 /* dScMgTrampoline_c::OnAttacked2 - recovered from vtable slot identity */
@@ -13,14 +13,14 @@ typedef struct Vec2s { s16 x, y; } Vec2s;
 extern UnkObj* data_0209f5bc;
 extern int data_ov006_0213fa9c;
 
-int func_ov004_020ae1a0(void);
+int _ZN11dScMgBase_c11OnAttacked2Ev(void);
 unsigned int func_02012790(unsigned int a);
 int func_ov006_020d0c38(Vec2s* a, Vec2s* b);
 void func_02012718(void* a, int b);
 int func_02054d88(void);
 void MultiStore16(u16 val, void* dst, int nbytes);
 
-int func_ov006_0212101c(char* self)
+int _ZN17dScMgTrampoline_c11OnAttacked2Ev(char* self)
 {
     volatile u16 z;
     Vec2s v1;
@@ -28,7 +28,7 @@ int func_ov006_0212101c(char* self)
     s16 a;
     int dst;
 
-    if (!func_ov004_020ae1a0())
+    if (!_ZN11dScMgBase_c11OnAttacked2Ev())
         return 0;
 
     if (data_0209f5bc->vt[5](data_0209f5bc)) {

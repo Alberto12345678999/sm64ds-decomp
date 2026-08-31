@@ -39,6 +39,7 @@ struct dScMgTrampoline_c : dScMgD3DBase_c {
     virtual s32 Render();            /* slot 9 -- ov006 0x021212fc */
     virtual int  OnYoshiTryEat(int arg);               /* slot 18 */
     virtual int  OnTurnIntoEgg(int mode);              /* slot 19 */
+    virtual int  OnAttacked2();                        /* slot 23 */
 
     u8  pad_5004[0x8];    /* 0x5004 -- no matched access in this class's methods */
     u8  mArray1[0x340];   /* 0x500c -- 4 * 0xd0,  elem dtor func_ov006_020ccfc8 */
@@ -69,7 +70,7 @@ struct dScMgTrampoline_c : dScMgD3DBase_c {
     s16 unk_5dc2;         /* 0x5dc2 */
     u8  mTouching;        /* 0x5dc4 -- a drag is in progress */
     u8  mTouchReleased;   /* 0x5dc5 -- set on the release edge; the swipe test
-                             in src/func_ov006_0212101c.c consumes and clears it */
+                             in src/_ZN17dScMgTrampoline_c11OnAttacked2Ev.c consumes and clears it */
     u8  pad_5dc6[0x2];    /* 0x5dc6 -- rounds up to the 0x5dc8 boundary */
 };
 

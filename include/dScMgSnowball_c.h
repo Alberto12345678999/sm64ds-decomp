@@ -81,6 +81,7 @@ struct dScMgSnowball_c : dScMgSingle3DBase_c {
     virtual s32 Behavior();          /* slot 6 -- ov006 0x021283a4 */
     virtual s32 Render();            /* slot 9 -- ov006 0x02127d10 */
     virtual int  OnYoshiTryEat(int arg);               /* slot 18 */
+    virtual int  OnAttacked2();                        /* slot 23 */
 
     u8    pad_4f38[0x5c00]; /* 0x4f38 -- no matched access */
     s32   mPosX;            /* 0xab38 -- Fix12 world position of the ball */
