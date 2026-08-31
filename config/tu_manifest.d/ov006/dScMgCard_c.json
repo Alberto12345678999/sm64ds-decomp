@@ -1,9 +1,9 @@
 {
   "id": "ov006/dScMgCard_c",
   "module": "ov006",
-  "source": "src_tu/actors/dScMgCard_c.cpp",
+  "source": "src/actors/dScMgCard_c.cpp",
   "promoted_source": "src/actors/dScMgCard_c.cpp",
-  "status": "text-verified",
+  "status": "promoted",
   "boundary_confidence": "high",
   "boundary_evidence": [
     "contiguous linker run: 0x20d95a4..0x20dbd54, 34 function(s), from build/tu_map.json (tools/tu_map.py)",
@@ -281,7 +281,8 @@
     "tubuild create warning: CONFLICT: local declaration ('struct', 'C') differs between the legacy file that used to hold func_ov006_020da00c and the one that held func_ov006_020da0ac; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: local declaration ('typedef', 's32') differs between the legacy file that used to hold func_ov006_020d9bdc and the one that held func_ov006_020da174; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: local declaration ('typedef', 's16') differs between the legacy file that used to hold func_ov006_020da174 and the one that held func_ov006_020db720; kept the first, the other is commented out for review",
-    "compiler_only_output, measured pre-link in this worktree with .rela.data slots masked as wildcards the way tools/match.py masks .text: the six typeinfo NAME STRINGS carry no relocations and every byte of each equals the cartridge (_ZTS7fBase_c 9/9, _ZTS7dBase_c 9/9, _ZTS8dScene_c 10/10, _ZTS11dScMgBase_c 14/14, _ZTS19dScMgSingle3DBase_c 22/22, _ZTS11dScMgCard_c 14/14). The six typeinfo RECORDS are 100% relocation words (8 or 12 bytes, 0 comparable), so nothing about them can be judged before the link -- romdata_check during rombuild is the authority, not this object. _ZTV11dScMgCard_c has exactly one non-relocated word, the offset-to-top, and it equals the cartridge: note the config symbol addr:0x0213bdb4 names the vtable's ADDRESS POINT, so the record starts 8 bytes earlier at 0x0213bdac, where the cartridge holds 0 then 0x0213bc70 (_ZTI11dScMgCard_c) -- comparing at the configured address without that -8 makes every word look wrong. The object emits 0x50 bytes = the 8-byte header plus 18 slots; the cartridge's table runs 0x0213bdb4..0x0213be44 = 144 bytes = 36 slots, so this vtable can only ever come out PARTIAL until dScMgBase_c declares slots 18-35."
+    "compiler_only_output, measured pre-link in this worktree with .rela.data slots masked as wildcards the way tools/match.py masks .text: the six typeinfo NAME STRINGS carry no relocations and every byte of each equals the cartridge (_ZTS7fBase_c 9/9, _ZTS7dBase_c 9/9, _ZTS8dScene_c 10/10, _ZTS11dScMgBase_c 14/14, _ZTS19dScMgSingle3DBase_c 22/22, _ZTS11dScMgCard_c 14/14). The six typeinfo RECORDS are 100% relocation words (8 or 12 bytes, 0 comparable), so nothing about them can be judged before the link -- romdata_check during rombuild is the authority, not this object. _ZTV11dScMgCard_c has exactly one non-relocated word, the offset-to-top, and it equals the cartridge: note the config symbol addr:0x0213bdb4 names the vtable's ADDRESS POINT, so the record starts 8 bytes earlier at 0x0213bdac, where the cartridge holds 0 then 0x0213bc70 (_ZTI11dScMgCard_c) -- comparing at the configured address without that -8 makes every word look wrong. The object emits 0x50 bytes = the 8-byte header plus 18 slots; the cartridge's table runs 0x0213bdb4..0x0213be44 = 144 bytes = 36 slots, so this vtable can only ever come out PARTIAL until dScMgBase_c declares slots 18-35.",
+    "The destructor is defined INLINE in include/dScMgCard_c.h, not out of line in this TU. Out of line, mwccarm emitted _ZN11dScMgCard_cD0Ev AHEAD of _ZN11dScMgCard_cD1Ev and rombuild's fail-closed isolate refused the object -- the cartridge has D1 first at 0x020d95a4 and D0 second at 0x020d9638. Inline, vtable slots 16 and 17 name D1 then D0 and odr-use both, so the compiler emits the pair in cartridge order; the key function moves to InitResources, the next virtual declared and non-inline, which this same TU defines, so _ZTV11dScMgCard_c is still emitted here. It also removes _ZN11dScMgCard_cD2Ev entirely, so that symbol needs no deadstrip policy. Same recipe and same reason as ov006/dScMgMCarlo2_c."
   ],
   "verification": {
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
@@ -292,12 +293,8 @@
     "functions_matched": 34,
     "functions_declared": 34,
     "compilerOnlyOutput": {
-      "requested": [
-        "_ZN11dScMgCard_cD2Ev"
-      ],
-      "deadstripped": [
-        "_ZN11dScMgCard_cD2Ev"
-      ],
+      "requested": [],
+      "deadstripped": [],
       "droppedSections": [
         5,
         6,
@@ -318,9 +315,7 @@
         21,
         22,
         23,
-        24,
-        25,
-        26
+        24
       ],
       "data": [
         "_ZTI7fBase_c",
@@ -357,8 +352,20 @@
       "every_declared_function_defined": "PASS",
       "every_declared_function_bytes_match": "PASS",
       "declared_function_set_equals_defined_function_set": "PASS",
-      "functions_occur_in_expected_order": "PARTIAL -- ordinal pair(s) not in ROM order: [(1, 2)]",
+      "functions_occur_in_expected_order": "PASS",
       "relocation_destinations_verified": "PASS"
+    },
+    "postPromotion": {
+      "round": "tools/rombuild.py -j 16 against the REAL tree, after the delinks entry was collapsed to one source -- the production counterpart of the scratch linkcheck above, which cannot run once the TU is enrolled (its substitution model needs the legacy delinks entries it just replaced)",
+      "moduleFidelity": "106/106 exact, 100.000000% of compared bytes",
+      "sourceBuiltFunctions": {
+        "total": 11088,
+        "reproducing": 11088,
+        "mismatching": 0
+      },
+      "intactTuGates": "dsd modules PASS, zero new symbol errors, storage aliases exact",
+      "romDataFromSource": "462 verified, 250 partial, 9 differ, 524 unnamed by config, from 7,586 object records. The record total falls 13 against origin/main for the same arithmetic reason ov006/dScMgMCarlo2_c's did: on main the out-of-line destructor was this class's key function, so _ZN11dScMgCard_cD1Ev.cpp and _ZN11dScMgCard_cD0Ev.cpp EACH emitted the same 13 licensed records; inlining the destructor moves the key function to InitResources and the one promoted object emits each record once. No symbol changed verdict.",
+      "licensedRecordVerdicts": "tools/romdata_check.py --files src/actors/dScMgCard_c.cpp -> 13 data symbols, 6 VERIFIED (68 bytes), 7 PARTIAL (140 bytes), 0 DIFFERS, 0 UNNAMED. VERIFIED means every byte of the cartridge's extent was compared and equal, with the object's relocations resolved the way the linker resolves them: ALL SIX typeinfo records -- _ZTI7fBase_c (8/8), _ZTI7dBase_c (12/12), _ZTI8dScene_c (12/12), _ZTI11dScMgBase_c (12/12), _ZTI19dScMgSingle3DBase_c (12/12) and this class's own _ZTI11dScMgCard_c (12/12). PARTIAL is an exact prefix short of the ROM's extent: the six typeinfo name strings, each equal to the cartridge for every whole word it emits and short only of the cartridge's 4-byte-aligned padding (_ZTS7fBase_c 8 of 12, _ZTS7dBase_c 8 of 12, _ZTS8dScene_c 8 of 12, _ZTS11dScMgBase_c 12 of 16, _ZTS11dScMgCard_c 12 of 16, _ZTS19dScMgSingle3DBase_c 20 of 24); and _ZTV11dScMgCard_c at 72 of the cartridge's 144 bytes -- 18 of 36 slots, because dScMgBase_c still leaves slots 18-35 undeclared. Widening that vtable is a separate change to the base class, not to this TU."
     }
   },
   "compiler_only_output": [
@@ -452,11 +459,6 @@
       "canonical_module": "ov006",
       "canonical_address": "0x0213bdb4",
       "reason": "emitted for this class itself vtable by naming this class's key function; the cartridge's copy lives at ov006:0x0213bdb4 and an enrolled source already reaches it, so romdata_check compares this object's bytes against the cartridge before the duplicate is discarded"
-    },
-    {
-      "symbol": "_ZN11dScMgCard_cD2Ev",
-      "disposition": "deadstrip",
-      "reason": "compiler-generated base-object destructor is byte-identical to D1, has no configured ROM symbol, and has no inbound relocation"
     }
   ],
   "partial_isolation": {

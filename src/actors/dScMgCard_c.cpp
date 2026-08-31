@@ -1884,25 +1884,8 @@ extern "C" {  /* .c-derived member: C linkage for the whole block */
 void func_ov006_020d96e0(void *p) { *(int *)p = (int)data_ov006_0213bccc; }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinals 1 and 2 -- _ZN11dScMgCard_cD1Ev 0x020d95a4 size 0x94, */
-/* _ZN11dScMgCard_cD0Ev 0x020d9638 size 0xa8. ONE definition; mwccarm emits */
-/* both the complete-object and the deleting destructor from it.                */
-/* -------------------------------------------------------------------------- */
-// @symbol _ZN11dScMgCard_cD1Ev
-/* recovered: real C++ destructor. Explicit calls reproduce the ROM's own
-   recovered body (func_ov006_020d95a4, pre-migration) exactly: destroy
-   mArray2 first, then mArray1 (reverse of construction order), then the
-   shared 0x270-byte table -- addressed by raw offset from `this` since
-   the header keeps two of the table's own words named (unk_4f52,
-   unk_511e), so there is no single contiguous member spanning it.
-   Everything after -- own vtable store, mSysTracker destruction, chain to
-   ~dScMgBase_c() -- is the compiler's own inlining of
-   dScMgSingle3DBase_c's now-inline destructor (see
-   include/dScMgSingle3DBase_c.h's own note). */
-dScMgCard_c::~dScMgCard_c()
-{
-    __destroy_arr(mArray2, 5, 0x30, (void *)func_ov006_020d96f0);
-    __destroy_arr(mArray1, 5, 0x30, (void *)func_ov006_020d96e0);
-    func_ov006_020c1c64((char *)this + 0x4f38);
-}
+/* The destructor is DEFINED INLINE in include/dScMgCard_c.h. mwcc emits the
+ * D1/D0 pair at ROM ordinals 1 and 2 (0x020d95a4 size 0x94, 0x020d9638 size
+ * 0xa8) from the vtable slots that name them, in cartridge order -- written
+ * out of line here it emitted D0 ahead of D1 and rombuild's fail-closed
+ * isolate refused the TU. The header's own banner carries the full reason. */

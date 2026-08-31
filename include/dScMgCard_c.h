@@ -26,10 +26,22 @@
  * src files: func_ov006_020da9c4.cpp, 020db6ec.c, 020db720.c,
  * 020db9dc.c, 020dbaf0.cpp -- five of dScMgCard_c's own vtable methods).
  *
- * THE DESTRUCTOR IS NOT DEFINED INLINE -- a leaf, no RTTI descendants of
- * its own. Defined for real in src/_ZN11dScMgCard_cD1Ev.cpp; D0Ev.cpp
- * carries an identical copy. No separate operator delete is needed --
- * dScMgBase_c, two levels up, already provides one. */
+ * THE DESTRUCTOR IS DEFINED INLINE, in the class body, and the ROM's own
+ * emission order is why. Written out of line, mwcc emits the synthesized D0
+ * AHEAD of the written D1; the cartridge has D1 first (0x020d95a4) and D0
+ * second (0x020d9638), and rombuild's fail-closed isolate refuses a TU whose
+ * licensed .text is not in ROM address order. Inline, the destructor cannot
+ * be the key function; InitResources -- the next virtual declared, and
+ * non-inline -- takes that role, and the TU that defines it emits
+ * _ZTV11dScMgCard_c. Slots 16 and 17 name D1 then D0, odr-using both, so the
+ * compiler emits the pair for us in cartridge order. It also removes the
+ * homeless D2 entirely -- a base-object variant byte-identical to D1, with no
+ * ROM address to claim and no inbound relocation. The two __destroy_arr calls
+ * below are ordinary reverse-declaration member destruction, spelled out only
+ * because the members are raw bytes; the third call releases the shared table
+ * by raw offset, since two of its words stay named. No separate operator
+ * delete is needed -- dScMgBase_c, two levels up, already provides one.
+ * Same recipe as include/dScMgMCarlo2_c.h, and for the same reason. */
 #ifndef DSCMGCARD_C_H
 #define DSCMGCARD_C_H
 #include "dScMgSingle3DBase_c.h"
@@ -40,7 +52,11 @@ extern "C" void func_ov006_020d96e0(void *elem);
 extern "C" void func_ov006_020d96f0(void *elem);
 
 struct dScMgCard_c : dScMgSingle3DBase_c {
-    virtual ~dScMgCard_c();
+    virtual ~dScMgCard_c() {
+        __destroy_arr(mArray2, 5, 0x30, (void *)func_ov006_020d96f0);
+        __destroy_arr(mArray1, 5, 0x30, (void *)func_ov006_020d96e0);
+        func_ov006_020c1c64((char *)this + 0x4f38);
+    }
 
     /* --- this class's own vtable slots, named from the table ---
        Re-overrides of slots fBase_c already owns, NOT new virtuals: the
