@@ -449,29 +449,55 @@ def cluster(fns, vt_for_module, factory_for_module, blind):
 def absorb_unlabelled(clusters, unlabelled, calls):
     """Attach each stray function to a neighbouring cluster when the call graph says so.
 
-    A function called ONLY from inside one cluster's span is file-local -- it has
-    internal linkage, which is why it has no mangled name to read a class from --
-    and internal linkage is a property that cannot cross a TU boundary. So its
-    callers' cluster is its cluster. That is proof, not preference.
+    A function called ONLY from inside one cluster's span is a candidate for being
+    file-local to that cluster: no mangled name to read a class from is what you
+    expect of internal linkage, and internal linkage cannot cross a TU boundary.
+
+    But a single caller-cluster is NOT proof of internal linkage. A perfectly
+    ordinary external function that happens to have exactly one caller looks
+    identical from the call graph alone. So the call graph proposes and *adjacency
+    disposes*: the linker lays a TU's .text down contiguously, so a function that
+    belongs to a TU must touch that TU's span. A stray is absorbed only when it
+    abuts the cluster -- and absorbing it extends the span, so a contiguous run of
+    strays is taken in one function at a time, which is why this iterates.
+
+    Without that guard the call-graph rule alone placed 304 functions into TUs
+    they cannot be in, across 59 of 720 units -- e.g. eight functions at
+    0x020ccd04..0x020d0bd8 absorbed into ov006's dScMgTrampoline_c
+    (0x021207dc..0x0212231c), a third of a megabyte away. A .text that jumps
+    0x54000 bytes and comes back is not a translation unit.
 
     Everything else becomes its own low-confidence TU rather than being guessed
     into a neighbour: an unattributed run between two clusters is genuinely
     ambiguous, and saying so is more useful than picking a side."""
-    leftovers = []
-    for addr, name, size in unlabelled:
-        callers = calls.get(addr, set())
+    def _owner(addr):
+        """The single cluster every caller of `addr` lies in, else None."""
         owners = set()
-        for c_addr in callers:
+        for c_addr in calls.get(addr, set()):
             for i, c in enumerate(clusters):
                 if c["start"] <= c_addr < c["end"]:
                     owners.add(i)
                     break
             else:
                 owners.add(-1)          # called from outside every cluster
-        if len(owners) == 1 and -1 not in owners:
-            clusters[owners.pop()]["funcs"].append((addr, name, size))
-        else:
-            leftovers.append((addr, name, size))
+        return owners.pop() if len(owners) == 1 and -1 not in owners else None
+
+    leftovers = list(unlabelled)
+    absorbing = True
+    while absorbing:                    # a run is absorbed one function per pass
+        absorbing = False
+        still = []
+        for addr, name, size in leftovers:
+            i = _owner(addr)
+            c = clusters[i] if i is not None else None
+            if c is not None and (addr == c["end"] or addr + size == c["start"]):
+                c["funcs"].append((addr, name, size))
+                c["start"] = min(c["start"], addr)
+                c["end"] = max(c["end"], addr + size)
+                absorbing = True
+            else:
+                still.append((addr, name, size))
+        leftovers = still
 
     # Contiguous runs of still-unattributed functions become their own TUs.
     orphan_tus = []
