@@ -71,6 +71,7 @@ struct dScMgMCarlo_c : dScMgSingle3DBase_c {
     s32 InitResources();   /* slot  0 -- ov006 0x020f8d08 */
     s32 Render();          /* slot  9 -- ov006 0x020f85b0 */
     virtual int  OnYoshiTryEat(int arg);               /* slot 18 */
+    virtual int  OnTurnIntoEgg(int mode);              /* slot 19 */
     s32 Behavior();        /* slot  6 -- ov006 0x020f869c */
 
     u8  pad_4f38[0x1a];    /* 0x4f38 -- shared table start, see file banner */

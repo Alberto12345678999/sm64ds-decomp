@@ -296,15 +296,15 @@ extern "C" void _ZN10dScMgBSC_c13OnYoshiTryEatEi(char* c, int mode){
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 14 -- func_ov006_0212527c, 0x0212527c, size 0xe8 */
+/* ROM ordinal 14 -- _ZN10dScMgBSC_c13OnTurnIntoEggEi, 0x0212527c, size 0xe8 */
 /* -------------------------------------------------------------------------- */
-// @symbol func_ov006_0212527c
+// @symbol _ZN10dScMgBSC_c13OnTurnIntoEggEi
 /* recovered: renamed to Class_Method, RTTI class fields named, declarations from a shared header */
 /* recovered: renamed to Class_Method, RTTI class fields named */
 // recovered name: dScMgBSC_c_OnTurnIntoEgg
 /* recovered: renamed to Class_Method */
 /* dScMgBSC_c::OnTurnIntoEgg - recovered from vtable slot identity */
-extern "C" int func_ov006_0212527c(char* c, int mode)
+extern "C" int _ZN10dScMgBSC_c13OnTurnIntoEggEi(char* c, int mode)
 {
     struct dScMgBSC_c *self = (struct dScMgBSC_c *)(void *)c;
     int st;

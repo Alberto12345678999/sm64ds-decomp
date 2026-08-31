@@ -3198,7 +3198,7 @@ src/_ZN11dScMgJump_c13InitResourcesEv.cpp:
     complete
     .text start:0x020ee690 end:0x020ee8dc
 
-src/func_ov006_020ee8dc.cpp:
+src/_ZN11dScMgJump_c13OnTurnIntoEggEi.cpp:
     complete
     .text start:0x020ee8dc end:0x020ee994
 
@@ -3310,7 +3310,7 @@ src/_ZN12dScMgJump2_c13InitResourcesEv.cpp:
     complete
     .text start:0x020ef834 end:0x020efa84
 
-src/func_ov006_020efa84.c:
+src/_ZN12dScMgJump2_c13OnTurnIntoEggEi.c:
     complete
     .text start:0x020efa84 end:0x020efaa8
 
@@ -3698,7 +3698,7 @@ src/func_ov006_020f523c.c:
     complete
     .text start:0x020f523c end:0x020f5250
 
-src/func_ov006_020f5250.c:
+src/_ZN13dScMgMemory_c13OnTurnIntoEggEi.c:
     complete
     .text start:0x020f5250 end:0x020f52c4
 
@@ -3901,7 +3901,7 @@ src/func_ov006_020f730c.c:
     complete
     .text start:0x020f730c end:0x020f7320
 
-src/func_ov006_020f7320.c:
+src/_ZN14dScMgMemory2_c13OnTurnIntoEggEi.c:
     complete
     .text start:0x020f7320 end:0x020f7394
 
@@ -4921,7 +4921,7 @@ src/_ZN15dScMgRoulette_c13OnYoshiTryEatEi.cpp:
     complete
     .text start:0x021095cc end:0x021096c8
 
-src/func_ov006_021096c8.c:
+src/_ZN15dScMgRoulette_c13OnTurnIntoEggEi.c:
     complete
     .text start:0x021096c8 end:0x0210980c
 
@@ -6421,7 +6421,7 @@ src/func_ov006_02121f04.c:
     complete
     .text start:0x02121f04 end:0x02121f70
 
-src/func_ov006_02121f70.c:
+src/_ZN17dScMgTrampoline_c13OnTurnIntoEggEi.c:
     complete
     .text start:0x02121f70 end:0x02121fa4
 
@@ -6585,7 +6585,7 @@ src/func_ov006_02124228.c:
     complete
     .text start:0x02124228 end:0x02124298
 
-src/func_ov006_02124298.c:
+src/_ZN18dScMgTrampoline2_c13OnTurnIntoEggEi.c:
     complete
     .text start:0x02124298 end:0x021242cc
 
