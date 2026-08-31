@@ -631,7 +631,7 @@ bytes the reset zeroes and nothing reads).
 
 | Offset | Name | Evidence |
 | --- | --- | --- |
-| 0x5388 | `mState` | src/func_ov006_020dac34.cpp is one long `switch` on it that mostly `++`s it; src/func_ov006_020db720.c switches on the same field; the reset in src/func_ov006_020db9dc.cpp starts it at 1. |
+| 0x5388 | `mState` | `func_ov006_020dac34` in src/actors/dScMgCard_c.cpp is one long `switch` on it that mostly `++`s it; `func_ov006_020db720` in the same file switches on the same field; the reset in `func_ov006_020db9dc`, also there, starts it at 1. |
 | 0x538a | `mStateTimer` | Reloaded with 0x10, 0x14, 0x1e, 0x3c or 0x5a on each step and run down to 0 (by `--` or `ApproachLinear2`) before `mState` advances. |
 | 0x5396 | `mFrameCounter` | `dScMgCard_c::Behavior`'s only own statement is `+= 1`; Render blinks the highlighted cards on bit 3. |
 | 0x5398 | `mScore` | Render keeps it as a high-water mark of the base's `mHudScore` and pushes it back out through `func_ov004_020adb1c` every frame. |
