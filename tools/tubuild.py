@@ -3554,6 +3554,17 @@ def verify_linked_storage_aliases(linked_elf, biases):
     return {"ok": not reasons, "rows": rows, "errors": reasons}
 
 
+def initial_storage_alias_verdict(vtable_policies):
+    """Return the pre-audit verdict for linked vtable split symbols.
+
+    A TU with no split aliases has nothing to compare and is vacuously exact.
+    A real split policy fails closed until ``verify_linked_storage_aliases``
+    replaces this default with its measured post-link verdict.
+    """
+    return not any(policy.get("storageAlias") or policy.get("partitionSymbols")
+                   for policy in vtable_policies.values())
+
+
 # ====================================== partial TU isolation (plan sec 9, phase D)
 #
 # The whole-range substitution above hands the linker ONE object for the TU's entire
@@ -4379,7 +4390,7 @@ def cmd_linkcheck(args):
     # -------------------- partial/partitioned isolation: derive, compare, substitute
     partial_rows = []
     partition_data_ok = False
-    storage_aliases_ok = not partitioned
+    storage_aliases_ok = True
     vtable_policies = {}
     if partial or partitioned:
         label = "partitioned" if partitioned else "partial"
@@ -4755,9 +4766,8 @@ def cmd_linkcheck(args):
             scratch / "final_link.o", config_root=cfg_root,
             tracked_config_root=CFG_ARM9)
 
-    has_vtable_splits = any(
-        policy.get("storageAlias") or policy.get("partitionSymbols")
-        for policy in vtable_policies.values())
+    storage_aliases_ok = initial_storage_alias_verdict(vtable_policies)
+    has_vtable_splits = not storage_aliases_ok
     if has_vtable_splits:
         linked_aliases = verify_linked_storage_aliases(
             scratch / "final_link.o", vtable_policies)
