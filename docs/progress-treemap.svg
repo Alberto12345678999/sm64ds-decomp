@@ -38409,19 +38409,19 @@ matched: yes</title></rect><rect x="1098.83" y="583.15" width="0.87" height="4.2
 module: ov071
 addr: 0x02121b00
 size: 8 bytes
-matched: yes</title></rect><rect x="1099.71" y="583.15" width="7.86" height="4.27" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov071_02121b08
+matched: yes</title></rect><rect x="1099.71" y="583.15" width="7.86" height="4.27" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daEyBm_c18SpawnDestroyEffectEv
 module: ov071
 addr: 0x02121b08
 size: 72 bytes
-matched: yes</title></rect><rect x="1107.57" y="583.15" width="9.17" height="4.27" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov071_02121b50
+matched: yes</title></rect><rect x="1107.57" y="583.15" width="9.17" height="4.27" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daEyBm_c15UpdateCollisionER10dBgCh_Actr
 module: ov071
 addr: 0x02121b50
 size: 84 bytes
-matched: yes</title></rect><rect x="1116.74" y="583.15" width="21.83" height="4.27" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov071_02121ba4
+matched: yes</title></rect><rect x="1116.74" y="583.15" width="21.83" height="4.27" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daEyBm_c10HurtPlayerEv
 module: ov071
 addr: 0x02121ba4
 size: 200 bytes
-matched: yes</title></rect><rect x="1098.83" y="587.42" width="22.46" height="3.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov071_02121c6c
+matched: yes</title></rect><rect x="1098.83" y="587.42" width="22.46" height="3.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daEyBm_c12UpdateShadowEv
 module: ov071
 addr: 0x02121c6c
 size: 156 bytes
