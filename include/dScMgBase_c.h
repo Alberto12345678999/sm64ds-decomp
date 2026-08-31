@@ -142,8 +142,8 @@ struct dScMgBase_c : dScene_c {
        dActor_c.h's type matches five and differs on one:
            18  int  / int   agree   sets r0 on a constant-return path
            19  int  / int   agree   sets r0 on a constant-return path
-           22  int  / int   agree   func_ov004_020ae198, `return 1;`
-           23  int  / int   agree   func_ov004_020ae1a0, `return 1;`
+           22  int  / int   agree   OnAttacked1's body is `return 1;`
+           23  int  / int   agree   OnAttacked2's body is `return 1;`
            24  int  / void  DIFFER  func_ov004_020ae140.cpp ends `return 1;`
            27  void / void  agree   func_ov004_020af27c, early bare return
        Slot 24 is the one that matters, because dActor_c.h names 24 as one of
@@ -182,10 +182,28 @@ struct dScMgBase_c : dScene_c {
        a `void` function would not, so this one is not a coin-flip the way slot
        21's tail calls were. */
     virtual int  OnAttacked1();                        /* slot 22 */
+    /* Slot 23 -- OnAttacked2.  Name from the ov004 body and from all
+       three overrides' own `recovered name: <class>_OnAttacked2` comments,
+       agreeing with include/dActor_c.h:140.
+         arity: no explicit parameters, MEASURED.  The base body reads no
+           argument register at all, and none of the three overrides touches
+           a second one.  dActor_c.h:140 spells a `dActor_c &`; it has been
+           wrong on every parameter list this campaign has measured, so it
+           is not carried.  The two flat-C callers do not even agree on a
+           prototype -- dScMgSnowball_c hands the base a `void *`,
+           dScMgTrampoline2_c calls it with nothing -- which is only
+           possible because the callee ignores both.  That is corroboration,
+           not the measurement.
+         return type: int, MEASURED twice.  The base body is `return 1;`,
+           and dScMgTrampoline2_c's override has four early `return 0;`
+           paths and a final `return 1;` -- exactly the early-return shape
+           include/dActor_c.h names as the only thing that can separate
+           `int` from `void`, and here it comes down on int. */
+    virtual int  OnAttacked2();                        /* slot 23 */
 
-    /* Slots 23-35 are added the same way: one slot per change, together with
+    /* Slots 24-35 are added the same way: one slot per change, together with
        every descendant override of that slot. Until then they stay undeclared
-       and the emitted tables stop at slot 22. */
+       and the emitted tables stop at slot 23. */
 
     s32 unk_050;            /* 0x050 */
     s32 unk_054;            /* 0x054 */
