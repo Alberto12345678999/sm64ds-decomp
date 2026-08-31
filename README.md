@@ -44,7 +44,7 @@ here, and they move independently.
 <!-- tiers:start -->
 ```
 MATCHED    ██████████████████████████████  98.7%   11,249 / 11,402 functions
-CONVERTED  ███████░░░░░░░░░░░░░░░░░░░░░░░  22.7%   2,571 / 11,314 functions
+CONVERTED  ███████░░░░░░░░░░░░░░░░░░░░░░░  22.7%   2,572 / 11,314 functions
 LINKED     ████████████████████████░░░░░░  80.5%   9,121 / 11,324 matched TUs
 ```
 <!-- tiers:end -->

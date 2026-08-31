@@ -19105,7 +19105,7 @@ matched: yes</title></rect><rect x="964.22" y="48.36" width="4.56" height="1.02"
 module: ov004
 addr: 0x020b04d0
 size: 16 bytes
-matched: yes</title></rect><rect x="968.78" y="27.00" width="4.04" height="0.57" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov004_020b04e0
+matched: yes</title></rect><rect x="968.78" y="27.00" width="4.04" height="0.57" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11dScMgBase_c24OnHitByCannonBlastedCharEv
 module: ov004
 addr: 0x020b04e0
 size: 8 bytes
@@ -22745,7 +22745,7 @@ matched: yes</title></rect><rect x="746.62" y="325.72" width="1.45" height="7.39
 module: ov006
 addr: 0x020e6e3c
 size: 16 bytes
-matched: yes</title></rect><rect x="748.06" y="325.72" width="0.72" height="7.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_020e6e4c
+matched: yes</title></rect><rect x="748.06" y="325.72" width="0.72" height="7.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14dScMgD3DBase_c24OnHitByCannonBlastedCharEv
 module: ov006
 addr: 0x020e6e4c
 size: 8 bytes
@@ -25421,7 +25421,7 @@ matched: yes</title></rect><rect x="1029.28" y="460.63" width="18.35" height="7.
 module: ov006
 addr: 0x0210a534
 size: 204 bytes
-matched: yes</title></rect><rect x="1047.63" y="460.63" width="0.72" height="7.43" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_0210a600
+matched: yes</title></rect><rect x="1047.63" y="460.63" width="0.72" height="7.43" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN19dScMgSingle3DBase_c24OnHitByCannonBlastedCharEv
 module: ov006
 addr: 0x0210a600
 size: 8 bytes
