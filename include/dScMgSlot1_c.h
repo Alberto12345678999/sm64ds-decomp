@@ -2,7 +2,8 @@
  * (zero RTTI edges name dScMgSlot1_c as a base).
  *
  * Own vtable slots (python tools/rtti_vtables.py --own dScMgSlot1_c): 0
- * (InitResources), 6 (Behavior -- NOT migrated, see below), 9 (Render), 16
+ * (InitResources), 6 (Behavior -- declared, body not decompiled, see below),
+ * 9 (Render), 16
  * (D1), 17 (D0), 18 (own new slot -- stays a raw extern "C" helper,
  * src/func_ov006_0210c674.c, same precedent as every other dScMgBase_c
  * leaf's slot 18), 27 (OnHitByMegaChar), 28 (OnHitFromUnderneath).
@@ -19,22 +20,28 @@
  * that address genuinely is Render (confirmed by vtable slot identity and
  * by matching every sibling's Render shape).
  *
- * BEHAVIOR (slot 6) IS NOT MIGRATED, unlike every other dScMgBase_c leaf on
- * this branch. dScMgSlot1_c's own Behavior -- func_ov006_0210c9e0, 0x81c
- * bytes -- has never been decompiled: its .text range (0x0210c9e0..
- * 0x0210d1fc) has no entry anywhere in
+ * BEHAVIOR (slot 6) IS DECLARED BUT NOT DECOMPILED. dScMgSlot1_c's own
+ * Behavior -- 0x81c bytes at ov006:0x0210c9e0 -- has never been matched: its
+ * .text range (0x0210c9e0..0x0210d1fc) has no entry anywhere in
  * config/arm9/overlays/ov006/delinks.txt, so it is served, unenrolled, by
  * the module's gap object straight from the ROM dump (tools/rombuild.py's
  * own banner: "every address range NOT enrolled is supplied by a delinked
- * gap object carrying the original ROM bytes"). There is no C source to
- * convert -- this is original matching work, a different and much larger
- * task than this struct-to-class migration. dScMgBase_c declares
- * `virtual s32 Behavior();` without a body, so simply not re-declaring it
- * here leaves that inherited declaration in place; nothing in this
- * migration needs its address resolved (this class's own vtable data,
- * data_ov006_0213eb40, is never compiler-emitted either -- only aliased,
- * see the rename commit -- so the real ROM vtable word for slot 6 is
- * untouched and keeps pointing at func_ov006_0210c9e0 exactly as before).
+ * gap object carrying the original ROM bytes"). There is still no C source
+ * to convert -- that is original matching work, a different and much larger
+ * task than this struct-to-class migration.
+ *
+ * The DECLARATION is nevertheless required, and an earlier revision of this
+ * banner was wrong to say otherwise. It claimed "this class's own vtable
+ * data, data_ov006_0213eb40, is never compiler-emitted either -- only
+ * aliased -- so the real ROM vtable word for slot 6 is untouched". That
+ * stopped being true once the destructor became this class's key function:
+ * _ZTV12dScMgSlot1_c IS emitted, from src/_ZN12dScMgSlot1_cD1Ev.cpp, and
+ * tools/romdata_check.py byte-compares it against the cartridge. With
+ * Behavior undeclared mwcc wrote dScMgBase_c's own body (0x020b0618) into
+ * slot 6 where the cartridge holds 0x0210c9e0, and the whole table scored
+ * DIFFERS. Declaring it, and naming the ROM body in ov006/symbols.txt so the
+ * slot has a symbol to point at, fixes that word without touching a byte of
+ * code: the 0x81c unmatched bytes are still the cartridge's.
  *
  * THE EMBEDDED SUBOBJECT AT 0x4660. build/rtti.json proves the distinct
  * nested class `dScMgSlot1_c::betIcon_c` (N12dScMgSlot1_c9betIcon_cE,
@@ -85,10 +92,22 @@
  * fBase_c.h currently declares a slot at 27/28 for the dScene_c branch (they
  * are left undeclared, same as dScMgBase_c.h's own "18-35... left
  * undeclared" note), so the compiler's OWN internal slot assignment for
- * these two methods in THIS class does not literally land on index 27/28 --
- * only the ROM's real vtable (never compiler-emitted for this class, see
- * above) does. The comments below record the true ROM position for a human
- * reader, same as every other slot-number comment in this file. */
+ * these two methods in THIS class does not literally land on index 27/28.
+ * The comments below record the true ROM position for a human reader, same
+ * as every other slot-number comment in this file.
+ *
+ * THAT MISLANDING IS A REAL, STILL-OPEN DEFECT, not just a bookkeeping note.
+ * Because _ZTV12dScMgSlot1_c is emitted (see the Behavior paragraph above),
+ * these two declarations -- the first virtuals this class introduces that
+ * mwcc can see past the destructor pair -- take the compiler's slots 18 and
+ * 19 and write 0x0210c4dc and 0x0210c4b8 there, where the cartridge holds
+ * 0x0210c674 (this class's real slot-18 body) and 0x020b2994 (the base's
+ * OnTurnIntoEgg). The table therefore still scores DIFFERS on those two
+ * words. The fix is not local to this header: dScMgBase_c has to declare its
+ * slots 18-35 first, which lands OnHitByMegaChar and OnHitFromUnderneath on
+ * their true indices and lets slot 18 be declared as well. That change is
+ * mapped, costed and blocked as one atomic unit in
+ * notes/dScMgBase_c-slots-18-35.md. */
 #ifndef DSCMGSLOT1_C_H
 #define DSCMGSLOT1_C_H
 #include "dScMgBase_c.h"
@@ -106,6 +125,7 @@ struct dScMgSlot1_c : dScMgBase_c {
 
     virtual ~dScMgSlot1_c();
     virtual s32 InitResources();                       /* slot  0 */
+    virtual s32 Behavior();     /* slot  6 -- ov006 0x0210c9e0, not decompiled */
     virtual s32 Render();                               /* slot  9 */
     virtual void OnHitByMegaChar(Player &player);       /* slot 27 -- void, see include/Stump.h */
     virtual int OnHitFromUnderneath(dActor_c &other);      /* slot 28 */

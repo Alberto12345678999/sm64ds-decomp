@@ -1029,7 +1029,7 @@ src/func_ov004_020b8a8c.c:
     complete
     .text start:0x020b8a8c end:0x020b8c18
 
-src/func_ov004_020b8c18.c:
+src/_ZN10dMgPsOpt_c11TouchIcon_c6RenderEv.cpp:
     complete
     .text start:0x020b8c18 end:0x020b8dc0
 

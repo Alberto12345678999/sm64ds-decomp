@@ -151,12 +151,29 @@ def test_verify_reproduces_pilot_1s_7_of_7_and_clean_objisolate():
     # the vtable-addend bug (PoleLift_Spawn's `+2` fix) would show here as a
     # failure even though the byte compare above is a false-green 7/7.
     assert "objisolate check  : clean" in out
-    # The one documented, non-fixable anomaly (pilot report sec 3): the compiler
-    # emits D2/D0/D1 in a fixed order that puts D0 before D1, opposite the ROM.
-    assert "1 ordinal pair(s) NOT in ROM order: [(0, 1)]" in out
+    # THIS ASSERTED THE ANOMALY ITSELF UNTIL #2066 FIXED IT, AND WENT ON ASSERTING
+    # IT AFTERWARDS -- so the test demanded the defect back. The pilot report called
+    # it non-fixable: an out-of-line ~PoleLift() makes mwccarm emit D2/D0/D1 in a
+    # fixed order that puts D0 before D1, opposite the ROM. Defining the destructor
+    # in the class body of PoleLift itself emits exactly the ROM's two variants in
+    # the ROM's order. Measured across 467bde020^ -> 467bde020 with both files
+    # swapped together: 37 sections / D2 present / "1 ordinal pair(s) NOT in ROM
+    # order: [(0, 1)]" before, 35 / no D2 / "ALL MATCH, ROM order" after.
+    #
+    # Asserted as an ABSENCE on purpose, so that reintroducing an out-of-line
+    # definition fails HERE rather than silently restoring a homeless D2 and an
+    # out-of-order pair.
+    assert "NOT in ROM order" not in out, out
+    assert "all 7 function(s) in the expected ROM-ascending section order" in out
     assert "Result: 7/7 MATCH, objisolate clean, reloc-destinations clean -> TEXT-VERIFIED" in out
-    # 1 unlicensed .text (D2) + 11 unlicensed .data (the vtable + the RTTI records)
-    # = 12 -- present and correctly refusing promotion, not silently dropped.
+    # 11 unlicensed .data (the vtable + the RTTI records) and NO unlicensed .text --
+    # present and correctly refusing promotion, not silently dropped.
+    #
+    # This read 12 until #2066, the twelfth being the unlicensed .text D2 that an
+    # out-of-line destructor emitted. Promotion is still refused, but for a narrower
+    # reason: what remains is _ZTI8PoleLift/_ZTS8PoleLift, for which no
+    # compiler_only_output disposition is admissible while PoleLift carries a coined
+    # name the cartridge contradicts.
     #
     # THE PILOT'S SEC 4 INVENTORY SAID 15, AND SO DID THIS LINE UNTIL IT WAS MEASURED.
     # The extra three were Platform's: two out-of-line vague-linkage destructors and
@@ -167,25 +184,44 @@ def test_verify_reproduces_pilot_1s_7_of_7_and_clean_objisolate():
     # and 37 / 12 at dedaa139e -- so this expectation went stale at #1555, 116 pull
     # requests before the collision rename (#1643) that later stopped the file
     # compiling at all and hid the staleness behind a compile error.
-    assert "12 unlicensed section/symbol(s) present -> PROMOTION REFUSED" in out
-    assert "_ZN8PoleLiftD2Ev" in out and "_ZTV8PoleLift" in out
+    assert "11 unlicensed section/symbol(s) present -> PROMOTION REFUSED" in out
+    assert "_ZTV8PoleLift" in out
+    assert "_ZN8PoleLiftD2Ev" not in out, "an out-of-line ~PoleLift() is back; see #2066"
 
 
 def test_compile_report_matches_the_pilots_object_inventory():
-    """37 sections, 8 .text, 11 .data, reproduced independently by tubuild.py's own
+    """35 sections, 7 .text, 11 .data, reproduced independently by tubuild.py's own
     ELF walk.
 
-    notes/tu-reconstruction-pilot-report.md sec 4 records 43/10/12, which is what this
-    file emitted until #1555 anchored Platform's vtable and its two out-of-line
-    destructors in Platform's own TU -- three fewer vague-linkage symbols here, and
-    six fewer sections because each brings its own relocation section. The measurement
-    is in test_verify_reproduces_pilot_1s_7_of_7_and_clean_objisolate above.
+    These numbers have now gone stale TWICE, both times because a vague-linkage
+    symbol stopped being emitted here, and each time the section count fell by two
+    per symbol -- the section itself plus its own relocation section.
+
+      43 / 10 / 12  notes/tu-reconstruction-pilot-report.md sec 4
+      37 /  8 / 11  #1555 anchored Platform's vtable and its two out-of-line
+                    destructors in Platform's own TU by giving Platform a key
+                    function -- three fewer vague-linkage symbols, six fewer sections
+      35 /  7 / 11  #2066 moved ~PoleLift() into the class body, so mwccarm no longer
+                    emits the D2 variant the cartridge does not contain -- one fewer
+                    .text and its .rela.text
+
+    Measured, not inferred: compiling this TU's shadow source together with PoleLift's
+    own class header at 467bde020^ -- both, because the pre-#2066 shadow source does
+    not compile against the post-#2066 header, which is why the staleness surfaced as
+    a failing assert rather than a quietly wrong number -- reads 37 sections with
+    _ZN8PoleLiftD2Ev present; at 467bde020 it reads 35 without.
+
+    Neither file is named by path here on purpose. PoleLift is a coined name the
+    cartridge contradicts (ROM RTTI: 18daObjKm2_Ami_Bou_c), the rename is a
+    prerequisite for promoting this very TU, and check_dead_references resolves any
+    a/b-shaped token in a docstring as a live repo-rooted reference -- so a path
+    naming this class is a dead reference with a scheduled fuse.
     """
     if not _toolchain():
         return
     code, out = _run("compile", "ov045/PoleLift")
     assert code == 0, out
-    assert "sections (37):" in out
+    assert "sections (35):" in out
     # Anchored to the section-LISTING line shape ("[ NN] .text  type=SHT_..."), not
     # a bare substring: "-> section[N] .text  size=..." in the function-mapping
     # block below it also contains the text "] .text ", which a plain count()
@@ -193,9 +229,12 @@ def test_compile_report_matches_the_pilots_object_inventory():
     import re
     n_text = len(re.findall(r"\[\s*\d+\] \.text\s+type=SHT_", out))
     n_data = len(re.findall(r"\[\s*\d+\] \.data\s+type=SHT_", out))
-    assert n_text == 8, f"expected 8 .text sections, counted {n_text}"
+    assert n_text == 7, f"expected 7 .text sections, counted {n_text}"
     assert n_data == 11, f"expected 11 .data sections, counted {n_data}"
-    assert "UNLICENSED function symbols (1)" in out
+    # No unlicensed .text at all since #2066, so tubuild prints no function block --
+    # asserted as an absence rather than a count of zero, because that is what the
+    # tool emits.
+    assert "UNLICENSED function symbols" not in out, out
     assert "UNLICENSED object/data symbols (11)" in out
     assert (REPO / "build" / "tu" / "ov045-PoleLift" / "inventory.txt").is_file()
     assert (REPO / "build" / "tu" / "ov045-PoleLift" / "PoleLift.o").is_file()
@@ -1836,6 +1875,163 @@ def test_anonymous_typedefs_key_by_their_trailing_name():
     assert (ka, na) == ("typedef", "Vector3")
     assert (kb, nb) == ("typedef", "State300")
     assert (ka, na) != (kb, nb), "distinct unnamed types must not share a merge key"
+
+
+def test_allman_braced_shadow_struct_is_captured_whole():
+    """The real input was the legacy source for `func_ov006_020f8224`, since
+    promoted into the ov006/dScMgMCarlo_c TU -- named by symbol rather than by
+    path on purpose, because the path no longer exists and check_dead_references
+    reads any `a/b` token in prose as a live repo-rooted reference. Its
+    shadow struct puts its opening brace on the next line. The first line scores
+    depth 0, so the block used to be cut to the bare words `struct Obj` -- the TU
+    got an incomplete type, the body leaked into function_text as a headless
+    `{ ... };` at file scope, and the conflict comment quoted `struct Obj` as
+    though that were the alternate body a reviewer should judge."""
+    src = ("struct Obj\n"
+           "{\n"
+           "    char pad[0x2a];\n"
+           "    short f2a;\n"
+           "    unsigned char f2c;\n"
+           "};\n"
+           "\n"
+           "int func_ov006_020f8224(struct Obj *a, struct Obj *b)\n"
+           "{\n"
+           "    return a->f2a - b->f2a;\n"
+           "}\n")
+    got = tubuild.split_legacy_source(src)
+    assert got["error"] is None, got["error"]
+    (kind, name, text), = got["shadow_decls"]
+    assert (kind, name) == ("struct", "Obj")
+    assert "char pad[0x2a];" in text and text.rstrip().endswith("};"), \
+        "the Allman body belongs to the declaration, not to the function"
+    assert "char pad[0x2a];" not in got["function_text"], \
+        "a headless struct body must never leak into the member body"
+    assert got["function_text"].startswith("int func_ov006_020f8224(")
+
+
+def test_same_name_allman_and_k_and_r_structs_conflict_with_real_bodies():
+    """Both spellings of the same name must reach _merge_field carrying their
+    OWN body, or the conflict comment asks a reviewer to compare a full struct
+    against the two words `struct Obj`."""
+    allman = tubuild.split_legacy_source(
+        "struct Obj\n{\n    char pad[0x2a];\n};\n\nint f(void)\n{\n    return 0;\n}\n")
+    kandr = tubuild.split_legacy_source(
+        "struct Obj { char pad[1]; };\n\nint g(void)\n{\n    return 0;\n}\n")
+    w = []
+    parsed = {"f": allman, "g": kandr}
+    rows = [(0, "f", 0, 4), (1, "g", 4, 4)]
+    live, dead = tubuild._merge_field(rows, parsed, lambda p: p["shadow_decls"],
+                                      lambda i: (i[0], i[1]), "local declaration", w)
+    assert len(live) == 1 and len(dead) == 1 and w
+    assert "char pad[0x2a];" in live[0][1][2]
+    assert "char pad[1];" in dead[0][1][2]
+
+
+def test_forward_declaration_still_owns_only_its_own_line():
+    """The Allman walk must stop at a `;`. `struct C;` followed by a definition
+    of something else must not swallow the next block."""
+    got = tubuild.split_legacy_source(
+        "struct C;\nstruct D { int x; };\n\nint f(void)\n{\n    return 0;\n}\n")
+    assert got["error"] is None, got["error"]
+    assert got["shadow_decls"] == [("struct", "C", "struct C;"),
+                                   ("struct", "D", "struct D { int x; };")]
+
+
+def test_declaration_wrapped_across_lines_is_kept_whole():
+    """A declaration with no brace at all that wraps to a second line used to be
+    cut after its first line, silently dropping the rest."""
+    got = tubuild.split_legacy_source(
+        "typedef void (*Fn)(int,\n                   int);\n\nint f(void)\n{\n    return 0;\n}\n")
+    assert got["error"] is None, got["error"]
+    (kind, _name, text), = got["shadow_decls"]
+    assert kind == "typedef"
+    assert text.count("int") == 2, text   # both parameter lines survived
+    assert "int);" not in got["function_text"], "the wrapped tail must not leak"
+
+
+def test_bare_brace_where_a_signature_belongs_is_refused_not_emitted():
+    """The fail-loud backstop for any residual mis-split: a function body never
+    starts on a bare `{`, so reaching one means a declaration above leaked. The
+    caller must be told to assemble by hand, not handed a TU with a headless
+    block in it."""
+    got = tubuild.split_legacy_source("#pragma once\n{\n    int x;\n};\n")
+    assert got["error"] and "bare" in got["error"], got["error"]
+    assert got["function_text"] is None
+
+
+def test_elaborated_return_type_is_not_a_shadow_declaration():
+    """Real inputs: src/_ZN11dCapEnemy_c15RespawnIfHasCapEv.cpp and
+    src/func_02041b60.c. Both open on the word `struct`, but as an elaborated
+    type specifier on the RETURN type -- the flat-C sources spell it that way
+    constantly. Filing the line as a declaration put the function's own
+    signature under `shadow struct dActor_c` and left its body headless below;
+    with the Allman walk it swallowed the whole function instead."""
+    method = tubuild.split_legacy_source(
+        "struct dActor_c;\n"
+        "\n"
+        "struct dActor_c * dCapEnemy_c::RespawnIfHasCap()\n"
+        "{\n"
+        "    return 0;\n"
+        "}\n")
+    assert method["error"] is None, method["error"]
+    assert method["shadow_decls"] == [("struct", "dActor_c", "struct dActor_c;")]
+    assert method["function_text"].startswith("struct dActor_c * dCapEnemy_c::")
+
+    freefn = tubuild.split_legacy_source(
+        "struct ListNode *func_02041b60(char *base)\n"
+        "{\n"
+        "    return 0;\n"
+        "}\n")
+    assert freefn["error"] is None, freefn["error"]
+    assert freefn["shadow_decls"] == []
+    assert freefn["function_text"].startswith("struct ListNode *func_02041b60(")
+
+
+def test_record_with_a_function_pointer_member_still_reads_as_a_record():
+    """The elaborated-return-type test is `(` before the opening brace, not `(`
+    anywhere: a one-line record whose member is a function pointer must stay a
+    record, and a function-pointer typedef must stay a typedef."""
+    got = tubuild.split_legacy_source(
+        "struct S { void (*fn)(void); int x; };\n"
+        "\n"
+        "int f(void)\n"
+        "{\n"
+        "    return 0;\n"
+        "}\n")
+    assert got["error"] is None, got["error"]
+    (kind, name, _text), = got["shadow_decls"]
+    assert (kind, name) == ("struct", "S")
+    assert got["function_text"].startswith("int f(void)")
+
+
+def test_definition_inside_a_namespace_or_extern_c_block_names_the_block():
+    """Real inputs: src/_ZN6Memory8AllocateEj.cpp (an Allman `namespace Memory`
+    whose body IS the member) and src/func_ov006_021063a0.cpp (the definition
+    inside `extern "C" {`). tubuild has nowhere to put a block-scoped member, so
+    it must refuse -- but the refusal has to name the block, or the message
+    reads as "your file has no function in it" and sends a reader hunting."""
+    ns = tubuild.split_legacy_source(
+        "namespace Memory\n"
+        "{\n"
+        "    void* Allocate(u32 size, int align, Heap* heap);\n"
+        "\n"
+        "    void* Allocate(u32 size)\n"
+        "    {\n"
+        "        return Allocate(size, 4, 0);\n"
+        "    }\n"
+        "}\n")
+    assert ns["function_text"] is None
+    assert "namespace Memory" in ns["error"] and "line 1" in ns["error"], ns["error"]
+
+    ec = tubuild.split_legacy_source(
+        'extern "C" {\n'
+        "int func_ov006_021063a0(void)\n"
+        "{\n"
+        "    return 0;\n"
+        "}\n"
+        "}\n")
+    assert ec["function_text"] is None
+    assert 'extern "C"' in ec["error"] and "line 1" in ec["error"], ec["error"]
 
 
 def test_forward_decl_folds_into_the_definition_either_order():

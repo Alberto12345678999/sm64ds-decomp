@@ -597,7 +597,7 @@ Only the fields several descendants corroborate are named here; this class has
 
 | Offset | Name | Evidence |
 | --- | --- | --- |
-| 0x0b4 | `mHudScore` | `dScMgBase_c::BeforeInitResources` zeroes it. `func_ov004_020adb1c` -- the routine that writes the HUD counter word at scene+0x464c -- is handed it directly by src/func_ov006_02125364.cpp and src/func_ov006_020ea3d0.c; dScMgMemory_c and dScMgSound_c seed it in their own InitResources; dScMgCard_c::Render keeps its own high-water mark of it; dScMgAmida_c::Behavior copies its round score into it. Deliberately NOT called `mScore`: five leaves already have a field of their own by that name, and naming the base's the same would silently shadow every one of them (see the round-2 `mPrevPosX` incident). |
+| 0x0b4 | `mHudScore` | `dScMgBase_c::BeforeInitResources` zeroes it. `func_ov004_020adb1c` -- the routine that writes the HUD counter word at scene+0x464c -- is handed it directly by `func_ov006_02125364` (src/actors/dScMgBSC_c.cpp) and src/func_ov006_020ea3d0.c; dScMgMemory_c and dScMgSound_c seed it in their own InitResources; dScMgCard_c::Render keeps its own high-water mark of it; dScMgAmida_c::Behavior copies its round score into it. Deliberately NOT called `mScore`: five leaves already have a field of their own by that name, and naming the base's the same would silently shadow every one of them (see the round-2 `mPrevPosX` incident). |
 | 0x21c | `mSavedMainBgBits` | src/func_ov004_020af094.cpp stores `data_0209d45c` here; src/func_ov004_020aeed8.cpp restores it from here. |
 | 0x220 | `mSavedSubBgBits` | The same save/restore pair for `data_0209d454`. |
 | 0x224 | `mSavedScreenSwap` | Saved as `(POWCNT1 & 0x8000) >> 15` and restored as `n << 15` by that same pair. |
@@ -631,7 +631,7 @@ bytes the reset zeroes and nothing reads).
 
 | Offset | Name | Evidence |
 | --- | --- | --- |
-| 0x5388 | `mState` | src/func_ov006_020dac34.cpp is one long `switch` on it that mostly `++`s it; src/func_ov006_020db720.c switches on the same field; the reset in src/func_ov006_020db9dc.cpp starts it at 1. |
+| 0x5388 | `mState` | `func_ov006_020dac34` in src/actors/dScMgCard_c.cpp is one long `switch` on it that mostly `++`s it; `func_ov006_020db720` in the same file switches on the same field; the reset in `func_ov006_020db9dc`, also there, starts it at 1. |
 | 0x538a | `mStateTimer` | Reloaded with 0x10, 0x14, 0x1e, 0x3c or 0x5a on each step and run down to 0 (by `--` or `ApproachLinear2`) before `mState` advances. |
 | 0x5396 | `mFrameCounter` | `dScMgCard_c::Behavior`'s only own statement is `+= 1`; Render blinks the highlighted cards on bit 3. |
 | 0x5398 | `mScore` | Render keeps it as a high-water mark of the base's `mHudScore` and pushes it back out through `func_ov004_020adb1c` every frame. |

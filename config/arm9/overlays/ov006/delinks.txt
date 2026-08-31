@@ -1758,141 +1758,9 @@ src/MgSortOrSplode_Spawn.c:
     complete
     .text start:0x020d9574 end:0x020d95a4
 
-src/_ZN11dScMgCard_cD1Ev.cpp:
+src/actors/dScMgCard_c.cpp:
     complete
-    .text start:0x020d95a4 end:0x020d9638
-
-src/_ZN11dScMgCard_cD0Ev.cpp:
-    complete
-    .text start:0x020d9638 end:0x020d96e0
-
-src/func_ov006_020d96e0.c:
-    complete
-    .text start:0x020d96e0 end:0x020d96f0
-
-src/func_ov006_020d96f0.c:
-    complete
-    .text start:0x020d96f0 end:0x020d970c
-
-src/func_ov006_020d970c.c:
-    complete
-    .text start:0x020d970c end:0x020d978c
-
-src/func_ov006_020d978c.cpp:
-    complete
-    .text start:0x020d978c end:0x020d9998
-
-src/func_ov006_020d9998.c:
-    complete
-    .text start:0x020d9998 end:0x020d99a4
-
-src/func_ov006_020d99a4.c:
-    complete
-    .text start:0x020d99a4 end:0x020d99ec
-
-src/func_ov006_020d99ec.c:
-    complete
-    .text start:0x020d99ec end:0x020d9a14
-
-src/func_ov006_020d9a14.c:
-    complete
-    .text start:0x020d9a14 end:0x020d9bd0
-
-src/func_ov006_020d9bd0.c:
-    complete
-    .text start:0x020d9bd0 end:0x020d9bdc
-
-src/func_ov006_020d9bdc.c:
-    complete
-    .text start:0x020d9bdc end:0x020d9c5c
-
-src/func_ov006_020d9c5c.cpp:
-    complete
-    .text start:0x020d9c5c end:0x020da00c
-
-src/func_ov006_020da00c.cpp:
-    complete
-    .text start:0x020da00c end:0x020da0ac
-
-src/func_ov006_020da0ac.cpp:
-    complete
-    .text start:0x020da0ac end:0x020da154
-
-src/func_ov006_020da154.c:
-    complete
-    .text start:0x020da154 end:0x020da174
-
-src/func_ov006_020da174.c:
-    complete
-    .text start:0x020da174 end:0x020da420
-
-src/func_ov006_020da420.c:
-    complete
-    .text start:0x020da420 end:0x020da4ac
-
-src/func_ov006_020da4ac.c:
-    complete
-    .text start:0x020da4ac end:0x020da5e8
-
-src/func_ov006_020da5e8.c:
-    complete
-    .text start:0x020da5e8 end:0x020da834
-
-src/func_ov006_020da834.c:
-    complete
-    .text start:0x020da834 end:0x020da860
-
-src/func_ov006_020da860.c:
-    complete
-    .text start:0x020da860 end:0x020da88c
-
-src/func_ov006_020da88c.c:
-    complete
-    .text start:0x020da88c end:0x020da8b8
-
-src/func_ov006_020da8b8.c:
-    complete
-    .text start:0x020da8b8 end:0x020da8e4
-
-src/func_ov006_020da8e4.c:
-    complete
-    .text start:0x020da8e4 end:0x020da974
-
-src/func_ov006_020da974.c:
-    complete
-    .text start:0x020da974 end:0x020da994
-
-src/_ZN11dScMgCard_c16CleanupResourcesEv.cpp:
-    complete
-    .text start:0x020da994 end:0x020da9c4
-
-src/_ZN11dScMgCard_c6RenderEv.cpp:
-    complete
-    .text start:0x020da9c4 end:0x020dabec
-
-src/_ZN11dScMgCard_c8BehaviorEv.cpp:
-    complete
-    .text start:0x020dabec end:0x020dac34
-
-src/func_ov006_020dac34.cpp:
-    complete
-    .text start:0x020dac34 end:0x020db6ec
-
-src/func_ov006_020db6ec.c:
-    complete
-    .text start:0x020db6ec end:0x020db720
-
-src/func_ov006_020db720.c:
-    complete
-    .text start:0x020db720 end:0x020db9dc
-
-src/func_ov006_020db9dc.cpp:
-    complete
-    .text start:0x020db9dc end:0x020dbaf0
-
-src/_ZN11dScMgCard_c13InitResourcesEv.cpp:
-    complete
-    .text start:0x020dbaf0 end:0x020dbd54
+    .text start:0x020d95a4 end:0x020dbd54
 
 src/actors/MgPicturePoker.cpp:
     complete
@@ -4057,97 +3925,9 @@ src/MgMemoryMaster_Spawn.c:
     complete
     .text start:0x020f75d4 end:0x020f7634
 
-src/_ZN13dScMgMCarlo_cD1Ev.cpp:
+src/actors/dScMgMCarlo_c.cpp:
     complete
-    .text start:0x020f7634 end:0x020f76a8
-
-src/_ZN13dScMgMCarlo_cD0Ev.cpp:
-    complete
-    .text start:0x020f76a8 end:0x020f7730
-
-src/func_ov006_020f7730.c:
-    complete
-    .text start:0x020f7730 end:0x020f7740
-
-src/func_ov006_020f7740.cpp:
-    complete
-    .text start:0x020f7740 end:0x020f7994
-
-src/func_ov006_020f7994.c:
-    complete
-    .text start:0x020f7994 end:0x020f7a00
-
-src/func_ov006_020f7a00.c:
-    complete
-    .text start:0x020f7a00 end:0x020f7a90
-
-src/func_ov006_020f7a90.c:
-    complete
-    .text start:0x020f7a90 end:0x020f7b10
-
-src/func_ov006_020f7b10.c:
-    complete
-    .text start:0x020f7b10 end:0x020f7b90
-
-src/func_ov006_020f7b90.c:
-    complete
-    .text start:0x020f7b90 end:0x020f7c10
-
-src/func_ov006_020f7c10.c:
-    complete
-    .text start:0x020f7c10 end:0x020f7e2c
-
-src/func_ov006_020f7e2c.c:
-    complete
-    .text start:0x020f7e2c end:0x020f7ee4
-
-src/func_ov006_020f7ee4.cpp:
-    complete
-    .text start:0x020f7ee4 end:0x020f8154
-
-src/func_ov006_020f8154.c:
-    complete
-    .text start:0x020f8154 end:0x020f8224
-
-src/func_ov006_020f8224.c:
-    complete
-    .text start:0x020f8224 end:0x020f82d0
-
-src/func_ov006_020f82d0.c:
-    complete
-    .text start:0x020f82d0 end:0x020f8320
-
-src/func_ov006_020f8320.c:
-    complete
-    .text start:0x020f8320 end:0x020f84a8
-
-src/func_ov006_020f84a8.c:
-    complete
-    .text start:0x020f84a8 end:0x020f8540
-
-src/func_ov006_020f8540.c:
-    complete
-    .text start:0x020f8540 end:0x020f85b0
-
-src/_ZN13dScMgMCarlo_c6RenderEv.cpp:
-    complete
-    .text start:0x020f85b0 end:0x020f869c
-
-src/_ZN13dScMgMCarlo_c8BehaviorEv.cpp:
-    complete
-    .text start:0x020f869c end:0x020f8a3c
-
-src/func_ov006_020f8a3c.c:
-    complete
-    .text start:0x020f8a3c end:0x020f8c68
-
-src/func_ov006_020f8c68.c:
-    complete
-    .text start:0x020f8c68 end:0x020f8d08
-
-src/_ZN13dScMgMCarlo_c13InitResourcesEv.cpp:
-    complete
-    .text start:0x020f8d08 end:0x020f8e44
+    .text start:0x020f7634 end:0x020f8e44
 
 src/func_ov006_020f8e44.cpp:
     complete
@@ -4157,97 +3937,9 @@ src/func_ov006_020f8ed8.c:
     complete
     .text start:0x020f8ed8 end:0x020f8ef4
 
-src/_ZN14dScMgMCarlo2_cD1Ev.cpp:
+src/actors/dScMgMCarlo2_c.cpp:
     complete
-    .text start:0x020f8ef4 end:0x020f8f68
-
-src/_ZN14dScMgMCarlo2_cD0Ev.cpp:
-    complete
-    .text start:0x020f8f68 end:0x020f8ff0
-
-src/func_ov006_020f8ff0.c:
-    complete
-    .text start:0x020f8ff0 end:0x020f9000
-
-src/func_ov006_020f9000.cpp:
-    complete
-    .text start:0x020f9000 end:0x020f94f4
-
-src/func_ov006_020f94f4.c:
-    complete
-    .text start:0x020f94f4 end:0x020f9560
-
-src/func_ov006_020f9560.c:
-    complete
-    .text start:0x020f9560 end:0x020f95f0
-
-src/func_ov006_020f95f0.c:
-    complete
-    .text start:0x020f95f0 end:0x020f9668
-
-src/func_ov006_020f9668.c:
-    complete
-    .text start:0x020f9668 end:0x020f96e0
-
-src/func_ov006_020f96e0.c:
-    complete
-    .text start:0x020f96e0 end:0x020f9760
-
-src/func_ov006_020f9760.c:
-    complete
-    .text start:0x020f9760 end:0x020f98dc
-
-src/func_ov006_020f98dc.c:
-    complete
-    .text start:0x020f98dc end:0x020f9994
-
-src/func_ov006_020f9994.c:
-    complete
-    .text start:0x020f9994 end:0x020f9bec
-
-src/func_ov006_020f9bec.c:
-    complete
-    .text start:0x020f9bec end:0x020f9cbc
-
-src/func_ov006_020f9cbc.c:
-    complete
-    .text start:0x020f9cbc end:0x020f9d68
-
-src/func_ov006_020f9d68.c:
-    complete
-    .text start:0x020f9d68 end:0x020f9db8
-
-src/func_ov006_020f9db8.c:
-    complete
-    .text start:0x020f9db8 end:0x020f9f40
-
-src/func_ov006_020f9f40.c:
-    complete
-    .text start:0x020f9f40 end:0x020f9fe0
-
-src/_ZN14dScMgMCarlo2_c16CleanupResourcesEv.cpp:
-    complete
-    .text start:0x020f9fe0 end:0x020f9ffc
-
-src/_ZN14dScMgMCarlo2_c6RenderEv.cpp:
-    complete
-    .text start:0x020f9ffc end:0x020fa13c
-
-src/_ZN14dScMgMCarlo2_c8BehaviorEv.cpp:
-    complete
-    .text start:0x020fa13c end:0x020fa3d0
-
-src/func_ov006_020fa3d0.c:
-    complete
-    .text start:0x020fa3d0 end:0x020fa4d4
-
-src/func_ov006_020fa4d4.cpp:
-    complete
-    .text start:0x020fa4d4 end:0x020fa56c
-
-src/_ZN14dScMgMCarlo2_c13InitResourcesEv.cpp:
-    complete
-    .text start:0x020fa56c end:0x020fa6ac
+    .text start:0x020f8ef4 end:0x020fa6ac
 
 src/actors/MgPairAGoneAndOn.cpp:
     complete
@@ -5257,41 +4949,9 @@ src/actors/MgMushroomRoulette.cpp:
     complete
     .text start:0x0210a400 end:0x0210a4b0
 
-src/_ZN19dScMgSingle3DBase_cD1Ev.cpp:
+src/actors/dScMgSingle3DBase_c.cpp:
     complete
-    .text start:0x0210a4b0 end:0x0210a4e8
-
-src/_ZN19dScMgSingle3DBase_cD0Ev.cpp:
-    complete
-    .text start:0x0210a4e8 end:0x0210a534
-
-src/func_ov006_0210a534.cpp:
-    complete
-    .text start:0x0210a534 end:0x0210a600
-
-src/func_ov006_0210a600.c:
-    complete
-    .text start:0x0210a600 end:0x0210a608
-
-src/_ZN19dScMgSingle3DBase_c21AfterCleanupResourcesEj.cpp:
-    complete
-    .text start:0x0210a608 end:0x0210a664
-
-src/_ZN19dScMgSingle3DBase_c12BeforeRenderEv.cpp:
-    complete
-    .text start:0x0210a664 end:0x0210a698
-
-src/_ZN19dScMgSingle3DBase_c14BeforeBehaviorEv.cpp:
-    complete
-    .text start:0x0210a698 end:0x0210a6e4
-
-src/_ZN19dScMgSingle3DBase_c18AfterInitResourcesEj.cpp:
-    complete
-    .text start:0x0210a6e4 end:0x0210a708
-
-src/func_ov006_0210a708.c:
-    complete
-    .text start:0x0210a708 end:0x0210a8c0
+    .text start:0x0210a4b0 end:0x0210a8c0
 
 src/_ZN12dScMgSlot1_cD1Ev.cpp:
     complete
@@ -6945,81 +6605,9 @@ src/actors/MgTrampolineTerror.cpp:
     complete
     .text start:0x0212471c end:0x02124908
 
-src/_ZN10dScMgBSC_cD1Ev.cpp:
+src/actors/dScMgBSC_c.cpp:
     complete
-    .text start:0x02124908 end:0x0212497c
-
-src/_ZN10dScMgBSC_cD0Ev.cpp:
-    complete
-    .text start:0x0212497c end:0x02124a04
-
-src/func_ov006_02124a04.c:
-    complete
-    .text start:0x02124a04 end:0x02124a08
-
-src/func_ov006_02124a08.c:
-    complete
-    .text start:0x02124a08 end:0x02124ae4
-
-src/func_ov006_02124ae4.c:
-    complete
-    .text start:0x02124ae4 end:0x02124b58
-
-src/func_ov006_02124b58.c:
-    complete
-    .text start:0x02124b58 end:0x02124bb4
-
-src/func_ov006_02124bb4.c:
-    complete
-    .text start:0x02124bb4 end:0x02124cb4
-
-src/func_ov006_02124cb4.c:
-    complete
-    .text start:0x02124cb4 end:0x02124dc0
-
-src/func_ov006_02124dc0.c:
-    complete
-    .text start:0x02124dc0 end:0x02124e1c
-
-src/func_ov006_02124e1c.cpp:
-    complete
-    .text start:0x02124e1c end:0x02124ec4
-
-src/func_ov006_02124ec4.c:
-    complete
-    .text start:0x02124ec4 end:0x02124fd8
-
-src/func_ov006_02124fd8.c:
-    complete
-    .text start:0x02124fd8 end:0x021250e4
-
-src/func_ov006_021250e4.c:
-    complete
-    .text start:0x021250e4 end:0x02125248
-
-src/func_ov006_02125248.c:
-    complete
-    .text start:0x02125248 end:0x0212527c
-
-src/func_ov006_0212527c.cpp:
-    complete
-    .text start:0x0212527c end:0x02125364
-
-src/func_ov006_02125364.cpp:
-    complete
-    .text start:0x02125364 end:0x021253bc
-
-src/_ZN10dScMgBSC_c6RenderEv.cpp:
-    complete
-    .text start:0x021253bc end:0x021254c0
-
-src/_ZN10dScMgBSC_c8BehaviorEv.cpp:
-    complete
-    .text start:0x021254c0 end:0x0212551c
-
-src/_ZN10dScMgBSC_c13InitResourcesEv.cpp:
-    complete
-    .text start:0x0212551c end:0x021255f8
+    .text start:0x02124908 end:0x021255f8
 
 src/MgLuckyStars_Spawn.cpp:
     complete

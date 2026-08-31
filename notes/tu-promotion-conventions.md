@@ -29,6 +29,12 @@ Seven classes across six PRs. When this note says "landed precedent" it means th
 PR #2004 (daObjKm3_Kurumajiku_c) is an open draft. It is a data point, not precedent.
 Do not cite it as settled, and do not copy a pattern that appears only there.
 
+*Update.* #2004 was since closed and that class landed instead through #2057 ("first
+compiler-built vtable — promote ov047/daObjKm3_Kurumajiku_c to intact-object
+production"), so `src/actors/daObjKm3_Kurumajiku_c.cpp` is on `main` and is precedent.
+Section 2's Kurumajiku measurements were written while it was a draft; they still hold,
+and section 6 cites the landed file.
+
 ---
 
 ## 1. A coined mangled name must not assert a parameter type the bytes cannot prove
@@ -165,18 +171,51 @@ ground truth to meet it:
    address point. Changing it to make an addend resolve reinterprets the symbol table.
 2. **Do not widen or shift the promoted `complete` range in `delinks.txt`** so a data
    symbol falls inside or outside it.
-3. **Do not delete a neighbouring `data_<module>_<addr>` entry** because a gate complains
-   about overlap.
+3. **Do not delete a neighbouring `data_<module>_<addr>` entry _to silence a gate_.**
+   Deleting one is sometimes *required* — see the second nuance below. The test is not
+   "was an entry dropped" but "is the entry unkeepable".
 
 A green gate does not distinguish the right approach from the wrong one here. A reviewer
 must check three facts directly: (a) the `symbols.txt` `_ZTV` address is unchanged; (b)
 the promoted `complete` span in `delinks.txt` covers exactly the promoted functions;
-(c) no neighbouring data or bss entry was dropped.
+(c) any dropped neighbouring data or bss entry is *unkeepable* — proven by restoring it and
+watching the link fail, not by argument.
 
 **One nuance, because the census contradicts the blunt form of rule 1.** *Renaming* a
 `_ZTV` symbol at an unchanged address is legitimate and has landed: #2045 changed
 `_ZTV13InvisiblePole` to `_ZTV7daBar_c` at `0x02108480`. The anti-pattern is moving the
 address, not renaming the symbol.
+
+**Second nuance, and it inverts rule 3 in one specific case.** A promotion that makes the TU
+supply the vtable *storage* will find a delinker-invented placeholder sitting 8 bytes below
+the address point — at the offset-to-top word. That entry is not merely droppable, it is
+**unkeepable**, and the promotion cannot link while it exists.
+
+Measured on `ov047/daObjKm3_Kurumajiku_c`, whose `_ZTV21daObjKm3_Kurumajiku_c` address point
+is `0x021122a0` and whose placeholder `data_ov047_02112298` sits at the storage start.
+Restoring the placeholder on top of the promotion and rebuilding produces a **new** symbol
+error, beyond the pre-existing baseline set:
+
+    [ERROR] Symbol 'data_ov047_02112298' in overlay 47
+            at 0x02112298 not found in linked binary
+
+Once the TU supplies those 8 bytes, `0x02112298` is the storage start of the
+compiler-emitted vtable, and no symbol of that name exists in the linked binary at all.
+`dsd check symbols --fail` rejects it. The placeholder was a delinker-invented name for
+cartridge bytes that are no longer cartridge bytes.
+
+**How to tell the two cases apart, without trusting a gate.** An entry deleted to silence a
+gate makes some metric *better*. An unkeepable entry usually makes one *worse*, because the
+dropped name was doing real work as a span boundary. In this promotion, keeping the entry
+would bound `RickshawBs_SpawnInfo` at `0x02112298 - 0x0211227c = 28`, exactly its emitted
+size, scoring it VERIFIED; dropping it pushes the next configured symbol out to the `_ZTV`
+at `0x021122a0`, giving `romExtent 36 > emitted 28` and scoring it PARTIAL. The verified
+count falls by one. Nobody deletes a line to make a metric worse — so a drop that *costs* a
+verified symbol is evidence for legitimacy, not against it.
+
+So the reviewer's question is not "was an entry dropped". It is: **restore it and rebuild.**
+If the link fails with a new symbol error, the drop was required. If the build still passes,
+the entry was keepable and the drop needs a different justification.
 
 ---
 
@@ -253,6 +292,223 @@ the queue as a chain, not a fan.
 
 ---
 
+## 6. Mark every hand-written member with `// @symbol`
+
+A promoted TU is scored **per member**, not per file. The only thing that tells
+`tools/tiers.py` where one member's text ends and the next begins is a marker comment.
+Leave it out and that member is scored against the entire file, so any other member's
+defect becomes its defect. This is the cheapest rule in this note to satisfy and the
+most expensive one to skip.
+
+### The rule
+
+> **Every hand-written member of a promoted TU carries `// @symbol <linker-name>` on its
+> own line, immediately above its definition, spelled exactly as the manifest's
+> `functions[].symbol` spells it.**
+
+`tools/tiers.py:74` is the entire recognizer:
+
+    SYMBOL = re.compile(r"//\s*@symbol\s+(\S+)")
+
+### Why — the fallback is the whole file
+
+`score_member` (`tools/tiers.py:406`) tries three things in order, and its own docstring
+states the last one plainly:
+
+> Hand-written members use exact ``@symbol`` boundaries.  Compiler-generated
+> ctor/dtor variants use the inline lifecycle definition in a directly included
+> class header.  **Anything without either form of evidence is scored against the
+> entire file, preserving the old conservative behavior.**
+
+`_marked_member_fragment` (line 309) slices from the end of this member's marker to the
+start of the next marker, and `score_file` sees only that slice. With no marker and no
+lifecycle fallback, `score_file` is handed the whole TU.
+
+Four of the five CONVERTED criteria read that fragment, so all four are poisonable by
+text belonging to some other member: `no_raw_offset`, `no_unk_field`, `no_codegen_trick`,
+`no_mangled_refs`. The other two readings are not, because `score_member` overwrites them
+after scoring — `real_name` is recomputed from the symbol and `shared_header` from the
+whole file regardless. So one `volatile` object, one `unk_<off>` field or one mangled
+call anywhere in a promoted TU strips the tier from every clean member in it.
+
+### The landed measurement
+
+Scored with `tools/tiers.py` against this tree:
+
+| promoted TU | members | `@symbol` markers | members at 5/5 | banked |
+| --- | --- | --- | --- | --- |
+| `src/actors/daObjKinokoTag_c.cpp` | 9 | 7 | 6 | 6 |
+| `src/actors/daObjFm_Battan_c.cpp` | 9 | 7 | 5 | 5 |
+| `src/actors/daObjKm3_Kurumajiku_c.cpp` | 5 | 3 | 4 | 4 |
+| `src/actors/daEyBm_c.cpp` | 13 | **0** | 2 | 2 |
+
+"banked" is the count of `promoted-path#symbol` identities in
+`config/converted-baseline.json`. In the first three TUs the unmarked members are exactly
+the two destructor variants, which the lifecycle path covers. `daEyBm_c` marks nothing:
+eleven of its thirteen members fall to the whole-file fallback and every one of them
+fails the same two criteria, `no_unk_field` and `no_mangled_refs` — properties of the
+factory and of `Behavior`, not of the members being scored. Inserting the eleven marker
+lines locally and changing nothing else raises the TU from two members at 5/5 to four.
+That promotion also spent five rows in `config/converted-backslide-exceptions.jsonl`.
+
+### The marker must be unique in the file
+
+`_marked_member_fragment` returns `None` unless the symbol appears exactly once:
+
+    matches = [i for i, marker in enumerate(markers)
+               if marker.group(1) == symbol]
+    if len(matches) != 1:
+        return None
+
+A marker copy-pasted from the member above, or repeated on both a forward declaration and
+the definition, silently re-enables the whole-file fallback for that member. Nothing warns
+and nothing goes red; the member simply scores as if it were unmarked.
+
+### Keep shared mangled externs above the first marker
+
+A member's slice runs to the *next* marker, so anything written between two definitions is
+charged to the earlier one, while text above the first marker belongs to no member at all.
+`src/actors/daObjKinokoTag_c.cpp` puts its whole `extern "C" { ... }` block of mangled
+ABI-seam declarations at the top of the file, above the first marker on line 40, and none
+of those spellings costs any member its `no_mangled_refs`. Declaring an ABI seam
+immediately above the one function that calls it — as `src/actors/daEyBm_c.cpp` does —
+hands the mangled spelling to the preceding member instead.
+
+### Constructors and destructors take the second path, and usually cannot be marked
+
+`_lifecycle_member_fragment` (line 378) is why D1 and D0 score without a marker. It
+demangles the symbol, confirms it is a ctor or dtor, walks the TU's `#include "..."` names,
+and looks for a balanced inline definition in one of those headers. `include/daEyBm_c.h`
+line 54 carries `virtual ~daEyBm_c() {}`, and that one line is the entire reason two of
+that TU's thirteen members are banked.
+
+**This is the intended path for them, not a fallback to be worked around.** All four
+landed promoted TUs mark zero structors, and in an inline-destructor TU there is nothing
+to mark: the D1 and D0 symbols have no definition text in the `.cpp` at all, so there is
+no line for a marker to sit above. A bare marker written somewhere else is worse than
+none — the slice runs from it to the next marker, so it would charge the following
+member's text to the destructor.
+
+Inlining the destructor is usually deliberate rather than incidental. Written out of
+line, mwcc emits the synthesized D0 *ahead* of the written D1, which is the reverse of
+the cartridge, and `tubuild.py linkcheck` refuses a TU whose licensed `.text` is not in
+ROM address order. Inlining moves the key function to the first other declared virtual,
+lets the vtable's slots 16 and 17 odr-use D1 then D0 in ROM order, and deletes the
+homeless D2.
+
+So the rule for structors is: **do not mark them, and do keep the inline definition in a
+directly included header.** What to check is that the fragment still exists.
+`_balanced_lifecycle_fragment` (line 328) needs exactly one occurrence of the class-name
+token followed by `(` in the masked header text, plus a brace-balanced body; a
+declaration alone returns `None`, and so does a second overload. If a promotion genuinely
+must move the destructor out of line, its two variants fall back to whole-file scoring —
+and only then can they carry markers, above their out-of-line definitions.
+
+### Put the inline structor's opening brace on the signature line
+
+Inlining the destructor to make it scoreable moves a function *body* into a struct that
+`tools/check_header_offsets.py` parses, and that gate recognises the body only when the
+signature line itself carries the `{`:
+
+    if n == 0:
+        depth = line.count("{") - line.count("}")
+        if depth > 0:
+            skip_body = depth
+        continue
+
+Written Allman the signature line has no brace, `skip_body` never arms, and the body's
+lines fall through to declaration parsing and are reported UNPARSED. Measured by
+rewriting nothing but the destructor of `include/dScMgBase_c.h` -- a derived class that
+declares its destructor first, which is the shape every inline-destructor promotion
+produces:
+
+    one line, with body    40 commented fields, 0 mismatched, 0 unparsed, spans 0x4660
+    one line, empty {}     40 commented fields, 0 mismatched, 0 unparsed, spans 0x4660
+    Allman, with body       0 commented fields, 0 mismatched, 2 unparsed, spans 0x50
+    Allman, empty           0 commented fields, 0 mismatched, 1 unparsed, spans 0x50
+
+Two things go wrong and only one of them is loud. The gate exits 1 on the UNPARSED line
+-- and it is green on `origin/main`, so this is a **merge-tree-only** red that
+`tools/premerge_check.py` will show you and your branch's own CI will not. The quiet half
+is the worse one: **one unparsed line suppresses the field walk for the whole header**,
+which is this tool's own documented silent-no-op shape. `0 commented fields` there is not
+a clean pass, it is no check at all -- forty fields stopped being checked and the reported
+span fell back to the base's `0x50`.
+
+Two conditions narrow the hazard, and both hold for precisely the promotions this document
+is about. It needs a **derived** class -- a non-derived one is declared unmodelled at its
+first method line and never reaches the brace -- whose **structor is declared before any
+field**, the key-function convention inherited from `dScene_c.h`. Where the destructor sits
+after the fields, a method line ends the field list and the stray brace is never read;
+`include/ArrowLift.h` measures identically in both styles. Note also that an **empty**
+Allman body breaks it exactly as an empty one-line body does not. It is the newline that
+costs, not the statements.
+
+So write
+
+    virtual ~PoleLift() {
+        ...
+    }
+
+and not the Allman form. Every inline destructor in `include/` today is `virtual ~X() {}`
+on a single line, so nothing has exercised this before; the inline-destructor wave will
+exercise it repeatedly. This is a defect in the gate rather than in the style, and it is
+recorded as one -- but until the gate is fixed, brace position is load-bearing.
+
+### A marker on a still-unnamed member buys nothing
+
+`score_member` recomputes `real_name` from the symbol, not from the fragment, so a member
+still called `func_ov006_0210a534` fails that criterion whichever text it is scored
+against. Marking it is still worth doing, because the boundary it creates is what protects
+its *neighbour* — that is the whole point of the rule above — but do not expect the marker
+to move that member's own score. Renaming it is the thing that does.
+
+### Markers cannot move a ROM byte
+
+`_code_only` (line 198) blanks comments before three of the five criteria run, and the
+preprocessor deletes them before mwccarm sees the TU. Adding markers to an already
+byte-proven TU cannot change an instruction and needs no new byte proof. It does change
+the CONVERTED count, so regenerate `config/converted-baseline.json` per rule 5 in the same
+PR.
+
+### The failure mode, concretely
+
+An unmarked promotion is *green*. Every byte gate passes, because the bytes are right. The
+CONVERTED count drops, the author covers the drop with one backslide-exception row per
+lost member, writes a true-sounding reason on each, and the PR merges. What actually
+happened is that comment lines were traded for ledger rows.
+
+- **#2062** (`daObjHatenaSwitch_c`, thirteen functions) adds **zero** markers. Its diff
+  moves `config/converted-baseline.json` from `"count": 2568` to `"count": 2560` and adds
+  **eight** rows to `config/converted-backslide-exceptions.jsonl`, one per lost member.
+  Every row carries the same reason, and that reason names the cause without naming the
+  fix: the TU "needs the volatile stack value to avoid a 17-word codegen mismatch". The
+  `volatile` is in one member. The other eight paid for it.
+- **#2064** (`dScMgSingle3DBase_c`, nine functions) adds **six** markers and **zero**
+  backslide-exception rows. The three it leaves unmarked are the two destructor variants,
+  which is right, and one member still named `func_ov006_0210a534`, which is not.
+  Nothing backslides — neither it nor its neighbour was CONVERTED before — but the
+  omission still costs, and it costs the *other* member: with no marker after it, the
+  preceding `func_ov006_0210a600` fragment runs from its own marker to end of file and
+  swallows a534's `volatile` body and raw addresses. `func_ov006_0210a600` is an
+  eight-byte `return 1;` that can never score readable while that is true. This is the
+  general shape of the omission — the member that pays is rarely the member you left
+  unmarked.
+
+Both are open at the time of writing, so neither is landed precedent in the sense section
+1 uses. They are cited here as the worked pair: same operation, same gates, one of them
+paying eight ledger rows for the omission.
+
+### Reviewer check
+
+Count the `@symbol` lines in the promoted TU against the length of the manifest's
+`functions` array. The difference should be the ctor/dtor variants and nothing else. If a
+promotion adds backslide-exception rows for members of
+its own destination TU, check for markers before reading the reasons — the reasons will be
+about codegen and the cause will be a boundary.
+
+---
+
 ## Reviewer checklist
 
 1. Every coined mangled name that encodes an argument type has its disclosure in the
@@ -260,11 +516,16 @@ the queue as a chain, not a fan.
 2. Exactly one `extern int _ZTV<C>[];`, in the TU source at namespace scope, no
    `extern "C"` block, and the store spelled `*(int *)p = (int)&_ZTV<C>[2];`.
 3. The `_ZTV` address in `symbols.txt` is unchanged; the `complete` span covers exactly
-   the promoted functions; no neighbouring data or bss entry was dropped.
+   the promoted functions; and any dropped neighbouring data or bss entry was shown to be
+   unkeepable by the restore test.
 4. Every renamed `func_<module>_<addr>` declaration is gone from `include/decl_common.h`.
 5. No comment in the diff names a file the diff deletes.
 6. The PR is alone in the ledger queue, and the baseline was regenerated rather than
    merged.
+7. Every hand-written member of the promoted TU carries a unique `// @symbol` line, the
+   shared mangled externs sit above the first marker, the destructor is inline in a
+   directly included header and unmarked, and no backslide-exception row is covering a
+   member a marker would have saved.
 
 ## Known open items at the time of writing
 

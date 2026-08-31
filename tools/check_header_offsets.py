@@ -9,7 +9,7 @@ the byte gate cannot see a field no source file happens to read.
 This walks the declarations, applies natural alignment, and compares. Used as the
 first gate on any header edit; see notes/archive/plan-scalar-markers.md 4.
 
-    python tools/check_header_offsets.py include/Amp.h include/Camera.h
+    python tools/check_header_offsets.py include/dActor_c.h include/dScMgBase_c.h
     python tools/check_header_offsets.py --changed              # vs origin/main
     python tools/check_header_offsets.py --changed main
     python tools/check_header_offsets.py --changed --committed-only   # what CI sees
@@ -119,11 +119,76 @@ IGNORABLE = re.compile(r"^\s*($|/\*|\*|//|\}|#)")
 # rglob, not glob: Matrix4x3 and Matrix3x3 assert their sizes in include/math/,
 # so a non-recursive scan missed exactly the two that Model.h and friends embed.
 CLASS_SIZES = {}
+# ...and WHERE each one came from. The table is keyed by the bare tag, so two
+# classes of the same name in different headers are one entry -- see
+# _shadowed_by_nested below, which needs the origin to tell them apart.
+CLASS_SIZE_SRC = {}
+# ...and the same sizes keyed by their QUALIFIED name, read out of the assertion's
+# own `sizeof(...)` expression rather than out of its typedef identifier.
+#
+# The identifier cannot be trusted to spell the qualified name, because the tree's
+# convention for one is not mechanical. `dMgPsOpt_c::TouchIcon_c` is asserted as
+# `dMgPsOpt_TouchIcon_c_size_must_be_0x24` -- outer tag with its `_c` dropped -- and
+# `Particle::SysTracker::Contents` as `Particle_SysTracker_Contents_size_must_be_0x748`.
+# No rule derives `dMgPsOpt_TouchIcon_c` from `dMgPsOpt_c` and `TouchIcon_c` that does
+# not also have to guess. The sizeof() operand, though, is the real qualified name by
+# construction -- the compiler resolves it or the header does not build.
+#
+# Measured over all 507 headers when this was written: 486 assertions parse in full,
+# 26 of them qualified, and the typedef identifier's `_0xN` suffix agrees with the
+# expression's own constant in 486 of 486 cases. So this reads the same numbers the
+# bare-tag table already reads; it only learns a second, unambiguous key for them.
+CLASS_SIZES_QUALIFIED = {}
+# `== 6` as well as `== 0x6`: types.h asserts Vector3s in decimal, and it is the one
+# assertion in the tree that the full form would otherwise miss.
+_SIZE_ASSERT_FULL = re.compile(
+    r"typedef\s+char\s+(\w+)_size_must_be_(0x[0-9a-fA-F]+)\s*\[\s*"
+    r"sizeof\s*\(\s*(?:struct|class|union)?\s*((?:\w+\s*::\s*)*\w+)\s*\)\s*"
+    r"==\s*(0x[0-9a-fA-F]+|\d+)", re.S)
 for _h in pathlib.Path(__file__).resolve().parents[1].joinpath("include").rglob("*.h"):
-    for _m in re.finditer(r"(\w+)_size_must_be_(0x[0-9a-fA-F]+)",
-                          _h.read_text(errors="replace")):
+    _txt = _h.read_text(errors="replace")
+    for _m in re.finditer(r"(\w+)_size_must_be_(0x[0-9a-fA-F]+)", _txt):
         CLASS_SIZES[_m.group(1)] = int(_m.group(2), 16)
+        CLASS_SIZE_SRC[_m.group(1)] = _h
+    for _m in _SIZE_ASSERT_FULL.finditer(_txt):
+        _expr = re.sub(r"\s+", "", _m.group(3))
+        if "::" in _expr:
+            CLASS_SIZES_QUALIFIED[_expr] = int(_m.group(2), 16)
+            # Only if nothing else claimed it: the bare-tag table above is what the
+            # shadow check reads, and a qualified entry must not overwrite the origin
+            # of a same-named top-level class.
+            CLASS_SIZE_SRC.setdefault(_expr, _h)
 SZ.update(CLASS_SIZES)
+
+
+def _qualified_size(outer, typ):
+    """Size of `typ` as written inside `outer`, from a QUALIFIED size assertion.
+
+    Returns None when no assertion names this nesting, which leaves the caller on
+    its existing bare-tag path -- this only ever adds an answer where there was
+    none, it never overrides one.
+
+    Two forms are accepted:
+
+      exact   `dMgPsOpt_c::TouchIcon_c` for `TouchIcon_c` written inside dMgPsOpt_c
+      nested  `dPa_c::level_c::callback_c` for `callback_c` written inside dPa_c,
+              where the type is declared in an intermediate scope the field walk
+              does not track
+
+    The second form must be UNIQUE to answer. Two different `Outer::*::Inner`
+    entries with the same size are still two different classes, and picking either
+    would be the exact guess this function exists to avoid -- see
+    _shadowed_by_nested, which is the same failure one level up.
+    """
+    if not outer:
+        return None
+    exact = CLASS_SIZES_QUALIFIED.get(outer + "::" + typ)
+    if exact is not None:
+        return exact
+    prefix = outer + "::"
+    hits = {v for k, v in CLASS_SIZES_QUALIFIED.items()
+            if k.startswith(prefix) and k.rsplit("::", 1)[-1] == typ}
+    return hits.pop() if len(hits) == 1 else None
 
 # A derived class's own fields start at the base's DATA SIZE, not its sizeof.
 #
@@ -391,6 +456,78 @@ def _resolve_paths(argv, repo=None):
     return argv, 0
 
 
+def _nested_names(all_lines):
+    """Tags defined as a NESTED type somewhere in this file.
+
+    Indentation is the test, which is what the field walk below already uses to
+    tell a nested definition from the outer one, so the two agree by construction.
+    """
+    out = set()
+    for line in all_lines:
+        m = re.match(r"^[ \t]+(?:struct|union|class) (\w+)\s*(?::\s*(?:public\s+)?\w+\s*)?\{", line)
+        if m:
+            out.add(m.group(1))
+    return out
+
+
+def _shadowed_by_nested(typ, nested_names, fp):
+    """True when SZ[typ] is about a DIFFERENT class than the one `typ` names here.
+
+    CLASS_SIZES is keyed by the bare tag -- it has no way to record a qualified
+    name -- so a class nested inside the struct under test silently borrows the
+    size of any unrelated top-level class that happens to share its tag.
+
+    Measured, one instance in the tree and it is not a small one:
+    `fBase_c::Manager` is SceneNode(0x14) + 2 * fLiNdBaPr_c(0x10) = 0x34, but
+    `Manager_size_must_be_0x3c` in include/Particle__Manager.h describes
+    Particle::Manager. The checker took 0x3c and reported the two fields after it
+    8 bytes late -- against a header whose own `fBase_c_size_must_be_0x50`
+    assertion proves the comments right and the checker wrong. This was invisible
+    while fBase_c.h was skipped wholesale; unskipping it is what exposed it.
+
+    Refuse rather than guess. A local size is derivable in principle, but a nested
+    body carries inline method bodies that the narrow learner above will not walk,
+    and a WRONG size here is worse than an honest UNPARSED: it shifts every later
+    field and each one still "matches" if the comments were written from the same
+    wrong model.
+    """
+    if typ not in nested_names or typ not in CLASS_SIZE_SRC:
+        return False
+    # Compare RESOLVED paths. CLASS_SIZE_SRC is built by rglob from an absolute repo
+    # root while `fp` arrives from the command line, so `include/dScEntry_c.h` and
+    # `C:/...
+    # /include/dScEntry_c.h` are the same file and unequal as Path objects. Comparing
+    # them raw made a type asserted in its OWN header -- dScEntry_c::icon_c, whose
+    # `icon_c_size_must_be_0x24` sits nine lines below the struct -- look shadowed,
+    # turning a header that checked 9 fields clean into an UNPARSED failure.
+    try:
+        return CLASS_SIZE_SRC[typ].resolve() != pathlib.Path(fp).resolve()
+    except OSError:
+        return CLASS_SIZE_SRC[typ] != fp
+
+
+def _root_offset(all_lines, open_lineno):
+    """Offset of the first field of a ROOT struct whose body opens at `open_lineno`.
+
+    4 when the struct is polymorphic and leaves its vptr implicit, 0 otherwise.
+
+    Scoped to THIS struct's body on purpose. A twin header carries a flat C view of
+    the same class below an `#else`, and that half routinely spells `void *vtable;`
+    even when the C++ half above it does not -- Animation.h is exactly that shape. A
+    file-wide search for either marker reads the wrong half and silently shifts every
+    field of the right one by 4.
+    """
+    virtual = vtable_field = False
+    for line in all_lines[open_lineno:]:
+        if re.match(r"^\};", line):
+            break
+        if re.match(r"^\s*virtual\s", line):
+            virtual = True
+        elif re.match(r"^\s*[A-Za-z_][^;]*[ *]vtable\s*;", line):
+            vtable_field = True
+    return 4 if (virtual and not vtable_field) else 0
+
+
 def main(argv, repo=None):
     """Check every header `argv` resolves to. Exit code is the gate's verdict."""
     root = pathlib.Path(repo) if repo else REPO
@@ -416,7 +553,9 @@ def main(argv, repo=None):
         skip_body = 0
         unknown_base = derived_from = None
         expected = fp.stem
-        for lineno, line in enumerate(txt.splitlines(), 1):
+        all_lines = txt.splitlines()
+        nested_names = _nested_names(all_lines)
+        for lineno, line in enumerate(all_lines, 1):
             if not started:
                 # A struct-with-body BEFORE the file's own class is a helper type
                 # (ActorBase_SceneNode in fBase_c.h, KCL_Tri in dBgW_Kc.h,
@@ -452,6 +591,23 @@ def main(argv, repo=None):
                         continue
                     started = True
                     base = m0.group(2)
+                    if base is None:
+                        # A ROOT class has no base sub-object, but it is not therefore
+                        # at offset 0: a POLYMORPHIC root places one implicit 4-byte
+                        # vptr at 0x00. That is not a guess -- the tree already writes
+                        # the model down by hand, verbatim in Animation.h and dCc_c.h:
+                        #
+                        #   /* 0x00 is the vptr, placed implicitly by the first
+                        #      virtual declaration. */
+                        #
+                        # ...UNLESS the struct declares the vptr as a REAL field. The
+                        # flat port-side headers do exactly that -- ArrowSignRight.h
+                        # opens `void *vtable;  /* 0x000 */` -- and there the comments
+                        # already count it, so starting at 4 double-counts and every
+                        # field after it reads 4 bytes late. Ten-plus headers in this
+                        # tree declare a literal vtable field, so this is a real fork,
+                        # not a special case for one file.
+                        off = _root_offset(all_lines, lineno)
                     if base is not None:
                         # A derived struct's own fields do NOT start at 0 -- the base
                         # sub-object is there. Guessing 0 would mismatch every field,
@@ -528,9 +684,6 @@ def main(argv, repo=None):
                 # class places no vptr of its own -- it inherits the base's, and the
                 # base's asserted size already counts it. The running offset is sound,
                 # so the member functions merely end the field list.
-                if derived_from is None:
-                    unmodelled = True
-                    break
                 # A derived class can ALSO declare its destructor/overrides FIRST
                 # (dScene_c.h's KEY FUNCTION convention -- "the destructor is declared
                 # first, which is safe for a derived class"). Before any real field
@@ -557,7 +710,22 @@ def main(argv, repo=None):
                 in_comment = True
             m = DECL.match(line)
             typ = m.group(1).rsplit("::", 1)[-1] if m else None
-            w = 4 if (m and m.group(2)) else SZ.get(typ)
+            # A qualified assertion is checked FIRST and settles the question. It
+            # names one class unambiguously, so neither the bare-tag lookup nor the
+            # shadow refusal below has anything left to decide. `TouchIcon_c
+            # mIcons[8];` in dMgPsOpt_c.h is the live case: the bare tag
+            # `TouchIcon_c` is asserted nowhere, so the field came back UNPARSED and
+            # the header's whole walk stopped at `struct spans 0x8`. With the
+            # qualified size it walks to 0x128, which is what the header's own
+            # `dMgPsOpt_c_size_must_be_0x128` says -- an independent check that the
+            # size read here is the right one.
+            qsize = _qualified_size(expected, typ) if (m and not m.group(2)) else None
+            if qsize is not None:
+                w = qsize
+            elif m and not m.group(2) and _shadowed_by_nested(typ, nested_names, fp):
+                w = None
+            else:
+                w = 4 if (m and m.group(2)) else SZ.get(typ)
             if w is None:
                 # An unrecognised declaration is NOT harmless: skipping it leaves the
                 # running offset short, so every later field silently "matches" at the

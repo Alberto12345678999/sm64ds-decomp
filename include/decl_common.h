@@ -1053,10 +1053,20 @@ extern int data_ov006_02140840;
 extern int data_ov006_02141a44;
 extern int data_ov006_021421b4;
 extern int data_ov006_021421c4;
-extern int data_ov006_021424fc;
-extern int data_ov006_02142508;
-extern int data_ov006_02142570;
-extern int data_ov006_02142574;
+/* data_ov006_021424fc / _02142500 / _02142504 / _02142508 are the four
+   globals of one intrusive doubly-linked Node list (two cursors, head,
+   tail). The 19 one-function legacy files each declared them differently
+   in isolation -- int, void*, char*, struct Node* -- and the scalar
+   spellings below were the arbitrary winners. Every consumer lives in
+   ov006/dScMgMCarlo_c, which now declares all four with the recovered
+   pointer type, so no declaration belongs here. */
+/* data_ov006_02142570 / _02142574 are the two halves of the pair being
+   matched in ov006/dScMgMCarlo2_c -- pointers into that minigame's own
+   node list. The six one-function legacy files each declared them in
+   isolation (int, char*, Node*) and a scalar spelling was the arbitrary
+   winner here. Every consumer now lives in that one translation unit,
+   which declares both with the recovered pointer type, so no declaration
+   belongs here either. */
 extern int data_ov006_02142f60;
 extern int data_ov007_02103260;
 extern int data_ov007_02103290;
@@ -1468,8 +1478,8 @@ extern void func_ov006_020d6098(void*);
 extern void func_ov006_020d63d4(void*);
 extern int func_ov006_020d672c();
 extern void func_ov006_020d7524(void*);
-extern int func_ov006_020da4ac(void*, int);
-extern int func_ov006_020da5e8(void*, void*);
+extern int func_ov006_020da4ac(char*, s16*);
+extern int func_ov006_020da5e8(char*, char*);
 extern int func_ov006_020e0694(char*);
 extern int func_ov006_020e1554(char*);
 extern int func_ov006_020e1c68(char*);
@@ -1488,9 +1498,12 @@ extern int func_ov006_020e6e78(void*);
 extern int func_ov006_020f7a90(void);
 extern int func_ov006_020f7b10(void);
 extern int func_ov006_020f7b90(void);
-extern int func_ov006_020f95f0(void);
-extern int func_ov006_020f9668(void);
-extern int func_ov006_020f96e0(void);
+/* func_ov006_020f95f0 / _020f9668 / _020f96e0 / _020f9000 / _020f94f4 /
+   _020f9760 are all members of ov006/dScMgMCarlo2_c and every caller is a
+   member of the same translation unit, which declares them with the
+   recovered node-pointer types (_020f9760 took `void*` here because the
+   one-function legacy file could not name the element type). Nothing
+   outside that TU refers to them, so no declaration belongs here. */
 extern void func_ov006_020ff47c(void*);
 extern void func_ov006_02100140(void*);
 extern void func_ov006_02100314(void*);
@@ -2420,8 +2433,8 @@ extern void func_ov006_020d604c(void*);
 extern void func_ov006_020d62e0(void*);
 extern void func_ov006_020d6630(void*);
 extern void func_ov006_020d907c(void*);
-extern void func_ov006_020d96e0();
-extern void func_ov006_020d96f0();
+extern void func_ov006_020d96e0(void*);
+extern void func_ov006_020d96f0(void*);
 extern void func_ov006_020d99a4(void*);
 extern void func_ov006_020d9a14(char*);
 extern void func_ov006_020da00c(char*);
@@ -2489,13 +2502,12 @@ extern void func_ov006_020f5620(char*);
 extern void func_ov006_020f565c(char*);
 extern void func_ov006_020f5b98(char*);
 extern void func_ov006_020f7064(void*);
-extern void func_ov006_020f7730();
+extern void func_ov006_020f7730(int *);
 extern void func_ov006_020f7740(void);
 extern void func_ov006_020f7994(void);
-extern void func_ov006_020f8ff0();
-extern void func_ov006_020f9000(void);
-extern void func_ov006_020f94f4(void);
-extern void func_ov006_020f9760(void*);
+/* the element destructor for dScMgMCarlo2_c's 40 x 0x30 array; it writes one
+   word into the element it is handed. Both call sites cast it to void*. */
+extern void func_ov006_020f8ff0(int*);
 extern void func_ov006_020fad90(char*);
 extern void func_ov006_020fadfc(char*);
 extern void func_ov006_020fffec(char*);
@@ -2992,7 +3004,6 @@ extern void*data_ov006_02141e9c;
 extern void*data_ov006_02142184;
 extern void*data_ov006_02142188;
 extern void*data_ov006_02142190;
-extern void*data_ov006_02142500;
 extern void*data_ov006_021428c8;
 extern void*data_ov007_0210342c;
 extern void*data_ov010_021122f8;
@@ -3107,7 +3118,7 @@ extern void*func_021124ac;
 extern void*func_021135d4;
 extern void*func_02132894[];
 extern void*func_ov002_020edb3c(void*, int, int);
-extern void*func_ov006_020dac34(void*);
+extern void func_ov006_020dac34(unsigned char*);
 extern void*func_ov007_020aebac(void);
 extern void*vtbl_Animation[];
 extern void*vtbl_Clipper[];

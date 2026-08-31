@@ -1,6 +1,6 @@
 # Who tests the tools that nobody runs?
 #
-# `tools/` holds 59 `test_*.py` modules. Before this workflow, SIX of them ran in CI:
+# `tools/` holds 63 `test_*.py` modules. Before this workflow, SIX of them ran in CI:
 # test_tiers (converted-ratchet.yml), test_check_dead_references (dead-references.yml),
 # test_check_header_offsets (header-offsets.yml), test_check_python_names
 # (python-names.yml), test_source_coverage (source-coverage.yml) and test_check_src_tu
@@ -10,7 +10,7 @@
 # gate's FAILURE branch is the one path a green run never exercises: no ROM build can
 # reach it, because these tools are not compiled into the ROM. src-tu-refs.yml exists
 # because #1643 broke 26 translation units while every byte gate stayed green, and the
-# only thing that noticed was a test suite a human had to run. This job runs 498 of
+# only thing that noticed was a test suite a human had to run. This job runs 514 of
 # those assertions on every PR that touches `tools/` or `nearmiss/`, so the next one is
 # noticed by CI.
 #
@@ -72,7 +72,7 @@
 # every future test_*.py automatically -- including one that needs mwccarm, which does
 # not fail on a runner but SELF-SKIPS, turning this job's green hollow with no diff to
 # review. There is a sharper version of the same trap already in the tree: thirteen of the
-# 59 modules are pytest-style bare functions with no unittest.TestCase, so
+# 63 modules are pytest-style bare functions with no unittest.TestCase, so
 # `python -m unittest tools.test_tubuild` prints "Ran 0 tests ... OK" and exits 0. That
 # is 186 test functions that a glob would have silently counted as passing. Four of them
 # -- test_build_pin, test_dtor_members, test_opnew_sizes, test_tubuild -- also carry the
@@ -86,7 +86,7 @@
 # none of the three inputs present); that module adds 87, timed at 9.7s on Windows.
 # The three modules added below cost no measurable wall time at all: on one Windows tree,
 # 435 tests in 46.5s before and 498 in 45.7s after -- inside the noise. On the runner
-# itself the whole 498 take 11.5s, plus about 1s for the two wheels (both are prebuilt;
+# itself those 498 took 11.5s, plus about 1s for the two wheels (both are prebuilt;
 # nothing compiles). They are mock- and tempdir-based and touch neither the network nor
 # the tree.
 # The whole-suite timings are dominated by Windows filesystem overhead and do not
@@ -100,8 +100,9 @@
 # present" -- its Retarget class, and only that class, compiles a real object). All nine
 # are @skipUnless with a stated reason, so `-v` shows them; none is a bare `return`.
 # test_premerge_check adds none on a runner with git installed, and test_symrecords,
-# test_nearmiss_db, test_tu_promote and test_tu_production add none anywhere.
-# 489 of the 498 assert something.
+# test_nearmiss_db, test_tu_map, test_tu_promote, test_tu_production and
+# test_tubuild_owned_relocs add none anywhere.
+# 505 of the 514 assert something.
 name: tool tests
 
 on:
@@ -151,12 +152,13 @@ jobs:
           python-version: "3.12"
 
       - name: Pinned tool dependencies
-        # Every module but the last three in the list below is stdlib-only and would run
-        # without this step. test_rombuild, test_tu_promote and test_tu_production import
+        # Every module in the list below except four is stdlib-only and would run without
+        # this step. test_rombuild, test_tu_promote and test_tu_production import
         # rombuild.py, which reaches elftools (via objisolate) and capstone (via
-        # romdata_check -> linkcheck -> match); without both they do not fail a test, they
-        # fail COLLECTION, which under `python -m unittest` is a loud error and not a
-        # silent zero. Versions live in tools/requirements.txt, not in this line, so a
+        # romdata_check -> linkcheck -> match); test_tubuild_owned_relocs imports
+        # tubuild.py, which reaches the same two by its own path. Without both wheels
+        # none of the four fails a test, they fail COLLECTION, which under
+        # `python -m unittest` is a loud error and not a silent zero. Versions live in tools/requirements.txt, not in this line, so a
         # bump is a reviewable diff. `tools/**` already triggers this workflow, so editing
         # that file re-runs the job that depends on it.
         run: pip install -r tools/requirements.txt
@@ -192,8 +194,10 @@ jobs:
             tools.test_srcpath \
             tools.test_stamp_provenance_verify \
             tools.test_symrecords \
+            tools.test_tu_map \
             tools.test_tu_production \
             tools.test_tu_promote \
+            tools.test_tubuild_owned_relocs \
             tools.test_validate_merge
 
 # What each module protects, in the order it runs above:
@@ -270,6 +274,23 @@ jobs:
 #                                      may be restamped. A verdict wrongly called
 #                                      mechanical would launder a wrong-identity pair
 #                                      straight into the mirror.
+#   test_tu_map                 (10)   tu_map.py -- the call-graph-plus-adjacency
+#                                      partition of every module into translation units.
+#                                      A single caller-cluster is NOT proof of internal
+#                                      linkage, so #2082 made a stray function have to
+#                                      ABUT the cluster that absorbs it. The reason this
+#                                      needs a gate: tu_config.attribute_text claims
+#                                      `.text` from these spans UNCONDITIONALLY -- every
+#                                      other section it attributes is fail-closed -- so a
+#                                      span inflated over a function that does not belong
+#                                      to the TU reaches a generator with nothing
+#                                      downstream able to notice. On the parent commit 6
+#                                      of these 10 fail, which is what makes them a
+#                                      bracket rather than a description. Pure stdlib: it
+#                                      imports tu_map and nothing else, builds its
+#                                      fixtures in-process, and needs no ROM, no
+#                                      compiler, no config/, no build/ and no git. 10 of
+#                                      10 run in CI, none skips, 0.000s.
 #   test_tu_production          (17)   tu_production.py -- the intact-object production
 #                                      route added by #2054, and the stock/ROM-gap control
 #                                      that decides whether a produced object may stand in
@@ -281,6 +302,33 @@ jobs:
 #                                      dilutes the CONVERTED tier, so a scoring bug here
 #                                      moves a published number with nothing else
 #                                      noticing. Pure mock; 9 of 9 run in CI.
+#   test_tubuild_owned_relocs    (6)   tubuild.verify_owned_sections' non-text
+#                                      relocation verdict ladder -- specifically the
+#                                      fail-closed `else None` #2059 added for a
+#                                      normalized undefined `_ZTV` import whose manifest
+#                                      addend is BELOW the two-word ABI preamble, and
+#                                      both clauses of the WRONG-DEST conjunction. It
+#                                      stubs `section_contribution` (the only part of
+#                                      that function that parses ELF) and drives the
+#                                      real verifier over a hand-written layout of the
+#                                      documented shape, so it needs no compiler, no
+#                                      ROM, no config/ and no build/. 6 of 6 run in CI,
+#                                      none skips. It exists as its own module rather
+#                                      than as more of test_tubuild.py for the reason
+#                                      spelled out in group 3 of the header: that file
+#                                      contributes zero tests to `python -m unittest`,
+#                                      and the assertions it already has for this code
+#                                      sit behind `if not _toolchain(): return`.
+#                                      Mutation-checked, all six against the whole of
+#                                      test_tubuild.py running WITH the pinned compiler
+#                                      present: `else None` -> `else 0` and
+#                                      -> `else expected_addend` and dropping
+#                                      `expected["target_address"] != cfg[1]` each leave
+#                                      46/46 of that suite green and are each caught
+#                                      here; dropping the candidate-side
+#                                      `cand_addr != expected["target_address"]` is
+#                                      likewise caught here alone; `>=` -> `>` and
+#                                      disabling the normalized bias are caught by both.
 #   test_validate_merge         (35)   validate_merge.py -- builds the machine-readable
 #                                      PR validation report the validator comment renders.
 #
@@ -288,4 +336,6 @@ jobs:
 # `git archive origin/main` tree with no toolchain: test_objisolate 0 pass / 34 skip
 # (every test in it compiles), test_tubuild 28 real pass / 15 vacuous / 2 fail. Neither
 # is a candidate until objisolate's fixtures stop needing mwcc and tubuild's bare
-# `return` guards become skips. See group 1 in the header.
+# `return` guards become skips. See group 1 in the header. test_tubuild_owned_relocs
+# above is NOT a step toward wiring test_tubuild: it is a separate module precisely so
+# that adding it did not require relaxing that refusal.
