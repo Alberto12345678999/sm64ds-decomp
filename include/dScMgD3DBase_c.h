@@ -95,18 +95,19 @@ struct dScMgD3DBase_c : dScMgBase_c {
     virtual int  OnHitByCannonBlastedChar();           /* slot 26 */
     virtual void OnHitByMegaChar();                    /* slot 27 */
     virtual int  OnHitFromUnderneath();                /* slot 28 */
+    virtual int  OnAimedAtWithEgg();                   /* slot 29 */
 
-    /* Four more of dScMgBase_c's own 18 new slots (18-35) are overridden
-       here too (slots 29-31, 33 per tools/rtti_vtables.py --own
+    /* Three more of dScMgBase_c's own 18 new slots (18-35) are overridden
+       here too (slots 30, 31, 33 per tools/rtti_vtables.py --own
        dScMgD3DBase_c) -- left undeclared, same as dScMgBase_c.h's own slots
-       29-35: their targets are matched source but dScMgBase_c hasn't named
+       30-35: their targets are matched source but dScMgBase_c hasn't named
        or given signatures to the slots they'd be overriding yet, and a
        derived override can't be declared before its base is.
 
-       Slots 24, 25, 26, 27 and 28 above came off that list, and they are
-       the same case five times over: dScMgJump_c and dScMgJump2_c both point
+       Slots 24, 25, 26, 27, 28 and 29 above came off that list, and they are
+       the same case six times over: dScMgJump_c and dScMgJump2_c both point
        at THIS class's body for each of them, so the declaration belongs here
-       and neither child declares any of them.  Slots 26, 27 and 28 widen that
+       and neither child declares any of them.  Slots 26 through 29 widen that
        to all four children -- dScMgTrampoline_c and dScMgTrampoline2_c point here
        too, where at 24 and 25 they had bodies of their own. */
 

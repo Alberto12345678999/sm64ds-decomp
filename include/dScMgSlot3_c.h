@@ -43,15 +43,20 @@ struct dScMgSlot3_c : dScMgSingle3DBase_c {
     virtual ~dScMgSlot3_c();
 
     /* This class's own overrides, read off the ROM's vtable: the slots where the
-       table differs from dScMgSingle3DBase_c's. Spelled WITHOUT the `virtual`
-       keyword, the way include/daObjMarioCap_c.h and include/daObjRc_Dorifu_c.h
-       spell theirs -- an override of a virtual an ancestor already declares is
-       implicitly virtual either way, so each reuses an existing slot and adds no
-       field, and the 0x5044 assert below still holds. The destructor above is
-       declared first and out of line, so it stays this class's KEY FUNCTION and
-       neither of these translation units emits _ZTV12dScMgSlot3_c. */
+       table differs from dScMgSingle3DBase_c's. The ones recovered off this
+       class's own matched files are spelled WITHOUT the `virtual` keyword, the
+       way include/daObjMarioCap_c.h and include/daObjRc_Dorifu_c.h spell
+       theirs; the ones carrying a slot-number marker came from the
+       dScMgBase_c slot campaign and keep that campaign's spelling, which
+       includes the keyword. Either way an override of a virtual an ancestor
+       already declares is implicitly virtual, so each reuses an existing slot
+       and adds no field, and the 0x5044 assert below still holds. The
+       destructor above is declared first and out of line, so it stays this
+       class's KEY FUNCTION and neither of these translation units emits
+       _ZTV12dScMgSlot3_c. */
     s32 InitResources();   /* slot  0 -- src/_ZN12dScMgSlot3_c13InitResourcesEv.cpp */
     virtual int  OnYoshiTryEat(int arg);               /* slot 18 */
+    virtual int  OnAimedAtWithEgg();                   /* slot 29 */
     s32 Behavior();        /* slot  6 -- src/_ZN12dScMgSlot3_c8BehaviorEv.cpp */
     s32 Render();          /* slot  9 -- src/_ZN12dScMgSlot3_c6RenderEv.cpp */
 
