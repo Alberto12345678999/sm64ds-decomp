@@ -3065,9 +3065,9 @@ def validated_vtable_partition_symbols(entry, policies):
                 continue
             metadata = (baseline.get("address"), baseline.get("size"),
                         baseline.get("binding"), baseline.get("type"),
-                        baseline.get("visibility"), baseline.get("section"))
+                        baseline.get("visibility"))
             if metadata != (address, size, "STB_GLOBAL", "STT_OBJECT",
-                            "STV_DEFAULT", policy.get("section")):
+                            "STV_DEFAULT"):
                 continue
             if baseline.get("sectionIndex") != vtable.get("sectionIndex"):
                 continue

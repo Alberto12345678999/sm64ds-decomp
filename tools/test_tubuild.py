@@ -1277,7 +1277,7 @@ def test_object_audit_licenses_only_validated_manifest_vtable_partitions():
                 "visibility": "STV_DEFAULT", "baseline": {
                     "symbol": {"address": address, "size": size,
                                "binding": "STB_GLOBAL", "type": "STT_OBJECT",
-                               "visibility": "STV_DEFAULT", "section": ".data",
+                               "visibility": "STV_DEFAULT", "section": "OV999",
                                "sectionIndex": 4},
                     "vtable": {"sectionIndex": 4},
                 }}
@@ -1688,13 +1688,13 @@ def test_partitioned_vtable_interior_symbols_require_exact_policy_and_baseline()
     baseline = {
         "_ZTV1P": [{"address": 0x2008, "size": 8, "binding": "STB_GLOBAL",
                      "type": "STT_OBJECT", "visibility": "STV_DEFAULT",
-                     "sectionIndex": 4, "section": ".data"}],
+                     "sectionIndex": 4, "section": "OV999"}],
         "VT7": [{"address": 0x2010, "size": 8, "binding": "STB_GLOBAL",
                  "type": "STT_OBJECT", "visibility": "STV_DEFAULT",
-                 "sectionIndex": 4, "section": ".data"}],
+                 "sectionIndex": 4, "section": "OV999"}],
         "VT14": [{"address": 0x2018, "size": 0x18, "binding": "STB_GLOBAL",
                   "type": "STT_OBJECT", "visibility": "STV_DEFAULT",
-                  "sectionIndex": 4, "section": ".data"}],
+                  "sectionIndex": 4, "section": "OV999"}],
     }
     homes = {"_ZTV1P": [("ov999", 0x2008)], "VT7": [("ov999", 0x2010)],
              "VT14": [("ov999", 0x2018)]}
@@ -1714,6 +1714,27 @@ def test_partitioned_vtable_interior_symbols_require_exact_policy_and_baseline()
         assert policy["baseline"]["elfSha256"] == "c" * 64
         assert [row[1]["symbol"] for row in
                 tubuild.manifest_vtable_partition_rows(entry)] == ["VT7", "VT14"]
+        assert tubuild.validated_vtable_partition_symbols(entry, policies) == {
+            "VT7", "VT14"}
+
+        # This is the ordinary intact call shape: the manifest owns input ``.data``,
+        # while the validated stock final-link metadata names its output section after
+        # the module.  Same linked section index proves the parent/part relationship.
+        inventory = {
+            "sections": [{"index": 4, "name": ".data", "size": 0,
+                          "type": "SHT_PROGBITS"}],
+            "symbols": [{"name": name, "bind": "STB_GLOBAL",
+                         "type": "STT_OBJECT", "size": size, "shndx": 4}
+                        for name, size in (("VT7", 8), ("VT14", 0x18))],
+        }
+        from unittest import mock
+        with mock.patch.object(tubuild, "elf_inventory", return_value=inventory):
+            rows, extra, _emitted, order_ok = tubuild.audit_tu_object(
+                b"ignored", entry, 0x1000, 0x1004, ranges={"ov999": []},
+                validated_vtable_policies=policies)
+        assert {row["name"]: row["verdict"] for row in rows} == {
+            "VT7": "LICENSED", "VT14": "LICENSED"}
+        assert tubuild.object_audit_refusals(rows, extra, order_ok) == []
 
         tubuild.linked_symbol_rows = lambda _path, _names: (baseline, None)
         proof = tubuild.verify_linked_storage_aliases("ignored.o", policies)
