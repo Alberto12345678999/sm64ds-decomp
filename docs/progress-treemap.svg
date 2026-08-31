@@ -19861,7 +19861,7 @@ matched: yes</title></rect><rect x="1411.63" y="28.48" width="5.49" height="20.9
 module: ov004
 addr: 0x020b8a8c
 size: 396 bytes
-matched: yes</title></rect><rect x="1417.12" y="27.00" width="9.22" height="13.32" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov004_020b8c18
+matched: yes</title></rect><rect x="1417.12" y="27.00" width="9.22" height="13.32" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10dMgPsOpt_c11TouchIcon_c6RenderEv
 module: ov004
 addr: 0x020b8c18
 size: 424 bytes
@@ -25601,7 +25601,7 @@ matched: yes</title></rect><rect x="805.40" y="473.09" width="47.54" height="11.
 module: ov006
 addr: 0x0210c6c0
 size: 800 bytes
-matched: yes</title></rect><rect x="852.95" y="473.09" width="123.37" height="11.25" fill="#4a4d52" stroke="#393b3f" stroke-width="0.4"><title>func_ov006_0210c9e0
+matched: yes</title></rect><rect x="852.95" y="473.09" width="123.37" height="11.25" fill="#4a4d52" stroke="#393b3f" stroke-width="0.4"><title>_ZN12dScMgSlot1_c8BehaviorEv
 module: ov006
 addr: 0x0210c9e0
 size: 2076 bytes
@@ -26125,7 +26125,7 @@ matched: yes</title></rect><rect x="785.31" y="555.03" width="10.37" height="9.0
 module: ov006
 addr: 0x02118ae4
 size: 140 bytes
-matched: yes</title></rect><rect x="785.31" y="564.05" width="10.37" height="146.22" fill="#4a4d52" stroke="#393b3f" stroke-width="0.4"><title>func_ov006_02118b70
+matched: yes</title></rect><rect x="785.31" y="564.05" width="10.37" height="146.22" fill="#4a4d52" stroke="#393b3f" stroke-width="0.4"><title>_ZN16dScMgSmartball_c13InitResourcesEv
 module: ov006
 addr: 0x02118b70
 size: 2268 bytes
