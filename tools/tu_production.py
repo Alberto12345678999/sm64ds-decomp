@@ -69,7 +69,8 @@ def prepare_intact_object(raw, entry):
 
     span_start, span_end = text[0]["start"], text[0]["end"]
     rows, extra, emitted, order_ok = TB.audit_tu_object(
-        linked_obj, entry, span_start, span_end, TB.complete_ranges(TB.CFG_ARM9))
+        linked_obj, entry, span_start, span_end, TB.complete_ranges(TB.CFG_ARM9),
+        validated_vtable_policies=biases)
     audit_errors = TB.object_audit_refusals(rows, extra, order_ok)
     if audit_errors:
         _raise(f"{entry['id']} production object audit", audit_errors)
@@ -342,12 +343,14 @@ def _prepare_one(entry, config_root, work_root, jobs):
     biases, reasons = TB.partition_vtable_rebiases(entry, claims)
     if reasons:
         _raise(f"{entry['id']} vtable address-point policy", reasons)
-    storage_obj, rebias = TB.OI.rebias_object_symbols(storage_obj, biases)
+    storage_obj, rebias = TB.OI.rebias_object_symbols(
+        storage_obj, biases, normalize_undefined=True)
     if storage_obj is None:
         _raise(f"{entry['id']} vtable address-point rewrite",
                [rebias.get("error")])
     owned_after = TB.verify_owned_sections(
-        storage_obj, entry, claims, public_address_points=True)
+        storage_obj, entry, claims, public_address_points=True,
+        normalized_undefined_vtables=True)
     if not owned_after.get("ok"):
         _raise(f"{entry['id']} reduced non-text contribution",
                owned_after.get("errors", []))

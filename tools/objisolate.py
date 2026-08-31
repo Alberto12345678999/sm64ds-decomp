@@ -907,11 +907,12 @@ def rebias_object_symbols(raw, symbol_policies, normalize_undefined=False):
     ``normalize_undefined``, raw references to undefined ``_ZTV`` imports lose the
     same ABI preamble from their addend; unlike a rebased local definition this fixes
     the address the repository's already-public import would otherwise resolve to.
-    A policy may additionally split the preamble into an exact storage-alias symbol by
-    reusing one explicitly deadstripped compiler-only symbol-table slot.  Reusing a
-    slot keeps every ELF offset stable; it is allowed only when the old name is an
-    unreferenced GLOBAL/FUNC import with enough exclusive string-table storage for the
-    alias.
+    A policy may additionally split the preamble and public vtable range into exact
+    symbols by reusing explicitly policy-owned symbol-table slots.  Reusing a slot
+    keeps every ELF offset stable; it is allowed only when the donor is an undefined,
+    unreferenced, non-local import with enough exclusive string-table storage.  The
+    caller is responsible for proving that every donor came from an exact deadstrip or
+    externalization policy before invoking this object-level primitive.
     """
     requested = {}
     for name, policy in dict(symbol_policies).items():
@@ -929,11 +930,18 @@ def rebias_object_symbols(raw, symbol_policies, normalize_undefined=False):
                     "donor": str(alias["donor"]),
                     "size": int(alias["size"]),
                 }
+            partitions = policy.get("partitionSymbols", [])
+            if not isinstance(partitions, list):
+                raise TypeError
+            normalized["partitionSymbols"] = [{
+                "symbol": str(row["symbol"]), "donor": str(row["donor"]),
+                "value": int(row["value"]), "size": int(row["size"]),
+            } for row in partitions]
             requested[str(name)] = normalized
         except (KeyError, TypeError, ValueError):
             return None, {"rebased": [], "aliases": [],
                           "error": f"{name} needs bias/size/section and valid optional "
-                                   "storageAlias fields"}
+                                   "storageAlias/partitionSymbols fields"}
     if not requested and not normalize_undefined:
         return bytes(raw), {"rebased": [], "aliases": [], "error": None}
     bad_bias = sorted(name for name, policy in requested.items()
@@ -941,6 +949,39 @@ def rebias_object_symbols(raw, symbol_policies, normalize_undefined=False):
     if bad_bias:
         return None, {"rebased": [], "aliases": [],
                       "error": f"symbol rebias must be positive: {bad_bias}"}
+    for name, policy in requested.items():
+        parts = sorted(policy["partitionSymbols"], key=lambda row: row["value"])
+        policy["partitionSymbols"] = parts
+        if not parts:
+            policy["publicSize"] = policy["size"] - policy["bias"]
+            continue
+        if parts[0]["value"] <= policy["bias"]:
+            return None, {"rebased": [], "aliases": [], "partitions": [],
+                          "error": f"{name} first partition must start after public "
+                                   "address-point bias 0x"
+                                   f"{policy['bias']:x}"}
+        cursor = parts[0]["value"]
+        for part in parts:
+            if not part["symbol"] or part["symbol"].startswith("_ZTV"):
+                return None, {"rebased": [], "aliases": [], "partitions": [],
+                              "error": f"{name} has invalid partition symbol "
+                                       f"{part['symbol']!r}"}
+            if part["size"] <= 0:
+                return None, {"rebased": [], "aliases": [], "partitions": [],
+                              "error": f"{name} partition {part['symbol']} has "
+                                       "non-positive size"}
+            if part["value"] != cursor:
+                relation = "overlaps" if part["value"] < cursor else "leaves a gap"
+                return None, {"rebased": [], "aliases": [], "partitions": [],
+                              "error": f"{name} partition {part['symbol']} {relation} "
+                                       f"at 0x{cursor:x}"}
+            cursor += part["size"]
+        if cursor != policy["size"]:
+            relation = "overruns" if cursor > policy["size"] else "leaves a gap before"
+            return None, {"rebased": [], "aliases": [], "partitions": [],
+                          "error": f"{name} partition coverage {relation} storage end "
+                                   f"0x{policy['size']:x} (ends 0x{cursor:x})"}
+        policy["publicSize"] = parts[0]["value"] - policy["bias"]
 
     raw_out = bytearray(raw)
     elf = ELFFile(io.BytesIO(bytes(raw_out)))
@@ -1064,88 +1105,105 @@ def rebias_object_symbols(raw, symbol_policies, normalize_undefined=False):
         struct.pack_into(endian + "i", expected_relocation_sections[row["sectionIndex"]],
                          row["entryOffset"] + 8, row["newAddend"])
 
-    aliases = {}
+    synthesized = {}
     used_donors = set()
+    used_names = set()
     existing_names = {sym.name for sym in syms if sym.name}
     for vtable_name, policy in requested.items():
         alias = policy.get("storageAlias")
-        if alias is None:
-            continue
-        alias_name, donor_name = alias["symbol"], alias["donor"]
-        if not alias_name or alias_name.startswith("_ZTV"):
-            return None, {"rebased": [], "aliases": [],
-                          "error": f"{vtable_name} storage alias has invalid name "
-                                   f"{alias_name!r}"}
-        if alias["size"] != policy["bias"]:
-            return None, {"rebased": [], "aliases": [],
-                          "error": f"{alias_name} size 0x{alias['size']:x} does not equal "
-                                   f"{vtable_name} bias 0x{policy['bias']:x}"}
-        if alias_name in existing_names:
-            return None, {"rebased": [], "aliases": [],
-                          "error": f"storage alias {alias_name} already exists"}
-        if donor_name in used_donors:
-            return None, {"rebased": [], "aliases": [],
-                          "error": f"storage alias donor {donor_name} is reused"}
-        donors = [(i, sym) for i, sym in enumerate(syms) if sym.name == donor_name]
-        if len(donors) != 1:
-            return None, {"rebased": [], "aliases": [],
-                          "error": f"storage alias donor {donor_name} has {len(donors)} "
-                                   "symbol-table slots, expected one"}
-        donor_index, donor = donors[0]
-        if donor["st_shndx"] not in ("SHN_UNDEF", SHN_UNDEF) \
-                or donor["st_value"] != 0 or donor["st_size"] != 0 \
-                or donor["st_info"]["bind"] != "STB_GLOBAL" \
-                or donor["st_info"]["type"] != "STT_FUNC" \
-                or donor["st_other"]["visibility"] != "STV_DEFAULT":
-            return None, {"rebased": [], "aliases": [],
-                          "error": f"storage alias donor {donor_name} is not an exact "
-                                   "deadstripped GLOBAL/FUNC import"}
-        for relsec in elf.iter_sections():
-            if not isinstance(relsec, RelocationSection):
-                continue
-            source = elf.get_section(relsec.header["sh_info"])
-            if source.header["sh_type"] not in CONTENT or not source.header["sh_size"]:
-                continue
-            if any(reloc["r_info_sym"] == donor_index
-                   for reloc in relsec.iter_relocations()):
-                return None, {"rebased": [], "aliases": [],
-                              "error": f"storage alias donor {donor_name} is still "
-                                       "referenced by surviving content"}
-        donor_bytes = donor_name.encode("ascii", errors="strict")
-        alias_bytes = alias_name.encode("ascii", errors="strict")
-        if len(alias_bytes) > len(donor_bytes):
-            return None, {"rebased": [], "aliases": [],
-                          "error": f"storage alias {alias_name} does not fit donor "
-                                   f"{donor_name}'s string-table slot"}
-        donor_name_offset = donor["st_name"]
-        overlapping = [(i, sym.name) for i, sym in enumerate(syms)
-                       if i != donor_index and isinstance(sym["st_name"], int)
-                       and donor_name_offset <= sym["st_name"] <=
-                       donor_name_offset + len(donor_bytes)]
-        if overlapping:
-            return None, {"rebased": [], "aliases": [],
-                          "error": f"storage alias donor {donor_name} has shared or "
-                                   f"substring string-table users {overlapping}"}
-        string_table = elf.get_section(symtab.header["sh_link"])
-        string_offset = string_table.header["sh_offset"] + donor_name_offset
-        if donor_name_offset == 0 or raw_out[string_offset - 1] != 0:
-            return None, {"rebased": [], "aliases": [],
-                          "error": f"storage alias donor {donor_name} does not start at "
-                                   "an exclusive string-table boundary"}
-        if bytes(raw_out[string_offset:string_offset + len(donor_bytes) + 1]) \
-                != donor_bytes + b"\0":
-            return None, {"rebased": [], "aliases": [],
-                          "error": f"storage alias donor {donor_name} does not occupy "
-                                   "the expected exclusive string-table bytes"}
-        aliases[vtable_name] = {**alias, "index": donor_index,
-                                "nameOffset": donor_name_offset,
-                                "stringOffset": string_offset,
-                                "donorBytes": donor_bytes, "aliasBytes": alias_bytes}
-        used_donors.add(donor_name)
+        rows = []
+        if alias is not None:
+            if not alias["symbol"] or alias["symbol"].startswith("_ZTV"):
+                return None, {"rebased": [], "aliases": [], "partitions": [],
+                              "error": f"{vtable_name} storage alias has invalid name "
+                                       f"{alias['symbol']!r}"}
+            if alias["size"] != policy["bias"]:
+                return None, {"rebased": [], "aliases": [], "partitions": [],
+                              "error": f"{alias['symbol']} size 0x{alias['size']:x} "
+                                       f"does not equal {vtable_name} bias "
+                                       f"0x{policy['bias']:x}"}
+            rows.append({**alias, "value": 0, "kind": "storage-alias"})
+        rows.extend({**part, "kind": "partition-symbol"}
+                    for part in policy["partitionSymbols"])
+        synthesized[vtable_name] = []
+        for row in rows:
+            new_name, donor_name = row["symbol"], row["donor"]
+            label = ("storage alias" if row["kind"] == "storage-alias"
+                     else "partition symbol")
+            if new_name in existing_names or new_name in used_names:
+                return None, {"rebased": [], "aliases": [], "partitions": [],
+                              "error": f"{label} {new_name} already exists or is reused"}
+            if donor_name in used_donors:
+                return None, {"rebased": [], "aliases": [], "partitions": [],
+                              "error": f"{label} donor {donor_name} is reused"}
+            donors = [(i, sym) for i, sym in enumerate(syms) if sym.name == donor_name]
+            if len(donors) != 1:
+                return None, {"rebased": [], "aliases": [], "partitions": [],
+                              "error": f"{label} donor {donor_name} has {len(donors)} "
+                                       "symbol-table slots, expected one"}
+            donor_index, donor = donors[0]
+            if donor["st_shndx"] not in ("SHN_UNDEF", SHN_UNDEF) \
+                    or donor["st_value"] != 0 or donor["st_size"] != 0 \
+                    or donor["st_info"]["bind"] == "STB_LOCAL" \
+                    or donor["st_other"]["visibility"] != "STV_DEFAULT":
+                return None, {"rebased": [], "aliases": [], "partitions": [],
+                              "error": f"{label} donor {donor_name} is not an exact "
+                                       "undefined, non-local, default-visible slot"}
+            for relsec in elf.iter_sections():
+                if not isinstance(relsec, RelocationSection):
+                    continue
+                source = elf.get_section(relsec.header["sh_info"])
+                if source.header["sh_type"] not in CONTENT \
+                        or not source.header["sh_size"]:
+                    continue
+                if any(reloc["r_info_sym"] == donor_index
+                       for reloc in relsec.iter_relocations()):
+                    return None, {"rebased": [], "aliases": [], "partitions": [],
+                                  "error": f"{label} donor {donor_name} is still "
+                                           "referenced by surviving content"}
+            try:
+                donor_bytes = donor_name.encode("ascii", errors="strict")
+                new_name_bytes = new_name.encode("ascii", errors="strict")
+            except UnicodeEncodeError:
+                return None, {"rebased": [], "aliases": [], "partitions": [],
+                              "error": f"{label} {new_name!r} or donor {donor_name!r} "
+                                       "is not ASCII"}
+            if len(new_name_bytes) > len(donor_bytes):
+                return None, {"rebased": [], "aliases": [], "partitions": [],
+                              "error": f"{label} {new_name} does not fit donor "
+                                       f"{donor_name}'s string-table slot"}
+            donor_name_offset = donor["st_name"]
+            overlapping = [(i, sym.name) for i, sym in enumerate(syms)
+                           if i != donor_index and isinstance(sym["st_name"], int)
+                           and donor_name_offset <= sym["st_name"] <=
+                           donor_name_offset + len(donor_bytes)]
+            if overlapping:
+                return None, {"rebased": [], "aliases": [], "partitions": [],
+                              "error": f"{label} donor {donor_name} has shared or "
+                                       f"substring string-table users {overlapping}"}
+            string_table = elf.get_section(symtab.header["sh_link"])
+            string_offset = string_table.header["sh_offset"] + donor_name_offset
+            if donor_name_offset == 0 or raw_out[string_offset - 1] != 0:
+                return None, {"rebased": [], "aliases": [], "partitions": [],
+                              "error": f"{label} donor {donor_name} does not start at "
+                                       "an exclusive string-table boundary"}
+            if bytes(raw_out[string_offset:string_offset + len(donor_bytes) + 1]) \
+                    != donor_bytes + b"\0":
+                return None, {"rebased": [], "aliases": [], "partitions": [],
+                              "error": f"{label} donor {donor_name} does not occupy "
+                                       "the expected exclusive string-table bytes"}
+            synthesized[vtable_name].append({
+                **row, "index": donor_index, "nameOffset": donor_name_offset,
+                "stringOffset": string_offset, "donorBytes": donor_bytes,
+                "newNameBytes": new_name_bytes,
+            })
+            used_names.add(new_name)
+            used_donors.add(donor_name)
 
     mutable_symbol_indices = {index for index, _sym in
                               (by_name[name][0] for name in requested)}
-    mutable_symbol_indices.update(alias["index"] for alias in aliases.values())
+    mutable_symbol_indices.update(row["index"] for rows in synthesized.values()
+                                  for row in rows)
     protected_symbols = {
         i: (sym.name, sym["st_name"], sym["st_value"], sym["st_size"],
             sym["st_info"]["bind"], sym["st_info"]["type"],
@@ -1154,28 +1212,35 @@ def rebias_object_symbols(raw, symbol_policies, normalize_undefined=False):
     }
 
     base = symtab.header["sh_offset"]
-    rows, alias_rows = [], []
+    rows, alias_rows, partition_rows = [], [], []
     for name in sorted(requested):
         index, sym = by_name[name][0]
         bias = requested[name]["bias"]
-        alias = aliases.get(name)
-        if alias is not None:
-            string_offset = alias["stringOffset"]
-            raw_out[string_offset:string_offset + len(alias["donorBytes"])] = \
-                alias["aliasBytes"] + b"\0" * (len(alias["donorBytes"])
-                                                 - len(alias["aliasBytes"]))
-            donor_ent = base + alias["index"] * 16
-            struct.pack_into(endian + "I", raw_out, donor_ent + 4, 0)
-            struct.pack_into(endian + "I", raw_out, donor_ent + 8, alias["size"])
+        for synthetic in synthesized[name]:
+            string_offset = synthetic["stringOffset"]
+            raw_out[string_offset:string_offset + len(synthetic["donorBytes"])] = \
+                synthetic["newNameBytes"] + b"\0" * \
+                (len(synthetic["donorBytes"]) - len(synthetic["newNameBytes"]))
+            donor_ent = base + synthetic["index"] * 16
+            struct.pack_into(endian + "I", raw_out, donor_ent + 4,
+                             synthetic["value"])
+            struct.pack_into(endian + "I", raw_out, donor_ent + 8,
+                             synthetic["size"])
             raw_out[donor_ent + 12] = 0x11  # STB_GLOBAL/STT_OBJECT
             struct.pack_into(endian + "H", raw_out, donor_ent + 14,
                              sym["st_shndx"])
-            alias_rows.append({"symbol": alias["symbol"], "donor": alias["donor"],
-                               "value": 0, "size": alias["size"],
-                               "section": requested[name]["section"]})
+            report_row = {
+                "symbol": synthetic["symbol"], "donor": synthetic["donor"],
+                "value": synthetic["value"], "size": synthetic["size"],
+                "section": requested[name]["section"],
+            }
+            if synthetic["kind"] == "storage-alias":
+                alias_rows.append(report_row)
+            else:
+                partition_rows.append(report_row)
         ent = base + index * 16
         new_value = sym["st_value"] + bias
-        new_size = sym["st_size"] - bias
+        new_size = requested[name]["publicSize"]
         struct.pack_into(endian + "I", raw_out, ent + 4, new_value)
         struct.pack_into(endian + "I", raw_out, ent + 8, new_size)
         rows.append({"symbol": name, "bias": bias,
@@ -1195,6 +1260,7 @@ def rebias_object_symbols(raw, symbol_policies, normalize_undefined=False):
     }
     if checked_protected != protected_symbols:
         return None, {"rebased": rows, "aliases": alias_rows,
+                      "partitions": partition_rows,
                       "error": "storage rewrite changed a non-policy symbol"}
     checked_sections = {
         i: sec.data() for i, sec in enumerate(checked.iter_sections())
@@ -1202,6 +1268,7 @@ def rebias_object_symbols(raw, symbol_policies, normalize_undefined=False):
     }
     if checked_sections != protected_sections:
         return None, {"rebased": rows, "aliases": alias_rows,
+                      "partitions": partition_rows,
                       "error": "storage rewrite changed content or relocation bytes"}
     checked_relocation_sections = {
         i: checked.get_section(i).data() for i in mutable_relocation_sections
@@ -1211,29 +1278,46 @@ def rebias_object_symbols(raw, symbol_policies, normalize_undefined=False):
     }
     if checked_relocation_sections != expected_relocation_sections:
         return None, {"rebased": rows, "aliases": alias_rows,
+                      "partitions": partition_rows,
                       "relocations": relocation_rewrites,
                       "error": "storage rewrite changed more than licensed RELA addends"}
-    for name, alias in aliases.items():
-        matches = [sym for sym in checked_symbols
-                   if sym.name == alias["symbol"]]
+    for name, synthetics in synthesized.items():
         vtables = [sym for sym in checked_symbols if sym.name == name]
-        if len(matches) != 1 or len(vtables) != 1:
+        if len(vtables) != 1:
             return None, {"rebased": rows, "aliases": alias_rows,
-                          "error": f"post-rewrite alias/vtable uniqueness failed for "
-                                   f"{alias['symbol']}/{name}"}
-        got, vtable = matches[0], vtables[0]
-        if got["st_info"]["bind"] != "STB_GLOBAL" \
-                or got["st_info"]["type"] != "STT_OBJECT" \
-                or got["st_value"] != 0 or got["st_size"] != alias["size"] \
-                or got["st_shndx"] != vtable["st_shndx"] \
-                or vtable["st_value"] != alias["size"]:
+                          "partitions": partition_rows,
+                          "error": f"post-rewrite vtable uniqueness failed for {name}"}
+        vtable = vtables[0]
+        if vtable["st_value"] != requested[name]["bias"] \
+                or vtable["st_size"] != requested[name]["publicSize"]:
             return None, {"rebased": rows, "aliases": alias_rows,
-                          "error": f"post-rewrite storage split is not exact for "
-                                   f"{alias['symbol']}/{name}"}
+                          "partitions": partition_rows,
+                          "error": f"post-rewrite public vtable segment is not exact "
+                                   f"for {name}"}
+        for synthetic in synthetics:
+            matches = [sym for sym in checked_symbols
+                       if sym.name == synthetic["symbol"]]
+            if len(matches) != 1:
+                return None, {"rebased": rows, "aliases": alias_rows,
+                              "partitions": partition_rows,
+                              "error": f"post-rewrite symbol uniqueness failed for "
+                                       f"{synthetic['symbol']}/{name}"}
+            got = matches[0]
+            if got["st_info"]["bind"] != "STB_GLOBAL" \
+                    or got["st_info"]["type"] != "STT_OBJECT" \
+                    or got["st_other"]["visibility"] != "STV_DEFAULT" \
+                    or got["st_value"] != synthetic["value"] \
+                    or got["st_size"] != synthetic["size"] \
+                    or got["st_shndx"] != vtable["st_shndx"]:
+                return None, {"rebased": rows, "aliases": alias_rows,
+                              "partitions": partition_rows,
+                              "error": f"post-rewrite vtable split is not exact for "
+                                       f"{synthetic['symbol']}/{name}"}
     public_relocations = [{k: v for k, v in row.items()
                            if k not in ("sectionIndex", "entryOffset", "fileOffset")}
                           for row in relocation_rewrites]
     return out, {"rebased": rows, "aliases": alias_rows,
+                 "partitions": partition_rows,
                  "relocations": public_relocations, "error": None}
 
 
