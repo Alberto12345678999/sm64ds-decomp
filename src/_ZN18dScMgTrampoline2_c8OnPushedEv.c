@@ -1,7 +1,7 @@
-// @symbol func_ov006_021230c4
+// @symbol _ZN18dScMgTrampoline2_c8OnPushedEv
 // recovered name: dScMgTrampoline2_c_OnPushed
 /* recovered: renamed to Class_Method, declarations from a shared header */
 #include "decl_common.h"
 /* recovered: renamed to Class_Method */
 /* dScMgTrampoline2_c::OnPushed - recovered from vtable slot identity */
-int func_ov006_021230c4(void *t) { return func_ov006_020e6e54(t) != 0; }
+int _ZN18dScMgTrampoline2_c8OnPushedEv(void *t) { return _ZN14dScMgD3DBase_c8OnPushedEv(t) != 0; }

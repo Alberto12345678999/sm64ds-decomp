@@ -139,7 +139,7 @@ src/func_ov004_020ae104.c:
     complete
     .text start:0x020ae104 end:0x020ae128
 
-src/func_ov004_020ae128.cpp:
+src/_ZN11dScMgBase_c8OnPushedEv.cpp:
     complete
     .text start:0x020ae128 end:0x020ae140
 
