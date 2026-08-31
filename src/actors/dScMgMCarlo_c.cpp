@@ -295,10 +295,10 @@ void _ZN13dScMgMCarlo_c13OnYoshiTryEatEi(char* c)
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 20 -- func_ov006_020f8a3c, 0x020f8a3c, size 0x22c */
+/* ROM ordinal 20 -- _ZN13dScMgMCarlo_c13OnTurnIntoEggEi, 0x020f8a3c, size 0x22c */
 /* -------------------------------------------------------------------------- */
 #include "types.h"
-// @symbol func_ov006_020f8a3c
+// @symbol _ZN13dScMgMCarlo_c13OnTurnIntoEggEi
 /* recovered: renamed to Class_Method, RTTI class fields named, declarations from a shared header */
 #include "decl_common.h"
 /* recovered: renamed to Class_Method, RTTI class fields named */
@@ -315,7 +315,7 @@ extern int _Z15ApproachLinear2Rsss(s16& r, s16 t, s16 s);
 extern unsigned short data_ov004_020bf9e4;
 extern void* data_ov004_020beb68;
 
-int func_ov006_020f8a3c(char* c)
+int _ZN13dScMgMCarlo_c13OnTurnIntoEggEi(char* c)
 {
     struct dScMgMCarlo_c *self = (struct dScMgMCarlo_c *)(void *)c;
     switch (self->unk_60a8) {

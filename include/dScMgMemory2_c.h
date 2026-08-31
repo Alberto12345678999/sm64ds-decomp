@@ -51,6 +51,7 @@ struct dScMgMemory2_c : dScMgSingle3DBase_c {
        none of these translation units emits _ZTV14dScMgMemory2_c. */
     s32 InitResources();   /* slot  0 -- src/_ZN14dScMgMemory2_c13InitResourcesEv.cpp */
     virtual int  OnYoshiTryEat(int arg);               /* slot 18 */
+    virtual int  OnTurnIntoEgg(int mode);              /* slot 19 */
     s32 Behavior();        /* slot  6 -- src/_ZN14dScMgMemory2_c8BehaviorEv.cpp */
     s32 Render();          /* slot  9 -- src/_ZN14dScMgMemory2_c6RenderEv.cpp */
 

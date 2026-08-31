@@ -1,5 +1,5 @@
 //cpp
-// @symbol func_ov006_020f5250
+// @symbol _ZN13dScMgMemory_c13OnTurnIntoEggEi
 /* recovered: renamed to Class_Method, RTTI class fields named */
 #include "dScMgMemory_c.h"
 
@@ -10,7 +10,7 @@ extern "C" {
 extern int func_ov006_020c1718(int* p);
 extern void FreeGfxSlotsById(int n);
 
-int func_ov006_020f5250(char* c) {
+int _ZN13dScMgMemory_c13OnTurnIntoEggEi(char* c) {
     struct dScMgMemory_c *self = (struct dScMgMemory_c *)(void *)c;
     if (self->unk_5314 == 3 && self->unk_5318 == 0) {
         if (func_ov006_020c1718((int*)(c + 0x4f38)) == 0) return 0;

@@ -77,9 +77,27 @@ struct dScMgBase_c : dScene_c {
            parameter, which the measurement above contradicts. */
     virtual int  OnYoshiTryEat(int arg);               /* slot 18 */
 
-    /* Slots 19-35 are added the same way: one slot per change, together with
+    /* Slot 19 -- MEASURED, and dActor_c.h is wrong here too:
+         arity: two of the eleven descendant overrides read r1, and both
+           COMPARE it against small integer constants rather than
+           dereferencing it -- dScMgJump_c does `if (sel == 0)`,
+           dScMgBSC_c does `if (mode == 4) ... else if (mode == 5)`.
+           Comparing a reference against 4 and 5 is meaningless, so the
+           parameter is an int, not the `Player &` dActor_c.h:132 declares.
+           Dereference-versus-compare is the discriminator whenever a word
+           in r1 could be either: both occupy one register, so codegen
+           alone cannot separate `Ei` from `ER6Player`.
+         return type: int, and this one needs no argument -- the ov004 base
+           body ends `return 1;` and all eleven overrides return a value.
+         name: unlike slot 18, independently recovered. dScMgJump_c and
+           dScMgBSC_c each carry a `recovered name: <class>_OnTurnIntoEgg`
+           comment in their own legacy source, so the name here does not
+           rest on dActor_c.h at all. */
+    virtual int  OnTurnIntoEgg(int mode);              /* slot 19 */
+
+    /* Slots 20-35 are added the same way: one slot per change, together with
        every descendant override of that slot. Until then they stay undeclared
-       and the emitted tables stop at slot 18. */
+       and the emitted tables stop at slot 19. */
 
     s32 unk_050;            /* 0x050 */
     s32 unk_054;            /* 0x054 */

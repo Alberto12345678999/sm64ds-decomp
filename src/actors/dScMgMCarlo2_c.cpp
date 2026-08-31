@@ -50,7 +50,7 @@
  * Any OTHER pragma is FILE-GLOBAL last-wins (opt_propagation,
  * optimize_for_size). Two legacy files carried one:
  *   func_ov006_020f95f0: #pragma opt_propagation off   [NOT carried]
- *   func_ov006_020fa3d0: #pragma opt_propagation off   [NOT carried]
+ *   _ZN14dScMgMCarlo2_c13OnTurnIntoEggEi: #pragma opt_propagation off   [NOT carried]
  * Neither is carried, and the measurements say the cartridge's own
  * translation unit did not have it either. opt_propagation is file-global
  * last-wins, so a TU has exactly one setting for all 23 members, and there
@@ -265,11 +265,11 @@ void _ZN14dScMgMCarlo2_c13OnYoshiTryEatEi(char* c) {
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 20 -- func_ov006_020fa3d0, 0x020fa3d0, size 0x104 */
+/* ROM ordinal 20 -- _ZN14dScMgMCarlo2_c13OnTurnIntoEggEi, 0x020fa3d0, size 0x104 */
 /* -------------------------------------------------------------------------- */
-// @symbol func_ov006_020fa3d0
+// @symbol _ZN14dScMgMCarlo2_c13OnTurnIntoEggEi
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-int func_ov006_020fa3d0(char *self)
+int _ZN14dScMgMCarlo2_c13OnTurnIntoEggEi(char *self)
 {
     short st = *(short *)(self + 0x5928);
     switch (st) {

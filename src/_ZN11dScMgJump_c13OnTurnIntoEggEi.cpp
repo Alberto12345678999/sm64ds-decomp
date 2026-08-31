@@ -1,5 +1,5 @@
 //cpp
-// @symbol func_ov006_020ee8dc
+// @symbol _ZN11dScMgJump_c13OnTurnIntoEggEi
 /* recovered: renamed to Class_Method, RTTI class fields named, declarations from a shared header */
 #include "decl_common.h"
 /* recovered: renamed to Class_Method, RTTI class fields named */
@@ -10,7 +10,7 @@
 extern "C" short _Z15ApproachLinear2Rsss(short &r, short b, short c);
 extern "C" void func_02012790(int a0);
 
-extern "C" int func_ov006_020ee8dc(char *thiz, int sel)
+extern "C" int _ZN11dScMgJump_c13OnTurnIntoEggEi(char *thiz, int sel)
 {
     struct dScMgJump_c *self = (struct dScMgJump_c *)(void *)thiz;
     if (sel == 0) {

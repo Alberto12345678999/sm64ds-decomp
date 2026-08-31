@@ -52,7 +52,7 @@
  *   [29] 0x020dabec  _ZN11dScMgCard_c8BehaviorEv
  *   [30] 0x020dac34  func_ov006_020dac34
  *   [31] 0x020db6ec  func_ov006_020db6ec
- *   [32] 0x020db720  func_ov006_020db720
+ *   [32] 0x020db720  _ZN11dScMgCard_c13OnTurnIntoEggEi
  *   [33] 0x020db9dc  _ZN11dScMgCard_c13OnYoshiTryEatEi
  *   [34] 0x020dbaf0  _ZN11dScMgCard_c13InitResourcesEv
  */
@@ -192,7 +192,7 @@ struct VtObj {
 typedef signed int s32;
 */
 
-/* TUBUILD CONFLICT -- alternate body of typedef 's16', from the legacy file for func_ov006_020db720, NOT applied:
+/* TUBUILD CONFLICT -- alternate body of typedef 's16', from the legacy file for _ZN11dScMgCard_c13OnTurnIntoEggEi, NOT applied:
 typedef short s16;
 */
 
@@ -264,7 +264,7 @@ double-mangling-defect memory note: a C++ TU re-mangles a bare
 `extern` unless told not to, and this name is already the target). */
 extern s16 data_ov004_020bf9e4;
 extern void* data_ov004_020beb68;
-extern "C" int func_ov006_020db720(char* c);
+extern "C" int _ZN11dScMgCard_c13OnTurnIntoEggEi(char* c);
 extern "C" void func_ov006_020c1604(char *c, int unused, short a2, int a3);
 extern "C" void func_ov004_020b66d4(void);
 extern u8 data_0209d45c;
@@ -289,8 +289,8 @@ extern int func_ov006_020c1a88(char *);
 /* TUBUILD CONFLICT -- alternate declaration of func_ov006_020da834, from the legacy file for func_ov006_020dac34, NOT applied: extern int func_ov006_020da834(void *p); */
 /* TUBUILD CONFLICT -- alternate declaration of func_ov006_020da860, from the legacy file for func_ov006_020dac34, NOT applied: extern int func_ov006_020da860(void *p, int v); */
 /* TUBUILD CONFLICT -- alternate declaration of _ZN5Sound12PlayBank2_2DEj, from the legacy file for func_ov006_020dac34, NOT applied: extern void _ZN5Sound12PlayBank2_2DEj(unsigned int id); */
-/* TUBUILD CONFLICT -- alternate declaration of func_ov006_020c1718, from the legacy file for func_ov006_020db720, NOT applied: extern int func_ov006_020c1718(void* p); */
-/* TUBUILD CONFLICT -- alternate declaration of _Z15ApproachLinear2Rsss, from the legacy file for func_ov006_020db720, NOT applied: extern int _Z15ApproachLinear2Rsss(s16* r, s16 t, s16 s); */
+/* TUBUILD CONFLICT -- alternate declaration of func_ov006_020c1718, from the legacy file for _ZN11dScMgCard_c13OnTurnIntoEggEi, NOT applied: extern int func_ov006_020c1718(void* p); */
+/* TUBUILD CONFLICT -- alternate declaration of _Z15ApproachLinear2Rsss, from the legacy file for _ZN11dScMgCard_c13OnTurnIntoEggEi, NOT applied: extern int _Z15ApproachLinear2Rsss(s16* r, s16 t, s16 s); */
 /* TUBUILD CONFLICT -- alternate declaration of data_ov006_02134028, from the legacy file for _ZN11dScMgCard_c13InitResourcesEv, NOT applied: extern u32 *data_ov006_02134028; */
 /* TUBUILD CONFLICT -- alternate declaration of func_ov006_020c0aa8, from the legacy file for _ZN11dScMgCard_c13InitResourcesEv, NOT applied: extern void func_ov006_020c0aa8(char *); */
 }
@@ -445,15 +445,15 @@ extern "C" void _ZN11dScMgCard_c13OnYoshiTryEatEi(char *c)
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 32 -- func_ov006_020db720, 0x020db720, size 0x2bc */
+/* ROM ordinal 32 -- _ZN11dScMgCard_c13OnTurnIntoEggEi, 0x020db720, size 0x2bc */
 /* -------------------------------------------------------------------------- */
-// @symbol func_ov006_020db720
+// @symbol _ZN11dScMgCard_c13OnTurnIntoEggEi
 /* recovered: renamed to Class_Method, RTTI class fields named, declarations from a shared header */
 /* recovered: renamed to Class_Method, RTTI class fields named */
 // recovered name: dScMgCard_c_OnTurnIntoEgg
 /* recovered: renamed to Class_Method */
 /* dScMgCard_c::OnTurnIntoEgg - recovered from vtable slot identity */
-int func_ov006_020db720(char* c)
+int _ZN11dScMgCard_c13OnTurnIntoEggEi(char* c)
 {
     struct dScMgCard_c *self = (struct dScMgCard_c *)(void *)c;
     switch (self->mState) {
