@@ -2109,7 +2109,7 @@ src/func_ov006_020dfd48.c:
     complete
     .text start:0x020dfd48 end:0x020dfed4
 
-src/func_ov006_020dfed4.c:
+src/_ZN10dScMgCup_c9Virtual50Ev.c:
     complete
     .text start:0x020dfed4 end:0x020dfeec
 
@@ -2863,7 +2863,7 @@ src/func_ov006_020e9bbc.c:
     complete
     .text start:0x020e9bbc end:0x020e9c10
 
-src/func_ov006_020e9c10.c:
+src/_ZN12dScMg3DEsp_c9Virtual50Ev.c:
     complete
     .text start:0x020e9c10 end:0x020e9c20
 
@@ -5923,7 +5923,7 @@ src/func_ov006_0211c478.c:
     complete
     .text start:0x0211c478 end:0x0211c5b8
 
-src/func_ov006_0211c5b8.c:
+src/_ZN12dScMgSound_c9Virtual50Ev.c:
     complete
     .text start:0x0211c5b8 end:0x0211c5d0
 
@@ -6246,7 +6246,7 @@ src/func_ov006_021200dc.c:
     complete
     .text start:0x021200dc end:0x02120238
 
-src/func_ov006_02120238.c:
+src/_ZN13dScMgTeresa_c9Virtual50Ev.c:
     complete
     .text start:0x02120238 end:0x02120248
 
