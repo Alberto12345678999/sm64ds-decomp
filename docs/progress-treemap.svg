@@ -37877,75 +37877,75 @@ matched: yes</title></rect><rect x="1528.61" y="483.54" width="4.70" height="7.7
 module: ov070
 addr: 0x02120520
 size: 80 bytes
-matched: yes</title></rect><rect x="1528.61" y="491.25" width="4.70" height="9.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN3AmpD1Ev
+matched: yes</title></rect><rect x="1528.61" y="491.25" width="4.70" height="9.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7daBrq_cD1Ev
 module: ov070
 addr: 0x02120570
 size: 96 bytes
-matched: yes</title></rect><rect x="1528.61" y="500.49" width="4.70" height="11.17" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN3AmpD0Ev
+matched: yes</title></rect><rect x="1528.61" y="500.49" width="4.70" height="11.17" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7daBrq_cD0Ev
 module: ov070
 addr: 0x021205d0
 size: 116 bytes
-matched: yes</title></rect><rect x="1533.31" y="448.50" width="9.47" height="10.70" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov070_02120644
+matched: yes</title></rect><rect x="1533.31" y="448.50" width="9.47" height="10.70" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7daBrq_c21HandlePlayerCollisionEv
 module: ov070
 addr: 0x02120644
 size: 224 bytes
-matched: yes</title></rect><rect x="1542.77" y="448.50" width="16.23" height="10.70" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov070_02120724
+matched: yes</title></rect><rect x="1542.77" y="448.50" width="16.23" height="10.70" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7daBrq_c20UpdateModelTransformEv
 module: ov070
 addr: 0x02120724
 size: 384 bytes
-matched: yes</title></rect><rect x="1559.00" y="448.50" width="4.56" height="10.70" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov070_021208a4
+matched: yes</title></rect><rect x="1559.00" y="448.50" width="4.56" height="10.70" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7daBrq_c19UpdateDefeatedStateEv
 module: ov070
 addr: 0x021208a4
 size: 108 bytes
-matched: yes</title></rect><rect x="1563.56" y="448.50" width="8.96" height="10.70" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov070_02120910
+matched: yes</title></rect><rect x="1563.56" y="448.50" width="8.96" height="10.70" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7daBrq_c18EnterDefeatedStateEv
 module: ov070
 addr: 0x02120910
 size: 212 bytes
-matched: yes</title></rect><rect x="1572.52" y="448.50" width="22.48" height="10.70" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov070_021209e4
+matched: yes</title></rect><rect x="1572.52" y="448.50" width="22.48" height="10.70" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7daBrq_c17UpdateActiveStateEv
 module: ov070
 addr: 0x021209e4
 size: 532 bytes
-matched: yes</title></rect><rect x="1533.31" y="459.20" width="4.76" height="17.11" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov070_02120bf8
+matched: yes</title></rect><rect x="1533.31" y="459.20" width="4.76" height="17.11" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7daBrq_c16EnterActiveStateEv
 module: ov070
 addr: 0x02120bf8
 size: 180 bytes
-matched: yes</title></rect><rect x="1533.31" y="476.31" width="4.76" height="5.32" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov070_02120cac
+matched: yes</title></rect><rect x="1533.31" y="476.31" width="4.76" height="5.32" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7daBrq_c19UpdateCooldownStateEv
 module: ov070
 addr: 0x02120cac
 size: 56 bytes
-matched: yes</title></rect><rect x="1533.31" y="481.63" width="4.76" height="7.60" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov070_02120ce4
+matched: yes</title></rect><rect x="1533.31" y="481.63" width="4.76" height="7.60" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7daBrq_c18EnterCooldownStateEv
 module: ov070
 addr: 0x02120ce4
 size: 80 bytes
-matched: yes</title></rect><rect x="1533.31" y="489.23" width="4.76" height="5.70" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov070_02120d34
+matched: yes</title></rect><rect x="1533.31" y="489.23" width="4.76" height="5.70" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7daBrq_c11UpdateStateEv
 module: ov070
 addr: 0x02120d34
 size: 60 bytes
-matched: yes</title></rect><rect x="1533.31" y="494.93" width="4.76" height="5.32" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov070_02120d70
+matched: yes</title></rect><rect x="1533.31" y="494.93" width="4.76" height="5.32" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7daBrq_c10EnterStateEv
 module: ov070
 addr: 0x02120d70
 size: 56 bytes
-matched: yes</title></rect><rect x="1533.31" y="500.25" width="4.76" height="2.66" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov070_02120da8
+matched: yes</title></rect><rect x="1533.31" y="500.25" width="4.76" height="2.66" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7daBrq_c8SetStateEi
 module: ov070
 addr: 0x02120da8
 size: 28 bytes
-matched: yes</title></rect><rect x="1533.31" y="502.92" width="4.76" height="8.74" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN3Amp16CleanupResourcesEv
+matched: yes</title></rect><rect x="1533.31" y="502.92" width="4.76" height="8.74" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7daBrq_c16CleanupResourcesEv
 module: ov070
 addr: 0x02120dc4
 size: 92 bytes
-matched: yes</title></rect><rect x="1538.06" y="459.20" width="1.76" height="1.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN3Amp16OnPendingDestroyEv
+matched: yes</title></rect><rect x="1538.06" y="459.20" width="1.76" height="1.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7daBrq_c16OnPendingDestroyEv
 module: ov070
 addr: 0x02120e20
 size: 4 bytes
-matched: yes</title></rect><rect x="1538.06" y="460.23" width="1.76" height="26.74" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN3Amp6RenderEv
+matched: yes</title></rect><rect x="1538.06" y="460.23" width="1.76" height="26.74" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7daBrq_c6RenderEv
 module: ov070
 addr: 0x02120e24
 size: 104 bytes
-matched: yes</title></rect><rect x="1538.06" y="486.97" width="1.76" height="24.69" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN3Amp8BehaviorEv
+matched: yes</title></rect><rect x="1538.06" y="486.97" width="1.76" height="24.69" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7daBrq_c8BehaviorEv
 module: ov070
 addr: 0x02120e8c
 size: 96 bytes
-matched: yes</title></rect><rect x="1539.82" y="459.20" width="6.21" height="32.64" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN3Amp13InitResourcesEv
+matched: yes</title></rect><rect x="1539.82" y="459.20" width="6.21" height="32.64" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7daBrq_c13InitResourcesEv
 module: ov070
 addr: 0x02120eec
 size: 448 bytes
