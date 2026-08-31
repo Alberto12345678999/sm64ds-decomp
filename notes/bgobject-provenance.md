@@ -207,8 +207,8 @@ so they stay `unk_`.
 
 | Offset | Name | Evidence |
 | --- | --- | --- |
-| 0x3cc | `mStateTable` | [func_ov027_02111d70](../src/func_ov027_02111d70.c) writes `&data_ov027_02113ce4[idx]` into it and `func_ov027_02111d38` / `02111cfc` read `*(p)` and `*(p + 1)` as function pointers and call them through `this`. Left a raw `void *` — the callee's exact function-pointer type is not proven. |
-| 0x3d8 | `mTimer` | `func_ov027_02111ca8` sets `0x14`; `func_ov027_02111c48` runs it down through `DecIfAbove0_Byte`. |
+| 0x3cc | `mStateTable` | [func_ov027_02111d70](../src/func_ov027_02111d70.c) writes `&data_ov027_02113ce4[idx]` into it and [func_ov027_02111d38](../src/func_ov027_02111d38.cpp) / [func_ov027_02111cfc](../src/func_ov027_02111cfc.cpp) read `*(p)` and `*(p + 1)` as function pointers and call them through `this`. Left a raw `void *` — the callee's exact function-pointer type is not proven. |
+| 0x3d8 | `mTimer` | [func_ov027_02111ca8](../src/func_ov027_02111ca8.cpp) sets `0x14`; [func_ov027_02111c48](../src/func_ov027_02111c48.c) runs it down through `DecIfAbove0_Byte`. |
 
 Left `unk_`: `0x3d0` (set to 0 or 1, no reader identified), `0x3d4` (an index into
 `data_ov027_02113a1c` keyed by `0x3d9`), `0x3d9` (0..9, reset above 9). In the C twin,
@@ -232,7 +232,7 @@ offset 0. Both are spelled `static_cast<Animation *>(&member)` now.
 
 ---
 
-## Eyerok (`include/Eyerok.h`, ov066, size 0x874)
+## Eyerok (`include/Eyerok.h`, [ov066](../config/arm9/overlays/ov066/symbols.txt), size 0x874)
 
 The largest recovery in this pass: reading `InitResources` and `Behavior` as named
 members turned **every remaining `pad_` run in the class** into an evidenced field,
@@ -281,7 +281,7 @@ re-verified. Two were rejected by the ROM and are documented in place:
 
 ---
 
-## daObjPushblock_c (`include/daObjPushblock_c.h`, ov002, size 0x4f4)
+## daObjPushblock_c (`include/daObjPushblock_c.h`, [ov002](../config/arm9/overlays/ov002/symbols.txt), size 0x4f4)
 
 Bodies read: `_ZN16daObjPushblock_c13InitResourcesEv`,
 `_ZN16daObjPushblock_c8BehaviorEv`, `_ZN16daObjPushblock_c6RenderEv`,
@@ -317,7 +317,7 @@ around it are free. The measurement is in a comment at the site.
 
 ---
 
-## BlueCoinSwitch (`include/BlueCoinSwitch.h`, ov002, size 0x330)
+## BlueCoinSwitch (`include/BlueCoinSwitch.h`, [ov002](../config/arm9/overlays/ov002/symbols.txt), size 0x330)
 
 This header already carried a full prose account of every offset; the names below just
 make the code say what the prose said. Bodies read:
@@ -342,7 +342,7 @@ nowhere and no normal gate would have caught it. `tools/check_src_tu_compiles.py
 
 ---
 
-## MovingBar (`include/MovingBar.h`, ov015, size 0x338)
+## MovingBar (`include/MovingBar.h`, [ov015](../config/arm9/overlays/ov015/symbols.txt), size 0x338)
 
 | Offset | Name | Evidence |
 | --- | --- | --- |
@@ -365,7 +365,7 @@ object is gone — the call goes through `&mModel`.
 
 ---
 
-## daObjCannonShutter_c (`include/daObjCannonShutter_c.h`, ov002, size 0x330)
+## daObjCannonShutter_c (`include/daObjCannonShutter_c.h`, [ov002](../config/arm9/overlays/ov002/symbols.txt), size 0x330)
 
 | Offset | Name | Evidence |
 | --- | --- | --- |
@@ -386,8 +386,7 @@ sub; }` shadow is gone in favour of `mModel.Render(0)`, and `InitResources` reac
 `mModel`, `mMeshCollider` and `mClsnMat` by name.
 
 ---
-
-## QuestionBlock (`include/QuestionBlock.h`, ov102, size 0x3f8)
+## QuestionBlock (`include/QuestionBlock.h`, [ov102](../config/arm9/overlays/ov102/symbols.txt), size 0x3f8)
 
 Bodies read: `src/_ZN13QuestionBlock13InitResourcesEv.cpp`,
 `src/_ZN13QuestionBlock8BehaviorEv.cpp`, `src/_ZN13QuestionBlock6RenderEv.cpp`,
@@ -419,7 +418,7 @@ whole-object shadow casts are `&mModelAnim` and `&mModel`.
 
 ---
 
-## FortressWall (`include/FortressWall.h`, ov079, size 0x324)
+## FortressWall (`include/FortressWall.h`, [ov079](../config/arm9/overlays/ov079/symbols.txt), size 0x324)
 
 Bodies read: `src/_ZN12FortressWall13InitResourcesEv.cpp`,
 `src/_ZN12FortressWall8BehaviorEv.cpp`, `src/_ZN12FortressWall6RenderEv.cpp`,
@@ -464,7 +463,7 @@ mismatching, 106/106 exact) and `tools/check_src_tu_compiles.py` (72/72).
 
 ---
 
-## daObjHmBskt_c (`include/daObjHmBskt_c.h`, ov030, size 0x4e0)
+## daObjHmBskt_c (`include/daObjHmBskt_c.h`, [ov030](../config/arm9/overlays/ov030/symbols.txt), size 0x4e0)
 
 | Offset | Name | Evidence |
 | --- | --- | --- |
@@ -497,7 +496,7 @@ The promoted header derives from `dBgActor_c` directly and owns two complete
 
 ---
 
-## CccArena (`include/CccArena.h`, ov073, size 0x33c)
+## CccArena (`include/CccArena.h`, [ov073](../config/arm9/overlays/ov073/symbols.txt), size 0x33c)
 
 | Offset | Name | Evidence |
 | --- | --- | --- |
@@ -514,7 +513,7 @@ Raw-offset collapses, each re-verified byte-exact: the six
 
 ---
 
-## BowserFireSeaArena (`include/BowserFireSeaArena.h`, ov060, size 0x570)
+## BowserFireSeaArena (`include/BowserFireSeaArena.h`, [ov060](../config/arm9/overlays/ov060/symbols.txt), size 0x570)
 
 | Offset | Name | Evidence |
 | --- | --- | --- |
@@ -535,7 +534,7 @@ In the C twin, `unk_08e` was repointed to `mAngleY`.
 
 ---
 
-## TtcRotatingGear (`include/TtcRotatingGear.h`, ov065, size 0x330)
+## TtcRotatingGear (`include/TtcRotatingGear.h`, [ov065](../config/arm9/overlays/ov065/symbols.txt), size 0x330)
 
 | Offset | Name | Evidence |
 | --- | --- | --- |
@@ -546,7 +545,7 @@ In the C twin, `0x0a0` becomes `mTerminalVelocity` and `0x0a8` becomes `mVertSpe
 
 ---
 
-## SeesawBob (`include/SeesawBob.h`, ov095, size 0x328)
+## SeesawBob (`include/SeesawBob.h`, [ov095](../config/arm9/overlays/ov095/symbols.txt), size 0x328)
 
 | Offset | Name | Evidence |
 | --- | --- | --- |
@@ -562,7 +561,7 @@ sites across `InitResources` and `CleanupResources`, and `a[0x326] = 1;` in
 
 ---
 
-## RotatingCogSmall (`include/RotatingCogSmall.h`, ov035, size 0x330)
+## RotatingCogSmall (`include/RotatingCogSmall.h`, [ov035](../config/arm9/overlays/ov035/symbols.txt), size 0x330)
 
 | Offset | Name | Evidence |
 | --- | --- | --- |
@@ -581,7 +580,7 @@ is three named member stores now.
 
 ---
 
-## IceBlock (`include/IceBlock.h`, ov081, size 0x368)
+## IceBlock (`include/IceBlock.h`, [ov081](../config/arm9/overlays/ov081/symbols.txt), size 0x368)
 
 | Offset | Name | Evidence |
 | --- | --- | --- |
@@ -598,7 +597,7 @@ In the C twin, `0x340`/`0x344` were repointed to `mdCcAc_c_hitFlags` /
 
 ---
 
-## DonutBlock (`include/DonutBlock.h`, ov036, size 0x4ec)
+## DonutBlock (`include/DonutBlock.h`, [ov036](../config/arm9/overlays/ov036/symbols.txt), size 0x4ec)
 
 | Offset | Name | Evidence |
 | --- | --- | --- |
@@ -609,7 +608,7 @@ In the C twin, `0x09c` becomes `mVertAccel`, `0x0a0` `mTerminalVelocity`,
 
 ---
 
-## daObjCtMecha05_c (`include/daObjCtMecha05_c.h`, ov065, size 0x394)
+## daObjCtMecha05_c (`include/daObjCtMecha05_c.h`, [ov065](../config/arm9/overlays/ov065/symbols.txt), size 0x394)
 
 | Offset | Name | Evidence |
 | --- | --- | --- |
@@ -622,7 +621,7 @@ In the C twin, `0x09c` becomes `mVertAccel`, `0x0a0` `mTerminalVelocity`,
 
 ---
 
-## daObjCtMecha03_c (`include/daObjCtMecha03_c.h`, ov065, size 0x388)
+## daObjCtMecha03_c (`include/daObjCtMecha03_c.h`, [ov065](../config/arm9/overlays/ov065/symbols.txt), size 0x388)
 
 A pendulum, in four fields `Behavior` integrates. Bodies read:
 `src/_ZN16daObjCtMecha03_c13InitResourcesEv.cpp`,
@@ -639,7 +638,7 @@ A pendulum, in four fields `Behavior` integrates. Bodies read:
 
 ---
 
-## RotatingBridge (`include/RotatingBridge.h`, ov015, size 0x324)
+## RotatingBridge (`include/RotatingBridge.h`, [ov015](../config/arm9/overlays/ov015/symbols.txt), size 0x324)
 
 | Offset | Name | Evidence |
 | --- | --- | --- |
@@ -651,7 +650,7 @@ In the C twin, `0x074` becomes `mCamSpacePosX`, `0x08e` `mAngleY`, `0x094`
 
 ---
 
-## PyramidTop (`include/PyramidTop.h`, ov024, size 0x3b8)
+## PyramidTop (`include/PyramidTop.h`, [ov024](../config/arm9/overlays/ov024/symbols.txt), size 0x3b8)
 
 | Offset | Name | Evidence |
 | --- | --- | --- |
@@ -662,7 +661,7 @@ In the C twin, `0x074` becomes `mCamSpacePosX`.
 
 ---
 
-## KnockDownPlank (`include/KnockDownPlank.h`, ov015, size 0x39c)
+## KnockDownPlank (`include/KnockDownPlank.h`, [ov015](../config/arm9/overlays/ov015/symbols.txt), size 0x39c)
 
 | Offset | Name | Evidence |
 | --- | --- | --- |
@@ -670,7 +669,7 @@ In the C twin, `0x074` becomes `mCamSpacePosX`.
 
 ---
 
-## BigBrickBlock (`include/BigBrickBlock.h`, ov002, size 0x330)
+## BigBrickBlock (`include/BigBrickBlock.h`, [ov002](../config/arm9/overlays/ov002/symbols.txt), size 0x330)
 
 | Offset | Name | Evidence |
 | --- | --- | --- |
@@ -680,7 +679,7 @@ In the C twin, `0x074` becomes `mCamSpacePosX`.
 
 ---
 
-## ArrowSignRight (`include/ArrowSignRight.h`, ov098, size 0x380)
+## ArrowSignRight (`include/ArrowSignRight.h`, [ov098](../config/arm9/overlays/ov098/symbols.txt), size 0x380)
 
 | Offset | Name | Evidence |
 | --- | --- | --- |
@@ -696,18 +695,18 @@ In the C twin, `0x00c` becomes `actorID` and `0x08e` `mAngleY`.
 
 | Class | Offset | Name | Evidence |
 | --- | --- | --- | --- |
-| `daObjEmmLog_c` (ov052) | 0x320 | `mBasePosY` | `InitResources` copies `mPosY`; `Behavior` computes `mPosY = mBasePosY + (sine * mBobAmplitude >> 12)` from `data_02082214`. |
+| `daObjEmmLog_c` ([ov052](../config/arm9/overlays/ov052/symbols.txt)) | 0x320 | `mBasePosY` | `InitResources` copies `mPosY`; `Behavior` computes `mPosY = mBasePosY + (sine * mBobAmplitude >> 12)` from `data_02082214`. |
 | | 0x324 | `mBobAmplitude` | `InitResources` sets `0x64000`, or the spawn byte times `0xa000`; it is the multiplicand of that sine. |
-| `TTC_MovingBeam` (ov065) | 0x330 | `mGroundY` | `InitResources` stores the probe point's Y, then overwrites it with the `dBgCh_Gnd` hit height when `DetectClsn` returns nonzero. |
-| `TTC_MovingBar` (ov065) | 0x31e | `mVariant` | `InitResources` sets `0`/`1` and uses it as the row index into `data_ov065_0211d35c` / `...d360`; `CleanupResources` indexes both again. |
+| `TTC_MovingBeam` ([ov065](../config/arm9/overlays/ov065/symbols.txt)) | 0x330 | `mGroundY` | `InitResources` stores the probe point's Y, then overwrites it with the `dBgCh_Gnd` hit height when `DetectClsn` returns nonzero. |
+| `TTC_MovingBar` ([ov065](../config/arm9/overlays/ov065/symbols.txt)) | 0x31e | `mVariant` | `InitResources` sets `0`/`1` and uses it as the row index into `data_ov065_0211d35c` / `...d360`; `CleanupResources` indexes both again. |
 | | 0x320 | `mGroundY` | the same raycast shape as `TTC_MovingBeam`'s: the probe Y, replaced by `raycast + 0x44` on a hit. |
-| `SlidingIce` (ov027) | 0x31e | `mDelayTimer` | `DecIfAbove0_Short`'d at the top of both variants of `Behavior`, which do nothing at all until it reaches 0; seeded `0x64` or `mNumToBigIce * 0x14` and re-armed to `(mNumToBigIce + 1) * 0x14` after each spawn. |
-| `PyramidStep` (ov025) | 0x374 | `mClsnMat2` | `InitResources` passes `&mClsnMat2` as the `const Matrix4x3 &` of `dBgW_KcMbg::SetFile`, and `0x374 + 0x30 = 0x3a4` — the factory's own `operator new` literal. The header's `pad_378[0x2c]` "tail padding" WAS this matrix; it is gone and the size assert now closes on a field span. |
-| `PathLift` (ov002) | 0x42a | `mAfterClsnRan` | set to `1` by the last statement of `AfterClsn`, cleared by the last statement of `BaseBehavior`. |
+| `SlidingIce` ([ov027](../config/arm9/overlays/ov027/symbols.txt)) | 0x31e | `mDelayTimer` | `DecIfAbove0_Short`'d at the top of both variants of `Behavior`, which do nothing at all until it reaches 0; seeded `0x64` or `mNumToBigIce * 0x14` and re-armed to `(mNumToBigIce + 1) * 0x14` after each spawn. |
+| `PyramidStep` ([ov025](../config/arm9/overlays/ov025/symbols.txt)) | 0x374 | `mClsnMat2` | `InitResources` passes `&mClsnMat2` as the `const Matrix4x3 &` of `dBgW_KcMbg::SetFile`, and `0x374 + 0x30 = 0x3a4` — the factory's own `operator new` literal. The header's `pad_378[0x2c]` "tail padding" WAS this matrix; it is gone and the size assert now closes on a field span. |
+| `PathLift` ([ov002](../config/arm9/overlays/ov002/symbols.txt)) | 0x42a | `mAfterClsnRan` | set to `1` by the last statement of `AfterClsn`, cleared by the last statement of `BaseBehavior`. |
 | | 0x42b | `mTriggerDelay` | `AfterClsn` fires `func_ov002_020efa54(this, 1)` only when `DecIfAbove0_Byte(&mTriggerDelay)` returns 0 and `mState == 0`. |
-| `WDW_Water` (ov029) | 0x338 | `mUseSpawnPosY` | `InitResources` sets `param1 & 1`, and when it is clear — and only then — overrides `mPosY` from `data_ov029_02112b2c[clock setting]` before snapshotting `mTargetPosY`. |
-| `ChainChompFence` (ov060) | 0x31e | `mDisabled` | both `Behavior` and `Render` return immediately while it is nonzero, and nothing else in a matched body touches it. |
-| `LavaPlank` (ov022) | 0x324 | `mPhaseAngle` | `InitResources` seeds it from `mAngleX`; `Behavior` adds `0x400` per frame and uses `(u16)mPhaseAngle >> 4` as the sine-table index. |
+| `WDW_Water` ([ov029](../config/arm9/overlays/ov029/symbols.txt)) | 0x338 | `mUseSpawnPosY` | `InitResources` sets `param1 & 1`, and when it is clear — and only then — overrides `mPosY` from `data_ov029_02112b2c[clock setting]` before snapshotting `mTargetPosY`. |
+| `ChainChompFence` ([ov060](../config/arm9/overlays/ov060/symbols.txt)) | 0x31e | `mDisabled` | both `Behavior` and `Render` return immediately while it is nonzero, and nothing else in a matched body touches it. |
+| `LavaPlank` ([ov022](../config/arm9/overlays/ov022/symbols.txt)) | 0x324 | `mPhaseAngle` | `InitResources` seeds it from `mAngleX`; `Behavior` adds `0x400` per frame and uses `(u16)mPhaseAngle >> 4` as the sine-table index. |
 
 `PathLift::mAfterClsnRan` also carried into the `daObjRcCarpet_c::Behavior` member
 in `src/actors/daObjRcCarpet_c.cpp`, a subclass that reads the inherited field — the
