@@ -1,12 +1,12 @@
-// @symbol func_ov006_020e9c10
+// @symbol _ZN12dScMg3DEsp_c9Virtual50Ev
 // recovered name: dScMg3DEsp_c_Virtual50
 /* recovered: renamed to Class_Method */
 /* dScMg3DEsp_c::Virtual50 - recovered from vtable slot identity */
-/* func_ov006_020e9c10 at 0x020e9c10 - thunk: FreeGfxSlotsById(8) */
+/* _ZN12dScMg3DEsp_c9Virtual50Ev at 0x020e9c10 - thunk: FreeGfxSlotsById(8) */
 
 extern int FreeGfxSlotsById(int a);
 
-int func_ov006_020e9c10(void)
+int _ZN12dScMg3DEsp_c9Virtual50Ev(void)
 {
     return FreeGfxSlotsById(8);
 }

@@ -70,6 +70,7 @@ struct dScMgCup_c : dScMgSingle3DBase_c {
        _ZTV10dScMgCup_c. */
     s32 InitResources();  /* slot  0 -- src/_ZN10dScMgCup_c13InitResourcesEv.cpp */
     virtual int  OnYoshiTryEat(int arg);               /* slot 18 */
+    virtual int  Virtual50();                          /* slot 20 */
     s32 Behavior();       /* slot  6 -- src/_ZN10dScMgCup_c8BehaviorEv.cpp */
     s32 Render();         /* slot  9 -- src/_ZN10dScMgCup_c6RenderEv.cpp */
 

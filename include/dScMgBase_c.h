@@ -93,11 +93,30 @@ struct dScMgBase_c : dScene_c {
            dScMgBSC_c each carry a `recovered name: <class>_OnTurnIntoEgg`
            comment in their own legacy source, so the name here does not
            rest on dActor_c.h at all. */
-    virtual int  OnTurnIntoEgg(int mode);              /* slot 19 */
+    virtual int  OnTurnIntoEgg(int mode);              /* slot 19 */
+    /* Slot 20 -- and this one has no name.  `Virtual50` is the placeholder
+       include/dActor_c.h:133 already uses, spelled from the byte offset
+       (slot 20 x 4 = 0x50).  All five bodies carry a
+       `recovered name: <class>_Virtual50` comment, but every one of them is
+       that same coined placeholder rather than a name read out of anything,
+       so five of them are not five pieces of evidence.  Naming it would be
+       inventing, so it keeps the placeholder until something real turns up.
+         arity: no explicit parameters.  dScMg3DEsp_c and dScMgTeresa_c take
+           nothing and tail-call `FreeGfxSlotsById(8)`; dScMgCup_c and
+           dScMgSound_c read only `this`, passing `this + 0x4f38` on.  No
+           override touches a second argument register.
+         return type: NOT determined here, and said plainly rather than
+           implied.  The ov004 base body is a bare `bx lr`, and all four
+           overrides are single tail calls -- both emit identical code under
+           `int` and under `void`, so the dereference-versus-compare trick that
+           settled slot 19 has nothing to bite on.  This takes
+           dActor_c.h:133's `int`; if a later override with an early return
+           shows otherwise, that override is the evidence and this changes. */
+    virtual int  Virtual50();                          /* slot 20 */
 
-    /* Slots 20-35 are added the same way: one slot per change, together with
+    /* Slots 21-35 are added the same way: one slot per change, together with
        every descendant override of that slot. Until then they stay undeclared
-       and the emitted tables stop at slot 19. */
+       and the emitted tables stop at slot 20. */
 
     s32 unk_050;            /* 0x050 */
     s32 unk_054;            /* 0x054 */
