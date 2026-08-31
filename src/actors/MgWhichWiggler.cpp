@@ -28,7 +28,13 @@ extern void func_ov006_020ea324(void *);
 void *MgWhichWiggler_Spawn(void);
 extern void NullDestructor_0203d47c(void);
 extern void func_0203d738(void);
-/* TUBUILD CONFLICT -- alternate declaration of func_020733a8, from the legacy file for func_ov006_020ede80, NOT applied: extern void func_020733a8(void* obj, int a, int b, void* cb1, void* cb2); */
+/* TUBUILD RECONCILE -- the legacy file for func_ov006_020ede80 declared
+ * func_020733a8 with the pointer asterisks bound to the type rather than to
+ * the name: `void* obj` against the `void *obj` kept above, and likewise for
+ * cb1 and cb2.  tubuild's _merge_field compares declaration text verbatim, so
+ * a difference in where the asterisk sits registers as a conflict.  It is the
+ * same declaration -- same types, same order, same ABI -- so there is nothing
+ * to choose between them and the alternate is dropped rather than deferred. */
 }
 
 /* -------------------------------------------------------------------------- */
