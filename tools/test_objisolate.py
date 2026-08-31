@@ -687,7 +687,7 @@ class Isolate(unittest.TestCase):
                                                    "donor": "_ZTI1P"}}}
         refused, why = OI.rebias_object_symbols(raw, live_donor)
         self.assertIsNone(refused)
-        self.assertIn("not an exact deadstripped", why["error"])
+        self.assertIn("not an exact undefined", why["error"])
 
         endian = "<" if elf.little_endian else ">"
         entry = symtab.header["sh_offset"] + index * 16
@@ -760,6 +760,114 @@ class Isolate(unittest.TestCase):
         refused, why = OI.rebias_object_symbols(bytes(bad), policy)
         self.assertIsNone(refused)
         self.assertIn("still referenced", why["error"])
+
+    def test_rebias_vtable_synthesizes_exact_interior_partition_symbols(self):
+        """Interior labels reuse only safe slots and never alter retained content."""
+        import io
+        import struct
+        from elftools.elf.elffile import ELFFile
+
+        whole = self.build(
+            "struct P { virtual ~P(); virtual void f(); virtual void g(); }; "
+            "P::~P(){} void P::f(){} void P::g(){} "
+            "struct Q { virtual ~Q(); }; Q::~Q(){}\n").read_bytes()
+        whole_elf = ELFFile(io.BytesIO(whole))
+        symbols = list(whole_elf.get_section_by_name(".symtab").iter_symbols())
+        licensed = [s.name for s in symbols
+                    if s.name and s["st_info"]["type"] == "STT_OBJECT"
+                    and isinstance(s["st_shndx"], int)
+                    and whole_elf.get_section(s["st_shndx"]).name == ".data"]
+        deferred = [{"symbol": s.name, "section": ".text", "size": s["st_size"]}
+                    for s in symbols if s.name and s["st_info"]["type"] == "STT_FUNC"
+                    and isinstance(s["st_shndx"], int)
+                    and whole_elf.get_section(s["st_shndx"]).name == ".text"
+                    and s["st_size"] > 0]
+        raw, partition = OI.derive_section_partition(
+            whole, [".data"], licensed, deferred)
+        self.assertIsNone(partition["error"])
+        elf = ELFFile(io.BytesIO(raw))
+        symtab = elf.get_section_by_name(".symtab")
+        symbols = list(symtab.iter_symbols())
+        vtable = next(s for s in symbols if s.name == "_ZTV1P")
+        donor1 = "_ZN1PD2Ev"
+        donor2 = "_ZN1QD2Ev"
+        donor2_index = next(i for i, s in enumerate(symbols) if s.name == donor2)
+
+        # Externalized RTTI donors are STB_LOPROC/OBJECT rather than GLOBAL/FUNC.
+        # Mutate one already-undefined, unreferenced test slot to that exact shape.
+        raw = bytearray(raw)
+        raw[symtab.header["sh_offset"] + donor2_index * 16 + 12] = 0xd1
+        raw = bytes(raw)
+        parsed = ELFFile(io.BytesIO(raw))
+        parsed_symbols = list(parsed.get_section_by_name(".symtab").iter_symbols())
+        donor2_row = next(s for s in parsed_symbols if s.name == donor2)
+        self.assertEqual((donor2_row["st_shndx"], donor2_row["st_info"]["bind"],
+                          donor2_row["st_info"]["type"]),
+                         ("SHN_UNDEF", "STB_LOPROC", "STT_OBJECT"))
+
+        total = vtable["st_size"]
+        self.assertGreater(total, 16)
+        policy = {"_ZTV1P": {
+            "bias": 8, "size": total, "section": ".data",
+            "partitionSymbols": [
+                {"symbol": "VT7", "value": 12, "size": 4, "donor": donor1},
+                {"symbol": "VT14", "value": 16, "size": total - 16,
+                 "donor": donor2},
+            ],
+        }}
+        before_content = {i: sec.data() for i, sec in enumerate(parsed.iter_sections())
+                          if sec.header["sh_type"] in OI.CONTENT
+                          and sec.header["sh_size"]}
+        out, report = OI.rebias_object_symbols(raw, policy)
+        self.assertIsNotNone(out, report)
+        self.assertIsNone(report["error"])
+        self.assertEqual([(row["symbol"], row["value"], row["size"])
+                          for row in report["partitions"]],
+                         [("VT7", 12, 4), ("VT14", 16, total - 16)])
+        result = ELFFile(io.BytesIO(out))
+        out_symbols = list(result.get_section_by_name(".symtab").iter_symbols())
+        got_vtable = next(s for s in out_symbols if s.name == "_ZTV1P")
+        self.assertEqual((got_vtable["st_value"], got_vtable["st_size"]), (8, 4))
+        for name, value, size in (("VT7", 12, 4), ("VT14", 16, total - 16)):
+            got = next(s for s in out_symbols if s.name == name)
+            self.assertEqual((got["st_value"], got["st_size"], got["st_shndx"]),
+                             (value, size, got_vtable["st_shndx"]))
+            self.assertEqual((got["st_info"]["bind"], got["st_info"]["type"]),
+                             ("STB_GLOBAL", "STT_OBJECT"))
+        self.assertFalse(any(s.name in (donor1, donor2) for s in out_symbols))
+        after_content = {i: sec.data() for i, sec in enumerate(result.iter_sections())
+                         if sec.header["sh_type"] in OI.CONTENT
+                         and sec.header["sh_size"]}
+        self.assertEqual(after_content, before_content)
+
+        def refused_with(partitions, phrase):
+            refused, why = OI.rebias_object_symbols(
+                raw, {"_ZTV1P": {**policy["_ZTV1P"],
+                                   "partitionSymbols": partitions}})
+            self.assertIsNone(refused)
+            self.assertIn(phrase, why["error"])
+
+        refused_with([
+            {"symbol": "VT7", "value": 12, "size": 4, "donor": donor1},
+            {"symbol": "VT14", "value": 15, "size": total - 15,
+             "donor": donor2}], "overlaps")
+        refused_with([
+            {"symbol": "VT7", "value": 12, "size": 4, "donor": donor1},
+            {"symbol": "VT14", "value": 20, "size": total - 20,
+             "donor": donor2}], "leaves a gap")
+        refused_with([
+            {"symbol": "VT7", "value": 12, "size": 4, "donor": "missing"},
+            {"symbol": "VT14", "value": 16, "size": total - 16,
+             "donor": donor2}], "has 0 symbol-table slots")
+        refused_with([
+            {"symbol": "VT7", "value": 12, "size": 4, "donor": donor1},
+            {"symbol": "VT14", "value": 16, "size": total - 16,
+             "donor": donor1}], "is reused")
+        refused_with([
+            {"symbol": "VT7", "value": 12, "size": 4,
+             "donor": "_ZN1PD0Ev"},
+            {"symbol": "VT14", "value": 16, "size": total - 16,
+             "donor": donor2}], "still referenced")
 
     def test_rebias_vtable_preserves_live_reference_targets(self):
         """Whole-object vptr stores keep their target while _ZTV moves by eight."""

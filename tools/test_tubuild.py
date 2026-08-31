@@ -1607,6 +1607,102 @@ def test_partitioned_vtable_rebias_needs_one_unique_configured_public_home():
         tubuild.all_symbol_homes = original
 
 
+def test_partitioned_vtable_interior_symbols_require_exact_policy_and_baseline():
+    entry = {
+        "module": "ov999", "functions": [],
+        "externalized_output": [
+            {"symbol": "_ZTS1B", "disposition": "canonical-import"},
+            {"symbol": "_ZTS1A", "disposition": "canonical-import"},
+        ],
+        "data": [{
+            "symbol": "_ZTV1P", "address": "0x2008",
+            "emitted_storage_address": "0x2000", "address_point_bias": "0x8",
+            "size": "0x30", "partition_symbols": [
+                {"symbol": "VT7", "address": "0x2010", "size": "0x8",
+                 "binding": "STB_GLOBAL", "type": "STT_OBJECT",
+                 "visibility": "STV_DEFAULT", "reuse_policy_symbol": "_ZTS1B"},
+                {"symbol": "VT14", "address": "0x2018", "size": "0x18",
+                 "binding": "STB_GLOBAL", "type": "STT_OBJECT",
+                 "visibility": "STV_DEFAULT", "reuse_policy_symbol": "_ZTS1A"},
+            ],
+        }], "bss": [],
+    }
+    claims = [{"name": ".data", "start": 0x2000, "end": 0x2030}]
+    baseline = {
+        "_ZTV1P": [{"address": 0x2008, "size": 8, "binding": "STB_GLOBAL",
+                     "type": "STT_OBJECT", "visibility": "STV_DEFAULT",
+                     "sectionIndex": 4, "section": ".data"}],
+        "VT7": [{"address": 0x2010, "size": 8, "binding": "STB_GLOBAL",
+                 "type": "STT_OBJECT", "visibility": "STV_DEFAULT",
+                 "sectionIndex": 4, "section": ".data"}],
+        "VT14": [{"address": 0x2018, "size": 0x18, "binding": "STB_GLOBAL",
+                  "type": "STT_OBJECT", "visibility": "STV_DEFAULT",
+                  "sectionIndex": 4, "section": ".data"}],
+    }
+    homes = {"_ZTV1P": [("ov999", 0x2008)], "VT7": [("ov999", 0x2010)],
+             "VT14": [("ov999", 0x2018)]}
+    original_homes = tubuild.all_symbol_homes
+    original_linked = tubuild.linked_symbol_rows
+    try:
+        tubuild.all_symbol_homes = lambda: homes
+        policies, reasons = tubuild.partition_vtable_rebiases(
+            entry, claims, baseline_symbols=baseline, baseline_sha256="c" * 64)
+        assert reasons == []
+        policy = policies["_ZTV1P"]
+        assert policy["publicSize"] == 8
+        assert [(row["symbol"], row["value"], row["size"], row["donor"])
+                for row in policy["partitionSymbols"]] == [
+                    ("VT7", 0x10, 8, "_ZTS1B"),
+                    ("VT14", 0x18, 0x18, "_ZTS1A")]
+        assert policy["baseline"]["elfSha256"] == "c" * 64
+        assert [row[1]["symbol"] for row in
+                tubuild.manifest_vtable_partition_rows(entry)] == ["VT7", "VT14"]
+
+        tubuild.linked_symbol_rows = lambda _path, _names: (baseline, None)
+        proof = tubuild.verify_linked_storage_aliases("ignored.o", policies)
+        assert proof["ok"] and proof["rows"][0]["exact"]
+        wrong_baseline = {key: [dict(row) for row in value]
+                          for key, value in baseline.items()}
+        wrong_baseline["VT14"][0]["sectionIndex"] = 5
+        _policies, reasons = tubuild.partition_vtable_rebiases(
+            entry, claims, baseline_symbols=wrong_baseline,
+            baseline_sha256="d" * 64)
+        assert any("baseline metadata differs" in reason for reason in reasons)
+
+        import copy
+        overlap = copy.deepcopy(entry)
+        overlap["data"][0]["partition_symbols"][1].update(
+            {"address": "0x2014", "size": "0x1c"})
+        _policies, reasons = tubuild.partition_vtable_rebiases(
+            overlap, claims, baseline_symbols=baseline)
+        assert any("overlaps" in reason for reason in reasons)
+
+        gap = copy.deepcopy(entry)
+        gap["data"][0]["partition_symbols"][1].update(
+            {"address": "0x201c", "size": "0x14"})
+        tubuild.all_symbol_homes = lambda: {
+            **homes, "VT14": [("ov999", 0x201c)]}
+        _policies, reasons = tubuild.partition_vtable_rebiases(
+            gap, claims, baseline_symbols=baseline)
+        assert any("leaves a gap" in reason for reason in reasons)
+
+        bad_donor = copy.deepcopy(entry)
+        bad_donor["data"][0]["partition_symbols"][0]["reuse_policy_symbol"] = "missing"
+        tubuild.all_symbol_homes = lambda: homes
+        _policies, reasons = tubuild.partition_vtable_rebiases(
+            bad_donor, claims, baseline_symbols=baseline)
+        assert any("not an explicit compiler-only" in reason for reason in reasons)
+
+        reused = copy.deepcopy(entry)
+        reused["data"][0]["partition_symbols"][1]["reuse_policy_symbol"] = "_ZTS1B"
+        _policies, reasons = tubuild.partition_vtable_rebiases(
+            reused, claims, baseline_symbols=baseline)
+        assert any("donor _ZTS1B is reused" in reason for reason in reasons)
+    finally:
+        tubuild.all_symbol_homes = original_homes
+        tubuild.linked_symbol_rows = original_linked
+
+
 def test_partition_baseline_evidence_is_content_bound_not_mtime_bound():
     with tempfile.TemporaryDirectory() as td:
         root = pathlib.Path(td)

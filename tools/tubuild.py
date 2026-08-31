@@ -2741,6 +2741,7 @@ def verify_owned_sections(obj_bytes, entry, claims, name_index=None,
     expected_rows = manifest_owned_symbol_rows(entry)
     if public_address_points:
         expected_rows += manifest_storage_alias_rows(entry)
+        expected_rows += manifest_vtable_partition_rows(entry)
     expected_names = {r["symbol"] for _sec, r in expected_rows}
     emitted_names = {name for layout in layouts.values() for name, row in layout["symbols"].items()
                      if row["type"] in ("STT_FUNC", "STT_OBJECT") and not name.startswith("$")}
@@ -2790,7 +2791,19 @@ def verify_owned_sections(obj_bytes, entry, claims, name_index=None,
                 reasons.append(f"licensed {section} symbol {name} has invalid size")
             else:
                 if public_address_points and address_bias:
-                    want_size -= address_bias
+                    partitions = expected.get("partition_symbols")
+                    if isinstance(partitions, list) and partitions:
+                        addresses = [_manifest_addr(row) for row in partitions
+                                     if isinstance(row, dict)]
+                        if len(addresses) != len(partitions) or any(
+                                address is None for address in addresses):
+                            reasons.append(f"licensed {section} symbol {name} has an "
+                                           "invalid partition_symbols address")
+                            want_size = 0
+                        else:
+                            want_size = min(addresses) - public_addr
+                    else:
+                        want_size -= address_bias
                 if want_size <= 0:
                     reasons.append(f"licensed {section} symbol {name} has no bytes after "
                                    f"address-point bias 0x{address_bias:x}")
@@ -2970,6 +2983,21 @@ def manifest_storage_alias_rows(entry):
             rows.append((section, {"symbol": alias.get("symbol"),
                                    "address": alias.get("address"),
                                    "size": alias.get("size")}))
+    return rows
+
+
+def manifest_vtable_partition_rows(entry):
+    """Nested public-range symbols licensed only after exact vtable partitioning."""
+    rows = []
+    for section, row in manifest_owned_symbol_rows(entry):
+        partitions = row.get("partition_symbols")
+        if not isinstance(partitions, list):
+            continue
+        for part in partitions:
+            if isinstance(part, dict):
+                rows.append((section, {"symbol": part.get("symbol"),
+                                       "address": part.get("address"),
+                                       "size": part.get("size")}))
     return rows
 
 
@@ -3155,6 +3183,18 @@ def partition_vtable_rebiases(entry, claims, baseline_symbols=None,
     biases, reasons = {}, []
     compiler_only = {row.get("symbol"): row for row in
                      entry.get("compiler_only_output", []) if isinstance(row, dict)}
+    externalized = {row.get("symbol"): row for row in
+                    entry.get("externalized_output", []) if isinstance(row, dict)}
+    used_donors, used_partition_names = set(), set()
+
+    def policy_donor_ok(symbol):
+        compiler = compiler_only.get(symbol)
+        external = externalized.get(symbol)
+        return ((compiler is not None and compiler.get("disposition") in
+                 ("deadstrip", "deadstrip-duplicate", "deadstrip-data"))
+                or (external is not None
+                    and external.get("disposition") == "canonical-import"))
+
     for section, row in manifest_owned_symbol_rows(entry):
         name = row["symbol"]
         if section not in claimed or not name.startswith("_ZTV"):
@@ -3193,7 +3233,8 @@ def partition_vtable_rebiases(entry, claims, baseline_symbols=None,
                            f"found {rendered or 'none'}")
             continue
         policy = {"bias": bias, "size": size, "section": section,
-                  "storageAddress": storage, "publicAddress": public}
+                  "storageAddress": storage, "publicAddress": public,
+                  "partitionSymbols": []}
         alias = row.get("storage_alias")
         if alias is not None:
             label = f"retained vtable {name} storage_alias"
@@ -3220,10 +3261,12 @@ def partition_vtable_rebiases(entry, claims, baseline_symbols=None,
             if alias.get("binding") != "STB_GLOBAL" or alias.get("type") != "STT_OBJECT" \
                     or alias.get("visibility") != "STV_DEFAULT":
                 reasons.append(f"{label} must require GLOBAL/OBJECT/DEFAULT visibility")
-            donor_row = compiler_only.get(donor)
-            if not donor_row or donor_row.get("disposition") != "deadstrip":
+            if not policy_donor_ok(donor):
                 reasons.append(f"{label} donor {donor} is not an explicit compiler-only "
-                               "deadstrip policy")
+                               "deadstrip or externalized canonical-import policy")
+            if donor in used_donors:
+                reasons.append(f"{label} donor {donor} is reused")
+            used_donors.add(donor)
             alias_homes = {(RL.normalize_module(module), address)
                            for module, address in homes.get(alias_name, [])}
             if alias_homes != {(owner_module, storage)}:
@@ -3237,46 +3280,144 @@ def partition_vtable_rebiases(entry, claims, baseline_symbols=None,
                 "binding": "STB_GLOBAL", "type": "STT_OBJECT",
                 "visibility": "STV_DEFAULT", "donor": donor,
             }
+
+        raw_partitions = row.get("partition_symbols", [])
+        if raw_partitions is None:
+            raw_partitions = []
+        if not isinstance(raw_partitions, list):
+            reasons.append(f"retained vtable {name} partition_symbols must be a list")
+            raw_partitions = []
+        partitions = []
+        for index, part in enumerate(raw_partitions):
+            label = f"retained vtable {name} partition_symbols[{index}]"
+            if not isinstance(part, dict):
+                reasons.append(f"{label} must be an object")
+                continue
+            try:
+                part_name = str(part["symbol"])
+                part_address = (int(part["address"], 0)
+                                if isinstance(part["address"], str)
+                                else int(part["address"]))
+                part_size = (int(part["size"], 0) if isinstance(part["size"], str)
+                             else int(part["size"]))
+                donor = str(part["reuse_policy_symbol"])
+            except (KeyError, TypeError, ValueError):
+                reasons.append(f"{label} needs symbol/address/size/reuse_policy_symbol")
+                continue
+            if not part_name or part_name.startswith("_ZTV"):
+                reasons.append(f"{label} has invalid symbol {part_name!r}")
+            if part_name in used_partition_names:
+                reasons.append(f"{label} reuses partition symbol {part_name}")
+            used_partition_names.add(part_name)
+            if part_size <= 0:
+                reasons.append(f"{label} has non-positive size 0x{part_size:x}")
+            if part.get("binding") != "STB_GLOBAL" \
+                    or part.get("type") != "STT_OBJECT" \
+                    or part.get("visibility") != "STV_DEFAULT":
+                reasons.append(f"{label} must require GLOBAL/OBJECT/DEFAULT visibility")
+            if not policy_donor_ok(donor):
+                reasons.append(f"{label} donor {donor} is not an explicit compiler-only "
+                               "deadstrip or externalized canonical-import policy")
+            if donor in used_donors:
+                reasons.append(f"{label} donor {donor} is reused")
+            used_donors.add(donor)
+            part_homes = {(RL.normalize_module(module), address)
+                          for module, address in homes.get(part_name, [])}
+            if part_homes != {(owner_module, part_address)}:
+                rendered = [f"{module}:0x{address:08x}"
+                            for module, address in sorted(part_homes)]
+                reasons.append(f"{label} needs one unique configured home "
+                               f"{owner_module}:0x{part_address:08x}; found "
+                               f"{rendered or 'none'}")
+            partitions.append({
+                "symbol": part_name, "address": part_address, "size": part_size,
+                "binding": "STB_GLOBAL", "type": "STT_OBJECT",
+                "visibility": "STV_DEFAULT", "donor": donor,
+                "value": part_address - storage,
+            })
+        partitions.sort(key=lambda part: part["address"])
+        storage_end = storage + size
+        if partitions:
+            if partitions[0]["address"] <= public:
+                reasons.append(f"retained vtable {name} first partition must start after "
+                               f"public address 0x{public:08x}")
+            cursor = partitions[0]["address"]
+            for part in partitions:
+                if part["address"] != cursor:
+                    relation = "overlaps" if part["address"] < cursor else "leaves a gap"
+                    reasons.append(f"retained vtable {name} partition {part['symbol']} "
+                                   f"{relation} at 0x{cursor:08x}")
+                cursor = part["address"] + part["size"]
+            if cursor != storage_end:
+                relation = "overruns" if cursor > storage_end else "leaves a gap before"
+                reasons.append(f"retained vtable {name} partition coverage {relation} "
+                               f"storage end 0x{storage_end:08x} (ends 0x{cursor:08x})")
+            policy["publicSize"] = partitions[0]["address"] - public
+        else:
+            policy["publicSize"] = size - bias
+        policy["partitionSymbols"] = partitions
         biases[name] = policy
 
-    aliases = [(name, policy["storageAlias"]) for name, policy in biases.items()
-               if policy.get("storageAlias")]
-    if aliases:
-        wanted = {name for name, _alias in aliases} | \
-                 {alias["symbol"] for _name, alias in aliases}
+    split_policies = {name: policy for name, policy in biases.items()
+                      if policy.get("storageAlias") or policy.get("partitionSymbols")}
+    if split_policies:
+        wanted = set(split_policies)
+        for policy in split_policies.values():
+            if policy.get("storageAlias"):
+                wanted.add(policy["storageAlias"]["symbol"])
+            wanted.update(part["symbol"] for part in policy["partitionSymbols"])
         if baseline_symbols is None:
             baseline_symbols, baseline_sha256, error = _baseline_partition_symbols(wanted)
             if error:
-                reasons.append(f"storage alias baseline proof unavailable: {error}")
+                reasons.append(f"vtable partition baseline proof unavailable: {error}")
                 baseline_symbols = {}
-        for name, alias in aliases:
-            base_alias = (baseline_symbols or {}).get(alias["symbol"], [])
+        for name, policy in split_policies.items():
             base_vtable = (baseline_symbols or {}).get(name, [])
-            if len(base_alias) != 1 or len(base_vtable) != 1:
-                reasons.append(f"storage alias baseline needs one {alias['symbol']} and one "
-                               f"{name}; found {len(base_alias)}/{len(base_vtable)}")
+            symbols = ([policy["storageAlias"]] if policy.get("storageAlias") else []) \
+                + policy["partitionSymbols"]
+            missing = [(part["symbol"], len((baseline_symbols or {}).get(
+                        part["symbol"], []))) for part in symbols
+                       if len((baseline_symbols or {}).get(part["symbol"], [])) != 1]
+            if len(base_vtable) != 1 or missing:
+                reasons.append(f"vtable partition baseline needs one {name} and each "
+                               f"declared split symbol; found vtable={len(base_vtable)}, "
+                               f"splits={missing}")
                 continue
-            got_alias, got_vtable = base_alias[0], base_vtable[0]
-            expected_alias = (alias["address"], alias["size"], alias["binding"],
-                              alias["type"], alias["visibility"])
-            actual_alias = (got_alias["address"], got_alias["size"],
-                            got_alias["binding"], got_alias["type"],
-                            got_alias["visibility"])
-            expected_vtable = (biases[name]["publicAddress"],
-                               biases[name]["size"] - biases[name]["bias"],
+            got_vtable = base_vtable[0]
+            expected_vtable = (policy["publicAddress"], policy["publicSize"],
                                "STB_GLOBAL", "STT_OBJECT", "STV_DEFAULT")
             actual_vtable = (got_vtable["address"], got_vtable["size"],
                              got_vtable["binding"], got_vtable["type"],
                              got_vtable["visibility"])
-            if actual_alias != expected_alias or actual_vtable != expected_vtable \
-                    or got_alias["sectionIndex"] != got_vtable["sectionIndex"]:
-                reasons.append(f"storage alias baseline metadata differs for "
-                               f"{alias['symbol']}/{name}")
+            split_rows = {part["symbol"]:
+                          (baseline_symbols or {})[part["symbol"]][0]
+                          for part in symbols}
+            split_exact = all(
+                (got["address"], got["size"], got["binding"], got["type"],
+                 got["visibility"]) ==
+                (part["address"], part["size"], part["binding"], part["type"],
+                 part["visibility"])
+                and got["sectionIndex"] == got_vtable["sectionIndex"]
+                for part in symbols for got in [split_rows[part["symbol"]]])
+            if actual_vtable != expected_vtable or not split_exact:
+                reasons.append(f"vtable partition baseline metadata differs for {name}")
                 continue
-            biases[name]["storageAlias"]["baseline"] = {
-                "elfSha256": baseline_sha256, "alias": got_alias,
-                "vtable": got_vtable,
+            policy["baseline"] = {
+                "elfSha256": baseline_sha256, "vtable": got_vtable,
+                "symbols": split_rows,
             }
+            if policy.get("storageAlias"):
+                policy["storageAlias"]["baseline"] = {
+                    "elfSha256": baseline_sha256,
+                    "alias": split_rows[policy["storageAlias"]["symbol"]],
+                    "vtable": got_vtable,
+                }
+            for part in policy["partitionSymbols"]:
+                part["baseline"] = {
+                    "elfSha256": baseline_sha256,
+                    "symbol": split_rows[part["symbol"]],
+                    "vtable": got_vtable,
+                }
     return biases, reasons
 
 
@@ -3293,33 +3434,42 @@ def prepare_partitioned_nontext_vtables(data_tu, entry, claims, biases):
 
 
 def verify_linked_storage_aliases(linked_elf, biases):
-    """Require final-link alias/vtable metadata to reproduce the baseline pair."""
-    pairs = [(name, policy["storageAlias"]) for name, policy in biases.items()
-             if policy.get("storageAlias")]
-    if not pairs:
+    """Require every synthesized vtable split symbol to reproduce the baseline."""
+    splits = {name: policy for name, policy in biases.items()
+              if policy.get("storageAlias") or policy.get("partitionSymbols")}
+    if not splits:
         return {"ok": True, "rows": [], "errors": []}
-    wanted = {name for name, _alias in pairs} | {alias["symbol"] for _name, alias in pairs}
+    wanted = set(splits)
+    for policy in splits.values():
+        if policy.get("storageAlias"):
+            wanted.add(policy["storageAlias"]["symbol"])
+        wanted.update(part["symbol"] for part in policy["partitionSymbols"])
     symbols, error = linked_symbol_rows(linked_elf, wanted)
     if error:
         return {"ok": False, "rows": [], "errors": [error]}
     rows, reasons = [], []
-    for name, alias in pairs:
-        got_alias = symbols.get(alias["symbol"], [])
+    for name, policy in splits.items():
         got_vtable = symbols.get(name, [])
-        baseline = alias.get("baseline") or {}
-        if len(got_alias) != 1 or len(got_vtable) != 1:
-            reasons.append(f"linked storage split {alias['symbol']}/{name} occurs "
-                           f"{len(got_alias)}/{len(got_vtable)} times")
+        parts = ([policy["storageAlias"]] if policy.get("storageAlias") else []) \
+            + policy["partitionSymbols"]
+        got_parts = {part["symbol"]: symbols.get(part["symbol"], []) for part in parts}
+        wrong_counts = {symbol: len(found) for symbol, found in got_parts.items()
+                        if len(found) != 1}
+        if len(got_vtable) != 1 or wrong_counts:
+            reasons.append(f"linked vtable split {name} occurs {len(got_vtable)} times; "
+                           f"split counts={wrong_counts}")
             continue
-        same = (got_alias[0] == baseline.get("alias")
-                and got_vtable[0] == baseline.get("vtable")
-                and got_alias[0]["sectionIndex"] == got_vtable[0]["sectionIndex"])
-        rows.append({"alias": alias["symbol"], "vtable": name,
-                     "aliasMetadata": got_alias[0], "vtableMetadata": got_vtable[0],
+        baseline = policy.get("baseline") or {}
+        actual_parts = {symbol: found[0] for symbol, found in got_parts.items()}
+        same = (got_vtable[0] == baseline.get("vtable")
+                and actual_parts == baseline.get("symbols")
+                and all(row["sectionIndex"] == got_vtable[0]["sectionIndex"]
+                        for row in actual_parts.values()))
+        rows.append({"vtable": name, "vtableMetadata": got_vtable[0],
+                     "splitSymbols": actual_parts,
                      "baselineElfSha256": baseline.get("elfSha256"), "exact": same})
         if not same:
-            reasons.append(f"linked storage split {alias['symbol']}/{name} does not "
-                           "match baseline metadata")
+            reasons.append(f"linked vtable split {name} does not match baseline metadata")
     return {"ok": not reasons, "rows": rows, "errors": reasons}
 
 
@@ -4530,9 +4680,9 @@ def cmd_linkcheck(args):
         storage_aliases_ok = linked_aliases["ok"]
         if linked_aliases["ok"]:
             count = len(linked_aliases["rows"])
-            print(f"      storage-prefix alias fidelity: {count}/{count} exact vs baseline")
+            print(f"      vtable split-symbol fidelity: {count}/{count} exact vs baseline")
         else:
-            print("      storage-prefix alias fidelity: FAIL")
+            print("      vtable split-symbol fidelity: FAIL")
             for reason in linked_aliases["errors"]:
                 print(f"        {reason}")
 
@@ -4728,7 +4878,7 @@ def cmd_linkcheck(args):
         else:
             print(f"Result: NOT partitioned-link-verified ({n_ok}/"
                   f"{len(partial_rows)} text contributions; data_ok="
-                  f"{partition_data_ok}; storage aliases exact={storage_aliases_ok}; "
+                  f"{partition_data_ok}; vtable splits exact={storage_aliases_ok}; "
                   "full ROM exact="
                   f"{report.get('rom', {}).get('matchesStockRom') is True}).")
     elif partial:
