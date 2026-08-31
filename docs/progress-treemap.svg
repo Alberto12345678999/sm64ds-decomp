@@ -18957,7 +18957,7 @@ matched: yes</title></rect><rect x="847.29" y="47.31" width="3.37" height="2.07"
 module: ov004
 addr: 0x020ae128
 size: 24 bytes
-matched: yes</title></rect><rect x="850.66" y="27.00" width="2.64" height="9.65" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov004_020ae140
+matched: yes</title></rect><rect x="850.66" y="27.00" width="2.64" height="9.65" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11dScMgBase_c8OnKickedEv
 module: ov004
 addr: 0x020ae140
 size: 88 bytes
@@ -22753,7 +22753,7 @@ matched: yes</title></rect><rect x="748.79" y="325.72" width="3.26" height="7.39
 module: ov006
 addr: 0x020e6e54
 size: 36 bytes
-matched: yes</title></rect><rect x="752.04" y="325.72" width="20.98" height="7.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_020e6e78
+matched: yes</title></rect><rect x="752.04" y="325.72" width="20.98" height="7.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14dScMgD3DBase_c8OnKickedEv
 module: ov006
 addr: 0x020e6e78
 size: 232 bytes
@@ -26885,7 +26885,7 @@ matched: yes</title></rect><rect x="846.70" y="671.61" width="8.35" height="2.88
 module: ov006
 addr: 0x021211bc
 size: 36 bytes
-matched: yes</title></rect><rect x="846.70" y="674.49" width="8.35" height="20.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_021211e0
+matched: yes</title></rect><rect x="846.70" y="674.49" width="8.35" height="20.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN17dScMgTrampoline_c8OnKickedEv
 module: ov006
 addr: 0x021211e0
 size: 256 bytes
@@ -27041,7 +27041,7 @@ matched: yes</title></rect><rect x="977.86" y="599.74" width="2.92" height="8.23
 module: ov006
 addr: 0x021230c4
 size: 36 bytes
-matched: yes</title></rect><rect x="980.79" y="599.74" width="13.32" height="8.23" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_021230e8
+matched: yes</title></rect><rect x="980.79" y="599.74" width="13.32" height="8.23" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN18dScMgTrampoline2_c8OnKickedEv
 module: ov006
 addr: 0x021230e8
 size: 164 bytes
@@ -27281,7 +27281,7 @@ matched: yes</title></rect><rect x="994.88" y="625.02" width="53.47" height="38.
 module: ov006
 addr: 0x021283a4
 size: 3092 bytes
-matched: yes</title></rect><rect x="903.02" y="663.68" width="9.41" height="35.82" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_02128fb8
+matched: yes</title></rect><rect x="903.02" y="663.68" width="9.41" height="35.82" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15dScMgSnowball_c8OnKickedEv
 module: ov006
 addr: 0x02128fb8
 size: 504 bytes
