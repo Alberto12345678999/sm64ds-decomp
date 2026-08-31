@@ -139,19 +139,19 @@ src/func_ov004_020ae104.c:
     complete
     .text start:0x020ae104 end:0x020ae128
 
-src/func_ov004_020ae128.cpp:
+src/_ZN11dScMgBase_c8OnPushedEv.cpp:
     complete
     .text start:0x020ae128 end:0x020ae140
 
-src/func_ov004_020ae140.cpp:
+src/_ZN11dScMgBase_c8OnKickedEv.cpp:
     complete
     .text start:0x020ae140 end:0x020ae198
 
-src/func_ov004_020ae198.c:
+src/_ZN11dScMgBase_c11OnAttacked1Ev.c:
     complete
     .text start:0x020ae198 end:0x020ae1a0
 
-src/func_ov004_020ae1a0.c:
+src/_ZN11dScMgBase_c11OnAttacked2Ev.c:
     complete
     .text start:0x020ae1a0 end:0x020ae1a8
 
@@ -215,7 +215,7 @@ src/func_ov004_020af094.cpp:
     complete
     .text start:0x020af094 end:0x020af27c
 
-src/func_ov004_020af27c.cpp:
+src/_ZN11dScMgBase_c15OnHitByMegaCharEv.cpp:
     complete
     .text start:0x020af27c end:0x020af2f8
 
@@ -287,7 +287,7 @@ src/func_ov004_020b04d0.c:
     complete
     .text start:0x020b04d0 end:0x020b04e0
 
-src/func_ov004_020b04e0.c:
+src/_ZN11dScMgBase_c24OnHitByCannonBlastedCharEv.c:
     complete
     .text start:0x020b04e0 end:0x020b04e8
 
@@ -426,19 +426,19 @@ src/func_ov004_020b2980.c:
     complete
     .text start:0x020b2980 end:0x020b298c
 
-src/func_ov004_020b298c.c:
+src/_ZN11dScMgBase_c15OnGroundPoundedEv.c:
     complete
     .text start:0x020b298c end:0x020b2990
 
-src/func_ov004_020b2990.c:
+src/_ZN11dScMgBase_c9Virtual50Ev.c:
     complete
     .text start:0x020b2990 end:0x020b2994
 
-src/func_ov004_020b2994.c:
+src/_ZN11dScMgBase_c13OnTurnIntoEggEi.c:
     complete
     .text start:0x020b2994 end:0x020b299c
 
-src/func_ov004_020b299c.c:
+src/_ZN11dScMgBase_c13OnYoshiTryEatEi.c:
     complete
     .text start:0x020b299c end:0x020b29a0
 

@@ -262,9 +262,9 @@ s32 dScMgMCarlo_c::InitResources()
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 21 -- func_ov006_020f8c68, 0x020f8c68, size 0xa0 */
+/* ROM ordinal 21 -- _ZN13dScMgMCarlo_c13OnYoshiTryEatEi, 0x020f8c68, size 0xa0 */
 /* -------------------------------------------------------------------------- */
-// @symbol func_ov006_020f8c68
+// @symbol _ZN13dScMgMCarlo_c13OnYoshiTryEatEi
 /* recovered: renamed to Class_Method, RTTI class fields named, declarations from a shared header */
 #include "decl_common.h"
 /* recovered: renamed to Class_Method, RTTI class fields named */
@@ -278,7 +278,7 @@ void func_ov006_020c1604(char* c, int unused, short a2, int a3);
 void func_ov004_020b66d4(char* p);
 
 
-void func_ov006_020f8c68(char* c)
+void _ZN13dScMgMCarlo_c13OnYoshiTryEatEi(char* c)
 {
     struct dScMgMCarlo_c *self = (struct dScMgMCarlo_c *)(void *)c;
     func_ov006_020f7c10(c + 0x51a8);
@@ -295,10 +295,10 @@ void func_ov006_020f8c68(char* c)
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 20 -- func_ov006_020f8a3c, 0x020f8a3c, size 0x22c */
+/* ROM ordinal 20 -- _ZN13dScMgMCarlo_c13OnTurnIntoEggEi, 0x020f8a3c, size 0x22c */
 /* -------------------------------------------------------------------------- */
 #include "types.h"
-// @symbol func_ov006_020f8a3c
+// @symbol _ZN13dScMgMCarlo_c13OnTurnIntoEggEi
 /* recovered: renamed to Class_Method, RTTI class fields named, declarations from a shared header */
 #include "decl_common.h"
 /* recovered: renamed to Class_Method, RTTI class fields named */
@@ -315,7 +315,7 @@ extern int _Z15ApproachLinear2Rsss(s16& r, s16 t, s16 s);
 extern unsigned short data_ov004_020bf9e4;
 extern void* data_ov004_020beb68;
 
-int func_ov006_020f8a3c(char* c)
+int _ZN13dScMgMCarlo_c13OnTurnIntoEggEi(char* c)
 {
     struct dScMgMCarlo_c *self = (struct dScMgMCarlo_c *)(void *)c;
     switch (self->unk_60a8) {

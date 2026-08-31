@@ -143,7 +143,7 @@ extern int data_ov004_020bf9ec;
 extern int RandomIntInternal(int* seed);
 extern void func_ov006_020c1604(char* c, int unused, short a2, int a3);
 extern int data_0209e650;
-extern "C" int func_ov006_02125248(void *thisPtr);
+extern "C" void _ZN10dScMgBSC_c15OnGroundPoundedEv(void *thisPtr);
 extern "C" void FreeGfxSlotsById(int arg);
 extern "C" void func_ov004_020b66d4(void);
 void func_ov006_020c0aa8(void *camera);
@@ -176,7 +176,7 @@ extern "C" void _ZN3GXS11LoadOBJPlttEPKvjj(void const *a, unsigned int b, unsign
  * agreed.
  *
  * The final call is a self-dispatch through this class's own vtable slot 18
- * (func_ov006_02125364, per the same rtti dump) -- neither dScMgBase_c.h nor this
+ * (_ZN10dScMgBSC_c13OnYoshiTryEatEi, per the same rtti dump) -- neither dScMgBase_c.h nor this
  * header names that slot yet (both leave 18-35 undeclared), so it stays a raw
  * vtable-shim call exactly as the pre-migration file spelled it, just through
  * `this` instead of a `void *self` parameter. */
@@ -273,9 +273,9 @@ s32 dScMgBSC_c::Render()
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 15 -- func_ov006_02125364, 0x02125364, size 0x58 */
+/* ROM ordinal 15 -- _ZN10dScMgBSC_c13OnYoshiTryEatEi, 0x02125364, size 0x58 */
 /* -------------------------------------------------------------------------- */
-// @symbol func_ov006_02125364
+// @symbol _ZN10dScMgBSC_c13OnYoshiTryEatEi
 /* recovered: renamed to Class_Method, RTTI class fields named, declarations from a shared header */
 /* recovered: renamed to Class_Method, RTTI class fields named */
 // recovered name: dScMgBSC_c_OnYoshiTryEat_02125364
@@ -284,7 +284,7 @@ s32 dScMgBSC_c::Render()
    OnYoshiTryEat, which is slot 18 -- off by one. This body stores the class
    vtable, destroys the members and calls Memory::Deallocate; no eat handler
    does any of that. */
-extern "C" void func_ov006_02125364(char* c, int mode){
+extern "C" void _ZN10dScMgBSC_c13OnYoshiTryEatEi(char* c, int mode){
     dScMgBSC_c *self = (dScMgBSC_c *)(void *)c;
   if(mode != 4 && mode != 5 && mode == 3){
     self->mHudScore = func_ov004_020ad878();
@@ -296,15 +296,15 @@ extern "C" void func_ov006_02125364(char* c, int mode){
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 14 -- func_ov006_0212527c, 0x0212527c, size 0xe8 */
+/* ROM ordinal 14 -- _ZN10dScMgBSC_c13OnTurnIntoEggEi, 0x0212527c, size 0xe8 */
 /* -------------------------------------------------------------------------- */
-// @symbol func_ov006_0212527c
+// @symbol _ZN10dScMgBSC_c13OnTurnIntoEggEi
 /* recovered: renamed to Class_Method, RTTI class fields named, declarations from a shared header */
 /* recovered: renamed to Class_Method, RTTI class fields named */
 // recovered name: dScMgBSC_c_OnTurnIntoEgg
 /* recovered: renamed to Class_Method */
 /* dScMgBSC_c::OnTurnIntoEgg - recovered from vtable slot identity */
-extern "C" int func_ov006_0212527c(char* c, int mode)
+extern "C" int _ZN10dScMgBSC_c13OnTurnIntoEggEi(char* c, int mode)
 {
     struct dScMgBSC_c *self = (struct dScMgBSC_c *)(void *)c;
     int st;
@@ -336,22 +336,22 @@ do1:
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 13 -- func_ov006_02125248, 0x02125248, size 0x34 */
+/* ROM ordinal 13 -- _ZN10dScMgBSC_c15OnGroundPoundedEv, 0x02125248, size 0x34 */
 /* -------------------------------------------------------------------------- */
-// @symbol func_ov006_02125248
+// @symbol _ZN10dScMgBSC_c15OnGroundPoundedEv
 /* recovered: renamed to Class_Method, RTTI class fields named, declarations from a shared header */
 /* recovered: renamed to Class_Method, RTTI class fields named */
 // recovered name: dScMgBSC_c_OnGroundPounded
 /* recovered: renamed to Class_Method */
 /* dScMgBSC_c::OnGroundPounded - recovered from vtable slot identity */
-int func_ov006_02125248(void *thisPtr) {
+void _ZN10dScMgBSC_c15OnGroundPoundedEv(void *thisPtr) {
     struct dScMgBSC_c *self = (struct dScMgBSC_c *)(void *)thisPtr;
     int x = self->mHudScore;
     int v = x / 5;
     if ((unsigned int)v > 3) {
         v = 3;
     }
-    return func_ov004_020b6324(v + 1);
+    func_ov004_020b6324(v + 1);
 }
 
 /* -------------------------------------------------------------------------- */

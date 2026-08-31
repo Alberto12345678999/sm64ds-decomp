@@ -103,17 +103,21 @@ struct dScMgSingle3DBase_c : dScMgBase_c {
            Slots 26 and 33 are ALSO re-overrides, not new virtuals: this class
            was previously annotated as introducing them, but dScMgBase_c's own
            vtable already carries bodies at both (ov004:0x020b04e0 for slot 26,
-           ov004:0x020b265c for slot 33). They stay undeclared here only because
-           dScMgBase_c leaves slots 18-35 undeclared -- a derived class cannot
-           override a base slot the base has not spelled. Their ov006 bodies do
-           exist and byte-verify, as func_ov006_0210a600 and
-           func_ov006_0210a708 in src/actors/dScMgSingle3DBase_c.cpp.
-           Declaring dScMgBase_c's eighteen is the follow-up that lets this
-           class emit its full 36-slot vtable instead of an 18-slot prefix. --- */
+           ov004:0x020b265c for slot 33).  Slot 26 is declared below now that
+           dScMgBase_c has named it, and its ov006 body is a real member
+           definition in src/actors/dScMgSingle3DBase_c.cpp rather than the
+           mangled free function it had to be while the base was silent.
+           Slot 33 stays undeclared until dScMgBase_c reaches it -- a derived
+           class cannot override a base slot the base has not spelled -- and
+           its body byte-verifies in that same file as func_ov006_0210a708.
+           Declaring dScMgBase_c's remaining eight (28-35) is what lets this
+           class emit its full 36-slot vtable; today it emits a byte-exact
+           28-slot prefix. --- */
     virtual void AfterInitResources(u32 vfSuccess); /* slot  2 */
     virtual void AfterCleanupResources(u32 vfSuccess); /* slot  5 */
     virtual int  BeforeBehavior();                  /* slot  7 */
     virtual int  BeforeRender();                    /* slot 10 */
+    virtual int  OnHitByCannonBlastedChar();      /* slot 26 */
 
     /* DO NOT restyle the seven `offset 0xNN` comments below into this
      * tree's usual hex-comment form: check_header_offsets.py's DATA_SIZE

@@ -228,18 +228,75 @@ class ProductionTuObjects(unittest.TestCase):
                                   return_value=(b"linked", {"error": None})) as rebias, \
                 mock.patch.object(TP.TB, "complete_ranges", return_value={}), \
                 mock.patch.object(TP.TB, "audit_tu_object",
-                                  return_value=([], [], [], True)), \
+                                  return_value=([], [], [], True)) as audit, \
                 mock.patch.object(TP.TB, "object_audit_refusals", return_value=[]):
             output, evidence = TP.prepare_intact_object(b"raw", entry)
         self.assertEqual(output, b"linked")
         rebias.assert_called_once_with(
             b"external", {"_ZTV1T": {"bias": 8}}, normalize_undefined=True)
+        audit.assert_called_once_with(
+            b"linked", entry, 0x1000, 0x1010, {},
+            validated_vtable_policies={"_ZTV1T": {"bias": 8}})
         self.assertEqual(verify.call_args_list, [
             mock.call(b"external", entry, claims),
             mock.call(b"linked", entry, claims, public_address_points=True,
                       normalized_undefined_vtables=True),
         ])
         self.assertEqual(evidence["sha256"],
+                         __import__("hashlib").sha256(b"linked").hexdigest())
+
+    def test_partitioned_object_normalizes_undefined_vtable_imports(self):
+        entry = {
+            "id": "ov999/Thing", "module": "ov999",
+            "source": "src/actors/Thing.cpp",
+            "functions": [{"symbol": "Thing_f", "ordinal": 0,
+                           "legacy_source": "src/Thing_f.cpp"}],
+        }
+        claims = [{"name": ".text", "start": 0x1000, "end": 0x1010},
+                  {"name": ".data", "start": 0x2000, "end": 0x2010}]
+        owned = {"ok": True, "rows": [], "errors": []}
+        biases = {"_ZTV1T": {"bias": 8}}
+        with tempfile.TemporaryDirectory() as td:
+            root = pathlib.Path(td)
+            config = root / "config"
+            module = config / "overlays" / "ov999"
+            module.mkdir(parents=True)
+            (module / "delinks.txt").write_text("placeholder\n", encoding="utf-8")
+            with mock.patch.object(TP.TB, "manifest_section_claims",
+                                   return_value=(claims, [])), \
+                    mock.patch.object(TP.TB, "add_partitioned_tu_entry",
+                                      return_value=(["src/Thing_f.cpp"], [])), \
+                    mock.patch.object(TP.TB, "_compile_tu",
+                                      return_value=(b"raw", "2004/b56", ["-O4"],
+                                                    root, root / "raw.o")), \
+                    mock.patch.object(TP.TB, "derive_function_objects",
+                                      return_value={"Thing_f": (b"text", {})}), \
+                    mock.patch.object(TP.TB, "production_objects",
+                                      return_value=({}, [])), \
+                    mock.patch.object(TP.TB, "partial_report", return_value=[
+                        (0, "Thing_f", {"identical": True})]), \
+                    mock.patch.object(TP.TB, "apply_compiler_only_policy",
+                                      return_value=(b"compiler", {}, [])), \
+                    mock.patch.object(TP.TB, "apply_externalized_output_policy",
+                                      return_value=(b"external", {}, [])), \
+                    mock.patch.object(TP.TB, "verify_owned_sections",
+                                      side_effect=[owned, owned]) as verify, \
+                    mock.patch.object(TP.TB, "derive_owned_nontext_object",
+                                      return_value=(b"storage", {}, [])), \
+                    mock.patch.object(TP.TB, "partition_vtable_rebiases",
+                                      return_value=(biases, [])), \
+                    mock.patch.object(TP.TB.OI, "rebias_object_symbols",
+                                      return_value=(b"linked", {"error": None})) as rebias:
+                result = TP._prepare_one(entry, config, root / "work", 1)
+
+        rebias.assert_called_once_with(
+            b"storage", biases, normalize_undefined=True)
+        self.assertEqual(verify.call_args_list, [
+            mock.call(b"external", entry, claims),
+            mock.call(b"linked", entry, claims, public_address_points=True,
+                      normalized_undefined_vtables=True),
+        ])
+        self.assertEqual(result["storageSha256"],
                          __import__("hashlib").sha256(b"linked").hexdigest())
 
     def test_compile_one_installs_prepared_object_without_compiler(self):

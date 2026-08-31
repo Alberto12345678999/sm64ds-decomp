@@ -42,7 +42,7 @@
       "ordinal": 2
     },
     {
-      "symbol": "func_ov006_0210a600",
+      "symbol": "_ZN19dScMgSingle3DBase_c24OnHitByCannonBlastedCharEv",
       "address": "0x0210a600",
       "size": "0x00000008",
       "legacy_source": "src/func_ov006_0210a600.c",

@@ -489,9 +489,11 @@ happened is that comment lines were traded for ledger rows.
   which is right, and one member still named `func_ov006_0210a534`, which is not.
   Nothing backslides — neither it nor its neighbour was CONVERTED before — but the
   omission still costs, and it costs the *other* member: with no marker after it, the
-  preceding `func_ov006_0210a600` fragment runs from its own marker to end of file and
-  swallows a534's `volatile` body and raw addresses. `func_ov006_0210a600` is an
-  eight-byte `return 1;` that can never score readable while that is true. This is the
+  preceding slot-26 fragment -- `func_ov006_0210a600` at the time, since renamed to
+  `_ZN19dScMgSingle3DBase_c24OnHitByCannonBlastedCharEv` and written as a real member
+  definition -- runs from its own marker to end of file and swallows a534's `volatile`
+  body and raw addresses. That member is an eight-byte `return 1;` that can never score
+  readable while that is true. This is the
   general shape of the omission — the member that pays is rarely the member you left
   unmarked.
 

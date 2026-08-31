@@ -53,8 +53,8 @@
  *
  * mMenuOpen, which the old auto-generated header declared, is dScMgBase_c's
  * own and is already declared there; it is dropped from this file, not
- * lost. src/func_ov006_02128fb8.c reads it through this class and keeps
- * working because it inherits it.
+ * lost. src/_ZN15dScMgSnowball_c8OnKickedEv.c reads it through this class
+ * and keeps working because it inherits it.
  *
  * THE DESTRUCTOR IS NOT DEFINED INLINE -- a leaf, no RTTI descendants of
  * its own. Defined for real in src/_ZN15dScMgSnowball_cD1Ev.cpp; D0Ev.cpp
@@ -79,7 +79,11 @@ struct dScMgSnowball_c : dScMgSingle3DBase_c {
     virtual s32 InitResources();     /* slot 0 -- ov006 0x02129268 */
     virtual s32 CleanupResources();  /* slot 3 -- ov006 0x021291f8 */
     virtual s32 Behavior();          /* slot 6 -- ov006 0x021283a4 */
-    virtual s32 Render();            /* slot 9 -- ov006 0x02127d10 */
+    virtual s32 Render();            /* slot 9 -- ov006 0x02127d10 */
+    virtual int  OnYoshiTryEat(int arg);               /* slot 18 */
+    virtual int  OnAttacked2();                        /* slot 23 */
+    virtual int  OnKicked();                           /* slot 24 */
+    virtual int  OnPushed();                           /* slot 25 */
 
     u8    pad_4f38[0x5c00]; /* 0x4f38 -- no matched access */
     s32   mPosX;            /* 0xab38 -- Fix12 world position of the ball */

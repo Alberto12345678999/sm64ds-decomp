@@ -259,10 +259,12 @@ Own vtable slots (python tools/rtti_vtables.py --own dScMgAmida_c): 0
 declared the base override as returning void*, which is WRONG; the real
 dScMgBase_c.h override returns void, so this now calls the base method as
 a plain statement instead of returning it, same fix dScMgLuigi_c's own
-slot 5 needed), 6 (Behavior), 9 (Render), 16 (D1), 17 (D0), 18 (own new
-slot, not yet named -- stays a raw extern "C" helper,
-src/func_ov006_020d52f0.c, same precedent as every other dScMgBase_c
-leaf's slot 18; it no longer includes this header at all -- its one
+slot 5 needed), 6 (Behavior), 9 (Render), 16 (D1), 17 (D0), 18
+(dScMgBase_c::OnYoshiTryEat, declared on the base and overridden here;
+the body is src/_ZN12dScMgAmida_c13OnYoshiTryEatEi.c, still a raw
+extern "C" helper rather than a member definition, same precedent as
+every other dScMgBase_c leaf's slot 18; it no longer includes this
+header at all -- its one
 inherited-field access at 0xbc is dScMgBase_c's own pad_0bc, not a named
 field there either, so it now reaches it via a raw char* offset, the same
 idiom dScMgPachinko_c's own slot 18 helper already uses), 31 ("Kill",
@@ -444,7 +446,7 @@ the previous header held as four pads, and a run/HUD block at 0xb9d8.
 | 0xab50 | `mSoundPosX` / `mSoundPosY` (0xab54) | Behavior fires a rolling sound whenever the position has moved 0x30000 from these two, then copies the position in. |
 | 0xab60 | `mVelX` / `mVelY` (0xab64) | `Vec2_Len` of the pair is the speed, `atan2` of it is the heading, and it is added into `mPos` each tick. Capped at 0x8000. |
 | 0xab68 | `mScrollX` | Subtracted from every world X before drawing; src/func_ov006_021279b0.cpp zeroes it. |
-| 0xab6c | `mScrollY` | `mPosY - 0x190000`, clamped to `[0, mScrollLimit]`; drives all four `SetBg*Offset` calls and the four hardware scroll registers in src/func_ov006_02128fb8.c. |
+| 0xab6c | `mScrollY` | `mPosY - 0x190000`, clamped to `[0, mScrollLimit]`; drives all four `SetBg*Offset` calls and the four hardware scroll registers in src/_ZN15dScMgSnowball_c8OnKickedEv.c. |
 | 0xab70 | `mTouchX` / `mTouchY` (0xab74) | Behavior stores the raw touch sample (`data_020a0dea` / `data_020a0deb`) here and steers off the difference from the previous one. |
 | 0xab78 | `mRollAngle` | u16. `+= speed * 0x2710 / mBallSize` -- an angle that advances faster the smaller the ball. |
 | 0xab7c | `mHeadingAngle` | u16. `atan2(mVelX, mVelY)`, approached linearly while rolling and set outright while crashing. |
@@ -461,7 +463,7 @@ the previous header held as four pads, and a run/HUD block at 0xb9d8.
 | 0xb9dc | `mTimeLeft` | Frames. Seeded 0x960 or 0x4b0 by variant; Behavior counts it down and plays a tick sound at 60/30/15-frame intervals as it shortens; Render formats it as seconds and centiseconds; 0 ends the run. |
 | 0xb9e0 | `mScore` | Zeroed by the reset, +1 a tick while rolling, handed to the HUD counter `func_ov004_020adb1c` at the crash -- the same sink dScMgAmida_c's score uses. |
 | 0xb9f4 | `mState` | Behavior's `switch`: 0 count-in, 1 rolling, 2/3 crash, 4 melt, 5 over. |
-| 0xb9f8 | `mScreensSwapped` | u8. Behavior sets it from `mPosY >= 0xe8000`; src/func_ov006_02128fb8.c uses it to flip the POWCNT1 display-swap bit at 0x4000304 and exchange the main/sub BG offsets. |
+| 0xb9f8 | `mScreensSwapped` | u8. Behavior sets it from `mPosY >= 0xe8000`; src/_ZN15dScMgSnowball_c8OnKickedEv.c uses it to flip the POWCNT1 display-swap bit at 0x4000304 and exchange the main/sub BG offsets. |
 | 0xb9fc | `mCountdownTimer` | Seeded 0xf1; state 0 counts it down, plays a beep at 0xf0/0xb4/0x78 and starts the run at 0x3c; Render draws the 3-2-1 banner from `n / 60`. |
 | 0xba00 | `mStartY` | 0x2dc0 or 0x1740 by variant; `mPosY` starts at `mStartY << 12` and the progress bar uses it as one end. |
 | 0xba04 | `mGoalY` | The other end of that bar, and the line `mPosY - mBallSize` must cross to end the run. |
@@ -513,7 +515,7 @@ into it by raw offset).
 | 0x5fd8 | `mPetalsLeft` | Decremented once per pull, gates every "still playing" branch on `>= 1`, and is the bound of the loop that finishes off the remaining petals when the round times out. |
 | 0x5fdc | `mWinStreak` | Incremented on the `mPetalToggle == 1` outcome and zeroed by the other; at 3 it swaps in banner 0x12 and adds 3 to `mScore` instead of 1. |
 | 0x5fe0 | `mLoseStreak` | The mirror counter on the other outcome; at 3 it swaps in banner 0x11. It never touches the score. |
-| 0x5fe4 | `mHoldTimer` | src/func_ov006_0212aa74.c increments it while `<= 0x14` and otherwise resets it to 0; Behavior treats `> 0x14` as "held long enough". InitResources zeroes it. |
+| 0x5fe4 | `mHoldTimer` | src/_ZN13dScMgFlower_c13OnYoshiTryEatEi.c increments it while `<= 0x14` and otherwise resets it to 0; Behavior treats `> 0x14` as "held long enough". InitResources zeroes it. |
 | 0x5fe8 | `mState` | Behavior's `switch`: 0 plays, 1 is over (it stops the prompt and only ticks the 0x51f8 object). |
 | 0x5fec | `mFaceSprite` | Render's only use is `data_ov006_0213ab94[n]` drawn at the screen centre; Behavior sets it to 0..4 on each outcome. |
 | 0x5ff0 | `mScore` | Incremented by 1 or 3 per winning pull and clamped to 0x270f -- the same 9999 cap dScMgAmida_c and dScMgSnowball_c use. |
@@ -530,16 +532,16 @@ four vtable methods; the citations below name those files.
 
 | Offset | Name | Evidence |
 | --- | --- | --- |
-| 0x5d94 | `mScrollY` | src/func_ov006_02121bc8.cpp approaches it toward `mScrollTargetY` by 2 a tick; src/func_ov006_021211e0.cpp and Render both use `mScrollY + mScrollOffsetY` as the BG2 offset and as the hardware scroll register value. InitResources seeds it to 0x20. |
+| 0x5d94 | `mScrollY` | src/func_ov006_02121bc8.cpp approaches it toward `mScrollTargetY` by 2 a tick; src/_ZN17dScMgTrampoline_c8OnKickedEv.cpp and Render both use `mScrollY + mScrollOffsetY` as the BG2 offset and as the hardware scroll register value. InitResources seeds it to 0x20. |
 | 0x5d98 | `mScrollTargetY` | The other argument of that `ApproachLinear`; recomputed as `(q << 3) + 0x20` once the scroll has caught up. InitResources seeds it from `mScrollY`. |
 | 0x5d9c | `mScrollHoldTimer` | Loaded with 0x78 and run down to 0 by `ApproachLinear(..., 0, 1)`; the target may not move again until it reaches 0. |
 | 0x5da0 | `mScrollOffsetY` | Added to `mScrollY` at every one of its uses, and zeroed once the scroll settles. |
 | 0x5da4 | `mArrow1X` / `mArrow2X` (0x5da8) | src/func_ov006_021218fc.c drives the pair in opposition (`ApproachLinear` one toward 0 while the other goes toward 0x20); Render draws sprite `data_ov006_02134f08` at `n + 0xf0` for each. |
 | 0x5db0 | `mTouchX` / `mTouchY` (0x5db2) | src/func_ov006_0212157c.c refreshes them from the touch sample `data_020a0dea` / `data_020a0deb` every tick a drag is live, and draws the drag segment from them. |
-| 0x5db4 | `mTouchStartX` / `mTouchStartY` (0x5db6) | Copied from the pair above on the press edge and then left alone; src/func_ov006_0212101c.c measures the swipe as start-to-current and only accepts it if the two ends sit on opposite sides of the screen. |
+| 0x5db4 | `mTouchStartX` / `mTouchStartY` (0x5db6) | Copied from the pair above on the press edge and then left alone; src/_ZN17dScMgTrampoline_c11OnAttacked2Ev.c measures the swipe as start-to-current and only accepts it if the two ends sit on opposite sides of the screen. |
 | 0x5db8 | `mInputEnabled` | s16. src/func_ov006_0212157c.c clears `mTouching` and returns immediately while it is 0. |
 | 0x5dc4 | `mTouching` | u8, set on the press edge and cleared when input is disabled; the drag body runs only while it is 1. |
-| 0x5dc5 | `mTouchReleased` | u8, set on the release edge by the same file; src/func_ov006_0212101c.c is the only reader and clears it after scoring the swipe. |
+| 0x5dc5 | `mTouchReleased` | u8, set on the release edge by the same file; src/_ZN17dScMgTrampoline_c11OnAttacked2Ev.c is the only reader and clears it after scoring the swipe. |
 
 Left `unk_`: 0x5dba (an s16 with its own getter/setter pair,
 src/func_ov006_02121750.c and _02121768.c, but no reader that says what it
@@ -616,7 +618,7 @@ kind, but nothing in scope increments it), 0x0b8, 0x0c8, 0x0f0, 0x05c,
 | --- | --- | --- |
 | 0x53d6 | `mSelectedTile` | Render draws the cursor sprite at `data_ov006_02142ab4[n]` / `_02142ab8[n]` (the tile coordinate tables, stride 8); Behavior hands the same value to `func_ov006_02108b90` once per racer to score the board. |
 | 0x53e4 | `mCameraPreset` | Render copies row `n` of `data_ov006_0213e34c` and `_0213e370` (stride 0xc) into the base's `mCameraTarget` and `mCameraEye`, takes the angle from `data_ov006_0213e2e0 + n*2`, and then calls `Camera_UpdateMatrices`. 0 leaves the camera alone. Behavior sets it to 1 as the deal starts and clears it at the end. |
-| 0x53e6 | `mPhase` | Behavior's `switch`: 1 deals the racers out one at a time, 2 runs the countdown and reads the board, 3 pays out per landed tile, 4 announces win/lose/draw. src/func_ov006_021095cc.cpp starts it at 1. |
+| 0x53e6 | `mPhase` | Behavior's `switch`: 1 deals the racers out one at a time, 2 runs the countdown and reads the board, 3 pays out per landed tile, 4 announces win/lose/draw. src/_ZN15dScMgRoulette_c13OnYoshiTryEatEi.cpp starts it at 1. |
 | 0x53e8 | `mPhaseTimer` | Counted down in every phase and reloaded on each transition (8, 0x258, 1, 0x5a); Render also renders the countdown digits from it while `mPhase == 2`. |
 | 0x53f2 | `mScore` | Phase 3 sums each racer's payout into it and phase 4 compares it against `mTargetScore` to pick the win, lose or draw banner. Zeroed by the reset. |
 | 0x53f6 | `mTargetScore` | One per racer that did NOT land on the winning tile; the bar `mScore` has to beat. |
