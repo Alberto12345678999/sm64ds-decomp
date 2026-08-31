@@ -7,7 +7,8 @@
 // recovered name: dScMgBase_c_OnHitByMegaChar
 /* recovered: renamed to Class_Method */
 /* dScMgBase_c::OnHitByMegaChar - recovered from vtable slot identity.
-   Converted from .c to .cpp -- see func_ov004_020ae128.cpp's banner. */
+   Converted from .c to .cpp -- see the banner on
+   src/_ZN11dScMgBase_c8OnPushedEv.cpp. */
 
 extern "C" void func_ov004_020af27c(void *c)
 {

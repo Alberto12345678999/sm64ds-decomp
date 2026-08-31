@@ -2555,7 +2555,7 @@ src/func_ov006_020e6e4c.c:
     complete
     .text start:0x020e6e4c end:0x020e6e54
 
-src/func_ov006_020e6e54.c:
+src/_ZN14dScMgD3DBase_c8OnPushedEv.c:
     complete
     .text start:0x020e6e54 end:0x020e6e78
 
@@ -5507,7 +5507,7 @@ src/func_ov006_0211474c.c:
     complete
     .text start:0x0211474c end:0x021147ac
 
-src/func_ov006_021147ac.c:
+src/_ZN16dScMgSmartball_c8OnPushedEv.c:
     complete
     .text start:0x021147ac end:0x021147d0
 
@@ -6353,7 +6353,7 @@ src/_ZN17dScMgTrampoline_c11OnAttacked2Ev.c:
     complete
     .text start:0x0212101c end:0x021211bc
 
-src/func_ov006_021211bc.c:
+src/_ZN17dScMgTrampoline_c8OnPushedEv.c:
     complete
     .text start:0x021211bc end:0x021211e0
 
@@ -6513,7 +6513,7 @@ src/_ZN18dScMgTrampoline2_c11OnAttacked2Ev.c:
     complete
     .text start:0x02122f24 end:0x021230c4
 
-src/func_ov006_021230c4.c:
+src/_ZN18dScMgTrampoline2_c8OnPushedEv.c:
     complete
     .text start:0x021230c4 end:0x021230e8
 
@@ -6672,7 +6672,7 @@ src/_ZN15dScMgSnowball_c8OnKickedEv.c:
     complete
     .text start:0x02128fb8 end:0x021291b0
 
-src/func_ov006_021291b0.c:
+src/_ZN15dScMgSnowball_c8OnPushedEv.c:
     complete
     .text start:0x021291b0 end:0x021291d4
 

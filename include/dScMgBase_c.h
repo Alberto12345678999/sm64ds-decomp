@@ -137,14 +137,15 @@ struct dScMgBase_c : dScene_c {
        hierarchy.
        How much that is worth is a count, not a rule, and an earlier draft of
        this comment got the count wrong.  It said dActor_c.h had been right on
-       every return type this campaign checked.  It has not.  Of the six
-       dScMgBase_c slots with a body of their own that pins a return type,
-       dActor_c.h's type matches five and differs on one:
+       every return type this campaign checked.  It has not.  Of the
+       seven dScMgBase_c slots with a body of their own that pins a return
+       type, dActor_c.h's type matches six and differs on one:
            18  int  / int   agree   sets r0 on a constant-return path
            19  int  / int   agree   sets r0 on a constant-return path
            22  int  / int   agree   OnAttacked1's body is `return 1;`
            23  int  / int   agree   OnAttacked2's body is `return 1;`
            24  int  / void  DIFFER  OnKicked's body ends `return 1;`
+           25  int  / int   agree   OnPushed returns `mMenuOpen == 0`
            27  void / void  agree   func_ov004_020af27c, early bare return
        Slot 24 is the one that matters, because dActor_c.h names 24 as one of
        its three MEASURED voids -- and it is right about its own hierarchy;
@@ -157,9 +158,9 @@ struct dScMgBase_c : dScene_c {
        `recovered name:` comments that make the slots look paired were assigned
        BY that index, so they cannot also be evidence for it.
        So dActor_c.h transfers no better on return types than on parameter
-       lists; it is five-for-six rather than wrong-every-time, which is why
+       lists; it is six-for-seven rather than wrong-every-time, which is why
        this line still follows it where the arity line above does not.
-       Five-for-six is the whole case for `void` here and is offered as a hint,
+       Six-for-seven is the whole case for `void` here and is offered as a hint,
        not a measurement.  Flipping all four overrides between `int` and `void`
        was tried and moves no ROM byte, so nothing in the cartridge rides on
        the choice -- but a later override with an early return would settle it,
@@ -234,10 +235,43 @@ struct dScMgBase_c : dScene_c {
            by that class; the recovered name was assigned from one child's
            table without looking at the other two. */
     virtual int  OnKicked();                           /* slot 24 */
+    /* Slot 25 -- OnPushed.  Name from all six bodies' own
+       `recovered name: <class>_OnPushed` comments; include/dActor_c.h:142
+       spells the same name at the same index on the parallel branch.
+         arity: no explicit parameters, MEASURED.  The base body reads one
+           field of `this` and nothing else, and all five overrides are a
+           single call passing that same one pointer through.  No body
+           touches a second argument register.  dActor_c.h:142 spells a
+           `dActor_c &other`; it has been wrong on every parameter list this
+           campaign has measured, so it is not carried.
+         return type: int, MEASURED, and not a coin flip: the base body is
+           `return mMenuOpen == 0;`, which computes a value into r0 -- a
+           `void` function would not.  Every one of the five overrides then
+           writes `<base call> != 0`, which cannot be written at all against
+           a void callee.  Six witnesses.  dActor_c.h:142 says `int` too,
+           which is the first slot in this campaign where it agrees on a
+           return type it had not already been credited with; the table
+           under slot 21 is updated to six-for-seven to match.
+         overrides: SEVEN tables, FIVE declarations.  dScMgJump_c and
+           dScMgJump2_c point at dScMgD3DBase_c's own body (0x020e6e54) and
+           override nothing themselves, exactly as at slot 24, so the
+           declaration goes on their shared base and neither child gets one.
+           dScMgSmartball_c is new here -- it inherits 22, 23 and 24 and
+           overrides 25 -- which is why the override set is read off the ROM
+           for every slot rather than carried forward from the last one.
+         NAME CORRECTION, the second on this class: 0x020e6e54 carried
+           `recovered name: dScMgJump2_c_OnPushed`.  It is
+           dScMgD3DBase_c's, on the same argument that settled 0x020e6e78 at
+           slot 24 -- word 25 of _ZTV14dScMgD3DBase_c, _ZTV11dScMgJump_c and
+           _ZTV12dScMgJump2_c all point here, and a body in a class's table
+           AND in both its children's is supplied by that class.  Both
+           misattributions name dScMgJump2_c, which is what a recovery pass
+           reading tables in name order would produce. */
+    virtual int  OnPushed();                           /* slot 25 */
 
-    /* Slots 25-35 are added the same way: one slot per change, together with
+    /* Slots 26-35 are added the same way: one slot per change, together with
        every descendant override of that slot. Until then they stay undeclared
-       and the emitted tables stop at slot 24. */
+       and the emitted tables stop at slot 25. */
 
     s32 unk_050;            /* 0x050 */
     s32 unk_054;            /* 0x054 */

@@ -91,17 +91,19 @@ struct dScMgD3DBase_c : dScMgBase_c {
     virtual int  BeforeRender();                       /* slot 10 */
     virtual void AfterRender(u32 vfSuccess);           /* slot 11 */
     virtual int  OnKicked();                           /* slot 24 */
+    virtual int  OnPushed();                           /* slot 25 */
 
-    /* Eight more of dScMgBase_c's own 18 new slots (18-35) are overridden
-       here too (slots 25-31, 33 per tools/rtti_vtables.py --own
+    /* Seven more of dScMgBase_c's own 18 new slots (18-35) are overridden
+       here too (slots 26-31, 33 per tools/rtti_vtables.py --own
        dScMgD3DBase_c) -- left undeclared, same as dScMgBase_c.h's own slots
-       25-35: their targets are matched source but dScMgBase_c hasn't named
+       26-35: their targets are matched source but dScMgBase_c hasn't named
        or given signatures to the slots they'd be overriding yet, and a
        derived override can't be declared before its base is.
 
-       Slot 24 above came off that list.  Note what it is NOT: dScMgJump_c
-       and dScMgJump2_c both point at THIS class's body for that slot, so
-       the declaration belongs here and neither child declares it. */
+       Slots 24 and 25 above came off that list, and they are the same case
+       twice over: dScMgJump_c and dScMgJump2_c both point at THIS class's
+       body for each of them, so the declaration belongs here and neither
+       child declares either one. */
 
     s32  unk_4660;                    /* 0x4660 */
     u16  unk_4664;                    /* 0x4664 -- both factories zero it right
