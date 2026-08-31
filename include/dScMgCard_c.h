@@ -36,8 +36,8 @@
 
 extern "C" int  func_ov006_020c1c64(char *t); /* decl_common.h's own signature */
 extern "C" void __destroy_arr(void *base, int count, int stride, void *dtor);
-extern "C" void func_ov006_020d96e0(void);
-extern "C" void func_ov006_020d96f0(void);
+extern "C" void func_ov006_020d96e0(void *elem);
+extern "C" void func_ov006_020d96f0(void *elem);
 
 struct dScMgCard_c : dScMgSingle3DBase_c {
     virtual ~dScMgCard_c();

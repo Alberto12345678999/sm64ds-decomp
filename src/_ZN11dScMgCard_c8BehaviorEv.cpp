@@ -15,13 +15,14 @@
 
 extern "C" {
 void func_ov006_020c19d0(void *table);
-void func_ov004_020b65e4(void *p);
+void func_ov004_020b65e4(void);
 }
 
 s32 dScMgCard_c::Behavior()
 {
     mFrameCounter += 1;
     func_ov006_020c19d0(pad_4f38);
-    func_ov004_020b65e4(func_ov006_020dac34(this));
+    func_ov006_020dac34((unsigned char *)this);
+    func_ov004_020b65e4();
     return 1;
 }
