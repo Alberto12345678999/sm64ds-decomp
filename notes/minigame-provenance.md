@@ -271,11 +271,20 @@ idiom dScMgPachinko_c's own slot 18 helper already uses), 31 (now
 `Virtual7C`, src/_ZN12dScMgAmida_c9Virtual7CEv.cpp -- takes no parameters
 and never touches `this` at all, pure hardware-register/global reset; it
 was left as a raw helper by THIS migration and picked up later, when the
-slot-31 keystone commit named the base slot), 34 (src/func_ov006_020d14c0.c -- takes
-three extra parameters (y, x, arg3) beyond `this` and draws a HUD
-digit/glyph into its own private Ctx-shaped state; same multi-argument
-shape dScMgTeresa_c's own slot 34 documents, left as a raw helper,
-untouched by this migration -- it never includes this header either).
+slot-31 keystone commit named the base slot), 34 (now `Virtual88`,
+src/_ZN12dScMgAmida_c9Virtual88Eiiii.c -- the slot's signature is
+`void(int, int, int, int)`, measured from the seven call sites in
+ov004:0x020ae5c4, and this body reads only three of the four because the
+fourth arrives on the stack and it supplies its own size instead; it is
+the collision half of the ghost-leg rule, probing the 0x158-stride
+occupancy grid at +0x4710 and then delegating the drawing to
+dScMgBase_c's brush, which it is the only override in the family to
+call.  The guess recorded here -- "draws a HUD digit/glyph" -- and the
+matching one in include/dScMgTeresa_c.h were both pointing at
+dScMgBase_c's slot 34 being a multi-argument virtual; it is declared and
+reconstructed tree-wide now.  Left as a raw helper by THIS migration and
+picked up later, when the slot-34 keystone commit named the base slot --
+it never includes this header either).
 
 rtti_vtables.py --own ALSO reports slot 35 (func_ov006_020d1170, a
 one-line `((*(int*)((char*)c+8))&0xff)==1` check, same shape as slot 36

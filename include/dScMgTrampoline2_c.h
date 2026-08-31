@@ -51,6 +51,7 @@ struct dScMgTrampoline2_c : dScMgD3DBase_c {
     virtual int  OnAttacked2();                        /* slot 23 */
     virtual int  OnKicked();                           /* slot 24 */
     virtual int  OnPushed();                           /* slot 25 */
+    virtual void Virtual88(int cx, int cy, int colour, int size); /* slot 34 */
 
     /* 0x5004 -- the state callback, a pointer-to-member of this class, which
        is mwccarm's eight bytes exactly; Behavior calls through it every frame.

@@ -768,10 +768,61 @@ struct dScMgBase_c : dScene_c {
            no vtable at all), so this turns it into a real member definition and
            takes the class from a byte-exact 33-slot vtable prefix to 34. */
     virtual void Virtual84();                          /* slot 33 */
+    /* Slot 34 -- Virtual88, the first slot in this family that takes arguments,
+       and the first whose job is legible from the body without any naming help.
+       IT IS THE BRUSH.  ov004:0x020ae3b4 walks a size x size square centred on
+         (cx, cy), and for each cell inside it computes the address of one
+         4-bit pixel in BG character VRAM -- `(x/8 + (y/8)*32)*32 + (y&7)*4`,
+         the standard DS 4bpp char layout -- reads the containing word, splices
+         `colour` into the nibble at `(x&7)*4`, and writes it back.  Sixteen
+         colours, one palette index per pixel.  It clips on all four sides.
+       THE TWO FIELDS SLOT 33 INITIALISES ARE THE ONES IT READS.  Slot 33
+         (Virtual84, engine bring-up) sets `obj+0x68` to 0 and `obj+0x6c` to -1.
+         Here `obj+0x6c` selects WHICH background layer to draw into -- 0..3
+         index G2S::GetBG0CharPtr through GetBG3CharPtr, anything else returns
+         without drawing, which is what -1 buys -- and `obj+0x68` gates the
+         wrapped region above the touch screen, where the main engine's
+         G2::GetBG*CharPtr are used instead and y is folded by
+         `+ data_ov004_020beb6c + 0xc0`.  So slot 33 leaves the brush disabled
+         and a minigame arms it by picking a layer.  Two slots, one mechanism.
+       WHO CALLS IT: ov004:0x020ae5c4, a line rasteriser sitting immediately
+         after the brush in the image, which dispatches through +0x88 at seven
+         separate sites as it steps along a segment.  That is the whole of the
+         in-family call graph for this slot -- every one of the seven is inside
+         that one function.  A line-drawing minigame is exactly the set that
+         overrides it (dScMgAmida_c is the ghost-leg/stylus one).
+       arity: FOUR explicit parameters, MEASURED and unanimous.  Every one of
+         the seven sites sets up r1, r2, r3 AND one stack word before the call
+         -- e.g. at 0x020ae690, `mov r1,sb; mov r2,r8` with r3 loaded from
+         [sp,#0x3c] and [sp] already holding r7 -- so the callee takes this plus
+         four.  Image-wide the +0x88 dispatch pair appears 14 times, 7 in
+         ov004/ov006 and 7 in ov064; the scanner is the one validated at slot 33
+         by reproducing slot 32's site at +0x80.
+       return type: void, and here the ROM says so rather than merely permitting
+         it.  Two of the seven sites (0x020ae7e4, 0x020ae83c) overwrite r0 on
+         the very next instruction with `ldr r0,[sp,#0xc]`; the rest tail-return
+         without reading it.  All five bodies fall off the end without setting a
+         result.
+       NOTHING TO CORRECT, as at slot 33: no `recovered name:` line exists on
+         the base body or on any of the four overrides, so no borrowed label is
+         being retired.  Virtual88 is this tree's own no-name spelling after the
+         +0x88 vtable offset.
+       overrides: FOUR tables, FOUR declarations, nothing inherited and nothing
+         shared -- dScMgAmida_c (ov006:0x020d14c0), dScMgTeresa_c (0x021200dc),
+         dScMgTrampoline_c (0x02120da8) and dScMgTrampoline2_c (0x02122cb0) each
+         have a body of their own.  dScMgD3DBase_c does NOT override this slot,
+         so its two trampoline children declare it themselves rather than
+         inheriting a shared body the way they do at 26-31 and 33.
+       dScMgAmida_c's body decompiles with only THREE explicit parameters.  That
+         is not a contradiction: the fourth arrives on the stack and that body
+         never reads it, so the reconstruction had nothing to name.  The slot's
+         signature is fixed by the call sites, which are unanimous, and an
+         ignored stack argument costs the callee nothing. */
+    virtual void Virtual88(int cx, int cy, int colour, int size); /* slot 34 */
 
-    /* Slots 34-35 are added the same way: one slot per change, together with
+    /* Slot 35 is added the same way: one slot per change, together with
        every descendant override of that slot. Until then they stay undeclared
-       and the emitted tables stop at slot 33.
+       and the emitted tables stop at slot 34.
 
        THE OCCUPIED-SLOT TRAP IS NO LONGER LOADED IN dScMgSlot1_c -- slots 27
        and 28 were both of its early declarations and both are reconciled --

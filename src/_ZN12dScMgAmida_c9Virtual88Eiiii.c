@@ -1,3 +1,19 @@
+// @symbol _ZN12dScMgAmida_c9Virtual88Eiiii
+/* dScMgAmida_c::Virtual88 - slot 34, and the only override in the family that
+   CALLS the base rather than replacing it.
+
+   Amida is the ghost-leg game: you draw a line and it must not cross one that
+   is already there.  So this override is the collision half and the base is the
+   drawing half.  Before painting it probes the 0x158-stride occupancy grid at
+   +0x4710 -- the cell under (x, y), and for a diagonal step also the two cells
+   the diagonal would cut between -- and sets the foul flag at +0x4709 if any of
+   them is already >= 3.  Then it calls the base brush, with a size of 2 or 4
+   chosen per case rather than passed in, which is why this body has one fewer
+   explicit parameter than the slot's signature: the fourth argument arrives on
+   the stack and is never read.
+
+   +0x46f8 / +0x46fc are the previous point, which is how it knows a step is
+   diagonal at all. */
 #include "types.h"
 typedef struct Ctx {
     u8 pad_0000[0x46d8];
@@ -21,9 +37,10 @@ typedef struct Ctx {
     u8* unk4710;
 } Ctx;
 
-extern void func_ov004_020ae3b4(Ctx* ctx, int y, int x, int arg3, int mode);
+extern void _ZN11dScMgBase_c9Virtual88Eiiii(Ctx* ctx, int cx, int cy,
+                                            int colour, int size);
 
-void func_ov006_020d14c0(Ctx* ctx, int y, int x, int arg3)
+void _ZN12dScMgAmida_c9Virtual88Eiiii(Ctx* ctx, int y, int x, int arg3)
 {
     u8 f705;
     u8 f707;
@@ -78,7 +95,7 @@ void func_ov006_020d14c0(Ctx* ctx, int y, int x, int arg3)
     }
 
     if (ctx->unk4706 == 1) {
-        func_ov004_020ae3b4(ctx, y, x, arg3, 4);
+        _ZN11dScMgBase_c9Virtual88Eiiii(ctx, y, x, arg3, 4);
         if (y < 0) return;
         if (y >= 0x100) return;
         if (x < -0xc0) return;
@@ -89,21 +106,21 @@ void func_ov006_020d14c0(Ctx* ctx, int y, int x, int arg3)
 
     f705 = ctx->unk4705;
     if (f705 == 1) {
-        func_ov004_020ae3b4(ctx, y, x, arg3, 2);
+        _ZN11dScMgBase_c9Virtual88Eiiii(ctx, y, x, arg3, 2);
         return;
     }
 
     f707 = ctx->unk4707;
     x2 = x + 0xc0;
     if (f707 != 0) {
-        func_ov004_020ae3b4(ctx, y, x, arg3, 4);
+        _ZN11dScMgBase_c9Virtual88Eiiii(ctx, y, x, arg3, 4);
         if (y >= 0 && y < 0x100 && x2 >= 0 && x2 < 0x158) {
             (ctx->unk4710 + y * 0x158)[x2] = ctx->unk470a;
         }
     } else {
         u8 b;
         if (y < 0 || y >= 0x100 || x2 < 0 || x2 >= 0x158) {
-            func_ov004_020ae3b4(ctx, y, x, arg3, 4);
+            _ZN11dScMgBase_c9Virtual88Eiiii(ctx, y, x, arg3, 4);
             return;
         }
         if (y == 0x20 || y == 0x60 || y == 0xa0 || y == 0xe0) {
@@ -126,7 +143,7 @@ void func_ov006_020d14c0(Ctx* ctx, int y, int x, int arg3)
             return;
         }
         if (ctx->unk4704 == 0) {
-            func_ov004_020ae3b4(ctx, y, x, arg3, 2);
+            _ZN11dScMgBase_c9Virtual88Eiiii(ctx, y, x, arg3, 2);
             return;
         }
         b = (ctx->unk470c + y * 0x158)[x2];
@@ -140,6 +157,6 @@ void func_ov006_020d14c0(Ctx* ctx, int y, int x, int arg3)
         }
     }
 
-    func_ov004_020ae3b4(ctx, y, x, arg3, 2);
+    _ZN11dScMgBase_c9Virtual88Eiiii(ctx, y, x, arg3, 2);
     (ctx->unk470c + y * 0x158)[x2] = ctx->unk470a;
 }
