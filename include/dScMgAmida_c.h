@@ -46,9 +46,14 @@ struct dScMgAmida_c : dScMgBase_c {
     virtual void AfterCleanupResources(u32 vfSuccess);   /* slot  5 */
     virtual s32  Behavior();                             /* slot  6 */
     virtual s32  Render();                               /* slot  9 */
-    /* Overrides dScMgBase_c's slot 18. It must stay FIRST among this class's
-       new-slot virtuals: for a new slot the index IS the declaration order,
-       so any undeclared-on-the-base virtual placed above it would claim 18. */
+    /* Overrides dScMgBase_c's slot 18, so the base fixes its index.  Unk36
+       below is NOT an override: dScMgBase_c declares through 26 today, so mwcc
+       lands Unk36 on 27 and _ZTV12dScMgAmida_c scores DIFFERS on that one
+       word.  That is the last DIFFERS left in the minigame family, and it
+       needs no fix local to this header -- every keystone slot declared on the
+       base moves Unk36 one index closer, and declaring slot 35 puts it on 36.
+       Until then, keep Unk36 LAST: anything else undeclared-on-the-base
+       inserted above it would take 27 and push it further out. */
     virtual int  OnYoshiTryEat(int arg);                 /* slot 18 */
     virtual int  Unk36();                                /* slot 36 */
 

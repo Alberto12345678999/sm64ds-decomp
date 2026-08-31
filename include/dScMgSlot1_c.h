@@ -88,26 +88,33 @@
  * which dScMgSlot1_c's own overrides call into), and on many unrelated
  * fBase_c descendants across other overlays -- a shared, fixed
  * collision-event slot pair used across both the dActor_c and dScene_c branches,
- * not a coincidence of numbering. Neither dScMgBase_c.h nor dScene_c.h/
- * fBase_c.h currently declares a slot at 27/28 for the dScene_c branch (they
- * are left undeclared, same as dScMgBase_c.h's own "18-35... left
- * undeclared" note), so the compiler's OWN internal slot assignment for
- * these two methods in THIS class does not literally land on index 27/28.
- * The comments below record the true ROM position for a human reader, same
- * as every other slot-number comment in this file.
+ * not a coincidence of numbering.
  *
- * THAT MISLANDING IS A REAL, STILL-OPEN DEFECT, not just a bookkeeping note.
- * Because _ZTV12dScMgSlot1_c is emitted (see the Behavior paragraph above),
- * these two declarations -- the first virtuals this class introduces that
- * mwcc can see past the destructor pair -- take the compiler's slots 18 and
- * 19 and write 0x0210c4dc and 0x0210c4b8 there, where the cartridge holds
- * 0x0210c674 (this class's real slot-18 body) and 0x020b2994 (the base's
- * OnTurnIntoEgg). The table therefore still scores DIFFERS on those two
- * words. The fix is not local to this header: dScMgBase_c has to declare its
- * slots 18-35 first, which lands OnHitByMegaChar and OnHitFromUnderneath on
- * their true indices and lets slot 18 be declared as well. That change is
- * mapped, costed and blocked as one atomic unit in
- * notes/dScMgBase_c-slots-18-35.md. */
+ * THE MISLANDING THIS PARAGRAPH USED TO DESCRIBE IS FIXED, and declaring
+ * dScMgBase_c's slot 26 is what fixed it. dScMgBase_c still does not declare
+ * 27/28 itself, so these two are still NEW slots as far as mwcc is concerned:
+ * they land on 27 and 28 by ARITHMETIC, because the base now declares 18
+ * through 26 and 27 is simply the next free index. Before that they took the
+ * compiler's 26 and 27 and wrote 0x0210c4dc and 0x0210c4b8 where the
+ * cartridge holds 0x0210c674 (this class's real slot-18 body) and 0x020b2994
+ * (the base's OnTurnIntoEgg), and _ZTV12dScMgSlot1_c scored DIFFERS on those
+ * two words. It scores PARTIAL now -- byte-exact for every word it emits.
+ * That is the first DIFFERS the slot-by-slot keystone campaign has CLOSED
+ * rather than widened, and it was closed by a change in a DIFFERENT header,
+ * which is the whole reason romdata_check runs on every slot of this
+ * campaign: rombuild was green before and after.
+ *
+ * THE ARITHMETIC IS LOAD-BEARING -- read this before adding slot 27 to
+ * dScMgBase_c.h. OnHitByMegaChar only STAYS at 27 if the base's slot-27
+ * declaration is one this header OVERRIDES. Every arity dScMgBase_c has
+ * measured in this campaign is `no explicit parameters`; this header copied
+ * `Player &player` from include/dActor_c.h, which has been wrong on every
+ * parameter list the campaign has measured. If the base declares
+ * `OnHitByMegaChar()` while this stays `OnHitByMegaChar(Player &)` they are
+ * two different functions: the base's takes 27, this one becomes a new slot
+ * at 28, OnHitFromUnderneath is pushed to 29, and this table goes straight
+ * back to DIFFERS. The two declarations have to be reconciled in the same
+ * change, and romdata_check is what will say whether they were. */
 #ifndef DSCMGSLOT1_C_H
 #define DSCMGSLOT1_C_H
 #include "dScMgBase_c.h"
@@ -127,9 +134,11 @@ struct dScMgSlot1_c : dScMgBase_c {
     virtual s32 InitResources();                       /* slot  0 */
     virtual s32 Behavior();     /* slot  6 -- ov006 0x0210c9e0, not decompiled */
     virtual s32 Render();                               /* slot  9 */
-    /* Overrides dScMgBase_c's slot 18. It must stay FIRST among this class's
-       new-slot virtuals: for a new slot the index IS the declaration order,
-       so any undeclared-on-the-base virtual placed above it would claim 18. */
+    /* Overrides dScMgBase_c's slot 18, so its own index is fixed by the base.
+       The two below it are NOT overrides yet -- the base stops at 26 -- so
+       their indices are still declaration order counting on from 27, and
+       anything undeclared-on-the-base inserted above them would claim 27 and
+       push both down.  Order is load-bearing here; see the banner. */
     virtual int  OnYoshiTryEat(int arg);                 /* slot 18 */
     virtual void OnHitByMegaChar(Player &player);       /* slot 27 -- void, see include/Stump.h */
     virtual int OnHitFromUnderneath(dActor_c &other);      /* slot 28 */

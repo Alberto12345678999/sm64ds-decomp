@@ -138,14 +138,15 @@ struct dScMgBase_c : dScene_c {
        How much that is worth is a count, not a rule, and an earlier draft of
        this comment got the count wrong.  It said dActor_c.h had been right on
        every return type this campaign checked.  It has not.  Of the
-       seven dScMgBase_c slots with a body of their own that pins a return
-       type, dActor_c.h's type matches six and differs on one:
+       eight dScMgBase_c slots with a body of their own that pins a return
+       type, dActor_c.h's type matches seven and differs on one:
            18  int  / int   agree   sets r0 on a constant-return path
            19  int  / int   agree   sets r0 on a constant-return path
            22  int  / int   agree   OnAttacked1's body is `return 1;`
            23  int  / int   agree   OnAttacked2's body is `return 1;`
            24  int  / void  DIFFER  OnKicked's body ends `return 1;`
            25  int  / int   agree   OnPushed returns `mMenuOpen == 0`
+           26  int  / int   agree   three bodies, three constants: 0, 1, 2
            27  void / void  agree   func_ov004_020af27c, early bare return
        Slot 24 is the one that matters, because dActor_c.h names 24 as one of
        its three MEASURED voids -- and it is right about its own hierarchy;
@@ -158,9 +159,9 @@ struct dScMgBase_c : dScene_c {
        `recovered name:` comments that make the slots look paired were assigned
        BY that index, so they cannot also be evidence for it.
        So dActor_c.h transfers no better on return types than on parameter
-       lists; it is six-for-seven rather than wrong-every-time, which is why
+       lists; it is seven-for-eight rather than wrong-every-time, which is why
        this line still follows it where the arity line above does not.
-       Six-for-seven is the whole case for `void` here and is offered as a hint,
+       Seven-for-eight is the whole case for `void` here and is offered as a hint,
        not a measurement.  Flipping all four overrides between `int` and `void`
        was tried and moves no ROM byte, so nothing in the cartridge rides on
        the choice -- but a later override with an early return would settle it,
@@ -251,7 +252,8 @@ struct dScMgBase_c : dScene_c {
            a void callee.  Six witnesses.  dActor_c.h:142 says `int` too,
            which is the first slot in this campaign where it agrees on a
            return type it had not already been credited with; the table
-           under slot 21 is updated to six-for-seven to match.
+           under slot 21 is updated to match.  (Slot 26 lands in that
+           table too, taking it to seven-for-eight.)
          overrides: SEVEN tables, FIVE declarations.  dScMgJump_c and
            dScMgJump2_c point at dScMgD3DBase_c's own body (0x020e6e54) and
            override nothing themselves, exactly as at slot 24, so the
@@ -268,10 +270,48 @@ struct dScMgBase_c : dScene_c {
            misattributions name dScMgJump2_c, which is what a recovery pass
            reading tables in name order would produce. */
     virtual int  OnPushed();                           /* slot 25 */
+    /* Slot 26 -- OnHitByCannonBlastedChar.  Name from the ov004 body's own
+       `recovered name: dScMgBase_c_OnHitByCannonBlastedChar` comment, agreeing
+       with include/dActor_c.h:143 on the parallel branch.
+         return type: int, MEASURED THREE TIMES, and this is the strongest
+           return-type evidence the campaign has had.  The three bodies are
+           three DIFFERENT constants -- ov004:0x020b04e0 is `mov r0,#0; bx lr`,
+           dScMgSingle3DBase_c's ov006:0x0210a600 is `mov r0,#1`, and
+           dScMgD3DBase_c's ov006:0x020e6e4c is `mov r0,#2`.  A void function
+           cannot return three different values, and the callers have to be
+           able to tell them apart.  dActor_c.h:143 says `int` as well.
+         arity: no explicit parameters, MEASURED.  All three bodies are two
+           instructions and read NO argument register at all -- not even
+           `this`.  dActor_c.h:143 spells a `dActor_c &other`; it has been
+           wrong on every parameter list this campaign has measured, so it is
+           not carried.
+         overrides: NINETEEN tables, TWO declarations -- the widest gap in the
+           campaign, and the one slot where the table count would have been
+           badly misleading on its own.  The RTTI graph is what closes it:
+           dScMgSingle3DBase_c is the shared base of thirteen of those tables
+           and dScMgD3DBase_c of four more (build/rtti.json, every edge at
+           offset 0), so seventeen classes point at an ancestor's body and
+           declare nothing themselves.  Declaring the slot on any of the
+           seventeen would invent an override the cartridge does not have.
+         NAME CORRECTION, the third on dScMgD3DBase_c: 0x020e6e4c carried
+           `recovered name: dScMgTrampoline2_c_OnHitByCannonBlastedChar`.
+           Five tables reference it -- dScMgD3DBase_c's and all four of its
+           children's -- so it is dScMgD3DBase_c's.  This one also disposes of
+           a guess made when reviewing slot 25: that the two earlier
+           misattributions both landing on dScMgJump2_c meant a recovery pass
+           reading tables in name order.  This one names dScMgTrampoline2_c,
+           so whatever the pass did, it was not that.
+         The matching error one level down was already found and corrected in
+           src/actors/dScMgSingle3DBase_c.cpp: 0x0210a600 had been recovered
+           as dScMgFlower_c's.  Three of the same mistake on this one slot is
+           what a per-table name assignment produces whenever a body is shared,
+           and it is why every slot in this campaign reconciles DISTINCT
+           ADDRESSES against declarations and the table count separately. */
+    virtual int  OnHitByCannonBlastedChar();           /* slot 26 */
 
-    /* Slots 26-35 are added the same way: one slot per change, together with
+    /* Slots 27-35 are added the same way: one slot per change, together with
        every descendant override of that slot. Until then they stay undeclared
-       and the emitted tables stop at slot 25. */
+       and the emitted tables stop at slot 26. */
 
     s32 unk_050;            /* 0x050 */
     s32 unk_054;            /* 0x054 */

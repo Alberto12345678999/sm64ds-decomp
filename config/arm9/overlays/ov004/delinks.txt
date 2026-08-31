@@ -287,7 +287,7 @@ src/func_ov004_020b04d0.c:
     complete
     .text start:0x020b04d0 end:0x020b04e0
 
-src/func_ov004_020b04e0.c:
+src/_ZN11dScMgBase_c24OnHitByCannonBlastedCharEv.c:
     complete
     .text start:0x020b04e0 end:0x020b04e8
 

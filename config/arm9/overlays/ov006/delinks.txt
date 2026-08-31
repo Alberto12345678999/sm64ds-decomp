@@ -2551,7 +2551,7 @@ src/func_ov006_020e6e3c.c:
     complete
     .text start:0x020e6e3c end:0x020e6e4c
 
-src/func_ov006_020e6e4c.c:
+src/_ZN14dScMgD3DBase_c24OnHitByCannonBlastedCharEv.c:
     complete
     .text start:0x020e6e4c end:0x020e6e54
 
