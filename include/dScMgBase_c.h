@@ -165,10 +165,27 @@ struct dScMgBase_c : dScene_c {
        the choice -- but a later override with an early return would settle it,
        and that override would outrank this count. */
     virtual void OnGroundPounded();                    /* slot 21 */
+/* Slot 22 -- OnAttacked1.  Name from the ov004 body's own
+   `recovered name: dScMgBase_c_OnAttacked1` comment, agreeing with
+   include/dActor_c.h:139 on the parallel branch.
+     overrides: NONE.  Every one of the 32 descendants inherits this slot, so
+       this declaration widens 30 emitted tables by a word and adds no other
+       file.  A slot with no overrides is the one case where the widened-table
+       COUNT is the entire check: nothing else would notice if the base
+       declaration failed to take.
+     arity: no explicit parameters.  There is no override to read a second
+       argument register, so the only evidence is the base body, which reads
+       none.  dActor_c.h:139 spells a `dActor_c &`; it has been wrong on every
+       parameter list this campaign has measured, and an unread parameter would
+       leave no trace either way, so it is not carried.
+     return type: int, MEASURED.  The body is `return 1;` -- it sets r0, which
+       a `void` function would not, so this one is not a coin-flip the way slot
+       21's tail calls were. */
+    virtual int  OnAttacked1();                        /* slot 22 */
 
-    /* Slots 22-35 are added the same way: one slot per change, together with
+    /* Slots 23-35 are added the same way: one slot per change, together with
        every descendant override of that slot. Until then they stay undeclared
-       and the emitted tables stop at slot 21. */
+       and the emitted tables stop at slot 22. */
 
     s32 unk_050;            /* 0x050 */
     s32 unk_054;            /* 0x054 */
