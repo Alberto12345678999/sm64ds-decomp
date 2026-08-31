@@ -1,10 +1,20 @@
 //cpp
-// @symbol func_ov006_0210aa60
-// recovered name: dScMgSlot3_c_AfterClsn
+// @symbol _ZN12dScMgSlot3_c9Virtual80Ev
+// recovered name: dScMgSlot3_c_AfterClsn  -- WRONG, see below
 /* recovered: renamed to Class_Method, declarations from a shared header */
 #include "decl_common.h"
 /* recovered: renamed to Class_Method */
-/* dScMgSlot3_c::AfterClsn - recovered from vtable slot identity */
+/* dScMgSlot3_c::Virtual80 - slot 32, the only override of it in the family.
+
+   Not an AfterClsn: the base slot has no ROM name at all, and the one the
+   recovery pass borrowed belongs to dPathLiftActor_c, two forks away.  See the
+   slot-32 block in include/dScMgBase_c.h.
+
+   The base's body verbatim -- main BG1CNT reduced to 0x1000, scroll reset, BG1
+   cleared from the main BG-enable shadow, this class's own language table and
+   the shared screen map -- and then one more write, leaving BG1CNT at 0x1118
+   instead of 0x1000: the same layer, pointed at this minigame's own character
+   and screen base blocks. */
 struct G2 { static void* GetBG1ScrPtr(); };
 
 extern "C" {
@@ -16,7 +26,7 @@ extern "C" {
 
 extern unsigned char data_0209d45c;
 
-extern "C" void func_ov006_0210aa60(void)
+extern "C" void _ZN12dScMgSlot3_c9Virtual80Ev(void)
 {
     int idx;
 

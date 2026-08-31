@@ -410,7 +410,7 @@ src/func_ov004_020b265c.c:
     complete
     .text start:0x020b265c end:0x020b27f4
 
-src/func_ov004_020b27f4.c:
+src/_ZN11dScMgBase_c9Virtual80Ev.c:
     complete
     .text start:0x020b27f4 end:0x020b2880
 
