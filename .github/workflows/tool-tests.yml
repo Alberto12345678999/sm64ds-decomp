@@ -27,14 +27,23 @@
 #
 #      test_tubuild deserves its own sentence, because it is the worst of the shapes and
 #      it is easy to look at its numbers and conclude the opposite. Run under pytest in
-#      that toolchain-free tree it reports "2 failed, 43 passed" -- which reads like a
-#      suite that is 95% wirable. It is not. Fifteen of its tests open with
-#      `if not _toolchain(): return`, and fourteen of those returns are bare, so those
-#      tests report PASS having asserted nothing. The honest split is 28 real passes, 15
-#      vacuous passes, 2 failures (`tubuild list` needs build/tu_map.json, which
-#      regenerates from the ROM and comes back empty without it). A bare `return` guard
-#      is strictly worse than a skip: `pytest -rs` cannot see it and neither can a
-#      reviewer reading a green log.
+#      that toolchain-free tree it used to report "2 failed, 43 passed" -- which reads
+#      like a suite that is 95% wirable. It was not: fifteen of its tests opened with
+#      `if not _toolchain(): return`, and fourteen of those returns were bare, so those
+#      tests reported PASS having asserted nothing. A bare `return` guard is strictly
+#      worse than a skip: `pytest -rs` cannot see it and neither can a reviewer reading
+#      a green log.
+#
+#      All sixteen of those guards now `raise unittest.SkipTest(...)` instead, so the
+#      pytest split is honest -- the vacuous passes became named skips and the two real
+#      failures stayed (`tubuild list` needs build/tu_map.json, which regenerates from
+#      the ROM and comes back empty without it). That does NOT make the module wirable,
+#      and the closing paragraph of this file used to imply it would. It has no
+#      `unittest.TestCase` at all, so `python -m unittest tools.test_tubuild` still finds
+#      zero tests; and a third of what it does have still compiles with mwccarm. Wiring
+#      it means converting 55 bare functions to methods, which is a change to the tests
+#      rather than to how they are invoked. Its three toolchain-free vtable-partition
+#      tests were moved out to test_tubuild_vtable_partitions instead -- see below.
 #
 #   2. NEEDS A PIP DEPENDENCY -- RESOLVED for the three modules added below, and that is
 #      what tools/requirements.txt now exists for. A bare runner has no pyelftools,
@@ -74,10 +83,11 @@
 # review. There is a sharper version of the same trap already in the tree: thirteen of the
 # 63 modules are pytest-style bare functions with no unittest.TestCase, so
 # `python -m unittest tools.test_tubuild` prints "Ran 0 tests ... OK" and exits 0. That
-# is 186 test functions that a glob would have silently counted as passing. Four of them
-# -- test_build_pin, test_dtor_members, test_opnew_sizes, test_tubuild -- also carry the
+# is 186 test functions that a glob would have silently counted as passing. Three of
+# them -- test_build_pin, test_dtor_members, test_opnew_sizes -- also carry the
 # bare-`return` toolchain guard that reports PASS rather than SKIP when the compiler is
-# missing. An explicit list makes adding a module a reviewed decision.
+# missing. (test_tubuild was the fourth; its sixteen guards are `unittest.SkipTest` now.)
+# An explicit list makes adding a module a reviewed decision.
 #
 # Nearly free: unittest over the working tree, no compiler, no ROM. It now costs one pip
 # step (two wheels, no build) and the network access that implies -- that is the whole
@@ -102,7 +112,10 @@
 # test_premerge_check adds none on a runner with git installed, and test_symrecords,
 # test_nearmiss_db, test_tu_map, test_tu_promote, test_tu_production and
 # test_tubuild_owned_relocs add none anywhere.
-# 505 of the 514 assert something.
+# 505 of the 514 assert something. test_tubuild_vtable_partitions adds four to both
+# halves of that -- all four assert and none skips -- but the 514 was measured in the
+# container and the +4 is arithmetic on it, not a re-measurement. On a Windows tree
+# WITH the toolchain the same 29 modules report 519 and three skips.
 name: tool tests
 
 on:
@@ -198,6 +211,7 @@ jobs:
             tools.test_tu_production \
             tools.test_tu_promote \
             tools.test_tubuild_owned_relocs \
+            tools.test_tubuild_vtable_partitions \
             tools.test_validate_merge
 
 # What each module protects, in the order it runs above:
@@ -329,13 +343,51 @@ jobs:
 #                                      `cand_addr != expected["target_address"]` is
 #                                      likewise caught here alone; `>=` -> `>` and
 #                                      disabling the normalized bias are caught by both.
+#   test_tubuild_vtable_partitions
+#                                (4)   tubuild's vtable-partition licensing boundary --
+#                                      the fail-closed path #2091 added, which refuses a
+#                                      manifest-declared symbol carved out of a vtable's
+#                                      public range unless `partition_vtable_rebiases`
+#                                      independently validated it against content-bound
+#                                      baseline ELF metadata. Three of the four are
+#                                      #2091's own tests, moved verbatim out of
+#                                      test_tubuild.py (bodies unchanged; `def f():` to
+#                                      `def f(self):` and one indent) because that file
+#                                      contributes zero tests to `python -m unittest`.
+#                                      Mock- and dict-driven: no compiler, no ROM, no
+#                                      config/ and no build/. 4 of 4 run in CI, none
+#                                      skips.
+#                                      WHY IT MATTERS NOW: measured on #2091's merge
+#                                      tree, that boundary licensed nothing at all -- 0
+#                                      of 97 manifest entries, 0 `partition_symbols` rows
+#                                      tree-wide -- and #2096 introduces the first two
+#                                      that have ever existed. It goes from unexercised
+#                                      to load-bearing in one PR.
+#                                      The fourth test is new and pins the invariant that
+#                                      is easiest to re-break: licensing compares
+#                                      `sectionIndex`, never section NAMES, because a
+#                                      linked ELF names a vtable's output section after
+#                                      its overlay (OV036/OV047/OV070 measured on the
+#                                      baseline link) while a manifest section is one of
+#                                      .rodata/.init/.ctor/.data/.bss. Comparing them
+#                                      refuses every real input, which is what made the
+#                                      whole path unreachable; 0b0e319 removed exactly
+#                                      that comparison. Mutation-checked both ways:
+#                                      deleting the `sectionIndex` equality is caught by
+#                                      the new test, and restoring the section-name
+#                                      comparison is caught by it and by the moved
+#                                      licensing test.
 #   test_validate_merge         (35)   validate_merge.py -- builds the machine-readable
 #                                      PR validation report the validator comment renders.
 #
-# The two suites this list still refuses, and the number that says why, measured on a
-# `git archive origin/main` tree with no toolchain: test_objisolate 0 pass / 34 skip
-# (every test in it compiles), test_tubuild 28 real pass / 15 vacuous / 2 fail. Neither
-# is a candidate until objisolate's fixtures stop needing mwcc and tubuild's bare
-# `return` guards become skips. See group 1 in the header. test_tubuild_owned_relocs
-# above is NOT a step toward wiring test_tubuild: it is a separate module precisely so
-# that adding it did not require relaxing that refusal.
+# The two suites this list still refuses, and the number that says why. test_objisolate
+# is one `@unittest.skipUnless(_compiler(), "mwccarm not present")` class and nothing
+# else, so on a runner it contributes 35 tests and 35 skips -- a green that asserts
+# nothing, which is the exact shape the header refuses a glob for. Adding it would still
+# catch a collection error in objisolate.py; that is not worth a hollow green, so it
+# stays out until its fixtures stop needing mwcc. test_tubuild has no
+# `unittest.TestCase`, so `python -m unittest` finds 0 of its 55 tests; its guards are
+# honest skips now, but that was never the binding constraint. Neither
+# test_tubuild_owned_relocs nor test_tubuild_vtable_partitions is a step toward wiring
+# test_tubuild: both are separate modules precisely so that adding them did not require
+# relaxing that refusal.
