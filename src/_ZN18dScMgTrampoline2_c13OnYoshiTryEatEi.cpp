@@ -1,10 +1,12 @@
 //cpp
 #include "types.h"
-// @symbol func_ov006_021242cc
+// @symbol _ZN18dScMgTrampoline2_c13OnYoshiTryEatEi
 // recovered name: dScMgTrampoline2_c_OnYoshiTryEat_021242cc
 /* recovered: renamed to Class_Method, declarations from a shared header */
 #include "decl_common.h"
-/* recovered: renamed to Class_Method */
+/* recovered: renamed to Class_Method, vtable slot 18 -- an override of
+   dScMgBase_c::OnYoshiTryEat(int). The signature must repeat the base
+   declaration exactly, or mwcc appends a slot instead of overriding. */
 typedef struct {
     u8 pad0[0xbc];
     u32 unkBC;
@@ -32,7 +34,7 @@ extern "C" void func_ov006_02124228(T *self);
 
 extern volatile s16 data_020a0dbc[];
 
-extern "C" void func_ov006_021242cc(T *self)
+extern "C" void _ZN18dScMgTrampoline2_c13OnYoshiTryEatEi(T *self)
 {
     _ZN3G2x13SetBlendAlphaEPVttttj((volatile void *)0x4000050, 1, 0x2e, 0x10, 0x10);
 

@@ -4,7 +4,7 @@ extern void func_ov004_020adb1c(int self);
 extern void func_ov006_020c2924(char *c);
 extern void func_ov004_020b0cac(int a, int b, int c, int d, int e, int f);
 
-void func_ov006_020dfeec(char *c, int msg)
+void _ZN10dScMgCup_c13OnYoshiTryEatEi(char *c, int msg)
 {
     int i;
 

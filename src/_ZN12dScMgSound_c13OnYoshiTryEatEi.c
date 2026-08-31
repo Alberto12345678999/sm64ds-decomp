@@ -1,13 +1,15 @@
-// @symbol func_ov006_0211c5d0
+// @symbol _ZN12dScMgSound_c13OnYoshiTryEatEi
 // recovered name: dScMgSound_c_OnYoshiTryEat_0211c5d0
 /* recovered: renamed to Class_Method, declarations from a shared header */
 #include "decl_common.h"
-/* recovered: renamed to Class_Method */
+/* recovered: renamed to Class_Method, vtable slot 18 -- an override of
+   dScMgBase_c::OnYoshiTryEat(int). The signature must repeat the base
+   declaration exactly, or mwcc appends a slot instead of overriding. */
 extern void func_ov006_0211c478(int self);
 extern void func_ov006_0211c080(int self);
 
 
-void func_ov006_0211c5d0(int self, int r1)
+void _ZN12dScMgSound_c13OnYoshiTryEatEi(int self, int r1)
 {
     int *p;
     int *q;

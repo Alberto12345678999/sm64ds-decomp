@@ -1,5 +1,5 @@
 //cpp
-// @symbol func_ov006_020e6774
+// @symbol _ZN15dScMgCurling2_c13OnYoshiTryEatEi
 /* recovered: renamed to Class_Method, RTTI class fields named */
 #include "dScMgCurling2_c.h"
 // recovered name: dScMgCurling2_c_OnYoshiTryEat_020e6774
@@ -9,7 +9,7 @@ void func_ov006_020e668c(void*);
 void func_ov006_020e6528(void*);
 void _ZN3G2x13SetBlendAlphaEPVttttj(volatile void*,unsigned short,unsigned short,unsigned short,unsigned short);
 int func_ov004_020adc1c(void);
-void func_ov006_020e6774(unsigned char* c){
+void _ZN15dScMgCurling2_c13OnYoshiTryEatEi(unsigned char* c){
     struct dScMgCurling2_c *self = (struct dScMgCurling2_c *)(void *)c;
   self->unk_5580=0;
   func_ov006_020e668c(c);

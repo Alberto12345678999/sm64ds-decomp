@@ -1,4 +1,4 @@
-// @symbol func_ov006_020d52f0
+// @symbol _ZN12dScMgAmida_c13OnYoshiTryEatEi
 /* recovered: renamed to Class_Method, declarations from a shared header */
 #include "decl_common.h"
 // recovered name: dScMgAmida_c_OnYoshiTryEat_020d52f0
@@ -9,7 +9,7 @@
    pad_0bc, not a named field there either), reached via a raw char* offset
    instead of the class header, same precedent dScMgPachinko_c's own slot 18
    helper (src/func_ov006_020fed58.c) already uses for the same offset. */
-void func_ov006_020d52f0(char *c, int arg)
+void _ZN12dScMgAmida_c13OnYoshiTryEatEi(char *c, int arg)
 {
     if (arg == 0) {
         int *p;

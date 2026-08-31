@@ -65,7 +65,8 @@ struct dScMgCard_c : dScMgSingle3DBase_c {
     virtual s32 InitResources();     /* slot 0 -- ov006 0x020dbaf0 */
     virtual s32 CleanupResources();  /* slot 3 -- ov006 0x020da994 */
     virtual s32 Behavior();          /* slot 6 -- ov006 0x020dabec */
-    virtual s32 Render();            /* slot 9 -- ov006 0x020da9c4 */
+    virtual s32 Render();            /* slot 9 -- ov006 0x020da9c4 */
+    virtual int  OnYoshiTryEat(int arg);               /* slot 18 */
 
     u8  pad_4f38[0x1a];   /* 0x4f38 -- shared table start, see file banner */
     s16 unk_4f52;          /* 0x4f52 -- within shared table */

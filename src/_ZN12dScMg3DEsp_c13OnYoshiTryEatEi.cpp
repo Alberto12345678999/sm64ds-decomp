@@ -1,16 +1,18 @@
 //cpp
-// @symbol func_ov006_020e9c20
+// @symbol _ZN12dScMg3DEsp_c13OnYoshiTryEatEi
 /* recovered: renamed to Class_Method, RTTI class fields named, declarations from a shared header */
 #include "decl_common.h"
 /* recovered: renamed to Class_Method, RTTI class fields named */
 #include "dMg3DEspModel_c.h"
 #include "dScMg3DEsp_c.h"
 // recovered name: dScMg3DEsp_c_OnYoshiTryEat_020e9c20
-/* recovered: renamed to Class_Method */
+/* recovered: renamed to Class_Method, vtable slot 18 -- an override of
+   dScMgBase_c::OnYoshiTryEat(int). The signature must repeat the base
+   declaration exactly, or mwcc appends a slot instead of overriding. */
 /* data_ov004_020beb68 is declared `void *` by dScMgBase_c.h; cast at the use site
    rather than redeclaring it with a different pointer type. */
 
-extern "C" void func_ov006_020e9c20(char* c, int a)
+extern "C" void _ZN12dScMg3DEsp_c13OnYoshiTryEatEi(char* c, int a)
 {
     dScMg3DEsp_c *self = (dScMg3DEsp_c *)(void *)c;
     func_ov006_020e984c(c);

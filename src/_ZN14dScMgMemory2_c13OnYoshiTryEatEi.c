@@ -1,5 +1,5 @@
 //cpp
-// @symbol func_ov006_020f7394
+// @symbol _ZN14dScMgMemory2_c13OnYoshiTryEatEi
 /* recovered: renamed to Class_Method, RTTI class fields named, declarations from a shared header */
 #include "decl_common.h"
 /* recovered: renamed to Class_Method, RTTI class fields named */
@@ -7,11 +7,13 @@
 
 extern "C" {
 // recovered name: dScMgMemory2_c_OnYoshiTryEat_020f7394
-/* recovered: renamed to Class_Method */
+/* recovered: renamed to Class_Method, vtable slot 18 -- an override of
+   dScMgBase_c::OnYoshiTryEat(int). The signature must repeat the base
+   declaration exactly, or mwcc appends a slot instead of overriding. */
 extern void func_ov004_020b66d4(void *o);
 /* data_ov004_020beb68 is declared `void *` by dScMgBase_c.h; cast at the use site. */
 
-void func_ov006_020f7394(char *c)
+void _ZN14dScMgMemory2_c13OnYoshiTryEatEi(char *c)
 {
     struct dScMgMemory2_c *self = (struct dScMgMemory2_c *)(void *)c;
     char *o;

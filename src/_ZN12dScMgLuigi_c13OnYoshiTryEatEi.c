@@ -1,8 +1,10 @@
-// @symbol func_ov006_020f3294
+// @symbol _ZN12dScMgLuigi_c13OnYoshiTryEatEi
 // recovered name: dScMgLuigi_c_OnYoshiTryEat_020f3294
 /* recovered: renamed to Class_Method, declarations from a shared header */
 #include "decl_common.h"
-/* recovered: renamed to Class_Method */
+/* recovered: renamed to Class_Method, vtable slot 18 -- an override of
+   dScMgBase_c::OnYoshiTryEat(int). The signature must repeat the base
+   declaration exactly, or mwcc appends a slot instead of overriding. */
 extern void FreeGfxSlotsById(int arg);
 extern void func_ov006_020f2ec0(char *c);
 
@@ -10,7 +12,7 @@ extern char *data_ov004_020beb68;
 extern unsigned char data_0209d45c;
 extern unsigned char data_0209d454;
 
-void func_ov006_020f3294(char *c, int arg1)
+void _ZN12dScMgLuigi_c13OnYoshiTryEatEi(char *c, int arg1)
 {
     char *p;
     int *q;

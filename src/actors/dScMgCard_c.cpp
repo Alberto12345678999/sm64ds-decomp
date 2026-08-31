@@ -53,7 +53,7 @@
  *   [30] 0x020dac34  func_ov006_020dac34
  *   [31] 0x020db6ec  func_ov006_020db6ec
  *   [32] 0x020db720  func_ov006_020db720
- *   [33] 0x020db9dc  func_ov006_020db9dc
+ *   [33] 0x020db9dc  _ZN11dScMgCard_c13OnYoshiTryEatEi
  *   [34] 0x020dbaf0  _ZN11dScMgCard_c13InitResourcesEv
  */
 
@@ -396,9 +396,9 @@ s32 dScMgCard_c::InitResources()
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 33 -- func_ov006_020db9dc, 0x020db9dc, size 0x114 */
+/* ROM ordinal 33 -- _ZN11dScMgCard_c13OnYoshiTryEatEi, 0x020db9dc, size 0x114 */
 /* -------------------------------------------------------------------------- */
-// @symbol func_ov006_020db9dc
+// @symbol _ZN11dScMgCard_c13OnYoshiTryEatEi
 /* recovered: renamed to Class_Method, RTTI class fields named, declarations from a shared header */
 /* recovered: renamed to Class_Method, RTTI class fields named */
 // recovered name: dScMgCard_c_OnYoshiTryEat_020db9dc
@@ -407,7 +407,7 @@ s32 dScMgCard_c::InitResources()
    OnYoshiTryEat, which is slot 18 -- off by one. This body stores the class
    vtable, destroys the members and calls Memory::Deallocate; no eat handler
    does any of that. */
-extern "C" void func_ov006_020db9dc(char *c)
+extern "C" void _ZN11dScMgCard_c13OnYoshiTryEatEi(char *c)
 {
     dScMgCard_c *self = (dScMgCard_c *)(void *)c;
     int i;

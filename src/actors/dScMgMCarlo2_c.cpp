@@ -243,14 +243,14 @@ s32 dScMgMCarlo2_c::InitResources()
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 21 -- func_ov006_020fa4d4, 0x020fa4d4, size 0x98 */
+/* ROM ordinal 21 -- _ZN14dScMgMCarlo2_c13OnYoshiTryEatEi, 0x020fa4d4, size 0x98 */
 /* -------------------------------------------------------------------------- */
-// @symbol func_ov006_020fa4d4
+// @symbol _ZN14dScMgMCarlo2_c13OnYoshiTryEatEi
 // recovered name: dScMgMCarlo2_c_OnYoshiTryEat_020fa4d4
 /* Resets the whole board: rebuild the 40 pieces, clear the match latch,
  * re-arm the shared table, then hand the score display a zero. */
 extern "C" {
-void func_ov006_020fa4d4(char* c) {
+void _ZN14dScMgMCarlo2_c13OnYoshiTryEatEi(char* c) {
     struct dScMgMCarlo2_c *self = (struct dScMgMCarlo2_c *)(void *)c;
   func_ov006_020f9760((Node *)(c + 0x51a8));
   data_ov006_0213d6fc = 0;
