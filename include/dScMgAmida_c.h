@@ -64,7 +64,7 @@ struct dScMgAmida_c : dScMgBase_c {
        header, but by the base finally spelling the slots underneath it.
        Keep Unk36 LAST all the same: any further virtual added to dScMgBase_c
        would take 36 and push it out again. */
-    virtual int  OnYoshiTryEat(int arg);                 /* slot 18 */
+    virtual void OnYoshiTryEat(int arg);                 /* slot 18 */
     virtual int  Virtual7C();                            /* slot 31 */
     virtual void Virtual88(int cx, int cy, int colour, int size); /* slot 34 */
     virtual int  Virtual8C();                          /* slot 35 */
