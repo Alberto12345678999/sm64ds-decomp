@@ -12,7 +12,7 @@ not ownable either. The same cap applies to all 32 descendants of `dScMgBase_c`.
 
 | slot | +off | ROM body | existing `recovered name:` | shape in the legacy source |
 |---|---|---|---|---|
-| 18 | 0x48 | ov004:0x020b299c | *(none)* → `Virtual48` | `void(void)` |
+| 18 | 0x48 | ov004:0x020b299c | `OnYoshiTryEat` — **corrected 2026-08-31** | `void(void)` \*\* |
 | 19 | 0x4C | ov004:0x020b2994 | `OnTurnIntoEgg` | `int(void)`, `return 1;` |
 | 20 | 0x50 | ov004:0x020b2990 | `Virtual50` | `void(void)` |
 | 21 | 0x54 | ov004:0x020b298c | `OnGroundPounded` | `void(void)` |
@@ -31,13 +31,113 @@ not ownable either. The same cap applies to all 32 descendants of `dScMgBase_c`.
 | 34 | 0x88 | ov004:0x020ae3b4 | *(none)* → `Virtual88` | `void(char*,int,int,int,int)` |
 | 35 | 0x8C | ov004:0x020ad660 | *(none)* → `Virtual8C` | `int(int*)` |
 
-Fourteen of the eighteen already carry a `recovered name:` comment, so this is far less
-speculative than the header's wording suggests. The four unnamed ones take the tree's
-established `Virtual<hex offset>` convention (`include/fBase_c.h:143` — `Virtual34`,
-`Virtual38`).
+Fourteen of the eighteen carry a `recovered name:` comment in the legacy source, so
+this is far less speculative than the header's wording suggests. Slot 18 has a name
+too, from a different direction — see the next section. The three still unnamed (33,
+34, 35) take the tree's established `Virtual<hex offset>` convention
+(`include/fBase_c.h:143` — `Virtual34`, `Virtual38`).
+
+\*\* The shape column records what the *legacy free function* looks like.
+`include/dActor_c.h:131` declares slot 18 `int OnYoshiTryEat()`, and the return type is
+exactly the kind of difference only an override with early returns can expose — the
+same trap `dActor_c.h` documents for slots 21, 24 and 27. Take `int` from the template
+and re-measure against a real override before treating `void` as settled.
 
 For slots 24, 25, 27, 28, 29, 30, 33, 34 and 35 the leading parameter in the legacy
 source is really `this`; it becomes implicit when the free function turns into a method.
+
+## Slot 18 is `OnYoshiTryEat`, not `Virtual48` (measured 2026-08-31)
+
+Two independent sources agree, and neither of them is this table:
+
+1. **`include/dActor_c.h:131`** declares `virtual int OnYoshiTryEat(); /* slot 18 */`,
+   and a dozen further headers repeat the declaration at the same index — BabyPenguin,
+   BlueFlame, BobOmb, BookShot, Coin, Crate, CrazedCrate, `daDossyCap_c`, `daEyBm_c`,
+   `daKpFr_c`, `daKrb_c`, `daKrpa_c`, `daObjMarioCap_c`, `daTrs_c`. `dActor_c` sits on
+   the *other* branch of `fBase_c` (`fBase_c → dBase_c → dActor_c`, where this family
+   is `fBase_c → dBase_c → dScene_c → dScMgBase_c`), so on its own this would only be
+   suggestive.
+
+2. **The cartridge.** Walking `_ZTV11dScMgCoin_c` (ov006:0x0213bf50) against
+   `_ZTV11dScMgBase_c` (ov004:0x020bc0c0), 36 slots each, `dScMgCoin_c` overrides
+   exactly three: 16 and 17 (the destructor pair) and **18, with ov006:0x020de5b0** —
+   which `config/arm9/overlays/ov006/symbols.txt:545` **already names**
+   `_ZN11dScMgCoin_c13OnYoshiTryEatEv`. That name was recovered and landed before this
+   table existed, and it lands on this branch's slot 18.
+
+So the `Virtual48` placeholder was wrong. The claim further down — "slot 18 stays
+unnamed on both sides, which is consistent rather than a gap" — was consistent for the
+wrong reason: two sources that both happened to lack the name, not two sources that
+agreed there was none to have.
+
+Watch the address point when reproducing this. A `_ZTV*` address in `symbols.txt`
+**is** the address point, so slot *i* sits at `addr + 4*i` with no preamble to skip.
+Adding `objisolate.VTABLE_PREAMBLE` (8) on top shifts every reading by two slots and
+makes the destructor pair look like slots 18 and 19.
+
+## The signature template for slots 18-30: `include/dActor_c.h:120-151`
+
+`dActor_c`'s new-slot block is on the other branch but at **identical indices**, and
+all thirteen names 18..30 agree with the `recovered name:` comments on this class's own
+ov004 bodies. It is the ready-made declaration block for PR B:
+
+```c
+/* --- new slots, 18..30, in declaration order. Do not reorder. --- */
+virtual int  OnYoshiTryEat();                      /* slot 18 */
+virtual int  OnTurnIntoEgg(Player &player);        /* slot 19 */
+virtual int  Virtual50();                          /* slot 20 -- vtable+0x50 */
+/* Slots 21, 24 and 27 return void, NOT int. Nothing in the tree reads them,
+   so only an override with early returns can tell the difference -- and one
+   of each does, allocating registers differently under `int` even with r0
+   untouched. Measured, not assumed; see notes/actor-core-provenance.md 9. */
+virtual void OnGroundPounded(dActor_c &other);          /* slot 21 */
+virtual int  OnAttacked1(dActor_c &other);              /* slot 22 */
+virtual int  OnAttacked2(dActor_c &other);              /* slot 23 */
+virtual void OnKicked(dActor_c &other);                 /* slot 24 */
+virtual int  OnPushed(dActor_c &other);                 /* slot 25 */
+virtual int  OnHitByCannonBlastedChar(dActor_c &other); /* slot 26 */
+virtual void OnHitByMegaChar(Player &player);           /* slot 27 */
+virtual int  OnHitFromUnderneath(dActor_c &other);      /* slot 28 */
+virtual int  OnAimedAtWithEgg();                        /* slot 29 */
+/* Returns a Vector3 by value ... the AAPCS indirect-return shape. */
+virtual Vector3 OnAimedAtWithEggReturnVec();            /* slot 30 */
+```
+
+The parameter *types* are `dActor_c &` / `Player &` on that branch; on this one the
+legacy sources pass raw `char *` / `void *`. The type does not change the slot's arity,
+but it does change the mangled name — so settle it before renaming the ov004 bodies,
+not after.
+
+**Slots 31-35 are not in `dActor_c.h`.** `Kill`, `AfterClsn`, `Virtual84`, `Virtual88`
+and `Virtual8C` still need signatures reconstructed from their bodies. That is the
+remaining unknown in PR B, and it is five slots, not eighteen.
+
+## What PR B actually costs (census, 2026-08-31)
+
+Walking every `_ZTV*` in the family against `_ZTV11dScMgBase_c`:
+
+- **106 overrides at slots ≥ 18**, across **33 classes**. 100 of them fall in 18..35;
+  6 sit at slot ≥ 36, on classes that add virtuals of their own on top.
+- `dScMgBase_c` itself owns 18 of those — **82 are descendant-side.**
+
+Per class: `dScMg3DEsp_c` 2, `dScMgAmida_c` 5, `dScMgBSC_c` 3, `dScMgBase_c` 18,
+`dScMgBomroom_c` 1, `dScMgCard_c` 3, `dScMgCoin_c` 1, `dScMgCup_c` 2,
+`dScMgCurling2_c` 1, `dScMgCurling_c` 1, `dScMgD3DBase_c` 9, `dScMgFlower_c` 1,
+`dScMgHanachan_c` 1, `dScMgJump2_c` 2, `dScMgJump_c` 4, `dScMgLuigi_c` 1,
+`dScMgMCarlo2_c` 2, `dScMgMCarlo_c` 2, `dScMgMemory2_c` 3, `dScMgMemory_c` 3,
+`dScMgPachinko2_c` 1, `dScMgPachinko_c` 3, `dScMgPanel_c` 1, `dScMgRoulette_c` 2,
+`dScMgSingle3DBase_c` 2, `dScMgSlot1_c` 4, `dScMgSlot3_c` 4, `dScMgSmartball_c` 3,
+`dScMgSnowball_c` 4, `dScMgSound_c` 2, `dScMgTeresa_c` 3, `dScMgTrampoline2_c` 6,
+`dScMgTrampoline_c` 6.
+
+**This is why the change cannot be staged class by class.** Roughly 34 of these
+classes already emit a vtable today. Declaring the base's eighteen slots widens every
+one of those tables from 18 slots to 36 — and a descendant that does not
+simultaneously declare its own overrides gets the *base's* body written into the
+widened slot, where the cartridge holds its own. Those tables go from PARTIAL (a
+byte-exact 18-slot prefix, ownable later) to **DIFFERS** (wrong bytes, a real
+regression `romdata_check` will catch). The base declarations, the eighteen ov004
+renames and all 82 descendant declarations-plus-renames are one commit.
 
 ## Two hazards, both measured
 
@@ -68,7 +168,7 @@ and its own bodies confirm the map from a second direction:
 
 | slot | base body (ov004) | base name here | dScMgBSC_c's override |
 |---|---|---|---|
-| 18 | 0x020b299c | `Virtual48` *(no recovered name)* | ov006:0x02125364 |
+| 18 | 0x020b299c | `OnYoshiTryEat` | ov006:0x02125364 |
 | 19 | 0x020b2994 | `OnTurnIntoEgg` | ov006:0x0212527c |
 | 21 | 0x020b298c | `OnGroundPounded` | ov006:0x02125248 |
 
@@ -76,8 +176,9 @@ Two independent sources agree on 19 and 21. This table was built by walking
 `_ZTV11dScMgBase_c`; the override addresses come from walking `_ZTV10dScMgBSC_c`. The
 promoted source carries `// recovered name: dScMgBSC_c_OnTurnIntoEgg` and
 `dScMgBSC_c_OnGroundPounded` comments that were recovered *before* either walk and
-land on exactly those two addresses. Slot 18 stays unnamed on both sides, which is
-consistent rather than a gap in one of them.
+land on exactly those two addresses. Slot 18 carried no recovered name on either
+side, which read as consistency at the time; the section above shows it was simply
+absent from both, and the name is `OnYoshiTryEat`.
 
 **This is also the measurement of what PR B costs.** `dScMgBSC_c`'s emitted
 `_ZTV10dScMgBSC_c` is 0x50 bytes -- an 8-byte preamble plus 18 slots, so slots 0..17,

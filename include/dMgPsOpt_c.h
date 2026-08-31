@@ -11,6 +11,15 @@ struct dMgPsOpt_c {
     struct TouchIcon_c : dThIcon_c {
         TouchIcon_c();
         ~TouchIcon_c();
+
+        /* Slot 1 of dThIcon_c's two-slot table, and this class's only override
+           of it. The cartridge's _ZTVN10dMgPsOpt_c11TouchIcon_cE holds
+           ov004:0x020b8c18 there where dThIcon_c's own table holds
+           _ZN9dThIcon_c6RenderEv; without this declaration mwcc emitted the
+           inherited address and romdata_check scored the table DIFFERS. Body in
+           src/_ZN10dMgPsOpt_c11TouchIcon_c6RenderEv.cpp. Behavior (slot 0) is
+           NOT overridden -- the cartridge keeps dThIcon_c's there. */
+        void Render();
     };
 
     TouchIcon_c mIcons[8];   /* 0x000..0x120 */
