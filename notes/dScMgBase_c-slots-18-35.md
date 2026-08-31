@@ -115,7 +115,12 @@ virtual int  OnHitByCannonBlastedChar(dActor_c &other); /* slot 26 */
    reading it, so no second argument register is live on entry. Declared and
    landed as the no-parameter form. */
 virtual void OnHitByMegaChar();                         /* slot 27 */
-virtual int  OnHitFromUnderneath(dActor_c &other);      /* slot 28 */
+/* The `dActor_c &other` this block proposed for slot 28 came from
+   dActor_c.h too, and came off for the same reason -- dScMgBase_c's own body
+   writes r1 before it ever reads it and touches no other argument register.
+   Measured once here rather than twice: dScMgSlot1_c's override calls the base
+   as its first act, so a second argument would ride through untouched. */
+virtual int  OnHitFromUnderneath();                     /* slot 28 */
 virtual int  OnAimedAtWithEgg();                        /* slot 29 */
 /* Returns a Vector3 by value ... the AAPCS indirect-return shape. */
 virtual Vector3 OnAimedAtWithEggReturnVec();            /* slot 30 */
@@ -201,7 +206,10 @@ or neither. Across slots, they are independent.
 `OnHitFromUnderneath /* slot 28 */`, and `dScMgAmida_c` declared `Unk36 /* slot 36 */`,
 but with the base declaring nothing above 17 those comments were aspirational: the
 declarations actually sat at indices 18/19 and 18. That is precisely why those two were
-the last DIFFERS vtables left after PR #2081. A new base slot's override must be
+the last DIFFERS vtables left after PR #2081. Both of `dScMgSlot1_c`'s have since been
+reconciled -- 27 with the base's slot-27 commit, 28 with slot 28's -- so that class now
+declares nothing mwcc numbers for itself; `dScMgAmida_c`'s `Unk36` is the last one left,
+and slot 35 lands it. A new base slot's override must be
 inserted **before** any such pre-existing slot≥18 declaration, and after the class's
 first declared virtual so the key function does not move. Slot 18 moved their
 wrongness up one index without changing its size (Amida 4 bytes, Slot1 8); they clear
@@ -224,7 +232,7 @@ every slot also carries the base declaration and the ov004 base-body rename.
 | 25 | `OnPushed` | 0x020ae128 | 7 |
 | 26 | `OnHitByCannonBlastedChar` | 0x020b04e0 | 19 |
 | 27 | `OnHitByMegaChar` | 0x020af27c | 6 - **DONE**, 2 declarations |
-| 28 | `OnHitFromUnderneath` | 0x020af04c | 6 - **signature trap, see slot 27** |
+| 28 | `OnHitFromUnderneath` | 0x020af04c | 6 - **DONE**, 2 declarations; the second and last occupied slot |
 | 29 | `OnAimedAtWithEgg` | 0x020af094 | 6 |
 | 30 | `OnAimedAtWithEggReturnVec` | 0x020aeed8 | 6 |
 | 31 | `Kill` | 0x020b2880 | 7 |

@@ -170,7 +170,12 @@ struct dScMgBase_c : dScene_c {
        body there takes an early `popne {r4,lr}; bxne lr` with nothing setting
        r0 on either path out, so 27's `void` is MEASURED and the row above says
        so rather than `agree`.  It settles 27 and nothing else; the other seven
-       rows are still the count. */
+       rows are still the count.
+       Slot 28 is the opposite case and the first of its kind: NO body pins it
+       at all.  Neither dScMgBase_c's nor dScMgSlot1_c's sets r0 deliberately,
+       and nothing anywhere in ov004 or ov006 loads vtable+0x70, so there is no
+       caller to read a result either.  It gets no row above, and its `int`
+       rests on this count and on nothing else. */
     virtual void OnGroundPounded();                    /* slot 21 */
 /* Slot 22 -- OnAttacked1.  Name from the ov004 body's own
    `recovered name: dScMgBase_c_OnAttacked1` comment, agreeing with
@@ -353,19 +358,73 @@ struct dScMgBase_c : dScene_c {
            artifact, because the twenty-six tables that do not override this
            slot hold 0x020af27c directly. */
     virtual void OnHitByMegaChar();                    /* slot 27 */
+    /* Slot 28 -- OnHitFromUnderneath.  Name from the ov004 body's own
+       `recovered name: dScMgBase_c_OnHitFromUnderneath` comment, agreeing with
+       include/dActor_c.h:145 on the parallel branch and with dScMgSlot1_c's
+       independently recovered override.
+         return type: int, A HINT -- and slot 28 is the first in this campaign
+           whose return type NO body pins, which is why it gets no row in the
+           table above: that table is the eight slots whose own bodies DO pin
+           one.  ov004:0x020af04c leaves r0 holding whatever it last tested or
+           last called: the early exit at
+           `cmp r0,#0; popeq {r4,lr}; bxeq lr` returns the zero it has just
+           compared, and the fall-through returns whatever Enable3dEngines
+           left.  Neither is a deliberate result.  Nothing anywhere in ov004 or
+           ov006 loads vtable+0x70, so no caller consumes one either.  `int` is
+           include/dActor_c.h's, and its RETURN types have held up where its
+           parameter lists have not; `void` compiles to the same bytes.
+         arity: no explicit parameters, MEASURED ONCE rather than twice.  The
+           base body opens `mov r4, r0` and then writes r1 with
+           `add r1, r4, #0x4000` before ever reading it, and reads no other
+           argument register anywhere.  dScMgSlot1_c's override at
+           ov006:0x0210c4b8 cannot corroborate it the way its slot-27 override
+           did: it calls this body as its very first act, so a second argument
+           would pass through r1 untouched and leave no trace either way.
+           dActor_c.h:145 spells `dActor_c &other` and include/dScMgSlot1_c.h
+           had copied it.
+         overrides: SIX tables, TWO declarations -- the same shape as slot 27.
+           dScMgD3DBase_c's own body at ov006:0x020e6d8c backs its table and
+           all four of its children's; dScMgSlot1_c has its own at
+           ov006:0x0210c4b8.
+         THE RECONCILIATION, for the second and last time in this class.
+           dScMgSlot1_c already carried this member, declared as a NEW virtual
+           with dActor_c.h's parameter list and landing on index 28 by
+           arithmetic because the base stopped at 27.  Declaring it here
+           without touching that header would have made the two DIFFERENT
+           functions: this one takes 28, dScMgSlot1_c's becomes a new slot at
+           29, and _ZTV12dScMgSlot1_c goes straight back to DIFFERS -- with
+           rombuild green throughout.  Both declarations change in this one
+           commit.  dScMgSlot1_c now declares nothing mwcc has to number for
+           itself, so this is the last time the trap is loaded THERE; it can
+           still be loaded anywhere else a descendant declared a base slot
+           early, which is the one thing to check before each of slots 29-35.
+         NAME CORRECTION, the fifth on dScMgD3DBase_c and the sixth in this
+           campaign: 0x020e6d8c carried
+           `recovered name: dScMgTrampoline2_c_OnHitFromUnderneath`.  Five
+           tables reference it -- dScMgD3DBase_c's and all four of its
+           children's -- so it is dScMgD3DBase_c's.  Its twelve bytes are a
+           long-branch veneer into this class's own body, `ldr ip, [pc];
+           bx ip; .word 0x020af04c`, which is what a forwarding override
+           compiles to from ov006; the vtable word is NOT a linker artifact,
+           because the twenty-six tables that do not override this slot hold
+           0x020af04c directly. */
+    virtual int  OnHitFromUnderneath();                /* slot 28 */
 
-    /* Slots 28-35 are added the same way: one slot per change, together with
+    /* Slots 29-35 are added the same way: one slot per change, together with
        every descendant override of that slot. Until then they stay undeclared
-       and the emitted tables stop at slot 27.
+       and the emitted tables stop at slot 28.
 
-       SLOT 28 CARRIES THE SAME TRAP SLOT 27 DID, and it is already loaded:
-       include/dScMgSlot1_c.h declares `OnHitFromUnderneath(dActor_c &other)`
-       as a new virtual that lands on 28 by arithmetic, and
-       src/_ZN12dScMgSlot1_c19OnHitFromUnderneathER8dActor_c.cpp is banked in
-       config/converted-baseline.json under that name.  Measure the parameter
-       list off the bodies, reconcile that header in the same commit, and
-       remember the rename has to reach converted-baseline.json (the ratchet
-       has no rename detection) and any prose path that names the file. */
+       THE OCCUPIED-SLOT TRAP IS NO LONGER LOADED IN dScMgSlot1_c -- slots 27
+       and 28 were both of its early declarations and both are reconciled --
+       but it is a property of the FAMILY, not of that one class.  Before
+       declaring slot N, check every descendant header for a virtual that
+       already lands on N by arithmetic.  Declaring the base's while a
+       descendant keeps a different signature makes them two different
+       functions, pushes the descendant's own down one index, and regresses its
+       table to DIFFERS with rombuild still green -- only romdata_check sees
+       it.  Reconcile in the same commit, and remember the rename has to reach
+       config/converted-baseline.json (the ratchet has no rename detection) and
+       any prose path that names the file. */
 
     s32 unk_050;            /* 0x050 */
     s32 unk_054;            /* 0x054 */
