@@ -57,6 +57,7 @@ struct dScMgSlot3_c : dScMgSingle3DBase_c {
     s32 InitResources();   /* slot  0 -- src/_ZN12dScMgSlot3_c13InitResourcesEv.cpp */
     virtual int  OnYoshiTryEat(int arg);               /* slot 18 */
     virtual int  OnAimedAtWithEgg();                   /* slot 29 */
+    virtual int  OnAimedAtWithEggReturnVec();          /* slot 30 */
     s32 Behavior();        /* slot  6 -- src/_ZN12dScMgSlot3_c8BehaviorEv.cpp */
     s32 Render();          /* slot  9 -- src/_ZN12dScMgSlot3_c6RenderEv.cpp */
 

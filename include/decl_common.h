@@ -2318,7 +2318,7 @@ extern void func_ov004_020adb1c(int);
 extern void func_ov004_020adc00(int);
 extern void func_ov004_020add88(void*);
 extern void func_ov004_020ae20c(void);
-extern void func_ov004_020aeed8(void*);
+extern void _ZN11dScMgBase_c25OnAimedAtWithEggReturnVecEv(void*);
 extern void _ZN11dScMgBase_c16OnAimedAtWithEggEv(void*);
 extern void func_ov004_020af2f8(char*, int, int, int);
 extern void func_ov004_020af868(void*, int, int, int, int, void*);

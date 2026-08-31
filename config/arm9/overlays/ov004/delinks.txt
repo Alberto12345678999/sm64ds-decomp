@@ -203,7 +203,7 @@ src/func_ov004_020aeb24.cpp:
     complete
     .text start:0x020aeb24 end:0x020aeed8
 
-src/func_ov004_020aeed8.cpp:
+src/_ZN11dScMgBase_c25OnAimedAtWithEggReturnVecEv.cpp:
     complete
     .text start:0x020aeed8 end:0x020af04c
 

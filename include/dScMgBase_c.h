@@ -501,10 +501,84 @@ struct dScMgBase_c : dScene_c {
            put a hidden result pointer in r0 and `this` in r1 under AAPCS.
            Whatever slot 30 returns here, it is not a Vector3. */
     virtual int  OnAimedAtWithEgg();                   /* slot 29 */
+    /* Slot 30 -- OnAimedAtWithEggReturnVec.  Name transplanted from
+       include/dActor_c.h:151 at the same index, by way of the ov004 body's own
+       `recovered name:` comment, which is the same transplant reached a second
+       time rather than a second witness.  Both halves of it are wrong here and
+       both are MEASURED wrong; it is kept as a label, for the reasons under
+       slot 29.
+         return type: int, A HINT, and the THIRD consecutive slot no body pins.
+           ov004:0x020aeed8 sets no result on either exit -- the early one is a
+           bare return after `cmp r0,#2` and the fall-through ends in a
+           read-modify-write of DISPCNT.  Neither dispatch site reads a result
+           either, and that is measured, not assumed: dScMgBase_c::OnKicked
+           (slot 21) is the only caller of this slot anywhere in ov004 or ov006
+           -- see the whole-image `ldr rN,[rM,#0x78]` + `blx rN` scan under slot
+           29 for the method -- and at ov004:0x020ae16c the very next
+           instruction after the `blx`, reached through `b 0x020ae180`, is
+           `add r0,r4,#0x4000`.  The result is dead one instruction later, on
+           both arms of that branch.
+         `ReturnVec` IS REFUTED, twice over.  include/dActor_c.h:151 declares
+           slot 30 returning a Vector3 BY VALUE, and in THAT hierarchy that is
+           itself a measurement (of 0x020100dc) -- so this is a genuine
+           divergence between the two branches, not a defect in dActor_c.h.  In
+           THIS one it cannot hold.  A 12-byte return is returned in memory
+           under AAPCS: r0 would carry a hidden result pointer and `this` would
+           move to r1.  At the dispatch, ov004:0x020ae168, r0 still holds
+           `this` -- OnKicked's entry does `mov r4,r0` and never rewrites r0 --
+           and r1 holds the loaded function pointer.  And the base's own body
+           opens `ldr r1,[r0]`, reading its vptr out of r0.  Whatever this slot
+           returns, it is not a Vector3, and it is not returned in memory.
+           And the contrast is the whole lesson of this campaign in one pair
+           of slots: over in dActor_c, 29 and 30 are a lock-on RADIUS and the
+           AIM POINT derived from it, and 30 asks 29 virtually.  Here 29 and
+           30 are a screen SAVE and the RESTORE that undoes it.  Same two
+           indices, same shared ancestor, nothing else in common.  An index
+           is not a name.
+         arity: no explicit parameters, MEASURED THREE TIMES, the third
+           destructively.  The base writes r1 out of `this` before reading it.
+           dScMgD3DBase_c's override at ov006:0x020e6cac loads r1 from `this`
+           for its first call and never reads an incoming one.
+           dScMgSlot3_c's at ov006:0x0210aa10 CLOBBERS r1 with a masked read of
+           the sub display-control register 0x0400000A before falling into
+           0x020aeed8 -- a second argument passed in r1 would reach the base as
+           a display-control word.
+         overrides: SIX tables, TWO declarations, NO reconciliation -- the same
+           shape as 29, and for the same reason: nothing in the family declared
+           this member early.  dScMgD3DBase_c's body at ov006:0x020e6cac backs
+           its own table and all four of its children's; dScMgSlot3_c, which
+           hangs off dScMgSingle3DBase_c, has its own at ov006:0x0210aa10.
+         NAME CORRECTION, the seventh on dScMgD3DBase_c and the eighth in this
+           campaign: 0x020e6cac carried
+           `recovered name: dScMgTrampoline2_c_OnAimedAtWithEggReturnVec` and
+           included dScMgTrampoline2_c.h.  Five tables reference it, so it is
+           dScMgD3DBase_c's.  Like 29's it is a real body, not a veneer, so the
+           include and the type it casts `this` to had to change with the name.
+         WHAT IT ACTUALLY DOES, and this is the finding that settles slot 29
+           rather than merely cautioning about it: this body is the WORD-FOR-
+           WORD MIRROR of 0x020af094.  Slot 29 saves POWCNT1's screen-swap bit
+           into mSavedScreenSwap and the two BG-enable bytes into
+           mSavedMainBgBits / mSavedSubBgBits, blanks both DISPCNTs, spools
+           0x400 bytes of BG palette into the buffer at +0x4228 and 0x2000
+           bytes of sub-screen OBJ VRAM at 0x06606000 into +0x2228, then draws
+           the menu over the top.  This one restores every one of those, in
+           reverse: POWCNT1 bit 15 from mSavedScreenSwap, both DISPCNT 0xe000
+           fields, the palettes back out of +0x4228 (with +0x200 going to the
+           sub screen), the 0x2000-byte VRAM block back to 0x06606000, and the
+           two BG-enable bytes back out of mSavedMainBgBits / mSavedSubBgBits
+           and into both DISPCNTs' 0x1f00 fields.  Save-then-draw at 29,
+           restore at 30.  OnKicked picks between them on an EDGE: it compares
+           mMenuOpen (+0x4628) against unk_462c (+0x462c), does nothing when
+           they agree, calls THIS slot when mMenuOpen has fallen to zero and
+           slot 29 when it has risen, then latches mMenuOpen into unk_462c.
+           unk_462c is that edge latch and nothing else.  Slot 29 is the
+           three-item overlay menu going up and slot 30 is it coming back down;
+           neither has anything to do with a Yoshi egg or with a vector. */
+    virtual int  OnAimedAtWithEggReturnVec();          /* slot 30 */
 
-    /* Slots 30-35 are added the same way: one slot per change, together with
+    /* Slots 31-35 are added the same way: one slot per change, together with
        every descendant override of that slot. Until then they stay undeclared
-       and the emitted tables stop at slot 29.
+       and the emitted tables stop at slot 30.
 
        THE OCCUPIED-SLOT TRAP IS NO LONGER LOADED IN dScMgSlot1_c -- slots 27
        and 28 were both of its early declarations and both are reconciled --
@@ -547,7 +621,7 @@ struct dScMgBase_c : dScene_c {
     dMgState_c mStateController; /* 0x0cc -- minigame UI state controller */
     dMgPsOpt_c mTouchOptions; /* 0x0f4 -- eight polymorphic touch icons */
     u32 mSavedMainBgBits;   /* 0x21c -- OnAimedAtWithEgg saves data_0209d45c
-                                here and func_ov004_020aeed8 restores it */
+                                here and OnAimedAtWithEggReturnVec restores it */
     u32 mSavedSubBgBits;    /* 0x220 -- the same pair for data_0209d454 */
     u32 mSavedScreenSwap;   /* 0x224 -- bit 15 of POWCNT1 (0x4000304), saved and
                                 restored by the same two functions */

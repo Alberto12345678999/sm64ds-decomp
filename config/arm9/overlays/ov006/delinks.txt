@@ -2519,7 +2519,7 @@ src/_ZN14dScMgD3DBase_cD0Ev.cpp:
     complete
     .text start:0x020e6c60 end:0x020e6cac
 
-src/func_ov006_020e6cac.c:
+src/_ZN14dScMgD3DBase_c25OnAimedAtWithEggReturnVecEv.c:
     complete
     .text start:0x020e6cac end:0x020e6d24
 
@@ -4969,7 +4969,7 @@ src/_ZN12dScMgSlot3_cD0Ev.cpp:
     complete
     .text start:0x0210a9a8 end:0x0210aa10
 
-src/func_ov006_0210aa10.c:
+src/_ZN12dScMgSlot3_c25OnAimedAtWithEggReturnVecEv.c:
     complete
     .text start:0x0210aa10 end:0x0210aa3c
 
