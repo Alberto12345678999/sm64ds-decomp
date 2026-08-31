@@ -173,9 +173,10 @@ struct dScMgBase_c : dScene_c {
        rows are still the count.
        Slot 28 is the opposite case and the first of its kind: NO body pins it
        at all.  Neither dScMgBase_c's nor dScMgSlot1_c's sets r0 deliberately,
-       and nothing anywhere in ov004 or ov006 loads vtable+0x70, so there is no
-       caller to read a result either.  It gets no row above, and its `int`
-       rests on this count and on nothing else. */
+       and all three callers that dispatch through vtable+0x70 throw the result
+       away -- two tail-call it out without reading it, the third overwrites r0
+       on the next instruction.  It gets no row above, and its `int` rests on
+       this count and on nothing else. */
     virtual void OnGroundPounded();                    /* slot 21 */
 /* Slot 22 -- OnAttacked1.  Name from the ov004 body's own
    `recovered name: dScMgBase_c_OnAttacked1` comment, agreeing with
@@ -369,10 +370,18 @@ struct dScMgBase_c : dScene_c {
            last called: the early exit at
            `cmp r0,#0; popeq {r4,lr}; bxeq lr` returns the zero it has just
            compared, and the fall-through returns whatever Enable3dEngines
-           left.  Neither is a deliberate result.  Nothing anywhere in ov004 or
-           ov006 loads vtable+0x70, so no caller consumes one either.  `int` is
-           include/dActor_c.h's, and its RETURN types have held up where its
-           parameter lists have not; `void` compiles to the same bytes.
+           left.  Neither is a deliberate result.  Nor does any caller settle
+           it.  ov004 and ov006 hold exactly three
+           `ldr rN,[rM,#0x70]; blx rN` dispatch sites: 0x020aedec and
+           0x020aee90 inside func_ov004_020aeb24, and 0x020b06cc inside
+           dScMgBase_c::BeforeBehavior.  The first two are tail calls --
+           `blx r1; add sp,sp,#0x10; pop {r4,lr}; bx lr` -- which hand r0 back
+           to their own caller without ever reading it, and the third branches
+           to a shared epilogue that overwrites r0 with `add r0,r4,#0x4000`
+           before anything can use it.  Three sites, three discarded results.
+           `int` is include/dActor_c.h's, and its RETURN types have held up
+           where its parameter lists have not; `void` compiles to the same
+           bytes.
          arity: no explicit parameters, MEASURED ONCE rather than twice.  The
            base body opens `mov r4, r0` and then writes r1 with
            `add r1, r4, #0x4000` before ever reading it, and reads no other
