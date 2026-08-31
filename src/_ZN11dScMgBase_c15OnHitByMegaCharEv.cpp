@@ -1,5 +1,5 @@
 //cpp
-// @symbol func_ov004_020af27c
+// @symbol _ZN11dScMgBase_c15OnHitByMegaCharEv
 /* recovered: renamed to Class_Method, RTTI class fields named, declarations from a shared header */
 #include "decl_common.h"
 /* recovered: renamed to Class_Method, RTTI class fields named */
@@ -10,7 +10,7 @@
    Converted from .c to .cpp -- see the banner on
    src/_ZN11dScMgBase_c8OnPushedEv.cpp. */
 
-extern "C" void func_ov004_020af27c(void *c)
+extern "C" void _ZN11dScMgBase_c15OnHitByMegaCharEv(void *c)
 {
     struct dScMgBase_c *self = (struct dScMgBase_c *)(void *)c;
     if (self->unk_4630 != 0) return;
