@@ -446,7 +446,7 @@ the previous header held as four pads, and a run/HUD block at 0xb9d8.
 | 0xab50 | `mSoundPosX` / `mSoundPosY` (0xab54) | Behavior fires a rolling sound whenever the position has moved 0x30000 from these two, then copies the position in. |
 | 0xab60 | `mVelX` / `mVelY` (0xab64) | `Vec2_Len` of the pair is the speed, `atan2` of it is the heading, and it is added into `mPos` each tick. Capped at 0x8000. |
 | 0xab68 | `mScrollX` | Subtracted from every world X before drawing; src/func_ov006_021279b0.cpp zeroes it. |
-| 0xab6c | `mScrollY` | `mPosY - 0x190000`, clamped to `[0, mScrollLimit]`; drives all four `SetBg*Offset` calls and the four hardware scroll registers in src/func_ov006_02128fb8.c. |
+| 0xab6c | `mScrollY` | `mPosY - 0x190000`, clamped to `[0, mScrollLimit]`; drives all four `SetBg*Offset` calls and the four hardware scroll registers in src/_ZN15dScMgSnowball_c8OnKickedEv.c. |
 | 0xab70 | `mTouchX` / `mTouchY` (0xab74) | Behavior stores the raw touch sample (`data_020a0dea` / `data_020a0deb`) here and steers off the difference from the previous one. |
 | 0xab78 | `mRollAngle` | u16. `+= speed * 0x2710 / mBallSize` -- an angle that advances faster the smaller the ball. |
 | 0xab7c | `mHeadingAngle` | u16. `atan2(mVelX, mVelY)`, approached linearly while rolling and set outright while crashing. |
@@ -463,7 +463,7 @@ the previous header held as four pads, and a run/HUD block at 0xb9d8.
 | 0xb9dc | `mTimeLeft` | Frames. Seeded 0x960 or 0x4b0 by variant; Behavior counts it down and plays a tick sound at 60/30/15-frame intervals as it shortens; Render formats it as seconds and centiseconds; 0 ends the run. |
 | 0xb9e0 | `mScore` | Zeroed by the reset, +1 a tick while rolling, handed to the HUD counter `func_ov004_020adb1c` at the crash -- the same sink dScMgAmida_c's score uses. |
 | 0xb9f4 | `mState` | Behavior's `switch`: 0 count-in, 1 rolling, 2/3 crash, 4 melt, 5 over. |
-| 0xb9f8 | `mScreensSwapped` | u8. Behavior sets it from `mPosY >= 0xe8000`; src/func_ov006_02128fb8.c uses it to flip the POWCNT1 display-swap bit at 0x4000304 and exchange the main/sub BG offsets. |
+| 0xb9f8 | `mScreensSwapped` | u8. Behavior sets it from `mPosY >= 0xe8000`; src/_ZN15dScMgSnowball_c8OnKickedEv.c uses it to flip the POWCNT1 display-swap bit at 0x4000304 and exchange the main/sub BG offsets. |
 | 0xb9fc | `mCountdownTimer` | Seeded 0xf1; state 0 counts it down, plays a beep at 0xf0/0xb4/0x78 and starts the run at 0x3c; Render draws the 3-2-1 banner from `n / 60`. |
 | 0xba00 | `mStartY` | 0x2dc0 or 0x1740 by variant; `mPosY` starts at `mStartY << 12` and the progress bar uses it as one end. |
 | 0xba04 | `mGoalY` | The other end of that bar, and the line `mPosY - mBallSize` must cross to end the run. |
@@ -532,7 +532,7 @@ four vtable methods; the citations below name those files.
 
 | Offset | Name | Evidence |
 | --- | --- | --- |
-| 0x5d94 | `mScrollY` | src/func_ov006_02121bc8.cpp approaches it toward `mScrollTargetY` by 2 a tick; src/func_ov006_021211e0.cpp and Render both use `mScrollY + mScrollOffsetY` as the BG2 offset and as the hardware scroll register value. InitResources seeds it to 0x20. |
+| 0x5d94 | `mScrollY` | src/func_ov006_02121bc8.cpp approaches it toward `mScrollTargetY` by 2 a tick; src/_ZN17dScMgTrampoline_c8OnKickedEv.cpp and Render both use `mScrollY + mScrollOffsetY` as the BG2 offset and as the hardware scroll register value. InitResources seeds it to 0x20. |
 | 0x5d98 | `mScrollTargetY` | The other argument of that `ApproachLinear`; recomputed as `(q << 3) + 0x20` once the scroll has caught up. InitResources seeds it from `mScrollY`. |
 | 0x5d9c | `mScrollHoldTimer` | Loaded with 0x78 and run down to 0 by `ApproachLinear(..., 0, 1)`; the target may not move again until it reaches 0. |
 | 0x5da0 | `mScrollOffsetY` | Added to `mScrollY` at every one of its uses, and zeroed once the scroll settles. |

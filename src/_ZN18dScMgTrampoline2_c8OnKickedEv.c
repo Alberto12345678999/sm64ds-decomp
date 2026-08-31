@@ -1,4 +1,4 @@
-// @symbol func_ov006_021230e8
+// @symbol _ZN18dScMgTrampoline2_c8OnKickedEv
 // recovered name: dScMgTrampoline2_c_OnKicked
 /* recovered: renamed to Class_Method, declarations from a shared header */
 #include "decl_common.h"
@@ -6,10 +6,10 @@
 /* dScMgTrampoline2_c::OnKicked - recovered from vtable slot identity */
 extern unsigned char data_0209d45c[];
 
-int func_ov006_021230e8(void *thiz)
+int _ZN18dScMgTrampoline2_c8OnKickedEv(void *thiz)
 {
     unsigned char *c = (unsigned char *)thiz;
-    if (!func_ov006_020e6e78(c)) return 0;
+    if (!_ZN14dScMgD3DBase_c8OnKickedEv(c)) return 0;
     if (*(int *)(c + 0x4628) == 0) {
         if (*(unsigned short *)(c + 0x4664) == 0) {
             data_0209d45c[0] = data_0209d45c[0] & ~8;

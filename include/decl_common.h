@@ -1494,7 +1494,7 @@ extern void func_ov006_020e4fe8(void*);
 extern void func_ov006_020e507c(void*);
 extern int func_ov006_020e6e3c(int, int);
 extern int func_ov006_020e6e54(void*);
-extern int func_ov006_020e6e78(void*);
+extern int _ZN14dScMgD3DBase_c8OnKickedEv(void*);
 extern int func_ov006_020f7a90(void);
 extern int func_ov006_020f7b10(void);
 extern int func_ov006_020f7b90(void);

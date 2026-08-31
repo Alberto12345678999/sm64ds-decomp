@@ -40,6 +40,7 @@ struct dScMgTrampoline_c : dScMgD3DBase_c {
     virtual int  OnYoshiTryEat(int arg);               /* slot 18 */
     virtual int  OnTurnIntoEgg(int mode);              /* slot 19 */
     virtual int  OnAttacked2();                        /* slot 23 */
+    virtual int  OnKicked();                           /* slot 24 */
 
     u8  pad_5004[0x8];    /* 0x5004 -- no matched access in this class's methods */
     u8  mArray1[0x340];   /* 0x500c -- 4 * 0xd0,  elem dtor func_ov006_020ccfc8 */

@@ -144,7 +144,7 @@ struct dScMgBase_c : dScene_c {
            19  int  / int   agree   sets r0 on a constant-return path
            22  int  / int   agree   OnAttacked1's body is `return 1;`
            23  int  / int   agree   OnAttacked2's body is `return 1;`
-           24  int  / void  DIFFER  func_ov004_020ae140.cpp ends `return 1;`
+           24  int  / void  DIFFER  OnKicked's body ends `return 1;`
            27  void / void  agree   func_ov004_020af27c, early bare return
        Slot 24 is the one that matters, because dActor_c.h names 24 as one of
        its three MEASURED voids -- and it is right about its own hierarchy;
@@ -200,10 +200,44 @@ struct dScMgBase_c : dScene_c {
            include/dActor_c.h names as the only thing that can separate
            `int` from `void`, and here it comes down on int. */
     virtual int  OnAttacked2();                        /* slot 23 */
+    /* Slot 24 -- OnKicked.  Name from all five bodies' own
+       `recovered name: <class>_OnKicked` comments; include/dActor_c.h:141
+       spells the same name at the same index on the parallel branch.
+         arity: no explicit parameters, MEASURED.  The base body reads only
+           `this`, and so does every override.  No body touches a second
+           argument register and every call in the chain passes one pointer
+           and nothing else.  dActor_c.h:141 spells a `dActor_c &other`; it
+           has been wrong on every parameter list this campaign has
+           measured, so it is not carried.
+         return type: int, MEASURED, and this is the slot the table under
+           slot 21 flagged in advance as the one where dActor_c.h's `void`
+           and this hierarchy genuinely disagree.  The base body ends
+           `return 1;`.  dScMgD3DBase_c, dScMgTrampoline_c and
+           dScMgTrampoline2_c each guard on the result of the call to their
+           own base and `return 0` early -- the early-return shape that is
+           the only thing separating `int` from `void` -- and
+           dScMgSnowball_c returns `<base call> != 0`, which cannot be
+           written at all against a void callee.  Four independent
+           witnesses; the cartridge comes down on int.  dActor_c.h's
+           measurement of `void` at index 24 stands for ITS branch.  The two
+           hierarchies simply do not hold the same function here.
+         overrides: SIX tables, FOUR declarations.  dScMgJump_c and
+           dScMgJump2_c point at dScMgD3DBase_c's own body (0x020e6e78) and
+           override nothing themselves, so declaring it on their shared base
+           is what reproduces their slots; a declaration on either child
+           would invent an override the cartridge does not have.  The bodies
+           spell the chain out themselves -- Trampoline and Trampoline2 both
+           call 0x020e6e78, which calls the base's 0x020ae140.
+         NAME CORRECTION: 0x020e6e78 carried `recovered name:
+           dScMgJump2_c_OnKicked`.  It is dScMgD3DBase_c's.  A body that
+           appears in a class's table AND in both its children's is supplied
+           by that class; the recovered name was assigned from one child's
+           table without looking at the other two. */
+    virtual int  OnKicked();                           /* slot 24 */
 
-    /* Slots 24-35 are added the same way: one slot per change, together with
+    /* Slots 25-35 are added the same way: one slot per change, together with
        every descendant override of that slot. Until then they stay undeclared
-       and the emitted tables stop at slot 23. */
+       and the emitted tables stop at slot 24. */
 
     s32 unk_050;            /* 0x050 */
     s32 unk_054;            /* 0x054 */
