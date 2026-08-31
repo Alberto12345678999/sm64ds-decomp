@@ -1,9 +1,11 @@
-// @symbol func_ov006_020d9104
+// @symbol _ZN14dScMgBomroom_c13OnYoshiTryEatEi
 // recovered name: dScMgBomroom_c_OnYoshiTryEat_020d9104
 /* recovered: renamed to Class_Method, declarations from a shared header */
 #include "decl_common.h"
-/* recovered: renamed to Class_Method */
-void func_ov006_020d9104(unsigned char* c){
+/* recovered: renamed to Class_Method, vtable slot 18 -- an override of
+   dScMgBase_c::OnYoshiTryEat(int). The signature must repeat the base
+   declaration exactly, or mwcc appends a slot instead of overriding. */
+void _ZN14dScMgBomroom_c13OnYoshiTryEatEi(unsigned char* c){
   func_ov006_020d907c(c);
   unsigned char* a=c+0x6200;
   unsigned char* b=c+0x6000;

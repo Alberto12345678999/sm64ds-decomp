@@ -1,16 +1,18 @@
 #include "types.h"
-// @symbol func_ov006_0210b314
+// @symbol _ZN12dScMgSlot3_c13OnYoshiTryEatEi
 // recovered name: dScMgSlot3_c_OnYoshiTryEat_0210b314
 /* recovered: renamed to Class_Method, declarations from a shared header */
 #include "decl_common.h"
-/* recovered: renamed to Class_Method */
+/* recovered: renamed to Class_Method, vtable slot 18 -- an override of
+   dScMgBase_c::OnYoshiTryEat(int). The signature must repeat the base
+   declaration exactly, or mwcc appends a slot instead of overriding. */
 extern int RandomIntInternal(int *seed);
 extern int data_0209e650;
 extern void func_02012790(unsigned int id);
 
 #pragma opt_strength_reduction off
 
-void func_ov006_0210b314(char *c, int mode)
+void _ZN12dScMgSlot3_c13OnYoshiTryEatEi(char *c, int mode)
 {
     if (mode == 3 || mode == 0x12) {
         *(int *)(c + 0xa8) = 0xc;

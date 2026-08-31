@@ -438,7 +438,7 @@ src/func_ov004_020b2994.c:
     complete
     .text start:0x020b2994 end:0x020b299c
 
-src/func_ov004_020b299c.c:
+src/_ZN11dScMgBase_c13OnYoshiTryEatEi.c:
     complete
     .text start:0x020b299c end:0x020b29a0
 

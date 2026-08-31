@@ -1,7 +1,9 @@
 //cpp
-// @symbol func_ov006_02120248
+// @symbol _ZN13dScMgTeresa_c13OnYoshiTryEatEi
 // recovered name: dScMgTeresa_c_OnYoshiTryEat_02120248
-/* recovered: renamed to Class_Method */
+/* recovered: renamed to Class_Method, vtable slot 18 -- an override of
+   dScMgBase_c::OnYoshiTryEat(int). The signature must repeat the base
+   declaration exactly, or mwcc appends a slot instead of overriding. */
 extern "C" {
 void func_ov006_0211fbf8(char* p);
 void func_ov006_0211dd6c(char* p);
@@ -16,7 +18,7 @@ void Deallocate(void* ptr);
 }
 struct G2S { static char* GetBG0CharPtr(); };
 
-extern "C" void func_ov006_02120248(char* self, int reset)
+extern "C" void _ZN13dScMgTeresa_c13OnYoshiTryEatEi(char* self, int reset)
 {
     volatile unsigned short val;
     if (reset == 0) {

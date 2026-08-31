@@ -1,11 +1,13 @@
 //cpp
-// @symbol func_ov006_021095cc
+// @symbol _ZN15dScMgRoulette_c13OnYoshiTryEatEi
 /* recovered: renamed to Class_Method, RTTI class fields named, declarations from a shared header */
 #include "decl_common.h"
 /* recovered: renamed to Class_Method, RTTI class fields named */
 #include "dScMgRoulette_c.h"
 // recovered name: dScMgRoulette_c_OnYoshiTryEat_021095cc
-/* recovered: renamed to Class_Method */
+/* recovered: renamed to Class_Method, vtable slot 18 -- an override of
+   dScMgBase_c::OnYoshiTryEat(int). The signature must repeat the base
+   declaration exactly, or mwcc appends a slot instead of overriding. */
 /* The DELETING DESTRUCTOR, vtable slot 17. The old comment here called it
    OnYoshiTryEat, which is slot 18 -- off by one. This body stores the class
    vtable, destroys the members and calls Memory::Deallocate; no eat handler
@@ -13,7 +15,7 @@
 extern "C" void func_ov004_020b66d4(void);
 /* data_ov004_020beb68 is declared `void *` by dScMgBase_c.h; cast at the use site. */
 
-extern "C" void func_ov006_021095cc(char *c)
+extern "C" void _ZN15dScMgRoulette_c13OnYoshiTryEatEi(char *c)
 {
     dScMgRoulette_c *self = (dScMgRoulette_c *)(void *)c;
     int i;

@@ -1,5 +1,5 @@
 //cpp
-// @symbol func_ov006_02121fa4
+// @symbol _ZN17dScMgTrampoline_c13OnYoshiTryEatEi
 /* recovered: renamed to Class_Method, RTTI class fields named, declarations from a shared header */
 #include "decl_common.h"
 /* recovered: renamed to Class_Method, RTTI class fields named */
@@ -7,7 +7,9 @@
 
 extern "C" {
 // recovered name: dScMgTrampoline_c_OnYoshiTryEat_02121fa4
-/* recovered: renamed to Class_Method */
+/* recovered: renamed to Class_Method, vtable slot 18 -- an override of
+   dScMgBase_c::OnYoshiTryEat(int). The signature must repeat the base
+   declaration exactly, or mwcc appends a slot instead of overriding. */
 extern void _ZN3G2x13SetBlendAlphaEPVttttj(volatile void *reg,
     unsigned short a, unsigned short b, int c, unsigned short d);
 extern void func_ov006_020d0b04(int a);
@@ -18,7 +20,7 @@ extern void MultiStore16(unsigned short val, char *dst, int nbytes);
 extern volatile short data_020a0dbc[];
 extern int data_0209e650;
 
-void func_ov006_02121fa4(char *o)
+void _ZN17dScMgTrampoline_c13OnYoshiTryEatEi(char *o)
 {
     struct dScMgTrampoline_c *self = (struct dScMgTrampoline_c *)(void *)o;
     volatile unsigned short fill;

@@ -39,8 +39,47 @@ struct dScMgBase_c : dScene_c {
     virtual int  BeforeRender();                       /* slot 10 */
     virtual void OnPendingDestroy();                   /* slot 12 */
 
-    /* Slots 18-35 are eighteen further virtuals new at this class; their
-       signatures are not reconstructed yet, so they stay undeclared. */
+    /* --- slots 18-35: eighteen further virtuals new at this class. --------
+
+       These are NOT dActor_c's slots. dActor_c hangs off dBase_c directly;
+       this class reaches dBase_c through dScene_c. The two are parallel
+       extensions that happen to share indices, and thirteen of the names
+       agree, so include/dActor_c.h is a useful NAMING hint -- never a
+       signature authority. Where the two disagree, the ROM wins.
+
+       Declared one slot at a time, lowest first. mwcc emits a vtable only as
+       long as the slots it has been told about, so after declaring 18..k every
+       descendant emits k+1 slots -- a byte-exact PREFIX of the cartridge table,
+       never a disagreement. Declaring all eighteen at once would instead write
+       the BASE body into every slot a descendant has not yet declared an
+       override for, turning PARTIAL into DIFFERS across the whole family.
+
+       Slot 18 -- MEASURED, not inferred:
+         arity: 13 of the 24 independently decompiled descendant overrides read
+           r1 and branch on it (dScMgTeresa_c takes an entirely different path
+           when it is 0). Twelve unrelated classes do not read a garbage
+           register by coincidence. The base's own body ignores it, but a base
+           stub proves nothing either way -- an unused argument is simply never
+           read -- so only an override that reads a parameter is evidence, and
+           that evidence is a LOWER bound on the arity.
+         return type: int. dScMgCoin_c::OnYoshiTryEat is a real member
+           definition ending `return 0;`, so declaring void would have changed
+           its bytes. The 24 free-function bodies are all written void, but
+           the return type is not mangled, so they are unaffected. The base's
+           own ROM body is a lone `bx lr` and sets nothing.
+         name: from dActor_c.h:131, corroborated by
+           config/arm9/overlays/ov006/symbols.txt, which already named
+           dScMgCoin_c's slot-18 override `_ZN11dScMgCoin_c13OnYoshiTryEat*`
+           -- recovered before the vtable walk that placed it at 18. Unlike
+           slots 19-30, this slot carries NO `recovered name:` comment on
+           either side; the name is inherited, not independently proven here.
+           Only the signature is measured. dActor_c.h declares it with no
+           parameter, which the measurement above contradicts. */
+    virtual int  OnYoshiTryEat(int arg);               /* slot 18 */
+
+    /* Slots 19-35 are added the same way: one slot per change, together with
+       every descendant override of that slot. Until then they stay undeclared
+       and the emitted tables stop at slot 18. */
 
     s32 unk_050;            /* 0x050 */
     s32 unk_054;            /* 0x054 */

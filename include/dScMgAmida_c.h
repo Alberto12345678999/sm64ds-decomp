@@ -46,6 +46,10 @@ struct dScMgAmida_c : dScMgBase_c {
     virtual void AfterCleanupResources(u32 vfSuccess);   /* slot  5 */
     virtual s32  Behavior();                             /* slot  6 */
     virtual s32  Render();                               /* slot  9 */
+    /* Overrides dScMgBase_c's slot 18. It must stay FIRST among this class's
+       new-slot virtuals: for a new slot the index IS the declaration order,
+       so any undeclared-on-the-base virtual placed above it would claim 18. */
+    virtual int  OnYoshiTryEat(int arg);                 /* slot 18 */
     virtual int  Unk36();                                /* slot 36 */
 
     u8  unk_4660[4][8];      /* 0x4660 -- only ever passed around whole */

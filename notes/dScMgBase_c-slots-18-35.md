@@ -12,7 +12,7 @@ not ownable either. The same cap applies to all 32 descendants of `dScMgBase_c`.
 
 | slot | +off | ROM body | existing `recovered name:` | shape in the legacy source |
 |---|---|---|---|---|
-| 18 | 0x48 | ov004:0x020b299c | `OnYoshiTryEat` — **corrected 2026-08-31** | `void(void)` \*\* |
+| 18 | 0x48 | ov004:0x020b299c | `OnYoshiTryEat` — **corrected 2026-08-31** | `int(int)` \*\* — **DECLARED** |
 | 19 | 0x4C | ov004:0x020b2994 | `OnTurnIntoEgg` | `int(void)`, `return 1;` |
 | 20 | 0x50 | ov004:0x020b2990 | `Virtual50` | `void(void)` |
 | 21 | 0x54 | ov004:0x020b298c | `OnGroundPounded` | `void(void)` |
@@ -37,11 +37,25 @@ too, from a different direction — see the next section. The three still unname
 34, 35) take the tree's established `Virtual<hex offset>` convention
 (`include/fBase_c.h:143` — `Virtual34`, `Virtual38`).
 
-\*\* The shape column records what the *legacy free function* looks like.
-`include/dActor_c.h:131` declares slot 18 `int OnYoshiTryEat()`, and the return type is
-exactly the kind of difference only an override with early returns can expose — the
-same trap `dActor_c.h` documents for slots 21, 24 and 27. Take `int` from the template
-and re-measure against a real override before treating `void` as settled.
+\*\* The shape column records what the *legacy free function* looks like — except for
+slot 18, which is now **measured** rather than read off the legacy shape:
+
+- **Arity is `(int)`, not `()`.** All 24 free-function bodies are written `void(void)`
+  or `void(char *self)`, but 13 of them read r1 and branch on it — `dScMgTeresa_c`
+  takes an entirely different path when it is 0. Twelve unrelated classes do not read
+  a garbage register by coincidence. The *base's* body ignores it, and that proves
+  nothing either way: an unused argument is simply never read. Only an override that
+  actually reads a parameter is evidence, and it gives a **lower** bound.
+  `include/dActor_c.h:131` declares it with no parameter and is therefore **wrong for
+  this branch** — a naming hint, never a signature authority.
+- **Return type is `int`, not `void`.** `dScMgCoin_c::OnYoshiTryEat` is a real *member*
+  definition ending `return 0;`; declaring `void` would have changed its bytes. The
+  return type is not mangled, so the 24 free functions are unaffected. This is the same
+  trap `dActor_c.h` documents for slots 21, 24 and 27 — re-measure each remaining slot
+  against a real override before treating its legacy `void` as settled.
+
+`config/arm9/overlays/ov006/symbols.txt` named Coin's override
+`_ZN11dScMgCoin_c13OnYoshiTryEatEv` — **wrong arity, corrected to `...Ei`.**
 
 For slots 24, 25, 27, 28, 29, 30, 33, 34 and 35 the leading parameter in the legacy
 source is really `this`; it becomes implicit when the free function turns into a method.
@@ -130,16 +144,39 @@ Per class: `dScMg3DEsp_c` 2, `dScMgAmida_c` 5, `dScMgBSC_c` 3, `dScMgBase_c` 18,
 `dScMgSnowball_c` 4, `dScMgSound_c` 2, `dScMgTeresa_c` 3, `dScMgTrampoline2_c` 6,
 `dScMgTrampoline_c` 6.
 
-**This is why the change cannot be staged class by class.** Roughly 34 of these
-classes already emit a vtable today. Declaring the base's eighteen slots widens every
-one of those tables from 18 slots to 36 — and a descendant that does not
+**This is why the change cannot be staged class by class** — but it decomposes
+cleanly **slot by slot**, which is how it is actually being landed. Roughly 34 of these
+classes already emit a vtable today. Declaring the base's eighteen slots *at once*
+widens every one of those tables from 18 slots to 36 — and a descendant that does not
 simultaneously declare its own overrides gets the *base's* body written into the
 widened slot, where the cartridge holds its own. Those tables go from PARTIAL (a
 byte-exact 18-slot prefix, ownable later) to **DIFFERS** (wrong bytes, a real
-regression `romdata_check` will catch). The base declarations, the eighteen ov004
-renames and all 82 descendant declarations-plus-renames are one commit.
+regression `romdata_check` will catch).
 
-## Two hazards, both measured
+Declaring **one** base slot only widens every table by one word. After declaring base
+slots 18..k an emitted table is k+1 slots long, and for every i ≤ k that slot is right
+if the class either declares its own override or genuinely inherits the base body.
+Slots above k are simply not emitted — still a byte-exact prefix, never a DIFFERS. So
+the atomic unit is **one base slot across the whole family**: base declaration, base
+body rename, and every descendant's override declaration plus rename, together. That
+is eighteen reviewable commits, not one 158-change commit.
+
+Measured on slot 18 (2026-08-31): `module fidelity 106/106`, `ROM data from source`
+unchanged at 463 verified / 251 partial / 7 differ, and `partialBytes` **9,980 →
+10,100** — exactly 30 emitted vtables each one word longer, all byte-exact. No table
+regressed.
+
+**Read that number twice.** Applying the 30 descendant declarations *without* the
+base declaration also builds green — 106/106, PASS, no new DIFFERS — but at **10,088**
+/ 27 tables. With the base silent above slot 17, each descendant's own
+`virtual int OnYoshiTryEat(int);` introduces a brand-new virtual that happens to land
+at index 18 in that class, pointing at the same body: byte-identical, semantically
+wrong, and invisible to every gate in this tree. The three tables that only appear
+once the base declares the slot are the classes with **no** override of their own;
+their bytes matching is the independent confirmation that they genuinely inherit.
+The widened-table **count** is the only check that distinguishes the two.
+
+## Three hazards, all measured
 
 **1. Slot 35 is a cross-overlay address collision.** `func_ov002_020ad660` and
 `func_ov004_020ad660` both exist, at the same address 0x020ad660, in different overlays.
@@ -149,11 +186,56 @@ scoped to the ov004 symbol alone; a filename- or address-keyed rename hits ov002
 unrelated function and every byte gate still passes. See the standing
 `cross-overlay-symbol-collision` note.
 
-**2. The change has to be atomic.** Declaring the eighteen virtuals makes mwcc emit
-vtable slots referencing `_ZN11dScMgBase_c*` mangled names. Those symbols do not exist
-until the eighteen ov004 bodies are renamed. Declarations without renames leave the
-link with eighteen undefined externals; renames without declarations orphan them. One
-commit, or neither.
+**2. Each slot has to be atomic.** Declaring a virtual makes mwcc emit a vtable slot
+referencing a `_ZN11dScMgBase_c*` mangled name. That symbol does not exist until the
+ov004 body is renamed. A declaration without its rename leaves the link with an
+undefined external; a rename without its declaration orphans it. Per slot: one commit,
+or neither. Across slots, they are independent.
+
+**3. Declaration order IS the index** — found while applying slot 18.
+`dScMgSlot1_c` already declared `OnHitByMegaChar /* slot 27 */` and
+`OnHitFromUnderneath /* slot 28 */`, and `dScMgAmida_c` declared `Unk36 /* slot 36 */`,
+but with the base declaring nothing above 17 those comments were aspirational: the
+declarations actually sat at indices 18/19 and 18. That is precisely why those two were
+the last DIFFERS vtables left after PR #2081. A new base slot's override must be
+inserted **before** any such pre-existing slot≥18 declaration, and after the class's
+first declared virtual so the key function does not move. Slot 18 moved their
+wrongness up one index without changing its size (Amida 4 bytes, Slot1 8); they clear
+only once every intervening slot is declared.
+
+## The per-slot worklist (measured 2026-08-31)
+
+How large each of the remaining seventeen PRs is. Counts are descendant overrides;
+every slot also carries the base declaration and the ov004 base-body rename.
+
+| slot | name | base body (ov004) | descendant overrides |
+|---|---|---|---|
+| 18 | `OnYoshiTryEat` | 0x020b299c | **30 — this PR** |
+| 19 | `OnTurnIntoEgg` | 0x020b2994 | 11 |
+| 20 | `Virtual50` | 0x020b2990 | 4 |
+| 21 | `OnGroundPounded` | 0x020b298c | 4 |
+| 22 | `OnAttacked1` | 0x020ae198 | **0** |
+| 23 | `OnAttacked2` | 0x020ae1a0 | 3 |
+| 24 | `OnKicked` | 0x020ae140 | 6 |
+| 25 | `OnPushed` | 0x020ae128 | 7 |
+| 26 | `OnHitByCannonBlastedChar` | 0x020b04e0 | 19 |
+| 27 | `OnHitByMegaChar` | 0x020af27c | 6 |
+| 28 | `OnHitFromUnderneath` | 0x020af04c | 6 |
+| 29 | `OnAimedAtWithEgg` | 0x020af094 | 6 |
+| 30 | `OnAimedAtWithEggReturnVec` | 0x020aeed8 | 6 |
+| 31 | `Kill` | 0x020b2880 | 7 |
+| 32 | `AfterClsn` | 0x020b27f4 | 1 |
+| 33 | `Virtual84` | 0x020b265c | 19 |
+| 34 | `Virtual88` | 0x020ae3b4 | 4 |
+| 35 | `Virtual8C` | 0x020ad660 | 1 |
+
+134 descendant overrides plus the base's 18 declarations. Slot 18 was the outlier;
+the median slot touches six classes. **Slot 22 has no descendant overrides at all** —
+base declaration and base rename only, the smallest commit in the campaign.
+
+Four classes are intact TUs, so at every slot their override is renamed *inside*
+`src/actors/<class>.cpp` rather than through a standalone source file:
+`dScMgBSC_c`, `dScMgCard_c`, `dScMgMCarlo_c`, `dScMgMCarlo2_c`.
 
 ## What it unlocks
 

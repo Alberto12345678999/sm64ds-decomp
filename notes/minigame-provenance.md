@@ -259,10 +259,12 @@ Own vtable slots (python tools/rtti_vtables.py --own dScMgAmida_c): 0
 declared the base override as returning void*, which is WRONG; the real
 dScMgBase_c.h override returns void, so this now calls the base method as
 a plain statement instead of returning it, same fix dScMgLuigi_c's own
-slot 5 needed), 6 (Behavior), 9 (Render), 16 (D1), 17 (D0), 18 (own new
-slot, not yet named -- stays a raw extern "C" helper,
-src/func_ov006_020d52f0.c, same precedent as every other dScMgBase_c
-leaf's slot 18; it no longer includes this header at all -- its one
+slot 5 needed), 6 (Behavior), 9 (Render), 16 (D1), 17 (D0), 18
+(dScMgBase_c::OnYoshiTryEat, declared on the base and overridden here;
+the body is src/_ZN12dScMgAmida_c13OnYoshiTryEatEi.c, still a raw
+extern "C" helper rather than a member definition, same precedent as
+every other dScMgBase_c leaf's slot 18; it no longer includes this
+header at all -- its one
 inherited-field access at 0xbc is dScMgBase_c's own pad_0bc, not a named
 field there either, so it now reaches it via a raw char* offset, the same
 idiom dScMgPachinko_c's own slot 18 helper already uses), 31 ("Kill",
@@ -513,7 +515,7 @@ into it by raw offset).
 | 0x5fd8 | `mPetalsLeft` | Decremented once per pull, gates every "still playing" branch on `>= 1`, and is the bound of the loop that finishes off the remaining petals when the round times out. |
 | 0x5fdc | `mWinStreak` | Incremented on the `mPetalToggle == 1` outcome and zeroed by the other; at 3 it swaps in banner 0x12 and adds 3 to `mScore` instead of 1. |
 | 0x5fe0 | `mLoseStreak` | The mirror counter on the other outcome; at 3 it swaps in banner 0x11. It never touches the score. |
-| 0x5fe4 | `mHoldTimer` | src/func_ov006_0212aa74.c increments it while `<= 0x14` and otherwise resets it to 0; Behavior treats `> 0x14` as "held long enough". InitResources zeroes it. |
+| 0x5fe4 | `mHoldTimer` | src/_ZN13dScMgFlower_c13OnYoshiTryEatEi.c increments it while `<= 0x14` and otherwise resets it to 0; Behavior treats `> 0x14` as "held long enough". InitResources zeroes it. |
 | 0x5fe8 | `mState` | Behavior's `switch`: 0 plays, 1 is over (it stops the prompt and only ticks the 0x51f8 object). |
 | 0x5fec | `mFaceSprite` | Render's only use is `data_ov006_0213ab94[n]` drawn at the screen centre; Behavior sets it to 0..4 on each outcome. |
 | 0x5ff0 | `mScore` | Incremented by 1 or 3 per winning pull and clamped to 0x270f -- the same 9999 cap dScMgAmida_c and dScMgSnowball_c use. |
@@ -616,7 +618,7 @@ kind, but nothing in scope increments it), 0x0b8, 0x0c8, 0x0f0, 0x05c,
 | --- | --- | --- |
 | 0x53d6 | `mSelectedTile` | Render draws the cursor sprite at `data_ov006_02142ab4[n]` / `_02142ab8[n]` (the tile coordinate tables, stride 8); Behavior hands the same value to `func_ov006_02108b90` once per racer to score the board. |
 | 0x53e4 | `mCameraPreset` | Render copies row `n` of `data_ov006_0213e34c` and `_0213e370` (stride 0xc) into the base's `mCameraTarget` and `mCameraEye`, takes the angle from `data_ov006_0213e2e0 + n*2`, and then calls `Camera_UpdateMatrices`. 0 leaves the camera alone. Behavior sets it to 1 as the deal starts and clears it at the end. |
-| 0x53e6 | `mPhase` | Behavior's `switch`: 1 deals the racers out one at a time, 2 runs the countdown and reads the board, 3 pays out per landed tile, 4 announces win/lose/draw. src/func_ov006_021095cc.cpp starts it at 1. |
+| 0x53e6 | `mPhase` | Behavior's `switch`: 1 deals the racers out one at a time, 2 runs the countdown and reads the board, 3 pays out per landed tile, 4 announces win/lose/draw. src/_ZN15dScMgRoulette_c13OnYoshiTryEatEi.cpp starts it at 1. |
 | 0x53e8 | `mPhaseTimer` | Counted down in every phase and reloaded on each transition (8, 0x258, 1, 0x5a); Render also renders the countdown digits from it while `mPhase == 2`. |
 | 0x53f2 | `mScore` | Phase 3 sums each racer's payout into it and phase 4 compares it against `mTargetScore` to pick the win, lose or draw banner. Zeroed by the reset. |
 | 0x53f6 | `mTargetScore` | One per racer that did NOT land on the winning tile; the bar `mScore` has to beat. |

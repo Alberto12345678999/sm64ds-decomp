@@ -45,7 +45,8 @@ extern "C" void _ZN18TextureTransformerD1Ev(void *);
 extern "C" void _ZN15dMg3DEspModel_cD1Ev(void *c);
 
 struct dScMg3DEsp_c : dScMgSingle3DBase_c {
-    virtual ~dScMg3DEsp_c();
+    virtual ~dScMg3DEsp_c();
+    virtual int  OnYoshiTryEat(int arg);               /* slot 18 */
 
     u8  mModel1[0x50];        /* 0x4f38 -- Model, raw bytes, see file banner */
     u8  mModel2[0x50];        /* 0x4f88 -- Model, raw bytes, see file banner */

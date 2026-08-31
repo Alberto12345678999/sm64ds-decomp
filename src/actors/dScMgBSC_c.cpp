@@ -176,7 +176,7 @@ extern "C" void _ZN3GXS11LoadOBJPlttEPKvjj(void const *a, unsigned int b, unsign
  * agreed.
  *
  * The final call is a self-dispatch through this class's own vtable slot 18
- * (func_ov006_02125364, per the same rtti dump) -- neither dScMgBase_c.h nor this
+ * (_ZN10dScMgBSC_c13OnYoshiTryEatEi, per the same rtti dump) -- neither dScMgBase_c.h nor this
  * header names that slot yet (both leave 18-35 undeclared), so it stays a raw
  * vtable-shim call exactly as the pre-migration file spelled it, just through
  * `this` instead of a `void *self` parameter. */
@@ -273,9 +273,9 @@ s32 dScMgBSC_c::Render()
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 15 -- func_ov006_02125364, 0x02125364, size 0x58 */
+/* ROM ordinal 15 -- _ZN10dScMgBSC_c13OnYoshiTryEatEi, 0x02125364, size 0x58 */
 /* -------------------------------------------------------------------------- */
-// @symbol func_ov006_02125364
+// @symbol _ZN10dScMgBSC_c13OnYoshiTryEatEi
 /* recovered: renamed to Class_Method, RTTI class fields named, declarations from a shared header */
 /* recovered: renamed to Class_Method, RTTI class fields named */
 // recovered name: dScMgBSC_c_OnYoshiTryEat_02125364
@@ -284,7 +284,7 @@ s32 dScMgBSC_c::Render()
    OnYoshiTryEat, which is slot 18 -- off by one. This body stores the class
    vtable, destroys the members and calls Memory::Deallocate; no eat handler
    does any of that. */
-extern "C" void func_ov006_02125364(char* c, int mode){
+extern "C" void _ZN10dScMgBSC_c13OnYoshiTryEatEi(char* c, int mode){
     dScMgBSC_c *self = (dScMgBSC_c *)(void *)c;
   if(mode != 4 && mode != 5 && mode == 3){
     self->mHudScore = func_ov004_020ad878();

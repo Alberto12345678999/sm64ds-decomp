@@ -1,4 +1,4 @@
-// @symbol func_ov006_020eda48
+// @symbol _ZN15dScMgHanachan_c13OnYoshiTryEatEi
 /* dScMgHanachan_c's own vtable slot 18 -- stays a raw extern "C" helper
    function rather than a migrated class method, same precedent as every
    other dScMgBase_c leaf's slot 18 (see include/dScMgHanachan_c.h). Takes a
@@ -10,7 +10,7 @@
 #include "decl_common.h"
 extern char* data_ov004_020beb68;
 
-void func_ov006_020eda48(char* c, int state)
+void _ZN15dScMgHanachan_c13OnYoshiTryEatEi(char* c, int state)
 {
     if (state == 1) {
         unsigned int v = *(unsigned int*)(c + 0xbc) + 1;

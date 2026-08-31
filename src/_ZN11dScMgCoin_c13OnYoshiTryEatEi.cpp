@@ -1,5 +1,5 @@
 //cpp
-// @symbol _ZN11dScMgCoin_c13OnYoshiTryEatEv
+// @symbol _ZN11dScMgCoin_c13OnYoshiTryEatEi
 #include "decl_common.h"
 #include "dScMgCoin_c.h"
 
@@ -9,7 +9,7 @@ extern void FreeGfxSlotsById(int n);
 extern int func_ov004_020adc1c(void);
 }
 
-int dScMgCoin_c::OnYoshiTryEat()
+int dScMgCoin_c::OnYoshiTryEat(int arg)
 {
     dScMgCoin_c *self = this;
 

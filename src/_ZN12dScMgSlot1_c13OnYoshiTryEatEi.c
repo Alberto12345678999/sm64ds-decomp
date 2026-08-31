@@ -1,4 +1,4 @@
-// @symbol func_ov006_0210c674
+// @symbol _ZN12dScMgSlot1_c13OnYoshiTryEatEi
 // recovered name: dScMgSlot1_c_OnYoshiTryEat_0210c674
 /* dScMgSlot1_c::OnYoshiTryEat - recovered from vtable slot identity. Slot 18
    stays an unmigrated raw extern "C" helper (see include/dScMgSlot1_c.h),
@@ -8,7 +8,7 @@
    its own offset 0xbc. */
 #include "decl_common.h"
 
-void func_ov006_0210c674(char* c, int i){
+void _ZN12dScMgSlot1_c13OnYoshiTryEatEi(char* c, int i){
   if(i == 4){
     *(unsigned char*)(c + 0x4706) = *(unsigned char*)(c + 0x4709);
   } else if(i == 3){
