@@ -260,9 +260,9 @@ void dScMgSingle3DBase_c::AfterCleanupResources(u32 vfSuccess)
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 3 -- func_ov006_0210a600, 0x0210a600, size 0x8 */
+/* ROM ordinal 3 -- _ZN19dScMgSingle3DBase_c24OnHitByCannonBlastedCharEv, 0x0210a600, size 0x8 */
 /* -------------------------------------------------------------------------- */
-// @symbol func_ov006_0210a600
+// @symbol _ZN19dScMgSingle3DBase_c24OnHitByCannonBlastedCharEv
 /* dScMgSingle3DBase_c's vtable slot 26 (offset +0x68), an override of
  * dScMgBase_c::OnHitByCannonBlastedChar (whose own body is at ov004:0x020b04e0).
  *
@@ -274,13 +274,15 @@ void dScMgSingle3DBase_c::AfterCleanupResources(u32 vfSuccess)
  * that every sibling shares belongs to the common ancestor, not to whichever
  * child happened to be looked at first.
  *
- * Left as a free function for the same reason as slot 33 below: dScMgBase_c has
- * not declared slots 18-35, so a derived class cannot yet spell the override. */
-extern "C" {  /* .c-derived member: C linkage for the whole block */
-int func_ov006_0210a600(void)
+ * NO LONGER A FREE FUNCTION.  This was written as one only because dScMgBase_c
+ * left slots 18-35 undeclared and a derived class cannot override a slot its
+ * base has not spelled.  dScMgBase_c::OnHitByCannonBlastedChar is declared now,
+ * so this is a real member definition -- mwccarm mangles it to the same symbol
+ * the free function was hand-named, and rombuild verifies the eight bytes are
+ * unchanged.  Slot 33 below is still waiting on the same declaration. */
+int dScMgSingle3DBase_c::OnHitByCannonBlastedChar()
 {
     return 1;
-}
 }
 
 /* -------------------------------------------------------------------------- */
