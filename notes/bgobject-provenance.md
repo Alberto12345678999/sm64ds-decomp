@@ -13,7 +13,7 @@ and again after each raw-offset collapse.
 
 ---
 
-## StarSwitch (`include/StarSwitch.h`, ov002, size 0x354)
+## StarSwitch (`include/StarSwitch.h`, [ov002](../config/arm9/overlays/ov002/symbols.txt), size 0x354)
 
 Bodies read: `src/_ZN10StarSwitch13InitResourcesEv.cpp`,
 `src/_ZN10StarSwitch8BehaviorEv.cpp`, `src/_ZN10StarSwitch6RenderEv.cpp`,
@@ -31,7 +31,7 @@ Bodies read: `src/_ZN10StarSwitch13InitResourcesEv.cpp`,
 | 0x33c | `mSwitchType` | `InitResources` sets `2` for `actorID == 0xc` (the silver-star variant) and `param1 & 3` otherwise; `Behavior` gates the music fade on `mSwitchType == 2`. |
 | 0x344 | `mTargetActorID` | pre-existing name; `Behavior` passes it to `dActor_c::FindWithID`. |
 | 0x348 | `mTargetActor` | zeroed in `InitResources`; `Behavior` stores the `dActor_c *` that `dActor_c::FindWithID(mTargetActorID)` returned. Declared type left `s32` — the store is still a cast, because changing the declared type is not needed to make the name true. |
-| 0x34c | `mResourceIdx` | `InitResources` sets `1` for the silver-star variant and `0` otherwise, then uses it as `idx` in `*(int *)(table + idx * 0xc)` for both the BMD table (`data_ov002_021098e8`) and the KCL tables (`…8ec`, `…8f0`); `CleanupResources` releases the same two rows by the same index. |
+| 0x34c | `mResourceIdx` | `InitResources` sets `1` for the silver-star variant and `0` otherwise, then uses it as `idx` in `*(int *)(table + idx * 0xc)` for both the BMD table ([data_ov002_021098e8](../config/arm9/overlays/ov002/symbols.txt)) and the KCL tables (`…8ec`, `…8f0`); `CleanupResources` releases the same two rows by the same index. |
 | 0x34d | `mMusicFadeDone` | `InitResources` sets it to `1`; `Behavior` only calls `Sound::ChangeMusicVolume` when it is `0`, and stores the call's return value back into it. A "fade finished" latch, not a counter. |
 | 0x34e | `mEventBit` | `InitResources` sets `(param1 >> 3) & 0xf` and passes it straight to `Event::ClearBit(u32)`. |
 | 0x353 | `mHomeAreaId` | `InitResources` copies `mAreaId` into it; `Behavior` uses it as the argument to `IsAreaShowing` and restores `mAreaId` from it. The area the switch belongs to, kept across the area-id shuffling `Behavior` does. |
@@ -59,7 +59,7 @@ Raw-offset collapses, each re-verified byte-exact:
 
 ---
 
-## Crate (`include/Crate.h`, ov098, size 0x608)
+## Crate (`include/Crate.h`, [ov098](../config/arm9/overlays/ov098/symbols.txt), size 0x608)
 
 Bodies read: `src/_ZN5Crate13InitResourcesEv.cpp`, `src/_ZN5Crate8BehaviorEv.cpp`,
 `src/_ZN5Crate6RenderEv.cpp`, `src/_ZN5Crate16CleanupResourcesEv.cpp`,
@@ -71,7 +71,7 @@ Bodies read: `src/_ZN5Crate13InitResourcesEv.cpp`, `src/_ZN5Crate8BehaviorEv.cpp
 | --- | --- | --- |
 | 0x4e8/0x4ec/0x4f0 | `mHomePosX/Y/Z` | `InitResources` copies `mPosX/mPosY/mPosZ` into them once; `Behavior` passes `&mHomePosX` as the second `Vector3 *` of `Vec3_HorzDist(&mPosX, …)`. A spawn position kept to measure drift. |
 | 0x500/0x502/0x504 | `mHomeAngleX/Y/Z` | `InitResources` copies `mAngleX/mAngleY/mAngleZ` into them, in the same run as the position triple above. |
-| 0x560 | `mState` | `Crate_SetState(c, i)` writes `i` to 0x560 and immediately dispatches `data_ov098_0213c878[i]`, a table of pointer-to-member functions — so 0x560 is the state index into that table. `Render` short-circuits on `mState == 6`, the value `Kill`, `OnTurnIntoEgg` and the two destruction paths in `Behavior` all park the crate at. |
+| 0x560 | `mState` | `Crate_SetState(c, i)` writes `i` to 0x560 and immediately dispatches [data_ov098_0213c878](../config/arm9/overlays/ov098/symbols.txt)[i], a table of pointer-to-member functions — so 0x560 is the state index into that table. `Render` short-circuits on `mState == 6`, the value `Kill`, `OnTurnIntoEgg` and the two destruction paths in `Behavior` all park the crate at. |
 | 0x5e4 | `mHoldingPlayer` | already typed `Player *`; `Behavior` calls `Player::DropActor()` on it when the pause bit `0x4000000` of `data_0209b454` is set and the crate's own `mFlags & 0x4000000` is set. Only a carrying player can be made to drop the actor. |
 | 0x5f4 | `mClsnYOffset` | `Behavior`'s only use: the crate's own position minus this value in Y is what both `dCcAcPos_c` members' `pos` are set to each frame. A vertical offset from the model origin to the collision origin. |
 | 0x5fc | `mParticleHandle1` | `Behavior` passes the field as the first argument of `Particle::System::New(u32, u32, …)` and stores the returned pointer straight back into it — a handle the particle system reads and rewrites. Effect id `0x13a`. |
@@ -112,11 +112,11 @@ class as for the flat shadow the ROM's own code is built against.
 
 ---
 
-## daDgr_c (`include/daDgr_c.h`, ov025, size 0x334)
+## daDgr_c (`include/daDgr_c.h`, [ov025](../config/arm9/overlays/ov025/symbols.txt), size 0x334)
 
 A swinging platform. Bodies read: `src/_ZN7daDgr_c13InitResourcesEv.cpp`,
 `src/_ZN7daDgr_c8BehaviorEv.cpp`, `src/_ZN7daDgr_c6RenderEv.cpp`,
-`src/_ZN7daDgr_c16CleanupResourcesEv.cpp`, `src/func_ov025_02111898.c` (the factory).
+`src/_ZN7daDgr_c16CleanupResourcesEv.cpp`, [src/func_ov025_02111898.c](../src/func_ov025_02111898.c) (the factory).
 
 | Offset | Name | Evidence |
 | --- | --- | --- |
@@ -151,7 +151,7 @@ was measured instead.
 
 ---
 
-## SignPost (`include/SignPost.h`, ov002, size 0x5a4)
+## SignPost (`include/SignPost.h`, [ov002](../config/arm9/overlays/ov002/symbols.txt), size 0x5a4)
 
 Bodies read: `src/_ZN8SignPost13InitResourcesEv.cpp`,
 `src/_ZN8SignPost8BehaviorEv.cpp`, `src/_ZN8SignPost6RenderEv.cpp`,
@@ -168,7 +168,7 @@ Bodies read: `src/_ZN8SignPost13InitResourcesEv.cpp`,
 | 0x3bc/0x3be/0x3c0 | `mHomeAngleX/Y/Z` | `InitResources` copies `mAngleX/mAngleY/mAngleZ` in the same run. |
 | 0x584 | `mParticleHandle1` | `Behavior` passes it as the first argument of `Particle::System::New` and stores the result back — a recycled handle. Effect `0x13a`. Was inside `pad_584`. |
 | 0x588 | `mParticleHandle2` | same shape through `Particle::System::NewUnkCallback818`, effect `0x13b`. Was inside `pad_584`. |
-| 0x58c | `mBreakTimer` | `Behavior` runs the whole break sequence under `if (0x58c != 0)`: disable the mesh collider, `DecIfAbove0_Byte` once a frame trailing the two particles, and on the frame it hits zero poof the dust and hand off to the class's reset routine `func_ov002_020bae9c`. The same shape `Crate` uses at its own 0x606. Was inside `pad_584`. |
+| 0x58c | `mBreakTimer` | `Behavior` runs the whole break sequence under `if (0x58c != 0)`: disable the mesh collider, `DecIfAbove0_Byte` once a frame trailng the two particles, and on the frame it hits zero poof the dust and hand off to the class's reset routine [func_ov002_020bae9c.c](../src/func_ov002_020bae9c.c). The same shape `Crate` uses at its own 0x606. Was inside `pad_584`. |
 | 0x58e | `mPoundsLeft` | `InitResources` sets `2`. `OnGroundPounded` either sinks the sign by `(mPoundsLeft * 0x2d) << 12` and zeroes it (a hard pound), or by one `0x2d000` step and decrements it. `Behavior` respawns the sign when it is `0`, setting it back to `2`, and only drops the shadow while it is still `2`. A remaining-steps count, not a state. |
 | 0x58f | `mPoundCooldown` | `OnGroundPounded` sets `0xf` on the soft-pound branch and returns early whenever it is nonzero; `Behavior` runs it down with `DecIfAbove0_Byte` once a frame. The gap between two successive pounds. |
 | 0x590 | `mHidden` | `Render` returns without drawing while it is nonzero; `Behavior` skips the collision-range check while it is nonzero and clears it under the same "player is far away" condition that respawns a pounded-in sign. |
@@ -198,7 +198,7 @@ which is now just `mWithMeshClsn.StartDetectingWater()`.
 
 ---
 
-## daPgDfdr_c (`include/daPgDfdr_c.h`, ov027, size 0x3dc)
+## daPgDfdr_c (`include/daPgDfdr_c.h`, [ov027](../config/arm9/overlays/ov027/symbols.txt), size 0x3dc)
 
 Only two of this class's own six trailing fields are named. The other four are
 described in the header from a read of the un-decompiled `func_ov027_*` state
@@ -207,7 +207,7 @@ so they stay `unk_`.
 
 | Offset | Name | Evidence |
 | --- | --- | --- |
-| 0x3cc | `mStateTable` | `func_ov027_02111d70` writes `&data_ov027_02113ce4[idx]` into it and `func_ov027_02111d38` / `02111cfc` read `*(p)` and `*(p + 1)` as function pointers and call them through `this`. Left a raw `void *` — the callee's exact function-pointer type is not proven. |
+| 0x3cc | `mStateTable` | [func_ov027_02111d70](../src/func_ov027_02111d70.c) writes `&data_ov027_02113ce4[idx]` into it and `func_ov027_02111d38` / `02111cfc` read `*(p)` and `*(p + 1)` as function pointers and call them through `this`. Left a raw `void *` — the callee's exact function-pointer type is not proven. |
 | 0x3d8 | `mTimer` | `func_ov027_02111ca8` sets `0x14`; `func_ov027_02111c48` runs it down through `DecIfAbove0_Byte`. |
 
 Left `unk_`: `0x3d0` (set to 0 or 1, no reader identified), `0x3d4` (an index into
