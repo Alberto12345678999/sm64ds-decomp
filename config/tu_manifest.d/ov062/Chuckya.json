@@ -308,7 +308,8 @@
     "tubuild create warning: CONFLICT: extern declaration 'data_ov062_0211dde8' differs between the legacy file that used to hold func_ov062_02116368 and the one that held _ZN7Chuckya13InitResourcesEv; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: extern declaration 'data_ov062_0211dee0' differs between the legacy file that used to hold func_ov062_021167c0 and the one that held _ZN7Chuckya13InitResourcesEv; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: extern declaration 'Chuckya_ChangeState' differs between the legacy file that used to hold func_ov062_02116010 and the one that held _ZN7Chuckya13InitResourcesEv; kept the first, the other is commented out for review",
-    "tubuild create warning: CONFLICT: local declaration ('struct', 'C') differs between the legacy file that used to hold Chuckya_ChangeState and the one that held Chuckya_ChangeState; kept the first, the other is commented out for review"
+    "tubuild create warning (RESOLVED): CONFLICT: local declaration ('struct', 'C') differs between the legacy file that used to hold Chuckya_ChangeState and the one that held Chuckya_ChangeState; kept the first, the other is commented out for review",
+    "tubuild reconcile note: the conflict markers the warnings above were frozen against are no longer present in src_tu/actors/Chuckya.cpp. They were reconciled in place and the notes were not updated at the time, so the entry claimed open conflicts that no longer existed. Marked (RESOLVED) rather than deleted, so the record that two legacy files disagreed about these names survives. Checked by tools/check_tubuild_conflicts.py."
   ],
   "verification": {
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
