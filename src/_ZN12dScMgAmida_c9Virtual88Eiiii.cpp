@@ -39,11 +39,6 @@ typedef struct Ctx {
     u8* unk4710;
 } Ctx;
 
-extern "C" {
-extern void _ZN11dScMgBase_c9Virtual88Eiiii(Ctx* ctx, int cx, int cy,
-                                            int colour, int size);
-}
-
 void dScMgAmida_c::Virtual88(int y, int x, int arg3, int /* size */)
 {
     Ctx *ctx = (Ctx *)this;
@@ -101,7 +96,7 @@ void dScMgAmida_c::Virtual88(int y, int x, int arg3, int /* size */)
     }
 
     if (ctx->unk4706 == 1) {
-        _ZN11dScMgBase_c9Virtual88Eiiii(ctx, y, x, arg3, 4);
+        dScMgBase_c::Virtual88(y, x, arg3, 4);
         if (y < 0) return;
         if (y >= 0x100) return;
         if (x < -0xc0) return;
@@ -112,21 +107,21 @@ void dScMgAmida_c::Virtual88(int y, int x, int arg3, int /* size */)
 
     f705 = ctx->unk4705;
     if (f705 == 1) {
-        _ZN11dScMgBase_c9Virtual88Eiiii(ctx, y, x, arg3, 2);
+        dScMgBase_c::Virtual88(y, x, arg3, 2);
         return;
     }
 
     f707 = ctx->unk4707;
     x2 = x + 0xc0;
     if (f707 != 0) {
-        _ZN11dScMgBase_c9Virtual88Eiiii(ctx, y, x, arg3, 4);
+        dScMgBase_c::Virtual88(y, x, arg3, 4);
         if (y >= 0 && y < 0x100 && x2 >= 0 && x2 < 0x158) {
             (ctx->unk4710 + y * 0x158)[x2] = ctx->unk470a;
         }
     } else {
         u8 b;
         if (y < 0 || y >= 0x100 || x2 < 0 || x2 >= 0x158) {
-            _ZN11dScMgBase_c9Virtual88Eiiii(ctx, y, x, arg3, 4);
+            dScMgBase_c::Virtual88(y, x, arg3, 4);
             return;
         }
         if (y == 0x20 || y == 0x60 || y == 0xa0 || y == 0xe0) {
@@ -149,7 +144,7 @@ void dScMgAmida_c::Virtual88(int y, int x, int arg3, int /* size */)
             return;
         }
         if (ctx->unk4704 == 0) {
-            _ZN11dScMgBase_c9Virtual88Eiiii(ctx, y, x, arg3, 2);
+            dScMgBase_c::Virtual88(y, x, arg3, 2);
             return;
         }
         b = (ctx->unk470c + y * 0x158)[x2];
@@ -163,6 +158,6 @@ void dScMgAmida_c::Virtual88(int y, int x, int arg3, int /* size */)
         }
     }
 
-    _ZN11dScMgBase_c9Virtual88Eiiii(ctx, y, x, arg3, 2);
+    dScMgBase_c::Virtual88(y, x, arg3, 2);
     (ctx->unk470c + y * 0x158)[x2] = ctx->unk470a;
 }
