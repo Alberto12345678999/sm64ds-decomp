@@ -16,7 +16,8 @@
  * overrides exactly six -- 0, 3, 6, 9, 16, 17 -- and every other slot is
  * still whatever dActor_c's own table holds there.
  *
- * CONSTRUCTION. A real Spawn-style factory, func_ov026_02111678: it opens
+ * CONSTRUCTION. The reconstructed class initializer
+ * daObjWlPolelift_c_classInit (historical placeholder func_ov026_02111678): it opens
  * with `_ZN7fBase_cnwEj(484)`, i.e. fBase_c::operator new(0x1e4). SIZE
  * 0x1e4 is read directly off the allocator call. The same constructor
  * placement-constructs four sub-objects after installing the vtable chain:

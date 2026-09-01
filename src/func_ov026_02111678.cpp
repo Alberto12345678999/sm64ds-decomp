@@ -1,5 +1,5 @@
 //cpp
-// @symbol func_ov026_02111678
+// @symbol daObjWlPolelift_c_classInit
 #include "daObjWlPolelift_c.h"
 
 /* CodeWarrior rejects the actor hierarchy's class-specific operator-new
@@ -15,7 +15,11 @@ void _ZN11ShadowModelC1Ev(void *self);
 extern void *_ZTV17daObjWlPolelift_c;
 }
 
-extern "C" daObjWlPolelift_c *func_ov026_02111678()
+/* Reconstructed source-style name: SM64DS proves daObjWlPolelift_c through
+ * RTTI, allocation size, vtable identity, and the WL_POLELIFT registry profile;
+ * later EAD lineage supplies classInit. Exact original spelling is not
+ * preserved. Historical placeholder: func_ov026_02111678. */
+extern "C" daObjWlPolelift_c *daObjWlPolelift_c_classInit()
 {
     daObjWlPolelift_c *actor =
         (daObjWlPolelift_c *)_ZN7fBase_cnwEj(sizeof(daObjWlPolelift_c));
