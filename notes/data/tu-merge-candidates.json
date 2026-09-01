@@ -4151,7 +4151,7 @@
     "src/_ZN9TinyCover6RenderEv.cpp",
     "src/_ZN9TinyCover8BehaviorEv.cpp",
     "src/_ZN9TinyCover13InitResourcesEv.cpp",
-    "src/TinyCover_Spawn.c"
+    "src/daObjTtFuta_c_classInit.c"
    ],
    "ext_mix": {
     ".cpp": 6,
@@ -5793,7 +5793,7 @@
     "src/_ZN9TinyWater6RenderEv.cpp",
     "src/_ZN9TinyWater8BehaviorEv.c",
     "src/_ZN9TinyWater13InitResourcesEv.cpp",
-    "src/TinyWater_Spawn.c"
+    "src/daObjTtWater_c_classInit.c"
    ],
    "ext_mix": {
     ".cpp": 5,
@@ -7415,7 +7415,7 @@
     "src/_ZN9HugeWater6RenderEv.cpp",
     "src/_ZN9HugeWater8BehaviorEv.cpp",
     "src/_ZN9HugeWater13InitResourcesEv.cpp",
-    "src/HugeWater_Spawn.c"
+    "src/daObjTdWater_c_classInit.c"
    ],
    "ext_mix": {
     ".cpp": 6,
@@ -25528,7 +25528,7 @@
     "src/_ZN9HugeCover6RenderEv.cpp",
     "src/_ZN9HugeCover8BehaviorEv.cpp",
     "src/_ZN9HugeCover13InitResourcesEv.cpp",
-    "src/HugeCover_Spawn.c"
+    "src/daObjTdFuta_c_classInit.c"
    ],
    "ext_mix": {
     ".cpp": 5,
@@ -36111,7 +36111,7 @@
    "n_functions_map": 1,
    "n_files": 1,
    "files": [
-    "src/func_ov065_0211a45c.c"
+    "src/daObjCtMecha03_c_classInit.c"
    ],
    "ext_mix": {
     ".c": 1

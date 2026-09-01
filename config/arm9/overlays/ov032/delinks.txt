@@ -124,7 +124,7 @@ src/_ZN9HugeCover13InitResourcesEv.cpp:
     complete
     .text start:0x021125d4 end:0x02112668
 
-src/HugeCover_Spawn.c:
+src/daObjTdFuta_c_classInit.c:
     complete
     .text start:0x02112668 end:0x02112698
 
@@ -152,7 +152,7 @@ src/_ZN9HugeWater13InitResourcesEv.cpp:
     complete
     .text start:0x021127f0 end:0x021128b8
 
-src/HugeWater_Spawn.c:
+src/daObjTdWater_c_classInit.c:
     complete
     .text start:0x021128b8 end:0x021128f0
 
