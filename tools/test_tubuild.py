@@ -1103,6 +1103,180 @@ if __name__ == "__main__":
 import tubuild
 
 
+def test_manifest_order_handles_rccarpet_owned_subset_after_rtti_externalization():
+    """RcCarpet's five live .data sections may reorder after inherited RTTI drops."""
+    if not _toolchain():
+        return
+    import io
+    from elftools.elf.elffile import ELFFile
+
+    manifest_entry = tubuild.manifest_entry(
+        tubuild.TUM.load(), "ov036/daObjRcCarpet_c")
+    assert manifest_entry is not None
+    source = REPO / manifest_entry["source"]
+    assert source.is_file(), source
+    obj = tubuild.M.compile_c(source, tubuild.RB.VERSION,
+                              tubuild.BP.flags_for(source))
+    inherited = [
+        "_ZTI7fBase_c", "_ZTS7fBase_c", "_ZTS7dBase_c", "_ZTS8dActor_c",
+        "_ZTI7dBase_c", "_ZTI10dBgActor_c", "_ZTI8dActor_c",
+        "_ZTI16dPathLiftActor_c", "_ZTS10dBgActor_c",
+        "_ZTS16dPathLiftActor_c",
+    ]
+    post_policy, externalized = tubuild.OI.derive_externalized(obj, inherited)
+    assert post_policy is not None, externalized
+    assert externalized["externalise"] == sorted(inherited)
+
+    elf = ELFFile(io.BytesIO(post_policy))
+    sections = list(elf.iter_sections())
+    retained = [i for i, sec in enumerate(sections)
+                if sec.name == ".data" and sec.header["sh_size"]]
+    assert len(retained) == 5
+    symtab = elf.get_section_by_name(".symtab")
+    symbols = {s.name: s for s in symtab.iter_symbols()}
+    owned = ["_ZTI15daObjRcCarpet_c", "data_ov036_02113f58",
+             "_ZTS15daObjRcCarpet_c", "FlyingCarpet_SpawnInfo",
+             "_ZTV15daObjRcCarpet_c"]
+    assert {symbols[name]["st_shndx"] for name in owned} == set(retained)
+    assert [symbols[name]["st_shndx"] for name in owned] != retained, (
+        "the real fixture must retain RcCarpet's measured RTTI/resource inversion")
+
+    addresses = {
+        "_ZTI15daObjRcCarpet_c": 0x02113f4c,
+        "data_ov036_02113f58": 0x02113f58,
+        "_ZTS15daObjRcCarpet_c": 0x02113f64,
+        "FlyingCarpet_SpawnInfo": 0x02113f78,
+        "_ZTV15daObjRcCarpet_c": 0x02113f9c,
+    }
+    rows = []
+    for name in owned:
+        sym = symbols[name]
+        row = {"symbol": name, "address": hex(addresses[name]),
+               "size": hex(sym["st_size"])}
+        if name.startswith("_ZTV"):
+            row.update({"emitted_storage_address": "0x02113f94",
+                        "address_point_bias": "0x8"})
+        rows.append(row)
+    entry = {"module": "ov036", "functions": [], "data": rows,
+             "rodata": [], "bss": []}
+    claims = [{"name": ".data", "start": 0x02113f4c, "end": 0x02114020}]
+
+    ordered, report, errors = tubuild.prepare_owned_nontext_section_order(
+        post_policy, entry, claims)
+    assert errors == [], errors
+    assert ordered is not None
+    assert report["groups"][0]["original"] == retained
+    assert report["groups"][0]["desired"] == [symbols[name]["st_shndx"]
+                                                for name in owned]
+    assert report["objisolate"]["error"] is None
+
+    layout, error = tubuild.section_contribution(ordered, ".data", 0x02113f4c)
+    assert error is None
+    for name in owned:
+        expected = (0x02113f94 if name == "_ZTV15daObjRcCarpet_c"
+                    else addresses[name])
+        assert layout["symbols"][name]["address"] == expected
+    assert len(layout["bytes"]) == 0xd4
+
+
+def test_manifest_order_is_a_noop_when_emitted_addresses_already_match():
+    """An already-correct TU keeps byte-identical object-file structure."""
+    if not _toolchain():
+        return
+
+    obj = _compile_tu_fixture(
+        'extern "C" int external_a;\n'
+        'extern "C" int external_b;\n'
+        'extern "C" int *first = &external_a;\n'
+        'extern "C" int *second = &external_b;\n')
+    start = 0x2000
+    layout, error = tubuild.section_contribution(obj, ".data", start)
+    assert error is None
+    entry = {"module": "ov999", "functions": [], "rodata": [], "bss": [],
+             "data": [{"symbol": name, "address": hex(row["address"]),
+                       "size": hex(row["size"])}
+                      for name, row in layout["symbols"].items()
+                      if name in ("first", "second")]}
+    claims = [{"name": ".data", "start": start,
+               "end": start + len(layout["bytes"])}]
+    ordered, report, errors = tubuild.prepare_owned_nontext_section_order(
+        obj, entry, claims)
+    assert errors == [], errors
+    assert ordered == obj
+    assert report["objisolate"] is None
+    assert report["groups"][0]["desired"] == report["groups"][0]["original"]
+
+
+def _verify_grouped_owned_relocation(manifest_module, configured_module,
+                                     candidate_module):
+    """Drive the real owned-relocation verdict with one injected data layout."""
+    from unittest import mock
+
+    start, end, destination = 0x02000000, 0x02000010, 0x02120000
+    owned, imported = "owned_data", "imported_data"
+    layout = {
+        "bytes": bytes(range(end - start)),
+        "relocs": [{"offset": 0, "type": 2, "symbol": imported,
+                    "addend": 0, "targetSection": "SHN_UNDEF"}],
+        "symbols": {owned: {"address": start, "size": end - start,
+                             "bind": "STB_GLOBAL", "type": "STT_OBJECT",
+                             "sectionIndex": 1}},
+        "inputSections": [1],
+    }
+    entry = {
+        "module": "ov999", "functions": [],
+        "data": [{"symbol": owned, "address": hex(start),
+                  "size": hex(end - start)}],
+        "relocations": [{"section": ".data", "source": hex(start),
+                         "type": "R_ARM_ABS32", "kind": "load",
+                         "symbol": imported, "addend": 0,
+                         "target_module": manifest_module,
+                         "target_address": hex(destination)}],
+    }
+    claims = [{"name": ".data", "start": start, "end": end}]
+    config = {"ov999": {start: ("load", destination, configured_module)}}
+    with mock.patch.object(tubuild, "section_contribution",
+                           lambda _obj, _name, _start: (layout, None)):
+        return tubuild.verify_owned_sections(
+            b"", entry, claims,
+            name_index={imported: (candidate_module, destination)},
+            config_relocs=config, sym_index={},
+            target_reader=lambda _module, _start, size: layout["bytes"][:size],
+            symbol_homes={}, bss_boundaries=set())
+
+
+def test_owned_relocation_accepts_exact_group_and_member_candidate():
+    result = _verify_grouped_owned_relocation(
+        "overlays(2,7)", "overlays(2,7)", "ov002")
+    assert result["ok"], result["errors"]
+    row = result["relocations"][0]
+    assert row["verdict"] == "OK"
+    assert row["expectedModules"] == ["ov002", "ov007"]
+    assert row["configuredModules"] == ["ov002", "ov007"]
+    assert row["candidateModule"] == "ov002"
+
+
+def test_owned_relocation_rejects_a_different_configured_group():
+    result = _verify_grouped_owned_relocation(
+        "overlays(2,7)", "overlays(2,9)", "ov002")
+    assert not result["ok"]
+    row = result["relocations"][0]
+    assert row["verdict"] == "WRONG-MODULE"
+    assert row["expectedModules"] == ["ov002", "ov007"]
+    assert row["configuredModules"] == ["ov002", "ov009"]
+
+
+def test_owned_relocation_rejects_candidate_outside_the_exact_group():
+    result = _verify_grouped_owned_relocation(
+        "overlays(2,7)", "overlays(2,7)", "ov009")
+    assert not result["ok"]
+    row = result["relocations"][0]
+    assert row["verdict"] == "WRONG-MODULE"
+    assert row["expectedModules"] == row["configuredModules"] \
+        == ["ov002", "ov007"]
+    assert row["candidateModule"] == "ov009"
+
+
 def test_linkcheck_compile_passes_all_production_object_policies():
     original_policies = tubuild.RB.compiler_only_policies
     original_intact = tubuild.RB.intact_tu_policies
@@ -1886,6 +2060,12 @@ def test_record_linkcheck_preserves_all_owned_ranges():
             {"section": ".data", "differingBytes": 0},
         ],
         "objectAudit": {},
+        "nontextSectionOrder": {
+            "groups": [{"section": ".data", "original": [14, 20],
+                        "desired": [20, 14], "anchors": {}}],
+            "objisolate": {"reordered": [{"section": ".data"}],
+                            "error": None},
+        },
         "linkedStorageAliases": {"ok": True, "rows": [{"exact": True}],
                                   "errors": []},
         "symbolsNew": [],
@@ -1904,6 +2084,12 @@ def test_record_linkcheck_preserves_all_owned_ranges():
     assert recorded["tuRanges"] == report["tuRanges"]
     assert recorded["moduleSetSha256"] == "b" * 64
     assert recorded["linkedStorageAliases"] == report["linkedStorageAliases"]
+    assert recorded["nontextSectionOrder"] == {
+        "groups": [{"section": ".data", "original": [14, 20],
+                    "desired": [20, 14]}],
+        "objisolate": report["nontextSectionOrder"]["objisolate"],
+        "errors": None,
+    }
 
 # ---------------------------------------------------------------- create repairs
 # The three assemble_shadow_source behaviors proven by six modules of
