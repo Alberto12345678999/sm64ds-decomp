@@ -284,7 +284,7 @@ src/_ZN5Stump13InitResourcesEv.cpp:
     complete
     .text start:0x021338ac end:0x02133938
 
-src/Stump_Spawn.c:
+src/daObjPile_c_classInit.c:
     complete
     .text start:0x02133938 end:0x02133968
 
