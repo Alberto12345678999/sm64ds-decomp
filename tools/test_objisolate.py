@@ -769,9 +769,15 @@ class Isolate(unittest.TestCase):
         long_alias = {"_ZTV1P": {**policy["_ZTV1P"],
                                   "storageAlias": {"symbol": "data_name_that_is_too_long",
                                                    "size": 8, "donor": donor_name}}}
-        refused, why = OI.rebias_object_symbols(raw, long_alias)
-        self.assertIsNone(refused)
-        self.assertIn("does not fit donor", why["error"])
+        grown, growth = OI.rebias_object_symbols(raw, long_alias)
+        self.assertIsNotNone(grown, growth)
+        self.assertIsNone(growth["error"])
+        self.assertGreater(growth["stringTable"]["shift"], 0)
+        self.assertEqual(growth["aliases"][0]["nameStorage"], "appended")
+        grown_symbols = list(ELFFile(io.BytesIO(grown))
+                             .get_section_by_name(".symtab").iter_symbols())
+        self.assertEqual(len([s for s in grown_symbols
+                              if s.name == "data_name_that_is_too_long"]), 1)
 
         # A second symbol may point at a longer name beginning immediately before
         # the donor while the donor itself points at that name's suffix.  Checking
@@ -786,9 +792,10 @@ class Isolate(unittest.TestCase):
         struct.pack_into(suffix_endian + "I", suffix_shared,
                          symtab.header["sh_offset"] + suffix_other_index * 16,
                          donor["st_name"] - 1)
-        refused, why = OI.rebias_object_symbols(bytes(suffix_shared), policy)
+        refused, why = OI.rebias_object_symbols(bytes(suffix_shared), long_alias)
         self.assertIsNone(refused)
         self.assertIn("string-table boundary", why["error"])
+        self.assertNotIn("string-table growth refused", why["error"])
 
         live_donor = {"_ZTV1P": {**policy["_ZTV1P"],
                                   "storageAlias": {"symbol": "data_2000", "size": 8,
@@ -868,6 +875,173 @@ class Isolate(unittest.TestCase):
         refused, why = OI.rebias_object_symbols(bytes(bad), policy)
         self.assertIsNone(refused)
         self.assertIn("still referenced", why["error"])
+
+    def test_rebias_vtable_grows_strtab_for_19_byte_neutral_name(self):
+        """A 19-byte neutral alias may reuse an exact safe 18-byte donor slot."""
+        import io
+        import struct
+        from elftools.elf.elffile import ELFFile
+        from elftools.elf.relocation import RelocationSection
+
+        whole = self.build(
+            "namespace A { namespace B { namespace C { namespace D { "
+            "struct EE { virtual ~EE(); }; EE::~EE(){} "
+            "struct FF { virtual ~FF(); }; FF::~FF(){} }}}} "
+            "struct P { virtual ~P(); virtual void f(); virtual void g(); }; "
+            "P::~P(){} void P::f(){} void P::g(){}\n").read_bytes()
+        whole_elf = ELFFile(io.BytesIO(whole))
+        whole_symbols = list(whole_elf.get_section_by_name(".symtab").iter_symbols())
+        licensed = [s.name for s in whole_symbols
+                    if s.name and s["st_info"]["type"] == "STT_OBJECT"
+                    and isinstance(s["st_shndx"], int)
+                    and whole_elf.get_section(s["st_shndx"]).name == ".data"]
+        deferred = [{"symbol": s.name, "section": ".text", "size": s["st_size"]}
+                    for s in whole_symbols
+                    if s.name and s["st_info"]["type"] == "STT_FUNC"
+                    and isinstance(s["st_shndx"], int)
+                    and whole_elf.get_section(s["st_shndx"]).name == ".text"
+                    and s["st_size"] > 0]
+        raw, partition = OI.derive_section_partition(
+            whole, [".data"], licensed, deferred)
+        self.assertIsNone(partition["error"])
+        parsed = ELFFile(io.BytesIO(raw))
+        sections = list(parsed.iter_sections())
+        symtab = parsed.get_section_by_name(".symtab")
+        symbols = list(symtab.iter_symbols())
+        vtable = next(s for s in symbols if s.name == "_ZTV1P")
+        donor_names = ("_ZN1A1B1C1D2EED2Ev", "_ZN1A1B1C1D2FFD2Ev")
+        donor_rows = [next((i, s) for i, s in enumerate(symbols)
+                           if s.name == name) for name in donor_names]
+        self.assertTrue(all(len(name.encode("ascii")) == 18 for name in donor_names))
+        self.assertTrue(all((donor["st_shndx"], donor["st_value"], donor["st_size"])
+                            == ("SHN_UNDEF", 0, 0)
+                            for _index, donor in donor_rows))
+        targets = ("data_ov070_02123184", "data_ov070_021231a0")
+        fittings = ("neutral_name_12345", "neutral_name_12346")
+        self.assertTrue(all(len(name) == 18 for name in fittings))
+        self.assertTrue(all(len(name) == 19 for name in targets))
+
+        def policy(names):
+            return {"_ZTV1P": {
+                "bias": 8, "size": vtable["st_size"],
+                "section": parsed.get_section(vtable["st_shndx"]).name,
+                "partitionSymbols": [
+                    {"symbol": names[0], "value": 12, "size": 4,
+                     "donor": donor_names[0]},
+                    {"symbol": names[1], "value": 16,
+                     "size": vtable["st_size"] - 16,
+                     "donor": donor_names[1]},
+                ],
+            }}
+
+        in_place, in_place_report = OI.rebias_object_symbols(raw, policy(fittings))
+        self.assertIsNotNone(in_place, in_place_report)
+        self.assertIsNone(in_place_report["error"])
+        self.assertIsNone(in_place_report["stringTable"])
+        grown, report = OI.rebias_object_symbols(raw, policy(targets))
+        self.assertIsNotNone(grown, report)
+        self.assertIsNone(report["error"])
+        self.assertTrue(all(row["nameStorage"] == "appended"
+                            for row in report["partitions"]))
+        self.assertGreaterEqual(report["stringTable"]["shift"],
+                                sum(len(name) + 1 for name in targets))
+
+        result = ELFFile(io.BytesIO(grown))
+        result_sections = list(result.iter_sections())
+        result_symbols = list(result.get_section_by_name(".symtab").iter_symbols())
+        expected_aliases = ((12, 4), (16, vtable["st_size"] - 16))
+        for (donor_index, _donor), target, (value, size) in zip(
+                donor_rows, targets, expected_aliases):
+            alias = result_symbols[donor_index]
+            self.assertEqual(alias.name, target)
+            self.assertEqual((alias["st_value"], alias["st_size"],
+                              alias["st_info"]["bind"], alias["st_info"]["type"]),
+                             (value, size, "STB_GLOBAL", "STT_OBJECT"))
+        self.assertFalse(any(s.name in donor_names for s in result_symbols))
+
+        string_index = symtab.header["sh_link"]
+        symtab_index = next(index for index, section in enumerate(sections)
+                            if section.name == ".symtab")
+        old_strings = sections[string_index].data()
+        new_strings = result_sections[string_index].data()
+        self.assertEqual(new_strings[:len(old_strings)], old_strings)
+        for target in targets:
+            self.assertIn(target.encode("ascii") + b"\0",
+                          new_strings[len(old_strings):])
+
+        # The fitting and appended paths must produce identical non-string payloads,
+        # relocation semantics, section order/links, and symbol records except for
+        # the one target name offset and the file-offset shifts growth requires.
+        fitted = ELFFile(io.BytesIO(in_place))
+        fitted_sections = list(fitted.iter_sections())
+        fitted_symbols = list(fitted.get_section_by_name(".symtab").iter_symbols())
+        self.assertEqual(len(fitted_sections), len(result_sections))
+        header_keys = ("sh_name", "sh_type", "sh_flags", "sh_addr", "sh_size",
+                       "sh_link", "sh_info", "sh_addralign", "sh_entsize")
+        for index, (short_section, long_section) in enumerate(
+                zip(fitted_sections, result_sections)):
+            expected_offset = short_section.header["sh_offset"]
+            insertion = (fitted_sections[string_index].header["sh_offset"]
+                         + fitted_sections[string_index].header["sh_size"])
+            if index != string_index and expected_offset \
+                    and expected_offset >= insertion:
+                expected_offset += report["stringTable"]["shift"]
+            self.assertEqual(long_section.header["sh_offset"], expected_offset)
+            if index != string_index:
+                self.assertEqual(tuple(short_section.header[key] for key in header_keys),
+                                 tuple(long_section.header[key] for key in header_keys))
+                if index != symtab_index \
+                        and short_section.header["sh_type"] != "SHT_NOBITS":
+                    self.assertEqual(short_section.data(), long_section.data())
+            else:
+                self.assertEqual(
+                    tuple(short_section.header[key] for key in header_keys if key != "sh_size"),
+                    tuple(long_section.header[key] for key in header_keys if key != "sh_size"))
+        expected_shoff = fitted["e_shoff"]
+        if expected_shoff >= insertion:
+            expected_shoff += report["stringTable"]["shift"]
+        self.assertEqual(result["e_shoff"], expected_shoff)
+        self.assertEqual(len(fitted_symbols), len(result_symbols))
+        symbol_keys = ("st_value", "st_size", "st_info", "st_other", "st_shndx")
+        for index, (short_symbol, long_symbol) in enumerate(
+                zip(fitted_symbols, result_symbols)):
+            self.assertEqual(tuple(short_symbol[key] for key in symbol_keys),
+                             tuple(long_symbol[key] for key in symbol_keys))
+            if index not in {row[0] for row in donor_rows}:
+                self.assertEqual((short_symbol.name, short_symbol["st_name"]),
+                                 (long_symbol.name, long_symbol["st_name"]))
+
+        def relocations(blob):
+            elf = ELFFile(io.BytesIO(blob))
+            return [(index, section.header["sh_info"],
+                     [(reloc["r_offset"], reloc["r_info_sym"],
+                       reloc["r_info_type"],
+                       reloc["r_addend"] if reloc.is_RELA() else None)
+                      for reloc in section.iter_relocations()])
+                    for index, section in enumerate(elf.iter_sections())
+                    if isinstance(section, RelocationSection)]
+
+        self.assertEqual(relocations(in_place), relocations(grown))
+
+        # A parseable but overlapping linked string table is still malformed and
+        # must fail closed before any offset or symbol mutation.
+        endian = "<" if parsed.little_endian else ">"
+        malformed = bytearray(raw)
+        struct.pack_into(endian + "I", malformed,
+                         OI._shdr_offset(parsed, string_index) + 0x14,
+                         len(raw) - sections[string_index].header["sh_offset"])
+        refused, why = OI.rebias_object_symbols(bytes(malformed), policy(targets))
+        self.assertIsNone(refused)
+        self.assertIn("string-table growth refused", why["error"])
+        self.assertTrue("overlaps" in why["error"] or "section headers" in why["error"])
+
+        unterminated = bytearray(raw)
+        string_end = (sections[string_index].header["sh_offset"]
+                      + sections[string_index].header["sh_size"])
+        unterminated[string_end - 1] = ord("X")
+        refused, why = OI.rebias_object_symbols(bytes(unterminated), policy(targets))
+        self.assertIsNone(refused)
+        self.assertIn("required boundary NULs", why["error"])
 
     def test_rebias_vtable_synthesizes_exact_interior_partition_symbols(self):
         """Interior labels reuse only safe slots and never alter retained content."""

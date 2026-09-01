@@ -94,6 +94,151 @@ def _shdr_offset(elf, index):
     return elf["e_shoff"] + index * elf["e_shentsize"]
 
 
+def _grow_string_table(raw, string_table_index, names):
+    """Append exact names to one ELF32 relocatable-object string table.
+
+    Existing bytes stay at the same offsets relative to the table. Complete
+    NUL-terminated names are appended, followed by enough NUL padding that every
+    later section retains its original alignment after its file offset moves. No
+    symbol, relocation, section index, link, or payload is rewritten here.
+    """
+    if not names:
+        return bytes(raw), [], {"oldSize": 0, "newSize": 0, "shift": 0,
+                                "appendedBytes": 0, "paddingBytes": 0,
+                                "error": None}
+    import struct
+
+    try:
+        elf = ELFFile(io.BytesIO(raw))
+        sections = list(elf.iter_sections())
+    except Exception as exc:
+        return None, [], {"error": f"cannot parse ELF for string-table growth: {exc}"}
+    if elf.elfclass != 32 or elf["e_type"] != "ET_REL":
+        return None, [], {"error": "string-table growth requires an ELF32 ET_REL object"}
+    if elf["e_phnum"] != 0 or elf["e_phoff"] != 0:
+        return None, [], {"error": "string-table growth refuses objects with program headers"}
+    if elf["e_ehsize"] != 52 or not elf["e_shnum"] \
+            or elf["e_shstrndx"] in ("SHN_XINDEX", SHN_XINDEX) \
+            or elf["e_shentsize"] != 40:
+        return None, [], {"error": "string-table growth refuses extended ELF section "
+                                  "indices or non-standard headers"}
+    if not isinstance(string_table_index, int) \
+            or not 0 < string_table_index < len(sections):
+        return None, [], {"error": f"invalid linked string-table index "
+                                  f"{string_table_index!r}"}
+    string_table = sections[string_table_index]
+    if string_table.header["sh_type"] != "SHT_STRTAB":
+        return None, [], {"error": f"linked section {string_table_index} is not SHT_STRTAB"}
+    if any(section.header["sh_type"] == "SHT_SYMTAB_SHNDX"
+           for section in sections):
+        return None, [], {"error": "string-table growth refuses extended symbol indices"}
+    try:
+        encoded = [bytes(name) for name in names]
+    except Exception:
+        return None, [], {"error": "string-table growth names are not byte strings"}
+    if any(not name or b"\0" in name for name in encoded):
+        return None, [], {"error": "string-table growth names must be nonempty and NUL-free"}
+
+    endian = "<" if elf.little_endian else ">"
+    old_offset = int(string_table.header["sh_offset"])
+    old_size = int(string_table.header["sh_size"])
+    insertion = old_offset + old_size
+    if old_offset <= 0 or old_size <= 0 or insertion > len(raw):
+        return None, [], {"error": "linked string table is outside the ELF file"}
+    old_strings = bytes(raw[old_offset:insertion])
+    if len(old_strings) != old_size or old_strings[:1] != b"\0" \
+            or old_strings[-1:] != b"\0":
+        return None, [], {"error": "linked string table lacks required boundary NULs"}
+    shoff = int(elf["e_shoff"])
+    shentsize = int(elf["e_shentsize"])
+    shend = shoff + shentsize * len(sections)
+    if shoff <= 0 or shend > len(raw):
+        return None, [], {"error": "ELF section-header table is malformed"}
+    if shoff < insertion < shend:
+        return None, [], {"error": "string-table end falls inside section headers"}
+
+    for index, section in enumerate(sections):
+        offset = int(section.header["sh_offset"])
+        size = int(section.header["sh_size"])
+        section_type = section.header["sh_type"]
+        alignment = int(section.header["sh_addralign"] or 1)
+        if alignment & (alignment - 1):
+            return None, [], {"error": f"section {index} has non-power-of-two alignment "
+                                      f"{alignment}"}
+        if section_type != "SHT_NOBITS" and size:
+            end = offset + size
+            if offset < 0 or end > len(raw):
+                return None, [], {"error": f"section {index} payload is outside the ELF file"}
+            if index != string_table_index \
+                    and offset < insertion and old_offset < end:
+                return None, [], {"error": f"linked string table overlaps section {index}"}
+            if index != string_table_index and offset < insertion < end:
+                return None, [], {"error": f"string-table growth would split section {index}"}
+            if offset < shend and shoff < end:
+                return None, [], {"error": f"section {index} overlaps section headers"}
+
+    payload = b"".join(name + b"\0" for name in encoded)
+    alignment = 4 if shoff >= insertion else 1
+    for index, section in enumerate(sections):
+        offset = int(section.header["sh_offset"])
+        if index != string_table_index and offset and offset >= insertion:
+            alignment = max(alignment, int(section.header["sh_addralign"] or 1))
+    shift = (len(payload) + alignment - 1) & -alignment
+    if shift <= 0 or len(raw) + shift > 0xffffffff:
+        return None, [], {"error": "string-table growth exceeds ELF32 file limits"}
+    padding = shift - len(payload)
+    name_offsets, cursor = [], old_size
+    for name in encoded:
+        name_offsets.append(cursor)
+        cursor += len(name) + 1
+    addition = payload + b"\0" * padding
+    out = bytearray(raw[:insertion] + addition + raw[insertion:])
+
+    new_shoff = shoff + shift if shoff >= insertion else shoff
+    struct.pack_into(endian + "I", out, 0x20, new_shoff)
+    for index, section in enumerate(sections):
+        header = new_shoff + index * shentsize
+        old_section_offset = int(section.header["sh_offset"])
+        if index == string_table_index:
+            struct.pack_into(endian + "I", out, header + 0x14, old_size + shift)
+        elif old_section_offset and old_section_offset >= insertion:
+            struct.pack_into(endian + "I", out, header + 0x10,
+                             old_section_offset + shift)
+
+    try:
+        grown = ELFFile(io.BytesIO(bytes(out)))
+        grown_sections = list(grown.iter_sections())
+    except Exception as exc:
+        return None, [], {"error": f"grown ELF does not parse: {exc}"}
+    if len(grown_sections) != len(sections) or grown["e_shoff"] != new_shoff:
+        return None, [], {"error": "string-table growth changed ELF structure"}
+    header_keys = ("sh_name", "sh_type", "sh_flags", "sh_addr", "sh_link",
+                   "sh_info", "sh_addralign", "sh_entsize")
+    for index, (before, after) in enumerate(zip(sections, grown_sections)):
+        if any(before.header[key] != after.header[key] for key in header_keys):
+            return None, [], {"error": f"string-table growth changed section {index} metadata"}
+        expected_offset = int(before.header["sh_offset"])
+        if index != string_table_index and expected_offset \
+                and expected_offset >= insertion:
+            expected_offset += shift
+        expected_size = (old_size + shift if index == string_table_index
+                         else int(before.header["sh_size"]))
+        if int(after.header["sh_offset"]) != expected_offset \
+                or int(after.header["sh_size"]) != expected_size:
+            return None, [], {"error": f"string-table growth changed section {index} "
+                                      "offset/size unexpectedly"}
+        if index != string_table_index and before.header["sh_type"] != "SHT_NOBITS" \
+                and before.data() != after.data():
+            return None, [], {"error": f"string-table growth changed section {index} payload"}
+    if grown_sections[string_table_index].data() != string_table.data() + addition:
+        return None, [], {"error": "string-table growth changed existing string bytes"}
+    return bytes(out), name_offsets, {
+        "sectionIndex": string_table_index, "oldSize": old_size,
+        "newSize": old_size + shift, "shift": shift,
+        "appendedBytes": len(payload), "paddingBytes": padding, "error": None,
+    }
+
+
 def plan(raw, keep_symbol):
     """What isolation would do, without doing it.
 
@@ -1060,11 +1205,13 @@ def rebias_object_symbols(raw, symbol_policies, normalize_undefined=False):
     same ABI preamble from their addend; unlike a rebased local definition this fixes
     the address the repository's already-public import would otherwise resolve to.
     A policy may additionally split the preamble and public vtable range into exact
-    symbols by reusing explicitly policy-owned symbol-table slots.  Reusing a slot
-    keeps every ELF offset stable; it is allowed only when the donor is an undefined,
-    unreferenced, non-local import with enough exclusive string-table storage.  The
-    caller is responsible for proving that every donor came from an exact deadstrip or
-    externalization policy before invoking this object-level primitive.
+    symbols by reusing explicitly policy-owned symbol-table slots. A fitting name
+    reuses the donor's exclusive string bytes in place. A longer name is appended to
+    the linked ELF string table, with later file offsets shifted without changing any
+    section index, link, relocation, or payload. Either path is allowed only when the
+    donor is an undefined, unreferenced, non-local import with exclusive string-table
+    storage. The caller is responsible for proving that every donor came from an exact
+    deadstrip or externalization policy before invoking this object-level primitive.
     """
     requested = {}
     for name, policy in dict(symbol_policies).items():
@@ -1140,7 +1287,19 @@ def rebias_object_symbols(raw, symbol_policies, normalize_undefined=False):
     symtab = elf.get_section_by_name(".symtab")
     if symtab is None:
         return None, {"rebased": [], "aliases": [], "error": "no .symtab"}
+    if symtab.header["sh_entsize"] != 16:
+        return None, {"rebased": [], "aliases": [],
+                      "error": "non-standard Elf32_Sym entries are unsupported"}
+    string_table_index = symtab.header["sh_link"]
+    string_table = (elf.get_section(string_table_index)
+                    if isinstance(string_table_index, int) else None)
+    if string_table is None or string_table.header["sh_type"] != "SHT_STRTAB":
+        return None, {"rebased": [], "aliases": [],
+                      "error": "symbol table has no valid linked string table"}
     syms = list(symtab.iter_symbols())
+    if any(sym["st_shndx"] in ("SHN_XINDEX", SHN_XINDEX) for sym in syms):
+        return None, {"rebased": [], "aliases": [],
+                      "error": "extended symbol section indices are unsupported"}
     by_name = {name: [(i, sym) for i, sym in enumerate(syms)
                       if sym.name == name and sym["st_shndx"] not in
                       ("SHN_UNDEF", "SHN_ABS")]
@@ -1320,10 +1479,6 @@ def rebias_object_symbols(raw, symbol_policies, normalize_undefined=False):
                 return None, {"rebased": [], "aliases": [], "partitions": [],
                               "error": f"{label} {new_name!r} or donor {donor_name!r} "
                                        "is not ASCII"}
-            if len(new_name_bytes) > len(donor_bytes):
-                return None, {"rebased": [], "aliases": [], "partitions": [],
-                              "error": f"{label} {new_name} does not fit donor "
-                                       f"{donor_name}'s string-table slot"}
             donor_name_offset = donor["st_name"]
             overlapping = [(i, sym.name) for i, sym in enumerate(syms)
                            if i != donor_index and isinstance(sym["st_name"], int)
@@ -1333,7 +1488,6 @@ def rebias_object_symbols(raw, symbol_policies, normalize_undefined=False):
                 return None, {"rebased": [], "aliases": [], "partitions": [],
                               "error": f"{label} donor {donor_name} has shared or "
                                        f"substring string-table users {overlapping}"}
-            string_table = elf.get_section(symtab.header["sh_link"])
             string_offset = string_table.header["sh_offset"] + donor_name_offset
             if donor_name_offset == 0 or raw_out[string_offset - 1] != 0:
                 return None, {"rebased": [], "aliases": [], "partitions": [],
@@ -1348,6 +1502,8 @@ def rebias_object_symbols(raw, symbol_policies, normalize_undefined=False):
                 **row, "index": donor_index, "nameOffset": donor_name_offset,
                 "stringOffset": string_offset, "donorBytes": donor_bytes,
                 "newNameBytes": new_name_bytes,
+                "nameStorage": ("in-place" if len(new_name_bytes) <= len(donor_bytes)
+                                else "appended"),
             })
             used_names.add(new_name)
             used_donors.add(donor_name)
@@ -1363,17 +1519,45 @@ def rebias_object_symbols(raw, symbol_policies, normalize_undefined=False):
         for i, sym in enumerate(syms) if i not in mutable_symbol_indices
     }
 
+    appended = [row for synthetics in synthesized.values() for row in synthetics
+                if row["nameStorage"] == "appended"]
+    string_growth = None
+    if appended:
+        grown, name_offsets, string_growth = _grow_string_table(
+            bytes(raw_out), string_table_index,
+            [row["newNameBytes"] for row in appended])
+        if grown is None:
+            return None, {"rebased": [], "aliases": [], "partitions": [],
+                          "stringTable": string_growth,
+                          "error": f"string-table growth refused: "
+                                   f"{string_growth['error']}"}
+        raw_out = bytearray(grown)
+        for synthetic, name_offset in zip(appended, name_offsets):
+            synthetic["nameOffset"] = name_offset
+        elf = ELFFile(io.BytesIO(bytes(raw_out)))
+        symtab = elf.get_section_by_name(".symtab")
+        string_table = elf.get_section(string_table_index)
+        for row in relocation_rewrites:
+            row["fileOffset"] = (elf.get_section(row["sectionIndex"])
+                                 .header["sh_offset"] + row["entryOffset"] + 8)
+
     base = symtab.header["sh_offset"]
     rows, alias_rows, partition_rows = [], [], []
     for name in sorted(requested):
         index, sym = by_name[name][0]
         bias = requested[name]["bias"]
         for synthetic in synthesized[name]:
-            string_offset = synthetic["stringOffset"]
-            raw_out[string_offset:string_offset + len(synthetic["donorBytes"])] = \
-                synthetic["newNameBytes"] + b"\0" * \
-                (len(synthetic["donorBytes"]) - len(synthetic["newNameBytes"]))
             donor_ent = base + synthetic["index"] * 16
+            if synthetic["nameStorage"] == "in-place":
+                string_offset = (string_table.header["sh_offset"]
+                                 + synthetic["nameOffset"])
+                raw_out[string_offset:string_offset + len(synthetic["donorBytes"])] = \
+                    synthetic["newNameBytes"] + b"\0" * \
+                    (len(synthetic["donorBytes"])
+                     - len(synthetic["newNameBytes"]))
+            else:
+                struct.pack_into(endian + "I", raw_out, donor_ent,
+                                 synthetic["nameOffset"])
             struct.pack_into(endian + "I", raw_out, donor_ent + 4,
                              synthetic["value"])
             struct.pack_into(endian + "I", raw_out, donor_ent + 8,
@@ -1385,6 +1569,7 @@ def rebias_object_symbols(raw, symbol_policies, normalize_undefined=False):
                 "symbol": synthetic["symbol"], "donor": synthetic["donor"],
                 "value": synthetic["value"], "size": synthetic["size"],
                 "section": requested[name]["section"],
+                "nameStorage": synthetic["nameStorage"],
             }
             if synthetic["kind"] == "storage-alias":
                 alias_rows.append(report_row)
@@ -1460,7 +1645,8 @@ def rebias_object_symbols(raw, symbol_policies, normalize_undefined=False):
                     or got["st_other"]["visibility"] != "STV_DEFAULT" \
                     or got["st_value"] != synthetic["value"] \
                     or got["st_size"] != synthetic["size"] \
-                    or got["st_shndx"] != vtable["st_shndx"]:
+                    or got["st_shndx"] != vtable["st_shndx"] \
+                    or got["st_name"] != synthetic["nameOffset"]:
                 return None, {"rebased": rows, "aliases": alias_rows,
                               "partitions": partition_rows,
                               "error": f"post-rewrite vtable split is not exact for "
@@ -1470,7 +1656,8 @@ def rebias_object_symbols(raw, symbol_policies, normalize_undefined=False):
                           for row in relocation_rewrites]
     return out, {"rebased": rows, "aliases": alias_rows,
                  "partitions": partition_rows,
-                 "relocations": public_relocations, "error": None}
+                 "relocations": public_relocations,
+                 "stringTable": string_growth, "error": None}
 
 
 def isolate(obj, keep_symbol):
