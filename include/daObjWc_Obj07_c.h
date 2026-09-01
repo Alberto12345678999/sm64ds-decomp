@@ -47,8 +47,8 @@ struct daObjWc_Obj07_c : daObjKaitendai_c {
        mwcc emits neither the RTTI group nor the inline destructor's D1/D0
        pair. `virtual` is written out for the reader; these override
        daObjKaitendai_c slots and would be virtual either way. */
-    virtual int CleanupResources();    /* slot  3 */
-    virtual int InitResources();       /* slot  0 */
+    virtual s32 CleanupResources();    /* slot  3 */
+    virtual s32 InitResources();       /* slot  0 */
 };
 
 typedef char daObjWc_Obj07_c_size_must_be_0x320[sizeof(daObjWc_Obj07_c) == 0x320 ? 1 : -1];

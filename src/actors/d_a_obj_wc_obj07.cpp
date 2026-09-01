@@ -13,10 +13,14 @@
  * are licensed in config/tu_manifest.d/ov029/daObjWc_Obj07_c.json as
  * deadstrip-data with a canonical module and address, and romdata_check
  * word-compares each against the cartridge: 7 VERIFIED, 6 PARTIAL, 0 DIFFERS.
- * _ZTV15daObjWc_Obj07_c is VERIFIED at 128 bytes, and 128 is the whole table
- * rather than a comfortable prefix: the address point is ov029 0x02114018 and
- * the next symbol, _ZTI14daObjWc_Mizu_c, begins at 0x02114098. Neither
- * truncated nor overrun. The 6 PARTIAL are only _ZTS strings, the known
+ * _ZTV15daObjWc_Obj07_c is VERIFIED at 128 bytes, and 128 is the full span of
+ * the table's SLOTS rather than a comfortable prefix: the address point is
+ * ov029 0x02114018 and the next symbol, _ZTI14daObjWc_Mizu_c, begins at
+ * 0x02114098. The slots are neither truncated nor overrun. What that does NOT
+ * cover is the 8-byte {offset-to-top, _ZTI pointer} header at 0x02114010,
+ * which is emitted but which no word comparison in the tree reaches -- the
+ * comparison starts at the address point, by construction.
+ * The 6 PARTIAL are only _ZTS strings, the known
  * benign pattern. None of this was reachable under the coined name
  * "RotatingPlatformWdw": these records are length-prefixed mangled strings,
  * so they could not have matched at any address.
@@ -29,9 +33,9 @@
  *
  * Consolidated from these legacy one-function sources (ROM address order):
  *   [0] 0x02112080  src/_ZN15daObjWc_Obj07_cD1Ev.cpp
- *   [1] 0x021120d0  src/_ZN15daObjWc_Obj07_cD0Ev.c
- *   [2] 0x02112134  src/_ZN15daObjWc_Obj07_c16CleanupResourcesEv.c
- *   [3] 0x02112148  src/_ZN15daObjWc_Obj07_c13InitResourcesEv.c
+ *   [1] 0x021120d0  src/_ZN15daObjWc_Obj07_cD0Ev.cpp
+ *   [2] 0x02112134  src/_ZN15daObjWc_Obj07_c16CleanupResourcesEv.cpp
+ *   [3] 0x02112148  src/_ZN15daObjWc_Obj07_c13InitResourcesEv.cpp
  *   [4] 0x02112168  src/daObjWc_Obj07_c_Spawn.c
  *
  * tubuild's create pass left one #pragma uncarried and asked for a decision
@@ -93,7 +97,7 @@ extern "C" int *daObjWc_Obj07_c_Spawn(void)
 /* The marker above is not decoration: without it tools/tiers.py folds this
  * body into the neighbouring fragment and scores that fragment's mangled
  * vtable externs against InitResources. */
-int daObjWc_Obj07_c::InitResources()
+s32 daObjWc_Obj07_c::InitResources()
 {
     return func_ov002_020b676c((unsigned char *)this, (struct Arg *)&data_ov029_02113fd4,
                                data_ov029_02113fc4);
@@ -113,7 +117,7 @@ int daObjWc_Obj07_c::InitResources()
 // of the file and refused to carry it automatically.
 #pragma long_calls on
 // @symbol _ZN15daObjWc_Obj07_c16CleanupResourcesEv
-int daObjWc_Obj07_c::CleanupResources()
+s32 daObjWc_Obj07_c::CleanupResources()
 {
     return func_ov002_020b66a8(this, data_ov029_02113fd4);
 }

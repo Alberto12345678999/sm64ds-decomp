@@ -267,7 +267,7 @@ ov016 0x2112ef4  n=4  L=82   FloatOnWaterPlatformJrb  1/4
 ov022 0x21115a8  n=5  L=106  RotatingPlatformLll      1/5
 ov029 0x211137c  n=9  L=243  ArrowLift                1/9  CONF2
 ov029 0x2111ac4  n=9  L=230  CageLift                 1/9  NORM1
-ov029 0x2112080  n=5  L=83   daObjWc_Obj07_c      1/5  pcov=3
+ov029 0x2112080  n=5  L=83   daObjWc_Obj07_c          1/5  pcov=3
 ov030 0x211155c  n=6  L=96   RollingLogTtm            3/6  pcov=4
 ov036 0x2111444  n=5  L=107  RotatingPlatformRr       1/5
 ```

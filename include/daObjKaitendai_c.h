@@ -23,7 +23,7 @@
  *
  * FIVE DESCENDANTS, more than any other class in this series:
  * daObjBk_Ukisima_c (RotatingPlatformWf), daObjFl_Koma_D_c (RotatingPlatformLll),
- * daObjWc_Obj07_c (daObjWc_Obj07_c), daObjRc_Kaitendai_c (RotatingPlatformRr)
+ * daObjWc_Obj07_c (was RotatingPlatformWdw), daObjRc_Kaitendai_c (RotatingPlatformRr)
  * and daObjKm3_Kaitendai_c (include/daObjKm3_Kaitendai_c.h). Each one's destructor
  * stores this class's vtable between its own and _ZTV10dBgActor_c, which is the
  * same fact the RTTI records, arrived at from the other direction.
