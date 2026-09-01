@@ -238,7 +238,7 @@ every slot also carries the base declaration and the ov004 base-body rename.
 | 27 | `OnHitByMegaChar` | 0x020af27c | 6 - **DONE**, 2 declarations |
 | 28 | `OnHitFromUnderneath` | 0x020af04c | 6 - **DONE**, 2 declarations; the second and last occupied slot |
 | 29 | `OnAimedAtWithEgg` | 0x020af094 | 6 - **DONE**, 2 declarations; the first since 26 with no occupied-slot trap, and the first whose NAME the ROM contradicts |
-| 30 | `OnAimedAtWithEggReturnVec` | 0x020aeed8 | 6 |
+| 30 | `OnAimedAtWithEggReturnVec` | 0x020aeed8 | 6 - **DONE**, 2 declarations; the slot that settles 29 (it restores, word for word, what 29 saves) and the first whose name the ROM refutes in BOTH halves |
 | 31 | `Kill` | 0x020b2880 | 7 |
 | 32 | `AfterClsn` | 0x020b27f4 | 1 |
 | 33 | `Virtual84` | 0x020b265c | 19 |
