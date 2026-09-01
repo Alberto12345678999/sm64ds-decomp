@@ -59,14 +59,15 @@ CLPS_Block *clps);
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 6 -- ShipWater_Spawn, 0x02111480, size 0x38 */
+/* ROM ordinal 6 -- daObjKsWater_c_classInit, 0x02111480, size 0x38 */
 /* -------------------------------------------------------------------------- */
-// @symbol ShipWater_Spawn
+// @symbol daObjKsWater_c_classInit
 /* recovered: vtable identified, globals resolved, declarations from a shared header */
 /* recovered: vtable identified, globals resolved */
 /* resolved: VT0 = _ZTV9ShipWater */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-int *ShipWater_Spawn(void)
+/* Reconstructed source-style name. Historical alias: ShipWater_Spawn. */
+int *daObjKsWater_c_classInit(void)
 {
     int *p = (int *)_ZN7fBase_cnwEj(832);
     if (p) {

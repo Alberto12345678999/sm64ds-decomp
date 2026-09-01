@@ -117,14 +117,15 @@ extern int data_0209caa0[];
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 7 -- LightBeam_Spawn, 0x02111dd0, size 0x40 */
+/* ROM ordinal 7 -- daObjC1Hikari_c_classInit, 0x02111dd0, size 0x40 */
 /* -------------------------------------------------------------------------- */
-// @symbol LightBeam_Spawn
+// @symbol daObjC1Hikari_c_classInit
 /* recovered: vtable identified, globals resolved, declarations from a shared header */
 /* recovered: vtable identified, globals resolved */
 /* resolved: VT0 = _ZTV9LightBeam */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-int *LightBeam_Spawn(void)
+/* Reconstructed source-style name. Historical alias: LightBeam_Spawn. */
+int *daObjC1Hikari_c_classInit(void)
 {
     int *p = (int *)_ZN7fBase_cnwEj(364);
     if (p) {
