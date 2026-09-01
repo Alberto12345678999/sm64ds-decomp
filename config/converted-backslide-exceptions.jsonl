@@ -78,6 +78,16 @@
 {"path": "src/_ZN16daObjWaterfall_cD1Ev.cpp", "reason": "TU promotion absorbs per-function files into promoted class TU (ov002/daObjWaterfall_c)"}
 {"path": "src/actors/tree.cpp#_ZN4TreeD0Ev", "reason": "ov002/Tree promoted to genuine TU src/actors/tree.cpp (snake_case)"}
 {"path": "src/actors/tree.cpp#_ZN4TreeD1Ev", "reason": "ov002/Tree promoted to genuine TU src/actors/tree.cpp (snake_case)"}
+{"path": "src/_ZN12SwitchPillar15OnGroundPoundedER8dActor_c.cpp", "reason": "regenerated after restacking cpp/c0switch-rtti-rename-snake-tu onto current main"}
+{"path": "src/_ZN12SwitchPillar6RenderEv.cpp", "reason": "regenerated after restacking cpp/c0switch-rtti-rename-snake-tu onto current main"}
+{"path": "src/_ZN12SwitchPillarD0Ev.cpp", "reason": "regenerated after restacking cpp/c0switch-rtti-rename-snake-tu onto current main"}
+{"path": "src/_ZN12SwitchPillarD1Ev.cpp", "reason": "regenerated after restacking cpp/c0switch-rtti-rename-snake-tu onto current main"}
+{"path": "src/_ZN16daObjWaterfall_c13InitResourcesEv.cpp", "reason": "regenerated after restacking cpp/c0switch-rtti-rename-snake-tu onto current main"}
+{"path": "src/_ZN16daObjWaterfall_cD0Ev.cpp", "reason": "regenerated after restacking cpp/c0switch-rtti-rename-snake-tu onto current main"}
+{"path": "src/_ZN16daObjWaterfall_cD1Ev.cpp", "reason": "regenerated after restacking cpp/c0switch-rtti-rename-snake-tu onto current main"}
+{"path": "src/_ZN4Tree16OnPendingDestroyEv.cpp", "reason": "regenerated after restacking cpp/c0switch-rtti-rename-snake-tu onto current main"}
+{"path": "src/_ZN4TreeD0Ev.cpp", "reason": "regenerated after restacking cpp/c0switch-rtti-rename-snake-tu onto current main"}
+{"path": "src/_ZN4TreeD1Ev.cpp", "reason": "regenerated after restacking cpp/c0switch-rtti-rename-snake-tu onto current main"}
 {"path": "src/_ZN16daObjWaterfall_c13InitResourcesEv.cpp", "reason": "regenerated after restacking cpp/ov002-tree-snake-tu onto current main"}
 {"path": "src/_ZN16daObjWaterfall_cD0Ev.cpp", "reason": "regenerated after restacking cpp/ov002-tree-snake-tu onto current main"}
 {"path": "src/_ZN16daObjWaterfall_cD1Ev.cpp", "reason": "regenerated after restacking cpp/ov002-tree-snake-tu onto current main"}
@@ -90,6 +100,10 @@
 {"path": "src/_ZN4Tree16OnPendingDestroyEv.cpp", "reason": "regenerated on cpp/ov002-tree-snake-tu after restacking onto cpp/waterfall-snake-tu"}
 {"path": "src/_ZN4TreeD0Ev.cpp", "reason": "regenerated on cpp/ov002-tree-snake-tu after restacking onto cpp/waterfall-snake-tu"}
 {"path": "src/_ZN4TreeD1Ev.cpp", "reason": "regenerated on cpp/ov002-tree-snake-tu after restacking onto cpp/waterfall-snake-tu"}
+{"path": "src/_ZN12SwitchPillar15OnGroundPoundedER8dActor_c.cpp", "reason": "regenerated on cpp/c0switch-rtti-rename-snake-tu after restacking onto cpp/ov002-tree-snake-tu"}
+{"path": "src/_ZN12SwitchPillar6RenderEv.cpp", "reason": "regenerated on cpp/c0switch-rtti-rename-snake-tu after restacking onto cpp/ov002-tree-snake-tu"}
+{"path": "src/_ZN12SwitchPillarD0Ev.cpp", "reason": "regenerated on cpp/c0switch-rtti-rename-snake-tu after restacking onto cpp/ov002-tree-snake-tu"}
+{"path": "src/_ZN12SwitchPillarD1Ev.cpp", "reason": "regenerated on cpp/c0switch-rtti-rename-snake-tu after restacking onto cpp/ov002-tree-snake-tu"}
 {"path": "src/actors/tree.cpp#_ZN4Tree16OnPendingDestroyEv", "reason": "ov002/daTree_c snake_case TU promotion: renamed, not lost -- the class takes its cartridge RTTI name and the TU takes the snake_case stem, so the same member banks as src/actors/d_a_tree.cpp#_ZN8daTree_c16OnPendingDestroyEv"}
 {"path": "src/_ZN15IceSlideManager13InitResourcesEv.cpp", "reason": "Consolidate daSldMng_c into one snake_case TU (#2148); restack on main after #2130"}
 {"path": "src/_ZN15IceSlideManagerD0Ev.cpp", "reason": "Consolidate daSldMng_c into one snake_case TU (#2148); restack on main after #2130"}
