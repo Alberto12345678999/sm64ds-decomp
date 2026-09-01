@@ -4,7 +4,7 @@ func_ov015_02111214 kind:function(arm,size=0x40) addr:0x02111214
 _ZN13PoleBillboard16CleanupResourcesEv kind:function(arm,size=0x24) addr:0x02111254
 _ZN13PoleBillboard6RenderEv kind:function(arm,size=0x28) addr:0x02111278
 _ZN13PoleBillboard13InitResourcesEv kind:function(arm,size=0x3c) addr:0x021112a0
-PoleBillboard_Spawn kind:function(arm,size=0x38) addr:0x021112dc
+daObjBkBillboard_c_classInit kind:function(arm,size=0x38) addr:0x021112dc
 _ZN14KnockDownPlankD1Ev kind:function(arm,size=0x4c) addr:0x02111314
 _ZN14KnockDownPlankD0Ev kind:function(arm,size=0x60) addr:0x02111360
 _ZN14KnockDownPlank15OnHitByMegaCharER6Player kind:function(arm,size=0x3c) addr:0x021113c0
@@ -17,7 +17,7 @@ _ZN14KnockDownPlank16CleanupResourcesEv kind:function(arm,size=0x44) addr:0x0211
 _ZN14KnockDownPlank6RenderEv kind:function(arm,size=0x28) addr:0x021116f8
 _ZN14KnockDownPlank8BehaviorEv kind:function(arm,size=0x240) addr:0x02111720
 _ZN14KnockDownPlank13InitResourcesEv kind:function(arm,size=0x208) addr:0x02111960
-KnockDownPlank_Spawn kind:function(arm,size=0x38) addr:0x02111b68
+daObjBk_Botaosi_c_classInit kind:function(arm,size=0x38) addr:0x02111b68
 _ZN9MovingBarD1Ev kind:function(arm,size=0x44) addr:0x02111ba0
 _ZN9MovingBarD0Ev kind:function(arm,size=0x58) addr:0x02111be4
 _ZN9MovingBar4KillEv kind:function(arm,size=0x7c) addr:0x02111c3c
@@ -71,7 +71,7 @@ _ZN11FallBlockWfD1Ev kind:function(arm,size=0x50) addr:0x02112cf4
 _ZN11FallBlockWfD0Ev kind:function(arm,size=0x64) addr:0x02112d44
 _ZN11FallBlockWf16CleanupResourcesEv kind:function(arm,size=0x14) addr:0x02112da8
 _ZN11FallBlockWf13InitResourcesEv kind:function(arm,size=0x14) addr:0x02112dbc
-FallBlockWf_Spawn kind:function(arm,size=0x3c) addr:0x02112dd0
+daObjBk_Fall_Block_c_classInit kind:function(arm,size=0x3c) addr:0x02112dd0
 data_ov015_02112e0c kind:data(any) addr:0x02112e0c
 data_ov015_02112e10 kind:data(any) addr:0x02112e10
 data_ov015_02112e14 kind:data(any) addr:0x02112e14
@@ -197,13 +197,13 @@ data_ov015_021141cc kind:data(any) addr:0x021141cc ambiguous
 data_ov015_021142a0 kind:data(any) addr:0x021142a0 ambiguous
 _ZTI18daObjBkBillboard_c kind:data(any) addr:0x02114318
 _ZTS18daObjBkBillboard_c kind:data(any) addr:0x02114324
-PoleBillboard_SpawnInfo kind:data(any) addr:0x0211433c ambiguous
+g_profile_BK_BILLBOARD kind:data(any) addr:0x0211433c ambiguous
 data_ov015_02114350 kind:data(any) addr:0x02114350 ambiguous
 _ZTV13PoleBillboard kind:data(any) addr:0x02114360
 data_ov015_02114380 kind:data(any) addr:0x02114380 ambiguous
 _ZTI17daObjBk_Botaosi_c kind:data(any) addr:0x021143dc
 _ZTS17daObjBk_Botaosi_c kind:data(any) addr:0x021143e8
-KnockDownPlank_SpawnInfo kind:data(any) addr:0x021143fc ambiguous
+g_profile_BK_BOTAOSI kind:data(any) addr:0x021143fc ambiguous
 _ZTV14KnockDownPlank kind:data(any) addr:0x02114420
 _ZTV17daObjBk_Botaosi_c kind:data(any) addr:0x02114420
 data_ov015_02114458 kind:data(any) addr:0x02114458 ambiguous
@@ -259,7 +259,7 @@ _ZTS16daObjFallBlock_c kind:data(any) addr:0x0211488c
 data_ov015_02114898 kind:data(any) addr:0x02114898 ambiguous
 _ZTS20daObjBk_Fall_Block_c kind:data(any) addr:0x021148a0
 data_ov015_021148b4 kind:data(any) addr:0x021148b4 ambiguous
-FallBlockWf_SpawnInfo kind:data(any) addr:0x021148b8 ambiguous
+g_profile_BK_DOWN_B kind:data(any) addr:0x021148b8 ambiguous
 _ZTV11FallBlockWf kind:data(any) addr:0x021148dc
 data_ov015_021148e0 kind:data(any) addr:0x021148e0 ambiguous
 data_ov015_021148f0 kind:data(any) addr:0x021148f0 ambiguous

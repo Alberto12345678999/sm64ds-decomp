@@ -53,7 +53,7 @@ _ZN11BillBlaster16CleanupResourcesEv kind:function(arm,size=0x60) addr:0x02126f0
 _ZN11BillBlaster6RenderEv kind:function(arm,size=0x28) addr:0x02126f64
 _ZN11BillBlaster8BehaviorEv kind:function(arm,size=0x104) addr:0x02126f8c
 _ZN11BillBlaster13InitResourcesEv kind:function(arm,size=0x124) addr:0x02127090
-BillBlaster_Spawn kind:function(arm,size=0x30) addr:0x021271b4
+daObjBkKillerdai_c_classInit kind:function(arm,size=0x30) addr:0x021271b4
 _ZN12FortressWallD1Ev kind:function(arm,size=0x44) addr:0x021271e4
 _ZN12FortressWallD0Ev kind:function(arm,size=0x58) addr:0x02127228
 _ZN12FortressWall4KillEv kind:function(arm,size=0x60) addr:0x02127280
@@ -107,7 +107,7 @@ _ZTV7daKlr_c kind:data(any) addr:0x02127ee8
 data_ov079_02127f64 kind:data(any) addr:0x02127f64
 _ZTI18daObjBkKillerdai_c kind:data(any) addr:0x02127f70
 _ZTS18daObjBkKillerdai_c kind:data(any) addr:0x02127f7c
-BillBlaster_SpawnInfo kind:data(any) addr:0x02127f94 ambiguous
+g_profile_BK_KILLER_DAI kind:data(any) addr:0x02127f94 ambiguous
 _ZTV11BillBlaster kind:data(any) addr:0x02127fb8
 data_ov079_02127fec kind:data(any) addr:0x02127fec ambiguous
 data_ov079_02128008 kind:data(any) addr:0x02128008 ambiguous

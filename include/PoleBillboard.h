@@ -7,7 +7,7 @@
 
 /* TWO WITNESSES, and they close on each other:
  *
- *   PoleBillboard_Spawn  fBase_c::operator new(292 = 0x124), dActor_c::dActor_c(), stores _ZTV13PoleBillboard,
+ *   daObjBkBillboard_c_classInit  fBase_c::operator new(292 = 0x124), dActor_c::dActor_c(), stores _ZTV13PoleBillboard,
  *                 then the member below in this order.
  *   ~PoleBillboard   the same member destroyed in reverse, then ~dActor_c.
  *

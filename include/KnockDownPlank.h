@@ -37,7 +37,7 @@ struct KnockDownPlank : dBgActor_c {
     s16 mWobbleTimer;                      /* 0x394 */
     s8 mKnockDir;                       /* 0x396 */
     u8 mState;                       /* 0x397 */
-    /* KnockDownPlank_Spawn, the one factory storing _ZTV14KnockDownPlank
+    /* daObjBk_Botaosi_c_classInit, the one factory storing _ZTV14KnockDownPlank
        (ov015:0x02114420), calls fBase_c::operator new(0x39c). The field span
        stopping at 0x398 is a lower bound, not the size. */
     u8 pad_398[0x4];                  /* 0x398, to the ROM's 0x39c */

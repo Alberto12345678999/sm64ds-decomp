@@ -68,7 +68,7 @@ _ZN5Stump16CleanupResourcesEv kind:function(arm,size=0x44) addr:0x021336cc
 _ZN5Stump6RenderEv kind:function(arm,size=0x28) addr:0x02133710
 _ZN5Stump8BehaviorEv kind:function(arm,size=0x174) addr:0x02133738
 _ZN5Stump13InitResourcesEv kind:function(arm,size=0x8c) addr:0x021338ac
-Stump_Spawn kind:function(arm,size=0x30) addr:0x02133938
+daObjPile_c_classInit kind:function(arm,size=0x30) addr:0x02133938
 _ZN6FwooshD1Ev kind:function(arm,size=0x40) addr:0x02133968
 _ZN6FwooshD0Ev kind:function(arm,size=0x54) addr:0x021339a8
 func_ov091_021339fc kind:function(arm,size=0x270) addr:0x021339fc
@@ -153,7 +153,7 @@ _ZTV6Thwomp kind:data(any) addr:0x02135174
 _ZTV11daDsnBase_c kind:data(any) addr:0x021351fc
 _ZTI11daObjPile_c kind:data(any) addr:0x0213527c
 _ZTS11daObjPile_c kind:data(any) addr:0x02135288
-Stump_SpawnInfo kind:data(any) addr:0x02135298 ambiguous
+g_profile_PILE kind:data(any) addr:0x02135298 ambiguous
 _ZTV5Stump kind:data(any) addr:0x021352bc
 data_ov091_0213533c kind:data(any) addr:0x0213533c
 data_ov091_02135344 kind:data(any) addr:0x02135344
