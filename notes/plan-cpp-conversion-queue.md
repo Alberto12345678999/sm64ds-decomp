@@ -171,11 +171,19 @@ unaffected by virtualness, and not declaring them `virtual` is what keeps this f
 becoming the key-function TU and emitting `_ZTV` â€” the exact trap the class-form skill
 warns about. **Preserve that; do not "fix" it to `virtual`.**
 
-**SINCE LANDED.** This pilot went in with #1684, essentially as written below; the
-file is now `src/_ZN21daObjKm2_Fall_Block_c13InitResourcesEv.cpp`. Kept because the reasoning
-above it is what the rest of the queue rests on.
+**SINCE LANDED, AND SINCE SUPERSEDED.** This pilot went in with #1684, essentially as
+written below. The class has since been renamed to the cartridge's own
+`daObjKm2_Fall_Block_c` and consolidated into one genuine TU,
+`src/actors/d_a_obj_km2_fall_block.cpp`, which is why every path in this section now
+names that file: the five per-function sources are gone. Both slot methods are now
+declared plainly, so `CleanupResources` (the first declared non-inline virtual, the
+destructor being inline) deliberately IS the key function, and the `no _ZTV` half of the
+follow-on check below is void for this class. With one TU there is exactly one place for
+the RTTI group to land, and the class stays unverifiable against the cartridge until it
+does. The reasoning above is kept because the rest of the queue still rests on it, and it
+still holds wherever a class remains spread over per-function files.
 
-The exact edit (`src/_ZN21daObjKm2_Fall_Block_c13InitResourcesEv.cpp`, `0x02111e10`, size `0x14`, ov045):
+The exact edit (`src/actors/d_a_obj_km2_fall_block.cpp`, `0x02111e10`, size `0x14`, ov045):
 
 ```cpp
 //cpp
@@ -189,7 +197,7 @@ This is a **real** migration: the compiler mangles the name. Verify that claim w
 oracle **before** the byte gate â€” it needs no ROM and no serialization:
 
 ```
-python tools/mangle.py src/_ZN21daObjKm2_Fall_Block_c13InitResourcesEv.cpp \
+python tools/mangle.py src/actors/d_a_obj_km2_fall_block.cpp \
     --expect _ZN21daObjKm2_Fall_Block_c13InitResourcesEv
 ```
 
@@ -345,14 +353,17 @@ python tools/match.py --c src/_ZN10ChillBully14UpdateRunStateEv.cpp \
 and the pilot deliberately excludes:
 
 ```
-python tools/mangle.py src/_ZN21daObjKm2_Fall_Block_c13InitResourcesEv.cpp --expect _ZN21daObjKm2_Fall_Block_c13InitResourcesEv
-python tools/match.py --c src/_ZN21daObjKm2_Fall_Block_c13InitResourcesEv.cpp \
+python tools/mangle.py src/actors/d_a_obj_km2_fall_block.cpp --expect _ZN21daObjKm2_Fall_Block_c13InitResourcesEv
+python tools/match.py --c src/actors/d_a_obj_km2_fall_block.cpp \
     --func _ZN21daObjKm2_Fall_Block_c13InitResourcesEv --addr 0x02111e10 --size 0x14 --module ov045
 ```
 
-Pass = `mangle.py` reports the expected symbol **and no `_ZTV21daObjKm2_Fall_Block_c`**, plus a
-clean `match.py`. If `_ZTV` appears, S2's premise (that the non-virtual declaration keeps
-the anchor elsewhere) is false and S2/S3 must be re-scoped as merge work.
+Pass = `mangle.py` reports the expected symbol, plus a clean `match.py`. (As written the
+check also demanded **no `_ZTV21daObjKm2_Fall_Block_c`**; that half is void for this class
+now that its consolidated TU is the key-function TU on purpose and emits the group. Where
+a class is still spread over per-function files, S2's premise — that the non-virtual
+declaration keeps the anchor elsewhere — is still what the `_ZTV` check tests, and if it
+appears there, S2/S3 must be re-scoped as merge work.)
 
 ## 4. Deliberately not touched
 
