@@ -360,6 +360,7 @@ ov006	0x020d9574	func_ov006_020d9574	MgSortOrSplode_Spawn	spawnfunc
 ov006	0x020dbd54	func_ov006_020dbd54	MgPicturePoker_Spawn	spawnfunc
 ov006	0x020de940	func_ov006_020de940	MgCoincentration_Spawn	spawnfunc
 ov006	0x020e3820	func_ov006_020e3820	MgShuffleShell_Spawn	spawnfunc
+ov006	0x020e3820	MgShuffleShell_Spawn	dScMgCurling_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov006	0x020e6c28	func_ov006_020e6c28	_ZN17MgBounceAndPounceD1Ev	vtable slot 16
 ov006	0x020e6c60	func_ov006_020e6c60	_ZN17MgBounceAndPounceD0Ev	vtable slot 17
 ov006	0x020e6f60	func_ov006_020e6f60	_ZN17MgBounceAndPounce21AfterCleanupResourcesEj	vtable slot 5
@@ -390,6 +391,9 @@ ov006	0x0213badc	data_ov006_0213badc	MgSortOrSplode_SpawnInfo	spawninfo
 ov006	0x0213bc50	data_ov006_0213bc50	MgPicturePoker_SpawnInfo	spawninfo
 ov006	0x0213bedc	data_ov006_0213bedc	MgCoincentration_SpawnInfo	spawninfo
 ov006	0x0213c214	data_ov006_0213c214	MgShuffleShell_SpawnInfo	spawninfo
+ov006	0x0213c214	MgShuffleShell_SpawnInfo	g_profile_MG_CURLING	reconstructed profile global; literal ROM ID MG_CURLING+registry role+later EAD lineage; exact SM64DS spelling not preserved
+ov006	0x020e6bf4	func_ov006_020e6bf4	dScMgCurling2_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
+ov006	0x0213c434	data_ov006_0213c434	g_profile_MG_CURLING_J	reconstructed profile global; literal ROM ID MG_CURLING_J+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov006	0x0213c62c	data_ov006_0213c62c	_ZTV17MgBounceAndPounce	vtable alloc=?
 ov006	0x0213c78c	data_ov006_0213c78c	MgPsycheOut_SpawnInfo	spawninfo
 ov006	0x0213c98c	data_ov006_0213c98c	MgWhichWiggler_SpawnInfo	spawninfo
@@ -1946,6 +1950,7 @@ ov085	0x0212d39c	func_ov085_0212d39c	_ZN9RabbitKey6RenderEv	vtable slot 9
 ov085	0x0212d3ec	func_ov085_0212d3ec	_ZN9RabbitKey8BehaviorEv	vtable slot 6
 ov085	0x0212d46c	func_ov085_0212d46c	_ZN9RabbitKey13InitResourcesEv	vtable slot 0
 ov085	0x0212d4e8	func_ov085_0212d4e8	RabbitKey_Spawn	spawnfunc
+ov085	0x0212d4e8	RabbitKey_Spawn	daObj_Mip_Key_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov085	0x0212d528	func_ov085_0212d528	_ZN9LakituBroD1Ev	vtable slot 16
 ov085	0x0212d578	func_ov085_0212d578	_ZN9LakituBroD0Ev	vtable slot 17
 ov085	0x0212ea90	func_ov085_0212ea90	_ZN9LakituBro16CleanupResourcesEv	vtable slot 3
@@ -1968,6 +1973,7 @@ ov085	0x0212ffc0	data_ov085_0212ffc0	_ZTV13PrincessPeach	vtable alloc=0x36c
 ov085	0x021300d4	data_ov085_021300d4	Rabbit_SpawnInfo	spawninfo
 ov085	0x021300f8	data_ov085_021300f8	_ZTV6Rabbit	vtable alloc=?
 ov085	0x021301b4	data_ov085_021301b4	RabbitKey_SpawnInfo	spawninfo
+ov085	0x021301b4	RabbitKey_SpawnInfo	g_profile_OBJ_MIP_KEY	reconstructed profile global; literal ROM ID OBJ_MIP_KEY+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov085	0x021301d8	data_ov085_021301d8	_ZTV9RabbitKey	vtable alloc=0x1a0
 ov085	0x02130320	data_ov085_02130320	LakituBro_SpawnInfo	spawninfo
 ov085	0x02130344	data_ov085_02130344	_ZTV9LakituBro	vtable alloc=0x2e8
