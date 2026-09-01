@@ -909,7 +909,7 @@ src/_ZN4HeapD1Ev.c	DTOR-ONLY	arm9	mHeap::Heap_t	Heap/mHeap	_ZN4HeapD1Ev	1		True	
 src/_ZN4HeapD2Ev.c	DTOR-ONLY	arm9		Heap	_ZN4HeapD2Ev	1		True		-
 src/_ZN4ToadD0Ev.c	DTOR-ONLY	ov085	daKinopio_c	Toad/daKinopio_c	_ZN4ToadD0Ev	1		True		-
 src/_ZN14daObjC1_Trap_c13InitResourcesEv.c	P1-vtable+mangled	ov010	daObjC1_Trap_c	daObjC1_Trap_c/daObjC1_Trap_c	vtable daObjC1_Trap_c slot 0 @0x2111654 | _ZN14daObjC1_Trap_c13InitResourcesEv	1		True		-
-src/_ZN4Tree16OnPendingDestroyEv.c	P1-vtable+mangled	ov002	daTree_c	Tree/daTree_c	vtable daTree_c slot 12 @0x20ec0a0 | _ZN4Tree16OnPendingDestroyEv	1		True		-
+src/_ZN8daTree_c16OnPendingDestroyEv.c	P1-vtable+mangled	ov002	daTree_c	daTree_c/daTree_c	vtable daTree_c slot 12 @0x20ec0a0 | _ZN8daTree_c16OnPendingDestroyEv	1		True		-
 src/_ZN4View6RenderEv.c	P1-vtable+mangled	arm9	dView_c	View/dView_c	vtable dView_c slot 9 @0x202fd0c | _ZN4View6RenderEv	1		False		no-header:View/dView_c
 src/_ZN4ViewD0Ev.cpp	DTOR-ONLY	arm9	dView_c	View/dView_c	_ZN4ViewD0Ev	1		False	_ZTV4View	no-header:View/dView_c
 src/_ZN4ViewD1Ev.cpp	DTOR-ONLY	arm9	dView_c	View/dView_c	_ZN4ViewD1Ev	1		False	_ZTV4View	no-header:View/dView_c

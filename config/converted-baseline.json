@@ -7,7 +7,7 @@
     "no_codegen_trick",
     "no_mangled_refs"
   ],
-  "count": 2588,
+  "count": 2590,
   "converted": [
     "src/ARMMathLoadState.c",
     "src/ARMMathSaveState.c",
@@ -2481,6 +2481,9 @@
     "src/actors/d_a_obj_waterfall.cpp#_ZN16daObjWaterfall_c13InitResourcesEv",
     "src/actors/d_a_obj_waterfall.cpp#_ZN16daObjWaterfall_cD0Ev",
     "src/actors/d_a_obj_waterfall.cpp#_ZN16daObjWaterfall_cD1Ev",
+    "src/actors/d_a_tree.cpp#_ZN8daTree_c16OnPendingDestroyEv",
+    "src/actors/d_a_tree.cpp#_ZN8daTree_cD0Ev",
+    "src/actors/d_a_tree.cpp#_ZN8daTree_cD1Ev",
     "src/actors/daBar_c.cpp#_ZN7daBar_c16CleanupResourcesEv",
     "src/actors/daBar_c.cpp#_ZN7daBar_c16OnPendingDestroyEv",
     "src/actors/daBar_c.cpp#_ZN7daBar_c6RenderEv",
@@ -2574,7 +2577,6 @@
     "src/actors/daTrs_c/_ZN7daTrs_c16OnPendingDestroyEv.cpp",
     "src/actors/daTrs_c/_ZN7daTrs_cD0Ev.cpp",
     "src/actors/daTrs_c/_ZN7daTrs_cD1Ev.cpp",
-    "src/actors/tree.cpp#_ZN4Tree16OnPendingDestroyEv",
     "src/engine/fader/_ZN10FaderColorD0Ev.cpp",
     "src/engine/fader/_ZN10FaderColorD1Ev.cpp",
     "src/engine/fader/_ZN15FaderBrightness10SetToStartEv.cpp",
