@@ -7,10 +7,11 @@
  * with the inline destructor in the real header, the compiler naturally owns
  * retail D1/D0 plus the class RTTI, type name, and vtable.
  *
- * daObjKinokoTag_c_Spawn is a class-anchored inferred spelling and
- * MegaMushroomTag_Spawn is retained as an evidence-bounded C ABI alias. Both
- * factories keep retail's measured allocator/base/member/vptr seam because a
- * natural new expression targets the wrong global allocator relocation.
+ * Both factories construct the same ROM-proven RTTI class. A single
+ * daObjKinokoTag_c_classInit spelling would therefore collide, so their
+ * evidence-bounded C ABI aliases remain unresolved. Both factories keep
+ * retail's measured allocator/base/member/vptr seam because a natural new
+ * expression targets the wrong global allocator relocation.
  */
 
 #include "daObjKinokoTag_c.h"
@@ -50,7 +51,10 @@ extern "C" daObjKinokoTag_c *MegaMushroomTag_Spawn()
     return tag;
 }
 
-extern "C" KinokoTagSpawnInfo MegaMushroomTag_SpawnInfo = {
+/* Reconstructed profile-global spelling from the literal ROM registry ID.
+ * Exact original SM64DS spelling is not preserved. Historical project alias:
+ * MegaMushroomTag_SpawnInfo. */
+extern "C" KinokoTagSpawnInfo g_profile_KINOKO_TAG = {
     MegaMushroomTag_Spawn,
     0x0140,
     0x013e,
@@ -75,7 +79,10 @@ extern "C" daObjKinokoTag_c *daObjKinokoTag_c_Spawn()
     return tag;
 }
 
-extern "C" KinokoTagSpawnInfo MegaMushroomCreateTag_SpawnInfo = {
+/* Reconstructed profile-global spelling from the literal ROM registry ID.
+ * Exact original SM64DS spelling is not preserved. Historical project alias:
+ * MegaMushroomCreateTag_SpawnInfo. */
+extern "C" KinokoTagSpawnInfo g_profile_KINOKO_CREATE_TAG = {
     daObjKinokoTag_c_Spawn,
     0x013f,
     0x013d,

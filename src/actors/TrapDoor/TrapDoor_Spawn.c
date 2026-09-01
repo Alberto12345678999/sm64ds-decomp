@@ -7,6 +7,9 @@
 #include "decl_common.h"
 /* recovered: vtable identified, globals resolved */
 /* resolved: VT0 = _ZTV11daTrsTrap_c */
+/* KAIDAN, BOOKSHELF, MERRYGOROUND, and TERESAPIT all construct the ROM-proven
+ * daTrsTrap_c class. A class-anchored classInit rename would collide, so this
+ * factory keeps its historical project spelling. */
 int *TrapDoor_Spawn(void)
 {
     int *p = (int *)_ZN7fBase_cnwEj(852);

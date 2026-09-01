@@ -291,7 +291,9 @@ ov002	0x02108bd8	data_ov002_02108bd8	SilverStarBlockTag_SpawnInfo	spawninfo
 ov002	0x02108bf4	data_ov002_02108bf4	OneUpMushroomBlockTag_SpawnInfo	spawninfo
 ov002	0x02108c18	data_ov002_02108c18	_ZTV10BrickBlock	vtable alloc=0xdc
 ov002	0x02108cb4	data_ov002_02108cb4	MegaMushroomTag_SpawnInfo	spawninfo
+ov002	0x02108cb4	MegaMushroomTag_SpawnInfo	g_profile_KINOKO_TAG	reconstructed profile global; literal ROM ID KINOKO_TAG+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov002	0x02108cd0	data_ov002_02108cd0	MegaMushroomCreateTag_SpawnInfo	spawninfo
+ov002	0x02108cd0	MegaMushroomCreateTag_SpawnInfo	g_profile_KINOKO_CREATE_TAG	reconstructed profile global; literal ROM ID KINOKO_CREATE_TAG+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov002	0x02108cf4	data_ov002_02108cf4	_ZTV16daObjKinokoTag_c	vtable alloc=0x110; class name from ROM RTTI
 ov002	0x02108e38	data_ov002_02108e38	QuestionSwitch_SpawnInfo	spawninfo
 ov002	0x02108e5c	data_ov002_02108e5c	_ZTV19daObjHatenaSwitch_c	vtable alloc=0x724; class name from ROM RTTI
@@ -1309,16 +1311,22 @@ ov063	0x0211deb8	func_ov063_0211deb8	_ZN8MadPiano8BehaviorEv	vtable slot 6
 ov063	0x0211dfac	func_ov063_0211dfac	_ZN8MadPiano13InitResourcesEv	vtable slot 0
 ov063	0x0211e128	func_ov063_0211e128	MadPiano_Spawn	spawnfunc
 ov063	0x0211e770	data_ov063_0211e770	Boo_SpawnInfo	spawninfo
+ov063	0x0211e770	Boo_SpawnInfo	g_profile_TERESA	reconstructed profile global; literal ROM ID TERESA+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov063	0x0211e78c	data_ov063_0211e78c	BigBoo_SpawnInfo	spawninfo
+ov063	0x0211e78c	BigBoo_SpawnInfo	g_profile_BOSS_TERESA	reconstructed profile global; literal ROM ID BOSS_TERESA+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov063	0x0211e7a8	data_ov063_0211e7a8	BooCage_SpawnInfo	spawninfo
 ov063	0x0211e7c4	data_ov063_0211e7c4	BigBooIcon_SpawnInfo	spawninfo
 ov063	0x0211e828	data_ov063_0211e828	_ZTV7daTrs_c	vtable alloc=0x5e0
 ov063	0x0211e8ac	data_ov063_0211e8ac	_ZTV10BigBooIcon	vtable alloc=0x380
 ov063	0x0211e930	data_ov063_0211e930	_ZTV11daTBasket_c	vtable alloc=0x380
 ov063	0x0211ea10	data_ov063_0211ea10	MansionSteps_SpawnInfo	spawninfo
+ov063	0x0211ea10	MansionSteps_SpawnInfo	g_profile_KAIDAN	reconstructed profile global; literal ROM ID KAIDAN+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov063	0x0211ea2c	data_ov063_0211ea2c	Bookshelf_SpawnInfo	spawninfo
+ov063	0x0211ea2c	Bookshelf_SpawnInfo	g_profile_BOOKSHELF	reconstructed profile global; literal ROM ID BOOKSHELF+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov063	0x0211ea48	data_ov063_0211ea48	MerryGoRound_SpawnInfo	spawninfo
+ov063	0x0211ea48	MerryGoRound_SpawnInfo	g_profile_MERRYGOROUND	reconstructed profile global; literal ROM ID MERRYGOROUND+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov063	0x0211ea64	data_ov063_0211ea64	TrapDoor_SpawnInfo	spawninfo
+ov063	0x0211ea64	TrapDoor_SpawnInfo	g_profile_TERESAPIT	reconstructed profile global; literal ROM ID TERESAPIT+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov063	0x0211ea88	data_ov063_0211ea88	_ZTV11daTrsTrap_c	vtable alloc=0x354
 ov063	0x0211eb34	data_ov063_0211eb34	FallBlockBbh_SpawnInfo	spawninfo
 ov063	0x0211eb58	data_ov063_0211eb58	_ZTV12FallBlockBbh	vtable alloc=0x34c

@@ -1762,8 +1762,8 @@ OneUpMushroomBlockTag_SpawnInfo kind:data(any) addr:0x02108bf4
 _ZTV10BrickBlock kind:data(any) addr:0x02108c18
 _ZTI16daObjKinokoTag_c kind:data(any) addr:0x02108c94
 _ZTS16daObjKinokoTag_c kind:data(any) addr:0x02108ca0
-MegaMushroomTag_SpawnInfo kind:data(any) addr:0x02108cb4
-MegaMushroomCreateTag_SpawnInfo kind:data(any) addr:0x02108cd0
+g_profile_KINOKO_TAG kind:data(any) addr:0x02108cb4
+g_profile_KINOKO_CREATE_TAG kind:data(any) addr:0x02108cd0
 _ZTV16daObjKinokoTag_c kind:data(any) addr:0x02108cf4
 _ZTI13daObjDorifu_c kind:data(any) addr:0x02108d70
 _ZTS13daObjDorifu_c kind:data(any) addr:0x02108d7c
