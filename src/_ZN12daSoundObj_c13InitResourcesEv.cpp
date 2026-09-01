@@ -1,15 +1,15 @@
 //cpp
-// @symbol _ZN11SoundObject13InitResourcesEv
+// @symbol _ZN12daSoundObj_c13InitResourcesEv
 
 #include "decl_common.h"
-#include "SoundObject.h"
+#include "daSoundObj_c.h"
 
 #pragma opt_loop_invariants off
 
 extern "C" void _ZN5Sound7PlaySubEjjj5Fix12IiEb(
     u32 a, u32 b, u32 c, Fix12i d, bool e);
 
-int SoundObject::InitResources()
+int daSoundObj_c::InitResources()
 {
     dActor_c *actor;
     int g;

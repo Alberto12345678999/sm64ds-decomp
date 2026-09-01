@@ -17537,18 +17537,18 @@
    "start": "0x20f934c",
    "end": "0x20f975c",
    "classes": [
-    "SoundObject"
+    "daSoundObj_c"
    ],
    "n_functions_map": 7,
    "n_files": 7,
    "files": [
-    "src/_ZN11SoundObjectD1Ev.cpp",
-    "src/_ZN11SoundObjectD0Ev.c",
+    "src/_ZN12daSoundObj_cD1Ev.cpp",
+    "src/_ZN12daSoundObj_cD0Ev.c",
     "src/func_ov002_020f93a8.cpp",
     "src/func_ov002_020f9468.c",
-    "src/_ZN11SoundObject8BehaviorEv.cpp",
-    "src/_ZN11SoundObject13InitResourcesEv.cpp",
-    "src/SoundObject_Spawn.c"
+    "src/_ZN12daSoundObj_c8BehaviorEv.cpp",
+    "src/_ZN12daSoundObj_c13InitResourcesEv.cpp",
+    "src/daSoundObj_c_Spawn.c"
    ],
    "ext_mix": {
     ".cpp": 4,

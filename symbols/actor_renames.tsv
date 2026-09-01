@@ -257,7 +257,7 @@ ov002	0x020f8c8c	func_ov002_020f8c8c	_ZN8Fireball6RenderEv	vtable slot 9
 ov002	0x020f8c94	func_ov002_020f8c94	_ZN8Fireball8BehaviorEv	vtable slot 6
 ov002	0x020f9204	func_ov002_020f9204	_ZN8Fireball13InitResourcesEv	vtable slot 0
 ov002	0x020f9304	func_ov002_020f9304	Fireball_Spawn	spawnfunc
-ov002	0x020f972c	func_ov002_020f972c	SoundObject_Spawn	spawnfunc
+ov002	0x020f972c	func_ov002_020f972c	daSoundObj_c_Spawn	spawnfunc
 ov002	0x020feabc	func_ov002_020feabc	_ZN6BulletD1Ev	vtable slot 16
 ov002	0x020feafc	func_ov002_020feafc	_ZN6BulletD0Ev	vtable slot 17
 ov002	0x020fedf0	func_ov002_020fedf0	_ZN6Bullet16CleanupResourcesEv	vtable slot 3
@@ -359,7 +359,7 @@ ov002	0x0210ba60	data_ov002_0210ba60	CutsceneObject_SpawnInfo	spawninfo
 ov002	0x0210bd60	data_ov002_0210bd60	_ZTV8MugenBgm	vtable alloc=0xd4
 ov002	0x0210bf70	data_ov002_0210bf70	Fireball_SpawnInfo	spawninfo
 ov002	0x0210bf94	data_ov002_0210bf94	_ZTV8Fireball	vtable alloc=0x378
-ov002	0x0210c064	data_ov002_0210c064	SoundObject_SpawnInfo	spawninfo
+ov002	0x0210c064	data_ov002_0210c064	daSoundObj_c_SpawnInfo	spawninfo
 ov002	0x0210d630	data_ov002_0210d630	Bullet_SpawnInfo	spawninfo
 ov002	0x0210d654	data_ov002_0210d654	_ZTV6Bullet	vtable alloc=0x35c
 ov003	0x020b04f0	func_ov003_020b04f0	StarSelect_Spawn	spawnfunc

@@ -1,8 +1,8 @@
 //cpp
-// @symbol _ZN11SoundObject8BehaviorEv
+// @symbol _ZN12daSoundObj_c8BehaviorEv
 
 #include "decl_common.h"
-#include "SoundObject.h"
+#include "daSoundObj_c.h"
 
 struct SoundObjectCallbackOwner;
 typedef int (SoundObjectCallbackOwner::*SoundObjectCallback)(void *);
@@ -13,7 +13,7 @@ void _ZN5Sound7PlaySubEjjj5Fix12IiEb(
     u32 a, u32 b, u32 d, Fix12i f, bool g);
 }
 
-int SoundObject::Behavior()
+int daSoundObj_c::Behavior()
 {
     SoundObjectCallbackOwner *owner = (SoundObjectCallbackOwner *)this;
     int result = (owner->*data_ov002_0211110c[param1])(&mTimer);
