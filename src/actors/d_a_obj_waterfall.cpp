@@ -1,10 +1,11 @@
 //cpp
-/* Manually curated shadow translation unit.
- * ov002/daObjWaterfall_c  (5 function(s))
+/* Genuine production translation unit for ov002/daObjWaterfall_c
+ * (5 function(s)), enrolled as one `complete` delinks span.
  *
- * NOT ENROLLED and NOT CANONICAL.  The readable class and member definitions
- * are compiled only by tubuild's scratch pipeline while the five legacy
- * production sources remain authoritative.
+ * The file stem follows the snake_case scheme in
+ * notes/tu-naming-and-swallowers.md sec 1 (tools/tu_names.py:
+ * daObjWaterfall_c -> d_a_obj_waterfall). The class name is unchanged: it is
+ * what the ROM's own RTTI record spells.
  *
  * FUNCTION ORDER IS DELIBERATELY THE REVERSE OF THE ROM'S -- mwccarm 2004/b56
  * emits one .text section per function, in the REVERSE of source order, so
@@ -12,7 +13,8 @@
  * see notes/tu-reconstruction-pilot-report.md sec 3 for the one documented
  * exception (a destructor's D0/D1/D2 group has compiler-chosen order).
  *
- * Assembled from these legacy one-function sources (ROM address order):
+ * Consolidates (and replaces) these legacy one-function sources, which this
+ * promotion deletes (ROM address order):
  *   [0] 0x020b6e08  src/_ZN16daObjWaterfall_cD1Ev.cpp
  *   [1] 0x020b6e2c  src/_ZN16daObjWaterfall_cD0Ev.cpp
  *   [2] 0x020b6e64  src/_ZN16daObjWaterfall_c8BehaviorEv.cpp
@@ -98,6 +100,7 @@ int daObjWaterfall_c::InitResources()
 /* -------------------------------------------------------------------------- */
 /* ROM ordinal 2 -- daObjWaterfall_c::Behavior, 0x020b6e64, size 0x48 */
 /* -------------------------------------------------------------------------- */
+// @symbol _ZN16daObjWaterfall_c8BehaviorEv
 int daObjWaterfall_c::Behavior()
 {
     mParticle = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
@@ -105,7 +108,6 @@ int daObjWaterfall_c::Behavior()
     return 1;
 }
 
-/* ROM ordinals 0/1 -- the compiler emits D1 and D0 from this definition. */
-daObjWaterfall_c::~daObjWaterfall_c()
-{
-}
+/* ROM ordinals 0/1 -- D1 (0x020b6e08) and D0 (0x020b6e2c) come from the inline
+ * destructor in daObjWaterfall_c.h. Defining the destructor out of line here
+ * instead makes mwccarm emit D0 before D1, which does not match the ROM span. */

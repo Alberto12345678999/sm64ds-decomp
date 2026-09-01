@@ -1099,6 +1099,11 @@
     "src/actors/daObjHatenaSwitch_c.cpp#_ZN19daObjHatenaSwitch_c13InitResourcesEv": "github-actions[bot]",
     "src/actors/daObjHatenaSwitch_c.cpp#_ZN19daObjHatenaSwitch_c10HandleClsnER8dActor_c": "tangosdev",
     "src/actors/daObjHatenaSwitch_c.cpp#_ZN19daObjHatenaSwitch_c17AfterClsnCallbackEP4dBgWP8dActor_cS3_": "ruspecial",
-    "src/actors/daObjHatenaSwitch_c.cpp#QuestionSwitch_Spawn": "github-actions[bot]"
+    "src/actors/daObjHatenaSwitch_c.cpp#QuestionSwitch_Spawn": "github-actions[bot]",
+    "src/actors/d_a_obj_waterfall.cpp#_ZN16daObjWaterfall_cD1Ev": "andrewboudreau",
+    "src/actors/d_a_obj_waterfall.cpp#_ZN16daObjWaterfall_cD0Ev": "andrewboudreau",
+    "src/actors/d_a_obj_waterfall.cpp#_ZN16daObjWaterfall_c8BehaviorEv": "github-actions[bot]",
+    "src/actors/d_a_obj_waterfall.cpp#_ZN16daObjWaterfall_c13InitResourcesEv": "github-actions[bot]",
+    "src/actors/d_a_obj_waterfall.cpp#WaterfallMist_Spawn": "github-actions[bot]"
   }
 }
