@@ -15,7 +15,7 @@
  *   [5] 0x02112320  src/_ZN9WDW_Water6RenderEv.cpp
  *   [6] 0x02112354  src/_ZN9WDW_Water8BehaviorEv.cpp
  *   [7] 0x021124d0  src/_ZN9WDW_Water13InitResourcesEv.cpp
- *   [8] 0x021125f8  src/WDW_Water_Spawn.c
+ *   [8] 0x021125f8  src/daObjWc_Mizu_c_classInit.c
  */
 
 /* -------------------------------------------------------------------------- */

@@ -128,7 +128,7 @@ src/func_ov029_02111e60.c:
     complete
     .text start:0x02111e60 end:0x02111e74
 
-src/CageLift_Spawn.c:
+src/daObjWc_Obj05_c_classInit.c:
     complete
     .text start:0x02111e74 end:0x02111ea4
 
@@ -144,7 +144,7 @@ src/_ZN32FloatOnWaterPlatformWdwRectangle13InitResourcesEv.cpp:
     complete
     .text start:0x02111f58 end:0x02112044
 
-src/FloatOnWaterPlatformWdwRectangle_Spawn.c:
+src/daObjWcObj06_c_classInit.c:
     complete
     .text start:0x02112044 end:0x02112080
 
@@ -200,7 +200,7 @@ src/_ZN9WDW_Water13InitResourcesEv.cpp:
     complete
     .text start:0x021124d0 end:0x021125f8
 
-src/WDW_Water_Spawn.c:
+src/daObjWc_Mizu_c_classInit.c:
     complete
     .text start:0x021125f8 end:0x02112630
 

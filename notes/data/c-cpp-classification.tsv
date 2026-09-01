@@ -50,7 +50,7 @@ src/BulletBill_Spawn.c	WEAK-refs-only	ov079				1		None		-
 src/Bullet_Spawn.c	WEAK-refs-only	ov002				1		None		-
 src/Bully_Spawn.c	S1-stores-rom-vptr	ov064			stores _ZTV5Bully	1		None	_ZTV5Bully	-
 src/Butterfly_Spawn.c	WEAK-refs-only	ov100				1		None		-
-src/CageLift_Spawn.c	S1-stores-rom-vptr	ov029			stores _ZTV8CageLift	1		None	_ZTV8CageLift	-
+src/daObjWc_Obj05_c_classInit.c	S1-stores-rom-vptr	ov029			stores _ZTV8CageLift	1		None	_ZTV8CageLift	-
 src/CameraTag_Spawn.c	WEAK-refs-only	ov002				1		None		-
 src/Camera_UpdateMatrices.c	WEAK-refs-only	ov006				1		None		-
 src/CannonHatch_Spawn.c	WEAK-refs-only	ov002				1		None		-
@@ -145,7 +145,7 @@ src/FlameChompFire_Spawn.c	WEAK-refs-only	ov070				1		None		-
 src/FlameChomp_Spawn.c	WEAK-refs-only	ov070				1		None		-
 src/daObjFl_Block_c_classInit.c	WEAK-refs-only	ov022				1		None		-
 src/daObjKi_Ita_c_classInit.c	S1-stores-rom-vptr	ov016			stores _ZTV17daObjFloatBoard_c	1		None	_ZTV17daObjFloatBoard_c/_ZTV23FloatOnWaterPlatformJrb	-
-src/FloatOnWaterPlatformWdwRectangle_Spawn.c	S1-stores-rom-vptr	ov029			stores _ZTV17daObjFloatBoard_c	1		None	_ZTV17daObjFloatBoard_c/_ZTV32FloatOnWaterPlatformWdwRectangle	-
+src/daObjWcObj06_c_classInit.c	S1-stores-rom-vptr	ov029			stores _ZTV17daObjFloatBoard_c	1		None	_ZTV17daObjFloatBoard_c/_ZTV32FloatOnWaterPlatformWdwRectangle	-
 src/daObjWcObj01_c_classInit.c	S1-stores-rom-vptr	ov029			stores _ZTV17daObjFloatBoard_c	1		None	_ZTV17daObjFloatBoard_c/_ZTV29FloatOnWaterPlatformWdwSquare	-
 src/FloatingFloorBfs_Spawn.c	S1-stores-rom-vptr	ov045			stores _ZTV14daObjUkiyuka_c	1		None	_ZTV14daObjUkiyuka_c/_ZTV16FloatingFloorBfs	-
 src/FloatingFloorLllBig_Spawn.c	S1-stores-rom-vptr	ov022			stores _ZTV14daObjUkiyuka_c	1		None	_ZTV14daObjUkiyuka_c/_ZTV21FloatingFloorLllSmall	-
@@ -378,7 +378,7 @@ src/daObjKi_Hasira_c_classInit.c	S1-stores-rom-vptr	ov016			stores _ZTV10RockPil
 src/RockTriangle_Spawn.c	WEAK-refs-only	ov102				1		None		-
 src/RollingIronBall_Spawn.c	WEAK-refs-only	ov100				1		None		-
 src/daObjFlMaruta_c_classInit.c	S1-stores-rom-vptr	ov022			stores _ZTV13RollingLogLll	1		None	_ZTV13RollingLogLll/_ZTV13daObjMaruta_c	-
-src/RollingLogTtm_Spawn.c	S1-stores-rom-vptr	ov030			stores _ZTV13RollingLogTtm	1		None	_ZTV13RollingLogTtm/_ZTV13daObjMaruta_c	-
+src/daObjHmMaruta_c_classInit.c	S1-stores-rom-vptr	ov030			stores _ZTV13RollingLogTtm	1		None	_ZTV13RollingLogTtm/_ZTV13daObjMaruta_c	-
 src/RollingRock_Spawn.c	S1-stores-rom-vptr	ov021			stores _ZTV11RollingRock	1		None	_ZTV11RollingRock	-
 src/RopeBarrier_Spawn.c	WEAK-refs-only	ov102				1		None		-
 src/daObjBk_Rotebar_c_classInit.c	WEAK-refs-only	ov015				1		None		-
@@ -507,7 +507,7 @@ src/TtcRotatingPrism_Spawn.c	WEAK-refs-only	ov065				1		None		-
 src/TtcRotatingTriangle_Spawn.c	WEAK-refs-only	ov065				1		None		-
 src/TurnBacklightOff.c	PURE-C	arm9				1		None		-
 src/TurnBacklightOn.c	PURE-C	arm9				1		None		-
-src/UkikiCage_Spawn.c	S1-stores-rom-vptr	ov030			stores _ZTV13daObjHmBskt_c	1		None	_ZTV13daObjHmBskt_c	-
+src/daObjHmBskt_c_classInit.c	S1-stores-rom-vptr	ov030			stores _ZTV13daObjHmBskt_c	1		None	_ZTV13daObjHmBskt_c	-
 src/UkikiStar_Spawn.c	WEAK-refs-only	ov030				1		None		-
 src/UkikiThief_Spawn.c	WEAK-refs-only	ov030				1		None		-
 src/Unagi_Spawn.c	S1-stores-rom-vptr	ov016			stores _ZTV5Unagi	1		None	_ZTV5Unagi	-
@@ -544,7 +544,7 @@ src/VirtualDoor_Spawn.c	WEAK-refs-only	ov002				1		None		-
 src/VolcanoFire_Spawn.c	WEAK-refs-only	ov022				1		None		-
 src/daObjFl_Ring_c_classInit.c	S1-stores-rom-vptr	ov022			stores _ZTV11VolcanoRing	1		None	_ZTV11VolcanoRing	-
 src/Vram__Map.c	PURE-C	arm9				1		None		-
-src/WDW_Water_Spawn.c	WEAK-refs-only	ov029				1		None		-
+src/daObjWc_Mizu_c_classInit.c	WEAK-refs-only	ov029				1		None		-
 src/WM_CheckStateEx.c	WEAK-refs-only	arm9				1		None		-
 src/WM_GetSystemWork.c	PURE-C	arm9				1		None		-
 src/WM_SendCommand.c	WEAK-refs-only	arm9				1		None		-

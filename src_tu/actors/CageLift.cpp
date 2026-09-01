@@ -15,7 +15,7 @@
  *   [5] 0x02111d6c  src/_ZN8CageLift13InitResourcesEv.cpp
  *   [6] 0x02111e40  src/func_ov029_02111e40.cpp
  *   [7] 0x02111e60  src/func_ov029_02111e60.c
- *   [8] 0x02111e74  src/CageLift_Spawn.c
+ *   [8] 0x02111e74  src/daObjWc_Obj05_c_classInit.c
  */
 
 /* -------------------------------------------------------------------------- */
