@@ -2308,7 +2308,7 @@ src/_ZN14dScMgCurling_c13InitResourcesEv.cpp:
     complete
     .text start:0x020e3578 end:0x020e3820
 
-src/MgShuffleShell_Spawn.c:
+src/dScMgCurling_c_classInit.c:
     complete
     .text start:0x020e3820 end:0x020e3854
 
@@ -2507,7 +2507,7 @@ src/_ZN15dScMgCurling2_c13InitResourcesEv.cpp:
     complete
     .text start:0x020e6894 end:0x020e6bf4
 
-src/func_ov006_020e6bf4.c:
+src/dScMgCurling2_c_classInit.c:
     complete
     .text start:0x020e6bf4 end:0x020e6c28
 

@@ -284,7 +284,7 @@ src/MgLakituLaunch_Spawn.c	P2-vtable-only	ov006	dScMgPachinko_c	dScMgPachinko_c	
 src/MgMemoryMaster_Spawn.c	S1-stores-rom-vptr	ov006			stores _ZTV14dScMgMemory2_c	1		None	_ZTV14dScMgMemory2_c/_ZTV19dScMgSingle3DBase_c	-
 src/MgMemoryMatch_Spawn.c	S1-stores-rom-vptr	ov006			stores _ZTV13dScMgMemory_c	1		None	_ZTV13dScMgMemory_c/_ZTV19dScMgSingle3DBase_c	-
 src/MgPuzzlePanelPuzzlePanic_Spawn.c	WEAK-refs-only	ov006				1		None		-
-src/MgShuffleShell_Spawn.c	WEAK-refs-only	ov006				1		None		-
+src/dScMgCurling_c_classInit.c	WEAK-refs-only	ov006				1		None		-
 src/MgSortOrSplode_Spawn.c	WEAK-refs-only	ov006				1		None		-
 src/MgWanted_Spawn.c	WEAK-refs-only	ov006				1		None		-
 src/Mod.c	PURE-C					0		None		not-in-delinks
@@ -356,7 +356,7 @@ src/Quaternion_SLerp.c	PURE-C	arm9				1		None		-
 src/QuestionBlock_Spawn.c	WEAK-refs-only	ov102				1		None		-
 src/RLUnCompReadByCallbackWrite16bit.c	PURE-C					0		None		not-in-delinks
 src/RLUnCompReadNormalWrite8bit.c	PURE-C					0		None		not-in-delinks
-src/RabbitKey_Spawn.c	WEAK-refs-only	ov085				1		None		-
+src/daObj_Mip_Key_c_classInit.c	WEAK-refs-only	ov085				1		None		-
 src/Rabbit_Spawn.c	WEAK-refs-only	ov085				1		None		-
 src/RacingPenguin_Spawn.c	WEAK-refs-only	ov019				1		None		-
 src/RandomIntInternal.c	PURE-C	arm9				1		None		-
@@ -4548,7 +4548,7 @@ src/func_ov006_020e64e4.c	PURE-C	ov006				1		None		-
 src/func_ov006_020e6528.c	PURE-C	ov006				1		None		-
 src/func_ov006_020e667c.c	PURE-C	ov006				1		None		-
 src/func_ov006_020e668c.c	PURE-C	ov006				1		None		-
-src/func_ov006_020e6bf4.c	WEAK-refs-only	ov006				1		None		-
+src/dScMgCurling2_c_classInit.c	WEAK-refs-only	ov006				1		None		-
 src/func_ov006_020e6cac.c	P2-vtable-only	ov006	dScMgD3DBase_c	dScMgD3DBase_c	vtable dScMgD3DBase_c slot 30 @0x20e6cac	1	active	True		-
 src/func_ov006_020e6d8c.c	P2-vtable-only	ov006	dScMgD3DBase_c	dScMgD3DBase_c	vtable dScMgD3DBase_c slot 28 @0x20e6d8c	1		True		-
 src/func_ov006_020e6d98.c	P2-vtable-only	ov006	dScMgD3DBase_c	dScMgD3DBase_c	vtable dScMgD3DBase_c slot 27 @0x20e6d98	1		True		-
