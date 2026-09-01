@@ -94,20 +94,25 @@ struct dScMgD3DBase_c : dScMgBase_c {
     virtual int  OnPushed();                           /* slot 25 */
     virtual int  OnHitByCannonBlastedChar();           /* slot 26 */
     virtual void OnHitByMegaChar();                    /* slot 27 */
+    virtual int  OnHitFromUnderneath();                /* slot 28 */
+    virtual int  OnAimedAtWithEgg();                   /* slot 29 */
+    virtual void OnAimedAtWithEggReturnVec();          /* slot 30 */
+    virtual int  Virtual7C();                          /* slot 31 */
+    virtual void Virtual84();                          /* slot 33 */
 
-    /* Five more of dScMgBase_c's own 18 new slots (18-35) are overridden
-       here too (slots 28-31, 33 per tools/rtti_vtables.py --own
-       dScMgD3DBase_c) -- left undeclared, same as dScMgBase_c.h's own slots
-       28-35: their targets are matched source but dScMgBase_c hasn't named
-       or given signatures to the slots they'd be overriding yet, and a
-       derived override can't be declared before its base is.
+    /* THAT LIST IS EMPTY NOW.  This class overrides nine of dScMgBase_c's own
+       18 new slots (18-35) -- 24 through 31, and 33 -- per
+       tools/rtti_vtables.py --own dScMgD3DBase_c, and slot 33 above was the
+       last one still waiting on its base to name it.  All nine are spelled out
+       here; nothing this class overrides is left implicit, and its table is a
+       byte-exact 34-slot prefix rather than a 31-slot one.
 
-       Slots 24, 25, 26 and 27 above came off that list, and they are the
-       same case four times over: dScMgJump_c and dScMgJump2_c both point at
-       THIS class's body for each of them, so the declaration belongs here and
-       neither child declares any of them.  Slots 26 and 27 widen that to all
-       four children -- dScMgTrampoline_c and dScMgTrampoline2_c point here
-       too, where at 24 and 25 they had bodies of their own. */
+       They are the same case nine times over: dScMgJump_c and dScMgJump2_c both
+       point at THIS class's body for each of them, so the declaration belongs
+       here and neither child declares any of them.  Slots 26 through 31 and 33
+       widen that to all four children -- dScMgTrampoline_c and
+       dScMgTrampoline2_c point here too, where at 24 and 25 they had bodies of
+       their own. */
 
     s32  unk_4660;                    /* 0x4660 */
     u16  unk_4664;                    /* 0x4664 -- both factories zero it right

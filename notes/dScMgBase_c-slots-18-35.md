@@ -1,12 +1,60 @@
 # dScMgBase_c slots 18-35 — the keystone map
 
-`include/dScMgBase_c.h` says: *"Slots 18-35 are eighteen further virtuals new at this
-class; their signatures are not reconstructed yet, so they stay undeclared."*
+**THE RANGE IS COMPLETE (2026-08-31).** All eighteen slots, 18 through 35, are
+declared on `dScMgBase_c` together with every descendant override, one slot per commit.
+`_ZTV11dScMgBase_c` and the tables of all 32 descendants are emitted from source at
+their full length; nothing in the family is a prefix any more. What follows is the map
+that got us here, kept because the measurements in it are still the evidence.
 
-That single sentence is what caps every minigame class's emitted vtable. mwcc emits a
-table only as long as the slots it has been told about, so `dScMgSingle3DBase_c` emits
+`include/dScMgBase_c.h` used to say: *"Slots 18-35 are eighteen further virtuals new at
+this class; their signatures are not reconstructed yet, so they stay undeclared."*
+
+That single sentence was what capped every minigame class's emitted vtable. mwcc emits a
+table only as long as the slots it has been told about, so `dScMgSingle3DBase_c` emitted
 18 slots where the cartridge has 36 — a byte-exact **prefix**, not a disagreement, but
-not ownable either. The same cap applies to all 32 descendants of `dScMgBase_c`.
+not ownable either. The same cap applied to all 32 descendants of `dScMgBase_c`.
+
+## What finishing it actually bought (measured 2026-08-31, at slot 35)
+
+`romdata_check` before slot 35 vs after — the whole-tree counters, not just this family:
+
+| | slot 34 | slot 35 | delta |
+|---|---|---|---|
+| verified symbols | 465 | 496 | **+31** |
+| verified bytes | 35,428 | 39,900 | **+4,472** |
+| partial symbols | 253 | 223 | −30 |
+| partial bytes | 12,120 | 7,924 | −4,196 |
+| differing symbols | 6 | 5 | −1 |
+
+Every slot from 18 to 34 moved exactly 128 bytes: `+4` verified and `+124` partial,
+one word into each of the 32 tables. **Slot 35 does not**, and that is the point of it.
+Completing a table does not add a word to it — it moves the *whole table* from PARTIAL
+to VERIFIED. Thirty of them flipped PARTIAL → VERIFIED and `_ZTV12dScMgAmida_c` flipped
+DIFFERS → VERIFIED, which is where the +31 and the last of the six DIFFERS come from.
+
+Per-table, straight from `romdata_check.check_object` (the `--json` report carries
+counts and a `differing` list only, so a PARTIAL → VERIFIED flip is invisible in it):
+
+```
+_ZTV11dScMgBase_c  emitted 144  romExtent 144  blindWords 0  VERIFIED
+```
+
+Thirty-two of the thirty-three family tables read exactly like that — 144 bytes,
+36 slots, emitted length equal to the cartridge's extent — except
+`_ZTV12dScMgAmida_c`, which is 148 because slot 36 is genuinely its own.
+
+**The one exception is not a missing virtual.** `_ZTV12dScMgSlot3_c` still scores
+PARTIAL: emitted 144, `romExtent` **152**. The eight bytes past the end read
+`{0x00000000, 0x0213e5a0}`, and 0x0213e5a0 is `_ZTI12dScMgSlot1_c` — that is the
+offset-to-top / typeinfo header of the *next* vtable in the image.
+`_ZTV12dScMgSlot3_c` is at 0x0213eaa8 and `_ZTV12dScMgSlot1_c` at 0x0213eb40, exactly
+152 apart, and dsd points a `_ZTV` symbol at slot 0 rather than at the header, so the
+two header words in between belong to no symbol and dsd's "extends to the next symbol"
+sizing swallows them. So the class model is right and the config extent is eight bytes
+long. Fixing it is a `config/arm9/overlays/ov006/symbols.txt` change with its own
+gates, not part of a keystone commit. This is the mirror image of the standing
+`verified-vtable-is-not-a-complete-vtable` hazard: there dsd cuts a table short, here
+it runs one past.
 
 ## The map (read out of `_ZTV11dScMgBase_c`, ov004:0x020bc0c0)
 
@@ -25,8 +73,8 @@ not ownable either. The same cap applies to all 32 descendants of `dScMgBase_c`.
 | 28 | 0x70 | ov004:0x020af04c | `OnHitFromUnderneath` | `void(Obj*)` |
 | 29 | 0x74 | ov004:0x020af094 | `OnAimedAtWithEgg` | `void(Obj*)` |
 | 30 | 0x78 | ov004:0x020aeed8 | `OnAimedAtWithEggReturnVec` | `void(char*)` |
-| 31 | 0x7C | ov004:0x020b2880 | `Kill` | `void(void)` |
-| 32 | 0x80 | ov004:0x020b27f4 | `AfterClsn` | `void(void)` |
+| 31 | 0x7C | ov004:0x020b2880 | *(none)* -> `Virtual7C` | `void(void)` |
+| 32 | 0x80 | ov004:0x020b27f4 | *(none)* -> `Virtual80` | `void(void)` |
 | 33 | 0x84 | ov004:0x020b265c | *(none)* → `Virtual84` | `void(char *obj)` |
 | 34 | 0x88 | ov004:0x020ae3b4 | *(none)* → `Virtual88` | `void(char*,int,int,int,int)` |
 | 35 | 0x8C | ov004:0x020ad660 | *(none)* → `Virtual8C` | `int(int*)` |
@@ -115,10 +163,19 @@ virtual int  OnHitByCannonBlastedChar(dActor_c &other); /* slot 26 */
    reading it, so no second argument register is live on entry. Declared and
    landed as the no-parameter form. */
 virtual void OnHitByMegaChar();                         /* slot 27 */
-virtual int  OnHitFromUnderneath(dActor_c &other);      /* slot 28 */
+/* The `dActor_c &other` this block proposed for slot 28 came from
+   dActor_c.h too, and came off for the same reason -- dScMgBase_c's own body
+   writes r1 before it ever reads it and touches no other argument register.
+   Measured once here rather than twice: dScMgSlot1_c's override calls the base
+   as its first act, so a second argument would ride through untouched. */
+virtual int  OnHitFromUnderneath();                     /* slot 28 */
 virtual int  OnAimedAtWithEgg();                        /* slot 29 */
-/* Returns a Vector3 by value ... the AAPCS indirect-return shape. */
-virtual Vector3 OnAimedAtWithEggReturnVec();            /* slot 30 */
+/* NOT a Vector3.  dActor_c.h:151 returns one by value, and slot 29's work
+   refuted the transplant: at ov004:0x020ae168 slot 30 is dispatched with r0
+   still holding `this` and r1 holding the loaded function pointer, where a
+   12-byte return would put a hidden result pointer in r0 and `this` in r1
+   under AAPCS.  The return type is open again; `int` is a placeholder. */
+virtual int  OnAimedAtWithEggReturnVec();               /* slot 30 */
 ```
 
 The parameter *types* are `dActor_c &` / `Player &` on that branch; on this one the
@@ -126,9 +183,44 @@ legacy sources pass raw `char *` / `void *`. The type does not change the slot's
 but it does change the mangled name — so settle it before renaming the ov004 bodies,
 not after.
 
-**Slots 31-35 are not in `dActor_c.h`.** `Kill`, `AfterClsn`, `Virtual84`, `Virtual88`
-and `Virtual8C` still need signatures reconstructed from their bodies. That is the
-remaining unknown in PR B, and it is five slots, not eighteen.
+**Slots 31-35 are not in `dActor_c.h`, and that is not an accident.** `dScMgBase_c`
+is not a `dActor_c` descendant at all: `fBase_c -> dBase_c -> dScene_c -> dScMgBase_c`
+against `fBase_c -> dBase_c -> dActor_c`. `fBase_c` declares slots 0-17 and `dBase_c`
+adds no virtual, so the two branches each start appending their own at 18 and collide
+on indices for the same reason two books have a page 19. Slots 18-30 borrowed
+`dActor_c`'s names because the indices lined up; at 31 `dActor_c`'s table simply ends
+and there is nothing left to borrow. `Kill` was carried in from `dBgActor_c`, which is
+`dActor_c`'s CHILD -- a nephew branch, one fork further away still -- where
+`_ZN10dBgActor_c4KillEv` at ov002:0x020ee55c is that class's own new slot 31.
+Slot 31 is recorded here as `Virtual7C`, the spelling `fBase_c` already uses for
+`Virtual34`/`Virtual38` and the one slots 33-35 carry below.
+
+**Slot 32 turned out to be the same defect one fork further out**, and it shipped as
+`Virtual80`. `AfterClsn` IS a real ROM name -- `include/PathLift.h:58` declares it and
+`_ZN16dPathLiftActor_c9AfterClsnEi` is a genuine mangled symbol -- but
+`dPathLiftActor_c` derives from `dBgActor_c`, which derives from `dActor_c`:
+
+```
+fBase_c -> dBase_c -> dActor_c -> dBgActor_c -> dPathLiftActor_c
+fBase_c -> dBase_c -> dScene_c -> dScMgBase_c
+```
+
+Two forks, not one, and that AfterClsn takes an `int` where this slot takes nothing.
+The whole-image dispatch scan at +0x80 finds exactly three sites: `ov004:0x020b0900`
+(this branch) and `ov002:0x020effa4` + `ov064:0x02116e58` (that one). Signatures for
+33-35 still need reconstructing from their bodies: three slots, not eighteen.
+
+**Slots 31 and 32 are one function twice, against the two display engines.** 31 is the
+SUB screen, called last by `BeforeInitResources`; 32 is the MAIN screen, called first by
+`AfterInitResources(u32)`. Same three read-modify-writes on `BG1CNT`, same scroll reset,
+same `&= ~2` on the engine's BG-enable shadow (`data_0209d454` / `data_0209d45c` -- the
+two words slot 30 restores the DISPCNTs from), same language-indexed character file plus
+a shared screen map, file `0x5b` against `0x67`. 31 reaches them through
+`G2S::GetBG1CharPtr` / `G2S::GetBG1ScrPtr`; 32 through `func_02054ea8` /
+`_ZN2G212GetBG1ScrPtrEv`. That last pairing also identifies `func_02054ea8` as
+`G2::GetBG1CharPtr` by position -- the G2S pair is `0x02054e88`/`0x02055148` and the G2
+pair is `0x02054ea8`/`0x02055168`, the same `+0x20` apart -- but that is an arm9 rename
+outside this campaign's scope and is deliberately NOT taken here.
 
 ## What PR B actually costs (census, 2026-08-31)
 
@@ -182,13 +274,14 @@ The widened-table **count** is the only check that distinguishes the two.
 
 ## Three hazards, all measured
 
-**1. Slot 35 is a cross-overlay address collision.** `func_ov002_020ad660` and
-`func_ov004_020ad660` both exist, at the same address 0x020ad660, in different overlays.
-Only ov002's is decompiled (`src/func_ov002_020ad660.cpp`) — and it is a *different
-function*. The slot-35 body is ov004's, which has no source file. Any rename must be
-scoped to the ov004 symbol alone; a filename- or address-keyed rename hits ov002's
-unrelated function and every byte gate still passes. See the standing
-`cross-overlay-symbol-collision` note.
+**1. Slot 35 is a cross-overlay address collision.** 0x020ad660 is an overlay LOAD
+BASE, so ov000, ov002, ov003, ov004 and ov007 each have a different, unrelated symbol
+there — ov003's is `dScTitle_c`'s D1. The slot-35 body is ov004's. The rename was
+scoped to the module-qualified symbol `func_ov004_020ad660` alone, which is what
+`apply_rename` takes; a filename- or address-keyed rename would have hit four unrelated
+overlays and every byte gate would still have passed. See the standing
+`cross-overlay-symbol-collision` note. (Handled — recorded here because the hazard is
+a property of the address, not of this campaign.)
 
 **2. Each slot has to be atomic.** Declaring a virtual makes mwcc emit a vtable slot
 referencing a `_ZN11dScMgBase_c*` mangled name. That symbol does not exist until the
@@ -201,7 +294,10 @@ or neither. Across slots, they are independent.
 `OnHitFromUnderneath /* slot 28 */`, and `dScMgAmida_c` declared `Unk36 /* slot 36 */`,
 but with the base declaring nothing above 17 those comments were aspirational: the
 declarations actually sat at indices 18/19 and 18. That is precisely why those two were
-the last DIFFERS vtables left after PR #2081. A new base slot's override must be
+the last DIFFERS vtables left after PR #2081. Both of `dScMgSlot1_c`'s have since been
+reconciled -- 27 with the base's slot-27 commit, 28 with slot 28's -- so that class now
+declares nothing mwcc numbers for itself; `dScMgAmida_c`'s `Unk36` is the last one left,
+and slot 35 lands it. A new base slot's override must be
 inserted **before** any such pre-existing slot≥18 declaration, and after the class's
 first declared virtual so the key function does not move. Slot 18 moved their
 wrongness up one index without changing its size (Amida 4 bytes, Slot1 8); they clear
@@ -209,8 +305,8 @@ only once every intervening slot is declared.
 
 ## The per-slot worklist (measured 2026-08-31)
 
-How large each of the remaining seventeen PRs is. Counts are descendant overrides;
-every slot also carries the base declaration and the ov004 base-body rename.
+How large each PR was. Counts are descendant overrides; every slot also carried the
+base declaration and the ov004 base-body rename. All eighteen are landed or open.
 
 | slot | name | base body (ov004) | descendant overrides |
 |---|---|---|---|
@@ -224,14 +320,33 @@ every slot also carries the base declaration and the ov004 base-body rename.
 | 25 | `OnPushed` | 0x020ae128 | 7 |
 | 26 | `OnHitByCannonBlastedChar` | 0x020b04e0 | 19 |
 | 27 | `OnHitByMegaChar` | 0x020af27c | 6 - **DONE**, 2 declarations |
-| 28 | `OnHitFromUnderneath` | 0x020af04c | 6 - **signature trap, see slot 27** |
-| 29 | `OnAimedAtWithEgg` | 0x020af094 | 6 |
-| 30 | `OnAimedAtWithEggReturnVec` | 0x020aeed8 | 6 |
-| 31 | `Kill` | 0x020b2880 | 7 |
-| 32 | `AfterClsn` | 0x020b27f4 | 1 |
-| 33 | `Virtual84` | 0x020b265c | 19 |
-| 34 | `Virtual88` | 0x020ae3b4 | 4 |
-| 35 | `Virtual8C` | 0x020ad660 | 1 |
+| 28 | `OnHitFromUnderneath` | 0x020af04c | 6 - **DONE**, 2 declarations; the second and last occupied slot |
+| 29 | `OnAimedAtWithEgg` | 0x020af094 | 6 - **DONE**, 2 declarations; the first since 26 with no occupied-slot trap, and the first whose NAME the ROM contradicts |
+| 30 | `OnAimedAtWithEggReturnVec` | 0x020aeed8 | 6 - **DONE**, 2 declarations; the slot that settles 29 (it restores, word for word, what 29 saves) and the first whose name the ROM refutes in BOTH halves |
+| 31 | `Virtual7C` | 0x020b2880 | 7 - **DONE**, 3 declarations; the first slot ABOVE `dActor_c`'s table, which is what proves the borrowed names never applied -- `dScMgBase_c` is a SCENE, a sibling branch, not an actor |
+| 32 | `Virtual80` | 0x020b27f4 | 1 - **DONE**, 1 declaration; the MAIN-engine twin of 31, and the cheapest slot in the campaign after 22 |
+| 33 | `Virtual84` | 0x020b265c | 19 - **DONE**, 2 declarations; structurally slot 26 again (same 19 tables, same two owning classes, 17 inherited) and the first slot whose override lives inside a PROMOTED intact-object TU |
+| 34 | `Virtual88` | 0x020ae3b4 | 4 - **DONE**, 5 declarations; the first slot that takes ARGUMENTS (four, unanimous across seven call sites), the first whose purpose is legible from the body alone (a 4bpp pixel brush), and the first whose rename breaks a cross-file reference -- dScMgAmida_c's override calls the base body directly |
+| 35 | `Virtual8C` | 0x020ad660 | 1 - **DONE**, 2 declarations; the LAST slot of the range, the smallest, and the best-evidenced -- 13 dispatch sites across four leaf classes, all 13 of which consume the return with `cmp r0,#0` |
+
+**One deferred cleanup, from slot 31 onward.** The base bodies for slots 31, 32 and
+33 (0x020b2880, 0x020b27f4, 0x020b265c -- ROM ordinals 47, 46 and 45) all live inside
+the same src_tu candidate unit, `src_tu/actors/unit_ov004_020b0a38.cpp`, which still
+defines them under their old `func_ov004_*` names and whose manifest
+`config/tu_manifest.d/ov004/unit020b0a38.json` still lists the old
+`legacy_source` paths.  Nothing is wrong today: that unit is `"status":
+"text-verified"`, it is not enrolled, `src_tu/` is not in the ROM build, and both
+gates that read it -- `check_src_tu_compiles.py` and `tiers_ratchet.promoted_moves()`,
+the latter only looking at `"status": "promoted"` entries -- are green.  But the
+unit is stale, and it will be stale again after 32 and after 33.  Regenerate it ONCE,
+through `tools/tubuild.py`, rather than three times.
+
+**That regeneration is DUE as of slot 33** -- all three base bodies carry their
+mangled names now.  It is deliberately NOT folded into the slot-33 commit: one slot
+per change is the whole safety argument for this campaign, and regenerating a
+`src_tu/` unit touches a different tree read by a different gate.  It is a follow-up
+PR of its own.
+
 
 134 descendant overrides plus the base's 18 declarations. Slot 18 was the outlier;
 the median slot touches six classes. **Slot 22 has no descendant overrides at all** —

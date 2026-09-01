@@ -477,12 +477,12 @@ In the `#else` C twin, ten offsets already named at exactly those offsets in
 
 ---
 
-## QuestionSwitch (`include/QuestionSwitch.h`, ov002, size 0x724)
+## daObjHatenaSwitch_c (`include/daObjHatenaSwitch_c.h`, ov002, size 0x724)
 
-Bodies read: `src/_ZN14QuestionSwitch13InitResourcesEv.cpp`,
-`src/_ZN14QuestionSwitch8BehaviorEv.cpp`,
-`src/_ZN14QuestionSwitch16CleanupResourcesEv.cpp`,
-`src/_ZN14QuestionSwitch15OnGroundPoundedER8dActor_c.cpp`.
+Bodies read in the promoted class TU: `daObjHatenaSwitch_c::InitResources`,
+`daObjHatenaSwitch_c::Behavior`, `daObjHatenaSwitch_c::CleanupResources`, and
+`daObjHatenaSwitch_c::OnGroundPounded` in
+`src/actors/daObjHatenaSwitch_c.cpp`.
 
 | Offset | Name | Evidence |
 | --- | --- | --- |
@@ -492,8 +492,8 @@ Bodies read: `src/_ZN14QuestionSwitch13InitResourcesEv.cpp`,
 | 0x71b | `mTalking` | set to `1` on the frame the switch fires, immediately after the four `Particle::System::NewSimple` calls; gates the whole `Player::GetTalkState` / `Message::PrepareTalk` / `Player::ShowMessage` / `Message::EndTalk` block, and is cleared together with `mTalkingPlayer` when `Player::HasFinishedTalking` returns nonzero. |
 | 0x71c | `mSoundDelay` | armed with `0x4b` on the frame the talk starts and run down by `DecIfAbove0_Short`; on the frame it reaches zero `Behavior` calls `Sound::PlaySub(0x20, 0x7f, 0, 0x8777, 0)`. |
 
-In the C twin, `unk_124` became `mMeshCollider`, the name `include/dBgActor_c.h`
-gives that offset.
+The promoted header derives from `dBgActor_c` directly and owns two complete
+`dBgW_KcMbg` members plus `ModelAnim`; the obsolete flat C twin has been removed.
 
 ---
 
@@ -709,10 +709,10 @@ In the C twin, `0x00c` becomes `actorID` and `0x08e` `mAngleY`.
 | `ChainChompFence` (ov060) | 0x31e | `mDisabled` | both `Behavior` and `Render` return immediately while it is nonzero, and nothing else in a matched body touches it. |
 | `LavaPlank` (ov022) | 0x324 | `mPhaseAngle` | `InitResources` seeds it from `mAngleX`; `Behavior` adds `0x400` per frame and uses `(u16)mPhaseAngle >> 4` as the sine-table index. |
 
-`PathLift::mAfterClsnRan` also carried into `src/_ZN15daObjRcCarpet_c8BehaviorEv.cpp`,
-a subclass that reads the inherited field — the kind of cross-file breakage a header
-rename in this family causes, and which `tools/rombuild.py` catches while
-`build_pin.verify` on the renamed class alone does not.
+`PathLift::mAfterClsnRan` also carried into the `daObjRcCarpet_c::Behavior` member
+in `src/actors/daObjRcCarpet_c.cpp`, a subclass that reads the inherited field — the
+kind of cross-file breakage a header rename in this family causes, and which
+`tools/rombuild.py` catches while `build_pin.verify` on the renamed class alone does not.
 
 ---
 

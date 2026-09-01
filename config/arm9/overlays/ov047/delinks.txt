@@ -8,45 +8,15 @@ src/actors/daObjKm3_Kurumajiku_c.cpp:
     .text start:0x021111a0 end:0x021112bc
     .data start:0x02112258 end:0x02112320
 
-src/_ZN20daObjKm3_Kaitendai_cD1Ev.cpp:
+src/actors/daObjKm3_Kaitendai_c.cpp:
     complete
-    .text start:0x021112bc end:0x0211130c
+    .text start:0x021112bc end:0x021113f8
+    .data start:0x02112328 end:0x021123fc
 
-src/_ZN20daObjKm3_Kaitendai_cD0Ev.cpp:
+src/actors/daObjKm3_Kuruma_c.cpp:
     complete
-    .text start:0x0211130c end:0x02111370
-
-src/_ZN20daObjKm3_Kaitendai_c16CleanupResourcesEv.cpp:
-    complete
-    .text start:0x02111370 end:0x02111384
-
-src/_ZN20daObjKm3_Kaitendai_c13InitResourcesEv.cpp:
-    complete
-    .text start:0x02111384 end:0x021113bc
-
-src/func_ov047_021113bc.c:
-    complete
-    .text start:0x021113bc end:0x021113f8
-
-src/_ZN17daObjKm3_Kuruma_cD1Ev.cpp:
-    complete
-    .text start:0x021113f8 end:0x02111448
-
-src/_ZN17daObjKm3_Kuruma_cD0Ev.cpp:
-    complete
-    .text start:0x02111448 end:0x021114ac
-
-src/_ZN17daObjKm3_Kuruma_c16CleanupResourcesEv.cpp:
-    complete
-    .text start:0x021114ac end:0x021114c0
-
-src/_ZN17daObjKm3_Kuruma_c13InitResourcesEv.cpp:
-    complete
-    .text start:0x021114c0 end:0x021114d4
-
-src/RickshawPlatformBs_Spawn.c:
-    complete
-    .text start:0x021114d4 end:0x02111510
+    .text start:0x021113f8 end:0x02111510
+    .data start:0x021123fc end:0x021124cc
 
 src/_ZN18RickshawPlatformBsD1Ev.cpp:
     complete

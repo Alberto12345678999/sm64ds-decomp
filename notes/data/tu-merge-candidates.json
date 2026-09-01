@@ -1192,7 +1192,7 @@
     "src/_ZN3Amp6RenderEv.cpp",
     "src/_ZN3Amp8BehaviorEv.cpp",
     "src/_ZN3Amp13InitResourcesEv.cpp",
-    "src/Amp_Spawn.c"
+    "src/daBrq_c_classInit.c"
    ],
    "ext_mix": {
     ".cpp": 11,
@@ -5341,19 +5341,19 @@
    "start": "0x21111a0",
    "end": "0x21113bc",
    "classes": [
-    "ClockPaintingPendulum"
+    "daObjClockHuriko_c"
    ],
    "n_functions_map": 8,
    "n_files": 8,
    "files": [
-    "src/_ZN21ClockPaintingPendulumD1Ev.c",
-    "src/_ZN21ClockPaintingPendulumD0Ev.c",
-    "src/_ZN21ClockPaintingPendulum16CleanupResourcesEv.c",
+    "src/_ZN18daObjClockHuriko_cD1Ev.c",
+    "src/_ZN18daObjClockHuriko_cD0Ev.c",
+    "src/_ZN18daObjClockHuriko_c16CleanupResourcesEv.c",
     "src/func_ov013_02111238.c",
-    "src/_ZN21ClockPaintingPendulum6RenderEv.cpp",
-    "src/_ZN21ClockPaintingPendulum8BehaviorEv.c",
-    "src/_ZN21ClockPaintingPendulum13InitResourcesEv.cpp",
-    "src/ClockPaintingPendulum_Spawn.c"
+    "src/_ZN18daObjClockHuriko_c6RenderEv.cpp",
+    "src/_ZN18daObjClockHuriko_c8BehaviorEv.c",
+    "src/_ZN18daObjClockHuriko_c13InitResourcesEv.cpp",
+    "src/daObjClockHuriko_c_Spawn.c"
    ],
    "ext_mix": {
     ".c": 6,
@@ -7462,7 +7462,7 @@
    "start": "0x20ebf8c",
    "end": "0x20ec388",
    "classes": [
-    "Tree"
+    "daTree_c"
    ],
    "n_functions_map": 8,
    "n_files": 8,
@@ -7947,19 +7947,19 @@
    "start": "0x21115c4",
    "end": "0x21118c8",
    "classes": [
-    "ChillBully",
+    "daIDonketu_c",
     "daIDonketu_c"
    ],
    "n_functions_map": 7,
    "n_files": 7,
    "files": [
-    "src/_ZN10ChillBullyD1Ev.cpp",
-    "src/_ZN10ChillBullyD0Ev.c",
+    "src/_ZN12daIDonketu_cD1Ev.cpp",
+    "src/_ZN12daIDonketu_cD0Ev.c",
     "src/func_ov027_02111680.c",
     "src/func_ov027_021116f0.cpp",
-    "src/_ZN10ChillBully8BehaviorEv.cpp",
-    "src/_ZN10ChillBully13InitResourcesEv.cpp",
-    "src/ChillBully_Spawn.c"
+    "src/_ZN12daIDonketu_c8BehaviorEv.cpp",
+    "src/_ZN12daIDonketu_c13InitResourcesEv.cpp",
+    "src/daIDonketu_c_Spawn.c"
    ],
    "ext_mix": {
     ".cpp": 4,
@@ -9326,16 +9326,16 @@
    "start": "0x2111d48",
    "end": "0x2111e60",
    "classes": [
-    "FallBlockBfs"
+    "daObjKm2_Fall_Block_c"
    ],
    "n_functions_map": 5,
    "n_files": 5,
    "files": [
-    "src/_ZN12FallBlockBfsD1Ev.cpp",
-    "src/_ZN12FallBlockBfsD0Ev.c",
-    "src/_ZN12FallBlockBfs16CleanupResourcesEv.c",
-    "src/_ZN12FallBlockBfs13InitResourcesEv.c",
-    "src/FallBlockBfs_Spawn.c"
+    "src/_ZN21daObjKm2_Fall_Block_cD1Ev.cpp",
+    "src/_ZN21daObjKm2_Fall_Block_cD0Ev.c",
+    "src/_ZN21daObjKm2_Fall_Block_c16CleanupResourcesEv.c",
+    "src/_ZN21daObjKm2_Fall_Block_c13InitResourcesEv.c",
+    "src/daObjKm2_Fall_Block_c_Spawn.c"
    ],
    "ext_mix": {
     ".cpp": 1,
@@ -37866,7 +37866,7 @@
     "src/_ZN3Amp6RenderEv.cpp",
     "src/_ZN3Amp8BehaviorEv.cpp",
     "src/_ZN3Amp13InitResourcesEv.cpp",
-    "src/Amp_Spawn.c"
+    "src/daBrq_c_classInit.c"
    ],
    "ext_mix": {
     ".cpp": 11,
