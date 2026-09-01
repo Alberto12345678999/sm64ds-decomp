@@ -2344,7 +2344,7 @@
     "src/_ZN9RabbitKey6RenderEv.cpp",
     "src/_ZN9RabbitKey8BehaviorEv.cpp",
     "src/_ZN9RabbitKey13InitResourcesEv.cpp",
-    "src/RabbitKey_Spawn.c"
+    "src/daObj_Mip_Key_c_classInit.c"
    ],
    "ext_mix": {
     ".cpp": 10,
@@ -34046,7 +34046,7 @@
    "n_functions_map": 1,
    "n_files": 1,
    "files": [
-    "src/MgShuffleShell_Spawn.c"
+    "src/dScMgCurling_c_classInit.c"
    ],
    "ext_mix": {
     ".c": 1
@@ -34092,7 +34092,7 @@
    "n_functions_map": 1,
    "n_files": 1,
    "files": [
-    "src/func_ov006_020e6bf4.c"
+    "src/dScMgCurling2_c_classInit.c"
    ],
    "ext_mix": {
     ".c": 1
