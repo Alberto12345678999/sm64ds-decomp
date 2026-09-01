@@ -1365,7 +1365,7 @@ src/_ZN12dScMgAmida_c5Unk36Ev.cpp:
     complete
     .text start:0x020d1188 end:0x020d11a0
 
-src/func_ov006_020d11a0.cpp:
+src/_ZN12dScMgAmida_c9Virtual7CEv.cpp:
     complete
     .text start:0x020d11a0 end:0x020d122c
 
@@ -2595,7 +2595,7 @@ src/func_ov006_020e7124.c:
     complete
     .text start:0x020e7124 end:0x020e72c0
 
-src/func_ov006_020e72c0.c:
+src/_ZN14dScMgD3DBase_c9Virtual7CEv.c:
     complete
     .text start:0x020e72c0 end:0x020e73c4
 
@@ -5615,7 +5615,7 @@ src/_ZN16dScMgSmartball_c13OnYoshiTryEatEi.cpp:
     complete
     .text start:0x02118a8c end:0x02118ae4
 
-src/func_ov006_02118ae4.c:
+src/_ZN16dScMgSmartball_c9Virtual7CEv.c:
     complete
     .text start:0x02118ae4 end:0x02118b70
 

@@ -110,9 +110,9 @@ struct dScMgSingle3DBase_c : dScMgBase_c {
            Slot 33 stays undeclared until dScMgBase_c reaches it -- a derived
            class cannot override a base slot the base has not spelled -- and
            its body byte-verifies in that same file as func_ov006_0210a708.
-           Declaring dScMgBase_c's remaining five (31-35) is what lets
+           Declaring dScMgBase_c's remaining four (32-35) is what lets
            this class emit its full 36-slot vtable; today it emits a byte-exact
-           31-slot prefix. --- */
+           32-slot prefix. --- */
     virtual void AfterInitResources(u32 vfSuccess); /* slot  2 */
     virtual void AfterCleanupResources(u32 vfSuccess); /* slot  5 */
     virtual int  BeforeBehavior();                  /* slot  7 */

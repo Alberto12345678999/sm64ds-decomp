@@ -25,7 +25,7 @@ not ownable either. The same cap applies to all 32 descendants of `dScMgBase_c`.
 | 28 | 0x70 | ov004:0x020af04c | `OnHitFromUnderneath` | `void(Obj*)` |
 | 29 | 0x74 | ov004:0x020af094 | `OnAimedAtWithEgg` | `void(Obj*)` |
 | 30 | 0x78 | ov004:0x020aeed8 | `OnAimedAtWithEggReturnVec` | `void(char*)` |
-| 31 | 0x7C | ov004:0x020b2880 | `Kill` | `void(void)` |
+| 31 | 0x7C | ov004:0x020b2880 | *(none)* -> `Virtual7C` | `void(void)` |
 | 32 | 0x80 | ov004:0x020b27f4 | `AfterClsn` | `void(void)` |
 | 33 | 0x84 | ov004:0x020b265c | *(none)* → `Virtual84` | `void(char *obj)` |
 | 34 | 0x88 | ov004:0x020ae3b4 | *(none)* → `Virtual88` | `void(char*,int,int,int,int)` |
@@ -135,9 +135,19 @@ legacy sources pass raw `char *` / `void *`. The type does not change the slot's
 but it does change the mangled name — so settle it before renaming the ov004 bodies,
 not after.
 
-**Slots 31-35 are not in `dActor_c.h`.** `Kill`, `AfterClsn`, `Virtual84`, `Virtual88`
-and `Virtual8C` still need signatures reconstructed from their bodies. That is the
-remaining unknown in PR B, and it is five slots, not eighteen.
+**Slots 31-35 are not in `dActor_c.h`, and that is not an accident.** `dScMgBase_c`
+is not a `dActor_c` descendant at all: `fBase_c -> dBase_c -> dScene_c -> dScMgBase_c`
+against `fBase_c -> dBase_c -> dActor_c`. `fBase_c` declares slots 0-17 and `dBase_c`
+adds no virtual, so the two branches each start appending their own at 18 and collide
+on indices for the same reason two books have a page 19. Slots 18-30 borrowed
+`dActor_c`'s names because the indices lined up; at 31 `dActor_c`'s table simply ends
+and there is nothing left to borrow. `Kill` was carried in from `dBgActor_c`, which is
+`dActor_c`'s CHILD -- a nephew branch, one fork further away still -- where
+`_ZN10dBgActor_c4KillEv` at ov002:0x020ee55c is that class's own new slot 31.
+Slot 31 is recorded here as `Virtual7C`, the spelling `fBase_c` already uses for
+`Virtual34`/`Virtual38` and the one slots 33-35 carry below. `AfterClsn` at 32 has the
+same provenance problem and should be re-examined when that slot lands. Signatures for
+32-35 still need reconstructing from their bodies: four slots, not eighteen.
 
 ## What PR B actually costs (census, 2026-08-31)
 
@@ -239,11 +249,24 @@ every slot also carries the base declaration and the ov004 base-body rename.
 | 28 | `OnHitFromUnderneath` | 0x020af04c | 6 - **DONE**, 2 declarations; the second and last occupied slot |
 | 29 | `OnAimedAtWithEgg` | 0x020af094 | 6 - **DONE**, 2 declarations; the first since 26 with no occupied-slot trap, and the first whose NAME the ROM contradicts |
 | 30 | `OnAimedAtWithEggReturnVec` | 0x020aeed8 | 6 - **DONE**, 2 declarations; the slot that settles 29 (it restores, word for word, what 29 saves) and the first whose name the ROM refutes in BOTH halves |
-| 31 | `Kill` | 0x020b2880 | 7 |
+| 31 | `Virtual7C` | 0x020b2880 | 7 - **DONE**, 3 declarations; the first slot ABOVE `dActor_c`'s table, which is what proves the borrowed names never applied -- `dScMgBase_c` is a SCENE, a sibling branch, not an actor |
 | 32 | `AfterClsn` | 0x020b27f4 | 1 |
 | 33 | `Virtual84` | 0x020b265c | 19 |
 | 34 | `Virtual88` | 0x020ae3b4 | 4 |
 | 35 | `Virtual8C` | 0x020ad660 | 1 |
+
+**One deferred cleanup, from slot 31 onward.** The base bodies for slots 31, 32 and
+33 (0x020b2880, 0x020b27f4, 0x020b265c -- ROM ordinals 47, 46 and 45) all live inside
+the same src_tu candidate unit, `src_tu/actors/unit_ov004_020b0a38.cpp`, which still
+defines them under their old `func_ov004_*` names and whose manifest
+`config/tu_manifest.d/ov004/unit020b0a38.json` still lists the old
+`legacy_source` paths.  Nothing is wrong today: that unit is `"status":
+"text-verified"`, it is not enrolled, `src_tu/` is not in the ROM build, and both
+gates that read it -- `check_src_tu_compiles.py` and `tiers_ratchet.promoted_moves()`,
+the latter only looking at `"status": "promoted"` entries -- are green.  But the
+unit is stale, and it will be stale again after 32 and after 33.  Regenerate it ONCE,
+through `tools/tubuild.py`, after slot 33 lands, rather than three times.
+
 
 134 descendant overrides plus the base's 18 declarations. Slot 18 was the outlier;
 the median slot touches six classes. **Slot 22 has no descendant overrides at all** —
