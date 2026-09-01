@@ -6390,7 +6390,7 @@
     "src/_ZN8PoleLift6RenderEv.cpp",
     "src/_ZN8PoleLift8BehaviorEv.cpp",
     "src/_ZN8PoleLift13InitResourcesEv.cpp",
-    "src/PoleLift_Spawn.c"
+    "src/daObjKm2_Ami_Bou_c_classInit.c"
    ],
    "ext_mix": {
     ".cpp": 6,
@@ -8616,7 +8616,7 @@
     "src/_ZN17ExtendingPlatform6RenderEv.cpp",
     "src/_ZN17ExtendingPlatform8BehaviorEv.cpp",
     "src/_ZN17ExtendingPlatform13InitResourcesEv.cpp",
-    "src/ExtendingPlatform_Spawn.c"
+    "src/daObjKm2_Nobiru_c_classInit.c"
    ],
    "ext_mix": {
     ".cpp": 6,
@@ -9279,7 +9279,7 @@
     "src/_ZN18TiltingPlatformBfsD0Ev.c",
     "src/_ZN18TiltingPlatformBfs16CleanupResourcesEv.c",
     "src/_ZN18TiltingPlatformBfs13InitResourcesEv.c",
-    "src/TiltingPlatformBfs_Spawn.c"
+    "src/daObjKm2_Gura_c_classInit.c"
    ],
    "ext_mix": {
     ".cpp": 1,
@@ -9562,7 +9562,7 @@
     "src/_ZN16FloatingFloorBfsD0Ev.c",
     "src/_ZN16FloatingFloorBfs16CleanupResourcesEv.cpp",
     "src/_ZN16FloatingFloorBfs13InitResourcesEv.cpp",
-    "src/FloatingFloorBfs_Spawn.c"
+    "src/daObjKm2_Ukishima_c_classInit.c"
    ],
    "ext_mix": {
     ".cpp": 3,
@@ -10345,7 +10345,7 @@
    "n_functions_map": 5,
    "n_files": 5,
    "files": [
-    "src/RickshawPlatformBs_Spawn.c",
+    "src/daObjKm3_Kuruma_c_classInit.c",
     "src/_ZN18RickshawPlatformBsD1Ev.cpp",
     "src/_ZN18RickshawPlatformBsD0Ev.c",
     "src/_ZN18RickshawPlatformBs16CleanupResourcesEv.cpp",

@@ -29,7 +29,7 @@ src/_ZN17daObjKm3_Kuruma_c13InitResourcesEv.cpp:
     complete
     .text start:0x021114c0 end:0x021114d4
 
-src/RickshawPlatformBs_Spawn.c:
+src/daObjKm3_Kuruma_c_classInit.c:
     complete
     .text start:0x021114d4 end:0x02111510
 
