@@ -78,7 +78,7 @@
       "symbol": "daObjWc_Obj04_c_classInit",
       "address": "0x02112964",
       "size": "0x00000038",
-      "legacy_source": "src/SwitchActivatedPlank_Spawn.c",
+      "legacy_source": "src/daObjWc_Obj04_c_classInit.c",
       "ordinal": 8
     }
   ],

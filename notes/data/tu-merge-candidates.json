@@ -1964,7 +1964,7 @@
     "src/_ZN9ArrowLift13InitResourcesEv.cpp",
     "src/func_ov029_021116c4.cpp",
     "src/func_ov029_021116e4.c",
-    "src/ArrowLift_Spawn.c"
+    "src/daObjWc_Obj02_c_classInit.c"
    ],
    "ext_mix": {
     ".c": 4,
@@ -8194,7 +8194,7 @@
     "src/_ZN12WaterDiamond6RenderEv.cpp",
     "src/_ZN12WaterDiamond8BehaviorEv.cpp",
     "src/_ZN12WaterDiamond13InitResourcesEv.cpp",
-    "src/WaterDiamond_Spawn.c"
+    "src/daObjWc_Obj03_c_classInit.c"
    ],
    "ext_mix": {
     ".cpp": 6,
@@ -9221,7 +9221,7 @@
     "src/_ZN19RotatingPlatformWdwD0Ev.c",
     "src/_ZN19RotatingPlatformWdw16CleanupResourcesEv.c",
     "src/_ZN19RotatingPlatformWdw13InitResourcesEv.c",
-    "src/RotatingPlatformWdw_Spawn.c"
+    "src/daObjWc_Obj07_c_classInit.c"
    ],
    "ext_mix": {
     ".cpp": 1,
@@ -9617,7 +9617,7 @@
     "src/_ZN29FloatOnWaterPlatformWdwSquareD1Ev.cpp",
     "src/_ZN29FloatOnWaterPlatformWdwSquareD0Ev.c",
     "src/_ZN29FloatOnWaterPlatformWdwSquare13InitResourcesEv.cpp",
-    "src/FloatOnWaterPlatformWdwSquare_Spawn.c"
+    "src/daObjWcObj01_c_classInit.c"
    ],
    "ext_mix": {
     ".cpp": 2,
@@ -25306,7 +25306,7 @@
     "src/_ZN20SwitchActivatedPlank6RenderEv.cpp",
     "src/_ZN20SwitchActivatedPlank8BehaviorEv.cpp",
     "src/_ZN20SwitchActivatedPlank13InitResourcesEv.cpp",
-    "src/SwitchActivatedPlank_Spawn.c"
+    "src/daObjWc_Obj04_c_classInit.c"
    ],
    "ext_mix": {
     ".c": 5,

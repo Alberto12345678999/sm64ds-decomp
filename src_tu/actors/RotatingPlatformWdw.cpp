@@ -20,7 +20,7 @@
  *   [1] 0x021120d0  src/_ZN19RotatingPlatformWdwD0Ev.c
  *   [2] 0x02112134  src/_ZN19RotatingPlatformWdw16CleanupResourcesEv.c
  *   [3] 0x02112148  src/_ZN19RotatingPlatformWdw13InitResourcesEv.c
- *   [4] 0x02112168  src/RotatingPlatformWdw_Spawn.c
+ *   [4] 0x02112168  src/daObjWc_Obj07_c_classInit.c
  */
 
 /* TUBUILD WARNING -- #pragma directive(s) were present in the legacy

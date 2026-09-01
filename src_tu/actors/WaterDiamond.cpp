@@ -16,7 +16,7 @@
  *   [6] 0x0211192c  src/_ZN12WaterDiamond6RenderEv.cpp
  *   [7] 0x02111954  src/_ZN12WaterDiamond8BehaviorEv.cpp
  *   [8] 0x02111a04  src/_ZN12WaterDiamond13InitResourcesEv.cpp
- *   [9] 0x02111a84  src/WaterDiamond_Spawn.c
+ *   [9] 0x02111a84  src/daObjWc_Obj03_c_classInit.c
  */
 
 /* -------------------------------------------------------------------------- */

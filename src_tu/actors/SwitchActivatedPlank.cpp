@@ -15,7 +15,7 @@
  *   [5] 0x02112794  src/_ZN20SwitchActivatedPlank6RenderEv.cpp
  *   [6] 0x021127cc  src/_ZN20SwitchActivatedPlank8BehaviorEv.cpp
  *   [7] 0x021128b0  src/_ZN20SwitchActivatedPlank13InitResourcesEv.cpp
- *   [8] 0x02112964  src/SwitchActivatedPlank_Spawn.c
+ *   [8] 0x02112964  src/daObjWc_Obj04_c_classInit.c
  */
 
 /* -------------------------------------------------------------------------- */

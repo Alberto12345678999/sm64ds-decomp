@@ -19,7 +19,7 @@
  *   [0] 0x021111a0  src/_ZN29FloatOnWaterPlatformWdwSquareD1Ev.cpp
  *   [1] 0x021111f0  src/_ZN29FloatOnWaterPlatformWdwSquareD0Ev.c
  *   [2] 0x02111254  src/_ZN29FloatOnWaterPlatformWdwSquare13InitResourcesEv.cpp
- *   [3] 0x02111340  src/FloatOnWaterPlatformWdwSquare_Spawn.c
+ *   [3] 0x02111340  src/daObjWcObj01_c_classInit.c
  */
 
 /* Includes: union of the legacy files', first-seen in ROM-ascending

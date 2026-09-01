@@ -85,7 +85,7 @@
       "symbol": "daObjWc_Obj03_c_classInit",
       "address": "0x02111a84",
       "size": "0x00000040",
-      "legacy_source": "src/WaterDiamond_Spawn.c",
+      "legacy_source": "src/daObjWc_Obj03_c_classInit.c",
       "ordinal": 9
     }
   ],

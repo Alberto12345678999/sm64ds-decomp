@@ -43,7 +43,7 @@
       "symbol": "daObjWcObj01_c_classInit",
       "address": "0x02111340",
       "size": "0x0000003c",
-      "legacy_source": "src/FloatOnWaterPlatformWdwSquare_Spawn.c",
+      "legacy_source": "src/daObjWcObj01_c_classInit.c",
       "ordinal": 3
     }
   ],

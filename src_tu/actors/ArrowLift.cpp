@@ -24,7 +24,7 @@
  *   [5] 0x021115f8  src/_ZN9ArrowLift13InitResourcesEv.cpp
  *   [6] 0x021116c4  src/func_ov029_021116c4.cpp
  *   [7] 0x021116e4  src/func_ov029_021116e4.c
- *   [8] 0x021116f8  src/ArrowLift_Spawn.c
+ *   [8] 0x021116f8  src/daObjWc_Obj02_c_classInit.c
  */
 
 /* TUBUILD WARNING -- #pragma directive(s) were present in the legacy
