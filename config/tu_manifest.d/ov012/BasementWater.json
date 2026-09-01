@@ -64,7 +64,7 @@
       "symbol": "daObjC0Water_c_classInit",
       "address": "0x02111730",
       "size": "0x00000038",
-      "legacy_source": "src/BasementWater_Spawn.c",
+      "legacy_source": "src/daObjC0Water_c_classInit.c",
       "ordinal": 6
     }
   ],
@@ -127,7 +127,7 @@
       "src/_ZN13BasementWater6RenderEv.cpp",
       "src/_ZN13BasementWater8BehaviorEv.cpp",
       "src/_ZN13BasementWater13InitResourcesEv.cpp",
-      "src/BasementWater_Spawn.c"
+      "src/daObjC0Water_c_classInit.c"
     ],
     "result": "failed",
     "phases": {

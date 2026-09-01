@@ -23,7 +23,7 @@
  *   [4] 0x02111324  src/_ZN12SwitchPillar6RenderEv.cpp
  *   [5] 0x0211134c  src/_ZN12SwitchPillar8BehaviorEv.cpp
  *   [6] 0x02111370  src/_ZN12SwitchPillar13InitResourcesEv.cpp
- *   [7] 0x02111420  src/SwitchPillar_Spawn.c
+ *   [7] 0x02111420  src/daObjC0_Switch_c_classInit.c
  */
 
 /* Includes: union of the legacy files', first-seen in ROM-ascending

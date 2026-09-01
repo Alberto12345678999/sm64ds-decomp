@@ -4092,7 +4092,7 @@
     "src/_ZN12SwitchPillar6RenderEv.cpp",
     "src/_ZN12SwitchPillar8BehaviorEv.cpp",
     "src/_ZN12SwitchPillar13InitResourcesEv.cpp",
-    "src/SwitchPillar_Spawn.c"
+    "src/daObjC0_Switch_c_classInit.c"
    ],
    "ext_mix": {
     ".cpp": 6,
@@ -6332,7 +6332,7 @@
     "src/_ZN13BasementWater6RenderEv.cpp",
     "src/_ZN13BasementWater8BehaviorEv.cpp",
     "src/_ZN13BasementWater13InitResourcesEv.cpp",
-    "src/BasementWater_Spawn.c"
+    "src/daObjC0Water_c_classInit.c"
    ],
    "ext_mix": {
     ".cpp": 6,
@@ -36978,7 +36978,7 @@
    "n_functions_map": 1,
    "n_files": 1,
    "files": [
-    "src/PathLift_Spawn.cpp"
+    "src/daObjPathLift_c_classInit.cpp"
    ],
    "ext_mix": {
     ".cpp": 1
