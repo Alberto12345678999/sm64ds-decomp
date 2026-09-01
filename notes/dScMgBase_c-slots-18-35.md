@@ -122,8 +122,12 @@ virtual void OnHitByMegaChar();                         /* slot 27 */
    as its first act, so a second argument would ride through untouched. */
 virtual int  OnHitFromUnderneath();                     /* slot 28 */
 virtual int  OnAimedAtWithEgg();                        /* slot 29 */
-/* Returns a Vector3 by value ... the AAPCS indirect-return shape. */
-virtual Vector3 OnAimedAtWithEggReturnVec();            /* slot 30 */
+/* NOT a Vector3.  dActor_c.h:151 returns one by value, and slot 29's work
+   refuted the transplant: at ov004:0x020ae168 slot 30 is dispatched with r0
+   still holding `this` and r1 holding the loaded function pointer, where a
+   12-byte return would put a hidden result pointer in r0 and `this` in r1
+   under AAPCS.  The return type is open again; `int` is a placeholder. */
+virtual int  OnAimedAtWithEggReturnVec();               /* slot 30 */
 ```
 
 The parameter *types* are `dActor_c &` / `Player &` on that branch; on this one the
@@ -233,7 +237,7 @@ every slot also carries the base declaration and the ov004 base-body rename.
 | 26 | `OnHitByCannonBlastedChar` | 0x020b04e0 | 19 |
 | 27 | `OnHitByMegaChar` | 0x020af27c | 6 - **DONE**, 2 declarations |
 | 28 | `OnHitFromUnderneath` | 0x020af04c | 6 - **DONE**, 2 declarations; the second and last occupied slot |
-| 29 | `OnAimedAtWithEgg` | 0x020af094 | 6 |
+| 29 | `OnAimedAtWithEgg` | 0x020af094 | 6 - **DONE**, 2 declarations; the first since 26 with no occupied-slot trap, and the first whose NAME the ROM contradicts |
 | 30 | `OnAimedAtWithEggReturnVec` | 0x020aeed8 | 6 |
 | 31 | `Kill` | 0x020b2880 | 7 |
 | 32 | `AfterClsn` | 0x020b27f4 | 1 |

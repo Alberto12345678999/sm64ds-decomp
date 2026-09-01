@@ -418,10 +418,93 @@ struct dScMgBase_c : dScene_c {
            because the twenty-six tables that do not override this slot hold
            0x020af04c directly. */
     virtual int  OnHitFromUnderneath();                /* slot 28 */
+    /* Slot 29 -- OnAimedAtWithEgg.  Name from the ov004 body's own
+       `recovered name: dScMgBase_c_OnAimedAtWithEgg` comment and from
+       include/dActor_c.h:146 at the same index -- and this is the slot where
+       that pairing stops being two witnesses.  See the caution below.
+         return type: int, A HINT, the second consecutive slot that no body
+           pins, so it gets no row in the table above.  ov004:0x020af094 has
+           two exits and neither sets a result: the early one is
+           `cmp r0,#2; addeq sp,sp,#8; popeq {r4-r8,lr}; bxeq lr`, returning
+           the 2 it has just compared against slot 26's result, and the
+           fall-through returns whatever MultiCopy_Int last left in r0.
+           No caller settles it either, and here that is MEASURED rather than
+           assumed.  Scanning arm9 and all 103 overlays for the dispatch
+           pattern -- `ldr rN,[rM,#0x74]` immediately followed by `blx rN`,
+           not any load at +0x74, which also matches an ordinary field read --
+           finds 35 sites, of which exactly ONE lies in ov004 or ov006, the
+           two modules this class and all thirty-two of its descendants live
+           in.  That one is ov004:0x020ae178, inside dScMgBase_c::OnKicked
+           (slot 21), and the instruction after the `blx` is
+           `add r0,r4,#0x4000`: the result is dead before anything can read
+           it, and OnKicked goes on to return a literal 1.  The other
+           thirty-four sites are in ov025, ov071, ov077, ov079, ov081, ov091,
+           ov096 and ov100 -- enemy overlays, dActor_c's branch -- which is
+           the sharpest measurement yet of how little the shared index means.
+         arity: no explicit parameters, MEASURED THREE TIMES, and the third
+           witness is destructive rather than circumstantial.  The base opens
+           `ldr r1,[r0]; mov r4,r0`, writing r1 out of `this` before any read,
+           and writes r2, r3 and ip before reading them too.
+           dScMgD3DBase_c's override at ov006:0x020e6d24 writes
+           `mov r1,#0x100; mov r2,r1` and reads neither on entry.
+           dScMgSlot3_c's at ov006:0x0210aa3c settles it: it loads r2 and ip
+           from its literal pool, CLOBBERS r1 with a masked read of the sub
+           display-control register, and only then tail-branches `bx ip` into
+           0x020af094.  A second argument passed in r1 would reach the base as
+           a display-control word, so the base cannot be reading one.
+           include/dActor_c.h:146 declares no parameter here either -- the
+           first time in this campaign its parameter list has agreed.
+         overrides: SIX tables, TWO declarations, and NO reconciliation.  This
+           is the first slot since 26 where no descendant had already declared
+           the member early, so nothing has to be un-declared alongside it.
+           dScMgD3DBase_c's own body at ov006:0x020e6d24 backs its table and
+           all four of its children's; dScMgSlot3_c, which hangs off
+           dScMgSingle3DBase_c rather than off D3DBase, has its own at
+           ov006:0x0210aa3c.  dScMgSingle3DBase_c itself does not override.
+         NAME CORRECTION, the sixth on dScMgD3DBase_c and the seventh in this
+           campaign: 0x020e6d24 carried
+           `recovered name: dScMgTrampoline2_c_OnAimedAtWithEgg`.  Five tables
+           reference it, so it is dScMgD3DBase_c's.  Unlike slots 26, 27 and
+           28 this one is not a twelve-byte veneer -- it is a real 0x68-byte
+           body that loads a sub-screen OBJ palette and claims two VRAM banks
+           before calling this class's, which is why it also had to change its
+           include and the type it casts `this` to.
+         SEMANTIC CAUTION, the first of its kind on this class.  Every method
+           name here is transplanted from include/dActor_c.h at the same
+           index.  Nothing in the cartridge carries a method name for
+           dScMgBase_c -- its RTTI carries class names only -- so the
+           `recovered name:` comments are themselves index transplants, not
+           independent recoveries.  There was never a second witness, only the
+           same witness reached twice.  Until now that cost nothing.  Here the
+           ROM contradicts the transplant outright.  The sole ov004 dispatch
+           site is guarded on an EDGE of mMenuOpen (+0x4628): OnKicked compares
+           mMenuOpen against unk_462c and, only when they differ, calls slot 30
+           if mMenuOpen is zero and THIS slot if it is not, then copies one
+           into the other.  And this body does exactly what that guard implies.
+           It saves POWCNT1's screen-swap bit and the two BG-enable bytes into
+           mSavedScreenSwap, mSavedMainBgBits and mSavedSubBgBits; clears every
+           layer- and window-enable bit in both DISPCNTs; saves 0x400 bytes of
+           BG palette out of palette RAM into a buffer at +0x4228 and loads the
+           menu's own palettes over it; and saves 0x2000 bytes of sub-screen
+           OBJ VRAM at 0x06606000 into +0x2228 before decompressing a
+           per-language image over that.  Save the screen, then draw over it:
+           that is the three-item overlay menu going UP.  It is not a Yoshi
+           egg.  The name is kept because it is the only one in evidence and
+           because coining a replacement would put an unverifiable identifier
+           on a byte-exact symbol -- but it is kept as a LABEL, not as a claim,
+           and slots 18-30 should be read in that light.
+         AND A WARNING FOR SLOT 30, measured here because it is cheaper to
+           record now than to rediscover: include/dActor_c.h:151 declares slot
+           30 returning a Vector3 BY VALUE.  That cannot be transplanted.  At
+           ov004:0x020ae168 slot 30 is dispatched with r0 still holding `this`
+           and r1 holding the loaded function pointer; a 12-byte return would
+           put a hidden result pointer in r0 and `this` in r1 under AAPCS.
+           Whatever slot 30 returns here, it is not a Vector3. */
+    virtual int  OnAimedAtWithEgg();                   /* slot 29 */
 
-    /* Slots 29-35 are added the same way: one slot per change, together with
+    /* Slots 30-35 are added the same way: one slot per change, together with
        every descendant override of that slot. Until then they stay undeclared
-       and the emitted tables stop at slot 28.
+       and the emitted tables stop at slot 29.
 
        THE OCCUPIED-SLOT TRAP IS NO LONGER LOADED IN dScMgSlot1_c -- slots 27
        and 28 were both of its early declarations and both are reconciled --
@@ -463,7 +546,7 @@ struct dScMgBase_c : dScene_c {
     s32 unk_0c8;            /* 0x0c8 */
     dMgState_c mStateController; /* 0x0cc -- minigame UI state controller */
     dMgPsOpt_c mTouchOptions; /* 0x0f4 -- eight polymorphic touch icons */
-    u32 mSavedMainBgBits;   /* 0x21c -- func_ov004_020af094 saves data_0209d45c
+    u32 mSavedMainBgBits;   /* 0x21c -- OnAimedAtWithEgg saves data_0209d45c
                                 here and func_ov004_020aeed8 restores it */
     u32 mSavedSubBgBits;    /* 0x220 -- the same pair for data_0209d454 */
     u32 mSavedScreenSwap;   /* 0x224 -- bit 15 of POWCNT1 (0x4000304), saved and
