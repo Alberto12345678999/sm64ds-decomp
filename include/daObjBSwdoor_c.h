@@ -40,7 +40,26 @@ struct daObjBSwdoor_c : daObjSwdoor_c {
     u8  pad_320[0x4];
 
     /* --- vtable --- */
-    virtual ~daObjBSwdoor_c();             /* slots 16 (D1), 17 (D0) */
+    /* INLINE, AND THAT IS WHAT LETS THIS CLASS OWN A TRANSLATION UNIT. Declared
+       out of line, mwccarm 2004/b56 emits D0 before D1 -- the reverse of the
+       cartridge, which has D1 at 0x021111a0 and D0 at 0x021111f0 -- and adds a
+       homeless D2 that no address claims; tools/objisolate.py then refuses the
+       whole TU rather than one function. Defined here, the pair comes out in ROM
+       order with no D2.
+
+       SAFE ONLY BECAUSE THIS CLASS IS A LEAF, and that is measured rather than
+       assumed: _ZTI14daObjBSwdoor_c, ov014 0x021145b8, occurs exactly once as a
+       word anywhere under extracted/ -- at ov014 file offset 0x3464, which is
+       0x02114604, the typeinfo slot of its own vtable header. No other class's
+       __si_class_type_info points at it, so no descendant exists to inline this
+       body where the ROM has a `bl`.
+
+       THREE vtable stores come out of it. `daObjBSwdoor_c : daObjSwdoor_c :
+       dBgActor_c` emits its own vptr, then daObjSwdoor_c's -- inlined, that
+       destructor is defined in its class body too -- then dBgActor_c's, then
+       dBgActor_c's dBgW_KcMbg and Model, then dActor_c. Nothing in the chain adds
+       a member with a destructor, so the body is empty. */
+    virtual ~daObjBSwdoor_c() {}           /* slots 16 (D1), 17 (D0) */
 
     int Behavior();                    /* slot  6 */
     int CleanupResources();            /* slot  3 */
