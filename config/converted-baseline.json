@@ -7,7 +7,7 @@
     "no_codegen_trick",
     "no_mangled_refs"
   ],
-  "count": 2588,
+  "count": 2590,
   "converted": [
     "src/ARMMathLoadState.c",
     "src/ARMMathSaveState.c",
@@ -1370,6 +1370,9 @@
     "src/_ZN4Toad8SetStateEi.cpp",
     "src/_ZN4ToadD0Ev.cpp",
     "src/_ZN4ToadD1Ev.cpp",
+    "src/_ZN4Tree16OnPendingDestroyEv.cpp",
+    "src/_ZN4TreeD0Ev.cpp",
+    "src/_ZN4TreeD1Ev.cpp",
     "src/_ZN4View6RenderEv.cpp",
     "src/_ZN4ViewD0Ev.cpp",
     "src/_ZN4ViewD1Ev.cpp",
@@ -2574,7 +2577,6 @@
     "src/actors/daTrs_c/_ZN7daTrs_c16OnPendingDestroyEv.cpp",
     "src/actors/daTrs_c/_ZN7daTrs_cD0Ev.cpp",
     "src/actors/daTrs_c/_ZN7daTrs_cD1Ev.cpp",
-    "src/actors/tree.cpp#_ZN4Tree16OnPendingDestroyEv",
     "src/engine/fader/_ZN10FaderColorD0Ev.cpp",
     "src/engine/fader/_ZN10FaderColorD1Ev.cpp",
     "src/engine/fader/_ZN15FaderBrightness10SetToStartEv.cpp",
