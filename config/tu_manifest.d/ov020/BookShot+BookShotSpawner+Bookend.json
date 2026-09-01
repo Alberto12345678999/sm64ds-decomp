@@ -218,7 +218,7 @@
       "symbol": "daBookGen_c_classInit",
       "address": "0x02112850",
       "size": "0x00000030",
-      "legacy_source": "src/BookShotSpawner_Spawn.c",
+      "legacy_source": "src/daBookGen_c_classInit.c",
       "ordinal": 28
     },
     {

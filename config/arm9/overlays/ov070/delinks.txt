@@ -108,7 +108,7 @@ src/_ZN6FlyGuy13OnYoshiTryEatEv.cpp:
     complete
     .text start:0x02120518 end:0x02120520
 
-src/FlyGuy_Spawn.c:
+src/daPropeller_Heyho_c_classInit.c:
     complete
     .text start:0x02120520 end:0x02120570
 

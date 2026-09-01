@@ -204,7 +204,7 @@
       "symbol": "daPropeller_Heyho_c_classInit",
       "address": "0x02120520",
       "size": "0x00000050",
-      "legacy_source": "src/FlyGuy_Spawn.c",
+      "legacy_source": "src/daPropeller_Heyho_c_classInit.c",
       "ordinal": 26
     }
   ],

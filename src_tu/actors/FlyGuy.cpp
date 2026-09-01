@@ -33,7 +33,7 @@
  *   [23] 0x021204e4  src/_ZN6FlyGuy16OnAimedAtWithEggEv.cpp
  *   [24] 0x021204ec  src/_ZN6FlyGuy13OnTurnIntoEggER6Player.cpp
  *   [25] 0x02120518  src/_ZN6FlyGuy13OnYoshiTryEatEv.cpp
- *   [26] 0x02120520  src/FlyGuy_Spawn.c
+ *   [26] 0x02120520  src/daPropeller_Heyho_c_classInit.c
  */
 
 struct V3w { int w[3]; };  /* array-wrapper: C++ scalarizes a plain struct copy; this form keeps the C front end's ldm/stm block copy */

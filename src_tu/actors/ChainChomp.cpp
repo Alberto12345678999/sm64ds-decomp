@@ -35,7 +35,7 @@
  *   [25] 0x02112994  src/_ZN10ChainChomp6RenderEv.cpp
  *   [26] 0x021129ec  src/_ZN10ChainChomp8BehaviorEv.cpp
  *   [27] 0x02112b14  src/_ZN10ChainChomp13InitResourcesEv.cpp
- *   [28] 0x02112d1c  src/ChainChomp_Spawn.cpp
+ *   [28] 0x02112d1c  src/daWanwan_c_classInit.cpp
  */
 
 /* -------------------------------------------------------------------------- */
