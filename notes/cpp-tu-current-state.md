@@ -21,7 +21,7 @@ python tools/cpp_tu_state.py --check-note
 | MATCHED functions | 11249 / 11402 (98.66%) |
 | MATCHED code bytes | 2122268 / 2238108 (94.82%) |
 | Strict CONVERTED source functions | 2572 / 11314 (22.73%) |
-| Physical production source files | 11018 |
+| Physical production source files | 10996 |
 
 MATCHED is recomputed from committed config symbols and `src/` through
 `progress.synced_from_src()`; no ambient or gitignored chaos database is accepted.
@@ -32,21 +32,21 @@ weighted by enrolled function ownership so TU consolidation does not move it.
 
 | Measure | Live value |
 | --- | ---: |
-| Tracked production source files | 11018 |
-| Tracked `.c` files | 6269 |
-| Tracked `.cpp` files | 4749 |
+| Tracked production source files | 10996 |
+| Tracked `.c` files | 6260 |
+| Tracked `.cpp` files | 4736 |
 | `.cpp` files missing first-line `//cpp` | 0 |
-| Mangled-symbol source files | 3673 |
-| Genuinely migrated C++ symbol files | 3514 |
-| Not semantically migrated | 156 |
+| Mangled-symbol source files | 3683 |
+| Genuinely migrated C++ symbol files | 3515 |
+| Not semantically migrated | 165 |
 | `.cpp` files still hand-spelling their symbol | 70 |
 | Nonmatching C++-symbol drafts | 11 |
 | Delinks path-owned function-symbol records | 11213 |
 | Path-owned records still supplied from ROM bytes | 121 |
 | Source-built (`complete`) function-symbol records | 11092 |
-| Source-built (`complete`) source files | 10791 |
+| Source-built (`complete`) source files | 10769 |
 | Complete sources owning more than one function | 33 |
-| Source-built records inside multi-function sources | 334 |
+| Source-built records inside multi-function sources | 356 |
 | Largest function-symbol-records-per-source count | 34 |
 | Complete source paths missing from git | 0 |
 
@@ -77,7 +77,7 @@ partition to add to the migrated and unmigrated rows.
 | Unique functions named by the manifest | 1258 |
 | Modules represented | 28 |
 | Manifest shadow sources present in git | 98 |
-| Entries licensing non-text sections | 4 |
+| Entries licensing non-text sections | 5 |
 | Entries actually production-enrolled at `promoted_source` | 28 |
 | Existing promotion paths that disagree with delinks | 4 |
 
