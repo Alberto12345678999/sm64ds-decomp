@@ -84,7 +84,7 @@ _ZN9RabbitKey16OnPendingDestroyEv kind:function(arm,size=0x4) addr:0x0212d398
 _ZN9RabbitKey6RenderEv kind:function(arm,size=0x50) addr:0x0212d39c
 _ZN9RabbitKey8BehaviorEv kind:function(arm,size=0x80) addr:0x0212d3ec
 _ZN9RabbitKey13InitResourcesEv kind:function(arm,size=0x7c) addr:0x0212d46c
-RabbitKey_Spawn kind:function(arm,size=0x40) addr:0x0212d4e8
+daObj_Mip_Key_c_classInit kind:function(arm,size=0x40) addr:0x0212d4e8
 _ZN9LakituBroD1Ev kind:function(arm,size=0x50) addr:0x0212d528
 _ZN9LakituBroD0Ev kind:function(arm,size=0x64) addr:0x0212d578
 func_ov085_0212d5dc kind:function(arm,size=0x148) addr:0x0212d5dc
@@ -195,7 +195,7 @@ data_ov085_02130184 kind:data(any) addr:0x02130184
 data_ov085_0213018c kind:data(any) addr:0x0213018c
 _ZTI15daObj_Mip_Key_c kind:data(any) addr:0x02130194
 _ZTS15daObj_Mip_Key_c kind:data(any) addr:0x021301a0
-RabbitKey_SpawnInfo kind:data(any) addr:0x021301b4 ambiguous
+g_profile_OBJ_MIP_KEY kind:data(any) addr:0x021301b4 ambiguous
 _ZTV9RabbitKey kind:data(any) addr:0x021301d8
 _ZTV15daObj_Mip_Key_c kind:data(any) addr:0x021301d8
 data_ov085_0213020b kind:data(any) addr:0x0213020b ambiguous

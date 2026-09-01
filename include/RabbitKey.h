@@ -5,7 +5,7 @@
 
 /* Derives from dEnemyBase_c, and TWO INDEPENDENT WITNESSES agree on the layout:
  * the class's own destructor `_ZN9RabbitKeyD1Ev` destroys each member, and
- * `RabbitKey_Spawn` constructs the same types at the same offsets before
+ * `daObj_Mip_Key_c_classInit` constructs the same types at the same offsets before
  * storing `_ZTV9RabbitKey`. Everything this header used to restate below
  * 0x110 belongs to dEnemyBase_c and dActor_c and is inherited now.
  *
@@ -15,7 +15,7 @@
  *     0x110 Model                      0x50    -> 0x160
  *     0x160 ShadowModel                0x28    -> 0x188
  *
- * SIZE IS THE ROM'S OWN: `RabbitKey_Spawn` calls
+ * SIZE IS THE ROM'S OWN: `daObj_Mip_Key_c_classInit` calls
  * `fBase_c::operator new(416)` -- 0x1a0 -- and stores this class's
  * vtable, so that literal IS this class's sizeof.
  */
