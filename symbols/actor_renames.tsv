@@ -769,6 +769,7 @@ ov021	0x02114914	data_ov021_02114914	_ZTV10ShutterHmc	vtable alloc=0x324
 ov022	0x02111578	func_ov022_02111578	VolcanoRing_Spawn	spawnfunc
 ov022	0x02111578	VolcanoRing_Spawn	daObjFl_Ring_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov022	0x02111688	func_ov022_02111688	RotatingPlatformLll_Spawn	spawnfunc
+ov022	0x02111688	RotatingPlatformLll_Spawn	daObjFl_Koma_D_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov022	0x021116c4	func_ov022_021116c4	_ZN19RotatingPlatformLllD1Ev	vtable slot 16
 ov022	0x02111708	func_ov022_02111708	_ZN19RotatingPlatformLllD0Ev	vtable slot 17
 ov022	0x02111760	func_ov022_02111760	_ZN19RotatingPlatformLll16CleanupResourcesEv	vtable slot 3
@@ -776,9 +777,11 @@ ov022	0x021117a4	func_ov022_021117a4	_ZN19RotatingPlatformLll6RenderEv	vtable sl
 ov022	0x021117cc	func_ov022_021117cc	_ZN19RotatingPlatformLll8BehaviorEv	vtable slot 6
 ov022	0x02111870	func_ov022_02111870	_ZN19RotatingPlatformLll13InitResourcesEv	vtable slot 0
 ov022	0x02111950	func_ov022_02111950	FloatOnLavaPlatform_Spawn	spawnfunc
+ov022	0x02111950	FloatOnLavaPlatform_Spawn	daObjFl_Block_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov022	0x02111c7c	func_ov022_02111c7c	LavaBridge_Spawn	spawnfunc
 ov022	0x02111c7c	LavaBridge_Spawn	daObjFl_London_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov022	0x02111f3c	func_ov022_02111f3c	LavaSeesaw_Spawn	spawnfunc
+ov022	0x02111f3c	LavaSeesaw_Spawn	daObjFl_Seesaw_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov022	0x02111f6c	func_ov022_02111f6c	_ZN21FloatingFloorLllSmallD1Ev	vtable slot 16
 ov022	0x02111fbc	func_ov022_02111fbc	_ZN21FloatingFloorLllSmallD0Ev	vtable slot 17
 ov022	0x02112020	func_ov022_02112020	_ZN21FloatingFloorLllSmall16CleanupResourcesEv	vtable slot 3
@@ -809,11 +812,14 @@ ov022	0x02112918	func_ov022_02112918	VolcanoFire_Spawn	spawnfunc
 ov022	0x02113cf4	data_ov022_02113cf4	VolcanoRing_SpawnInfo	spawninfo
 ov022	0x02113cf4	VolcanoRing_SpawnInfo	g_profile_FL_RING	reconstructed profile global; literal ROM ID FL_RING+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov022	0x02113dc4	data_ov022_02113dc4	RotatingPlatformLll_SpawnInfo	spawninfo
+ov022	0x02113dc4	RotatingPlatformLll_SpawnInfo	g_profile_FL_KOMA_D	reconstructed profile global; literal ROM ID FL_KOMA_D+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov022	0x02113e88	data_ov022_02113e88	FloatOnLavaPlatform_SpawnInfo	spawninfo
+ov022	0x02113e88	FloatOnLavaPlatform_SpawnInfo	g_profile_FL_BLOCK	reconstructed profile global; literal ROM ID FL_BLOCK+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov022	0x02113eac	data_ov022_02113eac	_ZTV19RotatingPlatformLll	vtable alloc=0x320
 ov022	0x02113f4c	data_ov022_02113f4c	LavaBridge_SpawnInfo	spawninfo
 ov022	0x02113f4c	LavaBridge_SpawnInfo	g_profile_FL_LONDON	reconstructed profile global; literal ROM ID FL_LONDON+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov022	0x02114010	data_ov022_02114010	LavaSeesaw_SpawnInfo	spawninfo
+ov022	0x02114010	LavaSeesaw_SpawnInfo	g_profile_FL_SEESAW	reconstructed profile global; literal ROM ID FL_SEESAW+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov022	0x021140ec	data_ov022_021140ec	FloatingFloorLllBig_SpawnInfo	spawninfo
 ov022	0x02114108	data_ov022_02114108	FloatingFloorLllSmall_SpawnInfo	spawninfo
 ov022	0x0211412c	data_ov022_0211412c	_ZTV21FloatingFloorLllSmall	vtable alloc=0x330
@@ -1449,7 +1455,9 @@ ov064	0x02119088	func_ov064_02119088	_ZN19BowserPuzzleManager6RenderEv	vtable sl
 ov064	0x021190b0	func_ov064_021190b0	_ZN19BowserPuzzleManager8BehaviorEv	vtable slot 6
 ov064	0x021191a8	func_ov064_021191a8	_ZN19BowserPuzzleManager13InitResourcesEv	vtable slot 0
 ov064	0x021192d0	func_ov064_021192d0	BowserPuzzleManager_Spawn	spawnfunc
+ov064	0x021192d0	BowserPuzzleManager_Spawn	daObjFl_Coin_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov064	0x02119300	func_ov064_02119300	BowserPuzzlePiece_Spawn	spawnfunc
+ov064	0x02119300	BowserPuzzlePiece_Spawn	daObjFl_Puzzle_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov064	0x02119330	func_ov064_02119330	_ZN17BowserPuzzlePieceD1Ev	vtable slot 16
 ov064	0x02119368	func_ov064_02119368	_ZN17BowserPuzzlePieceD0Ev	vtable slot 17
 ov064	0x02119880	func_ov064_02119880	_ZN17BowserPuzzlePiece16CleanupResourcesEv	vtable slot 3
@@ -1504,7 +1512,9 @@ ov064	0x0211be10	data_ov064_0211be10	_ZTV15RotatingFirebar	vtable alloc=0x540
 ov064	0x0211bec8	data_ov064_0211bec8	LavaBubble_SpawnInfo	spawninfo
 ov064	0x0211beec	data_ov064_0211beec	_ZTV10LavaBubble	vtable alloc=0x31c
 ov064	0x0211c160	data_ov064_0211c160	BowserPuzzlePiece_SpawnInfo	spawninfo
+ov064	0x0211c160	BowserPuzzlePiece_SpawnInfo	g_profile_FL_PUZZLE	reconstructed profile global; literal ROM ID FL_PUZZLE+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov064	0x0211c17c	data_ov064_0211c17c	BowserPuzzleManager_SpawnInfo	spawninfo
+ov064	0x0211c17c	BowserPuzzleManager_SpawnInfo	g_profile_FL_COIN	reconstructed profile global; literal ROM ID FL_COIN+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov064	0x0211c25c	data_ov064_0211c25c	_ZTV19BowserPuzzleManager	vtable alloc=0x33c
 ov064	0x0211c310	data_ov064_0211c310	JetStream_SpawnInfo	spawninfo
 ov064	0x0211c334	data_ov064_0211c334	_ZTV17BowserPuzzlePiece	vtable alloc=0x33c
