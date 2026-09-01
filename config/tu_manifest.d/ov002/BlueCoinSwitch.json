@@ -102,9 +102,23 @@
     "criteria": {
       "every_declared_function_defined": "PASS",
       "every_declared_function_bytes_match": "PASS",
-      "declared_function_set_equals_defined_function_set": "FAIL-BY-DESIGN -- 12 unlicensed section/symbol(s); see unlicensed_output_observed",
+      "declared_function_set_equals_defined_function_set": "FAIL-BY-DESIGN -- 11 unlicensed section/symbol(s), 0 compiler-only policy error(s)",
       "functions_occur_in_expected_order": "PARTIAL -- ordinal pair(s) not in ROM order: [(0, 1)]",
       "relocation_destinations_verified": "PASS"
+    },
+    "compilerOnlyOutput": {
+      "requested": [
+        "_ZN14BlueCoinSwitchD2Ev"
+      ],
+      "deadstripped": [
+        "_ZN14BlueCoinSwitchD2Ev"
+      ],
+      "droppedSections": [
+        22,
+        23
+      ],
+      "data": [],
+      "dataExternalized": []
     }
   },
   "partial_isolation": {
