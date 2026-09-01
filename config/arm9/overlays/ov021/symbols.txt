@@ -16,7 +16,7 @@ func_ov021_02111fcc kind:function(arm,size=0x18) addr:0x02111fcc
 func_ov021_02111fe4 kind:function(arm,size=0x40) addr:0x02111fe4
 func_ov021_02112024 kind:function(arm,size=0x104) addr:0x02112024
 func_ov021_02112128 kind:function(arm,size=0x40) addr:0x02112128
-WorkElevator_Spawn kind:function(arm,size=0x80) addr:0x02112168
+daObjCvNewsLift_c_classInit kind:function(arm,size=0x80) addr:0x02112168
 _ZN11RollingRockD1Ev kind:function(arm,size=0x48) addr:0x021121e8
 _ZN11RollingRockD0Ev kind:function(arm,size=0x5c) addr:0x02112230
 _ZN11RollingRock16OnAimedAtWithEggEv kind:function(arm,size=0x8) addr:0x0211228c
@@ -35,7 +35,7 @@ _ZN10ShutterHmcD0Ev kind:function(arm,size=0x64) addr:0x02112e04
 _ZN10ShutterHmc16CleanupResourcesEv kind:function(arm,size=0x14) addr:0x02112e68
 _ZN10ShutterHmc8BehaviorEv kind:function(arm,size=0x44) addr:0x02112e7c
 _ZN10ShutterHmc13InitResourcesEv kind:function(arm,size=0x14) addr:0x02112ec0
-ShutterHmc_Spawn kind:function(arm,size=0x3c) addr:0x02112ed4
+daObjCvShutter_c_classInit kind:function(arm,size=0x3c) addr:0x02112ed4
 data_ov021_02112f10 kind:data(any) addr:0x02112f10
 data_ov021_02112f14 kind:data(any) addr:0x02112f14
 data_ov021_02112f18 kind:data(any) addr:0x02112f18
@@ -193,7 +193,7 @@ data_ov021_02114740 kind:data(any) addr:0x02114740
 _ZTI17daObjCvNewsLift_c kind:data(any) addr:0x02114748
 data_ov021_02114750 kind:data(any) addr:0x02114750 ambiguous
 _ZTS17daObjCvNewsLift_c kind:data(any) addr:0x02114754
-WorkElevator_SpawnInfo kind:data(any) addr:0x02114768 ambiguous
+g_profile_CV_NEWS_LIFT kind:data(any) addr:0x02114768 ambiguous
 _ZTV12WorkElevator kind:data(any) addr:0x0211478c
 data_ov021_021147c4 kind:data(any) addr:0x021147c4 ambiguous
 _ZTS9daGrock_c kind:data(any) addr:0x0211480c
@@ -212,7 +212,7 @@ _ZTI16daObjCvShutter_c kind:data(any) addr:0x021148c4
 data_ov021_021148d0 kind:data(any) addr:0x021148d0
 _ZTS16daObjCvShutter_c kind:data(any) addr:0x021148dc
 data_ov021_021148e0 kind:data(any) addr:0x021148e0 ambiguous
-ShutterHmc_SpawnInfo kind:data(any) addr:0x021148f0 ambiguous
+g_profile_CV_SHUTTER kind:data(any) addr:0x021148f0 ambiguous
 _ZTV10ShutterHmc kind:data(any) addr:0x02114914
 data_ov021_021149a0 kind:bss addr:0x021149a0
 data_ov021_021149a8 kind:bss addr:0x021149a8
