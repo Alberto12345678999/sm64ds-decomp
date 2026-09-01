@@ -961,7 +961,7 @@ src/_ZN16daObjWaterfall_c13InitResourcesEv.cpp:
     complete
     .text start:0x020b6eac end:0x020b6ee8
 
-src/WaterfallMist_Spawn.cpp:
+src/daObjWaterfall_c_classInit.cpp:
     complete
     .text start:0x020b6ee8 end:0x020b6f18
 
