@@ -1112,6 +1112,11 @@
     "src/actors/d_a_tree.cpp#_ZN8daTree_c6RenderEv": "github-actions[bot]",
     "src/actors/d_a_tree.cpp#_ZN8daTree_c8BehaviorEv": "github-actions[bot]",
     "src/actors/d_a_tree.cpp#_ZN8daTree_c13InitResourcesEv": "github-actions[bot]",
-    "src/actors/d_a_tree.cpp#Tree_Spawn": "github-actions[bot]"
+    "src/actors/d_a_tree.cpp#Tree_Spawn": "github-actions[bot]",
+    "src/actors/daObjKm3_Kuruma_c.cpp#_ZN17daObjKm3_Kuruma_cD1Ev": "tangosdev",
+    "src/actors/daObjKm3_Kuruma_c.cpp#_ZN17daObjKm3_Kuruma_cD0Ev": "tangosdev",
+    "src/actors/daObjKm3_Kuruma_c.cpp#_ZN17daObjKm3_Kuruma_c16CleanupResourcesEv": "github-actions[bot]",
+    "src/actors/daObjKm3_Kuruma_c.cpp#_ZN17daObjKm3_Kuruma_c13InitResourcesEv": "github-actions[bot]",
+    "src/actors/daObjKm3_Kuruma_c.cpp#RickshawPlatformBs_Spawn": "github-actions[bot]"
   }
 }
