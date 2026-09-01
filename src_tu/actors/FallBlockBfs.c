@@ -19,7 +19,7 @@
  *   [1] 0x02111d98  src/_ZN12FallBlockBfsD0Ev.c
  *   [2] 0x02111dfc  src/_ZN12FallBlockBfs16CleanupResourcesEv.c
  *   [3] 0x02111e10  src/_ZN12FallBlockBfs13InitResourcesEv.c
- *   [4] 0x02111e24  src/FallBlockBfs_Spawn.c
+ *   [4] 0x02111e24  src/daObjKm2_Fall_Block_c_classInit.c
  */
 
 /* Includes: union of the legacy files', first-seen in ROM-ascending
