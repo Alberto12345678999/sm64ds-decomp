@@ -35,11 +35,30 @@
 #include "daObjDorifu_c.h"
 
 struct daObjKm3_Dorifu_c : daObjDorifu_c {
-    /* --- vtable --- */
-    virtual ~daObjKm3_Dorifu_c();     /* slots 16 (D1), 17 (D0) */
+    /* --- vtable. The destructor is INLINE, and that is load-bearing rather
+       than a style choice. Out of line, mwccarm emits D0 before D1 -- the
+       reverse of the ROM's 0x02111510 D1 / 0x02111590 D0 order, which makes
+       objisolate refuse the whole TU -- and additionally emits a D2, byte
+       identical to D1, that has no home in the cartridge. Inline, it emits
+       exactly the retail D1/D0 pair in ROM order and no D2.
 
-    int CleanupResources();            /* slot  3 */
-    int InitResources();               /* slot  0 */
+       Safe because nothing derives from this class, so no descendant needs a
+       D2 to `bl`: the word 0x021124cc occurs exactly once across every image
+       under extracted/, at ov047 0x02112548, which is this class's own vtable
+       header pointing at its own _ZTI. --- */
+    virtual ~daObjKm3_Dorifu_c() {}    /* slots 16 (D1), 17 (D0) */
+
+    /* CleanupResources is declared FIRST deliberately: with the destructor
+       inline the key function is the first DECLARED non-inline virtual --
+       declared, not lowest slot -- so this ordering is what makes
+       src/actors/d_a_obj_km3_dorifu.cpp the TU that emits the _ZTV/_ZTI/_ZTS
+       group. Both are real methods for the same reason: a hand-mangled
+       `extern "C"` free function does not DEFINE the key function, and then
+       mwcc emits neither the RTTI group nor the inline destructor's D1/D0
+       pair. Neither repeats `virtual`; daObjDorifu_c already declares these
+       slots virtual, so these override them either way. */
+    s32 CleanupResources();            /* slot  3 */
+    s32 InitResources();               /* slot  0 */
 };
 
 typedef char daObjKm3_Dorifu_c_size_must_be_0xdcc[sizeof(daObjKm3_Dorifu_c) == 0xdcc ? 1 : -1];
