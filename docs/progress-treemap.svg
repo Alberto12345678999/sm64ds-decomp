@@ -18813,7 +18813,7 @@ matched: yes</title></rect><rect x="784.52" y="47.98" width="20.08" height="1.39
 module: ov003
 addr: 0x020b1118
 size: 100 bytes
-matched: yes</title></rect><rect x="814.60" y="27.00" width="4.09" height="1.42" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov004_020ad660
+matched: yes</title></rect><rect x="814.60" y="27.00" width="4.09" height="1.42" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11dScMgBase_c9Virtual8CEv
 module: ov004
 addr: 0x020ad660
 size: 20 bytes
@@ -21377,7 +21377,7 @@ matched: yes</title></rect><rect x="629.51" y="189.45" width="14.17" height="8.4
 module: ov006
 addr: 0x020d10b8
 size: 180 bytes
-matched: yes</title></rect><rect x="643.99" y="189.45" width="1.89" height="8.49" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_020d1170
+matched: yes</title></rect><rect x="643.99" y="189.45" width="1.89" height="8.49" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dScMgAmida_c9Virtual8CEv
 module: ov006
 addr: 0x020d1170
 size: 24 bytes
