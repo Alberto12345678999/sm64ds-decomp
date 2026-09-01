@@ -47,12 +47,19 @@ struct dScMgBase_c : dScene_c {
        agree, so include/dActor_c.h is a useful NAMING hint -- never a
        signature authority. Where the two disagree, the ROM wins.
 
-       Declared one slot at a time, lowest first. mwcc emits a vtable only as
-       long as the slots it has been told about, so after declaring 18..k every
-       descendant emits k+1 slots -- a byte-exact PREFIX of the cartridge table,
-       never a disagreement. Declaring all eighteen at once would instead write
-       the BASE body into every slot a descendant has not yet declared an
-       override for, turning PARTIAL into DIFFERS across the whole family.
+ALL EIGHTEEN ARE DECLARED (2026-08-31). This class and all 32 of
+       its descendants emit their full 36-slot vtables from source; none of
+       them is a prefix any more.
+
+       They were declared one slot at a time, lowest first, and that ordering
+       is why it worked. mwcc emits a vtable only as long as the slots it has
+       been told about, so after declaring 18..k every descendant emitted k+1
+       slots -- a byte-exact PREFIX of the cartridge table, never a
+       disagreement, so every intermediate commit was shippable. Declaring all
+       eighteen at once would instead have written the BASE body into every
+       slot a descendant had not yet declared an override for, turning PARTIAL
+       into DIFFERS across the whole family. Anything ADDED here from now on
+       is past the cartridge's own table and has no such safety net.
 
        Slot 18 -- MEASURED, not inferred:
          arity: 13 of the 24 independently decompiled descendant overrides read
@@ -819,16 +826,66 @@ struct dScMgBase_c : dScene_c {
          signature is fixed by the call sites, which are unanimous, and an
          ignored stack argument costs the callee nothing. */
     virtual void Virtual88(int cx, int cy, int colour, int size); /* slot 34 */
+    /* Slot 35 -- Virtual8C, the LAST slot of dScMgBase_c's own eighteen and the
+       end of the 18-35 range.  With this declared the class emits its full
+       36-slot vtable from source, and dScMgAmida_c's Unk36 finally lands on 36
+       where the ROM puts it.
+       WHAT IT IS: a predicate on the scene's own spawn parameter.  The base
+         body (ov004:0x020ad660, twenty bytes) is `return (param1 & 0xff) != 0`
+         -- fBase_c::param1 at +0x08, the word every fBase_c is constructed
+         with.  dScMgAmida_c's override (ov006:0x020d1170, twenty-four bytes)
+         asks the narrower question, `== 1`.  Nothing else in the family
+         overrides it, so thirty-one of the thirty-two tables carry the base's
+         answer.
+       WHO CALLS IT, and this is the strongest call-site evidence in the whole
+         campaign: THIRTEEN dispatch sites, spread across FOUR different leaf
+         classes' code regions -- dScMgCoin_c (2), dScMgPanel_c (4),
+         dScMgSound_c (3) and dScMgSnowball_c (4).  Each is the same shape,
+         `mov r0,<this>; ldr r1,[r0]; ldr r1,[r1,#0x8c]; blx r1`, a class asking
+         the question of ITSELF.  They use the answer to pick between two
+         variants of the same minigame: two asset tables at ov006:0x02105488,
+         a different field path at 0x0211b9e0, a whole block skipped at
+         0x02126f58.
+       arity: no explicit parameters, MEASURED.  r1 is the loaded function
+         pointer at every one of the thirteen sites and so cannot also be an
+         argument, and r2/r3 are never set up for the call.  `this` only.
+       return type: int, and this is the first slot in the campaign where the
+         ROM does not merely permit a return value but is SEEN TO CONSUME ONE.
+         All 13 sites follow the call with `cmp r0, #0` and branch on the
+         result.  Both bodies compute a comparison and return it, so the value
+         is 0 or 1; `int` is the spelling slots 29-32 already use for the same
+         shape.
+       NOTHING TO CORRECT, as at slots 33 and 34: no `recovered name:` line on
+         the base body or on the one override.  Virtual8C is this tree's own
+         no-name spelling after the +0x8c vtable offset.
+       the rename is SCOPED.  0x020ad660 is an overlay load base, so ov000,
+         ov002, ov003, ov004 and ov007 each have a different, unrelated symbol
+         at that address -- ov003's was dScTitle_c's D1.  Only
+         func_ov004_020ad660 was this one, so the rename was keyed on that
+         module-qualified symbol; keying it on the address would have hit
+         five files in four unrelated overlays and every byte gate would
+         still have passed. */
+    virtual int  Virtual8C();                          /* slot 35 */
 
-    /* Slot 35 is added the same way: one slot per change, together with
-       every descendant override of that slot. Until then they stay undeclared
-       and the emitted tables stop at slot 34.
+    /* THAT IS ALL EIGHTEEN.  Slots 18-35 are declared, each in its own
+       commit together with every descendant override of that slot, and this
+       class emits its full 36-slot vtable from source.  Nothing in the family
+       is a prefix any more.
+
+       Slots 18-30 carry names borrowed from dActor_c by INDEX, which is a
+       coincidence and not evidence: dScMgBase_c is a scene
+       (fBase_c -> dBase_c -> dScene_c -> dScMgBase_c), a sibling branch that
+       happens to start appending its own virtuals at the same index dActor_c
+       does.  Slot 31 is the first one above dActor_c's table and is what
+       proved it.  Retiring those thirteen borrowed names is a separate
+       question from this range being declared, and is deliberately left open.
 
        THE OCCUPIED-SLOT TRAP IS NO LONGER LOADED IN dScMgSlot1_c -- slots 27
        and 28 were both of its early declarations and both are reconciled --
        but it is a property of the FAMILY, not of that one class.  Before
-       declaring slot N, check every descendant header for a virtual that
-       already lands on N by arithmetic.  Declaring the base's while a
+       adding any FURTHER virtual to this class, check every descendant
+       header for a virtual that already lands on the new index by
+       arithmetic.  Declaring the base's while a
        descendant keeps a different signature makes them two different
        functions, pushes the descendant's own down one index, and regresses its
        table to DIFFERS with rombuild still green -- only romdata_check sees

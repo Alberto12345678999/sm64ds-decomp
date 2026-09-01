@@ -4,7 +4,7 @@
     .ctor       start:0x020b9de4 end:0x020b9df4 kind:rodata align:4
     .data       start:0x020b9e00 end:0x020beb60 kind:data align:32
     .bss        start:0x020beb60 end:0x020bfec0 kind:bss align:32
-src/func_ov004_020ad660.c:
+src/_ZN11dScMgBase_c9Virtual8CEv.c:
     complete
     .text start:0x020ad660 end:0x020ad674
 
