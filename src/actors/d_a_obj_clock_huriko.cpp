@@ -131,31 +131,36 @@ s32 daObjClockHuriko_c::InitResources()
  * speed reverses at each end of the arc, the angle integrates it, and the tick
  * sound plays as the speed passes +-0x10.
  *
- * THE HALFWORD AT 0x90 IS NOT NAMED BY ANY HEADER. It is the swing angle, and
- * it sits in dActor_c's padding between mAngleY (0x8e) and mPrevAngleY (0x94) --
- * consistent with that gap being an mAngleZ, but nothing here proves it, and
- * naming it means editing include/dActor_c.h, whose includer set is the whole
- * tree. Left as a raw offset deliberately; see the note on the addressing
- * below, which is load-bearing. */
+ * The swing angle is dActor_c::mAngleZ, declared at 0x090 in include/dActor_c.h;
+ * its separately materialized pointer below preserves the ROM's load/
+ * read-modify-write order under 2004/b56.
+ *
+ * NOT A RAW OFFSET, AND THAT IS DELIBERATE. tubuild's generated body spelled
+ * this halfword `*(short *)(c + 0x90)` under a comment asserting no header
+ * named it. include/dActor_c.h:73 does name it, and the legacy source this TU
+ * replaces already read it as mAngleZ -- the generator regressed the recovery
+ * and tools/tiers.py duly dropped this member out of CONVERTED for a raw
+ * offset. What follows is the legacy recovery restored, not a new guess. */
 s32 daObjClockHuriko_c::Behavior()
 {
     char *c = (char *)this;
 
     if (data_02092110[0] <= 0) {
-        short *p90 = (short *)(c + 0x90);
-        /* The test re-derives +0x90 instead of reading through p90, and that is
+        s16 *angleZ = &mAngleZ;
+        /* The test reads the field instead of going through angleZ, and that is
            load-bearing under 2004/b56: the ROM tests the field directly
            (`ldrsh r0,[r4,#0x90]`) and only then materialises the pointer
-           (`add r3,r4,#0x90`) for the read-modify-write below. Spelled as `*p90`,
-           b56 folds the test into the pointer and emits the two in the other order. */
-        if (*(short *)(c + 0x90) > 0) {
+           (`add r3,r4,#0x90`) for the read-modify-write below. Spelled as
+           `*angleZ`, b56 folds the test into the pointer and emits the two in
+           the other order. */
+        if (mAngleZ > 0) {
             mAngSpeed -= 8;
         } else {
             mAngSpeed += 8;
         }
-        *p90 = (short)(*p90 + mAngSpeed);
-        short w = mAngSpeed;
-        if (w == 0x10 || w == -0x10) {
+        *angleZ = (s16)(*angleZ + mAngSpeed);
+        s16 speed = mAngSpeed;
+        if (speed == 0x10 || speed == -0x10) {
             Sound::PlayBank3(0x16, *(const Vector3 *)&mCamSpacePosX);
         }
     }
