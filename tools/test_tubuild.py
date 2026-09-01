@@ -1981,6 +1981,19 @@ def test_partitioned_result_gate_requires_every_full_rom_proof():
         assert not tubuild.partitioned_link_ready(**bad), key
 
 
+def test_partitioned_storage_alias_gate_is_vacuously_exact_without_splits():
+    assert tubuild.initial_storage_alias_verdict({})
+    assert tubuild.initial_storage_alias_verdict({
+        "_ZTV1A": {"addressPointBias": 8},
+    })
+    assert not tubuild.initial_storage_alias_verdict({
+        "_ZTV1A": {"storageAlias": {"symbol": "A_VT"}},
+    })
+    assert not tubuild.initial_storage_alias_verdict({
+        "_ZTV1A": {"partitionSymbols": [{"symbol": "A_VT7"}]},
+    })
+
+
 def test_partitioned_recorder_is_compact_orthogonal_and_preserves_verified_evidence():
     entry = {"id": "ov999/T", "status": "data-verified"}
     data = {"entries": [entry]}
