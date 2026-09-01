@@ -945,25 +945,9 @@ src/PoppingLavaBubbles_Spawn.c:
     complete
     .text start:0x020b6dd8 end:0x020b6e08
 
-src/_ZN16daObjWaterfall_cD1Ev.cpp:
+src/actors/d_a_obj_waterfall.cpp:
     complete
-    .text start:0x020b6e08 end:0x020b6e2c
-
-src/_ZN16daObjWaterfall_cD0Ev.cpp:
-    complete
-    .text start:0x020b6e2c end:0x020b6e64
-
-src/_ZN16daObjWaterfall_c8BehaviorEv.cpp:
-    complete
-    .text start:0x020b6e64 end:0x020b6eac
-
-src/_ZN16daObjWaterfall_c13InitResourcesEv.cpp:
-    complete
-    .text start:0x020b6eac end:0x020b6ee8
-
-src/WaterfallMist_Spawn.cpp:
-    complete
-    .text start:0x020b6ee8 end:0x020b6f18
+    .text start:0x020b6e08 end:0x020b6f18
 
 src/_ZN15daObjMarioCap_cD1Ev.cpp:
     complete
