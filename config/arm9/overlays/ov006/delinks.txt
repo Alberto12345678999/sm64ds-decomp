@@ -1377,7 +1377,7 @@ src/func_ov006_020d1450.c:
     complete
     .text start:0x020d1450 end:0x020d14c0
 
-src/func_ov006_020d14c0.c:
+src/_ZN12dScMgAmida_c9Virtual88Eiiii.c:
     complete
     .text start:0x020d14c0 end:0x020d1958
 
@@ -6242,7 +6242,7 @@ src/func_ov006_021200cc.c:
     complete
     .text start:0x021200cc end:0x021200dc
 
-src/func_ov006_021200dc.c:
+src/_ZN13dScMgTeresa_c9Virtual88Eiiii.c:
     complete
     .text start:0x021200dc end:0x02120238
 
@@ -6341,7 +6341,7 @@ src/func_ov006_02120d8c.c:
     complete
     .text start:0x02120d8c end:0x02120da8
 
-src/func_ov006_02120da8.c:
+src/_ZN17dScMgTrampoline_c9Virtual88Eiiii.c:
     complete
     .text start:0x02120da8 end:0x02120f18
 
@@ -6501,7 +6501,7 @@ src/func_ov006_02122c90.c:
     complete
     .text start:0x02122c90 end:0x02122cb0
 
-src/func_ov006_02122cb0.c:
+src/_ZN18dScMgTrampoline2_c9Virtual88Eiiii.c:
     complete
     .text start:0x02122cb0 end:0x02122e20
 

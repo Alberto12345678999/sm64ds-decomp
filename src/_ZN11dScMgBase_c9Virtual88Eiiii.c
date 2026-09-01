@@ -1,3 +1,30 @@
+// @symbol _ZN11dScMgBase_c9Virtual88Eiiii
+/* dScMgBase_c::Virtual88 - slot 34.  THE BRUSH.
+
+   Walks a `size` x `size` square centred on (cx, cy) and paints every cell
+   inside it with palette index `colour`.  The address arithmetic is the DS
+   4bpp background-character layout: `(x/8 + (y/8)*32)*32 + (y&7)*4` picks the
+   word holding eight pixels of one row of one 8x8 tile, `(x&7)*4` is the
+   nibble inside it, and MultiCopy_Int is used for the read and the write-back
+   rather than a plain load/store.  Sixteen colours, one nibble per pixel.  All
+   four sides clip.
+
+   It reads exactly the two object fields slot 33 (Virtual84) initialises.
+   `obj+0x6c` is the layer index: 0..3 select G2S::GetBG0CharPtr through
+   GetBG3CharPtr, and anything else returns without drawing -- which is what
+   slot 33's -1 buys.  `obj+0x68` gates the wrapped region above the touch
+   screen, where the MAIN engine's G2::GetBG*CharPtr are used instead and y is
+   folded by `+ data_ov004_020beb6c + 0xc0`.  So slot 33 leaves the brush
+   disabled and a minigame arms it by choosing a layer.
+
+   Its only in-family caller is ov004:0x020ae5c4, the line rasteriser sitting
+   immediately after it in the image, which dispatches through +0x88 at seven
+   separate sites as it walks a segment.  See the slot-34 block in
+   include/dScMgBase_c.h for the arity and return-type measurements.
+
+   `Virtual88` is a placeholder after the +0x88 vtable offset, not a ROM name --
+   but unlike slots 29-32 there is no wrong name being retired here, because
+   the recovery pass never guessed one for this address. */
 #include "types.h"
 extern int* func_02054efc(void);
 extern int* func_02054ea8(void);
@@ -12,7 +39,7 @@ extern void MultiCopy_Int(void* a, void* b, int n);
 extern int data_ov004_020beb64;
 extern int data_ov004_020beb6c;
 
-void func_ov004_020ae3b4(char* obj, int cx, int cy, int val, int n)
+void _ZN11dScMgBase_c9Virtual88Eiiii(char* obj, int cx, int cy, int val, int n)
 {
     int oi;
     int x0;

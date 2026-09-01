@@ -1,3 +1,14 @@
+// @symbol _ZN17dScMgTrampoline_c9Virtual88Eiiii
+/* dScMgTrampoline_c::Virtual88 - slot 34, the brush on the MAIN engine.
+
+   dScMgD3DBase_c does not override this slot, so unlike slots 26-31 and 33 the
+   two trampoline classes do not share a body here: each has its own, and they
+   differ only in the shape table they read (data_ov006_02142f6c here,
+   _02142f78 in dScMgTrampoline2_c).
+
+   The layer switch on +0x6c is kept, but it selects G2::GetBG0..3CharPtr
+   instead of G2S's, and the wrapped-region branch is gone -- a 3D minigame owns
+   the top screen, so there is nothing above the touch screen to fold into. */
 #pragma opt_loop_invariants off
 
 extern int data_ov006_02142f6c[];
@@ -7,7 +18,7 @@ extern void *_ZN2G213GetBG2CharPtrEv(void);
 extern int func_02054d88(void);
 extern void MultiCopy_Int(int *dst, int *src, int len);
 
-void func_ov006_02120da8(void *obj, int x_base, int y, int val, int n)
+void _ZN17dScMgTrampoline_c9Virtual88Eiiii(void *obj, int x_base, int y, int val, int n)
 {
     int half;
     int x0;

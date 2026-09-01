@@ -1,3 +1,10 @@
+// @symbol _ZN18dScMgTrampoline2_c9Virtual88Eiiii
+/* dScMgTrampoline2_c::Virtual88 - slot 34.
+
+   dScMgTrampoline_c's body again, reading data_ov006_02142f78 instead of
+   _02142f6c.  They are separate addresses in the ROM rather than one shared
+   one because dScMgD3DBase_c does not override this slot, so there is no common
+   ancestor body for them to inherit. */
 #pragma opt_loop_invariants off
 
 extern int data_ov006_02142f78[];
@@ -8,7 +15,7 @@ extern void *_ZN2G213GetBG2CharPtrEv(void);
 extern int func_02054d88(void);
 extern void MultiCopy_Int(int *dst, int *src, int len);
 
-void func_ov006_02122cb0(void *obj, int x_base, int y, int val, int n)
+void _ZN18dScMgTrampoline2_c9Virtual88Eiiii(void *obj, int x_base, int y, int val, int n)
 {
     int half;
     int x0;

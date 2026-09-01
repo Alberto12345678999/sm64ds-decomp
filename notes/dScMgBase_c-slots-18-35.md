@@ -277,7 +277,7 @@ every slot also carries the base declaration and the ov004 base-body rename.
 | 31 | `Virtual7C` | 0x020b2880 | 7 - **DONE**, 3 declarations; the first slot ABOVE `dActor_c`'s table, which is what proves the borrowed names never applied -- `dScMgBase_c` is a SCENE, a sibling branch, not an actor |
 | 32 | `Virtual80` | 0x020b27f4 | 1 - **DONE**, 1 declaration; the MAIN-engine twin of 31, and the cheapest slot in the campaign after 22 |
 | 33 | `Virtual84` | 0x020b265c | 19 - **DONE**, 2 declarations; structurally slot 26 again (same 19 tables, same two owning classes, 17 inherited) and the first slot whose override lives inside a PROMOTED intact-object TU |
-| 34 | `Virtual88` | 0x020ae3b4 | 4 |
+| 34 | `Virtual88` | 0x020ae3b4 | 4 - **DONE**, 5 declarations; the first slot that takes ARGUMENTS (four, unanimous across seven call sites), the first whose purpose is legible from the body alone (a 4bpp pixel brush), and the first whose rename breaks a cross-file reference -- dScMgAmida_c's override calls the base body directly |
 | 35 | `Virtual8C` | 0x020ad660 | 1 |
 
 **One deferred cleanup, from slot 31 onward.** The base bodies for slots 31, 32 and
