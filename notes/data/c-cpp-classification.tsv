@@ -144,7 +144,7 @@ src/Flag_Spawn.c	WEAK-refs-only	ov009				1		None		-
 src/FlameChompFire_Spawn.c	WEAK-refs-only	ov070				1		None		-
 src/FlameChomp_Spawn.c	WEAK-refs-only	ov070				1		None		-
 src/FloatOnLavaPlatform_Spawn.c	WEAK-refs-only	ov022				1		None		-
-src/FloatOnWaterPlatformJrb_Spawn.c	S1-stores-rom-vptr	ov016			stores _ZTV17daObjFloatBoard_c	1		None	_ZTV17daObjFloatBoard_c/_ZTV23FloatOnWaterPlatformJrb	-
+src/daObjKi_Ita_c_classInit.c	S1-stores-rom-vptr	ov016			stores _ZTV17daObjFloatBoard_c	1		None	_ZTV17daObjFloatBoard_c/_ZTV23FloatOnWaterPlatformJrb	-
 src/FloatOnWaterPlatformWdwRectangle_Spawn.c	S1-stores-rom-vptr	ov029			stores _ZTV17daObjFloatBoard_c	1		None	_ZTV17daObjFloatBoard_c/_ZTV32FloatOnWaterPlatformWdwRectangle	-
 src/FloatOnWaterPlatformWdwSquare_Spawn.c	S1-stores-rom-vptr	ov029			stores _ZTV17daObjFloatBoard_c	1		None	_ZTV17daObjFloatBoard_c/_ZTV29FloatOnWaterPlatformWdwSquare	-
 src/FloatingFloorBfs_Spawn.c	S1-stores-rom-vptr	ov045			stores _ZTV14daObjUkiyuka_c	1		None	_ZTV14daObjUkiyuka_c/_ZTV16FloatingFloorBfs	-
@@ -374,20 +374,20 @@ src/RickshawBdw_Spawn.c	S1-stores-rom-vptr	ov043			stores _ZTV11RickshawBdw	1		N
 src/RickshawBs_Spawn.c	S1-stores-rom-vptr	ov047			stores _ZTV17daObjKurumajiku_c	1		None	_ZTV17daObjKurumajiku_c/_ZTV21daObjKm3_Kurumajiku_c	-
 src/RickshawPlatformBdw_Spawn.c	S1-stores-rom-vptr	ov043			stores _ZTV13daObjKuruma_c	1		None	_ZTV13daObjKuruma_c/_ZTV19RickshawPlatformBdw	-
 src/RickshawPlatformBs_Spawn.c	S1-stores-rom-vptr	ov047			stores _ZTV13daObjKuruma_c	1		None	_ZTV13daObjKuruma_c/_ZTV17daObjKm3_Kuruma_c	-
-src/RockPillar_Spawn.c	S1-stores-rom-vptr	ov016			stores _ZTV10RockPillar	1		None	_ZTV10RockPillar	-
+src/daObjKi_Hasira_c_classInit.c	S1-stores-rom-vptr	ov016			stores _ZTV10RockPillar	1		None	_ZTV10RockPillar	-
 src/RockTriangle_Spawn.c	WEAK-refs-only	ov102				1		None		-
 src/RollingIronBall_Spawn.c	WEAK-refs-only	ov100				1		None		-
 src/RollingLogLll_Spawn.c	S1-stores-rom-vptr	ov022			stores _ZTV13RollingLogLll	1		None	_ZTV13RollingLogLll/_ZTV13daObjMaruta_c	-
 src/RollingLogTtm_Spawn.c	S1-stores-rom-vptr	ov030			stores _ZTV13RollingLogTtm	1		None	_ZTV13RollingLogTtm/_ZTV13daObjMaruta_c	-
 src/RollingRock_Spawn.c	S1-stores-rom-vptr	ov021			stores _ZTV11RollingRock	1		None	_ZTV11RollingRock	-
 src/RopeBarrier_Spawn.c	WEAK-refs-only	ov102				1		None		-
-src/RotatingBridge_Spawn.c	WEAK-refs-only	ov015				1		None		-
+src/daObjBk_Rotebar_c_classInit.c	WEAK-refs-only	ov015				1		None		-
 src/RotatingClockHand_Spawn.c	WEAK-refs-only	ov035				1		None		-
 src/RotatingCogSmall_Spawn.c	WEAK-refs-only	ov035				1		None		-
 src/RotatingPlatformLll_Spawn.c	S1-stores-rom-vptr	ov022			stores _ZTV16daObjKaitendai_c	1		None	_ZTV16daObjKaitendai_c/_ZTV19RotatingPlatformLll	-
 src/RotatingPlatformRr_Spawn.c	S1-stores-rom-vptr	ov036			stores _ZTV16daObjKaitendai_c	1		None	_ZTV16daObjKaitendai_c/_ZTV18RotatingPlatformRr	-
 src/RotatingPlatformWdw_Spawn.c	S1-stores-rom-vptr	ov029			stores _ZTV16daObjKaitendai_c	1		None	_ZTV16daObjKaitendai_c/_ZTV19RotatingPlatformWdw	-
-src/RotatingPlatformWf_Spawn.c	S1-stores-rom-vptr	ov015			stores _ZTV16daObjKaitendai_c	1		None	_ZTV16daObjKaitendai_c/_ZTV18RotatingPlatformWf	-
+src/daObjBk_Ukisima_c_classInit.c	S1-stores-rom-vptr	ov015			stores _ZTV16daObjKaitendai_c	1		None	_ZTV16daObjKaitendai_c/_ZTV18RotatingPlatformWf	-
 src/RotatingUpDownPlatformUtm_Spawn.c	WEAK-refs-only	ov091				1		None		-
 src/RotatingUpDownPlatform_Spawn.c	WEAK-refs-only	ov091				1		None		-
 src/RunKuppaScript.c	PURE-C	arm9				1		None		-
@@ -494,7 +494,7 @@ src/TinyWater_Spawn.c	WEAK-refs-only	ov033				1		None		-
 src/Toad_Spawn.c	WEAK-refs-only	ov085				1		None		-
 src/Tornado_Spawn.c	WEAK-refs-only	ov096				1		None		-
 src/TouchArea_Update.c	PURE-C	ov001				1		None		-
-src/TowerStep_Spawn.c	WEAK-refs-only	ov015				1		None		-
+src/daObjBk_Lift_c_classInit.c	WEAK-refs-only	ov015				1		None		-
 src/Trap_Spawn.c	S1-stores-rom-vptr	ov010			stores _ZTV14daObjC1_Trap_c	1		None	_ZTV14daObjC1_Trap_c	-
 src/daObjTbox_c_classInit.c	WEAK-refs-only	ov064				1		None		-
 src/TtcConveyorBeltLarge_Spawn.c	WEAK-refs-only	ov065				1		None		-
