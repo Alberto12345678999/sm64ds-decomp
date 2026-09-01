@@ -1,5 +1,5 @@
-#ifndef SHUTTERBOB_H
-#define SHUTTERBOB_H
+#ifndef DAOBJBSWDOOR_C_H
+#define DAOBJBSWDOOR_C_H
 
 #include "types.h"
 
@@ -12,11 +12,11 @@
  *
  *   _ZTI14daObjBSwdoor_c  ov014 0x021145b8
  *   _ZTS14daObjBSwdoor_c  ov014 0x021145d0
- *   _ZTV10ShutterBob      ov014 0x02114608  (its record sits at V-4)
+ *   _ZTV14daObjBSwdoor_c      ov014 0x02114608  (its record sits at V-4)
  *   kind  __si_class_type_info, ONE base, subobject offset 0
  *   base  daObjSwdoor_c, ov002 0x021099c0
  *
- * SIZE 0x324, from ShutterBob_Spawn's literal 804. It overrides slots 0
+ * SIZE 0x324, from daObjBSwdoor_c_Spawn's literal 804. It overrides slots 0
  * (InitResources), 3 (CleanupResources) and 6 (Behavior), all three of which the
  * base leaves null.
  *
@@ -28,7 +28,7 @@
  * WHAT THIS HEADER USED TO SAY: a `u8 mModel` marker at 0xd4 and a
  * `u8 mMovingMeshCollider` marker at 0x124, over `u8 pad_000[0xd4]`. Both were
  * dBgActor_c's, twice removed, and are inherited now -- dBgActor_c calls the second
- * one mMeshCollider, which is why _ZN10ShutterBob13InitResourcesEv.cpp changes
+ * one mMeshCollider, which is why _ZN14daObjBSwdoor_c13InitResourcesEv.cpp changes
  * with this header.
  */
 
@@ -36,19 +36,19 @@
 
 #include "daObjSwdoor_c.h"
 
-struct ShutterBob : daObjSwdoor_c {
+struct daObjBSwdoor_c : daObjSwdoor_c {
     u8  pad_320[0x4];
 
     /* --- vtable --- */
-    virtual ~ShutterBob();             /* slots 16 (D1), 17 (D0) */
+    virtual ~daObjBSwdoor_c();             /* slots 16 (D1), 17 (D0) */
 
     int Behavior();                    /* slot  6 */
     int CleanupResources();            /* slot  3 */
     int InitResources();               /* slot  0 */
 };
 
-typedef char ShutterBob_size_must_be_0x324[sizeof(ShutterBob) == 0x324 ? 1 : -1];
+typedef char daObjBSwdoor_c_size_must_be_0x324[sizeof(daObjBSwdoor_c) == 0x324 ? 1 : -1];
 
 #endif /* __cplusplus */
 
-#endif /* SHUTTERBOB_H */
+#endif /* DAOBJBSWDOOR_C_H */
