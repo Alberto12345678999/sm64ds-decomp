@@ -87,7 +87,7 @@ src/_ZN17daObjKm1_Dorifu_c13InitResourcesEv.cpp:
     complete
     .text start:0x02111758 end:0x0211176c
 
-src/StairsBdw_Spawn.cpp:
+src/daObjKm1_Dorifu_c_classInit.cpp:
     complete
     .text start:0x0211176c end:0x021117fc
 

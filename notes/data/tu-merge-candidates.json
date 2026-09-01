@@ -6860,7 +6860,7 @@
     "src/_ZN16SwingingPlatform6RenderEv.cpp",
     "src/_ZN16SwingingPlatform8BehaviorEv.cpp",
     "src/_ZN16SwingingPlatform13InitResourcesEv.cpp",
-    "src/SwingingPlatform_Spawn.c"
+    "src/daObjRcBuranko_c_classInit.c"
    ],
    "ext_mix": {
     ".cpp": 5,
@@ -8017,7 +8017,7 @@
     "src/_ZN21ArmedRotatingPlatform6RenderEv.cpp",
     "src/_ZN21ArmedRotatingPlatform8BehaviorEv.cpp",
     "src/_ZN21ArmedRotatingPlatform13InitResourcesEv.cpp",
-    "src/ArmedRotatingPlatform_Spawn.c"
+    "src/daObjRc_Guruguru_c_classInit.c"
    ],
    "ext_mix": {
     ".cpp": 6,
@@ -10235,7 +10235,7 @@
     "src/_ZN18RotatingPlatformRrD0Ev.c",
     "src/_ZN18RotatingPlatformRr16CleanupResourcesEv.cpp",
     "src/_ZN18RotatingPlatformRr13InitResourcesEv.cpp",
-    "src/RotatingPlatformRr_Spawn.c"
+    "src/daObjRc_Kaitendai_c_classInit.c"
    ],
    "ext_mix": {
     ".cpp": 3,
@@ -35873,7 +35873,7 @@
    "n_functions_map": 1,
    "n_files": 1,
    "files": [
-    "src/FlyingCarpet_Spawn.cpp"
+    "src/daObjRcCarpet_c_classInit.cpp"
    ],
    "ext_mix": {
     ".cpp": 1
@@ -35921,7 +35921,7 @@
    "n_functions_map": 1,
    "n_files": 1,
    "files": [
-    "src/StairsBdw_Spawn.cpp"
+    "src/daObjKm1_Dorifu_c_classInit.cpp"
    ],
    "ext_mix": {
     ".cpp": 1
