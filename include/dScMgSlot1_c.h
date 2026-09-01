@@ -83,18 +83,26 @@
  * slots 27/28 (OnHitByMegaChar/OnHitFromUnderneath) are real overrides.  The
  * names were independently recovered on dScMgBase_c's own copies at the same
  * two slots (src/_ZN11dScMgBase_c15OnHitByMegaCharEv.cpp and
- * .../func_ov004_020af04c.cpp, both of which this class's overrides call
- * into), and on many unrelated fBase_c descendants across other overlays -- a
- * shared, fixed collision-event slot pair used across both the dActor_c and
- * dScene_c branches, not a coincidence of numbering.
+ * .../_ZN11dScMgBase_c19OnHitFromUnderneathEv.cpp, both of which this class's
+ * overrides call into), and on many unrelated fBase_c descendants across other
+ * overlays -- a shared, fixed collision-event slot pair used across both the
+ * dActor_c and dScene_c branches, not a coincidence of numbering.
  *
  * THE SIGNATURES ARE NOT dActor_c.h's, whatever this banner used to say.  Both
  * were copied from include/dActor_c.h's slots 27/28 back when nothing in this
- * branch declared them.  Slot 27's parameter list has since been MEASURED off
- * the cartridge -- neither this class's body nor dScMgBase_c's reads a second
- * argument register -- so it is `OnHitByMegaChar()` here and on the base.
- * Slot 28 still carries dActor_c.h's `dActor_c &other` and is still
- * unmeasured; the same reconciliation falls due when the base declares it.
+ * branch declared them, and both have now come off.  Slot 27's `Player &` went
+ * when the base declared 27: neither body reads a second argument register.
+ * Slot 28's `dActor_c &other` goes in this commit, on dScMgBase_c's evidence
+ * alone -- its body at ov004:0x020af04c writes r1 (`add r1, r4, #0x4000`)
+ * before it ever reads it and touches no other argument register.
+ *
+ * That last one is measured ONCE, not twice, and the difference is worth
+ * keeping in view.  At slot 27 this class's own override corroborated the
+ * base: it zeroed r0/r1 for SetSubBg1Offset before doing anything else.  The
+ * slot-28 override cannot, because it calls the base as its very first act --
+ * a second argument would ride through r1 untouched and leave no trace either
+ * way.  What the cartridge does gate is that the two declarations AGREE, and
+ * romdata_check is the gate that sees it.
  *
  * THE MISLANDING THIS PARAGRAPH USED TO DESCRIBE IS FIXED.  Declaring
  * dScMgBase_c's slot 26 fixed half of it and slot 27 -- this commit -- fixed
@@ -107,28 +115,27 @@
  * by a change in a DIFFERENT header, which is the whole reason romdata_check
  * runs on every slot of this campaign: rombuild was green before and after.
  *
- * OnHitByMegaChar is a genuine override as of this commit, so the base fixes
- * its index and it no longer rides on arithmetic.  OnHitFromUnderneath still
- * does: dScMgBase_c declares through 27, so 28 is simply the next free index,
- * and it is the only virtual left in this class that mwcc numbers for itself.
+ * OnHitByMegaChar became a genuine override when the base declared slot 27,
+ * and OnHitFromUnderneath becomes one here.  dScMgBase_c now declares 18
+ * through 28 without a gap, so the base fixes every index in this class and
+ * mwcc numbers no virtual of it for itself any more.
  *
- * THE ARITHMETIC IS STILL LOAD-BEARING -- read this before adding slot 28 to
- * dScMgBase_c.h.  OnHitFromUnderneath only STAYS at 28 if the base's slot-28
- * declaration is one this header OVERRIDES.  Every arity dScMgBase_c has
- * measured in this campaign is `no explicit parameters`; this header copied
- * `dActor_c &other` from include/dActor_c.h, which has been wrong on every
- * parameter list the campaign has measured -- slot 27's included, one line
- * above, corrected in the same commit that declared it.  If the base declares
- * `OnHitFromUnderneath()` while this keeps `(dActor_c &)` they are two
- * different functions: the base's takes 28, this one becomes a new slot at 29,
- * and this table goes straight back to DIFFERS.  The two declarations have to
- * be reconciled in the same change, and romdata_check is what will say whether
- * they were. */
+ * THE ARITHMETIC WAS LOAD-BEARING RIGHT UP TO THIS COMMIT, and the trap the
+ * paragraph here used to warn about is the one this commit walked through.
+ * OnHitFromUnderneath sat on 28 only because the base stopped at 27 and 28 was
+ * the next free index.  Had the base declared `OnHitFromUnderneath()` while
+ * this header kept `(dActor_c &)`, the two would have been different
+ * functions: the base's takes 28, this one becomes a new slot at 29, and
+ * _ZTV12dScMgSlot1_c goes straight back to DIFFERS -- with rombuild green
+ * throughout, because rombuild does not read vtables.  Both declarations
+ * changed together and romdata_check is what says they were reconciled.
+ *
+ * Slots 29-35 add no virtual to this class, so the trap cannot recur HERE.  It
+ * recurs anywhere else a descendant declared a base slot early, which is the
+ * one thing to check before declaring each of the seven that remain. */
 #ifndef DSCMGSLOT1_C_H
 #define DSCMGSLOT1_C_H
 #include "dScMgBase_c.h"
-
-struct dActor_c;
 
 struct dScMgSlot1_c : dScMgBase_c {
     struct betIcon_c : dThIcon_c {
@@ -142,14 +149,13 @@ struct dScMgSlot1_c : dScMgBase_c {
     virtual s32 InitResources();                       /* slot  0 */
     virtual s32 Behavior();     /* slot  6 -- ov006 0x0210c9e0, not decompiled */
     virtual s32 Render();                               /* slot  9 */
-    /* Overrides dScMgBase_c's slots 18 and 27, so the base fixes both of those
-       indices.  OnHitFromUnderneath is NOT an override yet -- the base stops
-       at 27 -- so its index is still declaration order counting on from 28,
-       and anything undeclared-on-the-base inserted above it would claim 28 and
-       push it down.  Order is load-bearing here; see the banner. */
+    /* All three override dScMgBase_c -- slots 18, 27 and 28 -- so the base
+       fixes every index below and declaration order no longer decides any of
+       them.  It decided 27 and 28 until the base declared them; see the banner
+       for what that cost and how it was closed. */
     virtual int  OnYoshiTryEat(int arg);                 /* slot 18 */
     virtual void OnHitByMegaChar();                     /* slot 27 */
-    virtual int OnHitFromUnderneath(dActor_c &other);      /* slot 28 */
+    virtual int  OnHitFromUnderneath();                 /* slot 28 */
 
     betIcon_c mBetIcon;      /* 0x4660 -- RTTI-proven nested touch icon */
     u8  pad_4684[0xc];      /* 0x4684 -- embedded object, own type unknown */
