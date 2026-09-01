@@ -4977,7 +4977,7 @@ src/_ZN12dScMgSlot3_c16OnAimedAtWithEggEv.c:
     complete
     .text start:0x0210aa3c end:0x0210aa60
 
-src/func_ov006_0210aa60.cpp:
+src/_ZN12dScMgSlot3_c9Virtual80Ev.cpp:
     complete
     .text start:0x0210aa60 end:0x0210ab08
 

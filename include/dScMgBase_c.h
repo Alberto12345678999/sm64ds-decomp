@@ -646,10 +646,65 @@ struct dScMgBase_c : dScene_c {
            dScMgTrampoline2_c.h.  Five tables reference that address, so it is
            dScMgD3DBase_c's.  Fixed here along with the type it casts `this` to. */
     virtual int  Virtual7C();                          /* slot 31 */
+    /* Slot 32 -- Virtual80, and it is slot 31 again with the other display
+       engine.  Reading the two bodies side by side is the fastest way to see
+       that neither name the recovery pass gave them was ever a measurement.
+         WHY THE NAME CHANGES, and it is a WORSE case than 31.  `AfterClsn` is a
+           genuine ROM name -- include/PathLift.h:58 declares it and
+           _ZN16dPathLiftActor_c9AfterClsnEi is a real mangled symbol -- but
+           dPathLiftActor_c derives from dBgActor_c, which derives from
+           dActor_c.  That is TWO forks off this branch, not one:
+               fBase_c -> dBase_c -> dActor_c -> dBgActor_c -> dPathLiftActor_c
+               fBase_c -> dBase_c -> dScene_c -> dScMgBase_c
+           The shared ancestry stops at dBase_c, which adds no virtual, so the
+           only thing the two indices have in common is fBase_c's 18-slot base.
+           dPathLiftActor_c's AfterClsn also takes an `int`; this slot takes
+           nothing.  Same borrowed-label defect settled at slot 31, one fork
+           further out.  Virtual80 is the offset spelling, as at 31 and as
+           slots 33-35 are recorded in notes/dScMgBase_c-slots-18-35.md.
+         WHAT IT DOES -- the MAIN screen, where 31 did the sub.  Line for line
+           the same body against the other engine: three read-modify-writes on
+           the MAIN BG1CNT at 0x0400000a (`& ~3`, `(& 0x43) | 0x1000`, `& ~0x40`)
+           leave it holding exactly 0x1000, SetBg1Offset(0, 0) resets the
+           layer's scroll, `data_0209d45c &= ~2` clears BG1's bit in the MAIN
+           BG-enable shadow that slot 30 restores the main DISPCNT from, and two
+           LoadCompressedFileAt calls install a language-indexed character file
+           and the shared screen map -- file 0x67 here, 0x5b there.  Slot 31
+           went through G2S::GetBG1CharPtr and G2S::GetBG1ScrPtr; this one goes
+           through func_02054ea8 and _ZN2G212GetBG1ScrPtrEv (ov004:0x020b2848
+           and 0x020b285c).  So the ROM itself names the pair G2S/G2.  It builds
+           this minigame's TOP-screen background; it has nothing to do with
+           collision.
+         WHEN IT RUNS, and this is the other half of the symmetry.  Slot 31 is
+           called last by dScMgBase_c::BeforeInitResources; slot 32 is called
+           FIRST by dScMgBase_c::AfterInitResources(u32) at ov004:0x020b0900,
+           before the scene goes live.  Before/after, sub/main.
+         arity: no explicit parameters, MEASURED at that one call site.  The
+           whole-image scan for the dispatch pair at +0x80 (`ldr rN,[rM,#0x80]`
+           with Rn != pc, followed within three instructions by `blx rN`) finds
+           exactly THREE sites: ov004:0x020b0900, and ov002:0x020effa4 plus
+           ov064:0x02116e58, which are dPathLiftActor_c::AfterClsn on the other
+           branch.  At the ov004 site the sequence is
+           `ldr r2,[r0]; mov r5,r0; ldr r2,[r2,#0x80]; mov r4,r1; blx r2` --
+           r0 is `this`, and r1 is AfterInitResources's own `vfSuccess`, saved
+           into r4 BECAUSE the call clobbers it and handed to
+           0x0203188c afterwards.  A callee that consumed r1 would not need it
+           parked first.
+         return type: int, A HINT, and the FOURTH consecutive slot no body pins.
+           The base's last statement is the LoadCompressedFileAt call, so
+           whatever it returns falls out in r0; the caller overwrites r0 with a
+           literal 2 on the very next instruction.
+         overrides: ONE table, one declaration -- dScMgSlot3_c
+           (ov006:0x0210aa60), which repeats the base body verbatim and then
+           writes BG1CNT once more, to 0x1118 instead of the base's 0x1000:
+           same layer, this minigame's own character and screen base blocks.
+           No reconciliation, no misattribution: the smallest slot in the
+           campaign after 22's zero. */
+    virtual int  Virtual80();                          /* slot 32 */
 
-    /* Slots 32-35 are added the same way: one slot per change, together with
+    /* Slots 33-35 are added the same way: one slot per change, together with
        every descendant override of that slot. Until then they stay undeclared
-       and the emitted tables stop at slot 31.
+       and the emitted tables stop at slot 32.
 
        THE OCCUPIED-SLOT TRAP IS NO LONGER LOADED IN dScMgSlot1_c -- slots 27
        and 28 were both of its early declarations and both are reconciled --

@@ -26,7 +26,7 @@ not ownable either. The same cap applies to all 32 descendants of `dScMgBase_c`.
 | 29 | 0x74 | ov004:0x020af094 | `OnAimedAtWithEgg` | `void(Obj*)` |
 | 30 | 0x78 | ov004:0x020aeed8 | `OnAimedAtWithEggReturnVec` | `void(char*)` |
 | 31 | 0x7C | ov004:0x020b2880 | *(none)* -> `Virtual7C` | `void(void)` |
-| 32 | 0x80 | ov004:0x020b27f4 | `AfterClsn` | `void(void)` |
+| 32 | 0x80 | ov004:0x020b27f4 | *(none)* -> `Virtual80` | `void(void)` |
 | 33 | 0x84 | ov004:0x020b265c | *(none)* → `Virtual84` | `void(char *obj)` |
 | 34 | 0x88 | ov004:0x020ae3b4 | *(none)* → `Virtual88` | `void(char*,int,int,int,int)` |
 | 35 | 0x8C | ov004:0x020ad660 | *(none)* → `Virtual8C` | `int(int*)` |
@@ -145,9 +145,34 @@ and there is nothing left to borrow. `Kill` was carried in from `dBgActor_c`, wh
 `dActor_c`'s CHILD -- a nephew branch, one fork further away still -- where
 `_ZN10dBgActor_c4KillEv` at ov002:0x020ee55c is that class's own new slot 31.
 Slot 31 is recorded here as `Virtual7C`, the spelling `fBase_c` already uses for
-`Virtual34`/`Virtual38` and the one slots 33-35 carry below. `AfterClsn` at 32 has the
-same provenance problem and should be re-examined when that slot lands. Signatures for
-32-35 still need reconstructing from their bodies: four slots, not eighteen.
+`Virtual34`/`Virtual38` and the one slots 33-35 carry below.
+
+**Slot 32 turned out to be the same defect one fork further out**, and it shipped as
+`Virtual80`. `AfterClsn` IS a real ROM name -- `include/PathLift.h:58` declares it and
+`_ZN16dPathLiftActor_c9AfterClsnEi` is a genuine mangled symbol -- but
+`dPathLiftActor_c` derives from `dBgActor_c`, which derives from `dActor_c`:
+
+```
+fBase_c -> dBase_c -> dActor_c -> dBgActor_c -> dPathLiftActor_c
+fBase_c -> dBase_c -> dScene_c -> dScMgBase_c
+```
+
+Two forks, not one, and that AfterClsn takes an `int` where this slot takes nothing.
+The whole-image dispatch scan at +0x80 finds exactly three sites: `ov004:0x020b0900`
+(this branch) and `ov002:0x020effa4` + `ov064:0x02116e58` (that one). Signatures for
+33-35 still need reconstructing from their bodies: three slots, not eighteen.
+
+**Slots 31 and 32 are one function twice, against the two display engines.** 31 is the
+SUB screen, called last by `BeforeInitResources`; 32 is the MAIN screen, called first by
+`AfterInitResources(u32)`. Same three read-modify-writes on `BG1CNT`, same scroll reset,
+same `&= ~2` on the engine's BG-enable shadow (`data_0209d454` / `data_0209d45c` -- the
+two words slot 30 restores the DISPCNTs from), same language-indexed character file plus
+a shared screen map, file `0x5b` against `0x67`. 31 reaches them through
+`G2S::GetBG1CharPtr` / `G2S::GetBG1ScrPtr`; 32 through `func_02054ea8` /
+`_ZN2G212GetBG1ScrPtrEv`. That last pairing also identifies `func_02054ea8` as
+`G2::GetBG1CharPtr` by position -- the G2S pair is `0x02054e88`/`0x02055148` and the G2
+pair is `0x02054ea8`/`0x02055168`, the same `+0x20` apart -- but that is an arm9 rename
+outside this campaign's scope and is deliberately NOT taken here.
 
 ## What PR B actually costs (census, 2026-08-31)
 
@@ -250,7 +275,7 @@ every slot also carries the base declaration and the ov004 base-body rename.
 | 29 | `OnAimedAtWithEgg` | 0x020af094 | 6 - **DONE**, 2 declarations; the first since 26 with no occupied-slot trap, and the first whose NAME the ROM contradicts |
 | 30 | `OnAimedAtWithEggReturnVec` | 0x020aeed8 | 6 - **DONE**, 2 declarations; the slot that settles 29 (it restores, word for word, what 29 saves) and the first whose name the ROM refutes in BOTH halves |
 | 31 | `Virtual7C` | 0x020b2880 | 7 - **DONE**, 3 declarations; the first slot ABOVE `dActor_c`'s table, which is what proves the borrowed names never applied -- `dScMgBase_c` is a SCENE, a sibling branch, not an actor |
-| 32 | `AfterClsn` | 0x020b27f4 | 1 |
+| 32 | `Virtual80` | 0x020b27f4 | 1 - **DONE**, 1 declaration; the MAIN-engine twin of 31, and the cheapest slot in the campaign after 22 |
 | 33 | `Virtual84` | 0x020b265c | 19 |
 | 34 | `Virtual88` | 0x020ae3b4 | 4 |
 | 35 | `Virtual8C` | 0x020ad660 | 1 |
