@@ -20,7 +20,8 @@
  *                           which is ordinary here: 183 of the ROM's 413 base
  *                           edges leave their overlay.
  *
- * NO FIELDS OF ITS OWN: its factory, TrickyTriangles_Spawn, passes 0xdcc to
+ * NO FIELDS OF ITS OWN: daObjRc_Dorifu_c_classInit (historical alias
+ * TrickyTriangles_Spawn) passes 0xdcc to
  * fBase_c::operator new, which daObjDorifu_c fills. It overrides slots 0 and 3,
  * which the base leaves null, and both bodies just forward to daObjDorifu_c's
  * shared helpers in ov002 with this class's own argument block. Everything this

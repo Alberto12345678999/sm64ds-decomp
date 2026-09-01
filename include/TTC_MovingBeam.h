@@ -43,7 +43,8 @@ struct TTC_MovingBeam : dBgActor_c {
     int InitResources();
     int Render();
 
-    /* Tail padding. The field span stops short of the real size: TTC_MovingBeam_Spawn
+    /* Tail padding. The field span stops short of the real size:
+       daObjCtMecha09_c_classInit (historical alias TTC_MovingBeam_Spawn)
        calls fBase_c::operator new(0x38c), read off the retail
        instruction. A span is only a LOWER BOUND. */
     Matrix4x3 mShadowMat;        /* 0x35c */
