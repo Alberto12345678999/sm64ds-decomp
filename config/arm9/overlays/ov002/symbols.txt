@@ -77,7 +77,7 @@ _ZN7daBar_c16OnPendingDestroyEv kind:function(arm,size=0x4) addr:0x020b064c
 _ZN7daBar_c6RenderEv kind:function(arm,size=0x8) addr:0x020b0650
 _ZN7daBar_c8BehaviorEv kind:function(arm,size=0x24) addr:0x020b0658
 _ZN7daBar_c13InitResourcesEv kind:function(arm,size=0x94) addr:0x020b067c
-InvisiblePole_Spawn kind:function(arm,size=0x38) addr:0x020b0710
+daBar_c_classInit kind:function(arm,size=0x38) addr:0x020b0710
 _ZN9CameraTagD1Ev kind:function(arm,size=0x24) addr:0x020b0748
 _ZN9CameraTagD0Ev kind:function(arm,size=0x38) addr:0x020b076c
 _ZN9CameraTag16CleanupResourcesEv kind:function(arm,size=0x8) addr:0x020b07a4
@@ -1120,13 +1120,13 @@ StarCamera_Spawn kind:function(arm,size=0x30) addr:0x020ebe5c
 StarMarker_Spawn kind:function(arm,size=0x48) addr:0x020ebe8c
 SilverStar_Spawn kind:function(arm,size=0x5c) addr:0x020ebed4
 PowerStar_Spawn kind:function(arm,size=0x5c) addr:0x020ebf30
-_ZN4TreeD1Ev kind:function(arm,size=0x40) addr:0x020ebf8c
-_ZN4TreeD0Ev kind:function(arm,size=0x54) addr:0x020ebfcc
-_ZN4Tree16CleanupResourcesEv kind:function(arm,size=0x80) addr:0x020ec020
-_ZN4Tree16OnPendingDestroyEv kind:function(arm,size=0x4) addr:0x020ec0a0
-_ZN4Tree6RenderEv kind:function(arm,size=0x134) addr:0x020ec0a4
-_ZN4Tree8BehaviorEv kind:function(arm,size=0x54) addr:0x020ec1d8
-_ZN4Tree13InitResourcesEv kind:function(arm,size=0x100) addr:0x020ec22c
+_ZN8daTree_cD1Ev kind:function(arm,size=0x40) addr:0x020ebf8c
+_ZN8daTree_cD0Ev kind:function(arm,size=0x54) addr:0x020ebfcc
+_ZN8daTree_c16CleanupResourcesEv kind:function(arm,size=0x80) addr:0x020ec020
+_ZN8daTree_c16OnPendingDestroyEv kind:function(arm,size=0x4) addr:0x020ec0a0
+_ZN8daTree_c6RenderEv kind:function(arm,size=0x134) addr:0x020ec0a4
+_ZN8daTree_c8BehaviorEv kind:function(arm,size=0x54) addr:0x020ec1d8
+_ZN8daTree_c13InitResourcesEv kind:function(arm,size=0x100) addr:0x020ec22c
 Tree_Spawn kind:function(arm,size=0x5c) addr:0x020ec32c
 _ZN4WarpD1Ev kind:function(arm,size=0x30) addr:0x020ec388
 _ZN4WarpD0Ev kind:function(arm,size=0x44) addr:0x020ec3b8
@@ -1694,7 +1694,7 @@ _ZTV13OneUpMushroom kind:data(any) addr:0x021083c8
 _ZTV7da1up_c kind:data(any) addr:0x021083c8
 _ZTS7daBar_c kind:data(any) addr:0x02108444
 _ZTI7daBar_c kind:data(any) addr:0x02108450
-InvisiblePole_SpawnInfo kind:data(any) addr:0x0210845c
+g_profile_BAR kind:data(any) addr:0x0210845c
 _ZTV7daBar_c kind:data(any) addr:0x02108480
 _ZTI10daCamTag_c kind:data(any) addr:0x021084fc
 _ZTS10daCamTag_c kind:data(any) addr:0x02108508
@@ -2206,7 +2206,7 @@ data_ov002_0210abb8 kind:data(any) addr:0x0210abb8
 _ZTS8daTree_c kind:data(any) addr:0x0210abc4
 _ZTI8daTree_c kind:data(any) addr:0x0210abd0
 Tree_SpawnInfo kind:data(any) addr:0x0210abdc
-_ZTV4Tree kind:data(any) addr:0x0210ac00
+_ZTV8daTree_c kind:data(any) addr:0x0210ac00
 _ZTI11daWarpkun_c kind:data(any) addr:0x0210ac7c
 _ZTS11daWarpkun_c kind:data(any) addr:0x0210ac88
 Warp_SpawnInfo kind:data(any) addr:0x0210ac98

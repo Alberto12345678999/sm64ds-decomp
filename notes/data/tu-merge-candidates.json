@@ -1192,7 +1192,7 @@
     "src/_ZN3Amp6RenderEv.cpp",
     "src/_ZN3Amp8BehaviorEv.cpp",
     "src/_ZN3Amp13InitResourcesEv.cpp",
-    "src/Amp_Spawn.c"
+    "src/daBrq_c_classInit.c"
    ],
    "ext_mix": {
     ".cpp": 11,
@@ -7462,7 +7462,7 @@
    "start": "0x20ebf8c",
    "end": "0x20ec388",
    "classes": [
-    "Tree"
+    "daTree_c"
    ],
    "n_functions_map": 8,
    "n_files": 8,
@@ -37866,7 +37866,7 @@
     "src/_ZN3Amp6RenderEv.cpp",
     "src/_ZN3Amp8BehaviorEv.cpp",
     "src/_ZN3Amp13InitResourcesEv.cpp",
-    "src/Amp_Spawn.c"
+    "src/daBrq_c_classInit.c"
    ],
    "ext_mix": {
     ".cpp": 11,
