@@ -476,7 +476,7 @@ In the `#else` C twin, ten offsets already named at exactly those offsets in
 
 ---
 
-## daObjHatenaSwitch_c (`include/daObjHatenaSwitch_c.h`, ov002, size 0x724)
+## daObjHatenaSwitch_c (`include/daObjHatenaSwitch_c.h`, [ov002](../config/arm9/overlays/ov002/symbols.txt), size 0x724)
 
 Bodies read in the promoted class TU: `daObjHatenaSwitch_c::InitResources`,
 `daObjHatenaSwitch_c::Behavior`, `daObjHatenaSwitch_c::CleanupResources`, and
