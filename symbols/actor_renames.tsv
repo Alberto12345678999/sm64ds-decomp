@@ -576,6 +576,7 @@ ov015	0x021124a8	func_ov015_021124a8	_ZN14MovingBarSmall6RenderEv	vtable slot 9
 ov015	0x021124d0	func_ov015_021124d0	_ZN14MovingBarSmall8BehaviorEv	vtable slot 6
 ov015	0x0211269c	func_ov015_0211269c	_ZN14MovingBarSmall13InitResourcesEv	vtable slot 0
 ov015	0x0211290c	func_ov015_0211290c	TowerStep_Spawn	spawnfunc
+ov015	0x0211290c	TowerStep_Spawn	daObjBk_Lift_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov015	0x02112944	func_ov015_02112944	_ZN9TowerStepD1Ev	vtable slot 16
 ov015	0x02112988	func_ov015_02112988	_ZN9TowerStepD0Ev	vtable slot 17
 ov015	0x021129e0	func_ov015_021129e0	_ZN9TowerStep16CleanupResourcesEv	vtable slot 3
@@ -583,7 +584,9 @@ ov015	0x02112a24	func_ov015_02112a24	_ZN9TowerStep6RenderEv	vtable slot 9
 ov015	0x02112a4c	func_ov015_02112a4c	_ZN9TowerStep8BehaviorEv	vtable slot 6
 ov015	0x02112b04	func_ov015_02112b04	_ZN9TowerStep13InitResourcesEv	vtable slot 0
 ov015	0x02112ba0	func_ov015_02112ba0	RotatingBridge_Spawn	spawnfunc
+ov015	0x02112ba0	RotatingBridge_Spawn	daObjBk_Rotebar_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov015	0x02112cb8	func_ov015_02112cb8	RotatingPlatformWf_Spawn	spawnfunc
+ov015	0x02112cb8	RotatingPlatformWf_Spawn	daObjBk_Ukisima_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov015	0x02112cf4	func_ov015_02112cf4	_ZN11FallBlockWfD1Ev	vtable slot 16
 ov015	0x02112d44	func_ov015_02112d44	_ZN11FallBlockWfD0Ev	vtable slot 17
 ov015	0x02112da8	func_ov015_02112da8	_ZN11FallBlockWf16CleanupResourcesEv	vtable slot 3
@@ -599,10 +602,13 @@ ov015	0x0211454c	data_ov015_0211454c	MovingBarSmall_SpawnInfo	spawninfo
 ov015	0x02114568	data_ov015_02114568	MovingBarBig_SpawnInfo	spawninfo
 ov015	0x0211458c	data_ov015_0211458c	_ZTV14KnockDownPlank	vtable alloc=0x39c
 ov015	0x0211462c	data_ov015_0211462c	TowerStep_SpawnInfo	spawninfo
+ov015	0x0211462c	TowerStep_SpawnInfo	g_profile_BK_LIFT01	reconstructed profile global; literal ROM ID BK_LIFT01+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov015	0x02114650	data_ov015_02114650	_ZTV14MovingBarSmall	vtable alloc=0x338
 ov015	0x021146f0	data_ov015_021146f0	RotatingBridge_SpawnInfo	spawninfo
+ov015	0x021146f0	RotatingBridge_SpawnInfo	g_profile_BK_ROTEBAR	reconstructed profile global; literal ROM ID BK_ROTEBAR+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov015	0x02114714	data_ov015_02114714	_ZTV9TowerStep	vtable alloc=0x394
 ov015	0x021147c4	data_ov015_021147c4	RotatingPlatformWf_SpawnInfo	spawninfo
+ov015	0x021147c4	RotatingPlatformWf_SpawnInfo	g_profile_BK_UKISIMA	reconstructed profile global; literal ROM ID BK_UKISIMA+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov015	0x021148b8	data_ov015_021148b8	FallBlockWf_SpawnInfo	spawninfo
 ov015	0x021148b8	FallBlockWf_SpawnInfo	g_profile_BK_DOWN_B	reconstructed profile global; literal ROM ID BK_DOWN_B+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov015	0x021148dc	data_ov015_021148dc	_ZTV11FallBlockWf	vtable alloc=0x34c
@@ -624,7 +630,9 @@ ov016	0x0211283c	func_ov016_0211283c	_ZN6ShipUp13InitResourcesEv	vtable slot 0
 ov016	0x021129a0	func_ov016_021129a0	ShipUp_Spawn	spawnfunc
 ov016	0x021129d0	func_ov016_021129d0	ShipDown_Spawn	spawnfunc
 ov016	0x02112ec4	func_ov016_02112ec4	RockPillar_Spawn	spawnfunc
+ov016	0x02112ec4	RockPillar_Spawn	daObjKi_Hasira_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov016	0x02112fbc	func_ov016_02112fbc	FloatOnWaterPlatformJrb_Spawn	spawnfunc
+ov016	0x02112fbc	FloatOnWaterPlatformJrb_Spawn	daObjKi_Ita_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov016	0x02112ff8	func_ov016_02112ff8	_ZN23FloatOnWaterPlatformJrbD1Ev	vtable slot 16
 ov016	0x02113044	func_ov016_02113044	_ZN23FloatOnWaterPlatformJrbD0Ev	vtable slot 17
 ov016	0x021130ec	func_ov016_021130ec	_ZN23FloatOnWaterPlatformJrb16CleanupResourcesEv	vtable slot 3
@@ -639,7 +647,9 @@ ov016	0x021149fc	data_ov016_021149fc	ShipDown_SpawnInfo	spawninfo
 ov016	0x02114a18	data_ov016_02114a18	ShipUp_SpawnInfo	spawninfo
 ov016	0x02114a3c	data_ov016_02114a3c	_ZTV6ShipUp	vtable alloc=0x32c
 ov016	0x02114adc	data_ov016_02114adc	RockPillar_SpawnInfo	spawninfo
+ov016	0x02114adc	RockPillar_SpawnInfo	g_profile_KI_HASIRA	reconstructed profile global; literal ROM ID KI_HASIRA+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov016	0x02114ba8	data_ov016_02114ba8	FloatOnWaterPlatformJrb_SpawnInfo	spawninfo
+ov016	0x02114ba8	FloatOnWaterPlatformJrb_SpawnInfo	g_profile_KI_ITA	reconstructed profile global; literal ROM ID KI_ITA+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov016	0x02114c68	data_ov016_02114c68	SlidingBox_SpawnInfo	spawninfo
 ov016	0x02114c8c	data_ov016_02114c8c	_ZTV23FloatOnWaterPlatformJrb	vtable alloc=0x348
 ov017	0x021111a0	func_ov017_021111a0	_ZN9ShipWaterD1Ev	vtable slot 16

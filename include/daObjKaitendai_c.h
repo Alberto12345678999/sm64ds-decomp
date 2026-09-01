@@ -34,7 +34,7 @@
  * otherwise only calls dBgActor_c::UpdateModelPosAndRotY and the guarded
  * UpdateClsnPosAndRot. Its own Render (`func_ov002_020b66f0`) dispatches through
  * the Model at 0xd4. Its own destructor destroys only dBgActor_c's two members. And
- * all five factories -- RotatingPlatformWf_Spawn, RotatingPlatformLll_Spawn,
+ * all five factories -- daObjBk_Ukisima_c_classInit, RotatingPlatformLll_Spawn,
  * RotatingPlatformWdw_Spawn, RotatingPlatformRr_Spawn and `func_ov047_021113bc`,
  * which is daObjKm3_Kaitendai_c's real factory -- pass 800 = 0x320 to
  * fBase_c::operator new, which is sizeof(dBgActor_c) exactly. There is no room for
