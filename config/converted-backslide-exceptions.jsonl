@@ -76,3 +76,6 @@
 {"path": "src/_ZN16daObjWaterfall_c13InitResourcesEv.cpp", "reason": "TU promotion absorbs per-function files into promoted class TU (ov002/daObjWaterfall_c)"}
 {"path": "src/_ZN16daObjWaterfall_cD0Ev.cpp", "reason": "TU promotion absorbs per-function files into promoted class TU (ov002/daObjWaterfall_c)"}
 {"path": "src/_ZN16daObjWaterfall_cD1Ev.cpp", "reason": "TU promotion absorbs per-function files into promoted class TU (ov002/daObjWaterfall_c)"}
+{"path": "src/_ZN16daObjWaterfall_c13InitResourcesEv.cpp", "reason": "regenerated after restacking cpp/waterfall-snake-tu onto current main"}
+{"path": "src/_ZN16daObjWaterfall_cD0Ev.cpp", "reason": "regenerated after restacking cpp/waterfall-snake-tu onto current main"}
+{"path": "src/_ZN16daObjWaterfall_cD1Ev.cpp", "reason": "regenerated after restacking cpp/waterfall-snake-tu onto current main"}
