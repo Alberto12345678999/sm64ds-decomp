@@ -13,26 +13,33 @@
  * (include/ClockPaintingHandShort.h, a separate class -- same painting, not a
  * base/derived relationship: neither RTTI record names the other).
  *
- * DERIVATION. tools/rtti_extract.py has the RTTI record at ov013 0x021120e0,
- * mangled "18daObjClockHuriko_c" -- the ROM struct name (`huriko` is the
- * ROM's own word for pendulum) -- with ONE base, dActor_c, at subobject
- * offset 0. It is a leaf: nothing in the image derives from it. No header
- * existed for either the ROM name or the coined one before this file --
- * include/decl_common.h's `extern int _ZTV18daObjClockHuriko_c[];` is a
- * stale, unresolved declaration (no symbols.txt entry backs it); the real
- * vtable symbol is _ZTV18daObjClockHuriko_c, ov013 0x02112128.
+ * DERIVATION. The RTTI record at ov013 0x021120e0 is mangled
+ * "18daObjClockHuriko_c" -- the ROM struct name (`huriko` is the ROM's own
+ * word for pendulum) -- with ONE base, dActor_c, at subobject offset 0. Read
+ * straight out of extracted/overlays/overlay_0013.bin, not inferred: the
+ * _ZTI's three words are {0x0209a764 __si_class_type_info+8, 0x021120ec ->
+ * the "18daObjClockHuriko_c" string, 0x0208e390 = _ZTI8dActor_c}, so the
+ * cartridge names the base itself. It is a leaf: nothing in the image derives
+ * from it. include/decl_common.h:649 has long carried
+ * `extern int _ZTV18daObjClockHuriko_c[];`; that declaration was dangling
+ * while the vtable was still recorded under the coined spelling, and the
+ * rename to the cartridge name is what finally gave it its definition at
+ * ov013 0x02112128 (the address point -- the table itself starts 8 bytes
+ * earlier at 0x02112120, behind offset-to-top and the _ZTI pointer).
  *
  * VTABLE. _ZTV18daObjClockHuriko_c is 31 slots, the same count as
- * dActor_c's own table -- confirmed with `tools/rtti_vtables.py --own
- * daObjClockHuriko_c`, which also shows the destructor pair already migrated
- * under the coined name "daObjClockHuriko_c" (_ZN18daObjClockHuriko_cD1Ev
- * / D0Ev, ov013 0x021111a0 / 0x021111d0) by earlier work. This class
- * overrides four slots beyond the destructor:
+ * dActor_c's own table. That is not just a tool's reading any more:
+ * romdata_check word-compares the table this TU emits against the cartridge
+ * and reports it VERIFIED at 124 bytes -- 31 slots exactly, the whole table,
+ * neither truncated nor overrun. The destructor pair sits at ov013
+ * 0x021111a0 (D1) / 0x021111d0 (D0). This class overrides four slots beyond
+ * the destructor, all four now real methods in
+ * src/actors/d_a_obj_clock_huriko.cpp:
  *
- *   0  InitResources      ov013 0x0211133c  (src/_ZN18daObjClockHuriko_c13InitResourcesEv.cpp)
- *   3  CleanupResources   ov013 0x02111214  (src/_ZN18daObjClockHuriko_c16CleanupResourcesEv.c)
- *   6  Behavior           ov013 0x021112a8  (src/_ZN18daObjClockHuriko_c8BehaviorEv.c)
- *   9  Render             ov013 0x02111280  (src/_ZN18daObjClockHuriko_c6RenderEv.cpp)
+ *   0  InitResources      ov013 0x0211133c   <- the key function, see below
+ *   3  CleanupResources   ov013 0x02111214
+ *   6  Behavior           ov013 0x021112a8
+ *   9  Render             ov013 0x02111280
  *
  * (config/arm9/overlays/ov013/relocs.txt has no entries at the vtable's own
  * slot addresses because the whole vtable is one relocation-free literal
@@ -44,17 +51,24 @@
  * OnPendingDestroy, this class leaves slot 12 pointing at fBase_c's
  * implementation, so it is not part of this recovery.
  *
- * All four bytes still match; only the symbol NAMES were placeholders
- * (func_ov013_0211xxxx), now renamed. src/func_ov013_02111238.c, the small
- * helper both InitResources and Behavior call, is untouched -- it is not a
- * vtable slot and stays under its func_ name.
+ * All four bytes still match; the symbol names were placeholders
+ * (func_ov013_0211xxxx) before the rename. func_ov013_02111238, the small
+ * helper both InitResources and Behavior call, now lives in the same TU but
+ * stays a free function under its func_ name -- it is not a vtable slot, and
+ * nothing in the cartridge says whether it is a member.
  *
- * NOT CONVERTED TO REAL METHODS BY THIS PASS, same idiom as include/Door.h
- * and src/_ZN7fBase_c13InitResourcesEv.cpp: each of the four sources above is
- * declared here as a virtual override so the header documents the vtable
- * completely, but defined as a free function taking the object pointer
- * explicitly, never as a real `daObjClockHuriko_c::` method -- so nothing
- * about the bodies had to change to land the correct mangled symbol.
+ * REAL METHODS, NOT THE FREE-FUNCTION IDIOM. Older recoveries (include/Door.h,
+ * src/_ZN7fBase_c13InitResourcesEv.cpp) declare the override here but define
+ * it as a free function under a hand-written mangled `extern "C"` name. That
+ * idiom cannot survive promotion. With the destructor inline the key function
+ * is the first DECLARED non-inline virtual -- InitResources -- and a
+ * hand-mangled free function does not DEFINE it, so mwcc emits neither the
+ * _ZTV/_ZTI/_ZTS group nor the inline destructor's D1/D0 pair, and objisolate
+ * refuses the entry with `_ZN18daObjClockHuriko_cD1Ev has 0 defined symbols`
+ * (the same failure src/actors/d_a_tree.cpp records at its own line 133). All
+ * four overrides are therefore real `daObjClockHuriko_c::` methods, which is
+ * what makes this TU the key-function TU. Bodies are unchanged apart from the
+ * implicit `this`; the ROM bytes still match at 106/106.
  *
  * SIZE. daObjClockHuriko_c_Spawn.c calls `_ZN7fBase_cnwEj(296)` -- 0x128 --
  * then _ZN8dActor_cC2Ev and _ZN5ModelC1Ev at +0xd4. dActor_c is 0xd0
@@ -83,17 +97,24 @@ struct daObjClockHuriko_c : dActor_c {
     s16 mAngSpeed;               /* 0x124 -- swing angle/phase, see SIZE above */
     u8  pad_126[0x2];
 
-    /* --- vtable. Declared first, deliberately -- it is already the key
-       function (see DERIVATION above): _ZN18daObjClockHuriko_cD1Ev.c /
-       D0Ev.c define it as extern "C" free functions, never as a real
-       `daObjClockHuriko_c::~daObjClockHuriko_c()`, so nothing here
-       changes which TU the vtable is emitted from. --- */
-    virtual ~daObjClockHuriko_c();
+    /* --- vtable. The destructor is INLINE, and that is load-bearing rather
+       than a style choice. Out of line, mwccarm emits D0 before D1 -- the
+       reverse of the ROM's 0x021111a0 D1 / 0x021111d0 D0 order, which makes
+       objisolate refuse the whole TU -- and additionally emits a D2 that has
+       no home anywhere in the cartridge. Inline, it emits exactly the retail
+       D1/D0 pair in ROM order and no D2. Nothing derives from this class
+       (it is a leaf, see DERIVATION), so no descendant needs to `bl` a D2.
+
+       Declared first, deliberately: with the destructor inline the key
+       function is the first DECLARED non-inline virtual, so this ordering is
+       what makes src/actors/d_a_obj_clock_huriko.cpp the TU that emits the
+       _ZTV/_ZTI/_ZTS group -- exactly what the promotion needs it to be. --- */
+    virtual ~daObjClockHuriko_c() {}
 
     /* --- overrides of inherited fBase_c slots dActor_c left untouched.
-       Declared here purely so this header documents the vtable completely;
-       each is DEFINED as a free function under its mangled symbol, not as a
-       real daObjClockHuriko_c:: method -- see NOT CONVERTED above. --- */
+       Now real daObjClockHuriko_c:: methods, defined in
+       src/actors/d_a_obj_clock_huriko.cpp; the earlier free-function-under-a-
+       mangled-symbol idiom is gone with the promotion. --- */
     virtual s32 InitResources();          /* slot 0 */
     virtual s32 CleanupResources();       /* slot 3 */
     virtual s32 Behavior();               /* slot 6 */
