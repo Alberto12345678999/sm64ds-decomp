@@ -37,8 +37,8 @@ src/BookSwitch_Spawn.c	PURE-C	ov016				1		None		-
 src/Bookend_Spawn.c	WEAK-refs-only	ov020				1		None		-
 src/BowserFireSeaArena_Spawn.c	WEAK-refs-only	ov060				1		None		-
 src/BowserFire_Spawn.c	WEAK-refs-only	ov060				1		None		-
-src/BowserPuzzleManager_Spawn.c	S1-stores-rom-vptr	ov064			stores _ZTV19BowserPuzzleManager	1		None	_ZTV19BowserPuzzleManager	-
-src/BowserPuzzlePiece_Spawn.c	WEAK-refs-only	ov064				1		None		-
+src/daObjFl_Coin_c_classInit.c	S1-stores-rom-vptr	ov064			stores _ZTV19BowserPuzzleManager	1		None	_ZTV19BowserPuzzleManager	-
+src/daObjFl_Puzzle_c_classInit.c	WEAK-refs-only	ov064				1		None		-
 src/BowserShockwaves_Spawn.c	WEAK-refs-only	ov060				1		None		-
 src/BowserShutter_Spawn.c	S1-stores-rom-vptr	ov026			stores _ZTV13BowserShutter	1		None	_ZTV13BowserShutter	-
 src/BowserSkyPlatform_Spawn.c	S1-stores-rom-vptr	ov060			stores _ZTV17BowserSkyPlatform	1		None	_ZTV17BowserSkyPlatform	-
@@ -143,7 +143,7 @@ src/Fireball_Spawn.c	WEAK-refs-only	ov002				1		None		-
 src/Flag_Spawn.c	WEAK-refs-only	ov009				1		None		-
 src/FlameChompFire_Spawn.c	WEAK-refs-only	ov070				1		None		-
 src/FlameChomp_Spawn.c	WEAK-refs-only	ov070				1		None		-
-src/FloatOnLavaPlatform_Spawn.c	WEAK-refs-only	ov022				1		None		-
+src/daObjFl_Block_c_classInit.c	WEAK-refs-only	ov022				1		None		-
 src/daObjKi_Ita_c_classInit.c	S1-stores-rom-vptr	ov016			stores _ZTV17daObjFloatBoard_c	1		None	_ZTV17daObjFloatBoard_c/_ZTV23FloatOnWaterPlatformJrb	-
 src/FloatOnWaterPlatformWdwRectangle_Spawn.c	S1-stores-rom-vptr	ov029			stores _ZTV17daObjFloatBoard_c	1		None	_ZTV17daObjFloatBoard_c/_ZTV32FloatOnWaterPlatformWdwRectangle	-
 src/FloatOnWaterPlatformWdwSquare_Spawn.c	S1-stores-rom-vptr	ov029			stores _ZTV17daObjFloatBoard_c	1		None	_ZTV17daObjFloatBoard_c/_ZTV29FloatOnWaterPlatformWdwSquare	-
@@ -234,7 +234,7 @@ src/LastStar_Spawn.c	WEAK-refs-only	ov089				1		None		-
 src/daObjFl_London_c_classInit.c	S1-stores-rom-vptr	ov022			stores _ZTV10LavaBridge	1		None	_ZTV10LavaBridge	-
 src/LavaBubble_Spawn.c	WEAK-refs-only	ov064				1		None		-
 src/LavaPlank_Spawn.c	WEAK-refs-only	ov022				1		None		-
-src/LavaSeesaw_Spawn.c	S1-stores-rom-vptr	ov022			stores _ZTV10LavaSeesaw	1		None	_ZTV10LavaSeesaw	-
+src/daObjFl_Seesaw_c_classInit.c	S1-stores-rom-vptr	ov022			stores _ZTV10LavaSeesaw	1		None	_ZTV10LavaSeesaw	-
 src/LenVec3.c	PURE-C	arm9				1		None		-
 src/daObjC1Hikari_c_classInit.c	WEAK-refs-only	ov010				1		None		-
 src/LinkSilverStarAndStarMarker.c	PURE-C	ov002				1		None		-
@@ -384,7 +384,7 @@ src/RopeBarrier_Spawn.c	WEAK-refs-only	ov102				1		None		-
 src/daObjBk_Rotebar_c_classInit.c	WEAK-refs-only	ov015				1		None		-
 src/RotatingClockHand_Spawn.c	WEAK-refs-only	ov035				1		None		-
 src/RotatingCogSmall_Spawn.c	WEAK-refs-only	ov035				1		None		-
-src/RotatingPlatformLll_Spawn.c	S1-stores-rom-vptr	ov022			stores _ZTV16daObjKaitendai_c	1		None	_ZTV16daObjKaitendai_c/_ZTV19RotatingPlatformLll	-
+src/daObjFl_Koma_D_c_classInit.c	S1-stores-rom-vptr	ov022			stores _ZTV16daObjKaitendai_c	1		None	_ZTV16daObjKaitendai_c/_ZTV19RotatingPlatformLll	-
 src/RotatingPlatformRr_Spawn.c	S1-stores-rom-vptr	ov036			stores _ZTV16daObjKaitendai_c	1		None	_ZTV16daObjKaitendai_c/_ZTV18RotatingPlatformRr	-
 src/RotatingPlatformWdw_Spawn.c	S1-stores-rom-vptr	ov029			stores _ZTV16daObjKaitendai_c	1		None	_ZTV16daObjKaitendai_c/_ZTV19RotatingPlatformWdw	-
 src/daObjBk_Ukisima_c_classInit.c	S1-stores-rom-vptr	ov015			stores _ZTV16daObjKaitendai_c	1		None	_ZTV16daObjKaitendai_c/_ZTV18RotatingPlatformWf	-
