@@ -9439,16 +9439,16 @@
    "start": "0x211261c",
    "end": "0x211277c",
    "classes": [
-    "daSldMng_c"
+    "IceSlideManager"
    ],
    "n_functions_map": 5,
    "n_files": 5,
    "files": [
-    "src/_ZN10daSldMng_cD1Ev.cpp",
-    "src/_ZN10daSldMng_cD0Ev.c",
-    "src/_ZN10daSldMng_c8BehaviorEv.cpp",
-    "src/_ZN10daSldMng_c13InitResourcesEv.cpp",
-    "src/daSldMng_c_Spawn.c"
+    "src/_ZN15IceSlideManagerD1Ev.cpp",
+    "src/_ZN15IceSlideManagerD0Ev.c",
+    "src/_ZN15IceSlideManager8BehaviorEv.cpp",
+    "src/_ZN15IceSlideManager13InitResourcesEv.cpp",
+    "src/IceSlideManager_Spawn.c"
    ],
    "ext_mix": {
     ".cpp": 3,

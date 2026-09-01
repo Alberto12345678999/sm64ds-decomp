@@ -196,7 +196,7 @@ src/HugeWater_Spawn.c	WEAK-refs-only	ov032				1		None		-
 src/IPCSend.c	WEAK-refs-only	arm9				1		None		-
 src/IceBlock_Spawn.c	WEAK-refs-only	ov081				1		None		-
 src/IceSheet_Spawn.c	WEAK-refs-only	ov018				1		None		-
-src/daSldMng_c_Spawn.c	WEAK-refs-only	ov019				1		None		-
+src/IceSlideManager_Spawn.c	WEAK-refs-only	ov019				1		None		-
 src/InitControllerMode.c	PURE-C	arm9				1		None		-
 src/InitCrashScreen.c	WEAK-refs-only	arm9				1		None		-
 src/InitialiseVramGlobals.c	PURE-C	arm9				1		None		-
@@ -760,7 +760,7 @@ src/_ZN14MrI_ProjectileD0Ev.c	DTOR-ONLY	ov071	daEyBm_c	MrI_Projectile/daEyBm_c	_
 src/_ZN14UnknownVsEntryD0Ev.c	DTOR-ONLY	ov075	dEntObj_c	UnknownVsEntry/dEntObj_c	_ZN14UnknownVsEntryD0Ev	1		True	_ZTV14UnknownVsEntry	-
 src/_ZN15FaderBrightnessD2Ev.c	DTOR-ONLY	arm9		FaderBrightness	_ZN15FaderBrightnessD2Ev	1		True		-
 src/_ZN15FireSeaElevatorD0Ev.c	DTOR-ONLY	ov045	daObjKm2_Agaru_c	FireSeaElevator/daObjKm2_Agaru_c	_ZN15FireSeaElevatorD0Ev	1		True	_ZTV10dBgActor_c/_ZTV15FireSeaElevator	-
-src/_ZN10daSldMng_cD0Ev.c	DTOR-ONLY	ov019	daSldMng_c	daSldMng_c/daSldMng_c	_ZN10daSldMng_cD0Ev	1		True	_ZTV10daSldMng_c	-
+src/_ZN15IceSlideManagerD0Ev.c	DTOR-ONLY	ov019	daSldMng_c	IceSlideManager/daSldMng_c	_ZN15IceSlideManagerD0Ev	1		True	_ZTV15IceSlideManager	-
 src/_ZN15MaterialChanger7SetFileER8BMA_Filei5Fix12IiEj.c	P3-mangled-method-only	arm9		MaterialChanger	_ZN15MaterialChanger7SetFileER8BMA_Filei5Fix12IiEj	1		True		by-value-class-param
 src/_ZN15MaterialChangerC1Ev.c	P3-mangled-method-only	arm9		MaterialChanger	_ZN15MaterialChangerC1Ev	1		True	_ZTV15MaterialChanger	-
 src/_ZN15ModelComponents21UpdateVertsUsingBonesEv.c	P3-mangled-method-only	arm9		ModelComponents	_ZN15ModelComponents21UpdateVertsUsingBonesEv	1	active	False		no-header:ModelComponents
