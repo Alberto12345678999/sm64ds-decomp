@@ -71,7 +71,7 @@
       "symbol": "daObjC1Peach_c_classInit",
       "address": "0x02112004",
       "size": "0x00000038",
-      "legacy_source": "src/PeachPainting_Spawn.c",
+      "legacy_source": "src/daObjC1Peach_c_classInit.c",
       "ordinal": 7
     }
   ],

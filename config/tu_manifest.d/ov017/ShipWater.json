@@ -64,7 +64,7 @@
       "symbol": "daObjKsWater_c_classInit",
       "address": "0x02111480",
       "size": "0x00000038",
-      "legacy_source": "src/ShipWater_Spawn.c",
+      "legacy_source": "src/daObjKsWater_c_classInit.c",
       "ordinal": 6
     }
   ],
@@ -367,7 +367,7 @@
       "src/_ZN9ShipWater6RenderEv.cpp",
       "src/_ZN9ShipWater8BehaviorEv.cpp",
       "src/_ZN9ShipWater13InitResourcesEv.cpp",
-      "src/ShipWater_Spawn.c"
+      "src/daObjKsWater_c_classInit.c"
     ],
     "extraInertImports": 77,
     "extraImportsWithNoHome": [],

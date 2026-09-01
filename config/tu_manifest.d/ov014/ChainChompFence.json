@@ -71,7 +71,7 @@
       "symbol": "daObjWanwanShutter_c_classInit",
       "address": "0x0211307c",
       "size": "0x00000030",
-      "legacy_source": "src/ChainChompFence_Spawn.c",
+      "legacy_source": "src/daObjWanwanShutter_c_classInit.c",
       "ordinal": 7
     }
   ],

@@ -21,7 +21,7 @@
  *   [2] 0x02111254  src/_ZN10ShutterBob16CleanupResourcesEv.cpp
  *   [3] 0x02111268  src/_ZN10ShutterBob8BehaviorEv.cpp
  *   [4] 0x02111294  src/_ZN10ShutterBob13InitResourcesEv.cpp
- *   [5] 0x021112cc  src/ShutterBob_Spawn.c
+ *   [5] 0x021112cc  src/daObjBSwdoor_c_classInit.c
  */
 
 /* TUBUILD WARNING -- #pragma directive(s) were present in the legacy

@@ -24,7 +24,7 @@
  *   [3] 0x02111290  src/_ZN9ShipWater6RenderEv.cpp
  *   [4] 0x021112c4  src/_ZN9ShipWater8BehaviorEv.cpp
  *   [5] 0x021113c0  src/_ZN9ShipWater13InitResourcesEv.cpp
- *   [6] 0x02111480  src/ShipWater_Spawn.c
+ *   [6] 0x02111480  src/daObjKsWater_c_classInit.c
  */
 
 /* Includes: union of the legacy files', first-seen in ROM-ascending

@@ -23,7 +23,7 @@ src/_ZN10ShutterBob13InitResourcesEv.cpp:
     complete
     .text start:0x02111294 end:0x021112cc
 
-src/ShutterBob_Spawn.c:
+src/daObjBSwdoor_c_classInit.c:
     complete
     .text start:0x021112cc end:0x02111308
 
@@ -171,7 +171,7 @@ src/_ZN15ChainChompFence13InitResourcesEv.cpp:
     complete
     .text start:0x02112ffc end:0x0211307c
 
-src/ChainChompFence_Spawn.c:
+src/daObjWanwanShutter_c_classInit.c:
     complete
     .text start:0x0211307c end:0x021130ac
 

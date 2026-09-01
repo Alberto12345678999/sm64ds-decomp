@@ -23,7 +23,7 @@
  *   [4] 0x02112f80  src/_ZN15ChainChompFence6RenderEv.cpp
  *   [5] 0x02112fc0  src/_ZN15ChainChompFence8BehaviorEv.cpp
  *   [6] 0x02112ffc  src/_ZN15ChainChompFence13InitResourcesEv.cpp
- *   [7] 0x0211307c  src/ChainChompFence_Spawn.c
+ *   [7] 0x0211307c  src/daObjWanwanShutter_c_classInit.c
  */
 
 /* Includes: union of the legacy files', first-seen in ROM-ascending
