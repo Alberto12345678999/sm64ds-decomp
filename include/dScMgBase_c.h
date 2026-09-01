@@ -701,10 +701,77 @@ struct dScMgBase_c : dScene_c {
            No reconciliation, no misattribution: the smallest slot in the
            campaign after 22's zero. */
     virtual int  Virtual80();                          /* slot 32 */
+    /* Slot 33 -- Virtual84, the display bring-up, and the quietest slot in this
+       campaign: it is the first one with nothing to correct.
+         WHY THE NAME.  Neither override body carries a `recovered name:` line
+           and neither does the base, so unlike slots 26, 29, 30, 31 and 32 there
+           is no borrowed dActor_c label here to retire -- there was never one to
+           borrow, because dActor_c's table ends at slot 30 and dScMgBase_c is on
+           the sibling branch anyway (fBase_c -> dBase_c -> dScene_c ->
+           dScMgBase_c; see the slot-31 block above).  Nothing in the cartridge
+           names this method -- RTTI carries class names only -- so it takes the
+           offset spelling fBase_c already uses for Virtual34/Virtual38, which is
+           also how notes/dScMgBase_c-slots-18-35.md has recorded it all along.
+         return type: void, and here that is the reading of the bodies rather
+           than a default.  All three fall off the end without setting a result,
+           the one call site discards whatever is in r0, and -- unlike slots
+           28-32 -- one of the three is about to become a real member definition
+           (see below), where a declared `int` with no return statement would be
+           a lie the compiler has to paper over.  notes/dScMgBase_c-slots-18-35.md
+           records the signature as void(char *obj) and this agrees with it.
+         arity: no explicit parameters, MEASURED.  Scanning arm9 and all 103
+           overlays for the dispatch pair -- `ldr rD,[rN,#0x84]` with rN != 15,
+           followed within three instructions by `blx rD` -- finds TWO sites in
+           the whole image, of which exactly one is in ov004 or ov006:
+           ov004:0x020b09d0, inside dScMgBase_c::BeforeInitResources.  It reads
+           `mov r0,r4; ldr r1,[r0]; ldr r1,[r1,#0x84]; blx r1`, so r1 holds the
+           loaded pointer and cannot also be a second argument, and r0 is `this`.
+           The scan was validated against a known answer first: the same run at
+           +0x80 reproduces slot 32's site (ov004:0x020b0900) and nothing else in
+           the family.  The other +0x84 hit is in ov064, outside this hierarchy.
+         `this` IS carried, and for once the base body proves it on its own.
+           Slots 26-32 all had base bodies that never touched the object; this
+           one writes obj[0x68] and obj[0x6c] on its second and third statements
+           and then publishes obj itself into the scene registry.
+         WHAT IT DOES.  This is the engine bring-up, and it runs BEFORE anything
+           else the family does.  Both engines get a graphics mode, VRAM banks
+           are assigned, both BG-enable shadows are initialised to 0x10 --
+           data_0209d45c for main and data_0209d454 for sub, the same pair slot
+           30 restores the DISPCNTs from and slots 31 and 32 clear BG1 out of --
+           a language-indexed compressed character file is decompressed into BG
+           character VRAM, OBJ palette file 0xc3 is loaded into both engines, and
+           the scene object is published into the global registry at
+           data_ov004_020beb74[1] / data_0209d4a8.  The three bodies differ
+           exactly where the classes differ: the base is 2D (GX mode (1,0,0),
+           GXS mode 0, BG bank 3), dScMgD3DBase_c is 3D (DisableAllBanks first,
+           texture and texture-palette banks, GX mode (1,0,1), GXS mode 5, BG
+           bank 2, InitialiseVramGlobals, and it keeps the decompressed file
+           pointers in globals), and dScMgSingle3DBase_c is the base's 2D
+           sequence with the 3D banks folded in.
+         WHEN IT RUNS.  BeforeInitResources (ov004:0x020b0930) dispatches this
+           slot at 0x020b09d0, near the top, and dispatches slot 31 at
+           0x020b0a0c, last.  With slot 32 called first out of
+           AfterInitResources, the whole sequence reads: bring the engines up
+           (33), dress the sub screen (31), then dress the main screen (32).
+         overrides: NINETEEN tables, TWO declarations -- structurally slot 26
+           over again, and the same two classes own the bodies.  Thirteen
+           children of dScMgSingle3DBase_c and four of dScMgD3DBase_c point at an
+           ancestor's body and declare nothing; declaring the slot on any of
+           those seventeen would invent an override the cartridge does not have.
+         FIRST OVERRIDE INSIDE A PROMOTED TU.  dScMgSingle3DBase_c's body is not
+           a one-function file -- it lives inside the intact-object unit
+           src/actors/dScMgSingle3DBase_c.cpp (promoted in #2064), where it has
+           been waiting on this declaration by name since then: the slot-26
+           member in that file ends "Slot 33 below is still waiting on the same
+           declaration."  It was the last vtable slot in that unit still spelled
+           as a mangled free function (0x0210a534, the only other one left, is in
+           no vtable at all), so this turns it into a real member definition and
+           takes the class from a byte-exact 33-slot vtable prefix to 34. */
+    virtual void Virtual84();                          /* slot 33 */
 
-    /* Slots 33-35 are added the same way: one slot per change, together with
+    /* Slots 34-35 are added the same way: one slot per change, together with
        every descendant override of that slot. Until then they stay undeclared
-       and the emitted tables stop at slot 32.
+       and the emitted tables stop at slot 33.
 
        THE OCCUPIED-SLOT TRAP IS NO LONGER LOADED IN dScMgSlot1_c -- slots 27
        and 28 were both of its early declarations and both are reconciled --
