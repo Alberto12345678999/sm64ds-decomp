@@ -1,4 +1,4 @@
-// @symbol TinyWater_Spawn
+// @symbol daObjTtWater_c_classInit
 /* recovered: globals resolved, declarations from a shared header */
 #include "decl_ActorBase.h"
 #include "decl_Platform.h"
@@ -6,7 +6,12 @@
 #include "decl_common.h"
 /* recovered: globals resolved */
 /* resolved: VT0 = _ZTV9TinyWater */
-int *TinyWater_Spawn(void)
+/* Reconstructed source-style name: SM64DS proves daObjTtWater_c through RTTI,
+ * allocation size, vtable identity, and the TT_WATER registry profile; later
+ * EAD lineage supplies classInit. Exact original spelling is not preserved.
+ * The project's TinyWater implementation alias remains unchanged.
+ * Historical alias: TinyWater_Spawn. */
+int *daObjTtWater_c_classInit(void)
 {
     int *p = (int *)_ZN7fBase_cnwEj(832);
     if (p) {

@@ -1054,6 +1054,7 @@ ov031	0x02111944	data_ov031_02111944	SlideDecorationOrangeSmiley_SpawnInfo	spawn
 ov031	0x02111960	data_ov031_02111960	SlideDecorationBlueSmiley_SpawnInfo	spawninfo
 ov031	0x02111984	data_ov031_02111984	_ZTV25SlideDecorationSilverStar	vtable alloc=0x128
 ov032	0x02112668	func_ov032_02112668	HugeCover_Spawn	spawnfunc
+ov032	0x02112668	HugeCover_Spawn	daObjTdFuta_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov032	0x02112698	func_ov032_02112698	_ZN9HugeWaterD1Ev	vtable slot 16
 ov032	0x021126e4	func_ov032_021126e4	_ZN9HugeWaterD0Ev	vtable slot 17
 ov032	0x02112744	func_ov032_02112744	_ZN9HugeWater16CleanupResourcesEv	vtable slot 3
@@ -1061,11 +1062,15 @@ ov032	0x02112788	func_ov032_02112788	_ZN9HugeWater6RenderEv	vtable slot 9
 ov032	0x021127bc	func_ov032_021127bc	_ZN9HugeWater8BehaviorEv	vtable slot 6
 ov032	0x021127f0	func_ov032_021127f0	_ZN9HugeWater13InitResourcesEv	vtable slot 0
 ov032	0x021128b8	func_ov032_021128b8	HugeWater_Spawn	spawnfunc
+ov032	0x021128b8	HugeWater_Spawn	daObjTdWater_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov032	0x021138bc	data_ov032_021138bc	HugeCover_SpawnInfo	spawninfo
+ov032	0x021138bc	HugeCover_SpawnInfo	g_profile_TD_FUTA	reconstructed profile global; literal ROM ID TD_FUTA+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov032	0x021138e0	data_ov032_021138e0	_ZTV9HugeCover	vtable alloc=0x320
 ov032	0x02113980	data_ov032_02113980	HugeWater_SpawnInfo	spawninfo
+ov032	0x02113980	HugeWater_SpawnInfo	g_profile_TD_WATER	reconstructed profile global; literal ROM ID TD_WATER+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov032	0x021139a4	data_ov032_021139a4	_ZTV9HugeWater	vtable alloc=0x334
 ov033	0x021113a4	func_ov033_021113a4	TinyCover_Spawn	spawnfunc
+ov033	0x021113a4	TinyCover_Spawn	daObjTtFuta_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov033	0x021113d4	func_ov033_021113d4	_ZN9TinyCoverD1Ev	vtable slot 16
 ov033	0x02111420	func_ov033_02111420	_ZN9TinyCoverD0Ev	vtable slot 17
 ov033	0x02111480	func_ov033_02111480	_ZN9TinyCover16CleanupResourcesEv	vtable slot 3
@@ -1073,8 +1078,11 @@ ov033	0x021114c4	func_ov033_021114c4	_ZN9TinyCover6RenderEv	vtable slot 9
 ov033	0x021114f8	func_ov033_021114f8	_ZN9TinyCover8BehaviorEv	vtable slot 6
 ov033	0x021115bc	func_ov033_021115bc	_ZN9TinyCover13InitResourcesEv	vtable slot 0
 ov033	0x02111690	func_ov033_02111690	TinyWater_Spawn	spawnfunc
+ov033	0x02111690	TinyWater_Spawn	daObjTtWater_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov033	0x02112358	data_ov033_02112358	TinyCover_SpawnInfo	spawninfo
+ov033	0x02112358	TinyCover_SpawnInfo	g_profile_TT_FUTA	reconstructed profile global; literal ROM ID TT_FUTA+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov033	0x0211241c	data_ov033_0211241c	TinyWater_SpawnInfo	spawninfo
+ov033	0x0211241c	TinyWater_SpawnInfo	g_profile_TT_WATER	reconstructed profile global; literal ROM ID TT_WATER+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov033	0x02112440	data_ov033_02112440	_ZTV9TinyCover	vtable alloc=0x320
 ov034	0x021111a0	func_ov034_021111a0	_ZN7WigglerD1Ev	vtable slot 16
 ov034	0x021112b0	func_ov034_021112b0	_ZN7WigglerD0Ev	vtable slot 17
@@ -1602,6 +1610,7 @@ ov065	0x02119a50	func_ov065_02119a50	_ZN15TtcRotatingCube8BehaviorEv	vtable slot
 ov065	0x02119c38	func_ov065_02119c38	_ZN15TtcRotatingCube13InitResourcesEv	vtable slot 0
 ov065	0x02119ebc	func_ov065_02119ebc	TtcRotatingPrism_Spawn	spawnfunc
 ov065	0x02119efc	func_ov065_02119efc	TtcRotatingCube_Spawn	spawnfunc
+ov065	0x0211a45c	func_ov065_0211a45c	daObjCtMecha03_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov065	0x0211a494	func_ov065_0211a494	_ZN20TtcConveyorBeltLargeD1Ev	vtable slot 16
 ov065	0x0211a4e8	func_ov065_0211a4e8	_ZN20TtcConveyorBeltLargeD0Ev	vtable slot 17
 ov065	0x0211a638	func_ov065_0211a638	_ZN20TtcConveyorBeltLarge16CleanupResourcesEv	vtable slot 3
@@ -1645,6 +1654,7 @@ ov065	0x0211cdc4	data_ov065_0211cdc4	_ZTV12daDossyCap_c	vtable alloc=0x184
 ov065	0x0211ce48	data_ov065_0211ce48	_ZTV6Dorrie	vtable alloc=?
 ov065	0x0211cfe8	data_ov065_0211cfe8	TtcRotatingCube_SpawnInfo	spawninfo
 ov065	0x0211d004	data_ov065_0211d004	TtcRotatingPrism_SpawnInfo	spawninfo
+ov065	0x0211d0c8	data_ov065_0211d0c8	g_profile_CT_MECHA03	reconstructed profile global; literal ROM ID CT_MECHA03+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov065	0x0211d028	data_ov065_0211d028	_ZTV15TtcRotatingCube	vtable alloc=0x3d8
 ov065	0x0211d1ac	data_ov065_0211d1ac	TtcConveyorBeltSmall_SpawnInfo	spawninfo
 ov065	0x0211d1c8	data_ov065_0211d1c8	TtcConveyorBeltLarge_SpawnInfo	spawninfo
