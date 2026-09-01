@@ -1,4 +1,5 @@
 //cpp
+// @symbol daObjPathLift_c_classInit
 extern "C" {
 void* _ZN7fBase_cnwEj(unsigned int sz);
 void _ZN10dBgActor_cC2Ev(void* p);
@@ -11,7 +12,11 @@ void _ZN5ModelC1Ev(void* p);
 extern void* data_ov002_0210af70;
 extern void* data_ov100_0214857c;
 
-extern "C" void* PathLift_Spawn(void)
+/* Reconstructed source-style name: SM64DS proves daObjPathLift_c through
+ * RTTI, allocation size, vtable identity, and the PATH_LIFT registry profile;
+ * later EAD lineage supplies classInit. Exact original spelling is not
+ * preserved. Historical alias: PathLift_Spawn. */
+extern "C" void* daObjPathLift_c_classInit(void)
 {
     char* p = (char*)_ZN7fBase_cnwEj(0x4b4);
     if (p) {

@@ -63,10 +63,11 @@ extern void _ZN10dBgActor_cC2Ev(void *);
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 7 -- SwitchPillar_Spawn, 0x02111420, size 0x30 */
+/* ROM ordinal 7 -- class initializer, 0x02111420, size 0x30 */
 /* -------------------------------------------------------------------------- */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-int *SwitchPillar_Spawn(void)
+// @symbol daObjC0_Switch_c_classInit
+int *daObjC0_Switch_c_classInit(void)
 {
     int *p = (int *)_ZN7fBase_cnwEj(800);
     if (p) { _ZN10dBgActor_cC2Ev(p); p[0] = (int)(_ZTV12SwitchPillar + 2); }

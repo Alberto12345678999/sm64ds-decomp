@@ -1099,6 +1099,6 @@
     "src/actors/daObjHatenaSwitch_c.cpp#_ZN19daObjHatenaSwitch_c13InitResourcesEv": "github-actions[bot]",
     "src/actors/daObjHatenaSwitch_c.cpp#_ZN19daObjHatenaSwitch_c10HandleClsnER8dActor_c": "tangosdev",
     "src/actors/daObjHatenaSwitch_c.cpp#_ZN19daObjHatenaSwitch_c17AfterClsnCallbackEP4dBgWP8dActor_cS3_": "ruspecial",
-    "src/actors/daObjHatenaSwitch_c.cpp#QuestionSwitch_Spawn": "github-actions[bot]"
+    "src/actors/daObjHatenaSwitch_c.cpp#daObjHatenaSwitch_c_classInit": "github-actions[bot]"
   }
 }
