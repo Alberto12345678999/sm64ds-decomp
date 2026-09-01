@@ -1,4 +1,4 @@
-// @symbol UkikiCage_Spawn
+// @symbol daObjHmBskt_c_classInit
 /* recovered: vtable identified, declarations from a shared header */
 #include "decl_ActorBase.h"
 #include "decl_Platform.h"
@@ -7,7 +7,12 @@
 extern int _ZTV13daObjHmBskt_c[];
 /* recovered: vtable identified */
 /* vtable identified: VT0 = _ZTV13daObjHmBskt_c */
-int *UkikiCage_Spawn(void)
+/* Reconstructed source-style name: SM64DS proves daObjHmBskt_c through RTTI,
+ * allocation size, vtable identity, and the HM_BASKET registry profile; later
+ * EAD lineage supplies classInit. Exact original spelling is not preserved.
+ * The project's UkikiCage implementation aliases remain unchanged.
+ * Historical alias: UkikiCage_Spawn. */
+int *daObjHmBskt_c_classInit(void)
 {
     int *p = (int *)_ZN7fBase_cnwEj(1248);
     if (p) {

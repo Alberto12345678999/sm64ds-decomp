@@ -75,7 +75,7 @@
       "ordinal": 7
     },
     {
-      "symbol": "CageLift_Spawn",
+      "symbol": "daObjWc_Obj05_c_classInit",
       "address": "0x02111e74",
       "size": "0x00000030",
       "legacy_source": "src/CageLift_Spawn.c",

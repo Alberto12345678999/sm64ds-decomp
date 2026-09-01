@@ -9,8 +9,9 @@
  * Everything this header used to restate below 0x320 was dActor_c's and
  * dBgActor_c's, and is inherited now.
  *
- * SIZE IS 0x4e0, THE LITERAL UkikiCage_Spawn.c passes to fBase_c::operator
- * new (1248 decimal) -- not merely the observed field span, though here they
+ * SIZE IS 0x4e0: daObjHmBskt_c_classInit (historical alias UkikiCage_Spawn)
+ * passes the literal 1248 to fBase_c::operator new -- not merely the observed
+ * field span, though here they
  * agree: dBgActor_c ends at 0x320 and this class adds exactly one dBgCh_Actr
  * (0x1bc) plus one trailing scalar, landing on 0x4e0 with no padding.
  *

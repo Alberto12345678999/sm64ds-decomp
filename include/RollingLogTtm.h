@@ -16,7 +16,8 @@
  *   kind  __si_class_type_info, ONE base, subobject offset 0
  *   base  daObjMaruta_c, ov022 0x02114350
  *
- * SIZE 0x344, from RollingLogTtm_Spawn's literal 836. It overrides slots 0, 3 and 6,
+ * SIZE 0x344, from daObjHmMaruta_c_classInit's literal 836 (historical alias
+ * RollingLogTtm_Spawn). It overrides slots 0, 3 and 6,
  * all three of which the base leaves null.
  */
 
