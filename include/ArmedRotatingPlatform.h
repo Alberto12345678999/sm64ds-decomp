@@ -4,6 +4,8 @@
 #include "types.h"
 
 /* A donut lift: stands still until ridden, then shakes, falls and respawns.
+ * daObjRc_Guruguru_c_classInit (historical alias
+ * ArmedRotatingPlatform_Spawn) allocates its 0x320-byte instance.
  *
  * Everything this header used to declare below 0x31e was dActor_c's and
  * dBgActor_c's, restated. It derives from dBgActor_c now, which the destructor

@@ -1,4 +1,5 @@
 //cpp
+// @symbol daObjRcCarpet_c_classInit
 extern "C" {
 void* _ZN7fBase_cnwEj(unsigned int);
 void _ZN10dBgActor_cC2Ev(void*);
@@ -14,7 +15,11 @@ void _ZN5ModelC1Ev(void*);
    (#1589) -- the PathPtr constructed at c+0x430 sits inside dPathLiftActor_c's
    generic tail padding, not in any derived class's own storage, so the real
    compiler-synthesised constructor cannot place it there. */
-void* FlyingCarpet_Spawn(void){
+/* Reconstructed source-style name: SM64DS proves daObjRcCarpet_c through
+ * RTTI, allocation size, vtable identity, and the RC_CARPET registry profile;
+ * later EAD lineage supplies classInit. Exact original spelling is not
+ * preserved. Historical alias: FlyingCarpet_Spawn. */
+void* daObjRcCarpet_c_classInit(void){
   char* c = (char*)_ZN7fBase_cnwEj(0x4c0);
   if(c){
     _ZN10dBgActor_cC2Ev(c);
