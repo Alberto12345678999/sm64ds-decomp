@@ -358,9 +358,12 @@ ov002	0x0210d630	data_ov002_0210d630	Bullet_SpawnInfo	spawninfo
 ov002	0x0210d654	data_ov002_0210d654	_ZTV6Bullet	vtable alloc=0x35c
 ov003	0x020b04f0	func_ov003_020b04f0	StarSelect_Spawn	spawnfunc
 ov003	0x020b16b4	data_ov003_020b16b4	StarSelect_SpawnInfo	spawninfo
+ov005	0x020c21ec	func_ov005_020c21ec	dScMiniGm_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
+ov005	0x020c2440	data_ov005_020c2440	g_profile_MINIGAME	reconstructed profile global; literal ROM ID MINIGAME+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov006	0x020d9574	func_ov006_020d9574	MgSortOrSplode_Spawn	spawnfunc
 ov006	0x020dbd54	func_ov006_020dbd54	MgPicturePoker_Spawn	spawnfunc
 ov006	0x020de940	func_ov006_020de940	MgCoincentration_Spawn	spawnfunc
+ov006	0x020e0574	func_ov006_020e0574	dScMgCup_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov006	0x020e3820	func_ov006_020e3820	MgShuffleShell_Spawn	spawnfunc
 ov006	0x020e3820	MgShuffleShell_Spawn	dScMgCurling_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov006	0x020e6c28	func_ov006_020e6c28	_ZN17MgBounceAndPounceD1Ev	vtable slot 16
@@ -396,6 +399,7 @@ ov006	0x0213c214	data_ov006_0213c214	MgShuffleShell_SpawnInfo	spawninfo
 ov006	0x0213c214	MgShuffleShell_SpawnInfo	g_profile_MG_CURLING	reconstructed profile global; literal ROM ID MG_CURLING+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov006	0x020e6bf4	func_ov006_020e6bf4	dScMgCurling2_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov006	0x0213c434	data_ov006_0213c434	g_profile_MG_CURLING_J	reconstructed profile global; literal ROM ID MG_CURLING_J+registry role+later EAD lineage; exact SM64DS spelling not preserved
+ov006	0x0213c020	data_ov006_0213c020	g_profile_MG_CUP	reconstructed profile global; literal ROM ID MG_CUP+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov006	0x0213c62c	data_ov006_0213c62c	_ZTV17MgBounceAndPounce	vtable alloc=?
 ov006	0x0213c78c	data_ov006_0213c78c	MgPsycheOut_SpawnInfo	spawninfo
 ov006	0x0213c98c	data_ov006_0213c98c	MgWhichWiggler_SpawnInfo	spawninfo
@@ -513,6 +517,7 @@ ov014	0x02112994	func_ov014_02112994	_ZN10ChainChomp6RenderEv	vtable slot 9
 ov014	0x021129ec	func_ov014_021129ec	_ZN10ChainChomp8BehaviorEv	vtable slot 6
 ov014	0x02112b14	func_ov014_02112b14	_ZN10ChainChomp13InitResourcesEv	vtable slot 0
 ov014	0x02112d1c	func_ov014_02112d1c	ChainChomp_Spawn	spawnfunc
+ov014	0x02112d1c	ChainChomp_Spawn	daWanwan_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov014	0x02112e0c	func_ov014_02112e0c	_ZN15ChainChompFenceD1Ev	vtable slot 16
 ov014	0x02112e50	func_ov014_02112e50	_ZN15ChainChompFenceD0Ev	vtable slot 17
 ov014	0x02112f3c	func_ov014_02112f3c	_ZN15ChainChompFence16CleanupResourcesEv	vtable slot 3
@@ -525,6 +530,7 @@ ov014	0x021145e4	data_ov014_021145e4	ShutterBob_SpawnInfo	spawninfo
 ov014	0x021145e4	ShutterBob_SpawnInfo	g_profile_SWITCHDOOR	reconstructed profile global; literal ROM ID SWITCHDOOR+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov014	0x02114608	data_ov014_02114608	_ZTV10ShutterBob	vtable alloc=0x324
 ov014	0x02114750	data_ov014_02114750	ChainChomp_SpawnInfo	spawninfo
+ov014	0x02114750	ChainChomp_SpawnInfo	g_profile_WANWAN	reconstructed profile global; literal ROM ID WANWAN+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov014	0x021147ec	data_ov014_021147ec	_ZTV10ChainChomp	vtable alloc=0x620
 ov014	0x0211488c	data_ov014_0211488c	ChainChompFence_SpawnInfo	spawninfo
 ov014	0x0211488c	ChainChompFence_SpawnInfo	g_profile_WANWAN_SHUTTER	reconstructed profile global; literal ROM ID WANWAN_SHUTTER+registry role+later EAD lineage; exact SM64DS spelling not preserved
@@ -678,6 +684,7 @@ ov020	0x02112418	func_ov020_02112418	_ZN15BookShotSpawner8BehaviorEv	vtable slot
 ov020	0x021124e4	func_ov020_021124e4	_ZN8BookShot13InitResourcesEv	vtable slot 0
 ov020	0x02112768	func_ov020_02112768	_ZN15BookShotSpawner13InitResourcesEv	vtable slot 0
 ov020	0x02112850	func_ov020_02112850	BookShotSpawner_Spawn	spawnfunc
+ov020	0x02112850	BookShotSpawner_Spawn	daBookGen_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov020	0x02112880	func_ov020_02112880	Bookend_Spawn	spawnfunc
 ov020	0x021128dc	func_ov020_021128dc	BookShot_Spawn	spawnfunc
 ov020	0x02112938	func_ov020_02112938	_ZN12HauntedChairD1Ev	vtable slot 16
@@ -689,6 +696,7 @@ ov020	0x021133b0	func_ov020_021133b0	_ZN12HauntedChair13InitResourcesEv	vtable s
 ov020	0x02113494	func_ov020_02113494	HauntedChair_Spawn	spawnfunc
 ov020	0x02114860	data_ov020_02114860	Bookend_SpawnInfo	spawninfo
 ov020	0x0211487c	data_ov020_0211487c	BookShotSpawner_SpawnInfo	spawninfo
+ov020	0x0211487c	BookShotSpawner_SpawnInfo	g_profile_BOOK_GENERATOR	reconstructed profile global; literal ROM ID BOOK_GENERATOR+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov020	0x021148b4	data_ov020_021148b4	BookShot_SpawnInfo	spawninfo
 ov020	0x021148d8	data_ov020_021148d8	_ZTV15BookShotSpawner	vtable alloc=0xd8
 ov020	0x0211495c	data_ov020_0211495c	_ZTV8BookShot	vtable alloc=?
@@ -1567,6 +1575,7 @@ ov070	0x021201c0	func_ov070_021201c0	_ZN6FlyGuy6RenderEv	vtable slot 9
 ov070	0x02120210	func_ov070_02120210	_ZN6FlyGuy8BehaviorEv	vtable slot 6
 ov070	0x021203b4	func_ov070_021203b4	_ZN6FlyGuy13InitResourcesEv	vtable slot 0
 ov070	0x02120520	func_ov070_02120520	FlyGuy_Spawn	spawnfunc
+ov070	0x02120520	FlyGuy_Spawn	daPropeller_Heyho_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov070	0x02120570	func_ov070_02120570	_ZN7daBrq_cD1Ev	vtable slot 16; class name from ROM RTTI
 ov070	0x021205d0	func_ov070_021205d0	_ZN7daBrq_cD0Ev	vtable slot 17; class name from ROM RTTI
 ov070	0x02120644	func_ov070_02120644	_ZN7daBrq_c21HandlePlayerCollisionEv	inferred private helper on ROM-proven class; resolves the collider owner and handles player shock/defeat; body byte-verified
@@ -1608,6 +1617,7 @@ ov070	0x021221fc	func_ov070_021221fc	FlameChompFire_Spawn	spawnfunc
 ov070	0x021221fc	FlameChompFire_Spawn	daKpFr_c_Spawn	prior RTTI-anchored project alias; class identity proven, exact source spelling not preserved
 ov070	0x021221fc	daKpFr_c_Spawn	daKpFr_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov070	0x02123144	data_ov070_02123144	FlyGuy_SpawnInfo	spawninfo
+ov070	0x02123144	FlyGuy_SpawnInfo	g_profile_PROPELLER_HEYHO	reconstructed profile global; literal ROM ID PROPELLER_HEYHO+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov070	0x02123168	data_ov070_02123168	_ZTV6FlyGuy	vtable alloc=0x3e8
 ov070	0x02123254	data_ov070_02123254	Amp_SpawnInfo	spawninfo
 ov070	0x02123254	Amp_SpawnInfo	g_profile_BIRIKYU	reconstructed profile global; literal ROM ID BIRIKYU+registry role+later EAD lineage; exact SM64DS spelling not preserved

@@ -224,14 +224,15 @@ int *Bookend_Spawn(void)
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 28 -- BookShotSpawner_Spawn, 0x02112850, size 0x30 */
+/* ROM ordinal 28 -- daBookGen_c_classInit, 0x02112850, size 0x30 */
 /* -------------------------------------------------------------------------- */
-// @symbol BookShotSpawner_Spawn
+// @symbol daBookGen_c_classInit
 /* recovered: globals resolved, declarations from a shared header */
 /* recovered: globals resolved */
 /* resolved: VT = _ZTV15BookShotSpawner */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-int *BookShotSpawner_Spawn(void)
+/* Reconstructed source-style name. Historical alias: BookShotSpawner_Spawn. */
+int *daBookGen_c_classInit(void)
 {
     int *p = (int *)_ZN7fBase_cnwEj(216);
     if (p) { _ZN8dActor_cC2Ev(p); p[0] = (int)&_ZTV15BookShotSpawner[2]; /* +8: this TU defines the vtable */ }

@@ -40,10 +40,10 @@ struct V3w { int w[3]; };  /* array-wrapper: C++ scalarizes a plain struct copy;
 struct V3h { short h[3]; };
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 26 -- FlyGuy_Spawn, 0x02120520, size 0x50 */
+/* ROM ordinal 26 -- daPropeller_Heyho_c_classInit, 0x02120520, size 0x50 */
 /* -------------------------------------------------------------------------- */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-// @symbol FlyGuy_Spawn
+// @symbol daPropeller_Heyho_c_classInit
 /* recovered: vtable identified, globals resolved, declarations from a shared header */
 #include "decl_ActorBase.h"
 #include "decl_Enemy.h"
@@ -54,7 +54,8 @@ extern "C" {  /* .c-derived member: C linkage for the whole block */
 #include "decl_common.h"
 /* recovered: vtable identified, globals resolved */
 /* resolved: VT0 = _ZTV6FlyGuy */
-int *FlyGuy_Spawn(void)
+/* Reconstructed source-style name. Historical alias: FlyGuy_Spawn. */
+int *daPropeller_Heyho_c_classInit(void)
 {
     int *p = (int *)_ZN7fBase_cnwEj(1000);
     if (p) {

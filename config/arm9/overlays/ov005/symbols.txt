@@ -23,14 +23,14 @@ _ZN11dScMiniGm_c16CleanupResourcesEv kind:function(arm,size=0x34) addr:0x020c165
 func_ov005_020c1688 kind:function(arm,size=0x5c) addr:0x020c1688
 func_ov005_020c16e4 kind:function(arm,size=0x33c) addr:0x020c16e4
 _ZN11dScMiniGm_c13InitResourcesEv kind:function(arm,size=0x7cc) addr:0x020c1a20
-func_ov005_020c21ec kind:function(arm,size=0x64) addr:0x020c21ec
+dScMiniGm_c_classInit kind:function(arm,size=0x64) addr:0x020c21ec
 data_ov005_020c2250 kind:data(any) addr:0x020c2250
 data_ov005_020c2260 kind:data(any) addr:0x020c2260
 data_ov005_020c2280 kind:data(any) addr:0x020c2280
 data_ov005_020c22c8 kind:data(any) addr:0x020c22c8
 data_ov005_020c2310 kind:data(any) addr:0x020c2310
 data_ov005_020c23a0 kind:data(any) addr:0x020c23a0
-data_ov005_020c2440 kind:data(any) addr:0x020c2440 ambiguous
+g_profile_MINIGAME kind:data(any) addr:0x020c2440 ambiguous
 _ZTI11dScMiniGm_c kind:data(any) addr:0x020c2448
 _ZTS11dScMiniGm_c kind:data(any) addr:0x020c2454
 data_ov005_020c2464 kind:data(any) addr:0x020c2464

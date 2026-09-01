@@ -32,7 +32,7 @@ _ZN10ChainChomp16CleanupResourcesEv kind:function(arm,size=0x48) addr:0x0211294c
 _ZN10ChainChomp6RenderEv kind:function(arm,size=0x58) addr:0x02112994
 _ZN10ChainChomp8BehaviorEv kind:function(arm,size=0x128) addr:0x021129ec
 _ZN10ChainChomp13InitResourcesEv kind:function(arm,size=0x208) addr:0x02112b14
-ChainChomp_Spawn kind:function(arm,size=0xf0) addr:0x02112d1c
+daWanwan_c_classInit kind:function(arm,size=0xf0) addr:0x02112d1c
 _ZN15ChainChompFenceD1Ev kind:function(arm,size=0x44) addr:0x02112e0c
 _ZN15ChainChompFenceD0Ev kind:function(arm,size=0x58) addr:0x02112e50
 func_ov014_02112ea8 kind:function(arm,size=0x94) addr:0x02112ea8
@@ -182,7 +182,7 @@ _ZTI10daWanwan_c kind:data(any) addr:0x02114718
 data_ov014_02114724 kind:data(any) addr:0x02114724
 data_ov014_02114730 kind:data(any) addr:0x02114730
 _ZTS10daWanwan_c kind:data(any) addr:0x02114740
-ChainChomp_SpawnInfo kind:data(any) addr:0x02114750 ambiguous
+g_profile_WANWAN kind:data(any) addr:0x02114750 ambiguous
 data_ov014_02114768 kind:data(any) addr:0x02114768 ambiguous
 data_ov014_0211476c kind:data(any) addr:0x0211476c
 data_ov014_021147c4 kind:data(any) addr:0x021147c4 ambiguous
