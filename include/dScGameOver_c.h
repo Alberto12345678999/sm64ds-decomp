@@ -13,7 +13,7 @@
  * the same seven dScene_c gives every other direct child -- 0, 3, 6, 9, 12,
  * 16, 17 (rtti_vtables.py --own dScGameOver_c). No new virtual is added.
  *
- * CONSTRUCTION. func_ov003_020b1118 is the factory: it opens with
+ * CONSTRUCTION. dScGameOver_c_classInit is the factory: it opens with
  * `_ZN7fBase_cnwEj(0x98)`, i.e. fBase_c::operator new(0x98). SIZE 0x98 is
  * read directly off the allocator call. No nested-object construction is
  * visible in this TU (unlike dScEntry_c/dScStarSel_c); every own field

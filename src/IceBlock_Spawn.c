@@ -1,4 +1,4 @@
-// @symbol IceBlock_Spawn
+// @symbol daObjIceBlock_c_classInit
 /* recovered: vtable identified, globals resolved, declarations from a shared header */
 #include "decl_ActorBase.h"
 #include "decl_dCcAc_c.h"
@@ -6,7 +6,12 @@
 #include "decl_common.h"
 /* recovered: vtable identified, globals resolved */
 /* resolved: VT0 = _ZTV8IceBlock */
-int *IceBlock_Spawn(void)
+/* Reconstructed source-style name: SM64DS proves daObjIceBlock_c through RTTI,
+ * allocation size, vtable identity, and the ICE_BLOCK_LL registry profile;
+ * later EAD lineage supplies classInit. Exact original spelling is not
+ * preserved. The project's IceBlock implementation aliases remain unchanged.
+ * Historical alias: IceBlock_Spawn. */
+int *daObjIceBlock_c_classInit(void)
 {
     int *p = (int *)_ZN7fBase_cnwEj(872);
     if (p) {

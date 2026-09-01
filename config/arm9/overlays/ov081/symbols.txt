@@ -105,7 +105,7 @@ _ZN8IceBlock16CleanupResourcesEv kind:function(arm,size=0x44) addr:0x02127d98
 _ZN8IceBlock6RenderEv kind:function(arm,size=0x40) addr:0x02127ddc
 _ZN8IceBlock8BehaviorEv kind:function(arm,size=0x1d4) addr:0x02127e1c
 _ZN8IceBlock13InitResourcesEv kind:function(arm,size=0xb0) addr:0x02127ff0
-IceBlock_Spawn kind:function(arm,size=0x38) addr:0x021280a0
+daObjIceBlock_c_classInit kind:function(arm,size=0x38) addr:0x021280a0
 data_ov081_021280d8 kind:data(any) addr:0x021280d8
 __sinit_ov081_021280e8 kind:function(arm,size=0x6c) addr:0x021280e8
 __sinit_ov081_02128154 kind:function(arm,size=0x360) addr:0x02128154
@@ -183,7 +183,7 @@ _ZTV8Moneybag kind:data(any) addr:0x02128c04
 _ZTV8daGmch_c kind:data(any) addr:0x02128c04
 _ZTI15daObjIceBlock_c kind:data(any) addr:0x02128c80
 _ZTS15daObjIceBlock_c kind:data(any) addr:0x02128c8c
-IceBlock_SpawnInfo kind:data(any) addr:0x02128ca0
+g_profile_ICE_BLOCK_LL kind:data(any) addr:0x02128ca0
 _ZTV8IceBlock kind:data(any) addr:0x02128cc4
 _ZTV15daObjIceBlock_c kind:data(any) addr:0x02128cc4
 data_ov081_02128d60 kind:bss addr:0x02128d60

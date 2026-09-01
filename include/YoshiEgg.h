@@ -9,7 +9,7 @@
 #include "dBgCh_Actr.h"
 
 /* daYegg_c in the ROM's RTTI. Derives from dEnemyBase_c, and both witnesses agree:
- * YoshiEgg_Spawn allocates 0x42c, calls _ZN12dEnemyBase_cC2Ev, stores _ZTV8YoshiEgg and
+ * daYegg_c_classInit allocates 0x42c, calls _ZN12dEnemyBase_cC2Ev, stores _ZTV8YoshiEgg and
  * constructs the four members below in order; _ZN8YoshiEggD1Ev destroys the same four
  * in reverse and chains to _ZN12dEnemyBase_cD2Ev.
  *

@@ -1168,7 +1168,7 @@ _ZN8YoshiEgg16CleanupResourcesEv kind:function(arm,size=0x44) addr:0x020edf54
 _ZN8YoshiEgg6RenderEv kind:function(arm,size=0x78) addr:0x020edf98
 _ZN8YoshiEgg8BehaviorEv kind:function(arm,size=0x134) addr:0x020ee010
 _ZN8YoshiEgg13InitResourcesEv kind:function(arm,size=0x294) addr:0x020ee144
-YoshiEgg_Spawn kind:function(arm,size=0x54) addr:0x020ee3d8
+daYegg_c_classInit kind:function(arm,size=0x54) addr:0x020ee3d8
 _ZN10dBgActor_cD1Ev kind:function(arm,size=0x38) addr:0x020ee42c
 _ZN10dBgActor_cD0Ev kind:function(arm,size=0x4c) addr:0x020ee464
 _ZN10dBgActor_c14KillByMegaCharER6Player kind:function(arm,size=0xac) addr:0x020ee4b0
@@ -1248,7 +1248,7 @@ _ZN14BlueCoinSwitch8BehaviorEv kind:function(arm,size=0x1a0) addr:0x020f12c8
 _ZN14BlueCoinSwitch13InitResourcesEv kind:function(arm,size=0x110) addr:0x020f1468
 func_ov002_020f1578 kind:function(arm,size=0x40) addr:0x020f1578
 func_ov002_020f15b8 kind:function(arm,size=0x14) addr:0x020f15b8
-BlueCoinSwitch_Spawn kind:function(arm,size=0x30) addr:0x020f15cc
+daObjBC_Switch_c_classInit kind:function(arm,size=0x30) addr:0x020f15cc
 _ZN14EnemySwitchTagD1Ev kind:function(arm,size=0x30) addr:0x020f15fc
 _ZN14EnemySwitchTagD0Ev kind:function(arm,size=0x44) addr:0x020f162c
 _ZN12EnemySpawnerD1Ev kind:function(arm,size=0x24) addr:0x020f1670
@@ -2221,7 +2221,7 @@ data_ov002_0210ad68 kind:data(any) addr:0x0210ad68
 data_ov002_0210ad70 kind:data(any) addr:0x0210ad70
 _ZTS8daYegg_c kind:data(any) addr:0x0210ad78
 _ZTI8daYegg_c kind:data(any) addr:0x0210ad84
-YoshiEgg_SpawnInfo kind:data(any) addr:0x0210ad90
+g_profile_YOSHI_EGG kind:data(any) addr:0x0210ad90
 _ZTV8YoshiEgg kind:data(any) addr:0x0210adb4
 _ZTV8daYegg_c kind:data(any) addr:0x0210adb4
 _ZTV10dBgActor_c kind:data(any) addr:0x0210ae38
@@ -2256,7 +2256,7 @@ _ZTV9OneUpLogo kind:data(any) addr:0x0210b1ac
 _ZTV14daObj1UpLogo_c kind:data(any) addr:0x0210b1ac
 _ZTI16daObjBC_Switch_c kind:data(any) addr:0x0210b228
 _ZTS16daObjBC_Switch_c kind:data(any) addr:0x0210b234
-BlueCoinSwitch_SpawnInfo kind:data(any) addr:0x0210b248
+g_profile_BC_SWITCH kind:data(any) addr:0x0210b248
 _ZTV14BlueCoinSwitch kind:data(any) addr:0x0210b26c
 _ZTI11daESwitch_c kind:data(any) addr:0x0210b2ec
 _ZTI11daECreate_c kind:data(any) addr:0x0210b2f8
