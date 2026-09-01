@@ -71,7 +71,7 @@
       "symbol": "daObjC0_Switch_c_classInit",
       "address": "0x02111420",
       "size": "0x00000030",
-      "legacy_source": "src/SwitchPillar_Spawn.c",
+      "legacy_source": "src/daObjC0_Switch_c_classInit.c",
       "ordinal": 7
     }
   ],
