@@ -1,12 +1,17 @@
 #include "ArrowLift.h"
-// @symbol ArrowLift_Spawn
+// @symbol daObjWc_Obj02_c_classInit
 /* recovered: globals resolved, declarations from a shared header */
 #include "decl_ActorBase.h"
 #include "decl_Platform.h"
 #include "decl_common.h"
 /* recovered: globals resolved */
 /* resolved: VT = _ZTV9ArrowLift */
-int *ArrowLift_Spawn(void)
+/* Reconstructed source-style name: SM64DS proves daObjWc_Obj02_c through RTTI,
+ * allocation size, vtable identity, and the WC_OBJ02 registry profile; later
+ * EAD lineage supplies classInit. Exact original spelling is not preserved.
+ * The project's ArrowLift implementation aliases remain unchanged. Historical
+ * alias: ArrowLift_Spawn. */
+int *daObjWc_Obj02_c_classInit(void)
 {
     int *p = (int *)_ZN7fBase_cnwEj(sizeof(struct ArrowLift));
     if (p) { _ZN10dBgActor_cC2Ev(p); p[0] = (int)_ZTV9ArrowLift; }

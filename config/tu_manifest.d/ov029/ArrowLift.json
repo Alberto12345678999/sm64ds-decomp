@@ -75,7 +75,7 @@
       "ordinal": 7
     },
     {
-      "symbol": "ArrowLift_Spawn",
+      "symbol": "daObjWc_Obj02_c_classInit",
       "address": "0x021116f8",
       "size": "0x00000030",
       "legacy_source": "src/ArrowLift_Spawn.c",

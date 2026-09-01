@@ -61,13 +61,15 @@ extern short data_ov029_02113fc4;
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 4 -- RotatingPlatformWdw_Spawn, 0x02112168, size 0x3c */
+/* ROM ordinal 4 -- daObjWc_Obj07_c_classInit, 0x02112168, size 0x3c */
 /* -------------------------------------------------------------------------- */
-// @symbol RotatingPlatformWdw_Spawn
+// @symbol daObjWc_Obj07_c_classInit
 /* recovered: vtable identified, declarations from a shared header */
 /* recovered: vtable identified */
 /* vtable identified: VT0 = _ZTV16daObjKaitendai_c */
-extern "C" int *RotatingPlatformWdw_Spawn(void)
+/* Reconstructed source-style name; exact original SM64DS spelling is not
+ * preserved. Historical alias: RotatingPlatformWdw_Spawn. */
+extern "C" int *daObjWc_Obj07_c_classInit(void)
 {
     int *p = (int *)_ZN7fBase_cnwEj(800);
     if (p) {

@@ -49,13 +49,15 @@ extern int data_ov029_02113be8[];
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 3 -- FloatOnWaterPlatformWdwSquare_Spawn, 0x02111340, size 0x3c */
+/* ROM ordinal 3 -- daObjWcObj01_c_classInit, 0x02111340, size 0x3c */
 /* -------------------------------------------------------------------------- */
-// @symbol FloatOnWaterPlatformWdwSquare_Spawn
+// @symbol daObjWcObj01_c_classInit
 /* recovered: vtable identified, declarations from a shared header */
 /* recovered: vtable identified */
 /* vtable identified: VT0 = _ZTV17daObjFloatBoard_c */
-extern "C" int *FloatOnWaterPlatformWdwSquare_Spawn(void)
+/* Reconstructed source-style name; exact original SM64DS spelling is not
+ * preserved. Historical alias: FloatOnWaterPlatformWdwSquare_Spawn. */
+extern "C" int *daObjWcObj01_c_classInit(void)
 {
     int *p = (int *)_ZN7fBase_cnwEj(840);
     if (p) {
