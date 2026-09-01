@@ -78,7 +78,7 @@
       "symbol": "daObjBC_Switch_c_classInit",
       "address": "0x020f15cc",
       "size": "0x00000030",
-      "legacy_source": "src/BlueCoinSwitch_Spawn.c",
+      "legacy_source": "src/daObjBC_Switch_c_classInit.c",
       "ordinal": 8
     }
   ],
@@ -130,7 +130,7 @@
       "src/_ZN14BlueCoinSwitch13InitResourcesEv.cpp",
       "src/func_ov002_020f1578.c",
       "src/func_ov002_020f15b8.c",
-      "src/BlueCoinSwitch_Spawn.c"
+      "src/daObjBC_Switch_c_classInit.c"
     ],
     "extraInertImports": 82,
     "extraImportsWithNoHome": [],

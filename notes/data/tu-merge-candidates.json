@@ -2893,7 +2893,7 @@
     "src/_ZN13TreasureChest6RenderEv.cpp",
     "src/_ZN13TreasureChest8BehaviorEv.cpp",
     "src/_ZN13TreasureChest13InitResourcesEv.cpp",
-    "src/TreasureChest_Spawn.c"
+    "src/daObjTbox_c_classInit.c"
    ],
    "ext_mix": {
     ".cpp": 9,
@@ -3973,7 +3973,7 @@
     "src/_ZN14BlueCoinSwitch13InitResourcesEv.cpp",
     "src/func_ov002_020f1578.c",
     "src/func_ov002_020f15b8.c",
-    "src/BlueCoinSwitch_Spawn.c"
+    "src/daObjBC_Switch_c_classInit.c"
    ],
    "ext_mix": {
     ".cpp": 6,
@@ -7599,7 +7599,7 @@
     "src/_ZN8IceBlock6RenderEv.cpp",
     "src/_ZN8IceBlock8BehaviorEv.cpp",
     "src/_ZN8IceBlock13InitResourcesEv.cpp",
-    "src/IceBlock_Spawn.c"
+    "src/daObjIceBlock_c_classInit.c"
    ],
    "ext_mix": {
     ".cpp": 9,
@@ -16878,7 +16878,7 @@
     "src/_ZN8YoshiEgg6RenderEv.cpp",
     "src/_ZN8YoshiEgg8BehaviorEv.cpp",
     "src/_ZN8YoshiEgg13InitResourcesEv.cpp",
-    "src/YoshiEgg_Spawn.c"
+    "src/daYegg_c_classInit.c"
    ],
    "ext_mix": {
     ".cpp": 12,
@@ -33323,7 +33323,7 @@
    "n_functions_map": 1,
    "n_files": 1,
    "files": [
-    "src/func_ov003_020b1118.cpp"
+    "src/dScGameOver_c_classInit.cpp"
    ],
    "ext_mix": {
     ".cpp": 1
