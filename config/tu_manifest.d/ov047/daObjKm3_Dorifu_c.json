@@ -1,13 +1,13 @@
 {
-  "id": "ov047/RickshawPlatformBs",
+  "id": "ov047/daObjKm3_Dorifu_c",
   "module": "ov047",
-  "source": "src_tu/actors/RickshawPlatformBs.cpp",
-  "promoted_source": "src/actors/RickshawPlatformBs.cpp",
+  "source": "src_tu/actors/daObjKm3_Dorifu_c.cpp",
+  "promoted_source": "src/actors/daObjKm3_Dorifu_c.cpp",
   "status": "text-verified",
   "boundary_confidence": "high",
   "boundary_evidence": [
     "contiguous linker run: 0x2111510..0x21116dc, 5 function(s), from build/tu_map.json (tools/tu_map.py)",
-    "class label(s): RickshawPlatformBs",
+    "class label(s): daObjKm3_Dorifu_c",
     "module sinit corroboration: 4 sinit(s) / 4 .ctor entries, sinit_vs_tu=ok, corroborated=False (module-wide, NOT narrowed to this one TU -- see notes/tu-reconstruction-pilot-report.md sec 2 for the by-hand narrowing step)"
   ],
   "sections": [
@@ -19,31 +19,31 @@
   ],
   "functions": [
     {
-      "symbol": "_ZN18RickshawPlatformBsD1Ev",
+      "symbol": "_ZN17daObjKm3_Dorifu_cD1Ev",
       "address": "0x02111510",
       "size": "0x00000080",
-      "legacy_source": "src/_ZN18RickshawPlatformBsD1Ev.cpp",
+      "legacy_source": "src/_ZN17daObjKm3_Dorifu_cD1Ev.cpp",
       "ordinal": 0
     },
     {
-      "symbol": "_ZN18RickshawPlatformBsD0Ev",
+      "symbol": "_ZN17daObjKm3_Dorifu_cD0Ev",
       "address": "0x02111590",
       "size": "0x00000094",
-      "legacy_source": "src/_ZN18RickshawPlatformBsD0Ev.cpp",
+      "legacy_source": "src/_ZN17daObjKm3_Dorifu_cD0Ev.cpp",
       "ordinal": 1
     },
     {
-      "symbol": "_ZN18RickshawPlatformBs16CleanupResourcesEv",
+      "symbol": "_ZN17daObjKm3_Dorifu_c16CleanupResourcesEv",
       "address": "0x02111624",
       "size": "0x00000014",
-      "legacy_source": "src/_ZN18RickshawPlatformBs16CleanupResourcesEv.cpp",
+      "legacy_source": "src/_ZN17daObjKm3_Dorifu_c16CleanupResourcesEv.cpp",
       "ordinal": 2
     },
     {
-      "symbol": "_ZN18RickshawPlatformBs13InitResourcesEv",
+      "symbol": "_ZN17daObjKm3_Dorifu_c13InitResourcesEv",
       "address": "0x02111638",
       "size": "0x00000014",
-      "legacy_source": "src/_ZN18RickshawPlatformBs13InitResourcesEv.cpp",
+      "legacy_source": "src/_ZN17daObjKm3_Dorifu_c13InitResourcesEv.cpp",
       "ordinal": 3
     },
     {
@@ -64,14 +64,14 @@
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
     "toolchain": "tools/mwccarm/2004/b56/mwccarm.exe",
     "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
-    "object": "build/tu/ov047-RickshawPlatformBs/RickshawPlatformBs.o (gitignored)",
+    "object": "build/tu/ov047-daObjKm3_Dorifu_c/daObjKm3_Dorifu_c.o (gitignored)",
     "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
     "functions_matched": 5,
     "functions_declared": 5,
     "compilerOnlyOutput": {
       "requested": [],
       "unhandled": [
-        "_ZN18RickshawPlatformBsD2Ev"
+        "_ZN17daObjKm3_Dorifu_cD2Ev"
       ]
     },
     "criteria": {
