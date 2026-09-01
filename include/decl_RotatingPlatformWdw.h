@@ -20,7 +20,7 @@
 extern "C" {
 #endif
 
-extern void*_ZN19RotatingPlatformWdwD1Ev;
+extern void*_ZN15daObjWc_Obj07_cD1Ev;
 
 
 #ifdef __cplusplus

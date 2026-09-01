@@ -1,5 +1,5 @@
-#ifndef ROTATINGPLATFORMWDW_H
-#define ROTATINGPLATFORMWDW_H
+#ifndef DAOBJWC_OBJ07_C_H
+#define DAOBJWC_OBJ07_C_H
 
 #include "types.h"
 
@@ -12,11 +12,11 @@
  *
  *   _ZTI15daObjWc_Obj07_c  ov029 0x02113fc8
  *   _ZTS15daObjWc_Obj07_c  ov029 0x02113fe0
- *   _ZTV19RotatingPlatformWdw  ov029 0x02114018  (its record sits at V-4)
+ *   _ZTV15daObjWc_Obj07_c  ov029 0x02114018  (its record sits at V-4)
  *   kind  __si_class_type_info, ONE base, subobject offset 0
  *   base  daObjKaitendai_c, ov002 0x021091ac
  *
- * NO FIELDS OF ITS OWN: RotatingPlatformWdw_Spawn passes 800 = 0x320 = sizeof(dBgActor_c).
+ * NO FIELDS OF ITS OWN: daObjWc_Obj07_c_Spawn passes 800 = 0x320 = sizeof(dBgActor_c).
  * It overrides slots 0 and 3, which the base leaves null.
  */
 
@@ -24,16 +24,16 @@
 
 #include "daObjKaitendai_c.h"
 
-struct RotatingPlatformWdw : daObjKaitendai_c {
+struct daObjWc_Obj07_c : daObjKaitendai_c {
     /* --- vtable --- */
-    virtual ~RotatingPlatformWdw(); /* slots 16 (D1), 17 (D0) */
+    virtual ~daObjWc_Obj07_c(); /* slots 16 (D1), 17 (D0) */
 
     int CleanupResources();            /* slot  3 */
     int InitResources();               /* slot  0 */
 };
 
-typedef char RotatingPlatformWdw_size_must_be_0x320[sizeof(RotatingPlatformWdw) == 0x320 ? 1 : -1];
+typedef char daObjWc_Obj07_c_size_must_be_0x320[sizeof(daObjWc_Obj07_c) == 0x320 ? 1 : -1];
 
 #endif /* __cplusplus */
 
-#endif /* ROTATINGPLATFORMWDW_H */
+#endif /* DAOBJWC_OBJ07_C_H */
