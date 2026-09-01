@@ -12011,7 +12011,7 @@
     "src/func_02023544.c",
     "src/_ZN9BootSceneD1Ev.cpp",
     "src/_ZN9BootSceneD0Ev.cpp",
-    "src/func_02023624.c",
+    "src/dScBoot_c_classInit.c",
     "src/_ZN5StageD1Ev.cpp",
     "src/_ZN5StageD0Ev.cpp",
     "src/_ZN5Stage9VE_UpdateEv.cpp",
@@ -24269,7 +24269,7 @@
     "src/func_ov007_020cca80.c",
     "src/func_ov007_020cca98.c",
     "src/func_ov007_020ccab4.c",
-    "src/func_ov007_020ccad0.c"
+    "src/dScDSMT_c_classInit.c"
    ],
    "ext_mix": {
     ".c": 7
@@ -33227,7 +33227,7 @@
    "n_functions_map": 1,
    "n_files": 1,
    "files": [
-    "src/func_ov003_020adc10.cpp"
+    "src/dScTitle_c_classInit.cpp"
    ],
    "ext_mix": {
     ".cpp": 1
@@ -33277,7 +33277,7 @@
    "n_functions_map": 1,
    "n_files": 1,
    "files": [
-    "src/StarSelect_Spawn.cpp"
+    "src/dScStarSel_c_classInit.cpp"
    ],
    "ext_mix": {
     ".cpp": 1
