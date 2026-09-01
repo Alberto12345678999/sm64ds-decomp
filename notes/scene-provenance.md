@@ -257,7 +257,7 @@ at 0x056. Two corrections:
 
 With 0x056 counted, the class's own fields run 0x050..0x056 — seven bytes, one short of
 the 0x058 an eighth (padding) byte reaches. 0x058 is exactly what
-`src/func_02023624.c`'s `operator new(0x58)` allocates. Since `dScBoot_c` is a leaf, no
+`dScBoot_c_classInit`'s `operator new(0x58)` allocates. Since `dScBoot_c` is a leaf, no
 subclass needs the object to extend further, so the assertion holds to it.
 
 **`InitResources` in detail.** The very first thing the game draws. It hands the four

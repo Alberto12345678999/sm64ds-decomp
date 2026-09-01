@@ -1,4 +1,5 @@
-// dActor_c factory: new fBase_c(0x64), base ctor, installs the vtable chain
+// @symbol dScDSMT_c_classInit
+// dScDSMT_c factory: new fBase_c(0x64), base ctor, installs the vtable chain
 // (two base vtables then the ov007 one), ORs flag bits 1 and 4 at +0x13 via a
 // materialized byte pointer, sets the +0x50 sub-object vtables, and constructs
 // the member at +0x54 via func_02017278.
@@ -12,7 +13,11 @@ extern int data_ov007_021032e8[];
 extern int data_0208ee14[];
 extern int data_ov007_021032b0[];
 
-int *func_ov007_020ccad0(void)
+/* Reconstructed source-style name: SM64DS proves dScDSMT_c through RTTI,
+ * allocation size, vtable identity, and the DSMT registry profile; later EAD
+ * lineage supplies classInit. Exact original spelling is not preserved.
+ * Historical alias: func_ov007_020ccad0. */
+int *dScDSMT_c_classInit(void)
 {
     int *p = (int *)_ZN7fBase_cnwEj(0x64);
     if (p) {

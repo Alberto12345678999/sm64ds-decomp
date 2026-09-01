@@ -1,4 +1,5 @@
 //cpp
+// @symbol dScStarSel_c_classInit
 extern "C" {
 extern void* _ZN7fBase_cnwEj(unsigned int);
 extern void _ZN7fBase_cC2Ev(void*);
@@ -9,7 +10,11 @@ extern void* data_0208e4b8[];
 extern void* _ZTV8dScene_c[];
 extern void* data_ov003_020b1704[];
 
-void* StarSelect_Spawn(void){
+/* Reconstructed source-style name: SM64DS proves dScStarSel_c through RTTI,
+ * allocation size, vtable identity, and the STAR_SELECT registry profile;
+ * later EAD lineage supplies classInit. Exact original spelling is not
+ * preserved. Historical alias: StarSelect_Spawn. */
+void* dScStarSel_c_classInit(void){
   char* p = (char*)_ZN7fBase_cnwEj(0x13c);
   if(p){
     _ZN7fBase_cC2Ev(p);

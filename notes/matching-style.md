@@ -149,7 +149,7 @@ These were proven by hand-cracking real functions and watching the divergence co
 - **NEW-CTOR NULL CHECK: put the body INSIDE `if (p) { ... }`, return p after** -- NOT `if (!p) return p;`.
   `p = New(sz); if (p) { Ctor(p); ...installs...; } return p;` -> `movs r4,r0; beq <end>` (branch
   around the body), shared `mov r0,r4; pop; bx` exit. The early-return form predicates (`popeq;bxeq`)
-  and misses. Validated: func_ov003_020adc10 18 -> 7 divergences.
+  and misses. Validated: dScTitle_c_classInit (historical alias func_ov003_020adc10) 18 -> 7 divergences.
 - **MULTI-CONDITION EARLY-OUT TO A SHARED RETURN: use a `&&` chain, not separate `if(x) return K;`**.
   `if (a==0 && b==0 && c==0 && d==0) return 1; return 0;` -> each test `cmp; bne <shared ret0>`
   (branch), with a single shared exit. Separate `if (a) return 0;` statements PREDICATE each

@@ -14,7 +14,7 @@
  * every other direct child -- 0, 3, 6, 9, 12, 16, 17 (rtti_vtables.py --own
  * dScStarSel_c). No new virtual is added.
  *
- * CONSTRUCTION. StarSelect_Spawn is the factory: it opens with
+ * CONSTRUCTION. dScStarSel_c_classInit is the factory: it opens with
  * `_ZN7fBase_cnwEj(0x13c)`, i.e. fBase_c::operator new(0x13c). SIZE 0x13c
  * is read directly off the allocator call. The same factory then calls the
  * shared "construct N elements of size S" helper, func_020733a8(p+0x64, 2,

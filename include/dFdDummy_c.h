@@ -17,7 +17,7 @@
  * writes and otherwise behaves exactly like its base at those slots.
  *
  * CONSTRUCTION. Not spawned on its own. It is an embedded member of
- * dScDSMT_c (ov007) at offset 0x54: func_ov007_020ccad0 (dScDSMT_c's
+ * dScDSMT_c (ov007) at offset 0x54: dScDSMT_c_classInit (dScDSMT_c's
  * factory) calls `_ZN7fBase_cnwEj(0x64)`, builds the outer object, places a
  * dGraph_c::callback_c-derived sub-object at 0x50, then constructs this
  * class's sub-object at 0x54 via func_02017278 -- which writes the full
