@@ -1081,6 +1081,11 @@
     "src/actors/daBrq_c.cpp#_ZN7daBrq_c16OnPendingDestroyEv": "github-actions[bot]",
     "src/actors/daBrq_c.cpp#_ZN7daBrq_c6RenderEv": "github-actions[bot]",
     "src/actors/daBrq_c.cpp#_ZN7daBrq_c8BehaviorEv": "github-actions[bot]",
-    "src/actors/daBrq_c.cpp#_ZN7daBrq_c13InitResourcesEv": "github-actions[bot]"
+    "src/actors/daBrq_c.cpp#_ZN7daBrq_c13InitResourcesEv": "github-actions[bot]",
+    "src/actors/daObjKm3_Kaitendai_c.cpp#_ZN20daObjKm3_Kaitendai_cD1Ev": "github-actions[bot]",
+    "src/actors/daObjKm3_Kaitendai_c.cpp#_ZN20daObjKm3_Kaitendai_cD0Ev": "tangosdev",
+    "src/actors/daObjKm3_Kaitendai_c.cpp#_ZN20daObjKm3_Kaitendai_c16CleanupResourcesEv": "github-actions[bot]",
+    "src/actors/daObjKm3_Kaitendai_c.cpp#_ZN20daObjKm3_Kaitendai_c13InitResourcesEv": "github-actions[bot]",
+    "src/actors/daObjKm3_Kaitendai_c.cpp#func_ov047_021113bc": "github-actions[bot]"
   }
 }
