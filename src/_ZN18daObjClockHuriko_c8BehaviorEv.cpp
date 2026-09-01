@@ -1,19 +1,19 @@
 //cpp
-// @symbol _ZN21ClockPaintingPendulum8BehaviorEv
-/* ClockPaintingPendulum::Behavior -- vtable slot 6, ov013 0x021112a8. The
+// @symbol _ZN18daObjClockHuriko_c8BehaviorEv
+/* daObjClockHuriko_c::Behavior -- vtable slot 6, ov013 0x021112a8. The
  * pendulum swings while the global at data_02092110 is not positive: the swing
  * speed reverses at each end of the arc, the angle integrates it, and the tick
  * sound plays as the speed passes +-0x10.
  *
  * The swing angle is dActor_c::mAngleZ; its separately materialized pointer
  * below preserves the ROM's load/read-modify-write order under 2004/b56. */
-#include "ClockPaintingPendulum.h"
+#include "daObjClockHuriko_c.h"
 #include "Sound.h"
 
 extern s8 data_02092110[];
-extern "C" void func_ov013_02111238(ClockPaintingPendulum *pendulum);
+extern "C" void func_ov013_02111238(daObjClockHuriko_c *pendulum);
 
-s32 ClockPaintingPendulum::Behavior()
+s32 daObjClockHuriko_c::Behavior()
 {
     if (data_02092110[0] <= 0) {
         s16 *angleZ = &mAngleZ;

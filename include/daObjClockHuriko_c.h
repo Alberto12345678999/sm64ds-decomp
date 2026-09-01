@@ -1,5 +1,5 @@
-#ifndef CLOCKPAINTINGPENDULUM_H
-#define CLOCKPAINTINGPENDULUM_H
+#ifndef DAOBJCLOCKHURIKO_C_H
+#define DAOBJCLOCKHURIKO_C_H
 
 #include "types.h"
 
@@ -20,19 +20,19 @@
  * existed for either the ROM name or the coined one before this file --
  * include/decl_common.h's `extern int _ZTV18daObjClockHuriko_c[];` is a
  * stale, unresolved declaration (no symbols.txt entry backs it); the real
- * vtable symbol is _ZTV21ClockPaintingPendulum, ov013 0x02112128.
+ * vtable symbol is _ZTV18daObjClockHuriko_c, ov013 0x02112128.
  *
- * VTABLE. _ZTV21ClockPaintingPendulum is 31 slots, the same count as
+ * VTABLE. _ZTV18daObjClockHuriko_c is 31 slots, the same count as
  * dActor_c's own table -- confirmed with `tools/rtti_vtables.py --own
  * daObjClockHuriko_c`, which also shows the destructor pair already migrated
- * under the coined name "ClockPaintingPendulum" (_ZN21ClockPaintingPendulumD1Ev
+ * under the coined name "daObjClockHuriko_c" (_ZN18daObjClockHuriko_cD1Ev
  * / D0Ev, ov013 0x021111a0 / 0x021111d0) by earlier work. This class
  * overrides four slots beyond the destructor:
  *
- *   0  InitResources      ov013 0x0211133c  (src/_ZN21ClockPaintingPendulum13InitResourcesEv.cpp)
- *   3  CleanupResources   ov013 0x02111214  (src/_ZN21ClockPaintingPendulum16CleanupResourcesEv.c)
- *   6  Behavior           ov013 0x021112a8  (src/_ZN21ClockPaintingPendulum8BehaviorEv.c)
- *   9  Render             ov013 0x02111280  (src/_ZN21ClockPaintingPendulum6RenderEv.cpp)
+ *   0  InitResources      ov013 0x0211133c  (src/_ZN18daObjClockHuriko_c13InitResourcesEv.cpp)
+ *   3  CleanupResources   ov013 0x02111214  (src/_ZN18daObjClockHuriko_c16CleanupResourcesEv.c)
+ *   6  Behavior           ov013 0x021112a8  (src/_ZN18daObjClockHuriko_c8BehaviorEv.c)
+ *   9  Render             ov013 0x02111280  (src/_ZN18daObjClockHuriko_c6RenderEv.cpp)
  *
  * (config/arm9/overlays/ov013/relocs.txt has no entries at the vtable's own
  * slot addresses because the whole vtable is one relocation-free literal
@@ -53,10 +53,10 @@
  * and src/_ZN7fBase_c13InitResourcesEv.cpp: each of the four sources above is
  * declared here as a virtual override so the header documents the vtable
  * completely, but defined as a free function taking the object pointer
- * explicitly, never as a real `ClockPaintingPendulum::` method -- so nothing
+ * explicitly, never as a real `daObjClockHuriko_c::` method -- so nothing
  * about the bodies had to change to land the correct mangled symbol.
  *
- * SIZE. ClockPaintingPendulum_Spawn.c calls `_ZN7fBase_cnwEj(296)` -- 0x128 --
+ * SIZE. daObjClockHuriko_c_Spawn.c calls `_ZN7fBase_cnwEj(296)` -- 0x128 --
  * then _ZN8dActor_cC2Ev and _ZN5ModelC1Ev at +0xd4. dActor_c is 0xd0
  * (include/dActor_c.h) and Model is 0x50 (include/Model.h), so the embedded
  * Model runs 0xd4..0x124 (the same 4-byte alignment pad include/dBgActor_c.h
@@ -74,9 +74,9 @@
 
 #ifdef __cplusplus
 
-struct ClockPaintingPendulum : dActor_c {
+struct daObjClockHuriko_c : dActor_c {
     u8  pad_0d0[0x4];
-    /* Named by ClockPaintingPendulum_Spawn.c's own _ZN5ModelC1Ev call at
+    /* Named by daObjClockHuriko_c_Spawn.c's own _ZN5ModelC1Ev call at
        +0xd4 -- a relocation the ROM build checks. */
     Model mModel;             /* 0x0d4 */
 
@@ -84,27 +84,27 @@ struct ClockPaintingPendulum : dActor_c {
     u8  pad_126[0x2];
 
     /* --- vtable. Declared first, deliberately -- it is already the key
-       function (see DERIVATION above): _ZN21ClockPaintingPendulumD1Ev.c /
+       function (see DERIVATION above): _ZN18daObjClockHuriko_cD1Ev.c /
        D0Ev.c define it as extern "C" free functions, never as a real
-       `ClockPaintingPendulum::~ClockPaintingPendulum()`, so nothing here
+       `daObjClockHuriko_c::~daObjClockHuriko_c()`, so nothing here
        changes which TU the vtable is emitted from. --- */
-    virtual ~ClockPaintingPendulum();
+    virtual ~daObjClockHuriko_c();
 
     /* --- overrides of inherited fBase_c slots dActor_c left untouched.
        Declared here purely so this header documents the vtable completely;
        each is DEFINED as a free function under its mangled symbol, not as a
-       real ClockPaintingPendulum:: method -- see NOT CONVERTED above. --- */
+       real daObjClockHuriko_c:: method -- see NOT CONVERTED above. --- */
     virtual s32 InitResources();          /* slot 0 */
     virtual s32 CleanupResources();       /* slot 3 */
     virtual s32 Behavior();               /* slot 6 */
     virtual s32 Render();                 /* slot 9 */
 };
 
-/* Holds the chain to the size ClockPaintingPendulum_Spawn.c's
+/* Holds the chain to the size daObjClockHuriko_c_Spawn.c's
    operator new(0x128) call evidences. A silently-added member anywhere
    fails this. */
-typedef char ClockPaintingPendulum_size_must_be_0x128[sizeof(ClockPaintingPendulum) == 0x128 ? 1 : -1];
+typedef char daObjClockHuriko_c_size_must_be_0x128[sizeof(daObjClockHuriko_c) == 0x128 ? 1 : -1];
 
 #endif /* __cplusplus */
 
-#endif /* CLOCKPAINTINGPENDULUM_H */
+#endif /* DAOBJCLOCKHURIKO_C_H */
