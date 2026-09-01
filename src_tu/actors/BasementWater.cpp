@@ -67,14 +67,14 @@ int _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(void*,
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 6 -- BasementWater_Spawn, 0x02111730, size 0x38 */
+/* ROM ordinal 6 -- class initializer, 0x02111730, size 0x38 */
 /* -------------------------------------------------------------------------- */
-// @symbol BasementWater_Spawn
+// @symbol daObjC0Water_c_classInit
 /* recovered: vtable identified, globals resolved, declarations from a shared header */
 /* recovered: vtable identified, globals resolved */
 /* resolved: VT0 = _ZTV13BasementWater */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-int *BasementWater_Spawn(void)
+int *daObjC0Water_c_classInit(void)
 {
     int *p = (int *)_ZN7fBase_cnwEj(832);
     if (p) {

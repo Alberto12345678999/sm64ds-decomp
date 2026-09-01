@@ -5,14 +5,14 @@ _ZN12SwitchPillar16CleanupResourcesEv kind:function(arm,size=0x38) addr:0x021112
 _ZN12SwitchPillar6RenderEv kind:function(arm,size=0x28) addr:0x02111324
 _ZN12SwitchPillar8BehaviorEv kind:function(arm,size=0x24) addr:0x0211134c
 _ZN12SwitchPillar13InitResourcesEv kind:function(arm,size=0xb0) addr:0x02111370
-SwitchPillar_Spawn kind:function(arm,size=0x30) addr:0x02111420
+daObjC0_Switch_c_classInit kind:function(arm,size=0x30) addr:0x02111420
 _ZN13BasementWaterD1Ev kind:function(arm,size=0x4c) addr:0x02111450
 _ZN13BasementWaterD0Ev kind:function(arm,size=0x60) addr:0x0211149c
 _ZN13BasementWater16CleanupResourcesEv kind:function(arm,size=0x44) addr:0x021114fc
 _ZN13BasementWater6RenderEv kind:function(arm,size=0x34) addr:0x02111540
 _ZN13BasementWater8BehaviorEv kind:function(arm,size=0xd8) addr:0x02111574
 _ZN13BasementWater13InitResourcesEv kind:function(arm,size=0xe4) addr:0x0211164c
-BasementWater_Spawn kind:function(arm,size=0x38) addr:0x02111730
+daObjC0Water_c_classInit kind:function(arm,size=0x38) addr:0x02111730
 data_ov012_02111768 kind:data(any) addr:0x02111768
 data_ov012_0211176c kind:data(any) addr:0x0211176c
 data_ov012_02111770 kind:data(any) addr:0x02111770
@@ -95,13 +95,13 @@ data_ov012_02112294 kind:data(any) addr:0x02112294 ambiguous
 data_ov012_0211229c kind:data(any) addr:0x0211229c ambiguous
 _ZTI16daObjC0_Switch_c kind:data(any) addr:0x02112300
 _ZTS16daObjC0_Switch_c kind:data(any) addr:0x0211230c
-SwitchPillar_SpawnInfo kind:data(any) addr:0x02112320 ambiguous
+g_profile_C0_SWITCH kind:data(any) addr:0x02112320 ambiguous
 _ZTV12SwitchPillar kind:data(any) addr:0x02112344
 data_ov012_02112358 kind:data(any) addr:0x02112358 ambiguous
 data_ov012_02112368 kind:data(any) addr:0x02112368 ambiguous
 _ZTI14daObjC0Water_c kind:data(any) addr:0x021123c4
 _ZTS14daObjC0Water_c kind:data(any) addr:0x021123d0
-BasementWater_SpawnInfo kind:data(any) addr:0x021123e4 ambiguous
+g_profile_C0_WATER kind:data(any) addr:0x021123e4 ambiguous
 data_ov012_021123f4 kind:data(any) addr:0x021123f4 ambiguous
 data_ov012_02112404 kind:data(any) addr:0x02112404 ambiguous
 _ZTV13BasementWater kind:data(any) addr:0x02112408
