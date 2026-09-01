@@ -19025,7 +19025,7 @@ matched: yes</title></rect><rect x="895.73" y="27.00" width="5.75" height="18.75
 module: ov004
 addr: 0x020aeed8
 size: 372 bytes
-matched: yes</title></rect><rect x="895.73" y="45.75" width="5.75" height="3.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov004_020af04c
+matched: yes</title></rect><rect x="895.73" y="45.75" width="5.75" height="3.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11dScMgBase_c19OnHitFromUnderneathEv
 module: ov004
 addr: 0x020af04c
 size: 72 bytes
@@ -22721,7 +22721,7 @@ matched: yes</title></rect><rect x="721.29" y="325.72" width="9.41" height="7.39
 module: ov006
 addr: 0x020e6d24
 size: 104 bytes
-matched: yes</title></rect><rect x="730.70" y="325.72" width="1.09" height="7.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_020e6d8c
+matched: yes</title></rect><rect x="730.70" y="325.72" width="1.09" height="7.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14dScMgD3DBase_c19OnHitFromUnderneathEv
 module: ov006
 addr: 0x020e6d8c
 size: 12 bytes
@@ -25577,7 +25577,7 @@ matched: yes</title></rect><rect x="770.70" y="473.09" width="3.80" height="11.2
 module: ov006
 addr: 0x0210c478
 size: 64 bytes
-matched: yes</title></rect><rect x="774.50" y="473.09" width="2.14" height="11.25" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dScMgSlot1_c19OnHitFromUnderneathER8dActor_c
+matched: yes</title></rect><rect x="774.50" y="473.09" width="2.14" height="11.25" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12dScMgSlot1_c19OnHitFromUnderneathEv
 module: ov006
 addr: 0x0210c4b8
 size: 36 bytes
