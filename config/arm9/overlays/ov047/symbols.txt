@@ -12,7 +12,7 @@ _ZN17daObjKm3_Kuruma_cD1Ev kind:function(arm,size=0x50) addr:0x021113f8
 _ZN17daObjKm3_Kuruma_cD0Ev kind:function(arm,size=0x64) addr:0x02111448
 _ZN17daObjKm3_Kuruma_c16CleanupResourcesEv kind:function(arm,size=0x14) addr:0x021114ac
 _ZN17daObjKm3_Kuruma_c13InitResourcesEv kind:function(arm,size=0x14) addr:0x021114c0
-RickshawPlatformBs_Spawn kind:function(arm,size=0x3c) addr:0x021114d4
+daObjKm3_Kuruma_c_classInit kind:function(arm,size=0x3c) addr:0x021114d4
 _ZN18RickshawPlatformBsD1Ev kind:function(arm,size=0x80) addr:0x02111510
 _ZN18RickshawPlatformBsD0Ev kind:function(arm,size=0x94) addr:0x02111590
 _ZN18RickshawPlatformBs16CleanupResourcesEv kind:function(arm,size=0x14) addr:0x02111624
@@ -100,7 +100,7 @@ data_ov047_02112404 kind:data(any) addr:0x02112404 ambiguous
 data_ov047_02112408 kind:data(any) addr:0x02112408
 _ZTS17daObjKm3_Kuruma_c kind:data(any) addr:0x02112414
 data_ov047_0211241c kind:data(any) addr:0x0211241c ambiguous
-RickshawPlatformBs_SpawnInfo kind:data(any) addr:0x02112428 ambiguous
+g_profile_KM3_KURUMA kind:data(any) addr:0x02112428 ambiguous
 data_ov047_02112434 kind:data(any) addr:0x02112434 ambiguous
 data_ov047_02112438 kind:data(any) addr:0x02112438 ambiguous
 _ZTV17daObjKm3_Kuruma_c kind:data(any) addr:0x0211244c

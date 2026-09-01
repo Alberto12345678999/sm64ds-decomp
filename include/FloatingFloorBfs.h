@@ -17,8 +17,9 @@
  *   base  daObjUkiyuka_c, ov002 0x02109104
  *
  * NO FIELDS OF ITS OWN, and this is the leaf that fixes the base's size:
- * FloatingFloorBfs_Spawn passes 812 = 0x32c, which is daObjUkiyuka_c exactly.
- * It overrides slots 0 and 3, which the base leaves null.
+ * daObjKm2_Ukishima_c_classInit (historical alias FloatingFloorBfs_Spawn)
+ * passes 812 = 0x32c, which is daObjUkiyuka_c exactly. It overrides slots 0
+ * and 3, which the base leaves null.
  */
 
 #ifdef __cplusplus

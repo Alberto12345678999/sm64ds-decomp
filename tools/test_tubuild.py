@@ -146,7 +146,7 @@ def test_verify_reproduces_pilot_1s_7_of_7_and_clean_objisolate():
             ("_ZN8PoleLift6RenderEv", "0x021115f0", "0x028"),
             ("_ZN8PoleLift8BehaviorEv", "0x02111618", "0x120"),
             ("_ZN8PoleLift13InitResourcesEv", "0x02111738", "0x0d0"),
-            ("PoleLift_Spawn", "0x02111808", "0x038")]:
+            ("daObjKm2_Ami_Bou_c_classInit", "0x02111808", "0x038")]:
         assert f"MATCH    {sym}" in out and addr in out, (sym, out)
 
     assert "byte comparison   : 7/7 MATCH" in out
@@ -266,7 +266,7 @@ def test_partial_reproduces_the_production_per_function_objects():
     for sym in ("_ZN8PoleLiftD1Ev", "_ZN8PoleLiftD0Ev",
                 "_ZN8PoleLift16CleanupResourcesEv", "_ZN8PoleLift6RenderEv",
                 "_ZN8PoleLift8BehaviorEv", "_ZN8PoleLift13InitResourcesEv",
-                "PoleLift_Spawn"):
+                "daObjKm2_Ami_Bou_c_classInit"):
         line = next((l for l in out.splitlines() if f" {sym} " in l), None)
         assert line and "IDENTICAL" in line, (sym, line, out)
     assert "contribution equivalence: 7/7" in out

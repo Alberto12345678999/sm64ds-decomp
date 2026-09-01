@@ -12,7 +12,8 @@
  * so writing the LAST function of the ROM run FIRST is what makes the object's
  * section order equal the ROM's address order. Confirmed by probe against this
  * exact compiler rather than assumed; the reading order below is therefore
- * PoleLift_Spawn, InitResources, Behavior, Render, CleanupResources, ~PoleLift.
+ * daObjKm2_Ami_Bou_c_classInit, InitResources, Behavior, Render,
+ * CleanupResources, ~PoleLift.
  * The rule holds between distinct definitions but NOT inside the destructor's
  * variant group -- see the report.
  *
@@ -20,7 +21,8 @@
  *   _ZTV8PoleLift       .data  0x02112dbc (slot array; the C++ object starts
  *                              8 bytes earlier, at 0x02112db4)
  *   _ZTI8PoleLift       .data  0x02112d74
- *   PoleLift_SpawnInfo  .data  0x02112d98
+ *   g_profile_KM2_AMI_BOU .data 0x02112d98
+ *                          (historical alias PoleLift_SpawnInfo)
  *   PoleLift_ClsnFile   .bss   0x021131d0
  *   PoleLift_ModelFile  .bss   0x021131d8
  *   a static initialiser in .init
@@ -64,7 +66,7 @@ extern short data_02082214[];
 }
 
 /* ------------------------------------------------------------------------- */
-/* ROM ordinal 6 -- PoleLift_Spawn, 0x02111808, size 0x38                     */
+/* ROM ordinal 6 -- daObjKm2_Ami_Bou_c_classInit, 0x02111808, size 0x38      */
 /* ------------------------------------------------------------------------- */
 /* recovered: vtable identified, globals resolved, declarations from a shared header */
 /* resolved: VT0 = _ZTV8PoleLift
@@ -86,7 +88,11 @@ extern short data_02082214[];
  * (int-indexed, so eight bytes) makes this reference agree with the addend-8
  * stores the compiler itself emits in the destructors below.
  */
-extern "C" int *PoleLift_Spawn(void)
+/* Reconstructed source-style name: SM64DS proves daObjKm2_Ami_Bou_c through
+ * RTTI, allocation size, vtable identity, and the KM2_AMI_BOU registry
+ * profile; later EAD lineage supplies classInit. Exact original spelling is
+ * not preserved. Historical alias: PoleLift_Spawn. */
+extern "C" int *daObjKm2_Ami_Bou_c_classInit(void)
 {
     int *p = (int *)_ZN7fBase_cnwEj(856);
     if (p) {
