@@ -1,5 +1,5 @@
-#ifndef FALLBLOCKBFS_H
-#define FALLBLOCKBFS_H
+#ifndef DAOBJKM2_FALL_BLOCK_C_H
+#define DAOBJKM2_FALL_BLOCK_C_H
 
 #include "types.h"
 
@@ -12,11 +12,11 @@
  *
  *   _ZTI21daObjKm2_Fall_Block_c  ov045 0x021130a0
  *   _ZTS21daObjKm2_Fall_Block_c  ov045 0x021130b8
- *   _ZTV12FallBlockBfs  ov045 0x021130f4  (its record sits at V-4)
+ *   _ZTV21daObjKm2_Fall_Block_c  ov045 0x021130f4  (its record sits at V-4)
  *   kind  __si_class_type_info, ONE base, subobject offset 0
  *   base  daObjFallBlock_c, ov015 0x02114874
  *
- * NO FIELDS OF ITS OWN: FallBlockBfs_Spawn passes 844 = 0x34c, which daObjFallBlock_c
+ * NO FIELDS OF ITS OWN: daObjKm2_Fall_Block_c_Spawn passes 844 = 0x34c, which daObjFallBlock_c
  * fills exactly. It overrides slots 0 and 3, which the base leaves null.
  */
 
@@ -24,16 +24,16 @@
 
 #include "daObjFallBlock_c.h"
 
-struct FallBlockBfs : daObjFallBlock_c {
+struct daObjKm2_Fall_Block_c : daObjFallBlock_c {
     /* --- vtable --- */
-    virtual ~FallBlockBfs();       /* slots 16 (D1), 17 (D0) */
+    virtual ~daObjKm2_Fall_Block_c();       /* slots 16 (D1), 17 (D0) */
 
     int CleanupResources();            /* slot  3 */
     int InitResources();               /* slot  0 */
 };
 
-typedef char FallBlockBfs_size_must_be_0x34c[sizeof(FallBlockBfs) == 0x34c ? 1 : -1];
+typedef char daObjKm2_Fall_Block_c_size_must_be_0x34c[sizeof(daObjKm2_Fall_Block_c) == 0x34c ? 1 : -1];
 
 #endif /* __cplusplus */
 
-#endif /* FALLBLOCKBFS_H */
+#endif /* DAOBJKM2_FALL_BLOCK_C_H */

@@ -1,13 +1,13 @@
 {
-  "id": "ov045/FallBlockBfs",
+  "id": "ov045/daObjKm2_Fall_Block_c",
   "module": "ov045",
-  "source": "src_tu/actors/FallBlockBfs.c",
-  "promoted_source": "src/actors/FallBlockBfs.cpp",
+  "source": "src_tu/actors/daObjKm2_Fall_Block_c.c",
+  "promoted_source": "src/actors/daObjKm2_Fall_Block_c.cpp",
   "status": "text-verified",
   "boundary_confidence": "high",
   "boundary_evidence": [
     "contiguous linker run: 0x2111d48..0x2111e60, 5 function(s), from build/tu_map.json (tools/tu_map.py)",
-    "class label(s): FallBlockBfs",
+    "class label(s): daObjKm2_Fall_Block_c",
     "module sinit corroboration: 6 sinit(s) / 6 .ctor entries, sinit_vs_tu=ok, corroborated=True (module-wide, NOT narrowed to this one TU -- see notes/tu-reconstruction-pilot-report.md sec 2 for the by-hand narrowing step)"
   ],
   "sections": [
@@ -19,38 +19,38 @@
   ],
   "functions": [
     {
-      "symbol": "_ZN12FallBlockBfsD1Ev",
+      "symbol": "_ZN21daObjKm2_Fall_Block_cD1Ev",
       "address": "0x02111d48",
       "size": "0x00000050",
-      "legacy_source": "src/_ZN12FallBlockBfsD1Ev.cpp",
+      "legacy_source": "src/_ZN21daObjKm2_Fall_Block_cD1Ev.cpp",
       "ordinal": 0
     },
     {
-      "symbol": "_ZN12FallBlockBfsD0Ev",
+      "symbol": "_ZN21daObjKm2_Fall_Block_cD0Ev",
       "address": "0x02111d98",
       "size": "0x00000064",
-      "legacy_source": "src/_ZN12FallBlockBfsD0Ev.cpp",
+      "legacy_source": "src/_ZN21daObjKm2_Fall_Block_cD0Ev.cpp",
       "ordinal": 1
     },
     {
-      "symbol": "_ZN12FallBlockBfs16CleanupResourcesEv",
+      "symbol": "_ZN21daObjKm2_Fall_Block_c16CleanupResourcesEv",
       "address": "0x02111dfc",
       "size": "0x00000014",
-      "legacy_source": "src/_ZN12FallBlockBfs16CleanupResourcesEv.cpp",
+      "legacy_source": "src/_ZN21daObjKm2_Fall_Block_c16CleanupResourcesEv.cpp",
       "ordinal": 2
     },
     {
-      "symbol": "_ZN12FallBlockBfs13InitResourcesEv",
+      "symbol": "_ZN21daObjKm2_Fall_Block_c13InitResourcesEv",
       "address": "0x02111e10",
       "size": "0x00000014",
-      "legacy_source": "src/_ZN12FallBlockBfs13InitResourcesEv.cpp",
+      "legacy_source": "src/_ZN21daObjKm2_Fall_Block_c13InitResourcesEv.cpp",
       "ordinal": 3
     },
     {
-      "symbol": "FallBlockBfs_Spawn",
+      "symbol": "daObjKm2_Fall_Block_c_Spawn",
       "address": "0x02111e24",
       "size": "0x0000003c",
-      "legacy_source": "src/FallBlockBfs_Spawn.c",
+      "legacy_source": "src/daObjKm2_Fall_Block_c_Spawn.c",
       "ordinal": 4
     }
   ],
@@ -63,14 +63,14 @@
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
     "toolchain": "tools/mwccarm/2004/b56/mwccarm.exe",
     "flags": "-O4,p -enum int -lang c99 -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
-    "object": "build/tu/ov045-FallBlockBfs/FallBlockBfs.o (gitignored)",
+    "object": "build/tu/ov045-daObjKm2_Fall_Block_c/daObjKm2_Fall_Block_c.o (gitignored)",
     "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
     "functions_matched": 5,
     "functions_declared": 5,
     "linkcheck": {
       "round": "tools/tubuild.py linkcheck -- scratch dsd delink+lcf, whole-tree mwccarm, mwldarm link, linked-range and module byte comparison, dsd check symbols --fail, full ROM build",
       "result": "link-failed",
-      "scratch": "build/tu/ov045-FallBlockBfs/link (gitignored)",
+      "scratch": "build/tu/ov045-daObjKm2_Fall_Block_c/link (gitignored)",
       "phases": {
         "delink": true,
         "lcf": true,
@@ -106,7 +106,7 @@
     "legacyEntriesComplete": "0/5",
     "extraInertImports": 19,
     "extraImportsWithNoHome": [],
-    "artefacts": "build/tu/ov045-FallBlockBfs/partial/partial.json (gitignored)",
+    "artefacts": "build/tu/ov045-daObjKm2_Fall_Block_c/partial/partial.json (gitignored)",
     "state": "contribution-equivalent",
     "stateMeaning": "every derived object's linker-visible contribution -- kept section header and bytes, its relocations by symbol name, every defined symbol, every content section still carrying bytes, and every relocation-referenced import -- is byte-identical to what the current per-function compile+isolate pipeline produces for the same function",
     "axisNote": "Orthogonal to `status` (plan sec 6). This entry's `status` describes whole-range linking; this block describes a source consolidation whose linker contribution stays per-function."
