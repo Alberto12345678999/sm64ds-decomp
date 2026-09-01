@@ -16,7 +16,7 @@
  *   kind  __si_class_type_info, ONE base, subobject offset 0
  *   base  daObjMaruta_c, ov022 0x02114350 -- whose vtable is in ov080, not ov022
  *
- * SIZE 0x344, from RollingLogLll_Spawn's literal 836. It overrides slots 0
+ * SIZE 0x344, from daObjFlMaruta_c_classInit's literal 836. It overrides slots 0
  * (InitResources), 3 (CleanupResources) and 6 (Behavior), all three of which the
  * base leaves null; the base supplies only Render, the two destructors and
  * OnHitByMegaChar.
