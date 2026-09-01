@@ -1,9 +1,9 @@
-#ifndef ICESLIDEMANAGER_H
-#define ICESLIDEMANAGER_H
+#ifndef DASLDMNG_C_H
+#define DASLDMNG_C_H
 
 #include "dActor_c.h"
 
-/* The cartridge RTTI names this class daSldMng_c. IceSlideManager is the
+/* The cartridge RTTI names this class daSldMng_c. daSldMng_c is the
  * readable compatibility spelling already carried by all four configured
  * virtual symbols. Its __si_class_type_info record points directly at
  * dActor_c at offset zero, and its vtable has exactly the same 31 slots as
@@ -15,7 +15,7 @@
  * InitResources seeds mKillTimer with 120, and Behavior counts it down before
  * killing the actor. Behavior's two-way switch and byte increment pin mState.
  */
-struct IceSlideManager : dActor_c {
+struct daSldMng_c : dActor_c {
     u32 unk_0d0;          /* 0x0d0 */
     u16 mKillTimer;       /* 0x0d4 */
     u8 mState;            /* 0x0d6 */
@@ -23,13 +23,13 @@ struct IceSlideManager : dActor_c {
 
     /* Inline is load-bearing: explicit use from the destructor sources makes
      * mwccarm emit D1/D0 in cartridge order without a homeless D2. */
-    virtual ~IceSlideManager() {}
+    virtual ~daSldMng_c() {}
 
     virtual int InitResources(); /* slot 0 */
     virtual int Behavior();      /* slot 6 */
 };
 
-typedef char IceSlideManager_size_must_be_0xd8[
-    sizeof(IceSlideManager) == 0xd8 ? 1 : -1];
+typedef char daSldMng_c_size_must_be_0xd8[
+    sizeof(daSldMng_c) == 0xd8 ? 1 : -1];
 
 #endif

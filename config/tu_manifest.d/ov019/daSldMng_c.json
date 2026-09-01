@@ -1,13 +1,13 @@
 {
-  "id": "ov019/IceSlideManager",
+  "id": "ov019/daSldMng_c",
   "module": "ov019",
-  "source": "src_tu/actors/IceSlideManager.cpp",
-  "promoted_source": "src/actors/IceSlideManager.cpp",
+  "source": "src_tu/actors/daSldMng_c.cpp",
+  "promoted_source": "src/actors/daSldMng_c.cpp",
   "status": "text-verified",
   "boundary_confidence": "high",
   "boundary_evidence": [
     "contiguous linker run: 0x211261c..0x211277c, 5 function(s), from build/tu_map.json (tools/tu_map.py)",
-    "class label(s): IceSlideManager",
+    "class label(s): daSldMng_c",
     "module sinit corroboration: 2 sinit(s) / 2 .ctor entries, sinit_vs_tu=ok, corroborated=True (module-wide, NOT narrowed to this one TU -- see notes/tu-reconstruction-pilot-report.md sec 2 for the by-hand narrowing step)"
   ],
   "sections": [
@@ -19,38 +19,38 @@
   ],
   "functions": [
     {
-      "symbol": "_ZN15IceSlideManagerD1Ev",
+      "symbol": "_ZN10daSldMng_cD1Ev",
       "address": "0x0211261c",
       "size": "0x00000024",
-      "legacy_source": "src/_ZN15IceSlideManagerD1Ev.cpp",
+      "legacy_source": "src/_ZN10daSldMng_cD1Ev.cpp",
       "ordinal": 0
     },
     {
-      "symbol": "_ZN15IceSlideManagerD0Ev",
+      "symbol": "_ZN10daSldMng_cD0Ev",
       "address": "0x02112640",
       "size": "0x00000038",
-      "legacy_source": "src/_ZN15IceSlideManagerD0Ev.cpp",
+      "legacy_source": "src/_ZN10daSldMng_cD0Ev.cpp",
       "ordinal": 1
     },
     {
-      "symbol": "_ZN15IceSlideManager8BehaviorEv",
+      "symbol": "_ZN10daSldMng_c8BehaviorEv",
       "address": "0x02112678",
       "size": "0x000000a4",
-      "legacy_source": "src/_ZN15IceSlideManager8BehaviorEv.cpp",
+      "legacy_source": "src/_ZN10daSldMng_c8BehaviorEv.cpp",
       "ordinal": 2
     },
     {
-      "symbol": "_ZN15IceSlideManager13InitResourcesEv",
+      "symbol": "_ZN10daSldMng_c13InitResourcesEv",
       "address": "0x0211271c",
       "size": "0x00000030",
-      "legacy_source": "src/_ZN15IceSlideManager13InitResourcesEv.cpp",
+      "legacy_source": "src/_ZN10daSldMng_c13InitResourcesEv.cpp",
       "ordinal": 3
     },
     {
-      "symbol": "IceSlideManager_Spawn",
+      "symbol": "daSldMng_c_Spawn",
       "address": "0x0211274c",
       "size": "0x00000030",
-      "legacy_source": "src/IceSlideManager_Spawn.c",
+      "legacy_source": "src/daSldMng_c_Spawn.c",
       "ordinal": 4
     }
   ],
@@ -64,7 +64,7 @@
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
     "toolchain": "tools/mwccarm/2004/b56/mwccarm.exe",
     "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
-    "object": "build/tu/ov019-IceSlideManager/IceSlideManager.o (gitignored)",
+    "object": "build/tu/ov019-daSldMng_c/daSldMng_c.o (gitignored)",
     "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
     "functions_matched": 5,
     "functions_declared": 5,

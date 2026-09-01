@@ -1,6 +1,6 @@
 //cpp
-// @symbol _ZN15IceSlideManager8BehaviorEv
-#include "IceSlideManager.h"
+// @symbol _ZN10daSldMng_c8BehaviorEv
+#include "daSldMng_c.h"
 
 extern "C" u16 DecIfAbove0_Short(u16 *timer);
 
@@ -11,7 +11,7 @@ extern "C" u16 DecIfAbove0_Short(u16 *timer);
 extern "C" int _ZN5Sound7PlaySubEjjj5Fix12IiEb(
     u32 soundID, u32 volume, u32 pan, Fix12i distance, bool loop);
 
-int IceSlideManager::Behavior()
+int daSldMng_c::Behavior()
 {
     switch (mState) {
     case 0:
