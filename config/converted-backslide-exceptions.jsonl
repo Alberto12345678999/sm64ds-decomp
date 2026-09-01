@@ -99,3 +99,7 @@
 {"path": "src/_ZN10ChillBully8BehaviorEv.cpp", "reason": "restack cpp/donketu-snake-tu onto main after 2151 landed"}
 {"path": "src/_ZN10ChillBullyD0Ev.cpp", "reason": "restack cpp/donketu-snake-tu onto main after 2151 landed"}
 {"path": "src/_ZN10ChillBullyD1Ev.cpp", "reason": "restack cpp/donketu-snake-tu onto main after 2151 landed"}
+{"path": "src/_ZN15daObjWc_Obj07_c13InitResourcesEv.cpp", "reason": "ov029/daObjWc_Obj07_c promoted to a genuine snake_case TU (src/actors/d_a_obj_wc_obj07.cpp); four per-function entries become two path#symbol entries, and daObjWc_Obj07_c_Spawn was never CONVERTED"}
+{"path": "src/_ZN15daObjWc_Obj07_c16CleanupResourcesEv.cpp", "reason": "ov029/daObjWc_Obj07_c promoted to a genuine snake_case TU (src/actors/d_a_obj_wc_obj07.cpp); four per-function entries become two path#symbol entries, and daObjWc_Obj07_c_Spawn was never CONVERTED"}
+{"path": "src/_ZN15daObjWc_Obj07_cD0Ev.cpp", "reason": "ov029/daObjWc_Obj07_c promoted to a genuine snake_case TU (src/actors/d_a_obj_wc_obj07.cpp); four per-function entries become two path#symbol entries, and daObjWc_Obj07_c_Spawn was never CONVERTED"}
+{"path": "src/_ZN15daObjWc_Obj07_cD1Ev.cpp", "reason": "ov029/daObjWc_Obj07_c promoted to a genuine snake_case TU (src/actors/d_a_obj_wc_obj07.cpp); four per-function entries become two path#symbol entries, and daObjWc_Obj07_c_Spawn was never CONVERTED"}

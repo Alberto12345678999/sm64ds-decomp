@@ -1,9 +1,9 @@
 {
   "id": "ov029/daObjWc_Obj07_c",
   "module": "ov029",
-  "source": "src_tu/actors/daObjWc_Obj07_c.cpp",
-  "promoted_source": "src/actors/daObjWc_Obj07_c.cpp",
-  "status": "text-verified",
+  "source": "src/actors/d_a_obj_wc_obj07.cpp",
+  "promoted_source": "src/actors/d_a_obj_wc_obj07.cpp",
+  "status": "promoted",
   "boundary_confidence": "high",
   "boundary_evidence": [
     "contiguous linker run: 0x2112080..0x21121a4, 5 function(s), from build/tu_map.json (tools/tu_map.py)",
@@ -75,5 +75,98 @@
       "functions_occur_in_expected_order": "PARTIAL -- ordinal pair(s) not in ROM order: [(0, 1)]",
       "relocation_destinations_verified": "PASS"
     }
-  }
+  },
+  "compiler_only_output": [
+    {
+      "symbol": "_ZTI7fBase_c",
+      "disposition": "deadstrip-data",
+      "reason": "Emitted as vague linkage because this TU defines the class's key function. The cartridge keeps its canonical copy at arm9:0x02086d70, outside this entry's only licensed range (.text 0x02112080-0x021121a4), so dsd supplies that ROM data independently. romdata_check compares the emitted copy against the cartridge, relocations applied, before production isolation discards it.",
+      "canonical_module": "arm9",
+      "canonical_address": "0x02086d70"
+    },
+    {
+      "symbol": "_ZTS7fBase_c",
+      "disposition": "deadstrip-data",
+      "reason": "Emitted as vague linkage because this TU defines the class's key function. The cartridge keeps its canonical copy at arm9:0x02086e60, outside this entry's only licensed range (.text 0x02112080-0x021121a4), so dsd supplies that ROM data independently. romdata_check compares the emitted copy against the cartridge, relocations applied, before production isolation discards it.",
+      "canonical_module": "arm9",
+      "canonical_address": "0x02086e60"
+    },
+    {
+      "symbol": "_ZTS7dBase_c",
+      "disposition": "deadstrip-data",
+      "reason": "Emitted as vague linkage because this TU defines the class's key function. The cartridge keeps its canonical copy at arm9:0x02086e54, outside this entry's only licensed range (.text 0x02112080-0x021121a4), so dsd supplies that ROM data independently. romdata_check compares the emitted copy against the cartridge, relocations applied, before production isolation discards it.",
+      "canonical_module": "arm9",
+      "canonical_address": "0x02086e54"
+    },
+    {
+      "symbol": "_ZTS8dActor_c",
+      "disposition": "deadstrip-data",
+      "reason": "Emitted as vague linkage because this TU defines the class's key function. The cartridge keeps its canonical copy at arm9:0x0208e384, outside this entry's only licensed range (.text 0x02112080-0x021121a4), so dsd supplies that ROM data independently. romdata_check compares the emitted copy against the cartridge, relocations applied, before production isolation discards it.",
+      "canonical_module": "arm9",
+      "canonical_address": "0x0208e384"
+    },
+    {
+      "symbol": "_ZTI7dBase_c",
+      "disposition": "deadstrip-data",
+      "reason": "Emitted as vague linkage because this TU defines the class's key function. The cartridge keeps its canonical copy at arm9:0x02086e78, outside this entry's only licensed range (.text 0x02112080-0x021121a4), so dsd supplies that ROM data independently. romdata_check compares the emitted copy against the cartridge, relocations applied, before production isolation discards it.",
+      "canonical_module": "arm9",
+      "canonical_address": "0x02086e78"
+    },
+    {
+      "symbol": "_ZTI10dBgActor_c",
+      "disposition": "deadstrip-data",
+      "reason": "Emitted as vague linkage because this TU defines the class's key function. The cartridge keeps its canonical copy at ov002:0x021089ec, outside this entry's only licensed range (.text 0x02112080-0x021121a4), so dsd supplies that ROM data independently. romdata_check compares the emitted copy against the cartridge, relocations applied, before production isolation discards it.",
+      "canonical_module": "ov002",
+      "canonical_address": "0x021089ec"
+    },
+    {
+      "symbol": "_ZTI8dActor_c",
+      "disposition": "deadstrip-data",
+      "reason": "Emitted as vague linkage because this TU defines the class's key function. The cartridge keeps its canonical copy at arm9:0x0208e390, outside this entry's only licensed range (.text 0x02112080-0x021121a4), so dsd supplies that ROM data independently. romdata_check compares the emitted copy against the cartridge, relocations applied, before production isolation discards it.",
+      "canonical_module": "arm9",
+      "canonical_address": "0x0208e390"
+    },
+    {
+      "symbol": "_ZTI16daObjKaitendai_c",
+      "disposition": "deadstrip-data",
+      "reason": "Emitted as vague linkage because this TU defines the class's key function. The cartridge keeps its canonical copy at ov002:0x021091ac, outside this entry's only licensed range (.text 0x02112080-0x021121a4), so dsd supplies that ROM data independently. romdata_check compares the emitted copy against the cartridge, relocations applied, before production isolation discards it.",
+      "canonical_module": "ov002",
+      "canonical_address": "0x021091ac"
+    },
+    {
+      "symbol": "_ZTI15daObjWc_Obj07_c",
+      "disposition": "deadstrip-data",
+      "reason": "Emitted as vague linkage because this TU defines the class's key function. The cartridge keeps its canonical copy at ov029:0x02113fc8, outside this entry's only licensed range (.text 0x02112080-0x021121a4), so dsd supplies that ROM data independently. romdata_check compares the emitted copy against the cartridge, relocations applied, before production isolation discards it.",
+      "canonical_module": "ov029",
+      "canonical_address": "0x02113fc8"
+    },
+    {
+      "symbol": "_ZTS10dBgActor_c",
+      "disposition": "deadstrip-data",
+      "reason": "Emitted as vague linkage because this TU defines the class's key function. The cartridge keeps its canonical copy at ov002:0x02108a04, outside this entry's only licensed range (.text 0x02112080-0x021121a4), so dsd supplies that ROM data independently. romdata_check compares the emitted copy against the cartridge, relocations applied, before production isolation discards it.",
+      "canonical_module": "ov002",
+      "canonical_address": "0x02108a04"
+    },
+    {
+      "symbol": "_ZTS15daObjWc_Obj07_c",
+      "disposition": "deadstrip-data",
+      "reason": "Emitted as vague linkage because this TU defines the class's key function. The cartridge keeps its canonical copy at ov029:0x02113fe0, outside this entry's only licensed range (.text 0x02112080-0x021121a4), so dsd supplies that ROM data independently. romdata_check compares the emitted copy against the cartridge, relocations applied, before production isolation discards it.",
+      "canonical_module": "ov029",
+      "canonical_address": "0x02113fe0"
+    },
+    {
+      "symbol": "_ZTS16daObjKaitendai_c",
+      "disposition": "deadstrip-data",
+      "reason": "Emitted as vague linkage because this TU defines the class's key function. The cartridge keeps its canonical copy at ov002:0x021091b8, outside this entry's only licensed range (.text 0x02112080-0x021121a4), so dsd supplies that ROM data independently. romdata_check compares the emitted copy against the cartridge, relocations applied, before production isolation discards it.",
+      "canonical_module": "ov002",
+      "canonical_address": "0x021091b8"
+    },
+    {
+      "symbol": "_ZTV15daObjWc_Obj07_c",
+      "disposition": "deadstrip-data",
+      "reason": "Emitted as vague linkage because this TU defines the class's key function. The cartridge keeps its canonical copy at ov029:0x02114018, outside this entry's only licensed range (.text 0x02112080-0x021121a4), so dsd supplies that ROM data independently. romdata_check compares the emitted copy against the cartridge, relocations applied, before production isolation discards it.",
+      "canonical_module": "ov029",
+      "canonical_address": "0x02114018"
+    }
+  ]
 }

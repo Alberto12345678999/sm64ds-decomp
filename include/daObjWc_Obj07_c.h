@@ -25,11 +25,30 @@
 #include "daObjKaitendai_c.h"
 
 struct daObjWc_Obj07_c : daObjKaitendai_c {
-    /* --- vtable --- */
-    virtual ~daObjWc_Obj07_c(); /* slots 16 (D1), 17 (D0) */
+    /* --- vtable. The destructor is INLINE, and that is load-bearing rather
+       than a style choice. Out of line, mwccarm emits D0 before D1 -- the
+       reverse of the ROM's 0x02112080 D1 / 0x021120d0 D0 order, which makes
+       objisolate refuse the whole TU -- and additionally emits a D2 that has
+       no home in the cartridge. Inline, it emits exactly the retail D1/D0 pair
+       in ROM order and no D2. Nothing derives from this class, so no
+       descendant needs a D2 to `bl`: its _ZTI at ov029 0x02113fc8 appears as a
+       base pointer in no other RTTI record anywhere in the image (the one
+       other 32-bit occurrence of that value is in ov014, which loads at the
+       SAME address 0x021111a0 as ov029 and is therefore never resident
+       alongside it -- a coincidence, not a derivation). --- */
+    virtual ~daObjWc_Obj07_c() {}
 
-    int CleanupResources();            /* slot  3 */
-    int InitResources();               /* slot  0 */
+    /* Declared before InitResources deliberately: with the destructor inline
+       the key function is the first DECLARED non-inline virtual -- declared,
+       not lowest slot -- so this ordering is what makes
+       src/actors/d_a_obj_wc_obj07.cpp the TU that emits the _ZTV/_ZTI/_ZTS
+       group. Both are real methods for the same reason: a hand-mangled
+       `extern "C"` free function does not DEFINE the key function, and then
+       mwcc emits neither the RTTI group nor the inline destructor's D1/D0
+       pair. `virtual` is written out for the reader; these override
+       daObjKaitendai_c slots and would be virtual either way. */
+    virtual int CleanupResources();    /* slot  3 */
+    virtual int InitResources();       /* slot  0 */
 };
 
 typedef char daObjWc_Obj07_c_size_must_be_0x320[sizeof(daObjWc_Obj07_c) == 0x320 ? 1 : -1];
