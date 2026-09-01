@@ -83,7 +83,7 @@ src/_ZN8ShipWing13InitResourcesEv.cpp:
     complete
     .text start:0x02111854 end:0x02111904
 
-src/ShipWing_Spawn.c:
+src/daObjRc_Hane_c_classInit.c:
     complete
     .text start:0x02111904 end:0x0211193c
 
@@ -123,7 +123,7 @@ src/func_ov036_02111cc4.c:
     complete
     .text start:0x02111cc4 end:0x02111cd8
 
-src/DonutBlock_Spawn.c:
+src/daObjRc_Tikuwa_c_classInit.c:
     complete
     .text start:0x02111cd8 end:0x02111d14
 
@@ -171,7 +171,7 @@ src/_ZN16daObjRc_Dorifu_c13InitResourcesEv.cpp:
     complete
     .text start:0x021120b4 end:0x021120c8
 
-src/TrickyTriangles_Spawn.cpp:
+src/daObjRc_Dorifu_c_classInit.cpp:
     complete
     .text start:0x021120c8 end:0x02112158
 

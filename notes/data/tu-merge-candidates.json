@@ -5471,7 +5471,7 @@
     "src/_ZN8ShipWing6RenderEv.cpp",
     "src/_ZN8ShipWing8BehaviorEv.cpp",
     "src/_ZN8ShipWing13InitResourcesEv.cpp",
-    "src/ShipWing_Spawn.c"
+    "src/daObjRc_Hane_c_classInit.c"
    ],
    "ext_mix": {
     ".cpp": 6,
@@ -9108,7 +9108,7 @@
     "src/_ZN10DonutBlock13InitResourcesEv.cpp",
     "src/func_ov036_02111ca4.cpp",
     "src/func_ov036_02111cc4.c",
-    "src/DonutBlock_Spawn.c"
+    "src/daObjRc_Tikuwa_c_classInit.c"
    ],
    "ext_mix": {
     ".cpp": 7,
@@ -25729,7 +25729,7 @@
     "src/_ZN16SpinningPlatform6RenderEv.cpp",
     "src/_ZN16SpinningPlatform8BehaviorEv.cpp",
     "src/_ZN16SpinningPlatform13InitResourcesEv.cpp",
-    "src/SpinningPlatform_Spawn.c"
+    "src/daObjCtMecha11_c_classInit.c"
    ],
    "ext_mix": {
     ".c": 5,
@@ -27421,7 +27421,7 @@
     "src/_ZN14TTC_MovingBeam16CleanupResourcesEv.cpp",
     "src/_ZN14TTC_MovingBeam6RenderEv.cpp",
     "src/_ZN14TTC_MovingBeam13InitResourcesEv.cpp",
-    "src/TTC_MovingBeam_Spawn.c"
+    "src/daObjCtMecha09_c_classInit.c"
    ],
    "ext_mix": {
     ".cpp": 6,
@@ -35825,7 +35825,7 @@
    "n_functions_map": 1,
    "n_files": 1,
    "files": [
-    "src/TrickyTriangles_Spawn.cpp"
+    "src/daObjRc_Dorifu_c_classInit.cpp"
    ],
    "ext_mix": {
     ".cpp": 1

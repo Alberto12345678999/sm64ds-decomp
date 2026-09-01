@@ -109,7 +109,7 @@ src/DiamondLift_Spawn.c	S1-stores-rom-vptr	ov043			stores _ZTV11DiamondLift	1		N
 src/DisableSoundPlayersForCredits.c	WEAK-refs-only	arm9				1		None		-
 src/DisableVramBanks.c	PURE-C	arm9				1		None		-
 src/Div.c	PURE-C					0		None		not-in-delinks
-src/DonutBlock_Spawn.c	WEAK-refs-only	ov036				1		None		-
+src/daObjRc_Tikuwa_c_classInit.c	WEAK-refs-only	ov036				1		None		-
 src/Door_Spawn.c	S1-stores-rom-vptr	ov100			stores _ZTV4Door	1		None	_ZTV4Door	-
 src/DorrieCap_Spawn.c	WEAK-refs-only	ov065				1		None		-
 src/DotVec3.c	PURE-C	arm9				1		None		-
@@ -425,7 +425,7 @@ src/Shark_Spawn.c	WEAK-refs-only	ov090				1		None		-
 src/ShipDown_Spawn.c	WEAK-refs-only	ov016				1		None		-
 src/ShipUp_Spawn.c	WEAK-refs-only	ov016				1		None		-
 src/daObjKsWater_c_classInit.c	WEAK-refs-only	ov017				1		None		-
-src/ShipWing_Spawn.c	WEAK-refs-only	ov036				1		None		-
+src/daObjRc_Hane_c_classInit.c	WEAK-refs-only	ov036				1		None		-
 src/ShowArea.c	PURE-C	arm9				1		None		-
 src/ShowCrashScreen.c	WEAK-refs-only	arm9				1		None		-
 src/daObjBSwdoor_c_classInit.c	S1-stores-rom-vptr	ov014			stores _ZTV10ShutterBob	1		None	_ZTV10ShutterBob/_ZTV13daObjSwdoor_c	-
@@ -459,7 +459,7 @@ src/SoundObject_Spawn.c	S1-stores-rom-vptr	ov002			stores _ZTV11SoundObject	1		N
 src/Sound_PlayIfNotActive.c	PURE-C	arm9				1		None		-
 src/SpikeBomb_Spawn.c	WEAK-refs-only	ov060				1		None		-
 src/Spindrift_Spawn.c	WEAK-refs-only	ov081				1		None		-
-src/SpinningPlatform_Spawn.c	WEAK-refs-only	ov035				1		None		-
+src/daObjCtMecha11_c_classInit.c	WEAK-refs-only	ov035				1		None		-
 src/Spiny_Spawn.c	WEAK-refs-only	ov077				1		None		-
 src/Sprite_SetAnimation.c	PURE-C	ov007				1		None		-
 src/Sqrt.c	PURE-C					0		None		not-in-delinks
@@ -485,7 +485,7 @@ src/daObjWc_Obj04_c_classInit.c	WEAK-refs-only	ov029				1		None		-
 src/daObjC0_Switch_c_classInit.c	S1-stores-rom-vptr	ov012			stores _ZTV12SwitchPillar	1		None	_ZTV12SwitchPillar	-
 src/Swoop_Spawn.c	WEAK-refs-only	ov065				1		None		-
 src/TTC_MovingBar_Spawn.c	S1-stores-rom-vptr	ov065			stores _ZTV16daObjCtMecha05_c	1		None	_ZTV16daObjCtMecha05_c	-
-src/TTC_MovingBeam_Spawn.c	WEAK-refs-only	ov065				1		None		-
+src/daObjCtMecha09_c_classInit.c	WEAK-refs-only	ov065				1		None		-
 src/Thwomp_Spawn.c	S1-stores-rom-vptr	ov091			stores _ZTV11daDsnBase_c	1		None	_ZTV11daDsnBase_c/_ZTV6Thwomp	-
 src/TiltingPlatformBfs_Spawn.c	S1-stores-rom-vptr	ov045			stores _ZTV15daObjGuragura_c	1		None	_ZTV15daObjGuragura_c/_ZTV18TiltingPlatformBfs	-
 src/daObjFl_Gura_c_classInit.c	S1-stores-rom-vptr	ov064			stores _ZTV15daObjGuragura_c	1		None	_ZTV15daObjGuragura_c/_ZTV18TiltingPlatformLll	-
