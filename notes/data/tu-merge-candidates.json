@@ -4080,19 +4080,19 @@
    "start": "0x21111a0",
    "end": "0x2111450",
    "classes": [
-    "SwitchPillar"
+    "daObjC0_Switch_c"
    ],
    "n_functions_map": 8,
    "n_files": 8,
    "files": [
-    "src/_ZN12SwitchPillarD1Ev.cpp",
-    "src/_ZN12SwitchPillarD0Ev.c",
-    "src/_ZN12SwitchPillar15OnGroundPoundedER8dActor_c.cpp",
-    "src/_ZN12SwitchPillar16CleanupResourcesEv.cpp",
-    "src/_ZN12SwitchPillar6RenderEv.cpp",
-    "src/_ZN12SwitchPillar8BehaviorEv.cpp",
-    "src/_ZN12SwitchPillar13InitResourcesEv.cpp",
-    "src/SwitchPillar_Spawn.c"
+    "src/_ZN16daObjC0_Switch_cD1Ev.cpp",
+    "src/_ZN16daObjC0_Switch_cD0Ev.c",
+    "src/_ZN16daObjC0_Switch_c15OnGroundPoundedER8dActor_c.cpp",
+    "src/_ZN16daObjC0_Switch_c16CleanupResourcesEv.cpp",
+    "src/_ZN16daObjC0_Switch_c6RenderEv.cpp",
+    "src/_ZN16daObjC0_Switch_c8BehaviorEv.cpp",
+    "src/_ZN16daObjC0_Switch_c13InitResourcesEv.cpp",
+    "src/daObjC0_Switch_c_Spawn.c"
    ],
    "ext_mix": {
     ".cpp": 6,
@@ -4663,19 +4663,19 @@
    "start": "0x20b0748",
    "end": "0x20b07f8",
    "classes": [
-    "CameraTag"
+    "daCamTag_c"
    ],
    "n_functions_map": 8,
    "n_files": 8,
    "files": [
-    "src/_ZN9CameraTagD1Ev.cpp",
-    "src/_ZN9CameraTagD0Ev.c",
-    "src/_ZN9CameraTag16CleanupResourcesEv.cpp",
-    "src/_ZN9CameraTag16OnPendingDestroyEv.cpp",
-    "src/_ZN9CameraTag6RenderEv.cpp",
-    "src/_ZN9CameraTag8BehaviorEv.cpp",
-    "src/_ZN9CameraTag13InitResourcesEv.cpp",
-    "src/CameraTag_Spawn.c"
+    "src/_ZN10daCamTag_cD1Ev.cpp",
+    "src/_ZN10daCamTag_cD0Ev.c",
+    "src/_ZN10daCamTag_c16CleanupResourcesEv.cpp",
+    "src/_ZN10daCamTag_c16OnPendingDestroyEv.cpp",
+    "src/_ZN10daCamTag_c6RenderEv.cpp",
+    "src/_ZN10daCamTag_c8BehaviorEv.cpp",
+    "src/_ZN10daCamTag_c13InitResourcesEv.cpp",
+    "src/daCamTag_c_Spawn.c"
    ],
    "ext_mix": {
     ".cpp": 6,
@@ -5341,19 +5341,19 @@
    "start": "0x21111a0",
    "end": "0x21113bc",
    "classes": [
-    "ClockPaintingPendulum"
+    "daObjClockHuriko_c"
    ],
    "n_functions_map": 8,
    "n_files": 8,
    "files": [
-    "src/_ZN21ClockPaintingPendulumD1Ev.c",
-    "src/_ZN21ClockPaintingPendulumD0Ev.c",
-    "src/_ZN21ClockPaintingPendulum16CleanupResourcesEv.c",
+    "src/_ZN18daObjClockHuriko_cD1Ev.c",
+    "src/_ZN18daObjClockHuriko_cD0Ev.c",
+    "src/_ZN18daObjClockHuriko_c16CleanupResourcesEv.c",
     "src/func_ov013_02111238.c",
-    "src/_ZN21ClockPaintingPendulum6RenderEv.cpp",
-    "src/_ZN21ClockPaintingPendulum8BehaviorEv.c",
-    "src/_ZN21ClockPaintingPendulum13InitResourcesEv.cpp",
-    "src/ClockPaintingPendulum_Spawn.c"
+    "src/_ZN18daObjClockHuriko_c6RenderEv.cpp",
+    "src/_ZN18daObjClockHuriko_c8BehaviorEv.c",
+    "src/_ZN18daObjClockHuriko_c13InitResourcesEv.cpp",
+    "src/daObjClockHuriko_c_Spawn.c"
    ],
    "ext_mix": {
     ".c": 6,
@@ -9609,15 +9609,15 @@
    "start": "0x21111a0",
    "end": "0x211137c",
    "classes": [
-    "FloatOnWaterPlatformWdwSquare"
+    "daObjWcObj01_c"
    ],
    "n_functions_map": 4,
    "n_files": 4,
    "files": [
-    "src/_ZN29FloatOnWaterPlatformWdwSquareD1Ev.cpp",
-    "src/_ZN29FloatOnWaterPlatformWdwSquareD0Ev.c",
-    "src/_ZN29FloatOnWaterPlatformWdwSquare13InitResourcesEv.cpp",
-    "src/FloatOnWaterPlatformWdwSquare_Spawn.c"
+    "src/_ZN14daObjWcObj01_cD1Ev.cpp",
+    "src/_ZN14daObjWcObj01_cD0Ev.c",
+    "src/_ZN14daObjWcObj01_c13InitResourcesEv.cpp",
+    "src/daObjWcObj01_c_Spawn.c"
    ],
    "ext_mix": {
     ".cpp": 2,
@@ -9664,15 +9664,15 @@
    "start": "0x2111ea4",
    "end": "0x2112080",
    "classes": [
-    "FloatOnWaterPlatformWdwRectangle"
+    "daObjWcObj06_c"
    ],
    "n_functions_map": 4,
    "n_files": 4,
    "files": [
-    "src/_ZN32FloatOnWaterPlatformWdwRectangleD1Ev.cpp",
-    "src/_ZN32FloatOnWaterPlatformWdwRectangleD0Ev.c",
-    "src/_ZN32FloatOnWaterPlatformWdwRectangle13InitResourcesEv.cpp",
-    "src/FloatOnWaterPlatformWdwRectangle_Spawn.c"
+    "src/_ZN14daObjWcObj06_cD1Ev.cpp",
+    "src/_ZN14daObjWcObj06_cD0Ev.c",
+    "src/_ZN14daObjWcObj06_c13InitResourcesEv.cpp",
+    "src/daObjWcObj06_c_Spawn.c"
    ],
    "ext_mix": {
     ".cpp": 2,
@@ -9945,15 +9945,15 @@
    "start": "0x21126d4",
    "end": "0x21127bc",
    "classes": [
-    "PowerStarCreate"
+    "daSCre_c"
    ],
    "n_functions_map": 4,
    "n_files": 4,
    "files": [
-    "src/_ZN15PowerStarCreateD1Ev.cpp",
-    "src/_ZN15PowerStarCreateD0Ev.c",
-    "src/_ZN15PowerStarCreate8BehaviorEv.cpp",
-    "src/PowerStarCreate_Spawn.c"
+    "src/_ZN8daSCre_cD1Ev.cpp",
+    "src/_ZN8daSCre_cD0Ev.c",
+    "src/_ZN8daSCre_c8BehaviorEv.cpp",
+    "src/daSCre_c_Spawn.c"
    ],
    "ext_mix": {
     ".cpp": 2,
