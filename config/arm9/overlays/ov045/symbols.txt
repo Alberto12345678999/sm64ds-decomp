@@ -6,7 +6,7 @@ _ZN15FireSeaElevator8BehaviorEv kind:function(arm,size=0x150) addr:0x0211129c
 _ZN15FireSeaElevator13InitResourcesEv kind:function(arm,size=0xbc) addr:0x021113ec
 func_ov045_021114a8 kind:function(arm,size=0x20) addr:0x021114a8
 func_ov045_021114c8 kind:function(arm,size=0x14) addr:0x021114c8
-FireSeaElevator_Spawn kind:function(arm,size=0x30) addr:0x021114dc
+daObjKm2_Agaru_c_classInit kind:function(arm,size=0x30) addr:0x021114dc
 _ZN8PoleLiftD1Ev kind:function(arm,size=0x4c) addr:0x0211150c
 _ZN8PoleLiftD0Ev kind:function(arm,size=0x60) addr:0x02111558
 _ZN8PoleLift16CleanupResourcesEv kind:function(arm,size=0x38) addr:0x021115b8
@@ -38,7 +38,7 @@ _ZN12FallBlockBfsD1Ev kind:function(arm,size=0x50) addr:0x02111d48
 _ZN12FallBlockBfsD0Ev kind:function(arm,size=0x64) addr:0x02111d98
 _ZN12FallBlockBfs16CleanupResourcesEv kind:function(arm,size=0x14) addr:0x02111dfc
 _ZN12FallBlockBfs13InitResourcesEv kind:function(arm,size=0x14) addr:0x02111e10
-FallBlockBfs_Spawn kind:function(arm,size=0x3c) addr:0x02111e24
+daObjKm2_Fall_Block_c_classInit kind:function(arm,size=0x3c) addr:0x02111e24
 data_ov045_02111e60 kind:data(any) addr:0x02111e60
 data_ov045_02111e64 kind:data(any) addr:0x02111e64
 data_ov045_02111e68 kind:data(any) addr:0x02111e68
@@ -125,7 +125,7 @@ data_ov045_02112ca8 kind:data(any) addr:0x02112ca8 ambiguous
 data_ov045_02112cb0 kind:data(any) addr:0x02112cb0
 _ZTS16daObjKm2_Agaru_c kind:data(any) addr:0x02112cbc
 data_ov045_02112cc8 kind:data(any) addr:0x02112cc8 ambiguous
-FireSeaElevator_SpawnInfo kind:data(any) addr:0x02112cd0 ambiguous
+g_profile_KM2_AGARU kind:data(any) addr:0x02112cd0 ambiguous
 _ZTV15FireSeaElevator kind:data(any) addr:0x02112cf4
 data_ov045_02112d48 kind:data(any) addr:0x02112d48 ambiguous
 _ZTI18daObjKm2_Ami_Bou_c kind:data(any) addr:0x02112d74
@@ -154,7 +154,7 @@ _ZTI21daObjKm2_Fall_Block_c kind:data(any) addr:0x021130a0
 data_ov045_021130ac kind:data(any) addr:0x021130ac
 _ZTS21daObjKm2_Fall_Block_c kind:data(any) addr:0x021130b8
 data_ov045_021130cc kind:data(any) addr:0x021130cc ambiguous
-FallBlockBfs_SpawnInfo kind:data(any) addr:0x021130d0 ambiguous
+g_profile_KM2_KUZURE kind:data(any) addr:0x021130d0 ambiguous
 _ZTV12FallBlockBfs kind:data(any) addr:0x021130f4
 data_ov045_02113180 kind:bss addr:0x02113180
 data_ov045_02113188 kind:bss addr:0x02113188

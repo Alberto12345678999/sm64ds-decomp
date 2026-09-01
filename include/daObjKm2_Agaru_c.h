@@ -5,6 +5,9 @@
 #define DAOBJKM2_AGARU_C_H
 #include "types.h"
 
+/* daObjKm2_Agaru_c_classInit (historical alias FireSeaElevator_Spawn) allocates
+ * 0x328 bytes, constructs dBgActor_c, and installs this RTTI class's vtable. */
+
 struct daObjKm2_Agaru_c {
     u8  pad_000[0x60];
     s32 mPosY;            /* 0x060 */

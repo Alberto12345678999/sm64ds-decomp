@@ -1182,12 +1182,15 @@ ov039	0x0211137c	func_ov039_0211137c	Cloud_Spawn	spawnfunc
 ov039	0x02111834	data_ov039_02111834	Cloud_SpawnInfo	spawninfo
 ov039	0x02111858	data_ov039_02111858	_ZTV5Cloud	vtable alloc=0x124
 ov043	0x021113cc	func_ov043_021113cc	DiamondLift_Spawn	spawnfunc
+ov043	0x021113cc	DiamondLift_Spawn	daObjKm1_Ukishima_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov043	0x021114dc	func_ov043_021114dc	RickshawBdw_Spawn	spawnfunc
+ov043	0x021114dc	RickshawBdw_Spawn	daObjKm1_Kurumajiku_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov043	0x02111518	func_ov043_02111518	_ZN11RickshawBdwD1Ev	vtable slot 16
 ov043	0x02111568	func_ov043_02111568	_ZN11RickshawBdwD0Ev	vtable slot 17
 ov043	0x021115cc	func_ov043_021115cc	_ZN11RickshawBdw16CleanupResourcesEv	vtable slot 3
 ov043	0x021115e0	func_ov043_021115e0	_ZN11RickshawBdw13InitResourcesEv	vtable slot 0
 ov043	0x021115f4	func_ov043_021115f4	RickshawPlatformBdw_Spawn	spawnfunc
+ov043	0x021115f4	RickshawPlatformBdw_Spawn	daObjKm1_Kuruma_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov043	0x02111630	func_ov043_02111630	_ZN19RickshawPlatformBdwD1Ev	vtable slot 16
 ov043	0x021116b0	func_ov043_021116b0	_ZN19RickshawPlatformBdwD0Ev	vtable slot 17
 ov043	0x02111744	func_ov043_02111744	_ZN19RickshawPlatformBdw16CleanupResourcesEv	vtable slot 3
@@ -1195,8 +1198,11 @@ ov043	0x02111758	func_ov043_02111758	_ZN19RickshawPlatformBdw13InitResourcesEv	v
 ov043	0x0211176c	func_ov043_0211176c	StairsBdw_Spawn	spawnfunc
 ov043	0x0211176c	StairsBdw_Spawn	daObjKm1_Dorifu_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov043	0x02112294	data_ov043_02112294	DiamondLift_SpawnInfo	spawninfo
+ov043	0x02112294	DiamondLift_SpawnInfo	g_profile_KM1_UKISHIMA	reconstructed profile global; literal ROM ID KM1_UKISHIMA+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov043	0x02112368	data_ov043_02112368	RickshawBdw_SpawnInfo	spawninfo
+ov043	0x02112368	RickshawBdw_SpawnInfo	g_profile_KM1_KURUMAJIKU	reconstructed profile global; literal ROM ID KM1_KURUMAJIKU+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov043	0x02112438	data_ov043_02112438	RickshawPlatformBdw_SpawnInfo	spawninfo
+ov043	0x02112438	RickshawPlatformBdw_SpawnInfo	g_profile_KM1_KURUMA	reconstructed profile global; literal ROM ID KM1_KURUMA+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov043	0x0211245c	data_ov043_0211245c	_ZTV11RickshawBdw	vtable alloc=0x330
 ov043	0x021124fc	data_ov043_021124fc	StairsBdw_SpawnInfo	spawninfo
 ov043	0x021124fc	StairsBdw_SpawnInfo	g_profile_KM1_DORIFU	reconstructed profile global; literal ROM ID KM1_DORIFU+registry role+later EAD lineage; exact SM64DS spelling not preserved
@@ -1210,6 +1216,7 @@ ov044	0x021112dc	func_ov044_021112dc	OrangeBallBillboard_Spawn	spawnfunc
 ov044	0x021115e0	data_ov044_021115e0	OrangeBallBillboard_SpawnInfo	spawninfo
 ov044	0x02111604	data_ov044_02111604	_ZTV19OrangeBallBillboard	vtable alloc=0x124
 ov045	0x021114dc	func_ov045_021114dc	FireSeaElevator_Spawn	spawnfunc
+ov045	0x021114dc	FireSeaElevator_Spawn	daObjKm2_Agaru_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov045	0x0211150c	func_ov045_0211150c	_ZN15FireSeaElevatorD1Ev	vtable slot 16
 ov045	0x02111558	func_ov045_02111558	_ZN15FireSeaElevatorD0Ev	vtable slot 17
 ov045	0x021115b8	func_ov045_021115b8	_ZN15FireSeaElevator16CleanupResourcesEv	vtable slot 3
@@ -1238,7 +1245,9 @@ ov045	0x02111d98	func_ov045_02111d98	_ZN12FallBlockBfsD0Ev	vtable slot 17
 ov045	0x02111dfc	func_ov045_02111dfc	_ZN12FallBlockBfs16CleanupResourcesEv	vtable slot 3
 ov045	0x02111e10	func_ov045_02111e10	_ZN12FallBlockBfs13InitResourcesEv	vtable slot 0
 ov045	0x02111e24	func_ov045_02111e24	FallBlockBfs_Spawn	spawnfunc
+ov045	0x02111e24	FallBlockBfs_Spawn	daObjKm2_Fall_Block_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov045	0x02112cd0	data_ov045_02112cd0	FireSeaElevator_SpawnInfo	spawninfo
+ov045	0x02112cd0	FireSeaElevator_SpawnInfo	g_profile_KM2_AGARU	reconstructed profile global; literal ROM ID KM2_AGARU+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov045	0x02112d98	data_ov045_02112d98	PoleLift_SpawnInfo	spawninfo
 ov045	0x02112dbc	data_ov045_02112dbc	_ZTV15FireSeaElevator	vtable alloc=0x328
 ov045	0x02112e5c	data_ov045_02112e5c	ExtendingPlatform_SpawnInfo	spawninfo
@@ -1247,6 +1256,7 @@ ov045	0x02112f2c	data_ov045_02112f2c	FloatingFloorBfs_SpawnInfo	spawninfo
 ov045	0x02112ffc	data_ov045_02112ffc	TiltingPlatformBfs_SpawnInfo	spawninfo
 ov045	0x02113020	data_ov045_02113020	_ZTV16FloatingFloorBfs	vtable alloc=0x32c
 ov045	0x021130d0	data_ov045_021130d0	FallBlockBfs_SpawnInfo	spawninfo
+ov045	0x021130d0	FallBlockBfs_SpawnInfo	g_profile_KM2_KUZURE	reconstructed profile global; literal ROM ID KM2_KUZURE+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov045	0x021130f4	data_ov045_021130f4	_ZTV12FallBlockBfs	vtable alloc=0x34c
 ov047	0x02111280	func_ov047_02111280	RickshawBs_Spawn	spawnfunc
 ov047	0x02111280	RickshawBs_Spawn	daObjKm3_Kurumajiku_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved

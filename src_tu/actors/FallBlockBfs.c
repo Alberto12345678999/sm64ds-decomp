@@ -37,21 +37,24 @@ extern void *data_020a0eac;
 extern int func_ov098_0213a2cc(void *self, void *data);
 extern int data_ov045_021130ac[];
 extern int func_ov098_0213a794(void *self, void *data);
+extern int _ZTV16daObjFallBlock_c[];
 extern int _ZTV12FallBlockBfs[];
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 4 -- FallBlockBfs_Spawn, 0x02111e24, size 0x3c */
+/* ROM ordinal 4 -- daObjKm2_Fall_Block_c_classInit, 0x02111e24, size 0x3c */
 /* -------------------------------------------------------------------------- */
-// @symbol FallBlockBfs_Spawn
+// @symbol daObjKm2_Fall_Block_c_classInit
 /* recovered: vtable identified, declarations from a shared header */
 /* recovered: vtable identified */
-/* vtable identified: VT0 = _ZTV21daObjKm2_Fall_Block_c */
-int *FallBlockBfs_Spawn(void)
+/* Retail constructs the shared daObjFallBlock_c base before installing the
+ * local derived vtable. */
+/* Reconstructed source-style name. Historical alias: FallBlockBfs_Spawn. */
+int *daObjKm2_Fall_Block_c_classInit(void)
 {
     int *p = (int *)_ZN7fBase_cnwEj(844);
     if (p) {
         _ZN10dBgActor_cC2Ev(p);
-        p[0] = (int)_ZTV21daObjKm2_Fall_Block_c;
+        p[0] = (int)_ZTV16daObjFallBlock_c;
         p[0] = (int)_ZTV12FallBlockBfs;
     }
     return p;
@@ -79,11 +82,11 @@ int _ZN12FallBlockBfs16CleanupResourcesEv(void *self)
 // @symbol _ZN12FallBlockBfsD0Ev
 /* recovered: named members + shared header, vtable identified, declarations from a shared header */
 /* recovered: named members + shared header, vtable identified */
-/* vtable identified: VT0 = _ZTV21daObjKm2_Fall_Block_c; VT1 = _ZTV10dBgActor_c */
+/* Destruction walks local derived -> shared daObjFallBlock_c -> dBgActor_c. */
 int *_ZN12FallBlockBfsD0Ev(int *t)
 {
-    t[0] = (int)_ZTV21daObjKm2_Fall_Block_c;
-    t[0] = (int)_ZTV10dBgActor_c;
+    t[0] = (int)_ZTV12FallBlockBfs;
+    t[0] = (int)_ZTV16daObjFallBlock_c;
     t[0] = (int)_ZTV10dBgActor_c;
     _ZN10dBgW_KcMbgD1Ev((char *)t + 0x124);
     _ZN5ModelD1Ev((char *)t + 0xd4);
@@ -98,11 +101,11 @@ int *_ZN12FallBlockBfsD0Ev(int *t)
 // @symbol _ZN12FallBlockBfsD1Ev
 /* recovered: named members + shared header, vtable identified, declarations from a shared header */
 /* recovered: named members + shared header, vtable identified */
-/* vtable identified: VT0 = _ZTV21daObjKm2_Fall_Block_c; VT1 = _ZTV10dBgActor_c */
+/* Destruction walks local derived -> shared daObjFallBlock_c -> dBgActor_c. */
 int *_ZN12FallBlockBfsD1Ev(int *t)
 {
-    t[0] = (int)_ZTV21daObjKm2_Fall_Block_c;
-    t[0] = (int)_ZTV10dBgActor_c;
+    t[0] = (int)_ZTV12FallBlockBfs;
+    t[0] = (int)_ZTV16daObjFallBlock_c;
     t[0] = (int)_ZTV10dBgActor_c;
     _ZN10dBgW_KcMbgD1Ev((char *)t + 0x124);
     _ZN5ModelD1Ev((char *)t + 0xd4);
