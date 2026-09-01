@@ -23,9 +23,10 @@
  *
  * That is why this TU now emits and licenses the whole RTTI/vtable group
  * rather than importing it. The first promotion of this entry kept the
- * destructors as extern "C" mangled shims precisely to force `_ZTV8daTree_c`
- * to stay an UNDEFINED import, and the cost was measurable: the eight legacy
- * per-function objects between them PROVED `_ZTV8daTree_c` against the ROM,
+ * destructors as extern "C" mangled shims precisely to force the vtable
+ * symbol -- `_ZTV4Tree` at the time, the class still being coined -- to stay
+ * an UNDEFINED import, and the cost was measurable: the eight legacy
+ * per-function objects between them PROVED `_ZTV4Tree` against the ROM,
  * the shimmed TU proved nothing, and the tree's romdata-verified count fell by
  * one -- which is what the merge validator rejected.
  *

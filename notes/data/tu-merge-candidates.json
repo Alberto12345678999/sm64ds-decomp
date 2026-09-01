@@ -7467,13 +7467,13 @@
    "n_functions_map": 8,
    "n_files": 8,
    "files": [
-    "src/_ZN8daTree_cD1Ev.cpp",
-    "src/_ZN8daTree_cD0Ev.cpp",
-    "src/_ZN8daTree_c16CleanupResourcesEv.cpp",
-    "src/_ZN8daTree_c16OnPendingDestroyEv.c",
-    "src/_ZN8daTree_c6RenderEv.cpp",
-    "src/_ZN8daTree_c8BehaviorEv.cpp",
-    "src/_ZN8daTree_c13InitResourcesEv.cpp",
+    "src/_ZN4TreeD1Ev.cpp",
+    "src/_ZN4TreeD0Ev.cpp",
+    "src/_ZN4Tree16CleanupResourcesEv.cpp",
+    "src/_ZN4Tree16OnPendingDestroyEv.c",
+    "src/_ZN4Tree6RenderEv.cpp",
+    "src/_ZN4Tree8BehaviorEv.cpp",
+    "src/_ZN4Tree13InitResourcesEv.cpp",
     "src/Tree_Spawn.cpp"
    ],
    "ext_mix": {

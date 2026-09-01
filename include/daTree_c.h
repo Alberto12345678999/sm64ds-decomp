@@ -9,10 +9,15 @@
  * (InitResources/CleanupResources/Behavior/Render/OnPendingDestroy) plus
  * the destructor pair at 16/17.
  *
- * All seven functions are compiler-spelled daTree_c methods. InitResources keeps
- * one low-level extern-C declaration for dCcPos_c::Init: its ROM name carries
- * by-value Fix12 parameters whose honest C++ declaration changes the call ABI.
- * That exception is about the callee signature, not daTree_c method ownership.
+ * InitResources, CleanupResources, Render and OnPendingDestroy are real
+ * compiler-spelled daTree_c methods in src/actors/d_a_tree.cpp; the destructor
+ * pair is compiler-generated from the inline definition below. Behavior stays a
+ * hand-written free function under its own mangled ROM name, and Tree_Spawn
+ * under its unmangled one, because neither body references a named daTree_c
+ * member. InitResources also keeps one low-level extern-C declaration for
+ * dCcPos_c::Init: its ROM name carries by-value Fix12 parameters whose honest
+ * C++ declaration changes the call ABI. Both exceptions are about a callee
+ * signature, not about daTree_c method ownership.
  *
  * THE CLASS NAME IS THE CARTRIDGE'S OWN. The decomp called it `Tree`, a coined
  * name. MEASURED in extracted/overlays/overlay_0002.bin (ov002 base 0x020ad660,
