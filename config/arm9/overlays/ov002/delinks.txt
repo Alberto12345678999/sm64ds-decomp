@@ -4253,37 +4253,9 @@ src/PowerStar_Spawn.c:
     complete
     .text start:0x020ebf30 end:0x020ebf8c
 
-src/_ZN4TreeD1Ev.cpp:
+src/actors/tree.cpp:
     complete
-    .text start:0x020ebf8c end:0x020ebfcc
-
-src/_ZN4TreeD0Ev.cpp:
-    complete
-    .text start:0x020ebfcc end:0x020ec020
-
-src/_ZN4Tree16CleanupResourcesEv.cpp:
-    complete
-    .text start:0x020ec020 end:0x020ec0a0
-
-src/_ZN4Tree16OnPendingDestroyEv.cpp:
-    complete
-    .text start:0x020ec0a0 end:0x020ec0a4
-
-src/_ZN4Tree6RenderEv.cpp:
-    complete
-    .text start:0x020ec0a4 end:0x020ec1d8
-
-src/_ZN4Tree8BehaviorEv.cpp:
-    complete
-    .text start:0x020ec1d8 end:0x020ec22c
-
-src/_ZN4Tree13InitResourcesEv.cpp:
-    complete
-    .text start:0x020ec22c end:0x020ec32c
-
-src/Tree_Spawn.cpp:
-    complete
-    .text start:0x020ec32c end:0x020ec388
+    .text start:0x020ebf8c end:0x020ec388
 
 src/_ZN4WarpD1Ev.cpp:
     complete
