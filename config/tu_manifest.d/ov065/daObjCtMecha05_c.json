@@ -156,7 +156,7 @@
       "reason": "The genuine class identity naturally emits the ROM-named daObjCtMecha05_c type string; romdata_check proves its exact compiler-sized bytes at the canonical ov065 home."
     },
     {
-      "symbol": "TTC_MovingBar_SpawnInfo",
+      "symbol": "g_profile_CT_MECHA05",
       "disposition": "deadstrip-data",
       "canonical_module": "ov065",
       "canonical_address": "0x0211d290",
@@ -171,13 +171,13 @@
     }
   ],
   "notes": [
-    "The live linker map bounds this class translation unit at 0x0211ab60..0x0211b328. TTC_MovingBar_Spawn immediately follows at 0x0211b328 but remains a separately enrolled C ABI factory because there is no independent evidence that it belonged to the class TU.",
+    "The live linker map bounds this class translation unit at 0x0211ab60..0x0211b328. daObjCtMecha05_c_classInit immediately follows at 0x0211b328 but remains a separately enrolled C ABI factory because there is no independent evidence that it belonged to the class TU.",
     "One inline genuine destructor makes mwccarm emit the retail D1 then D0 pair without a D2. The dBgCh_Gnd local also emits an exact, unreferenced duplicate of Vector3's inline D1; the manifest records that compiler-only output for dead stripping.",
     "The unisolated object naturally emits daObjCtMecha05_c RTTI, type-name, typed SpawnInfo, and full vtable storage in retail order. romdata_check reports zero differing or unnamed objects; inherited vague-linkage RTTI is explicitly externalized to its canonical homes.",
-    "Production enrollment verifies all eight class functions and the separate typed factory at blind:0, and a full normal ROM build reproduces all 106 modules. InitResources retains the measured Fix12-by-value ABI seam and an explicit model-file local required for retail code shape; the factory keeps its allocator/base-constructor seam and its project-assigned TTC_MovingBar_Spawn spelling -- the address 0x0211b328 is ROM-proven, the name is ours from config/arm9/overlays/ov065/symbols.txt, since the string \"TTC_MovingBar\" appears in no ROM binary."
+    "Production enrollment verifies all eight class functions and the separate typed factory at blind:0, and a full normal ROM build reproduces all 106 modules. InitResources retains the measured Fix12-by-value ABI seam and an explicit model-file local required for retail code shape. daObjCtMecha05_c_classInit and g_profile_CT_MECHA05 are lineage-supported reconstructions from the ROM RTTI class, literal registry ID, measured factory shape, and descriptor relationship; exact original SM64DS spellings are not preserved. Historical aliases were TTC_MovingBar_Spawn and TTC_MovingBar_SpawnInfo."
   ],
   "verification": {
-    "round": "tools/tubuild.py verify -- text-only, whole production class TU compiled once",
+    "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
     "toolchain": "tools/mwccarm/2004/b56/mwccarm.exe",
     "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
     "object": "build/tu/ov065-daObjCtMecha05_c/daObjCtMecha05_c.o (gitignored)",
@@ -224,11 +224,10 @@
         "_ZTI8dActor_c",
         "_ZTI16daObjCtMecha05_c",
         "_ZTS16daObjCtMecha05_c",
-        "TTC_MovingBar_SpawnInfo",
+        "g_profile_CT_MECHA05",
         "_ZTV16daObjCtMecha05_c"
       ],
       "dataExternalized": [
-        "TTC_MovingBar_SpawnInfo",
         "_ZTI10dBgActor_c",
         "_ZTI16daObjCtMecha05_c",
         "_ZTI7dBase_c",
@@ -239,7 +238,8 @@
         "_ZTS7dBase_c",
         "_ZTS7fBase_c",
         "_ZTS8dActor_c",
-        "_ZTV16daObjCtMecha05_c"
+        "_ZTV16daObjCtMecha05_c",
+        "g_profile_CT_MECHA05"
       ]
     },
     "criteria": {

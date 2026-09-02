@@ -17,7 +17,7 @@ src/ArrowSignLeft_Spawn.c	WEAK-refs-only	ov098				1		None		-
 src/ArrowSignRight_Spawn.c	WEAK-refs-only	ov098				1		None		-
 src/AutoloadCallback.c	PURE-C	arm9				1		None		-
 src/BabyPenguin_Spawn.c	WEAK-refs-only	ov072				1		None		-
-src/BasementWater_Spawn.c	WEAK-refs-only	ov012				1		None		-
+src/daObjC0Water_c_classInit.c	WEAK-refs-only	ov012				1		None		-
 src/BigBrickBlock_Spawn.c	WEAK-refs-only	ov002				1		None		-
 src/BigBully_Spawn.c	S1-stores-rom-vptr	ov064			stores _ZTV8BigBully	1		None	_ZTV8BigBully	-
 src/BigMovingIceBlock_Spawn.c	WEAK-refs-only	ov056				1		None		-
