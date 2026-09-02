@@ -5,6 +5,10 @@
 #define DAOBJRCBURANKO_C_H
 #include "types.h"
 
+/* daObjRcBuranko_c_classInit (historical alias SwingingPlatform_Spawn)
+ * allocates 0x320 bytes, constructs dBgActor_c, and installs the vtable
+ * associated with this ROM RTTI identity. */
+
 struct daObjRcBuranko_c {
     u8  pad_000[0x8e];
     s16 mAngleY;            /* 0x08e */

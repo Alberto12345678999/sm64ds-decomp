@@ -82,12 +82,12 @@ extern "C" void func_ov036_021122c0(daObjRcCarpet_c *self);
 extern "C" void func_ov036_0211224c(daObjRcCarpet_c *self);
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 8 -- FlyingCarpet_Spawn, 0x02112538, size 0x78 */
+/* ROM ordinal 8 -- daObjRcCarpet_c_classInit, 0x02112538, size 0x78 */
 /* -------------------------------------------------------------------------- */
 /* Natural new targets the global allocator and cannot reproduce the actor
  * allocation/construction relocations. Keep this typed C-ABI factory seam. */
-// @symbol FlyingCarpet_Spawn
-extern "C" daObjRcCarpet_c *FlyingCarpet_Spawn()
+/* Reconstructed source-style name. Historical alias: FlyingCarpet_Spawn. */
+extern "C" daObjRcCarpet_c *daObjRcCarpet_c_classInit()
 {
     daObjRcCarpet_c *actor =
         (daObjRcCarpet_c *)_ZN7fBase_cnwEj(sizeof(daObjRcCarpet_c));
@@ -104,8 +104,8 @@ extern "C" daObjRcCarpet_c *FlyingCarpet_Spawn()
     return actor;
 }
 
-extern "C" FlyingCarpetSpawnInfo FlyingCarpet_SpawnInfo = {
-    FlyingCarpet_Spawn,
+extern "C" FlyingCarpetSpawnInfo g_profile_RC_CARPET = {
+    daObjRcCarpet_c_classInit,
     0x0082,
     0x0104,
     0x00000002,

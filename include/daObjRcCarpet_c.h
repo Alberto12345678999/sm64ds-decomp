@@ -3,8 +3,9 @@
 
 #include "types.h"
 
-/* The flying carpet. Its factory is FlyingCarpet_Spawn, and its own C++ base is
- * dPathLiftActor_c (include/PathLift.h), the identity proved by
+/* The flying carpet. Its factory is daObjRcCarpet_c_classInit (historical alias
+ * FlyingCarpet_Spawn), and its own C++ base is dPathLiftActor_c
+ * (include/PathLift.h), the identity proved by
  * _ZTI16dPathLiftActor_c/_ZTS16dPathLiftActor_c at ov002:0x0210af0c.
  * daObjPathLift_c (ov100) is a direct sibling under the same intermediate.
  *
@@ -14,8 +15,8 @@
  *   kind  __si_class_type_info, ONE base, subobject offset 0
  *   base  dPathLiftActor_c, ov002 0x0210af0c
  *
- * SIZE 0x4c0, the literal FlyingCarpet_Spawn (src/FlyingCarpet_Spawn.cpp) passes
- * to fBase_c::operator new. dPathLiftActor_c ends at 0x450; the D1 destructor
+ * SIZE 0x4c0, the literal daObjRcCarpet_c_classInit passes to
+ * fBase_c::operator new. dPathLiftActor_c ends at 0x450; the D1 destructor
  * (func_ov036_02112158, this class's own) destroys only a ModelAnim at 0x450
  * before storing the base vtable and running dPathLiftActor_c's inlined cleanup
  * (Model[3] array), so ModelAnim is this class's only member with a

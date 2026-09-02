@@ -81,10 +81,10 @@
       "ordinal": 7
     },
     {
-      "symbol": "FlyingCarpet_Spawn",
+      "symbol": "daObjRcCarpet_c_classInit",
       "address": "0x02112538",
       "size": "0x00000078",
-      "legacy_source": "src/FlyingCarpet_Spawn.cpp",
+      "legacy_source": "src/daObjRcCarpet_c_classInit.cpp",
       "ordinal": 8
     }
   ],
@@ -108,10 +108,10 @@
       "evidence": "compiler-emitted ROM-proven class type-name string; the 18-byte payload matches ov036 and the following two bytes are linker alignment"
     },
     {
-      "symbol": "FlyingCarpet_SpawnInfo",
+      "symbol": "g_profile_RC_CARPET",
       "address": "0x02113f78",
       "size": "0x1c",
-      "evidence": "typed actor descriptor; all 28 bytes and the relocation to FlyingCarpet_Spawn match ov036"
+      "evidence": "typed actor descriptor; all 28 bytes and the relocation to daObjRcCarpet_c_classInit match ov036"
     },
     {
       "symbol": "_ZTV15daObjRcCarpet_c",
@@ -209,7 +209,7 @@
       "source": "0x02113f78",
       "type": "R_ARM_ABS32",
       "kind": "load",
-      "symbol": "FlyingCarpet_Spawn",
+      "symbol": "daObjRcCarpet_c_classInit",
       "addend": 0,
       "target_module": "ov036",
       "target_address": "0x02112538"
@@ -560,8 +560,9 @@
     "tubuild create warning: RAW: src/_ZN15daObjRcCarpet_cD0Ev.cpp (_ZN15daObjRcCarpet_cD0Ev) did not split (scanned to end of file without finding a function body); carried verbatim -- its own includes/declarations stay inside its member block",
     "tubuild create warning: RAW: src/func_ov036_0211224c.cpp (func_ov036_0211224c) did not split (scanned to end of file without finding a function body); carried verbatim -- its own includes/declarations stay inside its member block",
     "tubuild create warning: RAW: src/func_ov036_021122c0.cpp (func_ov036_021122c0) did not split (scanned to end of file without finding a function body); carried verbatim -- its own includes/declarations stay inside its member block",
-    "tubuild create warning: RAW: src/FlyingCarpet_Spawn.cpp (FlyingCarpet_Spawn) did not split (scanned to end of file without finding a function body); carried verbatim -- its own includes/declarations stay inside its member block",
-    "The base class is now the ROM-proven dPathLiftActor_c identity. The compiler naturally emits daObjRcCarpet_c RTTI with its base relocation to ov002:0x0210af0c; no RTTI or lifecycle data is hand-authored."
+    "tubuild create warning: RAW: src/daObjRcCarpet_c_classInit.cpp (daObjRcCarpet_c_classInit) did not split (scanned to end of file without finding a function body); carried verbatim -- its own includes/declarations stay inside its member block",
+    "The base class is now the ROM-proven dPathLiftActor_c identity. The compiler naturally emits daObjRcCarpet_c RTTI with its base relocation to ov002:0x0210af0c; no RTTI or lifecycle data is hand-authored.",
+    "daObjRcCarpet_c_classInit and g_profile_RC_CARPET are reconstructed source-style names: SM64DS proves the RTTI class, RC_CARPET registry ID, descriptor/factory relationship, allocation size, and vtable identity; later EAD lineage supplies the spelling prior. Exact original SM64DS spellings are not preserved. Historical aliases were daObjRcCarpet_c_classInit and g_profile_RC_CARPET."
   ],
   "verification": {
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
@@ -1055,7 +1056,7 @@
           "src/_ZN15daObjRcCarpet_c6RenderEv.cpp",
           "src/_ZN15daObjRcCarpet_c8BehaviorEv.cpp",
           "src/_ZN15daObjRcCarpet_c13InitResourcesEv.cpp",
-          "src/FlyingCarpet_Spawn.cpp"
+          "src/daObjRcCarpet_c_classInit.cpp"
         ],
         "rows": [
           {
@@ -1116,7 +1117,7 @@
           },
           {
             "ordinal": 8,
-            "symbol": "FlyingCarpet_Spawn",
+            "symbol": "daObjRcCarpet_c_classInit",
             "identical": true,
             "relocCount": 9,
             "differences": []
@@ -1233,7 +1234,7 @@
           ".data"
         ],
         "licensedSymbols": [
-          "FlyingCarpet_SpawnInfo",
+          "g_profile_RC_CARPET",
           "_ZTI15daObjRcCarpet_c",
           "_ZTS15daObjRcCarpet_c",
           "_ZTV15daObjRcCarpet_c",
@@ -1281,7 +1282,7 @@
             "size": "0x000000ec"
           },
           {
-            "symbol": "FlyingCarpet_Spawn",
+            "symbol": "daObjRcCarpet_c_classInit",
             "section": ".text",
             "size": "0x00000078"
           }
@@ -1313,7 +1314,7 @@
           45
         ],
         "externalizedTextSymbols": [
-          "FlyingCarpet_Spawn",
+          "daObjRcCarpet_c_classInit",
           "_ZN15daObjRcCarpet_c13InitResourcesEv",
           "_ZN15daObjRcCarpet_c16CleanupResourcesEv",
           "_ZN15daObjRcCarpet_c6RenderEv",
@@ -1591,7 +1592,7 @@
           "src/_ZN15daObjRcCarpet_c6RenderEv.cpp",
           "src/_ZN15daObjRcCarpet_c8BehaviorEv.cpp",
           "src/_ZN15daObjRcCarpet_c13InitResourcesEv.cpp",
-          "src/FlyingCarpet_Spawn.cpp"
+          "src/daObjRcCarpet_c_classInit.cpp"
         ],
         "rows": [
           {
@@ -1652,7 +1653,7 @@
           },
           {
             "ordinal": 8,
-            "symbol": "FlyingCarpet_Spawn",
+            "symbol": "daObjRcCarpet_c_classInit",
             "identical": true,
             "relocCount": 9,
             "differences": []
@@ -1769,7 +1770,7 @@
           ".data"
         ],
         "licensedSymbols": [
-          "FlyingCarpet_SpawnInfo",
+          "g_profile_RC_CARPET",
           "_ZTI15daObjRcCarpet_c",
           "_ZTS15daObjRcCarpet_c",
           "_ZTV15daObjRcCarpet_c",
@@ -1817,7 +1818,7 @@
             "size": "0x000000ec"
           },
           {
-            "symbol": "FlyingCarpet_Spawn",
+            "symbol": "daObjRcCarpet_c_classInit",
             "section": ".text",
             "size": "0x00000078"
           }
@@ -1849,7 +1850,7 @@
           45
         ],
         "externalizedTextSymbols": [
-          "FlyingCarpet_Spawn",
+          "daObjRcCarpet_c_classInit",
           "_ZN15daObjRcCarpet_c13InitResourcesEv",
           "_ZN15daObjRcCarpet_c16CleanupResourcesEv",
           "_ZN15daObjRcCarpet_c6RenderEv",

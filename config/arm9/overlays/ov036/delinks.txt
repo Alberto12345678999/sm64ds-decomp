@@ -31,7 +31,7 @@ src/_ZN16SwingingPlatform13InitResourcesEv.cpp:
     complete
     .text start:0x0211137c end:0x02111414
 
-src/SwingingPlatform_Spawn.c:
+src/daObjRcBuranko_c_classInit.c:
     complete
     .text start:0x02111414 end:0x02111444
 
@@ -51,7 +51,7 @@ src/_ZN18RotatingPlatformRr13InitResourcesEv.cpp:
     complete
     .text start:0x0211150c end:0x02111544
 
-src/RotatingPlatformRr_Spawn.c:
+src/daObjRc_Kaitendai_c_classInit.c:
     complete
     .text start:0x02111544 end:0x02111580
 
@@ -151,7 +151,7 @@ src/_ZN21ArmedRotatingPlatform13InitResourcesEv.cpp:
     complete
     .text start:0x02111eb0 end:0x02111f5c
 
-src/ArmedRotatingPlatform_Spawn.c:
+src/daObjRc_Guruguru_c_classInit.c:
     complete
     .text start:0x02111f5c end:0x02111f8c
 

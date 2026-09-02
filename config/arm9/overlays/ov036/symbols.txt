@@ -5,12 +5,12 @@ _ZN16SwingingPlatform16CleanupResourcesEv kind:function(arm,size=0x44) addr:0x02
 _ZN16SwingingPlatform6RenderEv kind:function(arm,size=0x28) addr:0x021112c8
 _ZN16SwingingPlatform8BehaviorEv kind:function(arm,size=0x8c) addr:0x021112f0
 _ZN16SwingingPlatform13InitResourcesEv kind:function(arm,size=0x98) addr:0x0211137c
-SwingingPlatform_Spawn kind:function(arm,size=0x30) addr:0x02111414
+daObjRcBuranko_c_classInit kind:function(arm,size=0x30) addr:0x02111414
 _ZN18RotatingPlatformRrD1Ev kind:function(arm,size=0x50) addr:0x02111444
 _ZN18RotatingPlatformRrD0Ev kind:function(arm,size=0x64) addr:0x02111494
 _ZN18RotatingPlatformRr16CleanupResourcesEv kind:function(arm,size=0x14) addr:0x021114f8
 _ZN18RotatingPlatformRr13InitResourcesEv kind:function(arm,size=0x38) addr:0x0211150c
-RotatingPlatformRr_Spawn kind:function(arm,size=0x3c) addr:0x02111544
+daObjRc_Kaitendai_c_classInit kind:function(arm,size=0x3c) addr:0x02111544
 _ZN8ShipWingD1Ev kind:function(arm,size=0x30) addr:0x02111580
 _ZN8ShipWingD0Ev kind:function(arm,size=0x44) addr:0x021115b0
 _ZN8ShipWing16CleanupResourcesEv kind:function(arm,size=0x24) addr:0x021115f4
@@ -35,7 +35,7 @@ _ZN21ArmedRotatingPlatform16CleanupResourcesEv kind:function(arm,size=0x48) addr
 _ZN21ArmedRotatingPlatform6RenderEv kind:function(arm,size=0x28) addr:0x02111df8
 _ZN21ArmedRotatingPlatform8BehaviorEv kind:function(arm,size=0x90) addr:0x02111e20
 _ZN21ArmedRotatingPlatform13InitResourcesEv kind:function(arm,size=0xac) addr:0x02111eb0
-ArmedRotatingPlatform_Spawn kind:function(arm,size=0x30) addr:0x02111f5c
+daObjRc_Guruguru_c_classInit kind:function(arm,size=0x30) addr:0x02111f5c
 _ZN16daObjRc_Dorifu_cD1Ev kind:function(arm,size=0x80) addr:0x02111f8c
 _ZN16daObjRc_Dorifu_cD0Ev kind:function(arm,size=0x94) addr:0x0211200c
 _ZN16daObjRc_Dorifu_c16CleanupResourcesEv kind:function(arm,size=0x14) addr:0x021120a0
@@ -49,7 +49,7 @@ _ZN15daObjRcCarpet_c16CleanupResourcesEv kind:function(arm,size=0x60) addr:0x021
 _ZN15daObjRcCarpet_c6RenderEv kind:function(arm,size=0x50) addr:0x02112378
 _ZN15daObjRcCarpet_c8BehaviorEv kind:function(arm,size=0x84) addr:0x021123c8
 _ZN15daObjRcCarpet_c13InitResourcesEv kind:function(arm,size=0xec) addr:0x0211244c
-FlyingCarpet_Spawn kind:function(arm,size=0x78) addr:0x02112538
+daObjRcCarpet_c_classInit kind:function(arm,size=0x78) addr:0x02112538
 __sinit_ov036_021125b0 kind:function(arm,size=0x6c) addr:0x021125b0
 __sinit_ov036_0211261c kind:function(arm,size=0x6c) addr:0x0211261c
 __sinit_ov036_02112688 kind:function(arm,size=0x40) addr:0x02112688
@@ -154,7 +154,7 @@ data_ov036_02113a00 kind:data(any) addr:0x02113a00 ambiguous
 data_ov036_02113a50 kind:data(any) addr:0x02113a50 ambiguous
 _ZTI16daObjRcBuranko_c kind:data(any) addr:0x02113a54
 data_ov036_02113a60 kind:data(any) addr:0x02113a60
-SwingingPlatform_SpawnInfo kind:data(any) addr:0x02113a74 ambiguous
+g_profile_RC_BURANKO kind:data(any) addr:0x02113a74 ambiguous
 _ZTV16SwingingPlatform kind:data(any) addr:0x02113a98
 data_ov036_02113aa0 kind:data(any) addr:0x02113aa0 ambiguous
 data_ov036_02113abc kind:data(any) addr:0x02113abc ambiguous
@@ -164,7 +164,7 @@ data_ov036_02113b1c kind:data(any) addr:0x02113b1c
 _ZTI19daObjRc_Kaitendai_c kind:data(any) addr:0x02113b20
 data_ov036_02113b2c kind:data(any) addr:0x02113b2c
 _ZTS19daObjRc_Kaitendai_c kind:data(any) addr:0x02113b38
-RotatingPlatformRr_SpawnInfo kind:data(any) addr:0x02113b50 ambiguous
+g_profile_RC_KAITEN kind:data(any) addr:0x02113b50 ambiguous
 _ZTV18RotatingPlatformRr kind:data(any) addr:0x02113b74
 data_ov036_02113b7c kind:data(any) addr:0x02113b7c ambiguous
 data_ov036_02113b80 kind:data(any) addr:0x02113b80 ambiguous
@@ -190,7 +190,7 @@ data_ov036_02113d30 kind:data(any) addr:0x02113d30 ambiguous
 data_ov036_02113d78 kind:data(any) addr:0x02113d78
 _ZTI18daObjRc_Guruguru_c kind:data(any) addr:0x02113d84
 _ZTS18daObjRc_Guruguru_c kind:data(any) addr:0x02113d90
-ArmedRotatingPlatform_SpawnInfo kind:data(any) addr:0x02113da8 ambiguous
+g_profile_RC_GURUGURU kind:data(any) addr:0x02113da8 ambiguous
 data_ov036_02113dc4 kind:data(any) addr:0x02113dc4 ambiguous
 _ZTV21ArmedRotatingPlatform kind:data(any) addr:0x02113dcc
 data_ov036_02113e00 kind:data(any) addr:0x02113e00 ambiguous
@@ -204,7 +204,7 @@ data_ov036_02113f20 kind:data(any) addr:0x02113f20 ambiguous
 _ZTI15daObjRcCarpet_c kind:data(any) addr:0x02113f4c
 data_ov036_02113f58 kind:data(any) addr:0x02113f58
 _ZTS15daObjRcCarpet_c kind:data(any) addr:0x02113f64
-FlyingCarpet_SpawnInfo kind:data(any) addr:0x02113f78 ambiguous
+g_profile_RC_CARPET kind:data(any) addr:0x02113f78 ambiguous
 _ZTV15daObjRcCarpet_c kind:data(any) addr:0x02113f9c
 data_ov036_02113ff4 kind:data(any) addr:0x02113ff4 ambiguous
 data_ov036_02114010 kind:data(any) addr:0x02114010 ambiguous
