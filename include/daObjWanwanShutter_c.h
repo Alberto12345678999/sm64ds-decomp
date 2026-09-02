@@ -14,15 +14,27 @@
  * is not independent evidence about the ROM.
  */
 
-#ifdef __cplusplus
-
 #include "dBgActor_c.h"
 
 struct daObjWanwanShutter_c : dBgActor_c {
     u8 mDisabled;                     /* 0x31e -- both Behavior and Render return immediately while it is set */
 
     /* --- vtable --- */
-    virtual ~daObjWanwanShutter_c();
+    /* MEASURED -- INLINE ON PURPOSE, do not move out of line.
+     * Out of line, mwccarm 2004/b56 emits D0 before D1 (the reverse of the
+     * cartridge's 0x02112e0c D1 / 0x02112e50 D0) and a homeless D2, and
+     * objisolate rejects the whole translation unit. Defined in the class
+     * body it emits D1 then D0 and no D2, which is the ROM's own order.
+     *
+     * Safe here because the class is a LEAF: the only word in the cartridge
+     * pointing at _ZTI20daObjWanwanShutter_c (ov014 0x02114868) is its own
+     * vtable header at 0x021148ac, so nothing derives from it.
+     *
+     * The body is empty but the FUNCTION IS NOT: at 0x44 bytes it inlines
+     * dBgActor_c's own inline destructor, which destroys the Model at 0xd4
+     * and the dBgW_KcMbg at 0x124. Do not write those members as padding.
+     */
+    virtual ~daObjWanwanShutter_c() {}
 
     int Behavior();
     int CleanupResources();
@@ -31,27 +43,5 @@ struct daObjWanwanShutter_c : dBgActor_c {
 };
 
 typedef char daObjWanwanShutter_c_size_must_be_0x320[sizeof(daObjWanwanShutter_c) == 0x320 ? 1 : -1];
-
-#else
-
-/* The C spelling of the same object, flat. Kept because the D0 file is a C
-   translation unit that reads these fields, and D0 is compiler-generated so it
-   can never be migrated. Same arrangement as include/ShadowModel.h. */
-struct daObjWanwanShutter_c {
-    u8  pad_000[0x8e];
-    s16 mAngleY;            /* 0x08e */
-    u8  pad_090[0x44];
-    /* Model member, named by _ZN5ModelD1Ev at +0xd4 -- a relocation the ROM build checks.
-       D1 and not D2, so it is this type and not an inlined base. Was a u8 marker. */
-    Model mModel;            /* 0x0d4 */
-    /* dBgW_KcMbg member. The cartridge's own ~daObjWanwanShutter_c calls _ZN10dBgW_KcMbgD1Ev
-       at +0x124 (D0/D1), a relocation the ROM build checks; recovered by
-       tools/dtor_members.py. D1 and not D2, so it is this type and not an inlined base. */
-    dBgW_KcMbg mMovingMeshCollider;            /* 0x124 */
-    u8  pad_2ec[0x32];
-    u8  mDisabled;            /* 0x31e */
-};
-
-#endif /* __cplusplus */
 
 #endif /* DAOBJWANWANSHUTTER_C_H */

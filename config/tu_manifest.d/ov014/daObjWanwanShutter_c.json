@@ -1,9 +1,9 @@
 {
   "id": "ov014/daObjWanwanShutter_c",
   "module": "ov014",
-  "source": "src_tu/actors/daObjWanwanShutter_c.cpp",
-  "promoted_source": "src/actors/daObjWanwanShutter_c.cpp",
-  "status": "text-verified",
+  "source": "src/actors/d_a_obj_wanwan_shutter.cpp",
+  "promoted_source": "src/actors/d_a_obj_wanwan_shutter.cpp",
+  "status": "promoted",
   "boundary_confidence": "high",
   "boundary_evidence": [
     "contiguous linker run: 0x2112e0c..0x21130ac, 8 function(s), from build/tu_map.json (tools/tu_map.py)",
@@ -93,17 +93,149 @@
     "criteria": {
       "every_declared_function_defined": "PASS",
       "every_declared_function_bytes_match": "PASS",
-      "declared_function_set_equals_defined_function_set": "FAIL-BY-DESIGN -- 13 unlicensed section/symbol(s), 2 compiler-only policy error(s)",
-      "functions_occur_in_expected_order": "PARTIAL -- ordinal pair(s) not in ROM order: [(0, 1)]",
+      "declared_function_set_equals_defined_function_set": "PASS",
+      "functions_occur_in_expected_order": "PASS",
       "relocation_destinations_verified": "PASS"
     },
     "compilerOnlyOutput": {
-      "requested": [],
-      "unhandled": [
-        "_ZN20daObjWanwanShutter_cD2Ev",
+      "requested": [
         "_ZN7Vector3D1Ev"
       ],
-      "data": []
+      "deadstripped": [
+        "_ZN7Vector3D1Ev"
+      ],
+      "droppedSections": [
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        28
+      ],
+      "data": [
+        "_ZTI7fBase_c",
+        "_ZTS7fBase_c",
+        "_ZTS7dBase_c",
+        "_ZTS8dActor_c",
+        "_ZTI7dBase_c",
+        "_ZTI10dBgActor_c",
+        "_ZTS10dBgActor_c",
+        "_ZTI8dActor_c",
+        "_ZTI20daObjWanwanShutter_c",
+        "_ZTS20daObjWanwanShutter_c",
+        "_ZTV20daObjWanwanShutter_c"
+      ],
+      "dataExternalized": [
+        "_ZTI10dBgActor_c",
+        "_ZTI20daObjWanwanShutter_c",
+        "_ZTI7dBase_c",
+        "_ZTI7fBase_c",
+        "_ZTI8dActor_c",
+        "_ZTS10dBgActor_c",
+        "_ZTS20daObjWanwanShutter_c",
+        "_ZTS7dBase_c",
+        "_ZTS7fBase_c",
+        "_ZTS8dActor_c",
+        "_ZTV20daObjWanwanShutter_c"
+      ]
     }
-  }
+  },
+  "compiler_only_output": [
+    {
+      "symbol": "_ZN7Vector3D1Ev",
+      "disposition": "deadstrip-duplicate",
+      "reason": "func_ov014_02112ea8 (ROM ordinal 2, 0x02112ea8) declares a Vector3[2] local and passes v[1] to dActor_c::PoofDustAt, so this TU re-emits Vector3's vague-linkage D1 alongside its own text. The cartridge keeps one copy at arm9:0x020072c0 and an enrolled source already owns it; rombuild compares this object's body against those cartridge bytes and refuses anything but byte-identical vague-linkage output before discarding the duplicate.",
+      "canonical_module": "arm9",
+      "canonical_address": "0x020072c0"
+    },
+    {
+      "symbol": "_ZTI7fBase_c",
+      "disposition": "deadstrip-data",
+      "reason": "Emitted as vague linkage because it is part of daObjWanwanShutter_c's __si_class_type_info base chain (daObjWanwanShutter_c -> dBgActor_c -> dActor_c -> dBase_c -> fBase_c): mwccarm emits the typeinfo and name records of every base alongside the derived record. Note the chain's VTABLES are not emitted -- dBgActor_c's key function is Kill(), defined in another TU. The cartridge keeps the canonical copy at arm9:0x02086d70, outside this entry's only licensed range (.text 0x02112e0c-0x021130ac), so dsd supplies that ROM data independently. romdata_check compares the emitted copy against the cartridge, relocations applied, before production isolation discards it.",
+      "canonical_module": "arm9",
+      "canonical_address": "0x02086d70"
+    },
+    {
+      "symbol": "_ZTS7fBase_c",
+      "disposition": "deadstrip-data",
+      "reason": "Emitted as vague linkage because it is part of daObjWanwanShutter_c's __si_class_type_info base chain (daObjWanwanShutter_c -> dBgActor_c -> dActor_c -> dBase_c -> fBase_c): mwccarm emits the typeinfo and name records of every base alongside the derived record. Note the chain's VTABLES are not emitted -- dBgActor_c's key function is Kill(), defined in another TU. The cartridge keeps the canonical copy at arm9:0x02086e60, outside this entry's only licensed range (.text 0x02112e0c-0x021130ac), so dsd supplies that ROM data independently. romdata_check compares the emitted copy against the cartridge, relocations applied, before production isolation discards it.",
+      "canonical_module": "arm9",
+      "canonical_address": "0x02086e60"
+    },
+    {
+      "symbol": "_ZTS7dBase_c",
+      "disposition": "deadstrip-data",
+      "reason": "Emitted as vague linkage because it is part of daObjWanwanShutter_c's __si_class_type_info base chain (daObjWanwanShutter_c -> dBgActor_c -> dActor_c -> dBase_c -> fBase_c): mwccarm emits the typeinfo and name records of every base alongside the derived record. Note the chain's VTABLES are not emitted -- dBgActor_c's key function is Kill(), defined in another TU. The cartridge keeps the canonical copy at arm9:0x02086e54, outside this entry's only licensed range (.text 0x02112e0c-0x021130ac), so dsd supplies that ROM data independently. romdata_check compares the emitted copy against the cartridge, relocations applied, before production isolation discards it.",
+      "canonical_module": "arm9",
+      "canonical_address": "0x02086e54"
+    },
+    {
+      "symbol": "_ZTS8dActor_c",
+      "disposition": "deadstrip-data",
+      "reason": "Emitted as vague linkage because it is part of daObjWanwanShutter_c's __si_class_type_info base chain (daObjWanwanShutter_c -> dBgActor_c -> dActor_c -> dBase_c -> fBase_c): mwccarm emits the typeinfo and name records of every base alongside the derived record. Note the chain's VTABLES are not emitted -- dBgActor_c's key function is Kill(), defined in another TU. The cartridge keeps the canonical copy at arm9:0x0208e384, outside this entry's only licensed range (.text 0x02112e0c-0x021130ac), so dsd supplies that ROM data independently. romdata_check compares the emitted copy against the cartridge, relocations applied, before production isolation discards it.",
+      "canonical_module": "arm9",
+      "canonical_address": "0x0208e384"
+    },
+    {
+      "symbol": "_ZTI7dBase_c",
+      "disposition": "deadstrip-data",
+      "reason": "Emitted as vague linkage because it is part of daObjWanwanShutter_c's __si_class_type_info base chain (daObjWanwanShutter_c -> dBgActor_c -> dActor_c -> dBase_c -> fBase_c): mwccarm emits the typeinfo and name records of every base alongside the derived record. Note the chain's VTABLES are not emitted -- dBgActor_c's key function is Kill(), defined in another TU. The cartridge keeps the canonical copy at arm9:0x02086e78, outside this entry's only licensed range (.text 0x02112e0c-0x021130ac), so dsd supplies that ROM data independently. romdata_check compares the emitted copy against the cartridge, relocations applied, before production isolation discards it.",
+      "canonical_module": "arm9",
+      "canonical_address": "0x02086e78"
+    },
+    {
+      "symbol": "_ZTI10dBgActor_c",
+      "disposition": "deadstrip-data",
+      "reason": "Emitted as vague linkage because it is part of daObjWanwanShutter_c's __si_class_type_info base chain (daObjWanwanShutter_c -> dBgActor_c -> dActor_c -> dBase_c -> fBase_c): mwccarm emits the typeinfo and name records of every base alongside the derived record. Note the chain's VTABLES are not emitted -- dBgActor_c's key function is Kill(), defined in another TU. The cartridge keeps the canonical copy at ov002:0x021089ec, outside this entry's only licensed range (.text 0x02112e0c-0x021130ac), so dsd supplies that ROM data independently. romdata_check compares the emitted copy against the cartridge, relocations applied, before production isolation discards it.",
+      "canonical_module": "ov002",
+      "canonical_address": "0x021089ec"
+    },
+    {
+      "symbol": "_ZTS10dBgActor_c",
+      "disposition": "deadstrip-data",
+      "reason": "Emitted as vague linkage because it is part of daObjWanwanShutter_c's __si_class_type_info base chain (daObjWanwanShutter_c -> dBgActor_c -> dActor_c -> dBase_c -> fBase_c): mwccarm emits the typeinfo and name records of every base alongside the derived record. Note the chain's VTABLES are not emitted -- dBgActor_c's key function is Kill(), defined in another TU. The cartridge keeps the canonical copy at ov002:0x02108a04, outside this entry's only licensed range (.text 0x02112e0c-0x021130ac), so dsd supplies that ROM data independently. romdata_check compares the emitted copy against the cartridge, relocations applied, before production isolation discards it.",
+      "canonical_module": "ov002",
+      "canonical_address": "0x02108a04"
+    },
+    {
+      "symbol": "_ZTI8dActor_c",
+      "disposition": "deadstrip-data",
+      "reason": "Emitted as vague linkage because it is part of daObjWanwanShutter_c's __si_class_type_info base chain (daObjWanwanShutter_c -> dBgActor_c -> dActor_c -> dBase_c -> fBase_c): mwccarm emits the typeinfo and name records of every base alongside the derived record. Note the chain's VTABLES are not emitted -- dBgActor_c's key function is Kill(), defined in another TU. The cartridge keeps the canonical copy at arm9:0x0208e390, outside this entry's only licensed range (.text 0x02112e0c-0x021130ac), so dsd supplies that ROM data independently. romdata_check compares the emitted copy against the cartridge, relocations applied, before production isolation discards it.",
+      "canonical_module": "arm9",
+      "canonical_address": "0x0208e390"
+    },
+    {
+      "symbol": "_ZTI20daObjWanwanShutter_c",
+      "disposition": "deadstrip-data",
+      "reason": "Emitted as vague linkage because daObjWanwanShutter_c has NO key function: its first declared virtual is the destructor, and that destructor is defined inline in include/daObjWanwanShutter_c.h (deliberately -- out of line mwccarm reverses the ROM's D1/D0 order and adds a homeless D2). With no key function every TU that references the class emits its own copy of this record. The cartridge keeps the canonical copy at ov014:0x02114868, outside this entry's only licensed range (.text 0x02112e0c-0x021130ac), so dsd supplies that ROM data independently. romdata_check compares the emitted copy against the cartridge, relocations applied, before production isolation discards it.",
+      "canonical_module": "ov014",
+      "canonical_address": "0x02114868"
+    },
+    {
+      "symbol": "_ZTS20daObjWanwanShutter_c",
+      "disposition": "deadstrip-data",
+      "reason": "Emitted as vague linkage because daObjWanwanShutter_c has NO key function: its first declared virtual is the destructor, and that destructor is defined inline in include/daObjWanwanShutter_c.h (deliberately -- out of line mwccarm reverses the ROM's D1/D0 order and adds a homeless D2). With no key function every TU that references the class emits its own copy of this record. The cartridge keeps the canonical copy at ov014:0x02114874, outside this entry's only licensed range (.text 0x02112e0c-0x021130ac), so dsd supplies that ROM data independently. romdata_check compares the emitted copy against the cartridge, relocations applied, before production isolation discards it.",
+      "canonical_module": "ov014",
+      "canonical_address": "0x02114874"
+    },
+    {
+      "symbol": "_ZTV20daObjWanwanShutter_c",
+      "disposition": "deadstrip-data",
+      "reason": "Emitted as vague linkage because daObjWanwanShutter_c has NO key function: its first declared virtual is the destructor, and that destructor is defined inline in include/daObjWanwanShutter_c.h (deliberately -- out of line mwccarm reverses the ROM's D1/D0 order and adds a homeless D2). With no key function every TU that references the class emits its own copy of this record. The cartridge keeps the canonical copy at ov014:0x021148b0, outside this entry's only licensed range (.text 0x02112e0c-0x021130ac), so dsd supplies that ROM data independently. romdata_check compares the emitted copy against the cartridge, relocations applied, before production isolation discards it.",
+      "canonical_module": "ov014",
+      "canonical_address": "0x021148b0"
+    }
+  ]
 }

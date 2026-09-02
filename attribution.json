@@ -1236,6 +1236,14 @@
     "src/actors/d_a_warpkun.cpp#_ZN11daWarpkun_c6RenderEv": "github-actions[bot]",
     "src/actors/d_a_warpkun.cpp#_ZN11daWarpkun_c8BehaviorEv": "github-actions[bot]",
     "src/actors/d_a_warpkun.cpp#_ZN11daWarpkun_c13InitResourcesEv": "github-actions[bot]",
-    "src/actors/d_a_warpkun.cpp#daWarpkun_c_Spawn": "github-actions[bot]"
+    "src/actors/d_a_warpkun.cpp#daWarpkun_c_Spawn": "github-actions[bot]",
+    "src/actors/d_a_obj_wanwan_shutter.cpp#_ZN20daObjWanwanShutter_cD1Ev": "github-actions[bot]",
+    "src/actors/d_a_obj_wanwan_shutter.cpp#_ZN20daObjWanwanShutter_cD0Ev": "github-actions[bot]",
+    "src/actors/d_a_obj_wanwan_shutter.cpp#func_ov014_02112ea8": "github-actions[bot]",
+    "src/actors/d_a_obj_wanwan_shutter.cpp#_ZN20daObjWanwanShutter_c16CleanupResourcesEv": "github-actions[bot]",
+    "src/actors/d_a_obj_wanwan_shutter.cpp#_ZN20daObjWanwanShutter_c6RenderEv": "github-actions[bot]",
+    "src/actors/d_a_obj_wanwan_shutter.cpp#_ZN20daObjWanwanShutter_c8BehaviorEv": "github-actions[bot]",
+    "src/actors/d_a_obj_wanwan_shutter.cpp#_ZN20daObjWanwanShutter_c13InitResourcesEv": "github-actions[bot]",
+    "src/actors/d_a_obj_wanwan_shutter.cpp#daObjWanwanShutter_c_classInit": "github-actions[bot]"
   }
 }
