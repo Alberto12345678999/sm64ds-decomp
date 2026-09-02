@@ -4080,19 +4080,19 @@
    "start": "0x21111a0",
    "end": "0x2111450",
    "classes": [
-    "SwitchPillar"
+    "daObjC0_Switch_c"
    ],
    "n_functions_map": 8,
    "n_files": 8,
    "files": [
-    "src/_ZN12SwitchPillarD1Ev.cpp",
-    "src/_ZN12SwitchPillarD0Ev.c",
-    "src/_ZN12SwitchPillar15OnGroundPoundedER8dActor_c.cpp",
-    "src/_ZN12SwitchPillar16CleanupResourcesEv.cpp",
-    "src/_ZN12SwitchPillar6RenderEv.cpp",
-    "src/_ZN12SwitchPillar8BehaviorEv.cpp",
-    "src/_ZN12SwitchPillar13InitResourcesEv.cpp",
-    "src/daObjC0_Switch_c_classInit.c"
+    "src/_ZN16daObjC0_Switch_cD1Ev.cpp",
+    "src/_ZN16daObjC0_Switch_cD0Ev.c",
+    "src/_ZN16daObjC0_Switch_c15OnGroundPoundedER8dActor_c.cpp",
+    "src/_ZN16daObjC0_Switch_c16CleanupResourcesEv.cpp",
+    "src/_ZN16daObjC0_Switch_c6RenderEv.cpp",
+    "src/_ZN16daObjC0_Switch_c8BehaviorEv.cpp",
+    "src/_ZN16daObjC0_Switch_c13InitResourcesEv.cpp",
+    "src/daObjC0_Switch_c_Spawn.c"
    ],
    "ext_mix": {
     ".cpp": 6,
@@ -4663,19 +4663,19 @@
    "start": "0x20b0748",
    "end": "0x20b07f8",
    "classes": [
-    "CameraTag"
+    "daCamTag_c"
    ],
    "n_functions_map": 8,
    "n_files": 8,
    "files": [
-    "src/_ZN9CameraTagD1Ev.cpp",
-    "src/_ZN9CameraTagD0Ev.c",
-    "src/_ZN9CameraTag16CleanupResourcesEv.cpp",
-    "src/_ZN9CameraTag16OnPendingDestroyEv.cpp",
-    "src/_ZN9CameraTag6RenderEv.cpp",
-    "src/_ZN9CameraTag8BehaviorEv.cpp",
-    "src/_ZN9CameraTag13InitResourcesEv.cpp",
-    "src/CameraTag_Spawn.c"
+    "src/_ZN10daCamTag_cD1Ev.cpp",
+    "src/_ZN10daCamTag_cD0Ev.c",
+    "src/_ZN10daCamTag_c16CleanupResourcesEv.cpp",
+    "src/_ZN10daCamTag_c16OnPendingDestroyEv.cpp",
+    "src/_ZN10daCamTag_c6RenderEv.cpp",
+    "src/_ZN10daCamTag_c8BehaviorEv.cpp",
+    "src/_ZN10daCamTag_c13InitResourcesEv.cpp",
+    "src/daCamTag_c_Spawn.c"
    ],
    "ext_mix": {
     ".cpp": 6,
@@ -5341,19 +5341,19 @@
    "start": "0x21111a0",
    "end": "0x21113bc",
    "classes": [
-    "ClockPaintingPendulum"
+    "daObjClockHuriko_c"
    ],
    "n_functions_map": 8,
    "n_files": 8,
    "files": [
-    "src/_ZN21ClockPaintingPendulumD1Ev.c",
-    "src/_ZN21ClockPaintingPendulumD0Ev.c",
-    "src/_ZN21ClockPaintingPendulum16CleanupResourcesEv.c",
+    "src/_ZN18daObjClockHuriko_cD1Ev.c",
+    "src/_ZN18daObjClockHuriko_cD0Ev.c",
+    "src/_ZN18daObjClockHuriko_c16CleanupResourcesEv.c",
     "src/func_ov013_02111238.c",
-    "src/_ZN21ClockPaintingPendulum6RenderEv.cpp",
-    "src/_ZN21ClockPaintingPendulum8BehaviorEv.c",
-    "src/_ZN21ClockPaintingPendulum13InitResourcesEv.cpp",
-    "src/ClockPaintingPendulum_Spawn.c"
+    "src/_ZN18daObjClockHuriko_c6RenderEv.cpp",
+    "src/_ZN18daObjClockHuriko_c8BehaviorEv.c",
+    "src/_ZN18daObjClockHuriko_c13InitResourcesEv.cpp",
+    "src/daObjClockHuriko_c_Spawn.c"
    ],
    "ext_mix": {
     ".c": 6,
@@ -7462,7 +7462,7 @@
    "start": "0x20ebf8c",
    "end": "0x20ec388",
    "classes": [
-    "Tree"
+    "daTree_c"
    ],
    "n_functions_map": 8,
    "n_files": 8,
@@ -7947,19 +7947,19 @@
    "start": "0x21115c4",
    "end": "0x21118c8",
    "classes": [
-    "ChillBully",
+    "daIDonketu_c",
     "daIDonketu_c"
    ],
    "n_functions_map": 7,
    "n_files": 7,
    "files": [
-    "src/_ZN10ChillBullyD1Ev.cpp",
-    "src/_ZN10ChillBullyD0Ev.c",
+    "src/_ZN12daIDonketu_cD1Ev.cpp",
+    "src/_ZN12daIDonketu_cD0Ev.c",
     "src/func_ov027_02111680.c",
     "src/func_ov027_021116f0.cpp",
-    "src/_ZN10ChillBully8BehaviorEv.cpp",
-    "src/_ZN10ChillBully13InitResourcesEv.cpp",
-    "src/ChillBully_Spawn.c"
+    "src/_ZN12daIDonketu_c8BehaviorEv.cpp",
+    "src/_ZN12daIDonketu_c13InitResourcesEv.cpp",
+    "src/daIDonketu_c_Spawn.c"
    ],
    "ext_mix": {
     ".cpp": 4,
@@ -8299,17 +8299,17 @@
    "start": "0x21111a0",
    "end": "0x2111308",
    "classes": [
-    "ShutterBob"
+    "daObjBSwdoor_c"
    ],
    "n_functions_map": 6,
    "n_files": 6,
    "files": [
-    "src/_ZN10ShutterBobD1Ev.cpp",
-    "src/_ZN10ShutterBobD0Ev.c",
-    "src/_ZN10ShutterBob16CleanupResourcesEv.cpp",
-    "src/_ZN10ShutterBob8BehaviorEv.cpp",
-    "src/_ZN10ShutterBob13InitResourcesEv.cpp",
-    "src/daObjBSwdoor_c_classInit.c"
+    "src/_ZN14daObjBSwdoor_cD1Ev.cpp",
+    "src/_ZN14daObjBSwdoor_cD0Ev.c",
+    "src/_ZN14daObjBSwdoor_c16CleanupResourcesEv.cpp",
+    "src/_ZN14daObjBSwdoor_c8BehaviorEv.cpp",
+    "src/_ZN14daObjBSwdoor_c13InitResourcesEv.cpp",
+    "src/daObjBSwdoor_c_Spawn.c"
    ],
    "ext_mix": {
     ".cpp": 4,
@@ -9212,16 +9212,16 @@
    "start": "0x2112080",
    "end": "0x21121a4",
    "classes": [
-    "RotatingPlatformWdw"
+    "daObjWc_Obj07_c"
    ],
    "n_functions_map": 5,
    "n_files": 5,
    "files": [
-    "src/_ZN19RotatingPlatformWdwD1Ev.cpp",
-    "src/_ZN19RotatingPlatformWdwD0Ev.c",
-    "src/_ZN19RotatingPlatformWdw16CleanupResourcesEv.c",
-    "src/_ZN19RotatingPlatformWdw13InitResourcesEv.c",
-    "src/daObjWc_Obj07_c_classInit.c"
+    "src/_ZN15daObjWc_Obj07_cD1Ev.cpp",
+    "src/_ZN15daObjWc_Obj07_cD0Ev.c",
+    "src/_ZN15daObjWc_Obj07_c16CleanupResourcesEv.c",
+    "src/_ZN15daObjWc_Obj07_c13InitResourcesEv.c",
+    "src/daObjWc_Obj07_c_Spawn.c"
    ],
    "ext_mix": {
     ".cpp": 1,
@@ -9326,16 +9326,16 @@
    "start": "0x2111d48",
    "end": "0x2111e60",
    "classes": [
-    "FallBlockBfs"
+    "daObjKm2_Fall_Block_c"
    ],
    "n_functions_map": 5,
    "n_files": 5,
    "files": [
-    "src/_ZN12FallBlockBfsD1Ev.cpp",
-    "src/_ZN12FallBlockBfsD0Ev.c",
-    "src/_ZN12FallBlockBfs16CleanupResourcesEv.c",
-    "src/_ZN12FallBlockBfs13InitResourcesEv.c",
-    "src/FallBlockBfs_Spawn.c"
+    "src/_ZN21daObjKm2_Fall_Block_cD1Ev.cpp",
+    "src/_ZN21daObjKm2_Fall_Block_cD0Ev.c",
+    "src/_ZN21daObjKm2_Fall_Block_c16CleanupResourcesEv.c",
+    "src/_ZN21daObjKm2_Fall_Block_c13InitResourcesEv.c",
+    "src/daObjKm2_Fall_Block_c_Spawn.c"
    ],
    "ext_mix": {
     ".cpp": 1,
@@ -9609,15 +9609,15 @@
    "start": "0x21111a0",
    "end": "0x211137c",
    "classes": [
-    "FloatOnWaterPlatformWdwSquare"
+    "daObjWcObj01_c"
    ],
    "n_functions_map": 4,
    "n_files": 4,
    "files": [
-    "src/_ZN29FloatOnWaterPlatformWdwSquareD1Ev.cpp",
-    "src/_ZN29FloatOnWaterPlatformWdwSquareD0Ev.c",
-    "src/_ZN29FloatOnWaterPlatformWdwSquare13InitResourcesEv.cpp",
-    "src/daObjWcObj01_c_classInit.c"
+    "src/_ZN14daObjWcObj01_cD1Ev.cpp",
+    "src/_ZN14daObjWcObj01_cD0Ev.c",
+    "src/_ZN14daObjWcObj01_c13InitResourcesEv.cpp",
+    "src/daObjWcObj01_c_Spawn.c"
    ],
    "ext_mix": {
     ".cpp": 2,
@@ -9664,15 +9664,15 @@
    "start": "0x2111ea4",
    "end": "0x2112080",
    "classes": [
-    "FloatOnWaterPlatformWdwRectangle"
+    "daObjWcObj06_c"
    ],
    "n_functions_map": 4,
    "n_files": 4,
    "files": [
-    "src/_ZN32FloatOnWaterPlatformWdwRectangleD1Ev.cpp",
-    "src/_ZN32FloatOnWaterPlatformWdwRectangleD0Ev.c",
-    "src/_ZN32FloatOnWaterPlatformWdwRectangle13InitResourcesEv.cpp",
-    "src/FloatOnWaterPlatformWdwRectangle_Spawn.c"
+    "src/_ZN14daObjWcObj06_cD1Ev.cpp",
+    "src/_ZN14daObjWcObj06_cD0Ev.c",
+    "src/_ZN14daObjWcObj06_c13InitResourcesEv.cpp",
+    "src/daObjWcObj06_c_Spawn.c"
    ],
    "ext_mix": {
     ".cpp": 2,
@@ -9945,15 +9945,15 @@
    "start": "0x21126d4",
    "end": "0x21127bc",
    "classes": [
-    "PowerStarCreate"
+    "daSCre_c"
    ],
    "n_functions_map": 4,
    "n_files": 4,
    "files": [
-    "src/_ZN15PowerStarCreateD1Ev.cpp",
-    "src/_ZN15PowerStarCreateD0Ev.c",
-    "src/_ZN15PowerStarCreate8BehaviorEv.cpp",
-    "src/PowerStarCreate_Spawn.c"
+    "src/_ZN8daSCre_cD1Ev.cpp",
+    "src/_ZN8daSCre_cD0Ev.c",
+    "src/_ZN8daSCre_c8BehaviorEv.cpp",
+    "src/daSCre_c_Spawn.c"
    ],
    "ext_mix": {
     ".cpp": 2,
@@ -10340,16 +10340,16 @@
    "start": "0x21114d4",
    "end": "0x211164c",
    "classes": [
-    "RickshawPlatformBs"
+    "daObjKm3_Dorifu_c"
    ],
    "n_functions_map": 5,
    "n_files": 5,
    "files": [
-    "src/RickshawPlatformBs_Spawn.c",
-    "src/_ZN18RickshawPlatformBsD1Ev.cpp",
-    "src/_ZN18RickshawPlatformBsD0Ev.c",
-    "src/_ZN18RickshawPlatformBs16CleanupResourcesEv.cpp",
-    "src/_ZN18RickshawPlatformBs13InitResourcesEv.cpp"
+    "src/daObjKm3_Dorifu_c_Spawn.c",
+    "src/_ZN17daObjKm3_Dorifu_cD1Ev.cpp",
+    "src/_ZN17daObjKm3_Dorifu_cD0Ev.c",
+    "src/_ZN17daObjKm3_Dorifu_c16CleanupResourcesEv.cpp",
+    "src/_ZN17daObjKm3_Dorifu_c13InitResourcesEv.cpp"
    ],
    "ext_mix": {
     ".c": 2,
@@ -17163,19 +17163,19 @@
    "start": "0x20f198c",
    "end": "0x20f1bc4",
    "classes": [
-    "AmbientSoundEffects"
+    "daSetSE_c"
    ],
    "n_functions_map": 8,
    "n_files": 8,
    "files": [
-    "src/_ZN19AmbientSoundEffectsD1Ev.cpp",
-    "src/_ZN19AmbientSoundEffectsD0Ev.c",
-    "src/_ZN19AmbientSoundEffects16CleanupResourcesEv.c",
-    "src/_ZN19AmbientSoundEffects16OnPendingDestroyEv.c",
-    "src/_ZN19AmbientSoundEffects6RenderEv.c",
-    "src/_ZN19AmbientSoundEffects8BehaviorEv.cpp",
-    "src/_ZN19AmbientSoundEffects13InitResourcesEv.cpp",
-    "src/AmbientSoundEffects_Spawn.c"
+    "src/_ZN9daSetSE_cD1Ev.cpp",
+    "src/_ZN9daSetSE_cD0Ev.c",
+    "src/_ZN9daSetSE_c16CleanupResourcesEv.c",
+    "src/_ZN9daSetSE_c16OnPendingDestroyEv.c",
+    "src/_ZN9daSetSE_c6RenderEv.c",
+    "src/_ZN9daSetSE_c8BehaviorEv.cpp",
+    "src/_ZN9daSetSE_c13InitResourcesEv.cpp",
+    "src/daSetSE_c_Spawn.c"
    ],
    "ext_mix": {
     ".cpp": 3,
@@ -17537,18 +17537,18 @@
    "start": "0x20f934c",
    "end": "0x20f975c",
    "classes": [
-    "SoundObject"
+    "daSoundObj_c"
    ],
    "n_functions_map": 7,
    "n_files": 7,
    "files": [
-    "src/_ZN11SoundObjectD1Ev.cpp",
-    "src/_ZN11SoundObjectD0Ev.c",
+    "src/_ZN12daSoundObj_cD1Ev.cpp",
+    "src/_ZN12daSoundObj_cD0Ev.c",
     "src/func_ov002_020f93a8.cpp",
     "src/func_ov002_020f9468.c",
-    "src/_ZN11SoundObject8BehaviorEv.cpp",
-    "src/_ZN11SoundObject13InitResourcesEv.cpp",
-    "src/SoundObject_Spawn.c"
+    "src/_ZN12daSoundObj_c8BehaviorEv.cpp",
+    "src/_ZN12daSoundObj_c13InitResourcesEv.cpp",
+    "src/daSoundObj_c_Spawn.c"
    ],
    "ext_mix": {
     ".cpp": 4,
@@ -36978,7 +36978,7 @@
    "n_functions_map": 1,
    "n_files": 1,
    "files": [
-    "src/daObjPathLift_c_classInit.cpp"
+    "src/PathLift_Spawn.cpp"
    ],
    "ext_mix": {
     ".cpp": 1

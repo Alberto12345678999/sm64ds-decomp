@@ -27,7 +27,12 @@ struct daObjWaterfall_c : dActor_c {
        one would be invention, not recovery. */
     void *mParticle;         /* 0x0d8 */
 
-    virtual ~daObjWaterfall_c();
+    /* InitResources is the first out-of-line virtual/key function. Together
+     * with this inline destructor, mwccarm owns the retail D1/D0 pair in the
+     * ROM's own order and the complete class RTTI/vtable group, without
+     * retaining a D2 body. An out-of-line destructor definition emits D0
+     * before D1 and cannot be isolated against the ROM span. */
+    virtual ~daObjWaterfall_c() {}
 
     virtual int InitResources();
     virtual int Behavior();

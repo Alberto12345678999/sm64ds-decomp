@@ -130,7 +130,7 @@ cross-check. Low confidence on its own (round numbers), but useful.
 | Floor threshold | `normal.y > 0.01` | `normal.y > 0` (`cmp r0,#0; ble` @ 0x01ffd5cc) |
 | Point-in-triangle | 3× 2D XZ cross products, no tolerance | KCL 3D edge-plane dots + prism `length`, ±0x20000 tolerance |
 | Surface types | `SURFACE_*` 0x0000–0x00FD | 8-byte CLPS bitfield, **5-bit** type field (bits 19-23) — physically cannot hold N64's ID space |
-| Warps / camera triggers | static per-level C structs, `WARP_NODE_*` 0xF0–0xFA | instanced `Actor` objects with collision cylinders (`Warp_Spawn` = 264-byte actor, `CameraTag`) |
+| Warps / camera triggers | static per-level C structs, `WARP_NODE_*` 0xF0–0xFA | instanced `Actor` objects with collision cylinders (`Warp_Spawn` = 264-byte actor, `daCamTag_c`) |
 | Matrices | 4×4 f32 | 4×3 Fix12 (NitroSDK G3) |
 | sqrt / divide / sin / cos | software tables | DS hardware DIV/SQRT MMIO, BIOS `swi 0x0d`, `FX_SinCosTable_` |
 
@@ -342,7 +342,7 @@ Combined with N64's field vocabulary (`oPosX`/`oAction`/…) and the hitbox cons
 `sm64/src/game/behaviors/*.inc.c`, this is directly usable when drafting DS `Behavior()` /
 `InitResources()` or renaming `func_ov###_########` placeholders for these actors.
 
-DS-only / EAD additions, not chased: `KoopaTheQuick`, `ChillBully`/`ChiefChilly` (Snowman's Land
+DS-only / EAD additions, not chased: `KoopaTheQuick`, `daIDonketu_c` (then called `ChillBully` here)/`ChiefChilly` (Snowman's Land
 reskins — N64 doesn't reuse Bully there), `Toad`, `Dorrie`.
 
 ---

@@ -41,7 +41,7 @@ to 0x96, never read).
 | offset | new name | evidence |
 | --- | --- | --- |
 | 0x138 | `mKeyModel` | `new Model` + `ModelBase::SetFile` in `src/_ZN4Door13InitResourcesEv.c`; `Virtual10(mModel.data.transforms)` then `Render(0)` in `src/_ZN4Door6RenderEv.cpp`, where the local holding it is already called `key`; `delete key` through Model's vtable slot 1 in `src/_ZN4Door16CleanupResourcesEv.cpp`. Owned by the Door. |
-| 0x13c | `mKeyFile` | handed to `Model::LoadFile` and `Release()`d as a `SharedFilePtr`. Three sources in `InitResources`: `data_ov002_0211094c`, `func_02132894[mKeyModelIdx + 1]` for the keyed-door `param1` range, else `data_ov089_02132c50`. |
+| 0x13c | `mKeyFile` | handed to `Model::LoadFile` and `Release()`d as a `SharedFilePtr`. Three sources in `InitResources`: [data_ov002_0211094c](../config/arm9/overlays/ov002/symbols.txt), `func_02132894[mKeyModelIdx + 1]` for the keyed-door `param1` range, else [data_ov089_02132c50](../config/arm9/overlays/ov089/symbols.txt). |
 | 0x140 | `mCallbackNode` | `src/_ZN4Door8BehaviorEv.cpp` casts it to a node whose `+0x8` is a `void (Door::*)(int)` and calls it on this Door. |
 | 0x144 | `mKeyModelIdx` | `param1 - 8` for `param1` in 9..0xd, re-zeroed for `param1 == 0xc`; indexes `LoadKeyModels` and `func_02132894`. The header already carried "key-model index" as a comment. |
 
@@ -61,14 +61,14 @@ the rest, so the fifth collection can destroy the whole set from one place.
 | 0x10f | `mGroupRole` | 0 until the election, 1 on the coin that claims it, 2 written into every other coin. Both the election guard and the destroy test read it. |
 | 0x110 | `mCollectedCount` | leader destroys itself at `mGroupRole == 1 && mCollectedCount == 5` -- the five silver coins of a mission. |
 | 0x111 | `mClsnDisabled` | nonzero suppresses the `dCcAc_c` member's per-frame `Update()`; its `Clear()` runs either way. |
-| 0x113 | `mDeathTimer` | counted down by `DecIfAbove0_Byte` at the top of `Behavior`; the frame it reaches 0 the coin runs `func_ov002_020f05f4` and marks itself for destruction. Zero means "not dying". |
+| 0x113 | `mDeathTimer` | counted down by `DecIfAbove0_Byte` at the top of `Behavior`; the frame it reaches 0 the coin runs [func_ov002_020f05f4](../config/arm9/overlays/ov002/symbols.txt) and marks itself for destruction. Zero means "not dying". |
 
 Sources: `src/_ZN9daSCoin_c13InitResourcesEv.cpp`,
 `src/_ZN9daSCoin_c8BehaviorEv.cpp`.
 
 Deliberately left `unk_`: 0x10d (`param1 & 0xf`, written and never read);
 0x112 (already documented as touched only by the class's unenrolled
-`func_ov002_020f051c.c`).
+[func_ov002_020f051c](../config/arm9/overlays/ov002/symbols.txt)).
 
 ## Pokey -- include/Pokey.h
 
@@ -323,11 +323,11 @@ Source: `src/_ZN10BowserTail8BehaviorEv.cpp`.
 
 - `BobOmbBuddy` 0x198: zeroed in `src/_ZN11BobOmbBuddy13InitResourcesEv.cpp`,
   never read.
-- `CameraTag` 0x0d0 and `daBgSnwmn_c` 0x0d0: four opaque bytes each, touched by
+- `daCamTag_c` 0x0d0 and `daBgSnwmn_c` 0x0d0: four opaque bytes each, touched by
   no enrolled body. `daBgSnwmn_c` already carries a note saying its 0x0cc read
   is the inherited `mAreaId`, not a field of its own.
-- `SoundObject` 0x0e0: filled from `data_ov002_0210c08a + param1 * 0xc`, the
+- `daSoundObj_c` 0x0e0: filled from [data_ov002_0210c08a](../config/arm9/overlays/ov002/symbols.txt) + param1 * 0xc`, the
   same twelve-byte table row that fills `mLevelID`, `mTimerThreshold` and
   `mTimerReset` -- so it is the fourth column of the sound table, but nothing
   enrolled reads it, and which column is which is not something the table
-  itself says. [`src/_ZN11SoundObject13InitResourcesEv.cpp`]
+  itself says. [`src/actors/d_a_sound_obj.cpp`]

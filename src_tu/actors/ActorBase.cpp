@@ -99,8 +99,25 @@ struct fBaseActorInfo {
  * ------------------------------------------------------------------------- */
 extern "C" {
 
-/* ProcessingListNode::~ProcessingListNode -- torn down twice per destructor. */
-extern void func_020440e8(void *node);
+/* The node destructor each fBase_c destructor variant runs twice.
+ *
+ * NAME CORRECTED. This block used to declare it `func_020440e8`, and so does
+ * include/decl_common.h. NO MODULE EXPORTS THAT NAME: arm9's own
+ * config/arm9/symbols.txt:1842 gives 0x020440e8 as
+ * `_ZN11fLiNdBaPr_cD1Ev kind:function(arm,size=0x1c)`, and there is a source
+ * for it at src/_ZN11fLiNdBaPr_cD1Ev.cpp. A shadow TU is not in the build, so
+ * the fabricated name compiled and byte-matched here and would only have
+ * surfaced as `Undefined : "func_020440e8"` at ROM link time, on promotion --
+ * the same failure mode daObjKm3_Dorifu_c hit. Declared under the real mangled
+ * name: same address, same relocation, a reference that resolves.
+ *
+ * This is still a poorer recovery than the legacy src/_ZN7fBase_cD1Ev.cpp,
+ * which is a real `fBase_c::~fBase_c() {}` and lets the compiler synthesize
+ * both member teardowns. Restoring that here means unwinding the three
+ * hand-mangled D0/D1/D2 definitions below, and a hand-mangled D0 beside a real
+ * destructor is the known mwccarm ICE (ELFgen.c:483). Left for the promotion
+ * of this TU, which has to solve the destructor shape anyway. */
+extern "C" void _ZN11fLiNdBaPr_cD1Ev(void *node);
 
 /* Intrusive-list operations on the four global list heads below. All four take
    (list head, node); the legacy files spelled the heads `int`, `char` and
@@ -211,16 +228,16 @@ fBase_c::fBase_c() : manager(this)
 extern "C" fBase_c *_ZN7fBase_cD1Ev(fBase_c *self)
 {
     *(int *)self = (int)_ZTV7fBase_c;
-    func_020440e8(&self->manager.renderNode);
-    func_020440e8(&self->manager.behaviorNode);
+    _ZN11fLiNdBaPr_cD1Ev(&self->manager.renderNode);
+    _ZN11fLiNdBaPr_cD1Ev(&self->manager.behaviorNode);
     return self;
 }
 
 extern "C" fBase_c *_ZN7fBase_cD0Ev(fBase_c *self)
 {
     *(int *)self = (int)_ZTV7fBase_c;
-    func_020440e8(&self->manager.renderNode);
-    func_020440e8(&self->manager.behaviorNode);
+    _ZN11fLiNdBaPr_cD1Ev(&self->manager.renderNode);
+    _ZN11fLiNdBaPr_cD1Ev(&self->manager.behaviorNode);
     _ZN6Memory10DeallocateEPvP4Heap(self, data_020a0eac);
     return self;
 }
@@ -228,8 +245,8 @@ extern "C" fBase_c *_ZN7fBase_cD0Ev(fBase_c *self)
 extern "C" fBase_c *_ZN7fBase_cD2Ev(fBase_c *self)
 {
     *(int *)self = (int)_ZTV7fBase_c;
-    func_020440e8(&self->manager.renderNode);
-    func_020440e8(&self->manager.behaviorNode);
+    _ZN11fLiNdBaPr_cD1Ev(&self->manager.renderNode);
+    _ZN11fLiNdBaPr_cD1Ev(&self->manager.behaviorNode);
     return self;
 }
 
