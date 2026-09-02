@@ -482,7 +482,7 @@ ov012	0x02112320	SwitchPillar_SpawnInfo	g_profile_C0_SWITCH	reconstructed profil
 ov012	0x021123e4	data_ov012_021123e4	BasementWater_SpawnInfo	spawninfo
 ov012	0x021123e4	BasementWater_SpawnInfo	g_profile_C0_WATER	reconstructed profile global; literal ROM ID C0_WATER+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov012	0x02112408	data_ov012_02112408	_ZTV12SwitchPillar	vtable alloc=0x320
-ov013	0x02111384	func_ov013_02111384	ClockPaintingPendulum_Spawn	spawnfunc
+ov013	0x02111384	func_ov013_02111384	daObjClockHuriko_c_Spawn	spawnfunc
 ov013	0x021113bc	func_ov013_021113bc	_ZN22ClockPaintingHandShortD1Ev	vtable slot 16
 ov013	0x021113ec	func_ov013_021113ec	_ZN22ClockPaintingHandShortD0Ev	vtable slot 17
 ov013	0x02111478	func_ov013_02111478	_ZN22ClockPaintingHandShort16CleanupResourcesEv	vtable slot 3
@@ -491,7 +491,7 @@ ov013	0x021114cc	func_ov013_021114cc	_ZN22ClockPaintingHandShort8BehaviorEv	vtab
 ov013	0x021115cc	func_ov013_021115cc	_ZN22ClockPaintingHandShort13InitResourcesEv	vtable slot 0
 ov013	0x0211163c	func_ov013_0211163c	ClockPaintingHandShort_Spawn	spawnfunc
 ov013	0x02111674	func_ov013_02111674	ClockPaintingHandLong_Spawn	spawnfunc
-ov013	0x02112104	data_ov013_02112104	ClockPaintingPendulum_SpawnInfo	spawninfo
+ov013	0x02112104	data_ov013_02112104	daObjClockHuriko_c_SpawnInfo	spawninfo
 ov013	0x021121c0	data_ov013_021121c0	ClockPaintingHandLong_SpawnInfo	spawninfo
 ov013	0x021121dc	data_ov013_021121dc	ClockPaintingHandShort_SpawnInfo	spawninfo
 ov013	0x02112200	data_ov013_02112200	_ZTV22ClockPaintingHandShort	vtable alloc=0x128
@@ -844,7 +844,7 @@ ov027	0x02111304	func_ov027_02111304	_ZN10SlidingIce8BehaviorEv	vtable slot 6
 ov027	0x02111440	func_ov027_02111440	_ZN10SlidingIce13InitResourcesEv	vtable slot 0
 ov027	0x02111564	func_ov027_02111564	SlidingIce_Spawn	spawnfunc
 ov027	0x02111594	func_ov027_02111594	SlidingIceSpawner_Spawn	spawnfunc
-ov027	0x0211186c	func_ov027_0211186c	ChillBully_Spawn	spawnfunc
+ov027	0x0211186c	func_ov027_0211186c	daIDonketu_c_Spawn	spawnfunc
 ov027	0x021120c4	func_ov027_021120c4	_ZN13SnowmanBreathD1Ev	vtable slot 16
 ov027	0x02112104	func_ov027_02112104	_ZN13SnowmanBreathD0Ev	vtable slot 17
 ov027	0x02112700	func_ov027_02112700	_ZN13SnowmanBreath16CleanupResourcesEv	vtable slot 3
@@ -856,7 +856,7 @@ ov027	0x02112ab4	func_ov027_02112ab4	SnowmanBreath_Spawn	spawnfunc
 ov027	0x021137e4	data_ov027_021137e4	SlidingIceSpawner_SpawnInfo	spawninfo
 ov027	0x02113800	data_ov027_02113800	SlidingIce_SpawnInfo	spawninfo
 ov027	0x02113824	data_ov027_02113824	_ZTV10SlidingIce	vtable alloc=0x32c
-ov027	0x021138d8	data_ov027_021138d8	ChillBully_SpawnInfo	spawninfo
+ov027	0x021138d8	data_ov027_021138d8	daIDonketu_c_SpawnInfo	spawninfo
 ov027	0x02113b2c	data_ov027_02113b2c	SnowmanBreath_SpawnInfo	spawninfo
 ov027	0x02113b50	data_ov027_02113b50	_ZTV13SnowmanBreath	vtable alloc=?
 ov029	0x02111340	func_ov029_02111340	FloatOnWaterPlatformWdwSquare_Spawn	spawnfunc
