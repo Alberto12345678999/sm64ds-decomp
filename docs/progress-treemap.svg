@@ -12893,35 +12893,35 @@ matched: yes</title></rect><rect x="553.90" y="55.48" width="5.09" height="6.28"
 module: ov002
 addr: 0x020b07c8
 size: 48 bytes
-matched: yes</title></rect><rect x="558.99" y="55.48" width="3.82" height="6.28" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11VirtualDoorD1Ev
+matched: yes</title></rect><rect x="558.99" y="55.48" width="3.82" height="6.28" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10daChRoom_cD1Ev
 module: ov002
 addr: 0x020b07f8
 size: 36 bytes
-matched: yes</title></rect><rect x="562.81" y="55.48" width="5.94" height="6.28" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11VirtualDoorD0Ev
+matched: yes</title></rect><rect x="562.81" y="55.48" width="5.94" height="6.28" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10daChRoom_cD0Ev
 module: ov002
 addr: 0x020b081c
 size: 56 bytes
-matched: yes</title></rect><rect x="568.74" y="55.48" width="0.85" height="6.28" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11VirtualDoor16CleanupResourcesEv
+matched: yes</title></rect><rect x="568.74" y="55.48" width="0.85" height="6.28" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10daChRoom_c16CleanupResourcesEv
 module: ov002
 addr: 0x020b0854
 size: 8 bytes
-matched: yes</title></rect><rect x="569.59" y="55.48" width="0.42" height="6.28" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11VirtualDoor16OnPendingDestroyEv
+matched: yes</title></rect><rect x="569.59" y="55.48" width="0.42" height="6.28" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10daChRoom_c16OnPendingDestroyEv
 module: ov002
 addr: 0x020b085c
 size: 4 bytes
-matched: yes</title></rect><rect x="570.02" y="55.48" width="0.85" height="6.28" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11VirtualDoor6RenderEv
+matched: yes</title></rect><rect x="570.02" y="55.48" width="0.85" height="6.28" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10daChRoom_c6RenderEv
 module: ov002
 addr: 0x020b0860
 size: 8 bytes
-matched: yes</title></rect><rect x="570.87" y="55.48" width="22.06" height="6.28" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11VirtualDoor8BehaviorEv
+matched: yes</title></rect><rect x="570.87" y="55.48" width="22.06" height="6.28" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10daChRoom_c8BehaviorEv
 module: ov002
 addr: 0x020b0868
 size: 208 bytes
-matched: yes</title></rect><rect x="592.92" y="55.48" width="7.64" height="6.28" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11VirtualDoor13InitResourcesEv
+matched: yes</title></rect><rect x="592.92" y="55.48" width="7.64" height="6.28" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10daChRoom_c13InitResourcesEv
 module: ov002
 addr: 0x020b0938
 size: 72 bytes
-matched: yes</title></rect><rect x="600.56" y="55.48" width="5.09" height="6.28" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>VirtualDoor_Spawn
+matched: yes</title></rect><rect x="600.56" y="55.48" width="5.09" height="6.28" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daChRoom_c_Spawn
 module: ov002
 addr: 0x020b0980
 size: 48 bytes
