@@ -28,11 +28,12 @@
  * the header comment there. This class's own storage starts at 0x320 and
  * nothing below it is restated.
  *
- * SIZE IS THE ROM'S OWN LITERAL: the factory (spelled TTC_MovingBar_Spawn in
- * ov065's symbols.txt -- that spelling is a project name, not one the
- * cartridge carries; it stores THIS class's vtable, data_ov065_0211d2b4, not
- * _ZTV13TTC_MovingBar) calls fBase_c::operator new(0x394), read off the
- * retail instruction. A field span is only ever a LOWER BOUND on the size,
+ * SIZE IS THE ROM'S OWN LITERAL: the factory now reconstructed as
+ * daObjCtMecha05_c_classInit (historical project alias TTC_MovingBar_Spawn)
+ * stores THIS class's vtable, data_ov065_0211d2b4, not
+ * _ZTV13TTC_MovingBar, and calls fBase_c::operator new(0x394), read off the
+ * retail instruction. Neither factory spelling survives in the cartridge.
+ * A field span is only ever a LOWER BOUND on the size,
  * and this one used to stop at 0x364, with the remaining 0x30 bytes carried
  * as unclaimed trailing pad.
  *

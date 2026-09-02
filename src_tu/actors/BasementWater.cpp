@@ -22,7 +22,7 @@
  *   [3] 0x02111540  src/_ZN13BasementWater6RenderEv.cpp
  *   [4] 0x02111574  src/_ZN13BasementWater8BehaviorEv.cpp
  *   [5] 0x0211164c  src/_ZN13BasementWater13InitResourcesEv.cpp
- *   [6] 0x02111730  src/BasementWater_Spawn.c
+ *   [6] 0x02111730  src/daObjC0Water_c_classInit.c
  */
 
 /* Includes: union of the legacy files', first-seen in ROM-ascending
@@ -67,14 +67,14 @@ int _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(void*,
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 6 -- BasementWater_Spawn, 0x02111730, size 0x38 */
+/* ROM ordinal 6 -- class initializer, 0x02111730, size 0x38 */
 /* -------------------------------------------------------------------------- */
-// @symbol BasementWater_Spawn
+// @symbol daObjC0Water_c_classInit
 /* recovered: vtable identified, globals resolved, declarations from a shared header */
 /* recovered: vtable identified, globals resolved */
 /* resolved: VT0 = _ZTV13BasementWater */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-int *BasementWater_Spawn(void)
+int *daObjC0Water_c_classInit(void)
 {
     int *p = (int *)_ZN7fBase_cnwEj(832);
     if (p) {
