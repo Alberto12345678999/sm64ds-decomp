@@ -96,7 +96,7 @@ struct dScMgD3DBase_c : dScMgBase_c {
     virtual void OnHitByMegaChar();                    /* slot 27 */
     virtual int  OnHitFromUnderneath();                /* slot 28 */
     virtual int  OnAimedAtWithEgg();                   /* slot 29 */
-    virtual int  OnAimedAtWithEggReturnVec();          /* slot 30 */
+    virtual void OnAimedAtWithEggReturnVec();          /* slot 30 */
     virtual int  Virtual7C();                          /* slot 31 */
     virtual void Virtual84();                          /* slot 33 */
 

@@ -69,11 +69,40 @@ ALL EIGHTEEN ARE DECLARED (2026-08-31). This class and all 32 of
            stub proves nothing either way -- an unused argument is simply never
            read -- so only an override that reads a parameter is evidence, and
            that evidence is a LOWER bound on the arity.
-         return type: int. dScMgCoin_c::OnYoshiTryEat is a real member
-           definition ending `return 0;`, so declaring void would have changed
-           its bytes. The 24 free-function bodies are all written void, but
-           the return type is not mangled, so they are unaffected. The base's
-           own ROM body is a lone `bx lr` and sets nothing.
+         return type: void, MEASURED -- and it corrects the `int` this block
+           used to carry, which rested entirely on dScMgCoin_c::OnYoshiTryEat
+           ending `return 0;`.  That reasoning does not survive the bytes.
+           Coin's tail is
+
+               bl <func_ov004_020adc1c>      ; result lands in r0
+               add r1, r4, #0x5000           ; r0 is LIVE, so the address is r1
+               str r0, [r1, #0x1d4]
+               mov r0, #0                    ; r0 now free -- the constant 0
+               str r0, [r1, #0x1c8]
+
+           The address goes to r1 because r0 still held the call's result, not
+           because r0 was reserved for a return value, and the trailing
+           `mov r0,#0` is the constant being stored to unk_51c8.  A `return 0;`
+           written after it costs nothing, so Coin is byte-identical under
+           BOTH spellings and pins neither.
+
+           Six overrides do pin it, and they pin void.  Converting the
+           free-function bodies to real members forces the declaration on them,
+           and as `int` mwcc reserves r0 and shifts every register at their
+           exits by one -- dScMgSlot1_c 3 words of 19, dScMgMemory_c and
+           dScMgMemory2_c 5 of 24 each, dScMgRoulette_c 3 of 63,
+           dScMgPanel_c 4 of 68, dScMgSlot3_c 84 of 205:
+
+               ROM   add r0, r4, #0x4000 / mov r1, #0 / str r1,[r0,#0x6b4]
+               int   add r1, r4, #0x4000 / mov r2, #0 / str r2,[r1,#0x6b4]
+
+           Spelled void all six are byte-exact and the whole 106/106 holds.
+           mwcc rejects the halfway position outright -- a void override of an
+           int virtual is `differs from virtual base function ... in return
+           type only`, an error, not a warning -- so the base and all 31
+           declarations move together.  The return type is not part of the
+           Itanium mangled name, so no symbol, vtable or config entry moves.
+           The base's own ROM body is a lone `bx lr` and sets nothing.
          name: from dActor_c.h:131, corroborated by
            config/arm9/overlays/ov006/symbols.txt, which already named
            dScMgCoin_c's slot-18 override `_ZN11dScMgCoin_c13OnYoshiTryEat*`
@@ -82,7 +111,7 @@ ALL EIGHTEEN ARE DECLARED (2026-08-31). This class and all 32 of
            either side; the name is inherited, not independently proven here.
            Only the signature is measured. dActor_c.h declares it with no
            parameter, which the measurement above contradicts. */
-    virtual int  OnYoshiTryEat(int arg);               /* slot 18 */
+    virtual void OnYoshiTryEat(int arg);               /* slot 18 */
 
     /* Slot 19 -- MEASURED, and dActor_c.h is wrong here too:
          arity: two of the eleven descendant overrides read r1, and both
@@ -100,7 +129,7 @@ ALL EIGHTEEN ARE DECLARED (2026-08-31). This class and all 32 of
            dScMgBSC_c each carry a `recovered name: <class>_OnTurnIntoEgg`
            comment in their own legacy source, so the name here does not
            rest on dActor_c.h at all. */
-    virtual int  OnTurnIntoEgg(int mode);              /* slot 19 */
+    virtual int  OnTurnIntoEgg(int mode);              /* slot 19 */
     /* Slot 20 -- and this one has no name.  `Virtual50` is the placeholder
        include/dActor_c.h:133 already uses, spelled from the byte offset
        (slot 20 x 4 = 0x50).  All five bodies carry a
@@ -514,10 +543,26 @@ ALL EIGHTEEN ARE DECLARED (2026-08-31). This class and all 32 of
        time rather than a second witness.  Both halves of it are wrong here and
        both are MEASURED wrong; it is kept as a label, for the reasons under
        slot 29.
-         return type: int, A HINT, and the THIRD consecutive slot no body pins.
+         return type: void, and this is the one slot in the whole 18-35 range
+           whose return type the BYTES settle rather than merely permit.  It
+           was declared `int` here as a hint until the base body became a real
+           member definition; that spelling is now refuted.
            ov004:0x020aeed8 sets no result on either exit -- the early one is a
            bare return after `cmp r0,#2` and the fall-through ends in a
-           read-modify-write of DISPCNT.  Neither dispatch site reads a result
+           read-modify-write of DISPCNT.  Declaring the member `int` and
+           letting control fall off the end costs no instruction, but it does
+           reserve r0 as the result register, and the closing block wants four
+           scratch registers.  mwcc then allocates r1-r4 where the ROM
+           allocates r0-r3 -- fourteen of ninety-three words differ, with no
+           other change to the source:
+               ROM   ldr r0,[pc,#0x38] / mov r3,#0x4000000 / ldr r1,[r3]
+               int   ldr r1,[pc,#0x38] / mov r4,#0x4000000 / ldr r2,[r4]
+           Spelled `void` the function is byte-exact.  Contrast slots 31, 32,
+           35 and the OnXxx slots, where `int` costs nothing because r0 is not
+           contended at the exit -- there the hint stands unrefuted, which is
+           NOT the same as confirmed.  decl_common.h:2321 and both overrides
+           already said void.
+           Neither dispatch site reads a result
            either, and that is measured, not assumed: dScMgBase_c::OnKicked
            (slot 21) is the only caller of this slot anywhere in ov004 or ov006
            -- see the whole-image `ldr rN,[rM,#0x78]` + `blx rN` scan under slot
@@ -581,7 +626,7 @@ ALL EIGHTEEN ARE DECLARED (2026-08-31). This class and all 32 of
            unk_462c is that edge latch and nothing else.  Slot 29 is the
            three-item overlay menu going up and slot 30 is it coming back down;
            neither has anything to do with a Yoshi egg or with a vector. */
-    virtual int  OnAimedAtWithEggReturnVec();          /* slot 30 */
+    virtual void OnAimedAtWithEggReturnVec();          /* slot 30 */
     /* Slot 31 -- Virtual7C, and the name is a deliberate NON-name.  This is the
        first slot above dActor_c's table, and reaching it settles what the
        thirteen slots below it only hinted at.
@@ -697,17 +742,31 @@ ALL EIGHTEEN ARE DECLARED (2026-08-31). This class and all 32 of
            into r4 BECAUSE the call clobbers it and handed to
            0x0203188c afterwards.  A callee that consumed r1 would not need it
            parked first.
-         return type: int, A HINT, and the FOURTH consecutive slot no body pins.
-           The base's last statement is the LoadCompressedFileAt call, so
-           whatever it returns falls out in r0; the caller overwrites r0 with a
-           literal 2 on the very next instruction.
+         return type: void, MEASURED -- and it corrects the `int` this block
+           used to carry, which it called "A HINT ... no body pins".  A body
+           pins it now.  dScMgSlot3_c's override was converted to a real member
+           definition, and as `int` mwcc reserves r0 for the result: its closing
+           read-modify-write on BG1CNT then allocates r1-r3 where the ROM
+           allocates r0-r2, six of forty-two words differing with no other
+           source change.
+
+               ROM   ldr r2,[pc,#0x18] / ldr r0,[pc,#0x20] / ldrh r1,[r2]
+               int   ldr r3,[pc,#0x18] / ldr r1,[pc,#0x20] / ldrh r2,[r3]
+
+           Spelled void both bodies are byte-exact.  The base's own body was
+           byte-exact either way -- its last statement is the
+           LoadCompressedFileAt call, so r0 is already the call's result and
+           nothing contends for it -- which is exactly why the hint survived
+           unrefuted for so long.  Unrefuted is not confirmed.  The return type
+           is not part of the Itanium mangled name, so nothing moved: no
+           symbol, no vtable, no config entry.  Same adjudication as slot 30.
          overrides: ONE table, one declaration -- dScMgSlot3_c
            (ov006:0x0210aa60), which repeats the base body verbatim and then
            writes BG1CNT once more, to 0x1118 instead of the base's 0x1000:
            same layer, this minigame's own character and screen base blocks.
            No reconciliation, no misattribution: the smallest slot in the
            campaign after 22's zero. */
-    virtual int  Virtual80();                          /* slot 32 */
+    virtual void Virtual80();                          /* slot 32 */
     /* Slot 33 -- Virtual84, the display bring-up, and the quietest slot in this
        campaign: it is the first one with nothing to correct.
          WHY THE NAME.  Neither override body carries a `recovered name:` line
