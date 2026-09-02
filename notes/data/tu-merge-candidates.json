@@ -4033,7 +4033,7 @@
     "src/_ZN11BillBlaster6RenderEv.cpp",
     "src/_ZN11BillBlaster8BehaviorEv.cpp",
     "src/_ZN11BillBlaster13InitResourcesEv.cpp",
-    "src/BillBlaster_Spawn.c"
+    "src/daObjBkKillerdai_c_classInit.c"
    ],
    "ext_mix": {
     ".cpp": 7,
@@ -7357,7 +7357,7 @@
     "src/_ZN13PoleBillboard16CleanupResourcesEv.cpp",
     "src/_ZN13PoleBillboard6RenderEv.cpp",
     "src/_ZN13PoleBillboard13InitResourcesEv.cpp",
-    "src/PoleBillboard_Spawn.c"
+    "src/daObjBkBillboard_c_classInit.c"
    ],
    "ext_mix": {
     ".cpp": 4,
@@ -8493,7 +8493,7 @@
     "src/_ZN5Stump6RenderEv.cpp",
     "src/_ZN5Stump8BehaviorEv.cpp",
     "src/_ZN5Stump13InitResourcesEv.cpp",
-    "src/Stump_Spawn.c"
+    "src/daObjPile_c_classInit.c"
    ],
    "ext_mix": {
     ".cpp": 8,
@@ -9728,7 +9728,7 @@
     "src/_ZN11FallBlockWfD0Ev.c",
     "src/_ZN11FallBlockWf16CleanupResourcesEv.c",
     "src/_ZN11FallBlockWf13InitResourcesEv.c",
-    "src/FallBlockWf_Spawn.c"
+    "src/daObjBk_Fall_Block_c_classInit.c"
    ],
    "ext_mix": {
     ".cpp": 1,
@@ -24332,7 +24332,7 @@
     "src/_ZN14KnockDownPlank6RenderEv.cpp",
     "src/_ZN14KnockDownPlank8BehaviorEv.cpp",
     "src/_ZN14KnockDownPlank13InitResourcesEv.cpp",
-    "src/KnockDownPlank_Spawn.c"
+    "src/daObjBk_Botaosi_c_classInit.c"
    ],
    "ext_mix": {
     ".cpp": 9,

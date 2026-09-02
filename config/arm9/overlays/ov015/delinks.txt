@@ -28,7 +28,7 @@ src/_ZN13PoleBillboard13InitResourcesEv.cpp:
     complete
     .text start:0x021112a0 end:0x021112dc
 
-src/PoleBillboard_Spawn.c:
+src/daObjBkBillboard_c_classInit.c:
     complete
     .text start:0x021112dc end:0x02111314
 
@@ -76,7 +76,7 @@ src/_ZN14KnockDownPlank13InitResourcesEv.cpp:
     complete
     .text start:0x02111960 end:0x02111b68
 
-src/KnockDownPlank_Spawn.c:
+src/daObjBk_Botaosi_c_classInit.c:
     complete
     .text start:0x02111b68 end:0x02111ba0
 
@@ -292,7 +292,7 @@ src/_ZN11FallBlockWf13InitResourcesEv.cpp:
     complete
     .text start:0x02112dbc end:0x02112dd0
 
-src/FallBlockWf_Spawn.c:
+src/daObjBk_Fall_Block_c_classInit.c:
     complete
     .text start:0x02112dd0 end:0x02112e0c
 

@@ -16,7 +16,7 @@
  *   kind  __si_class_type_info, ONE base, subobject offset 0
  *   base  daObjFallBlock_c, ov015 0x02114874
  *
- * NO FIELDS OF ITS OWN: FallBlockWf_Spawn passes 844 = 0x34c, which daObjFallBlock_c
+ * NO FIELDS OF ITS OWN: daObjBk_Fall_Block_c_classInit passes 844 = 0x34c, which daObjFallBlock_c
  * fills exactly. It overrides slots 0 and 3, which the base leaves null.
  */
 

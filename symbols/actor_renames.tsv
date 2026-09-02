@@ -546,6 +546,7 @@ ov014	0x0211488c	data_ov014_0211488c	ChainChompFence_SpawnInfo	spawninfo
 ov014	0x0211488c	ChainChompFence_SpawnInfo	g_profile_WANWAN_SHUTTER	reconstructed profile global; literal ROM ID WANWAN_SHUTTER+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov014	0x021148b0	data_ov014_021148b0	_ZTV15ChainChompFence	vtable alloc=0x320
 ov015	0x021112dc	func_ov015_021112dc	PoleBillboard_Spawn	spawnfunc
+ov015	0x021112dc	PoleBillboard_Spawn	daObjBkBillboard_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov015	0x02111314	func_ov015_02111314	_ZN13PoleBillboardD1Ev	vtable slot 16
 ov015	0x02111360	func_ov015_02111360	_ZN13PoleBillboardD0Ev	vtable slot 17
 ov015	0x021116b4	func_ov015_021116b4	_ZN13PoleBillboard16CleanupResourcesEv	vtable slot 3
@@ -553,6 +554,7 @@ ov015	0x021116f8	func_ov015_021116f8	_ZN13PoleBillboard6RenderEv	vtable slot 9
 ov015	0x02111720	func_ov015_02111720	_ZN13PoleBillboard8BehaviorEv	vtable slot 6
 ov015	0x02111960	func_ov015_02111960	_ZN13PoleBillboard13InitResourcesEv	vtable slot 0
 ov015	0x02111b68	func_ov015_02111b68	KnockDownPlank_Spawn	spawnfunc
+ov015	0x02111b68	KnockDownPlank_Spawn	daObjBk_Botaosi_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov015	0x02111ba0	func_ov015_02111ba0	_ZN14KnockDownPlankD1Ev	vtable slot 16
 ov015	0x02111be4	func_ov015_02111be4	_ZN14KnockDownPlankD0Ev	vtable slot 17
 ov015	0x02112004	func_ov015_02112004	_ZN14KnockDownPlank16CleanupResourcesEv	vtable slot 3
@@ -581,8 +583,11 @@ ov015	0x02112d44	func_ov015_02112d44	_ZN11FallBlockWfD0Ev	vtable slot 17
 ov015	0x02112da8	func_ov015_02112da8	_ZN11FallBlockWf16CleanupResourcesEv	vtable slot 3
 ov015	0x02112dbc	func_ov015_02112dbc	_ZN11FallBlockWf13InitResourcesEv	vtable slot 0
 ov015	0x02112dd0	func_ov015_02112dd0	FallBlockWf_Spawn	spawnfunc
+ov015	0x02112dd0	FallBlockWf_Spawn	daObjBk_Fall_Block_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov015	0x0211433c	data_ov015_0211433c	PoleBillboard_SpawnInfo	spawninfo
+ov015	0x0211433c	PoleBillboard_SpawnInfo	g_profile_BK_BILLBOARD	reconstructed profile global; literal ROM ID BK_BILLBOARD+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov015	0x021143fc	data_ov015_021143fc	KnockDownPlank_SpawnInfo	spawninfo
+ov015	0x021143fc	KnockDownPlank_SpawnInfo	g_profile_BK_BOTAOSI	reconstructed profile global; literal ROM ID BK_BOTAOSI+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov015	0x02114420	data_ov015_02114420	_ZTV13PoleBillboard	vtable alloc=0x124
 ov015	0x0211454c	data_ov015_0211454c	MovingBarSmall_SpawnInfo	spawninfo
 ov015	0x02114568	data_ov015_02114568	MovingBarBig_SpawnInfo	spawninfo
@@ -593,6 +598,7 @@ ov015	0x021146f0	data_ov015_021146f0	RotatingBridge_SpawnInfo	spawninfo
 ov015	0x02114714	data_ov015_02114714	_ZTV9TowerStep	vtable alloc=0x394
 ov015	0x021147c4	data_ov015_021147c4	RotatingPlatformWf_SpawnInfo	spawninfo
 ov015	0x021148b8	data_ov015_021148b8	FallBlockWf_SpawnInfo	spawninfo
+ov015	0x021148b8	FallBlockWf_SpawnInfo	g_profile_BK_DOWN_B	reconstructed profile global; literal ROM ID BK_DOWN_B+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov015	0x021148dc	data_ov015_021148dc	_ZTV11FallBlockWf	vtable alloc=0x34c
 ov016	0x021111a0	func_ov016_021111a0	_ZN5UnagiD1Ev	vtable slot 16
 ov016	0x02111208	func_ov016_02111208	_ZN5UnagiD0Ev	vtable slot 17
@@ -1815,6 +1821,7 @@ ov079	0x02126a84	func_ov079_02126a84	_ZN10BulletBill8BehaviorEv	vtable slot 6
 ov079	0x02126c44	func_ov079_02126c44	_ZN10BulletBill13InitResourcesEv	vtable slot 0
 ov079	0x02126d64	func_ov079_02126d64	BulletBill_Spawn	spawnfunc
 ov079	0x021271b4	func_ov079_021271b4	BillBlaster_Spawn	spawnfunc
+ov079	0x021271b4	BillBlaster_Spawn	daObjBkKillerdai_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov079	0x021271e4	func_ov079_021271e4	_ZN12FortressWallD1Ev	vtable slot 16
 ov079	0x02127228	func_ov079_02127228	_ZN12FortressWallD0Ev	vtable slot 17
 ov079	0x02127300	func_ov079_02127300	_ZN12FortressWall16CleanupResourcesEv	vtable slot 3
@@ -1829,6 +1836,7 @@ ov079	0x02127c80	data_ov079_02127c80	_ZTV5Whomp	vtable alloc=0x610
 ov079	0x02127ec4	data_ov079_02127ec4	BulletBill_SpawnInfo	spawninfo
 ov079	0x02127ee8	data_ov079_02127ee8	_ZTV10BulletBill	vtable alloc=0x3e0
 ov079	0x02127f94	data_ov079_02127f94	BillBlaster_SpawnInfo	spawninfo
+ov079	0x02127f94	BillBlaster_SpawnInfo	g_profile_BK_KILLER_DAI	reconstructed profile global; literal ROM ID BK_KILLER_DAI+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov079	0x02128070	data_ov079_02128070	FortressWallBreakable_SpawnInfo	spawninfo
 ov079	0x0212808c	data_ov079_0212808c	FortressWall_SpawnInfo	spawninfo
 ov079	0x021280b0	data_ov079_021280b0	_ZTV12FortressWall	vtable alloc=0x324
@@ -2106,6 +2114,7 @@ ov091	0x02132cb8	func_ov091_02132cb8	Thwomp_Spawn	spawnfunc
 ov091	0x021331b8	func_ov091_021331b8	_ZN11daDsnBase_c16CleanupResourcesEv	vtable slot 3
 ov091	0x02133210	func_ov091_02133210	_ZN11daDsnBase_c6RenderEv	vtable slot 9
 ov091	0x02133938	func_ov091_02133938	Stump_Spawn	spawnfunc
+ov091	0x02133938	Stump_Spawn	daObjPile_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov091	0x02133968	func_ov091_02133968	_ZN5StumpD1Ev	vtable slot 16
 ov091	0x021339a8	func_ov091_021339a8	_ZN5StumpD0Ev	vtable slot 17
 ov091	0x02134108	func_ov091_02134108	_ZN5Stump16CleanupResourcesEv	vtable slot 3
@@ -2131,6 +2140,7 @@ ov091	0x02135080	data_ov091_02135080	_ZTV17SlidingPlatformWf	vtable alloc=0x330
 ov091	0x02135150	data_ov091_02135150	Thwomp_SpawnInfo	spawninfo
 ov091	0x02135174	data_ov091_02135174	_ZTV6Thwomp	vtable alloc=0x3a4
 ov091	0x02135298	data_ov091_02135298	Stump_SpawnInfo	spawninfo
+ov091	0x02135298	Stump_SpawnInfo	g_profile_PILE	reconstructed profile global; literal ROM ID PILE+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov091	0x02135388	data_ov091_02135388	Fwoosh_SpawnInfo	spawninfo
 ov091	0x021353ac	data_ov091_021353ac	_ZTV5Stump	vtable alloc=0x330
 ov092	0x02130f00	func_ov092_02130f00	_ZN6ToxBoxD1Ev	vtable slot 16

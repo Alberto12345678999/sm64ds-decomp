@@ -22,7 +22,7 @@ src/BigBrickBlock_Spawn.c	WEAK-refs-only	ov002				1		None		-
 src/BigBully_Spawn.c	S1-stores-rom-vptr	ov064			stores _ZTV8BigBully	1		None	_ZTV8BigBully	-
 src/BigMovingIceBlock_Spawn.c	WEAK-refs-only	ov056				1		None		-
 src/BigMrI_Spawn.c	WEAK-refs-only	ov071				1		None		-
-src/BillBlaster_Spawn.c	S1-stores-rom-vptr	ov079			stores _ZTV11BillBlaster	1		None	_ZTV11BillBlaster	-
+src/daObjBkKillerdai_c_classInit.c	S1-stores-rom-vptr	ov079			stores _ZTV11BillBlaster	1		None	_ZTV11BillBlaster	-
 src/Bird_Spawn.c	WEAK-refs-only	ov009				1		None		-
 src/BitUnPack.c	PURE-C					0		None		not-in-delinks
 src/BlackBrickBlock_Spawn.c	WEAK-refs-only	ov002				1		None		-
@@ -134,7 +134,7 @@ src/FUN_02029ab0.c	WEAK-refs-only	arm9				1		None		-
 src/FUN_0202a130.c	PURE-C	arm9				1		None		-
 src/daObjKm2_Fall_Block_c_Spawn.c	S1-stores-rom-vptr	ov045			stores _ZTV21daObjKm2_Fall_Block_c	1		None	_ZTV21daObjKm2_Fall_Block_c/_ZTV16daObjFallBlock_c	-
 src/FallBlockLll_Spawn.c	S1-stores-rom-vptr	ov022			stores _ZTV16daObjFallBlock_c	1		None	_ZTV16daObjFallBlock_c/_ZTV20daObjFl_Fall_Block_c	-
-src/FallBlockWf_Spawn.c	S1-stores-rom-vptr	ov015			stores _ZTV11FallBlockWf	1		None	_ZTV11FallBlockWf/_ZTV16daObjFallBlock_c	-
+src/daObjBk_Fall_Block_c_classInit.c	S1-stores-rom-vptr	ov015			stores _ZTV11FallBlockWf	1		None	_ZTV11FallBlockWf/_ZTV16daObjFallBlock_c	-
 src/FirePiranhaPlantBig_Spawn.c	WEAK-refs-only	ov084				1		None		-
 src/FirePiranhaPlantSmall_Spawn.c	WEAK-refs-only	ov084				1		None		-
 src/FirePiranhaPlant_Spawn.c	WEAK-refs-only	ov084				1		None		-
@@ -220,7 +220,7 @@ src/Key_Spawn.c	WEAK-refs-only	ov089				1		None		-
 src/KillPlayer.c	WEAK-refs-only	arm9				1		None		-
 src/KingBobOmb_Spawn.c	WEAK-refs-only	ov078				1		None		-
 src/Klepto_Spawn.c	WEAK-refs-only	ov062				1		None		-
-src/KnockDownPlank_Spawn.c	WEAK-refs-only	ov015				1		None		-
+src/daObjBk_Botaosi_c_classInit.c	WEAK-refs-only	ov015				1		None		-
 src/KoopaFlag_Spawn.c	WEAK-refs-only	ov062				1		None		-
 src/KoopaShell_Spawn.c	WEAK-refs-only	ov102				1		None		-
 src/KoopaSmall_Spawn.c	WEAK-refs-only	ov062				1		None		-
@@ -338,7 +338,7 @@ src/Player_ReleaseHeldActor.c	PURE-C	ov002				1		None		-
 src/Player_ScaleByCharFactor.c	PURE-C					0		None		not-in-delinks
 src/PokeySegment_Spawn.c	WEAK-refs-only	ov096				1		None		-
 src/Pokey_Spawn.c	WEAK-refs-only	ov096				1		None		-
-src/PoleBillboard_Spawn.c	S1-stores-rom-vptr	ov015			stores _ZTV13PoleBillboard	1		None	_ZTV13PoleBillboard	-
+src/daObjBkBillboard_c_classInit.c	S1-stores-rom-vptr	ov015			stores _ZTV13PoleBillboard	1		None	_ZTV13PoleBillboard	-
 src/PoleLift_Spawn.c	WEAK-refs-only	ov045				1		None		-
 src/PoppingLavaBubbles_Spawn.c	S1-stores-rom-vptr	ov002			stores _ZTV18PoppingLavaBubbles	1		None	_ZTV18PoppingLavaBubbles	-
 src/PowerFlower_Spawn.c	WEAK-refs-only	ov002				1		None		-
@@ -474,7 +474,7 @@ src/StartIntroCutscene.c	WEAK-refs-only	arm9				1		None		-
 src/StartMinigameMenu.c	WEAK-refs-only	arm9				1		None		-
 src/StartWithFarCamera.c	PURE-C	arm9				1		None		-
 src/StaticRock_Spawn.c	WEAK-refs-only	ov102				1		None		-
-src/Stump_Spawn.c	S1-stores-rom-vptr	ov091			stores _ZTV5Stump	1		None	_ZTV5Stump	-
+src/daObjPile_c_classInit.c	S1-stores-rom-vptr	ov091			stores _ZTV5Stump	1		None	_ZTV5Stump	-
 src/SubVec3.c	PURE-C	arm9				1		None		-
 src/SublevelToLevel.c	PURE-C	arm9				1		None		-
 src/Submarine_Spawn.c	S1-stores-rom-vptr	ov026			stores _ZTV9Submarine	1		None	_ZTV9Submarine	-

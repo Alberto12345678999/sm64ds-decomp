@@ -223,7 +223,7 @@ src/_ZN11BillBlaster13InitResourcesEv.cpp:
     complete
     .text start:0x02127090 end:0x021271b4
 
-src/BillBlaster_Spawn.c:
+src/daObjBkKillerdai_c_classInit.c:
     complete
     .text start:0x021271b4 end:0x021271e4
 
