@@ -641,7 +641,7 @@ extern int _ZTV17daObjSlIceBlock_c[];
 extern int _ZTV17daObjWlPolelift_c[];
 extern int _ZTV17daWater_Suikomi_c[];
 extern int _ZTV18BowserFireSeaArena[];
-extern int _ZTV18RickshawPlatformBs[];
+extern int _ZTV17daObjKm3_Dorifu_c[];
 extern int _ZTV8ShipWing[];
 extern int _ZTV18dMgTrmpln3DMario_c[];
 extern int _ZTV18daObjBkBillboard_c[];
@@ -2102,7 +2102,12 @@ extern void func_0203d388(int*, int);
 extern void func_0203d630(int*, int);
 extern void func_0203d930(void);
 extern void func_0203dafc(int);
-extern void func_020440e8(void*);
+/* 0x020440e8 is NOT `func_020440e8`. config/arm9/symbols.txt:1842 exports it as
+   _ZN11fLiNdBaPr_cD1Ev, and src/_ZN11fLiNdBaPr_cD1Ev.cpp is its source. The row
+   that used to sit here declared a name no module exports; anything that called
+   it compiled and byte-matched and then failed the ROM link. Removed rather than
+   corrected: fLiNdBaPr_c is a real class, so callers should include
+   include/fListNode.h and let the destructor be a destructor. */
 extern void func_02044104(int);
 extern void func_02045e44(void*, unsigned int, int);
 extern void func_0204a17c(void*, void*);
