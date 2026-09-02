@@ -30,18 +30,18 @@ written the way the original was.
 
 | file | ROM | what the compiler now generates |
 |---|---|---|
-| `_ZN12dEnemyBase_cC2Ev` | ov002 0x020aed98 0x24 | base call + vptr store |
-| `_ZN12dEnemyBase_cD2Ev` | ov002 0x020aed18 0x24 | vptr store + base D2 |
-| `_ZN7BooCageD0Ev` | ov063 0x0211600c 0x5c | 4 sub-object dtors, base chain, `operator delete` |
-| `_ZN11dCapEnemy_cD1Ev` | arm9 0x0200651c 0x38 | vptr store, 2 members, base D2 (was named D2) |
-| `_ZN11dCapEnemy_cD2Ev` | ov002 0x020aedbc 0x38 | the same body, bound to the other variant |
-| `_ZN7daTrs_cD1Ev` / `D0Ev` | ov063 0x02115ee0 / 0x02115f48 | 6 members, base D2 chain |
-| `_ZN7daKrb_cD1Ev` / `D0Ev` | ov084 0x02129020 / 0x02129070 | 5 members, base D2 chain |
-| `_ZN14UnchainedChompD0Ev` | ov100 0x02143290 0xe0 | 3 `__destroy_arr` + 4 sub-object dtors + chain |
-| `_ZN11dCapEnemy_cD0Ev` | ov002 0x020aedf4 0x4c | 2 sub-object dtors, base chain |
-| `_ZN15daObjMarioCap_cD0Ev` | ov002 0x020b6f68 0x64 | 5 sub-object dtors, base chain |
-| `_ZN8Goomboss13InitResourcesEv` | ov074 0x02121e98 0x404 | name mangling; header decl added |
-| `_ZN8Fireball8BehaviorEv` | ov002 0x020f8c94 0x570 | name mangling |
+| `_ZN12dEnemyBase_cC2Ev` | [ov002](../config/arm9/overlays/ov002/symbols.txt) 0x020aed98 0x24 | base call + vptr store |
+| `_ZN12dEnemyBase_cD2Ev` | [ov002](../config/arm9/overlays/ov002/symbols.txt) 0x020aed18 0x24 | vptr store + base D2 |
+| `_ZN7BooCageD0Ev` | [ov063](../config/arm9/overlays/ov063/symbols.txt) 0x0211600c 0x5c | 4 sub-object dtors, base chain, `operator delete` |
+| `_ZN11dCapEnemy_cD1Ev` | [arm9](../config/arm9/symbols.txt) 0x0200651c 0x38 | vptr store, 2 members, base D2 (was named D2) |
+| `_ZN11dCapEnemy_cD2Ev` | [ov002](../config/arm9/overlays/ov002/symbols.txt) 0x020aedbc 0x38 | the same body, bound to the other variant |
+| `_ZN7daTrs_cD1Ev` / `D0Ev` | [ov063](../config/arm9/overlays/ov063/symbols.txt) 0x02115ee0 / 0x02115f48 | 6 members, base D2 chain |
+| `_ZN7daKrb_cD1Ev` / `D0Ev` | [ov084](../config/arm9/overlays/ov084/symbols.txt) 0x02129020 / 0x02129070 | 5 members, base D2 chain |
+| `_ZN14UnchainedChompD0Ev` | [ov100](../config/arm9/overlays/ov100/symbols.txt) 0x02143290 0xe0 | 3 `__destroy_arr` + 4 sub-object dtors + chain |
+| `_ZN11dCapEnemy_cD0Ev` | [ov002](../config/arm9/overlays/ov002/symbols.txt) 0x020aedf4 0x4c | 2 sub-object dtors, base chain |
+| `_ZN15daObjMarioCap_cD0Ev` | [ov002](../config/arm9/overlays/ov002/symbols.txt) 0x020b6f68 0x64 | 5 sub-object dtors, base chain |
+| `_ZN8Goomboss13InitResourcesEv` | [ov074](../config/arm9/overlays/ov074/symbols.txt) 0x02121e98 0x404 | name mangling; header decl added |
+| `_ZN8Fireball8BehaviorEv` | [ov002](../config/arm9/overlays/ov002/symbols.txt) 0x020f8c94 0x570 | name mangling |
 
 Every one passed `tools/match.py` (byte comparison *and* relocation destination)
 under 2004/b56 and then `rombuild.py -j16`: **106/106 exact** after each commit. The
@@ -74,13 +74,12 @@ converted; what follows is what each one actually turned out to be.
 `daKrb_c` D0/D1 and `daTrs_c` D0/D1 all reproduced the ROM **byte for byte** as real
 destructors and were all rejected by the relocation leg with the same line:
 
-```
+```c
 +0x4c  cand _ZN11dCapEnemy_cD2Ev (0x0200651c) != config 0x020aedbc:ov002
 ```
 
 The reading recorded here first — one vague-linkage COMDAT destructor duplicated into
-two modules, so naming the ov002 copy would put one mangled name in both
-`config/arm9/symbols.txt` and an overlay's, which this tree has never done — was
+two modules, so naming the [ov002](../config/arm9/overlays/ov002/symbols.txt) copy would put one mangled name in both `config/arm9/symbols.txt` and an overlay's, which this tree has never done — was
 wrong. There is no duplicate and no collision. `dCapEnemy_c` has no virtual bases, so
 its **D1 and D2 are byte-identical code**, and the two addresses are the two ABI
 variants. The names were on the wrong ones.
@@ -89,17 +88,15 @@ What settles which is which is not the bytes but how the ROM reaches each addres
 both questions are cheap to ask:
 
 - **Who calls it?** Scanning every module's `bl` instructions for the two targets
-  returns four call sites, *all* of them to ov002 0x020aedbc, and *none* to arm9
-  0x0200651c. The four are exactly daTrs_c's and daKrb_c's two destructors each —
+  returns four call sites, *all* of them to [ov002](../config/arm9/overlays/ov002/symbols.txt) 0x020aedbc, and *none* to [arm9](../config/arm9/symbols.txt) 0x0200651c. The four are exactly daTrs_c's and daKrb_c's two destructors each —
   derived destructors tearing down their base sub-object. That is what D2 is for.
 - **Who points at it?** Scanning every module for a data word equal to either address
-  returns one hit: ov002 0x021082c4, which is slot 16 of `_ZTV11dCapEnemy_c`
+  returns one hit: [ov002](../config/arm9/overlays/ov002/symbols.txt) 0x021082c4, which is slot 16 of `_ZTV11dCapEnemy_c`
   (0x02108284) — the destructor pair's slot, with slot 17 already holding the matched
-  `_ZN11dCapEnemy_cD0Ev`. A vtable slot holds the complete-object destructor. So arm9
-  0x0200651c is **D1**.
+  `_ZN11dCapEnemy_cD0Ev`. A vtable slot holds the complete-object destructor. So [arm9](../config/arm9/symbols.txt) 0x0200651c is **D1**.
 
-So `config/arm9/symbols.txt`'s `_ZN11dCapEnemy_cD2Ev` at 0x0200651c became
-`_ZN11dCapEnemy_cD1Ev`, and ov002's placeholder `func_ov002_020aedbc` at 0x020aedbc
+So [arm9](../config/arm9/symbols.txt)'s `_ZN11dCapEnemy_cD2Ev` at 0x0200651c became
+`_ZN11dCapEnemy_cD1Ev`, and [ov002](../config/arm9/overlays/ov002/symbols.txt)'s placeholder `func_ov002_020aedbc` at 0x020aedbc
 became `_ZN11dCapEnemy_cD2Ev`, each with its source file renamed to follow. Both are
 now `dCapEnemy_c::~dCapEnemy_c() {}` — mwcc emits all three variants from one
 definition and `objisolate` keeps whichever variant the delink entry names, so the
@@ -142,27 +139,22 @@ locals at entry keeps parameter and copy both live and costs r7, r8 and a spill.
 
 ### Two names on the wrong function — SOLVED, 2 files
 
-ov002 and ov004 are alternates in one overlay slot, both based at 0x020ad3e0, so
+[ov002](../config/arm9/overlays/ov002/symbols.txt) and [ov004](../config/arm9/overlays/ov004/symbols.txt) are alternates in one overlay slot, both based at 0x020ad3e0, so
 one address is two unrelated functions and every actor overlay's `relocs.txt`
 records such a call as the ambiguous `module:overlays(2,4)`. Two `dEnemyBase_c`
-names had landed on the ov004 side.
+names had landed on the [ov004](../config/arm9/overlays/ov004/symbols.txt) side.
 
-`KillByInvincibleChar` was on ov004 0x020ada40, which reads only r0 and
-range-checks it as a scalar. The ov002 body at the same address is the method:
+`KillByInvincibleChar` was on [ov004](../config/arm9/overlays/ov004/symbols.txt) 0x020ada40, which reads only r0 and range-checks it as a scalar. The [ov002](../config/arm9/overlays/ov002/symbols.txt) body at the same address is the method:
 `Vec3_HorzAngle(player + 0x5c, &this->pos)`, then `Player::IncMegaKillCount`. Its
 arity was refuted too -- all 19 `bl`s to the address were disassembled, and the
-split IS the proof: the four inside ov004 leave r3 alone, all 15 outside it
-materialise a fourth argument. ov081 0x02123988 passes the return of vtable slot
-29, OnAimedAtWithEgg -- which this method's own body then calls again itself, so
+split IS the proof: the four inside [ov004](../config/arm9/overlays/ov004/symbols.txt) leave r3 alone, all 15 outside it materialise a fourth argument. [ov081](../config/arm9/overlays/ov081/symbols.txt) 0x02123988 passes the return of vtable slot *29, OnAimedAtWithEgg* -- which this method's own body then calls again itself, so
 the parameter is handed over and never read. Type from the ROM's sibling
 `dBgActor_c::UpdateKillByMegaChar(s16, s16, s16, Fix12<int>)`. Moved, given the
 third parameter, migrated: matches first try.
 
-`KillByAttack` was on ov004 0x020aea30, whose body walks an 8-byte table to an
-0xffff sentinel. The ov002 function there dispatches a pointer-to-member from
-`data_ov002_0210db80[mDeathState - 1]`, and is what all 34 enemy-overlay call
+`KillByAttack` was on [ov004](../config/arm9/overlays/ov004/symbols.txt) 0x020aea30, whose body walks an 8-byte table to an 0xffff sentinel. The [ov002](../config/arm9/overlays/ov002/symbols.txt) function there dispatches a pointer-to-member from `data_ov002_0210db80[mDeathState - 1]`, and is what all 34 enemy-overlay call
 sites reach. Same arity shape: an unused fourth argument makes it match.
-Deliberately left as `func_ov002_020aea30` -- the name was coined against the
+Deliberately left as [func_ov002_020aea30](../src/func_ov002_020aea30.cpp) -- the name was coined against the
 wrong body, and inheriting it would repeat the mistake -- with the evidence
 recorded in the file for a naming pass.
 
@@ -173,8 +165,7 @@ banner. One instruction, and it is the field-address CSE: `*(int*)(c + 8) =
 *(int*)(c + 8) & 0xf0ff;` spelled identically on both sides lets mwcc compute the
 address once where the ROM re-issues `[r4, #8]`. Eleven variants swept, and the
 split is clean -- all six that differ the spelling match, all three that do not
-miss by the same word. It is now a real method AND enrolled, so ov084 gains 912
-bytes from source.
+miss by the same word. It is now a real method AND enrolled, so [ov084](../config/arm9/overlays/ov084/symbols.txt) gains 912 bytes from source.
 
 `RollingRock::Behavior` settled at three words with a note saying "spelling alone
 does not reach it" after ten spellings. The lever was already written down, just
@@ -239,9 +230,9 @@ measure.
 
 Eight are left untested:
 
-```
-_ZN14BlueCoinSwitch13InitResourcesEv   _ZN6Number13InitResourcesEv
-func_ov002_020f6618                    func_ov006_020e6e78
-func_ov006_020e7fe8                    func_ov060_02111cc0
-func_ov075_021143e4                    func_ov075_02114ddc
+```md
+_ZN14BlueCoinSwitch13InitResourcesEv  _ZN6Number13InitResourcesEv
+[func_ov002_020f6618](../src/func_ov002_020f6618.cpp)                    func_ov006_020e6e78
+func_ov006_020e7fe8                    [func_ov060_02111cc0](../src/func_ov060_02111cc0.cpp)
+[func_ov075_021143e4](../src/func_ov075_021143e4.cpp)                    [func_ov075_02114ddc](../src/func_ov075_02114ddc.cpp)
 ```
