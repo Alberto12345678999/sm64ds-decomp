@@ -11,7 +11,7 @@ _ZN19RotatingPlatformLllD1Ev kind:function(arm,size=0x50) addr:0x021115a8
 _ZN19RotatingPlatformLllD0Ev kind:function(arm,size=0x64) addr:0x021115f8
 _ZN19RotatingPlatformLll16CleanupResourcesEv kind:function(arm,size=0x14) addr:0x0211165c
 _ZN19RotatingPlatformLll13InitResourcesEv kind:function(arm,size=0x18) addr:0x02111670
-RotatingPlatformLll_Spawn kind:function(arm,size=0x3c) addr:0x02111688
+daObjFl_Koma_D_c_classInit kind:function(arm,size=0x3c) addr:0x02111688
 _ZN19FloatOnLavaPlatformD1Ev kind:function(arm,size=0x44) addr:0x021116c4
 _ZN19FloatOnLavaPlatformD0Ev kind:function(arm,size=0x58) addr:0x02111708
 _ZN19FloatOnLavaPlatform16CleanupResourcesEv kind:function(arm,size=0x44) addr:0x02111760
@@ -20,7 +20,7 @@ _ZN19FloatOnLavaPlatform8BehaviorEv kind:function(arm,size=0xa4) addr:0x021117cc
 _ZN19FloatOnLavaPlatform13InitResourcesEv kind:function(arm,size=0xac) addr:0x02111870
 func_ov022_0211191c kind:function(arm,size=0x20) addr:0x0211191c
 func_ov022_0211193c kind:function(arm,size=0x14) addr:0x0211193c
-FloatOnLavaPlatform_Spawn kind:function(arm,size=0x30) addr:0x02111950
+daObjFl_Block_c_classInit kind:function(arm,size=0x30) addr:0x02111950
 _ZN10LavaBridgeD1Ev kind:function(arm,size=0x44) addr:0x02111980
 _ZN10LavaBridgeD0Ev kind:function(arm,size=0x58) addr:0x021119c4
 func_ov022_02111a1c kind:function(arm,size=0x48) addr:0x02111a1c
@@ -36,7 +36,7 @@ _ZN10LavaSeesaw16CleanupResourcesEv kind:function(arm,size=0x44) addr:0x02111d90
 _ZN10LavaSeesaw6RenderEv kind:function(arm,size=0x28) addr:0x02111dd4
 _ZN10LavaSeesaw8BehaviorEv kind:function(arm,size=0xa4) addr:0x02111dfc
 _ZN10LavaSeesaw13InitResourcesEv kind:function(arm,size=0x9c) addr:0x02111ea0
-LavaSeesaw_Spawn kind:function(arm,size=0x30) addr:0x02111f3c
+daObjFl_Seesaw_c_classInit kind:function(arm,size=0x30) addr:0x02111f3c
 _ZN21FloatingFloorLllSmallD1Ev kind:function(arm,size=0x50) addr:0x02111f6c
 _ZN21FloatingFloorLllSmallD0Ev kind:function(arm,size=0x64) addr:0x02111fbc
 _ZN21FloatingFloorLllSmall16CleanupResourcesEv kind:function(arm,size=0x20) addr:0x02112020
@@ -200,14 +200,14 @@ _ZTI16daObjFl_Koma_D_c kind:data(any) addr:0x02113d98
 data_ov022_02113da4 kind:data(any) addr:0x02113da4
 data_ov022_02113da8 kind:data(any) addr:0x02113da8 ambiguous
 _ZTS16daObjFl_Koma_D_c kind:data(any) addr:0x02113db0
-RotatingPlatformLll_SpawnInfo kind:data(any) addr:0x02113dc4 ambiguous
+g_profile_FL_KOMA_D kind:data(any) addr:0x02113dc4 ambiguous
 _ZTV19RotatingPlatformLll kind:data(any) addr:0x02113de8
 data_ov022_02113e00 kind:data(any) addr:0x02113e00 ambiguous
 data_ov022_02113e50 kind:data(any) addr:0x02113e50 ambiguous
 _ZTI15daObjFl_Block_c kind:data(any) addr:0x02113e68
 data_ov022_02113e6c kind:data(any) addr:0x02113e6c ambiguous
 _ZTS15daObjFl_Block_c kind:data(any) addr:0x02113e74
-FloatOnLavaPlatform_SpawnInfo kind:data(any) addr:0x02113e88 ambiguous
+g_profile_FL_BLOCK kind:data(any) addr:0x02113e88 ambiguous
 _ZTV19FloatOnLavaPlatform kind:data(any) addr:0x02113eac
 data_ov022_02113f20 kind:data(any) addr:0x02113f20 ambiguous
 _ZTI16daObjFl_London_c kind:data(any) addr:0x02113f2c
@@ -218,7 +218,7 @@ data_ov022_02113f78 kind:data(any) addr:0x02113f78 ambiguous
 _ZTI16daObjFl_Seesaw_c kind:data(any) addr:0x02113ff0
 data_ov022_02113ff4 kind:data(any) addr:0x02113ff4 ambiguous
 _ZTS16daObjFl_Seesaw_c kind:data(any) addr:0x02113ffc
-LavaSeesaw_SpawnInfo kind:data(any) addr:0x02114010 ambiguous
+g_profile_FL_SEESAW kind:data(any) addr:0x02114010 ambiguous
 _ZTV10LavaSeesaw kind:data(any) addr:0x02114034
 _ZTI17daObjFl_Ukiyuka_c kind:data(any) addr:0x021140b4
 data_ov022_021140b8 kind:data(any) addr:0x021140b8 ambiguous

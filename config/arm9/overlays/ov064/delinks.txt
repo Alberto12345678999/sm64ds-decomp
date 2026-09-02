@@ -428,11 +428,11 @@ src/func_ov064_021192bc.c:
     complete
     .text start:0x021192bc end:0x021192d0
 
-src/BowserPuzzleManager_Spawn.c:
+src/daObjFl_Coin_c_classInit.c:
     complete
     .text start:0x021192d0 end:0x02119300
 
-src/BowserPuzzlePiece_Spawn.c:
+src/daObjFl_Puzzle_c_classInit.c:
     complete
     .text start:0x02119300 end:0x02119330
 

@@ -6,7 +6,7 @@
 
 /* TWO WITNESSES, and they close on each other:
  *
- *   BowserPuzzleManager_Spawn  fBase_c::operator new(216 = 0xd8), dActor_c::dActor_c(), stores _ZTV19BowserPuzzleManager,
+ *   daObjFl_Coin_c_classInit  fBase_c::operator new(216 = 0xd8), dActor_c::dActor_c(), stores _ZTV19BowserPuzzleManager,
  *                 then the members below in this order.
  *   ~BowserPuzzleManager   the same members destroyed in reverse, then ~dActor_c.
  *

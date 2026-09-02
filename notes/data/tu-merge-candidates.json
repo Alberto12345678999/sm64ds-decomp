@@ -234,8 +234,8 @@
     "src/_ZN19BowserPuzzleManager13InitResourcesEv.cpp",
     "src/func_ov064_0211929c.cpp",
     "src/func_ov064_021192bc.c",
-    "src/BowserPuzzleManager_Spawn.c",
-    "src/BowserPuzzlePiece_Spawn.c"
+    "src/daObjFl_Coin_c_classInit.c",
+    "src/daObjFl_Puzzle_c_classInit.c"
    ],
    "ext_mix": {
     ".c": 14,
@@ -3157,7 +3157,7 @@
     "src/_ZN19FloatOnLavaPlatform13InitResourcesEv.cpp",
     "src/func_ov022_0211191c.cpp",
     "src/func_ov022_0211193c.c",
-    "src/FloatOnLavaPlatform_Spawn.c"
+    "src/daObjFl_Block_c_classInit.c"
    ],
    "ext_mix": {
     ".cpp": 7,
@@ -6742,7 +6742,7 @@
     "src/_ZN10LavaSeesaw6RenderEv.cpp",
     "src/_ZN10LavaSeesaw8BehaviorEv.cpp",
     "src/_ZN10LavaSeesaw13InitResourcesEv.cpp",
-    "src/LavaSeesaw_Spawn.c"
+    "src/daObjFl_Seesaw_c_classInit.c"
    ],
    "ext_mix": {
     ".cpp": 5,
@@ -10177,7 +10177,7 @@
     "src/_ZN19RotatingPlatformLllD0Ev.c",
     "src/_ZN19RotatingPlatformLll16CleanupResourcesEv.cpp",
     "src/_ZN19RotatingPlatformLll13InitResourcesEv.cpp",
-    "src/RotatingPlatformLll_Spawn.c"
+    "src/daObjFl_Koma_D_c_classInit.c"
    ],
    "ext_mix": {
     ".cpp": 3,
@@ -37287,8 +37287,8 @@
     "src/_ZN19BowserPuzzleManager13InitResourcesEv.cpp",
     "src/func_ov064_0211929c.cpp",
     "src/func_ov064_021192bc.c",
-    "src/BowserPuzzleManager_Spawn.c",
-    "src/BowserPuzzlePiece_Spawn.c"
+    "src/daObjFl_Coin_c_classInit.c",
+    "src/daObjFl_Puzzle_c_classInit.c"
    ],
    "ext_mix": {
     ".c": 14,

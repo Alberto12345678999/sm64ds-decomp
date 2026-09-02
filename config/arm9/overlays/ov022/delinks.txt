@@ -56,7 +56,7 @@ src/_ZN19RotatingPlatformLll13InitResourcesEv.cpp:
     complete
     .text start:0x02111670 end:0x02111688
 
-src/RotatingPlatformLll_Spawn.c:
+src/daObjFl_Koma_D_c_classInit.c:
     complete
     .text start:0x02111688 end:0x021116c4
 
@@ -92,7 +92,7 @@ src/func_ov022_0211193c.c:
     complete
     .text start:0x0211193c end:0x02111950
 
-src/FloatOnLavaPlatform_Spawn.c:
+src/daObjFl_Block_c_classInit.c:
     complete
     .text start:0x02111950 end:0x02111980
 
@@ -156,7 +156,7 @@ src/_ZN10LavaSeesaw13InitResourcesEv.cpp:
     complete
     .text start:0x02111ea0 end:0x02111f3c
 
-src/LavaSeesaw_Spawn.c:
+src/daObjFl_Seesaw_c_classInit.c:
     complete
     .text start:0x02111f3c end:0x02111f6c
 

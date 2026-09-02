@@ -104,8 +104,8 @@ _ZN17BowserPuzzlePiece13InitResourcesEv kind:function(arm,size=0xdc) addr:0x0211
 _ZN19BowserPuzzleManager13InitResourcesEv kind:function(arm,size=0x18) addr:0x02119284
 func_ov064_0211929c kind:function(arm,size=0x20) addr:0x0211929c
 func_ov064_021192bc kind:function(arm,size=0x14) addr:0x021192bc
-BowserPuzzleManager_Spawn kind:function(arm,size=0x30) addr:0x021192d0
-BowserPuzzlePiece_Spawn kind:function(arm,size=0x30) addr:0x02119300
+daObjFl_Coin_c_classInit kind:function(arm,size=0x30) addr:0x021192d0
+daObjFl_Puzzle_c_classInit kind:function(arm,size=0x30) addr:0x02119300
 _ZN9JetStreamD1Ev kind:function(arm,size=0x38) addr:0x02119330
 _ZN9JetStreamD0Ev kind:function(arm,size=0x4c) addr:0x02119368
 func_ov064_021193b4 kind:function(arm,size=0x448) addr:0x021193b4
@@ -259,8 +259,8 @@ data_ov064_0211c0f0 kind:data(any) addr:0x0211c0f0
 data_ov064_0211c10c kind:data(any) addr:0x0211c10c
 data_ov064_0211c128 kind:data(any) addr:0x0211c128
 data_ov064_0211c144 kind:data(any) addr:0x0211c144
-BowserPuzzlePiece_SpawnInfo kind:data(any) addr:0x0211c160
-BowserPuzzleManager_SpawnInfo kind:data(any) addr:0x0211c17c
+g_profile_FL_PUZZLE kind:data(any) addr:0x0211c160
+g_profile_FL_COIN kind:data(any) addr:0x0211c17c
 data_ov064_0211c198 kind:data(any) addr:0x0211c198
 _ZTV19BowserPuzzleManager kind:data(any) addr:0x0211c1d8
 _ZTV17BowserPuzzlePiece kind:data(any) addr:0x0211c25c
