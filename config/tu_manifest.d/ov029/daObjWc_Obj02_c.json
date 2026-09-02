@@ -1,9 +1,9 @@
 {
   "id": "ov029/daObjWc_Obj02_c",
   "module": "ov029",
-  "source": "src_tu/actors/daObjWc_Obj02_c.cpp",
-  "promoted_source": "src/actors/daObjWc_Obj02_c.cpp",
-  "status": "text-verified",
+  "source": "src/actors/d_a_obj_wc_obj02.cpp",
+  "promoted_source": "src/actors/d_a_obj_wc_obj02.cpp",
+  "status": "promoted",
   "boundary_confidence": "high",
   "boundary_evidence": [
     "contiguous linker run: 0x211137c..0x2111728, 9 function(s), from build/tu_map.json (tools/tu_map.py)",
@@ -101,15 +101,118 @@
     "criteria": {
       "every_declared_function_defined": "PASS",
       "every_declared_function_bytes_match": "PASS",
-      "declared_function_set_equals_defined_function_set": "FAIL-BY-DESIGN -- 11 unlicensed section/symbol(s), 0 compiler-only policy error(s)",
+      "declared_function_set_equals_defined_function_set": "FAIL-BY-DESIGN -- 11 unlicensed section/symbol(s), all dispositioned in compiler_only_output, 0 compiler-only policy error(s)",
       "functions_occur_in_expected_order": "PASS",
       "relocation_destinations_verified": "PASS"
     },
     "compilerOnlyOutput": {
-      "requested": [],
-      "deadstripped": []
+      "requested": [
+        "_ZTI7dBase_c",
+        "_ZTI7fBase_c",
+        "_ZTS7dBase_c",
+        "_ZTS7fBase_c",
+        "_ZTI8dActor_c",
+        "_ZTS8dActor_c",
+        "_ZTI10dBgActor_c",
+        "_ZTS10dBgActor_c",
+        "_ZTI15daObjWc_Obj02_c",
+        "_ZTS15daObjWc_Obj02_c",
+        "_ZTV15daObjWc_Obj02_c"
+      ],
+      "deadstripped": [
+        "_ZTI7dBase_c",
+        "_ZTI7fBase_c",
+        "_ZTS7dBase_c",
+        "_ZTS7fBase_c",
+        "_ZTI8dActor_c",
+        "_ZTS8dActor_c",
+        "_ZTI10dBgActor_c",
+        "_ZTS10dBgActor_c",
+        "_ZTI15daObjWc_Obj02_c",
+        "_ZTS15daObjWc_Obj02_c",
+        "_ZTV15daObjWc_Obj02_c"
+      ]
     }
   },
+  "compiler_only_output": [
+    {
+      "symbol": "_ZTI7dBase_c",
+      "disposition": "deadstrip-data",
+      "reason": "A vague-linkage passenger: naming a base class in this TU's hierarchy makes mwccarm emit its type_info record here too. The cartridge keeps the canonical copy at arm9:0x02086e78, outside this entry's only licensed range (.text 0x0211137c-0x02111728), so dsd supplies that ROM data independently. romdata_check compares the emitted copy against the cartridge, relocations applied, before production isolation discards it.",
+      "canonical_module": "arm9",
+      "canonical_address": "0x02086e78"
+    },
+    {
+      "symbol": "_ZTI7fBase_c",
+      "disposition": "deadstrip-data",
+      "reason": "A vague-linkage passenger: naming a base class in this TU's hierarchy makes mwccarm emit its type_info record here too. The cartridge keeps the canonical copy at arm9:0x02086d70, outside this entry's only licensed range (.text 0x0211137c-0x02111728), so dsd supplies that ROM data independently. romdata_check compares the emitted copy against the cartridge, relocations applied, before production isolation discards it.",
+      "canonical_module": "arm9",
+      "canonical_address": "0x02086d70"
+    },
+    {
+      "symbol": "_ZTS7dBase_c",
+      "disposition": "deadstrip-data",
+      "reason": "A vague-linkage passenger: naming a base class in this TU's hierarchy makes mwccarm emit its type_info record here too. The cartridge keeps the canonical copy at arm9:0x02086e54, outside this entry's only licensed range (.text 0x0211137c-0x02111728), so dsd supplies that ROM data independently. romdata_check compares the emitted copy against the cartridge, relocations applied, before production isolation discards it.",
+      "canonical_module": "arm9",
+      "canonical_address": "0x02086e54"
+    },
+    {
+      "symbol": "_ZTS7fBase_c",
+      "disposition": "deadstrip-data",
+      "reason": "A vague-linkage passenger: naming a base class in this TU's hierarchy makes mwccarm emit its type_info record here too. The cartridge keeps the canonical copy at arm9:0x02086e60, outside this entry's only licensed range (.text 0x0211137c-0x02111728), so dsd supplies that ROM data independently. romdata_check compares the emitted copy against the cartridge, relocations applied, before production isolation discards it.",
+      "canonical_module": "arm9",
+      "canonical_address": "0x02086e60"
+    },
+    {
+      "symbol": "_ZTI8dActor_c",
+      "disposition": "deadstrip-data",
+      "reason": "A vague-linkage passenger: naming a base class in this TU's hierarchy makes mwccarm emit its type_info record here too. The cartridge keeps the canonical copy at arm9:0x0208e390, outside this entry's only licensed range (.text 0x0211137c-0x02111728), so dsd supplies that ROM data independently. romdata_check compares the emitted copy against the cartridge, relocations applied, before production isolation discards it.",
+      "canonical_module": "arm9",
+      "canonical_address": "0x0208e390"
+    },
+    {
+      "symbol": "_ZTS8dActor_c",
+      "disposition": "deadstrip-data",
+      "reason": "A vague-linkage passenger: naming a base class in this TU's hierarchy makes mwccarm emit its type_info record here too. The cartridge keeps the canonical copy at arm9:0x0208e384, outside this entry's only licensed range (.text 0x0211137c-0x02111728), so dsd supplies that ROM data independently. romdata_check compares the emitted copy against the cartridge, relocations applied, before production isolation discards it.",
+      "canonical_module": "arm9",
+      "canonical_address": "0x0208e384"
+    },
+    {
+      "symbol": "_ZTI10dBgActor_c",
+      "disposition": "deadstrip-data",
+      "reason": "A vague-linkage passenger: naming a base class in this TU's hierarchy makes mwccarm emit its type_info record here too. The cartridge keeps the canonical copy at ov002:0x021089ec, outside this entry's only licensed range (.text 0x0211137c-0x02111728), so dsd supplies that ROM data independently. romdata_check compares the emitted copy against the cartridge, relocations applied, before production isolation discards it.",
+      "canonical_module": "ov002",
+      "canonical_address": "0x021089ec"
+    },
+    {
+      "symbol": "_ZTS10dBgActor_c",
+      "disposition": "deadstrip-data",
+      "reason": "A vague-linkage passenger: naming a base class in this TU's hierarchy makes mwccarm emit its type_info record here too. The cartridge keeps the canonical copy at ov002:0x02108a04, outside this entry's only licensed range (.text 0x0211137c-0x02111728), so dsd supplies that ROM data independently. romdata_check compares the emitted copy against the cartridge, relocations applied, before production isolation discards it.",
+      "canonical_module": "ov002",
+      "canonical_address": "0x02108a04"
+    },
+    {
+      "symbol": "_ZTI15daObjWc_Obj02_c",
+      "disposition": "deadstrip-data",
+      "reason": "Emitted as vague linkage because this class has NO key function: the first virtual it declares is ~daObjWc_Obj02_c, which include/daObjWc_Obj02_c.h defines inline, so every TU that uses the class emits its own copy of the RTTI trio rather than one TU homing it. The cartridge keeps its canonical copy at ov029:0x02113cac, outside this entry's only licensed range (.text 0x0211137c-0x02111728), so dsd supplies that ROM data independently. romdata_check compares the emitted copy against the cartridge, relocations applied, before production isolation discards it.",
+      "canonical_module": "ov029",
+      "canonical_address": "0x02113cac"
+    },
+    {
+      "symbol": "_ZTS15daObjWc_Obj02_c",
+      "disposition": "deadstrip-data",
+      "reason": "Emitted as vague linkage because this class has NO key function: the first virtual it declares is ~daObjWc_Obj02_c, which include/daObjWc_Obj02_c.h defines inline, so every TU that uses the class emits its own copy of the RTTI trio rather than one TU homing it. The cartridge keeps its canonical copy at ov029:0x02113cb8, outside this entry's only licensed range (.text 0x0211137c-0x02111728), so dsd supplies that ROM data independently. romdata_check compares the emitted copy against the cartridge, relocations applied, before production isolation discards it.",
+      "canonical_module": "ov029",
+      "canonical_address": "0x02113cb8"
+    },
+    {
+      "symbol": "_ZTV15daObjWc_Obj02_c",
+      "disposition": "deadstrip-data",
+      "reason": "Emitted as vague linkage because this class has NO key function: the first virtual it declares is ~daObjWc_Obj02_c, which include/daObjWc_Obj02_c.h defines inline, so every TU that uses the class emits its own copy of the RTTI trio rather than one TU homing it. The cartridge keeps its canonical copy at ov029:0x02113cf0, outside this entry's only licensed range (.text 0x0211137c-0x02111728), so dsd supplies that ROM data independently. romdata_check compares the emitted copy against the cartridge, relocations applied, before production isolation discards it.",
+      "canonical_module": "ov029",
+      "canonical_address": "0x02113cf0"
+    }
+  ],
   "partial_isolation": {
     "round": "tools/tubuild.py partial -- one compile of the consolidated source, objisolate.derive per licensed function, compared against rombuild.compile_one + objisolate.isolate of each legacy source",
     "derivedObjects": 9,
