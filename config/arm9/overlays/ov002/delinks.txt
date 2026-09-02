@@ -1360,37 +1360,9 @@ src/SignPost_Spawn.c:
     complete
     .text start:0x020bc3c8 end:0x020bc414
 
-src/_ZN13daObjWakame_cD1Ev.cpp:
+src/actors/d_a_obj_wakame.cpp:
     complete
-    .text start:0x020bc414 end:0x020bc444
-
-src/_ZN13daObjWakame_cD0Ev.cpp:
-    complete
-    .text start:0x020bc444 end:0x020bc488
-
-src/func_ov002_020bc488.c:
-    complete
-    .text start:0x020bc488 end:0x020bc4c8
-
-src/_ZN13daObjWakame_c16CleanupResourcesEv.cpp:
-    complete
-    .text start:0x020bc4c8 end:0x020bc4f8
-
-src/_ZN13daObjWakame_c6RenderEv.cpp:
-    complete
-    .text start:0x020bc4f8 end:0x020bc520
-
-src/_ZN13daObjWakame_c8BehaviorEv.cpp:
-    complete
-    .text start:0x020bc520 end:0x020bc540
-
-src/_ZN13daObjWakame_c13InitResourcesEv.cpp:
-    complete
-    .text start:0x020bc540 end:0x020bc5a8
-
-src/daObjWakame_c_Spawn.c:
-    complete
-    .text start:0x020bc5a8 end:0x020bc5e0
+    .text start:0x020bc414 end:0x020bc5e0
 
 src/_ZN12HealingHeartD1Ev.cpp:
     complete

@@ -13,7 +13,7 @@ asked together: does every function still reproduce its ROM bytes, AND are they
 emitted in ROM order. Running the whole ROM build to find out costs minutes; this
 costs one compile.
 
-    python tools/tu_order_check.py ov045/PoleLift ov002/Seaweed
+    python tools/tu_order_check.py ov045/PoleLift ov002/daObjWakame_c
 """
 
 from __future__ import annotations
