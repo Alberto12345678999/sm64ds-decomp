@@ -27,8 +27,8 @@ struct dScMgTeresa_c : dScMgBase_c {
     virtual ~dScMgTeresa_c();
     virtual s32 InitResources();  /* slot 0 */
     virtual s32 Behavior();       /* slot 6 */
-    virtual s32 Render();         /* slot 9 */
-    virtual int  OnYoshiTryEat(int arg);               /* slot 18 */
+    virtual s32 Render();         /* slot 9 */
+    virtual void OnYoshiTryEat(int arg);               /* slot 18 */
     virtual int  Virtual50();                          /* slot 20 */
     virtual void Virtual88(int cx, int cy, int colour, int size); /* slot 34 */
 
