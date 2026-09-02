@@ -1,31 +1,42 @@
 //cpp
-/* Manually curated shadow translation unit.
- * ov002/daSetSE_c  (8 function(s))
+/* An ambient sound-effect emitter -- ov002/daSetSE_c.
  *
- * NOT ENROLLED and NOT CANONICAL.  The readable class and member definitions
- * are compiled only by tubuild's scratch pipeline while the eight legacy
- * production sources remain authoritative.
+ * A GENUINE TRANSLATION UNIT, ENROLLED AND CANONICAL. It is the whole of the
+ * cartridge's contiguous linker run .text 0x020f198c..0x020f1bc4, eight
+ * functions and nothing else, and the production build links this object rather
+ * than eight per-function ones. The filename is tools/tu_names.py's:
+ * candidate_stem('daSetSE_c') is d_a_set_se.
+ *
+ * THE CLASS IS NAMED FROM THE CARTRIDGE, not coined. ov002 0x0210b470 is a
+ * __si_class_type_info whose _ZTS at 0x0210b464 reads exactly `9daSetSE_c`, and
+ * whose one base, at subobject offset 0, is arm9 0x0208e390 -- _ZTI8dActor_c.
+ * That is why the header says `struct daSetSE_c : dActor_c` and why the RTTI
+ * below has ROM homes to be compared against at all: a coined name is a
+ * length-prefixed mangled string that matches nothing at any address, so it can
+ * never be word-compared, and a class whose records cannot be compared cannot
+ * have a key-function TU.
  *
  * FUNCTION ORDER IS DELIBERATELY THE REVERSE OF THE ROM'S -- mwccarm 2004/b56
- * emits one .text section per function, in the REVERSE of source order, so
- * the highest-address ROM function is written FIRST here. Do not reorder;
- * see notes/tu-reconstruction-pilot-report.md sec 3 for the one documented
- * exception (a destructor's D0/D1/D2 group has compiler-chosen order).
+ * emits one .text section per function, in the REVERSE of source order, so the
+ * highest-address ROM function is written FIRST here. Do not reorder.
  *
- * Assembled from these legacy one-function sources (ROM address order):
- *   [0] 0x020f198c  src/_ZN9daSetSE_cD1Ev.cpp
- *   [1] 0x020f19b0  src/_ZN9daSetSE_cD0Ev.cpp
- *   [2] 0x020f19e8  src/_ZN9daSetSE_c16CleanupResourcesEv.cpp
- *   [3] 0x020f19f0  src/_ZN9daSetSE_c16OnPendingDestroyEv.cpp
- *   [4] 0x020f19f4  src/_ZN9daSetSE_c6RenderEv.cpp
- *   [5] 0x020f19fc  src/_ZN9daSetSE_c8BehaviorEv.cpp
- *   [6] 0x020f1ac4  src/_ZN9daSetSE_c13InitResourcesEv.cpp
- *   [7] 0x020f1b94  src/daSetSE_c_Spawn.c
+ * NAMING THE CLASS PUTS ITS VAGUE-LINKAGE DATA IN THIS OBJECT, because this TU
+ * defines the key function. Nine records come out, and every one of them has a
+ * cartridge home to be compared against; romdata_check compares each with
+ * relocations applied before production isolation discards it:
  *
- * Naming boundary: these configured text symbols use daSetSE_c,
- * while the adjacent retail RTTI spells daSetSE_c. Until that symbol migration
- * is resolved, this TU claims only the eight verified text contributions; its
- * generated RTTI/vtable is evidence, not licensed retail data.
+ *   _ZTV9daSetSE_c        ov002 0x0210b4c8   (0x84 = the 2-word header + 31 slots)
+ *   _ZTI9daSetSE_c        ov002 0x0210b470
+ *   _ZTS9daSetSE_c        ov002 0x0210b464
+ *   _ZTI8dActor_c / _ZTI7dBase_c / _ZTI7fBase_c   arm9
+ *   _ZTS8dActor_c / _ZTS7dBase_c / _ZTS7fBase_c   arm9
+ *
+ * A VTABLE CLAIM IS SCOPED TO THE SLOTS. A symbols.txt _ZTV address is the
+ * ADDRESS POINT, eight bytes past the table's real start; the
+ * {offset-to-top, _ZTI pointer} header pair is emitted here and word-compared by
+ * nothing. The 31 slots were diffed against _ZTV8dActor_c by hand and differ in
+ * exactly seven places -- 0, 3, 6, 9, 12, 16, 17 -- each holding the address of
+ * the member the header names beside that slot.
  */
 
 #include "daSetSE_c.h"
@@ -144,7 +155,23 @@ int daSetSE_c::CleanupResources()
     return 1;
 }
 
-/* ROM ordinals 0/1 -- the compiler emits D1 and D0 from this definition. */
-daSetSE_c::~daSetSE_c()
-{
-}
+/* -------------------------------------------------------------------------- */
+/* ROM ordinal 1 -- _ZN9daSetSE_cD0Ev, 0x020f19b0, size 0x38 */
+/* -------------------------------------------------------------------------- */
+/* _ZN9daSetSE_cD0Ev (vtable slot 17, the deleting destructor) is NOT
+ * hand-written here. A hand-written mangled D0 next to a real out-of-line D1
+ * ICEs mwccarm 2004/b56 (ELFgen.c:483); the compiler synthesizes D0 itself
+ * from D1. */
+
+/* -------------------------------------------------------------------------- */
+/* ROM ordinal 0 -- _ZN9daSetSE_cD1Ev, 0x020f198c, size 0x24 */
+/* -------------------------------------------------------------------------- */
+// @symbol _ZN9daSetSE_cD1Ev
+/* recovered: real C++ destructor -- the compiler emits the whole body.
+ * Vtable slot 16: one vptr store, then the tail into ~dActor_c.
+ *
+ * (no definition here: `virtual ~daSetSE_c() {}` is in include/daSetSE_c.h,
+ * and that placement is load-bearing rather than stylistic -- out of line,
+ * mwccarm emits D0 before D1 and adds a homeless D2, and objisolate then
+ * refuses this whole TU. The header carries the reasoning and the leaf
+ * measurement that makes it safe.) */

@@ -1204,6 +1204,14 @@
     "src/actors/d_a_cam_tag.cpp#_ZN10daCamTag_c6RenderEv": "github-actions[bot]",
     "src/actors/d_a_cam_tag.cpp#_ZN10daCamTag_c8BehaviorEv": "github-actions[bot]",
     "src/actors/d_a_cam_tag.cpp#_ZN10daCamTag_c13InitResourcesEv": "github-actions[bot]",
-    "src/actors/d_a_cam_tag.cpp#daCamTag_c_Spawn": "andrewboudreau"
+    "src/actors/d_a_cam_tag.cpp#daCamTag_c_Spawn": "andrewboudreau",
+    "src/actors/d_a_set_se.cpp#_ZN9daSetSE_cD1Ev": "andrewboudreau",
+    "src/actors/d_a_set_se.cpp#_ZN9daSetSE_cD0Ev": "andrewboudreau",
+    "src/actors/d_a_set_se.cpp#_ZN9daSetSE_c16CleanupResourcesEv": "andrewboudreau",
+    "src/actors/d_a_set_se.cpp#_ZN9daSetSE_c16OnPendingDestroyEv": "andrewboudreau",
+    "src/actors/d_a_set_se.cpp#_ZN9daSetSE_c6RenderEv": "andrewboudreau",
+    "src/actors/d_a_set_se.cpp#_ZN9daSetSE_c8BehaviorEv": "github-actions[bot]",
+    "src/actors/d_a_set_se.cpp#_ZN9daSetSE_c13InitResourcesEv": "github-actions[bot]",
+    "src/actors/d_a_set_se.cpp#daSetSE_c_Spawn": "github-actions[bot]"
   }
 }
