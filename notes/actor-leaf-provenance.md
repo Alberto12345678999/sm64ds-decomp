@@ -326,8 +326,8 @@ Source: `src/_ZN10BowserTail8BehaviorEv.cpp`.
 - `daCamTag_c` 0x0d0 and `daBgSnwmn_c` 0x0d0: four opaque bytes each, touched by
   no enrolled body. `daBgSnwmn_c` already carries a note saying its 0x0cc read
   is the inherited `mAreaId`, not a field of its own.
-- `SoundObject` 0x0e0: filled from [data_ov002_0210c08a](../config/arm9/overlays/ov002/symbols.txt) + param1 * 0xc`, the
+- `daSoundObj_c` 0x0e0: filled from [data_ov002_0210c08a](../config/arm9/overlays/ov002/symbols.txt) + param1 * 0xc`, the
   same twelve-byte table row that fills `mLevelID`, `mTimerThreshold` and
   `mTimerReset` -- so it is the fourth column of the sound table, but nothing
   enrolled reads it, and which column is which is not something the table
-  itself says. [`src/_ZN11SoundObject13InitResourcesEv.cpp`]
+  itself says. [`src/actors/d_a_sound_obj.cpp`]
