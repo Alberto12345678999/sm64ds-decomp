@@ -30209,11 +30209,11 @@ matched: yes</title></rect><rect x="1241.12" y="81.37" width="5.44" height="2.84
 module: ov014
 addr: 0x021112cc
 size: 60 bytes
-matched: yes</title></rect><rect x="1241.12" y="84.22" width="5.44" height="8.53" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10ChainChompD1Ev
+matched: yes</title></rect><rect x="1241.12" y="84.22" width="5.44" height="8.53" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10daWanwan_cD1Ev
 module: ov014
 addr: 0x02111308
 size: 180 bytes
-matched: yes</title></rect><rect x="1241.12" y="92.74" width="5.44" height="9.47" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10ChainChompD0Ev
+matched: yes</title></rect><rect x="1241.12" y="92.74" width="5.44" height="9.47" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10daWanwan_cD0Ev
 module: ov014
 addr: 0x021113bc
 size: 200 bytes
@@ -30305,19 +30305,19 @@ matched: yes</title></rect><rect x="1306.79" y="81.37" width="6.48" height="17.9
 module: ov014
 addr: 0x02112788
 size: 452 bytes
-matched: yes</title></rect><rect x="1306.79" y="99.35" width="6.48" height="2.86" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10ChainChomp16CleanupResourcesEv
+matched: yes</title></rect><rect x="1306.79" y="99.35" width="6.48" height="2.86" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10daWanwan_c16CleanupResourcesEv
 module: ov014
 addr: 0x0211294c
 size: 72 bytes
-matched: yes</title></rect><rect x="1313.27" y="81.37" width="4.75" height="4.78" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10ChainChomp6RenderEv
+matched: yes</title></rect><rect x="1313.27" y="81.37" width="4.75" height="4.78" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10daWanwan_c6RenderEv
 module: ov014
 addr: 0x02112994
 size: 88 bytes
-matched: yes</title></rect><rect x="1313.27" y="86.15" width="4.75" height="16.07" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10ChainChomp8BehaviorEv
+matched: yes</title></rect><rect x="1313.27" y="86.15" width="4.75" height="16.07" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10daWanwan_c8BehaviorEv
 module: ov014
 addr: 0x021129ec
 size: 296 bytes
-matched: yes</title></rect><rect x="1318.02" y="81.37" width="9.40" height="14.26" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10ChainChomp13InitResourcesEv
+matched: yes</title></rect><rect x="1318.02" y="81.37" width="9.40" height="14.26" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10daWanwan_c13InitResourcesEv
 module: ov014
 addr: 0x02112b14
 size: 520 bytes
