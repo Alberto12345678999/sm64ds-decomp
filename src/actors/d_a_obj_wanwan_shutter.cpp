@@ -17,8 +17,11 @@
  * mangled string that matches nothing at any address, so it can never be
  * word-compared. The historical spelling was ChainChompFence.
  *
- * IT DERIVES FROM dBgActor_c, not dActor_c -- the first entry in this campaign
- * that does. Two consequences show up below. The destructor is 0x44 bytes for
+ * IT DERIVES FROM dBgActor_c, not dActor_c. (Seven other promoted entries do
+ * too -- daObjCannonShutter_c, daObjHatenaSwitch_c, daObjPushblock_c,
+ * daObjC1_Trap_c, daObjC0_Switch_c, daObjFm_Battan_c, daObjCtMecha05_c -- so
+ * this is the campaign's normal shape, not a first.) Two consequences show up
+ * below. The destructor is 0x44 bytes for
  * an empty body because it inlines dBgActor_c's own inline destructor, which
  * destroys the Model at 0xd4 and the dBgW_KcMbg at 0x124. And the base chain's
  * VTABLES are absent from this object even though its typeinfo records are
