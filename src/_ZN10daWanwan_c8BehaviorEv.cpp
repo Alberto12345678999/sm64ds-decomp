@@ -1,9 +1,9 @@
 //cpp
-// @symbol _ZN10ChainChomp8BehaviorEv
+// @symbol _ZN10daWanwan_c8BehaviorEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 #include "decl_common.h"
 /* recovered: named members + shared header, real C++ method */
-#include "ChainChomp.h"
+#include "daWanwan_c.h"
 extern "C" {
 int func_ov014_02111fb8(char* c);
 char* _ZN8dActor_c15FindWithActorIDEjPS_(unsigned int a, void* b);
@@ -21,7 +21,7 @@ char* _ZN8dActor_c13ClosestPlayerEv(char* self);
 void _ZN5dCc_c6UpdateEv(void* self);
 }
 
-int ChainChomp::Behavior()
+int daWanwan_c::Behavior()
 {
     mIsOnGround = 0;
     {

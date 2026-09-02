@@ -521,12 +521,12 @@ ov014	0x02111254	func_ov014_02111254	_ZN14daObjBSwdoor_c16CleanupResourcesEv	vta
 ov014	0x02111268	func_ov014_02111268	_ZN14daObjBSwdoor_c8BehaviorEv	vtable slot 6
 ov014	0x02111294	func_ov014_02111294	_ZN14daObjBSwdoor_c13InitResourcesEv	vtable slot 0
 ov014	0x021112cc	func_ov014_021112cc	daObjBSwdoor_c_Spawn	spawnfunc
-ov014	0x02111308	func_ov014_02111308	_ZN10ChainChompD1Ev	vtable slot 16
-ov014	0x021113bc	func_ov014_021113bc	_ZN10ChainChompD0Ev	vtable slot 17
-ov014	0x0211294c	func_ov014_0211294c	_ZN10ChainChomp16CleanupResourcesEv	vtable slot 3
-ov014	0x02112994	func_ov014_02112994	_ZN10ChainChomp6RenderEv	vtable slot 9
-ov014	0x021129ec	func_ov014_021129ec	_ZN10ChainChomp8BehaviorEv	vtable slot 6
-ov014	0x02112b14	func_ov014_02112b14	_ZN10ChainChomp13InitResourcesEv	vtable slot 0
+ov014	0x02111308	func_ov014_02111308	_ZN10daWanwan_cD1Ev	vtable slot 16
+ov014	0x021113bc	func_ov014_021113bc	_ZN10daWanwan_cD0Ev	vtable slot 17
+ov014	0x0211294c	func_ov014_0211294c	_ZN10daWanwan_c16CleanupResourcesEv	vtable slot 3
+ov014	0x02112994	func_ov014_02112994	_ZN10daWanwan_c6RenderEv	vtable slot 9
+ov014	0x021129ec	func_ov014_021129ec	_ZN10daWanwan_c8BehaviorEv	vtable slot 6
+ov014	0x02112b14	func_ov014_02112b14	_ZN10daWanwan_c13InitResourcesEv	vtable slot 0
 ov014	0x02112d1c	func_ov014_02112d1c	ChainChomp_Spawn	spawnfunc
 ov014	0x02112d1c	ChainChomp_Spawn	daWanwan_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov014	0x02112e0c	func_ov014_02112e0c	_ZN20daObjWanwanShutter_cD1Ev	vtable slot 16
@@ -541,7 +541,7 @@ ov014	0x021145e4	data_ov014_021145e4	daObjBSwdoor_c_SpawnInfo	spawninfo
 ov014	0x02114608	data_ov014_02114608	_ZTV14daObjBSwdoor_c	vtable alloc=0x324
 ov014	0x02114750	data_ov014_02114750	ChainChomp_SpawnInfo	spawninfo
 ov014	0x02114750	ChainChomp_SpawnInfo	g_profile_WANWAN	reconstructed profile global; literal ROM ID WANWAN+registry role+later EAD lineage; exact SM64DS spelling not preserved
-ov014	0x021147ec	data_ov014_021147ec	_ZTV10ChainChomp	vtable alloc=0x620
+ov014	0x021147ec	data_ov014_021147ec	_ZTV10daWanwan_c	vtable alloc=0x620
 ov014	0x0211488c	data_ov014_0211488c	ChainChompFence_SpawnInfo	spawninfo
 ov014	0x0211488c	ChainChompFence_SpawnInfo	g_profile_WANWAN_SHUTTER	reconstructed profile global; literal ROM ID WANWAN_SHUTTER+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov014	0x021148b0	data_ov014_021148b0	_ZTV20daObjWanwanShutter_c	vtable alloc=0x320

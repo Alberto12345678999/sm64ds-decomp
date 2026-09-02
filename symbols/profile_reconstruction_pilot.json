@@ -2277,7 +2277,7 @@
       "tu_left_boundary_confidence": "high",
       "tu_right_boundary_confidence": "high",
       "tu_classes": [
-        "ChainChomp"
+        "daWanwan_c"
       ],
       "tu_profiles": [
         "WANWAN"
@@ -2295,7 +2295,7 @@
           ],
           "evidence": [
             "5 of 5 ownership global(s) map through consumers to ov014:1",
-            "ordered hypothesis ov014:1 (ov014/ChainChomp): module has one sinit per candidate TU; this is corroboration, not proof"
+            "ordered hypothesis ov014:1 (ov014/daWanwan_c): module has one sinit per candidate TU; this is corroboration, not proof"
           ],
           "blockers": []
         }

@@ -1,9 +1,9 @@
 //cpp
-// @symbol _ZN10ChainChomp13InitResourcesEv
+// @symbol _ZN10daWanwan_c13InitResourcesEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 #include "decl_common.h"
 /* recovered: named members + shared header, real C++ method */
-#include "ChainChomp.h"
+#include "daWanwan_c.h"
 extern "C" void *_ZN5Model8LoadFileER13SharedFilePtr(void *fp);
 extern "C" void _ZN9ModelBase7SetFileEP8BMD_Fileii(void *self, void *bmd, int a, int b);
 extern "C" void *_ZN9Animation8LoadFileER13SharedFilePtr(void *fp);
@@ -14,7 +14,7 @@ extern "C" void *_ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(unsigned int a,
 extern char data_ov014_02114980;
 extern char data_ov014_02114970;
 
-int ChainChomp::InitResources()
+int daWanwan_c::InitResources()
 {
     unsigned char *c = (unsigned char *)((void *)this);
     void *f;

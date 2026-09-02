@@ -3398,13 +3398,13 @@
    "start": "0x2111308",
    "end": "0x2112e0c",
    "classes": [
-    "ChainChomp"
+    "daWanwan_c"
    ],
    "n_functions_map": 29,
    "n_files": 29,
    "files": [
-    "src/_ZN10ChainChompD1Ev.cpp",
-    "src/_ZN10ChainChompD0Ev.cpp",
+    "src/_ZN10daWanwan_cD1Ev.cpp",
+    "src/_ZN10daWanwan_cD0Ev.cpp",
     "src/func_ov014_02111484.c",
     "src/func_ov014_021114d8.c",
     "src/func_ov014_0211150c.c",
@@ -3427,10 +3427,10 @@
     "src/func_ov014_0211236c.c",
     "src/func_ov014_0211250c.c",
     "src/func_ov014_02112788.c",
-    "src/_ZN10ChainChomp16CleanupResourcesEv.cpp",
-    "src/_ZN10ChainChomp6RenderEv.cpp",
-    "src/_ZN10ChainChomp8BehaviorEv.cpp",
-    "src/_ZN10ChainChomp13InitResourcesEv.cpp",
+    "src/_ZN10daWanwan_c16CleanupResourcesEv.cpp",
+    "src/_ZN10daWanwan_c6RenderEv.cpp",
+    "src/_ZN10daWanwan_c8BehaviorEv.cpp",
+    "src/_ZN10daWanwan_c13InitResourcesEv.cpp",
     "src/daWanwan_c_classInit.cpp"
    ],
    "ext_mix": {

@@ -7,7 +7,7 @@ int _ZN10dCcAcPos_cC1Ev(void*);
 int _ZN9ModelAnimC1Ev(void*);
 int _ZN11ShadowModelC1Ev(void*);
 int func_020733a8(void*, int, int, void*, void*);
-extern int _ZTV10ChainChomp[];
+extern int _ZTV10daWanwan_c[];
 extern void _ZN5ModelD1Ev();
 extern void _ZN5ModelC1Ev();
 extern void _ZN11ShadowModelD1Ev();
@@ -21,7 +21,7 @@ void* daWanwan_c_classInit(void){
   char* c = (char*)_ZN7fBase_cnwEj(0x620);
   if(c){
     _ZN12dEnemyBase_cC2Ev(c);
-    *(int**)c = _ZTV10ChainChomp;
+    *(int**)c = _ZTV10daWanwan_c;
     _ZN10dCcAcPos_cC1Ev(c+0x110);
     _ZN9ModelAnimC1Ev(c+0x150);
     _ZN11ShadowModelC1Ev(c+0x1b4);

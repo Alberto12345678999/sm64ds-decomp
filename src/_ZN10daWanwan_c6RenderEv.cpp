@@ -1,7 +1,7 @@
 //cpp
-// @symbol _ZN10ChainChomp6RenderEv
+// @symbol _ZN10daWanwan_c6RenderEv
 /* recovered: named members + shared header, real C++ method */
-#include "ChainChomp.h"
+#include "daWanwan_c.h"
 struct A;
 struct B {
     virtual void m0();
@@ -12,7 +12,7 @@ struct B {
     virtual void m5(A* arg);
 };
 
-int ChainChomp::Render()
+int daWanwan_c::Render()
 {
     B *b = (B*)((char *)&mModelAnim);
     b->m5((A*)((char *)&mScaleX));

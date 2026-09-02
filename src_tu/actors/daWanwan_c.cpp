@@ -1,5 +1,5 @@
 //cpp
-/* HAND-ASSEMBLED translation unit -- ov014/ChainChomp (29 function(s)).
+/* HAND-ASSEMBLED translation unit -- ov014/daWanwan_c (29 function(s)).
  * tubuild create refused this TU (legacy bodies wrapped in extern "C" { }),
  * so this is a raw concatenation of the complete legacy files in REVERSE
  * ROM order (mwccarm emits one .text section per function in the reverse
@@ -7,8 +7,8 @@
  * the manifest notes.
  *
  * Assembled from these legacy one-function sources (ROM address order):
- *   [0] 0x02111308  src/_ZN10ChainChompD1Ev.cpp
- *   [1] 0x021113bc  src/_ZN10ChainChompD0Ev.cpp
+ *   [0] 0x02111308  src/_ZN10daWanwan_cD1Ev.cpp
+ *   [1] 0x021113bc  src/_ZN10daWanwan_cD0Ev.cpp
  *   [2] 0x02111484  src/func_ov014_02111484.c
  *   [3] 0x021114d8  src/func_ov014_021114d8.c
  *   [4] 0x0211150c  src/func_ov014_0211150c.c
@@ -31,10 +31,10 @@
  *   [21] 0x0211236c  src/func_ov014_0211236c.c
  *   [22] 0x0211250c  src/func_ov014_0211250c.c
  *   [23] 0x02112788  src/func_ov014_02112788.c
- *   [24] 0x0211294c  src/_ZN10ChainChomp16CleanupResourcesEv.cpp
- *   [25] 0x02112994  src/_ZN10ChainChomp6RenderEv.cpp
- *   [26] 0x021129ec  src/_ZN10ChainChomp8BehaviorEv.cpp
- *   [27] 0x02112b14  src/_ZN10ChainChomp13InitResourcesEv.cpp
+ *   [24] 0x0211294c  src/_ZN10daWanwan_c16CleanupResourcesEv.cpp
+ *   [25] 0x02112994  src/_ZN10daWanwan_c6RenderEv.cpp
+ *   [26] 0x021129ec  src/_ZN10daWanwan_c8BehaviorEv.cpp
+ *   [27] 0x02112b14  src/_ZN10daWanwan_c13InitResourcesEv.cpp
  *   [28] 0x02112d1c  src/daWanwan_c_classInit.cpp
  */
 
@@ -48,7 +48,7 @@ int _ZN10dCcAcPos_cC1Ev(void*);
 int _ZN9ModelAnimC1Ev(void*);
 int _ZN11ShadowModelC1Ev(void*);
 int func_020733a8(void*, int, int, void*, void*);
-extern int _ZTV10ChainChomp[];
+extern int _ZTV10daWanwan_c[];
 extern void _ZN5ModelD1Ev();
 extern void _ZN5ModelC1Ev();
 extern void _ZN11ShadowModelD1Ev();
@@ -59,7 +59,7 @@ void* daWanwan_c_classInit(void){
   char* c = (char*)_ZN7fBase_cnwEj(0x620);
   if(c){
     _ZN12dEnemyBase_cC2Ev(c);
-    *(int**)c = &_ZTV10ChainChomp[2]; /* +8: this TU defines the vtable */
+    *(int**)c = &_ZTV10daWanwan_c[2]; /* +8: this TU defines the vtable */
     _ZN10dCcAcPos_cC1Ev(c+0x110);
     _ZN9ModelAnimC1Ev(c+0x150);
     _ZN11ShadowModelC1Ev(c+0x1b4);
@@ -73,13 +73,13 @@ void* daWanwan_c_classInit(void){
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 27 -- _ZN10ChainChomp13InitResourcesEv, 0x02112b14, size 0x208 */
+/* ROM ordinal 27 -- _ZN10daWanwan_c13InitResourcesEv, 0x02112b14, size 0x208 */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN10ChainChomp13InitResourcesEv
+// @symbol _ZN10daWanwan_c13InitResourcesEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 #include "decl_common.h"
 /* recovered: named members + shared header, real C++ method */
-#include "ChainChomp.h"
+#include "daWanwan_c.h"
 extern "C" void *_ZN5Model8LoadFileER13SharedFilePtr(void *fp);
 extern "C" void _ZN9ModelBase7SetFileEP8BMD_Fileii(void *self, void *bmd, int a, int b);
 extern "C" void *_ZN9Animation8LoadFileER13SharedFilePtr(void *fp);
@@ -90,7 +90,7 @@ extern "C" void *_ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(unsigned int a,
 extern char data_ov014_02114980;
 extern char data_ov014_02114970;
 
-int ChainChomp::InitResources()
+int daWanwan_c::InitResources()
 {
     unsigned char *c = (unsigned char *)((void *)this);
     void *f;
@@ -181,13 +181,13 @@ int ChainChomp::InitResources()
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 26 -- _ZN10ChainChomp8BehaviorEv, 0x021129ec, size 0x128 */
+/* ROM ordinal 26 -- _ZN10daWanwan_c8BehaviorEv, 0x021129ec, size 0x128 */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN10ChainChomp8BehaviorEv
+// @symbol _ZN10daWanwan_c8BehaviorEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 #include "decl_common.h"
 /* recovered: named members + shared header, real C++ method */
-#include "ChainChomp.h"
+#include "daWanwan_c.h"
 extern "C" {
 int func_ov014_02111fb8(char* c);
 char* _ZN8dActor_c15FindWithActorIDEjPS_(unsigned int a, void* b);
@@ -205,7 +205,7 @@ char* _ZN8dActor_c13ClosestPlayerEv(char* self);
 void _ZN5dCc_c6UpdateEv(void* self);
 }
 
-int ChainChomp::Behavior()
+int daWanwan_c::Behavior()
 {
     mIsOnGround = 0;
     {
@@ -250,11 +250,11 @@ int ChainChomp::Behavior()
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 25 -- _ZN10ChainChomp6RenderEv, 0x02112994, size 0x58 */
+/* ROM ordinal 25 -- _ZN10daWanwan_c6RenderEv, 0x02112994, size 0x58 */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN10ChainChomp6RenderEv
+// @symbol _ZN10daWanwan_c6RenderEv
 /* recovered: named members + shared header, real C++ method */
-#include "ChainChomp.h"
+#include "daWanwan_c.h"
 struct A;
 struct B {
     virtual void m0();
@@ -265,7 +265,7 @@ struct B {
     virtual void m5(A* arg);
 };
 
-int ChainChomp::Render()
+int daWanwan_c::Render()
 {
     B *b = (B*)((char *)&mModelAnim);
     b->m5((A*)((char *)&mScaleX));
@@ -283,17 +283,17 @@ int ChainChomp::Render()
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 24 -- _ZN10ChainChomp16CleanupResourcesEv, 0x0211294c, size 0x48 */
+/* ROM ordinal 24 -- _ZN10daWanwan_c16CleanupResourcesEv, 0x0211294c, size 0x48 */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN10ChainChomp16CleanupResourcesEv
+// @symbol _ZN10daWanwan_c16CleanupResourcesEv
 
-#include "ChainChomp.h"
+#include "daWanwan_c.h"
 #include "SharedFilePtr.h"
 
 extern "C" {
 }
 
-int ChainChomp::CleanupResources()
+int daWanwan_c::CleanupResources()
 {
     ((SharedFilePtr *)&data_ov014_02114968)->Release();  /* decl_common's char view; same object */
     ((SharedFilePtr *)&data_ov014_02114978)->Release();
@@ -1176,35 +1176,35 @@ void func_ov014_02111484(char* c){
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 1 -- _ZN10ChainChompD0Ev, 0x021113bc, size 0xc8 */
+/* ROM ordinal 1 -- _ZN10daWanwan_cD0Ev, 0x021113bc, size 0xc8 */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN10ChainChompD0Ev
+// @symbol _ZN10daWanwan_cD0Ev
 /* recovered: real C++ deleting destructor -- the compiler emits the whole body
  *
- * Destroy through ChainChomp and dEnemyBase_c, then hand the object back through
+ * Destroy through daWanwan_c and dEnemyBase_c, then hand the object back through
  * dActor_c's inline operator delete. The hand-written version declared its own
  * `data_020a0eac` for the actor heap, which collides with the `void *` dActor_c.h
  * supplies for that same symbol once the real header is in scope.
  */
-#include "ChainChomp.h"
+#include "daWanwan_c.h"
 
-/* (no separate definition: the single ~ChainChomp() below emits the D0 and
+/* (no separate definition: the single ~daWanwan_c() below emits the D0 and
  * D1 variants together.) */
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 0 -- _ZN10ChainChompD1Ev, 0x02111308, size 0xb4 */
+/* ROM ordinal 0 -- _ZN10daWanwan_cD1Ev, 0x02111308, size 0xb4 */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN10ChainChompD1Ev
+// @symbol _ZN10daWanwan_cD1Ev
 /* recovered: real C++ destructor -- the compiler emits the whole body
  *
  * Four array cleanups and three member destructors, reverse declaration order
- * out of ChainChomp.h. Seven links means seven of nearly everything: Model[7]
+ * out of daWanwan_c.h. Seven links means seven of nearly everything: Model[7]
  * at 0x1dc, ShadowModel[7] at 0x40c, and two Vector3[7] at 0x524 and 0x578 for
  * the per-link positions. Every element type was already named in the tree.
  */
-#include "ChainChomp.h"
+#include "daWanwan_c.h"
 
-ChainChomp::~ChainChomp()
+daWanwan_c::~daWanwan_c()
 {
 }
 
