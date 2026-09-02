@@ -167,7 +167,7 @@ adjustments):
 `KCL_File` (0x38) and `KCL_Tri` (0x10) are typed and documented in
 `include/dBgW_Kc.h`, gate-clean. **[N✓]** Load path, all matched:
 
-1. `Stage::LoadClsnAndObjects` (ov002 0x020fe190) — the level path.
+1. `Stage::LoadClsnAndObjects` ([ov002](../config/arm9/overlays/ov002/symbols.txt) 0x020fe190) — the level path.
 2. `dBgW_Kc::LoadFile(SharedFilePtr&)` (0x02017afc) — per-actor; rebases only on the
    first reference.
 3. `UpdateFileOffsets` (0x02039760) — turns the four header words 0x00–0x0c from file
@@ -242,7 +242,7 @@ not files, so they run higher than a `grep -l` over `src/`, which corroborates t
 
 **There is no central mesh-collision sweep.** Every actor calls it from its own
 `Behavior()`. The veneers `dBgCh_Actr_UpdateContinuous_Veneer` (44 call sites) and
-`…UpdateDiscreteNoLava_veneer` (19) are spread across ov002/030/070/072/085/098/100;
+`…UpdateDiscreteNoLava_veneer` (19) are spread across [ov002](../config/arm9/overlays/ov002/symbols.txt)/[ov030](../config/arm9/overlays/ov030/symbols.txt)/[ov070](../config/arm9/overlays/ov070/symbols.txt)/[ov072](../config/arm9/overlays/ov072/symbols.txt)/[ov085](../config/arm9/overlays/ov085/symbols.txt)/[ov098](../config/arm9/overlays/ov098/symbols.txt)/[ov100](../config/arm9/overlays/ov100/symbols.txt);
 `dBgCh_Gnd::DetectClsn` has 105 call sites and `dBgCh_Lin::DetectClsn` 57. The only
 engine-driven collision call per frame is `dCc_c::Process()` inside
 `Stage::Render()`. **[P]**
@@ -321,7 +321,7 @@ Three things on that branch are harvestable into `main` with no byte risk:
    collapses the Itanium D1/D0 pair into one slot and every virtual past it lands one slot
    low — `GetPos` indexes what is `D0` in a ROM-shaped table. The ROM shape is
    `[0] D1, [1] D0, [2] GetPos, [3] GetOwnerID`, and the matched grab test
-   `func_ov002_020caf98` calls slot 2 for `GetPos`, confirming it. Any host or portable
+   [func_ov002_020caf98](../src/func_ov002_020caf98.cpp) calls slot 2 for `GetPos`, confirming it. Any host or portable
    build must keep the ROM shape and dispatch by explicit slot.
 
 The 1,143-commit gap is mostly the class-rename campaign, which the port branch predates —
@@ -340,7 +340,7 @@ concentrated in structure, status, and numbers.
 |---|---|---|
 | `collision-query-classes.md:21` | "embedded polymorphic member, **not** inheritance depth" | **WRONG** — RTTI says three public bases (§3.1) |
 | `collision-query-classes.md:43` | "do not rename `func_020380ec` to `dBgPi`" | **SUPERSEDED** by #1206 — it is `_ZN5dBgPiD2Ev` |
-| `collision-query-classes.md:56` | dBgCh_Lin's 0x38 member "is overlay-resident" | dtor **is** in ov002 (4-byte `bx lr`) but the *type* is not — `dM3dGLin`'s RTTI is in arm9 |
+| `collision-query-classes.md:56` | dBgCh_Lin's 0x38 member "is overlay-resident" | dtor **is** in [ov002](../config/arm9/overlays/ov002/symbols.txt) (4-byte `bx lr`) but the *type* is not — `dM3dGLin`'s RTTI is in arm9 |
 | `collision-query-classes.md` (0x5c) | "0x5c = `lineEnd.z`" | **TRUE** — retracted 2026-08-19; see the dual-role note below |
 | `collision-query-classes.md:882` | wall slab is "**symmetric**", half-width `unk_ec + radius` | **WRONG** — asymmetric `[-(ec+rad), ec-rad]`; the note quoted four instructions and missed the `sub` |
 | `collision-query-classes.md:886` | a wall "wholly **outside** the slab is not a real contact" | **INVERTED** — all three vertices *inside* ⇒ reject |
@@ -365,9 +365,9 @@ concentrated in structure, status, and numbers.
 #### Retraction: `dBgCh_Lin` 0x54 is not misnamed
 
 A first pass of this survey reported that 0x54 should be `clsnPos`, not `lineEnd`. **That was
-wrong, and it rested on an inverted premise** — that `func_ov002_020fea4c` is `GetStart`. Read
+wrong, and it rested on an inverted premise** — that [func_ov002_020fea4c](../src/func_ov002_020fea4c.c) is `GetStart`. Read
 the body: `a[0..2] = b[3..5]` reads offset 0x44, the `dM3dGLin`'s *second* `Vector3`, so it is
-**GetEnd**; `func_ov002_020fea68` (`b[0..2]`) is GetStart.
+**GetEnd**; [func_ov002_020fea68](../src/func_ov002_020fea68.c) (`b[0..2]`) is GetStart.
 
 So `func_02037608` seeds 0x54 from the line **end**, and `dBgW_KcMbg::DetectClsn`
 depends on that, transforming 0x38 and 0x54 as the two endpoints of the scratch segment. On a
@@ -1682,7 +1682,7 @@ declaration.
 
 ### Free-standing quick win — measured 2026-08-19
 
-`dEnemyBase_c::UpdateYoshiEat(dBgCh_Actr&)`, ov002 0x020ade78, 0x3cc. **Two instructions
+`dEnemyBase_c::UpdateYoshiEat(dBgCh_Actr&)`, [ov002](../config/arm9/overlays/ov002/symbols.txt) 0x020ade78, 0x3cc. **Two instructions
 from matching:** `align target=243 cand=243 ratio=0.9877, equal=240, replace=1, insert=2,
 delete=2`.
 
