@@ -63,7 +63,7 @@ src/CccArena_Spawn.c	WEAK-refs-only	ov073				1		None		-
 src/CccBigIce_Spawn.c	WEAK-refs-only	ov073				1		None		-
 src/CccSmallIce_Spawn.c	WEAK-refs-only	ov073				1		None		-
 src/CgStairs_Spawn.c	WEAK-refs-only	ov102				1		None		-
-src/ChainChompFence_Spawn.c	WEAK-refs-only	ov014				1		None		-
+src/daObjWanwanShutter_c_classInit.c	WEAK-refs-only	ov014				1		None		-
 src/ChangeArea.c	PURE-C	arm9				1		None		-
 src/CheepCheep_Spawn.c	WEAK-refs-only	ov090				1		None		-
 src/daIDonketu_c_Spawn.c	WEAK-refs-only	ov027				1		None		-
@@ -236,7 +236,7 @@ src/LavaBubble_Spawn.c	WEAK-refs-only	ov064				1		None		-
 src/LavaPlank_Spawn.c	WEAK-refs-only	ov022				1		None		-
 src/LavaSeesaw_Spawn.c	S1-stores-rom-vptr	ov022			stores _ZTV10LavaSeesaw	1		None	_ZTV10LavaSeesaw	-
 src/LenVec3.c	PURE-C	arm9				1		None		-
-src/LightBeam_Spawn.c	WEAK-refs-only	ov010				1		None		-
+src/daObjC1Hikari_c_classInit.c	WEAK-refs-only	ov010				1		None		-
 src/LinkSilverStarAndStarMarker.c	PURE-C	ov002				1		None		-
 src/LoadArchive.c	PURE-C	arm9				1		None		-
 src/LoadBlueCoinModel.c	WEAK-refs-only	arm9				1		None		-
@@ -330,7 +330,7 @@ src/OpenCannonInLevel.c	PURE-C	arm9				1		None		-
 src/OrangeBallBillboard_Spawn.c	WEAK-refs-only	ov044				1		None		-
 src/Ov004_Deallocate.c	PURE-C	ov004				1		None		-
 src/Painting_Spawn.c	S1-stores-rom-vptr	ov080			stores _ZTV8Painting	1		None	_ZTV8Painting	-
-src/PeachPainting_Spawn.c	WEAK-refs-only	ov010				1		None		-
+src/daObjC1Peach_c_classInit.c	WEAK-refs-only	ov010				1		None		-
 src/PiranhaPlant_Spawn.c	WEAK-refs-only	ov084				1		None		-
 src/Player_DisableInteraction.c	PURE-C	ov002				1		None		-
 src/Player_PlaySoundEffect.c	PURE-C	arm9				1		None		-
@@ -424,11 +424,11 @@ src/SharedFilePtr_Destruct_TexSeq.c	PURE-C	arm9				1		None		-
 src/Shark_Spawn.c	WEAK-refs-only	ov090				1		None		-
 src/ShipDown_Spawn.c	WEAK-refs-only	ov016				1		None		-
 src/ShipUp_Spawn.c	WEAK-refs-only	ov016				1		None		-
-src/ShipWater_Spawn.c	WEAK-refs-only	ov017				1		None		-
+src/daObjKsWater_c_classInit.c	WEAK-refs-only	ov017				1		None		-
 src/ShipWing_Spawn.c	WEAK-refs-only	ov036				1		None		-
 src/ShowArea.c	PURE-C	arm9				1		None		-
 src/ShowCrashScreen.c	WEAK-refs-only	arm9				1		None		-
-src/ShutterBob_Spawn.c	S1-stores-rom-vptr	ov014			stores _ZTV10ShutterBob	1		None	_ZTV10ShutterBob/_ZTV13daObjSwdoor_c	-
+src/daObjBSwdoor_c_classInit.c	S1-stores-rom-vptr	ov014			stores _ZTV10ShutterBob	1		None	_ZTV10ShutterBob/_ZTV13daObjSwdoor_c	-
 src/ShutterHmc_Spawn.c	S1-stores-rom-vptr	ov021			stores _ZTV10ShutterHmc	1		None	_ZTV10ShutterHmc/_ZTV13daObjSwdoor_c	-
 src/SignPost_Spawn.c	WEAK-refs-only	ov002				1		None		-
 src/SilverStarBlockTag_Spawn.c	WEAK-refs-only	ov002				1		None		-

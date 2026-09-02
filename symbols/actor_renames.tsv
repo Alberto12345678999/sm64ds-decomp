@@ -453,6 +453,7 @@ ov010	0x02111ab8	func_ov010_02111ab8	_ZN14daObjC1_Trap_c6RenderEv	vtable slot 9
 ov010	0x02111ae0	func_ov010_02111ae0	_ZN14daObjC1_Trap_c8BehaviorEv	vtable slot 6
 ov010	0x02111d20	func_ov010_02111d20	_ZN14daObjC1_Trap_c13InitResourcesEv	vtable slot 0
 ov010	0x02111dd0	func_ov010_02111dd0	LightBeam_Spawn	spawnfunc
+ov010	0x02111dd0	LightBeam_Spawn	daObjC1Hikari_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov010	0x02111e10	func_ov010_02111e10	_ZN13PeachPaintingD1Ev	vtable slot 16
 ov010	0x02111e40	func_ov010_02111e40	_ZN13PeachPaintingD0Ev	vtable slot 17
 ov010	0x02111ec4	func_ov010_02111ec4	_ZN13PeachPainting16CleanupResourcesEv	vtable slot 3
@@ -460,10 +461,13 @@ ov010	0x02111ee8	func_ov010_02111ee8	_ZN13PeachPainting6RenderEv	vtable slot 9
 ov010	0x02111f28	func_ov010_02111f28	_ZN13PeachPainting8BehaviorEv	vtable slot 6
 ov010	0x02111fc0	func_ov010_02111fc0	_ZN13PeachPainting13InitResourcesEv	vtable slot 0
 ov010	0x02112004	func_ov010_02112004	PeachPainting_Spawn	spawnfunc
+ov010	0x02112004	PeachPainting_Spawn	daObjC1Peach_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov010	0x02112ac0	data_ov010_02112ac0	Trap_SpawnInfo	spawninfo
 ov010	0x02112b84	data_ov010_02112b84	LightBeam_SpawnInfo	spawninfo
+ov010	0x02112b84	LightBeam_SpawnInfo	g_profile_C1_HIKARI	reconstructed profile global; literal ROM ID C1_HIKARI+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov010	0x02112ba8	data_ov010_02112ba8	_ZTV14daObjC1_Trap_c	vtable alloc=0x3b0
 ov010	0x02112c44	data_ov010_02112c44	PeachPainting_SpawnInfo	spawninfo
+ov010	0x02112c44	PeachPainting_SpawnInfo	g_profile_C1_PEACH	reconstructed profile global; literal ROM ID C1_PEACH+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov010	0x02112c68	data_ov010_02112c68	_ZTV13PeachPainting	vtable alloc=0x128
 ov012	0x02111420	func_ov012_02111420	daObjC0_Switch_c_Spawn	spawnfunc
 ov012	0x02111450	func_ov012_02111450	_ZN16daObjC0_Switch_cD1Ev	vtable slot 16
@@ -497,6 +501,7 @@ ov014	0x02111254	func_ov014_02111254	_ZN10ShutterBob16CleanupResourcesEv	vtable 
 ov014	0x02111268	func_ov014_02111268	_ZN10ShutterBob8BehaviorEv	vtable slot 6
 ov014	0x02111294	func_ov014_02111294	_ZN10ShutterBob13InitResourcesEv	vtable slot 0
 ov014	0x021112cc	func_ov014_021112cc	ShutterBob_Spawn	spawnfunc
+ov014	0x021112cc	ShutterBob_Spawn	daObjBSwdoor_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov014	0x02111308	func_ov014_02111308	_ZN10ChainChompD1Ev	vtable slot 16
 ov014	0x021113bc	func_ov014_021113bc	_ZN10ChainChompD0Ev	vtable slot 17
 ov014	0x0211294c	func_ov014_0211294c	_ZN10ChainChomp16CleanupResourcesEv	vtable slot 3
@@ -511,11 +516,14 @@ ov014	0x02112f80	func_ov014_02112f80	_ZN15ChainChompFence6RenderEv	vtable slot 9
 ov014	0x02112fc0	func_ov014_02112fc0	_ZN15ChainChompFence8BehaviorEv	vtable slot 6
 ov014	0x02112ffc	func_ov014_02112ffc	_ZN15ChainChompFence13InitResourcesEv	vtable slot 0
 ov014	0x0211307c	func_ov014_0211307c	ChainChompFence_Spawn	spawnfunc
+ov014	0x0211307c	ChainChompFence_Spawn	daObjWanwanShutter_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov014	0x021145e4	data_ov014_021145e4	ShutterBob_SpawnInfo	spawninfo
+ov014	0x021145e4	ShutterBob_SpawnInfo	g_profile_SWITCHDOOR	reconstructed profile global; literal ROM ID SWITCHDOOR+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov014	0x02114608	data_ov014_02114608	_ZTV10ShutterBob	vtable alloc=0x324
 ov014	0x02114750	data_ov014_02114750	ChainChomp_SpawnInfo	spawninfo
 ov014	0x021147ec	data_ov014_021147ec	_ZTV10ChainChomp	vtable alloc=0x620
 ov014	0x0211488c	data_ov014_0211488c	ChainChompFence_SpawnInfo	spawninfo
+ov014	0x0211488c	ChainChompFence_SpawnInfo	g_profile_WANWAN_SHUTTER	reconstructed profile global; literal ROM ID WANWAN_SHUTTER+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov014	0x021148b0	data_ov014_021148b0	_ZTV15ChainChompFence	vtable alloc=0x320
 ov015	0x021112dc	func_ov015_021112dc	PoleBillboard_Spawn	spawnfunc
 ov015	0x02111314	func_ov015_02111314	_ZN13PoleBillboardD1Ev	vtable slot 16
@@ -609,7 +617,9 @@ ov017	0x02111290	func_ov017_02111290	_ZN9ShipWater6RenderEv	vtable slot 9
 ov017	0x021112c4	func_ov017_021112c4	_ZN9ShipWater8BehaviorEv	vtable slot 6
 ov017	0x021113c0	func_ov017_021113c0	_ZN9ShipWater13InitResourcesEv	vtable slot 0
 ov017	0x02111480	func_ov017_02111480	ShipWater_Spawn	spawnfunc
+ov017	0x02111480	ShipWater_Spawn	daObjKsWater_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov017	0x02111bd4	data_ov017_02111bd4	ShipWater_SpawnInfo	spawninfo
+ov017	0x02111bd4	ShipWater_SpawnInfo	g_profile_KS_MIZU	reconstructed profile global; literal ROM ID KS_MIZU+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov017	0x02111bf8	data_ov017_02111bf8	_ZTV9ShipWater	vtable alloc=0x340
 ov018	0x02111818	func_ov018_02111818	SkiLift_Spawn	spawnfunc
 ov018	0x02111848	func_ov018_02111848	_ZN7SkiLiftD1Ev	vtable slot 16
