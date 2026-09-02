@@ -1951,17 +1951,17 @@
    "start": "0x211137c",
    "end": "0x2111728",
    "classes": [
-    "ArrowLift"
+    "daObjWc_Obj02_c"
    ],
    "n_functions_map": 9,
    "n_files": 9,
    "files": [
-    "src/_ZN9ArrowLiftD1Ev.c",
-    "src/_ZN9ArrowLiftD0Ev.c",
-    "src/_ZN9ArrowLift16CleanupResourcesEv.cpp",
-    "src/_ZN9ArrowLift6RenderEv.cpp",
-    "src/_ZN9ArrowLift8BehaviorEv.cpp",
-    "src/_ZN9ArrowLift13InitResourcesEv.cpp",
+    "src/_ZN15daObjWc_Obj02_cD1Ev.c",
+    "src/_ZN15daObjWc_Obj02_cD0Ev.c",
+    "src/_ZN15daObjWc_Obj02_c16CleanupResourcesEv.cpp",
+    "src/_ZN15daObjWc_Obj02_c6RenderEv.cpp",
+    "src/_ZN15daObjWc_Obj02_c8BehaviorEv.cpp",
+    "src/_ZN15daObjWc_Obj02_c13InitResourcesEv.cpp",
     "src/func_ov029_021116c4.cpp",
     "src/func_ov029_021116e4.c",
     "src/daObjWc_Obj02_c_classInit.c"

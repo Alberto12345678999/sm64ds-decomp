@@ -11,7 +11,7 @@ src/actors/d_a_obj_wc_obj01.cpp:
     .data start:0x02113c08 end:0x02113cac
     .bss start:0x02114230 end:0x02114248
 
-src_tu/actors/ArrowLift.cpp:
+src/actors/d_a_obj_wc_obj02.cpp:
     .text start:0x0211137c end:0x02111728
     .init start:0x02112ba4 end:0x02112c10
     .ctor start:0x02112e6c end:0x02112e70
