@@ -81,7 +81,21 @@ struct daChScene_c : dActor_c {
        comparisons. */
     Matrix4x3 mInvMat;            /* 0x0d4 */
 
-    virtual ~daChScene_c();
+    /* MEASURED -- INLINE ON PURPOSE, do not move this body out of line.
+     * Out of line, mwcc emits D2, D0, D1; the ROM has D1 at ov002 0x020b09b0
+     * then D0 at 0x020b09d4 and no D2 at all. Production isolation lays .text
+     * into the spanning delink in EMISSION order, so the out-of-line spelling
+     * fails tubuild linkcheck even when every function's bytes match and
+     * objisolate calls the object clean -- objisolate checks one object's
+     * relocations, never the order the linker will see. Inline, the emission
+     * is D1, D0, no D2: the ROM's own order.
+     *
+     * Safe here only because this class is a LEAF. Its _ZTI is ov002
+     * 0x02108674, and the only word in any extracted binary pointing at it is
+     * 0x021086b0 -- the class's own vtable slot -- so no other class names it
+     * as a base and no other TU's codegen moves with this. See the leaf proof
+     * in src/actors/d_a_ch_scene.cpp. */
+    virtual ~daChScene_c() {}
 
     virtual s32 InitResources();
     virtual s32 CleanupResources();
