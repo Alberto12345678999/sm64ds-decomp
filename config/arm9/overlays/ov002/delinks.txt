@@ -4591,27 +4591,27 @@ src/OneUpLogo_Spawn.c:
     complete
     .text start:0x020f1170 end:0x020f11b0
 
-src/_ZN14BlueCoinSwitchD1Ev.cpp:
+src/_ZN16daObjBC_Switch_cD1Ev.cpp:
     complete
     .text start:0x020f11b0 end:0x020f11f4
 
-src/_ZN14BlueCoinSwitchD0Ev.cpp:
+src/_ZN16daObjBC_Switch_cD0Ev.cpp:
     complete
     .text start:0x020f11f4 end:0x020f124c
 
-src/_ZN14BlueCoinSwitch16CleanupResourcesEv.cpp:
+src/_ZN16daObjBC_Switch_c16CleanupResourcesEv.cpp:
     complete
     .text start:0x020f124c end:0x020f1290
 
-src/_ZN14BlueCoinSwitch6RenderEv.cpp:
+src/_ZN16daObjBC_Switch_c6RenderEv.cpp:
     complete
     .text start:0x020f1290 end:0x020f12c8
 
-src/_ZN14BlueCoinSwitch8BehaviorEv.cpp:
+src/_ZN16daObjBC_Switch_c8BehaviorEv.cpp:
     complete
     .text start:0x020f12c8 end:0x020f1468
 
-src/_ZN14BlueCoinSwitch13InitResourcesEv.cpp:
+src/_ZN16daObjBC_Switch_c13InitResourcesEv.cpp:
     complete
     .text start:0x020f1468 end:0x020f1578
 

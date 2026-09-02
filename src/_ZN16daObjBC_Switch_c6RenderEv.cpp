@@ -1,12 +1,12 @@
 //cpp
-// @symbol _ZN14BlueCoinSwitch6RenderEv
+// @symbol _ZN16daObjBC_Switch_c6RenderEv
 /* recovered: named members + shared header, real C++ method
  *
  * Draws the switch only while it is still above its stop. Behavior sinks mPosY
  * toward mStopPosY once pressed, so this comparison IS the visibility rule --
  * the switch vanishes exactly when it bottoms out, with no separate flag.
  */
-#include "BlueCoinSwitch.h"
+#include "daObjBC_Switch_c.h"
 
 struct Base {
     virtual void v0();
@@ -17,7 +17,7 @@ struct Base {
     virtual void m(int);
 };
 
-int BlueCoinSwitch::Render()
+int daObjBC_Switch_c::Render()
 {
     if (mPosY > mStopPosY) {
         Base *bp = (Base *)&mModel;

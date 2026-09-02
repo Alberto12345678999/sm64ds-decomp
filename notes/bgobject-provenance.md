@@ -22,7 +22,7 @@ Bodies read: `src/_ZN10StarSwitch13InitResourcesEv.cpp`,
 
 | Offset | Name | Evidence |
 | --- | --- | --- |
-| 0x320 | `mDrawScaleX` | `InitResources` writes `0x1000` (Fix12 1.0) to 0x320/0x324/0x328; `Render` passes `&mDrawScaleX` to the `Model` at 0xd4 through vtable slot 5. `BlueCoinSwitch::Render` calls the same slot with a literal `0` — so the argument is an optional pointer, and three consecutive Fix12 1.0s behind it are a scale vector. |
+| 0x320 | `mDrawScaleX` | `InitResources` writes `0x1000` (Fix12 1.0) to 0x320/0x324/0x328; `Render` passes `&mDrawScaleX` to the `Model` at 0xd4 through vtable slot 5. `daObjBC_Switch_c::Render` calls the same slot with a literal `0` — so the argument is an optional pointer, and three consecutive Fix12 1.0s behind it are a scale vector. |
 | 0x324 | `mDrawScaleY` | as above |
 | 0x328 | `mDrawScaleZ` | as above |
 | 0x334 | `mMusicVolume` | `Behavior` reads it into `v`, tests `v == 0x40` / `v == 0x7f`, then passes `v` as the first argument of `Sound::ChangeMusicVolume(u32, Fix12i)`. Every other caller in the tree (`Message::PrepareTalk`, `Message::EndTalk`, `Player::St_Talk_Main`, `func_0201f32c`) passes the literals `0x40` / `0x7f` there, so that parameter is a target volume level, not an id. |
@@ -53,7 +53,7 @@ Raw-offset collapses, each re-verified byte-exact:
 * `Behavior`: `*(void **)((char *)&unk_348) = a;` → `mTargetActor = (s32)a;`.
 * `Render`: the local `struct C { char p1[0xd4]; Sub sub; }` shadow of the whole object
   is gone; the call now goes through `&mModel` directly, matching the shape
-  `BlueCoinSwitch::Render` already used.
+  `daObjBC_Switch_c::Render` already used.
 * `CleanupResources`: `((dBgW *)((char *)&(*(u8 *)&mMeshCollider)))` →
   `((dBgW *)&mMeshCollider)`.
 
@@ -317,13 +317,13 @@ around it are free. The measurement is in a comment at the site.
 
 ---
 
-## BlueCoinSwitch (`include/BlueCoinSwitch.h`, [ov002](../config/arm9/overlays/ov002/symbols.txt), size 0x330)
+## daObjBC_Switch_c (`include/daObjBC_Switch_c.h`, [ov002](../config/arm9/overlays/ov002/symbols.txt), size 0x330)
 
 This header already carried a full prose account of every offset; the names below just
 make the code say what the prose said. Bodies read:
-`src/_ZN14BlueCoinSwitch13InitResourcesEv.cpp`,
-`src/_ZN14BlueCoinSwitch8BehaviorEv.cpp`, `src/_ZN14BlueCoinSwitch6RenderEv.cpp`,
-`src/_ZN14BlueCoinSwitch16CleanupResourcesEv.cpp`.
+`src/_ZN16daObjBC_Switch_c13InitResourcesEv.cpp`,
+`src/_ZN16daObjBC_Switch_c8BehaviorEv.cpp`, `src/_ZN16daObjBC_Switch_c6RenderEv.cpp`,
+`src/_ZN16daObjBC_Switch_c16CleanupResourcesEv.cpp`.
 
 | Offset | Name | Evidence |
 | --- | --- | --- |
@@ -335,7 +335,7 @@ make the code say what the prose said. Bodies read:
 | 0x32d | `mEventBit` | `param1 & 0xf`, passed straight to `Event::SetBit(u32)`. |
 | 0x32e | `mHomeAreaId` | `InitResources` copies `mAreaId` here before `Behavior` sets `mAreaId = -1`, and `Behavior` passes it to `IsAreaShowing`. |
 
-The rename carried into `src_tu/actors/BlueCoinSwitch.cpp` as well as `src/` — the
+The rename carried into `src_tu/actors/daObjBC_Switch_c.cpp` as well as `src/` — the
 shadow TU builds only under a `tuModules` profile, so a stale spelling there compiles
 nowhere and no normal gate would have caught it. `tools/check_src_tu_compiles.py`
 (72/72) and `tools/check_src_tu.py` were run after.

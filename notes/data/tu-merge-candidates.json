@@ -3960,17 +3960,17 @@
    "start": "0x20f11b0",
    "end": "0x20f15fc",
    "classes": [
-    "BlueCoinSwitch"
+    "daObjBC_Switch_c"
    ],
    "n_functions_map": 9,
    "n_files": 9,
    "files": [
-    "src/_ZN14BlueCoinSwitchD1Ev.cpp",
-    "src/_ZN14BlueCoinSwitchD0Ev.cpp",
-    "src/_ZN14BlueCoinSwitch16CleanupResourcesEv.cpp",
-    "src/_ZN14BlueCoinSwitch6RenderEv.cpp",
-    "src/_ZN14BlueCoinSwitch8BehaviorEv.cpp",
-    "src/_ZN14BlueCoinSwitch13InitResourcesEv.cpp",
+    "src/_ZN16daObjBC_Switch_cD1Ev.cpp",
+    "src/_ZN16daObjBC_Switch_cD0Ev.cpp",
+    "src/_ZN16daObjBC_Switch_c16CleanupResourcesEv.cpp",
+    "src/_ZN16daObjBC_Switch_c6RenderEv.cpp",
+    "src/_ZN16daObjBC_Switch_c8BehaviorEv.cpp",
+    "src/_ZN16daObjBC_Switch_c13InitResourcesEv.cpp",
     "src/func_ov002_020f1578.c",
     "src/func_ov002_020f15b8.c",
     "src/daObjBC_Switch_c_classInit.c"

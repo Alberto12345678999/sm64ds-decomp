@@ -1,5 +1,5 @@
 //cpp
-// @symbol _ZN14BlueCoinSwitch8BehaviorEv
+// @symbol _ZN16daObjBC_Switch_c8BehaviorEv
 /* recovered: named members + shared header, real C++ method
  *
  * The switch's whole life, and none of it runs until mPressed says it has been
@@ -23,8 +23,8 @@
  * Position and collision are updated regardless, and the collider only when the
  * player is within 0x1f4000.
  */
-#include "BlueCoinSwitch.h"
-// @symbol _ZN14BlueCoinSwitch8BehaviorEv
+#include "daObjBC_Switch_c.h"
+// @symbol _ZN16daObjBC_Switch_c8BehaviorEv
 // recovered name: daObjBC_Switch_c_Behavior
 /* recovered: renamed to Class_Method, declarations from a shared header */
 /* recovered: renamed to Class_Method */
@@ -51,7 +51,7 @@ extern void _ZN10dBgActor_c19UpdateClsnPosAndRotEv(void *self);
 #include "decl_common.h"
 }
 
-s32 BlueCoinSwitch::Behavior()
+s32 daObjBC_Switch_c::Behavior()
 {
     char *c = (char *)this;
     u16 t;

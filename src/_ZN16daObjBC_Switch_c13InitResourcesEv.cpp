@@ -1,7 +1,7 @@
 //cpp
-// @symbol _ZN14BlueCoinSwitch13InitResourcesEv
+// @symbol _ZN16daObjBC_Switch_c13InitResourcesEv
 /* recovered: renamed to Class_Method, RTTI class fields named, declarations from a shared header */
-// @symbol _ZN14BlueCoinSwitch13InitResourcesEv
+// @symbol _ZN16daObjBC_Switch_c13InitResourcesEv
 /* recovered: named members + shared header, real C++ method
  *
  * Loads the model and collision mesh, unpacks the spawn word, and computes how
@@ -30,7 +30,7 @@
  * case-insensitive regex over source TEXT, so naming that idiom in prose moves
  * the file into the hacks bucket and fails the ratchet.)
  */
-#include "BlueCoinSwitch.h"
+#include "daObjBC_Switch_c.h"
 extern "C" {
 #include "decl_common.h"
 }
@@ -52,7 +52,7 @@ extern "C" void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_
 extern "C" void func_020393c4(void* p, void* v);
 
 
-int BlueCoinSwitch::InitResources()
+int daObjBC_Switch_c::InitResources()
 {
     char* c = (char*)this;
     void* bmd;
