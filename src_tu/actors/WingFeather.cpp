@@ -30,7 +30,7 @@
  * of this TU. `#pragma long_calls` is POSITIONAL in mwccarm 2004/b56 and is
  * carried verbatim before its own member below, bracketed with `off` so it
  * cannot leak into later members (dropping it silently costs the pooled
- * cross-overlay tail-call -- a byte diff; see ShutterBob in ov014).
+ * cross-overlay tail-call -- a byte diff; see daObjBSwdoor_c in ov014).
  * Any OTHER pragma is FILE-GLOBAL last-wins (opt_propagation,
  * optimize_for_size) and is still left out: carried into a merged TU it
  * would silently recompile every other member. Decide those by hand:
@@ -369,7 +369,7 @@ extern "C" void func_ov002_020b2c44(void *cv)
  * destructor; the compiler emits D0 itself from it plus dActor_c's inline
  * operator delete, byte-identical to the ROM. A hand-written D0 free
  * function next to a real D1 in the same TU is an mwcc ICE (ELFgen.c:483) --
- * confirmed on InvisiblePole/#1722, CameraTag/#1724, VirtualDoor/#1725, and
+ * confirmed on InvisiblePole/#1722, daCamTag_c/#1724, VirtualDoor/#1725, and
  * Exit/#1726 before this pilot. */
 
 /* -------------------------------------------------------------------------- */

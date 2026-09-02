@@ -155,15 +155,15 @@ and provably C++; 84 distinct classes; **83 already have `include/<Class>.h`**. 
 **36** have a header that already declares the exact method inside an `#ifdef __cplusplus`
 guard; 31 enrolled; **26 in safe-pool TUs** (ceded to the merge per §7).
 
-`include/FallBlockBfs.h` is the exemplar and is already correct in the way that matters:
+`include/daObjKm2_Fall_Block_c.h` is the exemplar and is already correct in the way that matters:
 
 ```cpp
-struct FallBlockBfs : daObjFallBlock_c {
-    virtual ~FallBlockBfs();       /* slots 16 (D1), 17 (D0) */
+struct daObjKm2_Fall_Block_c : daObjFallBlock_c {
+    virtual ~daObjKm2_Fall_Block_c();       /* slots 16 (D1), 17 (D0) */
     int CleanupResources();            /* slot  3 */
     int InitResources();               /* slot  0 */
 };
-typedef char FallBlockBfs_size_must_be_0x34c[sizeof(FallBlockBfs) == 0x34c ? 1 : -1];
+typedef char daObjKm2_Fall_Block_c_size_must_be_0x34c[sizeof(daObjKm2_Fall_Block_c) == 0x34c ? 1 : -1];
 ```
 
 The two vtable-slot methods are declared **non-virtual on purpose**. Mangling is
@@ -171,33 +171,41 @@ unaffected by virtualness, and not declaring them `virtual` is what keeps this f
 becoming the key-function TU and emitting `_ZTV` — the exact trap the class-form skill
 warns about. **Preserve that; do not "fix" it to `virtual`.**
 
-**SINCE LANDED.** This pilot went in with #1684, essentially as written below; the
-file is now `src/_ZN12FallBlockBfs13InitResourcesEv.cpp`. Kept because the reasoning
-above it is what the rest of the queue rests on.
+**SINCE LANDED, AND SINCE SUPERSEDED.** This pilot went in with #1684, essentially as
+written below. The class has since been renamed to the cartridge's own
+`daObjKm2_Fall_Block_c` and consolidated into one genuine TU,
+`src/actors/d_a_obj_km2_fall_block.cpp`, which is why every path in this section now
+names that file: the five per-function sources are gone. Both slot methods are now
+declared plainly, so `CleanupResources` (the first declared non-inline virtual, the
+destructor being inline) deliberately IS the key function, and the `no _ZTV` half of the
+follow-on check below is void for this class. With one TU there is exactly one place for
+the RTTI group to land, and the class stays unverifiable against the cartridge until it
+does. The reasoning above is kept because the rest of the queue still rests on it, and it
+still holds wherever a class remains spread over per-function files.
 
-The exact edit (`src/_ZN12FallBlockBfs13InitResourcesEv.cpp`, `0x02111e10`, size `0x14`, ov045):
+The exact edit (`src/actors/d_a_obj_km2_fall_block.cpp`, `0x02111e10`, size `0x14`, ov045):
 
 ```cpp
 //cpp
-#include "FallBlockBfs.h"
+#include "daObjKm2_Fall_Block_c.h"
 extern "C" int func_ov098_0213a794(void *self, void *data);
 extern "C" int data_ov045_021130ac[];
-int FallBlockBfs::InitResources() { return func_ov098_0213a794(this, data_ov045_021130ac); }
+int daObjKm2_Fall_Block_c::InitResources() { return func_ov098_0213a794(this, data_ov045_021130ac); }
 ```
 
 This is a **real** migration: the compiler mangles the name. Verify that claim with the
 oracle **before** the byte gate — it needs no ROM and no serialization:
 
 ```
-python tools/mangle.py src/_ZN12FallBlockBfs13InitResourcesEv.cpp \
-    --expect _ZN12FallBlockBfs13InitResourcesEv
+python tools/mangle.py src/actors/d_a_obj_km2_fall_block.cpp \
+    --expect _ZN21daObjKm2_Fall_Block_c13InitResourcesEv
 ```
 
 **Failure modes:**
 
 1. `sizeof(X) == 0xNNN` static-assert fires → the base-class header chain has a layout
    error. **Loud, and a genuine find** — but it is header work, so bounce that class to S3.
-2. `this` is now typed `FallBlockBfs*` where the body assumed `void*`/`char*` → add an
+2. `this` is now typed `daObjKm2_Fall_Block_c*` where the body assumed `void*`/`char*` → add an
    explicit cast. Codegen-neutral; the single most common edit.
 3. Enrolled count falls → some class in the batch does have an out-of-line destructor in a
    sibling file and the include chain moved the anchor. Bisect by class; the offender goes
@@ -283,6 +291,13 @@ merge. So S1 legitimately harvests blocked-pool files; S6 does not.
 
 **`src/_ZN10ChillBully14UpdateRunStateEv.cpp`**, chosen deliberately over the smaller candidates.
 
+> HISTORICAL. What follows is a captured transcript of a pilot that ran while this class
+> was still going by its coined name. `ChillBully` is `daIDonketu_c` — the cartridge's own
+> name, measured at the top of `include/daIDonketu_c.h` — and all seven of its
+> per-function sources have since been folded into one translation unit, source-owned as
+> `actors/d_a_i_donketu.cpp`. The paths and symbols below are left as the pilot spelled
+> them, so none of them is in the tree any more.
+
 Why not the 4-byte `src/_ZN9dThIcon_c6RenderEv.cpp` (an empty `bx lr`): a stub is
 codegen-identical in both languages by construction and would validate nothing. This file
 is the smallest candidate that puts **real code** through the C→C++ front end while
@@ -295,7 +310,7 @@ holding every other variable fixed:
 * Zero lexical hazards, so a failure is unambiguously codegen, not hygiene.
 * Enrolled; no entry in `config/rombuild-versions.txt`, so `match.py`'s default
   `CANONICAL` **is** the build's pin.
-* Sits in a **safe-pool** TU (ov027 @`0x21115c4`, 7 members, `ChillBully`+`daIDonketu_c`),
+* Sits in a **safe-pool** TU (ov027 @`0x21115c4`, 7 members, all `ChillBully`'s),
   so a green result immediately feeds the merge workstream.
 * Includes `decl_common.h`, so it also exercises the one include known to be sometimes wrong.
 
@@ -345,14 +360,17 @@ python tools/match.py --c src/_ZN10ChillBully14UpdateRunStateEv.cpp \
 and the pilot deliberately excludes:
 
 ```
-python tools/mangle.py src/_ZN12FallBlockBfs13InitResourcesEv.cpp --expect _ZN12FallBlockBfs13InitResourcesEv
-python tools/match.py --c src/_ZN12FallBlockBfs13InitResourcesEv.cpp \
-    --func _ZN12FallBlockBfs13InitResourcesEv --addr 0x02111e10 --size 0x14 --module ov045
+python tools/mangle.py src/actors/d_a_obj_km2_fall_block.cpp --expect _ZN21daObjKm2_Fall_Block_c13InitResourcesEv
+python tools/match.py --c src/actors/d_a_obj_km2_fall_block.cpp \
+    --func _ZN21daObjKm2_Fall_Block_c13InitResourcesEv --addr 0x02111e10 --size 0x14 --module ov045
 ```
 
-Pass = `mangle.py` reports the expected symbol **and no `_ZTV12FallBlockBfs`**, plus a
-clean `match.py`. If `_ZTV` appears, S2's premise (that the non-virtual declaration keeps
-the anchor elsewhere) is false and S2/S3 must be re-scoped as merge work.
+Pass = `mangle.py` reports the expected symbol, plus a clean `match.py`. (As written the
+check also demanded **no `_ZTV21daObjKm2_Fall_Block_c`**; that half is void for this class
+now that its consolidated TU is the key-function TU on purpose and emits the group. Where
+a class is still spread over per-function files, S2's premise � that the non-virtual
+declaration keeps the anchor elsewhere � is still what the `_ZTV` check tests, and if it
+appears there, S2/S3 must be re-scoped as merge work.)
 
 ## 4. Deliberately not touched
 
