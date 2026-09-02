@@ -215,6 +215,7 @@ def analyze(config_root=DEFAULT_CONFIG_ROOT, profile="stock", build_root=None):
     per_module_bad = collections.Counter()
     source_functions = source_bytes = mod_functions = mod_bytes = 0
     source_data_bytes = 0
+    source_bss_claims = source_bss_bytes = 0
     source_data_claims = bad_data_claims = bad_data_bytes = 0
     reproducing_data_claims = reproducing_data_bytes = 0
     reproducing = reproducing_bytes = bad = bad_function_bytes = differing_source_bytes = 0
@@ -249,7 +250,7 @@ def analyze(config_root=DEFAULT_CONFIG_ROOT, profile="stock", build_root=None):
                               if rel.startswith("mods/")]
         source_data_bytes += _covered_bytes(
             [(addr, end) for rel, name, addr, end in entry_sections
-             if rel.startswith("src/") and name not in (".text", ".init")],
+             if rel.startswith("src/") and name not in (".text", ".init", ".bss")],
             base, max(len(built), len(retail)))
         module_diff, unexpected_diff = _diff_counts(built, retail, allowed_mod_ranges)
         module_results.append({
@@ -325,6 +326,13 @@ def analyze(config_root=DEFAULT_CONFIG_ROOT, profile="stock", build_root=None):
             if not rel.startswith("src/") or name in (".text", ".init"):
                 continue
             size = end - addr
+            if name == ".bss":
+                # BSS is NOBITS and deliberately lies beyond the initialized module
+                # image. Intact-object admission separately verifies its emitted
+                # size, symbol addresses/bindings, configured boundaries, and link.
+                source_bss_claims += 1
+                source_bss_bytes += size
+                continue
             source_data_claims += 1
             lo, hi = addr - base, end - base
             row = {"module": label, "name": pathlib.Path(rel).stem, "addr": addr,
@@ -419,6 +427,8 @@ def analyze(config_root=DEFAULT_CONFIG_ROOT, profile="stock", build_root=None):
             # function count that no function is behind. differingSourceBytes is
             # shared, because a differing byte is a differing byte either way.
             "sourceDataClaims": source_data_claims,
+            "sourceBssClaims": source_bss_claims,
+            "sourceBssBytes": source_bss_bytes,
             "reproducingDataClaims": reproducing_data_claims,
             "reproducingDataClaimBytes": reproducing_data_bytes,
             "mismatchingDataClaims": bad_data_claims,
@@ -453,6 +463,9 @@ def print_report(report, show=12):
         print(f"source-owned data claims: {sf['sourceDataClaims']:,}  "
               f"(reproducing {sf.get('reproducingDataClaims', 0):,}, "
               f"mismatching {sf.get('mismatchingDataClaims', 0):,})")
+    if sf.get("sourceBssClaims"):
+        print(f"source-owned BSS claims: {sf['sourceBssClaims']:,}  "
+              f"({sf.get('sourceBssBytes', 0):,} NOBITS bytes; object/symbol gates)")
     print(f"module fidelity: {mf['modulesExact']}/{mf['modulesChecked']} exact, "
           f"{mf['percent']:.6f}% of compared bytes")
     mc = report.get("moduleComposition")
