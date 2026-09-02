@@ -1,6 +1,6 @@
 //cpp
 /* Manually curated shadow translation unit.
- * ov002/AmbientSoundEffects  (8 function(s))
+ * ov002/daSetSE_c  (8 function(s))
  *
  * NOT ENROLLED and NOT CANONICAL.  The readable class and member definitions
  * are compiled only by tubuild's scratch pipeline while the eight legacy
@@ -13,26 +13,26 @@
  * exception (a destructor's D0/D1/D2 group has compiler-chosen order).
  *
  * Assembled from these legacy one-function sources (ROM address order):
- *   [0] 0x020f198c  src/_ZN19AmbientSoundEffectsD1Ev.cpp
- *   [1] 0x020f19b0  src/_ZN19AmbientSoundEffectsD0Ev.cpp
- *   [2] 0x020f19e8  src/_ZN19AmbientSoundEffects16CleanupResourcesEv.cpp
- *   [3] 0x020f19f0  src/_ZN19AmbientSoundEffects16OnPendingDestroyEv.cpp
- *   [4] 0x020f19f4  src/_ZN19AmbientSoundEffects6RenderEv.cpp
- *   [5] 0x020f19fc  src/_ZN19AmbientSoundEffects8BehaviorEv.cpp
- *   [6] 0x020f1ac4  src/_ZN19AmbientSoundEffects13InitResourcesEv.cpp
- *   [7] 0x020f1b94  src/AmbientSoundEffects_Spawn.c
+ *   [0] 0x020f198c  src/_ZN9daSetSE_cD1Ev.cpp
+ *   [1] 0x020f19b0  src/_ZN9daSetSE_cD0Ev.cpp
+ *   [2] 0x020f19e8  src/_ZN9daSetSE_c16CleanupResourcesEv.cpp
+ *   [3] 0x020f19f0  src/_ZN9daSetSE_c16OnPendingDestroyEv.cpp
+ *   [4] 0x020f19f4  src/_ZN9daSetSE_c6RenderEv.cpp
+ *   [5] 0x020f19fc  src/_ZN9daSetSE_c8BehaviorEv.cpp
+ *   [6] 0x020f1ac4  src/_ZN9daSetSE_c13InitResourcesEv.cpp
+ *   [7] 0x020f1b94  src/daSetSE_c_Spawn.c
  *
- * Naming boundary: these configured text symbols use AmbientSoundEffects,
+ * Naming boundary: these configured text symbols use daSetSE_c,
  * while the adjacent retail RTTI spells daSetSE_c. Until that symbol migration
  * is resolved, this TU claims only the eight verified text contributions; its
  * generated RTTI/vtable is evidence, not licensed retail data.
  */
 
-#include "AmbientSoundEffects.h"
+#include "daSetSE_c.h"
 #include "Camera.h"
 
 extern "C" {
-extern int _ZTV19AmbientSoundEffects[];
+extern int _ZTV9daSetSE_c[];
 extern void *_ZN7fBase_cnwEj(unsigned);
 extern void _ZN8dActor_cC2Ev(void *);
 extern u32 _ZN5Sound8PlayLongEjjjRK7Vector3s(u32 a, u32 b, u32 c, void *v, u32 e);
@@ -49,25 +49,25 @@ extern int data_0209fc48;
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 7 -- AmbientSoundEffects_Spawn, 0x020f1b94, size 0x30 */
+/* ROM ordinal 7 -- daSetSE_c_Spawn, 0x020f1b94, size 0x30 */
 /* -------------------------------------------------------------------------- */
-// @symbol AmbientSoundEffects_Spawn
-extern "C" AmbientSoundEffects *AmbientSoundEffects_Spawn(void)
+// @symbol daSetSE_c_Spawn
+extern "C" daSetSE_c *daSetSE_c_Spawn(void)
 {
-    AmbientSoundEffects *p =
-        (AmbientSoundEffects *)_ZN7fBase_cnwEj(sizeof(AmbientSoundEffects));
+    daSetSE_c *p =
+        (daSetSE_c *)_ZN7fBase_cnwEj(sizeof(daSetSE_c));
     if (p) {
         _ZN8dActor_cC2Ev(p);
-        *(int *)p = (int)&_ZTV19AmbientSoundEffects[2];
+        *(int *)p = (int)&_ZTV9daSetSE_c[2];
     }
     return p;
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 6 -- _ZN19AmbientSoundEffects13InitResourcesEv, 0x020f1ac4, size 0xd0 */
+/* ROM ordinal 6 -- _ZN9daSetSE_c13InitResourcesEv, 0x020f1ac4, size 0xd0 */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN19AmbientSoundEffects13InitResourcesEv
-int AmbientSoundEffects::InitResources()
+// @symbol _ZN9daSetSE_c13InitResourcesEv
+int daSetSE_c::InitResources()
 {
     int flag;
 
@@ -91,10 +91,10 @@ int AmbientSoundEffects::InitResources()
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 5 -- _ZN19AmbientSoundEffects8BehaviorEv, 0x020f19fc, size 0xc8 */
+/* ROM ordinal 5 -- _ZN9daSetSE_c8BehaviorEv, 0x020f19fc, size 0xc8 */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN19AmbientSoundEffects8BehaviorEv
-int AmbientSoundEffects::Behavior()
+// @symbol _ZN9daSetSE_c8BehaviorEv
+int daSetSE_c::Behavior()
 {
     u32 param;
     int a;
@@ -119,32 +119,32 @@ int AmbientSoundEffects::Behavior()
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 4 -- _ZN19AmbientSoundEffects6RenderEv, 0x020f19f4, size 0x8 */
+/* ROM ordinal 4 -- _ZN9daSetSE_c6RenderEv, 0x020f19f4, size 0x8 */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN19AmbientSoundEffects6RenderEv
-int AmbientSoundEffects::Render()
+// @symbol _ZN9daSetSE_c6RenderEv
+int daSetSE_c::Render()
 {
     return 1;
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 3 -- _ZN19AmbientSoundEffects16OnPendingDestroyEv, 0x020f19f0, size 0x4 */
+/* ROM ordinal 3 -- _ZN9daSetSE_c16OnPendingDestroyEv, 0x020f19f0, size 0x4 */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN19AmbientSoundEffects16OnPendingDestroyEv
-void AmbientSoundEffects::OnPendingDestroy()
+// @symbol _ZN9daSetSE_c16OnPendingDestroyEv
+void daSetSE_c::OnPendingDestroy()
 {
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 2 -- _ZN19AmbientSoundEffects16CleanupResourcesEv, 0x020f19e8, size 0x8 */
+/* ROM ordinal 2 -- _ZN9daSetSE_c16CleanupResourcesEv, 0x020f19e8, size 0x8 */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN19AmbientSoundEffects16CleanupResourcesEv
-int AmbientSoundEffects::CleanupResources()
+// @symbol _ZN9daSetSE_c16CleanupResourcesEv
+int daSetSE_c::CleanupResources()
 {
     return 1;
 }
 
 /* ROM ordinals 0/1 -- the compiler emits D1 and D0 from this definition. */
-AmbientSoundEffects::~AmbientSoundEffects()
+daSetSE_c::~daSetSE_c()
 {
 }

@@ -1,13 +1,13 @@
-// @symbol AmbientSoundEffects_Spawn
+// @symbol daSetSE_c_Spawn
 /* recovered: globals resolved, declarations from a shared header */
 #include "decl_Actor.h"
 #include "decl_ActorBase.h"
 #include "decl_common.h"
 /* recovered: globals resolved */
-/* resolved: VT = _ZTV19AmbientSoundEffects */
-int *AmbientSoundEffects_Spawn(void)
+/* resolved: VT = _ZTV9daSetSE_c */
+int *daSetSE_c_Spawn(void)
 {
     int *p = (int *)_ZN7fBase_cnwEj(216);
-    if (p) { _ZN8dActor_cC2Ev(p); p[0] = (int)_ZTV19AmbientSoundEffects; }
+    if (p) { _ZN8dActor_cC2Ev(p); p[0] = (int)_ZTV9daSetSE_c; }
     return p;
 }

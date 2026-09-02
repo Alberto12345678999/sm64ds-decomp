@@ -1,6 +1,6 @@
 //cpp
-// @symbol _ZN19AmbientSoundEffects13InitResourcesEv
-#include "AmbientSoundEffects.h"
+// @symbol _ZN9daSetSE_c13InitResourcesEv
+#include "daSetSE_c.h"
 extern "C" int IsStarCollectedInLevel(s8 levelID, int starID);
 extern s8 data_0209f2f8;
 extern u8 data_0209f220;
@@ -9,7 +9,7 @@ extern int data_0209caa0[];
 extern int data_0209fc48;
 extern int data_ov002_02110aec;
 
-int AmbientSoundEffects::InitResources()
+int daSetSE_c::InitResources()
 {
     int flag;
 

@@ -1,6 +1,6 @@
 //cpp
-// @symbol _ZN19AmbientSoundEffects8BehaviorEv
-#include "AmbientSoundEffects.h"
+// @symbol _ZN9daSetSE_c8BehaviorEv
+#include "daSetSE_c.h"
 #include "Camera.h"
 
 extern "C" {
@@ -12,7 +12,7 @@ extern int data_ov002_0210b498[];
 extern int data_ov002_02110aec;
 extern Camera *data_0209f318;
 
-int AmbientSoundEffects::Behavior()
+int daSetSE_c::Behavior()
 {
     u32 param;
     int a;

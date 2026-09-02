@@ -4759,35 +4759,35 @@ src/EnemySwitchTag_Spawn.c:
     complete
     .text start:0x020f1954 end:0x020f198c
 
-src/_ZN19AmbientSoundEffectsD1Ev.cpp:
+src/_ZN9daSetSE_cD1Ev.cpp:
     complete
     .text start:0x020f198c end:0x020f19b0
 
-src/_ZN19AmbientSoundEffectsD0Ev.cpp:
+src/_ZN9daSetSE_cD0Ev.cpp:
     complete
     .text start:0x020f19b0 end:0x020f19e8
 
-src/_ZN19AmbientSoundEffects16CleanupResourcesEv.cpp:
+src/_ZN9daSetSE_c16CleanupResourcesEv.cpp:
     complete
     .text start:0x020f19e8 end:0x020f19f0
 
-src/_ZN19AmbientSoundEffects16OnPendingDestroyEv.cpp:
+src/_ZN9daSetSE_c16OnPendingDestroyEv.cpp:
     complete
     .text start:0x020f19f0 end:0x020f19f4
 
-src/_ZN19AmbientSoundEffects6RenderEv.cpp:
+src/_ZN9daSetSE_c6RenderEv.cpp:
     complete
     .text start:0x020f19f4 end:0x020f19fc
 
-src/_ZN19AmbientSoundEffects8BehaviorEv.cpp:
+src/_ZN9daSetSE_c8BehaviorEv.cpp:
     complete
     .text start:0x020f19fc end:0x020f1ac4
 
-src/_ZN19AmbientSoundEffects13InitResourcesEv.cpp:
+src/_ZN9daSetSE_c13InitResourcesEv.cpp:
     complete
     .text start:0x020f1ac4 end:0x020f1b94
 
-src/AmbientSoundEffects_Spawn.c:
+src/daSetSE_c_Spawn.c:
     complete
     .text start:0x020f1b94 end:0x020f1bc4
 
