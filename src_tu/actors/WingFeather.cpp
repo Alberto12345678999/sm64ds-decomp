@@ -370,7 +370,7 @@ extern "C" void func_ov002_020b2c44(void *cv)
  * operator delete, byte-identical to the ROM. A hand-written D0 free
  * function next to a real D1 in the same TU is an mwcc ICE (ELFgen.c:483) --
  * confirmed on InvisiblePole/#1722, daCamTag_c/#1724, daChRoom_c/#1725, and
- * Exit/#1726 before this pilot. */
+ * daChScene_c/#1726 before this pilot. */
 
 /* -------------------------------------------------------------------------- */
 /* ROM ordinal 0 -- _ZN11WingFeatherD1Ev, 0x020b2ba0, size 0x48 */

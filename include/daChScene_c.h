@@ -1,11 +1,11 @@
 /* AUTO-GENERATED from matched-function evidence by tools/gen_header.py
- * class Exit: 4 matched functions, 12 evidenced fields.
+ * class daChScene_c: 4 matched functions, 12 evidenced fields.
  * Offsets/widths are observed, not guessed. Gaps are explicit padding.
  * Field NAMES are placeholders - renaming cannot change codegen.
  *
  * HAND-EXTENDED 2026-08-09 from all five methods. Do not regenerate over this.
  *
- * Exit is a TRIGGER VOLUME, not a moving actor -- it never moves and
+ * daChScene_c is a TRIGGER VOLUME, not a moving actor -- it never moves and
  * never draws (Render is `return 1`). So it inherits dActor_c's motion and scale
  * slots and uses them for something else entirely. The names below are dActor_c's,
  * kept deliberately so this header does not contradict include/dActor_c.h, but
@@ -33,15 +33,15 @@
  *                    0x20000 further along local -z until it clamps at
  *                    -0x300000.
  */
-#ifndef EXIT_H
-#define EXIT_H
+#ifndef DACHSCENE_C_H
+#define DACHSCENE_C_H
 #include "types.h"
 #include "math/Matrix.h"
 
 #ifdef __cplusplus
 #include "dActor_c.h"
 
-/* Exit is a real dActor_c, like every other actor in this family
+/* daChScene_c is a real dActor_c, like every other actor in this family
  * (daChRoom_c_Spawn's neighbor, daBar_c_classInit, and daCamTag_c_Spawn; the
  * bar factory's historical alias was InvisiblePole_Spawn) --
  * mParam/mPosX/mScaleX/mAngleX/mHorzSpeed above are dActor_c's own fields
@@ -73,7 +73,7 @@
  *                    0x20000 further along local -z until it clamps at
  *                    -0x300000.
  */
-struct Exit : dActor_c {
+struct daChScene_c : dActor_c {
     u8 pad_0d0[0x4];
     /* WORLD -> DOOR-LOCAL. InitResources builds translation, then rotation Y by
        -mAngleY and X by -mAngleX, then inverts in place -- so every Behavior
@@ -81,7 +81,7 @@ struct Exit : dActor_c {
        comparisons. */
     Matrix4x3 mInvMat;            /* 0x0d4 */
 
-    virtual ~Exit();
+    virtual ~daChScene_c();
 
     virtual s32 InitResources();
     virtual s32 CleanupResources();
@@ -90,7 +90,7 @@ struct Exit : dActor_c {
     virtual void OnPendingDestroy();
 };
 
-typedef char Exit_size_must_be_0x104[sizeof(Exit) == 0x104 ? 1 : -1];
+typedef char daChScene_c_size_must_be_0x104[sizeof(daChScene_c) == 0x104 ? 1 : -1];
 
 #else
 
@@ -100,7 +100,7 @@ typedef char Exit_size_must_be_0x104[sizeof(Exit) == 0x104 ? 1 : -1];
    below are dActor_c's own fields, re-listed here only because C cannot
    inherit them; their non-motion reuse as this class's trigger-box state is
    documented in the struct above. */
-struct Exit {
+struct daChScene_c {
     u8  pad_000[0x8];
     s32 mParam;            /* 0x008 */
     u8  pad_00c[0x50];
@@ -120,7 +120,7 @@ struct Exit {
     Matrix4x3 mInvMat;            /* 0x0d4 */
 };
 
-typedef char Exit_size_must_be_0x104_c[sizeof(struct Exit) == 0x104 ? 1 : -1];
+typedef char daChScene_c_size_must_be_0x104_c[sizeof(struct daChScene_c) == 0x104 ? 1 : -1];
 
 #endif /* __cplusplus */
 

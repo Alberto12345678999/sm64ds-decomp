@@ -1,13 +1,13 @@
-// @symbol Exit_Spawn
+// @symbol daChScene_c_Spawn
 /* recovered: globals resolved, declarations from a shared header */
 #include "decl_Actor.h"
 #include "decl_ActorBase.h"
 #include "decl_common.h"
 /* recovered: globals resolved */
-/* resolved: VT = _ZTV4Exit */
-int *Exit_Spawn(void)
+/* resolved: VT = _ZTV11daChScene_c */
+int *daChScene_c_Spawn(void)
 {
     int *p = (int *)_ZN7fBase_cnwEj(260);
-    if (p) { _ZN8dActor_cC2Ev(p); p[0] = (int)_ZTV4Exit; }
+    if (p) { _ZN8dActor_cC2Ev(p); p[0] = (int)_ZTV11daChScene_c; }
     return p;
 }

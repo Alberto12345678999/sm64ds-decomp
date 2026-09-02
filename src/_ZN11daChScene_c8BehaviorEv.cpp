@@ -1,5 +1,5 @@
 //cpp
-// @symbol _ZN4Exit8BehaviorEv
+// @symbol _ZN11daChScene_c8BehaviorEv
 /* recovered: named members + shared header, real C++ method
  *
  * Two modes, and mHorzSpeed picks which.
@@ -24,7 +24,7 @@
  * The whole thing is gated on data_02092110 < 0, so the door is inert unless
  * the level is in the right state.
  */
-#include "Exit.h"
+#include "daChScene_c.h"
 
 typedef struct Mtx { int m[12]; } Mtx;
 
@@ -51,7 +51,7 @@ extern char *data_0209f318;
 extern Mtx data_020a0e68;
 }
 
-int Exit::Behavior()
+int daChScene_c::Behavior()
 {
     int out1[3];
     int out2[3];
