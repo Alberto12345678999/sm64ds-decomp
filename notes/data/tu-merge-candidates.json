@@ -5282,19 +5282,19 @@
    "start": "0x20ec388",
    "end": "0x20ec56c",
    "classes": [
-    "Warp"
+    "daWarpkun_c"
    ],
    "n_functions_map": 8,
    "n_files": 8,
    "files": [
-    "src/_ZN4WarpD1Ev.cpp",
-    "src/_ZN4WarpD0Ev.c",
-    "src/_ZN4Warp16CleanupResourcesEv.cpp",
-    "src/_ZN4Warp16OnPendingDestroyEv.cpp",
-    "src/_ZN4Warp6RenderEv.cpp",
-    "src/_ZN4Warp8BehaviorEv.cpp",
-    "src/_ZN4Warp13InitResourcesEv.cpp",
-    "src/Warp_Spawn.c"
+    "src/_ZN11daWarpkun_cD1Ev.cpp",
+    "src/_ZN11daWarpkun_cD0Ev.c",
+    "src/_ZN11daWarpkun_c16CleanupResourcesEv.cpp",
+    "src/_ZN11daWarpkun_c16OnPendingDestroyEv.cpp",
+    "src/_ZN11daWarpkun_c6RenderEv.cpp",
+    "src/_ZN11daWarpkun_c8BehaviorEv.cpp",
+    "src/_ZN11daWarpkun_c13InitResourcesEv.cpp",
+    "src/daWarpkun_c_Spawn.c"
    ],
    "ext_mix": {
     ".cpp": 6,

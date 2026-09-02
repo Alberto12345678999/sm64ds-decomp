@@ -553,7 +553,7 @@ src/WaitByLoop.c	PURE-C					0		None		not-in-delinks
 src/WallSign_Spawn.c	WEAK-refs-only	ov085				1		None		-
 src/WarpPipe_Spawn.c	WEAK-refs-only	ov102				1		None		-
 src/WarpPlayer.c	PURE-C	arm9				1		None		-
-src/Warp_Spawn.c	S1-stores-rom-vptr	ov002			stores _ZTV4Warp	1		None	_ZTV4Warp	-
+src/daWarpkun_c_Spawn.c	S1-stores-rom-vptr	ov002			stores _ZTV11daWarpkun_c	1		None	_ZTV11daWarpkun_c	-
 src/WaterBomb_Spawn.c	WEAK-refs-only	ov098				1		None		-
 src/daObjWc_Obj03_c_classInit.c	WEAK-refs-only	ov029				1		None		-
 src/WaterRing_Spawn.c	WEAK-refs-only	ov064				1		None		-
@@ -913,7 +913,7 @@ src/_ZN4Tree16OnPendingDestroyEv.c	P1-vtable+mangled	ov002	daTree_c	Tree/daTree_
 src/_ZN4View6RenderEv.c	P1-vtable+mangled	arm9	dView_c	View/dView_c	vtable dView_c slot 9 @0x202fd0c | _ZN4View6RenderEv	1		False		no-header:View/dView_c
 src/_ZN4ViewD0Ev.cpp	DTOR-ONLY	arm9	dView_c	View/dView_c	_ZN4ViewD0Ev	1		False	_ZTV4View	no-header:View/dView_c
 src/_ZN4ViewD1Ev.cpp	DTOR-ONLY	arm9	dView_c	View/dView_c	_ZN4ViewD1Ev	1		False	_ZTV4View	no-header:View/dView_c
-src/_ZN4WarpD0Ev.c	DTOR-ONLY	ov002	daWarpkun_c	Warp/daWarpkun_c	_ZN4WarpD0Ev	1		True	_ZTV4Warp	-
+src/_ZN11daWarpkun_cD0Ev.c	DTOR-ONLY	ov002	daWarpkun_c	daWarpkun_c/daWarpkun_c	_ZN11daWarpkun_cD0Ev	1		True	_ZTV11daWarpkun_c	-
 src/_ZN4cstd10fdiv_asyncE5Fix12IiE5Fix12IiE.c	P3-mangled-method-only	arm9		cstd	_ZN4cstd10fdiv_asyncE5Fix12IiE5Fix12IiE	1		False		by-value-class-param;no-header:cstd
 src/_ZN4cstd16reciprocal_asyncE5Fix12IiE.c	P3-mangled-method-only	arm9		cstd	_ZN4cstd16reciprocal_asyncE5Fix12IiE	1		False		by-value-class-param;no-header:cstd
 src/_ZN4cstd5atan2E5Fix12IiES1_.c	P3-mangled-method-only	arm9		cstd	_ZN4cstd5atan2E5Fix12IiES1_	1		False		by-value-class-param;no-header:cstd

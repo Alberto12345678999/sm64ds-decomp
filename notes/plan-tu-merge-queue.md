@@ -131,7 +131,7 @@ ov002 0x20b0748  n=8  L=111  daCamTag_c                uncorrob
 ov002 0x20b07f8  n=8  L=121  daChRoom_c              uncorrob
 ov002 0x20b5734  n=7  L=164  BlueFlame                uncorrob
 ov002 0x20b6e08  n=5  L=67   WaterfallMist            uncorrob
-ov002 0x20ec388  n=8  L=148  Warp                     uncorrob
+ov002 0x20ec388  n=8  L=148  daWarpkun_c             uncorrob
 ov002 0x20f0dd0  n=8  L=176  OneUpLogo                uncorrob
 ov006 0x20dbd54  n=3  L=36   MgPicturePoker           uncorrob
 ov006 0x20fa6ac  n=2  L=30   MgPairAGoneAndOn         uncorrob
