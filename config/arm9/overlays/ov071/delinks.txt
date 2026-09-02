@@ -299,7 +299,7 @@ src/_ZN6Coffin13InitResourcesEv.cpp:
     complete
     .text start:0x0212255c end:0x02122670
 
-src/Coffin_Spawn.c:
+src/daObjCasket_c_classInit.c:
     complete
     .text start:0x02122670 end:0x021226a0
 

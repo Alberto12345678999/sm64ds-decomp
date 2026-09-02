@@ -2757,7 +2757,7 @@
     "src/_ZN6Coffin6RenderEv.cpp",
     "src/_ZN6Coffin8BehaviorEv.cpp",
     "src/_ZN6Coffin13InitResourcesEv.cpp",
-    "src/Coffin_Spawn.c"
+    "src/daObjCasket_c_classInit.c"
    ],
    "ext_mix": {
     ".c": 7,
@@ -8368,7 +8368,7 @@
     "src/_ZN10ShutterHmc16CleanupResourcesEv.cpp",
     "src/_ZN10ShutterHmc8BehaviorEv.cpp",
     "src/_ZN10ShutterHmc13InitResourcesEv.cpp",
-    "src/ShutterHmc_Spawn.c"
+    "src/daObjCvShutter_c_classInit.c"
    ],
    "ext_mix": {
     ".cpp": 4,
@@ -8799,7 +8799,7 @@
     "src/_ZN7SkiLift13InitResourcesEv.cpp",
     "src/func_ov018_021117e8.cpp",
     "src/func_ov018_02111804.c",
-    "src/SkiLift_Spawn.c"
+    "src/daObjSm_Lift_c_classInit.c"
    ],
    "ext_mix": {
     ".cpp": 8,
@@ -9504,7 +9504,7 @@
     "src/actors/FallBlockBbh/_ZN12FallBlockBbhD0Ev.cpp",
     "src/actors/FallBlockBbh/_ZN12FallBlockBbh16CleanupResourcesEv.cpp",
     "src/actors/FallBlockBbh/_ZN12FallBlockBbh13InitResourcesEv.cpp",
-    "src/actors/FallBlockBbh/FallBlockBbh_Spawn.c"
+    "src/actors/FallBlockBbh/daObjTh_Fall_Block_c_classInit.c"
    ],
    "ext_mix": {
     ".cpp": 3,
@@ -24767,7 +24767,7 @@
     "src/func_ov021_02111fe4.c",
     "src/func_ov021_02112024.cpp",
     "src/func_ov021_02112128.c",
-    "src/WorkElevator_Spawn.cpp"
+    "src/daObjCvNewsLift_c_classInit.cpp"
    ],
    "ext_mix": {
     ".cpp": 8,

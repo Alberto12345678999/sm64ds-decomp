@@ -15,7 +15,7 @@
  *   kind  __si_class_type_info, ONE base, subobject offset 0
  *   base  daObjSwdoor_c, ov002 0x021099c0
  *
- * SIZE 0x324, from ShutterHmc_Spawn's literal 804 -- the same as daObjBSwdoor_c's, and
+ * SIZE 0x324, from daObjCvShutter_c_classInit's literal 804 -- the same as daObjBSwdoor_c's, and
  * the two agreeing is what fixes the size for the pair. It overrides slots 0, 3
  * and 6, all three of which the base leaves null.
  *

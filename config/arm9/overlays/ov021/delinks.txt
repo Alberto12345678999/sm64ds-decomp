@@ -71,7 +71,7 @@ src/func_ov021_02112128.c:
     complete
     .text start:0x02112128 end:0x02112168
 
-src/WorkElevator_Spawn.cpp:
+src/daObjCvNewsLift_c_classInit.cpp:
     complete
     .text start:0x02112168 end:0x021121e8
 
@@ -147,7 +147,7 @@ src/_ZN10ShutterHmc13InitResourcesEv.cpp:
     complete
     .text start:0x02112ec0 end:0x02112ed4
 
-src/ShutterHmc_Spawn.c:
+src/daObjCvShutter_c_classInit.c:
     complete
     .text start:0x02112ed4 end:0x02112f10
 
