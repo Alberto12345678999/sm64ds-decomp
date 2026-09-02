@@ -17,6 +17,29 @@
  *   [7] 0x02111954  src/_ZN12WaterDiamond8BehaviorEv.cpp
  *   [8] 0x02111a04  src/_ZN12WaterDiamond13InitResourcesEv.cpp
  *   [9] 0x02111a84  src/WaterDiamond_Spawn.c
+ *
+ * THREE MEMBERS HERE ARE A REGRESSION ON THE LEGACY SOURCE, AND THIS TU MUST
+ * NOT BE PROMOTED UNTIL THEY ARE PUT BACK. The concatenation above names
+ * ordinals [2], [3] and [4] `src/func_ov029_*`, but those files no longer
+ * exist under those names and never held the best recovery. The real symbols
+ * are in config/arm9/overlays/ov029/symbols.txt:16-18 --
+ *   0x021117ac  _ZN12WaterDiamond19CheckClsnWithPlayerEv
+ *   0x02111850  _ZN12WaterDiamond10SetWaterIDEv
+ *   0x021118c8  _ZN12WaterDiamond20UpdateModelTransformEv
+ * -- and src/ still carries all three as real named-member C++ methods reading
+ * mCylinder.otherOwner, water->mTargetPosY, mModel.mat4x3 and so on. What is
+ * written below instead is raw pointer arithmetic on `char *c` under the
+ * func_<addr> placeholder names, and config/tu_manifest.d/ov029/WaterDiamond.json
+ * declares those placeholders as the TU's symbols.
+ *
+ * Unlike the two defects fixed alongside this one, these three RESOLVE: the
+ * placeholders are defined locally in this same file, so the link would
+ * succeed. The loss is entirely in the recovery. Restoring them means giving
+ * the TU-local shadow class below the fields those bodies read -- mCylinder,
+ * mCamSpacePosX, mPosX/mPosZ, mModel.mat4x3, uniqueID, actorID -- and pulling
+ * in WDW_Water, which is a rewrite of this file's whole class model rather
+ * than three edits. Left deliberately, and recorded here rather than in a
+ * tracker, because this banner is what a future promotion will read.
  */
 
 /* -------------------------------------------------------------------------- */

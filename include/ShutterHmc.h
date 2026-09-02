@@ -15,11 +15,11 @@
  *   kind  __si_class_type_info, ONE base, subobject offset 0
  *   base  daObjSwdoor_c, ov002 0x021099c0
  *
- * SIZE 0x324, from daObjCvShutter_c_classInit's literal 804 -- the same as ShutterBob's, and
+ * SIZE 0x324, from daObjCvShutter_c_classInit's literal 804 -- the same as daObjBSwdoor_c's, and
  * the two agreeing is what fixes the size for the pair. It overrides slots 0, 3
  * and 6, all three of which the base leaves null.
  *
- * THE FOUR BYTES AT 0x320 ARE UNOBSERVED, on the same reading as ShutterBob's.
+ * THE FOUR BYTES AT 0x320 ARE UNOBSERVED, on the same reading as daObjBSwdoor_c's.
  *
  * WHAT THIS HEADER USED TO SAY: a `u8 mModel` marker at 0xd4 and a
  * `u8 mMovingMeshCollider` marker at 0x124. Both were dBgActor_c's, twice removed,
