@@ -24,7 +24,7 @@
  *   [5] 0x020f1468  src/_ZN14BlueCoinSwitch13InitResourcesEv.cpp
  *   [6] 0x020f1578  src/func_ov002_020f1578.c
  *   [7] 0x020f15b8  src/func_ov002_020f15b8.c
- *   [8] 0x020f15cc  src/BlueCoinSwitch_Spawn.c
+ *   [8] 0x020f15cc  src/daObjBC_Switch_c_classInit.c
  */
 
 /* Includes: union of the legacy files', first-seen in ROM-ascending
@@ -84,10 +84,13 @@ extern int _ZTV14BlueCoinSwitch[];
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 8 -- BlueCoinSwitch_Spawn, 0x020f15cc, size 0x30 */
+/* ROM ordinal 8 -- daObjBC_Switch_c_classInit, 0x020f15cc, size 0x30 */
 /* -------------------------------------------------------------------------- */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-int *BlueCoinSwitch_Spawn(void)
+/* Reconstructed source-style name: the ROM proves daObjBC_Switch_c and the
+ * BC_SWITCH profile relationship; later EAD lineage supplies classInit.
+ * Exact original SM64DS spelling is not preserved. */
+int *daObjBC_Switch_c_classInit(void)
 {
     int *p = (int *)_ZN7fBase_cnwEj(816);
     if (p) { _ZN10dBgActor_cC2Ev(p); p[0] = (int)(_ZTV14BlueCoinSwitch + 2); }

@@ -148,7 +148,7 @@ _ZN13TreasureChest16CleanupResourcesEv kind:function(arm,size=0x48) addr:0x0211a
 _ZN13TreasureChest6RenderEv kind:function(arm,size=0x28) addr:0x0211a7c4
 _ZN13TreasureChest8BehaviorEv kind:function(arm,size=0x28) addr:0x0211a7ec
 _ZN13TreasureChest13InitResourcesEv kind:function(arm,size=0xdc) addr:0x0211a814
-TreasureChest_Spawn kind:function(arm,size=0x40) addr:0x0211a8f0
+daObjTbox_c_classInit kind:function(arm,size=0x40) addr:0x0211a8f0
 _ZN4ClamD1Ev kind:function(arm,size=0x38) addr:0x0211a930
 _ZN4ClamD0Ev kind:function(arm,size=0x4c) addr:0x0211a968
 func_ov064_0211a9b4 kind:function(arm,size=0x40) addr:0x0211a9b4
@@ -290,7 +290,7 @@ data_ov064_0211c4bc kind:data(any) addr:0x0211c4bc
 data_ov064_0211c4c4 kind:data(any) addr:0x0211c4c4
 _ZTI11daObjTbox_c kind:data(any) addr:0x0211c4cc
 _ZTS11daObjTbox_c kind:data(any) addr:0x0211c4d8
-TreasureChest_SpawnInfo kind:data(any) addr:0x0211c4e8
+g_profile_TREASURE_BOX kind:data(any) addr:0x0211c4e8
 _ZTV13TreasureChest kind:data(any) addr:0x0211c50c
 _ZTV11daObjTbox_c kind:data(any) addr:0x0211c50c
 _ZTI12daObjShell_c kind:data(any) addr:0x0211c588

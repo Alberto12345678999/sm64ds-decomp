@@ -604,7 +604,7 @@ src/_ZN13TreasureChest13InitResourcesEv.cpp:
     complete
     .text start:0x0211a814 end:0x0211a8f0
 
-src/TreasureChest_Spawn.c:
+src/daObjTbox_c_classInit.c:
     complete
     .text start:0x0211a8f0 end:0x0211a930
 

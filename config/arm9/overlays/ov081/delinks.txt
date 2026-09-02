@@ -431,7 +431,7 @@ src/_ZN8IceBlock13InitResourcesEv.cpp:
     complete
     .text start:0x02127ff0 end:0x021280a0
 
-src/IceBlock_Spawn.c:
+src/daObjIceBlock_c_classInit.c:
     complete
     .text start:0x021280a0 end:0x021280d8
 

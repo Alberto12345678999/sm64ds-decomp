@@ -4388,7 +4388,7 @@ src/_ZN8YoshiEgg13InitResourcesEv.cpp:
     complete
     .text start:0x020ee144 end:0x020ee3d8
 
-src/YoshiEgg_Spawn.c:
+src/daYegg_c_classInit.c:
     complete
     .text start:0x020ee3d8 end:0x020ee42c
 
@@ -4707,7 +4707,7 @@ src/func_ov002_020f15b8.c:
     complete
     .text start:0x020f15b8 end:0x020f15cc
 
-src/BlueCoinSwitch_Spawn.c:
+src/daObjBC_Switch_c_classInit.c:
     complete
     .text start:0x020f15cc end:0x020f15fc
 

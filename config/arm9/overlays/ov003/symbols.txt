@@ -33,7 +33,7 @@ _ZN13dScGameOver_c6RenderEv kind:function(arm,size=0x80) addr:0x020b0814
 _ZN13dScGameOver_c8BehaviorEv kind:function(arm,size=0x2a0) addr:0x020b0894
 _ZN13dScGameOver_c16CleanupResourcesEv kind:function(arm,size=0x8) addr:0x020b0b34
 _ZN13dScGameOver_c13InitResourcesEv kind:function(arm,size=0x5dc) addr:0x020b0b3c
-func_ov003_020b1118 kind:function(arm,size=0x64) addr:0x020b1118
+dScGameOver_c_classInit kind:function(arm,size=0x64) addr:0x020b1118
 data_ov003_020b117c kind:data(any) addr:0x020b117c
 data_ov003_020b1180 kind:data(any) addr:0x020b1180
 data_ov003_020b1181 kind:data(any) addr:0x020b1181
@@ -113,7 +113,7 @@ data_ov003_020b16e4 kind:data(any) addr:0x020b16e4
 data_ov003_020b1704 kind:data(any) addr:0x020b1704
 _ZTV12dScStarSel_c kind:data(any) addr:0x020b1704
 data_ov003_020b174c kind:data(any) addr:0x020b174c
-data_ov003_020b1750 kind:data(any) addr:0x020b1750 ambiguous
+g_profile_GAME_OVER kind:data(any) addr:0x020b1750 ambiguous
 _ZTI13dScGameOver_c kind:data(any) addr:0x020b1758
 data_ov003_020b1764 kind:data(any) addr:0x020b1764
 data_ov003_020b1774 kind:data(any) addr:0x020b1774
