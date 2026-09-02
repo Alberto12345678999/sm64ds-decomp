@@ -55,11 +55,20 @@
 #include "decl_Actor.h"
 #include "decl_common.h"
 
-/* Local declarations that have no real header yet. SoundObjectCallbackOwner is a
- * shadow struct rather than a class the ROM names: it exists only to give the
- * pointer-to-member type below a class to hang off, and the cast at its one use
- * site is what the compiler wanted. The two typedefs are the legacy files',
- * confirmed byte-neutral against each other. */
+/* Local declarations that have no real header yet. The two typedefs are the
+ * legacy files', confirmed byte-neutral against each other.
+ *
+ * TODO: SoundObjectCallbackOwner is very probably daSoundObj_c itself. The two
+ * callbacks below take (self, u16 *) and read self+0xd4/0xd8/0xde/0xe0 -- the
+ * four members this class declares -- and Behavior calls them with &mCounter,
+ * which is this+0xdc. So they are two more members, and SoundObjectCallback is
+ * plausibly `int (daSoundObj_c::*)(void *)` with the cast at its one use site
+ * deleted. Not done here because it cannot be settled statically: the table at
+ * data_ov002_0211110c lives in .bss (0x0210d9a0..0x021111a0), so it is
+ * populated at runtime and its entries cannot be read out of the image. It is a
+ * verify-cycle question -- change it and ask whether the seven functions still
+ * byte-match -- not a change to make on the way to a merge. Until then the
+ * shadow struct is a coined name, not a class the ROM spells. */
 /* shadow typedef 'Fix12i' */
 typedef int Fix12i;
 
@@ -70,7 +79,6 @@ struct SoundObjectCallbackOwner;
 typedef int (SoundObjectCallbackOwner::*SoundObjectCallback)(void *);
 
 extern "C" {
-extern void* data_020a0eac;
 extern int _ZTV12daSoundObj_c[];
 extern int _ZN5Sound7PlaySubEjjj5Fix12IiEb(unsigned int soundID, unsigned int vol, unsigned int pan, Fix12i dist, int loop);
 extern SoundObjectCallback data_ov002_0211110c[];
@@ -111,9 +119,9 @@ int daSoundObj_c::InitResources()
     if (param1 > 7)
         return 0;
 
-    mLevelID = *(s32 *)((char *)data_ov002_0210c080 + param1 * 0xc);
-    mTimerThreshold = *(s32 *)((char *)data_ov002_0210c084 + param1 * 0xc);
-    mTimerReset = *(u16 *)((char *)data_ov002_0210c088 + param1 * 0xc);
+    mSoundID = *(s32 *)((char *)data_ov002_0210c080 + param1 * 0xc);
+    mVolume = *(s32 *)((char *)data_ov002_0210c084 + param1 * 0xc);
+    mCounterLimit = *(u16 *)((char *)data_ov002_0210c088 + param1 * 0xc);
     unk_0e0 = *(u8 *)((char *)data_ov002_0210c08a + param1 * 0xc);
 
     actor = 0;
@@ -135,7 +143,7 @@ int daSoundObj_c::InitResources()
         }
     }
 
-    mTimer = 0;
+    mCounter = 0;
     mAreaId = -1;
     return 1;
 }
@@ -147,9 +155,9 @@ int daSoundObj_c::InitResources()
 int daSoundObj_c::Behavior()
 {
     SoundObjectCallbackOwner *owner = (SoundObjectCallbackOwner *)this;
-    int result = (owner->*data_ov002_0211110c[param1])(&mTimer);
-    if (result == 0 && mLevelID == data_0208e430
-        && (mTimer <= 0xa || data_0209b49c > 0x7f)) {
+    int result = (owner->*data_ov002_0211110c[param1])(&mCounter);
+    if (result == 0 && mSoundID == data_0208e430
+        && (mCounter <= 0xa || data_0209b49c > 0x7f)) {
         goto skip;
     }
     MarkForDestruction();
@@ -158,8 +166,8 @@ int daSoundObj_c::Behavior()
     }
 skip:
     if (param1 != 6) {
-        if (data_0209b490 < mTimerThreshold)
-            mTimer = mTimerReset;
+        if (data_0209b490 < mVolume)
+            mCounter = mCounterLimit;
     }
     return 1;
 }
@@ -168,6 +176,10 @@ skip:
 /* ROM ordinal 3 -- func_ov002_020f9468, 0x020f9468, size 0x94 */
 /* -------------------------------------------------------------------------- */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
+/* kPoolDist is the tree's existing spelling for this literal, not coined here:
+   src/func_0200f7f0.c and the two Sound::Play*SecretSound files give the same
+   0x8777 the same name. Its sibling 0xcb33 in func_ov002_020f93a8 has no such
+   precedent and is left bare. */
 static const int kPoolDist = 0x8777;
 int func_ov002_020f9468(char* a, unsigned short* counter){
   int ret = 0;
