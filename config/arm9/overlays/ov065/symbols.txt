@@ -136,7 +136,7 @@ _ZN14TTC_MovingBeam16CleanupResourcesEv kind:function(arm,size=0x44) addr:0x0211
 _ZN14TTC_MovingBeam6RenderEv kind:function(arm,size=0x28) addr:0x0211bd64
 _ZN14TTC_MovingBeam8BehaviorEv kind:function(arm,size=0x178) addr:0x0211bd8c
 _ZN14TTC_MovingBeam13InitResourcesEv kind:function(arm,size=0x13c) addr:0x0211bf04
-TTC_MovingBeam_Spawn kind:function(arm,size=0x38) addr:0x0211c040
+daObjCtMecha09_c_classInit kind:function(arm,size=0x38) addr:0x0211c040
 data_ov065_0211c078 kind:data(any) addr:0x0211c078
 data_ov065_0211c080 kind:data(any) addr:0x0211c080
 data_ov065_0211c08c kind:data(any) addr:0x0211c08c
@@ -258,7 +258,7 @@ _ZTV15TtcRotatingGear kind:data(any) addr:0x0211d494
 _ZTI16daObjCtMecha09_c kind:data(any) addr:0x0211d514
 data_ov065_0211d520 kind:data(any) addr:0x0211d520
 _ZTS16daObjCtMecha09_c kind:data(any) addr:0x0211d530
-TTC_MovingBeam_SpawnInfo kind:data(any) addr:0x0211d544 ambiguous
+g_profile_CT_MECHA09 kind:data(any) addr:0x0211d544 ambiguous
 _ZTV14TTC_MovingBeam kind:data(any) addr:0x0211d568
 _ZTV16daObjCtMecha09_c kind:data(any) addr:0x0211d568
 data_ov065_0211d600 kind:bss addr:0x0211d600

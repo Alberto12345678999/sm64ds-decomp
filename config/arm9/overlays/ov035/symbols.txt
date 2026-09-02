@@ -15,7 +15,7 @@ _ZN16SpinningPlatform16CleanupResourcesEv kind:function(arm,size=0x44) addr:0x02
 _ZN16SpinningPlatform6RenderEv kind:function(arm,size=0x28) addr:0x02111934
 _ZN16SpinningPlatform8BehaviorEv kind:function(arm,size=0x13c) addr:0x0211195c
 _ZN16SpinningPlatform13InitResourcesEv kind:function(arm,size=0x100) addr:0x02111a98
-SpinningPlatform_Spawn kind:function(arm,size=0x38) addr:0x02111b98
+daObjCtMecha11_c_classInit kind:function(arm,size=0x38) addr:0x02111b98
 data_ov035_02111bd0 kind:data(any) addr:0x02111bd0
 data_ov035_02111bd4 kind:data(any) addr:0x02111bd4
 data_ov035_02111bd8 kind:data(any) addr:0x02111bd8
@@ -110,7 +110,7 @@ data_ov035_02112b80 kind:data(any) addr:0x02112b80
 data_ov035_02112b84 kind:data(any) addr:0x02112b84 ambiguous
 _ZTI16daObjCtMecha11_c kind:data(any) addr:0x02112b88
 _ZTS16daObjCtMecha11_c kind:data(any) addr:0x02112b94
-SpinningPlatform_SpawnInfo kind:data(any) addr:0x02112ba8 ambiguous
+g_profile_CT_MECHA11 kind:data(any) addr:0x02112ba8 ambiguous
 _ZTV16SpinningPlatform kind:data(any) addr:0x02112bcc
 _ZTV16daObjCtMecha11_c kind:data(any) addr:0x02112bcc
 data_ov035_02112bdc kind:data(any) addr:0x02112bdc ambiguous

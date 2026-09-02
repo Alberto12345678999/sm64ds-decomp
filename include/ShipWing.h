@@ -4,7 +4,8 @@
 #include "CommonModel.h"
 #include "dActor_c.h"
 
-/* ShipWing_Spawn allocates 0x11c bytes, constructs dActor_c, and constructs a
+/* daObjRc_Hane_c_classInit (historical alias ShipWing_Spawn) allocates 0x11c
+ * bytes, constructs dActor_c, and constructs a
  * CommonModel at 0xd4. D1 destroys that model before chaining to dActor_c.
  * InitResources snapshots the three actor angles at 0x110..0x114 and Behavior
  * advances the frame and two parameter-derived mode flags at 0x116..0x119.

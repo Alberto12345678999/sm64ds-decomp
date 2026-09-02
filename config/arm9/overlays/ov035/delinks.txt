@@ -72,7 +72,7 @@ src/_ZN16SpinningPlatform13InitResourcesEv.cpp:
     complete
     .text start:0x02111a98 end:0x02111b98
 
-src/SpinningPlatform_Spawn.c:
+src/daObjCtMecha11_c_classInit.c:
     complete
     .text start:0x02111b98 end:0x02111bd0
 

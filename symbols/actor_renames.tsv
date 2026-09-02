@@ -1101,10 +1101,12 @@ ov035	0x02111934	func_ov035_02111934	_ZN16SpinningPlatform6RenderEv	vtable slot 
 ov035	0x0211195c	func_ov035_0211195c	_ZN16SpinningPlatform8BehaviorEv	vtable slot 6; method-symbol spelling and class-only TU
 ov035	0x02111a98	func_ov035_02111a98	_ZN16SpinningPlatform13InitResourcesEv	vtable slot 0; method-symbol spelling and class-only TU
 ov035	0x02111b98	func_ov035_02111b98	SpinningPlatform_Spawn	spawnfunc
+ov035	0x02111b98	SpinningPlatform_Spawn	daObjCtMecha11_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov035	0x02112aa4	data_ov035_02112aa4	RotatingClockHand_SpawnInfo	spawninfo
 ov035	0x02112adc	data_ov035_02112adc	RotatingCogSmall_SpawnInfo	spawninfo
 ov035	0x02112b00	data_ov035_02112b00	_ZTV16RotatingCogSmall	vtable alloc=0x330
 ov035	0x02112ba8	data_ov035_02112ba8	SpinningPlatform_SpawnInfo	spawninfo
+ov035	0x02112ba8	SpinningPlatform_SpawnInfo	g_profile_CT_MECHA11	reconstructed profile global; literal ROM ID CT_MECHA11+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov035	0x02112bcc	data_ov035_02112bcc	_ZTV16SpinningPlatform	vtable alloc=0x380; ROM RTTI name is daObjCtMecha11_c
 ov036	0x02111414	func_ov036_02111414	SwingingPlatform_Spawn	spawnfunc
 ov036	0x02111544	func_ov036_02111544	RotatingPlatformRr_Spawn	spawnfunc
@@ -1115,6 +1117,7 @@ ov036	0x0211169c	func_ov036_0211169c	_ZN18RotatingPlatformRr6RenderEv	vtable slo
 ov036	0x021116c0	func_ov036_021116c0	_ZN18RotatingPlatformRr8BehaviorEv	vtable slot 6
 ov036	0x02111854	func_ov036_02111854	_ZN18RotatingPlatformRr13InitResourcesEv	vtable slot 0
 ov036	0x02111904	func_ov036_02111904	ShipWing_Spawn	spawnfunc
+ov036	0x02111904	ShipWing_Spawn	daObjRc_Hane_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov036	0x0211193c	func_ov036_0211193c	_ZN8ShipWingD1Ev	vtable slot 16
 ov036	0x02111988	func_ov036_02111988	_ZN8ShipWingD0Ev	vtable slot 17
 ov036	0x021119e8	func_ov036_021119e8	_ZN8ShipWing16CleanupResourcesEv	vtable slot 3
@@ -1123,6 +1126,7 @@ ov036	0x02111a30	func_ov036_02111a30	_ZN8ShipWing6RenderEv	vtable slot 9
 ov036	0x02111a64	func_ov036_02111a64	_ZN8ShipWing8BehaviorEv	vtable slot 6
 ov036	0x02111bb8	func_ov036_02111bb8	_ZN8ShipWing13InitResourcesEv	vtable slot 0
 ov036	0x02111cd8	func_ov036_02111cd8	DonutBlock_Spawn	spawnfunc
+ov036	0x02111cd8	DonutBlock_Spawn	daObjRc_Tikuwa_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov036	0x02111d14	func_ov036_02111d14	_ZN10DonutBlockD1Ev	vtable slot 16
 ov036	0x02111d58	func_ov036_02111d58	_ZN10DonutBlockD0Ev	vtable slot 17
 ov036	0x02111db0	func_ov036_02111db0	_ZN10DonutBlock16CleanupResourcesEv	vtable slot 3
@@ -1135,16 +1139,20 @@ ov036	0x0211200c	func_ov036_0211200c	_ZN21ArmedRotatingPlatformD0Ev	vtable slot 
 ov036	0x021120a0	func_ov036_021120a0	_ZN21ArmedRotatingPlatform16CleanupResourcesEv	vtable slot 3
 ov036	0x021120b4	func_ov036_021120b4	_ZN21ArmedRotatingPlatform13InitResourcesEv	vtable slot 0
 ov036	0x021120c8	func_ov036_021120c8	TrickyTriangles_Spawn	spawnfunc
+ov036	0x021120c8	TrickyTriangles_Spawn	daObjRc_Dorifu_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov036	0x02112538	func_ov036_02112538	FlyingCarpet_Spawn	spawnfunc
 ov036	0x02113a74	data_ov036_02113a74	SwingingPlatform_SpawnInfo	spawninfo
 ov036	0x02113b50	data_ov036_02113b50	RotatingPlatformRr_SpawnInfo	spawninfo
 ov036	0x02113c14	data_ov036_02113c14	ShipWing_SpawnInfo	spawninfo
+ov036	0x02113c14	ShipWing_SpawnInfo	g_profile_RC_HANE	reconstructed profile global; literal ROM ID RC_HANE+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov036	0x02113c38	data_ov036_02113c38	_ZTV18RotatingPlatformRr	vtable alloc=0x320
 ov036	0x02113cd4	data_ov036_02113cd4	DonutBlock_SpawnInfo	spawninfo
+ov036	0x02113cd4	DonutBlock_SpawnInfo	g_profile_RC_TIKUWA	reconstructed profile global; literal ROM ID RC_TIKUWA+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov036	0x02113cf8	data_ov036_02113cf8	_ZTV8ShipWing	vtable alloc=0x11c
 ov036	0x02113da8	data_ov036_02113da8	ArmedRotatingPlatform_SpawnInfo	spawninfo
 ov036	0x02113dcc	data_ov036_02113dcc	_ZTV10DonutBlock	vtable alloc=?
 ov036	0x02113e6c	data_ov036_02113e6c	TrickyTriangles_SpawnInfo	spawninfo
+ov036	0x02113e6c	TrickyTriangles_SpawnInfo	g_profile_RC_DORIFU	reconstructed profile global; literal ROM ID RC_DORIFU+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov036	0x02113ecc	data_ov036_02113ecc	_ZTV21ArmedRotatingPlatform	vtable alloc=0x320
 ov036	0x02113f78	data_ov036_02113f78	FlyingCarpet_SpawnInfo	spawninfo
 ov039	0x021111a0	func_ov039_021111a0	_ZN5CloudD1Ev	vtable slot 16
@@ -1634,6 +1642,7 @@ ov065	0x0211bd64	func_ov065_0211bd64	_ZN14TtcMovingCubeA6RenderEv	vtable slot 9
 ov065	0x0211bd8c	func_ov065_0211bd8c	_ZN14TtcMovingCubeA8BehaviorEv	vtable slot 6
 ov065	0x0211bf04	func_ov065_0211bf04	_ZN14TtcMovingCubeA13InitResourcesEv	vtable slot 0
 ov065	0x0211c040	func_ov065_0211c040	TTC_MovingBeam_Spawn	spawnfunc
+ov065	0x0211c040	TTC_MovingBeam_Spawn	daObjCtMecha09_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov065	0x0211cb80	data_ov065_0211cb80	Snufit_SpawnInfo	spawninfo
 ov065	0x0211cba4	data_ov065_0211cba4	_ZTV6Snufit	vtable alloc=0x3e4
 ov065	0x0211cc7c	data_ov065_0211cc7c	Swoop_SpawnInfo	spawninfo
@@ -1657,6 +1666,7 @@ ov065	0x0211d454	data_ov065_0211d454	TtcMovingCubeA_SpawnInfo	spawninfo
 ov065	0x0211d470	data_ov065_0211d470	TtcMovingCubeB_SpawnInfo	spawninfo
 ov065	0x0211d494	data_ov065_0211d494	_ZTV15TtcRotatingGear	vtable alloc=0x37c
 ov065	0x0211d544	data_ov065_0211d544	TTC_MovingBeam_SpawnInfo	spawninfo
+ov065	0x0211d544	TTC_MovingBeam_SpawnInfo	g_profile_CT_MECHA09	reconstructed profile global; literal ROM ID CT_MECHA09+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov065	0x0211d568	data_ov065_0211d568	_ZTV14TtcMovingCubeA	vtable alloc=0x330
 ov066	0x02115ee0	func_ov066_02115ee0	_ZN6EyerokD1Ev	vtable slot 16
 ov066	0x02115f84	func_ov066_02115f84	_ZN6EyerokD0Ev	vtable slot 17
