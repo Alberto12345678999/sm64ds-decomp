@@ -32,14 +32,14 @@ ov002	0x020b0860	func_ov002_020b0860	_ZN10daChRoom_c6RenderEv	vtable slot 9 (was
 ov002	0x020b0868	func_ov002_020b0868	_ZN10daChRoom_c8BehaviorEv	vtable slot 6 (was _ZN10daCamTag_c8BehaviorEv)
 ov002	0x020b0938	func_ov002_020b0938	_ZN10daChRoom_c13InitResourcesEv	vtable slot 0 (was _ZN10daCamTag_c13InitResourcesEv)
 ov002	0x020b0980	func_ov002_020b0980	daChRoom_c_Spawn	spawnfunc
-ov002	0x020b09b0	func_ov002_020b09b0	_ZN4ExitD1Ev	vtable slot 16 (was _ZN11VirtualDoorD1Ev)
-ov002	0x020b09d4	func_ov002_020b09d4	_ZN4ExitD0Ev	vtable slot 17 (was _ZN11VirtualDoorD0Ev)
-ov002	0x020b0a70	func_ov002_020b0a70	_ZN4Exit16CleanupResourcesEv	vtable slot 3 (was _ZN11VirtualDoor16CleanupResourcesEv)
-ov002	0x020b0a78	func_ov002_020b0a78	_ZN4Exit16OnPendingDestroyEv	vtable slot 12 (was _ZN11VirtualDoor16OnPendingDestroyEv)
-ov002	0x020b0a7c	func_ov002_020b0a7c	_ZN4Exit6RenderEv	vtable slot 9 (was _ZN11VirtualDoor6RenderEv)
-ov002	0x020b0a84	func_ov002_020b0a84	_ZN4Exit8BehaviorEv	vtable slot 6 (was _ZN11VirtualDoor8BehaviorEv)
-ov002	0x020b0d88	func_ov002_020b0d88	_ZN4Exit13InitResourcesEv	vtable slot 0 (was _ZN11VirtualDoor13InitResourcesEv)
-ov002	0x020b0f24	func_ov002_020b0f24	Exit_Spawn	spawnfunc
+ov002	0x020b09b0	func_ov002_020b09b0	_ZN11daChScene_cD1Ev	vtable slot 16 (was _ZN11VirtualDoorD1Ev)
+ov002	0x020b09d4	func_ov002_020b09d4	_ZN11daChScene_cD0Ev	vtable slot 17 (was _ZN11VirtualDoorD0Ev)
+ov002	0x020b0a70	func_ov002_020b0a70	_ZN11daChScene_c16CleanupResourcesEv	vtable slot 3 (was _ZN11VirtualDoor16CleanupResourcesEv)
+ov002	0x020b0a78	func_ov002_020b0a78	_ZN11daChScene_c16OnPendingDestroyEv	vtable slot 12 (was _ZN11VirtualDoor16OnPendingDestroyEv)
+ov002	0x020b0a7c	func_ov002_020b0a7c	_ZN11daChScene_c6RenderEv	vtable slot 9 (was _ZN11VirtualDoor6RenderEv)
+ov002	0x020b0a84	func_ov002_020b0a84	_ZN11daChScene_c8BehaviorEv	vtable slot 6 (was _ZN11VirtualDoor8BehaviorEv)
+ov002	0x020b0d88	func_ov002_020b0d88	_ZN11daChScene_c13InitResourcesEv	vtable slot 0 (was _ZN11VirtualDoor13InitResourcesEv)
+ov002	0x020b0f24	func_ov002_020b0f24	daChScene_c_Spawn	spawnfunc
 ov002	0x020b0f54	func_ov002_020b0f54	_ZN4CoinD1Ev	vtable slot 16
 ov002	0x020b0fa4	func_ov002_020b0fa4	_ZN4CoinD0Ev	vtable slot 17
 ov002	0x020b2198	func_ov002_020b2198	_ZN4Coin16CleanupResourcesEv	vtable slot 3
@@ -275,8 +275,8 @@ ov002	0x02108480	data_ov002_02108480	_ZTV7daBar_c	vtable alloc=0x108
 ov002	0x02108518	data_ov002_02108518	daCamTag_c_SpawnInfo	spawninfo
 ov002	0x021085d4	data_ov002_021085d4	daChRoom_c_SpawnInfo	spawninfo
 ov002	0x021085f8	data_ov002_021085f8	_ZTV10daChRoom_c	vtable alloc=? (was _ZTV10daCamTag_c)
-ov002	0x02108690	data_ov002_02108690	Exit_SpawnInfo	spawninfo
-ov002	0x021086b4	data_ov002_021086b4	_ZTV4Exit	vtable alloc=? (was _ZTV11VirtualDoor)
+ov002	0x02108690	data_ov002_02108690	daChScene_c_SpawnInfo	spawninfo
+ov002	0x021086b4	data_ov002_021086b4	_ZTV11daChScene_c	vtable alloc=? (was _ZTV11VirtualDoor)
 ov002	0x02108790	data_ov002_02108790	Coin_SpawnInfo	spawninfo
 ov002	0x021087ac	data_ov002_021087ac	RedCoin_SpawnInfo	spawninfo
 ov002	0x021087c8	data_ov002_021087c8	BlueCoin_SpawnInfo	spawninfo

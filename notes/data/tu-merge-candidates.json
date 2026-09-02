@@ -3478,20 +3478,20 @@
    "start": "0x20b09b0",
    "end": "0x20b0f54",
    "classes": [
-    "Exit"
+    "daChScene_c"
    ],
    "n_functions_map": 9,
    "n_files": 9,
    "files": [
-    "src/_ZN4ExitD1Ev.cpp",
-    "src/_ZN4ExitD0Ev.c",
+    "src/_ZN11daChScene_cD1Ev.cpp",
+    "src/_ZN11daChScene_cD0Ev.c",
     "src/func_ov002_020b0a0c.c",
-    "src/_ZN4Exit16CleanupResourcesEv.cpp",
-    "src/_ZN4Exit16OnPendingDestroyEv.cpp",
-    "src/_ZN4Exit6RenderEv.cpp",
-    "src/_ZN4Exit8BehaviorEv.cpp",
-    "src/_ZN4Exit13InitResourcesEv.cpp",
-    "src/Exit_Spawn.c"
+    "src/_ZN11daChScene_c16CleanupResourcesEv.cpp",
+    "src/_ZN11daChScene_c16OnPendingDestroyEv.cpp",
+    "src/_ZN11daChScene_c6RenderEv.cpp",
+    "src/_ZN11daChScene_c8BehaviorEv.cpp",
+    "src/_ZN11daChScene_c13InitResourcesEv.cpp",
+    "src/daChScene_c_Spawn.c"
    ],
    "ext_mix": {
     ".cpp": 6,

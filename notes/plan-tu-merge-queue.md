@@ -188,7 +188,7 @@ first module where a `config_tu/` conversion becomes conceivable.
 
 **B5 — R1, ov002/ov006 conflicts · 6 TUs / 44 files / net −38 / 1,361 lines**
 ```
-ov002 0x20b09b0  n=9  L=338  Exit                   CONF1
+ov002 0x20b09b0  n=9  L=338  daChScene_c                   CONF1
 ov002 0x20b46a0  n=8  L=189  MegaMushroomCreateTag  CONF1 pcov=5
 ov002 0x20bc5e0  n=8  L=175  HealingHeart           CONF1 pcov=4
 ov002 0x20f0894  n=8  L=258  Number                 CONF1

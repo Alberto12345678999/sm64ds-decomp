@@ -1253,6 +1253,15 @@
     "src/actors/d_a_obj_bc_switch.cpp#_ZN16daObjBC_Switch_c13InitResourcesEv": "github-actions[bot]",
     "src/actors/d_a_obj_bc_switch.cpp#func_ov002_020f1578": "github-actions[bot]",
     "src/actors/d_a_obj_bc_switch.cpp#func_ov002_020f15b8": "github-actions[bot]",
-    "src/actors/d_a_obj_bc_switch.cpp#daObjBC_Switch_c_classInit": "github-actions[bot]"
+    "src/actors/d_a_obj_bc_switch.cpp#daObjBC_Switch_c_classInit": "github-actions[bot]",
+    "src/actors/d_a_ch_scene.cpp#_ZN11daChScene_cD1Ev": "andrewboudreau",
+    "src/actors/d_a_ch_scene.cpp#_ZN11daChScene_cD0Ev": "github-actions[bot]",
+    "src/actors/d_a_ch_scene.cpp#func_ov002_020b0a0c": "github-actions[bot]",
+    "src/actors/d_a_ch_scene.cpp#_ZN11daChScene_c16CleanupResourcesEv": "andrewboudreau",
+    "src/actors/d_a_ch_scene.cpp#_ZN11daChScene_c16OnPendingDestroyEv": "andrewboudreau",
+    "src/actors/d_a_ch_scene.cpp#_ZN11daChScene_c6RenderEv": "github-actions[bot]",
+    "src/actors/d_a_ch_scene.cpp#_ZN11daChScene_c8BehaviorEv": "github-actions[bot]",
+    "src/actors/d_a_ch_scene.cpp#_ZN11daChScene_c13InitResourcesEv": "github-actions[bot]",
+    "src/actors/d_a_ch_scene.cpp#daChScene_c_Spawn": "github-actions[bot]"
   }
 }
