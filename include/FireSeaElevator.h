@@ -6,7 +6,8 @@
 
 /* TWO WITNESSES, and they close on each other:
  *
- *   FireSeaElevator_Spawn  fBase_c::operator new(808 = 0x328), dBgActor_c::dBgActor_c(), stores _ZTV15FireSeaElevator,
+ *   daObjKm2_Agaru_c_classInit (historical alias FireSeaElevator_Spawn)
+ *                 fBase_c::operator new(808 = 0x328), dBgActor_c::dBgActor_c(), stores _ZTV15FireSeaElevator,
  *                 then the members below in this order.
  *   ~FireSeaElevator   the same members destroyed in reverse, then ~dBgActor_c.
  *

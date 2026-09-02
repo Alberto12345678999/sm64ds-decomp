@@ -27,7 +27,7 @@ src/_ZN11DiamondLift13InitResourcesEv.cpp:
     complete
     .text start:0x02111320 end:0x021113cc
 
-src/DiamondLift_Spawn.c:
+src/daObjKm1_Ukishima_c_classInit.c:
     complete
     .text start:0x021113cc end:0x021113fc
 
@@ -47,7 +47,7 @@ src/_ZN11RickshawBdw13InitResourcesEv.cpp:
     complete
     .text start:0x021114c4 end:0x021114dc
 
-src/RickshawBdw_Spawn.c:
+src/daObjKm1_Kurumajiku_c_classInit.c:
     complete
     .text start:0x021114dc end:0x02111518
 
@@ -67,7 +67,7 @@ src/_ZN19RickshawPlatformBdw13InitResourcesEv.cpp:
     complete
     .text start:0x021115e0 end:0x021115f4
 
-src/RickshawPlatformBdw_Spawn.c:
+src/daObjKm1_Kuruma_c_classInit.c:
     complete
     .text start:0x021115f4 end:0x02111630
 

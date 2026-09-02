@@ -5,6 +5,9 @@
 #define DAOBJKM1_UKISHIMA_C_H
 #include "types.h"
 
+/* daObjKm1_Ukishima_c_classInit (historical alias DiamondLift_Spawn) allocates
+ * 0x320 bytes, constructs dBgActor_c, and installs this RTTI class's vtable. */
+
 struct daObjKm1_Ukishima_c {
     u8  pad_000[0x8e];
     s16 mAngleY;            /* 0x08e */

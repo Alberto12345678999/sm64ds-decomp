@@ -36,7 +36,7 @@ src/func_ov045_021114c8.c:
     complete
     .text start:0x021114c8 end:0x021114dc
 
-src/FireSeaElevator_Spawn.c:
+src/daObjKm2_Agaru_c_classInit.c:
     complete
     .text start:0x021114dc end:0x0211150c
 

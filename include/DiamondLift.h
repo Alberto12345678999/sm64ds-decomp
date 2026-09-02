@@ -6,7 +6,8 @@
 
 /* TWO WITNESSES, and they close on each other:
  *
- *   DiamondLift_Spawn  fBase_c::operator new(800 = 0x320), dBgActor_c::dBgActor_c(), stores _ZTV11DiamondLift,
+ *   daObjKm1_Ukishima_c_classInit (historical alias DiamondLift_Spawn)
+ *                 fBase_c::operator new(800 = 0x320), dBgActor_c::dBgActor_c(), stores _ZTV11DiamondLift,
  *                 then the members below in this order.
  *   ~DiamondLift   the same members destroyed in reverse, then ~dBgActor_c.
  *
