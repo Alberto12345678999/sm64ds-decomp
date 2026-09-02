@@ -1,8 +1,8 @@
 # The Actor hierarchy vtables
 
 Recovered from the ROM, not inferred. Every slot in all four tables resolves to a named
-function — through `config/arm9/symbols.txt` for the first three, and additionally through
-`config/arm9/overlays/ov002/symbols.txt` for Player, which lives in an overlay. None is a
+function — through [config/arm9/symbols.txt](../config/arm9/symbols.txt) for the first three, and additionally through
+[arm9/overlays/ov002/symbols.txt](../config/arm9/overlays/ov002/symbols.txt) for Player, which lives in an overlay. None is a
 thunk, none is a secondary vtable, and there is no address-point offset — CodeWarrior 1.2
 emits no RTTI header, so the address stored into `[this+0x0]` *is* slot 0.
 
@@ -25,10 +25,10 @@ Actor's C2/D2 bytes.
 
 | class | vtable | slots | also named | module |
 |---|---|---:|---|---|
-| `ActorBase` | `_ZTV9ActorBase` | 18 | `data_02099edc` | arm9 |
-| `ActorDerived` | `_ZTV12ActorDerived` | 18 | `data_0208e4b8` | arm9 |
-| `Actor` | `_ZTV5Actor` | 31 | `data_0208e3a4` | arm9 |
-| `Player` | `_ZTV6Player` | 31 | `data_ov002_0210a83c` | **ov002** |
+| `ActorBase` | `_ZTV9ActorBase` | 18 | `data_02099edc` | [arm9](../config/arm9/symbols.txt) |
+| `ActorDerived` | `_ZTV12ActorDerived` | 18 | `data_0208e4b8` | [arm9](../config/arm9/symbols.txt) |
+| `Actor` | `_ZTV5Actor` | 31 | `data_0208e3a4` | [arm9](../config/arm9/symbols.txt) |
+| `Player` | `_ZTV6Player` | 31 | `data_ov002_0210a83c` | [ov002](../config/arm9/overlays/ov002/symbols.txt) |
 
 The `data_` names are kept as aliases, not replaced: 45 `src/` files reference the three
 arm9 ones and 3 reference Player's. `eligible.py` drops any file with an unresolvable
@@ -120,7 +120,7 @@ gap-object data supplied from the ROM, never compiled, so neither gate sees it:
 Until each slot is exercised by a virtual call inside a byte-checked file, this table is
 the only record of the order.
 
-## Player — 0x0210a83c (ov002), 31 slots
+## Player — 0x0210a83c ([ov002](../config/arm9/overlays/ov002/symbols.txt)), 31 slots
 
 Player derives **directly from Actor**: `_ZN6PlayerC1Ev` calls `_ZN5ActorC2Ev` and then
 stores one vptr, and `_ZN6PlayerD2Ev` stores one vptr and calls `_ZN5ActorD2Ev`. One store,
@@ -157,14 +157,14 @@ class.
 
 ### Names that are not Player
 
-Eight symbols matched `_ZN6Player*` but belong to other overlays — seven in ov006, one in
-ov007 — community labels applied to another class's bytes at a shared RAM address. They are
+Eight symbols matched `_ZN6Player*` but belong to other overlays — seven in [ov006](../config/arm9/overlays/ov006/symbols.txt), one in
+[ov007](../config/arm9/overlays/ov007/symbols.txt) — community labels applied to another class's bytes at a shared RAM address. They are
 listed in the commit that detached them from `Player.h`. Measured against `sizeof(Player)`
 = 0x768, they read offsets like 0x4eb0 and 0x62ad, thousands of bytes past the end of the
 object. Do not treat a `_ZN6Player*` name as proof of module membership; check which
 `symbols.txt` owns the address.
 
-## Platform — 0x0210ae30 (ov002), 32 slots
+## Platform — 0x0210ae30 ([ov002](../config/arm9/overlays/ov002/symbols.txt)), 32 slots
 
 `Platform` (RTTI name `dBgActor_c`) derives **directly from Actor** and is the base of the
 largest family in the tree: **101 direct RTTI children, 132 classes in the whole subtree.**
@@ -174,9 +174,9 @@ one. Its table is Actor's 31 slots with three differences:
 
 | # | override |
 |---:|---|
-| 16 | `~Platform` (D1) — ov002 `0x020ee42c` |
-| 17 | `~Platform` (D0) — ov002 `0x020ee464` |
-| **31** | **`Platform::Kill()` — ov002 `0x020ee55c`, NEW** |
+| 16 | `~Platform` (D1) — [ov002](../config/arm9/overlays/ov002/symbols.txt) `0x020ee42c` |
+| 17 | `~Platform` (D0) — [ov002](../config/arm9/overlays/ov002/symbols.txt) `0x020ee464` |
+| **31** | **`Platform::Kill()` — [ov002](../config/arm9/overlays/ov002/symbols.txt) `0x020ee55c`, NEW** |
 
 ### The 32nd slot, and how long it was missing
 
@@ -210,7 +210,7 @@ one:
     0x0210ae34  0x021089ec    _ZTI8Platform
     0x0210ae38  0x02043c80    slot 0            <- config's _ZTV8Platform is HERE
 
-`config/arm9/overlays/ov002/symbols.txt` puts `_ZTV8Platform` at the **address point**,
+[config/arm9/overlays/ov002/symbols.txt](../config/arm9/overlays/ov002/symbols.txt) puts `_ZTV8Platform` at the **address point**,
 `0x0210ae38`, which is the vptr value; mwcc emits its `_ZTV8Platform` at the **object
 start**, eight bytes earlier. Nothing depends on this today because the compiled vtable is
 always dropped, but a future change that tries to make a source file *deliver* a Platform

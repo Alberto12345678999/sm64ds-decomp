@@ -46,7 +46,7 @@
  * of this TU. `#pragma long_calls` is POSITIONAL in mwccarm 2004/b56 and is
  * carried verbatim before its own member below, bracketed with `off` so it
  * cannot leak into later members (dropping it silently costs the pooled
- * cross-overlay tail-call -- a byte diff; see ShutterBob in ov014).
+ * cross-overlay tail-call -- a byte diff; see daObjBSwdoor_c in ov014).
  * Any OTHER pragma is FILE-GLOBAL last-wins (opt_propagation,
  * optimize_for_size). Two legacy files carried one:
  *   func_ov006_020f95f0: #pragma opt_propagation off   [NOT carried]
@@ -250,7 +250,10 @@ s32 dScMgMCarlo2_c::InitResources()
 /* Resets the whole board: rebuild the 40 pieces, clear the match latch,
  * re-arm the shared table, then hand the score display a zero. */
 extern "C" {
-void _ZN14dScMgMCarlo2_c13OnYoshiTryEatEi(char* c) {
+void dScMgMCarlo2_c::OnYoshiTryEat(int /* arg */)
+{
+    char *c = (char *)this;
+
     struct dScMgMCarlo2_c *self = (struct dScMgMCarlo2_c *)(void *)c;
   func_ov006_020f9760((Node *)(c + 0x51a8));
   data_ov006_0213d6fc = 0;
@@ -269,8 +272,10 @@ void _ZN14dScMgMCarlo2_c13OnYoshiTryEatEi(char* c) {
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN14dScMgMCarlo2_c13OnTurnIntoEggEi
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-int _ZN14dScMgMCarlo2_c13OnTurnIntoEggEi(char *self)
+int dScMgMCarlo2_c::OnTurnIntoEgg(int /* mode */)
 {
+    char *self = (char *)this;
+
     short st = *(short *)(self + 0x5928);
     switch (st) {
     case 4:
