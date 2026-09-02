@@ -11,7 +11,8 @@
  * a compiler-facing alias for the ROM-owned daDpLift_c address point; its slot
  * shape and targets are nevertheless checked directly below.
  *
- * SIZE 0x3fc is the literal passed by PyramidLift_Spawn to fBase_c::operator
+ * SIZE 0x3fc is the literal passed by daDpLift_c_classInit (historically
+ * PyramidLift_Spawn) to fBase_c::operator
  * new. dBgActor_c occupies 0x000..0x31f. The factory constructs the Model at
  * 0x320 and a ten-element, 0xc-stride array at 0x37c. The D1/D0 pair destroys
  * that array through _ZN7Vector3D1Ev, then destroys the Model and inherited

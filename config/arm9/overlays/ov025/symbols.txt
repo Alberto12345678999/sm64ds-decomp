@@ -25,7 +25,7 @@ _ZN11PyramidStep16CleanupResourcesEv kind:function(arm,size=0x38) addr:0x02111e7
 _ZN11PyramidStep6RenderEv kind:function(arm,size=0x2c) addr:0x02111ea8
 _ZN11PyramidStep8BehaviorEv kind:function(arm,size=0xcc) addr:0x02111ed4
 _ZN11PyramidStep13InitResourcesEv kind:function(arm,size=0x10c) addr:0x02111fa0
-PyramidStep_Spawn kind:function(arm,size=0x38) addr:0x021120ac
+daObjDpBrock_c_classInit kind:function(arm,size=0x38) addr:0x021120ac
 _ZN11PyramidLiftD1Ev kind:function(arm,size=0x64) addr:0x021120e4
 _ZN11PyramidLiftD0Ev kind:function(arm,size=0x78) addr:0x02112148
 _ZN11PyramidLift16CleanupResourcesEv kind:function(arm,size=0x3c) addr:0x021121c0
@@ -34,7 +34,7 @@ _ZN11PyramidLift8BehaviorEv kind:function(arm,size=0x210) addr:0x02112288
 _ZN11PyramidLift13InitResourcesEv kind:function(arm,size=0x124) addr:0x02112498
 func_ov025_021125bc kind:function(arm,size=0x20) addr:0x021125bc
 func_ov025_021125dc kind:function(arm,size=0x14) addr:0x021125dc
-PyramidLift_Spawn kind:function(arm,size=0x64) addr:0x021125f0
+daDpLift_c_classInit kind:function(arm,size=0x64) addr:0x021125f0
 data_ov025_02112654 kind:data(any) addr:0x02112654
 data_ov025_02112658 kind:data(any) addr:0x02112658
 data_ov025_0211265c kind:data(any) addr:0x0211265c
@@ -131,7 +131,7 @@ data_ov025_021138c4 kind:data(any) addr:0x021138c4 ambiguous
 _ZTI14daObjDpBrock_c kind:data(any) addr:0x021138d0
 data_ov025_021138d8 kind:data(any) addr:0x021138d8 ambiguous
 _ZTS14daObjDpBrock_c kind:data(any) addr:0x021138dc
-PyramidStep_SpawnInfo kind:data(any) addr:0x021138f0 ambiguous
+g_profile_DP_BROCK kind:data(any) addr:0x021138f0 ambiguous
 data_ov025_021138fc kind:data(any) addr:0x021138fc ambiguous
 _ZTV11PyramidStep kind:data(any) addr:0x02113914
 _ZTV14daObjDpBrock_c kind:data(any) addr:0x02113914
@@ -140,7 +140,7 @@ data_ov025_02113980 kind:data(any) addr:0x02113980 ambiguous
 _ZTI10daDpLift_c kind:data(any) addr:0x02113994
 data_ov025_02113998 kind:data(any) addr:0x02113998 ambiguous
 _ZTS10daDpLift_c kind:data(any) addr:0x021139a0
-PyramidLift_SpawnInfo kind:data(any) addr:0x021139b0 ambiguous
+g_profile_DP_LIFT kind:data(any) addr:0x021139b0 ambiguous
 _ZTV11PyramidLift kind:data(any) addr:0x021139d4
 data_ov025_021139f4 kind:data(any) addr:0x021139f4 ambiguous
 data_ov025_02113a00 kind:data(any) addr:0x02113a00 ambiguous

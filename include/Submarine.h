@@ -6,7 +6,8 @@
 
 /* TWO WITNESSES, and they close on each other:
  *
- *   Submarine_Spawn  fBase_c::operator new(800 = 0x320), dBgActor_c::dBgActor_c(), stores _ZTV9Submarine,
+ *   daObjWlSubmarine_c_classInit (historically Submarine_Spawn)
+ *                 fBase_c::operator new(800 = 0x320), dBgActor_c::dBgActor_c(), stores _ZTV9Submarine,
  *                 then the members below in this order.
  *   ~Submarine   the same members destroyed in reverse, then ~dBgActor_c.
  *

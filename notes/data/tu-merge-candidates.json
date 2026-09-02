@@ -3611,7 +3611,7 @@
     "src/_ZN11PyramidStep6RenderEv.cpp",
     "src/_ZN11PyramidStep8BehaviorEv.cpp",
     "src/_ZN11PyramidStep13InitResourcesEv.cpp",
-    "src/PyramidStep_Spawn.c"
+    "src/daObjDpBrock_c_classInit.c"
    ],
    "ext_mix": {
     ".cpp": 7,
@@ -9392,7 +9392,7 @@
     "src/_ZN9Submarine16CleanupResourcesEv.cpp",
     "src/_ZN9Submarine6RenderEv.cpp",
     "src/_ZN9Submarine13InitResourcesEv.cpp",
-    "src/Submarine_Spawn.c"
+    "src/daObjWlSubmarine_c_classInit.c"
    ],
    "ext_mix": {
     ".cpp": 4,
@@ -25006,7 +25006,7 @@
     "src/_ZN11PyramidLift13InitResourcesEv.cpp",
     "src/func_ov025_021125bc.cpp",
     "src/func_ov025_021125dc.c",
-    "src/PyramidLift_Spawn.cpp"
+    "src/daDpLift_c_classInit.cpp"
    ],
    "ext_mix": {
     ".cpp": 6,
@@ -25121,7 +25121,7 @@
     "src/_ZN13BowserShutter6RenderEv.cpp",
     "src/_ZN13BowserShutter8BehaviorEv.cpp",
     "src/_ZN13BowserShutter13InitResourcesEv.cpp",
-    "src/BowserShutter_Spawn.c"
+    "src/daObjWlKoopaShutter_c_classInit.c"
    ],
    "ext_mix": {
     ".cpp": 5,
@@ -35438,7 +35438,7 @@
    "n_functions_map": 1,
    "n_files": 1,
    "files": [
-    "src/func_ov026_02111678.c"
+    "src/daObjWlPolelift_c_classInit.cpp"
    ],
    "ext_mix": {
     ".c": 1
