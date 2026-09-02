@@ -6332,7 +6332,7 @@
     "src/_ZN13BasementWater6RenderEv.cpp",
     "src/_ZN13BasementWater8BehaviorEv.cpp",
     "src/_ZN13BasementWater13InitResourcesEv.cpp",
-    "src/BasementWater_Spawn.c"
+    "src/daObjC0Water_c_classInit.c"
    ],
    "ext_mix": {
     ".cpp": 6,
