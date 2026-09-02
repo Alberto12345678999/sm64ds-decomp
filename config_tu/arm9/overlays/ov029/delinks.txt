@@ -25,7 +25,7 @@ src_tu/actors/WaterDiamond.cpp:
     .data start:0x02113d90 end:0x02113e00
     .bss start:0x02114270 end:0x02114284
 
-src_tu/actors/CageLift.cpp:
+src/actors/d_a_obj_wc_obj05.cpp:
     .text start:0x02111ac4 end:0x02111ea4
     .init start:0x02112c4c end:0x02112cb8
     .ctor start:0x02112e74 end:0x02112e78

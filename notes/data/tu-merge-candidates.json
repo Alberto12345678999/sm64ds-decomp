@@ -2391,17 +2391,17 @@
    "start": "0x2111ac4",
    "end": "0x2111ea4",
    "classes": [
-    "CageLift"
+    "daObjWc_Obj05_c"
    ],
    "n_functions_map": 9,
    "n_files": 9,
    "files": [
-    "src/_ZN8CageLiftD1Ev.cpp",
-    "src/_ZN8CageLiftD0Ev.c",
-    "src/_ZN8CageLift16CleanupResourcesEv.cpp",
-    "src/_ZN8CageLift6RenderEv.cpp",
-    "src/_ZN8CageLift8BehaviorEv.cpp",
-    "src/_ZN8CageLift13InitResourcesEv.cpp",
+    "src/_ZN15daObjWc_Obj05_cD1Ev.cpp",
+    "src/_ZN15daObjWc_Obj05_cD0Ev.c",
+    "src/_ZN15daObjWc_Obj05_c16CleanupResourcesEv.cpp",
+    "src/_ZN15daObjWc_Obj05_c6RenderEv.cpp",
+    "src/_ZN15daObjWc_Obj05_c8BehaviorEv.cpp",
+    "src/_ZN15daObjWc_Obj05_c13InitResourcesEv.cpp",
     "src/func_ov029_02111e40.cpp",
     "src/func_ov029_02111e60.c",
     "src/daObjWc_Obj05_c_classInit.c"
@@ -3398,13 +3398,13 @@
    "start": "0x2111308",
    "end": "0x2112e0c",
    "classes": [
-    "ChainChomp"
+    "daWanwan_c"
    ],
    "n_functions_map": 29,
    "n_files": 29,
    "files": [
-    "src/_ZN10ChainChompD1Ev.cpp",
-    "src/_ZN10ChainChompD0Ev.cpp",
+    "src/_ZN10daWanwan_cD1Ev.cpp",
+    "src/_ZN10daWanwan_cD0Ev.cpp",
     "src/func_ov014_02111484.c",
     "src/func_ov014_021114d8.c",
     "src/func_ov014_0211150c.c",
@@ -3427,10 +3427,10 @@
     "src/func_ov014_0211236c.c",
     "src/func_ov014_0211250c.c",
     "src/func_ov014_02112788.c",
-    "src/_ZN10ChainChomp16CleanupResourcesEv.cpp",
-    "src/_ZN10ChainChomp6RenderEv.cpp",
-    "src/_ZN10ChainChomp8BehaviorEv.cpp",
-    "src/_ZN10ChainChomp13InitResourcesEv.cpp",
+    "src/_ZN10daWanwan_c16CleanupResourcesEv.cpp",
+    "src/_ZN10daWanwan_c6RenderEv.cpp",
+    "src/_ZN10daWanwan_c8BehaviorEv.cpp",
+    "src/_ZN10daWanwan_c13InitResourcesEv.cpp",
     "src/daWanwan_c_classInit.cpp"
    ],
    "ext_mix": {
@@ -3478,20 +3478,20 @@
    "start": "0x20b09b0",
    "end": "0x20b0f54",
    "classes": [
-    "Exit"
+    "daChScene_c"
    ],
    "n_functions_map": 9,
    "n_files": 9,
    "files": [
-    "src/_ZN4ExitD1Ev.cpp",
-    "src/_ZN4ExitD0Ev.c",
+    "src/_ZN11daChScene_cD1Ev.cpp",
+    "src/_ZN11daChScene_cD0Ev.c",
     "src/func_ov002_020b0a0c.c",
-    "src/_ZN4Exit16CleanupResourcesEv.cpp",
-    "src/_ZN4Exit16OnPendingDestroyEv.cpp",
-    "src/_ZN4Exit6RenderEv.cpp",
-    "src/_ZN4Exit8BehaviorEv.cpp",
-    "src/_ZN4Exit13InitResourcesEv.cpp",
-    "src/Exit_Spawn.c"
+    "src/_ZN11daChScene_c16CleanupResourcesEv.cpp",
+    "src/_ZN11daChScene_c16OnPendingDestroyEv.cpp",
+    "src/_ZN11daChScene_c6RenderEv.cpp",
+    "src/_ZN11daChScene_c8BehaviorEv.cpp",
+    "src/_ZN11daChScene_c13InitResourcesEv.cpp",
+    "src/daChScene_c_Spawn.c"
    ],
    "ext_mix": {
     ".cpp": 6,
@@ -3835,18 +3835,18 @@
    "start": "0x2112e0c",
    "end": "0x21130ac",
    "classes": [
-    "ChainChompFence"
+    "daObjWanwanShutter_c"
    ],
    "n_functions_map": 8,
    "n_files": 8,
    "files": [
-    "src/_ZN15ChainChompFenceD1Ev.cpp",
-    "src/_ZN15ChainChompFenceD0Ev.cpp",
+    "src/_ZN20daObjWanwanShutter_cD1Ev.cpp",
+    "src/_ZN20daObjWanwanShutter_cD0Ev.cpp",
     "src/func_ov014_02112ea8.cpp",
-    "src/_ZN15ChainChompFence16CleanupResourcesEv.cpp",
-    "src/_ZN15ChainChompFence6RenderEv.cpp",
-    "src/_ZN15ChainChompFence8BehaviorEv.cpp",
-    "src/_ZN15ChainChompFence13InitResourcesEv.cpp",
+    "src/_ZN20daObjWanwanShutter_c16CleanupResourcesEv.cpp",
+    "src/_ZN20daObjWanwanShutter_c6RenderEv.cpp",
+    "src/_ZN20daObjWanwanShutter_c8BehaviorEv.cpp",
+    "src/_ZN20daObjWanwanShutter_c13InitResourcesEv.cpp",
     "src/daObjWanwanShutter_c_classInit.c"
    ],
    "ext_mix": {
@@ -3960,17 +3960,17 @@
    "start": "0x20f11b0",
    "end": "0x20f15fc",
    "classes": [
-    "BlueCoinSwitch"
+    "daObjBC_Switch_c"
    ],
    "n_functions_map": 9,
    "n_files": 9,
    "files": [
-    "src/_ZN14BlueCoinSwitchD1Ev.cpp",
-    "src/_ZN14BlueCoinSwitchD0Ev.cpp",
-    "src/_ZN14BlueCoinSwitch16CleanupResourcesEv.cpp",
-    "src/_ZN14BlueCoinSwitch6RenderEv.cpp",
-    "src/_ZN14BlueCoinSwitch8BehaviorEv.cpp",
-    "src/_ZN14BlueCoinSwitch13InitResourcesEv.cpp",
+    "src/_ZN16daObjBC_Switch_cD1Ev.cpp",
+    "src/_ZN16daObjBC_Switch_cD0Ev.cpp",
+    "src/_ZN16daObjBC_Switch_c16CleanupResourcesEv.cpp",
+    "src/_ZN16daObjBC_Switch_c6RenderEv.cpp",
+    "src/_ZN16daObjBC_Switch_c8BehaviorEv.cpp",
+    "src/_ZN16daObjBC_Switch_c13InitResourcesEv.cpp",
     "src/func_ov002_020f1578.c",
     "src/func_ov002_020f15b8.c",
     "src/daObjBC_Switch_c_classInit.c"
@@ -5282,19 +5282,19 @@
    "start": "0x20ec388",
    "end": "0x20ec56c",
    "classes": [
-    "Warp"
+    "daWarpkun_c"
    ],
    "n_functions_map": 8,
    "n_files": 8,
    "files": [
-    "src/_ZN4WarpD1Ev.cpp",
-    "src/_ZN4WarpD0Ev.c",
-    "src/_ZN4Warp16CleanupResourcesEv.cpp",
-    "src/_ZN4Warp16OnPendingDestroyEv.cpp",
-    "src/_ZN4Warp6RenderEv.cpp",
-    "src/_ZN4Warp8BehaviorEv.cpp",
-    "src/_ZN4Warp13InitResourcesEv.cpp",
-    "src/Warp_Spawn.c"
+    "src/_ZN11daWarpkun_cD1Ev.cpp",
+    "src/_ZN11daWarpkun_cD0Ev.c",
+    "src/_ZN11daWarpkun_c16CleanupResourcesEv.cpp",
+    "src/_ZN11daWarpkun_c16OnPendingDestroyEv.cpp",
+    "src/_ZN11daWarpkun_c6RenderEv.cpp",
+    "src/_ZN11daWarpkun_c8BehaviorEv.cpp",
+    "src/_ZN11daWarpkun_c13InitResourcesEv.cpp",
+    "src/daWarpkun_c_Spawn.c"
    ],
    "ext_mix": {
     ".cpp": 6,
@@ -6390,7 +6390,7 @@
     "src/_ZN8PoleLift6RenderEv.cpp",
     "src/_ZN8PoleLift8BehaviorEv.cpp",
     "src/_ZN8PoleLift13InitResourcesEv.cpp",
-    "src/PoleLift_Spawn.c"
+    "src/daObjKm2_Ami_Bou_c_classInit.c"
    ],
    "ext_mix": {
     ".cpp": 6,
@@ -8616,7 +8616,7 @@
     "src/_ZN17ExtendingPlatform6RenderEv.cpp",
     "src/_ZN17ExtendingPlatform8BehaviorEv.cpp",
     "src/_ZN17ExtendingPlatform13InitResourcesEv.cpp",
-    "src/ExtendingPlatform_Spawn.c"
+    "src/daObjKm2_Nobiru_c_classInit.c"
    ],
    "ext_mix": {
     ".cpp": 6,
@@ -9279,7 +9279,7 @@
     "src/_ZN18TiltingPlatformBfsD0Ev.c",
     "src/_ZN18TiltingPlatformBfs16CleanupResourcesEv.c",
     "src/_ZN18TiltingPlatformBfs13InitResourcesEv.c",
-    "src/TiltingPlatformBfs_Spawn.c"
+    "src/daObjKm2_Gura_c_classInit.c"
    ],
    "ext_mix": {
     ".cpp": 1,
@@ -9562,7 +9562,7 @@
     "src/_ZN16FloatingFloorBfsD0Ev.c",
     "src/_ZN16FloatingFloorBfs16CleanupResourcesEv.cpp",
     "src/_ZN16FloatingFloorBfs13InitResourcesEv.cpp",
-    "src/FloatingFloorBfs_Spawn.c"
+    "src/daObjKm2_Ukishima_c_classInit.c"
    ],
    "ext_mix": {
     ".cpp": 3,

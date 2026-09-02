@@ -5,7 +5,7 @@ the offset. Where the bodies only *write* a field and nothing in the tree reads 
 back, the field stays `unk_NNN` and the reason is recorded — a name nobody can
 check is a claim the next reader would trust for nothing.
 
-Classes covered here: JetStream, Goomboss, ChainChomp, BobOmb, Whomp,
+Classes covered here: JetStream, Goomboss, daWanwan_c, BobOmb, Whomp,
 RollingIronBall, KoopaShell, Klepto, Rabbit, ChiefChilly.
 
 A recurring source of `unk_` in these headers is the `#else` C twin, which
@@ -88,11 +88,11 @@ offsets are not member accesses to collapse.
 
 ---
 
-## ChainChomp (`include/ChainChomp.h`, ov014)
+## daWanwan_c (`include/daWanwan_c.h`, ov014)
 
-Bodies read: `src/_ZN10ChainChomp8BehaviorEv.cpp`,
-`src/_ZN10ChainChomp13InitResourcesEv.cpp`, `src/_ZN10ChainChomp6RenderEv.cpp`,
-and the merged `src_tu/actors/ChainChomp.cpp`.
+Bodies read: the `Behavior`, `InitResources` and `Render` members, then in
+one-function files, now all consolidated into the promoted TU
+`src/actors/d_a_wanwan.cpp`.
 
 | offset | name | evidence |
 | --- | --- | --- |
@@ -126,9 +126,11 @@ Byte-neutral cleanups (each re-verified, `2004/b56`):
 * `Behavior` — two `((char*)this) + 0x110` became `&mdCcAcPos_c`.
 * `Render` — `((char *)this) + 0x1dc` became `(char *)mLinkModels`.
 
-`src_tu/actors/ChainChomp.cpp` carries the same renames and still compiles
-(`match.compile_c`, 2004/b56) — the merged TU is not in the default rombuild
-profile, so a stale spelling there would not have been caught by any green gate.
+The promoted TU `src/actors/d_a_wanwan.cpp` carries the same renames. rombuild
+cannot see a stale spelling — `(char *)mLinkModels` and `((char *)this) + 0x1dc`
+compile to the same bytes — so what caught the one the reconstruction still
+carried was the readability ratchet (`tools/tiers_ratchet.py --check`), which
+scores the source text and read the raw-offset cast as a backslide.
 
 ---
 

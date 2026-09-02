@@ -63,10 +63,10 @@
       "ordinal": 5
     },
     {
-      "symbol": "PoleLift_Spawn",
+      "symbol": "daObjKm2_Ami_Bou_c_classInit",
       "address": "0x02111808",
       "size": "0x00000038",
-      "legacy_source": "src/PoleLift_Spawn.c",
+      "legacy_source": "src/daObjKm2_Ami_Bou_c_classInit.c",
       "ordinal": 6
     }
   ],
@@ -185,6 +185,12 @@
       "symbolCheckNewVsBaseline": null,
       "linkerOutput": "mwldarm.exe: Multiply-defined: \"virtual table for PoleLift\" in PoleLift.o\nmwldarm.exe: Previously defined in _dsd_gap@ov045_3.o\nmwldarm.exe: Multiply-defined: \"virtual table for Platform\" in PoleLift.o\nmwldarm.exe: Previously defined in _dsd_gap@ov002_13.o\n\nErrors caused tool to abort.",
       "supersededBy": "This round predates the in-class destructor. Its 'Multiply-defined: virtual table for Platform' half came from dBgActor_c's vague-linkage copy, which is no longer emitted. Not re-run; promotion is blocked earlier, at the isolator."
+    },
+    "compilerOnlyOutput": {
+      "requested": [],
+      "deadstripped": [],
+      "data": [],
+      "dataExternalized": []
     }
   },
   "unlicensed_output_observed": {
@@ -274,9 +280,9 @@
         "address": "0x02112d74"
       },
       {
-        "symbol": "PoleLift_SpawnInfo",
+        "symbol": "g_profile_KM2_AMI_BOU",
         "address": "0x02112d98",
-        "note": "config marks this one 'ambiguous'"
+        "note": "config marks this one 'ambiguous'; historical alias PoleLift_SpawnInfo"
       },
       {
         "symbol": "_ZTV8PoleLift",
@@ -312,9 +318,10 @@
   "notes": [
     "Pilot for notes/translation-unit-reconstruction-plan.md section 18, steps 2 through 5. Report: notes/tu-reconstruction-pilot-report.md.",
     "All seven functions reproduce their ROM bytes when compiled together. The legacy one-function sources under src/ are untouched and remain the enrolled owners of this range.",
-    "One source-level change was forced by consolidation and one relocation-convention conflict was found by it: PoleLift_Spawn's vptr store had to become (int)(_ZTV8PoleLift + 2). See the report's 'What consolidation forced' section.",
+    "One source-level change was forced by consolidation and one relocation-convention conflict was found by it: daObjKm2_Ami_Bou_c_classInit's vptr store (historical alias PoleLift_Spawn) had to become (int)(_ZTV8PoleLift + 2). See the report's 'What consolidation forced' section.",
     "PoleLift_ClsnFile (0x021131d0) and PoleLift_ModelFile (0x021131d8) carry this class's name but are referenced by none of these seven functions, and __sinit_ov045_02112280 rather than this TU's initialiser touches them. Those names are probably misattributed; that is a data-phase question and nothing here depends on it.",
-    "Promotion is still refused, but for a different and now-measured reason. The _ZN8PoleLiftD2Ev blocker is DISCHARGED: with the destructor in the class body the TU emits D1 and D0 only, in ROM order, and tools/tu_order_check.py returns ALL MATCH. What blocks promotion now is the class's own RTTI. A consolidated object takes objisolate's derive_deadstrip, which admits no unlicensed non-.text content; the TU emits eleven such records because it defines the key function. Nine take a compiler_only_output 'deadstrip-data' row and are accepted. _ZTI8PoleLift and _ZTS8PoleLift do not: measured against tools/tubuild.py, omitting their rows leaves objisolate refusing \"unlicensed content in text-only multi-symbol object\", 'deadstrip-data' is refused for having no configured ROM home, and plain 'deadstrip' is refused as an RTTI record that is never compared against the cartridge. production_mode 'intact-object' cannot help either: the cartridge's string is '18daObjKm2_Ami_Bou_c' (21 bytes) where the compiler emits '8PoleLift' (10 bytes), so no byte-identical emission exists under the coined name. The single remaining prerequisite is renaming this class to daObjKm2_Ami_Bou_c, which the ROM already evidences at 0x02112d74/0x02112d80 and which is deliberately NOT done here."
+    "Promotion is still refused, but for a different and now-measured reason. The _ZN8PoleLiftD2Ev blocker is DISCHARGED: with the destructor in the class body the TU emits D1 and D0 only, in ROM order, and tools/tu_order_check.py returns ALL MATCH. What blocks promotion now is the class's own RTTI. A consolidated object takes objisolate's derive_deadstrip, which admits no unlicensed non-.text content; the TU emits eleven such records because it defines the key function. Nine take a compiler_only_output 'deadstrip-data' row and are accepted. _ZTI8PoleLift and _ZTS8PoleLift do not: measured against tools/tubuild.py, omitting their rows leaves objisolate refusing \"unlicensed content in text-only multi-symbol object\", 'deadstrip-data' is refused for having no configured ROM home, and plain 'deadstrip' is refused as an RTTI record that is never compared against the cartridge. production_mode 'intact-object' cannot help either: the cartridge's string is '18daObjKm2_Ami_Bou_c' (21 bytes) where the compiler emits '8PoleLift' (10 bytes), so no byte-identical emission exists under the coined name. The single remaining prerequisite is renaming this class to daObjKm2_Ami_Bou_c, which the ROM already evidences at 0x02112d74/0x02112d80 and which is deliberately NOT done here.",
+    "daObjKm2_Ami_Bou_c_classInit and g_profile_KM2_AMI_BOU are reconstructed source-style names: SM64DS proves the RTTI class, KM2_AMI_BOU registry ID, descriptor/factory relationship, allocation size, and vtable identity; later EAD lineage supplies the spelling prior. Exact original SM64DS spellings are not preserved. Historical aliases were PoleLift_Spawn and PoleLift_SpawnInfo."
   ],
   "partial_isolation": {
     "round": "tools/tubuild.py linkcheck --partial -- one compile of the consolidated source, objisolate.derive per licensed function, each derived object substituted for the production per-function object at its own existing path, then scratch dsd delink+lcf, whole-tree mwccarm, mwldarm link, linked-range and module byte comparison, dsd check symbols --fail, full ROM build",
@@ -337,7 +344,7 @@
       "src/_ZN8PoleLift6RenderEv.cpp",
       "src/_ZN8PoleLift8BehaviorEv.cpp",
       "src/_ZN8PoleLift13InitResourcesEv.cpp",
-      "src/PoleLift_Spawn.c"
+      "src/daObjKm2_Ami_Bou_c_classInit.c"
     ],
     "extraInertImports": 78,
     "extraImportsWithNoHome": [],

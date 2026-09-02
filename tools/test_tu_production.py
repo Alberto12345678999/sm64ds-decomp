@@ -56,10 +56,45 @@ class ProductionTuAdmission(unittest.TestCase):
         with mock.patch.object(
                 TP, "_strict_baseline",
                 side_effect=TP.ProductionTuError("missing")), \
-                mock.patch.object(TP.subprocess, "run",
-                                  return_value=mock.Mock(returncode=3)):
+                mock.patch.object(
+                    TP.subprocess, "run",
+                    return_value=mock.Mock(
+                        returncode=3,
+                        stdout="[4/8] mwccarm\n\n      REFUSED -- pin disagreement\n")):
             with self.assertRaisesRegex(
                     TP.ProductionTuError, "baseline command exited 3"):
+                TP._current_or_bootstrapped_intact_baseline(entries, 7)
+
+    def test_failed_control_bootstrap_reports_what_the_baseline_said(self):
+        """An exit code alone cannot be acted on.
+
+        A remote gate surfaces this exception and nothing else, so the refusal has
+        to carry the baseline's own last words -- blank lines dropped, so a short
+        tail is real output rather than padding.
+        """
+        entries = {"src/actors/Thing.cpp": {
+            "id": "ov047/Thing", "module": "ov047"}}
+        with mock.patch.object(
+                TP, "_strict_baseline",
+                side_effect=TP.ProductionTuError("missing")),                 mock.patch.object(
+                    TP.subprocess, "run",
+                    return_value=mock.Mock(
+                        returncode=1,
+                        stdout="[4/8] mwccarm\n\n      REFUSED -- pin disagreement\n")):
+            with self.assertRaisesRegex(
+                    TP.ProductionTuError,
+                    r"last output: .*mwccarm \| .*REFUSED -- pin disagreement"):
+                TP._current_or_bootstrapped_intact_baseline(entries, 7)
+
+    def test_failed_control_bootstrap_says_so_when_there_was_no_output(self):
+        entries = {"src/actors/Thing.cpp": {
+            "id": "ov047/Thing", "module": "ov047"}}
+        with mock.patch.object(
+                TP, "_strict_baseline",
+                side_effect=TP.ProductionTuError("missing")),                 mock.patch.object(TP.subprocess, "run",
+                                  return_value=mock.Mock(returncode=1, stdout="")):
+            with self.assertRaisesRegex(
+                    TP.ProductionTuError, "the command produced no output"):
                 TP._current_or_bootstrapped_intact_baseline(entries, 7)
 
     def test_rom_gap_control_requires_exact_intact_inventory(self):

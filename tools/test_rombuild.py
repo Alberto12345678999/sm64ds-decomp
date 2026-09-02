@@ -408,6 +408,40 @@ class RomBuildEnrollment(unittest.TestCase):
             RB.intact_tu_policies({"src/actors/TU.cpp"}, manifest=manifest)
         self.assertIn("baseline bootstrapping is non-circular", raised.exception.output)
 
+    def test_intact_policy_admits_exact_init_ctor_and_bss_claims(self):
+        ranges = [
+            {"section": ".text", "start": "0x1000", "end": "0x1010",
+             "differingBytes": 0},
+            {"section": ".init", "start": "0x2000", "end": "0x2010",
+             "differingBytes": 0},
+            {"section": ".ctor", "start": "0x2010", "end": "0x2014",
+             "differingBytes": 0},
+            {"section": ".bss", "start": "0x3000", "end": "0x3010",
+             "comparison": "NOBITS -- symbol/module gates"},
+        ]
+        entry = {
+            "id": "ov023/TU", "status": "promoted",
+            "production_mode": "intact-object",
+            "source": "src/actors/TU.cpp", "promoted_source": "src/actors/TU.cpp",
+            "sections": [
+                {"name": row["section"], "start": row["start"], "end": row["end"]}
+                for row in ranges
+            ],
+            "verification": {"linkcheck": {
+                "result": "scratch-data-verified",
+                "phases": {name: True for name in
+                           ("delink", "lcf", "compile", "link", "checkModules", "rom")},
+                "symbolCheckNewVsBaseline": [],
+                "symbolCheckErrors": ["[ERROR] old"],
+                "symbolCheckBaselineErrors": ["[ERROR] old"],
+                "tuRanges": ranges,
+                "rom": {"sha256": "a" * 64, "matchesStockRom": True},
+            }},
+        }
+        self.assertEqual(RB.intact_tu_policies(
+            {"src/actors/TU.cpp"}, manifest={"entries": [entry]}),
+            {"src/actors/TU.cpp": entry})
+
     def test_intact_rom_comparison_uses_current_same_worker_control(self):
         verification = {
             "baseline": {

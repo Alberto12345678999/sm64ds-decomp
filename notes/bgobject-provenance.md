@@ -22,7 +22,7 @@ Bodies read: `src/_ZN10StarSwitch13InitResourcesEv.cpp`,
 
 | Offset | Name | Evidence |
 | --- | --- | --- |
-| 0x320 | `mDrawScaleX` | `InitResources` writes `0x1000` (Fix12 1.0) to 0x320/0x324/0x328; `Render` passes `&mDrawScaleX` to the `Model` at 0xd4 through vtable slot 5. `BlueCoinSwitch::Render` calls the same slot with a literal `0` — so the argument is an optional pointer, and three consecutive Fix12 1.0s behind it are a scale vector. |
+| 0x320 | `mDrawScaleX` | `InitResources` writes `0x1000` (Fix12 1.0) to 0x320/0x324/0x328; `Render` passes `&mDrawScaleX` to the `Model` at 0xd4 through vtable slot 5. `daObjBC_Switch_c::Render` calls the same slot with a literal `0` — so the argument is an optional pointer, and three consecutive Fix12 1.0s behind it are a scale vector. |
 | 0x324 | `mDrawScaleY` | as above |
 | 0x328 | `mDrawScaleZ` | as above |
 | 0x334 | `mMusicVolume` | `Behavior` reads it into `v`, tests `v == 0x40` / `v == 0x7f`, then passes `v` as the first argument of `Sound::ChangeMusicVolume(u32, Fix12i)`. Every other caller in the tree (`Message::PrepareTalk`, `Message::EndTalk`, `Player::St_Talk_Main`, `func_0201f32c`) passes the literals `0x40` / `0x7f` there, so that parameter is a target volume level, not an id. |
@@ -53,7 +53,7 @@ Raw-offset collapses, each re-verified byte-exact:
 * `Behavior`: `*(void **)((char *)&unk_348) = a;` → `mTargetActor = (s32)a;`.
 * `Render`: the local `struct C { char p1[0xd4]; Sub sub; }` shadow of the whole object
   is gone; the call now goes through `&mModel` directly, matching the shape
-  `BlueCoinSwitch::Render` already used.
+  `daObjBC_Switch_c::Render` already used.
 * `CleanupResources`: `((dBgW *)((char *)&(*(u8 *)&mMeshCollider)))` →
   `((dBgW *)&mMeshCollider)`.
 
@@ -317,13 +317,13 @@ around it are free. The measurement is in a comment at the site.
 
 ---
 
-## BlueCoinSwitch (`include/BlueCoinSwitch.h`, [ov002](../config/arm9/overlays/ov002/symbols.txt), size 0x330)
+## daObjBC_Switch_c (`include/daObjBC_Switch_c.h`, [ov002](../config/arm9/overlays/ov002/symbols.txt), size 0x330)
 
 This header already carried a full prose account of every offset; the names below just
-make the code say what the prose said. Bodies read:
-`src/_ZN14BlueCoinSwitch13InitResourcesEv.cpp`,
-`src/_ZN14BlueCoinSwitch8BehaviorEv.cpp`, `src/_ZN14BlueCoinSwitch6RenderEv.cpp`,
-`src/_ZN14BlueCoinSwitch16CleanupResourcesEv.cpp`.
+make the code say what the prose said. Bodies read: the four per-function files under `src/` that the class carried at the
+time, one each for `InitResources`, `Behavior`, `Render` and `CleanupResources`. All four have since been folded into the single
+translation unit `src/actors/d_a_obj_bc_switch.cpp`, where the same bodies now live as
+real member definitions.
 
 | Offset | Name | Evidence |
 | --- | --- | --- |
@@ -335,10 +335,12 @@ make the code say what the prose said. Bodies read:
 | 0x32d | `mEventBit` | `param1 & 0xf`, passed straight to `Event::SetBit(u32)`. |
 | 0x32e | `mHomeAreaId` | `InitResources` copies `mAreaId` here before `Behavior` sets `mAreaId = -1`, and `Behavior` passes it to `IsAreaShowing`. |
 
-The rename carried into `src_tu/actors/BlueCoinSwitch.cpp` as well as `src/` — the
-shadow TU builds only under a `tuModules` profile, so a stale spelling there compiles
-nowhere and no normal gate would have caught it. `tools/check_src_tu_compiles.py`
-(72/72) and `tools/check_src_tu.py` were run after.
+The rename carried into the shadow TU as well as `src/` — that file builds only under
+a `tuModules` profile, so a stale spelling there compiles nowhere and no normal gate
+would have caught it. `tools/check_src_tu_compiles.py` (72/72) and
+`tools/check_src_tu.py` were run after. The shadow TU has since been promoted into the
+production build as `src/actors/d_a_obj_bc_switch.cpp`, so it is no longer shadow: the
+same nine functions are now compiled and linked into the ROM from one file.
 
 ---
 
@@ -705,7 +707,7 @@ In the C twin, `0x00c` becomes `actorID` and `0x08e` `mAngleY`.
 | `PathLift` ([ov002](../config/arm9/overlays/ov002/symbols.txt)) | 0x42a | `mAfterClsnRan` | set to `1` by the last statement of `AfterClsn`, cleared by the last statement of `BaseBehavior`. |
 | | 0x42b | `mTriggerDelay` | `AfterClsn` fires `func_ov002_020efa54(this, 1)` only when `DecIfAbove0_Byte(&mTriggerDelay)` returns 0 and `mState == 0`. |
 | `WDW_Water` ([ov029](../config/arm9/overlays/ov029/symbols.txt)) | 0x338 | `mUseSpawnPosY` | `InitResources` sets `param1 & 1`, and when it is clear — and only then — overrides `mPosY` from `data_ov029_02112b2c[clock setting]` before snapshotting `mTargetPosY`. |
-| `ChainChompFence` ([ov060](../config/arm9/overlays/ov060/symbols.txt)) | 0x31e | `mDisabled` | both `Behavior` and `Render` return immediately while it is nonzero, and nothing else in a matched body touches it. |
+| `daObjWanwanShutter_c` ([ov060](../config/arm9/overlays/ov060/symbols.txt)) | 0x31e | `mDisabled` | both `Behavior` and `Render` return immediately while it is nonzero, and nothing else in a matched body touches it. |
 | `LavaPlank` ([ov022](../config/arm9/overlays/ov022/symbols.txt)) | 0x324 | `mPhaseAngle` | `InitResources` seeds it from `mAngleX`; `Behavior` adds `0x400` per frame and uses `(u16)mPhaseAngle >> 4` as the sine-table index. |
 
 `PathLift::mAfterClsnRan` also carried into the `daObjRcCarpet_c::Behavior` member

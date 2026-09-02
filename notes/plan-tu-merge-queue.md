@@ -54,7 +54,7 @@ pragmas into the output at all — it emits a warning comment — so members tha
 it lose it. Both directions are live. Affected Tier 1:
 
 ```
-ov029/ArrowLift(1/9)  ov029/CageLift(1/9)  ov029/daObjWc_Obj07_c(1/5)
+ov029/ArrowLift(1/9)  ov029/daObjWc_Obj05_c(1/9)  ov029/daObjWc_Obj07_c(1/5)
 ov014/daObjBSwdoor_c(1/6) ov030/RollingLogTtm(3/6) ov063/FallBlockBbh(2/5)
 ov015/FallBlockWf(2/5) ov015/RotatingPlatformWf(1/5) ov022/RotatingPlatformLll(1/5)
 ov036/RotatingPlatformRr(1/5) ov064/TiltingPlatformLll(2/5) ov016/FloatOnWaterPlatformJrb(1/4)
@@ -131,7 +131,7 @@ ov002 0x20b0748  n=8  L=111  daCamTag_c                uncorrob
 ov002 0x20b07f8  n=8  L=121  daChRoom_c              uncorrob
 ov002 0x20b5734  n=7  L=164  BlueFlame                uncorrob
 ov002 0x20b6e08  n=5  L=67   WaterfallMist            uncorrob
-ov002 0x20ec388  n=8  L=148  Warp                     uncorrob
+ov002 0x20ec388  n=8  L=148  daWarpkun_c             uncorrob
 ov002 0x20f0dd0  n=8  L=176  OneUpLogo                uncorrob
 ov006 0x20dbd54  n=3  L=36   MgPicturePoker           uncorrob
 ov006 0x20fa6ac  n=2  L=30   MgPairAGoneAndOn         uncorrob
@@ -146,7 +146,7 @@ cheapest possible probe of post-regeneration ov006.
 ov009 0x2112078  n=7  L=116  Flag                     pcov=2
 ov012 0x21111a0  n=8  L=175  daObjC0_Switch_c
 ov013 0x21113bc  n=8  L=153  ClockPaintingHandShort   uncorrob
-ov014 0x2112e0c  n=8  L=197  ChainChompFence
+ov014 0x2112e0c  n=8  L=197  daObjWanwanShutter_c
 ov015 0x21111a0  n=7  L=106  PoleBillboard            uncorrob
 ov018 0x21126d4  n=4  L=60   daSCre_c                 uncorrob
 ov019 0x211261c  n=5  L=93   daSldMng_c
@@ -188,11 +188,11 @@ first module where a `config_tu/` conversion becomes conceivable.
 
 **B5 — R1, ov002/ov006 conflicts · 6 TUs / 44 files / net −38 / 1,361 lines**
 ```
-ov002 0x20b09b0  n=9  L=338  Exit                   CONF1
+ov002 0x20b09b0  n=9  L=338  daChScene_c                   CONF1
 ov002 0x20b46a0  n=8  L=189  MegaMushroomCreateTag  CONF1 pcov=5
 ov002 0x20bc5e0  n=8  L=175  HealingHeart           CONF1 pcov=4
 ov002 0x20f0894  n=8  L=258  Number                 CONF1
-ov002 0x20f11b0  n=9  L=322  BlueCoinSwitch         CONF2
+ov002 0x20f11b0  n=9  L=322  daObjBC_Switch_c         CONF2
 ov006 0x212471c  n=2  L=79   MgTrampolineTerror     CONF1
 ```
 
@@ -268,7 +268,7 @@ ov015 0x2112cf4  n=5  L=80   FallBlockWf              2/5  pcov=3
 ov016 0x2112ef4  n=4  L=82   FloatOnWaterPlatformJrb  1/4
 ov022 0x21115a8  n=5  L=106  RotatingPlatformLll      1/5
 ov029 0x211137c  n=9  L=243  ArrowLift                1/9  CONF2
-ov029 0x2111ac4  n=9  L=230  CageLift                 1/9  NORM1
+ov029 0x2111ac4  n=9  L=230  daObjWc_Obj05_c                 1/9  NORM1
 ov029 0x2112080  n=5  L=83   daObjWc_Obj07_c          1/5  pcov=3
 ov030 0x211155c  n=6  L=96   RollingLogTtm            3/6  pcov=4
 ov036 0x2111444  n=5  L=107  RotatingPlatformRr       1/5

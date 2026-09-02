@@ -68,12 +68,12 @@ division.** Genuinely inert changes: renaming a field, a typedef alias (`Fix12i`
 ### "Observed" is not "correct"
 
 The generated width is the width of the access matched code happened to make, not the
-field's real width. `include/ChainChomp.h` *used to* declare `u8 mScaleX; /* 0x080 */` where
+field's real width. `include/daWanwan_c.h` *used to* declare `u8 mScaleX; /* 0x080 */` where
 `include/dActor_c.h:106` -- de-bannered, hand-reconstructed -- declares `s32 mScaleX` at the
-same offset, and `src/_ZN10ChainChomp13InitResourcesEv.cpp` settles it by writing
+same offset, and `src/actors/d_a_wanwan.cpp` settles it by writing
 `*(int *)(c + 0x80) = 0x1000;`. The derived header was the wrong one.
 
-*(Re-checked 2026-08-21: this particular conflict has since been fixed -- `ChainChomp.h:68`
+*(Re-checked 2026-08-21: this particular conflict has since been fixed -- `include/daWanwan_c.h`
 now says `s32 mScaleX` and its own comment records the retype. The "**87** base-conflicts
 `tools/gen_header.py --report` still lists" figure is also stale: `--report` no longer
 emits a base-conflict count unless the history/hierarchy/rom passes have been run first,

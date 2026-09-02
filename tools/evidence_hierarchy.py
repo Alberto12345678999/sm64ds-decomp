@@ -182,7 +182,7 @@ _LEN = re.compile(r"(\d+)")
 
 
 def split_nested(s: str):
-    """`10ChainChomp` -> ['ChainChomp'];  `8Particle7Manager` -> both parts."""
+    """`10daWanwan_c` -> ['daWanwan_c'];  `8Particle7Manager` -> both parts."""
     parts, i = [], 0
     while i < len(s):
         m = _LEN.match(s, i)
@@ -208,7 +208,7 @@ ANON_FILE = re.compile(r"^(func_[A-Za-z0-9_]+)\.(c|cpp)$")
 
 
 def class_of_mangled_symbol(sym: str):
-    """`_ZN10ChainChomp13InitResourcesEv` -> ChainChomp."""
+    """`_ZN10daWanwan_c13InitResourcesEv` -> daWanwan_c."""
     if not sym.startswith("_ZN"):
         return None
     body = sym[3:]
@@ -671,11 +671,11 @@ def iter_definitions(text):
     """(name, body, first_param(name, elem_width), start_line) for every
     function definition in a file.
 
-    Necessary because a file's symbol is not always the identifier that is
-    defined in it: src/_ZN10ChainChomp13InitResourcesEv.cpp defines
-    `int ChainChomp::InitResources()`, with `this` aliased to a local `c`.
-    Requiring the mangled name would have found zero accesses there -- the same
-    shape of miss that section 2 of the plan is about.
+    Necessary because a definition never spells the symbol the ROM knows it by:
+    ov014's `_ZN10daWanwan_c13InitResourcesEv` is written
+    `int daWanwan_c::InitResources()` in src/actors/d_a_wanwan.cpp, with `this`
+    aliased to a local `c`.  Requiring the mangled name would have found zero
+    accesses there -- the same shape of miss that section 2 of the plan is about.
     """
     for m in DEF_OPEN.finditer(text):
         name = m.group("name")
@@ -1419,8 +1419,8 @@ def build(root, seed_path):
             "pass": "hierarchy",
             "generator": "tools/evidence_hierarchy.py",
             "meaning": {
-                "hierarchy[c].base": "the IMMEDIATE base.  ChainChomp's is Enemy, "
-                                     "not Actor; Actor is reached at base_depth 2 "
+                "hierarchy[c].base": "the IMMEDIATE base.  daWanwan_c's is dEnemyBase_c, "
+                                     "not dActor_c; dActor_c is reached at base_depth 2 "
                                      "along hierarchy[c].chain.",
                 "conflicts": "one entry per (bannered class, offset, ancestor that "
                              "also names that offset).  kind=width is the "

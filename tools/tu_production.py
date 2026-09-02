@@ -48,9 +48,17 @@ def prepare_intact_object(raw, entry):
         TB.apply_externalized_output_policy(post_policy, entry)
     if reasons:
         _raise(f"{entry['id']} exact RTTI externalization", reasons)
+    aliased_obj, undefined_aliases, reasons = \
+        TB.apply_undefined_symbol_alias_policy(externalized_obj, entry)
+    if reasons:
+        _raise(f"{entry['id']} undefined symbol aliases", reasons)
+    bound_obj, symbol_bindings, reasons = \
+        TB.apply_symbol_binding_policy(aliased_obj, entry)
+    if reasons:
+        _raise(f"{entry['id']} symbol binding policy", reasons)
 
     ordered_obj, section_order, reasons = \
-        TB.prepare_owned_nontext_section_order(externalized_obj, entry, claims)
+        TB.prepare_owned_nontext_section_order(bound_obj, entry, claims)
     if reasons:
         _raise(f"{entry['id']} manifest non-text section order", reasons)
 
@@ -81,6 +89,8 @@ def prepare_intact_object(raw, entry):
         _raise(f"{entry['id']} production object audit", audit_errors)
     return linked_obj, {
         "compilerOnly": compiler_only, "externalized": externalized,
+        "undefinedAliases": undefined_aliases,
+        "symbolBindings": symbol_bindings,
         "sectionOrder": section_order,
         "ownedBefore": owned_before, "ownedAfter": owned_after,
         "vtableRebias": rebias,
@@ -122,11 +132,21 @@ def _current_or_bootstrapped_intact_baseline(entries, jobs):
             "linkcheck", "--baseline", "--module", module,
             "-j", str(jobs), "--clean",
         ]
-        result = subprocess.run(command, check=False)
+        # Capture rather than inherit.  A remote gate reports this exception and
+        # nothing else, so an exit code on its own says only that the control could
+        # not be rebuilt -- not which of the eight phases refused, which is the one
+        # fact a reader needs.  The output is echoed as it is summarised so an
+        # interactive run still sees the whole log.
+        result = subprocess.run(command, check=False, text=True,
+                                stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        print(result.stdout, end="")
         if result.returncode:
+            tail = [line for line in (result.stdout or "").splitlines() if line.strip()]
+            detail = " | ".join(tail[-12:]) or "the command produced no output"
             raise ProductionTuError(
                 "could not bootstrap strict stock control: "
-                f"{first_error}; baseline command exited {result.returncode}")
+                f"{first_error}; baseline command exited {result.returncode}; "
+                f"last output: {detail}")
         try:
             return _strict_baseline(entries)
         except ProductionTuError as fresh_error:

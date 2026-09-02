@@ -852,7 +852,8 @@ def intact_tu_policies(enrolled=None, manifest=None):
             except (KeyError, TypeError, ValueError):
                 errors.append(f"{label}: intact-object manifest has an invalid section claim")
                 continue
-            if name not in (".text", ".data", ".rodata", ".bss") or start >= end:
+            if name not in (".text", ".rodata", ".init", ".ctor", ".data", ".bss") \
+                    or start >= end:
                 errors.append(f"{label}: intact-object manifest has unsupported/invalid "
                               f"section claim {name!r}")
             if name in seen_sections:

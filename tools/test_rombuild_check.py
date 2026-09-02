@@ -89,6 +89,23 @@ class RomBuildCheck(unittest.TestCase):
         self.assertEqual(report["moduleComposition"]["sourceDataBytes"], 4)
         self.assertEqual(report["moduleComposition"]["unownedDataBytes"], 0)
 
+    def test_intact_bss_is_nobits_not_an_out_of_range_data_failure(self):
+        (self.config / "delinks.txt").write_text(
+            "    .text start:0x00001000 end:0x00001008 kind:code\n"
+            "    .bss start:0x00001020 end:0x00001040 kind:bss\n\n"
+            "src/actors/Pair.cpp:\n"
+            "    complete\n"
+            "    .text start:0x00001000 end:0x00001008\n"
+            "    .bss start:0x00001020 end:0x00001030\n",
+            encoding="utf-8")
+        report = RBC.analyze(self.config, "stock")
+        self.assertTrue(report["passed"])
+        self.assertEqual(report["sourceBuild"]["sourceDataClaims"], 0)
+        self.assertEqual(report["sourceBuild"]["sourceBssClaims"], 1)
+        self.assertEqual(report["sourceBuild"]["sourceBssBytes"], 0x10)
+        self.assertEqual(report["moduleComposition"]["sourceDataBytes"], 0)
+        self.assertEqual(report["failures"], [])
+
     def write_intact_entry(self):
         """One source-owned entry claiming BOTH .text and .data, as an intact TU
         does."""

@@ -8,7 +8,7 @@
  * named daObjKm3_Dorifu_c_Spawn, and that name is trustworthy for pairing (unlike
  * its sibling daObjKm3_Kurumajiku_c_classInit (historical alias
  * RickshawBs_Spawn; see include/daObjKm3_Kurumajiku_c.h); still paired
- * here by vtable ADDRESS per the recovery recipe, and it agrees with the name.
+ * here by vtable ADDRESS per the recovery recipe.
  *
  * IT DOES NOT DERIVE FROM dBgActor_c. It derives from daObjKuruma_c, which derives
  * from dBgActor_c. Its destructor stores THREE vptrs as it tears down this

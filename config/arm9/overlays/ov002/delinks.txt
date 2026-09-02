@@ -300,41 +300,9 @@ src/actors/d_a_ch_room.cpp:
     complete
     .text start:0x020b07f8 end:0x020b09b0
 
-src/_ZN4ExitD1Ev.cpp:
+src/actors/d_a_ch_scene.cpp:
     complete
-    .text start:0x020b09b0 end:0x020b09d4
-
-src/_ZN4ExitD0Ev.cpp:
-    complete
-    .text start:0x020b09d4 end:0x020b0a0c
-
-src/func_ov002_020b0a0c.c:
-    complete
-    .text start:0x020b0a0c end:0x020b0a70
-
-src/_ZN4Exit16CleanupResourcesEv.cpp:
-    complete
-    .text start:0x020b0a70 end:0x020b0a78
-
-src/_ZN4Exit16OnPendingDestroyEv.cpp:
-    complete
-    .text start:0x020b0a78 end:0x020b0a7c
-
-src/_ZN4Exit6RenderEv.cpp:
-    complete
-    .text start:0x020b0a7c end:0x020b0a84
-
-src/_ZN4Exit8BehaviorEv.cpp:
-    complete
-    .text start:0x020b0a84 end:0x020b0d88
-
-src/_ZN4Exit13InitResourcesEv.cpp:
-    complete
-    .text start:0x020b0d88 end:0x020b0f24
-
-src/Exit_Spawn.c:
-    complete
-    .text start:0x020b0f24 end:0x020b0f54
+    .text start:0x020b09b0 end:0x020b0f54
 
 src/_ZN4CoinD1Ev.cpp:
     complete
@@ -4173,37 +4141,9 @@ src/actors/d_a_tree.cpp:
     complete
     .text start:0x020ebf8c end:0x020ec388
 
-src/_ZN4WarpD1Ev.cpp:
+src/actors/d_a_warpkun.cpp:
     complete
-    .text start:0x020ec388 end:0x020ec3b8
-
-src/_ZN4WarpD0Ev.cpp:
-    complete
-    .text start:0x020ec3b8 end:0x020ec3fc
-
-src/_ZN4Warp16CleanupResourcesEv.cpp:
-    complete
-    .text start:0x020ec3fc end:0x020ec404
-
-src/_ZN4Warp16OnPendingDestroyEv.cpp:
-    complete
-    .text start:0x020ec404 end:0x020ec408
-
-src/_ZN4Warp6RenderEv.cpp:
-    complete
-    .text start:0x020ec408 end:0x020ec410
-
-src/_ZN4Warp8BehaviorEv.cpp:
-    complete
-    .text start:0x020ec410 end:0x020ec4c4
-
-src/_ZN4Warp13InitResourcesEv.cpp:
-    complete
-    .text start:0x020ec4c4 end:0x020ec534
-
-src/Warp_Spawn.c:
-    complete
-    .text start:0x020ec534 end:0x020ec56c
+    .text start:0x020ec388 end:0x020ec56c
 
 src/_ZN8YoshiEggD1Ev.cpp:
     complete
@@ -4619,41 +4559,9 @@ src/OneUpLogo_Spawn.c:
     complete
     .text start:0x020f1170 end:0x020f11b0
 
-src/_ZN14BlueCoinSwitchD1Ev.cpp:
+src/actors/d_a_obj_bc_switch.cpp:
     complete
-    .text start:0x020f11b0 end:0x020f11f4
-
-src/_ZN14BlueCoinSwitchD0Ev.cpp:
-    complete
-    .text start:0x020f11f4 end:0x020f124c
-
-src/_ZN14BlueCoinSwitch16CleanupResourcesEv.cpp:
-    complete
-    .text start:0x020f124c end:0x020f1290
-
-src/_ZN14BlueCoinSwitch6RenderEv.cpp:
-    complete
-    .text start:0x020f1290 end:0x020f12c8
-
-src/_ZN14BlueCoinSwitch8BehaviorEv.cpp:
-    complete
-    .text start:0x020f12c8 end:0x020f1468
-
-src/_ZN14BlueCoinSwitch13InitResourcesEv.cpp:
-    complete
-    .text start:0x020f1468 end:0x020f1578
-
-src/func_ov002_020f1578.c:
-    complete
-    .text start:0x020f1578 end:0x020f15b8
-
-src/func_ov002_020f15b8.c:
-    complete
-    .text start:0x020f15b8 end:0x020f15cc
-
-src/daObjBC_Switch_c_classInit.c:
-    complete
-    .text start:0x020f15cc end:0x020f15fc
+    .text start:0x020f11b0 end:0x020f15fc
 
 src/_ZN14EnemySwitchTagD1Ev.cpp:
     complete
