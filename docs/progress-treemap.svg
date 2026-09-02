@@ -32677,27 +32677,27 @@ matched: yes</title></rect><rect x="1505.21" y="175.78" width="3.90" height="3.2
 module: ov029
 addr: 0x02111340
 size: 60 bytes
-matched: yes</title></rect><rect x="1505.21" y="178.98" width="3.90" height="3.62" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9ArrowLiftD1Ev
+matched: yes</title></rect><rect x="1505.21" y="178.98" width="3.90" height="3.62" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15daObjWc_Obj02_cD1Ev
 module: ov029
 addr: 0x0211137c
 size: 68 bytes
-matched: yes</title></rect><rect x="1505.21" y="182.60" width="3.90" height="4.69" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9ArrowLiftD0Ev
+matched: yes</title></rect><rect x="1505.21" y="182.60" width="3.90" height="4.69" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15daObjWc_Obj02_cD0Ev
 module: ov029
 addr: 0x021113c0
 size: 88 bytes
-matched: yes</title></rect><rect x="1505.21" y="187.29" width="3.90" height="3.62" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9ArrowLift16CleanupResourcesEv
+matched: yes</title></rect><rect x="1505.21" y="187.29" width="3.90" height="3.62" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15daObjWc_Obj02_c16CleanupResourcesEv
 module: ov029
 addr: 0x02111418
 size: 68 bytes
-matched: yes</title></rect><rect x="1509.11" y="175.78" width="5.66" height="1.47" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9ArrowLift6RenderEv
+matched: yes</title></rect><rect x="1509.11" y="175.78" width="5.66" height="1.47" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15daObjWc_Obj02_c6RenderEv
 module: ov029
 addr: 0x0211145c
 size: 40 bytes
-matched: yes</title></rect><rect x="1509.11" y="177.25" width="5.66" height="13.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9ArrowLift8BehaviorEv
+matched: yes</title></rect><rect x="1509.11" y="177.25" width="5.66" height="13.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15daObjWc_Obj02_c8BehaviorEv
 module: ov029
 addr: 0x02111484
 size: 372 bytes
-matched: yes</title></rect><rect x="1514.77" y="175.78" width="3.51" height="12.06" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9ArrowLift13InitResourcesEv
+matched: yes</title></rect><rect x="1514.77" y="175.78" width="3.51" height="12.06" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15daObjWc_Obj02_c13InitResourcesEv
 module: ov029
 addr: 0x021115f8
 size: 204 bytes
