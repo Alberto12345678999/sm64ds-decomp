@@ -24,7 +24,7 @@
  * no D2: the ROM's own order.
  *
  * That lever is safe here only because daChScene_c is a LEAF. Its `_ZTI` is
- * ov002 0x02108674, and a scan of all 977 extracted binaries finds exactly
+ * ov002 0x02108674, and a scan of all 977 .bin files under extracted/ finds exactly
  * one word anywhere pointing at it: 0x021086b0, this class's own vtable slot.
  * No `_ZTI` in the cartridge names it as a base, so no other TU's codegen
  * moves when this one's destructor does.
@@ -51,7 +51,7 @@
  * Consolidated from these nine legacy one-function sources (ROM address
  * order), all nine now deleted:
  *   [0] 0x020b09b0  src/_ZN11daChScene_cD1Ev.cpp
- *   [1] 0x020b09d4  src/_ZN11daChScene_cD0Ev.c
+ *   [1] 0x020b09d4  src/_ZN11daChScene_cD0Ev.cpp
  *   [2] 0x020b0a0c  src/func_ov002_020b0a0c.c
  *   [3] 0x020b0a70  src/_ZN11daChScene_c16CleanupResourcesEv.cpp
  *   [4] 0x020b0a78  src/_ZN11daChScene_c16OnPendingDestroyEv.cpp
@@ -61,18 +61,26 @@
  *   [8] 0x020b0f24  src/daChScene_c_Spawn.c
  *
  * WHAT IS STILL A SHADOW. The `extern "C"` block below carries declarations
- * the legacy files invented -- several of them (dActor_c::FindWithActorID,
- * Camera::LookAtExit, Player::SetNoControlState) have real declarations in
- * project headers. Each is left alone deliberately: swapping a mangled-name
+ * the legacy files invented. Two of them have a real counterpart to swap to:
+ * dActor_c::FindWithActorID (include/dActor_c.h:171) and
+ * Player::SetNoControlState (include/Player.h:512). Camera::LookAtExit does
+ * NOT -- include/Camera.h declares no such member, and the only thing in the
+ * tree is include/decl_Camera.h's own mangled-name extern, which is the same
+ * shadow by another name; reconciling it means first evidencing the method on
+ * Camera. All three are left alone here regardless: swapping a mangled-name
  * extern for a real method call changes what mwcc emits at the call site, so
  * each is its own byte-verified change, not a cleanup to fold into a
  * promotion. */
-/* Includes: the union of the nine legacy files', first-seen in ROM-ascending
- * order. The order is load-bearing in general -- daChScene_c.h pulls in
- * math/Matrix.h for Matrix4x3, and a header that redefined it earlier would
- * change this file's layout silently -- but not here: decl_Actor.h and
- * decl_common.h declare functions and externs only, and this TU builds
- * byte-exact as written. */
+/* Includes: the union of the nine legacy files'. The order below is the one
+ * that builds byte-exact, and it is NOT ROM-ascending first-seen order --
+ * that would be daChScene_c.h, types.h, decl_Actor.h, decl_ActorBase.h,
+ * decl_common.h. An earlier version of this comment claimed the ascending
+ * order while the file shipped the order below; the code is what was
+ * verified, so the comment is what changed. Include order is load-bearing in
+ * general -- daChScene_c.h pulls in math/Matrix.h for Matrix4x3, and a header
+ * that redefined it earlier would change this file's layout silently -- but
+ * the two decl_ headers declare functions and externs only, so nothing here
+ * depends on which of the five comes first. */
 #include "decl_Actor.h"
 #include "decl_common.h"
 #include "daChScene_c.h"
@@ -91,7 +99,6 @@
 typedef struct Mtx { int m[12]; } Mtx;
 
 extern "C" {
-extern void* data_020a0eac;
 extern int _ZTV11daChScene_c[];
 extern void LoadLevel(s8 levelID, u8 entranceID, s8 starID, u32 d, s8 e);
 extern u8 data_0209f2c0[];

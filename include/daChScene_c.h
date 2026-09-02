@@ -1,5 +1,9 @@
 /* AUTO-GENERATED from matched-function evidence by tools/gen_header.py
  * class daChScene_c: 4 matched functions, 12 evidenced fields.
+ * (That generator line is a 2026-08 snapshot and is left as written for
+ * provenance. The class as shipped owns nine functions in ov002
+ * 0x020b09b0..0x020b0f54 -- five virtual overrides, the destructor pair,
+ * a helper and the factory -- all in src/actors/d_a_ch_scene.cpp.)
  * Offsets/widths are observed, not guessed. Gaps are explicit padding.
  * Field NAMES are placeholders - renaming cannot change codegen.
  *
