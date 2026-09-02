@@ -191,8 +191,8 @@ src/HideArea.c	PURE-C	arm9				1		None		-
 src/HitDeathPlane.c	WEAK-refs-only	arm9				1		None		-
 src/HootTheOwl_Spawn.c	WEAK-refs-only	ov094				1		None		-
 src/HuffUnCompReadByCallback.c	PURE-C					0		None		not-in-delinks
-src/HugeCover_Spawn.c	S1-stores-rom-vptr	ov032			stores _ZTV9HugeCover	1		None	_ZTV9HugeCover	-
-src/HugeWater_Spawn.c	WEAK-refs-only	ov032				1		None		-
+src/daObjTdFuta_c_classInit.c	S1-stores-rom-vptr	ov032			stores _ZTV9HugeCover	1		None	_ZTV9HugeCover	-
+src/daObjTdWater_c_classInit.c	WEAK-refs-only	ov032				1		None		-
 src/IPCSend.c	WEAK-refs-only	arm9				1		None		-
 src/daObjIceBlock_c_classInit.c	WEAK-refs-only	ov081				1		None		-
 src/IceSheet_Spawn.c	WEAK-refs-only	ov018				1		None		-
@@ -489,8 +489,8 @@ src/TTC_MovingBeam_Spawn.c	WEAK-refs-only	ov065				1		None		-
 src/Thwomp_Spawn.c	S1-stores-rom-vptr	ov091			stores _ZTV11daDsnBase_c	1		None	_ZTV11daDsnBase_c/_ZTV6Thwomp	-
 src/TiltingPlatformBfs_Spawn.c	S1-stores-rom-vptr	ov045			stores _ZTV15daObjGuragura_c	1		None	_ZTV15daObjGuragura_c/_ZTV18TiltingPlatformBfs	-
 src/daObjFl_Gura_c_classInit.c	S1-stores-rom-vptr	ov064			stores _ZTV15daObjGuragura_c	1		None	_ZTV15daObjGuragura_c/_ZTV18TiltingPlatformLll	-
-src/TinyCover_Spawn.c	S1-stores-rom-vptr	ov033			stores _ZTV9TinyCover	1		None	_ZTV9TinyCover	-
-src/TinyWater_Spawn.c	WEAK-refs-only	ov033				1		None		-
+src/daObjTtFuta_c_classInit.c	S1-stores-rom-vptr	ov033			stores _ZTV9TinyCover	1		None	_ZTV9TinyCover	-
+src/daObjTtWater_c_classInit.c	WEAK-refs-only	ov033				1		None		-
 src/Toad_Spawn.c	WEAK-refs-only	ov085				1		None		-
 src/Tornado_Spawn.c	WEAK-refs-only	ov096				1		None		-
 src/TouchArea_Update.c	PURE-C	ov001				1		None		-
@@ -6281,7 +6281,7 @@ src/func_ov065_021196bc.c	WEAK-refs-only	ov065				1		None		-
 src/func_ov065_02119794.c	WEAK-refs-only	ov065				1		None		-
 src/func_ov065_0211990c.c	PURE-C	ov065				1		None		-
 src/func_ov065_0211a114.c	PURE-C	ov065				1		None		-
-src/func_ov065_0211a45c.c	S1-stores-rom-vptr	ov065			stores _ZTV16daObjCtMecha03_c	1		None	_ZTV16daObjCtMecha03_c	-
+src/daObjCtMecha03_c_classInit.c	S1-stores-rom-vptr	ov065			stores _ZTV16daObjCtMecha03_c	1		None	_ZTV16daObjCtMecha03_c	-
 src/func_ov065_0211a550.c	WEAK-refs-only	ov065				1		None		-
 src/func_ov065_0211aa38.c	PURE-C	ov065				1		None		-
 src/func_ov065_0211aacc.c	PURE-C	ov065				1		None		-

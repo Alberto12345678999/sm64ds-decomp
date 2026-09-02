@@ -18,8 +18,9 @@
  * had no base class to inherit them from; the real class uses the
  * inherited names instead.
  *
- * SIZE IS THE ROM'S OWN LITERAL: the factory (func_ov065_0211a45c) calls
- * fBase_c::operator new(0x388), read off the retail instruction. The field
+ * SIZE IS THE ROM'S OWN LITERAL: daObjCtMecha03_c_classInit (historical
+ * placeholder func_ov065_0211a45c) calls fBase_c::operator new(0x388), read
+ * off the retail instruction. The field
  * span only reaches 0x358; the rest is unclaimed trailing pad, same shape
  * as TTC_MovingBar's own pad_34c[0x30] tail.
  */
