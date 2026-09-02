@@ -13,24 +13,39 @@
  *
  * SIZE IS THE OBSERVED FIELD SPAN, rounded up. It guards this declaration; it
  * is not independent evidence about the ROM.
+ *
+ * The flat-C `#else` spelling this header used to carry is gone: it existed
+ * for the three .c members (D0's neighbours func_ov002_020f1578/020f15b8 and
+ * the classInit factory), and the promotion folded all of them into the one
+ * C++ translation unit, so nothing includes this header from C any more.
  */
-
-#ifdef __cplusplus
 
 #include "dBgActor_c.h"
 
 struct daObjBC_Switch_c : dBgActor_c {
     u8  pad_31e[0x2];
-    s32 mStopPosY;                      /* 0x320 */
-    s32 mTickSound;                      /* 0x324 */
-    u16 mCoinTimer;                      /* 0x328 */
-    u16 mCoinTimerSeed;                      /* 0x32a */
-    u8 mPressed;                       /* 0x32c */
-    u8 mEventBit;                       /* 0x32d */
-    u8 mHomeAreaId;                       /* 0x32e */
+    s32 mStopPosY;      /* 0x320 */
+    s32 mTickSound;     /* 0x324 */
+    u16 mCoinTimer;     /* 0x328 */
+    u16 mCoinTimerSeed; /* 0x32a */
+    u8  mPressed;       /* 0x32c */
+    u8  mEventBit;      /* 0x32d */
+    u8  mHomeAreaId;    /* 0x32e */
 
     /* --- vtable --- */
-    virtual ~daObjBC_Switch_c();
+
+    /* MEASURED -- INLINE ON PURPOSE, do not move this body out of line.
+     * Out of line, mwcc emits D0 before D1 plus a homeless D2; the ROM has
+     * D1 at ov002 0x020f11b0 then D0 at 0x020f11f4 and no D2. Production
+     * isolation lays .text into the spanning delink in emission order, so
+     * the out-of-line spelling fails tubuild linkcheck even though the
+     * bytes match 9/9 and objisolate calls the object clean. Inline, the
+     * emission is D1, D0, no D2 -- the ROM's order.
+     *
+     * Safe to do here only because this class is a leaf: no _ZTI in the ROM
+     * names it as a base, so no other TU's codegen moves with it.
+     * src/actors/d_a_obj_bc_switch.cpp carries the leaf proof. */
+    virtual ~daObjBC_Switch_c() {}
 
     s32 Behavior();
     int CleanupResources();
@@ -39,62 +54,5 @@ struct daObjBC_Switch_c : dBgActor_c {
 };
 
 typedef char daObjBC_Switch_c_size_must_be_0x330[sizeof(daObjBC_Switch_c) == 0x330 ? 1 : -1];
-
-#else
-
-/* The C spelling of the same object, flat. Kept because the D0 file is a C
-   translation unit that reads these fields, and D0 is compiler-generated so it
-   can never be migrated. Same arrangement as include/ShadowModel.h. */
-struct daObjBC_Switch_c {
-    u8  pad_000[0x8];
-    /* Spawn word, unpacked into two fields by InitResources: bits 0-3 become
-       the event bit mEventBit, bits 8-15 the timer seed mCoinTimerSeed. */
-    u32 mParam;            /* 0x008 */
-    u8  pad_00c[0x50];
-    s32 mPosX;            /* 0x05c */
-    /* The switch top, and it MOVES: once pressed, Behavior walks mPosY down by
-       0x14000 a frame until it reaches mStopPosY. Render draws the model only
-       while mPosY is still above mStopPosY, so the switch disappears exactly when
-       it bottoms out rather than on a separate flag. */
-    s32 mPosY;            /* 0x060 */
-    s32 mPosZ;            /* 0x064 */
-    u8  pad_068[0x26];
-    s16 mAngleY;            /* 0x08e */
-    u8  pad_090[0x3c];
-    /* Set to -1 the moment the switch is pressed, and its ORIGINAL value was
-       copied into mHomeAreaId at init -- so the area it belongs to is remembered
-       after the switch stops claiming membership. */
-    s8  mAreaId;            /* 0x0cc */
-    u8  pad_0cd[0x7];
-    /* Model member. The cartridge's own ~daObjBC_Switch_c calls _ZN5ModelD1Ev at +0x0d4
-       (D0/D1), a relocation the ROM build checks; recovered by tools/dtor_members.py.
-       D1 and not D2, so it is this type and not an inlined base. */
-    Model mModel;            /* 0x0d4 */
-    /* dBgW_KcMbg member. The cartridge's own ~daObjBC_Switch_c calls _ZN10dBgW_KcMbgD1Ev
-       at +0x124 (D0/D1), a relocation the ROM build checks; recovered by
-       tools/dtor_members.py. D1 and not D2, so it is this type and not an inlined base. */
-    dBgW_KcMbg mMeshCollider;            /* 0x124 */
-    /* Real type, not a marker: InitResources hands it to
-       dBgW_KcMbg::SetFile as the collider's transform. */
-    Matrix4x3 mMatrix;            /* 0x2ec */
-    u8  pad_31c[0x4];
-    /* Where mPosY stops: seeded at init as mPosY - 0x64000, so the switch
-       always sinks the same distance from wherever it was placed. */
-    s32 mStopPosY;            /* 0x320 */
-    s32 mTickSound;            /* 0x324 */
-    /* The blue-coin countdown, in frames, and it is BOTH the timer and the
-       state: non-zero means running, and the code parks it at 1 rather than 0
-       to mean "expired but still latched". */
-    u16 mCoinTimer;            /* 0x328 */
-    /* Its seed, from mParam's second byte -- multiplied by 10 at init, or
-       forced to 0xfa when that byte is 0 or 0xff. So the spawn word carries
-       tenths of the real count. */
-    u16 mCoinTimerSeed;            /* 0x32a */
-    u8  mPressed;            /* 0x32c */
-    u8  mEventBit;            /* 0x32d */
-    u8  mHomeAreaId;            /* 0x32e */
-};
-
-#endif /* __cplusplus */
 
 #endif /* DAOBJBC_SWITCH_C_H */

@@ -4591,41 +4591,9 @@ src/OneUpLogo_Spawn.c:
     complete
     .text start:0x020f1170 end:0x020f11b0
 
-src/_ZN16daObjBC_Switch_cD1Ev.cpp:
+src/actors/d_a_obj_bc_switch.cpp:
     complete
-    .text start:0x020f11b0 end:0x020f11f4
-
-src/_ZN16daObjBC_Switch_cD0Ev.cpp:
-    complete
-    .text start:0x020f11f4 end:0x020f124c
-
-src/_ZN16daObjBC_Switch_c16CleanupResourcesEv.cpp:
-    complete
-    .text start:0x020f124c end:0x020f1290
-
-src/_ZN16daObjBC_Switch_c6RenderEv.cpp:
-    complete
-    .text start:0x020f1290 end:0x020f12c8
-
-src/_ZN16daObjBC_Switch_c8BehaviorEv.cpp:
-    complete
-    .text start:0x020f12c8 end:0x020f1468
-
-src/_ZN16daObjBC_Switch_c13InitResourcesEv.cpp:
-    complete
-    .text start:0x020f1468 end:0x020f1578
-
-src/func_ov002_020f1578.c:
-    complete
-    .text start:0x020f1578 end:0x020f15b8
-
-src/func_ov002_020f15b8.c:
-    complete
-    .text start:0x020f15b8 end:0x020f15cc
-
-src/daObjBC_Switch_c_classInit.c:
-    complete
-    .text start:0x020f15cc end:0x020f15fc
+    .text start:0x020f11b0 end:0x020f15fc
 
 src/_ZN14EnemySwitchTagD1Ev.cpp:
     complete

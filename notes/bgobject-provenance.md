@@ -320,10 +320,10 @@ around it are free. The measurement is in a comment at the site.
 ## daObjBC_Switch_c (`include/daObjBC_Switch_c.h`, [ov002](../config/arm9/overlays/ov002/symbols.txt), size 0x330)
 
 This header already carried a full prose account of every offset; the names below just
-make the code say what the prose said. Bodies read:
-`src/_ZN16daObjBC_Switch_c13InitResourcesEv.cpp`,
-`src/_ZN16daObjBC_Switch_c8BehaviorEv.cpp`, `src/_ZN16daObjBC_Switch_c6RenderEv.cpp`,
-`src/_ZN16daObjBC_Switch_c16CleanupResourcesEv.cpp`.
+make the code say what the prose said. Bodies read: the four per-function files under `src/` that the class carried at the
+time, one each for `InitResources`, `Behavior`, `Render` and `CleanupResources`. All four have since been folded into the single
+translation unit `src/actors/d_a_obj_bc_switch.cpp`, where the same bodies now live as
+real member definitions.
 
 | Offset | Name | Evidence |
 | --- | --- | --- |
@@ -335,10 +335,12 @@ make the code say what the prose said. Bodies read:
 | 0x32d | `mEventBit` | `param1 & 0xf`, passed straight to `Event::SetBit(u32)`. |
 | 0x32e | `mHomeAreaId` | `InitResources` copies `mAreaId` here before `Behavior` sets `mAreaId = -1`, and `Behavior` passes it to `IsAreaShowing`. |
 
-The rename carried into `src_tu/actors/daObjBC_Switch_c.cpp` as well as `src/` — the
-shadow TU builds only under a `tuModules` profile, so a stale spelling there compiles
-nowhere and no normal gate would have caught it. `tools/check_src_tu_compiles.py`
-(72/72) and `tools/check_src_tu.py` were run after.
+The rename carried into the shadow TU as well as `src/` — that file builds only under
+a `tuModules` profile, so a stale spelling there compiles nowhere and no normal gate
+would have caught it. `tools/check_src_tu_compiles.py` (72/72) and
+`tools/check_src_tu.py` were run after. The shadow TU has since been promoted into the
+production build as `src/actors/d_a_obj_bc_switch.cpp`, so it is no longer shadow: the
+same nine functions are now compiled and linked into the ROM from one file.
 
 ---
 
