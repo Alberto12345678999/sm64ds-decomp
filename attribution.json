@@ -1220,6 +1220,14 @@
     "src/actors/d_a_obj_wakame.cpp#_ZN13daObjWakame_c6RenderEv": "github-actions[bot]",
     "src/actors/d_a_obj_wakame.cpp#_ZN13daObjWakame_c8BehaviorEv": "github-actions[bot]",
     "src/actors/d_a_obj_wakame.cpp#_ZN13daObjWakame_c13InitResourcesEv": "github-actions[bot]",
-    "src/actors/d_a_obj_wakame.cpp#daObjWakame_c_Spawn": "github-actions[bot]"
+    "src/actors/d_a_obj_wakame.cpp#daObjWakame_c_Spawn": "github-actions[bot]",
+    "src/actors/d_a_ch_room.cpp#_ZN10daChRoom_cD1Ev": "andrewboudreau",
+    "src/actors/d_a_ch_room.cpp#_ZN10daChRoom_cD0Ev": "andrewboudreau",
+    "src/actors/d_a_ch_room.cpp#_ZN10daChRoom_c16CleanupResourcesEv": "andrewboudreau",
+    "src/actors/d_a_ch_room.cpp#_ZN10daChRoom_c16OnPendingDestroyEv": "andrewboudreau",
+    "src/actors/d_a_ch_room.cpp#_ZN10daChRoom_c6RenderEv": "andrewboudreau",
+    "src/actors/d_a_ch_room.cpp#_ZN10daChRoom_c8BehaviorEv": "github-actions[bot]",
+    "src/actors/d_a_ch_room.cpp#_ZN10daChRoom_c13InitResourcesEv": "github-actions[bot]",
+    "src/actors/d_a_ch_room.cpp#daChRoom_c_Spawn": "github-actions[bot]"
   }
 }
