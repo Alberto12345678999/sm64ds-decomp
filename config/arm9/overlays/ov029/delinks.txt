@@ -100,11 +100,11 @@ src/daObjWc_Mizu_c_classInit.c:
     complete
     .text start:0x021125f8 end:0x02112630
 
-src/_ZN20SwitchActivatedPlankD1Ev.cpp:
+src/_ZN15daObjWc_Obj04_cD1Ev.cpp:
     complete
     .text start:0x02112630 end:0x0211267c
 
-src/_ZN20SwitchActivatedPlankD0Ev.cpp:
+src/_ZN15daObjWc_Obj04_cD0Ev.cpp:
     complete
     .text start:0x0211267c end:0x021126dc
 
@@ -116,19 +116,19 @@ src/func_ov029_02112710.c:
     complete
     .text start:0x02112710 end:0x02112750
 
-src/_ZN20SwitchActivatedPlank16CleanupResourcesEv.cpp:
+src/_ZN15daObjWc_Obj04_c16CleanupResourcesEv.cpp:
     complete
     .text start:0x02112750 end:0x02112794
 
-src/_ZN20SwitchActivatedPlank6RenderEv.cpp:
+src/_ZN15daObjWc_Obj04_c6RenderEv.cpp:
     complete
     .text start:0x02112794 end:0x021127cc
 
-src/_ZN20SwitchActivatedPlank8BehaviorEv.cpp:
+src/_ZN15daObjWc_Obj04_c8BehaviorEv.cpp:
     complete
     .text start:0x021127cc end:0x021128b0
 
-src/_ZN20SwitchActivatedPlank13InitResourcesEv.cpp:
+src/_ZN15daObjWc_Obj04_c13InitResourcesEv.cpp:
     complete
     .text start:0x021128b0 end:0x02112964
 

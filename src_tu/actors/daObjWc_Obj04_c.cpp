@@ -1,5 +1,5 @@
 //cpp
-/* HAND-ASSEMBLED translation unit -- ov029/SwitchActivatedPlank (9 function(s)).
+/* HAND-ASSEMBLED translation unit -- ov029/daObjWc_Obj04_c (9 function(s)).
  * tubuild create refused this TU (legacy bodies wrapped in extern "C" { }),
  * so this is a raw concatenation of the complete legacy files in REVERSE
  * ROM order (mwccarm emits one .text section per function in the reverse
@@ -7,14 +7,14 @@
  * the manifest notes.
  *
  * Assembled from these legacy one-function sources (ROM address order):
- *   [0] 0x02112630  src/_ZN20SwitchActivatedPlankD1Ev.c
- *   [1] 0x0211267c  src/_ZN20SwitchActivatedPlankD0Ev.c
+ *   [0] 0x02112630  src/_ZN15daObjWc_Obj04_cD1Ev.c
+ *   [1] 0x0211267c  src/_ZN15daObjWc_Obj04_cD0Ev.c
  *   [2] 0x021126dc  src/func_ov029_021126dc.c
  *   [3] 0x02112710  src/func_ov029_02112710.c
- *   [4] 0x02112750  src/_ZN20SwitchActivatedPlank16CleanupResourcesEv.cpp
- *   [5] 0x02112794  src/_ZN20SwitchActivatedPlank6RenderEv.cpp
- *   [6] 0x021127cc  src/_ZN20SwitchActivatedPlank8BehaviorEv.cpp
- *   [7] 0x021128b0  src/_ZN20SwitchActivatedPlank13InitResourcesEv.cpp
+ *   [4] 0x02112750  src/_ZN15daObjWc_Obj04_c16CleanupResourcesEv.cpp
+ *   [5] 0x02112794  src/_ZN15daObjWc_Obj04_c6RenderEv.cpp
+ *   [6] 0x021127cc  src/_ZN15daObjWc_Obj04_c8BehaviorEv.cpp
+ *   [7] 0x021128b0  src/_ZN15daObjWc_Obj04_c13InitResourcesEv.cpp
  *   [8] 0x02112964  src/daObjWc_Obj04_c_classInit.c
  */
 
@@ -29,7 +29,7 @@ extern "C" {  /* .c-derived member: C linkage for the whole block */
 #include "decl_Platform.h"
 #include "decl_common.h"
 /* recovered: vtable identified, globals resolved */
-/* resolved: VT0 = _ZTV20SwitchActivatedPlank */
+/* resolved: VT0 = _ZTV15daObjWc_Obj04_c */
 /* Reconstructed source-style name; exact original SM64DS spelling is not
  * preserved. Historical alias: SwitchActivatedPlank_Spawn. */
 int *daObjWc_Obj04_c_classInit(void)
@@ -37,7 +37,7 @@ int *daObjWc_Obj04_c_classInit(void)
     int *p = (int *)_ZN7fBase_cnwEj(936);
     if (p) {
         _ZN10dBgActor_cC2Ev(p);
-        p[0] = (int)_ZTV20SwitchActivatedPlank;
+        p[0] = (int)_ZTV15daObjWc_Obj04_c;
         _ZN5ModelC1Ev((char *)p + 0x320);
     }
     return p;
@@ -45,18 +45,18 @@ int *daObjWc_Obj04_c_classInit(void)
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 7 -- _ZN20SwitchActivatedPlank13InitResourcesEv, 0x021128b0, size 0xb4 */
+/* ROM ordinal 7 -- _ZN15daObjWc_Obj04_c13InitResourcesEv, 0x021128b0, size 0xb4 */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN20SwitchActivatedPlank13InitResourcesEv
+// @symbol _ZN15daObjWc_Obj04_c13InitResourcesEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 #include "decl_common.h"
 /* recovered: named members + shared header, real C++ method */
-#include "SwitchActivatedPlank.h"
+#include "daObjWc_Obj04_c.h"
 typedef int Fix12i;
 struct SharedFilePtr; struct BMD_File; struct KCL_File; struct Matrix4x3; struct CLPS_Block;
 /* Model and ModelBase are the real classes now, through this actor's header --
  * and since #1643 so are dBgW_Kc and dBgW_KcMbg, which arrive via
- * SwitchActivatedPlank.h -> include/dBgW_Kc.h / include/dBgW_KcMbg.h. The two
+ * daObjWc_Obj04_c.h -> include/dBgW_Kc.h / include/dBgW_KcMbg.h. The two
  * one-int placeholder definitions that used to stand in for them here made the
  * whole TU fail to compile ("class 'dBgW_Kc' redefined", then an internal
  * compiler error at the D1 body), and nothing noticed: an unbuildable source
@@ -78,7 +78,7 @@ extern SharedFilePtr data_ov029_02114324;
 extern CLPS_Block data_ov029_0211304c;
 extern int _ZN4dBgW22UpdatePosWithTransformERS_P8dActor_cR5dBgPiR7Vector3P10Vector3_16S8_;
 
-int SwitchActivatedPlank::InitResources()
+int daObjWc_Obj04_c::InitResources()
 {
     char* c = ((char*)this);
     BMD_File* bmd = _ZN5Model8LoadFileER13SharedFilePtr(data_ov029_0211432c);
@@ -100,11 +100,11 @@ int SwitchActivatedPlank::InitResources()
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 6 -- _ZN20SwitchActivatedPlank8BehaviorEv, 0x021127cc, size 0xe4 */
+/* ROM ordinal 6 -- _ZN15daObjWc_Obj04_c8BehaviorEv, 0x021127cc, size 0xe4 */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN20SwitchActivatedPlank8BehaviorEv
+// @symbol _ZN15daObjWc_Obj04_c8BehaviorEv
 /* recovered: named members + shared header */
-#include "SwitchActivatedPlank.h"
+#include "daObjWc_Obj04_c.h"
 #include "dBgW.h"
 extern "C" {
 void func_020393a4(void* p, int v);
@@ -114,7 +114,7 @@ int _ZN10dBgW_KcMbg9TransformERK9Matrix4x3s(void*, void*, int);
 
 #pragma optimize_for_size on
 
-int _ZN20SwitchActivatedPlank8BehaviorEv(struct SwitchActivatedPlank *self) {
+int _ZN15daObjWc_Obj04_c8BehaviorEv(struct daObjWc_Obj04_c *self) {
     func_020393a4(((char*)self)+0x124, 0x100000);
 
     switch(self->mState){
@@ -153,14 +153,14 @@ int _ZN20SwitchActivatedPlank8BehaviorEv(struct SwitchActivatedPlank *self) {
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 5 -- _ZN20SwitchActivatedPlank6RenderEv, 0x02112794, size 0x38 */
+/* ROM ordinal 5 -- _ZN15daObjWc_Obj04_c6RenderEv, 0x02112794, size 0x38 */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN20SwitchActivatedPlank6RenderEv
+// @symbol _ZN15daObjWc_Obj04_c6RenderEv
 /* recovered: named members + shared header, real C++ method */
-#include "SwitchActivatedPlank.h"
+#include "daObjWc_Obj04_c.h"
 struct Sub { virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3(); virtual void v4(); virtual void v5(int); };
 
-int SwitchActivatedPlank::Render()
+int daObjWc_Obj04_c::Render()
 {
   if (mVisible != 0) {
     Sub *s = (Sub*)((char *)&mModel2);
@@ -170,17 +170,17 @@ int SwitchActivatedPlank::Render()
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 4 -- _ZN20SwitchActivatedPlank16CleanupResourcesEv, 0x02112750, size 0x44 */
+/* ROM ordinal 4 -- _ZN15daObjWc_Obj04_c16CleanupResourcesEv, 0x02112750, size 0x44 */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN20SwitchActivatedPlank16CleanupResourcesEv
+// @symbol _ZN15daObjWc_Obj04_c16CleanupResourcesEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 #include "decl_common.h"
 /* recovered: named members + shared header, real C++ method */
-#include "SwitchActivatedPlank.h"
+#include "daObjWc_Obj04_c.h"
 #include "SharedFilePtr.h"
 #include "dBgW.h"
 
-int SwitchActivatedPlank::CleanupResources()
+int daObjWc_Obj04_c::CleanupResources()
 {
     if (((dBgW *)((char *)&mMeshCollider))->IsEnabled()) {
         ((dBgW *)((char *)&mMeshCollider))->Disable();
@@ -219,10 +219,10 @@ void func_ov029_021126dc(char *c) {
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 1 -- _ZN20SwitchActivatedPlankD0Ev, 0x0211267c, size 0x60 */
+/* ROM ordinal 1 -- _ZN15daObjWc_Obj04_cD0Ev, 0x0211267c, size 0x60 */
 /* -------------------------------------------------------------------------- */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-// @symbol _ZN20SwitchActivatedPlankD0Ev
+// @symbol _ZN15daObjWc_Obj04_cD0Ev
 /* recovered: named members + shared header, vtable identified, declarations from a shared header */
 #include "decl_Actor.h"
 #include "decl_Model.h"
@@ -232,7 +232,7 @@ extern int _ZTV10dBgActor_c[];
 /* recovered: named members + shared header, vtable identified */
 /* vtable identified: VT0 = _ZTV15daObjWc_Obj04_c; VT1 = _ZTV10dBgActor_c */
 extern void *data_020a0eac;
-int *_ZN20SwitchActivatedPlankD0Ev(int *t)
+int *_ZN15daObjWc_Obj04_cD0Ev(int *t)
 {
     t[0] = (int)_ZTV15daObjWc_Obj04_c;
     _ZN5ModelD1Ev((char *)t + 0x320);
@@ -246,10 +246,10 @@ int *_ZN20SwitchActivatedPlankD0Ev(int *t)
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 0 -- _ZN20SwitchActivatedPlankD1Ev, 0x02112630, size 0x4c */
+/* ROM ordinal 0 -- _ZN15daObjWc_Obj04_cD1Ev, 0x02112630, size 0x4c */
 /* -------------------------------------------------------------------------- */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-// @symbol _ZN20SwitchActivatedPlankD1Ev
+// @symbol _ZN15daObjWc_Obj04_cD1Ev
 /* recovered: named members + shared header, vtable identified, declarations from a shared header */
 #include "decl_Actor.h"
 #include "decl_Model.h"
@@ -258,7 +258,7 @@ extern "C" {  /* .c-derived member: C linkage for the whole block */
 extern int _ZTV10dBgActor_c[];
 /* recovered: named members + shared header, vtable identified */
 /* vtable identified: VT0 = _ZTV15daObjWc_Obj04_c; VT1 = _ZTV10dBgActor_c */
-int *_ZN20SwitchActivatedPlankD1Ev(int *t)
+int *_ZN15daObjWc_Obj04_cD1Ev(int *t)
 {
     t[0] = (int)_ZTV15daObjWc_Obj04_c;
     _ZN5ModelD1Ev((char *)t + 0x320);

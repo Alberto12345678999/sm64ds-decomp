@@ -48,14 +48,14 @@ _ZN9WDW_Water6RenderEv kind:function(arm,size=0x34) addr:0x02112320
 _ZN9WDW_Water8BehaviorEv kind:function(arm,size=0x17c) addr:0x02112354
 _ZN9WDW_Water13InitResourcesEv kind:function(arm,size=0x128) addr:0x021124d0
 daObjWc_Mizu_c_classInit kind:function(arm,size=0x38) addr:0x021125f8
-_ZN20SwitchActivatedPlankD1Ev kind:function(arm,size=0x4c) addr:0x02112630
-_ZN20SwitchActivatedPlankD0Ev kind:function(arm,size=0x60) addr:0x0211267c
+_ZN15daObjWc_Obj04_cD1Ev kind:function(arm,size=0x4c) addr:0x02112630
+_ZN15daObjWc_Obj04_cD0Ev kind:function(arm,size=0x60) addr:0x0211267c
 func_ov029_021126dc kind:function(arm,size=0x34) addr:0x021126dc
 func_ov029_02112710 kind:function(arm,size=0x40) addr:0x02112710
-_ZN20SwitchActivatedPlank16CleanupResourcesEv kind:function(arm,size=0x44) addr:0x02112750
-_ZN20SwitchActivatedPlank6RenderEv kind:function(arm,size=0x38) addr:0x02112794
-_ZN20SwitchActivatedPlank8BehaviorEv kind:function(arm,size=0xe4) addr:0x021127cc
-_ZN20SwitchActivatedPlank13InitResourcesEv kind:function(arm,size=0xb4) addr:0x021128b0
+_ZN15daObjWc_Obj04_c16CleanupResourcesEv kind:function(arm,size=0x44) addr:0x02112750
+_ZN15daObjWc_Obj04_c6RenderEv kind:function(arm,size=0x38) addr:0x02112794
+_ZN15daObjWc_Obj04_c8BehaviorEv kind:function(arm,size=0xe4) addr:0x021127cc
+_ZN15daObjWc_Obj04_c13InitResourcesEv kind:function(arm,size=0xb4) addr:0x021128b0
 daObjWc_Obj04_c_classInit kind:function(arm,size=0x38) addr:0x02112964
 data_ov029_0211299c kind:data(any) addr:0x0211299c
 data_ov029_021129a0 kind:data(any) addr:0x021129a0
@@ -225,7 +225,6 @@ data_ov029_02114108 kind:data(any) addr:0x02114108 ambiguous
 _ZTI15daObjWc_Obj04_c kind:data(any) addr:0x0211415c
 _ZTS15daObjWc_Obj04_c kind:data(any) addr:0x02114168
 g_profile_WC_OBJ04 kind:data(any) addr:0x0211417c ambiguous
-_ZTV20SwitchActivatedPlank kind:data(any) addr:0x021141a0
 _ZTV15daObjWc_Obj04_c kind:data(any) addr:0x021141a0
 data_ov029_021141cc kind:data(any) addr:0x021141cc ambiguous
 data_ov029_02114220 kind:bss addr:0x02114220

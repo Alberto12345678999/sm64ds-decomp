@@ -1,9 +1,9 @@
 //cpp
-// @symbol _ZN20SwitchActivatedPlank13InitResourcesEv
+// @symbol _ZN15daObjWc_Obj04_c13InitResourcesEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 #include "decl_common.h"
 /* recovered: named members + shared header, real C++ method */
-#include "SwitchActivatedPlank.h"
+#include "daObjWc_Obj04_c.h"
 typedef int Fix12i;
 struct SharedFilePtr; struct BMD_File; struct KCL_File; struct Matrix4x3; struct CLPS_Block;
 /* Model, ModelBase and dBgW_KcMbg are the real classes now, through this
@@ -23,7 +23,7 @@ extern SharedFilePtr data_ov029_02114324;
 extern CLPS_Block data_ov029_0211304c;
 extern int _ZN4dBgW22UpdatePosWithTransformERS_P8dActor_cR5dBgPiR7Vector3P10Vector3_16S8_;
 
-int SwitchActivatedPlank::InitResources()
+int daObjWc_Obj04_c::InitResources()
 {
     char* c = ((char*)this);
     BMD_File* bmd = _ZN5Model8LoadFileER13SharedFilePtr(data_ov029_0211432c);

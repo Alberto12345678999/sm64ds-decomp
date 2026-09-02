@@ -1,10 +1,10 @@
 //cpp
-// @symbol _ZN20SwitchActivatedPlank8BehaviorEv
+// @symbol _ZN15daObjWc_Obj04_c8BehaviorEv
 /* recovered: named members + shared header. Real class form since the
-   SwitchActivatedPlank header grew the real inheritance chain; the previous
-   spelling defined extern "C" _ZN20SwitchActivatedPlank8BehaviorEv by hand,
+   daObjWc_Obj04_c header grew the real inheritance chain; the previous
+   spelling defined extern "C" _ZN15daObjWc_Obj04_c8BehaviorEv by hand,
    which let the compiler mangle nothing. */
-#include "SwitchActivatedPlank.h"
+#include "daObjWc_Obj04_c.h"
 #include "dBgW.h"
 
 extern "C" {
@@ -16,7 +16,7 @@ int _ZN10dBgW_KcMbg9TransformERK9Matrix4x3s(void*, void*, int);
 
 #pragma optimize_for_size on
 
-int SwitchActivatedPlank::Behavior() {
+int daObjWc_Obj04_c::Behavior() {
     func_020393a4(((char*)this)+0x124, 0x100000);
 
     switch(this->mState){

@@ -25293,19 +25293,19 @@
    "start": "0x2112630",
    "end": "0x211299c",
    "classes": [
-    "SwitchActivatedPlank"
+    "daObjWc_Obj04_c"
    ],
    "n_functions_map": 9,
    "n_files": 9,
    "files": [
-    "src/_ZN20SwitchActivatedPlankD1Ev.c",
-    "src/_ZN20SwitchActivatedPlankD0Ev.c",
+    "src/_ZN15daObjWc_Obj04_cD1Ev.c",
+    "src/_ZN15daObjWc_Obj04_cD0Ev.c",
     "src/func_ov029_021126dc.c",
     "src/func_ov029_02112710.c",
-    "src/_ZN20SwitchActivatedPlank16CleanupResourcesEv.cpp",
-    "src/_ZN20SwitchActivatedPlank6RenderEv.cpp",
-    "src/_ZN20SwitchActivatedPlank8BehaviorEv.cpp",
-    "src/_ZN20SwitchActivatedPlank13InitResourcesEv.cpp",
+    "src/_ZN15daObjWc_Obj04_c16CleanupResourcesEv.cpp",
+    "src/_ZN15daObjWc_Obj04_c6RenderEv.cpp",
+    "src/_ZN15daObjWc_Obj04_c8BehaviorEv.cpp",
+    "src/_ZN15daObjWc_Obj04_c13InitResourcesEv.cpp",
     "src/daObjWc_Obj04_c_classInit.c"
    ],
    "ext_mix": {

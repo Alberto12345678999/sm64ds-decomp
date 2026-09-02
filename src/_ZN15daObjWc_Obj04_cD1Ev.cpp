@@ -1,5 +1,5 @@
 //cpp
-// @symbol _ZN20SwitchActivatedPlankD1Ev
+// @symbol _ZN15daObjWc_Obj04_cD1Ev
 /* recovered: real C++ complete-object destructor -- the compiler emits the
  * whole body.
  *
@@ -10,11 +10,11 @@
  * before the base step -- reverse declaration order -- and the inlined empty
  * ~dBgActor_c() stores _ZTV10dBgActor_c and destroys mMeshCollider (+0x124)
  * and mModel (+0xd4) before running dActor_c::D2. That sequence is exactly
- * what an empty body with SwitchActivatedPlank : dBgActor_c compiles to;
+ * what an empty body with daObjWc_Obj04_c : dBgActor_c compiles to;
  * nothing below mentions a member or a vtable.
  */
-#include "SwitchActivatedPlank.h"
+#include "daObjWc_Obj04_c.h"
 
-SwitchActivatedPlank::~SwitchActivatedPlank()
+daObjWc_Obj04_c::~daObjWc_Obj04_c()
 {
 }
