@@ -10,7 +10,7 @@ src_tu/actors/ShutterBob.cpp:
     .data start:0x021145b8 end:0x02114688
     .bss start:0x02114940 end:0x02114968
 
-src_tu/actors/ChainChomp.cpp:
+src_tu/actors/daWanwan_c.cpp:
     .text start:0x02111308 end:0x02112e0c
     .init start:0x02113118 end:0x021132fc
     .ctor start:0x0211336c end:0x02113370

@@ -84,7 +84,7 @@ The worked case, confirmed three independent ways:
 
 | source | says |
 |---|---|
-| `include/daWanwan_c.h:13` | `u8  mScaleX;  /* 0x080 */` |
+| `include/daWanwan_c.h`, as generated | `u8  mScaleX;  /* 0x080 */` |
 | `include/Actor.h:86` | `s32 mScaleX;  /* 0x080 */` |
 | `src/actors/d_a_wanwan.cpp` | `*(int *)(c + 0x80) = 0x1000;` |
 

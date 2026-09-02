@@ -19,19 +19,24 @@
  * other four are ov034's, at 0x26cc and 0x2df4 under the same two paths, and
  * they are not RTTI at all: ov034 loads at the same base as ov014 (0x021111a0)
  * so the two are never co-resident, and at 0x02114718 ov034 has
- * data_ov034_02114718 kind:bss, an ordinary variable that two pointer-table
- * entries name. A real descendant's hit would decode as an _ZTI triple whose
+ * data_ov034_02114718 kind:bss, an ordinary variable. One hit, 0x0211386c, is a
+ * word inside the data record data_ov034_02113860; the other, 0x02113f94, is a
+ * literal-pool word inside the function __sinit_ov034_021138ec (0x021138ec,
+ * size 0x78c). A real descendant's hit would decode as an _ZTI triple whose
  * word[0] is 0x0209a764; neither of these does.
  *
  * The destructor is defined INLINE in include/daWanwan_c.h. Out of line
  * mwccarm emits D2, D0, D1; the ROM has D1 at 0x02111308 then D0 at 0x021113bc
- * and no D2 anywhere in ov014. With that destructor inline, daWanwan_c has no
- * out-of-line virtual left to serve as its key function -- the four overrides
- * below it are not declared virtual, and dEnemyBase_c does not declare them
- * virtual either -- so mwccarm has nowhere else to hang the class's RTTI and
- * emits _ZTV/_ZTI/_ZTS here, along with the eight inherited base-chain
- * records. All eleven are licensed in the manifest's compiler_only_output and
- * word-compared against the cartridge by
+ * and no D2 anywhere in ov014. mwcc picks a class's key function by the FIRST
+ * DECLARED virtual, not by vtable slot, and ~daWanwan_c is declared first. With
+ * it inline the class has no key function at all. The four overrides below it
+ * ARE virtual and ARE out of line -- fBase_c declares InitResources,
+ * CleanupResources, Behavior and Render virtual at slots 0/3/6/9, and
+ * daWanwan_c inherits them through dEnemyBase_c -> dActor_c -> dBase_c -- but a
+ * later virtual is never the key function, so mwccarm has nowhere to hang the
+ * class's RTTI and emits _ZTV/_ZTI/_ZTS here as vague-linkage records, along
+ * with the eight inherited base-chain ones. All eleven are licensed in the
+ * manifest's compiler_only_output and word-compared against the cartridge by
  * tools/romdata_check.py: 6 VERIFIED, 5 PARTIAL, 0 DIFFERS. The PARTIALs are
  * the five _ZTS strings -- extent shortfalls, not disagreements; every byte
  * compared is equal.
@@ -42,8 +47,14 @@
  * ROM destructor at 0x02111308 references it from its literal pool at +0xa0 --
  * exactly as the cartridge's own D1 does. It has a ROM home at arm9:0x020072c0
  * owned by src/_ZN7Vector3D1Ev.cpp, so it is licensed deadstrip-duplicate,
- * whose precondition is the opposite of deadstrip's: objisolate refuses unless
- * this object's copy is byte-identical to the cartridge's at that address.
+ * whose precondition is the opposite of deadstrip's: the body must be PROVED to
+ * be the cartridge's own at that address before it may be discarded. The proof
+ * is split. tools/objisolate.py compares the raw section, which can only speak
+ * for the words no relocation covers -- an addend is not a linked address, so
+ * every bl and every vptr store is masked out there.
+ * tools/rombuild.py's _duplicate_body_reasons links the body against
+ * arm9:0x020072c0 the way the linker would and compares exactly those masked
+ * words, and it runs before the surgery. Together they cover every word.
  *
  * Assembled from these legacy one-function sources (ROM address order):
  *   [0] 0x02111308  src/_ZN10daWanwan_cD1Ev.cpp

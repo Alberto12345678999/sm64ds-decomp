@@ -671,11 +671,11 @@ def iter_definitions(text):
     """(name, body, first_param(name, elem_width), start_line) for every
     function definition in a file.
 
-    Necessary because a file's symbol is not always the identifier that is
-    defined in it: src/actors/d_a_wanwan.cpp defines
-    `int daWanwan_c::InitResources()`, with `this` aliased to a local `c`.
-    Requiring the mangled name would have found zero accesses there -- the same
-    shape of miss that section 2 of the plan is about.
+    Necessary because a definition never spells the symbol the ROM knows it by:
+    ov014's `_ZN10daWanwan_c13InitResourcesEv` is written
+    `int daWanwan_c::InitResources()` in src/actors/d_a_wanwan.cpp, with `this`
+    aliased to a local `c`.  Requiring the mangled name would have found zero
+    accesses there -- the same shape of miss that section 2 of the plan is about.
     """
     for m in DEF_OPEN.finditer(text):
         name = m.group("name")

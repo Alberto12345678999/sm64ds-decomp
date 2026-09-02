@@ -73,7 +73,7 @@ field's real width. `include/daWanwan_c.h` *used to* declare `u8 mScaleX; /* 0x0
 same offset, and `src/actors/d_a_wanwan.cpp` settles it by writing
 `*(int *)(c + 0x80) = 0x1000;`. The derived header was the wrong one.
 
-*(Re-checked 2026-08-21: this particular conflict has since been fixed -- `daWanwan_c.h:68`
+*(Re-checked 2026-08-21: this particular conflict has since been fixed -- `include/daWanwan_c.h`
 now says `s32 mScaleX` and its own comment records the retype. The "**87** base-conflicts
 `tools/gen_header.py --report` still lists" figure is also stale: `--report` no longer
 emits a base-conflict count unless the history/hierarchy/rom passes have been run first,
