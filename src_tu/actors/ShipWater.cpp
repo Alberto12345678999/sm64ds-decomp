@@ -24,7 +24,7 @@
  *   [3] 0x02111290  src/_ZN9ShipWater6RenderEv.cpp
  *   [4] 0x021112c4  src/_ZN9ShipWater8BehaviorEv.cpp
  *   [5] 0x021113c0  src/_ZN9ShipWater13InitResourcesEv.cpp
- *   [6] 0x02111480  src/ShipWater_Spawn.c
+ *   [6] 0x02111480  src/daObjKsWater_c_classInit.c
  */
 
 /* Includes: union of the legacy files', first-seen in ROM-ascending
@@ -59,14 +59,15 @@ CLPS_Block *clps);
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 6 -- ShipWater_Spawn, 0x02111480, size 0x38 */
+/* ROM ordinal 6 -- daObjKsWater_c_classInit, 0x02111480, size 0x38 */
 /* -------------------------------------------------------------------------- */
-// @symbol ShipWater_Spawn
+// @symbol daObjKsWater_c_classInit
 /* recovered: vtable identified, globals resolved, declarations from a shared header */
 /* recovered: vtable identified, globals resolved */
 /* resolved: VT0 = _ZTV9ShipWater */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-int *ShipWater_Spawn(void)
+/* Reconstructed source-style name. Historical alias: ShipWater_Spawn. */
+int *daObjKsWater_c_classInit(void)
 {
     int *p = (int *)_ZN7fBase_cnwEj(832);
     if (p) {

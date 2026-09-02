@@ -98,14 +98,14 @@ claim about the whole link.
 | `TERESA` | `src/actors/daTrs_c/Boo_Spawn.cpp` | ov063 `0x02115ee0..0x0211c600` | `d_a_trs.cpp` | — | later `d_a_*` family | — | same TU also yields `d_a_t_basket.cpp`; TU-map check has baseline failure |
 | `BOSS_TERESA` | `src/actors/BigBoo/BigBoo_Spawn.cpp` | same ov063 TU | `d_a_trs.cpp` | — | same class as `TERESA` | — | multi-stem TU and two same-class profiles |
 | `WANWAN` | `src/ChainChomp_Spawn.cpp` | ov014 `0x02111308..0x02112e0c` | `d_a_wanwan.cpp` | same | unique stem and high/high boundaries | B | nearby `d_a_obj_*` units are not globally lexical |
-| `OBJ_MIP_KEY` | `src/RabbitKey_Spawn.c` | ov085 `0x0212cc88..0x0212d528` | `d_a_obj_mip_key.cpp` | same | class family plus high/high boundaries | B | TU-name tool has no surviving stem for this interval |
+| `OBJ_MIP_KEY` | `src/daObj_Mip_Key_c_classInit.c` | ov085 `0x0212cc88..0x0212d528` | `d_a_obj_mip_key.cpp` | same | class family plus high/high boundaries | B | TU-name tool has no surviving stem for this interval |
 | `PROPELLER_HEYHO` | `src/actors/daPropeller_Heyho_c.cpp` | ov070 `0x0211f000..0x02120570` | `d_a_propeller_heyho.cpp` | same | class family only | B- | no recovered interval stem; left edge lacks confidence |
 | `KINOKO_CREATE_TAG` | `src/actors/daObjKinokoTag_c.cpp` | ov002 `0x020b46a0..0x020b4a70` | `d_a_obj_kinoko_tag.cpp` | same | unique stem and high/high boundaries | B | two same-class factories weaken source organization inference |
 | `SHOOT_BOOK` | `src/BookShot_Spawn.c` | ov020 `0x021111a0..0x02112938` | `d_a_book.cpp` | — | class-family candidate | — | TU also yields `d_a_book_gen.cpp` |
 | `BOOK_GENERATOR` | `src/BookShotSpawner_Spawn.c` | same ov020 TU | `d_a_book_gen.cpp` | — | class-family candidate | — | one TU cannot have both mechanical filenames |
 | `MG_CUP` | `src/func_ov006_020e0574.cpp` | ov006 `0x020e0574..0x020e0638` | `d_sc_mg_cup.cpp` | same | adjacent earlier class interval has `d_sc_mg_cup` | B- | factory is split into its own tiny interval |
-| `MG_CURLING` | `src/MgShuffleShell_Spawn.c` | ov006 `0x020e0638..0x020e3854` | `d_sc_mg_curling.cpp` | same | local `cup -> curling -> curling2` sequence is compatible with related-family order | B- | boundaries are medium/high, not source proof |
-| `MG_CURLING_J` | `src/func_ov006_020e6bf4.c` | ov006 `0x020e6bf4..0x020e6c28` | `d_sc_mg_curling2.cpp` | same | immediately follows the `d_sc_mg_curling2` method interval | B- | factory-only interval; class and profile suffixes differ |
+| `MG_CURLING` | `src/dScMgCurling_c_classInit.c` | ov006 `0x020e0638..0x020e3854` | `d_sc_mg_curling.cpp` | same | local `cup -> curling -> curling2` sequence is compatible with related-family order | B- | boundaries are medium/high, not source proof |
+| `MG_CURLING_J` | `src/dScMgCurling2_c_classInit.c` | ov006 `0x020e6bf4..0x020e6c28` | `d_sc_mg_curling2.cpp` | same | immediately follows the `d_sc_mg_curling2` method interval | B- | factory-only interval; class and profile suffixes differ |
 
 ## WATERFALL ordering trace
 

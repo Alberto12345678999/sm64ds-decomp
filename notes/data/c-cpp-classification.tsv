@@ -17,7 +17,7 @@ src/ArrowSignLeft_Spawn.c	WEAK-refs-only	ov098				1		None		-
 src/ArrowSignRight_Spawn.c	WEAK-refs-only	ov098				1		None		-
 src/AutoloadCallback.c	PURE-C	arm9				1		None		-
 src/BabyPenguin_Spawn.c	WEAK-refs-only	ov072				1		None		-
-src/BasementWater_Spawn.c	WEAK-refs-only	ov012				1		None		-
+src/daObjC0Water_c_classInit.c	WEAK-refs-only	ov012				1		None		-
 src/BigBrickBlock_Spawn.c	WEAK-refs-only	ov002				1		None		-
 src/BigBully_Spawn.c	S1-stores-rom-vptr	ov064			stores _ZTV8BigBully	1		None	_ZTV8BigBully	-
 src/BigMovingIceBlock_Spawn.c	WEAK-refs-only	ov056				1		None		-
@@ -51,7 +51,7 @@ src/Bullet_Spawn.c	WEAK-refs-only	ov002				1		None		-
 src/Bully_Spawn.c	S1-stores-rom-vptr	ov064			stores _ZTV5Bully	1		None	_ZTV5Bully	-
 src/Butterfly_Spawn.c	WEAK-refs-only	ov100				1		None		-
 src/CageLift_Spawn.c	S1-stores-rom-vptr	ov029			stores _ZTV8CageLift	1		None	_ZTV8CageLift	-
-src/CameraTag_Spawn.c	WEAK-refs-only	ov002				1		None		-
+src/daCamTag_c_Spawn.c	WEAK-refs-only	ov002				1		None		-
 src/Camera_UpdateMatrices.c	WEAK-refs-only	ov006				1		None		-
 src/CannonHatch_Spawn.c	WEAK-refs-only	ov002				1		None		-
 src/CapBlockLuigi_Spawn.c	WEAK-refs-only	ov102				1		None		-
@@ -63,7 +63,7 @@ src/CccArena_Spawn.c	WEAK-refs-only	ov073				1		None		-
 src/CccBigIce_Spawn.c	WEAK-refs-only	ov073				1		None		-
 src/CccSmallIce_Spawn.c	WEAK-refs-only	ov073				1		None		-
 src/CgStairs_Spawn.c	WEAK-refs-only	ov102				1		None		-
-src/ChainChompFence_Spawn.c	WEAK-refs-only	ov014				1		None		-
+src/daObjWanwanShutter_c_classInit.c	WEAK-refs-only	ov014				1		None		-
 src/ChangeArea.c	PURE-C	arm9				1		None		-
 src/CheepCheep_Spawn.c	WEAK-refs-only	ov090				1		None		-
 src/daIDonketu_c_Spawn.c	WEAK-refs-only	ov027				1		None		-
@@ -71,7 +71,7 @@ src/Chuckya_Spawn.c	WEAK-refs-only	ov062				1		None		-
 src/CleanCommonModelDataArr.c	WEAK-refs-only					0		None		not-in-delinks
 src/ClearSpikeBomb.c	PURE-C	arm9				1		None		-
 src/ClockPaintingHandLong_Spawn.c	WEAK-refs-only	ov013				1		None		-
-src/ClockPaintingPendulum_Spawn.c	S1-stores-rom-vptr	ov013			stores _ZTV21ClockPaintingPendulum	1		None	_ZTV21ClockPaintingPendulum	-
+src/daObjClockHuriko_c_Spawn.c	S1-stores-rom-vptr	ov013			stores _ZTV18daObjClockHuriko_c	1		None	_ZTV18daObjClockHuriko_c	-
 src/Cloud_Spawn.c	WEAK-refs-only	ov039				1		None		-
 src/Coffin_Spawn.c	WEAK-refs-only	ov071				1		None		-
 src/Coin_Spawn.c	WEAK-refs-only	ov002				1		None		-
@@ -145,8 +145,8 @@ src/FlameChompFire_Spawn.c	WEAK-refs-only	ov070				1		None		-
 src/FlameChomp_Spawn.c	WEAK-refs-only	ov070				1		None		-
 src/FloatOnLavaPlatform_Spawn.c	WEAK-refs-only	ov022				1		None		-
 src/FloatOnWaterPlatformJrb_Spawn.c	S1-stores-rom-vptr	ov016			stores _ZTV17daObjFloatBoard_c	1		None	_ZTV17daObjFloatBoard_c/_ZTV23FloatOnWaterPlatformJrb	-
-src/FloatOnWaterPlatformWdwRectangle_Spawn.c	S1-stores-rom-vptr	ov029			stores _ZTV17daObjFloatBoard_c	1		None	_ZTV17daObjFloatBoard_c/_ZTV32FloatOnWaterPlatformWdwRectangle	-
-src/FloatOnWaterPlatformWdwSquare_Spawn.c	S1-stores-rom-vptr	ov029			stores _ZTV17daObjFloatBoard_c	1		None	_ZTV17daObjFloatBoard_c/_ZTV29FloatOnWaterPlatformWdwSquare	-
+src/daObjWcObj06_c_Spawn.c	S1-stores-rom-vptr	ov029			stores _ZTV17daObjFloatBoard_c	1		None	_ZTV17daObjFloatBoard_c/_ZTV14daObjWcObj06_c	-
+src/daObjWcObj01_c_Spawn.c	S1-stores-rom-vptr	ov029			stores _ZTV17daObjFloatBoard_c	1		None	_ZTV17daObjFloatBoard_c/_ZTV14daObjWcObj01_c	-
 src/FloatingFloorBfs_Spawn.c	S1-stores-rom-vptr	ov045			stores _ZTV14daObjUkiyuka_c	1		None	_ZTV14daObjUkiyuka_c/_ZTV16FloatingFloorBfs	-
 src/FloatingFloorLllBig_Spawn.c	S1-stores-rom-vptr	ov022			stores _ZTV14daObjUkiyuka_c	1		None	_ZTV14daObjUkiyuka_c/_ZTV21FloatingFloorLllSmall	-
 src/FloatingFloorLllSmall_Spawn.c	S1-stores-rom-vptr	ov022			stores _ZTV14daObjUkiyuka_c	1		None	_ZTV14daObjUkiyuka_c/_ZTV21FloatingFloorLllSmall	-
@@ -236,7 +236,7 @@ src/LavaBubble_Spawn.c	WEAK-refs-only	ov064				1		None		-
 src/LavaPlank_Spawn.c	WEAK-refs-only	ov022				1		None		-
 src/LavaSeesaw_Spawn.c	S1-stores-rom-vptr	ov022			stores _ZTV10LavaSeesaw	1		None	_ZTV10LavaSeesaw	-
 src/LenVec3.c	PURE-C	arm9				1		None		-
-src/LightBeam_Spawn.c	WEAK-refs-only	ov010				1		None		-
+src/daObjC1Hikari_c_classInit.c	WEAK-refs-only	ov010				1		None		-
 src/LinkSilverStarAndStarMarker.c	PURE-C	ov002				1		None		-
 src/LoadArchive.c	PURE-C	arm9				1		None		-
 src/LoadBlueCoinModel.c	WEAK-refs-only	arm9				1		None		-
@@ -284,7 +284,7 @@ src/MgLakituLaunch_Spawn.c	P2-vtable-only	ov006	dScMgPachinko_c	dScMgPachinko_c	
 src/MgMemoryMaster_Spawn.c	S1-stores-rom-vptr	ov006			stores _ZTV14dScMgMemory2_c	1		None	_ZTV14dScMgMemory2_c/_ZTV19dScMgSingle3DBase_c	-
 src/MgMemoryMatch_Spawn.c	S1-stores-rom-vptr	ov006			stores _ZTV13dScMgMemory_c	1		None	_ZTV13dScMgMemory_c/_ZTV19dScMgSingle3DBase_c	-
 src/MgPuzzlePanelPuzzlePanic_Spawn.c	WEAK-refs-only	ov006				1		None		-
-src/MgShuffleShell_Spawn.c	WEAK-refs-only	ov006				1		None		-
+src/dScMgCurling_c_classInit.c	WEAK-refs-only	ov006				1		None		-
 src/MgSortOrSplode_Spawn.c	WEAK-refs-only	ov006				1		None		-
 src/MgWanted_Spawn.c	WEAK-refs-only	ov006				1		None		-
 src/Mod.c	PURE-C					0		None		not-in-delinks
@@ -330,7 +330,7 @@ src/OpenCannonInLevel.c	PURE-C	arm9				1		None		-
 src/OrangeBallBillboard_Spawn.c	WEAK-refs-only	ov044				1		None		-
 src/Ov004_Deallocate.c	PURE-C	ov004				1		None		-
 src/Painting_Spawn.c	S1-stores-rom-vptr	ov080			stores _ZTV8Painting	1		None	_ZTV8Painting	-
-src/PeachPainting_Spawn.c	WEAK-refs-only	ov010				1		None		-
+src/daObjC1Peach_c_classInit.c	WEAK-refs-only	ov010				1		None		-
 src/PiranhaPlant_Spawn.c	WEAK-refs-only	ov084				1		None		-
 src/Player_DisableInteraction.c	PURE-C	ov002				1		None		-
 src/Player_PlaySoundEffect.c	PURE-C	arm9				1		None		-
@@ -342,7 +342,7 @@ src/PoleBillboard_Spawn.c	S1-stores-rom-vptr	ov015			stores _ZTV13PoleBillboard	
 src/PoleLift_Spawn.c	WEAK-refs-only	ov045				1		None		-
 src/PoppingLavaBubbles_Spawn.c	S1-stores-rom-vptr	ov002			stores _ZTV18PoppingLavaBubbles	1		None	_ZTV18PoppingLavaBubbles	-
 src/PowerFlower_Spawn.c	WEAK-refs-only	ov002				1		None		-
-src/PowerStarCreate_Spawn.c	S1-stores-rom-vptr	ov018			stores _ZTV15PowerStarCreate	1		None	_ZTV15PowerStarCreate	-
+src/daSCre_c_Spawn.c	S1-stores-rom-vptr	ov018			stores _ZTV8daSCre_c	1		None	_ZTV8daSCre_c	-
 src/PowerStar_Spawn.c	WEAK-refs-only	ov002				1		None		-
 src/PrepareVsMode.c	WEAK-refs-only	arm9				1		None		-
 src/PrincessPeach_Spawn.c	WEAK-refs-only	ov085				1		None		-
@@ -356,7 +356,7 @@ src/Quaternion_SLerp.c	PURE-C	arm9				1		None		-
 src/QuestionBlock_Spawn.c	WEAK-refs-only	ov102				1		None		-
 src/RLUnCompReadByCallbackWrite16bit.c	PURE-C					0		None		not-in-delinks
 src/RLUnCompReadNormalWrite8bit.c	PURE-C					0		None		not-in-delinks
-src/RabbitKey_Spawn.c	WEAK-refs-only	ov085				1		None		-
+src/daObj_Mip_Key_c_classInit.c	WEAK-refs-only	ov085				1		None		-
 src/Rabbit_Spawn.c	WEAK-refs-only	ov085				1		None		-
 src/RacingPenguin_Spawn.c	WEAK-refs-only	ov019				1		None		-
 src/RandomIntInternal.c	PURE-C	arm9				1		None		-
@@ -424,11 +424,10 @@ src/SharedFilePtr_Destruct_TexSeq.c	PURE-C	arm9				1		None		-
 src/Shark_Spawn.c	WEAK-refs-only	ov090				1		None		-
 src/ShipDown_Spawn.c	WEAK-refs-only	ov016				1		None		-
 src/ShipUp_Spawn.c	WEAK-refs-only	ov016				1		None		-
-src/ShipWater_Spawn.c	WEAK-refs-only	ov017				1		None		-
+src/daObjKsWater_c_classInit.c	WEAK-refs-only	ov017				1		None		-
 src/ShipWing_Spawn.c	WEAK-refs-only	ov036				1		None		-
 src/ShowArea.c	PURE-C	arm9				1		None		-
 src/ShowCrashScreen.c	WEAK-refs-only	arm9				1		None		-
-src/daObjBSwdoor_c_Spawn.c	S1-stores-rom-vptr	ov014			stores _ZTV14daObjBSwdoor_c	1		None	_ZTV14daObjBSwdoor_c/_ZTV13daObjSwdoor_c	-
 src/ShutterHmc_Spawn.c	S1-stores-rom-vptr	ov021			stores _ZTV10ShutterHmc	1		None	_ZTV10ShutterHmc/_ZTV13daObjSwdoor_c	-
 src/SignPost_Spawn.c	WEAK-refs-only	ov002				1		None		-
 src/SilverStarBlockTag_Spawn.c	WEAK-refs-only	ov002				1		None		-
@@ -482,7 +481,7 @@ src/Submarine_Spawn.c	S1-stores-rom-vptr	ov026			stores _ZTV9Submarine	1		None	_
 src/SurfaceInfo_TestFlag0x20.c	PURE-C	arm9				1		None		-
 src/SwingingPlatform_Spawn.c	S1-stores-rom-vptr	ov036			stores _ZTV16SwingingPlatform	1		None	_ZTV16SwingingPlatform	-
 src/SwitchActivatedPlank_Spawn.c	WEAK-refs-only	ov029				1		None		-
-src/SwitchPillar_Spawn.c	S1-stores-rom-vptr	ov012			stores _ZTV12SwitchPillar	1		None	_ZTV12SwitchPillar	-
+src/daObjC0_Switch_c_Spawn.c	S1-stores-rom-vptr	ov012			stores _ZTV16daObjC0_Switch_c	1		None	_ZTV16daObjC0_Switch_c	-
 src/Swoop_Spawn.c	WEAK-refs-only	ov065				1		None		-
 src/TTC_MovingBar_Spawn.c	S1-stores-rom-vptr	ov065			stores _ZTV16daObjCtMecha05_c	1		None	_ZTV16daObjCtMecha05_c	-
 src/TTC_MovingBeam_Spawn.c	WEAK-refs-only	ov065				1		None		-
@@ -558,7 +557,7 @@ src/WaterBomb_Spawn.c	WEAK-refs-only	ov098				1		None		-
 src/WaterDiamond_Spawn.c	WEAK-refs-only	ov029				1		None		-
 src/WaterRing_Spawn.c	WEAK-refs-only	ov064				1		None		-
 src/WaterSuction_Spawn.c	WEAK-refs-only	ov026				1		None		-
-src/WaterfallMist_Spawn.cpp	WEAK-refs-only	ov002				1		None		-
+src/daObjWaterfall_c_classInit.cpp	WEAK-refs-only	ov002				1		None		-
 src/Whirlpool_Spawn.c	WEAK-refs-only	ov026				1		None		-
 src/WhompKing_Spawn.c	S1-stores-rom-vptr	ov079			stores _ZTV5Whomp	1		None	_ZTV5Whomp	-
 src/Whomp_Spawn.c	S1-stores-rom-vptr	ov079			stores _ZTV5Whomp	1		None	_ZTV5Whomp	-
@@ -687,7 +686,7 @@ src/_ZN12MeshColliderC1Ev.c	P3-mangled-method-only	arm9		MeshCollider	_ZN12MeshC
 src/_ZN12MeshColliderD0Ev.c	DTOR-ONLY	arm9	dBgW_Kc	MeshCollider/dBgW_Kc	_ZN12MeshColliderD0Ev	1		True		-
 src/_ZN12MeshColliderD2Ev.c	DTOR-ONLY	arm9		MeshCollider	_ZN12MeshColliderD2Ev	1		True		-
 src/_ZN12MetalNetLiftD0Ev.c	DTOR-ONLY	ov064	daObjFl_Amilift_c	MetalNetLift/daObjFl_Amilift_c	_ZN12MetalNetLiftD0Ev	1		True	_ZTV10dBgActor_c/_ZTV12MetalNetLift	-
-src/_ZN12SwitchPillarD0Ev.c	DTOR-ONLY	ov012	daObjC0_Switch_c	SwitchPillar/daObjC0_Switch_c	_ZN12SwitchPillarD0Ev	1		True	_ZTV10dBgActor_c/_ZTV12SwitchPillar	-
+src/_ZN16daObjC0_Switch_cD0Ev.c	DTOR-ONLY	ov012	daObjC0_Switch_c	daObjC0_Switch_c/daObjC0_Switch_c	_ZN16daObjC0_Switch_cD0Ev	1		True	_ZTV10dBgActor_c/_ZTV16daObjC0_Switch_c	-
 src/_ZN12WaterDiamond16CleanupResourcesEv.c	P1-vtable+mangled	ov029	daObjWc_Obj03_c	WaterDiamond/daObjWc_Obj03_c	vtable daObjWc_Obj03_c slot 3 @0x2111908 | _ZN12WaterDiamond16CleanupResourcesEv	1		True		-
 src/_ZN12WaterDiamondD0Ev.c	DTOR-ONLY	ov029	daObjWc_Obj03_c	WaterDiamond/daObjWc_Obj03_c	_ZN12WaterDiamondD0Ev	1		True		-
 src/_ZN12WithMeshClsn4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_.c	P3-mangled-method-only	arm9		WithMeshClsn	_ZN12WithMeshClsn4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_	1		True		by-value-class-param
@@ -764,7 +763,7 @@ src/_ZN15IceSlideManagerD0Ev.c	DTOR-ONLY	ov019	daSldMng_c	IceSlideManager/daSldM
 src/_ZN15MaterialChanger7SetFileER8BMA_Filei5Fix12IiEj.c	P3-mangled-method-only	arm9		MaterialChanger	_ZN15MaterialChanger7SetFileER8BMA_Filei5Fix12IiEj	1		True		by-value-class-param
 src/_ZN15MaterialChangerC1Ev.c	P3-mangled-method-only	arm9		MaterialChanger	_ZN15MaterialChangerC1Ev	1		True	_ZTV15MaterialChanger	-
 src/_ZN15ModelComponents21UpdateVertsUsingBonesEv.c	P3-mangled-method-only	arm9		ModelComponents	_ZN15ModelComponents21UpdateVertsUsingBonesEv	1	active	False		no-header:ModelComponents
-src/_ZN15PowerStarCreateD0Ev.c	DTOR-ONLY	ov018	daSCre_c	PowerStarCreate/daSCre_c	_ZN15PowerStarCreateD0Ev	1		True	_ZTV15PowerStarCreate	-
+src/_ZN8daSCre_cD0Ev.c	DTOR-ONLY	ov018	daSCre_c	PowerStarCreate/daSCre_c	_ZN8daSCre_cD0Ev	1		True	_ZTV8daSCre_c	-
 src/_ZN15RecRoomCupboard13InitResourcesEv.c	P1-vtable+mangled	ov058	daObjCloset_c	RecRoomCupboard/daObjCloset_c	vtable daObjCloset_c slot 0 @0x211161c | _ZN15RecRoomCupboard13InitResourcesEv	1		False		no-header:RecRoomCupboard/daObjCloset_c
 src/_ZN15RecRoomCupboard16CleanupResourcesEv.c	P1-vtable+mangled	ov058	daObjCloset_c	RecRoomCupboard/daObjCloset_c	vtable daObjCloset_c slot 3 @0x2111234 | _ZN15RecRoomCupboard16CleanupResourcesEv	1		False		no-header:RecRoomCupboard/daObjCloset_c
 src/_ZN15RotatingFirebarD0Ev.c	DTOR-ONLY	ov064	daObjFl_KomaU_c	RotatingFirebar/daObjFl_KomaU_c	_ZN15RotatingFirebarD0Ev	1		True	_ZTV10dBgActor_c/_ZTV15RotatingFirebar	-
@@ -847,10 +846,10 @@ src/_ZN20daObjFl_Fall_Block_cD0Ev.c	DTOR-ONLY	ov022	daObjFl_Fall_Block_c	daObjFl
 src/_ZN20daObjKm3_Kaitendai_c13InitResourcesEv.c	P1-vtable+mangled	ov047	daObjKm3_Kaitendai_c	daObjKm3_Kaitendai_c	vtable daObjKm3_Kaitendai_c slot 0 @0x2111384 | _ZN20daObjKm3_Kaitendai_c13InitResourcesEv	1		True		-
 src/_ZN20daObjKm3_Kaitendai_c16CleanupResourcesEv.c	P1-vtable+mangled	ov047	daObjKm3_Kaitendai_c	daObjKm3_Kaitendai_c	vtable daObjKm3_Kaitendai_c slot 3 @0x2111370 | _ZN20daObjKm3_Kaitendai_c16CleanupResourcesEv	1		True		-
 src/_ZN20daObjKm3_Kaitendai_cD0Ev.c	DTOR-ONLY	ov047	daObjKm3_Kaitendai_c	daObjKm3_Kaitendai_c	_ZN20daObjKm3_Kaitendai_cD0Ev	1		True	_ZTV10dBgActor_c/_ZTV16daObjKaitendai_c/_ZTV20daObjKm3_Kaitendai_c	-
-src/_ZN21ClockPaintingPendulum16CleanupResourcesEv.c	P1-vtable+mangled	ov013	daObjClockHuriko_c	ClockPaintingPendulum/daObjClockHuriko_c	vtable daObjClockHuriko_c slot 3 @0x2111214 | _ZN21ClockPaintingPendulum16CleanupResourcesEv	1		True		-
-src/_ZN21ClockPaintingPendulum8BehaviorEv.c	P1-vtable+mangled	ov013	daObjClockHuriko_c	ClockPaintingPendulum/daObjClockHuriko_c	vtable daObjClockHuriko_c slot 6 @0x21112a8 | _ZN21ClockPaintingPendulum8BehaviorEv	1		True		-
-src/_ZN21ClockPaintingPendulumD0Ev.c	DTOR-ONLY	ov013	daObjClockHuriko_c	ClockPaintingPendulum/daObjClockHuriko_c	_ZN21ClockPaintingPendulumD0Ev	1		True	_ZTV21ClockPaintingPendulum	-
-src/_ZN21ClockPaintingPendulumD1Ev.c	DTOR-ONLY	ov013	daObjClockHuriko_c	ClockPaintingPendulum/daObjClockHuriko_c	_ZN21ClockPaintingPendulumD1Ev	1		True	_ZTV21ClockPaintingPendulum	-
+src/_ZN18daObjClockHuriko_c16CleanupResourcesEv.c	P1-vtable+mangled	ov013	daObjClockHuriko_c	daObjClockHuriko_c/daObjClockHuriko_c	vtable daObjClockHuriko_c slot 3 @0x2111214 | _ZN18daObjClockHuriko_c16CleanupResourcesEv	1		True		-
+src/_ZN18daObjClockHuriko_c8BehaviorEv.c	P1-vtable+mangled	ov013	daObjClockHuriko_c	daObjClockHuriko_c/daObjClockHuriko_c	vtable daObjClockHuriko_c slot 6 @0x21112a8 | _ZN18daObjClockHuriko_c8BehaviorEv	1		True		-
+src/_ZN18daObjClockHuriko_cD0Ev.c	DTOR-ONLY	ov013	daObjClockHuriko_c	daObjClockHuriko_c/daObjClockHuriko_c	_ZN18daObjClockHuriko_cD0Ev	1		True	_ZTV18daObjClockHuriko_c	-
+src/_ZN18daObjClockHuriko_cD1Ev.c	DTOR-ONLY	ov013	daObjClockHuriko_c	daObjClockHuriko_c/daObjClockHuriko_c	_ZN18daObjClockHuriko_cD1Ev	1		True	_ZTV18daObjClockHuriko_c	-
 src/_ZN21ExtendingMeshCollider10DetectClsnER11RaycastLine.c	P1-vtable+mangled	arm9	dBgW_KcMbgSclY	ExtendingMeshCollider/dBgW_KcMbgSclY	vtable dBgW_KcMbgSclY slot 7 @0x203a594 | _ZN21ExtendingMeshCollider10DetectClsnER11RaycastLine	1		True		-
 src/_ZN21ExtendingMeshCollider7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block.c	P3-mangled-method-only	arm9		ExtendingMeshCollider	_ZN21ExtendingMeshCollider7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block	1		True		by-value-class-param
 src/_ZN21ExtendingMeshCollider9SetScaleYE5Fix12IiE.c	P3-mangled-method-only	arm9		ExtendingMeshCollider	_ZN21ExtendingMeshCollider9SetScaleYE5Fix12IiE	1		True		by-value-class-param
@@ -871,8 +870,8 @@ src/_ZN25MovingCylinderClsnWithPos4InitEP8dActor_cRK7Vector35Fix12IiES6_jj.c	P3-
 src/_ZN25MovingCylinderClsnWithPos6GetPosEv.c	P1-vtable+mangled	arm9	dCcAcPos_c	MovingCylinderClsnWithPos/dCcAcPos_c	vtable dCcAcPos_c slot 2 @0x2014a2c | _ZN25MovingCylinderClsnWithPos6GetPosEv	1		True		-
 src/_ZN25MovingCylinderClsnWithPosC1Ev.c	P3-mangled-method-only	arm9		MovingCylinderClsnWithPos	_ZN25MovingCylinderClsnWithPosC1Ev	1		True	_ZTV25MovingCylinderClsnWithPos	-
 src/_ZN25SlideDecorationSilverStarD0Ev.cpp	DTOR-ONLY	ov031	daObjHsBillboard_c	SlideDecorationSilverStar/daObjHsBillboard_c	_ZN25SlideDecorationSilverStarD0Ev	1		True		-
-src/_ZN29FloatOnWaterPlatformWdwSquareD0Ev.c	DTOR-ONLY	ov029	daObjWcObj01_c	FloatOnWaterPlatformWdwSquare/daObjWcObj01_c	_ZN29FloatOnWaterPlatformWdwSquareD0Ev	1		True	_ZTV10dBgActor_c/_ZTV17daObjFloatBoard_c/_ZTV29FloatOnWaterPlatformWdwSquare	-
-src/_ZN32FloatOnWaterPlatformWdwRectangleD0Ev.c	DTOR-ONLY	ov029	daObjWcObj06_c	FloatOnWaterPlatformWdwRectangle/daObjWcObj06_c	_ZN32FloatOnWaterPlatformWdwRectangleD0Ev	1		True	_ZTV10dBgActor_c/_ZTV17daObjFloatBoard_c/_ZTV32FloatOnWaterPlatformWdwRectangle	-
+src/_ZN14daObjWcObj01_cD0Ev.c	DTOR-ONLY	ov029	daObjWcObj01_c	FloatOnWaterPlatformWdwSquare/daObjWcObj01_c	_ZN14daObjWcObj01_cD0Ev	1		True	_ZTV10dBgActor_c/_ZTV17daObjFloatBoard_c/_ZTV14daObjWcObj01_c	-
+src/_ZN14daObjWcObj06_cD0Ev.c	DTOR-ONLY	ov029	daObjWcObj06_c	FloatOnWaterPlatformWdwRectangle/daObjWcObj06_c	_ZN14daObjWcObj06_cD0Ev	1		True	_ZTV10dBgActor_c/_ZTV17daObjFloatBoard_c/_ZTV14daObjWcObj06_c	-
 src/_ZN3Amp16CleanupResourcesEv.c	P1-vtable+mangled	ov070	daBrq_c	Amp/daBrq_c	vtable daBrq_c slot 3 @0x2120dc4 | _ZN3Amp16CleanupResourcesEv	1		True		-
 src/_ZN3Amp16OnPendingDestroyEv.c	P1-vtable+mangled	ov070	daBrq_c	Amp/daBrq_c	vtable daBrq_c slot 12 @0x2120e20 | _ZN3Amp16OnPendingDestroyEv	1		True		-
 src/_ZN3AmpD0Ev.c	DTOR-ONLY	ov070	daBrq_c	Amp/daBrq_c	_ZN3AmpD0Ev	1		True		-
@@ -1049,7 +1048,7 @@ src/_ZN9BootScene8BehaviorEv.c	P1-vtable+mangled	arm9	dScBoot_c	BootScene/dScBoo
 src/_ZN9Butterfly16CleanupResourcesEv.c	P1-vtable+mangled	ov100	daBtfly_c	Butterfly/daBtfly_c	vtable daBtfly_c slot 3 @0x2141988 | _ZN9Butterfly16CleanupResourcesEv	1		True		-
 src/_ZN9Butterfly16OnPendingDestroyEv.c	P1-vtable+mangled	ov100	daBtfly_c	Butterfly/daBtfly_c	vtable daBtfly_c slot 12 @0x21419d0 | _ZN9Butterfly16OnPendingDestroyEv	1		True		-
 src/_ZN9ButterflyD0Ev.c	DTOR-ONLY	ov100	daBtfly_c	Butterfly/daBtfly_c	_ZN9ButterflyD0Ev	1		True		-
-src/_ZN9CameraTagD0Ev.c	DTOR-ONLY	ov002	daCamTag_c	CameraTag/daCamTag_c	_ZN9CameraTagD0Ev	1		True	_ZTV9CameraTag	-
+src/_ZN10daCamTag_cD0Ev.c	DTOR-ONLY	ov002	daCamTag_c	daCamTag_c/daCamTag_c	_ZN10daCamTag_cD0Ev	1		True	_ZTV10daCamTag_c	-
 src/_ZN9DorrieCap13OnYoshiTryEatEv.c	P1-vtable+mangled	ov065	daDossyCap_c	DorrieCap/daDossyCap_c	vtable daDossyCap_c slot 18 @0x21195e4 | _ZN9DorrieCap13OnYoshiTryEatEv	1		True		-
 src/_ZN9DorrieCapD0Ev.c	DTOR-ONLY	ov065	daDossyCap_c	DorrieCap/daDossyCap_c	_ZN9DorrieCapD0Ev	1		True		-
 src/_ZN9DorrieCapD1Ev.c	DTOR-ONLY	ov065	daDossyCap_c	DorrieCap/daDossyCap_c	_ZN9DorrieCapD1Ev	1		True		-
@@ -4548,7 +4547,7 @@ src/func_ov006_020e64e4.c	PURE-C	ov006				1		None		-
 src/func_ov006_020e6528.c	PURE-C	ov006				1		None		-
 src/func_ov006_020e667c.c	PURE-C	ov006				1		None		-
 src/func_ov006_020e668c.c	PURE-C	ov006				1		None		-
-src/func_ov006_020e6bf4.c	WEAK-refs-only	ov006				1		None		-
+src/dScMgCurling2_c_classInit.c	WEAK-refs-only	ov006				1		None		-
 src/func_ov006_020e6cac.c	P2-vtable-only	ov006	dScMgD3DBase_c	dScMgD3DBase_c	vtable dScMgD3DBase_c slot 30 @0x20e6cac	1	active	True		-
 src/func_ov006_020e6d8c.c	P2-vtable-only	ov006	dScMgD3DBase_c	dScMgD3DBase_c	vtable dScMgD3DBase_c slot 28 @0x20e6d8c	1		True		-
 src/func_ov006_020e6d98.c	P2-vtable-only	ov006	dScMgD3DBase_c	dScMgD3DBase_c	vtable dScMgD3DBase_c slot 27 @0x20e6d98	1		True		-

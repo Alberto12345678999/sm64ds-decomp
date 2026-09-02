@@ -164,8 +164,8 @@ _ZTI7daTrs_c kind:data(any) addr:0x0211e738
 _ZTI11daTrsIcon_c kind:data(any) addr:0x0211e744
 _ZTS11daTBasket_c kind:data(any) addr:0x0211e750
 _ZTS11daTrsIcon_c kind:data(any) addr:0x0211e760
-Boo_SpawnInfo kind:data(any) addr:0x0211e770
-BigBoo_SpawnInfo kind:data(any) addr:0x0211e78c
+g_profile_TERESA kind:data(any) addr:0x0211e770
+g_profile_BOSS_TERESA kind:data(any) addr:0x0211e78c
 BooCage_SpawnInfo kind:data(any) addr:0x0211e7a8
 BigBooIcon_SpawnInfo kind:data(any) addr:0x0211e7c4
 data_ov063_0211e7e0 kind:data(any) addr:0x0211e7e0
@@ -181,10 +181,10 @@ _ZTI11daTrsTrap_c kind:data(any) addr:0x0211e9cc
 _ZTS11daTrsTrap_c kind:data(any) addr:0x0211e9d8
 data_ov063_0211e9e8 kind:data(any) addr:0x0211e9e8
 data_ov063_0211e9f8 kind:data(any) addr:0x0211e9f8
-MansionSteps_SpawnInfo kind:data(any) addr:0x0211ea10
-Bookshelf_SpawnInfo kind:data(any) addr:0x0211ea2c
-MerryGoRound_SpawnInfo kind:data(any) addr:0x0211ea48
-TrapDoor_SpawnInfo kind:data(any) addr:0x0211ea64
+g_profile_KAIDAN kind:data(any) addr:0x0211ea10
+g_profile_BOOKSHELF kind:data(any) addr:0x0211ea2c
+g_profile_MERRYGOROUND kind:data(any) addr:0x0211ea48
+g_profile_TERESAPIT kind:data(any) addr:0x0211ea64
 _ZTV11daTrsTrap_c kind:data(any) addr:0x0211ea88
 _ZTI20daObjTh_Fall_Block_c kind:data(any) addr:0x0211eb04
 data_ov063_0211eb10 kind:data(any) addr:0x0211eb10

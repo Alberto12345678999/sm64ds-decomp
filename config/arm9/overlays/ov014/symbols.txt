@@ -40,7 +40,7 @@ _ZN15ChainChompFence16CleanupResourcesEv kind:function(arm,size=0x44) addr:0x021
 _ZN15ChainChompFence6RenderEv kind:function(arm,size=0x40) addr:0x02112f80
 _ZN15ChainChompFence8BehaviorEv kind:function(arm,size=0x3c) addr:0x02112fc0
 _ZN15ChainChompFence13InitResourcesEv kind:function(arm,size=0x80) addr:0x02112ffc
-ChainChompFence_Spawn kind:function(arm,size=0x30) addr:0x0211307c
+daObjWanwanShutter_c_classInit kind:function(arm,size=0x30) addr:0x0211307c
 __sinit_ov014_021130ac kind:function(arm,size=0x6c) addr:0x021130ac
 __sinit_ov014_02113118 kind:function(arm,size=0x1e4) addr:0x02113118
 __sinit_ov014_021132fc kind:function(arm,size=0x6c) addr:0x021132fc
@@ -192,7 +192,7 @@ data_ov014_02114860 kind:data(any) addr:0x02114860 ambiguous
 _ZTI20daObjWanwanShutter_c kind:data(any) addr:0x02114868
 _ZTS20daObjWanwanShutter_c kind:data(any) addr:0x02114874
 data_ov014_0211487c kind:data(any) addr:0x0211487c ambiguous
-ChainChompFence_SpawnInfo kind:data(any) addr:0x0211488c ambiguous
+g_profile_WANWAN_SHUTTER kind:data(any) addr:0x0211488c ambiguous
 data_ov014_02114898 kind:data(any) addr:0x02114898 ambiguous
 _ZTV15ChainChompFence kind:data(any) addr:0x021148b0
 data_ov014_021148b4 kind:data(any) addr:0x021148b4 ambiguous

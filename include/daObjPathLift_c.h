@@ -2,7 +2,7 @@
  * from dBgActor_c. The base identity is ROM-proven by
  * _ZTI16dPathLiftActor_c/_ZTS16dPathLiftActor_c at ov002:0x0210af0c.
  *
- * SIZE 0x4b4, the literal PathLift_Spawn (src/PathLift_Spawn.cpp) passes to
+ * SIZE 0x4b4, the literal daObjPathLift_c_classInit factory passes to
  * fBase_c::operator new. dPathLiftActor_c ends at 0x450; the D1 destructor
  * (func_ov100_02146d7c, this class's own) destroys only a ShadowModel at
  * 0x450 before storing the base vtable and running dPathLiftActor_c's

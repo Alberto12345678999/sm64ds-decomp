@@ -9,6 +9,9 @@ void _ZN9ModelAnimC1Ev(void* t);
 void _ZN5ModelC1Ev(void* t);
 void _ZN11ShadowModelC1Ev(void* t);
 extern void* _ZTV7daTrs_c;
+/* TERESA and BOSS_TERESA both construct the ROM-proven daTrs_c class. A
+ * class-anchored classInit rename would collide, so this factory keeps its
+ * historical project spelling until the original distinction is recovered. */
 void* Boo_Spawn(void){
   char* t=(char*)_ZN7fBase_cnwEj(0x5e0);
   if(t){
