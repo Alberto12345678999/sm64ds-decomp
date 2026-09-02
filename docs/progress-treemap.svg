@@ -13385,7 +13385,7 @@ matched: yes</title></rect><rect x="493.65" y="110.64" width="2.22" height="5.99
 module: ov002
 addr: 0x020b56c4
 size: 20 bytes
-matched: yes</title></rect><rect x="495.87" y="110.64" width="10.22" height="5.99" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>QuestionSwitch_Spawn
+matched: yes</title></rect><rect x="495.87" y="110.64" width="10.22" height="5.99" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daObjHatenaSwitch_c_classInit
 module: ov002
 addr: 0x020b56d8
 size: 92 bytes
@@ -30097,7 +30097,7 @@ matched: yes</title></rect><rect x="1201.01" y="84.13" width="6.65" height="11.2
 module: ov012
 addr: 0x0211164c
 size: 228 bytes
-matched: yes</title></rect><rect x="1194.71" y="95.35" width="2.66" height="6.87" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>BasementWater_Spawn
+matched: yes</title></rect><rect x="1194.71" y="95.35" width="2.66" height="6.87" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daObjC0Water_c_classInit
 module: ov012
 addr: 0x02111730
 size: 56 bytes
@@ -37365,7 +37365,7 @@ matched: yes</title></rect><rect x="1360.23" y="451.22" width="13.57" height="11
 module: ov065
 addr: 0x0211b1d4
 size: 340 bytes
-matched: yes</title></rect><rect x="1315.36" y="463.20" width="4.74" height="5.65" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>TTC_MovingBar_Spawn
+matched: yes</title></rect><rect x="1315.36" y="463.20" width="4.74" height="5.65" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daObjCtMecha05_c_classInit
 module: ov065
 addr: 0x0211b328
 size: 56 bytes
@@ -44757,7 +44757,7 @@ matched: yes</title></rect><rect x="1446.87" y="956.80" width="10.24" height="16
 module: ov100
 addr: 0x021471e0
 size: 328 bytes
-matched: yes</title></rect><rect x="1446.87" y="973.46" width="10.24" height="6.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>PathLift_Spawn
+matched: yes</title></rect><rect x="1446.87" y="973.46" width="10.24" height="6.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daObjPathLift_c_classInit
 module: ov100
 addr: 0x02147328
 size: 124 bytes
