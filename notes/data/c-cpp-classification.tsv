@@ -11,7 +11,7 @@ src/daBrq_c_classInit.c	WEAK-refs-only	ov070				1		None		-
 src/AngleDiff.c	PURE-C	arm9				1		None		-
 src/ApproachAngle.c	PURE-C	arm9				1		None		-
 src/ArmedRotatingPlatform_Spawn.c	WEAK-refs-only	ov036				1		None		-
-src/ArrowLift_Spawn.c	WEAK-refs-only	ov029				1		None		-
+src/daObjWc_Obj02_c_classInit.c	WEAK-refs-only	ov029				1		None		-
 src/ArrowPathLift_Spawn.c	WEAK-refs-only	ov091				1		None		-
 src/ArrowSignLeft_Spawn.c	WEAK-refs-only	ov098				1		None		-
 src/ArrowSignRight_Spawn.c	WEAK-refs-only	ov098				1		None		-
@@ -481,7 +481,7 @@ src/SublevelToLevel.c	PURE-C	arm9				1		None		-
 src/daObjWlSubmarine_c_classInit.c	S1-stores-rom-vptr	ov026			stores _ZTV9Submarine	1		None	_ZTV9Submarine	-
 src/SurfaceInfo_TestFlag0x20.c	PURE-C	arm9				1		None		-
 src/SwingingPlatform_Spawn.c	S1-stores-rom-vptr	ov036			stores _ZTV16SwingingPlatform	1		None	_ZTV16SwingingPlatform	-
-src/SwitchActivatedPlank_Spawn.c	WEAK-refs-only	ov029				1		None		-
+src/daObjWc_Obj04_c_classInit.c	WEAK-refs-only	ov029				1		None		-
 src/daObjC0_Switch_c_Spawn.c	S1-stores-rom-vptr	ov012			stores _ZTV16daObjC0_Switch_c	1		None	_ZTV16daObjC0_Switch_c	-
 src/Swoop_Spawn.c	WEAK-refs-only	ov065				1		None		-
 src/TTC_MovingBar_Spawn.c	S1-stores-rom-vptr	ov065			stores _ZTV16daObjCtMecha05_c	1		None	_ZTV16daObjCtMecha05_c	-
@@ -555,7 +555,7 @@ src/WarpPipe_Spawn.c	WEAK-refs-only	ov102				1		None		-
 src/WarpPlayer.c	PURE-C	arm9				1		None		-
 src/Warp_Spawn.c	S1-stores-rom-vptr	ov002			stores _ZTV4Warp	1		None	_ZTV4Warp	-
 src/WaterBomb_Spawn.c	WEAK-refs-only	ov098				1		None		-
-src/WaterDiamond_Spawn.c	WEAK-refs-only	ov029				1		None		-
+src/daObjWc_Obj03_c_classInit.c	WEAK-refs-only	ov029				1		None		-
 src/WaterRing_Spawn.c	WEAK-refs-only	ov064				1		None		-
 src/WaterSuction_Spawn.c	WEAK-refs-only	ov026				1		None		-
 src/daObjWaterfall_c_classInit.cpp	WEAK-refs-only	ov002				1		None		-

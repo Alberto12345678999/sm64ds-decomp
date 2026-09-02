@@ -1,4 +1,4 @@
-// @symbol SwitchActivatedPlank_Spawn
+// @symbol daObjWc_Obj04_c_classInit
 /* recovered: vtable identified, globals resolved, declarations from a shared header */
 #include "decl_ActorBase.h"
 #include "decl_Model.h"
@@ -6,7 +6,12 @@
 #include "decl_common.h"
 /* recovered: vtable identified, globals resolved */
 /* resolved: VT0 = _ZTV20SwitchActivatedPlank */
-int *SwitchActivatedPlank_Spawn(void)
+/* Reconstructed source-style name: SM64DS proves daObjWc_Obj04_c through RTTI,
+ * allocation size, vtable identity, and the WC_OBJ04 registry profile; later
+ * EAD lineage supplies classInit. Exact original spelling is not preserved.
+ * The project's SwitchActivatedPlank implementation aliases remain unchanged.
+ * Historical alias: SwitchActivatedPlank_Spawn. */
+int *daObjWc_Obj04_c_classInit(void)
 {
     int *p = (int *)_ZN7fBase_cnwEj(936);
     if (p) {

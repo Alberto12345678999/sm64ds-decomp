@@ -10,7 +10,7 @@ _ZN9ArrowLift8BehaviorEv kind:function(arm,size=0x174) addr:0x02111484
 _ZN9ArrowLift13InitResourcesEv kind:function(arm,size=0xcc) addr:0x021115f8
 func_ov029_021116c4 kind:function(arm,size=0x20) addr:0x021116c4
 func_ov029_021116e4 kind:function(arm,size=0x14) addr:0x021116e4
-ArrowLift_Spawn kind:function(arm,size=0x30) addr:0x021116f8
+daObjWc_Obj02_c_classInit kind:function(arm,size=0x30) addr:0x021116f8
 _ZN12WaterDiamondD1Ev kind:function(arm,size=0x38) addr:0x02111728
 _ZN12WaterDiamondD0Ev kind:function(arm,size=0x4c) addr:0x02111760
 _ZN12WaterDiamond19CheckClsnWithPlayerEv kind:function(arm,size=0xa4) addr:0x021117ac
@@ -20,7 +20,7 @@ _ZN12WaterDiamond16CleanupResourcesEv kind:function(arm,size=0x24) addr:0x021119
 _ZN12WaterDiamond6RenderEv kind:function(arm,size=0x28) addr:0x0211192c
 _ZN12WaterDiamond8BehaviorEv kind:function(arm,size=0xb0) addr:0x02111954
 _ZN12WaterDiamond13InitResourcesEv kind:function(arm,size=0x80) addr:0x02111a04
-WaterDiamond_Spawn kind:function(arm,size=0x40) addr:0x02111a84
+daObjWc_Obj03_c_classInit kind:function(arm,size=0x40) addr:0x02111a84
 _ZN8CageLiftD1Ev kind:function(arm,size=0x44) addr:0x02111ac4
 _ZN8CageLiftD0Ev kind:function(arm,size=0x58) addr:0x02111b08
 _ZN8CageLift16CleanupResourcesEv kind:function(arm,size=0x44) addr:0x02111b60
@@ -56,7 +56,7 @@ _ZN20SwitchActivatedPlank16CleanupResourcesEv kind:function(arm,size=0x44) addr:
 _ZN20SwitchActivatedPlank6RenderEv kind:function(arm,size=0x38) addr:0x02112794
 _ZN20SwitchActivatedPlank8BehaviorEv kind:function(arm,size=0xe4) addr:0x021127cc
 _ZN20SwitchActivatedPlank13InitResourcesEv kind:function(arm,size=0xb4) addr:0x021128b0
-SwitchActivatedPlank_Spawn kind:function(arm,size=0x38) addr:0x02112964
+daObjWc_Obj04_c_classInit kind:function(arm,size=0x38) addr:0x02112964
 data_ov029_0211299c kind:data(any) addr:0x0211299c
 data_ov029_021129a0 kind:data(any) addr:0x021129a0
 data_ov029_021129a4 kind:data(any) addr:0x021129a4
@@ -180,7 +180,7 @@ _ZTV14daObjWcObj01_c kind:data(any) addr:0x02113c2c
 data_ov029_02113c48 kind:data(any) addr:0x02113c48 ambiguous
 _ZTI15daObjWc_Obj02_c kind:data(any) addr:0x02113cac
 _ZTS15daObjWc_Obj02_c kind:data(any) addr:0x02113cb8
-ArrowLift_SpawnInfo kind:data(any) addr:0x02113ccc ambiguous
+g_profile_WC_OBJ02 kind:data(any) addr:0x02113ccc ambiguous
 data_ov029_02113cd4 kind:data(any) addr:0x02113cd4 ambiguous
 data_ov029_02113cec kind:data(any) addr:0x02113cec ambiguous
 _ZTV15daObjWc_Obj02_c kind:data(any) addr:0x02113cf0
@@ -189,7 +189,7 @@ data_ov029_02113cf4 kind:data(any) addr:0x02113cf4 ambiguous
 data_ov029_02113d30 kind:data(any) addr:0x02113d30 ambiguous
 _ZTI15daObjWc_Obj03_c kind:data(any) addr:0x02113d70
 _ZTS15daObjWc_Obj03_c kind:data(any) addr:0x02113d7c
-WaterDiamond_SpawnInfo kind:data(any) addr:0x02113d90 ambiguous
+g_profile_WC_OBJ03 kind:data(any) addr:0x02113d90 ambiguous
 data_ov029_02113da8 kind:data(any) addr:0x02113da8 ambiguous
 _ZTV12WaterDiamond kind:data(any) addr:0x02113db4
 _ZTV15daObjWc_Obj03_c kind:data(any) addr:0x02113db4
@@ -225,7 +225,7 @@ data_ov029_021140f8 kind:data(any) addr:0x021140f8 ambiguous
 data_ov029_02114108 kind:data(any) addr:0x02114108 ambiguous
 _ZTI15daObjWc_Obj04_c kind:data(any) addr:0x0211415c
 _ZTS15daObjWc_Obj04_c kind:data(any) addr:0x02114168
-SwitchActivatedPlank_SpawnInfo kind:data(any) addr:0x0211417c ambiguous
+g_profile_WC_OBJ04 kind:data(any) addr:0x0211417c ambiguous
 _ZTV20SwitchActivatedPlank kind:data(any) addr:0x021141a0
 _ZTV15daObjWc_Obj04_c kind:data(any) addr:0x021141a0
 data_ov029_021141cc kind:data(any) addr:0x021141cc ambiguous

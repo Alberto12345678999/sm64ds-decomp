@@ -940,6 +940,7 @@ ov027	0x021138d8	data_ov027_021138d8	daIDonketu_c_SpawnInfo	spawninfo
 ov027	0x02113b2c	data_ov027_02113b2c	SnowmanBreath_SpawnInfo	spawninfo
 ov027	0x02113b50	data_ov027_02113b50	_ZTV13SnowmanBreath	vtable alloc=?
 ov029	0x02111340	func_ov029_02111340	FloatOnWaterPlatformWdwSquare_Spawn	spawnfunc
+ov029	0x02111340	FloatOnWaterPlatformWdwSquare_Spawn	daObjWcObj01_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov029	0x0211137c	func_ov029_0211137c	_ZN29FloatOnWaterPlatformWdwSquareD1Ev	vtable slot 16
 ov029	0x021113c0	func_ov029_021113c0	_ZN29FloatOnWaterPlatformWdwSquareD0Ev	vtable slot 17
 ov029	0x02111418	func_ov029_02111418	_ZN29FloatOnWaterPlatformWdwSquare16CleanupResourcesEv	vtable slot 3
@@ -947,6 +948,7 @@ ov029	0x0211145c	func_ov029_0211145c	_ZN29FloatOnWaterPlatformWdwSquare6RenderEv
 ov029	0x02111484	func_ov029_02111484	_ZN29FloatOnWaterPlatformWdwSquare8BehaviorEv	vtable slot 6
 ov029	0x021115f8	func_ov029_021115f8	_ZN29FloatOnWaterPlatformWdwSquare13InitResourcesEv	vtable slot 0
 ov029	0x021116f8	func_ov029_021116f8	ArrowLift_Spawn	spawnfunc
+ov029	0x021116f8	ArrowLift_Spawn	daObjWc_Obj02_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov029	0x02111728	func_ov029_02111728	_ZN9ArrowLiftD1Ev	vtable slot 16
 ov029	0x02111760	func_ov029_02111760	_ZN9ArrowLiftD0Ev	vtable slot 17
 ov029	0x021117ac	func_ov029_021117ac	_ZN12WaterDiamond19CheckClsnWithPlayerEv	WaterDiamond Behavior helper; established class name
@@ -957,6 +959,7 @@ ov029	0x0211192c	func_ov029_0211192c	_ZN9ArrowLift6RenderEv	vtable slot 9
 ov029	0x02111954	func_ov029_02111954	_ZN9ArrowLift8BehaviorEv	vtable slot 6
 ov029	0x02111a04	func_ov029_02111a04	_ZN9ArrowLift13InitResourcesEv	vtable slot 0
 ov029	0x02111a84	func_ov029_02111a84	WaterDiamond_Spawn	spawnfunc
+ov029	0x02111a84	WaterDiamond_Spawn	daObjWc_Obj03_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov029	0x02111e74	func_ov029_02111e74	CageLift_Spawn	spawnfunc
 ov029	0x02112044	func_ov029_02112044	FloatOnWaterPlatformWdwRectangle_Spawn	spawnfunc
 ov029	0x02112080	func_ov029_02112080	_ZN32FloatOnWaterPlatformWdwRectangleD1Ev	vtable slot 16
@@ -978,10 +981,14 @@ ov029	0x02112794	func_ov029_02112794	_ZN20SwitchActivatedPlank6RenderEv	vtable s
 ov029	0x021127cc	func_ov029_021127cc	_ZN20SwitchActivatedPlank8BehaviorEv	vtable slot 6
 ov029	0x021128b0	func_ov029_021128b0	_ZN20SwitchActivatedPlank13InitResourcesEv	vtable slot 0
 ov029	0x02112964	func_ov029_02112964	SwitchActivatedPlank_Spawn	spawnfunc
+ov029	0x02112964	SwitchActivatedPlank_Spawn	daObjWc_Obj04_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov029	0x02113c08	data_ov029_02113c08	FloatOnWaterPlatformWdwSquare_SpawnInfo	spawninfo
+ov029	0x02113c08	FloatOnWaterPlatformWdwSquare_SpawnInfo	g_profile_WC_OBJ01	reconstructed profile global; literal ROM ID WC_OBJ01+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov029	0x02113ccc	data_ov029_02113ccc	ArrowLift_SpawnInfo	spawninfo
+ov029	0x02113ccc	ArrowLift_SpawnInfo	g_profile_WC_OBJ02	reconstructed profile global; literal ROM ID WC_OBJ02+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov029	0x02113cf0	data_ov029_02113cf0	_ZTV29FloatOnWaterPlatformWdwSquare	vtable alloc=0x348
 ov029	0x02113d90	data_ov029_02113d90	WaterDiamond_SpawnInfo	spawninfo
+ov029	0x02113d90	WaterDiamond_SpawnInfo	g_profile_WC_OBJ03	reconstructed profile global; literal ROM ID WC_OBJ03+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov029	0x02113db4	data_ov029_02113db4	_ZTV9ArrowLift	vtable alloc=0x328
 ov029	0x02113e50	data_ov029_02113e50	CageLift_SpawnInfo	spawninfo
 ov029	0x02113f20	data_ov029_02113f20	FloatOnWaterPlatformWdwRectangle_SpawnInfo	spawninfo
@@ -990,6 +997,7 @@ ov029	0x02114018	data_ov029_02114018	_ZTV32FloatOnWaterPlatformWdwRectangle	vtab
 ov029	0x021140b8	data_ov029_021140b8	WDW_Water_SpawnInfo	spawninfo
 ov029	0x021140dc	data_ov029_021140dc	_ZTV15daObjWc_Obj07_c	vtable alloc=0x320
 ov029	0x0211417c	data_ov029_0211417c	SwitchActivatedPlank_SpawnInfo	spawninfo
+ov029	0x0211417c	SwitchActivatedPlank_SpawnInfo	g_profile_WC_OBJ04	reconstructed profile global; literal ROM ID WC_OBJ04+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov029	0x021141a0	data_ov029_021141a0	_ZTV20SwitchActivatedPlank	vtable alloc=0x3a8
 ov030	0x02111524	func_ov030_02111524	UkikiCage_Spawn	spawnfunc
 ov030	0x0211155c	func_ov030_0211155c	_ZN13daObjHmBskt_cD1Ev	vtable slot 16

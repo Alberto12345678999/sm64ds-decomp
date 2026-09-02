@@ -16,7 +16,7 @@
  *   [6] 0x0211192c  src/_ZN12WaterDiamond6RenderEv.cpp
  *   [7] 0x02111954  src/_ZN12WaterDiamond8BehaviorEv.cpp
  *   [8] 0x02111a04  src/_ZN12WaterDiamond13InitResourcesEv.cpp
- *   [9] 0x02111a84  src/WaterDiamond_Spawn.c
+ *   [9] 0x02111a84  src/daObjWc_Obj03_c_classInit.c
  *
  * THREE MEMBERS HERE ARE A REGRESSION ON THE LEGACY SOURCE, AND THIS TU MUST
  * NOT BE PROMOTED UNTIL THEY ARE PUT BACK. The concatenation above names
@@ -43,10 +43,10 @@
  */
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 9 -- WaterDiamond_Spawn, 0x02111a84, size 0x40 */
+/* ROM ordinal 9 -- daObjWc_Obj03_c_classInit, 0x02111a84, size 0x40 */
 /* -------------------------------------------------------------------------- */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-// @symbol WaterDiamond_Spawn
+// @symbol daObjWc_Obj03_c_classInit
 /* recovered: vtable identified, globals resolved, declarations from a shared header */
 #define WATERDIAMOND_H  /* suppress include/WaterDiamond.h: its WaterDiamond is the flat C view without the destructor; the TU-local class below is the C++ view, same evidenced offsets */
 #include "Model.h"
@@ -87,7 +87,9 @@ struct WaterDiamond : dActor_c {
 #include "decl_common.h"
 /* recovered: vtable identified, globals resolved */
 /* resolved: VT0 = _ZTV12WaterDiamond */
-int *WaterDiamond_Spawn(void)
+/* Reconstructed source-style name; exact original SM64DS spelling is not
+ * preserved. Historical alias: WaterDiamond_Spawn. */
+int *daObjWc_Obj03_c_classInit(void)
 {
     int *p = (int *)_ZN7fBase_cnwEj(352);
     if (p) {

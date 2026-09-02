@@ -24,7 +24,7 @@
  *   [5] 0x021115f8  src/_ZN9ArrowLift13InitResourcesEv.cpp
  *   [6] 0x021116c4  src/func_ov029_021116c4.cpp
  *   [7] 0x021116e4  src/func_ov029_021116e4.c
- *   [8] 0x021116f8  src/ArrowLift_Spawn.c
+ *   [8] 0x021116f8  src/daObjWc_Obj02_c_classInit.c
  */
 
 /* TUBUILD WARNING -- #pragma directive(s) were present in the legacy
@@ -100,13 +100,15 @@ extern int _ZN4dBgW22UpdatePosWithTransformERS_P8dActor_cR5dBgPiR7Vector3P10Vect
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 8 -- ArrowLift_Spawn, 0x021116f8, size 0x30 */
+/* ROM ordinal 8 -- daObjWc_Obj02_c_classInit, 0x021116f8, size 0x30 */
 /* -------------------------------------------------------------------------- */
-// @symbol ArrowLift_Spawn
+// @symbol daObjWc_Obj02_c_classInit
 /* recovered: globals resolved, declarations from a shared header */
 /* recovered: globals resolved */
 /* resolved: VT = _ZTV9ArrowLift */
-extern "C" int *ArrowLift_Spawn(void)
+/* Reconstructed source-style name; exact original SM64DS spelling is not
+ * preserved. Historical alias: ArrowLift_Spawn. */
+extern "C" int *daObjWc_Obj02_c_classInit(void)
 {
     int *p = (int *)_ZN7fBase_cnwEj(sizeof(ArrowLift));
     if (p) {

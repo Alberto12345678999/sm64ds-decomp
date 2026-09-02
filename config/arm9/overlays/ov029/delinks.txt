@@ -40,7 +40,7 @@ src/func_ov029_021116e4.c:
     complete
     .text start:0x021116e4 end:0x021116f8
 
-src/ArrowLift_Spawn.c:
+src/daObjWc_Obj02_c_classInit.c:
     complete
     .text start:0x021116f8 end:0x02111728
 
@@ -80,7 +80,7 @@ src/_ZN12WaterDiamond13InitResourcesEv.cpp:
     complete
     .text start:0x02111a04 end:0x02111a84
 
-src/WaterDiamond_Spawn.c:
+src/daObjWc_Obj03_c_classInit.c:
     complete
     .text start:0x02111a84 end:0x02111ac4
 
@@ -196,7 +196,7 @@ src/_ZN20SwitchActivatedPlank13InitResourcesEv.cpp:
     complete
     .text start:0x021128b0 end:0x02112964
 
-src/SwitchActivatedPlank_Spawn.c:
+src/daObjWc_Obj04_c_classInit.c:
     complete
     .text start:0x02112964 end:0x0211299c
 
