@@ -21,34 +21,45 @@
 
 #include "daObjRc_Dorifu_c.h"
 
-struct ResourceDescriptor {
-    void *entries[3];
-};
-
-extern "C" {
-int func_ov002_020b4b6c(daObjRc_Dorifu_c *self,
-                        ResourceDescriptor *descriptor);
-int func_ov002_020b4d58(daObjRc_Dorifu_c *self,
-                        ResourceDescriptor *descriptor);
-extern ResourceDescriptor data_ov036_02113e88;
-}
+/* The resource table this platform hands to its base, five 0xc-byte entries at
+ * ov036 0x02113e88. daObjDorifuResources and the two base methods that consume
+ * it are declared by include/daObjDorifu_c.h, which daObjRc_Dorifu_c.h includes,
+ * so no shadow declaration is needed for either.
+ *
+ * tubuild's generated shadow block spelled this WRONGLY: a local
+ * `struct ResourceDescriptor { void *entries[3]; }` plus raw
+ * `func_ov002_020b4b6c` / `func_ov002_020b4d58` externs. Those two names are
+ * exported by no module -- the addresses are real, but the symbols there are
+ * _ZN13daObjDorifu_c16CleanupResourcesEP20daObjDorifuResources
+ * (config/arm9/overlays/ov002/symbols.txt:196) and
+ * _ZN13daObjDorifu_c13InitResourcesEP20daObjDorifuResources (:199) -- so the TU
+ * would compile and byte-match here and then fail the ROM link on promotion
+ * with `Undefined : "func_ov002_020b4b6c"`. That is exactly what happened to
+ * daObjKm3_Dorifu_c, which had the same generated block, in the same overlay,
+ * inventing the same two names. The legacy one-function sources this shadow
+ * stands in for had already recovered the real base calls; what follows is that
+ * recovery restored, not a new guess, and it is the pattern the sibling
+ * src_tu/actors/daObjKm1_Dorifu_c.cpp already uses. */
+extern daObjDorifuResources data_ov036_02113e88[5];
 
 /* -------------------------------------------------------------------------- */
 /* ROM ordinal 3 -- _ZN16daObjRc_Dorifu_c13InitResourcesEv, 0x021120b4, size 0x14 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN16daObjRc_Dorifu_c13InitResourcesEv
+/* recovered: named members + shared header, real C++ method */
 int daObjRc_Dorifu_c::InitResources()
 {
-    return func_ov002_020b4d58(this, &data_ov036_02113e88);
+    return daObjDorifu_c::InitResources(data_ov036_02113e88);
 }
 
 /* -------------------------------------------------------------------------- */
 /* ROM ordinal 2 -- _ZN16daObjRc_Dorifu_c16CleanupResourcesEv, 0x021120a0, size 0x14 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN16daObjRc_Dorifu_c16CleanupResourcesEv
+/* recovered: named members + shared header, real C++ method */
 int daObjRc_Dorifu_c::CleanupResources()
 {
-    return func_ov002_020b4b6c(this, &data_ov036_02113e88);
+    return daObjDorifu_c::CleanupResources(data_ov036_02113e88);
 }
 
 /* -------------------------------------------------------------------------- */
