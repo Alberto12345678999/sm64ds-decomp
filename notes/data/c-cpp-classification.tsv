@@ -558,7 +558,7 @@ src/WaterBomb_Spawn.c	WEAK-refs-only	ov098				1		None		-
 src/WaterDiamond_Spawn.c	WEAK-refs-only	ov029				1		None		-
 src/WaterRing_Spawn.c	WEAK-refs-only	ov064				1		None		-
 src/WaterSuction_Spawn.c	WEAK-refs-only	ov026				1		None		-
-src/WaterfallMist_Spawn.cpp	WEAK-refs-only	ov002				1		None		-
+src/daObjWaterfall_c_classInit.cpp	WEAK-refs-only	ov002				1		None		-
 src/Whirlpool_Spawn.c	WEAK-refs-only	ov026				1		None		-
 src/WhompKing_Spawn.c	S1-stores-rom-vptr	ov079			stores _ZTV5Whomp	1		None	_ZTV5Whomp	-
 src/Whomp_Spawn.c	S1-stores-rom-vptr	ov079			stores _ZTV5Whomp	1		None	_ZTV5Whomp	-
