@@ -28,7 +28,7 @@ src/_ZN9ShipWater13InitResourcesEv.cpp:
     complete
     .text start:0x021113c0 end:0x02111480
 
-src/ShipWater_Spawn.c:
+src/daObjKsWater_c_classInit.c:
     complete
     .text start:0x02111480 end:0x021114b8
 

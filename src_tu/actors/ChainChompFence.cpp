@@ -23,7 +23,7 @@
  *   [4] 0x02112f80  src/_ZN15ChainChompFence6RenderEv.cpp
  *   [5] 0x02112fc0  src/_ZN15ChainChompFence8BehaviorEv.cpp
  *   [6] 0x02112ffc  src/_ZN15ChainChompFence13InitResourcesEv.cpp
- *   [7] 0x0211307c  src/ChainChompFence_Spawn.c
+ *   [7] 0x0211307c  src/daObjWanwanShutter_c_classInit.c
  */
 
 /* Includes: union of the legacy files', first-seen in ROM-ascending
@@ -99,13 +99,14 @@ extern int data_ov014_02114558[];
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 7 -- ChainChompFence_Spawn, 0x0211307c, size 0x30 */
+/* ROM ordinal 7 -- daObjWanwanShutter_c_classInit, 0x0211307c, size 0x30 */
 /* -------------------------------------------------------------------------- */
-// @symbol ChainChompFence_Spawn
+// @symbol daObjWanwanShutter_c_classInit
 /* recovered: globals resolved, declarations from a shared header */
 /* recovered: globals resolved */
 /* resolved: VT = _ZTV15ChainChompFence */
-extern "C" int *ChainChompFence_Spawn(void)
+/* Reconstructed source-style name. Historical alias: ChainChompFence_Spawn. */
+extern "C" int *daObjWanwanShutter_c_classInit(void)
 {
     int *p = (int *)_ZN7fBase_cnwEj(800);
     if (p) { _ZN10dBgActor_cC2Ev(p); p[0] = (int)&_ZTV15ChainChompFence[2]; /* +8: this TU defines the vtable */ }

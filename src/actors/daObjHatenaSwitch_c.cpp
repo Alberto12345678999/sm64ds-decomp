@@ -1,10 +1,10 @@
 //cpp
 /* Genuine production translation unit for ov002/daObjHatenaSwitch_c.
  *
- * The class identity comes from retail RTTI. QuestionSwitch_Spawn and
- * QuestionSwitch_SpawnInfo remain evidence-bounded C ABI aliases because the
- * original factory spelling does not survive. The private helper spellings
- * are inferred; their class ownership, bodies, calls, and ordering are proven.
+ * The class identity comes from retail RTTI. The class initializer and profile
+ * global use lineage-supported reconstructed spellings; exact original
+ * SM64DS symbols do not survive. The private helper spellings are inferred;
+ * their class ownership, bodies, calls, and ordering are proven.
  *
  * mwccarm emits ordinary function sections in reverse source order. Keep the
  * ROM-high factory first and OnGroundPounded last. InitResources is the key
@@ -24,14 +24,14 @@ struct HatenaVector3Words { s32 x, y, z; };
 struct HatenaMatrixWords { s32 words[12]; };
 
 struct HatenaSwitchSpawnInfo {
-    daObjHatenaSwitch_c *(*spawn)();
-    s16 behaviorPriority;
-    s16 renderPriority;
-    u32 flags;
-    Fix12i rangeOffsetY;
-    Fix12i range;
-    Fix12i drawDistance;
-    u32 reserved;
+    daObjHatenaSwitch_c *(*classInit)();
+    s16 profileIDAndExecuteOrder;
+    s16 drawOrder;
+    u32 actorFlags;
+    Fix12i clipOffsetY;
+    Fix12i clipRadius;
+    Fix12i clipDistance;
+    Fix12i farDistance;
 };
 
 typedef char HatenaSwitchSpawnInfo_size_must_be_0x1c[
@@ -78,12 +78,13 @@ extern u8 data_0209d684;
 extern u8 data_0209d660;
 extern u32 data_0209caa0[];
 
-extern "C" daObjHatenaSwitch_c *QuestionSwitch_Spawn();
+extern "C" daObjHatenaSwitch_c *daObjHatenaSwitch_c_classInit();
 
-/* ROM ordinal 12 -- QuestionSwitch_Spawn, 0x020b56d8, size 0x5c. Natural new
+/* ROM ordinal 12 -- class initializer, 0x020b56d8, size 0x5c. Natural new
  * targets _Znwm instead of the retail actor allocator, so retain the measured
- * base/member construction and vptr sequence. */
-extern "C" daObjHatenaSwitch_c *QuestionSwitch_Spawn()
+ * base/member construction and vptr sequence. Reconstructed spelling from
+ * ROM RTTI plus later EAD lineage; historical alias QuestionSwitch_Spawn. */
+extern "C" daObjHatenaSwitch_c *daObjHatenaSwitch_c_classInit()
 {
     daObjHatenaSwitch_c *actor =
         (daObjHatenaSwitch_c *)_ZN7fBase_cnwEj(
@@ -98,8 +99,10 @@ extern "C" daObjHatenaSwitch_c *QuestionSwitch_Spawn()
     return actor;
 }
 
-extern "C" HatenaSwitchSpawnInfo QuestionSwitch_SpawnInfo = {
-    QuestionSwitch_Spawn,
+/* HATENA_SWITCH is the literal ROM registry ID. The g_profile spelling is a
+ * lineage-supported reconstruction; historical alias QuestionSwitch_SpawnInfo. */
+extern "C" HatenaSwitchSpawnInfo g_profile_HATENA_SWITCH = {
+    daObjHatenaSwitch_c_classInit,
     0x001a,
     0x0126,
     0x00000002,

@@ -625,7 +625,7 @@ _ZN14dScMgCurling_c13OnYoshiTryEatEi kind:function(arm,size=0x7c) addr:0x020e347
 _ZN14dScMgCurling_c6RenderEv kind:function(arm,size=0x3c) addr:0x020e34ec
 _ZN14dScMgCurling_c8BehaviorEv kind:function(arm,size=0x50) addr:0x020e3528
 _ZN14dScMgCurling_c13InitResourcesEv kind:function(arm,size=0x2a8) addr:0x020e3578
-MgShuffleShell_Spawn kind:function(arm,size=0x34) addr:0x020e3820
+dScMgCurling_c_classInit kind:function(arm,size=0x34) addr:0x020e3820
 _ZN15dScMgCurling2_cD1Ev kind:function(arm,size=0x24) addr:0x020e3854
 _ZN15dScMgCurling2_cD0Ev kind:function(arm,size=0x38) addr:0x020e3878
 func_ov006_020e38b0 kind:function(arm,size=0x98) addr:0x020e38b0
@@ -678,7 +678,7 @@ _ZN15dScMgCurling2_c13OnYoshiTryEatEi kind:function(arm,size=0x7c) addr:0x020e67
 _ZN15dScMgCurling2_c6RenderEv kind:function(arm,size=0x4c) addr:0x020e67f0
 _ZN15dScMgCurling2_c8BehaviorEv kind:function(arm,size=0x58) addr:0x020e683c
 _ZN15dScMgCurling2_c13InitResourcesEv kind:function(arm,size=0x360) addr:0x020e6894
-func_ov006_020e6bf4 kind:function(arm,size=0x34) addr:0x020e6bf4
+dScMgCurling2_c_classInit kind:function(arm,size=0x34) addr:0x020e6bf4
 _ZN14dScMgD3DBase_cD1Ev kind:function(arm,size=0x38) addr:0x020e6c28
 _ZN14dScMgD3DBase_cD0Ev kind:function(arm,size=0x4c) addr:0x020e6c60
 _ZN14dScMgD3DBase_c25OnAimedAtWithEggReturnVecEv kind:function(arm,size=0x78) addr:0x020e6cac
@@ -3538,7 +3538,7 @@ data_ov006_0213c1f4 kind:data(any) addr:0x0213c1f4
 data_ov006_0213c1fc kind:data(any) addr:0x0213c1fc
 data_ov006_0213c204 kind:data(any) addr:0x0213c204
 data_ov006_0213c20c kind:data(any) addr:0x0213c20c
-MgShuffleShell_SpawnInfo kind:data(any) addr:0x0213c214 ambiguous
+g_profile_MG_CURLING kind:data(any) addr:0x0213c214 ambiguous
 data_ov006_0213c21c kind:data(any) addr:0x0213c21c
 data_ov006_0213c224 kind:data(any) addr:0x0213c224
 data_ov006_0213c22c kind:data(any) addr:0x0213c22c
@@ -3580,7 +3580,7 @@ data_ov006_0213c414 kind:data(any) addr:0x0213c414
 data_ov006_0213c41c kind:data(any) addr:0x0213c41c
 data_ov006_0213c424 kind:data(any) addr:0x0213c424
 data_ov006_0213c42c kind:data(any) addr:0x0213c42c
-data_ov006_0213c434 kind:data(any) addr:0x0213c434 ambiguous
+g_profile_MG_CURLING_J kind:data(any) addr:0x0213c434 ambiguous
 data_ov006_0213c43c kind:data(any) addr:0x0213c43c
 data_ov006_0213c444 kind:data(any) addr:0x0213c444
 data_ov006_0213c44c kind:data(any) addr:0x0213c44c

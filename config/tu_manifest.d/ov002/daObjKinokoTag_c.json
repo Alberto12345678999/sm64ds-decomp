@@ -142,18 +142,18 @@
       "reason": "Inherited vague-linkage RTTI; romdata_check proves the natural compiler copy and relocations at its canonical arm9 home before isolation."
     },
     {
-      "symbol": "MegaMushroomTag_SpawnInfo",
+      "symbol": "g_profile_KINOKO_TAG",
       "disposition": "deadstrip-data",
       "canonical_module": "ov002",
       "canonical_address": "0x02108cb4",
-      "reason": "The first typed actor descriptor is naturally defined beside its factory. romdata_check proves the factory relocation and every descriptor word before isolation."
+      "reason": "The KINOKO_TAG profile is naturally defined beside its factory. Its reconstructed global spelling comes from the literal ROM registry ID plus later EAD lineage; romdata_check proves the factory relocation and every descriptor word before isolation."
     },
     {
-      "symbol": "MegaMushroomCreateTag_SpawnInfo",
+      "symbol": "g_profile_KINOKO_CREATE_TAG",
       "disposition": "deadstrip-data",
       "canonical_module": "ov002",
       "canonical_address": "0x02108cd0",
-      "reason": "The second typed actor descriptor retains its evidence-bounded ABI name. romdata_check proves its daObjKinokoTag_c_Spawn relocation and every descriptor word before isolation."
+      "reason": "The KINOKO_CREATE_TAG profile is naturally defined beside its factory. Its reconstructed global spelling comes from the literal ROM registry ID plus later EAD lineage; romdata_check proves its daObjKinokoTag_c_Spawn relocation and every descriptor word before isolation."
     },
     {
       "symbol": "_ZTV16daObjKinokoTag_c",
@@ -166,7 +166,8 @@
   "notes": [
     "Genuine class form: the real header's inline destructor and this TU's out-of-line InitResources key function make mwccarm own retail D1/D0 plus the complete daObjKinokoTag_c RTTI/vtable group; no hand-mangled member definition or forcing object remains.",
     "SpawnMegaMushroom and TrySpawnMegaMushroom are readable inferred private spellings. Their class ownership, call graph, bodies, relocations, and codegen are proven; their exact original English spellings are not.",
-    "Both factories retain narrow typed C ABI boundaries and the measured fBase allocator, dActor base construction, dCcAc member construction, and vptr sequence because natural new targets the wrong global allocator relocation.",
+    "Both factories retain narrow typed C ABI boundaries and the measured fBase allocator, dActor base construction, dCcAc member construction, and vptr sequence because natural new targets the wrong global allocator relocation. KINOKO_TAG and KINOKO_CREATE_TAG both construct daObjKinokoTag_c, so one global daObjKinokoTag_c_classInit spelling would collide; the exact original factory distinction is unresolved and neither factory is renamed in this wave.",
+    "g_profile_KINOKO_TAG and g_profile_KINOKO_CREATE_TAG are reconstructed source-style names: SM64DS proves the literal registry IDs, descriptor/factory relationships, and class identity; later EAD lineage supplies the global spelling prior. Exact original SM64DS spellings are not preserved. Historical aliases were MegaMushroomTag_SpawnInfo and MegaMushroomCreateTag_SpawnInfo.",
     "The external mushroom backlink at offset 0x32c remains a measured seam because no trustworthy real header for that external actor exists on this base.",
     "The resource SharedFilePtr at 0x0210da30 and __sinit_ov002_02100560 are external to this class TU and are not claimed."
   ],
@@ -210,13 +211,11 @@
         "_ZTI16daObjKinokoTag_c",
         "_ZTS16daObjKinokoTag_c",
         "_ZTI8dActor_c",
-        "MegaMushroomTag_SpawnInfo",
-        "MegaMushroomCreateTag_SpawnInfo",
+        "g_profile_KINOKO_TAG",
+        "g_profile_KINOKO_CREATE_TAG",
         "_ZTV16daObjKinokoTag_c"
       ],
       "dataExternalized": [
-        "MegaMushroomCreateTag_SpawnInfo",
-        "MegaMushroomTag_SpawnInfo",
         "_ZTI16daObjKinokoTag_c",
         "_ZTI7dBase_c",
         "_ZTI7fBase_c",
@@ -225,7 +224,9 @@
         "_ZTS7dBase_c",
         "_ZTS7fBase_c",
         "_ZTS8dActor_c",
-        "_ZTV16daObjKinokoTag_c"
+        "_ZTV16daObjKinokoTag_c",
+        "g_profile_KINOKO_CREATE_TAG",
+        "g_profile_KINOKO_TAG"
       ]
     },
     "criteria": {

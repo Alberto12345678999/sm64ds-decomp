@@ -4,7 +4,7 @@
  * mwccarm emits ordinary functions in reverse source order, so the eight
  * definitions below intentionally run from the highest retail address back
  * toward the compiler-owned destructor group. The adjacent C ABI factory is
- * independently enrolled in src/TTC_MovingBar_Spawn.cpp; adjacency alone is
+ * independently enrolled in src/daObjCtMecha05_c_classInit.cpp; adjacency alone is
  * not evidence that it belonged to this class TU.
  *
  * Superseded one-function sources (ROM address order):
@@ -22,16 +22,18 @@
 #include "dBgCh_Gnd.h"
 #include "SharedFilePtr.h"
 
-/* Actor-table descriptor at ov065:0x0211d290. */
+/* Actor/process profile descriptor at ov065:0x0211d290. Field roles are
+ * recovered from fBase_c/dActor_c consumers; exact original member spellings
+ * are not preserved. */
 struct CtMecha05SpawnInfo {
-    daObjCtMecha05_c *(*spawn)();
-    s16 behaviorPriority;
-    s16 renderPriority;
-    u32 flags;
-    Fix12i rangeOffsetY;
-    Fix12i range;
-    Fix12i drawDistance;
-    u32 unk_18;
+    daObjCtMecha05_c *(*classInit)();
+    s16 profileIDAndExecuteOrder;
+    s16 drawOrder;
+    u32 actorFlags;
+    Fix12i clipOffsetY;
+    Fix12i clipRadius;
+    Fix12i clipDistance;
+    Fix12i farDistance;
 };
 
 typedef char CtMecha05SpawnInfo_size_must_be_0x1c[
@@ -74,12 +76,14 @@ extern s8 data_ov065_0211d26c[];
 extern CLPS_Block data_ov035_02112258;
 }
 
-extern "C" daObjCtMecha05_c *TTC_MovingBar_Spawn();
+extern "C" daObjCtMecha05_c *daObjCtMecha05_c_classInit();
 
 /* This descriptor belongs to the class data group even though the adjacent
  * factory is kept as a separate, independently enrolled source. */
-extern "C" CtMecha05SpawnInfo TTC_MovingBar_SpawnInfo = {
-    TTC_MovingBar_Spawn,
+/* CT_MECHA05 is the literal ROM registry ID. The g_profile spelling is a
+ * lineage-supported reconstruction; historical alias TTC_MovingBar_SpawnInfo. */
+extern "C" CtMecha05SpawnInfo g_profile_CT_MECHA05 = {
+    daObjCtMecha05_c_classInit,
     0x0071,
     0x00ec,
     0x00000002,

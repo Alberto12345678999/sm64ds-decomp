@@ -424,7 +424,7 @@ src/actors/daObjCtMecha05_c.cpp:
     complete
     .text start:0x0211ab60 end:0x0211b328
 
-src/TTC_MovingBar_Spawn.cpp:
+src/daObjCtMecha05_c_classInit.cpp:
     complete
     .text start:0x0211b328 end:0x0211b360
 

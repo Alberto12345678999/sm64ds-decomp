@@ -125,7 +125,7 @@ _ZN15daObjPathLift_c16CleanupResourcesEv kind:function(arm,size=0x50) addr:0x021
 _ZN15daObjPathLift_c6RenderEv kind:function(arm,size=0x50) addr:0x021470a4
 _ZN15daObjPathLift_c8BehaviorEv kind:function(arm,size=0xec) addr:0x021470f4
 _ZN15daObjPathLift_c13InitResourcesEv kind:function(arm,size=0x148) addr:0x021471e0
-PathLift_Spawn kind:function(arm,size=0x7c) addr:0x02147328
+daObjPathLift_c_classInit kind:function(arm,size=0x7c) addr:0x02147328
 data_ov100_021473a4 kind:data(any) addr:0x021473a4
 data_ov100_021473b0 kind:data(any) addr:0x021473b0
 __sinit_ov100_021473bc kind:function(arm,size=0x12c) addr:0x021473bc
@@ -221,7 +221,7 @@ _ZTV4Fish kind:data(any) addr:0x021484bc
 _ZTV8daFish_c kind:data(any) addr:0x021484bc
 _ZTI15daObjPathLift_c kind:data(any) addr:0x02148538
 _ZTS15daObjPathLift_c kind:data(any) addr:0x02148544
-PathLift_SpawnInfo kind:data(any) addr:0x02148558
+g_profile_PATH_LIFT kind:data(any) addr:0x02148558
 data_ov100_0214857c kind:data(any) addr:0x0214857c
 _ZTV15daObjPathLift_c kind:data(any) addr:0x0214857c
 data_ov100_02148600 kind:bss addr:0x02148600

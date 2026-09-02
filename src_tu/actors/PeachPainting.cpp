@@ -23,7 +23,7 @@
  *   [4] 0x02111ee8  src/_ZN13PeachPainting6RenderEv.cpp
  *   [5] 0x02111f28  src/_ZN13PeachPainting8BehaviorEv.cpp
  *   [6] 0x02111fc0  src/_ZN13PeachPainting13InitResourcesEv.cpp
- *   [7] 0x02112004  src/PeachPainting_Spawn.c
+ *   [7] 0x02112004  src/daObjC1Peach_c_classInit.c
  */
 
 /* Includes: union of the legacy files', first-seen in ROM-ascending
@@ -94,14 +94,15 @@ extern void func_ov010_02111e84(void*);
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 7 -- PeachPainting_Spawn, 0x02112004, size 0x38 */
+/* ROM ordinal 7 -- daObjC1Peach_c_classInit, 0x02112004, size 0x38 */
 /* -------------------------------------------------------------------------- */
-// @symbol PeachPainting_Spawn
+// @symbol daObjC1Peach_c_classInit
 /* recovered: vtable identified, globals resolved, declarations from a shared header */
 /* recovered: vtable identified, globals resolved */
 /* resolved: VT0 = _ZTV13PeachPainting */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-int *PeachPainting_Spawn(void)
+/* Reconstructed source-style name. Historical alias: PeachPainting_Spawn. */
+int *daObjC1Peach_c_classInit(void)
 {
     int *p = (int *)_ZN7fBase_cnwEj(296);
     if (p) {

@@ -25,8 +25,8 @@
  *
  * The recovered original TU is ov002 [0x020b46a0, 0x020b4a70): both factory
  * functions belong to it. Its data contribution is likewise contiguous:
- * class RTTI/name, MegaMushroomTag SpawnInfo, MegaMushroomCreateTag
- * SpawnInfo, and the complete 31-slot vtable, ending at the next class RTTI. */
+ * class RTTI/name, the KINOKO_TAG and KINOKO_CREATE_TAG profiles, and the
+ * complete 31-slot vtable, ending at the next class RTTI. */
 struct daObjKinokoTag_c : dActor_c {
     u8       pad_0d0[0x4];
     dCcAc_c  mMovingCylinderClsn; /* 0x0d4 */
@@ -68,18 +68,19 @@ struct KinokoPositionWords {
 typedef char KinokoPositionWords_size_must_be_0xc[
     sizeof(KinokoPositionWords) == 0xc ? 1 : -1];
 
-/* Typed owner for the two 0x1c actor descriptors at ov002:0x02108cb4 and
- * 0x02108cd0. Their English global spellings remain evidence-bounded ABI
- * aliases; the structure and factory relationships are ROM-proven. */
+/* Typed owner for the two 0x1c actor/process profile descriptors at
+ * ov002:0x02108cb4 and 0x02108cd0. Field roles are recovered from
+ * fBase_c/dActor_c consumers; exact original member spellings are not
+ * preserved. */
 struct KinokoTagSpawnInfo {
-    daObjKinokoTag_c *(*spawn)();
-    s16 behaviorPriority;
-    s16 renderPriority;
-    u32 flags;
-    Fix12i rangeOffsetY;
-    Fix12i range;
-    Fix12i drawDistance;
-    u32 unk_18;
+    daObjKinokoTag_c *(*classInit)();
+    s16 profileIDAndExecuteOrder;
+    s16 drawOrder;
+    u32 actorFlags;
+    Fix12i clipOffsetY;
+    Fix12i clipRadius;
+    Fix12i clipDistance;
+    Fix12i farDistance;
 };
 
 typedef char KinokoTagSpawnInfo_size_must_be_0x1c[
