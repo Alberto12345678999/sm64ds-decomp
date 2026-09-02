@@ -46,7 +46,7 @@
  * of this TU. `#pragma long_calls` is POSITIONAL in mwccarm 2004/b56 and is
  * carried verbatim before its own member below, bracketed with `off` so it
  * cannot leak into later members (dropping it silently costs the pooled
- * cross-overlay tail-call -- a byte diff; see ShutterBob in ov014).
+ * cross-overlay tail-call -- a byte diff; see daObjBSwdoor_c in ov014).
  * Any OTHER pragma is FILE-GLOBAL last-wins (opt_propagation,
  * optimize_for_size). Two legacy files carried one:
  *   func_ov006_020f95f0: #pragma opt_propagation off   [NOT carried]

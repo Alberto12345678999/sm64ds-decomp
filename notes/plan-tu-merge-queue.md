@@ -55,7 +55,7 @@ it lose it. Both directions are live. Affected Tier 1:
 
 ```
 ov029/ArrowLift(1/9)  ov029/CageLift(1/9)  ov029/daObjWc_Obj07_c(1/5)
-ov014/ShutterBob(1/6) ov030/RollingLogTtm(3/6) ov063/FallBlockBbh(2/5)
+ov014/daObjBSwdoor_c(1/6) ov030/RollingLogTtm(3/6) ov063/FallBlockBbh(2/5)
 ov015/FallBlockWf(2/5) ov015/RotatingPlatformWf(1/5) ov022/RotatingPlatformLll(1/5)
 ov036/RotatingPlatformRr(1/5) ov064/TiltingPlatformLll(2/5) ov016/FloatOnWaterPlatformJrb(1/4)
 ```
@@ -262,7 +262,7 @@ ov064 0x21174a0  n=8  L=263  BigBully         NORM1 pcov=2
 
 **B12 — R3, `#pragma long_calls on` · 10 TUs / 59 files / net −49 / 1,265 lines**
 ```
-ov014 0x21111a0  n=6  L=133  ShutterBob               1/6 members
+ov014 0x21111a0  n=6  L=133  daObjBSwdoor_c               1/6 members
 ov015 0x2112bd0  n=5  L=105  RotatingPlatformWf       1/5
 ov015 0x2112cf4  n=5  L=80   FallBlockWf              2/5  pcov=3
 ov016 0x2112ef4  n=4  L=82   FloatOnWaterPlatformJrb  1/4
