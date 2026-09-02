@@ -296,35 +296,35 @@ src/actors/d_a_cam_tag.cpp:
     complete
     .text start:0x020b0748 end:0x020b07f8
 
-src/_ZN11VirtualDoorD1Ev.cpp:
+src/_ZN10daChRoom_cD1Ev.cpp:
     complete
     .text start:0x020b07f8 end:0x020b081c
 
-src/_ZN11VirtualDoorD0Ev.cpp:
+src/_ZN10daChRoom_cD0Ev.cpp:
     complete
     .text start:0x020b081c end:0x020b0854
 
-src/_ZN11VirtualDoor16CleanupResourcesEv.cpp:
+src/_ZN10daChRoom_c16CleanupResourcesEv.cpp:
     complete
     .text start:0x020b0854 end:0x020b085c
 
-src/_ZN11VirtualDoor16OnPendingDestroyEv.cpp:
+src/_ZN10daChRoom_c16OnPendingDestroyEv.cpp:
     complete
     .text start:0x020b085c end:0x020b0860
 
-src/_ZN11VirtualDoor6RenderEv.cpp:
+src/_ZN10daChRoom_c6RenderEv.cpp:
     complete
     .text start:0x020b0860 end:0x020b0868
 
-src/_ZN11VirtualDoor8BehaviorEv.cpp:
+src/_ZN10daChRoom_c8BehaviorEv.cpp:
     complete
     .text start:0x020b0868 end:0x020b0938
 
-src/_ZN11VirtualDoor13InitResourcesEv.cpp:
+src/_ZN10daChRoom_c13InitResourcesEv.cpp:
     complete
     .text start:0x020b0938 end:0x020b0980
 
-src/VirtualDoor_Spawn.c:
+src/daChRoom_c_Spawn.c:
     complete
     .text start:0x020b0980 end:0x020b09b0
 

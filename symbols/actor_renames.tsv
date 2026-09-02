@@ -31,7 +31,7 @@ ov002	0x020b085c	func_ov002_020b085c	_ZN10daCamTag_c16OnPendingDestroyEv	vtable 
 ov002	0x020b0860	func_ov002_020b0860	_ZN10daCamTag_c6RenderEv	vtable slot 9
 ov002	0x020b0868	func_ov002_020b0868	_ZN10daCamTag_c8BehaviorEv	vtable slot 6
 ov002	0x020b0938	func_ov002_020b0938	_ZN10daCamTag_c13InitResourcesEv	vtable slot 0
-ov002	0x020b0980	func_ov002_020b0980	VirtualDoor_Spawn	spawnfunc
+ov002	0x020b0980	func_ov002_020b0980	daChRoom_c_Spawn	spawnfunc
 ov002	0x020b09b0	func_ov002_020b09b0	_ZN11VirtualDoorD1Ev	vtable slot 16
 ov002	0x020b09d4	func_ov002_020b09d4	_ZN11VirtualDoorD0Ev	vtable slot 17
 ov002	0x020b0a70	func_ov002_020b0a70	_ZN11VirtualDoor16CleanupResourcesEv	vtable slot 3
@@ -273,7 +273,7 @@ ov002	0x0210845c	data_ov002_0210845c	InvisiblePole_SpawnInfo	spawninfo
 ov002	0x0210845c	InvisiblePole_SpawnInfo	g_profile_BAR	reconstructed profile global; literal ROM ID BAR+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov002	0x02108480	data_ov002_02108480	_ZTV7daBar_c	vtable alloc=0x108
 ov002	0x02108518	data_ov002_02108518	daCamTag_c_SpawnInfo	spawninfo
-ov002	0x021085d4	data_ov002_021085d4	VirtualDoor_SpawnInfo	spawninfo
+ov002	0x021085d4	data_ov002_021085d4	daChRoom_c_SpawnInfo	spawninfo
 ov002	0x021085f8	data_ov002_021085f8	_ZTV10daCamTag_c	vtable alloc=0xd4
 ov002	0x02108690	data_ov002_02108690	Exit_SpawnInfo	spawninfo
 ov002	0x021086b4	data_ov002_021086b4	_ZTV11VirtualDoor	vtable alloc=0xd4

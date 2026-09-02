@@ -5164,19 +5164,19 @@
    "start": "0x20b07f8",
    "end": "0x20b09b0",
    "classes": [
-    "VirtualDoor"
+    "daChRoom_c"
    ],
    "n_functions_map": 8,
    "n_files": 8,
    "files": [
-    "src/_ZN11VirtualDoorD1Ev.cpp",
-    "src/_ZN11VirtualDoorD0Ev.cpp",
-    "src/_ZN11VirtualDoor16CleanupResourcesEv.cpp",
-    "src/_ZN11VirtualDoor16OnPendingDestroyEv.cpp",
-    "src/_ZN11VirtualDoor6RenderEv.cpp",
-    "src/_ZN11VirtualDoor8BehaviorEv.cpp",
-    "src/_ZN11VirtualDoor13InitResourcesEv.cpp",
-    "src/VirtualDoor_Spawn.c"
+    "src/_ZN10daChRoom_cD1Ev.cpp",
+    "src/_ZN10daChRoom_cD0Ev.cpp",
+    "src/_ZN10daChRoom_c16CleanupResourcesEv.cpp",
+    "src/_ZN10daChRoom_c16OnPendingDestroyEv.cpp",
+    "src/_ZN10daChRoom_c6RenderEv.cpp",
+    "src/_ZN10daChRoom_c8BehaviorEv.cpp",
+    "src/_ZN10daChRoom_c13InitResourcesEv.cpp",
+    "src/daChRoom_c_Spawn.c"
    ],
    "ext_mix": {
     ".cpp": 7,

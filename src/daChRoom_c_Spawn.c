@@ -1,13 +1,13 @@
-// @symbol VirtualDoor_Spawn
+// @symbol daChRoom_c_Spawn
 /* recovered: globals resolved, declarations from a shared header */
 #include "decl_Actor.h"
 #include "decl_ActorBase.h"
 #include "decl_common.h"
 /* recovered: globals resolved */
-/* resolved: VT = _ZTV11VirtualDoor */
-int *VirtualDoor_Spawn(void)
+/* resolved: VT = _ZTV10daChRoom_c */
+int *daChRoom_c_Spawn(void)
 {
     int *p = (int *)_ZN7fBase_cnwEj(212);
-    if (p) { _ZN8dActor_cC2Ev(p); p[0] = (int)_ZTV11VirtualDoor; }
+    if (p) { _ZN8dActor_cC2Ev(p); p[0] = (int)_ZTV10daChRoom_c; }
     return p;
 }

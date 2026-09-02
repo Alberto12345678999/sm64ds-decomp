@@ -1,10 +1,10 @@
 //cpp
-// @symbol _ZN11VirtualDoor13InitResourcesEv
+// @symbol _ZN10daChRoom_c13InitResourcesEv
 /* recovered: named members + shared header, real C++ method */
-#include "VirtualDoor.h"
+#include "daChRoom_c.h"
 
 
-int VirtualDoor::InitResources()
+int daChRoom_c::InitResources()
 {
   mScaleX=(((param1&0xf)+1)*0x64000)>>1;
   mScaleY=(((param1>>4&0xf)+1)*0x64000);
