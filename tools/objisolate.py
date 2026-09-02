@@ -686,7 +686,7 @@ def derive(raw, keep_symbol):
     return _apply(raw, p, keep_symbol), p
 
 
-def deadstrip_plan(raw, symbol_names, expect=None):
+def deadstrip_plan(raw, symbol_names, expect=None, duplicates=None):
     """Plan removal of exact, explicitly named compiler-only output sections.
 
     This is intentionally narrower than a linker dead-strip pass.  TU reconstruction
@@ -702,7 +702,15 @@ def deadstrip_plan(raw, symbol_names, expect=None):
       *data object* may be referenced by name -- becoming an import is the point, and
       it is the only way a destructor can go on storing the vptr of a vtable the ROM
       owns -- but only for ``_ZTV``/``_ZTI``/``_ZTS``, whose relocation shapes are
-      surveyed, and never through an unnamed section symbol.
+      surveyed, and never through an unnamed section symbol.  A requested *function*
+      named in ``expect`` or ``duplicates`` is the one exception, and for the same
+      reason: it HAS a configured ROM home, so a surviving reference is not evidence
+      that the body is live compiler output -- the cartridge makes that same
+      reference, to that same home.  Externalising the definition turns the reference
+      into an import the owning source resolves.  Name neither and the rule stands
+      unchanged: calling a homeless symbol is proof it is not dead compiler output.
+      An unnamed section symbol stays refused either way, because an anonymous
+      reference cannot be redirected to a home by name.
 
     ``expect`` extends this to the *duplicate* case: a vague-linkage body the compiler
     re-emits in every TU that needs it, while the retail image keeps exactly one copy
@@ -771,6 +779,25 @@ def deadstrip_plan(raw, symbol_names, expect=None):
 
     funcs = {n for n in wanted if defined[n]["st_info"]["type"] == "STT_FUNC"}
     objects = wanted - funcs
+    # Functions licensed as a DUPLICATE of a configured ROM home.  A surviving
+    # reference to one of those is expected rather than disqualifying, because the
+    # cartridge's code makes the same reference to the same home, and the reference
+    # resolves there after the link.
+    #
+    # Two callers reach this.  `expect` carries the cartridge's bytes and is checked
+    # below, so naming a symbol there both licenses the reference and demands the
+    # body match (as far as an unlinked object can: see the masking note there, and
+    # `rombuild._duplicate_body_reasons` for the linked comparison that closes it).
+    # `duplicates` licenses the reference alone, for the scratch link path in
+    # `tubuild.apply_compiler_only_policy`, which has no cartridge bytes to hand and
+    # leaves the body proof to the production build.  Neither may name anything but a
+    # requested function.
+    duplicate_names = {str(n) for n in (duplicates or ())}
+    stray = sorted(duplicate_names - funcs)
+    if stray:
+        return {"error": f"duplicate-licensed name(s) that are not requested "
+                         f"compiler-only functions: {stray}"}
+    duplicates = duplicate_names | {n for n in (expect or ()) if n in funcs}
 
     # A discarded section may have relocations of its own; those disappear with it.
     # Only references from SURVIVING content are load-bearing and therefore blockers.
@@ -794,7 +821,7 @@ def deadstrip_plan(raw, symbol_names, expect=None):
         executable = bool(source.header["sh_flags"] & SHF_EXECINSTR)
         for r in rel.iter_relocations():
             target = symtab.get_symbol(r["r_info_sym"])
-            names_target = target.name in funcs
+            names_target = target.name in funcs and target.name not in duplicates
             section_target = (not target.name and target["st_shndx"] in drop_content)
             if names_target or section_target:
                 label = target.name or f"section[{target['st_shndx']}]"
@@ -886,14 +913,14 @@ def deadstrip_plan(raw, symbol_names, expect=None):
             "error": None}
 
 
-def derive_deadstrip(raw, symbol_names, expect=None):
+def derive_deadstrip(raw, symbol_names, expect=None, duplicates=None):
     """Return an object with exact declared compiler-only sections discarded.
 
     ``None`` is returned instead of bytes when :func:`deadstrip_plan` refuses.  The
     input is never mutated.  This exists for scratch TU links; production one-function
     isolation continues to use :func:`derive` unchanged.
     """
-    p = deadstrip_plan(raw, symbol_names, expect)
+    p = deadstrip_plan(raw, symbol_names, expect, duplicates)
     if p.get("error"):
         return None, p
     return _apply(raw, p, None), p

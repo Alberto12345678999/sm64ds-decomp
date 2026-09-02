@@ -132,11 +132,21 @@ def _current_or_bootstrapped_intact_baseline(entries, jobs):
             "linkcheck", "--baseline", "--module", module,
             "-j", str(jobs), "--clean",
         ]
-        result = subprocess.run(command, check=False)
+        # Capture rather than inherit.  A remote gate reports this exception and
+        # nothing else, so an exit code on its own says only that the control could
+        # not be rebuilt -- not which of the eight phases refused, which is the one
+        # fact a reader needs.  The output is echoed as it is summarised so an
+        # interactive run still sees the whole log.
+        result = subprocess.run(command, check=False, text=True,
+                                stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        print(result.stdout, end="")
         if result.returncode:
+            tail = [line for line in (result.stdout or "").splitlines() if line.strip()]
+            detail = " | ".join(tail[-12:]) or "the command produced no output"
             raise ProductionTuError(
                 "could not bootstrap strict stock control: "
-                f"{first_error}; baseline command exited {result.returncode}")
+                f"{first_error}; baseline command exited {result.returncode}; "
+                f"last output: {detail}")
         try:
             return _strict_baseline(entries)
         except ProductionTuError as fresh_error:
