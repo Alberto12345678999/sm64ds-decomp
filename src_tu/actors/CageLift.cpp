@@ -65,8 +65,6 @@ extern "C" void func_ov029_02111e40(char *a, char *b){ unsigned char ok = *(unsi
 #include "CageLift.h"
 /* recovered: renamed to Class_Method, RTTI class fields named, declarations from a shared header */
 #include "decl_common.h"
-/* recovered: renamed to Class_Method, RTTI class fields named */
-#include "daObjWc_Obj05_c.h"
 // recovered name: daObjWc_Obj05_c_InitResources
 /* recovered: renamed to Class_Method */
 /* daObjWc_Obj05_c::InitResources - recovered from vtable slot identity */
@@ -83,24 +81,23 @@ extern void _ZN4dBgW22UpdatePosWithTransformERS_P8dActor_cR5dBgPiR7Vector3P10Vec
 
 s32 CageLift::InitResources() {
     char* c = (char*)this;
-    struct daObjWc_Obj05_c *self = (struct daObjWc_Obj05_c *)(void *)c;
     void* f = _ZN5Model8LoadFileER13SharedFilePtr(data_ov029_0211428c);
     _ZN9ModelBase7SetFileEP8BMD_Fileii(c + 0xd4, f, 1, -1);
     _ZN10dBgActor_c21UpdateModelPosAndRotYEv(c);
     _ZN10dBgActor_c19UpdateClsnPosAndRotEv(c);
     void* mc = _ZN7dBgW_Kc8LoadFileER13SharedFilePtr(data_ov029_02114284);
     _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-        c + 0x124, mc, c + 0x2ec, 0x1000, self->mAngleY, data_ov029_0211306c);
+        c + 0x124, mc, c + 0x2ec, 0x1000, this->mAngleY, data_ov029_0211306c);
     func_020393d4(c + 0x124, (void*)&_ZN4dBgW22UpdatePosWithTransformERS_P8dActor_cR5dBgPiR7Vector3P10Vector3_16S8_);
     func_020393c4(c + 0x124, (void*)&func_ov029_02111e60);
-    self->unk_32b = 0;
-    self->unk_32a = self->unk_32b;
-    self->unk_328 = 0;
+    this->unk_32b = 0;
+    this->unk_32a = this->unk_32b;
+    this->unk_328 = 0;
     if (*(int*)(c + 8) & 1)
-        self->unk_32c = 3;
+        this->unk_32c = 3;
     else
-        self->unk_32c = 0;
-    self->unk_320 = self->mPosY;
+        this->unk_32c = 0;
+    this->unk_320 = this->mPosY;
     return 1;
 }
 }
@@ -111,8 +108,6 @@ s32 CageLift::InitResources() {
 #include "types.h"
 // @symbol _ZN8CageLift8BehaviorEv
 #include "CageLift.h"
-/* recovered: renamed to Class_Method, RTTI class fields named */
-#include "daObjWc_Obj05_c.h"
 // recovered name: daObjWc_Obj05_c_Behavior
 /* recovered: renamed to Class_Method */
 /* daObjWc_Obj05_c::Behavior - recovered from vtable slot identity */
@@ -127,7 +122,6 @@ extern void _ZN10dBgW_KcMbg9TransformERK9Matrix4x3s(void* self, void* mat, s16 s
 
 s32 CageLift::Behavior() {
     u8* thiz = (u8*)this;
-    struct daObjWc_Obj05_c *self = (struct daObjWc_Obj05_c *)(void *)thiz;
     func_020393a4((int*)(thiz + 0x124), 0x250000);
 
     switch (thiz[0x32c]) {
@@ -143,12 +137,12 @@ s32 CageLift::Behavior() {
     case 1: {
         int* p60 = (int*)(((int)thiz + 0x60));
         *p60 = *p60 - 0x14000;
-        self->unk_324 = _ZN5Sound8PlayLongEjjjRK7Vector3s(
+        this->unk_324 = _ZN5Sound8PlayLongEjjjRK7Vector3s(
             *(unsigned*)(thiz + 0x324), 3, 0x8d, thiz + 0x74, 0);
         {
-            int v = self->unk_320 + (int)0xff5d8000;
-            if (self->mPosY <= v) {
-                self->mPosY = v;
+            int v = this->unk_320 + (int)0xff5d8000;
+            if (this->mPosY <= v) {
+                this->mPosY = v;
                 {
                     u8* p = (u8*)(((int)thiz + 0x32c));
                     *p = *p + 1;
@@ -166,13 +160,13 @@ s32 CageLift::Behavior() {
         if (*(u16*)((u8*)(((unsigned)thiz + 0x300)) + 0x28) >= 0x6e) {
             int snd = _ZN5Sound8PlayLongEjjjRK7Vector3s(
                 *(unsigned*)(thiz + 0x324), 3, 0x8d, thiz + 0x74, 0);
-            self->unk_324 = snd;
+            this->unk_324 = snd;
             {
                 int* p60 = (int*)(((int)thiz + 0x60));
                 *p60 = *p60 + 0xa000;
             }
-            if (self->mPosY >= self->unk_320) {
-                self->mPosY = self->unk_320;
+            if (this->mPosY >= this->unk_320) {
+                this->mPosY = this->unk_320;
                 thiz[0x32c] = 0;
                 {
                     /* Different launder spelling so CSE does not reuse case-2 head base */
@@ -195,7 +189,7 @@ s32 CageLift::Behavior() {
         _ZN10dBgActor_c19UpdateClsnPosAndRotEv(thiz);
     }
     _ZN10dBgW_KcMbg9TransformERK9Matrix4x3s(
-        thiz + 0x124, thiz + 0x2ec, self->mAngleY);
+        thiz + 0x124, thiz + 0x2ec, this->mAngleY);
     thiz[0x32a] = 0;
     return 1;
 }

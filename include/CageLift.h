@@ -18,7 +18,20 @@
  * is deliberately not redeclared here.
  */
 struct CageLift : dBgActor_c {
-    u8  pad_320[0x10];
+    /* 0x320..0x32c, folded in from the flat include/daObjWc_Obj05_c.h that used
+     * to declare this same class a second time, un-inherited, and be cast to
+     * from `this` inside InitResources and Behavior. Both spellings were
+     * compiled into the ROM at once. The names are that header's own; they are
+     * placeholders and renaming them cannot change codegen. Its `mPosY` (0x060)
+     * and `mAngleY` (0x08e) are NOT repeated here -- they are dActor_c's own
+     * fields at those offsets, reached by inheritance. */
+    s32 unk_320;                    /* 0x320 */
+    s32 unk_324;                    /* 0x324 -- Sound::PlayLong handle */
+    s16 unk_328;                    /* 0x328 */
+    u8  unk_32a;                    /* 0x32a */
+    u8  unk_32b;                    /* 0x32b */
+    u8  unk_32c;                    /* 0x32c -- state selector */
+    u8  pad_32d[0x3];
 
     virtual ~CageLift();            /* slots 16 (D1), 17 (D0) */
 
