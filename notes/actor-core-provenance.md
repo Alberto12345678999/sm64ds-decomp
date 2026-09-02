@@ -137,7 +137,7 @@ classes `fBase_c`'s copy changes are `fBase_c` itself and `dBase_c` -- the two
 whose D0 the ROM shows inlining it. `dEnemyBase_c` carries its own copy for the
 same reason: it is a flattened struct that does not derive from `dActor_c` in
 these headers. The two `src/` files that declare a local `struct dActor_c : fBase_c`
-(`EndKuppaScript.cpp`, `func_ov002_020b7e1c.cpp`) use their own local shadow
+(`EndKuppaScript.cpp`, [func_ov002_020b7e1c.cpp](../src/func_ov002_020b7e1c.cpp)) use their own local shadow
 `fBase_c`, not this one, so they are out of scope too.
 
 No layout effect: an inline non-virtual member adds no field and no vtable slot,
@@ -218,14 +218,14 @@ mwcc allocates registers differently for `int` vs `void` even when r0 is neither
 read nor set -- measured by building both, not assumed.
 
 * slot 20 `Virtual50` -- still `int`; untested.
-* slot 21 `OnGroundPounded` -- `Stump::OnGroundPounded` (ov091 `0x02133648`)
+* slot 21 `OnGroundPounded` -- `Stump::OnGroundPounded` ([ov091](../config/arm9/overlays/ov091/symbols.txt) `0x02133648`)
   compares two class fields and returns early on either. See `include/Stump.h`.
   `BigBrickBlock`'s and `QuestionBlock`'s overrides happened not to trigger the
   difference under `int` and were re-verified under `void`, so the correction is
   free there.
-* slot 24 `OnKicked` -- `BigBrickBlock::OnKicked` (ov002 `0x020b36dc`) has two
+* slot 24 `OnKicked` -- `BigBrickBlock::OnKicked` ([ov002](../config/arm9/overlays/ov002/symbols.txt) `0x020b36dc`) has two
   locals and two early returns. See `include/BigBrickBlock.h`.
-* slot 27 `OnHitByMegaChar` -- `Stump::OnHitByMegaChar` (ov091 `0x021335d4`):
+* slot 27 `OnHitByMegaChar` -- `Stump::OnHitByMegaChar` ([ov091](../config/arm9/overlays/ov091/symbols.txt) `0x021335d4`):
   four early-return field checks, 6-word register mismatch under `int`, exact
   match under `void`. See `include/Stump.h`. The two already-landed overrides,
   `dScMgSlot1_c`'s and `daObjMaruta_c`'s, have no locals or early returns, so the

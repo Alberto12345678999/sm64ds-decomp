@@ -6,15 +6,15 @@
 #include "WDW_Water.h"
 #include "SharedFilePtr.h"
 #include "dBgW.h"
-extern int RotatingPlatformWdw_ClsnFile[];
-extern int RotatingPlatformWdw_ModelFile[];
+extern int daObjWc_Obj07_c_ClsnFile[];
+extern int daObjWc_Obj07_c_ModelFile[];
 
 int WDW_Water::CleanupResources()
 {
     if (((dBgW *)((char *)&(*(u8 *)&mMeshCollider)))->IsEnabled()) {
         ((dBgW *)((char *)&(*(u8 *)&mMeshCollider)))->Disable();
     }
-    ((SharedFilePtr *)(RotatingPlatformWdw_ModelFile))->Release();
-    ((SharedFilePtr *)(RotatingPlatformWdw_ClsnFile))->Release();
+    ((SharedFilePtr *)(daObjWc_Obj07_c_ModelFile))->Release();
+    ((SharedFilePtr *)(daObjWc_Obj07_c_ClsnFile))->Release();
     return 1;
 }

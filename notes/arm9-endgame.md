@@ -271,14 +271,14 @@ symbol, so each pair is a duplicate definition and each also double-counts in an
 | symbol | .c | .cpp | action |
 |---|---|---|---|
 | `_ZN7Message30DisplayCourseNameForStarSelectEj` | no | MATCH | delete `.c` |
-| `func_ov070_0211f6e0` | MATCH | no | delete `.cpp` |
+| [func_ov070_0211f6e0](../config/arm9/overlays/ov070/symbols.txt) | MATCH | no | delete `.cpp` |
 | `_ZN15TtcRotatingGear8BehaviorEv` | MATCH | MATCH | pick one |
 | `_ZN5Stage7PS_InitEv` | MATCH | MATCH | pick one |
-| `func_ov006_020f46ec` | MATCH | MATCH | pick one |
-| `func_ov065_02116364` | MATCH | MATCH | pick one |
-| `func_ov075_02116f40` | MATCH | MATCH | pick one |
-| `func_ov084_021298d0` | MATCH | MATCH | pick one |
-| `func_ov084_0212d564` | MATCH | MATCH | pick one |
+| [func_ov006_020f46ec](../config/arm9/overlays/ov006/symbols.txt) | MATCH | MATCH | pick one |
+| [func_ov065_02116364](../config/arm9/overlays/ov065/symbols.txt) | MATCH | MATCH | pick one |
+| [func_ov075_02116f40](../config/arm9/overlays/ov075/symbols.txt) | MATCH | MATCH | pick one |
+| [func_ov084_021298d0](../config/arm9/overlays/ov084/symbols.txt) | MATCH | MATCH | pick one |
+| [func_ov084_0212d564](../config/arm9/overlays/ov084/symbols.txt) | MATCH | MATCH | pick one |
 
 Three pairs were created by the recent b56 batches (`e8350ed1` / #783 added `.cpp` files
 while stale NONMATCHING `.c` siblings from `c31a2a63` stayed). Nothing is broken today,
