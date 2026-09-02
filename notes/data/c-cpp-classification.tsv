@@ -1873,7 +1873,7 @@ src/func_02023408.c	PURE-C	arm9				1		None		-
 src/func_0202345c.c	PURE-C	arm9				1		None		-
 src/func_02023498.c	PURE-C	arm9				1		None		-
 src/func_02023544.c	PURE-C	arm9				1		None		-
-src/func_02023624.c	S1-stores-rom-vptr	arm9			stores _ZTV8dScene_c	1		None	_ZTV8dScene_c	-
+src/dScBoot_c_classInit.c	S1-stores-rom-vptr	arm9			stores _ZTV8dScene_c	1		None	_ZTV8dScene_c	-
 src/func_02029408.c	PURE-C	arm9				1		None		-
 src/func_02029600.c	PURE-C	arm9				1		None		-
 src/func_0202a850.c	PURE-C	arm9				1		None		-
@@ -5861,7 +5861,7 @@ src/func_ov007_020cca74.c	PURE-C	ov007				1		None		-
 src/func_ov007_020cca80.c	WEAK-refs-only	ov007				1		None		-
 src/func_ov007_020cca98.c	WEAK-refs-only	ov007				1		None		-
 src/func_ov007_020ccab4.c	WEAK-refs-only	ov007				1		None		-
-src/func_ov007_020ccad0.c	S1-stores-rom-vptr	ov007			stores _ZTV8dScene_c	1		None	_ZTV8dScene_c	-
+src/dScDSMT_c_classInit.c	S1-stores-rom-vptr	ov007			stores _ZTV8dScene_c	1		None	_ZTV8dScene_c	-
 src/func_ov009_02111224.c	PURE-C	ov009				1		None		-
 src/func_ov009_0211145c.c	WEAK-refs-only					0		None		NONMATCHING-draft;not-in-delinks
 src/func_ov009_021115d8.c	WEAK-refs-only	ov009				1		None		-

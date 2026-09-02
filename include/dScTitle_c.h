@@ -13,7 +13,7 @@
  * other direct child -- 0, 3, 6, 9, 12, 16, 17 (rtti_vtables.py --own
  * dScTitle_c). No new virtual is added.
  *
- * CONSTRUCTION. func_ov003_020adc10 is the factory: it opens with
+ * CONSTRUCTION. dScTitle_c_classInit is the factory: it opens with
  * `_ZN7fBase_cnwEj(0x54)`, i.e. fBase_c::operator new(0x54). SIZE 0x54 is
  * read directly off the allocator call. There is no base-object-constructor
  * sibling visible in this TU; only one caller of this factory exists.

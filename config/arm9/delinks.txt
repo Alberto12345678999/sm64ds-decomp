@@ -3758,7 +3758,7 @@ src/_ZN9BootSceneD0Ev.cpp:
     complete
     .text start:0x020235d4 end:0x02023624
 
-src/func_02023624.c:
+src/dScBoot_c_classInit.c:
     complete
     .text start:0x02023624 end:0x02023688
 
@@ -4244,7 +4244,7 @@ src/_Z17LoadLevelOverlaysi.cpp:
 src/_Z26LoadOrUnloadObjectOverlaysPFviEi.cpp:
     .text start:0x0202df70 end:0x0202e088
 
-src/Stage_Spawn.cpp:
+src/dScStage_c_classInit.cpp:
     complete
     .text start:0x0202e088 end:0x0202e118
 

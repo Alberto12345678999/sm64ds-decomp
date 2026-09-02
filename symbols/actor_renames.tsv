@@ -1,6 +1,10 @@
 module	addr	old	new	why
 arm9	0x02086d78	data_02086d78	Camera_SpawnInfo	spawninfo
 arm9	0x02092680	data_02092680	_ZTV5Stage	vtable alloc=?
+arm9	0x02023624	func_02023624	dScBoot_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
+arm9	0x020914a8	data_020914a8	g_profile_BOOT	reconstructed profile global; literal ROM ID BOOT+registry role+later EAD lineage; exact SM64DS spelling not preserved
+arm9	0x0202e088	Stage_Spawn	dScStage_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
+arm9	0x0209213c	_ZN5Stage9spawnDataE	g_profile_STAGE	reconstructed profile global; literal ROM ID STAGE+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov002	0x020aee40	func_ov002_020aee40	_ZN13OneUpMushroomD1Ev	vtable slot 16
 ov002	0x020aee88	func_ov002_020aee88	_ZN13OneUpMushroomD0Ev	vtable slot 17
 ov002	0x020affe8	func_ov002_020affe8	_ZN13OneUpMushroom16CleanupResourcesEv	vtable slot 3
@@ -355,7 +359,11 @@ ov002	0x0210c064	data_ov002_0210c064	SoundObject_SpawnInfo	spawninfo
 ov002	0x0210d630	data_ov002_0210d630	Bullet_SpawnInfo	spawninfo
 ov002	0x0210d654	data_ov002_0210d654	_ZTV6Bullet	vtable alloc=0x35c
 ov003	0x020b04f0	func_ov003_020b04f0	StarSelect_Spawn	spawnfunc
+ov003	0x020b04f0	StarSelect_Spawn	dScStarSel_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov003	0x020b16b4	data_ov003_020b16b4	StarSelect_SpawnInfo	spawninfo
+ov003	0x020b16b4	StarSelect_SpawnInfo	g_profile_STAR_SELECT	reconstructed profile global; literal ROM ID STAR_SELECT+registry role+later EAD lineage; exact SM64DS spelling not preserved
+ov003	0x020adc10	func_ov003_020adc10	dScTitle_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
+ov003	0x020b1380	data_ov003_020b1380	g_profile_TITLE	reconstructed profile global; literal ROM ID TITLE+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov005	0x020c21ec	func_ov005_020c21ec	dScMiniGm_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov005	0x020c2440	data_ov005_020c2440	g_profile_MINIGAME	reconstructed profile global; literal ROM ID MINIGAME+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov006	0x020d9574	func_ov006_020d9574	MgSortOrSplode_Spawn	spawnfunc
@@ -400,6 +408,8 @@ ov006	0x0213c434	data_ov006_0213c434	g_profile_MG_CURLING_J	reconstructed profil
 ov006	0x0213c020	data_ov006_0213c020	g_profile_MG_CUP	reconstructed profile global; literal ROM ID MG_CUP+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov006	0x0213c62c	data_ov006_0213c62c	_ZTV17MgBounceAndPounce	vtable alloc=?
 ov006	0x0213c78c	data_ov006_0213c78c	MgPsycheOut_SpawnInfo	spawninfo
+ov007	0x020ccad0	func_ov007_020ccad0	dScDSMT_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
+ov007	0x02103264	data_ov007_02103264	g_profile_DSMT	reconstructed profile global; literal ROM ID DSMT+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov006	0x0213c98c	data_ov006_0213c98c	MgWhichWiggler_SpawnInfo	spawninfo
 ov006	0x0213cb64	data_ov006_0213cb64	MgBounceAndPounce_SpawnInfo	spawninfo
 ov006	0x0213cc7c	data_ov006_0213cc7c	MgBounceAndTrounce_SpawnInfo	spawninfo

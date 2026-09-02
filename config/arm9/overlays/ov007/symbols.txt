@@ -545,7 +545,7 @@ func_ov007_020cca74 kind:function(arm,size=0xc) addr:0x020cca74
 func_ov007_020cca80 kind:function(arm,size=0x18) addr:0x020cca80
 func_ov007_020cca98 kind:function(arm,size=0x1c) addr:0x020cca98
 func_ov007_020ccab4 kind:function(arm,size=0x1c) addr:0x020ccab4
-func_ov007_020ccad0 kind:function(arm,size=0x84) addr:0x020ccad0
+dScDSMT_c_classInit kind:function(arm,size=0x84) addr:0x020ccad0
 data_ov007_020ccb54 kind:data(any) addr:0x020ccb54
 data_ov007_020ccb58 kind:data(any) addr:0x020ccb58
 data_ov007_020ccb5c kind:data(any) addr:0x020ccb5c
@@ -1195,7 +1195,7 @@ data_ov007_02103254 kind:data(any) addr:0x02103254
 data_ov007_02103258 kind:data(any) addr:0x02103258
 data_ov007_0210325c kind:data(any) addr:0x0210325c
 data_ov007_02103260 kind:data(any) addr:0x02103260
-data_ov007_02103264 kind:data(any) addr:0x02103264
+g_profile_DSMT kind:data(any) addr:0x02103264
 _ZTS9dScDSMT_c kind:data(any) addr:0x0210326c
 _ZTI9dScDSMT_c kind:data(any) addr:0x02103278
 _ZTIN9dScDSMT_c15graphCallback_cE kind:data(any) addr:0x02103284

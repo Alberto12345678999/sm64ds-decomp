@@ -20,7 +20,7 @@
  *     is the fBase_c/dScene_c convention: no slot 1 (BeforeInitResources)
  *     override, matching dScMiniGm_c and unlike dScEntry_c.
  *
- * CONSTRUCTION. func_ov007_020ccad0 is the factory: it opens with
+ * CONSTRUCTION. dScDSMT_c_classInit is the factory: it opens with
  * `_ZN7fBase_cnwEj(0x64)` -- fBase_c::operator new(0x64). SIZE 0x64 (100
  * bytes) therefore comes directly off the allocator call.
  *

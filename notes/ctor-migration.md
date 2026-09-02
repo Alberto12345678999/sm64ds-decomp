@@ -225,7 +225,7 @@ a **base subobject** of a derived class:
 | `_ZN6CameraC1Ev`, `_ZN8dActor_cC1Ev`, `_ZN8dActor_cC2Ev` | derived ctors, base-subobject step |
 | `_ZN3HUDC1Ev`, `_ZN7MinimapC1Ev` | derived ctors, base-subobject step |
 | `_ZN5StageC3Ev` | allocating ctor folding a base-subobject step (§5c) |
-| `StarSelect_Spawn`, `UnknownVsEntry_Spawn`, `func_02023624`, `func_020352b4` | unnamed C3s: `operator new` → null check → base step → double vptr store |
+| `dScStarSel_c_classInit`, `UnknownVsEntry_Spawn`, `dScBoot_c_classInit`, `func_020352b4` | unnamed C3s: `operator new` → null check → base step → double vptr store |
 | 7 overlay `func_*` placeholders | same Spawn shape in ov003/004/005/007/075 |
 
 Nothing anywhere constructs a standalone `fBase_c` — it is pure machinery

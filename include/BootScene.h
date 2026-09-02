@@ -31,7 +31,7 @@ struct BootScene : dScene_c {
     virtual s32 Behavior();               /* slot 6 */
 };
 
-/* Holds the chain to the size func_02023624.c's operator new(0x58) evidences.
+/* Holds the chain to the size dScBoot_c_classInit's operator new(0x58) evidences.
    A silently-added member anywhere fails this. */
 typedef char BootScene_size_must_be_0x58[sizeof(BootScene) == 0x58 ? 1 : -1];
 

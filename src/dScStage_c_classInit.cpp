@@ -1,4 +1,5 @@
 //cpp
+// @symbol dScStage_c_classInit
 #include "Stage.h"
 
 extern "C" {
@@ -14,7 +15,12 @@ extern void *_ZTV5Stage[];
 /* This is the allocation boundary for Stage, not a compiler-emitted C3
    constructor. Its base and member construction order remains explicit until
    the surrounding original translation unit can own a real Stage constructor. */
-Stage *Stage_Spawn()
+/* Reconstructed source-style name: SM64DS proves dScStage_c through RTTI,
+ * allocation size, vtable identity, and the STAGE registry profile; later EAD
+ * lineage supplies classInit. Exact original spelling is not preserved.
+ * Historical alias: Stage_Spawn. The project's Stage implementation type is
+ * retained here because this wave reconstructs registry symbols, not classes. */
+Stage *dScStage_c_classInit()
 {
     Stage *stage = (Stage *)_ZN7fBase_cnwEj(sizeof(Stage));
     if (stage) {

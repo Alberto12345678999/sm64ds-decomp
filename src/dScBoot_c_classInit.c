@@ -1,10 +1,15 @@
+// @symbol dScBoot_c_classInit
 extern void* _ZN7fBase_cnwEj(unsigned int size);
 extern void _ZN7fBase_cC2Ev(void* self);
 extern int data_0208e4b8[];
 extern int _ZTV8dScene_c[];
 extern int data_02091528[];
 
-void* func_02023624(void)
+/* Reconstructed source-style name: SM64DS proves dScBoot_c through RTTI,
+ * allocation size, vtable identity, and the BOOT registry profile; later EAD
+ * lineage supplies classInit. Exact original spelling is not preserved.
+ * Historical alias: func_02023624. */
+void* dScBoot_c_classInit(void)
 {
     char* self = (char*)_ZN7fBase_cnwEj(0x58);
     if (self != 0) {
