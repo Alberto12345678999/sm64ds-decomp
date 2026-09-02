@@ -67,7 +67,7 @@ ordinal 22; `.p__sinit_ov002_02107370` at `0x02108128` has a relocation to
 
 - ordinal 21: `__sinit_ov002_02107304`, high-confidence `BlueCoinSwitch`
   (`ov002:56`);
-- ordinal 23: `__sinit_ov002_02107f88`, high-confidence `SoundObject`
+- ordinal 23: `__sinit_ov002_02107f88`, high-confidence `daSoundObj_c`
   (`ov002:63`).
 
 The `56 -> 60 -> 63` text-unit ordering agrees with `.ctor` order. It is useful

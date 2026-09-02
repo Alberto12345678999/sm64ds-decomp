@@ -23,7 +23,7 @@
  *
  * FIVE DESCENDANTS, more than any other class in this series:
  * daObjBk_Ukisima_c (RotatingPlatformWf), daObjFl_Koma_D_c (RotatingPlatformLll),
- * daObjWc_Obj07_c (RotatingPlatformWdw), daObjRc_Kaitendai_c (RotatingPlatformRr)
+ * daObjWc_Obj07_c (was RotatingPlatformWdw), daObjRc_Kaitendai_c (RotatingPlatformRr)
  * and daObjKm3_Kaitendai_c (include/daObjKm3_Kaitendai_c.h). Each one's destructor
  * stores this class's vtable between its own and _ZTV10dBgActor_c, which is the
  * same fact the RTTI records, arrived at from the other direction.
@@ -35,7 +35,7 @@
  * UpdateClsnPosAndRot. Its own Render (`func_ov002_020b66f0`) dispatches through
  * the Model at 0xd4. Its own destructor destroys only dBgActor_c's two members. And
  * all five factories -- daObjBk_Ukisima_c_classInit, daObjFl_Koma_D_c_classInit,
- * RotatingPlatformWdw_Spawn, RotatingPlatformRr_Spawn and `func_ov047_021113bc`,
+ * daObjWc_Obj07_c_Spawn, RotatingPlatformRr_Spawn and `func_ov047_021113bc`,
  * which is daObjKm3_Kaitendai_c's real factory -- pass 800 = 0x320 to
  * fBase_c::operator new, which is sizeof(dBgActor_c) exactly. There is no room for
  * a field anywhere in this class or in any of the five leaves.
