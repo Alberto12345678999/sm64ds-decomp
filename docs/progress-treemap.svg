@@ -29993,7 +29993,7 @@ matched: yes</title></rect><rect x="1164.76" y="88.92" width="5.01" height="8.12
 module: ov010
 addr: 0x02111d20
 size: 176 bytes
-matched: yes</title></rect><rect x="1164.76" y="97.05" width="5.01" height="2.95" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>LightBeam_Spawn
+matched: yes</title></rect><rect x="1164.76" y="97.05" width="5.01" height="2.95" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daObjC1Hikari_c_classInit
 module: ov010
 addr: 0x02111dd0
 size: 64 bytes
@@ -30025,7 +30025,7 @@ matched: yes</title></rect><rect x="1181.83" y="88.92" width="2.88" height="5.46
 module: ov010
 addr: 0x02111fc0
 size: 68 bytes
-matched: yes</title></rect><rect x="1172.68" y="94.38" width="1.65" height="7.84" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>PeachPainting_Spawn
+matched: yes</title></rect><rect x="1172.68" y="94.38" width="1.65" height="7.84" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daObjC1Peach_c_classInit
 module: ov010
 addr: 0x02112004
 size: 56 bytes
@@ -30205,7 +30205,7 @@ matched: yes</title></rect><rect x="1237.41" y="98.33" width="3.71" height="3.89
 module: ov014
 addr: 0x02111294
 size: 56 bytes
-matched: yes</title></rect><rect x="1241.12" y="81.37" width="5.44" height="2.84" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>ShutterBob_Spawn
+matched: yes</title></rect><rect x="1241.12" y="81.37" width="5.44" height="2.84" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daObjBSwdoor_c_classInit
 module: ov014
 addr: 0x021112cc
 size: 60 bytes
@@ -30353,7 +30353,7 @@ matched: yes</title></rect><rect x="1327.43" y="95.73" width="5.09" height="6.49
 module: ov014
 addr: 0x02112ffc
 size: 128 bytes
-matched: yes</title></rect><rect x="1332.51" y="85.99" width="3.66" height="3.38" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>ChainChompFence_Spawn
+matched: yes</title></rect><rect x="1332.51" y="85.99" width="3.66" height="3.38" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daObjWanwanShutter_c_classInit
 module: ov014
 addr: 0x0211307c
 size: 48 bytes
@@ -30933,7 +30933,7 @@ matched: yes</title></rect><rect x="1058.35" y="131.30" width="5.48" height="6.7
 module: ov017
 addr: 0x021113c0
 size: 192 bytes
-matched: yes</title></rect><rect x="1058.35" y="138.03" width="5.48" height="1.96" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>ShipWater_Spawn
+matched: yes</title></rect><rect x="1058.35" y="138.03" width="5.48" height="1.96" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daObjKsWater_c_classInit
 module: ov017
 addr: 0x02111480
 size: 56 bytes
