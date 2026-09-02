@@ -43,8 +43,6 @@ extern void *_ZN7fBase_cnwEj(unsigned int);
 extern void _ZN10dBgActor_cC2Ev(void *);
 extern void _ZN11ShadowModelC1Ev(ShadowModel *);
 
-extern SharedFilePtr data_ov023_02112080;
-extern SharedFilePtr data_ov023_02112088;
 extern char data_ov064_0211ba4c[];
 extern s16 data_02082214[];
 
@@ -64,6 +62,33 @@ extern void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Bloc
 extern void func_020393d4(int *, int);
 extern void _ZN4dBgW22UpdatePosWithTransformERS_P8dActor_cR5dBgPiR7Vector3P10Vector3_16S8_(void);
 }
+
+/* The retail static initializer constructs these two 8-byte resource handles
+ * in source order and lets the C++ runtime register their destructors.  The
+ * family spellings are reconstructed; the constructor/destructor addresses,
+ * file IDs, object widths, BSS order, and registration topology are direct ROM
+ * evidence.  The intact-TU manifest maps their compiler-generated undefined
+ * member imports to the existing evidence-bounded ROM symbols without claiming
+ * that those project names were the original source spellings. */
+struct BattanModelFilePtr : SharedFilePtr {
+    u32 words[2];
+
+    BattanModelFilePtr(u32 fileID);
+    ~BattanModelFilePtr();
+};
+
+struct BattanCollisionFilePtr : SharedFilePtr {
+    u32 words[2];
+
+    BattanCollisionFilePtr(u32 fileID);
+    ~BattanCollisionFilePtr();
+};
+
+extern "C" BattanModelFilePtr data_ov023_02112088;
+extern "C" BattanCollisionFilePtr data_ov023_02112080;
+
+BattanModelFilePtr data_ov023_02112088(1558);
+BattanCollisionFilePtr data_ov023_02112080(1559);
 
 extern "C" daObjFm_Battan_c *daObjFm_Battan_c_classInit();
 
