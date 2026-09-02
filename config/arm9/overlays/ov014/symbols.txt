@@ -4,8 +4,8 @@ _ZN14daObjBSwdoor_c16CleanupResourcesEv kind:function(arm,size=0x14) addr:0x0211
 _ZN14daObjBSwdoor_c8BehaviorEv kind:function(arm,size=0x2c) addr:0x02111268
 _ZN14daObjBSwdoor_c13InitResourcesEv kind:function(arm,size=0x38) addr:0x02111294
 daObjBSwdoor_c_Spawn kind:function(arm,size=0x3c) addr:0x021112cc
-_ZN10ChainChompD1Ev kind:function(arm,size=0xb4) addr:0x02111308
-_ZN10ChainChompD0Ev kind:function(arm,size=0xc8) addr:0x021113bc
+_ZN10daWanwan_cD1Ev kind:function(arm,size=0xb4) addr:0x02111308
+_ZN10daWanwan_cD0Ev kind:function(arm,size=0xc8) addr:0x021113bc
 func_ov014_02111484 kind:function(arm,size=0x54) addr:0x02111484
 func_ov014_021114d8 kind:function(arm,size=0x34) addr:0x021114d8
 func_ov014_0211150c kind:function(arm,size=0xb4) addr:0x0211150c
@@ -28,10 +28,10 @@ func_ov014_021122dc kind:function(arm,size=0x90) addr:0x021122dc
 func_ov014_0211236c kind:function(arm,size=0x1a0) addr:0x0211236c
 func_ov014_0211250c kind:function(arm,size=0x27c) addr:0x0211250c
 func_ov014_02112788 kind:function(arm,size=0x1c4) addr:0x02112788
-_ZN10ChainChomp16CleanupResourcesEv kind:function(arm,size=0x48) addr:0x0211294c
-_ZN10ChainChomp6RenderEv kind:function(arm,size=0x58) addr:0x02112994
-_ZN10ChainChomp8BehaviorEv kind:function(arm,size=0x128) addr:0x021129ec
-_ZN10ChainChomp13InitResourcesEv kind:function(arm,size=0x208) addr:0x02112b14
+_ZN10daWanwan_c16CleanupResourcesEv kind:function(arm,size=0x48) addr:0x0211294c
+_ZN10daWanwan_c6RenderEv kind:function(arm,size=0x58) addr:0x02112994
+_ZN10daWanwan_c8BehaviorEv kind:function(arm,size=0x128) addr:0x021129ec
+_ZN10daWanwan_c13InitResourcesEv kind:function(arm,size=0x208) addr:0x02112b14
 daWanwan_c_classInit kind:function(arm,size=0xf0) addr:0x02112d1c
 _ZN20daObjWanwanShutter_cD1Ev kind:function(arm,size=0x44) addr:0x02112e0c
 _ZN20daObjWanwanShutter_cD0Ev kind:function(arm,size=0x58) addr:0x02112e50
@@ -186,7 +186,7 @@ g_profile_WANWAN kind:data(any) addr:0x02114750 ambiguous
 data_ov014_02114768 kind:data(any) addr:0x02114768 ambiguous
 data_ov014_0211476c kind:data(any) addr:0x0211476c
 data_ov014_021147c4 kind:data(any) addr:0x021147c4 ambiguous
-_ZTV10ChainChomp kind:data(any) addr:0x021147ec
+_ZTV10daWanwan_c kind:data(any) addr:0x021147ec
 data_ov014_02114824 kind:data(any) addr:0x02114824 ambiguous
 data_ov014_02114860 kind:data(any) addr:0x02114860 ambiguous
 _ZTI20daObjWanwanShutter_c kind:data(any) addr:0x02114868

@@ -1,5 +1,5 @@
-#ifndef CHAINCHOMP_H
-#define CHAINCHOMP_H
+#ifndef DAWANWAN_C_H
+#define DAWANWAN_C_H
 
 #include "types.h"
 
@@ -28,7 +28,7 @@
 #include "ShadowModel.h"
 #include "dCcAcPos_c.h"
 
-struct ChainChomp : dEnemyBase_c {
+struct daWanwan_c : dEnemyBase_c {
     dCcAcPos_c mdCcAcPos_c;  /* 0x110 */
     ModelAnim mModelAnim;                                  /* 0x150 */
     ShadowModel mShadowModel;                              /* 0x1b4 */
@@ -62,7 +62,13 @@ struct ChainChomp : dEnemyBase_c {
     u8  mIsOnGround;        /* 0x61c */
     u8  mWasOnGround;       /* 0x61d */
 
-    virtual ~ChainChomp();
+    /* Defined INLINE on purpose. Out of line, mwccarm emits D2, D0, D1; the ROM
+       has D1 at 0x02111308 then D0 at 0x021113bc and no D2 anywhere in ov014.
+       Inline, mwccarm emits D1 then D0 and no D2 -- the cartridge's own order.
+       The body is empty either way: the 0xb4 bytes of D1 are the compiler's own
+       teardown of the four arrays and three member subobjects. */
+    virtual ~daWanwan_c() {}   /* slots 16 (D1), 17 (D0) */
+
 
     int Behavior();
     int CleanupResources();
@@ -70,12 +76,12 @@ struct ChainChomp : dEnemyBase_c {
     int Render();
 };
 
-typedef char ChainChomp_size_must_be_0x620[sizeof(ChainChomp) == 0x620 ? 1 : -1];
+typedef char daWanwan_c_size_must_be_0x620[sizeof(daWanwan_c) == 0x620 ? 1 : -1];
 
 #else
 
 /* The same object for a C translation unit, flat. */
-struct ChainChomp {
+struct daWanwan_c {
     u8  pad_000[0x60];
     s32 mPosY;            /* 0x060 */
     u8  pad_064[0x1c];
@@ -132,4 +138,4 @@ struct ChainChomp {
 
 #endif /* __cplusplus */
 
-#endif /* CHAINCHOMP_H */
+#endif /* DAWANWAN_C_H */

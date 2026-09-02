@@ -284,7 +284,7 @@ the hitbox with size**. A real behavioral difference — DS fixed what reads as 
 **BobOmb** (`ov102:0x0214c510`, size 0x1d4, verified): DS radius 60.0 / height 80.0 vs N64 65 / 113
 (`bobomb.inc.c:3-13`). Close on radius, ~29% off on height. Convergent, not shared data.
 
-**ChainChomp** — DS side **[T2, unmatched]**: claimed 150.0 / 300.0 vs N64 80 / 160
+**daWanwan_c** — DS side **[T2, unmatched]**: claimed 150.0 / 300.0 vs N64 80 / 160
 (`chain_chomp.inc.c:15-25`). That is a suspiciously uniform 1.875× on both axes; worth re-checking
 against a confirmed match before anyone relies on it.
 
@@ -306,7 +306,7 @@ All DS names below confirmed as live mangled symbols (`_ZTV*`, `_ZN*D1Ev`) in
 |---|---|---|---|
 | `bhvGoomba` | → | `Goomba` | ov084 |
 | `bhvBobomb` / `bhvKingBobomb` / `bhvBobombBuddy` | → | `BobOmb` / `KingBobOmb` / `BobOmbBuddy` | ov102 / ov078 / ov084 |
-| `bhvChainChomp` | → | `ChainChomp` (+`daObjWanwanShutter_c`) | ov014 |
+| `bhvChainChomp` | → | `daWanwan_c` (+`daObjWanwanShutter_c`) | ov014 |
 | `bhvSmallBully` / `bhvBigBully` | → | `Bully` / `BigBully` | ov064 |
 | `bhvSmallWhomp` (+King) | → | `Whomp` (`mIsKing` flag) | ov079 |
 | `bhvThwomp` | → | `Thwomp` | ov091 |

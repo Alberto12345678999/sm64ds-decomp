@@ -29,7 +29,7 @@
  *   - `u8 unk_010' was WRONG. Both evidence passes see five 4-byte accesses at
  *     0x10 and none narrower; the constructor stores the 32-bit constant 0x4000
  *     there. It is a u32 flag word, and the narrow declaration was the broken
- *     one -- the same shape of error as include/ChainChomp.h's `u8 mScaleX'
+ *     one -- the same shape of error as include/daWanwan_c.h's `u8 mScaleX'
  *     (runbook section 2, "Observed is not correct").
  *
  *   - THERE IS NO FIELD AT 0x14 ON Heap. evidence_rom reports one, from a
