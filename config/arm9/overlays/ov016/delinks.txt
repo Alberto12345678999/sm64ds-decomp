@@ -148,7 +148,7 @@ src/_ZN10RockPillar13InitResourcesEv.cpp:
     complete
     .text start:0x02112e1c end:0x02112ec4
 
-src/RockPillar_Spawn.c:
+src/daObjKi_Hasira_c_classInit.c:
     complete
     .text start:0x02112ec4 end:0x02112ef4
 
@@ -164,7 +164,7 @@ src/_ZN23FloatOnWaterPlatformJrb13InitResourcesEv.cpp:
     complete
     .text start:0x02112fa8 end:0x02112fbc
 
-src/FloatOnWaterPlatformJrb_Spawn.c:
+src/daObjKi_Ita_c_classInit.c:
     complete
     .text start:0x02112fbc end:0x02112ff8
 

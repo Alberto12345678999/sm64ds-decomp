@@ -7239,7 +7239,7 @@
     "src/_ZN9TowerStep13InitResourcesEv.cpp",
     "src/func_ov015_021128e8.c",
     "src/func_ov015_021128f8.c",
-    "src/TowerStep_Spawn.c"
+    "src/daObjBk_Lift_c_classInit.c"
    ],
    "ext_mix": {
     ".cpp": 9,
@@ -7842,7 +7842,7 @@
     "src/_ZN14RotatingBridge6RenderEv.cpp",
     "src/_ZN14RotatingBridge8BehaviorEv.cpp",
     "src/_ZN14RotatingBridge13InitResourcesEv.cpp",
-    "src/RotatingBridge_Spawn.c"
+    "src/daObjBk_Rotebar_c_classInit.c"
    ],
    "ext_mix": {
     ".cpp": 6,
@@ -10119,7 +10119,7 @@
     "src/_ZN18RotatingPlatformWfD0Ev.c",
     "src/_ZN18RotatingPlatformWf16CleanupResourcesEv.cpp",
     "src/_ZN18RotatingPlatformWf13InitResourcesEv.cpp",
-    "src/RotatingPlatformWf_Spawn.c"
+    "src/daObjBk_Ukisima_c_classInit.c"
    ],
    "ext_mix": {
     ".cpp": 3,
@@ -10462,7 +10462,7 @@
     "src/_ZN23FloatOnWaterPlatformJrbD1Ev.cpp",
     "src/_ZN23FloatOnWaterPlatformJrbD0Ev.c",
     "src/_ZN23FloatOnWaterPlatformJrb13InitResourcesEv.cpp",
-    "src/FloatOnWaterPlatformJrb_Spawn.c"
+    "src/daObjKi_Ita_c_classInit.c"
    ],
    "ext_mix": {
     ".cpp": 2,
@@ -24467,7 +24467,7 @@
     "src/_ZN10RockPillar6RenderEv.cpp",
     "src/_ZN10RockPillar8BehaviorEv.cpp",
     "src/_ZN10RockPillar13InitResourcesEv.cpp",
-    "src/RockPillar_Spawn.c"
+    "src/daObjKi_Hasira_c_classInit.c"
    ],
    "ext_mix": {
     ".cpp": 5,

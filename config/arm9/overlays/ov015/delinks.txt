@@ -224,7 +224,7 @@ src/func_ov015_021128f8.c:
     complete
     .text start:0x021128f8 end:0x0211290c
 
-src/TowerStep_Spawn.c:
+src/daObjBk_Lift_c_classInit.c:
     complete
     .text start:0x0211290c end:0x02112944
 
@@ -252,7 +252,7 @@ src/_ZN14RotatingBridge13InitResourcesEv.cpp:
     complete
     .text start:0x02112b04 end:0x02112ba0
 
-src/RotatingBridge_Spawn.c:
+src/daObjBk_Rotebar_c_classInit.c:
     complete
     .text start:0x02112ba0 end:0x02112bd0
 
@@ -272,7 +272,7 @@ src/_ZN18RotatingPlatformWf13InitResourcesEv.cpp:
     complete
     .text start:0x02112c98 end:0x02112cb8
 
-src/RotatingPlatformWf_Spawn.c:
+src/daObjBk_Ukisima_c_classInit.c:
     complete
     .text start:0x02112cb8 end:0x02112cf4
 

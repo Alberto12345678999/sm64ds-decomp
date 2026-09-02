@@ -16,7 +16,7 @@
  *   kind  __si_class_type_info, ONE base, subobject offset 0
  *   base  daObjKaitendai_c, ov002 0x021091ac
  *
- * NO FIELDS OF ITS OWN: RotatingPlatformWf_Spawn passes 800 = 0x320 = sizeof(dBgActor_c).
+ * NO FIELDS OF ITS OWN: daObjBk_Ukisima_c_classInit passes 800 = 0x320 = sizeof(dBgActor_c).
  * It overrides slots 0 and 3, which the base leaves null.
  */
 

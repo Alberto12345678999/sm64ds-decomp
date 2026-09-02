@@ -35,11 +35,11 @@ _ZN10RockPillar16CleanupResourcesEv kind:function(arm,size=0x44) addr:0x02112ae4
 _ZN10RockPillar6RenderEv kind:function(arm,size=0x28) addr:0x02112b28
 _ZN10RockPillar8BehaviorEv kind:function(arm,size=0x2cc) addr:0x02112b50
 _ZN10RockPillar13InitResourcesEv kind:function(arm,size=0xa8) addr:0x02112e1c
-RockPillar_Spawn kind:function(arm,size=0x30) addr:0x02112ec4
+daObjKi_Hasira_c_classInit kind:function(arm,size=0x30) addr:0x02112ec4
 _ZN23FloatOnWaterPlatformJrbD1Ev kind:function(arm,size=0x50) addr:0x02112ef4
 _ZN23FloatOnWaterPlatformJrbD0Ev kind:function(arm,size=0x64) addr:0x02112f44
 _ZN23FloatOnWaterPlatformJrb13InitResourcesEv kind:function(arm,size=0x14) addr:0x02112fa8
-FloatOnWaterPlatformJrb_Spawn kind:function(arm,size=0x3c) addr:0x02112fbc
+daObjKi_Ita_c_classInit kind:function(arm,size=0x3c) addr:0x02112fbc
 _ZN10SlidingBoxD1Ev kind:function(arm,size=0x4c) addr:0x02112ff8
 _ZN10SlidingBoxD0Ev kind:function(arm,size=0x60) addr:0x02113044
 _ZN10SlidingBox11UpdateModelEv kind:function(arm,size=0x48) addr:0x021130a4
@@ -178,12 +178,12 @@ ShipUp_SpawnInfo kind:data(any) addr:0x02114a18 ambiguous
 _ZTV6ShipUp kind:data(any) addr:0x02114a3c
 _ZTI16daObjKi_Hasira_c kind:data(any) addr:0x02114abc
 _ZTS16daObjKi_Hasira_c kind:data(any) addr:0x02114ac8
-RockPillar_SpawnInfo kind:data(any) addr:0x02114adc ambiguous
+g_profile_KI_HASIRA kind:data(any) addr:0x02114adc ambiguous
 _ZTV10RockPillar kind:data(any) addr:0x02114b00
 _ZTI13daObjKi_Ita_c kind:data(any) addr:0x02114b80
 data_ov016_02114b8c kind:data(any) addr:0x02114b8c
 _ZTS13daObjKi_Ita_c kind:data(any) addr:0x02114b98
-FloatOnWaterPlatformJrb_SpawnInfo kind:data(any) addr:0x02114ba8
+g_profile_KI_ITA kind:data(any) addr:0x02114ba8
 _ZTV23FloatOnWaterPlatformJrb kind:data(any) addr:0x02114bcc
 _ZTI13daSlide_Box_c kind:data(any) addr:0x02114c4c
 _ZTS13daSlide_Box_c kind:data(any) addr:0x02114c58
