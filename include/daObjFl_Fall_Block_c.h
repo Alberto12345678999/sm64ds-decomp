@@ -5,7 +5,7 @@
 #include "daObjFallBlock_c.h"
 
 /* The Lethal Lava Land falling block. Only ever named by its factory,
- * FallBlockLll_Spawn ("Lll" for Lethal Lava Land) -- distinct from the
+ * daObjFl_Fall_Block_c_classInit (historically FallBlockLll_Spawn) -- distinct from the
  * already-real daObjFallBlock_c (ov098), which is this class's base, not
  * this class itself.
  *
@@ -24,7 +24,7 @@
  *   kind  __si_class_type_info, ONE base, subobject offset 0
  *   base  daObjFallBlock_c, ov015 0x02114874 (typeinfo record), vtable in ov098
  *
- * NO FIELDS OF ITS OWN: FallBlockLll_Spawn passes 844 = 0x34c, which
+ * NO FIELDS OF ITS OWN: daObjFl_Fall_Block_c_classInit passes 844 = 0x34c, which
  * daObjFallBlock_c already fills exactly. It overrides slots 0 and 3, which
  * the base leaves null.
  */

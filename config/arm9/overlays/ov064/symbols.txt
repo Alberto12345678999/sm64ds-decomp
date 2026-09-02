@@ -66,7 +66,7 @@ _ZN15RotatingFirebar16CleanupResourcesEv kind:function(arm,size=0x48) addr:0x021
 _ZN15RotatingFirebar6RenderEv kind:function(arm,size=0x28) addr:0x0211824c
 _ZN15RotatingFirebar8BehaviorEv kind:function(arm,size=0x20c) addr:0x02118274
 _ZN15RotatingFirebar13InitResourcesEv kind:function(arm,size=0xe4) addr:0x02118480
-RotatingFirebar_Spawn kind:function(arm,size=0x5c) addr:0x02118564
+daObjFl_KomaU_c_classInit kind:function(arm,size=0x5c) addr:0x02118564
 _ZN10LavaBubbleD1Ev kind:function(arm,size=0x38) addr:0x021185c0
 _ZN10LavaBubbleD0Ev kind:function(arm,size=0x4c) addr:0x021185f8
 func_ov064_02118644 kind:function(arm,size=0xf8) addr:0x02118644
@@ -224,7 +224,7 @@ _ZTV18TiltingPlatformLll kind:data(any) addr:0x0211bd2c
 data_ov064_0211bdac kind:data(any) addr:0x0211bdac
 _ZTI15daObjFl_KomaU_c kind:data(any) addr:0x0211bdcc
 _ZTS15daObjFl_KomaU_c kind:data(any) addr:0x0211bdd8
-RotatingFirebar_SpawnInfo kind:data(any) addr:0x0211bdec
+g_profile_FL_KOMA_U kind:data(any) addr:0x0211bdec
 _ZTV15RotatingFirebar kind:data(any) addr:0x0211be10
 data_ov064_0211be90 kind:data(any) addr:0x0211be90
 data_ov064_0211be98 kind:data(any) addr:0x0211be98

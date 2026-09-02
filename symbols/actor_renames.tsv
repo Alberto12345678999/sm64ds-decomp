@@ -789,7 +789,9 @@ ov022	0x02112210	func_ov022_02112210	_ZN19FloatingFloorLllBig6RenderEv	vtable sl
 ov022	0x02112238	func_ov022_02112238	_ZN19FloatingFloorLllBig8BehaviorEv	vtable slot 6
 ov022	0x021122ac	func_ov022_021122ac	_ZN19FloatingFloorLllBig13InitResourcesEv	vtable slot 0
 ov022	0x02112350	func_ov022_02112350	LavaPlank_Spawn	spawnfunc
+ov022	0x02112350	LavaPlank_Spawn	daObjFl_UkiKi_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov022	0x0211245c	func_ov022_0211245c	FallBlockLll_Spawn	spawnfunc
+ov022	0x0211245c	FallBlockLll_Spawn	daObjFl_Fall_Block_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov022	0x02112498	func_ov022_02112498	_ZN12FallBlockLllD1Ev	vtable slot 16
 ov022	0x021124e8	func_ov022_021124e8	_ZN12FallBlockLllD0Ev	vtable slot 17
 ov022	0x0211254c	func_ov022_0211254c	_ZN12FallBlockLll16CleanupResourcesEv	vtable slot 3
@@ -818,8 +820,10 @@ ov022	0x021140ec	data_ov022_021140ec	FloatingFloorLllBig_SpawnInfo	spawninfo
 ov022	0x02114108	data_ov022_02114108	FloatingFloorLllSmall_SpawnInfo	spawninfo
 ov022	0x0211412c	data_ov022_0211412c	_ZTV21FloatingFloorLllSmall	vtable alloc=0x330
 ov022	0x021141cc	data_ov022_021141cc	LavaPlank_SpawnInfo	spawninfo
+ov022	0x021141cc	LavaPlank_SpawnInfo	g_profile_FL_UKI_KI	reconstructed profile global; literal ROM ID FL_UKI_KI+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov022	0x021141f0	data_ov022_021141f0	_ZTV19FloatingFloorLllBig	vtable alloc=0x330
 ov022	0x021142a0	data_ov022_021142a0	FallBlockLll_SpawnInfo	spawninfo
+ov022	0x021142a0	FallBlockLll_SpawnInfo	g_profile_FL_KUZURE	reconstructed profile global; literal ROM ID FL_KUZURE+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov022	0x02114380	data_ov022_02114380	RollingLogLll_SpawnInfo	spawninfo
 ov022	0x02114380	RollingLogLll_SpawnInfo	g_profile_FL_MARUTA	reconstructed profile global; literal ROM ID FL_MARUTA+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov022	0x021143a4	data_ov022_021143a4	_ZTV12FallBlockLll	vtable alloc=0x34c
@@ -849,9 +853,13 @@ ov024	0x02111668	func_ov024_02111668	_ZN10PyramidTag8BehaviorEv	vtable slot 6
 ov024	0x021116ec	func_ov024_021116ec	_ZN10PyramidTop13InitResourcesEv	vtable slot 0
 ov024	0x021117c8	func_ov024_021117c8	_ZN10PyramidTag13InitResourcesEv	vtable slot 0
 ov024	0x0211183c	func_ov024_0211183c	PyramidTag_Spawn	spawnfunc
+ov024	0x0211183c	PyramidTag_Spawn	daObjDlPyramidDummy_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov024	0x02111874	func_ov024_02111874	PyramidTop_Spawn	spawnfunc
+ov024	0x02111874	PyramidTop_Spawn	daObjDlPyramid_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov024	0x02113804	data_ov024_02113804	PyramidTop_SpawnInfo	spawninfo
+ov024	0x02113804	PyramidTop_SpawnInfo	g_profile_DL_PYRAMID	reconstructed profile global; literal ROM ID DL_PYRAMID+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov024	0x02113820	data_ov024_02113820	PyramidTag_SpawnInfo	spawninfo
+ov024	0x02113820	PyramidTag_SpawnInfo	g_profile_DL_PYRAMID_DUMMY	reconstructed profile global; literal ROM ID DL_PYRAMID_DUMMY+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov024	0x02113844	data_ov024_02113844	_ZTV10PyramidTag	vtable alloc=0x3b8
 ov024	0x021138c8	data_ov024_021138c8	_ZTV10PyramidTop	vtable alloc=0x3b8
 ov025	0x02111cf4	func_ov025_02111cf4	Grindel_Spawn	spawnfunc
@@ -1434,6 +1442,7 @@ ov064	0x0211824c	func_ov064_0211824c	_ZN15RotatingFirebar6RenderEv	vtable slot 9
 ov064	0x02118274	func_ov064_02118274	_ZN15RotatingFirebar8BehaviorEv	vtable slot 6
 ov064	0x02118480	func_ov064_02118480	_ZN15RotatingFirebar13InitResourcesEv	vtable slot 0
 ov064	0x02118564	func_ov064_02118564	RotatingFirebar_Spawn	spawnfunc
+ov064	0x02118564	RotatingFirebar_Spawn	daObjFl_KomaU_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov064	0x021185c0	func_ov064_021185c0	_ZN10LavaBubbleD1Ev	vtable slot 16
 ov064	0x021185f8	func_ov064_021185f8	_ZN10LavaBubbleD0Ev	vtable slot 17
 ov064	0x0211883c	func_ov064_0211883c	_ZN10LavaBubble16CleanupResourcesEv	vtable slot 3
@@ -1502,6 +1511,7 @@ ov064	0x0211bd08	data_ov064_0211bd08	TiltingPlatformLll_SpawnInfo	spawninfo
 ov064	0x0211bd08	TiltingPlatformLll_SpawnInfo	g_profile_FL_GURA	reconstructed profile global; literal ROM ID FL_GURA+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov064	0x0211bd2c	data_ov064_0211bd2c	_ZTV12MetalNetLift	vtable alloc=0x368
 ov064	0x0211bdec	data_ov064_0211bdec	RotatingFirebar_SpawnInfo	spawninfo
+ov064	0x0211bdec	RotatingFirebar_SpawnInfo	g_profile_FL_KOMA_U	reconstructed profile global; literal ROM ID FL_KOMA_U+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov064	0x0211be10	data_ov064_0211be10	_ZTV15RotatingFirebar	vtable alloc=0x540
 ov064	0x0211bec8	data_ov064_0211bec8	LavaBubble_SpawnInfo	spawninfo
 ov064	0x0211beec	data_ov064_0211beec	_ZTV10LavaBubble	vtable alloc=0x31c

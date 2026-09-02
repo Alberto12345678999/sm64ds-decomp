@@ -7900,7 +7900,7 @@
     "src/_ZN9LavaPlank6RenderEv.cpp",
     "src/_ZN9LavaPlank8BehaviorEv.cpp",
     "src/_ZN9LavaPlank13InitResourcesEv.cpp",
-    "src/LavaPlank_Spawn.c"
+    "src/daObjFl_UkiKi_c_classInit.c"
    ],
    "ext_mix": {
     ".cpp": 6,
@@ -24831,8 +24831,8 @@
     "src/_ZN10PyramidTag8BehaviorEv.cpp",
     "src/_ZN10PyramidTop13InitResourcesEv.cpp",
     "src/_ZN10PyramidTag13InitResourcesEv.cpp",
-    "src/PyramidTag_Spawn.c",
-    "src/PyramidTop_Spawn.c"
+    "src/daObjDlPyramidDummy_c_classInit.c",
+    "src/daObjDlPyramid_c_classInit.c"
    ],
    "ext_mix": {
     ".cpp": 10,
@@ -27042,7 +27042,7 @@
     "src/_ZN15RotatingFirebar6RenderEv.cpp",
     "src/_ZN15RotatingFirebar8BehaviorEv.cpp",
     "src/_ZN15RotatingFirebar13InitResourcesEv.cpp",
-    "src/RotatingFirebar_Spawn.cpp"
+    "src/daObjFl_KomaU_c_classInit.cpp"
    ],
    "ext_mix": {
     ".cpp": 6,
@@ -35296,7 +35296,7 @@
    "n_functions_map": 1,
    "n_files": 1,
    "files": [
-    "src/FallBlockLll_Spawn.c"
+    "src/daObjFl_Fall_Block_c_classInit.c"
    ],
    "ext_mix": {
     ".c": 1

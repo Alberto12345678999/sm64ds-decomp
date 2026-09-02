@@ -49,12 +49,12 @@ _ZN9LavaPlank16CleanupResourcesEv kind:function(arm,size=0x44) addr:0x021121cc
 _ZN9LavaPlank6RenderEv kind:function(arm,size=0x28) addr:0x02112210
 _ZN9LavaPlank8BehaviorEv kind:function(arm,size=0x74) addr:0x02112238
 _ZN9LavaPlank13InitResourcesEv kind:function(arm,size=0xa4) addr:0x021122ac
-LavaPlank_Spawn kind:function(arm,size=0x30) addr:0x02112350
+daObjFl_UkiKi_c_classInit kind:function(arm,size=0x30) addr:0x02112350
 _ZN20daObjFl_Fall_Block_cD1Ev kind:function(arm,size=0x50) addr:0x02112380
 _ZN20daObjFl_Fall_Block_cD0Ev kind:function(arm,size=0x64) addr:0x021123d0
 _ZN20daObjFl_Fall_Block_c16CleanupResourcesEv kind:function(arm,size=0x14) addr:0x02112434
 _ZN20daObjFl_Fall_Block_c13InitResourcesEv kind:function(arm,size=0x14) addr:0x02112448
-FallBlockLll_Spawn kind:function(arm,size=0x3c) addr:0x0211245c
+daObjFl_Fall_Block_c_classInit kind:function(arm,size=0x3c) addr:0x0211245c
 _ZN13RollingLogLllD1Ev kind:function(arm,size=0x50) addr:0x02112498
 _ZN13RollingLogLllD0Ev kind:function(arm,size=0x64) addr:0x021124e8
 _ZN13RollingLogLll16CleanupResourcesEv kind:function(arm,size=0x14) addr:0x0211254c
@@ -231,12 +231,12 @@ _ZTV21FloatingFloorLllSmall kind:data(any) addr:0x0211412c
 data_ov022_0211417c kind:data(any) addr:0x0211417c ambiguous
 _ZTI15daObjFl_UkiKi_c kind:data(any) addr:0x021141ac
 _ZTS15daObjFl_UkiKi_c kind:data(any) addr:0x021141b8
-LavaPlank_SpawnInfo kind:data(any) addr:0x021141cc ambiguous
+g_profile_FL_UKI_KI kind:data(any) addr:0x021141cc ambiguous
 _ZTV9LavaPlank kind:data(any) addr:0x021141f0
 _ZTI20daObjFl_Fall_Block_c kind:data(any) addr:0x02114270
 data_ov022_0211427c kind:data(any) addr:0x0211427c
 _ZTS20daObjFl_Fall_Block_c kind:data(any) addr:0x02114288
-FallBlockLll_SpawnInfo kind:data(any) addr:0x021142a0 ambiguous
+g_profile_FL_KUZURE kind:data(any) addr:0x021142a0 ambiguous
 _ZTV20daObjFl_Fall_Block_c kind:data(any) addr:0x021142c4
 data_ov022_0211433c kind:data(any) addr:0x0211433c ambiguous
 _ZTI15daObjFlMaruta_c kind:data(any) addr:0x02114344
