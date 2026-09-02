@@ -1,5 +1,5 @@
-#ifndef CHAINCHOMPFENCE_H
-#define CHAINCHOMPFENCE_H
+#ifndef DAOBJWANWANSHUTTER_C_H
+#define DAOBJWANWANSHUTTER_C_H
 
 #include "types.h"
 #include "dBgW_KcMbg.h"
@@ -18,11 +18,11 @@
 
 #include "dBgActor_c.h"
 
-struct ChainChompFence : dBgActor_c {
+struct daObjWanwanShutter_c : dBgActor_c {
     u8 mDisabled;                     /* 0x31e -- both Behavior and Render return immediately while it is set */
 
     /* --- vtable --- */
-    virtual ~ChainChompFence();
+    virtual ~daObjWanwanShutter_c();
 
     int Behavior();
     int CleanupResources();
@@ -30,21 +30,21 @@ struct ChainChompFence : dBgActor_c {
     int Render();
 };
 
-typedef char ChainChompFence_size_must_be_0x320[sizeof(ChainChompFence) == 0x320 ? 1 : -1];
+typedef char daObjWanwanShutter_c_size_must_be_0x320[sizeof(daObjWanwanShutter_c) == 0x320 ? 1 : -1];
 
 #else
 
 /* The C spelling of the same object, flat. Kept because the D0 file is a C
    translation unit that reads these fields, and D0 is compiler-generated so it
    can never be migrated. Same arrangement as include/ShadowModel.h. */
-struct ChainChompFence {
+struct daObjWanwanShutter_c {
     u8  pad_000[0x8e];
     s16 mAngleY;            /* 0x08e */
     u8  pad_090[0x44];
     /* Model member, named by _ZN5ModelD1Ev at +0xd4 -- a relocation the ROM build checks.
        D1 and not D2, so it is this type and not an inlined base. Was a u8 marker. */
     Model mModel;            /* 0x0d4 */
-    /* dBgW_KcMbg member. The cartridge's own ~ChainChompFence calls _ZN10dBgW_KcMbgD1Ev
+    /* dBgW_KcMbg member. The cartridge's own ~daObjWanwanShutter_c calls _ZN10dBgW_KcMbgD1Ev
        at +0x124 (D0/D1), a relocation the ROM build checks; recovered by
        tools/dtor_members.py. D1 and not D2, so it is this type and not an inlined base. */
     dBgW_KcMbg mMovingMeshCollider;            /* 0x124 */
@@ -54,4 +54,4 @@ struct ChainChompFence {
 
 #endif /* __cplusplus */
 
-#endif /* CHAINCHOMPFENCE_H */
+#endif /* DAOBJWANWANSHUTTER_C_H */

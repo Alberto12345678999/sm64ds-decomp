@@ -1,7 +1,7 @@
 //cpp
-// @symbol _ZN15ChainChompFence6RenderEv
+// @symbol _ZN20daObjWanwanShutter_c6RenderEv
 /* recovered: named members + shared header, real C++ method */
-#include "ChainChompFence.h"
+#include "daObjWanwanShutter_c.h"
 struct Base {
     virtual int vf0(int);
     virtual int vf1(int);
@@ -15,7 +15,7 @@ struct Obj {
     Base sub;
 };
 
-int ChainChompFence::Render()
+int daObjWanwanShutter_c::Render()
 {
     if (*(unsigned char*)((char*)&mDisabled) != 0) return 1;
     ((Obj *)this)->sub.vfunc(0);

@@ -123,11 +123,11 @@ src/daWanwan_c_classInit.cpp:
     complete
     .text start:0x02112d1c end:0x02112e0c
 
-src/_ZN15ChainChompFenceD1Ev.cpp:
+src/_ZN20daObjWanwanShutter_cD1Ev.cpp:
     complete
     .text start:0x02112e0c end:0x02112e50
 
-src/_ZN15ChainChompFenceD0Ev.cpp:
+src/_ZN20daObjWanwanShutter_cD0Ev.cpp:
     complete
     .text start:0x02112e50 end:0x02112ea8
 
@@ -135,19 +135,19 @@ src/func_ov014_02112ea8.cpp:
     complete
     .text start:0x02112ea8 end:0x02112f3c
 
-src/_ZN15ChainChompFence16CleanupResourcesEv.cpp:
+src/_ZN20daObjWanwanShutter_c16CleanupResourcesEv.cpp:
     complete
     .text start:0x02112f3c end:0x02112f80
 
-src/_ZN15ChainChompFence6RenderEv.cpp:
+src/_ZN20daObjWanwanShutter_c6RenderEv.cpp:
     complete
     .text start:0x02112f80 end:0x02112fc0
 
-src/_ZN15ChainChompFence8BehaviorEv.cpp:
+src/_ZN20daObjWanwanShutter_c8BehaviorEv.cpp:
     complete
     .text start:0x02112fc0 end:0x02112ffc
 
-src/_ZN15ChainChompFence13InitResourcesEv.cpp:
+src/_ZN20daObjWanwanShutter_c13InitResourcesEv.cpp:
     complete
     .text start:0x02112ffc end:0x0211307c
 

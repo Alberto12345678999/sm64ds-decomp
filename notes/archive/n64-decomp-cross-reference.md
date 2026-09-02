@@ -306,7 +306,7 @@ All DS names below confirmed as live mangled symbols (`_ZTV*`, `_ZN*D1Ev`) in
 |---|---|---|---|
 | `bhvGoomba` | → | `Goomba` | ov084 |
 | `bhvBobomb` / `bhvKingBobomb` / `bhvBobombBuddy` | → | `BobOmb` / `KingBobOmb` / `BobOmbBuddy` | ov102 / ov078 / ov084 |
-| `bhvChainChomp` | → | `ChainChomp` (+`ChainChompFence`) | ov014 |
+| `bhvChainChomp` | → | `ChainChomp` (+`daObjWanwanShutter_c`) | ov014 |
 | `bhvSmallBully` / `bhvBigBully` | → | `Bully` / `BigBully` | ov064 |
 | `bhvSmallWhomp` (+King) | → | `Whomp` (`mIsKing` flag) | ov079 |
 | `bhvThwomp` | → | `Thwomp` | ov091 |

@@ -4,7 +4,7 @@
 #include "decl_Platform.h"
 #include "decl_common.h"
 /* recovered: globals resolved */
-/* resolved: VT = _ZTV15ChainChompFence */
+/* resolved: VT = _ZTV20daObjWanwanShutter_c */
 /* Reconstructed source-style name: SM64DS proves daObjWanwanShutter_c through
  * RTTI, allocation size, vtable identity, and the WANWAN_SHUTTER registry
  * profile; later EAD lineage supplies classInit. Exact original spelling is
@@ -12,6 +12,6 @@
 int *daObjWanwanShutter_c_classInit(void)
 {
     int *p = (int *)_ZN7fBase_cnwEj(800);
-    if (p) { _ZN10dBgActor_cC2Ev(p); p[0] = (int)_ZTV15ChainChompFence; }
+    if (p) { _ZN10dBgActor_cC2Ev(p); p[0] = (int)_ZTV20daObjWanwanShutter_c; }
     return p;
 }

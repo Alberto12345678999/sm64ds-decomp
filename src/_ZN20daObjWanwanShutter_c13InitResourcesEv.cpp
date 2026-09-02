@@ -1,9 +1,9 @@
 //cpp
-// @symbol _ZN15ChainChompFence13InitResourcesEv
+// @symbol _ZN20daObjWanwanShutter_c13InitResourcesEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 #include "decl_common.h"
 /* recovered: named members + shared header, real C++ method */
-#include "ChainChompFence.h"
+#include "daObjWanwanShutter_c.h"
 extern "C" {
 extern int _ZN5Model8LoadFileER13SharedFilePtr(void*);
 extern int _ZN9ModelBase7SetFileEP8BMD_Fileii(void*,int,int,int);
@@ -20,7 +20,7 @@ extern int data_ov014_021149b8[];
 extern int data_ov014_02114558[];
 extern int data_ov014_021149c0[];
 
-int ChainChompFence::InitResources()
+int daObjWanwanShutter_c::InitResources()
 {
   int m = _ZN5Model8LoadFileER13SharedFilePtr(data_ov014_021149c0);
   _ZN9ModelBase7SetFileEP8BMD_Fileii((char*)&mModel, m, 1, -1);

@@ -3835,18 +3835,18 @@
    "start": "0x2112e0c",
    "end": "0x21130ac",
    "classes": [
-    "ChainChompFence"
+    "daObjWanwanShutter_c"
    ],
    "n_functions_map": 8,
    "n_files": 8,
    "files": [
-    "src/_ZN15ChainChompFenceD1Ev.cpp",
-    "src/_ZN15ChainChompFenceD0Ev.cpp",
+    "src/_ZN20daObjWanwanShutter_cD1Ev.cpp",
+    "src/_ZN20daObjWanwanShutter_cD0Ev.cpp",
     "src/func_ov014_02112ea8.cpp",
-    "src/_ZN15ChainChompFence16CleanupResourcesEv.cpp",
-    "src/_ZN15ChainChompFence6RenderEv.cpp",
-    "src/_ZN15ChainChompFence8BehaviorEv.cpp",
-    "src/_ZN15ChainChompFence13InitResourcesEv.cpp",
+    "src/_ZN20daObjWanwanShutter_c16CleanupResourcesEv.cpp",
+    "src/_ZN20daObjWanwanShutter_c6RenderEv.cpp",
+    "src/_ZN20daObjWanwanShutter_c8BehaviorEv.cpp",
+    "src/_ZN20daObjWanwanShutter_c13InitResourcesEv.cpp",
     "src/daObjWanwanShutter_c_classInit.c"
    ],
    "ext_mix": {
