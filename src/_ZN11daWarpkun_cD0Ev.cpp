@@ -1,11 +1,11 @@
 //cpp
-// @symbol _ZN4WarpD0Ev
+// @symbol _ZN11daWarpkun_cD0Ev
 /* recovered: real C++ deleting destructor -- the compiler emits the whole body.
  * D0 is the deleting destructor (vtable slot); mwcc emits D0/D1/D2 from one
- * ~Warp() and objisolate keeps the variant this TU is bound to. Body is
+ * ~daWarpkun_c() and objisolate keeps the variant this TU is bound to. Body is
  * identical to the D1 file; delinks.txt binds each file to one symbol. */
-#include "Warp.h"
+#include "daWarpkun_c.h"
 
-Warp::~Warp()
+daWarpkun_c::~daWarpkun_c()
 {
 }

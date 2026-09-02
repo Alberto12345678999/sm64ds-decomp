@@ -189,7 +189,7 @@ ov002	0x020ec0a4	func_ov002_020ec0a4	_ZN8daTree_c6RenderEv	vtable slot 9
 ov002	0x020ec1d8	func_ov002_020ec1d8	_ZN8daTree_c8BehaviorEv	vtable slot 6
 ov002	0x020ec22c	func_ov002_020ec22c	_ZN8daTree_c13InitResourcesEv	vtable slot 0
 ov002	0x020ec32c	func_ov002_020ec32c	Tree_Spawn	spawnfunc
-ov002	0x020ec534	func_ov002_020ec534	Warp_Spawn	spawnfunc
+ov002	0x020ec534	func_ov002_020ec534	daWarpkun_c_Spawn	spawnfunc
 ov002	0x020ec56c	func_ov002_020ec56c	_ZN8YoshiEggD1Ev	vtable slot 16
 ov002	0x020ec5b4	func_ov002_020ec5b4	_ZN8YoshiEggD0Ev	vtable slot 17
 ov002	0x020edf54	func_ov002_020edf54	_ZN8YoshiEgg16CleanupResourcesEv	vtable slot 3
@@ -335,7 +335,7 @@ ov002	0x0210aab8	data_ov002_0210aab8	_ZTV10StarMarker	vtable alloc=0x1dc
 ov002	0x0210ab3c	data_ov002_0210ab3c	_ZTV9PowerStar	vtable alloc=?
 ov002	0x0210abdc	data_ov002_0210abdc	Tree_SpawnInfo	spawninfo
 ov002	0x0210ac00	data_ov002_0210ac00	_ZTV8daTree_c	vtable alloc=0x264
-ov002	0x0210ac98	data_ov002_0210ac98	Warp_SpawnInfo	spawninfo
+ov002	0x0210ac98	data_ov002_0210ac98	daWarpkun_c_SpawnInfo	spawninfo
 ov002	0x0210ad90	data_ov002_0210ad90	YoshiEgg_SpawnInfo	spawninfo
 ov002	0x0210ad90	YoshiEgg_SpawnInfo	g_profile_YOSHI_EGG	reconstructed profile global; literal ROM ID YOSHI_EGG+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov002	0x0210adb4	data_ov002_0210adb4	_ZTV8YoshiEgg	vtable alloc=?

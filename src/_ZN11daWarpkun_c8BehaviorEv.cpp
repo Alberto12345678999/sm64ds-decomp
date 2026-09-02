@@ -1,7 +1,7 @@
 //cpp
-// @symbol _ZN4Warp8BehaviorEv
-// recovered name: Warp::Behavior
-/* Warp::Behavior - vtable slot 6, overriding fBase_c::Behavior(). Migrated
+// @symbol _ZN11daWarpkun_c8BehaviorEv
+// recovered name: daWarpkun_c::Behavior
+/* daWarpkun_c::Behavior - vtable slot 6, overriding fBase_c::Behavior(). Migrated
  * to a real member: `c + 0xf8` is mdCcAc_c.otherOwner
  * (include/dCc_c.h, 0x24 into the embedded dCcAc_c at
  * 0xd4 -- 0xd4 + 0x24 = 0xf8) and `c + 0xd4` casts to that same member's
@@ -10,13 +10,13 @@
  * repurposed here as a warp-in-progress flag, not an angle). The found
  * actor's own fields (actorID 0x00c, mPlayerNo 0x6d8) are real Player
  * members once cast. */
-#include "Warp.h"
+#include "daWarpkun_c.h"
 #include "Player.h"
 
 extern "C" int IsPlayerWarping(int a0);
 extern "C" void WarpPlayer(int i, int val);
 
-s32 Warp::Behavior()
+s32 daWarpkun_c::Behavior()
 {
     unsigned int id = mdCcAc_c.otherOwner;
     if (id != 0) {
