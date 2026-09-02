@@ -30,7 +30,7 @@ is `False` for all 173 because the census joined on the wrong key. The real key 
 `entries[*].functions[*].legacy_source`. Joining on it:
 
 * `ov045/PoleLift` (7 files, text-verified + linkcheck record) — **in the safe pool**
-* `ov045/FallBlockBfs` (5 files, text-verified) — **in the safe pool**
+* `ov045/daObjKm2_Fall_Block_c` (5 files, text-verified) — **in the safe pool**
 * `ov002/Enemy` → `ov002 @0x20ad838 dEnemyBase_c` (30 files) — blocked pool
 * `ov002/Platform` → `ov002 @0x20ee42c dBgActor_c` (11) — blocked pool
 * `ov002/LevelObjects` → `ov002 @0x20fe3cc` (17) — blocked pool, **and it disagrees with the map**
@@ -54,7 +54,7 @@ pragmas into the output at all — it emits a warning comment — so members tha
 it lose it. Both directions are live. Affected Tier 1:
 
 ```
-ov029/ArrowLift(1/9)  ov029/CageLift(1/9)  ov029/RotatingPlatformWdw(1/5)
+ov029/ArrowLift(1/9)  ov029/CageLift(1/9)  ov029/daObjWc_Obj07_c(1/5)
 ov014/ShutterBob(1/6) ov030/RollingLogTtm(3/6) ov063/FallBlockBbh(2/5)
 ov015/FallBlockWf(2/5) ov015/RotatingPlatformWf(1/5) ov022/RotatingPlatformLll(1/5)
 ov036/RotatingPlatformRr(1/5) ov064/TiltingPlatformLll(2/5) ov016/FloatOnWaterPlatformJrb(1/4)
@@ -119,7 +119,7 @@ unavailable, not failed). `pcov` = how many of the TU's `.c` members the C++ cen
 independently proved C++.
 
 **B0 — calibration / regression control (no new source).**
-`ov045/PoleLift` (7 files), `ov045/FallBlockBfs` (5 files), both already `text-verified`.
+`ov045/PoleLift` (7 files), `ov045/daObjKm2_Fall_Block_c` (5 files), both already `text-verified`.
 Re-run `compile` + `verify` only. Proves the pinned toolchain, the ROM dump and the
 serial-build assumption reproduce a *known-green* transcript before a real pilot is
 spent. **Run first; 10 minutes, and it de-risks every later "is it me or is it the TU?"**
@@ -127,7 +127,7 @@ spent. **Run first; 10 minutes, and it de-risks every later "is it me or is it t
 **B1 — R0, ov002 + ov006 · 10 TUs / 59 files / net −49 / 1,011 lines**
 ```
 ov002 0x20b05d0  n=8  L=126  InvisiblePole            uncorrob
-ov002 0x20b0748  n=8  L=111  CameraTag                uncorrob
+ov002 0x20b0748  n=8  L=111  daCamTag_c                uncorrob
 ov002 0x20b07f8  n=8  L=121  VirtualDoor              uncorrob
 ov002 0x20b5734  n=7  L=164  BlueFlame                uncorrob
 ov002 0x20b6e08  n=5  L=67   WaterfallMist            uncorrob
@@ -144,12 +144,12 @@ cheapest possible probe of post-regeneration ov006.
 **B2 — R0, one TU per module · 10 TUs / 69 files / net −59 / 1,356 lines**
 ```
 ov009 0x2112078  n=7  L=116  Flag                     pcov=2
-ov012 0x21111a0  n=8  L=175  SwitchPillar
+ov012 0x21111a0  n=8  L=175  daObjC0_Switch_c
 ov013 0x21113bc  n=8  L=153  ClockPaintingHandShort   uncorrob
 ov014 0x2112e0c  n=8  L=197  ChainChompFence
 ov015 0x21111a0  n=7  L=106  PoleBillboard            uncorrob
-ov018 0x21126d4  n=4  L=60   PowerStarCreate          uncorrob
-ov019 0x211261c  n=5  L=93   IceSlideManager
+ov018 0x21126d4  n=4  L=60   daSCre_c                 uncorrob
+ov019 0x211261c  n=5  L=93   daSldMng_c
 ov021 0x2112db4  n=6  L=105  ShutterHmc
 ov022 0x2111980  n=8  L=181  LavaBridge               uncorrob
 ov022 0x2111cac  n=8  L=170  LavaSeesaw               uncorrob
@@ -161,15 +161,17 @@ ov022 0x2111f6c  n=5  L=86   FloatingFloorLllSmall            pcov=3
 ov022 0x2112380  n=4  L=60   daObjFl_Fall_Block_c             pcov=2
 ov022 0x2112498  n=6  L=100  RollingLogLll
 ov026 0x21118b8  n=6  L=115  Submarine
-ov029 0x21111a0  n=4  L=135  FloatOnWaterPlatformWdwSquare
-ov029 0x2111ea4  n=4  L=124  FloatOnWaterPlatformWdwRectangle
+ov029 0x21111a0  n=4  L=135  daObjWcObj01_c
+ov029 0x2111ea4  n=4  L=124  daObjWcObj06_c
 ov036 0x2111580  n=8  L=146  ShipWing
 ov036 0x2111d14  n=7  L=155  ArmedRotatingPlatform
 ov036 0x2111f8c  n=4  L=75   daObjRc_Dorifu_c
 ov043 0x2111518  n=5  L=80   RickshawPlatformBdw              pcov=3
 ```
-`FloatOnWaterPlatformWdwSquare`/`Rectangle` are adjacent and near-identical — this batch
-is where shape-family amortization first pays.
+`daObjWcObj01_c` and `daObjWcObj06_c` — the Wdw square and rectangle floating
+platforms, coined `FloatOnWaterPlatformWdwSquare`/`...Rectangle` before the
+cartridge's own names were adopted — are adjacent and near-identical, so this
+batch is where shape-family amortization first pays.
 
 **B4 — R0 tail · 7 TUs / 37 files / net −30 / 726 lines**
 ```
@@ -178,7 +180,7 @@ ov044 0x21111a0  n=7  L=88   OrangeBallBillboard   WHOLEMOD (module-edge both en
 ov045 0x2111b14  n=5  L=99   FloatingFloorBfs
 ov045 0x2111c30  n=5  L=74   TiltingPlatformBfs    pcov=3
 ov047 0x21111a0  n=4  L=68   daObjKm3_Kurumajiku_c pcov=2
-ov047 0x21114d4  n=5  L=96   RickshawPlatformBs
+ov047 0x21114d4  n=5  L=96   daObjKm3_Dorifu_c
 ov085 0x212edac  n=7  L=226  WallSign
 ```
 B4 completes ov045: with B0's two, all four ov045 safe TUs are done, making ov045 the
@@ -241,10 +243,10 @@ ov091 0x2132404  n=7  L=186  SlidingPlatformWf  CONF2
 ```
 ov002 0x20b3298  n=7  L=164  daObjAbuku_c           NORM2
 ov002 0x20bc414  n=8  L=130  Seaweed                NORM1
-ov002 0x20ebf8c  n=8  L=228  Tree                   NORM4
+ov002 0x20ebf8c  n=8  L=228  daTree_c               NORM4
 ov006 0x20ede18  n=2  L=30   MgWhichWiggler         NORM1
 ov006 0x2119824  n=2  L=29   MgBingoBallSlotsShot   NORM1
-ov013 0x21111a0  n=8  L=150  ClockPaintingPendulum  NORM1 pcov=4
+ov013 0x21111a0  n=8  L=150  daObjClockHuriko_c  NORM1 pcov=4
 ov027 0x21111a0  n=8  L=204  SlidingIce             NORM1
 ov029 0x21121a4  n=9  L=245  WDW_Water              NORM1
 ov030 0x21111a0  n=8  L=236  daObjHmBskt_c              NORM2 pcov=2
@@ -267,7 +269,7 @@ ov016 0x2112ef4  n=4  L=82   FloatOnWaterPlatformJrb  1/4
 ov022 0x21115a8  n=5  L=106  RotatingPlatformLll      1/5
 ov029 0x211137c  n=9  L=243  ArrowLift                1/9  CONF2
 ov029 0x2111ac4  n=9  L=230  CageLift                 1/9  NORM1
-ov029 0x2112080  n=5  L=83   RotatingPlatformWdw      1/5  pcov=3
+ov029 0x2112080  n=5  L=83   daObjWc_Obj07_c          1/5  pcov=3
 ov030 0x211155c  n=6  L=96   RollingLogTtm            3/6  pcov=4
 ov036 0x2111444  n=5  L=107  RotatingPlatformRr       1/5
 ```
@@ -319,7 +321,7 @@ python tools/tubuild.py linkcheck <ID> --no-rom
 ```
 
 `<ID>` is `<module>/<tail>` where `tail` is the single class name, `"+".join(sorted(classes))`
-for a multi-class TU (`ov027/ChillBully+daIDonketu_c`), or `@<start>-<end>` for an
+for a multi-class TU (`ov027/daIDonketu_c+daIDonketu_c`), or `@<start>-<end>` for an
 unattributed run. If the tail is not unique in the module it becomes `Class@<start8hex>`.
 Quote the multi-class ones in the shell.
 
@@ -521,7 +523,7 @@ python tu_preflight.py --batch B3
 | **P2** | **local-struct + extern collision scan** — replay `tubuild._merge_field`, print both texts side by side; flag same-key/same-text `struct` decls in ≥3 members as advisory | silent layout divergence (§2.5) | **WARN**; count must equal the batch's `CONFn`, all resolved before `verify` |
 | **P3** | **`decl_common.h` usage** — count members including it, print what each actually consumes | it sometimes declares a TU's own functions as **data** → silent mismatch | **WARN**. Policy: drop it and restate the 3–17 lines. Median distinct includes is 6–7; usage 0–6 members/TU (highest `ov016/ShipUp` 6/8) |
 | **P4** | **sinit accounting** — module `sinits` / `ctor_entries` / `sinit_vs_tu` / `corroborated`, plus this TU's share | two merged TUs that each carried a sinit must produce **one** | **FAIL** if `sinit_vs_tu != "ok"`. **WARN** on `corroborated:false` (67 of 100 Tier-1 — *unavailable*, not *failed*). Corroboration is module-wide, **not narrowed to this TU** |
-| **P5** | **manifest dedupe** — join on `entries[*].functions[*].legacy_source`, **not** the census flag | redoing PoleLift/FallBlockBfs, or fighting an entry that already claims a member (§0.2) | **FAIL** on partial overlap; route whole-TU overlap to B0 as a re-verify |
+| **P5** | **manifest dedupe** — join on `entries[*].functions[*].legacy_source`, **not** the census flag | redoing PoleLift/daObjKm2_Fall_Block_c, or fighting an entry that already claims a member (§0.2) | **FAIL** on partial overlap; route whole-TU overlap to B0 as a re-verify |
 | **P6** | **completeness re-derived** — `SP.path_for(sym)` not `None`, `is_complete(module, path)`, assert `len(unit_functions) == len(census files)` | the census drops sourceless functions (§0.5). Without `complete`, dsd supplies the range from ROM bytes and **your source is never compiled** | **FAIL** on any missing or incomplete. All 100 Tier-1 pass today; 3 Tier-2 fail |
 | **P7** | **`create`-ability probe** — `split_legacy_source`, on error retry `tu_create.normalize` | discovering mid-batch that `create` aborts; the `struct`-return misparse (§2.2) | **INFO**: clean / normalizer-required / HAND-ASSEMBLE. FAIL only on the third |
 | **P8** | **inert-marker + blocker cross-check** — `text.startswith("//cpp")` vs `"//cpp" in text[:400]`; assert no member is in the by-value / not-in-delinks / extra-sections / NONMATCHING sets | a file that looks C++ and compiles as C99; a member invisible to the byte gates | **REPORT ONLY, do not tidy.** All four blocker sets currently have 0 safe-pool hits |
@@ -538,7 +540,7 @@ Chosen over the smaller candidates because:
 
 * **Boundary confidence is not inferred at all.** ov023 has exactly one TU; `inspect`
   reports `left=edge, right=edge`. There is no cut to be wrong about. Contrast the
-  4-file `ov018/PowerStarCreate`, smaller but sitting on two inferred `high` boundaries.
+  4-file `ov018/daSCre_c`, smaller but sitting on two inferred `high` boundaries.
 * **Sinit accounting is exactly satisfied**: 1 sinit / 1 `.ctor` entry, `sinit_vs_tu=ok`,
   `corroborated=True`, 1 TU. The tightest corroboration available anywhere in the pool.
 * **The language variable is pre-settled**: all 4 `.c` members are census-proven C++
@@ -569,13 +571,13 @@ vtable-anchor / class-form; go to `decomp-cpp-class-form` before touching the me
 
 Then run `python tools/rombuild.py` once, serially. It is the final verdict.
 
-### Pilot 2 — `ov027/ChillBully+daIDonketu_c` (multi-class + normalizer)
+### Pilot 2 — `ov027/daIDonketu_c+daIDonketu_c` (multi-class + normalizer)
 
 `.text 0x021115c4..0x021118c8` · 7 files · 193 lines · high/high · `corroborated:false` ·
 1 file needs the normalizer.
 
 New mechanisms: (a) **two class labels in one TU** — `inspect` reports `_ZTI12daIDonketu_c`,
-`_ZTS12daIDonketu_c`, `_ZTV10ChillBully`, i.e. RTTI for one class and a vtable for the
+`_ZTS12daIDonketu_c`, `_ZTV12daIDonketu_c`, i.e. RTTI for one class and a vtable for the
 other, the sharpest available test that the grouping is real; (b) the `+`-joined ID path;
 (c) the normalizer in isolation; (d) an *inferred* high/high boundary; (e) `corroborated:false`.
 
@@ -746,7 +748,7 @@ See `notes/plan-cpp-conversion-queue.md`. Sequencing rules: §8 of
    independently proven only 75. The merge reaches 166 files the per-file evidence cannot.
 2. **The class → key-function-TU mapping** from `inspect`, for every TU touched.
    Notable multi-class case: ov027 carries `_ZTI/_ZTS 12daIDonketu_c` **and**
-   `_ZTV10ChillBully` in one TU.
+   `_ZTV12daIDonketu_c` in one TU.
 3. **Every RTTI-vs-coined-name contradiction hit.** `ov070/FlameChomp` is Tier-2 rank 1,
    and FlameChomp is already known to sit in `daKrpa_c`'s vtable. The ROM name wins.
 4. **Findings §0.1–0.5**, which invalidate three census fields the conversion side may
@@ -804,9 +806,9 @@ where noted.**
 | control | result |
 |---|---|
 | `ov045/PoleLift` | **7/7 MATCH, objisolate clean, reloc-destinations clean → TEXT-VERIFIED.** The one out-of-order pair is the D1/D0 group, the precedented exception. |
-| `ov045/FallBlockBfs` | **3/5 — NOT verified.** Both destructors `999 word(s) differ` with wrong reloc destinations (`_ZTV10dBgActor_c != 0x021130f4:ov045`). |
+| `ov045/daObjKm2_Fall_Block_c` | **3/5 — NOT verified.** Both destructors `999 word(s) differ` with wrong reloc destinations (`_ZTV10dBgActor_c != 0x021130f4:ov045`). |
 
-`FallBlockBfs` is banked in `config/tu_manifest.d/` as `text-verified` and does not
+`daObjKm2_Fall_Block_c` is banked in `config/tu_manifest.d/` as `text-verified` and does not
 reproduce today. **A banked status is not evidence.** Re-verify before trusting any entry.
 
 ### Pilot 1 `ov023/Squasher`: 9/9 MATCH → TEXT-VERIFIED
@@ -857,7 +859,7 @@ Run because they were the cheapest, not because the others were blocked.
 | `ov036/daObjRcCarpet_c` | 8 | in progress — one vtable declared twice (`int[]` vs `void*[]`), then `data_ov002_0210af70` redeclared |
 | `ov036/daObjRc_Dorifu_c` | 4 | blocked on `mMovingMeshCollider` — the class header does not declare the member. **Header work, not merge work.** |
 | `ov043/daObjKm1_Dorifu_c` | 4 | same |
-| `ov047/RickshawPlatformBs` | 5 | same, plus an ambiguous overload |
+| `ov047/daObjKm3_Dorifu_c` | 5 | same, plus an ambiguous overload |
 | `ov065/TTC_MovingBar` | 8 | `class 'TTC_MovingBar' redefined` — the loud form of the local-struct collision |
 | `ov065/daObjCtMecha05_c` | 8 | `data_ov065_0211c0c8` redeclared, `short` vs other |
 | `ov006/MgTrampolineTerror` | 2 | overload conflict at the extern block |
