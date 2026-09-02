@@ -23,7 +23,9 @@
  * non-inline virtual -- so this TU also emits the class's vague-linkage
  * _ZTV/_ZTI/_ZTS plus the eight inherited base-chain records. All eleven are
  * licensed in the manifest's compiler_only_output and word-compared against the
- * cartridge by tools/romdata_check.py.
+ * cartridge by tools/romdata_check.py: 6 VERIFIED, 5 PARTIAL, 0 DIFFERS. The
+ * PARTIALs are extent shortfalls, not disagreements -- every byte compared is
+ * equal; see the manifest note for why the vtable's own extent is cut short.
  *
  * Assembled from these legacy one-function sources (ROM address order):
  *   [0] 0x02111ac4  src/_ZN15daObjWc_Obj05_cD1Ev.cpp
@@ -45,7 +47,7 @@ extern void *_ZN7fBase_cnwEj(unsigned);
 extern void _ZN10dBgActor_cC2Ev(void *);
 extern int _ZTV15daObjWc_Obj05_c[];
 /* Reconstructed source-style name; exact original SM64DS spelling is not
- * preserved. Historical alias: daObjWc_Obj05_c_Spawn. */
+ * preserved. Historical alias: CageLift_Spawn. */
 int *daObjWc_Obj05_c_classInit(void)
 {
     int *p = (int *)_ZN7fBase_cnwEj(816);

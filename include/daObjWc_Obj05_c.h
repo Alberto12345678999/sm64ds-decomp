@@ -6,7 +6,7 @@
 
 /* TWO WITNESSES, and they close on each other:
  *
- *   daObjWc_Obj05_c_classInit (historical alias daObjWc_Obj05_c_Spawn) allocates
+ *   daObjWc_Obj05_c_classInit (historical alias CageLift_Spawn) allocates
  *                 816 = 0x330, calls dBgActor_c::dBgActor_c(), stores _ZTV15daObjWc_Obj05_c,
  *                 then the members below in this order.
  *   ~daObjWc_Obj05_c   the same members destroyed in reverse, then ~dBgActor_c.
@@ -18,9 +18,11 @@
  * is deliberately not redeclared here.
  */
 struct daObjWc_Obj05_c : dBgActor_c {
-    /* 0x320..0x32c, folded in from the flat include/daObjWc_Obj05_c.h that used
-     * to declare this same class a second time, un-inherited, and be cast to
-     * from `this` inside InitResources and Behavior. Both spellings were
+    /* 0x320..0x32c, folded in from a SECOND header that used to declare this
+     * same class over again, un-inherited, and be cast to from `this` inside
+     * InitResources and Behavior. (That header held the cartridge name while
+     * the real declaration below was still called CageLift; folding it in is
+     * what freed the name for this file.) Both spellings were
      * compiled into the ROM at once. The names are that header's own; they are
      * placeholders and renaming them cannot change codegen. Its `mPosY` (0x060)
      * and `mAngleY` (0x08e) are NOT repeated here -- they are dActor_c's own
