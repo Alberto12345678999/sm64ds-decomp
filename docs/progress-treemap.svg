@@ -22489,7 +22489,7 @@ matched: yes</title></rect><rect x="877.78" y="301.77" width="73.78" height="6.1
 module: ov006
 addr: 0x020e3578
 size: 680 bytes
-matched: yes</title></rect><rect x="951.56" y="301.77" width="5.64" height="6.16" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>MgShuffleShell_Spawn
+matched: yes</title></rect><rect x="951.56" y="301.77" width="5.64" height="6.16" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>dScMgCurling_c_classInit
 module: ov006
 addr: 0x020e3820
 size: 52 bytes
@@ -22701,7 +22701,7 @@ matched: yes</title></rect><rect x="615.65" y="325.72" width="78.15" height="7.3
 module: ov006
 addr: 0x020e6894
 size: 864 bytes
-matched: yes</title></rect><rect x="693.80" y="325.72" width="4.70" height="7.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_020e6bf4
+matched: yes</title></rect><rect x="693.80" y="325.72" width="4.70" height="7.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>dScMgCurling2_c_classInit
 module: ov006
 addr: 0x020e6bf4
 size: 52 bytes
@@ -42397,7 +42397,7 @@ matched: yes</title></rect><rect x="1391.59" y="707.89" width="3.20" height="18.
 module: ov085
 addr: 0x0212d46c
 size: 124 bytes
-matched: yes</title></rect><rect x="1391.59" y="726.33" width="3.20" height="9.52" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>RabbitKey_Spawn
+matched: yes</title></rect><rect x="1391.59" y="726.33" width="3.20" height="9.52" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daObj_Mip_Key_c_classInit
 module: ov085
 addr: 0x0212d4e8
 size: 64 bytes
