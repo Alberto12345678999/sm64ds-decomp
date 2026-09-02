@@ -2404,7 +2404,7 @@
     "src/_ZN8CageLift13InitResourcesEv.cpp",
     "src/func_ov029_02111e40.cpp",
     "src/func_ov029_02111e60.c",
-    "src/CageLift_Spawn.c"
+    "src/daObjWc_Obj05_c_classInit.c"
    ],
    "ext_mix": {
     ".cpp": 6,
@@ -2466,7 +2466,7 @@
     "src/_ZN9WDW_Water6RenderEv.cpp",
     "src/_ZN9WDW_Water8BehaviorEv.cpp",
     "src/_ZN9WDW_Water13InitResourcesEv.cpp",
-    "src/WDW_Water_Spawn.c"
+    "src/daObjWc_Mizu_c_classInit.c"
    ],
    "ext_mix": {
     ".cpp": 7,
@@ -5970,7 +5970,7 @@
     "src/_ZN13daObjHmBskt_c6RenderEv.cpp",
     "src/_ZN13daObjHmBskt_c8BehaviorEv.cpp",
     "src/_ZN13daObjHmBskt_c13InitResourcesEv.cpp",
-    "src/UkikiCage_Spawn.c"
+    "src/daObjHmBskt_c_classInit.c"
    ],
    "ext_mix": {
     ".cpp": 6,
@@ -8673,7 +8673,7 @@
     "src/_ZN13RollingLogTtm16CleanupResourcesEv.c",
     "src/_ZN13RollingLogTtm8BehaviorEv.c",
     "src/_ZN13RollingLogTtm13InitResourcesEv.c",
-    "src/RollingLogTtm_Spawn.c"
+    "src/daObjHmMaruta_c_classInit.c"
    ],
    "ext_mix": {
     ".cpp": 1,

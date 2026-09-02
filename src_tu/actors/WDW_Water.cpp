@@ -15,14 +15,14 @@
  *   [5] 0x02112320  src/_ZN9WDW_Water6RenderEv.cpp
  *   [6] 0x02112354  src/_ZN9WDW_Water8BehaviorEv.cpp
  *   [7] 0x021124d0  src/_ZN9WDW_Water13InitResourcesEv.cpp
- *   [8] 0x021125f8  src/WDW_Water_Spawn.c
+ *   [8] 0x021125f8  src/daObjWc_Mizu_c_classInit.c
  */
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 8 -- WDW_Water_Spawn, 0x021125f8, size 0x38 */
+/* ROM ordinal 8 -- daObjWc_Mizu_c_classInit, 0x021125f8, size 0x38 */
 /* -------------------------------------------------------------------------- */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-// @symbol WDW_Water_Spawn
+// @symbol daObjWc_Mizu_c_classInit
 /* recovered: vtable identified, globals resolved, declarations from a shared header */
 #include "decl_ActorBase.h"
 #include "decl_Platform.h"
@@ -30,7 +30,9 @@ extern "C" {  /* .c-derived member: C linkage for the whole block */
 #include "decl_common.h"
 /* recovered: vtable identified, globals resolved */
 /* resolved: VT0 = _ZTV9WDW_Water */
-int *WDW_Water_Spawn(void)
+/* Reconstructed source-style name; exact original SM64DS spelling is not
+ * preserved. Historical alias: WDW_Water_Spawn. */
+int *daObjWc_Mizu_c_classInit(void)
 {
     int *p = (int *)_ZN7fBase_cnwEj(840);
     if (p) {

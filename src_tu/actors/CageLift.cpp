@@ -15,17 +15,19 @@
  *   [5] 0x02111d6c  src/_ZN8CageLift13InitResourcesEv.cpp
  *   [6] 0x02111e40  src/func_ov029_02111e40.cpp
  *   [7] 0x02111e60  src/func_ov029_02111e60.c
- *   [8] 0x02111e74  src/CageLift_Spawn.c
+ *   [8] 0x02111e74  src/daObjWc_Obj05_c_classInit.c
  */
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 8 -- CageLift_Spawn, 0x02111e74, size 0x30 */
+/* ROM ordinal 8 -- daObjWc_Obj05_c_classInit, 0x02111e74, size 0x30 */
 /* -------------------------------------------------------------------------- */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 extern void *_ZN7fBase_cnwEj(unsigned);
 extern void _ZN10dBgActor_cC2Ev(void *);
 extern int _ZTV8CageLift[];
-int *CageLift_Spawn(void)
+/* Reconstructed source-style name; exact original SM64DS spelling is not
+ * preserved. Historical alias: CageLift_Spawn. */
+int *daObjWc_Obj05_c_classInit(void)
 {
     int *p = (int *)_ZN7fBase_cnwEj(816);
     if (p) { _ZN10dBgActor_cC2Ev(p); p[0] = (int)&_ZTV8CageLift[2]; /* +8: this TU defines the vtable */ }
