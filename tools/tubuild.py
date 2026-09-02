@@ -1680,6 +1680,41 @@ def validate_tu_entry_splice(delinks_path, span_start, span_end, tu_rel,
     return header, entries, inside, claims, reasons
 
 
+def validate_enrolled_intact_tu_entry(delinks_path, tu_rel, section_claims):
+    """Validate an already-enrolled TU whose ownership is exactly the manifest.
+
+    Ordinary ``linkcheck`` normally replaces N legacy text entries in a disposable
+    config.  A promoted text-only TU can later grow into an intact TU, however, and
+    the tracked candidate config then already contains the final one-object entry.
+    Requiring a second destination path or pretending the historical per-function
+    files are still enrolled would make that transition impossible to prove.
+
+    This path is intentionally narrower than the splice path: exactly one entry must
+    name ``tu_rel``, it must be ``complete``, and its complete section inventory must
+    equal the manifest claims.  No subset, overlap, storage alias, or implicit gap is
+    accepted.  The caller still compiles a raw object and reruns every byte,
+    relocation, symbol, module, and full-ROM gate before recording evidence.
+    """
+    _header, entries = parse_delinks_file(delinks_path)
+    matches = [(idx, body) for idx, (rel, body) in enumerate(entries) if rel == tu_rel]
+    reasons = []
+    if len(matches) != 1:
+        reasons.append(f"enrolled intact TU {tu_rel} appears {len(matches)} time(s), "
+                       "expected exactly 1")
+        return reasons
+    _idx, body = matches[0]
+    if not entry_is_complete(body):
+        reasons.append(f"enrolled intact TU {tu_rel} is not `complete`")
+    actual = sorted(entry_sections(body))
+    expected = sorted((claim.get("module_section", claim["name"]),
+                       claim["start"], claim["end"])
+                      for claim in section_claims)
+    if actual != expected:
+        reasons.append(f"enrolled intact TU {tu_rel} sections do not exactly equal "
+                       f"the manifest claims: enrolled={actual!r}, expected={expected!r}")
+    return reasons
+
+
 def splice_tu_entry(delinks_path, span_start, span_end, tu_rel, expected_legacy,
                     section_claims=None):
     """Replace the per-function entries tiling [span_start, span_end) with ONE TU entry.
@@ -2089,6 +2124,23 @@ def _raw_configured_symbol_address(symbol, public_address, addend):
     if symbol.startswith("_ZTV") and addend >= OI.VTABLE_PREAMBLE:
         address -= OI.VTABLE_PREAMBLE
     return address
+
+
+def _relocation_destination_address(reloc_type, symbol, public_address, addend,
+                                    configured_public=False):
+    """Return the symbol destination represented by one ELF relocation.
+
+    ARM branch relocations carry the architecture's PC-bias correction in their
+    addend (mwcc emits -8 for the ordinary ARM calls in static initializers).  That
+    correction participates in encoding ``S + A - P`` but does not mean the call's
+    destination is eight bytes before ``S``.  Absolute relocations continue through
+    the existing public-vtable normalization path.
+    """
+    if reloc_type in (1, 10, 28, 29):
+        return public_address
+    if configured_public:
+        return _raw_configured_symbol_address(symbol, public_address, addend)
+    return public_address + addend
 
 
 def apply_compiler_only_policy(obj_bytes, entry, homes=None):
@@ -2557,6 +2609,96 @@ def apply_externalized_output_policy(obj_bytes, entry, homes=None,
                  "verification": verification}, []
 
 
+def apply_undefined_symbol_alias_policy(obj_bytes, entry, name_index=None):
+    """Canonicalize exact compiler imports to independently configured ROM names."""
+    raw = entry.get("undefined_symbol_aliases", [])
+    if raw is None:
+        raw = []
+    if not isinstance(raw, list):
+        return None, {"requested": [], "renamed": []}, \
+            ["undefined_symbol_aliases must be a list"]
+    index = RA.build_name_index() if name_index is None else name_index
+    mapping, requested, reasons = {}, [], []
+    for ordinal, row in enumerate(raw):
+        label = f"undefined_symbol_aliases[{ordinal}]"
+        if not isinstance(row, dict):
+            reasons.append(f"{label} is not an object")
+            continue
+        missing = [key for key in ("symbol", "canonical_symbol", "canonical_module",
+                                   "canonical_address", "evidence") if not row.get(key)]
+        if missing:
+            reasons.append(f"{label} is missing {missing}")
+            continue
+        old, new = str(row["symbol"]), str(row["canonical_symbol"])
+        try:
+            address = int(row["canonical_address"], 0)
+        except (TypeError, ValueError):
+            reasons.append(f"{label} has an invalid canonical_address")
+            continue
+        resolved = index.get(new) or RA.resolve_candidate(new, index)
+        module = RL.normalize_module(row["canonical_module"])
+        if resolved is None or RL.normalize_module(resolved[0]) != module \
+                or resolved[1] != address:
+            reasons.append(f"{label} canonical symbol {new} does not resolve exactly "
+                           f"to {module}:0x{address:08x}")
+            continue
+        if old in mapping:
+            reasons.append(f"duplicate undefined alias source {old}")
+            continue
+        mapping[old] = new
+        requested.append({"from": old, "to": new, "module": module,
+                          "address": f"0x{address:08x}", "evidence": row["evidence"]})
+    if reasons:
+        return None, {"requested": requested, "renamed": []}, reasons
+    out, plan = OI.rename_undefined_symbols(obj_bytes, mapping)
+    if out is None:
+        return None, {"requested": requested, "renamed": plan.get("renamed", []),
+                      "objisolate": plan}, [f"undefined symbol alias rewrite refused: "
+                                            f"{plan.get('error')}"]
+    return out, {"requested": requested, "renamed": plan.get("renamed", []),
+                 "objisolate": plan}, []
+
+
+def apply_symbol_binding_policy(obj_bytes, entry):
+    """Apply exact manifest-licensed binding rewrites to owned compiler locals."""
+    raw = entry.get("symbol_binding_rewrites", [])
+    if raw is None:
+        raw = []
+    if not isinstance(raw, list):
+        return None, {"requested": [], "rewritten": []}, \
+            ["symbol_binding_rewrites must be a list"]
+    owned = {row["symbol"] for _section, row in manifest_owned_symbol_rows(entry)}
+    mapping, requested, reasons = {}, [], []
+    for ordinal, row in enumerate(raw):
+        label = f"symbol_binding_rewrites[{ordinal}]"
+        if not isinstance(row, dict):
+            reasons.append(f"{label} is not an object")
+            continue
+        missing = [key for key in ("symbol", "from", "to", "evidence")
+                   if not row.get(key)]
+        if missing:
+            reasons.append(f"{label} is missing {missing}")
+            continue
+        symbol = str(row["symbol"])
+        if symbol not in owned:
+            reasons.append(f"{label} names unowned symbol {symbol}")
+            continue
+        if symbol in mapping:
+            reasons.append(f"duplicate binding rewrite for {symbol}")
+            continue
+        mapping[symbol] = (row["from"], row["to"])
+        requested.append(dict(row))
+    if reasons:
+        return None, {"requested": requested, "rewritten": []}, reasons
+    out, plan = OI.rewrite_symbol_bindings(obj_bytes, mapping)
+    if out is None:
+        return None, {"requested": requested,
+                      "rewritten": plan.get("rewritten", []), "objisolate": plan}, \
+            [f"symbol binding rewrite refused: {plan.get('error')}"]
+    return out, {"requested": requested, "rewritten": plan.get("rewritten", []),
+                 "objisolate": plan}, []
+
+
 def _align_up(value, alignment):
     alignment = max(1, int(alignment or 1))
     return (value + alignment - 1) & ~(alignment - 1)
@@ -2933,6 +3075,10 @@ def verify_owned_sections(obj_bytes, entry, claims, name_index=None,
         if got is None:
             reasons.append(f"licensed {section} symbol {name} is not emitted there")
             continue
+        expected_binding = expected.get("binding")
+        if expected_binding is not None and got["bind"] != expected_binding:
+            reasons.append(f"licensed {section} symbol {name} binding {got['bind']}, "
+                           f"manifest says {expected_binding}")
         if address_error:
             reasons.append(f"licensed {section} symbol {name}: {address_error}")
         elif want_addr is None:
@@ -2941,7 +3087,8 @@ def verify_owned_sections(obj_bytes, entry, claims, name_index=None,
             reasons.append(f"licensed {section} symbol {name} links at "
                            f"0x{got['address']:08x}, manifest emitted address says "
                            f"0x{want_addr:08x}")
-        if section == ".bss" and public_addr is not None:
+        if section == ".bss" and public_addr is not None \
+                and expected_binding != "STB_LOCAL":
             configured = {(RL.normalize_module(mod), addr)
                           for mod, addr in symbol_homes.get(name, [])}
             if (owner_module, public_addr) not in configured:
@@ -3011,7 +3158,8 @@ def verify_owned_sections(obj_bytes, entry, claims, name_index=None,
                 base = manifest_addrs[rel["symbol"]]
                 candidate_module = owner_module
             else:
-                resolved = RA.resolve_candidate(rel["symbol"], name_index)
+                resolved = name_index.get(rel["symbol"]) \
+                    or RA.resolve_candidate(rel["symbol"], name_index)
                 if resolved:
                     candidate_module = (RL.normalize_module(resolved[0])
                                         if resolved[0] is not None else None)
@@ -3019,11 +3167,10 @@ def verify_owned_sections(obj_bytes, entry, claims, name_index=None,
                     configured_public_base = True
             cand_addr = None
             if base is not None:
-                if configured_public_base and not normalized_undefined_vtables:
-                    cand_addr = _raw_configured_symbol_address(
-                        rel["symbol"], base, rel["addend"])
-                else:
-                    cand_addr = base + rel["addend"]
+                cand_addr = _relocation_destination_address(
+                    rel["type"], rel["symbol"], base, rel["addend"],
+                    configured_public=(configured_public_base
+                                       and not normalized_undefined_vtables))
             cfg = cfgmap.get(source)
             expected = expected_relocs.get(source)
             expected_addend = expected.get("addend") if expected else None
@@ -4356,7 +4503,44 @@ def cmd_linkcheck(args):
 
     if baseline:
         enrolled_before = RB.enrolled(cfg_root)
-        intact_before = RB.intact_tu_policies(enrolled_before)
+        # A strict control excludes every exact enrolled intact-object candidate,
+        # including one whose admission proof is the thing this control will enable.
+        # Requiring the old proof here is circular.  Demotion is safe only after the
+        # disposable config entry is independently shown to equal every current
+        # manifest claim exactly; the control then serves those ranges from the
+        # extracted retail module rather than compiling any candidate source.
+        counts = collections.Counter(enrolled_before)
+        intact_before, control_reasons = {}, []
+        for candidate in data.get("entries", []):
+            if candidate.get("production_mode") != "intact-object" \
+                    or candidate.get("status") != "promoted":
+                continue
+            source = str(candidate.get("promoted_source")
+                         or candidate.get("source", "")).replace("\\", "/")
+            if counts[source] != 1:
+                control_reasons.append(
+                    f"{candidate.get('id', source)}: strict control candidate {source!r} "
+                    f"is enrolled {counts[source]} time(s), expected exactly 1")
+                continue
+            candidate_claims, reasons = manifest_section_claims(candidate)
+            if reasons:
+                control_reasons.extend(
+                    f"{candidate.get('id', source)}: {reason}" for reason in reasons)
+                continue
+            candidate_dl = module_dir_in(
+                cfg_root, candidate.get("module")) / "delinks.txt"
+            reasons = validate_enrolled_intact_tu_entry(
+                candidate_dl, source, candidate_claims)
+            if reasons:
+                control_reasons.extend(
+                    f"{candidate.get('id', source)}: {reason}" for reason in reasons)
+                continue
+            intact_before[source] = candidate
+        if control_reasons:
+            print("\nREFUSED -- strict control intact-TU inventory is not exact:")
+            for reason in control_reasons:
+                print(f"  {reason}")
+            return 1
         demoted, reasons = demote_complete_sources(cfg_root, intact_before)
         if reasons:
             print("\nREFUSED -- strict control could not exclude every intact TU:")
@@ -4376,6 +4560,7 @@ def cmd_linkcheck(args):
     claims = []
     replaced = []
     scratch_rewrite = False
+    enrolled_intact_candidate = False
     if not baseline:
         claims, claim_reasons = manifest_section_claims(entry)
         if claim_reasons:
@@ -4389,7 +4574,27 @@ def cmd_linkcheck(args):
         if not dl.is_file():
             raise SystemExit(f"no delinks.txt for module {module} at {dl}")
         legacy_rels = [f["legacy_source"] for f in entry["functions"]]
-        if partial:
+        enrolled_paths = [rel for rel, _body in parse_delinks_file(dl)[1]]
+        if entry["source"] in enrolled_paths and not partial and not partitioned:
+            reasons = validate_enrolled_intact_tu_entry(dl, entry["source"], claims)
+            if reasons:
+                print("\nREFUSED -- the already-enrolled intact TU candidate is not "
+                      "exactly the manifest-owned object:")
+                for r in reasons:
+                    print(f"  {r}")
+                return 1
+            enrolled_intact_candidate = True
+            replaced = [entry["source"]]
+            print("      delinks.txt already contains the exact final intact-object "
+                  "entry; no scratch splice is needed:")
+            print(f"        {entry['source']}: complete")
+            for claim in claims:
+                output_name = claim.get("module_section", claim["name"])
+                label = (claim["name"] if output_name == claim["name"] else
+                         f"{claim['name']} -> {output_name}")
+                print(f"          {label:16} 0x{claim['start']:08x}.."
+                      f"0x{claim['end']:08x}")
+        elif partial:
             # No splice. The whole point of partial isolation is that the CONFIG does
             # not move: the same N entries, the same N object paths, the same tiling of
             # the span -- only the source that produced those objects' bytes changes.
@@ -4531,10 +4736,22 @@ def cmd_linkcheck(args):
                                 enabled=not args.no_cache)
     init_srcs = RB.init_section_sources()
     syms = RB.enrolled_symbols()
+    intact_override = None
+    if enrolled_intact_candidate:
+        # Keep every previously admitted intact TU on its production preparation
+        # path, but admit this one candidate only inside the disposable proof run.
+        # Its initially prepared object is discarded below and rebuilt raw before
+        # the explicit [4b] audit, so this does not use the proof being created as
+        # evidence for itself.
+        without_candidate = dict(data)
+        without_candidate["entries"] = [
+            row for row in data.get("entries", []) if row is not entry]
+        intact_override = RB.intact_tu_policies(srcs, manifest=without_candidate)
+        intact_override[entry["source"]] = entry
     t0 = time.time()
     failures, outcomes = compile_linkcheck_sources(
         srcs, vers, cache, init_srcs, syms, scratch, args.jobs,
-        intact_tus_override={} if baseline else None)
+        intact_tus_override={} if baseline else intact_override)
     dt = time.time() - t0
     report["phases"]["compile"] = {"ok": not failures, "seconds": round(dt, 1),
                                    "outcomes": dict(outcomes)}
@@ -4784,7 +5001,18 @@ def cmd_linkcheck(args):
         if not tu_obj.is_file():
             print(f"      !! no object at {tu_obj}")
             return 1
-        raw_tu = tu_obj.read_bytes()
+        if enrolled_intact_candidate:
+            raw_tu, _version, _flags, _build_dir, _raw_path = _compile_tu(entry)
+            tu_obj.write_bytes(raw_tu)
+            report["candidateAdmission"] = {
+                "mode": "already-enrolled-exact-manifest-entry",
+                "initialPreparedObjectDiscarded": True,
+                "rawObjectRecompiledBeforeAudit": True,
+            }
+            print("      discarded the scratch-only admission copy and recompiled the "
+                  "candidate raw; every policy below is now being proved, not assumed")
+        else:
+            raw_tu = tu_obj.read_bytes()
         linked_tu, compiler_only, policy_reasons = apply_compiler_only_policy(raw_tu, entry)
         report["compilerOnlyOutput"] = compiler_only
         if policy_reasons:
@@ -4820,6 +5048,44 @@ def cmd_linkcheck(args):
             tu_obj.write_bytes(linked_tu)
             print(f"      externalized {externalized['externalized']} to their exact "
                   "configured canonical homes in the SCRATCH object only")
+
+        aliased_tu, undefined_aliases, alias_reasons = \
+            apply_undefined_symbol_alias_policy(linked_tu, entry)
+        report["undefinedSymbolAliases"] = undefined_aliases
+        if alias_reasons:
+            print("      REFUSED -- undefined symbol alias policy:")
+            for reason in alias_reasons:
+                print(f"        {reason}")
+            report["undefinedSymbolAliases"]["errors"] = alias_reasons
+            report["result"] = "undefined-alias-refused"
+            _write_link_report(scratch, report)
+            _record_linkcheck(data, entry, report, baseline)
+            return 1
+        if aliased_tu != linked_tu:
+            linked_tu = aliased_tu
+            scratch_rewrite = True
+            tu_obj.write_bytes(linked_tu)
+            print(f"      canonicalized {len(undefined_aliases['renamed'])} exact "
+                  "undefined C++ import name(s) to their configured ROM symbols")
+
+        bound_tu, symbol_bindings, binding_reasons = \
+            apply_symbol_binding_policy(linked_tu, entry)
+        report["symbolBindingRewrites"] = symbol_bindings
+        if binding_reasons:
+            print("      REFUSED -- symbol binding policy:")
+            for reason in binding_reasons:
+                print(f"        {reason}")
+            report["symbolBindingRewrites"]["errors"] = binding_reasons
+            report["result"] = "symbol-binding-refused"
+            _write_link_report(scratch, report)
+            _record_linkcheck(data, entry, report, baseline)
+            return 1
+        if bound_tu != linked_tu:
+            linked_tu = bound_tu
+            scratch_rewrite = True
+            tu_obj.write_bytes(linked_tu)
+            print(f"      promoted {len(symbol_bindings['rewritten'])} exact local "
+                  "owned symbol binding(s) for DSD's global symbol surface")
 
         ordered_tu, section_order, order_reasons = \
             prepare_owned_nontext_section_order(linked_tu, entry, claims)
@@ -5119,6 +5385,24 @@ def cmd_linkcheck(args):
                 print(f"      vs this tree's last stock build/sm64ds.nds: "
                       f"{'IDENTICAL' if same else 'DIFFERS'}")
                 report["rom"]["matchesStockRom"] = same
+            elif not baseline:
+                # A clean worktree need not have a shared build/sm64ds.nds.  The
+                # strict control is stronger for this experiment anyway: it demotes
+                # every intact TU to independently extracted retail gap bytes and
+                # runs the identical linker/ROM pipeline under the current config
+                # and tools.  Compare against its content-bound ROM digest rather
+                # than leaving a successfully reproduced clean-worker ROM ungraded.
+                control_path = BASELINE_LINK / "linkcheck.json"
+                try:
+                    control = json.loads(control_path.read_text(encoding="utf-8"))
+                    control_digest = (control.get("rom") or {}).get("sha256")
+                except (OSError, ValueError, TypeError):
+                    control_digest = None
+                if isinstance(control_digest, str):
+                    same = control_digest == digest
+                    print("      vs current source-independent strict stock control: "
+                          f"{'IDENTICAL' if same else 'DIFFERS'}")
+                    report["rom"]["matchesStockRom"] = same
         else:
             print(f"      FAILED ({dt:.1f}s)")
             print("      " + "\n      ".join(out.splitlines()[-15:]))

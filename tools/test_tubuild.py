@@ -319,38 +319,43 @@ def test_splice_refuses_a_span_whose_legacy_entries_are_not_complete():
     cause, clear two seams, +98 functions") marked all five, so the premise is gone: the
     command now gets past the splice and spends ninety seconds reaching a link that
     fails on the key-function wall instead. Re-pointing it at some other TU would only
-    re-arm the same trap, so the invariant is checked directly, on a scratch COPY of the
-    real file, the way its sibling test below does.
+    re-arm the same trap, so the invariant is checked directly with a synthetic delinks
+    fixture whose ownership cannot drift when another production TU is promoted.
     """
-    import json
     sys.path.insert(0, str(TOOLS))
     import tubuild as T
 
-    manifest = T.load_manifest()
-    entry = next(e for e in manifest["entries"] if e["id"] == "ov045/daObjKm2_Fall_Block_c")
-    sec = next(s for s in entry["sections"] if s["name"] == ".text")
-    start, end = int(sec["start"], 16), int(sec["end"], 16)
-    legacy = [f["legacy_source"] for f in entry["functions"]]
-    real = REPO / "config" / "arm9" / "overlays" / "ov045" / "delinks.txt"
+    start, end = 0x1000, 0x1040
+    legacy = ["src/first.cpp", "src/second.cpp"]
+    candidate = "src/actors/Combined.cpp"
+    text = (
+        "    .text start:0x00001000 end:0x00001100 kind:code align:4\n"
+        "src/first.cpp:\n"
+        "    complete\n"
+        "    .text start:0x00001000 end:0x00001020\n"
+        "\n"
+        "src/second.cpp:\n"
+        "    complete\n"
+        "    .text start:0x00001020 end:0x00001040\n"
+    )
 
     with tempfile.TemporaryDirectory() as td:
-        # As committed, every entry in the span is `complete`, so the splice is allowed.
+        # Every entry in the span is `complete`, so the splice is allowed.
         good = pathlib.Path(td) / "good.txt"
-        shutil.copyfile(real, good)
-        replaced, reasons = T.splice_tu_entry(good, start, end, entry["source"], legacy)
+        good.write_text(text, encoding="utf-8")
+        replaced, reasons = T.splice_tu_entry(good, start, end, candidate, legacy)
         assert reasons == [], reasons
         assert len(replaced) == len(legacy)
 
         # Take `complete` away from one of them and the splice must refuse, untouched.
         stripped = pathlib.Path(td) / "stripped.txt"
-        text = real.read_text(encoding="utf-8")
         victim = legacy[0]
         head, sep, tail = text.partition(f"{victim}:\n")
         assert sep, victim
         stripped.write_text(head + sep + tail.replace("    complete\n", "", 1),
                             encoding="utf-8")
         before = stripped.read_bytes()
-        replaced, reasons = T.splice_tu_entry(stripped, start, end, entry["source"], legacy)
+        replaced, reasons = T.splice_tu_entry(stripped, start, end, candidate, legacy)
         assert replaced is None
         assert any("NOT `complete` today" in r for r in reasons), reasons
         assert stripped.read_bytes() == before, "a refusal must not edit the file"
@@ -523,6 +528,94 @@ def test_splice_relinquishes_exact_manifest_data_and_bss_ranges_only():
         assert replaced is None
         assert any("not pure gap ownership" in r for r in reasons)
         assert occupied.read_bytes() == before
+
+
+def test_enrolled_intact_candidate_requires_one_complete_exact_entry():
+    text = (
+        "    .text start:0x00001000 end:0x00001100 kind:code align:4\n"
+        "    .init start:0x00002000 end:0x00002100 kind:code align:4\n"
+        "    .data start:0x00003000 end:0x00003100 kind:data align:4\n"
+        "src/actors/T.cpp:\n"
+        "    complete\n"
+        "    .text start:0x00001000 end:0x00001020\n"
+        "    .init start:0x00002040 end:0x00002050\n"
+        "    .data start:0x00003080 end:0x00003090\n"
+    )
+    claims = [
+        {"name": ".text", "start": 0x1000, "end": 0x1020},
+        {"name": ".init", "start": 0x2040, "end": 0x2050},
+        {"name": ".data", "start": 0x3080, "end": 0x3090},
+    ]
+    with tempfile.TemporaryDirectory() as td:
+        path = pathlib.Path(td) / "delinks.txt"
+        path.write_text(text, encoding="utf-8")
+        reasons = tubuild.validate_enrolled_intact_tu_entry(
+            path, "src/actors/T.cpp", claims)
+        assert reasons == [], reasons
+
+        path.write_text(text.replace(
+            "    .data start:0x00003080 end:0x00003090\n",
+            "    .data start:0x00003080 end:0x00003094\n"), encoding="utf-8")
+        reasons = tubuild.validate_enrolled_intact_tu_entry(
+            path, "src/actors/T.cpp", claims)
+        assert any("do not exactly equal" in reason for reason in reasons), reasons
+
+        path.write_text(text.replace("    complete\n", ""), encoding="utf-8")
+        reasons = tubuild.validate_enrolled_intact_tu_entry(
+            path, "src/actors/T.cpp", claims)
+        assert any("is not `complete`" in reason for reason in reasons), reasons
+
+
+def test_nontext_call_destination_ignores_encoded_pc_bias_addend():
+    assert tubuild._relocation_destination_address(
+        1, "callee", 0x02001000, -8, configured_public=True) == 0x02001000
+    assert tubuild._relocation_destination_address(
+        2, "object", 0x02002000, 4, configured_public=True) == 0x02002004
+
+
+def test_undefined_symbol_alias_policy_only_renames_exact_import():
+    if not _toolchain():
+        raise unittest.SkipTest("needs the pinned compiler")
+    obj = _compile_tu_fixture(
+        'extern "C" void generated_wrapper_symbol(void);\n'
+        'extern "C" void owner(void) { generated_wrapper_symbol(); }\n')
+    entry = {"undefined_symbol_aliases": [{
+        "symbol": "generated_wrapper_symbol",
+        "canonical_symbol": "rom_func",
+        "canonical_module": "arm9",
+        "canonical_address": "0x02001234",
+        "evidence": "fixture",
+    }]}
+    out, report, reasons = tubuild.apply_undefined_symbol_alias_policy(
+        obj, entry, name_index={"rom_func": ("arm9", 0x02001234)})
+    assert reasons == [], reasons
+    assert report["renamed"][0]["from"] == "generated_wrapper_symbol"
+    imports = set(tubuild.contribution(out, "owner")["undefReferenced"])
+    assert "generated_wrapper_symbol" not in imports
+    assert "rom_func" in imports
+
+
+def test_symbol_binding_policy_only_promotes_exact_owned_local():
+    if not _toolchain():
+        raise unittest.SkipTest("needs the pinned compiler")
+    obj = _compile_tu_fixture(
+        'static int local_word;\nextern "C" int *owner = &local_word;\n')
+    inventory = tubuild.elf_inventory(obj)
+    local = next(row for row in inventory["symbols"]
+                 if row["type"] == "STT_OBJECT" and row["bind"] == "STB_LOCAL")
+    entry = {
+        "data": [{"symbol": local["name"], "address": "0x2000", "size": "0x4"}],
+        "symbol_binding_rewrites": [{
+            "symbol": local["name"], "from": "STB_LOCAL", "to": "STB_GLOBAL",
+            "evidence": "fixture",
+        }],
+    }
+    out, report, reasons = tubuild.apply_symbol_binding_policy(obj, entry)
+    assert reasons == [], reasons
+    assert report["rewritten"][0]["symbol"] == local["name"]
+    rewritten = next(row for row in tubuild.elf_inventory(out)["symbols"]
+                     if row["name"] == local["name"])
+    assert rewritten["bind"] == "STB_GLOBAL"
 
 
 def test_splice_maps_compiler_rodata_into_module_data():

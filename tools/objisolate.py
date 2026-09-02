@@ -52,6 +52,122 @@ import io
 from elftools.elf.elffile import ELFFile
 from elftools.elf.relocation import RelocationSection
 
+
+def rename_undefined_symbols(raw, aliases):
+    """Rename exact undefined imports in place without touching symbol indices.
+
+    Reconstructed C++ wrapper types can make mwcc emit a source-authentic member
+    spelling for a ROM function that this project still names by an address alias.
+    The linker needs one spelling.  This operation changes only the corresponding
+    NUL-terminated string-table bytes, and only when the replacement is no longer
+    than the original and no other symbol points into that string.  Relocations,
+    section contents, symbol values/bindings/types, and table indices are unchanged.
+    """
+    requested = dict(aliases or {})
+    if not requested:
+        return bytes(raw), {"renamed": [], "error": None}
+    if any(not isinstance(old, str) or not old or not isinstance(new, str) or not new
+           for old, new in requested.items()):
+        return None, {"renamed": [], "error": "symbol aliases must be non-empty strings"}
+    if len(set(requested.values())) != len(requested):
+        return None, {"renamed": [], "error": "canonical symbol aliases must be unique"}
+
+    elf = ELFFile(io.BytesIO(bytes(raw)))
+    secs = list(elf.iter_sections())
+    symtab = elf.get_section_by_name(".symtab")
+    if symtab is None:
+        return None, {"renamed": [], "error": "no .symtab"}
+    strtab_index = symtab.header["sh_link"]
+    if not isinstance(strtab_index, int) or not (0 <= strtab_index < len(secs)):
+        return None, {"renamed": [], "error": "symbol table has no valid string table"}
+    strtab = secs[strtab_index]
+    syms = list(symtab.iter_symbols())
+    names = {sym.name for sym in syms if sym.name}
+    rows = []
+    out = bytearray(raw)
+    offsets = [int(sym.entry["st_name"]) for sym in syms]
+    for old, new in requested.items():
+        matches = [(index, sym) for index, sym in enumerate(syms) if sym.name == old]
+        if len(matches) != 1:
+            return None, {"renamed": rows, "error":
+                          f"undefined alias source {old} has {len(matches)} symbols"}
+        index, sym = matches[0]
+        if sym["st_shndx"] != "SHN_UNDEF":
+            return None, {"renamed": rows, "error":
+                          f"undefined alias source {old} is a definition"}
+        if new in names and new not in requested:
+            return None, {"renamed": rows, "error":
+                          f"canonical alias destination {new} already exists in object"}
+        old_bytes, new_bytes = old.encode("utf-8"), new.encode("utf-8")
+        if len(new_bytes) > len(old_bytes):
+            return None, {"renamed": rows, "error":
+                          f"canonical alias destination {new} is longer than {old}"}
+        name_offset = int(sym.entry["st_name"])
+        interior = [other for ordinal, other in enumerate(offsets)
+                    if ordinal != index and name_offset < other <= name_offset + len(old_bytes)]
+        if interior:
+            return None, {"renamed": rows, "error":
+                          f"another symbol string points inside {old}: {interior}"}
+        file_offset = strtab.header["sh_offset"] + name_offset
+        if bytes(out[file_offset:file_offset + len(old_bytes) + 1]) \
+                != old_bytes + b"\0":
+            return None, {"renamed": rows, "error":
+                          f"string-table bytes for {old} are not exact"}
+        out[file_offset:file_offset + len(old_bytes) + 1] = \
+            new_bytes + b"\0" * (len(old_bytes) + 1 - len(new_bytes))
+        rows.append({"symbolIndex": index, "from": old, "to": new})
+
+    check = ELFFile(io.BytesIO(bytes(out))).get_section_by_name(".symtab")
+    got = [sym.name for sym in check.iter_symbols()]
+    for row in rows:
+        if got[row["symbolIndex"]] != row["to"] or row["from"] in got:
+            return None, {"renamed": rows, "error":
+                          f"post-rewrite symbol verification failed for {row['from']}"}
+    return bytes(out), {"renamed": rows, "error": None}
+
+
+def rewrite_symbol_bindings(raw, policies):
+    """Rewrite exact defined-symbol bindings in place, preserving every other bit."""
+    requested = dict(policies or {})
+    if not requested:
+        return bytes(raw), {"rewritten": [], "error": None}
+    binding_values = {"STB_LOCAL": 0, "STB_GLOBAL": 1, "STB_WEAK": 2,
+                      "STB_LOPROC": 13}
+    elf = ELFFile(io.BytesIO(bytes(raw)))
+    symtab = elf.get_section_by_name(".symtab")
+    if symtab is None or symtab.header["sh_entsize"] != 16:
+        return None, {"rewritten": [], "error": "no standard Elf32 symbol table"}
+    syms = list(symtab.iter_symbols())
+    out, rows = bytearray(raw), []
+    for name, policy in requested.items():
+        if not isinstance(policy, (tuple, list)) or len(policy) != 2 \
+                or policy[0] not in binding_values or policy[1] not in binding_values:
+            return None, {"rewritten": rows, "error":
+                          f"invalid binding policy for {name}: {policy!r}"}
+        matches = [(index, sym) for index, sym in enumerate(syms) if sym.name == name]
+        if len(matches) != 1:
+            return None, {"rewritten": rows, "error":
+                          f"binding rewrite symbol {name} has {len(matches)} entries"}
+        index, sym = matches[0]
+        if sym["st_shndx"] == "SHN_UNDEF" or sym["st_info"]["bind"] != policy[0]:
+            return None, {"rewritten": rows, "error":
+                          f"binding rewrite symbol {name} is {sym['st_info']['bind']}/"
+                          f"{sym['st_shndx']}, expected defined {policy[0]}"}
+        info_offset = symtab.header["sh_offset"] + index * symtab.header["sh_entsize"] + 12
+        old_info = out[info_offset]
+        if old_info >> 4 != binding_values[policy[0]]:
+            return None, {"rewritten": rows, "error":
+                          f"raw binding nibble for {name} disagrees with ELF parse"}
+        out[info_offset] = (binding_values[policy[1]] << 4) | (old_info & 0x0f)
+        rows.append({"symbolIndex": index, "symbol": name,
+                     "from": policy[0], "to": policy[1]})
+    check = list(ELFFile(io.BytesIO(bytes(out))).get_section_by_name(".symtab").iter_symbols())
+    for row in rows:
+        if check[row["symbolIndex"]]["st_info"]["bind"] != row["to"]:
+            return None, {"rewritten": rows, "error":
+                          f"post-rewrite binding verification failed for {row['symbol']}"}
+    return bytes(out), {"rewritten": rows, "error": None}
+
 CONTENT = ("SHT_PROGBITS", "SHT_NOBITS")
 IGNORE = (".comment", ".debug", ".line", ".note")
 
