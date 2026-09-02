@@ -67,6 +67,13 @@
       "declared_function_set_equals_defined_function_set": "FAIL-BY-DESIGN -- raw object also emits compiler-only D2 plus 13 unlicensed RTTI/type-name/vtable definitions",
       "functions_occur_in_expected_order": "PARTIAL -- ordinal pair(s) not in ROM order: [(0, 1)]",
       "relocation_destinations_verified": "PASS"
+    },
+    "compilerOnlyOutput": {
+      "requested": [],
+      "unhandled": [
+        "_ZN16daObjRc_Dorifu_cD2Ev"
+      ],
+      "data": []
     }
   },
   "partial_isolation": {
