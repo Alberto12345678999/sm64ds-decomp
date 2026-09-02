@@ -21,12 +21,12 @@ _ZN12WaterDiamond6RenderEv kind:function(arm,size=0x28) addr:0x0211192c
 _ZN12WaterDiamond8BehaviorEv kind:function(arm,size=0xb0) addr:0x02111954
 _ZN12WaterDiamond13InitResourcesEv kind:function(arm,size=0x80) addr:0x02111a04
 daObjWc_Obj03_c_classInit kind:function(arm,size=0x40) addr:0x02111a84
-_ZN8CageLiftD1Ev kind:function(arm,size=0x44) addr:0x02111ac4
-_ZN8CageLiftD0Ev kind:function(arm,size=0x58) addr:0x02111b08
-_ZN8CageLift16CleanupResourcesEv kind:function(arm,size=0x44) addr:0x02111b60
-_ZN8CageLift6RenderEv kind:function(arm,size=0x28) addr:0x02111ba4
-_ZN8CageLift8BehaviorEv kind:function(arm,size=0x1a0) addr:0x02111bcc
-_ZN8CageLift13InitResourcesEv kind:function(arm,size=0xd4) addr:0x02111d6c
+_ZN15daObjWc_Obj05_cD1Ev kind:function(arm,size=0x44) addr:0x02111ac4
+_ZN15daObjWc_Obj05_cD0Ev kind:function(arm,size=0x58) addr:0x02111b08
+_ZN15daObjWc_Obj05_c16CleanupResourcesEv kind:function(arm,size=0x44) addr:0x02111b60
+_ZN15daObjWc_Obj05_c6RenderEv kind:function(arm,size=0x28) addr:0x02111ba4
+_ZN15daObjWc_Obj05_c8BehaviorEv kind:function(arm,size=0x1a0) addr:0x02111bcc
+_ZN15daObjWc_Obj05_c13InitResourcesEv kind:function(arm,size=0xd4) addr:0x02111d6c
 func_ov029_02111e40 kind:function(arm,size=0x20) addr:0x02111e40
 func_ov029_02111e60 kind:function(arm,size=0x14) addr:0x02111e60
 daObjWc_Obj05_c_classInit kind:function(arm,size=0x30) addr:0x02111e74
@@ -199,7 +199,7 @@ _ZTI15daObjWc_Obj05_c kind:data(any) addr:0x02113e30
 _ZTS15daObjWc_Obj05_c kind:data(any) addr:0x02113e3c
 g_profile_WC_OBJ05 kind:data(any) addr:0x02113e50 ambiguous
 data_ov029_02113e6c kind:data(any) addr:0x02113e6c ambiguous
-_ZTV8CageLift kind:data(any) addr:0x02113e74
+_ZTV15daObjWc_Obj05_c kind:data(any) addr:0x02113e74
 data_ov029_02113e88 kind:data(any) addr:0x02113e88 ambiguous
 _ZTI14daObjWcObj06_c kind:data(any) addr:0x02113ef4
 data_ov029_02113f00 kind:data(any) addr:0x02113f00

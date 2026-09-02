@@ -163,7 +163,7 @@ SKIP WaterDiamond: ov029:0x2111728 already claimed by ArrowLift (vtable slot 16)
 SKIP WaterDiamond: ov029:0x2111760 already claimed by ArrowLift (vtable slot 17)
 AMBIG actor 98 SWITCH_ACTIVATED_PLANK: ['ov029', 'ov022'] -> ov029
 AMBIG actor 99 CAGE_LIFT: ['ov029', 'ov022'] -> ov029
-NOVTABLE actor 99 CageLift (alloc=0x330)
+NOVTABLE actor 99 daObjWc_Obj05_c (alloc=0x330)
 AMBIG actor 100 FLOAT_ON_WATER_PLATFORM_WDW_RECTANGLE: ['ov029', 'ov036'] -> ov029
 SKIP WDW_Water: ov029:0x21141a0 already claimed by SwitchActivatedPlank (vtable alloc=0x348)
 SKIP WDW_Water: ov029:0x21128b0 already claimed by SwitchActivatedPlank (vtable slot 0)

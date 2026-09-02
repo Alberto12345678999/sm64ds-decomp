@@ -2391,17 +2391,17 @@
    "start": "0x2111ac4",
    "end": "0x2111ea4",
    "classes": [
-    "CageLift"
+    "daObjWc_Obj05_c"
    ],
    "n_functions_map": 9,
    "n_files": 9,
    "files": [
-    "src/_ZN8CageLiftD1Ev.cpp",
-    "src/_ZN8CageLiftD0Ev.c",
-    "src/_ZN8CageLift16CleanupResourcesEv.cpp",
-    "src/_ZN8CageLift6RenderEv.cpp",
-    "src/_ZN8CageLift8BehaviorEv.cpp",
-    "src/_ZN8CageLift13InitResourcesEv.cpp",
+    "src/_ZN15daObjWc_Obj05_cD1Ev.cpp",
+    "src/_ZN15daObjWc_Obj05_cD0Ev.c",
+    "src/_ZN15daObjWc_Obj05_c16CleanupResourcesEv.cpp",
+    "src/_ZN15daObjWc_Obj05_c6RenderEv.cpp",
+    "src/_ZN15daObjWc_Obj05_c8BehaviorEv.cpp",
+    "src/_ZN15daObjWc_Obj05_c13InitResourcesEv.cpp",
     "src/func_ov029_02111e40.cpp",
     "src/func_ov029_02111e60.c",
     "src/daObjWc_Obj05_c_classInit.c"

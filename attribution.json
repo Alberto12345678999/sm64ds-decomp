@@ -1262,6 +1262,15 @@
     "src/actors/d_a_ch_scene.cpp#_ZN11daChScene_c6RenderEv": "github-actions[bot]",
     "src/actors/d_a_ch_scene.cpp#_ZN11daChScene_c8BehaviorEv": "github-actions[bot]",
     "src/actors/d_a_ch_scene.cpp#_ZN11daChScene_c13InitResourcesEv": "github-actions[bot]",
-    "src/actors/d_a_ch_scene.cpp#daChScene_c_Spawn": "github-actions[bot]"
+    "src/actors/d_a_ch_scene.cpp#daChScene_c_Spawn": "github-actions[bot]",
+    "src/actors/d_a_obj_wc_obj05.cpp#_ZN15daObjWc_Obj05_cD1Ev": "github-actions[bot]",
+    "src/actors/d_a_obj_wc_obj05.cpp#_ZN15daObjWc_Obj05_cD0Ev": "github-actions[bot]",
+    "src/actors/d_a_obj_wc_obj05.cpp#_ZN15daObjWc_Obj05_c16CleanupResourcesEv": "github-actions[bot]",
+    "src/actors/d_a_obj_wc_obj05.cpp#_ZN15daObjWc_Obj05_c6RenderEv": "github-actions[bot]",
+    "src/actors/d_a_obj_wc_obj05.cpp#_ZN15daObjWc_Obj05_c8BehaviorEv": "github-actions[bot]",
+    "src/actors/d_a_obj_wc_obj05.cpp#_ZN15daObjWc_Obj05_c13InitResourcesEv": "github-actions[bot]",
+    "src/actors/d_a_obj_wc_obj05.cpp#func_ov029_02111e40": "github-actions[bot]",
+    "src/actors/d_a_obj_wc_obj05.cpp#func_ov029_02111e60": "github-actions[bot]",
+    "src/actors/d_a_obj_wc_obj05.cpp#daObjWc_Obj05_c_classInit": "github-actions[bot]"
   }
 }
