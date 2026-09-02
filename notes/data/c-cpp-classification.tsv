@@ -6,7 +6,7 @@ src/ARMRestoreContext.c	PURE-C	arm9				1		None		-
 src/ARMSaveContext.c	PURE-C	arm9				1		None		-
 src/AddSpikeBomb.c	PURE-C	arm9				1		None		-
 src/AddVec3.c	PURE-C	arm9				1		None		-
-src/AmbientSoundEffects_Spawn.c	WEAK-refs-only	ov002				1		None		-
+src/daSetSE_c_Spawn.c	WEAK-refs-only	ov002				1		None		-
 src/daBrq_c_classInit.c	WEAK-refs-only	ov070				1		None		-
 src/AngleDiff.c	PURE-C	arm9				1		None		-
 src/ApproachAngle.c	PURE-C	arm9				1		None		-
@@ -822,10 +822,10 @@ src/_ZN18TiltingPlatformBfs13InitResourcesEv.c	P1-vtable+mangled	ov045	daObjKm2_
 src/_ZN18TiltingPlatformBfs16CleanupResourcesEv.c	P1-vtable+mangled	ov045	daObjKm2_Gura_c	TiltingPlatformBfs/daObjKm2_Gura_c	vtable daObjKm2_Gura_c slot 3 @0x2111ce4 | _ZN18TiltingPlatformBfs16CleanupResourcesEv	1		True		-
 src/_ZN18TiltingPlatformBfsD0Ev.c	DTOR-ONLY	ov045	daObjKm2_Gura_c	TiltingPlatformBfs/daObjKm2_Gura_c	_ZN18TiltingPlatformBfsD0Ev	1		True	_ZTV10dBgActor_c/_ZTV15daObjGuragura_c/_ZTV18TiltingPlatformBfs	-
 src/_ZN18TiltingPlatformLllD0Ev.c	DTOR-ONLY	ov064	daObjFl_Gura_c	TiltingPlatformLll/daObjFl_Gura_c	_ZN18TiltingPlatformLllD0Ev	1		True	_ZTV10dBgActor_c/_ZTV15daObjGuragura_c/_ZTV18TiltingPlatformLll	-
-src/_ZN19AmbientSoundEffects16CleanupResourcesEv.c	P1-vtable+mangled	ov002	daSetSE_c	AmbientSoundEffects/daSetSE_c	vtable daSetSE_c slot 3 @0x20f19e8 | _ZN19AmbientSoundEffects16CleanupResourcesEv	1		True		-
-src/_ZN19AmbientSoundEffects16OnPendingDestroyEv.c	P1-vtable+mangled	ov002	daSetSE_c	AmbientSoundEffects/daSetSE_c	vtable daSetSE_c slot 12 @0x20f19f0 | _ZN19AmbientSoundEffects16OnPendingDestroyEv	1		True		-
-src/_ZN19AmbientSoundEffects6RenderEv.c	P1-vtable+mangled	ov002	daSetSE_c	AmbientSoundEffects/daSetSE_c	vtable daSetSE_c slot 9 @0x20f19f4 | _ZN19AmbientSoundEffects6RenderEv	1		True		-
-src/_ZN19AmbientSoundEffectsD0Ev.c	DTOR-ONLY	ov002	daSetSE_c	AmbientSoundEffects/daSetSE_c	_ZN19AmbientSoundEffectsD0Ev	1		True	_ZTV19AmbientSoundEffects	-
+src/_ZN9daSetSE_c16CleanupResourcesEv.c	P1-vtable+mangled	ov002	daSetSE_c	daSetSE_c/daSetSE_c	vtable daSetSE_c slot 3 @0x20f19e8 | _ZN9daSetSE_c16CleanupResourcesEv	1		True		-
+src/_ZN9daSetSE_c16OnPendingDestroyEv.c	P1-vtable+mangled	ov002	daSetSE_c	daSetSE_c/daSetSE_c	vtable daSetSE_c slot 12 @0x20f19f0 | _ZN9daSetSE_c16OnPendingDestroyEv	1		True		-
+src/_ZN9daSetSE_c6RenderEv.c	P1-vtable+mangled	ov002	daSetSE_c	daSetSE_c/daSetSE_c	vtable daSetSE_c slot 9 @0x20f19f4 | _ZN9daSetSE_c6RenderEv	1		True		-
+src/_ZN9daSetSE_cD0Ev.c	DTOR-ONLY	ov002	daSetSE_c	daSetSE_c/daSetSE_c	_ZN9daSetSE_cD0Ev	1		True	_ZTV9daSetSE_c	-
 src/_ZN19BowserPuzzleManagerD0Ev.c	DTOR-ONLY	ov064	daObjFl_Coin_c	BowserPuzzleManager/daObjFl_Coin_c	_ZN19BowserPuzzleManagerD0Ev	1		True	_ZTV19BowserPuzzleManager	-
 src/_ZN19CylinderClsnWithPos4InitERK7Vector35Fix12IiES4_jj.c	P3-mangled-method-only	arm9		CylinderClsnWithPos	_ZN19CylinderClsnWithPos4InitERK7Vector35Fix12IiES4_jj	1		True		by-value-class-param
 src/_ZN19CylinderClsnWithPos6GetPosEv.c	P1-vtable+mangled	arm9	dCcPos_c	CylinderClsnWithPos/dCcPos_c	vtable dCcPos_c slot 2 @0x2014820 | _ZN19CylinderClsnWithPos6GetPosEv	1		True		-

@@ -58,10 +58,14 @@ struct daSoundObj_c : dActor_c {
        class's __si_class_type_info points at it, so no descendant exists to
        inline this body where the ROM has a `bl`.
 
-       THE BODY IS EMPTY, and the ROM agrees: 0x24 bytes is one vptr store plus
-       the tail into ~dActor_c. `daSoundObj_c : dActor_c` is a one-level chain,
-       so two vptr stores come out of it, and no member of either class has a
-       destructor of its own. */
+       THE BODY IS EMPTY, and the ROM agrees. D1 at 0x020f934c is 0x24 bytes
+       and disassembles to exactly `push {r4,lr} / ldr r1,[pc] / mov r4,r0 /
+       str r1,[r4] / bl _ZN8dActor_cD2Ev / mov r0,r4 / pop / bx lr`: ONE vptr
+       store of its own, then the tail into the base destructor, which does the
+       rest of the chain itself. There is no member destructor call to account
+       for, because every member of this class is a scalar. (~dActor_c is not
+       empty -- it stores two more vptrs and destroys its own fLiNdBa_c member
+       at 0x50 -- but none of that belongs to this class or to this TU.) */
     virtual ~daSoundObj_c() {}          /* slots 16 (D1), 17 (D0) */
 
     /* Both are overrides of fBase_c, not new members -- see include/fBase_c.h,
