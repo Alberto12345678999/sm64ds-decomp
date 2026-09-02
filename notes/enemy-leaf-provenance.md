@@ -90,9 +90,9 @@ offsets are not member accesses to collapse.
 
 ## daWanwan_c (`include/daWanwan_c.h`, ov014)
 
-Bodies read: `src/_ZN10daWanwan_c8BehaviorEv.cpp`,
-`src/_ZN10daWanwan_c13InitResourcesEv.cpp`, `src/_ZN10daWanwan_c6RenderEv.cpp`,
-and the merged `src_tu/actors/daWanwan_c.cpp`.
+Bodies read: the `Behavior`, `InitResources` and `Render` members, then in
+one-function files, now all consolidated into the promoted TU
+`src/actors/d_a_wanwan.cpp`.
 
 | offset | name | evidence |
 | --- | --- | --- |
@@ -126,9 +126,10 @@ Byte-neutral cleanups (each re-verified, `2004/b56`):
 * `Behavior` — two `((char*)this) + 0x110` became `&mdCcAcPos_c`.
 * `Render` — `((char *)this) + 0x1dc` became `(char *)mLinkModels`.
 
-`src_tu/actors/daWanwan_c.cpp` carries the same renames and still compiles
-(`match.compile_c`, 2004/b56) — the merged TU is not in the default rombuild
-profile, so a stale spelling there would not have been caught by any green gate.
+The promoted TU `src/actors/d_a_wanwan.cpp` carries the same renames. It is now
+in the default rombuild profile, so a stale spelling there is caught by the
+ordinary green gates — which is how the `((char *)this) + 0x1dc` that the
+reconstruction still carried was found and put back to `(char *)mLinkModels`.
 
 ---
 

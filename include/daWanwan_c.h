@@ -62,7 +62,13 @@ struct daWanwan_c : dEnemyBase_c {
     u8  mIsOnGround;        /* 0x61c */
     u8  mWasOnGround;       /* 0x61d */
 
-    virtual ~daWanwan_c();
+    /* Defined INLINE on purpose. Out of line, mwccarm emits D2, D0, D1; the ROM
+       has D1 at 0x02111308 then D0 at 0x021113bc and no D2 anywhere in ov014.
+       Inline, mwccarm emits D1 then D0 and no D2 -- the cartridge's own order.
+       The body is empty either way: the 0xb4 bytes of D1 are the compiler's own
+       teardown of the four arrays and three member subobjects. */
+    virtual ~daWanwan_c() {}   /* slots 16 (D1), 17 (D0) */
+
 
     int Behavior();
     int CleanupResources();

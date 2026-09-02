@@ -6,6 +6,45 @@
  * of source order). Conflicting declarations were reconciled by hand; see
  * the manifest notes.
  *
+ * PROMOTED: this file is compiled and linked into the ROM, and ov014's
+ * delinks.txt gives it the whole .text run 0x02111308..0x02112e0c. The 29
+ * legacy one-function sources listed below are deleted; they are named for
+ * provenance only.
+ *
+ * The class is spelled as the cartridge spells it. ov014 _ZTI 0x02114718 holds
+ * _ZTS 0x02114740, reading `10daWanwan_c`, and its base word 0x021081c0 is
+ * _ZTI12dEnemyBase_c. It is a leaf: a scan of all 977 .bin files under
+ * extracted/ for the word 0x02114718 finds six hits. Two are this class's own
+ * _ZTV - 4, at file offset 0x3648 in the same overlay under two paths. The
+ * other four are ov034's, at 0x26cc and 0x2df4 under the same two paths, and
+ * they are not RTTI at all: ov034 loads at the same base as ov014 (0x021111a0)
+ * so the two are never co-resident, and at 0x02114718 ov034 has
+ * data_ov034_02114718 kind:bss, an ordinary variable that two pointer-table
+ * entries name. A real descendant's hit would decode as an _ZTI triple whose
+ * word[0] is 0x0209a764; neither of these does.
+ *
+ * The destructor is defined INLINE in include/daWanwan_c.h. Out of line
+ * mwccarm emits D2, D0, D1; the ROM has D1 at 0x02111308 then D0 at 0x021113bc
+ * and no D2 anywhere in ov014. With that destructor inline, daWanwan_c has no
+ * out-of-line virtual left to serve as its key function -- the four overrides
+ * below it are not declared virtual, and dEnemyBase_c does not declare them
+ * virtual either -- so mwccarm has nowhere else to hang the class's RTTI and
+ * emits _ZTV/_ZTI/_ZTS here, along with the eight inherited base-chain
+ * records. All eleven are licensed in the manifest's compiler_only_output and
+ * word-compared against the cartridge by
+ * tools/romdata_check.py: 6 VERIFIED, 5 PARTIAL, 0 DIFFERS. The PARTIALs are
+ * the five _ZTS strings -- extent shortfalls, not disagreements; every byte
+ * compared is equal.
+ *
+ * A twelfth record is a FUNCTION, not data: _ZN7Vector3D1Ev, the 4-byte
+ * `bx lr` that include/types.h's in-class `~Vector3() {}` emits into every TU
+ * holding a Vector3. This one holds fourteen (two Vector3[7]), and the kept
+ * ROM destructor at 0x02111308 references it from its literal pool at +0xa0 --
+ * exactly as the cartridge's own D1 does. It has a ROM home at arm9:0x020072c0
+ * owned by src/_ZN7Vector3D1Ev.cpp, so it is licensed deadstrip-duplicate,
+ * whose precondition is the opposite of deadstrip's: objisolate refuses unless
+ * this object's copy is byte-identical to the cartridge's at that address.
+ *
  * Assembled from these legacy one-function sources (ROM address order):
  *   [0] 0x02111308  src/_ZN10daWanwan_cD1Ev.cpp
  *   [1] 0x021113bc  src/_ZN10daWanwan_cD0Ev.cpp
@@ -42,6 +81,7 @@
 /* ROM ordinal 28 -- daWanwan_c_classInit, 0x02112d1c, size 0xf0 */
 /* -------------------------------------------------------------------------- */
 extern "C" {
+// @symbol daWanwan_c_classInit
 void* _ZN7fBase_cnwEj(unsigned int);
 void _ZN12dEnemyBase_cC2Ev(void*);
 int _ZN10dCcAcPos_cC1Ev(void*);
@@ -271,7 +311,7 @@ int daWanwan_c::Render()
     b->m5((A*)((char *)&mScaleX));
     
     int j = 0;
-    char *p2 = ((char *)this) + 0x1dc;
+    char *p2 = (char *)mLinkModels;
     for (;;) {
         B *b2 = (B*)p2;
         b2->m5((A*)0);
@@ -366,6 +406,7 @@ void func_ov014_02112788(char* c) {
 /* ROM ordinal 22 -- func_ov014_0211250c, 0x0211250c, size 0x27c */
 /* -------------------------------------------------------------------------- */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
+// @symbol func_ov014_0211250c
 typedef struct { int x, y, z; } Vec3;
 
 extern void Matrix4x3_FromRotationXYZExt(void *m, int x, int y, int z);
@@ -494,6 +535,7 @@ void func_ov014_0211250c(char *c)
 /* ROM ordinal 21 -- func_ov014_0211236c, 0x0211236c, size 0x1a0 */
 /* -------------------------------------------------------------------------- */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
+// @symbol func_ov014_0211236c
 extern void Vec3_Sub(void* out, void* a, void* b);
 extern short _ZN4cstd5atan2E5Fix12IiES1_(int y, int x);
 extern int Vec3_HorzLen(void* v);
@@ -581,6 +623,7 @@ void func_ov014_0211236c(char* c)
 /* ROM ordinal 20 -- func_ov014_021122dc, 0x021122dc, size 0x90 */
 /* -------------------------------------------------------------------------- */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
+// @symbol func_ov014_021122dc
 extern void Vec3_Sub(void *out, void *a, void *b);
 extern void Vec3_MulScalar(void *out, void *v, int s);
 extern void AddVec3(void *a, void *b, void *c);
@@ -608,6 +651,7 @@ void func_ov014_021122dc(char *c)
 /* ROM ordinal 19 -- func_ov014_02112114, 0x02112114, size 0x1c8 */
 /* -------------------------------------------------------------------------- */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
+// @symbol func_ov014_02112114
 extern void *_ZN8dActor_c10FindWithIDEj(unsigned id);
 extern void func_ov014_02111ebc(void *c, int i);
 extern int Vec3_HorzAngle(void *a, void *b);
@@ -718,6 +762,7 @@ void func_ov014_02111fe0(char* c){
 /* ROM ordinal 17 -- func_ov014_02111fb8, 0x02111fb8, size 0x28 */
 /* -------------------------------------------------------------------------- */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
+// @symbol func_ov014_02111fb8
 extern int func_0201267c(int,void*);
 extern void _ZN8dActor_c15HugeLandingDustEb(void*,int);
 int func_ov014_02111fb8(char* c){
@@ -730,6 +775,7 @@ int func_ov014_02111fb8(char* c){
 /* ROM ordinal 16 -- func_ov014_02111f54, 0x02111f54, size 0x64 */
 /* -------------------------------------------------------------------------- */
 extern "C" {
+// @symbol func_ov014_02111f54
 void* _ZN8dActor_c10FindWithIDEj(unsigned int id);
 char* _ZN8dActor_c13ClosestPlayerEv(char* a);
 int _ZN6Player17SetNoControlStateEhih(void* p, unsigned char a, int b, unsigned char c);
@@ -753,6 +799,7 @@ fail:
 /* -------------------------------------------------------------------------- */
 /* ROM ordinal 15 -- func_ov014_02111f08, 0x02111f08, size 0x4c */
 /* -------------------------------------------------------------------------- */
+// @symbol func_ov014_02111f08
 struct C; typedef void (C::*PMF)();
 struct Entry { char pad[8]; PMF pmf; char tail[20 - 8 - sizeof(PMF)]; };
 extern Entry data_ov014_0211476c[];
@@ -766,6 +813,7 @@ extern "C" void func_ov014_02111f08(void *vc) {
 /* -------------------------------------------------------------------------- */
 /* ROM ordinal 14 -- func_ov014_02111ebc, 0x02111ebc, size 0x4c */
 /* -------------------------------------------------------------------------- */
+// @symbol func_ov014_02111ebc
 namespace ent0 {  /* this member reads the state table's +0 field; ordinal 15's view
                      reads +8 -- two honest views of one table, isolated by namespace */
 struct Entry { void (C::*pmf)(); char rest[12]; };
@@ -781,6 +829,7 @@ extern "C" void func_ov014_02111ebc(void *vc, int i) {
 /* -------------------------------------------------------------------------- */
 /* ROM ordinal 13 -- func_ov014_02111e74, 0x02111e74, size 0x48 */
 /* -------------------------------------------------------------------------- */
+// @symbol func_ov014_02111e74
 struct BCA_File;
 /* (ModelAnim: real header type in scope; call stays on the mangled spelling with
    int in place of the by-value Fix12<int> -- notes/mwccarm-codegen.md 6az) */
@@ -796,6 +845,7 @@ extern "C" void func_ov014_02111e74(char* c){
 /* ROM ordinal 12 -- func_ov014_02111e14, 0x02111e14, size 0x60 */
 /* -------------------------------------------------------------------------- */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
+// @symbol func_ov014_02111e14
 extern unsigned short DecIfAbove0_Short(unsigned short*);
 extern void func_ov014_02111ebc(void*, int);
 extern void _Z14ApproachLinearRiii(int*, int, int);
@@ -813,6 +863,7 @@ void func_ov014_02111e14(char* c){
 /* ROM ordinal 11 -- func_ov014_02111dc4, 0x02111dc4, size 0x50 */
 /* -------------------------------------------------------------------------- */
 extern "C" {
+// @symbol func_ov014_02111dc4
 void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void*,void*,int,int,unsigned int);
 void func_ov014_02111dc4(char *c){
   *(int*)(c+0xa8)=0;
@@ -825,6 +876,7 @@ void func_ov014_02111dc4(char *c){
 /* -------------------------------------------------------------------------- */
 /* ROM ordinal 10 -- func_ov014_02111ca8, 0x02111ca8, size 0x11c */
 /* -------------------------------------------------------------------------- */
+// @symbol func_ov014_02111ca8
 typedef short s16;
 extern "C" {
 int func_ov014_02111f54(void* c);
@@ -866,6 +918,7 @@ void func_ov014_02111ca8(char* c){
 /* ROM ordinal 9 -- func_ov014_02111b70, 0x02111b70, size 0x138 */
 /* -------------------------------------------------------------------------- */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
+// @symbol func_ov014_02111b70
 namespace call3_267c { extern "C" int func_0201267c(int, void *, int); } /* this member byte-requires the three-argument call (r2 set); the TU's file-scope view is (int, void*) */
 extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *, void *, int, int, unsigned int);
 extern char *_ZN8dActor_c13ClosestPlayerEv(char *);
@@ -914,6 +967,7 @@ void func_ov014_02111b70(char *c)
 /* ROM ordinal 8 -- func_ov014_02111af0, 0x02111af0, size 0x80 */
 /* -------------------------------------------------------------------------- */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
+// @symbol func_ov014_02111af0
 extern int func_ov014_02111f54(void*);
 extern int Math_Function_0203b14c(void*,int,int,int,int);
 extern unsigned short DecIfAbove0_Short(unsigned short*);
@@ -933,6 +987,7 @@ adv:
 /* -------------------------------------------------------------------------- */
 /* ROM ordinal 7 -- func_ov014_02111a6c, 0x02111a6c, size 0x84 */
 /* -------------------------------------------------------------------------- */
+// @symbol func_ov014_02111a6c
 struct BCA_File;
 /* (ModelAnim: real header type in scope; call stays on the mangled spelling with
    int in place of the by-value Fix12<int> -- notes/mwccarm-codegen.md 6az) */
@@ -1114,6 +1169,7 @@ extern "C" void func_ov014_021115ec(u8 *self)
 /* ROM ordinal 5 -- func_ov014_021115c0, 0x021115c0, size 0x2c */
 /* -------------------------------------------------------------------------- */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
+// @symbol func_ov014_021115c0
 extern int func_0201267c(int,void*);
 
 void func_ov014_021115c0(char *r4) {
@@ -1127,6 +1183,7 @@ void func_ov014_021115c0(char *r4) {
 /* ROM ordinal 4 -- func_ov014_0211150c, 0x0211150c, size 0xb4 */
 /* -------------------------------------------------------------------------- */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
+// @symbol func_ov014_0211150c
 int func_ov014_0211150c(char *c) {
     /* views moved to block scope: this file's return/parameter spellings differ
      * from the TU's canonical declarations (C linkage inherited). */
@@ -1149,6 +1206,7 @@ int func_ov014_0211150c(char *c) {
 /* ROM ordinal 3 -- func_ov014_021114d8, 0x021114d8, size 0x34 */
 /* -------------------------------------------------------------------------- */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
+// @symbol func_ov014_021114d8
 void func_ov014_021114d8(char *c) {
     short v = *(short *)(c + 0x94);
     *(short *)(c + 0x8e) = v;
@@ -1163,6 +1221,7 @@ void func_ov014_021114d8(char *c) {
 /* ROM ordinal 2 -- func_ov014_02111484, 0x02111484, size 0x54 */
 /* -------------------------------------------------------------------------- */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
+// @symbol func_ov014_02111484
 extern unsigned short DecIfAbove0_Short(unsigned short*);
 extern void func_ov014_02111ebc(void*, int);
 extern void _Z14ApproachLinearRiii(int*, int, int);
@@ -1204,7 +1263,6 @@ void func_ov014_02111484(char* c){
  */
 #include "daWanwan_c.h"
 
-daWanwan_c::~daWanwan_c()
-{
-}
+/* (no out-of-line body: the destructor is defined inline in daWanwan_c.h, which
+ * is what makes mwccarm emit D1 then D0 and no D2 -- the ROM's own order.) */
 
