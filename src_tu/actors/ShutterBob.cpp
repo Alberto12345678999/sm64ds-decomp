@@ -21,7 +21,7 @@
  *   [2] 0x02111254  src/_ZN10ShutterBob16CleanupResourcesEv.cpp
  *   [3] 0x02111268  src/_ZN10ShutterBob8BehaviorEv.cpp
  *   [4] 0x02111294  src/_ZN10ShutterBob13InitResourcesEv.cpp
- *   [5] 0x021112cc  src/ShutterBob_Spawn.c
+ *   [5] 0x021112cc  src/daObjBSwdoor_c_classInit.c
  */
 
 /* TUBUILD WARNING -- #pragma directive(s) were present in the legacy
@@ -55,13 +55,14 @@ extern int data_ov014_021145c4;
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 5 -- ShutterBob_Spawn, 0x021112cc, size 0x3c */
+/* ROM ordinal 5 -- daObjBSwdoor_c_classInit, 0x021112cc, size 0x3c */
 /* -------------------------------------------------------------------------- */
-// @symbol ShutterBob_Spawn
+// @symbol daObjBSwdoor_c_classInit
 /* recovered: vtable identified, declarations from a shared header */
 /* recovered: vtable identified */
 /* vtable identified: VT0 = _ZTV13daObjSwdoor_c */
-extern "C" int *ShutterBob_Spawn(void)
+/* Reconstructed source-style name. Historical alias: ShutterBob_Spawn. */
+extern "C" int *daObjBSwdoor_c_classInit(void)
 {
     int *p = (int *)_ZN7fBase_cnwEj(804);
     if (p) {

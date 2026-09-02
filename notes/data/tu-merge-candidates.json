@@ -3038,7 +3038,7 @@
     "src/_ZN13PeachPainting6RenderEv.cpp",
     "src/_ZN13PeachPainting8BehaviorEv.cpp",
     "src/_ZN13PeachPainting13InitResourcesEv.cpp",
-    "src/PeachPainting_Spawn.c"
+    "src/daObjC1Peach_c_classInit.c"
    ],
    "ext_mix": {
     ".cpp": 4,
@@ -3788,7 +3788,7 @@
     "src/_ZN9LightBeam6RenderEv.cpp",
     "src/_ZN9LightBeam8BehaviorEv.cpp",
     "src/_ZN9LightBeam13InitResourcesEv.cpp",
-    "src/LightBeam_Spawn.c"
+    "src/daObjC1Hikari_c_classInit.c"
    ],
    "ext_mix": {
     ".cpp": 4,
@@ -3847,7 +3847,7 @@
     "src/_ZN15ChainChompFence6RenderEv.cpp",
     "src/_ZN15ChainChompFence8BehaviorEv.cpp",
     "src/_ZN15ChainChompFence13InitResourcesEv.cpp",
-    "src/ChainChompFence_Spawn.c"
+    "src/daObjWanwanShutter_c_classInit.c"
    ],
    "ext_mix": {
     ".cpp": 7,
@@ -5735,7 +5735,7 @@
     "src/_ZN9ShipWater6RenderEv.cpp",
     "src/_ZN9ShipWater8BehaviorEv.cpp",
     "src/_ZN9ShipWater13InitResourcesEv.c",
-    "src/ShipWater_Spawn.c"
+    "src/daObjKsWater_c_classInit.c"
    ],
    "ext_mix": {
     ".cpp": 5,
@@ -8309,7 +8309,7 @@
     "src/_ZN10ShutterBob16CleanupResourcesEv.cpp",
     "src/_ZN10ShutterBob8BehaviorEv.cpp",
     "src/_ZN10ShutterBob13InitResourcesEv.cpp",
-    "src/ShutterBob_Spawn.c"
+    "src/daObjBSwdoor_c_classInit.c"
    ],
    "ext_mix": {
     ".cpp": 4,

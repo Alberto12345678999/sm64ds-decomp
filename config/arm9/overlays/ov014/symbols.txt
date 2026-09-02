@@ -3,7 +3,7 @@ _ZN10ShutterBobD0Ev kind:function(arm,size=0x64) addr:0x021111f0
 _ZN10ShutterBob16CleanupResourcesEv kind:function(arm,size=0x14) addr:0x02111254
 _ZN10ShutterBob8BehaviorEv kind:function(arm,size=0x2c) addr:0x02111268
 _ZN10ShutterBob13InitResourcesEv kind:function(arm,size=0x38) addr:0x02111294
-ShutterBob_Spawn kind:function(arm,size=0x3c) addr:0x021112cc
+daObjBSwdoor_c_classInit kind:function(arm,size=0x3c) addr:0x021112cc
 _ZN10ChainChompD1Ev kind:function(arm,size=0xb4) addr:0x02111308
 _ZN10ChainChompD0Ev kind:function(arm,size=0xc8) addr:0x021113bc
 func_ov014_02111484 kind:function(arm,size=0x54) addr:0x02111484
@@ -40,7 +40,7 @@ _ZN15ChainChompFence16CleanupResourcesEv kind:function(arm,size=0x44) addr:0x021
 _ZN15ChainChompFence6RenderEv kind:function(arm,size=0x40) addr:0x02112f80
 _ZN15ChainChompFence8BehaviorEv kind:function(arm,size=0x3c) addr:0x02112fc0
 _ZN15ChainChompFence13InitResourcesEv kind:function(arm,size=0x80) addr:0x02112ffc
-ChainChompFence_Spawn kind:function(arm,size=0x30) addr:0x0211307c
+daObjWanwanShutter_c_classInit kind:function(arm,size=0x30) addr:0x0211307c
 __sinit_ov014_021130ac kind:function(arm,size=0x6c) addr:0x021130ac
 __sinit_ov014_02113118 kind:function(arm,size=0x1e4) addr:0x02113118
 __sinit_ov014_021132fc kind:function(arm,size=0x6c) addr:0x021132fc
@@ -158,7 +158,7 @@ data_ov014_02114598 kind:data(any) addr:0x02114598 ambiguous
 _ZTI14daObjBSwdoor_c kind:data(any) addr:0x021145b8
 data_ov014_021145c4 kind:data(any) addr:0x021145c4
 _ZTS14daObjBSwdoor_c kind:data(any) addr:0x021145d0
-ShutterBob_SpawnInfo kind:data(any) addr:0x021145e4 ambiguous
+g_profile_SWITCHDOOR kind:data(any) addr:0x021145e4 ambiguous
 _ZTV10ShutterBob kind:data(any) addr:0x02114608
 data_ov014_0211462c kind:data(any) addr:0x0211462c ambiguous
 data_ov014_02114688 kind:data(any) addr:0x02114688
@@ -192,7 +192,7 @@ data_ov014_02114860 kind:data(any) addr:0x02114860 ambiguous
 _ZTI20daObjWanwanShutter_c kind:data(any) addr:0x02114868
 _ZTS20daObjWanwanShutter_c kind:data(any) addr:0x02114874
 data_ov014_0211487c kind:data(any) addr:0x0211487c ambiguous
-ChainChompFence_SpawnInfo kind:data(any) addr:0x0211488c ambiguous
+g_profile_WANWAN_SHUTTER kind:data(any) addr:0x0211488c ambiguous
 data_ov014_02114898 kind:data(any) addr:0x02114898 ambiguous
 _ZTV15ChainChompFence kind:data(any) addr:0x021148b0
 data_ov014_021148b4 kind:data(any) addr:0x021148b4 ambiguous

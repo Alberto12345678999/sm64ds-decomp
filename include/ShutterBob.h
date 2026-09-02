@@ -16,7 +16,7 @@
  *   kind  __si_class_type_info, ONE base, subobject offset 0
  *   base  daObjSwdoor_c, ov002 0x021099c0
  *
- * SIZE 0x324, from ShutterBob_Spawn's literal 804. It overrides slots 0
+ * SIZE 0x324, from daObjBSwdoor_c_classInit's literal 804. It overrides slots 0
  * (InitResources), 3 (CleanupResources) and 6 (Behavior), all three of which the
  * base leaves null.
  *
