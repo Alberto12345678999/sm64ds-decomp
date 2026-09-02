@@ -8299,17 +8299,17 @@
    "start": "0x21111a0",
    "end": "0x2111308",
    "classes": [
-    "ShutterBob"
+    "daObjBSwdoor_c"
    ],
    "n_functions_map": 6,
    "n_files": 6,
    "files": [
-    "src/_ZN10ShutterBobD1Ev.cpp",
-    "src/_ZN10ShutterBobD0Ev.c",
-    "src/_ZN10ShutterBob16CleanupResourcesEv.cpp",
-    "src/_ZN10ShutterBob8BehaviorEv.cpp",
-    "src/_ZN10ShutterBob13InitResourcesEv.cpp",
-    "src/daObjBSwdoor_c_classInit.c"
+    "src/_ZN14daObjBSwdoor_cD1Ev.cpp",
+    "src/_ZN14daObjBSwdoor_cD0Ev.c",
+    "src/_ZN14daObjBSwdoor_c16CleanupResourcesEv.cpp",
+    "src/_ZN14daObjBSwdoor_c8BehaviorEv.cpp",
+    "src/_ZN14daObjBSwdoor_c13InitResourcesEv.cpp",
+    "src/daObjBSwdoor_c_Spawn.c"
    ],
    "ext_mix": {
     ".cpp": 4,

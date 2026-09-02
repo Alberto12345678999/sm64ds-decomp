@@ -495,13 +495,12 @@ ov013	0x02112104	data_ov013_02112104	daObjClockHuriko_c_SpawnInfo	spawninfo
 ov013	0x021121c0	data_ov013_021121c0	ClockPaintingHandLong_SpawnInfo	spawninfo
 ov013	0x021121dc	data_ov013_021121dc	ClockPaintingHandShort_SpawnInfo	spawninfo
 ov013	0x02112200	data_ov013_02112200	_ZTV22ClockPaintingHandShort	vtable alloc=0x128
-ov014	0x021111a0	func_ov014_021111a0	_ZN10ShutterBobD1Ev	vtable slot 16
-ov014	0x021111f0	func_ov014_021111f0	_ZN10ShutterBobD0Ev	vtable slot 17
-ov014	0x02111254	func_ov014_02111254	_ZN10ShutterBob16CleanupResourcesEv	vtable slot 3
-ov014	0x02111268	func_ov014_02111268	_ZN10ShutterBob8BehaviorEv	vtable slot 6
-ov014	0x02111294	func_ov014_02111294	_ZN10ShutterBob13InitResourcesEv	vtable slot 0
-ov014	0x021112cc	func_ov014_021112cc	ShutterBob_Spawn	spawnfunc
-ov014	0x021112cc	ShutterBob_Spawn	daObjBSwdoor_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
+ov014	0x021111a0	func_ov014_021111a0	_ZN14daObjBSwdoor_cD1Ev	vtable slot 16
+ov014	0x021111f0	func_ov014_021111f0	_ZN14daObjBSwdoor_cD0Ev	vtable slot 17
+ov014	0x02111254	func_ov014_02111254	_ZN14daObjBSwdoor_c16CleanupResourcesEv	vtable slot 3
+ov014	0x02111268	func_ov014_02111268	_ZN14daObjBSwdoor_c8BehaviorEv	vtable slot 6
+ov014	0x02111294	func_ov014_02111294	_ZN14daObjBSwdoor_c13InitResourcesEv	vtable slot 0
+ov014	0x021112cc	func_ov014_021112cc	daObjBSwdoor_c_Spawn	spawnfunc
 ov014	0x02111308	func_ov014_02111308	_ZN10ChainChompD1Ev	vtable slot 16
 ov014	0x021113bc	func_ov014_021113bc	_ZN10ChainChompD0Ev	vtable slot 17
 ov014	0x0211294c	func_ov014_0211294c	_ZN10ChainChomp16CleanupResourcesEv	vtable slot 3
@@ -517,9 +516,8 @@ ov014	0x02112fc0	func_ov014_02112fc0	_ZN15ChainChompFence8BehaviorEv	vtable slot
 ov014	0x02112ffc	func_ov014_02112ffc	_ZN15ChainChompFence13InitResourcesEv	vtable slot 0
 ov014	0x0211307c	func_ov014_0211307c	ChainChompFence_Spawn	spawnfunc
 ov014	0x0211307c	ChainChompFence_Spawn	daObjWanwanShutter_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
-ov014	0x021145e4	data_ov014_021145e4	ShutterBob_SpawnInfo	spawninfo
-ov014	0x021145e4	ShutterBob_SpawnInfo	g_profile_SWITCHDOOR	reconstructed profile global; literal ROM ID SWITCHDOOR+registry role+later EAD lineage; exact SM64DS spelling not preserved
-ov014	0x02114608	data_ov014_02114608	_ZTV10ShutterBob	vtable alloc=0x324
+ov014	0x021145e4	data_ov014_021145e4	daObjBSwdoor_c_SpawnInfo	spawninfo
+ov014	0x02114608	data_ov014_02114608	_ZTV14daObjBSwdoor_c	vtable alloc=0x324
 ov014	0x02114750	data_ov014_02114750	ChainChomp_SpawnInfo	spawninfo
 ov014	0x021147ec	data_ov014_021147ec	_ZTV10ChainChomp	vtable alloc=0x620
 ov014	0x0211488c	data_ov014_0211488c	ChainChompFence_SpawnInfo	spawninfo
