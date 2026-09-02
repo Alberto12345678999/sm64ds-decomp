@@ -1360,11 +1360,11 @@ src/SignPost_Spawn.c:
     complete
     .text start:0x020bc3c8 end:0x020bc414
 
-src/_ZN7SeaweedD1Ev.cpp:
+src/_ZN13daObjWakame_cD1Ev.cpp:
     complete
     .text start:0x020bc414 end:0x020bc444
 
-src/_ZN7SeaweedD0Ev.cpp:
+src/_ZN13daObjWakame_cD0Ev.cpp:
     complete
     .text start:0x020bc444 end:0x020bc488
 
@@ -1372,23 +1372,23 @@ src/func_ov002_020bc488.c:
     complete
     .text start:0x020bc488 end:0x020bc4c8
 
-src/_ZN7Seaweed16CleanupResourcesEv.cpp:
+src/_ZN13daObjWakame_c16CleanupResourcesEv.cpp:
     complete
     .text start:0x020bc4c8 end:0x020bc4f8
 
-src/_ZN7Seaweed6RenderEv.cpp:
+src/_ZN13daObjWakame_c6RenderEv.cpp:
     complete
     .text start:0x020bc4f8 end:0x020bc520
 
-src/_ZN7Seaweed8BehaviorEv.cpp:
+src/_ZN13daObjWakame_c8BehaviorEv.cpp:
     complete
     .text start:0x020bc520 end:0x020bc540
 
-src/_ZN7Seaweed13InitResourcesEv.cpp:
+src/_ZN13daObjWakame_c13InitResourcesEv.cpp:
     complete
     .text start:0x020bc540 end:0x020bc5a8
 
-src/Seaweed_Spawn.c:
+src/daObjWakame_c_Spawn.c:
     complete
     .text start:0x020bc5a8 end:0x020bc5e0
 

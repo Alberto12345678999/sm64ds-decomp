@@ -6553,19 +6553,19 @@
    "start": "0x20bc414",
    "end": "0x20bc5e0",
    "classes": [
-    "Seaweed"
+    "daObjWakame_c"
    ],
    "n_functions_map": 8,
    "n_files": 8,
    "files": [
-    "src/_ZN7SeaweedD1Ev.cpp",
-    "src/_ZN7SeaweedD0Ev.c",
+    "src/_ZN13daObjWakame_cD1Ev.cpp",
+    "src/_ZN13daObjWakame_cD0Ev.c",
     "src/func_ov002_020bc488.c",
-    "src/_ZN7Seaweed16CleanupResourcesEv.cpp",
-    "src/_ZN7Seaweed6RenderEv.cpp",
-    "src/_ZN7Seaweed8BehaviorEv.cpp",
-    "src/_ZN7Seaweed13InitResourcesEv.cpp",
-    "src/Seaweed_Spawn.c"
+    "src/_ZN13daObjWakame_c16CleanupResourcesEv.cpp",
+    "src/_ZN13daObjWakame_c6RenderEv.cpp",
+    "src/_ZN13daObjWakame_c8BehaviorEv.cpp",
+    "src/_ZN13daObjWakame_c13InitResourcesEv.cpp",
+    "src/daObjWakame_c_Spawn.c"
    ],
    "ext_mix": {
     ".cpp": 5,

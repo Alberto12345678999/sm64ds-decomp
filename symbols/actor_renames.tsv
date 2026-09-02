@@ -147,7 +147,7 @@ ov002	0x020bbe30	func_ov002_020bbe30	_ZN8SignPost6RenderEv	vtable slot 9
 ov002	0x020bbea4	func_ov002_020bbea4	_ZN8SignPost8BehaviorEv	vtable slot 6
 ov002	0x020bc240	func_ov002_020bc240	_ZN8SignPost13InitResourcesEv	vtable slot 0
 ov002	0x020bc3c8	func_ov002_020bc3c8	SignPost_Spawn	spawnfunc
-ov002	0x020bc5a8	func_ov002_020bc5a8	Seaweed_Spawn	spawnfunc
+ov002	0x020bc5a8	func_ov002_020bc5a8	daObjWakame_c_Spawn	spawnfunc
 ov002	0x020bc5e0	func_ov002_020bc5e0	_ZN7SeaweedD1Ev	vtable slot 16
 ov002	0x020bc618	func_ov002_020bc618	_ZN7SeaweedD0Ev	vtable slot 17
 ov002	0x020bc6a4	func_ov002_020bc6a4	_ZN7Seaweed16CleanupResourcesEv	vtable slot 3
@@ -320,7 +320,7 @@ ov002	0x0210991c	data_ov002_0210991c	StarSwitch_SpawnInfo	spawninfo
 ov002	0x02109940	data_ov002_02109940	_ZTV10StarSwitch	vtable alloc=0x354
 ov002	0x02109ad4	data_ov002_02109ad4	SignPost_SpawnInfo	spawninfo
 ov002	0x02109af8	data_ov002_02109af8	_ZTV8SignPost	vtable alloc=?
-ov002	0x02109b94	data_ov002_02109b94	Seaweed_SpawnInfo	spawninfo
+ov002	0x02109b94	data_ov002_02109b94	daObjWakame_c_SpawnInfo	spawninfo
 ov002	0x02109c50	data_ov002_02109c50	HealingHeart_SpawnInfo	spawninfo
 ov002	0x02109c74	data_ov002_02109c74	_ZTV7Seaweed	vtable alloc=0x138
 ov002	0x02109d14	data_ov002_02109d14	daObjCannonShutter_c_SpawnInfo	spawninfo

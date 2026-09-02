@@ -1,5 +1,5 @@
-#ifndef SEAWEED_H
-#define SEAWEED_H
+#ifndef DAOBJWAKAME_C_H
+#define DAOBJWAKAME_C_H
 
 #include "types.h"
 #include "dActor_c.h"
@@ -7,9 +7,9 @@
 
 /* TWO WITNESSES, and they close on each other:
  *
- *   Seaweed_Spawn  fBase_c::operator new(312 = 0x138), dActor_c::dActor_c(), stores _ZTV7Seaweed,
+ *   daObjWakame_c_Spawn  fBase_c::operator new(312 = 0x138), dActor_c::dActor_c(), stores _ZTV13daObjWakame_c,
  *                 then the member below in this order.
- *   ~Seaweed   the same member destroyed in reverse, then ~dActor_c.
+ *   ~daObjWakame_c   the same member destroyed in reverse, then ~dActor_c.
  *
  * SIZE 0x138 is the factory's own literal, and the last member closes exactly on it.
  *
@@ -17,11 +17,11 @@
  * below differ; every other slot holds the base's own word and is inherited, so it
  * is deliberately not redeclared here.
  */
-struct Seaweed : dActor_c {
+struct daObjWakame_c : dActor_c {
     u8  pad_0d0[0x4];
     ModelAnim              mModelAnim;   /* 0x0d4 */
 
-    virtual ~Seaweed();            /* slots 16 (D1), 17 (D0) */
+    virtual ~daObjWakame_c();            /* slots 16 (D1), 17 (D0) */
 
     virtual s32   InitResources();         /* slot  0 */
     virtual s32   CleanupResources();      /* slot  3 */
@@ -29,6 +29,6 @@ struct Seaweed : dActor_c {
     virtual s32   Render();                /* slot  9 */
 };
 
-typedef char Seaweed_size_must_be_0x138[sizeof(Seaweed) == 0x138 ? 1 : -1];
+typedef char daObjWakame_c_size_must_be_0x138[sizeof(daObjWakame_c) == 0x138 ? 1 : -1];
 
-#endif /* SEAWEED_H */
+#endif /* DAOBJWAKAME_C_H */
