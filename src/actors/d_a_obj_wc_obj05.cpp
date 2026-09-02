@@ -6,9 +6,28 @@
  * of source order). Conflicting declarations were reconciled by hand; see
  * the manifest notes.
  *
+ * PROMOTED: this file is compiled and linked into the ROM, and ov029's
+ * delinks.txt gives it the whole .text run 0x02111ac4..0x02111ea4. The nine
+ * legacy one-function sources listed below are deleted; they are named for
+ * provenance only.
+ *
+ * The class is spelled as the cartridge spells it. ov029 _ZTI 0x02113e30 holds
+ * _ZTS 0x02113e3c, reading `15daObjWc_Obj05_c`, and its base word 0x021089ec is
+ * _ZTI10dBgActor_c. It is a leaf: a scan of all 977 .bin files under extracted/
+ * for the word 0x02113e30 finds exactly two hits, both at file offset 0x2cd0 in
+ * the same overlay under two paths, which is this class's own _ZTV - 4.
+ *
+ * The destructor is defined INLINE in include/daObjWc_Obj05_c.h. Out of line
+ * mwccarm emits D2, D0, D1; the ROM has D1 then D0 and no D2. Because the
+ * destructor is inline the key function is InitResources -- the first DECLARED
+ * non-inline virtual -- so this TU also emits the class's vague-linkage
+ * _ZTV/_ZTI/_ZTS plus the eight inherited base-chain records. All eleven are
+ * licensed in the manifest's compiler_only_output and word-compared against the
+ * cartridge by tools/romdata_check.py.
+ *
  * Assembled from these legacy one-function sources (ROM address order):
  *   [0] 0x02111ac4  src/_ZN15daObjWc_Obj05_cD1Ev.cpp
- *   [1] 0x02111b08  src/_ZN15daObjWc_Obj05_cD0Ev.c
+ *   [1] 0x02111b08  src/_ZN15daObjWc_Obj05_cD0Ev.cpp
  *   [2] 0x02111b60  src/_ZN15daObjWc_Obj05_c16CleanupResourcesEv.cpp
  *   [3] 0x02111ba4  src/_ZN15daObjWc_Obj05_c6RenderEv.cpp
  *   [4] 0x02111bcc  src/_ZN15daObjWc_Obj05_c8BehaviorEv.cpp
@@ -263,7 +282,6 @@ extern void *data_020a0eac;
  * Vtable slot 16: one vtable store, the members in reverse, then ~dBgActor_c. */
 #include "daObjWc_Obj05_c.h"
 
-daObjWc_Obj05_c::~daObjWc_Obj05_c()
-{
-}
+/* (no out-of-line body: the destructor is defined inline in the header, which is
+ * what makes mwccarm emit D1 then D0 and no D2 -- the ROM's own order.) */
 

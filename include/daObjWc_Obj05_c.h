@@ -33,7 +33,13 @@ struct daObjWc_Obj05_c : dBgActor_c {
     u8  unk_32c;                    /* 0x32c -- state selector */
     u8  pad_32d[0x3];
 
-    virtual ~daObjWc_Obj05_c();            /* slots 16 (D1), 17 (D0) */
+    /* Defined INLINE on purpose. Out of line, mwccarm emits D2, D0, D1; the
+     * ROM has D1 at 0x02111ac4 then D0 at 0x02111b08 and no D2 anywhere in
+     * ov029. Moving the (empty) body here flips emission to D1, D0 and drops
+     * the D2 entirely. The key function is then the first DECLARED non-inline
+     * virtual, InitResources, which lives in this TU -- so this TU also owns
+     * the class's vague-linkage _ZTV/_ZTI/_ZTS, licensed in the manifest. */
+    virtual ~daObjWc_Obj05_c() {}          /* slots 16 (D1), 17 (D0) */
 
     virtual s32   InitResources();         /* slot  0 */
     virtual s32   CleanupResources();      /* slot  3 */

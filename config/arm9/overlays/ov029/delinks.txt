@@ -84,41 +84,9 @@ src/daObjWc_Obj03_c_classInit.c:
     complete
     .text start:0x02111a84 end:0x02111ac4
 
-src/_ZN15daObjWc_Obj05_cD1Ev.cpp:
+src/actors/d_a_obj_wc_obj05.cpp:
     complete
-    .text start:0x02111ac4 end:0x02111b08
-
-src/_ZN15daObjWc_Obj05_cD0Ev.cpp:
-    complete
-    .text start:0x02111b08 end:0x02111b60
-
-src/_ZN15daObjWc_Obj05_c16CleanupResourcesEv.cpp:
-    complete
-    .text start:0x02111b60 end:0x02111ba4
-
-src/_ZN15daObjWc_Obj05_c6RenderEv.cpp:
-    complete
-    .text start:0x02111ba4 end:0x02111bcc
-
-src/_ZN15daObjWc_Obj05_c8BehaviorEv.cpp:
-    complete
-    .text start:0x02111bcc end:0x02111d6c
-
-src/_ZN15daObjWc_Obj05_c13InitResourcesEv.cpp:
-    complete
-    .text start:0x02111d6c end:0x02111e40
-
-src/func_ov029_02111e40.cpp:
-    complete
-    .text start:0x02111e40 end:0x02111e60
-
-src/func_ov029_02111e60.c:
-    complete
-    .text start:0x02111e60 end:0x02111e74
-
-src/daObjWc_Obj05_c_classInit.c:
-    complete
-    .text start:0x02111e74 end:0x02111ea4
+    .text start:0x02111ac4 end:0x02111ea4
 
 src/actors/d_a_obj_wc_obj06.cpp:
     complete
