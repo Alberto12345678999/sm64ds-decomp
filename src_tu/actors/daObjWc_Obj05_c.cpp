@@ -1,5 +1,5 @@
 //cpp
-/* HAND-ASSEMBLED translation unit -- ov029/CageLift (9 function(s)).
+/* HAND-ASSEMBLED translation unit -- ov029/daObjWc_Obj05_c (9 function(s)).
  * tubuild create refused this TU (legacy bodies wrapped in extern "C" { }),
  * so this is a raw concatenation of the complete legacy files in REVERSE
  * ROM order (mwccarm emits one .text section per function in the reverse
@@ -7,12 +7,12 @@
  * the manifest notes.
  *
  * Assembled from these legacy one-function sources (ROM address order):
- *   [0] 0x02111ac4  src/_ZN8CageLiftD1Ev.cpp
- *   [1] 0x02111b08  src/_ZN8CageLiftD0Ev.c
- *   [2] 0x02111b60  src/_ZN8CageLift16CleanupResourcesEv.cpp
- *   [3] 0x02111ba4  src/_ZN8CageLift6RenderEv.cpp
- *   [4] 0x02111bcc  src/_ZN8CageLift8BehaviorEv.cpp
- *   [5] 0x02111d6c  src/_ZN8CageLift13InitResourcesEv.cpp
+ *   [0] 0x02111ac4  src/_ZN15daObjWc_Obj05_cD1Ev.cpp
+ *   [1] 0x02111b08  src/_ZN15daObjWc_Obj05_cD0Ev.c
+ *   [2] 0x02111b60  src/_ZN15daObjWc_Obj05_c16CleanupResourcesEv.cpp
+ *   [3] 0x02111ba4  src/_ZN15daObjWc_Obj05_c6RenderEv.cpp
+ *   [4] 0x02111bcc  src/_ZN15daObjWc_Obj05_c8BehaviorEv.cpp
+ *   [5] 0x02111d6c  src/_ZN15daObjWc_Obj05_c13InitResourcesEv.cpp
  *   [6] 0x02111e40  src/func_ov029_02111e40.cpp
  *   [7] 0x02111e60  src/func_ov029_02111e60.c
  *   [8] 0x02111e74  src/daObjWc_Obj05_c_classInit.c
@@ -24,13 +24,13 @@
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 extern void *_ZN7fBase_cnwEj(unsigned);
 extern void _ZN10dBgActor_cC2Ev(void *);
-extern int _ZTV8CageLift[];
+extern int _ZTV15daObjWc_Obj05_c[];
 /* Reconstructed source-style name; exact original SM64DS spelling is not
- * preserved. Historical alias: CageLift_Spawn. */
+ * preserved. Historical alias: daObjWc_Obj05_c_Spawn. */
 int *daObjWc_Obj05_c_classInit(void)
 {
     int *p = (int *)_ZN7fBase_cnwEj(816);
-    if (p) { _ZN10dBgActor_cC2Ev(p); p[0] = (int)&_ZTV8CageLift[2]; /* +8: this TU defines the vtable */ }
+    if (p) { _ZN10dBgActor_cC2Ev(p); p[0] = (int)&_ZTV15daObjWc_Obj05_c[2]; /* +8: this TU defines the vtable */ }
     return p;
 }
 }
@@ -59,10 +59,10 @@ extern "C" int func_ov029_02111e60(void *a, void *b, void *c)
 extern "C" void func_ov029_02111e40(char *a, char *b){ unsigned char ok = *(unsigned short*)(b+0xc)==0xbf; if(ok) *(unsigned char*)(a+0x32a)=1; }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 5 -- _ZN8CageLift13InitResourcesEv, 0x02111d6c, size 0xd4 */
+/* ROM ordinal 5 -- _ZN15daObjWc_Obj05_c13InitResourcesEv, 0x02111d6c, size 0xd4 */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN8CageLift13InitResourcesEv
-#include "CageLift.h"
+// @symbol _ZN15daObjWc_Obj05_c13InitResourcesEv
+#include "daObjWc_Obj05_c.h"
 /* recovered: renamed to Class_Method, RTTI class fields named, declarations from a shared header */
 #include "decl_common.h"
 // recovered name: daObjWc_Obj05_c_InitResources
@@ -79,7 +79,7 @@ extern void func_020393d4(void* p, void* v);
 extern void func_020393c4(void* p, void* v);
 extern void _ZN4dBgW22UpdatePosWithTransformERS_P8dActor_cR5dBgPiR7Vector3P10Vector3_16S8_(void);
 
-s32 CageLift::InitResources() {
+s32 daObjWc_Obj05_c::InitResources() {
     char* c = (char*)this;
     void* f = _ZN5Model8LoadFileER13SharedFilePtr(data_ov029_0211428c);
     _ZN9ModelBase7SetFileEP8BMD_Fileii(c + 0xd4, f, 1, -1);
@@ -103,11 +103,11 @@ s32 CageLift::InitResources() {
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 4 -- _ZN8CageLift8BehaviorEv, 0x02111bcc, size 0x1a0 */
+/* ROM ordinal 4 -- _ZN15daObjWc_Obj05_c8BehaviorEv, 0x02111bcc, size 0x1a0 */
 /* -------------------------------------------------------------------------- */
 #include "types.h"
-// @symbol _ZN8CageLift8BehaviorEv
-#include "CageLift.h"
+// @symbol _ZN15daObjWc_Obj05_c8BehaviorEv
+#include "daObjWc_Obj05_c.h"
 // recovered name: daObjWc_Obj05_c_Behavior
 /* recovered: renamed to Class_Method */
 /* daObjWc_Obj05_c::Behavior - recovered from vtable slot identity */
@@ -120,7 +120,7 @@ extern void _ZN10dBgActor_c19UpdateClsnPosAndRotEv(void* self);
 extern void _ZN10dBgW_KcMbg9TransformERK9Matrix4x3s(void* self, void* mat, s16 s);
 }
 
-s32 CageLift::Behavior() {
+s32 daObjWc_Obj05_c::Behavior() {
     u8* thiz = (u8*)this;
     func_020393a4((int*)(thiz + 0x124), 0x250000);
 
@@ -195,23 +195,23 @@ s32 CageLift::Behavior() {
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 3 -- _ZN8CageLift6RenderEv, 0x02111ba4, size 0x28 */
+/* ROM ordinal 3 -- _ZN15daObjWc_Obj05_c6RenderEv, 0x02111ba4, size 0x28 */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN8CageLift6RenderEv
-#include "CageLift.h"
+// @symbol _ZN15daObjWc_Obj05_c6RenderEv
+#include "daObjWc_Obj05_c.h"
 // recovered name: daObjWc_Obj05_c_Render
 /* recovered: renamed to Class_Method */
 /* daObjWc_Obj05_c::Render - recovered from vtable slot identity */
 struct Base { virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3(); virtual void v4(); virtual void m(int); };
 struct Derived { char pad[0xd4]; Base base; };
-s32 CageLift::Render() {
+s32 daObjWc_Obj05_c::Render() {
     Derived * d = (Derived *)this; Base *b = &d->base; b->m(0); return 1; }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 2 -- _ZN8CageLift16CleanupResourcesEv, 0x02111b60, size 0x44 */
+/* ROM ordinal 2 -- _ZN15daObjWc_Obj05_c16CleanupResourcesEv, 0x02111b60, size 0x44 */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN8CageLift16CleanupResourcesEv
-#include "CageLift.h"
+// @symbol _ZN15daObjWc_Obj05_c16CleanupResourcesEv
+#include "daObjWc_Obj05_c.h"
 // recovered name: daObjWc_Obj05_c_CleanupResources
 /* recovered: renamed to Class_Method, declarations from a shared header */
 #include "decl_common.h"
@@ -222,7 +222,7 @@ extern void _ZN13SharedFilePtr7ReleaseEv(void *);
 extern int data_ov029_0211428c[];
 }
 
-s32 CageLift::CleanupResources() {
+s32 daObjWc_Obj05_c::CleanupResources() {
     void * t = (void *)this;
     if (_ZN4dBgW9IsEnabledEv((char *)t + 0x124)) {
         _ZN4dBgW7DisableEv((char *)t + 0x124);
@@ -233,16 +233,16 @@ s32 CageLift::CleanupResources() {
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 1 -- _ZN8CageLiftD0Ev, 0x02111b08, size 0x58 */
+/* ROM ordinal 1 -- _ZN15daObjWc_Obj05_cD0Ev, 0x02111b08, size 0x58 */
 /* -------------------------------------------------------------------------- */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-// @symbol _ZN8CageLiftD0Ev
+// @symbol _ZN15daObjWc_Obj05_cD0Ev
 /* recovered: vtable identified, renamed to Class_Method, declarations from a shared header */
 #include "decl_Actor.h"
 #include "decl_Model.h"
 #include "decl_dBgW_KcMbg.h"
 #include "decl_common.h"
-extern int _ZTV8CageLift[];
+extern int _ZTV15daObjWc_Obj05_c[];
 extern int _ZTV10dBgActor_c[];
 /* recovered: vtable identified, renamed to Class_Method */
 /* The DELETING DESTRUCTOR, vtable slot 17. The old comment here called it
@@ -250,20 +250,20 @@ extern int _ZTV10dBgActor_c[];
    vtable, destroys the members and calls Memory::Deallocate; no eat handler
    does any of that. */
 extern void *data_020a0eac;
-/* (no separate definition: the single ~CageLift() below emits the D0 and D1
+/* (no separate definition: the single ~daObjWc_Obj05_c() below emits the D0 and D1
  * variants together -- a hand-mangled D0 next to a real destructor is the
  * known mwccarm ICE, ELFgen.c:483.) */
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 0 -- _ZN8CageLiftD1Ev, 0x02111ac4, size 0x44 */
+/* ROM ordinal 0 -- _ZN15daObjWc_Obj05_cD1Ev, 0x02111ac4, size 0x44 */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN8CageLiftD1Ev
+// @symbol _ZN15daObjWc_Obj05_cD1Ev
 /* recovered: real C++ destructor -- the compiler emits the whole body.
  * Vtable slot 16: one vtable store, the members in reverse, then ~dBgActor_c. */
-#include "CageLift.h"
+#include "daObjWc_Obj05_c.h"
 
-CageLift::~CageLift()
+daObjWc_Obj05_c::~daObjWc_Obj05_c()
 {
 }
 

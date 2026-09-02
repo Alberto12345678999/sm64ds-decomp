@@ -1,7 +1,7 @@
 //cpp
 #include "types.h"
-// @symbol _ZN8CageLift8BehaviorEv
-#include "CageLift.h"
+// @symbol _ZN15daObjWc_Obj05_c8BehaviorEv
+#include "daObjWc_Obj05_c.h"
 // recovered name: daObjWc_Obj05_c_Behavior
 /* recovered: renamed to Class_Method */
 /* daObjWc_Obj05_c::Behavior - recovered from vtable slot identity */
@@ -14,7 +14,7 @@ extern void _ZN10dBgActor_c19UpdateClsnPosAndRotEv(void* self);
 extern void _ZN10dBgW_KcMbg9TransformERK9Matrix4x3s(void* self, void* mat, s16 s);
 }
 
-s32 CageLift::Behavior() {
+s32 daObjWc_Obj05_c::Behavior() {
     u8* thiz = (u8*)this;
     func_020393a4((int*)(thiz + 0x124), 0x250000);
 

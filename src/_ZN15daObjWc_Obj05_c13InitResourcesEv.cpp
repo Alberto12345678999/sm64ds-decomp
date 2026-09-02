@@ -1,6 +1,6 @@
 //cpp
-// @symbol _ZN8CageLift13InitResourcesEv
-#include "CageLift.h"
+// @symbol _ZN15daObjWc_Obj05_c13InitResourcesEv
+#include "daObjWc_Obj05_c.h"
 /* recovered: renamed to Class_Method, RTTI class fields named, declarations from a shared header */
 #include "decl_common.h"
 // recovered name: daObjWc_Obj05_c_InitResources
@@ -17,7 +17,7 @@ extern void func_020393d4(void* p, void* v);
 extern void func_020393c4(void* p, void* v);
 extern void _ZN4dBgW22UpdatePosWithTransformERS_P8dActor_cR5dBgPiR7Vector3P10Vector3_16S8_(void);
 
-s32 CageLift::InitResources() {
+s32 daObjWc_Obj05_c::InitResources() {
     char* c = (char*)this;
     void* f = _ZN5Model8LoadFileER13SharedFilePtr(data_ov029_0211428c);
     _ZN9ModelBase7SetFileEP8BMD_Fileii(c + 0xd4, f, 1, -1);

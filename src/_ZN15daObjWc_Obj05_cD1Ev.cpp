@@ -1,9 +1,9 @@
 //cpp
-// @symbol _ZN8CageLiftD1Ev
+// @symbol _ZN15daObjWc_Obj05_cD1Ev
 /* recovered: real C++ destructor -- the compiler emits the whole body.
  * Vtable slot 16: one vtable store, the members in reverse, then ~dBgActor_c. */
-#include "CageLift.h"
+#include "daObjWc_Obj05_c.h"
 
-CageLift::~CageLift()
+daObjWc_Obj05_c::~daObjWc_Obj05_c()
 {
 }

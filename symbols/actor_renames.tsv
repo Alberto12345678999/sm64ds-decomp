@@ -960,8 +960,8 @@ ov029	0x02111954	func_ov029_02111954	_ZN12WaterDiamond8BehaviorEv	vtable slot 6 
 ov029	0x02111a04	func_ov029_02111a04	_ZN12WaterDiamond13InitResourcesEv	vtable slot 0 (was _ZN9ArrowLift13InitResourcesEv)
 ov029	0x02111a84	func_ov029_02111a84	WaterDiamond_Spawn	spawnfunc
 ov029	0x02111a84	WaterDiamond_Spawn	daObjWc_Obj03_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
-ov029	0x02111e74	func_ov029_02111e74	CageLift_Spawn	spawnfunc
-ov029	0x02111e74	CageLift_Spawn	daObjWc_Obj05_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
+ov029	0x02111e74	func_ov029_02111e74	daObjWc_Obj05_c_Spawn	spawnfunc (was CageLift_Spawn)
+ov029	0x02111e74	daObjWc_Obj05_c_Spawn	daObjWc_Obj05_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved (was CageLift_Spawn)
 ov029	0x02112044	func_ov029_02112044	FloatOnWaterPlatformWdwRectangle_Spawn	spawnfunc
 ov029	0x02112044	FloatOnWaterPlatformWdwRectangle_Spawn	daObjWcObj06_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov029	0x02112080	func_ov029_02112080	_ZN15daObjWc_Obj07_cD1Ev	vtable slot 16 (was _ZN32FloatOnWaterPlatformWdwRectangleD1Ev)
@@ -993,8 +993,8 @@ ov029	0x02113cf0	data_ov029_02113cf0	_ZTV9ArrowLift	vtable alloc=? (was _ZTV29Fl
 ov029	0x02113d90	data_ov029_02113d90	WaterDiamond_SpawnInfo	spawninfo
 ov029	0x02113d90	WaterDiamond_SpawnInfo	g_profile_WC_OBJ03	reconstructed profile global; literal ROM ID WC_OBJ03+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov029	0x02113db4	data_ov029_02113db4	_ZTV12WaterDiamond	vtable alloc=? (was _ZTV9ArrowLift)
-ov029	0x02113e50	data_ov029_02113e50	CageLift_SpawnInfo	spawninfo
-ov029	0x02113e50	CageLift_SpawnInfo	g_profile_WC_OBJ05	reconstructed profile global; literal ROM ID WC_OBJ05+registry role+later EAD lineage; exact SM64DS spelling not preserved
+ov029	0x02113e50	data_ov029_02113e50	daObjWc_Obj05_c_SpawnInfo	spawninfo (was CageLift_SpawnInfo)
+ov029	0x02113e50	daObjWc_Obj05_c_SpawnInfo	g_profile_WC_OBJ05	reconstructed profile global; literal ROM ID WC_OBJ05+registry role+later EAD lineage; exact SM64DS spelling not preserved (was CageLift_SpawnInfo)
 ov029	0x02113f20	data_ov029_02113f20	FloatOnWaterPlatformWdwRectangle_SpawnInfo	spawninfo
 ov029	0x02113ff4	data_ov029_02113ff4	daObjWc_Obj07_c_SpawnInfo	spawninfo
 ov029	0x02114018	data_ov029_02114018	_ZTV15daObjWc_Obj07_c	vtable alloc=? (was _ZTV32FloatOnWaterPlatformWdwRectangle)

@@ -1,15 +1,15 @@
-#ifndef CAGELIFT_H
-#define CAGELIFT_H
+#ifndef DAOBJWC_OBJ05_C_H
+#define DAOBJWC_OBJ05_C_H
 
 #include "types.h"
 #include "dBgActor_c.h"
 
 /* TWO WITNESSES, and they close on each other:
  *
- *   daObjWc_Obj05_c_classInit (historical alias CageLift_Spawn) allocates
- *                 816 = 0x330, calls dBgActor_c::dBgActor_c(), stores _ZTV8CageLift,
+ *   daObjWc_Obj05_c_classInit (historical alias daObjWc_Obj05_c_Spawn) allocates
+ *                 816 = 0x330, calls dBgActor_c::dBgActor_c(), stores _ZTV15daObjWc_Obj05_c,
  *                 then the members below in this order.
- *   ~CageLift   the same members destroyed in reverse, then ~dBgActor_c.
+ *   ~daObjWc_Obj05_c   the same members destroyed in reverse, then ~dBgActor_c.
  *
  * SIZE 0x330 is the factory's own literal, and the last member closes exactly on it.
  *
@@ -17,7 +17,7 @@
  * below differ; every other slot holds the base's own word and is inherited, so it
  * is deliberately not redeclared here.
  */
-struct CageLift : dBgActor_c {
+struct daObjWc_Obj05_c : dBgActor_c {
     /* 0x320..0x32c, folded in from the flat include/daObjWc_Obj05_c.h that used
      * to declare this same class a second time, un-inherited, and be cast to
      * from `this` inside InitResources and Behavior. Both spellings were
@@ -33,7 +33,7 @@ struct CageLift : dBgActor_c {
     u8  unk_32c;                    /* 0x32c -- state selector */
     u8  pad_32d[0x3];
 
-    virtual ~CageLift();            /* slots 16 (D1), 17 (D0) */
+    virtual ~daObjWc_Obj05_c();            /* slots 16 (D1), 17 (D0) */
 
     virtual s32   InitResources();         /* slot  0 */
     virtual s32   CleanupResources();      /* slot  3 */
@@ -41,6 +41,6 @@ struct CageLift : dBgActor_c {
     virtual s32   Render();                /* slot  9 */
 };
 
-typedef char CageLift_size_must_be_0x330[sizeof(CageLift) == 0x330 ? 1 : -1];
+typedef char daObjWc_Obj05_c_size_must_be_0x330[sizeof(daObjWc_Obj05_c) == 0x330 ? 1 : -1];
 
-#endif /* CAGELIFT_H */
+#endif /* DAOBJWC_OBJ05_C_H */
