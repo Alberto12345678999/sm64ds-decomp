@@ -86,7 +86,7 @@ An adversarial audit found all four with concrete cases:
   `src/_ZN6Coffin13InitResourcesEv.cpp` matches a bare `MeshCollider::LoadFile`
   forward declaration that ends in `;` and is defined in another file entirely.
 - **Override of a correct failure.** Four files whose own symbol is a genuinely
-  unidentified `func_ov*` placeholder (`func_ov006_020c8f20`, `func_ov006_020cb030`,
+  unidentified `func_ov*` placeholder ([func_ov006_020c8f20](../src/func_ov006_020c8f20.cpp), [func_ov006_020cb030](../src/func_ov006_020cb030.cpp),
   `func_ov064_02117220`, `func_ov079_02126f8c`) had their verdict flipped to pass
   by an unrelated declaration elsewhere in the file.
 - **Dropped qualifiers.** `Sound::Player::SetPlayableSeqCount` came out as

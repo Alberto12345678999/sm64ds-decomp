@@ -35,7 +35,7 @@ DIFFERS → VERIFIED, which is where the +31 and the last of the six DIFFERS com
 Per-table, straight from `romdata_check.check_object` (the `--json` report carries
 counts and a `differing` list only, so a PARTIAL → VERIFIED flip is invisible in it):
 
-```
+```text
 _ZTV11dScMgBase_c  emitted 144  romExtent 144  blindWords 0  VERIFIED
 ```
 
@@ -51,33 +51,33 @@ offset-to-top / typeinfo header of the *next* vtable in the image.
 152 apart, and dsd points a `_ZTV` symbol at slot 0 rather than at the header, so the
 two header words in between belong to no symbol and dsd's "extends to the next symbol"
 sizing swallows them. So the class model is right and the config extent is eight bytes
-long. Fixing it is a `config/arm9/overlays/ov006/symbols.txt` change with its own
+long. Fixing it is a [config/arm9/overlays/ov006/symbols.txt](../config/arm9/overlays/ov006/symbols.txt) change with its own
 gates, not part of a keystone commit. This is the mirror image of the standing
 `verified-vtable-is-not-a-complete-vtable` hazard: there dsd cuts a table short, here
 it runs one past.
 
-## The map (read out of `_ZTV11dScMgBase_c`, ov004:0x020bc0c0)
+## The map (read out of `_ZTV11dScMgBase_c`, [ov004](../config/arm9/overlays/ov004/symbols.txt):0x020bc0c0)
 
 | slot | +off | ROM body | existing `recovered name:` | shape in the legacy source |
 |---|---|---|---|---|
-| 18 | 0x48 | ov004:0x020b299c | `OnYoshiTryEat` — **corrected 2026-08-31** | `int(int)` \*\* — **DECLARED** |
-| 19 | 0x4C | ov004:0x020b2994 | `OnTurnIntoEgg` | `int(void)`, `return 1;` |
-| 20 | 0x50 | ov004:0x020b2990 | `Virtual50` | `void(void)` |
-| 21 | 0x54 | ov004:0x020b298c | `OnGroundPounded` | `void(void)` |
-| 22 | 0x58 | ov004:0x020ae198 | `OnAttacked1` | `int(void)` |
-| 23 | 0x5C | ov004:0x020ae1a0 | `OnAttacked2` | `int(void)` |
-| 24 | 0x60 | ov004:0x020ae140 | `OnKicked` | `int(Obj*)` |
-| 25 | 0x64 | ov004:0x020ae128 | `OnPushed` | `int(void*)` |
-| 26 | 0x68 | ov004:0x020b04e0 | `OnHitByCannonBlastedChar` | `int(void)`, `return 0;` |
-| 27 | 0x6C | ov004:0x020af27c | `OnHitByMegaChar` | `void(void*)` |
-| 28 | 0x70 | ov004:0x020af04c | `OnHitFromUnderneath` | `void(Obj*)` |
-| 29 | 0x74 | ov004:0x020af094 | `OnAimedAtWithEgg` | `void(Obj*)` |
-| 30 | 0x78 | ov004:0x020aeed8 | `OnAimedAtWithEggReturnVec` | `void(char*)` |
-| 31 | 0x7C | ov004:0x020b2880 | *(none)* -> `Virtual7C` | `void(void)` |
-| 32 | 0x80 | ov004:0x020b27f4 | *(none)* -> `Virtual80` | `void(void)` |
-| 33 | 0x84 | ov004:0x020b265c | *(none)* → `Virtual84` | `void(char *obj)` |
-| 34 | 0x88 | ov004:0x020ae3b4 | *(none)* → `Virtual88` | `void(char*,int,int,int,int)` |
-| 35 | 0x8C | ov004:0x020ad660 | *(none)* → `Virtual8C` | `int(int*)` |
+| 18 | 0x48 | [ov004](../config/arm9/overlays/ov004/symbols.txt):0x020b299c | `OnYoshiTryEat` — **corrected 2026-08-31** | `int(int)` \*\* — **DECLARED** |
+| 19 | 0x4C | [ov004](../config/arm9/overlays/ov004/symbols.txt):0x020b2994 | `OnTurnIntoEgg` | `int(void)`, `return 1;` |
+| 20 | 0x50 | [ov004](../config/arm9/overlays/ov004/symbols.txt):0x020b2990 | `Virtual50` | `void(void)` |
+| 21 | 0x54 | [ov004](../config/arm9/overlays/ov004/symbols.txt):0x020b298c | `OnGroundPounded` | `void(void)` |
+| 22 | 0x58 | [ov004](../config/arm9/overlays/ov004/symbols.txt):0x020ae198 | `OnAttacked1` | `int(void)` |
+| 23 | 0x5C | [ov004](../config/arm9/overlays/ov004/symbols.txt):0x020ae1a0 | `OnAttacked2` | `int(void)` |
+| 24 | 0x60 | [ov004](../config/arm9/overlays/ov004/symbols.txt):0x020ae140 | `OnKicked` | `int(Obj*)` |
+| 25 | 0x64 | [ov004](../config/arm9/overlays/ov004/symbols.txt):0x020ae128 | `OnPushed` | `int(void*)` |
+| 26 | 0x68 | [ov004](../config/arm9/overlays/ov004/symbols.txt):0x020b04e0 | `OnHitByCannonBlastedChar` | `int(void)`, `return 0;` |
+| 27 | 0x6C | [ov004](../config/arm9/overlays/ov004/symbols.txt):0x020af27c | `OnHitByMegaChar` | `void(void*)` |
+| 28 | 0x70 | [ov004](../config/arm9/overlays/ov004/symbols.txt):0x020af04c | `OnHitFromUnderneath` | `void(Obj*)` |
+| 29 | 0x74 | [ov004](../config/arm9/overlays/ov004/symbols.txt):0x020af094 | `OnAimedAtWithEgg` | `void(Obj*)` |
+| 30 | 0x78 | [ov004](../config/arm9/overlays/ov004/symbols.txt):0x020aeed8 | `OnAimedAtWithEggReturnVec` | `void(char*)` |
+| 31 | 0x7C | [ov004](../config/arm9/overlays/ov004/symbols.txt):0x020b2880 | *(none)* -> `Virtual7C` | `void(void)` |
+| 32 | 0x80 | [ov004](../config/arm9/overlays/ov004/symbols.txt):0x020b27f4 | *(none)* -> `Virtual80` | `void(void)` |
+| 33 | 0x84 | [ov004](../config/arm9/overlays/ov004/symbols.txt):0x020b265c | *(none)* → `Virtual84` | `void(char *obj)` |
+| 34 | 0x88 | [ov004](../config/arm9/overlays/ov004/symbols.txt):0x020ae3b4 | *(none)* → `Virtual88` | `void(char*,int,int,int,int)` |
+| 35 | 0x8C | [ov004](../config/arm9/overlays/ov004/symbols.txt):0x020ad660 | *(none)* → `Virtual8C` | `int(int*)` |
 
 Fourteen of the eighteen carry a `recovered name:` comment in the legacy source, so
 this is far less speculative than the header's wording suggests. Slot 18 has a name
@@ -102,7 +102,7 @@ slot 18, which is now **measured** rather than read off the legacy shape:
   trap `dActor_c.h` documents for slots 21, 24 and 27 — re-measure each remaining slot
   against a real override before treating its legacy `void` as settled.
 
-`config/arm9/overlays/ov006/symbols.txt` named Coin's override
+[ov006](../config/arm9/overlays/ov006/symbols.txt) named Coin's override
 `_ZN11dScMgCoin_c13OnYoshiTryEatEv` — **wrong arity, corrected to `...Ei`.**
 
 For slots 24, 25, 27, 28, 29, 30, 33, 34 and 35 the leading parameter in the legacy
@@ -120,10 +120,10 @@ Two independent sources agree, and neither of them is this table:
    is `fBase_c → dBase_c → dScene_c → dScMgBase_c`), so on its own this would only be
    suggestive.
 
-2. **The cartridge.** Walking `_ZTV11dScMgCoin_c` (ov006:0x0213bf50) against
-   `_ZTV11dScMgBase_c` (ov004:0x020bc0c0), 36 slots each, `dScMgCoin_c` overrides
-   exactly three: 16 and 17 (the destructor pair) and **18, with ov006:0x020de5b0** —
-   which `config/arm9/overlays/ov006/symbols.txt:545` **already names**
+2. **The cartridge.** Walking `_ZTV11dScMgCoin_c` ([ov006](../config/arm9/overlays/ov006/symbols.txt):0x0213bf50) against
+   `_ZTV11dScMgBase_c` ([ov004](../config/arm9/overlays/ov004/symbols.txt):0x020bc0c0), 36 slots each, `dScMgCoin_c` overrides
+   exactly three: 16 and 17 (the destructor pair) and **18, with [ov006](../config/arm9/overlays/ov006/symbols.txt):0x020de5b0** —
+   which [ov006](../config/arm9/overlays/ov006/symbols.txt):545 **already names**
    `_ZN11dScMgCoin_c13OnYoshiTryEatEv`. That name was recovered and landed before this
    table existed, and it lands on this branch's slot 18.
 
@@ -141,7 +141,7 @@ makes the destructor pair look like slots 18 and 19.
 
 `dActor_c`'s new-slot block is on the other branch but at **identical indices**, and
 all thirteen names 18..30 agree with the `recovered name:` comments on this class's own
-ov004 bodies. It is the ready-made declaration block for PR B:
+[ov004](../config/arm9/overlays/ov004/symbols.txt) bodies. It is the ready-made declaration block for PR B:
 
 ```c
 /* --- new slots, 18..30, in declaration order. Do not reorder. --- */
@@ -180,7 +180,7 @@ virtual int  OnAimedAtWithEggReturnVec();               /* slot 30 */
 
 The parameter *types* are `dActor_c &` / `Player &` on that branch; on this one the
 legacy sources pass raw `char *` / `void *`. The type does not change the slot's arity,
-but it does change the mangled name — so settle it before renaming the ov004 bodies,
+but it does change the mangled name — so settle it before renaming the [ov004](../config/arm9/overlays/ov004/symbols.txt) bodies,
 not after.
 
 **Slots 31-35 are not in `dActor_c.h`, and that is not an accident.** `dScMgBase_c`
@@ -191,7 +191,7 @@ on indices for the same reason two books have a page 19. Slots 18-30 borrowed
 `dActor_c`'s names because the indices lined up; at 31 `dActor_c`'s table simply ends
 and there is nothing left to borrow. `Kill` was carried in from `dBgActor_c`, which is
 `dActor_c`'s CHILD -- a nephew branch, one fork further away still -- where
-`_ZN10dBgActor_c4KillEv` at ov002:0x020ee55c is that class's own new slot 31.
+`_ZN10dBgActor_c4KillEv` at [ov002](../config/arm9/overlays/ov002/symbols.txt):0x020ee55c is that class's own new slot 31.
 Slot 31 is recorded here as `Virtual7C`, the spelling `fBase_c` already uses for
 `Virtual34`/`Virtual38` and the one slots 33-35 carry below.
 
@@ -200,14 +200,13 @@ Slot 31 is recorded here as `Virtual7C`, the spelling `fBase_c` already uses for
 `_ZN16dPathLiftActor_c9AfterClsnEi` is a genuine mangled symbol -- but
 `dPathLiftActor_c` derives from `dBgActor_c`, which derives from `dActor_c`:
 
-```
+```sh
 fBase_c -> dBase_c -> dActor_c -> dBgActor_c -> dPathLiftActor_c
 fBase_c -> dBase_c -> dScene_c -> dScMgBase_c
 ```
 
 Two forks, not one, and that AfterClsn takes an `int` where this slot takes nothing.
-The whole-image dispatch scan at +0x80 finds exactly three sites: `ov004:0x020b0900`
-(this branch) and `ov002:0x020effa4` + `ov064:0x02116e58` (that one). Signatures for
+The whole-image dispatch scan at +0x80 finds exactly three sites: [ov004](../config/arm9/overlays/ov004/symbols.txt):0x020b0900 (this branch) and [ov002](../config/arm9/overlays/ov002/symbols.txt):0x020effa4` + `[ov064](../config/arm9/overlays/ov064/symbols.txt):0x02116e58 (that one). Signatures for
 33-35 still need reconstructing from their bodies: three slots, not eighteen.
 
 **Slots 31 and 32 are one function twice, against the two display engines.** 31 is the
@@ -274,19 +273,11 @@ The widened-table **count** is the only check that distinguishes the two.
 
 ## Three hazards, all measured
 
-**1. Slot 35 is a cross-overlay address collision.** 0x020ad660 is an overlay LOAD
-BASE, so ov000, ov002, ov003, ov004 and ov007 each have a different, unrelated symbol
-there — ov003's is `dScTitle_c`'s D1. The slot-35 body is ov004's. The rename was
-scoped to the module-qualified symbol `func_ov004_020ad660` alone, which is what
-`apply_rename` takes; a filename- or address-keyed rename would have hit four unrelated
-overlays and every byte gate would still have passed. See the standing
-`cross-overlay-symbol-collision` note. (Handled — recorded here because the hazard is
-a property of the address, not of this campaign.)
+**1. Slot 35 is a cross-overlay address collision.** 0x020ad660 is an overlay LOAD BASE, so [ov000](../config/arm9/overlays/ov000/symbols.txt), [ov002](../config/arm9/overlays/ov002/symbols.txt), [ov003](../config/arm9/overlays/ov003/symbols.txt), [ov004](../config/arm9/overlays/ov004/symbols.txt) and [ov007](../config/arm9/overlays/ov007/symbols.txt) each have a different, unrelated symbol there — [ov003](../config/arm9/overlays/ov003/symbols.txt)'s is `dScTitle_c`'s D1. The slot-35 body is [ov004](../config/arm9/overlays/ov004/symbols.txt)'s. The rename was scoped to the module-qualified symbol `func_ov004_020ad660` alone, which is what `apply_rename` takes; a filename- or address-keyed rename would have hit four unrelated overlays and every byte gate would still have passed. See the standing `cross-overlay-symbol-collision` note. (Handled — recorded here because the hazard is a property of the address, not of this campaign.)
 
 **2. Each slot has to be atomic.** Declaring a virtual makes mwcc emit a vtable slot
 referencing a `_ZN11dScMgBase_c*` mangled name. That symbol does not exist until the
-ov004 body is renamed. A declaration without its rename leaves the link with an
-undefined external; a rename without its declaration orphans it. Per slot: one commit,
+[ov004](../config/arm9/overlays/ov004/symbols.txt) body is renamed. A declaration without its rename leaves the link with an undefined external; a rename without its declaration orphans it. Per slot: one commit,
 or neither. Across slots, they are independent.
 
 **3. Declaration order IS the index** — found while applying slot 18.
@@ -306,9 +297,9 @@ only once every intervening slot is declared.
 ## The per-slot worklist (measured 2026-08-31)
 
 How large each PR was. Counts are descendant overrides; every slot also carried the
-base declaration and the ov004 base-body rename. All eighteen are landed or open.
+base declaration and the [ov004](../config/arm9/overlays/ov004/symbols.txt) base-body rename. All eighteen are landed or open.
 
-| slot | name | base body (ov004) | descendant overrides |
+| slot | name | base body ([ov004](../config/arm9/overlays/ov004/symbols.txt)) | descendant overrides |
 |---|---|---|---|
 | 18 | `OnYoshiTryEat` | 0x020b299c | **30 — this PR** |
 | 19 | `OnTurnIntoEgg` | 0x020b2994 | 11 |
@@ -331,9 +322,9 @@ base declaration and the ov004 base-body rename. All eighteen are landed or open
 
 **One deferred cleanup, from slot 31 onward.** The base bodies for slots 31, 32 and
 33 (0x020b2880, 0x020b27f4, 0x020b265c -- ROM ordinals 47, 46 and 45) all live inside
-the same src_tu candidate unit, `src_tu/actors/unit_ov004_020b0a38.cpp`, which still
+the same src_tu candidate unit, [unit_ov004_020b0a38](../src_tu/actors/unit_ov004_020b0a38.cpp), which still
 defines them under their old `func_ov004_*` names and whose manifest
-`config/tu_manifest.d/ov004/unit020b0a38.json` still lists the old
+[unit020b0a38.json](../config/tu_manifest.d/ov004/unit020b0a38.json) still lists the old
 `legacy_source` paths.  Nothing is wrong today: that unit is `"status":
 "text-verified"`, it is not enrolled, `src_tu/` is not in the ROM build, and both
 gates that read it -- `check_src_tu_compiles.py` and `tiers_ratchet.promoted_moves()`,
@@ -364,14 +355,13 @@ precondition for `production_mode: "intact-object"` ownership of the minigame fa
 
 ## Independent confirmation from a derived class (2026-08-30)
 
-`ov006/dScMgBSC_c`, promoted as a 19-function TU, **overrides three of these slots**,
-and its own bodies confirm the map from a second direction:
+[ov006/dScMgBSC_c](../src/actors/dScMgBSC_c.cpp), promoted as a 19-function TU, **overrides three of these slots**, and its own bodies confirm the map from a second direction:
 
-| slot | base body (ov004) | base name here | dScMgBSC_c's override |
+| slot | base body ([ov004](../config/arm9/overlays/ov004/symbols.txt)) | base name here | dScMgBSC_c's override |
 |---|---|---|---|
-| 18 | 0x020b299c | `OnYoshiTryEat` | ov006:0x02125364 |
-| 19 | 0x020b2994 | `OnTurnIntoEgg` | ov006:0x0212527c |
-| 21 | 0x020b298c | `OnGroundPounded` | ov006:0x02125248 |
+| 18 | 0x020b299c | `OnYoshiTryEat` | [ov006](../config/arm9/overlays/ov006/symbols.txt):0x02125364 |
+| 19 | 0x020b2994 | `OnTurnIntoEgg` | [ov006](../config/arm9/overlays/ov006/symbols.txt):0x0212527c |
+| 21 | 0x020b298c | `OnGroundPounded` | [ov006](../config/arm9/overlays/ov006/symbols.txt):0x02125248 |
 
 Two independent sources agree on 19 and 21. This table was built by walking
 `_ZTV11dScMgBase_c`; the override addresses come from walking `_ZTV10dScMgBSC_c`. The
@@ -389,5 +379,4 @@ in slot 18 and truncates. The TU reaches slot 18 today through a cast to a local
 struct (`SelfVtblShim`) because no header declares it. Declaring slots 18-35 on
 `dScMgBase_c` widens this table to the full 36 and lets that cast become a real virtual
 call -- but it also means `dScMgBSC_c` starts emitting 18 more slots of vtable data
-that must be licensed and byte-compared, on top of the eighteen ov004 renames. Budget
-for the descendants' tables, not just the base's.
+that must be licensed and byte-compared, on top of the eighteen [ov004](../config/arm9/overlays/ov004/symbols.txt) renames. Budget for the descendants' tables, not just the base's.

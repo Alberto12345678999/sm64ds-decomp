@@ -29,16 +29,16 @@ cross-checked against `include/dScene_c.h`'s own census comment):
 
 | class | vtable addr | module | status |
 |---|---|---|---|
-| `dScBoot_c` | 0x02091528 | arm9 | **done** — `include/BootScene.h`, D0/D1 real |
-| `dScStage_c` | 0x020921c0 | arm9 | **done** — `include/Stage.h`, D0/D1/methods real |
-| `dScMB_c` | 0x020943c4 | arm9 | unnamed, 0 attributed functions |
-| `dScTitle_c` | 0x020b1650 | ov003 | unnamed, 0 attributed functions |
-| `dScStarSel_c` | 0x020b1704 | ov003 | unnamed, 0 attributed functions |
-| `dScGameOver_c` | 0x020b179c | ov003 | unnamed, 0 attributed functions |
-| `dScMgBase_c` | 0x020bc0c0 | ov004 | **class itself done** (PR #1396) — `: Scene`, real D0/D1/D2, 8/28 own-slots real. 32 descendants unnamed |
-| `dScMiniGm_c` | 0x020c2490 | ov005 | unnamed, 0 attributed functions (has a generated header, no named methods) |
-| `dScDSMT_c` | 0x021032e8 | ov007 | unnamed, 0 attributed functions |
-| `dScEntry_c` | 0x0211d304 | ov075 | unnamed, 0 attributed functions (has a generated header, no named methods) |
+| `dScBoot_c` | 0x02091528 | [arm9](../config/arm9/symbols.txt) | **done** — `include/BootScene.h`, D0/D1 real |
+| `dScStage_c` | 0x020921c0 | [arm9](../config/arm9/symbols.txt) | **done** — `include/Stage.h`, D0/D1/methods real |
+| `dScMB_c` | 0x020943c4 | [arm9](../config/arm9/symbols.txt) | unnamed, 0 attributed functions |
+| `dScTitle_c` | 0x020b1650 | [ov003](../config/arm9/overlays/ov003/symbols.txt) | unnamed, 0 attributed functions |
+| `dScStarSel_c` | 0x020b1704 | [ov003](../config/arm9/overlays/ov003/symbols.txt) | unnamed, 0 attributed functions |
+| `dScGameOver_c` | 0x020b179c | [ov003](../config/arm9/overlays/ov003/symbols.txt) | unnamed, 0 attributed functions |
+| `dScMgBase_c` | 0x020bc0c0 | [ov004](../config/arm9/overlays/ov004/symbols.txt) | **class itself done** (PR #1396) — `: Scene`, real D0/D1/D2, 8/28 own-slots real. 32 descendants unnamed |
+| `dScMiniGm_c` | 0x020c2490 | [ov005](../config/arm9/overlays/ov005/symbols.txt) | unnamed, 0 attributed functions (has a generated header, no named methods) |
+| `dScDSMT_c` | 0x021032e8 | [ov007](../config/arm9/overlays/ov007/symbols.txt) | unnamed, 0 attributed functions |
+| `dScEntry_c` | 0x0211d304 | [ov075](../config/arm9/overlays/ov075/symbols.txt) | unnamed, 0 attributed functions (has a generated header, no named methods) |
 
 "0 attributed functions" means literally no symbol anywhere in `config/**/symbols.txt`
 mangles under that class's English or ROM name — confirmed by grepping every
@@ -62,14 +62,14 @@ for anything but orientation.
 
 | class | module | overridden slots | example target |
 |---|---|---|---|
-| `dScMB_c` | arm9 | 0 (InitResources), 3, 6, 9, 16 (D1), 17 (D0) | `func_0203506c` (InitResources) |
-| `dScTitle_c` | ov003 | 0, 3, 6, 9, 12, 16, 17 | `func_ov003_020ada9c` |
-| `dScStarSel_c` | ov003 | 0, 3, 6, 9, 12, 16, 17 | `func_ov003_020af8a0` |
-| `dScGameOver_c` | ov003 | 0, 3, 6, 9, 12, 16, 17 | `func_ov003_020b0b3c` |
-| `dScMiniGm_c` | ov005 | 0, 3, 6, 9, 12, 16, 17 | `func_ov005_020c1a20` |
-| `dScDSMT_c` | ov007 | 0, 3, 6, 9, 12, 16, 17 | `func_ov007_020cc4c0` |
-| `dScEntry_c` | ov075 | 0, 1, 3, 6, 9, 12, 16, 17 | `func_ov075_0211a410` |
-| `dScMgBase_c` | ov004 | 1,2,5,6,7,9,10,12,16,17 **+ 18 NEW slots (18-35)** | see §2 |
+| `dScMB_c` | [arm9](../config/arm9/symbols.txt) | 0 (InitResources), 3, 6, 9, 16 (D1), 17 (D0) | `func_0203506c` (InitResources) |
+| `dScTitle_c` | [ov003](../config/arm9/overlays/ov003/symbols.txt) | 0, 3, 6, 9, 12, 16, 17 | `func_ov003_020ada9c` |
+| `dScStarSel_c` | [ov003](../config/arm9/overlays/ov003/symbols.txt) | 0, 3, 6, 9, 12, 16, 17 | `func_ov003_020af8a0` |
+| `dScGameOver_c` | [ov003](../config/arm9/overlays/ov003/symbols.txt) | 0, 3, 6, 9, 12, 16, 17 | `func_ov003_020b0b3c` |
+| `dScMiniGm_c` | [ov005](../config/arm9/overlays/ov005/symbols.txt) | 0, 3, 6, 9, 12, 16, 17 | `func_ov005_020c1a20` |
+| `dScDSMT_c` | [ov007](../config/arm9/overlays/ov007/symbols.txt) | 0, 3, 6, 9, 12, 16, 17 | `func_ov007_020cc4c0` |
+| `dScEntry_c` | [ov075](../config/arm9/overlays/ov075/symbols.txt) | 0, 1, 3, 6, 9, 12, 16, 17 | `func_ov075_0211a410` |
+| `dScMgBase_c` | [ov004](../config/arm9/overlays/ov004/symbols.txt) | 1,2,5,6,7,9,10,12,16,17 **+ 18 NEW slots (18-35)** | see §2 |
 
 Slot numbers match Scene's own table (0=InitResources, 1=BeforeInitResources,
 3=CleanupResources, 6=Behavior, 9=Render, 12=OnPendingDestroy, 16=D1, 17=D0) —
@@ -102,7 +102,7 @@ Pounce" (a real minigame) when the class it actually names is the shared
 `dScMgTrampoline_c`, `dScMgTrampoline2_c`). Confirmed two ways:
 `tools/rtti_vtables.py --own` for all 15 TRUE direct children found no
 match for its D1/D0 addresses (it isn't one of them); its own vtable
-address (ov006:0x0213c62c) matches `dScMgD3DBase_c`'s RTTI record exactly,
+address ([ov006](../config/arm9/overlays/ov006/symbols.txt):0x0213c62c) matches `dScMgD3DBase_c`'s RTTI record exactly,
 and `MgBounceAndPounce_Spawn.cpp`'s construction order corroborates it
 independently -- it writes its OWN vtable mid-construction, then
 `dScMgJump_c`'s vtable (one of its four children) at the very end,
@@ -155,7 +155,7 @@ pad rather than being guessed at. Three real bugs found and fixed along the
 way, all now in [[double-mangling-defect]]: bare `extern` declarations
 silently C++-mangling once a file becomes `.cpp` (invisible to loose
 `build_pin.verify`, only `eligible.py` catches it); `decl_common.h`
-declaring several ov006 helpers with empty `()` C-style "unspecified args"
+declaring several [ov006](../config/arm9/overlays/ov006/symbols.txt) helpers with empty `()` C-style "unspecified args"
 prototypes that become "exactly zero args" in C++ once a real method calls
 them with `this` (hit in Curling2's, Bomroom's, AND Pachinko2's `Render` --
 recurred a third time) -- fixed by declaring the real signature locally
@@ -199,7 +199,7 @@ PR #1400. Three of these needed something genuinely new:
   still declaring the method for documentation purposes.
 
 **`dScMgSmartball_c` is a genuine blocker, not a migration problem**: its
-own `InitResources` (slot 0, ov006:0x02118b70, 0x8dc bytes) has never been
+own `InitResources` (slot 0, [ov006](../config/arm9/overlays/ov006/symbols.txt):0x02118b70, 0x8dc bytes) has never been
 decompiled -- no source file, no `delinks.txt` entry, served raw from the
 ROM gap object. This needs original asm-to-C matching work before it can
 even be considered for a struct-to-class migration; skipped entirely.
