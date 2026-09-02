@@ -3813,7 +3813,7 @@ matched: yes</title></rect><rect x="285.13" y="282.04" width="10.22" height="5.2
 module: arm9
 addr: 0x020235d4
 size: 80 bytes
-matched: yes</title></rect><rect x="295.35" y="282.04" width="12.78" height="5.25" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02023624
+matched: yes</title></rect><rect x="295.35" y="282.04" width="12.78" height="5.25" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>dScBoot_c_classInit
 module: arm9
 addr: 0x02023624
 size: 100 bytes
@@ -4301,7 +4301,7 @@ matched: yes</title></rect><rect x="91.67" y="377.84" width="57.23" height="3.28
 module: arm9
 addr: 0x0202df70
 size: 280 bytes
-matched: yes</title></rect><rect x="148.90" y="377.84" width="29.43" height="3.28" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>Stage_Spawn
+matched: yes</title></rect><rect x="148.90" y="377.84" width="29.43" height="3.28" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>dScStage_c_classInit
 module: arm9
 addr: 0x0202e088
 size: 144 bytes
@@ -17217,7 +17217,7 @@ matched: yes</title></rect><rect x="441.18" y="723.88" width="37.22" height="11.
 module: ov002
 addr: 0x020ee144
 size: 660 bytes
-matched: yes</title></rect><rect x="478.41" y="723.88" width="4.74" height="11.80" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>YoshiEgg_Spawn
+matched: yes</title></rect><rect x="478.41" y="723.88" width="4.74" height="11.80" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daYegg_c_classInit
 module: ov002
 addr: 0x020ee3d8
 size: 84 bytes
@@ -17537,7 +17537,7 @@ matched: yes</title></rect><rect x="498.10" y="750.66" width="2.01" height="6.63
 module: ov002
 addr: 0x020f15b8
 size: 20 bytes
-matched: yes</title></rect><rect x="500.10" y="750.66" width="4.82" height="6.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>BlueCoinSwitch_Spawn
+matched: yes</title></rect><rect x="500.10" y="750.66" width="4.82" height="6.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daObjBC_Switch_c_classInit
 module: ov002
 addr: 0x020f15cc
 size: 48 bytes
@@ -18713,7 +18713,7 @@ matched: yes</title></rect><rect x="628.84" y="28.57" width="4.99" height="20.81
 module: ov003
 addr: 0x020ada9c
 size: 372 bytes
-matched: yes</title></rect><rect x="633.83" y="27.00" width="6.14" height="4.55" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov003_020adc10
+matched: yes</title></rect><rect x="633.83" y="27.00" width="6.14" height="4.55" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>dScTitle_c_classInit
 module: ov003
 addr: 0x020adc10
 size: 100 bytes
@@ -18777,7 +18777,7 @@ matched: yes</title></rect><rect x="725.14" y="27.00" width="39.36" height="22.3
 module: ov003
 addr: 0x020af8a0
 size: 3152 bytes
-matched: no</title></rect><rect x="764.50" y="27.00" width="7.19" height="5.59" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>StarSelect_Spawn
+matched: no</title></rect><rect x="764.50" y="27.00" width="7.19" height="5.59" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>dScStarSel_c_classInit
 module: ov003
 addr: 0x020b04f0
 size: 144 bytes
@@ -18809,7 +18809,7 @@ matched: yes</title></rect><rect x="784.52" y="27.11" width="20.08" height="20.8
 module: ov003
 addr: 0x020b0b3c
 size: 1500 bytes
-matched: yes</title></rect><rect x="784.52" y="47.98" width="20.08" height="1.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov003_020b1118
+matched: yes</title></rect><rect x="784.52" y="47.98" width="20.08" height="1.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>dScGameOver_c_classInit
 module: ov003
 addr: 0x020b1118
 size: 100 bytes
@@ -20017,7 +20017,7 @@ matched: yes</title></rect><rect x="1569.74" y="27.00" width="24.05" height="22.
 module: ov005
 addr: 0x020c1a20
 size: 1996 bytes
-matched: yes</title></rect><rect x="1593.80" y="27.00" width="1.20" height="22.37" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov005_020c21ec
+matched: yes</title></rect><rect x="1593.80" y="27.00" width="1.20" height="22.37" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>dScMiniGm_c_classInit
 module: ov005
 addr: 0x020c21ec
 size: 100 bytes
@@ -22301,7 +22301,7 @@ matched: yes</title></rect><rect x="912.71" y="280.29" width="54.04" height="7.6
 module: ov006
 addr: 0x020e0308
 size: 620 bytes
-matched: yes</title></rect><rect x="966.76" y="280.29" width="16.74" height="7.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_020e0574
+matched: yes</title></rect><rect x="966.76" y="280.29" width="16.74" height="7.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>dScMgCup_c_classInit
 module: ov006
 addr: 0x020e0574
 size: 192 bytes
@@ -29733,7 +29733,7 @@ matched: yes</title></rect><rect x="1043.27" y="976.39" width="5.08" height="3.2
 module: ov007
 addr: 0x020ccab4
 size: 28 bytes
-matched: yes</title></rect><rect x="1043.27" y="979.65" width="5.08" height="15.35" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov007_020ccad0
+matched: yes</title></rect><rect x="1043.27" y="979.65" width="5.08" height="15.35" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>dScDSMT_c_classInit
 module: ov007
 addr: 0x020ccad0
 size: 132 bytes
@@ -30321,7 +30321,7 @@ matched: yes</title></rect><rect x="1318.02" y="81.37" width="9.40" height="14.2
 module: ov014
 addr: 0x02112b14
 size: 520 bytes
-matched: yes</title></rect><rect x="1318.02" y="95.63" width="9.40" height="6.58" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>ChainChomp_Spawn
+matched: yes</title></rect><rect x="1318.02" y="95.63" width="9.40" height="6.58" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daWanwan_c_classInit
 module: ov014
 addr: 0x02112d1c
 size: 240 bytes
@@ -31397,7 +31397,7 @@ matched: yes</title></rect><rect x="1398.36" y="134.22" width="3.74" height="3.7
 module: ov020
 addr: 0x021127f4
 size: 92 bytes
-matched: yes</title></rect><rect x="1398.36" y="138.01" width="3.74" height="1.98" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>BookShotSpawner_Spawn
+matched: yes</title></rect><rect x="1398.36" y="138.01" width="3.74" height="1.98" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daBookGen_c_classInit
 module: ov020
 addr: 0x02112850
 size: 48 bytes
@@ -36833,7 +36833,7 @@ matched: yes</title></rect><rect x="1152.63" y="469.40" width="6.48" height="16.
 module: ov064
 addr: 0x0211a814
 size: 220 bytes
-matched: yes</title></rect><rect x="1152.63" y="485.43" width="6.48" height="4.66" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>TreasureChest_Spawn
+matched: yes</title></rect><rect x="1152.63" y="485.43" width="6.48" height="4.66" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daObjTbox_c_classInit
 module: ov064
 addr: 0x0211a8f0
 size: 64 bytes
@@ -41605,7 +41605,7 @@ matched: yes</title></rect><rect x="1242.37" y="830.15" width="9.44" height="8.6
 module: ov081
 addr: 0x02127ff0
 size: 176 bytes
-matched: yes</title></rect><rect x="1251.81" y="803.97" width="8.68" height="2.99" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>IceBlock_Spawn
+matched: yes</title></rect><rect x="1251.81" y="803.97" width="8.68" height="2.99" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daObjIceBlock_c_classInit
 module: ov081
 addr: 0x021280a0
 size: 56 bytes
