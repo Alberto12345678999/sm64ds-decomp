@@ -54,7 +54,7 @@ pragmas into the output at all — it emits a warning comment — so members tha
 it lose it. Both directions are live. Affected Tier 1:
 
 ```
-ov029/ArrowLift(1/9)  ov029/CageLift(1/9)  ov029/RotatingPlatformWdw(1/5)
+ov029/ArrowLift(1/9)  ov029/CageLift(1/9)  ov029/daObjWc_Obj07_c(1/5)
 ov014/ShutterBob(1/6) ov030/RollingLogTtm(3/6) ov063/FallBlockBbh(2/5)
 ov015/FallBlockWf(2/5) ov015/RotatingPlatformWf(1/5) ov022/RotatingPlatformLll(1/5)
 ov036/RotatingPlatformRr(1/5) ov064/TiltingPlatformLll(2/5) ov016/FloatOnWaterPlatformJrb(1/4)
@@ -180,7 +180,7 @@ ov044 0x21111a0  n=7  L=88   OrangeBallBillboard   WHOLEMOD (module-edge both en
 ov045 0x2111b14  n=5  L=99   FloatingFloorBfs
 ov045 0x2111c30  n=5  L=74   TiltingPlatformBfs    pcov=3
 ov047 0x21111a0  n=4  L=68   daObjKm3_Kurumajiku_c pcov=2
-ov047 0x21114d4  n=5  L=96   RickshawPlatformBs
+ov047 0x21114d4  n=5  L=96   daObjKm3_Dorifu_c
 ov085 0x212edac  n=7  L=226  WallSign
 ```
 B4 completes ov045: with B0's two, all four ov045 safe TUs are done, making ov045 the
@@ -269,7 +269,7 @@ ov016 0x2112ef4  n=4  L=82   FloatOnWaterPlatformJrb  1/4
 ov022 0x21115a8  n=5  L=106  RotatingPlatformLll      1/5
 ov029 0x211137c  n=9  L=243  ArrowLift                1/9  CONF2
 ov029 0x2111ac4  n=9  L=230  CageLift                 1/9  NORM1
-ov029 0x2112080  n=5  L=83   RotatingPlatformWdw      1/5  pcov=3
+ov029 0x2112080  n=5  L=83   daObjWc_Obj07_c          1/5  pcov=3
 ov030 0x211155c  n=6  L=96   RollingLogTtm            3/6  pcov=4
 ov036 0x2111444  n=5  L=107  RotatingPlatformRr       1/5
 ```
@@ -859,7 +859,7 @@ Run because they were the cheapest, not because the others were blocked.
 | `ov036/daObjRcCarpet_c` | 8 | in progress — one vtable declared twice (`int[]` vs `void*[]`), then `data_ov002_0210af70` redeclared |
 | `ov036/daObjRc_Dorifu_c` | 4 | blocked on `mMovingMeshCollider` — the class header does not declare the member. **Header work, not merge work.** |
 | `ov043/daObjKm1_Dorifu_c` | 4 | same |
-| `ov047/RickshawPlatformBs` | 5 | same, plus an ambiguous overload |
+| `ov047/daObjKm3_Dorifu_c` | 5 | same, plus an ambiguous overload |
 | `ov065/TTC_MovingBar` | 8 | `class 'TTC_MovingBar' redefined` — the loud form of the local-struct collision |
 | `ov065/daObjCtMecha05_c` | 8 | `data_ov065_0211c0c8` redeclared, `short` vs other |
 | `ov006/MgTrampolineTerror` | 2 | overload conflict at the extern block |
