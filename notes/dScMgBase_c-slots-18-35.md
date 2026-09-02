@@ -68,7 +68,7 @@ it runs one past.
 | 23 | 0x5C | [ov004](../config/arm9/overlays/ov004/symbols.txt):0x020ae1a0 | `OnAttacked2` | `int(void)` |
 | 24 | 0x60 | [ov004](../config/arm9/overlays/ov004/symbols.txt):0x020ae140 | `OnKicked` | `int(Obj*)` |
 | 25 | 0x64 | [ov004](../config/arm9/overlays/ov004/symbols.txt):0x020ae128 | `OnPushed` | `int(void*)` |
-| 26 | 0x68 | [ov004](../config/arm9/overlays/ov004/symbols.txt):0x020b04e₀ | `OnHitByCannonBlastedChar` | `int(void)`, `return 0;` |
+| 26 | 0x68 | [ov004](../config/arm9/overlays/ov004/symbols.txt):0x020b04e0 | `OnHitByCannonBlastedChar` | `int(void)`, `return 0;` |
 | 27 | 0x6C | [ov004](../config/arm9/overlays/ov004/symbols.txt):0x020af27c | `OnHitByMegaChar` | `void(void*)` |
 | 28 | 0x70 | [ov004](../config/arm9/overlays/ov004/symbols.txt):0x020af04c | `OnHitFromUnderneath` | `void(Obj*)` |
 | 29 | 0x74 | [ov004](../config/arm9/overlays/ov004/symbols.txt):0x020af094 | `OnAimedAtWithEgg` | `void(Obj*)` |
