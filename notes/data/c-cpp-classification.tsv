@@ -31,7 +31,7 @@ src/BlueCoin_Spawn.c	WEAK-refs-only	ov002				1		None		-
 src/BlueFlame_Spawn.c	WEAK-refs-only	ov002				1		None		-
 src/BobOmbBuddy_Spawn.c	WEAK-refs-only	ov084				1		None		-
 src/BobOmb_Spawn.c	WEAK-refs-only	ov102				1		None		-
-src/BookShotSpawner_Spawn.c	WEAK-refs-only	ov020				1		None		-
+src/daBookGen_c_classInit.c	WEAK-refs-only	ov020				1		None		-
 src/BookShot_Spawn.c	WEAK-refs-only	ov020				1		None		-
 src/BookSwitch_Spawn.c	PURE-C	ov016				1		None		-
 src/Bookend_Spawn.c	WEAK-refs-only	ov020				1		None		-
@@ -150,7 +150,7 @@ src/daObjWcObj01_c_Spawn.c	S1-stores-rom-vptr	ov029			stores _ZTV17daObjFloatBoa
 src/FloatingFloorBfs_Spawn.c	S1-stores-rom-vptr	ov045			stores _ZTV14daObjUkiyuka_c	1		None	_ZTV14daObjUkiyuka_c/_ZTV16FloatingFloorBfs	-
 src/FloatingFloorLllBig_Spawn.c	S1-stores-rom-vptr	ov022			stores _ZTV14daObjUkiyuka_c	1		None	_ZTV14daObjUkiyuka_c/_ZTV21FloatingFloorLllSmall	-
 src/FloatingFloorLllSmall_Spawn.c	S1-stores-rom-vptr	ov022			stores _ZTV14daObjUkiyuka_c	1		None	_ZTV14daObjUkiyuka_c/_ZTV21FloatingFloorLllSmall	-
-src/FlyGuy_Spawn.c	WEAK-refs-only	ov070				1		None		-
+src/daPropeller_Heyho_c_classInit.c	WEAK-refs-only	ov070				1		None		-
 src/FortressTowerWall_Spawn.c	WEAK-refs-only	ov002				1		None		-
 src/FortressTower_Spawn.c	WEAK-refs-only	ov102				1		None		-
 src/FortressWallBreakable_Spawn.c	WEAK-refs-only	ov079				1		None		-
@@ -4069,7 +4069,7 @@ src/func_ov005_020c0f38.c	WEAK-refs-only	ov005				1		None		-
 src/func_ov005_020c1130.c	WEAK-refs-only	ov005				1		None		-
 src/func_ov005_020c1688.c	WEAK-refs-only	ov005				1		None		-
 src/func_ov005_020c16e4.c	WEAK-refs-only	ov005				1		None		-
-src/func_ov005_020c21ec.c	S1-stores-rom-vptr	ov005			stores _ZTV8dScene_c	1		None	_ZTV8dScene_c	-
+src/dScMiniGm_c_classInit.c	S1-stores-rom-vptr	ov005			stores _ZTV8dScene_c	1		None	_ZTV8dScene_c	-
 src/func_ov006_020c0304.c	WEAK-refs-only	ov006				1		None		-
 src/func_ov006_020c0364.c	WEAK-refs-only	ov006				1		None		-
 src/func_ov006_020c07a0.c	WEAK-refs-only	ov006				1		None		-

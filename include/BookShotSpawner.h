@@ -3,7 +3,7 @@
 
 #include "dActor_c.h"
 
-/* BookShotSpawner_Spawn allocates 0xd8 bytes, constructs dActor_c, and stores
+/* daBookGen_c_classInit allocates 0xd8 bytes, constructs dActor_c, and stores
  * _ZTV15BookShotSpawner. D1 chains directly to dActor_c::~dActor_c, while
  * Behavior identifies the only derived field as the book-shot cooldown.
  */

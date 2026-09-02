@@ -23,7 +23,7 @@ resolvable vtable slots were blocked on it.
   pair is slots 16/17, checked directly against the `_ZN8dScene_cD1Ev` /
   `_ZN8dScene_cD0Ev` anchors.
 
-**Size.** func_ov005_020c21ec is the factory; it opens with
+**Size.** `dScMiniGm_c_classInit` (historical alias `func_ov005_020c21ec`) is the factory; it opens with
 `_ZN7fBase_cnwEj(0xb0)` -- fBase_c::operator new(0xb0). 0xb0 therefore comes
 straight off the allocator call. The factory writes only the vtable chain
 (fBase_c -> dScene_c inlined -> data_ov005_020c2490) and two spawn-flag bits at

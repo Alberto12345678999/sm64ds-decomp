@@ -577,7 +577,7 @@ _ZN10dScMgCup_c13OnYoshiTryEatEi kind:function(arm,size=0x17c) addr:0x020dfeec
 _ZN10dScMgCup_c6RenderEv kind:function(arm,size=0x19c) addr:0x020e0068
 _ZN10dScMgCup_c8BehaviorEv kind:function(arm,size=0x104) addr:0x020e0204
 _ZN10dScMgCup_c13InitResourcesEv kind:function(arm,size=0x26c) addr:0x020e0308
-func_ov006_020e0574 kind:function(arm,size=0xc0) addr:0x020e0574
+dScMgCup_c_classInit kind:function(arm,size=0xc0) addr:0x020e0574
 func_ov006_020e0634 kind:function(arm,size=0x4) addr:0x020e0634
 _ZN14dScMgCurling_cD1Ev kind:function(arm,size=0x24) addr:0x020e0638
 _ZN14dScMgCurling_cD0Ev kind:function(arm,size=0x38) addr:0x020e065c
@@ -3512,7 +3512,7 @@ data_ov006_0213c000 kind:data(any) addr:0x0213c000
 data_ov006_0213c008 kind:data(any) addr:0x0213c008
 data_ov006_0213c010 kind:data(any) addr:0x0213c010
 data_ov006_0213c018 kind:data(any) addr:0x0213c018
-data_ov006_0213c020 kind:data(any) addr:0x0213c020
+g_profile_MG_CUP kind:data(any) addr:0x0213c020
 data_ov006_0213c028 kind:data(any) addr:0x0213c028
 data_ov006_0213c030 kind:data(any) addr:0x0213c030
 data_ov006_0213c038 kind:data(any) addr:0x0213c038

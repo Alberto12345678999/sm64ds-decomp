@@ -35,11 +35,11 @@
  *   [25] 0x02112994  src/_ZN10ChainChomp6RenderEv.cpp
  *   [26] 0x021129ec  src/_ZN10ChainChomp8BehaviorEv.cpp
  *   [27] 0x02112b14  src/_ZN10ChainChomp13InitResourcesEv.cpp
- *   [28] 0x02112d1c  src/ChainChomp_Spawn.cpp
+ *   [28] 0x02112d1c  src/daWanwan_c_classInit.cpp
  */
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 28 -- ChainChomp_Spawn, 0x02112d1c, size 0xf0 */
+/* ROM ordinal 28 -- daWanwan_c_classInit, 0x02112d1c, size 0xf0 */
 /* -------------------------------------------------------------------------- */
 extern "C" {
 void* _ZN7fBase_cnwEj(unsigned int);
@@ -54,7 +54,8 @@ extern void _ZN5ModelC1Ev();
 extern void _ZN11ShadowModelD1Ev();
 extern void _ZN7Vector3D1Ev();
 extern void func_0203d384();
-void* ChainChomp_Spawn(void){
+/* Reconstructed source-style name. Historical alias: ChainChomp_Spawn. */
+void* daWanwan_c_classInit(void){
   char* c = (char*)_ZN7fBase_cnwEj(0x620);
   if(c){
     _ZN12dEnemyBase_cC2Ev(c);

@@ -1,4 +1,5 @@
 //cpp
+// @symbol daWanwan_c_classInit
 extern "C" {
 void* _ZN7fBase_cnwEj(unsigned int);
 void _ZN12dEnemyBase_cC2Ev(void*);
@@ -12,7 +13,11 @@ extern void _ZN5ModelC1Ev();
 extern void _ZN11ShadowModelD1Ev();
 extern void _ZN7Vector3D1Ev();
 extern void func_0203d384();
-void* ChainChomp_Spawn(void){
+/* Reconstructed source-style name: SM64DS proves daWanwan_c through RTTI,
+ * allocation size, vtable identity, and the WANWAN registry profile; later
+ * EAD lineage supplies classInit. Exact original spelling is not preserved.
+ * Historical alias: ChainChomp_Spawn. */
+void* daWanwan_c_classInit(void){
   char* c = (char*)_ZN7fBase_cnwEj(0x620);
   if(c){
     _ZN12dEnemyBase_cC2Ev(c);

@@ -116,7 +116,7 @@ src/func_ov020_021127f4.c:
     complete
     .text start:0x021127f4 end:0x02112850
 
-src/BookShotSpawner_Spawn.c:
+src/daBookGen_c_classInit.c:
     complete
     .text start:0x02112850 end:0x02112880
 

@@ -119,7 +119,7 @@ src/_ZN10ChainChomp13InitResourcesEv.cpp:
     complete
     .text start:0x02112b14 end:0x02112d1c
 
-src/ChainChomp_Spawn.cpp:
+src/daWanwan_c_classInit.cpp:
     complete
     .text start:0x02112d1c end:0x02112e0c
 

@@ -26,7 +26,7 @@ _ZN15BookShotSpawner13InitResourcesEv kind:function(arm,size=0x3c) addr:0x021127
 _ZN8BookShot16OnAimedAtWithEggEv kind:function(arm,size=0x28) addr:0x021127a4
 _ZN8BookShot13OnYoshiTryEatEv kind:function(arm,size=0x28) addr:0x021127cc
 func_ov020_021127f4 kind:function(arm,size=0x5c) addr:0x021127f4
-BookShotSpawner_Spawn kind:function(arm,size=0x30) addr:0x02112850
+daBookGen_c_classInit kind:function(arm,size=0x30) addr:0x02112850
 Bookend_Spawn kind:function(arm,size=0x5c) addr:0x02112880
 BookShot_Spawn kind:function(arm,size=0x5c) addr:0x021128dc
 _ZN12HauntedChairD1Ev kind:function(arm,size=0x48) addr:0x02112938
@@ -203,7 +203,7 @@ _ZTI8daBook_c kind:data(any) addr:0x02114844
 _ZTS11daBookGen_c kind:data(any) addr:0x02114850
 Bookend_SpawnInfo kind:data(any) addr:0x02114860 ambiguous
 data_ov020_02114874 kind:data(any) addr:0x02114874 ambiguous
-BookShotSpawner_SpawnInfo kind:data(any) addr:0x0211487c ambiguous
+g_profile_BOOK_GENERATOR kind:data(any) addr:0x0211487c ambiguous
 data_ov020_0211488c kind:data(any) addr:0x0211488c ambiguous
 data_ov020_02114898 kind:data(any) addr:0x02114898 ambiguous
 BookShot_SpawnInfo kind:data(any) addr:0x021148b4 ambiguous

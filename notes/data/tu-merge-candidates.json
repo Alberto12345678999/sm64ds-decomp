@@ -3431,7 +3431,7 @@
     "src/_ZN10ChainChomp6RenderEv.cpp",
     "src/_ZN10ChainChomp8BehaviorEv.cpp",
     "src/_ZN10ChainChomp13InitResourcesEv.cpp",
-    "src/ChainChomp_Spawn.cpp"
+    "src/daWanwan_c_classInit.cpp"
    ],
    "ext_mix": {
     ".cpp": 15,
@@ -4812,7 +4812,7 @@
     "src/_ZN6FlyGuy16OnAimedAtWithEggEv.cpp",
     "src/_ZN6FlyGuy13OnTurnIntoEggER6Player.cpp",
     "src/_ZN6FlyGuy13OnYoshiTryEatEv.cpp",
-    "src/FlyGuy_Spawn.c"
+    "src/daPropeller_Heyho_c_classInit.c"
    ],
    "ext_mix": {
     ".cpp": 18,
@@ -20577,7 +20577,7 @@
    "n_functions_map": 2,
    "n_files": 2,
    "files": [
-    "src/func_ov006_020e0574.cpp",
+    "src/dScMgCup_c_classInit.cpp",
     "src/func_ov006_020e0634.c"
    ],
    "ext_mix": {
@@ -24634,7 +24634,7 @@
     "src/_ZN8BookShot16OnAimedAtWithEggEv.cpp",
     "src/_ZN8BookShot13OnYoshiTryEatEv.cpp",
     "src/func_ov020_021127f4.c",
-    "src/BookShotSpawner_Spawn.c",
+    "src/daBookGen_c_classInit.c",
     "src/Bookend_Spawn.c",
     "src/BookShot_Spawn.c"
    ],
@@ -33708,7 +33708,7 @@
    "n_functions_map": 1,
    "n_files": 1,
    "files": [
-    "src/func_ov005_020c21ec.c"
+    "src/dScMiniGm_c_classInit.c"
    ],
    "ext_mix": {
     ".c": 1

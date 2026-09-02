@@ -2129,7 +2129,7 @@ src/_ZN10dScMgCup_c13InitResourcesEv.cpp:
     complete
     .text start:0x020e0308 end:0x020e0574
 
-src/func_ov006_020e0574.cpp:
+src/dScMgCup_c_classInit.cpp:
     complete
     .text start:0x020e0574 end:0x020e0634
 
