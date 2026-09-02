@@ -440,7 +440,7 @@ is about. It needs a **derived** class -- a non-derived one is declared unmodell
 first method line and never reaches the brace -- whose **structor is declared before any
 field**, the key-function convention inherited from `dScene_c.h`. Where the destructor sits
 after the fields, a method line ends the field list and the stray brace is never read;
-`include/ArrowLift.h` measures identically in both styles. Note also that an **empty**
+`include/daObjWc_Obj02_c.h` measures identically in both styles. Note also that an **empty**
 Allman body breaks it exactly as an empty one-line body does not. It is the newline that
 costs, not the statements.
 

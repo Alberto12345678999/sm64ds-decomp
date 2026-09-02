@@ -1,8 +1,8 @@
 //cpp
 #include "types.h"
-// @symbol _ZN9ArrowLift8BehaviorEv
+// @symbol _ZN15daObjWc_Obj02_c8BehaviorEv
 /* recovered: named members + shared header, real C++ method */
-#include "ArrowLift.h"
+#include "daObjWc_Obj02_c.h"
 extern "C" {
 extern void func_02012694(int a, void* p);
 extern void _ZN8dActor_c9UpdatePosEP5dCc_c(void* self, void* clsn);
@@ -11,7 +11,7 @@ extern int _ZN10dBgActor_c21IsClsnInRangeOnScreenE5Fix12IiES1_(void* self, int a
 extern void _ZN10dBgActor_c19UpdateClsnPosAndRotEv(void* self);
 }
 
-int ArrowLift::Behavior()
+int daObjWc_Obj02_c::Behavior()
 {
     switch (((u8*)this)[0x327]) {
     case 0:

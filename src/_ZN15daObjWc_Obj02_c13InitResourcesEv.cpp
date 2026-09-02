@@ -1,9 +1,9 @@
 //cpp
-// @symbol _ZN9ArrowLift13InitResourcesEv
+// @symbol _ZN15daObjWc_Obj02_c13InitResourcesEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 #include "decl_common.h"
 /* recovered: named members + shared header, real C++ method */
-#include "ArrowLift.h"
+#include "daObjWc_Obj02_c.h"
 typedef int Fix12i;
 struct SharedFilePtr; struct BMD_File; struct KCL_File; struct Matrix4x3; struct CLPS_Block;
 /* dBgW_Kc and dBgW_KcMbg are the real classes now, through this actor's header,
@@ -25,7 +25,7 @@ extern SharedFilePtr data_ov029_02114248;
 extern CLPS_Block data_ov029_0211302c;
 extern int _ZN4dBgW22UpdatePosWithTransformERS_P8dActor_cR5dBgPiR7Vector3P10Vector3_16S8_;
 
-int ArrowLift::InitResources()
+int daObjWc_Obj02_c::InitResources()
 {
     char* c = ((char*)this);
     {
