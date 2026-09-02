@@ -296,37 +296,9 @@ src/actors/d_a_cam_tag.cpp:
     complete
     .text start:0x020b0748 end:0x020b07f8
 
-src/_ZN11VirtualDoorD1Ev.cpp:
+src/actors/d_a_ch_room.cpp:
     complete
-    .text start:0x020b07f8 end:0x020b081c
-
-src/_ZN11VirtualDoorD0Ev.cpp:
-    complete
-    .text start:0x020b081c end:0x020b0854
-
-src/_ZN11VirtualDoor16CleanupResourcesEv.cpp:
-    complete
-    .text start:0x020b0854 end:0x020b085c
-
-src/_ZN11VirtualDoor16OnPendingDestroyEv.cpp:
-    complete
-    .text start:0x020b085c end:0x020b0860
-
-src/_ZN11VirtualDoor6RenderEv.cpp:
-    complete
-    .text start:0x020b0860 end:0x020b0868
-
-src/_ZN11VirtualDoor8BehaviorEv.cpp:
-    complete
-    .text start:0x020b0868 end:0x020b0938
-
-src/_ZN11VirtualDoor13InitResourcesEv.cpp:
-    complete
-    .text start:0x020b0938 end:0x020b0980
-
-src/VirtualDoor_Spawn.c:
-    complete
-    .text start:0x020b0980 end:0x020b09b0
+    .text start:0x020b07f8 end:0x020b09b0
 
 src/_ZN4ExitD1Ev.cpp:
     complete

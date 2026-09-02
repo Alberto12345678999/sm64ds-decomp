@@ -6,7 +6,7 @@
 #include "ModelAnim.h"
 
 /* The plain warp door -- the leaf dActor_c child at ov100 0x021443f4..0x02145948,
- * distinct from StarDoor and VirtualDoor which are their own classes/headers.
+ * distinct from StarDoor and daChRoom_c which are their own classes/headers.
  *
  * DERIVATION. tools/rtti_extract.py has the RTTI record at ov100 0x02148158,
  * mangled "8daDoor_c" -- the ROM struct name, which is NOT the name this

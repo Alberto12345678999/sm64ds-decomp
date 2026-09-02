@@ -789,7 +789,7 @@ extern int _ZTV8daYegg_c[];
 extern int _ZTV12WaterDiamond[];
 extern int _ZTV9BlueFlame[];
 extern int _ZTV9Butterfly[];
-extern int _ZTV11VirtualDoor[];
+extern int _ZTV10daChRoom_c[];
 extern int _ZTV12daDossyCap_c[];
 extern int _ZTV9HugeWater[];
 extern int _ZTV9KoopaFlag[];

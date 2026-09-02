@@ -540,7 +540,7 @@ src/Vec3_MulScalarInPlace.c	PURE-C	arm9				1		None		-
 src/Vec3_RotateYAndTranslate.c	PURE-C	arm9				1		None		-
 src/Vec3_Sub.c	PURE-C	arm9				1		None		-
 src/Vec3_VertAngle.c	WEAK-refs-only	arm9				1		None		-
-src/VirtualDoor_Spawn.c	WEAK-refs-only	ov002				1		None		-
+src/daChRoom_c_Spawn.c	WEAK-refs-only	ov002				1		None		-
 src/VolcanoFire_Spawn.c	WEAK-refs-only	ov022				1		None		-
 src/daObjFl_Ring_c_classInit.c	S1-stores-rom-vptr	ov022			stores _ZTV11VolcanoRing	1		None	_ZTV11VolcanoRing	-
 src/Vram__Map.c	PURE-C	arm9				1		None		-
