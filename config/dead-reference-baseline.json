@@ -198,6 +198,10 @@
    "ref": "src/func_ov007_020cc2cc.c"
   },
   {
+   "file": "notes/plan-cpp-conversion-queue.md",
+   "ref": "src/_ZN10ChillBully14UpdateRunStateEv.cpp"
+  },
+  {
    "file": "notes/plan-cpp-language-mode.md",
    "ref": "src/_ZN9ActorBaseC1Ev.cpp"
   },
@@ -252,6 +256,30 @@
   {
    "file": "notes/translation-unit-reconstruction-plan.md",
    "ref": "src/actors/Chuckya.cpp"
+  },
+  {
+   "file": "notes/tu-filename-reconstruction-pilot.md",
+   "ref": "src/BookShotSpawner_Spawn.c"
+  },
+  {
+   "file": "notes/tu-filename-reconstruction-pilot.md",
+   "ref": "src/ChainChomp_Spawn.cpp"
+  },
+  {
+   "file": "notes/tu-filename-reconstruction-pilot.md",
+   "ref": "src/Stage_Spawn.cpp"
+  },
+  {
+   "file": "notes/tu-filename-reconstruction-pilot.md",
+   "ref": "src/func_02023624.c"
+  },
+  {
+   "file": "notes/tu-filename-reconstruction-pilot.md",
+   "ref": "src/func_ov005_020c21ec.c"
+  },
+  {
+   "file": "notes/tu-filename-reconstruction-pilot.md",
+   "ref": "src/func_ov006_020e0574.cpp"
   },
   {
    "file": "notes/tu-reconstruction-pilot-2-report.md",

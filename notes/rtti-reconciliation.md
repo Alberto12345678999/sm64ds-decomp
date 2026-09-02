@@ -157,7 +157,7 @@ Each row: the tree named an ancestor and skipped the class in between.
     daObjKm1_Kuruma_c                : daObjKuruma_c      tree said Platform
     daObjFlMaruta_c  (FallBlockLll)  : daObjMaruta_c      tree said dBgActor_c
     daObjHmMaruta_c  (daObjHmBskt_c)     : daObjMaruta_c      tree said dBgActor_c
-    daObjBSwdoor_c   (ShutterBob)    : daObjSwdoor_c      tree said Platform
+    daObjBSwdoor_c   (daObjBSwdoor_c)    : daObjSwdoor_c      tree said Platform
     daObjCvShutter_c (ShutterHmc)    : daObjSwdoor_c      tree said Platform
     daObjFl_Ukiyuka_c                : daObjUkiyuka_c     tree said Platform
     daDonketu_c      (Bully)         : daOts_c            tree said Enemy
@@ -274,7 +274,7 @@ ancestor already owns, and none is attributable to the intermediate.**
 The `daObjDorifu_c` family is the clean case. Its three descendants' headers are
 **byte-identical**:
 
-    ArmedRotatingPlatform  |  RickshawPlatformBdw  |  RickshawPlatformBs
+    ArmedRotatingPlatform  |  RickshawPlatformBdw  |  daObjKm3_Dorifu_c
         u8 pad_000[0xd4];
         u8 mModel;              /* 0x0d4 */
         u8 pad_0d5[0x4f];
@@ -288,7 +288,7 @@ headers that distinguishes `daObjDorifu_c` from `Platform`, so a generated
 `daObjDorifu_c` would be a class whose entire content is inherited.
 
 The tell that identity is weak evidence: `FallBlockLll` (family `daObjMaruta_c`) has the
-**same** header body as `ShutterBob`/`ShutterHmc` (family `daObjSwdoor_c`). Identical
+**same** header body as `daObjBSwdoor_c`/`ShutterHmc` (family `daObjSwdoor_c`). Identical
 bodies across *different* ROM bases means the identity reflects how little the generator
 found, not a shared layout.
 
