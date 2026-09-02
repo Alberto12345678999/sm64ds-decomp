@@ -25,7 +25,14 @@
  * cartridge home to be compared against; romdata_check compares each with
  * relocations applied before production isolation discards it:
  *
- *   _ZTV9daSetSE_c        ov002 0x0210b4c8   (0x84 = the 2-word header + 31 slots)
+ *   _ZTV9daSetSE_c        ov002 0x0210b4c8   (the ADDRESS POINT -- the record
+ *                                          itself starts 8 bytes earlier at
+ *                                          0x0210b4c0 and is 0x84 bytes, the
+ *                                          2-word header plus 31 slots, ending
+ *                                          at _ZTI12daMugenBGM_c 0x0210b544;
+ *                                          romdata_check subtracts the preamble
+ *                                          for _ZTV*, so 0x0210b4c8 is the
+ *                                          right thing to record here)
  *   _ZTI9daSetSE_c        ov002 0x0210b470
  *   _ZTS9daSetSE_c        ov002 0x0210b464
  *   _ZTI8dActor_c / _ZTI7dBase_c / _ZTI7fBase_c   arm9
@@ -46,6 +53,15 @@ extern "C" {
 extern int _ZTV9daSetSE_c[];
 extern void *_ZN7fBase_cnwEj(unsigned);
 extern void _ZN8dActor_cC2Ev(void *);
+/* The mangled name decodes to (unsigned, unsigned, unsigned, const Vector3 &,
+   short); the 4th and 5th parameters are deliberately spelled `void *` and
+   `u32` here instead. Both spellings are ABI-identical on ARM -- a const
+   reference is passed as the pointer this hands it, and a short argument is
+   promoted to a full word -- so the codegen is the same, and the call site
+   passes &mCamSpacePosX, the first component of the inherited Vector3, without
+   needing that type declared. Worth tightening to the real spelling when
+   Vector3 is reachable from this TU; it is a declaration divergence, not a
+   disagreement about what the ROM calls. */
 extern u32 _ZN5Sound8PlayLongEjjjRK7Vector3s(u32 a, u32 b, u32 c, void *v, u32 e);
 extern int data_0209b4ac;
 extern int data_ov002_0210b498[];

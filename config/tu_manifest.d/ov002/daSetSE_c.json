@@ -85,7 +85,7 @@
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
     "toolchain": "tools/mwccarm/2004/b56/mwccarm.exe",
     "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
-    "object": "build/tu/ov002-daSetSE_c/daSetSE_c.o (gitignored)",
+    "object": "build/tu/ov002-daSetSE_c/d_a_set_se.o (gitignored)",
     "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
     "functions_matched": 8,
     "functions_declared": 8,
@@ -138,77 +138,6 @@
         "_ZTV9daSetSE_c"
       ]
     }
-  },
-  "unlicensed_output_observed": {
-    "note": "Ten definitions are present in the raw object and intentionally excluded from this text-only proof. The inherited records have canonical arm9 homes; the three derived-class records use the configured text label rather than the retail RTTI name daSetSE_c.",
-    "text": [
-      {
-        "symbol": "_ZN9daSetSE_cD2Ev",
-        "size": "0x24",
-        "binding": "STB_GLOBAL",
-        "note": "compiler-emitted base destructor variant with no licensed ROM text contribution"
-      }
-    ],
-    "data": [
-      {
-        "symbol": "_ZTI7fBase_c",
-        "size": "0x8",
-        "binding": "STB_LOPROC",
-        "canonical_home": "arm9:0x02086d70"
-      },
-      {
-        "symbol": "_ZTS7fBase_c",
-        "size": "0x9",
-        "binding": "STB_LOPROC",
-        "canonical_home": "arm9:0x02086e60"
-      },
-      {
-        "symbol": "_ZTS7dBase_c",
-        "size": "0x9",
-        "binding": "STB_LOPROC",
-        "canonical_home": "arm9:0x02086e54"
-      },
-      {
-        "symbol": "_ZTS8dActor_c",
-        "size": "0xa",
-        "binding": "STB_LOPROC",
-        "canonical_home": "arm9:0x0208e384"
-      },
-      {
-        "symbol": "_ZTI7dBase_c",
-        "size": "0xc",
-        "binding": "STB_LOPROC",
-        "canonical_home": "arm9:0x02086e78"
-      },
-      {
-        "symbol": "_ZTI8dActor_c",
-        "size": "0xc",
-        "binding": "STB_LOPROC",
-        "canonical_home": "arm9:0x0208e390"
-      },
-      {
-        "symbol": "_ZTI9daSetSE_c",
-        "size": "0xc",
-        "binding": "STB_LOPROC",
-        "note": "retail record is _ZTI9daSetSE_c at ov002:0x0210b470"
-      },
-      {
-        "symbol": "_ZTS9daSetSE_c",
-        "size": "0x16",
-        "binding": "STB_LOPROC",
-        "note": "retail string is _ZTS9daSetSE_c at ov002:0x0210b464"
-      },
-      {
-        "symbol": "_ZTV9daSetSE_c",
-        "size": "0x84",
-        "binding": "STB_GLOBAL",
-        "note": "not licensed while its RTTI/type-name identity differs from retail"
-      }
-    ],
-    "bss": [],
-    "init": [],
-    "rodata": [],
-    "ctor": []
   },
   "partial_isolation": {
     "round": "tools/tubuild.py linkcheck --partial -- one compile of the consolidated source, objisolate.derive per licensed function, each derived object substituted for the production per-function object at its own existing path, then scratch dsd delink+lcf, whole-tree mwccarm, mwldarm link, linked-range and module byte comparison, dsd check symbols --fail, full ROM build",

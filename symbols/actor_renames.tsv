@@ -235,13 +235,13 @@ ov002	0x020f19f4	func_ov002_020f19f4	_ZN14EnemySwitchTag6RenderEv	vtable slot 9
 ov002	0x020f19fc	func_ov002_020f19fc	_ZN14EnemySwitchTag8BehaviorEv	vtable slot 6
 ov002	0x020f1ac4	func_ov002_020f1ac4	_ZN14EnemySwitchTag13InitResourcesEv	vtable slot 0
 ov002	0x020f1b94	func_ov002_020f1b94	daSetSE_c_Spawn	spawnfunc
-ov002	0x020f1bc4	func_ov002_020f1bc4	_ZN9daSetSE_cD1Ev	vtable slot 16
-ov002	0x020f1be8	func_ov002_020f1be8	_ZN9daSetSE_cD0Ev	vtable slot 17
-ov002	0x020f1c50	func_ov002_020f1c50	_ZN9daSetSE_c16CleanupResourcesEv	vtable slot 3
-ov002	0x020f1c58	func_ov002_020f1c58	_ZN9daSetSE_c16OnPendingDestroyEv	vtable slot 12
-ov002	0x020f1c5c	func_ov002_020f1c5c	_ZN9daSetSE_c6RenderEv	vtable slot 9
-ov002	0x020f1c64	func_ov002_020f1c64	_ZN9daSetSE_c8BehaviorEv	vtable slot 6
-ov002	0x020f1eb4	func_ov002_020f1eb4	_ZN9daSetSE_c13InitResourcesEv	vtable slot 0
+ov002	0x020f1bc4	func_ov002_020f1bc4	_ZN19AmbientSoundEffectsD1Ev	vtable slot 16
+ov002	0x020f1be8	func_ov002_020f1be8	_ZN19AmbientSoundEffectsD0Ev	vtable slot 17
+ov002	0x020f1c50	func_ov002_020f1c50	_ZN19AmbientSoundEffects16CleanupResourcesEv	vtable slot 3
+ov002	0x020f1c58	func_ov002_020f1c58	_ZN19AmbientSoundEffects16OnPendingDestroyEv	vtable slot 12
+ov002	0x020f1c5c	func_ov002_020f1c5c	_ZN19AmbientSoundEffects6RenderEv	vtable slot 9
+ov002	0x020f1c64	func_ov002_020f1c64	_ZN19AmbientSoundEffects8BehaviorEv	vtable slot 6
+ov002	0x020f1eb4	func_ov002_020f1eb4	_ZN19AmbientSoundEffects13InitResourcesEv	vtable slot 0
 ov002	0x020f1f40	func_ov002_020f1f40	MugenBgm_Spawn	spawnfunc
 ov002	0x020f1f70	func_ov002_020f1f70	_ZN8MugenBgmD1Ev	vtable slot 16
 ov002	0x020f1f94	func_ov002_020f1f94	_ZN8MugenBgmD0Ev	vtable slot 17
@@ -354,7 +354,7 @@ ov002	0x0210b3e8	data_ov002_0210b3e8	_ZTV14BlueCoinSwitch	vtable alloc=0x330
 ov002	0x0210b47c	data_ov002_0210b47c	daSetSE_c_SpawnInfo	spawninfo
 ov002	0x0210b4c8	data_ov002_0210b4c8	_ZTV14EnemySwitchTag	vtable alloc=0x110
 ov002	0x0210b560	data_ov002_0210b560	MugenBgm_SpawnInfo	spawninfo
-ov002	0x0210b584	data_ov002_0210b584	_ZTV9daSetSE_c	vtable alloc=0xd8
+ov002	0x0210b584	data_ov002_0210b584	_ZTV19AmbientSoundEffects	vtable alloc=0xd8
 ov002	0x0210ba60	data_ov002_0210ba60	CutsceneObject_SpawnInfo	spawninfo
 ov002	0x0210bd60	data_ov002_0210bd60	_ZTV8MugenBgm	vtable alloc=0xd4
 ov002	0x0210bf70	data_ov002_0210bf70	Fireball_SpawnInfo	spawninfo
