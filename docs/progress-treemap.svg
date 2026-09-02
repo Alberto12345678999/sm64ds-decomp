@@ -33665,7 +33665,7 @@ matched: yes</title></rect><rect x="1582.36" y="231.97" width="5.36" height="9.4
 module: ov035
 addr: 0x02111a98
 size: 256 bytes
-matched: yes</title></rect><rect x="1587.72" y="231.97" width="1.67" height="6.64" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>SpinningPlatform_Spawn
+matched: yes</title></rect><rect x="1587.72" y="231.97" width="1.67" height="6.64" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daObjCtMecha11_c_classInit
 module: ov035
 addr: 0x02111b98
 size: 56 bytes
@@ -33757,7 +33757,7 @@ matched: yes</title></rect><rect x="1098.25" y="251.44" width="7.16" height="10.
 module: ov036
 addr: 0x02111854
 size: 176 bytes
-matched: yes</title></rect><rect x="1098.25" y="262.15" width="7.16" height="3.41" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>ShipWing_Spawn
+matched: yes</title></rect><rect x="1098.25" y="262.15" width="7.16" height="3.41" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daObjRc_Hane_c_classInit
 module: ov036
 addr: 0x02111904
 size: 56 bytes
@@ -33797,7 +33797,7 @@ matched: yes</title></rect><rect x="1123.92" y="254.77" width="4.19" height="2.0
 module: ov036
 addr: 0x02111cc4
 size: 20 bytes
-matched: yes</title></rect><rect x="1123.92" y="256.85" width="4.19" height="6.25" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>DonutBlock_Spawn
+matched: yes</title></rect><rect x="1123.92" y="256.85" width="4.19" height="6.25" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daObjRc_Tikuwa_c_classInit
 module: ov036
 addr: 0x02111cd8
 size: 60 bytes
@@ -33845,7 +33845,7 @@ matched: yes</title></rect><rect x="1147.64" y="253.47" width="4.28" height="2.0
 module: ov036
 addr: 0x021120b4
 size: 20 bytes
-matched: yes</title></rect><rect x="1147.64" y="255.51" width="4.28" height="14.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>TrickyTriangles_Spawn
+matched: yes</title></rect><rect x="1147.64" y="255.51" width="4.28" height="14.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daObjRc_Dorifu_c_classInit
 module: ov036
 addr: 0x021120c8
 size: 144 bytes
@@ -37465,7 +37465,7 @@ matched: yes</title></rect><rect x="1334.00" y="494.54" width="8.83" height="17.
 module: ov065
 addr: 0x0211bf04
 size: 316 bytes
-matched: yes</title></rect><rect x="1342.83" y="472.00" width="3.74" height="7.17" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>TTC_MovingBeam_Spawn
+matched: yes</title></rect><rect x="1342.83" y="472.00" width="3.74" height="7.17" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daObjCtMecha09_c_classInit
 module: ov065
 addr: 0x0211c040
 size: 56 bytes
