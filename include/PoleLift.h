@@ -12,6 +12,10 @@
  *
  * SIZE IS THE OBSERVED FIELD SPAN, rounded up. It guards this declaration; it
  * is not independent evidence about the ROM.
+ *
+ * SM64DS RTTI names the implementation daObjKm2_Ami_Bou_c. The reconstructed
+ * factory daObjKm2_Ami_Bou_c_classInit (historical alias PoleLift_Spawn)
+ * allocates 0x358 and installs this class's cartridge vtable.
  */
 
 #ifdef __cplusplus

@@ -16,8 +16,9 @@
  *   kind  __si_class_type_info, ONE base, subobject offset 0
  *   base  daObjGuragura_c, ov002 0x0210905c
  *
- * NO FIELDS OF ITS OWN: TiltingPlatformBfs_Spawn passes 848 = 0x350, which
- * daObjGuragura_c fills. It overrides slots 0 and 3, which the base leaves null.
+ * NO FIELDS OF ITS OWN: daObjKm2_Gura_c_classInit (historical alias
+ * TiltingPlatformBfs_Spawn) passes 848 = 0x350, which daObjGuragura_c fills.
+ * It overrides slots 0 and 3, which the base leaves null.
  */
 
 #ifdef __cplusplus

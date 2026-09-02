@@ -6,9 +6,12 @@
 #include "dBgW_KcMbgSclY.h"
 
 /* The cartridge calls this class daObjKm2_Nobiru_c in RTTI. ExtendingPlatform
- * is the readable compatibility name already carried by its factory and every
- * known virtual. The __si_class_type_info record points directly at dActor_c,
- * and the vtable has exactly the same 31 slots as that base.
+ * is the readable compatibility name carried by the project's historical
+ * factory alias and every known virtual. The reconstructed factory
+ * daObjKm2_Nobiru_c_classInit (historical alias ExtendingPlatform_Spawn)
+ * allocates 0x328 and installs this class's cartridge vtable. The
+ * __si_class_type_info record points directly at dActor_c, and the vtable has
+ * exactly the same 31 slots as that base.
  *
  * The readable name intentionally does not claim that the compiler-generated
  * RTTI spelling is cartridge-authentic. Per-function object isolation keeps
