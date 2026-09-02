@@ -33705,7 +33705,7 @@ matched: yes</title></rect><rect x="1069.41" y="251.44" width="6.51" height="10.
 module: ov036
 addr: 0x0211137c
 size: 152 bytes
-matched: yes</title></rect><rect x="1069.41" y="261.61" width="6.51" height="3.21" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>SwingingPlatform_Spawn
+matched: yes</title></rect><rect x="1069.41" y="261.61" width="6.51" height="3.21" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daObjRcBuranko_c_classInit
 module: ov036
 addr: 0x02111414
 size: 48 bytes
@@ -33725,7 +33725,7 @@ matched: yes</title></rect><rect x="1075.93" y="264.22" width="4.09" height="5.9
 module: ov036
 addr: 0x0211150c
 size: 56 bytes
-matched: yes</title></rect><rect x="1080.02" y="251.44" width="4.93" height="5.31" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>RotatingPlatformRr_Spawn
+matched: yes</title></rect><rect x="1080.02" y="251.44" width="4.93" height="5.31" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daObjRc_Kaitendai_c_classInit
 module: ov036
 addr: 0x02111544
 size: 60 bytes
@@ -33825,7 +33825,7 @@ matched: yes</title></rect><rect x="1132.76" y="259.98" width="7.35" height="10.
 module: ov036
 addr: 0x02111eb0
 size: 172 bytes
-matched: yes</title></rect><rect x="1140.11" y="251.44" width="7.53" height="2.78" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>ArmedRotatingPlatform_Spawn
+matched: yes</title></rect><rect x="1140.11" y="251.44" width="7.53" height="2.78" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daObjRc_Guruguru_c_classInit
 module: ov036
 addr: 0x02111f5c
 size: 48 bytes
@@ -33881,7 +33881,7 @@ matched: yes</title></rect><rect x="1166.43" y="258.16" width="8.56" height="12.
 module: ov036
 addr: 0x0211244c
 size: 236 bytes
-matched: yes</title></rect><rect x="1174.99" y="251.44" width="7.81" height="6.70" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>FlyingCarpet_Spawn
+matched: yes</title></rect><rect x="1174.99" y="251.44" width="7.81" height="6.70" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daObjRcCarpet_c_classInit
 module: ov036
 addr: 0x02112538
 size: 120 bytes
