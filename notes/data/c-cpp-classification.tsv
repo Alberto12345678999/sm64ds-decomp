@@ -26,7 +26,7 @@ src/daObjBkKillerdai_c_classInit.c	S1-stores-rom-vptr	ov079			stores _ZTV11BillB
 src/Bird_Spawn.c	WEAK-refs-only	ov009				1		None		-
 src/BitUnPack.c	PURE-C					0		None		not-in-delinks
 src/BlackBrickBlock_Spawn.c	WEAK-refs-only	ov002				1		None		-
-src/daObjBC_Switch_c_classInit.c	S1-stores-rom-vptr	ov002			stores _ZTV14BlueCoinSwitch	1		None	_ZTV14BlueCoinSwitch	-
+src/daObjBC_Switch_c_classInit.c	S1-stores-rom-vptr	ov002			stores _ZTV16daObjBC_Switch_c	1		None	_ZTV16daObjBC_Switch_c	-
 src/BlueCoin_Spawn.c	WEAK-refs-only	ov002				1		None		-
 src/BlueFlame_Spawn.c	WEAK-refs-only	ov002				1		None		-
 src/BobOmbBuddy_Spawn.c	WEAK-refs-only	ov084				1		None		-

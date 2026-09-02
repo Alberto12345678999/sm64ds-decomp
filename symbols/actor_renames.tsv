@@ -213,8 +213,8 @@ ov002	0x020f0ea8	func_ov002_020f0ea8	_ZN9OneUpLogo6RenderEv	vtable slot 9
 ov002	0x020f0f08	func_ov002_020f0f08	_ZN9OneUpLogo8BehaviorEv	vtable slot 6
 ov002	0x020f107c	func_ov002_020f107c	_ZN9OneUpLogo13InitResourcesEv	vtable slot 0
 ov002	0x020f1170	func_ov002_020f1170	OneUpLogo_Spawn	spawnfunc
-ov002	0x020f15cc	func_ov002_020f15cc	BlueCoinSwitch_Spawn	spawnfunc
-ov002	0x020f15cc	BlueCoinSwitch_Spawn	daObjBC_Switch_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
+ov002	0x020f15cc	func_ov002_020f15cc	daObjBC_Switch_c_Spawn	spawnfunc
+ov002	0x020f15cc	daObjBC_Switch_c_Spawn	daObjBC_Switch_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov002	0x020f15fc	func_ov002_020f15fc	_ZN14EnemySwitchTagD1Ev	vtable slot 16 (was _ZN14BlueCoinSwitchD1Ev)
 ov002	0x020f162c	func_ov002_020f162c	_ZN14EnemySwitchTagD0Ev	vtable slot 17 (was _ZN14BlueCoinSwitchD0Ev)
 ov002	0x020f1670	func_ov002_020f1670	_ZN12EnemySpawnerD1Ev	vtable slot 16
@@ -345,8 +345,8 @@ ov002	0x0210b0c8	data_ov002_0210b0c8	Number_SpawnInfo	spawninfo
 ov002	0x0210b0ec	data_ov002_0210b0ec	_ZTV6Number	vtable alloc=? (was _ZTV15InvisibleSecret)
 ov002	0x0210b188	data_ov002_0210b188	OneUpLogo_SpawnInfo	spawninfo
 ov002	0x0210b1ac	data_ov002_0210b1ac	_ZTV9OneUpLogo	vtable alloc=0x150
-ov002	0x0210b248	data_ov002_0210b248	BlueCoinSwitch_SpawnInfo	spawninfo
-ov002	0x0210b248	BlueCoinSwitch_SpawnInfo	g_profile_BC_SWITCH	reconstructed profile global; literal ROM ID BC_SWITCH+registry role+later EAD lineage; exact SM64DS spelling not preserved
+ov002	0x0210b248	data_ov002_0210b248	daObjBC_Switch_c_SpawnInfo	spawninfo
+ov002	0x0210b248	daObjBC_Switch_c_SpawnInfo	g_profile_BC_SWITCH	reconstructed profile global; literal ROM ID BC_SWITCH+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov002	0x0210b324	data_ov002_0210b324	EnemySwitchTag_SpawnInfo	spawninfo
 ov002	0x0210b340	data_ov002_0210b340	EnemySpawner_SpawnInfo	spawninfo
 ov002	0x0210b364	data_ov002_0210b364	_ZTV12EnemySpawner	vtable alloc=0x110

@@ -65,7 +65,7 @@ Overlay 2 has 26 `__sinit` functions and 26 `.ctor` entries. This initializer is
 ordinal 22; `.p__sinit_ov002_02107370` at `0x02108128` has a relocation to
 `0x02107370`. Its neighbors are:
 
-- ordinal 21: `__sinit_ov002_02107304`, high-confidence `BlueCoinSwitch`
+- ordinal 21: `__sinit_ov002_02107304`, high-confidence `daObjBC_Switch_c`
   (`ov002:56`);
 - ordinal 23: `__sinit_ov002_02107f88`, high-confidence `daSoundObj_c`
   (`ov002:63`).
