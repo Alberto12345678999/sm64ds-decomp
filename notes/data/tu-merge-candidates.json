@@ -3551,7 +3551,7 @@
     "src/_ZN11VolcanoRing13InitResourcesEv.cpp",
     "src/func_ov022_02111558.c",
     "src/func_ov022_02111564.c",
-    "src/VolcanoRing_Spawn.c"
+    "src/daObjFl_Ring_c_classInit.c"
    ],
    "ext_mix": {
     ".cpp": 5,
@@ -5675,7 +5675,7 @@
     "src/_ZN12MetalNetLift13InitResourcesEv.cpp",
     "src/func_ov064_02117fb4.cpp",
     "src/func_ov064_02117fd4.c",
-    "src/MetalNetLift_Spawn.c"
+    "src/daObjFl_Amilift_c_classInit.c"
    ],
    "ext_mix": {
     ".cpp": 8,
@@ -6683,7 +6683,7 @@
     "src/_ZN10LavaBridge6RenderEv.cpp",
     "src/_ZN10LavaBridge8BehaviorEv.cpp",
     "src/_ZN10LavaBridge13InitResourcesEv.cpp",
-    "src/LavaBridge_Spawn.c"
+    "src/daObjFl_London_c_classInit.c"
    ],
    "ext_mix": {
     ".cpp": 5,
@@ -9165,7 +9165,7 @@
     "src/_ZN13RollingLogLll16CleanupResourcesEv.cpp",
     "src/_ZN13RollingLogLll8BehaviorEv.cpp",
     "src/_ZN13RollingLogLll13InitResourcesEv.cpp",
-    "src/RollingLogLll_Spawn.c"
+    "src/daObjFlMaruta_c_classInit.c"
    ],
    "ext_mix": {
     ".cpp": 4,
@@ -10405,7 +10405,7 @@
     "src/_ZN18TiltingPlatformLllD0Ev.c",
     "src/_ZN18TiltingPlatformLll16CleanupResourcesEv.cpp",
     "src/_ZN18TiltingPlatformLll13InitResourcesEv.cpp",
-    "src/TiltingPlatformLll_Spawn.c"
+    "src/daObjFl_Gura_c_classInit.c"
    ],
    "ext_mix": {
     ".cpp": 3,

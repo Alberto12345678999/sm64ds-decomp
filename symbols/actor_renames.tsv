@@ -761,6 +761,7 @@ ov021	0x021148f0	data_ov021_021148f0	ShutterHmc_SpawnInfo	spawninfo
 ov021	0x021148f0	ShutterHmc_SpawnInfo	g_profile_CV_SHUTTER	reconstructed profile global; literal ROM ID CV_SHUTTER+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov021	0x02114914	data_ov021_02114914	_ZTV10ShutterHmc	vtable alloc=0x324
 ov022	0x02111578	func_ov022_02111578	VolcanoRing_Spawn	spawnfunc
+ov022	0x02111578	VolcanoRing_Spawn	daObjFl_Ring_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov022	0x02111688	func_ov022_02111688	RotatingPlatformLll_Spawn	spawnfunc
 ov022	0x021116c4	func_ov022_021116c4	_ZN19RotatingPlatformLllD1Ev	vtable slot 16
 ov022	0x02111708	func_ov022_02111708	_ZN19RotatingPlatformLllD0Ev	vtable slot 17
@@ -770,6 +771,7 @@ ov022	0x021117cc	func_ov022_021117cc	_ZN19RotatingPlatformLll8BehaviorEv	vtable 
 ov022	0x02111870	func_ov022_02111870	_ZN19RotatingPlatformLll13InitResourcesEv	vtable slot 0
 ov022	0x02111950	func_ov022_02111950	FloatOnLavaPlatform_Spawn	spawnfunc
 ov022	0x02111c7c	func_ov022_02111c7c	LavaBridge_Spawn	spawnfunc
+ov022	0x02111c7c	LavaBridge_Spawn	daObjFl_London_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov022	0x02111f3c	func_ov022_02111f3c	LavaSeesaw_Spawn	spawnfunc
 ov022	0x02111f6c	func_ov022_02111f6c	_ZN21FloatingFloorLllSmallD1Ev	vtable slot 16
 ov022	0x02111fbc	func_ov022_02111fbc	_ZN21FloatingFloorLllSmallD0Ev	vtable slot 17
@@ -791,6 +793,7 @@ ov022	0x0211254c	func_ov022_0211254c	_ZN12FallBlockLll16CleanupResourcesEv	vtabl
 ov022	0x02112560	func_ov022_02112560	_ZN12FallBlockLll8BehaviorEv	vtable slot 6
 ov022	0x02112590	func_ov022_02112590	_ZN12FallBlockLll13InitResourcesEv	vtable slot 0
 ov022	0x021125a4	func_ov022_021125a4	RollingLogLll_Spawn	spawnfunc
+ov022	0x021125a4	RollingLogLll_Spawn	daObjFlMaruta_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov022	0x021125e0	func_ov022_021125e0	_ZN13RollingLogLllD1Ev	vtable slot 16
 ov022	0x02112610	func_ov022_02112610	_ZN13RollingLogLllD0Ev	vtable slot 17
 ov022	0x021127e0	func_ov022_021127e0	_ZN13RollingLogLll16CleanupResourcesEv	vtable slot 3
@@ -798,10 +801,12 @@ ov022	0x02112800	func_ov022_02112800	_ZN13RollingLogLll8BehaviorEv	vtable slot 6
 ov022	0x021128b8	func_ov022_021128b8	_ZN13RollingLogLll13InitResourcesEv	vtable slot 0
 ov022	0x02112918	func_ov022_02112918	VolcanoFire_Spawn	spawnfunc
 ov022	0x02113cf4	data_ov022_02113cf4	VolcanoRing_SpawnInfo	spawninfo
+ov022	0x02113cf4	VolcanoRing_SpawnInfo	g_profile_FL_RING	reconstructed profile global; literal ROM ID FL_RING+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov022	0x02113dc4	data_ov022_02113dc4	RotatingPlatformLll_SpawnInfo	spawninfo
 ov022	0x02113e88	data_ov022_02113e88	FloatOnLavaPlatform_SpawnInfo	spawninfo
 ov022	0x02113eac	data_ov022_02113eac	_ZTV19RotatingPlatformLll	vtable alloc=0x320
 ov022	0x02113f4c	data_ov022_02113f4c	LavaBridge_SpawnInfo	spawninfo
+ov022	0x02113f4c	LavaBridge_SpawnInfo	g_profile_FL_LONDON	reconstructed profile global; literal ROM ID FL_LONDON+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov022	0x02114010	data_ov022_02114010	LavaSeesaw_SpawnInfo	spawninfo
 ov022	0x021140ec	data_ov022_021140ec	FloatingFloorLllBig_SpawnInfo	spawninfo
 ov022	0x02114108	data_ov022_02114108	FloatingFloorLllSmall_SpawnInfo	spawninfo
@@ -810,6 +815,7 @@ ov022	0x021141cc	data_ov022_021141cc	LavaPlank_SpawnInfo	spawninfo
 ov022	0x021141f0	data_ov022_021141f0	_ZTV19FloatingFloorLllBig	vtable alloc=0x330
 ov022	0x021142a0	data_ov022_021142a0	FallBlockLll_SpawnInfo	spawninfo
 ov022	0x02114380	data_ov022_02114380	RollingLogLll_SpawnInfo	spawninfo
+ov022	0x02114380	RollingLogLll_SpawnInfo	g_profile_FL_MARUTA	reconstructed profile global; literal ROM ID FL_MARUTA+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov022	0x021143a4	data_ov022_021143a4	_ZTV12FallBlockLll	vtable alloc=0x34c
 ov022	0x02114458	data_ov022_02114458	VolcanoFire_SpawnInfo	spawninfo
 ov022	0x0211447c	data_ov022_0211447c	_ZTV13RollingLogLll	vtable alloc=0x344
@@ -1408,11 +1414,13 @@ ov064	0x02117684	func_ov064_02117684	_ZN8BigBully8BehaviorEv	vtable slot 6
 ov064	0x02117784	func_ov064_02117784	_ZN8BigBully13InitResourcesEv	vtable slot 0
 ov064	0x0211791c	func_ov064_0211791c	BigBully_Spawn	spawnfunc
 ov064	0x02117fe8	func_ov064_02117fe8	MetalNetLift_Spawn	spawnfunc
+ov064	0x02117fe8	MetalNetLift_Spawn	daObjFl_Amilift_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov064	0x02118020	func_ov064_02118020	_ZN12MetalNetLiftD1Ev	vtable slot 16
 ov064	0x02118070	func_ov064_02118070	_ZN12MetalNetLiftD0Ev	vtable slot 17
 ov064	0x021180d4	func_ov064_021180d4	_ZN12MetalNetLift16CleanupResourcesEv	vtable slot 3
 ov064	0x021180e8	func_ov064_021180e8	_ZN12MetalNetLift13InitResourcesEv	vtable slot 0
 ov064	0x021180fc	func_ov064_021180fc	TiltingPlatformLll_Spawn	spawnfunc
+ov064	0x021180fc	TiltingPlatformLll_Spawn	daObjFl_Gura_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov064	0x02118138	func_ov064_02118138	_ZN15RotatingFirebarD1Ev	vtable slot 16
 ov064	0x02118194	func_ov064_02118194	_ZN15RotatingFirebarD0Ev	vtable slot 17
 ov064	0x02118204	func_ov064_02118204	_ZN15RotatingFirebar16CleanupResourcesEv	vtable slot 3
@@ -1481,7 +1489,9 @@ ov064	0x0211b870	data_ov064_0211b870	_ZTV5Bully	vtable alloc=0x400
 ov064	0x0211b920	data_ov064_0211b920	BigBully_SpawnInfo	spawninfo
 ov064	0x0211b978	data_ov064_0211b978	_ZTV8BigBully	vtable alloc=0x400
 ov064	0x0211bc44	data_ov064_0211bc44	MetalNetLift_SpawnInfo	spawninfo
+ov064	0x0211bc44	MetalNetLift_SpawnInfo	g_profile_FL_AMILIFT	reconstructed profile global; literal ROM ID FL_AMILIFT+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov064	0x0211bd08	data_ov064_0211bd08	TiltingPlatformLll_SpawnInfo	spawninfo
+ov064	0x0211bd08	TiltingPlatformLll_SpawnInfo	g_profile_FL_GURA	reconstructed profile global; literal ROM ID FL_GURA+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov064	0x0211bd2c	data_ov064_0211bd2c	_ZTV12MetalNetLift	vtable alloc=0x368
 ov064	0x0211bdec	data_ov064_0211bdec	RotatingFirebar_SpawnInfo	spawninfo
 ov064	0x0211be10	data_ov064_0211be10	_ZTV15RotatingFirebar	vtable alloc=0x540
