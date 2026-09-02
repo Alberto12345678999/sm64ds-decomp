@@ -2281,7 +2281,11 @@ def apply_compiler_only_policy(obj_bytes, entry, homes=None):
         return obj_bytes, {"requested": [], "deadstripped": [], "data": [],
                            "dataExternalized": []}, []
 
-    out, plan = OI.derive_deadstrip(obj_bytes, wanted + data)
+    # `duplicates` licenses a surviving reference to a duplicate-homed function
+    # without claiming the body is the cartridge's; this path has no cartridge bytes
+    # and leaves that proof to rombuild, which passes `expect` instead.
+    out, plan = OI.derive_deadstrip(obj_bytes, wanted + data,
+                                    duplicates=sorted(duplicates))
     if out is None:
         return None, {"requested": wanted, "objisolate": plan}, \
             [f"compiler-only deadstrip refused: {plan.get('error')}"]

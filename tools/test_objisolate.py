@@ -368,6 +368,126 @@ class Isolate(unittest.TestCase):
         self.assertIn("surviving", plan["error"])
         self.assertIn("references compiler-only helper", plan["error"])
 
+    def test_duplicate_deadstrip_allows_a_surviving_reference(self):
+        """A duplicate with a ROM home may be called by a survivor; a homeless one may not.
+
+        ov014/daWanwan_c is the case: it holds two `Vector3[7]`, so its destructor --
+        a function the ROM owns, at 0x02111308 -- hands `_ZN7Vector3D1Ev` to
+        `__destroy_arr`, and the cartridge keeps 0x020072c0 in that destructor's own
+        literal pool.  The reference is therefore ROM-real, and it is not evidence
+        that this object's vague-linkage copy is live compiler output: exactly one
+        copy has a home, an enrolled source owns it, and externalising the local
+        definition turns the reference into an import onto that home.
+
+        The exemption is opt-in and never fires on its own: a caller must name the
+        symbol in `expect` (the cartridge's bytes, compared here as far as an
+        unlinked object allows -- every relocated word is masked out, and
+        `rombuild._duplicate_body_reasons` links the body and compares those words)
+        or in `duplicates` (the reference alone, for the scratch path that has no
+        cartridge bytes).  A homeless symbol reaches neither.
+        """
+        # A member ARRAY is what forces the reference: mwcc cannot unroll the
+        # teardown, so it calls `__destroy_arr` with the element destructor's
+        # address, and that address is a relocation out of a surviving function.
+        obj = self.build("struct V { int v; ~V(){} };\n"
+                         "struct C { V a[7]; ~C(); };\n"
+                         "C::~C(){}\n")
+        raw = obj.read_bytes()
+        real = self._section_bytes(raw, "_ZN1VD1Ev")
+
+        # Without duplicate-body evidence the survivor's reference disqualifies it.
+        out, plan = OI.derive_deadstrip(raw, ["_ZN1VD1Ev"])
+        self.assertIsNone(out)
+        self.assertIn("references compiler-only _ZN1VD1Ev", plan["error"])
+
+        # With it, the definition is externalised and the reference becomes an import.
+        import io
+        from elftools.elf.elffile import ELFFile
+
+        out, plan = OI.derive_deadstrip(raw, ["_ZN1VD1Ev"], {"_ZN1VD1Ev": real})
+        self.assertIsNone(plan["error"])
+        self.assertIsNotNone(out)
+        elf = ELFFile(io.BytesIO(out))
+        syms = {s.name: s for s in elf.get_section_by_name(".symtab").iter_symbols()}
+        self.assertEqual(syms["_ZN1VD1Ev"]["st_shndx"], "SHN_UNDEF")
+
+        # The exemption is keyed on the evidence, not on being a function: a WRONG
+        # body is still refused even though the reference would now be allowed.
+        _out, plan = OI.derive_deadstrip(raw, ["_ZN1VD1Ev"],
+                                         {"_ZN1VD1Ev": bytes(len(real))})
+        self.assertIn("non-relocated offset", plan["error"])
+
+        # `duplicates` licenses the reference without claiming the body: the scratch
+        # link path has no cartridge bytes and leaves that proof to rombuild.
+        out, plan = OI.derive_deadstrip(raw, ["_ZN1VD1Ev"],
+                                        duplicates=["_ZN1VD1Ev"])
+        self.assertIsNone(plan["error"])
+        elf = ELFFile(io.BytesIO(out))
+        syms = {s.name: s for s in elf.get_section_by_name(".symtab").iter_symbols()}
+        self.assertEqual(syms["_ZN1VD1Ev"]["st_shndx"], "SHN_UNDEF")
+
+        # It cannot license anything but a requested compiler-only function.
+        _out, plan = OI.derive_deadstrip(raw, ["_ZN1VD1Ev"], duplicates=["_ZN1CD1Ev"])
+        self.assertIn("not requested compiler-only functions", plan["error"])
+
+    def test_duplicate_deadstrip_still_refuses_an_unnamed_section_reference(self):
+        """The exemption is keyed on the NAME, so an anonymous reference is untouched.
+
+        `deadstrip_plan` refuses two shapes of surviving reference: one that names a
+        requested symbol, and one that goes through the unnamed `STT_SECTION` symbol
+        of a section being removed.  Only the first consults `expect`/`duplicates`;
+        after the section is gone there is no symbol left to carry the second, so it
+        stays a refusal no matter what the caller licenses.
+        """
+        import io
+        from elftools.elf.elffile import ELFFile
+        from elftools.elf.relocation import RelocationSection
+
+        obj = self.build("struct V { int v; ~V(){} };\n"
+                         "struct C { V a[7]; ~C(); };\n"
+                         "C::~C(){}\n")
+        raw = obj.read_bytes()
+        real = self._section_bytes(raw, "_ZN1VD1Ev")
+
+        # mwcc emits no STT_SECTION entry for this section, so -- as the vague-RTTI
+        # sibling test does -- repurpose a spare symbol into the exact unnamed shape
+        # an ELF producer could legally use, then point the survivor's relocation
+        # through it instead of at `_ZN1VD1Ev`.
+        import struct
+
+        patched = bytearray(raw)
+        elf = ELFFile(io.BytesIO(raw))
+        symtab = elf.get_section_by_name(".symtab")
+        syms = list(symtab.iter_symbols())
+        victim = next(i for i, s in enumerate(syms) if s.name == "_ZN1VD1Ev")
+        shndx = syms[victim]["st_shndx"]
+        spare = next(i for i, s in enumerate(syms)
+                     if s.name.startswith("$") and s["st_shndx"] == shndx)
+        endian = "<" if elf.little_endian else ">"
+        entry = symtab.header["sh_offset"] + spare * 16
+        struct.pack_into(endian + "III", patched, entry, 0, 0, 0)
+        patched[entry + 12] = 0x03  # STB_LOCAL / STT_SECTION
+        struct.pack_into(endian + "H", patched, entry + 14, shndx)
+        found = False
+        for rel in elf.iter_sections():
+            if not isinstance(rel, RelocationSection) or rel.header["sh_info"] == shndx:
+                continue
+            for i, r in enumerate(rel.iter_relocations()):
+                if r["r_info_sym"] != victim:
+                    continue
+                struct.pack_into(endian + "I", patched,
+                                 rel.header["sh_offset"]
+                                 + i * rel.header["sh_entsize"] + 4,
+                                 (spare << 8) | r["r_info_type"])
+                found = True
+        self.assertTrue(found, "no relocation named the victim")
+
+        for kwargs in ({"expect": {"_ZN1VD1Ev": real}},
+                       {"duplicates": ["_ZN1VD1Ev"]}):
+            out, plan = OI.derive_deadstrip(bytes(patched), ["_ZN1VD1Ev"], **kwargs)
+            self.assertIsNone(out)
+            self.assertIn("references compiler-only section[", plan["error"])
+
     def test_exact_vague_rtti_externalization_keeps_named_imports(self):
         """A dedicated inherited RTTI section becomes an import, not lost bytes."""
         import io
