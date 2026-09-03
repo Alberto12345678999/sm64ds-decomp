@@ -7,7 +7,7 @@
     "no_codegen_trick",
     "no_mangled_refs"
   ],
-  "count": 2582,
+  "count": 2584,
   "converted": [
     "src/ARMMathLoadState.c",
     "src/ARMMathSaveState.c",
@@ -540,6 +540,10 @@
     "src/_ZN11dScMiniGm_c16OnPendingDestroyEv.cpp",
     "src/_ZN11dScMiniGm_cD0Ev.cpp",
     "src/_ZN11dScMiniGm_cD1Ev.cpp",
+    "src/actors/d_a_bg_snwmn.cpp#_ZN11daBgSnwmn_c16OnPendingDestroyEv",
+    "src/actors/d_a_bg_snwmn.cpp#_ZN11daBgSnwmn_c8BehaviorEv",
+    "src/actors/d_a_bg_snwmn.cpp#_ZN11daBgSnwmn_cD0Ev",
+    "src/actors/d_a_bg_snwmn.cpp#_ZN11daBgSnwmn_cD1Ev",
     "src/_ZN11daDsnBase_c16CleanupResourcesEv.cpp",
     "src/_ZN11daDsnBase_cD0Ev.cpp",
     "src/_ZN11daDsnBase_cD1Ev.cpp",
@@ -2335,8 +2339,6 @@
     "src/actors/dScMgSingle3DBase_c.cpp#_ZN19dScMgSingle3DBase_c24OnHitByCannonBlastedCharEv",
     "src/actors/dScMgSingle3DBase_c.cpp#_ZN19dScMgSingle3DBase_cD0Ev",
     "src/actors/dScMgSingle3DBase_c.cpp#_ZN19dScMgSingle3DBase_cD1Ev",
-    "src/actors/d_a_bg_snwmn.cpp#_ZN11daBgSnwmn_c16OnPendingDestroyEv",
-    "src/actors/d_a_bg_snwmn.cpp#_ZN11daBgSnwmn_c8BehaviorEv",
     "src/actors/d_a_cam_tag.cpp#_ZN10daCamTag_c13InitResourcesEv",
     "src/actors/d_a_cam_tag.cpp#_ZN10daCamTag_c16CleanupResourcesEv",
     "src/actors/d_a_cam_tag.cpp#_ZN10daCamTag_c16OnPendingDestroyEv",

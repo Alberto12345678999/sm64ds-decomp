@@ -1380,6 +1380,7 @@
     "src/actors/d_a_bg_snwmn.cpp#_ZN11daBgSnwmn_c16OnPendingDestroyEv": "tangosdev",
     "src/actors/d_a_bg_snwmn.cpp#_ZN11daBgSnwmn_c6RenderEv": "tangosdev",
     "src/actors/d_a_bg_snwmn.cpp#_ZN11daBgSnwmn_c8BehaviorEv": "github-actions[bot]",
-    "src/actors/d_a_bg_snwmn.cpp#_ZN11daBgSnwmn_c13InitResourcesEv": "github-actions[bot]"
+    "src/actors/d_a_bg_snwmn.cpp#_ZN11daBgSnwmn_c13InitResourcesEv": "github-actions[bot]",
+    "src/actors/d_a_bg_snwmn.cpp#daBgSnwmn_c_classInit": "github-actions[bot]"
   }
 }
