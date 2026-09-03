@@ -1,5 +1,5 @@
-#ifndef TILTINGPLATFORMLLL_H
-#define TILTINGPLATFORMLLL_H
+#ifndef DAOBJFL_GURA_C_H
+#define DAOBJFL_GURA_C_H
 
 #include "types.h"
 
@@ -12,7 +12,7 @@
  *
  *   _ZTI14daObjFl_Gura_c    ov064 0x0211bce8
  *   _ZTS14daObjFl_Gura_c    ov064 0x0211bcf4
- *   _ZTV18TiltingPlatformLll ov064 0x0211bd2c  (its record sits at V-4)
+ *   _ZTV14daObjFl_Gura_c ov064 0x0211bd2c  (public address point)
  *   kind  __si_class_type_info, ONE base, subobject offset 0
  *   base  daObjGuragura_c, ov002 0x0210905c
  *
@@ -28,7 +28,7 @@
  * MetalNetLift is a different class. Its factory stores _ZTV12MetalNetLift, ov064
  * 0x0211bc68, and never mentions this one; this class's factory is
  * daObjFl_Gura_c_classInit, which allocates 848 = 0x350, stores
- * _ZTV15daObjGuragura_c and then _ZTV18TiltingPlatformLll, ov064 0x0211bd2c, and
+ * _ZTV15daObjGuragura_c and then _ZTV14daObjFl_Gura_c, ov064 0x0211bd2c, and
  * constructs no PathPtr. The two vtables are 0xc4 apart in the same overlay, which
  * is presumably how they were crossed. Both relocation sets are in
  * config/arm9/overlays/ov064/relocs.txt and they do not overlap.
@@ -41,16 +41,16 @@
 
 #include "daObjGuragura_c.h"
 
-struct TiltingPlatformLll : daObjGuragura_c {
+struct daObjFl_Gura_c : daObjGuragura_c {
     /* --- vtable --- */
-    virtual ~TiltingPlatformLll();     /* slots 16 (D1), 17 (D0) */
+    virtual ~daObjFl_Gura_c();         /* slots 16 (D1), 17 (D0) */
 
     int CleanupResources();            /* slot  3 */
     int InitResources();               /* slot  0 */
 };
 
-typedef char TiltingPlatformLll_size_must_be_0x350[sizeof(TiltingPlatformLll) == 0x350 ? 1 : -1];
+typedef char daObjFl_Gura_c_size_must_be_0x350[sizeof(daObjFl_Gura_c) == 0x350 ? 1 : -1];
 
 #endif /* __cplusplus */
 
-#endif /* TILTINGPLATFORMLLL_H */
+#endif /* DAOBJFL_GURA_C_H */

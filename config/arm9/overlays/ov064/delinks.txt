@@ -232,19 +232,19 @@ src/daObjFl_Amilift_c_classInit.c:
     complete
     .text start:0x02117fe8 end:0x02118020
 
-src/_ZN18TiltingPlatformLllD1Ev.cpp:
+src/_ZN14daObjFl_Gura_cD1Ev.cpp:
     complete
     .text start:0x02118020 end:0x02118070
 
-src/_ZN18TiltingPlatformLllD0Ev.cpp:
+src/_ZN14daObjFl_Gura_cD0Ev.cpp:
     complete
     .text start:0x02118070 end:0x021180d4
 
-src/_ZN18TiltingPlatformLll16CleanupResourcesEv.cpp:
+src/_ZN14daObjFl_Gura_c16CleanupResourcesEv.cpp:
     complete
     .text start:0x021180d4 end:0x021180e8
 
-src/_ZN18TiltingPlatformLll13InitResourcesEv.cpp:
+src/_ZN14daObjFl_Gura_c13InitResourcesEv.cpp:
     complete
     .text start:0x021180e8 end:0x021180fc
 

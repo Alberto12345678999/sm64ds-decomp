@@ -1,5 +1,5 @@
 //cpp
-// @symbol _ZN18TiltingPlatformLll16CleanupResourcesEv
+// @symbol _ZN14daObjFl_Gura_c16CleanupResourcesEv
 /* recovered: shared header, real C++ method
  *
  * Cross-overlay tail-call veneer. #pragma long_calls forces mwccarm to emit
@@ -12,14 +12,14 @@
  * matched set rather than two unrelated veneers.
  */
 #pragma long_calls on
-#include "TiltingPlatformLll.h"
+#include "daObjFl_Gura_c.h"
 
 extern "C" {
 extern int func_ov002_020b60fc(void *thisp, void *data);
 extern char data_ov064_0211adb0[];
 }
 
-int TiltingPlatformLll::CleanupResources()
+int daObjFl_Gura_c::CleanupResources()
 {
     return func_ov002_020b60fc(this, data_ov064_0211adb0);
 }
