@@ -143,12 +143,14 @@ destinations and non-reproducing near misses before anything lands. See
 Matching byte-for-byte and being readable are not in conflict — both are required,
 and byte accuracy wins when they'd otherwise disagree, because it's the only half a
 machine can check. Recovered classes are promoted from flat C into real, idiomatic
-C++ where ROM RTTI and the vtables prove the hierarchy, so `ActorBase`,
-`ActorDerived`, `Actor`, and the `Model` and `ModelAnim` families are declared as
-actual classes in `include/`, with matched files merged into the translation units
-the original EAD team most likely wrote. Every promotion is gated on the same byte
-check as everything else, so readability never costs a match. See
-[AGENTS.md](AGENTS.md) for what a conversion looks like.
+C++ where ROM RTTI and the vtables prove the hierarchy, so the actor tree —
+`fBase_c` → `dBase_c` → `dActor_c`, with `dBgActor_c`, `dEnemyBase_c`, and every
+`daObj*_c`/`daKrb*_c` scene actor as real derived classes — is declared as actual
+C++ in `include/`, named from the ROM's own RTTI rather than placeholders, with
+matched files merged into the translation units the original EAD team most likely
+wrote. Every promotion is gated on the same byte check as everything else, so
+readability never costs a match. See [AGENTS.md](AGENTS.md) for what a conversion
+looks like.
 
 ## Where things stand
 
