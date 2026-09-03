@@ -7,7 +7,7 @@
     "no_codegen_trick",
     "no_mangled_refs"
   ],
-  "count": 2590,
+  "count": 2588,
   "converted": [
     "src/ARMMathLoadState.c",
     "src/ARMMathSaveState.c",
@@ -2054,9 +2054,6 @@
     "src/_ZN9TowerStep6RenderEv.cpp",
     "src/_ZN9TowerStepD0Ev.cpp",
     "src/_ZN9TowerStepD1Ev.cpp",
-    "src/_ZN14daObjWc_Mizu_c16CleanupResourcesEv.cpp",
-    "src/_ZN14daObjWc_Mizu_cD0Ev.cpp",
-    "src/_ZN14daObjWc_Mizu_cD1Ev.cpp",
     "src/_ZN9WaterBombD0Ev.cpp",
     "src/_ZN9WaterBombD1Ev.cpp",
     "src/_ZN9WaterRing16CleanupResourcesEv.cpp",
@@ -2429,6 +2426,7 @@
     "src/actors/d_a_obj_waterfall.cpp#_ZN16daObjWaterfall_c13InitResourcesEv",
     "src/actors/d_a_obj_waterfall.cpp#_ZN16daObjWaterfall_cD0Ev",
     "src/actors/d_a_obj_waterfall.cpp#_ZN16daObjWaterfall_cD1Ev",
+    "src/actors/d_a_obj_wc_mizu.cpp#_ZN14daObjWc_Mizu_c16CleanupResourcesEv",
     "src/actors/d_a_obj_wc_obj01.cpp#_ZN14daObjWcObj01_cD0Ev",
     "src/actors/d_a_obj_wc_obj01.cpp#_ZN14daObjWcObj01_cD1Ev",
     "src/actors/d_a_obj_wc_obj02.cpp#_ZN15daObjWc_Obj02_c16CleanupResourcesEv",

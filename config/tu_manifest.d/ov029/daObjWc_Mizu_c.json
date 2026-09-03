@@ -1,9 +1,9 @@
 {
   "id": "ov029/daObjWc_Mizu_c",
   "module": "ov029",
-  "source": "src_tu/actors/daObjWc_Mizu_c.cpp",
-  "promoted_source": "src/actors/daObjWc_Mizu_c.cpp",
-  "status": "text-verified",
+  "source": "src/actors/d_a_obj_wc_mizu.cpp",
+  "promoted_source": "src/actors/d_a_obj_wc_mizu.cpp",
+  "status": "promoted",
   "boundary_confidence": "high",
   "boundary_evidence": [
     "contiguous linker run: 0x21121a4..0x2112630, 9 function(s), from build/tu_map.json (tools/tu_map.py)",
@@ -100,9 +100,15 @@
     "criteria": {
       "every_declared_function_defined": "PASS",
       "every_declared_function_bytes_match": "PASS",
-      "declared_function_set_equals_defined_function_set": "FAIL-BY-DESIGN -- 12 unlicensed section/symbol(s); see unlicensed_output_observed",
-      "functions_occur_in_expected_order": "PARTIAL -- ordinal pair(s) not in ROM order: [(0, 1)]",
+      "declared_function_set_equals_defined_function_set": "PASS",
+      "functions_occur_in_expected_order": "PASS",
       "relocation_destinations_verified": "PASS"
+    },
+    "compilerOnlyOutput": {
+      "requested": [],
+      "deadstripped": [],
+      "data": [],
+      "dataExternalized": []
     }
   }
 }
