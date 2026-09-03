@@ -377,6 +377,10 @@ class ProductionTuObjects(unittest.TestCase):
                                       return_value=(b"compiler", {}, [])), \
                     mock.patch.object(TP.TB, "apply_externalized_output_policy",
                                       return_value=(b"external", {}, [])), \
+                    mock.patch.object(TP.TB, "apply_undefined_symbol_alias_policy",
+                                      return_value=(b"aliased", {}, [])) as aliases, \
+                    mock.patch.object(TP.TB, "apply_symbol_binding_policy",
+                                      return_value=(b"bound", {}, [])) as bindings, \
                     mock.patch.object(TP.TB, "prepare_owned_nontext_section_order",
                                       return_value=(b"ordered", section_order, [])) as order, \
                     mock.patch.object(TP.TB, "verify_owned_sections",
@@ -391,7 +395,9 @@ class ProductionTuObjects(unittest.TestCase):
 
         rebias.assert_called_once_with(
             b"storage", biases, normalize_undefined=True)
-        order.assert_called_once_with(b"external", entry, claims)
+        aliases.assert_called_once_with(b"external", entry)
+        bindings.assert_called_once_with(b"aliased", entry)
+        order.assert_called_once_with(b"bound", entry, claims)
         derive.assert_called_once_with(b"ordered", entry, claims)
         self.assertEqual(verify.call_args_list, [
             mock.call(b"ordered", entry, claims),
