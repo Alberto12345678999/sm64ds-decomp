@@ -20,8 +20,8 @@ python tools/cpp_tu_state.py --check-note
 | --- | ---: |
 | MATCHED functions | 11249 / 11402 (98.66%) |
 | MATCHED code bytes | 2122268 / 2238108 (94.82%) |
-| Strict CONVERTED source functions | 2582 / 11315 (22.82%) |
-| Physical production source files | 10758 |
+| Strict CONVERTED source functions | 2587 / 11315 (22.86%) |
+| Physical production source files | 10757 |
 
 MATCHED is recomputed from committed config symbols and `src/` through
 `progress.synced_from_src()`; no ambient or gitignored chaos database is accepted.
@@ -32,21 +32,21 @@ weighted by enrolled function ownership so TU consolidation does not move it.
 
 | Measure | Live value |
 | --- | ---: |
-| Tracked production source files | 10758 |
-| Tracked `.c` files | 6140 |
+| Tracked production source files | 10757 |
+| Tracked `.c` files | 6139 |
 | Tracked `.cpp` files | 4618 |
 | `.cpp` files missing first-line `//cpp` | 0 |
 | Mangled-symbol source files | 3684 |
-| Genuinely migrated C++ symbol files | 3598 |
-| Not semantically migrated | 83 |
-| `.cpp` files still hand-spelling their symbol | 53 |
+| Genuinely migrated C++ symbol files | 3602 |
+| Not semantically migrated | 79 |
+| `.cpp` files still hand-spelling their symbol | 49 |
 | Nonmatching C++-symbol drafts | 11 |
 | Delinks path-owned function-symbol records | 11214 |
 | Path-owned records still supplied from ROM bytes | 121 |
 | Source-built (`complete`) function-symbol records | 11093 |
-| Source-built (`complete`) source files | 10531 |
+| Source-built (`complete`) source files | 10530 |
 | Complete sources owning more than one function | 69 |
-| Source-built records inside multi-function sources | 631 |
+| Source-built records inside multi-function sources | 632 |
 | Largest function-symbol-records-per-source count | 34 |
 | Complete source paths missing from git | 0 |
 
@@ -73,11 +73,11 @@ partition to add to the migrated and unmigrated rows.
 | --- | ---: |
 | Tracked `src_tu/` source files | 33 |
 | Manifest entries | 101 |
-| Functions named by manifest entries | 1281 |
-| Unique functions named by the manifest | 1281 |
+| Functions named by manifest entries | 1282 |
+| Unique functions named by the manifest | 1282 |
 | Modules represented | 30 |
 | Manifest shadow sources present in git | 101 |
-| Entries licensing non-text sections | 11 |
+| Entries licensing non-text sections | 13 |
 | Entries actually production-enrolled at `promoted_source` | 64 |
 | Existing promotion paths that disagree with delinks | 4 |
 

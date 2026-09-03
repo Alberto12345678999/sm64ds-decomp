@@ -6,6 +6,8 @@
 #include "ShadowModel.h"
 #include "dCcAcPos_c.h"
 
+extern "C" void *_ZN7fBase_cnwEj(unsigned size);
+
 /* An dActor_c-side class (da* prefix, not a scene class) -- a background
  * snowman actor. It had a FLAT header before this pass, with no base
  * clause; seven resolvable vtable slots were blocked on it. The flat
@@ -39,9 +41,8 @@
  *     _ZN10dCcAcPos_cC1Ev(p + 0x1b0) -- dCcAcPos_c, 0x40
  * THE LAST MEMBER CLOSES EXACTLY ON THE ALLOCATION LITERAL:
  * 0x1b0 + 0x40 = 0x1f0. Nothing is left over. The destructor
- * (_ZN11daBgSnwmn_cD1Ev at 0x02120824, _ZN11daBgSnwmn_cD0Ev at 0x02120874)
- * tears the same five down in exactly the
- * reverse order -- dCcAcPos_c, ShadowModel, TextureSequence,
+ * pair emitted from src/actors/d_a_bg_snwmn.cpp tears the same five down in
+ * exactly the reverse order -- dCcAcPos_c, ShadowModel, TextureSequence,
  * Model, Model -- which is what a compiler-generated body emits for typed
  * members declared in ascending-offset order, so they are declared typed
  * below rather than left as opaque storage.
@@ -49,7 +50,7 @@
  * THE OLD FLAT HEADER'S SIZE WAS WRONG: it asserted nothing explicitly but
  * its last field sat at 0x368 -- 0x178 bytes past the real 0x1f0 allocation.
  * Every field it listed below 0xd0 (0x05c, 0x060, 0x064, 0x080, 0x084,
- * 0x088, 0x08e, 0x094, 0x098, 0x09c, 0x0a0, 0x0a8, 0x0cc) is really
+ * 0x088, 0x08e, 0x094, 0x098, 0x09c, 0x0a0, 0x0a8, 0x0cc, 0x0d0) is really
  * dActor_c's OWN field, misattributed by the flat generator exactly the way
  * dScEntry_c's old header misattributed everything below fBase_c's 0x50
  * (see dScEntry_c.h) -- dActor_c.h already declares mPosX/Y/Z at 0x05c,
@@ -90,20 +91,13 @@ struct daBgSnwmn_c : dActor_c {
     virtual s32  Render();                                /* slot  9 */
     virtual void OnPendingDestroy();                      /* slot 12 */
 
-    /* Declared LAST, deliberately. Nothing DEFINES this destructor as a real
-       C++ member: the cartridge's D1 (0x02120824) sits BELOW its D0
-       (0x02120874), and a real member definition makes mwccarm emit the
-       D2/D1/D0 triple as one group in the order D0-then-D1, which the
-       whole-range link refuses. Both variants are therefore carried in
-       src/actors/d_a_bg_snwmn.cpp as `// @symbol` mangled bodies, which the
-       compiler sees as unrelated functions -- so the class has no key
-       function and its vtable and RTTI are vague linkage. With the
-       destructor declared FIRST, mwccarm emits no RTTI at all and
-       _ZTV/_ZTI/_ZTS11daBgSnwmn_c go unverified by any source; declared
-       last, after the five virtual overrides, it emits all three. See
-       notes/mwccarm-codegen.md and include/daObjWc_Mizu_c.h, which carries
-       the same shape for the same reason. */
-    virtual ~daBgSnwmn_c();                              /* slots 16 (D1), 17 (D0) */
+    static void *operator new(unsigned long size) {
+        return _ZN7fBase_cnwEj((unsigned)size);
+    }
+
+    /* Declared last and inline so class instantiation emits the retail D1/D0
+       pair in that order, with no separate D2 body. */
+    virtual ~daBgSnwmn_c() {}                            /* slots 16 (D1), 17 (D0) */
 };
 
 typedef char daBgSnwmn_c_size_must_be_0x1f0[sizeof(daBgSnwmn_c) == 0x1f0 ? 1 : -1];
