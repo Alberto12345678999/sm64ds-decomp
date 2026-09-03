@@ -8180,20 +8180,20 @@
    "start": "0x2111728",
    "end": "0x2111ac4",
    "classes": [
-    "WaterDiamond"
+    "daObjWc_Obj03_c"
    ],
    "n_functions_map": 10,
    "n_files": 10,
    "files": [
-    "src/_ZN12WaterDiamondD1Ev.cpp",
-    "src/_ZN12WaterDiamondD0Ev.c",
+    "src/_ZN15daObjWc_Obj03_cD1Ev.cpp",
+    "src/_ZN15daObjWc_Obj03_cD0Ev.c",
     "src/func_ov029_021117ac.cpp",
     "src/func_ov029_02111850.cpp",
     "src/func_ov029_021118c8.c",
-    "src/_ZN12WaterDiamond16CleanupResourcesEv.c",
-    "src/_ZN12WaterDiamond6RenderEv.cpp",
-    "src/_ZN12WaterDiamond8BehaviorEv.cpp",
-    "src/_ZN12WaterDiamond13InitResourcesEv.cpp",
+    "src/_ZN15daObjWc_Obj03_c16CleanupResourcesEv.c",
+    "src/_ZN15daObjWc_Obj03_c6RenderEv.cpp",
+    "src/_ZN15daObjWc_Obj03_c8BehaviorEv.cpp",
+    "src/_ZN15daObjWc_Obj03_c13InitResourcesEv.cpp",
     "src/daObjWc_Obj03_c_classInit.c"
    ],
    "ext_mix": {

@@ -11,15 +11,15 @@ _ZN15daObjWc_Obj02_c13InitResourcesEv kind:function(arm,size=0xcc) addr:0x021115
 func_ov029_021116c4 kind:function(arm,size=0x20) addr:0x021116c4
 func_ov029_021116e4 kind:function(arm,size=0x14) addr:0x021116e4
 daObjWc_Obj02_c_classInit kind:function(arm,size=0x30) addr:0x021116f8
-_ZN12WaterDiamondD1Ev kind:function(arm,size=0x38) addr:0x02111728
-_ZN12WaterDiamondD0Ev kind:function(arm,size=0x4c) addr:0x02111760
-_ZN12WaterDiamond19CheckClsnWithPlayerEv kind:function(arm,size=0xa4) addr:0x021117ac
-_ZN12WaterDiamond10SetWaterIDEv kind:function(arm,size=0x78) addr:0x02111850
-_ZN12WaterDiamond20UpdateModelTransformEv kind:function(arm,size=0x40) addr:0x021118c8
-_ZN12WaterDiamond16CleanupResourcesEv kind:function(arm,size=0x24) addr:0x02111908
-_ZN12WaterDiamond6RenderEv kind:function(arm,size=0x28) addr:0x0211192c
-_ZN12WaterDiamond8BehaviorEv kind:function(arm,size=0xb0) addr:0x02111954
-_ZN12WaterDiamond13InitResourcesEv kind:function(arm,size=0x80) addr:0x02111a04
+_ZN15daObjWc_Obj03_cD1Ev kind:function(arm,size=0x38) addr:0x02111728
+_ZN15daObjWc_Obj03_cD0Ev kind:function(arm,size=0x4c) addr:0x02111760
+_ZN15daObjWc_Obj03_c19CheckClsnWithPlayerEv kind:function(arm,size=0xa4) addr:0x021117ac
+_ZN15daObjWc_Obj03_c10SetWaterIDEv kind:function(arm,size=0x78) addr:0x02111850
+_ZN15daObjWc_Obj03_c20UpdateModelTransformEv kind:function(arm,size=0x40) addr:0x021118c8
+_ZN15daObjWc_Obj03_c16CleanupResourcesEv kind:function(arm,size=0x24) addr:0x02111908
+_ZN15daObjWc_Obj03_c6RenderEv kind:function(arm,size=0x28) addr:0x0211192c
+_ZN15daObjWc_Obj03_c8BehaviorEv kind:function(arm,size=0xb0) addr:0x02111954
+_ZN15daObjWc_Obj03_c13InitResourcesEv kind:function(arm,size=0x80) addr:0x02111a04
 daObjWc_Obj03_c_classInit kind:function(arm,size=0x40) addr:0x02111a84
 _ZN15daObjWc_Obj05_cD1Ev kind:function(arm,size=0x44) addr:0x02111ac4
 _ZN15daObjWc_Obj05_cD0Ev kind:function(arm,size=0x58) addr:0x02111b08
@@ -190,7 +190,6 @@ _ZTI15daObjWc_Obj03_c kind:data(any) addr:0x02113d70
 _ZTS15daObjWc_Obj03_c kind:data(any) addr:0x02113d7c
 g_profile_WC_OBJ03 kind:data(any) addr:0x02113d90 ambiguous
 data_ov029_02113da8 kind:data(any) addr:0x02113da8 ambiguous
-_ZTV12WaterDiamond kind:data(any) addr:0x02113db4
 _ZTV15daObjWc_Obj03_c kind:data(any) addr:0x02113db4
 data_ov029_02113dc4 kind:data(any) addr:0x02113dc4 ambiguous
 data_ov029_02113e00 kind:data(any) addr:0x02113e00 ambiguous

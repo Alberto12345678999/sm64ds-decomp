@@ -18,7 +18,7 @@ src/actors/d_a_obj_wc_obj02.cpp:
     .data start:0x02113ccc end:0x02113d70
     .bss start:0x02114248 end:0x02114270
 
-src_tu/actors/WaterDiamond.cpp:
+src/actors/d_a_obj_wc_obj03.cpp:
     .text start:0x02111728 end:0x02111ac4
     .init start:0x02112c10 end:0x02112c4c
     .ctor start:0x02112e70 end:0x02112e74

@@ -154,13 +154,13 @@ AMBIG actor 93 SLIDING_ICE: ['ov027', 'ov032', 'ov034'] -> ov027
 AMBIG actor 94 ROTATING_PLATFORM_WDW: ['ov029', 'ov036'] -> ov029
 AMBIG actor 95 FLOAT_ON_WATER_PLATFORM_WDW_SQUARE: ['ov029', 'ov026'] -> ov029
 AMBIG actor 96 ARROW_LIFT: ['ov029', 'ov026'] -> ov029
-SKIP WaterDiamond: ov029:0x2113db4 already claimed by ArrowLift (vtable alloc=0x160)
-SKIP WaterDiamond: ov029:0x2111a04 already claimed by ArrowLift (vtable slot 0)
-SKIP WaterDiamond: ov029:0x2111908 already claimed by ArrowLift (vtable slot 3)
-SKIP WaterDiamond: ov029:0x2111954 already claimed by ArrowLift (vtable slot 6)
-SKIP WaterDiamond: ov029:0x211192c already claimed by ArrowLift (vtable slot 9)
-SKIP WaterDiamond: ov029:0x2111728 already claimed by ArrowLift (vtable slot 16)
-SKIP WaterDiamond: ov029:0x2111760 already claimed by ArrowLift (vtable slot 17)
+SKIP daObjWc_Obj03_c: ov029:0x2113db4 already claimed by ArrowLift (vtable alloc=0x160)
+SKIP daObjWc_Obj03_c: ov029:0x2111a04 already claimed by ArrowLift (vtable slot 0)
+SKIP daObjWc_Obj03_c: ov029:0x2111908 already claimed by ArrowLift (vtable slot 3)
+SKIP daObjWc_Obj03_c: ov029:0x2111954 already claimed by ArrowLift (vtable slot 6)
+SKIP daObjWc_Obj03_c: ov029:0x211192c already claimed by ArrowLift (vtable slot 9)
+SKIP daObjWc_Obj03_c: ov029:0x2111728 already claimed by ArrowLift (vtable slot 16)
+SKIP daObjWc_Obj03_c: ov029:0x2111760 already claimed by ArrowLift (vtable slot 17)
 AMBIG actor 98 SWITCH_ACTIVATED_PLANK: ['ov029', 'ov022'] -> ov029
 AMBIG actor 99 CAGE_LIFT: ['ov029', 'ov022'] -> ov029
 NOVTABLE actor 99 daObjWc_Obj05_c (alloc=0x330)
