@@ -81,18 +81,27 @@ struct daBgSnwmn_c : dActor_c {
     ShadowModel mShadow;           /* 0x188 */
     dCcAcPos_c mCylClsn; /* 0x1b0 */
 
-    /* Declared first -- key function; see the family convention discussed
-       in dActor_c.h. Never defined as a real method in any TU: both D1 and
-       D0 are plain functions carrying their literal mangled name
-       (src/_ZN11daBgSnwmn_cD1Ev.c, src/_ZN11daBgSnwmn_cD0Ev.c). */
-    virtual ~daBgSnwmn_c();                              /* slots 16 (D1), 17 (D0) */
-
     /* --- overrides, in dActor_c's own vtable order. --- */
     virtual s32  InitResources();                        /* slot  0 */
     virtual s32  CleanupResources();                     /* slot  3 */
     virtual s32  Behavior();                              /* slot  6 */
     virtual s32  Render();                                /* slot  9 */
     virtual void OnPendingDestroy();                      /* slot 12 */
+
+    /* Declared LAST, deliberately. Nothing DEFINES this destructor as a real
+       C++ member: the cartridge's D1 (0x02120824) sits BELOW its D0
+       (0x02120874), and a real member definition makes mwccarm emit the
+       D2/D1/D0 triple as one group in the order D0-then-D1, which the
+       whole-range link refuses. Both variants are therefore carried in
+       src/actors/d_a_bg_snwmn.cpp as `// @symbol` mangled bodies, which the
+       compiler sees as unrelated functions -- so the class has no key
+       function and its vtable and RTTI are vague linkage. With the
+       destructor declared FIRST, mwccarm emits no RTTI at all and
+       _ZTV/_ZTI/_ZTS11daBgSnwmn_c go unverified by any source; declared
+       last, after the non-virtual methods, it emits all three. See
+       notes/mwccarm-codegen.md and include/daObjWc_Mizu_c.h, which carries
+       the same shape for the same reason. */
+    virtual ~daBgSnwmn_c();                              /* slots 16 (D1), 17 (D0) */
 };
 
 typedef char daBgSnwmn_c_size_must_be_0x1f0[sizeof(daBgSnwmn_c) == 0x1f0 ? 1 : -1];
