@@ -671,7 +671,7 @@ extern int _ZTV19daObjKm1_Ukishima_c[];
 extern int _ZTV19daObjKm2_Ukishima_c[];
 extern int _ZTV19daObjRc_Kaitendai_c[];
 extern int _ZTV19daPropeller_Heyho_c[];
-extern int _ZTV20SwitchActivatedPlank[];
+extern int _ZTV15daObjWc_Obj04_c[];
 extern int _ZTV20daObjCannonShutter_c[];
 extern int _ZTV20daObjCtRotateBlock_c[];
 extern int _ZTV20daObjFl_Fall_Block_c[];

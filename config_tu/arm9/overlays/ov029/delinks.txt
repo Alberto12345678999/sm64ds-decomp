@@ -53,7 +53,7 @@ src_tu/actors/WDW_Water.cpp:
     .data start:0x02114098 end:0x0211415c
     .bss start:0x021142fc end:0x02114324
 
-src_tu/actors/SwitchActivatedPlank.cpp:
+src/actors/d_a_obj_wc_obj04.cpp:
     .text start:0x02112630 end:0x0211299c
     .init start:0x02112dfc end:0x02112e68
     .ctor start:0x02112e84 end:0x02112e88

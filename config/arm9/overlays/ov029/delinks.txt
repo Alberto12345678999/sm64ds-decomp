@@ -100,41 +100,9 @@ src/daObjWc_Mizu_c_classInit.c:
     complete
     .text start:0x021125f8 end:0x02112630
 
-src/_ZN20SwitchActivatedPlankD1Ev.cpp:
+src/actors/d_a_obj_wc_obj04.cpp:
     complete
-    .text start:0x02112630 end:0x0211267c
-
-src/_ZN20SwitchActivatedPlankD0Ev.cpp:
-    complete
-    .text start:0x0211267c end:0x021126dc
-
-src/func_ov029_021126dc.c:
-    complete
-    .text start:0x021126dc end:0x02112710
-
-src/func_ov029_02112710.c:
-    complete
-    .text start:0x02112710 end:0x02112750
-
-src/_ZN20SwitchActivatedPlank16CleanupResourcesEv.cpp:
-    complete
-    .text start:0x02112750 end:0x02112794
-
-src/_ZN20SwitchActivatedPlank6RenderEv.cpp:
-    complete
-    .text start:0x02112794 end:0x021127cc
-
-src/_ZN20SwitchActivatedPlank8BehaviorEv.cpp:
-    complete
-    .text start:0x021127cc end:0x021128b0
-
-src/_ZN20SwitchActivatedPlank13InitResourcesEv.cpp:
-    complete
-    .text start:0x021128b0 end:0x02112964
-
-src/daObjWc_Obj04_c_classInit.c:
-    complete
-    .text start:0x02112964 end:0x0211299c
+    .text start:0x02112630 end:0x0211299c
 
 src/__sinit_ov029_02112b38.c:
     complete
