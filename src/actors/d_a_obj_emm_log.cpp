@@ -47,9 +47,13 @@
 #include "daObjEmmLog_c.h"
 #include "SharedFilePtr.h"   /* CleanupResources releases the two shared files by name */
 
-/* The one declaration this file still owns: the three-pointer resource block
- * ov052 keeps at 0x021124d4, which no header names. Everything else the seven
- * bodies touch comes from include/daObjEmmLog_c.h and its base chain. */
+/* The class layout and every method it inherits come from
+ * include/daObjEmmLog_c.h and its base chain. What no header supplies is
+ * declared here: the three-pointer resource block ov052 keeps at 0x021124d4,
+ * whose shape no header names, and then four free symbols -- the arm9 sine
+ * table data_02082214, the unnamed arm9 collision helper func_020393a4, the
+ * two allocator/base-constructor entry points, and dBgActor_c::IsClsnInRange,
+ * which include/dBgActor_c.h discusses in a comment but does not declare. */
 
 struct daObjEmmLog_c_Resources {
     SharedFilePtr *model;
@@ -140,7 +144,9 @@ int daObjEmmLog_c::Behavior()
 /* ROM ordinal 3 -- _ZN13daObjEmmLog_c6RenderEv, 0x02111284, size 0x28 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN13daObjEmmLog_c6RenderEv
-/* daObjEmmLog_c::Render -- vtable slot 4. Hands the whole job to the inherited
+/* daObjEmmLog_c::Render -- vtable slot 9 (overlay_0052.bin at 0x02112544 holds
+ * 0x02111284; slot 4 is an arm9 method this class does not override). Hands the
+ * whole job to the inherited
  * Model at +0xd4, through its own vtable: the ROM loads the model's vptr and
  * calls slot 5, which include/Model.h records as Render(const Vector3 *), with
  * a null scale. */
@@ -169,15 +175,16 @@ int daObjEmmLog_c::CleanupResources()
 // @symbol _ZN13daObjEmmLog_cD0Ev
 /* recovered: real C++ deleting destructor -- the compiler emits the whole body
  *
- * D0 is the DELETING destructor: destroy through this class and its bases,
- * then return the object to its heap. Declaring `~daObjEmmLog_c()` is enough;
- * mwcc emits D2, D0 and D1 together and objisolate keeps the one this file is
- * bound to. The deallocation is an inline operator delete, matching
+ * D0 is the DELETING destructor: destroy through this class and its bases, then
+ * return the object to its heap. The deallocation is an inline operator delete
+ * -- the ROM's `bl 0x0203c1e8` is _ZN6Memory10DeallocateEPvP4Heap -- matching
  * BigBrickBlock's D0 (include/BigBrickBlock.h, src/_ZN13BigBrickBlockD0Ev.cpp).
- */
-/* (no definition here: one `~daObjEmmLog_c()` definition emits the whole
- * D2/D1/D0 group, and it is written at the bottom of this file with D1, the
- * lowest-addressed of the three.) */
+ *
+ * (No definition here, and none anywhere in this file: the one definition is
+ * `virtual ~daObjEmmLog_c() {}` in include/daObjEmmLog_c.h, pulled in by the
+ * include at the top. It emits D1 and D0 together -- and no D2 -- so this file
+ * is licensed for both variants; see the banner for why the in-class spelling
+ * is the only one the link accepts.) */
 
 /* -------------------------------------------------------------------------- */
 /* ROM ordinal 0 -- _ZN13daObjEmmLog_cD1Ev, 0x021111a0, size 0x44 */
@@ -188,11 +195,12 @@ int daObjEmmLog_c::CleanupResources()
  * Two vtable stores and three destructor calls, every one a consequence of
  * `struct daObjEmmLog_c : dBgActor_c`: its own vptr, then dBgActor_c's --
  * inlined, because dBgActor_c's destructor is defined in its class body --
- * then dBgActor_c's Model and dBgW_KcMbg, then dActor_c. This class
- * adds no member with a destructor of its own (mBasePosY/mBobAmplitude are plain
- * s32).
+ * then dBgActor_c's members in reverse declaration order, dBgW_KcMbg at +0x124
+ * (0x021111b4: add r0, r4, #0x124) before Model at +0xd4 (0x021111c0), and then
+ * dActor_c. This class adds no member with a destructor of its own
+ * (mSpinAngle/mBasePosY/mBobAmplitude are plain integers).
  */
 /* (no definition here: `virtual ~daObjEmmLog_c() {}` is in
- * include/daObjEmmLog_c.h. One definition emits the whole D2/D1/D0 group, and
- * only the in-class spelling emits it in ROM-ascending order -- see the comment
- * on that declaration.) */
+ * include/daObjEmmLog_c.h. That one definition emits both D1 and D0, and only
+ * the in-class spelling emits them in ROM-ascending order -- see the comment on
+ * that declaration.) */
