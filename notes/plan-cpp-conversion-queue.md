@@ -368,8 +368,8 @@ python tools/match.py --c src/actors/d_a_obj_km2_fall_block.cpp \
 Pass = `mangle.py` reports the expected symbol, plus a clean `match.py`. (As written the
 check also demanded **no `_ZTV21daObjKm2_Fall_Block_c`**; that half is void for this class
 now that its consolidated TU is the key-function TU on purpose and emits the group. Where
-a class is still spread over per-function files, S2's premise — that the non-virtual
-declaration keeps the anchor elsewhere — is still what the `_ZTV` check tests, and if it
+a class is still spread over per-function files, S2's premise ï¿½ that the non-virtual
+declaration keeps the anchor elsewhere ï¿½ is still what the `_ZTV` check tests, and if it
 appears there, S2/S3 must be re-scoped as merge work.)
 
 ## 4. Deliberately not touched
@@ -462,8 +462,8 @@ So they are **sequenced, not split**:
 
 1. **A TU claim protocol.** The unit of collision is the TU range `(module, start)`, not
    the file. Once the merge admits a TU, this workstream stops editing its members.
-   `tools/agentlock.py` is present but untracked; if that is the mechanism, key it on
-   `(module, start)`.
+   No local lock mechanism is available now; whatever coordination is used should key
+   on `(module, start)`.
 2. **A serial gate calendar.** GATE-2 and GATE-3 are the collision-prone resources â€” about
    one bracket per stage, five or six windows total, which is a small ask against the
    merge's per-TU `linkcheck` cadence. Everything else here runs through
