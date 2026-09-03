@@ -14,8 +14,9 @@
  *
  * The class is spelled as the cartridge spells it. ov029's _ZTV at 0x021141a0
  * is preceded by its _ZTI at 0x0211415c, whose _ZTS at 0x02114168 reads
- * `15daObjWc_Obj04_c`, and the spawn profile just before it at 0x0211417c is
- * g_profile_WC_OBJ04 -- the ROM's own actor id agrees with the RTTI string.
+ * `15daObjWc_Obj04_c`, and the record immediately before the vtable, at
+ * 0x0211417c, is the spawn profile g_profile_WC_OBJ04 -- the ROM's own actor
+ * id agrees with the RTTI string.
  * The coined alias `_ZTV20SwitchActivatedPlank`, which used to name that same
  * address, is gone.
  *

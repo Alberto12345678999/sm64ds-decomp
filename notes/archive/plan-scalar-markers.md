@@ -68,8 +68,9 @@ unsigned -- no sub-word load, no comparison, no right shift, no division.~~
 
 There is a sub-word access: `src/actors/d_a_obj_wc_obj04.cpp:184` does an
 `unsigned short*` read-modify-write on retyped `unk_3a0`, now `mStateTimer`.
-(It was `src/_ZN15daObjWc_Obj04_c8BehaviorEv.cpp:35` when this note was
-written, before that class was promoted to a single translation unit.) The correct statement is
+(It was `src/_ZN20SwitchActivatedPlank8BehaviorEv.cpp:35` when this note was
+written, before the class was renamed to its RTTI spelling and promoted to a
+single translation unit.) The correct statement is
 narrower and is what the experiment actually shows: **no access whose codegen depends
 on the declared type.** Every compiled reference to these fields goes through an
 address-cast (`*(int*)((char*)&self->unk_018)`), and a cast ignores the declaration.

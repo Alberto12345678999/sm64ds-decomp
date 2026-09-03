@@ -9,9 +9,11 @@
  *   0x2ec..0x320               -> dBgActor_c::mClsnMat + tail
  *
  * The class is polymorphic (the ROM emits D0/D1 for it) and its vtable is
- * _ZTV15daObjWc_Obj04_c == _ZTV15daObjWc_Obj04_c: two names, one address
- * (ov029 0x021141a0; RTTI at 0x0211415c carries the Obj04 name). Same
- * EAD-name/English-name alias as HootTheOwl/_ZTV7daOwl_c. The cartridge's D1
+ * _ZTV15daObjWc_Obj04_c at ov029 0x021141a0, whose RTTI at 0x0211415c carries
+ * the same name -- which is why the class is spelled that way here. This
+ * header used to record a second, coined spelling for that one address; that
+ * alias is gone from symbols.txt, so there is nothing left to reconcile. The
+ * cartridge's D1
  * stores that vtable, destroys its own Model at +0x320 first, then the inlined
  * dBgActor_c base step destroys mMeshCollider and mModel and runs dActor_c::D2
  * -- which is what an empty ~daObjWc_Obj04_c() with this inheritance
@@ -40,9 +42,13 @@ struct daObjWc_Obj04_c : dBgActor_c {
     int Render();
     int Behavior();
 
-    /* MEASURED -- defined out-of-line in src/_ZN15daObjWc_Obj04_cD1Ev.cpp.
-       Declaring it virtual is what makes mwccarm emit the ROM's D1/D0 pair;
-       see notes/dtor-migration.md. */
+    /* MEASURED. Declared here but never DEFINED as a C++ member: the
+       cartridge's D1 and D0 are carried in src/actors/d_a_obj_wc_obj04.cpp as
+       `// @symbol` marked bodies under their mangled names, because a real
+       member definition emits the D2/D1/D0 triple in the order D0-then-D1
+       while the ROM keeps D1 below D0. Declaring it virtual is still what
+       fixes the vtable shape; see notes/dtor-migration.md and that file's
+       header for the emission-order refusal. */
     virtual ~daObjWc_Obj04_c();
 };
 
