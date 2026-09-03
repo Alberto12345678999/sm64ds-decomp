@@ -7,7 +7,7 @@
     "no_codegen_trick",
     "no_mangled_refs"
   ],
-  "count": 2586,
+  "count": 2584,
   "converted": [
     "src/ARMMathLoadState.c",
     "src/ARMMathSaveState.c",
@@ -948,10 +948,6 @@
     "src/_ZN16daObjKaitendai_c6RenderEv.cpp",
     "src/_ZN16daObjKaitendai_cD0Ev.cpp",
     "src/_ZN16daObjKaitendai_cD1Ev.cpp",
-    "src/_ZN16daObjRc_Dorifu_c13InitResourcesEv.cpp",
-    "src/_ZN16daObjRc_Dorifu_c16CleanupResourcesEv.cpp",
-    "src/_ZN16daObjRc_Dorifu_cD0Ev.cpp",
-    "src/_ZN16daObjRc_Dorifu_cD1Ev.cpp",
     "src/_ZN17BigMovingIceBlock6RenderEv.cpp",
     "src/_ZN17BigMovingIceBlockD0Ev.cpp",
     "src/_ZN17BigMovingIceBlockD1Ev.cpp",
@@ -2408,6 +2404,8 @@
     "src/actors/d_a_obj_km3_dorifu.cpp#_ZN17daObjKm3_Dorifu_c16CleanupResourcesEv",
     "src/actors/d_a_obj_km3_dorifu.cpp#_ZN17daObjKm3_Dorifu_cD0Ev",
     "src/actors/d_a_obj_km3_dorifu.cpp#_ZN17daObjKm3_Dorifu_cD1Ev",
+    "src/actors/d_a_obj_rc_dorifu.cpp#_ZN16daObjRc_Dorifu_c13InitResourcesEv",
+    "src/actors/d_a_obj_rc_dorifu.cpp#_ZN16daObjRc_Dorifu_c16CleanupResourcesEv",
     "src/actors/d_a_obj_wakame.cpp#_ZN13daObjWakame_c6RenderEv",
     "src/actors/d_a_obj_wakame.cpp#_ZN13daObjWakame_c8BehaviorEv",
     "src/actors/d_a_obj_wakame.cpp#_ZN13daObjWakame_cD0Ev",

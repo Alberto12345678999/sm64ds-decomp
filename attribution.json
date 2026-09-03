@@ -1352,6 +1352,11 @@
     "src/actors/d_a_obj_kb1_billboard.cpp#_ZN19OrangeBallBillboard6RenderEv": "github-actions[bot]",
     "src/actors/d_a_obj_kb1_billboard.cpp#_ZN19OrangeBallBillboard13InitResourcesEv": "github-actions[bot]",
     "src/actors/d_a_obj_kb1_billboard.cpp#OrangeBallBillboard_Spawn": "github-actions[bot]",
-    "src/actors/d_a_obj_kb1_billboard.cpp#__sinit_ov044_02111314": "github-actions[bot]"
+    "src/actors/d_a_obj_kb1_billboard.cpp#__sinit_ov044_02111314": "github-actions[bot]",
+    "src/actors/d_a_obj_rc_dorifu.cpp#_ZN16daObjRc_Dorifu_cD1Ev": "github-actions[bot]",
+    "src/actors/d_a_obj_rc_dorifu.cpp#_ZN16daObjRc_Dorifu_cD0Ev": "tangosdev",
+    "src/actors/d_a_obj_rc_dorifu.cpp#_ZN16daObjRc_Dorifu_c16CleanupResourcesEv": "github-actions[bot]",
+    "src/actors/d_a_obj_rc_dorifu.cpp#_ZN16daObjRc_Dorifu_c13InitResourcesEv": "github-actions[bot]",
+    "src/actors/d_a_obj_rc_dorifu.cpp#daObjRc_Dorifu_c_classInit": "github-actions[bot]"
   }
 }
