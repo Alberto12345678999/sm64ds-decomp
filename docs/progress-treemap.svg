@@ -33913,11 +33913,11 @@ matched: yes</title></rect><rect x="1189.22" y="265.24" width="13.39" height="4.
 module: ov036
 addr: 0x02112944
 size: 152 bytes
-matched: yes</title></rect><rect x="1212.61" y="251.44" width="1.99" height="3.65" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5CloudD1Ev
+matched: yes</title></rect><rect x="1212.61" y="251.44" width="1.99" height="3.65" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11daObjKumo_cD1Ev
 module: ov039
 addr: 0x021111a0
 size: 48 bytes
-matched: yes</title></rect><rect x="1214.61" y="251.44" width="2.83" height="3.65" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5CloudD0Ev
+matched: yes</title></rect><rect x="1214.61" y="251.44" width="2.83" height="3.65" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11daObjKumo_cD0Ev
 module: ov039
 addr: 0x021111d0
 size: 68 bytes
@@ -33925,19 +33925,19 @@ matched: yes</title></rect><rect x="1212.61" y="255.08" width="3.08" height="3.1
 module: ov039
 addr: 0x02111214
 size: 64 bytes
-matched: yes</title></rect><rect x="1215.70" y="255.08" width="1.74" height="3.15" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Cloud16CleanupResourcesEv
+matched: yes</title></rect><rect x="1215.70" y="255.08" width="1.74" height="3.15" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11daObjKumo_c16CleanupResourcesEv
 module: ov039
 addr: 0x02111254
 size: 36 bytes
-matched: yes</title></rect><rect x="1212.61" y="258.23" width="4.82" height="1.26" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Cloud6RenderEv
+matched: yes</title></rect><rect x="1212.61" y="258.23" width="4.82" height="1.26" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11daObjKumo_c6RenderEv
 module: ov039
 addr: 0x02111278
 size: 40 bytes
-matched: yes</title></rect><rect x="1212.61" y="259.49" width="4.82" height="4.40" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Cloud8BehaviorEv
+matched: yes</title></rect><rect x="1212.61" y="259.49" width="4.82" height="4.40" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11daObjKumo_c8BehaviorEv
 module: ov039
 addr: 0x021112a0
 size: 140 bytes
-matched: yes</title></rect><rect x="1212.61" y="263.89" width="4.82" height="2.52" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Cloud13InitResourcesEv
+matched: yes</title></rect><rect x="1212.61" y="263.89" width="4.82" height="2.52" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11daObjKumo_c13InitResourcesEv
 module: ov039
 addr: 0x0211132c
 size: 80 bytes
