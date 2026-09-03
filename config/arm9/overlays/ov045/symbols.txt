@@ -29,10 +29,10 @@ _ZN16FloatingFloorBfsD0Ev kind:function(arm,size=0x64) addr:0x02111b64
 _ZN16FloatingFloorBfs16CleanupResourcesEv kind:function(arm,size=0x14) addr:0x02111bc8
 _ZN16FloatingFloorBfs13InitResourcesEv kind:function(arm,size=0x18) addr:0x02111bdc
 daObjKm2_Ukishima_c_classInit kind:function(arm,size=0x3c) addr:0x02111bf4
-_ZN18TiltingPlatformBfsD1Ev kind:function(arm,size=0x50) addr:0x02111c30
-_ZN18TiltingPlatformBfsD0Ev kind:function(arm,size=0x64) addr:0x02111c80
-_ZN18TiltingPlatformBfs16CleanupResourcesEv kind:function(arm,size=0x14) addr:0x02111ce4
-_ZN18TiltingPlatformBfs13InitResourcesEv kind:function(arm,size=0x14) addr:0x02111cf8
+_ZN15daObjKm2_Gura_cD1Ev kind:function(arm,size=0x50) addr:0x02111c30
+_ZN15daObjKm2_Gura_cD0Ev kind:function(arm,size=0x64) addr:0x02111c80
+_ZN15daObjKm2_Gura_c16CleanupResourcesEv kind:function(arm,size=0x14) addr:0x02111ce4
+_ZN15daObjKm2_Gura_c13InitResourcesEv kind:function(arm,size=0x14) addr:0x02111cf8
 daObjKm2_Gura_c_classInit kind:function(arm,size=0x3c) addr:0x02111d0c
 _ZN21daObjKm2_Fall_Block_cD1Ev kind:function(arm,size=0x50) addr:0x02111d48
 _ZN21daObjKm2_Fall_Block_cD0Ev kind:function(arm,size=0x64) addr:0x02111d98
@@ -149,7 +149,7 @@ _ZTI15daObjKm2_Gura_c kind:data(any) addr:0x02112fd0
 data_ov045_02112fdc kind:data(any) addr:0x02112fdc
 _ZTS15daObjKm2_Gura_c kind:data(any) addr:0x02112fe8
 g_profile_KM2_GURA kind:data(any) addr:0x02112ffc ambiguous
-_ZTV18TiltingPlatformBfs kind:data(any) addr:0x02113020
+_ZTV15daObjKm2_Gura_c kind:data(any) addr:0x02113020
 _ZTI21daObjKm2_Fall_Block_c kind:data(any) addr:0x021130a0
 data_ov045_021130ac kind:data(any) addr:0x021130ac
 _ZTS21daObjKm2_Fall_Block_c kind:data(any) addr:0x021130b8
