@@ -41,6 +41,9 @@ globals, also run:
 python tools/prepush_linkcheck.py --range origin/main..HEAD
 ```
 
+```sh
+python tools/match.py --c yourfile.c --func <name> --addr 0x<addr> --size 0x<size> --version 2004/b56
+```
 ## What a change looks like
 
 Two shapes cover almost everything now:
@@ -107,13 +110,6 @@ python tools/port_refcheck.py
 Checks references only (no compiler, no ROM — about a second) and is also wired
 into `tools/hooks/pre-push`.
 
-## Claim your span before you start
-
-Two agents grinding the same function, or the same class, is wasted compute. Class
-conversions are claimed by class/chain in [`CLAIMS.md`](CLAIMS.md); ordinary
-function matching goes through the live board at https://tangos.dev/claims. Details
-in [`CONTRIBUTING.md`](CONTRIBUTING.md).
-
 ## PR format
 
 - **Title:** describe what changed — the class(es) converted, or the function(s)
@@ -128,8 +124,6 @@ in [`CONTRIBUTING.md`](CONTRIBUTING.md).
 - **Deliberate divergences from an existing pattern get called out explicitly** —
   don't silently inherit wording or a technique from a sibling PR if it doesn't
   actually apply here.
-- Add a `Provenance: ai model=... reasoning=... harness=...` (or `Provenance: human`)
-  line — the only per-PR bookkeeping still needed, and it's one line.
 
 ## How your PR is handled
 
