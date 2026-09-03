@@ -18,7 +18,6 @@ repository by hand, also read:
 - the installed `decomp-cpp-class-form` skill
 - the installed `decomp-tu-build` skill
 - the installed `decomp-tu-slicing` skill
-- the installed local `agent-lock` skill
 
 ## Non-negotiable result
 
@@ -57,44 +56,6 @@ D1, D2, the key function, and vtable ownership among different agents.
 Use a second agent as a read-only verifier after the producer commits. The verifier
 must inspect raw emitted metadata as well as re-running executable gates. A producer's
 own green output is evidence, not independent review.
-
-## Coordinate locally with Redis
-
-Remote claims prevent duplication across contributors. The local Redis lock prevents
-agents on this machine from editing the same files or address ranges. Use both.
-
-Start Redis if needed (reachable at the `REDIS_URL` `tools/agentlock.py` expects).
-
-Every agent needs a unique holder name:
-
-```powershell
-$env:AGENTLOCK_HOLDER = 'cpp-heap'
-$AgentLockCli = '<path supplied by the installed agent-lock skill>'
-python $AgentLockCli list
-python $AgentLockCli acquire `
-  --files include/Heap.h src/_ZN4HeapD0Ev.cpp src/_ZN4HeapD1Ev.cpp `
-          config/arm9/symbols.txt config/arm9/delinks.txt `
-  --range arm9 0x0203ca10 0x0203ca54 `
-  --ttl 3600 --wait 60 --note 'real C++ Heap migration'
-```
-
-Acquire the complete resource set atomically before dispatching the lane. Renew long
-jobs, and release only after the branch is pushed or deliberately abandoned:
-
-```powershell
-python $AgentLockCli renew `
-  --files include/Heap.h src/_ZN4HeapD0Ev.cpp src/_ZN4HeapD1Ev.cpp `
-          config/arm9/symbols.txt config/arm9/delinks.txt `
-  --range arm9 0x0203ca10 0x0203ca54
-
-python $AgentLockCli release `
-  --files include/Heap.h src/_ZN4HeapD0Ev.cpp src/_ZN4HeapD1Ev.cpp `
-          config/arm9/symbols.txt config/arm9/delinks.txt `
-  --range arm9 0x0203ca10 0x0203ca54
-```
-
-Use the actual files and exact half-open address span for the selected class. The
-Heap names above illustrate the shape; they are not a reusable lock list.
 
 ## Producer workflow
 
