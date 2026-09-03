@@ -76,7 +76,11 @@ extern "C" {  /* .c-derived member: C linkage for the whole block */
 #include "decl_common.h"
 /* recovered: vtable identified, globals resolved */
 /* resolved: VT0 = _ZTV15daObjWc_Obj03_c */
-/* Historical alias: daObjWc_Obj03_c_Spawn. */
+/* Historical alias: WaterDiamond_Spawn -- this entry point carried the
+ * project's coined class name until the ROM's RTTI name was adopted.
+ * The ROM proves the class through RTTI (_ZTS15daObjWc_Obj03_c at
+ * 0x02113d7c), the 0x160 allocation below, the vtable at 0x02113db4 and
+ * the WC_OBJ03 registry profile at 0x02113d90. */
 int *daObjWc_Obj03_c_classInit(void)
 {
     int *p = (int *)_ZN7fBase_cnwEj(352);

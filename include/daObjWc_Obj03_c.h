@@ -5,10 +5,11 @@
 #include "Model.h"
 #include "dCcAc_c.h"
 
-/* daObjWc_Obj03_c is the readable symbol spelling for the class whose cartridge
- * RTTI name is daObjWc_Obj03_c. The ROM exposes both names at the same vtable
- * address: methods mangle as daObjWc_Obj03_c while the typeinfo string retains
- * EAD's daObjWc_Obj03_c name.
+/* daObjWc_Obj03_c is the name the cartridge's own RTTI gives this class, and it
+ * is now the only name the tree uses for it. The typeinfo string at 0x02113d7c
+ * reads daObjWc_Obj03_c and every method mangles against that spelling; the
+ * project's earlier coined name, WaterDiamond, is gone from the sources and
+ * survives only in the rename ledger and in generated snapshots.
  *
  * The factory allocates 0x160 bytes, constructs dActor_c, then constructs the
  * Model at 0x0d4 and dCcAc_c at 0x124. Both destructor variants destroy those
