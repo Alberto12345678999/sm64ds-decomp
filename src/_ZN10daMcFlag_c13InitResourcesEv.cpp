@@ -1,6 +1,6 @@
 //cpp
-// @symbol _ZN4Flag13InitResourcesEv
-#include "Flag.h"
+// @symbol _ZN10daMcFlag_c13InitResourcesEv
+#include "daMcFlag_c.h"
 #include "SharedFilePtr.h"
 
 extern "C" void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
@@ -9,7 +9,7 @@ extern "C" void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
 extern SharedFilePtr data_ov009_02113eb8;
 extern SharedFilePtr data_ov009_02113eb0;
 
-int Flag::InitResources()
+int daMcFlag_c::InitResources()
 {
     BMD_File *modelFile = (BMD_File *)Model::LoadFile(data_ov009_02113eb8);
     mModelAnim.SetFile(modelFile, 1, -1);

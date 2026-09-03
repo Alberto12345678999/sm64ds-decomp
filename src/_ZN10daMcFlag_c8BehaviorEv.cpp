@@ -1,12 +1,12 @@
 //cpp
-// @symbol _ZN4Flag8BehaviorEv
-#include "Flag.h"
+// @symbol _ZN10daMcFlag_c8BehaviorEv
+#include "daMcFlag_c.h"
 
 extern "C" {
 extern void Matrix4x3_FromRotationY(void* m, short angle);
 }
 
-int Flag::Behavior()
+int daMcFlag_c::Behavior()
 {
     mModelAnim.Advance();
     Matrix4x3_FromRotationY(&mModelAnim.mat4x3, mAngleY);
