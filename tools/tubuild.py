@@ -6016,9 +6016,10 @@ def cmd_promote(args):
               f"the owner of the merged file. This is NOT the rewrite-then-move hazard "
               f"prepush_attribution.py documents, which a two-commit split fixes -- a "
               f"many-to-one collapse has no commit arrangement that preserves N lineages, "
-              f"so `CREDIT LOST` is structural for this workstream and needs an explicit "
-              f"policy (an attribution.json override keyed on the surviving path, or the "
-              f"attribution-override label) BEFORE the first real promotion.")
+              f"so `CREDIT LOST` is structural for this workstream. It no longer fails "
+              f"the merge gate, but an attribution.json override keyed on the surviving "
+              f"path still keeps credit correctly recorded before the first real "
+              f"promotion.")
     # validate_merge used to infer ownership only from filename stems. It now asks the
     # revision's delinks enrollment map first, so a single path can retain matched and
     # byte-verified coverage for every licensed function range it owns. Keep the dry

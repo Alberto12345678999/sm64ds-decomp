@@ -8,9 +8,8 @@ name: Cancel PR validation
 # to a job ID against the relay's own queue listing, and cancels it -- so a maintainer
 # never needs the token or a job ID directly.
 #
-# workflow_dispatch is only offered to accounts with write access to this repo, which
-# is the same population that can already label a PR attribution-override, so this
-# adds no new privilege surface.
+# workflow_dispatch is only offered to accounts with write access to this repo, so
+# this adds no new privilege surface.
 on:
   workflow_dispatch:
     inputs:
