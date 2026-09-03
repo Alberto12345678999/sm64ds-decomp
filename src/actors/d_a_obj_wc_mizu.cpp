@@ -30,6 +30,14 @@
  * symbol with addend 0; `&_ZTV14daObjWc_Mizu_c[2]` would ask production
  * isolation to rewrite an undefined RTTI reference by 8 and is refused.
  *
+ * THIS TU CARRIES THE CLASS'S VTABLE AND RTTI AS VAGUE LINKAGE. With no key
+ * function defined anywhere, mwccarm emits _ZTV/_ZTI/_ZTS14daObjWc_Mizu_c plus the
+ * base chain here -- but only because include/daObjWc_Mizu_c.h declares
+ * ~daObjWc_Mizu_c() AFTER the non-virtual methods. Declared first, this file emits
+ * no data at all and those three ROM records go unverified by any source. The 11
+ * symbols are licensed as `deadstrip-data` in the manifest; production isolation
+ * discards them after tools/romdata_check.py compares them to the cartridge.
+ *
  * Absorbed these legacy one-function sources (ROM address order), all deleted
  * by tools/tu_promote.py:
  *   [0] 0x021121a4  src/_ZN14daObjWc_Mizu_cD1Ev.cpp

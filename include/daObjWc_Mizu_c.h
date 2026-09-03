@@ -30,13 +30,24 @@ struct daObjWc_Mizu_c : dBgActor_c {
     u8  pad_341[0x3];
     s32 mWaterHeight;                      /* 0x344 */
 
-    /* --- vtable --- */
-    virtual ~daObjWc_Mizu_c();
-
     int Behavior();
     int CleanupResources();
     int InitResources();
     int Render();
+
+    /* --- vtable --- */
+    /* MEASURED -- DECLARED LAST ON PURPOSE, after the non-virtual methods.
+       Nothing DEFINES this destructor as a C++ member (D1 and D0 are carried in
+       src/actors/d_a_obj_wc_mizu.cpp as `// @symbol` marked mangled bodies, for
+       the emission-order reason that file's header gives), so the class's vtable
+       and RTTI have no home. With the declaration LAST, mwccarm still emits them
+       as vague linkage into the TU that defines the class's members, and
+       tools/romdata_check.py word-compares that emitted copy against the
+       cartridge; with the declaration FIRST it emits nothing at all and those
+       three ROM records go unverified by any source. Measured both ways on this
+       class: first -> 0 data symbols emitted, last -> 11 (6 VERIFIED, 5 PARTIAL).
+       include/daObjWc_Obj04_c.h has the same shape for the same reason. */
+    virtual ~daObjWc_Mizu_c();
 };
 
 typedef char daObjWc_Mizu_c_size_must_be_0x348[sizeof(daObjWc_Mizu_c) == 0x348 ? 1 : -1];
