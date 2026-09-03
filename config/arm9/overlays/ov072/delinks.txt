@@ -204,7 +204,7 @@ src/actors/d_a_bg_snwmn.cpp:
     complete
     .text start:0x02120824 end:0x02120c00
 
-src/func_ov072_02120c00.c:
+src/daBgSnwmn_c_classInit.c:
     complete
     .text start:0x02120c00 end:0x02120c58
 

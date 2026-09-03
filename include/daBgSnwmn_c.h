@@ -26,7 +26,8 @@
  *     31. daBgSnwmn_c overrides exactly seven of dActor_c's 31 -- 0, 3, 6,
  *     9, 12, 16, 17.
  *
- * CONSTRUCTION. func_ov072_02120c00 is the factory: it opens with
+ * CONSTRUCTION. daBgSnwmn_c_classInit is the reconstructed source-style
+ * factory name. The function at 0x02120c00 opens with
  * `_ZN7fBase_cnwEj(496)` -- fBase_c::operator new(0x1f0). SIZE 0x1f0 (496
  * bytes) comes directly off the allocator call, and the same factory
  * constructs five typed sub-objects after the dActor_c base and the
