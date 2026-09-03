@@ -1,5 +1,5 @@
-#ifndef FLOATONWATERPLATFORMJRB_H
-#define FLOATONWATERPLATFORMJRB_H
+#ifndef DAOBJKI_ITA_C_H
+#define DAOBJKI_ITA_C_H
 
 #include "types.h"
 
@@ -12,7 +12,7 @@
  *
  *   _ZTI13daObjKi_Ita_c  ov016 0x02114b80
  *   _ZTS13daObjKi_Ita_c  ov016 0x02114b98
- *   _ZTV23FloatOnWaterPlatformJrb  ov016 0x02114bcc  (its record sits at V-4)
+ *   _ZTV13daObjKi_Ita_c  ov016 0x02114bcc  (public address point)
  *   kind  __si_class_type_info, ONE base, subobject offset 0
  *   base  daObjFloatBoard_c, ov002 0x02108fb4
  *
@@ -25,15 +25,15 @@
 
 #include "daObjFloatBoard_c.h"
 
-struct FloatOnWaterPlatformJrb : daObjFloatBoard_c {
+struct daObjKi_Ita_c : daObjFloatBoard_c {
     /* --- vtable --- */
-    virtual ~FloatOnWaterPlatformJrb(); /* slots 16 (D1), 17 (D0) */
+    virtual ~daObjKi_Ita_c();           /* slots 16 (D1), 17 (D0) */
 
     int InitResources();               /* slot  0 */
 };
 
-typedef char FloatOnWaterPlatformJrb_size_must_be_0x348[sizeof(FloatOnWaterPlatformJrb) == 0x348 ? 1 : -1];
+typedef char daObjKi_Ita_c_size_must_be_0x348[sizeof(daObjKi_Ita_c) == 0x348 ? 1 : -1];
 
 #endif /* __cplusplus */
 
-#endif /* FLOATONWATERPLATFORMJRB_H */
+#endif /* DAOBJKI_ITA_C_H */
