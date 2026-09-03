@@ -38,7 +38,10 @@
  * animation.  Both are ov009 .bss, not .data -- config/arm9/overlays/ov009/
  * symbols.txt records them kind:bss -- and they are constructed at runtime by
  * a static initializer this repo already carries as source,
- * src/__sinit_ov009_02112ac8.c, which calls SharedFilePtr::Construct on each.
+ * src/__sinit_ov009_02112ac8.c.  The two go through different constructors
+ * there: 0x02113eb0 through _ZN13SharedFilePtr9ConstructEj (arm9 0x0201799c)
+ * and 0x02113eb8 through func_02017acc, a same-sized sibling the symbol set
+ * has not named yet.
  * This TU only loads and releases them; it neither defines nor initializes
  * them. */
 extern "C" SharedFilePtr data_ov009_02113eb8;
