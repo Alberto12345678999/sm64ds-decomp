@@ -85,7 +85,9 @@ extern void _ZN10dBgW_KcMbgC1Ev(void *);
 /* Reconstructed source-style name: SM64DS proves daObjRc_Dorifu_c through
  * RTTI, allocation size, vtable identity, and the RC_DORIFU registry profile;
  * later EAD lineage supplies classInit. Exact original spelling is not
- * preserved. Historical alias: TrickyTriangles_Spawn. */
+ * preserved. The project's TrickyTriangles implementation alias remains
+ * unchanged (symbols/actor_renames.tsv still carries that row). Historical
+ * alias: TrickyTriangles_Spawn. */
 void *daObjRc_Dorifu_c_classInit(void)
 {
     char *c = (char *)_ZN7fBase_cnwEj(0xdcc);

@@ -10,7 +10,11 @@
  * IT DOES NOT DERIVE FROM dBgActor_c. It derives from daObjDorifu_c, which derives
  * from dBgActor_c. The destructor stores three vptrs -- its own, daObjDorifu_c's,
  * then dBgActor_c's -- and destroys daObjDorifu_c's Model[5] and
- * dBgW_KcMbg[5] in between, all of it from the base declaration.
+ * dBgW_KcMbg[5] in between. That shape is inherited from the base declaration,
+ * but it is no longer compiler-derived here: since the promotion both destructor
+ * variants are carried in src/actors/d_a_obj_rc_dorifu.cpp as hand-transcribed
+ * mangled bodies (see the class-body comment below for why), so what follows is
+ * a description of the cartridge's code, not of code mwccarm generates.
  *
  *   _ZTI16daObjRc_Dorifu_c  ov036 0x02113e4c
  *   _ZTS16daObjRc_Dorifu_c  ov036 0x02113e58
@@ -47,7 +51,10 @@ struct daObjRc_Dorifu_c : daObjDorifu_c {
        emitted copy against the cartridge; with the declaration FIRST it emits
        no data at all and those ROM records go unverified by any source.
        Measured both ways on the sibling daObjWc_Mizu_c: first -> 0 data
-       symbols, last -> 11. */
+       symbols, last -> 11. This class licenses 13 rather than Mizu's 11
+       because it sits two levels below dBgActor_c, so its base chain
+       contributes one more _ZTI/_ZTS pair; the manifest's
+       compiler_only_output lists all 13 with their canonical addresses. */
     virtual ~daObjRc_Dorifu_c();       /* slots 16 (D1), 17 (D0) */
 };
 
@@ -55,9 +62,12 @@ typedef char daObjRc_Dorifu_c_size_must_be_0xdcc[sizeof(daObjRc_Dorifu_c) == 0xd
 
 #else
 
-/* The C spelling of the same object, flat. Kept because the D0 file is a C
-   translation unit that reads these fields, and D0 is compiler-generated so it
-   can never be migrated. Same arrangement as include/dBgActor_c.h. */
+/* The C spelling of the same object, flat. NOTHING IN THE TREE COMPILES THIS
+   BRANCH any more: the per-function shards this was written for are gone, and
+   the one file that includes this header,
+   src/actors/d_a_obj_rc_dorifu.cpp, is //cpp. It is kept only as the readable
+   field record -- the same arrangement as include/dBgActor_c.h -- and must stay
+   in step with the C++ struct above if either changes. */
 struct daObjRc_Dorifu_c {
     u8  pad_000[0xd4];
     /* Model member. The cartridge's own ~daObjRc_Dorifu_c calls _ZN5ModelD1Ev at +0x0d4
