@@ -3,6 +3,8 @@
 
 #include "types.h"
 
+extern "C" void *_ZN7fBase_cnwEj(unsigned size);
+
 /* Lethal Lava Land's tilting slab.
  *
  * IT DOES NOT DERIVE FROM dBgActor_c. It derives from daObjGuragura_c, which derives
@@ -42,12 +44,20 @@
 #include "daObjGuragura_c.h"
 
 struct daObjFl_Gura_c : daObjGuragura_c {
-    /* --- vtable --- */
-    virtual ~daObjFl_Gura_c();         /* slots 16 (D1), 17 (D0) */
-
     int CleanupResources();            /* slot  3 */
     int InitResources();               /* slot  0 */
+
+    static void *operator new(unsigned long size);
+
+    /* Declared last and inline so class instantiation emits the retail D1/D0
+       pair in cartridge order without a separate leaf D2 body. */
+    virtual ~daObjFl_Gura_c() {}
 };
+
+inline void *daObjFl_Gura_c::operator new(unsigned long size)
+{
+    return _ZN7fBase_cnwEj((unsigned)size);
+}
 
 typedef char daObjFl_Gura_c_size_must_be_0x350[sizeof(daObjFl_Gura_c) == 0x350 ? 1 : -1];
 
