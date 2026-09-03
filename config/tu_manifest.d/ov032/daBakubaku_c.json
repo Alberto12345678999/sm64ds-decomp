@@ -1,9 +1,9 @@
 {
   "id": "ov032/daBakubaku_c",
   "module": "ov032",
-  "source": "src_tu/actors/daBakubaku_c.cpp",
-  "promoted_source": "src/actors/daBakubaku_c.cpp",
-  "status": "text-verified",
+  "source": "src/actors/d_a_bakubaku.cpp",
+  "promoted_source": "src/actors/d_a_bakubaku.cpp",
+  "status": "promoted",
   "boundary_confidence": "medium",
   "boundary_evidence": [
     "contiguous linker run: 0x21111a0..0x211244c, 23 function(s), from build/tu_map.json (tools/tu_map.py)",
