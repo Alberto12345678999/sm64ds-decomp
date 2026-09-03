@@ -3,6 +3,8 @@
 
 #include "types.h"
 
+extern "C" void *_ZN7fBase_cnwEj(unsigned size);
+
 /* Jolly Roger Bay's floating plank. `ita` is a board.
  *
  * IT DOES NOT DERIVE FROM dBgActor_c. It derives from daObjFloatBoard_c, which derives from
@@ -26,11 +28,19 @@
 #include "daObjFloatBoard_c.h"
 
 struct daObjKi_Ita_c : daObjFloatBoard_c {
-    /* --- vtable --- */
-    virtual ~daObjKi_Ita_c();           /* slots 16 (D1), 17 (D0) */
-
     int InitResources();               /* slot  0 */
+
+    static void *operator new(unsigned long size);
+
+    /* Declared last and inline so class instantiation can emit the retail
+       D1/D0 pair in cartridge order without a separate D2 body. */
+    virtual ~daObjKi_Ita_c() {}
 };
+
+inline void *daObjKi_Ita_c::operator new(unsigned long size)
+{
+    return _ZN7fBase_cnwEj((unsigned)size);
+}
 
 typedef char daObjKi_Ita_c_size_must_be_0x348[sizeof(daObjKi_Ita_c) == 0x348 ? 1 : -1];
 
