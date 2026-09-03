@@ -5,7 +5,7 @@ extern void _ZN10dBgCh_ActrC1Ev(void *);
 extern void _ZN9ModelAnimC1Ev(void *);
 extern void _ZN11ShadowModelC1Ev(void *);
 extern int _ZTV12daBakubaku_c[];
-int *func_ov032_0211244c(void)
+int *daBakubaku_c_classInit(void)
 {
     int *p = (int *)_ZN7fBase_cnwEj(1080);
     if (p) {
