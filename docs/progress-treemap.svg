@@ -30841,15 +30841,15 @@ matched: yes</title></rect><rect x="1559.69" y="90.22" width="4.97" height="2.53
 module: ov016
 addr: 0x02112ec4
 size: 48 bytes
-matched: yes</title></rect><rect x="1559.69" y="92.74" width="4.97" height="4.21" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN23FloatOnWaterPlatformJrbD1Ev
+matched: yes</title></rect><rect x="1559.69" y="92.74" width="4.97" height="4.21" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN13daObjKi_Ita_cD1Ev
 module: ov016
 addr: 0x02112ef4
 size: 80 bytes
-matched: yes</title></rect><rect x="1559.69" y="96.95" width="4.97" height="5.26" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN23FloatOnWaterPlatformJrbD0Ev
+matched: yes</title></rect><rect x="1559.69" y="96.95" width="4.97" height="5.26" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN13daObjKi_Ita_cD0Ev
 module: ov016
 addr: 0x02112f44
 size: 100 bytes
-matched: yes</title></rect><rect x="1564.66" y="81.37" width="3.16" height="1.65" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN23FloatOnWaterPlatformJrb13InitResourcesEv
+matched: yes</title></rect><rect x="1564.66" y="81.37" width="3.16" height="1.65" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN13daObjKi_Ita_c13InitResourcesEv
 module: ov016
 addr: 0x02112fa8
 size: 20 bytes
