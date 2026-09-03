@@ -32861,11 +32861,11 @@ matched: yes</title></rect><rect x="1566.94" y="188.51" width="4.83" height="2.4
 module: ov029
 addr: 0x021125f8
 size: 56 bytes
-matched: yes</title></rect><rect x="1571.77" y="175.78" width="3.95" height="3.99" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN20SwitchActivatedPlankD1Ev
+matched: yes</title></rect><rect x="1571.77" y="175.78" width="3.95" height="3.99" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15daObjWc_Obj04_cD1Ev
 module: ov029
 addr: 0x02112630
 size: 76 bytes
-matched: yes</title></rect><rect x="1571.77" y="179.78" width="3.95" height="5.05" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN20SwitchActivatedPlankD0Ev
+matched: yes</title></rect><rect x="1571.77" y="179.78" width="3.95" height="5.05" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15daObjWc_Obj04_cD0Ev
 module: ov029
 addr: 0x0211267c
 size: 96 bytes
@@ -32877,19 +32877,19 @@ matched: yes</title></rect><rect x="1571.77" y="187.56" width="3.95" height="3.3
 module: ov029
 addr: 0x02112710
 size: 64 bytes
-matched: yes</title></rect><rect x="1575.72" y="175.78" width="4.83" height="2.92" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN20SwitchActivatedPlank16CleanupResourcesEv
+matched: yes</title></rect><rect x="1575.72" y="175.78" width="4.83" height="2.92" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15daObjWc_Obj04_c16CleanupResourcesEv
 module: ov029
 addr: 0x02112750
 size: 68 bytes
-matched: yes</title></rect><rect x="1575.72" y="178.71" width="4.83" height="2.41" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN20SwitchActivatedPlank6RenderEv
+matched: yes</title></rect><rect x="1575.72" y="178.71" width="4.83" height="2.41" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15daObjWc_Obj04_c6RenderEv
 module: ov029
 addr: 0x02112794
 size: 56 bytes
-matched: yes</title></rect><rect x="1575.72" y="181.11" width="4.83" height="9.80" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN20SwitchActivatedPlank8BehaviorEv
+matched: yes</title></rect><rect x="1575.72" y="181.11" width="4.83" height="9.80" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15daObjWc_Obj04_c8BehaviorEv
 module: ov029
 addr: 0x021127cc
 size: 228 bytes
-matched: yes</title></rect><rect x="1580.56" y="175.78" width="7.56" height="4.95" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN20SwitchActivatedPlank13InitResourcesEv
+matched: yes</title></rect><rect x="1580.56" y="175.78" width="7.56" height="4.95" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15daObjWc_Obj04_c13InitResourcesEv
 module: ov029
 addr: 0x021128b0
 size: 180 bytes
