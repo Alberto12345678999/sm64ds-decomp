@@ -1,6 +1,6 @@
 //cpp
 #include "WaterDiamond.h"
-#include "WDW_Water.h"
+#include "daObjWc_Mizu_c.h"
 
 struct Sound {
     static void PlayBank3(u32 id, const Vector3 &pos);
@@ -19,7 +19,7 @@ void WaterDiamond::CheckClsnWithPlayer()
     int isPlayer = (int)(actor->actorID == 0xbf);
     if (isPlayer == 0)
         return;
-    WDW_Water *water = (WDW_Water *)dActor_c::FindWithID(mWaterID);
+    daObjWc_Mizu_c *water = (daObjWc_Mizu_c *)dActor_c::FindWithID(mWaterID);
     int targetPosY = water->mTargetPosY;
     if (targetPosY != water->mPosY)
         return;

@@ -1,10 +1,10 @@
 //cpp
 #include "types.h"
-// @symbol _ZN9WDW_Water13InitResourcesEv
+// @symbol _ZN14daObjWc_Mizu_c13InitResourcesEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 #include "decl_common.h"
 /* recovered: named members + shared header, real C++ method */
-#include "WDW_Water.h"
+#include "daObjWc_Mizu_c.h"
 #include "dBgW.h"
 extern "C" {
 extern void *_ZN5Model8LoadFileER13SharedFilePtr(void *sfp);
@@ -23,7 +23,7 @@ extern void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Bloc
 extern u8 data_0209f2c0[];
 extern int data_0209f32c;
 
-int WDW_Water::InitResources()
+int daObjWc_Mizu_c::InitResources()
 {
     void *m;
     void *k;

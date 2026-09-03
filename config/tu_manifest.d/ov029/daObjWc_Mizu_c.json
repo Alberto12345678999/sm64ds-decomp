@@ -1,13 +1,13 @@
 {
-  "id": "ov029/WDW_Water",
+  "id": "ov029/daObjWc_Mizu_c",
   "module": "ov029",
-  "source": "src_tu/actors/WDW_Water.cpp",
-  "promoted_source": "src/actors/WDW_Water.cpp",
+  "source": "src_tu/actors/daObjWc_Mizu_c.cpp",
+  "promoted_source": "src/actors/daObjWc_Mizu_c.cpp",
   "status": "text-verified",
   "boundary_confidence": "high",
   "boundary_evidence": [
     "contiguous linker run: 0x21121a4..0x2112630, 9 function(s), from build/tu_map.json (tools/tu_map.py)",
-    "class label(s): WDW_Water",
+    "class label(s): daObjWc_Mizu_c",
     "module sinit corroboration: 8 sinit(s) / 8 .ctor entries, sinit_vs_tu=ok, corroborated=True (module-wide, NOT narrowed to this one TU -- see notes/tu-reconstruction-pilot-report.md sec 2 for the by-hand narrowing step)"
   ],
   "sections": [
@@ -19,17 +19,17 @@
   ],
   "functions": [
     {
-      "symbol": "_ZN9WDW_WaterD1Ev",
+      "symbol": "_ZN14daObjWc_Mizu_cD1Ev",
       "address": "0x021121a4",
       "size": "0x0000004c",
-      "legacy_source": "src/_ZN9WDW_WaterD1Ev.cpp",
+      "legacy_source": "src/_ZN14daObjWc_Mizu_cD1Ev.cpp",
       "ordinal": 0
     },
     {
-      "symbol": "_ZN9WDW_WaterD0Ev",
+      "symbol": "_ZN14daObjWc_Mizu_cD0Ev",
       "address": "0x021121f0",
       "size": "0x00000060",
-      "legacy_source": "src/_ZN9WDW_WaterD0Ev.cpp",
+      "legacy_source": "src/_ZN14daObjWc_Mizu_cD0Ev.cpp",
       "ordinal": 1
     },
     {
@@ -47,31 +47,31 @@
       "ordinal": 3
     },
     {
-      "symbol": "_ZN9WDW_Water16CleanupResourcesEv",
+      "symbol": "_ZN14daObjWc_Mizu_c16CleanupResourcesEv",
       "address": "0x021122dc",
       "size": "0x00000044",
-      "legacy_source": "src/_ZN9WDW_Water16CleanupResourcesEv.cpp",
+      "legacy_source": "src/_ZN14daObjWc_Mizu_c16CleanupResourcesEv.cpp",
       "ordinal": 4
     },
     {
-      "symbol": "_ZN9WDW_Water6RenderEv",
+      "symbol": "_ZN14daObjWc_Mizu_c6RenderEv",
       "address": "0x02112320",
       "size": "0x00000034",
-      "legacy_source": "src/_ZN9WDW_Water6RenderEv.cpp",
+      "legacy_source": "src/_ZN14daObjWc_Mizu_c6RenderEv.cpp",
       "ordinal": 5
     },
     {
-      "symbol": "_ZN9WDW_Water8BehaviorEv",
+      "symbol": "_ZN14daObjWc_Mizu_c8BehaviorEv",
       "address": "0x02112354",
       "size": "0x0000017c",
-      "legacy_source": "src/_ZN9WDW_Water8BehaviorEv.cpp",
+      "legacy_source": "src/_ZN14daObjWc_Mizu_c8BehaviorEv.cpp",
       "ordinal": 6
     },
     {
-      "symbol": "_ZN9WDW_Water13InitResourcesEv",
+      "symbol": "_ZN14daObjWc_Mizu_c13InitResourcesEv",
       "address": "0x021124d0",
       "size": "0x00000128",
-      "legacy_source": "src/_ZN9WDW_Water13InitResourcesEv.cpp",
+      "legacy_source": "src/_ZN14daObjWc_Mizu_c13InitResourcesEv.cpp",
       "ordinal": 7
     },
     {
@@ -93,7 +93,7 @@
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
     "toolchain": "tools/mwccarm/2004/b56/mwccarm.exe",
     "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
-    "object": "build/tu/ov029-WDW_Water/WDW_Water.o (gitignored)",
+    "object": "build/tu/ov029-daObjWc_Mizu_c/daObjWc_Mizu_c.o (gitignored)",
     "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
     "functions_matched": 9,
     "functions_declared": 9,

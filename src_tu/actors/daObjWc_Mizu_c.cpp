@@ -1,5 +1,5 @@
 //cpp
-/* HAND-ASSEMBLED translation unit -- ov029/WDW_Water (9 function(s)).
+/* HAND-ASSEMBLED translation unit -- ov029/daObjWc_Mizu_c (9 function(s)).
  * tubuild create refused this TU (legacy bodies wrapped in extern "C" { }),
  * so this is a raw concatenation of the complete legacy files in REVERSE
  * ROM order (mwccarm emits one .text section per function in the reverse
@@ -7,14 +7,14 @@
  * the manifest notes.
  *
  * Assembled from these legacy one-function sources (ROM address order):
- *   [0] 0x021121a4  src/_ZN9WDW_WaterD1Ev.cpp
- *   [1] 0x021121f0  src/_ZN9WDW_WaterD0Ev.cpp
+ *   [0] 0x021121a4  src/_ZN14daObjWc_Mizu_cD1Ev.cpp
+ *   [1] 0x021121f0  src/_ZN14daObjWc_Mizu_cD0Ev.cpp
  *   [2] 0x02112250  src/func_ov029_02112250.cpp
  *   [3] 0x021122b4  src/func_ov029_021122b4.c
- *   [4] 0x021122dc  src/_ZN9WDW_Water16CleanupResourcesEv.cpp
- *   [5] 0x02112320  src/_ZN9WDW_Water6RenderEv.cpp
- *   [6] 0x02112354  src/_ZN9WDW_Water8BehaviorEv.cpp
- *   [7] 0x021124d0  src/_ZN9WDW_Water13InitResourcesEv.cpp
+ *   [4] 0x021122dc  src/_ZN14daObjWc_Mizu_c16CleanupResourcesEv.cpp
+ *   [5] 0x02112320  src/_ZN14daObjWc_Mizu_c6RenderEv.cpp
+ *   [6] 0x02112354  src/_ZN14daObjWc_Mizu_c8BehaviorEv.cpp
+ *   [7] 0x021124d0  src/_ZN14daObjWc_Mizu_c13InitResourcesEv.cpp
  *   [8] 0x021125f8  src/daObjWc_Mizu_c_classInit.c
  */
 
@@ -29,7 +29,7 @@ extern "C" {  /* .c-derived member: C linkage for the whole block */
 #include "decl_TextureTransformer.h"
 #include "decl_common.h"
 /* recovered: vtable identified, globals resolved */
-/* resolved: VT0 = _ZTV9WDW_Water */
+/* resolved: VT0 = _ZTV14daObjWc_Mizu_c */
 /* Reconstructed source-style name; exact original SM64DS spelling is not
  * preserved. Historical alias: WDW_Water_Spawn. */
 int *daObjWc_Mizu_c_classInit(void)
@@ -37,7 +37,7 @@ int *daObjWc_Mizu_c_classInit(void)
     int *p = (int *)_ZN7fBase_cnwEj(840);
     if (p) {
         _ZN10dBgActor_cC2Ev(p);
-        p[0] = (int)&_ZTV9WDW_Water[2]; /* +8: this TU defines the vtable */
+        p[0] = (int)&_ZTV14daObjWc_Mizu_c[2]; /* +8: this TU defines the vtable */
         _ZN18TextureTransformerC1Ev((char *)p + 0x320);
     }
     return p;
@@ -45,14 +45,14 @@ int *daObjWc_Mizu_c_classInit(void)
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 7 -- _ZN9WDW_Water13InitResourcesEv, 0x021124d0, size 0x128 */
+/* ROM ordinal 7 -- _ZN14daObjWc_Mizu_c13InitResourcesEv, 0x021124d0, size 0x128 */
 /* -------------------------------------------------------------------------- */
 #include "types.h"
-// @symbol _ZN9WDW_Water13InitResourcesEv
+// @symbol _ZN14daObjWc_Mizu_c13InitResourcesEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 #include "decl_common.h"
 /* recovered: named members + shared header, real C++ method */
-#include "WDW_Water.h"
+#include "daObjWc_Mizu_c.h"
 #include "dBgW.h"
 extern "C" {
 extern void *_ZN5Model8LoadFileER13SharedFilePtr(void *sfp);
@@ -71,7 +71,7 @@ extern void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Bloc
 extern u8 data_0209f2c0[];
 extern int data_0209f32c;
 
-int WDW_Water::InitResources()
+int daObjWc_Mizu_c::InitResources()
 {
     void *m;
     void *k;
@@ -106,14 +106,14 @@ int WDW_Water::InitResources()
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 6 -- _ZN9WDW_Water8BehaviorEv, 0x02112354, size 0x17c */
+/* ROM ordinal 6 -- _ZN14daObjWc_Mizu_c8BehaviorEv, 0x02112354, size 0x17c */
 /* -------------------------------------------------------------------------- */
 #include "types.h"
-// @symbol _ZN9WDW_Water8BehaviorEv
+// @symbol _ZN14daObjWc_Mizu_c8BehaviorEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 #include "decl_common.h"
 /* recovered: named members + shared header, real C++ method */
-#include "WDW_Water.h"
+#include "daObjWc_Mizu_c.h"
 #include "dBgW.h"
 extern "C" {
 extern int IsAreaShowing(int idx);
@@ -123,7 +123,7 @@ extern void _ZN9Animation7AdvanceEv(void *a);
 extern s16 data_02082214[];
 extern int data_0209f32c;
 
-int WDW_Water::Behavior()
+int daObjWc_Mizu_c::Behavior()
 {
     int t;
     s16 *q;
@@ -180,34 +180,34 @@ int WDW_Water::Behavior()
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 5 -- _ZN9WDW_Water6RenderEv, 0x02112320, size 0x34 */
+/* ROM ordinal 5 -- _ZN14daObjWc_Mizu_c6RenderEv, 0x02112320, size 0x34 */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN9WDW_Water6RenderEv
+// @symbol _ZN14daObjWc_Mizu_c6RenderEv
 /* recovered: named members + shared header, real C++ method */
-#include "WDW_Water.h"
+#include "daObjWc_Mizu_c.h"
 struct Sub { virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3(); virtual void v4(); virtual void m(int); };
 struct Base { char pad[0xd4]; Sub sub; };
 extern "C" void _ZN18TextureTransformer6UpdateER15ModelComponents(void *, void *);
 
-int WDW_Water::Render()
+int daObjWc_Mizu_c::Render()
 {
  _ZN18TextureTransformer6UpdateER15ModelComponents((char *)((Base *)this) + 0x320, (char *)((Base *)this) + 0xdc); Sub *b = &((Base *)this)->sub; b->m(0); return 1;
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 4 -- _ZN9WDW_Water16CleanupResourcesEv, 0x021122dc, size 0x44 */
+/* ROM ordinal 4 -- _ZN14daObjWc_Mizu_c16CleanupResourcesEv, 0x021122dc, size 0x44 */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN9WDW_Water16CleanupResourcesEv
+// @symbol _ZN14daObjWc_Mizu_c16CleanupResourcesEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 #include "decl_common.h"
 /* recovered: named members + shared header, real C++ method */
-#include "WDW_Water.h"
+#include "daObjWc_Mizu_c.h"
 #include "SharedFilePtr.h"
 #include "dBgW.h"
 extern int daObjWc_Obj07_c_ClsnFile[];
 extern int daObjWc_Obj07_c_ModelFile[];
 
-int WDW_Water::CleanupResources()
+int daObjWc_Mizu_c::CleanupResources()
 {
     if (((dBgW *)((char *)&(*(u8 *)&mMeshCollider)))->IsEnabled()) {
         ((dBgW *)((char *)&(*(u8 *)&mMeshCollider)))->Disable();
@@ -253,40 +253,40 @@ void func_ov029_02112250(void* vself){
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 1 -- _ZN9WDW_WaterD0Ev, 0x021121f0, size 0x60 */
+/* ROM ordinal 1 -- _ZN14daObjWc_Mizu_cD0Ev, 0x021121f0, size 0x60 */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN9WDW_WaterD0Ev
+// @symbol _ZN14daObjWc_Mizu_cD0Ev
 /* recovered: real C++ deleting destructor -- the compiler emits the whole body
  *
  * D0 is the DELETING destructor: destroy through this class and its bases --
  * which is why more than one vptr store appears -- then return the object to
- * its heap. Nobody writes that; declaring `~WDW_Water()` is enough, because mwcc
+ * its heap. Nobody writes that; declaring `~daObjWc_Mizu_c()` is enough, because mwcc
  * emits D2, D0 and D1 together and objisolate keeps the one this file is bound
  * to.
  *
  * The deallocation is an inline operator delete, which is why nothing below
  * mentions a heap.
  */
-#include "WDW_Water.h"
+#include "daObjWc_Mizu_c.h"
 
-/* (no separate definition: the single ~WDW_Water() below emits the D0 and D1
+/* (no separate definition: the single ~daObjWc_Mizu_c() below emits the D0 and D1
  * variants together.) */
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 0 -- _ZN9WDW_WaterD1Ev, 0x021121a4, size 0x4c */
+/* ROM ordinal 0 -- _ZN14daObjWc_Mizu_cD1Ev, 0x021121a4, size 0x4c */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN9WDW_WaterD1Ev
+// @symbol _ZN14daObjWc_Mizu_cD1Ev
 /* recovered: real C++ destructor -- the compiler emits the whole body
  *
  * Two vtable stores and three destructor calls, every one a consequence of
- * `struct WDW_Water : dBgActor_c`: its own vptr, then dBgActor_c's -- inlined,
+ * `struct daObjWc_Mizu_c : dBgActor_c`: its own vptr, then dBgActor_c's -- inlined,
  * because dBgActor_c's destructor is defined in its class body -- then
  * dBgActor_c's Model and dBgW_KcMbg, then dActor_c. This class adds no
  * member with a destructor of its own.
  */
-#include "WDW_Water.h"
+#include "daObjWc_Mizu_c.h"
 
-WDW_Water::~WDW_Water()
+daObjWc_Mizu_c::~daObjWc_Mizu_c()
 {
 }
 

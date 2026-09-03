@@ -1,10 +1,10 @@
 //cpp
 #include "types.h"
-// @symbol _ZN9WDW_Water8BehaviorEv
+// @symbol _ZN14daObjWc_Mizu_c8BehaviorEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 #include "decl_common.h"
 /* recovered: named members + shared header, real C++ method */
-#include "WDW_Water.h"
+#include "daObjWc_Mizu_c.h"
 #include "dBgW.h"
 extern "C" {
 extern int IsAreaShowing(int idx);
@@ -14,7 +14,7 @@ extern void _ZN9Animation7AdvanceEv(void *a);
 extern s16 data_02082214[];
 extern int data_0209f32c;
 
-int WDW_Water::Behavior()
+int daObjWc_Mizu_c::Behavior()
 {
     int t;
     s16 *q;
