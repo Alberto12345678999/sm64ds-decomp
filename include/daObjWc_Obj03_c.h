@@ -29,8 +29,6 @@ struct daObjWc_Obj03_c : dActor_c {
     u8      mActive;            /* 0x015d -- water movement in progress */
     u8      pad_15e[0x2];
 
-    virtual ~daObjWc_Obj03_c();                  /* slots 16 (D1), 17 (D0) */
-
     virtual s32 InitResources();              /* slot  0 */
     virtual s32 CleanupResources();           /* slot  3 */
     virtual s32 Behavior();                   /* slot  6 */
@@ -39,6 +37,20 @@ struct daObjWc_Obj03_c : dActor_c {
     void CheckClsnWithPlayer();
     void SetWaterID();
     void UpdateModelTransform();
+
+    /* DECLARED LAST ON PURPOSE, after the other members. Nothing DEFINES this
+       destructor as a C++ member -- D1 and D0 are carried in
+       src/actors/d_a_obj_wc_obj03.cpp as `// @symbol` marked mangled bodies, for
+       the emission-order reason that file's header gives -- so the class's
+       vtable and RTTI have no key function to home them. With the declaration
+       LAST, mwccarm still emits them as vague linkage into the TU that defines
+       the class's members, and tools/romdata_check.py word-compares that
+       emitted copy against the cartridge; with the declaration FIRST it emits
+       no data at all and those ROM records go unverified by any source.
+       Measured both ways on the sibling daObjWc_Mizu_c: first -> 0 data
+       symbols, last -> 11. include/daObjWc_Mizu_c.h and
+       include/daObjWc_Obj04_c.h have the same shape for the same reason. */
+    virtual ~daObjWc_Obj03_c();               /* slots 16 (D1), 17 (D0) */
 };
 
 typedef char daObjWc_Obj03_c_size_must_be_0x160[
