@@ -39,13 +39,21 @@ struct daObjWc_Mizu_c : dBgActor_c {
     int Render();
 };
 
-typedef char WDW_Water_size_must_be_0x348[sizeof(daObjWc_Mizu_c) == 0x348 ? 1 : -1];
+typedef char daObjWc_Mizu_c_size_must_be_0x348[sizeof(daObjWc_Mizu_c) == 0x348 ? 1 : -1];
 
 #else
 
-/* The C spelling of the same object, flat. Kept because the D0 file is a C
-   translation unit that reads these fields, and D0 is compiler-generated so it
-   can never be migrated. Same arrangement as include/ShadowModel.h. */
+/* The C spelling of the same object, flat. Same arrangement as
+   include/ShadowModel.h.
+
+   NOTHING COMPILES THIS BRANCH TODAY. It was kept for a D0 file that was said
+   to be a C translation unit; it never was (src/_ZN9WDW_WaterD0Ev.cpp was
+   //cpp), and the whole class was absorbed into src/actors/d_a_obj_wc_mizu.cpp,
+   where D0 is a hand-written `// @symbol` body rather than anything
+   compiler-generated. Every remaining includer of this header is //cpp, so the
+   #if arm above is the one that builds. Left in place rather than deleted
+   because the offsets below are measured and are the only flat record of this
+   layout; delete it once nothing wants that record. */
 struct daObjWc_Mizu_c {
     u8  pad_000[0x8];
     s32 mParam;            /* 0x008 */
