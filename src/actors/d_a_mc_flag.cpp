@@ -33,19 +33,33 @@
 #include "daMcFlag_c.h"
 #include "SharedFilePtr.h"
 
-/* The two resource handles this class shares, both in ov009's data and both
- * outside the .text range this TU licenses: 0x02113eb8 is the BMD model file,
- * 0x02113eb0 the BCA animation.  Their static initializers are ROM-supplied
- * and stay that way -- this TU only loads and releases them. */
+/* The two resource handles this class shares, both outside the .text range
+ * this TU licenses: 0x02113eb8 is the BMD model file, 0x02113eb0 the BCA
+ * animation.  Both are ov009 .bss, not .data -- config/arm9/overlays/ov009/
+ * symbols.txt records them kind:bss -- and they are constructed at runtime by
+ * a static initializer this repo already carries as source,
+ * src/__sinit_ov009_02112ac8.c, which calls SharedFilePtr::Construct on each.
+ * This TU only loads and releases them; it neither defines nor initializes
+ * them. */
 extern "C" SharedFilePtr data_ov009_02113eb8;
 extern "C" SharedFilePtr data_ov009_02113eb0;
 
-/* Declared so daMcFlag_c_Spawn can spell the vptr store as &_ZTV[2].  This TU
-   also DEFINES the vtable (it is the key-function TU), so the relocation is
-   internal and the 8-byte address-point bias is one mwccarm resolves itself --
-   unlike the mangled-body siblings, where the same store has to name the bare
-   symbol with addend 0 because production isolation cannot rewrite an external
-   RTTI addend. */
+/* Declared so daMcFlag_c_Spawn can spell the vptr store as &_ZTV[2].  That
+   spelling is safe here for a reason worth stating exactly, because the
+   obvious reading of it is wrong: this TU does emit the vtable (it is the
+   key-function TU), but production isolation empties that emitted section and
+   turns the symbol into an import -- in build/src/actors/d_a_mc_flag.o
+   _ZTV/_ZTI/_ZTS10daMcFlag_c are all SHN_UNDEF, and the manifest's
+   compiler_only_output rows are what re-supply the cartridge's copies.  The
+   relocation is therefore EXTERNAL, not internal.  It still lands because
+   mwccarm folds the 8-byte address-point bias at compile time: all three
+   R_ARM_ABS32 relocations naming _ZTV10daMcFlag_c (the two destructor vptr
+   stores and Spawn's) carry addend 0 with a zero content word, so each
+   resolves to symbols.txt's 0x02113ba0 -- which IS the address point
+   (0x02113b98 = 0 offset-to-top, 0x02113b9c = _ZTI, 0x02113ba0 = slot 0,
+   InitResources).  The bias is computed, never patched; see
+   notes/mwccarm-codegen.md and the mangled-body siblings, which reach the same
+   addend-0 relocation by naming the bare symbol instead. */
 extern int _ZTV10daMcFlag_c[];
 
 
@@ -57,7 +71,7 @@ extern void Matrix4x3_FromRotationY(void *, s16);
 
 /* ModelAnim::SetAnim, spelled as the mangled free function it is defined as,
    with the speed argument declared SCALAR.  Its real signature takes
-   Fix12<int> by value (include/ModelAnim.h line 89), and a by-value class
+   Fix12<int> by value (include/ModelAnim.h line 88), and a by-value class
    argument makes mwccarm home the value and reload it with `ldr r3,[pc]; ldm
    r3,{r3}` -- two instructions and a literal-pool word the cartridge does not
    have; retail materialises the constant straight into r3 with `mov r3,

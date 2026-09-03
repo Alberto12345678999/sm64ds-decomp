@@ -9,10 +9,13 @@
  * variants destroy that member before chaining to dActor_c, independently
  * confirming the ownership and the class extent.
  *
- * The cartridge RTTI names this class daMcFlag_c.  The readable symbol set
- * calls it daMcFlag_c, and symbols.txt therefore retains co-address aliases for the
- * ROM vtable.  The inheritance edge itself is unambiguous: daMcFlag_c derives
- * directly from dActor_c at offset zero.
+ * The cartridge RTTI names this class daMcFlag_c: _ZTS10daMcFlag_c at ov009
+ * 0x02113b6c reads "10daMcFlag_c".  The sources used to spell it Flag, a
+ * coined name, and symbols.txt carried a co-address alias for the ROM vtable
+ * while both spellings were live; the rename retired that alias, so ov009's
+ * symbols.txt now has a single _ZTV10daMcFlag_c row at 0x02113ba0.  The
+ * inheritance edge is unambiguous: daMcFlag_c derives directly from dActor_c
+ * at offset zero.
  *
  * The 31-slot ROM vtable differs from dActor_c only in slots 0, 3, 6, 9, 16
  * and 17, exactly the declarations below.  All other actor virtuals are
