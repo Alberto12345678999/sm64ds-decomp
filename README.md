@@ -7,14 +7,17 @@
 
 > **Looking for the PC port?** [Download it here.](https://tangos.dev/downloads)
 
-A from-scratch decompilation (decomp) of **Super Mario 64 DS** into matching C.
+A from-scratch decompilation (decomp) of **Super Mario 64 DS**, written as a love
+letter to the original EAD team: the goal is source that reads like it shipped in
+2004 — idiomatic, period-accurate C++ — and that also compiles byte-identical to the
+retail cartridge under the pinned compiler.
 
 This repo holds source code and tooling. It contains no ROM and no Nintendo assets.
 Everything here runs against a cartridge dump you supply yourself, which stays on your
 machine and is git-ignored.
 
-New here? Start with **[CONTRIBUTING.md](CONTRIBUTING.md)**, coordinate work in
-**[CLAIMS.md](CLAIMS.md)**, and if you review or merge PRs read **[MERGE.md](MERGE.md)**.
+New here? Start with **[CONTRIBUTING.md](CONTRIBUTING.md)**, and if you review or
+merge PRs read **[MERGE.md](MERGE.md)**.
 
 ## Progress
 
@@ -137,12 +140,17 @@ destinations and non-reproducing near misses before anything lands. See
 
 ## Readable source
 
-Matching byte-for-byte and being readable are not in conflict. Recovered classes are
-promoted from flat C into real C++ where the vtables prove the hierarchy, so
-`ActorBase`, `ActorDerived`, `Actor`, and the `Model` and `ModelAnim` families are
-declared as actual classes in `include/`. Actor implementations are moving under
-`src/actors/<Class>/`. Every promotion is gated on the same byte check as everything
-else, so readability never costs a match.
+Matching byte-for-byte and being readable are not in conflict — both are required,
+and byte accuracy wins when they'd otherwise disagree, because it's the only half a
+machine can check. Recovered classes are promoted from flat C into real, idiomatic
+C++ where ROM RTTI and the vtables prove the hierarchy, so the actor tree —
+`fBase_c` → `dBase_c` → `dActor_c`, with `dBgActor_c`, `dEnemyBase_c`, and every
+`daObj*_c`/`daKrb*_c` scene actor as real derived classes — is declared as actual
+C++ in `include/`, named from the ROM's own RTTI rather than placeholders, with
+matched files merged into the translation units the original EAD team most likely
+wrote. Every promotion is gated on the same byte check as everything else, so
+readability never costs a match. See [AGENTS.md](AGENTS.md) for what a conversion
+looks like.
 
 ## Where things stand
 

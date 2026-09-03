@@ -119,14 +119,13 @@ def enrollment_of(label, addr, src_path, enrolled, blocks):
     (address-keyed, the same set ``verified`` uses) and layout_check.delinks_paths() for
     "is there an entry at all" (path-keyed, the L1/L5 reader).
 
-    The two keyings disagree for exactly one entry in the tree, and it is worth naming
-    because it is the whole 47-vs-48 discrepancy two independent derivations of this gap
-    produced: mods/Player_ScaleByCharFactor.c (ov002 0x020bf30c) IS marked ``complete``,
-    so an address-coverage test calls it enrolled, but the path it names is not the
-    src/ path, and enrolled_addresses() drops mods/ on purpose, because a deliberate
-    divergence must never be counted as a reproduction of the cartridge. It is reported
-    no_block here, which is the honest answer for src/Player_ScaleByCharFactor.c: that
-    file is compiled by nothing.
+    The two keyings can disagree for an entry under mods/: a delinks range naming a
+    mods/ path can be marked ``complete``, so an address-coverage test calls it
+    enrolled, but enrolled_addresses() drops mods/ on purpose, because a deliberate
+    divergence must never be counted as a reproduction of the cartridge. Such an entry
+    is reported no_block here, which is the honest answer for the src/ path it displaced:
+    that file is compiled by nothing. `mods/` is currently empty, so this case does not
+    occur in the tree today, but the reader still has to handle it correctly.
     """
     if (label, addr) in enrolled:
         return "enrolled"

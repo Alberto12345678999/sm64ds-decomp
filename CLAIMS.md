@@ -1,24 +1,15 @@
-# Active claims
+# Claims log
 
-Claim a module or address range before you start matching, so two people (or two AI
-sessions) do not grind the same functions. The batch tools are range-scoped, so one
-claimed range per worker keeps everyone on disjoint work by construction.
+This is a historical record, read by tooling (`tools/claims_md.py` and friends) and
+by contributors checking what's already spoken for — it is not a step in the
+contributing or merge workflow. See [`CONTRIBUTING.md`](CONTRIBUTING.md) for how to
+get a claims key; the live board at https://tangos.dev/claims is what actually locks
+work, and a lock made there is honored everywhere within a minute without anyone
+touching this file.
 
-## How to claim
-
-The register is the live claims board, not this file:
-
-- **Board:** https://tangos.dev/claims (this project's board is the default)
-- **API:** `POST https://tangos.dev/api/claims/try-lock` - full contract at
-  `GET https://tangos.dev/api/claims/instructions` (how to get a key, renew, release)
-- Locks expire on their own (24h TTL, renew while working), so a crashed session
-  frees its range without anyone editing anything.
-
-The viewer, the Console, and the batch schedulers all read the board live, and a
-range you lock there is dimmed and skipped everywhere within a minute. Rows in the
-table below are still honored as a fallback and existing rows keep protecting their
-ranges, but do not add new rows for ordinary matching work - lock through the API
-instead. If a lock has gone stale and expired, the range is simply free again.
+Existing rows below still protect their ranges as a fallback, and the class/chain
+table stays the record of what's converted and what's in flight, but don't hand-edit
+this file as part of ordinary matching work — lock through the API instead.
 
 ## Readable-C++ conversion claims (classes)
 

@@ -73,8 +73,9 @@ def test_list_finds_polelift_and_its_module_neighbours():
     assert "ov045/PoleLift" in out
     assert "ov045/FireSeaElevator" in out          # its lower-address neighbour
     assert "ov045/ExtendingPlatform" in out         # its higher-address neighbour
-    # PoleLift is 7 functions, all `complete` -- see the manifest and the pilot report.
-    assert "7     7/7" in out
+    # The class run is six functions, all `complete`. Its reconstructed classInit
+    # uses the ROM RTTI class name and now appears as the adjacent anonymous run.
+    assert "6     6/6 medium" in out
 
 
 def test_list_has_no_duplicate_ids_anywhere_in_the_tree():
@@ -103,7 +104,7 @@ def test_inspect_polelift_reproduces_the_pilots_static_findings():
     code, out = _run("inspect", "ov045/PoleLift")
     assert code == 0, out
     assert "classes           PoleLift" in out
-    assert "boundary conf.    high" in out
+    assert "boundary conf.    medium" in out
     # The pilot's report sec 4: D1/D0 are real, D2 is a compiler-only byproduct
     # that only appears once the TU is actually compiled (verify/compile), not here.
     assert "_ZN8PoleLiftD1Ev" in out and "_ZN8PoleLiftD0Ev" in out
@@ -616,6 +617,52 @@ def test_symbol_binding_policy_only_promotes_exact_owned_local():
     rewritten = next(row for row in tubuild.elf_inventory(out)["symbols"]
                      if row["name"] == local["name"])
     assert rewritten["bind"] == "STB_GLOBAL"
+
+
+def test_derived_function_applies_its_exact_manifest_binding_rewrite():
+    if not _toolchain():
+        raise unittest.SkipTest("needs the pinned compiler")
+    obj = _compile_tu_fixture('extern "C" void owner(void) {}\n')
+    obj, rewrite = tubuild.OI.rewrite_symbol_bindings(
+        obj, {"owner": ("STB_GLOBAL", "STB_LOPROC")})
+    assert obj is not None, rewrite
+    entry = {
+        "functions": [{"symbol": "owner", "ordinal": 0,
+                       "address": "0x1000", "size": "0x4"}],
+        "symbol_binding_rewrites": [{
+            "symbol": "owner", "from": "STB_LOPROC", "to": "STB_GLOBAL",
+            "evidence": "fixture",
+        }],
+    }
+    derived, plan = tubuild.derive_function_objects(obj, entry)["owner"]
+    assert derived is not None, plan
+    assert plan["symbolBindingRewrites"]["rewritten"][0]["symbol"] == "owner"
+    owner = tubuild.contribution(derived, "owner")["defined"]["owner"]
+    assert owner[0] == "STB_GLOBAL"
+
+
+def test_contribution_ignores_only_inert_local_defs_in_empty_sections():
+    if not _toolchain():
+        raise unittest.SkipTest("needs the pinned compiler")
+    production = _compile_tu_fixture('extern "C" void owner(void) {}\n')
+    merged = _compile_tu_fixture(
+        'static int compiler_local_word;\n'
+        'extern "C" void owner(void) {}\n')
+    derived, plan = tubuild.OI.derive(merged, "owner")
+    assert derived is not None, plan
+
+    inventory = tubuild.elf_inventory(derived)
+    assert any(row["name"] == "compiler_local_word"
+               and row["bind"] == "STB_LOCAL" for row in inventory["symbols"])
+    got = tubuild.contribution(derived, "owner")
+    assert "compiler_local_word" not in got["defined"]
+    assert tubuild.compare_contribution(production, derived, "owner")["identical"]
+
+    globalized, rewrite = tubuild.OI.rewrite_symbol_bindings(
+        derived, {"compiler_local_word": ("STB_LOCAL", "STB_GLOBAL")})
+    assert globalized is not None, rewrite
+    assert "compiler_local_word" in \
+        tubuild.contribution(globalized, "owner")["defined"]
 
 
 def test_splice_maps_compiler_rodata_into_module_data():
@@ -1229,7 +1276,7 @@ def test_manifest_order_handles_rccarpet_owned_subset_after_rtti_externalization
     symtab = elf.get_section_by_name(".symtab")
     symbols = {s.name: s for s in symtab.iter_symbols()}
     owned = ["_ZTI15daObjRcCarpet_c", "data_ov036_02113f58",
-             "_ZTS15daObjRcCarpet_c", "FlyingCarpet_SpawnInfo",
+             "_ZTS15daObjRcCarpet_c", "g_profile_RC_CARPET",
              "_ZTV15daObjRcCarpet_c"]
     assert {symbols[name]["st_shndx"] for name in owned} == set(retained)
     assert [symbols[name]["st_shndx"] for name in owned] != retained, (
@@ -1239,7 +1286,7 @@ def test_manifest_order_handles_rccarpet_owned_subset_after_rtti_externalization
         "_ZTI15daObjRcCarpet_c": 0x02113f4c,
         "data_ov036_02113f58": 0x02113f58,
         "_ZTS15daObjRcCarpet_c": 0x02113f64,
-        "FlyingCarpet_SpawnInfo": 0x02113f78,
+        "g_profile_RC_CARPET": 0x02113f78,
         "_ZTV15daObjRcCarpet_c": 0x02113f9c,
     }
     rows = []

@@ -54,9 +54,9 @@ pragmas into the output at all — it emits a warning comment — so members tha
 it lose it. Both directions are live. Affected Tier 1:
 
 ```
-ov029/ArrowLift(1/9)  ov029/daObjWc_Obj05_c(1/9)  ov029/daObjWc_Obj07_c(1/5)
+ov029/daObjWc_Obj02_c(1/9)  ov029/daObjWc_Obj05_c(1/9)  ov029/daObjWc_Obj07_c(1/5)
 ov014/daObjBSwdoor_c(1/6) ov030/RollingLogTtm(3/6) ov063/FallBlockBbh(2/5)
-ov015/FallBlockWf(2/5) ov015/RotatingPlatformWf(1/5) ov022/RotatingPlatformLll(1/5)
+ov015/daObjBk_Fall_Block_c(2/5) ov015/daObjBk_Ukisima_c(1/5) ov022/RotatingPlatformLll(1/5)
 ov036/RotatingPlatformRr(1/5) ov064/TiltingPlatformLll(2/5) ov016/FloatOnWaterPlatformJrb(1/4)
 ```
 
@@ -143,7 +143,7 @@ cheapest possible probe of post-regeneration ov006.
 
 **B2 — R0, one TU per module · 10 TUs / 69 files / net −59 / 1,356 lines**
 ```
-ov009 0x2112078  n=7  L=116  Flag                     pcov=2
+ov009 0x2112078  n=7  L=116  daMcFlag_c               pcov=2
 ov012 0x21111a0  n=8  L=175  daObjC0_Switch_c
 ov013 0x21113bc  n=8  L=153  ClockPaintingHandShort   uncorrob
 ov014 0x2112e0c  n=8  L=197  daObjWanwanShutter_c
@@ -166,7 +166,7 @@ ov029 0x2111ea4  n=4  L=124  daObjWcObj06_c
 ov036 0x2111580  n=8  L=146  ShipWing
 ov036 0x2111d14  n=7  L=155  ArmedRotatingPlatform
 ov036 0x2111f8c  n=4  L=75   daObjRc_Dorifu_c
-ov043 0x2111518  n=5  L=80   RickshawPlatformBdw              pcov=3
+ov043 0x2111518  n=5  L=80   daObjKm1_Kuruma_c              pcov=3
 ```
 `daObjWcObj01_c` and `daObjWcObj06_c` — the Wdw square and rectangle floating
 platforms, coined `FloatOnWaterPlatformWdwSquare`/`...Rectangle` before the
@@ -248,7 +248,7 @@ ov006 0x20ede18  n=2  L=30   MgWhichWiggler         NORM1
 ov006 0x2119824  n=2  L=29   MgBingoBallSlotsShot   NORM1
 ov013 0x21111a0  n=8  L=150  daObjClockHuriko_c  NORM1 pcov=4
 ov027 0x21111a0  n=8  L=204  SlidingIce             NORM1
-ov029 0x21121a4  n=9  L=245  WDW_Water              NORM1
+ov029 0x21121a4  n=9  L=245  daObjWc_Mizu_c              NORM1
 ov030 0x21111a0  n=8  L=236  daObjHmBskt_c              NORM2 pcov=2
 ```
 
@@ -263,11 +263,11 @@ ov064 0x21174a0  n=8  L=263  BigBully         NORM1 pcov=2
 **B12 — R3, `#pragma long_calls on` · 10 TUs / 59 files / net −49 / 1,265 lines**
 ```
 ov014 0x21111a0  n=6  L=133  daObjBSwdoor_c               1/6 members
-ov015 0x2112bd0  n=5  L=105  RotatingPlatformWf       1/5
-ov015 0x2112cf4  n=5  L=80   FallBlockWf              2/5  pcov=3
+ov015 0x2112bd0  n=5  L=105  daObjBk_Ukisima_c       1/5
+ov015 0x2112cf4  n=5  L=80   daObjBk_Fall_Block_c              2/5  pcov=3
 ov016 0x2112ef4  n=4  L=82   FloatOnWaterPlatformJrb  1/4
 ov022 0x21115a8  n=5  L=106  RotatingPlatformLll      1/5
-ov029 0x211137c  n=9  L=243  ArrowLift                1/9  CONF2
+ov029 0x211137c  n=9  L=243  daObjWc_Obj02_c                1/9  CONF2
 ov029 0x2111ac4  n=9  L=230  daObjWc_Obj05_c                 1/9  NORM1
 ov029 0x2112080  n=5  L=83   daObjWc_Obj07_c          1/5  pcov=3
 ov030 0x211155c  n=6  L=96   RollingLogTtm            3/6  pcov=4
@@ -419,8 +419,10 @@ tb.cmd_create(a)
 ```
 
 **Validated read-only against the tree**: over all 131 refused safe-pool files this
-recovers **130**. The single residual, `src/func_ov018_021118fc.c` (Tier 2,
-`ov018/daPgMthr_c`), fails for a different reason worth naming — its definition is
+recovers **130**. The single residual was `func_ov018_021118fc` (Tier 2,
+`ov018/daPgMthr_c`; it lived in a per-function legacy source at the time and is now
+part of the promoted `src/actors/d_a_pg_mthr.cpp`), and it fails for a different
+reason worth naming — its definition is
 `struct dActor_c* func_ov018_021118fc(char* c) {`, and `split_legacy_source`'s first-word
 test sees `struct` in `_DECL_KEYWORDS` and consumes the whole function as a shadow
 declaration. **Any definition whose return type is spelled `struct X*` / `enum X` /

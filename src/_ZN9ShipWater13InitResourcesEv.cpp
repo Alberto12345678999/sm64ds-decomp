@@ -5,7 +5,7 @@
  * surface height so Behavior can raise the water from it.
  *
  * THE COLLISION FILE'S HANDLE WAS NAMED FROM THE WRONG OVERLAY. The C form
- * passed `_ZN18TiltingPlatformBfsD0Ev', an ov045 FUNCTION that happens to sit
+ * passed `_ZN15daObjKm2_Gura_cD0Ev', an ov045 FUNCTION that happens to sit
  * at 0x02111c80 -- the same address as ov017's own `data_ov017_02111c80', which
  * is what this actually is. Overlays share address space, so both names
  * relocate to the same word and the byte gate could not tell them apart (see

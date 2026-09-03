@@ -1951,17 +1951,17 @@
    "start": "0x211137c",
    "end": "0x2111728",
    "classes": [
-    "ArrowLift"
+    "daObjWc_Obj02_c"
    ],
    "n_functions_map": 9,
    "n_files": 9,
    "files": [
-    "src/_ZN9ArrowLiftD1Ev.c",
-    "src/_ZN9ArrowLiftD0Ev.c",
-    "src/_ZN9ArrowLift16CleanupResourcesEv.cpp",
-    "src/_ZN9ArrowLift6RenderEv.cpp",
-    "src/_ZN9ArrowLift8BehaviorEv.cpp",
-    "src/_ZN9ArrowLift13InitResourcesEv.cpp",
+    "src/_ZN15daObjWc_Obj02_cD1Ev.c",
+    "src/_ZN15daObjWc_Obj02_cD0Ev.c",
+    "src/_ZN15daObjWc_Obj02_c16CleanupResourcesEv.cpp",
+    "src/_ZN15daObjWc_Obj02_c6RenderEv.cpp",
+    "src/_ZN15daObjWc_Obj02_c8BehaviorEv.cpp",
+    "src/_ZN15daObjWc_Obj02_c13InitResourcesEv.cpp",
     "src/func_ov029_021116c4.cpp",
     "src/func_ov029_021116e4.c",
     "src/daObjWc_Obj02_c_classInit.c"
@@ -2453,19 +2453,19 @@
    "start": "0x21121a4",
    "end": "0x2112630",
    "classes": [
-    "WDW_Water"
+    "daObjWc_Mizu_c"
    ],
    "n_functions_map": 9,
    "n_files": 9,
    "files": [
-    "src/_ZN9WDW_WaterD1Ev.cpp",
-    "src/_ZN9WDW_WaterD0Ev.cpp",
+    "src/_ZN14daObjWc_Mizu_cD1Ev.cpp",
+    "src/_ZN14daObjWc_Mizu_cD0Ev.cpp",
     "src/func_ov029_02112250.cpp",
     "src/func_ov029_021122b4.c",
-    "src/_ZN9WDW_Water16CleanupResourcesEv.cpp",
-    "src/_ZN9WDW_Water6RenderEv.cpp",
-    "src/_ZN9WDW_Water8BehaviorEv.cpp",
-    "src/_ZN9WDW_Water13InitResourcesEv.cpp",
+    "src/_ZN14daObjWc_Mizu_c16CleanupResourcesEv.cpp",
+    "src/_ZN14daObjWc_Mizu_c6RenderEv.cpp",
+    "src/_ZN14daObjWc_Mizu_c8BehaviorEv.cpp",
+    "src/_ZN14daObjWc_Mizu_c13InitResourcesEv.cpp",
     "src/daObjWc_Mizu_c_classInit.c"
    ],
    "ext_mix": {
@@ -6263,18 +6263,18 @@
    "start": "0x2112078",
    "end": "0x2112228",
    "classes": [
-    "Flag"
+    "daMcFlag_c"
    ],
    "n_functions_map": 7,
    "n_files": 7,
    "files": [
-    "src/_ZN4FlagD1Ev.cpp",
-    "src/_ZN4FlagD0Ev.c",
-    "src/_ZN4Flag16CleanupResourcesEv.c",
-    "src/_ZN4Flag6RenderEv.cpp",
-    "src/_ZN4Flag8BehaviorEv.cpp",
-    "src/_ZN4Flag13InitResourcesEv.cpp",
-    "src/Flag_Spawn.c"
+    "src/_ZN10daMcFlag_cD1Ev.cpp",
+    "src/_ZN10daMcFlag_cD0Ev.c",
+    "src/_ZN10daMcFlag_c16CleanupResourcesEv.c",
+    "src/_ZN10daMcFlag_c6RenderEv.cpp",
+    "src/_ZN10daMcFlag_c8BehaviorEv.cpp",
+    "src/_ZN10daMcFlag_c13InitResourcesEv.cpp",
+    "src/daMcFlag_c_Spawn.c"
    ],
    "ext_mix": {
     ".cpp": 4,
@@ -8180,20 +8180,20 @@
    "start": "0x2111728",
    "end": "0x2111ac4",
    "classes": [
-    "WaterDiamond"
+    "daObjWc_Obj03_c"
    ],
    "n_functions_map": 10,
    "n_files": 10,
    "files": [
-    "src/_ZN12WaterDiamondD1Ev.cpp",
-    "src/_ZN12WaterDiamondD0Ev.c",
+    "src/_ZN15daObjWc_Obj03_cD1Ev.cpp",
+    "src/_ZN15daObjWc_Obj03_cD0Ev.c",
     "src/func_ov029_021117ac.cpp",
     "src/func_ov029_02111850.cpp",
     "src/func_ov029_021118c8.c",
-    "src/_ZN12WaterDiamond16CleanupResourcesEv.c",
-    "src/_ZN12WaterDiamond6RenderEv.cpp",
-    "src/_ZN12WaterDiamond8BehaviorEv.cpp",
-    "src/_ZN12WaterDiamond13InitResourcesEv.cpp",
+    "src/_ZN15daObjWc_Obj03_c16CleanupResourcesEv.c",
+    "src/_ZN15daObjWc_Obj03_c6RenderEv.cpp",
+    "src/_ZN15daObjWc_Obj03_c8BehaviorEv.cpp",
+    "src/_ZN15daObjWc_Obj03_c13InitResourcesEv.cpp",
     "src/daObjWc_Obj03_c_classInit.c"
    ],
    "ext_mix": {
@@ -9719,15 +9719,15 @@
    "start": "0x2112cf4",
    "end": "0x2112e0c",
    "classes": [
-    "FallBlockWf"
+    "daObjBk_Fall_Block_c"
    ],
    "n_functions_map": 5,
    "n_files": 5,
    "files": [
-    "src/_ZN11FallBlockWfD1Ev.cpp",
-    "src/_ZN11FallBlockWfD0Ev.c",
-    "src/_ZN11FallBlockWf16CleanupResourcesEv.c",
-    "src/_ZN11FallBlockWf13InitResourcesEv.c",
+    "src/_ZN20daObjBk_Fall_Block_cD1Ev.cpp",
+    "src/_ZN20daObjBk_Fall_Block_cD0Ev.c",
+    "src/_ZN20daObjBk_Fall_Block_c16CleanupResourcesEv.c",
+    "src/_ZN20daObjBk_Fall_Block_c13InitResourcesEv.c",
     "src/daObjBk_Fall_Block_c_classInit.c"
    ],
    "ext_mix": {
@@ -9833,15 +9833,15 @@
    "start": "0x2111518",
    "end": "0x2111630",
    "classes": [
-    "RickshawPlatformBdw"
+    "daObjKm1_Kuruma_c"
    ],
    "n_functions_map": 5,
    "n_files": 5,
    "files": [
-    "src/_ZN19RickshawPlatformBdwD1Ev.cpp",
-    "src/_ZN19RickshawPlatformBdwD0Ev.c",
-    "src/_ZN19RickshawPlatformBdw16CleanupResourcesEv.c",
-    "src/_ZN19RickshawPlatformBdw13InitResourcesEv.c",
+    "src/_ZN17daObjKm1_Kuruma_cD1Ev.cpp",
+    "src/_ZN17daObjKm1_Kuruma_cD0Ev.c",
+    "src/_ZN17daObjKm1_Kuruma_c16CleanupResourcesEv.c",
+    "src/_ZN17daObjKm1_Kuruma_c13InitResourcesEv.c",
     "src/daObjKm1_Kuruma_c_classInit.c"
    ],
    "ext_mix": {
@@ -10110,15 +10110,15 @@
    "start": "0x2112bd0",
    "end": "0x2112cf4",
    "classes": [
-    "RotatingPlatformWf"
+    "daObjBk_Ukisima_c"
    ],
    "n_functions_map": 5,
    "n_files": 5,
    "files": [
-    "src/_ZN18RotatingPlatformWfD1Ev.cpp",
-    "src/_ZN18RotatingPlatformWfD0Ev.c",
-    "src/_ZN18RotatingPlatformWf16CleanupResourcesEv.cpp",
-    "src/_ZN18RotatingPlatformWf13InitResourcesEv.cpp",
+    "src/_ZN17daObjBk_Ukisima_cD1Ev.cpp",
+    "src/_ZN17daObjBk_Ukisima_cD0Ev.c",
+    "src/_ZN17daObjBk_Ukisima_c16CleanupResourcesEv.cpp",
+    "src/_ZN17daObjBk_Ukisima_c13InitResourcesEv.cpp",
     "src/daObjBk_Ukisima_c_classInit.c"
    ],
    "ext_mix": {
@@ -25293,19 +25293,19 @@
    "start": "0x2112630",
    "end": "0x211299c",
    "classes": [
-    "SwitchActivatedPlank"
+    "daObjWc_Obj04_c"
    ],
    "n_functions_map": 9,
    "n_files": 9,
    "files": [
-    "src/_ZN20SwitchActivatedPlankD1Ev.c",
-    "src/_ZN20SwitchActivatedPlankD0Ev.c",
+    "src/_ZN15daObjWc_Obj04_cD1Ev.c",
+    "src/_ZN15daObjWc_Obj04_cD0Ev.c",
     "src/func_ov029_021126dc.c",
     "src/func_ov029_02112710.c",
-    "src/_ZN20SwitchActivatedPlank16CleanupResourcesEv.cpp",
-    "src/_ZN20SwitchActivatedPlank6RenderEv.cpp",
-    "src/_ZN20SwitchActivatedPlank8BehaviorEv.cpp",
-    "src/_ZN20SwitchActivatedPlank13InitResourcesEv.cpp",
+    "src/_ZN15daObjWc_Obj04_c16CleanupResourcesEv.cpp",
+    "src/_ZN15daObjWc_Obj04_c6RenderEv.cpp",
+    "src/_ZN15daObjWc_Obj04_c8BehaviorEv.cpp",
+    "src/_ZN15daObjWc_Obj04_c13InitResourcesEv.cpp",
     "src/daObjWc_Obj04_c_classInit.c"
    ],
    "ext_mix": {

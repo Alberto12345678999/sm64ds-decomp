@@ -8,81 +8,13 @@ src/actors/d_a_obj_wc_obj01.cpp:
     complete
     .text start:0x021111a0 end:0x0211137c
 
-src/_ZN9ArrowLiftD1Ev.cpp:
+src/actors/d_a_obj_wc_obj02.cpp:
     complete
-    .text start:0x0211137c end:0x021113c0
+    .text start:0x0211137c end:0x02111728
 
-src/_ZN9ArrowLiftD0Ev.cpp:
+src/actors/d_a_obj_wc_obj03.cpp:
     complete
-    .text start:0x021113c0 end:0x02111418
-
-src/_ZN9ArrowLift16CleanupResourcesEv.cpp:
-    complete
-    .text start:0x02111418 end:0x0211145c
-
-src/_ZN9ArrowLift6RenderEv.cpp:
-    complete
-    .text start:0x0211145c end:0x02111484
-
-src/_ZN9ArrowLift8BehaviorEv.cpp:
-    complete
-    .text start:0x02111484 end:0x021115f8
-
-src/_ZN9ArrowLift13InitResourcesEv.cpp:
-    complete
-    .text start:0x021115f8 end:0x021116c4
-
-src/func_ov029_021116c4.cpp:
-    complete
-    .text start:0x021116c4 end:0x021116e4
-
-src/func_ov029_021116e4.c:
-    complete
-    .text start:0x021116e4 end:0x021116f8
-
-src/daObjWc_Obj02_c_classInit.c:
-    complete
-    .text start:0x021116f8 end:0x02111728
-
-src/_ZN12WaterDiamondD1Ev.cpp:
-    complete
-    .text start:0x02111728 end:0x02111760
-
-src/_ZN12WaterDiamondD0Ev.cpp:
-    complete
-    .text start:0x02111760 end:0x021117ac
-
-src/_ZN12WaterDiamond19CheckClsnWithPlayerEv.cpp:
-    complete
-    .text start:0x021117ac end:0x02111850
-
-src/_ZN12WaterDiamond10SetWaterIDEv.cpp:
-    complete
-    .text start:0x02111850 end:0x021118c8
-
-src/_ZN12WaterDiamond20UpdateModelTransformEv.cpp:
-    complete
-    .text start:0x021118c8 end:0x02111908
-
-src/_ZN12WaterDiamond16CleanupResourcesEv.cpp:
-    complete
-    .text start:0x02111908 end:0x0211192c
-
-src/_ZN12WaterDiamond6RenderEv.cpp:
-    complete
-    .text start:0x0211192c end:0x02111954
-
-src/_ZN12WaterDiamond8BehaviorEv.cpp:
-    complete
-    .text start:0x02111954 end:0x02111a04
-
-src/_ZN12WaterDiamond13InitResourcesEv.cpp:
-    complete
-    .text start:0x02111a04 end:0x02111a84
-
-src/daObjWc_Obj03_c_classInit.c:
-    complete
-    .text start:0x02111a84 end:0x02111ac4
+    .text start:0x02111728 end:0x02111ac4
 
 src/actors/d_a_obj_wc_obj05.cpp:
     complete
@@ -96,77 +28,13 @@ src/actors/d_a_obj_wc_obj07.cpp:
     complete
     .text start:0x02112080 end:0x021121a4
 
-src/_ZN9WDW_WaterD1Ev.cpp:
+src/actors/d_a_obj_wc_mizu.cpp:
     complete
-    .text start:0x021121a4 end:0x021121f0
+    .text start:0x021121a4 end:0x02112630
 
-src/_ZN9WDW_WaterD0Ev.cpp:
+src/actors/d_a_obj_wc_obj04.cpp:
     complete
-    .text start:0x021121f0 end:0x02112250
-
-src/func_ov029_02112250.cpp:
-    complete
-    .text start:0x02112250 end:0x021122b4
-
-src/func_ov029_021122b4.c:
-    complete
-    .text start:0x021122b4 end:0x021122dc
-
-src/_ZN9WDW_Water16CleanupResourcesEv.cpp:
-    complete
-    .text start:0x021122dc end:0x02112320
-
-src/_ZN9WDW_Water6RenderEv.cpp:
-    complete
-    .text start:0x02112320 end:0x02112354
-
-src/_ZN9WDW_Water8BehaviorEv.cpp:
-    complete
-    .text start:0x02112354 end:0x021124d0
-
-src/_ZN9WDW_Water13InitResourcesEv.cpp:
-    complete
-    .text start:0x021124d0 end:0x021125f8
-
-src/daObjWc_Mizu_c_classInit.c:
-    complete
-    .text start:0x021125f8 end:0x02112630
-
-src/_ZN20SwitchActivatedPlankD1Ev.cpp:
-    complete
-    .text start:0x02112630 end:0x0211267c
-
-src/_ZN20SwitchActivatedPlankD0Ev.cpp:
-    complete
-    .text start:0x0211267c end:0x021126dc
-
-src/func_ov029_021126dc.c:
-    complete
-    .text start:0x021126dc end:0x02112710
-
-src/func_ov029_02112710.c:
-    complete
-    .text start:0x02112710 end:0x02112750
-
-src/_ZN20SwitchActivatedPlank16CleanupResourcesEv.cpp:
-    complete
-    .text start:0x02112750 end:0x02112794
-
-src/_ZN20SwitchActivatedPlank6RenderEv.cpp:
-    complete
-    .text start:0x02112794 end:0x021127cc
-
-src/_ZN20SwitchActivatedPlank8BehaviorEv.cpp:
-    complete
-    .text start:0x021127cc end:0x021128b0
-
-src/_ZN20SwitchActivatedPlank13InitResourcesEv.cpp:
-    complete
-    .text start:0x021128b0 end:0x02112964
-
-src/daObjWc_Obj04_c_classInit.c:
-    complete
-    .text start:0x02112964 end:0x0211299c
+    .text start:0x02112630 end:0x0211299c
 
 src/__sinit_ov029_02112b38.c:
     complete

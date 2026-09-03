@@ -217,19 +217,6 @@ class ValidateMerge(unittest.TestCase):
         self.assertIn("| `arm9:0x02000000` | `src/Example.c` | alice | bob |",
                       report["reportMarkdown"])
 
-    def test_attribution_override_is_not_needed_for_a_pure_change(self):
-        # The override label exists for a real LOSS. A pure reassignment already passes
-        # without it, and passing the label besides changes nothing about that.
-        (self.repo / "attribution.json").write_text(
-            '{"overrides": {"src/Example.c": "bob"}}\n', encoding="utf-8")
-        commit(self.repo, "pin credit", "maintainer")
-        report = VM.build_report(self.base, "HEAD", allow_attribution_change=True)
-        self.assertEqual(report["status"], "Passed")
-        self.assertEqual(report["reasons"], [])
-        self.assertIn("src/Example.c: alice -> bob", "; ".join(report["warnings"]))
-        self.assertNotIn("(override label)", report["reportMarkdown"])
-        self.assertEqual(len(report["attribution"]["changed"]), 1)
-
     def test_a_wholesale_credit_move_stays_within_the_relay_summary_limit(self):
         # The relay rejects a result whose summary runs past 500 characters, and a
         # rejected result is a job that never reports at all. Naming files is worth
@@ -257,15 +244,15 @@ class ValidateMerge(unittest.TestCase):
         self.assertIn("+37 more", "; ".join(report["warnings"]))
         self.assertIn("+15 more", report["reportMarkdown"])
 
-    def test_override_does_not_excuse_a_non_attribution_failure(self):
-        # Scoped to attribution only: a label about credit must not wave through a
-        # PR that actually lost matched code.
+    def test_lost_credit_does_not_excuse_a_non_attribution_failure(self):
+        # Attribution never blocks a merge, but that must not mask a PR that
+        # actually lost matched code alongside its credit.
         (self.repo / "src" / "Example.c").write_text(
             "// NONMATCHING\nint Example(void) { return 0; }\n")
         (self.repo / "attribution.json").write_text(
             '{"overrides": {"src/Example.c": "bob"}}\n', encoding="utf-8")
         commit(self.repo, "unmatch and repin", "maintainer")
-        report = VM.build_report(self.base, "HEAD", allow_attribution_change=True)
+        report = VM.build_report(self.base, "HEAD")
         self.assertEqual(report["status"], "Failed")
         self.assertIn("lost 1 matched function(s)", report["reasons"])
 
@@ -373,15 +360,8 @@ class ValidateMerge(unittest.TestCase):
         head = commit(self.repo, "banner Claimed", "bob")
 
         # Withdrawing also hands the claim's contributor credit back to nobody, which
-        # is its own reason and keeps its own label. That is the real shape of such a
-        # PR: attribution-override for the credit, and this rule for the count. Assert
-        # the two separately so neither can be mistaken for the other.
-        unlabelled = VM.build_report(base, head)
-        self.assertEqual(unlabelled["status"], "Failed")
-        self.assertEqual([r.split(" (")[0] for r in unlabelled["reasons"]],
-                         ["contributor attribution was lost"])
-
-        report = VM.build_report(base, head, allow_attribution_change=True)
+        # is reported as its own warning and never blocks the merge.
+        report = VM.build_report(base, head)
         self.assertEqual(report["status"], "Passed")
         self.assertEqual(report["coverage"]["delta"]["withdrawnMatchedFunctions"], 1)
         self.assertEqual(report["coverage"]["delta"]["lostMatchedFunctions"], 0)

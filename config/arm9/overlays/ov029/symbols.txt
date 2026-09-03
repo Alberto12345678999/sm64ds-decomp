@@ -2,24 +2,24 @@ _ZN14daObjWcObj01_cD1Ev kind:function(arm,size=0x50) addr:0x021111a0
 _ZN14daObjWcObj01_cD0Ev kind:function(arm,size=0x64) addr:0x021111f0
 _ZN14daObjWcObj01_c13InitResourcesEv kind:function(arm,size=0xec) addr:0x02111254
 daObjWcObj01_c_Spawn kind:function(arm,size=0x3c) addr:0x02111340
-_ZN9ArrowLiftD1Ev kind:function(arm,size=0x44) addr:0x0211137c
-_ZN9ArrowLiftD0Ev kind:function(arm,size=0x58) addr:0x021113c0
-_ZN9ArrowLift16CleanupResourcesEv kind:function(arm,size=0x44) addr:0x02111418
-_ZN9ArrowLift6RenderEv kind:function(arm,size=0x28) addr:0x0211145c
-_ZN9ArrowLift8BehaviorEv kind:function(arm,size=0x174) addr:0x02111484
-_ZN9ArrowLift13InitResourcesEv kind:function(arm,size=0xcc) addr:0x021115f8
+_ZN15daObjWc_Obj02_cD1Ev kind:function(arm,size=0x44) addr:0x0211137c
+_ZN15daObjWc_Obj02_cD0Ev kind:function(arm,size=0x58) addr:0x021113c0
+_ZN15daObjWc_Obj02_c16CleanupResourcesEv kind:function(arm,size=0x44) addr:0x02111418
+_ZN15daObjWc_Obj02_c6RenderEv kind:function(arm,size=0x28) addr:0x0211145c
+_ZN15daObjWc_Obj02_c8BehaviorEv kind:function(arm,size=0x174) addr:0x02111484
+_ZN15daObjWc_Obj02_c13InitResourcesEv kind:function(arm,size=0xcc) addr:0x021115f8
 func_ov029_021116c4 kind:function(arm,size=0x20) addr:0x021116c4
 func_ov029_021116e4 kind:function(arm,size=0x14) addr:0x021116e4
 daObjWc_Obj02_c_classInit kind:function(arm,size=0x30) addr:0x021116f8
-_ZN12WaterDiamondD1Ev kind:function(arm,size=0x38) addr:0x02111728
-_ZN12WaterDiamondD0Ev kind:function(arm,size=0x4c) addr:0x02111760
-_ZN12WaterDiamond19CheckClsnWithPlayerEv kind:function(arm,size=0xa4) addr:0x021117ac
-_ZN12WaterDiamond10SetWaterIDEv kind:function(arm,size=0x78) addr:0x02111850
-_ZN12WaterDiamond20UpdateModelTransformEv kind:function(arm,size=0x40) addr:0x021118c8
-_ZN12WaterDiamond16CleanupResourcesEv kind:function(arm,size=0x24) addr:0x02111908
-_ZN12WaterDiamond6RenderEv kind:function(arm,size=0x28) addr:0x0211192c
-_ZN12WaterDiamond8BehaviorEv kind:function(arm,size=0xb0) addr:0x02111954
-_ZN12WaterDiamond13InitResourcesEv kind:function(arm,size=0x80) addr:0x02111a04
+_ZN15daObjWc_Obj03_cD1Ev kind:function(arm,size=0x38) addr:0x02111728
+_ZN15daObjWc_Obj03_cD0Ev kind:function(arm,size=0x4c) addr:0x02111760
+_ZN15daObjWc_Obj03_c19CheckClsnWithPlayerEv kind:function(arm,size=0xa4) addr:0x021117ac
+_ZN15daObjWc_Obj03_c10SetWaterIDEv kind:function(arm,size=0x78) addr:0x02111850
+_ZN15daObjWc_Obj03_c20UpdateModelTransformEv kind:function(arm,size=0x40) addr:0x021118c8
+_ZN15daObjWc_Obj03_c16CleanupResourcesEv kind:function(arm,size=0x24) addr:0x02111908
+_ZN15daObjWc_Obj03_c6RenderEv kind:function(arm,size=0x28) addr:0x0211192c
+_ZN15daObjWc_Obj03_c8BehaviorEv kind:function(arm,size=0xb0) addr:0x02111954
+_ZN15daObjWc_Obj03_c13InitResourcesEv kind:function(arm,size=0x80) addr:0x02111a04
 daObjWc_Obj03_c_classInit kind:function(arm,size=0x40) addr:0x02111a84
 _ZN15daObjWc_Obj05_cD1Ev kind:function(arm,size=0x44) addr:0x02111ac4
 _ZN15daObjWc_Obj05_cD0Ev kind:function(arm,size=0x58) addr:0x02111b08
@@ -39,23 +39,23 @@ _ZN15daObjWc_Obj07_cD0Ev kind:function(arm,size=0x64) addr:0x021120d0
 _ZN15daObjWc_Obj07_c16CleanupResourcesEv kind:function(arm,size=0x14) addr:0x02112134
 _ZN15daObjWc_Obj07_c13InitResourcesEv kind:function(arm,size=0x20) addr:0x02112148
 daObjWc_Obj07_c_Spawn kind:function(arm,size=0x3c) addr:0x02112168
-_ZN9WDW_WaterD1Ev kind:function(arm,size=0x4c) addr:0x021121a4
-_ZN9WDW_WaterD0Ev kind:function(arm,size=0x60) addr:0x021121f0
+_ZN14daObjWc_Mizu_cD1Ev kind:function(arm,size=0x4c) addr:0x021121a4
+_ZN14daObjWc_Mizu_cD0Ev kind:function(arm,size=0x60) addr:0x021121f0
 func_ov029_02112250 kind:function(arm,size=0x64) addr:0x02112250
 func_ov029_021122b4 kind:function(arm,size=0x28) addr:0x021122b4
-_ZN9WDW_Water16CleanupResourcesEv kind:function(arm,size=0x44) addr:0x021122dc
-_ZN9WDW_Water6RenderEv kind:function(arm,size=0x34) addr:0x02112320
-_ZN9WDW_Water8BehaviorEv kind:function(arm,size=0x17c) addr:0x02112354
-_ZN9WDW_Water13InitResourcesEv kind:function(arm,size=0x128) addr:0x021124d0
+_ZN14daObjWc_Mizu_c16CleanupResourcesEv kind:function(arm,size=0x44) addr:0x021122dc
+_ZN14daObjWc_Mizu_c6RenderEv kind:function(arm,size=0x34) addr:0x02112320
+_ZN14daObjWc_Mizu_c8BehaviorEv kind:function(arm,size=0x17c) addr:0x02112354
+_ZN14daObjWc_Mizu_c13InitResourcesEv kind:function(arm,size=0x128) addr:0x021124d0
 daObjWc_Mizu_c_classInit kind:function(arm,size=0x38) addr:0x021125f8
-_ZN20SwitchActivatedPlankD1Ev kind:function(arm,size=0x4c) addr:0x02112630
-_ZN20SwitchActivatedPlankD0Ev kind:function(arm,size=0x60) addr:0x0211267c
+_ZN15daObjWc_Obj04_cD1Ev kind:function(arm,size=0x4c) addr:0x02112630
+_ZN15daObjWc_Obj04_cD0Ev kind:function(arm,size=0x60) addr:0x0211267c
 func_ov029_021126dc kind:function(arm,size=0x34) addr:0x021126dc
 func_ov029_02112710 kind:function(arm,size=0x40) addr:0x02112710
-_ZN20SwitchActivatedPlank16CleanupResourcesEv kind:function(arm,size=0x44) addr:0x02112750
-_ZN20SwitchActivatedPlank6RenderEv kind:function(arm,size=0x38) addr:0x02112794
-_ZN20SwitchActivatedPlank8BehaviorEv kind:function(arm,size=0xe4) addr:0x021127cc
-_ZN20SwitchActivatedPlank13InitResourcesEv kind:function(arm,size=0xb4) addr:0x021128b0
+_ZN15daObjWc_Obj04_c16CleanupResourcesEv kind:function(arm,size=0x44) addr:0x02112750
+_ZN15daObjWc_Obj04_c6RenderEv kind:function(arm,size=0x38) addr:0x02112794
+_ZN15daObjWc_Obj04_c8BehaviorEv kind:function(arm,size=0xe4) addr:0x021127cc
+_ZN15daObjWc_Obj04_c13InitResourcesEv kind:function(arm,size=0xb4) addr:0x021128b0
 daObjWc_Obj04_c_classInit kind:function(arm,size=0x38) addr:0x02112964
 data_ov029_0211299c kind:data(any) addr:0x0211299c
 data_ov029_021129a0 kind:data(any) addr:0x021129a0
@@ -184,14 +184,12 @@ g_profile_WC_OBJ02 kind:data(any) addr:0x02113ccc ambiguous
 data_ov029_02113cd4 kind:data(any) addr:0x02113cd4 ambiguous
 data_ov029_02113cec kind:data(any) addr:0x02113cec ambiguous
 _ZTV15daObjWc_Obj02_c kind:data(any) addr:0x02113cf0
-_ZTV9ArrowLift kind:data(any) addr:0x02113cf0
 data_ov029_02113cf4 kind:data(any) addr:0x02113cf4 ambiguous
 data_ov029_02113d30 kind:data(any) addr:0x02113d30 ambiguous
 _ZTI15daObjWc_Obj03_c kind:data(any) addr:0x02113d70
 _ZTS15daObjWc_Obj03_c kind:data(any) addr:0x02113d7c
 g_profile_WC_OBJ03 kind:data(any) addr:0x02113d90 ambiguous
 data_ov029_02113da8 kind:data(any) addr:0x02113da8 ambiguous
-_ZTV12WaterDiamond kind:data(any) addr:0x02113db4
 _ZTV15daObjWc_Obj03_c kind:data(any) addr:0x02113db4
 data_ov029_02113dc4 kind:data(any) addr:0x02113dc4 ambiguous
 data_ov029_02113e00 kind:data(any) addr:0x02113e00 ambiguous
@@ -218,7 +216,6 @@ _ZTV15daObjWc_Obj07_c kind:data(any) addr:0x02114018
 _ZTI14daObjWc_Mizu_c kind:data(any) addr:0x02114098
 _ZTS14daObjWc_Mizu_c kind:data(any) addr:0x021140a4
 g_profile_WC_MIZU kind:data(any) addr:0x021140b8 ambiguous
-_ZTV9WDW_Water kind:data(any) addr:0x021140dc
 _ZTV14daObjWc_Mizu_c kind:data(any) addr:0x021140dc
 data_ov029_021140ec kind:data(any) addr:0x021140ec ambiguous
 data_ov029_021140f8 kind:data(any) addr:0x021140f8 ambiguous
@@ -226,7 +223,6 @@ data_ov029_02114108 kind:data(any) addr:0x02114108 ambiguous
 _ZTI15daObjWc_Obj04_c kind:data(any) addr:0x0211415c
 _ZTS15daObjWc_Obj04_c kind:data(any) addr:0x02114168
 g_profile_WC_OBJ04 kind:data(any) addr:0x0211417c ambiguous
-_ZTV20SwitchActivatedPlank kind:data(any) addr:0x021141a0
 _ZTV15daObjWc_Obj04_c kind:data(any) addr:0x021141a0
 data_ov029_021141cc kind:data(any) addr:0x021141cc ambiguous
 data_ov029_02114220 kind:bss addr:0x02114220

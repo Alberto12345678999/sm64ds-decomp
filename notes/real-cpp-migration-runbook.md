@@ -75,18 +75,10 @@ header evidence through final verification. Two agents must not concurrently
 edit the same class layout, base class, destructor graph, shared header, delink
 range, or production TU.
 
-On a machine with the local Redis coordination service, use the installed
-`agent-lock` skill before fan-out. The orchestrator, not the worker, acquires the
-complete file and half-open ROM-range lock set before dispatch. Give every worker
-a distinct `AGENTLOCK_HOLDER`, renew work that approaches its TTL, and release on
-every success and error path. A conflict means assign different work or wait;
-do not launch an agent and let it discover the overlap after editing.
-
-Redis locks are deliberately short-lived and machine-local. They prevent two
-local LLM sessions from editing the same files or address range, but do not
-replace repository claims or Git history as durable coordination. Follow the
-installed skill for service startup, acquire/check/list/renew/release commands,
-and the read-only local lock dashboard.
+No local lock tooling is available now. The orchestrator, not the worker, must
+still confirm the complete file and half-open ROM-range set for each lane is
+disjoint from every other lane before dispatch. A conflict means assign different
+work or wait; do not launch an agent and let it discover the overlap after editing.
 
 A practical four-agent team is:
 

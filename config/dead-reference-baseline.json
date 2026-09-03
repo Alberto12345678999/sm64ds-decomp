@@ -2,8 +2,8 @@
  "_comment": "Dead path references in prose that are known and accepted: synthetic example paths in tests, paths belonging to other repositories, paths that exist only on an unlanded branch, and prose that deliberately names something historical. tools/check_dead_references.py fails on any dead reference NOT listed here. Regenerate with --update, but read the diff: a new entry is usually a rename someone forgot to follow through into the docs.",
  "known": [
   {
-   "file": "AGENTS.md",
-   "ref": "tools/CI/docs"
+   "file": ".github/workflows/source-coverage.yml",
+   "ref": "mods/Player_ScaleByCharFactor.c"
   },
   {
    "file": "notes/actor-leaf-provenance.md",
@@ -80,6 +80,10 @@
   {
    "file": "notes/archive/plan-gen-header.md",
    "ref": "tools/decl_headers.py"
+  },
+  {
+   "file": "notes/archive/plan-scalar-markers.md",
+   "ref": "src/_ZN20SwitchActivatedPlank8BehaviorEv.cpp"
   },
   {
    "file": "notes/archive/plan-scalar-markers.md",
@@ -220,6 +224,10 @@
   {
    "file": "notes/research-matching-levers.md",
    "ref": "src/randomizer.py"
+  },
+  {
+   "file": "notes/rom-build.md",
+   "ref": "mods/Player_ScaleByCharFactor.c"
   },
   {
    "file": "notes/rom-build.md",

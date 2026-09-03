@@ -358,8 +358,18 @@ def _prepare_one(entry, config_root, work_root, jobs):
     if reasons:
         _raise(f"{entry['id']} exact RTTI externalization", reasons)
 
+    aliased_obj, undefined_aliases, reasons = \
+        TB.apply_undefined_symbol_alias_policy(externalized_obj, entry)
+    if reasons:
+        _raise(f"{entry['id']} undefined symbol aliases", reasons)
+
+    bound_obj, symbol_bindings, reasons = \
+        TB.apply_symbol_binding_policy(aliased_obj, entry)
+    if reasons:
+        _raise(f"{entry['id']} symbol binding rewrites", reasons)
+
     ordered_obj, section_order, reasons = \
-        TB.prepare_owned_nontext_section_order(externalized_obj, entry, claims)
+        TB.prepare_owned_nontext_section_order(bound_obj, entry, claims)
     if reasons:
         _raise(f"{entry['id']} manifest non-text section order", reasons)
 

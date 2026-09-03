@@ -484,7 +484,7 @@ def _credit_detail(changed, lost):
 
 def build_report(base, head, base_rom=None, head_rom=None, link_rows=None,
                  require_merge_commit=False, expected_pr_head=None,
-                 port_report=None, allow_attribution_change=False):
+                 port_report=None):
     base_sha, head_sha = resolve_commit(base), resolve_commit(head)
     parents = _git("rev-list", "--parents", "-n", "1", head_sha).split()
     is_merge = len(parents) >= 3
@@ -601,21 +601,13 @@ def build_report(base, head, base_rom=None, head_rom=None, link_rows=None,
     dropped_enrollment = sorted(set(be["source"]) - set(he["source"]))
     # Reassignment alone (a name moving from one contributor to another, credit_changes)
     # is never a blocker: a rebase, a rename, or resolving someone else's merge conflict
-    # all relabel a function's "last touched by" without losing anything, and this project
-    # spends no tokens defending credit. Only an outright LOSS (lost_credit: a function
-    # that had a contributor and now has none) is a real regression, and the
-    # attribution-override label (carried on the job by tangos-backend) makes that one
-    # finding advisory too -- an override says "I know, and I meant it", not "do not
-    # look" -- for this one pull request.
+    # all relabel a function's "last touched by" without losing anything, and this
+    # project spends no tokens defending credit -- not even for an outright LOSS
+    # (lost_credit: a function that had a contributor and now has none). Both are
+    # reported below so a PR author can see what moved, but neither fails the merge.
     credit_moved = bool(credit_changes or lost_credit)
     new_unattributed = (ha["stats"]["unattributedFunctions"]
                         > ba["stats"]["unattributedFunctions"])
-    if lost_credit and not allow_attribution_change:
-        reasons.append("contributor attribution was lost "
-                       f"({_credit_detail(credit_changes, lost_credit)}); label the pull "
-                       "request attribution-override to accept it")
-    if new_unattributed and not allow_attribution_change:
-        reasons.append("the merge introduced an unattributed matched function")
     if diff["leftoverOldPaths"]:
         reasons.append("old source paths remain after rename")
     if new_transcribed:
@@ -660,18 +652,16 @@ def build_report(base, head, base_rom=None, head_rom=None, link_rows=None,
             + ", ".join(w["path"] for w in withdrawn[:3])
             + (f", +{len(withdrawn) - 3} more" if len(withdrawn) > 3 else ""))
     if credit_changes:
-        # Never a blocker (see above) -- reported so a reader can still see whose credit
-        # moved, without needing the attribution-override label to get a passing merge.
+        # Never a blocker (see above) -- reported so a reader can still see whose
+        # credit moved.
         warnings.append("contributor attribution changed, not a blocker "
                         f"({_credit_detail(credit_changes, [])})")
-    if allow_attribution_change and lost_credit:
-        warnings.append("attribution-override label: contributor attribution was lost "
-                        f"({_credit_detail([], lost_credit)}), "
-                        "accepted without failing the pull request")
-    if allow_attribution_change and new_unattributed:
-        warnings.append("attribution-override label: the merge introduced an "
-                        "unattributed matched function, accepted without failing "
-                        "the pull request")
+    if lost_credit:
+        warnings.append("contributor attribution was lost, not a blocker "
+                        f"({_credit_detail([], lost_credit)})")
+    if new_unattributed:
+        warnings.append("the merge introduced an unattributed matched function, "
+                        "not a blocker")
     if same_baseline_failure:
         warnings.append("base and merge share the same pre-existing ROM-build failure")
     if (dropped_enrollment
@@ -733,13 +723,11 @@ def build_report(base, head, base_rom=None, head_rom=None, link_rows=None,
         if hf["stats"]["totalBytes"] else 0.0)
     if reasons:
         summary = "Validation failed: " + "; ".join(reasons)
-    elif allow_attribution_change and (lost_credit or new_unattributed):
-        # Passing *because* of the label is not the same verdict as nothing having been
-        # lost, and the one-liner is what most people read.
-        summary = ("Committed merge passes; the attribution-override label accepted "
-                   f"{len(lost_credit)} lost credit(s)"
+    elif lost_credit or new_unattributed:
+        summary = ("Committed merge passes; "
+                   f"{len(lost_credit)} lost credit(s) noted"
                    + (", including an unattributed match" if new_unattributed else "")
-                   + ".")
+                   + ", not a blocker.")
     elif credit_changes:
         summary = (f"Committed merge passes; {len(credit_changes)} contributor credit "
                    "reassignment(s) noted, not a blocker.")
@@ -767,7 +755,7 @@ def build_report(base, head, base_rom=None, head_rom=None, link_rows=None,
         "attribution": {"base": ba["contributors"], "head": ha["contributors"],
                         "baseStats": ba["stats"], "headStats": ha["stats"],
                         "added": added_credit, "changed": credit_changes,
-                        "lost": lost_credit, "overridden": allow_attribution_change},
+                        "lost": lost_credit},
         "diff": diff,
         "asmPolicy": {"transcribed": new_transcribed, "unbanneredAsm": new_unbannered,
                       "strandedMarkers": stranded_markers},
@@ -827,16 +815,10 @@ def render_markdown(r):
             f"({s['head']['sourceBytesPercent']:.2f}%, {_signed(d['sourceBuiltBytes'])}) "
             f"-- differs from byte-verified by "
             f"{s['head']['sourceFunctions'] - h['verifiedFunctions']:+,} |")
-    # "(override label)" only when the label actually waived something -- a pure
-    # reassignment (changed, no lost) already passes on its own, so tagging it here
-    # would read as "this needed permission" when it did not.
-    overrode_something = bool(r["attribution"].get("overridden")
-                              and r["attribution"]["lost"])
     lines += [
              f"| Contributor credit | {len(r['attribution']['added'])} added, "
              f"{len(r['attribution']['changed'])} changed, "
-             f"{len(r['attribution']['lost'])} lost"
-             f"{' (override label)' if overrode_something else ''} |",
+             f"{len(r['attribution']['lost'])} lost |",
              f"| Relocation check | {l['checked']} checked; {relocation_summary} |"]
     # Optional phase: no row at all when it did not run, so an older worker's
     # report reads exactly as it did before.
@@ -1027,18 +1009,13 @@ def main():
     ap.add_argument("--port-refcheck-report",
                     help="tools/port_refcheck.py --json output; the check is "
                          "reported only when this is supplied and exists")
-    ap.add_argument("--allow-attribution-change", action="store_true",
-                    help="report attribution changes as warnings instead of failing "
-                         "the merge; the worker passes this for a pull request "
-                         "carrying the attribution-override label")
     ap.add_argument("--out", required=True)
     ap.add_argument("--markdown")
     args = ap.parse_args()
     report = build_report(args.base, args.head, _load_json(args.base_rom_report),
                           _load_json(args.head_rom_report), _load_json(args.link_report),
                           args.require_merge_commit, args.expected_pr_head,
-                          _load_json(args.port_refcheck_report, optional=True),
-                          args.allow_attribution_change)
+                          _load_json(args.port_refcheck_report, optional=True))
     pathlib.Path(args.out).write_text(json.dumps(report, indent=2) + "\n",
                                       encoding="utf-8", newline="\n")
     if args.markdown:
