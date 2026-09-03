@@ -2591,3 +2591,7 @@ ov072	0x02122954	data_ov072_02122954	g_profile_BIG_SNOWMAN	reconstructed profile
 ov072	0x02122978	data_ov072_02122978	_ZTV11daBgSnwmn_c	ROM RTTI class identity; address-point symbol already configured at the same address
 ov032	0x0211244c	func_ov032_0211244c	daBakubaku_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov032	0x02113800	data_ov032_02113800	g_profile_BAKUBAKU	reconstructed profile global; descriptor-stored profile ID 228+literal ROM ID BAKUBAKU+registry role+later EAD lineage; exact SM64DS spelling not preserved
+ov016	0x02112ef4	_ZN23FloatOnWaterPlatformJrbD1Ev	_ZN13daObjKi_Ita_cD1Ev	ROM RTTI class identity; unchanged function address; vtable slot 16
+ov016	0x02112f44	_ZN23FloatOnWaterPlatformJrbD0Ev	_ZN13daObjKi_Ita_cD0Ev	ROM RTTI class identity; unchanged function address; vtable slot 17
+ov016	0x02112fa8	_ZN23FloatOnWaterPlatformJrb13InitResourcesEv	_ZN13daObjKi_Ita_c13InitResourcesEv	ROM RTTI class identity; unchanged function address; vtable slot 0
+ov016	0x02114bcc	_ZTV23FloatOnWaterPlatformJrb	_ZTV13daObjKi_Ita_c	ROM RTTI class identity; unchanged public vtable address point
