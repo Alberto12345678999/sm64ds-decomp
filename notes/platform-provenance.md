@@ -332,7 +332,7 @@ so plausibly a one-second timer, but only ever written), `unk_350`, `unk_374`,
 
 ---
 
-## `include/TiltingPlatformLll.h` — retraction, kept for the trap
+## `include/daObjFl_Gura_c.h` — retraction, kept for the trap
 
 Lethal Lava Land's tilting slab. It does **not** derive from `dBgActor_c`; it
 derives from `daObjGuragura_c`, which derives from `dBgActor_c`, and the
@@ -342,7 +342,7 @@ emits two.
 
     _ZTI14daObjFl_Gura_c     ov064 0x0211bce8
     _ZTS14daObjFl_Gura_c     ov064 0x0211bcf4
-    _ZTV18TiltingPlatformLll ov064 0x0211bd2c   (its record sits at V-4)
+    _ZTV14daObjFl_Gura_c     ov064 0x0211bd2c   (public address point)
     kind  __si_class_type_info, ONE base, subobject offset 0
     base  daObjGuragura_c, ov002 0x0210905c
 
@@ -356,7 +356,7 @@ the base leaves null.
 at +0x360". `MetalNetLift` is a different class: its factory stores
 `_ZTV12MetalNetLift`, ov064 0x0211bc68, and never mentions this one. This class's
 factory is `daObjFl_Gura_c_classInit`, which allocates 848 = 0x350, stores
-`_ZTV15daObjGuragura_c` and then `_ZTV18TiltingPlatformLll`, ov064 0x0211bd2c, and
+`_ZTV15daObjGuragura_c` and then `_ZTV14daObjFl_Gura_c`, ov064 0x0211bd2c, and
 constructs no `PathPtr`. The two vtables are 0xc4 apart in the same overlay, which
 is presumably how they were crossed. Both relocation sets are in
 `config/arm9/overlays/ov064/relocs.txt` and they do not overlap. Nothing consumed
