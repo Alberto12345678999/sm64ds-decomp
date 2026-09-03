@@ -1,12 +1,12 @@
 //cpp
-#include "WaterDiamond.h"
+#include "daObjWc_Obj03_c.h"
 #include "daObjWc_Mizu_c.h"
 
 struct Sound {
     static void PlayBank3(u32 id, const Vector3 &pos);
 };
 
-void WaterDiamond::CheckClsnWithPlayer()
+void daObjWc_Obj03_c::CheckClsnWithPlayer()
 {
     if (mActive != 0)
         return;

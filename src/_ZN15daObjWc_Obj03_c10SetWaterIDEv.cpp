@@ -1,8 +1,8 @@
 //cpp
-#include "WaterDiamond.h"
+#include "daObjWc_Obj03_c.h"
 #include "daObjWc_Mizu_c.h"
 
-void WaterDiamond::SetWaterID()
+void daObjWc_Obj03_c::SetWaterID()
 {
   dActor_c *water;
   if (mWaterID != 0) return;

@@ -1,9 +1,9 @@
 //cpp
-// @symbol _ZN12WaterDiamond8BehaviorEv
-#include "WaterDiamond.h"
+// @symbol _ZN15daObjWc_Obj03_c8BehaviorEv
+#include "daObjWc_Obj03_c.h"
 #include "daObjWc_Mizu_c.h"
 
-int WaterDiamond::Behavior()
+int daObjWc_Obj03_c::Behavior()
 {
     SetWaterID();
     if (mWaterID == 0) return 1;

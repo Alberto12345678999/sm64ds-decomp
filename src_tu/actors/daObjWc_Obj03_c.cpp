@@ -1,5 +1,5 @@
 //cpp
-/* HAND-ASSEMBLED translation unit -- ov029/WaterDiamond (10 function(s)).
+/* HAND-ASSEMBLED translation unit -- ov029/daObjWc_Obj03_c (10 function(s)).
  * tubuild create refused this TU (legacy bodies wrapped in extern "C" { }),
  * so this is a raw concatenation of the complete legacy files in REVERSE
  * ROM order (mwccarm emits one .text section per function in the reverse
@@ -7,15 +7,15 @@
  * the manifest notes.
  *
  * Assembled from these legacy one-function sources (ROM address order):
- *   [0] 0x02111728  src/_ZN12WaterDiamondD1Ev.cpp
- *   [1] 0x02111760  src/_ZN12WaterDiamondD0Ev.c
+ *   [0] 0x02111728  src/_ZN15daObjWc_Obj03_cD1Ev.cpp
+ *   [1] 0x02111760  src/_ZN15daObjWc_Obj03_cD0Ev.c
  *   [2] 0x021117ac  src/func_ov029_021117ac.cpp
  *   [3] 0x02111850  src/func_ov029_02111850.cpp
  *   [4] 0x021118c8  src/func_ov029_021118c8.c
- *   [5] 0x02111908  src/_ZN12WaterDiamond16CleanupResourcesEv.c
- *   [6] 0x0211192c  src/_ZN12WaterDiamond6RenderEv.cpp
- *   [7] 0x02111954  src/_ZN12WaterDiamond8BehaviorEv.cpp
- *   [8] 0x02111a04  src/_ZN12WaterDiamond13InitResourcesEv.cpp
+ *   [5] 0x02111908  src/_ZN15daObjWc_Obj03_c16CleanupResourcesEv.c
+ *   [6] 0x0211192c  src/_ZN15daObjWc_Obj03_c6RenderEv.cpp
+ *   [7] 0x02111954  src/_ZN15daObjWc_Obj03_c8BehaviorEv.cpp
+ *   [8] 0x02111a04  src/_ZN15daObjWc_Obj03_c13InitResourcesEv.cpp
  *   [9] 0x02111a84  src/daObjWc_Obj03_c_classInit.c
  *
  * THREE MEMBERS HERE ARE A REGRESSION ON THE LEGACY SOURCE, AND THIS TU MUST
@@ -23,13 +23,13 @@
  * ordinals [2], [3] and [4] `src/func_ov029_*`, but those files no longer
  * exist under those names and never held the best recovery. The real symbols
  * are in config/arm9/overlays/ov029/symbols.txt:16-18 --
- *   0x021117ac  _ZN12WaterDiamond19CheckClsnWithPlayerEv
- *   0x02111850  _ZN12WaterDiamond10SetWaterIDEv
- *   0x021118c8  _ZN12WaterDiamond20UpdateModelTransformEv
+ *   0x021117ac  _ZN15daObjWc_Obj03_c19CheckClsnWithPlayerEv
+ *   0x02111850  _ZN15daObjWc_Obj03_c10SetWaterIDEv
+ *   0x021118c8  _ZN15daObjWc_Obj03_c20UpdateModelTransformEv
  * -- and src/ still carries all three as real named-member C++ methods reading
  * mCylinder.otherOwner, water->mTargetPosY, mModel.mat4x3 and so on. What is
  * written below instead is raw pointer arithmetic on `char *c` under the
- * func_<addr> placeholder names, and config/tu_manifest.d/ov029/WaterDiamond.json
+ * func_<addr> placeholder names, and config/tu_manifest.d/ov029/daObjWc_Obj03_c.json
  * declares those placeholders as the TU's symbols.
  *
  * Unlike the two defects fixed alongside this one, these three RESOLVE: the
@@ -48,7 +48,7 @@
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 // @symbol daObjWc_Obj03_c_classInit
 /* recovered: vtable identified, globals resolved, declarations from a shared header */
-#define WATERDIAMOND_H  /* suppress include/WaterDiamond.h: its WaterDiamond is the flat C view without the destructor; the TU-local class below is the C++ view, same evidenced offsets */
+#define DAOBJWC_OBJ03_C_H  /* suppress include/daObjWc_Obj03_c.h: its daObjWc_Obj03_c is the flat C view without the destructor; the TU-local class below is the C++ view, same evidenced offsets */
 #include "Model.h"
 #include "dCcAc_c.h"
 
@@ -66,16 +66,16 @@ struct dActor_c {   /* shadow base: vptr at 0, evidenced dActor_c fields, size 0
     virtual ~dActor_c();
     static dActor_c *FindWithID(unsigned int id);
     /* dActor_c's own inline operator delete (include/dActor_c.h): what lets the
-       single ~WaterDiamond() reproduce the ROM's deleting destructor D0 */
+       single ~daObjWc_Obj03_c() reproduce the ROM's deleting destructor D0 */
     void operator delete(void *ptr) { _ZN6Memory10DeallocateEPvP4Heap(ptr, data_020a0eac); }
 };
-struct WaterDiamond : dActor_c {
+struct daObjWc_Obj03_c : dActor_c {
     Model mModel;                            /* 0x0d4 */
     dCcAc_c mdCcAc_c;  /* 0x124 */
     s32 mWaterID;                             /* 0x158 */
     s8  mWaterParam;
     u8  mActive;
-    virtual ~WaterDiamond();
+    virtual ~daObjWc_Obj03_c();
     int Behavior();
     int InitResources();
     int Render();
@@ -86,15 +86,15 @@ struct WaterDiamond : dActor_c {
 #include "decl_dCcAc_c.h"
 #include "decl_common.h"
 /* recovered: vtable identified, globals resolved */
-/* resolved: VT0 = _ZTV12WaterDiamond */
+/* resolved: VT0 = _ZTV15daObjWc_Obj03_c */
 /* Reconstructed source-style name; exact original SM64DS spelling is not
- * preserved. Historical alias: WaterDiamond_Spawn. */
+ * preserved. Historical alias: daObjWc_Obj03_c_Spawn. */
 int *daObjWc_Obj03_c_classInit(void)
 {
     int *p = (int *)_ZN7fBase_cnwEj(352);
     if (p) {
         _ZN8dActor_cC2Ev(p);
-        p[0] = (int)&_ZTV12WaterDiamond[2]; /* +8: this TU defines the vtable */
+        p[0] = (int)&_ZTV15daObjWc_Obj03_c[2]; /* +8: this TU defines the vtable */
         _ZN5ModelC1Ev((char *)p + 0xd4);
         _ZN7dCcAc_cC1Ev((char *)p + 0x124);
     }
@@ -103,20 +103,20 @@ int *daObjWc_Obj03_c_classInit(void)
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 8 -- _ZN12WaterDiamond13InitResourcesEv, 0x02111a04, size 0x80 */
+/* ROM ordinal 8 -- _ZN15daObjWc_Obj03_c13InitResourcesEv, 0x02111a04, size 0x80 */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN12WaterDiamond13InitResourcesEv
+// @symbol _ZN15daObjWc_Obj03_c13InitResourcesEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 #include "decl_common.h"
 /* recovered: named members + shared header, real C++ method */
-#include "WaterDiamond.h"
+#include "daObjWc_Obj03_c.h"
 extern "C" {
 extern void* _ZN5Model8LoadFileER13SharedFilePtr(void* f);
 extern void _ZN9ModelBase7SetFileEP8BMD_Fileii(void* self, void* bmd, int a, int b);
 extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void* self, void* actor, int fix, int t, unsigned int u, unsigned int v);
 }
 
-int WaterDiamond::InitResources()
+int daObjWc_Obj03_c::InitResources()
 {
   void* m = _ZN5Model8LoadFileER13SharedFilePtr(data_ov029_02114270);
   _ZN9ModelBase7SetFileEP8BMD_Fileii(((char*)this)+0xd4, m, 1, -1);
@@ -129,13 +129,13 @@ int WaterDiamond::InitResources()
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 7 -- _ZN12WaterDiamond8BehaviorEv, 0x02111954, size 0xb0 */
+/* ROM ordinal 7 -- _ZN15daObjWc_Obj03_c8BehaviorEv, 0x02111954, size 0xb0 */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN12WaterDiamond8BehaviorEv
+// @symbol _ZN15daObjWc_Obj03_c8BehaviorEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 #include "decl_common.h"
 /* recovered: named members + shared header, real C++ method */
-#include "WaterDiamond.h"
+#include "daObjWc_Obj03_c.h"
 typedef short s16;
 extern "C" {
 extern char* _ZN8dActor_c10FindWithIDEj(unsigned int id);
@@ -143,7 +143,7 @@ extern void _ZN5dCc_c5ClearEv(void* self);
 extern void _ZN5dCc_c6UpdateEv(void* self);
 }
 
-int WaterDiamond::Behavior()
+int daObjWc_Obj03_c::Behavior()
 {
     func_ov029_02111850(((char*)this));
     if (mWaterID == 0) return 1;
@@ -170,26 +170,26 @@ int WaterDiamond::Behavior()
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 6 -- _ZN12WaterDiamond6RenderEv, 0x0211192c, size 0x28 */
+/* ROM ordinal 6 -- _ZN15daObjWc_Obj03_c6RenderEv, 0x0211192c, size 0x28 */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN12WaterDiamond6RenderEv
+// @symbol _ZN15daObjWc_Obj03_c6RenderEv
 /* recovered: named members + shared header, real C++ method */
-#include "WaterDiamond.h"
+#include "daObjWc_Obj03_c.h"
 struct Base { virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3(); virtual void v4(); virtual void m(int); };
 struct Derived { char pad[0xd4]; Base base; };
 
-int WaterDiamond::Render()
+int daObjWc_Obj03_c::Render()
 {
  Base *b = &((Derived *)this)->base; b->m(0); return 1;
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 5 -- _ZN12WaterDiamond16CleanupResourcesEv, 0x02111908, size 0x24 */
+/* ROM ordinal 5 -- _ZN15daObjWc_Obj03_c16CleanupResourcesEv, 0x02111908, size 0x24 */
 /* -------------------------------------------------------------------------- */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 extern void _ZN13SharedFilePtr7ReleaseEv(void *);
 extern int data_ov029_02114270[];
-int _ZN12WaterDiamond16CleanupResourcesEv(void)
+int _ZN15daObjWc_Obj03_c16CleanupResourcesEv(void)
 {
     _ZN13SharedFilePtr7ReleaseEv(data_ov029_02114270);
     return 1;
@@ -264,10 +264,10 @@ extern "C" void func_ov029_021117ac(char *c)
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 1 -- _ZN12WaterDiamondD0Ev, 0x02111760, size 0x4c */
+/* ROM ordinal 1 -- _ZN15daObjWc_Obj03_cD0Ev, 0x02111760, size 0x4c */
 /* -------------------------------------------------------------------------- */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-// @symbol _ZN12WaterDiamondD0Ev
+// @symbol _ZN15daObjWc_Obj03_cD0Ev
 /* recovered: named members + shared header, vtable identified, declarations from a shared header */
 #include "decl_Actor.h"
 #include "decl_Model.h"
@@ -276,20 +276,20 @@ extern "C" {  /* .c-derived member: C linkage for the whole block */
 /* recovered: named members + shared header, vtable identified */
 /* vtable identified: VT0 = _ZTV15daObjWc_Obj03_c */
 extern void *data_020a0eac;
-/* (no separate definition: the single ~WaterDiamond() below emits the D0 and D1
+/* (no separate definition: the single ~daObjWc_Obj03_c() below emits the D0 and D1
  * variants together -- a hand-mangled D0 next to a real destructor is the
  * known mwccarm ICE, ELFgen.c:483.) */
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 0 -- _ZN12WaterDiamondD1Ev, 0x02111728, size 0x38 */
+/* ROM ordinal 0 -- _ZN15daObjWc_Obj03_cD1Ev, 0x02111728, size 0x38 */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN12WaterDiamondD1Ev
+// @symbol _ZN15daObjWc_Obj03_cD1Ev
 
-/* (the TU-local WaterDiamond at the top of this file replaces the legacy
+/* (the TU-local daObjWc_Obj03_c at the top of this file replaces the legacy
  * shadow world; real Model/dCcAc_c members, evidenced offsets) */
 
-WaterDiamond::~WaterDiamond()
+daObjWc_Obj03_c::~daObjWc_Obj03_c()
 {
 }
 
