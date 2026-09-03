@@ -1,9 +1,9 @@
 {
   "id": "ov052/daObjEmmLog_c",
   "module": "ov052",
-  "source": "src_tu/actors/daObjEmmLog_c.cpp",
-  "promoted_source": "src/actors/daObjEmmLog_c.cpp",
-  "status": "text-verified",
+  "source": "src/actors/d_a_obj_emm_log.cpp",
+  "promoted_source": "src/actors/d_a_obj_emm_log.cpp",
+  "status": "promoted",
   "boundary_confidence": "high",
   "boundary_evidence": [
     "contiguous linker run: 0x21111a0..0x2111440, 7 function(s), from build/tu_map.json (tools/tu_map.py)",
@@ -77,7 +77,7 @@
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
     "toolchain": "tools/mwccarm/2004/b56/mwccarm.exe",
     "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
-    "object": "build/tu/ov052-daObjEmmLog_c/daObjEmmLog_c.o (gitignored)",
+    "object": "build/tu/ov052-daObjEmmLog_c/d_a_obj_emm_log.o (gitignored)",
     "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
     "functions_matched": 7,
     "functions_declared": 7,
