@@ -37,10 +37,13 @@
 #include "decl_Model.h"
 #include "decl_ShadowModel.h"
 
-/* Externs for symbols this TU calls but does not own. These stay spelled as
- * mangled names because the classes behind them (dCcAcPos_c, TextureSequence,
- * SharedFilePtr, ...) have no project header yet; each one is a candidate to
- * be replaced by a real declaration as those classes are recovered. */
+/* Externs for symbols this TU calls but does not own, carried from the legacy
+ * one-function sources. The BMD_File/BTP_File handles genuinely have no
+ * project header and stay as raw int[]; several of the others (dCcAcPos_c,
+ * TextureSequence, SharedFilePtr) DO have headers in include/ that this file
+ * already pulls in via daBgSnwmn_c.h, so those externs duplicate a real
+ * declaration and should be replaced by it -- deliberately left for a
+ * follow-up, since each swap has to be re-proved against the ROM. */
 /* shadow struct 'Matrix4x3' */
 struct Matrix4x3;
 
@@ -74,9 +77,10 @@ extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(void *self, 
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN11daBgSnwmn_c13InitResourcesEv
 /* recovered: named members + real C++ method */
-/* daBgSnwmn_c::InitResources() -- vtable slot 0. Bails out (spawning actor
- * 0x111 in its place) if this level's star 5 is already collected. Otherwise
- * loads two models and the texture sequence, sets up the cylinder shadow and
+/* daBgSnwmn_c::InitResources() -- vtable slot 0. If level 0xa's star 5 is NOT
+ * yet collected, it spawns actor 0x111 in its place and marks itself for
+ * destruction -- but does not return, so the rest of the body still runs.
+ * It loads two models and the texture sequence, sets up the cylinder shadow and
  * collision, then drops the snowman onto the ground: a throwaway dBgCh_Gnd
  * probe 0x14000 above the spawn point finds the floor, and mPosY is set from
  * the hit (or the probe height) and raised 0xc3000. */
@@ -212,15 +216,20 @@ extern "C" {  /* mangled body: C linkage so the name is emitted verbatim */
  * D0 is the DELETING destructor: store this class's vtable over the one the
  * base constructor left, destroy the five typed members in reverse
  * declaration order, run the dActor_c base-subobject destructor, then return
- * the object to the game heap.  Its first 0x50 bytes are D1's, verbatim.
+ * the object to the game heap.  Its first 0x40 bytes are the same SEQUENCE of
+ * operations as D1's, but not the same bytes: the literal-pool displacement
+ * and every bl displacement differ, and from 0x40 on the two diverge outright
+ * (D1 pops and returns; D0 loads the heap pointer and calls
+ * Memory::Deallocate).
  *
  * Written as a mangled body rather than as a real `~daBgSnwmn_c()` member.  A
  * real member definition makes mwccarm emit the D2/D1/D0 triple as ONE group
  * in the order D0-then-D1, while the cartridge keeps D1 (0x02120824) BELOW D0
  * (0x02120874); the whole-range linkcheck then refuses with `licensed .text
  * functions are not emitted in ROM address order`, and the group also carries
- * an unhomed D2.  The manifest flagged this in advance as
- * `functions_occur_in_expected_order: PARTIAL -- [(0, 1)]`.
+ * an unhomed D2.  tubuild's own `functions_occur_in_expected_order` check
+ * does NOT predict this: it reads PASS in the manifest, because the ROM order
+ * is fine -- it is mwccarm's emission order that is not.
  *
  * THE VPTR STORE IS SPELLED &_ZTV[2], AND HAS TO BE.  symbols.txt records
  * _ZTV11daBgSnwmn_c at ov072:0x02122978, which IS the vtable's address point --
