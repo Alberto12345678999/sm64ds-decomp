@@ -2664,7 +2664,7 @@ def apply_undefined_symbol_alias_policy(obj_bytes, entry, name_index=None):
 
 
 def apply_symbol_binding_policy(obj_bytes, entry):
-    """Apply exact manifest-licensed binding rewrites to owned compiler locals."""
+    """Apply exact manifest-licensed binding rewrites to owned symbols."""
     raw = entry.get("symbol_binding_rewrites", [])
     if raw is None:
         raw = []
@@ -2672,6 +2672,8 @@ def apply_symbol_binding_policy(obj_bytes, entry):
         return None, {"requested": [], "rewritten": []}, \
             ["symbol_binding_rewrites must be a list"]
     owned = {row["symbol"] for _section, row in manifest_owned_symbol_rows(entry)}
+    owned.update(row["symbol"] for row in entry.get("functions", [])
+                 if isinstance(row, dict) and row.get("symbol"))
     mapping, requested, reasons = {}, [], []
     for ordinal, row in enumerate(raw):
         label = f"symbol_binding_rewrites[{ordinal}]"
@@ -3904,8 +3906,24 @@ def derive_function_objects(obj_bytes, entry):
     stop being comparable to the production one, which is the only evidence that makes
     the substitution safe."""
     out = {}
+    binding_rows = entry.get("symbol_binding_rewrites", [])
+    if not isinstance(binding_rows, list):
+        binding_rows = []
     for f in sorted(entry["functions"], key=lambda x: x["ordinal"]):
-        out[f["symbol"]] = OI.derive(obj_bytes, f["symbol"])
+        symbol = f["symbol"]
+        derived, plan = OI.derive(obj_bytes, symbol)
+        scoped_rows = [row for row in binding_rows
+                       if isinstance(row, dict) and row.get("symbol") == symbol]
+        if derived is not None and scoped_rows:
+            scoped_entry = dict(entry)
+            scoped_entry["symbol_binding_rewrites"] = scoped_rows
+            derived, binding_report, reasons = \
+                apply_symbol_binding_policy(derived, scoped_entry)
+            plan["symbolBindingRewrites"] = binding_report
+            if reasons:
+                plan["error"] = "; ".join(reasons)
+                derived = None
+        out[symbol] = derived, plan
     return out
 
 
@@ -3923,10 +3941,11 @@ def contribution(raw, keep_symbol):
       relocs      the fixups applied to it, as (offset, type, SYMBOL NAME, addend) --
                   by name, because a symbol INDEX is a property of the object's own
                   table and means nothing to another object;
-      defined     every symbol this object defines, with its binding, type, value,
-                  size and the name+size of the section it lives in. A definition in a
-                  zeroed section still resolves for anyone who imports it, so a
-                  size-0-in-an-empty-section entry is reported rather than filtered;
+      defined     every link-visible symbol this object defines, with its binding,
+                  type, value, size and the name+size of the section it lives in. A
+                  non-local definition in a zeroed section can still resolve imports,
+                  so it remains reported. An unreferenced STB_LOCAL symbol in an empty
+                  discarded section cannot resolve another object and is omitted;
       mapping     $a/$t/$d ARM EABI mapping symbols inside the kept section, kept
                   separate because they repeat by name across sections;
       live        every content section still carrying bytes -- the check that the
@@ -3958,6 +3977,7 @@ def contribution(raw, keep_symbol):
                 relocs.append((r["r_offset"], r["r_info_type"], sym.name,
                                r["r_addend"] if s.is_RELA() else None))
 
+    referenced = {name for _offset, _type, name, _addend in relocs}
     defined, mapping, undef = {}, [], []
     for s in symtab.iter_symbols():
         if not s.name:
@@ -3968,6 +3988,9 @@ def contribution(raw, keep_symbol):
             continue
         secname = secs[shndx].name if isinstance(shndx, int) else str(shndx)
         secsize = secs[shndx].header["sh_size"] if isinstance(shndx, int) else -1
+        if (s["st_info"]["bind"] == "STB_LOCAL" and isinstance(shndx, int)
+                and shndx != keep and secsize == 0 and s.name not in referenced):
+            continue
         row = (s["st_info"]["bind"], s["st_info"]["type"], s["st_value"], s["st_size"],
                secname, secsize)
         if s.name.startswith("$"):
@@ -3981,7 +4004,6 @@ def contribution(raw, keep_symbol):
                   for x in secs if x.header["sh_type"] in OI.CONTENT
                   and x.header["sh_size"]
                   and not any(x.name.startswith(p) for p in OI.IGNORE))
-    referenced = {n for _o, _t, n, _a in relocs}
     return {
         "keptSection": (ks.name, ks.header["sh_type"], ks.header["sh_flags"],
                         ks.header["sh_addralign"], ks.header["sh_size"]),
@@ -4104,6 +4126,7 @@ def partial_report(entry, merged_bytes, derived, prod_paths):
             continue
         v = compare_contribution(ppath.read_bytes(), dbytes, sym)
         v["objisolateError"] = plan.get("error")
+        v["symbolBindingRewrites"] = plan.get("symbolBindingRewrites")
         rows.append((f["ordinal"], sym, v))
     return rows
 
@@ -4904,6 +4927,42 @@ def cmd_linkcheck(args):
                 print(f"      externalized {externalized['externalized']} to exact "
                       "configured canonical homes")
 
+            aliased_tu, undefined_aliases, alias_reasons = \
+                apply_undefined_symbol_alias_policy(linked_tu, entry)
+            report["undefinedSymbolAliases"] = undefined_aliases
+            if alias_reasons:
+                print("      REFUSED -- undefined symbol alias policy:")
+                for reason in alias_reasons:
+                    print(f"        {reason}")
+                report["undefinedSymbolAliases"]["errors"] = alias_reasons
+                report["result"] = "undefined-alias-refused"
+                _write_link_report(scratch, report)
+                _record_partitioned(data, entry, report)
+                return 1
+            if aliased_tu != linked_tu:
+                linked_tu = aliased_tu
+                scratch_rewrite = True
+                print(f"      canonicalized {len(undefined_aliases['renamed'])} exact "
+                      "undefined C++ import name(s) to their configured ROM symbols")
+
+            bound_tu, symbol_bindings, binding_reasons = \
+                apply_symbol_binding_policy(linked_tu, entry)
+            report["symbolBindingRewrites"] = symbol_bindings
+            if binding_reasons:
+                print("      REFUSED -- symbol binding policy:")
+                for reason in binding_reasons:
+                    print(f"        {reason}")
+                report["symbolBindingRewrites"]["errors"] = binding_reasons
+                report["result"] = "symbol-binding-refused"
+                _write_link_report(scratch, report)
+                _record_partitioned(data, entry, report)
+                return 1
+            if bound_tu != linked_tu:
+                linked_tu = bound_tu
+                scratch_rewrite = True
+                print(f"      promoted {len(symbol_bindings['rewritten'])} exact local "
+                      "owned symbol binding(s) for DSD's global symbol surface")
+
             ordered_tu, section_order, order_reasons = \
                 prepare_owned_nontext_section_order(linked_tu, entry, claims)
             report["nontextSectionOrder"] = section_order
@@ -5601,6 +5660,8 @@ def _partition_attempt_record(report):
     compiler = report.get("compilerOnlyOutput") or {}
     externalized = report.get("externalizedOutput") or {}
     external_verify = externalized.get("verification") or {}
+    undefined_aliases = report.get("undefinedSymbolAliases") or {}
+    symbol_bindings = report.get("symbolBindingRewrites") or {}
     section_order = report.get("nontextSectionOrder") or {}
     return {
         "result": report.get("result", "failed"),
@@ -5616,7 +5677,8 @@ def _partition_attempt_record(report):
             "contributionEquivalent": partial_report.get("contributionEquivalent"),
             "substitutedObjectPaths": partial_report.get("substituted"),
             "rows": [{key: row.get(key) for key in (
-                "ordinal", "symbol", "identical", "relocCount", "differences")}
+                "ordinal", "symbol", "identical", "relocCount", "differences",
+                "symbolBindingRewrites")}
                 for row in partial_report.get("rows", [])],
         },
         "compilerOnlyPolicy": {
@@ -5631,6 +5693,16 @@ def _partition_attempt_record(report):
             "droppedSections": externalized.get("droppedSections"),
             "verificationOk": external_verify.get("ok"),
             "errors": externalized.get("errors") or external_verify.get("errors"),
+        },
+        "undefinedAliasPolicy": {
+            "requested": undefined_aliases.get("requested"),
+            "renamed": undefined_aliases.get("renamed"),
+            "errors": undefined_aliases.get("errors"),
+        },
+        "symbolBindingPolicy": {
+            "requested": symbol_bindings.get("requested"),
+            "rewritten": symbol_bindings.get("rewritten"),
+            "errors": symbol_bindings.get("errors"),
         },
         "nontextSectionOrder": {
             "groups": [{key: row.get(key) for key in
