@@ -1198,14 +1198,23 @@ ov043	0x0211245c	data_ov043_0211245c	_ZTV19RickshawPlatformBdw	vtable alloc=? (w
 ov043	0x021124fc	data_ov043_021124fc	StairsBdw_SpawnInfo	spawninfo
 ov043	0x021124fc	StairsBdw_SpawnInfo	g_profile_KM1_DORIFU	reconstructed profile global; literal ROM ID KM1_DORIFU+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov043	0x0211255c	data_ov043_0211255c	_ZTV17daObjKm1_Dorifu_c	vtable alloc=? (was _ZTV19RickshawPlatformBdw)
-ov044	0x021111a0	func_ov044_021111a0	_ZN19OrangeBallBillboardD1Ev	vtable slot 16
-ov044	0x021111d0	func_ov044_021111d0	_ZN19OrangeBallBillboardD0Ev	vtable slot 17
-ov044	0x02111254	func_ov044_02111254	_ZN19OrangeBallBillboard16CleanupResourcesEv	vtable slot 3
-ov044	0x02111278	func_ov044_02111278	_ZN19OrangeBallBillboard6RenderEv	vtable slot 9
-ov044	0x021112a0	func_ov044_021112a0	_ZN19OrangeBallBillboard13InitResourcesEv	vtable slot 0
+ov044	0x021111a0	func_ov044_021111a0	_ZN19daObjKb1Billboard_cD1Ev	vtable slot 16 (was _ZN19OrangeBallBillboardD1Ev)
+ov044	0x021111d0	func_ov044_021111d0	_ZN19daObjKb1Billboard_cD0Ev	vtable slot 17 (was _ZN19OrangeBallBillboardD0Ev)
+ov044	0x02111254	func_ov044_02111254	_ZN19daObjKb1Billboard_c16CleanupResourcesEv	vtable slot 3 (was _ZN19OrangeBallBillboard16CleanupResourcesEv)
+ov044	0x02111278	func_ov044_02111278	_ZN19daObjKb1Billboard_c6RenderEv	vtable slot 9 (was _ZN19OrangeBallBillboard6RenderEv)
+ov044	0x021112a0	func_ov044_021112a0	_ZN19daObjKb1Billboard_c13InitResourcesEv	vtable slot 0 (was _ZN19OrangeBallBillboard13InitResourcesEv)
 ov044	0x021112dc	func_ov044_021112dc	OrangeBallBillboard_Spawn	spawnfunc
 ov044	0x021115e0	data_ov044_021115e0	OrangeBallBillboard_SpawnInfo	spawninfo
-ov044	0x02111604	data_ov044_02111604	_ZTV19OrangeBallBillboard	vtable alloc=0x124
+ov044	0x02111604	data_ov044_02111604	_ZTV19daObjKb1Billboard_c	vtable alloc=? (was _ZTV19OrangeBallBillboard)
+ov044	0x021111a0	_ZN19OrangeBallBillboardD1Ev	_ZN19daObjKb1Billboard_cD1Ev	vtable slot 16; class identity proven by ov044 RTTI/ZTS
+ov044	0x021111d0	_ZN19OrangeBallBillboardD0Ev	_ZN19daObjKb1Billboard_cD0Ev	vtable slot 17; class identity proven by ov044 RTTI/ZTS
+ov044	0x02111214	func_ov044_02111214	_ZN19daObjKb1Billboard_c20UpdateModelTransformEv	inferred private spelling; class ownership/call/body/codegen proven
+ov044	0x02111254	_ZN19OrangeBallBillboard16CleanupResourcesEv	_ZN19daObjKb1Billboard_c16CleanupResourcesEv	vtable slot 3; class identity proven by ov044 RTTI/ZTS
+ov044	0x02111278	_ZN19OrangeBallBillboard6RenderEv	_ZN19daObjKb1Billboard_c6RenderEv	vtable slot 9; class identity proven by ov044 RTTI/ZTS
+ov044	0x021112a0	_ZN19OrangeBallBillboard13InitResourcesEv	_ZN19daObjKb1Billboard_c13InitResourcesEv	vtable slot 0; class identity proven by ov044 RTTI/ZTS
+ov044	0x021112dc	OrangeBallBillboard_Spawn	daObjKb1Billboard_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
+ov044	0x021115e0	OrangeBallBillboard_SpawnInfo	g_profile_KB1_BILLBOARD	reconstructed profile global; literal ROM ID KB1_BILLBOARD+registry role+later EAD lineage; exact SM64DS spelling not preserved
+ov044	0x02111604	_ZTV19OrangeBallBillboard	_ZTV19daObjKb1Billboard_c	vtable alloc=0x124; class identity proven by ov044 RTTI/ZTS
 ov045	0x021114dc	func_ov045_021114dc	FireSeaElevator_Spawn	spawnfunc
 ov045	0x021114dc	FireSeaElevator_Spawn	daObjKm2_Agaru_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov045	0x0211150c	func_ov045_0211150c	_ZN8PoleLiftD1Ev	vtable slot 16 (was _ZN15FireSeaElevatorD1Ev)

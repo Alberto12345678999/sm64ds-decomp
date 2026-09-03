@@ -1337,6 +1337,21 @@
     "src/actors/d_a_obj_wc_obj03.cpp#_ZN15daObjWc_Obj03_c6RenderEv": "andrewboudreau",
     "src/actors/d_a_obj_wc_obj03.cpp#_ZN15daObjWc_Obj03_c8BehaviorEv": "github-actions[bot]",
     "src/actors/d_a_obj_wc_obj03.cpp#_ZN15daObjWc_Obj03_c13InitResourcesEv": "github-actions[bot]",
-    "src/actors/d_a_obj_wc_obj03.cpp#daObjWc_Obj03_c_classInit": "github-actions[bot]"
+    "src/actors/d_a_obj_wc_obj03.cpp#daObjWc_Obj03_c_classInit": "github-actions[bot]",
+    "src/actors/d_a_obj_kb1_billboard.cpp#_ZN19daObjKb1Billboard_cD1Ev": "github-actions[bot]",
+    "src/actors/d_a_obj_kb1_billboard.cpp#_ZN19daObjKb1Billboard_cD0Ev": "github-actions[bot]",
+    "src/actors/d_a_obj_kb1_billboard.cpp#_ZN19daObjKb1Billboard_c20UpdateModelTransformEv": "github-actions[bot]",
+    "src/actors/d_a_obj_kb1_billboard.cpp#_ZN19daObjKb1Billboard_c16CleanupResourcesEv": "github-actions[bot]",
+    "src/actors/d_a_obj_kb1_billboard.cpp#_ZN19daObjKb1Billboard_c6RenderEv": "github-actions[bot]",
+    "src/actors/d_a_obj_kb1_billboard.cpp#_ZN19daObjKb1Billboard_c13InitResourcesEv": "github-actions[bot]",
+    "src/actors/d_a_obj_kb1_billboard.cpp#daObjKb1Billboard_c_classInit": "github-actions[bot]",
+    "src/actors/d_a_obj_kb1_billboard.cpp#_ZN19OrangeBallBillboardD1Ev": "github-actions[bot]",
+    "src/actors/d_a_obj_kb1_billboard.cpp#_ZN19OrangeBallBillboardD0Ev": "github-actions[bot]",
+    "src/actors/d_a_obj_kb1_billboard.cpp#func_ov044_02111214": "github-actions[bot]",
+    "src/actors/d_a_obj_kb1_billboard.cpp#_ZN19OrangeBallBillboard16CleanupResourcesEv": "github-actions[bot]",
+    "src/actors/d_a_obj_kb1_billboard.cpp#_ZN19OrangeBallBillboard6RenderEv": "github-actions[bot]",
+    "src/actors/d_a_obj_kb1_billboard.cpp#_ZN19OrangeBallBillboard13InitResourcesEv": "github-actions[bot]",
+    "src/actors/d_a_obj_kb1_billboard.cpp#OrangeBallBillboard_Spawn": "github-actions[bot]",
+    "src/actors/d_a_obj_kb1_billboard.cpp#__sinit_ov044_02111314": "github-actions[bot]"
   }
 }
