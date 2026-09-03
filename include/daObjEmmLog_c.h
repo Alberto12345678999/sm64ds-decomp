@@ -26,7 +26,15 @@ struct daObjEmmLog_c : dBgActor_c {
     s32 mBasePosY;          /* 0x320 -- InitResources copies mPosY; Behavior computes mPosY = mBasePosY + sine * mBobAmplitude */
     s32 mBobAmplitude;      /* 0x324 -- 0x64000, or the spawn byte * 0xa000 */
 
-    virtual ~daObjEmmLog_c();
+    /* Defined here, in the class body, and not out of line in the .cpp: the
+     * cartridge keeps D1 (0x021111a0) BELOW D0 (0x021111e4), and an out-of-line
+     * member definition makes mwccarm emit the D2/D1/D0 group in the order
+     * D0-then-D1, which the whole-range link refuses (`licensed .text functions
+     * are not emitted in ROM address order`). Written in the class body the group
+     * comes out ROM-ascending. The body is genuinely empty -- every store and call
+     * in the two ROM bodies is base and member destruction the compiler generates.
+     * Slots 16 (D1) and 17 (D0). */
+    virtual ~daObjEmmLog_c() {}
 
     int InitResources();
     int CleanupResources();
