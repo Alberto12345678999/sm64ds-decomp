@@ -1,10 +1,9 @@
-"""Local lock service (backed by Redis in local-infra/) so agents working the same
+"""Local lock service (backed by Redis) so agents working the same
 worktree don't step on each other's files or address ranges. Sibling of tools/claims.py
 but LOCAL and SHORT-LIVED: claims.py coordinates with tangos.dev across contributors
 over the network (address ranges only); this coordinates parallel agents/forks on THIS
-machine only, and covers both address ranges and plain filenames. Start it with:
-
-    docker compose -f local-infra/docker-compose.yml up -d
+machine only, and covers both address ranges and plain filenames. Requires a Redis
+instance reachable at REDIS_URL (see below); how to run one is left to the operator.
 
 Lock flow: acquire a set of resources (files and/or one address range) -> renew while
 working -> release when done. All resources in one `acquire` call succeed or fail
@@ -190,8 +189,8 @@ def _client():
         c.ping()
     except redis.exceptions.ConnectionError as e:
         raise LockError(
-            f"can't reach redis at {REDIS_URL} -- start it with "
-            f"'docker compose -f local-infra/docker-compose.yml up -d' ({e})"
+            f"can't reach redis at {REDIS_URL} -- start a local Redis instance "
+            f"and make sure it's reachable at that address ({e})"
         )
     return c
 

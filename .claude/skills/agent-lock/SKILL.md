@@ -5,8 +5,8 @@ description: Take a short-lived local lock on a set of filenames and/or an addre
 
 # Local agent locking (Redis, this machine only)
 
-`tools/agentlock.py` is a **local** lock, backed by a Redis container in
-`local-infra/`. It exists for the case `tools/claims.py` doesn't cover: several agents
+`tools/agentlock.py` is a **local** lock, backed by Redis. It exists for the case
+`tools/claims.py` doesn't cover: several agents
 (forks, worktrees, a Workflow's parallel stages) running on **this machine** in **this
 session**, about to edit the same file or the same address range at the same time.
 
@@ -30,12 +30,11 @@ a single agent working alone — it's overhead with no payoff there.
 
 ## Setup (once per machine, or after a restart)
 
-```
-docker compose -f local-infra/docker-compose.yml up -d
-```
+Run a local Redis instance reachable at the address `tools/agentlock.py` expects
+(`REDIS_URL`, defaulting to `redis://localhost:6379`) — how you run it is up to you.
 
 No persistence by design — a restart starts with an empty lock table, never resurrects
-stale locks. If `agentlock.py` can't reach Redis it says so and names this command.
+stale locks. If `agentlock.py` can't reach Redis it says so.
 
 ## Identity
 

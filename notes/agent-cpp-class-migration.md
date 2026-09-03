@@ -63,11 +63,7 @@ own green output is evidence, not independent review.
 Remote claims prevent duplication across contributors. The local Redis lock prevents
 agents on this machine from editing the same files or address ranges. Use both.
 
-Start Redis if needed:
-
-```powershell
-docker compose -f local-infra/docker-compose.yml up -d
-```
+Start Redis if needed (reachable at the `REDIS_URL` `tools/agentlock.py` expects).
 
 Every agent needs a unique holder name:
 
