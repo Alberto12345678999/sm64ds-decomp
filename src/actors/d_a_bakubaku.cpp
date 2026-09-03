@@ -17,9 +17,27 @@
  * blocks rather than a real `~daBakubaku_c()` member, and the vptr stores are
  * spelled `&_ZTV12daBakubaku_c[2]` rather than the bare symbol. Both are forced,
  * and both are explained where they appear -- see the D0 comment for the
- * D1-below-D0 emission-order wall, and note that the sibling class daObjWc_Mizu_c
- * needed the OPPOSITE vtable spelling: which one objisolate accepts depends on the
- * isolation path the object takes, not on the class.
+ * D1-below-D0 emission-order wall.
+ *
+ * The vtable spelling is decided by tools/objisolate.py, not by this class, and it
+ * is the OPPOSITE of what #2184's daObjWc_Mizu_c needed -- an unrelated class
+ * (dBgActor_c in ov029, not a relative of this dEnemyBase_c one), so do not read
+ * either file as the convention. With the bare symbol objisolate refused both
+ * bodies here with `_ZTV12daBakubaku_c: unexpected reloc type=2 addend=0`;
+ * `&_ZTV12daBakubaku_c[2]` cleared it and both matched. The rule is in
+ * tools/objisolate.py:472: a `_ZTV` on the EXTERNALISE list must carry
+ * `addend >= VTABLE_PREAMBLE` (8), because that path converts mwccarm's
+ * object-start `_ZTV` into the ROM's address point by subtracting 8. Mizu's object
+ * took the intact-multi-symbol path instead, which cannot rewrite an addend and so
+ * demanded 0 -- a different refusal message ("cannot rewrite it"), not this one.
+ *
+ * None of that contradicts config/arm9/overlays/ov032/relocs.txt recording the two
+ * cartridge vptr loads as `to:0x02113824` addend 0, or the legacy
+ * src/func_ov032_0211244c.c storing that word with the bare symbol: those describe
+ * the CARTRIDGE's relocation against a symbol that already IS the address point
+ * (0x0211381c = offset-to-top, 0x02113820 = &_ZTI, 0x02113824 = slot 0). The +8
+ * here is mwccarm's object-start bias, folded at compile time and undone by
+ * isolation; both spellings emit the same addend-0 word in the final image.
  *
  * The functions, in ROM address order:
  *   [0]  0x021111a0  _ZN12daBakubaku_cD1Ev
@@ -924,9 +942,13 @@ int *_ZN12daBakubaku_cD0Ev(int *t)
  *
  * The same body as D0 without the Deallocate call. One vtable store -- one, not
  * two -- and six destructor calls: the five members in reverse declaration order,
- * then dEnemyBase_c. This body IS the evidence for the header's layout: each
- * member's size closes exactly on the next one's offset, and the factory
- * constructs the same five forwards.
+ * then dEnemyBase_c. This body is most of the evidence for the header's layout:
+ * four of the five members close exactly on the next one's offset, and the factory
+ * constructs the same five forwards. The exception is the gap this body cannot
+ * witness -- ModelAnim at 0x34c is 0x64 bytes and so closes at 0x3b0, but
+ * ShadowModel is at 0x3b4; the word at 0x3b0 is `void *mState`, a field with no
+ * destructor, evidenced by the state-machine functions rather than by any structor.
+ * See include/daBakubaku_c.h for that member.
  *
  * Written LAST in the file because the file is in reverse ROM order and this is
  * ROM ordinal 0. See the D0 comment above for why it is a mangled body.
