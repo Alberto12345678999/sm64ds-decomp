@@ -33949,27 +33949,27 @@ matched: yes</title></rect><rect x="1214.86" y="266.41" width="2.57" height="3.7
 module: ov039
 addr: 0x021113b4
 size: 64 bytes
-matched: yes</title></rect><rect x="1227.43" y="251.44" width="4.63" height="5.69" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11DiamondLiftD1Ev
+matched: yes</title></rect><rect x="1227.43" y="251.44" width="4.63" height="5.69" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN19daObjKm1_Ukishima_cD1Ev
 module: ov043
 addr: 0x021111a0
 size: 68 bytes
-matched: yes</title></rect><rect x="1227.43" y="257.13" width="4.63" height="7.37" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11DiamondLiftD0Ev
+matched: yes</title></rect><rect x="1227.43" y="257.13" width="4.63" height="7.37" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN19daObjKm1_Ukishima_cD0Ev
 module: ov043
 addr: 0x021111e4
 size: 88 bytes
-matched: yes</title></rect><rect x="1227.43" y="264.49" width="4.63" height="5.69" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11DiamondLift16CleanupResourcesEv
+matched: yes</title></rect><rect x="1227.43" y="264.49" width="4.63" height="5.69" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN19daObjKm1_Ukishima_c16CleanupResourcesEv
 module: ov043
 addr: 0x0211123c
 size: 68 bytes
-matched: yes</title></rect><rect x="1232.06" y="251.44" width="6.86" height="2.26" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11DiamondLift6RenderEv
+matched: yes</title></rect><rect x="1232.06" y="251.44" width="6.86" height="2.26" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN19daObjKm1_Ukishima_c6RenderEv
 module: ov043
 addr: 0x02111280
 size: 40 bytes
-matched: yes</title></rect><rect x="1232.06" y="253.69" width="6.86" height="6.78" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11DiamondLift8BehaviorEv
+matched: yes</title></rect><rect x="1232.06" y="253.69" width="6.86" height="6.78" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN19daObjKm1_Ukishima_c8BehaviorEv
 module: ov043
 addr: 0x021112a8
 size: 120 bytes
-matched: yes</title></rect><rect x="1232.06" y="260.47" width="6.86" height="9.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11DiamondLift13InitResourcesEv
+matched: yes</title></rect><rect x="1232.06" y="260.47" width="6.86" height="9.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN19daObjKm1_Ukishima_c13InitResourcesEv
 module: ov043
 addr: 0x02111320
 size: 172 bytes
