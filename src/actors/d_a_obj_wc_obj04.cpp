@@ -1,14 +1,60 @@
 //cpp
-/* HAND-ASSEMBLED translation unit -- ov029/daObjWc_Obj04_c (9 function(s)).
- * tubuild create refused this TU (legacy bodies wrapped in extern "C" { }),
- * so this is a raw concatenation of the complete legacy files in REVERSE
- * ROM order (mwccarm emits one .text section per function in the reverse
- * of source order). Conflicting declarations were reconciled by hand; see
- * the manifest notes.
+/* PROMOTED translation unit -- ov029/daObjWc_Obj04_c (9 function(s)).
+ * HAND-ASSEMBLED: tubuild create refused this TU (legacy bodies wrapped in
+ * extern "C" { }), so this is a raw concatenation of the complete legacy files
+ * in REVERSE ROM order -- mwccarm 2004/b56 emits one .text section per function
+ * in the reverse of source order, so the highest-address ROM function is
+ * written FIRST. Do not reorder. Conflicting declarations were reconciled by
+ * hand; see the manifest notes.
+ *
+ * This file is compiled and linked into the ROM: ov029's delinks.txt gives it
+ * the whole .text run 0x02112630..0x0211299c as one `complete` entry, and the
+ * nine legacy one-function sources listed below are deleted -- they are named
+ * for provenance only.
+ *
+ * The class is spelled as the cartridge spells it. ov029's _ZTV at 0x021141a0
+ * is preceded by its _ZTI at 0x0211415c, whose _ZTS at 0x02114168 reads
+ * `15daObjWc_Obj04_c`, and the spawn profile just before it at 0x0211417c is
+ * g_profile_WC_OBJ04 -- the ROM's own actor id agrees with the RTTI string.
+ * The coined alias `_ZTV20SwitchActivatedPlank`, which used to name that same
+ * address, is gone.
+ *
+ * NOTHING HOMES THIS CLASS'S VTABLE. include/daObjWc_Obj04_c.h declares
+ * ~daObjWc_Obj04_c() -- the first virtual it declares, hence the key function --
+ * but no TU DEFINES it as a C++ member: the cartridge's D1 and D0 live below as
+ * `// @symbol` marked bodies under their mangled names, which the compiler sees
+ * as unrelated functions. With the key function undefined, mwccarm emits this
+ * class's _ZTV/_ZTI/_ZTS here as vague linkage, plus the eight inherited
+ * base-chain records (fBase_c, dBase_c, dActor_c, dBgActor_c). All eleven are
+ * licensed in the manifest's compiler_only_output as deadstrip-data -- each has
+ * a canonical ROM home outside this entry's licensed .text, which dsd supplies
+ * independently -- and tools/romdata_check.py word-compares every one against
+ * the cartridge: 6 VERIFIED, 5 PARTIAL, 0 DIFFERS. The PARTIALs are extent
+ * shortfalls, not disagreements: every byte compared is equal.
+ *
+ *
+ * WHY D1 AND D0 ARE MANGLED BODIES RATHER THAN A REAL DESTRUCTOR. Defining
+ * ~daObjWc_Obj04_c() once as a C++ member was tried on this tree and the build
+ * refused it: mwccarm emits the D2/D1/D0 triple as one group, in the order
+ * D0-then-D1, while the cartridge keeps D1 at 0x02112630 BELOW D0 at
+ * 0x0211267c -- objisolate reports `requested functions are not emitted in ROM
+ * order`, and the group also brings an unhomed D2 along. Placing the two at
+ * their ROM addresses means writing them as separate functions, which is only
+ * possible under their mangled names. That costs both of them the CONVERTED
+ * tier's no-raw-offset and no-mangled-refs criteria; the two removals are
+ * banked in config/converted-backslide-exceptions.jsonl with that reason. The
+ * one-line member versions this promotion deletes are in git history if the
+ * placement rule ever changes.
+ * `#pragma optimize_for_size on`, carried in from the legacy Behavior file,
+ * covers ROM ordinals 6 down to 0 -- everything from Behavior to the end of the
+ * file. It is bracketed with an explicit `off` at the tail so its extent is
+ * stated rather than inferred from where the file happens to end; do not move
+ * either directive, and do not add a function between them without checking it
+ * still byte-matches.
  *
  * Assembled from these legacy one-function sources (ROM address order):
- *   [0] 0x02112630  src/_ZN15daObjWc_Obj04_cD1Ev.c
- *   [1] 0x0211267c  src/_ZN15daObjWc_Obj04_cD0Ev.c
+ *   [0] 0x02112630  src/_ZN15daObjWc_Obj04_cD1Ev.cpp
+ *   [1] 0x0211267c  src/_ZN15daObjWc_Obj04_cD0Ev.cpp
  *   [2] 0x021126dc  src/func_ov029_021126dc.c
  *   [3] 0x02112710  src/func_ov029_02112710.c
  *   [4] 0x02112750  src/_ZN15daObjWc_Obj04_c16CleanupResourcesEv.cpp
@@ -194,6 +240,7 @@ int daObjWc_Obj04_c::CleanupResources()
 /* ROM ordinal 3 -- func_ov029_02112710, 0x02112710, size 0x40 */
 /* -------------------------------------------------------------------------- */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
+// @symbol func_ov029_02112710
 extern void Matrix4x3_FromRotationY(void *, int);
 void func_ov029_02112710(char *t)
 {
@@ -208,6 +255,7 @@ void func_ov029_02112710(char *t)
 /* ROM ordinal 2 -- func_ov029_021126dc, 0x021126dc, size 0x34 */
 /* -------------------------------------------------------------------------- */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
+// @symbol func_ov029_021126dc
 extern void Matrix4x3_FromRotationY(void *, int);
 
 void func_ov029_021126dc(char *c) {
@@ -270,3 +318,5 @@ int *_ZN15daObjWc_Obj04_cD1Ev(int *t)
 }
 }
 
+/* Closes the `optimize_for_size on` opened above ROM ordinal 6. */
+#pragma optimize_for_size off
