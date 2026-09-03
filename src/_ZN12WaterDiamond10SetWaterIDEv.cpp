@@ -1,6 +1,6 @@
 //cpp
 #include "WaterDiamond.h"
-#include "WDW_Water.h"
+#include "daObjWc_Mizu_c.h"
 
 void WaterDiamond::SetWaterID()
 {
@@ -10,7 +10,7 @@ void WaterDiamond::SetWaterID()
   for (;;) {
     water = dActor_c::FindWithActorID(0x65, water);
     if (water == 0) goto done;
-    if (mWaterParam == ((WDW_Water *)water)->mUseSpawnPosY) break;
+    if (mWaterParam == ((daObjWc_Mizu_c *)water)->mUseSpawnPosY) break;
   }
   mWaterID = water->uniqueID;
 done:

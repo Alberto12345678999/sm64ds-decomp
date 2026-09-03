@@ -1,5 +1,5 @@
-#ifndef WDW_WATER_H
-#define WDW_WATER_H
+#ifndef DAOBJWC_MIZU_C_H
+#define DAOBJWC_MIZU_C_H
 
 #include "types.h"
 #include "dBgW_KcMbg.h"
@@ -19,7 +19,7 @@
 #include "dBgActor_c.h"
 #include "TextureTransformer.h"
 
-struct WDW_Water : dBgActor_c {
+struct daObjWc_Mizu_c : dBgActor_c {
     u8  pad_31e[0x2];
     TextureTransformer mTextureTransformer;/* 0x320 */
     s32 mTargetPosY;                  /* 0x334 */
@@ -30,23 +30,42 @@ struct WDW_Water : dBgActor_c {
     u8  pad_341[0x3];
     s32 mWaterHeight;                      /* 0x344 */
 
-    /* --- vtable --- */
-    virtual ~WDW_Water();
-
     int Behavior();
     int CleanupResources();
     int InitResources();
     int Render();
+
+    /* --- vtable --- */
+    /* MEASURED -- DECLARED LAST ON PURPOSE, after the non-virtual methods.
+       Nothing DEFINES this destructor as a C++ member (D1 and D0 are carried in
+       src/actors/d_a_obj_wc_mizu.cpp as `// @symbol` marked mangled bodies, for
+       the emission-order reason that file's header gives), so the class's vtable
+       and RTTI have no home. With the declaration LAST, mwccarm still emits them
+       as vague linkage into the TU that defines the class's members, and
+       tools/romdata_check.py word-compares that emitted copy against the
+       cartridge; with the declaration FIRST it emits nothing at all and those
+       three ROM records go unverified by any source. Measured both ways on this
+       class: first -> 0 data symbols emitted, last -> 11 (6 VERIFIED, 5 PARTIAL).
+       include/daObjWc_Obj04_c.h has the same shape for the same reason. */
+    virtual ~daObjWc_Mizu_c();
 };
 
-typedef char WDW_Water_size_must_be_0x348[sizeof(WDW_Water) == 0x348 ? 1 : -1];
+typedef char daObjWc_Mizu_c_size_must_be_0x348[sizeof(daObjWc_Mizu_c) == 0x348 ? 1 : -1];
 
 #else
 
-/* The C spelling of the same object, flat. Kept because the D0 file is a C
-   translation unit that reads these fields, and D0 is compiler-generated so it
-   can never be migrated. Same arrangement as include/ShadowModel.h. */
-struct WDW_Water {
+/* The C spelling of the same object, flat. Same arrangement as
+   include/ShadowModel.h.
+
+   NOTHING COMPILES THIS BRANCH TODAY. It was kept for a D0 file that was said
+   to be a C translation unit; it never was (src/_ZN9WDW_WaterD0Ev.cpp was
+   //cpp), and the whole class was absorbed into src/actors/d_a_obj_wc_mizu.cpp,
+   where D0 is a hand-written `// @symbol` body rather than anything
+   compiler-generated. Every remaining includer of this header is //cpp, so the
+   #if arm above is the one that builds. Left in place rather than deleted
+   because the offsets below are measured and are the only flat record of this
+   layout; delete it once nothing wants that record. */
+struct daObjWc_Mizu_c {
     u8  pad_000[0x8];
     s32 mParam;            /* 0x008 */
     u8  pad_00c[0x54];
@@ -63,7 +82,7 @@ struct WDW_Water {
        short of the object, so the member also takes over unk_0dc (+0x8 = data), which the
        header declared separately inside it. */
     Model mModel;            /* 0x0d4 */
-    /* dBgW_KcMbg member. The cartridge's own ~WDW_Water calls _ZN10dBgW_KcMbgD1Ev at
+    /* dBgW_KcMbg member. The cartridge's own ~daObjWc_Mizu_c calls _ZN10dBgW_KcMbgD1Ev at
        +0x124 (D0/D1), a relocation the ROM build checks; recovered by
        tools/dtor_members.py. D1 and not D2, so it is this type and not an inlined base. */
     dBgW_KcMbg mMeshCollider;            /* 0x124 */
@@ -80,4 +99,4 @@ struct WDW_Water {
 
 #endif /* __cplusplus */
 
-#endif /* WDW_WATER_H */
+#endif /* DAOBJWC_MIZU_C_H */

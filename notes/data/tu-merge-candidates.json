@@ -2453,19 +2453,19 @@
    "start": "0x21121a4",
    "end": "0x2112630",
    "classes": [
-    "WDW_Water"
+    "daObjWc_Mizu_c"
    ],
    "n_functions_map": 9,
    "n_files": 9,
    "files": [
-    "src/_ZN9WDW_WaterD1Ev.cpp",
-    "src/_ZN9WDW_WaterD0Ev.cpp",
+    "src/_ZN14daObjWc_Mizu_cD1Ev.cpp",
+    "src/_ZN14daObjWc_Mizu_cD0Ev.cpp",
     "src/func_ov029_02112250.cpp",
     "src/func_ov029_021122b4.c",
-    "src/_ZN9WDW_Water16CleanupResourcesEv.cpp",
-    "src/_ZN9WDW_Water6RenderEv.cpp",
-    "src/_ZN9WDW_Water8BehaviorEv.cpp",
-    "src/_ZN9WDW_Water13InitResourcesEv.cpp",
+    "src/_ZN14daObjWc_Mizu_c16CleanupResourcesEv.cpp",
+    "src/_ZN14daObjWc_Mizu_c6RenderEv.cpp",
+    "src/_ZN14daObjWc_Mizu_c8BehaviorEv.cpp",
+    "src/_ZN14daObjWc_Mizu_c13InitResourcesEv.cpp",
     "src/daObjWc_Mizu_c_classInit.c"
    ],
    "ext_mix": {

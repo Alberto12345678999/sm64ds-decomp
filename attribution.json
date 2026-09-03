@@ -1318,6 +1318,15 @@
     "src/actors/d_a_obj_wc_obj04.cpp#_ZN15daObjWc_Obj04_c6RenderEv": "github-actions[bot]",
     "src/actors/d_a_obj_wc_obj04.cpp#_ZN15daObjWc_Obj04_c8BehaviorEv": "github-actions[bot]",
     "src/actors/d_a_obj_wc_obj04.cpp#_ZN15daObjWc_Obj04_c13InitResourcesEv": "github-actions[bot]",
-    "src/actors/d_a_obj_wc_obj04.cpp#daObjWc_Obj04_c_classInit": "github-actions[bot]"
+    "src/actors/d_a_obj_wc_obj04.cpp#daObjWc_Obj04_c_classInit": "github-actions[bot]",
+    "src/actors/d_a_obj_wc_mizu.cpp#_ZN14daObjWc_Mizu_cD1Ev": "github-actions[bot]",
+    "src/actors/d_a_obj_wc_mizu.cpp#_ZN14daObjWc_Mizu_cD0Ev": "github-actions[bot]",
+    "src/actors/d_a_obj_wc_mizu.cpp#func_ov029_02112250": "github-actions[bot]",
+    "src/actors/d_a_obj_wc_mizu.cpp#func_ov029_021122b4": "github-actions[bot]",
+    "src/actors/d_a_obj_wc_mizu.cpp#_ZN14daObjWc_Mizu_c16CleanupResourcesEv": "github-actions[bot]",
+    "src/actors/d_a_obj_wc_mizu.cpp#_ZN14daObjWc_Mizu_c6RenderEv": "github-actions[bot]",
+    "src/actors/d_a_obj_wc_mizu.cpp#_ZN14daObjWc_Mizu_c8BehaviorEv": "github-actions[bot]",
+    "src/actors/d_a_obj_wc_mizu.cpp#_ZN14daObjWc_Mizu_c13InitResourcesEv": "github-actions[bot]",
+    "src/actors/d_a_obj_wc_mizu.cpp#daObjWc_Mizu_c_classInit": "github-actions[bot]"
   }
 }

@@ -1,7 +1,7 @@
 //cpp
 // @symbol _ZN12WaterDiamond8BehaviorEv
 #include "WaterDiamond.h"
-#include "WDW_Water.h"
+#include "daObjWc_Mizu_c.h"
 
 int WaterDiamond::Behavior()
 {
@@ -13,7 +13,7 @@ int WaterDiamond::Behavior()
          * cartridge keeps r1 as &mAngleY for both the halfword load and store. */
         s16 *angleY = (s16 *)((int)(char *)this + 0x8e);
         *angleY = *angleY + 0x400;
-        WDW_Water *water = (WDW_Water *)dActor_c::FindWithID(mWaterID);
+        daObjWc_Mizu_c *water = (daObjWc_Mizu_c *)dActor_c::FindWithID(mWaterID);
         if (water != 0) {
             if (mPosY == water->mPosY) {
                 if (mAngleY == 0) mActive = 0;

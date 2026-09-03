@@ -37,7 +37,7 @@
  * succeed. The loss is entirely in the recovery. Restoring them means giving
  * the TU-local shadow class below the fields those bodies read -- mCylinder,
  * mCamSpacePosX, mPosX/mPosZ, mModel.mat4x3, uniqueID, actorID -- and pulling
- * in WDW_Water, which is a rewrite of this file's whole class model rather
+ * in daObjWc_Mizu_c, which is a rewrite of this file's whole class model rather
  * than three edits. Left deliberately, and recorded here rather than in a
  * tracker, because this banner is what a future promotion will read.
  */
