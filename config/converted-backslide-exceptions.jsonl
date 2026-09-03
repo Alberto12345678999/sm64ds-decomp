@@ -201,3 +201,15 @@
 {"path": "src/_ZN13PoleBillboard6RenderEv.cpp", "reason": "ov015/daObjBkBillboard_c: six per-function sources promoted into src/actors/d_a_obj_bk_billboard.cpp (a move into a CONVERTED file, not a removal)"}
 {"path": "src/_ZN13PoleBillboardD0Ev.cpp", "reason": "ov015/daObjBkBillboard_c: six per-function sources promoted into src/actors/d_a_obj_bk_billboard.cpp (a move into a CONVERTED file, not a removal)"}
 {"path": "src/_ZN13PoleBillboardD1Ev.cpp", "reason": "ov015/daObjBkBillboard_c: six per-function sources promoted into src/actors/d_a_obj_bk_billboard.cpp (a move into a CONVERTED file, not a removal)"}
+{"path": "src/_ZN5Cloud16CleanupResourcesEv.cpp", "reason": "ov039/daObjKumo_c promoted to a single TU (PR #2216); the CONVERTED members move under src/actors/d_a_obj_kumo.cpp"}
+{"path": "src/_ZN5Cloud6RenderEv.cpp", "reason": "ov039/daObjKumo_c promoted to a single TU (PR #2216); the CONVERTED members move under src/actors/d_a_obj_kumo.cpp"}
+{"path": "src/_ZN5Cloud8BehaviorEv.cpp", "reason": "ov039/daObjKumo_c promoted to a single TU (PR #2216); the CONVERTED members move under src/actors/d_a_obj_kumo.cpp"}
+{"path": "src/_ZN5CloudD0Ev.cpp", "reason": "ov039/daObjKumo_c promoted to a single TU (PR #2216); the CONVERTED members move under src/actors/d_a_obj_kumo.cpp"}
+{"path": "src/_ZN5CloudD1Ev.cpp", "reason": "ov039/daObjKumo_c promoted to a single TU (PR #2216); the CONVERTED members move under src/actors/d_a_obj_kumo.cpp"}
+{"path": "src/_ZN9HugeCover16CleanupResourcesEv.cpp", "reason": "ov032/daObjTdFuta_c promoted to a single TU; rebased onto post-#2216 main"}
+{"path": "src/_ZN9HugeCover6RenderEv.cpp", "reason": "ov032/daObjTdFuta_c promoted to a single TU; rebased onto post-#2216 main"}
+{"path": "src/_ZN9HugeCoverD0Ev.cpp", "reason": "ov032/daObjTdFuta_c promoted to a single TU; rebased onto post-#2216 main"}
+{"path": "src/_ZN9HugeCoverD1Ev.cpp", "reason": "ov032/daObjTdFuta_c promoted to a single TU; rebased onto post-#2216 main"}
+{"path": "src/_ZN11DiamondLift6RenderEv.cpp", "reason": "ov043/daObjKm1_Ukishima_c promoted to a single TU; rebased onto post-#2217 main"}
+{"path": "src/_ZN11DiamondLiftD0Ev.cpp", "reason": "ov043/daObjKm1_Ukishima_c promoted to a single TU; rebased onto post-#2217 main"}
+{"path": "src/_ZN11DiamondLiftD1Ev.cpp", "reason": "ov043/daObjKm1_Ukishima_c promoted to a single TU; rebased onto post-#2217 main"}
