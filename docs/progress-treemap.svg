@@ -33709,19 +33709,19 @@ matched: yes</title></rect><rect x="1069.41" y="261.61" width="6.51" height="3.2
 module: ov036
 addr: 0x02111414
 size: 48 bytes
-matched: yes</title></rect><rect x="1069.41" y="264.83" width="6.51" height="5.36" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN18RotatingPlatformRrD1Ev
+matched: yes</title></rect><rect x="1069.41" y="264.83" width="6.51" height="5.36" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN19daObjRc_Kaitendai_cD1Ev
 module: ov036
 addr: 0x02111444
 size: 80 bytes
-matched: yes</title></rect><rect x="1075.93" y="251.44" width="4.09" height="10.65" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN18RotatingPlatformRrD0Ev
+matched: yes</title></rect><rect x="1075.93" y="251.44" width="4.09" height="10.65" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN19daObjRc_Kaitendai_cD0Ev
 module: ov036
 addr: 0x02111494
 size: 100 bytes
-matched: yes</title></rect><rect x="1075.93" y="262.09" width="4.09" height="2.13" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN18RotatingPlatformRr16CleanupResourcesEv
+matched: yes</title></rect><rect x="1075.93" y="262.09" width="4.09" height="2.13" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN19daObjRc_Kaitendai_c16CleanupResourcesEv
 module: ov036
 addr: 0x021114f8
 size: 20 bytes
-matched: yes</title></rect><rect x="1075.93" y="264.22" width="4.09" height="5.97" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN18RotatingPlatformRr13InitResourcesEv
+matched: yes</title></rect><rect x="1075.93" y="264.22" width="4.09" height="5.97" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN19daObjRc_Kaitendai_c13InitResourcesEv
 module: ov036
 addr: 0x0211150c
 size: 56 bytes
