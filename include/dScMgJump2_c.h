@@ -51,8 +51,7 @@ struct dScMgJump2_c : dScMgD3DBase_c {
        DECLARED but not defined here is OnYoshiTryEat below, which lives in
        src/actors/d_sc_mg_jump2.cpp, so _ZTV12dScMgJump2_c is still emitted
        by that one translation unit and by no other. */
-    virtual ~dScMgJump2_c()
-    {
+    virtual ~dScMgJump2_c() {
         _ZN5ModelD1Ev((char *)this + 0x5a14);
         __destroy_arr(mArray3, 0x10, 0x24, (void *)func_ov006_020eed64);
         __destroy_arr(mArray2, 6, 0xf0, (void *)func_ov006_020c6f3c);
