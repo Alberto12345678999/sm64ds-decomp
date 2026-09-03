@@ -1,9 +1,9 @@
 {
   "id": "ov009/daMcFlag_c",
   "module": "ov009",
-  "source": "src_tu/actors/daMcFlag_c.cpp",
-  "promoted_source": "src/actors/daMcFlag_c.cpp",
-  "status": "text-verified",
+  "source": "src/actors/d_a_mc_flag.cpp",
+  "promoted_source": "src/actors/d_a_mc_flag.cpp",
+  "status": "promoted",
   "boundary_confidence": "high",
   "boundary_evidence": [
     "contiguous linker run: 0x2112078..0x2112228, 7 function(s), from build/tu_map.json (tools/tu_map.py)",
@@ -69,6 +69,71 @@
     }
   ],
   "data": [],
+  "compiler_only_output": [
+    {
+      "symbol": "_ZTI7dBase_c",
+      "disposition": "deadstrip-data",
+      "reason": "A vague-linkage passenger: naming a base class in this TU's hierarchy makes mwccarm emit its type_info record here too. The cartridge keeps its canonical copy at arm9:0x02086e78, which no section this entry licenses (.text 0x02112078-0x02112228) reaches, so dsd supplies that ROM data independently and production isolation discards the emitted copy. tools/romdata_check.py word-compares the two, relocations applied, before it is discarded.",
+      "canonical_module": "arm9",
+      "canonical_address": "0x02086e78"
+    },
+    {
+      "symbol": "_ZTS7dBase_c",
+      "disposition": "deadstrip-data",
+      "reason": "A vague-linkage passenger: naming a base class in this TU's hierarchy makes mwccarm emit its type_info record here too. The cartridge keeps its canonical copy at arm9:0x02086e54, which no section this entry licenses (.text 0x02112078-0x02112228) reaches, so dsd supplies that ROM data independently and production isolation discards the emitted copy. tools/romdata_check.py word-compares the two, relocations applied, before it is discarded.",
+      "canonical_module": "arm9",
+      "canonical_address": "0x02086e54"
+    },
+    {
+      "symbol": "_ZTI7fBase_c",
+      "disposition": "deadstrip-data",
+      "reason": "A vague-linkage passenger: naming a base class in this TU's hierarchy makes mwccarm emit its type_info record here too. The cartridge keeps its canonical copy at arm9:0x02086d70, which no section this entry licenses (.text 0x02112078-0x02112228) reaches, so dsd supplies that ROM data independently and production isolation discards the emitted copy. tools/romdata_check.py word-compares the two, relocations applied, before it is discarded.",
+      "canonical_module": "arm9",
+      "canonical_address": "0x02086d70"
+    },
+    {
+      "symbol": "_ZTS7fBase_c",
+      "disposition": "deadstrip-data",
+      "reason": "A vague-linkage passenger: naming a base class in this TU's hierarchy makes mwccarm emit its type_info record here too. The cartridge keeps its canonical copy at arm9:0x02086e60, which no section this entry licenses (.text 0x02112078-0x02112228) reaches, so dsd supplies that ROM data independently and production isolation discards the emitted copy. tools/romdata_check.py word-compares the two, relocations applied, before it is discarded.",
+      "canonical_module": "arm9",
+      "canonical_address": "0x02086e60"
+    },
+    {
+      "symbol": "_ZTI8dActor_c",
+      "disposition": "deadstrip-data",
+      "reason": "A vague-linkage passenger: naming a base class in this TU's hierarchy makes mwccarm emit its type_info record here too. The cartridge keeps its canonical copy at arm9:0x0208e390, which no section this entry licenses (.text 0x02112078-0x02112228) reaches, so dsd supplies that ROM data independently and production isolation discards the emitted copy. tools/romdata_check.py word-compares the two, relocations applied, before it is discarded.",
+      "canonical_module": "arm9",
+      "canonical_address": "0x0208e390"
+    },
+    {
+      "symbol": "_ZTS8dActor_c",
+      "disposition": "deadstrip-data",
+      "reason": "A vague-linkage passenger: naming a base class in this TU's hierarchy makes mwccarm emit its type_info record here too. The cartridge keeps its canonical copy at arm9:0x0208e384, which no section this entry licenses (.text 0x02112078-0x02112228) reaches, so dsd supplies that ROM data independently and production isolation discards the emitted copy. tools/romdata_check.py word-compares the two, relocations applied, before it is discarded.",
+      "canonical_module": "arm9",
+      "canonical_address": "0x0208e384"
+    },
+    {
+      "symbol": "_ZTI10daMcFlag_c",
+      "disposition": "deadstrip-data",
+      "reason": "Emitted because this TU HOMES the class: InitResources is the key function and include/daMcFlag_c.h declares ~daMcFlag_c() INLINE, so mwccarm emits the retail D1/D0 pair here as real C++ members and, with them, this class's vtable and RTTI. That is the opposite of the mangled-body siblings such as ov029/daObjWc_Mizu_c, where the same three records are vague linkage no TU homes -- here they are genuine key-function output. The cartridge keeps its canonical copy at ov009:0x02113b60, outside this entry's only licensed range (.text 0x02112078-0x02112228), so dsd supplies that ROM data independently and production isolation discards the emitted copy. tools/romdata_check.py word-compares the two, relocations applied, before it is discarded.",
+      "canonical_module": "ov009",
+      "canonical_address": "0x02113b60"
+    },
+    {
+      "symbol": "_ZTS10daMcFlag_c",
+      "disposition": "deadstrip-data",
+      "reason": "Emitted because this TU HOMES the class: InitResources is the key function and include/daMcFlag_c.h declares ~daMcFlag_c() INLINE, so mwccarm emits the retail D1/D0 pair here as real C++ members and, with them, this class's vtable and RTTI. That is the opposite of the mangled-body siblings such as ov029/daObjWc_Mizu_c, where the same three records are vague linkage no TU homes -- here they are genuine key-function output. The cartridge keeps its canonical copy at ov009:0x02113b6c, outside this entry's only licensed range (.text 0x02112078-0x02112228), so dsd supplies that ROM data independently and production isolation discards the emitted copy. tools/romdata_check.py word-compares the two, relocations applied, before it is discarded.",
+      "canonical_module": "ov009",
+      "canonical_address": "0x02113b6c"
+    },
+    {
+      "symbol": "_ZTV10daMcFlag_c",
+      "disposition": "deadstrip-data",
+      "reason": "Emitted because this TU HOMES the class: InitResources is the key function and include/daMcFlag_c.h declares ~daMcFlag_c() INLINE, so mwccarm emits the retail D1/D0 pair here as real C++ members and, with them, this class's vtable and RTTI. That is the opposite of the mangled-body siblings such as ov029/daObjWc_Mizu_c, where the same three records are vague linkage no TU homes -- here they are genuine key-function output. The cartridge keeps its canonical copy at ov009:0x02113ba0, outside this entry's only licensed range (.text 0x02112078-0x02112228), so dsd supplies that ROM data independently and production isolation discards the emitted copy. tools/romdata_check.py word-compares the two, relocations applied, before it is discarded.",
+      "canonical_module": "ov009",
+      "canonical_address": "0x02113ba0"
+    }
+  ],
   "bss": [],
   "notes": [
     "Generated by tools/tubuild.py create. See the file's own header comment for what was and was not reconciled, and notes/translation-unit-reconstruction-plan.md section 7.3 for what this generator does and does not attempt to resolve automatically.",
@@ -85,9 +150,51 @@
     "criteria": {
       "every_declared_function_defined": "PASS",
       "every_declared_function_bytes_match": "PASS",
-      "declared_function_set_equals_defined_function_set": "FAIL-BY-DESIGN -- 6 unlicensed section/symbol(s); see unlicensed_output_observed",
-      "functions_occur_in_expected_order": "PARTIAL -- ordinal pair(s) not in ROM order: [(0, 1)]",
+      "declared_function_set_equals_defined_function_set": "PASS",
+      "functions_occur_in_expected_order": "PASS",
       "relocation_destinations_verified": "PASS"
+    },
+    "compilerOnlyOutput": {
+      "requested": [],
+      "deadstripped": [],
+      "droppedSections": [
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18
+      ],
+      "data": [
+        "_ZTI7dBase_c",
+        "_ZTS7dBase_c",
+        "_ZTI7fBase_c",
+        "_ZTS7fBase_c",
+        "_ZTI8dActor_c",
+        "_ZTS8dActor_c",
+        "_ZTI10daMcFlag_c",
+        "_ZTS10daMcFlag_c",
+        "_ZTV10daMcFlag_c"
+      ],
+      "dataExternalized": [
+        "_ZTI10daMcFlag_c",
+        "_ZTI7dBase_c",
+        "_ZTI7fBase_c",
+        "_ZTI8dActor_c",
+        "_ZTS10daMcFlag_c",
+        "_ZTS7dBase_c",
+        "_ZTS7fBase_c",
+        "_ZTS8dActor_c",
+        "_ZTV10daMcFlag_c"
+      ]
     }
   }
 }
