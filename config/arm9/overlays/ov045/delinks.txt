@@ -128,25 +128,10 @@ src/daObjKm2_Ukishima_c_classInit.c:
     complete
     .text start:0x02111bf4 end:0x02111c30
 
-src/_ZN18TiltingPlatformBfsD1Ev.cpp:
+src/actors/d_a_obj_km2_gura.cpp:
     complete
-    .text start:0x02111c30 end:0x02111c80
-
-src/_ZN18TiltingPlatformBfsD0Ev.cpp:
-    complete
-    .text start:0x02111c80 end:0x02111ce4
-
-src/_ZN18TiltingPlatformBfs16CleanupResourcesEv.cpp:
-    complete
-    .text start:0x02111ce4 end:0x02111cf8
-
-src/_ZN18TiltingPlatformBfs13InitResourcesEv.cpp:
-    complete
-    .text start:0x02111cf8 end:0x02111d0c
-
-src/daObjKm2_Gura_c_classInit.c:
-    complete
-    .text start:0x02111d0c end:0x02111d48
+    .text start:0x02111c30 end:0x02111d48
+    .data start:0x02112fdc end:0x021130a0
 
 src/actors/d_a_obj_km2_fall_block.cpp:
     complete

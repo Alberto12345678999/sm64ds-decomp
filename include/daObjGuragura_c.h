@@ -22,8 +22,8 @@
  * ABSTRACT. Slots 0 and 3 -- InitResources and CleanupResources -- are null. Its
  * own overrides are slots 6 (Behavior), 9 (Render), 16 (D1) and 17 (D0).
  *
- * TWO DESCENDANTS: daObjKm2_Gura_c (TiltingPlatformBfs) and daObjFl_Gura_c
- * (TiltingPlatformLll). Each one's destructor stores this class's vtable between
+ * TWO DESCENDANTS: daObjKm2_Gura_c (historical alias TiltingPlatformBfs) and
+ * daObjFl_Gura_c (TiltingPlatformLll). Each one's destructor stores this class's vtable between
  * its own and _ZTV10dBgActor_c.
  *
  * SIZE 0x350, the literal both factories pass to fBase_c::operator new.
