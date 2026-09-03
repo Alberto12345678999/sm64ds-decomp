@@ -182,13 +182,14 @@ def _enrolment():
     one-function file left behind beside a promoted TU is then correctly ignored rather
     than counted as a match nothing builds.
 
-    `mods/` ENTRIES ARE EXCLUDED, deliberately and load-bearingly. One entry in the
-    tree points at `mods/Player_ScaleByCharFactor.c` -- an intentional divergence from
-    the cartridge, not a reproduction of it -- and `rombuild_profile._stock_delinks`
-    swaps it back to its `src/` counterpart for a stock link *by calling path_for on the
-    mods stem*. Letting the mod win here would make that swap a no-op and leak the mod
-    into the stock ROM. This module's first line is "where does symbol X live in src/",
-    and that is exactly the rule: only entries under `src/`."""
+    `mods/` ENTRIES ARE EXCLUDED, deliberately and load-bearingly. A delinks entry can
+    point at `mods/<Symbol>.c` -- an intentional divergence from the cartridge, not a
+    reproduction of it -- and `rombuild_profile._stock_delinks` swaps it back to its
+    `src/` counterpart for a stock link *by calling path_for on the mods stem*. Letting
+    the mod win here would make that swap a no-op and leak the mod into the stock ROM.
+    This module's first line is "where does symbol X live in src/", and that is exactly
+    the rule: only entries under `src/`. (`mods/` is currently empty, but the exclusion
+    stays load-bearing for the next divergence someone adds there.)"""
     global _enrolment_cache, _definition_ownership_cache
     if _enrolment_cache is None:
         by_symbol, by_path = {}, {}
