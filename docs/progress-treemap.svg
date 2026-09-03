@@ -33997,19 +33997,19 @@ matched: yes</title></rect><rect x="1243.63" y="255.92" width="3.80" height="6.1
 module: ov043
 addr: 0x021114dc
 size: 60 bytes
-matched: yes</title></rect><rect x="1243.63" y="262.03" width="3.80" height="8.15" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN19RickshawPlatformBdwD1Ev
+matched: yes</title></rect><rect x="1243.63" y="262.03" width="3.80" height="8.15" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN17daObjKm1_Kuruma_cD1Ev
 module: ov043
 addr: 0x02111518
 size: 80 bytes
-matched: yes</title></rect><rect x="1247.43" y="251.44" width="4.13" height="9.37" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN19RickshawPlatformBdwD0Ev
+matched: yes</title></rect><rect x="1247.43" y="251.44" width="4.13" height="9.37" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN17daObjKm1_Kuruma_cD0Ev
 module: ov043
 addr: 0x02111568
 size: 100 bytes
-matched: yes</title></rect><rect x="1247.43" y="260.81" width="4.13" height="1.87" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN19RickshawPlatformBdw16CleanupResourcesEv
+matched: yes</title></rect><rect x="1247.43" y="260.81" width="4.13" height="1.87" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN17daObjKm1_Kuruma_c16CleanupResourcesEv
 module: ov043
 addr: 0x021115cc
 size: 20 bytes
-matched: yes</title></rect><rect x="1247.43" y="262.68" width="4.13" height="1.87" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN19RickshawPlatformBdw13InitResourcesEv
+matched: yes</title></rect><rect x="1247.43" y="262.68" width="4.13" height="1.87" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN17daObjKm1_Kuruma_c13InitResourcesEv
 module: ov043
 addr: 0x021115e0
 size: 20 bytes
