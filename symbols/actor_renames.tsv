@@ -1512,10 +1512,10 @@ ov064	0x02117784	func_ov064_02117784	_ZN8BigBully13InitResourcesEv	vtable slot 0
 ov064	0x0211791c	func_ov064_0211791c	BigBully_Spawn	spawnfunc
 ov064	0x02117fe8	func_ov064_02117fe8	MetalNetLift_Spawn	spawnfunc
 ov064	0x02117fe8	MetalNetLift_Spawn	daObjFl_Amilift_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
-ov064	0x02118020	func_ov064_02118020	_ZN18TiltingPlatformLllD1Ev	vtable slot 16 (was _ZN12MetalNetLiftD1Ev)
-ov064	0x02118070	func_ov064_02118070	_ZN18TiltingPlatformLllD0Ev	vtable slot 17 (was _ZN12MetalNetLiftD0Ev)
-ov064	0x021180d4	func_ov064_021180d4	_ZN18TiltingPlatformLll16CleanupResourcesEv	vtable slot 3 (was _ZN12MetalNetLift16CleanupResourcesEv)
-ov064	0x021180e8	func_ov064_021180e8	_ZN18TiltingPlatformLll13InitResourcesEv	vtable slot 0 (was _ZN12MetalNetLift13InitResourcesEv)
+ov064	0x02118020	func_ov064_02118020	_ZN14daObjFl_Gura_cD1Ev	ROM RTTI class identity; vtable slot 16 (was _ZN18TiltingPlatformLllD1Ev)
+ov064	0x02118070	func_ov064_02118070	_ZN14daObjFl_Gura_cD0Ev	ROM RTTI class identity; vtable slot 17 (was _ZN18TiltingPlatformLllD0Ev)
+ov064	0x021180d4	func_ov064_021180d4	_ZN14daObjFl_Gura_c16CleanupResourcesEv	ROM RTTI class identity; vtable slot 3 (was _ZN18TiltingPlatformLll16CleanupResourcesEv)
+ov064	0x021180e8	func_ov064_021180e8	_ZN14daObjFl_Gura_c13InitResourcesEv	ROM RTTI class identity; vtable slot 0 (was _ZN18TiltingPlatformLll13InitResourcesEv)
 ov064	0x021180fc	func_ov064_021180fc	TiltingPlatformLll_Spawn	spawnfunc
 ov064	0x021180fc	TiltingPlatformLll_Spawn	daObjFl_Gura_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov064	0x02118138	func_ov064_02118138	_ZN15RotatingFirebarD1Ev	vtable slot 16
@@ -1592,7 +1592,7 @@ ov064	0x0211bc44	data_ov064_0211bc44	MetalNetLift_SpawnInfo	spawninfo
 ov064	0x0211bc44	MetalNetLift_SpawnInfo	g_profile_FL_AMILIFT	reconstructed profile global; literal ROM ID FL_AMILIFT+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov064	0x0211bd08	data_ov064_0211bd08	TiltingPlatformLll_SpawnInfo	spawninfo
 ov064	0x0211bd08	TiltingPlatformLll_SpawnInfo	g_profile_FL_GURA	reconstructed profile global; literal ROM ID FL_GURA+registry role+later EAD lineage; exact SM64DS spelling not preserved
-ov064	0x0211bd2c	data_ov064_0211bd2c	_ZTV18TiltingPlatformLll	vtable alloc=? (was _ZTV12MetalNetLift)
+ov064	0x0211bd2c	data_ov064_0211bd2c	_ZTV14daObjFl_Gura_c	ROM RTTI class identity; vtable alloc=? (was _ZTV18TiltingPlatformLll)
 ov064	0x0211bdec	data_ov064_0211bdec	RotatingFirebar_SpawnInfo	spawninfo
 ov064	0x0211bdec	RotatingFirebar_SpawnInfo	g_profile_FL_KOMA_U	reconstructed profile global; literal ROM ID FL_KOMA_U+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov064	0x0211be10	data_ov064_0211be10	_ZTV15RotatingFirebar	vtable alloc=0x540

@@ -1509,6 +1509,11 @@
     "src/actors/d_sc_mg_trampoline.cpp#_ZN17dScMgTrampoline_c13OnTurnIntoEggEi": "github-actions[bot]",
     "src/actors/d_sc_mg_trampoline.cpp#_ZN17dScMgTrampoline_c13OnYoshiTryEatEi": "github-actions[bot]",
     "src/actors/d_sc_mg_trampoline.cpp#_ZN17dScMgTrampoline_c13InitResourcesEv": "github-actions[bot]",
-    "src/actors/d_sc_mg_trampoline.cpp#func_ov006_0212231c": "github-actions[bot]"
+    "src/actors/d_sc_mg_trampoline.cpp#func_ov006_0212231c": "github-actions[bot]",
+    "src/actors/d_a_obj_fl_gura.cpp#_ZN14daObjFl_Gura_cD1Ev": "github-actions[bot]",
+    "src/actors/d_a_obj_fl_gura.cpp#_ZN14daObjFl_Gura_cD0Ev": "tangosdev",
+    "src/actors/d_a_obj_fl_gura.cpp#_ZN14daObjFl_Gura_c16CleanupResourcesEv": "github-actions[bot]",
+    "src/actors/d_a_obj_fl_gura.cpp#_ZN14daObjFl_Gura_c13InitResourcesEv": "github-actions[bot]",
+    "src/actors/d_a_obj_fl_gura.cpp#daObjFl_Gura_c_classInit": "github-actions[bot]"
   }
 }
