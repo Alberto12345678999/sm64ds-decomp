@@ -1,9 +1,9 @@
 {
   "id": "ov072/daBgSnwmn_c",
   "module": "ov072",
-  "source": "src_tu/actors/daBgSnwmn_c.cpp",
+  "source": "src/actors/d_a_bg_snwmn.cpp",
   "promoted_source": "src/actors/d_a_bg_snwmn.cpp",
-  "status": "text-verified",
+  "status": "promoted",
   "boundary_confidence": "medium",
   "boundary_evidence": [
     "contiguous linker run: 0x2120824..0x2120c00, 8 function(s), from build/tu_map.json (tools/tu_map.py)",
