@@ -709,7 +709,7 @@ matched: yes</title></rect><rect x="232.12" y="97.92" width="25.79" height="6.97
 module: arm9
 addr: 0x0200e338
 size: 268 bytes
-matched: yes</title></rect><rect x="257.91" y="97.92" width="7.70" height="6.97" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>Camera_Spawn
+matched: yes</title></rect><rect x="257.91" y="97.92" width="7.70" height="6.97" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>dCamera_c_classInit
 module: arm9
 addr: 0x0200e444
 size: 80 bytes
@@ -4777,7 +4777,7 @@ matched: yes</title></rect><rect x="257.17" y="433.86" width="50.43" height="7.7
 module: arm9
 addr: 0x0203506c
 size: 584 bytes
-matched: yes</title></rect><rect x="307.61" y="433.86" width="13.82" height="7.77" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_020352b4
+matched: yes</title></rect><rect x="307.61" y="433.86" width="13.82" height="7.77" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>dScMB_c_classInit
 module: arm9
 addr: 0x020352b4
 size: 160 bytes
@@ -12821,11 +12821,11 @@ matched: yes</title></rect><rect x="390.16" y="55.48" width="93.32" height="6.28
 module: ov002
 addr: 0x020b01c0
 size: 880 bytes
-matched: yes</title></rect><rect x="483.48" y="55.48" width="8.48" height="6.28" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>MegaMushroom_Spawn
+matched: yes</title></rect><rect x="483.48" y="55.48" width="8.48" height="6.28" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>da1up_c_classInit_SCALEUP_KINOKO
 module: ov002
 addr: 0x020b0530
 size: 80 bytes
-matched: yes</title></rect><rect x="491.96" y="55.48" width="8.48" height="6.28" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OneUpMushroom_Spawn
+matched: yes</title></rect><rect x="491.96" y="55.48" width="8.48" height="6.28" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>da1up_c_classInit_ONEUPKINOKO
 module: ov002
 addr: 0x020b0580
 size: 80 bytes
@@ -13073,15 +13073,15 @@ matched: yes</title></rect><rect x="354.10" y="84.02" width="4.62" height="1.15"
 module: ov002
 addr: 0x020b2a90
 size: 8 bytes
-matched: yes</title></rect><rect x="358.72" y="84.02" width="50.77" height="1.15" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>BlueCoin_Spawn
+matched: yes</title></rect><rect x="358.72" y="84.02" width="50.77" height="1.15" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daCoin_c_classInit_BLUE_COIN
 module: ov002
 addr: 0x020b2a98
 size: 88 bytes
-matched: yes</title></rect><rect x="409.49" y="84.02" width="50.77" height="1.15" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>RedCoin_Spawn
+matched: yes</title></rect><rect x="409.49" y="84.02" width="50.77" height="1.15" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daCoin_c_classInit_RED_COIN
 module: ov002
 addr: 0x020b2af0
 size: 88 bytes
-matched: yes</title></rect><rect x="460.26" y="84.02" width="50.77" height="1.15" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>Coin_Spawn
+matched: yes</title></rect><rect x="460.26" y="84.02" width="50.77" height="1.15" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daCoin_c_classInit_COIN
 module: ov002
 addr: 0x020b2b48
 size: 88 bytes
@@ -13113,7 +13113,7 @@ matched: yes</title></rect><rect x="452.69" y="85.18" width="23.85" height="8.37
 module: ov002
 addr: 0x020b311c
 size: 300 bytes
-matched: yes</title></rect><rect x="476.54" y="85.18" width="6.36" height="8.37" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>WingFeather_Spawn
+matched: yes</title></rect><rect x="476.54" y="85.18" width="6.36" height="8.37" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daFeather_c_classInit
 module: ov002
 addr: 0x020b3248
 size: 80 bytes
@@ -13201,23 +13201,23 @@ matched: yes</title></rect><rect x="432.47" y="93.55" width="47.78" height="10.5
 module: ov002
 addr: 0x020b3d78
 size: 756 bytes
-matched: yes</title></rect><rect x="480.25" y="93.55" width="3.03" height="10.53" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>FortressTowerWall_Spawn
+matched: yes</title></rect><rect x="480.25" y="93.55" width="3.03" height="10.53" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daObjBlockL_c_classInit_BK_FUTA
 module: ov002
 addr: 0x020b406c
 size: 48 bytes
-matched: yes</title></rect><rect x="483.29" y="93.55" width="3.03" height="10.53" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>BlackBrickBlock_Spawn
+matched: yes</title></rect><rect x="483.29" y="93.55" width="3.03" height="10.53" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daObjBlockL_c_classInit_BLOCK_LL
 module: ov002
 addr: 0x020b409c
 size: 48 bytes
-matched: yes</title></rect><rect x="486.32" y="93.55" width="3.03" height="10.53" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>BrickBlockSwitchActivated_Spawn
+matched: yes</title></rect><rect x="486.32" y="93.55" width="3.03" height="10.53" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daObjBlockL_c_classInit_SW_BLOCK_L
 module: ov002
 addr: 0x020b40cc
 size: 48 bytes
-matched: yes</title></rect><rect x="489.36" y="93.55" width="3.03" height="10.53" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>BigBrickBlock_Spawn
+matched: yes</title></rect><rect x="489.36" y="93.55" width="3.03" height="10.53" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daObjBlockL_c_classInit_DP_BLOCK_L
 module: ov002
 addr: 0x020b40fc
 size: 48 bytes
-matched: yes</title></rect><rect x="492.39" y="93.55" width="3.03" height="10.53" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>BrickBlock_Spawn
+matched: yes</title></rect><rect x="492.39" y="93.55" width="3.03" height="10.53" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daObjBlockL_c_classInit_BLOCK_L
 module: ov002
 addr: 0x020b412c
 size: 48 bytes
@@ -13261,19 +13261,19 @@ matched: yes</title></rect><rect x="556.10" y="93.55" width="12.39" height="10.5
 module: ov002
 addr: 0x020b451c
 size: 196 bytes
-matched: yes</title></rect><rect x="568.49" y="93.55" width="3.03" height="10.53" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>SilverStarBlockTag_Spawn
+matched: yes</title></rect><rect x="568.49" y="93.55" width="3.03" height="10.53" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daObjBlockItemTag_c_classInit_BLK_SLVSTAR_TAG
 module: ov002
 addr: 0x020b45e0
 size: 48 bytes
-matched: yes</title></rect><rect x="571.52" y="93.55" width="3.03" height="10.53" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>GreenShellBlockTag_Spawn
+matched: yes</title></rect><rect x="571.52" y="93.55" width="3.03" height="10.53" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daObjBlockItemTag_c_classInit_BLK_GNSHELL_TAG
 module: ov002
 addr: 0x020b4610
 size: 48 bytes
-matched: yes</title></rect><rect x="574.55" y="93.55" width="3.03" height="10.53" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>MegaMushroomBlockTag_Spawn
+matched: yes</title></rect><rect x="574.55" y="93.55" width="3.03" height="10.53" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daObjBlockItemTag_c_classInit_BLK_SKINOKO_TAG
 module: ov002
 addr: 0x020b4640
 size: 48 bytes
-matched: yes</title></rect><rect x="577.59" y="93.55" width="3.03" height="10.53" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OneUpMushroomBlockTag_Spawn
+matched: yes</title></rect><rect x="577.59" y="93.55" width="3.03" height="10.53" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daObjBlockItemTag_c_classInit_BLK_OKINOKO_TAG
 module: ov002
 addr: 0x020b4670
 size: 48 bytes
@@ -13413,11 +13413,11 @@ matched: yes</title></rect><rect x="574.98" y="110.64" width="0.89" height="5.99
 module: ov002
 addr: 0x020b59a0
 size: 8 bytes
-matched: yes</title></rect><rect x="575.87" y="110.64" width="6.22" height="5.99" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>BlueFlame_Spawn
+matched: yes</title></rect><rect x="575.87" y="110.64" width="6.22" height="5.99" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daObjFire_c_classInit_OBJ_BLUE_FIRE
 module: ov002
 addr: 0x020b59a8
 size: 56 bytes
-matched: yes</title></rect><rect x="582.10" y="110.64" width="6.22" height="5.99" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>RedFlame_Spawn
+matched: yes</title></rect><rect x="582.10" y="110.64" width="6.22" height="5.99" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daObjFire_c_classInit_OBJ_RED_FIRE
 module: ov002
 addr: 0x020b59e0
 size: 56 bytes
@@ -13613,7 +13613,7 @@ matched: yes</title></rect><rect x="422.11" y="127.82" width="0.82" height="6.50
 module: ov002
 addr: 0x020b6dd0
 size: 8 bytes
-matched: yes</title></rect><rect x="422.93" y="127.82" width="4.92" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>PoppingLavaBubbles_Spawn
+matched: yes</title></rect><rect x="422.93" y="127.82" width="4.92" height="6.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daObjLava_c_classInit
 module: ov002
 addr: 0x020b6dd8
 size: 48 bytes
@@ -13757,7 +13757,7 @@ matched: yes</title></rect><rect x="482.62" y="141.54" width="83.85" height="9.7
 module: ov002
 addr: 0x020b86d0
 size: 1224 bytes
-matched: yes</title></rect><rect x="566.47" y="141.54" width="6.03" height="9.72" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>Cap_Spawn
+matched: yes</title></rect><rect x="566.47" y="141.54" width="6.03" height="9.72" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daObjMarioCap_c_classInit
 module: ov002
 addr: 0x020b8b98
 size: 88 bytes
@@ -13797,7 +13797,7 @@ matched: yes</title></rect><rect x="399.24" y="151.26" width="25.84" height="7.7
 module: ov002
 addr: 0x020b8fe0
 size: 300 bytes
-matched: yes</title></rect><rect x="425.09" y="151.26" width="5.17" height="7.73" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>PushBlock_Spawn
+matched: yes</title></rect><rect x="425.09" y="151.26" width="5.17" height="7.73" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daObjPushblock_c_classInit
 module: ov002
 addr: 0x020b910c
 size: 60 bytes
@@ -13873,7 +13873,7 @@ matched: yes</title></rect><rect x="479.67" y="158.98" width="0.82" height="6.49
 module: ov002
 addr: 0x020b9e04
 size: 8 bytes
-matched: yes</title></rect><rect x="480.49" y="158.98" width="9.03" height="6.49" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>PowerFlower_Spawn
+matched: yes</title></rect><rect x="480.49" y="158.98" width="9.03" height="6.49" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daObjPowerUpItem_c_classInit
 module: ov002
 addr: 0x020b9e0c
 size: 88 bytes
