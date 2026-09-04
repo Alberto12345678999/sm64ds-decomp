@@ -13305,11 +13305,11 @@ matched: yes</title></rect><rect x="392.64" y="104.08" width="8.93" height="6.56
 module: ov002
 addr: 0x020b49a8
 size: 88 bytes
-matched: yes</title></rect><rect x="401.57" y="104.08" width="5.68" height="6.56" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daObjKinokoTag_c_Spawn
+matched: yes</title></rect><rect x="401.57" y="104.08" width="5.68" height="6.56" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daObjKinokoTag_c_classInit_KINOKO_CREATE_TAG
 module: ov002
 addr: 0x020b4a00
 size: 56 bytes
-matched: yes</title></rect><rect x="407.25" y="104.08" width="5.68" height="6.56" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>MegaMushroomTag_Spawn
+matched: yes</title></rect><rect x="407.25" y="104.08" width="5.68" height="6.56" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daObjKinokoTag_c_classInit_KINOKO_TAG
 module: ov002
 addr: 0x020b4a38
 size: 56 bytes
@@ -13965,11 +13965,11 @@ matched: yes</title></rect><rect x="508.38" y="165.47" width="1.55" height="8.59
 module: ov002
 addr: 0x020baa98
 size: 20 bytes
-matched: yes</title></rect><rect x="509.92" y="165.47" width="3.72" height="8.59" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>StarSwitch_Spawn
+matched: yes</title></rect><rect x="509.92" y="165.47" width="3.72" height="8.59" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daObjSwitch_c_classInit_STAR_SWITCH
 module: ov002
 addr: 0x020baaac
 size: 48 bytes
-matched: yes</title></rect><rect x="513.64" y="165.47" width="3.72" height="8.59" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>ExclamationSwitch_Spawn
+matched: yes</title></rect><rect x="513.64" y="165.47" width="3.72" height="8.59" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daObjSwitch_c_classInit_HANSWITCH
 module: ov002
 addr: 0x020baadc
 size: 48 bytes
@@ -14109,7 +14109,7 @@ matched: yes</title></rect><rect x="565.70" y="181.27" width="39.95" height="6.5
 module: ov002
 addr: 0x020bc240
 size: 392 bytes
-matched: yes</title></rect><rect x="354.10" y="187.80" width="23.31" height="2.17" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>SignPost_Spawn
+matched: yes</title></rect><rect x="354.10" y="187.80" width="23.31" height="2.17" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daObjTatefuda_c_classInit
 module: ov002
 addr: 0x020bc3c8
 size: 76 bytes
@@ -14173,7 +14173,7 @@ matched: yes</title></rect><rect x="374.61" y="189.97" width="10.83" height="9.3
 module: ov002
 addr: 0x020bc81c
 size: 152 bytes
-matched: yes</title></rect><rect x="385.44" y="189.97" width="4.56" height="9.35" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>HealingHeart_Spawn
+matched: yes</title></rect><rect x="385.44" y="189.97" width="4.56" height="9.35" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daObjHeart_c_classInit
 module: ov002
 addr: 0x020bc8b4
 size: 64 bytes
@@ -16697,7 +16697,7 @@ matched: yes</title></rect><rect x="552.42" y="642.57" width="8.38" height="7.30
 module: ov002
 addr: 0x020e6bb0
 size: 92 bytes
-matched: yes</title></rect><rect x="560.81" y="642.57" width="4.74" height="7.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>Player_Spawn
+matched: yes</title></rect><rect x="560.81" y="642.57" width="4.74" height="7.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daPly_c_classInit
 module: ov002
 addr: 0x020e6c0c
 size: 52 bytes
@@ -17013,15 +17013,15 @@ matched: yes</title></rect><rect x="354.10" y="704.32" width="20.68" height="1.5
 module: ov002
 addr: 0x020ebe5c
 size: 48 bytes
-matched: yes</title></rect><rect x="374.78" y="704.32" width="31.01" height="1.55" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>StarMarker_Spawn
+matched: yes</title></rect><rect x="374.78" y="704.32" width="31.01" height="1.55" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daStarBase_c_classInit
 module: ov002
 addr: 0x020ebe8c
 size: 72 bytes
-matched: yes</title></rect><rect x="405.79" y="704.32" width="39.63" height="1.55" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>SilverStar_Spawn
+matched: yes</title></rect><rect x="405.79" y="704.32" width="39.63" height="1.55" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daStar_c_classInit_SILVER_STAR
 module: ov002
 addr: 0x020ebed4
 size: 92 bytes
-matched: yes</title></rect><rect x="445.42" y="704.32" width="39.63" height="1.55" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>PowerStar_Spawn
+matched: yes</title></rect><rect x="445.42" y="704.32" width="39.63" height="1.55" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daStar_c_classInit_STAR
 module: ov002
 addr: 0x020ebf30
 size: 92 bytes
@@ -17437,7 +17437,7 @@ matched: yes</title></rect><rect x="354.10" y="841.21" width="9.56" height="8.92
 module: ov002
 addr: 0x020f07dc
 size: 128 bytes
-matched: yes</title></rect><rect x="354.10" y="850.13" width="9.56" height="3.90" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daSCoin_c_Spawn
+matched: yes</title></rect><rect x="354.10" y="850.13" width="9.56" height="3.90" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daSCoin_c_classInit
 module: ov002
 addr: 0x020f085c
 size: 56 bytes
@@ -17469,7 +17469,7 @@ matched: yes</title></rect><rect x="354.10" y="911.98" width="9.56" height="30.9
 module: ov002
 addr: 0x020f0bd4
 size: 444 bytes
-matched: yes</title></rect><rect x="354.10" y="942.90" width="9.56" height="4.46" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>Number_Spawn
+matched: yes</title></rect><rect x="354.10" y="942.90" width="9.56" height="4.46" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daObjNumber_c_classInit
 module: ov002
 addr: 0x020f0d90
 size: 64 bytes
@@ -17501,7 +17501,7 @@ matched: yes</title></rect><rect x="363.66" y="750.66" width="24.48" height="6.6
 module: ov002
 addr: 0x020f107c
 size: 244 bytes
-matched: yes</title></rect><rect x="388.14" y="750.66" width="6.42" height="6.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>OneUpLogo_Spawn
+matched: yes</title></rect><rect x="388.14" y="750.66" width="6.42" height="6.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daObj1UpLogo_c_classInit
 module: ov002
 addr: 0x020f1170
 size: 64 bytes
@@ -17581,11 +17581,11 @@ matched: yes</title></rect><rect x="568.73" y="750.66" width="17.26" height="6.6
 module: ov002
 addr: 0x020f1878
 size: 172 bytes
-matched: yes</title></rect><rect x="585.99" y="750.66" width="4.82" height="6.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>EnemySpawner_Spawn
+matched: yes</title></rect><rect x="585.99" y="750.66" width="4.82" height="6.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daECreate_c_classInit
 module: ov002
 addr: 0x020f1924
 size: 48 bytes
-matched: yes</title></rect><rect x="590.80" y="750.66" width="5.62" height="6.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>EnemySwitchTag_Spawn
+matched: yes</title></rect><rect x="590.80" y="750.66" width="5.62" height="6.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daESwitch_c_classInit
 module: ov002
 addr: 0x020f1954
 size: 56 bytes
@@ -17653,7 +17653,7 @@ matched: yes</title></rect><rect x="363.66" y="897.10" width="5.85" height="15.9
 module: ov002
 addr: 0x020f1eb4
 size: 140 bytes
-matched: yes</title></rect><rect x="363.66" y="913.03" width="5.85" height="5.46" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>MugenBgm_Spawn
+matched: yes</title></rect><rect x="363.66" y="913.03" width="5.85" height="5.46" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daMugenBGM_c_classInit
 module: ov002
 addr: 0x020f1f40
 size: 48 bytes
@@ -18237,7 +18237,7 @@ matched: yes</title></rect><rect x="402.40" y="874.55" width="6.65" height="112.
 module: ov002
 addr: 0x020f83a4
 size: 1124 bytes
-matched: yes</title></rect><rect x="402.40" y="987.00" width="6.65" height="4.80" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>CutsceneObject_Spawn
+matched: yes</title></rect><rect x="402.40" y="987.00" width="6.65" height="4.80" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daDemo_c_classInit
 module: ov002
 addr: 0x020f8808
 size: 48 bytes
@@ -18285,7 +18285,7 @@ matched: yes</title></rect><rect x="409.05" y="819.66" width="11.33" height="1.8
 module: ov002
 addr: 0x020f92e4
 size: 32 bytes
-matched: yes</title></rect><rect x="409.05" y="821.54" width="11.33" height="4.23" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>Fireball_Spawn
+matched: yes</title></rect><rect x="409.05" y="821.54" width="11.33" height="4.23" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daFPknBall_c_classInit
 module: ov002
 addr: 0x020f9304
 size: 72 bytes
@@ -18357,7 +18357,7 @@ matched: yes</title></rect><rect x="420.38" y="989.00" width="17.31" height="3.6
 module: ov002
 addr: 0x020fb85c
 size: 96 bytes
-matched: yes</title></rect><rect x="420.38" y="992.69" width="17.31" height="2.31" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>Minimap_Spawn
+matched: yes</title></rect><rect x="420.38" y="992.69" width="17.31" height="2.31" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>dMap_c_classInit
 module: ov002
 addr: 0x020fb8bc
 size: 60 bytes
@@ -18437,7 +18437,7 @@ matched: yes</title></rect><rect x="442.39" y="843.15" width="11.34" height="109
 module: ov002
 addr: 0x020fda04
 size: 1872 bytes
-matched: yes</title></rect><rect x="442.39" y="952.99" width="11.34" height="3.52" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>HUD_Spawn
+matched: yes</title></rect><rect x="442.39" y="952.99" width="11.34" height="3.52" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>dMeter_c_classInit
 module: ov002
 addr: 0x020fe154
 size: 60 bytes
@@ -18573,7 +18573,7 @@ matched: yes</title></rect><rect x="461.14" y="848.14" width="10.82" height="13.
 module: ov002
 addr: 0x020feef4
 size: 216 bytes
-matched: yes</title></rect><rect x="471.96" y="848.14" width="3.61" height="13.28" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>Bullet_Spawn
+matched: yes</title></rect><rect x="471.96" y="848.14" width="3.61" height="13.28" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daPropeller_Heyho_Fire_c_classInit
 module: ov002
 addr: 0x020fefcc
 size: 72 bytes
