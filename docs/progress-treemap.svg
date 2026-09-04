@@ -43817,11 +43817,11 @@ matched: yes</title></rect><rect x="1453.97" y="807.51" width="2.86" height="9.1
 module: ov096
 addr: 0x02136cd0
 size: 64 bytes
-matched: yes</title></rect><rect x="1456.84" y="807.51" width="3.58" height="9.10" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>PokeySegment_Spawn
+matched: yes</title></rect><rect x="1456.84" y="807.51" width="3.58" height="9.10" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daSanbo_c_classInit_SANBO_BODY
 module: ov096
 addr: 0x02136d10
 size: 80 bytes
-matched: yes</title></rect><rect x="1460.42" y="807.51" width="3.58" height="9.10" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>Pokey_Spawn
+matched: yes</title></rect><rect x="1460.42" y="807.51" width="3.58" height="9.10" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daSanbo_c_classInit_SANBO
 module: ov096
 addr: 0x02136d60
 size: 80 bytes
@@ -43865,7 +43865,7 @@ matched: yes</title></rect><rect x="1442.63" y="829.49" width="7.96" height="17.
 module: ov096
 addr: 0x02137564
 size: 344 bytes
-matched: yes</title></rect><rect x="1450.58" y="829.49" width="13.41" height="2.43" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>Tornado_Spawn
+matched: yes</title></rect><rect x="1450.58" y="829.49" width="13.41" height="2.43" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daTor_c_classInit
 module: ov096
 addr: 0x021376bc
 size: 80 bytes
@@ -43917,11 +43917,11 @@ matched: yes</title></rect><rect x="1474.00" y="831.87" width="6.70" height="15.
 module: ov098
 addr: 0x02137eec
 size: 228 bytes
-matched: yes</title></rect><rect x="1480.70" y="779.74" width="5.87" height="4.27" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>ArrowSignRight_Spawn
+matched: yes</title></rect><rect x="1480.70" y="779.74" width="5.87" height="4.27" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daObjYajirusi_c_classInit_YAJIRUSI_R
 module: ov098
 addr: 0x02137fd0
 size: 56 bytes
-matched: yes</title></rect><rect x="1480.70" y="784.01" width="5.87" height="4.27" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>ArrowSignLeft_Spawn
+matched: yes</title></rect><rect x="1480.70" y="784.01" width="5.87" height="4.27" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daObjYajirusi_c_classInit_YAJIRUSI_L
 module: ov098
 addr: 0x02138008
 size: 56 bytes
@@ -44069,7 +44069,7 @@ matched: yes</title></rect><rect x="1534.40" y="779.74" width="11.78" height="5.
 module: ov098
 addr: 0x02139e78
 size: 140 bytes
-matched: yes</title></rect><rect x="1546.18" y="779.74" width="9.09" height="5.32" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>Crate_Spawn
+matched: yes</title></rect><rect x="1546.18" y="779.74" width="9.09" height="5.32" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daObjBlockS_c_classInit
 module: ov098
 addr: 0x02139f04
 size: 108 bytes
@@ -44181,7 +44181,7 @@ matched: yes</title></rect><rect x="1554.01" y="801.89" width="21.45" height="7.
 module: ov098
 addr: 0x0213b2d4
 size: 360 bytes
-matched: yes</title></rect><rect x="1575.46" y="801.89" width="3.81" height="7.51" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>Cannon_Spawn
+matched: yes</title></rect><rect x="1575.46" y="801.89" width="3.81" height="7.51" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daCnn_c_classInit
 module: ov098
 addr: 0x0213b43c
 size: 64 bytes
@@ -44237,7 +44237,7 @@ matched: yes</title></rect><rect x="1569.69" y="820.29" width="25.31" height="8.
 module: ov098
 addr: 0x0213bd14
 size: 508 bytes
-matched: yes</title></rect><rect x="1569.69" y="829.27" width="6.73" height="5.32" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>WaterBomb_Spawn
+matched: yes</title></rect><rect x="1569.69" y="829.27" width="6.73" height="5.32" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daWbm_c_classInit
 module: ov098
 addr: 0x0213bf10
 size: 80 bytes
@@ -44317,7 +44317,7 @@ matched: yes</title></rect><rect x="1376.62" y="879.10" width="52.07" height="5.
 module: ov100
 addr: 0x02141c6c
 size: 568 bytes
-matched: yes</title></rect><rect x="1428.69" y="879.10" width="8.80" height="5.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>Butterfly_Spawn
+matched: yes</title></rect><rect x="1428.69" y="879.10" width="8.80" height="5.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daBtfly_c_classInit
 module: ov100
 addr: 0x02141ea4
 size: 96 bytes
@@ -44381,7 +44381,7 @@ matched: yes</title></rect><rect x="1399.50" y="884.78" width="39.29" height="12
 module: ov100
 addr: 0x02142de0
 size: 908 bytes
-matched: yes</title></rect><rect x="1438.79" y="884.78" width="3.81" height="12.01" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>RollingIronBall_Spawn
+matched: yes</title></rect><rect x="1438.79" y="884.78" width="3.81" height="12.01" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daIbl_c_classInit
 module: ov100
 addr: 0x0214316c
 size: 88 bytes
@@ -44445,7 +44445,7 @@ matched: yes</title></rect><rect x="1396.28" y="958.97" width="5.83" height="0.7
 module: ov100
 addr: 0x021442d4
 size: 8 bytes
-matched: yes</title></rect><rect x="1396.28" y="959.68" width="5.83" height="24.97" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>UnchainedChomp_Spawn
+matched: yes</title></rect><rect x="1396.28" y="959.68" width="5.83" height="24.97" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daWanwan2_c_classInit
 module: ov100
 addr: 0x021442dc
 size: 280 bytes
@@ -44569,7 +44569,7 @@ matched: yes</title></rect><rect x="1414.19" y="937.89" width="6.96" height="57.
 module: ov100
 addr: 0x021455a0
 size: 764 bytes
-matched: yes</title></rect><rect x="1421.15" y="921.44" width="4.13" height="7.04" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>Door_Spawn
+matched: yes</title></rect><rect x="1421.15" y="921.44" width="4.13" height="7.04" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daDoor_c_classInit
 module: ov100
 addr: 0x0214589c
 size: 56 bytes
@@ -44649,7 +44649,7 @@ matched: yes</title></rect><rect x="1468.34" y="928.49" width="20.13" height="4.
 module: ov100
 addr: 0x0214612c
 size: 168 bytes
-matched: yes</title></rect><rect x="1428.56" y="932.83" width="5.08" height="5.73" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>StarDoor_Spawn
+matched: yes</title></rect><rect x="1428.56" y="932.83" width="5.08" height="5.73" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daStarGate_c_classInit
 module: ov100
 addr: 0x021461d4
 size: 56 bytes
@@ -44721,7 +44721,7 @@ matched: yes</title></rect><rect x="1440.50" y="946.70" width="10.70" height="10
 module: ov100
 addr: 0x02146c68
 size: 208 bytes
-matched: yes</title></rect><rect x="1451.21" y="946.70" width="3.50" height="10.10" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>Fish_Spawn
+matched: yes</title></rect><rect x="1451.21" y="946.70" width="3.50" height="10.10" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daFish_c_classInit
 module: ov100
 addr: 0x02146d38
 size: 68 bytes
@@ -44813,27 +44813,27 @@ matched: yes</title></rect><rect x="1529.33" y="879.10" width="30.17" height="8.
 module: ov102
 addr: 0x02148c94
 size: 520 bytes
-matched: yes</title></rect><rect x="1559.50" y="879.10" width="2.78" height="8.75" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>RopeBarrier_Spawn
+matched: yes</title></rect><rect x="1559.50" y="879.10" width="2.78" height="8.75" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daObjSimpleBg_c_classInit_MC_HAZAD
 module: ov102
 addr: 0x02148e9c
 size: 48 bytes
-matched: yes</title></rect><rect x="1562.28" y="879.10" width="2.78" height="8.75" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>CgStairs_Spawn
+matched: yes</title></rect><rect x="1562.28" y="879.10" width="2.78" height="8.75" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daObjSimpleBg_c_classInit_MC_DODAI
 module: ov102
 addr: 0x02148ecc
 size: 48 bytes
-matched: yes</title></rect><rect x="1565.06" y="879.10" width="2.78" height="8.75" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>WarpPipe_Spawn
+matched: yes</title></rect><rect x="1565.06" y="879.10" width="2.78" height="8.75" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daObjSimpleBg_c_classInit_DOKAN
 module: ov102
 addr: 0x02148efc
 size: 48 bytes
-matched: yes</title></rect><rect x="1567.85" y="879.10" width="2.78" height="8.75" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>FortressTower_Spawn
+matched: yes</title></rect><rect x="1567.85" y="879.10" width="2.78" height="8.75" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daObjSimpleBg_c_classInit_BK_TOWER
 module: ov102
 addr: 0x02148f2c
 size: 48 bytes
-matched: yes</title></rect><rect x="1570.63" y="879.10" width="2.78" height="8.75" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>RockTriangle_Spawn
+matched: yes</title></rect><rect x="1570.63" y="879.10" width="2.78" height="8.75" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daObjSimpleBg_c_classInit_KI_HASIRA_DAI
 module: ov102
 addr: 0x02148f5c
 size: 48 bytes
-matched: yes</title></rect><rect x="1573.42" y="879.10" width="2.78" height="8.75" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>StaticRock_Spawn
+matched: yes</title></rect><rect x="1573.42" y="879.10" width="2.78" height="8.75" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daObjSimpleBg_c_classInit_KI_IWA
 module: ov102
 addr: 0x02148f8c
 size: 48 bytes
@@ -44977,27 +44977,27 @@ matched: yes</title></rect><rect x="1498.46" y="959.23" width="11.92" height="35
 module: ov102
 addr: 0x0214a4a4
 size: 840 bytes
-matched: yes</title></rect><rect x="1510.39" y="907.96" width="9.74" height="3.34" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>CapBlockWario_Spawn
+matched: yes</title></rect><rect x="1510.39" y="907.96" width="9.74" height="3.34" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daObjHatenaBlock_c_classInit_CAP_BLOCK_W
 module: ov102
 addr: 0x0214a7ec
 size: 64 bytes
-matched: yes</title></rect><rect x="1520.13" y="907.96" width="9.74" height="3.34" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>CapBlockLuigi_Spawn
+matched: yes</title></rect><rect x="1520.13" y="907.96" width="9.74" height="3.34" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daObjHatenaBlock_c_classInit_CAP_BLOCK_L
 module: ov102
 addr: 0x0214a82c
 size: 64 bytes
-matched: yes</title></rect><rect x="1529.87" y="907.96" width="9.74" height="3.34" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>CapBlockMario_Spawn
+matched: yes</title></rect><rect x="1529.87" y="907.96" width="9.74" height="3.34" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daObjHatenaBlock_c_classInit_CAP_BLOCK_M
 module: ov102
 addr: 0x0214a86c
 size: 64 bytes
-matched: yes</title></rect><rect x="1539.60" y="907.96" width="9.74" height="3.34" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>ExclamationBlock_Spawn
+matched: yes</title></rect><rect x="1539.60" y="907.96" width="9.74" height="3.34" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daObjHatenaBlock_c_classInit_ITEM_BLOCK
 module: ov102
 addr: 0x0214a8ac
 size: 64 bytes
-matched: yes</title></rect><rect x="1549.34" y="907.96" width="9.74" height="3.34" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>QuestionBlock_Spawn
+matched: yes</title></rect><rect x="1549.34" y="907.96" width="9.74" height="3.34" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daObjHatenaBlock_c_classInit_HATENA_BLOCK
 module: ov102
 addr: 0x0214a8ec
 size: 64 bytes
-matched: yes</title></rect><rect x="1559.08" y="907.96" width="9.74" height="3.34" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>ExclamationBlockVs_Spawn
+matched: yes</title></rect><rect x="1559.08" y="907.96" width="9.74" height="3.34" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daObjHatenaBlock_c_classInit_VS_ITEM_BLOCK
 module: ov102
 addr: 0x0214a92c
 size: 64 bytes
@@ -45137,7 +45137,7 @@ matched: yes</title></rect><rect x="1531.85" y="973.79" width="6.70" height="1.5
 module: ov102
 addr: 0x0214c6e4
 size: 20 bytes
-matched: yes</title></rect><rect x="1531.85" y="975.31" width="6.70" height="6.06" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>BobOmb_Spawn
+matched: yes</title></rect><rect x="1531.85" y="975.31" width="6.70" height="6.06" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daBmb_c_classInit
 module: ov102
 addr: 0x0214c6f8
 size: 80 bytes
@@ -45233,7 +45233,7 @@ matched: yes</title></rect><rect x="1564.11" y="953.06" width="1.02" height="9.9
 module: ov102
 addr: 0x0214d6a0
 size: 20 bytes
-matched: yes</title></rect><rect x="1565.13" y="953.06" width="4.47" height="9.99" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>KoopaShell_Spawn
+matched: yes</title></rect><rect x="1565.13" y="953.06" width="4.47" height="9.99" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daShl_c_classInit
 module: ov102
 addr: 0x0214d6b4
 size: 88 bytes
