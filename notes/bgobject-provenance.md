@@ -640,7 +640,7 @@ A pendulum, in four fields `Behavior` integrates. Bodies read:
 
 ---
 
-## RotatingBridge (`include/RotatingBridge.h`, [ov015](../config/arm9/overlays/ov015/symbols.txt), size 0x324)
+## daObjBk_Rotebar_c (`include/daObjBk_Rotebar_c.h`, [ov015](../config/arm9/overlays/ov015/symbols.txt), size 0x324)
 
 | Offset | Name | Evidence |
 | --- | --- | --- |
@@ -753,4 +753,4 @@ same offsets:
   `dBgActor_c::mClsnMat` (0x2ec + 0x14), and naming a matrix element from a single
   `s16` read would be an invention.
 * The classes with no fields of their own — `MetalNet`, `IceSheet`,
-  `FortressTower`, `HugeWater` — have nothing left to name.
+  `FortressTower`, `daObjTdWater_c` — have nothing left to name.

@@ -150,7 +150,7 @@ ov014 0x2112e0c  n=8  L=197  daObjWanwanShutter_c
 ov015 0x21111a0  n=7  L=106  daObjBkBillboard_c            uncorrob
 ov018 0x21126d4  n=4  L=60   daSCre_c                 uncorrob
 ov019 0x211261c  n=5  L=93   daSldMng_c
-ov021 0x2112db4  n=6  L=105  ShutterHmc
+ov021 0x2112db4  n=6  L=105  daObjCvShutter_c
 ov022 0x2111980  n=8  L=181  LavaBridge               uncorrob
 ov022 0x2111cac  n=8  L=170  LavaSeesaw               uncorrob
 ```
@@ -164,7 +164,7 @@ ov026 0x21118b8  n=6  L=115  Submarine
 ov029 0x21111a0  n=4  L=135  daObjWcObj01_c
 ov029 0x2111ea4  n=4  L=124  daObjWcObj06_c
 ov036 0x2111580  n=8  L=146  ShipWing
-ov036 0x2111d14  n=7  L=155  ArmedRotatingPlatform
+ov036 0x2111d14  n=7  L=155  daObjRc_Guruguru_c
 ov036 0x2111f8c  n=4  L=75   daObjRc_Dorifu_c
 ov043 0x2111518  n=5  L=80   daObjKm1_Kuruma_c              pcov=3
 ```
@@ -203,7 +203,7 @@ ov009 0x2111dc4  n=8  L=163  MetalNet         CONF2 pcov=2
 ov010 0x21119d0  n=8  L=233  LightBeam        CONF1 pcov=3
 ov010 0x2111e10  n=8  L=148  PeachPainting    CONF1 pcov=3
 ov012 0x2111450  n=7  L=164  BasementWater    CONF2
-ov015 0x2112944  n=7  L=143  RotatingBridge   CONF2
+ov015 0x2112944  n=7  L=143  daObjBk_Rotebar_c   CONF2
 ov016 0x211260c  n=8  L=185  ShipUp           CONF1
 ```
 
@@ -215,7 +215,7 @@ ov022 0x21111a0  n=9  L=240  VolcanoRing          CONF1
 ov022 0x21116c4  n=9  L=160  FloatOnLavaPlatform  CONF2
 ov022 0x2112130  n=7  L=135  LavaPlank            CONF2
 ov025 0x2111d40  n=9  L=203  PyramidStep          CONF1
-ov032 0x2112698  n=7  L=155  HugeWater            CONF2
+ov032 0x2112698  n=7  L=155  daObjTdWater_c            CONF2
 ov033 0x21113d4  n=7  L=155  TinyWater            CONF3 pcov=2
 ```
 
