@@ -1,4 +1,4 @@
-// @symbol BlueCoin_Spawn
+// @symbol daCoin_c_classInit_COIN
 /* recovered: vtable identified, globals resolved, declarations from a shared header */
 #include "decl_Actor.h"
 #include "decl_ActorBase.h"
@@ -8,7 +8,11 @@
 #include "decl_common.h"
 /* recovered: vtable identified, globals resolved */
 /* resolved: VT0 = _ZTV4Coin */
-int *BlueCoin_Spawn(void)
+/* Reconstructed source-style name: SM64DS proves daCoin_c through RTTI,
+ * allocation size, vtable identity, and the COIN registry profile;
+ * later EAD lineage supplies classInit. Exact original spelling is not
+ * preserved. Historical alias: Coin_Spawn. */
+int *daCoin_c_classInit_COIN(void)
 {
     int *p = (int *)_ZN7fBase_cnwEj(948);
     if (p) {

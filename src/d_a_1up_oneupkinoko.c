@@ -1,4 +1,4 @@
-// @symbol MegaMushroom_Spawn
+// @symbol da1up_c_classInit_ONEUPKINOKO
 /* recovered: vtable identified, globals resolved, declarations from a shared header */
 #include "decl_ActorBase.h"
 #include "decl_Enemy.h"
@@ -9,7 +9,11 @@
 #include "decl_common.h"
 /* recovered: vtable identified, globals resolved */
 /* resolved: VT0 = _ZTV13OneUpMushroom */
-int *MegaMushroom_Spawn(void)
+/* Reconstructed source-style name: SM64DS proves da1up_c through RTTI,
+ * allocation size, vtable identity, and the ONEUPKINOKO registry profile;
+ * later EAD lineage supplies classInit. Exact original spelling is not
+ * preserved. Historical alias: OneUpMushroom_Spawn. */
+int *da1up_c_classInit_ONEUPKINOKO(void)
 {
     int *p = (int *)_ZN7fBase_cnwEj(920);
     if (p) {

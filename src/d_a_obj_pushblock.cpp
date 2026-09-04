@@ -1,5 +1,5 @@
 //cpp
-// @symbol PushBlock_Spawn
+// @symbol daObjPushblock_c_classInit
 #include "daObjPushblock_c.h"
 
 /* A natural `new daObjPushblock_c` emits the exact instruction bytes, but its
@@ -13,7 +13,11 @@ void _ZN10dBgActor_cC2Ev(void *self);
 void _ZN10dBgCh_ActrC1Ev(void *self);
 }
 
-extern "C" daObjPushblock_c *PushBlock_Spawn()
+/* Reconstructed source-style name: SM64DS proves daObjPushblock_c through RTTI,
+ * allocation size, vtable identity, and the PUSHBLOCK registry profile;
+ * later EAD lineage supplies classInit. Exact original spelling is not
+ * preserved. Historical alias: PushBlock_Spawn. */
+extern "C" daObjPushblock_c *daObjPushblock_c_classInit()
 {
     daObjPushblock_c *actor =
         (daObjPushblock_c *)_ZN7fBase_cnwEj(sizeof(daObjPushblock_c));

@@ -1,3 +1,4 @@
+// @symbol dScMB_c_classInit
 #include "types.h"
 extern void *_ZN7fBase_cnwEj(unsigned);
 extern void _ZN7fBase_cC2Ev(void *);
@@ -8,7 +9,11 @@ extern int data_020943c4[];
 extern int data_0208eafc[];
 extern int data_0208eacc[];
 extern int data_0208eb2c[];
-void *func_020352b4(void)
+/* Reconstructed source-style name: SM64DS proves dScMB_c through RTTI,
+ * allocation size, vtable identity, and the MULTIBOOT registry profile;
+ * later EAD lineage supplies classInit. Exact original spelling is not
+ * preserved. Historical alias: func_020352b4. */
+void *dScMB_c_classInit(void)
 {
     char *p = (char *)_ZN7fBase_cnwEj(0x68);
     if (p) {

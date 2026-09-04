@@ -1,5 +1,5 @@
 //cpp
-// @symbol Camera_Spawn
+// @symbol dCamera_c_classInit
 /* Allocation factory historically labelled _ZN6CameraC1Ev. Its first action
  * overwrites r0 with fBase_c::operator new(sizeof(Camera)); a real constructor
  * must consume the incoming storage pointer. The factory table at 0x02086d78
@@ -20,7 +20,11 @@ extern void *_ZTV4View[];
 extern void *_ZTV6Camera[];
 }
 
-extern "C" Camera *Camera_Spawn()
+/* Reconstructed source-style name: SM64DS proves dCamera_c through RTTI,
+ * allocation size, vtable identity, and the CAMERA registry profile;
+ * later EAD lineage supplies classInit. Exact original spelling is not
+ * preserved. Historical alias: Camera_Spawn. */
+extern "C" Camera *dCamera_c_classInit()
 {
     Camera *camera = (Camera *)_ZN7fBase_cnwEj(sizeof(Camera));
     if (camera) {

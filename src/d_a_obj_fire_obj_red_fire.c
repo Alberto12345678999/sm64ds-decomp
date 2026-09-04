@@ -1,4 +1,4 @@
-// @symbol BlueFlame_Spawn
+// @symbol daObjFire_c_classInit_OBJ_RED_FIRE
 /* recovered: vtable identified, globals resolved, declarations from a shared header */
 #include "decl_Actor.h"
 #include "decl_ActorBase.h"
@@ -6,7 +6,11 @@
 #include "decl_common.h"
 /* recovered: vtable identified, globals resolved */
 /* resolved: VT0 = _ZTV9BlueFlame */
-int *BlueFlame_Spawn(void)
+/* Reconstructed source-style name: SM64DS proves daObjFire_c through RTTI,
+ * allocation size, vtable identity, and the OBJ_RED_FIRE registry profile;
+ * later EAD lineage supplies classInit. Exact original spelling is not
+ * preserved. Historical alias: RedFlame_Spawn. */
+int *daObjFire_c_classInit_OBJ_RED_FIRE(void)
 {
     int *p = (int *)_ZN7fBase_cnwEj(280);
     if (p) {

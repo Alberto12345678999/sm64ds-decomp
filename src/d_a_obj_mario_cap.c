@@ -1,4 +1,4 @@
-// @symbol Cap_Spawn
+// @symbol daObjMarioCap_c_classInit
 /* recovered: vtable identified, globals resolved, declarations from a shared header */
 #include "decl_ActorBase.h"
 #include "decl_Enemy.h"
@@ -10,7 +10,11 @@
 extern void _ZN10dCapIcon_cC1Ev(void *);
 /* recovered: vtable identified, globals resolved */
 /* resolved: VT0 = _ZTV15daObjMarioCap_c */
-int *Cap_Spawn(void)
+/* Reconstructed source-style name: SM64DS proves daObjMarioCap_c through RTTI,
+ * allocation size, vtable identity, and the OBJ_MARIO_CAP registry profile;
+ * later EAD lineage supplies classInit. Exact original spelling is not
+ * preserved. Historical alias: Cap_Spawn. */
+int *daObjMarioCap_c_classInit(void)
 {
     int *p = (int *)_ZN7fBase_cnwEj(1040);
     if (p) {
