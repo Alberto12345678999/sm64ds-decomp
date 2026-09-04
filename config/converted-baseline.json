@@ -7,7 +7,7 @@
     "no_codegen_trick",
     "no_mangled_refs"
   ],
-  "count": 2594,
+  "count": 2595,
   "converted": [
     "src/ARMMathLoadState.c",
     "src/ARMMathSaveState.c",
@@ -2360,6 +2360,7 @@
     "src/actors/d_a_obj_km1_kuruma.cpp#_ZN17daObjKm1_Kuruma_c16CleanupResourcesEv",
     "src/actors/d_a_obj_km1_kuruma.cpp#_ZN17daObjKm1_Kuruma_cD0Ev",
     "src/actors/d_a_obj_km1_kuruma.cpp#_ZN17daObjKm1_Kuruma_cD1Ev",
+    "src/actors/d_a_obj_km1_kuruma.cpp#daObjKm1_Kuruma_c_classInit",
     "src/actors/d_a_obj_km1_ukishima.cpp#_ZN19daObjKm1_Ukishima_c16CleanupResourcesEv",
     "src/actors/d_a_obj_km1_ukishima.cpp#_ZN19daObjKm1_Ukishima_c6RenderEv",
     "src/actors/d_a_obj_km1_ukishima.cpp#_ZN19daObjKm1_Ukishima_cD0Ev",
