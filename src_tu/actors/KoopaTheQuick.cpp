@@ -33,7 +33,7 @@
  *   [14] 0x0211ab88  src/_ZN13KoopaTheQuick8BehaviorEv.cpp
  *   [15] 0x0211ac10  src/_ZN13KoopaTheQuick16CleanupResourcesEv.cpp
  *   [16] 0x0211ac94  src/_ZN13KoopaTheQuick13InitResourcesEv.cpp
- *   [17] 0x0211aee0  src/KoopaTheQuick_Spawn.c
+ *   [17] 0x0211aee0  src/d_a_r_nk.c
  */
 
 /* TUBUILD NOTE -- #pragma directive(s) were present in the legacy sources
@@ -195,14 +195,14 @@ extern void _ZN7PathPtrC1Ev(void *);
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 17 -- KoopaTheQuick_Spawn, 0x0211aee0, size 0x58 */
+/* ROM ordinal 17 -- daRNk_c_classInit, 0x0211aee0, size 0x58 */
 /* -------------------------------------------------------------------------- */
-// @symbol KoopaTheQuick_Spawn
+// @symbol daRNk_c_classInit
 /* recovered: vtable identified, globals resolved, declarations from a shared header */
 /* recovered: vtable identified, globals resolved */
 /* resolved: VT0 = _ZTV13KoopaTheQuick */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-int *KoopaTheQuick_Spawn(void)
+int *daRNk_c_classInit(void)
 {
     int *p = (int *)_ZN7fBase_cnwEj(992);
     if (p) {

@@ -53,8 +53,8 @@
  *   [34] 0x02119608  src/_ZN5Koopa16OnAimedAtWithEggEv.cpp
  *   [35] 0x02119628  src/_ZN5Koopa13OnTurnIntoEggER6Player.cpp
  *   [36] 0x021196a8  src/_ZN5Koopa13OnYoshiTryEatEv.cpp
- *   [37] 0x021196bc  src/KoopaSmall_Spawn.c
- *   [38] 0x0211970c  src/Koopa_Spawn.c
+ *   [37] 0x021196bc  src/d_a_nknk_nokonoko_s.c
+ *   [38] 0x0211970c  src/d_a_nknk_nokonoko.c
  */
 
 /* TUBUILD NOTE -- #pragma directive(s) were present in the legacy sources
@@ -278,14 +278,14 @@ extern void LoadBlueCoinModel(void* c);
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 38 -- Koopa_Spawn, 0x0211970c, size 0x50 */
+/* ROM ordinal 38 -- daNknk_c_classInit_NOKONOKO, 0x0211970c, size 0x50 */
 /* -------------------------------------------------------------------------- */
-// @symbol Koopa_Spawn
+// @symbol daNknk_c_classInit_NOKONOKO
 /* recovered: vtable identified, globals resolved, declarations from a shared header */
 /* recovered: vtable identified, globals resolved */
 /* resolved: VT0 = _ZTV5Koopa */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-int *Koopa_Spawn(void)
+int *daNknk_c_classInit_NOKONOKO(void)
 {
     int *p = (int *)_ZN7fBase_cnwEj(976);
     if (p) {
@@ -301,14 +301,14 @@ int *Koopa_Spawn(void)
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 37 -- KoopaSmall_Spawn, 0x021196bc, size 0x50 */
+/* ROM ordinal 37 -- daNknk_c_classInit_NOKONOKO_S, 0x021196bc, size 0x50 */
 /* -------------------------------------------------------------------------- */
-// @symbol KoopaSmall_Spawn
+// @symbol daNknk_c_classInit_NOKONOKO_S
 /* recovered: vtable identified, globals resolved, declarations from a shared header */
 /* recovered: vtable identified, globals resolved */
 /* resolved: VT0 = _ZTV5Koopa */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-int *KoopaSmall_Spawn(void)
+int *daNknk_c_classInit_NOKONOKO_S(void)
 {
     int *p = (int *)_ZN7fBase_cnwEj(976);
     if (p) {
