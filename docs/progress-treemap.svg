@@ -29821,35 +29821,35 @@ matched: yes</title></rect><rect x="1090.13" y="99.49" width="5.08" height="2.73
 module: ov009
 addr: 0x02111d8c
 size: 56 bytes
-matched: yes</title></rect><rect x="1095.20" y="81.37" width="2.66" height="6.33" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8MetalNetD1Ev
+matched: yes</title></rect><rect x="1095.20" y="81.37" width="2.66" height="6.33" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN18daObjMc_Metalnet_cD1Ev
 module: ov009
 addr: 0x02111dc4
 size: 68 bytes
-matched: yes</title></rect><rect x="1095.20" y="87.70" width="2.66" height="8.19" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8MetalNetD0Ev
+matched: yes</title></rect><rect x="1095.20" y="87.70" width="2.66" height="8.19" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN18daObjMc_Metalnet_cD0Ev
 module: ov009
 addr: 0x02111e08
 size: 88 bytes
-matched: yes</title></rect><rect x="1095.20" y="95.89" width="2.66" height="6.33" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8MetalNet16CleanupResourcesEv
+matched: yes</title></rect><rect x="1095.20" y="95.89" width="2.66" height="6.33" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN18daObjMc_Metalnet_c16CleanupResourcesEv
 module: ov009
 addr: 0x02111e60
 size: 68 bytes
-matched: yes</title></rect><rect x="1097.86" y="81.37" width="1.85" height="0.53" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8MetalNet16OnPendingDestroyEv
+matched: yes</title></rect><rect x="1097.86" y="81.37" width="1.85" height="0.53" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN18daObjMc_Metalnet_c16OnPendingDestroyEv
 module: ov009
 addr: 0x02111ea4
 size: 4 bytes
-matched: yes</title></rect><rect x="1097.86" y="81.91" width="1.85" height="5.34" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8MetalNet6RenderEv
+matched: yes</title></rect><rect x="1097.86" y="81.91" width="1.85" height="5.34" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN18daObjMc_Metalnet_c6RenderEv
 module: ov009
 addr: 0x02111ea8
 size: 40 bytes
-matched: yes</title></rect><rect x="1097.86" y="87.25" width="1.85" height="14.96" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8MetalNet8BehaviorEv
+matched: yes</title></rect><rect x="1097.86" y="87.25" width="1.85" height="14.96" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN18daObjMc_Metalnet_c8BehaviorEv
 module: ov009
 addr: 0x02111ed0
 size: 112 bytes
-matched: yes</title></rect><rect x="1099.71" y="81.37" width="5.08" height="12.86" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8MetalNet13InitResourcesEv
+matched: yes</title></rect><rect x="1099.71" y="81.37" width="5.08" height="12.86" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN18daObjMc_Metalnet_c13InitResourcesEv
 module: ov009
 addr: 0x02111f40
 size: 264 bytes
-matched: yes</title></rect><rect x="1099.71" y="94.23" width="5.08" height="2.34" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>MetalNet_Spawn
+matched: yes</title></rect><rect x="1099.71" y="94.23" width="5.08" height="2.34" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daObjMc_Metalnet_c_classInit
 module: ov009
 addr: 0x02112048
 size: 48 bytes
@@ -30909,27 +30909,27 @@ matched: yes</title></rect><rect x="1591.68" y="93.72" width="3.32" height="8.50
 module: ov016
 addr: 0x02113a50
 size: 108 bytes
-matched: yes</title></rect><rect x="1058.35" y="112.22" width="5.48" height="2.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9ShipWaterD1Ev
+matched: yes</title></rect><rect x="1058.35" y="112.22" width="5.48" height="2.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14daObjKsWater_cD1Ev
 module: ov017
 addr: 0x021111a0
 size: 76 bytes
-matched: yes</title></rect><rect x="1058.35" y="114.88" width="5.48" height="3.37" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9ShipWaterD0Ev
+matched: yes</title></rect><rect x="1058.35" y="114.88" width="5.48" height="3.37" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14daObjKsWater_cD0Ev
 module: ov017
 addr: 0x021111ec
 size: 96 bytes
-matched: yes</title></rect><rect x="1058.35" y="118.25" width="3.10" height="4.21" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9ShipWater16CleanupResourcesEv
+matched: yes</title></rect><rect x="1058.35" y="118.25" width="3.10" height="4.21" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14daObjKsWater_c16CleanupResourcesEv
 module: ov017
 addr: 0x0211124c
 size: 68 bytes
-matched: yes</title></rect><rect x="1061.45" y="118.25" width="2.37" height="4.21" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9ShipWater6RenderEv
+matched: yes</title></rect><rect x="1061.45" y="118.25" width="2.37" height="4.21" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14daObjKsWater_c6RenderEv
 module: ov017
 addr: 0x02111290
 size: 52 bytes
-matched: yes</title></rect><rect x="1058.35" y="122.46" width="5.48" height="8.84" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9ShipWater8BehaviorEv
+matched: yes</title></rect><rect x="1058.35" y="122.46" width="5.48" height="8.84" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14daObjKsWater_c8BehaviorEv
 module: ov017
 addr: 0x021112c4
 size: 252 bytes
-matched: yes</title></rect><rect x="1058.35" y="131.30" width="5.48" height="6.73" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9ShipWater13InitResourcesEv
+matched: yes</title></rect><rect x="1058.35" y="131.30" width="5.48" height="6.73" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14daObjKsWater_c13InitResourcesEv
 module: ov017
 addr: 0x021113c0
 size: 192 bytes
@@ -31089,43 +31089,43 @@ matched: yes</title></rect><rect x="1160.83" y="138.45" width="3.28" height="2.2
 module: ov018
 addr: 0x0211278c
 size: 48 bytes
-matched: yes</title></rect><rect x="1160.83" y="140.66" width="3.28" height="3.13" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8IceSheetD1Ev
+matched: yes</title></rect><rect x="1160.83" y="140.66" width="3.28" height="3.13" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15daObjIceBoard_cD1Ev
 module: ov018
 addr: 0x021127bc
 size: 68 bytes
-matched: yes</title></rect><rect x="1164.11" y="134.22" width="3.53" height="3.76" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8IceSheetD0Ev
+matched: yes</title></rect><rect x="1164.11" y="134.22" width="3.53" height="3.76" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15daObjIceBoard_cD0Ev
 module: ov018
 addr: 0x02112800
 size: 88 bytes
-matched: yes</title></rect><rect x="1164.11" y="137.97" width="3.53" height="1.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8IceSheet15OnHitByMegaCharER6Player
+matched: yes</title></rect><rect x="1164.11" y="137.97" width="3.53" height="1.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15daObjIceBoard_c15OnHitByMegaCharER6Player
 module: ov018
 addr: 0x02112858
 size: 40 bytes
-matched: yes</title></rect><rect x="1164.11" y="139.68" width="3.53" height="4.10" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8IceSheet4KillEv
+matched: yes</title></rect><rect x="1164.11" y="139.68" width="3.53" height="4.10" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15daObjIceBoard_c4KillEv
 module: ov018
 addr: 0x02112880
 size: 96 bytes
-matched: yes</title></rect><rect x="1167.64" y="134.22" width="2.77" height="3.70" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8IceSheet15OnGroundPoundedER8dActor_c
+matched: yes</title></rect><rect x="1167.64" y="134.22" width="2.77" height="3.70" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15daObjIceBoard_c15OnGroundPoundedER8dActor_c
 module: ov018
 addr: 0x021128e0
 size: 68 bytes
-matched: yes</title></rect><rect x="1167.64" y="137.91" width="2.77" height="3.70" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8IceSheet16CleanupResourcesEv
+matched: yes</title></rect><rect x="1167.64" y="137.91" width="2.77" height="3.70" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15daObjIceBoard_c16CleanupResourcesEv
 module: ov018
 addr: 0x02112924
 size: 68 bytes
-matched: yes</title></rect><rect x="1167.64" y="141.61" width="2.77" height="2.17" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8IceSheet6RenderEv
+matched: yes</title></rect><rect x="1167.64" y="141.61" width="2.77" height="2.17" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15daObjIceBoard_c6RenderEv
 module: ov018
 addr: 0x02112968
 size: 40 bytes
-matched: yes</title></rect><rect x="1170.41" y="134.22" width="3.59" height="2.01" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8IceSheet8BehaviorEv
+matched: yes</title></rect><rect x="1170.41" y="134.22" width="3.59" height="2.01" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15daObjIceBoard_c8BehaviorEv
 module: ov018
 addr: 0x02112990
 size: 48 bytes
-matched: yes</title></rect><rect x="1170.41" y="136.23" width="3.59" height="5.54" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8IceSheet13InitResourcesEv
+matched: yes</title></rect><rect x="1170.41" y="136.23" width="3.59" height="5.54" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15daObjIceBoard_c13InitResourcesEv
 module: ov018
 addr: 0x021129c0
 size: 132 bytes
-matched: yes</title></rect><rect x="1170.41" y="141.77" width="3.59" height="2.01" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>IceSheet_Spawn
+matched: yes</title></rect><rect x="1170.41" y="141.77" width="3.59" height="2.01" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daObjIceBoard_c_classInit
 module: ov018
 addr: 0x02112a44
 size: 48 bytes
@@ -33677,11 +33677,11 @@ matched: yes</title></rect><rect x="1587.72" y="238.61" width="7.28" height="2.8
 module: ov035
 addr: 0x02111fc0
 size: 104 bytes
-matched: yes</title></rect><rect x="1058.35" y="251.44" width="5.30" height="5.59" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN16SwingingPlatformD1Ev
+matched: yes</title></rect><rect x="1058.35" y="251.44" width="5.30" height="5.59" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN16daObjRcBuranko_cD1Ev
 module: ov036
 addr: 0x021111a0
 size: 68 bytes
-matched: yes</title></rect><rect x="1058.35" y="257.03" width="5.30" height="7.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN16SwingingPlatformD0Ev
+matched: yes</title></rect><rect x="1058.35" y="257.03" width="5.30" height="7.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN16daObjRcBuranko_cD0Ev
 module: ov036
 addr: 0x021111e4
 size: 88 bytes
@@ -33689,19 +33689,19 @@ matched: yes</title></rect><rect x="1058.35" y="264.26" width="5.30" height="5.9
 module: ov036
 addr: 0x0211123c
 size: 72 bytes
-matched: yes</title></rect><rect x="1063.65" y="251.44" width="5.77" height="5.14" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN16SwingingPlatform16CleanupResourcesEv
+matched: yes</title></rect><rect x="1063.65" y="251.44" width="5.77" height="5.14" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN16daObjRcBuranko_c16CleanupResourcesEv
 module: ov036
 addr: 0x02111284
 size: 68 bytes
-matched: yes</title></rect><rect x="1063.65" y="256.58" width="5.77" height="3.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN16SwingingPlatform6RenderEv
+matched: yes</title></rect><rect x="1063.65" y="256.58" width="5.77" height="3.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN16daObjRcBuranko_c6RenderEv
 module: ov036
 addr: 0x021112c8
 size: 40 bytes
-matched: yes</title></rect><rect x="1063.65" y="259.60" width="5.77" height="10.58" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN16SwingingPlatform8BehaviorEv
+matched: yes</title></rect><rect x="1063.65" y="259.60" width="5.77" height="10.58" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN16daObjRcBuranko_c8BehaviorEv
 module: ov036
 addr: 0x021112f0
 size: 140 bytes
-matched: yes</title></rect><rect x="1069.41" y="251.44" width="6.51" height="10.18" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN16SwingingPlatform13InitResourcesEv
+matched: yes</title></rect><rect x="1069.41" y="251.44" width="6.51" height="10.18" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN16daObjRcBuranko_c13InitResourcesEv
 module: ov036
 addr: 0x0211137c
 size: 152 bytes

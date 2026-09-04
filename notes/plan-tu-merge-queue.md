@@ -199,7 +199,7 @@ ov006 0x212471c  n=2  L=79   MgTrampolineTerror     CONF1
 **B6 — R1 · 7 TUs / 54 files / net −47 / 1,283 lines**
 ```
 ov009 0x2111a70  n=8  L=247  CastleWater      CONF1
-ov009 0x2111dc4  n=8  L=163  MetalNet         CONF2 pcov=2
+ov009 0x2111dc4  n=8  L=163  daObjMc_Metalnet_c         CONF2 pcov=2
 ov010 0x21119d0  n=8  L=233  LightBeam        CONF1 pcov=3
 ov010 0x2111e10  n=8  L=148  PeachPainting    CONF1 pcov=3
 ov012 0x2111450  n=7  L=164  BasementWater    CONF2
@@ -210,7 +210,7 @@ ov016 0x211260c  n=8  L=185  ShipUp           CONF1
 **B7 — R1 · 8 TUs / 63 files / net −55 / 1,440 lines**
 ```
 ov016 0x2112ff8  n=8  L=233  SlidingBox           CONF2 pcov=3
-ov017 0x21111a0  n=7  L=159  ShipWater            CONF2 WHOLEMOD pcov=2
+ov017 0x21111a0  n=7  L=159  daObjKsWater_c            CONF2 WHOLEMOD pcov=2
 ov022 0x21111a0  n=9  L=240  VolcanoRing          CONF1
 ov022 0x21116c4  n=9  L=160  FloatOnLavaPlatform  CONF2
 ov022 0x2112130  n=7  L=135  LavaPlank            CONF2
@@ -221,7 +221,7 @@ ov033 0x21113d4  n=7  L=155  TinyWater            CONF3 pcov=2
 
 **B8 — R1 · 7 TUs / 50 files / net −43 / 1,286 lines**
 ```
-ov036 0x21111a0  n=8  L=163  SwingingPlatform   CONF1
+ov036 0x21111a0  n=8  L=163  daObjRcBuranko_c   CONF1
 ov043 0x21113fc  n=5  L=107  RickshawBdw        CONF1
 ov052 0x21111a0  n=7  L=158  daObjEmmLog_c      CONF3 WHOLEMOD pcov=3 (1 distinct include)
 ov052 0x2111440  n=7  L=190  SquarePathLift     CONF2
