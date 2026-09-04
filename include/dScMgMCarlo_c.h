@@ -5,7 +5,7 @@
  * that table to this class rather than to a neighbour.
  *
  * SIZE 0x60b0, from the factory's own `_ZN7fBase_cnwEj(0x60b0)`
- * (src/func_ov006_020f8e44.cpp).
+ * (src/d_s_mg_m_carlo.cpp).
  *
  * SHARED TABLE at 0x4f38, size 0x270, constructed by func_ov006_020c1d80
  * and destroyed by func_ov006_020c1c64 -- the same pair dScMgCard_c and
@@ -42,7 +42,12 @@
  * homeless D2 entirely. The two calls below are ordinary reverse-declaration
  * member destruction, spelled out only because the members are raw bytes.
  * No separate operator delete is needed -- dScMgBase_c, two levels up,
- * already provides one. */
+ * already provides one.
+ *
+ * SM64DS RTTI names the implementation dScMgMCarlo_c. The reconstructed factory
+ * dScMgMCarlo_c_classInit (historical alias func_ov006_020f8e44) installs this class's
+ * cartridge vtable for the MG_MCARLO registry profile.
+ */
 #ifndef DSCMGMCARLO_C_H
 #define DSCMGMCARLO_C_H
 #include "dScMgSingle3DBase_c.h"

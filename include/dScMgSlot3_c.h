@@ -6,7 +6,7 @@
  * than to a neighbour.
  *
  * SIZE 0x5044, from the factory's own `_ZN7fBase_cnwEj(0x5044)`
- * (src/func_ov006_0210c120.c). The evidenced field span stops at 0x5043,
+ * (src/d_s_mg_slot3.c). The evidenced field span stops at 0x5043,
  * so the trailing byte is alignment, not unclaimed space.
  *
  * TABLE at 0x4f38, constructed by func_ov006_020c221c and destroyed by
@@ -32,7 +32,12 @@
  * THE DESTRUCTOR IS NOT DEFINED INLINE -- a leaf, no RTTI descendants of
  * its own. Defined for real in src/_ZN12dScMgSlot3_cD1Ev.cpp; D0Ev.cpp
  * carries an identical copy. No separate operator delete is needed --
- * dScMgBase_c, two levels up, already provides one. */
+ * dScMgBase_c, two levels up, already provides one.
+ *
+ * SM64DS RTTI names the implementation dScMgSlot3_c. The reconstructed factory
+ * dScMgSlot3_c_classInit (historical alias func_ov006_0210c120) installs this class's
+ * cartridge vtable for the MG_SLOT3 registry profile.
+ */
 #ifndef DSCMGSLOT3_C_H
 #define DSCMGSLOT3_C_H
 #include "dScMgSingle3DBase_c.h"
