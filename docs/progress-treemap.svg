@@ -32673,7 +32673,7 @@ matched: yes</title></rect><rect x="1499.50" y="182.33" width="5.71" height="8.5
 module: ov029
 addr: 0x02111254
 size: 236 bytes
-matched: yes</title></rect><rect x="1505.21" y="175.78" width="3.90" height="3.20" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daObjWcObj01_c_Spawn
+matched: yes</title></rect><rect x="1505.21" y="175.78" width="3.90" height="3.20" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daObjWcObj01_c_classInit
 module: ov029
 addr: 0x02111340
 size: 60 bytes
@@ -32801,7 +32801,7 @@ matched: yes</title></rect><rect x="1546.35" y="180.29" width="4.61" height="10.
 module: ov029
 addr: 0x02111f58
 size: 236 bytes
-matched: yes</title></rect><rect x="1550.96" y="175.78" width="3.29" height="3.78" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daObjWcObj06_c_Spawn
+matched: yes</title></rect><rect x="1550.96" y="175.78" width="3.29" height="3.78" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daObjWcObj06_c_classInit
 module: ov029
 addr: 0x02112044
 size: 60 bytes
@@ -34033,7 +34033,7 @@ matched: yes</title></rect><rect x="1257.26" y="253.47" width="3.80" height="2.0
 module: ov043
 addr: 0x02111758
 size: 20 bytes
-matched: yes</title></rect><rect x="1257.26" y="255.51" width="3.80" height="14.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>StairsBdw_Spawn
+matched: yes</title></rect><rect x="1257.26" y="255.51" width="3.80" height="14.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daObjKm1_Dorifu_c_classInit
 module: ov043
 addr: 0x0211176c
 size: 144 bytes
