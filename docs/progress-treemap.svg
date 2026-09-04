@@ -21469,7 +21469,7 @@ matched: yes</title></rect><rect x="766.07" y="215.91" width="7.58" height="7.06
 module: ov006
 addr: 0x020d5924
 size: 80 bytes
-matched: yes</title></rect><rect x="773.65" y="215.91" width="20.84" height="7.06" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_020d5974
+matched: yes</title></rect><rect x="773.65" y="215.91" width="20.84" height="7.06" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>dScMgAmida_c_classInit
 module: ov006
 addr: 0x020d5974
 size: 220 bytes
@@ -21777,7 +21777,7 @@ matched: yes</title></rect><rect x="917.17" y="234.30" width="57.06" height="9.5
 module: ov006
 addr: 0x020d9244
 size: 816 bytes
-matched: yes</title></rect><rect x="974.23" y="234.30" width="3.36" height="9.56" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>MgSortOrSplode_Spawn
+matched: yes</title></rect><rect x="974.23" y="234.30" width="3.36" height="9.56" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>dScMgBomroom_c_classInit
 module: ov006
 addr: 0x020d9574
 size: 48 bytes
@@ -22177,7 +22177,7 @@ matched: yes</title></rect><rect x="929.78" y="270.37" width="67.55" height="5.6
 module: ov006
 addr: 0x020de704
 size: 572 bytes
-matched: yes</title></rect><rect x="997.33" y="270.37" width="8.50" height="5.66" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>MgCoincentration_Spawn
+matched: yes</title></rect><rect x="997.33" y="270.37" width="8.50" height="5.66" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>dScMgCoin_c_classInit
 module: ov006
 addr: 0x020de940
 size: 72 bytes
@@ -23081,7 +23081,7 @@ matched: yes</title></rect><rect x="906.38" y="340.94" width="66.25" height="9.0
 module: ov006
 addr: 0x020e9e70
 size: 896 bytes
-matched: yes</title></rect><rect x="972.63" y="340.94" width="10.65" height="9.04" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>MgPsycheOut_Spawn
+matched: yes</title></rect><rect x="972.63" y="340.94" width="10.65" height="9.04" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>dScMg3DEsp_c_classInit
 module: ov006
 addr: 0x020ea1f0
 size: 144 bytes
@@ -23409,7 +23409,7 @@ matched: yes</title></rect><rect x="623.37" y="581.90" width="5.63" height="42.7
 module: ov006
 addr: 0x020ee994
 size: 360 bytes
-matched: no</title></rect><rect x="623.37" y="624.62" width="5.63" height="28.00" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>MgBounceAndPounce_Spawn
+matched: no</title></rect><rect x="623.37" y="624.62" width="5.63" height="28.00" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>dScMgJump_c_classInit
 module: ov006
 addr: 0x020eeafc
 size: 236 bytes
@@ -23761,7 +23761,7 @@ matched: yes</title></rect><rect x="637.71" y="690.50" width="9.99" height="62.0
 module: ov006
 addr: 0x020f3460
 size: 928 bytes
-matched: yes</title></rect><rect x="637.71" y="752.58" width="9.99" height="3.48" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>MgWanted_Spawn
+matched: yes</title></rect><rect x="637.71" y="752.58" width="9.99" height="3.48" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>dScMgLuigi_c_classInit
 module: ov006
 addr: 0x020f3800
 size: 52 bytes
@@ -23949,7 +23949,7 @@ matched: yes</title></rect><rect x="856.11" y="386.24" width="33.27" height="5.7
 module: ov006
 addr: 0x020f53e4
 size: 288 bytes
-matched: yes</title></rect><rect x="889.38" y="386.24" width="11.09" height="5.79" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>MgMemoryMatch_Spawn
+matched: yes</title></rect><rect x="889.38" y="386.24" width="11.09" height="5.79" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>dScMgMemory_c_classInit
 module: ov006
 addr: 0x020f5504
 size: 96 bytes
@@ -24157,7 +24157,7 @@ matched: yes</title></rect><rect x="652.92" y="548.82" width="9.04" height="21.3
 module: ov006
 addr: 0x020f74b4
 size: 288 bytes
-matched: yes</title></rect><rect x="652.92" y="570.13" width="9.04" height="7.10" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>MgMemoryMaster_Spawn
+matched: yes</title></rect><rect x="652.92" y="570.13" width="9.04" height="7.10" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>dScMgMemory2_c_classInit
 module: ov006
 addr: 0x020f75d4
 size: 96 bytes
@@ -24253,7 +24253,7 @@ matched: yes</title></rect><rect x="867.06" y="394.67" width="21.63" height="9.7
 module: ov006
 addr: 0x020f8d08
 size: 316 bytes
-matched: yes</title></rect><rect x="888.70" y="394.67" width="10.13" height="9.76" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_020f8e44
+matched: yes</title></rect><rect x="888.70" y="394.67" width="10.13" height="9.76" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>dScMgMCarlo_c_classInit
 module: ov006
 addr: 0x020f8e44
 size: 148 bytes
@@ -24661,7 +24661,7 @@ matched: yes</title></rect><rect x="977.23" y="412.12" width="65.70" height="10.
 module: ov006
 addr: 0x020fefc0
 size: 1068 bytes
-matched: yes</title></rect><rect x="1042.93" y="412.12" width="3.20" height="10.87" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>MgBobOmbSquad_Spawn
+matched: yes</title></rect><rect x="1042.93" y="412.12" width="3.20" height="10.87" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>dScMgPachinko_c_classInit
 module: ov006
 addr: 0x020ff3ec
 size: 52 bytes
@@ -24957,7 +24957,7 @@ matched: yes</title></rect><rect x="698.61" y="548.56" width="8.54" height="70.8
 module: ov006
 addr: 0x02103ed0
 size: 904 bytes
-matched: yes</title></rect><rect x="698.61" y="619.36" width="8.54" height="4.07" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>MgLakituLaunch_Spawn
+matched: yes</title></rect><rect x="698.61" y="619.36" width="8.54" height="4.07" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>dScMgPachinko2_c_classInit
 module: ov006
 addr: 0x02104258
 size: 52 bytes
@@ -25245,7 +25245,7 @@ matched: yes</title></rect><rect x="718.69" y="452.80" width="101.80" height="7.
 module: ov006
 addr: 0x021073b0
 size: 1192 bytes
-matched: yes</title></rect><rect x="820.49" y="452.80" width="4.44" height="7.83" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>MgPuzzlePanelPuzzlePanic_Spawn
+matched: yes</title></rect><rect x="820.49" y="452.80" width="4.44" height="7.83" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>dScMgPanel_c_classInit
 module: ov006
 addr: 0x02107858
 size: 52 bytes
@@ -25521,7 +25521,7 @@ matched: yes</title></rect><rect x="729.90" y="709.01" width="10.37" height="56.
 module: ov006
 addr: 0x0210bdb0
 size: 880 bytes
-matched: yes</title></rect><rect x="729.90" y="765.73" width="10.37" height="6.19" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_0210c120
+matched: yes</title></rect><rect x="729.90" y="765.73" width="10.37" height="6.19" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>dScMgSlot3_c_classInit
 module: ov006
 addr: 0x0210c120
 size: 96 bytes
@@ -25609,7 +25609,7 @@ matched: no</title></rect><rect x="976.32" y="473.09" width="72.03" height="11.2
 module: ov006
 addr: 0x0210d1fc
 size: 1212 bytes
-matched: yes</title></rect><rect x="740.27" y="484.34" width="5.87" height="15.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_0210d6b8
+matched: yes</title></rect><rect x="740.27" y="484.34" width="5.87" height="15.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>dScMgSlot1_c_classInit
 module: ov006
 addr: 0x0210d6b8
 size: 136 bytes
@@ -26465,7 +26465,7 @@ matched: yes</title></rect><rect x="815.06" y="565.12" width="5.72" height="57.4
 module: ov006
 addr: 0x0211c984
 size: 492 bytes
-matched: yes</title></rect><rect x="815.06" y="622.57" width="5.72" height="11.21" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>MgBoomBox_Spawn
+matched: yes</title></rect><rect x="815.06" y="622.57" width="5.72" height="11.21" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>dScMgSound_c_classInit
 module: ov006
 addr: 0x0211cb70
 size: 96 bytes
@@ -26793,7 +26793,7 @@ matched: yes</title></rect><rect x="863.49" y="581.76" width="100.79" height="6.
 module: ov006
 addr: 0x021203fc
 size: 940 bytes
-matched: yes</title></rect><rect x="964.28" y="581.76" width="5.58" height="6.23" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>MgHideAndBooSeek_Spawn
+matched: yes</title></rect><rect x="964.28" y="581.76" width="5.58" height="6.23" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>dScMgTeresa_c_classInit
 module: ov006
 addr: 0x021207a8
 size: 52 bytes
@@ -26961,7 +26961,7 @@ matched: yes</title></rect><rect x="855.05" y="713.82" width="5.88" height="42.2
 module: ov006
 addr: 0x0212231c
 size: 372 bytes
-matched: yes</title></rect><rect x="855.05" y="756.09" width="5.88" height="31.82" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>MgTrampolineTime_Spawn
+matched: yes</title></rect><rect x="855.05" y="756.09" width="5.88" height="31.82" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>dScMgTrampoline_c_classInit
 module: ov006
 addr: 0x02122490
 size: 280 bytes
@@ -27209,7 +27209,7 @@ matched: yes</title></rect><rect x="995.33" y="615.69" width="15.76" height="9.3
 module: ov006
 addr: 0x0212551c
 size: 220 bytes
-matched: yes</title></rect><rect x="1011.09" y="615.69" width="10.60" height="9.33" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>MgLuckyStars_Spawn
+matched: yes</title></rect><rect x="1011.09" y="615.69" width="10.60" height="9.33" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>dScMgBSC_c_classInit
 module: ov006
 addr: 0x021255f8
 size: 148 bytes
@@ -27381,7 +27381,7 @@ matched: yes</title></rect><rect x="974.67" y="663.68" width="39.54" height="5.9
 module: ov006
 addr: 0x0212a3c0
 size: 352 bytes
-matched: yes</title></rect><rect x="1014.20" y="663.68" width="5.84" height="5.95" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>MgSnowballSlalom_Spawn
+matched: yes</title></rect><rect x="1014.20" y="663.68" width="5.84" height="5.95" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>dScMgSnowball_c_classInit
 module: ov006
 addr: 0x0212a520
 size: 52 bytes
@@ -27421,7 +27421,7 @@ matched: yes</title></rect><rect x="934.38" y="684.72" width="6.71" height="88.4
 module: ov006
 addr: 0x0212b480
 size: 888 bytes
-matched: yes</title></rect><rect x="934.38" y="773.16" width="6.71" height="14.74" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov006_0212b7f8
+matched: yes</title></rect><rect x="934.38" y="773.16" width="6.71" height="14.74" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>dScMgFlower_c_classInit
 module: ov006
 addr: 0x0212b7f8
 size: 148 bytes
