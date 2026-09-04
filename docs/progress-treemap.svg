@@ -31597,7 +31597,7 @@ matched: yes</title></rect><rect x="1570.10" y="134.22" width="9.07" height="9.5
 module: ov021
 addr: 0x02112b2c
 size: 568 bytes
-matched: yes</title></rect><rect x="1579.16" y="134.22" width="4.15" height="2.94" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>RollingRock_Spawn
+matched: yes</title></rect><rect x="1579.16" y="134.22" width="4.15" height="2.94" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daGrock_c_classInit
 module: ov021
 addr: 0x02112d64
 size: 80 bytes
@@ -31809,11 +31809,11 @@ matched: yes</title></rect><rect x="1108.09" y="183.71" width="3.47" height="7.2
 module: ov022
 addr: 0x02112040
 size: 120 bytes
-matched: yes</title></rect><rect x="1111.56" y="175.78" width="3.80" height="3.29" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>FloatingFloorLllSmall_Spawn
+matched: yes</title></rect><rect x="1111.56" y="175.78" width="3.80" height="3.29" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daObjFl_Ukiyuka_c_classInit_FL_UKIYUKA_L
 module: ov022
 addr: 0x021120b8
 size: 60 bytes
-matched: yes</title></rect><rect x="1111.56" y="179.07" width="3.80" height="3.29" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>FloatingFloorLllBig_Spawn
+matched: yes</title></rect><rect x="1111.56" y="179.07" width="3.80" height="3.29" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daObjFl_Ukiyuka_c_classInit_FL_UKIYUKA
 module: ov022
 addr: 0x021120f4
 size: 60 bytes
@@ -31925,7 +31925,7 @@ matched: yes</title></rect><rect x="1137.23" y="184.07" width="4.63" height="4.3
 module: ov022
 addr: 0x021128b8
 size: 96 bytes
-matched: yes</title></rect><rect x="1137.23" y="188.40" width="4.63" height="2.52" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>VolcanoFire_Spawn
+matched: yes</title></rect><rect x="1137.23" y="188.40" width="4.63" height="2.52" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daObj_volcanoCannon_c_classInit
 module: ov022
 addr: 0x02112918
 size: 56 bytes
@@ -32113,7 +32113,7 @@ matched: yes</title></rect><rect x="1241.44" y="175.78" width="4.46" height="8.5
 module: ov025
 addr: 0x021117dc
 size: 188 bytes
-matched: yes</title></rect><rect x="1241.44" y="184.35" width="4.46" height="2.19" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov025_02111898
+matched: yes</title></rect><rect x="1241.44" y="184.35" width="4.46" height="2.19" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daDgr_c_classInit
 module: ov025
 addr: 0x02111898
 size: 48 bytes
@@ -32149,7 +32149,7 @@ matched: yes</title></rect><rect x="1253.57" y="183.05" width="5.37" height="7.8
 module: ov025
 addr: 0x02111c24
 size: 208 bytes
-matched: yes</title></rect><rect x="1258.93" y="175.78" width="4.24" height="3.64" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>Grindel_Spawn
+matched: yes</title></rect><rect x="1258.93" y="175.78" width="4.24" height="3.64" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daDkk_c_classInit
 module: ov025
 addr: 0x02111cf4
 size: 76 bytes
@@ -32381,7 +32381,7 @@ matched: yes</title></rect><rect x="1355.99" y="183.63" width="5.75" height="7.2
 module: ov026
 addr: 0x021120ec
 size: 208 bytes
-matched: yes</title></rect><rect x="1361.74" y="175.78" width="3.25" height="3.97" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>Whirlpool_Spawn
+matched: yes</title></rect><rect x="1361.74" y="175.78" width="3.25" height="3.97" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daWater_Tatumaki_c_classInit
 module: ov026
 addr: 0x021121bc
 size: 64 bytes
@@ -32429,7 +32429,7 @@ matched: yes</title></rect><rect x="1367.30" y="177.66" width="5.89" height="4.6
 module: ov026
 addr: 0x021123c8
 size: 136 bytes
-matched: yes</title></rect><rect x="1373.19" y="177.66" width="2.77" height="4.65" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>WaterSuction_Spawn
+matched: yes</title></rect><rect x="1373.19" y="177.66" width="2.77" height="4.65" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daWater_Suikomi_c_classInit
 module: ov026
 addr: 0x02112450
 size: 64 bytes
@@ -32481,11 +32481,11 @@ matched: yes</title></rect><rect x="1398.00" y="175.78" width="4.69" height="13.
 module: ov027
 addr: 0x02111440
 size: 292 bytes
-matched: yes</title></rect><rect x="1398.00" y="188.78" width="4.69" height="2.14" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>SlidingIce_Spawn
+matched: yes</title></rect><rect x="1398.00" y="188.78" width="4.69" height="2.14" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daObjSlIceBlock_c_classInit_SL_ICEBLOCK_SHOT
 module: ov027
 addr: 0x02111564
 size: 48 bytes
-matched: yes</title></rect><rect x="1402.69" y="175.78" width="3.26" height="3.08" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>SlidingIceSpawner_Spawn
+matched: yes</title></rect><rect x="1402.69" y="175.78" width="3.26" height="3.08" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daObjSlIceBlock_c_classInit_SL_ICEBLOCK
 module: ov027
 addr: 0x02111594
 size: 48 bytes
@@ -32513,7 +32513,7 @@ matched: yes</title></rect><rect x="1411.63" y="175.78" width="3.64" height="4.5
 module: ov027
 addr: 0x0211181c
 size: 80 bytes
-matched: yes</title></rect><rect x="1411.63" y="180.37" width="3.64" height="5.27" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daIDonketu_c_Spawn
+matched: yes</title></rect><rect x="1411.63" y="180.37" width="3.64" height="5.27" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daIDonketu_c_classInit
 module: ov027
 addr: 0x0211186c
 size: 92 bytes
@@ -32573,7 +32573,7 @@ matched: yes</title></rect><rect x="1433.16" y="179.10" width="8.06" height="11.
 module: ov027
 addr: 0x02111eb4
 size: 456 bytes
-matched: yes</title></rect><rect x="1441.21" y="175.78" width="3.04" height="4.95" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov027_0211207c
+matched: yes</title></rect><rect x="1441.21" y="175.78" width="3.04" height="4.95" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daPgDfdr_c_classInit
 module: ov027
 addr: 0x0211207c
 size: 72 bytes
@@ -32641,7 +32641,7 @@ matched: yes</title></rect><rect x="1474.33" y="175.78" width="5.79" height="7.7
 module: ov027
 addr: 0x021129dc
 size: 216 bytes
-matched: yes</title></rect><rect x="1474.33" y="183.57" width="5.79" height="3.46" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>SnowmanBreath_Spawn
+matched: yes</title></rect><rect x="1474.33" y="183.57" width="5.79" height="3.46" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daSnmBth_c_classInit
 module: ov027
 addr: 0x02112ab4
 size: 96 bytes
@@ -32821,7 +32821,7 @@ matched: yes</title></rect><rect x="1554.25" y="177.39" width="2.58" height="2.5
 module: ov029
 addr: 0x02112148
 size: 32 bytes
-matched: yes</title></rect><rect x="1554.25" y="179.97" width="2.58" height="4.83" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daObjWc_Obj07_c_Spawn
+matched: yes</title></rect><rect x="1554.25" y="179.97" width="2.58" height="4.83" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daObjWc_Obj07_c_classInit
 module: ov029
 addr: 0x02112168
 size: 60 bytes
@@ -33157,11 +33157,11 @@ matched: yes</title></rect><rect x="1238.54" y="222.92" width="2.53" height="1.1
 module: ov030
 addr: 0x021145d4
 size: 12 bytes
-matched: yes</title></rect><rect x="1238.54" y="224.10" width="2.53" height="8.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>UkikiStar_Spawn
+matched: yes</title></rect><rect x="1238.54" y="224.10" width="2.53" height="8.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daMky_c_classInit_MONKEY_STAR
 module: ov030
 addr: 0x021145e0
 size: 88 bytes
-matched: yes</title></rect><rect x="1238.54" y="232.77" width="2.53" height="8.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>UkikiThief_Spawn
+matched: yes</title></rect><rect x="1238.54" y="232.77" width="2.53" height="8.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daMky_c_classInit_MONKEY_THIEF
 module: ov030
 addr: 0x02114638
 size: 88 bytes
@@ -33201,19 +33201,19 @@ matched: yes</title></rect><rect x="1270.11" y="213.84" width="1.72" height="7.6
 module: ov031
 addr: 0x021112a8
 size: 156 bytes
-matched: yes</title></rect><rect x="1270.11" y="221.47" width="1.72" height="2.74" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>SlideDecorationBlueSmiley_Spawn
+matched: yes</title></rect><rect x="1270.11" y="221.47" width="1.72" height="2.74" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daObjHsBillboard_c_classInit_HS_B_STAR
 module: ov031
 addr: 0x02111344
 size: 56 bytes
-matched: yes</title></rect><rect x="1270.11" y="224.21" width="1.72" height="2.74" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>SlideDecorationOrangeSmiley_Spawn
+matched: yes</title></rect><rect x="1270.11" y="224.21" width="1.72" height="2.74" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daObjHsBillboard_c_classInit_HS_Y_STAR
 module: ov031
 addr: 0x0211137c
 size: 56 bytes
-matched: yes</title></rect><rect x="1270.11" y="226.95" width="1.72" height="2.74" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>SlideDecorationYellowStar_Spawn
+matched: yes</title></rect><rect x="1270.11" y="226.95" width="1.72" height="2.74" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daObjHsBillboard_c_classInit_HS_STAR
 module: ov031
 addr: 0x021113b4
 size: 56 bytes
-matched: yes</title></rect><rect x="1270.11" y="229.69" width="1.72" height="2.74" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>SlideDecorationSilverStar_Spawn
+matched: yes</title></rect><rect x="1270.11" y="229.69" width="1.72" height="2.74" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daObjHsBillboard_c_classInit_HS_MOON
 module: ov031
 addr: 0x021113ec
 size: 56 bytes
@@ -33589,7 +33589,7 @@ matched: no</title></rect><rect x="1508.20" y="222.92" width="15.01" height="18.
 module: ov034
 addr: 0x0211323c
 size: 1128 bytes
-matched: yes</title></rect><rect x="1523.20" y="222.92" width="5.06" height="18.52" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>Wiggler_Spawn
+matched: yes</title></rect><rect x="1523.20" y="222.92" width="5.06" height="18.52" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daHanachan_c_classInit
 module: ov034
 addr: 0x021136a4
 size: 380 bytes
@@ -33621,15 +33621,15 @@ matched: yes</title></rect><rect x="1567.51" y="233.44" width="9.42" height="8.0
 module: ov035
 addr: 0x021114e0
 size: 380 bytes
-matched: yes</title></rect><rect x="1576.93" y="222.92" width="2.74" height="3.47" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>RotatingCogSmall_Spawn
+matched: yes</title></rect><rect x="1576.93" y="222.92" width="2.74" height="3.47" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daObjCtMecha10_c_classInit_CT_MECHA12S
 module: ov035
 addr: 0x0211165c
 size: 48 bytes
-matched: yes</title></rect><rect x="1579.68" y="222.92" width="2.74" height="3.47" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov035_0211168c
+matched: yes</title></rect><rect x="1579.68" y="222.92" width="2.74" height="3.47" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daObjCtMecha10_c_classInit_CT_MECHA12L
 module: ov035
 addr: 0x0211168c
 size: 48 bytes
-matched: yes</title></rect><rect x="1582.42" y="222.92" width="2.74" height="3.47" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>RotatingClockHand_Spawn
+matched: yes</title></rect><rect x="1582.42" y="222.92" width="2.74" height="3.47" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daObjCtMecha10_c_classInit_CT_MECHA10
 module: ov035
 addr: 0x021116bc
 size: 48 bytes
