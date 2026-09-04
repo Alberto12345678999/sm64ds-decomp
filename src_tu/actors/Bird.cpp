@@ -28,7 +28,7 @@
  *   [9] 0x02111870  src/_ZN4Bird6RenderEv.cpp
  *   [10] 0x02111898  src/_ZN4Bird8BehaviorEv.cpp
  *   [11] 0x0211197c  src/_ZN4Bird13InitResourcesEv.cpp
- *   [12] 0x02111a30  src/Bird_Spawn.c
+ *   [12] 0x02111a30  src/d_a_s_bird.c
  */
 
 /* Includes: union of the legacy files', first-seen in ROM-ascending
@@ -88,13 +88,13 @@ extern "C" void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj( void *, BCA_File *,
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 12 -- Bird_Spawn, 0x02111a30, size 0x40 */
+/* ROM ordinal 12 -- daSBird_c_classInit, 0x02111a30, size 0x40 */
 /* -------------------------------------------------------------------------- */
-// @symbol Bird_Spawn
+// @symbol daSBird_c_classInit
 /* recovered: vtable identified, globals resolved, declarations from a shared header */
 /* recovered: vtable identified, globals resolved */
 /* resolved: VT0 = _ZTV4Bird */
-extern "C" int *Bird_Spawn(void)
+extern "C" int *daSBird_c_classInit(void)
 {
     int *p = (int *)_ZN7fBase_cnwEj(388);
     if (p) {

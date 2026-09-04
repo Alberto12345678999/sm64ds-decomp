@@ -29,7 +29,7 @@
  *   [10] 0x021132fc  src/_ZN12HauntedChair6RenderEv.cpp
  *   [11] 0x02113324  src/_ZN12HauntedChair8BehaviorEv.cpp
  *   [12] 0x021133b0  src/_ZN12HauntedChair13InitResourcesEv.cpp
- *   [13] 0x02113494  src/HauntedChair_Spawn.c
+ *   [13] 0x02113494  src/d_a_chair.c
  */
 
 /* TUBUILD NOTE -- #pragma directive(s) were present in the legacy sources
@@ -194,14 +194,14 @@ extern struct M48 IDENTITY_MATRIX4X3;
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 13 -- HauntedChair_Spawn, 0x02113494, size 0x50 */
+/* ROM ordinal 13 -- daChair_c_classInit, 0x02113494, size 0x50 */
 /* -------------------------------------------------------------------------- */
-// @symbol HauntedChair_Spawn
+// @symbol daChair_c_classInit
 /* recovered: vtable identified, globals resolved, declarations from a shared header */
 /* recovered: vtable identified, globals resolved */
 /* resolved: VT0 = _ZTV12HauntedChair */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-int *HauntedChair_Spawn(void)
+int *daChair_c_classInit(void)
 {
     int *p = (int *)_ZN7fBase_cnwEj(936);
     if (p) {

@@ -45,7 +45,7 @@
  *   [26] 0x02112360  src/_ZN13RacingPenguin6RenderEv.cpp
  *   [27] 0x02112394  src/_ZN13RacingPenguin8BehaviorEv.cpp
  *   [28] 0x021123d4  src/_ZN13RacingPenguin13InitResourcesEv.cpp
- *   [29] 0x021125bc  src/RacingPenguin_Spawn.c
+ *   [29] 0x021125bc  src/d_a_pg_rcer.c
  */
 
 /* TUBUILD NOTE -- #pragma directive(s) were present in the legacy sources
@@ -264,14 +264,14 @@ extern void _ZN7PathPtrC1Ev(void *);
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 29 -- RacingPenguin_Spawn, 0x021125bc, size 0x60 */
+/* ROM ordinal 29 -- daPgRcer_c_classInit, 0x021125bc, size 0x60 */
 /* -------------------------------------------------------------------------- */
-// @symbol RacingPenguin_Spawn
+// @symbol daPgRcer_c_classInit
 /* recovered: vtable identified, globals resolved, declarations from a shared header */
 /* recovered: vtable identified, globals resolved */
 /* resolved: VT0 = _ZTV13RacingPenguin */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-int *RacingPenguin_Spawn(void)
+int *daPgRcer_c_classInit(void)
 {
     int *p = (int *)_ZN7fBase_cnwEj(920);
     if (p) {
