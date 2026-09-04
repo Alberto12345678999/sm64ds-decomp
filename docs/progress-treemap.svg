@@ -31069,7 +31069,7 @@ matched: yes</title></rect><rect x="1151.25" y="134.22" width="6.75" height="9.5
 module: ov018
 addr: 0x021124d0
 size: 428 bytes
-matched: yes</title></rect><rect x="1157.99" y="134.22" width="2.84" height="4.68" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>MotherPenguin_Spawn
+matched: yes</title></rect><rect x="1157.99" y="134.22" width="2.84" height="4.68" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daPgMthr_c_classInit
 module: ov018
 addr: 0x0211267c
 size: 88 bytes
@@ -33941,7 +33941,7 @@ matched: yes</title></rect><rect x="1212.61" y="263.89" width="4.82" height="2.5
 module: ov039
 addr: 0x0211132c
 size: 80 bytes
-matched: yes</title></rect><rect x="1212.61" y="266.41" width="2.25" height="3.78" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>Cloud_Spawn
+matched: yes</title></rect><rect x="1212.61" y="266.41" width="2.25" height="3.78" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daObjKumo_c_classInit
 module: ov039
 addr: 0x0211137c
 size: 56 bytes
