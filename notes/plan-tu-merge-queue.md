@@ -126,18 +126,6 @@ serial-build assumption reproduce a *known-green* transcript before a real pilot
 spent. **Run first; 10 minutes, and it de-risks every later "is it me or is it the TU?"**
 
 **B1 — R0, [ov002](../config/arm9/overlays/ov002/symbols.txt) + [ov006](../config/arm9/overlays/ov006/symbols.txt) · 10 TUs / 59 files / net −49 / 1,011 lines**
-| TU | Address | Files | Description | Status |
-|----|---------|-------|-------------|--------|
-|[ov002](../config/arm9/overlays/ov002/symbols.txt)| 0x20b05d0|  n=8|   `InvisiblePole`|            uncorrob|
-|[ov002](../config/arm9/overlays/ov002/symbols.txt)| 0x20b0748|  n=8|   `daCamTag_c`|                uncorrob||
-|[ov002](../config/arm9/overlays/ov002/symbols.txt)| 0x20b07f8|  n=8|   `daChRoom_c`|              uncorrob|
-|[ov002](../config/arm9/overlays/ov002/symbols.txt)| 0x20b5734|  n=7|   `BlueFlame`|                uncorrob|
-|[ov002](../config/arm9/overlays/ov002/symbols.txt)| 0x20b6e08|  n=5|   `WaterfallMist`|            uncorrob|
-|[ov002](../config/arm9/overlays/ov002/symbols.txt)| 0x20ec388|  n=8|   `daWarpkun_c`|             uncorrob|
-|[ov002](../config/arm9/overlays/ov002/symbols.txt)| 0x20f0dd0|  n=8|   `OneUpLogo`|                uncorrob|
-|[ov006](../config/arm9/overlays/ov006/symbols.txt)| 0x20dbd54|  n=3|   `MgPicturePoker`|           uncorrob|
-|[ov006](../config/arm9/overlays/ov006/symbols.txt)| 0x20fa6ac|  n=2|   `MgPairAGoneAndOn`|         uncorrob|
-|[ov006](../config/arm9/overlays/ov006/symbols.txt)| 0x210a400|  n=2|   `MgMushroomRoulette`|       uncorrob|
 | TU | Address | Files | Lines | Description | Status |
 |----|---------|-------|-------|-------------|--------|
 |[ov002](../config/arm9/overlays/ov002/symbols.txt)| 0x20b05d0|  n=8|  L=126|  `InvisiblePole`|            uncorrob|
@@ -156,18 +144,6 @@ in that module. The three [ov006](../config/arm9/overlays/ov006/symbols.txt) min
 cheapest possible probe of post-regeneration [ov006](../config/arm9/overlays/ov006/symbols.txt).
 
 **B2 — R0, one TU per module · 10 TUs / 69 files / net −59 / 1,356 lines**
-| TU | Address | Files | Description | Status |
-|----|---------|-------|-------------|--------|
-|[ov009](../config/arm9/overlays/ov009/symbols.txt)| 0x2112078|  n=7|    `daMcFlag_c`|               pcov=2|
-|[ov012](../config/arm9/overlays/ov012/symbols.txt)| 0x21111a0|  n=8|    `daObjC0_Switch_c`|
-|[ov013](../config/arm9/overlays/ov013/symbols.txt)| 0x21113bc|  n=8|    `ClockPaintingHandShort`|   uncorrob|
-|[ov014](../config/arm9/overlays/ov014/symbols.txt)| 0x2112e0c|  n=8|    `daObjWanwanShutter_c`|
-|[ov015](../config/arm9/overlays/ov015/symbols.txt)| 0x21111a0|  n=7|    `daObjBkBillboard_c`|            uncorrob||
-|[ov018](../config/arm9/overlays/ov018/symbols.txt)| 0x21126d4|  n=4|   `daSCre_c`|                 uncorrob|
-|[ov019](../config/arm9/overlays/ov019/symbols.txt)| 0x211261c|  n=5|   `daSldMng_c`|
-|[ov021](../config/arm9/overlays/ov021/symbols.txt)| 0x2112db4|  n=6|    `daObjCvShutter_c`|
-|[ov022](../config/arm9/overlays/ov022/symbols.txt)| 0x2111980|  n=8|    `LavaBridge`|               uncorrob|
-|[ov022](../config/arm9/overlays/ov022/symbols.txt)| 0x2111cac|  n=8|    `LavaSeesaw`|               uncorrob|
 | TU | Address | Files | Lines | Description | Status |
 |----|---------|-------|-------|-------------|--------|
 |[ov009](../config/arm9/overlays/ov009/symbols.txt)| 0x2112078|  n=7|  L=116|  `daMcFlag_c`|               pcov=2|
@@ -183,18 +159,6 @@ cheapest possible probe of post-regeneration [ov006](../config/arm9/overlays/ov0
 
 
 **B3 — R0 · 10 TUs / 53 files / net −43 / 1,076 lines**
-| TU | Address | Files | Description | Status |
-|----|---------|-------|-------------|--------|
-|[ov022](../config/arm9/overlays/ov022/symbols.txt)| 0x2111f6c|  n=5|    `FloatingFloorLllSmall`|            pcov=3|
-|[ov022](../config/arm9/overlays/ov022/symbols.txt)| 0x2112380|  n=4|    `daObjFl_Fall_Block_c`|             pcov=2|
-|[ov022](../config/arm9/overlays/ov022/symbols.txt)| 0x2112498|  n=6|    `RollingLogLll`|
-|[ov026](../config/arm9/overlays/ov026/symbols.txt)| 0x21118b8|  n=6|    `Submarine`|
-|[ov029](../config/arm9/overlays/ov029/symbols.txt)| 0x21111a0|  n=4|    `daObjWcObj01_c`|
-|[ov029](../config/arm9/overlays/ov029/symbols.txt)| 0x2111ea4|  n=4|    `daObjWcObj06_c`|
-|[ov036](../config/arm9/overlays/ov036/symbols.txt)| 0x2111580|  n=8|    `daObjRc_Hane_c`|
-|[ov036](../config/arm9/overlays/ov036/symbols.txt)| 0x2111d14|  n=7|    `daObjRc_Guruguru_c`|
-|[ov036](../config/arm9/overlays/ov036/symbols.txt)| 0x2111f8c|  n=4|    `daObjRc_Dorifu_c`|
-|[ov043](../config/arm9/overlays/ov043/symbols.txt)| 0x2111518|  n=5|    `daObjKm1_Kuruma_c`|              pcov=3|
 | TU | Address | Files | Lines | Description | Status |
 |----|---------|-------|-------|-------------|--------|
 |[ov022](../config/arm9/overlays/ov022/symbols.txt)| 0x2111f6c|  n=5|  L=86|   `FloatingFloorLllSmall`|            pcov=3|
@@ -214,15 +178,6 @@ cartridge's own names were adopted — are adjacent and near-identical, so this
 batch is where shape-family amortization first pays.
 
 **B4 — R0 tail · 7 TUs / 37 files / net −30 / 726 lines**
-| TU | Address | Files | Description | Status |
-|----|---------|-------|-------------|--------|
-|[ov043](../config/arm9/overlays/ov043/symbols.txt)| 0x2111630|  n=4|   `daObjKm1_Dorifu_c`|
-|[ov044](../config/arm9/overlays/ov044/symbols.txt)| 0x21111a0|  n=7|   `OrangeBallBillboard`|   WHOLEMOD (module-edge both ends, corroborated)|
-|[ov045](../config/arm9/overlays/ov045/symbols.txt)| 0x2111b14|  n=5|   `FloatingFloorBfs`|
-|[ov045](../config/arm9/overlays/ov045/symbols.txt)| 0x2111c30|  n=5|   `TiltingPlatformBfs`|    pcov=3|
-|[ov047](../config/arm9/overlays/ov047/symbols.txt)| 0x21111a0|  n=4|   `daObjKm3_Kurumajiku_c`| pcov=2|
-|[ov047](../config/arm9/overlays/ov047/symbols.txt)| 0x21114d4|  n=5|   `daObjKm3_Dorifu_c`|
-|[ov085](../config/arm9/overlays/ov085/symbols.txt)| 0x212edac|  n=7|   `WallSign`|
 | TU | Address | Files | Lines | Description | Status |
 |----|---------|-------|-------|-------------|--------|
 |[ov043](../config/arm9/overlays/ov043/symbols.txt)| 0x2111630|  n=4|  L=75|   `daObjKm1_Dorifu_c`| |
@@ -380,7 +335,6 @@ python tools/tubuild.py linkcheck <ID> --no-rom
 ```
 
 `<ID>` is `<module>/<tail>` where `tail` is the single class name, `"+".join(sorted(classes))`
-for a multi-class TU [(ov027](../config/arm9/overlays/ov027/symbols.txt)/`daIDonketu_c+daIDonketu_c`, or `@<start>-<end>` for an
 for a multi-class TU ([ov027](../config/arm9/overlays/ov027/symbols.txt)/`daIDonketu_c+daIDonketu_c`), or `@<start>-<end>` for an
 unattributed run. If the tail is not unique in the module it becomes `Class@<start8hex>`.
 Quote the multi-class ones in the shell.
@@ -479,8 +433,6 @@ tb.cmd_create(a)
 ```
 
 **Validated read-only against the tree**: over all 131 refused safe-pool files this
-recovers **130**. The single residual was [func_ov018_021118fc](../config/arm9/overlays/ov018/symbols.txt) (Tier 2,
-[ov018](../config/arm9/overlays/ov018/symbols.txt)/`daPgMthr_c`; it lived in a per-function legacy source at the time and is now
 recovers **130**. The single residual was [func_ov018_021118fc](../src/game/actors/d_a_pg_mthr.cpp) (Tier 2,
 [ov018](../config/arm9/overlays/ov018/symbols.txt)`/daPgMthr_c`; it lived in a per-function legacy source at the time and is now
 part of the promoted `src/game/actors/d_a_pg_mthr.cpp`), and it fails for a different
