@@ -238,8 +238,8 @@ Field roles, from `InitResources`, `Behavior`, `Kill` and `Render` ([ov091](../c
 | 0x388 | `mBasePosX` | `= mPosX`; `Vec3_Add(…, (Vector3 *)&mBasePosX, …)` reads the triple as a `Vector3` |
 | 0x38c | `mBasePosY` | `= mPosY` |
 | 0x390 | `mBasePosZ` | `= mPosZ` |
-| 0x394 | `mWaypointIndex` | `= param1 & 0xf`; indexes `data_ov091_02134cdc + mVariant*0x78` at stride 0xc, wraps at 10 |
-| 0x395 | `mVariant` | 0 / 1 / 2 from `actorID == 0x1e` and `data_0209f2f8 == 7`; the 0x78 stride selector |
+| 0x394 | `mWaypointIndex` | `= param1 & 0xf`; indexes [data_ov091_02134cdc](../config/arm9/overlays/ov091/symbols.txt) + `mVariant*0x78` at stride 0xc, wraps at 10 |
+| 0x395 | `mVariant` | 0 / 1 / 2 from `actorID == 0x1e` and [data_0209f2f8](../config/arm9/symbols.txt) `== 7`; the 0x78 stride selector |
 | 0x398 | `mPlatform0` | `dActor_c::FindWithActorID(0x1d, …)` neighbour within 0xa0000 |
 | 0x39c | `mPlatform1` | the second such neighbour |
 | 0x3a0 | `mIsDead` | set to 1 by `Kill`; `Behavior` and `Render` both return early when it is set, and neighbours test `*(u8 *)(other + 0x3a0)` |
@@ -251,7 +251,7 @@ every access is a 16-bit one; the widths were left alone because changing them i
 a layout claim this pass did not need to make.
 
 `Kill` is slot 31, `dBgActor_c`'s own new virtual, attributed by the vtable:
-`config/arm9/overlays/ov091/relocs.txt` has 0x02134cd8 → 0x02131070, and
+[arm9/overlays/ov091/relocs.txt](../config/arm9/overlays/ov091/relocs.txt) has 0x02134cd8 → 0x02131070, and
 `_ZTV25RotatingUpDownPlatformUtm + 4*31 = 0x02134cd8`. It is **not** the key
 function: the destructor is declared out of line and defined identically in both
 `D1Ev.cpp` and `D0Ev.cpp`, so those two TUs keep emitting the vtable — checked
@@ -267,30 +267,30 @@ true types breaks the byte match. See `notes/mwccarm-codegen.md` 6az.
 
 ## `include/UpDownLiftBbh.h`
 
-Still a flat generated struct (ov095). Own fields start at 0x320.
+Still a flat generated struct ([ov095](../config/arm9/overlays/ov095/symbols.txt)). Own fields start at 0x320.
 
 | offset | name | evidence |
 |---|---|---|
-| 0x320 | `mRider` | `func_ov095_02136764` stores the colliding actor here; `Behavior` passes it to `Player::IsInAir` and clears it when the rider leaves |
+| 0x320 | `mRider` | [func_ov095_02136764](../src/func_ov095_02136764.cpp) stores the colliding actor here; `Behavior` passes it to `Player::IsInAir` and clears it when the rider leaves |
 | 0x324 | `mClosestPlayer` | `= dActor_c::ClosestPlayer()` every frame |
-| 0x328 | `mVariant` | 0 / 1 / 2 from `actorID` 0x20 / 0x21 / 0x83; indexes `data_ov095_02136f68` (model), `…f74` (collider) and `…021375a4` (CLPS) |
-| 0x32c | `mState` | the index into the `data_ov095_02137910` pointer-to-member table `Behavior` dispatches |
+| 0x328 | `mVariant` | 0 / 1 / 2 from `actorID` 0x20 / 0x21 / 0x83; indexes [data_ov095_02136f68](../config/arm9/overlays/ov095/symbols.txt) (model), [data_ov095_02136f74](../config/arm9/overlays/ov095/symbols.txt) (collider) and [data_ov095_021375a4](../config/arm9/overlays/ov095/symbols.txt) (CLPS) |
+| 0x32c | `mState` | the index into the [data_ov095_02137910](../config/arm9/overlays/ov095/symbols.txt) pointer-to-member table `Behavior` dispatches |
 | 0x330 | `mPlayerPosY` | `= mClosestPlayer->mPosY` (that actor's +0x60) |
 | 0x334 | `mTopY` | `= mPosY`, or `mPosY + (spawn word << 12)` for the third variant |
 | 0x338 | `mBottomY` | `= mTopY - (spawn word << 12)` |
 | 0x33c | `mMiddleY` | `= (mTopY + mBottomY) / 2` |
 | 0x340 | `mSoundHandle` | `= Sound::PlayLong(mSoundHandle, 3, 0x82, …)` in the state functions |
 | 0x344 | `mStateTimer` | incremented every `Behavior`, zeroed on a state change |
-| 0x347 | `mIsArmed` | 1 at init; `func_ov095_02136368` only starts the lift while it is 1 and clears it on trigger; `Behavior` re-arms it when the rider leaves |
-| 0x348 | `mIsRidden` | set by the collider callback `func_ov095_02136764`, read once and cleared at the end of every `Behavior` |
+| 0x347 | `mIsArmed` | 1 at init; [func_ov095_02136368](../src/func_ov095_02136368.c) only starts the lift while it is 1 and clears it on trigger; `Behavior` re-arms it when the rider leaves |
+| 0x348 | `mIsRidden` | set by the collider callback [func_ov095_02136764](../src/func_ov095_02136764.cpp), read once and cleared at the end of every `Behavior` |
 
 Left as `unk_`, honestly:
 
-- `unk_346` — a flag the state functions set and clear (`func_ov095_02136178`
-  sets it, `…02136298` clears it, `…02136368` does both). No body in the tree
+- `unk_346` — a flag the state functions set and clear ([func_ov095_02136178](../src/func_ov095_02136178.c)
+  sets it, [func_ov095_02136298](../src/func_ov095_02136298.cpp) clears it, [func_ov095_02136368](../src/func_ov095_02136368.c) does both). No body in the tree
   shows what it means.
 - `unk_349` — set to 0, and to 1 for the `actorID == 0x83` variant. Both
-  `InitResources` and `func_ov095_02136298` then compare it against 2 and 0, and
+  `InitResources` and [func_ov095_02136298](../src/func_ov095_02136298.cpp) then compare it against 2 and 0, and
   the `== 2` arm is unreachable from what the tree can see. It is a byte load in
   the ROM, not the `s32 mVariant` at 0x328 (those are different instructions), so
   it is genuinely its own field and its role is not settled. Do not "fix" the
@@ -311,13 +311,13 @@ they are `s32` / `u32` now. Same offsets, same size, byte-verified.
 
 An RTTI-derived flat placeholder credited to a `deepen_rtti.py` that has
 never existed in this repo (see notes/minigame-provenance.md), shared by
-`SkiLift::InitResources` and `func_ov018_021122ec` (ov018).
+`SkiLift::InitResources` and [func_ov018_021122ec](../config/arm9/overlays/ov018/symbols.txt) ([ov018](../config/arm9/overlays/ov018/symbols.txt)).
 
 | offset | name | evidence |
 |---|---|---|
 | 0x05c/0x060/0x064 | `mPosX` / `mPosY` / `mPosZ` | `dActor_c`'s position, copied to 0x324..0x32c |
 | 0x08e | `mAngleY` | `-= 0x4000`, then handed to `dBgW_KcMbg::SetFile` as its yaw |
-| 0x098 | `mHorzSpeed` | `dActor_c`'s; zeroed by `func_ov018_021122ec` |
+| 0x098 | `mHorzSpeed` | `dActor_c`'s; zeroed by [func_ov018_021122ec](../config/arm9/overlays/ov018/symbols.txt) |
 | 0x324/0x328/0x32c | `mBasePosX` / `mBasePosY` / `mBasePosZ` | `= mPosX/mPosY/mPosZ` in `InitResources` |
 | 0x334 | `mPathId` | `= param1 & 0xff`; `InitResources` bails when it is 0xff, otherwise passes it to `PathPtr::FromID` |
 | 0x338 | `mNodeCount` | `= PathPtr::NumNodes()` |
@@ -339,11 +339,13 @@ difference is in the bytes rather than only in the RTTI: its destructor stores
 three vptrs — its own, `daObjGuragura_c`'s, then `dBgActor_c`'s. A one-level chain
 emits two.
 
-    _ZTI14daObjFl_Gura_c     ov064 0x0211bce8
-    _ZTS14daObjFl_Gura_c     ov064 0x0211bcf4
-    _ZTV14daObjFl_Gura_c     ov064 0x0211bd2c   (public address point)
-    kind  __si_class_type_info, ONE base, subobject offset 0
-    base  daObjGuragura_c, ov002 0x0210905c
+| offset | overlay | evidence |
+|---|---|---|
+  |`_ZTI14daObjFl_Gura_c`|     |[ov064](../config/arm9/overlays/ov064/symbols.txt)| 0x0211bce8|
+  |`_ZTS14daObjFl_Gura_c`|     |[ov064](../config/arm9/overlays/ov064/symbols.txt)| 0x0211bcf4|
+  |`_ZTV14daObjFl_Gura_c`|     |[ov064](../config/arm9/overlays/ov064/symbols.txt)| 0x0211bd2c|   (public address |point)|
+  |kind  `__si_class_type_info`|, ONE base|, subobject offset 0|
+  |base  `daObjGuragura_c|`, [ov002](../config/arm9/overlays/ov002/symbols.txt)| 0x0210905c|
 
 Size 0x350, from `daObjFl_Gura_c_classInit`'s literal 848, which
 `daObjGuragura_c` fills. No fields of its own; it overrides slots 0 and 3, which
@@ -358,8 +360,7 @@ factory is `daObjFl_Gura_c_classInit`, which allocates 848 = 0x350, stores
 `_ZTV15daObjGuragura_c` and then `_ZTV14daObjFl_Gura_c`, ov064 0x0211bd2c, and
 constructs no `PathPtr`. The two vtables are 0xc4 apart in the same overlay, which
 is presumably how they were crossed. Both relocation sets are in
-`config/arm9/overlays/ov064/relocs.txt` and they do not overlap. Nothing consumed
-the wrong fields: this class's two methods are cross-overlay veneers that pass
+[arm9/overlays/ov064/relocs.txt](../config/arm9/overlays/ov064/relocs.txt) and they do not overlap. Nothing consumed the wrong fields: this class's two methods are cross-overlay veneers that pass
 `this` and a table pointer and touch no member at all.
 
 The general rule: **pair a class to its factory by vtable address, never by
@@ -372,18 +373,19 @@ not derive from `dBgActor_c`; it derives from `daObjDorifu_c`, which does. The
 destructor stores three vptrs and destroys `daObjDorifu_c`'s `Model[5]` and
 `dBgW_KcMbg[5]` in between, all of it from the base declaration.
 
-    _ZTI17daObjKm3_Dorifu_c  ov047 0x021124cc
-    _ZTS17daObjKm3_Dorifu_c  ov047 0x021124d8
-    _ZTV17daObjKm3_Dorifu_c ov047 0x0211254c   (its record sits at V-4)
-    kind  __si_class_type_info, ONE base, offset 0
-    base  daObjDorifu_c, ov002 0x02108d70
+| offset | overlay | evidence |
+|---|---|---|
+  |`_ZTI17daObjKm3_Dorifu_c`  |[ov047](../config/arm9/overlays/ov047/symbols.txt)| 0x021124cc|
+  |`_ZTS17daObjKm3_Dorifu_c`  |[ov047](../config/arm9/overlays/ov047/symbols.txt)| 0x021124d8|
+  |`_ZTV17daObjKm3_Dorifu_c` |[ov047](../config/arm9/overlays/ov047/symbols.txt)| 0x0211254c|   (its record sits at V-4)|
+  |kind  `__si_class_type_info`,| |ONE base, offset 0|
+  |base  daObjDorifu_c, |[ov002](../config/arm9/overlays/ov002/symbols.txt)| 0x02108d70|
 
 **The tree's "Bs" names are crossed**, and the header does not try to fix it. The
 factory that builds *this* class is `StairsBs_Spawn` (0xdcc, this class's
-vtable), mirroring `daObjKm1_Dorifu_c_classInit` in ov043. The function called
+vtable), mirroring `daObjKm1_Dorifu_c_classInit` in [ov043](../config/arm9/overlays/ov043/symbols.txt). The function called
 `daObjKm3_Dorifu_c_Spawn` builds something else — 800 = 0x320,
-`daObjKuruma_c`'s vtable then ov047 0x0211244c, which is `daObjKm3_Kuruma_c`, a
-class the tree has never named. Untangling the two names is a config change and
+`daObjKuruma_c`'s vtable then [ov047](../config/arm9/overlays/ov047/symbols.txt) 0x0211244c, which is `daObjKm3_Kuruma_c`, a class the tree has never named. Untangling the two names is a config change and
 belongs in its own piece of work; the class modelled here is the one the vtable
 symbol names.
 
@@ -426,10 +428,10 @@ still builds 106/106.
 
 | function | module / range | what changed |
 |---|---|---|
-| `SlidingPlatformWf::InitResources` | ov091 0x021325d4 +0x214 | `*(u8 *)(c+0x322)` → `mVariant` throughout, `c+0x320` → `mMoveTimer`, `c+0x324..0x32c` → `mBasePos{X,Y,Z}` |
-| `RotatingUpDownPlatform::Behavior` | ov091 0x02132108 +0x104 | `s+0x320` → `mState`, `s+0x354` → `mStateTimer`, `s+0x352` → `mVariant`, `s+0x356` → `mIsPressed`, `s+0x34c` → `mSinkOffsetY`; the two sink magic numbers become `cSinkDepth` / `cSinkRate` |
-| `RotatingUpDownPlatform::InitResources` | ov091 0x0213220c +0x154 | `this+0x344` → `&mPathPtr`, `this+0x338` → `&mTargetPosX`, `this+0x32c` → `&mBasePosX` |
-| `UpDownLiftBbh::InitResources` and `::Behavior` | ov095 0x021365d8 +0x18c, 0x021364d8 +0x100 | the `*((int *)((char *)&mTopY))` cast wrappers drop away now that the fields are `s32`; `this+0x344` and `(&unk_300)+0x44` both become `mStateTimer` |
+| `SlidingPlatformWf::InitResources` | [ov091](../config/arm9/overlays/ov091/symbols.txt) 0x021325d4 +0x214 | `*(u8 *)(c+0x322)` → `mVariant` throughout, `c+0x320` → `mMoveTimer`, `c+0x324..0x32c` → `mBasePos{X,Y,Z}` |
+| `RotatingUpDownPlatform::Behavior` | [ov091](../config/arm9/overlays/ov091/symbols.txt) 0x02132108 +0x104 | `s+0x320` → `mState`, `s+0x354` → `mStateTimer`, `s+0x352` → `mVariant`, `s+0x356` → `mIsPressed`, `s+0x34c` → `mSinkOffsetY`; the two sink magic numbers become `cSinkDepth` / `cSinkRate` |
+| `RotatingUpDownPlatform::InitResources` | [ov091](../config/arm9/overlays/ov091/symbols.txt) 0x0213220c +0x154 | `this+0x344` → `&mPathPtr`, `this+0x338` → `&mTargetPosX`, `this+0x32c` → `&mBasePosX` |
+| `UpDownLiftBbh::InitResources` and `::Behavior` | [ov095](../config/arm9/overlays/ov095/symbols.txt) 0x021365d8 +0x18c, 0x021364d8 +0x100 | the `*((int *)((char *)&mTopY))` cast wrappers drop away now that the fields are `s32`; `this+0x344` and `(&unk_300)+0x44` both become `mStateTimer` |
 
 One thing that did NOT hold: `*(int *)(s + 0x60) -= mSinkOffsetY;` in
 `RotatingUpDownPlatform::Behavior` is followed by `mPosY = saved;`, so the
