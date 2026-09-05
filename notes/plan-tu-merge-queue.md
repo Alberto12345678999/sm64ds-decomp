@@ -67,8 +67,8 @@ it lose it. Both directions are live. Affected Tier 1:
 
 * **All 100 Tier-1 TUs: zero missing, zero incomplete**, map function count == census
   file count exactly. The Tier-1 pool is genuinely clean.
-* 3 Tier-2 TUs hide a blocker: [ov063](../config/arm9/overlays/ov063/symbols.txt)`/Bookshelf+MansionSteps+MerryGoRound+TrapDoor`
-  (`_ZN12MansionSteps13InitResourcesEv` has no source), [ov009](../config/arm9/overlays/ov009/symbols.txt)`/Bird`, [ov055](../config/arm9/overlays/ov055/symbols.txt)`/MirrorLuigi`.
+* 3 Tier-2 TUs hide a blocker: [ov063](../config/arm9/overlays/ov063/symbols.txt)/`Bookshelf+MansionSteps+MerryGoRound+TrapDoor`
+  (`_ZN12MansionSteps13InitResourcesEv` has no source), [ov009](../config/arm9/overlays/ov009/symbols.txt)/`Bird`, [ov055](../config/arm9/overlays/ov055/symbols.txt)/`MirrorLuigi`.
 * Same failure inflates §6 below.
 
 Two clean confirmations: cross-joining the C++ census's blocker tags against the safe
@@ -120,57 +120,57 @@ unavailable, not failed). `pcov` = how many of the TU's `.c` members the C++ cen
 independently proved C++.
 
 **B0 — calibration / regression control (no new source).**
-[ov045](../config/arm9/overlays/ov045/symbols.txt)`/PoleLift` (7 files), [ov045](../config/arm9/overlays/ov045/symbols.txt)`/daObjKm2_Fall_Block_c` (5 files), both already `text-verified`.
+[ov045](../config/arm9/overlays/ov045/symbols.txt)/`PoleLift` (7 files), [ov045](../config/arm9/overlays/ov045/symbols.txt)/`daObjKm2_Fall_Block_c` (5 files), both already `text-verified`.
 Re-run `compile` + `verify` only. Proves the pinned toolchain, the ROM dump and the
 serial-build assumption reproduce a *known-green* transcript before a real pilot is
 spent. **Run first; 10 minutes, and it de-risks every later "is it me or is it the TU?"**
 
 **B1 — R0, [ov002](../config/arm9/overlays/ov002/symbols.txt) + [ov006](../config/arm9/overlays/ov006/symbols.txt) · 10 TUs / 59 files / net −49 / 1,011 lines**
-| TU | Address | Files | Lines | Description | Status |
-|----|---------|-------|-------|-------------|--------|
-|[ov002](../config/arm9/overlays/ov002/symbols.txt)| 0x20b05d0|  n=8|  L=126|  InvisiblePole|            uncorrob|
-|[ov002](../config/arm9/overlays/ov002/symbols.txt)| 0x20b0748|  n=8|  L=111|  daCamTag_c|                uncorrob||
-|[ov002](../config/arm9/overlays/ov002/symbols.txt)| 0x20b07f8|  n=8|  L=121|  daChRoom_c|              uncorrob|
-|[ov002](../config/arm9/overlays/ov002/symbols.txt)| 0x20b5734|  n=7|  L=164|  BlueFlame|                uncorrob|
-|[ov002](../config/arm9/overlays/ov002/symbols.txt)| 0x20b6e08|  n=5|  L=67|   WaterfallMist|            uncorrob|
-|[ov002](../config/arm9/overlays/ov002/symbols.txt)| 0x20ec388|  n=8|  L=148|  daWarpkun_c|             uncorrob|
-|[ov002](../config/arm9/overlays/ov002/symbols.txt)| 0x20f0dd0|  n=8|  L=176|  OneUpLogo|                uncorrob|
-|[ov006](../config/arm9/overlays/ov006/symbols.txt)| 0x20dbd54|  n=3|  L=36|   MgPicturePoker|           uncorrob|
-|[ov006](../config/arm9/overlays/ov006/symbols.txt)| 0x20fa6ac|  n=2|  L=30|   MgPairAGoneAndOn|         uncorrob|
-|[ov006](../config/arm9/overlays/ov006/symbols.txt)| 0x210a400|  n=2|  L=32|   MgMushroomRoulette|       uncorrob|
+| TU | Address | Files | Description | Status |
+|----|---------|-------|-------------|--------|
+|[ov002](../config/arm9/overlays/ov002/symbols.txt)| 0x20b05d0|  n=8|   `InvisiblePole`|            uncorrob|
+|[ov002](../config/arm9/overlays/ov002/symbols.txt)| 0x20b0748|  n=8|   `daCamTag_c`|                uncorrob||
+|[ov002](../config/arm9/overlays/ov002/symbols.txt)| 0x20b07f8|  n=8|   `daChRoom_c`|              uncorrob|
+|[ov002](../config/arm9/overlays/ov002/symbols.txt)| 0x20b5734|  n=7|   `BlueFlame`|                uncorrob|
+|[ov002](../config/arm9/overlays/ov002/symbols.txt)| 0x20b6e08|  n=5|   `WaterfallMist`|            uncorrob|
+|[ov002](../config/arm9/overlays/ov002/symbols.txt)| 0x20ec388|  n=8|   `daWarpkun_c`|             uncorrob|
+|[ov002](../config/arm9/overlays/ov002/symbols.txt)| 0x20f0dd0|  n=8|   `OneUpLogo`|                uncorrob|
+|[ov006](../config/arm9/overlays/ov006/symbols.txt)| 0x20dbd54|  n=3|   `MgPicturePoker`|           uncorrob|
+|[ov006](../config/arm9/overlays/ov006/symbols.txt)| 0x20fa6ac|  n=2|   `MgPairAGoneAndOn`|         uncorrob|
+|[ov006](../config/arm9/overlays/ov006/symbols.txt)| 0x210a400|  n=2|   `MgMushroomRoulette`|       uncorrob|
 
 All seven [ov002](../config/arm9/overlays/ov002/symbols.txt) entries are high/high, which after §0.3 is the confidence floor to trust
 in that module. The three [ov006](../config/arm9/overlays/ov006/symbols.txt) minigame TUs are 2–3 files with **zero includes** — the
 cheapest possible probe of post-regeneration [ov006](../config/arm9/overlays/ov006/symbols.txt).
 
 **B2 — R0, one TU per module · 10 TUs / 69 files / net −59 / 1,356 lines**
-| TU | Address | Files | Lines | Description | Status |
-|----|---------|-------|-------|-------------|--------|
-|[ov009](../config/arm9/overlays/ov009/symbols.txt)| 0x2112078|  n=7|  L=116|  daMcFlag_c|               pcov=2|
-|[ov012](../config/arm9/overlays/ov012/symbols.txt)| 0x21111a0|  n=8|  L=175|  daObjC0_Switch_c|
-|[ov013](../config/arm9/overlays/ov013/symbols.txt)| 0x21113bc|  n=8|  L=153|  ClockPaintingHandShort|   uncorrob|
-|[ov014](../config/arm9/overlays/ov014/symbols.txt)| 0x2112e0c|  n=8|  L=197|  daObjWanwanShutter_c|
-|[ov015](../config/arm9/overlays/ov015/symbols.txt)| 0x21111a0|  n=7|  L=106|  daObjBkBillboard_c|            uncorrob||
-|[ov018](../config/arm9/overlays/ov018/symbols.txt)| 0x21126d4|  n=4|  L=60|  daSCre_c|                 uncorrob|
-|[ov019](../config/arm9/overlays/ov019/symbols.txt)| 0x211261c|  n=5|  L=93|  daSldMng_c|
-|[ov021](../config/arm9/overlays/ov021/symbols.txt)| 0x2112db4|  n=6|  L=105|  daObjCvShutter_c|
-|[ov022](../config/arm9/overlays/ov022/symbols.txt)| 0x2111980|  n=8|  L=181|  LavaBridge|               uncorrob|
-|[ov022](../config/arm9/overlays/ov022/symbols.txt)| 0x2111cac|  n=8|  L=170|  LavaSeesaw|               uncorrob|
+| TU | Address | Files | Description | Status |
+|----|---------|-------|-------------|--------|
+|[ov009](../config/arm9/overlays/ov009/symbols.txt)| 0x2112078|  n=7|    `daMcFlag_c`|               pcov=2|
+|[ov012](../config/arm9/overlays/ov012/symbols.txt)| 0x21111a0|  n=8|    `daObjC0_Switch_c`|
+|[ov013](../config/arm9/overlays/ov013/symbols.txt)| 0x21113bc|  n=8|    `ClockPaintingHandShort`|   uncorrob|
+|[ov014](../config/arm9/overlays/ov014/symbols.txt)| 0x2112e0c|  n=8|    `daObjWanwanShutter_c`|
+|[ov015](../config/arm9/overlays/ov015/symbols.txt)| 0x21111a0|  n=7|    `daObjBkBillboard_c`|            uncorrob||
+|[ov018](../config/arm9/overlays/ov018/symbols.txt)| 0x21126d4|  n=4|   `daSCre_c`|                 uncorrob|
+|[ov019](../config/arm9/overlays/ov019/symbols.txt)| 0x211261c|  n=5|   `daSldMng_c`|
+|[ov021](../config/arm9/overlays/ov021/symbols.txt)| 0x2112db4|  n=6|    `daObjCvShutter_c`|
+|[ov022](../config/arm9/overlays/ov022/symbols.txt)| 0x2111980|  n=8|    `LavaBridge`|               uncorrob|
+|[ov022](../config/arm9/overlays/ov022/symbols.txt)| 0x2111cac|  n=8|    `LavaSeesaw`|               uncorrob|
 
 
 **B3 — R0 · 10 TUs / 53 files / net −43 / 1,076 lines**
-| TU | Address | Files | Lines | Description | Status |
-|----|---------|-------|-------|-------------|--------|
-|[ov022](../config/arm9/overlays/ov022/symbols.txt)| 0x2111f6c|  n=5|  L=86|   FloatingFloorLllSmall|            pcov=3|
-|[ov022](../config/arm9/overlays/ov022/symbols.txt)| 0x2112380|  n=4|  L=60|   daObjFl_Fall_Block_c|             pcov=2|
-|[ov022](../config/arm9/overlays/ov022/symbols.txt)| 0x2112498|  n=6|  L=100|  RollingLogLll|
-|[ov026](../config/arm9/overlays/ov026/symbols.txt)| 0x21118b8|  n=6|  L=115|  Submarine|
-|[ov029](../config/arm9/overlays/ov029/symbols.txt)| 0x21111a0|  n=4|  L=135|  daObjWcObj01_c|
-|[ov029](../config/arm9/overlays/ov029/symbols.txt)| 0x2111ea4|  n=4|  L=124|  daObjWcObj06_c|
-|[ov036](../config/arm9/overlays/ov036/symbols.txt)| 0x2111580|  n=8|  L=146|  daObjRc_Hane_c|
-|[ov036](../config/arm9/overlays/ov036/symbols.txt)| 0x2111d14|  n=7|  L=155|  daObjRc_Guruguru_c|
-|[ov036](../config/arm9/overlays/ov036/symbols.txt)| 0x2111f8c|  n=4|  L=75|   daObjRc_Dorifu_c|
-|[ov043](../config/arm9/overlays/ov043/symbols.txt)| 0x2111518|  n=5|  L=80|   daObjKm1_Kuruma_c|              pcov=3|
+| TU | Address | Files | Description | Status |
+|----|---------|-------|-------------|--------|
+|[ov022](../config/arm9/overlays/ov022/symbols.txt)| 0x2111f6c|  n=5|    `FloatingFloorLllSmall`|            pcov=3|
+|[ov022](../config/arm9/overlays/ov022/symbols.txt)| 0x2112380|  n=4|    `daObjFl_Fall_Block_c`|             pcov=2|
+|[ov022](../config/arm9/overlays/ov022/symbols.txt)| 0x2112498|  n=6|    `RollingLogLll`|
+|[ov026](../config/arm9/overlays/ov026/symbols.txt)| 0x21118b8|  n=6|    `Submarine`|
+|[ov029](../config/arm9/overlays/ov029/symbols.txt)| 0x21111a0|  n=4|    `daObjWcObj01_c`|
+|[ov029](../config/arm9/overlays/ov029/symbols.txt)| 0x2111ea4|  n=4|    `daObjWcObj06_c`|
+|[ov036](../config/arm9/overlays/ov036/symbols.txt)| 0x2111580|  n=8|    `daObjRc_Hane_c`|
+|[ov036](../config/arm9/overlays/ov036/symbols.txt)| 0x2111d14|  n=7|    `daObjRc_Guruguru_c`|
+|[ov036](../config/arm9/overlays/ov036/symbols.txt)| 0x2111f8c|  n=4|    `daObjRc_Dorifu_c`|
+|[ov043](../config/arm9/overlays/ov043/symbols.txt)| 0x2111518|  n=5|    `daObjKm1_Kuruma_c`|              pcov=3|
 
 `daObjWcObj01_c` and `daObjWcObj06_c` — the Wdw square and rectangle floating
 platforms, coined `FloatOnWaterPlatformWdwSquare`/`...Rectangle` before the
@@ -178,120 +178,120 @@ cartridge's own names were adopted — are adjacent and near-identical, so this
 batch is where shape-family amortization first pays.
 
 **B4 — R0 tail · 7 TUs / 37 files / net −30 / 726 lines**
-| TU | Address | Files | Lines | Description | Status |
-|----|---------|-------|-------|-------------|--------|
-|[ov043](../config/arm9/overlays/ov043/symbols.txt)| 0x2111630|  n=4|  L=75|   daObjKm1_Dorifu_c|
-|[ov044](../config/arm9/overlays/ov044/symbols.txt)| 0x21111a0|  n=7|  L=88|   OrangeBallBillboard|   WHOLEMOD (module-edge both ends, corroborated)|
-|[ov045](../config/arm9/overlays/ov045/symbols.txt)| 0x2111b14|  n=5|  L=99|   FloatingFloorBfs|
-|[ov045](../config/arm9/overlays/ov045/symbols.txt)| 0x2111c30|  n=5|  L=74|   TiltingPlatformBfs|    pcov=3|
-|[ov047](../config/arm9/overlays/ov047/symbols.txt)| 0x21111a0|  n=4|  L=68|   daObjKm3_Kurumajiku_c| pcov=2|
-|[ov047](../config/arm9/overlays/ov047/symbols.txt)| 0x21114d4|  n=5|  L=96|   daObjKm3_Dorifu_c|
-|[ov085](../config/arm9/overlays/ov085/symbols.txt)| 0x212edac|  n=7|  L=226|  WallSign|
+| TU | Address | Files | Description | Status |
+|----|---------|-------|-------------|--------|
+|[ov043](../config/arm9/overlays/ov043/symbols.txt)| 0x2111630|  n=4|   `daObjKm1_Dorifu_c`|
+|[ov044](../config/arm9/overlays/ov044/symbols.txt)| 0x21111a0|  n=7|   `OrangeBallBillboard`|   WHOLEMOD (module-edge both ends, corroborated)|
+|[ov045](../config/arm9/overlays/ov045/symbols.txt)| 0x2111b14|  n=5|   `FloatingFloorBfs`|
+|[ov045](../config/arm9/overlays/ov045/symbols.txt)| 0x2111c30|  n=5|   `TiltingPlatformBfs`|    pcov=3|
+|[ov047](../config/arm9/overlays/ov047/symbols.txt)| 0x21111a0|  n=4|   `daObjKm3_Kurumajiku_c`| pcov=2|
+|[ov047](../config/arm9/overlays/ov047/symbols.txt)| 0x21114d4|  n=5|   `daObjKm3_Dorifu_c`|
+|[ov085](../config/arm9/overlays/ov085/symbols.txt)| 0x212edac|  n=7|   `WallSign`|
 
 B4 completes [ov045](../config/arm9/overlays/ov045/symbols.txt): with B0's two, all four [ov045](../config/arm9/overlays/ov045/symbols.txt) safe TUs are done, making ov045 the
 first module where a `config_tu/` conversion becomes conceivable.
 
 **B5 — R1, ov002/ov006 conflicts · 6 TUs / 44 files / net −38 / 1,361 lines**
-| TU | Address | Files | Lines | Description | Status |
-|----|---------|-------|-------|-------------|--------|
-|[ov002](../config/arm9/overlays/ov002/symbols.txt)| 0x20b09b0|  n=9|  L=338|  daChScene_c|                   CONF1|
-|[ov002](../config/arm9/overlays/ov002/symbols.txt)| 0x20b46a0|  n=8|  L=189|  MegaMushroomCreateTag|  CONF1 pcov=5|
-|[ov002](../config/arm9/overlays/ov002/symbols.txt)| 0x20bc5e0|  n=8|  L=175|  HealingHeart|          CONF1 pcov=4|
-|[ov002](../config/arm9/overlays/ov002/symbols.txt)| 0x20f0894|  n=8|  L=258|  Number|                 CONF1|
-|[ov002](../config/arm9/overlays/ov002/symbols.txt)| 0x20f11b0|  n=9|  L=322|  daObjBC_Switch_c|         CONF2|
-|[ov006](../config/arm9/overlays/ov006/symbols.txt)| 0x212471c|  n=2|  L=79|   MgTrampolineTerror|     CONF1|
+| TU | Address | Files | Description | Status |
+|----|---------|-------|-------------|--------|
+|[ov002](../config/arm9/overlays/ov002/symbols.txt)| 0x20b09b0|  n=9|   `daChScene_c`|                   CONF1|
+|[ov002](../config/arm9/overlays/ov002/symbols.txt)| 0x20b46a0|  n=8|   `MegaMushroomCreateTag`|  CONF1 pcov=5|
+|[ov002](../config/arm9/overlays/ov002/symbols.txt)| 0x20bc5e0|  n=8|   `HealingHeart`|          CONF1 pcov=4|
+|[ov002](../config/arm9/overlays/ov002/symbols.txt)| 0x20f0894|  n=8|   `Number`|                 CONF1|
+|[ov002](../config/arm9/overlays/ov002/symbols.txt)| 0x20f11b0|  n=9|   `daObjBC_Switch_c`|         CONF2|
+|[ov006](../config/arm9/overlays/ov006/symbols.txt)| 0x212471c|  n=2|   `MgTrampolineTerror`|     CONF1|
 
 
 **B6 — R1 · 7 TUs / 54 files / net −47 / 1,283 lines**
-| TU | Address | Files | Lines | Description | Status |
-|----|---------|-------|-------|-------------|--------|
-|[ov009](../config/arm9/overlays/ov009/symbols.txt)| 0x2111a70|  n=8|  L=247|  daObjMcWater_c|      CONF1|
-|[ov009](../config/arm9/overlays/ov009/symbols.txt)| 0x2111dc4|  n=8|  L=163|  daObjMc_Metalnet_c|         CONF2 pcov=2|
-|[ov010](../config/arm9/overlays/ov010/symbols.txt)| 0x21119d0|  n=8|  L=233|  LightBeam|        CONF1 pcov=3|
-|[ov010](../config/arm9/overlays/ov010/symbols.txt)| 0x2111e10|  n=8|  L=148|  PeachPainting|    CONF1 pcov=3|
-|[ov012](../config/arm9/overlays/ov012/symbols.txt)| 0x2111450|  n=7|  L=164|  BasementWater|    CONF2|
-|[ov015](../config/arm9/overlays/ov015/symbols.txt)| 0x2112944|  n=7|  L=143|  daObjBk_Rotebar_c|   CONF2|
-|[ov016](../config/arm9/overlays/ov016/symbols.txt)| 0x211260c|  n=8|  L=185|  ShipUp|           CONF1|
+| TU | Address | Files | Description | Status |
+|----|---------|-------|-------------|--------|
+|[ov009](../config/arm9/overlays/ov009/symbols.txt)| 0x2111a70|  n=8|   `daObjMcWater_c`|      CONF1|
+|[ov009](../config/arm9/overlays/ov009/symbols.txt)| 0x2111dc4|  n=8|   `daObjMc_Metalnet_c`|         CONF2 pcov=2|
+|[ov010](../config/arm9/overlays/ov010/symbols.txt)| 0x21119d0|  n=8|   `LightBeam`|        CONF1 pcov=3|
+|[ov010](../config/arm9/overlays/ov010/symbols.txt)| 0x2111e10|  n=8|   `PeachPainting`|    CONF1 pcov=3|
+|[ov012](../config/arm9/overlays/ov012/symbols.txt)| 0x2111450|  n=7|   `BasementWater`|    CONF2|
+|[ov015](../config/arm9/overlays/ov015/symbols.txt)| 0x2112944|  n=7|   `daObjBk_Rotebar_c`|   CONF2|
+|[ov016](../config/arm9/overlays/ov016/symbols.txt)| 0x211260c|  n=8|   `ShipUp`|           CONF1|
 
 
 **B7 — R1 · 8 TUs / 63 files / net −55 / 1,440 lines**
-| TU | Address | Files | Lines | Description | Status |
-|----|---------|-------|-------|-------------|--------|
-|[ov016](../config/arm9/overlays/ov016/symbols.txt)| 0x2112ff8|  n=8|  L=233|  SlidingBox|           CONF2 pcov=3|
-|[ov017](../config/arm9/overlays/ov017/symbols.txt)| 0x21111a0|  n=7|  L=159|  daObjKsWater_c|            CONF2 WHOLEMOD pcov=2|
-|[ov022](../config/arm9/overlays/ov022/symbols.txt)| 0x21111a0|  n=9|  L=240|  VolcanoRing|          CONF1|
-|[ov022](../config/arm9/overlays/ov022/symbols.txt)| 0x21116c4|  n=9|  L=160|  FloatOnLavaPlatform|  CONF2|
-|[ov022](../config/arm9/overlays/ov022/symbols.txt)| 0x2112130|  n=7|  L=135|  LavaPlank|            CONF2|
-|[ov025](../config/arm9/overlays/ov025/symbols.txt)| 0x2111d40|  n=9|  L=203|  PyramidStep|          CONF1|
-|[ov032](../config/arm9/overlays/ov032/symbols.txt)| 0x2112698|  n=7|  L=155|  daObjTdWater_c|            CONF2|
-|[ov033](../config/arm9/overlays/ov033/symbols.txt)| 0x21113d4|  n=7|  L=155|  TinyWater|            CONF3 pcov=2|
+| TU | Address | Files | Description | Status |
+|----|---------|-------|-------------|--------|
+|[ov016](../config/arm9/overlays/ov016/symbols.txt)| 0x2112ff8|  n=8|   `SlidingBox`|           CONF2 pcov=3|
+|[ov017](../config/arm9/overlays/ov017/symbols.txt)| 0x21111a0|  n=7|   `daObjKsWater_c`|            CONF2 WHOLEMOD pcov=2|
+|[ov022](../config/arm9/overlays/ov022/symbols.txt)| 0x21111a0|  n=9|   `VolcanoRing`|          CONF1|
+|[ov022](../config/arm9/overlays/ov022/symbols.txt)| 0x21116c4|  n=9|   `FloatOnLavaPlatform`|  CONF2|
+|[ov022](../config/arm9/overlays/ov022/symbols.txt)| 0x2112130|  n=7|   `LavaPlank`|            CONF2|
+|[ov025](../config/arm9/overlays/ov025/symbols.txt)| 0x2111d40|  n=9|   `PyramidStep`|          CONF1|
+|[ov032](../config/arm9/overlays/ov032/symbols.txt)| 0x2112698|  n=7|   `daObjTdWater_c`|            CONF2|
+|[ov033](../config/arm9/overlays/ov033/symbols.txt)| 0x21113d4|  n=7|   `TinyWater`|            CONF3 pcov=2|
 
 
 **B8 — R1 · 7 TUs / 50 files / net −43 / 1,286 lines**
-| TU | Address | Files | Lines | Description | Status |
-|----|---------|-------|-------|-------------|--------|
-|[ov036](../config/arm9/overlays/ov036/symbols.txt)| 0x21111a0|  n=8|  L=163|  daObjRcBuranko_c|   CONF1|
-|[ov043](../config/arm9/overlays/ov043/symbols.txt)| 0x21113fc|  n=5|  L=107|  RickshawBdw|       CONF1|
-|[ov052](../config/arm9/overlays/ov052/symbols.txt)| 0x21111a0|  n=7|  L=158|  daObjEmmLog_c|      CONF3 WHOLEMOD pcov=3 (1 distinct include)|
-|[ov052](../config/arm9/overlays/ov052/symbols.txt)| 0x2111440|  n=7|  L=190|  SquarePathLift|     CONF2|
-|[ov056](../config/arm9/overlays/ov056/symbols.txt)| 0x21111a0|  n=7|  L=216|  BigMovingIceBlock|  CONF2 WHOLEMOD pcov=2|
-|[ov062](../config/arm9/overlays/ov062/symbols.txt)| 0x211af38|  n=8|  L=188|  KoopaFlag|          CONF2 pcov=3|
-|[ov064](../config/arm9/overlays/ov064/symbols.txt)| 0x211a930|  n=8|  L=264|  Clam|               CONF1|
+| TU | Address | Files | Description | Status |
+|----|---------|-------|-------------|--------|
+|[ov036](../config/arm9/overlays/ov036/symbols.txt)| 0x21111a0|  n=8|   `daObjRcBuranko_c`|   CONF1|
+|[ov043](../config/arm9/overlays/ov043/symbols.txt)| 0x21113fc|  n=5|   `RickshawBdw`|       CONF1|
+|[ov052](../config/arm9/overlays/ov052/symbols.txt)| 0x21111a0|  n=7|   `daObjEmmLog_c`|      CONF3 WHOLEMOD pcov=3 (1 distinct include)|
+|[ov052](../config/arm9/overlays/ov052/symbols.txt)| 0x2111440|  n=7|   `SquarePathLift`|     CONF2|
+|[ov056](../config/arm9/overlays/ov056/symbols.txt)| 0x21111a0|  n=7|   `BigMovingIceBlock`|  CONF2 WHOLEMOD pcov=2|
+|[ov062](../config/arm9/overlays/ov062/symbols.txt)| 0x211af38|  n=8|   `KoopaFlag`|          CONF2 pcov=3|
+|[ov064](../config/arm9/overlays/ov064/symbols.txt)| 0x211a930|  n=8|   `Clam`|               CONF1|
 
 
 **B9 — R1 tail, largest bodies · 5 TUs / 41 files / net −36 / 1,341 lines**
-| TU | Address | Files | Lines | Description | Status |
-|----|---------|-------|-------|-------------|--------|
-|[ov065](../config/arm9/overlays/ov065/symbols.txt)| 0x211ab60|  n=8|  L=370|  daObjCtMecha05_c|   CONF3|
-|[ov065](../config/arm9/overlays/ov065/symbols.txt)| 0x211b328|  n=8|  L=253|  TTC_MovingBar|      CONF2|
-|[ov079](../config/arm9/overlays/ov079/symbols.txt)| 0x2126dbc|  n=9|  L=280|  BillBlaster|        CONF2|
-|[ov079](../config/arm9/overlays/ov079/symbols.txt)| 0x21271e4|  n=9|  L=252|  FortressWall|       CONF1|
-|[ov091](../config/arm9/overlays/ov091/symbols.txt)| 0x2132404|  n=7|  L=186|  SlidingPlatformWf|  CONF2|
+| TU | Address | Files | Description | Status |
+|----|---------|-------|-------------|--------|
+|[ov065](../config/arm9/overlays/ov065/symbols.txt)| 0x211ab60|  n=8|   `daObjCtMecha05_c`|   CONF3|
+|[ov065](../config/arm9/overlays/ov065/symbols.txt)| 0x211b328|  n=8|   `TTC_MovingBar`|      CONF2|
+|[ov079](../config/arm9/overlays/ov079/symbols.txt)| 0x2126dbc|  n=9|   `BillBlaster`|        CONF2|
+|[ov079](../config/arm9/overlays/ov079/symbols.txt)| 0x21271e4|  n=9|   `FortressWall`|       CONF1|
+|[ov091](../config/arm9/overlays/ov091/symbols.txt)| 0x2132404|  n=7|   `SlidingPlatformWf`|  CONF2|
 
 
 **B10 — R2, normalizer required · 9 TUs / 60 files / net −51 / 1,416 lines**
-| TU | Address | Files | Lines | Description | Status |
-|----|---------|-------|-------|-------------|--------|
-|[ov002](../config/arm9/overlays/ov002/symbols.txt)| 0x20b3298|  n=7|  L=164|  daObjAbuku_c|           NORM2|
-|[ov002](../config/arm9/overlays/ov002/symbols.txt)| 0x20bc414|  n=8|  L=130|  daObjWakame_c|                NORM1|
-|[ov002](../config/arm9/overlays/ov002/symbols.txt)| 0x20ebf8c|  n=8|  L=228|  daTree_c|               NORM4|
-|[ov006](../config/arm9/overlays/ov006/symbols.txt)| 0x20ede18|  n=2|  L=30|  MgWhichWiggler|         NORM1|
-|[ov006](../config/arm9/overlays/ov006/symbols.txt)| 0x2119824|  n=2|  L=29|  MgBingoBallSlotsShot|   NORM1|
-|[ov013](../config/arm9/overlays/ov013/symbols.txt)| 0x21111a0|  n=8|  L=150|  daObjClockHuriko_c|  NORM1 pcov=4|
-|[ov027](../config/arm9/overlays/ov027/symbols.txt)| 0x21111a0|  n=8|  L=204|  SlidingIce|             NORM1|
-|[ov029](../config/arm9/overlays/ov029/symbols.txt)| 0x21121a4|  n=9|  L=245|  daObjWc_Mizu_c|              NORM1|
-|[ov030](../config/arm9/overlays/ov030/symbols.txt)| 0x21111a0|  n=8|  L=236|  daObjHmBskt_c|              NORM2 pcov=2|
+| TU | Address | Files | Description | Status |
+|----|---------|-------|-------------|--------|
+|[ov002](../config/arm9/overlays/ov002/symbols.txt)| 0x20b3298|  n=7|   `daObjAbuku_c`|           NORM2|
+|[ov002](../config/arm9/overlays/ov002/symbols.txt)| 0x20bc414|  n=8|   `daObjWakame_c`|                NORM1|
+|[ov002](../config/arm9/overlays/ov002/symbols.txt)| 0x20ebf8c|  n=8|   `daTree_c`|               NORM4|
+|[ov006](../config/arm9/overlays/ov006/symbols.txt)| 0x20ede18|  n=2|  `MgWhichWiggler`|         NORM1|
+|[ov006](../config/arm9/overlays/ov006/symbols.txt)| 0x2119824|  n=2|  `MgBingoBallSlotsShot`|   NORM1|
+|[ov013](../config/arm9/overlays/ov013/symbols.txt)| 0x21111a0|  n=8|   `daObjClockHuriko_c`|  NORM1 pcov=4|
+|[ov027](../config/arm9/overlays/ov027/symbols.txt)| 0x21111a0|  n=8|   `SlidingIce`|             NORM1|
+|[ov029](../config/arm9/overlays/ov029/symbols.txt)| 0x21121a4|  n=9|   `daObjWc_Mizu_c`|              NORM1|
+|[ov030](../config/arm9/overlays/ov030/symbols.txt)| 0x21111a0|  n=8|   `daObjHmBskt_c`|              NORM2 pcov=2|
 
 
 **B11 — R2 tail · 4 TUs / 32 files / net −28 / 759 lines**
-| TU | Address | Files | Lines | Description | Status |
-|----|---------|-------|-------|-------------|--------|
-|[ov033](../config/arm9/overlays/ov033/symbols.txt)| 0x21111a0|  n=8|  L=151|  TinyCover|        NORM1|
-|[ov043](../config/arm9/overlays/ov043/symbols.txt)| 0x21111a0|  n=7|  L=145|  daObjKm1_Ukishima_c|      NORM1|
-|[ov045](../config/arm9/overlays/ov045/symbols.txt)| 0x21111a0|  n=9|  L=200|  FireSeaElevator|  NORM1 CONF2|
-|[ov064](../config/arm9/overlays/ov064/symbols.txt)| 0x21174a0|  n=8|  L=263|  BigBully|         NORM1 pcov=2|
+| TU | Address | Files | Description | Status |
+|----|---------|-------|-------------|--------|
+|[ov033](../config/arm9/overlays/ov033/symbols.txt)| 0x21111a0|  n=8|   `TinyCover`|        NORM1|
+|[ov043](../config/arm9/overlays/ov043/symbols.txt)| 0x21111a0|  n=7|   `daObjKm1_Ukishima_c`|      NORM1|
+|[ov045](../config/arm9/overlays/ov045/symbols.txt)| 0x21111a0|  n=9|   `FireSeaElevator`|  NORM1 CONF2|
+|[ov064](../config/arm9/overlays/ov064/symbols.txt)| 0x21174a0|  n=8|   `BigBully`|         NORM1 pcov=2|
 
 
 **B12 — R3, `#pragma long_calls on` · 10 TUs / 59 files / net −49 / 1,265 lines**
-| TU | Address | Files | Lines | Description | Status |
-|----|---------|-------|-------|-------------|--------|
-|[ov014](../config/arm9/overlays/ov014/symbols.txt)| 0x21111a0|  n=6|  L=133|  daObjBSwdoor_c|               1/6 members|
-|[ov015](../config/arm9/overlays/ov015/symbols.txt)| 0x2112bd0|  n=5|  L=105|  daObjBk_Ukisima_c|       1/5|
-|[ov015](../config/arm9/overlays/ov015/symbols.txt)| 0x2112cf4|  n=5|  L=80|   daObjBk_Fall_Block_c|              2/5  pcov=3|
-|[ov016](../config/arm9/overlays/ov016/symbols.txt)| 0x2112ef4|  n=4|  L=82|   FloatOnWaterPlatformJrb|  1/4|
-|[ov022](../config/arm9/overlays/ov022/symbols.txt)| 0x21115a8|  n=5|  L=106|  RotatingPlatformLll|      1/5|
-|[ov029](../config/arm9/overlays/ov029/symbols.txt)| 0x211137c|  n=9|  L=243|  daObjWc_Obj02_c|                1/9  CONF2|
-|[ov029](../config/arm9/overlays/ov029/symbols.txt)| 0x2111ac4|  n=9|  L=230|  daObjWc_Obj05_c|                 1/9  NORM1|
-|[ov029](../config/arm9/overlays/ov029/symbols.txt)| 0x2112080|  n=5|  L=83|   daObjWc_Obj07_c|          1/5  pcov=3|
-|[ov030](../config/arm9/overlays/ov030/symbols.txt)| 0x211155c|  n=6|  L=96|   RollingLogTtm|            3/6  pcov=4|
-|[ov036](../config/arm9/overlays/ov036/symbols.txt)| 0x2111444|  n=5|  L=107|  RotatingPlatformRr|       1/5|
+| TU | Address | Files | Description | Status |
+|----|---------|-------|-------------|--------|
+|[ov014](../config/arm9/overlays/ov014/symbols.txt)| 0x21111a0|  n=6|    `daObjBSwdoor_c`|               1/6 members|
+|[ov015](../config/arm9/overlays/ov015/symbols.txt)| 0x2112bd0|  n=5|    `daObjBk_Ukisima_c`|       1/5|
+|[ov015](../config/arm9/overlays/ov015/symbols.txt)| 0x2112cf4|  n=5|    `daObjBk_Fall_Block_c`|              2/5  pcov=3|
+|[ov016](../config/arm9/overlays/ov016/symbols.txt)| 0x2112ef4|  n=4|    `FloatOnWaterPlatformJrb`|  1/4|
+|[ov022](../config/arm9/overlays/ov022/symbols.txt)| 0x21115a8|  n=5|    `RotatingPlatformLll`|      1/5|
+|[ov029](../config/arm9/overlays/ov029/symbols.txt)| 0x211137c|  n=9|    `daObjWc_Obj02_c`|                1/9  CONF2|
+|[ov029](../config/arm9/overlays/ov029/symbols.txt)| 0x2111ac4|  n=9|    `daObjWc_Obj05_c`|                 1/9  NORM1|
+|[ov029](../config/arm9/overlays/ov029/symbols.txt)| 0x2112080|  n=5|    `daObjWc_Obj07_c`|          1/5  pcov=3|
+|[ov030](../config/arm9/overlays/ov030/symbols.txt)| 0x211155c|  n=6|    `RollingLogTtm`|            3/6  pcov=4|
+|[ov036](../config/arm9/overlays/ov036/symbols.txt)| 0x2111444|  n=5|    `RotatingPlatformRr`|       1/5|
 
 
 **B13 — R3 tail · 2 TUs / 10 files / net −8 / 206 lines**
-| TU | Address | Files | Lines | Description | Status |
-|----|---------|-------|-------|-------------|--------|
-|[ov063](../config/arm9/overlays/ov063/symbols.txt)| 0x211d3a0|  n=5|  L=94|   FallBlockBbh|        2/5|
-|[ov064](../config/arm9/overlays/ov064/symbols.txt)| 0x2118020|  n=5|  L=112|  TiltingPlatformLll|  2/5|
+| TU | Address | Files | Description | Status |
+|----|---------|-------|-------------|--------|
+|[ov063](../config/arm9/overlays/ov063/symbols.txt)| 0x211d3a0|  n=5|   `FallBlockBbh`|        2/5|
+|[ov064](../config/arm9/overlays/ov064/symbols.txt)| 0x2118020|  n=5|   `TiltingPlatformLll`|  2/5|
 
 
 **Totals: 3 pilots + 13 batches + 2 control = 100 TUs, 667 files, net −567.**
@@ -335,7 +335,7 @@ python tools/tubuild.py linkcheck <ID> --no-rom
 ```
 
 `<ID>` is `<module>/<tail>` where `tail` is the single class name, `"+".join(sorted(classes))`
-for a multi-class TU [(ov027](../config/arm9/overlays/ov027/symbols.txt)`/daIDonketu_c+daIDonketu_c`, or `@<start>-<end>` for an
+for a multi-class TU [(ov027](../config/arm9/overlays/ov027/symbols.txt)/`daIDonketu_c+daIDonketu_c`, or `@<start>-<end>` for an
 unattributed run. If the tail is not unique in the module it becomes `Class@<start8hex>`.
 Quote the multi-class ones in the shell.
 
@@ -434,7 +434,7 @@ tb.cmd_create(a)
 
 **Validated read-only against the tree**: over all 131 refused safe-pool files this
 recovers **130**. The single residual was [func_ov018_021118fc](../config/arm9/overlays/ov018/symbols.txt) (Tier 2,
-[ov018](../config/arm9/overlays/ov018/symbols.txt)`/daPgMthr_c`; it lived in a per-function legacy source at the time and is now
+[ov018](../config/arm9/overlays/ov018/symbols.txt)/`daPgMthr_c`; it lived in a per-function legacy source at the time and is now
 part of the promoted `src/game/actors/d_a_pg_mthr.cpp`), and it fails for a different
 reason worth naming — its definition is
 `struct dActor_c* func_ov018_021118fc(char* c) {`, and `split_legacy_source`'s first-word
@@ -548,7 +548,7 @@ Run it over all 100 Tier-1 TUs once before B1 and treat the output as the batch-
 
 ## 4. Pilots — run serially, one at a time, after B0
 
-### Pilot 1 — [ov023](../config/arm9/overlays/ov023/symbols.txt)`/Squasher`
+### Pilot 1 — [ov023](../config/arm9/overlays/ov023/symbols.txt)/`Squasher`
 
 `.text 0x021111a0..0x02111760` · 9 files · 236 lines · 5 `.cpp` + 4 `.c` · 9 includes.
 
