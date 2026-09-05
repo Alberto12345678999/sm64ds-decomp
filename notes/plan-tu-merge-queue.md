@@ -140,16 +140,16 @@ spent. **Run first; 10 minutes, and it de-risks every later "is it me or is it t
 |[ov006](../config/arm9/overlays/ov006/symbols.txt)| 0x210a400|  n=2|   `MgMushroomRoulette`|       uncorrob|
 | TU | Address | Files | Lines | Description | Status |
 |----|---------|-------|-------|-------------|--------|
-|[ov002](../config/arm9/overlays/ov002/symbols.txt)| 0x20b05d0|  n=8|  L=126|  InvisiblePole|            uncorrob|
-|[ov002](../config/arm9/overlays/ov002/symbols.txt)| 0x20b0748|  n=8|  L=111|  daCamTag_c|                uncorrob|
-|[ov002](../config/arm9/overlays/ov002/symbols.txt)| 0x20b07f8|  n=8|  L=121|  daChRoom_c|              uncorrob|
-|[ov002](../config/arm9/overlays/ov002/symbols.txt)| 0x20b5734|  n=7|  L=164|  BlueFlame|                uncorrob|
-|[ov002](../config/arm9/overlays/ov002/symbols.txt)| 0x20b6e08|  n=5|  L=67|   WaterfallMist|            uncorrob|
-|[ov002](../config/arm9/overlays/ov002/symbols.txt)| 0x20ec388|  n=8|  L=148|  daWarpkun_c|             uncorrob|
-|[ov002](../config/arm9/overlays/ov002/symbols.txt)| 0x20f0dd0|  n=8|  L=176|  OneUpLogo|                uncorrob|
-|[ov006](../config/arm9/overlays/ov006/symbols.txt)| 0x20dbd54|  n=3|  L=36|   MgPicturePoker|           uncorrob|
-|[ov006](../config/arm9/overlays/ov006/symbols.txt)| 0x20fa6ac|  n=2|  L=30|   MgPairAGoneAndOn|         uncorrob|
-|[ov006](../config/arm9/overlays/ov006/symbols.txt)| 0x210a400|  n=2|  L=32|   MgMushroomRoulette|       uncorrob|
+|[ov002](../config/arm9/overlays/ov002/symbols.txt)| 0x20b05d0|  n=8|  L=126|  `InvisiblePole`|            uncorrob|
+|[ov002](../config/arm9/overlays/ov002/symbols.txt)| 0x20b0748|  n=8|  L=111|  `daCamTag_c`|                uncorrob|
+|[ov002](../config/arm9/overlays/ov002/symbols.txt)| 0x20b07f8|  n=8|  L=121|  `daChRoom_c`|              uncorrob|
+|[ov002](../config/arm9/overlays/ov002/symbols.txt)| 0x20b5734|  n=7|  L=164|  `BlueFlame`|                uncorrob|
+|[ov002](../config/arm9/overlays/ov002/symbols.txt)| 0x20b6e08|  n=5|  L=67|   `WaterfallMist`|            uncorrob|
+|[ov002](../config/arm9/overlays/ov002/symbols.txt)| 0x20ec388|  n=8|  L=148|  `daWarpkun_c`|             uncorrob|
+|[ov002](../config/arm9/overlays/ov002/symbols.txt)| 0x20f0dd0|  n=8|  L=176|  `OneUpLogo`|                uncorrob|
+|[ov006](../config/arm9/overlays/ov006/symbols.txt)| 0x20dbd54|  n=3|  L=36|   `MgPicturePoker`|           uncorrob|
+|[ov006](../config/arm9/overlays/ov006/symbols.txt)| 0x20fa6ac|  n=2|  L=30|   `MgPairAGoneAndOn`|         uncorrob|
+|[ov006](../config/arm9/overlays/ov006/symbols.txt)| 0x210a400|  n=2|  L=32|   `MgMushroomRoulette`|       uncorrob|
 
 All seven [ov002](../config/arm9/overlays/ov002/symbols.txt) entries are high/high, which after §0.3 is the confidence floor to trust
 in that module. The three [ov006](../config/arm9/overlays/ov006/symbols.txt) minigame TUs are 2–3 files with **zero includes** — the
@@ -170,16 +170,16 @@ cheapest possible probe of post-regeneration [ov006](../config/arm9/overlays/ov0
 |[ov022](../config/arm9/overlays/ov022/symbols.txt)| 0x2111cac|  n=8|    `LavaSeesaw`|               uncorrob|
 | TU | Address | Files | Lines | Description | Status |
 |----|---------|-------|-------|-------------|--------|
-|[ov009](../config/arm9/overlays/ov009/symbols.txt)| 0x2112078|  n=7|  L=116|  daMcFlag_c|               pcov=2|
-|[ov012](../config/arm9/overlays/ov012/symbols.txt)| 0x21111a0|  n=8|  L=175|  daObjC0_Switch_c| |
-|[ov013](../config/arm9/overlays/ov013/symbols.txt)| 0x21113bc|  n=8|  L=153|  ClockPaintingHandShort|   uncorrob|
-|[ov014](../config/arm9/overlays/ov014/symbols.txt)| 0x2112e0c|  n=8|  L=197|  daObjWanwanShutter_c| |
-|[ov015](../config/arm9/overlays/ov015/symbols.txt)| 0x21111a0|  n=7|  L=106|  daObjBkBillboard_c|            uncorrob|
-|[ov018](../config/arm9/overlays/ov018/symbols.txt)| 0x21126d4|  n=4|  L=60|  daSCre_c|                 uncorrob|
-|[ov019](../config/arm9/overlays/ov019/symbols.txt)| 0x211261c|  n=5|  L=93|  daSldMng_c| |
-|[ov021](../config/arm9/overlays/ov021/symbols.txt)| 0x2112db4|  n=6|  L=105|  daObjCvShutter_c| |
-|[ov022](../config/arm9/overlays/ov022/symbols.txt)| 0x2111980|  n=8|  L=181|  LavaBridge|               uncorrob|
-|[ov022](../config/arm9/overlays/ov022/symbols.txt)| 0x2111cac|  n=8|  L=170|  LavaSeesaw|               uncorrob|
+|[ov009](../config/arm9/overlays/ov009/symbols.txt)| 0x2112078|  n=7|  L=116|  `daMcFlag_c`|               pcov=2|
+|[ov012](../config/arm9/overlays/ov012/symbols.txt)| 0x21111a0|  n=8|  L=175|  `daObjC0_Switch_c`| |
+|[ov013](../config/arm9/overlays/ov013/symbols.txt)| 0x21113bc|  n=8|  L=153|  `ClockPaintingHandShort`|   uncorrob|
+|[ov014](../config/arm9/overlays/ov014/symbols.txt)| 0x2112e0c|  n=8|  L=197|  `daObjWanwanShutter_c`| |
+|[ov015](../config/arm9/overlays/ov015/symbols.txt)| 0x21111a0|  n=7|  L=106|  `daObjBkBillboard_c`|            uncorrob|
+|[ov018](../config/arm9/overlays/ov018/symbols.txt)| 0x21126d4|  n=4|  L=60|  `daSCre_c`|                 uncorrob|
+|[ov019](../config/arm9/overlays/ov019/symbols.txt)| 0x211261c|  n=5|  L=93|  `daSldMng_c`| |
+|[ov021](../config/arm9/overlays/ov021/symbols.txt)| 0x2112db4|  n=6|  L=105|  `daObjCvShutter_c`| |
+|[ov022](../config/arm9/overlays/ov022/symbols.txt)| 0x2111980|  n=8|  L=181|  `LavaBridge`|               uncorrob|
+|[ov022](../config/arm9/overlays/ov022/symbols.txt)| 0x2111cac|  n=8|  L=170|  `LavaSeesaw`|               uncorrob|
 
 
 **B3 — R0 · 10 TUs / 53 files / net −43 / 1,076 lines**
@@ -197,16 +197,16 @@ cheapest possible probe of post-regeneration [ov006](../config/arm9/overlays/ov0
 |[ov043](../config/arm9/overlays/ov043/symbols.txt)| 0x2111518|  n=5|    `daObjKm1_Kuruma_c`|              pcov=3|
 | TU | Address | Files | Lines | Description | Status |
 |----|---------|-------|-------|-------------|--------|
-|[ov022](../config/arm9/overlays/ov022/symbols.txt)| 0x2111f6c|  n=5|  L=86|   FloatingFloorLllSmall|            pcov=3|
-|[ov022](../config/arm9/overlays/ov022/symbols.txt)| 0x2112380|  n=4|  L=60|   daObjFl_Fall_Block_c|             pcov=2|
-|[ov022](../config/arm9/overlays/ov022/symbols.txt)| 0x2112498|  n=6|  L=100|  RollingLogLll| |
-|[ov026](../config/arm9/overlays/ov026/symbols.txt)| 0x21118b8|  n=6|  L=115|  Submarine| |
-|[ov029](../config/arm9/overlays/ov029/symbols.txt)| 0x21111a0|  n=4|  L=135|  daObjWcObj01_c| |
-|[ov029](../config/arm9/overlays/ov029/symbols.txt)| 0x2111ea4|  n=4|  L=124|  daObjWcObj06_c| |
-|[ov036](../config/arm9/overlays/ov036/symbols.txt)| 0x2111580|  n=8|  L=146|  daObjRc_Hane_c| |
-|[ov036](../config/arm9/overlays/ov036/symbols.txt)| 0x2111d14|  n=7|  L=155|  daObjRc_Guruguru_c| |
-|[ov036](../config/arm9/overlays/ov036/symbols.txt)| 0x2111f8c|  n=4|  L=75|   daObjRc_Dorifu_c| |
-|[ov043](../config/arm9/overlays/ov043/symbols.txt)| 0x2111518|  n=5|  L=80|   daObjKm1_Kuruma_c|              pcov=3|
+|[ov022](../config/arm9/overlays/ov022/symbols.txt)| 0x2111f6c|  n=5|  L=86|   `FloatingFloorLllSmall`|            pcov=3|
+|[ov022](../config/arm9/overlays/ov022/symbols.txt)| 0x2112380|  n=4|  L=60|   `daObjFl_Fall_Block_c`|             pcov=2|
+|[ov022](../config/arm9/overlays/ov022/symbols.txt)| 0x2112498|  n=6|  L=100|  `RollingLogLll`| |
+|[ov026](../config/arm9/overlays/ov026/symbols.txt)| 0x21118b8|  n=6|  L=115|  `Submarine`| |
+|[ov029](../config/arm9/overlays/ov029/symbols.txt)| 0x21111a0|  n=4|  L=135|  `daObjWcObj01_c`| |
+|[ov029](../config/arm9/overlays/ov029/symbols.txt)| 0x2111ea4|  n=4|  L=124|  `daObjWcObj06_c`| |
+|[ov036](../config/arm9/overlays/ov036/symbols.txt)| 0x2111580|  n=8|  L=146|  `daObjRc_Hane_c`| |
+|[ov036](../config/arm9/overlays/ov036/symbols.txt)| 0x2111d14|  n=7|  L=155|  `daObjRc_Guruguru_c`| |
+|[ov036](../config/arm9/overlays/ov036/symbols.txt)| 0x2111f8c|  n=4|  L=75|   `daObjRc_Dorifu_c`| |
+|[ov043](../config/arm9/overlays/ov043/symbols.txt)| 0x2111518|  n=5|  L=80|   `daObjKm1_Kuruma_c`|              pcov=3|
 
 `daObjWcObj01_c` and `daObjWcObj06_c` — the Wdw square and rectangle floating
 platforms, coined `FloatOnWaterPlatformWdwSquare`/`...Rectangle` before the
@@ -225,13 +225,13 @@ batch is where shape-family amortization first pays.
 |[ov085](../config/arm9/overlays/ov085/symbols.txt)| 0x212edac|  n=7|   `WallSign`|
 | TU | Address | Files | Lines | Description | Status |
 |----|---------|-------|-------|-------------|--------|
-|[ov043](../config/arm9/overlays/ov043/symbols.txt)| 0x2111630|  n=4|  L=75|   daObjKm1_Dorifu_c| |
-|[ov044](../config/arm9/overlays/ov044/symbols.txt)| 0x21111a0|  n=7|  L=88|   OrangeBallBillboard|   WHOLEMOD (module-edge both ends, corroborated)|
-|[ov045](../config/arm9/overlays/ov045/symbols.txt)| 0x2111b14|  n=5|  L=99|   FloatingFloorBfs| |
-|[ov045](../config/arm9/overlays/ov045/symbols.txt)| 0x2111c30|  n=5|  L=74|   TiltingPlatformBfs|    pcov=3|
-|[ov047](../config/arm9/overlays/ov047/symbols.txt)| 0x21111a0|  n=4|  L=68|   daObjKm3_Kurumajiku_c| pcov=2|
-|[ov047](../config/arm9/overlays/ov047/symbols.txt)| 0x21114d4|  n=5|  L=96|   daObjKm3_Dorifu_c| |
-|[ov085](../config/arm9/overlays/ov085/symbols.txt)| 0x212edac|  n=7|  L=226|  WallSign| |
+|[ov043](../config/arm9/overlays/ov043/symbols.txt)| 0x2111630|  n=4|  L=75|   `daObjKm1_Dorifu_c`| |
+|[ov044](../config/arm9/overlays/ov044/symbols.txt)| 0x21111a0|  n=7|  L=88|   `OrangeBallBillboard`|   WHOLEMOD (module-edge both ends, corroborated)|
+|[ov045](../config/arm9/overlays/ov045/symbols.txt)| 0x2111b14|  n=5|  L=99|   `FloatingFloorBfs`| |
+|[ov045](../config/arm9/overlays/ov045/symbols.txt)| 0x2111c30|  n=5|  L=74|   `TiltingPlatformBfs`|    pcov=3|
+|[ov047](../config/arm9/overlays/ov047/symbols.txt)| 0x21111a0|  n=4|  L=68|   `daObjKm3_Kurumajiku_c`| pcov=2|
+|[ov047](../config/arm9/overlays/ov047/symbols.txt)| 0x21114d4|  n=5|  L=96|   `daObjKm3_Dorifu_c`| |
+|[ov085](../config/arm9/overlays/ov085/symbols.txt)| 0x212edac|  n=7|  L=226|  `WallSign`| |
 
 B4 completes [ov045](../config/arm9/overlays/ov045/symbols.txt): with B0's two, all four [ov045](../config/arm9/overlays/ov045/symbols.txt) safe TUs are done, making ov045 the
 first module where a `config_tu/` conversion becomes conceivable.
