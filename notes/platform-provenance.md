@@ -311,13 +311,13 @@ they are `s32` / `u32` now. Same offsets, same size, byte-verified.
 
 An RTTI-derived flat placeholder credited to a `deepen_rtti.py` that has
 never existed in this repo (see notes/minigame-provenance.md), shared by
-`SkiLift::InitResources` and [func_ov018_021122ec](../config/arm9/overlays/ov018/symbols.txt) ([ov018](../config/arm9/overlays/ov018/symbols.txt)).
+`SkiLift::InitResources` and [func_ov018_021122ec](../src/game/actors/d_a_pg_mthr.cpp) ([ov018](../config/arm9/overlays/ov018/symbols.txt)).
 
 | offset | name | evidence |
 |---|---|---|
 | 0x05c/0x060/0x064 | `mPosX` / `mPosY` / `mPosZ` | `dActor_c`'s position, copied to 0x324..0x32c |
 | 0x08e | `mAngleY` | `-= 0x4000`, then handed to `dBgW_KcMbg::SetFile` as its yaw |
-| 0x098 | `mHorzSpeed` | `dActor_c`'s; zeroed by [func_ov018_021122ec](../config/arm9/overlays/ov018/symbols.txt) |
+| 0x098 | `mHorzSpeed` | `dActor_c`'s; zeroed by [func_ov018_021122ec](../src/game/actors/d_a_pg_mthr.cpp) |
 | 0x324/0x328/0x32c | `mBasePosX` / `mBasePosY` / `mBasePosZ` | `= mPosX/mPosY/mPosZ` in `InitResources` |
 | 0x334 | `mPathId` | `= param1 & 0xff`; `InitResources` bails when it is 0xff, otherwise passes it to `PathPtr::FromID` |
 | 0x338 | `mNodeCount` | `= PathPtr::NumNodes()` |
@@ -339,13 +339,13 @@ difference is in the bytes rather than only in the RTTI: its destructor stores
 three vptrs — its own, `daObjGuragura_c`'s, then `dBgActor_c`'s. A one-level chain
 emits two.
 
-| offset | overlay | evidence |
+| symbol/type | overlay | address/detail |
 |---|---|---|
-  |`_ZTI14daObjFl_Gura_c`|     |[ov064](../config/arm9/overlays/ov064/symbols.txt)| 0x0211bce8|
-  |`_ZTS14daObjFl_Gura_c`|     |[ov064](../config/arm9/overlays/ov064/symbols.txt)| 0x0211bcf4|
-  |`_ZTV14daObjFl_Gura_c`|     |[ov064](../config/arm9/overlays/ov064/symbols.txt)| 0x0211bd2c|   (public address |point)|
-  |kind  `__si_class_type_info`|, ONE base|, subobject offset 0|
-  |base  `daObjGuragura_c|`, [ov002](../config/arm9/overlays/ov002/symbols.txt)| 0x0210905c|
+| `_ZTI14daObjFl_Gura_c` | [ov064](../config/arm9/overlays/ov064/symbols.txt) | `0x0211bce8` |
+| `_ZTS14daObjFl_Gura_c` | [ov064](../config/arm9/overlays/ov064/symbols.txt) | `0x0211bcf4` |
+| `_ZTV14daObjFl_Gura_c` | [ov064](../config/arm9/overlays/ov064/symbols.txt) | `0x0211bd2c` (public address point) |
+| kind | — | `__si_class_type_info`, one base, subobject offset 0 |
+| base `daObjGuragura_c` | [ov002](../config/arm9/overlays/ov002/symbols.txt) | `0x0210905c` |
 
 Size 0x350, from `daObjFl_Gura_c_classInit`'s literal 848, which
 `daObjGuragura_c` fills. No fields of its own; it overrides slots 0 and 3, which
@@ -373,13 +373,13 @@ not derive from `dBgActor_c`; it derives from `daObjDorifu_c`, which does. The
 destructor stores three vptrs and destroys `daObjDorifu_c`'s `Model[5]` and
 `dBgW_KcMbg[5]` in between, all of it from the base declaration.
 
-| offset | overlay | evidence |
+| symbol/type | overlay | address/detail |
 |---|---|---|
-  |`_ZTI17daObjKm3_Dorifu_c`  |[ov047](../config/arm9/overlays/ov047/symbols.txt)| 0x021124cc|
-  |`_ZTS17daObjKm3_Dorifu_c`  |[ov047](../config/arm9/overlays/ov047/symbols.txt)| 0x021124d8|
-  |`_ZTV17daObjKm3_Dorifu_c` |[ov047](../config/arm9/overlays/ov047/symbols.txt)| 0x0211254c|   (its record sits at V-4)|
-  |kind  `__si_class_type_info`,| |ONE base, offset 0|
-  |base  daObjDorifu_c, |[ov002](../config/arm9/overlays/ov002/symbols.txt)| 0x02108d70|
+| `_ZTI17daObjKm3_Dorifu_c` | [ov047](../config/arm9/overlays/ov047/symbols.txt) | `0x021124cc` |
+| `_ZTS17daObjKm3_Dorifu_c` | [ov047](../config/arm9/overlays/ov047/symbols.txt) | `0x021124d8` |
+| `_ZTV17daObjKm3_Dorifu_c` | [ov047](../config/arm9/overlays/ov047/symbols.txt) | `0x0211254c` (its record sits at V-4) |
+| kind | — | `__si_class_type_info`, one base, offset 0 |
+| base `daObjDorifu_c` | [ov002](../config/arm9/overlays/ov002/symbols.txt) | `0x02108d70` |
 
 **The tree's "Bs" names are crossed**, and the header does not try to fix it. The
 factory that builds *this* class is `StairsBs_Spawn` (0xdcc, this class's

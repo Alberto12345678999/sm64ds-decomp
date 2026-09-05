@@ -103,7 +103,7 @@ one-function files, now all consolidated into the promoted TU
 | 0x608 | `mStumpUniqueID` | `InitResources` calls `dActor_c::Spawn(0x1b, 0x11, &mPosX, ...)` and stores `spawned + 4` here. `fBase_c + 0x04` is `uniqueID` (`include/fBase_c.h`). ACTOR_SPAWN_TABLE at 0x02090864, entry 0x1b, points at 0x02135298 = `g_profile_PILE`; and the very next line writes `spawned + 0x320`, which `include/Stump.h` declares as `Stump::mBusy`. Two independent witnesses for the same class. |
 | 0x60c | `mFenceUniqueID` | `Behavior` lazily fills it with `dActor_c::FindWithActorID(0x29, 0)->uniqueID`. ACTOR_SPAWN_TABLE entry 0x29 points at 0x0211488c = `g_profile_WANWAN_SHUTTER` (historical alias `ChainChompFence_SpawnInfo`), in this same overlay. |
 | 0x61c | `mIsOnGround` | `Behavior` clears it at the top of the frame and sets it to 1 in exactly the branch that had to clamp `mPosY` up to the rest height. |
-| 0x61d | `mWasOnGround` | last statement of that block is `mWasOnGround = mIsOnGround`, and [func_ov014_02111fb8](../config/arm9/overlays/ov014/symbols.txt) fires only when the clamp happens *and* `mWasOnGround == 0` — a rising-edge one-shot. |
+| 0x61d | `mWasOnGround` | last statement of that block is `mWasOnGround = mIsOnGround`, and [func_ov014_02111fb8](../src/game/actors/d_a_wanwan.cpp) fires only when the clamp happens *and* `mWasOnGround == 0` — a rising-edge one-shot. |
 
 Left `unk_`:
 
@@ -111,7 +111,7 @@ Left `unk_`:
   prose calls both "the per-link positions", but nothing matched reads or writes
   this one, so which role it plays (previous-position history is the obvious
   guess) is not evidenced. Naming it would be guessing.
-* **0x5f8** — `mChainExtension`. [func_ov014_02111fe0](../config/arm9/overlays/ov014/symbols.txt) builds the leash limit as
+* **0x5f8** — `mChainExtension`. [func_ov014_02111fe0](../src/game/actors/d_a_wanwan.cpp) builds the leash limit as
   `this * 7 + 0xc8000` and pulls the chomp back onto that radius around `mSpawnPos`
   whenever it strays outside; a second branch zeroes both speeds once it reaches
   `0x64000`. So the stored `0x50000` is the chain's slack, and 0x64000 its maximum.
