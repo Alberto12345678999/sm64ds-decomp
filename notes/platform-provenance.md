@@ -89,8 +89,7 @@ built.
 ### `virtual ~dBgActor_c() {}` is inline on purpose — LOAD-BEARING
 
 Every subclass's destructor inlines this body rather than calling
-`_ZN10dBgActor_cD1Ev` (which does exist, at ov002 0x020ee42c, for the times it is
-called out of line). An out-of-line declaration here would make each subclass
+`_ZN10dBgActor_cD1Ev` (which does exist, at [ov002](../config/arm9/overlays/ov002/symbols.txt) 0x020ee42c, for the times it is called out of line). An out-of-line declaration here would make each subclass
 emit a `bl` the ROM does not have. Being inline also keeps `dBgActor_c` without a
 key function, so no translation unit that merely includes this header emits
 `_ZTV10dBgActor_c`.
@@ -100,7 +99,7 @@ key function, so no translation unit that merely includes this header emits
 `dActor_c` ends at slot 30, so this one word is the whole difference between the
 vtable this header emitted and the one in the cartridge.
 
-`_ZTV10dBgActor_c` is 0x84 at ov002:0x0210ae38 — 33 words, one more than the 32 a
+`_ZTV10dBgActor_c` is 0x84 at [ov002](../config/arm9/overlays/ov002/symbols.txt):0x0210ae38 — 33 words, one more than the 32 a
 `dActor_c`-shaped table needs — and `_ZTV8PoleLift`, one of the 70 subclasses, is
 0x84 as well. `rtti_vtables` agrees from the other side: `dActor_c` has 31 slots
 and `dBgActor_c`'s own overrides are 16 (D1), 17 (D0) and 31, and 97 of its 101
@@ -122,7 +121,7 @@ See also the plain-English write-up in the project memory note
 
 The cartridge's RTTI carries class names only, so every parameter type in a
 mangled symbol is this project's reconstruction until some function's bytes test
-it. This one is tested: the body at ov002 0x020ee674 reproduces with a
+it. This one is tested: the body at [ov002](../config/arm9/overlays/ov002/symbols.txt) 0x020ee674 reproduces with a
 single-int-by-value fourth parameter, which is exactly what `math/Fix12.h`'s
 `{ T val; }` is.
 
@@ -164,7 +163,7 @@ The field span stops short of the real size. `SlidingPlatformBdw_Spawn` and
 the retail instruction. **A span is only a lower bound**, so the header carries
 explicit tail padding from 0x324 to 0x330.
 
-Field roles, from `InitResources` (ov091) and `Behavior`:
+Field roles, from `InitResources` [ov091](../config/arm9/overlays/ov091/symbols.txt) and `Behavior` [ov091](../config/arm9/overlays/ov091/symbols.txt):
 
 | offset | name | evidence |
 |---|---|---|
@@ -172,8 +171,8 @@ Field roles, from `InitResources` (ov091) and `Behavior`:
 | 0x324 | `mBasePosX` | `InitResources` copies the actor's position into 0x324/0x328/0x32c, which is also what closes the header on the factories' 0x330 |
 | 0x328 | `mBasePosY` | as above |
 | 0x32c | `mBasePosZ` | as above |
-| 0x320 | `mMoveTimer`  | `DecIfAbove0_Short`; reloaded from `data_ov091_02134504[mVariant]` and the yaw flips by 0x8000 when it expires |
-| 0x322 | `mVariant`    | set 0..6 by a switch on `actorID`; indexes the model, collider and CLPS tables (stride 0xc) and the two `data_ov091_021345xx` tables |
+| 0x320 | `mMoveTimer`  | `DecIfAbove0_Short`; reloaded from [data_ov091_02134504](../config/arm9/overlays/ov091/symbols.txt)`[mVariant]` and the yaw flips by 0x8000 when it expires |
+| 0x322 | `mVariant`    | set 0..6 by a switch on `actorID`; indexes the model, collider and CLPS tables (stride 0xc) and the two [data_ov091_021345xx](../config/arm9/overlays/ov091/symbols.txt) tables |
 
 ## `include/RotatingUpDownPlatform.h`
 
@@ -181,21 +180,21 @@ Still a flat generated struct. Own fields start at 0x320.
 
 | offset | name | evidence |
 |---|---|---|
-| 0x320 | `mState` | `Behavior` dispatches `data_ov091_021354e0[mState]` as a pointer-to-member; `func_ov091_02132000` sets it to 1 |
+| 0x320 | `mState` | `Behavior` dispatches [data_ov091_021354e0](../config/arm9/overlays/ov091/symbols.txt)`[mState]` as a pointer-to-member; [func_ov091_02132000](../src/func_ov091_02132000.c) sets it to 1 |
 | 0x324 | `mNodeCount` | `= PathPtr::NumNodes()` |
 | 0x328 | `mNodeIndex` | `= 0`, passed to `PathPtr::GetNode(…, idx)`, incremented when the first node equals the start position |
 | 0x32c | `mBasePosX` | `= mPosX` in `InitResources`; `Vec3_Equal(this+0x338, this+0x32c)` reads 0x32c as a `Vector3` |
 | 0x330 | `mBasePosY` | `= mPosY` |
 | 0x334 | `mBasePosZ` | `= mPosZ` |
-| 0x338 | `mTargetPosX` | `PathPtr::GetNode` writes a `Vector3` over 0x338/0x33c/0x340; `func_ov091_02132000` reads all three back as one |
+| 0x338 | `mTargetPosX` | `PathPtr::GetNode` writes a `Vector3` over 0x338/0x33c/0x340; [func_ov091_02132000](../src/func_ov091_02132000.c) reads all three back as one |
 | 0x33c | `mTargetPosY` | as above |
 | 0x340 | `mTargetPosZ` | as above |
 | 0x344 | `mPathPtr` | `PathPtr::FromID(this+0x344, param & 0xf)` |
 | 0x34c | `mSinkOffsetY` | `ApproachLinear(&this[0x34c], mIsPressed ? 0x1e000 : 0, 0x5000)`, then subtracted from `mPosY` |
 | 0x350 | `mBaseAngleY` | `= mAngleY` in `InitResources` |
 | 0x352 | `mVariant` | `= (param1 >> 8) & 0xff`; indexes the model / collider / CLPS tables |
-| 0x354 | `mStateTimer` | incremented every `Behavior`, zeroed on a state change; `func_ov091_02132000` gates on `<= 0x14` |
-| 0x356 | `mIsPressed` | cleared at the end of every `Behavior`; `func_ov091_02132360` sets it from a collision callback when the toucher's actorID is 0xbf; when set, `mSinkOffsetY` approaches 0x1e000 and `func_ov091_02132000` advances the state |
+| 0x354 | `mStateTimer` | incremented every `Behavior`, zeroed on a state change; [func_ov091_02132000](../src/func_ov091_02132000.c) gates on `<= 0x14` |
+| 0x356 | `mIsPressed` | cleared at the end of every `Behavior`; [func_ov091_02132360](../src/func_ov091_02132360.cpp) sets it from a collision callback when the toucher's actorID is 0xbf; when set, `mSinkOffsetY` approaches 0x1e000 and [func_ov091_02132000](../src/func_ov091_02132000.c) advances the state |
 
 `mIsPressed` names the *observed role* (something is bearing on the platform), not
 the identity of actor 0xbf, which is not settled here.
@@ -227,7 +226,7 @@ placeholder names by the auto-generated flat header; they are `dActor_c`'s and
 `mShadowModel` at 0x320 is named by the class's own destructor calling
 `ShadowModel`'s D1 at +0x320 — a relocation the ROM build checks.
 
-Field roles, from `InitResources`, `Behavior`, `Kill` and `Render` (ov091):
+Field roles, from `InitResources`, `Behavior`, `Kill` and `Render` ([ov091](../config/arm9/overlays/ov091/symbols.txt)):
 
 | offset | name | evidence |
 |---|---|---|
