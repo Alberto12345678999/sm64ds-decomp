@@ -12,7 +12,7 @@ Convention: instance members `mFoo`.
 
 ---
 
-## `Unagi` (`include/Unagi.h`, ov016)
+## `Unagi` (`include/Unagi.h`, [ov016](../config/arm9/overlays/ov016/symbols.txt))
 
 | offset | new name | evidence |
 | --- | --- | --- |
@@ -40,7 +40,7 @@ were dropped in favour of `mStarPos`.
 
 ---
 
-## `KingBobOmb` (`include/KingBobOmb.h`, ov078)
+## `KingBobOmb` (`include/KingBobOmb.h`, [ov078](../config/arm9/overlays/ov078/symbols.txt))
 
 | offset | new name | evidence |
 | --- | --- | --- |
@@ -70,7 +70,7 @@ Left `unk_`:
 
 ---
 
-## `BowserFire` (`include/BowserFire.h`, ov060)
+## `BowserFire` (`include/BowserFire.h`, [ov060](../config/arm9/overlays/ov060/symbols.txt))
 
 | offset | new name | evidence |
 | --- | --- | --- |
@@ -95,7 +95,7 @@ Left `unk_`:
 
 ---
 
-## `MrBlizzard` (`include/MrBlizzard.h`, ov081)
+## `MrBlizzard` (`include/MrBlizzard.h`, [ov081](../config/arm9/overlays/ov081/symbols.txt))
 
 | offset | new name | evidence |
 | --- | --- | --- |
@@ -125,7 +125,7 @@ corresponding raw `c + 0xNNN` pokes in `Behavior`.
 
 ---
 
-## `Shark` (`include/Shark.h`, ov090)
+## `Shark` (`include/Shark.h`, [ov090](../config/arm9/overlays/ov090/symbols.txt))
 
 | offset | new name | evidence |
 | --- | --- | --- |
@@ -135,7 +135,7 @@ corresponding raw `c + 0xNNN` pokes in `Behavior`.
 
 ---
 
-## `PiranhaPlant` (`include/PiranhaPlant.h`, ov084)
+## `PiranhaPlant` (`include/PiranhaPlant.h`, [ov084](../config/arm9/overlays/ov084/symbols.txt))
 
 | offset | new name | evidence |
 | --- | --- | --- |
@@ -163,7 +163,7 @@ stays as it is — the file already documents that the add must sit inside the i
 
 ---
 
-## `FirePiranhaPlantBig` (`include/FirePiranhaPlantBig.h`, ov084)
+## `FirePiranhaPlantBig` (`include/FirePiranhaPlantBig.h`, [ov084](../config/arm9/overlays/ov084/symbols.txt))
 
 | offset | new name | evidence |
 | --- | --- | --- |
@@ -200,7 +200,7 @@ documents that the add must sit inside the integer cast.
 
 ---
 
-## `dCapEnemy_c` (`include/dCapEnemy_c.h`, arm9)
+## `dCapEnemy_c` (`include/dCapEnemy_c.h`, [arm9](../config/arm9/symbols.txt))
 
 The shared base for the cap-wearing enemies (`daKrb_c`, `daTrs_c`). All three of its
 remaining `unk_` fields resolve; the header's own prose already described two of them.
@@ -213,7 +213,7 @@ remaining `unk_` fields resolve; the header's own prose already described two of
 
 ---
 
-## `daKrb_c` (`include/daKrb_c.h`, ov084 — derives from `dCapEnemy_c`, not `dEnemyBase_c`)
+## `daKrb_c` (`include/daKrb_c.h`, [ov084](../config/arm9/overlays/ov084/symbols.txt) — derives from `dCapEnemy_c`, not `dEnemyBase_c`)
 
 | offset | new name | evidence |
 | --- | --- | --- |
