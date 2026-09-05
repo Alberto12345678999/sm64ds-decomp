@@ -28,7 +28,7 @@ once, here, rather than per class.
 
 ---
 
-## JetStream (`include/JetStream.h`, ov064)
+## JetStream (`include/JetStream.h`, [ov064](../config/arm9/overlays/ov064/symbols.txt))
 
 | offset | name | evidence |
 | --- | --- | --- |
@@ -49,13 +49,13 @@ Byte-neutral cleanups made in the same pass (each re-verified with
   stand-in in favour of the declared `mState`; collapsed
   `*(short*)((char*)&mAngleX) = *(short*)((char*)&mPrevAngleX)` (and Y, Z) to plain
   member assignments; `(unsigned short*)((char*)&(*(u8 *)&unk_100))` to
-  `(unsigned short*)&unk_100`; `func_ov064_0211987c(((C*)this))` to `(this)`.
+  `(unsigned short*)&unk_100`; [func_ov064_0211987c](../src/func_ov064_0211987c.c)`(((C*)this))` to `(this)`.
 * `InitResources` — `(dCcAc_c*)((char*)&(*(u8 *)&mdCcAc_c))` to `&mdCcAc_c`,
   `(dActor_c*)((char*)this)` to `(dActor_c*)this`.
 
 ---
 
-## Goomboss (`include/Goomboss.h`, ov074)
+## Goomboss (`include/Goomboss.h`, [ov074](../config/arm9/overlays/ov074/symbols.txt))
 
 | offset | name | evidence |
 | --- | --- | --- |
@@ -88,7 +88,7 @@ offsets are not member accesses to collapse.
 
 ---
 
-## daWanwan_c (`include/daWanwan_c.h`, ov014)
+## daWanwan_c (`include/daWanwan_c.h`, [ov014](../config/arm9/overlays/ov014/symbols.txt))
 
 Bodies read: the `Behavior`, `InitResources` and `Render` members, then in
 one-function files, now all consolidated into the promoted TU
@@ -103,7 +103,7 @@ one-function files, now all consolidated into the promoted TU
 | 0x608 | `mStumpUniqueID` | `InitResources` calls `dActor_c::Spawn(0x1b, 0x11, &mPosX, ...)` and stores `spawned + 4` here. `fBase_c + 0x04` is `uniqueID` (`include/fBase_c.h`). ACTOR_SPAWN_TABLE at 0x02090864, entry 0x1b, points at 0x02135298 = `g_profile_PILE`; and the very next line writes `spawned + 0x320`, which `include/Stump.h` declares as `Stump::mBusy`. Two independent witnesses for the same class. |
 | 0x60c | `mFenceUniqueID` | `Behavior` lazily fills it with `dActor_c::FindWithActorID(0x29, 0)->uniqueID`. ACTOR_SPAWN_TABLE entry 0x29 points at 0x0211488c = `g_profile_WANWAN_SHUTTER` (historical alias `ChainChompFence_SpawnInfo`), in this same overlay. |
 | 0x61c | `mIsOnGround` | `Behavior` clears it at the top of the frame and sets it to 1 in exactly the branch that had to clamp `mPosY` up to the rest height. |
-| 0x61d | `mWasOnGround` | last statement of that block is `mWasOnGround = mIsOnGround`, and `func_ov014_02111fb8` fires only when the clamp happens *and* `mWasOnGround == 0` — a rising-edge one-shot. |
+| 0x61d | `mWasOnGround` | last statement of that block is `mWasOnGround = mIsOnGround`, and [func_ov014_02111fb8](../config/arm9/overlays/ov014/symbols.txt) fires only when the clamp happens *and* `mWasOnGround == 0` — a rising-edge one-shot. |
 
 Left `unk_`:
 
@@ -111,7 +111,7 @@ Left `unk_`:
   prose calls both "the per-link positions", but nothing matched reads or writes
   this one, so which role it plays (previous-position history is the obvious
   guess) is not evidenced. Naming it would be guessing.
-* **0x5f8** — `mChainExtension`. `func_ov014_02111fe0` builds the leash limit as
+* **0x5f8** — `mChainExtension`. [func_ov014_02111fe0](../config/arm9/overlays/ov014/symbols.txt) builds the leash limit as
   `this * 7 + 0xc8000` and pulls the chomp back onto that radius around `mSpawnPos`
   whenever it strays outside; a second branch zeroes both speeds once it reaches
   `0x64000`. So the stored `0x50000` is the chain's slack, and 0x64000 its maximum.
@@ -171,7 +171,7 @@ with" flag rather than a counter.
 
 ---
 
-## Whomp (`include/Whomp.h`, ov079)
+## Whomp (`include/Whomp.h`, [ov079](../config/arm9/overlays/ov079/symbols.txt))
 
 Bodies read: `src/_ZN5Whomp13InitResourcesEv.cpp`,
 `src/_ZN5Whomp8BehaviorEv.cpp`, `src/_ZN5Whomp6RenderEv.cpp`,
@@ -180,7 +180,7 @@ Bodies read: `src/_ZN5Whomp13InitResourcesEv.cpp`,
 
 | offset | name | evidence |
 | --- | --- | --- |
-| 0x3b0 | `mState` | `Behavior` uses it as the index into `data_ov079_02128280`, a table of pointer-to-member handlers, and calls the one it selects; the king's camera-target update is skipped while it reads 9. |
+| 0x3b0 | `mState` | `Behavior` uses it as the index into [data_ov079_02128280](../config/arm9/overlays/ov079/symbols.txt), a table of pointer-to-member handlers, and calls the one it selects; the king's camera-target update is skipped while it reads 9. |
 | 0x3bc | `mSpawnPosX` | `InitResources` copies `mPosX/mPosY/mPosZ` into 0x3bc/0x3c0/0x3c4 once. |
 | 0x3c0 | `mSpawnPosY` | as above. |
 | 0x3c4 | `mSpawnPosZ` | as above. |
@@ -294,18 +294,18 @@ Byte-neutral cleanup: `Behavior`'s
 
 ---
 
-## Klepto (`include/Klepto.h`, ov062)
+## Klepto (`include/Klepto.h`, [ov062](../config/arm9/overlays/ov062/symbols.txt))
 
 Bodies read: `src/_ZN6Klepto13InitResourcesEv.cpp`,
 `src/_ZN6Klepto8BehaviorEv.cpp`, `src/_ZN6Klepto6RenderEv.cpp`.
 
 | offset | name | evidence |
 | --- | --- | --- |
-| 0x42c | `mState` (`void *`) | `Behavior` reads the word as a pointer, calls the pointer-to-member at its `+0x08` on `this` every frame, and compares it against the file-scope records `data_ov062_0211e14c` / `_0211e15c` / `_0211e17c` **by address**. `func_ov062_0211c658(this, record)` is the setter. |
+| 0x42c | `mState` (`void *`) | `Behavior` reads the word as a pointer, calls the pointer-to-member at its `+0x08` on `this` every frame, and compares it against the file-scope records [data_ov062_0211e14c](../config/arm9/overlays/ov062/symbols.txt) / [data_ov062_0211e15c](../config/arm9/overlays/ov062/symbols.txt) / [data_ov062_0211e17c](../config/arm9/overlays/ov062/symbols.txt) **by address**. [func_ov062_0211c658](../src/func_ov062_0211c658.cpp)(this, record) is the setter. |
 | 0x430 | `mPathNodePosX` | `PathPtr::GetNode(path, &unk_430, mPathNodeIndex)` writes the node here, and the star-carrying branch then does `mPosX = unk_430; mPosY = unk_434; mPosZ = unk_438;`. |
 | 0x434 | `mPathNodePosY` | as above. |
 | 0x438 | `mPathNodePosZ` | as above. |
-| 0x444 | `mTimer` | `DecIfAbove0_Short` on it at the top of every frame, and reloaded with 0x1e the moment the carried actor is lost — in the same block as the state switch back to `data_ov062_0211e17c`. (`Behavior` reached it as `((char *)this) + 0x400 + 0x44`, which is this field.) |
+| 0x444 | `mTimer` | `DecIfAbove0_Short` on it at the top of every frame, and reloaded with 0x1e the moment the carried actor is lost — in the same block as the state switch back to [data_ov062_0211e17c](../config/arm9/overlays/ov062/symbols.txt). (`Behavior` reached it as `((char *)this) + 0x400 + 0x44`, which is this field.) |
 | 0x450 | `mHeldPosX` | `Behavior` writes these three into the held actor's own `mPosX/mPosY/mPosZ` (`p + 0x5c/0x60/0x64`) every frame. |
 | 0x454 | `mHeldPosY` | as above. |
 | 0x458 | `mHeldPosZ` | as above. |
