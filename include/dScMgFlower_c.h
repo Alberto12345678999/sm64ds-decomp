@@ -5,7 +5,7 @@
  * that table to this class rather than to a neighbour.
  *
  * SIZE 0x5ff8, from the factory's own `_ZN7fBase_cnwEj(0x5ff8)`
- * (src/func_ov006_0212b7f8.cpp).
+ * (src/d_s_mg_flower.cpp).
  *
  * FACTORY AND DESTRUCTOR AGREE MEMBER FOR MEMBER. The factory builds
  * mArray at 0x4f38 (0x16 elements of 0x20, element ctor
@@ -36,7 +36,12 @@
  * THE DESTRUCTOR IS NOT DEFINED INLINE -- a leaf, no RTTI descendants of
  * its own. Defined for real in src/_ZN13dScMgFlower_cD1Ev.cpp; D0Ev.cpp
  * carries an identical copy. No separate operator delete is needed --
- * dScMgBase_c, two levels up, already provides one. */
+ * dScMgBase_c, two levels up, already provides one.
+ *
+ * SM64DS RTTI names the implementation dScMgFlower_c. The reconstructed factory
+ * dScMgFlower_c_classInit (historical alias func_ov006_0212b7f8) installs this class's
+ * cartridge vtable for the MG_FLOWER registry profile.
+ */
 #ifndef DSCMGFLOWER_C_H
 #define DSCMGFLOWER_C_H
 #include "dScMgSingle3DBase_c.h"

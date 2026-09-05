@@ -27,8 +27,10 @@ EAD's class names carry a lowercase prefix naming the layer. Measured over the 4
 structs); `_info` closes the 4 ABI records.
 
 In the GameCube Zelda codebases that share this convention the prefix *is* the path:
-`daKrb_c` lives in `d_a_krb.cpp`. `tools/tu_names.py` applies that rule to every RTTI
-class.
+`daKrb_c` lives in `d_a_krb.cpp`. Later NSMBW source independently maps
+`dScBoot_c` to `d_s_boot.cpp` and `daObjFruitTree_c` to
+`d_a_obj_fruit_tree.cpp`. `tools/tu_names.py` applies that lineage convention to
+every RTTI class.
 
 ### This part is a hypothesis, and the ROM cannot confirm it
 
@@ -38,6 +40,19 @@ in all 104 modules finds exactly one source filename ROM-wide — `isdoverlay.c`
 `ASSERTION FAILED FILE=[%s] LINE=[%d] EXP=[%s]` format above it at `0x020868a0`.
 Game code was built with asserts stripped. So the derived filenames are a naming
 *proposal*; nothing writes them where the build can see them.
+
+The prefix mapping does not settle acronym or numeric word boundaries. Candidates
+such as `d_s_mg_bsc.cpp`, `d_s_mg_m_carlo.cpp`,
+`d_s_mg_single3_d_base.cpp`, and `d_s_mg3_d_esp.cpp` are adopted mechanical
+spellings, not evidence for Nintendo's exact tokenization. A numeric family suffix
+such as `jump2` or `memory2` is likewise preserved from the ROM class identity;
+whether an original filename separated the number is unknown.
+
+Multi-class or currently under-segmented runs need an additional anchor. The
+repository basename may follow the ROM-proven primary scene class or the class
+installed by its factory, but that choice does not prove every passenger class was
+named in the original filename. If neither anchor is unique, keep the established
+basename and record the exception rather than selecting an English profile alias.
 
 ## 2. What IS testable: the grouping the convention implies
 

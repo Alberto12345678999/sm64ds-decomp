@@ -5,51 +5,15 @@
     .bss        start:0x02114020 end:0x021141e0 kind:bss align:32
 src/actors/d_a_obj_rc_buranko.cpp:
     complete
-    .text start:0x021111a0 end:0x02111414
-
-src/daObjRcBuranko_c_classInit.c:
-    complete
-    .text start:0x02111414 end:0x02111444
+    .text start:0x021111a0 end:0x02111444
 
 src/actors/d_a_obj_rc_kaitendai.cpp:
     complete
-    .text start:0x02111444 end:0x02111544
+    .text start:0x02111444 end:0x02111580
 
-src/daObjRc_Kaitendai_c_classInit.c:
+src/actors/d_a_obj_rc_hane.cpp:
     complete
-    .text start:0x02111544 end:0x02111580
-
-src/_ZN8ShipWingD1Ev.cpp:
-    complete
-    .text start:0x02111580 end:0x021115b0
-
-src/_ZN8ShipWingD0Ev.cpp:
-    complete
-    .text start:0x021115b0 end:0x021115f4
-
-src/_ZN8ShipWing16CleanupResourcesEv.cpp:
-    complete
-    .text start:0x021115f4 end:0x02111618
-
-src/func_ov036_02111618.c:
-    complete
-    .text start:0x02111618 end:0x0211169c
-
-src/_ZN8ShipWing6RenderEv.cpp:
-    complete
-    .text start:0x0211169c end:0x021116c0
-
-src/_ZN8ShipWing8BehaviorEv.cpp:
-    complete
-    .text start:0x021116c0 end:0x02111854
-
-src/_ZN8ShipWing13InitResourcesEv.cpp:
-    complete
-    .text start:0x02111854 end:0x02111904
-
-src/daObjRc_Hane_c_classInit.c:
-    complete
-    .text start:0x02111904 end:0x0211193c
+    .text start:0x02111580 end:0x0211193c
 
 src/_ZN10DonutBlockD1Ev.cpp:
     complete
@@ -87,17 +51,13 @@ src/func_ov036_02111cc4.c:
     complete
     .text start:0x02111cc4 end:0x02111cd8
 
-src/daObjRc_Tikuwa_c_classInit.c:
+src/d_a_obj_rc_tikuwa.c:
     complete
     .text start:0x02111cd8 end:0x02111d14
 
 src/actors/d_a_obj_rc_guruguru.cpp:
     complete
-    .text start:0x02111d14 end:0x02111f5c
-
-src/daObjRc_Guruguru_c_classInit.c:
-    complete
-    .text start:0x02111f5c end:0x02111f8c
+    .text start:0x02111d14 end:0x02111f8c
 
 src/actors/d_a_obj_rc_dorifu.cpp:
     complete

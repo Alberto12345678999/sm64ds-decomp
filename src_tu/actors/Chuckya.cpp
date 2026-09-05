@@ -51,7 +51,7 @@
  *   [32] 0x0211707c  src/_ZN7Chuckya8BehaviorEv.cpp
  *   [33] 0x02117334  src/_ZN7Chuckya13InitResourcesEv.cpp
  *   [34] 0x02117470  src/_ZN7Chuckya16OnAimedAtWithEggEv.cpp
- *   [35] 0x02117478  src/Chuckya_Spawn.c
+ *   [35] 0x02117478  src/d_a_holhei.c
  */
 
 /* TUBUILD NOTE -- #pragma directive(s) were present in the legacy sources
@@ -201,14 +201,14 @@ extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void* se
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 35 -- Chuckya_Spawn, 0x02117478, size 0x54 */
+/* ROM ordinal 35 -- daHolhei_c_classInit, 0x02117478, size 0x54 */
 /* -------------------------------------------------------------------------- */
-// @symbol Chuckya_Spawn
+// @symbol daHolhei_c_classInit
 /* recovered: vtable identified, globals resolved, declarations from a shared header */
 /* recovered: vtable identified, globals resolved */
 /* resolved: VT0 = _ZTV7Chuckya */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-int *Chuckya_Spawn(void)
+int *daHolhei_c_classInit(void)
 {
     int *p = (int *)_ZN7fBase_cnwEj(1080);
     if (p) {

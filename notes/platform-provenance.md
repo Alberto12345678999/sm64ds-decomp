@@ -50,7 +50,7 @@ same bytes twice.
 
 ### `sizeof` is 0x320, and it takes more than one derived class to see why
 
-`BowserFireSeaArena` starts its own `Model` at 0x324, which alone reads like the
+`daKpa2Bg_c` starts its own `Model` at 0x324, which alone reads like the
 class ending there. But four classes derive from `dBgActor_c` **directly** — one
 non-`dBgActor_c` vtable store each, so no intermediate — and each places a
 4-byte-aligned class member at 0x320, impossible if this class occupied
@@ -67,10 +67,10 @@ Each is read straight off that class's destructor, which destroys its own member
 at 0x320 before storing `_ZTV10dBgActor_c` and running the base.
 
 One layout satisfies all five: **data ends 0x31e, `sizeof` 0x320.** The four
-above align up from 0x31e to 0x320; `BowserFireSeaArena` puts its own three `s16`
+above align up from 0x31e to 0x320; `daKpa2Bg_c` puts its own three `s16`
 at 0x31e/0x320/0x322 so its `Model` lands at 0x324; `daObjRc_Guruguru_c` puts
 a single `s16` at 0x31e, in this class's tail padding, and its `Behavior` reads
-`this+0x31e` and reproduces. Ending at 0x324 satisfies `BowserFireSeaArena` and
+`this+0x31e` and reproduces. Ending at 0x324 satisfies `daKpa2Bg_c` and
 contradicts the other four.
 
 ### `#include "common.h"` must come first — LOAD-BEARING
@@ -212,7 +212,7 @@ The pair goes in registers exactly as two ints either way.
 
 ## `include/RotatingUpDownPlatformUtm.h`
 
-Base and size from the factory (`src/RotatingUpDownPlatformUtm_Spawn.c`):
+Base and size from the factory (`src/d_a_obj_rotate_updown_lift_hs_updown_lift.c`):
 `fBase_c::operator new(936)` — 0x3a8 — then `dBgActor_c::dBgActor_c()`, then stores
 `_ZTV25RotatingUpDownPlatformUtm`. No intermediate base: one non-base vtable
 store, matching the D1 destructor.
@@ -381,7 +381,7 @@ destructor stores three vptrs and destroys `daObjDorifu_c`'s `Model[5]` and
 
 **The tree's "Bs" names are crossed**, and the header does not try to fix it. The
 factory that builds *this* class is `StairsBs_Spawn` (0xdcc, this class's
-vtable), mirroring `StairsBdw_Spawn` in ov043. The function called
+vtable), mirroring `daObjKm1_Dorifu_c_classInit` in ov043. The function called
 `daObjKm3_Dorifu_c_Spawn` builds something else — 800 = 0x320,
 `daObjKuruma_c`'s vtable then ov047 0x0211244c, which is `daObjKm3_Kuruma_c`, a
 class the tree has never named. Untangling the two names is a config change and

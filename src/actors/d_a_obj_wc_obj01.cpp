@@ -17,7 +17,7 @@
  *   [0] 0x021111a0  src/_ZN14daObjWcObj01_cD1Ev.cpp
  *   [1] 0x021111f0  src/_ZN14daObjWcObj01_cD0Ev.cpp
  *   [2] 0x02111254  src/_ZN14daObjWcObj01_c13InitResourcesEv.cpp
- *   [3] 0x02111340  src/daObjWcObj01_c_Spawn.c
+ *   [3] 0x02111340  src/daObjWcObj01_c_classInit.c
  *
  * THE CLASS NAME IS THE CARTRIDGE'S OWN. The decomp used to call this class
  * `FloatOnWaterPlatformWdwSquare`, a coined name. MEASURED in
@@ -59,13 +59,17 @@ extern int data_ov029_02113be8[];
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 3 -- daObjWcObj01_c_Spawn, 0x02111340, size 0x3c */
+/* ROM ordinal 3 -- daObjWcObj01_c_classInit, 0x02111340, size 0x3c */
 /* -------------------------------------------------------------------------- */
-// @symbol daObjWcObj01_c_Spawn
+// @symbol daObjWcObj01_c_classInit
 /* recovered: vtable identified, declarations from a shared header */
 /* recovered: vtable identified */
 /* vtable identified: VT0 = _ZTV17daObjFloatBoard_c */
-extern "C" int *daObjWcObj01_c_Spawn(void)
+/* Reconstructed source-style name: SM64DS proves daObjWcObj01_c through RTTI,
+ * allocation size, vtable identity, and the WC_OBJ01 registry profile;
+ * later EAD lineage supplies classInit. Exact original spelling is not
+ * preserved. Historical alias: daObjWcObj01_c_Spawn. */
+extern "C" int *daObjWcObj01_c_classInit(void)
 {
     int *p = (int *)_ZN7fBase_cnwEj(840);
     if (p) {

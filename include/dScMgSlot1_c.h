@@ -7,12 +7,12 @@
  * (D1), 17 (D0), 18 (own new slot -- stays a raw extern "C" helper,
  * src/func_ov006_0210c674.c, same precedent as every other dScMgBase_c
  * leaf's slot 18), 27 (OnHitByMegaChar), 28 (OnHitFromUnderneath).
- * rtti_vtables.py --own also reports slot 36 (MgBingoBallSlotsShot_Spawn);
+ * rtti_vtables.py --own also reports slot 36 (dScMgSmartball_c_classInit);
  * that one is SPURIOUS -- address-gap math confirms it: the vtable data
  * symbol ends exactly 0x90 bytes (36 words) before the unrelated
- * MgBingoBallSlotsShot_SpawnInfo table, which MgBingoBallSlotsShot_Spawn
+ * g_profile_MG_SMARTBALL table, which dScMgSmartball_c_classInit
  * itself uses to build a completely different, larger object with its own
- * vtable -- excluded, along with MgBingoBallSlotsShot_Spawn and anything
+ * vtable -- excluded, along with dScMgSmartball_c_classInit and anything
  * named "MgBingoBallSlotsShot", from this migration.
  *
  * slot 9's recovered symbol name (_ZN3OAM7SECONDSE, i.e. "OAM::SECONDS") is
@@ -55,7 +55,7 @@
  * destructor now lets the compiler perform the member teardown. Render calls
  * mBetIcon.Render() directly and retains the ROM's virtual dispatch.
  *
- * func_ov006_0210d6b8 remains an explicit C-ABI factory because this compiler
+ * dScMgSlot1_c_classInit remains an explicit C-ABI factory because this compiler
  * cannot reproduce the ROM factory with a usable class-specific or placement
  * operator new spelling (the documented factory wall). Its allocation size,
  * object pointer, member pointer and vtable symbols are nevertheless typed;
@@ -132,7 +132,12 @@
  *
  * Slots 29-35 add no virtual to this class, so the trap cannot recur HERE.  It
  * recurs anywhere else a descendant declared a base slot early, which is the
- * one thing to check before declaring each of the seven that remain. */
+ * one thing to check before declaring each of the seven that remain.
+ *
+ * SM64DS RTTI names the implementation dScMgSlot1_c. The reconstructed factory
+ * dScMgSlot1_c_classInit (historical alias func_ov006_0210d6b8) installs this class's
+ * cartridge vtable for the MG_SLOT1 registry profile.
+ */
 #ifndef DSCMGSLOT1_C_H
 #define DSCMGSLOT1_C_H
 #include "dScMgBase_c.h"

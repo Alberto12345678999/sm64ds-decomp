@@ -7,74 +7,72 @@ src/ARMSaveContext.c	PURE-C	arm9				1		None		-
 src/AddSpikeBomb.c	PURE-C	arm9				1		None		-
 src/AddVec3.c	PURE-C	arm9				1		None		-
 src/daSetSE_c_Spawn.c	WEAK-refs-only	ov002				1		None		-
-src/daBrq_c_classInit.c	WEAK-refs-only	ov070				1		None		-
+src/d_a_brq.c	WEAK-refs-only	ov070				1		None		-
 src/AngleDiff.c	PURE-C	arm9				1		None		-
 src/ApproachAngle.c	PURE-C	arm9				1		None		-
-src/daObjRc_Guruguru_c_classInit.c	WEAK-refs-only	ov036				1		None		-
 src/daObjWc_Obj02_c_classInit.c	WEAK-refs-only	ov029				1		None		-
-src/ArrowPathLift_Spawn.c	WEAK-refs-only	ov091				1		None		-
-src/ArrowSignLeft_Spawn.c	WEAK-refs-only	ov098				1		None		-
-src/ArrowSignRight_Spawn.c	WEAK-refs-only	ov098				1		None		-
+src/d_a_linelift2_km3_lift.c	WEAK-refs-only	ov091				1		None		-
+src/d_a_obj_yajirusi_yajirusi_l.c	WEAK-refs-only	ov098				1		None		-
+src/d_a_obj_yajirusi_yajirusi_r.c	WEAK-refs-only	ov098				1		None		-
 src/AutoloadCallback.c	PURE-C	arm9				1		None		-
-src/BabyPenguin_Spawn.c	WEAK-refs-only	ov072				1		None		-
-src/daObjC0Water_c_classInit.c	WEAK-refs-only	ov012				1		None		-
-src/BigBrickBlock_Spawn.c	WEAK-refs-only	ov002				1		None		-
-src/BigBully_Spawn.c	S1-stores-rom-vptr	ov064			stores _ZTV8BigBully	1		None	_ZTV8BigBully	-
-src/BigMovingIceBlock_Spawn.c	WEAK-refs-only	ov056				1		None		-
-src/BigMrI_Spawn.c	WEAK-refs-only	ov071				1		None		-
-src/daObjBkKillerdai_c_classInit.c	S1-stores-rom-vptr	ov079			stores _ZTV11BillBlaster	1		None	_ZTV11BillBlaster	-
-src/Bird_Spawn.c	WEAK-refs-only	ov009				1		None		-
+src/d_a_pg_bby.c	WEAK-refs-only	ov072				1		None		-
+src/d_a_obj_c0_water.c	WEAK-refs-only	ov012				1		None		-
+src/d_a_obj_block_l_dp_block_l.c	WEAK-refs-only	ov002				1		None		-
+src/daBDonketu_c_classInit.c	S1-stores-rom-vptr	ov064			stores _ZTV8BigBully	1		None	_ZTV8BigBully	-
+src/d_a_obj_ewm_ice_block.c	WEAK-refs-only	ov056				1		None		-
+src/daEykn_c_classInit_EYEKUN_BOSS.c	WEAK-refs-only	ov071				1		None		-
+src/d_a_obj_bk_killerdai.c	S1-stores-rom-vptr	ov079			stores _ZTV11BillBlaster	1		None	_ZTV11BillBlaster	-
+src/d_a_s_bird.c	WEAK-refs-only	ov009				1		None		-
 src/BitUnPack.c	PURE-C					0		None		not-in-delinks
-src/BlackBrickBlock_Spawn.c	WEAK-refs-only	ov002				1		None		-
+src/d_a_obj_block_l_block_ll.c	WEAK-refs-only	ov002				1		None		-
 src/daObjBC_Switch_c_classInit.c	S1-stores-rom-vptr	ov002			stores _ZTV16daObjBC_Switch_c	1		None	_ZTV16daObjBC_Switch_c	-
-src/BlueCoin_Spawn.c	WEAK-refs-only	ov002				1		None		-
-src/BlueFlame_Spawn.c	WEAK-refs-only	ov002				1		None		-
-src/BobOmbBuddy_Spawn.c	WEAK-refs-only	ov084				1		None		-
-src/BobOmb_Spawn.c	WEAK-refs-only	ov102				1		None		-
-src/daBookGen_c_classInit.c	WEAK-refs-only	ov020				1		None		-
-src/BookShot_Spawn.c	WEAK-refs-only	ov020				1		None		-
+src/d_a_coin_blue_coin.c	WEAK-refs-only	ov002				1		None		-
+src/d_a_obj_fire_obj_blue_fire.c	WEAK-refs-only	ov002				1		None		-
+src/d_a_red_bombhei.c	WEAK-refs-only	ov084				1		None		-
+src/d_a_bmb.c	WEAK-refs-only	ov102				1		None		-
+src/d_a_book_gen.c	WEAK-refs-only	ov020				1		None		-
+src/d_a_book_shoot_book.c	WEAK-refs-only	ov020				1		None		-
 src/BookSwitch_Spawn.c	PURE-C	ov016				1		None		-
-src/Bookend_Spawn.c	WEAK-refs-only	ov020				1		None		-
-src/BowserFireSeaArena_Spawn.c	WEAK-refs-only	ov060				1		None		-
-src/BowserFire_Spawn.c	WEAK-refs-only	ov060				1		None		-
-src/daObjFl_Coin_c_classInit.c	S1-stores-rom-vptr	ov064			stores _ZTV19BowserPuzzleManager	1		None	_ZTV19BowserPuzzleManager	-
-src/daObjFl_Puzzle_c_classInit.c	WEAK-refs-only	ov064				1		None		-
-src/BowserShockwaves_Spawn.c	WEAK-refs-only	ov060				1		None		-
-src/daObjWlKoopaShutter_c_classInit.c	S1-stores-rom-vptr	ov026			stores _ZTV13BowserShutter	1		None	_ZTV13BowserShutter	-
-src/BowserSkyPlatform_Spawn.c	S1-stores-rom-vptr	ov060			stores _ZTV17BowserSkyPlatform	1		None	_ZTV17BowserSkyPlatform	-
-src/BowserTail_Spawn.c	WEAK-refs-only	ov060				1		None		-
-src/Bowser_Spawn.c	WEAK-refs-only	ov060				1		None		-
-src/BrickBlockSwitchActivated_Spawn.c	WEAK-refs-only	ov002				1		None		-
-src/BrickBlock_Spawn.c	WEAK-refs-only	ov002				1		None		-
-src/BulletBill_Spawn.c	WEAK-refs-only	ov079				1		None		-
-src/Bullet_Spawn.c	WEAK-refs-only	ov002				1		None		-
-src/Bully_Spawn.c	S1-stores-rom-vptr	ov064			stores _ZTV5Bully	1		None	_ZTV5Bully	-
-src/Butterfly_Spawn.c	WEAK-refs-only	ov100				1		None		-
+src/d_a_book_killer_book.c	WEAK-refs-only	ov020				1		None		-
+src/d_a_kpa2_bg.c	WEAK-refs-only	ov060				1		None		-
+src/d_a_kpa_fire.c	WEAK-refs-only	ov060				1		None		-
+src/d_a_obj_fl_coin.c	S1-stores-rom-vptr	ov064			stores _ZTV19BowserPuzzleManager	1		None	_ZTV19BowserPuzzleManager	-
+src/d_a_obj_fl_puzzle.c	WEAK-refs-only	ov064				1		None		-
+src/d_a_f_ring.c	WEAK-refs-only	ov060				1		None		-
+src/d_a_obj_wl_koopa_shutter.c	S1-stores-rom-vptr	ov026			stores _ZTV13BowserShutter	1		None	_ZTV13BowserShutter	-
+src/d_a_kpa3_bg.c	S1-stores-rom-vptr	ov060			stores _ZTV17BowserSkyPlatform	1		None	_ZTV17BowserSkyPlatform	-
+src/d_a_kpa_tail.c	WEAK-refs-only	ov060				1		None		-
+src/d_a_kpa.c	WEAK-refs-only	ov060				1		None		-
+src/d_a_obj_block_l_sw_block_l.c	WEAK-refs-only	ov002				1		None		-
+src/d_a_obj_block_l_block_l.c	WEAK-refs-only	ov002				1		None		-
+src/d_a_klr.c	WEAK-refs-only	ov079				1		None		-
+src/d_a_propeller_heyho_fire.c	WEAK-refs-only	ov002				1		None		-
+src/daDonketu_c_classInit.c	S1-stores-rom-vptr	ov064			stores _ZTV5Bully	1		None	_ZTV5Bully	-
+src/d_a_btfly.c	WEAK-refs-only	ov100				1		None		-
 src/daObjWc_Obj05_c_classInit.c	S1-stores-rom-vptr	ov029			stores _ZTV15daObjWc_Obj05_c	1		None	_ZTV15daObjWc_Obj05_c	-
 src/daCamTag_c_Spawn.c	WEAK-refs-only	ov002				1		None		-
 src/Camera_UpdateMatrices.c	WEAK-refs-only	ov006				1		None		-
 src/CannonHatch_Spawn.c	WEAK-refs-only	ov002				1		None		-
-src/CapBlockLuigi_Spawn.c	WEAK-refs-only	ov102				1		None		-
-src/CapBlockMario_Spawn.c	WEAK-refs-only	ov102				1		None		-
-src/CapBlockWario_Spawn.c	WEAK-refs-only	ov102				1		None		-
-src/Cap_Spawn.c	WEAK-refs-only	ov002				1		None		-
+src/d_a_obj_hatena_block_cap_block_l.c	WEAK-refs-only	ov102				1		None		-
+src/d_a_obj_hatena_block_cap_block_m.c	WEAK-refs-only	ov102				1		None		-
+src/d_a_obj_hatena_block_cap_block_w.c	WEAK-refs-only	ov102				1		None		-
+src/d_a_obj_mario_cap.c	WEAK-refs-only	ov002				1		None		-
 src/daObjMcWater_c_classInit.c	WEAK-refs-only	ov009				1		None		-
-src/CccArena_Spawn.c	WEAK-refs-only	ov073				1		None		-
-src/CccBigIce_Spawn.c	WEAK-refs-only	ov073				1		None		-
-src/CccSmallIce_Spawn.c	WEAK-refs-only	ov073				1		None		-
-src/CgStairs_Spawn.c	WEAK-refs-only	ov102				1		None		-
+src/daObjEwbIce_c_classInit_EWB_ICE_A.c	WEAK-refs-only	ov073				1		None		-
+src/daObjEwbIce_c_classInit_EWB_ICE_B.c	WEAK-refs-only	ov073				1		None		-
+src/daObjEwbIce_c_classInit_EWB_ICE_C.c	WEAK-refs-only	ov073				1		None		-
+src/d_a_obj_simple_bg_mc_dodai.c	WEAK-refs-only	ov102				1		None		-
 src/daObjWanwanShutter_c_classInit.c	WEAK-refs-only	ov014				1		None		-
 src/ChangeArea.c	PURE-C	arm9				1		None		-
-src/CheepCheep_Spawn.c	WEAK-refs-only	ov090				1		None		-
+src/d_a_pukupuku.c	WEAK-refs-only	ov090				1		None		-
 src/daIDonketu_c_Spawn.c	WEAK-refs-only	ov027				1		None		-
-src/Chuckya_Spawn.c	WEAK-refs-only	ov062				1		None		-
+src/d_a_holhei.c	WEAK-refs-only	ov062				1		None		-
 src/CleanCommonModelDataArr.c	WEAK-refs-only					0		None		not-in-delinks
 src/ClearSpikeBomb.c	PURE-C	arm9				1		None		-
-src/ClockPaintingHandLong_Spawn.c	WEAK-refs-only	ov013				1		None		-
+src/d_a_obj_clock_clock_long.c	WEAK-refs-only	ov013				1		None		-
 src/daObjClockHuriko_c_Spawn.c	S1-stores-rom-vptr	ov013			stores _ZTV18daObjClockHuriko_c	1		None	_ZTV18daObjClockHuriko_c	-
-src/Cloud_Spawn.c	WEAK-refs-only	ov039				1		None		-
-src/daObjCasket_c_classInit.c	WEAK-refs-only	ov071				1		None		-
-src/Coin_Spawn.c	WEAK-refs-only	ov002				1		None		-
+src/d_a_obj_casket.c	WEAK-refs-only	ov071				1		None		-
+src/d_a_coin_coin.c	WEAK-refs-only	ov002				1		None		-
 src/CollectStar.c	PURE-C	arm9				1		None		-
 src/CollectStarInCurLevel.c	PURE-C	arm9				1		None		-
 src/CollectStarInLevel.c	PURE-C	arm9				1		None		-
@@ -90,9 +88,9 @@ src/CpuCopy8.c	PURE-C					0		None		NONMATCHING-draft;not-in-delinks
 src/CpuFastSet.c	PURE-C					0		None		not-in-delinks
 src/CpuSet.c	PURE-C					0		None		not-in-delinks
 src/Crash.c	WEAK-refs-only	arm9				1		None		-
-src/CrazedCrate_Spawn.c	WEAK-refs-only	ov080				1		None		-
+src/daBttBk_c_classInit.c	WEAK-refs-only	ov080				1		None		-
 src/CrossVec3.c	PURE-C	arm9				1		None		-
-src/CutsceneObject_Spawn.c	WEAK-refs-only	ov002				1		None		-
+src/d_a_demo.c	WEAK-refs-only	ov002				1		None		-
 src/DMAStartTransfer.c	WEAK-refs-only					0		None		not-in-delinks
 src/DMAStartTransferFB.c	WEAK-refs-only					0		None		not-in-delinks
 src/DMASyncFillTransfer.c	PURE-C	arm9				1		None		-
@@ -105,26 +103,25 @@ src/DeathTable_SetBit.c	PURE-C	arm9				1		None		-
 src/DecIfAbove0_Byte.c	PURE-C	arm9				1		None		-
 src/DecIfAbove0_Short.c	PURE-C	arm9				1		None		-
 src/DecompressLZ16.c	PURE-C	arm9				1		None		-
-src/daObjKm1_Ukishima_c_classInit.c	S1-stores-rom-vptr	ov043			stores _ZTV19daObjKm1_Ukishima_c	1		None	_ZTV19daObjKm1_Ukishima_c	-
 src/DisableSoundPlayersForCredits.c	WEAK-refs-only	arm9				1		None		-
 src/DisableVramBanks.c	PURE-C	arm9				1		None		-
 src/Div.c	PURE-C					0		None		not-in-delinks
-src/daObjRc_Tikuwa_c_classInit.c	WEAK-refs-only	ov036				1		None		-
-src/Door_Spawn.c	S1-stores-rom-vptr	ov100			stores _ZTV4Door	1		None	_ZTV4Door	-
-src/DorrieCap_Spawn.c	WEAK-refs-only	ov065				1		None		-
+src/d_a_obj_rc_tikuwa.c	WEAK-refs-only	ov036				1		None		-
+src/d_a_door.c	S1-stores-rom-vptr	ov100			stores _ZTV4Door	1		None	_ZTV4Door	-
+src/daDossyCap_c_classInit.c	WEAK-refs-only	ov065				1		None		-
 src/DotVec3.c	PURE-C	arm9				1		None		-
 src/Enable3dEngines.c	PURE-C	arm9				1		None		-
-src/EnemySpawner_Spawn.c	WEAK-refs-only	ov002				1		None		-
-src/EnemySwitchTag_Spawn.c	WEAK-refs-only	ov002				1		None		-
+src/d_a_e_create.c	WEAK-refs-only	ov002				1		None		-
+src/d_a_e_switch.c	WEAK-refs-only	ov002				1		None		-
 src/EnterBigBoosHaunt.c	PURE-C	arm9				1		None		-
 src/Entry.c	WEAK-refs-only	arm9				1		None		-
-src/ExclamationBlockVs_Spawn.c	WEAK-refs-only	ov102				1		None		-
-src/ExclamationBlock_Spawn.c	WEAK-refs-only	ov102				1		None		-
-src/ExclamationSwitch_Spawn.c	WEAK-refs-only	ov002				1		None		-
+src/d_a_obj_hatena_block_vs_item_block.c	WEAK-refs-only	ov102				1		None		-
+src/d_a_obj_hatena_block_item_block.c	WEAK-refs-only	ov102				1		None		-
+src/d_a_obj_switch_hanswitch.c	WEAK-refs-only	ov002				1		None		-
 src/ExitLevel.c	PURE-C	arm9				1		None		-
 src/ExitMinigameMenu.c	WEAK-refs-only	arm9				1		None		-
 src/daChScene_c_Spawn.c	WEAK-refs-only	ov002				1		None		-
-src/daObjKm2_Nobiru_c_classInit.c	WEAK-refs-only	ov045				1		None		-
+src/d_a_obj_km2_nobiru.c	WEAK-refs-only	ov045				1		None		-
 src/FS_CloseFile.c	PURE-C	arm9				1		None		-
 src/FS_InitFile.c	PURE-C	arm9				1		None		-
 src/FS_LoadOverlay.c	PURE-C	arm9				1		None		-
@@ -133,30 +130,29 @@ src/FUN_02029a68.c	PURE-C	arm9				1		None		-
 src/FUN_02029ab0.c	WEAK-refs-only	arm9				1		None		-
 src/FUN_0202a130.c	PURE-C	arm9				1		None		-
 src/actors/d_a_obj_km2_fall_block.cpp	S1-stores-rom-vptr	ov045			stores _ZTV12FallBlockBfs	1		None	_ZTV12FallBlockBfs/_ZTV16daObjFallBlock_c	-
-src/daObjFl_Fall_Block_c_classInit.c	S1-stores-rom-vptr	ov022			stores _ZTV16daObjFallBlock_c	1		None	_ZTV16daObjFallBlock_c/_ZTV20daObjFl_Fall_Block_c	-
-src/daObjBk_Fall_Block_c_classInit.c	S1-stores-rom-vptr	ov015			stores _ZTV20daObjBk_Fall_Block_c	1		None	_ZTV20daObjBk_Fall_Block_c/_ZTV16daObjFallBlock_c	-
-src/FirePiranhaPlantBig_Spawn.c	WEAK-refs-only	ov084				1		None		-
-src/FirePiranhaPlantSmall_Spawn.c	WEAK-refs-only	ov084				1		None		-
-src/FirePiranhaPlant_Spawn.c	WEAK-refs-only	ov084				1		None		-
-src/daObjKm2_Agaru_c_classInit.c	S1-stores-rom-vptr	ov045			stores _ZTV15FireSeaElevator	1		None	_ZTV15FireSeaElevator	-
-src/Fireball_Spawn.c	WEAK-refs-only	ov002				1		None		-
+src/d_a_obj_fl_fall_block.c	S1-stores-rom-vptr	ov022			stores _ZTV16daObjFallBlock_c	1		None	_ZTV16daObjFallBlock_c/_ZTV20daObjFl_Fall_Block_c	-
+src/d_a_f_pkn_firepakun.c	WEAK-refs-only	ov084				1		None		-
+src/d_a_f_pkn_firepakun_s.c	WEAK-refs-only	ov084				1		None		-
+src/d_a_f_pkn_pakun2.c	WEAK-refs-only	ov084				1		None		-
+src/d_a_obj_km2_agaru.c	S1-stores-rom-vptr	ov045			stores _ZTV15FireSeaElevator	1		None	_ZTV15FireSeaElevator	-
+src/d_a_f_pkn_ball.c	WEAK-refs-only	ov002				1		None		-
 src/daMcFlag_c_Spawn.c	WEAK-refs-only	ov009				1		None		-
 src/FlameChompFire_Spawn.c	WEAK-refs-only	ov070				1		None		-
 src/FlameChomp_Spawn.c	WEAK-refs-only	ov070				1		None		-
-src/daObjFl_Block_c_classInit.c	WEAK-refs-only	ov022				1		None		-
+src/d_a_obj_fl_block.c	WEAK-refs-only	ov022				1		None		-
 src/daObjKi_Ita_c_classInit.c	S1-stores-rom-vptr	ov016			stores _ZTV17daObjFloatBoard_c	1		None	_ZTV17daObjFloatBoard_c/_ZTV23FloatOnWaterPlatformJrb	-
 src/actors/d_a_obj_wc_obj06.cpp	S1-stores-rom-vptr	ov029			stores _ZTV17daObjFloatBoard_c	1		None	_ZTV17daObjFloatBoard_c/_ZTV14daObjWcObj06_c	-
 src/actors/d_a_obj_wc_obj01.cpp	S1-stores-rom-vptr	ov029			stores _ZTV17daObjFloatBoard_c	1		None	_ZTV17daObjFloatBoard_c/_ZTV14daObjWcObj01_c	-
 src/FloatingFloorBfs_Spawn.c	S1-stores-rom-vptr	ov045			stores _ZTV14daObjUkiyuka_c	1		None	_ZTV14daObjUkiyuka_c/_ZTV16FloatingFloorBfs	-
-src/FloatingFloorLllBig_Spawn.c	S1-stores-rom-vptr	ov022			stores _ZTV14daObjUkiyuka_c	1		None	_ZTV14daObjUkiyuka_c/_ZTV21FloatingFloorLllSmall	-
-src/FloatingFloorLllSmall_Spawn.c	S1-stores-rom-vptr	ov022			stores _ZTV14daObjUkiyuka_c	1		None	_ZTV14daObjUkiyuka_c/_ZTV21FloatingFloorLllSmall	-
+src/d_a_obj_fl_ukiyuka_fl_ukiyuka.c	S1-stores-rom-vptr	ov022			stores _ZTV14daObjUkiyuka_c	1		None	_ZTV14daObjUkiyuka_c/_ZTV21FloatingFloorLllSmall	-
+src/d_a_obj_fl_ukiyuka_fl_ukiyuka_l.c	S1-stores-rom-vptr	ov022			stores _ZTV14daObjUkiyuka_c	1		None	_ZTV14daObjUkiyuka_c/_ZTV21FloatingFloorLllSmall	-
 src/daPropeller_Heyho_c_classInit.c	WEAK-refs-only	ov070				1		None		-
-src/FortressTowerWall_Spawn.c	WEAK-refs-only	ov002				1		None		-
-src/FortressTower_Spawn.c	WEAK-refs-only	ov102				1		None		-
-src/FortressWallBreakable_Spawn.c	WEAK-refs-only	ov079				1		None		-
-src/FortressWall_Spawn.c	WEAK-refs-only	ov079				1		None		-
+src/d_a_obj_block_l_bk_futa.c	WEAK-refs-only	ov002				1		None		-
+src/d_a_obj_simple_bg_bk_tower.c	WEAK-refs-only	ov102				1		None		-
+src/daObjBk_Kabe_c_classInit_BK_KABE00.c	WEAK-refs-only	ov079				1		None		-
+src/daObjBk_Kabe_c_classInit_BK_KABE01.c	WEAK-refs-only	ov079				1		None		-
 src/FreeGfxSlotsById.c	PURE-C	ov004				1		None		-
-src/Fwoosh_Spawn.c	WEAK-refs-only	ov091				1		None		-
+src/d_a_hyuhyu.c	WEAK-refs-only	ov091				1		None		-
 src/Geometry_MatrixMultiply3x3.c	PURE-C	arm9				1		None		-
 src/GetAngleToCamera.c	PURE-C	arm9				1		None		-
 src/GetCRC16.c	PURE-C					0		None		not-in-delinks
@@ -178,23 +174,21 @@ src/GiveHealth.c	PURE-C	arm9				1		None		-
 src/GiveLives.c	PURE-C	arm9				1		None		-
 src/GiveRedCoins.c	PURE-C	arm9				1		None		-
 src/GiveVsStars.c	PURE-C	arm9				1		None		-
-src/GoombaLarge_Spawn.c	WEAK-refs-only	ov084				1		None		-
-src/GoombaSmall_Spawn.c	WEAK-refs-only	ov084				1		None		-
-src/Goomba_Spawn.c	WEAK-refs-only	ov084				1		None		-
-src/GreenShellBlockTag_Spawn.c	WEAK-refs-only	ov002				1		None		-
-src/Grindel_Spawn.c	S1-stores-rom-vptr	ov025			stores _ZTV11daDsnBase_c	1		None	_ZTV11daDsnBase_c/_ZTV7daDkk_c	-
+src/d_a_krb_kuribo_l.c	WEAK-refs-only	ov084				1		None		-
+src/d_a_krb_kuribo_s.c	WEAK-refs-only	ov084				1		None		-
+src/d_a_krb_kuribo.c	WEAK-refs-only	ov084				1		None		-
+src/d_a_obj_block_item_tag_blk_gnshell_tag.c	WEAK-refs-only	ov002				1		None		-
+src/d_a_dkk.c	S1-stores-rom-vptr	ov025			stores _ZTV11daDsnBase_c	1		None	_ZTV11daDsnBase_c/_ZTV7daDkk_c	-
 src/Halt.c	PURE-C					0		None		not-in-delinks
-src/HauntedChair_Spawn.c	WEAK-refs-only	ov020				1		None		-
-src/HealingHeart_Spawn.c	WEAK-refs-only	ov002				1		None		-
-src/HeaveHo_Spawn.c	WEAK-refs-only	ov077				1		None		-
+src/d_a_chair.c	WEAK-refs-only	ov020				1		None		-
+src/d_a_obj_heart.c	WEAK-refs-only	ov002				1		None		-
+src/d_a_popoi.c	WEAK-refs-only	ov077				1		None		-
 src/HideArea.c	PURE-C	arm9				1		None		-
 src/HitDeathPlane.c	WEAK-refs-only	arm9				1		None		-
-src/HootTheOwl_Spawn.c	WEAK-refs-only	ov094				1		None		-
+src/d_a_owl.c	WEAK-refs-only	ov094				1		None		-
 src/HuffUnCompReadByCallback.c	PURE-C					0		None		not-in-delinks
-src/daObjTdFuta_c_classInit.c	S1-stores-rom-vptr	ov032			stores _ZTV13daObjTdFuta_c	1		None	_ZTV13daObjTdFuta_c	-
-src/daObjTdWater_c_classInit.c	WEAK-refs-only	ov032				1		None		-
 src/IPCSend.c	WEAK-refs-only	arm9				1		None		-
-src/daObjIceBlock_c_classInit.c	WEAK-refs-only	ov081				1		None		-
+src/d_a_obj_ice_block.c	WEAK-refs-only	ov081				1		None		-
 src/daObjIceBoard_c_classInit.c	WEAK-refs-only	ov018				1		None		-
 src/IceSlideManager_Spawn.c	WEAK-refs-only	ov019				1		None		-
 src/InitControllerMode.c	PURE-C	arm9				1		None		-
@@ -215,28 +209,28 @@ src/IsPlayerWarping.c	PURE-C	arm9				1		None		-
 src/IsStarCollected.c	PURE-C	arm9				1		None		-
 src/IsStarCollectedInCurLevel.c	PURE-C	arm9				1		None		-
 src/IsStarCollectedInLevel.c	PURE-C	arm9				1		None		-
-src/JetStream_Spawn.c	WEAK-refs-only	ov064				1		None		-
-src/Key_Spawn.c	WEAK-refs-only	ov089				1		None		-
+src/daWater_Hakidasi_c_classInit.c	WEAK-refs-only	ov064				1		None		-
+src/d_a_obj_key_obj_key.c	WEAK-refs-only	ov089				1		None		-
 src/KillPlayer.c	WEAK-refs-only	arm9				1		None		-
-src/KingBobOmb_Spawn.c	WEAK-refs-only	ov078				1		None		-
-src/Klepto_Spawn.c	WEAK-refs-only	ov062				1		None		-
-src/daObjBk_Botaosi_c_classInit.c	WEAK-refs-only	ov015				1		None		-
-src/KoopaFlag_Spawn.c	WEAK-refs-only	ov062				1		None		-
-src/KoopaShell_Spawn.c	WEAK-refs-only	ov102				1		None		-
-src/KoopaSmall_Spawn.c	WEAK-refs-only	ov062				1		None		-
-src/KoopaTheQuick_Spawn.c	WEAK-refs-only	ov062				1		None		-
-src/Koopa_Spawn.c	WEAK-refs-only	ov062				1		None		-
+src/d_a_bombking.c	WEAK-refs-only	ov078				1		None		-
+src/d_a_jango.c	WEAK-refs-only	ov062				1		None		-
+src/d_a_obj_bk_botaosi.c	WEAK-refs-only	ov015				1		None		-
+src/d_a_r_flag.c	WEAK-refs-only	ov062				1		None		-
+src/d_a_shl.c	WEAK-refs-only	ov102				1		None		-
+src/d_a_nknk_nokonoko_s.c	WEAK-refs-only	ov062				1		None		-
+src/d_a_r_nk.c	WEAK-refs-only	ov062				1		None		-
+src/d_a_nknk_nokonoko.c	WEAK-refs-only	ov062				1		None		-
 src/LZ77UnCompReadByCallbackWrite16bit.c	PURE-C					0		None		not-in-delinks
 src/LZ77UnCompReadNormalWrite8bit.c	PURE-C					0		None		not-in-delinks
-src/LakituBro_Spawn.c	WEAK-refs-only	ov085				1		None		-
-src/Lakitu_Spawn.c	WEAK-refs-only	ov077				1		None		-
-src/LastStar_Spawn.c	WEAK-refs-only	ov089				1		None		-
-src/daObjFl_London_c_classInit.c	S1-stores-rom-vptr	ov022			stores _ZTV10LavaBridge	1		None	_ZTV10LavaBridge	-
-src/LavaBubble_Spawn.c	WEAK-refs-only	ov064				1		None		-
-src/daObjFl_UkiKi_c_classInit.c	WEAK-refs-only	ov022				1		None		-
-src/daObjFl_Seesaw_c_classInit.c	S1-stores-rom-vptr	ov022			stores _ZTV10LavaSeesaw	1		None	_ZTV10LavaSeesaw	-
+src/d_a_c_jugem.c	WEAK-refs-only	ov085				1		None		-
+src/d_a_jgm.c	WEAK-refs-only	ov077				1		None		-
+src/d_a_obj_key_last_star.c	WEAK-refs-only	ov089				1		None		-
+src/d_a_obj_fl_london.c	S1-stores-rom-vptr	ov022			stores _ZTV10LavaBridge	1		None	_ZTV10LavaBridge	-
+src/daBbl_c_classInit.c	WEAK-refs-only	ov064				1		None		-
+src/d_a_obj_fl_uki_ki.c	WEAK-refs-only	ov022				1		None		-
+src/d_a_obj_fl_seesaw.c	S1-stores-rom-vptr	ov022			stores _ZTV10LavaSeesaw	1		None	_ZTV10LavaSeesaw	-
 src/LenVec3.c	PURE-C	arm9				1		None		-
-src/daObjC1Hikari_c_classInit.c	WEAK-refs-only	ov010				1		None		-
+src/d_a_obj_c1_hikari.c	WEAK-refs-only	ov010				1		None		-
 src/LinkSilverStarAndStarMarker.c	PURE-C	ov002				1		None		-
 src/LoadArchive.c	PURE-C	arm9				1		None		-
 src/LoadBlueCoinModel.c	WEAK-refs-only	arm9				1		None		-
@@ -251,7 +245,7 @@ src/LoadLevelNoReturn.c	PURE-C	arm9				1		None		-
 src/LoadOverlay.c	PURE-C	arm9				1		None		-
 src/LoadSilverStarAndNumber.c	WEAK-refs-only	ov002				1		None		-
 src/LoadTextNarcs.c	PURE-C	arm9				1		None		-
-src/MantaRay_Spawn.c	WEAK-refs-only	ov090				1		None		-
+src/d_a_manta.c	WEAK-refs-only	ov090				1		None		-
 src/Math_Function_0203b0fc.c	PURE-C	arm9				1		None		-
 src/Math_Function_0203b14c.c	PURE-C	arm9				1		None		-
 src/Matrix3x3_FromQuaternion.c	PURE-C	arm9				1		None		-
@@ -272,31 +266,30 @@ src/Matrix4x3_FromRotationZ.c	PURE-C	arm9				1		None		-
 src/Matrix4x3_FromRotationZXYExt.c	PURE-C	arm9				1		None		-
 src/Matrix4x3_FromTranslation.c	PURE-C	arm9				1		None		-
 src/Matrix4x3_LoadIdentity.c	PURE-C	arm9				1		None		-
-src/MegaMushroomBlockTag_Spawn.c	WEAK-refs-only	ov002				1		None		-
+src/d_a_obj_block_item_tag_blk_skinoko_tag.c	WEAK-refs-only	ov002				1		None		-
 src/MegaMushroomCreateTag_Spawn.c	WEAK-refs-only	ov002				1		None		-
-src/MegaMushroom_Spawn.c	WEAK-refs-only	ov002				1		None		-
+src/d_a_1up_scaleup_kinoko.c	WEAK-refs-only	ov002				1		None		-
 src/Message_DrawCenteredLine.c	WEAK-refs-only	arm9				1		None		-
-src/daObjFl_Amilift_c_classInit.c	S1-stores-rom-vptr	ov064			stores _ZTV12MetalNetLift	1		None	_ZTV12MetalNetLift	-
+src/d_a_obj_fl_amilift.c	S1-stores-rom-vptr	ov064			stores _ZTV12MetalNetLift	1		None	_ZTV12MetalNetLift	-
 src/daObjMc_Metalnet_c_classInit.c	WEAK-refs-only	ov009				1		None		-
-src/MgBobOmbSquad_Spawn.c	WEAK-refs-only	ov006				1		None		-
-src/MgHideAndBooSeek_Spawn.c	WEAK-refs-only	ov006				1		None		-
-src/MgLakituLaunch_Spawn.c	P2-vtable-only	ov006	dScMgPachinko_c	dScMgPachinko_c	vtable dScMgPachinko_c slot 38 @0x2104258	1		True		-
-src/MgMemoryMaster_Spawn.c	S1-stores-rom-vptr	ov006			stores _ZTV14dScMgMemory2_c	1		None	_ZTV14dScMgMemory2_c/_ZTV19dScMgSingle3DBase_c	-
-src/MgMemoryMatch_Spawn.c	S1-stores-rom-vptr	ov006			stores _ZTV13dScMgMemory_c	1		None	_ZTV13dScMgMemory_c/_ZTV19dScMgSingle3DBase_c	-
-src/MgPuzzlePanelPuzzlePanic_Spawn.c	WEAK-refs-only	ov006				1		None		-
-src/dScMgCurling_c_classInit.c	WEAK-refs-only	ov006				1		None		-
-src/MgSortOrSplode_Spawn.c	WEAK-refs-only	ov006				1		None		-
-src/MgWanted_Spawn.c	WEAK-refs-only	ov006				1		None		-
+src/d_s_mg_pachinko.c	WEAK-refs-only	ov006				1		None		-
+src/d_s_mg_teresa.c	WEAK-refs-only	ov006				1		None		-
+src/d_s_mg_pachinko2.c	P2-vtable-only	ov006	dScMgPachinko_c	dScMgPachinko_c	vtable dScMgPachinko_c slot 38 @0x2104258	1		True		-
+src/d_s_mg_memory2.c	S1-stores-rom-vptr	ov006			stores _ZTV14dScMgMemory2_c	1		None	_ZTV14dScMgMemory2_c/_ZTV19dScMgSingle3DBase_c	-
+src/d_s_mg_memory.c	S1-stores-rom-vptr	ov006			stores _ZTV13dScMgMemory_c	1		None	_ZTV13dScMgMemory_c/_ZTV19dScMgSingle3DBase_c	-
+src/d_s_mg_panel.c	WEAK-refs-only	ov006				1		None		-
+src/d_s_mg_curling.c	WEAK-refs-only	ov006				1		None		-
+src/d_s_mg_bomroom.c	WEAK-refs-only	ov006				1		None		-
+src/d_s_mg_luigi.c	WEAK-refs-only	ov006				1		None		-
 src/Mod.c	PURE-C					0		None		not-in-delinks
-src/Moneybag_Spawn.c	WEAK-refs-only	ov081				1		None		-
-src/MontyMoleRock_Spawn.c	WEAK-refs-only	ov080				1		None		-
-src/MontyMole_Spawn.c	WEAK-refs-only	ov080				1		None		-
-src/MotherPenguin_Spawn.c	WEAK-refs-only	ov018				1		None		-
-src/MovingBarBig_Spawn.c	WEAK-refs-only	ov015				1		None		-
-src/MovingBarSmall_Spawn.c	WEAK-refs-only	ov015				1		None		-
-src/MrBlizzard_Spawn.c	WEAK-refs-only	ov081				1		None		-
-src/MrI_Spawn.c	WEAK-refs-only	ov071				1		None		-
-src/MugenBgm_Spawn.c	WEAK-refs-only	ov002				1		None		-
+src/d_a_gmch.c	WEAK-refs-only	ov081				1		None		-
+src/d_a_choro_rock.c	WEAK-refs-only	ov080				1		None		-
+src/d_a_choropu.c	WEAK-refs-only	ov080				1		None		-
+src/d_a_obj_bk_dossunbar_bk_dossunbar_l.c	WEAK-refs-only	ov015				1		None		-
+src/d_a_obj_bk_dossunbar_bk_dossunbar_s.c	WEAK-refs-only	ov015				1		None		-
+src/d_a_snowman.c	WEAK-refs-only	ov081				1		None		-
+src/daEykn_c_classInit_EYEKUN.c	WEAK-refs-only	ov071				1		None		-
+src/d_a_mugen_bgm.c	WEAK-refs-only	ov002				1		None		-
 src/MulMat3x3Mat3x3.c	PURE-C	arm9				1		None		-
 src/MulMat4x3Mat4x3.c	PURE-C	arm9				1		None		-
 src/MulVec3Mat3x3.c	PURE-C	arm9				1		None		-
@@ -315,92 +308,88 @@ src/NumCoins.c	PURE-C	arm9				1		None		-
 src/NumRedCoins.c	PURE-C	arm9				1		None		-
 src/NumStars.c	PURE-C	arm9				1		None		-
 src/NumVsStarsObtained.c	PURE-C	arm9				1		None		-
-src/Number_Spawn.c	WEAK-refs-only	ov002				1		None		-
+src/d_a_obj_number.c	WEAK-refs-only	ov002				1		None		-
 src/OSReadROMArea.c	PURE-C					0		None		not-in-delinks
 src/OS_GetInitArenaLo.c	PURE-C	arm9				1		None		-
 src/OS_SleepThread.c	WEAK-refs-only	arm9				1		None		-
 src/OS_WakeupThread.c	WEAK-refs-only	arm9				1		None		-
 src/ObjectMessageIDToActualMessageID.c	PURE-C	arm9				1		None		-
-src/OneUpLogo_Spawn.c	WEAK-refs-only	ov002				1		None		-
-src/OneUpMushroomBlockTag_Spawn.c	WEAK-refs-only	ov002				1		None		-
-src/OneUpMushroom_Spawn.c	WEAK-refs-only	ov002				1		None		-
+src/d_a_obj1_up_logo.c	WEAK-refs-only	ov002				1		None		-
+src/d_a_obj_block_item_tag_blk_okinoko_tag.c	WEAK-refs-only	ov002				1		None		-
+src/d_a_1up_oneupkinoko.c	WEAK-refs-only	ov002				1		None		-
 src/OpenCannon.c	PURE-C	arm9				1		None		-
 src/OpenCannonInCurLevel.c	PURE-C	arm9				1		None		-
 src/OpenCannonInLevel.c	PURE-C	arm9				1		None		-
 src/OrangeBallBillboard_Spawn.c	WEAK-refs-only	ov044				1		None		-
 src/Ov004_Deallocate.c	PURE-C	ov004				1		None		-
-src/Painting_Spawn.c	S1-stores-rom-vptr	ov080			stores _ZTV8Painting	1		None	_ZTV8Painting	-
-src/daObjC1Peach_c_classInit.c	WEAK-refs-only	ov010				1		None		-
-src/PiranhaPlant_Spawn.c	WEAK-refs-only	ov084				1		None		-
+src/d_a_pic_gate.c	S1-stores-rom-vptr	ov080			stores _ZTV8Painting	1		None	_ZTV8Painting	-
+src/d_a_obj_c1_peach.c	WEAK-refs-only	ov010				1		None		-
+src/d_a_pkn.c	WEAK-refs-only	ov084				1		None		-
 src/Player_DisableInteraction.c	PURE-C	ov002				1		None		-
 src/Player_PlaySoundEffect.c	PURE-C	arm9				1		None		-
 src/Player_ReleaseHeldActor.c	PURE-C	ov002				1		None		-
 src/Player_ScaleByCharFactor.c	PURE-C					0		None		not-in-delinks
-src/PokeySegment_Spawn.c	WEAK-refs-only	ov096				1		None		-
-src/Pokey_Spawn.c	WEAK-refs-only	ov096				1		None		-
-src/daObjBkBillboard_c_classInit.c	S1-stores-rom-vptr	ov015			stores _ZTV18daObjBkBillboard_c	1		None	_ZTV18daObjBkBillboard_c	-
-src/daObjKm2_Ami_Bou_c_classInit.c	WEAK-refs-only	ov045				1		None		-
-src/PoppingLavaBubbles_Spawn.c	S1-stores-rom-vptr	ov002			stores _ZTV18PoppingLavaBubbles	1		None	_ZTV18PoppingLavaBubbles	-
-src/PowerFlower_Spawn.c	WEAK-refs-only	ov002				1		None		-
+src/d_a_sanbo_sanbo_body.c	WEAK-refs-only	ov096				1		None		-
+src/d_a_sanbo_sanbo.c	WEAK-refs-only	ov096				1		None		-
+src/d_a_obj_km2_ami_bou.c	WEAK-refs-only	ov045				1		None		-
+src/d_a_obj_lava.c	S1-stores-rom-vptr	ov002			stores _ZTV18PoppingLavaBubbles	1		None	_ZTV18PoppingLavaBubbles	-
+src/d_a_obj_power_up_item.c	WEAK-refs-only	ov002				1		None		-
 src/daSCre_c_Spawn.c	S1-stores-rom-vptr	ov018			stores _ZTV8daSCre_c	1		None	_ZTV8daSCre_c	-
-src/PowerStar_Spawn.c	WEAK-refs-only	ov002				1		None		-
+src/d_a_star_star.c	WEAK-refs-only	ov002				1		None		-
 src/PrepareVsMode.c	WEAK-refs-only	arm9				1		None		-
-src/PrincessPeach_Spawn.c	WEAK-refs-only	ov085				1		None		-
-src/PushBlock_Spawn.c	S1-stores-rom-vptr	ov002			stores _ZTV16daObjPushblock_c	1		None	_ZTV16daObjPushblock_c	-
-src/daObjDpBrock_c_classInit.c	WEAK-refs-only	ov025				1		None		-
-src/daObjDlPyramidDummy_c_classInit.c	WEAK-refs-only	ov024				1		None		-
-src/daObjDlPyramid_c_classInit.c	WEAK-refs-only	ov024				1		None		-
+src/d_a_peach.c	WEAK-refs-only	ov085				1		None		-
+src/d_a_obj_pushblock.cpp	S1-stores-rom-vptr	ov002			stores _ZTV16daObjPushblock_c	1		None	_ZTV16daObjPushblock_c	-
+src/d_a_obj_dp_brock.c	WEAK-refs-only	ov025				1		None		-
+src/d_a_obj_dl_pyramid_dummy.c	WEAK-refs-only	ov024				1		None		-
+src/d_a_obj_dl_pyramid.c	WEAK-refs-only	ov024				1		None		-
 src/Quaternion_FromVector3.c	WEAK-refs-only	arm9				1		None		-
 src/Quaternion_Normalize.c	PURE-C	arm9				1		None		-
 src/Quaternion_SLerp.c	PURE-C	arm9				1		None		-
-src/QuestionBlock_Spawn.c	WEAK-refs-only	ov102				1		None		-
+src/d_a_obj_hatena_block_hatena_block.c	WEAK-refs-only	ov102				1		None		-
 src/RLUnCompReadByCallbackWrite16bit.c	PURE-C					0		None		not-in-delinks
 src/RLUnCompReadNormalWrite8bit.c	PURE-C					0		None		not-in-delinks
-src/daObj_Mip_Key_c_classInit.c	WEAK-refs-only	ov085				1		None		-
-src/Rabbit_Spawn.c	WEAK-refs-only	ov085				1		None		-
-src/RacingPenguin_Spawn.c	WEAK-refs-only	ov019				1		None		-
+src/d_a_obj_mip_key.c	WEAK-refs-only	ov085				1		None		-
+src/d_a_mip.c	WEAK-refs-only	ov085				1		None		-
+src/d_a_pg_rcer.c	WEAK-refs-only	ov019				1		None		-
 src/RandomIntInternal.c	PURE-C	arm9				1		None		-
 src/ReadSignedVarInt.c	PURE-C	arm9				1		None		-
 src/ReadUnalignedInt.c	PURE-C	arm9				1		None		-
 src/ReadUnalignedShort.c	PURE-C	arm9				1		None		-
 src/ReadUnalignedUshort.c	PURE-C	arm9				1		None		-
-src/RedCoin_Spawn.c	WEAK-refs-only	ov002				1		None		-
-src/RedFlame_Spawn.c	WEAK-refs-only	ov002				1		None		-
+src/d_a_coin_red_coin.c	WEAK-refs-only	ov002				1		None		-
+src/d_a_obj_fire_obj_red_fire.c	WEAK-refs-only	ov002				1		None		-
 src/RequestScreenFade.c	PURE-C	ov007				1		None		-
 src/ResetCrashScreen.c	WEAK-refs-only	arm9				1		None		-
 src/ResetInput.c	PURE-C	arm9				1		None		-
 src/ResetKuppaScript.c	PURE-C	arm9				1		None		-
-src/daObjKm1_Kurumajiku_c_classInit.c	S1-stores-rom-vptr	ov043			stores _ZTV11RickshawBdw	1		None	_ZTV11RickshawBdw/_ZTV17daObjKurumajiku_c	-
+src/d_a_obj_km1_kurumajiku.c	S1-stores-rom-vptr	ov043			stores _ZTV11RickshawBdw	1		None	_ZTV11RickshawBdw/_ZTV17daObjKurumajiku_c	-
 src/actors/daObjKm3_Kurumajiku_c.cpp	S1-stores-rom-vptr	ov047			stores _ZTV17daObjKurumajiku_c	1		None	_ZTV17daObjKurumajiku_c/_ZTV21daObjKm3_Kurumajiku_c	-
 src/daObjKm1_Kuruma_c_classInit.c	S1-stores-rom-vptr	ov043			stores _ZTV13daObjKuruma_c	1		None	_ZTV13daObjKuruma_c/_ZTV17daObjKm1_Kuruma_c	-
-src/actors/daObjKm3_Kuruma_c.cpp	S1-stores-rom-vptr	ov047			stores _ZTV13daObjKuruma_c	1		None	_ZTV13daObjKuruma_c/_ZTV17daObjKm3_Kuruma_c	-
-src/daObjKi_Hasira_c_classInit.c	S1-stores-rom-vptr	ov016			stores _ZTV10RockPillar	1		None	_ZTV10RockPillar	-
-src/RockTriangle_Spawn.c	WEAK-refs-only	ov102				1		None		-
-src/RollingIronBall_Spawn.c	WEAK-refs-only	ov100				1		None		-
-src/daObjFlMaruta_c_classInit.c	S1-stores-rom-vptr	ov022			stores _ZTV13RollingLogLll	1		None	_ZTV13RollingLogLll/_ZTV13daObjMaruta_c	-
-src/daObjHmMaruta_c_classInit.c	S1-stores-rom-vptr	ov030			stores _ZTV13RollingLogTtm	1		None	_ZTV13RollingLogTtm/_ZTV13daObjMaruta_c	-
-src/RollingRock_Spawn.c	S1-stores-rom-vptr	ov021			stores _ZTV11RollingRock	1		None	_ZTV11RollingRock	-
-src/RopeBarrier_Spawn.c	WEAK-refs-only	ov102				1		None		-
-src/daObjBk_Rotebar_c_classInit.c	WEAK-refs-only	ov015				1		None		-
-src/RotatingClockHand_Spawn.c	WEAK-refs-only	ov035				1		None		-
-src/RotatingCogSmall_Spawn.c	WEAK-refs-only	ov035				1		None		-
-src/daObjFl_Koma_D_c_classInit.c	S1-stores-rom-vptr	ov022			stores _ZTV16daObjKaitendai_c	1		None	_ZTV16daObjKaitendai_c/_ZTV19RotatingPlatformLll	-
-src/daObjRc_Kaitendai_c_classInit.c	S1-stores-rom-vptr	ov036			stores _ZTV16daObjKaitendai_c	1		None	_ZTV16daObjKaitendai_c/_ZTV18RotatingPlatformRr	-
+src/actors/d_a_obj_km3_kuruma.cpp	S1-stores-rom-vptr	ov047			stores _ZTV13daObjKuruma_c	1		None	_ZTV13daObjKuruma_c/_ZTV17daObjKm3_Kuruma_c	-
+src/d_a_obj_ki_hasira.c	S1-stores-rom-vptr	ov016			stores _ZTV10RockPillar	1		None	_ZTV10RockPillar	-
+src/d_a_obj_simple_bg_ki_hasira_dai.c	WEAK-refs-only	ov102				1		None		-
+src/d_a_ibl.c	WEAK-refs-only	ov100				1		None		-
+src/d_a_obj_fl_maruta.c	S1-stores-rom-vptr	ov022			stores _ZTV13RollingLogLll	1		None	_ZTV13RollingLogLll/_ZTV13daObjMaruta_c	-
+src/d_a_obj_hm_maruta.c	S1-stores-rom-vptr	ov030			stores _ZTV13RollingLogTtm	1		None	_ZTV13RollingLogTtm/_ZTV13daObjMaruta_c	-
+src/d_a_grock.c	S1-stores-rom-vptr	ov021			stores _ZTV11RollingRock	1		None	_ZTV11RollingRock	-
+src/d_a_obj_simple_bg_mc_hazad.c	WEAK-refs-only	ov102				1		None		-
+src/d_a_obj_ct_mecha10_ct_mecha10.c	WEAK-refs-only	ov035				1		None		-
+src/d_a_obj_ct_mecha10_ct_mecha12s.c	WEAK-refs-only	ov035				1		None		-
+src/d_a_obj_fl_koma_d.c	S1-stores-rom-vptr	ov022			stores _ZTV16daObjKaitendai_c	1		None	_ZTV16daObjKaitendai_c/_ZTV19RotatingPlatformLll	-
 src/actors/d_a_obj_wc_obj07.cpp	S1-stores-rom-vptr	ov029			stores _ZTV16daObjKaitendai_c	1		None	_ZTV16daObjKaitendai_c/_ZTV19RotatingPlatformWdw	-
-src/daObjBk_Ukisima_c_classInit.c	S1-stores-rom-vptr	ov015			stores _ZTV16daObjKaitendai_c	1		None	_ZTV16daObjKaitendai_c/_ZTV17daObjBk_Ukisima_c	-
-src/RotatingUpDownPlatformUtm_Spawn.c	WEAK-refs-only	ov091				1		None		-
-src/RotatingUpDownPlatform_Spawn.c	WEAK-refs-only	ov091				1		None		-
+src/d_a_obj_rotate_updown_lift_hs_updown_lift.c	WEAK-refs-only	ov091				1		None		-
+src/d_a_obj_rotate_updown_lift_updown_lift.c	WEAK-refs-only	ov091				1		None		-
 src/RunKuppaScript.c	PURE-C	arm9				1		None		-
 src/Scuttlebug_SetState.c	PURE-C	ov071				1		None		-
-src/Scuttlebug_Spawn.c	WEAK-refs-only	ov071				1		None		-
+src/daSpd_c_classInit.c	WEAK-refs-only	ov071				1		None		-
 src/daObjWakame_c_Spawn.c	S1-stores-rom-vptr	ov002			stores _ZTV13daObjWakame_c	1		None	_ZTV13daObjWakame_c	-
-src/SeesawBdw_Spawn.c	WEAK-refs-only	ov095				1		None		-
-src/SeesawBfs_Spawn.c	WEAK-refs-only	ov095				1		None		-
-src/SeesawBob_Spawn.c	WEAK-refs-only	ov095				1		None		-
-src/SeesawBsPlank_Spawn.c	WEAK-refs-only	ov095				1		None		-
-src/SeesawBsZigZag_Spawn.c	WEAK-refs-only	ov095				1		None		-
-src/SeesawRr_Spawn.c	WEAK-refs-only	ov095				1		None		-
-src/SeesawUtm_Spawn.c	WEAK-refs-only	ov095				1		None		-
+src/d_a_obj_seesaw_km1_seesaw.c	WEAK-refs-only	ov095				1		None		-
+src/d_a_obj_seesaw_km2_yokoseesaw.c	WEAK-refs-only	ov095				1		None		-
+src/d_a_obj_seesaw_bomb_seesaw.c	WEAK-refs-only	ov095				1		None		-
+src/d_a_obj_seesaw_km3_seesaw.c	WEAK-refs-only	ov095				1		None		-
+src/d_a_obj_seesaw_km3_yokoseesaw.c	WEAK-refs-only	ov095				1		None		-
+src/d_a_obj_seesaw_rc_seesaw.c	WEAK-refs-only	ov095				1		None		-
+src/d_a_obj_seesaw_seesaw.c	WEAK-refs-only	ov095				1		None		-
 src/SetBg0Offset.c	PURE-C	arm9				1		None		-
 src/SetBg1Offset.c	PURE-C	arm9				1		None		-
 src/SetBg2Offset.c	PURE-C	arm9				1		None		-
@@ -421,104 +410,101 @@ src/SharedFilePtr_Construct_TexSeq.c	PURE-C	arm9				1		None		-
 src/SharedFilePtr_Destruct_Anim.c	PURE-C	arm9				1		None		-
 src/SharedFilePtr_Destruct_Clsn.c	PURE-C	arm9				1		None		-
 src/SharedFilePtr_Destruct_TexSeq.c	PURE-C	arm9				1		None		-
-src/Shark_Spawn.c	WEAK-refs-only	ov090				1		None		-
-src/ShipDown_Spawn.c	WEAK-refs-only	ov016				1		None		-
-src/ShipUp_Spawn.c	WEAK-refs-only	ov016				1		None		-
+src/d_a_shark.c	WEAK-refs-only	ov090				1		None		-
+src/d_a_obj_ki_fune_ki_fune.c	WEAK-refs-only	ov016				1		None		-
+src/d_a_obj_ki_fune_ki_fune_up.c	WEAK-refs-only	ov016				1		None		-
 src/daObjKsWater_c_classInit.c	WEAK-refs-only	ov017				1		None		-
-src/daObjRc_Hane_c_classInit.c	WEAK-refs-only	ov036				1		None		-
 src/ShowArea.c	PURE-C	arm9				1		None		-
 src/ShowCrashScreen.c	WEAK-refs-only	arm9				1		None		-
 src/daObjBSwdoor_c_classInit.c	S1-stores-rom-vptr	ov014			stores _ZTV10ShutterBob	1		None	_ZTV10ShutterBob/_ZTV13daObjSwdoor_c	-
-src/daObjCvShutter_c_classInit.c	S1-stores-rom-vptr	ov021			stores _ZTV16daObjCvShutter_c	1		None	_ZTV16daObjCvShutter_c/_ZTV13daObjSwdoor_c	-
-src/SignPost_Spawn.c	WEAK-refs-only	ov002				1		None		-
-src/SilverStarBlockTag_Spawn.c	WEAK-refs-only	ov002				1		None		-
-src/SilverStar_Spawn.c	WEAK-refs-only	ov002				1		None		-
-src/Skeeter_Spawn.c	S1-stores-rom-vptr	ov090			stores _ZTV7Skeeter	1		None	_ZTV7Skeeter	-
-src/daObjSm_Lift_c_classInit.c	S1-stores-rom-vptr	ov018			stores _ZTV7SkiLift	1		None	_ZTV7SkiLift	-
-src/SlideDecorationBlueSmiley_Spawn.c	WEAK-refs-only	ov031				1		None		-
-src/SlideDecorationOrangeSmiley_Spawn.c	WEAK-refs-only	ov031				1		None		-
-src/SlideDecorationSilverStar_Spawn.c	WEAK-refs-only	ov031				1		None		-
-src/SlideDecorationYellowStar_Spawn.c	WEAK-refs-only	ov031				1		None		-
-src/SlidingBox_Spawn.c	WEAK-refs-only	ov016				1		None		-
-src/SlidingIceSpawner_Spawn.c	WEAK-refs-only	ov027				1		None		-
-src/SlidingIce_Spawn.c	WEAK-refs-only	ov027				1		None		-
-src/SlidingPlatformBdw_Spawn.c	WEAK-refs-only	ov091				1		None		-
-src/SlidingPlatformBfsRectangle_Spawn.c	WEAK-refs-only	ov091				1		None		-
-src/SlidingPlatformBfsSquare_Spawn.c	WEAK-refs-only	ov091				1		None		-
-src/SlidingPlatformBsLong_Spawn.c	WEAK-refs-only	ov091				1		None		-
-src/SlidingPlatformBsWide_Spawn.c	WEAK-refs-only	ov091				1		None		-
-src/SlidingPlatformRr_Spawn.c	WEAK-refs-only	ov091				1		None		-
-src/SlidingPlatformWf_Spawn.c	WEAK-refs-only	ov091				1		None		-
+src/d_a_obj_tatefuda.c	WEAK-refs-only	ov002				1		None		-
+src/d_a_obj_block_item_tag_blk_slvstar_tag.c	WEAK-refs-only	ov002				1		None		-
+src/d_a_star_silver_star.c	WEAK-refs-only	ov002				1		None		-
+src/d_a_menbo.c	S1-stores-rom-vptr	ov090			stores _ZTV7Skeeter	1		None	_ZTV7Skeeter	-
+src/d_a_obj_sm_lift.c	S1-stores-rom-vptr	ov018			stores _ZTV7SkiLift	1		None	_ZTV7SkiLift	-
+src/d_a_obj_hs_billboard_hs_b_star.c	WEAK-refs-only	ov031				1		None		-
+src/d_a_obj_hs_billboard_hs_y_star.c	WEAK-refs-only	ov031				1		None		-
+src/d_a_obj_hs_billboard_hs_moon.c	WEAK-refs-only	ov031				1		None		-
+src/d_a_obj_hs_billboard_hs_star.c	WEAK-refs-only	ov031				1		None		-
+src/d_a_slide_box.c	WEAK-refs-only	ov016				1		None		-
+src/d_a_obj_sl_ice_block_sl_iceblock.c	WEAK-refs-only	ov027				1		None		-
+src/d_a_obj_sl_ice_block_sl_iceblock_shot.c	WEAK-refs-only	ov027				1		None		-
+src/d_a_obj_simple_lift_km1_deru.c	WEAK-refs-only	ov091				1		None		-
+src/d_a_obj_simple_lift_km2_rifut02.c	WEAK-refs-only	ov091				1		None		-
+src/d_a_obj_simple_lift_km2_rifut01.c	WEAK-refs-only	ov091				1		None		-
+src/d_a_obj_simple_lift_km3_deru02.c	WEAK-refs-only	ov091				1		None		-
+src/d_a_obj_simple_lift_km3_deru01.c	WEAK-refs-only	ov091				1		None		-
+src/d_a_obj_simple_lift_rc_rift01.c	WEAK-refs-only	ov091				1		None		-
+src/d_a_obj_simple_lift_bk_transbar.c	WEAK-refs-only	ov091				1		None		-
 src/Snd_SendCommand.c	PURE-C	arm9				1		None		-
-src/Snowball_Spawn.c	WEAK-refs-only	ov081				1		None		-
-src/SnowmanBody_Spawn.c	WEAK-refs-only	ov072				1		None		-
-src/SnowmanHead_Spawn.c	WEAK-refs-only	ov072				1		None		-
-src/Snufit_Spawn.c	WEAK-refs-only	ov065				1		None		-
+src/d_a_snowball.c	WEAK-refs-only	ov081				1		None		-
+src/d_a_bg_snm_bdy.c	WEAK-refs-only	ov072				1		None		-
+src/d_a_bg_snm_hed.c	WEAK-refs-only	ov072				1		None		-
+src/daYurei_Mucho_c_classInit.c	WEAK-refs-only	ov065				1		None		-
 src/SoftReset.c	PURE-C					0		None		not-in-delinks
 src/daSoundObj_c_Spawn.c	S1-stores-rom-vptr	ov002			stores _ZTV12daSoundObj_c	1		None	_ZTV12daSoundObj_c	-
 src/Sound_PlayIfNotActive.c	PURE-C	arm9				1		None		-
-src/SpikeBomb_Spawn.c	WEAK-refs-only	ov060				1		None		-
-src/Spindrift_Spawn.c	WEAK-refs-only	ov081				1		None		-
-src/daObjCtMecha11_c_classInit.c	WEAK-refs-only	ov035				1		None		-
-src/Spiny_Spawn.c	WEAK-refs-only	ov077				1		None		-
+src/d_a_kirai.c	WEAK-refs-only	ov060				1		None		-
+src/d_a_huwa.c	WEAK-refs-only	ov081				1		None		-
+src/d_a_obj_ct_mecha11.c	WEAK-refs-only	ov035				1		None		-
+src/d_a_tgz.c	WEAK-refs-only	ov077				1		None		-
 src/Sprite_SetAnimation.c	PURE-C	ov007				1		None		-
 src/Sqrt.c	PURE-C					0		None		not-in-delinks
-src/SquareMetalNetLift_Spawn.c	WEAK-refs-only	ov091				1		None		-
-src/SquarePathLift_Spawn.c	WEAK-refs-only	ov052				1		None		-
+src/d_a_linelift2_km2_susumu.c	WEAK-refs-only	ov091				1		None		-
+src/d_a_obj_emm_yuka.c	WEAK-refs-only	ov052				1		None		-
 src/Squasher_Spawn.c	WEAK-refs-only	ov023				1		None		-
-src/StarDoor_Spawn.c	WEAK-refs-only	ov100				1		None		-
-src/StarMarker_Spawn.c	WEAK-refs-only	ov002				1		None		-
-src/StarSwitch_Spawn.c	WEAK-refs-only	ov002				1		None		-
+src/d_a_star_gate.c	WEAK-refs-only	ov100				1		None		-
+src/d_a_star_base.c	WEAK-refs-only	ov002				1		None		-
+src/d_a_obj_switch_star_switch.c	WEAK-refs-only	ov002				1		None		-
 src/StartExitCharacterWipe.c	PURE-C	arm9				1		None		-
 src/StartFile.c	WEAK-refs-only	arm9				1		None		-
 src/StartIntroCutscene.c	WEAK-refs-only	arm9				1		None		-
 src/StartMinigameMenu.c	WEAK-refs-only	arm9				1		None		-
 src/StartWithFarCamera.c	PURE-C	arm9				1		None		-
-src/StaticRock_Spawn.c	WEAK-refs-only	ov102				1		None		-
-src/daObjPile_c_classInit.c	S1-stores-rom-vptr	ov091			stores _ZTV5Stump	1		None	_ZTV5Stump	-
+src/d_a_obj_simple_bg_ki_iwa.c	WEAK-refs-only	ov102				1		None		-
+src/d_a_obj_pile.c	S1-stores-rom-vptr	ov091			stores _ZTV5Stump	1		None	_ZTV5Stump	-
 src/SubVec3.c	PURE-C	arm9				1		None		-
 src/SublevelToLevel.c	PURE-C	arm9				1		None		-
-src/daObjWlSubmarine_c_classInit.c	S1-stores-rom-vptr	ov026			stores _ZTV9Submarine	1		None	_ZTV9Submarine	-
+src/d_a_obj_wl_submarine.c	S1-stores-rom-vptr	ov026			stores _ZTV9Submarine	1		None	_ZTV9Submarine	-
 src/SurfaceInfo_TestFlag0x20.c	PURE-C	arm9				1		None		-
-src/daObjRcBuranko_c_classInit.c	S1-stores-rom-vptr	ov036			stores _ZTV16daObjRcBuranko_c	1		None	_ZTV16daObjRcBuranko_c	-
 src/daObjWc_Obj04_c_classInit.c	WEAK-refs-only	ov029				1		None		-
 src/daObjC0_Switch_c_Spawn.c	S1-stores-rom-vptr	ov012			stores _ZTV16daObjC0_Switch_c	1		None	_ZTV16daObjC0_Switch_c	-
-src/Swoop_Spawn.c	WEAK-refs-only	ov065				1		None		-
+src/daBasabasa_c_classInit.c	WEAK-refs-only	ov065				1		None		-
 src/TTC_MovingBar_Spawn.c	S1-stores-rom-vptr	ov065			stores _ZTV16daObjCtMecha05_c	1		None	_ZTV16daObjCtMecha05_c	-
-src/daObjCtMecha09_c_classInit.c	WEAK-refs-only	ov065				1		None		-
-src/Thwomp_Spawn.c	S1-stores-rom-vptr	ov091			stores _ZTV11daDsnBase_c	1		None	_ZTV11daDsnBase_c/_ZTV6Thwomp	-
+src/d_a_obj_ct_mecha09.c	WEAK-refs-only	ov065				1		None		-
+src/d_a_dsn.c	S1-stores-rom-vptr	ov091			stores _ZTV11daDsnBase_c	1		None	_ZTV11daDsnBase_c/_ZTV6Thwomp	-
 src/daObjKm2_Gura_c_classInit.c	S1-stores-rom-vptr	ov045			stores _ZTV15daObjGuragura_c	1		None	_ZTV15daObjGuragura_c/_ZTV18TiltingPlatformBfs	-
 src/daObjFl_Gura_c_classInit.c	S1-stores-rom-vptr	ov064			stores _ZTV15daObjGuragura_c	1		None	_ZTV15daObjGuragura_c/_ZTV18TiltingPlatformLll	-
-src/daObjTtFuta_c_classInit.c	S1-stores-rom-vptr	ov033			stores _ZTV9TinyCover	1		None	_ZTV9TinyCover	-
-src/daObjTtWater_c_classInit.c	WEAK-refs-only	ov033				1		None		-
-src/Toad_Spawn.c	WEAK-refs-only	ov085				1		None		-
-src/Tornado_Spawn.c	WEAK-refs-only	ov096				1		None		-
+src/d_a_obj_tt_futa.c	S1-stores-rom-vptr	ov033			stores _ZTV9TinyCover	1		None	_ZTV9TinyCover	-
+src/d_a_obj_tt_water.c	WEAK-refs-only	ov033				1		None		-
+src/d_a_kinopio.c	WEAK-refs-only	ov085				1		None		-
+src/d_a_tor.c	WEAK-refs-only	ov096				1		None		-
 src/TouchArea_Update.c	PURE-C	ov001				1		None		-
-src/daObjBk_Lift_c_classInit.c	WEAK-refs-only	ov015				1		None		-
+src/d_a_obj_bk_lift.c	WEAK-refs-only	ov015				1		None		-
 src/Trap_Spawn.c	S1-stores-rom-vptr	ov010			stores _ZTV14daObjC1_Trap_c	1		None	_ZTV14daObjC1_Trap_c	-
-src/daObjTbox_c_classInit.c	WEAK-refs-only	ov064				1		None		-
-src/TtcConveyorBeltLarge_Spawn.c	WEAK-refs-only	ov065				1		None		-
-src/TtcConveyorBeltSmall_Spawn.c	WEAK-refs-only	ov065				1		None		-
-src/TtcMovingCubeA_Spawn.c	WEAK-refs-only	ov065				1		None		-
-src/TtcMovingCubeB_Spawn.c	WEAK-refs-only	ov065				1		None		-
-src/TtcRotatingCube_Spawn.c	WEAK-refs-only	ov065				1		None		-
-src/TtcRotatingGear_Spawn.c	WEAK-refs-only	ov065				1		None		-
-src/TtcRotatingPrism_Spawn.c	WEAK-refs-only	ov065				1		None		-
-src/TtcRotatingTriangle_Spawn.c	WEAK-refs-only	ov065				1		None		-
+src/d_a_obj_tbox.c	WEAK-refs-only	ov064				1		None		-
+src/daObjCtMecha04_c_classInit_CT_MECHA04L.c	WEAK-refs-only	ov065				1		None		-
+src/daObjCtMecha04_c_classInit_CT_MECHA04S.c	WEAK-refs-only	ov065				1		None		-
+src/daObjCtMecha08_c_classInit_CT_MECHA08A.c	WEAK-refs-only	ov065				1		None		-
+src/daObjCtMecha08_c_classInit_CT_MECHA08B.c	WEAK-refs-only	ov065				1		None		-
+src/daObjCtRotateBlock_c_classInit_CT_MECHA01.c	WEAK-refs-only	ov065				1		None		-
+src/daObjCtKaitendai_c_classInit_CT_MECHA06.c	WEAK-refs-only	ov065				1		None		-
+src/daObjCtRotateBlock_c_classInit_CT_MECHA02.c	WEAK-refs-only	ov065				1		None		-
+src/daObjCtKaitendai_c_classInit_CT_MECHA07.c	WEAK-refs-only	ov065				1		None		-
 src/TurnBacklightOff.c	PURE-C	arm9				1		None		-
 src/TurnBacklightOn.c	PURE-C	arm9				1		None		-
-src/daObjHmBskt_c_classInit.c	S1-stores-rom-vptr	ov030			stores _ZTV13daObjHmBskt_c	1		None	_ZTV13daObjHmBskt_c	-
-src/UkikiStar_Spawn.c	WEAK-refs-only	ov030				1		None		-
-src/UkikiThief_Spawn.c	WEAK-refs-only	ov030				1		None		-
-src/Unagi_Spawn.c	S1-stores-rom-vptr	ov016			stores _ZTV5Unagi	1		None	_ZTV5Unagi	-
+src/d_a_obj_hm_bskt.c	S1-stores-rom-vptr	ov030			stores _ZTV13daObjHmBskt_c	1		None	_ZTV13daObjHmBskt_c	-
+src/d_a_mky_monkey_star.c	WEAK-refs-only	ov030				1		None		-
+src/d_a_mky_monkey_thief.c	WEAK-refs-only	ov030				1		None		-
+src/d_a_moray.c	S1-stores-rom-vptr	ov016			stores _ZTV5Unagi	1		None	_ZTV5Unagi	-
 src/UnloadArchive.c	PURE-C	arm9				1		None		-
 src/UnloadArchives.c	PURE-C	arm9				1		None		-
 src/UnloadBlueCoinModel.c	WEAK-refs-only	arm9				1		None		-
 src/UnloadOverlay.c	PURE-C	arm9				1		None		-
 src/UnloadSilverStarAndNumber.c	WEAK-refs-only	ov002				1		None		-
-src/UpDownLiftBbh_Spawn.c	WEAK-refs-only	ov095				1		None		-
-src/UpDownLiftHmc_Spawn.c	WEAK-refs-only	ov095				1		None		-
-src/UpDownLiftRr_Spawn.c	WEAK-refs-only	ov095				1		None		-
+src/d_a_udlift_udlift_teresa.c	WEAK-refs-only	ov095				1		None		-
+src/d_a_udlift_udlift.c	WEAK-refs-only	ov095				1		None		-
+src/d_a_udlift_rc_rift02.c	WEAK-refs-only	ov095				1		None		-
 src/UpdateMinimap.c	PURE-C	arm9				1		None		-
 src/VBlankIntrWait.c	PURE-C					0		None		not-in-delinks
 src/Vec2_Len.c	WEAK-refs-only	arm9				1		None		-
@@ -541,8 +527,8 @@ src/Vec3_RotateYAndTranslate.c	PURE-C	arm9				1		None		-
 src/Vec3_Sub.c	PURE-C	arm9				1		None		-
 src/Vec3_VertAngle.c	WEAK-refs-only	arm9				1		None		-
 src/daChRoom_c_Spawn.c	WEAK-refs-only	ov002				1		None		-
-src/VolcanoFire_Spawn.c	WEAK-refs-only	ov022				1		None		-
-src/daObjFl_Ring_c_classInit.c	S1-stores-rom-vptr	ov022			stores _ZTV11VolcanoRing	1		None	_ZTV11VolcanoRing	-
+src/d_a_obj_volcano_cannon.c	WEAK-refs-only	ov022				1		None		-
+src/d_a_obj_fl_ring.c	S1-stores-rom-vptr	ov022			stores _ZTV11VolcanoRing	1		None	_ZTV11VolcanoRing	-
 src/Vram__Map.c	PURE-C	arm9				1		None		-
 src/daObjWc_Mizu_c_classInit.c	WEAK-refs-only	ov029				1		None		-
 src/WM_CheckStateEx.c	WEAK-refs-only	arm9				1		None		-
@@ -550,24 +536,24 @@ src/WM_GetSystemWork.c	PURE-C	arm9				1		None		-
 src/WM_SendCommand.c	WEAK-refs-only	arm9				1		None		-
 src/WM_SetCallbackTable.c	PURE-C	arm9				1		None		-
 src/WaitByLoop.c	PURE-C					0		None		not-in-delinks
-src/WallSign_Spawn.c	WEAK-refs-only	ov085				1		None		-
-src/WarpPipe_Spawn.c	WEAK-refs-only	ov102				1		None		-
+src/d_a_obj_kanban.c	WEAK-refs-only	ov085				1		None		-
+src/d_a_obj_simple_bg_dokan.c	WEAK-refs-only	ov102				1		None		-
 src/WarpPlayer.c	PURE-C	arm9				1		None		-
 src/daWarpkun_c_Spawn.c	S1-stores-rom-vptr	ov002			stores _ZTV11daWarpkun_c	1		None	_ZTV11daWarpkun_c	-
-src/WaterBomb_Spawn.c	WEAK-refs-only	ov098				1		None		-
+src/d_a_wbm.c	WEAK-refs-only	ov098				1		None		-
 src/daObjWc_Obj03_c_classInit.c	WEAK-refs-only	ov029				1		None		-
-src/WaterRing_Spawn.c	WEAK-refs-only	ov064				1		None		-
-src/WaterSuction_Spawn.c	WEAK-refs-only	ov026				1		None		-
+src/daWater_Ring_c_classInit.c	WEAK-refs-only	ov064				1		None		-
+src/d_a_water_suikomi.c	WEAK-refs-only	ov026				1		None		-
 src/daObjWaterfall_c_classInit.cpp	WEAK-refs-only	ov002				1		None		-
-src/Whirlpool_Spawn.c	WEAK-refs-only	ov026				1		None		-
-src/WhompKing_Spawn.c	S1-stores-rom-vptr	ov079			stores _ZTV5Whomp	1		None	_ZTV5Whomp	-
-src/Whomp_Spawn.c	S1-stores-rom-vptr	ov079			stores _ZTV5Whomp	1		None	_ZTV5Whomp	-
-src/Wiggler_Spawn.c	S1-stores-rom-vptr	ov034			stores _ZTV7Wiggler	1		None	_ZTV7Wiggler	-
-src/game/actors/WingFeather/WingFeather_Spawn.c	WEAK-refs-only	ov002				1		None		-
+src/d_a_water_tatumaki.c	WEAK-refs-only	ov026				1		None		-
+src/d_a_btn_batanking.c	S1-stores-rom-vptr	ov079			stores _ZTV5Whomp	1		None	_ZTV5Whomp	-
+src/d_a_btn_batan.c	S1-stores-rom-vptr	ov079			stores _ZTV5Whomp	1		None	_ZTV5Whomp	-
+src/d_a_hanachan.c	S1-stores-rom-vptr	ov034			stores _ZTV7Wiggler	1		None	_ZTV7Wiggler	-
+src/game/actors/WingFeather/d_a_feather.c	WEAK-refs-only	ov002				1		None		-
 src/Wireless_Reset.c	PURE-C	arm9				1		None		-
 src/WithMeshClsn_UpdateContinuous_Veneer.c	WEAK-refs-only	arm9				1		None		-
 src/WithMeshClsn_UpdateDiscreteNoLava_veneer.c	WEAK-refs-only	arm9				1		None		-
-src/daYegg_c_classInit.c	WEAK-refs-only	ov002				1		None		-
+src/d_a_yegg.c	WEAK-refs-only	ov002				1		None		-
 src/_Z19UnloadLevelOverlaysi.c	P4-mangled-freefn	arm9			_Z19UnloadLevelOverlaysi	1	active	None		-
 src/_Z23LoadMinimapChangeObjecti5Fix12IiEh.c	P4-mangled-freefn	arm9			_Z23LoadMinimapChangeObjecti5Fix12IiEh	1		None		by-value-class-param
 src/_ZN10BrickBlockD0Ev.c	DTOR-ONLY	ov002	daObjBlockItemTag_c	BrickBlock/daObjBlockItemTag_c	_ZN10BrickBlockD0Ev	1		True	_ZTV10BrickBlock	-
@@ -1395,23 +1381,23 @@ src/_dmul.c	PURE-C					0		None		not-in-delinks
 src/_ll_sdiv.c	PURE-C					0		None		not-in-delinks
 src/_s32_div_f.c	PURE-C					0		None		not-in-delinks
 src/_u32_div_f.c	PURE-C					0		None		not-in-delinks
-src/actors/BigBooIcon/BigBooIcon_Spawn.c	WEAK-refs-only	ov063				1		None		-
+src/actors/BigBooIcon/daTrsIcon_c_classInit.c	WEAK-refs-only	ov063				1		None		-
 src/actors/Boo/_ZN3Boo13InitResourcesEv.c	P1-vtable+mangled	ov063	daTrs_c	Boo/daTrs_c	vtable daTrs_c slot 0 @0x211b9bc | _ZN3Boo13InitResourcesEv	1		True		-
 src/actors/Boo/_ZN3Boo16OnPendingDestroyEv.c	P1-vtable+mangled	ov063	daTrs_c	Boo/daTrs_c	vtable daTrs_c slot 12 @0x211af6c | _ZN3Boo16OnPendingDestroyEv	1		True		-
-src/actors/BooCage/BooCage_Spawn.c	WEAK-refs-only	ov063				1		None		-
-src/actors/Bookshelf/Bookshelf_Spawn.c	WEAK-refs-only	ov063				1		None		-
-src/actors/FallBlockBbh/daObjTh_Fall_Block_c_classInit.c	S1-stores-rom-vptr	ov063			stores _ZTV12FallBlockBbh	1		None	_ZTV12FallBlockBbh/_ZTV16daObjFallBlock_c	-
+src/actors/BooCage/daTBasket_c_classInit.c	WEAK-refs-only	ov063				1		None		-
+src/actors/Bookshelf/daTrsTrap_c_classInit_BOOKSHELF.c	WEAK-refs-only	ov063				1		None		-
+src/actors/FallBlockBbh/d_a_obj_th_fall_block.c	S1-stores-rom-vptr	ov063			stores _ZTV12FallBlockBbh	1		None	_ZTV12FallBlockBbh/_ZTV16daObjFallBlock_c	-
 src/actors/FallBlockBbh/_ZN12FallBlockBbhD0Ev.cpp	DTOR-ONLY	ov063	daObjTh_Fall_Block_c	FallBlockBbh/daObjTh_Fall_Block_c	_ZN12FallBlockBbhD0Ev	1		True	_ZTV10dBgActor_c/_ZTV12FallBlockBbh/_ZTV16daObjFallBlock_c	-
 src/actors/MadPiano/_ZN8MadPianoD1Ev.cpp	DTOR-ONLY	ov063	daPiano_c	MadPiano/daPiano_c	_ZN8MadPianoD1Ev	1		True	_ZTV10dBgActor_c/_ZTV8MadPiano	-
 src/actors/MadPiano/__sinit_ov063_0211e5fc.c	WEAK-refs-only	ov063				0		None		extra-sections:init
-src/actors/MansionSteps/MansionSteps_Spawn.c	WEAK-refs-only	ov063				1		None		-
+src/actors/MansionSteps/daTrsTrap_c_classInit_KAIDAN.c	WEAK-refs-only	ov063				1		None		-
 src/actors/MansionSteps/_ZN12MansionSteps16OnPendingDestroyEv.c	P1-vtable+mangled	ov063	daTrsTrap_c	MansionSteps/daTrsTrap_c	vtable daTrsTrap_c slot 12 @0x211ce30 | _ZN12MansionSteps16OnPendingDestroyEv	1		True		-
-src/actors/MerryGoRound/MerryGoRound_Spawn.c	WEAK-refs-only	ov063				1		None		-
-src/actors/TrapDoor/TrapDoor_Spawn.c	WEAK-refs-only	ov063				1		None		-
+src/actors/MerryGoRound/daTrsTrap_c_classInit_MERRYGOROUND.c	WEAK-refs-only	ov063				1		None		-
+src/actors/TrapDoor/daTrsTrap_c_classInit_TERESAPIT.c	WEAK-refs-only	ov063				1		None		-
 src/dScMgJump2_c_Spawn.c	P2-vtable-only	ov006	dScMgJump_c	dScMgJump_c	vtable dScMgJump_c slot 38 @0x20efaf0	1		True	_ZTV12dScMgJump2_c/_ZTV14dScMgD3DBase_c	-
 src/daObjAbuku_c_Spawn.c	S1-stores-rom-vptr	ov002			stores _ZTV12daObjAbuku_c	1		None	_ZTV12daObjAbuku_c	-
 src/daObjEmmLog_c_Spawn.c	S1-stores-rom-vptr	ov052			stores _ZTV13daObjEmmLog_c	1		None	_ZTV13daObjEmmLog_c	-
-src/daSCoin_c_Spawn.c	S1-stores-rom-vptr	ov002			stores _ZTV9daSCoin_c	1		None	_ZTV9daSCoin_c	-
+src/d_a_s_coin.c	S1-stores-rom-vptr	ov002			stores _ZTV9daSCoin_c	1		None	_ZTV9daSCoin_c	-
 src/engine/fader/_ZN10FaderColorD0Ev.c	DTOR-ONLY	arm9	dFdColor_c	FaderColor/dFdColor_c	_ZN10FaderColorD0Ev	1		True		-
 src/engine/fader/_ZN10FaderColorD1Ev.c	DTOR-ONLY	arm9	dFdColor_c	FaderColor/dFdColor_c	_ZN10FaderColorD1Ev	1		True		-
 src/engine/fader/_ZN15FaderBrightnessD0Ev.c	DTOR-ONLY	arm9	dFdBrightness_c	FaderBrightness/dFdBrightness_c	_ZN15FaderBrightnessD0Ev	1		True		-
@@ -1874,7 +1860,7 @@ src/func_02023408.c	PURE-C	arm9				1		None		-
 src/func_0202345c.c	PURE-C	arm9				1		None		-
 src/func_02023498.c	PURE-C	arm9				1		None		-
 src/func_02023544.c	PURE-C	arm9				1		None		-
-src/dScBoot_c_classInit.c	S1-stores-rom-vptr	arm9			stores _ZTV8dScene_c	1		None	_ZTV8dScene_c	-
+src/d_s_boot.c	S1-stores-rom-vptr	arm9			stores _ZTV8dScene_c	1		None	_ZTV8dScene_c	-
 src/func_02029408.c	PURE-C	arm9				1		None		-
 src/func_02029600.c	PURE-C	arm9				1		None		-
 src/func_0202a850.c	PURE-C	arm9				1		None		-
@@ -1951,7 +1937,7 @@ src/func_02034b40.c	P2-vtable-only	arm9	dScMB_c::graphCallback_c	dScMB_c	vtable 
 src/func_02034d24.c	P2-vtable-only	arm9	dScMB_c::graphCallback_c	dScMB_c	vtable dScMB_c::graphCallback_c slot 2 @0x2034d24	1		True		-
 src/func_02034d2c.c	P2-vtable-only	arm9	dScMB_c::graphCallback_c	dScMB_c	vtable dScMB_c::graphCallback_c slot 0 @0x2034d2c	1		True		-
 src/func_02034fbc.c	WEAK-refs-only	arm9				1		None		-
-src/func_020352b4.c	S1-stores-rom-vptr	arm9			stores _ZTV8dScene_c	1		None	_ZTV8dScene_c	-
+src/d_s_mb.c	S1-stores-rom-vptr	arm9			stores _ZTV8dScene_c	1		None	_ZTV8dScene_c	-
 src/func_02035354.c	PURE-C	arm9				1		None		-
 src/func_02035394.c	PURE-C	arm9				1		None		-
 src/func_020353b0.c	PURE-C	arm9				1		None		-
@@ -4070,7 +4056,7 @@ src/func_ov005_020c0f38.c	WEAK-refs-only	ov005				1		None		-
 src/func_ov005_020c1130.c	WEAK-refs-only	ov005				1		None		-
 src/func_ov005_020c1688.c	WEAK-refs-only	ov005				1		None		-
 src/func_ov005_020c16e4.c	WEAK-refs-only	ov005				1		None		-
-src/dScMiniGm_c_classInit.c	S1-stores-rom-vptr	ov005			stores _ZTV8dScene_c	1		None	_ZTV8dScene_c	-
+src/d_s_mini_gm.c	S1-stores-rom-vptr	ov005			stores _ZTV8dScene_c	1		None	_ZTV8dScene_c	-
 src/func_ov006_020c0304.c	WEAK-refs-only	ov006				1		None		-
 src/func_ov006_020c0364.c	WEAK-refs-only	ov006				1		None		-
 src/func_ov006_020c07a0.c	WEAK-refs-only	ov006				1		None		-
@@ -4548,7 +4534,7 @@ src/func_ov006_020e64e4.c	PURE-C	ov006				1		None		-
 src/func_ov006_020e6528.c	PURE-C	ov006				1		None		-
 src/func_ov006_020e667c.c	PURE-C	ov006				1		None		-
 src/func_ov006_020e668c.c	PURE-C	ov006				1		None		-
-src/dScMgCurling2_c_classInit.c	WEAK-refs-only	ov006				1		None		-
+src/d_s_mg_curling2.c	WEAK-refs-only	ov006				1		None		-
 src/func_ov006_020e6cac.c	P2-vtable-only	ov006	dScMgD3DBase_c	dScMgD3DBase_c	vtable dScMgD3DBase_c slot 30 @0x20e6cac	1	active	True		-
 src/func_ov006_020e6d8c.c	P2-vtable-only	ov006	dScMgD3DBase_c	dScMgD3DBase_c	vtable dScMgD3DBase_c slot 28 @0x20e6d8c	1		True		-
 src/func_ov006_020e6d98.c	P2-vtable-only	ov006	dScMgD3DBase_c	dScMgD3DBase_c	vtable dScMgD3DBase_c slot 27 @0x20e6d98	1		True		-
@@ -5052,7 +5038,7 @@ src/func_ov006_0210adac.c	PURE-C	ov006				1		None		-
 src/func_ov006_0210af64.c	WEAK-refs-only	ov006				1		None		-
 src/func_ov006_0210b1fc.c	PURE-C	ov006				1		None		-
 src/func_ov006_0210b314.c	P2-vtable-only	ov006	dScMgSlot3_c	dScMgSlot3_c	vtable dScMgSlot3_c slot 18 @0x210b314	1		True		-
-src/func_ov006_0210c120.c	S1-stores-rom-vptr	ov006			stores _ZTV12dScMgSlot3_c	1		None	_ZTV12dScMgSlot3_c/_ZTV19dScMgSingle3DBase_c	-
+src/d_s_mg_slot3.c	S1-stores-rom-vptr	ov006			stores _ZTV12dScMgSlot3_c	1		None	_ZTV12dScMgSlot3_c/_ZTV19dScMgSingle3DBase_c	-
 src/func_ov006_0210c180.c	PURE-C	ov006				1		None		-
 src/func_ov006_0210c1a8.c	PURE-C	ov006				1		None		-
 src/func_ov006_0210c208.c	PURE-C	ov006				1		None		-
@@ -5862,7 +5848,7 @@ src/func_ov007_020cca74.c	PURE-C	ov007				1		None		-
 src/func_ov007_020cca80.c	WEAK-refs-only	ov007				1		None		-
 src/func_ov007_020cca98.c	WEAK-refs-only	ov007				1		None		-
 src/func_ov007_020ccab4.c	WEAK-refs-only	ov007				1		None		-
-src/dScDSMT_c_classInit.c	S1-stores-rom-vptr	ov007			stores _ZTV8dScene_c	1		None	_ZTV8dScene_c	-
+src/d_s_dsmt.c	S1-stores-rom-vptr	ov007			stores _ZTV8dScene_c	1		None	_ZTV8dScene_c	-
 src/func_ov009_02111224.c	PURE-C	ov009				1		None		-
 src/func_ov009_0211145c.c	WEAK-refs-only					0		None		NONMATCHING-draft;not-in-delinks
 src/func_ov009_021115d8.c	WEAK-refs-only	ov009				1		None		-
@@ -5951,7 +5937,7 @@ src/func_ov020_0211174c.c	WEAK-refs-only	ov020				1		None		-
 src/func_ov020_021119dc.c	WEAK-refs-only	ov020				1		None		-
 src/func_ov020_02111aa8.c	WEAK-refs-only	ov020				1		None		-
 src/func_ov020_02111c30.c	WEAK-refs-only	ov020				1		None		-
-src/func_ov020_021127f4.c	WEAK-refs-only	ov020				1		None		-
+src/d_a_book_book_switch.c	WEAK-refs-only	ov020				1		None		-
 src/func_ov020_021129dc.c	PURE-C	ov020				1		None		-
 src/func_ov020_02112b00.c	WEAK-refs-only	ov020				1		None		-
 src/func_ov020_02112e94.c	WEAK-refs-only	ov020				1		None		-
@@ -5982,12 +5968,12 @@ src/func_ov024_021112c0.c	WEAK-refs-only	ov024				1		None		-
 src/func_ov024_02111350.c	WEAK-refs-only	ov024				1		None		-
 src/func_ov024_021114c4.c	PURE-C	ov024				1		None		-
 src/func_ov025_02111344.c	PURE-C	ov025				1		None		-
-src/func_ov025_02111898.c	S1-stores-rom-vptr	ov025			stores _ZTV7daDgr_c	1		None	_ZTV7daDgr_c	-
+src/d_a_dgr.c	S1-stores-rom-vptr	ov025			stores _ZTV7daDgr_c	1		None	_ZTV7daDgr_c	-
 src/func_ov025_021119f4.c	PURE-C	ov025				1		None		-
 src/func_ov025_02111e30.c	PURE-C	ov025				1		None		-
 src/func_ov025_021125dc.c	PURE-C	ov025				1		None		-
 src/func_ov026_021112a4.c	PURE-C	ov026				1		None		-
-src/daObjWlPolelift_c_classInit.cpp	WEAK-refs-only	ov026				1		None		-
+src/d_a_obj_wl_polelift.cpp	WEAK-refs-only	ov026				1		None		-
 src/func_ov026_02111b24.c	WEAK-refs-only	ov026				1		None		-
 src/func_ov026_02111cb4.c	WEAK-refs-only	ov026				1		None		-
 src/func_ov026_02111ed8.c	PURE-C	ov026				1		None		-
@@ -6000,7 +5986,7 @@ src/func_ov027_02111680.c	P2-vtable-only	ov027	daIDonketu_c	daIDonketu_c	vtable 
 src/func_ov027_02111a28.c	WEAK-refs-only	ov027				1		None		-
 src/func_ov027_02111c48.c	WEAK-refs-only	ov027				1		None		-
 src/func_ov027_02111d70.c	PURE-C	ov027				1		None		-
-src/func_ov027_0211207c.c	S1-stores-rom-vptr	ov027			stores _ZTV10daPgDfdr_c	1		None	_ZTV10daPgDfdr_c	-
+src/d_a_pg_dfdr.c	S1-stores-rom-vptr	ov027			stores _ZTV10daPgDfdr_c	1		None	_ZTV10daPgDfdr_c	-
 src/func_ov027_02112158.c	WEAK-refs-only	ov027				1		None		-
 src/func_ov027_021123b0.c	PURE-C	ov027				1		None		-
 src/func_ov027_02112424.c	WEAK-refs-only	ov027				1		None		-
@@ -6062,7 +6048,7 @@ src/func_ov034_02112650.c	PURE-C	ov034				1		None		-
 src/func_ov034_02112688.c	WEAK-refs-only	ov034				1		None		-
 src/func_ov034_02112874.c	WEAK-refs-only	ov034				1		None		-
 src/func_ov034_021129ec.c	PURE-C	ov034				1		None		-
-src/func_ov035_0211168c.c	WEAK-refs-only	ov035				1		None		-
+src/d_a_obj_ct_mecha10_ct_mecha12l.c	WEAK-refs-only	ov035				1		None		-
 src/func_ov035_02111798.c	WEAK-refs-only	ov035				1		None		-
 src/func_ov035_021118a8.c	PURE-C	ov035				1		None		-
 src/func_ov036_0211123c.c	PURE-C	ov036				1		None		-
@@ -6281,7 +6267,7 @@ src/func_ov065_021196bc.c	WEAK-refs-only	ov065				1		None		-
 src/func_ov065_02119794.c	WEAK-refs-only	ov065				1		None		-
 src/func_ov065_0211990c.c	PURE-C	ov065				1		None		-
 src/func_ov065_0211a114.c	PURE-C	ov065				1		None		-
-src/daObjCtMecha03_c_classInit.c	S1-stores-rom-vptr	ov065			stores _ZTV16daObjCtMecha03_c	1		None	_ZTV16daObjCtMecha03_c	-
+src/d_a_obj_ct_mecha03.c	S1-stores-rom-vptr	ov065			stores _ZTV16daObjCtMecha03_c	1		None	_ZTV16daObjCtMecha03_c	-
 src/func_ov065_0211a550.c	WEAK-refs-only	ov065				1		None		-
 src/func_ov065_0211aa38.c	PURE-C	ov065				1		None		-
 src/func_ov065_0211aacc.c	PURE-C	ov065				1		None		-
@@ -6567,10 +6553,10 @@ src/func_ov075_02119d3c.c	WEAK-refs-only	ov075				1		None		-
 src/func_ov075_02119d78.c	PURE-C	ov075				1		None		-
 src/func_ov075_0211a100.c	PURE-C	ov075				1		None		-
 src/func_ov075_0211a148.c	PURE-C	ov075				1		None		-
-src/func_ov075_0211a740.c	S1-stores-rom-vptr	ov075			stores _ZTV8dScene_c	1		None	_ZTV8dScene_c	-
+src/dScEntry_c_classInit_RESULT.c	S1-stores-rom-vptr	ov075			stores _ZTV8dScene_c	1		None	_ZTV8dScene_c	-
 src/func_ov075_0211a834.c	PURE-C	ov075				1		None		-
 src/func_ov075_0211a838.c	PURE-C	ov075				1		None		-
-src/func_ov075_0211a854.c	S1-stores-rom-vptr	ov075			stores _ZTV8dScene_c	1		None	_ZTV8dScene_c	-
+src/dScEntry_c_classInit_ENTRY.c	S1-stores-rom-vptr	ov075			stores _ZTV8dScene_c	1		None	_ZTV8dScene_c	-
 src/func_ov075_0211aa00.c	PURE-C	ov075				1		None		-
 src/func_ov075_0211aa94.c	WEAK-refs-only	ov075				1		None		-
 src/func_ov075_0211ab38.c	PURE-C	ov075				1		None		-

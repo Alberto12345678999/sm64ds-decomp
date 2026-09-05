@@ -23,7 +23,7 @@
  *   [4] 0x02111ee8  src/_ZN13PeachPainting6RenderEv.cpp
  *   [5] 0x02111f28  src/_ZN13PeachPainting8BehaviorEv.cpp
  *   [6] 0x02111fc0  src/_ZN13PeachPainting13InitResourcesEv.cpp
- *   [7] 0x02112004  src/daObjC1Peach_c_classInit.c
+ *   [7] 0x02112004  src/d_a_obj_c1_peach.c
  */
 
 /* Includes: union of the legacy files', first-seen in ROM-ascending
@@ -122,7 +122,7 @@ int *daObjC1Peach_c_classInit(void)
 /* recovered: named members + shared header, real C++ method */
 int PeachPainting::InitResources()
 {
-    void *file = _ZN5Model8LoadFileER13SharedFilePtr((void*)RollingRock_Spawn);
+    void *file = _ZN5Model8LoadFileER13SharedFilePtr((void*)daGrock_c_classInit);
     _ZN9ModelBase7SetFileEP8BMD_Fileii((char*)((void *)this) + 0xd4, file, 1, -1);
     *(unsigned char*)((char*)&mOpacity) = 0xff;
     func_ov010_02111e84(((void *)this));
