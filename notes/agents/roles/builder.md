@@ -52,7 +52,11 @@ that does not match `HEAD` — so the ratchet and its commit must come **before*
     python tools/check_duplicate_sources.py
     python tools/check_dead_references.py
     python tools/cpp_tu_state.py --check-note
-    #    ^ notes/cpp-tu-current-state.md is generated and goes stale on every
+    #    ^ --write-note EXITS 2 on a dirty tree, which is exactly the state the
+    #      rebase recipe leaves you in, and its message tells you to STASH --
+    #      which this file forbids (shared across worktrees; unstages
+    #      deletions). Use `git add -A`, then re-run.
+    #      notes/cpp-tu-current-state.md is generated and goes stale on every
     #      promotion. Regenerate with --write-note and commit it in the same
     #      PR; a stale note on
     #      main is how the queue starts lying about what is already promoted.
@@ -66,15 +70,30 @@ PASS signals:
 - `tubuild verify` → `N/N MATCH, objisolate clean, reloc-destinations clean`
 - `rombuild` → `module fidelity: 106/106 exact, 100.000000% of compared bytes`
   and `ROM-build analysis: PASS`; its stock profile must report 0 mod source
-  replacements and 0 ROM-gap fallbacks, and the built NDS must have the retail
-  SHA-256
+  replacements and 0 ROM-gap fallbacks. **There is no retail-SHA oracle — do not
+  look for one.** The built ROM differs from the repo's own `sm64.nds` in ~54 KB
+  across ~7,000 ranges, all outside the compared modules, and the manifest's
+  `matchesStockRom` means "identical to this tree's last `build/sm64ds.nds`",
+  not "identical to retail". The real checks are `module fidelity: 106/106
+  exact, 100.000000%` plus equality with the run's own source-independent stock
+  baseline control
 - `source_coverage` → `0 B` handed back to the cartridge
+- **`rombuild`'s BASELINE CONTROL legitimately prints
+  `dsd check symbols --fail FAIL`** — 9 pre-existing errors, present on untouched
+  `main`. It is absent from the PASS list above and it is not your defect, but a
+  builder grepping the log for `FAIL` will stop on it. Compare the error count
+  against the control run and report `0 new`
 - `prepush_attribution` → **no symbol *lost*.** Do **not** hold out for
   `0 changed`: a promotion folds N shards into one file, and the counter credits
   only the delinks range's *first* symbol and reclassifies the rest as
   "claimed" — see the many-to-one fold artifact below, which lists the lines
-  that are expected and are not losses. `changed` is noise on a promotion by
-  construction; `lost` is the signal. Run the check, commit what it asks for,
+  that are expected and are not losses. **But `changed` is not noise by
+  construction, and this file used to say it was.** With correct `path#symbol`
+  overrides committed, the validator reports `0 changed` and the four "expected"
+  fold lines collapse to one (`N address range(s) left the byte-verified set`).
+  Measured on `ov006/dScMgRoulette_c`: `32 consolidated with credit intact,
+  0 changed, 0 lost`. So aim for `0 changed`; if you cannot reach it, say which
+  rows resist and why, rather than writing it off as inherent. Run the check, commit what it asks for,
   report the numbers, and move on — reconciling credit beyond that is a stated
   non-goal in this repo and has consumed whole sessions before.
 - everything else → exit 0 with no backlog count increased
@@ -131,10 +150,22 @@ Every other tool treats those as prose, so a poisoned manifest ships silently.
 `match.compare`. Require all three: byte compare, `objisolate` (relocation type
 and addend), and `reloc_audit` (destination identity).
 
+**`match.py`'s API is not shaped the way that instruction implies.**
+`extract_func` returns a `(bytes, relocs)` **pair**, and the signature is
+`target_bytes(addr, size, bin_path: pathlib.Path, base: int)` — passing a module
+label like `"ov006"` raises
+`AttributeError: 'str' object has no attribute 'read_bytes'`. For an overlay pass
+`pathlib.Path("extracted/dsd/arm9_overlays/ov006.bin")` with base `0x020bfec0`.
+
 **`romdata_check`'s per-symbol verdicts are not reachable from the CLI.**
 `--show` only slices `report["differing"]` and `--json` carries counts. To prove
 a specific symbol's identity — which is how the cross-module RTTI claim was
-settled — import the module and call `check_object()` directly. **Pass
+settled — import the module and call `check_object()` directly. **The records DO carry an address** — this file used to say they carry `module`
+but no address field. The keys are exactly `symbol, module, addr, bytes,
+emitted, romExtent, blindWords, verdict`. The verdict key is `verdict`; printing
+`status`/`result`/`state` gives `None`. The signature is
+`check_object(obj_path, rel, names=None)` — passing a rom index positionally
+raises `TypeError: got multiple values for argument 'names'`. **Pass
 `names=romdata_check.name_index()`**: without it `module` comes back `None`,
 which defeats the cross-module proof the call is for. The records carry `module`
 but **no address field**, so addresses still need checking against `symbols.txt`
@@ -218,6 +249,56 @@ path legitimately recurs under different reasons — `main` carries 66 such rows
 from past promotions. Only byte-identical repetition is the defect. A builder
 who deduped by path would delete real history.
 
+## Check for a shallow clone before trusting ANY attribution output
+
+    git rev-parse --is-shallow-repository        # must print false
+
+**A shallow clone silently corrupts every attribution answer, and the wrong
+answer is permanent.** `first_matchers()` / `match_finishers()` replay `src/`
+history, so a truncated clone makes every lineage start at the newest commit
+that touched the file — which is usually the automated refresh, i.e.
+`github-actions[bot]`. `prepush_attribution` then reports dozens "lost", and
+banking its suggestion writes override rows that are **highest priority and
+never pruned**.
+
+Measured 2026-09-05: this repo's primary checkout was shallow at **1,325 of
+4,743 commits** for a whole session. A builder banked 40 override rows from that
+output before catching it; the merge validator's "Before" column showed it would
+have stripped functions from three named human contributors and mislabelled 24
+more. After `git fetch --unshallow`, the recomputed owner set agreed with all 25
+owners the validator printed, with **0 disagreements**.
+
+`attribution.json` currently carries **968 of 2,036 override rows crediting
+`github-actions[bot]`**, which is what this defect looks like at scale. CI is not
+the source — the workflows that read history correctly set `fetch-depth: 0`.
+Local agent runs are.
+
+**An attribution override has no effect until it is committed.** With all rows
+present in the working tree the gate still reported `0 consolidated, 71 lost` —
+unchanged. After `git commit`, the identical rows gave `71 consolidated, 0
+changed, 0 lost`. A builder who edits, re-runs, and sees no movement will
+reasonably conclude overrides are the wrong mechanism. Commit, then re-run.
+
+**So: never bank an attribution override from a shallow clone.** If
+`--is-shallow-repository` prints true, run `git fetch --unshallow` and recompute
+before writing anything. Worktrees share the parent clone's `.git`, so one
+shallow clone makes every worktree cut from it shallow too.
+
+## Two PowerShell traps that read as other people's bugs
+
+- **`git commit -F @'...'@` does not fail at parse time.** PowerShell passes the
+  here-string *body* as a filename, and git dies with `...: No such file or
+  directory` — which reads like a git problem, not a shell one. Write the
+  message to a class-unique scratch file and pass `-F <path>`.
+- **No PowerShell pipeline form gives live progress from a backgrounded build.**
+  `Select-Object -Last N`, `Tee-Object -FilePath` and `Out-File` all buffer
+  identically; the log file stays at 0 bytes until the process exits. A
+  backgrounded `linkcheck` cannot be watched at all — poll `build/tu/<id>/`
+  directory mtimes instead.
+- `jq` is **not** on PATH in the Bash tool here; only `gh`'s built-in `--jq`.
+  A monitor built on `jq` fails silently with `command not found` and produces
+  no events at all, which looks like the thing you are watching never finished.
+
 ## Do not use `git stash` in this repo
 
 Two hazards compound. The stash is **shared across every worktree** here, so a
@@ -254,8 +335,14 @@ Two things follow:
 A class branch cut before `main` moved must be rebased, and **the two ratchet
 files behave differently and only one of them tells you**:
 
-- `config/converted-baseline.json` **conflicts loudly**. It is regenerated whole
-  per promotion, so any overlap collides. That is the safe one.
+- `config/converted-baseline.json` **conflicts loudly — but only when the landed
+  promotion actually changed the CONVERTED set.** It is regenerated whole per
+  promotion, so an overlapping change collides, and that is the safe one. The
+  guarantee is conditional and the condition is easy to miss: a promotion whose
+  absorbed shards were all *below* CONVERTED tier banks nothing, leaving the file
+  byte-identical and unable to collide. Measured — `dScMgRoulette_c` (#2312), a
+  40-member promotion, changed **neither** ledger file and put zero rows in the
+  exceptions file. Do not infer "no conflict, therefore no promotion landed".
 - `config/converted-backslide-exceptions.jsonl` **auto-merges silently and
   reintroduces stale rows.** Measured here: a cherry-pick re-added five
   `ShipWing` rows naming the former actor-directory location for
@@ -282,6 +369,17 @@ the auto-merge was correct — `git checkout HEAD --` both and commit nothing.
 Different means the silent merge lost or duplicated rows, and the regenerated
 version is the one to keep.
 
+**The recipe is missing its last step, and the omission is dangerous.**
+`--update` *appends* to the exceptions file, so by the time you have diffed and
+decided "my copy is the one to keep", the tool has **already overwritten the
+working file**. Restoring your copy is a separate, explicit action —
+`git checkout HEAD --` it, or copy it back. Deciding is not restoring.
+
+**And `--check` goes red on a narrower trigger than stated.** Measured: red after
+restoring **only** `config/converted-baseline.json`. The exceptions file plays no
+part in the backslide verdict at all, so do not restore it "to make the check
+pass" — that only risks the rows.
+
 **Committing the regenerated exceptions file destroys the writers' reasons.**
 Rows carry whatever string you pass to `--reason`, so regenerating from a clean
 base and committing the result replaces N informative per-class reasons with N
@@ -289,6 +387,13 @@ identical generic ones. Nothing reads those strings, so no gate goes red and no
 reviewer diff makes it obvious — it is silent data loss. This is the second half
 of the non-destructive recipe above: when the regenerated file differs from your
 copy *only in the `reason` strings*, your copy is the one to keep.
+
+**A third file conflicts on a rebase and this section used to omit it:
+`notes/cpp-tu-current-state.md`.** It is generated, every promotion rewrites it,
+and on one measured rebase it was the *only* `UU` conflict while both ledger
+files merged silently. Same rule as the ledgers — regenerate, never resolve:
+`git checkout <newbase> --` it, finish the merge, then
+`python tools/cpp_tu_state.py --write-note`.
 
 **Restore BOTH files to `main`'s version and re-run `tiers_ratchet --update`.**
 Never resolve either by hand and never let the merge resolve them for you — the
@@ -374,7 +479,10 @@ already stale. Getting this wrong costs a full validation cycle.
   decimal, i.e. the false `0x58`, on the very class where the real answer is
   `0x88`. The truthful fields are **`emitted`** and **`bytes`**, with
   `blindWords: 0`. Following the extent field confirms the trap instead of
-  catching it.
+  catching it. **This is class-specific, not universal** — on
+  `dScMgRoulette_c` the field reads `144`, which is correct and equal to
+  `emitted`/`bytes`. So it is unreliable rather than always-wrong: never take it
+  alone, and corroborate as above.
 - **Print scalar fields only from a `check_object()` record.** Its `src` key is a
   dict keyed by *tuples* covering every symbol in the module, so `json.dumps`
   raises `TypeError: keys must be str...` and printing the record raw dumps about

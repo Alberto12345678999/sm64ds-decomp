@@ -29,10 +29,56 @@ with, but **the conflict detector does not compare parameter types**: it will
 print `no cross-file conflicts detected` over a file carrying two contradictory
 declarations of the same helper (`extern "C" int f(char*)` from one shard and
 `int f(Class*)` from another), and even a nested `extern "C" { extern "C" ... }`.
-`create` can emit a TU that does not compile. Read what it wrote. **Trust it over the queue's `blockers` column**, which is
+`create` can emit a TU that does not compile. **At any real size, discard the
+generated preamble and hand-curate one declaration per symbol — do not try to
+repair it.** The measured failure mode is not a typo you can patch: comment
+hoisting **split a multi-line declaration in half**, leaving a bare
+`int flags, int speed, unsigned int startFrame);` at file scope with no return
+type and no name, alongside two contradictory `PMF` typedefs and one data symbol
+declared three mutually exclusive ways in the same file. Two more
+collision classes it misses, both measured:
+
+- **The `/* TUBUILD CONFLICT ... */` blocks are not comment-safe.** An alternate
+  body containing its own `/* ... */` field comments terminates the outer block
+  early, and you get raw `declaration syntax error`s that name nothing.
+- **`this` used as a parameter name**, carried verbatim out of a `.c` shard into
+  a C++ TU, gives `')' expected`.
+
+**Past roughly 30 members the generated preamble is unusable, and
+uniquification stops being advice.** Measured at 41 members: duplicate
+`class C`/`struct C`, a `typedef E` colliding with a `#define E`, and
+`typedef s16/u16/u8` colliding with `types.h`. Two traps in the fix itself:
+
+- a naive `C` tag rename corrupts `extern "C"` into `extern "C_5fec"` —
+  placeholder-protect the string first;
+- member-local `extern` declarations that mention a renamed tag must **not** be
+  hoisted into the shared block.
+
+**And `create`'s merging of a shared `struct` is a codegen hazard, not a naming
+one.** On `dScMgSound_c`, eleven dispatch members saw `struct C` **incomplete**
+and two saw it complete; merging them onto one complete `C` changes mwccarm's
+pointer-to-member representation for the eleven. This file's advice elsewhere
+— "a real header should usually win", "kept the first" — points the wrong way
+here. The fix was to **split the type** (`C` incomplete, `CFull` complete); no
+choice of a single body would have reproduced 82/82. **Trust it over the queue's `blockers` column**, which is
 inferred rather than measured: `promotion_route` and any `compiler-only:~N` were
 copied from the row's `sibling_oracle` manifest, and 91 of 226 rows have no
-oracle at all and simply default to text-only. The `~` means estimate. Confirm
+oracle at all and simply default to text-only. The `~` means estimate. **`prepush_attribution` reports CREDIT LOST from pure base drift.** If
+`origin/main` advanced past your base, it flags files that exist there and not
+on yours — one run blamed `dScMgHanachan_c`, which the branch never touched.
+Compare against the branch's own **merge-base** before treating CREDIT LOST as a
+blocker.
+
+**Measured across four classes, the blockers column has been wrong every
+time**, and in both directions: `dScMgRoulette_c`'s `pragma:1` was a phantom (the
+shards' pragmas were inert, provable by deleting them outright);
+`dScMgSound_c`'s `no-legacy-source:1` was simply false (`inspect` reports "no
+legacy source: none"), its `unmatched:3` was really 1, its `pragma:1` was inert,
+and its shard count was 80 against a real 82; `dScMgMemory2_c`'s count was 51
+against a real 52. **Treat every blocker as a hypothesis to disprove, and expect
+the shard count to be a floor** — `tu_map` cuts on symbol *name*, so a factory
+not spelled `_ZN<len><Class>...` is never labelled and never counted, even when
+it sits adjacent with no gap. Confirm
 the real count at build time -- `tubuild verify` will tell you exactly which
 symbols are unlicensed, and inheritance depth changes the number per class
 (`daBar_c` carries three levels of inherited base RTTI: `fBase_c`, `dBase_c`,
@@ -112,7 +158,17 @@ steps the dry-run does not print:
 1. Move the source out of `src_tu/` and `git rm` the shards.
 2. Splice their N `delinks.txt` entries into one.
 3. **Edit the manifest yourself:** `status` → `promoted`, `source` → the new
-   path. `verify` does not do this, and `promote --dry-run` refuses to run at
+   path. **Write it at `indent=2`** — `tu_manifest.save` uses that, and a
+   hand-written entry at `indent=1` fails
+   `test_tu_manifest.py::test_rewriting_the_tracked_manifest_is_a_no_op` with
+   only "would be rewritten", which never names indentation as the cause.
+   **And write bytes, not text.** On Windows `pathlib.write_text` translates
+   `
+` to CRLF, so a python manifest edit silently converts a LF manifest to
+   CRLF — every sibling in `config/tu_manifest.d/` is LF. Normalise afterwards
+   if you used it. (Related environment trap: a `python - <<'PY'` heredoc aborts
+   on an apostrophe in prose and eats doubled backslashes; write the script to a
+   file and run it.) `verify` does not do this, and `promote --dry-run` refuses to run at
    all while `status` is still `text-verified`. **This is not cosmetic and the
    damage is permanent.** `tiers_ratchet.promoted_moves()` skips every manifest
    entry whose status is not exactly `promoted`, so leaving it means your
@@ -129,7 +185,36 @@ steps the dry-run does not print:
    `config/converted-backslide-exceptions.jsonl`, re-sorts the array, and adds
    `src/actors/<Class>.cpp#<symbol>` member rows for members still passing all
    five criteria. A hand edit gets the count right and the **set** wrong.
-5. **Rewrite each manifest conflict note** from `tubuild create warning:
+
+   **But check set membership BEFORE you run it at all.** This step used to read
+   as "always `--update`", which contradicts `builder.md`'s "if `--check` passes,
+   do NOT `--update`". Both were partly wrong. The real test is whether **your
+   own files are in the CONVERTED baseline set**: open
+   `config/converted-baseline.json`, look for rows in your class's address range,
+   and if there are none the promotion is **ratchet-neutral and there is nothing
+   to bank**. `dScMgBomroom_c` had 0 of 41 shards in the set; running `--update`
+   anyway banked an unrelated `+1` for `src/_ZN12dScStarSel_c8BehaviorEv.cpp`,
+   pre-existing drift on `main` that has nothing to do with the class. Two
+   separate writers hit that same stray row on the same day. `--update`
+   re-derives the whole set, so it sweeps up any drift sitting on your base, and
+   `append_exceptions` opens the file `"a"` — the append is permanent. Bank only
+   when your files are actually in the set, and say which rows you banked.
+4b. **A near-miss recovery and the promotion cannot be one commit.** `linkcheck`
+   hard-refuses at `[1/8]` — *"substituting the TU would change enrollment and
+   byte provenance in the same step"* — for any shard whose `delinks.txt` entry
+   is not `complete` today. So if you fix shards to lengthen a contiguous run,
+   the order is: **land the recoveries plus their `complete` markers as their own
+   commit, re-run `linkcheck --baseline` against that new pre-substitution
+   state, and only then `linkcheck` the promotion.** Remember that the marker
+   edit itself invalidates any earlier baseline, since the fingerprint is
+   `trackedConfigArm9Sha256`.
+
+5. **Rewrite each manifest CONFLICT note — and only those.**
+   `check_tubuild_conflicts.py`'s `NOTE_RE` matches only
+   `CONFLICT: (macro|extern declaration|local declaration)`. `create` also emits
+   `RAW:` warnings, which the gate never reads; rewriting them is wasted work and
+   editing them can only break things. Measured: 40 CONFLICT notes marked, 3
+   `RAW:` notes left alone, gate green. Rewrite from `tubuild create warning:
    CONFLICT:` to `tubuild create warning (RESOLVED): CONFLICT:`, or
    `check_tubuild_conflicts.py` fails once per note. **Keep the trailing
    `; kept the first` verbatim** and append your resolution after it — the
@@ -224,13 +309,29 @@ ever promote, which is plainly false.
 oracle's count unless the oracle sits at the same depth. **Count the chain
 yourself before trusting the queue's `compiler-only:~N`** — that column is copied
 from the `sibling_oracle` with no depth check, and has now been wrong in both
-directions. `dScMgMemory2_c` is six levels
+directions. (Note what an out-of-line destructor actually costs. "Out-of-line emits D2, D0,
+D1" reads as though the order is unusable; the tree says otherwise.
+`dScMgMemory2_c` declares its destructor out of line, is link-verified with D1
+below D0, and pays for it with a **homeless** `_ZN14dScMgMemory2_cD2Ev` — that
+is its 14th row, and it is where the formula's otherwise-unexplained "+1" comes
+from. The lever set is right; the consequence is a homeless D2 plus a licensing
+row, not necessarily a wrong order.)
+
+`dScMgMemory2_c` is six levels
 (`dScMgSingle3DBase_c` -> `dScMgBase_c` -> `dScene_c` -> `dBase_c` -> `fBase_c`)
 and needs `2x6 + 1 = 13`, +1 homeless `D2Ev` = **14**; the queue said ~11 because
 its oracle sits one level shallower.
 
     rows = 2 x (ancestors + self)  +  1 vtable  +  1 per Vector3-like
                                                      member with an inline D1
+
+**The whole formula is conditional on the licensed range owning the key
+function, and this file used to state it unconditionally.** A TU that does not
+own the key function emits **no vtable and no RTTI at all** — zero rows from
+this formula, not `2x(ancestors+self)+1`. Measured on `Goomboss` (ov074): a
+key-function-owning probe emitted exactly the predicted 11; the range actually
+licensed excludes the key function and needs **1** row, the `_ZN7Vector3D1Ev`
+duplicate. Both numbers are right. Decide which TU you are building first.
 
 **The last term is conditional, and "member" is the wrong test.** The trigger is
 any `Vector3` the TU *odr-uses* — **function locals count**. `dScMgD3DBase_c` is
@@ -245,6 +346,16 @@ the one disposition you will rarely otherwise use. So: **count the `Vector3`s th
 TU touches, members and locals alike, and add one more for any local anonymous
 struct containing them.**
 
+**Correction, measured: the Vector3 term is `+1` if the TU odr-uses `Vector3`
+AT ALL — not one per object.** The emitted symbol is the single vague-linkage
+`_ZN7Vector3D1Ev`, so the count is one however many objects there are.
+`daObjMarioCap_c` odr-uses **four** (three locals in one function, one in
+another), has **no** `Vector3` member, and got exactly **one** extra row: 12 =
+2x5 + 1 + 1. Read literally, "1 per Vector3" predicts 4 or 5. The worked examples
+above are consistent with the corrected rule; only the prose was wrong. The
+local-anonymous-struct term is separate and genuinely additive — that one emits
+its own distinct `_ZN<N>@class$<n><file>_cppD1Ev`.
+
 `daPgDfdr_c` (`dBgActor_c` -> `dActor_c` -> `dBase_c` -> `fBase_c`, 5 levels)
 needs 2x5+2 = **12**. Its oracle `daIDonketu_c` sits one level deeper and needs
 14 — which is exactly how the queue's estimate came out wrong.
@@ -257,12 +368,39 @@ relocates across to them. `dsd` reports that relocation's module as a list of
 sixteen overlays; the real one is whichever overlay's `symbols.txt` actually
 names the address. Two rows will be wrong if you guess.
 
+**`decl_common.h` is not always right, and correcting it is precedented.** It is
+generated by `decl_headers.py`, which reads a legacy shard's K&R forward
+declaration in preference to its definition — so a member can be recorded with
+the wrong signature entirely. Measured: `func_ov006_020d672c` was recorded
+`int f()` from an `extern int f();` line, while the cartridge's bytes take the
+scene pointer in r0 and leave r0 untouched on the early-out path, making it
+`void(void*)`. Most overload collisions are adaptable byte-neutrally (take
+`void*`, cast on line 1 — six of seven were), but when the header is simply
+wrong, correct it with a comment and check every other caller: a caller that
+declares the function locally and does not include the header will not be
+affected, and you must confirm that rather than assume it.
+
 `tubuild create` writes `// @symbol` markers only for mangled or already-named
 members; **auto-named `func_ovNN_ADDR` shards are skipped silently.** Add theirs
 by hand or tiers scoring misses them. The gap is narrower than it sounds — a
 shard carried in RAW, inside its own `extern "C"` block, *does* get a marker.
 Only the plain `.c`-derived ones lack them. Check which you have rather than
 blanket-adding.
+
+**Measured, that last sentence is too optimistic:** on `dScMgSound_c`, `create`
+emitted **10 markers and skipped 72 of 82**, the three RAW members among them.
+So the RAW-members-are-covered rule does not hold. Count what you actually got;
+blanket-adding was the right call there.
+
+**A missing `complete` marker refuses the whole run at `[1/8]`, before any of
+the documented failure modes.** If any shard in your TU has a `delinks.txt` entry
+without `complete`, `linkcheck` stops with *"substituting the TU would change
+enrollment and byte provenance in the same step"*. This fires first on any class
+carrying an `unmatched:` blocker, so expect it there. A shard usually lacks the
+marker for a reason — one measured case did not compile at all, because it
+referenced a **phantom** symbol that `decl_common.h` declares and no module
+defines. Find out why before setting the marker; setting it on a genuinely
+broken shard converts a clean refusal into a link failure.
 
 When the policy is refused, `verify` re-reports **all** extras as unlicensed from
 the unaudited object. One bad row makes it look like nothing is licensed. Fix the
@@ -292,14 +430,39 @@ mwccarm 2004/b56 behaviours, not style preferences.
   ROM address order`. Beware that `tubuild verify` reports the same condition as
   `PARTIAL ... not necessarily a bug`, which reads advisory and is not.
 
-  The destructor pair is the usual way to hit it, and the lever set is closed —
-  measured, not guessed: **inline in class ⇒ D1 then D0, always**; out-of-line
-  ⇒ D2, D0, D1. A `delete p` scaffold, a `p->~X()` scaffold, and moving the
-  declaration below the overrides all change **nothing**. So if the cartridge
-  puts D0 *below* D1, no admissible source form reproduces the order, and the
-  pair cannot live in this TU's licensed run. See the comment block in
+  The destructor pair is the usual way to hit it. Under **default** codegen the
+  lever set is closed — measured, not guessed: **inline in class ⇒ D1 then D0,
+  always**; out-of-line ⇒ D2, D0, D1. A `delete p` scaffold, a `p->~X()`
+  scaffold, and moving the declaration below the overrides all change
+  **nothing**. See the comment block in
   `src/game/actors/d_a_obj_wc_obj01.cpp` and `notes/tu-reconstruction-pilot-report.md`
   section 3.
+
+  **But that closure holds only under deferred codegen, and `#pragma
+  defer_codegen off` is a fourth lever the old measurement never tried.**
+  Measured 2026-09-05 on `dScMgTeresa_c` (pinned 2004/b56, real header, both
+  ways): out-of-line + default codegen emits **D2, D0, D1**; out-of-line +
+  `#pragma defer_codegen off` emits **D1, D0, D2** — the cartridge's order.
+  Sizes 0x24 / 0x38 / 0x24, byte-MATCH either way. So a cartridge that puts D0
+  *below* D1 is **not** automatically a refusal any more: try the pragma before
+  taking the partial promotion. It flips emission order for the whole file, so
+  adopting it and laying the source out ROM-ascending are one edit, not two.
+
+  **A fifth lever, from the same day:** with the destructor **inline**, the two
+  variants come out in the *reverse order of their first odr-use*. On `Goomboss`
+  a `delete p; p->~Goomboss();` scaffold gave D1-then-D0 and swapping the two
+  statements gave D0-then-D1, read out of the compiled object's section order.
+  That is a real handle on the order — but the destructor group travels with the
+  scaffold that forces it, emitted immediately below that function wherever it
+  lands, so it is unusable when the pair belongs at the very start of a module's
+  `.text` (on `Goomboss`, D1 *is* the first byte of ov074's `.text`; there is no
+  address below it).
+
+  Do not read that as "inline is the fallback". On `dScMgTeresa_c` inlining
+  moved the key function to a member *above* the run's sourceless hole, so the
+  destructor pair could not share a licensed TU with it; the probe TU emitted
+  one `.text` section and **neither** D1 nor D0. Check where inlining puts the
+  key function before assuming it is available.
 - **The TU must odr-use the class** or nothing is emitted at all.
 - **vptr store is `(int)&_ZTV...[2]`**, never the raw symbol — the addend loses
   8 on rebind, and only `objisolate`'s addend check sees a miss.
@@ -438,8 +601,16 @@ Ask the compiler rather than hand-mangling:
   stock-identical ROM sha256 — out of `--partial`. Settling order at `verify` is
   still right; this is the extra evidence available once you have.
 - **`create` before `linkcheck --baseline` is safe.** `src_tu/` is untracked and
-  not in the build, so the tree is still pristine for baseline purposes. Only
-  *header edits* spoil a baseline.
+  not in the build, so the tree is still pristine for baseline purposes.
+  **But it is NOT only header edits that spoil a baseline** — this file used to
+  say so. The baseline's fingerprint is `trackedConfigArm9Sha256`, so **any**
+  edit under `config/arm9` invalidates it, including a one-line `complete` marker
+  in a `delinks.txt`. Worse, **the failure is indistinguishable from never having
+  run a baseline at all**: both die at `[4/8]` with the same
+  `ov036/daObjRcCarpet_c` + `ov070/daPropeller_Heyho_c` "vtable partition
+  baseline proof unavailable" pair. Recovery costs a second full baseline run
+  with the header **temporarily reverted** — the still-enrolled D1/D0 shards will
+  not compile against an inline destructor.
 - **Reading the `_ZTV` extent from the next `symbols.txt` row UNDER-reports it** —
   the opposite error to the one below, and easier to fall for because it looks
   authoritative. `_ZTV7daDkk_c` at `0x02113850` is followed by
@@ -455,16 +626,48 @@ Ask the compiler rather than hand-mangling:
   `0x0211384c` reaches `0x021138d8` with **no gap anywhere** — 36 words, four
   more than the real 32 — because `_ZTI14daObjDpBrock_c` at `0x021138d0` is a
   `__si_class_type_info`, three fully-relocated words butted straight against the
-  table. Nothing in `relocs.txt` marks that boundary. **The tie-break is
-  `symbols.txt` naming a `_ZTI`/`_ZTS` inside the run**, not the run's own shape.
-  A class whose run happens to end in a real gap (`dScMgRoulette_c`: next
-  relocated word `0x0213e444`, with `0x0213e42c..0x0213e440` unrelocated) is
-  decisive by accident, not by method — do not generalise from one.
+  table. Nothing in `relocs.txt` marks that boundary.
+
+  **The `_ZTI`/`_ZTS` tie-break first proposed here does NOT generalise — a
+  later sweep refuted it.** All 51 `_ZTV` in ov006 were checked: the run-overshoot
+  is real in **15 of them**, but in every one of those the overshooting words are
+  ordinary `data_ov006_*` / `g_profile_*` objects, **never** a `_ZTI`. So "look
+  for a `_ZTI`/`_ZTS` named inside the run" would have caught **0 of 15**. And
+  the naive next-symbol read *under*-reports in the other direction
+  (`dScMgD3DBase_c`: `0x50` against a real `0x90`, because of an interior phantom
+  symbol). **Neither rule is sound alone.**
+
+  **What actually works is corroboration from three independent tools**, which is
+  what every correct extent in this campaign has rested on: the relocation gap,
+  `rtti_vtables.py --own <Class>` for the slot count — **but it answers only to
+  the ROM's RTTI spelling, not the tree's**. `--own Goomboss` prints
+  `no vtable for Goomboss`; `--own daKuriKing_c` prints the 31 slots. For a
+  coined-name class that output reads as "no vtable exists", which is false;
+  look the class up in `build/rtti.json` and ask with the cartridge's name — and
+  `romdata_check.check_object()` for `bytes`/`emitted` with `blindWords: 0`.
+  Worked example, `dScMgRoulette_c`: relocated run `0x0213e398..0x0213e428`, then
+  a real `0x18` gap before the next reloc at `0x0213e444`; storage
+  `0x0213e394..0x0213e42c` = `0x98`; symbol extent from the address point =
+  `0x90` = 36 slots; `rtti_vtables` says 36; `check_object` says
+  `bytes 144, emitted 144, blindWords 0, VERIFIED`. Three tools, one answer.
+  **Distinguish storage size from symbol extent** — they differ by the 8-byte
+  offset-to-top + typeinfo preamble, and quoting one where the other is meant is
+  its own source of confusion.
 - **Do NOT read the extent from `romdata_check`'s `romExtent` field.** It carries
   the *wrong short* value — `88` decimal, the false `0x58` — on the very class
   where the answer is `0x88`. Trusting it confirms the trap instead of catching
-  it. `emitted` and `bytes` are the truthful fields.
-- **`verify` prints no `_ZTV` section size.** This file said twice to cross-check
+  it. `emitted` and `bytes` are the truthful fields. **This is class-specific, not universal** — on
+  `dScMgRoulette_c` the field reads `144`, which is correct and equal to
+  `emitted`/`bytes`. So it is unreliable rather than always-wrong: never take it
+  alone, and corroborate as above.
+- **`verify` DOES print a `_ZTV` size while the licensing policy is still
+  missing**, and that is worth exploiting. Each unlicensed symbol gets an
+  `EXTRA <section> <symbol> size=0x..` line, e.g.
+  `EXTRA .data _ZTV15daObjMarioCap_c size=0x84`. That is **mwcc's own emitted
+  storage size**, free, before you read a single ROM word — the cheapest of the
+  three corroborations for the extent. Run `verify` once before writing the
+  licensing policy just to harvest it.
+- **On a green run, `verify` prints no `_ZTV` section size.** This file said twice to cross-check
   against one. It does not exist; `verify` prints the MATCH table, byte
   comparison, objisolate, emission order and the result.
 - **Corroborate every slot count, but `rtti_vtables.py` is no longer the known-bad
@@ -553,7 +756,16 @@ three.
 leads with `<<< promotion would be REFUSED` while `status` is `text-verified`,
 which is expected and is not a defect in your branch — you need the plan in
 order to *reach* the status flip. One run stopped after step 3, another printed
-all six steps and exited 0; either way read what it gives you.
+all six steps and exited 0; a third printed the **complete** plan (1, 2, 3, 4,
+4b, 5, 6) and exited **1**. **So the exit code carries no information about plan
+completeness** — read the output, never the status, and do not re-run just
+because it exited non-zero.
+
+**Two of its steps are missing from the hand-promotion list above, and nothing
+gates them:** the dry-run also prints RETARGET of `srcPath` in
+`config/match_provenance.jsonl` and `config/match_attempts.jsonl`. A writer
+following the list alone leaves both dangling, and `check_dead_references` walks
+only `.md`, so no gate notices.
 
 **`no current eligibility report` from the pre-push hook is expected in a fresh
 worktree** — it prints "skipping", not "passed", and it is not a failure. It
@@ -612,15 +824,43 @@ measured on `ov006/dScMgHanachan_c` (22 of 61):
   that want it gave byte-identical results to omitting it entirely. (`#pragma
   push`/`O3`/`pop` *is* positional; these two are not.)
 
-  **That measurement is now suspect: try `#pragma defer_codegen off` first.**
+  **SETTLED: `#pragma defer_codegen off` makes the bracket bind, and it recovered
+  this exact class from 22 of 61 to 49 of 61.** The pragma-driven exclusions were
+  all 27 of them; the only functions still held back are the sourceless hole and
+  the 11 on its smaller side, which is a different and unfixable refusal. Measured
+  on `ov006/dScMgHanachan_c` (PR #2309): `verify` 49/49 MATCH, `linkcheck [4b/8]`
+  49 LICENSED with `emittedTextOrderIsRomAscending = true`, 106/106 modules exact,
+  ROM sha256 identical to stock. The decisive probe was adding one
+  `opt_strength_reduction off` member under a `push`/`pop` bracket: 23/23, with
+  the two `opt_strength_reduction`-**on** members still matching. Deleting that
+  one pragma line from the finished file drops it to 44/49 **and** 48 ordinal
+  pairs out of ROM order — it buys the bytes and the order together.
+
+  **So the rule above is true by default and false under `defer_codegen off`,
+  now confirmed on all three pragma families tried.** Any partial that was cut on
+  a pragma contradiction is worth re-measuring.
+
+  **The ROM-ascending rewrite is not optional when you adopt it.** Same class,
+  same bytes, three configurations:
+
+  | source order | `defer_codegen` | bytes | emission order |
+  |---|---|---|---|
+  | ROM-descending | deferred (default) | 22/22 | ROM-ascending |
+  | ROM-descending | **off** | 22/22 | **21 pairs NOT in ROM order** |
+  | ROM-ascending | **off** | 22/22 | ROM-ascending |
+
+  The rewrite is mechanical and belongs in the same edit.
+
+  **The older, superseded framing follows.**
   Bracketed pragmas do not bind while codegen is deferred, which is the default,
   and the measurement above was almost certainly taken that way. Measured on
   `ov006/dScMgMemory2_c`: with `#pragma defer_codegen off` at the top of the TU,
   **52/52 MATCH**; removing that one line dropped it to **50/52**, and the two
   DIFFs were exactly the two functions carrying bracketed pragmas —
   `opt_propagation off` (27 words) and `opt_loop_invariants off` (6 words). The
-  pair actually named above, `opt_strength_reduction` and `opt_common_subs`, has
-  **not** been re-tested under `defer_codegen off`. Do not take a pragma
+  pair actually named above, `opt_strength_reduction` and `opt_common_subs`, was
+  the last untested family; it has since been measured and behaves the same way
+  (see the settled result at the top of this bullet). Do not take a pragma
   collision as an automatic subset until you have tried it, and report what you
   measure either way.
 
