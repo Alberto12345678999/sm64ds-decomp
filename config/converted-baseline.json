@@ -7,7 +7,7 @@
     "no_codegen_trick",
     "no_mangled_refs"
   ],
-  "count": 2688,
+  "count": 2686,
   "converted": [
     "src/ARMMathLoadState.c",
     "src/ARMMathSaveState.c",
@@ -2116,8 +2116,6 @@
     "src/actors/dBgActor_c.cpp#_ZN10dBgActor_cC2Ev",
     "src/actors/dBgActor_c.cpp#_ZN10dBgActor_cD0Ev",
     "src/actors/dBgActor_c.cpp#_ZN10dBgActor_cD1Ev",
-    "src/actors/dMgJump3DMario_c.cpp#_ZN16dMgJump3DMario_c11EnterBounceEv",
-    "src/actors/dMgJump3DMario_c.cpp#_ZN16dMgJump3DMario_c9EnterMoveEv",
     "src/actors/dMgJump3DMario_c.cpp#_ZN16dMgJump3DMario_c9StateIdleEv",
     "src/actors/dMgJump3DMario_c.cpp#_ZN16dMgJump3DMario_cC1Ev",
     "src/actors/dMgJump3DMario_c.cpp#_ZN16dMgJump3DMario_cD1Ev",

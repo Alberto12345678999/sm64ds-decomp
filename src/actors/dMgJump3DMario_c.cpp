@@ -109,7 +109,14 @@
  *   StateHold (5 words); the `*(volatile int *)&v[2] = 0` stack demotion in
  *   StateMove (rewrites the whole 0x3c4-byte member); the same-on-both-arms
  *   select in EnterHit (4 words); the `int t` temporary in func_ov006_020c87d0
- *   (rewrites the whole 0x16c-byte function).
+ *   (rewrites the whole 0x16c-byte function, 13 relocation destinations wrong).
+ *
+ *   WHAT IS MEASURED AND WHAT IS NOT.  Every word count and every
+ *   whole-function verdict above was produced by removing that one spelling and
+ *   re-running `tubuild.py verify`.  The sentences at the five sites that say
+ *   WHY mwccarm behaves that way -- register spills, stack demotion, operand
+ *   evaluation order -- are readings of the resulting diff, not separate
+ *   measurements.  Trust the counts; treat the mechanisms as hypotheses.
  *
  * METHOD-CONVERSION PASS: 20 OF THE 28 MEMBERS ARE REAL dMgJump3DMario_c::
  * METHODS.  The five that already carried mangled names (three virtuals, D1,
@@ -377,10 +384,11 @@ void func_ov006_020c7734(char *c)
         g = data_ov006_02140404;
         r2res = -func_02053200((data_02082214[(g >> 4) * 2 + 1] >> 2) + 0x1000);
 
-        /* Zeroed THROUGH `int *`, not through m.a..m.d.  Writing the named
-           members instead costs 11 words: mwccarm keeps the struct in
-           registers for the member form and has to spill it back for the
-           Matrix2x2 argument below. */
+        /* Zeroed THROUGH `int *`, not through m.a..m.d.  MEASURED: writing the
+           named members instead costs 11 words.  Why, is a reading and not a
+           measurement -- the extra words look like a spill of a struct mwccarm
+           had kept in registers, for the Matrix2x2 argument below -- so trust
+           the 11 and not the explanation. */
         int *mp = (int *)&m;
         mp[0] = 0; mp[1] = 0; mp[2] = 0; mp[3] = 0;
         m.d = r2res;
@@ -615,11 +623,12 @@ void dMgJump3DMario_c::StateMove()
                     int t1 = (-az) << 12;
                     v[0] = t0;
                     v[1] = t1;
-                    /* The volatile round-trip is load-bearing: it demotes v[]
-                       from registers to the stack, which is what puts the
-                       three NewSimple() argument loads below in the ROM's
-                       order.  Writing a plain `v[2] = 0;` rewrites the whole
-                       0x3c4-byte member. */
+                    /* The volatile round-trip is load-bearing.  MEASURED:
+                       writing a plain `v[2] = 0;` rewrites the whole 0x3c4-byte
+                       member, with 4 relocation destinations wrong.  The stack
+                       demotion of v[] and the NewSimple() argument load order
+                       below are a reading of that diff, not a separate
+                       measurement. */
                     *(volatile int *)&v[2] = 0;
                     *(int *)(c + 0x24) = *p;
                     *(int *)(c + 0x20) = data_ov006_0213b01c * dx;
@@ -787,9 +796,10 @@ void dMgJump3DMario_c::EnterHit()
     }
     func_02012718(0x1b5, *(short *)(c + 0x36) << 12);
     t0 = data_ov006_0213b078.a;
-    /* Both arms of this select are the same word on purpose.  It is what makes
-       mwccarm read .a before .b and keep both live; collapsing it to a plain
-       `t1 = data_ov006_0213b078.b;` costs 4 words. */
+    /* Both arms of this select are the same word on purpose.  MEASURED:
+       collapsing it to a plain `t1 = data_ov006_0213b078.b;` costs 4 words.
+       That it is what makes mwccarm read .a before .b and keep both live is a
+       reading of the diff, not a second measurement. */
     t1 = t0 ? data_ov006_0213b078.b : data_ov006_0213b078.b;
     *(int *)(c + 0x3c) = t0;
     *(int *)(c + 0x40) = t1;
