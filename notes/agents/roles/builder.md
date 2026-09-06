@@ -52,7 +52,11 @@ that does not match `HEAD` — so the ratchet and its commit must come **before*
     python tools/check_duplicate_sources.py
     python tools/check_dead_references.py
     python tools/cpp_tu_state.py --check-note
-    #    ^ notes/cpp-tu-current-state.md is generated and goes stale on every
+    #    ^ --write-note EXITS 2 on a dirty tree, which is exactly the state the
+    #      rebase recipe leaves you in, and its message tells you to STASH --
+    #      which this file forbids (shared across worktrees; unstages
+    #      deletions). Use `git add -A`, then re-run.
+    #      notes/cpp-tu-current-state.md is generated and goes stale on every
     #      promotion. Regenerate with --write-note and commit it in the same
     #      PR; a stale note on
     #      main is how the queue starts lying about what is already promoted.
@@ -74,6 +78,11 @@ PASS signals:
   exact, 100.000000%` plus equality with the run's own source-independent stock
   baseline control
 - `source_coverage` → `0 B` handed back to the cartridge
+- **`rombuild`'s BASELINE CONTROL legitimately prints
+  `dsd check symbols --fail FAIL`** — 9 pre-existing errors, present on untouched
+  `main`. It is absent from the PASS list above and it is not your defect, but a
+  builder grepping the log for `FAIL` will stop on it. Compare the error count
+  against the control run and report `0 new`
 - `prepush_attribution` → **no symbol *lost*.** Do **not** hold out for
   `0 changed`: a promotion folds N shards into one file, and the counter credits
   only the delinks range's *first* symbol and reclassifies the rest as
@@ -141,10 +150,20 @@ Every other tool treats those as prose, so a poisoned manifest ships silently.
 `match.compare`. Require all three: byte compare, `objisolate` (relocation type
 and addend), and `reloc_audit` (destination identity).
 
+**`match.py`'s API is not shaped the way that instruction implies.**
+`extract_func` returns a `(bytes, relocs)` **pair**, and the signature is
+`target_bytes(addr, size, bin_path: pathlib.Path, base: int)` — passing a module
+label like `"ov006"` raises
+`AttributeError: 'str' object has no attribute 'read_bytes'`. For an overlay pass
+`pathlib.Path("extracted/dsd/arm9_overlays/ov006.bin")` with base `0x020bfec0`.
+
 **`romdata_check`'s per-symbol verdicts are not reachable from the CLI.**
 `--show` only slices `report["differing"]` and `--json` carries counts. To prove
 a specific symbol's identity — which is how the cross-module RTTI claim was
-settled — import the module and call `check_object()` directly. The signature is
+settled — import the module and call `check_object()` directly. **The records DO carry an address** — this file used to say they carry `module`
+but no address field. The keys are exactly `symbol, module, addr, bytes,
+emitted, romExtent, blindWords, verdict`. The verdict key is `verdict`; printing
+`status`/`result`/`state` gives `None`. The signature is
 `check_object(obj_path, rel, names=None)` — passing a rom index positionally
 raises `TypeError: got multiple values for argument 'names'`. **Pass
 `names=romdata_check.name_index()`**: without it `module` comes back `None`,
@@ -254,10 +273,31 @@ owners the validator printed, with **0 disagreements**.
 the source — the workflows that read history correctly set `fetch-depth: 0`.
 Local agent runs are.
 
+**An attribution override has no effect until it is committed.** With all rows
+present in the working tree the gate still reported `0 consolidated, 71 lost` —
+unchanged. After `git commit`, the identical rows gave `71 consolidated, 0
+changed, 0 lost`. A builder who edits, re-runs, and sees no movement will
+reasonably conclude overrides are the wrong mechanism. Commit, then re-run.
+
 **So: never bank an attribution override from a shallow clone.** If
 `--is-shallow-repository` prints true, run `git fetch --unshallow` and recompute
 before writing anything. Worktrees share the parent clone's `.git`, so one
 shallow clone makes every worktree cut from it shallow too.
+
+## Two PowerShell traps that read as other people's bugs
+
+- **`git commit -F @'...'@` does not fail at parse time.** PowerShell passes the
+  here-string *body* as a filename, and git dies with `...: No such file or
+  directory` — which reads like a git problem, not a shell one. Write the
+  message to a class-unique scratch file and pass `-F <path>`.
+- **No PowerShell pipeline form gives live progress from a backgrounded build.**
+  `Select-Object -Last N`, `Tee-Object -FilePath` and `Out-File` all buffer
+  identically; the log file stays at 0 bytes until the process exits. A
+  backgrounded `linkcheck` cannot be watched at all — poll `build/tu/<id>/`
+  directory mtimes instead.
+- `jq` is **not** on PATH in the Bash tool here; only `gh`'s built-in `--jq`.
+  A monitor built on `jq` fails silently with `command not found` and produces
+  no events at all, which looks like the thing you are watching never finished.
 
 ## Do not use `git stash` in this repo
 
@@ -328,6 +368,17 @@ second banking. Do it non-destructively: copy the post-cherry-pick files aside,
 the auto-merge was correct — `git checkout HEAD --` both and commit nothing.
 Different means the silent merge lost or duplicated rows, and the regenerated
 version is the one to keep.
+
+**The recipe is missing its last step, and the omission is dangerous.**
+`--update` *appends* to the exceptions file, so by the time you have diffed and
+decided "my copy is the one to keep", the tool has **already overwritten the
+working file**. Restoring your copy is a separate, explicit action —
+`git checkout HEAD --` it, or copy it back. Deciding is not restoring.
+
+**And `--check` goes red on a narrower trigger than stated.** Measured: red after
+restoring **only** `config/converted-baseline.json`. The exceptions file plays no
+part in the backslide verdict at all, so do not restore it "to make the check
+pass" — that only risks the rows.
 
 **Committing the regenerated exceptions file destroys the writers' reasons.**
 Rows carry whatever string you pass to `--reason`, so regenerating from a clean
