@@ -18,10 +18,10 @@ python tools/cpp_tu_state.py --check-note
 
 | Measure | Live value |
 | --- | ---: |
-| MATCHED functions | 11309 / 11392 (99.27%) |
-| MATCHED code bytes | 2181328 / 2238108 (97.46%) |
-| Strict CONVERTED source functions | 2686 / 11356 (23.65%) |
-| Physical production source files | 9424 |
+| MATCHED functions | 11310 / 11392 (99.28%) |
+| MATCHED code bytes | 2184092 / 2238108 (97.59%) |
+| Strict CONVERTED source functions | 2686 / 11357 (23.65%) |
+| Physical production source files | 9425 |
 
 MATCHED is recomputed from committed config symbols and `src/` through
 `progress.synced_from_src()`; no ambient or gitignored chaos database is accepted.
@@ -32,19 +32,19 @@ weighted by enrolled function ownership so TU consolidation does not move it.
 
 | Measure | Live value |
 | --- | ---: |
-| Tracked production source files | 9424 |
+| Tracked production source files | 9425 |
 | Tracked `.c` files | 5390 |
-| Tracked `.cpp` files | 4034 |
+| Tracked `.cpp` files | 4035 |
 | `.cpp` files missing first-line `//cpp` | 0 |
 | Mangled-symbol source files | 3901 |
 | Genuinely migrated C++ symbol files | 3821 |
 | Not semantically migrated | 76 |
 | `.cpp` files still hand-spelling their symbol | 50 |
 | Nonmatching C++-symbol drafts | 5 |
-| Delinks path-owned function-symbol records | 11272 |
+| Delinks path-owned function-symbol records | 11273 |
 | Path-owned records still supplied from ROM bytes | 78 |
-| Source-built (`complete`) function-symbol records | 11194 |
-| Source-built (`complete`) source files | 9257 |
+| Source-built (`complete`) function-symbol records | 11195 |
+| Source-built (`complete`) source files | 9258 |
 | Complete sources owning more than one function | 122 |
 | Source-built records inside multi-function sources | 2059 |
 | Largest function-symbol-records-per-source count | 301 |
