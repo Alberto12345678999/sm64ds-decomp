@@ -46,7 +46,7 @@
  *
  * decl_common.h is NOT included, following the ov006/dScMgPanel_c and
  * ov006/dScMgCurling2_c precedent.  It declares only two of these members
- * (func_ov006_020c76e0 and func_ov006_020c7860, both `void(char*)`, both
+ * (func_ov006_020c76e0 and func_ov006_020c7860, both `void(char *)`, both
  * agreeing), but four of the DATA symbols this file reads collide with it:
  * data_ov006_02141a44 (`int` against this file's `void*`), data_ov006_02141a40
  * (`void*` against `char*`), data_ov006_02140428 (`int` against `int[]`) and
@@ -74,21 +74,42 @@
  * members are each wrapped in their own `extern "C" { }` and keep theirs at
  * block scope, where they inherit C linkage from the enclosing region.
  *
- * TWO SHADOW SPELLINGS ARE LOAD-BEARING AND WERE MEASURED.
+ * THREE SHADOW SPELLINGS ARE LOAD-BEARING AND WERE MEASURED.
  *   - `struct C` is incomplete when `typedef void (C::*PMF)()` is formed and
  *     complete afterwards, exactly as the shard for 0x020c7860 had it.  mwccarm
  *     picks its pointer-to-member representation from the completeness of the
  *     class at the point the pointer-to-member TYPE is declared.
- *   - The 8-byte records copied into +0x3c are spelled with ARRAY members
- *     (`struct S { int w[2]; }`), never two named ints.  The one shard that
- *     used `{ int a, b; }` -- func_ov006_020c81e0 -- was this file's single
- *     DIFF: C block-moved the record, C++ scalarised it and scheduled the load
- *     after the store, two words at +0x64/+0x68 with no size change.  Spelling
- *     it as an array restored 28/28.
+ *   - The 8-byte records copied into +0x3c are spelled with an ARRAY member
+ *     (`PmfRecord`, below), never two named ints.  The one shard that used
+ *     `{ int a, b; }` -- func_ov006_020c81e0 -- was this file's single DIFF: C
+ *     block-moved the record, C++ scalarised it and scheduled the load after
+ *     the store, two words at +0x64/+0x68 with no size change.  Spelling it as
+ *     an array restored 28/28.
  *   - func_ov006_020c7ba4 keeps its own `typedef struct { int x, y, z; } Vec3`
  *     for its local instead of the real Vector3.  types.h's Vector3 declares an
  *     empty destructor, so an object of it would odr-use `_ZN7Vector3D1Ev` and
  *     add an eleventh compiler-only row for nothing.
+ *
+ * STAGE 3 (humanizer) MEASURED EVERY CLEANUP, AND FIVE OF THEM COST BYTES.
+ * Each survivor is commented at its own site; do not delete one on sight.  What
+ * was tried, against `tubuild.py verify ov006/dMgJump3DMario_c`:
+ *
+ *   REMOVED, byte-neutral -- four `(int)` pointer launders (`(Pair *)((int)c +
+ *   0x3c)` and kin, in Unk_020c762c / StateDamp / EnterHit / StateWindUp); the
+ *   `int zero = 0` hoist in StateWindUp; the `int z = 0` hoist in
+ *   func_ov006_020c7734; the `(&data_ov006_02140428)[0]` subscript in
+ *   StateDamp; `t != false` -> `t != 0` in func_ov006_020c87d0; the
+ *   declare-then-assign pair in EnterHit.  Eight `{ int w[2]; }` shadow structs
+ *   under eight different names -- G, S, V2, W2, S60, S50, S48, G38 -- plus
+ *   EnterDamp's lone `double` spelling of the same eight bytes, folded into one
+ *   `PmfRecord`; all nine +0x3c installs now share it.
+ *
+ *   PUT BACK, load-bearing -- zeroing `Mtx m` through `int *` rather than
+ *   m.a..m.d (11 words, func_ov006_020c7734); reusing `flag` as the scratch in
+ *   StateHold (5 words); the `*(volatile int *)&v[2] = 0` stack demotion in
+ *   StateMove (rewrites the whole 0x3c4-byte member); the same-on-both-arms
+ *   select in EnterHit (4 words); the `int t` temporary in func_ov006_020c87d0
+ *   (rewrites the whole 0x16c-byte function).
  *
  * METHOD-CONVERSION PASS: 20 OF THE 28 MEMBERS ARE REAL dMgJump3DMario_c::
  * METHODS.  The five that already carried mangled names (three virtuals, D1,
@@ -190,6 +211,21 @@ struct C;
 typedef void (C::*PMF)();
 struct C { char pad[0x3c]; PMF m; };
 
+/* The 8-byte records at 0x0213b020..0x0213b098 that the Enter* members install
+ * at +0x3c.  What is measured is the SHAPE -- {code pointer, adjustment}, the
+ * mwccarm pointer-to-member representation -- not any gameplay meaning, so the
+ * type is named for the shape.
+ *
+ * THE ARRAY MEMBER IS LOAD-BEARING and this is the one type all nine installs
+ * share.  Spelled `{ int a, b; }` instead, C++ scalarises the copy and
+ * schedules the load after the store: two words at +0x64/+0x68 in
+ * func_ov006_020c81e0, which was this file's single DIFF before the array
+ * spelling restored 28/28.  `Pair` below is the SAME eight bytes read as two
+ * named ints, which is what the two comparison sites want; the split is
+ * deliberate, and the two must not be merged. */
+struct PmfRecord { int w[2]; };
+struct Pair { int a, b; };
+
 /* ---------------------------------------------------------------------------
  * ONE file-scope `extern "C"` region.
  * ------------------------------------------------------------------------- */
@@ -219,7 +255,6 @@ void func_ov006_020c8c78(int a, int b);
 // @symbol _ZN16dMgJump3DMario_c12Unk_020c762cEv
 int dMgJump3DMario_c::Unk_020c762c()
 {
-    struct Pair { int a, b; };
     extern Pair data_ov006_0213b058;
     extern Pair data_ov006_0213b070;
 
@@ -229,7 +264,7 @@ int dMgJump3DMario_c::Unk_020c762c()
     int m = 1;
     char *c = (char *)this;
 
-    p = (Pair *)((int)c + 0x3c);
+    p = (Pair *)(c + 0x3c);
     g = &data_ov006_0213b058;
     if (p->a == g->a) {
         if (p->b == g->b)
@@ -277,13 +312,16 @@ void *dMgJump3DMario_c::Unk_020c76d8()
 /* [3] 0x020c76e0 */
 extern "C" {
 // @symbol func_ov006_020c76e0
-void func_ov006_020c76e0(char *c) {
-  extern void Matrix4x3_FromTranslation(void *m, int x, int y, int z);
-  extern void Matrix4x3_ApplyInPlaceToRotationY(void *m, short angY);
-  extern struct Matrix4x3 data_020a0e68;
-  Matrix4x3_FromTranslation(&data_020a0e68, *(int*)(c+0x14), *(int*)(c+0x18), *(int*)(c+0x1c));
-  Matrix4x3_ApplyInPlaceToRotationY(&data_020a0e68, *(short*)(c+0x2e));
-  *(struct Matrix4x3*)(c+0x68) = data_020a0e68;
+void func_ov006_020c76e0(char *c)
+{
+    extern void Matrix4x3_FromTranslation(void *m, int x, int y, int z);
+    extern void Matrix4x3_ApplyInPlaceToRotationY(void *m, short angY);
+    extern struct Matrix4x3 data_020a0e68;
+
+    Matrix4x3_FromTranslation(&data_020a0e68,
+        *(int *)(c + 0x14), *(int *)(c + 0x18), *(int *)(c + 0x1c));
+    Matrix4x3_ApplyInPlaceToRotationY(&data_020a0e68, *(short *)(c + 0x2e));
+    *(struct Matrix4x3 *)(c + 0x68) = data_020a0e68;
 }
 }
 
@@ -303,9 +341,9 @@ struct VBase {
     virtual void m5(void *arg);
 };
 
-// @symbol func_ov006_020c7734
 extern "C" {
-void func_ov006_020c7734(char *self)
+// @symbol func_ov006_020c7734
+void func_ov006_020c7734(char *c)
 {
     extern void func_ov006_020bfec0(void *a, void *b, short *c);
     extern int func_02053200(int x);
@@ -325,11 +363,11 @@ void func_ov006_020c7734(char *self)
     int t;
     Mtx m;
 
-    if (*(unsigned char *)(self + 0x35) == 0)
+    if (*(unsigned char *)(c + 0x35) == 0)
         return;
 
     if (data_ov006_02140400 != 0) {
-        func_ov006_020bfec0(data_ov006_02141a44, self + 0x14, v);
+        func_ov006_020bfec0(data_ov006_02141a44, c + 0x14, v);
 
         g = data_ov006_02140404;
         t = data_02082214[(g >> 4) * 2];
@@ -339,16 +377,19 @@ void func_ov006_020c7734(char *self)
         g = data_ov006_02140404;
         r2res = -func_02053200((data_02082214[(g >> 4) * 2 + 1] >> 2) + 0x1000);
 
+        /* Zeroed THROUGH `int *`, not through m.a..m.d.  Writing the named
+           members instead costs 11 words: mwccarm keeps the struct in
+           registers for the member form and has to spill it back for the
+           Matrix2x2 argument below. */
         int *mp = (int *)&m;
-        int z = 0;
-        mp[0] = z; mp[1] = z; mp[2] = z; mp[3] = z;
+        mp[0] = 0; mp[1] = 0; mp[2] = 0; mp[3] = 0;
         m.d = r2res;
         m.a = r1res;
         _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2(
             false, data_ov006_02134d1c, v[0], v[1], -1, -1, (Matrix2x2 *)&m);
     }
 
-    ((VBase *)(self + 0x4c))->m5(&data_ov006_0212ddd0);
+    ((VBase *)(c + 0x4c))->m5(&data_ov006_0212ddd0);
 }
 }
 
@@ -356,18 +397,23 @@ void func_ov006_020c7734(char *self)
 /* [5] 0x020c7860 */
 extern "C" {
 // @symbol func_ov006_020c7860
-void func_ov006_020c7860(char *c) {
+void func_ov006_020c7860(char *c)
+{
     extern void AddVec3(struct Vector3 *a, struct Vector3 *b, struct Vector3 *c);
-    extern void func_ov006_020bfec0(void* a, char* b, short* d);
+    extern void func_ov006_020bfec0(void *a, char *b, short *d);
     extern void func_ov006_020c76e0(char *c);
     extern void _ZN9Animation7AdvanceEv(void *);
     extern int data_ov006_0213b010;
     extern int data_ov006_0213b018;
     extern void *data_ov006_02141a40;
-    _Z14ApproachLinearRiii(*(int*)(c + 0x24), data_ov006_0213b010, data_ov006_0213b018);
+    _Z14ApproachLinearRiii(*(int *)(c + 0x24), data_ov006_0213b010, data_ov006_0213b018);
     AddVec3((struct Vector3*)(c + 0x14), (struct Vector3*)(c + 0x20), (struct Vector3*)(c + 0x14));
-    { C *o = (C*)c; (o->*o->m)(); }
-    func_ov006_020bfec0(*(void**)&data_ov006_02141a40, c + 0x14, (short*)(c + 0x36));
+    {
+        /* Dispatch through the object's own +0x3c state handler. */
+        C *o = (C *)c;
+        (o->*o->m)();
+    }
+    func_ov006_020bfec0(*(void **)&data_ov006_02141a40, c + 0x14, (short *)(c + 0x36));
     func_ov006_020c76e0(c);
     _ZN9Animation7AdvanceEv(c + 0x9c);
 }
@@ -379,23 +425,23 @@ void func_ov006_020c7860(char *c) {
 void dMgJump3DMario_c::StateDamp()
 {
     extern int data_ov006_02140428;
-    char *thiz = (char *)this;
-    *(short *)(((int)thiz + 0x32)) -= 1;
-    if (*(short*)(thiz + 0x32) == 0) {
-        _Z14ApproachLinearRiii((&data_ov006_02140428)[0], 0, 1);
+    char *c = (char *)this;
+    *(short *)(c + 0x32) -= 1;
+    if (*(short *)(c + 0x32) == 0) {
+        _Z14ApproachLinearRiii(data_ov006_02140428, 0, 1);
         _ZN5Sound12PlayBank2_2DEj(0x130);
-        func_ov006_020c8c78(*(short*)(thiz + 0x36), 0xc0);
+        func_ov006_020c8c78(*(short *)(c + 0x36), 0xc0);
         EnterRespawn();
         return;
     }
-    *(int*)(thiz + 0x20) =
-        (int)(((long long)*(int*)(thiz + 0x20) * 0xc00 + 0x800) >> 12);
-    if (*(int*)(thiz + 0x14) < -0x6c000) {
-        *(int*)(thiz + 0x14) = -0x6c000;
+    *(int *)(c + 0x20) =
+        (int)(((s64)*(int *)(c + 0x20) * 0xc00 + 0x800) >> 12);
+    if (*(int *)(c + 0x14) < -0x6c000) {
+        *(int *)(c + 0x14) = -0x6c000;
         return;
     }
-    if (*(int*)(thiz + 0x14) > 0x6c000)
-        *(int*)(thiz + 0x14) = 0x6c000;
+    if (*(int *)(c + 0x14) > 0x6c000)
+        *(int *)(c + 0x14) = 0x6c000;
 }
 
 
@@ -405,7 +451,7 @@ void dMgJump3DMario_c::EnterDamp()
 {
     extern int data_ov006_02140428[];
     extern int data_ov006_0214042c[];
-    extern double data_ov006_0213b030;
+    extern PmfRecord data_ov006_0213b030;
     char *c = (char *)this;
     if (data_ov006_02140428[0] > 1)
         _ZN5Sound12PlayBank2_2DEj(0x1ca);
@@ -413,7 +459,7 @@ void dMgJump3DMario_c::EnterDamp()
         _ZN5Sound12PlayBank2_2DEj(0x1c9);
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj((void *)(c + 0x4c), (void *)data_ov006_0214042c[0], 0, 0x800, 0);
     *(short *)(c + 0x32) = 0x28;
-    *(double *)(c + 0x3c) = data_ov006_0213b030;
+    *(PmfRecord *)(c + 0x3c) = data_ov006_0213b030;
 }
 
 
@@ -421,112 +467,95 @@ void dMgJump3DMario_c::EnterDamp()
 // @symbol _ZN16dMgJump3DMario_c9StateHoldEv
 void dMgJump3DMario_c::StateHold()
 {
-  char *c = (char *)this;
-  extern u8 data_020a0e40;
-  extern u8 data_020a0de8[][4];
-  extern u8 data_020a0de9[][4];
-  extern u8 data_020a0dea[][4];
-  extern u8 data_020a0deb[][4];
-  extern int data_ov006_0213b008;
-  u32 idx = data_020a0e40;
-  int flag = 0;
-  if (data_020a0de8[idx][0] != 0)
-  {
-    if (data_020a0de9[idx][0] != 0)
-    {
-      flag = 1;
+    extern u8 data_020a0e40;
+    extern u8 data_020a0de8[][4];
+    extern u8 data_020a0de9[][4];
+    extern u8 data_020a0dea[][4];
+    extern u8 data_020a0deb[][4];
+    extern int data_ov006_0213b008;
+    char *c = (char *)this;
+    u32 idx = data_020a0e40;
+    int flag = 0;
+
+    if (data_020a0de8[idx][0] != 0) {
+        if (data_020a0de9[idx][0] != 0) {
+            flag = 1;
+        }
     }
-  }
-  if (flag != 0)
-  {
-    int b = flag = data_020a0deb[idx][0];
-    int x = (*((s16 *) (c + 0x38))) - 0x20;
-    int dz = (*((s16 *) (c + 0x36))) - data_020a0dea[idx][0];
-    if (dz < 0)
-    {
-      dz = -dz;
+    if (flag != 0) {
+        /* Reusing `flag` as the scratch is load-bearing, not leftover: reading
+           the table straight into `b` and leaving `flag` alone costs 5 words. */
+        flag = data_020a0deb[idx][0];
+        int b = flag;
+        int x = *(s16 *)(c + 0x38) - 0x20;
+        int dz = *(s16 *)(c + 0x36) - data_020a0dea[idx][0];
+        if (dz < 0) {
+            dz = -dz;
+        }
+        if (dz < 0x18) {
+            int dx = x - b;
+            if (dx < 0) {
+                dx = -dx;
+            }
+            if (dx < 0x26) {
+                _Z15ApproachLinear2Rsss((short *)(c + 0x32), 0, 8);
+            }
+        }
     }
-    if (dz < 0x18)
     {
-      int dx = x - b;
-      if (dx < 0)
-      {
-        dx = -dx;
-      }
-      if (dx < 0x26)
-      {
-        _Z15ApproachLinear2Rsss((short *) (c + 0x32), 0, 8);
-      }
+        int v = *(int *)(c + 0x14);
+        if (v < -0x6c000) {
+            v = -0x6c000;
+        } else if (v > 0x6c000) {
+            v = 0x6c000;
+        }
+        *(int *)(c + 0x14) = v;
     }
-  }
-  {
-    int v = *((int *) (c + 0x14));
-    if (v < (-0x6c000))
-    {
-      v = -0x6c000;
+    if (*(u16 *)(c + 0x10) == 1) {
+        *(u16 *)(c + 0x10) = 0;
+        *(int *)(c + 0x24) = data_ov006_0213b008;
+        EnterHit();
+    } else if (_Z15ApproachLinear2Rsss((short *)(c + 0x32), 0, 1)) {
+        *(u16 *)(c + 0x10) = 0;
+        if (*(int *)(c + 0x24) > 0) {
+            EnterBounce();
+            StateBounce();
+        } else {
+            EnterMove();
+            StateMove();
+        }
+    } else {
+        if (*(s16 *)(c + 0x38) < 0xbc) {
+            return;
+        }
+        EnterDamp();
     }
-    else
-      if (v > 0x6c000)
-    {
-      v = 0x6c000;
-    }
-    *((int *) (c + 0x14)) = v;
-  }
-  if ((*((u16 *) (c + 0x10))) == 1)
-  {
-    *((u16 *) (c + 0x10)) = 0;
-    *((int *) (c + 0x24)) = data_ov006_0213b008;
-    EnterHit();
-  }
-  else
-    if (_Z15ApproachLinear2Rsss((short *) (c + 0x32), 0, 1))
-  {
-    *((u16 *) (c + 0x10)) = 0;
-    if ((*((int *) (c + 0x24))) > 0)
-    {
-      EnterBounce();
-      StateBounce();
-    }
-    else
-    {
-      EnterMove();
-      StateMove();
-    }
-  }
-  else
-  {
-    if ((*((s16 *) (c + 0x38))) < 0xbc)
-    {
-      return;
-    }
-    EnterDamp();
-  }
 }
 
 
 /* [9] 0x020c7ba4 */
-struct G { int w[2]; };
 // @symbol _ZN16dMgJump3DMario_c9EnterHoldEv
-void dMgJump3DMario_c::EnterHold() {
-    char *p = (char *)this;
+void dMgJump3DMario_c::EnterHold()
+{
+    char *c = (char *)this;
     extern int data_ov006_02140408[];
-    extern struct G data_ov006_0213b028;
+    extern PmfRecord data_ov006_0213b028;
     typedef struct { int x, y, z; } Vec3;
     Vec3 v;
-    Vec3_Sub(&v, (Vec3 *)(p + 0x14), (Vec3 *)(p + 4));
+    Vec3_Sub(&v, (Vec3 *)(c + 0x14), (Vec3 *)(c + 4));
     if (NormalizeVec3IfNonZero(&v) != 0) {
-        *(int *)(p + 0x20) = v.x;
-        *(int *)(p + 0x24) = v.y;
-        *(int *)(p + 0x28) = v.z;
+        *(int *)(c + 0x20) = v.x;
+        *(int *)(c + 0x24) = v.y;
+        *(int *)(c + 0x28) = v.z;
     } else {
-        *(int *)(p + 0x20) = -*(int *)(p + 0x20);
-        *(int *)(p + 0x24) = -*(int *)(p + 0x24);
+        *(int *)(c + 0x20) = -*(int *)(c + 0x20);
+        *(int *)(c + 0x24) = -*(int *)(c + 0x24);
     }
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(p + 0x4c, (void *)data_ov006_02140408[0], 0x40000000, 0x800, 0);
-    *(int *)(p + 0xa4) = 0;
-    Sound_PlayBank1Panned(0, 6, *(int *)(p + 0x14));
-    *(short *)(p + 0x32) = 0x20;
-    *(struct G *)(p + 0x3c) = data_ov006_0213b028;
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(c + 0x4c, (void *)data_ov006_02140408[0], 0x40000000, 0x800, 0);
+    *(int *)(c + 0xa4) = 0;
+    Sound_PlayBank1Panned(0, 6, *(int *)(c + 0x14));
+    *(short *)(c + 0x32) = 0x20;
+    *(PmfRecord *)(c + 0x3c) = data_ov006_0213b028;
 }
 
 
@@ -586,6 +615,11 @@ void dMgJump3DMario_c::StateMove()
                     int t1 = (-az) << 12;
                     v[0] = t0;
                     v[1] = t1;
+                    /* The volatile round-trip is load-bearing: it demotes v[]
+                       from registers to the stack, which is what puts the
+                       three NewSimple() argument loads below in the ROM's
+                       order.  Writing a plain `v[2] = 0;` rewrites the whole
+                       0x3c4-byte member. */
                     *(volatile int *)&v[2] = 0;
                     *(int *)(c + 0x24) = *p;
                     *(int *)(c + 0x20) = data_ov006_0213b01c * dx;
@@ -641,42 +675,49 @@ void dMgJump3DMario_c::StateMove()
 
 
 /* [11] 0x020c802c */
-struct S { int w[2]; };
 // @symbol _ZN16dMgJump3DMario_c9EnterMoveEv
-void dMgJump3DMario_c::EnterMove() { char *p = (char *)this; extern struct S data_ov006_0213b020; *(struct S *)(p + 0x3c) = data_ov006_0213b020; }
+void dMgJump3DMario_c::EnterMove()
+{
+    extern PmfRecord data_ov006_0213b020;
+    char *c = (char *)this;
+
+    *(PmfRecord *)(c + 0x3c) = data_ov006_0213b020;
+}
 
 
 /* [12] 0x020c8048 */
 // @symbol _ZN16dMgJump3DMario_c12StateFallOutEv
-void dMgJump3DMario_c::StateFallOut(){
-  void *c = (void *)this;
-  if(*(int*)((char*)c+0x18) >= -0x120000) return;
-  *(int*)((char*)c+0x24)=0;
-  func_ov006_020c8658(c);
+void dMgJump3DMario_c::StateFallOut()
+{
+    void *c = (void *)this;
+
+    if (*(int *)((char *)c + 0x18) >= -0x120000)
+        return;
+    *(int *)((char *)c + 0x24) = 0;
+    func_ov006_020c8658(c);
 }
 
 
 /* [13] 0x020c8084 */
 extern "C" {
 // @symbol func_ov006_020c8084
-typedef struct { int v[2]; } V2;
 void func_ov006_020c8084(char *c)
 {
     extern int data_ov006_0213b088[2];
     extern void *data_ov006_0214042c;
     extern int data_ov006_0213b090[2];
-    int *p = (int*)(c + 0x3c);
+    int *p = (int *)(c + 0x3c);
     int *g = data_ov006_0213b088;
-    if (p[0] == g[0] && (p[1] == g[1] || *(int*)(c + 0x3c) == 0)) {
-        *(int*)(c + 0x24) = 0;
+    if (p[0] == g[0] && (p[1] == g[1] || *(int *)(c + 0x3c) == 0)) {
+        *(int *)(c + 0x24) = 0;
         func_ov006_020c8658(c);
     } else {
-        *(int*)(c + 0x20) = 0;
-        *(int*)(c + 0x24) = 0x2000;
+        *(int *)(c + 0x20) = 0;
+        *(int *)(c + 0x24) = 0x2000;
         _ZN5Sound12PlayBank2_2DEj(0x1c9);
         _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj((void *)(c + 0x4c), data_ov006_0214042c, 0, 0x800, 0);
-        *(int*)(c + 0xa4) = 0;
-        *(V2*)(c + 0x3c) = *(V2*)data_ov006_0213b090;
+        *(int *)(c + 0xa4) = 0;
+        *(PmfRecord *)(c + 0x3c) = *(PmfRecord *)data_ov006_0213b090;
     }
 }
 }
@@ -709,8 +750,6 @@ extern "C" {
 /* An ARRAY member, where the .c shard spelled it `{ int a, b; }`.  C block-moved
    the 8-byte record; C++ scalarises two named ints and schedules the load after
    the store, which is this file's one measured 2-word DIFF (+0x64/+0x68). */
-struct W2 { int w[2]; };
-
 void func_ov006_020c81e0(char *c)
 {
     extern int data_ov006_0213b00c[];
@@ -722,38 +761,38 @@ void func_ov006_020c81e0(char *c)
     *(int *)(c + 0xa4) = 0;
     _ZN5Sound12PlayBank2_2DEj(0x10f);
     func_02012718(0x1b5, *(short *)(c + 0x36) << 0xc);
-    *(struct W2 *)(c + 0x3c) = *(struct W2 *)data_ov006_0213b080;
+    *(PmfRecord *)(c + 0x3c) = *(PmfRecord *)data_ov006_0213b080;
 }
 }
 
 
 /* [16] 0x020c8270 */
-struct Pair { int a, b; };
 // @symbol _ZN16dMgJump3DMario_c8EnterHitEv
 void dMgJump3DMario_c::EnterHit()
 {
-    char* c = (char *)this;
-    extern void* data_ov006_0214041c;
-    extern struct Pair data_ov006_0213b068;
-    extern struct Pair data_ov006_0213b078;
-    struct Pair* g;
-    struct Pair* p;
+    char *c = (char *)this;
+    extern void *data_ov006_0214041c;
+    extern Pair data_ov006_0213b068;
+    extern Pair data_ov006_0213b078;
     int t0, t1;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj((void*)(c + 0x4c), data_ov006_0214041c, 0x40000000, 0x800, 0);
-    *(int*)(c + 0xa4) = 0;
-    p = (struct Pair*)(((int)c + 0x3c));
-    g = &data_ov006_0213b068;
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj((void *)(c + 0x4c), data_ov006_0214041c, 0x40000000, 0x800, 0);
+    *(int *)(c + 0xa4) = 0;
+    Pair *p = (Pair *)(c + 0x3c);
+    Pair *g = &data_ov006_0213b068;
     if (p->a == g->a &&
-        (p->b == g->b || *(int*)(c + 0x3c) == 0)) {
-        func_02012718(0x110, *(short*)(c + 0x36) << 12);
+        (p->b == g->b || *(int *)(c + 0x3c) == 0)) {
+        func_02012718(0x110, *(short *)(c + 0x36) << 12);
     } else {
-        Sound_PlayBank1Panned(0, 4, *(int*)(c + 0x14));
+        Sound_PlayBank1Panned(0, 4, *(int *)(c + 0x14));
     }
-    func_02012718(0x1b5, *(short*)(c + 0x36) << 12);
+    func_02012718(0x1b5, *(short *)(c + 0x36) << 12);
     t0 = data_ov006_0213b078.a;
+    /* Both arms of this select are the same word on purpose.  It is what makes
+       mwccarm read .a before .b and keep both live; collapsing it to a plain
+       `t1 = data_ov006_0213b078.b;` costs 4 words. */
     t1 = t0 ? data_ov006_0213b078.b : data_ov006_0213b078.b;
-    *(int*)(c + 0x3c) = t0;
-    *(int*)(c + 0x40) = t1;
+    *(int *)(c + 0x3c) = t0;
+    *(int *)(c + 0x40) = t1;
 }
 
 
@@ -778,7 +817,7 @@ void dMgJump3DMario_c::StateBounce()
     }
 
     if (*(int *)(c + 0x14) < -0x6c000 && *(int *)(c + 0x20) < 0) {
-        *(int *)(c + 0x20) = -(int)((*(int *)(c + 0x20) * 0xd00LL + 0x800) >> 12);
+        *(int *)(c + 0x20) = -(int)(((s64)*(int *)(c + 0x20) * 0xd00 + 0x800) >> 12);
         if (*(int *)(c + 0x24) > 0) {
             *(int *)(c + 0x44) = 2;
             _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(c + 0x4c,
@@ -787,7 +826,7 @@ void dMgJump3DMario_c::StateBounce()
             Sound_PlayBank1Panned(0, *(int *)(c + 0x44), *(int *)(c + 0x14));
         }
     } else if (*(int *)(c + 0x14) > 0x6c000 && *(int *)(c + 0x20) > 0) {
-        *(int *)(c + 0x20) = -(int)((*(int *)(c + 0x20) * 0xd00LL + 0x800) >> 12);
+        *(int *)(c + 0x20) = -(int)(((s64)*(int *)(c + 0x20) * 0xd00 + 0x800) >> 12);
         if (*(int *)(c + 0x24) > 0) {
             *(int *)(c + 0x44) = 2;
             _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(c + 0x4c,
@@ -818,28 +857,32 @@ void dMgJump3DMario_c::StateBounce()
 
 
 /* [18] 0x020c85a0 */
-struct S60 { int w[2]; };
 // @symbol _ZN16dMgJump3DMario_c11EnterBounceEv
-void dMgJump3DMario_c::EnterBounce() { char *p = (char *)this; extern struct S60 data_ov006_0213b060; *(struct S60 *)(p + 0x3c) = data_ov006_0213b060; }
+void dMgJump3DMario_c::EnterBounce()
+{
+    extern PmfRecord data_ov006_0213b060;
+    char *c = (char *)this;
+
+    *(PmfRecord *)(c + 0x3c) = data_ov006_0213b060;
+}
 
 
 /* [19] 0x020c85bc */
 // @symbol _ZN16dMgJump3DMario_c11StateWindUpEv
 void dMgJump3DMario_c::StateWindUp()
 {
-    char *o = (char *)this;
+    char *c = (char *)this;
     extern int data_ov006_0213b00c;
-    if (_Z15ApproachLinear2Rsss((s16 *)(o + 0x32), 0, 1) == 0) {
-        *(int *)(o + 0x18) = 0;
+    if (_Z15ApproachLinear2Rsss((s16 *)(c + 0x32), 0, 1) == 0) {
+        *(int *)(c + 0x18) = 0;
         return;
     }
-    *(unsigned char *)(o + 0x35) = 1;
-    int zero = 0;
-    *(int *)(o + 0x18) = zero;
-    int *base = (int *)(((int)o + 0x20));
+    *(unsigned char *)(c + 0x35) = 1;
+    *(int *)(c + 0x18) = 0;
+    int *base = (int *)(c + 0x20);
     *base = *base << 1;
-    *(int *)(o + 0x24) = data_ov006_0213b00c;
-    *(short *)(o + 0x10) = (short)zero;
+    *(int *)(c + 0x24) = data_ov006_0213b00c;
+    *(short *)(c + 0x10) = 0;
     EnterHit();
 }
 
@@ -847,8 +890,13 @@ void dMgJump3DMario_c::StateWindUp()
 /* [20] 0x020c862c */
 extern "C" {
 // @symbol func_ov006_020c862c
-struct S50{int w[2];};
-void func_ov006_020c862c(int* c, int v){ extern struct S50 data_ov006_0213b050; *(short*)((char*)c+0x32)=(short)v; *(struct S50*)((char*)c+0x3c)=data_ov006_0213b050; }
+void func_ov006_020c862c(int *c, int v)
+{
+    extern PmfRecord data_ov006_0213b050;
+
+    *(short *)((char *)c + 0x32) = (short)v;
+    *(PmfRecord *)((char *)c + 0x3c) = data_ov006_0213b050;
+}
 }
 
 
@@ -864,12 +912,13 @@ void dMgJump3DMario_c::StateIdle()
 /* [22] 0x020c8658 */
 extern "C" {
 // @symbol func_ov006_020c8658
-struct S48{int w[2];};
-void func_ov006_020c8658(void *c){
-  extern struct S48 data_ov006_0213b048;
-  *(char*)((char*)c+0x35)=0;
-  *(int*)((char*)c+0x18)=0;
-  *(struct S48*)((char*)c+0x3c)=data_ov006_0213b048;
+void func_ov006_020c8658(void *c)
+{
+    extern PmfRecord data_ov006_0213b048;
+
+    *(char *)((char *)c + 0x35) = 0;
+    *(int *)((char *)c + 0x18) = 0;
+    *(PmfRecord *)((char *)c + 0x3c) = data_ov006_0213b048;
 }
 }
 
@@ -878,50 +927,50 @@ void func_ov006_020c8658(void *c){
 // @symbol _ZN16dMgJump3DMario_c12StateRespawnEv
 void dMgJump3DMario_c::StateRespawn()
 {
-    char* self = (char *)this;
+    char *c = (char *)this;
     extern int data_0209e650;
     extern int data_ov006_0213b01c;
-    extern void* data_ov006_02140424;
+    extern void *data_ov006_02140424;
     unsigned int r;
     int r5;
 
-    *(short*)(self + 0x32) -= 1;
-    if (*(short*)(self + 0x32) == 0) {
-        *(int*)(self + 0x18) = 0x100000;
+    *(short *)(c + 0x32) -= 1;
+    if (*(short *)(c + 0x32) == 0) {
+        *(int *)(c + 0x18) = 0x100000;
         r = ((unsigned int)RandomIntInternal(&data_0209e650) & 0x7fffffff) >> 0x13;
-        *(int*)(self + 0x14) = ((int)r - 0x800) * 0xc0;
-        *(int*)(self + 0x24) = 0;
+        *(int *)(c + 0x14) = ((int)r - 0x800) * 0xc0;
+        *(int *)(c + 0x24) = 0;
         r5 = data_ov006_0213b01c;
         r = ((unsigned int)RandomIntInternal(&data_0209e650) & 0x7fffffff) >> 0x13;
-        *(int*)(self + 0x20) = (int)(((long long)(((int)r - 0x800) << 1) * r5 + 0x800) >> 12);
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(self + 0x4c, data_ov006_02140424, 0x40000000, 0x800, 0);
+        *(int *)(c + 0x20) = (int)(((s64)(((int)r - 0x800) << 1) * r5 + 0x800) >> 12);
+        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(c + 0x4c, data_ov006_02140424, 0x40000000, 0x800, 0);
         EnterMove();
         return;
     }
-    *(int*)(self + 0x18) = 0x100000;
-    *(int*)(self + 0x24) = 0;
+    *(int *)(c + 0x18) = 0x100000;
+    *(int *)(c + 0x24) = 0;
 }
 
 
 /* [24] 0x020c8768 */
-struct G38 { int w[2]; };
 // @symbol _ZN16dMgJump3DMario_c12EnterRespawnEv
-void dMgJump3DMario_c::EnterRespawn() {
-    char *p = (char *)this;
+void dMgJump3DMario_c::EnterRespawn()
+{
+    char *c = (char *)this;
     extern int data_ov006_02140424[];
-    extern struct G38 data_ov006_0213b038;
-    *(short *)(p + 0x32) = 0x3c;
-    *(int *)(p + 0x18) = 0x100000;
-    *(int *)(p + 0x24) = 0;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(p + 0x4c, (void *)data_ov006_02140424[0], 0x40000000, 0x800, 0);
-    *(struct G38 *)(p + 0x3c) = data_ov006_0213b038;
+    extern PmfRecord data_ov006_0213b038;
+    *(short *)(c + 0x32) = 0x3c;
+    *(int *)(c + 0x18) = 0x100000;
+    *(int *)(c + 0x24) = 0;
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(c + 0x4c, (void *)data_ov006_02140424[0], 0x40000000, 0x800, 0);
+    *(PmfRecord *)(c + 0x3c) = data_ov006_0213b038;
 }
 
 
 /* [25] 0x020c87d0 */
 extern "C" {
 // @symbol func_ov006_020c87d0
-int func_ov006_020c87d0(char* c)
+int func_ov006_020c87d0(char *c)
 {
     extern SharedFilePtr data_ov006_02140450;
     extern SharedFilePtr data_ov006_02140460;
@@ -931,22 +980,24 @@ int func_ov006_020c87d0(char* c)
     extern SharedFilePtr data_ov006_02140440;
     extern SharedFilePtr data_ov006_02140448;
 
-    extern void* data_ov006_02140430;
-    extern void* data_ov006_0214040c;
-    extern void* data_ov006_0214041c;
-    extern void* data_ov006_02140424;
-    extern void* data_ov006_02140408;
-    extern void* data_ov006_0214042c;
+    extern void *data_ov006_02140430;
+    extern void *data_ov006_0214040c;
+    extern void *data_ov006_0214041c;
+    extern void *data_ov006_02140424;
+    extern void *data_ov006_02140408;
+    extern void *data_ov006_0214042c;
 
-    extern char* data_ov006_02141a40;
-    extern void* data_0209f5c0;
+    extern char *data_ov006_02141a40;
+    extern void *data_0209f5c0;
 
-    extern int func_020179b4(SharedFilePtr* f, void* model, int a);
-    extern void* _ZN9Animation8LoadFileER13SharedFilePtr(SharedFilePtr* f);
-    extern void func_ov006_020bfec0(char* p, void* q, short* s);
-    extern void func_02016a14(void* self, int a);
-    extern void func_02016a04(void* self, int a);
+    extern int func_020179b4(SharedFilePtr *f, void *model, int a);
+    extern void *_ZN9Animation8LoadFileER13SharedFilePtr(SharedFilePtr *f);
+    extern void func_ov006_020bfec0(char *p, void *q, short *s);
+    extern void func_02016a14(void *self, int a);
+    extern void func_02016a04(void *self, int a);
 
+    /* `t` is load-bearing, not a leftover: folding the comparison into the
+       `if` below rewrites the whole 0x16c-byte function. */
     int t;
 
     if (func_020179b4(&data_ov006_02140450, c + 0x4c, 1) == 0)
@@ -959,12 +1010,12 @@ int func_ov006_020c87d0(char* c)
     data_ov006_02140408 = _ZN9Animation8LoadFileER13SharedFilePtr(&data_ov006_02140440);
     data_ov006_0214042c = _ZN9Animation8LoadFileER13SharedFilePtr(&data_ov006_02140448);
 
-    *(int*)(c + 0x44) = 0;
+    *(int *)(c + 0x44) = 0;
     if (data_ov006_02141a40 != 0)
-        func_ov006_020bfec0(data_ov006_02141a40, c + 0x14, (short*)(c + 0x36));
+        func_ov006_020bfec0(data_ov006_02141a40, c + 0x14, (short *)(c + 0x36));
 
-    t = *(u16*)((char*)data_0209f5c0 + 0xc) == 0x175;
-    if (t != false) {
+    t = *(u16 *)((char *)data_0209f5c0 + 0xc) == 0x175;
+    if (t != 0) {
         func_02016a14(c + 0x4c, 0x7fff);
         func_02016a04(c + 0x4c, 0x210);
     }
