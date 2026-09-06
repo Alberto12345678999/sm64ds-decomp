@@ -2863,6 +2863,18 @@
     "src/actors/dMgJump3DMario_c.cpp#_ZN16dMgJump3DMario_c9EnterHoldEv": "ruspecial",
     "src/actors/dMgJump3DMario_c.cpp#_ZN16dMgJump3DMario_c12EnterRespawnEv": "tangosdev",
     "src/actors/dMgJump3DMario_c.cpp#_ZN16dMgJump3DMario_c12StateRiseOutEv": "tangosdev",
-    "src/actors/dMgJump3DMario_c.cpp#func_ov006_020c87d0": "alexsobolew7"
+    "src/actors/dMgJump3DMario_c.cpp#func_ov006_020c87d0": "alexsobolew7",
+    "src/actors/dMgJump3DMario_c.cpp#func_ov006_020c79a8": "tangosdev",
+    "src/actors/dMgJump3DMario_c.cpp#func_ov006_020c7a30": "tangosdev",
+    "src/actors/dMgJump3DMario_c.cpp#func_ov006_020c802c": "tangosdev",
+    "src/actors/dMgJump3DMario_c.cpp#func_ov006_020c833c": "ruspecial",
+    "src/actors/dMgJump3DMario_c.cpp#func_ov006_020c8048": "tangosdev",
+    "src/actors/dMgJump3DMario_c.cpp#func_ov006_020c7c68": "lunavyqo",
+    "src/actors/dMgJump3DMario_c.cpp#func_ov006_020c864c": "tangosdev",
+    "src/actors/dMgJump3DMario_c.cpp#func_ov006_020c85a0": "tangosdev",
+    "src/actors/dMgJump3DMario_c.cpp#func_ov006_020c8680": "andrewboudreau",
+    "src/actors/dMgJump3DMario_c.cpp#func_ov006_020c7ba4": "ruspecial",
+    "src/actors/dMgJump3DMario_c.cpp#func_ov006_020c8768": "tangosdev",
+    "src/actors/dMgJump3DMario_c.cpp#func_ov006_020c814c": "tangosdev"
   }
 }
