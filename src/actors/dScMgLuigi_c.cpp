@@ -54,16 +54,23 @@
  * is a codegen hazard, not a naming one, so each member's own view is kept:
  * shadow TYPE tags are uniquified per member with the member's address as a
  * suffix, and the declarations themselves sit at BLOCK scope inside the member
- * that recovered them.  Each `func_ov006_*` member is wrapped in its own
- * file-scope `extern "C" { }` region precisely so those block-scope
- * declarations get C linkage and name the ROM symbol.
+ * that recovered them.  Each member that still carries an auto-generated C name
+ * is wrapped in its own file-scope `extern "C" { }` region precisely so those
+ * block-scope declarations get C linkage and name the ROM symbol.
  *
  * A class member function may NOT sit inside a linkage-specification region, so
- * the six C++-named members (ordinals 0/1, 2, 53, 54, 55, 56) are outside one,
- * and what they call is declared in the two file-scope `extern "C"` regions
- * below instead -- the small one before ordinal 2, the large one after the last
- * wrapped member.  Writing those declarations in their bodies instead compiles
- * and byte-matches and then fails to link with mangled undefined symbols.
+ * every C++-named member is outside one, and what they call is declared in the
+ * file-scope `extern "C"` regions instead.  Writing those declarations in their
+ * bodies compiles and byte-matches and then fails to link with mangled
+ * undefined symbols.
+ *
+ * Measured at this revision, after the stage-3b naming pass: this file defines
+ * 57 functions carrying 58 symbols -- the single `~dScMgLuigi_c` definition
+ * emits both D1 and D0.  55 of the 58 are mangled `_ZN12dScMgLuigi_c*` members;
+ * exactly 3 keep an auto-generated C name (`func_ov006_020efcf8`,
+ * `func_ov006_020efdac` and `dScMgLuigi_c_classInit`).  There are 10 file-scope
+ * `extern "C"` regions: 3 wrap those C-named definitions, the other 7 carry
+ * only declarations and shadow structs.
  *
  * decl_common.h is deliberately NOT included: it types eight of this TU's own
  * members `void(void *)` / `void(char *)` against byte-matched definitions that
