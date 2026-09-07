@@ -79,7 +79,7 @@
 #include "IRQ.h"
 
 /* Same spelling the matched IRQ::EnableIRQs / IRQ::DisableIRQs shards use. */
-#define IME (*(volatile u16 *)0x4000208)
+#define IME (*(volatile u16 *)0x04000208)
 
 /* ---------------------------------------------------------------------------
  * Shadow types, one set per member that recovered one.  The tag suffix is the
@@ -185,7 +185,7 @@ extern void func_ov006_020f1b98(dScMgLuigi_c *self, int idx);
 extern void func_ov006_020f1cb4(dScMgLuigi_c *self, int idx);
 extern void func_ov006_020f1dbc(Obj_f1dbc *self, int i);
 extern void func_ov006_020f1e40(unsigned *base, int idx);
-extern void func_ov006_020f1e58(unsigned char *r0, int r1);
+extern void func_ov006_020f1e58(unsigned char *self, int idx);
 extern void func_ov006_020f1e90(C_f1e90 *c);
 extern void func_ov006_020f1ef8(char *o, int p1);
 extern void func_ov006_020f1fcc(char *c);
@@ -269,8 +269,8 @@ void func_ov006_020efcf8(void)
     if (line >= 0xc0) {
         func_ov006_020efdac();
     } else if (line <= 0xc0) {
-        if (*(volatile u16 *)0x4000004 & 2) {
-            MultiCopy_Int(&data_0209f648[data_0209f608][line], (int *)0x4000040, 4);
+        if (*(volatile u16 *)0x04000004 & 2) {
+            MultiCopy_Int(&data_0209f648[data_0209f608][line], (int *)0x04000040, 4);
         }
     }
 }
@@ -440,10 +440,10 @@ void func_ov006_020f00a4(char *self)
 
     REG_DISPCNT = (REG_DISPCNT & ~0xe000) | 0x2000;
     data_0209d460 = 1;
-    { unsigned int v = *(volatile unsigned short *)0x4000048; v = (v & ~0x3f) | 0x18; v = v | 0x20; *(volatile unsigned short *)0x4000048 = v; }
-    *(volatile unsigned short *)0x400004a = (*(volatile unsigned short *)0x400004a & ~0x3f) | 0x14;
-    *(volatile unsigned short *)0x4000040 = 0;
-    *(volatile unsigned short *)0x4000044 = 0xc0;
+    { unsigned int v = *(volatile unsigned short *)0x04000048; v = (v & ~0x3f) | 0x18; v = v | 0x20; *(volatile unsigned short *)0x04000048 = v; }
+    *(volatile unsigned short *)0x0400004a = (*(volatile unsigned short *)0x0400004a & ~0x3f) | 0x14;
+    *(volatile unsigned short *)0x04000040 = 0;
+    *(volatile unsigned short *)0x04000044 = 0xc0;
     IRQ::EnableIRQs(2);
     func_02053c10(1);
     if (saved != 0) {
@@ -821,15 +821,15 @@ void func_ov006_020f0bf0(char *c, int i) {
         return;
     }
 
-    x = *(unsigned short *)0x400004a;
+    x = *(unsigned short *)0x0400004a;
     x &= ~0x3f00;
     x |= 0x1800;
     x &= ~0x2000;
     x |= 0x2000;
-    *(unsigned short *)0x400004a = x;
-    x = (*(unsigned short *)0x400004a & ~0x3f) | 0x14;
-    *(unsigned short *)0x400004a = x;
-    *(volatile int *)0x4000000 = (*(volatile int *)0x4000000 & ~0xe000) | 0x8000;
+    *(unsigned short *)0x0400004a = x;
+    x = (*(unsigned short *)0x0400004a & ~0x3f) | 0x14;
+    *(unsigned short *)0x0400004a = x;
+    *(volatile int *)0x04000000 = (*(volatile int *)0x04000000 & ~0xe000) | 0x8000;
     data_0209d460 = 4;
 
     *(int *)(c + 0x47a0 + i * 0x18) = data_ov006_0212e850[i] << 12;
@@ -2486,8 +2486,8 @@ s32 dScMgLuigi_c::InitResources()
     if (arc == 0) return 0;
 
     data_0209d45c |= 8;
-    *(volatile u16 *)0x400000e = (*(volatile u16 *)0x400000e & ~3) | 2;
-    *(volatile u16 *)0x400000e = (*(volatile u16 *)0x400000e & 0x43) | 0x1218;
+    *(volatile u16 *)0x0400000e = (*(volatile u16 *)0x0400000e & ~3) | 2;
+    *(volatile u16 *)0x0400000e = (*(volatile u16 *)0x0400000e & 0x43) | 0x1218;
 
     DecompressLZ16(arc, (void *)func_02054d88());
 
@@ -2500,10 +2500,10 @@ s32 dScMgLuigi_c::InitResources()
     Deallocate((void *)file);
 
     data_0209d45c |= 4;
-    *(volatile u16 *)0x400000c &= ~3;
-    *(volatile u16 *)0x400000c &= ~0x40;
-    *(volatile u32 *)0x4000018 = 0;
-    *(volatile u16 *)0x400000c = (*(volatile u16 *)0x400000c & 0x43) | 0x1410;
+    *(volatile u16 *)0x0400000c &= ~3;
+    *(volatile u16 *)0x0400000c &= ~0x40;
+    *(volatile u32 *)0x04000018 = 0;
+    *(volatile u16 *)0x0400000c = (*(volatile u16 *)0x0400000c & 0x43) | 0x1410;
 
     file = LoadFile(0x4b);
     DecompressLZ16(file, (void *)(_ZN2G213GetBG2CharPtrEv() + 0x4000));
@@ -2522,10 +2522,10 @@ s32 dScMgLuigi_c::InitResources()
     DecompressLZ16(objChar, (void *)0x6400000);
     _ZN2GX11LoadOBJPlttEPKvjj((const void *)file, 0, 0x100);
 
-    *(volatile u16 *)0x400100c &= ~3;
-    *(volatile u16 *)0x400100c &= ~0x40;
-    *(volatile u32 *)0x4001018 = 0;
-    *(volatile u16 *)0x400100c = (*(volatile u16 *)0x400100c & 0x43) | 0x1210;
+    *(volatile u16 *)0x0400100c &= ~3;
+    *(volatile u16 *)0x0400100c &= ~0x40;
+    *(volatile u32 *)0x04001018 = 0;
+    *(volatile u16 *)0x0400100c = (*(volatile u16 *)0x0400100c & 0x43) | 0x1210;
 
     {
         int subFile;
@@ -2542,8 +2542,8 @@ s32 dScMgLuigi_c::InitResources()
         Deallocate((void *)subFile);
 
         data_0209d454 |= 8;
-        *(volatile u16 *)0x400100e &= ~3;
-        *(volatile u16 *)0x400100e = (*(volatile u16 *)0x400100e & 0x43) | 0x1410;
+        *(volatile u16 *)0x0400100e &= ~3;
+        *(volatile u16 *)0x0400100e = (*(volatile u16 *)0x0400100e & 0x43) | 0x1410;
 
         subFile = LoadFile(0x4a);
         scr = _ZN3G2S12GetBG3ScrPtrEv();
