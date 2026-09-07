@@ -1005,9 +1005,10 @@ int Scuttlebug::OnAimedAtWithEgg()
     return 204800;
 }
 
-/* ROM ordinal 2 -- OnYoshiTryEat, 0x0211f0a4, size 0x8.  Vtable slot 18, the
- * first non-inline virtual this class declares, and therefore the KEY
- * FUNCTION: it anchors _ZTV10Scuttlebug and the class RTTI in this TU. */
+/* ROM ordinal 2 -- OnYoshiTryEat, 0x0211f0a4, size 0x8.  Vtable slot 18, and
+ * the first function of this TU's licensed run.  It is NOT the key function:
+ * ~Scuttlebug is declared ahead of it and left undefined here, so this TU
+ * emits no vtable and no RTTI. */
 
 // @symbol _ZN10Scuttlebug13OnYoshiTryEatEv
 int Scuttlebug::OnYoshiTryEat()
@@ -1015,6 +1016,11 @@ int Scuttlebug::OnYoshiTryEat()
     return 6;
 }
 
-/* ROM ordinals 0 and 1 -- D1 at 0x0211f000 and D0 at 0x0211f048.  The inline
- * destructor in include/Scuttlebug.h emits both, in that order, below every
- * section above, with no D2 and no forcing scaffold. */
+/* ROM ordinals 0 and 1 -- D1 at 0x0211f000 and D0 at 0x0211f048 -- are
+ * deliberately NOT in this TU.  ~Scuttlebug is the key function, so whichever
+ * translation unit defines it emits _ZTV10Scuttlebug, _ZTI10Scuttlebug and
+ * _ZTS10Scuttlebug, and the last two have no address in the cartridge, which
+ * spells this class daSpd_c.  Leaving the pair enrolled leaves that emission
+ * with src/_ZN10ScuttlebugD1Ev.cpp, where objisolate keeps the .text and
+ * discards the data.  ov074/Goomboss and ov066/Eyerok are promoted on exactly
+ * this arrangement.  The licensed run is therefore 0x0211f0a4..0x02120668. */
