@@ -66,7 +66,7 @@
  * and byte-matches and then fails to link with mangled undefined symbols.
  *
  * decl_common.h is deliberately NOT included: it types eight of this TU's own
- * members `void(void*)` / `void(char*)` against byte-matched definitions that
+ * members `void(void *)` / `void(char *)` against byte-matched definitions that
  * take `char*`, which would be eight `illegal function overloading` errors
  * pointed at the definitions rather than at the header.
  */
@@ -351,19 +351,19 @@ extern "C" {
 extern void _ZN3IRQ11DisableIRQsEj(unsigned int);
 extern void _ZN3IRQ13SetIRQHandlerEjPFvvE(unsigned int, void(*)(void));
 extern unsigned char data_0209d454;
-void func_ov006_020eff20(char* c, int idx){
-  volatile unsigned short* ime = &IME;
-  unsigned short saved;
-  *(unsigned char*)(c + idx * 0x14 + 0x47f4) = 0;
-  saved = *ime;
-  *ime = 0;
-  _ZN3IRQ11DisableIRQsEj(2);
-  func_02053c10(0);
-  _ZN3IRQ13SetIRQHandlerEjPFvvE(2, 0);
-  if (saved != 0) { *ime; *ime = 1; }
-  REG_DISPCNT &= ~0xe000;
-  REG_DISPCNT_SUB &= ~0xe000;
-  data_0209d454 |= 4;
+void func_ov006_020eff20(char *c, int idx) {
+    volatile unsigned short *ime = &IME;
+    unsigned short saved;
+    *(unsigned char *)(c + idx * 0x14 + 0x47f4) = 0;
+    saved = *ime;
+    *ime = 0;
+    _ZN3IRQ11DisableIRQsEj(2);
+    func_02053c10(0);
+    _ZN3IRQ13SetIRQHandlerEjPFvvE(2, 0);
+    if (saved != 0) { *ime; *ime = 1; }
+    REG_DISPCNT &= ~0xe000;
+    REG_DISPCNT_SUB &= ~0xe000;
+    data_0209d454 |= 4;
 }
 }
 
@@ -374,11 +374,11 @@ void func_ov006_020eff20(char* c, int idx){
 extern "C" {
 extern unsigned char data_0209d45c;
 
-void func_ov006_020effb8(char* c, int idx) {
-    *(int*)(c + 0x47ec + idx * 0x14) += 0x2000;
+void func_ov006_020effb8(char *c, int idx) {
+    *(int *)(c + 0x47ec + idx * 0x14) += 0x2000;
     func_ov006_020efdf0(c, idx);
-    if ((*(int*)(c + 0x47ec + idx * 0x14) >> 12) < 0xa0) return;
-    *(unsigned char*)(c + 0x47f5 + idx * 0x14) += 1;
+    if ((*(int *)(c + 0x47ec + idx * 0x14) >> 12) < 0xa0) return;
+    *(unsigned char *)(c + 0x47f5 + idx * 0x14) += 1;
     data_0209d45c &= ~4;
 }
 }
@@ -388,8 +388,8 @@ void func_ov006_020effb8(char* c, int idx) {
 /* ------------------------------------------------------------------ */
 // @symbol func_ov006_020f002c
 extern "C" {
-void func_ov006_020f002c(struct E_f002c *base, int idx){
-  *(unsigned*)((unsigned char*)&base[idx] + 0x47f0) = 0x1000;
+void func_ov006_020f002c(struct E_f002c *base, int idx) {
+  *(unsigned *)((unsigned char *)&base[idx] + 0x47f0) = 0x1000;
 }
 }
 
@@ -460,16 +460,16 @@ void func_ov006_020f01d8(char *c)
     extern void func_ov004_020af948(void *a, int b, int c, int d);
     extern void *data_ov006_0213ce70[];
     extern char data_ov006_02137cd8[];
-    if (*(unsigned char*)(c + 0x47e3) == 0) return;
-    int x = *(int*)(c + 0x47d0) >> 0xc;
-    int y = *(int*)(c + 0x47d4) >> 0xc;
+    if (*(unsigned char *)(c + 0x47e3) == 0) return;
+    int x = *(int *)(c + 0x47d0) >> 0xc;
+    int y = *(int *)(c + 0x47d4) >> 0xc;
     if (x <= 8) x = 8;
     if (x >= 0xf0) x = 0xf0;
     if (y <= 8) y = 8;
     if (y >= 0xb8) y = 0xb8;
     s32 r = GetGameLanguage();
-    func_ov004_020af948(*(void**)((char*)data_ov006_0213ce70[r] + 0x34), x - 8, y, 0);
-    func_ov004_020af948(*(void**)(data_ov006_02137cd8 + 0x64), x + 8, y, 0);
+    func_ov004_020af948(*(void **)((char *)data_ov006_0213ce70[r] + 0x34), x - 8, y, 0);
+    func_ov004_020af948(*(void **)(data_ov006_02137cd8 + 0x64), x + 8, y, 0);
 }
 }
 
@@ -552,14 +552,14 @@ void func_ov006_020f0274(char *s)
 extern "C" {
 void func_ov006_020f049c(char *c, int i) {
     char *s = c + i*4;
-    *(unsigned char*)(c + 0x47e0) = 1;
-    *(int*)(c + 0x47d0) = *(int*)(s + 0x47f8);
-    *(int*)(c + 0x47d4) = *(int*)(s + 0x49d8);
-    *(unsigned char*)(c + 0x47df) = 16;
-    *(unsigned char*)(c + 0x47e1) = 0;
-    *(unsigned char*)(c + 0x47e3) = 1;
-    *(unsigned char*)(c + 0x47e2) = 5;
-    *(int*)(c + 0x47d8) = -3840;
+    *(unsigned char *)(c + 0x47e0) = 1;
+    *(int *)(c + 0x47d0) = *(int *)(s + 0x47f8);
+    *(int *)(c + 0x47d4) = *(int *)(s + 0x49d8);
+    *(unsigned char *)(c + 0x47df) = 16;
+    *(unsigned char *)(c + 0x47e1) = 0;
+    *(unsigned char *)(c + 0x47e3) = 1;
+    *(unsigned char *)(c + 0x47e2) = 5;
+    *(int *)(c + 0x47d8) = -3840;
 }
 }
 
@@ -791,9 +791,9 @@ void func_ov006_020f0a6c(char *c, int i)
 /* ------------------------------------------------------------------ */
 // @symbol func_ov006_020f0ba0
 extern "C" {
-void func_ov006_020f0ba0(C_f0ba0* c, int i){
-  extern Entry_f0ba0 data_ov006_0214221c[];
-  (c->*(data_ov006_0214221c[c->rows[i].tag].pmf))(i);
+void func_ov006_020f0ba0(C_f0ba0 *c, int i) {
+    extern Entry_f0ba0 data_ov006_0214221c[];
+    (c->*(data_ov006_0214221c[c->rows[i].tag].pmf))(i);
 }
 }
 
@@ -802,52 +802,52 @@ void func_ov006_020f0ba0(C_f0ba0* c, int i){
 /* ------------------------------------------------------------------ */
 // @symbol func_ov006_020f0bf0
 extern "C" {
-void func_ov006_020f0bf0(char* c, int i) {
+void func_ov006_020f0bf0(char *c, int i) {
     extern unsigned char data_0209d460;
     extern int data_ov006_0212e850[];
     unsigned short t;
     int x;
     int v;
 
-    t = *(unsigned short*)(c + 0x47b0 + i * 0x18);
+    t = *(unsigned short *)(c + 0x47b0 + i * 0x18);
     if (t != 0) {
-        *(short*)(c + 0x47b0 + i * 0x18) = t - 1;
-        if (*(short*)(c + 0x47b0 + i * 0x18) < 0)
-            *(short*)(c + 0x47b0 + i * 0x18) = 0;
+        *(short *)(c + 0x47b0 + i * 0x18) = t - 1;
+        if (*(short *)(c + 0x47b0 + i * 0x18) < 0)
+            *(short *)(c + 0x47b0 + i * 0x18) = 0;
         return;
     }
 
-    x = *(unsigned short*)0x400004a;
+    x = *(unsigned short *)0x400004a;
     x &= ~0x3f00;
     x |= 0x1800;
     x &= ~0x2000;
     x |= 0x2000;
-    *(unsigned short*)0x400004a = x;
-    x = (*(unsigned short*)0x400004a & ~0x3f) | 0x14;
-    *(unsigned short*)0x400004a = x;
-    *(volatile int*)0x4000000 = (*(volatile int*)0x4000000 & ~0xe000) | 0x8000;
+    *(unsigned short *)0x400004a = x;
+    x = (*(unsigned short *)0x400004a & ~0x3f) | 0x14;
+    *(unsigned short *)0x400004a = x;
+    *(volatile int *)0x4000000 = (*(volatile int *)0x4000000 & ~0xe000) | 0x8000;
     data_0209d460 = 4;
 
-    *(int*)(c + 0x47a0 + i * 0x18) = data_ov006_0212e850[i] << 12;
-    *(int*)(c + 0x47a4 + i * 0x18) = 0x60000;
-    *(char*)(c + 0x47b5 + i * 0x18) = 1;
-    *(char*)(c + 0x47b6 + i * 0x18) = 1;
+    *(int *)(c + 0x47a0 + i * 0x18) = data_ov006_0212e850[i] << 12;
+    *(int *)(c + 0x47a4 + i * 0x18) = 0x60000;
+    *(char *)(c + 0x47b5 + i * 0x18) = 1;
+    *(char *)(c + 0x47b6 + i * 0x18) = 1;
     if (i != 0)
-        *(int*)(c + 0x47a8 + i * 0x18) = -0x8000;
+        *(int *)(c + 0x47a8 + i * 0x18) = -0x8000;
     else
-        *(int*)(c + 0x47a8 + i * 0x18) = 0x8000;
+        *(int *)(c + 0x47a8 + i * 0x18) = 0x8000;
 
-    v = *(int*)(c + 0xbc);
+    v = *(int *)(c + 0xbc);
     while (v >= 5)
         v -= 5;
     if (v != 0) {
-        *(char*)(c + 0x47b6 + i * 0x18) = 2;
+        *(char *)(c + 0x47b6 + i * 0x18) = 2;
         if (i != 0)
-            *(int*)(c + 0x47a8 + i * 0x18) = -0x7000;
+            *(int *)(c + 0x47a8 + i * 0x18) = -0x7000;
         else
-            *(int*)(c + 0x47a8 + i * 0x18) = 0x7000;
+            *(int *)(c + 0x47a8 + i * 0x18) = 0x7000;
     }
-    *(int*)(c + 0x47ac + i * 0x18) = 0;
+    *(int *)(c + 0x47ac + i * 0x18) = 0;
 }
 }
 
@@ -882,12 +882,12 @@ extern "C" {
 void func_ov006_020f0dd8(char *c) {
     int i;
     for (i = 0; i < 2; i++) {
-        *(unsigned char*)(c + 0x47b4) = 1;
-        *(unsigned char*)(c + 0x47b6) = 0;
-        *(short*)(c + 0x47b0) = 0;
-        *(short*)(c + 0x47b2) = 0;
-        *(unsigned char*)(c + 0x47b5) = 0;
-        *(unsigned char*)(c + 0x47b7) = 0;
+        *(unsigned char *)(c + 0x47b4) = 1;
+        *(unsigned char *)(c + 0x47b6) = 0;
+        *(short *)(c + 0x47b0) = 0;
+        *(short *)(c + 0x47b2) = 0;
+        *(unsigned char *)(c + 0x47b5) = 0;
+        *(unsigned char *)(c + 0x47b7) = 0;
         c += 0x18;
     }
 }
@@ -904,11 +904,11 @@ void func_ov006_020f0e28(char *self) {
     extern void func_ov004_020b2220(int a, int b, int c, int d, int e, int f, int g);
     extern int *data_ov006_0213ce70[];
     int idx;
-    if (*(int*)(self + 0x4f78) < 2)
+    if (*(int *)(self + 0x4f78) < 2)
         return;
     idx = GetGameLanguage();
-    DrawOamSprite(*(int*)((char*)data_ov006_0213ce70[idx] + 0xc), 0x80, 0x10, 0);
-    func_ov004_020b2220(0x80, 0x28, *(unsigned short*)(self + 0x5172), 1, -1, 0x800, 0);
+    DrawOamSprite(*(int *)((char *)data_ov006_0213ce70[idx] + 0xc), 0x80, 0x10, 0);
+    func_ov004_020b2220(0x80, 0x28, *(unsigned short *)(self + 0x5172), 1, -1, 0x800, 0);
 }
 }
 
@@ -953,18 +953,18 @@ void func_ov006_020f0eac(char *c)
 /* ------------------------------------------------------------------ */
 // @symbol func_ov006_020f0f7c
 extern "C" {
-void func_ov006_020f0f7c(char *c){
+void func_ov006_020f0f7c(char *c) {
     extern void Hud_RenderSprite(int a, int b, int c, int d, int e);
     extern int data_ov006_0213abc8[];
     int i;
-    if(*(int*)(c+0x4f78) == 0)
+    if (*(int *)(c+0x4f78) == 0)
         return;
-    for(i=0;i<0x78;i++){
-        if(*(unsigned char*)(c+i+0x53dd) == 1){
+    for (i=0;i<0x78;i++) {
+        if (*(unsigned char *)(c+i+0x53dd) == 1) {
             Hud_RenderSprite(
-                data_ov006_0213abc8[*(unsigned char*)(c+i+0x5365)],
-                ((int*)(c+0x47f8))[i] >> 12,
-                ((int*)(c+0x49d8))[i] >> 12,
+                data_ov006_0213abc8[*(unsigned char *)(c+i+0x5365)],
+                ((int *)(c+0x47f8))[i] >> 12,
+                ((int *)(c+0x49d8))[i] >> 12,
                 -1,
                 0);
         }
@@ -1078,12 +1078,12 @@ void func_ov006_020f120c(char *base, int idx)
 // @symbol func_ov006_020f12c8
 extern "C" {
 void func_ov006_020f12c8(char *c) {
-    void func_ov004_020af948(void *a, int b, int c, int d);
+    extern void func_ov004_020af948(void *a, int b, int c, int d);
     extern void *data_ov006_0213abc8[];
-    if (*(unsigned short*)(c + 0x5164) == 0) return;
-    func_ov004_020af948(data_ov006_0213abc8[*(unsigned char*)(c + 0x545a)],
-                        *(unsigned short*)(c + 0x5166),
-                        *(unsigned short*)(c + 0x5168), 0);
+    if (*(unsigned short *)(c + 0x5164) == 0) return;
+    func_ov004_020af948(data_ov006_0213abc8[*(unsigned char *)(c + 0x545a)],
+                        *(unsigned short *)(c + 0x5166),
+                        *(unsigned short *)(c + 0x5168), 0);
 }
 }
 
@@ -1296,7 +1296,7 @@ extern "C" {
  * Plain member access on the class header is the match under 2004/b56: the
  * twice-read mMovePhase[idx] takes the `this + idx*2 + 0x4f00` base with a
  * #0x7c offset as a compiler temp, and the two RMWs take the pool-loaded array
- * base with the scaled index. The raw char* form this replaces pooled 0x4f7c
+ * base with the scaled index. The raw char *form this replaces pooled 0x4f7c
  * whole (+8 bytes) and, once that was fixed by hand, still swapped the r4/ip
  * pair in the second update. */
 
@@ -1479,7 +1479,7 @@ void func_ov006_020f1cb4(dScMgLuigi_c *self, int idx)
 // @symbol func_ov006_020f1dbc
 extern "C" {
 /* Wraps one picture's 20.12 position round the 0x110 x 0xd0 screen. Leaf. */
-void func_ov006_020f1dbc(Obj_f1dbc* self, int i) {
+void func_ov006_020f1dbc(Obj_f1dbc *self, int i) {
     int x = self->mPosX[i] >> 12;
     int y = self->mPosY[i] >> 12;
     if (x > 0x110) self->mPosX[i] = -0x10000;
@@ -1494,10 +1494,10 @@ void func_ov006_020f1dbc(Obj_f1dbc* self, int i) {
 /* ------------------------------------------------------------------ */
 // @symbol func_ov006_020f1e40
 extern "C" {
-void func_ov006_020f1e40(unsigned *base, int idx){
-  unsigned *p = base + idx;
-  *(unsigned*)((unsigned char*)p + 0x4bb8) = 0;
-  *(unsigned*)((unsigned char*)p + 0x4d98) = 0;
+void func_ov006_020f1e40(unsigned *base, int idx) {
+    unsigned *p = base + idx;
+    *(unsigned *)((unsigned char *)p + 0x4bb8) = 0;
+    *(unsigned *)((unsigned char *)p + 0x4d98) = 0;
 }
 }
 
@@ -1682,7 +1682,7 @@ extern "C" {
 
 void func_ov006_020f2224(dScMgLuigi_c *self)
 {
-    int RandomIntInternal(int *seed);
+    extern int RandomIntInternal(int *seed);
     extern int data_0209d4b8;
     extern u8 data_ov006_0213ce98[];
     int mode;
@@ -1839,7 +1839,7 @@ extern "C" {
 
 void func_ov006_020f2790(dScMgLuigi_c *self)
 {
-    int RandomIntInternal(int *seed);
+    extern int RandomIntInternal(int *seed);
     extern int data_0209d4b8;
     extern u8 data_ov006_0213ce84[];
     extern u8 data_ov006_0213ce98[];
@@ -1976,9 +1976,9 @@ void func_ov006_020f2790(dScMgLuigi_c *self)
 extern "C" {
 void func_ov006_020f2cb8(char *c)
 {
-    int RandomIntInternal(int *seed);
-    char *_ZN2G212GetBG3ScrPtrEv(void);
-    void MultiStore16(u16 val, char *dst, int nbytes);
+    extern int RandomIntInternal(int *seed);
+    extern char *_ZN2G212GetBG3ScrPtrEv(void);
+    extern void MultiStore16(u16 val, char *dst, int nbytes);
     extern int data_0209d4b8;
     extern u8 data_ov006_0213cec0[];
     extern u16 data_ov006_0213cdec[];
@@ -2035,23 +2035,23 @@ void func_ov006_020f2cb8(char *c)
 /* ------------------------------------------------------------------ */
 // @symbol func_ov006_020f2e20
 extern "C" {
-void func_ov006_020f2e20(char* c)
+void func_ov006_020f2e20(char *c)
 {
-    int RandomIntInternal(int* seed);
+    extern int RandomIntInternal(int *seed);
     extern int data_0209d4b8;
     int lvl;
-    *(unsigned short*)(c + 0x5176) = *(unsigned short*)(c + 0x5174);
-    lvl = *(int*)(c + 0xbc);
+    *(unsigned short *)(c + 0x5176) = *(unsigned short *)(c + 0x5174);
+    lvl = *(int *)(c + 0xbc);
     if (lvl >= 0x14) {
         int pick = (int)(((((unsigned)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) * 0xa) >> 0xf);
-        if (pick + 0xa == *(unsigned short*)(c + 0x5176)) {
+        if (pick + 0xa == *(unsigned short *)(c + 0x5176)) {
             int step = (int)((((((unsigned)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) * 9) >> 0xf)) + 1;
             pick += step;
             if (pick >= 0xa) pick -= 0xa;
         }
         lvl = pick + 0xa;
     }
-    *(unsigned short*)(c + 0x5174) = lvl;
+    *(unsigned short *)(c + 0x5174) = lvl;
 }
 }
 
@@ -2285,9 +2285,9 @@ void func_ov006_020f300c(char *o)
 /* ------------------------------------------------------------------ */
 // @symbol func_ov006_020f319c
 extern "C" {
-void func_ov006_020f319c(char* c){
+void func_ov006_020f319c(char *c) {
     func_ov006_020f0eac(c);
-    if (*(int*)(c + 0x4f78) == 3) return;
+    if (*(int *)(c + 0x4f78) == 3) return;
     func_ov006_020f1e90((C_f1e90 *)c);
     func_ov006_020f1fcc(c);
     func_ov006_020f10ec(c);
@@ -2305,12 +2305,12 @@ void func_ov006_020f31dc(char *self) {
         func_ov006_020f2790((dScMgLuigi_c *)self);
     if (func_ov006_020f0d58((C_f0d58 *)self) == 0)
         return;
-    if (*(unsigned char*)(self + 0x5455) == 0)
+    if (*(unsigned char *)(self + 0x5455) == 0)
         return;
-    *(int*)(self + 0x4f78) = 2;
-    *(unsigned char*)(self + 0x5458) = 0;
-    *(short*)(self + 0x516c) = 0xa;
-    *(short*)(self + 0x516e) = 0;
+    *(int *)(self + 0x4f78) = 2;
+    *(unsigned char *)(self + 0x5458) = 0;
+    *(short *)(self + 0x516c) = 0xa;
+    *(short *)(self + 0x516e) = 0;
 }
 }
 
@@ -2482,32 +2482,32 @@ s32 dScMgLuigi_c::InitResources()
     if (arc == 0) return 0;
 
     data_0209d45c |= 8;
-    *(volatile u16*)0x400000e = (*(volatile u16*)0x400000e & ~3) | 2;
-    *(volatile u16*)0x400000e = (*(volatile u16*)0x400000e & 0x43) | 0x1218;
+    *(volatile u16 *)0x400000e = (*(volatile u16 *)0x400000e & ~3) | 2;
+    *(volatile u16 *)0x400000e = (*(volatile u16 *)0x400000e & 0x43) | 0x1218;
 
-    DecompressLZ16(arc, (void*)func_02054d88());
+    DecompressLZ16(arc, (void *)func_02054d88());
 
     file = LoadFile(0x48);
-    _ZN2GX10LoadBGPlttEPKvjj((const void*)file, 0x60, 0x1a0);
-    Deallocate((void*)file);
+    _ZN2GX10LoadBGPlttEPKvjj((const void *)file, 0x60, 0x1a0);
+    Deallocate((void *)file);
 
     file = LoadFile(0x49);
-    func_02056314((void*)file, 0, 0x800);
-    Deallocate((void*)file);
+    func_02056314((void *)file, 0, 0x800);
+    Deallocate((void *)file);
 
     data_0209d45c |= 4;
-    *(volatile u16*)0x400000c &= ~3;
-    *(volatile u16*)0x400000c &= ~0x40;
-    *(volatile u32*)0x4000018 = 0;
-    *(volatile u16*)0x400000c = (*(volatile u16*)0x400000c & 0x43) | 0x1410;
+    *(volatile u16 *)0x400000c &= ~3;
+    *(volatile u16 *)0x400000c &= ~0x40;
+    *(volatile u32 *)0x4000018 = 0;
+    *(volatile u16 *)0x400000c = (*(volatile u16 *)0x400000c & 0x43) | 0x1410;
 
     file = LoadFile(0x4b);
-    DecompressLZ16(file, (void*)(_ZN2G213GetBG2CharPtrEv() + 0x4000));
-    Deallocate((void*)file);
+    DecompressLZ16(file, (void *)(_ZN2G213GetBG2CharPtrEv() + 0x4000));
+    Deallocate((void *)file);
 
     file = LoadFile(0x4c);
-    _ZN2GX10LoadBGPlttEPKvjj((const void*)file, 0x40, 0x20);
-    Deallocate((void*)file);
+    _ZN2GX10LoadBGPlttEPKvjj((const void *)file, 0x40, 0x20);
+    Deallocate((void *)file);
 
     scr = _ZN2G212GetBG2ScrPtrEv();
     fillMain = 0x23e1;
@@ -2515,57 +2515,57 @@ s32 dScMgLuigi_c::InitResources()
 
     objChar = LoadFile(0xd3);
     file = LoadFile(0xd4);
-    DecompressLZ16(objChar, (void*)0x6400000);
-    _ZN2GX11LoadOBJPlttEPKvjj((const void*)file, 0, 0x100);
+    DecompressLZ16(objChar, (void *)0x6400000);
+    _ZN2GX11LoadOBJPlttEPKvjj((const void *)file, 0, 0x100);
 
-    *(volatile u16*)0x400100c &= ~3;
-    *(volatile u16*)0x400100c &= ~0x40;
-    *(volatile u32*)0x4001018 = 0;
-    *(volatile u16*)0x400100c = (*(volatile u16*)0x400100c & 0x43) | 0x1210;
+    *(volatile u16 *)0x400100c &= ~3;
+    *(volatile u16 *)0x400100c &= ~0x40;
+    *(volatile u32 *)0x4001018 = 0;
+    *(volatile u16 *)0x400100c = (*(volatile u16 *)0x400100c & 0x43) | 0x1210;
 
     {
         int subFile;
         subFile = LoadFile(0x4b);
-        DecompressLZ16(subFile, (void*)(_ZN3G2S13GetBG2CharPtrEv() + 0x4000));
-        Deallocate((void*)subFile);
+        DecompressLZ16(subFile, (void *)(_ZN3G2S13GetBG2CharPtrEv() + 0x4000));
+        Deallocate((void *)subFile);
 
         subFile = LoadFile(0x4c);
-        _ZN3GXS10LoadBGPlttEPKvjj((const void*)subFile, 0x1e0, 0x20);
-        Deallocate((void*)subFile);
+        _ZN3GXS10LoadBGPlttEPKvjj((const void *)subFile, 0x1e0, 0x20);
+        Deallocate((void *)subFile);
 
         subFile = LoadFile(0x4d);
-        func_02056374((const void*)subFile, 0, 0x800);
-        Deallocate((void*)subFile);
+        func_02056374((const void *)subFile, 0, 0x800);
+        Deallocate((void *)subFile);
 
         data_0209d454 |= 8;
-        *(volatile u16*)0x400100e &= ~3;
-        *(volatile u16*)0x400100e = (*(volatile u16*)0x400100e & 0x43) | 0x1410;
+        *(volatile u16 *)0x400100e &= ~3;
+        *(volatile u16 *)0x400100e = (*(volatile u16 *)0x400100e & 0x43) | 0x1410;
 
         subFile = LoadFile(0x4a);
         scr = _ZN3G2S12GetBG3ScrPtrEv();
         fillSub = 0xf3e1;
         MultiStore16(fillSub, scr, 0x800);
-        Deallocate((void*)subFile);
+        Deallocate((void *)subFile);
     }
 
-    DecompressLZ16(objChar, (void*)0x6600000);
-    _ZN3GXS11LoadOBJPlttEPKvjj((const void*)file, 0, 0x100);
-    Deallocate((void*)objChar);
-    Deallocate((void*)file);
+    DecompressLZ16(objChar, (void *)0x6600000);
+    _ZN3GXS11LoadOBJPlttEPKvjj((const void *)file, 0, 0x100);
+    Deallocate((void *)objChar);
+    Deallocate((void *)file);
 
-    *(u8*)(c + 0x5457) = 0;
+    *(u8 *)(c + 0x5457) = 0;
     func_ov006_020f2ec0((struct Ctx_f2ec0 *)this);
-    *(volatile u16*)(c + 0x5174) = 0xff;
+    *(volatile u16 *)(c + 0x5174) = 0xff;
     func_ov006_020f2e20(c);
 
-    *(int*)(c + 0x4f78) = 0;
+    *(int *)(c + 0x4f78) = 0;
     Ov004_Deallocate(arc);
     func_ov004_020b04d0(0x30);
-    *(volatile u16*)(c + 0x5172) = 0xa;
+    *(volatile u16 *)(c + 0x5172) = 0xa;
     func_ov004_020b0cac(0xd, 0x80, 0xa8, 1, -1, 0xd);
     data_ov004_020bc888 = 0x80;
     data_ov004_020bc864 = ~0x1b;
-    *(int*)(c + 0xb4) = 0;
+    *(int *)(c + 0xb4) = 0;
     return 1;
 }
 
