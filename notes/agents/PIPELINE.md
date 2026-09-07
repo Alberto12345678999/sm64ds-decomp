@@ -59,7 +59,29 @@ equally. A TU of thirty `extern "C" func_ovNNN_*(char *self)` free functions in
 goal is writing the classes back.
 
 **The ruling: convert as far as byte-match allows.** `dScMgMemory2_c` is the proof
-the route works end to end. Stage 3b owns it; it is the same `writer` role file and
+the route works end to end -- but read what it cost before you take 51/52 as a
+target. Measured across its promotion commit `e351ffb09`, in
+`config/arm9/overlays/ov006/symbols.txt`:
+
+| | mangled `_ZN14dScMgMemory2_c*` rows |
+|---|---|
+| `e351ffb09^` | 8 |
+| `e351ffb09` | **51** |
+
+So 43 of that 51 were **renamed in the same commit**, shard and `symbols.txt` row
+together. **51/52 was a coordinated naming pass, not conversion alone.**
+
+That distinction decides what your own ceiling even means. A member already
+carrying a mangled name converts as a codegen question -- does it byte-match.
+A member carrying an auto-generated `func_ovNNN_*` name converts only by being
+**renamed**, which is a different, larger, and riskier act: the new name must
+reach `symbols.txt` in the same commit (see below), and every external caller
+must move with it. Measured on `ov071/Scuttlebug`, all 27 unconverted members
+were auto-named, so its ceiling was **name recovery, not codegen and not
+scope** -- a different wall from `dScMgCurling2_c`'s, where all 29 compiled
+byte-neutrally and 12 were refused for scope alone.
+
+State which wall you hit. "10/37" with no wall named is not a result. Stage 3b owns it; it is the same `writer` role file and
 may run as a separate pass on the same branch when stages 2 and 3 have already
 pushed. A member that will not convert byte-neutrally **stays a free function** --
 that is a result, not a failure. Report the count either way: "31/31 MATCH" hides
