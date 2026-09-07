@@ -2902,6 +2902,14 @@
     "src/actors/Scuttlebug.cpp#func_ov071_0211fb24": "tangosdev",
     "src/actors/Scuttlebug.cpp#func_ov071_0211fee4": "tangosdev",
     "src/actors/Scuttlebug.cpp#func_ov071_0211fd58": "tangosdev",
-    "src/actors/Scuttlebug.cpp#func_ov071_0211f498": "tangosdev"
+    "src/actors/Scuttlebug.cpp#func_ov071_0211f498": "tangosdev",
+    "src/actors/Scuttlebug.cpp#_ZN10Scuttlebug13OnYoshiTryEatEv": "tangosdev",
+    "src/actors/Scuttlebug.cpp#_ZN10Scuttlebug16OnAimedAtWithEggEv": "tangosdev",
+    "src/actors/Scuttlebug.cpp#func_ov071_0211f6f8": "ruspecial",
+    "src/actors/Scuttlebug.cpp#func_ov071_0211f7d4": "lunavyqo",
+    "src/actors/Scuttlebug.cpp#func_ov071_0211fa54": "tangosdev",
+    "src/actors/Scuttlebug.cpp#func_ov071_02120200": "lunavyqo",
+    "src/actors/Scuttlebug.cpp#_ZN10Scuttlebug13OnTurnIntoEggER6Player": "tangosdev",
+    "src/actors/Scuttlebug.cpp#daSpd_c_classInit": "tangosdev"
   }
 }
