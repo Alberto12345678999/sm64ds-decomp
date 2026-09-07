@@ -25,37 +25,62 @@ struct dScMgLuigi_c : dScMgBase_c {
     virtual s32 Render();                 /* slot 9 */
     virtual void OnYoshiTryEat(int arg);               /* slot 18 */
 
-    /* Non-virtual members.  Each of these is reached through a
-       zero-adjustment pointer-to-member record in the ov006 table at
-       0x0213cd8c..0x0213ce4c, which is what proves it is a member of this
-       class and not a free helper; the NAMES are coined -- the cartridge
-       carries only the address.  See symbols/actor_renames.tsv for the
-       per-symbol evidence. */
-    void IrisStop(int idx);
-    void IrisGrow(int idx);
-    void IrisHold(int idx);
-    void CurtainStateSlow(int i);
-    void CurtainStateFast(int i);
-    void CurtainStateHold(int i);
-    void CurtainStateBounce(int i);
-    void CurtainUpdate(int i);
-    void CurtainStart(int i);
-    void TickPictureFlash(int idx);
-    void MovePictureBounce(int i);
-    void MovePictureSway(int idx);
-    void MovePictureDriftRandom(int idx);
-    void MovePictureDriftByRow(int idx);
-    void MovePictureDriftByColumn(int idx);
-    void MovePictureDriftByLevel(int idx);
-    void MovePictureDriftFixed(int idx);
-    void StopPicture(int idx);
-    void RestartPicture(int idx);
-    void PlaceBoardLayout();
-    void PlaceNextPicture();
-    void StateCatch();
-    void StatePlay();
-    void StatePlace();
-    void StateSetup();
+    /* Non-virtual members, in ROM address order.  MEMBER-NESS is evidenced two
+       ways and neither is a guess: the ones marked PMF below are named by a
+       zero-adjustment pointer-to-member record in ov006 .data (the run at
+       0x0213cd8c..0x0213ce4c), and the rest are only ever reached with this
+       object in r0, from a member above them.  The NAMES are all coined -- the
+       cartridge carries the address and nothing else, so each one describes the
+       matched body and no more.  See symbols/actor_renames.tsv for the
+       per-symbol evidence, one row each. */
+    void BuildIrisTable(int i);       /* 0x020efdf0 */
+    void IrisStop(int idx);           /* 0x020eff20  PMF */
+    void IrisGrow(int idx);           /* 0x020effb8  PMF */
+    void IrisHold(int idx);           /* 0x020f002c  PMF */
+    void UpdateIris();                /* 0x020f0044 */
+    void StartIris();                 /* 0x020f00a4 */
+    void DrawReward();                /* 0x020f01d8 */
+    void UpdateReward();              /* 0x020f0274 */
+    void StartReward(int i);          /* 0x020f049c */
+    void DrawCurtains();              /* 0x020f04ec */
+    void CurtainStateSlow(int i);     /* 0x020f05d8  PMF */
+    void CurtainStateFast(int i);     /* 0x020f06fc  PMF */
+    void CurtainStateHold(int i);     /* 0x020f088c  PMF */
+    void CurtainStateBounce(int i);   /* 0x020f0a6c  PMF */
+    void CurtainUpdate(int i);        /* 0x020f0ba0  PMF */
+    void CurtainStart(int i);         /* 0x020f0bf0  PMF */
+    int  CurtainsDone();              /* 0x020f0d58 */
+    void ResetCurtains();             /* 0x020f0dd8 */
+    void DrawTimer();                 /* 0x020f0e28 */
+    void TickTimer();                 /* 0x020f0eac */
+    void DrawPictures();              /* 0x020f0f7c */
+    void DrawPenalties();             /* 0x020f100c */
+    void UpdatePenalties();           /* 0x020f10ec */
+    void AddPenalty(int idx);         /* 0x020f120c */
+    void DrawWantedIcon();            /* 0x020f12c8 */
+    void TickPictureFlash(int idx);   /* 0x020f1318  PMF */
+    void MovePictureBounce(int i);    /* 0x020f13cc  PMF */
+    void MovePictureSway(int idx);    /* 0x020f15ac  PMF */
+    void MovePictureDriftRandom(int idx);   /* 0x020f17fc  PMF */
+    void MovePictureDriftByRow(int idx);    /* 0x020f192c  PMF */
+    void MovePictureDriftByColumn(int idx); /* 0x020f1a70  PMF */
+    void MovePictureDriftByLevel(int idx);  /* 0x020f1b98  PMF */
+    void MovePictureDriftFixed(int idx);    /* 0x020f1cb4  PMF */
+    void WrapPicture(int i);          /* 0x020f1dbc */
+    void StopPicture(int idx);        /* 0x020f1e40  PMF */
+    void RestartPicture(int idx);     /* 0x020f1e58  PMF */
+    void UpdatePictures();            /* 0x020f1e90 */
+    void BeginCatch(int found);       /* 0x020f1ef8 */
+    void CheckTouch();                /* 0x020f1fcc */
+    void PlaceBoardLayout();          /* 0x020f2224 */
+    void PlaceNextPicture();          /* 0x020f2790 */
+    void ChooseTarget();              /* 0x020f2cb8 */
+    void ChooseBoard();               /* 0x020f2e20 */
+    void ResetBoard();                /* 0x020f2ec0 */
+    void StateCatch();                /* 0x020f300c  PMF, Behavior state 3 */
+    void StatePlay();                 /* 0x020f319c  PMF, Behavior state 2 */
+    void StatePlace();                /* 0x020f31dc  PMF, Behavior state 1 */
+    void StateSetup();                /* 0x020f3260  PMF, Behavior state 0 */
 
     u8  pad_4660[0x198];
     /* The 120 moving pictures (0x78 slots). Four Fix12 arrays back to back --
