@@ -219,9 +219,7 @@ dScMgLuigi_c::~dScMgLuigi_c()
 /* ROM ordinal 2 -- _ZN12dScMgLuigi_c21AfterCleanupResourcesEj, 0x020efc68, size 0x90 */
 /* ------------------------------------------------------------------ */
 // @symbol _ZN12dScMgLuigi_c21AfterCleanupResourcesEj
-// recovered name: dScMgLuigi_c_AfterCleanupResources
-/* recovered: renamed to Class_Method, declarations from a shared header */
-/* dScMgLuigi_c::AfterCleanupResources - recovered from vtable slot identity.
+/* Slot 5 of _ZTV12dScMgLuigi_c.
    The recovered source returned the base call's result as if it were int;
    the real override (dScMgBase_c.h) returns void, so this now calls the
    base method as a plain statement instead. */
@@ -253,14 +251,14 @@ void func_ov006_020efcf8(void)
     extern int data_0209f608;
     extern int data_0209f648[][192];
     extern void MultiCopy_Int(int *dst, int *src, int len);
-    int v;
+    int line;
     *(int *)(((int)data_023c0000 + 0x3ff8)) |= 2;
-    v = REG_VCOUNT + 1;
-    if (v >= 0xc0) {
+    line = REG_VCOUNT + 1;
+    if (line >= 0xc0) {
         func_ov006_020efdac();
-    } else if (v <= 0xc0) {
+    } else if (line <= 0xc0) {
         if (*(volatile u16 *)0x4000004 & 2) {
-            MultiCopy_Int(&data_0209f648[data_0209f608][v], (int *)0x4000040, 4);
+            MultiCopy_Int(&data_0209f648[data_0209f608][line], (int *)0x4000040, 4);
         }
     }
 }
@@ -271,14 +269,8 @@ void func_ov006_020efcf8(void)
 /* ------------------------------------------------------------------ */
 // @symbol func_ov006_020efdac
 extern "C" {
-/* func_ov006_020efdac at 0x020efdac
- *
- * Copies a global index (data_0209f60c -> data_0209f608) and tail-calls
- * MultiCopy_Int to copy the 0x300-byte record at that index to 0x04000040.
- */
-
-
-
+/* Latches the pending scanline-table index and pushes that 0x300-byte record
+   at 0x04000040. */
 void func_ov006_020efdac(void)
 {
     extern u32 data_0209f60c;
@@ -308,7 +300,7 @@ void func_ov006_020efdf0(char *o, int i)
     int zc = 0;
     int y;
     int k, n, m;
-    u8 tmp;
+    u8 mirrored;
 
     if (data_0209f608 == 0)
         toggle = 1;
@@ -334,8 +326,8 @@ void func_ov006_020efdf0(char *o, int i)
         }
     }
     for (n = 0x5f, m = 0; m < 0x60; m++, n--) {
-        tmp = data_0209f648[toggle][n].b;
-        data_0209f648[toggle][m + 0x60].b = tmp;
+        mirrored = data_0209f648[toggle][n].b;
+        data_0209f648[toggle][m + 0x60].b = mirrored;
         data_0209f648[toggle][m + 0x60].a = data_0209f648[toggle][n].a;
     }
     _ZN4CP1527FlushAndInvalidateDataCacheEjj(data_0209f648, 0x600);
@@ -418,12 +410,12 @@ void func_ov006_020f00a4(char *self)
     extern unsigned int data_0209f608;
     extern unsigned char data_0209d460;
     unsigned short saved;
-    *(unsigned char *)(self + 0x4000 + 0x7f4) = 1;
-    *(int *)(self + 0x4000 + 0x7e4) = 0x80000;
-    *(int *)(self + 0x4000 + 0x7e8) = 0x60000;
-    *(unsigned char *)(self + 0x4000 + 0x7f5) = 0;
-    *(int *)(self + 0x4000 + 0x7ec) = 0x40000;
-    *(int *)(self + 0x4000 + 0x7f0) = 0x1000;
+    *(unsigned char *)(self + 0x47f4) = 1;
+    *(int *)(self + 0x47e4) = 0x80000;
+    *(int *)(self + 0x47e8) = 0x60000;
+    *(unsigned char *)(self + 0x47f5) = 0;
+    *(int *)(self + 0x47ec) = 0x40000;
+    *(int *)(self + 0x47f0) = 0x1000;
     data_0209f608 = 0;
     func_ov006_020efdf0(self, 0);
 
@@ -461,9 +453,9 @@ void func_ov006_020f01d8(char *c)
     extern void func_ov004_020af948(void *a, int b, int c, int d);
     extern void *data_ov006_0213ce70[];
     extern char data_ov006_02137cd8[];
-    if (*(unsigned char*)(c + 0x4000 + 0x7e3) == 0) return;
-    int x = *(int*)(c + 0x4000 + 0x7d0) >> 0xc;
-    int y = *(int*)(c + 0x4000 + 0x7d4) >> 0xc;
+    if (*(unsigned char*)(c + 0x47e3) == 0) return;
+    int x = *(int*)(c + 0x47d0) >> 0xc;
+    int y = *(int*)(c + 0x47d4) >> 0xc;
     if (x <= 8) x = 8;
     if (x >= 0xf0) x = 0xf0;
     if (y <= 8) y = 8;
@@ -903,11 +895,11 @@ void func_ov006_020f0e28(char *self) {
     extern void func_ov004_020b2220(int a, int b, int c, int d, int e, int f, int g);
     extern int *data_ov006_0213ce70[];
     int idx;
-    if (*(int*)(self + 0x4000 + 0xf78) < 2)
+    if (*(int*)(self + 0x4f78) < 2)
         return;
     idx = GetGameLanguage();
     DrawOamSprite(*(int*)((char*)data_ov006_0213ce70[idx] + 0xc), 0x80, 0x10, 0);
-    func_ov004_020b2220(0x80, 0x28, *(unsigned short*)(self + 0x5100 + 0x72), 1, -1, 0x800, 0);
+    func_ov004_020b2220(0x80, 0x28, *(unsigned short*)(self + 0x5172), 1, -1, 0x800, 0);
 }
 }
 
@@ -1050,31 +1042,27 @@ void func_ov006_020f10ec(char *q)
 /* ------------------------------------------------------------------ */
 // @symbol func_ov006_020f120c
 extern "C" {
+/* Arms the first free entry of the sixteen-entry table at +0x4660 at picture
+   `idx`'s position, and takes 10 off the counter at +0x5172. */
 void func_ov006_020f120c(char *base, int idx)
 {
-  int i;
-  char *p = base;
-  for (i = 0; i < 0x10; i++, p += 0x14)
-  {
-    if ((*((unsigned char *) (p + 0x4670))) != 0)
-    {
-      continue;
+    int i;
+    char *p = base;
+    for (i = 0; i < 0x10; i++, p += 0x14) {
+        if (*(unsigned char *)(p + 0x4670) != 0)
+            continue;
+        *(base + i * 0x14 + 0x4670) = 1;
+        *(unsigned char *)(base + i * 0x14 + 0x4671) = 1;
+        *(short *)(base + i * 0x14 + 0x466c) = 0x10;
+        *(int *)(base + i * 0x14 + 0x4660) = *(int *)(base + idx * 4 + 0x47f8);
+        *(int *)(base + i * 0x14 + 0x4664) = *(int *)(base + idx * 4 + 0x49d8);
+        *(int *)(base + i * 0x14 + 0x4668) = 0x1100;
+        *(unsigned char *)(base + i * 0x14 + 0x4672) = 0;
+        *(unsigned short *)(((int)base + 0x5172)) -= 0xa;
+        if (*(short *)(base + 0x5172) < 0)
+            *(short *)(base + 0x5172) = 0;
+        return;
     }
-    *((base + (i * 0x14)) + 0x4670) = 1;
-    *((unsigned char *) ((base + (i * 0x14)) + 0x4671)) = 1;
-    *((short *) ((base + (i * 0x14)) + 0x466c)) = 0x10;
-    *((int *) ((base + (i * 0x14)) + 0x4660)) = *((int *) ((base + (idx * 4)) + 0x47f8));
-    *((int *) ((base + (i * 0x14)) + 0x4664)) = *((int *) ((base + (idx * 4)) + 0x49d8));
-    *((int *) ((base + (i * 0x14)) + 0x4668)) = 0x1100;
-    *((unsigned char *) ((base + (i * 0x14)) + 0x4672)) = 0;
-    *((unsigned short *) ((((int) base) + 0x5172))) -= 0xa;
-    if ((*((short *) (base + 0x5172))) < 0)
-    {
-      *((short *) (base + 0x5172)) = 0;
-    }
-    return;
-  }
-
 }
 }
 
@@ -1111,10 +1099,10 @@ void func_ov006_020f1318(char *c, int idx)
 
     *(short *)(base + twice) = (short)(h - 1);
 
-    if (*(short *)(c + (idx << 1) + 0x5000 + 0x6c) < 0)
-        *(short *)(c + (idx << 1) + 0x5000 + 0x6c) = 0;
+    if (*(short *)(c + (idx << 1) + 0x506c) < 0)
+        *(short *)(c + (idx << 1) + 0x506c) = 0;
 
-    if ((((unsigned short)*(unsigned short *)(c + (idx << 1) + 0x5000 + 0x6c) >> 2) & 1) != 0) {
+    if ((((unsigned short)*(unsigned short *)(c + (idx << 1) + 0x506c) >> 2) & 1) != 0) {
         char *p = c + 0x53dd;
         p[idx] = 0;
         q = (unsigned char *)(p + idx);
@@ -1126,9 +1114,9 @@ void func_ov006_020f1318(char *c, int idx)
         q = (unsigned char *)(p + idx);
     }
 after_flag:
-    if (*(unsigned short *)(c + (idx << 1) + 0x5000 + 0x6c) != 0)
+    if (*(unsigned short *)(c + (idx << 1) + 0x506c) != 0)
         return;
-    *(unsigned char *)(c + idx + 0x5000 + 0x1fd) = 0;
+    *(unsigned char *)(c + idx + 0x51fd) = 0;
     *q = 1;
 }
 }
@@ -1148,63 +1136,63 @@ void func_ov006_020f13cc(char *c, int i)
     extern int data_0209d4b8;
     extern int data_ov006_0212e8b8[];
     extern s16 data_02082214[];
-    u8 *counterAi = (u8 *)(c + 0x5275 + i);
+    u8 *started = (u8 *)(c + 0x5275 + i);
 
-    if (*counterAi == 0) {
+    if (*started == 0) {
         u32 r = ((u32)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff;
         u16 val = (u16)((((r << 4) >> 15) << 12));
 
         *(u16 *)(c + i * 2 + 0x4f7c) = val;
-        *counterAi += 1;
+        *started += 1;
         return;
     }
 
     {
-        u8 *counterC = (u8 *)(c + 0x5365);
-        int *accB = (int *)(c + 0x47f8);
-        int *accD = (int *)(c + 0x49d8);
-        u16 valB;
-        int shifted;
-        int tblOdd, tblEven;
-        int weight;
+        u8 *speedLevel = (u8 *)(c + 0x5365);
+        int *posX = (int *)(c + 0x47f8);
+        int *posY = (int *)(c + 0x49d8);
+        u16 phase;
+        int a;
+        int stepX, stepY;
+        int speed;
         s64 prod;
-        int add12 = 0x800;
+        int round12 = 0x800;
 
-        valB = *(u16 *)(c + i * 2 + 0x4f00 + 0x7c);
-        shifted = valB >> 4;
-        tblOdd = data_02082214[shifted * 2 + 1];
-        weight = data_ov006_0212e8b8[counterC[i]];
-        prod = (s64)tblOdd * weight;
-        accB[i] += (int)((prod + add12) >> 12);
+        phase = *(u16 *)(c + i * 2 + 0x4f7c);
+        a = phase >> 4;
+        stepX = data_02082214[a * 2 + 1];
+        speed = data_ov006_0212e8b8[speedLevel[i]];
+        prod = (s64)stepX * speed;
+        posX[i] += (int)((prod + round12) >> 12);
 
-        valB = *(u16 *)(c + i * 2 + 0x4f00 + 0x7c);
-        shifted = valB >> 4;
-        tblEven = data_02082214[shifted * 2];
-        weight = data_ov006_0212e8b8[counterC[i]];
-        prod = (s64)tblEven * weight;
-        accD[i] += (int)((prod + add12) >> 12);
+        phase = *(u16 *)(c + i * 2 + 0x4f7c);
+        a = phase >> 4;
+        stepY = data_02082214[a * 2];
+        speed = data_ov006_0212e8b8[speedLevel[i]];
+        prod = (s64)stepY * speed;
+        posY[i] += (int)((prod + round12) >> 12);
 
         {
-            int x = *(int *)(c + i * 4 + 0x4000 + 0x7f8) >> 0xc;
-            int y = *(int *)(c + i * 4 + 0x4000 + 0x9d8) >> 0xc;
+            int x = *(int *)(c + i * 4 + 0x47f8) >> 0xc;
+            int y = *(int *)(c + i * 4 + 0x49d8) >> 0xc;
 
             if (x > 0xf8) {
-                *(u16 *)(c + i * 2 + 0x4f00 + 0x7c) = 0x8000 - *(u16 *)(c + i * 2 + 0x4f00 + 0x7c);
-                *(int *)(c + i * 4 + 0x4000 + 0x7f8) = 0xf8000;
+                *(u16 *)(c + i * 2 + 0x4f7c) = 0x8000 - *(u16 *)(c + i * 2 + 0x4f7c);
+                *(int *)(c + i * 4 + 0x47f8) = 0xf8000;
             } else if (x < 8) {
-                *(u16 *)(c + i * 2 + 0x4f00 + 0x7c) = 0x8000 - *(u16 *)(c + i * 2 + 0x4f00 + 0x7c);
-                *(int *)(c + i * 4 + 0x4000 + 0x7f8) = 0x8000;
+                *(u16 *)(c + i * 2 + 0x4f7c) = 0x8000 - *(u16 *)(c + i * 2 + 0x4f7c);
+                *(int *)(c + i * 4 + 0x47f8) = 0x8000;
             }
 
             if (y > 0xb8) {
-                *(u16 *)(c + i * 2 + 0x4f00 + 0x7c) = -*(u16 *)(c + i * 2 + 0x4f00 + 0x7c);
-                *(int *)(c + i * 4 + 0x4000 + 0x9d8) = 0xb8000;
+                *(u16 *)(c + i * 2 + 0x4f7c) = -*(u16 *)(c + i * 2 + 0x4f7c);
+                *(int *)(c + i * 4 + 0x49d8) = 0xb8000;
                 return;
             }
 
             if (y < 8) {
-                *(u16 *)(c + i * 2 + 0x4f00 + 0x7c) = -*(u16 *)(c + i * 2 + 0x4f00 + 0x7c);
-                *(int *)(c + i * 4 + 0x4000 + 0x9d8) = 0x8000;
+                *(u16 *)(c + i * 2 + 0x4f7c) = -*(u16 *)(c + i * 2 + 0x4f7c);
+                *(int *)(c + i * 4 + 0x49d8) = 0x8000;
                 return;
             }
 
@@ -1220,7 +1208,7 @@ void func_ov006_020f13cc(char *c, int i)
 /* ------------------------------------------------------------------ */
 extern "C" {
 // @symbol func_ov006_020f15ac
-/* recovered: dScMgLuigi_c per-slot mover, ov006 0x020f15ac (592 bytes). One
+/* dScMgLuigi_c per-slot mover, ov006 0x020f15ac (592 bytes). One
  * slot of the 120-entry picture table per call. A slot that has not started
  * yet is armed: phase 0, mStarted set, the x speed loaded from the speed-level
  * table (positive for level 0, negated otherwise) and the y speed from its own
@@ -1337,12 +1325,8 @@ extern "C" {
  * slot's phase) scaled by its speed-level entry to mPosX/mPosY, then wraps
  * through func_ov006_020f1dbc.
  *
- * Plain member access on the class header is the match under 2004/b56: the
- * twice-read mMovePhase[idx] takes the `this + idx*2 + 0x4f00` base with a
- * #0x7c offset as a compiler temp, and the two RMWs take the pool-loaded array
- * base with the scaled index. The raw char* form this replaces pooled 0x4f7c
- * whole (+8 bytes) and, once that was fixed by hand, still swapped the r4/ip
- * pair in the second update. */
+ * Member access, not raw offsets, for the reason spelled out on
+ * func_ov006_020f17fc above. */
 
 
 void func_ov006_020f192c(dScMgLuigi_c *self, int idx)
@@ -1388,12 +1372,8 @@ extern "C" {
  * slot's phase) scaled by its speed-level entry to mPosX/mPosY, then wraps
  * through func_ov006_020f1dbc.
  *
- * Plain member access on the class header is the match under 2004/b56: the
- * twice-read mMovePhase[idx] takes the `this + idx*2 + 0x4f00` base with a
- * #0x7c offset as a compiler temp, and the two RMWs take the pool-loaded array
- * base with the scaled index. The raw char* form this replaces pooled 0x4f7c
- * whole (+8 bytes) and, once that was fixed by hand, still swapped the r4/ip
- * pair in the second update. */
+ * Member access, not raw offsets, for the reason spelled out on
+ * func_ov006_020f17fc above. */
 
 
 void func_ov006_020f1a70(dScMgLuigi_c *self, int idx)
@@ -1429,12 +1409,8 @@ extern "C" {
  * slot's phase) scaled by its speed-level entry to mPosX/mPosY, then wraps
  * through func_ov006_020f1dbc.
  *
- * Plain member access on the class header is the match under 2004/b56: the
- * twice-read mMovePhase[idx] takes the `this + idx*2 + 0x4f00` base with a
- * #0x7c offset as a compiler temp, and the two RMWs take the pool-loaded array
- * base with the scaled index. The raw char* form this replaces pooled 0x4f7c
- * whole (+8 bytes) and, once that was fixed by hand, still swapped the r4/ip
- * pair in the second update. */
+ * Member access, not raw offsets, for the reason spelled out on
+ * func_ov006_020f17fc above. */
 
 
 void func_ov006_020f1b98(dScMgLuigi_c *self, int idx)
@@ -1465,12 +1441,8 @@ extern "C" {
  * slot's phase) scaled by its speed-level entry to mPosX/mPosY, then wraps
  * through func_ov006_020f1dbc.
  *
- * Plain member access on the class header is the match under 2004/b56: the
- * twice-read mMovePhase[idx] takes the `this + idx*2 + 0x4f00` base with a
- * #0x7c offset as a compiler temp, and the two RMWs take the pool-loaded array
- * base with the scaled index. The raw char* form this replaces pooled 0x4f7c
- * whole (+8 bytes) and, once that was fixed by hand, still swapped the r4/ip
- * pair in the second update. */
+ * Member access, not raw offsets, for the reason spelled out on
+ * func_ov006_020f17fc above. */
 
 
 void func_ov006_020f1cb4(dScMgLuigi_c *self, int idx)
@@ -1528,19 +1500,13 @@ void func_ov006_020f1e40(unsigned *base, int idx){
 /* ------------------------------------------------------------------ */
 // @symbol func_ov006_020f1e58
 extern "C" {
-/* func_ov006_020f1e58 at 0x020f1e58
- *
- * Matched byte-for-byte with mwccarm 1.2/sp2p3 (overlay ov006).
- */
-
-
-void func_ov006_020f1e58(unsigned char *r0, int r1) {
+void func_ov006_020f1e58(unsigned char *self, int idx) {
     extern unsigned char data_ov006_0213ceac[];
-    unsigned short idx = *(unsigned short *)(r0 + 0x5174);
-    r0 += r1;
-    r0[0x53dd] = 1;
-    r0[0x5275] = 0;
-    r0[0x51fd] = data_ov006_0213ceac[idx] + 1;
+    unsigned short board = *(unsigned short *)(self + 0x5174);
+    self += idx;
+    self[0x53dd] = 1;
+    self[0x5275] = 0;
+    self[0x51fd] = data_ov006_0213ceac[board] + 1;
 }
 }
 
@@ -1657,12 +1623,12 @@ void func_ov006_020f1fcc(char *c)
                         if (*(u16 *)(c + 0x5172) != 0) {
                             int cur2 = *(u8 *)(c + 0x5456);
                             int t = (((int *)(c + 0x47f8))[cur2 - 1] >> 12) - 0x80;
-                            int r3 = (t * 0x30) >> 7;
-                            int val2b;
-                            if (r3 >= 0x30) r3 = 0x30;
-                            if (r3 <= -0x30) r3 = -0x30;
-                            val2b = *(u8 *)(c + 0x545a);
-                            func_020127a4(2, (val2b << 3) + 0xbf, 0xffff, r3);
+                            int pan = (t * 0x30) >> 7;
+                            int unk545a;
+                            if (pan >= 0x30) pan = 0x30;
+                            if (pan <= -0x30) pan = -0x30;
+                            unk545a = *(u8 *)(c + 0x545a);
+                            func_020127a4(2, (unk545a << 3) + 0xbf, 0xffff, pan);
                             func_02012790(0xe);
                         }
                         return;
@@ -1679,7 +1645,7 @@ void func_ov006_020f1fcc(char *c)
 /* ------------------------------------------------------------------ */
 extern "C" {
 // @symbol func_ov006_020f2224
-/* recovered: dScMgLuigi_c board layout, ov006 0x020f2224 (1388 bytes). Called
+/* dScMgLuigi_c board layout, ov006 0x020f2224 (1388 bytes). Called
  * from func_ov006_020f2790 for the boards whose data_ov006_0213ce98 entry is
  * non-zero: instead of scattering pictures at random it lays the whole board
  * out at once. The table entry picks one of four fixed layouts -- 1 is a 2x2
@@ -1836,7 +1802,7 @@ void func_ov006_020f2224(dScMgLuigi_c *self)
 #pragma opt_propagation off
 extern "C" {
 // @symbol func_ov006_020f2790
-/* recovered: dScMgLuigi_c picture placer, ov006 0x020f2790 (1320 bytes). Runs
+/* dScMgLuigi_c picture placer, ov006 0x020f2790 (1320 bytes). Runs
  * once per frame while the board is still filling. Boards whose
  * data_ov006_0213ce98 entry is set are laid out in one go by
  * func_ov006_020f2224 instead; the rest place one picture per call. The slot
@@ -2011,7 +1977,6 @@ void func_ov006_020f2cb8(char *c)
     extern u8 data_ov006_0213cec0[];
     extern u16 data_ov006_0213cdec[];
     u8 *pb;
-    s32 n;
     s32 i;
     s32 k;
     u16 *dst;
@@ -2019,6 +1984,7 @@ void func_ov006_020f2cb8(char *c)
     u16 t;
     s32 j;
     s32 off;
+    s32 nbytes;
     volatile u16 v;
 
     t = *(u16 *)(c + 0x5172);
@@ -2041,7 +2007,7 @@ void func_ov006_020f2cb8(char *c)
         }
     }
 
-    n = 2;
+    nbytes = 2;
     for (i = 0, off = 0; i < 8; i++, off += 0x20) {
         pb = (u8 *)(c + 0x5000);
         dst = (u16 *)(_ZN2G212GetBG3ScrPtrEv() + 0x1d8) + off;
@@ -2049,7 +2015,7 @@ void func_ov006_020f2cb8(char *c)
         idx += off;
         for (j = 0; j < 8; j++) {
             v = ((u16 *)_ZN2G212GetBG3ScrPtrEv())[idx];
-            MultiStore16(v, (char *)dst, n);
+            MultiStore16(v, (char *)dst, nbytes);
             idx++;
             dst++;
         }
@@ -2067,19 +2033,19 @@ void func_ov006_020f2e20(char* c)
 {
     int RandomIntInternal(int* seed);
     extern int data_0209d4b8;
-    int v;
+    int lvl;
     *(unsigned short*)(c + 0x5176) = *(unsigned short*)(c + 0x5174);
-    v = *(int*)(c + 0xbc);
-    if (v >= 0x14) {
-        int r4 = (int)(((((unsigned)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) * 0xa) >> 0xf);
-        if (r4 + 0xa == *(unsigned short*)(c + 0x5176)) {
-            int add = (int)((((((unsigned)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) * 9) >> 0xf)) + 1;
-            r4 += add;
-            if (r4 >= 0xa) r4 -= 0xa;
+    lvl = *(int*)(c + 0xbc);
+    if (lvl >= 0x14) {
+        int pick = (int)(((((unsigned)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) * 0xa) >> 0xf);
+        if (pick + 0xa == *(unsigned short*)(c + 0x5176)) {
+            int step = (int)((((((unsigned)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) * 9) >> 0xf)) + 1;
+            pick += step;
+            if (pick >= 0xa) pick -= 0xa;
         }
-        v = r4 + 0xa;
+        lvl = pick + 0xa;
     }
-    *(unsigned short*)(c + 0x5174) = v;
+    *(unsigned short*)(c + 0x5174) = lvl;
 }
 }
 
@@ -2329,12 +2295,12 @@ void func_ov006_020f31dc(char *self) {
         func_ov006_020f2790((dScMgLuigi_c *)self);
     if (func_ov006_020f0d58((C_f0d58 *)self) == 0)
         return;
-    if (*(unsigned char*)(self + 0x5000 + 0x455) == 0)
+    if (*(unsigned char*)(self + 0x5455) == 0)
         return;
-    *(int*)(self + 0x4000 + 0xf78) = 2;
-    *(unsigned char*)(self + 0x5000 + 0x458) = 0;
-    *(short*)(self + 0x5100 + 0x6c) = 0xa;
-    *(short*)(self + 0x5100 + 0x6e) = 0;
+    *(int*)(self + 0x4f78) = 2;
+    *(unsigned char*)(self + 0x5458) = 0;
+    *(short*)(self + 0x516c) = 0xa;
+    *(short*)(self + 0x516e) = 0;
 }
 }
 
@@ -2410,15 +2376,9 @@ extern int data_ov006_0213cf10[];
 /* ROM ordinal 53 -- _ZN12dScMgLuigi_c13OnYoshiTryEatEi, 0x020f3294, size 0x12c */
 /* ------------------------------------------------------------------ */
 // @symbol _ZN12dScMgLuigi_c13OnYoshiTryEatEi
-// recovered name: dScMgLuigi_c_OnYoshiTryEat_020f3294
-/* recovered: renamed to Class_Method, declarations from a shared header */
-/* recovered: renamed to Class_Method, vtable slot 18 -- an override of
-   dScMgBase_c::OnYoshiTryEat(int). The signature must repeat the base
-   declaration exactly, or mwcc appends a slot instead of overriding. */
-
-extern "C" {
-}
-
+/* Slot 18 of _ZTV12dScMgLuigi_c -- an override of dScMgBase_c::OnYoshiTryEat(int).
+   The signature must repeat the base declaration exactly, or mwcc appends a slot
+   instead of overriding. */
 void dScMgLuigi_c::OnYoshiTryEat(int arg1)
 {
     char *c = (char *)this;
@@ -2426,7 +2386,7 @@ void dScMgLuigi_c::OnYoshiTryEat(int arg1)
     char *p;
     int *q;
 
-    if (*(unsigned char *)(c + 0x5000 + 0x459) != 0) {
+    if (*(unsigned char *)(c + 0x5459) != 0) {
         *(unsigned char *)(((int)c + 0x5457)) += 1;
 
         q = (int *)(((int)c + 0xbc));
@@ -2436,7 +2396,7 @@ void dScMgLuigi_c::OnYoshiTryEat(int arg1)
     }
 
     if (arg1 == 0x12) {
-        *(short *)(c + 0x5100 + 0x72) = 0xa;
+        *(short *)(c + 0x5172) = 0xa;
         *(int *)(c + 0xbc) = 0;
         if ((unsigned int)*(int *)(c + 0xbc) > 0x270e)
             *(int *)(c + 0xbc) = 0x270e;
@@ -2452,7 +2412,7 @@ void dScMgLuigi_c::OnYoshiTryEat(int arg1)
     func_ov006_020f2ec0((struct Ctx_f2ec0 *)c);
     func_ov006_020f2e20(c);
 
-    *(int *)(c + 0x4000 + 0xf78) = 0;
+    *(int *)(c + 0x4f78) = 0;
     data_0209d45c |= 4;
     data_0209d454 &= ~4;
 
@@ -2463,9 +2423,7 @@ void dScMgLuigi_c::OnYoshiTryEat(int arg1)
 /* ROM ordinal 54 -- _ZN12dScMgLuigi_c6RenderEv, 0x020f33c0, size 0x54 */
 /* ------------------------------------------------------------------ */
 // @symbol _ZN12dScMgLuigi_c6RenderEv
-// recovered name: dScMgLuigi_c_Render
-/* recovered: renamed to Class_Method, declarations from a shared header */
-/* dScMgLuigi_c::Render - recovered from vtable slot identity */
+/* Slot 9 of _ZTV12dScMgLuigi_c. */
 s32 dScMgLuigi_c::Render()
 {
     func_ov004_020b1e34(this, 0xe0, 0x14, 1);
@@ -2482,14 +2440,13 @@ s32 dScMgLuigi_c::Render()
 /* ROM ordinal 55 -- _ZN12dScMgLuigi_c8BehaviorEv, 0x020f3414, size 0x4c */
 /* ------------------------------------------------------------------ */
 // @symbol _ZN12dScMgLuigi_c8BehaviorEv
-// recovered name: dScMgLuigi_c_Behavior
-/* recovered: renamed to Class_Method */
-/* dScMgLuigi_c::Behavior - recovered from vtable slot identity */
+/* Slot 6 of _ZTV12dScMgLuigi_c: one dispatch through the per-state table at
+   data_ov006_02142234, indexed by unk_4f78. */
 s32 dScMgLuigi_c::Behavior()
 {
-    struct D { char pad[0x4f78]; int idx; };
-    D *c = (D *)this;
-    int j = c->idx;
+    struct StateView { char pad[0x4f78]; int state; };
+    StateView *c = (StateView *)this;
+    int j = c->state;
     (((C_beh *)c)->*data_ov006_02142234[j].pmf)();
     return 1;
 }
@@ -2498,36 +2455,35 @@ s32 dScMgLuigi_c::Behavior()
 /* ROM ordinal 56 -- _ZN12dScMgLuigi_c13InitResourcesEv, 0x020f3460, size 0x3a0 */
 /* ------------------------------------------------------------------ */
 // @symbol _ZN12dScMgLuigi_c13InitResourcesEv
-// recovered name: dScMgLuigi_c_InitResources
-/* recovered: renamed to Class_Method, declarations from a shared header */
-/* dScMgLuigi_c::InitResources - recovered from vtable slot identity */
-
+/* Slot 0 of _ZTV12dScMgLuigi_c. */
 s32 dScMgLuigi_c::InitResources()
 {
     char *c = (char *)this;
-    char *b;
-    volatile u16 sp8;
-    volatile u16 spA;
-    int r6;
-    int f;
-    int r5;
+    char *scr;
+    /* Two distinct volatile slots, not one reused: the main-screen and
+       sub-screen fills are separate stack words in the ROM's frame. */
+    volatile u16 fillMain;
+    volatile u16 fillSub;
+    int arc;
+    int file;
+    int objChar;
 
-    r6 = func_ov004_020adc74(&data_ov006_0213cfa0);
-    if (r6 == 0) return 0;
+    arc = func_ov004_020adc74(&data_ov006_0213cfa0);
+    if (arc == 0) return 0;
 
     data_0209d45c |= 8;
     *(volatile u16*)0x400000e = (*(volatile u16*)0x400000e & ~3) | 2;
     *(volatile u16*)0x400000e = (*(volatile u16*)0x400000e & 0x43) | 0x1218;
 
-    DecompressLZ16(r6, (void*)func_02054d88());
+    DecompressLZ16(arc, (void*)func_02054d88());
 
-    f = LoadFile(0x48);
-    _ZN2GX10LoadBGPlttEPKvjj((const void*)f, 0x60, 0x1a0);
-    Deallocate((void*)f);
+    file = LoadFile(0x48);
+    _ZN2GX10LoadBGPlttEPKvjj((const void*)file, 0x60, 0x1a0);
+    Deallocate((void*)file);
 
-    f = LoadFile(0x49);
-    func_02056314((void*)f, 0, 0x800);
-    Deallocate((void*)f);
+    file = LoadFile(0x49);
+    func_02056314((void*)file, 0, 0x800);
+    Deallocate((void*)file);
 
     data_0209d45c |= 4;
     *(volatile u16*)0x400000c &= ~3;
@@ -2535,22 +2491,22 @@ s32 dScMgLuigi_c::InitResources()
     *(volatile u32*)0x4000018 = 0;
     *(volatile u16*)0x400000c = (*(volatile u16*)0x400000c & 0x43) | 0x1410;
 
-    f = LoadFile(0x4b);
-    DecompressLZ16(f, (void*)(_ZN2G213GetBG2CharPtrEv() + 0x4000));
-    Deallocate((void*)f);
+    file = LoadFile(0x4b);
+    DecompressLZ16(file, (void*)(_ZN2G213GetBG2CharPtrEv() + 0x4000));
+    Deallocate((void*)file);
 
-    f = LoadFile(0x4c);
-    _ZN2GX10LoadBGPlttEPKvjj((const void*)f, 0x40, 0x20);
-    Deallocate((void*)f);
+    file = LoadFile(0x4c);
+    _ZN2GX10LoadBGPlttEPKvjj((const void*)file, 0x40, 0x20);
+    Deallocate((void*)file);
 
-    b = _ZN2G212GetBG2ScrPtrEv();
-    sp8 = 0x23e1;
-    MultiStore16(sp8, b, 0x800);
+    scr = _ZN2G212GetBG2ScrPtrEv();
+    fillMain = 0x23e1;
+    MultiStore16(fillMain, scr, 0x800);
 
-    r5 = LoadFile(0xd3);
-    f = LoadFile(0xd4);
-    DecompressLZ16(r5, (void*)0x6400000);
-    _ZN2GX11LoadOBJPlttEPKvjj((const void*)f, 0, 0x100);
+    objChar = LoadFile(0xd3);
+    file = LoadFile(0xd4);
+    DecompressLZ16(objChar, (void*)0x6400000);
+    _ZN2GX11LoadOBJPlttEPKvjj((const void*)file, 0, 0x100);
 
     *(volatile u16*)0x400100c &= ~3;
     *(volatile u16*)0x400100c &= ~0x40;
@@ -2558,44 +2514,44 @@ s32 dScMgLuigi_c::InitResources()
     *(volatile u16*)0x400100c = (*(volatile u16*)0x400100c & 0x43) | 0x1210;
 
     {
-        int f8;
-        f8 = LoadFile(0x4b);
-        DecompressLZ16(f8, (void*)(_ZN3G2S13GetBG2CharPtrEv() + 0x4000));
-        Deallocate((void*)f8);
+        int subFile;
+        subFile = LoadFile(0x4b);
+        DecompressLZ16(subFile, (void*)(_ZN3G2S13GetBG2CharPtrEv() + 0x4000));
+        Deallocate((void*)subFile);
 
-        f8 = LoadFile(0x4c);
-        _ZN3GXS10LoadBGPlttEPKvjj((const void*)f8, 0x1e0, 0x20);
-        Deallocate((void*)f8);
+        subFile = LoadFile(0x4c);
+        _ZN3GXS10LoadBGPlttEPKvjj((const void*)subFile, 0x1e0, 0x20);
+        Deallocate((void*)subFile);
 
-        f8 = LoadFile(0x4d);
-        func_02056374((const void*)f8, 0, 0x800);
-        Deallocate((void*)f8);
+        subFile = LoadFile(0x4d);
+        func_02056374((const void*)subFile, 0, 0x800);
+        Deallocate((void*)subFile);
 
         data_0209d454 |= 8;
         *(volatile u16*)0x400100e &= ~3;
         *(volatile u16*)0x400100e = (*(volatile u16*)0x400100e & 0x43) | 0x1410;
 
-        f8 = LoadFile(0x4a);
-        b = _ZN3G2S12GetBG3ScrPtrEv();
-        spA = 0xf3e1;
-        MultiStore16(spA, b, 0x800);
-        Deallocate((void*)f8);
+        subFile = LoadFile(0x4a);
+        scr = _ZN3G2S12GetBG3ScrPtrEv();
+        fillSub = 0xf3e1;
+        MultiStore16(fillSub, scr, 0x800);
+        Deallocate((void*)subFile);
     }
 
-    DecompressLZ16(r5, (void*)0x6600000);
-    _ZN3GXS11LoadOBJPlttEPKvjj((const void*)f, 0, 0x100);
-    Deallocate((void*)r5);
-    Deallocate((void*)f);
+    DecompressLZ16(objChar, (void*)0x6600000);
+    _ZN3GXS11LoadOBJPlttEPKvjj((const void*)file, 0, 0x100);
+    Deallocate((void*)objChar);
+    Deallocate((void*)file);
 
-    *(u8*)(c + 0x5000 + 0x457) = 0;
+    *(u8*)(c + 0x5457) = 0;
     func_ov006_020f2ec0((struct Ctx_f2ec0 *)this);
-    *(volatile u16*)(c + 0x5100 + 0x74) = 0xff;
+    *(volatile u16*)(c + 0x5174) = 0xff;
     func_ov006_020f2e20(c);
 
-    *(int*)(c + 0x4000 + 0xf78) = 0;
-    Ov004_Deallocate(r6);
+    *(int*)(c + 0x4f78) = 0;
+    Ov004_Deallocate(arc);
     func_ov004_020b04d0(0x30);
-    *(volatile u16*)(c + 0x5100 + 0x72) = 0xa;
+    *(volatile u16*)(c + 0x5172) = 0xa;
     func_ov004_020b0cac(0xd, 0x80, 0xa8, 1, -1, 0xd);
     data_ov004_020bc888 = 0x80;
     data_ov004_020bc864 = ~0x1b;
@@ -2608,10 +2564,10 @@ s32 dScMgLuigi_c::InitResources()
 /* ------------------------------------------------------------------ */
 extern "C" {
 // @symbol dScMgLuigi_c_classInit
-/* recovered: vtable identified, declarations from a shared header */
-/* recovered: vtable identified */
-/* vtable identified: VT0 = data_ov006_0213cf10 */
-/* Reconstructed source-style name: SM64DS proves dScMgLuigi_c through RTTI,
+/* The MG_LUIGI factory: allocates 0x545c, runs dScMgBase_c's constructor and
+ * installs this class's vtable, data_ov006_0213cf10.
+ *
+ * Reconstructed source-style name: SM64DS proves dScMgLuigi_c through RTTI,
  * allocation size, vtable identity, and the MG_LUIGI registry profile;
  * later EAD lineage supplies classInit. Exact original spelling is not
  * preserved. Historical alias: MgWanted_Spawn. */
