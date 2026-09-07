@@ -1,7 +1,9 @@
 # Queue v2 pilot: durable ownership and handoffs
 
 This is an opt-in Git protocol, invoked as `python tools/classqueue.py v2 ...`.
-It does not change the active v1 fleet or decide the project's final role sequence.
+Installing it does not change the active v1 fleet. The current default role sequence
+and integration policy are in [PIPELINE.md](PIPELINE.md); this tool supports explicit
+per-task stages.
 GitHub issues can supply the human task identity (`issue-2400`) and discussion;
 the queue records exact ownership, resources, input commits and handoffs. No
 realtime messaging service is needed: agents poll `next` and `list` between tasks.
@@ -54,8 +56,8 @@ Save a JSON specification outside tracked source (for example under `build/`):
   "workflow_commit": "FULL_WORKFLOW_COMMIT_SHA",
   "resources": [
     "class:ov006/dExample_c+dExampleChild_c",
-    "tu:src/actors/dExample_c.cpp",
-    "file:include/dExample_c.h",
+    "tu:REPLACE_WITH_SOURCE_PATH",
+    "file:REPLACE_WITH_HEADER_PATH",
     "range:ov006:0x020c0000:0x020c0100"
   ],
   "base_commit": "FULL_BASE_COMMIT_SHA",
@@ -67,14 +69,21 @@ Save a JSON specification outside tracked source (for example under `build/`):
       "id": "reconstruct",
       "role": "producer",
       "mode": "write",
-      "requires": ["notes/data/class-facts/dExample_c.json"],
-      "produces": ["src/actors/dExample_c.cpp"]
+      "requires": ["REPLACE_WITH_FACTS_PATH"],
+      "produces": ["REPLACE_WITH_SOURCE_PATH"]
     },
     {
       "id": "verify",
       "role": "verifier",
       "mode": "verify",
-      "requires": ["src/actors/dExample_c.cpp"],
+      "requires": ["REPLACE_WITH_SOURCE_PATH"],
+      "produces": []
+    },
+    {
+      "id": "integrate",
+      "role": "integrator",
+      "mode": "verify",
+      "requires": ["REPLACE_WITH_SOURCE_PATH"],
       "produces": []
     }
   ]
@@ -108,7 +117,7 @@ merging source just to import metadata:
   {
     "kind": "scout-facts",
     "commit": "FULL_SCOUT_COMMIT_SHA",
-    "paths": ["notes/data/class-facts/dExample_c.json"]
+    "paths": ["REPLACE_WITH_FACTS_PATH"]
   }
 ]
 ```
@@ -216,7 +225,7 @@ If a producer discovers a shared dependency outside the reservation, pause the
 edit and release its running lease. The coordinator adds resources atomically:
 
 ```powershell
-python tools/classqueue.py v2 amend --receipt build/issue-2400-coordinator-receipt.json --request-id reserve-issue-2400-header --resource file:include/shared.h --reason "Reserve dependency before continuing"
+python tools/classqueue.py v2 amend --receipt build/issue-2400-coordinator-receipt.json --request-id reserve-issue-2400-header --resource file:REPLACE_WITH_SHARED_HEADER_PATH --reason "Reserve dependency before continuing"
 ```
 
 Amend only adds resources; another task's overlapping claim denies the entire
