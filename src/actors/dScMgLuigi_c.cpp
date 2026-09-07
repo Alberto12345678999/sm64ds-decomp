@@ -59,7 +59,7 @@
  * declarations get C linkage and name the ROM symbol.
  *
  * A class member function may NOT sit inside a linkage-specification region, so
- * the five C++-named members (ordinals 0/1, 2, 53, 54, 55, 56) are outside one,
+ * the six C++-named members (ordinals 0/1, 2, 53, 54, 55, 56) are outside one,
  * and what they call is declared in the two file-scope `extern "C"` regions
  * below instead -- the small one before ordinal 2, the large one after the last
  * wrapped member.  Writing those declarations in their bodies instead compiles
@@ -247,6 +247,10 @@ void dScMgLuigi_c::AfterCleanupResources(u32 vfSuccess)
 /* ROM ordinal 3 -- func_ov006_020efcf8, 0x020efcf8, size 0xb4 */
 /* ------------------------------------------------------------------ */
 // @symbol func_ov006_020efcf8
+/* IRQ 2's handler, installed by ordinal 10 through
+   _ZN3IRQ13SetIRQHandlerEjPFvvE, whose parameter mangles PFvvE = void(*)().
+   It has to stay a free function: a member function has a different type and
+   would not bind. */
 extern "C" {
 void func_ov006_020efcf8(void)
 {
@@ -1215,8 +1219,8 @@ void func_ov006_020f13cc(char *c, int i)
 /* ------------------------------------------------------------------ */
 /* ROM ordinal 32 -- func_ov006_020f15ac, 0x020f15ac, size 0x250 */
 /* ------------------------------------------------------------------ */
-extern "C" {
 // @symbol func_ov006_020f15ac
+extern "C" {
 /* dScMgLuigi_c per-slot mover, ov006 0x020f15ac (592 bytes). One
  * slot of the 120-entry picture table per call. A slot that has not started
  * yet is armed: phase 0, mStarted set, the x speed loaded from the speed-level
@@ -1286,8 +1290,8 @@ void func_ov006_020f15ac(dScMgLuigi_c *self, int idx)
 /* ------------------------------------------------------------------ */
 /* ROM ordinal 33 -- func_ov006_020f17fc, 0x020f17fc, size 0x130 */
 /* ------------------------------------------------------------------ */
-extern "C" {
 // @symbol func_ov006_020f17fc
+extern "C" {
 /* dScMgLuigi_c per-slot mover, ov006 0x020f17fc (304 bytes). A slot that has not started draws a random phase (one of eight 0x1000 steps).
  * A running slot adds one sine/cosine step (data_02082214, indexed by the
  * slot's phase) scaled by its speed-level entry to mPosX/mPosY, then wraps
@@ -1327,8 +1331,8 @@ void func_ov006_020f17fc(dScMgLuigi_c *self, int idx)
 /* ------------------------------------------------------------------ */
 /* ROM ordinal 34 -- func_ov006_020f192c, 0x020f192c, size 0x144 */
 /* ------------------------------------------------------------------ */
-extern "C" {
 // @symbol func_ov006_020f192c
+extern "C" {
 /* dScMgLuigi_c per-slot mover, ov006 0x020f192c (324 bytes). A slot that has not started is armed at phase 0x8000 or 0 from unk_51f5[idx / 8].
  * A running slot adds one sine/cosine step (data_02082214, indexed by the
  * slot's phase) scaled by its speed-level entry to mPosX/mPosY, then wraps
@@ -1374,8 +1378,8 @@ void func_ov006_020f192c(dScMgLuigi_c *self, int idx)
 /* ------------------------------------------------------------------ */
 /* ROM ordinal 35 -- func_ov006_020f1a70, 0x020f1a70, size 0x128 */
 /* ------------------------------------------------------------------ */
-extern "C" {
 // @symbol func_ov006_020f1a70
+extern "C" {
 /* dScMgLuigi_c per-slot mover, ov006 0x020f1a70 (296 bytes). A slot that has not started is armed at phase 0x4000 or 0xc000 from unk_51ed[idx & 7].
  * A running slot adds one sine/cosine step (data_02082214, indexed by the
  * slot's phase) scaled by its speed-level entry to mPosX/mPosY, then wraps
@@ -1411,8 +1415,8 @@ void func_ov006_020f1a70(dScMgLuigi_c *self, int idx)
 /* ------------------------------------------------------------------ */
 /* ROM ordinal 36 -- func_ov006_020f1b98, 0x020f1b98, size 0x11c */
 /* ------------------------------------------------------------------ */
-extern "C" {
 // @symbol func_ov006_020f1b98
+extern "C" {
 /* dScMgLuigi_c per-slot mover, ov006 0x020f1b98 (284 bytes). A slot that has not started takes its phase from unk_515c[speed level].
  * A running slot adds one sine/cosine step (data_02082214, indexed by the
  * slot's phase) scaled by its speed-level entry to mPosX/mPosY, then wraps
@@ -1443,8 +1447,8 @@ void func_ov006_020f1b98(dScMgLuigi_c *self, int idx)
 /* ------------------------------------------------------------------ */
 /* ROM ordinal 37 -- func_ov006_020f1cb4, 0x020f1cb4, size 0x108 */
 /* ------------------------------------------------------------------ */
-extern "C" {
 // @symbol func_ov006_020f1cb4
+extern "C" {
 /* dScMgLuigi_c per-slot mover, ov006 0x020f1cb4 (264 bytes). A slot that has not started is armed at phase 0x6000.
  * A running slot adds one sine/cosine step (data_02082214, indexed by the
  * slot's phase) scaled by its speed-level entry to mPosX/mPosY, then wraps
@@ -1649,8 +1653,8 @@ void func_ov006_020f1fcc(char *c)
 /* ------------------------------------------------------------------ */
 /* ROM ordinal 44 -- func_ov006_020f2224, 0x020f2224, size 0x56c */
 /* ------------------------------------------------------------------ */
-extern "C" {
 // @symbol func_ov006_020f2224
+extern "C" {
 /* dScMgLuigi_c board layout, ov006 0x020f2224 (1388 bytes). Called
  * from func_ov006_020f2790 for the boards whose data_ov006_0213ce98 entry is
  * non-zero: instead of scattering pictures at random it lays the whole board
@@ -1806,8 +1810,8 @@ void func_ov006_020f2224(dScMgLuigi_c *self)
 /* ------------------------------------------------------------------ */
 #pragma push
 #pragma opt_propagation off
-extern "C" {
 // @symbol func_ov006_020f2790
+extern "C" {
 /* dScMgLuigi_c picture placer, ov006 0x020f2790 (1320 bytes). Runs
  * once per frame while the board is still filling. Boards whose
  * data_ov006_0213ce98 entry is set are laid out in one go by
@@ -2572,8 +2576,8 @@ s32 dScMgLuigi_c::InitResources()
 /* ------------------------------------------------------------------ */
 /* ROM ordinal 57 -- dScMgLuigi_c_classInit, 0x020f3800, size 0x34 */
 /* ------------------------------------------------------------------ */
-extern "C" {
 // @symbol dScMgLuigi_c_classInit
+extern "C" {
 /* The MG_LUIGI factory: allocates 0x545c, runs dScMgBase_c's constructor and
  * installs this class's vtable, data_ov006_0213cf10.
  *
