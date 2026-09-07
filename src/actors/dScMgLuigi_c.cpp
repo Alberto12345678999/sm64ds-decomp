@@ -252,6 +252,11 @@ void func_ov006_020efcf8(void)
     extern int data_0209f648[][192];
     extern void MultiCopy_Int(int *dst, int *src, int len);
     int line;
+    /* The (int) round-trip is load-bearing here: written as plain array
+       arithmetic the whole handler re-codegens.  MEASURED 2026-09-07 -- this TU
+       inherited 24 such launders from its shards and this is the ONLY one that
+       pays; deleting the other 23 was byte-neutral.  Do not put those back, and
+       do not delete this one. */
     *(int *)(((int)data_023c0000 + 0x3ff8)) |= 2;
     line = REG_VCOUNT + 1;
     if (line >= 0xc0) {
@@ -297,7 +302,6 @@ void func_ov006_020efdf0(char *o, int i)
     extern int _ZN4cstd4sqrtEy(unsigned long long);
     extern void _ZN4CP1527FlushAndInvalidateDataCacheEjj(void *p, unsigned int len);
     int toggle;
-    int zc = 0;
     int y;
     int k, n, m;
     u8 mirrored;
@@ -315,7 +319,7 @@ void func_ov006_020efdf0(char *o, int i)
             int lo = (*(int *)(o + 0x47e4) >> 12) - s;
             int hi = s + (*(int *)(o + 0x47e4) >> 12);
             if (lo < 0)
-                lo = zc;
+                lo = 0;
             if (hi >= 0xff)
                 hi = 0xff;
             data_0209f648[toggle][k].b = lo;
@@ -436,7 +440,7 @@ void func_ov006_020f00a4(char *self)
     IRQ::EnableIRQs(2);
     func_02053c10(1);
     if (saved != 0) {
-        unsigned short tmp = *(volatile unsigned short *)0x4000208;
+        *(volatile unsigned short *)0x4000208;
         *(volatile unsigned short *)0x4000208 = 1;
     }
 }
@@ -482,37 +486,37 @@ void func_ov006_020f0274(char *s)
         return;
 
     if (*(u8 *)(s + 0x47e1) == 0) {
-        *(int *)(((int)s + 0x47d4)) += *(int *)(s + 0x47d8);
-        *(int *)(((int)s + 0x47d8)) -= 0x100;
+        *(int *)(s + 0x47d4) += *(int *)(s + 0x47d8);
+        *(int *)(s + 0x47d8) -= 0x100;
         if (*(u8 *)(s + 0x47df) != 0) {
             int v;
-            (*(u8 *)(((int)s + 0x47df)))--;
+            (*(u8 *)(s + 0x47df))--;
             v = *(u8 *)(s + 0x47df);
             if (v < 0)
                 *(u8 *)(s + 0x47df) = 0;
             return;
         }
         *(u8 *)(s + 0x47df) = 0x40;
-        *(u8 *)(((int)s + 0x47e1)) += 1;
+        *(u8 *)(s + 0x47e1) += 1;
         return;
     }
 
     if (*(u8 *)(s + 0x47e1) == 1) {
         if (*(u8 *)(s + 0x47df) != 0) {
             int v;
-            (*(u8 *)(((int)s + 0x47df)))--;
+            (*(u8 *)(s + 0x47df))--;
             v = *(u8 *)(s + 0x47df);
             if (v < 0)
                 *(u8 *)(s + 0x47df) = 0;
             return;
         }
         *(u8 *)(s + 0x47e3) = 0;
-        *(u8 *)(((int)s + 0x47e1)) += 1;
+        *(u8 *)(s + 0x47e1) += 1;
         {
             char *g = BEB68_f0274;
             if (g != 0) {
                 if (*(int *)(g + 0xb4) < 0x270f)
-                    *(int *)(((int)g + 0xb4)) += 1;
+                    *(int *)(g + 0xb4) += 1;
                 if (*(int *)(g + 0xb4) > *(int *)(g + 0xb8))
                     *(int *)(g + 0xb8) = *(int *)(g + 0xb4);
             }
@@ -522,13 +526,13 @@ void func_ov006_020f0274(char *s)
     }
 
     if (*(u8 *)(s + 0x47e2) != 0) {
-        *(u8 *)(((int)s + 0x47df)) += 1;
+        *(u8 *)(s + 0x47df) += 1;
         if (*(u8 *)(s + 0x47df) < 4)
             return;
         _ZN5Sound12PlayBank2_2DEj(0x1bc);
         *(u8 *)(s + 0x47df) = 0;
-        *(u8 *)(((int)s + 0x47e2)) -= 1;
-        *(u16 *)(((int)s + 0x5172)) += 1;
+        *(u8 *)(s + 0x47e2) -= 1;
+        *(u16 *)(s + 0x5172) += 1;
         if (*(u16 *)(s + 0x5172) >= 0x32) {
             *(u16 *)(s + 0x5172) = 0x32;
             *(u8 *)(s + 0x51fb) = 0;
@@ -914,14 +918,14 @@ void func_ov006_020f0eac(char *c)
     extern void func_02012790(int x);
     if (*(u16 *)(c + 0x5172) != 0) {
         {
-            u8 *q = (u8 *)(((int)c + 0x51fb));
+            u8 *q = (u8 *)(c + 0x51fb);
             *q = *q + 1;
         }
         if (*(u8 *)(c + 0x51fb) < 0x3c)
             return;
         *(u8 *)(c + 0x51fb) = 0;
         {
-            u16 *p = (u16 *)(((int)c + 0x5172));
+            u16 *p = (u16 *)(c + 0x5172);
             *p = *p - 1;
         }
         if (*(s16 *)(c + 0x5172) <= 0)
@@ -975,9 +979,6 @@ void func_ov006_020f100c(char *c)
     extern void *data_ov006_0213ce70[];
     extern char data_ov006_02137cd8[];
     int i;
-    void *m0 = 0;
-    void *m1 = 0;
-    void *m2 = 0;
     for (i = 0; i < 0x10; i++) {
         if (*(unsigned char *)(c + 0x4671) != 0) {
             int x = *(s32 *)(c + 0x4660) >> 0xc;
@@ -988,9 +989,9 @@ void func_ov006_020f100c(char *c)
             if (y <= 8) y = 8;
             if (y >= 0xb8) y = 0xb8;
             r = GetGameLanguage();
-            func_ov004_020af948(*(void **)((char *)data_ov006_0213ce70[r] + 0x38), x - 0x10, y, m0);
-            func_ov004_020af948(*(void **)(data_ov006_02137cd8 + 0xa4), x, y, m1);
-            func_ov004_020af948(*(void **)(data_ov006_02137cd8 + 0xa0), x + 0x10, y, m2);
+            func_ov004_020af948(*(void **)((char *)data_ov006_0213ce70[r] + 0x38), x - 0x10, y, 0);
+            func_ov004_020af948(*(void **)(data_ov006_02137cd8 + 0xa4), x, y, 0);
+            func_ov004_020af948(*(void **)(data_ov006_02137cd8 + 0xa0), x + 0x10, y, 0);
         }
         c += 0x14;
     }
@@ -1011,18 +1012,18 @@ void func_ov006_020f10ec(char *q)
         if (*(u8 *)(q + 0x4670) != 0) {
             if (*(u8 *)(q + 0x4672) == 0) {
                 if (*(u16 *)(q + 0x466c) != 0) {
-                    *(u16 *)(((int)q + 0x466c)) -= 1;
+                    *(u16 *)(q + 0x466c) -= 1;
                     if (*(short *)(q + 0x466c) < 0)
                         *(u16 *)(q + 0x466c) = 0;
-                    *(int *)(((int)q + 0x4664)) += *(int *)(q + 0x4668);
-                    *(int *)(((int)q + 0x4668)) += 0x100;
+                    *(int *)(q + 0x4664) += *(int *)(q + 0x4668);
+                    *(int *)(q + 0x4668) += 0x100;
                 } else {
                     *(u16 *)(q + 0x466c) = 0x40;
-                    *(u8 *)(((int)q + 0x4672)) += 1;
+                    *(u8 *)(q + 0x4672) += 1;
                 }
             } else {
                 if (*(u16 *)(q + 0x466c) != 0) {
-                    *(u16 *)(((int)q + 0x466c)) -= 1;
+                    *(u16 *)(q + 0x466c) -= 1;
                     if (*(short *)(q + 0x466c) < 0)
                         *(u16 *)(q + 0x466c) = 0;
                 } else {
@@ -1058,7 +1059,7 @@ void func_ov006_020f120c(char *base, int idx)
         *(int *)(base + i * 0x14 + 0x4664) = *(int *)(base + idx * 4 + 0x49d8);
         *(int *)(base + i * 0x14 + 0x4668) = 0x1100;
         *(unsigned char *)(base + i * 0x14 + 0x4672) = 0;
-        *(unsigned short *)(((int)base + 0x5172)) -= 0xa;
+        *(unsigned short *)(base + 0x5172) -= 0xa;
         if (*(short *)(base + 0x5172) < 0)
             *(short *)(base + 0x5172) = 0;
         return;
@@ -1545,7 +1546,7 @@ void func_ov006_020f1ef8(char *o, int p1)
     v = *(int *)(o + 0xbc);
     while (v >= 5) v -= 5;
     if (v != 4)
-        *(unsigned short *)(((int)o + 0x516a)) += 8;
+        *(unsigned short *)(o + 0x516a) += 8;
     if (p1 == 0)
         *(short *)(o + 0x516a) = 0x80;
     *(unsigned char *)(o + 0x5459) = (unsigned char)p1;
@@ -2240,7 +2241,7 @@ void func_ov006_020f300c(char *o)
         return;
 
     for (i = 0; i < 0x78; i++) {
-        unsigned char *p = (unsigned char *)(((int)o + i + 0x53dd));
+        unsigned char *p = (unsigned char *)(o + i + 0x53dd);
         if (*p == 1)
             *p = 0;
     }
@@ -2248,7 +2249,7 @@ void func_ov006_020f300c(char *o)
     if (*(unsigned short *)(o + 0x516a) == 0)
         return;
     *(unsigned short *)(o + 0x5164) = 1;
-    *(unsigned short *)(((int)o + 0x516a)) -= 1;
+    *(unsigned short *)(o + 0x516a) -= 1;
     if (*(short *)(o + 0x516a) > 0)
         return;
     *(unsigned short *)(o + 0x516a) = 0;
@@ -2387,9 +2388,9 @@ void dScMgLuigi_c::OnYoshiTryEat(int arg1)
     int *q;
 
     if (*(unsigned char *)(c + 0x5459) != 0) {
-        *(unsigned char *)(((int)c + 0x5457)) += 1;
+        *(unsigned char *)(c + 0x5457) += 1;
 
-        q = (int *)(((int)c + 0xbc));
+        q = (int *)(c + 0xbc);
         *q += 1;
         if ((unsigned int)*(int *)(c + 0xbc) > 0x270e)
             *(int *)(c + 0xbc) = 0x270e;
