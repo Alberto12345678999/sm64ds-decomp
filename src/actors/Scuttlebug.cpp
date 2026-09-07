@@ -9,10 +9,16 @@
  *
  * mwccarm emits ordinary function sections in REVERSE source order, so this
  * file is written ROM-descending: the factory at 0x02120618 first and
- * OnYoshiTryEat at 0x0211f0a4 last.  The destructor is defined inline in
- * include/Scuttlebug.h and OnYoshiTryEat is the key function; together they
- * emit retail D1 (0x0211f000) then D0 (0x0211f048) below every other section,
- * plus the class vtable and RTTI, with no D2 and no forcing scaffold.
+ * OnYoshiTryEat at 0x0211f0a4 last.  ~Scuttlebug is DECLARED AND NOT DEFINED in
+ * include/Scuttlebug.h, ahead of every other virtual, so the destructor -- not
+ * OnYoshiTryEat -- is this class's key function, and it is defined elsewhere:
+ * the shards src/_ZN10ScuttlebugD1Ev.cpp (0x0211f000) and
+ * src/_ZN10ScuttlebugD0Ev.cpp (0x0211f048) stay enrolled and own the emission
+ * of _ZTV10Scuttlebug, _ZTI10Scuttlebug and _ZTS10Scuttlebug.  THIS TU EMITS NO
+ * VTABLE, NO RTTI AND NO D2; its licensed run is 0x0211f0a4..0x02120668 and its
+ * object defines nothing outside .text.  An inline body here would give the
+ * vtable and RTTI vague linkage and pull D1/D0 into this object as well; see the
+ * closing note at the foot of this file for the measurement.
  *
  * common.h is included FIRST on purpose.  Scuttlebug.h reaches math/Matrix.h
  * through ModelAnim.h, and that header spells Matrix4x3 as `Matrix3x3 r;
