@@ -78,6 +78,9 @@
 #include "dScMgLuigi_c.h"
 #include "IRQ.h"
 
+/* Same spelling the matched IRQ::EnableIRQs / IRQ::DisableIRQs shards use. */
+#define IME (*(volatile u16 *)0x4000208)
+
 /* ---------------------------------------------------------------------------
  * Shadow types, one set per member that recovered one.  The tag suffix is the
  * member's ROM address: two members that describe the same object through
@@ -124,8 +127,8 @@ struct Entry_f0d58 { PMF_f0d58 pmf; };
 /* ordinal 38, func_ov006_020f1dbc */
 typedef struct Obj_f1dbc {
     char _pad0[0x47f8]; /* 0x0000 */
-    int arrA[120];      /* 0x47f8 */
-    int arrB[120];      /* 0x49d8 */
+    int mPosX[120];     /* 0x47f8 */
+    int mPosY[120];     /* 0x49d8 */
 } Obj_f1dbc;
 
 /* ordinal 41, func_ov006_020f1e90 */
@@ -228,14 +231,14 @@ void dScMgLuigi_c::AfterCleanupResources(u32 vfSuccess)
     if (vfSuccess == 2 && IRQ::GetIRQHandler(2) == func_ov006_020efcf8) {
         u16 ime;
         do {
-            ime = *(volatile u16 *)0x4000208;
-            *(volatile u16 *)0x4000208 = 0;
+            ime = IME;
+            IME = 0;
         } while (ime != 0);
         IRQ::DisableIRQs(2);
         func_02053c10(0);
         IRQ::SetIRQHandler(2, 0);
-        ime = *(volatile u16 *)0x4000208;
-        *(volatile u16 *)0x4000208 = 1;
+        ime = IME;
+        IME = 1;
     }
     dScMgBase_c::AfterCleanupResources(vfSuccess);
 }
@@ -349,7 +352,7 @@ extern void _ZN3IRQ11DisableIRQsEj(unsigned int);
 extern void _ZN3IRQ13SetIRQHandlerEjPFvvE(unsigned int, void(*)(void));
 extern unsigned char data_0209d454;
 void func_ov006_020eff20(char* c, int idx){
-  volatile unsigned short* ime = (volatile unsigned short*)0x4000208;
+  volatile unsigned short* ime = &IME;
   unsigned short saved;
   *(unsigned char*)(c + idx * 0x14 + 0x47f4) = 0;
   saved = *ime;
@@ -358,8 +361,8 @@ void func_ov006_020eff20(char* c, int idx){
   func_02053c10(0);
   _ZN3IRQ13SetIRQHandlerEjPFvvE(2, 0);
   if (saved != 0) { *ime; *ime = 1; }
-  *(volatile unsigned int*)0x4000000 &= ~0xe000;
-  *(volatile unsigned int*)0x4001000 &= ~0xe000;
+  REG_DISPCNT &= ~0xe000;
+  REG_DISPCNT_SUB &= ~0xe000;
   data_0209d454 |= 4;
 }
 }
@@ -427,11 +430,11 @@ void func_ov006_020f00a4(char *self)
     func_ov006_020efdf0(self, 0);
 
     data_0209f608 = 0;
-    saved = *(volatile unsigned short *)0x4000208;
-    *(volatile unsigned short *)0x4000208 = 0;
+    saved = IME;
+    IME = 0;
     IRQ::SetIRQHandler(2, func_ov006_020efcf8);
 
-    *(volatile unsigned int *)0x4000000 = (*(volatile unsigned int *)0x4000000 & ~0xe000) | 0x2000;
+    REG_DISPCNT = (REG_DISPCNT & ~0xe000) | 0x2000;
     data_0209d460 = 1;
     { unsigned int v = *(volatile unsigned short *)0x4000048; v = (v & ~0x3f) | 0x18; v = v | 0x20; *(volatile unsigned short *)0x4000048 = v; }
     *(volatile unsigned short *)0x400004a = (*(volatile unsigned short *)0x400004a & ~0x3f) | 0x14;
@@ -440,8 +443,8 @@ void func_ov006_020f00a4(char *self)
     IRQ::EnableIRQs(2);
     func_02053c10(1);
     if (saved != 0) {
-        *(volatile unsigned short *)0x4000208;
-        *(volatile unsigned short *)0x4000208 = 1;
+        IME;
+        IME = 1;
     }
 }
 }
@@ -480,8 +483,6 @@ extern void _ZN5Sound12PlayBank2_2DEj(unsigned int);
 
 void func_ov006_020f0274(char *s)
 {
-    extern void func_ov004_020adb1c(int self);
-    extern void _ZN5Sound12PlayBank2_2DEj(unsigned int);
     if (*(u8 *)(s + 0x47e0) == 0)
         return;
 
@@ -638,6 +639,10 @@ void func_ov006_020f05d8(char *c, int i)
 /* ------------------------------------------------------------------ */
 // @symbol func_ov006_020f06fc
 extern "C" {
+/* The tests on `i` nested inside the branch that already decided `i` are NOT
+   redundant: they are what mwccarm 2004/b56 needs to emit this body.  MEASURED
+   2026-09-07 -- deleting the four of them (and the code the else arm can then no
+   longer reach) makes the member stop reproducing outright. */
 void func_ov006_020f06fc(char *c, int i)
 {
     extern void _ZN5Sound12PlayBank2_2DEj(unsigned int a);
@@ -1103,6 +1108,9 @@ void func_ov006_020f1318(char *c, int idx)
     if (*(short *)(c + (idx << 1) + 0x506c) < 0)
         *(short *)(c + (idx << 1) + 0x506c) = 0;
 
+    /* The goto and the duplicated block are load-bearing.  MEASURED 2026-09-07 --
+       folding them into one if/else over a single `p` makes the member stop
+       reproducing; mwccarm keeps the two exits distinct. */
     if ((((unsigned short)*(unsigned short *)(c + (idx << 1) + 0x506c) >> 2) & 1) != 0) {
         char *p = c + 0x53dd;
         p[idx] = 0;
@@ -1470,17 +1478,14 @@ void func_ov006_020f1cb4(dScMgLuigi_c *self, int idx)
 /* ------------------------------------------------------------------ */
 // @symbol func_ov006_020f1dbc
 extern "C" {
-// Wraps two per-index 20.12 fixed-point coords (arrays at +0x47f8 and +0x49d8)
-// around their ranges: >0x110 -> -0x10000 / < -0x10 -> 0x110000, and
-// >0xd0 -> -0x10000 / < -0x10 -> 0xd0000. Leaf, no callees.
-
+/* Wraps one picture's 20.12 position round the 0x110 x 0xd0 screen. Leaf. */
 void func_ov006_020f1dbc(Obj_f1dbc* self, int i) {
-    int a = self->arrA[i] >> 12;
-    int b = self->arrB[i] >> 12;
-    if (a > 0x110) self->arrA[i] = -0x10000;
-    if (a < -0x10) self->arrA[i] = 0x110000;
-    if (b > 0xd0)  self->arrB[i] = -0x10000;
-    if (b < -0x10) self->arrB[i] = 0xd0000;
+    int x = self->mPosX[i] >> 12;
+    int y = self->mPosY[i] >> 12;
+    if (x > 0x110) self->mPosX[i] = -0x10000;
+    if (x < -0x10) self->mPosX[i] = 0x110000;
+    if (y > 0xd0)  self->mPosY[i] = -0x10000;
+    if (y < -0x10) self->mPosY[i] = 0xd0000;
 }
 }
 
@@ -2090,12 +2095,12 @@ struct Ctx_f2ec0
     u8 f47f4;                /* 0x47f4 */
     u8 f47f5;                /* 0x47f5 */
     u8 pad47f6[2];
-    s32 arrA[120];           /* 0x47f8 */
-    s32 arrB[120];           /* 0x49d8 */
-    s32 arrC[120];           /* 0x4bb8 */
-    s32 arrD[120];           /* 0x4d98 */
+    s32 mPosX[120];           /* 0x47f8 */
+    s32 mPosY[120];           /* 0x49d8 */
+    s32 mVelX[120];           /* 0x4bb8 */
+    s32 mVelY[120];           /* 0x4d98 */
     u8 pad4f78[4];
-    s16 arrJ[120];           /* 0x4f7c */
+    s16 mMovePhase[120];           /* 0x4f7c */
     s16 arrI[120];           /* 0x506c */
     u8 pad515c[8];
     s16 h5164;               /* 0x5164 */
@@ -2103,12 +2108,12 @@ struct Ctx_f2ec0
     s16 h5168;               /* 0x5168 */
     s16 h516a;               /* 0x516a */
     u8 pad516c[0xc];
-    u8 grid[13][9];          /* 0x5178 */
+    u8 mGrid[13][9];          /* 0x5178 */
     u8 pad51ed[0x10];
     u8 arrE[120];            /* 0x51fd */
-    u8 pad5275[120];
+    u8 mStarted[120];        /* 0x5275 -- not cleared here */
     u8 arrF[120];            /* 0x52ed */
-    u8 arrG[120];            /* 0x5365 */
+    u8 mSpeedLevel[120];            /* 0x5365 */
     u8 arrH[120];            /* 0x53dd */
     u8 b5455;                /* 0x5455 */
     u8 b5456;                /* 0x5456 */
@@ -2127,15 +2132,15 @@ void func_ov006_020f2ec0(struct Ctx_f2ec0 *c)
 
     for (i = 0; i < 120; i++)
     {
-        c->arrA[i] = 0;
-        c->arrB[i] = 0;
-        c->arrC[i] = 0;
-        c->arrD[i] = 0;
+        c->mPosX[i] = 0;
+        c->mPosY[i] = 0;
+        c->mVelX[i] = 0;
+        c->mVelY[i] = 0;
         c->arrE[i] = 0;
         c->arrF[i] = 0;
-        c->arrG[i] = 0;
+        c->mSpeedLevel[i] = 0;
         c->arrI[i] = 0;
-        c->arrJ[i] = 0;
+        c->mMovePhase[i] = 0;
         c->arrH[i] = 0;
     }
 
@@ -2166,7 +2171,7 @@ void func_ov006_020f2ec0(struct Ctx_f2ec0 *c)
     {
         for (n = 0; n < 9; n++)
         {
-            c->grid[m][n] = 0;
+            c->mGrid[m][n] = 0;
         }
     }
 
@@ -2189,6 +2194,10 @@ void func_ov006_020f2ec0(struct Ctx_f2ec0 *c)
 #pragma push
 #pragma opt_strength_reduction off
 extern "C" {
+/* This member reaches slot 18 of its own object through the dispatch table at
+   data_ov006_02142254, so the pointer-to-member has to be formed against a class
+   with that many virtuals. The slots below slot 18 are never called from here
+   and are placeholders; only the shape matters. */
 class C_f300c {
 public:
     virtual void v00();
