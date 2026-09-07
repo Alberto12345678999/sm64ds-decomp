@@ -243,42 +243,42 @@
       "ordinal": 31
     },
     {
-      "symbol": "func_ov006_020f15ac",
+      "symbol": "_ZN12dScMgLuigi_c15MovePictureSwayEi",
       "address": "0x020f15ac",
       "size": "0x00000250",
       "legacy_source": "src/func_ov006_020f15ac.cpp",
       "ordinal": 32
     },
     {
-      "symbol": "func_ov006_020f17fc",
+      "symbol": "_ZN12dScMgLuigi_c22MovePictureDriftRandomEi",
       "address": "0x020f17fc",
       "size": "0x00000130",
       "legacy_source": "src/func_ov006_020f17fc.c",
       "ordinal": 33
     },
     {
-      "symbol": "func_ov006_020f192c",
+      "symbol": "_ZN12dScMgLuigi_c21MovePictureDriftByRowEi",
       "address": "0x020f192c",
       "size": "0x00000144",
       "legacy_source": "src/func_ov006_020f192c.c",
       "ordinal": 34
     },
     {
-      "symbol": "func_ov006_020f1a70",
+      "symbol": "_ZN12dScMgLuigi_c24MovePictureDriftByColumnEi",
       "address": "0x020f1a70",
       "size": "0x00000128",
       "legacy_source": "src/func_ov006_020f1a70.c",
       "ordinal": 35
     },
     {
-      "symbol": "func_ov006_020f1b98",
+      "symbol": "_ZN12dScMgLuigi_c23MovePictureDriftByLevelEi",
       "address": "0x020f1b98",
       "size": "0x0000011c",
       "legacy_source": "src/func_ov006_020f1b98.c",
       "ordinal": 36
     },
     {
-      "symbol": "func_ov006_020f1cb4",
+      "symbol": "_ZN12dScMgLuigi_c21MovePictureDriftFixedEi",
       "address": "0x020f1cb4",
       "size": "0x00000108",
       "legacy_source": "src/func_ov006_020f1cb4.c",

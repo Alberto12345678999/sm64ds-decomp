@@ -25,6 +25,19 @@ struct dScMgLuigi_c : dScMgBase_c {
     virtual s32 Render();                 /* slot 9 */
     virtual void OnYoshiTryEat(int arg);               /* slot 18 */
 
+    /* Non-virtual members.  Each of these is reached through a
+       zero-adjustment pointer-to-member record in the ov006 table at
+       0x0213cd8c..0x0213ce4c, which is what proves it is a member of this
+       class and not a free helper; the NAMES are coined -- the cartridge
+       carries only the address.  See symbols/actor_renames.tsv for the
+       per-symbol evidence. */
+    void MovePictureSway(int idx);
+    void MovePictureDriftRandom(int idx);
+    void MovePictureDriftByRow(int idx);
+    void MovePictureDriftByColumn(int idx);
+    void MovePictureDriftByLevel(int idx);
+    void MovePictureDriftFixed(int idx);
+
     u8  pad_4660[0x198];
     /* The 120 moving pictures (0x78 slots). Four Fix12 arrays back to back --
        0x47f8 + 4 * 0x1e0 lands exactly on unk_4f78 -- then a u16 phase per slot

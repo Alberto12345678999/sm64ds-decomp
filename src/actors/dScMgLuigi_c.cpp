@@ -147,6 +147,13 @@ struct Ctx_f2ec0;   /* completed at ordinal 48, below */
  * ------------------------------------------------------------------------- */
 extern "C" {
 extern int func_02053c10(int);
+/* Externals a C++-NAMED member calls.  A class member function may not sit in a
+   linkage-specification region, so a declaration written in its body would get
+   C++ linkage and the reference would mangle; these have to be declared with C
+   linkage at file scope instead.  Data is different -- mwccarm leaves a
+   file-scope variable's name unmangled in C++ -- so every `data_*` declaration
+   stays in the body that recovered it. */
+extern int RandomIntInternal(int *seed);
 
 extern void func_ov006_020efcf8(void);
 extern void func_ov006_020efdac(void);
@@ -177,12 +184,6 @@ extern void func_ov006_020f120c(char *base, int idx);
 extern void func_ov006_020f12c8(char *c);
 extern void func_ov006_020f1318(char *c, int idx);
 extern void func_ov006_020f13cc(char *c, int i);
-extern void func_ov006_020f15ac(dScMgLuigi_c *self, int idx);
-extern void func_ov006_020f17fc(dScMgLuigi_c *self, int idx);
-extern void func_ov006_020f192c(dScMgLuigi_c *self, int idx);
-extern void func_ov006_020f1a70(dScMgLuigi_c *self, int idx);
-extern void func_ov006_020f1b98(dScMgLuigi_c *self, int idx);
-extern void func_ov006_020f1cb4(dScMgLuigi_c *self, int idx);
 extern void func_ov006_020f1dbc(Obj_f1dbc *self, int i);
 extern void func_ov006_020f1e40(unsigned *base, int idx);
 extern void func_ov006_020f1e58(unsigned char *self, int idx);
@@ -1217,10 +1218,9 @@ void func_ov006_020f13cc(char *c, int i)
 #pragma pop
 
 /* ------------------------------------------------------------------ */
-/* ROM ordinal 32 -- func_ov006_020f15ac, 0x020f15ac, size 0x250 */
+/* ROM ordinal 32 -- _ZN12dScMgLuigi_c15MovePictureSwayEi, 0x020f15ac, size 0x250 */
 /* ------------------------------------------------------------------ */
-// @symbol func_ov006_020f15ac
-extern "C" {
+// @symbol _ZN12dScMgLuigi_c15MovePictureSwayEi
 /* dScMgLuigi_c per-slot mover, ov006 0x020f15ac (592 bytes). One
  * slot of the 120-entry picture table per call. A slot that has not started
  * yet is armed: phase 0, mStarted set, the x speed loaded from the speed-level
@@ -1240,58 +1240,56 @@ extern "C" {
  * `#pragma opt_common_subs off`, which is what rotated its registers. */
 
 
-void func_ov006_020f15ac(dScMgLuigi_c *self, int idx)
+void dScMgLuigi_c::MovePictureSway(int idx)
 {
     extern int data_ov006_0212e888[];
     extern int data_ov006_0212e898[];
     extern int data_ov006_0212e8a8[];
-    if (self->mStarted[idx] == 0) {
-        self->mMovePhase[idx] = 0;
-        self->mStarted[idx]++;
-        if (self->mSpeedLevel[idx] == 0) {
-            self->mVelX[idx] = data_ov006_0212e888[self->mSpeedLevel[idx]];
+    if (mStarted[idx] == 0) {
+        mMovePhase[idx] = 0;
+        mStarted[idx]++;
+        if (mSpeedLevel[idx] == 0) {
+            mVelX[idx] = data_ov006_0212e888[mSpeedLevel[idx]];
         } else {
-            self->mVelX[idx] = -data_ov006_0212e888[self->mSpeedLevel[idx]];
+            mVelX[idx] = -data_ov006_0212e888[mSpeedLevel[idx]];
         }
-        self->mVelY[idx] = data_ov006_0212e898[self->mSpeedLevel[idx]];
+        mVelY[idx] = data_ov006_0212e898[mSpeedLevel[idx]];
         return;
     }
-    self->mPosX[idx] += self->mVelX[idx];
-    self->mPosY[idx] += self->mVelY[idx];
-    if (self->mMovePhase[idx] == 0) {
-        if (self->mVelX[idx] > 0) {
-            self->mVelX[idx] -= data_ov006_0212e8a8[self->mSpeedLevel[idx]];
-            if (self->mVelX[idx] <= 0) {
-                self->mVelX[idx] = 0;
-                self->mMovePhase[idx] = 2;
+    mPosX[idx] += mVelX[idx];
+    mPosY[idx] += mVelY[idx];
+    if (mMovePhase[idx] == 0) {
+        if (mVelX[idx] > 0) {
+            mVelX[idx] -= data_ov006_0212e8a8[mSpeedLevel[idx]];
+            if (mVelX[idx] <= 0) {
+                mVelX[idx] = 0;
+                mMovePhase[idx] = 2;
             }
-        } else if (self->mVelX[idx] < 0) {
-            self->mVelX[idx] += data_ov006_0212e8a8[self->mSpeedLevel[idx]];
-            if (self->mVelX[idx] >= 0) {
-                self->mVelX[idx] = 0;
-                self->mMovePhase[idx] = 1;
+        } else if (mVelX[idx] < 0) {
+            mVelX[idx] += data_ov006_0212e8a8[mSpeedLevel[idx]];
+            if (mVelX[idx] >= 0) {
+                mVelX[idx] = 0;
+                mMovePhase[idx] = 1;
             }
         }
-    } else if (self->mMovePhase[idx] == 1) {
-        self->mVelX[idx] += data_ov006_0212e8a8[self->mSpeedLevel[idx]];
-        if (self->mVelX[idx] >= data_ov006_0212e888[self->mSpeedLevel[idx]]) {
-            self->mMovePhase[idx] = 0;
+    } else if (mMovePhase[idx] == 1) {
+        mVelX[idx] += data_ov006_0212e8a8[mSpeedLevel[idx]];
+        if (mVelX[idx] >= data_ov006_0212e888[mSpeedLevel[idx]]) {
+            mMovePhase[idx] = 0;
         }
     } else {
-        self->mVelX[idx] -= data_ov006_0212e8a8[self->mSpeedLevel[idx]];
-        if (self->mVelX[idx] <= -data_ov006_0212e888[self->mSpeedLevel[idx]]) {
-            self->mMovePhase[idx] = 0;
+        mVelX[idx] -= data_ov006_0212e8a8[mSpeedLevel[idx]];
+        if (mVelX[idx] <= -data_ov006_0212e888[mSpeedLevel[idx]]) {
+            mMovePhase[idx] = 0;
         }
     }
-    func_ov006_020f1dbc((Obj_f1dbc *)self, idx);
-}
+    func_ov006_020f1dbc((Obj_f1dbc *)this, idx);
 }
 
 /* ------------------------------------------------------------------ */
-/* ROM ordinal 33 -- func_ov006_020f17fc, 0x020f17fc, size 0x130 */
+/* ROM ordinal 33 -- _ZN12dScMgLuigi_c22MovePictureDriftRandomEi, 0x020f17fc, size 0x130 */
 /* ------------------------------------------------------------------ */
-// @symbol func_ov006_020f17fc
-extern "C" {
+// @symbol _ZN12dScMgLuigi_c22MovePictureDriftRandomEi
 /* dScMgLuigi_c per-slot mover, ov006 0x020f17fc (304 bytes). A slot that has not started draws a random phase (one of eight 0x1000 steps).
  * A running slot adds one sine/cosine step (data_02082214, indexed by the
  * slot's phase) scaled by its speed-level entry to mPosX/mPosY, then wraps
@@ -1305,34 +1303,31 @@ extern "C" {
  * pair in the second update. */
 
 
-void func_ov006_020f17fc(dScMgLuigi_c *self, int idx)
+void dScMgLuigi_c::MovePictureDriftRandom(int idx)
 {
-    extern int RandomIntInternal(int *seed);
     extern int data_0209d4b8;
     extern int data_ov006_0212e878[];
     extern s16 data_02082214[];
-    if (self->mStarted[idx] == 0) {
+    if (mStarted[idx] == 0) {
         unsigned int r = ((unsigned int)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff;
         unsigned short val = (unsigned short)(((r << 4) >> 15) << 12);
-        self->mMovePhase[idx] = val;
-        self->mStarted[idx]++;
+        mMovePhase[idx] = val;
+        mStarted[idx]++;
         return;
     }
     {
-        int a = self->mMovePhase[idx] >> 4;
-        self->mPosX[idx] = self->mPosX[idx] + (s32)(((s64)data_02082214[a * 2 + 1] * data_ov006_0212e878[self->mSpeedLevel[idx]] + 0x800) >> 12);
-        a = self->mMovePhase[idx] >> 4;
-        self->mPosY[idx] = self->mPosY[idx] + (s32)(((s64)data_02082214[a * 2] * data_ov006_0212e878[self->mSpeedLevel[idx]] + 0x800) >> 12);
+        int a = mMovePhase[idx] >> 4;
+        mPosX[idx] = mPosX[idx] + (s32)(((s64)data_02082214[a * 2 + 1] * data_ov006_0212e878[mSpeedLevel[idx]] + 0x800) >> 12);
+        a = mMovePhase[idx] >> 4;
+        mPosY[idx] = mPosY[idx] + (s32)(((s64)data_02082214[a * 2] * data_ov006_0212e878[mSpeedLevel[idx]] + 0x800) >> 12);
     }
-    func_ov006_020f1dbc((Obj_f1dbc *)self, idx);
-}
+    func_ov006_020f1dbc((Obj_f1dbc *)this, idx);
 }
 
 /* ------------------------------------------------------------------ */
-/* ROM ordinal 34 -- func_ov006_020f192c, 0x020f192c, size 0x144 */
+/* ROM ordinal 34 -- _ZN12dScMgLuigi_c21MovePictureDriftByRowEi, 0x020f192c, size 0x144 */
 /* ------------------------------------------------------------------ */
-// @symbol func_ov006_020f192c
-extern "C" {
+// @symbol _ZN12dScMgLuigi_c21MovePictureDriftByRowEi
 /* dScMgLuigi_c per-slot mover, ov006 0x020f192c (324 bytes). A slot that has not started is armed at phase 0x8000 or 0 from unk_51f5[idx / 8].
  * A running slot adds one sine/cosine step (data_02082214, indexed by the
  * slot's phase) scaled by its speed-level entry to mPosX/mPosY, then wraps
@@ -1342,14 +1337,14 @@ extern "C" {
  * func_ov006_020f17fc above. */
 
 
-void func_ov006_020f192c(dScMgLuigi_c *self, int idx)
+void dScMgLuigi_c::MovePictureDriftByRow(int idx)
 {
     extern int data_ov006_0212e868[];
     extern s16 data_02082214[];
     int cnt;
     int j;
-    if (self->mStarted[idx] == 0) {
-        self->mStarted[idx]++;
+    if (mStarted[idx] == 0) {
+        mStarted[idx]++;
         cnt = 0;
         j = idx;
         if (idx >= 8) {
@@ -1358,28 +1353,26 @@ void func_ov006_020f192c(dScMgLuigi_c *self, int idx)
                 cnt++;
             } while (j >= 8);
         }
-        if (self->unk_51f5[cnt] != 0) {
-            self->mMovePhase[idx] = 0x8000;
+        if (unk_51f5[cnt] != 0) {
+            mMovePhase[idx] = 0x8000;
         } else {
-            self->mMovePhase[idx] = 0;
+            mMovePhase[idx] = 0;
         }
         return;
     }
     {
-        int a = self->mMovePhase[idx] >> 4;
-        self->mPosX[idx] = self->mPosX[idx] + (s32)(((s64)data_02082214[a * 2 + 1] * data_ov006_0212e868[self->mSpeedLevel[idx]] + 0x800) >> 12);
-        a = self->mMovePhase[idx] >> 4;
-        self->mPosY[idx] = self->mPosY[idx] + (s32)(((s64)data_02082214[a * 2] * data_ov006_0212e868[self->mSpeedLevel[idx]] + 0x800) >> 12);
+        int a = mMovePhase[idx] >> 4;
+        mPosX[idx] = mPosX[idx] + (s32)(((s64)data_02082214[a * 2 + 1] * data_ov006_0212e868[mSpeedLevel[idx]] + 0x800) >> 12);
+        a = mMovePhase[idx] >> 4;
+        mPosY[idx] = mPosY[idx] + (s32)(((s64)data_02082214[a * 2] * data_ov006_0212e868[mSpeedLevel[idx]] + 0x800) >> 12);
     }
-    func_ov006_020f1dbc((Obj_f1dbc *)self, idx);
-}
+    func_ov006_020f1dbc((Obj_f1dbc *)this, idx);
 }
 
 /* ------------------------------------------------------------------ */
-/* ROM ordinal 35 -- func_ov006_020f1a70, 0x020f1a70, size 0x128 */
+/* ROM ordinal 35 -- _ZN12dScMgLuigi_c24MovePictureDriftByColumnEi, 0x020f1a70, size 0x128 */
 /* ------------------------------------------------------------------ */
-// @symbol func_ov006_020f1a70
-extern "C" {
+// @symbol _ZN12dScMgLuigi_c24MovePictureDriftByColumnEi
 /* dScMgLuigi_c per-slot mover, ov006 0x020f1a70 (296 bytes). A slot that has not started is armed at phase 0x4000 or 0xc000 from unk_51ed[idx & 7].
  * A running slot adds one sine/cosine step (data_02082214, indexed by the
  * slot's phase) scaled by its speed-level entry to mPosX/mPosY, then wraps
@@ -1389,34 +1382,32 @@ extern "C" {
  * func_ov006_020f17fc above. */
 
 
-void func_ov006_020f1a70(dScMgLuigi_c *self, int idx)
+void dScMgLuigi_c::MovePictureDriftByColumn(int idx)
 {
     extern int data_ov006_0212e858[];
     extern s16 data_02082214[];
-    if (self->mStarted[idx] == 0) {
-        self->mStarted[idx]++;
-        if (self->unk_51ed[idx & 7] != 0) {
-            self->mMovePhase[idx] = 0x4000;
+    if (mStarted[idx] == 0) {
+        mStarted[idx]++;
+        if (unk_51ed[idx & 7] != 0) {
+            mMovePhase[idx] = 0x4000;
         } else {
-            self->mMovePhase[idx] = 0xc000;
+            mMovePhase[idx] = 0xc000;
         }
         return;
     }
     {
-        int a = self->mMovePhase[idx] >> 4;
-        self->mPosX[idx] = self->mPosX[idx] + (s32)(((s64)data_02082214[a * 2 + 1] * data_ov006_0212e858[self->mSpeedLevel[idx]] + 0x800) >> 12);
-        a = self->mMovePhase[idx] >> 4;
-        self->mPosY[idx] = self->mPosY[idx] + (s32)(((s64)data_02082214[a * 2] * data_ov006_0212e858[self->mSpeedLevel[idx]] + 0x800) >> 12);
+        int a = mMovePhase[idx] >> 4;
+        mPosX[idx] = mPosX[idx] + (s32)(((s64)data_02082214[a * 2 + 1] * data_ov006_0212e858[mSpeedLevel[idx]] + 0x800) >> 12);
+        a = mMovePhase[idx] >> 4;
+        mPosY[idx] = mPosY[idx] + (s32)(((s64)data_02082214[a * 2] * data_ov006_0212e858[mSpeedLevel[idx]] + 0x800) >> 12);
     }
-    func_ov006_020f1dbc((Obj_f1dbc *)self, idx);
-}
+    func_ov006_020f1dbc((Obj_f1dbc *)this, idx);
 }
 
 /* ------------------------------------------------------------------ */
-/* ROM ordinal 36 -- func_ov006_020f1b98, 0x020f1b98, size 0x11c */
+/* ROM ordinal 36 -- _ZN12dScMgLuigi_c23MovePictureDriftByLevelEi, 0x020f1b98, size 0x11c */
 /* ------------------------------------------------------------------ */
-// @symbol func_ov006_020f1b98
-extern "C" {
+// @symbol _ZN12dScMgLuigi_c23MovePictureDriftByLevelEi
 /* dScMgLuigi_c per-slot mover, ov006 0x020f1b98 (284 bytes). A slot that has not started takes its phase from unk_515c[speed level].
  * A running slot adds one sine/cosine step (data_02082214, indexed by the
  * slot's phase) scaled by its speed-level entry to mPosX/mPosY, then wraps
@@ -1426,29 +1417,27 @@ extern "C" {
  * func_ov006_020f17fc above. */
 
 
-void func_ov006_020f1b98(dScMgLuigi_c *self, int idx)
+void dScMgLuigi_c::MovePictureDriftByLevel(int idx)
 {
     extern int data_ov006_0212e8d8[];
     extern s16 data_02082214[];
-    if (self->mStarted[idx] == 0) {
-        u8 t = self->mSpeedLevel[idx];
-        self->mMovePhase[idx] = self->unk_515c[t];
-        self->mStarted[idx]++;
+    if (mStarted[idx] == 0) {
+        u8 t = mSpeedLevel[idx];
+        mMovePhase[idx] = unk_515c[t];
+        mStarted[idx]++;
     } else {
-        int a = self->mMovePhase[idx] >> 4;
-        self->mPosX[idx] = self->mPosX[idx] + (s32)(((s64)data_02082214[a * 2 + 1] * data_ov006_0212e8d8[self->mSpeedLevel[idx]] + 0x800) >> 12);
-        a = self->mMovePhase[idx] >> 4;
-        self->mPosY[idx] = self->mPosY[idx] + (s32)(((s64)data_02082214[a * 2] * data_ov006_0212e8d8[self->mSpeedLevel[idx]] + 0x800) >> 12);
-        func_ov006_020f1dbc((Obj_f1dbc *)self, idx);
+        int a = mMovePhase[idx] >> 4;
+        mPosX[idx] = mPosX[idx] + (s32)(((s64)data_02082214[a * 2 + 1] * data_ov006_0212e8d8[mSpeedLevel[idx]] + 0x800) >> 12);
+        a = mMovePhase[idx] >> 4;
+        mPosY[idx] = mPosY[idx] + (s32)(((s64)data_02082214[a * 2] * data_ov006_0212e8d8[mSpeedLevel[idx]] + 0x800) >> 12);
+        func_ov006_020f1dbc((Obj_f1dbc *)this, idx);
     }
-}
 }
 
 /* ------------------------------------------------------------------ */
-/* ROM ordinal 37 -- func_ov006_020f1cb4, 0x020f1cb4, size 0x108 */
+/* ROM ordinal 37 -- _ZN12dScMgLuigi_c21MovePictureDriftFixedEi, 0x020f1cb4, size 0x108 */
 /* ------------------------------------------------------------------ */
-// @symbol func_ov006_020f1cb4
-extern "C" {
+// @symbol _ZN12dScMgLuigi_c21MovePictureDriftFixedEi
 /* dScMgLuigi_c per-slot mover, ov006 0x020f1cb4 (264 bytes). A slot that has not started is armed at phase 0x6000.
  * A running slot adds one sine/cosine step (data_02082214, indexed by the
  * slot's phase) scaled by its speed-level entry to mPosX/mPosY, then wraps
@@ -1458,23 +1447,22 @@ extern "C" {
  * func_ov006_020f17fc above. */
 
 
-void func_ov006_020f1cb4(dScMgLuigi_c *self, int idx)
+void dScMgLuigi_c::MovePictureDriftFixed(int idx)
 {
     extern int data_ov006_0212e8c8[];
     extern s16 data_02082214[];
-    if (self->mStarted[idx] == 0) {
-        self->mMovePhase[idx] = 0x6000;
-        self->mStarted[idx]++;
+    if (mStarted[idx] == 0) {
+        mMovePhase[idx] = 0x6000;
+        mStarted[idx]++;
         return;
     }
     {
-        int a = self->mMovePhase[idx] >> 4;
-        self->mPosX[idx] = self->mPosX[idx] + (s32)(((s64)data_02082214[a * 2 + 1] * data_ov006_0212e8c8[self->mSpeedLevel[idx]] + 0x800) >> 12);
-        a = self->mMovePhase[idx] >> 4;
-        self->mPosY[idx] = self->mPosY[idx] + (s32)(((s64)data_02082214[a * 2] * data_ov006_0212e8c8[self->mSpeedLevel[idx]] + 0x800) >> 12);
+        int a = mMovePhase[idx] >> 4;
+        mPosX[idx] = mPosX[idx] + (s32)(((s64)data_02082214[a * 2 + 1] * data_ov006_0212e8c8[mSpeedLevel[idx]] + 0x800) >> 12);
+        a = mMovePhase[idx] >> 4;
+        mPosY[idx] = mPosY[idx] + (s32)(((s64)data_02082214[a * 2] * data_ov006_0212e8c8[mSpeedLevel[idx]] + 0x800) >> 12);
     }
-    func_ov006_020f1dbc((Obj_f1dbc *)self, idx);
-}
+    func_ov006_020f1dbc((Obj_f1dbc *)this, idx);
 }
 
 /* ------------------------------------------------------------------ */
