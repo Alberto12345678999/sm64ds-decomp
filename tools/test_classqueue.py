@@ -7,9 +7,12 @@ name that does not exist.
 """
 import unittest
 import pathlib
+import sys
 import tempfile
 import types
 import unittest.mock
+
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 
 import classqueue
 

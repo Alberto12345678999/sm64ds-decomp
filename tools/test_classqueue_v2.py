@@ -14,6 +14,8 @@ import time
 import unittest
 from unittest.mock import patch
 
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+
 import classqueue_v2 as cq
 
 

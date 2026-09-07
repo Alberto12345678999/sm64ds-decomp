@@ -55,6 +55,8 @@ Role names describe responsibilities, not preferred models.
 
 1. Read the issue, queue record, input commit, and accepted handoff.
 2. Inspect prior branches, PRs, and local output before rediscovering the class.
+   [IN-FLIGHT.md](IN-FLIGHT.md) preserves the v1 backlog investigation and inventory
+   commands; recompute its dated counts before using them.
 3. Declare classes, TU/source paths, shared headers, symbol/config surfaces, and
    module-qualified half-open ROM ranges. Names alone do not imply those resources.
 4. Obtain a successful v2 claim for the exact offered stage and input SHA.
