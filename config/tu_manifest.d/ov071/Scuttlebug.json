@@ -1,9 +1,9 @@
 {
   "id": "ov071/Scuttlebug",
   "module": "ov071",
-  "source": "src_tu/actors/Scuttlebug.cpp",
+  "source": "src/actors/Scuttlebug.cpp",
   "promoted_source": "src/actors/Scuttlebug.cpp",
-  "status": "text-verified",
+  "status": "promoted",
   "boundary_confidence": "high",
   "boundary_evidence": [
     "contiguous linker run: 0x0211f0a4..0x02120668, 35 function(s), with no gap anywhere",
