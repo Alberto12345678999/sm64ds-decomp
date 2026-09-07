@@ -31,12 +31,29 @@ struct dScMgLuigi_c : dScMgBase_c {
        class and not a free helper; the NAMES are coined -- the cartridge
        carries only the address.  See symbols/actor_renames.tsv for the
        per-symbol evidence. */
+    void IrisStop(int idx);
+    void IrisGrow(int idx);
+    void IrisHold(int idx);
+    void CurtainStateSlow(int i);
+    void CurtainStateFast(int i);
+    void CurtainStateHold(int i);
+    void CurtainStateBounce(int i);
+    void CurtainUpdate(int i);
+    void CurtainStart(int i);
+    void TickPictureFlash(int idx);
+    void MovePictureBounce(int i);
     void MovePictureSway(int idx);
     void MovePictureDriftRandom(int idx);
     void MovePictureDriftByRow(int idx);
     void MovePictureDriftByColumn(int idx);
     void MovePictureDriftByLevel(int idx);
     void MovePictureDriftFixed(int idx);
+    void StopPicture(int idx);
+    void RestartPicture(int idx);
+    void StateCatch();
+    void StatePlay();
+    void StatePlace();
+    void StateSetup();
 
     u8  pad_4660[0x198];
     /* The 120 moving pictures (0x78 slots). Four Fix12 arrays back to back --

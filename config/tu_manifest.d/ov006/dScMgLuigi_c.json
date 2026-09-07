@@ -61,21 +61,21 @@
       "ordinal": 5
     },
     {
-      "symbol": "func_ov006_020eff20",
+      "symbol": "_ZN12dScMgLuigi_c8IrisStopEi",
       "address": "0x020eff20",
       "size": "0x00000098",
       "legacy_source": "src/func_ov006_020eff20.c",
       "ordinal": 6
     },
     {
-      "symbol": "func_ov006_020effb8",
+      "symbol": "_ZN12dScMgLuigi_c8IrisGrowEi",
       "address": "0x020effb8",
       "size": "0x00000074",
       "legacy_source": "src/func_ov006_020effb8.c",
       "ordinal": 7
     },
     {
-      "symbol": "func_ov006_020f002c",
+      "symbol": "_ZN12dScMgLuigi_c8IrisHoldEi",
       "address": "0x020f002c",
       "size": "0x00000018",
       "legacy_source": "src/func_ov006_020f002c.c",
@@ -124,42 +124,42 @@
       "ordinal": 14
     },
     {
-      "symbol": "func_ov006_020f05d8",
+      "symbol": "_ZN12dScMgLuigi_c16CurtainStateSlowEi",
       "address": "0x020f05d8",
       "size": "0x00000124",
       "legacy_source": "src/func_ov006_020f05d8.c",
       "ordinal": 15
     },
     {
-      "symbol": "func_ov006_020f06fc",
+      "symbol": "_ZN12dScMgLuigi_c16CurtainStateFastEi",
       "address": "0x020f06fc",
       "size": "0x00000190",
       "legacy_source": "src/func_ov006_020f06fc.c",
       "ordinal": 16
     },
     {
-      "symbol": "func_ov006_020f088c",
+      "symbol": "_ZN12dScMgLuigi_c16CurtainStateHoldEi",
       "address": "0x020f088c",
       "size": "0x000001e0",
       "legacy_source": "src/func_ov006_020f088c.c",
       "ordinal": 17
     },
     {
-      "symbol": "func_ov006_020f0a6c",
+      "symbol": "_ZN12dScMgLuigi_c18CurtainStateBounceEi",
       "address": "0x020f0a6c",
       "size": "0x00000134",
       "legacy_source": "src/func_ov006_020f0a6c.c",
       "ordinal": 18
     },
     {
-      "symbol": "func_ov006_020f0ba0",
+      "symbol": "_ZN12dScMgLuigi_c13CurtainUpdateEi",
       "address": "0x020f0ba0",
       "size": "0x00000050",
       "legacy_source": "src/func_ov006_020f0ba0.cpp",
       "ordinal": 19
     },
     {
-      "symbol": "func_ov006_020f0bf0",
+      "symbol": "_ZN12dScMgLuigi_c12CurtainStartEi",
       "address": "0x020f0bf0",
       "size": "0x00000168",
       "legacy_source": "src/func_ov006_020f0bf0.c",
@@ -229,14 +229,14 @@
       "ordinal": 29
     },
     {
-      "symbol": "func_ov006_020f1318",
+      "symbol": "_ZN12dScMgLuigi_c16TickPictureFlashEi",
       "address": "0x020f1318",
       "size": "0x000000b4",
       "legacy_source": "src/func_ov006_020f1318.c",
       "ordinal": 30
     },
     {
-      "symbol": "func_ov006_020f13cc",
+      "symbol": "_ZN12dScMgLuigi_c17MovePictureBounceEi",
       "address": "0x020f13cc",
       "size": "0x000001e0",
       "legacy_source": "src/func_ov006_020f13cc.c",
@@ -292,14 +292,14 @@
       "ordinal": 38
     },
     {
-      "symbol": "func_ov006_020f1e40",
+      "symbol": "_ZN12dScMgLuigi_c11StopPictureEi",
       "address": "0x020f1e40",
       "size": "0x00000018",
       "legacy_source": "src/func_ov006_020f1e40.c",
       "ordinal": 39
     },
     {
-      "symbol": "func_ov006_020f1e58",
+      "symbol": "_ZN12dScMgLuigi_c14RestartPictureEi",
       "address": "0x020f1e58",
       "size": "0x00000038",
       "legacy_source": "src/func_ov006_020f1e58.c",
@@ -362,28 +362,28 @@
       "ordinal": 48
     },
     {
-      "symbol": "func_ov006_020f300c",
+      "symbol": "_ZN12dScMgLuigi_c10StateCatchEv",
       "address": "0x020f300c",
       "size": "0x00000190",
       "legacy_source": "src/func_ov006_020f300c.cpp",
       "ordinal": 49
     },
     {
-      "symbol": "func_ov006_020f319c",
+      "symbol": "_ZN12dScMgLuigi_c9StatePlayEv",
       "address": "0x020f319c",
       "size": "0x00000040",
       "legacy_source": "src/func_ov006_020f319c.c",
       "ordinal": 50
     },
     {
-      "symbol": "func_ov006_020f31dc",
+      "symbol": "_ZN12dScMgLuigi_c10StatePlaceEv",
       "address": "0x020f31dc",
       "size": "0x00000084",
       "legacy_source": "src/func_ov006_020f31dc.c",
       "ordinal": 51
     },
     {
-      "symbol": "func_ov006_020f3260",
+      "symbol": "_ZN12dScMgLuigi_c10StateSetupEv",
       "address": "0x020f3260",
       "size": "0x00000034",
       "legacy_source": "src/func_ov006_020f3260.c",

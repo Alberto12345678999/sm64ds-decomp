@@ -154,25 +154,20 @@ extern int func_02053c10(int);
    file-scope variable's name unmangled in C++ -- so every `data_*` declaration
    stays in the body that recovered it. */
 extern int RandomIntInternal(int *seed);
+extern void _ZN5Sound12PlayBank2_2DEj(unsigned int);
+extern int Sound_PlayIfNotActive(int a, int b, int c, int d);
+extern void FreeGfxSlotsById(int arg);
+extern void func_ov004_020b0a54(int c);
 
 extern void func_ov006_020efcf8(void);
 extern void func_ov006_020efdac(void);
 extern void func_ov006_020efdf0(char *o, int i);
-extern void func_ov006_020eff20(char *c, int idx);
-extern void func_ov006_020effb8(char *c, int idx);
-extern void func_ov006_020f002c(struct E_f002c *base, int idx);
 extern void func_ov006_020f0044(C_f0044 *c);
 extern void func_ov006_020f00a4(char *self);
 extern void func_ov006_020f01d8(char *c);
 extern void func_ov006_020f0274(char *s);
 extern void func_ov006_020f049c(char *c, int i);
 extern void func_ov006_020f04ec(char *base);
-extern void func_ov006_020f05d8(char *c, int i);
-extern void func_ov006_020f06fc(char *c, int i);
-extern void func_ov006_020f088c(char *c, int i);
-extern void func_ov006_020f0a6c(char *c, int i);
-extern void func_ov006_020f0ba0(C_f0ba0 *c, int i);
-extern void func_ov006_020f0bf0(char *c, int i);
 extern int  func_ov006_020f0d58(C_f0d58 *c);
 extern void func_ov006_020f0dd8(char *c);
 extern void func_ov006_020f0e28(char *self);
@@ -182,11 +177,7 @@ extern void func_ov006_020f100c(char *c);
 extern void func_ov006_020f10ec(char *q);
 extern void func_ov006_020f120c(char *base, int idx);
 extern void func_ov006_020f12c8(char *c);
-extern void func_ov006_020f1318(char *c, int idx);
-extern void func_ov006_020f13cc(char *c, int i);
 extern void func_ov006_020f1dbc(Obj_f1dbc *self, int i);
-extern void func_ov006_020f1e40(unsigned *base, int idx);
-extern void func_ov006_020f1e58(unsigned char *self, int idx);
 extern void func_ov006_020f1e90(C_f1e90 *c);
 extern void func_ov006_020f1ef8(char *o, int p1);
 extern void func_ov006_020f1fcc(char *c);
@@ -195,10 +186,6 @@ extern void func_ov006_020f2790(dScMgLuigi_c *self);
 extern void func_ov006_020f2cb8(char *c);
 extern void func_ov006_020f2e20(char *c);
 extern void func_ov006_020f2ec0(struct Ctx_f2ec0 *c);
-extern void func_ov006_020f300c(char *o);
-extern void func_ov006_020f319c(char *c);
-extern void func_ov006_020f31dc(char *self);
-extern void func_ov006_020f3260(char *o);
 extern int *dScMgLuigi_c_classInit(void);
 }
 
@@ -349,14 +336,16 @@ void func_ov006_020efdf0(char *o, int i)
 #pragma pop
 
 /* ------------------------------------------------------------------ */
-/* ROM ordinal 6 -- func_ov006_020eff20, 0x020eff20, size 0x98 */
+/* ROM ordinal 6 -- _ZN12dScMgLuigi_c8IrisStopEi, 0x020eff20, size 0x98 */
 /* ------------------------------------------------------------------ */
-// @symbol func_ov006_020eff20
+// @symbol _ZN12dScMgLuigi_c8IrisStopEi
 extern "C" {
 extern void _ZN3IRQ11DisableIRQsEj(unsigned int);
 extern void _ZN3IRQ13SetIRQHandlerEjPFvvE(unsigned int, void(*)(void));
 extern unsigned char data_0209d454;
-void func_ov006_020eff20(char *c, int idx) {
+}
+void dScMgLuigi_c::IrisStop(int idx) {
+    char *c = (char *)this;
     volatile unsigned short *ime = &IME;
     unsigned short saved;
     *(unsigned char *)(c + idx * 0x14 + 0x47f4) = 0;
@@ -370,32 +359,31 @@ void func_ov006_020eff20(char *c, int idx) {
     REG_DISPCNT_SUB &= ~0xe000;
     data_0209d454 |= 4;
 }
-}
 
 /* ------------------------------------------------------------------ */
-/* ROM ordinal 7 -- func_ov006_020effb8, 0x020effb8, size 0x74 */
+/* ROM ordinal 7 -- _ZN12dScMgLuigi_c8IrisGrowEi, 0x020effb8, size 0x74 */
 /* ------------------------------------------------------------------ */
-// @symbol func_ov006_020effb8
+// @symbol _ZN12dScMgLuigi_c8IrisGrowEi
 extern "C" {
 extern unsigned char data_0209d45c;
+}
 
-void func_ov006_020effb8(char *c, int idx) {
+void dScMgLuigi_c::IrisGrow(int idx) {
+    char *c = (char *)this;
     *(int *)(c + 0x47ec + idx * 0x14) += 0x2000;
     func_ov006_020efdf0(c, idx);
     if ((*(int *)(c + 0x47ec + idx * 0x14) >> 12) < 0xa0) return;
     *(unsigned char *)(c + 0x47f5 + idx * 0x14) += 1;
     data_0209d45c &= ~4;
 }
-}
 
 /* ------------------------------------------------------------------ */
-/* ROM ordinal 8 -- func_ov006_020f002c, 0x020f002c, size 0x18 */
+/* ROM ordinal 8 -- _ZN12dScMgLuigi_c8IrisHoldEi, 0x020f002c, size 0x18 */
 /* ------------------------------------------------------------------ */
-// @symbol func_ov006_020f002c
-extern "C" {
-void func_ov006_020f002c(struct E_f002c *base, int idx) {
+// @symbol _ZN12dScMgLuigi_c8IrisHoldEi
+void dScMgLuigi_c::IrisHold(int idx) {
+    struct E_f002c *base = (struct E_f002c *)this;
   *(unsigned *)((unsigned char *)&base[idx] + 0x47f0) = 0x1000;
-}
 }
 
 /* ------------------------------------------------------------------ */
@@ -600,14 +588,12 @@ void func_ov006_020f04ec(char *base)
 }
 
 /* ------------------------------------------------------------------ */
-/* ROM ordinal 15 -- func_ov006_020f05d8, 0x020f05d8, size 0x124 */
+/* ROM ordinal 15 -- _ZN12dScMgLuigi_c16CurtainStateSlowEi, 0x020f05d8, size 0x124 */
 /* ------------------------------------------------------------------ */
-// @symbol func_ov006_020f05d8
-extern "C" {
-void func_ov006_020f05d8(char *c, int i)
+// @symbol _ZN12dScMgLuigi_c16CurtainStateSlowEi
+void dScMgLuigi_c::CurtainStateSlow(int i)
 {
-    extern void _ZN5Sound12PlayBank2_2DEj(unsigned int);
-    extern void FreeGfxSlotsById(int arg);
+    char *c = (char *)this;
     int n = i * 0x18;
     unsigned short *ctr = (unsigned short *)(c + 0x47b2 + n);
     int *b;
@@ -637,21 +623,18 @@ void func_ov006_020f05d8(char *c, int i)
         *(unsigned char *)(c + n + 0x47b7) = 0;
     }
 }
-}
 
 /* ------------------------------------------------------------------ */
-/* ROM ordinal 16 -- func_ov006_020f06fc, 0x020f06fc, size 0x190 */
+/* ROM ordinal 16 -- _ZN12dScMgLuigi_c16CurtainStateFastEi, 0x020f06fc, size 0x190 */
 /* ------------------------------------------------------------------ */
-// @symbol func_ov006_020f06fc
-extern "C" {
+// @symbol _ZN12dScMgLuigi_c16CurtainStateFastEi
 /* The tests on `i` nested inside the branch that already decided `i` are NOT
    redundant: they are what mwccarm 2004/b56 needs to emit this body.  MEASURED
    2026-09-07 -- deleting the four of them (and the code the else arm can then no
    longer reach) makes the member stop reproducing outright. */
-void func_ov006_020f06fc(char *c, int i)
+void dScMgLuigi_c::CurtainStateFast(int i)
 {
-    extern void _ZN5Sound12PlayBank2_2DEj(unsigned int a);
-    extern int Sound_PlayIfNotActive(int a, int b, int c, int d);
+    char *c = (char *)this;
     int n = i * 0x18;
     int *pf8 = (int *)(c + 0x47a8 + n);
     int *pf0 = (int *)(c + 0x47a0 + n);
@@ -689,18 +672,14 @@ void func_ov006_020f06fc(char *c, int i)
         *(int *)(c + 0x47ac + n) = Sound_PlayIfNotActive(*(int *)(c + 0x47ac + n), 2, 0x1b8, 0);
     }
 }
-}
 
 /* ------------------------------------------------------------------ */
-/* ROM ordinal 17 -- func_ov006_020f088c, 0x020f088c, size 0x1e0 */
+/* ROM ordinal 17 -- _ZN12dScMgLuigi_c16CurtainStateHoldEi, 0x020f088c, size 0x1e0 */
 /* ------------------------------------------------------------------ */
-// @symbol func_ov006_020f088c
-extern "C" {
-void func_ov006_020f088c(char *c, int i)
+// @symbol _ZN12dScMgLuigi_c16CurtainStateHoldEi
+void dScMgLuigi_c::CurtainStateHold(int i)
 {
-    extern void _ZN5Sound12PlayBank2_2DEj(unsigned int);
-    extern int Sound_PlayIfNotActive(int a, int b, int c, int d);
-    extern void FreeGfxSlotsById(int arg);
+    char *c = (char *)this;
     int n = i * 0x18;
     unsigned short *ctr = (unsigned short *)(c + 0x47b2 + n);
     int *b;
@@ -752,16 +731,14 @@ void func_ov006_020f088c(char *c, int i)
         }
     }
 }
-}
 
 /* ------------------------------------------------------------------ */
-/* ROM ordinal 18 -- func_ov006_020f0a6c, 0x020f0a6c, size 0x134 */
+/* ROM ordinal 18 -- _ZN12dScMgLuigi_c18CurtainStateBounceEi, 0x020f0a6c, size 0x134 */
 /* ------------------------------------------------------------------ */
-// @symbol func_ov006_020f0a6c
-extern "C" {
-void func_ov006_020f0a6c(char *c, int i)
+// @symbol _ZN12dScMgLuigi_c18CurtainStateBounceEi
+void dScMgLuigi_c::CurtainStateBounce(int i)
 {
-    extern int Sound_PlayIfNotActive(int a, int b, int c, int d);
+    char *c = (char *)this;
     int n = i * 0x18;
     int *pf8 = (int *)(c + 0x47a8 + n);
     int *pf0 = (int *)(c + 0x47a0 + n);
@@ -789,25 +766,23 @@ void func_ov006_020f0a6c(char *c, int i)
         *(int *)(c + 0x47ac + n) = Sound_PlayIfNotActive(*(int *)(c + 0x47ac + n), 2, 0x1b8, 0);
     }
 }
-}
 
 /* ------------------------------------------------------------------ */
-/* ROM ordinal 19 -- func_ov006_020f0ba0, 0x020f0ba0, size 0x50 */
+/* ROM ordinal 19 -- _ZN12dScMgLuigi_c13CurtainUpdateEi, 0x020f0ba0, size 0x50 */
 /* ------------------------------------------------------------------ */
-// @symbol func_ov006_020f0ba0
-extern "C" {
-void func_ov006_020f0ba0(C_f0ba0 *c, int i) {
+// @symbol _ZN12dScMgLuigi_c13CurtainUpdateEi
+void dScMgLuigi_c::CurtainUpdate(int i) {
+    C_f0ba0 *c = (C_f0ba0 *)this;
     extern Entry_f0ba0 data_ov006_0214221c[];
     (c->*(data_ov006_0214221c[c->rows[i].tag].pmf))(i);
 }
-}
 
 /* ------------------------------------------------------------------ */
-/* ROM ordinal 20 -- func_ov006_020f0bf0, 0x020f0bf0, size 0x168 */
+/* ROM ordinal 20 -- _ZN12dScMgLuigi_c12CurtainStartEi, 0x020f0bf0, size 0x168 */
 /* ------------------------------------------------------------------ */
-// @symbol func_ov006_020f0bf0
-extern "C" {
-void func_ov006_020f0bf0(char *c, int i) {
+// @symbol _ZN12dScMgLuigi_c12CurtainStartEi
+void dScMgLuigi_c::CurtainStart(int i) {
+    char *c = (char *)this;
     extern unsigned char data_0209d460;
     extern int data_ov006_0212e850[];
     unsigned short t;
@@ -853,7 +828,6 @@ void func_ov006_020f0bf0(char *c, int i) {
             *(int *)(c + 0x47a8 + i * 0x18) = 0x7000;
     }
     *(int *)(c + 0x47ac + i * 0x18) = 0;
-}
 }
 
 /* ------------------------------------------------------------------ */
@@ -1093,16 +1067,16 @@ void func_ov006_020f12c8(char *c) {
 }
 
 /* ------------------------------------------------------------------ */
-/* ROM ordinal 30 -- func_ov006_020f1318, 0x020f1318, size 0xb4 */
+/* ROM ordinal 30 -- _ZN12dScMgLuigi_c16TickPictureFlashEi, 0x020f1318, size 0xb4 */
 /* ------------------------------------------------------------------ */
-// @symbol func_ov006_020f1318
+// @symbol _ZN12dScMgLuigi_c16TickPictureFlashEi
 #pragma push
 #pragma opt_common_subs off
 #pragma push
 #pragma opt_strength_reduction off
-extern "C" {
-void func_ov006_020f1318(char *c, int idx)
+void dScMgLuigi_c::TickPictureFlash(int idx)
 {
+    char *c = (char *)this;
     char *base = c + 0x506c;
     int twice = idx * 2;
     unsigned short h = *(unsigned short *)(base + twice);
@@ -1133,20 +1107,18 @@ after_flag:
     *(unsigned char *)(c + idx + 0x51fd) = 0;
     *q = 1;
 }
-}
 #pragma pop
 #pragma pop
 
 /* ------------------------------------------------------------------ */
-/* ROM ordinal 31 -- func_ov006_020f13cc, 0x020f13cc, size 0x1e0 */
+/* ROM ordinal 31 -- _ZN12dScMgLuigi_c17MovePictureBounceEi, 0x020f13cc, size 0x1e0 */
 /* ------------------------------------------------------------------ */
-// @symbol func_ov006_020f13cc
+// @symbol _ZN12dScMgLuigi_c17MovePictureBounceEi
 #pragma push
 #pragma opt_common_subs off
-extern "C" {
-void func_ov006_020f13cc(char *c, int i)
+void dScMgLuigi_c::MovePictureBounce(int i)
 {
-    extern int RandomIntInternal(int *seed);
+    char *c = (char *)this;
     extern int data_0209d4b8;
     extern int data_ov006_0212e8b8[];
     extern s16 data_02082214[];
@@ -1213,7 +1185,6 @@ void func_ov006_020f13cc(char *c, int i)
             return;
         }
     }
-}
 }
 #pragma pop
 
@@ -1482,30 +1453,28 @@ void func_ov006_020f1dbc(Obj_f1dbc *self, int i) {
 }
 
 /* ------------------------------------------------------------------ */
-/* ROM ordinal 39 -- func_ov006_020f1e40, 0x020f1e40, size 0x18 */
+/* ROM ordinal 39 -- _ZN12dScMgLuigi_c11StopPictureEi, 0x020f1e40, size 0x18 */
 /* ------------------------------------------------------------------ */
-// @symbol func_ov006_020f1e40
-extern "C" {
-void func_ov006_020f1e40(unsigned *base, int idx) {
+// @symbol _ZN12dScMgLuigi_c11StopPictureEi
+void dScMgLuigi_c::StopPicture(int idx) {
+    unsigned *base = (unsigned *)this;
     unsigned *p = base + idx;
     *(unsigned *)((unsigned char *)p + 0x4bb8) = 0;
     *(unsigned *)((unsigned char *)p + 0x4d98) = 0;
 }
-}
 
 /* ------------------------------------------------------------------ */
-/* ROM ordinal 40 -- func_ov006_020f1e58, 0x020f1e58, size 0x38 */
+/* ROM ordinal 40 -- _ZN12dScMgLuigi_c14RestartPictureEi, 0x020f1e58, size 0x38 */
 /* ------------------------------------------------------------------ */
-// @symbol func_ov006_020f1e58
-extern "C" {
-void func_ov006_020f1e58(unsigned char *self, int idx) {
+// @symbol _ZN12dScMgLuigi_c14RestartPictureEi
+void dScMgLuigi_c::RestartPicture(int idx) {
+    unsigned char *self = (unsigned char *)this;
     extern unsigned char data_ov006_0213ceac[];
     unsigned short board = *(unsigned short *)(self + 0x5174);
     self += idx;
     self[0x53dd] = 1;
     self[0x5275] = 0;
     self[0x51fd] = data_ov006_0213ceac[board] + 1;
-}
 }
 
 /* ------------------------------------------------------------------ */
@@ -2180,9 +2149,9 @@ void func_ov006_020f2ec0(struct Ctx_f2ec0 *c)
 }
 
 /* ------------------------------------------------------------------ */
-/* ROM ordinal 49 -- func_ov006_020f300c, 0x020f300c, size 0x190 */
+/* ROM ordinal 49 -- _ZN12dScMgLuigi_c10StateCatchEv, 0x020f300c, size 0x190 */
 /* ------------------------------------------------------------------ */
-// @symbol func_ov006_020f300c
+// @symbol _ZN12dScMgLuigi_c10StateCatchEv
 #pragma push
 #pragma opt_strength_reduction off
 extern "C" {
@@ -2214,13 +2183,14 @@ public:
 };
 
 typedef void (C_f300c::*PMF_f300c)(int);
+}
 
 
 
-void func_ov006_020f300c(char *o)
+void dScMgLuigi_c::StateCatch()
 {
+    char *o = (char *)this;
     extern PMF_f300c data_ov006_02142254[];
-    extern void func_ov004_020b0a54(int c);
     int matches;
     int i;
 
@@ -2269,29 +2239,27 @@ void func_ov006_020f300c(char *o)
     }
     *(unsigned char *)(o + 0xc3) = 0;
 }
-}
 #pragma pop
 
 /* ------------------------------------------------------------------ */
-/* ROM ordinal 50 -- func_ov006_020f319c, 0x020f319c, size 0x40 */
+/* ROM ordinal 50 -- _ZN12dScMgLuigi_c9StatePlayEv, 0x020f319c, size 0x40 */
 /* ------------------------------------------------------------------ */
-// @symbol func_ov006_020f319c
-extern "C" {
-void func_ov006_020f319c(char *c) {
+// @symbol _ZN12dScMgLuigi_c9StatePlayEv
+void dScMgLuigi_c::StatePlay() {
+    char *c = (char *)this;
     func_ov006_020f0eac(c);
     if (*(int *)(c + 0x4f78) == 3) return;
     func_ov006_020f1e90((C_f1e90 *)c);
     func_ov006_020f1fcc(c);
     func_ov006_020f10ec(c);
 }
-}
 
 /* ------------------------------------------------------------------ */
-/* ROM ordinal 51 -- func_ov006_020f31dc, 0x020f31dc, size 0x84 */
+/* ROM ordinal 51 -- _ZN12dScMgLuigi_c10StatePlaceEv, 0x020f31dc, size 0x84 */
 /* ------------------------------------------------------------------ */
-// @symbol func_ov006_020f31dc
-extern "C" {
-void func_ov006_020f31dc(char *self) {
+// @symbol _ZN12dScMgLuigi_c10StatePlaceEv
+void dScMgLuigi_c::StatePlace() {
+    char *self = (char *)this;
     int i;
     for (i = 0; i < 8; i++)
         func_ov006_020f2790((dScMgLuigi_c *)self);
@@ -2304,20 +2272,18 @@ void func_ov006_020f31dc(char *self) {
     *(short *)(self + 0x516c) = 0xa;
     *(short *)(self + 0x516e) = 0;
 }
-}
 
 /* ------------------------------------------------------------------ */
-/* ROM ordinal 52 -- func_ov006_020f3260, 0x020f3260, size 0x34 */
+/* ROM ordinal 52 -- _ZN12dScMgLuigi_c10StateSetupEv, 0x020f3260, size 0x34 */
 /* ------------------------------------------------------------------ */
-// @symbol func_ov006_020f3260
-extern "C" {
-void func_ov006_020f3260(char *o)
+// @symbol _ZN12dScMgLuigi_c10StateSetupEv
+void dScMgLuigi_c::StateSetup()
 {
+    char *o = (char *)this;
     *(short *)(o + 0x5164) = 0;
     func_ov006_020f0dd8(o);
     *(int *)(o + 0x4f78) = 1;
     func_ov006_020f2cb8(o);
-}
 }
 
 /* ---------------------------------------------------------------------------
