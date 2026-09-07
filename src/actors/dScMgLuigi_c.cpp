@@ -181,8 +181,6 @@ extern void func_ov006_020f1dbc(Obj_f1dbc *self, int i);
 extern void func_ov006_020f1e90(C_f1e90 *c);
 extern void func_ov006_020f1ef8(char *o, int p1);
 extern void func_ov006_020f1fcc(char *c);
-extern void func_ov006_020f2224(dScMgLuigi_c *self);
-extern void func_ov006_020f2790(dScMgLuigi_c *self);
 extern void func_ov006_020f2cb8(char *c);
 extern void func_ov006_020f2e20(char *c);
 extern void func_ov006_020f2ec0(struct Ctx_f2ec0 *c);
@@ -1608,10 +1606,9 @@ void func_ov006_020f1fcc(char *c)
 }
 
 /* ------------------------------------------------------------------ */
-/* ROM ordinal 44 -- func_ov006_020f2224, 0x020f2224, size 0x56c */
+/* ROM ordinal 44 -- _ZN12dScMgLuigi_c16PlaceBoardLayoutEv, 0x020f2224, size 0x56c */
 /* ------------------------------------------------------------------ */
-// @symbol func_ov006_020f2224
-extern "C" {
+// @symbol _ZN12dScMgLuigi_c16PlaceBoardLayoutEv
 /* dScMgLuigi_c board layout, ov006 0x020f2224 (1388 bytes). Called
  * from func_ov006_020f2790 for the boards whose data_ov006_0213ce98 entry is
  * non-zero: instead of scattering pictures at random it lays the whole board
@@ -1641,16 +1638,15 @@ extern "C" {
  * mwccarm hoisting the 0x7fff mask out of the loop (+33 divergences). */
 
 
-void func_ov006_020f2224(dScMgLuigi_c *self)
+void dScMgLuigi_c::PlaceBoardLayout()
 {
-    extern int RandomIntInternal(int *seed);
     extern int data_0209d4b8;
     extern u8 data_ov006_0213ce98[];
     int mode;
     int rnd;
     int i;
 
-    mode = data_ov006_0213ce98[self->unk_5174];
+    mode = data_ov006_0213ce98[unk_5174];
     if (mode == 1) {
         int i;
         int n;
@@ -1660,16 +1656,16 @@ void func_ov006_020f2224(dScMgLuigi_c *self)
         rnd = RandomIntInternal(&data_0209d4b8);
         base = (((u32)rnd >> 16) & 0x7fff) * 4 >> 15;
         rnd = RandomIntInternal(&data_0209d4b8);
-        self->unk_5456 = (((u32)rnd >> 16) & 0x7fff) * 4 >> 15;
+        unk_5456 = (((u32)rnd >> 16) & 0x7fff) * 4 >> 15;
         for (i = 0; i < 2; i++) {
             for (j = 0; j < 2; j++) {
-                self->mPosX[n] = (0x70 + j * 0x20) << 12;
-                self->mPosY[n] = (0x50 + i * 0x20) << 12;
-                self->unk_52ed[n] = 1;
-                self->unk_51fd[n] = 0;
-                self->mSpeedLevel[n] = (base + n) & 3;
-                if (self->unk_545a == self->mSpeedLevel[n])
-                    self->unk_5456 = n + 1;
+                mPosX[n] = (0x70 + j * 0x20) << 12;
+                mPosY[n] = (0x50 + i * 0x20) << 12;
+                unk_52ed[n] = 1;
+                unk_51fd[n] = 0;
+                mSpeedLevel[n] = (base + n) & 3;
+                if (unk_545a == mSpeedLevel[n])
+                    unk_5456 = n + 1;
                 n++;
             }
         }
@@ -1679,24 +1675,24 @@ void func_ov006_020f2224(dScMgLuigi_c *self)
         int j;
         n = 0;
         rnd = RandomIntInternal(&data_0209d4b8);
-        self->unk_5456 = ((((u32)rnd >> 16) & 0x7fff) * 16 >> 15) + 1;
+        unk_5456 = ((((u32)rnd >> 16) & 0x7fff) * 16 >> 15) + 1;
         for (i = 0; i < 4; i++) {
             for (j = 0; j < 4; j++) {
                 u8 step;
-                self->mPosX[n] = (0x50 + j * 0x20) << 12;
-                self->mPosY[n] = (0x30 + i * 0x20) << 12;
-                self->unk_52ed[n] = 1;
-                self->unk_51fd[n] = 0;
+                mPosX[n] = (0x50 + j * 0x20) << 12;
+                mPosY[n] = (0x30 + i * 0x20) << 12;
+                unk_52ed[n] = 1;
+                unk_51fd[n] = 0;
                 rnd = RandomIntInternal(&data_0209d4b8);
-                self->mSpeedLevel[n] = (((u32)rnd >> 16) & 0x7fff) * 4 >> 15;
-                if (self->unk_545a == self->mSpeedLevel[n]) {
+                mSpeedLevel[n] = (((u32)rnd >> 16) & 0x7fff) * 4 >> 15;
+                if (unk_545a == mSpeedLevel[n]) {
                     rnd = RandomIntInternal(&data_0209d4b8);
                     step = (((u32)rnd >> 16) & 0x7fff) * 3 >> 15;
-                    self->mSpeedLevel[n] += step + 1;
-                    self->mSpeedLevel[n] &= 3;
+                    mSpeedLevel[n] += step + 1;
+                    mSpeedLevel[n] &= 3;
                 }
-                if (n == self->unk_5456 - 1)
-                    self->mSpeedLevel[n] = self->unk_545a;
+                if (n == unk_5456 - 1)
+                    mSpeedLevel[n] = unk_545a;
                 n++;
             }
         }
@@ -1706,24 +1702,24 @@ void func_ov006_020f2224(dScMgLuigi_c *self)
         int j;
         n = 0;
         rnd = RandomIntInternal(&data_0209d4b8);
-        self->unk_5456 = ((((u32)rnd >> 16) & 0x7fff) * 0x30 >> 15) + 1;
+        unk_5456 = ((((u32)rnd >> 16) & 0x7fff) * 0x30 >> 15) + 1;
         for (i = 0; i < 6; i++) {
             for (j = 0; j < 8; j++) {
                 u8 step;
-                self->mPosX[n] = (0x10 + j * 0x20) << 12;
-                self->mPosY[n] = (0x10 + i * 0x20) << 12;
-                self->unk_52ed[n] = 1;
-                self->unk_51fd[n] = 0;
+                mPosX[n] = (0x10 + j * 0x20) << 12;
+                mPosY[n] = (0x10 + i * 0x20) << 12;
+                unk_52ed[n] = 1;
+                unk_51fd[n] = 0;
                 rnd = RandomIntInternal(&data_0209d4b8);
-                self->mSpeedLevel[n] = (((u32)rnd >> 16) & 0x7fff) * 4 >> 15;
-                if (self->unk_545a == self->mSpeedLevel[n]) {
+                mSpeedLevel[n] = (((u32)rnd >> 16) & 0x7fff) * 4 >> 15;
+                if (unk_545a == mSpeedLevel[n]) {
                     rnd = RandomIntInternal(&data_0209d4b8);
                     step = (((u32)rnd >> 16) & 0x7fff) * 3 >> 15;
-                    self->mSpeedLevel[n] += step + 1;
-                    self->mSpeedLevel[n] &= 3;
+                    mSpeedLevel[n] += step + 1;
+                    mSpeedLevel[n] &= 3;
                 }
-                if (n == self->unk_5456 - 1)
-                    self->mSpeedLevel[n] = self->unk_545a;
+                if (n == unk_5456 - 1)
+                    mSpeedLevel[n] = unk_545a;
                 n++;
             }
         }
@@ -1732,43 +1728,41 @@ void func_ov006_020f2224(dScMgLuigi_c *self)
         int i;
         n = 0;
         rnd = RandomIntInternal(&data_0209d4b8);
-        self->unk_5456 = ((((u32)rnd >> 16) & 0x7fff) * 8 >> 15) + 1;
+        unk_5456 = ((((u32)rnd >> 16) & 0x7fff) * 8 >> 15) + 1;
         for (i = 0; i < 8; i++) {
             u8 step;
-            self->mPosX[n] = (0x10 + i * 0x20) << 12;
-            self->mPosY[n] = -(5 << 12);
-            self->unk_52ed[n] = 1;
-            self->unk_51fd[n] = 0;
+            mPosX[n] = (0x10 + i * 0x20) << 12;
+            mPosY[n] = -(5 << 12);
+            unk_52ed[n] = 1;
+            unk_51fd[n] = 0;
             rnd = RandomIntInternal(&data_0209d4b8);
-            self->mSpeedLevel[n] = (((u32)rnd >> 16) & 0x7fff) * 3 >> 15;
-            if (self->unk_545a == self->mSpeedLevel[n]) {
+            mSpeedLevel[n] = (((u32)rnd >> 16) & 0x7fff) * 3 >> 15;
+            if (unk_545a == mSpeedLevel[n]) {
                 rnd = RandomIntInternal(&data_0209d4b8);
                 step = ((((u32)rnd >> 16) & 0x7fff) * 2 >> 15) + 1;
-                self->mSpeedLevel[n] += step;
-                if (self->mSpeedLevel[n] >= 3)
-                    self->mSpeedLevel[n] = 0;
+                mSpeedLevel[n] += step;
+                if (mSpeedLevel[n] >= 3)
+                    mSpeedLevel[n] = 0;
             }
-            if (n == self->unk_5456 - 1)
-                self->mSpeedLevel[n] = self->unk_545a;
+            if (n == unk_5456 - 1)
+                mSpeedLevel[n] = unk_545a;
             n++;
         }
     }
 
     for (i = 0; i < 8; i++)
-        self->unk_51ed[i] = (((u32)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) * 2 >> 15;
+        unk_51ed[i] = (((u32)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) * 2 >> 15;
     for (i = 0; i < 6; i++)
-        self->unk_51f5[i] = (((u32)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) * 2 >> 15;
-    self->unk_5455++;
-}
+        unk_51f5[i] = (((u32)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) * 2 >> 15;
+    unk_5455++;
 }
 
 /* ------------------------------------------------------------------ */
-/* ROM ordinal 45 -- func_ov006_020f2790, 0x020f2790, size 0x528 */
+/* ROM ordinal 45 -- _ZN12dScMgLuigi_c16PlaceNextPictureEv, 0x020f2790, size 0x528 */
 /* ------------------------------------------------------------------ */
 #pragma push
 #pragma opt_propagation off
-// @symbol func_ov006_020f2790
-extern "C" {
+// @symbol _ZN12dScMgLuigi_c16PlaceNextPictureEv
 /* dScMgLuigi_c picture placer, ov006 0x020f2790 (1320 bytes). Runs
  * once per frame while the board is still filling. Boards whose
  * data_ov006_0213ce98 entry is set are laid out in one go by
@@ -1798,9 +1792,8 @@ extern "C" {
  * without it `this` colours into r6 and the whole callee-saved file permutes. */
 
 
-void func_ov006_020f2790(dScMgLuigi_c *self)
+void dScMgLuigi_c::PlaceNextPicture()
 {
-    extern int RandomIntInternal(int *seed);
     extern int data_0209d4b8;
     extern u8 data_ov006_0213ce84[];
     extern u8 data_ov006_0213ce98[];
@@ -1813,23 +1806,23 @@ void func_ov006_020f2790(dScMgLuigi_c *self)
     int tries;
     int rnd;
 
-    if (self->unk_5455 != 0)
+    if (unk_5455 != 0)
         return;
 
-    idx = self->unk_5174;
+    idx = unk_5174;
     if (data_ov006_0213ce98[idx] != 0) {
-        func_ov006_020f2224(self);
+        PlaceBoardLayout();
         return;
     }
 
     lim = data_ov006_0213cee0[idx];
-    cur = self->unk_5456;
+    cur = unk_5456;
 
     rnd = RandomIntInternal(&data_0209d4b8);
-    self->mSpeedLevel[cur] = (((u32)rnd >> 16) & 0x7fff) * 4 >> 15;
+    mSpeedLevel[cur] = (((u32)rnd >> 16) & 0x7fff) * 4 >> 15;
     {
-        u8 *p = &self->mSpeedLevel[cur];
-        if (self->unk_545a == self->mSpeedLevel[cur]) {
+        u8 *p = &mSpeedLevel[cur];
+        if (unk_545a == mSpeedLevel[cur]) {
             rnd = RandomIntInternal(&data_0209d4b8);
             *p += ((((u32)rnd >> 16) & 0x7fff) * 3 >> 15) + 1;
             *p &= 3;
@@ -1850,22 +1843,22 @@ void func_ov006_020f2790(dScMgLuigi_c *self)
         jy += (((u32)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) * 5 >> 15;
 
         if (data_ov006_0213ce84[idx] != 0) {
-            self->mPosX[0] = (col * 20 + (jx + 8)) << 12;
-            self->mPosY[0] = (row * 20 + (jy + 16)) << 12;
-            self->unk_52ed[0] = 1;
-            self->unk_51fd[0] = 0;
-            self->mSpeedLevel[0] = self->unk_545a;
-            self->mGrid[col][row] = 1;
-            self->unk_5456++;
+            mPosX[0] = (col * 20 + (jx + 8)) << 12;
+            mPosY[0] = (row * 20 + (jy + 16)) << 12;
+            unk_52ed[0] = 1;
+            unk_51fd[0] = 0;
+            mSpeedLevel[0] = unk_545a;
+            mGrid[col][row] = 1;
+            unk_5456++;
             return;
         } else {
             int n = lim - 1;
-            self->mPosX[n] = (col * 20 + 8) << 12;
-            self->mPosY[n] = (row * 20 + 16) << 12;
-            self->unk_52ed[n] = 1;
-            self->unk_51fd[n] = 0;
-            self->mSpeedLevel[n] = self->unk_545a;
-            self->mGrid[col][row] = 1;
+            mPosX[n] = (col * 20 + 8) << 12;
+            mPosY[n] = (row * 20 + 16) << 12;
+            unk_52ed[n] = 1;
+            unk_51fd[n] = 0;
+            mSpeedLevel[n] = unk_545a;
+            mGrid[col][row] = 1;
         }
     }
 
@@ -1884,7 +1877,7 @@ void func_ov006_020f2790(dScMgLuigi_c *self)
             col = (((u32)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) * 13 >> 15;
             row = (((u32)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) * 9 >> 15;
         }
-        cell = (u8 *)((unsigned int)((char *)self + col * 9 + row) + 0x5178);
+        cell = (u8 *)((unsigned int)((char *)this + col * 9 + row) + 0x5178);
         if (*cell == 0) {
             int jx;
             int jy;
@@ -1892,39 +1885,38 @@ void func_ov006_020f2790(dScMgLuigi_c *self)
             jx = jy;
             jx += (((u32)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) * 5 >> 15;
             jy += (((u32)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) * 5 >> 15;
-            self->mPosX[cur] = (col * 20 + (jx + 8)) << 12;
-            self->mPosY[cur] = (row * 20 + (jy + 16)) << 12;
+            mPosX[cur] = (col * 20 + (jx + 8)) << 12;
+            mPosY[cur] = (row * 20 + (jy + 16)) << 12;
             *cell = 1;
             break;
         }
         tries++;
     }
 
-    self->unk_52ed[cur] = 1;
-    self->unk_51fd[cur] = 0;
-    self->unk_5456++;
+    unk_52ed[cur] = 1;
+    unk_51fd[cur] = 0;
+    unk_5456++;
 
     const u8 *f = &data_ov006_0213ce84[idx];
-    if (self->unk_5456 >= (data_ov006_0213ce84[idx] != 0 ? lim : lim - 1)) {
+    if (unk_5456 >= (data_ov006_0213ce84[idx] != 0 ? lim : lim - 1)) {
         if (idx == 0xe || idx == 0x10 || idx == 0x11 || idx == 0x13) {
-            self->mPosX[cur] = self->mPosX[lim - 1];
-            self->mPosY[cur] = self->mPosY[lim - 1] - 0x14000;
+            mPosX[cur] = mPosX[lim - 1];
+            mPosY[cur] = mPosY[lim - 1] - 0x14000;
         }
-        self->unk_5455 = 1;
+        unk_5455 = 1;
         if (*f != 0)
-            self->unk_5456 = 1;
+            unk_5456 = 1;
         else
-            self->unk_5456 = lim;
+            unk_5456 = lim;
     }
 
-    if (self->unk_5455 == 0)
+    if (unk_5455 == 0)
         return;
 
-    self->unk_515c[0] = ((((u32)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) * 16 >> 15) << 12;
-    self->unk_515c[1] = ((((u32)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) * 16 >> 15) << 12;
-    self->unk_515c[2] = ((((u32)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) * 16 >> 15) << 12;
-    self->unk_515c[3] = ((((u32)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) * 16 >> 15) << 12;
-}
+    unk_515c[0] = ((((u32)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) * 16 >> 15) << 12;
+    unk_515c[1] = ((((u32)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) * 16 >> 15) << 12;
+    unk_515c[2] = ((((u32)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) * 16 >> 15) << 12;
+    unk_515c[3] = ((((u32)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) * 16 >> 15) << 12;
 }
 #pragma pop
 
@@ -2262,7 +2254,7 @@ void dScMgLuigi_c::StatePlace() {
     char *self = (char *)this;
     int i;
     for (i = 0; i < 8; i++)
-        func_ov006_020f2790((dScMgLuigi_c *)self);
+        PlaceNextPicture();
     if (func_ov006_020f0d58((C_f0d58 *)self) == 0)
         return;
     if (*(unsigned char *)(self + 0x5455) == 0)

@@ -327,14 +327,14 @@
       "ordinal": 43
     },
     {
-      "symbol": "func_ov006_020f2224",
+      "symbol": "_ZN12dScMgLuigi_c16PlaceBoardLayoutEv",
       "address": "0x020f2224",
       "size": "0x0000056c",
       "legacy_source": "src/func_ov006_020f2224.cpp",
       "ordinal": 44
     },
     {
-      "symbol": "func_ov006_020f2790",
+      "symbol": "_ZN12dScMgLuigi_c16PlaceNextPictureEv",
       "address": "0x020f2790",
       "size": "0x00000528",
       "legacy_source": "src/func_ov006_020f2790.cpp",

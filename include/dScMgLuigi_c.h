@@ -50,6 +50,8 @@ struct dScMgLuigi_c : dScMgBase_c {
     void MovePictureDriftFixed(int idx);
     void StopPicture(int idx);
     void RestartPicture(int idx);
+    void PlaceBoardLayout();
+    void PlaceNextPicture();
     void StateCatch();
     void StatePlay();
     void StatePlace();
