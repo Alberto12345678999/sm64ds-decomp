@@ -26,7 +26,24 @@ nothing -- but **measure, do not assume**. Work in batches, run `tubuild.py veri
 after each, and isolate any regression to one cause before continuing. A member
 whose first parameter is not the object, or that will not convert byte-neutrally,
 **stays a free function**: that is a result, not a failure. `dScMgMemory2_c` is the
-oracle for every mechanical question -- read its source and manifest first.
+oracle for every mechanical question -- read its source and manifest first, and
+read it knowing that **43 of its 51 methods were renamed in the promotion commit
+itself** (8 mangled rows in `ov006/symbols.txt` at `e351ffb09^`, 51 at
+`e351ffb09`). 51/52 was a coordinated naming pass, not conversion alone.
+
+**Name which wall you hit, because there are three and they need different
+answers.**
+
+| wall | what it looks like | what it costs to push |
+|---|---|---|
+| **codegen** | the member compiles as a method but the bytes move | usually unfixable here; leave it C |
+| **scope** | it byte-matches, but an unpromoted shard still calls the C name | let `mwldarm` enumerate it -- `dScMgCurling2_c`: 29/29 byte-neutral, 12 refused |
+| **naming** | the member has an auto-generated `func_ovNNN_*` name, so converting it *is* a rename | the rename must reach `symbols.txt` in the same commit, and every external namer must move with it -- `ov071/Scuttlebug`: all 27 unconverted members |
+
+Reporting "10/37" without naming the wall is not a result. The three are not
+interchangeable: a scope wall is enumerated for you by the linker, a naming wall
+is a decision about how much renaming the run is willing to carry, and only the
+codegen wall is a fact about the compiler.
 
 This may run as a separate pass on the same branch after stages 2 and 3 have
 already pushed. Whenever you report a promotion, give the method count next to the
