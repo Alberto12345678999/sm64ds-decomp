@@ -56,6 +56,36 @@ the manifest's `functions[]` move in the same commit. No byte gate at stage 2 or
 catches this; the cheap link evidence is a `.symtab` undefined-symbol scan of the
 emitted object.
 
+**The rename also invalidates your own prose, and nothing will tell you.** Stage 2
+writes comments, manifest notes and a PR body describing the file it just folded --
+"the six C++-named members", "the two file-scope `extern "C"` regions". Stage 3b then
+renames forty or fifty members, and every one of those counts becomes wrong. No gate
+reads prose: `mwccarm` strips comments, `tiers.py` blanks them before scoring, and
+`check_dead_references.py` walks only `.md`, so a stale count inside a `.cpp` is
+completely ungated.
+
+This is the **most common defect the reviewer finds**, and it has hit both of the two
+most recent classes: five wrong counts across `ov071/Scuttlebug`'s manifest notes,
+facts file and PR body, and three in one comment block shipped inside
+`src/actors/dScMgLuigi_c.cpp`.
+
+So, before you hand off:
+
+* **Re-measure every number your prose asserts.** Count the regions, the mangled
+  symbols, the definitions -- do not carry a stage-2 figure forward on trust.
+* **State the counts you assert**, rather than describing shape vaguely. "57
+  definitions carrying 58 symbols; 55 mangled, 3 C-named; 10 file-scope regions"
+  makes the next drift visible; "the two regions below" hides it.
+* **A negative claim from a search is unproven until you state the search's case,
+  scope and encoding.** `ov071/Scuttlebug` shipped "nothing named Scuttlebug or
+  Spider exists anywhere in this cartridge" from a case-sensitive scan; lowercase
+  `spider` is in `overlay_0000.bin` as two asset paths and `SPIDER` is in
+  `arm9_dec.bin`. The class name really was coined -- the stated reason was not.
+
+A count that contradicts the file shipping around it is the same defect the builder
+keeps fixing in the banner, re-introduced one stage later. It moves no bytes and it
+misleads every agent who reads the file afterwards as fact.
+
 ## Coined class names are allowed, and must be recorded as coined
 
 An earlier version of this file told you not to claim a class whose name was coined
