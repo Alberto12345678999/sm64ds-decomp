@@ -5,13 +5,12 @@
 /* dScMgLuigi_c : dScMgBase_c, confirmed leaf via tools/rtti_extract.py (no
    RTTI record names it as a base). Own vtable slots: 0 (InitResources),
    5 (AfterCleanupResources), 6 (Behavior), 9 (Render), 16 (D1), 17 (D0),
-   18 (own new slot, not yet named -- stays a raw extern "C" helper, not a
-   declared method). Fields below dScMgBase_c's own 0x4660 are INHERITED,
+   18 (OnYoshiTryEat). Fields below dScMgBase_c's own 0x4660 are INHERITED,
    not this class's own -- accessed via raw offsets on a char* cast of
-   `this`, same as every other dScMgBase_c leaf. Own fields observed only
-   from slots 0/5/6/9/16/17/18 directly; fields touched only by non-virtual
-   helper functions (still raw extern "C" calls, not migrated methods) are
-   not represented here.
+   `this`, same as every other dScMgBase_c leaf. The 48 non-virtual members
+   declared below are methods too; the fields they touch are named here
+   wherever the matched body proves a type, and the ones still reached
+   through a raw offset on a char* cast of `this` are not represented.
  *
  * SM64DS RTTI names the implementation dScMgLuigi_c. The reconstructed factory
  * dScMgLuigi_c_classInit (historical alias MgWanted_Spawn) installs this class's
@@ -29,7 +28,8 @@ struct dScMgLuigi_c : dScMgBase_c {
        ways and neither is a guess: the ones marked PMF below are named by a
        zero-adjustment pointer-to-member record in ov006 .data (the run at
        0x0213cd8c..0x0213ce4c), and the rest are only ever reached with this
-       object in r0, from a member above them.  The NAMES are all coined -- the
+       object in r0, from another member of the same run.  The NAMES are all
+       coined -- the
        cartridge carries the address and nothing else, so each one describes the
        matched body and no more.  See symbols/actor_renames.tsv for the
        per-symbol evidence, one row each. */
@@ -86,8 +86,8 @@ struct dScMgLuigi_c : dScMgBase_c {
     /* The 120 moving pictures (0x78 slots). Four Fix12 arrays back to back --
        0x47f8 + 4 * 0x1e0 lands exactly on unk_4f78 -- then a u16 phase per slot
        and, from 0x5275, byte arrays of the same count 0x78 apart. All observed
-       from the per-slot helpers (func_ov006_020f15ac is the one typed here;
-       func_ov006_020f1dbc wraps mPosX/mPosY to the 0x110 x 0xd0 screen). */
+       from the per-slot helpers (dScMgLuigi_c::MovePictureSway is the one typed here;
+       dScMgLuigi_c::WrapPicture wraps mPosX/mPosY to the 0x110 x 0xd0 screen). */
     Fix12i mPosX[120];       /* 0x47f8 -- 20.12 screen x, wraps at 0x110 */
     Fix12i mPosY[120];       /* 0x49d8 -- 20.12 screen y, wraps at 0xd0 */
     Fix12i mVelX[120];       /* 0x4bb8 -- per-frame x step */
@@ -109,9 +109,9 @@ struct dScMgLuigi_c : dScMgBase_c {
     u8  pad_51fb[0x2];
     u8  unk_51fd[120];       /* 0x51fd -- per-slot byte, cleared on placement */
     u8  mStarted[120];       /* 0x5275 -- 0 until the slot's first tick */
-    u8  unk_52ed[120];       /* 0x52ed -- another per-slot byte (func_ov006_020f1e90) */
+    u8  unk_52ed[120];       /* 0x52ed -- another per-slot byte (dScMgLuigi_c::UpdatePictures) */
     u8  mSpeedLevel[120];    /* 0x5365 -- indexes data_ov006_0212e888/898/8a8 */
-    u8  pad_53dd[0x78];      /* 0x53dd -- one more per-slot byte array (func_ov006_020f1318) */
+    u8  pad_53dd[0x78];      /* 0x53dd -- one more per-slot byte array (dScMgLuigi_c::TickPictureFlash) */
     u8  unk_5455;            /* 0x5455 -- board fully placed */
     u8  unk_5456;            /* 0x5456 -- slots placed so far */
     u8  unk_5457;            /* 0x5457 */

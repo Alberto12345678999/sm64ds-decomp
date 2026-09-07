@@ -91,15 +91,15 @@
 /* ordinal 4, func_ov006_020efdac */
 struct Record_efdac { char _pad[0x300]; };
 
-/* ordinal 5, func_ov006_020efdf0 */
+/* ordinal 5, dScMgLuigi_c::BuildIrisTable */
 struct Px_efdf0 {
     u8 a, b, c2, d2;
 };
 
-/* ordinal 8, func_ov006_020f002c */
+/* ordinal 8, dScMgLuigi_c::IrisHold */
 struct E_f002c { unsigned char d[0x14]; };
 
-/* ordinal 9, func_ov006_020f0044 */
+/* ordinal 9, dScMgLuigi_c::UpdateIris */
 struct C_f0044;
 typedef void (C_f0044::*PMF_f0044)(int);
 struct Entry_f0044 { PMF_f0044 pmf[1]; };
@@ -109,29 +109,29 @@ struct C_f0044 {
     unsigned char idx;
 };
 
-/* ordinal 12, func_ov006_020f0274 */
+/* ordinal 12, dScMgLuigi_c::UpdateReward */
 #define BEB68_f0274 ((char *)data_ov004_020beb68)
 
-/* ordinal 19, func_ov006_020f0ba0 */
+/* ordinal 19, dScMgLuigi_c::CurtainUpdate */
 struct C_f0ba0;
 typedef void (C_f0ba0::*PMF_f0ba0)(int);
 struct Entry_f0ba0 { PMF_f0ba0 pmf; };
 struct Row_f0ba0 { unsigned char tag; char pad[0x17]; };
 struct C_f0ba0 { char pad[0x47b7]; Row_f0ba0 rows[1]; };
 
-/* ordinal 21, func_ov006_020f0d58 */
+/* ordinal 21, dScMgLuigi_c::CurtainsDone */
 struct C_f0d58;
 typedef void (C_f0d58::*PMF_f0d58)(int);
 struct Entry_f0d58 { PMF_f0d58 pmf; };
 
-/* ordinal 38, func_ov006_020f1dbc */
+/* ordinal 38, dScMgLuigi_c::WrapPicture */
 typedef struct Obj_f1dbc {
     char _pad0[0x47f8]; /* 0x0000 */
     int mPosX[120];     /* 0x47f8 */
     int mPosY[120];     /* 0x49d8 */
 } Obj_f1dbc;
 
-/* ordinal 41, func_ov006_020f1e90 */
+/* ordinal 41, dScMgLuigi_c::UpdatePictures */
 struct C_f1e90;
 typedef void (C_f1e90::*PMF_f1e90)(int);
 struct Entry_f1e90 { PMF_f1e90 pmf; };
@@ -1160,7 +1160,7 @@ void dScMgLuigi_c::MovePictureBounce(int i)
  * and flips to 2 or 1 at the crossing (the direction it was moving picks the
  * new phase), phases 1 and 2 accelerate toward the level's top speed and drop
  * back to 0 on reaching it -- and finally wraps the position through
- * func_ov006_020f1dbc.
+ * dScMgLuigi_c::WrapPicture.
  *
  * Plain member access throughout, and that is the whole match: every read of
  * mVelX[idx] takes the `this + idx*4 + 0x4000` base with a #0xbb8 offset,
@@ -1223,7 +1223,7 @@ void dScMgLuigi_c::MovePictureSway(int idx)
 /* dScMgLuigi_c per-slot mover, ov006 0x020f17fc (304 bytes). A slot that has not started draws a random phase (one of eight 0x1000 steps).
  * A running slot adds one sine/cosine step (data_02082214, indexed by the
  * slot's phase) scaled by its speed-level entry to mPosX/mPosY, then wraps
- * through func_ov006_020f1dbc.
+ * through dScMgLuigi_c::WrapPicture.
  *
  * Plain member access on the class header is the match under 2004/b56: the
  * twice-read mMovePhase[idx] takes the `this + idx*2 + 0x4f00` base with a
@@ -1261,10 +1261,10 @@ void dScMgLuigi_c::MovePictureDriftRandom(int idx)
 /* dScMgLuigi_c per-slot mover, ov006 0x020f192c (324 bytes). A slot that has not started is armed at phase 0x8000 or 0 from unk_51f5[idx / 8].
  * A running slot adds one sine/cosine step (data_02082214, indexed by the
  * slot's phase) scaled by its speed-level entry to mPosX/mPosY, then wraps
- * through func_ov006_020f1dbc.
+ * through dScMgLuigi_c::WrapPicture.
  *
  * Member access, not raw offsets, for the reason spelled out on
- * func_ov006_020f17fc above. */
+ * dScMgLuigi_c::MovePictureDriftRandom above. */
 
 
 void dScMgLuigi_c::MovePictureDriftByRow(int idx)
@@ -1306,10 +1306,10 @@ void dScMgLuigi_c::MovePictureDriftByRow(int idx)
 /* dScMgLuigi_c per-slot mover, ov006 0x020f1a70 (296 bytes). A slot that has not started is armed at phase 0x4000 or 0xc000 from unk_51ed[idx & 7].
  * A running slot adds one sine/cosine step (data_02082214, indexed by the
  * slot's phase) scaled by its speed-level entry to mPosX/mPosY, then wraps
- * through func_ov006_020f1dbc.
+ * through dScMgLuigi_c::WrapPicture.
  *
  * Member access, not raw offsets, for the reason spelled out on
- * func_ov006_020f17fc above. */
+ * dScMgLuigi_c::MovePictureDriftRandom above. */
 
 
 void dScMgLuigi_c::MovePictureDriftByColumn(int idx)
@@ -1341,10 +1341,10 @@ void dScMgLuigi_c::MovePictureDriftByColumn(int idx)
 /* dScMgLuigi_c per-slot mover, ov006 0x020f1b98 (284 bytes). A slot that has not started takes its phase from unk_515c[speed level].
  * A running slot adds one sine/cosine step (data_02082214, indexed by the
  * slot's phase) scaled by its speed-level entry to mPosX/mPosY, then wraps
- * through func_ov006_020f1dbc.
+ * through dScMgLuigi_c::WrapPicture.
  *
  * Member access, not raw offsets, for the reason spelled out on
- * func_ov006_020f17fc above. */
+ * dScMgLuigi_c::MovePictureDriftRandom above. */
 
 
 void dScMgLuigi_c::MovePictureDriftByLevel(int idx)
@@ -1371,10 +1371,10 @@ void dScMgLuigi_c::MovePictureDriftByLevel(int idx)
 /* dScMgLuigi_c per-slot mover, ov006 0x020f1cb4 (264 bytes). A slot that has not started is armed at phase 0x6000.
  * A running slot adds one sine/cosine step (data_02082214, indexed by the
  * slot's phase) scaled by its speed-level entry to mPosX/mPosY, then wraps
- * through func_ov006_020f1dbc.
+ * through dScMgLuigi_c::WrapPicture.
  *
  * Member access, not raw offsets, for the reason spelled out on
- * func_ov006_020f17fc above. */
+ * dScMgLuigi_c::MovePictureDriftRandom above. */
 
 
 void dScMgLuigi_c::MovePictureDriftFixed(int idx)
@@ -1565,7 +1565,7 @@ void dScMgLuigi_c::CheckTouch()
 /* ------------------------------------------------------------------ */
 // @symbol _ZN12dScMgLuigi_c16PlaceBoardLayoutEv
 /* dScMgLuigi_c board layout, ov006 0x020f2224 (1388 bytes). Called
- * from func_ov006_020f2790 for the boards whose data_ov006_0213ce98 entry is
+ * from dScMgLuigi_c::PlaceNextPicture for the boards whose data_ov006_0213ce98 entry is
  * non-zero: instead of scattering pictures at random it lays the whole board
  * out at once. The table entry picks one of four fixed layouts -- 1 is a 2x2
  * block at (0x70,0x50) step 0x20 whose speed levels run consecutively from one
@@ -1721,7 +1721,7 @@ void dScMgLuigi_c::PlaceBoardLayout()
 /* dScMgLuigi_c picture placer, ov006 0x020f2790 (1320 bytes). Runs
  * once per frame while the board is still filling. Boards whose
  * data_ov006_0213ce98 entry is set are laid out in one go by
- * func_ov006_020f2224 instead; the rest place one picture per call. The slot
+ * dScMgLuigi_c::PlaceBoardLayout instead; the rest place one picture per call. The slot
  * gets a random speed level, nudged off unk_545a when it lands on it, and the
  * very first slot of a board is dropped at a random cell outside the middle
  * block with a small random jitter. Every later slot retries a random cell up
