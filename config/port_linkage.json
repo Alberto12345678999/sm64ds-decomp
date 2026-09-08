@@ -24,9 +24,9 @@
     "lk5 3819. Overlapping but not identical seats, so the merged figure is higher and",
     "the published number stays a floor.",
     "",
-    "This number moves ONE way: seating a new actor class, worth ~8-10 TUs each.",
-    "Enrolling free TUs does nothing, because the release build dead-strips whatever the",
-    "linked closure never references."
+    "LINKED grows when matched TUs become reachable in the port's linked call graph.",
+    "Actor methods and free functions both count. Enrollment alone does not increase",
+    "the count when the release build still dead-strips the unreachable object."
   ],
   "linkedTus": 10170,
   "matchedTus": 11328,
