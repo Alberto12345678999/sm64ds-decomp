@@ -8,7 +8,7 @@
   "boundary_evidence": [
     "ONE FUNCTION, THREE SECTIONS. 0x02073300..0x020733a8 is a single MSL C++ runtime array-destroy helper, the rethrowing sibling of __cxa_vec_cleanup, whose out-of-line catch landing pad the symbol table had split off as func_0207335c. The cartridge's own .exceptix record at 0x02073994 declares the function length as 0xa8 = 0x5c + 0x4c, which is the direct evidence that the two ranges are one function and one translation unit.",
     "THE UNWIND RECORDS ARE THIS TU'S OUTPUT. Compiled with tools/rombuild.py's exact command (2004/b56, CFLAGS carrying -Cpp_exceptions off, -lang c++ because of the //cpp marker), the in-file `#pragma exceptions on` wins and the object carries .text 168, .exception 38 and .exceptix 12. All three reproduce the cartridge byte for byte outside relocation slots, and every slot resolves to the symbol config/arm9/relocs.txt records.",
-    "THE .exception CLAIM INCLUDES TWO BYTES OF LINK FILL. @ET@func_02073300 is 0x26 bytes in the object and the cartridge's next .exception record begins at 0x02073768, so the two bytes at 0x02073766 are zero alignment fill, not compiler output. The claimed range is the whole 0x28 so that the module's .exception ranges tile; the 0x26 bytes the compiler emitted are identical to the cartridge and the fill is verified to be zero.",
+    "THE .exception CLAIM STOPS SHORT OF THE NEXT RECORD, ON PURPOSE. @ET@func_02073300 is 0x26 bytes in the object and the cartridge's next .exception record begins at 0x02073768, so the two bytes at 0x02073766 are zero alignment fill the linker inserted, not this TU's output. The claim ends at 0x02073766 because that is where the compiler output ends; claiming the fill too is what tools/tu_production.py prepare_intact_object refuses, and it is right to. The 0x26 bytes are identical to the cartridge and the two fill bytes are verified zero.",
     "NOT FROM tools/tu_map.py. The arm9 main module is reported under-segmented and emits one unit for 0x20049f0..0x20707a4; this entry was assembled by hand from the .exceptix length field."
   ],
   "sections": [
@@ -20,7 +20,7 @@
     {
       "name": ".exception",
       "start": "0x02073740",
-      "end": "0x02073768"
+      "end": "0x02073766"
     },
     {
       "name": ".exceptix",
