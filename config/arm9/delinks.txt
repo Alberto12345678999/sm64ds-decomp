@@ -11795,7 +11795,7 @@ src/ReadSignedVarInt.c:
     complete
     .text start:0x02071af8 end:0x02071ba0
 
-src/func_02071ba0.c:
+src/__end__catch.c:
     complete
     .text start:0x02071ba0 end:0x02071be8
 
