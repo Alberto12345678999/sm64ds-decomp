@@ -1479,7 +1479,14 @@ def cmd_verify(args):
 # ========================================================== `linkcheck` -- scratch delinks
 
 _SEC_LINE_RE = re.compile(r'^\s+(\.\S+)\s+start:0x([0-9a-fA-F]+)\s+end:0x([0-9a-fA-F]+)')
-_TU_SECTION_NAMES = (".text", ".rodata", ".init", ".ctor", ".data", ".bss")
+# `.exception` and `.exceptix` are the CodeWarrior unwind pair. A translation unit
+# compiled with exceptions on emits one `.exception` frame record per function that
+# has a try, plus one 12-byte `.exceptix` index entry naming that function and its
+# frame. Both are ordinary content sections the linker concatenates like any other,
+# so they claim retail ranges through the same schema; the ROM keeps them in
+# separate module sections from `.text`.
+_TU_SECTION_NAMES = (".text", ".rodata", ".init", ".ctor", ".data", ".bss",
+                     ".exception", ".exceptix")
 
 
 def parse_delinks_file(path):
@@ -2083,6 +2090,7 @@ def object_audit_refusals(rows, extra_secs, order_ok):
 _SECTION_SYMBOL_FIELDS = {
     ".rodata": "rodata", ".init": "init", ".ctor": "ctor",
     ".data": "data", ".bss": "bss",
+    ".exception": "exception", ".exceptix": "exceptix",
 }
 
 
