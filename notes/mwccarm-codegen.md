@@ -5276,3 +5276,39 @@ colouring of their own either: swapping which function-scope counter a later loo
 was byte-identical in the row that tested it. The shared-cursor lever's population on
 this near-miss DB is exhausted; a second pass over it needs a different table entirely,
 not more permutations of the same eight rows.
+
+## 6bz. Four MSL runtime entries are named by the COMPILER, not by us, and a size-0 alias row for one of them stops being a link definition the moment its range is carved out to source (2026-09-08, run link100 lanes DARRLINK and DARRFIX)
+
+mwccarm 2004/b56 plants calls to runtime helpers whose names appear nowhere in the source
+it is given. Four are now known, all in arm9:
+
+    __end__catch        0x02071ba0   end of every catch block
+    __rethrow           0x020717c0   a bare `throw;`
+    __cxa_vec_cleanup   0x0207328c   destroying an array member
+    __cxa_vec_ctor      0x020733a8   constructing an array member
+
+The object's own `.strtab` is the evidence. A try/catch/rethrow probe compiled under the
+ROM CFLAGS produces an object whose undefined set is exactly
+`['__end__catch', '__rethrow', 'sink']`, and every destructor object for a class with an
+array member imports `__cxa_vec_cleanup` without the source ever writing it.
+
+WHY THAT COST A LINK. config/**/symbols.txt lets a second name sit at an address with
+`size=0x0`. That row becomes a linker definition only while dsd owns the range: a gap
+object defines every symbols.txt row it covers STB_GLOBAL. Carve the range out with a
+`complete` delinks entry and the link is handed a compiled object instead, which defines
+only what the C source declares, so the size-0 name silently stops existing. Nothing
+per-function notices. `tools/match.py`, `tools/linkcheck.py`, `progress.py` and
+`validate_merge.py` all stay green, and the failure appears only in the real mwldarm
+link, as `Undefined : "<name>"` with a list of referrers that never mention it in source.
+
+THE FIX IS TO RENAME THE PRIMARY, NOT TO LAUNDER THE IMPORT. The compiler's spelling is
+the one the link must resolve, so the sized symbols.txt row takes it and every call site
+follows; a called name is a relocation, so no byte moves. The alternative, rewriting each
+object's import back to our name before the link, would put a symbol rewrite in the
+ordinary compile path of all 8947 objects, would not be covered by the object cache key,
+and would leave the tree calling the entry by a name the compiler never emits.
+
+HOW TO SEE IT BEFORE THE LINK DOES: `tools/tubuild.py undefinable_alias_names()` returns
+every name whose only symbols.txt homes are size-0 rows inside a carved-out range. It was
+`{__end__catch, __cxa_vec_cleanup, _deq}` when the trap fired; after both renames only
+`_deq` (arm9 itcm 0x01ff9d40) is left, and no object in a full stock build imports it.
