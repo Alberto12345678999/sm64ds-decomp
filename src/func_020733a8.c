@@ -5,8 +5,7 @@
 // construction (ctor applied forward across n elements) with an exception
 // frame (fp anchor + sp spill at [fp,#0x14]) and a landing pad that calls the
 // partial array destroyer; no C under our flags reproduces it. Per asm
-// policy, sibling of matched func_02073534 and of the recovered C++
-// func_02073300.
+// policy, sibling of the recovered C++ func_02073300 and func_02073534.
 extern void func_02073534(void);
 extern void __rethrow(void);
 extern void __end__catch(void);
