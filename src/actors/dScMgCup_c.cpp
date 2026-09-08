@@ -201,8 +201,8 @@ extern void *_ZTV10dScMgCup_c[];
    none of it is written here.  This one definition emits ordinal 1, D0, too. */
 dScMgCup_c::~dScMgCup_c()
 {
-    __destroy_arr(mArray2, 3, 8, (void *)NullDestructor_0203d47c);
-    __destroy_arr(mArray1, 0x20, 0x18, (void *)func_ov006_020deac4);
+    __cxa_vec_cleanup(mArray2, 3, 8, (void *)NullDestructor_0203d47c);
+    __cxa_vec_cleanup(mArray1, 0x20, 0x18, (void *)func_ov006_020deac4);
     func_ov006_020c3288((char *)this + 0x4f38);
 }
 
