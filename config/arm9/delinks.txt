@@ -11882,8 +11882,6 @@ src/func_02073244.c:
 src/__destroy_arr.cpp:
     complete
     .text start:0x0207328c end:0x02073300
-    .exception start:0x0207372c end:0x02073740
-    .exceptix start:0x02073988 end:0x02073994
 
 src/_ZN3abi21__vmi_class_type_infoD0Ev.cpp:
     complete

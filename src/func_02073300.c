@@ -5,7 +5,7 @@
 // destroy helper (reverse dtor loop, 0x30-byte exception frame with sp spill
 // at [fp,#0x14]); its out-of-line landing pad is the already-matched
 // func_0207335c. No C under our flags reproduces the exception frame. Per asm
-// policy, sibling of matched func_0207335c / func_020732e8.
+// policy, sibling of matched func_0207335c.
 asm void func_02073300(void) {
     stmdb sp!, {r4, r5, r6, r7, r11, lr}
     sub sp, sp, #0x30
