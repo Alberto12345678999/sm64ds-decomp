@@ -5261,3 +5261,18 @@ Negative half, measured the same session on the same axis: reusing `i`, `j` and 
 as well (the counters, not just the cursor) costs 25 to 27 words, and reusing only `cnt`
 costs 18. The cursor is the one that carries the colouring; the counters are already
 spilled and reusing them only merges spill slots that the ROM keeps apart.
+
+Addendum, 2026-09-08 (out/DC4/results.md is the measurement). Lane DC4 applied the
+shared-cursor lever to every other near-miss row with this shape: eight rows, the whole
+population with two or more loops each declaring its own cursor (func_ov007_020c9688
+above was the ninth and had already landed, so it was excluded). All eight were inert or
+worse, costing 3 to 116 words and, in some of the eight, changing the frame size. The
+lever only pays off when a second pass walks a DIFFERENT table with a cursor whose live
+range would otherwise start only after the first pass ends, under enough callee-saved
+pressure for the interference order to decide the colouring; none of the eight remaining
+rows has that combination. Extending a cursor's live range past the point where the ROM
+lets it die cost words in every row that tried it, never saved any. Counters carry no
+colouring of their own either: swapping which function-scope counter a later loop reuses
+was byte-identical in the row that tested it. The shared-cursor lever's population on
+this near-miss DB is exhausted; a second pass over it needs a different table entirely,
+not more permutations of the same eight rows.
