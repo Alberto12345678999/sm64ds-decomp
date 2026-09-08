@@ -1,4 +1,6 @@
 //cpp
+// @symbol __destroy_arr
+// Load-bearing: the ROM build passes -Cpp_exceptions off and has no per-file CFLAGS mechanism; the .exceptix record at 0x02073988 (length 0x74) exists only because this pragma turns exceptions back on for this file.
 #pragma exceptions on
 
 // MSL C++ runtime array-destroy helper. Runs `dtor` over the `n` elements of
