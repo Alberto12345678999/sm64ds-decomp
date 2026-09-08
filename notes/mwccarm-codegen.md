@@ -5223,3 +5223,41 @@ both.
 
 Items 3 to 7 were measured by lanes DC1 and DC2 on 2026-09-07. Items 1 and 2, and the
 byte-level probes in item 3, were re-measured in the banking pass at origin/main 199b7ad3e.
+
+## 6by. Two loops that walk different tables share ONE cursor variable, and that alone fixes the callee-saved rotation (func_ov007_020c9688, div 10 -> 0, 2026-09-08)
+
+Run link100 lane DC3B. `func_ov007_020c9688` (ov007 0x020c9688, 0x300 bytes) sat at
+"pure r7/r8/sb register rotation" for two prior runs (the near-miss row records ~900
+hypotheses at exactly 10: 120 block declaration permutations, a 735-step greedy pairwise
+climb over a 15-element function-top declaration list, plus the 6y levers). Every one of
+those kept the two loops separate.
+
+The function has two passes. The first walks list A with a `RecA *p` declared at function
+top. The second walks list B and, in every candidate, declared its own `u8 *q` inside the
+tail block. With a separate cursor the tail is byte-identical to the ROM except for a
+three-way rotation of the callee-saved registers:
+
+    ROM   0x250  add sb, r1, #4      cursor -> sb      0x264 mov r8, r6   0x268 mov r7, r6
+    ours  0x250  add r7, r1, #4      cursor -> r7      0x264 mov sb, r6   0x268 mov r8, r6
+
+that is, cursor / hoisted-zero-argument / hoisted-loop-init colour to (sb, r8, r7) in the
+cartridge and to (r7, sb, r8) in every candidate. Ten instructions, nothing else.
+
+Reusing `p` for the second pass -- `p = (RecA *)((u8 *)ctx.listB + 4);` and casting at the
+three use sites -- puts all three where the ROM has them and the function matches at 0
+under 2004/b56.
+
+The lever generalises: when a second loop's induction pointer collides with the
+callee-saved numbering, ask whether the original source declared a NEW pointer at all.
+A cursor variable whose live range already spans the first loop enters the interference
+graph before the second loop's compiler temps do, and the temps take the registers below
+it instead of above it. Declaration ORDER cannot express that -- a fresh block-scope
+pointer is a different variable no matter where it is declared, and the 120-permutation
+sweep is blind to it. Reuse is a different axis from ordering, and it is cheap to probe:
+for every block-local pointer or counter, try the function-scope variable of the same
+shape that an earlier loop already finished with.
+
+Negative half, measured the same session on the same axis: reusing `i`, `j` and `cnt`
+as well (the counters, not just the cursor) costs 25 to 27 words, and reusing only `cnt`
+costs 18. The cursor is the one that carries the colouring; the counters are already
+spilled and reusing them only merges spill slots that the ROM keeps apart.
