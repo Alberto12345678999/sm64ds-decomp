@@ -2,6 +2,9 @@
 // Load-bearing: the ROM build passes -Cpp_exceptions off and has no per-file CFLAGS mechanism; the .exceptix record at 0x020739b8 (length 0x68) exists only because this pragma turns exceptions back on for this file.
 #pragma exceptions on
 
+// Both of the family's construct helpers call this one from their landing pads:
+// func_02073470 at its +0x9c and __cxa_vec_ctor at 0x020733a8 + 0x7c.
+//
 // MSL C++ runtime partial array destroy, the third of the family that starts
 // at __cxa_vec_cleanup. Walks `current` back down to `base` in `size` steps,
 // running `dtor` on each element; if one throws, the catch hands off to the
