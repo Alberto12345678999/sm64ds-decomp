@@ -2,6 +2,9 @@
 // Load-bearing: the ROM build passes -Cpp_exceptions off and has no per-file CFLAGS mechanism; the .exceptix record at 0x02073994 (length 0xa8) exists only because this pragma turns exceptions back on for this file.
 #pragma exceptions on
 
+// The whole family is source-built now: __cxa_vec_cleanup at 0x0207328c, this one,
+// __cxa_vec_ctor at 0x020733a8, func_02073470 and func_02073534.
+//
 // MSL C++ runtime array-destroy-with-rethrow helper, the sibling of
 // __cxa_vec_cleanup at 0x0207328c. Runs `dtor` over the `n` elements of `size`
 // bytes in reverse order; if an element destructor throws, the handler

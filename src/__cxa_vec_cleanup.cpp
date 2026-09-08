@@ -16,8 +16,10 @@
 // resolve once this range is compiled from source instead of carved out of a dsd
 // gap object. `__destroy_arr` was the tree's own name for the same address, given
 // by the bulk rename in fb96f41f2 with no recorded evidence; it described the role
-// and is kept here only as this comment. Its counterpart at 0x020733a8 is
-// `__cxa_vec_ctor`, the same family and the same provenance.
+// and is kept here only as this comment. Its counterpart at 0x020733a8 took the
+// same move for the same reason and on stronger evidence: mwccarm's own probe output
+// names `__cxa_vec_ctor`, and two objects in this tree import it, so 0x020733a8 is
+// now `__cxa_vec_ctor` with a source file of its own.
 
 extern "C" void func_020731fc(void);
 

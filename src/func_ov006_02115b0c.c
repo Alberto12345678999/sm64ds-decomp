@@ -63,7 +63,7 @@ extern u16 *_ZN2G212GetBG2ScrPtrEv(void);
 extern u16 *_ZN3G2S12GetBG2ScrPtrEv(void);
 extern void *_ZN2G212GetBG3ScrPtrEv(void);
 extern u16 *_ZN3G2S12GetBG3ScrPtrEv(void);
-extern void func_020733a8(void *p, int a, int b, void *cb1, void *cb2);
+extern void __cxa_vec_ctor(void *p, int a, int b, void *cb1, void *cb2);
 extern void *_Znwj(u32 size);
 extern void *func_ov006_02111b40(void *p, char *c, int i, V2 *pos);
 extern void *func_ov006_02111774(void *p, char *c, int i, V2 *pos);
@@ -306,7 +306,7 @@ void func_ov006_02115b0c(char *c)
     *(int *)(c + 0x4000 + 0x674) = 0;
     *(int *)(c + 0x4000 + 0x680) = 0;
 
-    func_020733a8(pos, 0x19, 8, func_0203d738, NullDestructor_0203d47c);
+    __cxa_vec_ctor(pos, 0x19, 8, func_0203d738, NullDestructor_0203d47c);
 
     {
         int mask = 0x3ff;

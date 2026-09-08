@@ -6,7 +6,7 @@
  * SIZE AND BASE come from the factory. daObjCloset_c_classInit (0x02111688)
  * allocates fBase_c::operator new(0x21c), calls _ZN8dActor_cC2Ev on it and then
  * stores _ZTV15RecRoomCupboard -- so the object is 0x21c bytes and the base is
- * dActor_c (0xd0). Spawn also runs func_020733a8 over `this + 0xd4` as
+ * dActor_c (0xd0). Spawn also runs __cxa_vec_ctor over `this + 0xd4` as
  * 5 x 0x40 with _ZN10dCcAcPos_cC1Ev / _ZN10dCcAcPos_cD1Ev, which is the
  * array-construct helper; ~RecRoomCupboard runs the matching
  * __cxa_vec_cleanup(this + 0xd4, 5, 0x40, _ZN10dCcAcPos_cD1Ev). D1 and not D2, so

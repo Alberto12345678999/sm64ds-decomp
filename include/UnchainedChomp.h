@@ -21,7 +21,7 @@
  *     0x720  Vector3     x6   stride 0x0c
  *     0x768  Vector3s    x6   stride 0x06   -> ends 0x78c
  *
- * daWanwan2_c_classInit constructs the same six through func_020733a8, which takes the
+ * daWanwan2_c_classInit constructs the same six through __cxa_vec_ctor, which takes the
  * same counts and strides, and allocates 0x7a4 -- so 0x18 of tail is spare and stays
  * padding.
  *

@@ -2,6 +2,9 @@
 // Load-bearing: the ROM build passes -Cpp_exceptions off and has no per-file CFLAGS mechanism; the .exceptix record at 0x020739ac (length 0xc4) exists only because this pragma turns exceptions back on for this file.
 #pragma exceptions on
 
+// The family is complete: the last member, __cxa_vec_ctor at 0x020733a8, is the
+// plain array construct loop this one wraps with an allocation and a cookie.
+//
 // MSL C++ runtime array construct-with-cleanup, the fourth of the family that
 // starts at __cxa_vec_cleanup. Allocates n * elem_size + cookie_size bytes, writes
 // the array cookie (element count just below the array, element size a word
