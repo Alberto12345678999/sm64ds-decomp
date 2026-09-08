@@ -11887,6 +11887,10 @@ src/func_02073300.cpp:
     complete
     .text start:0x02073300 end:0x020733a8
 
+src/func_02073470.cpp:
+    complete
+    .text start:0x02073470 end:0x02073534
+
 src/func_02073534.cpp:
     complete
     .text start:0x02073534 end:0x0207359c
