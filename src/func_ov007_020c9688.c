@@ -1,4 +1,5 @@
 // @symbol func_ov007_020c9688
+// recovered: ov007 scene table builder, ov007 0x020c9688 (768 bytes).
 /* func_ov007_020c9688 -- ov007 0x020c9688, 0x300 bytes.
  *
  * Builds the packed runtime tables for one scene description. The context
@@ -91,26 +92,27 @@ Res *func_ov007_020c9688(int arg)
     u32 nA;
     u32 nB;
     u32 cnt;
+    // Every other caller of func_ov007_020c3df4 passes a literal 0; this named local is deliberate (one of the near-miss row's nine zero-plumbing shapes).
     u32 heap = 0;
     Packed tmp;
     Ctx ctx;
     u32 j;
-    RecA *p;
+    u8 *p;
 
     func_ov007_020c9a2c(&ctx, arg);
     nA = *ctx.listA;
     nB = *ctx.listB;
     s = func_ov007_020c12ac(nA, nB);
 
-    p = (RecA *)((u8 *)ctx.listA + 4);
+    p = (u8 *)ctx.listA + 4;
     for (i = 0; i < nA; i++) {
         Entry *e;
         u8 *base;
-        cnt = *(u8 *)p;
-        p = (RecA *)((u8 *)p + 4);
+        cnt = *p;
+        p = p + 4;
         base = s->entries;
         e = (Entry *)(base + i * 8);
-        *(u16 **)(base + i * 8) = (u16 *)func_ov007_020c3df4(heap, cnt * 6);
+        e->data = (u16 *)func_ov007_020c3df4(heap, cnt * 6);
         e->count = cnt;
         for (j = 0; j < cnt; j++) {
             s16 h0;
@@ -125,10 +127,10 @@ Res *func_ov007_020c9688(int arg)
             RecA *r;
             s16 h2;
             u8 b5;
-            r = p;
+            r = (RecA *)p;
             key = ((u32)r->f8 << 8) | ((u32)r->f6 << 28) | ((u32)r->f7 << 29);
             hi = ((u32)r->fC << 14) | ((u32)r->fD << 30);
-            p = (RecA *)((u8 *)p + 0x14);
+            p = p + 0x14;
             bF = r->fF;
             h10 = r->f10;
             b5 = r->f5;
@@ -163,15 +165,15 @@ Res *func_ov007_020c9688(int arg)
         Group *g;
         u32 m;
         u32 c2;
-        p = (RecA *)((u8 *)ctx.listB + 4);
+        p = (u8 *)ctx.listB + 4;
         for (k = 0; k < nB; k++) {
-            c2 = *((u8 *)p + 8);
+            c2 = *(p + 8);
             g = (Group *)(s->groups + k * 0x10);
-            p = (RecA *)((u8 *)p + 0xc);
+            p = p + 0xc;
             func_ov007_020c13a4(g, c2, 0, 0);
             for (m = 0; m < c2; m++) {
-                u8 *q0 = (u8 *)p;
-                p = (RecA *)((u8 *)p + 0x18);
+                u8 *q0 = p;
+                p = p + 0x18;
                 g->arr[m] = (Entry *)((Entry *)s->entries + *(u16 *)q0);
                 g->vals[m] = *(u16 *)(q0 + 2);
             }
