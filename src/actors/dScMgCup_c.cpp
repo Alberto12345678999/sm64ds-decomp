@@ -182,7 +182,7 @@ extern void _ZN3GXS11LoadOBJPlttEPKvjj(void *, unsigned int, unsigned int);
 void *_ZN7fBase_cnwEj(unsigned int size);
 void _ZN8Particle10SysTrackerC1Ev(void *tracker);
 void func_ov006_020c33dc(void *table);
-void func_020733a8(void *base, int count, int stride, void *ctor, void *dtor);
+void __cxa_vec_ctor(void *base, int count, int stride, void *ctor, void *dtor);
 void func_ov006_020e0634(void);
 void func_0203d738(void);
 extern void *_ZTV19dScMgSingle3DBase_c[];
@@ -1212,10 +1212,10 @@ extern "C" void *dScMgCup_c_classInit()
         _ZN8Particle10SysTrackerC1Ev(scene + 0x471c);
         *(void **)scene = _ZTV10dScMgCup_c + 2;
         func_ov006_020c33dc(scene + 0x4f38);
-        func_020733a8(scene + 0x50e8, 0x20, 0x18,
+        __cxa_vec_ctor(scene + 0x50e8, 0x20, 0x18,
                       (void *)func_ov006_020e0634,
                       (void *)func_ov006_020deac4);
-        func_020733a8(scene + 0x53e8, 3, 8,
+        __cxa_vec_ctor(scene + 0x53e8, 3, 8,
                       (void *)func_0203d738,
                       (void *)NullDestructor_0203d47c);
     }

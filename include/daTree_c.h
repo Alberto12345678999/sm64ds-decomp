@@ -52,7 +52,7 @@
 struct daTree_c : dActor_c {
     u8  pad_0d0[0x4];
     /* Model[5] array, named by _ZN5ModelD1Ev/_ZN5ModelC1Ev at +0xd4 via
-       __cxa_vec_cleanup/func_020733a8 (a relocation the ROM build checks) --
+       __cxa_vec_cleanup/__cxa_vec_ctor (a relocation the ROM build checks) --
        five Models, one per compass-ish direction slot indexed by
        InitResources/Render. Fills the class to its exact trailing size,
        0xd0 (dActor_c) + 0x4 (pad) + 5*0x50 (Model) = 0x264. */
