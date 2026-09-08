@@ -2549,12 +2549,15 @@ def test_unresolvable_imports_rejects_a_home_that_is_an_undefinable_alias():
         tubuild.undefinable_alias_names = original_alias
 
 
-def test_live_config_defines_the_two_exception_runtime_entries_the_compiler_emits():
-    """mwccarm emits `bl __end__catch` and `bl __rethrow` with no help from the source.
+def test_live_config_defines_the_runtime_entries_the_compiler_emits():
+    """mwccarm names these itself; the source never writes them.
 
-    Both must therefore be real definitions in the link, not size-0 alias rows sitting
-    inside a carved-out range. Pins the regression that took the full-ROM link down.
+    `bl __end__catch` closes every catch block, `bl __rethrow` is a bare `throw;`, and
+    `bl __cxa_vec_cleanup` destroys an array member. All three must therefore be real
+    definitions in the link, not size-0 alias rows sitting inside a carved-out range.
+    Pins the two regressions that took the full-ROM link down, one name at a time.
     """
     undefinable = tubuild.undefinable_alias_names()
     assert "__end__catch" not in undefinable
     assert "__rethrow" not in undefinable
+    assert "__cxa_vec_cleanup" not in undefinable
