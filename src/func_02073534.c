@@ -5,7 +5,7 @@
 // array destroy (dtor applied downward from 'current' back to 'base') with an
 // exception frame (fp anchor + sp spill at [fp,#0x14]) that no C under our
 // flags reproduces; its landing pad follows at 0x02073584. Per asm policy,
-// sibling of matched func_0207335c.
+// sibling of the recovered C++ func_02073300.
 asm void func_02073534(void) {
     stmdb sp!, {r4, r5, r6, r7, r11, lr}
     sub sp, sp, #0x18
