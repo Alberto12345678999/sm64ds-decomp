@@ -6,11 +6,11 @@
 // constructs each element via an indirect ctor, with an exception landing pad at
 // 0x020734f4 (jumped over by normal flow, reached only via unwinding) that no C
 // under our flags reproduces. Per asm policy, sibling of matched func_02073534 /
-// func_020732e8 / func_0207335c.
+// func_0207335c.
 extern void _ZN6Memory13operator_new2Ej(void);
 extern void func_0203cbc0(void);
-extern void func_020717c0(void);
-extern void func_02071ba0(void);
+extern void __rethrow(void);
+extern void __end__catch(void);
 extern void func_02073534(void);
 
 asm void func_02073470(void) {
@@ -59,9 +59,9 @@ L_loop:
 L_10:
     mov r0, r9
     bl func_0203cbc0
-    bl func_020717c0
+    bl __rethrow
     add r0, r11, #0
-    bl func_02071ba0
+    bl __end__catch
 L_end:
     add r0, r9, r6
     add sp, r11, #0x1c

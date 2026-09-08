@@ -23,7 +23,7 @@
  * generated bodies spell out daObjDorifu_c's and dBgActor_c's work instead of
  * calling _ZN13daObjDorifu_cD1Ev: three vptr stores (own, daObjDorifu_c's,
  * dBgActor_c's), daObjDorifu_c's dBgW_KcMbg[5] at 0x4b0 and Model[5] at 0x320
- * through __destroy_arr, then dBgActor_c's own dBgW_KcMbg at 0x124 and Model
+ * through __cxa_vec_cleanup, then dBgActor_c's own dBgW_KcMbg at 0x124 and Model
  * at 0xd4, then dActor_c.
  *
  * Absorbed from these legacy one-function sources (ROM address order):
@@ -189,7 +189,7 @@ int daObjRc_Dorifu_c::CleanupResources()
  * `struct daObjRc_Dorifu_c : daObjDorifu_c`: its own vptr, then
  * daObjDorifu_c's, then dBgActor_c's -- inlined, because both bases'
  * destructors are themselves inline -- then daObjDorifu_c's dBgW_KcMbg[5]
- * and Model[5] through __destroy_arr, then dBgActor_c's own dBgW_KcMbg and
+ * and Model[5] through __cxa_vec_cleanup, then dBgActor_c's own dBgW_KcMbg and
  * Model, then dActor_c. This class adds no member with a destructor of its
  * own.
  */

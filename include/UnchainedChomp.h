@@ -10,7 +10,7 @@
 #include "dBgCh_Actr.h"
 
 /* daWanwan2_c in the ROM's RTTI. Derives from dEnemyBase_c, and the destructor is an
- * unusually strong witness because six of the nine members are ARRAYS: __destroy_arr
+ * unusually strong witness because six of the nine members are ARRAYS: __cxa_vec_cleanup
  * takes a count and a stride, so it names not just the type at an offset but how many
  * and how far apart. Six arrays tile 0x370..0x78c with no overlap and no gap:
  *

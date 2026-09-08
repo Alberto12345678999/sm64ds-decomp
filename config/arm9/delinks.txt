@@ -11795,7 +11795,7 @@ src/ReadSignedVarInt.c:
     complete
     .text start:0x02071af8 end:0x02071ba0
 
-src/func_02071ba0.c:
+src/__end__catch.c:
     complete
     .text start:0x02071ba0 end:0x02071be8
 
@@ -11878,6 +11878,10 @@ src/func_02073238.c:
 src/func_02073244.c:
     complete
     .text start:0x02073244 end:0x0207328c
+
+src/__cxa_vec_cleanup.cpp:
+    complete
+    .text start:0x0207328c end:0x02073300
 
 src/_ZN3abi21__vmi_class_type_infoD0Ev.cpp:
     complete

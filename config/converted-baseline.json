@@ -1842,7 +1842,7 @@
     "src/_ZNSt9type_infoD2Ev.cpp",
     "src/_ZdlPv.cpp",
     "src/_Znwj.cpp",
-    "src/__destroy_arr.c",
+    "src/__cxa_vec_cleanup.cpp",
     "src/__sinit_02073a24.c",
     "src/__sinit_02074d90.c",
     "src/__sinit_02074da8.c",

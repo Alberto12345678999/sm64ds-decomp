@@ -1,10 +1,17 @@
+// @symbol __rethrow
+// MSL C++ runtime rethrow entry. mwccarm emits `bl __rethrow` itself for a bare `throw;`
+// inside a catch block, same proof as __end__catch above: the probe object's undefined
+// symbol table carries __rethrow and the source never names it. The ROM's own rethrow
+// calls land here (notes/mwccarm-codegen.md 9a), and src/func_0207335c.c,
+// src/func_020733a8.c and src/func_02073470.c all branch to this address.
+// Was func_020717c0.
 // NONMATCHING (ASM-PRIMITIVE): byte-exact hand-written asm. Nintendo shipped this as an
 // assembly primitive, so there is no original C to recover and no match to chase. Counts as
 // done under the asm-primitive policy - see notes/arm9-endgame.md.
 // HAND-ASM PRIMITIVE: byte-faithful asm-block match (assembly-only primitive). Per asm policy.
 extern void func_02071be8(void);
 
-asm void func_020717c0(void) {
+asm void __rethrow(void) {
     mov ip, sp
     sub sp, sp, #0x70
     str r4, [sp, #0x2c]
