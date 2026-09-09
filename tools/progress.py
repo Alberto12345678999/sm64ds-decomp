@@ -46,10 +46,15 @@ FUNC_NAME_RE = re.compile(
 
 def source_counts_as_matched(path, src_path, module, addr, size,
                              alias_addrs, excluded_paths):
-    """Apply the same committed-data MATCHED policy as ``chaos_db_ci``."""
+    """Apply the same committed-data MATCHED policy as ``chaos_db_ci``.
+
+    The banner half is asm_policy.counts_as_matched, which both tools call rather
+    than re-spelling: this used to read "no NONMATCHING and not transcribed" here
+    and the same words over there, so the two agreed by coincidence and Tango's
+    hand-asm ruling would have had to be applied twice to keep them agreeing.
+    """
     text = path.read_text(errors="ignore")
-    countable = (not asm_policy.has_draft_banner(text)
-                 and asm_policy.classify(text) != "transcribed")
+    countable = asm_policy.counts_as_matched(text)
     zero_alias = BG.is_zero_size_alias(module, addr, size, alias_addrs)
     return countable and not zero_alias and src_path not in excluded_paths
 
