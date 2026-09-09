@@ -266,7 +266,7 @@ jobs:
 #                                      ledger behind every banked match. (2 skip)
 #   test_message_bank            (5)   message_bank.py -- message-bank export/rebuild
 #                                      must round-trip to the exact original bytes.
-#   test_nearmiss_db            (21)   nearmiss_db.py -- the persistent near-miss DB, so
+#   test_nearmiss_db             (30)   nearmiss_db.py -- the persistent near-miss DB, so
 #                                      close attempts are never thrown away, plus the
 #                                      eval-pin guard: stored divergences are only
 #                                      comparable while their evaluator still exists.
@@ -278,6 +278,12 @@ jobs:
 #                                      parallel sweep instead of one blanket NO-SYM. No
 #                                      ROM, no compiler; srcpath/load_symbol_fn/
 #                                      run_linkcheck are mocked throughout.
+#                                      +7 (run link100, 2026-09-09): set-divergence, the
+#                                      hand-correction escape hatch for a row the live
+#                                      evaluator undercounts relative to tools/match.py's
+#                                      positional diff, and the reeval/bank-matches hold
+#                                      it needs to survive a re-score (was 21 documented
+#                                      here / 23 actual before this change).
 #   test_premerge_check         (87)   premerge_check.py -- runs the static gates on
 #                                      the git merge-tree RESULT, the one tree no CI
 #                                      job ever builds. Pure functions over verdict
