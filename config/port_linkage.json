@@ -24,15 +24,15 @@
     "lk5 3819. Overlapping but not identical seats, so the merged figure is higher and",
     "the published number stays a floor.",
     "",
-    "This number moves ONE way: seating a new actor class, worth ~8-10 TUs each.",
-    "Enrolling free TUs does nothing, because the release build dead-strips whatever the",
-    "linked closure never references."
+    "LINKED grows when matched TUs become reachable in the port's linked call graph.",
+    "Actor methods and free functions both count. Enrollment alone does not increase",
+    "the count when the release build still dead-strips the unreachable object."
   ],
-  "linkedTus": 10013,
+  "linkedTus": 10503,
   "matchedTus": 11328,
-  "measuredAt": "2026-09-07",
+  "measuredAt": "2026-09-09",
   "branch": "port/link100",
-  "commit": "a4504f88d",
+  "commit": "97b51649d",
   "stale": false,
-  "basis": "integration branch port/link100 at its pushed tip a4504f88d, measured against that tip's own battery build walk_window.map (C:/tmp/l4pmf, tree clean, battery ALL GREEN, five proofs green including the opening-cutscene gate). +892 over the 2026-08-30 stamp of 9121 on cons ce1afba51. The branch is cons 6fa05ec03 plus run link100: the ROM's save system, thread scheduler and ARM9<->ARM7 link running as ROM code; the pre-main boot spans; Stage vtable slots 3/6/9/16/17; the boot and download-play scenes; /vmg /vmm target-wide so every pointer-to-member is the ROM's 8-byte pair, which retired 56 host copies; the Model-family virtual-destructor unfold (MSVC folds D1/D0 into one slot) which put 30 render bodies and 25 more host copies back on the ROM's own TUs; 24 ruled bodies seated by ROM address; CAGE_LIFT, RICKSHAW_BDW and PUSHABLE_BLOCK registered; TRAP moved off LIGHT_BEAM's vtable (a live wrong-alias bug). Every rung of the night was gated: 9820 -> 9843 -> 9871 -> 9895 -> 9925 -> 9945 -> 9976 -> 9988 -> 10013. The linkage number itself was proven cartridge-independent this run (an identical set of 9820 TUs links with no ROM present, locally and on a GitHub runner). Remaining: the 478-row documented host-ABI exception queue, the wireless chain behind the ARM7 model (~175), the boot chain's refused arms, and guessed vtable bodies that need real decomp."
+  "basis": "integration branch port/link100 at its pushed tip 97b51649d, measured against that tip's own battery build walk_window.map (C:/tmp/l1-int, gate INT25: tree clean, reconfigure with the four hostgen register TUs, battery ALL GREEN at floor 10503 with all 51 level and 37 scene rows including the Game Over scene, the six proofs, the loopback pair with the ROM's own wireless worker created, entered, slept and woken on the parent, the four-player proof, the rollback ladder at eight wide with every session row green including seven windows at 160 ms, and a captured level under the ROM's own frame loop), and confirmed by the hosted-runner port-linkage workflow on every push of port/** and every pull request into the shipping branch. +106 over the previous stamp of 10397, +470 over the 2026-09-08 morning's 10033, +1382 over the 2026-08-30 stamp of 9121. Since the 10397 stamp: the ROM's own wireless worker thread and its session over the hosted ARM7 (+20), the touch panel answered by a hosted ARM7 arm with the console's firmware calibration published (+9), the ROM's own static-initialiser runner at Entry's own instruction (+18), the sound command layer and its frame (+34), the mother penguin's cells and the Game Over scene hosted as ROM bodies (+21), plus zero-gain rungs that make the port more the decomp: four I/O placeholders spelled as the registers they stood for and the ROM's own game loop driving a level frame behind a knob, a decomp function's forgotten register-borne arguments restored byte for byte, the four-player re-seat and the ROM's five-second drop bound honoured. Running: the ROM's loop as the default frame driver (the flip), the ROM's own touch-ring writer, the remaining register-borne signatures on the decomp side."
 }
