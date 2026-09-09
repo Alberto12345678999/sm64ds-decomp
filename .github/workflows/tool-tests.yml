@@ -205,7 +205,9 @@ jobs:
             tools.test_match_provenance \
             tools.test_message_bank \
             tools.test_nearmiss_db \
+            tools.test_pgate \
             tools.test_premerge_check \
+            tools.test_prepush_linkcheck \
             tools.test_profile_reconstruction \
             tools.test_progress \
             tools.test_rombuild \
@@ -268,11 +270,26 @@ jobs:
 #                                      close attempts are never thrown away, plus the
 #                                      eval-pin guard: stored divergences are only
 #                                      comparable while their evaluator still exists.
+#   test_pgate                    (6)   pgate.py -- prepush_linkcheck.py's threaded
+#                                      twin resolves a file to every function its
+#                                      committed delinks.txt range owns the same way,
+#                                      via the same imported srcpath.symbols_for, so a
+#                                      consolidated TU gets one job per function in a
+#                                      parallel sweep instead of one blanket NO-SYM. No
+#                                      ROM, no compiler; srcpath/load_symbol_fn/
+#                                      run_linkcheck are mocked throughout.
 #   test_premerge_check         (87)   premerge_check.py -- runs the static gates on
 #                                      the git merge-tree RESULT, the one tree no CI
 #                                      job ever builds. Pure functions over verdict
 #                                      dicts and a stubbed main(); four honest
 #                                      skipTests need a git binary.
+#   test_prepush_linkcheck       (9)   prepush_linkcheck.py -- resolves a src file to
+#                                      EVERY function its committed delinks.txt range
+#                                      owns (srcpath.symbols_for), not only the one its
+#                                      filename spells, so a consolidated TU gets one
+#                                      verdict per function instead of one blanket
+#                                      NO-SYM. No ROM, no compiler; srcpath/
+#                                      _load_symbol/_run_linkcheck are mocked throughout.
 #   test_profile_reconstruction (14)   profile_reconstruction.py -- preserves the
 #                                      profile/class namespace split, actor/base layout
 #                                      distinction, overlay-address rejection, and the
