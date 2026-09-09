@@ -251,6 +251,77 @@ class NearMissDbTests(unittest.TestCase):
         finally:
             NDB.CONFIG_GLOB_ROOT = NDB.REPO
 
+    # -------------------------------------------------------------- fix-refs
+    # check-refs only REPORTS a dead reference; fix-refs is the tool-native repair --
+    # a whole-word rewrite of the stale name to its current, address-resolved one,
+    # touching only c_source. Mirrors the real pre-existing row: arm9 __rethrow's
+    # c_source still spells its own function `func_020717c0` after config renamed the
+    # symbol at that address.
+    def _fixture_config_addr(self, name, addr):
+        root = pathlib.Path(tempfile.mkdtemp())
+        d = root / "config"
+        d.mkdir(parents=True)
+        (d / "symbols.txt").write_text(
+            "%s kind:function(arm,size=0x10) addr:0x%08x\n" % (name, addr),
+            encoding="utf-8")
+        return root
+
+    def test_fix_refs_rewrites_a_reference_resolvable_by_address(self):
+        self.write_rows(row(1, name="__rethrow",
+                             c_source="void func_020717c0(void) { __rethrow(); }"))
+        NDB.CONFIG_GLOB_ROOT = self._fixture_config_addr("__rethrow", 0x020717C0)
+        try:
+            with contextlib.redirect_stdout(io.StringIO()) as out:
+                NDB.fix_refs(argparse.Namespace(dry_run=False))
+            self.assertIn("rewrote 1 dead reference(s) across 1 row(s)", out.getvalue())
+            db, _ = self.load_quiet()
+            self.assertNotIn("func_020717c0", db[KEY]["c_source"])
+            self.assertEqual(db[KEY]["c_source"], "void __rethrow(void) { __rethrow(); }")
+            # check-refs is clean afterward -- the fix actually closes the finding.
+            with contextlib.redirect_stdout(io.StringIO()) as out2:
+                NDB.check_refs(argparse.Namespace(check=True))
+            self.assertIn("every reference", out2.getvalue())
+        finally:
+            NDB.CONFIG_GLOB_ROOT = NDB.REPO
+
+    def test_fix_refs_dry_run_changes_nothing(self):
+        self.write_rows(row(1, name="__rethrow",
+                             c_source="void func_020717c0(void) { __rethrow(); }"))
+        NDB.CONFIG_GLOB_ROOT = self._fixture_config_addr("__rethrow", 0x020717C0)
+        try:
+            with contextlib.redirect_stdout(io.StringIO()) as out:
+                NDB.fix_refs(argparse.Namespace(dry_run=True))
+            self.assertIn("func_020717c0 -> __rethrow", out.getvalue())
+            self.assertIn("(dry run)", out.getvalue())
+            db, _ = self.load_quiet()
+            self.assertIn("func_020717c0", db[KEY]["c_source"])
+        finally:
+            NDB.CONFIG_GLOB_ROOT = NDB.REPO
+
+    def test_fix_refs_leaves_an_unresolved_reference_alone(self):
+        # No address in config for func_020124c4 -- nothing fix-refs can do with it;
+        # it must not touch c_source or crash.
+        self.write_rows(row(10, c_source="void f(void){ func_020124c4(); }"))
+        NDB.CONFIG_GLOB_ROOT = self._fixture_config("Sound_PlayIfNotActive")
+        try:
+            with contextlib.redirect_stdout(io.StringIO()) as out:
+                NDB.fix_refs(argparse.Namespace(dry_run=False))
+            self.assertIn("rewrote 0 dead reference(s)", out.getvalue())
+            db, _ = self.load_quiet()
+            self.assertIn("func_020124c4", db[KEY]["c_source"])
+        finally:
+            NDB.CONFIG_GLOB_ROOT = NDB.REPO
+
+    def test_fix_refs_is_a_no_op_when_every_reference_resolves(self):
+        self.write_rows(row(10, c_source="void f(void){ Sound_PlayIfNotActive(); }"))
+        NDB.CONFIG_GLOB_ROOT = self._fixture_config("Sound_PlayIfNotActive")
+        try:
+            with contextlib.redirect_stdout(io.StringIO()) as out:
+                NDB.fix_refs(argparse.Namespace(dry_run=False))
+            self.assertIn("rewrote 0 dead reference(s)", out.getvalue())
+        finally:
+            NDB.CONFIG_GLOB_ROOT = NDB.REPO
+
     # ---------------------------------------------------------- set-divergence
     # nearmiss/db.jsonl's own metric can UNDERCOUNT a stored row (2026-09-09: a pure
     # 3-instruction ROM reorder on _ZN3MrI13InitResourcesEv scored 2 under
@@ -317,6 +388,47 @@ class NearMissDbTests(unittest.TestCase):
         order = [r for r in db.values() if not NDB._is_manual(r)]
         self.assertEqual([r["divergences"] for r in order], [42])
 
+    # ---------------------------------------------- manual hold auto-release (reeval)
+    # METRIC_REV 2 makes evaluate_full agree with match.py, so a manual correction's
+    # OWN stored c_source should now reproduce the hand-set number under the live
+    # evaluator on its own -- reeval verifies that every pass and retires the hold
+    # instead of leaving a row manual forever (_manual_hold_releasable is the pure
+    # decision function reeval's compiler-backed loop calls; these test it directly).
+    def test_manual_hold_releasable_when_live_score_agrees(self):
+        r = row(3, manual_divergences=True, manual_evidence="x", manual_date="2026-09-09")
+        full = {"status": None, "error": None, "divergences": 3, "cand_size": 20, "ok": False}
+        self.assertTrue(NDB._manual_hold_releasable(r, full))
+
+    def test_manual_hold_not_releasable_when_live_score_disagrees(self):
+        r = row(3, manual_divergences=True)
+        full = {"status": None, "error": None, "divergences": 2, "cand_size": 20, "ok": False}
+        self.assertFalse(NDB._manual_hold_releasable(r, full))
+
+    def test_manual_hold_not_releasable_when_unscorable(self):
+        r = row(3, manual_divergences=True)
+        full = {"status": "noncompile", "error": "x", "divergences": None, "cand_size": None,
+                "ok": False}
+        self.assertFalse(NDB._manual_hold_releasable(r, full))
+
+    # ------------------------------------------------- apply_eval: not strictly-improving
+    # ingest/merge_batch is deliberately strictly-improving (never regresses a stored
+    # divergence between two competing drafts); apply_eval is the OTHER half of the
+    # rule -- re-measuring the SAME draft under today's live scorer moves the number
+    # whichever way the scorer says, including up, when a compiler/metric bump makes
+    # yesterday's count wrong (see merge_batch's and apply_eval's docstrings).
+    def test_apply_eval_can_raise_a_rows_divergences(self):
+        r = row(2, cand_size=0x150)
+        NDB.apply_eval(r, {"status": None, "error": None, "divergences": 5,
+                            "cand_size": 0x164})
+        self.assertEqual(r["divergences"], 5)
+        self.assertEqual(r["cand_size"], 0x164)
+
+    def test_apply_eval_can_lower_a_rows_divergences(self):
+        r = row(50)
+        NDB.apply_eval(r, {"status": None, "error": None, "divergences": 3,
+                            "cand_size": 0x164})
+        self.assertEqual(r["divergences"], 3)
+
     # ------------------------------------------------------------------ imports
     def test_module_imports_without_the_compile_stack(self):
         # stats/list/dedupe and this suite must run where capstone/pyelftools are
@@ -328,6 +440,50 @@ class NearMissDbTests(unittest.TestCase):
                              capture_output=True, text=True)
         self.assertEqual(out.returncode, 0, out.stderr)
         self.assertEqual(out.stdout.strip(), "clean")
+
+    # --------------------------------------------- match.py scorer parity (METRIC_REV 2)
+    # The bug this change fixes: a pure instruction-position ROTATE reads differently
+    # under an edit-distance diff (which finds a cheaper alignment across the reorder)
+    # than under match.py's own fixed-position word compare -- 2 vs 3 on a real
+    # 3-instruction ROM rotation (_ZN3MrI13InitResourcesEv, 2026-09-09). These need
+    # capstone/pyelftools to import tools/match.py (compare(verbose=False) never
+    # disassembles, so no capstone CALL happens, only the import) but never mwccarm --
+    # skip cleanly wherever those two packages are not installed, run for real
+    # wherever tool-tests.yml's `pip install -r tools/requirements.txt` step ran.
+    def _require_compile_stack(self):
+        try:
+            import match
+            import swarm
+        except ImportError as e:
+            self.skipTest(f"capstone/pyelftools not installed: {e}")
+        return match, swarm
+
+    def test_match_compare_counts_a_pure_reorder_positionally(self):
+        M, _ = self._require_compile_stack()
+        a, b, c = b"\x01\x00\x00\x00", b"\x02\x00\x00\x00", b"\x03\x00\x00\x00"
+        target = a + b + c                  # the ROM's order
+        candidate = b + c + a               # a full rotation of the same three words
+        ok, ndiff = M.compare(target, candidate, set(), verbose=False)
+        self.assertFalse(ok)
+        self.assertEqual(ndiff, 3)           # match.py --brief's own number for this shape
+
+    def test_evaluate_full_divergences_is_match_compares_own_number(self):
+        # Wire-level parity, not just equal-by-coincidence: stub only the compile/
+        # extract steps (oracle_check, extract_func) so evaluate_full's divergence
+        # count runs through the REAL match.compare on these bytes, not a
+        # reimplementation. No mwccarm involved.
+        M, swarm = self._require_compile_stack()
+        from unittest import mock
+        a, b, c = b"\x01\x00\x00\x00", b"\x02\x00\x00\x00", b"\x03\x00\x00\x00"
+        target = a + b + c
+        candidate = b + c + a
+        with mock.patch.object(swarm, "oracle_check", return_value=(False, b"fake-obj")), \
+             mock.patch.object(M, "extract_func", return_value=(candidate, set())):
+            full = NDB.evaluate_full("void f(void){}", "f", target)
+        direct_ok, direct_ndiff = M.compare(target, candidate, set(), verbose=False)
+        self.assertEqual(full["divergences"], direct_ndiff)
+        self.assertEqual(full["divergences"], 3)
+        self.assertEqual(full["ok"], direct_ok)
 
 
 class EvalPinGuardTests(unittest.TestCase):
