@@ -132,6 +132,39 @@ def is_zero_size_alias(module: str, addr: int, size: int, alias_addrs) -> bool:
     return size == 0 and (module, addr) in alias_addrs
 
 
+def alias_target_size(module: str, addr: int, module_universe=None) -> int | None:
+    """The sized twin's byte length for an aliased address, or None if there is none.
+
+    ``is_zero_size_alias`` answers "should this record count", for the two counting
+    generators. A VERIFICATION gate needs a different answer: tools/linkcheck.py,
+    checking that ``src/_dmul.c`` reproduces the bytes at the address it shares with
+    ``func_01ff8708``, cannot byte-compare against the alias's own recorded size (0,
+    by construction -- nothing compiles to 0 bytes), and used to read that 0 straight
+    through and report every alias NO-SYM regardless of how correct its source was.
+    It has to compare against the SIZED twin's size instead. Same scan as
+    ``alias_names``, so the two never drift apart; kept separate because most callers
+    of ``alias_names`` want the NAME (which file to try compiling) and have no use
+    for the size, and this caller wants only the size.
+    """
+    if module_universe is None:
+        sys.path.insert(0, str(REPO / "tools"))
+        import relocs as RL
+        module_universe = RL.module_universe
+
+    for symbols, label in module_universe():
+        if label != module:
+            continue
+        for line in symbols.read_text(errors="ignore").splitlines():
+            match = FUNC_RE.match(line)
+            if not match:
+                continue
+            size, a = int(match.group(2), 16), int(match.group(3), 16)
+            if size and a == addr:
+                return size
+        break
+    return None
+
+
 def source_hash(path: pathlib.Path) -> str | None:
     """sha256 of the file's bytes with CRLF folded to LF, truncated.
 
