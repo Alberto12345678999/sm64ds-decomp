@@ -28,11 +28,11 @@
     "Actor methods and free functions both count. Enrollment alone does not increase",
     "the count when the release build still dead-strips the unreachable object."
   ],
-  "linkedTus": 10227,
+  "linkedTus": 10392,
   "matchedTus": 11328,
   "measuredAt": "2026-09-08",
   "branch": "port/link100",
-  "commit": "3d8374ff7",
+  "commit": "421afeaf7",
   "stale": false,
-  "basis": "Linkage measurement of integration branch port/link100 at 3d8374ff735e285a668e8af30e90e35ba2771050 on 2026-09-08: 10,227 of 11,328 matched TUs reach walk_window, 11 above the previous stamp. Hosted port-linkage push run 34284327226 checked that exact commit; its successful linkage job 102256251572 reports the count and retains the map. This link-only build establishes build/link coverage. It does not validate gameplay, private battery claims, or a shipping-branch landing."
+  "basis": "integration branch port/link100 at its pushed tip 421afeaf7, measured against that tip's own battery build walk_window.map (C:/tmp/l1-int, gate INT19: tree clean, reconfigure with CONFIGURE DEPS 256/5 in 10.4 s, battery ALL GREEN at floor 10357 with all 51 level and 36 scene rows, the six proofs, the two stage proofs, the loopback session, the four-player proof three times green, the sixteen-window ladder with every slot at a distinct position, a captured run showing the ROM's own SWAP_BUFFERS executing once per frame and all eight cartridge-header mirror words), and confirmed by the hosted-runner port-linkage workflow on every push of port/** and every pull request into the shipping branch. +35 over the previous stamp of 10357, +359 over the 2026-09-08 morning's 10033, +1271 over the 2026-08-30 stamp of 9121. Since the 10357 stamp, four gated lanes: the mirror's overlay half seeded from the cartridge header, func_02057198 from its own object, and the overlay-bookkeeping chain through the one entry point whose ROM behaviour on the host is an honest early return (+33); the wireless association bitmaps and the ROM's own peer-block reader over the ROM's receive layout (+2); five frame-loop rungs toward the loop handover, including the ROM's own frame swap now routed to the graphics engine and executing once per frame (0); and the reviewer's requested diagnostic wording (0). Gated rungs since the last stamp: 10357 -> 10392. Staged behind the next gate: five more object-field pointer-to-member rows (+5). Running: the ROM's own game loop driving the frame, the last two game-init arms, and a scout sizing the sound chain."
 }
