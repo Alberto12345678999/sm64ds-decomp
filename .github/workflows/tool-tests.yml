@@ -206,6 +206,7 @@ jobs:
             tools.test_message_bank \
             tools.test_nearmiss_db \
             tools.test_premerge_check \
+            tools.test_prepush_linkcheck \
             tools.test_profile_reconstruction \
             tools.test_progress \
             tools.test_rombuild \
@@ -273,6 +274,13 @@ jobs:
 #                                      job ever builds. Pure functions over verdict
 #                                      dicts and a stubbed main(); four honest
 #                                      skipTests need a git binary.
+#   test_prepush_linkcheck       (9)   prepush_linkcheck.py -- resolves a src file to
+#                                      EVERY function its committed delinks.txt range
+#                                      owns (srcpath.symbols_for), not only the one its
+#                                      filename spells, so a consolidated TU gets one
+#                                      verdict per function instead of one blanket
+#                                      NO-SYM. No ROM, no compiler; srcpath/
+#                                      _load_symbol/_run_linkcheck are mocked throughout.
 #   test_profile_reconstruction (14)   profile_reconstruction.py -- preserves the
 #                                      profile/class namespace split, actor/base layout
 #                                      distinction, overlay-address rejection, and the
