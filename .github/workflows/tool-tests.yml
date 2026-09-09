@@ -201,6 +201,7 @@ jobs:
             tools.test_delaunder \
             tools.test_enroll \
             tools.test_layout \
+            tools.test_linkcheck \
             tools.test_match_attempts \
             tools.test_match_provenance \
             tools.test_message_bank \
@@ -260,6 +261,26 @@ jobs:
 #   test_layout                 (11)   layout_check.py -- the invariants that make src/
 #                                      trustworthy; L1 is the one the ROM build cannot
 #                                      catch.
+#   test_linkcheck                (7)   linkcheck.py -- the len-mismatch verdict one
+#                                      level under pgate.py/prepush_linkcheck.py's own
+#                                      resolution: a zero-size EABI alias record (a
+#                                      second name for a differently-named, correctly-
+#                                      sized function at the same address) now compares
+#                                      against its sized twin's real length instead of
+#                                      its own recorded 0, and a nested entry point
+#                                      packed inside another symbol's compiled span
+#                                      (a hand-asm block with several ROM functions in
+#                                      one ELF symbol) is sliced and its relocations
+#                                      rebased into its own window rather than reported
+#                                      NO-SYM for a symbol the object never defines.
+#                                      Two tests compile the real committed fixtures
+#                                      (skip without mwccarm); the rest mock
+#                                      winning_object/extract_func/func_relocs_typed/
+#                                      rom_bytes to prove the offset arithmetic itself,
+#                                      including a deliberately wrong relocation a real
+#                                      compile alone could not distinguish from correct
+#                                      (any sub-slice of an already byte-perfect span
+#                                      trivially matches wherever you cut it).
 #   test_match_attempts         (10)   match_attempts.py -- append-only log of every
 #                                      matching attempt.
 #   test_match_provenance       (20)   match_provenance.py -- the durable how-record and
