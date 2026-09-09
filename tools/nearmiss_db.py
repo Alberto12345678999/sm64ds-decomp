@@ -27,12 +27,16 @@ by the live evaluator (see set_divergence / _is_manual below):
   manual_divergences  true
   manual_evidence     what was measured and how (e.g. a pasted match.py run)
   manual_date         "YYYY-MM-DD"
-  A manual row is held, not re-scored, by both `reeval` and `bank-matches` (2026-09-09:
-  evaluate_full's SequenceMatcher-based count can UNDERCOUNT a pure instruction
-  reorder relative to tools/match.py's positional MISMATCH count -- the number every
-  src/ header, floors.jsonl and worklist.py actually reports -- so the live evaluator
-  can be WRONG in a way that silently ratchets a correction back down; `set-divergence`
-  exists for exactly that gap, and it needs the hold to actually stick).
+  A manual row is held, not silently overwritten, by both `reeval` and `bank-matches`
+  (2026-09-09: before METRIC_REV 2, evaluate_full's own SequenceMatcher-based count
+  could UNDERCOUNT a pure instruction reorder relative to tools/match.py's positional
+  MISMATCH count -- the number every src/ header, floors.jsonl and worklist.py actually
+  reports -- so the live evaluator could be WRONG in a way that silently ratchets a
+  correction back down; `set-divergence` exists for exactly that gap). Since
+  evaluate_full now calls match.compare() directly (METRIC_REV 2), a manual row's own
+  live score is verified every reeval pass, and the hold is RELEASED automatically the
+  moment it agrees with the hand-set number on its own -- see _manual_hold_releasable.
+  A row whose live score still disagrees stays held, untouched, exactly as before.
 
 Scores are only comparable while the evaluator that produced them still exists:
 include/ churn under the stored sources, a canonical-compiler bump, or a metric change
@@ -64,6 +68,14 @@ Usage:
                                                  # direction) when the live evaluator
                                                  # disagrees with the canonical measurement;
                                                  # held out of reeval/bank-matches after
+                                                 # (reeval auto-releases the hold once the
+                                                 # live evaluator agrees naturally, see
+                                                 # _manual_hold_releasable)
+  python tools/nearmiss_db.py check-refs --check  # exit 1 if any c_source names a symbol
+                                                 # config no longer has
+  python tools/nearmiss_db.py fix-refs          # rewrite a dead reference in c_source to
+                                                 # its current name, when resolvable by
+                                                 # address (see check-refs)
   python tools/nearmiss_db.py dedupe --check    # exit 1 if any (module, addr) holds 2+ rows
 """
 import argparse
@@ -89,7 +101,20 @@ REG = re.compile(r"\b(r\d+|sb|sl|fp|ip|sp|lr|pc)\b")
 # evaluate_full). Bump it whenever a change here would re-score an unchanged source,
 # then run `reeval` on a main-tip checkout and commit db.jsonl + eval_pin.json with
 # the bump -- tools/test_nearmiss_db.py fails until the pin agrees.
-METRIC_REV = 1
+#
+# METRIC_REV 2 (2026-09-09): evaluate_full's divergence count is now ONE call to
+# tools/match.py's own compare() -- the exact positional, reloc-wildcarded word
+# compare match.py prints -- instead of a second, separate implementation
+# (difflib.SequenceMatcher over a re-disassembled instruction list). The two metrics
+# disagreed on a pure instruction reorder: a 3-word ROM rotation scored 2 under the
+# old SequenceMatcher diff (it finds a cheaper alignment across the reorder) but 3
+# under match.py's fixed-position compare -- the number every committed src/ header,
+# floors.jsonl and worklist.py actually reports against. Because ingest/merge_batch is
+# deliberately strictly-improving (see merge_batch), that disagreement could silently
+# freeze a stored row at a WRONG, too-low number forever with no path to correct it --
+# the four rows `set-divergence` fixed by hand. A stored row and a fresh
+# `tools/match.py` run on that row's own c_source can no longer disagree.
+METRIC_REV = 2
 
 _PIN_CACHE = {}
 
@@ -194,14 +219,22 @@ def _trim_error(text, limit=240):
 def evaluate_full(src, name, target):
     """Evaluate a candidate against the target bytes with the live evaluator. Returns
       {divergences, ok, cand_size, status, error}
-    divergences  count of differing instructions (reloc-wildcarded), None if unscorable
+    divergences  count of differing WORDS (reloc-wildcarded) -- tools/match.py's own
+                 compare(), the exact number a pasted `match.py --brief` run prints for
+                 this c_source. None if unscorable. A size mismatch scores 999
+                 (compare()'s own sentinel: the permuter cannot add or remove
+                 instructions, so a differently-sized candidate is not "close" on any
+                 axis a word compare can express; cand_size / _size_gap rank those).
     ok           true RELOC-AWARE oracle match (reloc slots wildcarded, NOT raw equality)
     cand_size    assembled byte size of the candidate function, None if unscorable
     status/error None on a scorable row; "noncompile"/"func-absent" + detail otherwise
     resolved   the symbol actually scored, when it is not the row's stored `name`
-    ONE compile: the oracle object is reused for the divergence count, so the metric and
-    the oracle can never disagree about what the compiler emitted (the old two-compile
-    shape also doubled the cost of every ingest/bank-matches/reeval pass).
+    ONE compile, ONE compare: match.compare(target, cand, relocs) is called exactly
+    once and its (ok, ndiff) is BOTH the match verdict and the divergence count, so a
+    stored row and a fresh `tools/match.py` run on the same c_source can never
+    disagree with each other -- and never with the oracle, since there is only one
+    scorer, not two (a second, separate difflib.SequenceMatcher-based diff used to
+    compute the count here; see METRIC_REV).
 
     A name miss falls back to the object's SOLE sized STT_FUNC before it is called an
     absence: the stored `name` goes stale against its own `c_source` (a symbol import
@@ -210,7 +243,6 @@ def evaluate_full(src, name, target):
     Both look identical to an exact-string lookup and both demote a perfectly good,
     often size-exact seed to last place in every worklist. See match.sole_func_symbol."""
     import contextlib
-    import difflib
     import io
     import match as M
     import swarm as S
@@ -219,34 +251,24 @@ def evaluate_full(src, name, target):
     resolved = None
     try:
         with contextlib.redirect_stdout(chat):    # compile_c prints; capture the detail
-            ok, obj = S.oracle_check(src, name, target)
+            _, obj = S.oracle_check(src, name, target)
         if obj is None:
             return dict(unscorable, status="noncompile", error=_trim_error(chat.getvalue()))
         cand, crel = M.extract_func(obj, name)
         if cand is None:
-            # oracle_check looked the same name up and returned ok=False for the same
-            # reason, so the byte verdict has to be recomputed against the resolved
-            # symbol -- otherwise a fallback row could never read as a match.
+            # oracle_check looked the same name up and found nothing either, so the
+            # only case worth resolving is the object defining exactly one function.
             resolved = M.sole_func_symbol(obj)
             if resolved is not None:
                 cand, crel = M.extract_func(obj, resolved)
-                ok, _ = M.compare(target, cand, crel or set(), verbose=False) \
-                    if cand is not None and len(cand) == len(target) else (False, 0)
     except Exception as e:                        # malformed object, ELF parse crash, ...
         return dict(unscorable, status="noncompile",
                     error=_trim_error(f"{type(e).__name__}: {e}"))
     if cand is None:
         return dict(unscorable, status="func-absent",
                     error=f"function {name!r} absent from the compiled object")
-    if ok:
-        return {"divergences": 0, "ok": True, "cand_size": len(cand),
-                "status": None, "error": None, "resolved": resolved}
-    crel = crel or set()
-    c = _disasm(cand, crel)
-    t = _disasm(target, crel)
-    sm = difflib.SequenceMatcher(a=c, b=t, autojunk=False)
-    div = sum(max(i2 - i1, j2 - j1) for op, i1, i2, j1, j2 in sm.get_opcodes() if op != "equal")
-    return {"divergences": div, "ok": False, "cand_size": len(cand),
+    ok, div = M.compare(target, cand, crel or set(), verbose=False)
+    return {"divergences": 0 if ok else div, "ok": ok, "cand_size": len(cand),
             "status": None, "error": None, "resolved": resolved}
 
 
@@ -260,21 +282,43 @@ def evaluate(src, name, target):
 
 def _is_manual(r):
     """True for a row whose divergences were last set by `set-divergence`, not by the
-    live evaluator. reeval/bank-matches must hold these rather than silently re-score
-    them: evaluate_full's SequenceMatcher-based diff can UNDERCOUNT a pure instruction
-    reorder relative to tools/match.py's positional MISMATCH count (measured 2026-09-09
-    on _ZN3MrI13InitResourcesEv: a 3-instruction ROM rotation scores 2 under
-    evaluate_full but 3 under match.py -- the number the committed src/ header,
-    floors.jsonl and worklist.py all report), so re-running the auto-scorer over a
-    hand-corrected row would quietly ratchet the correction back to the wrong number."""
+    live evaluator. reeval/bank-matches must hold these rather than silently overwrite
+    them (before METRIC_REV 2, evaluate_full's SequenceMatcher-based diff could
+    UNDERCOUNT a pure instruction reorder relative to tools/match.py's positional
+    MISMATCH count -- measured 2026-09-09 on _ZN3MrI13InitResourcesEv: a 3-instruction
+    ROM rotation scored 2 under the old evaluate_full but 3 under match.py, the number
+    the committed src/ header, floors.jsonl and worklist.py all report -- so
+    re-running the auto-scorer over a hand-corrected row could quietly ratchet the
+    correction back to the wrong number). reeval still checks a manual row's live
+    score every pass; see _manual_hold_releasable for when the hold comes back off."""
     return bool(r.get("manual_divergences"))
+
+
+def _manual_hold_releasable(r, full):
+    """True once a manual_divergences row's OWN stored c_source scores the SAME
+    divergence count under the live evaluator that `set-divergence` recorded by hand.
+
+    The hold exists only to stop the live evaluator from silently overwriting a
+    correction it disagrees with (see _is_manual). Once the live evaluator -- now
+    tools/match.py's own compare(), METRIC_REV 2 -- reproduces the hand-set number on
+    its own, the correction is no longer doing anything the evaluator can't do for
+    itself, so `reeval` retires it instead of leaving the row stuck manual forever. A
+    row that is unscorable (status set) or whose live score still disagrees is left
+    held, untouched, exactly as before."""
+    return full["status"] is None and full["divergences"] == r.get("divergences")
 
 
 def apply_eval(r, full):
     """Fold an evaluate_full result into a row, in place: re-score + stamp, or mark
     it unscorable (status/error, divergences=None) keeping the last good score as
     stale_divergences. Never deletes the row -- a broken source is still the record
-    of an attempt, it just must not sit in a closest-first worklist as bait."""
+    of an attempt, it just must not sit in a closest-first worklist as bait.
+
+    Deliberately NOT strictly-improving, unlike merge_batch: this is re-measuring the
+    SAME row's own c_source under today's live scorer, not choosing between two
+    competing drafts, so divergences moves whichever way the scorer says -- up when a
+    compiler/metric bump makes yesterday's count wrong, not just down. See
+    merge_batch's docstring for the boundary between the two."""
     if full["status"]:
         if r.get("divergences") is not None:
             r["stale_divergences"] = r["divergences"]
@@ -428,6 +472,21 @@ def merge_batch(db, drops, updates):
     size is strictly closer to the target (see closeness for why size-blind keep-best
     holds worse permuter fuel). A row marked unscorable (status set, divergences null)
     ranks worst, so any compiling candidate replaces it.
+
+    SCOPE, decided 2026-09-09 alongside the match.py-parity scorer fix (METRIC_REV 2):
+    this rule picks the better of two DIFFERENT candidate drafts competing for the
+    same (module, addr) -- an ingested draft must never evict a strictly closer one
+    already banked. It is not, and must never become, a rule about whether a row's
+    stored number is allowed to change when nothing about the draft did. That is
+    re-measurement, not competition, and it belongs entirely to `reeval` /
+    `bank-matches` (apply_eval), which overwrite a row's divergences with whatever the
+    live pinned scorer says today, UP OR DOWN, unconditionally -- "the stored number is
+    what the pinned scorer says today", not "never up". Conflating the two is exactly
+    how four rows went stale for weeks before `set-divergence` existed: nothing else in
+    this file could ever raise a stored divergence, ingest because it is deliberately
+    strictly-improving (correctly) and reeval because its own metric was wrong (the
+    real bug, now fixed). See apply_eval and its test coverage for the "not never up"
+    half of that split.
 
     Drops win over updates. A dropped key means the function is matched (the ledger or
     committed src/ says so), and one seeds file can carry two names for one (module,
@@ -887,11 +946,14 @@ def reeval(args):
     Only a MAIN-TIP pass is authoritative (the stale-lane rule): run on a checkout of
     current origin/main and commit db.jsonl together with eval_pin.json.
 
-    Rows marked manual_divergences (see set_divergence) are HELD out of the pass
-    entirely -- not compiled, not re-scored -- because evaluate_full's SequenceMatcher
-    diff is known to disagree with the hand correction's source measurement for
-    exactly the row it was applied to (see _is_manual); re-running it would silently
-    undo the correction."""
+    Rows marked manual_divergences (see set_divergence) are never silently overwritten
+    -- reeval must not undo a hand correction the live evaluator still disagrees with
+    (see _is_manual). But their own stored c_source IS compiled and scored every pass
+    (see _manual_hold_releasable): once the live evaluator reproduces the hand-set
+    number on its own, the hold is retired (manual_divergences/manual_evidence/
+    manual_date cleared, the row goes back to ordinary auto-scored status) instead of
+    sitting manual forever. A manual row whose live score still disagrees is left
+    completely untouched, exactly as the old HELD-entirely behavior did."""
     import datetime
     import match as M
     exe = M.MW / M.CANONICAL / "mwccarm.exe"
@@ -899,7 +961,8 @@ def reeval(args):
         sys.exit(f"reeval: canonical compiler {M.CANONICAL} is not installed at {exe}; "
                  f"a pass without it would mark every row noncompiling")
     db = load_db()
-    held = sum(1 for r in db.values() if _is_manual(r))
+    manual_items = [(k, r) for k, r in db.items() if _is_manual(r)]
+    held = len(manual_items)
     order = sorted((kv for kv in db.items() if not _is_manual(kv[1])),
                    key=lambda kv: seed_rank(kv[1]))
     results, n = {}, len(order)
@@ -929,9 +992,26 @@ def reeval(args):
         else:
             same += 1
         bankable += full["ok"]
+    # Manual rows: verify against the live evaluator (so a corrected pin can retire a
+    # hold on its own) without ever silently overwriting one that still disagrees.
+    manual_results, released = {}, 0
+    for i, (key, r) in enumerate(manual_items, 1):
+        full = evaluate_full(r["c_source"], r["name"], bytes.fromhex(r["target_hex"]))
+        manual_results[key] = (r["c_source"], full)
+        label = f"[manual {i}/{held}] {r['module']:6} {r['name'][:46]:46}"
+        if _manual_hold_releasable(r, full):
+            released += 1
+            print(f"{label} div {r.get('divergences')} agrees naturally now -- "
+                  f"RELEASING the manual hold", flush=True)
+        else:
+            live = full["divergences"] if full["status"] is None else f"UNSCORABLE {full['status']}"
+            print(f"{label} manual={r.get('divergences')} live={live} -- hold kept",
+                  flush=True)
+    still_held = held - released
     print(f"\nreeval: {n} rows -- {same} unchanged, {drifted} drifted, {broke} unscorable, "
           f"{recovered} recovered, {bankable} bankable (run bank-matches)"
-          + (f", {held} held (manual correction)" if held else ""))
+          + (f", {still_held} held (manual correction)" if still_held else "")
+          + (f", {released} manual hold(s) released (now agrees naturally)" if released else ""))
     if args.dry_run:
         print("dry run: nothing written")
         return
@@ -947,11 +1027,21 @@ def reeval(args):
                 continue
             apply_eval(tgt, full)
             applied += 1
+        for key, (src, full) in manual_results.items():
+            tgt = cur.get(key)
+            if tgt is None or tgt.get("c_source") != src or not _is_manual(tgt):
+                continue
+            if _manual_hold_releasable(tgt, full):
+                tgt.pop("manual_divergences", None)
+                tgt.pop("manual_evidence", None)
+                tgt.pop("manual_date", None)
+                apply_eval(tgt, full)          # stamps evaluator/cand_size again
+                applied += 1
         save_db(cur)
     pin = {"canonical": M.CANONICAL, "flags": M.DEFAULT_FLAGS,
            "cpp_flags": M.DEFAULT_FLAGS.replace("-lang c99", "-lang c++"),
            "metric": METRIC_REV,
-           "reevaluated": str(datetime.date.today()), "rows": len(db), "held": held}
+           "reevaluated": str(datetime.date.today()), "rows": len(db), "held": still_held}
     PIN.write_text(json.dumps(pin, indent=2) + "\n", encoding="utf-8")
     _PIN_CACHE.clear()
     print(f"applied {applied} rows ({skipped} changed under the pass and were left "
@@ -1025,6 +1115,58 @@ def check_refs(args):
         print(f"check-refs: every reference in {len(db)} row(s) resolves in config")
 
 
+def _resolvable_dead_refs(db, names, by_addr):
+    """(row, old_name, new_name) for every check_refs dead reference that resolves by
+    address -- the same lookup check_refs prints as "-> NAME (resolved by address)".
+    An unresolved one (no address in the name) is not returned: there is nothing a
+    text substitution could do with it."""
+    out = []
+    for r in db.values():
+        src = r.get("c_source") or ""
+        bad = sorted({n for n in SRC_IDENT.findall(src)} - {r["name"]} - names)
+        for n in bad:
+            m = NAME_ADDR.search(n)
+            hit = by_addr.get(int(m.group(1), 16)) if m else None
+            if hit and hit != n:
+                out.append((r, n, hit))
+    return out
+
+
+def fix_refs(args):
+    """Rewrite a check-refs dead reference inside c_source to its current, resolved
+    name -- e.g. a stored candidate that still spells a callee `func_020717c0` after
+    config renamed the symbol at that address to `__rethrow`.
+
+    A dead callee is invisible to the byte gate (relocation slots are wildcarded), so
+    it never demands attention the way a compile error would; check-refs is the only
+    thing that notices, and until now correcting one meant hand-editing db.jsonl. This
+    is the tool-native fix: a whole-word text substitution in c_source, address-scoped
+    exactly like check-refs's own resolution, so it can never touch an unrelated
+    identifier that happens to share a substring. Only c_source changes -- the row's
+    own `name`/key (resync-names' job) and its divergence count are untouched; a
+    substitution of a dead callee name cannot change what the candidate compiles to,
+    since it's a rename of an already-nonexistent symbol, not a code edit that
+    survives compilation as-is only because the compiler treats the callee as an
+    unresolved extern either way."""
+    names, by_addr = _config_symbols()
+    db = load_db()
+    pending = _resolvable_dead_refs(db, names, by_addr)
+    if args.dry_run:
+        for r, old, new in pending:
+            print(f"  {r['module']:6} {r['name'][:34]:34} {old} -> {new}")
+        print(f"{len(pending)} dead reference(s) resolvable by address (dry run)")
+        return
+    with locked():
+        db = load_db()
+        pending = _resolvable_dead_refs(db, names, by_addr)
+        rows = set()
+        for r, old, new in pending:
+            r["c_source"] = re.sub(r"\b%s\b" % re.escape(old), new, r["c_source"])
+            rows.add(r["name"])
+        save_db(db)
+    print(f"fix-refs: rewrote {len(pending)} dead reference(s) across {len(rows)} row(s)")
+
+
 def main():
     ap = argparse.ArgumentParser()
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -1081,6 +1223,10 @@ def main():
                    help="regression gate: exit 1 if any row names a symbol config "
                         "does not have")
     p.set_defaults(fn=check_refs)
+    p = sub.add_parser("fix-refs")
+    p.add_argument("--dry-run", action="store_true",
+                   help="list what would be rewritten without changing db.jsonl")
+    p.set_defaults(fn=fix_refs)
     p = sub.add_parser("dedupe")
     p.add_argument("--dry-run", action="store_true",
                    help="report duplicate rows without collapsing them")
