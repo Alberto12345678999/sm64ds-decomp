@@ -158,7 +158,12 @@ class NestedOffsetRebaseUnit(unittest.TestCase):
              mock.patch.object(LC.M, "extract_func",
                                return_value=(self.CONTAINER_CODE, set())), \
              mock.patch.object(LC, "func_relocs_typed", return_value=relocs), \
-             mock.patch.object(RV, "rom_bytes", return_value=target_bytes):
+             mock.patch.object(RV, "rom_bytes", return_value=target_bytes), \
+             mock.patch.object(LC, "is_benign", return_value=False), \
+             mock.patch.object(LC, "is_interwork", return_value=False):
+            # is_benign / is_interwork read the real module images to excuse a
+            # mismatch (veneers, twins). A mocked-arithmetic test must not touch
+            # extracted/ (absent on the CI runner) and must not be excused.
             return LC.linkcheck("func_01ff98f4", self.NESTED_ADDR, 4, "itcm", {})
 
     def test_slices_code_and_rebases_the_reloc_into_the_nested_window(self):
