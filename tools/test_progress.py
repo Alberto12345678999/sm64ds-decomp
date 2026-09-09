@@ -33,6 +33,19 @@ class ProgressPolicy(unittest.TestCase):
         self.assertFalse(self.counted("// NONMATCHING\nint Example(void) { return 0; }"))
         self.assertFalse(self.counted("asm void Example(void) { dcd 0xe12fff1e }"))
 
+    def test_a_hand_asm_primitive_counts_even_with_a_draft_banner(self):
+        """Tango's ruling, 2026-09-09. This path and chaos_db_ci's used to spell the
+        banner rule separately, so a ruling had to be applied twice or the clean-clone
+        scan and the published database would disagree about the same file."""
+        self.assertTrue(self.counted(
+            "// NONMATCHING (ASM-PRIMITIVE): byte-exact hand-written asm.\n"
+            "// HAND-ASM PRIMITIVE: byte-faithful asm-block match.\n"
+            "asm void Example(void) { mrs r0, cpsr\n bx lr }"))
+
+    def test_the_ruling_does_not_reach_an_ordinary_draft(self):
+        self.assertFalse(self.counted(
+            "// NONMATCHING: scheduling wall.\nint Example(void) { return 0; }"))
+
     def test_zero_size_alias_and_manifest_exclusion_do_not_count(self):
         self.assertFalse(self.counted(
             size=0, aliases=frozenset({("arm9", 0x02000000)})))

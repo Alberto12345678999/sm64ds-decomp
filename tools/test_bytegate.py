@@ -384,5 +384,145 @@ class MatchedConjunct(unittest.TestCase):
         self.assertEqual([s["problem"] for s in BG.stale_rows(self.man)], ["changed"])
 
 
+HAND_ASM = (
+    "// NONMATCHING (ASM-PRIMITIVE): byte-exact hand-written asm. There is no original\n"
+    "// C to recover and no match to chase.\n"
+    "// HAND-ASM PRIMITIVE: byte-faithful asm-block match. Per asm policy.\n"
+    "asm void f(void) {\n"
+    "    mrs r0, cpsr\n"
+    "    msr cpsr_c, r1\n"
+    "    bx lr\n"
+    "}\n")
+DRAFT = "// NONMATCHING: scheduling wall.\nint f(void) { return 0; }\n"
+
+
+class HandAsmCounting(unittest.TestCase):
+    """Tango's ruling, 2026-09-09, through the real generator.
+
+    Byte-exact hand-written assembly under the HAND-ASM PRIMITIVE banner counts as
+    matched even when the file also carries the word NONMATCHING, and the assembly
+    subset is published beside the total so the bar can say how much of itself is not
+    C. The denominator must not move: this is twenty functions changing sides, not
+    twenty functions appearing.
+
+    Driven end to end rather than through asm_policy alone, because the thing that has
+    to be right is the published record and the stats block, which is where the number
+    on the README comes from."""
+
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.root = pathlib.Path(self.tmp.name)
+        self.addCleanup(self.tmp.cleanup)
+        (self.root / "src").mkdir()
+        (self.root / "config").mkdir()
+        self.sym = self.root / "config" / "symbols.txt"
+        self.sym.write_text(
+            "plain kind:function(arm,size=0x10) addr:0x02000000\n"
+            "primitive kind:function(arm,size=0x20) addr:0x02000010\n"
+            "draft kind:function(arm,size=0x30) addr:0x02000030\n", encoding="utf-8")
+        put(self.root / "src" / "plain.c", FIXED)
+        put(self.root / "src" / "primitive.c", HAND_ASM)
+        put(self.root / "src" / "draft.c", DRAFT)
+
+        def git(*a):
+            subprocess.run(["git", *a], cwd=self.root, check=True, capture_output=True)
+        git("init", "-q", "-b", "main")
+        git("config", "user.email", "matcher@example.com")
+        git("config", "user.name", "matcher")
+        git("add", "-A")
+        git("commit", "-q", "-m", "seed")
+
+        saved = (CDB.REPO, BG.REPO, BG.MANIFEST, RL.module_universe, SP.path_for,
+                 LYC.delinks_paths)
+        CDB.REPO, BG.REPO = self.root, self.root
+        BG.MANIFEST = self.root / "config" / "bytegate-known-failures.txt"
+        RL.module_universe = lambda: [(self.sym, "arm9")]
+        SP.path_for = lambda n: (self.root / "src" / f"{n}.c"
+                                 if (self.root / "src" / f"{n}.c").is_file() else None)
+        LYC.delinks_paths = lambda *a, **k: {}
+
+        def restore():
+            (CDB.REPO, BG.REPO, BG.MANIFEST, RL.module_universe, SP.path_for,
+             LYC.delinks_paths) = saved
+        self.addCleanup(restore)
+
+    def generate(self):
+        out = self.root / "db.json"
+        argv = sys.argv
+        sys.argv = ["chaos_db_ci.py", "--out", str(out),
+                    "--contrib-out", str(self.root / "contrib.json")]
+        try:
+            CDB.main()
+        finally:
+            sys.argv = argv
+        db = json.loads(out.read_text(encoding="utf-8"))
+        return {f["name"]: f for f in db["functions"]}, db["stats"]
+
+    def test_a_primitive_carrying_both_banners_counts(self):
+        recs, stats = self.generate()
+        self.assertTrue(recs["primitive"]["matched"])
+        self.assertTrue(recs["primitive"]["handAsm"])
+        self.assertEqual(stats["matchedFunctions"], 2)
+        self.assertEqual(stats["matchedBytes"], 0x10 + 0x20)
+
+    def test_an_ordinary_draft_beside_it_still_does_not_count(self):
+        """The half of the ruling that is a refusal. Ordinary ARM the compiler cannot
+        yet reproduce is an unsolved matching problem, and nothing about a primitive
+        next door changes that."""
+        recs, _ = self.generate()
+        self.assertFalse(recs["draft"]["matched"])
+        self.assertNotIn("handAsm", recs["draft"])
+
+    def test_the_denominator_does_not_move(self):
+        recs, stats = self.generate()
+        self.assertEqual(stats["totalFunctions"], 3)
+        self.assertEqual(stats["totalBytes"], 0x10 + 0x20 + 0x30)
+
+    def test_the_assembly_subset_is_published_beside_the_total(self):
+        _, stats = self.generate()
+        self.assertEqual(stats["handAsmFunctions"], 1)
+        self.assertEqual(stats["handAsmBytes"], 0x20)
+
+    def test_plain_c_is_not_counted_as_assembly(self):
+        """The caption has to shrink as well as grow, or it becomes a label nobody can
+        trust: only a bannered file is in the subset."""
+        recs, stats = self.generate()
+        self.assertTrue(recs["plain"]["matched"])
+        self.assertNotIn("handAsm", recs["plain"])
+        self.assertEqual(stats["handAsmFunctions"], 1)
+
+    def test_a_dcd_transcription_under_both_banners_is_still_refused(self):
+        """The vacuous match, which the ruling does not reopen. `dcd 0x...` emits the
+        word you type, so the file byte-matches by definition; a banner claiming it is
+        a primitive must not buy it a place in the count.
+
+        The refusal comes from counts_as_matched's own dcd clause, not from classify:
+        classify treats any banner as exculpatory and so returns None here, which is why
+        the record carries no `transcribed` flag. That makes the hand-asm exception
+        deliberately stricter than the plain HAND-ASM-only path, where a pool word
+        inside an asm block has always been allowed. Measured when the ruling landed:
+        none of the twenty files it admits carries a dcd word, so the clause costs
+        nothing and closes the obvious laundering route."""
+        put(self.root / "src" / "primitive.c",
+            "// NONMATCHING\n"
+            "// HAND-ASM PRIMITIVE: byte-faithful asm-block match.\n"
+            "asm void f(void) {\n    dcd 0xe92d43f0\n    dcd 0xe12fff1e\n}\n")
+        recs, stats = self.generate()
+        self.assertFalse(recs["primitive"]["matched"])
+        self.assertEqual(stats["handAsmFunctions"], 0)
+        self.assertEqual(stats["matchedFunctions"], 1)
+
+    def test_a_primitive_the_byte_gate_refuses_still_does_not_count(self):
+        """Policy D is upstream of the ruling and stays that way: a source no compiler
+        will build is not evidence, whatever its banner says."""
+        sha = BG.source_hash(self.root / "src" / "primitive.c")
+        BG.MANIFEST.write_text(f"{sha} src/primitive.c will-not-build\n",
+                               encoding="utf-8")
+        recs, stats = self.generate()
+        self.assertFalse(recs["primitive"]["matched"])
+        self.assertEqual(recs["primitive"]["byteGate"], "will-not-build")
+        self.assertEqual(stats["handAsmFunctions"], 0)
+
+
 if __name__ == "__main__":
     unittest.main()
