@@ -486,6 +486,173 @@ class NearMissDbTests(unittest.TestCase):
         self.assertEqual(full["ok"], direct_ok)
 
 
+class EvaluateFullResolverParityTests(unittest.TestCase):
+    """evaluate_full resolves the candidate for the same two shapes LINKCHK2 (#2535)
+    closed in tools/linkcheck.py's byte gate -- the nine ITCM rows NMDB2's whole-DB
+    reeval marked func-absent (extract by exact name found nothing, because that is
+    what a zero-size alias record and a nested entry point both look like to a plain
+    symbol lookup). Shared, not re-derived: bytegate.alias_target_size and
+    reloc_audit.resolve_nested_slice are the exact functions tools/linkcheck.py
+    calls, imported here and there, so a stored divergence can never disagree with a
+    fresh linkcheck run on the same c_source.
+
+    The Unit tests below mock oracle_check/extract_func/alias_target_size/
+    resolve_nested_slice directly and need no compiler at all -- same convention
+    test_linkcheck.py's own AliasSizeSubstitutionUnit / NestedOffsetRebaseUnit use,
+    for the same reason: the WIRING is what these prove, and resolve_nested_slice's
+    own offset arithmetic already has dedicated coverage there (shared code, not
+    re-tested here). RealCompileFixtures below compiles the actual committed
+    src/_dmul.c and src/func_01ff97d8.c and skips if the canonical (2004/b56)
+    compiler is absent, same as tools/test_linkcheck.py's RealCompileFixtures."""
+
+    def _require_compile_stack(self):
+        try:
+            import match
+            import swarm
+        except ImportError as e:
+            self.skipTest(f"capstone/pyelftools not installed: {e}")
+        return match, swarm
+
+    def test_alias_zero_size_row_is_scored_against_its_sized_twin(self):
+        """A zero-size EABI alias row (e.g. _dadd, config size 0 at the same address
+        as the sized primary func_01ff8000): the caller's own target/size are 0
+        bytes -- exactly the shape that used to read func-absent regardless of how
+        correct the source was, because a 0-byte target can never be byte-compared
+        against a nonzero compiled candidate. evaluate_full must resolve the real
+        size the same way linkcheck() does (bytegate.alias_target_size) and re-read
+        the ROM at that length (reverify_corpus.rom_bytes) before comparing -- proven
+        through the REAL match.compare on the resolved bytes, not a stand-in."""
+        M, swarm = self._require_compile_stack()
+        import bytegate
+        import reverify_corpus
+        from unittest import mock
+        real = b"\x01\x00\x00\x00\x02\x00\x00\x00"        # the sized twin's ROM bytes
+        candidate = b"\x01\x00\x00\x00\x03\x00\x00\x00"   # one word off
+        with mock.patch.object(swarm, "oracle_check", return_value=(False, b"fake-obj")), \
+             mock.patch.object(M, "extract_func", return_value=(candidate, set())), \
+             mock.patch.object(bytegate, "alias_target_size", return_value=len(real)) as alt, \
+             mock.patch.object(reverify_corpus, "rom_bytes", return_value=real) as rb:
+            full = NDB.evaluate_full("asm double _dadd(...) { ... }", "_dadd", b"",
+                                     module="itcm", addr=0x01ff8000, size=0)
+        alt.assert_called_once_with("itcm", 0x01ff8000)
+        rb.assert_called_once_with("itcm", 0x01ff8000, len(real))
+        direct_ok, direct_ndiff = M.compare(real, candidate, set(), verbose=False)
+        self.assertEqual(full["divergences"], direct_ndiff)
+        self.assertEqual(full["ok"], direct_ok)
+        self.assertEqual(full["cand_size"], len(candidate))
+
+    def test_alias_row_that_byte_matches_its_sized_twin_reads_zero_and_ok(self):
+        """The MATCH case: once the size is resolved, a byte-exact candidate must
+        read divergences 0 / ok True -- the number reeval treats as bankable."""
+        M, swarm = self._require_compile_stack()
+        import bytegate
+        import reverify_corpus
+        from unittest import mock
+        real = b"\x01\x00\x00\x00\x02\x00\x00\x00"
+        with mock.patch.object(swarm, "oracle_check", return_value=(False, b"fake-obj")), \
+             mock.patch.object(M, "extract_func", return_value=(real, set())), \
+             mock.patch.object(bytegate, "alias_target_size", return_value=len(real)), \
+             mock.patch.object(reverify_corpus, "rom_bytes", return_value=real):
+            full = NDB.evaluate_full("asm double _dadd(...) { ... }", "_dadd", b"",
+                                     module="itcm", addr=0x01ff8000, size=0)
+        self.assertEqual(full["divergences"], 0)
+        self.assertTrue(full["ok"])
+
+    def test_nested_entry_point_is_found_inside_its_containing_symbol(self):
+        """A nested entry point (e.g. func_01ff98f4 inside func_01ff97d8.c's single
+        compiled symbol): `name` has no symbol of its own in the object at all --
+        extract_func(obj, name) and the sole-symbol fallback both miss. evaluate_full
+        must search every symbol the object DOES define for one that CONTAINS
+        name's ROM range, the exact address-anchored resolution
+        reloc_audit.resolve_nested_slice gives tools/linkcheck.py -- shared, not
+        re-derived, so the two can never disagree on which symbol a nested name
+        resolves against."""
+        M, swarm = self._require_compile_stack()
+        import probe_versions
+        import reloc_audit
+        from unittest import mock
+        container_code = b"\x11" * 0x10 + b"\x01\x00\x00\x00"   # nested func at +0x10
+        sliced = container_code[0x10:0x14]
+        target = b"\x02\x00\x00\x00"                             # one word off
+
+        def fake_extract(obj, sym):
+            if sym == "func_01ff98f4":
+                return None, None                # absent from the object by that name
+            return container_code, set()          # the containing symbol's full body
+
+        with mock.patch.object(swarm, "oracle_check", return_value=(False, b"fake-obj")), \
+             mock.patch.object(M, "extract_func", side_effect=fake_extract), \
+             mock.patch.object(M, "sole_func_symbol", return_value=None), \
+             mock.patch.object(probe_versions, "funcs_in",
+                               return_value={"func_01ff97d8": b""}), \
+             mock.patch.object(reloc_audit, "resolve_nested_slice",
+                               return_value=(sliced, set(), 0x10)) as rns:
+            full = NDB.evaluate_full("//asm container", "func_01ff98f4", target,
+                                     module="itcm", addr=0x01ff98f4, size=4, name_index={})
+        rns.assert_called_once_with("func_01ff97d8", container_code, set(),
+                                    0x01ff98f4, 4, {})
+        direct_ok, direct_ndiff = M.compare(target, sliced, set(), verbose=False)
+        self.assertEqual(full["divergences"], direct_ndiff)
+        self.assertEqual(full["ok"], direct_ok)
+        self.assertEqual(full["resolved"], "func_01ff97d8")
+
+    def test_no_container_found_still_reads_func_absent(self):
+        """No symbol in the object contains name's range either (resolve_nested_slice
+        returns None for every candidate): the row stays func-absent, same as before
+        this change -- the search must not fabricate a container that is not there."""
+        M, swarm = self._require_compile_stack()
+        import probe_versions
+        import reloc_audit
+        from unittest import mock
+        with mock.patch.object(swarm, "oracle_check", return_value=(False, b"fake-obj")), \
+             mock.patch.object(M, "extract_func", return_value=(None, None)), \
+             mock.patch.object(M, "sole_func_symbol", return_value=None), \
+             mock.patch.object(probe_versions, "funcs_in", return_value={}), \
+             mock.patch.object(reloc_audit, "resolve_nested_slice", return_value=None):
+            full = NDB.evaluate_full("", "func_01ff8df8", b"\x00" * 24,
+                                     module="itcm", addr=0x01ff8df8, size=24)
+        self.assertIsNone(full["divergences"])
+        self.assertEqual(full["status"], "func-absent")
+
+
+@unittest.skipUnless(
+    (TOOLS / "mwccarm" / "2004" / "b56" / "mwccarm.exe").is_file(),
+    "canonical (2004/b56) mwccarm not present")
+class RealCompileResolverFixtures(unittest.TestCase):
+    """Real compiles of the two committed sources tools/test_linkcheck.py's own
+    RealCompileFixtures were written for, run through evaluate_full instead of
+    linkcheck() -- proving the near-miss evaluator and the byte gate now agree on
+    both shapes using the SAME committed source, not just on mocked wiring."""
+
+    def test_dmul_scores_zero_when_evaluated_under_its_alias_row_shape(self):
+        """src/_dmul.c, fed to evaluate_full as if it were a near-miss row's own
+        c_source with the row's zero-declared size (the alias shape), must resolve
+        to the sized twin's real length and read a byte-exact MATCH -- divergences 0,
+        ok True -- the number reeval treats as bankable."""
+        import match as M
+        src = (TOOLS.parent / "src" / "_dmul.c").read_text(encoding="utf-8")
+        full = NDB.evaluate_full(src, "_dmul", b"", module="itcm", addr=0x01ff8708, size=0)
+        self.assertEqual(full["divergences"], 0)
+        self.assertTrue(full["ok"])
+
+    def test_nested_entry_point_scores_zero_from_the_containing_source(self):
+        """src/func_01ff97d8.c compiles to ONE ELF symbol, "func_01ff97d8", 0xb6c
+        bytes; func_01ff98f4 (config size 0xb0) has no symbol of its own anywhere in
+        that object. Fed to evaluate_full as func_01ff98f4's own c_source (the
+        nested shape: a stored near-miss draft that is really the whole containing
+        block), it must slice the containing symbol's compiled body at the right
+        address-resolved offset and read a byte-exact MATCH."""
+        import match as M
+        import reverify_corpus as RV
+        src = (TOOLS.parent / "src" / "func_01ff97d8.c").read_text(encoding="utf-8")
+        target = RV.rom_bytes("itcm", 0x01ff98f4, 0xb0)
+        full = NDB.evaluate_full(src, "func_01ff98f4", target,
+                                 module="itcm", addr=0x01ff98f4, size=0xb0)
+        self.assertEqual(full["divergences"], 0)
+        self.assertTrue(full["ok"])
+        self.assertEqual(full["resolved"], "func_01ff97d8")
+
+
 class EvalPinGuardTests(unittest.TestCase):
     """The committed evaluator pin must agree with the live evaluator.
 

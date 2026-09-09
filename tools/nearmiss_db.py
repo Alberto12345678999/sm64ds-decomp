@@ -216,7 +216,21 @@ def _trim_error(text, limit=240):
     return text[:limit] if text else "compile failed (no diagnostic captured)"
 
 
-def evaluate_full(src, name, target):
+_NAME_INDEX_CACHE = None
+
+
+def _name_index():
+    """Lazy, process-wide cache of reloc_audit.build_name_index() (a scan of every
+    committed symbols.txt) -- expensive enough that evaluate_full must not rebuild
+    it per row when reeval/bank-matches call it hundreds of times in one pass."""
+    global _NAME_INDEX_CACHE
+    if _NAME_INDEX_CACHE is None:
+        import reloc_audit as RA
+        _NAME_INDEX_CACHE = RA.build_name_index()
+    return _NAME_INDEX_CACHE
+
+
+def evaluate_full(src, name, target, module=None, addr=None, size=None, name_index=None):
     """Evaluate a candidate against the target bytes with the live evaluator. Returns
       {divergences, ok, cand_size, status, error}
     divergences  count of differing WORDS (reloc-wildcarded) -- tools/match.py's own
@@ -241,7 +255,27 @@ def evaluate_full(src, name, target):
     renames the row to the C++ symbol while the source still spells func_<addr>), and
     the repo's substitution-compressed manglings are not the spelling mwccarm emits.
     Both look identical to an exact-string lookup and both demote a perfectly good,
-    often size-exact seed to last place in every worklist. See match.sole_func_symbol."""
+    often size-exact seed to last place in every worklist. See match.sole_func_symbol.
+
+    module/addr/size/name_index (all optional; every existing caller that omits them
+    keeps the exact behavior above unchanged) let evaluate_full resolve the candidate
+    the same way tools/linkcheck.py's byte gate does, for the same two shapes
+    LINKCHK2 (#2535) closed there -- shared, not re-derived, so a stored row can never
+    disagree with a fresh linkcheck run on its own c_source:
+      * zero-size EABI alias (size == 0, e.g. _dadd at 0x01ff8000): the row's own
+        declared size is a second name for a differently-named, correctly-sized
+        primary at the SAME address (func_01ff8000, size 0x59c) -- nothing compiles
+        to 0 bytes, so a 0-byte target could never be byte-compared.
+        bytegate.alias_target_size finds the sized twin's real length; `target` and
+        `size` are both replaced with it (reverify_corpus.rom_bytes re-reads the ROM
+        at the corrected length) before extraction or comparison.
+      * nested entry point: `name` has no symbol of its own in the compiled object at
+        all -- a hand-asm block packs several ROM functions into ONE compiled symbol
+        (see func_01ff97d8.c: 0xb6c bytes, five more ROM addresses inside). When the
+        exact-name lookup and the sole-symbol fallback both miss, every function the
+        object DOES define is checked for one that CONTAINS name's ROM range,
+        resolved by address (reloc_audit.resolve_nested_slice) -- never by scanning
+        source text for a label."""
     import contextlib
     import io
     import match as M
@@ -249,6 +283,14 @@ def evaluate_full(src, name, target):
     unscorable = {"divergences": None, "ok": False, "cand_size": None}
     chat = io.StringIO()
     resolved = None
+    if size == 0 and module is not None and addr is not None:
+        import bytegate as BG
+        alt = BG.alias_target_size(module, addr)
+        if alt:
+            import reverify_corpus as RV
+            rebased = RV.rom_bytes(module, addr, alt)
+            if rebased is not None:
+                target, size = rebased, alt
     try:
         with contextlib.redirect_stdout(chat):    # compile_c prints; capture the detail
             _, obj = S.oracle_check(src, name, target)
@@ -261,6 +303,32 @@ def evaluate_full(src, name, target):
             resolved = M.sole_func_symbol(obj)
             if resolved is not None:
                 cand, crel = M.extract_func(obj, resolved)
+                if size and cand is not None and len(cand) != size:
+                    # The object's one function is a CONTAINER (a nested entry
+                    # point -- func_01ff97d8.c's whole 0xb6c-byte body is exactly
+                    # this shape), not a renamed/mangled copy of `name` itself: a
+                    # genuine rename compiles to `name`'s own length by
+                    # construction, since it IS that function under another
+                    # spelling. Undo the guess and let the nested-container search
+                    # below resolve it by address instead of reporting a false
+                    # size mismatch under the wrong resolved name.
+                    cand, crel, resolved = None, None, None
+        if cand is None and addr is not None and size:
+            # Neither the exact name nor the sole-symbol fallback found it: try every
+            # function the object DOES define as a possible CONTAINER (see
+            # reloc_audit.resolve_nested_slice).
+            import probe_versions as PV
+            import reloc_audit as RA
+            idx = name_index if name_index is not None else _name_index()
+            for sym in PV.funcs_in(obj):
+                full_code, full_relocs = M.extract_func(obj, sym)
+                if full_code is None:
+                    continue
+                sliced = RA.resolve_nested_slice(sym, full_code, full_relocs, addr, size, idx)
+                if sliced is not None:
+                    cand, crel, _off = sliced
+                    resolved = sym
+                    break
     except Exception as e:                        # malformed object, ELF parse crash, ...
         return dict(unscorable, status="noncompile",
                     error=_trim_error(f"{type(e).__name__}: {e}"))
@@ -564,7 +632,8 @@ def ingest(args):
             # 2026-07-12). Skip before the expensive evaluate().
             drops.append(key)
             continue
-        full = evaluate_full(src, name, bytes.fromhex(thex))
+        full = evaluate_full(src, name, bytes.fromhex(thex),
+                             module=mod, addr=L.norm_addr(addr), size=size)
         if full["divergences"] is None or full["ok"]:   # broken seed, or already a match; skip
             continue
         rec = {"module": mod, "addr": addr, "name": name, "size": size,
@@ -884,7 +953,8 @@ def bank_matches(args):
     for key, r in list(db.items()):
         if _is_manual(r):
             continue
-        full = evaluate_full(r["c_source"], r["name"], bytes.fromhex(r["target_hex"]))
+        full = evaluate_full(r["c_source"], r["name"], bytes.fromhex(r["target_hex"]),
+                             module=r["module"], addr=L.norm_addr(r["addr"]), size=r["size"])
         div, ok = full["divergences"], full["ok"]
         if ok and not getattr(args, "no_strict", False):
             # the byte oracle wildcards reloc slots; refuse a draft whose relocations
@@ -961,6 +1031,7 @@ def reeval(args):
         sys.exit(f"reeval: canonical compiler {M.CANONICAL} is not installed at {exe}; "
                  f"a pass without it would mark every row noncompiling")
     db = load_db()
+    name_idx = _name_index()   # built once for the whole pass, not once per row
     manual_items = [(k, r) for k, r in db.items() if _is_manual(r)]
     held = len(manual_items)
     order = sorted((kv for kv in db.items() if not _is_manual(kv[1])),
@@ -968,7 +1039,9 @@ def reeval(args):
     results, n = {}, len(order)
     same = drifted = broke = recovered = bankable = 0
     for i, (key, r) in enumerate(order, 1):
-        full = evaluate_full(r["c_source"], r["name"], bytes.fromhex(r["target_hex"]))
+        full = evaluate_full(r["c_source"], r["name"], bytes.fromhex(r["target_hex"]),
+                             module=r["module"], addr=L.norm_addr(r["addr"]), size=r["size"],
+                             name_index=name_idx)
         results[key] = (r["c_source"], full)
         old, new = r.get("divergences"), full["divergences"]
         label = f"[{i}/{n}] {r['module']:6} {r['name'][:46]:46}"
@@ -996,7 +1069,9 @@ def reeval(args):
     # hold on its own) without ever silently overwriting one that still disagrees.
     manual_results, released = {}, 0
     for i, (key, r) in enumerate(manual_items, 1):
-        full = evaluate_full(r["c_source"], r["name"], bytes.fromhex(r["target_hex"]))
+        full = evaluate_full(r["c_source"], r["name"], bytes.fromhex(r["target_hex"]),
+                             module=r["module"], addr=L.norm_addr(r["addr"]), size=r["size"],
+                             name_index=name_idx)
         manual_results[key] = (r["c_source"], full)
         label = f"[manual {i}/{held}] {r['module']:6} {r['name'][:46]:46}"
         if _manual_hold_releasable(r, full):
