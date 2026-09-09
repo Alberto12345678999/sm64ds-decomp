@@ -214,6 +214,79 @@ class AliasCollisions(unittest.TestCase):
         self.assertEqual(CDB.alias_collision_addresses(), set())
 
 
+class AliasNames(unittest.TestCase):
+    """The names an aliased address carries, not just the address.
+
+    A source file is filed under the name its author knew the function by, and for
+    every aliased address in this tree that is the ALIAS -- src/_dmul.c holds the
+    1,776 bytes the symbol table calls func_01ff8708. Asked only about the sized
+    record's own name, srcpath finds nothing and four byte-exact ITCM primitives read
+    as never attempted."""
+
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.root = pathlib.Path(self.tmp.name)
+        self.addCleanup(self.tmp.cleanup)
+        self._saved = RL.module_universe
+
+    def universe(self, text, label="itcm"):
+        p = self.root / "symbols.txt"
+        p.write_text(text, encoding="utf-8")
+        RL.module_universe = lambda: [(p, label)]
+        self.addCleanup(lambda: setattr(RL, "module_universe", self._saved))
+
+    def test_the_alias_name_is_returned_for_the_shared_address(self):
+        self.universe(
+            "func_01ff8708 kind:function(arm,size=0x6f0) addr:0x01ff8708\n"
+            "_dmul kind:function(arm,size=0x0) addr:0x01ff8708\n")
+        self.assertEqual(BG.alias_names(),
+                         {("itcm", 0x01ff8708): ["_dmul"]})
+
+    def test_the_sized_name_is_never_one_of_the_aliases(self):
+        """The sized record is the thing being named, not a name for something else.
+        Returning it here would let a caller resolve a source for the wrong symbol."""
+        self.universe(
+            "func_01ff8708 kind:function(arm,size=0x6f0) addr:0x01ff8708\n"
+            "_dmul kind:function(arm,size=0x0) addr:0x01ff8708\n")
+        self.assertNotIn("func_01ff8708", BG.alias_names()[("itcm", 0x01ff8708)])
+
+    def test_several_aliases_on_one_address_are_all_returned(self):
+        self.universe(
+            "func_01ffa9dc kind:function(arm,size=0xc) addr:0x01ffa9dc\n"
+            "_ll_udiv kind:function(arm,size=0x0) addr:0x01ffa9dc\n"
+            "__aeabi_uldiv2 kind:function(arm,size=0x0) addr:0x01ffa9dc\n")
+        self.assertEqual(sorted(BG.alias_names()[("itcm", 0x01ffa9dc)]),
+                         ["__aeabi_uldiv2", "_ll_udiv"])
+
+    def test_a_lone_zero_size_symbol_contributes_no_name(self):
+        """The same asymmetry the address set has: a zero-size symbol nothing shares
+        is real outstanding work, not a second name for anything."""
+        self.universe("_solo kind:function(arm,size=0x0) addr:0x01ff9000\n")
+        self.assertEqual(BG.alias_names(), {})
+
+    def test_the_address_set_is_exactly_the_keys_of_the_name_map(self):
+        """One derivation, two views. They were separate walks of the same config for
+        one commit and that is one walk too many: a fix to either could have moved the
+        numerator and the denominator apart."""
+        self.universe(
+            "func_01ff8708 kind:function(arm,size=0x6f0) addr:0x01ff8708\n"
+            "_dmul kind:function(arm,size=0x0) addr:0x01ff8708\n"
+            "_solo kind:function(arm,size=0x0) addr:0x01ff9000\n"
+            "plain kind:function(arm,size=0x40) addr:0x01ff9100\n")
+        self.assertEqual(BG.alias_collision_addresses(), set(BG.alias_names()))
+
+
+class RealAliasNames(unittest.TestCase):
+    """Against the committed config, so the four ITCM rows this unblocked stay named."""
+
+    def test_the_committed_aliases_carry_the_names_their_sources_use(self):
+        names = BG.alias_names()
+        self.assertEqual(names.get(("itcm", 0x01ff8708)), ["_dmul"])
+        self.assertEqual(names.get(("itcm", 0x01ffabe4)), ["_s32_div_f"])
+        self.assertEqual(names.get(("itcm", 0x01ffadf0)), ["_u32_div_f"])
+        self.assertEqual(names.get(("itcm", 0x01ffaa34)), ["_ll_sdiv"])
+
+
 class ZeroSizeAliasPredicate(unittest.TestCase):
     """is_zero_size_alias, on its own.
 
@@ -522,6 +595,83 @@ class HandAsmCounting(unittest.TestCase):
         self.assertFalse(recs["primitive"]["matched"])
         self.assertEqual(recs["primitive"]["byteGate"], "will-not-build")
         self.assertEqual(stats["handAsmFunctions"], 0)
+
+
+class AliasSourceFallback(unittest.TestCase):
+    """A sized record whose source is filed under its ALIAS still finds it.
+
+    src/_dmul.c decompiles the 1,776 bytes the symbol table calls func_01ff8708, and a
+    lookup by the sized record's own name finds nothing at all. Four byte-exact ITCM
+    primitives read as never attempted for that reason alone."""
+
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.root = pathlib.Path(self.tmp.name)
+        self.addCleanup(self.tmp.cleanup)
+        (self.root / "src").mkdir()
+        (self.root / "config").mkdir()
+        self.sym = self.root / "config" / "symbols.txt"
+        self.sym.write_text(
+            "func_01ff8708 kind:function(arm,size=0x6f0) addr:0x01ff8708\n"
+            "_dmul kind:function(arm,size=0x0) addr:0x01ff8708\n"
+            "func_01ff9000 kind:function(arm,size=0x40) addr:0x01ff9000\n",
+            encoding="utf-8")
+        put(self.root / "src" / "_dmul.c", FIXED)
+
+        def git(*a):
+            subprocess.run(["git", *a], cwd=self.root, check=True, capture_output=True)
+        git("init", "-q", "-b", "main")
+        git("config", "user.email", "matcher@example.com")
+        git("config", "user.name", "matcher")
+        git("add", "-A")
+        git("commit", "-q", "-m", "seed")
+
+        saved = (CDB.REPO, BG.REPO, BG.MANIFEST, RL.module_universe, SP.path_for,
+                 LYC.delinks_paths)
+        CDB.REPO, BG.REPO = self.root, self.root
+        BG.MANIFEST = self.root / "config" / "bytegate-known-failures.txt"
+        RL.module_universe = lambda: [(self.sym, "itcm")]
+        SP.path_for = lambda n: (self.root / "src" / f"{n}.c"
+                                 if (self.root / "src" / f"{n}.c").is_file() else None)
+        LYC.delinks_paths = lambda *a, **k: {}
+
+        def restore():
+            (CDB.REPO, BG.REPO, BG.MANIFEST, RL.module_universe, SP.path_for,
+             LYC.delinks_paths) = saved
+        self.addCleanup(restore)
+
+    def generate(self):
+        out = self.root / "db.json"
+        argv = sys.argv
+        sys.argv = ["chaos_db_ci.py", "--out", str(out),
+                    "--contrib-out", str(self.root / "contrib.json")]
+        try:
+            CDB.main()
+        finally:
+            sys.argv = argv
+        db = json.loads(out.read_text(encoding="utf-8"))
+        return {f["name"]: f for f in db["functions"]}, db["stats"]
+
+    def test_the_sized_record_picks_up_the_alias_source(self):
+        recs, stats = self.generate()
+        self.assertTrue(recs["func_01ff8708"]["matched"])
+        self.assertTrue(recs["func_01ff8708"]["srcPath"].endswith("_dmul.c"))
+        self.assertEqual(stats["matchedFunctions"], 1)
+
+    def test_the_alias_record_itself_is_still_dropped(self):
+        """The body is counted once, under the record that has a length. Counting the
+        pair would ask the project to match the same bytes twice."""
+        recs, stats = self.generate()
+        self.assertNotIn("_dmul", recs)
+        self.assertEqual(stats["totalFunctions"], 2)
+
+    def test_a_record_with_no_source_under_any_of_its_names_stays_unmatched(self):
+        """The fallback resolves names, it does not invent evidence. Nine of the
+        thirteen unmatched ITCM rows have no source in the tree under any name and are
+        left exactly where they were."""
+        recs, _ = self.generate()
+        self.assertFalse(recs["func_01ff9000"]["matched"])
+        self.assertNotIn("srcPath", recs["func_01ff9000"])
 
 
 if __name__ == "__main__":

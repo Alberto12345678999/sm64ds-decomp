@@ -545,6 +545,10 @@ def main():
     # The byte-gate-failure class, both halves, read once for the same reason. See the
     # `matched` conjunct below and tools/bytegate.py.
     alias_addrs = alias_collision_addresses()
+    # Same eight addresses, keyed to the names the aliases carry, so a sized record
+    # whose source is filed under its alias can find it.  Derived from the same
+    # committed config, in one pass, for the same reason the set above is.
+    alias_srcnames = BG.alias_names(RL.module_universe)
     wont_build = BG.excluded_paths()
     bytegate_n = collections.Counter()
     enrollment_n = collections.Counter()
@@ -569,6 +573,18 @@ def main():
                 alias_dropped += 1
                 continue
             f = SP.path_for(name)
+            if f is None:
+                # An aliased address files its source under whichever name the author
+                # knew the function by, which in this tree is the ALIAS: src/_dmul.c
+                # decompiles the bytes the symbol table calls func_01ff8708. Asked only
+                # about the sized record's own name, the lookup finds nothing and four
+                # byte-exact ITCM primitives read as never attempted. The zero-size
+                # record is still dropped above, so this attaches the source to the one
+                # record that survives rather than counting the pair twice.
+                for alt in alias_srcnames.get((label, addr), ()):
+                    f = SP.path_for(alt)
+                    if f is not None:
+                        break
             src_path = f.relative_to(REPO).as_posix() if f else None
             text = f.read_text(errors="ignore") if f else ""
             # The settled tag lives in the banner, and banners drift downward as the
