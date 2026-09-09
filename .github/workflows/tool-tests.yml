@@ -287,10 +287,27 @@ jobs:
 #                                      ledger behind every banked match. (2 skip)
 #   test_message_bank            (5)   message_bank.py -- message-bank export/rebuild
 #                                      must round-trip to the exact original bytes.
-#   test_nearmiss_db             (30)   nearmiss_db.py -- the persistent near-miss DB, so
+#   test_nearmiss_db             (41)   nearmiss_db.py -- the persistent near-miss DB, so
 #                                      close attempts are never thrown away, plus the
 #                                      eval-pin guard: stored divergences are only
 #                                      comparable while their evaluator still exists.
+#                                      +7 (run link100, 2026-09-09): set-divergence, the
+#                                      hand-correction escape hatch for a row the live
+#                                      evaluator undercounts relative to tools/match.py's
+#                                      positional diff, and the reeval/bank-matches hold
+#                                      it needs to survive a re-score (was 21 documented
+#                                      here / 23 actual before this change).
+#                                      +11 (run link100, 2026-09-09): evaluate_full's
+#                                      divergence count is now tools/match.py's own
+#                                      compare() (METRIC_REV 2), not a second, separate
+#                                      SequenceMatcher-based diff that disagreed with it
+#                                      on a pure instruction reorder -- the actual bug
+#                                      set-divergence above exists to patch around.
+#                                      New: fix-refs (the check-refs dead-reference
+#                                      repair), the manual-hold auto-release reeval now
+#                                      runs every pass, apply_eval up/down coverage, and
+#                                      the match.py rotation-parity fixture (was 30
+#                                      documented here / 30 actual before this change).
 #   test_pgate                    (7)   pgate.py -- prepush_linkcheck.py's threaded
 #                                      twin resolves a file to every function its
 #                                      committed delinks.txt range owns the same way,
@@ -298,13 +315,6 @@ jobs:
 #                                      consolidated TU gets one job per function in a
 #                                      parallel sweep instead of one blanket NO-SYM. No
 #                                      ROM, no compiler; srcpath/load_symbol_fn/
-#                                      run_linkcheck are mocked throughout.
-#                                      +7 (run link100, 2026-09-09): set-divergence, the
-#                                      hand-correction escape hatch for a row the live
-#                                      evaluator undercounts relative to tools/match.py's
-#                                      positional diff, and the reeval/bank-matches hold
-#                                      it needs to survive a re-score (was 21 documented
-#                                      here / 23 actual before this change).
 #                                      run_linkcheck are mocked throughout, except one
 #                                      test that leaves load_symbol_fn real to prove an
 #                                      ITCM-housed symbol resolves through the actual
