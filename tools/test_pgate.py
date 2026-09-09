@@ -82,6 +82,33 @@ class Main(unittest.TestCase):
                                   "module": "arm9", "addr": "0x205a61c",
                                   "verdict": "VERIFIED", "blind": 0}])
 
+    def test_itcm_housed_symbol_resolves_through_the_real_load_symbol(self):
+        """`load_symbol_fn()` is intentionally left UNMOCKED here -- every other test in
+        this class stands in for it, which proves the per-function job dispatch but never
+        exercises the real resolver (stamp_provenance.load_symbol -> relocs.module_universe)
+        this gate actually ships. That resolver used to walk config/ with a regex that only
+        recognized a directory named arm9, arm7, or arm9/overlays/ovNNN, so every
+        ITCM-housed symbol -- OSReadROMArea, a real one -- read NO-SYM here regardless of
+        `symbols_for`, because the module lookup itself, not the file-to-function mapping,
+        was blind to config/arm9/itcm/symbols.txt. Only `run_linkcheck` (the compiler/
+        linker subprocess) is mocked; symbol resolution reads the real, committed
+        config/arm9/itcm/symbols.txt, so this is stdlib-only and needs no toolchain --
+        same fixture as prepush_linkcheck.py's twin of this test, proving the two gates
+        resolve the real ITCM symbol identically, not just the mocked ones."""
+        out_path = tempfile.mktemp(suffix=".json")
+        argv = ["pgate.py", "--out", out_path, "--jobs", "1", "src/OSReadROMArea.c"]
+        with mock.patch.object(PG.srcpath, "symbols_for", return_value=["OSReadROMArea"]), \
+             mock.patch.object(PG, "run_linkcheck",
+                               _linkcheck_table({"OSReadROMArea": ("VERIFIED", 0)})), \
+             mock.patch.object(sys, "argv", argv):
+            code = PG.main()
+        rows = json.loads(pathlib.Path(out_path).read_text())
+        pathlib.Path(out_path).unlink(missing_ok=True)
+        self.assertEqual(rows, [{"file": "src/OSReadROMArea.c", "name": "OSReadROMArea",
+                                  "module": "itcm", "addr": "0x1ffdbd8",
+                                  "verdict": "VERIFIED", "blind": 0}])
+        self.assertEqual(code, 0)
+
     def test_consolidated_tu_gets_one_job_per_owned_function(self):
         """The case this whole change exists for: a merged TU's stem names nothing, but
         the enrolment table lists every function it owns. Same fixture as
