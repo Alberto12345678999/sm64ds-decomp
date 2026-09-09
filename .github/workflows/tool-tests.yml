@@ -205,6 +205,7 @@ jobs:
             tools.test_match_provenance \
             tools.test_message_bank \
             tools.test_nearmiss_db \
+            tools.test_pgate \
             tools.test_premerge_check \
             tools.test_prepush_linkcheck \
             tools.test_profile_reconstruction \
@@ -269,6 +270,14 @@ jobs:
 #                                      close attempts are never thrown away, plus the
 #                                      eval-pin guard: stored divergences are only
 #                                      comparable while their evaluator still exists.
+#   test_pgate                    (6)   pgate.py -- prepush_linkcheck.py's threaded
+#                                      twin resolves a file to every function its
+#                                      committed delinks.txt range owns the same way,
+#                                      via the same imported srcpath.symbols_for, so a
+#                                      consolidated TU gets one job per function in a
+#                                      parallel sweep instead of one blanket NO-SYM. No
+#                                      ROM, no compiler; srcpath/load_symbol_fn/
+#                                      run_linkcheck are mocked throughout.
 #   test_premerge_check         (87)   premerge_check.py -- runs the static gates on
 #                                      the git merge-tree RESULT, the one tree no CI
 #                                      job ever builds. Pure functions over verdict
