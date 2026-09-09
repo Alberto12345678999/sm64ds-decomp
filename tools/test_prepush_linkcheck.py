@@ -111,6 +111,25 @@ class Verify(unittest.TestCase):
         self.assertEqual(rows, [{"file": "src/func_0209aaaa.c", "name": "func_0209aaaa",
                                   "verdict": "NO-SYM", "note": "no symbol entry"}])
 
+    def test_itcm_housed_symbol_resolves_through_the_real_load_symbol(self):
+        """`_load_symbol` is intentionally left UNMOCKED here -- every other test in this
+        class stands in for it, which proves the row-per-function plumbing but never
+        exercises the real resolver (stamp_provenance.load_symbol -> relocs.module_universe)
+        this gate actually ships. That resolver used to walk config/ with a regex that only
+        recognized a directory named arm9, arm7, or arm9/overlays/ovNNN, so every ITCM-
+        housed symbol -- OSReadROMArea real one among them -- read NO-SYM here regardless
+        of `symbols_for`, because the module lookup itself, not the file-to-function
+        mapping, was blind to config/arm9/itcm/symbols.txt. Only `_run_linkcheck` (the
+        compiler/linker subprocess) is mocked; symbol resolution reads the real, committed
+        config/arm9/itcm/symbols.txt, so this is stdlib-only and needs no toolchain."""
+        with mock.patch.object(PL.srcpath, "symbols_for", return_value=["OSReadROMArea"]), \
+             mock.patch.object(PL, "_run_linkcheck",
+                               _linkcheck_table({"OSReadROMArea": ("VERIFIED", 0, [])})):
+            rows = PL.verify("src/OSReadROMArea.c")
+        self.assertEqual(rows, [{"file": "src/OSReadROMArea.c", "name": "OSReadROMArea",
+                                  "module": "itcm", "addr": "0x1ffdbd8",
+                                  "verdict": "VERIFIED", "blind": 0, "diffs": []}])
+
     def test_error_is_retried_once_per_function_not_once_per_file(self):
         calls = {"n": 0}
 
