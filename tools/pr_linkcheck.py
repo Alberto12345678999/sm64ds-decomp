@@ -284,6 +284,13 @@ def source_policy(worst, text):
     WRONG (a resolvable reloc pointing at the wrong symbol) still fails -- a draft's
     call graph must be honest even if its bytes differ.
 
+    The test is `not asm_policy.counts_as_matched`, not `has_draft_banner`, because
+    those two stopped meaning the same thing on 2026-09-09. Twenty hand-written
+    assembly primitives carry the word NONMATCHING inside a note that says there is no
+    C to chase, and they DO count now -- so the sentence above, "chaos-db counts it as
+    unmatched", is exactly the condition to ask about, and asking the older question
+    would hand a counted match the downgrade that exists for uncounted drafts.
+
     The draft downgrade cannot collide with the transcription check: a transcription
     has no banner by definition, because a NONMATCHING banner reclassifies it as an
     honest draft (asm_policy.classify returns None for it).
@@ -294,7 +301,7 @@ def source_policy(worst, text):
     NO-REPRO -- and then the validator died on a NameError mid-loop, reporting "worker
     error" instead of grading the file. Untestable because inline, so untested.
     """
-    if worst == "NO-REPRO" and AP.has_draft_banner(text):
+    if worst == "NO-REPRO" and text and not AP.counts_as_matched(text):
         return "DRAFT"
     if AP.classify(text) == "transcribed":
         return "RAW-ASM"
