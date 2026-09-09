@@ -260,6 +260,34 @@ def _as_the_build_links_it(obj, name):
         return obj
 
 
+def resolve_nested_slice(sym, code, relocs, addr, size, name_index):
+    """If `name`'s ROM range [addr, addr+size) is not `sym`'s own compiled length but
+    lies fully WITHIN it -- a hand-asm block packing several ROM functions into one
+    compiled symbol (see func_01ff97d8.c: 0xb6c bytes, five more ROM addresses
+    inside) -- resolve `sym`'s own ROM address the same way every reloc destination
+    is resolved (func_<addr> name, else symbols.txt via name_index) and slice by
+    address arithmetic against that -- never by scanning the source text for a
+    label, which this source does not reliably carry (func_01ff97d8.c's own labels
+    are offsets from ITS base, spelled `_L<hex>`, not the nested functions' names or
+    addresses).
+
+    Returns (sliced_code, sliced_relocs, offset), or None if `sym` does not contain
+    the range -- including when `size` is 0 (a zero-size alias record; that shape is
+    resolved by bytegate.alias_target_size against the TARGET side, not by searching
+    for a container here).
+
+    Shared by winning_object (compiling every source candidate fresh, per version)
+    and nearmiss_db.evaluate_full (scoring one already-compiled near-miss draft), so
+    the two can never resolve a nested name differently from each other."""
+    res = resolve_candidate(sym, name_index or {})
+    sym_addr = res[1] if res else None
+    if (sym_addr is None or not size
+            or not (sym_addr <= addr and addr + size <= sym_addr + len(code))):
+        return None
+    off = addr - sym_addr
+    return code[off:off + size], {r - off for r in relocs if off <= r < off + size}, off
+
+
 def winning_object(name, addr, size, mod, candidate=None, include_dirs=(), name_index=None):
     """Reproduce the match the way reverify does, but return the object that did it.
 
@@ -360,25 +388,13 @@ def winning_object(name, addr, size, mod, candidate=None, include_dirs=(), name_
                                 tgt = ext
                             else:
                                 # NESTED ENTRY POINT: `sym` may CONTAIN `name`'s ROM range
-                                # rather than equal or merely overhang it -- a hand-asm block
-                                # packing several ROM functions into one compiled symbol (see
-                                # func_01ff97d8.c: 0xb6c bytes, five more ROM addresses inside).
-                                # Resolve `sym`'s own ROM address the same way every reloc
-                                # destination is resolved (func_<addr> name, else symbols.txt
-                                # via name_index) and slice by address arithmetic against that
-                                # -- never by scanning the source text for a label, which this
-                                # source does not reliably carry (func_01ff97d8.c's own labels
-                                # are offsets from ITS base, spelled `_L<hex>`, not the nested
-                                # functions' names or addresses).
-                                res = resolve_candidate(sym, name_index or {})
-                                sym_addr = res[1] if res else None
-                                if (sym_addr is None or size == 0
-                                        or not (sym_addr <= addr
-                                                and addr + size <= sym_addr + len(code))):
+                                # rather than equal or merely overhang it -- see
+                                # resolve_nested_slice for the address-anchored resolution.
+                                sliced = resolve_nested_slice(sym, code, relocs, addr, size,
+                                                              name_index)
+                                if sliced is None:
                                     continue
-                                off = addr - sym_addr
-                                code = code[off:off + size]
-                                relocs = {r - off for r in relocs if off <= r < off + size}
+                                code, relocs, off = sliced
                         saw_len = True
                         ok, _ = M.compare(tgt, code, relocs, verbose=False)
                         if ok:
