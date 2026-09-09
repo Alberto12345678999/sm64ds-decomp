@@ -207,7 +207,12 @@ def check_file(path, idx, ledger):
         # ordinary one-function sources this is exactly one call, as before.
         obj = wsym = None
         for addr, size, mod in slots:
-            obj, wsym, _ = RA.winning_object(sym, addr, size, mod)
+            # offset discarded: this caller pre-supplies obj/sym straight into
+            # LC.linkcheck below rather than letting it call winning_object itself, so
+            # a nonzero nested-entry-point offset has nowhere to go here. Unaffected
+            # for the ordinary one-symbol-per-object case this loop was built for;
+            # see tools/linkcheck.py's own winning_object call for the nested path.
+            obj, wsym, _, _off = RA.winning_object(sym, addr, size, mod, name_index=_NAME_INDEX)
             if obj is not None:
                 break
         for addr, size, mod in slots:

@@ -243,10 +243,25 @@ def linkcheck(name, addr, size, mod, name_index, candidate=None, include_dirs=()
     checks the reproduced bytes. A caller that already holds the compiled object -- e.g.
     pr_linkcheck checking a compiler-emitted passenger (a this-adjusting thunk or a weak
     dtor/ctor copy) that has no source file of its own -- passes obj=<object bytes> and
-    sym=<symbol to extract> so the symbol is link-checked straight from that object."""
+    sym=<symbol to extract> so the symbol is link-checked straight from that object.
+
+    A zero-size `size` is an EABI alias name for a differently-named, correctly-sized
+    primary function at the same address (e.g. _dmul, size 0, aliasing func_01ff8708,
+    size 0x6f0) -- nothing compiles to 0 bytes, so a zero-size target could never be
+    byte-compared and every alias used to read NO-SYM regardless of its source. Verify
+    against the sized twin's real range instead, still reported under the requested
+    (alias) name; bytegate.alias_target_size is the one place that lookup is made, the
+    same scan progress.py's own matched-count already trusts for this address shape."""
     import reverify_corpus as RV
+    if size == 0:
+        import bytegate as BG
+        alt = BG.alias_target_size(mod, addr)
+        if alt:
+            size = alt
+    off = 0
     if obj is None:
-        obj, sym, err = RA.winning_object(name, addr, size, mod, candidate, include_dirs)
+        obj, sym, err, off = RA.winning_object(name, addr, size, mod, candidate,
+                                               include_dirs, name_index)
     if obj is None:
         # A missing or wrong-length source is NOT a false match; give it a verdict
         # distinct from NO-REPRO so it does not read as "the source stopped matching".
@@ -256,6 +271,13 @@ def linkcheck(name, addr, size, mod, name_index, candidate=None, include_dirs=()
                 "reason": err, "diffs": [], "blind": 0}
     target = RV.rom_bytes(mod, addr, size)
     code, _ = M.extract_func(obj, sym)
+    if off and code is not None:
+        # Nested entry point: `sym` is the CONTAINING symbol the object actually
+        # defines (a hand-asm block packing several ROM functions into one compiled
+        # body -- func_01ff97d8.c is the case in this tree). `off` is `name`'s own
+        # start within that body, already resolved by RA.winning_object via address
+        # arithmetic against config, never by scanning the source text for a label.
+        code = code[off:off + size]
     if (code is not None and target is not None and len(code) > len(target)
             and len(code) - len(target) <= 0x40):
         # Split-symbol carrier (notes 9a(3)): the compiled function extends over the
@@ -269,6 +291,9 @@ def linkcheck(name, addr, size, mod, name_index, candidate=None, include_dirs=()
         return {"name": name, "module": mod, "addr": f"0x{addr:08x}", "verdict": "NO-SYM",
                 "reason": "len-mismatch", "diffs": [], "blind": 0}
     relocs = func_relocs_typed(obj, sym, name_index)
+    if off:
+        relocs = [dict(rl, off=rl["off"] - off) for rl in relocs
+                  if off <= rl["off"] < off + size]
     linked, blind = link_function(code, addr, relocs)
     by_off = {rl["off"] & ~3: rl for rl in relocs}
     diffs = [i for i in range(0, len(target), 4)
