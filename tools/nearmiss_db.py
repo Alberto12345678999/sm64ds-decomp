@@ -22,6 +22,17 @@ and, on rows whose stored source NO LONGER scores under the current evaluator:
               poisoned bait at the top of a closest-first worklist)
 plus an optional "floor" object on entries whose residual is verified compiler-internal:
   {"class": "ordering", "evidence": "...", "date": "YYYY-MM-DD"}
+plus, on a row whose divergence count was set by hand via `set-divergence` rather than
+by the live evaluator (see set_divergence / _is_manual below):
+  manual_divergences  true
+  manual_evidence     what was measured and how (e.g. a pasted match.py run)
+  manual_date         "YYYY-MM-DD"
+  A manual row is held, not re-scored, by both `reeval` and `bank-matches` (2026-09-09:
+  evaluate_full's SequenceMatcher-based count can UNDERCOUNT a pure instruction
+  reorder relative to tools/match.py's positional MISMATCH count -- the number every
+  src/ header, floors.jsonl and worklist.py actually reports -- so the live evaluator
+  can be WRONG in a way that silently ratchets a correction back down; `set-divergence`
+  exists for exactly that gap, and it needs the hold to actually stick).
 
 Scores are only comparable while the evaluator that produced them still exists:
 include/ churn under the stored sources, a canonical-compiler bump, or a metric change
@@ -48,6 +59,11 @@ Usage:
   python tools/nearmiss_db.py prune-matched     # drop ghosts already matched in committed src/
   python tools/nearmiss_db.py mark-floor --name <func> --class ordering --evidence "levers tried ..."
   python tools/nearmiss_db.py unmark-floor --name <func>
+  python tools/nearmiss_db.py set-divergence --name <func> --divergences <N> --evidence "..."
+                                                 # hand-correct one row's count (either
+                                                 # direction) when the live evaluator
+                                                 # disagrees with the canonical measurement;
+                                                 # held out of reeval/bank-matches after
   python tools/nearmiss_db.py dedupe --check    # exit 1 if any (module, addr) holds 2+ rows
 """
 import argparse
@@ -240,6 +256,18 @@ def evaluate(src, name, target):
     the failure detail use evaluate_full."""
     r = evaluate_full(src, name, target)
     return r["divergences"], r["ok"]
+
+
+def _is_manual(r):
+    """True for a row whose divergences were last set by `set-divergence`, not by the
+    live evaluator. reeval/bank-matches must hold these rather than silently re-score
+    them: evaluate_full's SequenceMatcher-based diff can UNDERCOUNT a pure instruction
+    reorder relative to tools/match.py's positional MISMATCH count (measured 2026-09-09
+    on _ZN3MrI13InitResourcesEv: a 3-instruction ROM rotation scores 2 under
+    evaluate_full but 3 under match.py -- the number the committed src/ header,
+    floors.jsonl and worklist.py all report), so re-running the auto-scorer over a
+    hand-corrected row would quietly ratchet the correction back to the wrong number."""
+    return bool(r.get("manual_divergences"))
 
 
 def apply_eval(r, full):
@@ -573,6 +601,46 @@ def unmark_floor(args):
     print(f"unmarked {hit}/{len(names)}")
 
 
+def set_divergence(args):
+    """Hand-correct ONE row's stored divergence count, in either direction, when a
+    measurement against the canonical proof tool (tools/match.py, the pinned compiler)
+    disagrees with what the live evaluator's SequenceMatcher-based diff reports for the
+    row's OWN stored c_source.
+
+    This exists because `ingest`/merge_batch is deliberately strictly-improving (an
+    upsert never regresses divergences -- see closeness()) and reeval's own evaluator
+    can UNDERCOUNT a pure instruction reorder relative to match.py's positional count
+    (see _is_manual), so neither existing path can lower confidence in a stored row: a
+    DB that only ever ratchets divergences down, even when a fresh authoritative
+    measurement says the true residue is worse, is lying about the floor. This is the
+    escape hatch, and it is intentionally narrow: one named row, evidence required,
+    never touches c_source.
+
+    The corrected row is stamped manual_divergences so reeval and bank-matches HOLD it
+    (see _is_manual) instead of silently re-scoring it back with the disagreeing
+    metric; evaluator is still stamped to the live pin because the correction WAS
+    measured under the live pinned compiler, just via match.py's diff, not
+    evaluate_full's."""
+    import datetime
+    name = args.name
+    with locked():
+        db = load_db()
+        r = next((r for r in db.values() if r["name"] == name), None)
+        if r is None:
+            sys.exit(f"set-divergence: no row named {name!r} in {DB.name}")
+        old = r.get("divergences")
+        r["divergences"] = args.divergences
+        r["manual_divergences"] = True
+        r["manual_evidence"] = args.evidence
+        r["manual_date"] = str(datetime.date.today())
+        r.pop("cand_size", None)     # the manual count is not backed by a fresh compile
+        fp = current_fingerprint()
+        if fp:
+            r["evaluator"] = fp
+        save_db(db)
+    print(f"{name}: divergences {old} -> {args.divergences} (manual, held from reeval/bank-matches)")
+
+
 def export_close(args):
     warn_stale_pin()
     db = load_db()
@@ -745,12 +813,18 @@ def resync_names(args):
 
 def bank_matches(args):
     """Re-evaluate every entry; bank any that now byte-match (score 0). Everything
-    else is re-scored and stamped in passing (same shape as reeval, minus the pin)."""
+    else is re-scored and stamped in passing (same shape as reeval, minus the pin).
+    Rows marked manual_divergences (see set_divergence) are held, not re-scored: their
+    own stored c_source is known-non-matching either way, so there is nothing to bank,
+    and re-evaluating them would silently overwrite a hand correction (see _is_manual)."""
     import swarm as S
     warn_stale_pin()
     db = load_db()
+    held = sum(1 for r in db.values() if _is_manual(r))
     banked, banked_keys, rescored = 0, [], {}
     for key, r in list(db.items()):
+        if _is_manual(r):
+            continue
         full = evaluate_full(r["c_source"], r["name"], bytes.fromhex(r["target_hex"]))
         div, ok = full["divergences"], full["ok"]
         if ok and not getattr(args, "no_strict", False):
@@ -795,7 +869,8 @@ def bank_matches(args):
                 apply_eval(tgt, full)
         save_db(cur)
         remaining = len(cur)
-    print(f"banked {banked} now-matching entries; DB now {remaining}.")
+    print(f"banked {banked} now-matching entries; DB now {remaining}."
+          + (f" {held} manual row(s) held, not re-scored." if held else ""))
 
 
 def reeval(args):
@@ -810,7 +885,13 @@ def reeval(args):
     strictly-improving ingest replaces them and clears the mark.
 
     Only a MAIN-TIP pass is authoritative (the stale-lane rule): run on a checkout of
-    current origin/main and commit db.jsonl together with eval_pin.json."""
+    current origin/main and commit db.jsonl together with eval_pin.json.
+
+    Rows marked manual_divergences (see set_divergence) are HELD out of the pass
+    entirely -- not compiled, not re-scored -- because evaluate_full's SequenceMatcher
+    diff is known to disagree with the hand correction's source measurement for
+    exactly the row it was applied to (see _is_manual); re-running it would silently
+    undo the correction."""
     import datetime
     import match as M
     exe = M.MW / M.CANONICAL / "mwccarm.exe"
@@ -818,7 +899,9 @@ def reeval(args):
         sys.exit(f"reeval: canonical compiler {M.CANONICAL} is not installed at {exe}; "
                  f"a pass without it would mark every row noncompiling")
     db = load_db()
-    order = sorted(db.items(), key=lambda kv: seed_rank(kv[1]))
+    held = sum(1 for r in db.values() if _is_manual(r))
+    order = sorted((kv for kv in db.items() if not _is_manual(kv[1])),
+                   key=lambda kv: seed_rank(kv[1]))
     results, n = {}, len(order)
     same = drifted = broke = recovered = bankable = 0
     for i, (key, r) in enumerate(order, 1):
@@ -847,7 +930,8 @@ def reeval(args):
             same += 1
         bankable += full["ok"]
     print(f"\nreeval: {n} rows -- {same} unchanged, {drifted} drifted, {broke} unscorable, "
-          f"{recovered} recovered, {bankable} bankable (run bank-matches)")
+          f"{recovered} recovered, {bankable} bankable (run bank-matches)"
+          + (f", {held} held (manual correction)" if held else ""))
     if args.dry_run:
         print("dry run: nothing written")
         return
@@ -867,7 +951,7 @@ def reeval(args):
     pin = {"canonical": M.CANONICAL, "flags": M.DEFAULT_FLAGS,
            "cpp_flags": M.DEFAULT_FLAGS.replace("-lang c99", "-lang c++"),
            "metric": METRIC_REV,
-           "reevaluated": str(datetime.date.today()), "rows": n}
+           "reevaluated": str(datetime.date.today()), "rows": len(db), "held": held}
     PIN.write_text(json.dumps(pin, indent=2) + "\n", encoding="utf-8")
     _PIN_CACHE.clear()
     print(f"applied {applied} rows ({skipped} changed under the pass and were left "
@@ -969,6 +1053,13 @@ def main():
     p = sub.add_parser("unmark-floor")
     p.add_argument("--name", required=True, help="function name, or comma list")
     p.set_defaults(fn=unmark_floor)
+    p = sub.add_parser("set-divergence")
+    p.add_argument("--name", required=True, help="function name (one row)")
+    p.add_argument("--divergences", required=True, type=int,
+                   help="the corrected count, either direction")
+    p.add_argument("--evidence", required=True,
+                   help="what was measured and how (e.g. a pasted match.py run)")
+    p.set_defaults(fn=set_divergence)
     p = sub.add_parser("bank-matches")
     p.add_argument("--no-strict", action="store_true",
                    help="skip the reloc-destination gate (bytes-only banking)")

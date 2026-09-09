@@ -251,6 +251,72 @@ class NearMissDbTests(unittest.TestCase):
         finally:
             NDB.CONFIG_GLOB_ROOT = NDB.REPO
 
+    # ---------------------------------------------------------- set-divergence
+    # nearmiss/db.jsonl's own metric can UNDERCOUNT a stored row (2026-09-09: a pure
+    # 3-instruction ROM reorder on _ZN3MrI13InitResourcesEv scored 2 under
+    # evaluate_full's SequenceMatcher diff but 3 under tools/match.py's positional
+    # MISMATCH count, the number the committed src/ header and floors.jsonl agreed on),
+    # and merge_batch/ingest is deliberately strictly-improving, so nothing else in
+    # this file can ever RAISE a stored divergence. set_divergence is the escape hatch;
+    # these tests hold it to both directions and to surviving reeval/bank-matches.
+    def test_set_divergence_can_raise_a_stale_row(self):
+        self.write_rows(row(2))
+        with contextlib.redirect_stdout(io.StringIO()) as out:
+            NDB.set_divergence(argparse.Namespace(
+                name="func_ov004", divergences=3,
+                evidence="match.py --strict-relocs 2004/b56: 3 MISMATCH at +0x20/+0x24/+0x28"))
+        db, _ = self.load_quiet()
+        self.assertEqual(db[KEY]["divergences"], 3)
+        self.assertTrue(db[KEY]["manual_divergences"])
+        self.assertIn("MISMATCH", db[KEY]["manual_evidence"])
+        self.assertIn("2 -> 3", out.getvalue())
+
+    def test_set_divergence_can_also_lower_a_row(self):
+        # Not one-directional: the same verb corrects an over-count too.
+        self.write_rows(row(50))
+        NDB.set_divergence(argparse.Namespace(
+            name="func_ov004", divergences=10, evidence="match.py: 10 MISMATCH"))
+        db, _ = self.load_quiet()
+        self.assertEqual(db[KEY]["divergences"], 10)
+
+    def test_set_divergence_unknown_name_exits_without_writing(self):
+        self.write_rows(row(2))
+        with contextlib.redirect_stdout(io.StringIO()):
+            with self.assertRaises(SystemExit):
+                NDB.set_divergence(argparse.Namespace(
+                    name="nope", divergences=3, evidence="x"))
+        db, _ = self.load_quiet()
+        self.assertEqual(db[KEY]["divergences"], 2)      # untouched
+
+    def test_set_divergence_drops_cand_size_not_backed_by_a_fresh_compile(self):
+        self.write_rows(row(2, cand_size=0x164))
+        NDB.set_divergence(argparse.Namespace(
+            name="func_ov004", divergences=3, evidence="x"))
+        db, _ = self.load_quiet()
+        self.assertNotIn("cand_size", db[KEY])
+
+    def test_is_manual_false_by_default(self):
+        self.assertFalse(NDB._is_manual(row(10)))
+
+    def test_is_manual_true_after_a_correction(self):
+        self.write_rows(row(2))
+        NDB.set_divergence(argparse.Namespace(
+            name="func_ov004", divergences=3, evidence="x"))
+        db, _ = self.load_quiet()
+        self.assertTrue(NDB._is_manual(db[KEY]))
+
+    def test_reeval_order_excludes_manual_rows(self):
+        # reeval must never hand a manual row to evaluate_full -- that recompile is
+        # exactly what would silently undo the correction (see _is_manual). This checks
+        # the filter reeval builds `order` from, without invoking reeval itself (which
+        # unconditionally imports the compiler-backed match module).
+        manual = row(3, addr="0x020ae858", manual_divergences=True, evidence="x")
+        other = row(42, addr="0x020ee994", module="ov006")
+        self.write_rows(manual, other)
+        db, _ = self.load_quiet()
+        order = [r for r in db.values() if not NDB._is_manual(r)]
+        self.assertEqual([r["divergences"] for r in order], [42])
+
     # ------------------------------------------------------------------ imports
     def test_module_imports_without_the_compile_stack(self):
         # stats/list/dedupe and this suite must run where capstone/pyelftools are
