@@ -12669,11 +12669,11 @@ matched: yes</title></rect><rect x="546.33" y="39.27" width="10.44" height="4.85
 module: ov002
 addr: 0x020aedf4
 size: 76 bytes
-matched: yes</title></rect><rect x="556.77" y="39.27" width="9.89" height="4.85" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN13OneUpMushroomD1Ev
+matched: yes</title></rect><rect x="556.77" y="39.27" width="9.89" height="4.85" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7da1up_cD1Ev
 module: ov002
 addr: 0x020aee40
 size: 72 bytes
-matched: yes</title></rect><rect x="566.65" y="39.27" width="12.63" height="4.85" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN13OneUpMushroomD0Ev
+matched: yes</title></rect><rect x="566.65" y="39.27" width="12.63" height="4.85" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7da1up_cD0Ev
 module: ov002
 addr: 0x020aee88
 size: 92 bytes
@@ -12705,11 +12705,11 @@ matched: yes</title></rect><rect x="424.84" y="44.11" width="10.88" height="6.36
 module: ov002
 addr: 0x020af248
 size: 104 bytes
-matched: yes</title></rect><rect x="435.72" y="44.11" width="25.11" height="6.36" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN13OneUpMushroom13OnTurnIntoEggER6Player
+matched: yes</title></rect><rect x="435.72" y="44.11" width="25.11" height="6.36" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7da1up_c13OnTurnIntoEggER6Player
 module: ov002
 addr: 0x020af2b0
 size: 240 bytes
-matched: yes</title></rect><rect x="460.83" y="44.11" width="0.84" height="6.36" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN13OneUpMushroom13OnYoshiTryEatEv
+matched: yes</title></rect><rect x="460.83" y="44.11" width="0.84" height="6.36" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7da1up_c13OnYoshiTryEatEv
 module: ov002
 addr: 0x020af3a0
 size: 8 bytes
@@ -12793,23 +12793,23 @@ matched: yes</title></rect><rect x="559.38" y="50.47" width="28.72" height="5.01
 module: ov002
 addr: 0x020aff10
 size: 216 bytes
-matched: yes</title></rect><rect x="588.10" y="50.47" width="17.55" height="5.01" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN13OneUpMushroom16CleanupResourcesEv
+matched: yes</title></rect><rect x="588.10" y="50.47" width="17.55" height="5.01" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7da1up_c16CleanupResourcesEv
 module: ov002
 addr: 0x020affe8
 size: 132 bytes
-matched: yes</title></rect><rect x="354.10" y="55.48" width="0.42" height="6.28" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN13OneUpMushroom16OnPendingDestroyEv
+matched: yes</title></rect><rect x="354.10" y="55.48" width="0.42" height="6.28" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7da1up_c16OnPendingDestroyEv
 module: ov002
 addr: 0x020b006c
 size: 4 bytes
-matched: yes</title></rect><rect x="354.52" y="55.48" width="12.73" height="6.28" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN13OneUpMushroom6RenderEv
+matched: yes</title></rect><rect x="354.52" y="55.48" width="12.73" height="6.28" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7da1up_c6RenderEv
 module: ov002
 addr: 0x020b0070
 size: 120 bytes
-matched: yes</title></rect><rect x="367.25" y="55.48" width="22.91" height="6.28" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN13OneUpMushroom8BehaviorEv
+matched: yes</title></rect><rect x="367.25" y="55.48" width="22.91" height="6.28" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7da1up_c8BehaviorEv
 module: ov002
 addr: 0x020b00e8
 size: 216 bytes
-matched: yes</title></rect><rect x="390.16" y="55.48" width="93.32" height="6.28" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN13OneUpMushroom13InitResourcesEv
+matched: yes</title></rect><rect x="390.16" y="55.48" width="93.32" height="6.28" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7da1up_c13InitResourcesEv
 module: ov002
 addr: 0x020b01c0
 size: 880 bytes
