@@ -33969,19 +33969,19 @@ matched: yes</title></rect><rect x="1238.92" y="251.44" width="4.71" height="3.9
 module: ov043
 addr: 0x021113cc
 size: 48 bytes
-matched: yes</title></rect><rect x="1238.92" y="255.38" width="4.71" height="6.58" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11RickshawBdwD1Ev
+matched: yes</title></rect><rect x="1238.92" y="255.38" width="4.71" height="6.58" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN21daObjKm1_Kurumajiku_cD1Ev
 module: ov043
 addr: 0x021113fc
 size: 80 bytes
-matched: yes</title></rect><rect x="1238.92" y="261.96" width="4.71" height="8.22" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11RickshawBdwD0Ev
+matched: yes</title></rect><rect x="1238.92" y="261.96" width="4.71" height="8.22" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN21daObjKm1_Kurumajiku_cD0Ev
 module: ov043
 addr: 0x0211144c
 size: 100 bytes
-matched: yes</title></rect><rect x="1243.63" y="251.44" width="3.80" height="2.04" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11RickshawBdw16CleanupResourcesEv
+matched: yes</title></rect><rect x="1243.63" y="251.44" width="3.80" height="2.04" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN21daObjKm1_Kurumajiku_c16CleanupResourcesEv
 module: ov043
 addr: 0x021114b0
 size: 20 bytes
-matched: yes</title></rect><rect x="1243.63" y="253.47" width="3.80" height="2.45" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11RickshawBdw13InitResourcesEv
+matched: yes</title></rect><rect x="1243.63" y="253.47" width="3.80" height="2.45" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN21daObjKm1_Kurumajiku_c13InitResourcesEv
 module: ov043
 addr: 0x021114c4
 size: 24 bytes
