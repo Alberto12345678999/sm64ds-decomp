@@ -196,6 +196,7 @@ def check_file(path, idx, ledger):
                 "results": [], "note": "unresolved"}
 
     import reloc_audit as RA
+    import bytegate as BG
     results, checked_passengers = [], set()
     for sym, slots in named:
         # ONE OBJECT PER OWNED SYMBOL, not one per file. `winning_object` runs the
@@ -206,18 +207,36 @@ def check_file(path, idx, ledger):
         # Reset VERIFIED, SceneNode() NO-SYM; per-symbol -> both VERIFIED.) For the
         # ordinary one-function sources this is exactly one call, as before.
         obj = wsym = None
+        off = 0
         for addr, size, mod in slots:
-            # offset discarded: this caller pre-supplies obj/sym straight into
-            # LC.linkcheck below rather than letting it call winning_object itself, so
-            # a nonzero nested-entry-point offset has nowhere to go here. Unaffected
-            # for the ordinary one-symbol-per-object case this loop was built for;
-            # see tools/linkcheck.py's own winning_object call for the nested path.
-            obj, wsym, _, _off = RA.winning_object(sym, addr, size, mod, name_index=_NAME_INDEX)
+            # Mirror linkcheck.linkcheck's own resolution order exactly, since this loop
+            # pre-supplies obj/sym into LC.linkcheck below instead of letting it call
+            # winning_object itself: correct a zero-size EABI alias record to its sized
+            # twin's real length (bytegate.alias_target_size) BEFORE calling
+            # winning_object, the same substitution linkcheck() applies at its own top --
+            # a raw zero-size request can never resolve here (rom_bytes(...,0) is an
+            # empty target no compiled candidate's length ever equals), which used to
+            # send every alias through the `obj is None` fallback below instead of
+            # resolving directly. And carry `off`, the fourth element winning_object
+            # returns: nonzero when `sym` is a NESTED entry point's CONTAINING symbol
+            # rather than the symbol itself (a hand-asm block packing several ROM
+            # functions into one compiled body, e.g. func_01ff97d8.c). Both matter
+            # together for a symbol like _deq -- an alias (size 0) whose sized twin,
+            # func_01ff9d40, is itself a nested entry point: the size fix is what makes
+            # winning_object see a nonzero range at all, and the offset fix is what
+            # slices that range at the right place once it does.
+            csize = size
+            if csize == 0:
+                alt = BG.alias_target_size(mod, addr)
+                if alt:
+                    csize = alt
+            obj, wsym, _, off = RA.winning_object(sym, addr, csize, mod, name_index=_NAME_INDEX)
             if obj is not None:
                 break
         for addr, size, mod in slots:
             r = LC.linkcheck(sym, addr, size, mod, _NAME_INDEX,
-                             obj=obj, sym=(wsym if obj is not None else None))
+                             obj=obj, sym=(wsym if obj is not None else None),
+                             off=(off if obj is not None else 0))
             results.append({"sym": sym, "addr": f"0x{addr:08x}", "module": mod,
                             "verdict": r["verdict"], "diffs": r.get("diffs", []),
                             "passenger": False})
