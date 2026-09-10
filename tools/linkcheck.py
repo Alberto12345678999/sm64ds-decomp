@@ -236,14 +236,19 @@ def link_function(code, addr, relocs):
 
 
 def linkcheck(name, addr, size, mod, name_index, candidate=None, include_dirs=(),
-              obj=None, sym=None):
+              obj=None, sym=None, off=0):
     """Verdict + detail for one banked match.
 
     Normally compiles the source that defines `name` (reloc_audit.winning_object) and
     checks the reproduced bytes. A caller that already holds the compiled object -- e.g.
     pr_linkcheck checking a compiler-emitted passenger (a this-adjusting thunk or a weak
     dtor/ctor copy) that has no source file of its own -- passes obj=<object bytes> and
-    sym=<symbol to extract> so the symbol is link-checked straight from that object.
+    sym=<symbol to extract> so the symbol is link-checked straight from that object. When
+    the pre-supplied object is a NESTED entry point's containing symbol rather than the
+    symbol itself (reloc_audit.winning_object's fourth return value -- see its docstring),
+    that same caller must also pass `off`, the byte offset of `name`'s own range inside
+    `sym`'s compiled span; this function does not re-derive it when `obj` is pre-supplied,
+    because a pre-supplied object skips the winning_object call that computes it.
 
     A zero-size `size` is an EABI alias name for a differently-named, correctly-sized
     primary function at the same address (e.g. _dmul, size 0, aliasing func_01ff8708,
@@ -251,14 +256,16 @@ def linkcheck(name, addr, size, mod, name_index, candidate=None, include_dirs=()
     byte-compared and every alias used to read NO-SYM regardless of its source. Verify
     against the sized twin's real range instead, still reported under the requested
     (alias) name; bytegate.alias_target_size is the one place that lookup is made, the
-    same scan progress.py's own matched-count already trusts for this address shape."""
+    same scan progress.py's own matched-count already trusts for this address shape.
+    This substitution runs unconditionally, whether or not `obj` is pre-supplied, so a
+    pre-supplied zero-size alias is corrected here even if the caller passed the raw
+    (unresolved) size through."""
     import reverify_corpus as RV
     if size == 0:
         import bytegate as BG
         alt = BG.alias_target_size(mod, addr)
         if alt:
             size = alt
-    off = 0
     if obj is None:
         obj, sym, err, off = RA.winning_object(name, addr, size, mod, candidate,
                                                include_dirs, name_index)
