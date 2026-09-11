@@ -399,7 +399,7 @@ mwccarm emits **one `.text` section per function** within a TU, and the lcf's
 name collides — and `-nodead` disables the dead-stripping that might otherwise hide it.
 
 Bisection on a mismatch starts at the **earliest module in the `AFTER()` partial order**
-(`build/arm9.lcf:5–109`): a size change in ov002 shifts the origins of ov008–ov102, so
+(`build/arm9.lcf:5–109`): a size change in [ov002](../config/arm9/overlays/ov002/symbols.txt) shifts the origins of [ov008](../config/arm9/overlays/ov008/symbols.txt)–[ov102](../config/arm9/overlays/ov102/symbols.txt), so
 dozens of red modules mean "look upstream", not "dozens of bugs". Verdicts land in
 `build/rombuild-eligibility.json`.
 
@@ -451,19 +451,19 @@ compiling the same snippet under both compilers in isolation:
   two accesses with different expression shapes (`(char *)p + K` vs `(int)p + K`, or an
   index) stops it. Every sharing site has to be respelled together -- `func_02062428`
   has three, and respelling any one alone left the other two sharing. Fixed
-  `func_ov015_02111e80`, `func_ov006_020ded00`, `func_ov013_021112a8`, `func_02062428`,
-  `func_ov006_02111e90`.
+  [func_ov015_02111e80](../src/game/actors/d_a_obj_bk_dossunbar.cpp) (func 12 used to assemble the TU - `d_a_obj_bk_dossunbar`), [func_ov006_020ded00](../src/actors/dScMgCup_c.cpp) (part of `dScMgCup_c.cpp`), `func_ov013_021112a8`, `func_02062428`,
+  [func_ov006_02111e90](../src/func_ov006_02111e90.c).
 - **Prefer pointer arithmetic on a typed pointer over integer arithmetic then a cast.**
   `ldr` carries a 12-bit displacement and `ldrh`/`ldrsh`/`strh` only 8, so a large
   offset must be split. Given pointer arithmetic b56 splits it the ROM's way; given
   integer arithmetic it materialises the whole constant, from the literal pool if
   needed. In `func_0206a6d0` that one extra pool entry shifted every pc-relative load in
   the function by 4 -- a 52-word diff from a single spelling. Also fixed
-  `func_ov081_02127558`, where the compound-assignment form is the only spelling b56
+  `func_ov081_02127558` (weak ref to [daGmch.cpp](../src/actors/daGmch.cpp)), where the compound-assignment form is the only spelling b56
   refuses to split; an explicit read-modify-write through a temporary reproduces, and
   pre-splitting the base in the source does NOT work -- b56 has to do its own splitting.
 
-`func_ov084_0212f460` was neither: a straight r6/r7 swap. Callee-saved registers are
+[func_ov084_0212f460](../src/func_ov084_0212f460.cpp) (shard of [Piranha Plant](../src/d_a_pkn.c)) was neither: a straight r6/r7 swap. Callee-saved registers are
 handed out in **assignment order** under b56 -- declaration order moves nothing -- so
 hoisting the pointer's assignment above the other local's put them the ROM's way round.
 The ROM emits the two in the opposite order regardless, because the independent store
