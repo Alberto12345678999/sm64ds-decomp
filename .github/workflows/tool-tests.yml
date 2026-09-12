@@ -208,6 +208,7 @@ jobs:
             tools.test_nearmiss_db \
             tools.test_pgate \
             tools.test_premerge_check \
+            tools.test_port_refcheck \
             tools.test_prepush_linkcheck \
             tools.test_profile_reconstruction \
             tools.test_progress \
@@ -218,6 +219,7 @@ jobs:
             tools.test_sinit_owners \
             tools.test_srcpath \
             tools.test_stamp_provenance_verify \
+            tools.test_submit_pr_validation \
             tools.test_symrecords \
             tools.test_tu_map \
             tools.test_tu_production \
