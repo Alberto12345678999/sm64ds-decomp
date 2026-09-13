@@ -5059,7 +5059,7 @@ wildcarded, reported as `mismatches=N/total`. `nearmiss_db.evaluate_full` comput
 edit distance over disassembled instruction strings, so one instruction that MOVES costs two
 (a delete and an insert) where fdiff charges one, and the DB's stored `divergences` is that
 second number. Measured on the night's two seeds, both size-exact against their targets, each
-scored in one worktree at origin/main 199b7ad3e:
+scored in one worktree at origin/main 92f0801d1:
 
 | function | fdiff seed / stored | DB metric seed / stored |
 |---|---|---|
@@ -5222,7 +5222,7 @@ short; index spellings stay size-exact and score 21 to 29. 16 spellings, neither
 both.
 
 Items 3 to 7 were measured by lanes DC1 and DC2 on 2026-09-07. Items 1 and 2, and the
-byte-level probes in item 3, were re-measured in the banking pass at origin/main 199b7ad3e.
+byte-level probes in item 3, were re-measured in the banking pass at origin/main 92f0801d1.
 
 ## 6by. Two loops that walk different tables share ONE cursor variable, and that alone fixes the callee-saved rotation (func_ov007_020c9688, div 10 -> 0, 2026-09-08)
 

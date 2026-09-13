@@ -375,7 +375,7 @@ class TreeAPI:
             return gate.check_pr("tangosdev/sm64ds-decomp", 2445)
 
 
-# Exact --no-renames path inventory of PR 2445, 666df563a..3b71825d7.
+# Exact --no-renames path inventory of PR 2445, 315c46d4b..7ed0a7c6b.
 PR2445_PATHS = [('M', 'attribution.json'),
  ('M', 'config/arm9/overlays/ov072/delinks.txt'),
  ('M', 'config/arm9/overlays/ov072/symbols.txt'),
@@ -432,9 +432,9 @@ class ExactTreeScopeTest(unittest.TestCase):
         before = {path: blob("old " + path) for status, path in PR2445_PATHS if status != "A"}
         after = {path: blob("new " + path) for status, path in PR2445_PATHS if status != "D"}
         fixture = TreeAPI(before, after,
-                          base="666df563a2ea5340f41866c3321468b3c2207fd2",
-                          head="3b71825d7da2b969c4d962fd82b189090743757f")
-        fixture.pr["base"]["sha"] = "690637e41a7a302eace631f6065ab1c4fe37326e"
+                          base="315c46d4b180193d9f607f0a62f7d681ca3f76ac",
+                          head="7ed0a7c6be6e06a91081a3db75ebd52d2db58753")
+        fixture.pr["base"]["sha"] = "6941db21d5708261205537058935c990aafa10e2"
         fixture.pr["changed_files"] = 401
         fixture.comparison["files"] = [{"filename": f"src/stale-{n}.cpp"} for n in range(300)]
         self.assertEqual(fixture.paths(), sorted(path for _, path in PR2445_PATHS))

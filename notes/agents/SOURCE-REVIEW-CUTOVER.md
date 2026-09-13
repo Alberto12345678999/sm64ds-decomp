@@ -124,8 +124,8 @@ insufficient. The composition must retain both source and base ancestry.
 
 The first concrete adoption case is [PR #2447](https://github.com/tangosdev/sm64ds-decomp/pull/2447),
 `daSanbo_c`, task `sanbo-ov096-0907b`: accepted source
-`58a735d6ffc733823fda12aaee1d9fec724a8721`, proposed PR head at review
-`fb3babaef848aa1e4fd038fd4705d2162f4295c7`. The old task recorded the composition
+`287c12ab9c2e5914d2ea23c1a6857bc375bc7491`, proposed PR head at review
+`54ff0fef2df15e60916221ddc53e0efadf37f416`. The old task recorded the composition
 under `composed_head`. That old pass has no source review and must not be
 reinterpreted as approval of the PR. Refresh its live head before assigning work.
 

@@ -36,7 +36,7 @@ A PATH CAN LEAVE WITHOUT ANYTHING BEING LOST. The one legitimate way is a TU
 promotion: `tubuild.py` consolidates N per-symbol `src/_ZN....cpp` files into the one
 `src/actors/<Class>.cpp` the original translation unit was, and git records N deletions plus
 one addition. A set ratchet reads all N as `GONE`. Measured on PR #1882
-(`tu/inline-dtor-order`, 9c6396c5f), 90 of 90 backslid paths were exactly that and
+(`tu/inline-dtor-order`, f3223b816), 90 of 90 backslid paths were exactly that and
 none was a deletion, which is a report no one can read.
 
 So a GONE path is resolved through the TU manifest (`config/tu_manifest.d/`, via
@@ -299,7 +299,7 @@ def promoted_moves(root=None):
     files into the single `src/actors/<Class>.cpp` the original translation unit was, and
     git records that as N deletions plus one addition -- so every one of the N banked
     paths reads to a set ratchet exactly like a file someone threw away. Measured on
-    PR #1882 (`tu/inline-dtor-order`, 9c6396c5f): 90 of 90 backslid paths were TU
+    PR #1882 (`tu/inline-dtor-order`, f3223b816): 90 of 90 backslid paths were TU
     `legacy_source` entries whose TU is `"status": "promoted"` and whose
     `promoted_source` exists on the branch. Zero were real deletions. A gate whose
     entire output is 90 false alarms teaches people to re-bank without reading it,

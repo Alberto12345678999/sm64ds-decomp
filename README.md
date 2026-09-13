@@ -23,8 +23,8 @@ merge PRs read **[MERGE.md](MERGE.md)**.
 
 <!-- progress:start -->
 ```
-Functions  ██████████████████████████████  99.7%   11,352 / 11,390
-Code size  █████████████████████████████░  98.2%   2,197,752 / 2,238,108 bytes
+Functions  ██████████████████████████████  99.7%   11,353 / 11,390
+Code size  █████████████████████████████░  98.2%   2,197,936 / 2,238,108 bytes
 ```
 <!-- progress:end -->
 
@@ -46,10 +46,10 @@ here, and they move independently.
 
 <!-- tiers:start -->
 ```
-MATCHED    ██████████████████████████████  99.7%   11,352 / 11,390 functions
+MATCHED    ██████████████████████████████  99.7%   11,353 / 11,390 functions
            of which 121 are byte-exact assembly (hand-written in the original, not C)
-CONVERTED  ███████░░░░░░░░░░░░░░░░░░░░░░░  23.9%   2,714 / 11,364 functions
-LINKED     ████████████████████████████░░  93.5%   10,590 / 11,328 matched TUs
+CONVERTED  ███████░░░░░░░░░░░░░░░░░░░░░░░  23.9%   2,715 / 11,364 functions
+LINKED     ████████████████████████████░░  93.5%   10,595 / 11,328 matched TUs
 ```
 <!-- tiers:end -->
 
