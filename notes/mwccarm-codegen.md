@@ -413,7 +413,7 @@ permuter's ~8k iterations) had exhausted. The working levers, in order of genera
   `add rX,base,rI,lsl #6` each iteration like the ROM (func_ov034_02112020's loop; its
   remaining gap is first-access-fold). Source-level, committable.
 - **`volatile` array retains stack slots** that plain locals/structs lose to scalar
-  replacement or rematerialization (func_ov102_0214953c).
+  replacement or rematerialization ([func_ov102_0214953c](../src/func_ov102_0214953c.c)).
 - **A named partial-sum local + nested ifs flips bounds-check coloring.** Rewriting
   `if (cur + size > end) Crash();` as nested ifs with the sum in its own named local
   moved an r1/r2 coloring swap into place (FS_LoadOverlay, mid-band batch).
@@ -583,7 +583,7 @@ field-wise (multiple matches). Neither is universally right.
 **Two more coloring levers (2026-07-02, 16/16 Fable batch):** adding a THIRD named temp
 for an arg build (w = y + 0x78000) rotates the r0/r1/r2 assignment; and placing a
 copy-through-direct-expression BEFORE a saved= assignment makes CSE spill its temp
-pre-writeback (func_ov073_021215cc, func_ov102_0214ae1c).
+pre-writeback ([func_ov073_021215cc](../src/_ZN11ChiefChilly8BehaviorEv.cpp) - `_ZN11ChiefChilly8BehaviorEv`, [func_ov102_0214ae1c](../src/actors/daBmb_c.cpp) - ROM ordinal 8 of `daBmb_c`).
 
 **RETIREMENT LIFTED (2026-07-02): the u64-mask laundering idiom IS the lever.**
 `*(int *)(((int)base + 0xOFF) & 0xFFFFFFFFFFFFFFFF) |= x` forces the materialized
@@ -901,12 +901,12 @@ Three parked "not reachable from C" regalloc near-misses cracked byte-exact
 - **Friendly extern aliases read BLIND in linkcheck.** `Particle_System_NewSimple`
   compiled fine but linkcheck could not resolve it; the config symbol is
   `_ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_` (0x02022e98). Use the mangled
-  name from config/arm9/symbols.txt in new sources (same lesson as the division
+  name from [config/arm9/symbols.txt](../config/arm9/symbols.txt) in new sources (same lesson as the division
   `_u32_div_f` aliases).
 - **2-instruction scheduler-order residuals ARE permuter-crackable.** The "ordering
   floor" note (cond-move polarity, store batching) does not extend to adjacent
   independent-instruction swaps: the permuter flipped one instantly on
-  func_ov092_021311b0 (its mutation: inline the base re-deref). Route 2-div
+  [func_ov092_021311b0](../src/func_ov092_021311b0.cpp) (its mutation: inline the base re-deref). Route 2-div
   add/add or mov/str swaps to the permuter before calling floor.
 
 ## 6o. Ordering-residual triage: five levers, four true floors (2026-07-11)
@@ -3186,10 +3186,10 @@ Both landed in PR #1227, cracking a div=6 and a div=7 that had sat as
 the same operation on an `s16 *`, but they are NOT the same to the address
 allocator: the explicit-cast form materializes the pointer into the slot the
 ROM did not use, and the compound-assignment form flips it back. On
-func_ov102_021498e0 (question-block bounce, 0x398) this single respell closed
+[func_ov102_021498e0](../src/func_ov102_021498e0.cpp) (question-block bounce, 0x398) this single respell closed
 the address-materialization half of a div=7 (the other half was a real seed
-bug: case 0 loaded data_ov102_0214e870 where the relocs prove the ROM loads
-data_ov102_0214e8c0 -- re-read the relocs before trusting an inherited seed).
+bug: case 0 loaded [data_ov102_0214e870](../config/arm9/overlays/ov102/symbols.txt) where the relocs prove the ROM loads
+[data_ov102_0214e8c0](../config/arm9/overlays/ov102/symbols.txt) -- re-read the relocs before trusting an inherited seed).
 
 **First-consumed-web order.** On func_ov098_0213ade8 (cannon lid, 0x2bc,
 div 6->0): compute x before y AND store x before y, so the x web is the first
