@@ -66,7 +66,7 @@ so order is only a neighbor check here, not the ownership proof.
 
 Natural probe result:
 
-```SH
+```sh
 probe .init size 0x174; hand source size 0x174; raw_equal=True
 relocation words (both):
   138 13c 140 144 148 14c 150 154 158 15c 160 164 168 16c 170
