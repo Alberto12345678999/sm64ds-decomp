@@ -284,37 +284,9 @@ src/d_a_coin_coin.c:
     complete
     .text start:0x020b2b48 end:0x020b2ba0
 
-src/game/actors/WingFeather/_ZN11WingFeatherD1Ev.cpp:
+src/game/actors/daFeather_c/daFeather_c.cpp:
     complete
-    .text start:0x020b2ba0 end:0x020b2be8
-
-src/game/actors/WingFeather/_ZN11WingFeatherD0Ev.cpp:
-    complete
-    .text start:0x020b2be8 end:0x020b2c44
-
-src/game/actors/WingFeather/func_ov002_020b2c44.cpp:
-    complete
-    .text start:0x020b2c44 end:0x020b2e30
-
-src/game/actors/WingFeather/_ZN11WingFeather16CleanupResourcesEv.cpp:
-    complete
-    .text start:0x020b2e30 end:0x020b2e54
-
-src/game/actors/WingFeather/_ZN11WingFeather6RenderEv.cpp:
-    complete
-    .text start:0x020b2e54 end:0x020b2e9c
-
-src/game/actors/WingFeather/_ZN11WingFeather8BehaviorEv.cpp:
-    complete
-    .text start:0x020b2e9c end:0x020b311c
-
-src/game/actors/WingFeather/_ZN11WingFeather13InitResourcesEv.cpp:
-    complete
-    .text start:0x020b311c end:0x020b3248
-
-src/game/actors/WingFeather/d_a_feather.c:
-    complete
-    .text start:0x020b3248 end:0x020b3298
+    .text start:0x020b2ba0 end:0x020b3298
 
 src/game/actors/d_a_obj_abuku.cpp:
     complete
@@ -2918,37 +2890,9 @@ src/actors/daSCoin_c.cpp:
     .text start:0x020f03c4 end:0x020f0894
     .data start:0x0210aff4 end:0x0210b0ac
 
-src/_ZN6NumberD1Ev.cpp:
+src/game/actors/d_a_obj_number.cpp:
     complete
-    .text start:0x020f0894 end:0x020f08cc
-
-src/_ZN6NumberD0Ev.cpp:
-    complete
-    .text start:0x020f08cc end:0x020f0918
-
-src/func_ov002_020f0918.c:
-    complete
-    .text start:0x020f0918 end:0x020f093c
-
-src/_ZN6Number16CleanupResourcesEv.cpp:
-    complete
-    .text start:0x020f093c end:0x020f0994
-
-src/_ZN6Number6RenderEv.cpp:
-    complete
-    .text start:0x020f0994 end:0x020f0a60
-
-src/_ZN6Number8BehaviorEv.cpp:
-    complete
-    .text start:0x020f0a60 end:0x020f0bd4
-
-src/_ZN6Number13InitResourcesEv.cpp:
-    complete
-    .text start:0x020f0bd4 end:0x020f0d90
-
-src/d_a_obj_number.c:
-    complete
-    .text start:0x020f0d90 end:0x020f0dd0
+    .text start:0x020f0894 end:0x020f0dd0
 
 src/_ZN9OneUpLogoD1Ev.cpp:
     complete

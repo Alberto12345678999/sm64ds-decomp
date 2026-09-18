@@ -6,7 +6,7 @@
  * build. It is a STARTING POINT (plan sec 7.3): local shadow declarations
  * below were carried verbatim from the legacy files, not reconciled against
  * real project headers -- that judgement call is left to a human/LLM review,
- * the way pilot #1 reconciled PoleLift::Render and ::CleanupResources by hand
+ * the way pilot #1 reconciled daObjKm2_Ami_Bou_c::Render and ::CleanupResources by hand
  * (see notes/tu-reconstruction-pilot-report.md sec 5.2).
  *
  * FUNCTION ORDER IS DELIBERATELY THE REVERSE OF THE ROM'S -- mwccarm 2004/b56
@@ -61,6 +61,26 @@
 /* Includes: union of the legacy files', first-seen in ROM-ascending
  * processing order. NOT verified for header ordering constraints (e.g. a
  * common.h-before-X rule) -- watch for new compile errors after this. */
+/* STILL MACHINE-SHAPED (audit 2026-09-18) -- byte-exact; what blocks each part:
+ *  51 func_ov006_* + 23 data_*   unnamed in config symbols.txt; each needs a
+ *                                coined, behaviour-justified name.
+ *  2 _ZN..E member call(s)       already declared -- needs the
+ *                                scope-qualified spelling on a real `this`.
+ *  2 _ZN..E call(s)              class header exists, member not yet
+ *                                declared in it.
+ *  3 _ZN..E call(s)              no include/<class>.h yet, so there is
+ *                                no member to call.
+ *  6 ctor/dtor/op-new call(s)    C1/C2/D0/D1/D2 is not expressible
+ *                                in C++ source; only a real ctor emits it.
+ *  2 _ZTV vptr store(s)          stands in for the ctor that would emit it.
+ *  3 `(void *)this` launder(s)   bisect before removing -- some are free,
+ *                                some hold the register allocation.
+ *  ~34 *(T *)(p + 0x..)          class layout does not name these offsets.
+ *  7 shadow struct(s)            fake interfaces for the real classes:
+ *                                Base, Elem, G2, M48, Node, S3, Vector3_16f
+ *  2 unk_NN                      slot/field name not evidenced.
+ */
+
 #include "dScMgJump2_c.h"
 #include "SharedFilePtr.h"
 #include "types.h"

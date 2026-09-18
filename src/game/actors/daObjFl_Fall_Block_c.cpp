@@ -5,19 +5,21 @@
  * No fields. InitResources / CleanupResources hand this overlay's
  * model and collision files to daObjFallBlock_c's shared ov098
  * helpers.
- * func_ov098_0213a794 loads slot 0 with Model::LoadFile, slot 1
+ * daObjFallBlock_c_InitResources loads slot 0 with Model::LoadFile, slot 1
  * with dBgW_Kc::LoadFile, slot 2 as CLPS into SetFile. ov022 sinit
  * constructs those SharedFilePtrs as file IDs 1529 / 1530.
  *
+ * daObjFl_Fall_Block_c_classInit is reconstructed (RTTI
+ * daObjFl_Fall_Block_c, FL_KUZURE registry). Retail does not store
+ * that spelling.
+ *
  * deslop
- * Leftover: func_ov098_0213a794 / func_ov098_0213a2cc are still the
- *   linker names of daObjFallBlock_c Init/Cleanup (the base leaves
- *   those slots pure virtual). Naming belongs in ov098.
+ * Leftover: func_ov098_0213a2cc is still the linker name of
+ *   daObjFallBlock_c Cleanup (the base leaves those slots pure virtual).
  * Leftover: data_ov022_0211427c is overlay .data this TU does not
  *   own; the BMD/KCL SharedFilePtrs stay data_ov022_*, CLPS is
  *   data_ov064_0211ba8c.
- * Leftover: factory is still src/d_a_obj_fl_fall_block.c, outside
- *   this TU.
+ * Leftover: g_profile_FL_KUZURE lives outside this TU (S14).
  */
 
 #include "daObjFl_Fall_Block_c.h"
@@ -35,14 +37,20 @@ typedef char ResourceDescriptor_size_must_be_0x0c[
 
 extern "C" {
 int func_ov098_0213a2cc(daObjFl_Fall_Block_c *self, ResourceDescriptor *descriptor);
-int func_ov098_0213a794(daObjFl_Fall_Block_c *self, ResourceDescriptor *descriptor);
+int daObjFallBlock_c_InitResources(daObjFallBlock_c *self, ResourceDescriptor *descriptor);
 extern ResourceDescriptor data_ov022_0211427c;
+}
+
+// @symbol daObjFl_Fall_Block_c_classInit
+extern "C" daObjFl_Fall_Block_c *daObjFl_Fall_Block_c_classInit()
+{
+    return new daObjFl_Fall_Block_c();
 }
 
 // @symbol _ZN20daObjFl_Fall_Block_c13InitResourcesEv
 int daObjFl_Fall_Block_c::InitResources()
 {
-    return func_ov098_0213a794(this, &data_ov022_0211427c);
+    return daObjFallBlock_c_InitResources(this, &data_ov022_0211427c);
 }
 
 // @symbol _ZN20daObjFl_Fall_Block_c16CleanupResourcesEv

@@ -105,8 +105,4 @@ src/d_s_star_sel.cpp:
 
 src/actors/dScGameOver_c.cpp:
     complete
-    .text start:0x020b0580 end:0x020b1118
-
-src/d_s_game_over.cpp:
-    complete
-    .text start:0x020b1118 end:0x020b117c
+    .text start:0x020b0580 end:0x020b117c

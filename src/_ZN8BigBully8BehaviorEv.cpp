@@ -7,7 +7,6 @@
 #include "BigBully.h"
 extern "C" {
 extern int _ZN5Sound15PlaySecretSoundEP8dActor_cPt(void* a, u16* p);
-extern int func_ov064_02116d1c(void* c);
 extern void _ZN12dEnemyBase_c12UpdateWMClsnER10dBgCh_Actrj(void* c, void* clsn, unsigned f);
 extern int _ZNK10dBgCh_Actr10IsOnGroundEv(void* c);
 }
@@ -20,7 +19,7 @@ int BigBully::Behavior()
             if (_ZN5Sound15PlaySecretSoundEP8dActor_cPt(((char*)this), (u16*)((char*)&mSecretSoundCounter)) != 0)
                 mSecretSoundCounter = 0;
         }
-        return func_ov064_02116d1c(((char*)this));
+        return BehaviorCommon();
     }
     if (s == 3) {
         int t;

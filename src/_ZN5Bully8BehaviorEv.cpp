@@ -36,7 +36,6 @@ extern char *_ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(
 extern char *_ZN8dActor_c10FindWithIDEj(unsigned int id);
 extern int RandomIntInternal(void *seed);
 extern int data_0209e650;
-extern int func_ov064_02116d1c(char *self);
 }
 
 int Bully::Behavior()
@@ -76,5 +75,5 @@ int Bully::Behavior()
         }
         return 1;
     }
-    return func_ov064_02116d1c((char *)this);
+    return BehaviorCommon();
 }

@@ -35,7 +35,7 @@
  *
  * The vtable is data_ov064_0211b768: the word before it is 0x021138bc, which is
  * _ZTI7daOts_c. (Reading that address out of the merged symbol table answers
- * `data_ov009_021138bc`, and the destructor answers `_ZN7ChuckyaD1Ev` -- ov062
+ * `data_ov009_021138bc`, and the destructor answers `_ZN10daHolhei_cD1Ev` -- ov062
  * through ov066 all load their .text at 0x02115ee0. Resolve inside ov064 or the
  * table will lie to you.)
  *
@@ -141,6 +141,16 @@ struct daOts_c : dEnemyBase_c {
        whichever virtual was first and non-inline before is still first now. */
     virtual int InitResources() = 0;        /* slot  0 */
     virtual int Behavior() = 0;             /* slot  6 */
+
+    /* Non-virtual shared workers. All three children wrap these from the
+       pure-virtual InitResources / Behavior slots after their own preamble.
+       Class ownership is proven by this-pointer layout (ModelAnim 0x110,
+       dBgCh_Actr 0x174, mFileTable 0x330, dCcAc_c 0x33c, ShadowModel 0x370)
+       and by named daOts callees already in this TU. The English spellings
+       describe those call sites; the stripped image carries no original
+       method names. */
+    int InitResourcesCommon();
+    int BehaviorCommon();
 };
 
 #ifndef SM64DS_PLATFORM_PC

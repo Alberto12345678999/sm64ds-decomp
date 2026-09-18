@@ -7,7 +7,6 @@
 #include "BigBully.h"
 #include "dBgCh_Gnd.h"
 extern "C" {
-extern int func_ov064_02116ec0(void* obj);
 extern int _ZN8dActor_c9TrackStarEjj(dActor_c* self, unsigned int a, unsigned int b);
 extern dActor_c* _ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(u32 actorID, u32 param1, const Vector3* pos, const Vector3_16* rot, s8 areaID, s16 deathTableID);
 extern s16 data_02082214[];
@@ -18,7 +17,7 @@ int BigBully::InitResources()
     int saved;
 
     *(void**)((char*)&mFileTable) = &data_ov064_0211b93c;
-    saved = func_ov064_02116ec0(((char*)this));
+    saved = InitResourcesCommon();
     mStarID = param1 & 0xf;
     unk_3fd = (u8)_ZN8dActor_c9TrackStarEjj((dActor_c*)((char*)this), mStarID, 2);
     mSecretSoundCounter = 0;

@@ -6,7 +6,7 @@
  * build. It is a STARTING POINT (plan sec 7.3): local shadow declarations
  * below were carried verbatim from the legacy files, not reconciled against
  * real project headers -- that judgement call is left to a human/LLM review,
- * the way pilot #1 reconciled PoleLift::Render and ::CleanupResources by hand
+ * the way pilot #1 reconciled daObjKm2_Ami_Bou_c::Render and ::CleanupResources by hand
  * (see notes/tu-reconstruction-pilot-report.md sec 5.2).
  *
  * FUNCTION ORDER IS DELIBERATELY THE REVERSE OF THE ROM'S -- mwccarm 2004/b56
@@ -43,7 +43,7 @@ extern "C" {
    recovered project-wide; see its own header comment). This TU needs both
    .file field access and a .Release() method call on the same globals, so
    the externs are backed by a local layout shadow and each real-class call
-   site casts through it -- same pattern as the Number pilot (#1733). */
+   site casts through it -- same pattern as the daObjNumber_c pilot (#1733). */
 struct SharedFilePtrLayout { int a, file; };
 extern SharedFilePtrLayout data_ov002_02110aa4;
 extern SharedFilePtrLayout data_ov002_02110a9c;

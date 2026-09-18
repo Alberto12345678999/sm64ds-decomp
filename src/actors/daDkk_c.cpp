@@ -76,7 +76,6 @@
  * signature and links because the symbol is extern "C". */
 extern "C" {
 extern void func_0201267c(int a, void *b);
-extern int func_ov091_02133254(char *c);
 extern int _Z14ApproachLinearRsss(short &a, short b, short c);
 extern int _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(void *p, Fix12i a, Fix12i b);
 extern void _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(void *thiz, const Vector3 &v, int f);
@@ -110,14 +109,14 @@ extern "C" daDkk_c *daDkk_c_classInit()
  * ABI key function -- the first declared virtual that is neither inline nor
  * pure -- so defining it here is what makes this TU emit _ZTV7daDkk_c.
  *
- * Stores the file table pointer at mFileTable, calls a shared ov091 helper,
+ * Stores the file table pointer at mFileTable, calls daDsnBase_c::Init,
  * then either forces mState to a fixed "already airborne" value or runs a
  * downward raycast from the actor's own position to set mProbeHeight from the
  * collision point it finds. */
 int daDkk_c::InitResources()
 {
     mFileTable = (s32)data_ov025_02113814;
-    int r = func_ov091_02133254((char *)this);
+    int r = Init();
     if (param1 & 1) {
         mState = 6;
     } else {

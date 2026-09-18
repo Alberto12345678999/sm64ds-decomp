@@ -187,11 +187,7 @@ src/d_a_obj_fl_uki_ki.c:
 
 src/game/actors/daObjFl_Fall_Block_c.cpp:
     complete
-    .text start:0x02112380 end:0x0211245c
-
-src/d_a_obj_fl_fall_block.c:
-    complete
-    .text start:0x0211245c end:0x02112498
+    .text start:0x02112380 end:0x02112498
 
 src/_ZN13RollingLogLllD1Ev.cpp:
     complete
