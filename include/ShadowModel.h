@@ -83,7 +83,7 @@ struct ShadowModel : ModelBase {
     int InitCylinder();
     /* int for the same reason, and by the same evidence: 0x02015ed8 also ends in
        `bx ip`, so SetFile's r0 flows straight out. YoshiEgg::InitResources and
-       func_ov091_02133254 both test the result and bail on 0. */
+       daDsnBase_c::Init both test the result and bail on 0. */
     int InitCuboid();
 
     /* --- static --- */

@@ -116,6 +116,14 @@ struct daDsnBase_c : dBgActor_c {
        merely mention the class. */
     virtual s32 CleanupResources();    /* slot 3 -- ov091:0x021331b8 */
     virtual s32 Render();              /* slot 9 -- ov091:0x02133210 */
+
+    /* Shared resource setup both leaves' InitResources call after storing
+       their file table. Not a vtable slot -- InitResources itself is pure
+       and each leaf supplies it. The name is coined from those two callers
+       (Thwomp::InitResources, daDkk_c::InitResources) and from the body
+       (load model/KCL, bind CLPS, optional BTP, cuboid shadow, ground
+       probe); the ROM has no mangled spelling. */
+    s32 Init();
 };
 
 #ifndef SM64DS_PLATFORM_PC

@@ -15,7 +15,7 @@
  * shards carried (`p->~daDsnBase_c();` and `delete p;`) are therefore not
  * needed here and have been dropped.
  *
- * LICENSED FOR 9 OF THE RUN'S 11 FUNCTIONS: .text 0x02132dc0..0x02133254.
+ * LICENSED FOR 10 FUNCTIONS: .text 0x02132dc0..0x021333fc.
  * The destructor pair below that range stays owned by its own two enrolled
  * shards, because the cartridge orders D0 (0x02132d04) BELOW D1 (0x02132d6c)
  * and no admissible source form emits that order -- a destructor defined
@@ -24,7 +24,7 @@
  * emits both variants byte-identically; the manifest licenses those two copies
  * deadstrip-duplicate. See the manifest's boundary_evidence.
  *
- * Absorbed these 9 legacy one-function sources (ROM address order):
+ * Absorbed these 10 legacy one-function sources (ROM address order):
  *   0x02132dc0  func_ov091_02132dc0
  *   0x02132e64  func_ov091_02132e64
  *   0x02132e98  func_ov091_02132e98
@@ -34,10 +34,22 @@
  *   0x02133098  func_ov091_02133098
  *   0x021331b8  daDsnBase_c::CleanupResources
  *   0x02133210  daDsnBase_c::Render
+ *   0x02133254  daDsnBase_c::Init
  *
  * Still enrolled separately, NOT absorbed:
  *   0x02132d04  _ZN11daDsnBase_cD0Ev
  *   0x02132d6c  _ZN11daDsnBase_cD1Ev
+ *
+ * deslop
+ * Leftover (Init):
+ * - dBgW_KcMbg::SetFile / TextureSequence::SetFile stay mangled: both take
+ *   Fix12<int> by value (6az); the header method homes the argument.
+ * - func_020393d4 is an 8-byte store into dBgW+0x18 (beforeClsnCallback).
+ *   This TU calls it; naming belongs with dBgW in arm9.
+ * - SharedFilePtr +4 BMD/BTP load (layout unrecovered; Prepare/SetFile).
+ * - 0x390/0x394/0x39e/0x39f stay offset soup. Rise/ground heights and the
+ *   timer live on the leaves (daDkk_c.h, Thwomp.h); this TU writes the same
+ *   words. The move up that daDsnBase_c.h invites edits both leaf headers.
  */
 
 /* daDsnBase_c.h reaches dBgActor_c.h, which includes common.h BEFORE Model.h.
@@ -49,6 +61,7 @@
 #include "decl_common.h"
 #include "SharedFilePtr.h"
 #include "dBgW.h"
+#include "dBgCh_Gnd.h"
 
 extern "C" {
 /* Two shards spelled this `int(char*)` and `int(void*)`; every call site here
@@ -60,10 +73,106 @@ extern int DecIfAbove0_Byte(char*);
  * the same address. */
 extern int RandomIntInternal(void*);
 extern int data_0209e650[];
+
+/* Fix12<int> BY VALUE (6az): the header member homes the argument. */
+extern void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
+    dBgW_KcMbg *self, KCL_File *file, const Matrix4x3 *mat, int scale, s16 angY,
+    CLPS_Block *clps);
+extern void _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
+    TextureSequence *self, BTP_File *file, int flags, int speed,
+    unsigned startFrame);
+/* 8-byte store into dBgW+0x18 (beforeClsnCallback). No SetCallback member.
+ * Spelling matches src/func_020393d4.c -- (int *, int). */
+extern void func_020393d4(int *collider, int callback);
+}
+
+/* The per-leaf resource table both InitResources store into mFileTable (the
+ * Thwomp's at data_ov091_02135138, Grindel's at data_ov025_02113814). Shaped
+ * from Init: loads model/collision, binds the CLPS block and, when texAnim is
+ * non-null, the texture animation. Owned by the leaf overlays, never defined
+ * here. */
+struct DsnBaseFileTable {
+    SharedFilePtr *model;       /* +0x00, BMD */
+    SharedFilePtr *collision;   /* +0x04, KCL */
+    CLPS_Block *clps;           /* +0x08, not a file, not released */
+    SharedFilePtr *texAnim;     /* +0x0c, BTP, or null when the leaf has none */
+    int shadowExtentX;          /* +0x10, DropShadow X base */
+    int shadowExtentZ;          /* +0x14, DropShadow Z base */
+};
+
+#ifndef SM64DS_PLATFORM_PC
+typedef char DsnBaseFileTable_size_must_be_0x18[
+    sizeof(DsnBaseFileTable) == 0x18 ? 1 : -1];
+#endif
+
+/* -------------------------------------------------------------------------- */
+/* ROM ordinal 10 -- _ZN11daDsnBase_c4InitEv, 0x02133254, size 0x1a8 */
+/* -------------------------------------------------------------------------- */
+// @symbol _ZN11daDsnBase_c4InitEv
+s32 daDsnBase_c::Init()
+{
+    Vector3 v;
+    BMD_File *bmd;
+    KCL_File *kcl;
+    DsnBaseFileTable *files;
+    CLPS_Block *clps;
+    SharedFilePtr *texAnim;
+
+    files = (DsnBaseFileTable *)mFileTable;
+    bmd = (BMD_File *)Model::LoadFile(*files->model);
+    mModel.SetFile(bmd, 1, -1);
+    UpdateModelPosAndRotY();
+    UpdateClsnPosAndRot();
+
+    files = (DsnBaseFileTable *)mFileTable;
+    kcl = (KCL_File *)dBgW_Kc::LoadFile(*files->collision);
+    clps = files->clps;
+    _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
+        &mMeshCollider, kcl, &mClsnMat, 0x199, mAngleY, clps);
+    func_020393d4((int *)&mMeshCollider, (int)&dBgW::UpdatePosAndAngs);
+    mMeshCollider.Enable(this);
+
+    texAnim = ((DsnBaseFileTable *)mFileTable)->texAnim;
+    if (texAnim != 0) {
+        TextureSequence::LoadFile(*texAnim);
+        files = (DsnBaseFileTable *)mFileTable;
+        TextureSequence::Prepare(
+            *(BMD_File *)((int *)files->model)[1],
+            *(BTP_File *)((int *)files->texAnim)[1]);
+        files = (DsnBaseFileTable *)mFileTable;
+        texAnim = files->texAnim;
+        _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
+            &mTextureSequence, (BTP_File *)((int *)texAnim)[1],
+            0x40000000, 0x1000, 0);
+    }
+
+    if (!mShadowModel.InitCuboid())
+        return 0;
+
+    v.x = mPosX;
+    v.y = mPosY;
+    v.z = mPosZ;
+    v.y = v.y + 0x32000;
+    {
+        dBgCh_Gnd rg;
+        rg.SetObjAndPos(v, 0);
+        *(s32 *)((char *)this + 0x394) = v.y;
+        if (rg.DetectClsn())
+            *(s32 *)((char *)this + 0x394) = rg.clsnY;
+
+        *(s32 *)((char *)this + 0x390) = mPosY + 0x190000;
+        mPosY = *(s32 *)((char *)this + 0x394);
+        *(u8 *)((char *)this + 0x39e) = 0x28;
+        mVertAccel = -0x4000;
+        mTerminalVelocity = -0x3c000;
+        mHorzSpeed = 0xc000;
+        *(u8 *)((char *)this + 0x39f) = 0;
+    }
+    return 1;
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 10 -- _ZN11daDsnBase_c6RenderEv, 0x02133210, size 0x44 */
+/* ROM ordinal 9 -- _ZN11daDsnBase_c6RenderEv, 0x02133210, size 0x44 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN11daDsnBase_c6RenderEv
 int daDsnBase_c::Render()

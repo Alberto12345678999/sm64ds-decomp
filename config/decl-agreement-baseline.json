@@ -3175,6 +3175,7 @@
    "src/_ZN9OneUpLogo13InitResourcesEv.cpp": ["param:#5 unsigned int"],
    "src/actors/Eyerok.cpp": ["param:#5 unsigned int"],
    "src/actors/Goomboss.cpp": ["param:#5 unsigned int"],
+   "src/actors/daDsnBase_c.cpp": ["param:#5 unsigned int"],
    "src/actors/daPgDfdr_c.cpp": ["param:#5 unsigned int"],
    "src/func_ov002_020e5948.c": ["param:#5 unsigned int"],
    "src/func_ov002_020f6514.c": ["param:#5 unsigned int"],
@@ -3203,7 +3204,6 @@
    "src/func_ov075_02114ddc.cpp": ["param:#5 unsigned int"],
    "src/func_ov077_021244d4.cpp": ["param:#2 BTP_File &", "param:#5 unsigned int"],
    "src/func_ov077_02124698.c": ["param:#2 int", "param:#5 unsigned int", "return:int"],
-   "src/func_ov091_02133254.cpp": ["param:#5 unsigned int"],
    "src/game/actors/d_a_bg_snwmn.cpp": ["param:#5 unsigned int"],
    "src/game/actors/d_a_pg_mthr.cpp": ["param:#2 BTP_File &", "param:#5 unsigned int"],
    "src/game/actors/daBrq_c.cpp": ["param:#2 BTP_File &", "param:#5 unsigned int", "return:unsigned int"]
@@ -3225,7 +3225,6 @@
    "src/func_ov002_020e5948.c": ["arity:1", "return:void"],
    "src/func_ov002_020f6618.cpp": ["arity:1"],
    "src/func_ov006_020c3050.c": ["arity:1"],
-   "src/func_ov091_02133254.cpp": ["arity:1", "return:BTP_File *"],
    "src/game/actors/d_a_pg_mthr.cpp": ["arity:1"]
   },
   "_ZN15TextureSequenceC1Ev": {
@@ -4138,8 +4137,7 @@
    "src/actors/daDgr_c.cpp": ["kind:data"],
    "src/func_ov002_020b5e58.cpp": ["kind:data"],
    "src/func_ov002_020b676c.cpp": ["kind:data"],
-   "src/func_ov002_020bad10.c": ["arity:0", "mangled:0 parameter(s)", "return:int"],
-   "src/func_ov091_02133254.cpp": ["kind:data"]
+   "src/func_ov002_020bad10.c": ["arity:0", "mangled:0 parameter(s)", "return:int"]
   },
   "_ZN4dBgW21UpdatePosWithVelocityERS_P8dActor_cR5dBgPiR7Vector3P10Vector3_16S8_": {
    "src/_ZN10DonutBlock13InitResourcesEv.cpp": ["arity:0", "mangled:0 parameter(s)"],
@@ -4406,7 +4404,6 @@
    "src/func_ov006_020cce0c.c": ["arity:1", "return:struct BMD_File *"],
    "src/func_ov006_020cef14.c": ["arity:1"],
    "src/func_ov080_021274ac.c": ["arity:1", "return:int"],
-   "src/func_ov091_02133254.cpp": ["arity:1", "return:BMD_File *"],
    "src/func_ov098_0213a794.cpp": ["arity:1"],
    "src/game/actors/WingFeather/_ZN11WingFeather13InitResourcesEv.cpp": ["arity:1", "return:BMD_File *"],
    "src/game/actors/d_a_obj_bk_dossunbar.cpp": ["arity:1", "return:int"],
@@ -5593,7 +5590,6 @@
    "src/func_ov002_020b6c54.c": ["arity:1", "return:void *"],
    "src/func_ov002_020bad10.c": ["arity:1", "return:void *"],
    "src/func_ov080_021274ac.c": ["arity:1", "return:int"],
-   "src/func_ov091_02133254.cpp": ["arity:1", "return:KCL_File *"],
    "src/func_ov098_0213a794.cpp": ["arity:1", "return:void *"],
    "src/game/actors/d_a_obj_bk_dossunbar.cpp": ["arity:1", "return:int"]
   },
@@ -7156,7 +7152,6 @@
    "src/func_ov020_02111ee0.cpp": ["param:#2 int"],
    "src/func_ov075_02114ddc.cpp": ["return:void"],
    "src/func_ov080_021274ac.c": ["param:#2 int", "return:void"],
-   "src/func_ov091_02133254.cpp": ["return:void"],
    "src/func_ov098_0213a794.cpp": ["return:void"],
    "src/game/actors/d_a_obj_bk_dossunbar.cpp": ["param:#2 int"],
    "src/game/actors/d_a_pg_mthr.cpp": ["return:void"],
