@@ -13073,11 +13073,11 @@ matched: yes</title></rect><rect x="460.26" y="84.02" width="50.77" height="1.15
 module: ov002
 addr: 0x020b2b48
 size: 88 bytes
-matched: yes</title></rect><rect x="511.03" y="84.02" width="41.54" height="1.15" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11WingFeatherD1Ev
+matched: yes</title></rect><rect x="511.03" y="84.02" width="41.54" height="1.15" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11daFeather_cD1Ev
 module: ov002
 addr: 0x020b2ba0
 size: 72 bytes
-matched: yes</title></rect><rect x="552.57" y="84.02" width="53.08" height="1.15" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11WingFeatherD0Ev
+matched: yes</title></rect><rect x="552.57" y="84.02" width="53.08" height="1.15" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11daFeather_cD0Ev
 module: ov002
 addr: 0x020b2be8
 size: 92 bytes
@@ -13085,19 +13085,19 @@ matched: yes</title></rect><rect x="354.10" y="85.18" width="39.12" height="8.37
 module: ov002
 addr: 0x020b2c44
 size: 492 bytes
-matched: yes</title></rect><rect x="393.22" y="85.18" width="2.86" height="8.37" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11WingFeather16CleanupResourcesEv
+matched: yes</title></rect><rect x="393.22" y="85.18" width="2.86" height="8.37" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11daFeather_c16CleanupResourcesEv
 module: ov002
 addr: 0x020b2e30
 size: 36 bytes
-matched: yes</title></rect><rect x="396.08" y="85.18" width="5.72" height="8.37" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11WingFeather6RenderEv
+matched: yes</title></rect><rect x="396.08" y="85.18" width="5.72" height="8.37" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11daFeather_c6RenderEv
 module: ov002
 addr: 0x020b2e54
 size: 72 bytes
-matched: yes</title></rect><rect x="401.80" y="85.18" width="50.88" height="8.37" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11WingFeather8BehaviorEv
+matched: yes</title></rect><rect x="401.80" y="85.18" width="50.88" height="8.37" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11daFeather_c8BehaviorEv
 module: ov002
 addr: 0x020b2e9c
 size: 640 bytes
-matched: yes</title></rect><rect x="452.69" y="85.18" width="23.85" height="8.37" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11WingFeather13InitResourcesEv
+matched: yes</title></rect><rect x="452.69" y="85.18" width="23.85" height="8.37" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11daFeather_c13InitResourcesEv
 module: ov002
 addr: 0x020b311c
 size: 300 bytes
