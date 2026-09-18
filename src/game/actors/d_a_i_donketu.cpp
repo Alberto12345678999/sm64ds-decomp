@@ -32,8 +32,9 @@
  * include/daIDonketu_c.h.
  *
  * deslop leftovers:
- * - func_ov064_02116ec0 (InitResources), func_ov064_02116d1c (Behavior),
- *   func_ov064_0211616c (UpdateDeathState), func_ov064_02116110 (UpdateRunState):
+ * - daOts_c::InitResourcesCommon / daOts_c::BehaviorCommon: ov064 shared
+ *   workers this child wraps from slot 0 / slot 6.
+ * - func_ov064_0211616c (UpdateDeathState), func_ov064_02116110 (UpdateRunState):
  *   unmatched ov064 daOts_c helpers; name_evidence none.
  * - data_ov027_021138f4 file-table handle: this TU claims .text only.
  * - S14: g_profile_ICE_DONKETU stays outside the licensed .text.
@@ -47,8 +48,6 @@
 extern "C" {
 int func_ov064_02116110(void *self, s16 step);
 int func_ov064_0211616c(void *self);
-int func_ov064_02116d1c(void *self);
-int func_ov064_02116ec0(void *self);
 extern int data_ov027_021138f4[];
 }
 
@@ -85,7 +84,7 @@ extern "C" daIDonketu_c *daIDonketu_c_classInit(void)
 int daIDonketu_c::InitResources()
 {
     mFileTable = (int)data_ov027_021138f4;
-    int r = func_ov064_02116ec0(this);
+    int r = InitResourcesCommon();
     mStarIdx = param1 & 0xf;
     mStarSlot = TrackStar(mStarIdx, 2);
     return r;
@@ -122,7 +121,7 @@ int daIDonketu_c::Behavior()
         }
         return 1;
     }
-    return func_ov064_02116d1c(this);
+    return BehaviorCommon();
 }
 
 /* -------------------------------------------------------------------------- */

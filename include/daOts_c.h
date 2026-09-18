@@ -141,6 +141,16 @@ struct daOts_c : dEnemyBase_c {
        whichever virtual was first and non-inline before is still first now. */
     virtual int InitResources() = 0;        /* slot  0 */
     virtual int Behavior() = 0;             /* slot  6 */
+
+    /* Non-virtual shared workers. All three children wrap these from the
+       pure-virtual InitResources / Behavior slots after their own preamble.
+       Class ownership is proven by this-pointer layout (ModelAnim 0x110,
+       dBgCh_Actr 0x174, mFileTable 0x330, dCcAc_c 0x33c, ShadowModel 0x370)
+       and by named daOts callees already in this TU. The English spellings
+       describe those call sites; the stripped image carries no original
+       method names. */
+    int InitResourcesCommon();
+    int BehaviorCommon();
 };
 
 #ifndef SM64DS_PLATFORM_PC

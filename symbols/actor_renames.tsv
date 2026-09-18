@@ -1816,6 +1816,8 @@ ov063	0x0211ed10	MadPiano_SpawnInfo	g_profile_PIANO	reconstructed profile global
 ov063	0x0211ed34	data_ov063_0211ed34	_ZTV8MadPiano	vtable alloc=?
 ov064	0x02116ca0	func_ov064_02116ca0	_ZN7daOts_c16CleanupResourcesEv	vtable slot 3 (was _ZN5Bully16CleanupResourcesEv)
 ov064	0x02116cf0	func_ov064_02116cf0	_ZN7daOts_c6RenderEv	vtable slot 9 (was _ZN5Bully6RenderEv)
+ov064	0x02116d1c	func_ov064_02116d1c	_ZN7daOts_c14BehaviorCommonEv	shared Behavior worker; children wrap from slot 6; class ownership/layout/named daOts callees proven; original English name is not
+ov064	0x02116ec0	func_ov064_02116ec0	_ZN7daOts_c19InitResourcesCommonEv	shared InitResources worker; children wrap from slot 0; class ownership/layout/named daOts callees proven; original English name is not
 ov064	0x02117070	func_ov064_02117070	_ZN5BullyD1Ev	vtable slot 16
 ov064	0x021170c4	func_ov064_021170c4	_ZN5BullyD0Ev	vtable slot 17
 ov064	0x02117310	func_ov064_02117310	_ZN5Bully8BehaviorEv	vtable slot 6
