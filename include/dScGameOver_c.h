@@ -13,11 +13,12 @@
  * the same seven dScene_c gives every other direct child -- 0, 3, 6, 9, 12,
  * 16, 17 (rtti_vtables.py --own dScGameOver_c). No new virtual is added.
  *
- * CONSTRUCTION. dScGameOver_c_classInit is the factory: it opens with
- * `_ZN7fBase_cnwEj(0x98)`, i.e. fBase_c::operator new(0x98). SIZE 0x98 is
- * read directly off the allocator call. No nested-object construction is
- * visible in this TU (unlike dScEntry_c/dScStarSel_c); every own field
- * below is a plain scalar.
+ * CONSTRUCTION. dScGameOver_c_classInit lives in this class's TU as
+ * `return new dScGameOver_c()`. That one `new` is fBase_c::operator new(0x98)
+ * -- SIZE 0x98 is the allocator literal -- then the inlined ctor chain
+ * (fBase_c C2, dBase_c/dScene_c vptrs, pauseFlags |= 1 and 4, this class's
+ * vptr). No nested-object construction is visible in this TU (unlike
+ * dScEntry_c/dScStarSel_c); every own field below is a plain scalar.
  *
  * MEMBERS BELOW 0x50 are all inherited (dScene_c/dBase_c add none of their
  * own -- see dScene_c.h). InitResources (func_ov003_020b0b3c) fills four

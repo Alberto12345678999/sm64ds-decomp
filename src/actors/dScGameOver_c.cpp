@@ -3,20 +3,21 @@
  * children.  Mario is out of lives; this scene drops the eight "GAME OVER"
  * glyphs in from off screen and then offers the yes/no continue prompt.
  *
- * ov003, .text 0x020b0580 .. 0x020b1118, 9 functions, reconstructed from 9
- * one-function legacy sources by tools/tubuild.py create and reconciled by
- * hand.  See include/dScGameOver_c.h for the class's own evidence trail --
- * where its fields end, why the destructor is inline, and why InitResources
- * rather than the destructor is this TU's key function.
+ * ov003, .text 0x020b0580 .. 0x020b117c, 10 functions.  See
+ * include/dScGameOver_c.h for the class's own evidence trail -- where its
+ * fields end, why the destructor is inline, and why InitResources rather
+ * than the destructor is this TU's key function.
  *
- * Seven of the 9 are this class's own members: vtable slots 0, 3, 6, 9, 12,
+ * Seven of the 10 are this class's own members: vtable slots 0, 3, 6, 9, 12,
  * 16 and 17, exactly the seven dScene_c gives every direct child (the class
- * adds no new virtual).  The other two are the free helpers that shared the
+ * adds no new virtual).  Two more are the free helpers that shared the
  * translation unit with them -- the glyph drop-in animation step at
  * 0x020b060c and the sub-screen yes/no highlight repaint at 0x020b0730.
  * Both take this object's address as their first argument and are called only
  * from inside the class region, but the ROM gives neither a mangled name, so
- * neither was a class member with external linkage.
+ * neither was a class member with external linkage.  The tenth is the
+ * factory, which abuts InitResources at 0x020b1118 and ends at ov003's
+ * .text end.
  *
  * FUNCTION ORDER IS DELIBERATELY THE REVERSE OF THE ROM'S -- mwccarm 2004/b56
  * emits one .text section per function, in the REVERSE of source order, so
@@ -34,6 +35,7 @@
  *   [6] 0x020b0894  src/_ZN13dScGameOver_c8BehaviorEv.cpp
  *   [7] 0x020b0b34  src/_ZN13dScGameOver_c16CleanupResourcesEv.cpp
  *   [8] 0x020b0b3c  src/_ZN13dScGameOver_c13InitResourcesEv.cpp
+ *   [9] 0x020b1118  dScGameOver_c_classInit
  */
 
 #include "dScGameOver_c.h"
@@ -48,8 +50,8 @@
  * mwccarm 2004/b56 -- bracketing it around the one member does nothing,
  * because the trailing `on` wins for the whole file -- so there is no
  * narrower place to put it.  The blast radius was measured rather than
- * assumed: with it set here, all 9 members verify, so it costs the other
- * eight nothing.  0x020b060c is the one that needs it: it walks the eight
+ * assumed: with it set here, all 10 members verify, so it costs the other
+ * nine nothing.  0x020b060c is the one that needs it: it walks the eight
  * glyphs with an `i << 1` index into four s16 arrays and a second `ip`
  * induction variable, which is exactly the shape mwcc strength-reduces into
  * an extra register when the pragma is absent. */
@@ -128,6 +130,22 @@ void _ZN5Sound22StopLoadedMusic_Layer1Ej(unsigned int);
 int LoadFile(int handle);
 void DecompressLZ16(int src, void *dst);
 void func_02012790(int se);
+}
+
+/* Reconstructed source-style name: SM64DS proves dScGameOver_c through RTTI,
+ * allocation size, vtable identity, and the GAME_OVER registry profile;
+ * later EAD lineage supplies classInit. Exact original spelling is not
+ * preserved. Historical alias: func_ov003_020b1118.
+ *
+ * Every instruction the cartridge has here falls out of the one `new`.
+ * 0x020b1118 loads 0x98 -- the class's own size -- into fBase_c::operator
+ * new; the inlined ctor runs fBase_c's C2, stores dBase_c then dScene_c's
+ * vptrs, ORs pauseFlags 1 and 4 (dScene_c::dScene_c), then stores this
+ * class's vptr. The null check is the one `new` itself emits. */
+// @symbol dScGameOver_c_classInit
+extern "C" dScGameOver_c *dScGameOver_c_classInit(void)
+{
+    return new dScGameOver_c();
 }
 
 /* -------------------------------------------------------------------------- */
