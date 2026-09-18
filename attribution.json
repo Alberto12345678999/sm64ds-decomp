@@ -3459,6 +3459,15 @@
     "src/actors/daObjCtKaitendai_c.cpp#_ZN18daObjCtKaitendai_c8BehaviorEv": "andrewboudreau",
     "src/actors/daObjCtKaitendai_c.cpp#_ZN18daObjCtKaitendai_c13InitResourcesEv": "andrewboudreau",
     "src/actors/daObjCtKaitendai_c.cpp#daObjCtKaitendai_c_classInit_CT_MECHA07": "tangosdev",
-    "src/actors/daObjCtKaitendai_c.cpp#daObjCtKaitendai_c_classInit_CT_MECHA06": "tangosdev"
+    "src/actors/daObjCtKaitendai_c.cpp#daObjCtKaitendai_c_classInit_CT_MECHA06": "tangosdev",
+    "src/game/actors/daTrsTrap_c/d_a_trs_trap_classinits.cpp#daTrsTrap_c_classInit_BOOKSHELF": "tangosdev",
+    "src/game/actors/daTrsTrap_c/d_a_trs_trap_classinits.cpp#daTrsTrap_c_classInit_KAIDAN": "tangosdev",
+    "src/game/actors/daTrsTrap_c/d_a_trs_trap_classinits.cpp#daTrsTrap_c_classInit_MERRYGOROUND": "tangosdev",
+    "src/game/actors/daTrsTrap_c/d_a_trs_trap_classinits.cpp#daTrsTrap_c_classInit_TERESAPIT": "tangosdev",
+    "src/game/actors/daTrsTrap_c/d_a_trs_trap.cpp#_ZN11daTrsTrap_c13InitResourcesEv": "tangosdev",
+    "src/game/actors/daTrsTrap_c/d_a_trs_trap.cpp#_ZN11daTrsTrap_c16CleanupResourcesEv": "tangosdev",
+    "src/game/actors/daTrsTrap_c/d_a_trs_trap.cpp#_ZN11daTrsTrap_c16OnPendingDestroyEv": "andrewboudreau",
+    "src/game/actors/daTrsTrap_c/d_a_trs_trap.cpp#_ZN11daTrsTrap_c6RenderEv": "tangosdev",
+    "src/game/actors/daTrsTrap_c/d_a_trs_trap.cpp#_ZN11daTrsTrap_c8BehaviorEv": "tangosdev"
   }
 }
