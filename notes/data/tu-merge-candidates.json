@@ -24661,13 +24661,13 @@
    "start": "0x2112938",
    "end": "0x21134e4",
    "classes": [
-    "HauntedChair"
+    "daChair_c"
    ],
    "n_functions_map": 14,
    "n_files": 14,
    "files": [
-    "src/_ZN12HauntedChairD1Ev.cpp",
-    "src/_ZN12HauntedChairD0Ev.c",
+    "src/_ZN9daChair_cD1Ev.cpp",
+    "src/_ZN9daChair_cD0Ev.c",
     "src/func_ov020_021129dc.c",
     "src/func_ov020_02112b00.c",
     "src/func_ov020_02112e94.c",
@@ -24675,10 +24675,10 @@
     "src/func_ov020_02113148.c",
     "src/func_ov020_021131f8.c",
     "src/func_ov020_02113240.cpp",
-    "src/_ZN12HauntedChair16CleanupResourcesEv.c",
-    "src/_ZN12HauntedChair6RenderEv.cpp",
-    "src/_ZN12HauntedChair8BehaviorEv.cpp",
-    "src/_ZN12HauntedChair13InitResourcesEv.cpp",
+    "src/_ZN9daChair_c16CleanupResourcesEv.c",
+    "src/_ZN9daChair_c6RenderEv.cpp",
+    "src/_ZN9daChair_c8BehaviorEv.cpp",
+    "src/_ZN9daChair_c13InitResourcesEv.cpp",
     "src/d_a_chair.c"
    ],
    "ext_mix": {

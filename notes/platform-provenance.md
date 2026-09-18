@@ -398,7 +398,7 @@ It overrides slots 0 and 3, which the base leaves null.
 as its `const Matrix4x3 &`. Was a `u8` marker plus its pad.
 
 `mShadowMat` at 0x350: `ShadowModel` + `Matrix4x3` is the same pair
-`HauntedChair` evidences by byte (a 48-byte identity block-copied over +0x14c,
+`daChair_c` evidences by byte (a 48-byte identity block-copied over +0x14c,
 which lands exactly on the next member), and 0x350 + 0x30 closes on the 0x380
 `SpinningPlatform_Spawn` allocates.
 

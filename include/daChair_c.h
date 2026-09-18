@@ -1,5 +1,5 @@
-#ifndef HAUNTEDCHAIR_H
-#define HAUNTEDCHAIR_H
+#ifndef DACHAIR_C_H
+#define DACHAIR_C_H
 
 #include "dActor_c.h"
 #include "Model.h"
@@ -7,26 +7,18 @@
 #include "dCcAcPos_c.h"
 #include "dBgCh_Actr.h"
 
-/* The cartridge RTTI names this class daChair_c. HauntedChair is the readable
- * compatibility spelling already carried by every matched virtual. The ROM's
- * __si_class_type_info record gives it one direct base, dActor_c at offset
- * zero, and its 31-slot vtable has exactly the same extent as that base. Slots
- * 0, 3, 6, 9, 16 and 17 are the only overrides. symbols.txt carries
- * `_ZTV12HauntedChair` and `_ZTV9daChair_c` at one address, but only the latter
- * name is derived from cartridge RTTI. The old hand-written D0 selected that
- * alias explicitly; the real destructor now lets the compiler reference its
- * own `_ZTV12HauntedChair` spelling and objisolate rebinds it to the same ROM
- * slot array without retaining a source-level alias.
+/* Big Boo's Haunt haunted chair. ROM RTTI ov020:0x021149d8 names the class
+ * daChair_c; the debug table names CHAIR (326). One direct base, dActor_c at
+ * offset zero. Slots 0, 3, 6, 9, 16 and 17 are the only overrides.
  *
- * daChair_c_classInit allocates 0x3a8 bytes, constructs dActor_c, then the four
- * owned objects below. Both destructor variants destroy those objects in
- * reverse order at these exact offsets, independently pinning the layout.
+ * daChair_c_classInit allocates 0x3a8 bytes, constructs dActor_c, then the
+ * four owned objects below. Both destructor variants destroy those objects
+ * in reverse order at these exact offsets.
  *
- * SM64DS RTTI names the implementation daChair_c. The reconstructed factory
- * daChair_c_classInit (historical alias HauntedChair_Spawn) installs this class's
- * cartridge vtable for the CHAIR registry profile.
+ * classInit is reconstructed (RTTI daChair_c, CHAIR registry). Historical
+ * alias HauntedChair_Spawn. Retail does not store that spelling.
  */
-struct HauntedChair : dActor_c {
+struct daChair_c : dActor_c {
     u8 mPad0d0[0x4];                    /* 0x0d0 */
     Model mModel;                       /* 0x0d4 */
     ShadowModel mShadowModel;           /* 0x124 */
@@ -35,7 +27,7 @@ struct HauntedChair : dActor_c {
     dBgCh_Actr mWithMeshClsn;           /* 0x1bc */
 
     s32 mState;                         /* 0x378 */
-    u32 mTargetID;                      /* 0x37c */
+    u32 mTargetID;                      /* 0x37c -- uniqueID of the nearby PIANO */
     Vector3 mHomePos;                   /* 0x380 */
     Vector3 mClsnOffset;                /* 0x38c */
     s16 mStateValue0;                   /* 0x398 */
@@ -46,9 +38,14 @@ struct HauntedChair : dActor_c {
     s16 mTargetAngle;                   /* 0x3a2 */
     s16 *mTrackedAngle;                 /* 0x3a4 */
 
-    virtual ~HauntedChair();            /* slots 16, 17 */
+    /* INLINE, AND DECLARED FIRST. The cartridge puts D1 at 0x02112938 below
+       D0 at 0x02112980 and carries no D2, which is what mwccarm 2004/b56
+       emits for an in-class destructor. InitResources is then the first
+       out-of-line virtual -- the key function -- so this TU emits the
+       vtable. */
+    virtual ~daChair_c() {}
 
-    virtual s32 InitResources();        /* slot  0 */
+    virtual s32 InitResources();        /* slot  0 -- key function */
     virtual s32 CleanupResources();     /* slot  3 */
     virtual s32 Behavior();             /* slot  6 */
     virtual s32 Render();               /* slot  9 */
@@ -60,6 +57,10 @@ struct HauntedChair : dActor_c {
     void State2();
     void State3();
 
+    /* Coined. The mangled suffix EPsS0_isis claims two s16* then int, s16,
+     * int, s16. A pointer and a reference generate identical ARM for this
+     * body, as do short and int in some of these slots, so the bytes cannot
+     * prove the exact original types. */
     int ApproachStateValue(s16 *value, s16 *velocity, s32 target,
                            s16 threshold, s32 acceleration, s16 multiplier);
     void Break();
@@ -68,8 +69,8 @@ struct HauntedChair : dActor_c {
 
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
-typedef char HauntedChair_size_must_be_0x3a8[
-    sizeof(HauntedChair) == 0x3a8 ? 1 : -1];
+typedef char daChair_c_size_must_be_0x3a8[
+    sizeof(daChair_c) == 0x3a8 ? 1 : -1];
 #endif
 
 #endif
