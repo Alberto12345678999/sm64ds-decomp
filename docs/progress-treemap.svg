@@ -35133,11 +35133,11 @@ matched: yes</title></rect><rect x="1227.69" y="394.31" width="10.15" height="7.
 module: ov060
 addr: 0x0211a428
 size: 148 bytes
-matched: yes</title></rect><rect x="1247.84" y="302.18" width="9.16" height="4.00" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7ChuckyaD1Ev
+matched: yes</title></rect><rect x="1247.84" y="302.18" width="9.16" height="4.00" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10daHolhei_cD1Ev
 module: ov062
 addr: 0x02115ee0
 size: 72 bytes
-matched: yes</title></rect><rect x="1247.84" y="306.19" width="9.16" height="5.11" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7ChuckyaD0Ev
+matched: yes</title></rect><rect x="1247.84" y="306.19" width="9.16" height="5.11" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10daHolhei_cD0Ev
 module: ov062
 addr: 0x02115f28
 size: 92 bytes
@@ -35229,7 +35229,7 @@ matched: yes</title></rect><rect x="1262.44" y="342.03" width="7.97" height="6.1
 module: ov062
 addr: 0x02116c78
 size: 96 bytes
-matched: yes</title></rect><rect x="1262.44" y="348.15" width="7.97" height="5.11" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>Chuckya_ChangeState
+matched: yes</title></rect><rect x="1262.44" y="348.15" width="7.97" height="5.11" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>daHolhei_c_ChangeState
 module: ov062
 addr: 0x02116cd8
 size: 80 bytes
@@ -35249,23 +35249,23 @@ matched: yes</title></rect><rect x="1262.44" y="381.10" width="7.97" height="14.
 module: ov062
 addr: 0x02116edc
 size: 228 bytes
-matched: yes</title></rect><rect x="1262.44" y="395.66" width="7.97" height="6.13" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7Chuckya16CleanupResourcesEv
+matched: yes</title></rect><rect x="1262.44" y="395.66" width="7.97" height="6.13" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10daHolhei_c16CleanupResourcesEv
 module: ov062
 addr: 0x02116fc0
 size: 96 bytes
-matched: yes</title></rect><rect x="1270.41" y="302.55" width="5.64" height="7.94" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7Chuckya6RenderEv
+matched: yes</title></rect><rect x="1270.41" y="302.55" width="5.64" height="7.94" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10daHolhei_c6RenderEv
 module: ov062
 addr: 0x02117024
 size: 88 bytes
-matched: yes</title></rect><rect x="1270.41" y="310.49" width="5.64" height="62.79" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7Chuckya8BehaviorEv
+matched: yes</title></rect><rect x="1270.41" y="310.49" width="5.64" height="62.79" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10daHolhei_c8BehaviorEv
 module: ov062
 addr: 0x0211707c
 size: 696 bytes
-matched: yes</title></rect><rect x="1270.41" y="373.28" width="5.64" height="28.51" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7Chuckya13InitResourcesEv
+matched: yes</title></rect><rect x="1270.41" y="373.28" width="5.64" height="28.51" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10daHolhei_c13InitResourcesEv
 module: ov062
 addr: 0x02117334
 size: 316 bytes
-matched: yes</title></rect><rect x="1276.06" y="302.18" width="6.73" height="0.61" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7Chuckya16OnAimedAtWithEggEv
+matched: yes</title></rect><rect x="1276.06" y="302.18" width="6.73" height="0.61" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10daHolhei_c16OnAimedAtWithEggEv
 module: ov062
 addr: 0x02117470
 size: 8 bytes
