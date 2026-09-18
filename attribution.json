@@ -3750,6 +3750,24 @@
     "src/actors/dScMgJump_c.cpp#func_ov006_020ee5b8": "andrewboudreau",
     "src/actors/dScMgJump_c.cpp#func_ov006_020ee658": "tangosdev",
     "src/actors/dScMgJump_c.cpp#_ZN11dScMgJump_c13InitResourcesEv": "andrewboudreau",
-    "src/actors/dScMgJump_c.cpp#_ZN11dScMgJump_c13OnTurnIntoEggEi": "tangosdev"
+    "src/actors/dScMgJump_c.cpp#_ZN11dScMgJump_c13OnTurnIntoEggEi": "tangosdev",
+    "src/actors/dScMgSlot1_c.cpp#func_ov006_0210c180": "tangosdev",
+    "src/actors/dScMgSlot1_c.cpp#func_ov006_0210c1a8": "tangosdev",
+    "src/actors/dScMgSlot1_c.cpp#func_ov006_0210c208": "tangosdev",
+    "src/actors/dScMgSlot1_c.cpp#func_ov006_0210c218": "tangosdev",
+    "src/actors/dScMgSlot1_c.cpp#func_ov006_0210c234": "tangosdev",
+    "src/actors/dScMgSlot1_c.cpp#func_ov006_0210c278": "tangosdev",
+    "src/actors/dScMgSlot1_c.cpp#func_ov006_0210c2b0": "tangosdev",
+    "src/actors/dScMgSlot1_c.cpp#func_ov006_0210c2c0": "tangosdev",
+    "src/actors/dScMgSlot1_c.cpp#func_ov006_0210c2d4": "tangosdev",
+    "src/actors/dScMgSlot1_c.cpp#func_ov006_0210c354": "tangosdev",
+    "src/actors/dScMgSlot1_c.cpp#_ZN12dScMgSlot1_c9betIcon_c6RenderEv": "tangosdev",
+    "src/actors/dScMgSlot1_c.cpp#_ZN12dScMgSlot1_c9betIcon_c8BehaviorEv": "tangosdev",
+    "src/actors/dScMgSlot1_c.cpp#func_ov006_0210c478": "tangosdev",
+    "src/actors/dScMgSlot1_c.cpp#_ZN12dScMgSlot1_c19OnHitFromUnderneathEv": "andrewboudreau",
+    "src/actors/dScMgSlot1_c.cpp#_ZN12dScMgSlot1_c15OnHitByMegaCharEv": "andrewboudreau",
+    "src/actors/dScMgSlot1_c.cpp#func_ov006_0210c500": "andrewboudreau",
+    "src/actors/dScMgSlot1_c.cpp#func_ov006_0210c638": "tangosdev",
+    "src/actors/dScMgSlot1_c.cpp#_ZN12dScMgSlot1_c13OnYoshiTryEatEi": "tangosdev"
   }
 }
