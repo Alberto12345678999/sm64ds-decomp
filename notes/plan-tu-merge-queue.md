@@ -512,7 +512,7 @@ reloc-destinations: clean            <- relocation destination identity
 
 A byte MATCH alone is **not** proof: `match.compare` wildcards every relocated word, so a
 member can reproduce the bytes while calling the wrong function. [ov077](../config/arm9/overlays/ov077/symbols.txt)'s
-[func_ov077_02124118](../src/func_ov077_02124118.cpp) called `ApproachLinear` where the ROM calls `ApproachLinear2` —
+[`daJgm_c::UpdateSpitState` (0x02124118)](../src/game/actors/d_a_jgm.cpp) called `ApproachLinear` where the ROM calls `ApproachLinear2` —
 same signature shape, reported MATCH, cost a day. If any of the three could not run, the
 status is "not verified", never "probably fine".
 
@@ -617,7 +617,7 @@ reorder: run B1–B9 (no normalizer needed) and hold B10–B11.
 ## 5. The Tier 2 campaign — 73 TUs / 1,338 files / net −1,265 / 40,621 lines
 
 Sizes: 31 TUs at 10–14 members, 11 at 15–19, 18 at 20–24, **13 at 25+** (largest:
-[ov081](../config/arm9/overlays/ov081/symbols.txt)/`MrBlizzard` 35, [ov102](../config/arm9/overlays/ov102/symbols.txt)/`BobOmb` 35, [ov077](../config/arm9/overlays/ov077/symbols.txt)/`Spiny` 34, [ov077](../config/arm9/overlays/ov077/symbols.txt)/`Lakitu` 32,
+[ov081](../config/arm9/overlays/ov081/symbols.txt)/`MrBlizzard` 35, [ov102](../config/arm9/overlays/ov102/symbols.txt)/`BobOmb` 35, [ov077](../config/arm9/overlays/ov077/symbols.txt)/`Spiny` 34, [ov077](../config/arm9/overlays/ov077/symbols.txt)/`daJgm_c` 32,
 [ov085](../config/arm9/overlays/ov085/symbols.txt)/`daMip_c` 32). 18 are multi-class. 48 of 73 need the normalizer.
 
 ### 5.1 Greedy admission
