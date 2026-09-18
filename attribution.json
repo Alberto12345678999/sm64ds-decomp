@@ -1969,6 +1969,7 @@
     "src/game/actors/daObjFl_Fall_Block_c.cpp#_ZN20daObjFl_Fall_Block_c16CleanupResourcesEv": "github-actions[bot]",
     "src/game/actors/daObjFl_Fall_Block_c.cpp#_ZN20daObjFl_Fall_Block_cD0Ev": "tangosdev",
     "src/game/actors/daObjFl_Fall_Block_c.cpp#_ZN20daObjFl_Fall_Block_cD1Ev": "tangosdev",
+    "src/game/actors/daObjFl_Fall_Block_c.cpp#daObjFl_Fall_Block_c_classInit": "tangosdev",
     "src/game/actors/d_a_obj_fm_battan.cpp#Squasher_Spawn": "github-actions[bot]",
     "src/game/actors/d_a_obj_fm_battan.cpp#_ZN16daObjFm_Battan_c12UpdateShadowEv": "github-actions[bot]",
     "src/game/actors/d_a_obj_fm_battan.cpp#_ZN16daObjFm_Battan_c13InitResourcesEv": "github-actions[bot]",

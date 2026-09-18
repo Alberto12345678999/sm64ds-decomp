@@ -7,7 +7,7 @@
     "no_codegen_trick",
     "no_mangled_refs"
   ],
-  "count": 2812,
+  "count": 2813,
   "converted": [
     "src/ARMMathLoadState.c",
     "src/ARMMathSaveState.c",
@@ -2679,6 +2679,7 @@
     "src/game/actors/daObjFl_Fall_Block_c.cpp#_ZN20daObjFl_Fall_Block_c16CleanupResourcesEv",
     "src/game/actors/daObjFl_Fall_Block_c.cpp#_ZN20daObjFl_Fall_Block_cD0Ev",
     "src/game/actors/daObjFl_Fall_Block_c.cpp#_ZN20daObjFl_Fall_Block_cD1Ev",
+    "src/game/actors/daObjFl_Fall_Block_c.cpp#daObjFl_Fall_Block_c_classInit",
     "src/game/actors/daObjPathLift_c.cpp#_ZN15daObjPathLift_c16CleanupResourcesEv",
     "src/game/actors/daObjPathLift_c.cpp#_ZN15daObjPathLift_c6RenderEv",
     "src/game/actors/daObjPathLift_c.cpp#_ZN15daObjPathLift_cD0Ev",
