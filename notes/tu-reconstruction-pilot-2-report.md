@@ -145,8 +145,8 @@ A direct search that bypassed `tu_map` entirely — cut every module's
 address-sorted function list wherever the mangled class label changes — found
 **171** single-class contiguous destructor-free runs of 5–15 functions. Every
 one outside `main` is the *named tail* of an ordinary actor TU whose destructor
-pair sits at its head with unnamed helpers between ([ov062](../config/arm9/overlays/ov062/symbols.txt)/[Chuckya](../src_tu/actors/Chuckya.cpp) is the
-canonical example: a "7-function Chuckya run" that is the last seven of a
+pair sits at its head with unnamed helpers between ([ov062](../config/arm9/overlays/ov062/symbols.txt)/[daHolhei_c](../src/game/actors/d_a_holhei.cpp) is the
+canonical example: a "7-function daHolhei_c run" that is the last seven of a
 36-function object). And every run belonging to a class with **no destructor
 anywhere in the ROM** — `IRQ`, `GX`, `GXS`, `CP15`, `SaveData`, `Memory`,
 `Message`, `ExpandingHeapAllocator`, `SolidHeapAllocator`, `NestedHeapIterator` —

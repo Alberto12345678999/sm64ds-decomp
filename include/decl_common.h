@@ -695,7 +695,6 @@ extern int _ZTV6Klepto[];
 extern int _ZTV6Lakitu[];
 extern int _ZTV6ShipUp[];
 extern int _ZTV6dMap_c[];
-extern int _ZTV7Chuckya[];
 extern int _ZTV7HeaveHo[];
 extern int _ZTV12HealingHeart[];
 extern int _ZTV7Skeeter[];

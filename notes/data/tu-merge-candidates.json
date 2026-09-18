@@ -26356,13 +26356,13 @@
    "start": "0x2115ee0",
    "end": "0x21174cc",
    "classes": [
-    "Chuckya"
+    "daHolhei_c"
    ],
    "n_functions_map": 36,
    "n_files": 36,
    "files": [
-    "src/_ZN7ChuckyaD1Ev.cpp",
-    "src/_ZN7ChuckyaD0Ev.cpp",
+    "src/_ZN10daHolhei_cD1Ev.cpp",
+    "src/_ZN10daHolhei_cD0Ev.cpp",
     "src/func_ov062_02115f84.c",
     "src/func_ov062_02116010.c",
     "src/func_ov062_021161a8.c",
@@ -26385,17 +26385,17 @@
     "src/func_ov062_02116b80.cpp",
     "src/func_ov062_02116bf8.c",
     "src/func_ov062_02116c78.cpp",
-    "src/Chuckya_ChangeState.cpp",
+    "src/daHolhei_c_ChangeState.cpp",
     "src/func_ov062_02116d28.cpp",
     "src/func_ov062_02116dbc.cpp",
     "src/func_ov062_02116e80.c",
     "src/func_ov062_02116edc.cpp",
-    "src/_ZN7Chuckya16CleanupResourcesEv.cpp",
-    "src/_ZN7Chuckya16OnPendingDestroyEv.cpp",
-    "src/_ZN7Chuckya6RenderEv.cpp",
-    "src/_ZN7Chuckya8BehaviorEv.cpp",
-    "src/_ZN7Chuckya13InitResourcesEv.cpp",
-    "src/_ZN7Chuckya16OnAimedAtWithEggEv.cpp",
+    "src/_ZN10daHolhei_c16CleanupResourcesEv.cpp",
+    "src/_ZN10daHolhei_c16OnPendingDestroyEv.cpp",
+    "src/_ZN10daHolhei_c6RenderEv.cpp",
+    "src/_ZN10daHolhei_c8BehaviorEv.cpp",
+    "src/_ZN10daHolhei_c13InitResourcesEv.cpp",
+    "src/_ZN10daHolhei_c16OnAimedAtWithEggEv.cpp",
     "src/d_a_holhei.c"
    ],
    "ext_mix": {

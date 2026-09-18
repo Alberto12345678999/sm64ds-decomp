@@ -321,7 +321,7 @@ daFPknBall_c	DONE	include\Fireball.h  [alias: header uses pre-rename name]	dEnem
 daFPkn_c	DONE	include\FirePiranhaPlantBig.h  [alias: header uses pre-rename name]	dEnemyBase_c	0	ov084	9
 daGrock_c	DONE	include\RollingRock.h  [alias: header uses pre-rename name]	dEnemyBase_c	0	ov021	7
 daHanachan_c	DONE	include\Wiggler.h  [alias: header uses pre-rename name]	dEnemyBase_c	0	ov034	6
-daHolhei_c	DONE	include\Chuckya.h  [alias: header uses pre-rename name]	dEnemyBase_c	0	ov062	8
+daHolhei_c	DONE	include\daHolhei_c.h  [alias: header uses pre-rename name]	dEnemyBase_c	0	ov062	8
 daHuwa_c	DONE	include\Spindrift.h  [alias: header uses pre-rename name]	dEnemyBase_c	0	ov081	9
 daHyuhyu_c	DONE	include\Fwoosh.h  [alias: header uses pre-rename name]	dEnemyBase_c	0	ov091	10
 daIbl_c	DONE	include\RollingIronBall.h  [alias: header uses pre-rename name]	dEnemyBase_c	0	ov100	7
