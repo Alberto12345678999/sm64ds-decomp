@@ -6133,22 +6133,22 @@
    "start": "0x21111a0",
    "end": "0x2111a70",
    "classes": [
-    "Bird"
+    "daSBird_c"
    ],
    "n_functions_map": 13,
    "n_files": 12,
    "files": [
-    "src/_ZN4BirdD1Ev.cpp",
-    "src/_ZN4BirdD0Ev.c",
+    "src/_ZN9daSBird_cD1Ev.cpp",
+    "src/_ZN9daSBird_cD0Ev.c",
     "src/func_ov009_02111224.c",
     "src/func_ov009_02111234.cpp",
     "src/func_ov009_021115d8.c",
     "src/func_ov009_021116ec.cpp",
-    "src/_ZN4Bird16CleanupResourcesEv.c",
-    "src/_ZN4Bird16OnPendingDestroyEv.c",
-    "src/_ZN4Bird6RenderEv.cpp",
-    "src/_ZN4Bird8BehaviorEv.cpp",
-    "src/_ZN4Bird13InitResourcesEv.cpp",
+    "src/_ZN9daSBird_c16CleanupResourcesEv.c",
+    "src/_ZN9daSBird_c16OnPendingDestroyEv.c",
+    "src/_ZN9daSBird_c6RenderEv.cpp",
+    "src/_ZN9daSBird_c8BehaviorEv.cpp",
+    "src/_ZN9daSBird_c13InitResourcesEv.cpp",
     "src/d_a_s_bird.c"
    ],
    "ext_mix": {
