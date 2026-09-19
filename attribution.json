@@ -4056,6 +4056,13 @@
     "src/actors/dScMgPachinko_c.cpp#func_ov006_020fc500": "tangosdev",
     "src/actors/dScMgPachinko_c.cpp#func_ov006_020fc718": "github-actions[bot]",
     "src/actors/dScMgPachinko_c.cpp#func_ov006_020fc7d0": "tangosdev",
-    "src/actors/dScMgPachinko_c.cpp#func_ov006_020fc844": "tangosdev"
+    "src/actors/dScMgPachinko_c.cpp#func_ov006_020fc844": "tangosdev",
+    "src/actors/daObjKanban_c.cpp#_ZN13daObjKanban_cD1Ev": "tangosdev",
+    "src/actors/daObjKanban_c.cpp#_ZN13daObjKanban_cD0Ev": "tangosdev",
+    "src/actors/daObjKanban_c.cpp#_ZN13daObjKanban_c16CleanupResourcesEv": "tangosdev",
+    "src/actors/daObjKanban_c.cpp#_ZN13daObjKanban_c6RenderEv": "tangosdev",
+    "src/actors/daObjKanban_c.cpp#_ZN13daObjKanban_c8BehaviorEv": "lunavyqo",
+    "src/actors/daObjKanban_c.cpp#_ZN13daObjKanban_c13InitResourcesEv": "tangosdev",
+    "src/actors/daObjKanban_c.cpp#daObjKanban_c_classInit": "tangosdev"
   }
 }
