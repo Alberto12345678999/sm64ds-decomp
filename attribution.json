@@ -199,6 +199,7 @@
     "src/actors/dScMiniGm_c.cpp#func_ov005_020c1688": "tangosdev",
     "src/actors/dScMiniGm_c.cpp#func_ov005_020c16e4": "lunavyqo",
     "src/actors/dScMiniGm_c.cpp#_ZN11dScMiniGm_c13InitResourcesEv": "tangosdev",
+    "src/actors/dScMiniGm_c.cpp#dScMiniGm_c_classInit": "andrewboudreau",
     "src/_ZN11daBgSnwmn_c16CleanupResourcesEv.c": "tangosdev",
     "src/_ZN11daBgSnwmn_c16CleanupResourcesEv.cpp": "tangosdev",
     "src/_ZN11daBgSnwmn_c16OnPendingDestroyEv.c": "tangosdev",

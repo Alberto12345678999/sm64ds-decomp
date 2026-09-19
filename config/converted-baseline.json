@@ -7,7 +7,7 @@
     "no_codegen_trick",
     "no_mangled_refs"
   ],
-  "count": 2814,
+  "count": 2815,
   "converted": [
     "src/ARMMathLoadState.c",
     "src/ARMMathSaveState.c",
@@ -27,6 +27,7 @@
     "src/actors/dScMiniGm_c.cpp#_ZN11dScMiniGm_c16OnPendingDestroyEv",
     "src/actors/dScMiniGm_c.cpp#_ZN11dScMiniGm_cD0Ev",
     "src/actors/dScMiniGm_c.cpp#_ZN11dScMiniGm_cD1Ev",
+    "src/actors/dScMiniGm_c.cpp#dScMiniGm_c_classInit",
     "src/game/actors/d_a_holhei.cpp#daHolhei_c_ChangeState",
     "src/ClearSpikeBomb.c",
     "src/CollectStar.c",
