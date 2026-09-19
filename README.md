@@ -63,7 +63,10 @@ LINKED     ███████████████████████
   does not require readable code, so this tier does not move on its own and is by far
   the furthest behind.
 - **LINKED** is matched code that actually reaches the [PC port](port/)'s binary,
-  replacing the host stand-in that stood there before.
+  replacing the host stand-in that stood there before. On `main` that `port/` tree holds
+  the port's smoke-gate suite: the platform seam, the slice manifests and the native test
+  executables. The playable build is developed on the `port/*` branches, and that is what
+  the download link at the top of this file serves.
 
 They are not stages of one pipeline. A function can be matched and linked while still
 being unreadable, and converting a file never changes its matched bytes.
@@ -292,6 +295,13 @@ static-initializer batches), contributed codegen notes on boolean materializatio
 predicated-select shapes (PR #49), and reported the scheduler bug fixed in #61.
 [Moundistz](https://github.com/Moundistz) contributed 3 matched functions and 8 nonmatching
 floor entries, plus a pass of placeholder-to-resolved callee renames across the arm9 corpus.
+[lunavyqo](https://github.com/lunavyqo) has hand-matched across ov001 and a wide spread of
+the scene overlays, and carries the class translation-unit cleanup work, promoting a folded
+actor TU and then clearing the one-function leftovers it strands.
+[ruspecial](https://github.com/ruspecial) has hand-matched large batches across ov002, ov006
+and the arm9 BIOS SVC stubs, banked 174 near-misses with the C++ exception-handling and
+split-symbol triage notes behind them (PR #806), and contributed oracle-verified host copies
+for the two Bowser ov060 holes on the port side (PR #1505).
 
 Tooling contributions: [webheadvr](https://github.com/webheadvr) made the relocation
 symbol resolver module-aware, fixing wrong-overlay symbol picks where overlay address
