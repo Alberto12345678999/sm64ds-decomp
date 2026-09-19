@@ -3934,6 +3934,19 @@
     "src/actors/dScMgCurling_c.cpp#func_ov006_020e1854": "tangosdev",
     "src/actors/dScMgCurling_c.cpp#func_ov006_020e1b54": "tangosdev",
     "src/actors/dScMgCurling_c.cpp#func_ov006_020e1c68": "andrewboudreau",
-    "src/actors/dScMgCurling_c.cpp#func_ov006_020e1dc8": "tangosdev"
+    "src/actors/dScMgCurling_c.cpp#func_ov006_020e1dc8": "tangosdev",
+    "src/actors/dScMgAmida_c.cpp#func_ov006_020d3624": "tangosdev",
+    "src/actors/dScMgAmida_c.cpp#func_ov006_020d3668": "tangosdev",
+    "src/actors/dScMgAmida_c.cpp#func_ov006_020d36a4": "tangosdev",
+    "src/actors/dScMgAmida_c.cpp#func_ov006_020d3ba0": "lunavyqo",
+    "src/actors/dScMgAmida_c.cpp#func_ov006_020d452c": "andrewboudreau",
+    "src/actors/dScMgAmida_c.cpp#func_ov006_020d47f4": "lunavyqo",
+    "src/actors/dScMgAmida_c.cpp#_ZN12dScMgAmida_c6RenderEv": "andrewboudreau",
+    "src/actors/dScMgAmida_c.cpp#_ZN12dScMgAmida_c8BehaviorEv": "ruspecial",
+    "src/actors/dScMgAmida_c.cpp#_ZN12dScMgAmida_c13OnYoshiTryEatEi": "tangosdev",
+    "src/actors/dScMgAmida_c.cpp#_ZN12dScMgAmida_c13InitResourcesEv": "tangosdev",
+    "src/actors/dScMgAmida_c.cpp#_ZN12dScMgAmida_c21AfterCleanupResourcesEj": "andrewboudreau",
+    "src/actors/dScMgAmida_c.cpp#dScMgAmida_c_classInit": "tangosdev",
+    "src/actors/dScMgAmida_c.cpp#func_ov006_020d5a50": "tangosdev"
   }
 }
