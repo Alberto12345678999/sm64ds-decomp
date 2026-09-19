@@ -295,6 +295,13 @@ static-initializer batches), contributed codegen notes on boolean materializatio
 predicated-select shapes (PR #49), and reported the scheduler bug fixed in #61.
 [Moundistz](https://github.com/Moundistz) contributed 3 matched functions and 8 nonmatching
 floor entries, plus a pass of placeholder-to-resolved callee renames across the arm9 corpus.
+[lunavyqo](https://github.com/lunavyqo) has hand-matched across ov001 and a wide spread of
+the scene overlays, and carries the class translation-unit cleanup work, promoting a folded
+actor TU and then clearing the one-function leftovers it strands.
+[ruspecial](https://github.com/ruspecial) has hand-matched large batches across ov002, ov006
+and the arm9 BIOS SVC stubs, banked 174 near-misses with the C++ exception-handling and
+split-symbol triage notes behind them (PR #806), and contributed oracle-verified host copies
+for the two Bowser ov060 holes on the port side (PR #1505).
 
 Tooling contributions: [webheadvr](https://github.com/webheadvr) made the relocation
 symbol resolver module-aware, fixing wrong-overlay symbol picks where overlay address
