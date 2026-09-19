@@ -63,7 +63,10 @@ LINKED     ███████████████████████
   does not require readable code, so this tier does not move on its own and is by far
   the furthest behind.
 - **LINKED** is matched code that actually reaches the [PC port](port/)'s binary,
-  replacing the host stand-in that stood there before.
+  replacing the host stand-in that stood there before. On `main` that `port/` tree holds
+  the port's smoke-gate suite: the platform seam, the slice manifests and the native test
+  executables. The playable build is developed on the `port/*` branches, and that is what
+  the download link at the top of this file serves.
 
 They are not stages of one pipeline. A function can be matched and linked while still
 being unreadable, and converting a file never changes its matched bytes.
