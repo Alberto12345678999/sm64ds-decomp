@@ -428,29 +428,9 @@ src/game/actors/d_a_obj_kinoko_tag.cpp:
     complete
     .text start:0x020b46a0 end:0x020b4a70
 
-src/_ZN13daObjDorifu_cD0Ev.cpp:
+src/actors/daObjDorifu_c.cpp:
     complete
-    .text start:0x020b4a70 end:0x020b4af8
-
-src/_ZN13daObjDorifu_cD1Ev.cpp:
-    complete
-    .text start:0x020b4af8 end:0x020b4b6c
-
-src/_ZN13daObjDorifu_c16CleanupResourcesEP20daObjDorifuResources.cpp:
-    complete
-    .text start:0x020b4b6c end:0x020b4bc4
-
-src/_ZN13daObjDorifu_c6RenderEv.cpp:
-    complete
-    .text start:0x020b4bc4 end:0x020b4bfc
-
-src/_ZN13daObjDorifu_c8BehaviorEv.cpp:
-    complete
-    .text start:0x020b4bfc end:0x020b4d58
-
-src/_ZN13daObjDorifu_c13InitResourcesEP20daObjDorifuResources.cpp:
-    complete
-    .text start:0x020b4d58 end:0x020b4ed8
+    .text start:0x020b4a70 end:0x020b4ed8
 
 src/game/actors/d_a_obj_hatena_switch.cpp:
     complete
@@ -530,21 +510,9 @@ src/_ZN13daObjKuruma_cD1Ev.cpp:
     complete
     .text start:0x020b686c end:0x020b68b0
 
-src/func_ov002_020b68b0.cpp:
+src/actors/daObjKuruma_c.cpp:
     complete
-    .text start:0x020b68b0 end:0x020b68f8
-
-src/_ZN13daObjKuruma_c6RenderEv.cpp:
-    complete
-    .text start:0x020b68f8 end:0x020b6920
-
-src/_ZN13daObjKuruma_c8BehaviorEv.cpp:
-    complete
-    .text start:0x020b6920 end:0x020b6958
-
-src/func_ov002_020b6958.c:
-    complete
-    .text start:0x020b6958 end:0x020b69e4
+    .text start:0x020b68b0 end:0x020b69e4
 
 src/_ZN17daObjKurumajiku_cD0Ev.cpp:
     complete
@@ -778,21 +746,9 @@ src/_ZN13daObjSwdoor_cD1Ev.cpp:
     complete
     .text start:0x020bab64 end:0x020baba8
 
-src/func_ov002_020baba8.cpp:
+src/actors/daObjSwdoor_c.cpp:
     complete
-    .text start:0x020baba8 end:0x020babf0
-
-src/_ZN13daObjSwdoor_c6RenderEv.cpp:
-    complete
-    .text start:0x020babf0 end:0x020bac18
-
-src/func_ov002_020bac18.c:
-    complete
-    .text start:0x020bac18 end:0x020bad10
-
-src/func_ov002_020bad10.c:
-    complete
-    .text start:0x020bad10 end:0x020badd0
+    .text start:0x020baba8 end:0x020badd0
 
 src/_ZN8SignPostD1Ev.cpp:
     complete
