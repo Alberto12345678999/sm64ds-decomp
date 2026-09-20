@@ -35273,11 +35273,11 @@ matched: yes</title></rect><rect x="1276.06" y="302.79" width="6.73" height="6.3
 module: ov062
 addr: 0x02117478
 size: 84 bytes
-matched: yes</title></rect><rect x="1276.06" y="309.15" width="6.73" height="5.45" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5KoopaD1Ev
+matched: yes</title></rect><rect x="1276.06" y="309.15" width="6.73" height="5.45" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daNknk_cD1Ev
 module: ov062
 addr: 0x021174cc
 size: 72 bytes
-matched: yes</title></rect><rect x="1276.06" y="314.60" width="6.73" height="6.96" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5KoopaD0Ev
+matched: yes</title></rect><rect x="1276.06" y="314.60" width="6.73" height="6.96" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daNknk_cD0Ev
 module: ov062
 addr: 0x02117514
 size: 92 bytes
@@ -35389,35 +35389,35 @@ matched: yes</title></rect><rect x="1309.38" y="302.18" width="35.88" height="4.
 module: ov062
 addr: 0x02118de8
 size: 284 bytes
-matched: yes</title></rect><rect x="1345.26" y="302.18" width="15.67" height="4.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Koopa16CleanupResourcesEv
+matched: yes</title></rect><rect x="1345.26" y="302.18" width="15.67" height="4.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daNknk_c16CleanupResourcesEv
 module: ov062
 addr: 0x02118f04
 size: 124 bytes
-matched: yes</title></rect><rect x="1360.93" y="302.18" width="0.51" height="4.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Koopa16OnPendingDestroyEv
+matched: yes</title></rect><rect x="1360.93" y="302.18" width="0.51" height="4.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daNknk_c16OnPendingDestroyEv
 module: ov062
 addr: 0x02118f80
 size: 4 bytes
-matched: yes</title></rect><rect x="1361.43" y="302.18" width="45.48" height="4.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Koopa6RenderEv
+matched: yes</title></rect><rect x="1361.43" y="302.18" width="45.48" height="4.03" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daNknk_c6RenderEv
 module: ov062
 addr: 0x02118f84
 size: 360 bytes
-matched: yes</title></rect><rect x="1309.38" y="306.21" width="7.93" height="52.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Koopa8BehaviorEv
+matched: yes</title></rect><rect x="1309.38" y="306.21" width="7.93" height="52.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daNknk_c8BehaviorEv
 module: ov062
 addr: 0x021190ec
 size: 820 bytes
-matched: yes</title></rect><rect x="1309.38" y="358.88" width="7.93" height="31.34" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Koopa13InitResourcesEv
+matched: yes</title></rect><rect x="1309.38" y="358.88" width="7.93" height="31.34" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daNknk_c13InitResourcesEv
 module: ov062
 addr: 0x02119420
 size: 488 bytes
-matched: yes</title></rect><rect x="1309.38" y="390.23" width="7.93" height="2.06" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Koopa16OnAimedAtWithEggEv
+matched: yes</title></rect><rect x="1309.38" y="390.23" width="7.93" height="2.06" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daNknk_c16OnAimedAtWithEggEv
 module: ov062
 addr: 0x02119608
 size: 32 bytes
-matched: yes</title></rect><rect x="1309.38" y="392.28" width="7.93" height="8.22" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Koopa13OnTurnIntoEggER6Player
+matched: yes</title></rect><rect x="1309.38" y="392.28" width="7.93" height="8.22" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daNknk_c13OnTurnIntoEggER6Player
 module: ov062
 addr: 0x02119628
 size: 128 bytes
-matched: yes</title></rect><rect x="1309.38" y="400.50" width="7.93" height="1.28" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Koopa13OnYoshiTryEatEv
+matched: yes</title></rect><rect x="1309.38" y="400.50" width="7.93" height="1.28" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daNknk_c13OnYoshiTryEatEv
 module: ov062
 addr: 0x021196a8
 size: 20 bytes
