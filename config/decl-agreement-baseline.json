@@ -770,7 +770,7 @@
    "src/_ZN12Flamethrower8BehaviorEv.cpp": ["param:#1 int *", "param:#3 int *"],
    "src/_ZN12WorkElevator8BehaviorEv.cpp": ["param:#1 const Vector3 *", "param:#2 const Matrix4x3 *"],
    "src/_ZN13SnowmanBreath15IsPlayerInRangeEv.cpp": ["param:#1 const Vector3 *", "param:#2 const Matrix4x3 *"],
-   "src/_ZN17daObjKurumajiku_c8BehaviorEv.cpp": ["param:#1 const Vector3 *", "param:#2 const void *"],
+   "src/actors/daObjKurumajiku_c.cpp": ["param:#1 const Vector3 *", "param:#2 const void *"],
    "src/_ZN25RotatingUpDownPlatformUtm13InitResourcesEv.cpp": ["param:#1 const Vector3 *", "param:#2 const Matrix4x3 *"],
    "src/_ZN5dPa_c7level_c14clipCallback_c8OnUpdateERN8Particle6SystemEb.cpp": ["param:#1 const Vector3 *", "param:#2 const Matrix4x3 *"],
    "src/_ZN6Coffin13InitResourcesEv.cpp": ["param:#1 const Vector3 *", "param:#2 const void *"],
@@ -1544,7 +1544,7 @@
    "src/_ZN11dCapEnemy_c12UpdateCapPosERK7Vector3RK10Vector3_16.cpp": ["param:#1 Vector3 *", "param:#2 Vector3 *", "param:#3 const Vector3 *"],
    "src/_ZN12Flamethrower8BehaviorEv.cpp": ["param:#1 int *", "param:#2 int *", "param:#3 int *"],
    "src/_ZN14KnockDownPlank13InitResourcesEv.cpp": ["param:#1 Vector3 *", "param:#2 Vector3 *", "param:#3 Vector3 *"],
-   "src/_ZN17daObjKurumajiku_c8BehaviorEv.cpp": ["param:#1 Vector3 *", "param:#2 const Vector3 *", "param:#3 const Vector3 *"],
+   "src/actors/daObjKurumajiku_c.cpp": ["param:#1 Vector3 *", "param:#2 const Vector3 *", "param:#3 const Vector3 *"],
    "src/_ZN25RotatingUpDownPlatformUtm13InitResourcesEv.cpp": ["param:#1 Vector3 *", "param:#2 Vector3 *", "param:#3 Vector3 *"],
    "src/_ZN25RotatingUpDownPlatformUtm8BehaviorEv.cpp": ["param:#1 Vector3 *", "param:#2 Vector3 *", "param:#3 Vector3 *"],
    "src/_ZN6Coffin13InitResourcesEv.cpp": ["param:#1 Vector3 *", "param:#2 Vector3 *", "param:#3 Vector3 *"],
@@ -8244,7 +8244,7 @@
    "src/_ZN15RotatingFirebar8BehaviorEv.cpp": ["return:int []"],
    "src/_ZN15TtcRotatingCube13InitResourcesEv.cpp": ["return:int []"],
    "src/_ZN16daKing_Donketu_c8BehaviorEv.cpp": ["return:Mat4x3"],
-   "src/_ZN17daObjKurumajiku_c8BehaviorEv.cpp": ["return:char []"],
+   "src/actors/daObjKurumajiku_c.cpp": ["return:char []"],
    "src/_ZN25RotatingUpDownPlatformUtm8BehaviorEv.cpp": ["return:char []"],
    "src/_ZN3Key8BehaviorEv.cpp": ["return:char"],
    "src/_ZN6Coffin13InitResourcesEv.cpp": ["return:char"],
@@ -8979,7 +8979,7 @@
    "src/game/actors/d_a_obj_hatena_switch.cpp": ["return:SharedFilePtr"]
   },
   "data_ov002_0210ddd0": {
-   "src/_ZN17daObjKurumajiku_c8BehaviorEv.cpp": ["return:Vector3 []"]
+   "src/actors/daObjKurumajiku_c.cpp": ["return:Vector3 []"]
   },
   "data_ov002_0210de00": {
    "src/_ZN15daObjMarioCap_c13InitResourcesEv.cpp": ["return:char"]
@@ -17063,7 +17063,8 @@
    "include/decl_common.h": ["kind:data"]
   },
   "func_ov002_020b6a80": {
-   "src/_ZN17daObjKurumajiku_c8BehaviorEv.cpp": ["param:#1 daObjKurumajiku_c *"]
+  },
+  "func_ov002_020b6ac8": {
   },
   "func_ov002_020b6c54": {
    "src/game/actors/d_a_obj_km1_kurumajiku.cpp": ["param:#1 daObjKm1_Kurumajiku_c *", "param:#2 ResourceDescriptor *"],

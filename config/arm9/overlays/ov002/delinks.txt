@@ -522,21 +522,9 @@ src/_ZN17daObjKurumajiku_cD1Ev.cpp:
     complete
     .text start:0x020b6a3c end:0x020b6a80
 
-src/func_ov002_020b6a80.c:
+src/actors/daObjKurumajiku_c.cpp:
     complete
-    .text start:0x020b6a80 end:0x020b6ac8
-
-src/func_ov002_020b6ac8.cpp:
-    complete
-    .text start:0x020b6ac8 end:0x020b6b10
-
-src/_ZN17daObjKurumajiku_c6RenderEv.cpp:
-    complete
-    .text start:0x020b6b10 end:0x020b6b38
-
-src/_ZN17daObjKurumajiku_c8BehaviorEv.cpp:
-    complete
-    .text start:0x020b6b38 end:0x020b6c54
+    .text start:0x020b6a80 end:0x020b6c54
 
 src/func_ov002_020b6c54.c:
     complete

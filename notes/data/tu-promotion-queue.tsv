@@ -60,7 +60,7 @@ daBgSnmBdy_c	1	622	ov072	yes	yes	intact-object(owns non-text data at natural add
 daObjBk_Dossunbar_c	1	340	ov015	yes	yes	compiler-only:>=11(derived from own chain: 5 classes incl. self via build/rtti.json; floor 2x5+1)	daObjBkBillboard_c	text-only
 daObjDorifu_c	6	254	ov002	yes	yes	compiler-only:>=11(derived from own chain: 5 classes incl. self via build/rtti.json; floor 2x5+1)	daBar_c	text-only
 daObjGuragura_c	6	181	ov002	yes	yes	compiler-only:>=11(derived from own chain: 5 classes incl. self via build/rtti.json; floor 2x5+1)	daBar_c	text-only
-daObjKurumajiku_c	6	168	ov002	yes	no	compiler-only:>=11(derived from own chain: 5 classes incl. self via build/rtti.json; floor 2x5+1)	daBar_c	text-only
+daObjKurumajiku_c	3	167	ov002	yes	yes	compiler-only:>=11(derived from own chain: 5 classes incl. self via build/rtti.json; floor 2x5+1)	daBar_c	text-only
 daObjFallBlock_c	3	566	ov098	yes	yes	compiler-only:>=11(derived from own chain: 5 classes incl. self via build/rtti.json; floor 2x5+1)	daObjYajirusi_c	text-only
 daObjUkiyuka_c	5	140	ov002	yes	yes	compiler-only:>=11(derived from own chain: 5 classes incl. self via build/rtti.json; floor 2x5+1)	daBar_c	text-only
 daObjKaitendai_c	3	253	ov002	yes	yes	compiler-only:>=11(derived from own chain: 5 classes incl. self via build/rtti.json; floor 2x5+1)	daBar_c	text-only
