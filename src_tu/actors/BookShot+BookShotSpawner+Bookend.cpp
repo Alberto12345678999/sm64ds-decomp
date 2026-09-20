@@ -146,9 +146,14 @@ extern int data_ov020_02114ab0[];
 extern struct BMD_File* _ZN5Model8LoadFileER13SharedFilePtr(SharedFilePtr* fp);
 extern void* _ZN9Animation8LoadFileER13SharedFilePtr(SharedFilePtr* fp);
 extern void LoadBlueCoinModel(void* c);
-extern int _ZN11ShadowModel12InitCylinderEv(char* self);
-extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(char* self, struct dActor_c* a, int r, int h, struct Vector3_16* rot, int f);
-extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(char* self, struct dActor_c* a, struct Vector3* pos, int r, int h, u32 f1, u32 f2);
+/* Scalar collision bridges; measured member-call forms are recorded in
+ * notes/experiments/pr2869-source-repair-0920.json. */
+extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
+    dBgCh_Actr* self, dActor_c* actor, int radius, int height,
+    Vector3_16* first, Vector3_16* second);
+extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
+    dCcAcPos_c* self, dActor_c* actor, const Vector3* offset,
+    int radius, int height, u32 flags, u32 vulnFlags);
 extern struct M48 IDENTITY_MATRIX4X3;
 extern int data_ov020_02114ab8[];
 extern int data_ov020_02114aa0[];
@@ -313,15 +318,15 @@ int BookShot::InitResources()
     _ZN9Animation8LoadFileER13SharedFilePtr((SharedFilePtr *)&data_ov020_02114ab0);
     LoadBlueCoinModel(((char*)this));
 
-    if (_ZN11ShadowModel12InitCylinderEv((char*)&mShadowModel) == 0)
+    if (mShadowModel.InitCylinder() == 0)
         return 0;
 
-    _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(((char*)this)+0x25c, (struct dActor_c*)((char*)this), 0x32000, 0x32000, 0, 0);
+    _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(&mWithMeshClsn, this, 0x32000, 0x32000, 0, 0);
 
     unk_438 = 0;
     unk_43c = 0;
     unk_440 = 0;
-    _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(((char*)this)+0x21c, (struct dActor_c*)((char*)this), (struct Vector3*)((char*)&unk_438), 0x19000, 0x32000, 0x200001, 0);
+    _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(&mdCcAcPos_c, this, (const Vector3*)&unk_438, 0x19000, 0x32000, 0x200001, 0);
 
     unk_418 = 0;
     unk_41c = 0;
