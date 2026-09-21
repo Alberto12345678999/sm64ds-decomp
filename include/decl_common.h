@@ -494,7 +494,7 @@ extern int _ZTV12daObjShell_c[];
 extern int _ZTV12daPukupuku_c[];
 extern int _ZTV12daSnowball_c[];
 extern int _ZTV12daStarBase_c[];
-extern int _ZTV13BigBrickBlock[];
+extern int _ZTV13daObjBlockL_c[];
 extern int _ZTV13FortressTower[];
 extern int _ZTV10daCamTag_c[];
 extern int _ZTV7daRNk_c[];

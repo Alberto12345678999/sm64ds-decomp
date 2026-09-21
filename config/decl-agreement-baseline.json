@@ -2175,7 +2175,7 @@
    "src/game/actors/d_a_obj_maruta.cpp": ["param:#5 int"]
   },
   "_ZN10dBgActor_c21IsClsnInRangeOnScreenE5Fix12IiES1_": {
-   "src/_ZN13BigBrickBlock8BehaviorEv.cpp": ["return:void"],
+   "src/_ZN13daObjBlockL_c8BehaviorEv.cpp": ["return:void"],
    "src/_ZN8IceBlock8BehaviorEv.cpp": ["return:void"],
    "src/actors/daPgDfdr_c.cpp": ["return:void"]
   },
@@ -5119,7 +5119,7 @@
    "src/_ZN11SnowmanHead6State2Ev.cpp": ["return:void"],
    "src/_ZN12FortressWall4KillEv.cpp": ["return:void"],
    "src/_ZN12daObjShell_c8BehaviorEv.cpp": ["return:int"],
-   "src/_ZN13BigBrickBlock4KillEv.cpp": ["return:void"],
+   "src/_ZN13daObjBlockL_c4KillEv.cpp": ["return:void"],
    "src/_ZN21SnowmanBreathParticle12CheckSnowmanEv.cpp": ["return:void"],
    "src/_ZN21SnowmanBreathParticle9HitPlayerEv.cpp": ["return:void"],
    "src/_ZN25RotatingUpDownPlatformUtm4KillEv.cpp": ["return:System *"],
@@ -5447,7 +5447,7 @@
    "src/unnamed/ov063/func_ov063_0211a3d0.cpp": ["param:#2 const Vector3 *"]
   },
   "_ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs": {
-   "src/_ZN13BigBrickBlock4KillEv.cpp": ["param:#2 const Vector3 &", "param:#3 unsigned int"],
+   "src/_ZN13daObjBlockL_c4KillEv.cpp": ["param:#2 const Vector3 &", "param:#3 unsigned int"],
    "src/_ZN5Stump8BehaviorEv.cpp": ["param:#2 V3", "param:#3 unsigned int"],
    "src/_ZN6Player19St_CrazedCrate_MainEv.cpp": ["param:#2 const Vector3 &", "param:#3 unsigned int"],
    "src/_ZN9daMenbo_c8BehaviorEv.cpp": ["param:#2 const void *", "param:#3 unsigned int"],
@@ -8666,13 +8666,13 @@
    "src/func_ov002_020dacb4.c": ["return:int []"]
   },
   "data_ov002_02108ab0": {
-   "src/_ZN13BigBrickBlock16CleanupResourcesEv.cpp": ["return:BigBrickBlockFileRow []"]
+   "src/_ZN13daObjBlockL_c16CleanupResourcesEv.cpp": ["return:BigBrickBlockFileRow []"]
   },
   "data_ov002_02108ab4": {
-   "src/_ZN13BigBrickBlock16CleanupResourcesEv.cpp": ["return:BigBrickBlockFileRow []"]
+   "src/_ZN13daObjBlockL_c16CleanupResourcesEv.cpp": ["return:BigBrickBlockFileRow []"]
   },
   "data_ov002_02108ab8": {
-   "src/_ZN13BigBrickBlock13InitResourcesEv.cpp": ["return:ClpsRow []"]
+   "src/_ZN13daObjBlockL_c13InitResourcesEv.cpp": ["return:ClpsRow []"]
   },
   "data_ov002_0210af2c": {
    "src/_ZN16dPathLiftActor_c12BaseBehaviorEv.cpp": ["return:PathLiftState []"]

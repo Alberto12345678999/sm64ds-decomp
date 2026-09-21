@@ -2,7 +2,7 @@
 #include "dActor_c.h"
 // @symbol _ZN10BrickBlock8BehaviorEv
 #include "BrickBlock.h"
-#include "BigBrickBlock.h"
+#include "daObjBlockL_c.h"
 
 typedef void (BrickBlock::*BrickBlockAction)();
 extern "C" BrickBlockAction data_ov002_0210dd30[];
@@ -30,7 +30,7 @@ int BrickBlock::Behavior()
             }
         }
         if (Vec3_Dist(&mPosX, &block->mPosX) < 0x32000) {
-            ((BigBrickBlock *)block)->mLinkedActor = this;
+            ((daObjBlockL_c *)block)->mLinkedActor = this;
             mIsAttached = 1;
             return 1;
         }

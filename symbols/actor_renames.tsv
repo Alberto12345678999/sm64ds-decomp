@@ -72,14 +72,14 @@ ov002	0x020b3248	daFeather_c_Spawn	daFeather_c_classInit	reconstructed classInit
 ov002	0x020b3568	func_ov002_020b3568	Bubble_Spawn	spawnfunc
 ov002	0x020b3568	Bubble_Spawn	daObjAbuku_c_Spawn	prior RTTI-anchored project alias; class identity proven, exact source spelling not preserved
 ov002	0x020b3568	daObjAbuku_c_Spawn	daObjAbuku_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
-ov002	0x020b35a0	func_ov002_020b35a0	_ZN13BigBrickBlockD1Ev	vtable slot 16
-ov002	0x020b35e4	func_ov002_020b35e4	_ZN13BigBrickBlockD0Ev	vtable slot 17
-ov002	0x020b363c	func_ov002_020b363c	_ZN13BigBrickBlock17NotifyLinkedActorEv	inferred helper: sole caller BigBrickBlock::Kill; this owns mLinkedActor at 0x328
-ov002	0x020b36a0	func_ov002_020b36a0	_ZN13BigBrickBlock16HasNonzeroAngleXEv	inferred helper: BigBrickBlock::Kill/InitResources callers; reads inherited mAngleX at 0x8c
-ov002	0x020b3ab0	func_ov002_020b3ab0	_ZN13BigBrickBlock16CleanupResourcesEv	vtable slot 3
-ov002	0x020b3b14	func_ov002_020b3b14	_ZN13BigBrickBlock6RenderEv	vtable slot 9
-ov002	0x020b3c0c	func_ov002_020b3c0c	_ZN13BigBrickBlock8BehaviorEv	vtable slot 6
-ov002	0x020b3d78	func_ov002_020b3d78	_ZN13BigBrickBlock13InitResourcesEv	vtable slot 0
+ov002	0x020b35a0	func_ov002_020b35a0	_ZN13daObjBlockL_cD1Ev	vtable slot 16
+ov002	0x020b35e4	func_ov002_020b35e4	_ZN13daObjBlockL_cD0Ev	vtable slot 17
+ov002	0x020b363c	func_ov002_020b363c	_ZN13daObjBlockL_c17NotifyLinkedActorEv	inferred helper: sole caller daObjBlockL_c::Kill; this owns mLinkedActor at 0x328
+ov002	0x020b36a0	func_ov002_020b36a0	_ZN13daObjBlockL_c16HasNonzeroAngleXEv	inferred helper: daObjBlockL_c::Kill/InitResources callers; reads inherited mAngleX at 0x8c
+ov002	0x020b3ab0	func_ov002_020b3ab0	_ZN13daObjBlockL_c16CleanupResourcesEv	vtable slot 3
+ov002	0x020b3b14	func_ov002_020b3b14	_ZN13daObjBlockL_c6RenderEv	vtable slot 9
+ov002	0x020b3c0c	func_ov002_020b3c0c	_ZN13daObjBlockL_c8BehaviorEv	vtable slot 6
+ov002	0x020b3d78	func_ov002_020b3d78	_ZN13daObjBlockL_c13InitResourcesEv	vtable slot 0
 ov002	0x020b406c	func_ov002_020b406c	FortressTowerWall_Spawn	spawnfunc
 ov002	0x020b406c	FortressTowerWall_Spawn	daObjBlockL_c_classInit_BK_FUTA	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov002	0x020b409c	func_ov002_020b409c	BlackBrickBlock_Spawn	spawnfunc
@@ -360,7 +360,7 @@ ov002	0x02108a78	data_ov002_02108a78	BlackBrickBlock_SpawnInfo	spawninfo
 ov002	0x02108a78	BlackBrickBlock_SpawnInfo	g_profile_BLOCK_LL	reconstructed profile global; literal ROM ID BLOCK_LL+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov002	0x02108a94	data_ov002_02108a94	FortressTowerWall_SpawnInfo	spawninfo
 ov002	0x02108a94	FortressTowerWall_SpawnInfo	g_profile_BK_FUTA	reconstructed profile global; literal ROM ID BK_FUTA+registry role+later EAD lineage; exact SM64DS spelling not preserved
-ov002	0x02108adc	data_ov002_02108adc	_ZTV13BigBrickBlock	vtable alloc=0x330
+ov002	0x02108adc	data_ov002_02108adc	_ZTV13daObjBlockL_c	vtable alloc=0x330
 ov002	0x02108ba0	data_ov002_02108ba0	MegaMushroomBlockTag_SpawnInfo	spawninfo
 ov002	0x02108ba0	MegaMushroomBlockTag_SpawnInfo	g_profile_BLK_SKINOKO_TAG	reconstructed profile global; literal ROM ID BLK_SKINOKO_TAG+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov002	0x02108bbc	data_ov002_02108bbc	GreenShellBlockTag_SpawnInfo	spawninfo
