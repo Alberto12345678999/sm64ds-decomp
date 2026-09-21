@@ -124,11 +124,11 @@ extern "C" void _ZN11fLiNdBaPr_cD1Ev(void *node);
    `int[]` in different files and passed `&x` or `x` accordingly. Unified on the
    array spelling, so every call site passes the bare name and every reloc is
    the same addend-0 reference it always was. */
-extern void func_0203b3c0(void *list, void *node);
-extern void func_0203b27c(void *list, void *node);
-extern void func_0203b20c(void *list, void *node);
-extern void func_0203b244(void *list, void *node);
-extern void func_0204405c(void *list, void *node);
+extern int  func_0203b3c0(void *list, void *node);
+extern int  func_0203b27c(void *list, void *node);
+extern int  func_0203b20c(void *list, void *node);
+extern int  func_0203b244(void *list, void *node);
+extern int  func_0204405c(void *list, void *node);
 extern int  func_0203b438(void *root, void *node, void *parent);
 
 extern int  data_020a4b6c[];
@@ -146,7 +146,7 @@ extern fBaseActorInfo **data_020a4bb8;
 
 extern void func_02044334(void *p);
 extern int  func_0204424c(int p);
-extern void func_0206e2f8(void *p, int fill, unsigned int size);
+extern void *func_0206e2f8(void *p, int fill, unsigned int size);
 
 /* Defined LOWER DOWN in this file (ROM ordinal 4) but called from ordinal 6,
    which the reverse-emission order puts above it. Declared here rather than
