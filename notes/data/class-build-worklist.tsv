@@ -400,7 +400,7 @@ daObjKm1_Kuruma_c	DONE	include\daObjKm1_Kuruma_c.h	daObjKuruma_c	0	ov043	4
 daObjKm3_Kuruma_c	DONE	include\daObjKm3_Kuruma_c.h	daObjKuruma_c	0	ov047	4
 daObjKm1_Kurumajiku_c	DONE	include\daObjKm1_Kurumajiku_c.h	daObjKurumajiku_c	0	ov043	4
 daObjKm3_Kurumajiku_c	DONE	include\daObjKm3_Kurumajiku_c.h	daObjKurumajiku_c	0	ov047	4
-daObjFlMaruta_c	DONE	include\RollingLogLll.h  [alias: header uses pre-rename name]	daObjMaruta_c	0	ov022	5
+daObjFlMaruta_c	DONE	include\daObjFlMaruta_c.h  [alias: header uses pre-rename name]	daObjMaruta_c	0	ov022	5
 daObjHmMaruta_c	PARTIAL	include\daObjHmMaruta_c.h	daObjMaruta_c	0	ov030	5
 daObjBSwdoor_c	DONE	include\daObjBSwdoor_c.h	daObjSwdoor_c	0	ov014	5
 daObjCvShutter_c	DONE	include\daObjCvShutter_c.h	daObjSwdoor_c	0	ov021	5
