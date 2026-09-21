@@ -1544,7 +1544,7 @@
    "src/game/actors/d_a_tree.cpp": ["param:#1 Vector3 *"]
   },
   "Vec3_Dist": {
-   "src/_ZN10BrickBlock8BehaviorEv.cpp": ["param:#1 const void *", "param:#2 const void *"],
+   "src/_ZN19daObjBlockItemTag_c8BehaviorEv.cpp": ["param:#1 const void *", "param:#2 const void *"],
    "src/_ZN10RockPillar8BehaviorEv.cpp": ["param:#1 const void *", "param:#2 const void *"],
    "src/_ZN12dBgCh_SphCrr10DetectClsnEv.cpp": ["param:#1 const void *", "param:#2 const void *"],
    "src/_ZN5Unagi8BehaviorEv.cpp": ["param:#1 const void *", "param:#2 const void *"],
@@ -8732,8 +8732,8 @@
    "src/__sinit_ov002_02100560.c": ["return:void *"]
   },
   "data_ov002_0210d9d8": {
-   "src/_ZN10BrickBlock13InitResourcesEv.cpp": ["return:int"],
-   "src/_ZN10BrickBlock16CleanupResourcesEv.cpp": ["return:char []"],
+   "src/_ZN19daObjBlockItemTag_c13InitResourcesEv.cpp": ["return:int"],
+   "src/_ZN19daObjBlockItemTag_c16CleanupResourcesEv.cpp": ["return:char []"],
    "src/_ZN9Butterfly13InitResourcesEv.cpp": ["return:SFP"],
    "src/__sinit_ov002_02100560.c": ["return:void *"]
   },
@@ -8765,7 +8765,7 @@
    "src/__sinit_ov002_02100560.c": ["return:void *"]
   },
   "data_ov002_0210da18": {
-   "src/_ZN10BrickBlock13InitResourcesEv.cpp": ["return:int"],
+   "src/_ZN19daObjBlockItemTag_c13InitResourcesEv.cpp": ["return:int"],
    "src/__sinit_ov002_02100560.c": ["return:void *"]
   },
   "data_ov002_0210da28": {
@@ -8773,8 +8773,8 @@
    "src/game/actors/d_a_obj_number.cpp": ["return:SharedFilePtr"]
   },
   "data_ov002_0210da30": {
-   "src/_ZN10BrickBlock13InitResourcesEv.cpp": ["return:int"],
-   "src/_ZN10BrickBlock16CleanupResourcesEv.cpp": ["return:char []"],
+   "src/_ZN19daObjBlockItemTag_c13InitResourcesEv.cpp": ["return:int"],
+   "src/_ZN19daObjBlockItemTag_c16CleanupResourcesEv.cpp": ["return:char []"],
    "src/_ZN16daKing_Donketu_c13InitResourcesEv.cpp": ["return:SharedFilePtr"],
    "src/_ZN8Goomboss16CleanupResourcesEv.cpp": ["return:char"],
    "src/actors/Goomboss.cpp": ["return:char"],

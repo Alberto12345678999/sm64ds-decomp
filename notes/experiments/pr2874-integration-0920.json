@@ -1946,8 +1946,8 @@
       "diffs": []
     },
     {
-      "file": "src/_ZN10BrickBlock16CleanupResourcesEv.cpp",
-      "name": "_ZN10BrickBlock16CleanupResourcesEv",
+      "file": "src/_ZN19daObjBlockItemTag_c16CleanupResourcesEv.cpp",
+      "name": "_ZN19daObjBlockItemTag_c16CleanupResourcesEv",
       "module": "ov002",
       "addr": "0x20b4394",
       "verdict": "VERIFIED",
@@ -1955,8 +1955,8 @@
       "diffs": []
     },
     {
-      "file": "src/_ZN10BrickBlock8BehaviorEv.cpp",
-      "name": "_ZN10BrickBlock8BehaviorEv",
+      "file": "src/_ZN19daObjBlockItemTag_c8BehaviorEv.cpp",
+      "name": "_ZN19daObjBlockItemTag_c8BehaviorEv",
       "module": "ov002",
       "addr": "0x20b440c",
       "verdict": "VERIFIED",
@@ -20288,7 +20288,7 @@
           "src/actors/daPukupuku_c.cpp",
           "src/actors/daDkk_c.cpp",
           "src/game/actors/d_a_warpkun.cpp",
-          "src/_ZN10BrickBlock16CleanupResourcesEv.cpp",
+          "src/_ZN19daObjBlockItemTag_c16CleanupResourcesEv.cpp",
           "src/_ZN10HootTheOwl13InitResourcesEv.cpp",
           "src/_ZN10PyramidTop13InitResourcesEv.cpp",
           "src/_ZN10SlidingBox13InitResourcesEv.cpp",
@@ -20412,7 +20412,7 @@
           "src/actors/daPukupuku_c.cpp",
           "src/actors/daDkk_c.cpp",
           "src/game/actors/d_a_warpkun.cpp",
-          "src/_ZN10BrickBlock16CleanupResourcesEv.cpp",
+          "src/_ZN19daObjBlockItemTag_c16CleanupResourcesEv.cpp",
           "src/_ZN10HootTheOwl13InitResourcesEv.cpp",
           "src/_ZN10PyramidTop13InitResourcesEv.cpp",
           "src/_ZN10SlidingBox13InitResourcesEv.cpp",
@@ -20810,7 +20810,7 @@
           "src/minigames/d_s_mg_single3_d_base.cpp",
           "src/Camera_UpdateMatrices.c",
           "src/_ZN10BowserFire8BehaviorEv.cpp",
-          "src/_ZN10BrickBlock8BehaviorEv.cpp",
+          "src/_ZN19daObjBlockItemTag_c8BehaviorEv.cpp",
           "src/_ZN10LavaSeesaw16CleanupResourcesEv.cpp",
           "src/_ZN10PyramidTop8BehaviorEv.cpp",
           "src/_ZN10StarMarker13InitResourcesEv.cpp",
@@ -20935,7 +20935,7 @@
           "src/minigames/d_s_mg_single3_d_base.cpp",
           "src/Camera_UpdateMatrices.c",
           "src/_ZN10BowserFire8BehaviorEv.cpp",
-          "src/_ZN10BrickBlock8BehaviorEv.cpp",
+          "src/_ZN19daObjBlockItemTag_c8BehaviorEv.cpp",
           "src/_ZN10LavaSeesaw16CleanupResourcesEv.cpp",
           "src/_ZN10PyramidTop8BehaviorEv.cpp",
           "src/_ZN10StarMarker13InitResourcesEv.cpp",
@@ -21603,8 +21603,8 @@
         "src/SublevelToLevel.c",
         "src/_ZN10BowserFire8BehaviorEv.cpp",
         "src/_ZN10BowserTail8BehaviorEv.cpp",
-        "src/_ZN10BrickBlock16CleanupResourcesEv.cpp",
-        "src/_ZN10BrickBlock8BehaviorEv.cpp",
+        "src/_ZN19daObjBlockItemTag_c16CleanupResourcesEv.cpp",
+        "src/_ZN19daObjBlockItemTag_c8BehaviorEv.cpp",
         "src/_ZN10DonutBlock13InitResourcesEv.cpp",
         "src/_ZN10DonutBlock16CleanupResourcesEv.cpp",
         "src/_ZN10HootTheOwl13InitResourcesEv.cpp",
@@ -22335,12 +22335,12 @@
           "name": "_ZN10BowserTail8BehaviorEv"
         },
         {
-          "file": "src/_ZN10BrickBlock16CleanupResourcesEv.cpp",
-          "name": "_ZN10BrickBlock16CleanupResourcesEv"
+          "file": "src/_ZN19daObjBlockItemTag_c16CleanupResourcesEv.cpp",
+          "name": "_ZN19daObjBlockItemTag_c16CleanupResourcesEv"
         },
         {
-          "file": "src/_ZN10BrickBlock8BehaviorEv.cpp",
-          "name": "_ZN10BrickBlock8BehaviorEv"
+          "file": "src/_ZN19daObjBlockItemTag_c8BehaviorEv.cpp",
+          "name": "_ZN19daObjBlockItemTag_c8BehaviorEv"
         },
         {
           "file": "src/_ZN10DonutBlock13InitResourcesEv.cpp",

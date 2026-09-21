@@ -90,11 +90,11 @@ ov002	0x020b40fc	func_ov002_020b40fc	BigBrickBlock_Spawn	spawnfunc
 ov002	0x020b40fc	BigBrickBlock_Spawn	daObjBlockL_c_classInit_DP_BLOCK_L	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov002	0x020b412c	func_ov002_020b412c	BrickBlock_Spawn	spawnfunc
 ov002	0x020b412c	BrickBlock_Spawn	daObjBlockL_c_classInit_BLOCK_L	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
-ov002	0x020b415c	func_ov002_020b415c	_ZN10BrickBlockD1Ev	vtable slot 16
-ov002	0x020b4180	func_ov002_020b4180	_ZN10BrickBlockD0Ev	vtable slot 17
-ov002	0x020b4394	func_ov002_020b4394	_ZN10BrickBlock16CleanupResourcesEv	vtable slot 3
-ov002	0x020b440c	func_ov002_020b440c	_ZN10BrickBlock8BehaviorEv	vtable slot 6
-ov002	0x020b451c	func_ov002_020b451c	_ZN10BrickBlock13InitResourcesEv	vtable slot 0
+ov002	0x020b415c	func_ov002_020b415c	_ZN19daObjBlockItemTag_cD1Ev	vtable slot 16
+ov002	0x020b4180	func_ov002_020b4180	_ZN19daObjBlockItemTag_cD0Ev	vtable slot 17
+ov002	0x020b4394	func_ov002_020b4394	_ZN19daObjBlockItemTag_c16CleanupResourcesEv	vtable slot 3
+ov002	0x020b440c	func_ov002_020b440c	_ZN19daObjBlockItemTag_c8BehaviorEv	vtable slot 6
+ov002	0x020b451c	func_ov002_020b451c	_ZN19daObjBlockItemTag_c13InitResourcesEv	vtable slot 0
 ov002	0x020b45e0	func_ov002_020b45e0	SilverStarBlockTag_Spawn	spawnfunc
 ov002	0x020b45e0	SilverStarBlockTag_Spawn	daObjBlockItemTag_c_classInit_BLK_SLVSTAR_TAG	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov002	0x020b4610	func_ov002_020b4610	GreenShellBlockTag_Spawn	spawnfunc
@@ -369,7 +369,7 @@ ov002	0x02108bd8	data_ov002_02108bd8	SilverStarBlockTag_SpawnInfo	spawninfo
 ov002	0x02108bd8	SilverStarBlockTag_SpawnInfo	g_profile_BLK_SLVSTAR_TAG	reconstructed profile global; literal ROM ID BLK_SLVSTAR_TAG+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov002	0x02108bf4	data_ov002_02108bf4	OneUpMushroomBlockTag_SpawnInfo	spawninfo
 ov002	0x02108bf4	OneUpMushroomBlockTag_SpawnInfo	g_profile_BLK_OKINOKO_TAG	reconstructed profile global; literal ROM ID BLK_OKINOKO_TAG+registry role+later EAD lineage; exact SM64DS spelling not preserved
-ov002	0x02108c18	data_ov002_02108c18	_ZTV10BrickBlock	vtable alloc=0xdc
+ov002	0x02108c18	data_ov002_02108c18	_ZTV19daObjBlockItemTag_c	vtable alloc=0xdc
 ov002	0x02108cb4	data_ov002_02108cb4	MegaMushroomTag_SpawnInfo	spawninfo
 ov002	0x02108cb4	MegaMushroomTag_SpawnInfo	g_profile_KINOKO_TAG	reconstructed profile global; literal ROM ID KINOKO_TAG+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov002	0x02108cd0	data_ov002_02108cd0	MegaMushroomCreateTag_SpawnInfo	spawninfo
@@ -3170,11 +3170,11 @@ ov027	0x02112480	func_ov027_02112480	_ZN21SnowmanBreathParticle8BehaviorEv	infer
 ov027	0x021124e4	func_ov027_021124e4	_ZN21SnowmanBreathParticle8TrySpawnER6Player	inferred helper name and Player reference parameter; owner and call shape proven by TU calls
 ov027	0x021125a8	func_ov027_021125a8	_ZN21SnowmanBreathParticleC1Ev	50-element SnowmanBreath helper array constructor target; stride 0x60
 ov027	0x02112618	func_ov027_02112618	_ZN13SnowmanBreath15IsPlayerInRangeEv	inferred helper name; SnowmanBreath-only Behavior caller and this owner proven
-ov002	0x020b41b8	func_ov002_020b41b8	_ZN10BrickBlock11GetSpawnPosER7Vector3RS_	inferred helper ownership: four BrickBlock action callers; destination and owner references
-ov002	0x020b41f8	func_ov002_020b41f8	_ZN10BrickBlock15SpawnKoopaShellEv	PMF action table entry index 2; spawns KoopaShell
-ov002	0x020b4250	func_ov002_020b4250	_ZN10BrickBlock17SpawnMegaMushroomEv	PMF action table entry index 1; spawns MegaMushroom
-ov002	0x020b429c	func_ov002_020b429c	_ZN10BrickBlock18SpawnOneUpMushroomEv	PMF action table entry index 0; spawns OneUpMushroom
-ov002	0x020b42e4	func_ov002_020b42e4	_ZN10BrickBlock15SpawnSilverStarEv	PMF action table entry index 3; spawns SilverStar and marker
+ov002	0x020b41b8	func_ov002_020b41b8	_ZN19daObjBlockItemTag_c11GetSpawnPosER7Vector3RS_	inferred helper ownership: four daObjBlockItemTag_c action callers; destination and owner references
+ov002	0x020b41f8	func_ov002_020b41f8	_ZN19daObjBlockItemTag_c15SpawnKoopaShellEv	PMF action table entry index 2; spawns KoopaShell
+ov002	0x020b4250	func_ov002_020b4250	_ZN19daObjBlockItemTag_c17SpawnMegaMushroomEv	PMF action table entry index 1; spawns MegaMushroom
+ov002	0x020b429c	func_ov002_020b429c	_ZN19daObjBlockItemTag_c18SpawnOneUpMushroomEv	PMF action table entry index 0; spawns OneUpMushroom
+ov002	0x020b42e4	func_ov002_020b42e4	_ZN19daObjBlockItemTag_c15SpawnSilverStarEv	PMF action table entry index 3; spawns SilverStar and marker
 ov002	0x020b4714	func_ov002_020b4714	_ZN16daObjKinokoTag_c17SpawnMegaMushroomEv	inferred helper name; class name from ROM RTTI and this ownership proven by exclusive TU callers and field ABI
 ov002	0x020b47ec	func_ov002_020b47ec	_ZN16daObjKinokoTag_c20TrySpawnMegaMushroomEv	inferred helper name; class name from ROM RTTI and this ownership proven by exclusive Behavior caller and collider field ABI
 ov065	0x0211a550	func_ov065_0211a550	_ZN16daObjCtMecha04_c12UpdateShadowEv	inferred helper name; class name from ROM RTTI and this ownership proven by exclusive Behavior caller, owned shadow fields, and dActor_c shadow call

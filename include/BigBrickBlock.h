@@ -10,7 +10,7 @@
  * Everything this header used to restate below 0x31e was dActor_c's and
  * dBgActor_c's, and is inherited now.
  *
- * ONE CLASS, FIVE ACTORS. BrickBlock, BigBrickBlock, BrickBlockSwitchActivated,
+ * ONE CLASS, FIVE ACTORS. daObjBlockItemTag_c, BigBrickBlock, BrickBlockSwitchActivated,
  * BlackBrickBlock and FortressTowerWall all have their own SpawnInfo, and all
  * five factories are the same three instructions: fBase_c::operator new(816),
  * dBgActor_c::dBgActor_c(), store _ZTV13BigBrickBlock. There is no second vtable and

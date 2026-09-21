@@ -11,7 +11,7 @@
  * derived from, is the same class under its Japanese name.
  *
  * ONE CLASS, FIVE ACTOR IDS, which is why this function is a switchboard rather
- * than five overrides: BrickBlock, BigBrickBlock, BrickBlockSwitchActivated,
+ * than five overrides: daObjBlockItemTag_c, BigBrickBlock, BrickBlockSwitchActivated,
  * BlackBrickBlock and FortressTowerWall all allocate 816 bytes, run
  * dBgActor_c::dBgActor_c and store _ZTV13BigBrickBlock. See include/BigBrickBlock.h.
  *

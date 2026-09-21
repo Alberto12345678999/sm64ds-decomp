@@ -420,7 +420,7 @@ extern int _ZN6Memory25isRootHeapIterInitializedE;
 extern int _ZTV10BigBooIcon[];
 extern int _ZTV10BowserFire[];
 extern int _ZTV10BowserTail[];
-extern int _ZTV10BrickBlock[];
+extern int _ZTV19daObjBlockItemTag_c[];
 extern int _ZTV10BulletBill[];
 extern int _ZTV10HootTheOwl[];
 extern int _ZTV12daBombking_c[];

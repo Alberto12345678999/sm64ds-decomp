@@ -8706,22 +8706,22 @@
    "start": "0x20b412c",
    "end": "0x20b45e0",
    "classes": [
-    "BrickBlock"
+    "daObjBlockItemTag_c"
    ],
    "n_functions_map": 11,
    "n_files": 11,
    "files": [
     "src/d_a_obj_block_l_block_l.c",
-    "src/_ZN10BrickBlockD1Ev.cpp",
-    "src/_ZN10BrickBlockD0Ev.c",
+    "src/_ZN19daObjBlockItemTag_cD1Ev.cpp",
+    "src/_ZN19daObjBlockItemTag_cD0Ev.c",
     "src/func_ov002_020b41b8.c",
     "src/func_ov002_020b41f8.cpp",
     "src/func_ov002_020b4250.cpp",
     "src/func_ov002_020b429c.cpp",
     "src/func_ov002_020b42e4.c",
-    "src/_ZN10BrickBlock16CleanupResourcesEv.cpp",
-    "src/_ZN10BrickBlock8BehaviorEv.cpp",
-    "src/_ZN10BrickBlock13InitResourcesEv.cpp"
+    "src/_ZN19daObjBlockItemTag_c16CleanupResourcesEv.cpp",
+    "src/_ZN19daObjBlockItemTag_c8BehaviorEv.cpp",
+    "src/_ZN19daObjBlockItemTag_c13InitResourcesEv.cpp"
    ],
    "ext_mix": {
     ".c": 4,
