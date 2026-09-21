@@ -4271,6 +4271,10 @@
     "src/actors/dEnemyBase_c.cpp#func_ov002_020ae9f8": "ruspecial",
     "src/actors/dEnemyBase_c.cpp#_ZN12dEnemyBase_c12UpdateWMClsnER10dBgCh_Actrj": "tangosdev",
     "src/actors/dEnemyBase_c.cpp#_ZN12dEnemyBase_cD0Ev": "tangosdev",
-    "src/actors/dEnemyBase_c.cpp#_ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Player5Fix12IiE": "andrewboudreau"
+    "src/actors/dEnemyBase_c.cpp#_ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Player5Fix12IiE": "andrewboudreau",
+    "src/actors/daObjFl_Ukiyuka_c.cpp#_ZN17daObjFl_Ukiyuka_cD1Ev": "tangosdev",
+    "src/actors/daObjFl_Ukiyuka_c.cpp#_ZN17daObjFl_Ukiyuka_cD0Ev": "tangosdev",
+    "src/actors/daObjFl_Ukiyuka_c.cpp#_ZN17daObjFl_Ukiyuka_c16CleanupResourcesEv": "ruspecial",
+    "src/actors/daObjFl_Ukiyuka_c.cpp#_ZN17daObjFl_Ukiyuka_c13InitResourcesEv": "tangosdev"
   }
 }
