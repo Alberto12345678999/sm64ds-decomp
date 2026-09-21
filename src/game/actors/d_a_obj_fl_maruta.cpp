@@ -1,7 +1,7 @@
 //cpp
-/* Lethal Lava Land: the rolling log (daObjFlMaruta_c, spelled daObjFlMaruta_c in
- * this tree) and the volcano cannon's flame (daObj_volcanoCannon_c), in the one
- * translation unit the linker says they came from.
+/* Lethal Lava Land: the rolling log (daObjFlMaruta_c) and the volcano cannon's
+ * flame (daObj_volcanoCannon_c), in the one translation unit the linker says
+ * they came from.
  *
  * WHY THE TWO CLASSES ARE ONE FILE. daObjFlMaruta_c's vtable (ov022 0x021143a4)
  * claims two slots whose code sits in the MIDDLE of daObj_volcanoCannon_c's
@@ -16,23 +16,8 @@
  * ROM function is written first here. Do not reorder. A destructor's D0/D1/D2
  * group is the documented exception: the compiler picks that group's order.
  *
- * Assembled from these legacy one-function sources (ROM address order):
- *   [ 0] 0x02112498  src/_ZN15daObjFlMaruta_cD1Ev.cpp
- *   [ 1] 0x021124e8  src/_ZN15daObjFlMaruta_cD0Ev.cpp
- *   [ 2] 0x0211254c  src/_ZN15daObjFlMaruta_c16CleanupResourcesEv.cpp
- *   [ 3] 0x02112560  src/_ZN15daObjFlMaruta_c8BehaviorEv.cpp
- *   [ 4] 0x02112590  src/_ZN15daObjFlMaruta_c13InitResourcesEv.cpp
- *   [ 5] 0x021125a4  src/d_a_obj_fl_maruta.c
- *   [ 6] 0x021125e0  src/_ZN21daObj_volcanoCannon_cD1Ev.cpp
- *   [ 7] 0x02112610  src/_ZN21daObj_volcanoCannon_cD0Ev.cpp
- *   [ 8] 0x02112654  src/func_ov022_02112654.cpp
- *   [ 9] 0x021126ac  src/func_ov022_021126ac.c
- *   [10] 0x02112710  src/func_ov022_02112710.c
- *   [11] 0x02112790  src/_ZN21daObj_volcanoCannon_c11ChangeStateEPNS_5StateE.cpp
- *   [12] 0x021127e0  src/_ZN21daObj_volcanoCannon_c16CleanupResourcesEv.cpp
- *   [13] 0x02112800  src/_ZN21daObj_volcanoCannon_c8BehaviorEv.cpp
- *   [14] 0x021128b8  src/_ZN21daObj_volcanoCannon_c13InitResourcesEv.cpp
- *   [15] 0x02112918  src/d_a_obj_volcano_cannon.c
+ * The 16 legacy one-function sources this folds are named by the manifest's
+ * `legacy_source` fields (history); they are not repeated here.
  *
  * Reconciled while merging: the legacy shards declared
  * _ZN7fBase_c18MarkForDestructionEv with two different return types (int in one,
@@ -81,8 +66,6 @@ void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
 /* daObjFlMaruta_c's collaborators. */
 void func_020393a4(void *p, int v);
 extern int data_ov022_02112c98[];
-extern int _ZTV15daObjFlMaruta_c[];
-extern int _ZTV13daObjMaruta_c[];
 
 /* Shared by the two flame helpers below. */
 int _ZN7fBase_c18MarkForDestructionEv(void *c);
@@ -93,6 +76,12 @@ void _ZN6Player4BurnEv(void *p);
 void func_ov022_02112654(char *c);
 
 }
+
+/* One vtable declaration per class this TU installs, at namespace scope above
+ * the factories that store them (never inside extern "C" -- a namespace-scope
+ * variable is not mangled under the Itanium ABI either way). */
+extern int _ZTV15daObjFlMaruta_c[];
+extern int _ZTV13daObjMaruta_c[];
 
 /* -------------------------------------------------------------------------- */
 /* ROM ordinal 15 -- daObj_volcanoCannon_c_classInit, 0x02112918, size 0x38     */
