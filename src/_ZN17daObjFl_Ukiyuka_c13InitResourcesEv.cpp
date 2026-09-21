@@ -1,10 +1,10 @@
 //cpp
-// @symbol _ZN21FloatingFloorLllSmall13InitResourcesEv
+// @symbol _ZN17daObjFl_Ukiyuka_c13InitResourcesEv
 /* recovered: named members + real C++ method */
-/* FloatingFloorLllSmall::InitResources() -- the two spawn IDs 0x4b/0x4c select
+/* daObjFl_Ukiyuka_c::InitResources() -- the two spawn IDs 0x4b/0x4c select
  * the variant and its float period; mVariant then indexes the same ov022
  * parameter table CleanupResources uses. */
-#include "FloatingFloorLllSmall.h"
+#include "daObjFl_Ukiyuka_c.h"
 
 extern "C" {
 void func_020393a4(int *p, int v);
@@ -20,7 +20,7 @@ extern char data_ov022_021140d4[];
  * real method. Harmless for the ROM build; a host-port caller that reads this
  * result gets garbage. Fix upstream in the header's return type if it is wrong --
  * never with a `return` here. */
-int FloatingFloorLllSmall::InitResources()
+int daObjFl_Ukiyuka_c::InitResources()
 {
     switch (*(unsigned short *)((char *)this + 0xc)) {
     case 0x4b:
