@@ -4271,6 +4271,16 @@
     "src/actors/dEnemyBase_c.cpp#func_ov002_020ae9f8": "ruspecial",
     "src/actors/dEnemyBase_c.cpp#_ZN12dEnemyBase_c12UpdateWMClsnER10dBgCh_Actrj": "tangosdev",
     "src/actors/dEnemyBase_c.cpp#_ZN12dEnemyBase_cD0Ev": "tangosdev",
-    "src/actors/dEnemyBase_c.cpp#_ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Player5Fix12IiE": "andrewboudreau"
+    "src/actors/dEnemyBase_c.cpp#_ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Player5Fix12IiE": "andrewboudreau",
+    "src/actors/daObjBlockItemTag_c.cpp#_ZN19daObjBlockItemTag_cD1Ev": "tangosdev",
+    "src/actors/daObjBlockItemTag_c.cpp#_ZN19daObjBlockItemTag_cD0Ev": "tangosdev",
+    "src/actors/daObjBlockItemTag_c.cpp#_ZN19daObjBlockItemTag_c11GetSpawnPosER7Vector3RS_": "andrewboudreau",
+    "src/actors/daObjBlockItemTag_c.cpp#_ZN19daObjBlockItemTag_c15SpawnKoopaShellEv": "andrewboudreau",
+    "src/actors/daObjBlockItemTag_c.cpp#_ZN19daObjBlockItemTag_c17SpawnMegaMushroomEv": "lunavyqo",
+    "src/actors/daObjBlockItemTag_c.cpp#_ZN19daObjBlockItemTag_c18SpawnOneUpMushroomEv": "lunavyqo",
+    "src/actors/daObjBlockItemTag_c.cpp#_ZN19daObjBlockItemTag_c15SpawnSilverStarEv": "andrewboudreau",
+    "src/actors/daObjBlockItemTag_c.cpp#_ZN19daObjBlockItemTag_c16CleanupResourcesEv": "tangosdev",
+    "src/actors/daObjBlockItemTag_c.cpp#_ZN19daObjBlockItemTag_c8BehaviorEv": "tangosdev",
+    "src/actors/daObjBlockItemTag_c.cpp#_ZN19daObjBlockItemTag_c13InitResourcesEv": "tangosdev"
   }
 }

@@ -2,8 +2,48 @@
  "_comment": "Dead path references in prose that are known and accepted: synthetic example paths in tests, paths belonging to other repositories, paths that exist only on an unlanded branch, and prose that deliberately names something historical. tools/check_dead_references.py fails on any dead reference NOT listed here. Regenerate with --update, but read the diff: a new entry is usually a rename someone forgot to follow through into the docs.",
  "known": [
   {
+   "file": ".claude/skills/decomp-tu-build/SKILL.md",
+   "ref": "tools/bin"
+  },
+  {
+   "file": ".claude/skills/decomp-tu-build/SKILL.md",
+   "ref": "tools/bin/dsd.exe"
+  },
+  {
+   "file": ".claude/skills/decomp-tu-build/SKILL.md",
+   "ref": "tools/mwccarm"
+  },
+  {
    "file": ".github/workflows/source-coverage.yml",
    "ref": "mods/Player_ScaleByCharFactor.c"
+  },
+  {
+   "file": ".github/workflows/tool-tests.yml",
+   "ref": "tools/bin"
+  },
+  {
+   "file": ".github/workflows/tool-tests.yml",
+   "ref": "tools/mwccarm"
+  },
+  {
+   "file": "CONTRIBUTING.md",
+   "ref": "tools/bin"
+  },
+  {
+   "file": "CONTRIBUTING.md",
+   "ref": "tools/bin/dsd.exe"
+  },
+  {
+   "file": "CONTRIBUTING.md",
+   "ref": "tools/claims_key.txt"
+  },
+  {
+   "file": "CONTRIBUTING.md",
+   "ref": "tools/mwccarm"
+  },
+  {
+   "file": "CONTRIBUTING.md",
+   "ref": "tools/mwccarm/2004/b56"
   },
   {
    "file": "notes/actor-leaf-provenance.md",
@@ -50,16 +90,48 @@
    "ref": "src/_ZN8PlatformD0Ev.cpp"
   },
   {
+   "file": "notes/agents/handoffs/daYurei_Mucho_c-ov065.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/agents/handoffs/draft-verdict-repair-0918.md",
+   "ref": "tools/mwccarm"
+  },
+  {
+   "file": "notes/agents/handoffs/issue-2410-daMky_c.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
    "file": "notes/agents/handoffs/issue-2411-humanizer-2.md",
    "ref": "src_tu/actors/Koopa"
+  },
+  {
+   "file": "notes/agents/handoffs/pr-2709-source-review-fixes.md",
+   "ref": "tools/mwccarm"
+  },
+  {
+   "file": "notes/agents/handoffs/prod-snmbdy-0907.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/agents/references/builder-v1.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
   },
   {
    "file": "notes/archive/crack-loop-runbook.md",
    "ref": "notes/pret-idioms.md"
   },
   {
+   "file": "notes/archive/crack-loop-runbook.md",
+   "ref": "tools/claims_key.txt"
+  },
+  {
    "file": "notes/archive/func_02059d8c-asm-origin.md",
    "ref": "src/dst"
+  },
+  {
+   "file": "notes/archive/func_02059d8c-asm-origin.md",
+   "ref": "tools/mwccarm"
   },
   {
    "file": "notes/archive/n64-decomp-cross-reference.md",
@@ -94,6 +166,10 @@
    "ref": "src/_ZN9FaderWipeC1Ev.c"
   },
   {
+   "file": "notes/arm9-msl-walls.md",
+   "ref": "tools/mwccarm/2.0"
+  },
+  {
    "file": "notes/bgobject-provenance.md",
    "ref": "src/Eyerok_Spawn.cpp"
   },
@@ -104,10 +180,6 @@
   {
    "file": "notes/bgobject-provenance.md",
    "ref": "src/FortressWall_Spawn.c"
-  },
-  {
-   "file": "notes/bgobject-provenance.md",
-   "ref": "src/func_ov025_02111898.c"
   },
   {
    "file": "notes/collision-query-classes.md",
@@ -139,7 +211,399 @@
   },
   {
    "file": "notes/emu-trace-build.md",
+   "ref": "asm/target_hex"
+  },
+  {
+   "file": "notes/emu-trace-build.md",
    "ref": "nearmiss/ledger"
+  },
+  {
+   "file": "notes/experiments/batch2-2685-bakubaku-deadstore.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/experiments/batch2-2685-bakubaku-klass-ice.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/experiments/batch2-2685-bakubaku-matrix.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/experiments/batch2-2685-damip-matrix.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/experiments/batch2-2685-damky-matrix.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/experiments/batch2-2685-dossunbar-resdesc.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/experiments/batch2-2685-dossunbar-setfile.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/experiments/batch2-2685-not-experimentable.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/experiments/batch2-2685-pgmthr-dropshadow.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/experiments/batch2-2685-pgmthr-init-1ac.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/experiments/batch2-2685-pgmthr-matrix.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/experiments/batch2-2685-pgmthr-setanim.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/experiments/batch2-2685-wanwan-factory.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/experiments/batch2-2685-wanwan-matrix.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/experiments/batch2-2685-wanwan-stump.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/experiments/batch2-2685-waterfall-levelid.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/experiments/batch2-2685-waterfall-particle.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/experiments/batch2-2685-waterfall-vector3.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/experiments/batch2-2685-wcobj01-getclsn.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/experiments/batch2-2685-wcobj06-getclsn.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/experiments/batch3-2707-00-index.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/experiments/batch3-2707-abuku-dccac-init-6az.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/experiments/batch3-2707-abuku-sway-actorid-forms.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/experiments/batch3-2707-abuku-vector3-pod.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/experiments/batch3-2707-billboard-defaultless-switch.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/experiments/batch3-2707-floatboard-5ab4-staged-locals.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/experiments/batch3-2707-floatboard-atan2-6az.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/experiments/batch3-2707-floatboard-bobphase-collapse.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/experiments/batch3-2707-floatboard-isclsn-6az.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/experiments/batch3-2707-floatboard-riderpos-ptr.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/experiments/batch3-2707-setse-int-casts.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/experiments/batch3-2707-setse-volatile-rmw.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/experiments/batch3-2707-sldmng-playsub-method.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/experiments/batch3-2707-soundobj-dup-0x21.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/experiments/batch3-2707-soundobj-loop-int.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/experiments/batch3-2707-soundobj-loop-shape.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/experiments/batch3-2707-soundobj-loopinvariants.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/experiments/batch3-2707-soundobj-ret-goto.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/experiments/batch3-2707-tree-applyopacity-current.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/experiments/batch3-2707-tree-clipper-6az.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/experiments/batch3-2707-tree-dccpos-init-6az.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/experiments/batch3-2707-tree-render-vector3-out.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/experiments/batch3-2707-tree-znwj-new.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/experiments/batch3-2707-warpkun-dccac-init-6az.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/experiments/batch3-2707-warpkun-isplayer-fold.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/experiments/batch3-2707-warpkun-radius-cse.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/experiments/boo-2710-advance-thunk.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/experiments/boo-2710-ccacpos-raw.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/experiments/boo-2710-factory-vtable.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/experiments/boo-2710-flags-shift.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/experiments/boo-2710-flags16.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/experiments/boo-2710-render-shadow.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/experiments/boo-2710-setanim-6az.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/experiments/dsn-2708-cleanup-reloads.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/experiments/dsn-2708-decifabove0.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/experiments/dsn-2708-dropshadow.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/experiments/dsn-2708-earthquake.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/experiments/dsn-2708-isdosun.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/experiments/dsn-2708-volatile-aimpos.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/experiments/feather-2713-dbgch-actr-init.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/experiments/feather-2713-dccac-init.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/experiments/feather-2713-dropshadow.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/experiments/feather-2713-particle-newsimple.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/experiments/feather-2713-swayangle-short.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/experiments/feather-2713-swayangle-volatile.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/experiments/gameover-2711-bg1scrptr-u16.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/experiments/gameover-2711-case1-gooff-spelling.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/experiments/gameover-2711-glyph-loop-skeleton.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/experiments/gameover-2711-oam-render-fix12.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/experiments/gameover-2711-scenegate-virtual-call.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/experiments/gameover-2711-strength-pragma-bracket.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/experiments/gameover-2711-strength-reduction-off.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/experiments/jump3d-2711-87d0-int-temp.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/experiments/jump3d-2711-common-first-matrix.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/experiments/jump3d-2711-enterhit-pmf-assign.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/experiments/jump3d-2711-enterhit-same-arms-select.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/experiments/jump3d-2711-members-vector3.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/experiments/jump3d-2711-mtx-intptr-zeroing.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/experiments/jump3d-2711-scratch-vector3.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/experiments/jump3d-2711-setanim-member-form.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/experiments/jump3d-2711-statehold-flag-reuse.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/experiments/jump3d-2711-statemove-volatile-store.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/experiments/koopa-2864-source-forms.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/experiments/piano-2712-dropshadow-advance.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/experiments/piano-2712-dtor-split.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/experiments/piano-2712-factory.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/experiments/piano-2712-pianovec3.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/experiments/piano-2712-pmf-verified.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/experiments/piano-2712-setanim-6az.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/experiments/piano-2712-sinit-split.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/experiments/trap-2709-dispatch.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/experiments/trap-2709-matrixd1.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/experiments/trap-2709-notexperimentable.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/experiments/trap-2709-offstable.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/experiments/trap-2709-setfile.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/experiments/trap-2709-statetimer.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/experiments/trap-2709-v16order.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
   },
   {
    "file": "notes/ghidra-dsd-landscape.md",
@@ -154,12 +618,20 @@
    "ref": "src/Wiggler_Spawn.c"
   },
   {
+   "file": "notes/ghidra-dsd-landscape.md",
+   "ref": "tools/bin/dsd.exe"
+  },
+  {
    "file": "notes/global-data-migration.md",
    "ref": "src/testbss.c"
   },
   {
    "file": "notes/global-data-migration.md",
    "ref": "src/testbssmid.c"
+  },
+  {
+   "file": "notes/global-data-migration.md",
+   "ref": "src/testbssmid.o"
   },
   {
    "file": "notes/global-data-migration.md",
@@ -174,8 +646,20 @@
    "ref": "src/testrodata.c"
   },
   {
+   "file": "notes/global-data-migration.md",
+   "ref": "tools/bin/dsd.exe"
+  },
+  {
+   "file": "notes/global-data-migration.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
    "file": "notes/handoff-class-skeleton.md",
    "ref": "docs/class-reference-confidence"
+  },
+  {
+   "file": "notes/handoff-class-skeleton.md",
+   "ref": "tools/mwccarm"
   },
   {
    "file": "notes/handoff-marker-typing.md",
@@ -188,6 +672,10 @@
   {
    "file": "notes/handoff-sphereclsn-detectclsn.md",
    "ref": "notes/drafts-sphereclsn-detectclsn.cpp"
+  },
+  {
+   "file": "notes/handoff-validator-and-tests.md",
+   "ref": "tools/mwccarm"
   },
   {
    "file": "notes/handoff-validator-and-tests.md",
@@ -218,6 +706,14 @@
    "ref": "src/dst"
   },
   {
+   "file": "notes/mwccarm-codegen.md",
+   "ref": "tools/mwccarm"
+  },
+  {
+   "file": "notes/mwccarm-codegen.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
    "file": "notes/overlay-residency.md",
    "ref": "src/_ZN8CapEnemy6AddCapEj.c"
   },
@@ -230,8 +726,20 @@
    "ref": "src/_ZN10ChillBully14UpdateRunStateEv.cpp"
   },
   {
+   "file": "notes/plan-cpp-conversion-queue.md",
+   "ref": "tools/mwccarm"
+  },
+  {
    "file": "notes/plan-cpp-language-mode.md",
    "ref": "src/_ZN9ActorBaseC1Ev.cpp"
+  },
+  {
+   "file": "notes/plan-cpp-language-mode.md",
+   "ref": "tools/bin/dsd.exe"
+  },
+  {
+   "file": "notes/plan-cpp-language-mode.md",
+   "ref": "tools/mwccarm/2004/b56"
   },
   {
    "file": "notes/port-selftest-bmp-gate.md",
@@ -259,15 +767,31 @@
   },
   {
    "file": "notes/rom-build.md",
-   "ref": "src/func_ov013_021112a8.c"
+   "ref": "src/func_ov091_02132a0c.c"
   },
   {
    "file": "notes/rom-build.md",
-   "ref": "src/func_ov091_02132a0c.c"
+   "ref": "tools/bin/dsd.exe"
+  },
+  {
+   "file": "notes/rom-build.md",
+   "ref": "tools/mwccarm"
+  },
+  {
+   "file": "notes/rom-build.md",
+   "ref": "tools/mwccarm/1.2/sp2p3"
   },
   {
    "file": "notes/rtti-reconciliation.md",
    "ref": "src/func_ov002_020b4bfc.c"
+  },
+  {
+   "file": "notes/runbook-reference-repair.md",
+   "ref": "tools/mwccarm"
+  },
+  {
+   "file": "notes/runbook-type-reconstruction.md",
+   "ref": "src/_ZN19daObjBlockItemTag_cD0Ev.cpp"
   },
   {
    "file": "notes/runbook-type-reconstruction.md",
@@ -276,6 +800,42 @@
   {
    "file": "notes/runbook-type-reconstruction.md",
    "ref": "tools/deepen_rtti.py"
+  },
+  {
+   "file": "notes/runbook-type-reconstruction.md",
+   "ref": "tools/mwccarm"
+  },
+  {
+   "file": "notes/setup-mwccarm.md",
+   "ref": "tools/bin"
+  },
+  {
+   "file": "notes/setup-mwccarm.md",
+   "ref": "tools/mwccarm"
+  },
+  {
+   "file": "notes/setup-mwccarm.md",
+   "ref": "tools/mwccarm/1.2/sp2p3"
+  },
+  {
+   "file": "notes/setup-mwccarm.md",
+   "ref": "tools/mwccarm/2.0/sp2p2/mwccarm.exe"
+  },
+  {
+   "file": "notes/setup-mwccarm.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/setup-mwccarm.md",
+   "ref": "tools/mwccarm/license.dat"
+  },
+  {
+   "file": "notes/sinit-ownership-wave-edges.md",
+   "ref": "tools/claims_key.txt"
+  },
+  {
+   "file": "notes/sinit-wave-a-ownership.md",
+   "ref": "tools/claims_key.txt"
   },
   {
    "file": "notes/smartball-provenance.md",
@@ -288,10 +848,6 @@
   {
    "file": "notes/src-domain-buckets.md",
    "ref": "src/ui/messages"
-  },
-  {
-   "file": "notes/translation-unit-reconstruction-plan.md",
-   "ref": "src/game/actors/d_a_holhei.cpp"
   },
   {
    "file": "notes/tu-filename-reconstruction-pilot.md",
@@ -324,6 +880,18 @@
   {
    "file": "notes/tu-reconstruction-pilot-report.md",
    "ref": "include/Platform.h"
+  },
+  {
+   "file": "notes/tu-reconstruction-pilot-report.md",
+   "ref": "tools/mwccarm/2004/b56/mwccarm.exe"
+  },
+  {
+   "file": "notes/worktree-inputs.md",
+   "ref": "tools/bin"
+  },
+  {
+   "file": "notes/worktree-inputs.md",
+   "ref": "tools/mwccarm"
   },
   {
    "file": "port/docs/mmio-inventory.md",
@@ -386,6 +954,14 @@
    "ref": "src/port"
   },
   {
+   "file": "tools/bytegate.py",
+   "ref": "tools/bin"
+  },
+  {
+   "file": "tools/bytegate.py",
+   "ref": "tools/mwccarm"
+  },
+  {
    "file": "tools/chaos_db_ci.py",
    "ref": "src/F.c"
   },
@@ -407,15 +983,15 @@
   },
   {
    "file": "tools/check_dead_references.py",
-   "ref": "src/f.c"
-  },
-  {
-   "file": "tools/check_dead_references.py",
-   "ref": "src/game/mario.c"
+   "ref": "tools/bin"
   },
   {
    "file": "tools/check_dead_references.py",
    "ref": "tools/foo.py"
+  },
+  {
+   "file": "tools/check_dead_references.py",
+   "ref": "tools/mwccarm"
   },
   {
    "file": "tools/check_header_offsets.py",
@@ -428,6 +1004,14 @@
   {
    "file": "tools/check_src_tu.py",
    "ref": "src_tu/actors/CastleWater.cpp"
+  },
+  {
+   "file": "tools/claims.py",
+   "ref": "tools/claims_handle.txt"
+  },
+  {
+   "file": "tools/claims.py",
+   "ref": "tools/claims_key.txt"
   },
   {
    "file": "tools/d0_migrate.py",
@@ -458,12 +1042,20 @@
    "ref": "nearmiss/.lock"
   },
   {
+   "file": "tools/log_attempt.py",
+   "ref": "tools/mwccarm"
+  },
+  {
    "file": "tools/m2c_draft.py",
    "ref": "symbols/relocs"
   },
   {
    "file": "tools/match.py",
    "ref": "config/reloc"
+  },
+  {
+   "file": "tools/match.py",
+   "ref": "tools/mwccarm"
   },
   {
    "file": "tools/match_provenance.py",
@@ -530,12 +1122,20 @@
    "ref": "tools/rebuild_ledger"
   },
   {
+   "file": "tools/recover_cw2004.py",
+   "ref": "tools/mwccarm/2004/b56"
+  },
+  {
    "file": "tools/residue_reaudit.py",
    "ref": "src/_ZN"
   },
   {
    "file": "tools/restack_tu_pr.py",
    "ref": "config/tu_manifest.json"
+  },
+  {
+   "file": "tools/rombuild_cache.py",
+   "ref": "tools/mwccarm"
   },
   {
    "file": "tools/romdata_check.py",
@@ -562,8 +1162,20 @@
    "ref": "src/Foo.cpp"
   },
   {
+   "file": "tools/test_dead_references.py",
+   "ref": "tools/mwccarm"
+  },
+  {
    "file": "tools/test_demember_calls.py",
    "ref": "src/func_ov022_02111bdc.cpp"
+  },
+  {
+   "file": "tools/test_objisolate.py",
+   "ref": "tools/mwccarm"
+  },
+  {
+   "file": "tools/test_rombuild_cache.py",
+   "ref": "tools/mwccarm"
   },
   {
    "file": "tools/test_srcpath.py",
@@ -584,6 +1196,10 @@
   {
    "file": "tools/trace/actors.py",
    "ref": "src/_ZN5ActorC2Ev.cpp"
+  },
+  {
+   "file": "tools/tu_config.py",
+   "ref": "tools/bin/dsd.exe"
   },
   {
    "file": "tools/tu_manifest.py",
