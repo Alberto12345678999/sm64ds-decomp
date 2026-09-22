@@ -139,7 +139,7 @@ daObjAbuku_c	DONE	include\daObjAbuku_c.h	dActor_c	0	ov002	4
 daObjBkBillboard_c	DONE	include\daObjBkBillboard_c.h	dActor_c	0	ov015	5
 daObjBlockItemTag_c	DONE	include\BrickBlock.h  [alias: header uses pre-rename name]	dActor_c	0	ov002	10
 daObjC1Hikari_c	DONE	include\daObjC1Hikari_c.h  [alias: header uses pre-rename name]	dActor_c	0	ov010	6
-daObjC1Peach_c	DONE	include\PeachPainting.h  [alias: header uses pre-rename name]	dActor_c	0	ov010	7
+daObjC1Peach_c	DONE	include\daObjC1Peach_c.h  [alias: header uses pre-rename name]	dActor_c	0	ov010	7
 daObjClockHuriko_c	DONE	include\daObjClockHuriko_c.h	dActor_c	0	ov013	6
 daObjClock_c	DONE	include\daObjClock_c.h	dActor_c	0	ov013	6
 daObjCloset_c	DONE	include\RecRoomCupboard.h  [alias: header uses pre-rename name]	dActor_c	0	ov058	5

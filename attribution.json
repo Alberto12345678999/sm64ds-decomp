@@ -4271,6 +4271,14 @@
     "src/actors/dEnemyBase_c.cpp#func_ov002_020ae9f8": "ruspecial",
     "src/actors/dEnemyBase_c.cpp#_ZN12dEnemyBase_c12UpdateWMClsnER10dBgCh_Actrj": "tangosdev",
     "src/actors/dEnemyBase_c.cpp#_ZN12dEnemyBase_cD0Ev": "tangosdev",
-    "src/actors/dEnemyBase_c.cpp#_ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Player5Fix12IiE": "andrewboudreau"
+    "src/actors/dEnemyBase_c.cpp#_ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Player5Fix12IiE": "andrewboudreau",
+    "src/actors/daObjC1Peach_c.cpp#_ZN14daObjC1Peach_cD1Ev": "tangosdev",
+    "src/actors/daObjC1Peach_c.cpp#_ZN14daObjC1Peach_cD0Ev": "tangosdev",
+    "src/actors/daObjC1Peach_c.cpp#_ZN14daObjC1Peach_c20UpdateModelTransformEv": "andrewboudreau",
+    "src/actors/daObjC1Peach_c.cpp#_ZN14daObjC1Peach_c16CleanupResourcesEv": "tangosdev",
+    "src/actors/daObjC1Peach_c.cpp#_ZN14daObjC1Peach_c6RenderEv": "tangosdev",
+    "src/actors/daObjC1Peach_c.cpp#_ZN14daObjC1Peach_c8BehaviorEv": "tangosdev",
+    "src/actors/daObjC1Peach_c.cpp#_ZN14daObjC1Peach_c13InitResourcesEv": "tangosdev",
+    "src/actors/daObjC1Peach_c.cpp#daObjC1Peach_c_classInit": "tangosdev"
   }
 }
