@@ -430,7 +430,7 @@ extern int _ZTV10MrBlizzard[];
 extern int _ZTV10PyramidTag[];
 extern int _ZTV10PyramidTop[];
 extern int _ZTV10Scuttlebug[];
-extern int _ZTV10SlidingIce[];
+extern int _ZTV17daObjSlIceBlock_c[];
 extern int _ZTV10StarMarker[];
 extern int _ZTV13daObjSwitch_c[];
 extern int _ZTV10dBgActor_c[];
