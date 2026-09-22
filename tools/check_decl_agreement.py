@@ -44,9 +44,9 @@ about the codegen they produced. What no byte gate does is compare ONE translati
 unit's declaration against ANOTHER's definition: the link resolves by NAME, the ROM
 records no types, and `check_references.py` only asks whether the name exists. That
 cross-TU contract is the gap this fills, and it is the whole of it.
-`.claude/skills/decomp-match-review` calls it "the highest-value unbuilt item"; read
-"the one the byte gate can never do" as being about that comparison, not about whether
-a compiler ever sees a declaration.
+See `notes/source-review-observations.md` for declaration and source-review pitfalls.
+The cross-TU comparison is separate from byte proof; neither establishes that an
+inferred declaration is the original source type.
 
 WHY IT IS WORTH FIXING. The host port compiles these same files with a compiler that
 DOES check across the tree, where `signature-mismatch` is the largest non-trivial
@@ -1587,6 +1587,32 @@ def _reference(symbol, decls, defs):
     return best[0], "plurality"
 
 
+def _overload_reference(decl, definitions, unmangled, fallback):
+    """Select an existing native C++ overload without guessing its signature.
+
+    Plain native names are not linker identities when several overloads exist.
+    Return types do not select overloads. Keep the established comparison for
+    C linkage, explicit linker names, unknown signatures, and unmatched types;
+    none of those can be excused merely by another overload's existence.
+    """
+    if (not decl.is_function or decl.linkage != "C++" or decl.is_member
+            or decl.this_unknown
+            or decl.symbol.startswith("_Z") or decl.symbol in unmangled
+            or decl.params is UNSPECIFIED):
+        return fallback
+    native = [d for d in definitions
+              if d.is_function and d.linkage == "C++" and not d.is_member
+              and not d.this_unknown
+              and d.params is not UNSPECIFIED]
+    if len({tuple(d.params) for d in native}) < 2:
+        return fallback
+    matches = [d for d in native if tuple(d.params) == tuple(decl.params)]
+    # Conflicting definitions of the same overload are not a resolution.
+    if not matches or len({d.ret for d in matches}) != 1:
+        return fallback
+    return matches[0], "definition"
+
+
 def _declines_to_answer(a, b):
     """True when one spelling is `void *` and the other is any other object pointer.
 
@@ -1628,9 +1654,11 @@ def disagreements(decls, defs, unmangled, root=REPO):
     out = []
     for symbol in sorted(by_symbol):
         group = by_symbol[symbol]
-        ref, basis = _reference(symbol, group, defs_by_symbol.get(symbol, []))
+        own = defs_by_symbol.get(symbol, [])
+        default_reference = _reference(symbol, group, own)
         want_arity = demangled_arity(symbol, root)
         for d in group:
+            ref, basis = _overload_reference(d, own, unmangled, default_reference)
             if d is not ref and d.is_function != ref.is_function:
                 out.append(_finding(symbol, "kind", d, ref, basis,
                                     "function" if d.is_function else "data",

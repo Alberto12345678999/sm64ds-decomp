@@ -83,91 +83,140 @@ void func_ov022_02112654(char *c);
 extern int _ZTV15daObjFlMaruta_c[];
 extern int _ZTV13daObjMaruta_c[];
 
+#pragma defer_codegen off
+
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 15 -- daObj_volcanoCannon_c_classInit, 0x02112918, size 0x38     */
+/* ROM ordinals 1 and 0 -- the destructor pair, lowest addresses in the TU      */
+/*   0x021124e8  _ZN15daObjFlMaruta_cD0Ev, size 0x64                              */
+/*   0x02112498  _ZN15daObjFlMaruta_cD1Ev, size 0x50                              */
 /* -------------------------------------------------------------------------- */
-// @symbol daObj_volcanoCannon_c_classInit
-/* The factory stays hand-spelled because a natural `new daObj_volcanoCannon_c()`
- * makes mwccarm call unresolved `_Znwm`; the ROM calls the class allocator
- * `_ZN7fBase_cnwEj`. This form preserves that destination exactly.
- *
- * Reconstructed source-style name: SM64DS proves daObj_volcanoCannon_c through
- * RTTI, allocation size, vtable identity, and the OBJ_VOLCANO_CANNON registry
- * profile; later EAD lineage supplies classInit. Exact original spelling is not
- * preserved. Historical alias: VolcanoFire_Spawn. */
-extern "C" int *daObj_volcanoCannon_c_classInit(void)
+// @symbol _ZN15daObjFlMaruta_cD0Ev
+// @symbol _ZN15daObjFlMaruta_cD1Ev
+/* One out-of-line definition; mwccarm emits the D1 and D0 variants from it and
+ * picks their relative order itself. THREE vtable stores, and the middle one is
+ * the finding: `daObjFlMaruta_c : daObjMaruta_c : dBgActor_c` emits its own vptr,
+ * then daObjMaruta_c's -- inlined, because that destructor is defined in its
+ * class body -- then dBgActor_c's, then dBgActor_c's dBgW_KcMbg and Model, then
+ * dActor_c. Nothing in the chain adds a member with a destructor, so the body is
+ * empty. D0's deallocation is an inline operator delete, which is why nothing
+ * below mentions a heap. */
+daObjFlMaruta_c::~daObjFlMaruta_c()
 {
-    int *p = (int *)_ZN7fBase_cnwEj(0x11c);
+}
+/* -------------------------------------------------------------------------- */
+/* ROM ordinal 2 -- _ZN15daObjFlMaruta_c16CleanupResourcesEv, 0x0211254c          */
+/* -------------------------------------------------------------------------- */
+// @symbol _ZN15daObjFlMaruta_c16CleanupResourcesEv
+int daObjFlMaruta_c::CleanupResources()
+{
+    return func_ov080_021270dc(((void *)this), data_ov022_02112c9c);
+}
+
+/* -------------------------------------------------------------------------- */
+/* ROM ordinal 3 -- _ZN15daObjFlMaruta_c8BehaviorEv, 0x02112560, size 0x30        */
+/* -------------------------------------------------------------------------- */
+// @symbol _ZN15daObjFlMaruta_c8BehaviorEv
+int daObjFlMaruta_c::Behavior()
+{
+    func_020393a4(((char *)this) + 0x124, 0x500000);
+    return func_ov080_0212714c(((char *)this), data_ov022_02112c98) & 0xff;
+}
+
+/* -------------------------------------------------------------------------- */
+/* ROM ordinal 4 -- _ZN15daObjFlMaruta_c13InitResourcesEv, 0x02112590, size 0x14  */
+/* -------------------------------------------------------------------------- */
+// @symbol _ZN15daObjFlMaruta_c13InitResourcesEv
+int daObjFlMaruta_c::InitResources()
+{
+    return func_ov080_021274ac(((void *)this), data_ov022_02112c9c);
+}
+
+/* -------------------------------------------------------------------------- */
+/* ROM ordinal 5 -- daObjFlMaruta_c_classInit, 0x021125a4, size 0x3c            */
+/* -------------------------------------------------------------------------- */
+// @symbol daObjFlMaruta_c_classInit
+/* vtable identified: VT0 = _ZTV13daObjMaruta_c, then this class's own.
+ *
+ * Reconstructed source-style name: SM64DS proves daObjFlMaruta_c through RTTI,
+ * allocation size, most-derived vtable identity, and the FL_MARUTA registry
+ * profile; later EAD lineage supplies classInit. Exact original spelling is not
+ * preserved. The project's daObjFlMaruta_c implementation aliases remain
+ * unchanged. Historical alias: RollingLogLll_Spawn. */
+extern "C" int *daObjFlMaruta_c_classInit(void)
+{
+    int *p = (int *)_ZN7fBase_cnwEj(836);
     if (p) {
-        _ZN8dActor_cC2Ev(p);
-        p[0] = (int)&_ZTV21daObj_volcanoCannon_c[2];
-        _ZN7dCcAc_cC1Ev((char *)p + 0xd4);
+        _ZN10dBgActor_cC2Ev(p);
+        p[0] = (int)_ZTV13daObjMaruta_c;
+        p[0] = (int)&_ZTV15daObjFlMaruta_c[2];
     }
     return p;
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 14 -- _ZN21daObj_volcanoCannon_c13InitResourcesEv, 0x021128b8    */
+/* ROM ordinals 6 and 7 -- _ZN21daObj_volcanoCannon_cD1Ev 0x021125e0 size 0x30,
+                          _ZN21daObj_volcanoCannon_cD0Ev 0x02112610 size 0x44 */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN21daObj_volcanoCannon_c13InitResourcesEv
-int daObj_volcanoCannon_c::InitResources()
+// @symbol _ZN21daObj_volcanoCannon_cD1Ev
+// @symbol _ZN21daObj_volcanoCannon_cD0Ev
+/* ONE definition, TWO ROM functions. The class body declares the destructor
+ * without defining it, so this single out-of-line definition pins the
+ * variants' sections to the TU's ROM-ascending order -- the inline vague
+ * copies the compiler would otherwise emit land at the end of the object,
+ * after func_ov022_02112654. The body is empty: the vptr store, the dCcAc_c
+ * member teardown and the base chain are all consequences of the class
+ * layout. D0's deallocation is dActor_c's inline operator delete, which is
+ * why no heap call appears in it. With deferred code generation off the two
+ * variants land in the cartridge's order, D1 first at 0x021125e0 and D0 at
+ * 0x02112610.
+ *
+ * While these two functions lived in one-function files, each needed a forcing
+ * helper of its own -- a `delete` expression for D0, an explicit destructor call
+ * for D1 -- because neither file emitted the vtable. Folding the TU retires both
+ * helpers, which compiled to two global functions the ROM does not contain. */
+daObj_volcanoCannon_c::~daObj_volcanoCannon_c()
 {
-    mTerminalVelocity = -0xc8000;
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mCylinderClsn, this, 0x1e000, 0x1e000, 0x200002, 0);
-    ChangeState((State *)&data_ov022_02114690);
-    return 1;
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 13 -- _ZN21daObj_volcanoCannon_c8BehaviorEv, 0x02112800          */
+/* ROM ordinal 8 -- func_ov022_02112654, 0x02112654, size 0x58                  */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN21daObj_volcanoCannon_c8BehaviorEv
-int daObj_volcanoCannon_c::Behavior()
+// @symbol func_ov022_02112654
+/* Not in either vtable: a helper of the slot-32 method above. Burns the player
+ * if the actor this one is tracking by ID is Mario (actor type 0xbf), then
+ * retires itself. */
+extern "C" void func_ov022_02112654(char *c)
 {
-    DecIfAbove0_Short(&mKillTimer);
-    if (mState->behavior != 0)
-        (this->*mState->behavior)();
-    _ZN8dActor_c9UpdatePosEP5dCc_c(this, &mCylinderClsn);
-    _ZN5dCc_c5ClearEv(&mCylinderClsn);
-    _ZN5dCc_c6UpdateEv(&mCylinderClsn);
-    {
-        int b = (int)((mFlags & 8) != 0);
-        if (b == 0) {
-            mParticleID = _ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f(
-                mParticleID, 0x129, mPosX, mPosY, mPosZ, 0);
-        }
-    }
-    return 1;
+    if (*(unsigned int *)(c + 0xf8) == 0) return;
+    void *a = _ZN8dActor_c10FindWithIDEj(*(unsigned int *)(c + 0xf8));
+    if (a == 0) return;
+    unsigned int b = *(unsigned short *)((char *)a + 0xc) == 0xbf;
+    if (b == 0) return;
+    _ZN6Player4BurnEv(a);
+    _ZN7fBase_c18MarkForDestructionEv(c);
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 12 -- _ZN21daObj_volcanoCannon_c16CleanupResourcesEv, 0x021127e0 */
+/* ROM ordinal 9 -- func_ov022_021126ac, 0x021126ac, size 0x64                  */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN21daObj_volcanoCannon_c16CleanupResourcesEv
-/* Vtable slot 3. The only one of these leaves that owns no files: it hands its
- * slot back to the spawner that made it, by decrementing the live-flame count
- * that spawner keeps at +0x324. mSpawner is null for a flame that was never
- * registered, hence the guard. The spawner's own class is not described by any
- * header yet, so that offset stays raw. */
-int daObj_volcanoCannon_c::CleanupResources()
+// @symbol func_ov022_021126ac
+/* daObjFlMaruta_c vtable slot 32 (ov022 0x021143a4, 32 words in). Historical
+ * alias: daObjFlMaruta_c_AfterClsn. */
+extern "C" int func_ov022_021126ac(char *c)
 {
-    if (mSpawner)
-        *(u16 *)((char *)mSpawner + 0x324) -= 1;
-    return 1;
-}
-
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 11 -- _ZN21daObj_volcanoCannon_c11ChangeStateEPNS_5StateE        */
-/* -------------------------------------------------------------------------- */
-// @symbol _ZN21daObj_volcanoCannon_c11ChangeStateEPNS_5StateE
-/* The state record contains two pointer-to-member callbacks; the transition
- * stores the record and runs its init. */
-int daObj_volcanoCannon_c::ChangeState(State *state)
-{
-    mState = state;
-    if (mState->init == 0)
+    int a = *(int *)(c + 0x60);
+    int b = *(int *)(c + 0x118);
+    if (a < b) {
+        _ZN7fBase_c18MarkForDestructionEv(c);
         return 1;
-    return (this->*mState->init)();
+    }
+    unsigned short h = *(unsigned short *)(c + 0x100 + 0x10);
+    if (h == 0) {
+        _ZN7fBase_c18MarkForDestructionEv(c);
+        return 1;
+    }
+    func_ov022_02112654(c);
+    return 1;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -195,140 +244,88 @@ extern "C" int func_ov022_02112710(char *c)
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 9 -- func_ov022_021126ac, 0x021126ac, size 0x64                  */
+/* ROM ordinal 11 -- _ZN21daObj_volcanoCannon_c11ChangeStateEPNS_5StateE        */
 /* -------------------------------------------------------------------------- */
-// @symbol func_ov022_021126ac
-/* daObjFlMaruta_c vtable slot 32 (ov022 0x021143a4, 32 words in). Historical
- * alias: daObjFlMaruta_c_AfterClsn. */
-extern "C" int func_ov022_021126ac(char *c)
+// @symbol _ZN21daObj_volcanoCannon_c11ChangeStateEPNS_5StateE
+/* The state record contains two pointer-to-member callbacks; the transition
+ * stores the record and runs its init. */
+int daObj_volcanoCannon_c::ChangeState(State *state)
 {
-    int a = *(int *)(c + 0x60);
-    int b = *(int *)(c + 0x118);
-    if (a < b) {
-        _ZN7fBase_c18MarkForDestructionEv(c);
+    mState = state;
+    if (mState->init == 0)
         return 1;
-    }
-    unsigned short h = *(unsigned short *)(c + 0x100 + 0x10);
-    if (h == 0) {
-        _ZN7fBase_c18MarkForDestructionEv(c);
-        return 1;
-    }
-    func_ov022_02112654(c);
+    return (this->*mState->init)();
+}
+
+/* -------------------------------------------------------------------------- */
+/* ROM ordinal 12 -- _ZN21daObj_volcanoCannon_c16CleanupResourcesEv, 0x021127e0 */
+/* -------------------------------------------------------------------------- */
+// @symbol _ZN21daObj_volcanoCannon_c16CleanupResourcesEv
+/* Vtable slot 3. The only one of these leaves that owns no files: it hands its
+ * slot back to the spawner that made it, by decrementing the live-flame count
+ * that spawner keeps at +0x324. mSpawner is null for a flame that was never
+ * registered, hence the guard. The spawner's own class is not described by any
+ * header yet, so that offset stays raw. */
+int daObj_volcanoCannon_c::CleanupResources()
+{
+    if (mSpawner)
+        *(u16 *)((char *)mSpawner + 0x324) -= 1;
     return 1;
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 8 -- func_ov022_02112654, 0x02112654, size 0x58                  */
+/* ROM ordinal 13 -- _ZN21daObj_volcanoCannon_c8BehaviorEv, 0x02112800          */
 /* -------------------------------------------------------------------------- */
-// @symbol func_ov022_02112654
-/* Not in either vtable: a helper of the slot-32 method above. Burns the player
- * if the actor this one is tracking by ID is Mario (actor type 0xbf), then
- * retires itself. */
-extern "C" void func_ov022_02112654(char *c)
+// @symbol _ZN21daObj_volcanoCannon_c8BehaviorEv
+int daObj_volcanoCannon_c::Behavior()
 {
-    if (*(unsigned int *)(c + 0xf8) == 0) return;
-    void *a = _ZN8dActor_c10FindWithIDEj(*(unsigned int *)(c + 0xf8));
-    if (a == 0) return;
-    unsigned int b = *(unsigned short *)((char *)a + 0xc) == 0xbf;
-    if (b == 0) return;
-    _ZN6Player4BurnEv(a);
-    _ZN7fBase_c18MarkForDestructionEv(c);
+    DecIfAbove0_Short(&mKillTimer);
+    if (mState->behavior != 0)
+        (this->*mState->behavior)();
+    _ZN8dActor_c9UpdatePosEP5dCc_c(this, &mCylinderClsn);
+    _ZN5dCc_c5ClearEv(&mCylinderClsn);
+    _ZN5dCc_c6UpdateEv(&mCylinderClsn);
+    {
+        int b = (int)((mFlags & 8) != 0);
+        if (b == 0) {
+            mParticleID = _ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f(
+                mParticleID, 0x129, mPosX, mPosY, mPosZ, 0);
+        }
+    }
+    return 1;
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 7 -- _ZN21daObj_volcanoCannon_cD0Ev, 0x02112610, size 0x44       */
+/* ROM ordinal 14 -- _ZN21daObj_volcanoCannon_c13InitResourcesEv, 0x021128b8    */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN21daObj_volcanoCannon_cD0Ev
-/* NO BODY HERE, DELIBERATELY. daObj_volcanoCannon_c's destructor is defined
- * inline in the class body (include/daObj_volcanoCannon_c.h), so this TU has no
- * out-of-line destructor source to carry. mwccarm emits D1 and D0 anyway,
- * because this TU defines the class's key function -- InitResources, the first
- * non-inline virtual the class declares. That emits _ZTV21daObj_volcanoCannon_c,
- * whose slots 16 and 17 reference the two destructor variants.
- *
- * While these two functions lived in one-function files, each needed a forcing
- * helper of its own -- a `delete` expression for D0, an explicit destructor call
- * for D1 -- because neither file emitted the vtable. Folding the TU retires both
- * helpers, which compiled to two global functions the ROM does not contain.
- *
- * D0 is the deleting variant; its deallocation is dActor_c's inline operator
- * delete, which is why no heap call appears in it. */
-
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 6 -- _ZN21daObj_volcanoCannon_cD1Ev, 0x021125e0, size 0x30       */
-/* -------------------------------------------------------------------------- */
-// @symbol _ZN21daObj_volcanoCannon_cD1Ev
-/* NO BODY HERE either, for the reason given just above: D1 is the complete-object
- * variant of the same inline class-body destructor, emitted from the same vtable
- * reference. Both markers are parked at their ROM ordinals so the address order
- * of this file stays readable; the next definition below carries its own marker,
- * so neither of these lends its name to it. */
-
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 5 -- daObjFlMaruta_c_classInit, 0x021125a4, size 0x3c            */
-/* -------------------------------------------------------------------------- */
-// @symbol daObjFlMaruta_c_classInit
-/* vtable identified: VT0 = _ZTV13daObjMaruta_c, then this class's own.
- *
- * Reconstructed source-style name: SM64DS proves daObjFlMaruta_c through RTTI,
- * allocation size, most-derived vtable identity, and the FL_MARUTA registry
- * profile; later EAD lineage supplies classInit. Exact original spelling is not
- * preserved. The project's daObjFlMaruta_c implementation aliases remain
- * unchanged. Historical alias: RollingLogLll_Spawn. */
-extern "C" int *daObjFlMaruta_c_classInit(void)
+// @symbol _ZN21daObj_volcanoCannon_c13InitResourcesEv
+int daObj_volcanoCannon_c::InitResources()
 {
-    int *p = (int *)_ZN7fBase_cnwEj(836);
+    mTerminalVelocity = -0xc8000;
+    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mCylinderClsn, this, 0x1e000, 0x1e000, 0x200002, 0);
+    ChangeState((State *)&data_ov022_02114690);
+    return 1;
+}
+
+/* -------------------------------------------------------------------------- */
+/* ROM ordinal 15 -- daObj_volcanoCannon_c_classInit, 0x02112918, size 0x38     */
+/* -------------------------------------------------------------------------- */
+// @symbol daObj_volcanoCannon_c_classInit
+/* The factory stays hand-spelled because a natural `new daObj_volcanoCannon_c()`
+ * makes mwccarm call unresolved `_Znwm`; the ROM calls the class allocator
+ * `_ZN7fBase_cnwEj`. This form preserves that destination exactly.
+ *
+ * Reconstructed source-style name: SM64DS proves daObj_volcanoCannon_c through
+ * RTTI, allocation size, vtable identity, and the OBJ_VOLCANO_CANNON registry
+ * profile; later EAD lineage supplies classInit. Exact original spelling is not
+ * preserved. Historical alias: VolcanoFire_Spawn. */
+extern "C" int *daObj_volcanoCannon_c_classInit(void)
+{
+    int *p = (int *)_ZN7fBase_cnwEj(0x11c);
     if (p) {
-        _ZN10dBgActor_cC2Ev(p);
-        p[0] = (int)_ZTV13daObjMaruta_c;
-        p[0] = (int)&_ZTV15daObjFlMaruta_c[2];
+        _ZN8dActor_cC2Ev(p);
+        p[0] = (int)&_ZTV21daObj_volcanoCannon_c[2];
+        _ZN7dCcAc_cC1Ev((char *)p + 0xd4);
     }
     return p;
-}
-
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 4 -- _ZN15daObjFlMaruta_c13InitResourcesEv, 0x02112590, size 0x14  */
-/* -------------------------------------------------------------------------- */
-// @symbol _ZN15daObjFlMaruta_c13InitResourcesEv
-int daObjFlMaruta_c::InitResources()
-{
-    return func_ov080_021274ac(((void *)this), data_ov022_02112c9c);
-}
-
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 3 -- _ZN15daObjFlMaruta_c8BehaviorEv, 0x02112560, size 0x30        */
-/* -------------------------------------------------------------------------- */
-// @symbol _ZN15daObjFlMaruta_c8BehaviorEv
-int daObjFlMaruta_c::Behavior()
-{
-    func_020393a4(((char *)this) + 0x124, 0x500000);
-    return func_ov080_0212714c(((char *)this), data_ov022_02112c98) & 0xff;
-}
-
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 2 -- _ZN15daObjFlMaruta_c16CleanupResourcesEv, 0x0211254c          */
-/* -------------------------------------------------------------------------- */
-// @symbol _ZN15daObjFlMaruta_c16CleanupResourcesEv
-int daObjFlMaruta_c::CleanupResources()
-{
-    return func_ov080_021270dc(((void *)this), data_ov022_02112c9c);
-}
-
-/* -------------------------------------------------------------------------- */
-/* ROM ordinals 1 and 0 -- the destructor pair, lowest addresses in the TU      */
-/*   0x021124e8  _ZN15daObjFlMaruta_cD0Ev, size 0x64                              */
-/*   0x02112498  _ZN15daObjFlMaruta_cD1Ev, size 0x50                              */
-/* -------------------------------------------------------------------------- */
-// @symbol _ZN15daObjFlMaruta_cD0Ev
-// @symbol _ZN15daObjFlMaruta_cD1Ev
-/* One out-of-line definition; mwccarm emits the D1 and D0 variants from it and
- * picks their relative order itself. THREE vtable stores, and the middle one is
- * the finding: `daObjFlMaruta_c : daObjMaruta_c : dBgActor_c` emits its own vptr,
- * then daObjMaruta_c's -- inlined, because that destructor is defined in its
- * class body -- then dBgActor_c's, then dBgActor_c's dBgW_KcMbg and Model, then
- * dActor_c. Nothing in the chain adds a member with a destructor, so the body is
- * empty. D0's deallocation is an inline operator delete, which is why nothing
- * below mentions a heap. */
-daObjFlMaruta_c::~daObjFlMaruta_c()
-{
 }

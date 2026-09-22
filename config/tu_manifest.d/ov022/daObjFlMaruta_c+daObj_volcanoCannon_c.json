@@ -143,6 +143,11 @@
       "reason": "mwccarm emits the base-object destructor variant beside the licensed D1/D0 pair whenever it lowers an out-of-line destructor definition. daObjFlMaruta_c's D2 has no entry in config/arm9/overlays/ov022/symbols.txt, so the ROM gives it no home, and no function surviving in this TU references it."
     },
     {
+      "symbol": "_ZN21daObj_volcanoCannon_cD2Ev",
+      "disposition": "deadstrip",
+      "reason": "mwccarm emits the base-object destructor variant beside the licensed D1/D0 pair whenever it lowers an out-of-line destructor definition. daObj_volcanoCannon_c's D2 has no entry in config/arm9/overlays/ov022/symbols.txt, so the ROM gives it no home, and no function surviving in this TU references it."
+    },
+    {
       "symbol": "_ZTI15daObjFlMaruta_c",
       "disposition": "deadstrip-data",
       "canonical_module": "ov022",
@@ -269,39 +274,43 @@
     "functions_declared": 16,
     "compilerOnlyOutput": {
       "requested": [
-        "_ZN15daObjFlMaruta_cD2Ev"
+        "_ZN15daObjFlMaruta_cD2Ev",
+        "_ZN21daObj_volcanoCannon_cD2Ev"
       ],
       "deadstripped": [
-        "_ZN15daObjFlMaruta_cD2Ev"
+        "_ZN15daObjFlMaruta_cD2Ev",
+        "_ZN21daObj_volcanoCannon_cD2Ev"
       ],
       "droppedSections": [
-        5,
-        6,
-        7,
-        8,
         9,
         10,
-        11,
-        12,
-        13,
-        14,
-        15,
-        16,
-        17,
-        18,
-        19,
-        20,
-        21,
-        22,
         23,
         24,
-        25,
-        26,
-        27,
-        28,
-        29,
-        34,
-        35
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56,
+        57,
+        58,
+        59,
+        60,
+        61,
+        62,
+        63
       ],
       "data": [
         "_ZTI15daObjFlMaruta_c",
@@ -344,7 +353,7 @@
       "every_declared_function_defined": "PASS",
       "every_declared_function_bytes_match": "PASS",
       "declared_function_set_equals_defined_function_set": "PASS",
-      "functions_occur_in_expected_order": "PARTIAL -- ordinal pair(s) not in ROM order: [(0, 1), (5, 6)]",
+      "functions_occur_in_expected_order": "PASS",
       "relocation_destinations_verified": "PASS"
     }
   }

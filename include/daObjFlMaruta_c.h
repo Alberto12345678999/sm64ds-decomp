@@ -43,7 +43,7 @@ struct daObjFlMaruta_c : daObjMaruta_c {
 
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
-typedef char RollingLogLll_size_must_be_0x344[sizeof(daObjFlMaruta_c) == 0x344 ? 1 : -1];
+typedef char daObjFlMaruta_c_size_must_be_0x344[sizeof(daObjFlMaruta_c) == 0x344 ? 1 : -1];
 #endif
 
 #endif /* __cplusplus */
