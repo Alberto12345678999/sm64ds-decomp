@@ -3487,13 +3487,9 @@ src/func_ov002_020fea68.c:
     complete
     .text start:0x020fea68 end:0x020fea84
 
-src/_ZN8dM3dGLin3SetERK7Vector3S2_.cpp:
+src/actors/dM3dGLin.cpp:
     complete
-    .text start:0x020fea84 end:0x020feab8
-
-src/_ZN8dM3dGLinD2Ev.cpp:
-    complete
-    .text start:0x020feab8 end:0x020feabc
+    .text start:0x020fea84 end:0x020feabc
 
 src/_ZN6BulletD1Ev.cpp:
     complete

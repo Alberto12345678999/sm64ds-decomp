@@ -29,7 +29,7 @@
  * leaves forward those three null slots into the shared ov080 helpers
  * func_ov080_021274ac / 0212714c / 021270dc.
  *
- * TWO DESCENDANTS: daObjFlMaruta_c (RollingLogLll, ov022) and daObjHmMaruta_c
+ * TWO DESCENDANTS: daObjFlMaruta_c (daObjFlMaruta_c, ov022) and daObjHmMaruta_c
  * (RollingLogTtm, ov030). Each one's destructor stores this class's vtable between
  * its own and _ZTV10dBgActor_c. Both factories pass 836 = 0x344.
  *

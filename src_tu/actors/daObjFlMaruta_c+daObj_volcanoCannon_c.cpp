@@ -1,5 +1,5 @@
 //cpp
-/* Lethal Lava Land: the rolling log (daObjFlMaruta_c, spelled RollingLogLll in
+/* Lethal Lava Land: the rolling log (daObjFlMaruta_c, spelled daObjFlMaruta_c in
  * this tree) and the volcano cannon's flame (daObj_volcanoCannon_c), in the one
  * translation unit the linker says they came from.
  *
@@ -17,11 +17,11 @@
  * group is the documented exception: the compiler picks that group's order.
  *
  * Assembled from these legacy one-function sources (ROM address order):
- *   [ 0] 0x02112498  src/_ZN13RollingLogLllD1Ev.cpp
- *   [ 1] 0x021124e8  src/_ZN13RollingLogLllD0Ev.cpp
- *   [ 2] 0x0211254c  src/_ZN13RollingLogLll16CleanupResourcesEv.cpp
- *   [ 3] 0x02112560  src/_ZN13RollingLogLll8BehaviorEv.cpp
- *   [ 4] 0x02112590  src/_ZN13RollingLogLll13InitResourcesEv.cpp
+ *   [ 0] 0x02112498  src/_ZN15daObjFlMaruta_cD1Ev.cpp
+ *   [ 1] 0x021124e8  src/_ZN15daObjFlMaruta_cD0Ev.cpp
+ *   [ 2] 0x0211254c  src/_ZN15daObjFlMaruta_c16CleanupResourcesEv.cpp
+ *   [ 3] 0x02112560  src/_ZN15daObjFlMaruta_c8BehaviorEv.cpp
+ *   [ 4] 0x02112590  src/_ZN15daObjFlMaruta_c13InitResourcesEv.cpp
  *   [ 5] 0x021125a4  src/d_a_obj_fl_maruta.c
  *   [ 6] 0x021125e0  src/_ZN21daObj_volcanoCannon_cD1Ev.cpp
  *   [ 7] 0x02112610  src/_ZN21daObj_volcanoCannon_cD0Ev.cpp
@@ -58,7 +58,7 @@
 #include "decl_dCcAc_c.h"
 #include "decl_common.h"
 
-#include "RollingLogLll.h"
+#include "daObjFlMaruta_c.h"
 #include "daObj_volcanoCannon_c.h"
 
 struct Vector3_16f;
@@ -81,7 +81,7 @@ void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
 /* daObjFlMaruta_c's collaborators. */
 void func_020393a4(void *p, int v);
 extern int data_ov022_02112c98[];
-extern int _ZTV13RollingLogLll[];
+extern int _ZTV15daObjFlMaruta_c[];
 extern int _ZTV13daObjMaruta_c[];
 
 /* Shared by the two flame helpers below. */
@@ -284,7 +284,7 @@ extern "C" void func_ov022_02112654(char *c)
  * Reconstructed source-style name: SM64DS proves daObjFlMaruta_c through RTTI,
  * allocation size, most-derived vtable identity, and the FL_MARUTA registry
  * profile; later EAD lineage supplies classInit. Exact original spelling is not
- * preserved. The project's RollingLogLll implementation aliases remain
+ * preserved. The project's daObjFlMaruta_c implementation aliases remain
  * unchanged. Historical alias: RollingLogLll_Spawn. */
 extern "C" int *daObjFlMaruta_c_classInit(void)
 {
@@ -292,54 +292,54 @@ extern "C" int *daObjFlMaruta_c_classInit(void)
     if (p) {
         _ZN10dBgActor_cC2Ev(p);
         p[0] = (int)_ZTV13daObjMaruta_c;
-        p[0] = (int)&_ZTV13RollingLogLll[2];
+        p[0] = (int)&_ZTV15daObjFlMaruta_c[2];
     }
     return p;
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 4 -- _ZN13RollingLogLll13InitResourcesEv, 0x02112590, size 0x14  */
+/* ROM ordinal 4 -- _ZN15daObjFlMaruta_c13InitResourcesEv, 0x02112590, size 0x14  */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN13RollingLogLll13InitResourcesEv
-int RollingLogLll::InitResources()
+// @symbol _ZN15daObjFlMaruta_c13InitResourcesEv
+int daObjFlMaruta_c::InitResources()
 {
     return func_ov080_021274ac(((void *)this), data_ov022_02112c9c);
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 3 -- _ZN13RollingLogLll8BehaviorEv, 0x02112560, size 0x30        */
+/* ROM ordinal 3 -- _ZN15daObjFlMaruta_c8BehaviorEv, 0x02112560, size 0x30        */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN13RollingLogLll8BehaviorEv
-int RollingLogLll::Behavior()
+// @symbol _ZN15daObjFlMaruta_c8BehaviorEv
+int daObjFlMaruta_c::Behavior()
 {
     func_020393a4(((char *)this) + 0x124, 0x500000);
     return func_ov080_0212714c(((char *)this), data_ov022_02112c98) & 0xff;
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 2 -- _ZN13RollingLogLll16CleanupResourcesEv, 0x0211254c          */
+/* ROM ordinal 2 -- _ZN15daObjFlMaruta_c16CleanupResourcesEv, 0x0211254c          */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN13RollingLogLll16CleanupResourcesEv
-int RollingLogLll::CleanupResources()
+// @symbol _ZN15daObjFlMaruta_c16CleanupResourcesEv
+int daObjFlMaruta_c::CleanupResources()
 {
     return func_ov080_021270dc(((void *)this), data_ov022_02112c9c);
 }
 
 /* -------------------------------------------------------------------------- */
 /* ROM ordinals 1 and 0 -- the destructor pair, lowest addresses in the TU      */
-/*   0x021124e8  _ZN13RollingLogLllD0Ev, size 0x64                              */
-/*   0x02112498  _ZN13RollingLogLllD1Ev, size 0x50                              */
+/*   0x021124e8  _ZN15daObjFlMaruta_cD0Ev, size 0x64                              */
+/*   0x02112498  _ZN15daObjFlMaruta_cD1Ev, size 0x50                              */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN13RollingLogLllD0Ev
-// @symbol _ZN13RollingLogLllD1Ev
+// @symbol _ZN15daObjFlMaruta_cD0Ev
+// @symbol _ZN15daObjFlMaruta_cD1Ev
 /* One out-of-line definition; mwccarm emits the D1 and D0 variants from it and
  * picks their relative order itself. THREE vtable stores, and the middle one is
- * the finding: `RollingLogLll : daObjMaruta_c : dBgActor_c` emits its own vptr,
+ * the finding: `daObjFlMaruta_c : daObjMaruta_c : dBgActor_c` emits its own vptr,
  * then daObjMaruta_c's -- inlined, because that destructor is defined in its
  * class body -- then dBgActor_c's, then dBgActor_c's dBgW_KcMbg and Model, then
  * dActor_c. Nothing in the chain adds a member with a destructor, so the body is
  * empty. D0's deallocation is an inline operator delete, which is why nothing
  * below mentions a heap. */
-RollingLogLll::~RollingLogLll()
+daObjFlMaruta_c::~daObjFlMaruta_c()
 {
 }
