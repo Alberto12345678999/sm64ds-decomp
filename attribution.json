@@ -4492,6 +4492,16 @@
     "src/actors/daBDonketu_c.cpp#_ZN12daBDonketu_c16UpdateDeathStateEv": "andrewboudreau",
     "src/actors/daBDonketu_c.cpp#_ZN12daBDonketu_c6RenderEv": "tangosdev",
     "src/actors/daBDonketu_c.cpp#_ZN12daBDonketu_c8BehaviorEv": "tangosdev",
-    "src/actors/daBDonketu_c.cpp#_ZN12daBDonketu_c13InitResourcesEv": "andrewboudreau"
+    "src/actors/daBDonketu_c.cpp#_ZN12daBDonketu_c13InitResourcesEv": "andrewboudreau",
+    "src/actors/daDonketu_c.cpp#_ZN11daDonketu_cD1Ev": "tangosdev",
+    "src/actors/daDonketu_c.cpp#_ZN11daDonketu_cD0Ev": "tangosdev",
+    "src/actors/daDonketu_c.cpp#_ZN11daDonketu_c14PlayDeathSoundEv": "andrewboudreau",
+    "src/actors/daDonketu_c.cpp#_ZN11daDonketu_c17PlayShellHitSoundEv": "andrewboudreau",
+    "src/actors/daDonketu_c.cpp#_ZN11daDonketu_c12PlayHitSoundEv": "andrewboudreau",
+    "src/actors/daDonketu_c.cpp#_ZN11daDonketu_c13PlayStepSoundEv": "andrewboudreau",
+    "src/actors/daDonketu_c.cpp#_ZN11daDonketu_c14UpdateRunStateEv": "andrewboudreau",
+    "src/actors/daDonketu_c.cpp#_ZN11daDonketu_c16UpdateDeathStateEv": "andrewboudreau",
+    "src/actors/daDonketu_c.cpp#_ZN11daDonketu_c8BehaviorEv": "lunavyqo",
+    "src/actors/daDonketu_c.cpp#_ZN11daDonketu_c13InitResourcesEv": "ruspecial"
   }
 }
