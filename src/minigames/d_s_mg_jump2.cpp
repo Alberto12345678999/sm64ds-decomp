@@ -211,7 +211,7 @@ void __cxa_vec_ctor(void *o, int a, int b, void *f1, void *f2);
 void _ZN8Particle10SysTrackerC1Ev(void *p);
 void _ZN5ModelC1Ev(void *p);
 extern char _ZTV14dScMgD3DBase_c[];
-void _ZN16dMgJump3DMario_cD1Ev();
+void _ZN16dMgJump3DMario_cD1Ev(void *p);
 void _ZN16dMgJump3DMario_cC1Ev();
 void func_ov006_020c6f70();
 void func_ov006_020eed64();
