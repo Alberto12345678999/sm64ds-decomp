@@ -1537,7 +1537,6 @@
   "Vec3_Dist": {
    "src/_ZN10RockPillar8BehaviorEv.cpp": ["param:#1 const void *", "param:#2 const void *"],
    "src/_ZN12dBgCh_SphCrr10DetectClsnEv.cpp": ["param:#1 const void *", "param:#2 const void *"],
-   "src/_ZN19daObjBlockItemTag_c8BehaviorEv.cpp": ["param:#1 const void *", "param:#2 const void *"],
    "src/_ZN5Unagi8BehaviorEv.cpp": ["param:#1 const void *", "param:#2 const void *"],
    "src/_ZN7Tornado6State1Ev.cpp": ["param:#1 const void *", "param:#2 const void *"],
    "src/_ZN8dActor_c13ClosestPlayerEv.cpp": ["param:#1 const void *", "param:#2 const void *"],
@@ -1549,6 +1548,7 @@
    "src/actors/daJango_c.cpp": ["param:#1 const void *", "param:#2 const void *"],
    "src/actors/daMip_c.cpp": ["param:#1 const void *", "param:#2 const void *"],
    "src/actors/daMky_c.cpp": ["param:#1 const void *", "param:#2 const void *"],
+   "src/actors/daObjBlockItemTag_c.cpp": ["param:#1 const void *", "param:#2 const void *"],
    "src/actors/daYurei_Mucho_c.cpp": ["param:#1 const void *", "param:#2 const void *"],
    "src/func_02005110.c": ["param:#1 const Vec3 *", "param:#2 const Vec3 *"],
    "src/func_02007c9c.c": ["param:#1 const struct Vector3 *", "param:#2 const struct Vector3 *"],
@@ -8612,10 +8612,9 @@
    "src/__sinit_ov002_02100560.c": ["return:void *"]
   },
   "data_ov002_0210d9d8": {
-   "src/_ZN19daObjBlockItemTag_c13InitResourcesEv.cpp": ["return:int"],
-   "src/_ZN19daObjBlockItemTag_c16CleanupResourcesEv.cpp": ["return:char []"],
    "src/_ZN9daBtfly_c13InitResourcesEv.cpp": ["return:SFP"],
-   "src/__sinit_ov002_02100560.c": ["return:void *"]
+   "src/__sinit_ov002_02100560.c": ["return:void *"],
+   "src/actors/daObjBlockItemTag_c.cpp": ["return:char []"]
   },
   "data_ov002_0210d9e0": {
    "src/_ZN12EnemySpawner13InitResourcesEv.cpp": ["return:int"],
@@ -8645,7 +8644,6 @@
    "src/__sinit_ov002_02100560.c": ["return:void *"]
   },
   "data_ov002_0210da18": {
-   "src/_ZN19daObjBlockItemTag_c13InitResourcesEv.cpp": ["return:int"],
    "src/__sinit_ov002_02100560.c": ["return:void *"]
   },
   "data_ov002_0210da28": {
@@ -8654,11 +8652,10 @@
   },
   "data_ov002_0210da30": {
    "src/_ZN16daKing_Donketu_c13InitResourcesEv.cpp": ["return:SharedFilePtr"],
-   "src/_ZN19daObjBlockItemTag_c13InitResourcesEv.cpp": ["return:int"],
-   "src/_ZN19daObjBlockItemTag_c16CleanupResourcesEv.cpp": ["return:char []"],
+   "src/_ZN8Goomboss13InitResourcesEv.cpp": ["return:void *"],
    "src/_ZN8Goomboss16CleanupResourcesEv.cpp": ["return:char"],
+   "src/__sinit_ov002_02100560.c": ["return:void *"],
    "src/actors/Goomboss.cpp": ["return:char"],
-   "src/actors/daObjHatenaBlock_c.cpp": ["return:char []"],
    "src/game/actors/d_a_obj_kinoko_tag.cpp": ["return:SharedFilePtr"]
   },
   "data_ov002_0210da38": {
