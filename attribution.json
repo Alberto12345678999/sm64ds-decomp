@@ -4441,6 +4441,11 @@
     "src/actors/daObjBlockItemTag_c.cpp#_ZN19daObjBlockItemTag_cD0Ev": "tangosdev",
     "src/actors/daObjBlockItemTag_c.cpp#_ZN19daObjBlockItemTag_c17SpawnMegaMushroomEv": "andrewboudreau",
     "src/actors/daObjBlockItemTag_c.cpp#_ZN19daObjBlockItemTag_c13InitResourcesEv": "tangosdev",
-    "src/actors/daObjBlockItemTag_c.cpp#_ZN19daObjBlockItemTag_c15SpawnKoopaShellEv": "andrewboudreau"
+    "src/actors/daObjBlockItemTag_c.cpp#_ZN19daObjBlockItemTag_c15SpawnKoopaShellEv": "andrewboudreau",
+    "src/actors/daObjWlSubmarine_c.cpp#_ZN18daObjWlSubmarine_cD1Ev": "andrewboudreau",
+    "src/actors/daObjWlSubmarine_c.cpp#_ZN18daObjWlSubmarine_cD0Ev": "andrewboudreau",
+    "src/actors/daObjWlSubmarine_c.cpp#_ZN18daObjWlSubmarine_c16CleanupResourcesEv": "tangosdev",
+    "src/actors/daObjWlSubmarine_c.cpp#_ZN18daObjWlSubmarine_c6RenderEv": "tangosdev",
+    "src/actors/daObjWlSubmarine_c.cpp#_ZN18daObjWlSubmarine_c13InitResourcesEv": "tangosdev"
   }
 }

@@ -36,25 +36,9 @@ src/d_a_obj_wl_koopa_shutter.c:
     complete
     .text start:0x02111888 end:0x021118b8
 
-src/_ZN18daObjWlSubmarine_cD1Ev.cpp:
+src/actors/daObjWlSubmarine_c.cpp:
     complete
-    .text start:0x021118b8 end:0x021118fc
-
-src/_ZN18daObjWlSubmarine_cD0Ev.cpp:
-    complete
-    .text start:0x021118fc end:0x02111954
-
-src/_ZN18daObjWlSubmarine_c16CleanupResourcesEv.cpp:
-    complete
-    .text start:0x02111954 end:0x02111998
-
-src/_ZN18daObjWlSubmarine_c6RenderEv.cpp:
-    complete
-    .text start:0x02111998 end:0x021119c0
-
-src/_ZN18daObjWlSubmarine_c13InitResourcesEv.cpp:
-    complete
-    .text start:0x021119c0 end:0x02111a70
+    .text start:0x021118b8 end:0x02111a70
 
 src/d_a_obj_wl_submarine.c:
     complete
