@@ -1,10 +1,10 @@
-_ZN9TinyCoverD1Ev kind:function(arm,size=0x44) addr:0x021111a0
-_ZN9TinyCoverD0Ev kind:function(arm,size=0x58) addr:0x021111e4
-_ZN9TinyCover15OnGroundPoundedER8dActor_c kind:function(arm,size=0x44) addr:0x0211123c
-_ZN9TinyCover16CleanupResourcesEv kind:function(arm,size=0x44) addr:0x02111280
-_ZN9TinyCover6RenderEv kind:function(arm,size=0x28) addr:0x021112c4
-_ZN9TinyCover8BehaviorEv kind:function(arm,size=0x24) addr:0x021112ec
-_ZN9TinyCover13InitResourcesEv kind:function(arm,size=0x94) addr:0x02111310
+_ZN13daObjTtFuta_cD1Ev kind:function(arm,size=0x44) addr:0x021111a0
+_ZN13daObjTtFuta_cD0Ev kind:function(arm,size=0x58) addr:0x021111e4
+_ZN13daObjTtFuta_c15OnGroundPoundedER8dActor_c kind:function(arm,size=0x44) addr:0x0211123c
+_ZN13daObjTtFuta_c16CleanupResourcesEv kind:function(arm,size=0x44) addr:0x02111280
+_ZN13daObjTtFuta_c6RenderEv kind:function(arm,size=0x28) addr:0x021112c4
+_ZN13daObjTtFuta_c8BehaviorEv kind:function(arm,size=0x24) addr:0x021112ec
+_ZN13daObjTtFuta_c13InitResourcesEv kind:function(arm,size=0x94) addr:0x02111310
 daObjTtFuta_c_classInit kind:function(arm,size=0x30) addr:0x021113a4
 _ZN14daObjTtWater_cD1Ev kind:function(arm,size=0x4c) addr:0x021113d4
 _ZN14daObjTtWater_cD0Ev kind:function(arm,size=0x60) addr:0x02111420
@@ -102,11 +102,11 @@ data_ov033_0211227c kind:data(any) addr:0x0211227c ambiguous
 data_ov033_02112294 kind:data(any) addr:0x02112294 ambiguous
 data_ov033_0211229c kind:data(any) addr:0x0211229c ambiguous
 data_ov033_02112320 kind:data(any) addr:0x02112320 ambiguous
-data_ov033_0211233c kind:data(any) addr:0x0211233c
+_ZTI13daObjTtFuta_c kind:data(any) addr:0x0211233c
 _ZTS13daObjTtFuta_c kind:data(any) addr:0x02112348
 g_profile_TT_FUTA kind:data(any) addr:0x02112358 ambiguous
 data_ov033_02112368 kind:data(any) addr:0x02112368 ambiguous
-_ZTV9TinyCover kind:data(any) addr:0x0211237c
+_ZTV13daObjTtFuta_c kind:data(any) addr:0x0211237c
 data_ov033_021123e4 kind:data(any) addr:0x021123e4 ambiguous
 data_ov033_021123f4 kind:data(any) addr:0x021123f4 ambiguous
 _ZTI14daObjTtWater_c kind:data(any) addr:0x021123fc

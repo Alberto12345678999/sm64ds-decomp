@@ -171,7 +171,7 @@ cheapest possible probe of post-regeneration [ov006](../config/arm9/overlays/ov0
 |[ov022](../config/arm9/overlays/ov022/symbols.txt)| 0x2111f6c|  n=5|  L=86|   `daObjFl_Ukiyuka_c`|            pcov=3|
 |[ov022](../config/arm9/overlays/ov022/symbols.txt)| 0x2112380|  n=4|  L=60|   `daObjFl_Fall_Block_c`|             pcov=2|
 |[ov022](../config/arm9/overlays/ov022/symbols.txt)| 0x2112498|  n=6|  L=100|  `daObjFlMaruta_c`| |
-|[ov026](../config/arm9/overlays/ov026/symbols.txt)| 0x21118b8|  n=6|  L=115|  `Submarine`| |
+|[ov026](../config/arm9/overlays/ov026/symbols.txt)| 0x21118b8|  n=6|  L=115|  `daObjWlSubmarine_c`| |
 |[ov029](../config/arm9/overlays/ov029/symbols.txt)| 0x21111a0|  n=4|  L=135|  `daObjWcObj01_c`| |
 |[ov029](../config/arm9/overlays/ov029/symbols.txt)| 0x2111ea4|  n=4|  L=124|  `daObjWcObj06_c`| |
 |[ov036](../config/arm9/overlays/ov036/symbols.txt)| 0x2111580|  n=8|  L=146|  `daObjRc_Hane_c`| |
@@ -265,7 +265,7 @@ first module where a `config_tu/` conversion becomes conceivable.
 |[ov006](../config/arm9/overlays/ov006/symbols.txt)| 0x20ede18|  n=2|  `MgWhichWiggler`|         NORM1|
 |[ov006](../config/arm9/overlays/ov006/symbols.txt)| 0x2119824|  n=2|  `MgBingoBallSlotsShot`|   NORM1|
 |[ov013](../config/arm9/overlays/ov013/symbols.txt)| 0x21111a0|  n=8|   `daObjClockHuriko_c`|  NORM1 pcov=4|
-|[ov027](../config/arm9/overlays/ov027/symbols.txt)| 0x21111a0|  n=8|   `SlidingIce`|             NORM1|
+|[ov027](../config/arm9/overlays/ov027/symbols.txt)| 0x21111a0|  n=8|   `daObjSlIceBlock_c`|             NORM1|
 |[ov029](../config/arm9/overlays/ov029/symbols.txt)| 0x21121a4|  n=9|   `daObjWc_Mizu_c`|              NORM1|
 |[ov030](../config/arm9/overlays/ov030/symbols.txt)| 0x21111a0|  n=8|   `daObjHmBskt_c`|              NORM2 pcov=2|
 
@@ -273,7 +273,7 @@ first module where a `config_tu/` conversion becomes conceivable.
 **B11 — R2 tail · 4 TUs / 32 files / net −28 / 759 lines**
 | TU | Address | Files | Description | Status |
 |----|---------|-------|-------------|--------|
-|[ov033](../config/arm9/overlays/ov033/symbols.txt)| 0x21111a0|  n=8|   `TinyCover`|        NORM1|
+|[ov033](../config/arm9/overlays/ov033/symbols.txt)| 0x21111a0|  n=8|   `daObjTtFuta_c`|        NORM1|
 |[ov043](../config/arm9/overlays/ov043/symbols.txt)| 0x21111a0|  n=7|   `daObjKm1_Ukishima_c`|      NORM1|
 |[ov045](../config/arm9/overlays/ov045/symbols.txt)| 0x21111a0|  n=9|   `FireSeaElevator`|  NORM1 CONF2|
 |[ov064](../config/arm9/overlays/ov064/symbols.txt)| 0x21174a0|  n=8|   `daBDonketu_c`|         NORM1 pcov=2|

@@ -1,5 +1,5 @@
-#ifndef TINYCOVER_H
-#define TINYCOVER_H
+#ifndef DAOBJTTFUTA_C_H
+#define DAOBJTTFUTA_C_H
 
 #include "types.h"
 #include "dBgActor_c.h"
@@ -7,9 +7,9 @@
 /* TWO WITNESSES, and they close on each other:
  *
  *   daObjTtFuta_c_classInit (historical alias TinyCover_Spawn) calls
- *                 fBase_c::operator new(800 = 0x320), dBgActor_c::dBgActor_c(), stores _ZTV9TinyCover,
+ *                 fBase_c::operator new(800 = 0x320), dBgActor_c::dBgActor_c(), stores _ZTV13daObjTtFuta_c,
  *                 then the members below in this order.
- *   ~TinyCover   the same members destroyed in reverse, then ~dBgActor_c.
+ *   ~daObjTtFuta_c   the same members destroyed in reverse, then ~dBgActor_c.
  *
  * SIZE 0x320 is the factory's own literal, and the last member closes exactly on it.
  *
@@ -17,9 +17,9 @@
  * below differ; every other slot holds the base's own word and is inherited, so it
  * is deliberately not redeclared here.
  */
-struct TinyCover : dBgActor_c {
+struct daObjTtFuta_c : dBgActor_c {
 
-    virtual ~TinyCover();            /* slots 16 (D1), 17 (D0) */
+    virtual ~daObjTtFuta_c();            /* slots 16 (D1), 17 (D0) */
 
     virtual s32   InitResources();         /* slot  0 */
     virtual s32   CleanupResources();      /* slot  3 */
@@ -30,7 +30,7 @@ struct TinyCover : dBgActor_c {
 
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
-typedef char TinyCover_size_must_be_0x320[sizeof(TinyCover) == 0x320 ? 1 : -1];
+typedef char daObjTtFuta_c_size_must_be_0x320[sizeof(daObjTtFuta_c) == 0x320 ? 1 : -1];
 #endif
 
-#endif /* TINYCOVER_H */
+#endif /* DAOBJTTFUTA_C_H */

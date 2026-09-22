@@ -899,6 +899,49 @@ class Record(object):
         return "%s (%s)" % (self.ret, ", ".join(params) if params else "void")
 
 
+def _parse_native_destructor(text, symbol):
+    """Native syntax only when its qualified owner exactly names a D0/D1/D2 entry.
+
+    Preserve existing handling for thunks, force-emission wrappers, templates,
+    namespace shorthand and ambiguous identities rather than guessing a mapping.
+    """
+    text = " ".join(text.split())
+    text = re.sub(r"\)\s*(?:throw\s*\([^)]*\)|noexcept)\s*$", ")", text)
+    dtor = re.fullmatch(r"(?P<owner>[A-Za-z_][A-Za-z0-9_]*(?:::[A-Za-z_][A-Za-z0-9_]*)*)"
+                        r"::\s*~(?P<name>[A-Za-z_][A-Za-z0-9_]*)\s*\(\s*(?:void\s*)?\)", text)
+    if not dtor or dtor.group("owner").split("::")[-1] != dtor.group("name"):
+        return None
+    owner = dtor.group("owner")
+    encoded = "_ZN" + "".join(str(len(part)) + part for part in owner.split("::"))
+    if symbol not in tuple(encoded + variant + "Ev" for variant in ("D0", "D1", "D2")):
+        return None
+    # There is no written source return type. ABI comparison happens separately.
+    return "~" + dtor.group("name"), "<destructor " + owner + ">", (), True, True, dtor.group("name")
+
+
+def _native_destructor_abi(record):
+    """(owner, ABI result) only for an exactly mapped native destructor definition.
+
+    The source has no return type. Direct Arm D1/D2 ABI entries return this;
+    D0 has a void result. This does not infer constructors, thunks, or the
+    contracts of explicitly written flat functions, even with lifecycle names.
+    Arm cppabi32, GC++ABI 3.1.5 and the helper-function compatibility rules:
+    https://github.com/ARM-software/abi-aa/blob/main/cppabi32/cppabi32.rst
+    """
+    if not (record.is_definition and record.is_member and record.is_function
+            and record.linkage == "C++" and record.params == ()):
+        return None
+    match = re.fullmatch(r"<destructor ([A-Za-z_][A-Za-z0-9_]*(?:::[A-Za-z_][A-Za-z0-9_]*)*)>", record.ret)
+    if not match:
+        return None
+    owner = match.group(1)
+    encoded = "_ZN" + "".join(str(len(part)) + part for part in owner.split("::"))
+    for variant in ("D0", "D1", "D2"):
+        if record.symbol == encoded + variant + "Ev":
+            return owner, "void" if variant == "D0" else owner + " *"
+    return None
+
+
 def scan_targets(root=REPO):
     out = []
     for base, dirs, files in os.walk(root):
@@ -1303,7 +1346,14 @@ def parse_file(rel, text, aliases, statics=None):
             # carries one, and otherwise the flat identifier it declares. Only marks
             # between the PREVIOUS statement and this declarator count, so one
             # marked function in a file does not lend its name to the next.
-            parsed = parse_declarator(rest, aliases, cxx)
+            marked = [s for idx, s in marks if start <= idx < decl_start]
+            # A sole file marker can name an orphan only in the existing
+            # unambiguous adoption pass below. It can never rename another owner.
+            dtor_symbol = marked[-1] if marked else (marks[0][1] if len(marks) == 1 else None)
+            parsed = (_parse_native_destructor(rest, dtor_symbol)
+                      if cxx and linkage == "C++" else None)
+            if parsed is None:
+                parsed = parse_declarator(rest, aliases, cxx)
             if parsed is None:
                 continue
             name, ret, params, is_fn, member, owner = parsed
@@ -1665,9 +1715,15 @@ def disagreements(decls, defs, unmangled, root=REPO):
                                     "function" if ref.is_function else "data"))
                 continue
             if d.is_function and ref.is_function and d is not ref:
-                if d.ret != ref.ret:
+                native = _native_destructor_abi(ref)
+                want_return = native[1] if native else ref.ret
+                # An opaque receiver-result pointer is an ABI view, not a claim
+                # that the native C++ destructor has a source-visible result.
+                opaque_result = (native and want_return.endswith(" *")
+                                 and d.ret == "void *")
+                if d.ret != want_return and not opaque_result:
                     out.append(_finding(symbol, "return", d, ref, basis,
-                                        d.ret, ref.ret))
+                                        d.ret, want_return))
                 mine, theirs = d.flat_params(), ref.flat_params()
                 # An unspecified list on either side claims nothing about arity, so
                 # there is nothing to contradict.
