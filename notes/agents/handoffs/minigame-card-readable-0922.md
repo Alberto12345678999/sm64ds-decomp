@@ -136,7 +136,7 @@ is not claimed.
 The source cleanup removed redundant local s16/s32 typedef conflict markers,
 but their manifest notes still called them open. Those exact two notes now say
 RESOLVED, retaining the historical disagreement. The source uses the existing
-shared scalar types. All other conflict notes/markers remain unchanged.
+shared scalar types. All other conflict notes and markers remain unchanged.
 
 This follow-up changes only those note labels and this handoff. Source, headers,
 manifest enrollment/function/compiler/data policies and all build tools are
