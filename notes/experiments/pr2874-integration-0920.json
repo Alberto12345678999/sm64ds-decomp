@@ -5087,8 +5087,8 @@
       "diffs": []
     },
     {
-      "file": "src/_ZN9TinyWater13InitResourcesEv.cpp",
-      "name": "_ZN9TinyWater13InitResourcesEv",
+      "file": "src/_ZN14daObjTtWater_c13InitResourcesEv.cpp",
+      "name": "_ZN14daObjTtWater_c13InitResourcesEv",
       "module": "ov033",
       "addr": "0x21115bc",
       "verdict": "VERIFIED",
@@ -5096,8 +5096,8 @@
       "diffs": []
     },
     {
-      "file": "src/_ZN9TinyWater16CleanupResourcesEv.cpp",
-      "name": "_ZN9TinyWater16CleanupResourcesEv",
+      "file": "src/_ZN14daObjTtWater_c16CleanupResourcesEv.cpp",
+      "name": "_ZN14daObjTtWater_c16CleanupResourcesEv",
       "module": "ov033",
       "addr": "0x2111480",
       "verdict": "VERIFIED",
@@ -20347,7 +20347,7 @@
           "src/_ZN9JetStream13InitResourcesEv.cpp",
           "src/_ZN9SeesawBob13InitResourcesEv.cpp",
           "src/_ZN9Spindrift13InitResourcesEv.cpp",
-          "src/_ZN9TinyWater13InitResourcesEv.cpp",
+          "src/_ZN14daObjTtWater_c13InitResourcesEv.cpp",
           "src/_ZN9dScDSMT_c16CleanupResourcesEv.cpp",
           "src/d_a_b_donketu.c",
           "src/d_a_book_killer_book.c",
@@ -20471,7 +20471,7 @@
           "src/_ZN9JetStream13InitResourcesEv.cpp",
           "src/_ZN9SeesawBob13InitResourcesEv.cpp",
           "src/_ZN9Spindrift13InitResourcesEv.cpp",
-          "src/_ZN9TinyWater13InitResourcesEv.cpp",
+          "src/_ZN14daObjTtWater_c13InitResourcesEv.cpp",
           "src/_ZN9dScDSMT_c16CleanupResourcesEv.cpp",
           "src/d_a_b_donketu.c",
           "src/d_a_book_killer_book.c",
@@ -20606,7 +20606,7 @@
           "src/_ZN9KoopaFlag8BehaviorEv.cpp",
           "src/_ZN9SeesawBob16CleanupResourcesEv.cpp",
           "src/_ZN9Spindrift8BehaviorEv.cpp",
-          "src/_ZN9TinyWater16CleanupResourcesEv.cpp",
+          "src/_ZN14daObjTtWater_c16CleanupResourcesEv.cpp",
           "src/_ZN9dScDSMT_c6RenderEv.cpp",
           "src/d_a_basabasa.c",
           "src/d_a_book_shoot_book.c",
@@ -20731,7 +20731,7 @@
           "src/_ZN9KoopaFlag8BehaviorEv.cpp",
           "src/_ZN9SeesawBob16CleanupResourcesEv.cpp",
           "src/_ZN9Spindrift8BehaviorEv.cpp",
-          "src/_ZN9TinyWater16CleanupResourcesEv.cpp",
+          "src/_ZN14daObjTtWater_c16CleanupResourcesEv.cpp",
           "src/_ZN9dScDSMT_c6RenderEv.cpp",
           "src/d_a_basabasa.c",
           "src/d_a_book_shoot_book.c",
@@ -21954,8 +21954,8 @@
         "src/_ZN9Submarine16CleanupResourcesEv.cpp",
         "src/_ZN9TinyCover13InitResourcesEv.cpp",
         "src/_ZN9TinyCover16CleanupResourcesEv.cpp",
-        "src/_ZN9TinyWater13InitResourcesEv.cpp",
-        "src/_ZN9TinyWater16CleanupResourcesEv.cpp",
+        "src/_ZN14daObjTtWater_c13InitResourcesEv.cpp",
+        "src/_ZN14daObjTtWater_c16CleanupResourcesEv.cpp",
         "src/_ZN9WaterBomb8BehaviorEv.cpp",
         "src/_ZN9Whirlpool13InitResourcesEv.cpp",
         "src/_ZN9Whirlpool8BehaviorEv.cpp",
@@ -23731,12 +23731,12 @@
           "name": "_ZN9TinyCover16CleanupResourcesEv"
         },
         {
-          "file": "src/_ZN9TinyWater13InitResourcesEv.cpp",
-          "name": "_ZN9TinyWater13InitResourcesEv"
+          "file": "src/_ZN14daObjTtWater_c13InitResourcesEv.cpp",
+          "name": "_ZN14daObjTtWater_c13InitResourcesEv"
         },
         {
-          "file": "src/_ZN9TinyWater16CleanupResourcesEv.cpp",
-          "name": "_ZN9TinyWater16CleanupResourcesEv"
+          "file": "src/_ZN14daObjTtWater_c16CleanupResourcesEv.cpp",
+          "name": "_ZN14daObjTtWater_c16CleanupResourcesEv"
         },
         {
           "file": "src/_ZN9WaterBomb8BehaviorEv.cpp",
