@@ -6774,7 +6774,7 @@
         "return:bool"
       ],
       "src/game/actors/daObjPathLift_c.cpp": [
-        "return:void"
+        "param:#1 dBgW_KcMbg *"
       ]
     },
     "_ZN10dBgActor_c14KillByMegaCharER6Player": {
@@ -28695,6 +28695,11 @@
         "return:int []"
       ]
     },
+    "data_ov022_021140d4": {
+      "src/actors/daObjFl_Ukiyuka_c.cpp": [
+        "return:ResourceDescriptor []"
+      ]
+    },
     "data_ov022_0211427c": {
       "src/game/actors/daObjFl_Fall_Block_c.cpp": [
         "return:ResourceDescriptor"
@@ -37069,6 +37074,9 @@
       ],
       "src/game/actors/daObjPathLift_c.cpp": [
         "param:#1 dBgW_KcMbg *"
+      ],
+      "src/actors/daObjFl_Ukiyuka_c.cpp": [
+        "param:#1 dBgW *"
       ]
     },
     "func_020393ac": {
