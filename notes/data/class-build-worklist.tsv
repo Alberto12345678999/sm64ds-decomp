@@ -170,7 +170,7 @@ daPgMthr_c	DONE	include\daPgMthr_c.h	dActor_c	0	ov018	7
 daPgRcer_c	DONE	include\daPgRcer_c.h  [alias: header uses pre-rename name]	dActor_c	0	ov019	7
 daPicGate_c	PARTIAL	include\daPicGate_c.h	dActor_c	0	ov080	7
 daPly_c	DONE	include\Player.h  [alias: header uses pre-rename name]	dActor_c	0	ov002;ov006	248
-daRFlag_c	DONE	include\KoopaFlag.h  [alias: header uses pre-rename name]	dActor_c	0	ov062	6
+daRFlag_c	DONE	include\daRFlag_c.h  [alias: header uses pre-rename name]	dActor_c	0	ov062	6
 daRedBombhei_c	DONE	include\BobOmbBuddy.h  [alias: header uses pre-rename name]	dActor_c	0	ov084	6
 daSBird_c	DONE	include\daSBird_c.h  [alias: header uses pre-rename name]	dActor_c	0	ov009	7
 daSCoin_c	DONE	include\daSCoin_c.h	dActor_c	0	ov002	5

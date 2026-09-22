@@ -1710,12 +1710,12 @@ ov062	0x0211ac10	func_ov062_0211ac10	_ZN7daRNk_c16CleanupResourcesEv	vtable slot
 ov062	0x0211ac94	func_ov062_0211ac94	_ZN7daRNk_c13InitResourcesEv	vtable slot 0
 ov062	0x0211aee0	func_ov062_0211aee0	KoopaTheQuick_Spawn	spawnfunc
 ov062	0x0211aee0	KoopaTheQuick_Spawn	daRNk_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
-ov062	0x0211af38	func_ov062_0211af38	_ZN9KoopaFlagD1Ev	vtable slot 16
-ov062	0x0211af70	func_ov062_0211af70	_ZN9KoopaFlagD0Ev	vtable slot 17
-ov062	0x0211b000	func_ov062_0211b000	_ZN9KoopaFlag16CleanupResourcesEv	vtable slot 3
-ov062	0x0211b030	func_ov062_0211b030	_ZN9KoopaFlag6RenderEv	vtable slot 9
-ov062	0x0211b05c	func_ov062_0211b05c	_ZN9KoopaFlag8BehaviorEv	vtable slot 6
-ov062	0x0211b168	func_ov062_0211b168	_ZN9KoopaFlag13InitResourcesEv	vtable slot 0
+ov062	0x0211af38	func_ov062_0211af38	_ZN9daRFlag_cD1Ev	vtable slot 16
+ov062	0x0211af70	func_ov062_0211af70	_ZN9daRFlag_cD0Ev	vtable slot 17
+ov062	0x0211b000	func_ov062_0211b000	_ZN9daRFlag_c16CleanupResourcesEv	vtable slot 3
+ov062	0x0211b030	func_ov062_0211b030	_ZN9daRFlag_c6RenderEv	vtable slot 9
+ov062	0x0211b05c	func_ov062_0211b05c	_ZN9daRFlag_c8BehaviorEv	vtable slot 6
+ov062	0x0211b168	func_ov062_0211b168	_ZN9daRFlag_c13InitResourcesEv	vtable slot 0
 ov062	0x0211b208	func_ov062_0211b208	KoopaFlag_Spawn	spawnfunc
 ov062	0x0211b208	KoopaFlag_Spawn	daRFlag_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov062	0x0211b248	func_ov062_0211b248	_ZN9daJango_cD1Ev	vtable slot 16 (was _ZN6KleptoD1Ev)
@@ -1740,7 +1740,7 @@ ov062	0x0211db78	KoopaTheQuick_SpawnInfo	g_profile_RACE_NOKO	reconstructed profi
 ov062	0x0211db9c	data_ov062_0211db9c	_ZTV7daRNk_c	vtable alloc=0x3e0
 ov062	0x0211dc30	data_ov062_0211dc30	KoopaFlag_SpawnInfo	spawninfo
 ov062	0x0211dc30	KoopaFlag_SpawnInfo	g_profile_RACE_FLAG	reconstructed profile global; literal ROM ID RACE_FLAG+registry role+later EAD lineage; exact SM64DS spelling not preserved
-ov062	0x0211dc54	data_ov062_0211dc54	_ZTV9KoopaFlag	vtable alloc=0x174
+ov062	0x0211dc54	data_ov062_0211dc54	_ZTV9daRFlag_c	vtable alloc=0x174
 ov062	0x0211dd38	data_ov062_0211dd38	Klepto_SpawnInfo	spawninfo
 ov062	0x0211dd38	Klepto_SpawnInfo	g_profile_JANGO	reconstructed profile global; literal ROM ID JANGO+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov062	0x0211dd5c	data_ov062_0211dd5c	_ZTV9daJango_c	vtable alloc=0x490 (was _ZTV6Klepto)

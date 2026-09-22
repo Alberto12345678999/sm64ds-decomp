@@ -242,7 +242,7 @@ first module where a `config_tu/` conversion becomes conceivable.
 |[ov052](../config/arm9/overlays/ov052/symbols.txt)| 0x21111a0|  n=7|   `daObjEmmLog_c`|      CONF3 WHOLEMOD pcov=3 (1 distinct include)|
 |[ov052](../config/arm9/overlays/ov052/symbols.txt)| 0x2111440|  n=7|   `SquarePathLift`|     CONF2|
 |[ov056](../config/arm9/overlays/ov056/symbols.txt)| 0x21111a0|  n=7|   `BigMovingIceBlock`|  CONF2 WHOLEMOD pcov=2|
-|[ov062](../config/arm9/overlays/ov062/symbols.txt)| 0x211af38|  n=8|   `KoopaFlag`|          CONF2 pcov=3|
+|[ov062](../config/arm9/overlays/ov062/symbols.txt)| 0x211af38|  n=8|   `daRFlag_c`|          CONF2 pcov=3|
 |[ov064](../config/arm9/overlays/ov064/symbols.txt)| 0x211a930|  n=8|   `daObjShell_c`|               CONF1|
 
 

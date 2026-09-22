@@ -12230,10 +12230,13 @@
       "src/_ZN8MugenBgm8BehaviorEv.cpp": [
         "return:int"
       ],
-      "src/_ZN9KoopaFlag8BehaviorEv.cpp": [
+      "src/_ZN9daRFlag_c8BehaviorEv.cpp": [
         "return:int"
       ],
       "src/actors/daPkn_c.cpp": [
+        "return:int"
+      ],
+      "src/actors/daRFlag_c.cpp": [
         "return:int"
       ],
       "src/func_0200f7f0.c": [
@@ -18220,7 +18223,7 @@
       "src/_ZN8YoshiEgg13InitResourcesEv.cpp": [
         "param:#5 unsigned int"
       ],
-      "src/_ZN9KoopaFlag13InitResourcesEv.cpp": [
+      "src/_ZN9daRFlag_c13InitResourcesEv.cpp": [
         "param:#5 unsigned int"
       ],
       "src/_ZN9MontyMole13InitResourcesEv.cpp": [
@@ -18291,6 +18294,9 @@
         "param:#5 unsigned int"
       ],
       "src/actors/daPukupuku_c.cpp": [
+        "param:#5 unsigned int"
+      ],
+      "src/actors/daRFlag_c.cpp": [
         "param:#5 unsigned int"
       ],
       "src/actors/daYurei_Mucho_c.cpp": [
@@ -21670,7 +21676,10 @@
       "src/_ZN5Stage10PS_CleanupEv.cpp": [
         "return:int []"
       ],
-      "src/_ZN9KoopaFlag8BehaviorEv.cpp": [
+      "src/_ZN9daRFlag_c8BehaviorEv.cpp": [
+        "return:char []"
+      ],
+      "src/actors/daRFlag_c.cpp": [
         "return:char []"
       ]
     },

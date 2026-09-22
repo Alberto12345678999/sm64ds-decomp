@@ -4477,6 +4477,14 @@
     "src/actors/daObjCloset_c.cpp#_ZN13daObjCloset_c16CleanupResourcesEv": "tangosdev",
     "src/actors/daObjCloset_c.cpp#_ZN13daObjCloset_c8BehaviorEv": "lunavyqo",
     "src/actors/daObjCloset_c.cpp#_ZN13daObjCloset_cD0Ev": "tangosdev",
-    "src/actors/daObjCloset_c.cpp#_ZN13daObjCloset_cD1Ev": "tangosdev"
+    "src/actors/daObjCloset_c.cpp#_ZN13daObjCloset_cD1Ev": "tangosdev",
+    "src/actors/daRFlag_c.cpp#func_ov062_0211afbc": "tangosdev",
+    "src/actors/daRFlag_c.cpp#daRFlag_c_classInit": "tangosdev",
+    "src/actors/daRFlag_c.cpp#_ZN9daRFlag_cD1Ev": "tangosdev",
+    "src/actors/daRFlag_c.cpp#_ZN9daRFlag_cD0Ev": "tangosdev",
+    "src/actors/daRFlag_c.cpp#_ZN9daRFlag_c16CleanupResourcesEv": "tangosdev",
+    "src/actors/daRFlag_c.cpp#_ZN9daRFlag_c6RenderEv": "tangosdev",
+    "src/actors/daRFlag_c.cpp#_ZN9daRFlag_c8BehaviorEv": "tangosdev",
+    "src/actors/daRFlag_c.cpp#_ZN9daRFlag_c13InitResourcesEv": "tangosdev"
   }
 }

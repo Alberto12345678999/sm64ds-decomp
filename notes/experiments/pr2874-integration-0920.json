@@ -4934,8 +4934,8 @@
       "diffs": []
     },
     {
-      "file": "src/_ZN9KoopaFlag8BehaviorEv.cpp",
-      "name": "_ZN9KoopaFlag8BehaviorEv",
+      "file": "src/_ZN9daRFlag_c8BehaviorEv.cpp",
+      "name": "_ZN9daRFlag_c8BehaviorEv",
       "module": "ov062",
       "addr": "0x211b05c",
       "verdict": "VERIFIED",
@@ -20603,7 +20603,7 @@
           "src/_ZN8Particle6Jitter4FuncERNS_10EffectDataEPcR7Vector3.cpp",
           "src/_ZN8SignPost6RenderEv.cpp",
           "src/_ZN8dActor_cC1Ev.cpp",
-          "src/_ZN9KoopaFlag8BehaviorEv.cpp",
+          "src/_ZN9daRFlag_c8BehaviorEv.cpp",
           "src/_ZN9SeesawBob16CleanupResourcesEv.cpp",
           "src/_ZN9Spindrift8BehaviorEv.cpp",
           "src/_ZN14daObjTtWater_c16CleanupResourcesEv.cpp",
@@ -20728,7 +20728,7 @@
           "src/_ZN8Particle6Jitter4FuncERNS_10EffectDataEPcR7Vector3.cpp",
           "src/_ZN8SignPost6RenderEv.cpp",
           "src/_ZN8dActor_cC1Ev.cpp",
-          "src/_ZN9KoopaFlag8BehaviorEv.cpp",
+          "src/_ZN9daRFlag_c8BehaviorEv.cpp",
           "src/_ZN9SeesawBob16CleanupResourcesEv.cpp",
           "src/_ZN9Spindrift8BehaviorEv.cpp",
           "src/_ZN14daObjTtWater_c16CleanupResourcesEv.cpp",
@@ -21937,7 +21937,7 @@
         "src/_ZN9BootScene8BehaviorEv.cpp",
         "src/_ZN9daBtfly_c6State6Ev.cpp",
         "src/_ZN9JetStream13InitResourcesEv.cpp",
-        "src/_ZN9KoopaFlag8BehaviorEv.cpp",
+        "src/_ZN9daRFlag_c8BehaviorEv.cpp",
         "src/_ZN9MontyMole13InitResourcesEv.cpp",
         "src/_ZN9PowerStar13AddStarMarkerEv.cpp",
         "src/_ZN9PowerStar16CleanupResourcesEv.cpp",
@@ -23663,8 +23663,8 @@
           "name": "_ZN9JetStream13InitResourcesEv"
         },
         {
-          "file": "src/_ZN9KoopaFlag8BehaviorEv.cpp",
-          "name": "_ZN9KoopaFlag8BehaviorEv"
+          "file": "src/_ZN9daRFlag_c8BehaviorEv.cpp",
+          "name": "_ZN9daRFlag_c8BehaviorEv"
         },
         {
           "file": "src/_ZN9MontyMole13InitResourcesEv.cpp",
