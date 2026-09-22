@@ -161,23 +161,16 @@ extern daPeach_c::StateFunc data_ov085_0213055c[];
  * declaration types. D0's deallocation is the inline operator delete reached
  * through fBase_c, which is why nothing here mentions a heap.
  *
- * daPeach_c declares its destructor IN the class body, so the two variants
- * are emitted on demand rather than at a declaration of their own. The two
- * file-static functions below are what demands them, in the cartridge's
- * order: a pseudo-destructor call brings out D1, a delete-expression brings
- * out D0. Neither static is referenced by anything, so neither survives the
- * link -- they are the same kind of unlicensed section as the compiler's own
- * _ZN7Vector3D1Ev, and they carry no ROM bytes. The two legacy one-function
- * sources this replaces, src/_ZN9daPeach_cD1Ev.cpp and
- * src/_ZN9daPeach_cD0Ev.cpp, force the same two variants the same way, which
- * is why the class body keeps its inline destructor and neither those files
- * nor include/daPeach_c.h change. */
-static void PeachDemandCompleteDtor(daPeach_c *peach)
+ * daPeach_c declares its destructor in the class body. The two functions
+ * below demand D1 and D0, in that order: a destructor call, then a
+ * delete-expression. Nothing calls either one, so the link drops them.
+ * include/daPeach_c.h stays as it is. */
+void PeachDemandCompleteDtor(daPeach_c *peach)
 {
     peach->~daPeach_c();
 }
 
-static void PeachDemandDeletingDtor(daPeach_c *peach)
+void PeachDemandDeletingDtor(daPeach_c *peach)
 {
     delete peach;
 }
@@ -251,7 +244,6 @@ void daPeach_c::UpdateGroundCollision(dBgCh_Actr *clsn)
  * C linkage, called by InitState0 and InitState4. It asks whether the actor
  * whose id sits at +0x184 is still alive and is still kind 0xbf. */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-static int normalize(int r) { if (r) return 1; return 0; }
 int func_ov085_02129f8c(char *c) {
     unsigned int id = *(unsigned int *)(c + 0x184);
     void *actor;
@@ -262,7 +254,13 @@ int func_ov085_02129f8c(char *c) {
     if (actor == 0) return (int)actor;
     kind = *(unsigned short *)((char *)actor + 0xc);
     if (kind == 0xbf) r = 1; else r = 0;
-    return normalize(r);
+    /* Both paths return r. The cartridge still compares r with zero first;
+     * a single return lets the compiler delete that compare. */
+    if (r == 0)
+        goto done;
+    return r;
+done:
+    return r;
 }
 }
 
