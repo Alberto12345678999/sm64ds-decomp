@@ -579,10 +579,6 @@
     "src/actors/daObjC1Peach_c.cpp#_ZN14daObjC1Peach_c6RenderEv",
     "src/actors/daObjC1Peach_c.cpp#_ZN14daObjC1Peach_cD0Ev",
     "src/actors/daObjC1Peach_c.cpp#_ZN14daObjC1Peach_cD1Ev",
-    "src/_ZN13RollingLogLll13InitResourcesEv.cpp",
-    "src/_ZN13RollingLogLll16CleanupResourcesEv.cpp",
-    "src/_ZN13RollingLogLllD0Ev.cpp",
-    "src/_ZN13RollingLogLllD1Ev.cpp",
     "src/_ZN13RollingLogTtm13InitResourcesEv.cpp",
     "src/_ZN13RollingLogTtm16CleanupResourcesEv.cpp",
     "src/_ZN13RollingLogTtm8BehaviorEv.cpp",
@@ -2981,6 +2977,10 @@
     "src/actors/dEnemyBase_c.cpp#_ZN12dEnemyBase_cC2Ev",
     "src/actors/dEnemyBase_c.cpp#_ZN12dEnemyBase_cD0Ev",
     "src/actors/dEnemyBase_c.cpp#_ZN12dEnemyBase_cD1Ev",
-    "src/actors/dEnemyBase_c.cpp#_ZN12dEnemyBase_cD2Ev"
+    "src/actors/dEnemyBase_c.cpp#_ZN12dEnemyBase_cD2Ev",
+    "src/_ZN15daObjFlMaruta_c13InitResourcesEv.cpp",
+    "src/_ZN15daObjFlMaruta_c16CleanupResourcesEv.cpp",
+    "src/_ZN15daObjFlMaruta_cD0Ev.cpp",
+    "src/_ZN15daObjFlMaruta_cD1Ev.cpp"
   ]
 }

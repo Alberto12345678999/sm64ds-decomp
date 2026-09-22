@@ -55,11 +55,11 @@ _ZN20daObjFl_Fall_Block_cD0Ev kind:function(arm,size=0x64) addr:0x021123d0
 _ZN20daObjFl_Fall_Block_c16CleanupResourcesEv kind:function(arm,size=0x14) addr:0x02112434
 _ZN20daObjFl_Fall_Block_c13InitResourcesEv kind:function(arm,size=0x14) addr:0x02112448
 daObjFl_Fall_Block_c_classInit kind:function(arm,size=0x3c) addr:0x0211245c
-_ZN13RollingLogLllD1Ev kind:function(arm,size=0x50) addr:0x02112498
-_ZN13RollingLogLllD0Ev kind:function(arm,size=0x64) addr:0x021124e8
-_ZN13RollingLogLll16CleanupResourcesEv kind:function(arm,size=0x14) addr:0x0211254c
-_ZN13RollingLogLll8BehaviorEv kind:function(arm,size=0x30) addr:0x02112560
-_ZN13RollingLogLll13InitResourcesEv kind:function(arm,size=0x14) addr:0x02112590
+_ZN15daObjFlMaruta_cD1Ev kind:function(arm,size=0x50) addr:0x02112498
+_ZN15daObjFlMaruta_cD0Ev kind:function(arm,size=0x64) addr:0x021124e8
+_ZN15daObjFlMaruta_c16CleanupResourcesEv kind:function(arm,size=0x14) addr:0x0211254c
+_ZN15daObjFlMaruta_c8BehaviorEv kind:function(arm,size=0x30) addr:0x02112560
+_ZN15daObjFlMaruta_c13InitResourcesEv kind:function(arm,size=0x14) addr:0x02112590
 daObjFlMaruta_c_classInit kind:function(arm,size=0x3c) addr:0x021125a4
 _ZN21daObj_volcanoCannon_cD1Ev kind:function(arm,size=0x30) addr:0x021125e0
 _ZN21daObj_volcanoCannon_cD0Ev kind:function(arm,size=0x44) addr:0x02112610
@@ -243,7 +243,7 @@ _ZTI13daObjMaruta_c kind:data(any) addr:0x02114350
 _ZTS13daObjMaruta_c kind:data(any) addr:0x0211435c
 _ZTS15daObjFlMaruta_c kind:data(any) addr:0x0211436c
 g_profile_FL_MARUTA kind:data(any) addr:0x02114380 ambiguous
-_ZTV13RollingLogLll kind:data(any) addr:0x021143a4
+_ZTV15daObjFlMaruta_c kind:data(any) addr:0x021143a4
 data_ov022_021143fc kind:data(any) addr:0x021143fc ambiguous
 data_ov022_02114424 kind:data(any) addr:0x02114424
 data_ov022_0211442c kind:data(any) addr:0x0211442c

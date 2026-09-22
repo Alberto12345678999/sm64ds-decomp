@@ -7,9 +7,9 @@
   "boundary_confidence": "medium",
   "boundary_evidence": [
     "contiguous linker run 0x02112498..0x02112950, 16 function(s); every function carries a `complete` .text claim in config/arm9/overlays/ov022/delinks.txt and the run ends exactly at this overlay's .text boundary",
-    "class label(s): daObjFlMaruta_c (spelled RollingLogLll in this tree), daObj_volcanoCannon_c",
+    "class label(s): daObjFlMaruta_c (spelled daObjFlMaruta_c in this tree), daObj_volcanoCannon_c",
     "the two classes interleave and so cannot be separate translation units: daObjFlMaruta_c's vtable at ov022 0x021143a4 owns slot 32 -> 0x021126ac and slot 34 -> 0x02112710, both of which sit between daObj_volcanoCannon_c's D0 at 0x02112610 and its ChangeState at 0x02112790. A translation unit is a contiguous address run, so the two runs overlap and neither class can be carved out alone.",
-    "build/tu_map.json cuts a TU boundary at 0x021125e0 that this fold does not honour. That cut is an artifact of the class being known under two spellings: tu_map's union-find over overlapping class spans compares the vtable name _ZTV13RollingLogLll against the RTTI name daObjFlMaruta_c as if they were two classes, so it never merges the two runs.",
+    "build/tu_map.json cuts a TU boundary at 0x021125e0 that this fold does not honour. That cut is an artifact of the class being known under two spellings: tu_map's union-find over overlapping class spans compares the vtable name _ZTV15daObjFlMaruta_c against the RTTI name daObjFlMaruta_c as if they were two classes, so it never merges the two runs.",
     "the preceding TU, src/game/actors/daObjFl_Fall_Block_c.cpp, is already promoted and ends at 0x02112498, which fixes this TU's lower bound",
     "module sinit corroboration: 10 sinit(s) / 10 .ctor entries, sinit_vs_tu=ok, corroborated=False (module-wide, NOT narrowed to this one TU)"
   ],
@@ -22,38 +22,38 @@
   ],
   "functions": [
     {
-      "symbol": "_ZN13RollingLogLllD1Ev",
+      "symbol": "_ZN15daObjFlMaruta_cD1Ev",
       "address": "0x02112498",
       "size": "0x00000050",
-      "legacy_source": "src/_ZN13RollingLogLllD1Ev.cpp",
+      "legacy_source": "src/_ZN15daObjFlMaruta_cD1Ev.cpp",
       "ordinal": 0
     },
     {
-      "symbol": "_ZN13RollingLogLllD0Ev",
+      "symbol": "_ZN15daObjFlMaruta_cD0Ev",
       "address": "0x021124e8",
       "size": "0x00000064",
-      "legacy_source": "src/_ZN13RollingLogLllD0Ev.cpp",
+      "legacy_source": "src/_ZN15daObjFlMaruta_cD0Ev.cpp",
       "ordinal": 1
     },
     {
-      "symbol": "_ZN13RollingLogLll16CleanupResourcesEv",
+      "symbol": "_ZN15daObjFlMaruta_c16CleanupResourcesEv",
       "address": "0x0211254c",
       "size": "0x00000014",
-      "legacy_source": "src/_ZN13RollingLogLll16CleanupResourcesEv.cpp",
+      "legacy_source": "src/_ZN15daObjFlMaruta_c16CleanupResourcesEv.cpp",
       "ordinal": 2
     },
     {
-      "symbol": "_ZN13RollingLogLll8BehaviorEv",
+      "symbol": "_ZN15daObjFlMaruta_c8BehaviorEv",
       "address": "0x02112560",
       "size": "0x00000030",
-      "legacy_source": "src/_ZN13RollingLogLll8BehaviorEv.cpp",
+      "legacy_source": "src/_ZN15daObjFlMaruta_c8BehaviorEv.cpp",
       "ordinal": 3
     },
     {
-      "symbol": "_ZN13RollingLogLll13InitResourcesEv",
+      "symbol": "_ZN15daObjFlMaruta_c13InitResourcesEv",
       "address": "0x02112590",
       "size": "0x00000014",
-      "legacy_source": "src/_ZN13RollingLogLll13InitResourcesEv.cpp",
+      "legacy_source": "src/_ZN15daObjFlMaruta_c13InitResourcesEv.cpp",
       "ordinal": 4
     },
     {
@@ -138,9 +138,9 @@
   "bss": [],
   "compiler_only_output": [
     {
-      "symbol": "_ZN13RollingLogLllD2Ev",
+      "symbol": "_ZN15daObjFlMaruta_cD2Ev",
       "disposition": "deadstrip",
-      "reason": "mwccarm emits the base-object destructor variant beside the licensed D1/D0 pair whenever it lowers an out-of-line destructor definition. RollingLogLll's D2 has no entry in config/arm9/overlays/ov022/symbols.txt, so the ROM gives it no home, and no function surviving in this TU references it."
+      "reason": "mwccarm emits the base-object destructor variant beside the licensed D1/D0 pair whenever it lowers an out-of-line destructor definition. daObjFlMaruta_c's D2 has no entry in config/arm9/overlays/ov022/symbols.txt, so the ROM gives it no home, and no function surviving in this TU references it."
     }
   ],
   "notes": [
@@ -157,10 +157,10 @@
     "functions_declared": 16,
     "compilerOnlyOutput": {
       "requested": [
-        "_ZN13RollingLogLllD2Ev"
+        "_ZN15daObjFlMaruta_cD2Ev"
       ],
       "deadstripped": [
-        "_ZN13RollingLogLllD2Ev"
+        "_ZN15daObjFlMaruta_cD2Ev"
       ],
       "droppedSections": [
         34,
