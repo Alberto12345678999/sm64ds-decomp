@@ -31803,6 +31803,9 @@
     "data_ov085_02130858": {
       "src/__sinit_ov085_0212fdb0.c": [
         "return:int []"
+      ],
+      "src/actors/daObjKanban_c.cpp": [
+        "return:SharedFilePtr"
       ]
     },
     "data_ov089_02132894": {
