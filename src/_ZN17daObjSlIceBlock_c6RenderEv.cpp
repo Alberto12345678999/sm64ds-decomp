@@ -1,8 +1,8 @@
 //cpp
 #include "dBgActor_c.h"
-// @symbol _ZN10SlidingIce6RenderEv
+// @symbol _ZN17daObjSlIceBlock_c6RenderEv
 /* recovered: named members + shared header, real C++ method */
-#include "SlidingIce.h"
+#include "daObjSlIceBlock_c.h"
 struct VObj {
   virtual void f0();
   virtual void f1();
@@ -14,7 +14,7 @@ struct VObj {
 extern "C" {
 }
 
-int SlidingIce::Render()
+int daObjSlIceBlock_c::Render()
 {
   int x = actorID==0x5d;
   if(x){

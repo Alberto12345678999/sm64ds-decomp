@@ -1,7 +1,7 @@
 //cpp
-// @symbol _ZN10SlidingIce8BehaviorEv
+// @symbol _ZN17daObjSlIceBlock_c8BehaviorEv
 /* recovered: named members + shared header, real C++ method */
-#include "SlidingIce.h"
+#include "daObjSlIceBlock_c.h"
 struct V3 { int x,y,z; };
 struct V316 { short x,y,z; };
 extern "C" {
@@ -14,7 +14,7 @@ extern int _ZN5Sound8PlayLongEjjjRK7Vector3s(unsigned int, unsigned int, unsigne
 extern int _ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(unsigned int, unsigned int, void*, void*, int, int);
 }
 
-int SlidingIce::Behavior()
+int daObjSlIceBlock_c::Behavior()
 {
   int isType = (actorID == 0x5d);
   if(isType){

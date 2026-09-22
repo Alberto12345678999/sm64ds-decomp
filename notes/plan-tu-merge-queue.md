@@ -265,7 +265,7 @@ first module where a `config_tu/` conversion becomes conceivable.
 |[ov006](../config/arm9/overlays/ov006/symbols.txt)| 0x20ede18|  n=2|  `MgWhichWiggler`|         NORM1|
 |[ov006](../config/arm9/overlays/ov006/symbols.txt)| 0x2119824|  n=2|  `MgBingoBallSlotsShot`|   NORM1|
 |[ov013](../config/arm9/overlays/ov013/symbols.txt)| 0x21111a0|  n=8|   `daObjClockHuriko_c`|  NORM1 pcov=4|
-|[ov027](../config/arm9/overlays/ov027/symbols.txt)| 0x21111a0|  n=8|   `SlidingIce`|             NORM1|
+|[ov027](../config/arm9/overlays/ov027/symbols.txt)| 0x21111a0|  n=8|   `daObjSlIceBlock_c`|             NORM1|
 |[ov029](../config/arm9/overlays/ov029/symbols.txt)| 0x21121a4|  n=9|   `daObjWc_Mizu_c`|              NORM1|
 |[ov030](../config/arm9/overlays/ov030/symbols.txt)| 0x21111a0|  n=8|   `daObjHmBskt_c`|              NORM2 pcov=2|
 

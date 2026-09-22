@@ -1,5 +1,5 @@
 //cpp
-#include "SlidingIce.h"
+#include "daObjSlIceBlock_c.h"
 
 extern "C" {
 int _ZN5Model8LoadFileER13SharedFilePtr(void *);
@@ -16,7 +16,7 @@ extern char data_ov027_02113108[];
 extern int _ZN4dBgW21UpdatePosWithVelocityERS_P8dActor_cR5dBgPiR7Vector3P10Vector3_16S8_[];
 }
 
-int SlidingIce::InitResources()
+int daObjSlIceBlock_c::InitResources()
 {
     _ZN5Model8LoadFileER13SharedFilePtr(data_ov027_02113be8);
     _ZN7dBgW_Kc8LoadFileER13SharedFilePtr(data_ov027_02113be0);
