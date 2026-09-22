@@ -9139,16 +9139,16 @@
    "start": "0x2112498",
    "end": "0x21125e0",
    "classes": [
-    "RollingLogLll"
+    "daObjFlMaruta_c"
    ],
    "n_functions_map": 6,
    "n_files": 6,
    "files": [
-    "src/_ZN13RollingLogLllD1Ev.cpp",
-    "src/_ZN13RollingLogLllD0Ev.c",
-    "src/_ZN13RollingLogLll16CleanupResourcesEv.cpp",
-    "src/_ZN13RollingLogLll8BehaviorEv.cpp",
-    "src/_ZN13RollingLogLll13InitResourcesEv.cpp",
+    "src/_ZN15daObjFlMaruta_cD1Ev.cpp",
+    "src/_ZN15daObjFlMaruta_cD0Ev.c",
+    "src/_ZN15daObjFlMaruta_c16CleanupResourcesEv.cpp",
+    "src/_ZN15daObjFlMaruta_c8BehaviorEv.cpp",
+    "src/_ZN15daObjFlMaruta_c13InitResourcesEv.cpp",
     "src/d_a_obj_fl_maruta.c"
    ],
    "ext_mix": {

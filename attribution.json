@@ -4303,6 +4303,8 @@
     "src/actors/daJango_c.cpp#_ZN9daJango_c8BehaviorEv": "tangosdev",
     "src/actors/daJango_c.cpp#_ZN9daJango_c6RenderEv": "tangosdev",
     "src/actors/daJango_c.cpp#_ZN9daJango_cD1Ev": "tangosdev",
+    "src/actors/dM3dGLin.cpp#_ZN8dM3dGLin3SetERK7Vector3S2_": "tangosdev",
+    "src/actors/dM3dGLin.cpp#_ZN8dM3dGLinD2Ev": "tangosdev",
     "src/game/actors/d_a_c_jugem.cpp#_ZN11daC_Jugem_cD1Ev": "tangosdev",
     "src/game/actors/d_a_c_jugem.cpp#_ZN11daC_Jugem_cD0Ev": "tangosdev",
     "src/game/actors/d_a_c_jugem.cpp#func_ov085_0212d5dc": "ruspecial",

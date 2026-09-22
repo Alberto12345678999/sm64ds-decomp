@@ -11,7 +11,6 @@ class_name	shard_count	total_lines	overlay	has_header	already_promoted	blockers	
 # ROM run as tools/tu_map.py cuts it, extended over zero-gap <Class>_classInit factories
 # tu_map cannot label because it cuts on symbol NAME. Any OTHER unlabelled neighbour is
 # still uncounted. Trust `tubuild.py inspect` over this column.
-#
 # compiler-only:>=N is DERIVED from the row's own ancestor chain, not copied from
 # sibling_oracle -- that copy had no depth check and was wrong in both directions.
 # Calibrated on all 108 promoted manifests: exact 45 times, an UNDER-count 37 times, and
@@ -19,13 +18,11 @@ class_name	shard_count	total_lines	overlay	has_header	already_promoted	blockers	
 # NOT apply when the key function falls outside the licensed range -- then the real count
 # is 0, measured on dScMgBase_c, dScMgHanachan_c and dScMgBomroom_c -- and every Vector3
 # the TU odr-uses, function locals included, adds a row the chain cannot predict.
-#
 # pragma:N IS NOT A BLOCKER. It counts shards in the run carrying a #pragma line, nothing
 # more. '#pragma defer_codegen off' makes positional brackets bind and took dScMgHanachan_c
 # from 22/61 to 49/61 (PR #2309), at the cost of rewriting the TU ROM-ascending in the same
 # edit. A pragma count means something only after a DELETE-OUTRIGHT control shows the bytes
 # move: dScMgRoulette_c's pragmas were inert and it scored 40/40 with them deleted.
-#
 # unmatched:N        delink entries in the run with no 'complete' marker.
 #                    The NAME MISLEADS: this is a LINK condition, not a matching one.
 #                    Measured on ov066/Eyerok all six byte-MATCHed; they lack the marker
@@ -38,7 +35,6 @@ class_name	shard_count	total_lines	overlay	has_header	already_promoted	blockers	
 #                    sourceless: that is not-in-delinks, a milder and separate condition.
 # already_promoted   every named class has a config/tu_manifest.d entry reading
 #                    status: promoted. Goes stale on every promotion; re-derive, never edit.
-#
 # sibling_oracle is a SHAPE reference only. Copying its counts is what made this file wrong.
 dMg3DEspAnimSet_c+dMg3DEspModel_c+dScMg3DEsp_c	68	1844	ov006	yes	no	pragma:8;multi-class-tu:3;compiler-only:>=13(derived from own chain: 6 classes incl. self via build/rtti.json; floor 2x6+1; excludes 2 unresolved: dMg3DEspAnimSet_c,dMg3DEspModel_c)	dScMgSingle3DBase_c	text-only
 dMgJump3DMario_c	1	844	ov006	yes	yes	compiler-only:>=5(derived from own chain: 2 classes incl. self via build/rtti.json; floor 2x2+1)	dScMgSingle3DBase_c	text-only
@@ -99,7 +95,7 @@ CrazedCrate	20	458	ov080	yes	no	compiler-only:>=9(derived from own chain: 4 clas
 Fwoosh	19	544	ov091	yes	no	compiler-only:>=11(derived from own chain: 5 classes incl. self via build/rtti.json + include/ base clause; floor 2x5+1)	-	text-only
 FirePiranhaPlantBig	18	982	ov084	yes	no	compiler-only:>=11(derived from own chain: 5 classes incl. self via build/rtti.json + include/ base clause; floor 2x5+1)	-	text-only
 daObjBlockItemTag_c	10	213	ov002	yes	no	compiler-only:>=9(derived from own chain: 4 classes incl. self via build/rtti.json + include/ base clause; floor 2x4+1)	daBar_c	text-only
-dM3dGLin	2	27	ov002	yes	no	compiler-only:>=3(derived from own chain: 1 classes incl. self via build/rtti.json; floor 2x1+1)	daBar_c	text-only
+dM3dGLin	2	27	ov002	yes	yes	compiler-only:>=3(derived from own chain: 1 classes incl. self via build/rtti.json; floor 2x1+1)	daBar_c	text-only
 Crate	36	1426	ov098	yes	no	pragma:1;compiler-only:>=11(derived from own chain: 5 classes incl. self via build/rtti.json + include/ base clause; floor 2x5+1)	daObjYajirusi_c	text-only
 UnchainedChomp+daIbl_c	17	713	ov100	partial	no	multi-class-tu:2;classif:no-header:daIbl_c;compiler-only:>=14(derived from own chain: 6 classes incl. self via build/rtti.json + include/ base clause; floor 2x6+2)	daObjPathLift_c	text-only
 dThIcon_c	2	35	ov001	yes	yes	compiler-only:>=3(derived from own chain: 1 classes incl. self via build/rtti.json; floor 2x1+1)	-	text-only
@@ -165,7 +161,7 @@ daObjFl_UkiKi_c	7	136	ov022	yes	yes	compiler-only:>=11(derived from own chain: 5
 SquarePathLift	6	165	ov052	yes	no	compiler-only:>=11(derived from own chain: 5 classes incl. self via build/rtti.json + include/ base clause; floor 2x5+1)	daObjEmmLog_c	text-only
 BowserPuzzleManager+BowserPuzzlePiece	21	391	ov064	yes	no	multi-class-tu:2;compiler-only:>=14(derived from own chain: 6 classes incl. self via build/rtti.json + include/ base clause; floor 2x6+2)	daObjFl_Gura_c	text-only
 TinyCover	7	128	ov033	yes	no	compiler-only:>=11(derived from own chain: 5 classes incl. self via build/rtti.json + include/ base clause; floor 2x5+1)	-	text-only
-RollingLogLll	5	70	ov022	yes	no	compiler-only:>=13(derived from own chain: 6 classes incl. self via build/rtti.json + include/ base clause; floor 2x6+1)	daObjFl_Fall_Block_c	text-only
+daObjFlMaruta_c	5	70	ov022	yes	no	compiler-only:>=13(derived from own chain: 6 classes incl. self via build/rtti.json + include/ base clause; floor 2x6+1)	daObjFl_Fall_Block_c	text-only
 BowserShutter	6	96	ov026	yes	no	compiler-only:>=11(derived from own chain: 5 classes incl. self via build/rtti.json + include/ base clause; floor 2x5+1)	-	text-only
 TinyWater	6	137	ov033	yes	no	compiler-only:>=11(derived from own chain: 5 classes incl. self via build/rtti.json + include/ base clause; floor 2x5+1)	-	text-only
 RotatingCogSmall	6	194	ov035	yes	no	compiler-only:>=11(derived from own chain: 5 classes incl. self via build/rtti.json + include/ base clause; floor 2x5+1)	-	text-only

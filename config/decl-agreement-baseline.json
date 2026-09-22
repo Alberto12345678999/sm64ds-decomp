@@ -19339,7 +19339,7 @@
    "include/decl_common.h": ["return:int"]
   },
   "func_ov080_0212714c": {
-   "src/_ZN13RollingLogLll8BehaviorEv.cpp": ["return:unsigned char"]
+   "src/_ZN15daObjFlMaruta_c8BehaviorEv.cpp": ["return:unsigned char"]
   },
   "func_ov080_02127658": {
    "include/decl_common.h": ["kind:data"]
