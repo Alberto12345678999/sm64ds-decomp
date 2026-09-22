@@ -19,7 +19,7 @@ struct Ent { char pad[0x1a]; s16 f; char pad2[4]; };
 
 /* Local view of the unresolved stylus owner, also used by dScMiniGm_c.
  * Slot 5 gates input handling; this does not establish a dScene_c base. */
-struct TouchOwner {
+struct SceneVCall6 {
     virtual int v0(); virtual int v1(); virtual int v2();
     virtual int v3(); virtual int v4(); virtual int IsActive();
 };
@@ -33,7 +33,7 @@ int func_ov004_020b8ee0(char *p);
 void func_ov004_020aeb24(char *c);
 void func_ov004_020b321c(char *c);
 void func_ov004_020adf2c(char *c);
-extern TouchOwner *data_0209f5bc;
+extern SceneVCall6 *data_0209f5bc;
 extern unsigned char data_020a0e40;
 extern unsigned short data_020a0e5a[];
 extern unsigned char data_020a0de8[];
@@ -117,7 +117,7 @@ void dScMgBase_c::AfterCleanupResources(u32 vfSuccess)
 
 // @symbol _ZN11dScMgBase_c14BeforeBehaviorEv
 /* Gate scene behavior on input/menu state, update the shared UI records,
- * approach the displayed value, and advance the 40-frame animation counter.
+ * approach the tracked value, and advance the 40-frame animation counter.
  * The stylus owner's slot-5 predicate uses the local view above; its complete
  * class and inheritance remain unresolved. */
 int dScMgBase_c::BeforeBehavior()
