@@ -4415,6 +4415,16 @@
     "src/actors/daPeach_c.cpp#_ZN9daPeach_c6RenderEv": "tangosdev",
     "src/actors/daPeach_c.cpp#_ZN9daPeach_c8BehaviorEv": "tangosdev",
     "src/actors/daPeach_c.cpp#_ZN9daPeach_c13InitResourcesEv": "tangosdev",
-    "src/actors/daPeach_c.cpp#daPeach_c_classInit": "tangosdev"
+    "src/actors/daPeach_c.cpp#daPeach_c_classInit": "tangosdev",
+    "src/actors/daObjBlockItemTag_c.cpp#_ZN19daObjBlockItemTag_c11GetSpawnPosER7Vector3RS_": "andrewboudreau",
+    "src/actors/daObjBlockItemTag_c.cpp#_ZN19daObjBlockItemTag_c8BehaviorEv": "tangosdev",
+    "src/actors/daObjBlockItemTag_c.cpp#_ZN19daObjBlockItemTag_c15SpawnSilverStarEv": "andrewboudreau",
+    "src/actors/daObjBlockItemTag_c.cpp#_ZN19daObjBlockItemTag_c18SpawnOneUpMushroomEv": "andrewboudreau",
+    "src/actors/daObjBlockItemTag_c.cpp#_ZN19daObjBlockItemTag_cD1Ev": "tangosdev",
+    "src/actors/daObjBlockItemTag_c.cpp#_ZN19daObjBlockItemTag_c16CleanupResourcesEv": "tangosdev",
+    "src/actors/daObjBlockItemTag_c.cpp#_ZN19daObjBlockItemTag_cD0Ev": "tangosdev",
+    "src/actors/daObjBlockItemTag_c.cpp#_ZN19daObjBlockItemTag_c17SpawnMegaMushroomEv": "andrewboudreau",
+    "src/actors/daObjBlockItemTag_c.cpp#_ZN19daObjBlockItemTag_c13InitResourcesEv": "tangosdev",
+    "src/actors/daObjBlockItemTag_c.cpp#_ZN19daObjBlockItemTag_c15SpawnKoopaShellEv": "andrewboudreau"
   }
 }
