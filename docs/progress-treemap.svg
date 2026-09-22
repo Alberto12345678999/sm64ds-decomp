@@ -29985,31 +29985,31 @@ matched: yes</title></rect><rect x="1164.76" y="97.05" width="5.01" height="2.95
 module: ov010
 addr: 0x02111dd0
 size: 64 bytes
-matched: yes</title></rect><rect x="1164.76" y="100.00" width="5.01" height="2.22" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN13PeachPaintingD1Ev
+matched: yes</title></rect><rect x="1164.76" y="100.00" width="5.01" height="2.22" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14daObjC1Peach_cD1Ev
 module: ov010
 addr: 0x02111e10
 size: 48 bytes
-matched: yes</title></rect><rect x="1169.76" y="88.92" width="2.92" height="5.38" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN13PeachPaintingD0Ev
+matched: yes</title></rect><rect x="1169.76" y="88.92" width="2.92" height="5.38" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14daObjC1Peach_cD0Ev
 module: ov010
 addr: 0x02111e40
 size: 68 bytes
-matched: yes</title></rect><rect x="1169.76" y="94.30" width="2.92" height="5.06" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN13PeachPainting20UpdateModelTransformEv
+matched: yes</title></rect><rect x="1169.76" y="94.30" width="2.92" height="5.06" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14daObjC1Peach_c20UpdateModelTransformEv
 module: ov010
 addr: 0x02111e84
 size: 64 bytes
-matched: yes</title></rect><rect x="1169.76" y="99.37" width="2.92" height="2.85" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN13PeachPainting16CleanupResourcesEv
+matched: yes</title></rect><rect x="1169.76" y="99.37" width="2.92" height="2.85" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14daObjC1Peach_c16CleanupResourcesEv
 module: ov010
 addr: 0x02111ec4
 size: 36 bytes
-matched: yes</title></rect><rect x="1172.68" y="88.92" width="2.71" height="5.46" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN13PeachPainting6RenderEv
+matched: yes</title></rect><rect x="1172.68" y="88.92" width="2.71" height="5.46" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14daObjC1Peach_c6RenderEv
 module: ov010
 addr: 0x02111ee8
 size: 64 bytes
-matched: yes</title></rect><rect x="1175.40" y="88.92" width="6.44" height="5.46" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN13PeachPainting8BehaviorEv
+matched: yes</title></rect><rect x="1175.40" y="88.92" width="6.44" height="5.46" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14daObjC1Peach_c8BehaviorEv
 module: ov010
 addr: 0x02111f28
 size: 152 bytes
-matched: yes</title></rect><rect x="1181.83" y="88.92" width="2.88" height="5.46" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN13PeachPainting13InitResourcesEv
+matched: yes</title></rect><rect x="1181.83" y="88.92" width="2.88" height="5.46" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14daObjC1Peach_c13InitResourcesEv
 module: ov010
 addr: 0x02111fc0
 size: 68 bytes
