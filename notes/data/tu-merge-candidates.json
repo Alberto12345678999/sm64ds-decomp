@@ -25091,17 +25091,17 @@
    "start": "0x21116c8",
    "end": "0x21118b8",
    "classes": [
-    "BowserShutter"
+    "daObjWlKoopaShutter_c"
    ],
    "n_functions_map": 7,
    "n_files": 7,
    "files": [
-    "src/_ZN13BowserShutterD1Ev.cpp",
-    "src/_ZN13BowserShutterD0Ev.c",
-    "src/_ZN13BowserShutter16CleanupResourcesEv.cpp",
-    "src/_ZN13BowserShutter6RenderEv.cpp",
-    "src/_ZN13BowserShutter8BehaviorEv.cpp",
-    "src/_ZN13BowserShutter13InitResourcesEv.cpp",
+    "src/_ZN21daObjWlKoopaShutter_cD1Ev.cpp",
+    "src/_ZN21daObjWlKoopaShutter_cD0Ev.c",
+    "src/_ZN21daObjWlKoopaShutter_c16CleanupResourcesEv.cpp",
+    "src/_ZN21daObjWlKoopaShutter_c6RenderEv.cpp",
+    "src/_ZN21daObjWlKoopaShutter_c8BehaviorEv.cpp",
+    "src/_ZN21daObjWlKoopaShutter_c13InitResourcesEv.cpp",
     "src/d_a_obj_wl_koopa_shutter.c"
    ],
    "ext_mix": {

@@ -1,6 +1,6 @@
 //cpp
-// @symbol _ZN13BowserShutter16CleanupResourcesEv
-#include "BowserShutter.h"
+// @symbol _ZN21daObjWlKoopaShutter_c16CleanupResourcesEv
+#include "daObjWlKoopaShutter_c.h"
 // recovered name: daObjWlKoopaShutter_c_CleanupResources
 /* recovered: renamed to Class_Method, declarations from a shared header */
 #include "decl_common.h"
@@ -12,7 +12,7 @@ extern void _ZN13SharedFilePtr7ReleaseEv(void *);
 extern int BowserShutter_ModelFile[];
 }
 
-s32 BowserShutter::CleanupResources() {
+s32 daObjWlKoopaShutter_c::CleanupResources() {
     void * t = (void *)this;
     if (_ZN4dBgW9IsEnabledEv((char *)t + 0x124)) {
         _ZN4dBgW7DisableEv((char *)t + 0x124);

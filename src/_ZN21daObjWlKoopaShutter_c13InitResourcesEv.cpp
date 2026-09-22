@@ -1,6 +1,6 @@
 //cpp
-// @symbol _ZN13BowserShutter13InitResourcesEv
-#include "BowserShutter.h"
+// @symbol _ZN21daObjWlKoopaShutter_c13InitResourcesEv
+#include "daObjWlKoopaShutter_c.h"
 // recovered name: daObjWlKoopaShutter_c_InitResources
 /* recovered: renamed to Class_Method, declarations from a shared header */
 #include "decl_common.h"
@@ -17,7 +17,7 @@ extern void _ZN4dBgW6EnableEP8dActor_c(void *, void *);
 extern char data_0209caa0[];
 }
 
-s32 BowserShutter::InitResources() {
+s32 daObjWlKoopaShutter_c::InitResources() {
     char * c = (char *)this;
   void *m = (void*)_ZN5Model8LoadFileER13SharedFilePtr(data_ov026_02113ebc);
   _ZN9ModelBase7SetFileEP8BMD_Fileii(c+0xd4,(int)m,1,-1);

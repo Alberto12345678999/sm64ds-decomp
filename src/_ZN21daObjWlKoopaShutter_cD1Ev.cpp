@@ -1,9 +1,9 @@
 //cpp
-// @symbol _ZN13BowserShutterD1Ev
+// @symbol _ZN21daObjWlKoopaShutter_cD1Ev
 /* recovered: real C++ destructor -- the compiler emits the whole body.
  * Vtable slot 16: one vtable store, the members in reverse, then ~dBgActor_c. */
-#include "BowserShutter.h"
+#include "daObjWlKoopaShutter_c.h"
 
-BowserShutter::~BowserShutter()
+daObjWlKoopaShutter_c::~daObjWlKoopaShutter_c()
 {
 }

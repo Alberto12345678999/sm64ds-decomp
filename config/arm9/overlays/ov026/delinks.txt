@@ -8,27 +8,27 @@ src/game/actors/d_a_obj_wl_polelift.cpp:
     complete
     .text start:0x021111a0 end:0x021116c8
 
-src/_ZN13BowserShutterD1Ev.cpp:
+src/_ZN21daObjWlKoopaShutter_cD1Ev.cpp:
     complete
     .text start:0x021116c8 end:0x0211170c
 
-src/_ZN13BowserShutterD0Ev.cpp:
+src/_ZN21daObjWlKoopaShutter_cD0Ev.cpp:
     complete
     .text start:0x0211170c end:0x02111764
 
-src/_ZN13BowserShutter16CleanupResourcesEv.cpp:
+src/_ZN21daObjWlKoopaShutter_c16CleanupResourcesEv.cpp:
     complete
     .text start:0x02111764 end:0x021117a8
 
-src/_ZN13BowserShutter6RenderEv.cpp:
+src/_ZN21daObjWlKoopaShutter_c6RenderEv.cpp:
     complete
     .text start:0x021117a8 end:0x021117d0
 
-src/_ZN13BowserShutter8BehaviorEv.cpp:
+src/_ZN21daObjWlKoopaShutter_c8BehaviorEv.cpp:
     complete
     .text start:0x021117d0 end:0x021117d8
 
-src/_ZN13BowserShutter13InitResourcesEv.cpp:
+src/_ZN21daObjWlKoopaShutter_c13InitResourcesEv.cpp:
     complete
     .text start:0x021117d8 end:0x02111888
 
