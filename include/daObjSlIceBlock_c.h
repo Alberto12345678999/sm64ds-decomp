@@ -43,14 +43,13 @@ struct daObjSlIceBlock_c : dBgActor_c {
 
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
-typedef char SlidingIce_size_must_be_0x32c[sizeof(daObjSlIceBlock_c) == 0x32c ? 1 : -1];
+typedef char daObjSlIceBlock_c_size_must_be_0x32c[sizeof(daObjSlIceBlock_c) == 0x32c ? 1 : -1];
 #endif
 
 #else
 
-/* The C spelling of the same object, flat. Kept because the D0 file is a C
-   translation unit that reads these fields, and D0 is compiler-generated so it
-   can never be migrated. Same arrangement as include/ShadowModel.h. */
+/* The C spelling of the same object, flat. Kept because C factories and
+   leftover C TUs still read these fields. Same arrangement as include/ShadowModel.h. */
 struct daObjSlIceBlock_c {
     u8  pad_000[0xc];
     u16 mActorID;            /* 0x00c */
