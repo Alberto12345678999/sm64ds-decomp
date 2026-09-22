@@ -7291,10 +7291,6 @@
       "src/_ZN12MetalNetLift13InitResourcesEv.cpp": [
         "param:#3 Matrix4x3 *"
       ],
-      "src/_ZN13BowserShutter13InitResourcesEv.cpp": [
-        "param:#2 int",
-        "param:#5 int"
-      ],
       "src/_ZN15FireSeaElevator13InitResourcesEv.cpp": [
         "param:#2 int"
       ],
@@ -7363,6 +7359,10 @@
         "param:#3 Matrix4x3 *"
       ],
       "src/actors/daObjSlIceBlock_c.cpp": [
+        "param:#2 int",
+        "param:#5 int"
+      ],
+      "src/actors/daObjWlKoopaShutter_c.cpp": [
         "param:#2 int",
         "param:#5 int"
       ],
@@ -11135,10 +11135,10 @@
       ]
     },
     "_ZN4dBgW6EnableEP8dActor_c": {
-      "src/_ZN13BowserShutter13InitResourcesEv.cpp": [
+      "src/actors/Eyerok.cpp": [
         "return:void"
       ],
-      "src/actors/Eyerok.cpp": [
+      "src/actors/daObjWlKoopaShutter_c.cpp": [
         "return:void"
       ],
       "src/actors/daObjWlSubmarine_c.cpp": [
@@ -11370,10 +11370,6 @@
       "src/_ZN12daBgSnmHed_c13InitResourcesEv.cpp": [
         "param:#1 void *"
       ],
-      "src/_ZN13BowserShutter13InitResourcesEv.cpp": [
-        "param:#1 void *",
-        "return:int"
-      ],
       "src/_ZN13FortressTower13InitResourcesEv.cpp": [
         "param:#1 void *"
       ],
@@ -11571,6 +11567,10 @@
       ],
       "src/actors/daObjTtFuta_c.cpp": [
         "param:#1 void *"
+      ],
+      "src/actors/daObjWlKoopaShutter_c.cpp": [
+        "param:#1 void *",
+        "return:int"
       ],
       "src/actors/daObjWlSubmarine_c.cpp": [
         "param:#1 void *",
@@ -14757,10 +14757,6 @@
       "src/_ZN12MetalNetLift13InitResourcesEv.cpp": [
         "return:KCL_File *"
       ],
-      "src/_ZN13BowserShutter13InitResourcesEv.cpp": [
-        "param:#1 void *",
-        "return:int"
-      ],
       "src/_ZN13FortressTower13InitResourcesEv.cpp": [
         "param:#1 void *",
         "return:void *"
@@ -14867,6 +14863,10 @@
       "src/actors/daObjTtFuta_c.cpp": [
         "param:#1 void *",
         "return:void *"
+      ],
+      "src/actors/daObjWlKoopaShutter_c.cpp": [
+        "param:#1 void *",
+        "return:int"
       ],
       "src/actors/daObjWlSubmarine_c.cpp": [
         "param:#1 void *",
@@ -18837,10 +18837,6 @@
       "src/_ZN12daDossyCap_c13InitResourcesEv.cpp": [
         "return:void"
       ],
-      "src/_ZN13BowserShutter13InitResourcesEv.cpp": [
-        "param:#2 int",
-        "return:void"
-      ],
       "src/_ZN13FortressTower13InitResourcesEv.cpp": [
         "return:void"
       ],
@@ -18968,6 +18964,10 @@
         "param:#2 int"
       ],
       "src/actors/daObjTtFuta_c.cpp": [
+        "return:void"
+      ],
+      "src/actors/daObjWlKoopaShutter_c.cpp": [
+        "param:#2 int",
         "return:void"
       ],
       "src/actors/daObjWlSubmarine_c.cpp": [
@@ -21297,9 +21297,6 @@
       "src/_ZN12dScStarSel_c8BehaviorEv.cpp": [
         "return:unsigned char []"
       ],
-      "src/_ZN13BowserShutter13InitResourcesEv.cpp": [
-        "return:char []"
-      ],
       "src/_ZN6Player13InitResourcesEv.cpp": [
         "return:CAA0"
       ],
@@ -21341,6 +21338,9 @@
       ],
       "src/actors/dScStarSel_c.cpp": [
         "return:unsigned char []"
+      ],
+      "src/actors/daObjWlKoopaShutter_c.cpp": [
+        "return:char []"
       ],
       "src/actors/daObjWlSubmarine_c.cpp": [
         "return:char []"

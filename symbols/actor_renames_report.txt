@@ -148,7 +148,7 @@ NOVTABLE actor 82 LavaPlank (alloc=0x328)
 AMBIG actor 88 PYRAMID_LIFT: ['ov025', 'ov009'] -> ov025
 AMBIG actor 89 DOCK_POLE: ['ov009', 'ov026', 'ov018'] -> ov009
 AMBIG actor 91 BOWSER_SHUTTER: ['ov026', 'ov018'] -> ov026
-NOVTABLE actor 91 BowserShutter (alloc=0x320)
+NOVTABLE actor 91 daObjWlKoopaShutter_c (alloc=0x320)
 NOVTABLE actor 92 SlidingIceSpawner (alloc=0x32c)
 AMBIG actor 93 SLIDING_ICE: ['ov027', 'ov032', 'ov034'] -> ov027
 AMBIG actor 94 ROTATING_PLATFORM_WDW: ['ov029', 'ov036'] -> ov029

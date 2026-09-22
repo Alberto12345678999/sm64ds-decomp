@@ -2837,8 +2837,8 @@
       "diffs": []
     },
     {
-      "file": "src/_ZN13BowserShutter13InitResourcesEv.cpp",
-      "name": "_ZN13BowserShutter13InitResourcesEv",
+      "file": "src/_ZN21daObjWlKoopaShutter_c13InitResourcesEv.cpp",
+      "name": "_ZN21daObjWlKoopaShutter_c13InitResourcesEv",
       "module": "ov026",
       "addr": "0x21117d8",
       "verdict": "VERIFIED",
@@ -2846,8 +2846,8 @@
       "diffs": []
     },
     {
-      "file": "src/_ZN13BowserShutter16CleanupResourcesEv.cpp",
-      "name": "_ZN13BowserShutter16CleanupResourcesEv",
+      "file": "src/_ZN21daObjWlKoopaShutter_c16CleanupResourcesEv.cpp",
+      "name": "_ZN21daObjWlKoopaShutter_c16CleanupResourcesEv",
       "module": "ov026",
       "addr": "0x2111764",
       "verdict": "VERIFIED",
@@ -20827,7 +20827,7 @@
           "src/_ZN12dScStarSel_c16CleanupResourcesEv.cpp",
           "src/_ZN13daObjBlockL_c13InitResourcesEv.cpp",
           "src/_ZN13daObjBlockL_c4KillEv.cpp",
-          "src/_ZN13BowserShutter13InitResourcesEv.cpp",
+          "src/_ZN21daObjWlKoopaShutter_c13InitResourcesEv.cpp",
           "src/_ZN15daObjFlMaruta_c16CleanupResourcesEv.cpp",
           "src/_ZN14CutsceneObject8BehaviorEv.cpp",
           "src/_ZN14dScMgBomroom_c13InitResourcesEv.cpp",
@@ -20952,7 +20952,7 @@
           "src/_ZN12dScStarSel_c16CleanupResourcesEv.cpp",
           "src/_ZN13daObjBlockL_c13InitResourcesEv.cpp",
           "src/_ZN13daObjBlockL_c4KillEv.cpp",
-          "src/_ZN13BowserShutter13InitResourcesEv.cpp",
+          "src/_ZN21daObjWlKoopaShutter_c13InitResourcesEv.cpp",
           "src/_ZN15daObjFlMaruta_c16CleanupResourcesEv.cpp",
           "src/_ZN14CutsceneObject8BehaviorEv.cpp",
           "src/_ZN14dScMgBomroom_c13InitResourcesEv.cpp",
@@ -21088,7 +21088,7 @@
           "src/_ZN12daBDonketu_c13InitResourcesEv.cpp",
           "src/_ZN13daObjBlockL_c15OnGroundPoundedER8dActor_c.cpp",
           "src/_ZN13daObjBlockL_c6RenderEv.cpp",
-          "src/_ZN13BowserShutter16CleanupResourcesEv.cpp",
+          "src/_ZN21daObjWlKoopaShutter_c16CleanupResourcesEv.cpp",
           "src/_ZN10daSnmBth_c8BehaviorEv.cpp",
           "src/_ZN14KnockDownPlank16CleanupResourcesEv.cpp",
           "src/_ZN14dScMgBomroom_c13OnYoshiTryEatEi.cpp",
@@ -21213,7 +21213,7 @@
           "src/_ZN12daBDonketu_c13InitResourcesEv.cpp",
           "src/_ZN13daObjBlockL_c15OnGroundPoundedER8dActor_c.cpp",
           "src/_ZN13daObjBlockL_c6RenderEv.cpp",
-          "src/_ZN13BowserShutter16CleanupResourcesEv.cpp",
+          "src/_ZN21daObjWlKoopaShutter_c16CleanupResourcesEv.cpp",
           "src/_ZN10daSnmBth_c8BehaviorEv.cpp",
           "src/_ZN14KnockDownPlank16CleanupResourcesEv.cpp",
           "src/_ZN14dScMgBomroom_c13OnYoshiTryEatEi.cpp",
@@ -21704,8 +21704,8 @@
         "src/_ZN13daObjBlockL_c8OnKickedER8dActor_c.cpp",
         "src/_ZN13daObjBlockL_cD0Ev.cpp",
         "src/_ZN13daObjBlockL_cD1Ev.cpp",
-        "src/_ZN13BowserShutter13InitResourcesEv.cpp",
-        "src/_ZN13BowserShutter16CleanupResourcesEv.cpp",
+        "src/_ZN21daObjWlKoopaShutter_c13InitResourcesEv.cpp",
+        "src/_ZN21daObjWlKoopaShutter_c16CleanupResourcesEv.cpp",
         "src/_ZN13FortressTower13InitResourcesEv.cpp",
         "src/_ZN13FortressTower16CleanupResourcesEv.cpp",
         "src/_ZN13MontyMoleRock8BehaviorEv.cpp",
@@ -22731,12 +22731,12 @@
           "name": "_ZN13daObjBlockL_cD1Ev"
         },
         {
-          "file": "src/_ZN13BowserShutter13InitResourcesEv.cpp",
-          "name": "_ZN13BowserShutter13InitResourcesEv"
+          "file": "src/_ZN21daObjWlKoopaShutter_c13InitResourcesEv.cpp",
+          "name": "_ZN21daObjWlKoopaShutter_c13InitResourcesEv"
         },
         {
-          "file": "src/_ZN13BowserShutter16CleanupResourcesEv.cpp",
-          "name": "_ZN13BowserShutter16CleanupResourcesEv"
+          "file": "src/_ZN21daObjWlKoopaShutter_c16CleanupResourcesEv.cpp",
+          "name": "_ZN21daObjWlKoopaShutter_c16CleanupResourcesEv"
         },
         {
           "file": "src/_ZN13FortressTower13InitResourcesEv.cpp",
