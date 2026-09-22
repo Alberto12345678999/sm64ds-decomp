@@ -13,20 +13,19 @@
  * vtable preamble ZTI at 0x021089f8 prove the ROM name, and _ZTV13daObjBlockL_c
  * sits at the measured address point 0x02108adc.
  *
- * FUNCTION ORDER IS THE REVERSE OF THE ROM'S. mwccarm 2004/b56 emits one .text
- * section per function in the reverse of source order, so the HIGHEST-address
- * ROM function (_ZN13daObjBlockL_c13InitResourcesEv, 0x020b3d78) is written FIRST
- * and the lowest (_ZN13daObjBlockL_cD1Ev, 0x020b35a0) LAST. Do not reorder.
- * The destructor's D0/D1 pair is the one documented exception: written out of
- * line, mwcc emits the synthesized D0 ahead of the written D1, which is the
- * reverse of the cartridge, so the verifier reports the ordinal pair (0, 1) as
- * PARTIAL -- compiler-chosen order, not a bug (see notes/tu-reconstruction-pilot-report.md sec 3).
+ * FUNCTION ORDER IS THE ROM'S OWN, under `#pragma defer_codegen off`.
+ * Deferred code generation stays off for this TU so mwccarm emits one .text
+ * section per function in SOURCE order: the lowest-address ROM function
+ * (_ZN13daObjBlockL_cD1Ev, 0x020b35a0) is written FIRST and the highest
+ * (_ZN13daObjBlockL_c13InitResourcesEv, 0x020b3d78) LAST. Do not reorder.
+ * The verifier reports all 14 sections in the expected ROM-ascending order.
  *
  * THE DESTRUCTOR IS ONE DEFINITION AND TWO SECTIONS (plus a homeless D2).
- * A single `daObjBlockL_c::~daObjBlockL_c()` emits D1 and D0, in compiler order,
- * which is exactly the cartridge's (0x020b35a0 D1, 0x020b35e4 D0). The homeless
- * D2 has no ROM symbol and no inbound relocation once the leaf D1/D0 pair is
- * retained, so the manifest licenses it as deadstrip compiler-only output.
+ * A single `daObjBlockL_c::~daObjBlockL_c()` emits D1 and D0, and with
+ * deferred code generation off they land in the cartridge's order, D1 first
+ * at 0x020b35a0 and D0 at 0x020b35e4. The homeless D2 has no ROM symbol and
+ * no inbound relocation once the leaf D1/D0 pair is retained, so the manifest
+ * licenses it as deadstrip compiler-only output.
  *
  * KEY-FUNCTION SIDE EFFECT: none claimed. ~daObjBlockL_c is the first non-inline
  * virtual and this TU defines it, but the promotion is text-only: the manifest's
@@ -101,209 +100,213 @@ CLPS_Block *clps);
 /* TUBUILD CONFLICT -- alternate declaration of _ZN5Event6GetBitEj, from the legacy file for _ZN13daObjBlockL_c13InitResourcesEv, NOT applied: int _ZN5Event6GetBitEj(u32 bit); */
 }
 
+#pragma defer_codegen off
+
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 13 -- _ZN13daObjBlockL_c13InitResourcesEv, 0x020b3d78, size 0x2f4 */
+/* ROM ordinals 0 and 1 -- _ZN13daObjBlockL_cD1Ev 0x020b35a0 size 0x44,
+                          _ZN13daObjBlockL_cD0Ev 0x020b35e4 size 0x58 */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN13daObjBlockL_c13InitResourcesEv
-/* daObjBlockL_c::InitResources -- one class, six actor IDs. mVariant selects the
- * row of the three 0xc-stride resource tables (model, collision, CLPS) that this
- * block loads; the collision scale then varies again by ID -- 0x1800 for 0x10,
- * 0x1000 for the other variant-0/1 blocks, 0x199 for variant 2.
+// @symbol _ZN13daObjBlockL_cD1Ev
+// @symbol _ZN13daObjBlockL_cD0Ev
+/* recovered: real C++ destructor -- the compiler emits the whole body
  *
- * Actor 0x11 is the star block: the low byte of param1 is the star index (0xff
- * meaning none) and the second byte being 0xff registers a star marker.
- * Actor 0x13 takes the event bit from the low nibble of param1 instead.
- *
- * The two tail cases return 0 -- refuse to spawn: a 0x11 block whose star is
- * already taken when the player is entering level 1, and a 0x2e block above
- * y 0xdac000 in level 7 once star 1 is collected.
- *
- * The redundant compares and the reloaded actorID are the ROM's, not
- * tidiness lost in translation: folding them changes the compare shape.
- * dBgW_KcMbg::SetFile takes Fix12<int> by value (wall 6az) so it stays an
- * extern-C mangled free function.
+ * ONE definition, TWO ROM functions. Two vtable stores and three destructor
+ * calls, every one a consequence of `struct daObjBlockL_c : dBgActor_c`: its
+ * own vptr, then dBgActor_c's -- inlined, because dBgActor_c's destructor is
+ * defined in its class body -- then dBgActor_c's Model and dBgW_KcMbg, then
+ * dActor_c. This class adds no member with a destructor of its own. D0
+ * additionally returns the object to the actor heap through the inline
+ * operator delete, which is why nothing below mentions a heap. With deferred
+ * code generation off the two variants land in the cartridge's order, D1
+ * first at 0x020b35a0 and D0 at 0x020b35e4.
  */
-int daObjBlockL_c::InitResources()
+daObjBlockL_c::~daObjBlockL_c()
 {
-    u16 id = actorID;
-    u8 idx;
+}
+/* -------------------------------------------------------------------------- */
+/* ROM ordinal 2 -- _ZN13daObjBlockL_c17NotifyLinkedActorEv, 0x020b363c, size 0x64 */
+/* -------------------------------------------------------------------------- */
+// @symbol _ZN13daObjBlockL_c17NotifyLinkedActorEv
+/* The helper belongs to daObjBlockL_c's recovered TU and has one caller:
+   daObjBlockL_c::Kill. It follows mLinkedActor and clears the per-actor state
+   used by actor 0x121 or sets the equivalent state on actors 0x141..0x144. */
+void daObjBlockL_c::NotifyLinkedActor()
+{
+    dActor_c* linkedActor = mLinkedActor;
+    int actorID;
+    if (linkedActor == 0)
+        return;
 
-    switch (id) {
-    case 0xf:
-    case 0x10:
-    case 0x13: mVariant = 0; break;
-    case 0x11: mVariant = 1; break;
-    case 0x12: break;
-    case 0x2e: mVariant = 2; break;
-    }
-
-    mModel.SetFile((BMD_File *)Model::LoadFile(*data_ov002_02108ab0[mVariant].file), 1, -1);
-    UpdateModelPosAndRotY();
-    UpdateClsnPosAndRot();
-
-    {
-    int is11 = actorID;
-    is11 = is11 == 0x11;
-    if (is11 != 0) {
-        int byte1;
-        mStarID = param1;
-        byte1 = (param1 >> 8) & 0xff;
-        if (mStarID == 0xff)
-            mStarID = 0;
-        if (mStarID != 0 && byte1 == 0xff)
-            mTrackStarID = TrackStar(mStarID, 2);
-    }
+    actorID = linkedActor->actorID;
+    if (actorID <= 0x121) {
+        if (actorID == 0x121)
+            ((u8*)linkedActor)[0x3b0] = 0;
+        return;
     }
 
-    idx = mVariant;
-    if (idx <= 1) {
-        int is10 = actorID;
-        is10 = is10 == 0x10;
-        if (is10 != 0) {
-            KCL_File *kcl = (KCL_File *)dBgW_Kc::LoadFile(*data_ov002_02108ab4[idx].file);
-            _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-                &mMeshCollider, kcl, &mClsnMat, 0x1800, mAngleY,
-                data_ov002_02108ab8[idx].block);
-        } else {
-            KCL_File *kcl = (KCL_File *)dBgW_Kc::LoadFile(*data_ov002_02108ab4[idx].file);
-            _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-                &mMeshCollider, kcl, &mClsnMat, 0x1000, mAngleY,
-                data_ov002_02108ab8[idx].block);
-        }
-    } else {
-        KCL_File *kcl = (KCL_File *)dBgW_Kc::LoadFile(*data_ov002_02108ab4[idx].file);
-        _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
-            &mMeshCollider, kcl, &mClsnMat, 0x199, mAngleY,
-            data_ov002_02108ab8[idx].block);
+    switch (actorID) {
+    case 0x141:
+    case 0x142:
+    case 0x143:
+    case 0x144:
+        ((u8*)linkedActor)[0xd6] = 1;
     }
-
-    {
-    int is13 = actorID;
-    is13 = is13 == 0x13;
-    if (is13 != 0)
-        mEventID = param1 & 0xf;
-    }
-    mPrevEventBit = _ZN5Event6GetBitEj(mEventID);
-
-    {
-    Player *pl = ClosestPlayer();
-    if (pl != 0 && pl->IsEnteringLevel() != 0) {
-        int is11b = actorID;
-        is11b = is11b == 0x11;
-        if (is11b != false && HasNonzeroAngleX()) {
-            if (data_0209f2f8 == 1)
-                return 0;
-        }
-    }
-    }
-
-    {
-    int is2e = actorID;
-    is2e = is2e == 0x2e;
-    if (is2e != false && data_0209f2f8 == 7) {
-        if (data_0209f220 != 1) {
-            if (IsStarCollectedInCurLevel(1) != 0)
-                goto ret1;
-        }
-        if (mPosY >= 0xdac000)
-            return 0;
-    }
-    }
-
-ret1:
-    return 1;
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 12 -- _ZN13daObjBlockL_c8BehaviorEv, 0x020b3c0c, size 0x16c */
+/* ROM ordinal 3 -- _ZN13daObjBlockL_c16HasNonzeroAngleXEv, 0x020b36a0, size 0x14 */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN13daObjBlockL_c8BehaviorEv
-/* Event has no shared namespace declaration yet. The two unnamed collision
-   setters remain address-named, and IsClsnInRangeOnScreen's by-value Fix12
-   signature is a documented compiler wall, so those ABI calls stay explicit. */
-int daObjBlockL_c::Behavior()
+// @symbol _ZN13daObjBlockL_c16HasNonzeroAngleXEv
+/* Both callers are daObjBlockL_c methods in this TU. The field at 0x8c is the
+   inherited dActor_c::mAngleX; no external state participates. */
+bool daObjBlockL_c::HasNonzeroAngleX()
 {
-    int is13 = (int)(actorID == 0x13);
-    if (is13 != 0) {
-        if (mPrevEventBit != _ZN5Event6GetBitEj(mEventID))
-            mBroken = 0;
-
-        if (mSwitch == 0) {
-            unsigned int id = 0xb;
-            do {
-                mSwitch = (daObjSwitch_c *)FindWithActorID(id, mSwitch);
-            } while (mSwitch == 0 || mEventID != mSwitch->mEventBit);
-        }
-
-        if (_ZN5Event6GetBitEj(mEventID) == 0 || mBroken != 0) {
-            if (mMeshCollider.IsEnabled() != 0)
-                mMeshCollider.Disable();
-        } else {
-            func_020393a4(&mMeshCollider, 0x15e000);
-            func_02039394(&mMeshCollider, 0x64000);
-            _ZN10dBgActor_c21IsClsnInRangeOnScreenE5Fix12IiES1_(this, 0x150000, 0);
-        }
-
-        mPrevEventBit = _ZN5Event6GetBitEj(mEventID);
-    } else {
-        int v1 = 0x15e000;
-        int v5 = 0x64000;
-        int t;
-        if ((t = (int)(actorID == 0x10)) != 0 ||
-            (t = (int)(actorID == 0x11)) != 0 ||
-            (t = (int)(actorID == 0x2e)) != 0) {
-            v1 = 0x1c2000;
-            v5 = 0x96000;
-        }
-        func_020393a4(&mMeshCollider, v1);
-        func_02039394(&mMeshCollider, v5);
-        _ZN10dBgActor_c21IsClsnInRangeOnScreenE5Fix12IiES1_(this, 0x600000, 0);
-    }
-    return 1;
+    return mAngleX != 0;
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 11 -- _ZN13daObjBlockL_c6RenderEv, 0x020b3b14, size 0xf8 */
+/* ROM ordinal 4 -- _ZN13daObjBlockL_c15OnHitByMegaCharER6Player, 0x020b36b4, size 0x28 */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN13daObjBlockL_c6RenderEv
-/* recovered: named members + shared header, real C++ method */
-/* Event has no shared namespace declaration yet. */
-int daObjBlockL_c::Render()
+// @symbol _ZN13daObjBlockL_c15OnHitByMegaCharER6Player
+/* daObjBlockL_c::OnHitByMegaChar -- vtable slot 27, ov002 0x020b36b4.
+ * include/dActor_c.h's own slot 27 supplies the signature, `virtual void
+ * OnHitByMegaChar(Player &player)` -- corrected from `int` by
+ * Stump::OnHitByMegaChar (include/Stump.h); re-verified here rather than
+ * assumed.
+ *
+ * player.IncMegaKillCount() then this class's own Kill (slot 31), reached
+ * through an unqualified virtual call -- the same indirect dispatch the
+ * pre-migration `c->m()` vtable-slot trick reproduced. */
+void daObjBlockL_c::OnHitByMegaChar(Player &player)
 {
-  int b = (actorID == 0x13);
-  if (b != 0) {
-    if (!(_ZN5Event6GetBitEj(mEventID) != 0 && mBroken == 0)) {
-      return 1;
-    } else {
-      if (mSwitch != 0) {
-        unsigned short d = (unsigned short)(mSwitch->mTimeLimit - mSwitch->mTimer);
-        if (d < 0x2d) {
-          if ((d & 1) != 0) return 1;
-        }
-      }
-    }
-  }
-  int b2 = (actorID == 0x10);
-  if (b2 != 0) {
-    Vector3 v = data_ov002_021089e0;
-    mModel.Render(&v);
-  } else {
-    mModel.Render(0);
-  }
-  return 1;
+    player.IncMegaKillCount();
+    Kill();
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 10 -- _ZN13daObjBlockL_c16CleanupResourcesEv, 0x020b3ab0, size 0x64 */
+/* ROM ordinal 5 -- _ZN13daObjBlockL_c8OnKickedER8dActor_c, 0x020b36dc, size 0xac */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN13daObjBlockL_c16CleanupResourcesEv
-int daObjBlockL_c::CleanupResources()
+// @symbol _ZN13daObjBlockL_c8OnKickedER8dActor_c
+/* daObjBlockL_c::OnKicked -- vtable slot 24, ov002 0x020b36dc.
+ *
+ * `void`, NOT `int`. include/dActor_c.h declared slot 24 `int` until this
+ * override proved it wrong: with two locals and two early returns, mwcc
+ * allocates registers differently for `int` vs `void` even though the ROM
+ * sets no r0 either way -- measured with tools/mangle.py, not assumed. Every
+ * other slot in this file (21/22/23/27) stayed `int` and byte-matches under
+ * `int`, so this is specific to this override, not a blanket rule.
+ *
+ * `actorID` and `other.param1` are fBase_c's own fields. Every call is this
+ * class's own Kill (slot 31) through an unqualified virtual call -- the same
+ * indirect dispatch the pre-migration `self->m()` vtable-slot trick
+ * reproduced. The 0x2e branch calls Kill and falls through without
+ * returning, same as the pre-migration recovery.
+ *
+ * `int b = (actorID == 0x2e);` / `b = (actorID == 0x11);` materialize the
+ * bools the same way the pre-migration recovery did -- load-bearing
+ * (cpp-bool-widening-cast). */
+void daObjBlockL_c::OnKicked(dActor_c &other)
 {
-    if (mMeshCollider.IsEnabled())
-        mMeshCollider.Disable();
-    data_ov002_02108ab0[mVariant].file->Release();
-    data_ov002_02108ab4[mVariant].file->Release();
-    return 1;
+    int p1;
+    int b = (actorID == 0x2e);
+    if (b) Kill();
+    p1 = other.param1;
+    if (p1 == 3) return;
+    b = (actorID == 0x11);
+    if (b) {
+        if (p1 != 2) return;
+        Kill();
+    } else {
+        Kill();
+    }
+}
+
+/* -------------------------------------------------------------------------- */
+/* ROM ordinal 6 -- _ZN13daObjBlockL_c11OnAttacked2ER8dActor_c, 0x020b3788, size 0x64 */
+/* -------------------------------------------------------------------------- */
+// @symbol _ZN13daObjBlockL_c11OnAttacked2ER8dActor_c
+/* daObjBlockL_c::OnAttacked2 -- vtable slot 23, ov002 0x020b3788.
+ * include/dActor_c.h's own slot 23 supplies the signature, `virtual int
+ * OnAttacked2(dActor_c &other)`.
+ *
+ * `actorID` and `other.param1` are fBase_c's own fields. Both branches call
+ * this class's own Kill (slot 31) through an unqualified virtual call -- the
+ * same indirect dispatch the pre-migration `(*(Vt**)c)->fn(c)` read
+ * reproduced by hand.
+ *
+ * `int b = (actorID == 0x11);` materializes the bool the same way the
+ * pre-migration recovery did -- load-bearing (cpp-bool-widening-cast). */
+int daObjBlockL_c::OnAttacked2(dActor_c &other)
+{
+    int b = (actorID == 0x11);
+    if (b) {
+        if (other.param1 != 2) return;
+        Kill();
+        return;
+    }
+    Kill();
+}
+
+/* -------------------------------------------------------------------------- */
+/* ROM ordinal 7 -- _ZN13daObjBlockL_c11OnAttacked1ER8dActor_c, 0x020b37ec, size 0x40 */
+/* -------------------------------------------------------------------------- */
+// @symbol _ZN13daObjBlockL_c11OnAttacked1ER8dActor_c
+/* daObjBlockL_c::OnAttacked1 -- vtable slot 22, ov002 0x020b37ec. Was a plain
+ * C recovery (func_ov002_020b37ec.c) with a single `void *this` parameter --
+ * `other` was never read, so the pre-migration stub dropped it from the
+ * declared prototype without changing the compiled bytes. The real override
+ * keeps `other` in the signature (include/dActor_c.h slot 22) but still never
+ * touches it.
+ *
+ * `actorID` is fBase_c's own field. The single call is this class's own Kill
+ * (slot 31), reached through an unqualified virtual call -- the same
+ * indirect dispatch the pre-migration `*(int*)((*(int*)c)+0x7c)` vtable read
+ * reproduced by hand.
+ *
+ * `int b = (actorID == 0x11);` materializes the bool the same way the
+ * pre-migration recovery did -- load-bearing (cpp-bool-widening-cast). */
+int daObjBlockL_c::OnAttacked1(dActor_c &other)
+{
+    int b = (actorID == 0x11);
+    if (b) return;
+    Kill();
+}
+
+/* -------------------------------------------------------------------------- */
+/* ROM ordinal 8 -- _ZN13daObjBlockL_c15OnGroundPoundedER8dActor_c, 0x020b382c, size 0x74 */
+/* -------------------------------------------------------------------------- */
+// @symbol _ZN13daObjBlockL_c15OnGroundPoundedER8dActor_c
+/* daObjBlockL_c::OnGroundPounded -- vtable slot 21, ov002 0x020b382c.
+ *
+ * Attributed by the vtable, not the pre-migration `recovered name:` comment
+ * (BigBrickBlock_OnGroundPounded, one class too far down -- see
+ * actor-class-names-off-by-one). include/dActor_c.h's own slot 21 supplies
+ * the signature, `virtual void OnGroundPounded(dActor_c &other)` -- corrected
+ * from `int` by Stump::OnGroundPounded (include/Stump.h); re-verified here
+ * rather than assumed.
+ *
+ * `other.param1 == 3` and `actorID == 0x11` are fBase_c's own fields, already
+ * named in include/fBase_c.h. Both branches call this class's own Kill
+ * (slot 31, include/daObjBlockL_c.h) through an unqualified virtual call --
+ * the same indirect dispatch the pre-migration `Obj::target()` vtable-slot
+ * trick reproduced. Neither branch sets r0, so the bare `return;` in this
+ * `void`-returning override compiles to the same bytes as the ROM's stub,
+ * which never touches r0 either.
+ *
+ * `int b = (actorID == 0x11);` materializes the bool into a temporary before
+ * branching on it, same as the pre-migration recovery -- the temporary is
+ * load-bearing (see cpp-bool-widening-cast): writing the comparison directly
+ * as `if (actorID == 0x11)` compiles 3 instructions shorter than the ROM. */
+void daObjBlockL_c::OnGroundPounded(dActor_c &other)
+{
+    if (other.param1 == 3) return;
+    int b = (actorID == 0x11);
+    if (b) {
+        if (other.param1 != 2) return;
+        Kill();
+    } else {
+        Kill();
+    }
 }
 
 /* -------------------------------------------------------------------------- */
@@ -429,222 +432,206 @@ void daObjBlockL_c::Kill()
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 8 -- _ZN13daObjBlockL_c15OnGroundPoundedER8dActor_c, 0x020b382c, size 0x74 */
+/* ROM ordinal 10 -- _ZN13daObjBlockL_c16CleanupResourcesEv, 0x020b3ab0, size 0x64 */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN13daObjBlockL_c15OnGroundPoundedER8dActor_c
-/* daObjBlockL_c::OnGroundPounded -- vtable slot 21, ov002 0x020b382c.
- *
- * Attributed by the vtable, not the pre-migration `recovered name:` comment
- * (BigBrickBlock_OnGroundPounded, one class too far down -- see
- * actor-class-names-off-by-one). include/dActor_c.h's own slot 21 supplies
- * the signature, `virtual void OnGroundPounded(dActor_c &other)` -- corrected
- * from `int` by Stump::OnGroundPounded (include/Stump.h); re-verified here
- * rather than assumed.
- *
- * `other.param1 == 3` and `actorID == 0x11` are fBase_c's own fields, already
- * named in include/fBase_c.h. Both branches call this class's own Kill
- * (slot 31, include/daObjBlockL_c.h) through an unqualified virtual call --
- * the same indirect dispatch the pre-migration `Obj::target()` vtable-slot
- * trick reproduced. Neither branch sets r0, so the bare `return;` in this
- * `void`-returning override compiles to the same bytes as the ROM's stub,
- * which never touches r0 either.
- *
- * `int b = (actorID == 0x11);` materializes the bool into a temporary before
- * branching on it, same as the pre-migration recovery -- the temporary is
- * load-bearing (see cpp-bool-widening-cast): writing the comparison directly
- * as `if (actorID == 0x11)` compiles 3 instructions shorter than the ROM. */
-void daObjBlockL_c::OnGroundPounded(dActor_c &other)
+// @symbol _ZN13daObjBlockL_c16CleanupResourcesEv
+int daObjBlockL_c::CleanupResources()
 {
-    if (other.param1 == 3) return;
-    int b = (actorID == 0x11);
-    if (b) {
-        if (other.param1 != 2) return;
-        Kill();
+    if (mMeshCollider.IsEnabled())
+        mMeshCollider.Disable();
+    data_ov002_02108ab0[mVariant].file->Release();
+    data_ov002_02108ab4[mVariant].file->Release();
+    return 1;
+}
+
+/* -------------------------------------------------------------------------- */
+/* ROM ordinal 11 -- _ZN13daObjBlockL_c6RenderEv, 0x020b3b14, size 0xf8 */
+/* -------------------------------------------------------------------------- */
+// @symbol _ZN13daObjBlockL_c6RenderEv
+/* recovered: named members + shared header, real C++ method */
+/* Event has no shared namespace declaration yet. */
+int daObjBlockL_c::Render()
+{
+  int b = (actorID == 0x13);
+  if (b != 0) {
+    if (!(_ZN5Event6GetBitEj(mEventID) != 0 && mBroken == 0)) {
+      return 1;
     } else {
-        Kill();
+      if (mSwitch != 0) {
+        unsigned short d = (unsigned short)(mSwitch->mTimeLimit - mSwitch->mTimer);
+        if (d < 0x2d) {
+          if ((d & 1) != 0) return 1;
+        }
+      }
     }
+  }
+  int b2 = (actorID == 0x10);
+  if (b2 != 0) {
+    Vector3 v = data_ov002_021089e0;
+    mModel.Render(&v);
+  } else {
+    mModel.Render(0);
+  }
+  return 1;
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 7 -- _ZN13daObjBlockL_c11OnAttacked1ER8dActor_c, 0x020b37ec, size 0x40 */
+/* ROM ordinal 12 -- _ZN13daObjBlockL_c8BehaviorEv, 0x020b3c0c, size 0x16c */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN13daObjBlockL_c11OnAttacked1ER8dActor_c
-/* daObjBlockL_c::OnAttacked1 -- vtable slot 22, ov002 0x020b37ec. Was a plain
- * C recovery (func_ov002_020b37ec.c) with a single `void *this` parameter --
- * `other` was never read, so the pre-migration stub dropped it from the
- * declared prototype without changing the compiled bytes. The real override
- * keeps `other` in the signature (include/dActor_c.h slot 22) but still never
- * touches it.
- *
- * `actorID` is fBase_c's own field. The single call is this class's own Kill
- * (slot 31), reached through an unqualified virtual call -- the same
- * indirect dispatch the pre-migration `*(int*)((*(int*)c)+0x7c)` vtable read
- * reproduced by hand.
- *
- * `int b = (actorID == 0x11);` materializes the bool the same way the
- * pre-migration recovery did -- load-bearing (cpp-bool-widening-cast). */
-int daObjBlockL_c::OnAttacked1(dActor_c &other)
+// @symbol _ZN13daObjBlockL_c8BehaviorEv
+/* Event has no shared namespace declaration yet. The two unnamed collision
+   setters remain address-named, and IsClsnInRangeOnScreen's by-value Fix12
+   signature is a documented compiler wall, so those ABI calls stay explicit. */
+int daObjBlockL_c::Behavior()
 {
-    int b = (actorID == 0x11);
-    if (b) return;
-    Kill();
-}
+    int is13 = (int)(actorID == 0x13);
+    if (is13 != 0) {
+        if (mPrevEventBit != _ZN5Event6GetBitEj(mEventID))
+            mBroken = 0;
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 6 -- _ZN13daObjBlockL_c11OnAttacked2ER8dActor_c, 0x020b3788, size 0x64 */
-/* -------------------------------------------------------------------------- */
-// @symbol _ZN13daObjBlockL_c11OnAttacked2ER8dActor_c
-/* daObjBlockL_c::OnAttacked2 -- vtable slot 23, ov002 0x020b3788.
- * include/dActor_c.h's own slot 23 supplies the signature, `virtual int
- * OnAttacked2(dActor_c &other)`.
- *
- * `actorID` and `other.param1` are fBase_c's own fields. Both branches call
- * this class's own Kill (slot 31) through an unqualified virtual call -- the
- * same indirect dispatch the pre-migration `(*(Vt**)c)->fn(c)` read
- * reproduced by hand.
- *
- * `int b = (actorID == 0x11);` materializes the bool the same way the
- * pre-migration recovery did -- load-bearing (cpp-bool-widening-cast). */
-int daObjBlockL_c::OnAttacked2(dActor_c &other)
-{
-    int b = (actorID == 0x11);
-    if (b) {
-        if (other.param1 != 2) return;
-        Kill();
-        return;
-    }
-    Kill();
-}
+        if (mSwitch == 0) {
+            unsigned int id = 0xb;
+            do {
+                mSwitch = (daObjSwitch_c *)FindWithActorID(id, mSwitch);
+            } while (mSwitch == 0 || mEventID != mSwitch->mEventBit);
+        }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 5 -- _ZN13daObjBlockL_c8OnKickedER8dActor_c, 0x020b36dc, size 0xac */
-/* -------------------------------------------------------------------------- */
-// @symbol _ZN13daObjBlockL_c8OnKickedER8dActor_c
-/* daObjBlockL_c::OnKicked -- vtable slot 24, ov002 0x020b36dc.
- *
- * `void`, NOT `int`. include/dActor_c.h declared slot 24 `int` until this
- * override proved it wrong: with two locals and two early returns, mwcc
- * allocates registers differently for `int` vs `void` even though the ROM
- * sets no r0 either way -- measured with tools/mangle.py, not assumed. Every
- * other slot in this file (21/22/23/27) stayed `int` and byte-matches under
- * `int`, so this is specific to this override, not a blanket rule.
- *
- * `actorID` and `other.param1` are fBase_c's own fields. Every call is this
- * class's own Kill (slot 31) through an unqualified virtual call -- the same
- * indirect dispatch the pre-migration `self->m()` vtable-slot trick
- * reproduced. The 0x2e branch calls Kill and falls through without
- * returning, same as the pre-migration recovery.
- *
- * `int b = (actorID == 0x2e);` / `b = (actorID == 0x11);` materialize the
- * bools the same way the pre-migration recovery did -- load-bearing
- * (cpp-bool-widening-cast). */
-void daObjBlockL_c::OnKicked(dActor_c &other)
-{
-    int p1;
-    int b = (actorID == 0x2e);
-    if (b) Kill();
-    p1 = other.param1;
-    if (p1 == 3) return;
-    b = (actorID == 0x11);
-    if (b) {
-        if (p1 != 2) return;
-        Kill();
+        if (_ZN5Event6GetBitEj(mEventID) == 0 || mBroken != 0) {
+            if (mMeshCollider.IsEnabled() != 0)
+                mMeshCollider.Disable();
+        } else {
+            func_020393a4(&mMeshCollider, 0x15e000);
+            func_02039394(&mMeshCollider, 0x64000);
+            _ZN10dBgActor_c21IsClsnInRangeOnScreenE5Fix12IiES1_(this, 0x150000, 0);
+        }
+
+        mPrevEventBit = _ZN5Event6GetBitEj(mEventID);
     } else {
-        Kill();
+        int v1 = 0x15e000;
+        int v5 = 0x64000;
+        int t;
+        if ((t = (int)(actorID == 0x10)) != 0 ||
+            (t = (int)(actorID == 0x11)) != 0 ||
+            (t = (int)(actorID == 0x2e)) != 0) {
+            v1 = 0x1c2000;
+            v5 = 0x96000;
+        }
+        func_020393a4(&mMeshCollider, v1);
+        func_02039394(&mMeshCollider, v5);
+        _ZN10dBgActor_c21IsClsnInRangeOnScreenE5Fix12IiES1_(this, 0x600000, 0);
     }
+    return 1;
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 4 -- _ZN13daObjBlockL_c15OnHitByMegaCharER6Player, 0x020b36b4, size 0x28 */
+/* ROM ordinal 13 -- _ZN13daObjBlockL_c13InitResourcesEv, 0x020b3d78, size 0x2f4 */
 /* -------------------------------------------------------------------------- */
-// @symbol _ZN13daObjBlockL_c15OnHitByMegaCharER6Player
-/* daObjBlockL_c::OnHitByMegaChar -- vtable slot 27, ov002 0x020b36b4.
- * include/dActor_c.h's own slot 27 supplies the signature, `virtual void
- * OnHitByMegaChar(Player &player)` -- corrected from `int` by
- * Stump::OnHitByMegaChar (include/Stump.h); re-verified here rather than
- * assumed.
+// @symbol _ZN13daObjBlockL_c13InitResourcesEv
+/* daObjBlockL_c::InitResources -- one class, six actor IDs. mVariant selects the
+ * row of the three 0xc-stride resource tables (model, collision, CLPS) that this
+ * block loads; the collision scale then varies again by ID -- 0x1800 for 0x10,
+ * 0x1000 for the other variant-0/1 blocks, 0x199 for variant 2.
  *
- * player.IncMegaKillCount() then this class's own Kill (slot 31), reached
- * through an unqualified virtual call -- the same indirect dispatch the
- * pre-migration `c->m()` vtable-slot trick reproduced. */
-void daObjBlockL_c::OnHitByMegaChar(Player &player)
-{
-    player.IncMegaKillCount();
-    Kill();
-}
-
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 3 -- _ZN13daObjBlockL_c16HasNonzeroAngleXEv, 0x020b36a0, size 0x14 */
-/* -------------------------------------------------------------------------- */
-// @symbol _ZN13daObjBlockL_c16HasNonzeroAngleXEv
-/* Both callers are daObjBlockL_c methods in this TU. The field at 0x8c is the
-   inherited dActor_c::mAngleX; no external state participates. */
-bool daObjBlockL_c::HasNonzeroAngleX()
-{
-    return mAngleX != 0;
-}
-
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 2 -- _ZN13daObjBlockL_c17NotifyLinkedActorEv, 0x020b363c, size 0x64 */
-/* -------------------------------------------------------------------------- */
-// @symbol _ZN13daObjBlockL_c17NotifyLinkedActorEv
-/* The helper belongs to daObjBlockL_c's recovered TU and has one caller:
-   daObjBlockL_c::Kill. It follows mLinkedActor and clears the per-actor state
-   used by actor 0x121 or sets the equivalent state on actors 0x141..0x144. */
-void daObjBlockL_c::NotifyLinkedActor()
-{
-    dActor_c* linkedActor = mLinkedActor;
-    int actorID;
-    if (linkedActor == 0)
-        return;
-
-    actorID = linkedActor->actorID;
-    if (actorID <= 0x121) {
-        if (actorID == 0x121)
-            ((u8*)linkedActor)[0x3b0] = 0;
-        return;
-    }
-
-    switch (actorID) {
-    case 0x141:
-    case 0x142:
-    case 0x143:
-    case 0x144:
-        ((u8*)linkedActor)[0xd6] = 1;
-    }
-}
-
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 1 -- _ZN13daObjBlockL_cD0Ev, 0x020b35e4, size 0x58 */
-/* -------------------------------------------------------------------------- */
-// @symbol _ZN13daObjBlockL_cD0Ev
-/* recovered: real C++ deleting destructor -- the compiler emits the whole body
+ * Actor 0x11 is the star block: the low byte of param1 is the star index (0xff
+ * meaning none) and the second byte being 0xff registers a star marker.
+ * Actor 0x13 takes the event bit from the low nibble of param1 instead.
  *
- * D0 is the DELETING destructor: destroy through this class and its bases --
- * which is why more than one vptr store appears -- then return the object to
- * its heap. Nobody writes that; declaring `~daObjBlockL_c()` is enough, because mwcc
- * emits D2, D0 and D1 together and objisolate keeps the one this file is bound
- * to.
+ * The two tail cases return 0 -- refuse to spawn: a 0x11 block whose star is
+ * already taken when the player is entering level 1, and a 0x2e block above
+ * y 0xdac000 in level 7 once star 1 is collected.
  *
- * The deallocation is an inline operator delete, which is why nothing below
- * mentions a heap.
- *
- * (Merged TU: the single out-of-line definition below emits D1, D0 and D2
- * together; objisolate binds each to its section. This duplicate is dropped.)
+ * The redundant compares and the reloaded actorID are the ROM's, not
+ * tidiness lost in translation: folding them changes the compare shape.
+ * dBgW_KcMbg::SetFile takes Fix12<int> by value (wall 6az) so it stays an
+ * extern-C mangled free function.
  */
-
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 0 -- _ZN13daObjBlockL_cD1Ev, 0x020b35a0, size 0x44 */
-/* -------------------------------------------------------------------------- */
-// @symbol _ZN13daObjBlockL_cD1Ev
-/* recovered: real C++ destructor -- the compiler emits the whole body
- *
- * Two vtable stores and three destructor calls, every one a consequence of
- * `struct daObjBlockL_c : dBgActor_c`: its own vptr, then dBgActor_c's -- inlined,
- * because dBgActor_c's destructor is defined in its class body -- then
- * dBgActor_c's Model and dBgW_KcMbg, then dActor_c. This class adds no
- * member with a destructor of its own.
- */
-daObjBlockL_c::~daObjBlockL_c()
+int daObjBlockL_c::InitResources()
 {
+    u16 id = actorID;
+    u8 idx;
+
+    switch (id) {
+    case 0xf:
+    case 0x10:
+    case 0x13: mVariant = 0; break;
+    case 0x11: mVariant = 1; break;
+    case 0x12: break;
+    case 0x2e: mVariant = 2; break;
+    }
+
+    mModel.SetFile((BMD_File *)Model::LoadFile(*data_ov002_02108ab0[mVariant].file), 1, -1);
+    UpdateModelPosAndRotY();
+    UpdateClsnPosAndRot();
+
+    {
+    int is11 = actorID;
+    is11 = is11 == 0x11;
+    if (is11 != 0) {
+        int byte1;
+        mStarID = param1;
+        byte1 = (param1 >> 8) & 0xff;
+        if (mStarID == 0xff)
+            mStarID = 0;
+        if (mStarID != 0 && byte1 == 0xff)
+            mTrackStarID = TrackStar(mStarID, 2);
+    }
+    }
+
+    idx = mVariant;
+    if (idx <= 1) {
+        int is10 = actorID;
+        is10 = is10 == 0x10;
+        if (is10 != 0) {
+            KCL_File *kcl = (KCL_File *)dBgW_Kc::LoadFile(*data_ov002_02108ab4[idx].file);
+            _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
+                &mMeshCollider, kcl, &mClsnMat, 0x1800, mAngleY,
+                data_ov002_02108ab8[idx].block);
+        } else {
+            KCL_File *kcl = (KCL_File *)dBgW_Kc::LoadFile(*data_ov002_02108ab4[idx].file);
+            _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
+                &mMeshCollider, kcl, &mClsnMat, 0x1000, mAngleY,
+                data_ov002_02108ab8[idx].block);
+        }
+    } else {
+        KCL_File *kcl = (KCL_File *)dBgW_Kc::LoadFile(*data_ov002_02108ab4[idx].file);
+        _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
+            &mMeshCollider, kcl, &mClsnMat, 0x199, mAngleY,
+            data_ov002_02108ab8[idx].block);
+    }
+
+    {
+    int is13 = actorID;
+    is13 = is13 == 0x13;
+    if (is13 != 0)
+        mEventID = param1 & 0xf;
+    }
+    mPrevEventBit = _ZN5Event6GetBitEj(mEventID);
+
+    {
+    Player *pl = ClosestPlayer();
+    if (pl != 0 && pl->IsEnteringLevel() != 0) {
+        int is11b = actorID;
+        is11b = is11b == 0x11;
+        if (is11b != false && HasNonzeroAngleX()) {
+            if (data_0209f2f8 == 1)
+                return 0;
+        }
+    }
+    }
+
+    {
+    int is2e = actorID;
+    is2e = is2e == 0x2e;
+    if (is2e != false && data_0209f2f8 == 7) {
+        if (data_0209f220 != 1) {
+            if (IsStarCollectedInCurLevel(1) != 0)
+                goto ret1;
+        }
+        if (mPosY >= 0xdac000)
+            return 0;
+    }
+    }
+
+ret1:
+    return 1;
 }

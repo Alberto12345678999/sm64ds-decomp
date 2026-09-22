@@ -307,14 +307,14 @@ Byte-neutral cleanup: `Behavior`'s
 
 ---
 
-## Klepto (`include/Klepto.h`, [ov062](../config/arm9/overlays/ov062/symbols.txt))
+## daJango_c (`include/daJango_c.h`, [ov062](../config/arm9/overlays/ov062/symbols.txt))
 
-Bodies read: `src/_ZN6Klepto13InitResourcesEv.cpp`,
-`src/_ZN6Klepto8BehaviorEv.cpp`, `src/_ZN6Klepto6RenderEv.cpp`.
+The cartridge class is daJango_c. The bodies below were read when they were
+still one file each; they now live in `src/actors/daJango_c.cpp`.
 
 | offset | name | evidence |
 | --- | --- | --- |
-| 0x42c | `mState` (`void *`) | `Behavior` reads the word as a pointer, calls the pointer-to-member at its `+0x08` on `this` every frame, and compares it against the file-scope records [data_ov062_0211e14c](../config/arm9/overlays/ov062/symbols.txt) / [data_ov062_0211e15c](../config/arm9/overlays/ov062/symbols.txt) / [data_ov062_0211e17c](../config/arm9/overlays/ov062/symbols.txt) **by address**. [func_ov062_0211c658](../src/func_ov062_0211c658.cpp)(this, record) is the setter. |
+| 0x42c | `mState` (`void *`) | `Behavior` reads the word as a pointer, calls the pointer-to-member at its `+0x08` on `this` every frame, and compares it against the file-scope records [data_ov062_0211e14c](../config/arm9/overlays/ov062/symbols.txt) / [data_ov062_0211e15c](../config/arm9/overlays/ov062/symbols.txt) / [data_ov062_0211e17c](../config/arm9/overlays/ov062/symbols.txt) **by address**. `func_ov062_0211c658` in `src/actors/daJango_c.cpp` is the setter. |
 | 0x430 | `mPathNodePosX` | `PathPtr::GetNode(path, &unk_430, mPathNodeIndex)` writes the node here, and the star-carrying branch then does `mPosX = unk_430; mPosY = unk_434; mPosZ = unk_438;`. |
 | 0x434 | `mPathNodePosY` | as above. |
 | 0x438 | `mPathNodePosZ` | as above. |
