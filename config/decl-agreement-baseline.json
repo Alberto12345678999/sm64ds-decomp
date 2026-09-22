@@ -328,7 +328,6 @@
    "src/func_ov002_020f5fe4.c": ["param:#1 int"],
    "src/func_ov004_020b3278.cpp": ["param:#1 int", "param:#2 int"],
    "src/func_ov075_02116ad4.c": ["param:#2 int"],
-   "src/minigames/d_s_mg_card.cpp": ["param:#2 unsigned int"],
    "src/minigames/d_s_mg_jump2.cpp": ["param:#1 int", "param:#2 int"],
    "src/minigames/d_s_mg_m_carlo2.cpp": ["param:#1 int", "param:#2 int"],
    "src/minigames/d_s_mg_trampoline.cpp": ["param:#1 int"],
@@ -1056,7 +1055,6 @@
    "src/actors/dScMgTeresa_c.cpp": ["param:#1 void *"],
    "src/func_ov006_020d5ab0.cpp": ["param:#1 void *"],
    "src/func_ov006_020d5e5c.c": ["return:int"],
-   "src/minigames/d_s_mg_card.cpp": ["return:int"],
    "src/minigames/d_s_mg_m_carlo2.cpp": ["return:int"],
    "src/minigames/d_s_mg_trampoline.cpp": ["return:int"]
   },
@@ -6604,7 +6602,6 @@
    "src/game/actors/d_a_wanwan.cpp": ["param:#2 int", "param:#3 int", "param:#4 void *", "param:#5 void *", "return:int"],
    "src/game/actors/daPiano_c/d_a_piano.cpp": ["param:#2 int", "param:#3 int", "param:#4 void *", "param:#5 void *"],
    "src/minigames/d_s_mg_bsc.cpp": ["param:#2 int", "param:#3 int", "param:#4 void *", "param:#5 void *"],
-   "src/minigames/d_s_mg_card.cpp": ["param:#2 int", "param:#3 int", "param:#4 void *", "param:#5 void *"],
    "src/minigames/d_s_mg_hanachan.cpp": ["param:#2 int", "param:#3 int", "param:#4 void *", "param:#5 void *"],
    "src/minigames/d_s_mg_jump2.cpp": ["param:#2 int", "param:#3 int", "param:#4 void *", "param:#5 void *"],
    "src/minigames/d_s_mg_m_carlo.cpp": ["param:#2 int", "param:#3 int", "param:#4 void *", "param:#5 void *"],
