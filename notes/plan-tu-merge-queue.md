@@ -231,7 +231,7 @@ first module where a `config_tu/` conversion becomes conceivable.
 |[ov022](../config/arm9/overlays/ov022/symbols.txt)| 0x2112130|  n=7|   `daObjFl_UkiKi_c`|            CONF2|
 |[ov025](../config/arm9/overlays/ov025/symbols.txt)| 0x2111d40|  n=9|   `PyramidStep`|          CONF1|
 |[ov032](../config/arm9/overlays/ov032/symbols.txt)| 0x2112698|  n=7|   `daObjTdWater_c`|            CONF2|
-|[ov033](../config/arm9/overlays/ov033/symbols.txt)| 0x21113d4|  n=7|   `TinyWater`|            CONF3 pcov=2|
+|[ov033](../config/arm9/overlays/ov033/symbols.txt)| 0x21113d4|  n=7|   `daObjTtWater_c`|            CONF3 pcov=2|
 
 
 **B8 — R1 · 7 TUs / 50 files / net −43 / 1,286 lines**

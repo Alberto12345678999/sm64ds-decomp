@@ -4467,10 +4467,16 @@
     "src/actors/daObjWlKoopaShutter_c.cpp#_ZN21daObjWlKoopaShutter_c8BehaviorEv": "tangosdev",
     "src/actors/daObjWlKoopaShutter_c.cpp#_ZN21daObjWlKoopaShutter_cD0Ev": "andrewboudreau",
     "src/actors/daObjWlKoopaShutter_c.cpp#_ZN21daObjWlKoopaShutter_cD1Ev": "tangosdev",
-    "src/actors/daObjCloset_c.cpp#_ZN13daObjCloset_cD1Ev": "tangosdev",
-    "src/actors/daObjCloset_c.cpp#_ZN13daObjCloset_cD0Ev": "tangosdev",
+    "src/actors/daObjTtWater_c.cpp#_ZN14daObjTtWater_c13InitResourcesEv": "tangosdev",
+    "src/actors/daObjTtWater_c.cpp#_ZN14daObjTtWater_c16CleanupResourcesEv": "tangosdev",
+    "src/actors/daObjTtWater_c.cpp#_ZN14daObjTtWater_c6RenderEv": "tangosdev",
+    "src/actors/daObjTtWater_c.cpp#_ZN14daObjTtWater_c8BehaviorEv": "andrewboudreau",
+    "src/actors/daObjTtWater_c.cpp#_ZN14daObjTtWater_cD0Ev": "andrewboudreau",
+    "src/actors/daObjTtWater_c.cpp#_ZN14daObjTtWater_cD1Ev": "andrewboudreau",
+    "src/actors/daObjCloset_c.cpp#_ZN13daObjCloset_c13InitResourcesEv": "tangosdev",
     "src/actors/daObjCloset_c.cpp#_ZN13daObjCloset_c16CleanupResourcesEv": "tangosdev",
     "src/actors/daObjCloset_c.cpp#_ZN13daObjCloset_c8BehaviorEv": "lunavyqo",
-    "src/actors/daObjCloset_c.cpp#_ZN13daObjCloset_c13InitResourcesEv": "tangosdev"
+    "src/actors/daObjCloset_c.cpp#_ZN13daObjCloset_cD0Ev": "tangosdev",
+    "src/actors/daObjCloset_c.cpp#_ZN13daObjCloset_cD1Ev": "tangosdev"
   }
 }

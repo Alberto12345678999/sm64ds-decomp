@@ -291,7 +291,7 @@ daObjTatefuda_c	DONE	include\SignPost.h  [alias: header uses pre-rename name]	dB
 daObjTdFuta_c	DONE	include\daObjTdFuta_c.h	dBgActor_c	0	ov032	6
 daObjTdWater_c	DONE	include\daObjTdWater_c.h	dBgActor_c	0	ov032	6
 daObjTtFuta_c	MISSING	include/daObjTtFuta_c.h (MISSING)	dBgActor_c	0	ov033	0
-daObjTtWater_c	DONE	include\TinyWater.h  [alias: header uses pre-rename name]	dBgActor_c	0	ov033	6
+daObjTtWater_c	DONE	include\daObjTtWater_c.h  [alias: header uses pre-rename name]	dBgActor_c	0	ov033	6
 daObjWanwanShutter_c	DONE	include\daObjWanwanShutter_c.h	dBgActor_c	0	ov014	6
 daObjWc_Mizu_c	DONE	include\daObjWc_Mizu_c.h	dBgActor_c	0	ov029	6
 daObjWc_Obj02_c	DONE	include\daObjWc_Obj02_c.h	dBgActor_c	0	ov029	6

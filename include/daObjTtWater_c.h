@@ -1,5 +1,5 @@
-#ifndef TINYWATER_H
-#define TINYWATER_H
+#ifndef DAOBJTTWATER_C_H
+#define DAOBJTTWATER_C_H
 
 #include "types.h"
 #include "dBgW_KcMbg.h"
@@ -19,7 +19,7 @@
 #include "dBgActor_c.h"
 #include "TextureTransformer.h"
 
-struct TinyWater : dBgActor_c {
+struct daObjTtWater_c : dBgActor_c {
     u8  pad_31e[0x2];
     TextureTransformer mTextureTransformer;/* 0x320 */
     s32 mMinPosY;                      /* 0x334 */
@@ -32,7 +32,7 @@ struct TinyWater : dBgActor_c {
     u16 mSoundTimer;              /* 0x33c */
 
     /* --- vtable --- */
-    virtual ~TinyWater();
+    virtual ~daObjTtWater_c();
 
     int Behavior();
     int CleanupResources();
@@ -42,7 +42,7 @@ struct TinyWater : dBgActor_c {
 
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
-typedef char TinyWater_size_must_be_0x340[sizeof(TinyWater) == 0x340 ? 1 : -1];
+typedef char daObjTtWater_c_size_must_be_0x340[sizeof(daObjTtWater_c) == 0x340 ? 1 : -1];
 #endif
 
 #else
@@ -50,7 +50,7 @@ typedef char TinyWater_size_must_be_0x340[sizeof(TinyWater) == 0x340 ? 1 : -1];
 /* The C spelling of the same object, flat. Kept because the D0 file is a C
    translation unit that reads these fields, and D0 is compiler-generated so it
    can never be migrated. Same arrangement as include/ShadowModel.h. */
-struct TinyWater {
+struct daObjTtWater_c {
     u8  pad_000[0x60];
     s32 mPosY;            /* 0x060 */
     u8  pad_064[0x2a];
@@ -61,14 +61,14 @@ struct TinyWater {
        short of the object, so the member also takes over unk_0dc (+0x8 = data), which the
        header declared separately inside it. */
     Model mModel;            /* 0x0d4 */
-    /* dBgW_KcMbg member. The cartridge's own ~TinyWater calls _ZN10dBgW_KcMbgD1Ev at
+    /* dBgW_KcMbg member. The cartridge's own ~daObjTtWater_c calls _ZN10dBgW_KcMbgD1Ev at
        +0x124 (D0/D1), a relocation the ROM build checks; recovered by
        tools/dtor_members.py. D1 and not D2, so it is this type and not an inlined base. */
     dBgW_KcMbg mMeshCollider;            /* 0x124 */
     u8  pad_2ec[0x34];
     /* TextureTransformer member, named by the class's own destructor calling
        TextureTransformer's D1 at +0x320 -- a relocation the ROM build
-       checks. Was a u8 marker. [_ZN9TinyWaterD1Ev.c] */
+       checks. Was a u8 marker. [_ZN14daObjTtWater_cD1Ev.c] */
     TextureTransformer mTextureTransformer;            /* 0x320 */
     s32 mMinPosY;            /* 0x334 */
     s32 mSoundID;            /* 0x338 */
@@ -77,4 +77,4 @@ struct TinyWater {
 
 #endif /* __cplusplus */
 
-#endif /* TINYWATER_H */
+#endif /* DAOBJTTWATER_C_H */
