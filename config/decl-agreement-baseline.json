@@ -26348,6 +26348,9 @@
     "data_ov004_020beb60": {
       "src/func_ov004_020adc4c.c": [
         "return:int []"
+      ],
+      "src/minigames/d_s_mg_base.cpp": [
+        "return:void *"
       ]
     },
     "data_ov004_020beb68": {
