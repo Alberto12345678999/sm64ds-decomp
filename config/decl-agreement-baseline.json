@@ -2249,14 +2249,6 @@
         "param:#1 const Vector3 *",
         "param:#2 const Matrix4x3 *"
       ],
-      "src/_ZN19daObjFlamethrower_c13InitResourcesEv.cpp": [
-        "param:#1 Vec3 *",
-        "param:#3 Vec3 *"
-      ],
-      "src/_ZN19daObjFlamethrower_c8BehaviorEv.cpp": [
-        "param:#1 int *",
-        "param:#3 int *"
-      ],
       "src/_ZN25RotatingUpDownPlatformUtm13InitResourcesEv.cpp": [
         "param:#1 const Vector3 *",
         "param:#2 const Matrix4x3 *"
@@ -2283,6 +2275,10 @@
       "src/actors/daMip_c.cpp": [
         "param:#1 const void *",
         "param:#2 const void *"
+      ],
+      "src/actors/daObjFlamethrower_c.cpp": [
+        "param:#1 int *",
+        "param:#3 int *"
       ],
       "src/actors/daObjKurumajiku_c.cpp": [
         "param:#1 const Vector3 *",
@@ -4480,11 +4476,6 @@
         "param:#2 Vector3 *",
         "param:#3 Vector3 *"
       ],
-      "src/_ZN19daObjFlamethrower_c8BehaviorEv.cpp": [
-        "param:#1 int *",
-        "param:#2 int *",
-        "param:#3 int *"
-      ],
       "src/_ZN25RotatingUpDownPlatformUtm13InitResourcesEv.cpp": [
         "param:#1 Vector3 *",
         "param:#2 Vector3 *",
@@ -4504,6 +4495,11 @@
         "param:#1 Vector3 *",
         "param:#2 Vector3 *",
         "param:#3 Vector3 *"
+      ],
+      "src/actors/daObjFlamethrower_c.cpp": [
+        "param:#1 int *",
+        "param:#2 int *",
+        "param:#3 int *"
       ],
       "src/actors/daObjKurumajiku_c.cpp": [
         "param:#1 Vector3 *",
@@ -12295,10 +12291,6 @@
         "param:#4 const void *",
         "return:unsigned int"
       ],
-      "src/_ZN19daObjFlamethrower_c8BehaviorEv.cpp": [
-        "param:#4 const Vector3 *",
-        "return:unsigned int"
-      ],
       "src/_ZN25RotatingUpDownPlatformUtm8BehaviorEv.cpp": [
         "param:#4 const Vector3 *",
         "param:#5 unsigned int"
@@ -12359,6 +12351,10 @@
         "param:#4 void *",
         "param:#5 unsigned int",
         "return:void *"
+      ],
+      "src/actors/daObjFlamethrower_c.cpp": [
+        "param:#4 const Vector3 *",
+        "return:unsigned int"
       ],
       "src/actors/daObjSlIceBlock_c.cpp": [
         "param:#4 void *",
@@ -13520,9 +13516,6 @@
       "include/decl_Player.h": [
         "return:void"
       ],
-      "src/_ZN19daObjFlamethrower_c8BehaviorEv.cpp": [
-        "return:void"
-      ],
       "src/_ZN7daBbl_c8BehaviorEv.cpp": [
         "return:void"
       ],
@@ -13530,6 +13523,9 @@
         "return:void"
       ],
       "src/actors/daObjFire_c.cpp": [
+        "return:void"
+      ],
+      "src/actors/daObjFlamethrower_c.cpp": [
         "return:void"
       ],
       "src/func_ov060_02116740.cpp": [
@@ -15931,9 +15927,6 @@
       "src/_ZN17BowserPuzzlePiece8BehaviorEv.cpp": [
         "return:char *"
       ],
-      "src/_ZN19daObjFlamethrower_c8BehaviorEv.cpp": [
-        "return:char *"
-      ],
       "src/_ZN5Unagi8BehaviorEv.cpp": [
         "return:void *"
       ],
@@ -15978,6 +15971,9 @@
       ],
       "src/actors/daObjCloset_c.cpp": [
         "return:void *"
+      ],
+      "src/actors/daObjFlamethrower_c.cpp": [
+        "return:char *"
       ],
       "src/actors/daObjKanban_c.cpp": [
         "return:void *"
@@ -17858,7 +17854,7 @@
       ]
     },
     "_ZN8dCcPos_c4InitERK7Vector35Fix12IiES4_jj": {
-      "src/_ZN19daObjFlamethrower_c13InitResourcesEv.cpp": [
+      "src/actors/daObjFlamethrower_c.cpp": [
         "param:#2 Vec3 *"
       ],
       "src/game/actors/d_a_tree.cpp": [
@@ -36389,16 +36385,6 @@
         "arity:0"
       ]
     },
-    "func_02022774": {
-      "src/_ZN19daObjFlamethrower_c8BehaviorEv.cpp": [
-        "param:#5 int"
-      ]
-    },
-    "func_02022864": {
-      "src/_ZN19daObjFlamethrower_c8BehaviorEv.cpp": [
-        "param:#5 int"
-      ]
-    },
     "func_02022cbc": {
       "include/decl_common.h": [
         "param:#1 int",
@@ -47920,6 +47906,16 @@
       "src/ShowCrashScreen.c": [
         "param:#2 const char *",
         "param:#3 unsigned int"
+      ]
+    },
+    "func_02022774": {
+      "src/actors/daObjFlamethrower_c.cpp": [
+        "param:#5 int"
+      ]
+    },
+    "func_02022864": {
+      "src/actors/daObjFlamethrower_c.cpp": [
+        "param:#5 int"
       ]
     }
   }
