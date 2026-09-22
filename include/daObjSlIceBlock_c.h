@@ -1,5 +1,5 @@
-#ifndef SLIDINGICE_H
-#define SLIDINGICE_H
+#ifndef DAOBJSLICEBLOCK_C_H
+#define DAOBJSLICEBLOCK_C_H
 
 #include "types.h"
 #include "dBgW_KcMbg.h"
@@ -23,7 +23,7 @@
 
 #include "dBgActor_c.h"
 
-struct SlidingIce : dBgActor_c {
+struct daObjSlIceBlock_c : dBgActor_c {
     s16 mDelayTimer;                  /* 0x31e -- DecIfAbove0_Short; both variants of Behavior do nothing until it reaches 0 */
     s8 mNumToBigIce;                       /* 0x320 */
     u8  pad_321[0x3];
@@ -31,7 +31,7 @@ struct SlidingIce : dBgActor_c {
     s32 mSoundID;                      /* 0x328 */
 
     /* --- vtable --- */
-    virtual ~SlidingIce();
+    virtual ~daObjSlIceBlock_c();
 
     int Behavior();
     int CleanupResources();
@@ -43,15 +43,14 @@ struct SlidingIce : dBgActor_c {
 
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
-typedef char SlidingIce_size_must_be_0x32c[sizeof(SlidingIce) == 0x32c ? 1 : -1];
+typedef char daObjSlIceBlock_c_size_must_be_0x32c[sizeof(daObjSlIceBlock_c) == 0x32c ? 1 : -1];
 #endif
 
 #else
 
-/* The C spelling of the same object, flat. Kept because the D0 file is a C
-   translation unit that reads these fields, and D0 is compiler-generated so it
-   can never be migrated. Same arrangement as include/ShadowModel.h. */
-struct SlidingIce {
+/* The C spelling of the same object, flat. Kept because C factories and
+   leftover C TUs still read these fields. Same arrangement as include/ShadowModel.h. */
+struct daObjSlIceBlock_c {
     u8  pad_000[0xc];
     u16 mActorID;            /* 0x00c */
     u8  pad_00e[0x4e];
@@ -70,7 +69,7 @@ struct SlidingIce {
     /* Model member, named by _ZN5ModelD1Ev at +0xd4 -- a relocation the ROM build checks.
        D1 and not D2, so it is this type and not an inlined base. Was a u8 marker. */
     Model mModel;            /* 0x0d4 */
-    /* dBgW_KcMbg member. The cartridge's own ~SlidingIce calls _ZN10dBgW_KcMbgD1Ev at
+    /* dBgW_KcMbg member. The cartridge's own ~daObjSlIceBlock_c calls _ZN10dBgW_KcMbgD1Ev at
        +0x124 (D0/D1), a relocation the ROM build checks; recovered by
        tools/dtor_members.py. D1 and not D2, so it is this type and not an inlined base.
        The marker's pad stopped short of the object, so the member also takes over
@@ -87,4 +86,4 @@ struct SlidingIce {
 
 #endif /* __cplusplus */
 
-#endif /* SLIDINGICE_H */
+#endif /* DAOBJSLICEBLOCK_C_H */

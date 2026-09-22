@@ -2022,7 +2022,6 @@ class RealTreeStaticMemberTests(unittest.TestCase):
         self.assertEqual(verdicts.count(CDA.AMBIGUOUS_MEMBER), 0)
 
 
-
 class NativeFreeOverloadTests(unittest.TestCase):
     """Native short/int overloads must not share whichever body was scanned first."""
 
@@ -2095,6 +2094,139 @@ class NativeFreeOverloadTests(unittest.TestCase):
         findings, _, _, _ = self.fixture(
             "extern int ApproachLinear(int *, int, int);\n")
         self.assertEqual([f["kind"] for f in findings], ["param"])
+
+
+class NativeDestructorTests(unittest.TestCase):
+    """Source syntax and a precisely mapped direct Arm ABI entry stay distinct."""
+
+    def inspect(self, declaration, variant="D1", owner="Widget", mark=None):
+        symbol = mark or "_ZN%d%s%sEv" % (len(owner), owner, variant)
+        def tree(t):
+            t.write("include/Widget.h", "struct Widget { Widget(); ~Widget(); };\n")
+            t.write("src/native.cpp", "// @symbol %s\n%s::~%s() {}\n" %
+                    (symbol, owner, owner))
+            t.write("src/caller.cpp", 'extern "C" ' + declaration % symbol + ';\n')
+        findings, decls, defs, _ = build(tree)
+        return findings, defs
+
+    def test_source_sentinel_and_real_receiver(self):
+        findings, defs = self.inspect("Widget *%s(Widget *)")
+        self.assertEqual(findings, [])
+        self.assertEqual(defs[0].ret, "<destructor Widget>")
+        self.assertTrue(defs[0].is_member)
+        self.assertEqual(defs[0].flat_params(), ("<this>",))
+
+    def test_complete_and_base_direct_entries_return_receiver(self):
+        for variant in ("D1", "D2"):
+            for signature in ("Widget *%s(Widget *)", "void *%s(void *)"):
+                with self.subTest(variant=variant, signature=signature):
+                    self.assertEqual(self.inspect(signature, variant)[0], [])
+
+    def test_nonpointer_or_wrong_typed_result_still_fails(self):
+        for result in ("int", "float", "void", "Other *", "const Widget *"):
+            with self.subTest(result=result):
+                rows, _ = self.inspect(result + " %s(Widget *)")
+                self.assertEqual([r['kind'] for r in rows], ['return'])
+
+    def test_missing_or_extra_lifecycle_arguments_still_fail(self):
+        for params in ("void", "Widget *, int"):
+            with self.subTest(params=params):
+                rows, _ = self.inspect("Widget *%s(" + params + ")")
+                self.assertIn('arity', [r['kind'] for r in rows]); self.assertTrue(all(r['kind'] in ('arity', 'mangled') for r in rows))
+
+    def test_nonpointer_receiver_still_fails(self):
+        for receiver in ("int", "float"):
+            with self.subTest(receiver=receiver):
+                rows, _ = self.inspect("Widget *%s(" + receiver + ")")
+                self.assertEqual([r['kind'] for r in rows], ['param'])
+                self.assertIn("implicit this", rows[0]['want'])
+
+    def test_receiver_views_keep_existing_member_compatibility(self):
+        # This is the existing <this> policy, not acceptance of these source views.
+        for receiver in ("Other *", "const Widget *", "const void *", "Widget **", "Widget &"):
+            with self.subTest(receiver=receiver):
+                self.assertEqual(self.inspect("Widget *%s(" + receiver + ")")[0], [])
+
+    def test_six_existing_storage_views_do_not_gain_parameter_findings(self):
+        examples = (
+            ("dBgPi", "dBgPiLoc *", "src/_ZN10dBgCh_Actr16UpdateContinuousEv.cpp"),
+            ("dBgPi", "dBgPiLoc *", "src/_ZN10dBgCh_Actr20UpdateExtraContinousEv.cpp"),
+            ("dBgPi", "dBgPiLoc *", "src/_ZN10dBgCh_Actr22UpdateContinuousNoLavaEv.cpp"),
+            ("dBgPi", "dBgPiRaw *", "src/game/actors/d_a_pg_mthr.cpp"),
+            ("dBgCh_Gnd", "RG *", "src/func_ov002_020b94c4.c"),
+            ("dBgCh_Gnd", "char *", "src/actors/daObjMarioCap_c.cpp"),
+        )
+        for owner, receiver, path in examples:
+            symbol = "_ZN%d%sD1Ev" % (len(owner), owner)
+            def tree(t):
+                t.write("src/native.cpp", "// @symbol %s\n%s::~%s() {}\n" % (symbol, owner, owner))
+                linkage = 'extern "C" ' if path.endswith('.cpp') else 'extern '
+                t.write(path, linkage + "void %s(%s);\n" % (symbol, receiver))
+            with self.subTest(path=path):
+                rows, _, _, _ = build(tree)
+                # The existing false written result is still reported; neither
+                # implicit receiver arity nor its storage view invents another key.
+                self.assertEqual([r['kind'] for r in rows], ['return'])
+
+    def test_deleting_destructor_does_not_get_receiver_result_exemption(self):
+        self.assertEqual(self.inspect("void %s(Widget *)", "D0")[0], [])
+        for result in ("Widget *", "void *", "int"):
+            with self.subTest(result=result):
+                rows, _ = self.inspect(result + " %s(Widget *)", "D0")
+                self.assertEqual([r['kind'] for r in rows], ['return'])
+        rows, _ = self.inspect("void %s(Widget *, int)", "D0")
+        self.assertIn('arity', [r['kind'] for r in rows]); self.assertTrue(all(r['kind'] in ('arity', 'mangled') for r in rows))
+
+    def test_constructor_parsing_is_not_invented(self):
+        source = '// @symbol _ZN6WidgetC1Ev\nWidget::Widget() {}\n'
+        decls, defs, _ = CDA.parse_file("src/native.cpp", source, {})
+        self.assertEqual(defs, [])
+
+    def test_explicit_flat_lifecycle_definition_is_not_overridden(self):
+        def tree(t):
+            t.write("src/native.cpp", 'extern "C" int _ZN6WidgetD1Ev(void *p) { return 1; }\n')
+            t.write("src/caller.cpp", 'extern "C" Widget *_ZN6WidgetD1Ev(Widget *p);\n')
+        rows, _, _, _ = build(tree)
+        self.assertEqual([r['kind'] for r in rows], ['return'])
+        self.assertEqual(rows[0]['want'], 'int')
+
+    def test_thunk_or_wrong_owner_identity_has_no_abi_inference(self):
+        for symbol in ('_ZThn4_N6WidgetD1Ev', '_ZN5OtherD1Ev', '_ZN6WidgetD1Ei'):
+            with self.subTest(symbol=symbol):
+                rows, defs = self.inspect('Widget *%s(Widget *)', mark=symbol)
+                self.assertTrue(rows)
+                self.assertIsNone(CDA._native_destructor_abi(defs[0]))
+                self.assertFalse(defs[0].is_member)
+                self.assertEqual(defs[0].ret, 'Widget::')
+
+    def test_ambiguous_unmarked_definition_is_not_adopted(self):
+        source = '// @symbol _ZN6WidgetD1Ev\nextern void helper();\nWidget::~Widget() {}\nOther::~Other() {}\n'
+        _, defs, _ = CDA.parse_file('src/native.cpp', source, {})
+        self.assertEqual(defs, [])
+
+    def test_single_orphan_retains_destructor_metadata(self):
+        source = '// @symbol _ZN6WidgetD1Ev\nextern void helper();\nWidget::~Widget() {}\n'
+        _, defs, _ = CDA.parse_file('src/native.cpp', source, {})
+        self.assertEqual(len(defs), 1)
+        self.assertEqual(CDA._native_destructor_abi(defs[0]), ('Widget', 'Widget *'))
+
+    def test_nested_qualified_owner_is_exact(self):
+        source = '// @symbol _ZN1N6WidgetD1Ev\nN::Widget::~Widget() {}\n'
+        _, defs, _ = CDA.parse_file('src/native.cpp', source, {})
+        self.assertEqual(CDA._native_destructor_abi(defs[0]), ('N::Widget', 'N::Widget *'))
+
+    def test_void_parameter_and_exception_specification(self):
+        source = '// @symbol _ZN6WidgetD1Ev\nWidget::~Widget(void) throw() {}\n'
+        _, defs, _ = CDA.parse_file('src/native.cpp', source, {})
+        self.assertEqual(CDA._native_destructor_abi(defs[0]), ('Widget', 'Widget *'))
+
+    def test_unrelated_return_and_linkage_findings_are_preserved(self):
+        def tree(t):
+            t.symbols(['ordinary'])
+            t.write('src/ordinary.cpp', 'extern "C" int ordinary(int n) { return n; }\n')
+            t.write('src/caller.cpp', 'extern void ordinary(float n);\n')
+        rows, _, _, _ = build(tree)
+        self.assertEqual({r['kind'] for r in rows}, {'return', 'param', 'linkage'})
 
 
 if __name__ == "__main__":
