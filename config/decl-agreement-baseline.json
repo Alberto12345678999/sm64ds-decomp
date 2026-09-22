@@ -37058,6 +37058,9 @@
       ],
       "src/actors/daObjFl_Ukiyuka_c.cpp": [
         "param:#1 dBgW *"
+      ],
+      "src/game/actors/d_a_obj_fl_maruta.cpp": [
+        "param:#1 dBgW_KcMbg *"
       ]
     },
     "func_020393ac": {
