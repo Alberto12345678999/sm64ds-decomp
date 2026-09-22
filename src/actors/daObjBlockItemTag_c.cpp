@@ -16,18 +16,17 @@
  * constructor and install this same table: the item-tag variants for One-Up
  * Mushroom, Mega Mushroom, Koopa Shell and Silver Star blocks.
  *
- * FUNCTION ORDER IS THE REVERSE OF THE ROM'S. mwccarm 2004/b56 emits one .text
- * section per function in the reverse of source order, so the HIGHEST-address
- * ROM function (_ZN19daObjBlockItemTag_c13InitResourcesEv, 0x020b451c) is written
- * FIRST and the lowest (_ZN19daObjBlockItemTag_cD1Ev, 0x020b415c) LAST. Do not
- * reorder. The destructor's D0/D1 pair is the one documented exception:
- * written out of line, mwcc emits the synthesized D0 ahead of the written D1,
- * which is the reverse of the cartridge, so the verifier reports the ordinal
- * pair (0, 1) as PARTIAL -- compiler-chosen order, not a bug (see
- * notes/tu-reconstruction-pilot-report.md sec 3).
+ * FUNCTION ORDER IS THE ROM'S OWN, under `#pragma defer_codegen off`.
+ * Deferred code generation stays off for this TU so mwccarm emits one .text
+ * section per function in SOURCE order: the lowest-address ROM function
+ * (_ZN19daObjBlockItemTag_cD1Ev, 0x020b415c) is written FIRST and the highest
+ * (_ZN19daObjBlockItemTag_c13InitResourcesEv, 0x020b451c) LAST. Do not reorder.
+ * The verifier reports all 10 sections in the expected ROM-ascending order.
  *
  * THE DESTRUCTOR IS ONE DEFINITION AND TWO SECTIONS (plus a homeless D2).
- * A single `daObjBlockItemTag_c::~daObjBlockItemTag_c()` emits D1 and D0, in
+ * A single `daObjBlockItemTag_c::~daObjBlockItemTag_c()` emits D1 and D0, and
+ * with deferred code generation off they land in the cartridge's order, D1
+ * first at 0x020b415c and D0 at 0x020b4180.
  * compiler order, which is exactly the cartridge's (0x020b415c D1, 0x020b4180
  * D0). The homeless D2 has no ROM symbol and no inbound relocation once the
  * leaf D1/D0 pair is retained, so the manifest licenses it as deadstrip
@@ -61,7 +60,7 @@
 #include "decl_common.h"
 #include "SharedFilePtr.h"
 #include "dActor_c.h"
-#include "BigBrickBlock.h"
+#include "daObjBlockL_c.h"
 #include "Model.h"
 
 /* Local shadow declarations carried from the legacy files verbatim.
@@ -79,6 +78,162 @@ extern char data_ov002_0210da18[];
 extern "C" ItemTagAction data_ov002_0210dd30[];
 extern s32 Vec3_Dist(const void *a, const void *b);
 extern void LoadSilverStarAndNumber();
+}
+
+#pragma defer_codegen off
+
+/* -------------------------------------------------------------------------- */
+/* ROM ordinals 0/1 -- _ZN19daObjBlockItemTag_cD1Ev 0x020b415c, _ZN19daObjBlockItemTag_cD0Ev 0x020b4180. */
+/* ONE definition, two emitted sections.                                          */
+/* -------------------------------------------------------------------------- */
+// @symbol _ZN19daObjBlockItemTag_cD1Ev
+// @symbol _ZN19daObjBlockItemTag_cD0Ev
+/* Genuine destructor. A single `daObjBlockItemTag_c::~daObjBlockItemTag_c()`
+ * emits D1 and D0, in compiler order, which is exactly the cartridge's
+ * (0x020b415c D1, 0x020b4180 D0). D0 additionally returns the object to the
+ * actor heap through dActor_c's inline operator delete, which is why nothing
+ * below mentions a heap. The raw compiler object also materializes this
+ * class's vtable and RTTI passengers; objisolate retains only licensed text. */
+daObjBlockItemTag_c::~daObjBlockItemTag_c()
+{
+}
+/* -------------------------------------------------------------------------- */
+/* ROM ordinal 2 -- _ZN19daObjBlockItemTag_c11GetSpawnPosER7Vector3RS_, 0x020b41b8, size 0x40 */
+/* -------------------------------------------------------------------------- */
+// @symbol _ZN19daObjBlockItemTag_c11GetSpawnPosER7Vector3RS_
+void daObjBlockItemTag_c::GetSpawnPos(Vector3 &destination, daObjBlockItemTag_c &tag)
+{
+    u8 index = tag.mActionIndex;
+    s32 z = tag.mPosZ;
+    s32 y = tag.mPosY + data_ov002_020ff090[index];
+    s32 x = tag.mPosX;
+
+    destination.x = x;
+    destination.y = y;
+    destination.z = z;
+}
+
+/* -------------------------------------------------------------------------- */
+/* ROM ordinal 3 -- _ZN19daObjBlockItemTag_c15SpawnKoopaShellEv, 0x020b41f8, size 0x58 */
+/* -------------------------------------------------------------------------- */
+// @symbol _ZN19daObjBlockItemTag_c15SpawnKoopaShellEv
+void daObjBlockItemTag_c::SpawnKoopaShell()
+{
+    Vector3 spawnPos;
+    GetSpawnPos(spawnPos, *this);
+    dActor_c *shell = Spawn(0x11d, 0, spawnPos, 0, mAreaId, -1);
+    if (shell)
+        *(u8 *)((char *)shell + 0x3c6) = 0xb4;
+}
+
+/* -------------------------------------------------------------------------- */
+/* ROM ordinal 4 -- _ZN19daObjBlockItemTag_c17SpawnMegaMushroomEv, 0x020b4250, size 0x4c */
+/* -------------------------------------------------------------------------- */
+// @symbol _ZN19daObjBlockItemTag_c17SpawnMegaMushroomEv
+void daObjBlockItemTag_c::SpawnMegaMushroom()
+{
+    Vector3 spawnPos;
+    GetSpawnPos(spawnPos, *this);
+    Spawn(0x115, 0, spawnPos, 0, mAreaId, -1);
+}
+
+/* -------------------------------------------------------------------------- */
+/* ROM ordinal 5 -- _ZN19daObjBlockItemTag_c18SpawnOneUpMushroomEv, 0x020b429c, size 0x48 */
+/* -------------------------------------------------------------------------- */
+// @symbol _ZN19daObjBlockItemTag_c18SpawnOneUpMushroomEv
+void daObjBlockItemTag_c::SpawnOneUpMushroom()
+{
+    Vector3 spawnPos;
+    GetSpawnPos(spawnPos, *this);
+    Spawn(0x114, 0, spawnPos, 0, mAreaId, -1);
+}
+
+/* -------------------------------------------------------------------------- */
+/* ROM ordinal 6 -- _ZN19daObjBlockItemTag_c15SpawnSilverStarEv, 0x020b42e4, size 0xb0 */
+/* -------------------------------------------------------------------------- */
+// @symbol _ZN19daObjBlockItemTag_c15SpawnSilverStarEv
+void daObjBlockItemTag_c::SpawnSilverStar()
+{
+    Vector3 spawnPos;
+    dActor_c *starMarker;
+    dActor_c *silverStar;
+
+    UntrackStar(mTrackStarID);
+    GetSpawnPos(spawnPos, *this);
+    starMarker = Spawn(0xb4, 0x50, spawnPos, 0, mAreaId, -1);
+    silverStar = Spawn(0xb3, mStarID | 0x10, spawnPos, 0, mAreaId, -1);
+    if (starMarker == 0)
+        return;
+    if (silverStar == 0)
+        return;
+
+    /* Silver Star's marker-owner unique ID is the word at 0x434. */
+    *(u32 *)((char *)silverStar + 0x434) = starMarker->uniqueID;
+    LinkSilverStarAndStarMarker(starMarker, silverStar);
+}
+
+/* -------------------------------------------------------------------------- */
+/* ROM ordinal 7 -- _ZN19daObjBlockItemTag_c16CleanupResourcesEv, 0x020b4394, size 0x78 */
+/* -------------------------------------------------------------------------- */
+// @symbol _ZN19daObjBlockItemTag_c16CleanupResourcesEv
+/* recovered: named members + shared header, real C++ method, declarations from a shared header */
+/* recovered: named members + shared header, real C++ method */
+int daObjBlockItemTag_c::CleanupResources()
+{
+  int v = actorID;
+  switch(v){
+  case 0x141: ((SharedFilePtr *)(data_ov002_0210d9d8))->Release(); break;
+  case 0x142: ((SharedFilePtr *)(data_ov002_0210da30))->Release(); break;
+  case 0x143: ((SharedFilePtr *)(data_ov002_0210da18))->Release(); break;
+  case 0x144: UnloadSilverStarAndNumber(); break;
+  }
+  return 1;
+}
+
+/* -------------------------------------------------------------------------- */
+/* ROM ordinal 8 -- _ZN19daObjBlockItemTag_c8BehaviorEv, 0x020b440c, size 0x110 */
+/* -------------------------------------------------------------------------- */
+// @symbol _ZN19daObjBlockItemTag_c8BehaviorEv
+int daObjBlockItemTag_c::Behavior()
+{
+    dActor_c *block = 0;
+    if (mIsAttached != 0)
+        goto attached;
+
+    block = dActor_c::Next(0);
+    while (block) {
+        u16 type = block->actorID;
+        int isBlock;
+        isBlock = (type == 0x10);
+        if (!isBlock) {
+            isBlock = (type == 0x0f);
+            if (!isBlock) {
+                isBlock = (type == 0x11);
+                if (!isBlock)
+                    goto next;
+            }
+        }
+        if (Vec3_Dist(&mPosX, &block->mPosX) < 0x32000) {
+            ((daObjBlockL_c *)block)->mLinkedActor = this;
+            mIsAttached = 1;
+            return 1;
+        }
+    next:
+        block = dActor_c::Next(block);
+    }
+
+    if (block)
+        goto attached;
+    MarkForDestruction();
+    return 1;
+
+attached:
+    if (mActionPending != 0) {
+        int index = mActionIndex;
+        (this->*data_ov002_0210dd30[index])();
+        MarkForDestruction();
+    }
+    return 1;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -113,159 +268,4 @@ int daObjBlockItemTag_c::InitResources()
         break;
     }
     return 1;
-}
-
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 8 -- _ZN19daObjBlockItemTag_c8BehaviorEv, 0x020b440c, size 0x110 */
-/* -------------------------------------------------------------------------- */
-// @symbol _ZN19daObjBlockItemTag_c8BehaviorEv
-int daObjBlockItemTag_c::Behavior()
-{
-    dActor_c *block = 0;
-    if (mIsAttached != 0)
-        goto attached;
-
-    block = dActor_c::Next(0);
-    while (block) {
-        u16 type = block->actorID;
-        int isBlock;
-        isBlock = (type == 0x10);
-        if (!isBlock) {
-            isBlock = (type == 0x0f);
-            if (!isBlock) {
-                isBlock = (type == 0x11);
-                if (!isBlock)
-                    goto next;
-            }
-        }
-        if (Vec3_Dist(&mPosX, &block->mPosX) < 0x32000) {
-            ((BigBrickBlock *)block)->mLinkedActor = this;
-            mIsAttached = 1;
-            return 1;
-        }
-    next:
-        block = dActor_c::Next(block);
-    }
-
-    if (block)
-        goto attached;
-    MarkForDestruction();
-    return 1;
-
-attached:
-    if (mActionPending != 0) {
-        int index = mActionIndex;
-        (this->*data_ov002_0210dd30[index])();
-        MarkForDestruction();
-    }
-    return 1;
-}
-
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 7 -- _ZN19daObjBlockItemTag_c16CleanupResourcesEv, 0x020b4394, size 0x78 */
-/* -------------------------------------------------------------------------- */
-// @symbol _ZN19daObjBlockItemTag_c16CleanupResourcesEv
-/* recovered: named members + shared header, real C++ method, declarations from a shared header */
-/* recovered: named members + shared header, real C++ method */
-int daObjBlockItemTag_c::CleanupResources()
-{
-  int v = actorID;
-  switch(v){
-  case 0x141: ((SharedFilePtr *)(data_ov002_0210d9d8))->Release(); break;
-  case 0x142: ((SharedFilePtr *)(data_ov002_0210da30))->Release(); break;
-  case 0x143: ((SharedFilePtr *)(data_ov002_0210da18))->Release(); break;
-  case 0x144: UnloadSilverStarAndNumber(); break;
-  }
-  return 1;
-}
-
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 6 -- _ZN19daObjBlockItemTag_c15SpawnSilverStarEv, 0x020b42e4, size 0xb0 */
-/* -------------------------------------------------------------------------- */
-// @symbol _ZN19daObjBlockItemTag_c15SpawnSilverStarEv
-void daObjBlockItemTag_c::SpawnSilverStar()
-{
-    Vector3 spawnPos;
-    dActor_c *starMarker;
-    dActor_c *silverStar;
-
-    UntrackStar(mTrackStarID);
-    GetSpawnPos(spawnPos, *this);
-    starMarker = Spawn(0xb4, 0x50, spawnPos, 0, mAreaId, -1);
-    silverStar = Spawn(0xb3, mStarID | 0x10, spawnPos, 0, mAreaId, -1);
-    if (starMarker == 0)
-        return;
-    if (silverStar == 0)
-        return;
-
-    /* Silver Star's marker-owner unique ID is the word at 0x434. */
-    *(u32 *)((char *)silverStar + 0x434) = starMarker->uniqueID;
-    LinkSilverStarAndStarMarker(starMarker, silverStar);
-}
-
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 5 -- _ZN19daObjBlockItemTag_c18SpawnOneUpMushroomEv, 0x020b429c, size 0x48 */
-/* -------------------------------------------------------------------------- */
-// @symbol _ZN19daObjBlockItemTag_c18SpawnOneUpMushroomEv
-void daObjBlockItemTag_c::SpawnOneUpMushroom()
-{
-    Vector3 spawnPos;
-    GetSpawnPos(spawnPos, *this);
-    Spawn(0x114, 0, spawnPos, 0, mAreaId, -1);
-}
-
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 4 -- _ZN19daObjBlockItemTag_c17SpawnMegaMushroomEv, 0x020b4250, size 0x4c */
-/* -------------------------------------------------------------------------- */
-// @symbol _ZN19daObjBlockItemTag_c17SpawnMegaMushroomEv
-void daObjBlockItemTag_c::SpawnMegaMushroom()
-{
-    Vector3 spawnPos;
-    GetSpawnPos(spawnPos, *this);
-    Spawn(0x115, 0, spawnPos, 0, mAreaId, -1);
-}
-
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 3 -- _ZN19daObjBlockItemTag_c15SpawnKoopaShellEv, 0x020b41f8, size 0x58 */
-/* -------------------------------------------------------------------------- */
-// @symbol _ZN19daObjBlockItemTag_c15SpawnKoopaShellEv
-void daObjBlockItemTag_c::SpawnKoopaShell()
-{
-    Vector3 spawnPos;
-    GetSpawnPos(spawnPos, *this);
-    dActor_c *shell = Spawn(0x11d, 0, spawnPos, 0, mAreaId, -1);
-    if (shell)
-        *(u8 *)((char *)shell + 0x3c6) = 0xb4;
-}
-
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 2 -- _ZN19daObjBlockItemTag_c11GetSpawnPosER7Vector3RS_, 0x020b41b8, size 0x40 */
-/* -------------------------------------------------------------------------- */
-// @symbol _ZN19daObjBlockItemTag_c11GetSpawnPosER7Vector3RS_
-void daObjBlockItemTag_c::GetSpawnPos(Vector3 &destination, daObjBlockItemTag_c &tag)
-{
-    u8 index = tag.mActionIndex;
-    s32 z = tag.mPosZ;
-    s32 y = tag.mPosY + data_ov002_020ff090[index];
-    s32 x = tag.mPosX;
-
-    destination.x = x;
-    destination.y = y;
-    destination.z = z;
-}
-
-/* -------------------------------------------------------------------------- */
-/* ROM ordinals 0/1 -- _ZN19daObjBlockItemTag_cD1Ev 0x020b415c, _ZN19daObjBlockItemTag_cD0Ev 0x020b4180. */
-/* ONE definition, two emitted sections.                                          */
-/* -------------------------------------------------------------------------- */
-// @symbol _ZN19daObjBlockItemTag_cD1Ev
-// @symbol _ZN19daObjBlockItemTag_cD0Ev
-/* Genuine destructor. A single `daObjBlockItemTag_c::~daObjBlockItemTag_c()`
- * emits D1 and D0, in compiler order, which is exactly the cartridge's
- * (0x020b415c D1, 0x020b4180 D0). D0 additionally returns the object to the
- * actor heap through dActor_c's inline operator delete, which is why nothing
- * below mentions a heap. The raw compiler object also materializes this
- * class's vtable and RTTI passengers; objisolate retains only licensed text. */
-daObjBlockItemTag_c::~daObjBlockItemTag_c()
-{
 }
