@@ -166,16 +166,8 @@
         "_ZN17daObjFl_Ukiyuka_cD2Ev"
       ],
       "droppedSections": [
-        5,
-        6,
-        7,
-        8,
         9,
         10,
-        11,
-        12,
-        13,
-        14,
         15,
         16,
         17,
@@ -187,7 +179,15 @@
         23,
         24,
         25,
-        26
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34
       ],
       "data": [
         "_ZTI17daObjFl_Ukiyuka_c",
@@ -224,7 +224,7 @@
       "every_declared_function_defined": "PASS",
       "every_declared_function_bytes_match": "PASS",
       "declared_function_set_equals_defined_function_set": "PASS",
-      "functions_occur_in_expected_order": "PARTIAL -- ordinal pair(s) not in ROM order: [(0, 1)]",
+      "functions_occur_in_expected_order": "PASS",
       "relocation_destinations_verified": "PASS"
     }
   }
