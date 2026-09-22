@@ -38,7 +38,8 @@ identifiers. The header's field/class reconstruction is unchanged.
 
 All three direct-histogram-pointer experiments were rejected under `2004/b56`
 with production flags (`-O4,p`, C++, exceptions off). Each changes only the
-specified initializer in this candidate; exact sources, objects, hashes and
+specified initializer in the pre-contract-repair snapshot, which emits the same
+complete baseline object; exact sources, objects, hashes and
 word offsets are preserved in the producer worktree's ignored
 `build/card-readable/experiments.json` and its sibling files.
 
@@ -103,3 +104,29 @@ all-open-PR worktree. This focused branch contains no aggregate PR merges.
 Attribution remains unchanged because no symbol, source owner or path moved.
 Private validation and GitHub Source review are pending; no merge is authorized
 by this handoff.
+
+## Independent review rework
+
+The first formal review returned this task to the producer with three open
+finding IDs. All are repaired in this commit and require fresh independent
+acceptance:
+
+- **CARD-READ-01:** use `Sound.h`'s `u32 Sound::PlayBank2_2D(u32)` declaration
+  instead of a local void return. The native definition agrees with the header.
+- **CARD-READ-02:** declare `RenderOamMainScreen` as void, matching its definition.
+- **CARD-READ-03:** give `DecompressLZ16` a pointer destination and use explicit
+  VRAM pointers at the two calls. Give `__cxa_vec_ctor` unsigned counts and real
+  element-callback function pointers; remove the callback-to-data-pointer casts.
+  The primitive and runtime definitions establish these contracts.
+- **CARD-READ-04:** callback-event and singleton-tie prose corrections remain fixed.
+- **CARD-READ-05:** the measured ABI/alias constraints and remaining reconstruction
+  above remain deferred to issue #2909 and the producer's second pass.
+
+`LoadFile` keeps its buffer-pointer return: the underlying helper returns allocated
+buffers that this TU decompresses and deallocates. Copying the raw legacy C
+wrapper's integer spelling would not improve that evidenced pointer contract.
+
+The repaired source still emits the identical 27,880-byte raw object with the
+SHA256 above. Producer rework uses the new private receipt in ignored build state;
+no verifier edited the candidate. Formal acceptance of the rejected predecessor
+is not claimed.

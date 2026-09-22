@@ -10,6 +10,7 @@
 #include "dScMgCard_c.h"
 #include "types.h"
 #include "decl_common.h"
+#include "Sound.h"
 
 /* By-value five-card ordering table. */
 typedef struct 
@@ -51,7 +52,7 @@ extern int RandomIntInternal(int *seed);
 extern int data_ov006_0213bd18[];
 extern int data_0209e650;
 extern "C" void func_ov006_020c0aa8(void *c);
-extern "C" int RenderOamMainScreen(int a0, int a1, int a2, int a3, int a4);
+extern "C" void RenderOamMainScreen(int a0, int a1, int a2, int a3, int a4);
 extern "C" void func_ov004_020b1bc8(char *a0, int a1, int a2, int a3);
 extern "C" void func_ov004_020b1e34(void *a0, int a1, int a2, int a3);
 extern "C" void func_ov006_020c1804(void *c);
@@ -88,12 +89,14 @@ see its own use below. */
 extern void func_ov006_0210a534(char *);
 extern void *LoadFile(int);
 extern int GetGameLanguage(void);
-extern void DecompressLZ16(void *, u32);
+extern void DecompressLZ16(void *, void *);
 extern int func_ov006_020c1a88(char *);
 void* _ZN7fBase_cnwEj(unsigned int);
 void _ZN11dScMgBase_cC2Ev(void*);
 void _ZN8Particle10SysTrackerC1Ev(void*);
-void __cxa_vec_ctor(void*, int, int, void*, void*);
+typedef void (*CardElementCallback)(void *);
+void __cxa_vec_ctor(void *, unsigned int, unsigned int,
+                    CardElementCallback, CardElementCallback);
 extern int _ZTV19dScMgSingle3DBase_c;
 extern int _ZTV11dScMgCard_c[];
 extern int _ZTV12dMgCardObj_c[];
@@ -139,11 +142,11 @@ extern "C" void* dScMgCard_c_classInit()
         *(int*)p = (int)&_ZTV11dScMgCard_c[2];
         func_ov006_020c1d80(p + 0x4f38);
         __cxa_vec_ctor(p + 0x51a8, 5, 0x30,
-                     (void*)_ZN12dMgCardObj_cC1Ev,
-                     (void*)_ZN12dMgCardObj_cD1Ev);
+                     _ZN12dMgCardObj_cC1Ev,
+                     _ZN12dMgCardObj_cD1Ev);
         __cxa_vec_ctor(p + 0x5298, 5, 0x30,
-                     (void*)_ZN17dMgDilarCardObj_cC1Ev,
-                     (void*)_ZN17dMgDilarCardObj_cD1Ev);
+                     _ZN17dMgDilarCardObj_cC1Ev,
+                     _ZN17dMgDilarCardObj_cD1Ev);
     }
     return p;
 }
@@ -166,7 +169,6 @@ extern "C" void* dScMgCard_c_classInit()
    namespace per include/Sound.h; GX/GXS are spelled as namespaces the same
    way, since a namespace and a class-only-statics mangle identically and
    the calls here are static either way. */
-namespace Sound { void PlayBank2_2D(u32 id); }
 namespace GX { void LoadOBJPltt(const void *plt, u32 base, u32 size); }
 namespace GXS { void LoadOBJPltt(const void *plt, u32 base, u32 size); }
 namespace G2x { void SetBlendAlpha(volatile u16 *reg, u16 a, u16 b, u16 c, u32 d); }
@@ -207,9 +209,9 @@ s32 dScMgCard_c::InitResources()
     f6 = LoadFile(0xbe);
     f5 = LoadFile(data_ov006_0213bcb0[GetGameLanguage()]);
     f4 = LoadFile(0xbb);
-    DecompressLZ16(f7, 0x6400000);
+    DecompressLZ16(f7, (void *)0x6400000);
     GX::LoadOBJPltt(f6, 0, 0x20);
-    DecompressLZ16(f5, 0x6600000);
+    DecompressLZ16(f5, (void *)0x6600000);
     GXS::LoadOBJPltt(f4, 0, 0x100);
     Deallocate(f7);
     Deallocate(f6);
