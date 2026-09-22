@@ -9366,16 +9366,16 @@
    "start": "0x21118b8",
    "end": "0x2111aa0",
    "classes": [
-    "Submarine"
+    "daObjWlSubmarine_c"
    ],
    "n_functions_map": 6,
    "n_files": 6,
    "files": [
-    "src/_ZN9SubmarineD1Ev.cpp",
-    "src/_ZN9SubmarineD0Ev.c",
-    "src/_ZN9Submarine16CleanupResourcesEv.cpp",
-    "src/_ZN9Submarine6RenderEv.cpp",
-    "src/_ZN9Submarine13InitResourcesEv.cpp",
+    "src/_ZN18daObjWlSubmarine_cD1Ev.cpp",
+    "src/_ZN18daObjWlSubmarine_cD0Ev.c",
+    "src/_ZN18daObjWlSubmarine_c16CleanupResourcesEv.cpp",
+    "src/_ZN18daObjWlSubmarine_c6RenderEv.cpp",
+    "src/_ZN18daObjWlSubmarine_c13InitResourcesEv.cpp",
     "src/d_a_obj_wl_submarine.c"
    ],
    "ext_mix": {
