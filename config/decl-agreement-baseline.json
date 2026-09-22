@@ -9082,11 +9082,11 @@
         "param:#1 void *",
         "param:#2 void *"
       ],
-      "src/_ZN9TinyWater13InitResourcesEv.cpp": [
+      "src/actors/Goomboss.cpp": [
         "param:#1 void *",
         "param:#2 void *"
       ],
-      "src/actors/Goomboss.cpp": [
+      "src/actors/daObjTtWater_c.cpp": [
         "param:#1 void *",
         "param:#2 void *"
       ],
@@ -9115,9 +9115,6 @@
       "src/_ZN8Goomboss13InitResourcesEv.cpp": [
         "param:#5 unsigned int"
       ],
-      "src/_ZN9TinyWater13InitResourcesEv.cpp": [
-        "param:#5 unsigned int"
-      ],
       "src/_ZN9Whirlpool13InitResourcesEv.cpp": [
         "param:#2 BTA_File &",
         "param:#5 unsigned int"
@@ -9127,6 +9124,9 @@
       ],
       "src/actors/daObjCtMecha04_c.cpp": [
         "param:#2 BTA_File &",
+        "param:#5 unsigned int"
+      ],
+      "src/actors/daObjTtWater_c.cpp": [
         "param:#5 unsigned int"
       ],
       "src/func_ov006_020c2300.c": [
@@ -11518,9 +11518,6 @@
       "src/_ZN9Spindrift13InitResourcesEv.cpp": [
         "param:#1 void *"
       ],
-      "src/_ZN9TinyWater13InitResourcesEv.cpp": [
-        "param:#1 void *"
-      ],
       "src/_ZN9Whirlpool13InitResourcesEv.cpp": [
         "return:BMD_File *"
       ],
@@ -11566,6 +11563,9 @@
         "return:int"
       ],
       "src/actors/daObjTtFuta_c.cpp": [
+        "param:#1 void *"
+      ],
+      "src/actors/daObjTtWater_c.cpp": [
         "param:#1 void *"
       ],
       "src/actors/daObjWlKoopaShutter_c.cpp": [
@@ -14848,10 +14848,6 @@
         "param:#1 int",
         "return:int"
       ],
-      "src/_ZN9TinyWater13InitResourcesEv.cpp": [
-        "param:#1 void *",
-        "return:void *"
-      ],
       "src/_ZN9daDossy_c13InitResourcesEv.cpp": [
         "param:#1 void *",
         "return:void *"
@@ -14861,6 +14857,10 @@
         "return:int"
       ],
       "src/actors/daObjTtFuta_c.cpp": [
+        "param:#1 void *",
+        "return:void *"
+      ],
+      "src/actors/daObjTtWater_c.cpp": [
         "param:#1 void *",
         "return:void *"
       ],
@@ -18938,9 +18938,6 @@
       "src/_ZN9SpikeBomb13InitResourcesEv.cpp": [
         "return:void"
       ],
-      "src/_ZN9TinyWater13InitResourcesEv.cpp": [
-        "return:void"
-      ],
       "src/_ZN9Whirlpool13InitResourcesEv.cpp": [
         "return:void"
       ],
@@ -18964,6 +18961,9 @@
         "param:#2 int"
       ],
       "src/actors/daObjTtFuta_c.cpp": [
+        "return:void"
+      ],
+      "src/actors/daObjTtWater_c.cpp": [
         "return:void"
       ],
       "src/actors/daObjWlKoopaShutter_c.cpp": [

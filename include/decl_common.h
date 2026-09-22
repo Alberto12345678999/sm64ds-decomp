@@ -743,7 +743,7 @@ extern int _ZTV11PowerFlower[];
 extern int _ZTV9SeesawBob[];
 extern int _ZTV9Spindrift[];
 extern int _ZTV9Whirlpool[];
-extern int _ZTV9TinyWater[];
+extern int _ZTV14daObjTtWater_c[];
 extern int _ZTV9WaterBomb[];
 extern int _ZTV14daWater_Ring_c[];
 extern int _ZTV9dScDSMT_c[];
