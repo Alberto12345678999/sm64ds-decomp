@@ -40,3 +40,11 @@ The baseline was compiled from the immutable base before editing. Baseline and f
 - `git diff --check`: clean. Exact committed-range relocation, credit and port results are recorded in producer evidence before publication.
 
 No header, manifest, symbol, enrollment, attribution or baseline file changed. No source path moved. Whole-tree metadata still contains three unrelated differences; this is not universal metadata acceptance. Independent source review and private PR validation remain separate requirements.
+
+## Current-main composition proof
+
+The producer composed observed main `1e2d7dcc692060f35458355d21ab7efb1ac0dc09` before handoff. Source, headers relevant to this TU and its complete raw object remain identical after the merge. The original task/workflow pin above remains historical; this section records the newer tested base.
+
+A fresh `rombuild.py -j16` on composition `e01d8ab67473640b05070b2ae49bf0855eae977c` packaged the 16,777,216-byte ROM with SHA256 `d1506e90efae5e2d2cf119926a4ac2a291bd5ca78349d09d5024e1a918c478e8`: 11,208 matching functions, 106/106 exact modules,26 initialized-data claims,3 BSS claims and zero new stock symbol errors. Exact-range prepush verification passes all27 functions with no blind relocations or differences. Declaration agreement has zero new disagreements (502 scoped banked entries), port references408/408, attribution8,052 tracked with zero lost credit. Current-base reports are in the private `current-main-*` producer artifacts.
+
+The only follow-up to that tested composition is this handoff update; no source or other build input changed. Whole-tree metadata still has the same three unrelated differences. Source reconstruction remains partial, and formal independent verification and PR acceptance remain separate.
