@@ -4478,8 +4478,8 @@
    "src/_ZN7daBbl_c8BehaviorEv.cpp": ["return:void"],
    "src/_ZN8Fireball8BehaviorEv.cpp": ["return:void"],
    "src/actors/daObjFire_c.cpp": ["return:void"],
-   "src/func_ov022_02112654.cpp": ["return:void"],
-   "src/func_ov060_02116740.cpp": ["return:void"]
+   "src/func_ov060_02116740.cpp": ["return:void"],
+   "src/game/actors/d_a_obj_fl_maruta.cpp": ["return:void"]
   },
   "_ZN6Player4HealEi": {
    "src/func_ov002_020b1674.cpp": ["return:int"],
@@ -4911,9 +4911,9 @@
    "src/func_ov002_020b1a60.c": ["return:int"],
    "src/func_ov002_020e7e58.cpp": ["return:int"],
    "src/func_ov002_020fec94.c": ["return:int"],
-   "src/func_ov022_021126ac.c": ["return:int"],
    "src/func_ov060_021180e0.cpp": ["return:int"],
    "src/func_ov064_02118644.c": ["param:#1 int", "return:int"],
+   "src/game/actors/d_a_obj_fl_maruta.cpp": ["return:int"],
    "src/unnamed/ov063/func_ov063_0211776c.cpp": ["return:int"]
   },
   "_ZN7fBase_c7ProcessEMS_FivEMS_FbvEMS_FvjE": {
@@ -4935,7 +4935,6 @@
    "src/minigames/d_s_mg_trampoline2.cpp": ["return:void *"]
   },
   "_ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f": {
-   "src/_ZN21daObj_volcanoCannon_c8BehaviorEv.cpp": ["param:#6 const Vector3_16f *"],
    "src/_ZN5Crate8BehaviorEv.cpp": ["return:void *"],
    "src/_ZN8SignPost8BehaviorEv.cpp": ["return:void *"],
    "src/actors/dEnemyBase_c.cpp": ["return:void *"],
@@ -4944,6 +4943,7 @@
    "src/func_ov071_02120b14.cpp": ["return:void *"],
    "src/game/actors/d_a_ey_bm.cpp": ["param:#6 const Vector3_16f *"],
    "src/game/actors/d_a_kp_fr.cpp": ["param:#6 const Vector3_16f *"],
+   "src/game/actors/d_a_obj_fl_maruta.cpp": ["param:#6 const Vector3_16f *"],
    "src/minigames/d_s_mg_jump2.cpp": ["param:#6 const Vector3_16f *"],
    "src/minigames/d_s_mg_trampoline2.cpp": ["param:#6 const Vector3_16f *", "return:void *"]
   },
@@ -5296,7 +5296,6 @@
    "src/func_ov020_021115ac.c": ["return:void *"],
    "src/func_ov020_0211174c.c": ["return:void *"],
    "src/func_ov021_021123b0.c": ["return:void *"],
-   "src/func_ov022_02112654.cpp": ["return:void *"],
    "src/func_ov026_02112280.c": ["return:void *"],
    "src/func_ov034_02112688.c": ["return:char *"],
    "src/func_ov060_021125f0.c": ["return:char *"],
@@ -5356,6 +5355,7 @@
    "src/func_ov102_0214cbec.cpp": ["return:void *"],
    "src/game/actors/d_a_holhei.cpp": ["return:void *"],
    "src/game/actors/d_a_kinopio.cpp": ["return:void *"],
+   "src/game/actors/d_a_obj_fl_maruta.cpp": ["return:void *"],
    "src/game/actors/d_a_wanwan.cpp": ["return:void *"],
    "src/unnamed/ov063/func_ov063_021163d0.c": ["return:int"],
    "src/unnamed/ov063/func_ov063_02118e5c.c": ["return:void *"],
@@ -18871,9 +18871,6 @@
   "func_ov022_02111a1c": {
    "include/decl_common.h": ["param:#1 char *"]
   },
-  "func_ov022_02112654": {
-   "src/func_ov022_021126ac.c": ["return:int"]
-  },
   "func_ov025_021125dc": {
    "include/decl_common.h": ["kind:data"]
   },
@@ -19278,9 +19275,6 @@
   },
   "func_ov080_02125630": {
    "include/decl_common.h": ["return:int"]
-  },
-  "func_ov080_0212714c": {
-   "src/_ZN15daObjFlMaruta_c8BehaviorEv.cpp": ["return:unsigned char"]
   },
   "func_ov080_02127658": {
    "include/decl_common.h": ["kind:data"]
