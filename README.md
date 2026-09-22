@@ -25,10 +25,6 @@ Code size  ███████████████████████
 ```
 <!-- progress:end -->
 
-Every arm-mode function in the game, drawn as a treemap. Each rectangle is one
-function sized by its byte count, green for matched and gray for unmatched, grouped
-by module.
-
 ![Decompilation progress treemap](docs/progress-treemap.svg)
 
 For an interactive version where you can hover any function for its name, address,
