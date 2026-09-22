@@ -12,10 +12,9 @@
 #include "decl_Particle.h"
 #include "types.h"
 
-/* The sub-screen OAM entry the 0x020e7428 table builder writes.  Eight bytes,
-   and only this TU spells it; there is no OAM.h in the tree yet (see
-   include/G2x.h's note), so the shadow definition the legacy .c carried is
-   kept rather than inventing one header for one caller. */
+/* Local eight-byte OAM view for the sub-screen table builder.
+ * OamAttr.h represents the same hardware entry with individual attributes;
+ * this code retains its combined attr01 word stores. */
 typedef struct Oam {
     u32 attr01;
     u16 attr2;
@@ -58,9 +57,13 @@ void  func_ov004_020b290c(void);
 void  func_ov004_020b2980(void);
 int   GetGameLanguage(void);
 void  DecompressLZ16(void *src, void *dst);
+/* The callee takes u16; narrowing the loaded file IDs grows Virtual7C
+ * from 260 to 276 bytes. Keep this existing wide ABI boundary pending
+ * reconstruction of the file-ID tables and their callers. */
 u32   LoadCompressedFileAt(unsigned int fileID, void *target);
 void  Ov004_Deallocate(void *x);
-void  Camera_UpdateMatrices(int arg);
+struct Camera;
+void  Camera_UpdateMatrices(Camera *camera);
 
 /* Retained wide-argument ABI bridges for the four saved-bank restores.
  * The native definitions take u16. Narrowing the saved s32 values adds 16
@@ -72,7 +75,7 @@ void  _ZN2GX16SetBankForSubOBJEt(unsigned int x);
 /* Stage.h's tracker view lacks these ordinary methods. Its layout remains
  * shared with Stage; adding methods to that header is separate scoped work.
  * decl_Particle.h supplies the Initialise ABI declaration. */
-int  _ZN8Particle10SysTracker6UpdateEv(void *self);
+void _ZN8Particle10SysTracker6UpdateEv(void *self);
 
 /* This TU's own free helpers, forward-declared because they are called from
    members written above their definitions. */
@@ -364,7 +367,7 @@ int dScMgD3DBase_c::OnKicked()
             unk_4664 = 0;
         int cameraAddress = (int)(self + 0x466c + unk_4664 * 0xbc);
         data_ov006_02141a44 = cameraAddress;
-        Camera_UpdateMatrices(cameraAddress);
+        Camera_UpdateMatrices((Camera *)cameraAddress);
         if (unk_4664 == 1) {
             func_ov006_020e7508();
         } else {
