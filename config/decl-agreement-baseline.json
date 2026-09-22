@@ -11170,6 +11170,9 @@
       "src/actors/Eyerok.cpp": [
         "return:void"
       ],
+      "src/actors/daObjTtFuta_c.cpp": [
+        "return:void"
+      ],
       "src/func_ov002_020bae9c.c": [
         "return:void"
       ],
@@ -11519,9 +11522,6 @@
       "src/_ZN9Spindrift13InitResourcesEv.cpp": [
         "param:#1 void *"
       ],
-      "src/_ZN9TinyCover13InitResourcesEv.cpp": [
-        "param:#1 void *"
-      ],
       "src/_ZN9TinyWater13InitResourcesEv.cpp": [
         "param:#1 void *"
       ],
@@ -11568,6 +11568,9 @@
       "src/actors/daObjSlIceBlock_c.cpp": [
         "param:#1 void *",
         "return:int"
+      ],
+      "src/actors/daObjTtFuta_c.cpp": [
+        "param:#1 void *"
       ],
       "src/actors/daObjWlSubmarine_c.cpp": [
         "param:#1 void *",
@@ -12631,11 +12634,11 @@
       "src/_ZN5Crate4KillEv.cpp": [
         "param:#2 const Vector3 *"
       ],
-      "src/_ZN9TinyCover15OnGroundPoundedER8dActor_c.cpp": [
-        "param:#2 void *"
-      ],
       "src/actors/daObjSwdoor_c.cpp": [
         "param:#2 const Vector3 *"
+      ],
+      "src/actors/daObjTtFuta_c.cpp": [
+        "param:#2 void *"
       ],
       "src/func_ov002_020b16c4.c": [
         "param:#2 const Vector3 *"
@@ -14849,10 +14852,6 @@
         "param:#1 int",
         "return:int"
       ],
-      "src/_ZN9TinyCover13InitResourcesEv.cpp": [
-        "param:#1 void *",
-        "return:void *"
-      ],
       "src/_ZN9TinyWater13InitResourcesEv.cpp": [
         "param:#1 void *",
         "return:void *"
@@ -14864,6 +14863,10 @@
       "src/actors/daObjSlIceBlock_c.cpp": [
         "param:#1 void *",
         "return:int"
+      ],
+      "src/actors/daObjTtFuta_c.cpp": [
+        "param:#1 void *",
+        "return:void *"
       ],
       "src/actors/daObjWlSubmarine_c.cpp": [
         "param:#1 void *",
@@ -15510,9 +15513,6 @@
       "src/_ZN9OneUpLogo8BehaviorEv.cpp": [
         "return:void"
       ],
-      "src/_ZN9TinyCover15OnGroundPoundedER8dActor_c.cpp": [
-        "return:void"
-      ],
       "src/actors/Goomboss.cpp": [
         "return:void"
       ],
@@ -15562,6 +15562,9 @@
         "return:void"
       ],
       "src/actors/daObjHatenaBlock_c.cpp": [
+        "return:void"
+      ],
+      "src/actors/daObjTtFuta_c.cpp": [
         "return:void"
       ],
       "src/actors/daObjYajirusi_c.cpp": [
@@ -18939,9 +18942,6 @@
       "src/_ZN9SpikeBomb13InitResourcesEv.cpp": [
         "return:void"
       ],
-      "src/_ZN9TinyCover13InitResourcesEv.cpp": [
-        "return:void"
-      ],
       "src/_ZN9TinyWater13InitResourcesEv.cpp": [
         "return:void"
       ],
@@ -18966,6 +18966,9 @@
       ],
       "src/actors/daObjSlIceBlock_c.cpp": [
         "param:#2 int"
+      ],
+      "src/actors/daObjTtFuta_c.cpp": [
+        "return:void"
       ],
       "src/actors/daObjWlSubmarine_c.cpp": [
         "param:#2 int",

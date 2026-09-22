@@ -273,7 +273,7 @@ first module where a `config_tu/` conversion becomes conceivable.
 **B11 — R2 tail · 4 TUs / 32 files / net −28 / 759 lines**
 | TU | Address | Files | Description | Status |
 |----|---------|-------|-------------|--------|
-|[ov033](../config/arm9/overlays/ov033/symbols.txt)| 0x21111a0|  n=8|   `TinyCover`|        NORM1|
+|[ov033](../config/arm9/overlays/ov033/symbols.txt)| 0x21111a0|  n=8|   `daObjTtFuta_c`|        NORM1|
 |[ov043](../config/arm9/overlays/ov043/symbols.txt)| 0x21111a0|  n=7|   `daObjKm1_Ukishima_c`|      NORM1|
 |[ov045](../config/arm9/overlays/ov045/symbols.txt)| 0x21111a0|  n=9|   `FireSeaElevator`|  NORM1 CONF2|
 |[ov064](../config/arm9/overlays/ov064/symbols.txt)| 0x21174a0|  n=8|   `daBDonketu_c`|         NORM1 pcov=2|
