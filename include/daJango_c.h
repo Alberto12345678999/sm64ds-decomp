@@ -1,9 +1,9 @@
-#ifndef KLEPTO_H
-#define KLEPTO_H
+#ifndef DAJANGO_C_H
+#define DAJANGO_C_H
 
 #include "types.h"
 
-/* Derives from dEnemyBase_c, on the evidence of its own destructor: `_ZN6KleptoD1Ev`
+/* Derives from dEnemyBase_c, on the evidence of its own destructor: `_ZN9daJango_cD1Ev`
  * stores this vtable, destroys its members in reverse declaration order, then
  * calls `dEnemyBase_c::~dEnemyBase_c`. Everything this header used to restate below 0x110
  * belongs to that chain and is inherited now.
@@ -36,7 +36,7 @@
 #include "ShadowModel.h"
 #include "dBgCh_Actr.h"
 
-struct Klepto : dEnemyBase_c {
+struct daJango_c : dEnemyBase_c {
     dCcAc_c           mdCcAc_c1;  /* 0x110 */
     dCcAc_c           mdCcAc_c2;  /* 0x144 */
     dBgCh_Actr                 mWithMeshClsn;         /* 0x178 */
@@ -70,7 +70,7 @@ struct Klepto : dEnemyBase_c {
                                                             no reader in the tree */
     s32                          mHeldActorID;          /* 0x44c */
     /* Behavior writes these three into the held actor's own mPosX/mPosY/mPosZ
-       every frame -- this is where Klepto carries what it stole. */
+       every frame -- this is where daJango_c carries what it stole. */
     s32                          mHeldPosX;             /* 0x450 */
     s32                          mHeldPosY;             /* 0x454 */
     s32                          mHeldPosZ;             /* 0x458 */
@@ -78,7 +78,7 @@ struct Klepto : dEnemyBase_c {
     s32                          mPathId;               /* 0x464 */
     s32                          mCarriedItem;          /* 0x468 */
     /* (param1 >> 12) & 0xf, used for one thing only: it is OR-ed with 0x50 to
-       build the spawn parameter of the actor Klepto is carrying. */
+       build the spawn parameter of the actor daJango_c is carrying. */
     s32                          mHeldItemParam;        /* 0x46c */
     s32                          unk_470;               /* 0x470 -- InitResources stores 4; no reader */
     u32                          mPathNodeIndex;        /* 0x474 -- the index handed to PathPtr::GetNode */
@@ -89,7 +89,7 @@ struct Klepto : dEnemyBase_c {
     s32                          mSpawnPosZ;            /* 0x48c */
 
     /* --- vtable --- */
-    virtual ~Klepto();
+    virtual ~daJango_c() {}
 
     virtual s32   OnAimedAtWithEgg();      /* slot 29 */
 
@@ -102,7 +102,7 @@ struct Klepto : dEnemyBase_c {
 
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
-typedef char Klepto_size_must_be_0x490[sizeof(Klepto) == 0x490 ? 1 : -1];
+typedef char Klepto_size_must_be_0x490[sizeof(daJango_c) == 0x490 ? 1 : -1];
 #endif
 
-#endif /* KLEPTO_H */
+#endif /* DAJANGO_C_H */
