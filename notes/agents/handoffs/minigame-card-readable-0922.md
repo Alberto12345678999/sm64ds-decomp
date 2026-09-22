@@ -130,3 +130,17 @@ The repaired source still emits the identical 27,880-byte raw object with the
 SHA256 above. Producer rework uses the new private receipt in ignored build state;
 no verifier edited the candidate. Formal acceptance of the rejected predecessor
 is not claimed.
+
+## Review follow-up CARD-READ-06
+
+The source cleanup removed redundant local s16/s32 typedef conflict markers,
+but their manifest notes still called them open. Those exact two notes now say
+RESOLVED, retaining the historical disagreement. The source uses the existing
+shared scalar types. All other conflict notes/markers remain unchanged.
+
+This follow-up changes only those note labels and this handoff. Source, headers,
+manifest enrollment/function/compiler/data policies and all build tools are
+identical to candidate b5c61e1401ccd4970b9f4b9fa09109c198054ccc, independently
+verified against base b93e467b9b7b6a75a32a547fcd1158399a3525dd. Its complete
+object, strict37 and full ROM proofs are retained by checked input identity;
+no additional full ROM execution is claimed for the note-only repair.
