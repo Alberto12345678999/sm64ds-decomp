@@ -13535,13 +13535,6 @@
         "param:#7 unsigned int",
         "return:void"
       ],
-      "src/_ZN12daObjShell_c8BehaviorEv.cpp": [
-        "param:#1 char *",
-        "param:#5 unsigned int",
-        "param:#6 unsigned int",
-        "param:#7 unsigned int",
-        "return:void"
-      ],
       "src/_ZN13MontyMoleRock8BehaviorEv.cpp": [
         "param:#5 unsigned int",
         "param:#6 unsigned int",
@@ -13599,6 +13592,13 @@
         "param:#5 unsigned int",
         "param:#6 unsigned int",
         "param:#7 unsigned int"
+      ],
+      "src/actors/daObjShell_c.cpp": [
+        "param:#1 char *",
+        "param:#5 unsigned int",
+        "param:#6 unsigned int",
+        "param:#7 unsigned int",
+        "return:void"
       ],
       "src/actors/daOts_c.cpp": [
         "param:#5 unsigned int",
@@ -15434,9 +15434,6 @@
       "src/_ZN12daBgSnmHed_c6State2Ev.cpp": [
         "return:void"
       ],
-      "src/_ZN12daObjShell_c8BehaviorEv.cpp": [
-        "return:int"
-      ],
       "src/_ZN21SnowmanBreathParticle12CheckSnowmanEv.cpp": [
         "return:void"
       ],
@@ -15547,6 +15544,9 @@
       ],
       "src/actors/daObjHatenaBlock_c.cpp": [
         "return:void"
+      ],
+      "src/actors/daObjShell_c.cpp": [
+        "return:int"
       ],
       "src/actors/daObjTtFuta_c.cpp": [
         "return:void"
@@ -18132,14 +18132,6 @@
       "src/_ZN12HealingHeart13InitResourcesEv.cpp": [
         "param:#5 unsigned int"
       ],
-      "src/_ZN12daObjShell_c13InitResourcesEv.cpp": [
-        "param:#5 unsigned int"
-      ],
-      "src/_ZN12daObjShell_c8BehaviorEv.cpp": [
-        "param:#1 char *",
-        "param:#2 int",
-        "param:#5 unsigned int"
-      ],
       "src/_ZN14UnknownVsEntry13InitResourcesEv.cpp": [
         "param:#5 unsigned int"
       ],
@@ -18238,6 +18230,9 @@
         "param:#5 unsigned int"
       ],
       "src/actors/daObjMarioCap_c.cpp": [
+        "param:#5 unsigned int"
+      ],
+      "src/actors/daObjShell_c.cpp": [
         "param:#5 unsigned int"
       ],
       "src/actors/daObjTbox_c.cpp": [
@@ -19777,11 +19772,6 @@
     "_ZTV11dScMgJump_c": {
       "include/decl_common.h": [
         "return:void * []"
-      ]
-    },
-    "_ZTV12daObjShell_c": {
-      "src/d_a_obj_shell.cpp": [
-        "return:void *"
       ]
     },
     "_ZTV13daObjCloset_c": {
@@ -29731,25 +29721,16 @@
       ]
     },
     "data_ov064_0211c9bc": {
-      "src/_ZN12daObjShell_c8BehaviorEv.cpp": [
-        "return:char []"
-      ],
       "src/__sinit_ov064_0211b698.c": [
         "return:int []"
       ]
     },
     "data_ov064_0211c9c4": {
-      "src/_ZN12daObjShell_c13InitResourcesEv.cpp": [
-        "return:SharedFilePtr"
-      ],
-      "src/_ZN12daObjShell_c16CleanupResourcesEv.cpp": [
+      "src/actors/daObjShell_c.cpp": [
         "return:SharedFilePtr"
       ]
     },
     "data_ov064_0211c9cc": {
-      "src/_ZN12daObjShell_c8BehaviorEv.cpp": [
-        "return:char []"
-      ],
       "src/__sinit_ov064_0211b698.c": [
         "return:int []"
       ]
@@ -32996,10 +32977,6 @@
         "param:#1 int",
         "return:int"
       ],
-      "src/_ZN12daObjShell_c8BehaviorEv.cpp": [
-        "param:#1 int",
-        "param:#2 int *"
-      ],
       "src/_ZN7Wiggler8BehaviorEv.cpp": [
         "param:#1 int"
       ],
@@ -33017,6 +32994,10 @@
       ],
       "src/actors/daGmch_c.cpp": [
         "param:#1 int"
+      ],
+      "src/actors/daObjShell_c.cpp": [
+        "param:#1 int",
+        "param:#2 int *"
       ],
       "src/actors/daPgDfdr_c.cpp": [
         "param:#1 int",
@@ -46973,11 +46954,6 @@
       ],
       "src/func_ov064_02119afc.cpp": [
         "return:void"
-      ]
-    },
-    "func_ov064_0211a9b4": {
-      "src/_ZN12daObjShell_c13InitResourcesEv.cpp": [
-        "param:#1 daObjShell_c *"
       ]
     },
     "func_ov065_02117944": {

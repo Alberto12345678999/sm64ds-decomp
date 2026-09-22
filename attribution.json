@@ -4507,6 +4507,14 @@
     "src/actors/daBtfly_c.cpp#_ZN9daBtfly_c16OnPendingDestroyEv": "andrewboudreau",
     "src/actors/daBtfly_c.cpp#_ZN9daBtfly_c6RenderEv": "tangosdev",
     "src/actors/daBtfly_c.cpp#_ZN9daBtfly_c8BehaviorEv": "lunavyqo",
-    "src/actors/daBtfly_c.cpp#_ZN9daBtfly_c13InitResourcesEv": "tangosdev"
+    "src/actors/daBtfly_c.cpp#_ZN9daBtfly_c13InitResourcesEv": "tangosdev",
+    "src/actors/daObjShell_c.cpp#_ZN12daObjShell_cD1Ev": "andrewboudreau",
+    "src/actors/daObjShell_c.cpp#_ZN12daObjShell_cD0Ev": "tangosdev",
+    "src/actors/daObjShell_c.cpp#func_ov064_0211a9b4": "tangosdev",
+    "src/actors/daObjShell_c.cpp#_ZN12daObjShell_c16CleanupResourcesEv": "tangosdev",
+    "src/actors/daObjShell_c.cpp#_ZN12daObjShell_c6RenderEv": "tangosdev",
+    "src/actors/daObjShell_c.cpp#_ZN12daObjShell_c8BehaviorEv": "ruspecial",
+    "src/actors/daObjShell_c.cpp#_ZN12daObjShell_c13InitResourcesEv": "tangosdev",
+    "src/actors/daObjShell_c.cpp#daObjShell_c_classInit": "tangosdev"
   }
 }
