@@ -32441,31 +32441,31 @@ matched: yes</title></rect><rect x="1372.36" y="189.02" width="6.37" height="1.9
 module: ov026
 addr: 0x02112d68
 size: 60 bytes
-matched: yes</title></rect><rect x="1388.73" y="175.78" width="3.81" height="3.73" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10SlidingIceD1Ev
+matched: yes</title></rect><rect x="1388.73" y="175.78" width="3.81" height="3.73" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN17daObjSlIceBlock_cD1Ev
 module: ov027
 addr: 0x021111a0
 size: 68 bytes
-matched: yes</title></rect><rect x="1388.73" y="179.51" width="3.81" height="4.83" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10SlidingIceD0Ev
+matched: yes</title></rect><rect x="1388.73" y="179.51" width="3.81" height="4.83" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN17daObjSlIceBlock_cD0Ev
 module: ov027
 addr: 0x021111e4
 size: 88 bytes
-matched: yes</title></rect><rect x="1388.73" y="184.34" width="3.81" height="2.19" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10SlidingIce15OnHitByMegaCharER6Player
+matched: yes</title></rect><rect x="1388.73" y="184.34" width="3.81" height="2.19" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN17daObjSlIceBlock_c15OnHitByMegaCharER6Player
 module: ov027
 addr: 0x0211123c
 size: 40 bytes
-matched: yes</title></rect><rect x="1388.73" y="186.53" width="3.81" height="4.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10SlidingIce16CleanupResourcesEv
+matched: yes</title></rect><rect x="1388.73" y="186.53" width="3.81" height="4.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN17daObjSlIceBlock_c16CleanupResourcesEv
 module: ov027
 addr: 0x02111264
 size: 80 bytes
-matched: yes</title></rect><rect x="1392.54" y="175.78" width="5.46" height="3.06" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10SlidingIce6RenderEv
+matched: yes</title></rect><rect x="1392.54" y="175.78" width="5.46" height="3.06" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN17daObjSlIceBlock_c6RenderEv
 module: ov027
 addr: 0x021112b4
 size: 80 bytes
-matched: yes</title></rect><rect x="1392.54" y="178.84" width="5.46" height="12.08" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10SlidingIce8BehaviorEv
+matched: yes</title></rect><rect x="1392.54" y="178.84" width="5.46" height="12.08" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN17daObjSlIceBlock_c8BehaviorEv
 module: ov027
 addr: 0x02111304
 size: 316 bytes
-matched: yes</title></rect><rect x="1398.00" y="175.78" width="4.69" height="13.00" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10SlidingIce13InitResourcesEv
+matched: yes</title></rect><rect x="1398.00" y="175.78" width="4.69" height="13.00" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN17daObjSlIceBlock_c13InitResourcesEv
 module: ov027
 addr: 0x02111440
 size: 292 bytes
