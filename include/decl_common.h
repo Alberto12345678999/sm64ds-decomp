@@ -677,7 +677,6 @@ extern int _ZTV6Bullet[];
 extern int _ZTV6Cannon[];
 extern int _ZTV6Coffin[];
 extern int _ZTV6Eyerok[];
-extern int _ZTV6Klepto[];
 extern int _ZTV14daObjKi_Fune_c[];
 extern int _ZTV9daPopoi_c[];
 extern int _ZTV12HealingHeart[];

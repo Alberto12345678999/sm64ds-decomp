@@ -60,7 +60,7 @@ struct dEnemyBase_c : dActor_c {
        MrBlizzard, daShark_c, PiranhaPlant, FirePiranhaPlantBig, daKrb_c) and
        (Whomp) -- see notes/enemy-provenance.md and
        notes/enemy-leaf-provenance.md. Named mStateTimer, not mTimer, because
-       Klepto already owns an unrelated mTimer and the shorter name silently
+       daJango_c already owns an unrelated mTimer and the shorter name silently
        rebinds it. */
     s16 mStateTimer;              /* 0x100 */
     u16 mDeathTimer;              /* 0x102 */
