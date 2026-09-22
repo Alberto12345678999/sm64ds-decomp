@@ -1,8 +1,8 @@
 //cpp
-// @symbol _ZN9TinyCover15OnGroundPoundedER8dActor_c
-#include "TinyCover.h"
+// @symbol _ZN13daObjTtFuta_c15OnGroundPoundedER8dActor_c
+#include "daObjTtFuta_c.h"
 
-/* TinyCover::OnGroundPounded -- vtable slot 21, ov033 0x0211123c.
+/* daObjTtFuta_c::OnGroundPounded -- vtable slot 21, ov033 0x0211123c.
  *
  * Real member function: fBase_c::MarkForDestruction is a real method
  * (include/fBase_c.h), and &mCamSpacePosX (a real named field,
@@ -18,7 +18,7 @@ extern void _ZN5Sound9PlayBank3EjRK7Vector3(unsigned int a, void *v);
 extern void _ZN5Event6SetBitEj(unsigned int b);
 }
 
-void TinyCover::OnGroundPounded(dActor_c &other)
+void daObjTtFuta_c::OnGroundPounded(dActor_c &other)
 {
     int *v = (int *)(((char *)&other) + 0x5c);
     _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x28, v[0], v[1], v[2]);

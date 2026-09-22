@@ -4138,18 +4138,18 @@
    "start": "0x21111a0",
    "end": "0x21113d4",
    "classes": [
-    "TinyCover"
+    "daObjTtFuta_c"
    ],
    "n_functions_map": 8,
    "n_files": 8,
    "files": [
-    "src/_ZN9TinyCoverD1Ev.cpp",
-    "src/_ZN9TinyCoverD0Ev.c",
-    "src/_ZN9TinyCover15OnGroundPoundedER8dActor_c.cpp",
-    "src/_ZN9TinyCover16CleanupResourcesEv.cpp",
-    "src/_ZN9TinyCover6RenderEv.cpp",
-    "src/_ZN9TinyCover8BehaviorEv.cpp",
-    "src/_ZN9TinyCover13InitResourcesEv.cpp",
+    "src/_ZN13daObjTtFuta_cD1Ev.cpp",
+    "src/_ZN13daObjTtFuta_cD0Ev.c",
+    "src/_ZN13daObjTtFuta_c15OnGroundPoundedER8dActor_c.cpp",
+    "src/_ZN13daObjTtFuta_c16CleanupResourcesEv.cpp",
+    "src/_ZN13daObjTtFuta_c6RenderEv.cpp",
+    "src/_ZN13daObjTtFuta_c8BehaviorEv.cpp",
+    "src/_ZN13daObjTtFuta_c13InitResourcesEv.cpp",
     "src/d_a_obj_tt_futa.c"
    ],
    "ext_mix": {
