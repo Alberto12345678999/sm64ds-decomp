@@ -7,7 +7,7 @@ This handoff describes this commit; the queue records any published immutable ou
 - Worktree/branch: `C:/tmp/sm64ds-mg-single3dread0922`, `cleanup/minigame-single3dbase-readable-0922`.
 - Source/workflow base: `d033c646262e878ce234bafd37d6b5b3abf40179`.
 - Scope: `src/minigames/d_s_mg_single3_d_base.cpp` and this handoff; nine functions in ov006 `[0x0210a4b0,0x0210a8c0)` (1,040 bytes).
-- Status: local checkpoint; full-ROM run is in progress and independent review remains required. No producer publication, source branch push, PR or merge is claimed.
+- Status: producer candidate with local proof complete; independent source/byte review remains required. No source branch push, PR or merge is claimed.
 
 ## Changes
 
@@ -34,6 +34,8 @@ The unchanged base and final candidate were compiled with `match.compile_c`, `bu
 - `check_decl_agreement.py --changed d033c646262e878ce234bafd37d6b5b3abf40179`: no new disagreement; 67 scoped banked rows remain.
 - `check_tubuild_conflicts.py ov006/dScMgSingle3DBase_c`: all records agree, no conflict notes or markers.
 - `port_refcheck.py`: 408 references resolve; `git diff --check` passes.
-- Full packaged-ROM check is running in this worktree. Committed-range relocation and attribution checks remain pending this checkpoint commit. No pass is claimed for these pending checks.
+- `rombuild.py -j16 --report-json build/single3d-readable/rombuild.json --data-json build/single3d-readable/rombuild-data.json`: full packaged ROM **PASS**, **11,208/11,208** source-built functions, **106/106** exact modules, **26** initialized-data claims, **3 BSS claims / 172 NOBITS bytes**, zero new stock symbol errors. The build reused7,874 objects and compiled1. Whole-tree metadata remains773 VERIFIED /272 PARTIAL /3 DIFFERS /274 UNNAMED; this is not universal metadata acceptance.
+- Committed-range `prepush_linkcheck.py` passes **9/9**, blind0, diffs empty. `prepush_attribution.py` reports **8,052 tracked**, zero changed or lost credit. Both use source checkpoint `c2200500eed6619c49d5a74768cfcd7bafa0cf23` against immutable base `d033c646262e878ce234bafd37d6b5b3abf40179`; this follow-up changes only the handoff. Source and all build inputs remain identical to that tested checkpoint.
+- `tiers_ratchet.py --check`: PASS (2,995 baseline /3,000 current). Language-mode ratchet: PASS against live chaos-data baseline `f3c0b367fc902958e2770e04ebcdbb16e9769240`. The installed worktree example omits the required `--check PATH`; that initial syntax-only error is retained separately and was corrected without changing any baseline.
 
 No failed new source experiment occurred: the combined native-declaration/name cleanup and final comment/format follow-up both produced the identical object. Historical inline-destructor and header-offset-parser constraints in `notes/minigame-provenance.md` were read, not rerun; no universal impossibility is inferred. Preserve the inline destructor/key function and shared header layout until separately measured work proves a replacement.
