@@ -1146,12 +1146,12 @@ ov026	0x02113d54	data_ov026_02113d54	_ZTV9Whirlpool	vtable alloc=? (was _ZTV18da
 ov026	0x02113e00	data_ov026_02113e00	WaterSuction_SpawnInfo	spawninfo
 ov026	0x02113e00	WaterSuction_SpawnInfo	g_profile_WATER_SUIKOMI	reconstructed profile global; literal ROM ID WATER_SUIKOMI+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov026	0x02113e24	data_ov026_02113e24	_ZTV12WaterSuction	vtable alloc=0x318
-ov027	0x021111a0	func_ov027_021111a0	_ZN10SlidingIceD1Ev	vtable slot 16
-ov027	0x021111e4	func_ov027_021111e4	_ZN10SlidingIceD0Ev	vtable slot 17
-ov027	0x02111264	func_ov027_02111264	_ZN10SlidingIce16CleanupResourcesEv	vtable slot 3
-ov027	0x021112b4	func_ov027_021112b4	_ZN10SlidingIce6RenderEv	vtable slot 9
-ov027	0x02111304	func_ov027_02111304	_ZN10SlidingIce8BehaviorEv	vtable slot 6
-ov027	0x02111440	func_ov027_02111440	_ZN10SlidingIce13InitResourcesEv	vtable slot 0
+ov027	0x021111a0	func_ov027_021111a0	_ZN17daObjSlIceBlock_cD1Ev	vtable slot 16
+ov027	0x021111e4	func_ov027_021111e4	_ZN17daObjSlIceBlock_cD0Ev	vtable slot 17
+ov027	0x02111264	func_ov027_02111264	_ZN17daObjSlIceBlock_c16CleanupResourcesEv	vtable slot 3
+ov027	0x021112b4	func_ov027_021112b4	_ZN17daObjSlIceBlock_c6RenderEv	vtable slot 9
+ov027	0x02111304	func_ov027_02111304	_ZN17daObjSlIceBlock_c8BehaviorEv	vtable slot 6
+ov027	0x02111440	func_ov027_02111440	_ZN17daObjSlIceBlock_c13InitResourcesEv	vtable slot 0
 ov027	0x02111564	func_ov027_02111564	SlidingIce_Spawn	spawnfunc
 ov027	0x02111564	SlidingIce_Spawn	daObjSlIceBlock_c_classInit_SL_ICEBLOCK_SHOT	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov027	0x02111594	func_ov027_02111594	SlidingIceSpawner_Spawn	spawnfunc
@@ -1172,7 +1172,7 @@ ov027	0x021137e4	data_ov027_021137e4	SlidingIceSpawner_SpawnInfo	spawninfo
 ov027	0x021137e4	SlidingIceSpawner_SpawnInfo	g_profile_SL_ICEBLOCK	reconstructed profile global; literal ROM ID SL_ICEBLOCK+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov027	0x02113800	data_ov027_02113800	SlidingIce_SpawnInfo	spawninfo
 ov027	0x02113800	SlidingIce_SpawnInfo	g_profile_SL_ICEBLOCK_SHOT	reconstructed profile global; literal ROM ID SL_ICEBLOCK_SHOT+registry role+later EAD lineage; exact SM64DS spelling not preserved
-ov027	0x02113824	data_ov027_02113824	_ZTV10SlidingIce	vtable alloc=0x32c
+ov027	0x02113824	data_ov027_02113824	_ZTV17daObjSlIceBlock_c	vtable alloc=0x32c
 ov027	0x021138d8	data_ov027_021138d8	daIDonketu_c_SpawnInfo	spawninfo
 ov027	0x021138d8	daIDonketu_c_SpawnInfo	g_profile_ICE_DONKETU	reconstructed profile global; literal ROM ID ICE_DONKETU+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov027	0x02113a00	data_ov027_02113a00	g_profile_PENGUIN_DEFENDER	reconstructed profile global; literal ROM ID PENGUIN_DEFENDER+registry role+later EAD lineage; exact SM64DS spelling not preserved
