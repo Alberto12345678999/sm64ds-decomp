@@ -32293,23 +32293,23 @@ matched: yes</title></rect><rect x="1330.37" y="175.78" width="3.62" height="2.6
 module: ov026
 addr: 0x02111888
 size: 48 bytes
-matched: yes</title></rect><rect x="1330.37" y="178.45" width="3.62" height="3.78" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9SubmarineD1Ev
+matched: yes</title></rect><rect x="1330.37" y="178.45" width="3.62" height="3.78" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN18daObjWlSubmarine_cD1Ev
 module: ov026
 addr: 0x021118b8
 size: 68 bytes
-matched: yes</title></rect><rect x="1330.37" y="182.24" width="3.62" height="4.90" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9SubmarineD0Ev
+matched: yes</title></rect><rect x="1330.37" y="182.24" width="3.62" height="4.90" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN18daObjWlSubmarine_cD0Ev
 module: ov026
 addr: 0x021118fc
 size: 88 bytes
-matched: yes</title></rect><rect x="1330.37" y="187.14" width="3.62" height="3.78" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9Submarine16CleanupResourcesEv
+matched: yes</title></rect><rect x="1330.37" y="187.14" width="3.62" height="3.78" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN18daObjWlSubmarine_c16CleanupResourcesEv
 module: ov026
 addr: 0x02111954
 size: 68 bytes
-matched: yes</title></rect><rect x="1333.99" y="175.78" width="4.26" height="1.89" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9Submarine6RenderEv
+matched: yes</title></rect><rect x="1333.99" y="175.78" width="4.26" height="1.89" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN18daObjWlSubmarine_c6RenderEv
 module: ov026
 addr: 0x02111998
 size: 40 bytes
-matched: yes</title></rect><rect x="1333.99" y="177.67" width="4.26" height="8.33" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9Submarine13InitResourcesEv
+matched: yes</title></rect><rect x="1333.99" y="177.67" width="4.26" height="8.33" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN18daObjWlSubmarine_c13InitResourcesEv
 module: ov026
 addr: 0x021119c0
 size: 176 bytes
