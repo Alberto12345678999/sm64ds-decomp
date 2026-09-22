@@ -146,7 +146,7 @@ extern void *data_020a4b64;
 extern fBaseActorInfo **data_020a4bb8;
 
 extern void func_02044334(void *p);
-extern int  func_0204424c(int p);
+extern int  func_0204424c(char *p);
 extern void *func_0206e2f8(void *p, int fill, unsigned int size);
 
 /* Defined LOWER DOWN in this file (ROM ordinal 4) but called from ordinal 6,
@@ -181,7 +181,7 @@ extern void *_ZN6Memory8AllocateEjiP4Heap(unsigned int size, int align, void *he
 extern void  _ZN4Heap20RestoreFromTemporaryEv(void);
 extern void  _ZN4Heap8_DestroyEv(void *h);
 extern u32   _ZN4Heap21MaxAllocationUnitSizeEv(void *h);
-extern void  _ZN4Heap11ResizeToFitEv(void *h);
+extern u32   _ZN4Heap11ResizeToFitEv(void *h);
 
 }
 
@@ -370,7 +370,7 @@ int fBase_c::BeforeCleanupResources()
 {
     int v = (int)lifecycleState;
     if (v != 0) {
-        if (func_0204424c(v) == 0)
+        if (func_0204424c((char *)v) == 0)
             goto ret0;
     }
     if (manager.sceneNode.child == 0)
