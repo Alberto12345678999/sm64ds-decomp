@@ -15,7 +15,7 @@ classes) is in the project memory note `platform-family-census`.
 ## `include/dBgActor_c.h`
 
 `dBgActor_c` is the base of the level-object family — daObjRc_Guruguru_c,
-PyramidTop, daObjKm3_Kaitendai_c, daObjBSwdoor_c, daObjCvShutter_c, SlidingIce and ~130
+PyramidTop, daObjKm3_Kaitendai_c, daObjBSwdoor_c, daObjCvShutter_c, daObjSlIceBlock_c and ~130
 others. Seeded by `tools/gen_header.py` from matched-function evidence, then
 given its real base and real member types by hand.
 
