@@ -1,8 +1,15 @@
-# TU merge queue
+# TU merge queue (historical August 2026 campaign)
+
+> This is a historical plan and experiment log, not the active queue or launch
+> recipe. Its shadow-only endpoints, review shortcuts, tool availability claims
+> and census counts are superseded by [the promotion workflow](tu-promotion-conventions.md)
+> and [the agent protocol](agents/PIPELINE.md). Preserve its measured compiler
+> observations as evidence; do not repeat the campaign's staging phases by default.
 
 Combining one-function files back into the translation units the linker erased.
 Ground truth and counts: `notes/tu-cpp-census-2026-08.md`. Data: `notes/data/tu-merge-candidates.json`.
-Execution loop: the `decomp-tu-build` skill. Map-reading limits: `decomp-tu-slicing`.
+Current execution: [TU promotion](tu-promotion-conventions.md).
+Map-reading limits: [TU boundaries](tu-boundaries.md).
 
 Planned 2026-08-25 against a freshly regenerated `tu_map` chain. No builds were run
 during planning; every wall-clock figure below is an estimate that B0 and the pilots
@@ -163,7 +170,7 @@ cheapest possible probe of post-regeneration [ov006](../config/arm9/overlays/ov0
 |----|---------|-------|-------|-------------|--------|
 |[ov022](../config/arm9/overlays/ov022/symbols.txt)| 0x2111f6c|  n=5|  L=86|   `daObjFl_Ukiyuka_c`|            pcov=3|
 |[ov022](../config/arm9/overlays/ov022/symbols.txt)| 0x2112380|  n=4|  L=60|   `daObjFl_Fall_Block_c`|             pcov=2|
-|[ov022](../config/arm9/overlays/ov022/symbols.txt)| 0x2112498|  n=6|  L=100|  `RollingLogLll`| |
+|[ov022](../config/arm9/overlays/ov022/symbols.txt)| 0x2112498|  n=6|  L=100|  `daObjFlMaruta_c`| |
 |[ov026](../config/arm9/overlays/ov026/symbols.txt)| 0x21118b8|  n=6|  L=115|  `Submarine`| |
 |[ov029](../config/arm9/overlays/ov029/symbols.txt)| 0x21111a0|  n=4|  L=135|  `daObjWcObj01_c`| |
 |[ov029](../config/arm9/overlays/ov029/symbols.txt)| 0x2111ea4|  n=4|  L=124|  `daObjWcObj06_c`| |
@@ -208,7 +215,7 @@ first module where a `config_tu/` conversion becomes conceivable.
 |[ov009](../config/arm9/overlays/ov009/symbols.txt)| 0x2111a70|  n=8|   `daObjMcWater_c`|      CONF1|
 |[ov009](../config/arm9/overlays/ov009/symbols.txt)| 0x2111dc4|  n=8|   `daObjMc_Metalnet_c`|         CONF2 pcov=2|
 |[ov010](../config/arm9/overlays/ov010/symbols.txt)| 0x21119d0|  n=8|   `daObjC1Hikari_c`|        CONF1 pcov=3|
-|[ov010](../config/arm9/overlays/ov010/symbols.txt)| 0x2111e10|  n=8|   `PeachPainting`|    CONF1 pcov=3|
+|[ov010](../config/arm9/overlays/ov010/symbols.txt)| 0x2111e10|  n=8|   `daObjC1Peach_c`|    CONF1 pcov=3|
 |[ov012](../config/arm9/overlays/ov012/symbols.txt)| 0x2111450|  n=7|   `daObjC0Water_c`|    CONF2|
 |[ov015](../config/arm9/overlays/ov015/symbols.txt)| 0x2112944|  n=7|   `daObjBk_Rotebar_c`|   CONF2|
 |[ov016](../config/arm9/overlays/ov016/symbols.txt)| 0x211260c|  n=8|   `daObjKi_Fune_c`|           CONF1|
@@ -517,7 +524,7 @@ same signature shape, reported MATCH, cost a day. If any of the three could not 
 status is "not verified", never "probably fine".
 
 `999 word(s) differ` means **sizes** differ (usually the D0/D1/D2 variant collapse), not
-a type error — go to `decomp-cpp-class-form`.
+a type error — go to [class-form observations](cpp-class-form.md).
 
 Every TU in this pool is a key-function TU, so vtable/RTTI emission appears as
 *unlicensed-but-expected* output. `linkcheck --no-rom` is where a wrong vtable anchor
@@ -583,7 +590,7 @@ range. `_ZTV8Squasher` is emitted as unlicensed-but-expected — record it, do n
 as a failure.
 **FAIL**: <9/9 → per-member triage, a reconcile bug. Audits dirty at 9/9 → wrong-callee
 (the [ov077](../config/arm9/overlays/ov077/symbols.txt) class); do **not** record `text-verified`. `linkcheck` failing at 9/9 clean →
-vtable-anchor / class-form; go to `decomp-cpp-class-form` before touching the merge.
+vtable-anchor / class-form; go to [class-form observations](cpp-class-form.md) before touching the merge.
 
 Then run `python tools/rombuild.py` once, serially. It is the final verdict.
 

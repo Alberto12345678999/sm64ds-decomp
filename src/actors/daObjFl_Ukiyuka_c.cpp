@@ -17,18 +17,17 @@
  * daObjFl_Ukiyuka_c_classInit_FL_UKIYUKA_L and daObjFl_Ukiyuka_c_classInit_FL_UKIYUKA,
  * build ONE class: both pass 816 = 0x330 and both store this vtable.
  *
- * FUNCTION ORDER IS THE REVERSE OF THE ROM'S. mwccarm 2004/b56 emits one .text
- * section per function in the reverse of source order, so the HIGHEST-address
- * ROM function (_ZN17daObjFl_Ukiyuka_c13InitResourcesEv, 0x02112040) is written
- * FIRST and the lowest (_ZN17daObjFl_Ukiyuka_cD1Ev, 0x02111f6c) LAST. Do not
- * reorder. The destructor's D0/D1 pair is the one documented exception:
- * written out of line, mwcc emits the synthesized D0 ahead of the written D1,
- * which is the reverse of the cartridge, so the verifier reports the ordinal
- * pair (0, 1) as PARTIAL -- compiler-chosen order, not a bug (see
- * notes/tu-reconstruction-pilot-report.md sec 3).
+ * FUNCTION ORDER IS THE ROM'S OWN, under `#pragma defer_codegen off`.
+ * Deferred code generation stays off for this TU so mwccarm emits one .text
+ * section per function in SOURCE order: the lowest-address ROM function
+ * (_ZN17daObjFl_Ukiyuka_cD1Ev, 0x02111f6c) is written FIRST and the highest
+ * (_ZN17daObjFl_Ukiyuka_c13InitResourcesEv, 0x02112040) LAST. Do not reorder.
+ * The verifier reports all 4 sections in the expected ROM-ascending order.
  *
  * THE DESTRUCTOR IS ONE DEFINITION AND TWO SECTIONS (plus a homeless D2).
- * A single `daObjFl_Ukiyuka_c::~daObjFl_Ukiyuka_c()` emits D1 and D0, in
+ * A single `daObjFl_Ukiyuka_c::~daObjFl_Ukiyuka_c()` emits D1 and D0, and
+ * with deferred code generation off they land in the cartridge's order, D1
+ * first at 0x02111f6c and D0 at 0x02111fbc.
  * compiler order, which is exactly the cartridge's (0x02111f6c D1, 0x02111fbc
  * D0). The homeless D2 has no ROM symbol and no inbound relocation once the
  * leaf D1/D0 pair is retained, so the manifest licenses it as deadstrip
@@ -86,6 +85,48 @@ void func_020393a4(int *p, int v);
 int func_ov002_020b6584(void *self, void *p, int x);
 }
 
+#pragma defer_codegen off
+
+/* -------------------------------------------------------------------------- */
+/* ROM ordinals 0/1 -- _ZN17daObjFl_Ukiyuka_cD1Ev 0x02111f6c, _ZN17daObjFl_Ukiyuka_cD0Ev 0x02111fbc. */
+/* ONE definition, two emitted sections.                                          */
+/* -------------------------------------------------------------------------- */
+// @symbol _ZN17daObjFl_Ukiyuka_cD1Ev
+// @symbol _ZN17daObjFl_Ukiyuka_cD0Ev
+/* recovered: real C++ destructor -- the compiler emits the whole body
+ *
+ * THREE vtable stores, and the middle one is the finding. `struct
+ * daObjFl_Ukiyuka_c : daObjUkiyuka_c : dBgActor_c` emits its own vptr, then
+ * daObjUkiyuka_c's -- inlined, because that destructor is defined in its
+ * class body -- then dBgActor_c's, then dBgActor_c's dBgW_KcMbg and Model,
+ * then dActor_c. Nothing in the chain adds a member with a destructor, so the
+ * body is empty. D0 additionally returns the object to the actor heap through
+ * the inline operator delete, which is why nothing below mentions a heap.
+ */
+daObjFl_Ukiyuka_c::~daObjFl_Ukiyuka_c()
+{
+}
+/* -------------------------------------------------------------------------- */
+/* ROM ordinal 2 -- _ZN17daObjFl_Ukiyuka_c16CleanupResourcesEv, 0x02112020, size 0x20 */
+/* -------------------------------------------------------------------------- */
+// @symbol _ZN17daObjFl_Ukiyuka_c16CleanupResourcesEv
+/* recovered: named members + real C++ method */
+/* daObjFl_Ukiyuka_c::CleanupResources() -- indexes the ov022 parameter
+ * table with mVariant, the one field this class adds. */
+/* One row of the 0xc-stride ov022 table: the model/collision/CLPS descriptor
+ * the shared helper reads out of its second argument, spelled the way
+ * src/actors/daObjUkiyuka_c.cpp -- the file that DEFINES func_ov002_020b6424
+ * -- spells it. */
+/* The helper takes the BASE, daObjUkiyuka_c, not this leaf: this class's
+ * __si_class_type_info in ov022 records exactly one base, daObjUkiyuka_c at
+ * ov002 0x02109104, at subobject offset 0, and daObjKm2_Ukishima_c (ov045)
+ * reaches the same helper through the same base. */
+int daObjFl_Ukiyuka_c::CleanupResources()
+{
+    return func_ov002_020b6424(
+        this, (ResourceDescriptor *)(data_ov022_021140d4 + mVariant * 0xc));
+}
+
 /* -------------------------------------------------------------------------- */
 /* ROM ordinal 3 -- _ZN17daObjFl_Ukiyuka_c13InitResourcesEv, 0x02112040, size 0x78 */
 /* -------------------------------------------------------------------------- */
@@ -116,45 +157,4 @@ int daObjFl_Ukiyuka_c::InitResources()
     }
     unsigned char idx = mVariant;
     func_ov002_020b6584(this, data_ov022_021140d4 + idx * 0xc, 0x1051);
-}
-
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 2 -- _ZN17daObjFl_Ukiyuka_c16CleanupResourcesEv, 0x02112020, size 0x20 */
-/* -------------------------------------------------------------------------- */
-// @symbol _ZN17daObjFl_Ukiyuka_c16CleanupResourcesEv
-/* recovered: named members + real C++ method */
-/* daObjFl_Ukiyuka_c::CleanupResources() -- indexes the ov022 parameter
- * table with mVariant, the one field this class adds. */
-/* One row of the 0xc-stride ov022 table: the model/collision/CLPS descriptor
- * the shared helper reads out of its second argument, spelled the way
- * src/actors/daObjUkiyuka_c.cpp -- the file that DEFINES func_ov002_020b6424
- * -- spells it. */
-/* The helper takes the BASE, daObjUkiyuka_c, not this leaf: this class's
- * __si_class_type_info in ov022 records exactly one base, daObjUkiyuka_c at
- * ov002 0x02109104, at subobject offset 0, and daObjKm2_Ukishima_c (ov045)
- * reaches the same helper through the same base. */
-int daObjFl_Ukiyuka_c::CleanupResources()
-{
-    return func_ov002_020b6424(
-        this, (ResourceDescriptor *)(data_ov022_021140d4 + mVariant * 0xc));
-}
-
-/* -------------------------------------------------------------------------- */
-/* ROM ordinals 0/1 -- _ZN17daObjFl_Ukiyuka_cD1Ev 0x02111f6c, _ZN17daObjFl_Ukiyuka_cD0Ev 0x02111fbc. */
-/* ONE definition, two emitted sections.                                          */
-/* -------------------------------------------------------------------------- */
-// @symbol _ZN17daObjFl_Ukiyuka_cD1Ev
-// @symbol _ZN17daObjFl_Ukiyuka_cD0Ev
-/* recovered: real C++ destructor -- the compiler emits the whole body
- *
- * THREE vtable stores, and the middle one is the finding. `struct
- * daObjFl_Ukiyuka_c : daObjUkiyuka_c : dBgActor_c` emits its own vptr, then
- * daObjUkiyuka_c's -- inlined, because that destructor is defined in its
- * class body -- then dBgActor_c's, then dBgActor_c's dBgW_KcMbg and Model,
- * then dActor_c. Nothing in the chain adds a member with a destructor, so the
- * body is empty. D0 additionally returns the object to the actor heap through
- * the inline operator delete, which is why nothing below mentions a heap.
- */
-daObjFl_Ukiyuka_c::~daObjFl_Ukiyuka_c()
-{
 }
