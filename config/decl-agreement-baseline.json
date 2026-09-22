@@ -28990,6 +28990,16 @@
         "return:SharedFilePtr"
       ]
     },
+    "data_ov033_021124e8": {
+      "src/actors/daObjTtWater_c.cpp": [
+        "return:SharedFilePtr"
+      ]
+    },
+    "data_ov033_021124f0": {
+      "src/actors/daObjTtWater_c.cpp": [
+        "return:SharedFilePtr"
+      ]
+    },
     "data_ov034_02113820": {
       "src/func_ov034_02112284.c": [
         "return:char []"
