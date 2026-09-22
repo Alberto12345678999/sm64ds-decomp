@@ -1601,16 +1601,16 @@ ov056	0x02111594	BigMovingIceBlock_Spawn	daObjEwmIceBlock_c_classInit	reconstruc
 ov056	0x02113344	data_ov056_02113344	BigMovingIceBlock_SpawnInfo	spawninfo
 ov056	0x02113344	BigMovingIceBlock_SpawnInfo	g_profile_EWM_ICE_BLOCK	reconstructed profile global; literal ROM ID EWM_ICE_BLOCK+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov056	0x02113368	data_ov056_02113368	_ZTV17BigMovingIceBlock	vtable alloc=0x330
-ov058	0x021111a0	func_ov058_021111a0	_ZN15RecRoomCupboardD1Ev	vtable slot 16
-ov058	0x021111e0	func_ov058_021111e0	_ZN15RecRoomCupboardD0Ev	vtable slot 17
-ov058	0x02111234	func_ov058_02111234	_ZN15RecRoomCupboard16CleanupResourcesEv	vtable slot 3
-ov058	0x0211123c	func_ov058_0211123c	_ZN15RecRoomCupboard8BehaviorEv	vtable slot 6
-ov058	0x0211161c	func_ov058_0211161c	_ZN15RecRoomCupboard13InitResourcesEv	vtable slot 0
+ov058	0x021111a0	func_ov058_021111a0	_ZN13daObjCloset_cD1Ev	vtable slot 16
+ov058	0x021111e0	func_ov058_021111e0	_ZN13daObjCloset_cD0Ev	vtable slot 17
+ov058	0x02111234	func_ov058_02111234	_ZN13daObjCloset_c16CleanupResourcesEv	vtable slot 3
+ov058	0x0211123c	func_ov058_0211123c	_ZN13daObjCloset_c8BehaviorEv	vtable slot 6
+ov058	0x0211161c	func_ov058_0211161c	_ZN13daObjCloset_c13InitResourcesEv	vtable slot 0
 ov058	0x02111688	func_ov058_02111688	RecRoomCupboard_Spawn	spawnfunc
 ov058	0x02111688	RecRoomCupboard_Spawn	daObjCloset_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov058	0x02111a4c	data_ov058_02111a4c	RecRoomCupboard_SpawnInfo	spawninfo
 ov058	0x02111a4c	RecRoomCupboard_SpawnInfo	g_profile_PL_CLOSET	reconstructed profile global; literal ROM ID PL_CLOSET+registry role+later EAD lineage; exact SM64DS spelling not preserved
-ov058	0x02111a70	data_ov058_02111a70	_ZTV15RecRoomCupboard	vtable alloc=0x21c
+ov058	0x02111a70	data_ov058_02111a70	_ZTV13daObjCloset_c	vtable alloc=0x21c
 ov060	0x02111900	func_ov060_02111900	_ZN6BowserD1Ev	vtable slot 16
 ov060	0x02111950	func_ov060_02111950	_ZN6BowserD0Ev	vtable slot 17
 ov060	0x021119b4	func_ov060_021119b4	_ZN10BowserTailD1Ev	vtable slot 16

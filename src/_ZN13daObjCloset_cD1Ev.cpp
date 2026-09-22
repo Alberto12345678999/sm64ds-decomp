@@ -1,5 +1,5 @@
 //cpp
-// @symbol _ZN15RecRoomCupboardD1Ev
+// @symbol _ZN13daObjCloset_cD1Ev
 /* recovered: real C++ destructor -- the compiler emits the whole body.
  *
  * Nobody writes the vptr store, the five-element array destroy at +0xd4 or the
@@ -8,8 +8,8 @@
  * vtable and typeinfo, which the module's gap object also supplies from ROM)
  * and objisolate keeps the one this file is bound to.
  */
-#include "RecRoomCupboard.h"
+#include "daObjCloset_c.h"
 
-RecRoomCupboard::~RecRoomCupboard()
+daObjCloset_c::~daObjCloset_c()
 {
 }

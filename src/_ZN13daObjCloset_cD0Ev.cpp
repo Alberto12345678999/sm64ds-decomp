@@ -1,5 +1,5 @@
 //cpp
-// @symbol _ZN15RecRoomCupboardD0Ev
+// @symbol _ZN13daObjCloset_cD0Ev
 /* recovered: real C++ deleting destructor -- the compiler emits the whole body.
  *
  * D0 is the DELETING destructor: run the destructor -- vptr store, the
@@ -7,8 +7,8 @@
  * -- and hand the object back to its heap. The deallocation is dActor_c's
  * inline `operator delete`, which is why nothing below mentions a heap.
  */
-#include "RecRoomCupboard.h"
+#include "daObjCloset_c.h"
 
-RecRoomCupboard::~RecRoomCupboard()
+daObjCloset_c::~daObjCloset_c()
 {
 }

@@ -1,5 +1,5 @@
 //cpp
-// @symbol _ZN15RecRoomCupboard13InitResourcesEv
+// @symbol _ZN13daObjCloset_c13InitResourcesEv
 /* recovered: real class form -- the compiler spells the mangled name.
  *
  * dCcAcPos_c::Init is CALLED, not defined, through its mangled name with int
@@ -8,13 +8,13 @@
  * the true types breaks the byte match. Every other InitResources in the tree
  * that touches this function does the same (notes/mwccarm-codegen.md 6az).
  */
-#include "RecRoomCupboard.h"
+#include "daObjCloset_c.h"
 
 extern "C" void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
     void *self, void *actor, void *offset, int radius, int height,
     unsigned int flags, unsigned int vulnFlags);
 
-s32 RecRoomCupboard::InitResources()
+s32 daObjCloset_c::InitResources()
 {
     int i;
     dCcAcPos_c *collider = mColliders;

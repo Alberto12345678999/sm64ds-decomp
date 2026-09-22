@@ -217,7 +217,7 @@ python tools/mangle.py src/game/actors/d_a_obj_km2_fall_block.cpp \
 Add one method declaration to `include/<Class>.h` inside the existing `#ifdef __cplusplus`
 block, then do the S2 edit. Representative classes: `DonutBlock`, `FlameChomp`,
 `Scuttlebug`, `dScEntry_c`, `dScTitle_c`, `BabyPenguin`. Two classes have no header at all
-(`RecRoomCupboard` + one more) — drop those files; that is header-reconstruction work.
+(`daObjCloset_c` + one more) — drop those files; that is header-reconstruction work.
 
 **Why a separate stage:** a header edit has blast radius through every includer, and
 `notes/plan-cpp-language-mode.md` §7 names "header retype silently un-matches a

@@ -25917,14 +25917,14 @@
    "start": "0x21111a0",
    "end": "0x21116e4",
    "classes": [
-    "RecRoomCupboard"
+    "daObjCloset_c"
    ],
    "n_functions_map": 6,
    "n_files": 4,
    "files": [
-    "src/_ZN15RecRoomCupboard16CleanupResourcesEv.c",
-    "src/_ZN15RecRoomCupboard8BehaviorEv.cpp",
-    "src/_ZN15RecRoomCupboard13InitResourcesEv.c",
+    "src/_ZN13daObjCloset_c16CleanupResourcesEv.c",
+    "src/_ZN13daObjCloset_c8BehaviorEv.cpp",
+    "src/_ZN13daObjCloset_c13InitResourcesEv.c",
     "src/d_a_obj_closet.cpp"
    ],
    "ext_mix": {

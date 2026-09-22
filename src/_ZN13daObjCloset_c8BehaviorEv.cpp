@@ -1,7 +1,7 @@
 //cpp
-// @symbol _ZN15RecRoomCupboard8BehaviorEv
+// @symbol _ZN13daObjCloset_c8BehaviorEv
 /* recovered: real class form -- the compiler spells the mangled name. */
-#include "RecRoomCupboard.h"
+#include "daObjCloset_c.h"
 
 typedef long long s64;
 
@@ -35,7 +35,7 @@ extern u8 data_0209d684;
 extern u8 data_0209d660;
 
 #pragma opt_strength_reduction off
-s32 RecRoomCupboard::Behavior()
+s32 daObjCloset_c::Behavior()
 {
     volatile Vec3Raw v1, v2, v3;
     Vec3Raw apos;

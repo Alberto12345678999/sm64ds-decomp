@@ -1,14 +1,14 @@
-/* RecRoomCupboard -- the Rec Room's minigame cupboard: the object you talk to
+/* daObjCloset_c -- the Rec Room's minigame cupboard: the object you talk to
  * to open the minigame menu, and the one that puts up the "saving" banner.
  *
- * ov058, _ZTV15RecRoomCupboard at 0x02111a70.
+ * ov058, _ZTV13daObjCloset_c at 0x02111a70.
  *
  * SIZE AND BASE come from the factory. daObjCloset_c_classInit (0x02111688)
  * allocates fBase_c::operator new(0x21c), calls _ZN8dActor_cC2Ev on it and then
- * stores _ZTV15RecRoomCupboard -- so the object is 0x21c bytes and the base is
+ * stores _ZTV13daObjCloset_c -- so the object is 0x21c bytes and the base is
  * dActor_c (0xd0). Spawn also runs __cxa_vec_ctor over `this + 0xd4` as
  * 5 x 0x40 with _ZN10dCcAcPos_cC1Ev / _ZN10dCcAcPos_cD1Ev, which is the
- * array-construct helper; ~RecRoomCupboard runs the matching
+ * array-construct helper; ~daObjCloset_c runs the matching
  * __cxa_vec_cleanup(this + 0xd4, 5, 0x40, _ZN10dCcAcPos_cD1Ev). D1 and not D2, so
  * these are five dCcAcPos_c MEMBERS, not an inlined base.
  *
@@ -19,8 +19,8 @@
  *   slot  0  0x0211161c  InitResources
  *   slot  3  0x02111234  CleanupResources
  *   slot  6  0x0211123c  Behavior
- *   slot 16  0x021111a0  ~RecRoomCupboard (D1)
- *   slot 17  0x021111e0  ~RecRoomCupboard (D0)
+ *   slot 16  0x021111a0  ~daObjCloset_c (D1)
+ *   slot 17  0x021111e0  ~daObjCloset_c (D0)
  *
  * Every other slot is dActor_c's or fBase_c's own entry unchanged; in
  * particular slot 9 is fBase_c::Render and slot 12 fBase_c::OnPendingDestroy,
@@ -51,13 +51,13 @@
  * global g_profile_PL_CLOSET (historical alias RecRoomCupboard_SpawnInfo)
  * is its registry descriptor.
  */
-#ifndef RECROOMCUPBOARD_H
-#define RECROOMCUPBOARD_H
+#ifndef DAOBJCLOSET_C_H
+#define DAOBJCLOSET_C_H
 #include "types.h"
 #include "dActor_c.h"
 #include "dCcAcPos_c.h"
 
-struct RecRoomCupboard : dActor_c {
+struct daObjCloset_c : dActor_c {
     u8  pad_0d0[0x4];
     /* Five attached cylinders, laid out left to right in front of the cupboard:
        Behavior places mColliders[j] at 100 * (2 - j) units along the actor's
@@ -81,7 +81,7 @@ struct RecRoomCupboard : dActor_c {
     u16 mMessageID;            /* 0x21a */
 
     /* --- vtable. Only the slots the ROM table actually overrides. --- */
-    virtual ~RecRoomCupboard();        /* slots 16 (D1), 17 (D0) */
+    virtual ~daObjCloset_c();        /* slots 16 (D1), 17 (D0) */
     virtual s32 InitResources();       /* slot  0 */
     virtual s32 CleanupResources();    /* slot  3 */
     virtual s32 Behavior();            /* slot  6 */
@@ -89,7 +89,7 @@ struct RecRoomCupboard : dActor_c {
 
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
-typedef char RecRoomCupboard_size_must_be_0x21c[sizeof(RecRoomCupboard) == 0x21c ? 1 : -1];
+typedef char daObjCloset_c_size_must_be_0x21c[sizeof(daObjCloset_c) == 0x21c ? 1 : -1];
 #endif
 
 #endif
