@@ -1,5 +1,5 @@
-#ifndef ROLLINGLOGLLL_H
-#define ROLLINGLOGLLL_H
+#ifndef DAOBJFLMARUTA_C_H
+#define DAOBJFLMARUTA_C_H
 
 #include "types.h"
 
@@ -12,7 +12,7 @@
  *
  *   _ZTI15daObjFlMaruta_c  ov022 0x02114344
  *   _ZTS15daObjFlMaruta_c  ov022 0x0211436c
- *   _ZTV13RollingLogLll    ov022 0x021143a4  (its record sits at V-4)
+ *   _ZTV15daObjFlMaruta_c    ov022 0x021143a4  (its record sits at V-4)
  *   kind  __si_class_type_info, ONE base, subobject offset 0
  *   base  daObjMaruta_c, ov022 0x02114350 -- whose vtable is in ov080, not ov022
  *
@@ -32,9 +32,9 @@
 
 #include "daObjMaruta_c.h"
 
-struct RollingLogLll : daObjMaruta_c {
+struct daObjFlMaruta_c : daObjMaruta_c {
     /* --- vtable --- */
-    virtual ~RollingLogLll();          /* slots 16 (D1), 17 (D0) */
+    virtual ~daObjFlMaruta_c();          /* slots 16 (D1), 17 (D0) */
 
     int Behavior();                    /* slot  6 */
     int CleanupResources();            /* slot  3 */
@@ -43,9 +43,9 @@ struct RollingLogLll : daObjMaruta_c {
 
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
-typedef char RollingLogLll_size_must_be_0x344[sizeof(RollingLogLll) == 0x344 ? 1 : -1];
+typedef char daObjFlMaruta_c_size_must_be_0x344[sizeof(daObjFlMaruta_c) == 0x344 ? 1 : -1];
 #endif
 
 #endif /* __cplusplus */
 
-#endif /* ROLLINGLOGLLL_H */
+#endif /* DAOBJFLMARUTA_C_H */

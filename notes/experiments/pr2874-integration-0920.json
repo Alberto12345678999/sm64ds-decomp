@@ -2882,8 +2882,8 @@
       "diffs": []
     },
     {
-      "file": "src/_ZN13RollingLogLll13InitResourcesEv.cpp",
-      "name": "_ZN13RollingLogLll13InitResourcesEv",
+      "file": "src/_ZN15daObjFlMaruta_c13InitResourcesEv.cpp",
+      "name": "_ZN15daObjFlMaruta_c13InitResourcesEv",
       "module": "ov022",
       "addr": "0x2112590",
       "verdict": "VERIFIED",
@@ -2891,8 +2891,8 @@
       "diffs": []
     },
     {
-      "file": "src/_ZN13RollingLogLll16CleanupResourcesEv.cpp",
-      "name": "_ZN13RollingLogLll16CleanupResourcesEv",
+      "file": "src/_ZN15daObjFlMaruta_c16CleanupResourcesEv.cpp",
+      "name": "_ZN15daObjFlMaruta_c16CleanupResourcesEv",
       "module": "ov022",
       "addr": "0x211254c",
       "verdict": "VERIFIED",
@@ -20565,7 +20565,7 @@
           "src/_ZN13daObjBlockL_c11OnAttacked2ER8dActor_c.cpp",
           "src/_ZN13daObjBlockL_c17NotifyLinkedActorEv.cpp",
           "src/_ZN13daObjBlockL_cD1Ev.cpp",
-          "src/_ZN13RollingLogLll13InitResourcesEv.cpp",
+          "src/_ZN15daObjFlMaruta_c13InitResourcesEv.cpp",
           "src/_ZN14CutsceneObject6RenderEv.cpp",
           "src/_ZN14UnknownVsEntry8BehaviorEv.cpp",
           "src/_ZN14daWater_Ring_c8BehaviorEv.cpp",
@@ -20690,7 +20690,7 @@
           "src/_ZN13daObjBlockL_c11OnAttacked2ER8dActor_c.cpp",
           "src/_ZN13daObjBlockL_c17NotifyLinkedActorEv.cpp",
           "src/_ZN13daObjBlockL_cD1Ev.cpp",
-          "src/_ZN13RollingLogLll13InitResourcesEv.cpp",
+          "src/_ZN15daObjFlMaruta_c13InitResourcesEv.cpp",
           "src/_ZN14CutsceneObject6RenderEv.cpp",
           "src/_ZN14UnknownVsEntry8BehaviorEv.cpp",
           "src/_ZN14daWater_Ring_c8BehaviorEv.cpp",
@@ -20828,7 +20828,7 @@
           "src/_ZN13daObjBlockL_c13InitResourcesEv.cpp",
           "src/_ZN13daObjBlockL_c4KillEv.cpp",
           "src/_ZN13BowserShutter13InitResourcesEv.cpp",
-          "src/_ZN13RollingLogLll16CleanupResourcesEv.cpp",
+          "src/_ZN15daObjFlMaruta_c16CleanupResourcesEv.cpp",
           "src/_ZN14CutsceneObject8BehaviorEv.cpp",
           "src/_ZN14dScMgBomroom_c13InitResourcesEv.cpp",
           "src/_ZN15BookShotSpawner13InitResourcesEv.cpp",
@@ -20953,7 +20953,7 @@
           "src/_ZN13daObjBlockL_c13InitResourcesEv.cpp",
           "src/_ZN13daObjBlockL_c4KillEv.cpp",
           "src/_ZN13BowserShutter13InitResourcesEv.cpp",
-          "src/_ZN13RollingLogLll16CleanupResourcesEv.cpp",
+          "src/_ZN15daObjFlMaruta_c16CleanupResourcesEv.cpp",
           "src/_ZN14CutsceneObject8BehaviorEv.cpp",
           "src/_ZN14dScMgBomroom_c13InitResourcesEv.cpp",
           "src/_ZN15BookShotSpawner13InitResourcesEv.cpp",
@@ -21709,8 +21709,8 @@
         "src/_ZN13FortressTower13InitResourcesEv.cpp",
         "src/_ZN13FortressTower16CleanupResourcesEv.cpp",
         "src/_ZN13MontyMoleRock8BehaviorEv.cpp",
-        "src/_ZN13RollingLogLll13InitResourcesEv.cpp",
-        "src/_ZN13RollingLogLll16CleanupResourcesEv.cpp",
+        "src/_ZN15daObjFlMaruta_c13InitResourcesEv.cpp",
+        "src/_ZN15daObjFlMaruta_c16CleanupResourcesEv.cpp",
         "src/_ZN10daSnmBth_c8BehaviorEv.cpp",
         "src/_ZN13dScMgTeresa_c13InitResourcesEv.cpp",
         "src/_ZN13dScMgTeresa_c6RenderEv.cpp",
@@ -22751,12 +22751,12 @@
           "name": "_ZN13MontyMoleRock8BehaviorEv"
         },
         {
-          "file": "src/_ZN13RollingLogLll13InitResourcesEv.cpp",
-          "name": "_ZN13RollingLogLll13InitResourcesEv"
+          "file": "src/_ZN15daObjFlMaruta_c13InitResourcesEv.cpp",
+          "name": "_ZN15daObjFlMaruta_c13InitResourcesEv"
         },
         {
-          "file": "src/_ZN13RollingLogLll16CleanupResourcesEv.cpp",
-          "name": "_ZN13RollingLogLll16CleanupResourcesEv"
+          "file": "src/_ZN15daObjFlMaruta_c16CleanupResourcesEv.cpp",
+          "name": "_ZN15daObjFlMaruta_c16CleanupResourcesEv"
         },
         {
           "file": "src/_ZN10daSnmBth_c8BehaviorEv.cpp",

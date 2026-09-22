@@ -165,23 +165,23 @@ src/game/actors/daObjFl_Fall_Block_c.cpp:
     complete
     .text start:0x02112380 end:0x02112498
 
-src/_ZN13RollingLogLllD1Ev.cpp:
+src/_ZN15daObjFlMaruta_cD1Ev.cpp:
     complete
     .text start:0x02112498 end:0x021124e8
 
-src/_ZN13RollingLogLllD0Ev.cpp:
+src/_ZN15daObjFlMaruta_cD0Ev.cpp:
     complete
     .text start:0x021124e8 end:0x0211254c
 
-src/_ZN13RollingLogLll16CleanupResourcesEv.cpp:
+src/_ZN15daObjFlMaruta_c16CleanupResourcesEv.cpp:
     complete
     .text start:0x0211254c end:0x02112560
 
-src/_ZN13RollingLogLll8BehaviorEv.cpp:
+src/_ZN15daObjFlMaruta_c8BehaviorEv.cpp:
     complete
     .text start:0x02112560 end:0x02112590
 
-src/_ZN13RollingLogLll13InitResourcesEv.cpp:
+src/_ZN15daObjFlMaruta_c13InitResourcesEv.cpp:
     complete
     .text start:0x02112590 end:0x021125a4
 
