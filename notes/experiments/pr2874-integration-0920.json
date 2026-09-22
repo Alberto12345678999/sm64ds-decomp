@@ -5051,8 +5051,8 @@
       "diffs": []
     },
     {
-      "file": "src/_ZN9Submarine13InitResourcesEv.cpp",
-      "name": "_ZN9Submarine13InitResourcesEv",
+      "file": "src/_ZN18daObjWlSubmarine_c13InitResourcesEv.cpp",
+      "name": "_ZN18daObjWlSubmarine_c13InitResourcesEv",
       "module": "ov026",
       "addr": "0x21119c0",
       "verdict": "VERIFIED",
@@ -5060,8 +5060,8 @@
       "diffs": []
     },
     {
-      "file": "src/_ZN9Submarine16CleanupResourcesEv.cpp",
-      "name": "_ZN9Submarine16CleanupResourcesEv",
+      "file": "src/_ZN18daObjWlSubmarine_c16CleanupResourcesEv.cpp",
+      "name": "_ZN18daObjWlSubmarine_c16CleanupResourcesEv",
       "module": "ov026",
       "addr": "0x2111954",
       "verdict": "VERIFIED",
@@ -20868,7 +20868,7 @@
           "src/_ZN8dActor_cC2Ev.cpp",
           "src/_ZN9MontyMole13InitResourcesEv.cpp",
           "src/_ZN9SolidHeap11VDeallocateEPv.cpp",
-          "src/_ZN9Submarine13InitResourcesEv.cpp",
+          "src/_ZN18daObjWlSubmarine_c13InitResourcesEv.cpp",
           "src/_ZN9WaterBomb8BehaviorEv.cpp",
           "src/_ZN9dScDSMT_c8BehaviorEv.cpp",
           "src/d_a_bbl.c",
@@ -20993,7 +20993,7 @@
           "src/_ZN8dActor_cC2Ev.cpp",
           "src/_ZN9MontyMole13InitResourcesEv.cpp",
           "src/_ZN9SolidHeap11VDeallocateEPv.cpp",
-          "src/_ZN9Submarine13InitResourcesEv.cpp",
+          "src/_ZN18daObjWlSubmarine_c13InitResourcesEv.cpp",
           "src/_ZN9WaterBomb8BehaviorEv.cpp",
           "src/_ZN9dScDSMT_c8BehaviorEv.cpp",
           "src/d_a_bbl.c",
@@ -21129,7 +21129,7 @@
           "src/_ZN9BootScene13InitResourcesEv.cpp",
           "src/_ZN9PowerStar13AddStarMarkerEv.cpp",
           "src/_ZN9SolidHeap7VSizeofEPv.cpp",
-          "src/_ZN9Submarine16CleanupResourcesEv.cpp",
+          "src/_ZN18daObjWlSubmarine_c16CleanupResourcesEv.cpp",
           "src/_ZN9Whirlpool13InitResourcesEv.cpp",
           "src/_ZN9daDossy_c13InitResourcesEv.cpp",
           "src/d_a_bg_snm_hed.c",
@@ -21254,7 +21254,7 @@
           "src/_ZN9BootScene13InitResourcesEv.cpp",
           "src/_ZN9PowerStar13AddStarMarkerEv.cpp",
           "src/_ZN9SolidHeap7VSizeofEPv.cpp",
-          "src/_ZN9Submarine16CleanupResourcesEv.cpp",
+          "src/_ZN18daObjWlSubmarine_c16CleanupResourcesEv.cpp",
           "src/_ZN9Whirlpool13InitResourcesEv.cpp",
           "src/_ZN9daDossy_c13InitResourcesEv.cpp",
           "src/d_a_bg_snm_hed.c",
@@ -21950,8 +21950,8 @@
         "src/_ZN9SpikeBomb8BehaviorEv.cpp",
         "src/_ZN9Spindrift13InitResourcesEv.cpp",
         "src/_ZN9Spindrift8BehaviorEv.cpp",
-        "src/_ZN9Submarine13InitResourcesEv.cpp",
-        "src/_ZN9Submarine16CleanupResourcesEv.cpp",
+        "src/_ZN18daObjWlSubmarine_c13InitResourcesEv.cpp",
+        "src/_ZN18daObjWlSubmarine_c16CleanupResourcesEv.cpp",
         "src/_ZN9TinyCover13InitResourcesEv.cpp",
         "src/_ZN9TinyCover16CleanupResourcesEv.cpp",
         "src/_ZN9TinyWater13InitResourcesEv.cpp",
@@ -23715,12 +23715,12 @@
           "name": "_ZN9Spindrift8BehaviorEv"
         },
         {
-          "file": "src/_ZN9Submarine13InitResourcesEv.cpp",
-          "name": "_ZN9Submarine13InitResourcesEv"
+          "file": "src/_ZN18daObjWlSubmarine_c13InitResourcesEv.cpp",
+          "name": "_ZN18daObjWlSubmarine_c13InitResourcesEv"
         },
         {
-          "file": "src/_ZN9Submarine16CleanupResourcesEv.cpp",
-          "name": "_ZN9Submarine16CleanupResourcesEv"
+          "file": "src/_ZN18daObjWlSubmarine_c16CleanupResourcesEv.cpp",
+          "name": "_ZN18daObjWlSubmarine_c16CleanupResourcesEv"
         },
         {
           "file": "src/_ZN9TinyCover13InitResourcesEv.cpp",

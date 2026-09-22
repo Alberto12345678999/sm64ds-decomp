@@ -1,5 +1,5 @@
-#ifndef SUBMARINE_H
-#define SUBMARINE_H
+#ifndef DAOBJWLSUBMARINE_C_H
+#define DAOBJWLSUBMARINE_C_H
 
 #include "types.h"
 #include "dBgActor_c.h"
@@ -7,9 +7,9 @@
 /* TWO WITNESSES, and they close on each other:
  *
  *   daObjWlSubmarine_c_classInit (historically Submarine_Spawn)
- *                 fBase_c::operator new(800 = 0x320), dBgActor_c::dBgActor_c(), stores _ZTV9Submarine,
+ *                 fBase_c::operator new(800 = 0x320), dBgActor_c::dBgActor_c(), stores _ZTV18daObjWlSubmarine_c,
  *                 then the members below in this order.
- *   ~Submarine   the same members destroyed in reverse, then ~dBgActor_c.
+ *   ~daObjWlSubmarine_c   the same members destroyed in reverse, then ~dBgActor_c.
  *
  * SIZE 0x320 is the factory's own literal, and the last member closes exactly on it.
  *
@@ -17,9 +17,9 @@
  * below differ; every other slot holds the base's own word and is inherited, so it
  * is deliberately not redeclared here.
  */
-struct Submarine : dBgActor_c {
+struct daObjWlSubmarine_c : dBgActor_c {
 
-    virtual ~Submarine();            /* slots 16 (D1), 17 (D0) */
+    virtual ~daObjWlSubmarine_c();            /* slots 16 (D1), 17 (D0) */
 
     virtual s32   InitResources();         /* slot  0 */
     virtual s32   CleanupResources();      /* slot  3 */
@@ -28,7 +28,7 @@ struct Submarine : dBgActor_c {
 
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
-typedef char Submarine_size_must_be_0x320[sizeof(Submarine) == 0x320 ? 1 : -1];
+typedef char daObjWlSubmarine_c_size_must_be_0x320[sizeof(daObjWlSubmarine_c) == 0x320 ? 1 : -1];
 #endif
 
-#endif /* SUBMARINE_H */
+#endif /* DAOBJWLSUBMARINE_C_H */

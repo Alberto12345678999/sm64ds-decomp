@@ -1,6 +1,6 @@
 //cpp
-// @symbol _ZN9Submarine16CleanupResourcesEv
-#include "Submarine.h"
+// @symbol _ZN18daObjWlSubmarine_c16CleanupResourcesEv
+#include "daObjWlSubmarine_c.h"
 // recovered name: daObjWlSubmarine_c_CleanupResources
 /* recovered: renamed to Class_Method, declarations from a shared header */
 #include "decl_common.h"
@@ -12,7 +12,7 @@ extern void _ZN13SharedFilePtr7ReleaseEv(void *);
 extern int Submarine_ModelFile[];
 }
 
-s32 Submarine::CleanupResources() {
+s32 daObjWlSubmarine_c::CleanupResources() {
     void * t = (void *)this;
     if (_ZN4dBgW9IsEnabledEv((char *)t + 0x124)) {
         _ZN4dBgW7DisableEv((char *)t + 0x124);

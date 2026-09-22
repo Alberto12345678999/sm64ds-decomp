@@ -1,6 +1,6 @@
 //cpp
-// @symbol _ZN9Submarine13InitResourcesEv
-#include "Submarine.h"
+// @symbol _ZN18daObjWlSubmarine_c13InitResourcesEv
+#include "daObjWlSubmarine_c.h"
 // recovered name: daObjWlSubmarine_c_InitResources
 /* recovered: renamed to Class_Method, declarations from a shared header */
 #include "decl_common.h"
@@ -17,7 +17,7 @@ extern void _ZN4dBgW6EnableEP8dActor_c(void *, void *);
 extern char data_0209caa0[];
 }
 
-s32 Submarine::InitResources() {
+s32 daObjWlSubmarine_c::InitResources() {
     char * c = (char *)this;
   void *m = (void*)_ZN5Model8LoadFileER13SharedFilePtr(data_ov026_02113ee4);
   _ZN9ModelBase7SetFileEP8BMD_Fileii(c+0xd4,(int)m,1,-1);
