@@ -4485,6 +4485,10 @@
     "src/actors/daRFlag_c.cpp#_ZN9daRFlag_c16CleanupResourcesEv": "tangosdev",
     "src/actors/daRFlag_c.cpp#_ZN9daRFlag_c6RenderEv": "tangosdev",
     "src/actors/daRFlag_c.cpp#_ZN9daRFlag_c8BehaviorEv": "tangosdev",
-    "src/actors/daRFlag_c.cpp#_ZN9daRFlag_c13InitResourcesEv": "tangosdev"
+    "src/actors/daRFlag_c.cpp#_ZN9daRFlag_c13InitResourcesEv": "tangosdev",
+    "src/actors/daObjFlamethrower_c.cpp#_ZN19daObjFlamethrower_cD1Ev": "andrewboudreau",
+    "src/actors/daObjFlamethrower_c.cpp#_ZN19daObjFlamethrower_cD0Ev": "andrewboudreau",
+    "src/actors/daObjFlamethrower_c.cpp#_ZN19daObjFlamethrower_c8BehaviorEv": "lunavyqo",
+    "src/actors/daObjFlamethrower_c.cpp#_ZN19daObjFlamethrower_c13InitResourcesEv": "andrewboudreau"
   }
 }
