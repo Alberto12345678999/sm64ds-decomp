@@ -750,8 +750,8 @@ src/_ZN15MaterialChanger7SetFileER8BMA_Filei5Fix12IiEj.c	P3-mangled-method-only	
 src/_ZN15MaterialChangerC1Ev.c	P3-mangled-method-only	arm9		MaterialChanger	_ZN15MaterialChangerC1Ev	1		True	_ZTV15MaterialChanger	-
 src/_ZN15ModelComponents21UpdateVertsUsingBonesEv.c	P3-mangled-method-only	arm9		ModelComponents	_ZN15ModelComponents21UpdateVertsUsingBonesEv	1	active	False		no-header:ModelComponents
 src/_ZN8daSCre_cD0Ev.c	DTOR-ONLY	ov018	daSCre_c	PowerStarCreate/daSCre_c	_ZN8daSCre_cD0Ev	1		True	_ZTV8daSCre_c	-
-src/_ZN15RecRoomCupboard13InitResourcesEv.c	P1-vtable+mangled	ov058	daObjCloset_c	RecRoomCupboard/daObjCloset_c	vtable daObjCloset_c slot 0 @0x211161c | _ZN15RecRoomCupboard13InitResourcesEv	1		False		no-header:RecRoomCupboard/daObjCloset_c
-src/_ZN15RecRoomCupboard16CleanupResourcesEv.c	P1-vtable+mangled	ov058	daObjCloset_c	RecRoomCupboard/daObjCloset_c	vtable daObjCloset_c slot 3 @0x2111234 | _ZN15RecRoomCupboard16CleanupResourcesEv	1		False		no-header:RecRoomCupboard/daObjCloset_c
+src/_ZN13daObjCloset_c13InitResourcesEv.c	P1-vtable+mangled	ov058	daObjCloset_c	daObjCloset_c/daObjCloset_c	vtable daObjCloset_c slot 0 @0x211161c | _ZN13daObjCloset_c13InitResourcesEv	1		False		no-header:daObjCloset_c/daObjCloset_c
+src/_ZN13daObjCloset_c16CleanupResourcesEv.c	P1-vtable+mangled	ov058	daObjCloset_c	daObjCloset_c/daObjCloset_c	vtable daObjCloset_c slot 3 @0x2111234 | _ZN13daObjCloset_c16CleanupResourcesEv	1		False		no-header:daObjCloset_c/daObjCloset_c
 src/_ZN15RotatingFirebarD0Ev.c	DTOR-ONLY	ov064	daObjFl_KomaU_c	RotatingFirebar/daObjFl_KomaU_c	_ZN15RotatingFirebarD0Ev	1		True	_ZTV10dBgActor_c/_ZTV15RotatingFirebar	-
 src/_ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj.c	P3-mangled-method-only	arm9		TextureSequence	_ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj	1		True		by-value-class-param
 src/_ZN15TextureSequenceC1Ev.c	P3-mangled-method-only	arm9		TextureSequence	_ZN15TextureSequenceC1Ev	1		True	_ZTV15TextureSequence	-

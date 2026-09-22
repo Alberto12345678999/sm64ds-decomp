@@ -142,7 +142,7 @@ daObjC1Hikari_c	DONE	include\daObjC1Hikari_c.h  [alias: header uses pre-rename n
 daObjC1Peach_c	DONE	include\daObjC1Peach_c.h  [alias: header uses pre-rename name]	dActor_c	0	ov010	7
 daObjClockHuriko_c	DONE	include\daObjClockHuriko_c.h	dActor_c	0	ov013	6
 daObjClock_c	DONE	include\daObjClock_c.h	dActor_c	0	ov013	6
-daObjCloset_c	DONE	include\RecRoomCupboard.h  [alias: header uses pre-rename name]	dActor_c	0	ov058	5
+daObjCloset_c	DONE	include\daObjCloset_c.h  [alias: header uses pre-rename name]	dActor_c	0	ov058	5
 daObjDlPyramidDummy_c	DONE	include\PyramidTag.h  [alias: header uses pre-rename name]	dActor_c	0	ov024	4
 daObjFire_c	DONE	include\daObjFire_c.h	dActor_c	0	ov002	6
 daObjFl_Coin_c	PARTIAL	include\daObjFl_Coin_c.h	dActor_c	0	ov064	4

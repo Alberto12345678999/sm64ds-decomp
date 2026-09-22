@@ -4921,10 +4921,6 @@
         "param:#1 const void *",
         "param:#2 const void *"
       ],
-      "src/_ZN15RecRoomCupboard8BehaviorEv.cpp": [
-        "param:#1 const Vec3Raw *",
-        "param:#2 const Vec3Raw *"
-      ],
       "src/_ZN5Unagi13InitResourcesEv.cpp": [
         "param:#1 char *",
         "param:#2 char *"
@@ -4988,6 +4984,10 @@
       "src/actors/daMky_c.cpp": [
         "param:#1 const void *",
         "param:#2 const void *"
+      ],
+      "src/actors/daObjCloset_c.cpp": [
+        "param:#1 const Vec3Raw *",
+        "param:#2 const Vec3Raw *"
       ],
       "src/actors/daObjKanban_c.cpp": [
         "param:#1 Vector3 *",
@@ -6464,9 +6464,6 @@
       "src/_ZN11BobOmbBuddy8BehaviorEv.cpp": [
         "return:int"
       ],
-      "src/_ZN15RecRoomCupboard8BehaviorEv.cpp": [
-        "return:int"
-      ],
       "src/_ZN15TtcRotatingCube8BehaviorEv.cpp": [
         "param:#2 int",
         "param:#3 int",
@@ -6499,6 +6496,9 @@
         "return:int"
       ],
       "src/actors/daMip_c.cpp": [
+        "return:int"
+      ],
+      "src/actors/daObjCloset_c.cpp": [
         "return:int"
       ],
       "src/actors/daObjCtKaitendai_c.cpp": [
@@ -13424,7 +13424,7 @@
       ]
     },
     "_ZN6Player12ShowMessage2ER7fBase_cjPK7Vector3hh": {
-      "src/_ZN15RecRoomCupboard8BehaviorEv.cpp": [
+      "src/actors/daObjCloset_c.cpp": [
         "param:#4 const void *"
       ]
     },
@@ -15922,9 +15922,6 @@
       "src/_ZN13MontyMoleRock8BehaviorEv.cpp": [
         "return:void *"
       ],
-      "src/_ZN15RecRoomCupboard8BehaviorEv.cpp": [
-        "return:void *"
-      ],
       "src/_ZN15RotatingFirebar8BehaviorEv.cpp": [
         "return:void *"
       ],
@@ -15974,6 +15971,9 @@
         "return:void *"
       ],
       "src/actors/daKrb_c.cpp": [
+        "return:void *"
+      ],
+      "src/actors/daObjCloset_c.cpp": [
         "return:void *"
       ],
       "src/actors/daObjKanban_c.cpp": [
@@ -19810,6 +19810,11 @@
         "return:void *"
       ]
     },
+    "_ZTV13daObjCloset_c": {
+      "src/d_a_obj_closet.cpp": [
+        "return:void * []"
+      ]
+    },
     "_ZTV14UnknownVsEntry": {
       "include/decl_common.h": [
         "return:int []"
@@ -19818,11 +19823,6 @@
     "_ZTV14dScMgD3DBase_c": {
       "src/minigames/d_s_mg_jump2.cpp": [
         "return:char []"
-      ]
-    },
-    "_ZTV15RecRoomCupboard": {
-      "src/d_a_obj_closet.cpp": [
-        "return:void * []"
       ]
     },
     "_ZTV15RotatingFirebar": {
@@ -33588,10 +33588,6 @@
         "param:#1 int",
         "return:void"
       ],
-      "src/_ZN15RecRoomCupboard8BehaviorEv.cpp": [
-        "param:#1 int",
-        "return:void"
-      ],
       "src/_ZN5Stage8BehaviorEv.cpp": [
         "param:#1 int",
         "return:void"
@@ -33672,6 +33668,10 @@
         "return:void"
       ],
       "src/actors/daJango_c.cpp": [
+        "param:#1 int",
+        "return:void"
+      ],
+      "src/actors/daObjCloset_c.cpp": [
         "param:#1 int",
         "return:void"
       ],
