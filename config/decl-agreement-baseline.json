@@ -36985,6 +36985,9 @@
       ]
     },
     "func_02039394": {
+      "src/actors/daObjBlockL_c.cpp": [
+        "param:#1 dBgW_KcMbg *"
+      ],
       "src/game/actors/daObjCtMecha05_c.cpp": [
         "param:#1 dBgW *"
       ],
@@ -37001,6 +37004,9 @@
       ]
     },
     "func_020393a4": {
+      "src/actors/daObjBlockL_c.cpp": [
+        "param:#1 dBgW_KcMbg *"
+      ],
       "src/actors/daObjFloatBoard_c.cpp": [
         "param:#1 dBgW_KcMbg *"
       ],
