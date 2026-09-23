@@ -40085,19 +40085,19 @@ matched: yes</title></rect><rect x="1397.81" y="562.73" width="8.28" height="5.5
 module: ov077
 addr: 0x02124b04
 size: 96 bytes
-matched: yes</title></rect><rect x="1406.08" y="562.73" width="6.90" height="5.55" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5SpinyD1Ev
+matched: yes</title></rect><rect x="1406.08" y="562.73" width="6.90" height="5.55" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7daTgz_cD1Ev
 module: ov077
 addr: 0x02124b64
 size: 80 bytes
-matched: yes</title></rect><rect x="1412.98" y="562.73" width="8.62" height="5.55" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5SpinyD0Ev
+matched: yes</title></rect><rect x="1412.98" y="562.73" width="8.62" height="5.55" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7daTgz_cD0Ev
 module: ov077
 addr: 0x02124bb4
 size: 100 bytes
-matched: yes</title></rect><rect x="1347.12" y="568.28" width="4.43" height="0.86" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Spiny13OnYoshiTryEatEv
+matched: yes</title></rect><rect x="1347.12" y="568.28" width="4.43" height="0.86" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7daTgz_c13OnYoshiTryEatEv
 module: ov077
 addr: 0x02124c18
 size: 8 bytes
-matched: yes</title></rect><rect x="1347.12" y="569.14" width="4.43" height="0.86" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Spiny16OnAimedAtWithEggEv
+matched: yes</title></rect><rect x="1347.12" y="569.14" width="4.43" height="0.86" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7daTgz_c16OnAimedAtWithEggEv
 module: ov077
 addr: 0x02124c20
 size: 8 bytes
@@ -40193,27 +40193,27 @@ matched: yes</title></rect><rect x="1360.21" y="634.05" width="7.05" height="1.9
 module: ov077
 addr: 0x02125e94
 size: 28 bytes
-matched: yes</title></rect><rect x="1360.21" y="635.95" width="7.05" height="4.07" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Spiny16CleanupResourcesEv
+matched: yes</title></rect><rect x="1360.21" y="635.95" width="7.05" height="4.07" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7daTgz_c16CleanupResourcesEv
 module: ov077
 addr: 0x02125eb0
 size: 60 bytes
-matched: yes</title></rect><rect x="1367.26" y="584.11" width="0.60" height="3.20" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Spiny16OnPendingDestroyEv
+matched: yes</title></rect><rect x="1367.26" y="584.11" width="0.60" height="3.20" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7daTgz_c16OnPendingDestroyEv
 module: ov077
 addr: 0x02125eec
 size: 4 bytes
-matched: yes</title></rect><rect x="1367.86" y="584.11" width="17.91" height="3.20" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Spiny6RenderEv
+matched: yes</title></rect><rect x="1367.86" y="584.11" width="17.91" height="3.20" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7daTgz_c6RenderEv
 module: ov077
 addr: 0x02125ef0
 size: 120 bytes
-matched: yes</title></rect><rect x="1385.77" y="584.11" width="35.83" height="3.20" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Spiny8BehaviorEv
+matched: yes</title></rect><rect x="1385.77" y="584.11" width="35.83" height="3.20" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7daTgz_c8BehaviorEv
 module: ov077
 addr: 0x02125f68
 size: 240 bytes
-matched: yes</title></rect><rect x="1367.26" y="587.31" width="11.18" height="13.52" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Spiny13InitResourcesEv
+matched: yes</title></rect><rect x="1367.26" y="587.31" width="11.18" height="13.52" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7daTgz_c13InitResourcesEv
 module: ov077
 addr: 0x02126058
 size: 316 bytes
-matched: yes</title></rect><rect x="1367.26" y="600.83" width="11.18" height="4.11" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN5Spiny13OnTurnIntoEggER6Player
+matched: yes</title></rect><rect x="1367.26" y="600.83" width="11.18" height="4.11" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7daTgz_c13OnTurnIntoEggER6Player
 module: ov077
 addr: 0x02126194
 size: 96 bytes
