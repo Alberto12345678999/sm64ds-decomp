@@ -44,7 +44,7 @@ This document describes this commit. The queue records its immutable output SHA.
   [config/arm9/overlays/ov102/delinks.txt](../../../config/arm9/overlays/ov102/delinks.txt).
 - Also touched, outside the reservation and deliberately narrow: this class's own
   row in [notes/data/tu-promotion-queue.tsv](../../../notes/data/tu-promotion-queue.tsv) (a derived line count), and
-  [langmode-baseline.json](../../../config/langmode-baseline.json), which is restored to main's own file rather than
+  [langmode-baseline.json](../../../langmode-baseline.json), which is restored to main's own file rather than
   changed. [include/decl_common.h](../../../include/decl_common.h), [attribution.json](../../../attribution.json),
   [symbols/actor_renames.tsv](../../../symbols/actor_renames.tsv), [config/converted-baseline.json](../../../config/converted-baseline.json),
   [config/converted-backslide-exceptions.jsonl](../../../config/converted-backslide-exceptions.jsonl) carry v1 edits inherited from the
