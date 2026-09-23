@@ -226,7 +226,7 @@ first module where a `config_tu/` conversion becomes conceivable.
 |----|---------|-------|-------------|--------|
 |[ov016](../config/arm9/overlays/ov016/symbols.txt)| 0x2112ff8|  n=8|   `SlidingBox`|           CONF2 pcov=3|
 |[ov017](../config/arm9/overlays/ov017/symbols.txt)| 0x21111a0|  n=7|   `daObjKsWater_c`|            CONF2 WHOLEMOD pcov=2|
-|[ov022](../config/arm9/overlays/ov022/symbols.txt)| 0x21111a0|  n=9|   `VolcanoRing`|          CONF1|
+|[ov022](../config/arm9/overlays/ov022/symbols.txt)| 0x21111a0|  n=9|   `daObjFl_Ring_c`|          CONF1|
 |[ov022](../config/arm9/overlays/ov022/symbols.txt)| 0x21116c4|  n=9|   `FloatOnLavaPlatform`|  CONF2|
 |[ov022](../config/arm9/overlays/ov022/symbols.txt)| 0x2112130|  n=7|   `daObjFl_UkiKi_c`|            CONF2|
 |[ov025](../config/arm9/overlays/ov025/symbols.txt)| 0x2111d40|  n=9|   `PyramidStep`|          CONF1|
@@ -253,7 +253,7 @@ first module where a `config_tu/` conversion becomes conceivable.
 |[ov065](../config/arm9/overlays/ov065/symbols.txt)| 0x211b328|  n=8|   `daObjCtKaitendai_c`|      CONF2|
 |[ov079](../config/arm9/overlays/ov079/symbols.txt)| 0x2126dbc|  n=9|   `BillBlaster`|        CONF2|
 |[ov079](../config/arm9/overlays/ov079/symbols.txt)| 0x21271e4|  n=9|   `FortressWall`|       CONF1|
-|[ov091](../config/arm9/overlays/ov091/symbols.txt)| 0x2132404|  n=7|   `SlidingPlatformWf`|  CONF2|
+|[ov091](../config/arm9/overlays/ov091/symbols.txt)| 0x2132404|  n=7|   `daObjSimpleLift_c`|  CONF2|
 
 
 **B10 — R2, normalizer required · 9 TUs / 60 files / net −51 / 1,416 lines**
