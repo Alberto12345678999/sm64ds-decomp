@@ -357,7 +357,7 @@ to `attribution.json` under the `src/actors/daBmb_c.cpp#<symbol>` key form.
 Credit preserved: **lunavyqo ×3** (`_ZN7daBmb_c8BehaviorEv`),
 [func_ov102_0214b248](../../../src/actors/daBmb_c.cpp)(ROM Ordinal 11), [func_ov102_0214b53c](../../../src/actors/daBmb_c.cpp)(ROM Ordinal 16), **ruspecial ×1**
 ([func_ov102_0214b384](../../../src/actors/daBmb_c.cpp)(ROM Ordinal 12)), **aitddlabs ×1** ([func_ov102_0214baa0](../../../src/actors/daBmb_c.cpp)(ROM Ordinal 19)), tangosdev ×27.
-[func_ov102_0214ab1c](../../../src/actors/daBmb_c.cpp)(ROM Ordinal 4), [func_ov102_0214bc20](../../../src/actors/daBmb_c.cpp)(ROM Ordinal 21) and
+[func_ov102_0214ab1c](../../../src/actors/daBmb_c.cpp)(ROM Ordinal 3), [func_ov102_0214bc20](../../../src/actors/daBmb_c.cpp)(ROM Ordinal 21) and
 `_ZN7daBmb_c13OnYoshiTryEatEv` already credit andrewboudreau at the base and get
 no row. After the rows are applied the same tool reports **0 changed, 0 lost**.
 
