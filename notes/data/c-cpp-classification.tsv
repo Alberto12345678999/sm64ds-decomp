@@ -39,7 +39,7 @@ src/d_a_kpa_fire.c	WEAK-refs-only	ov060				1		None		-
 src/d_a_obj_fl_coin.c	S1-stores-rom-vptr	ov064			stores _ZTV19BowserPuzzleManager	1		None	_ZTV19BowserPuzzleManager	-
 src/d_a_obj_fl_puzzle.c	WEAK-refs-only	ov064				1		None		-
 src/d_a_f_ring.c	WEAK-refs-only	ov060				1		None		-
-src/d_a_obj_wl_koopa_shutter.c	S1-stores-rom-vptr	ov026			stores _ZTV13BowserShutter	1		None	_ZTV13BowserShutter	-
+src/d_a_obj_wl_koopa_shutter.c	S1-stores-rom-vptr	ov026			stores _ZTV21daObjWlKoopaShutter_c	1		None	_ZTV21daObjWlKoopaShutter_c	-
 src/d_a_kpa3_bg.c	S1-stores-rom-vptr	ov060			stores _ZTV17BowserSkyPlatform	1		None	_ZTV17BowserSkyPlatform	-
 src/d_a_kpa_tail.c	WEAK-refs-only	ov060				1		None		-
 src/d_a_kpa.c	WEAK-refs-only	ov060				1		None		-
@@ -144,8 +144,8 @@ src/daObjKi_Ita_c_classInit.c	S1-stores-rom-vptr	ov016			stores _ZTV17daObjFloat
 src/game/actors/d_a_obj_wc_obj06.cpp	S1-stores-rom-vptr	ov029			stores _ZTV17daObjFloatBoard_c	1		None	_ZTV17daObjFloatBoard_c/_ZTV14daObjWcObj06_c	-
 src/game/actors/d_a_obj_wc_obj01.cpp	S1-stores-rom-vptr	ov029			stores _ZTV17daObjFloatBoard_c	1		None	_ZTV17daObjFloatBoard_c/_ZTV14daObjWcObj01_c	-
 src/FloatingFloorBfs_Spawn.c	S1-stores-rom-vptr	ov045			stores _ZTV14daObjUkiyuka_c	1		None	_ZTV14daObjUkiyuka_c/_ZTV16FloatingFloorBfs	-
-src/d_a_obj_fl_ukiyuka_fl_ukiyuka.c	S1-stores-rom-vptr	ov022			stores _ZTV14daObjUkiyuka_c	1		None	_ZTV14daObjUkiyuka_c/_ZTV21FloatingFloorLllSmall	-
-src/d_a_obj_fl_ukiyuka_fl_ukiyuka_l.c	S1-stores-rom-vptr	ov022			stores _ZTV14daObjUkiyuka_c	1		None	_ZTV14daObjUkiyuka_c/_ZTV21FloatingFloorLllSmall	-
+src/d_a_obj_fl_ukiyuka_fl_ukiyuka.c	S1-stores-rom-vptr	ov022			stores _ZTV14daObjUkiyuka_c	1		None	_ZTV14daObjUkiyuka_c/_ZTV17daObjFl_Ukiyuka_c	-
+src/d_a_obj_fl_ukiyuka_fl_ukiyuka_l.c	S1-stores-rom-vptr	ov022			stores _ZTV14daObjUkiyuka_c	1		None	_ZTV14daObjUkiyuka_c/_ZTV17daObjFl_Ukiyuka_c	-
 src/daPropeller_Heyho_c_classInit.c	WEAK-refs-only	ov070				1		None		-
 src/d_a_obj_block_l_bk_futa.c	WEAK-refs-only	ov002				1		None		-
 src/d_a_obj_simple_bg_bk_tower.c	WEAK-refs-only	ov102				1		None		-
@@ -368,7 +368,7 @@ src/game/actors/d_a_obj_km3_kuruma.cpp	S1-stores-rom-vptr	ov047			stores _ZTV13d
 src/d_a_obj_ki_hasira.c	S1-stores-rom-vptr	ov016			stores _ZTV10RockPillar	1		None	_ZTV10RockPillar	-
 src/d_a_obj_simple_bg_ki_hasira_dai.c	WEAK-refs-only	ov102				1		None		-
 src/d_a_ibl.c	WEAK-refs-only	ov100				1		None		-
-src/d_a_obj_fl_maruta.c	S1-stores-rom-vptr	ov022			stores _ZTV13RollingLogLll	1		None	_ZTV13RollingLogLll/_ZTV13daObjMaruta_c	-
+src/d_a_obj_fl_maruta.c	S1-stores-rom-vptr	ov022			stores _ZTV15daObjFlMaruta_c	1		None	_ZTV15daObjFlMaruta_c/_ZTV13daObjMaruta_c	-
 src/d_a_obj_hm_maruta.c	S1-stores-rom-vptr	ov030			stores _ZTV13RollingLogTtm	1		None	_ZTV13RollingLogTtm/_ZTV13daObjMaruta_c	-
 src/d_a_grock.c	S1-stores-rom-vptr	ov021			stores _ZTV11RollingRock	1		None	_ZTV11RollingRock	-
 src/d_a_obj_simple_bg_mc_hazad.c	WEAK-refs-only	ov102				1		None		-
@@ -464,7 +464,7 @@ src/d_a_obj_simple_bg_ki_iwa.c	WEAK-refs-only	ov102				1		None		-
 src/d_a_obj_pile.c	S1-stores-rom-vptr	ov091			stores _ZTV5Stump	1		None	_ZTV5Stump	-
 src/SubVec3.c	PURE-C	arm9				1		None		-
 src/SublevelToLevel.c	PURE-C	arm9				1		None		-
-src/d_a_obj_wl_submarine.c	S1-stores-rom-vptr	ov026			stores _ZTV9Submarine	1		None	_ZTV9Submarine	-
+src/d_a_obj_wl_submarine.c	S1-stores-rom-vptr	ov026			stores _ZTV18daObjWlSubmarine_c	1		None	_ZTV18daObjWlSubmarine_c	-
 src/SurfaceInfo_TestFlag0x20.c	PURE-C	arm9				1		None		-
 src/daObjWc_Obj04_c_classInit.c	WEAK-refs-only	ov029				1		None		-
 src/daObjC0_Switch_c_Spawn.c	S1-stores-rom-vptr	ov012			stores _ZTV16daObjC0_Switch_c	1		None	_ZTV16daObjC0_Switch_c	-
@@ -474,7 +474,7 @@ src/d_a_obj_ct_mecha09.c	WEAK-refs-only	ov065				1		None		-
 src/d_a_dsn.c	S1-stores-rom-vptr	ov091			stores _ZTV11daDsnBase_c	1		None	_ZTV11daDsnBase_c/_ZTV6Thwomp	-
 src/daObjKm2_Gura_c_classInit.c	S1-stores-rom-vptr	ov045			stores _ZTV15daObjGuragura_c	1		None	_ZTV15daObjGuragura_c/_ZTV18TiltingPlatformBfs	-
 src/daObjFl_Gura_c_classInit.c	S1-stores-rom-vptr	ov064			stores _ZTV15daObjGuragura_c	1		None	_ZTV15daObjGuragura_c/_ZTV18TiltingPlatformLll	-
-src/d_a_obj_tt_futa.c	S1-stores-rom-vptr	ov033			stores _ZTV9TinyCover	1		None	_ZTV9TinyCover	-
+src/d_a_obj_tt_futa.c	S1-stores-rom-vptr	ov033			stores _ZTV13daObjTtFuta_c	1		None	_ZTV13daObjTtFuta_c	-
 src/d_a_obj_tt_water.c	WEAK-refs-only	ov033				1		None		-
 src/d_a_kinopio.c	WEAK-refs-only	ov085				1		None		-
 src/d_a_tor.c	WEAK-refs-only	ov096				1		None		-
@@ -555,7 +555,7 @@ src/WithMeshClsn_UpdateDiscreteNoLava_veneer.c	WEAK-refs-only	arm9				1		None		-
 src/d_a_yegg.c	WEAK-refs-only	ov002				1		None		-
 src/_Z19UnloadLevelOverlaysi.c	P4-mangled-freefn	arm9			_Z19UnloadLevelOverlaysi	1	active	None		-
 src/_Z23LoadMinimapChangeObjecti5Fix12IiEh.c	P4-mangled-freefn	arm9			_Z23LoadMinimapChangeObjecti5Fix12IiEh	1		None		by-value-class-param
-src/_ZN10BrickBlockD0Ev.c	DTOR-ONLY	ov002	daObjBlockItemTag_c	BrickBlock/daObjBlockItemTag_c	_ZN10BrickBlockD0Ev	1		True	_ZTV10BrickBlock	-
+src/_ZN19daObjBlockItemTag_cD0Ev.c	DTOR-ONLY	ov002	daObjBlockItemTag_c	daObjBlockItemTag_c/daObjBlockItemTag_c	_ZN19daObjBlockItemTag_cD0Ev	1		True	_ZTV19daObjBlockItemTag_c	-
 src/_ZN12daIDonketu_cD0Ev.c	DTOR-ONLY	ov027	daIDonketu_c	daIDonketu_c/daIDonketu_c	_ZN12daIDonketu_cD0Ev	1		True	_ZTV12daIDonketu_c/_ZTV7daOts_c	-
 src/_ZN10ClsnResultC1Ev.c	P3-mangled-method-only	arm9		ClsnResult	_ZN10ClsnResultC1Ev	1		True		-
 src/_ZN10ClsnResultD1Ev.c	DTOR-ONLY	arm9	dBgPi	ClsnResult/dBgPi	_ZN10ClsnResultD1Ev	1		True		-
@@ -634,9 +634,9 @@ src/_ZN11ShadowModelD0Ev.cpp	DTOR-ONLY	arm9	dExtShadowModel_c	ShadowModel/dExtSh
 src/_ZN12daBgSnmBdy_c16CleanupResourcesEv.c	P1-vtable+mangled	ov072	daBgSnmBdy_c	daBgSnmBdy_c/daBgSnmBdy_c	vtable daBgSnmBdy_c slot 3 @0x211fccc | _ZN12daBgSnmBdy_c16CleanupResourcesEv	1		True		-
 src/_ZN12daBgSnmBdy_c16OnPendingDestroyEv.c	P1-vtable+mangled	ov072	daBgSnmBdy_c	daBgSnmBdy_c/daBgSnmBdy_c	vtable daBgSnmBdy_c slot 12 @0x211fcf0 | _ZN12daBgSnmBdy_c16OnPendingDestroyEv	1		True		-
 src/_ZN12daBgSnmBdy_cD0Ev.c	DTOR-ONLY	ov072	daBgSnmBdy_c	daBgSnmBdy_c/daBgSnmBdy_c	_ZN12daBgSnmBdy_cD0Ev	1		True		-
-src/_ZN11SnowmanHead16CleanupResourcesEv.c	P1-vtable+mangled	ov072	daBgSnmHed_c	SnowmanHead/daBgSnmHed_c	vtable daBgSnmHed_c slot 3 @0x21205f0 | _ZN11SnowmanHead16CleanupResourcesEv	1		True		-
-src/_ZN11SnowmanHead16OnPendingDestroyEv.c	P1-vtable+mangled	ov072	daBgSnmHed_c	SnowmanHead/daBgSnmHed_c	vtable daBgSnmHed_c slot 12 @0x2120634 | _ZN11SnowmanHead16OnPendingDestroyEv	1		True		-
-src/_ZN11SnowmanHeadD0Ev.c	DTOR-ONLY	ov072	daBgSnmHed_c	SnowmanHead/daBgSnmHed_c	_ZN11SnowmanHeadD0Ev	1		True		-
+src/_ZN12daBgSnmHed_c16CleanupResourcesEv.c	P1-vtable+mangled	ov072	daBgSnmHed_c	daBgSnmHed_c/daBgSnmHed_c	vtable daBgSnmHed_c slot 3 @0x21205f0 | _ZN12daBgSnmHed_c16CleanupResourcesEv	1		True		-
+src/_ZN12daBgSnmHed_c16OnPendingDestroyEv.c	P1-vtable+mangled	ov072	daBgSnmHed_c	daBgSnmHed_c/daBgSnmHed_c	vtable daBgSnmHed_c slot 12 @0x2120634 | _ZN12daBgSnmHed_c16OnPendingDestroyEv	1		True		-
+src/_ZN12daBgSnmHed_cD0Ev.c	DTOR-ONLY	ov072	daBgSnmHed_c	daBgSnmHed_c/daBgSnmHed_c	_ZN12daBgSnmHed_cD0Ev	1		True		-
 src/_ZN12daSoundObj_cD0Ev.c	DTOR-ONLY	ov002	daSoundObj_c	daSoundObj_c/daSoundObj_c	_ZN12daSoundObj_cD0Ev	1		True	_ZTV12daSoundObj_c	-
 src/_ZN21daObj_volcanoCannon_c16CleanupResourcesEv.c	P1-vtable+mangled	ov022	daObj_volcanoCannon_c	daObj_volcanoCannon_c/daObj_volcanoCannon_c	vtable daObj_volcanoCannon_c slot 3 @0x21127e0 | _ZN21daObj_volcanoCannon_c16CleanupResourcesEv	1		True		-
 src/_ZN21daObj_volcanoCannon_cD0Ev.c	DTOR-ONLY	ov022	daObj_volcanoCannon_c	daObj_volcanoCannon_c/daObj_volcanoCannon_c	_ZN21daObj_volcanoCannon_cD0Ev	1		True		-
@@ -688,8 +688,8 @@ src/_ZN12dScStarSel_cD0Ev.c	DTOR-ONLY	ov003	dScStarSel_c	dScStarSel_c	_ZN12dScSt
 src/_ZN12daBakubaku_cD0Ev.c	DTOR-ONLY	ov032	daBakubaku_c	daBakubaku_c	_ZN12daBakubaku_cD0Ev	1		True	_ZTV12daBakubaku_c	-
 src/_ZN12daObjAbuku_cD0Ev.c	DTOR-ONLY	ov002	daObjAbuku_c	daObjAbuku_c	_ZN12daObjAbuku_cD0Ev	1		True	_ZTV12daObjAbuku_c	-
 src/_ZN12daObjAbuku_cD1Ev.c	DTOR-ONLY	ov002	daObjAbuku_c	daObjAbuku_c	_ZN12daObjAbuku_cD1Ev	1		True	_ZTV12daObjAbuku_c	-
-src/_ZN13BigBrickBlock13InitResourcesEv.c	P1-vtable+mangled	ov002	daObjBlockL_c	BigBrickBlock/daObjBlockL_c	vtable daObjBlockL_c slot 0 @0x20b3d78 | _ZN13BigBrickBlock13InitResourcesEv	1		True		-
-src/_ZN13BowserShutterD0Ev.c	DTOR-ONLY	ov026	daObjWlKoopaShutter_c	BowserShutter/daObjWlKoopaShutter_c	_ZN13BowserShutterD0Ev	1		True	_ZTV10dBgActor_c/_ZTV13BowserShutter	-
+src/_ZN13daObjBlockL_c13InitResourcesEv.c	P1-vtable+mangled	ov002	daObjBlockL_c	daObjBlockL_c/daObjBlockL_c	vtable daObjBlockL_c slot 0 @0x20b3d78 | _ZN13daObjBlockL_c13InitResourcesEv	1		True		-
+src/_ZN21daObjWlKoopaShutter_cD0Ev.c	DTOR-ONLY	ov026	daObjWlKoopaShutter_c	daObjWlKoopaShutter_c/daObjWlKoopaShutter_c	_ZN21daObjWlKoopaShutter_cD0Ev	1		True	_ZTV10dBgActor_c/_ZTV21daObjWlKoopaShutter_c	-
 src/_ZN13ExpandingHeapC1EPvjP4HeapP22ExpandingHeapAllocator.c	P3-mangled-method-only	arm9		ExpandingHeap	_ZN13ExpandingHeapC1EPvjP4HeapP22ExpandingHeapAllocator	1		True	_ZTV13ExpandingHeap	-
 src/_ZN13ExpandingHeapD1Ev.cpp	DTOR-ONLY	arm9	mHeap::ExpHeap_t	ExpandingHeap/mHeap	_ZN13ExpandingHeapD1Ev	1		True	_ZTV13ExpandingHeap	-
 src/_ZN10daPgMthr_c16OnPendingDestroyEv.c	P1-vtable+mangled	ov018	daPgMthr_c	daPgMthr_c/daPgMthr_c	vtable daPgMthr_c slot 12 @0x2112450 | _ZN10daPgMthr_c16OnPendingDestroyEv	1		True		-
@@ -705,7 +705,7 @@ src/_ZN10daPgRcer_cD0Ev.c	DTOR-ONLY	ov019	daPgRcer_c	daPgRcer_c/daPgRcer_c	_ZN10
 src/_ZN13RaycastGround12SetObjAndPosERK7Vector3P8dActor_c.c	P3-mangled-method-only	arm9		RaycastGround	_ZN13RaycastGround12SetObjAndPosERK7Vector3P8dActor_c	1		True		-
 src/_ZN13RaycastGroundC1Ev.c	P3-mangled-method-only	arm9		RaycastGround	_ZN13RaycastGroundC1Ev	1		True		-
 src/_ZN13RaycastGroundD1Ev.c	DTOR-ONLY	arm9	dBgCh_Gnd	RaycastGround/dBgCh_Gnd	_ZN13RaycastGroundD1Ev	1		True		-
-src/_ZN13RollingLogLllD0Ev.c	DTOR-ONLY	ov022	daObjFlMaruta_c	RollingLogLll/daObjFlMaruta_c	_ZN13RollingLogLllD0Ev	1		True	_ZTV10dBgActor_c/_ZTV13RollingLogLll/_ZTV13daObjMaruta_c	-
+src/_ZN15daObjFlMaruta_cD0Ev.c	DTOR-ONLY	ov022	daObjFlMaruta_c	daObjFlMaruta_c/daObjFlMaruta_c	_ZN15daObjFlMaruta_cD0Ev	1		True	_ZTV10dBgActor_c/_ZTV15daObjFlMaruta_c/_ZTV13daObjMaruta_c	-
 src/_ZN13RollingLogTtm13InitResourcesEv.c	P1-vtable+mangled	ov030	daObjHmMaruta_c	RollingLogTtm/daObjHmMaruta_c	vtable daObjHmMaruta_c slot 0 @0x2111638 | _ZN13RollingLogTtm13InitResourcesEv	1		True		-
 src/_ZN13RollingLogTtm16CleanupResourcesEv.c	P1-vtable+mangled	ov030	daObjHmMaruta_c	RollingLogTtm/daObjHmMaruta_c	vtable daObjHmMaruta_c slot 3 @0x2111610 | _ZN13RollingLogTtm16CleanupResourcesEv	1		True		-
 src/_ZN13RollingLogTtm8BehaviorEv.c	P1-vtable+mangled	ov030	daObjHmMaruta_c	RollingLogTtm/daObjHmMaruta_c	vtable daObjHmMaruta_c slot 6 @0x2111624 | _ZN13RollingLogTtm8BehaviorEv	1		True		-
@@ -713,8 +713,8 @@ src/_ZN13RollingLogTtmD0Ev.c	DTOR-ONLY	ov030	daObjHmMaruta_c	RollingLogTtm/daObj
 src/_ZN13SharedFilePtr7ReleaseEv.c	P3-mangled-method-only	arm9		SharedFilePtr	_ZN13SharedFilePtr7ReleaseEv	1		True		-
 src/_ZN13SharedFilePtr8LoadFileEv.c	P3-mangled-method-only	arm9		SharedFilePtr	_ZN13SharedFilePtr8LoadFileEv	1		True		-
 src/_ZN13SharedFilePtr9ConstructEj.c	P3-mangled-method-only	arm9		SharedFilePtr	_ZN13SharedFilePtr9ConstructEj	1		True		-
-src/_ZN13SnowmanBreath16CleanupResourcesEv.c	P1-vtable+mangled	ov027	daSnmBth_c	SnowmanBreath/daSnmBth_c	vtable daSnmBth_c slot 3 @0x2112700 | _ZN13SnowmanBreath16CleanupResourcesEv	1		True		-
-src/_ZN13SnowmanBreath16OnPendingDestroyEv.c	P1-vtable+mangled	ov027	daSnmBth_c	SnowmanBreath/daSnmBth_c	vtable daSnmBth_c slot 12 @0x211273c | _ZN13SnowmanBreath16OnPendingDestroyEv	1		True		-
+src/_ZN10daSnmBth_c16CleanupResourcesEv.c	P1-vtable+mangled	ov027	daSnmBth_c	daSnmBth_c/daSnmBth_c	vtable daSnmBth_c slot 3 @0x2112700 | _ZN10daSnmBth_c16CleanupResourcesEv	1		True		-
+src/_ZN10daSnmBth_c16OnPendingDestroyEv.c	P1-vtable+mangled	ov027	daSnmBth_c	daSnmBth_c/daSnmBth_c	vtable daSnmBth_c slot 12 @0x211273c | _ZN10daSnmBth_c16OnPendingDestroyEv	1		True		-
 src/_ZN11daObjTbox_cD0Ev.c	DTOR-ONLY	ov064	daObjTbox_c	daObjTbox_c/daObjTbox_c	_ZN11daObjTbox_cD0Ev	1		True		-
 src/_ZN13UpDownLiftBbhD0Ev.cpp	DTOR-ONLY	ov095	daUdlift_c	UpDownLiftBbh/daUdlift_c	_ZN13UpDownLiftBbhD0Ev	1		True	_ZTV10dBgActor_c/_ZTV13UpDownLiftBbh	-
 src/_ZN13UpDownLiftBbhD1Ev.cpp	DTOR-ONLY	ov095	daUdlift_c	UpDownLiftBbh/daUdlift_c	_ZN13UpDownLiftBbhD1Ev	1		True	_ZTV10dBgActor_c/_ZTV13UpDownLiftBbh	-
@@ -750,8 +750,8 @@ src/_ZN15MaterialChanger7SetFileER8BMA_Filei5Fix12IiEj.c	P3-mangled-method-only	
 src/_ZN15MaterialChangerC1Ev.c	P3-mangled-method-only	arm9		MaterialChanger	_ZN15MaterialChangerC1Ev	1		True	_ZTV15MaterialChanger	-
 src/_ZN15ModelComponents21UpdateVertsUsingBonesEv.c	P3-mangled-method-only	arm9		ModelComponents	_ZN15ModelComponents21UpdateVertsUsingBonesEv	1	active	False		no-header:ModelComponents
 src/_ZN8daSCre_cD0Ev.c	DTOR-ONLY	ov018	daSCre_c	PowerStarCreate/daSCre_c	_ZN8daSCre_cD0Ev	1		True	_ZTV8daSCre_c	-
-src/_ZN15RecRoomCupboard13InitResourcesEv.c	P1-vtable+mangled	ov058	daObjCloset_c	RecRoomCupboard/daObjCloset_c	vtable daObjCloset_c slot 0 @0x211161c | _ZN15RecRoomCupboard13InitResourcesEv	1		False		no-header:RecRoomCupboard/daObjCloset_c
-src/_ZN15RecRoomCupboard16CleanupResourcesEv.c	P1-vtable+mangled	ov058	daObjCloset_c	RecRoomCupboard/daObjCloset_c	vtable daObjCloset_c slot 3 @0x2111234 | _ZN15RecRoomCupboard16CleanupResourcesEv	1		False		no-header:RecRoomCupboard/daObjCloset_c
+src/_ZN13daObjCloset_c13InitResourcesEv.c	P1-vtable+mangled	ov058	daObjCloset_c	daObjCloset_c/daObjCloset_c	vtable daObjCloset_c slot 0 @0x211161c | _ZN13daObjCloset_c13InitResourcesEv	1		False		no-header:daObjCloset_c/daObjCloset_c
+src/_ZN13daObjCloset_c16CleanupResourcesEv.c	P1-vtable+mangled	ov058	daObjCloset_c	daObjCloset_c/daObjCloset_c	vtable daObjCloset_c slot 3 @0x2111234 | _ZN13daObjCloset_c16CleanupResourcesEv	1		False		no-header:daObjCloset_c/daObjCloset_c
 src/_ZN15RotatingFirebarD0Ev.c	DTOR-ONLY	ov064	daObjFl_KomaU_c	RotatingFirebar/daObjFl_KomaU_c	_ZN15RotatingFirebarD0Ev	1		True	_ZTV10dBgActor_c/_ZTV15RotatingFirebar	-
 src/_ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj.c	P3-mangled-method-only	arm9		TextureSequence	_ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj	1		True		by-value-class-param
 src/_ZN15TextureSequenceC1Ev.c	P3-mangled-method-only	arm9		TextureSequence	_ZN15TextureSequenceC1Ev	1		True	_ZTV15TextureSequence	-
@@ -840,9 +840,9 @@ src/_ZN21ExtendingMeshCollider10DetectClsnER11RaycastLine.c	P1-vtable+mangled	ar
 src/_ZN21ExtendingMeshCollider7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block.c	P3-mangled-method-only	arm9		ExtendingMeshCollider	_ZN21ExtendingMeshCollider7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block	1		True		by-value-class-param
 src/_ZN21ExtendingMeshCollider9SetScaleYE5Fix12IiE.c	P3-mangled-method-only	arm9		ExtendingMeshCollider	_ZN21ExtendingMeshCollider9SetScaleYE5Fix12IiE	1		True		by-value-class-param
 src/_ZN21ExtendingMeshColliderC1Ev.c	P3-mangled-method-only	arm9		ExtendingMeshCollider	_ZN21ExtendingMeshColliderC1Ev	1		True		-
-src/_ZN21FloatingFloorLllSmall13InitResourcesEv.c	P1-vtable+mangled	ov022	daObjFl_Ukiyuka_c	FloatingFloorLllSmall/daObjFl_Ukiyuka_c	vtable daObjFl_Ukiyuka_c slot 0 @0x2112040 | _ZN21FloatingFloorLllSmall13InitResourcesEv	1		True		-
-src/_ZN21FloatingFloorLllSmall16CleanupResourcesEv.c	P1-vtable+mangled	ov022	daObjFl_Ukiyuka_c	FloatingFloorLllSmall/daObjFl_Ukiyuka_c	vtable daObjFl_Ukiyuka_c slot 3 @0x2112020 | _ZN21FloatingFloorLllSmall16CleanupResourcesEv	1		True		-
-src/_ZN21FloatingFloorLllSmallD0Ev.c	DTOR-ONLY	ov022	daObjFl_Ukiyuka_c	FloatingFloorLllSmall/daObjFl_Ukiyuka_c	_ZN21FloatingFloorLllSmallD0Ev	1		True	_ZTV10dBgActor_c/_ZTV14daObjUkiyuka_c/_ZTV21FloatingFloorLllSmall	-
+src/_ZN17daObjFl_Ukiyuka_c13InitResourcesEv.c	P1-vtable+mangled	ov022	daObjFl_Ukiyuka_c	daObjFl_Ukiyuka_c/daObjFl_Ukiyuka_c	vtable daObjFl_Ukiyuka_c slot 0 @0x2112040 | _ZN17daObjFl_Ukiyuka_c13InitResourcesEv	1		True		-
+src/_ZN17daObjFl_Ukiyuka_c16CleanupResourcesEv.c	P1-vtable+mangled	ov022	daObjFl_Ukiyuka_c	daObjFl_Ukiyuka_c/daObjFl_Ukiyuka_c	vtable daObjFl_Ukiyuka_c slot 3 @0x2112020 | _ZN17daObjFl_Ukiyuka_c16CleanupResourcesEv	1		True		-
+src/_ZN17daObjFl_Ukiyuka_cD0Ev.c	DTOR-ONLY	ov022	daObjFl_Ukiyuka_c	daObjFl_Ukiyuka_c/daObjFl_Ukiyuka_c	_ZN17daObjFl_Ukiyuka_cD0Ev	1		True	_ZTV10dBgActor_c/_ZTV14daObjUkiyuka_c/_ZTV17daObjFl_Ukiyuka_c	-
 src/_ZN21daObjKm3_Kurumajiku_c13InitResourcesEv.c	P1-vtable+mangled	ov047	daObjKm3_Kurumajiku_c	daObjKm3_Kurumajiku_c	vtable daObjKm3_Kurumajiku_c slot 0 @0x2111268 | _ZN21daObjKm3_Kurumajiku_c13InitResourcesEv	1		True		-
 src/_ZN21daObjKm3_Kurumajiku_c16CleanupResourcesEv.c	P1-vtable+mangled	ov047	daObjKm3_Kurumajiku_c	daObjKm3_Kurumajiku_c	vtable daObjKm3_Kurumajiku_c slot 3 @0x2111254 | _ZN21daObjKm3_Kurumajiku_c16CleanupResourcesEv	1		True		-
 src/_ZN21daObjKm3_Kurumajiku_cD0Ev.c	DTOR-ONLY	ov047	daObjKm3_Kurumajiku_c	daObjKm3_Kurumajiku_c	_ZN21daObjKm3_Kurumajiku_cD0Ev	1		True	_ZTV10dBgActor_c/_ZTV17daObjKurumajiku_c/_ZTV21daObjKm3_Kurumajiku_c	-
@@ -862,8 +862,8 @@ src/_ZN3Amp16CleanupResourcesEv.c	P1-vtable+mangled	ov070	daBrq_c	Amp/daBrq_c	vt
 src/_ZN3Amp16OnPendingDestroyEv.c	P1-vtable+mangled	ov070	daBrq_c	Amp/daBrq_c	vtable daBrq_c slot 12 @0x2120e20 | _ZN3Amp16OnPendingDestroyEv	1		True		-
 src/_ZN3AmpD0Ev.c	DTOR-ONLY	ov070	daBrq_c	Amp/daBrq_c	_ZN3AmpD0Ev	1		True		-
 src/_ZN3G3i13PerspectiveW_E5Fix12IiES1_S1_S1_S1_S1_bP9Matrix4x3.c	P3-mangled-method-only	arm9		G3i	_ZN3G3i13PerspectiveW_E5Fix12IiES1_S1_S1_S1_S1_bP9Matrix4x3	1		False		by-value-class-param;no-header:G3i
-src/_ZN3HUDC1Ev.c	P3-mangled-method-only	ov002		HUD	_ZN3HUDC1Ev	1		True	_ZTV3HUD/_ZTV7dBase_c	-
-src/_ZN3HUDD0Ev.c	DTOR-ONLY	ov002	dMeter_c	HUD/dMeter_c	_ZN3HUDD0Ev	1		True	_ZTV3HUD/_ZTV7dBase_c	-
+src/_ZN8dMeter_cC1Ev.c	P3-mangled-method-only	ov002		dMeter_c	_ZN8dMeter_cC1Ev	1		True	_ZTV8dMeter_c/_ZTV7dBase_c	-
+src/_ZN8dMeter_cD0Ev.c	DTOR-ONLY	ov002	dMeter_c	dMeter_c/dMeter_c	_ZN8dMeter_cD0Ev	1		True	_ZTV8dMeter_c/_ZTV7dBase_c	-
 src/_ZN3IRQ13SetIRQHandlerEjPFvvE.c	P3-mangled-method-only	arm9		IRQ	_ZN3IRQ13SetIRQHandlerEjPFvvE	1		False		by-value-class-param;no-header:IRQ
 src/_ZN3MrI16OnPendingDestroyEv.c	P1-vtable+mangled	ov071	daEykn_c	MrI/daEykn_c	vtable daEykn_c slot 12 @0x21216b4 | _ZN3MrI16OnPendingDestroyEv	1		True		-
 src/_ZN3MrID0Ev.c	DTOR-ONLY	ov071	daEykn_c	MrI/daEykn_c	_ZN3MrID0Ev	1		True		-
@@ -916,9 +916,9 @@ src/_ZN5ModelD2Ev.cpp	DTOR-ONLY	arm9		Model	_ZN5ModelD2Ev	1		True	_ZTV5Model	-
 src/_ZN5PokeyD0Ev.c	DTOR-ONLY	ov096	daSanbo_c	Pokey/daSanbo_c	_ZN5PokeyD0Ev	1		True		-
 src/_ZN5Sound17ChangeMusicVolumeEj5Fix12IiE.c	P3-mangled-method-only	arm9		Sound	_ZN5Sound17ChangeMusicVolumeEj5Fix12IiE	1		True		by-value-class-param
 src/_ZN5Sound4PlayEjjRK7Vector3.c	P3-mangled-method-only	arm9		Sound	_ZN5Sound4PlayEjjRK7Vector3	1	active	True		-
-src/_ZN5Spiny16CleanupResourcesEv.c	P1-vtable+mangled	ov077	daTgz_c	Spiny/daTgz_c	vtable daTgz_c slot 3 @0x2125eb0 | _ZN5Spiny16CleanupResourcesEv	1		True		-
-src/_ZN5Spiny16OnPendingDestroyEv.c	P1-vtable+mangled	ov077	daTgz_c	Spiny/daTgz_c	vtable daTgz_c slot 12 @0x2125eec | _ZN5Spiny16OnPendingDestroyEv	1		True		-
-src/_ZN5SpinyD0Ev.c	DTOR-ONLY	ov077	daTgz_c	Spiny/daTgz_c	_ZN5SpinyD0Ev	1		True		-
+src/_ZN7daTgz_c16CleanupResourcesEv.c	P1-vtable+mangled	ov077	daTgz_c	daTgz_c/daTgz_c	vtable daTgz_c slot 3 @0x2125eb0 | _ZN7daTgz_c16CleanupResourcesEv	1		True		-
+src/_ZN7daTgz_c16OnPendingDestroyEv.c	P1-vtable+mangled	ov077	daTgz_c	daTgz_c/daTgz_c	vtable daTgz_c slot 12 @0x2125eec | _ZN7daTgz_c16OnPendingDestroyEv	1		True		-
+src/_ZN7daTgz_cD0Ev.c	DTOR-ONLY	ov077	daTgz_c	daTgz_c/daTgz_c	_ZN7daTgz_cD0Ev	1		True		-
 src/_ZN5StageC3Ev.c	P3-mangled-method-only	arm9		Stage	_ZN5StageC3Ev	1		True	_ZTV5Stage/_ZTV8dScene_c	-
 src/_ZN5StumpD0Ev.c	DTOR-ONLY	ov091	daObjPile_c	Stump/daObjPile_c	_ZN5StumpD0Ev	1		True	_ZTV10dBgActor_c/_ZTV5Stump	-
 src/_ZN5Ukiki16CleanupResourcesEv.c	P1-vtable+mangled	ov030	daMky_c	Ukiki/daMky_c	vtable daMky_c slot 3 @0x21141c4 | _ZN5Ukiki16CleanupResourcesEv	1		True		-
@@ -950,8 +950,8 @@ src/_ZN7Clipper13Func_0201559CEv.c	P3-mangled-method-only	arm9		Clipper	_ZN7Clip
 src/_ZN7ClipperC1Ev.c	P3-mangled-method-only	arm9		Clipper	_ZN7ClipperC1Ev	1		True	_ZTV7Clipper	-
 src/_ZN7ClipperD0Ev.cpp	DTOR-ONLY	arm9	dClipper	Clipper/dClipper	_ZN7ClipperD0Ev	1		True	_ZTV7Clipper	-
 src/_ZN7ClipperD1Ev.cpp	DTOR-ONLY	arm9	dClipper	Clipper/dClipper	_ZN7ClipperD1Ev	1		True	_ZTV7Clipper	-
-src/_ZN7MinimapC1Ev.c	P3-mangled-method-only	ov002		Minimap	_ZN7MinimapC1Ev	1		True	_ZTV7Minimap/_ZTV7dBase_c	-
-src/_ZN7MinimapD0Ev.c	DTOR-ONLY	ov002	dMap_c	Minimap/dMap_c	_ZN7MinimapD0Ev	1		True	_ZTV7Minimap/_ZTV7dBase_c	-
+src/_ZN6dMap_cC1Ev.c	P3-mangled-method-only	ov002		dMap_c	_ZN6dMap_cC1Ev	1		True	_ZTV6dMap_c/_ZTV7dBase_c	-
+src/_ZN6dMap_cD0Ev.c	DTOR-ONLY	ov002	dMap_c	dMap_c/dMap_c	_ZN6dMap_cD0Ev	1		True	_ZTV6dMap_c/_ZTV7dBase_c	-
 src/_ZN7PathPtrC1Ev.c	P3-mangled-method-only	arm9		PathPtr	_ZN7PathPtrC1Ev	1		True		-
 src/_ZN13daObjWakame_cD0Ev.c	DTOR-ONLY	ov002	daObjWakame_c	daObjWakame_c/daObjWakame_c	_ZN13daObjWakame_cD0Ev	1		True	_ZTV13daObjWakame_c	-
 src/_ZN7SkiLiftD0Ev.c	DTOR-ONLY	ov018	daObjSm_Lift_c	SkiLift/daObjSm_Lift_c	_ZN7SkiLiftD0Ev	1		True	_ZTV10dBgActor_c/_ZTV7SkiLift	-
@@ -1031,16 +1031,16 @@ src/_ZN15daObjWc_Obj02_cD1Ev.c	DTOR-ONLY	ov029	daObjWc_Obj02_c	daObjWc_Obj02_c/d
 src/_ZN11daObjFire_cD0Ev.c	DTOR-ONLY	ov002	daObjFire_c	daObjFire_c/daObjFire_c	_ZN11daObjFire_cD0Ev	1		True		-
 src/_ZN9BootScene13InitResourcesEv.c	P1-vtable+mangled	arm9	dScBoot_c	BootScene/dScBoot_c	vtable dScBoot_c slot 0 @0x2005a58 | _ZN9BootScene13InitResourcesEv	1		True		-
 src/_ZN9BootScene8BehaviorEv.c	P1-vtable+mangled	arm9	dScBoot_c	BootScene/dScBoot_c	vtable dScBoot_c slot 6 @0x2005418 | _ZN9BootScene8BehaviorEv	1		True		-
-src/_ZN9Butterfly16CleanupResourcesEv.c	P1-vtable+mangled	ov100	daBtfly_c	Butterfly/daBtfly_c	vtable daBtfly_c slot 3 @0x2141988 | _ZN9Butterfly16CleanupResourcesEv	1		True		-
-src/_ZN9Butterfly16OnPendingDestroyEv.c	P1-vtable+mangled	ov100	daBtfly_c	Butterfly/daBtfly_c	vtable daBtfly_c slot 12 @0x21419d0 | _ZN9Butterfly16OnPendingDestroyEv	1		True		-
-src/_ZN9ButterflyD0Ev.c	DTOR-ONLY	ov100	daBtfly_c	Butterfly/daBtfly_c	_ZN9ButterflyD0Ev	1		True		-
+src/_ZN9daBtfly_c16CleanupResourcesEv.c	P1-vtable+mangled	ov100	daBtfly_c	daBtfly_c/daBtfly_c	vtable daBtfly_c slot 3 @0x2141988 | _ZN9daBtfly_c16CleanupResourcesEv	1		True		-
+src/_ZN9daBtfly_c16OnPendingDestroyEv.c	P1-vtable+mangled	ov100	daBtfly_c	daBtfly_c/daBtfly_c	vtable daBtfly_c slot 12 @0x21419d0 | _ZN9daBtfly_c16OnPendingDestroyEv	1		True		-
+src/_ZN9daBtfly_cD0Ev.c	DTOR-ONLY	ov100	daBtfly_c	daBtfly_c/daBtfly_c	_ZN9daBtfly_cD0Ev	1		True		-
 src/_ZN10daCamTag_cD0Ev.c	DTOR-ONLY	ov002	daCamTag_c	daCamTag_c/daCamTag_c	_ZN10daCamTag_cD0Ev	1		True	_ZTV10daCamTag_c	-
 src/_ZN9DorrieCap13OnYoshiTryEatEv.c	P1-vtable+mangled	ov065	daDossyCap_c	DorrieCap/daDossyCap_c	vtable daDossyCap_c slot 18 @0x21195e4 | _ZN9DorrieCap13OnYoshiTryEatEv	1		True		-
 src/_ZN9DorrieCapD0Ev.c	DTOR-ONLY	ov065	daDossyCap_c	DorrieCap/daDossyCap_c	_ZN9DorrieCapD0Ev	1		True		-
 src/_ZN9DorrieCapD1Ev.c	DTOR-ONLY	ov065	daDossyCap_c	DorrieCap/daDossyCap_c	_ZN9DorrieCapD1Ev	1		True		-
 src/_ZN13daObjTdFuta_cD0Ev.c	DTOR-ONLY	ov032	daObjTdFuta_c	daObjTdFuta_c/daObjTdFuta_c	_ZN13daObjTdFuta_cD0Ev	1		True	_ZTV10dBgActor_c/_ZTV13daObjTdFuta_c	-
-src/_ZN9KoopaFlag16CleanupResourcesEv.c	P1-vtable+mangled	ov062	daRFlag_c	KoopaFlag/daRFlag_c	vtable daRFlag_c slot 3 @0x211b000 | _ZN9KoopaFlag16CleanupResourcesEv	1		True		-
-src/_ZN9KoopaFlagD0Ev.c	DTOR-ONLY	ov062	daRFlag_c	KoopaFlag/daRFlag_c	_ZN9KoopaFlagD0Ev	1		True		-
+src/_ZN9daRFlag_c16CleanupResourcesEv.c	P1-vtable+mangled	ov062	daRFlag_c	daRFlag_c/daRFlag_c	vtable daRFlag_c slot 3 @0x211b000 | _ZN9daRFlag_c16CleanupResourcesEv	1		True		-
+src/_ZN9daRFlag_cD0Ev.c	DTOR-ONLY	ov062	daRFlag_c	daRFlag_c/daRFlag_c	_ZN9daRFlag_cD0Ev	1		True		-
 src/_ZN15daObjC1Hikari_c16CleanupResourcesEv.c	P1-vtable+mangled	ov010	daObjC1Hikari_c	daObjC1Hikari_c/daObjC1Hikari_c	vtable daObjC1Hikari_c slot 3 @0x2111a94 | _ZN15daObjC1Hikari_c16CleanupResourcesEv	1		True		-
 src/_ZN15daObjC1Hikari_cD0Ev.c	DTOR-ONLY	ov010	daObjC1Hikari_c	daObjC1Hikari_c/daObjC1Hikari_c	_ZN15daObjC1Hikari_cD0Ev	1		True		-
 src/_ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj.c	P3-mangled-method-only	arm9		ModelAnim	_ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj	1		True		by-value-class-param
@@ -1061,9 +1061,9 @@ src/_ZN14daObjKsWater_c13InitResourcesEv.c	P1-vtable+mangled	ov017	daObjKsWater_
 src/_ZN9SolidHeapC1EPvjP4HeapP18SolidHeapAllocator.c	P3-mangled-method-only	arm9		SolidHeap	_ZN9SolidHeapC1EPvjP4HeapP18SolidHeapAllocator	1		True	_ZTV9SolidHeap	-
 src/_ZN9SolidHeapD1Ev.cpp	DTOR-ONLY	arm9	mHeap::SolidHeap_t	SolidHeap/mHeap	_ZN9SolidHeapD1Ev	1		True	_ZTV9SolidHeap	-
 src/_ZN9SpindriftD0Ev.c	DTOR-ONLY	ov081	daHuwa_c	Spindrift/daHuwa_c	_ZN9SpindriftD0Ev	1		True		-
-src/_ZN9SubmarineD0Ev.c	DTOR-ONLY	ov026	daObjWlSubmarine_c	Submarine/daObjWlSubmarine_c	_ZN9SubmarineD0Ev	1		True	_ZTV10dBgActor_c/_ZTV9Submarine	-
-src/_ZN9TinyCoverD0Ev.c	DTOR-ONLY	ov033	daObjTtFuta_c	TinyCover/daObjTtFuta_c	_ZN9TinyCoverD0Ev	1		True	_ZTV10dBgActor_c/_ZTV9TinyCover	-
-src/_ZN9TinyWater8BehaviorEv.c	P1-vtable+mangled	ov033	daObjTtWater_c	TinyWater/daObjTtWater_c	vtable daObjTtWater_c slot 6 @0x21114f8 | _ZN9TinyWater8BehaviorEv	1		True		-
+src/_ZN18daObjWlSubmarine_cD0Ev.c	DTOR-ONLY	ov026	daObjWlSubmarine_c	daObjWlSubmarine_c/daObjWlSubmarine_c	_ZN18daObjWlSubmarine_cD0Ev	1		True	_ZTV10dBgActor_c/_ZTV18daObjWlSubmarine_c	-
+src/_ZN13daObjTtFuta_cD0Ev.c	DTOR-ONLY	ov033	daObjTtFuta_c	daObjTtFuta_c/daObjTtFuta_c	_ZN13daObjTtFuta_cD0Ev	1		True	_ZTV10dBgActor_c/_ZTV13daObjTtFuta_c	-
+src/_ZN14daObjTtWater_c8BehaviorEv.c	P1-vtable+mangled	ov033	daObjTtWater_c	daObjTtWater_c/daObjTtWater_c	vtable daObjTtWater_c slot 6 @0x21114f8 | _ZN14daObjTtWater_c8BehaviorEv	1		True		-
 src/_ZN13daObjHmBskt_c16CleanupResourcesEv.c	P1-vtable+mangled	ov030	daObjHmBskt_c	daObjHmBskt_c/daObjHmBskt_c	vtable daObjHmBskt_c slot 3 @0x211130c | _ZN13daObjHmBskt_c16CleanupResourcesEv	1		True		-
 src/_ZN9dScDSMT_c16CleanupResourcesEv.c	P1-vtable+mangled	ov007	dScDSMT_c	dScDSMT_c	vtable dScDSMT_c slot 3 @0x20cc45c | _ZN9dScDSMT_c16CleanupResourcesEv	1		True		-
 src/_ZN9dScDSMT_c16OnPendingDestroyEv.c	P1-vtable+mangled	ov007	dScDSMT_c	dScDSMT_c	vtable dScDSMT_c slot 12 @0x20cc2ac | _ZN9dScDSMT_c16OnPendingDestroyEv	1		True		-

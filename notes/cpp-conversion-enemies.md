@@ -3,7 +3,7 @@
 **Written 2026-08-27**, branch `cpp/period-accurate-form`. Scope: every `src/` file
 whose mangled stem names a class that derives, transitively, from `dEnemyBase_c`.
 Companions: `notes/ctor-migration.md`, `notes/dtor-migration.md`,
-`notes/plan-cpp-conversion-queue.md`, and the `decomp-cpp-class-form` skill.
+`notes/plan-cpp-conversion-queue.md`, and [class-form compiler observations](cpp-class-form.md).
 
 The goal this sweep serves is narrow and worth stating: a file where the compiler
 generates the constructor, the destructor variants and the name mangling is a
@@ -154,7 +154,7 @@ third parameter, migrated: matches first try.
 
 `KillByAttack` was on [ov004](../config/arm9/overlays/ov004/symbols.txt) 0x020aea30, whose body walks an 8-byte table to an 0xffff sentinel. The [ov002](../config/arm9/overlays/ov002/symbols.txt) function there dispatches a pointer-to-member from `data_ov002_0210db80[mDeathState - 1]`, and is what all 34 enemy-overlay call
 sites reach. Same arity shape: an unused fourth argument makes it match.
-Deliberately left as [func_ov002_020aea30](../src/func_ov002_020aea30.cpp) -- the name was coined against the
+Deliberately left as [func_ov002_020aea30](../src/actors/dEnemyBase_c.cpp) -- the name was coined against the
 wrong body, and inheriting it would repeat the mistake -- with the evidence
 recorded in the file for a naming pass.
 
