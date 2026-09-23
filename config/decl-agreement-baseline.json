@@ -28922,6 +28922,16 @@
         "return:SharedFilePtr"
       ]
     },
+    "data_ov033_021124c0": {
+      "src/actors/daObjTtFuta_c.cpp": [
+        "return:SharedFilePtr"
+      ]
+    },
+    "data_ov033_021124c8": {
+      "src/actors/daObjTtFuta_c.cpp": [
+        "return:SharedFilePtr"
+      ]
+    },
     "data_ov034_02113820": {
       "src/func_ov034_02112284.c": [
         "return:char []"
