@@ -1,4 +1,4 @@
-# Handoff: daYurei_Mucho_c ([ov065](../../../config/arm9/overlays/ov065/symbols.txt))
+# Handoff: daYurei_Mucho_c (ov065)
 
 The original handoff below is preserved as historical evidence of its named
 revisions. Current corrections and proof identities follow in the dated
@@ -116,7 +116,7 @@ mwcc's own D1/D0 vptr stores both write.
 
 ### A wrong callee the byte gate could not see
 
-The retired shard [func_ov065_021162c0.c](../../../src/actors/daYurei_Mucho_c.cpp)(ROM Ordinal 4 used to assemble `daYurei_Mucho_c.cpp`) called `_ZN6EyerokD0Ev` -- [ov066](../../../config/arm9/overlays/ov066/symbols.txt)'s name
+The retired shard `func_ov065_021162c0.c`(ROM Ordinal 4 used to assemble `daYurei_Mucho_c.cpp`) called `_ZN6EyerokD0Ev` -- [ov066](../../../config/arm9/overlays/ov066/symbols.txt)'s name
 for address 0x02115f84. In [ov065](../../../config/arm9/overlays/ov065/symbols.txt) that address is [func_ov065_02115f84](../../../src/actors/daYurei_Mucho_c.cpp)(ROM Ordinal 2), the death
 helper two ordinals below, and [ov065](../../../config/arm9/overlays/ov065/symbols.txt) is the module this branch links. The ROM's
 own `bl 0x02115f84` at 0x02116314 decides it. `match.py` wildcards the relocated

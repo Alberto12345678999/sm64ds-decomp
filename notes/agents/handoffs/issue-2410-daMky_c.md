@@ -189,8 +189,8 @@ pinned compiler `tools/mwccarm/2004/b56/mwccarm.exe`.
   `_ZTS7daMky_c`, `_ZTS7fBase_c`, `_ZTS8dActor_c`, each `emitted=9..10`,
   `romExtent=12`, `compared=8`, `differing=0` — the benign sibling pattern.
   The fifth is the **vtable**: `_ZTV7daMky_c`, `emitted=124 romExtent=132
-  compared=124 differing=0 blindWords=0`. The cartridge at [ov030](../../../config/arm9/overlays/ov030/delinks.txt) 0x02115bfc holds
-  31 real slots and then two zero words, and the [ov030](../../../config/arm9/overlays/ov030/delinks.txt) initialised image ends at
+  compared=124 differing=0 blindWords=0`. The cartridge at [ov030](../../../config/arm9/overlays/ov030/symbols.txt) 0x02115bfc holds
+  31 real slots and then two zero words, and the [ov030](../../../config/arm9/overlays/ov030/symbols.txt) initialised image ends at
   0x02115c80 where [data_ov030_02115c80](../../../config/arm9/overlays/ov030/symbols.txt) `kind:bss` begins, so the 8-byte shortfall
   is unnamed module tail padding. **All 31 real vtable slots are byte-exact with
   zero blind words.** This is an extent overrun in `symbols.txt`, not a short

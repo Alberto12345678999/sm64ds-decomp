@@ -35,7 +35,7 @@ This document describes this commit. The queue records its immutable output SHA.
 
 - Class/TU/symbol and module-qualified ROM scope: `daBmb_c` in [ov102](../../../config/arm9/overlays/ov102/symbols.txt), one
   contiguous `.text` run `0x0214a96c..0x0214c748` (35 functions), plus the
-  [ov102](../../../config/arm9/overlays/ov102/delinks.txt) data records `_ZTV7daBmb_c` (`0x0214e558`) and `_ZTI7daBmb_c`
+  [ov102](../../../config/arm9/overlays/ov102/symbols.txt) data records `_ZTV7daBmb_c` (`0x0214e558`) and `_ZTI7daBmb_c`
   (`0x0214e508`).
 - Reserved source/header/config surfaces actually touched:
   [src/actors/daBmb_c.cpp](../../../src/actors/daBmb_c.cpp), [include/daBmb_c.h](../../../include/daBmb_c.h),
