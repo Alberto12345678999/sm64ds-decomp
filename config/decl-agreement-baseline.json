@@ -2075,9 +2075,6 @@
       "src/_ZN11MirrorLuigi8BehaviorEv.cpp": [
         "param:#1 char *"
       ],
-      "src/_ZN11PyramidLift6RenderEv.cpp": [
-        "param:#1 Mtx *"
-      ],
       "src/actors/daPkn_c.cpp": [
         "param:#1 PknMtx43 *"
       ],
@@ -7233,9 +7230,6 @@
       "src/_ZN11BillBlaster13InitResourcesEv.cpp": [
         "param:#3 const void *"
       ],
-      "src/_ZN11PyramidLift13InitResourcesEv.cpp": [
-        "param:#3 struct Matrix4x3 *"
-      ],
       "src/_ZN11PyramidStep13InitResourcesEv.cpp": [
         "param:#3 Matrix4x3 &",
         "param:#6 CLPS_Block &"
@@ -10977,9 +10971,6 @@
         "arity:0",
         "mangled:0 parameter(s)"
       ],
-      "src/_ZN11PyramidLift13InitResourcesEv.cpp": [
-        "kind:data"
-      ],
       "src/_ZN11PyramidStep13InitResourcesEv.cpp": [
         "kind:data"
       ],
@@ -11265,10 +11256,6 @@
       ],
       "src/_ZN11PowerFlower13InitResourcesEv.cpp": [
         "param:#1 void *"
-      ],
-      "src/_ZN11PyramidLift13InitResourcesEv.cpp": [
-        "param:#1 SharedFilePtr *",
-        "return:struct BMD_File *"
       ],
       "src/_ZN11PyramidStep13InitResourcesEv.cpp": [
         "return:BMD_File *"
@@ -14654,10 +14641,6 @@
       ],
       "src/_ZN11BillBlaster13InitResourcesEv.cpp": [
         "return:void *"
-      ],
-      "src/_ZN11PyramidLift13InitResourcesEv.cpp": [
-        "param:#1 SharedFilePtr *",
-        "return:struct KCL_File *"
       ],
       "src/_ZN11PyramidStep13InitResourcesEv.cpp": [
         "return:KCL_File *"
@@ -18678,10 +18661,6 @@
         "return:void"
       ],
       "src/_ZN11MirrorLuigi13InitResourcesEv.cpp": [
-        "return:void"
-      ],
-      "src/_ZN11PyramidLift13InitResourcesEv.cpp": [
-        "param:#2 struct BMD_File *",
         "return:void"
       ],
       "src/_ZN11PyramidStep13InitResourcesEv.cpp": [
@@ -36907,9 +36886,6 @@
       "src/_ZN10DonutBlock13InitResourcesEv.cpp": [
         "param:#2 void *"
       ],
-      "src/_ZN11PyramidLift13InitResourcesEv.cpp": [
-        "param:#2 void *"
-      ],
       "src/actors/daObjFl_Ring_c.cpp": [
         "param:#2 void *"
       ],
@@ -37007,9 +36983,6 @@
       "src/_ZN10daKpa2Bg_c13InitResourcesEv.cpp": [
         "param:#2 void *",
         "return:int"
-      ],
-      "src/_ZN11PyramidLift13InitResourcesEv.cpp": [
-        "param:#2 void *"
       ],
       "src/actors/daObjFl_Ring_c.cpp": [
         "param:#2 void *"

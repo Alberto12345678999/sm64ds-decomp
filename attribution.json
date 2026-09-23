@@ -4667,6 +4667,12 @@
     "src/actors/daObjFl_Block_c.cpp#_ZN15daObjFl_Block_c16CleanupResourcesEv": "tangosdev",
     "src/actors/daObjFl_Block_c.cpp#_ZN15daObjFl_Block_c6RenderEv": "tangosdev",
     "src/actors/daObjFl_Block_c.cpp#_ZN15daObjFl_Block_c8BehaviorEv": "tangosdev",
-    "src/actors/daObjFl_Block_c.cpp#_ZN15daObjFl_Block_c13InitResourcesEv": "tangosdev"
+    "src/actors/daObjFl_Block_c.cpp#_ZN15daObjFl_Block_c13InitResourcesEv": "tangosdev",
+    "src/actors/daDpLift_c.cpp#_ZN10daDpLift_cD1Ev": "tangosdev",
+    "src/actors/daDpLift_c.cpp#_ZN10daDpLift_cD0Ev": "tangosdev",
+    "src/actors/daDpLift_c.cpp#_ZN10daDpLift_c16CleanupResourcesEv": "tangosdev",
+    "src/actors/daDpLift_c.cpp#_ZN10daDpLift_c6RenderEv": "tangosdev",
+    "src/actors/daDpLift_c.cpp#_ZN10daDpLift_c8BehaviorEv": "lunavyqo",
+    "src/actors/daDpLift_c.cpp#_ZN10daDpLift_c13InitResourcesEv": "lunavyqo"
   }
 }
