@@ -243,7 +243,7 @@ the `profile-lifecycle-crosswalk` docs branch (1). The fourth, `constitution-lan
 would have destroyed them. Its local tip went to
 `rescue/constitution-lane-local-9b129018` instead.
 
-**One match had landed without its credit.** [func_ov006_0212a764](../../src/actors/dScMgFlower_c.cpp)(ROM Ordinal 4 used for `dScMgFlower_c.cpp`) is on `main` and the
+One match had landed without its credit. [func_ov006_0212a764](../../src/actors/dScMgFlower_c.cpp)(ROM Ordinal 4 used for `dScMgFlower_c.cpp`, although technically fifth-index based on [dScMgFlower_c.json](../../config/tu_manifest.d/ov006/dScMgFlower_c.json)) is on `main` and the
 delinks route to it, but the winning attempt and its provenance row were sitting
 uncommitted in a working tree. Recovered in #2408, which was then closed as a
 duplicate of #2399 — the credit is banked either way.
