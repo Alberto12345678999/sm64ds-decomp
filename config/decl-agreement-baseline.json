@@ -2249,14 +2249,6 @@
         "param:#1 const Vector3 *",
         "param:#2 const Matrix4x3 *"
       ],
-      "src/_ZN19daObjFlamethrower_c13InitResourcesEv.cpp": [
-        "param:#1 Vec3 *",
-        "param:#3 Vec3 *"
-      ],
-      "src/_ZN19daObjFlamethrower_c8BehaviorEv.cpp": [
-        "param:#1 int *",
-        "param:#3 int *"
-      ],
       "src/_ZN25RotatingUpDownPlatformUtm13InitResourcesEv.cpp": [
         "param:#1 const Vector3 *",
         "param:#2 const Matrix4x3 *"
@@ -2411,6 +2403,10 @@
       "src/game/actors/daObjCtMecha05_c.cpp": [
         "param:#1 const Vector3 *",
         "param:#2 const Matrix4x3 *"
+      ],
+      "src/actors/daObjFlamethrower_c.cpp": [
+        "param:#1 int *",
+        "param:#3 int *"
       ]
     },
     "MultiCopyHalf": {
@@ -4474,11 +4470,6 @@
         "param:#2 Vector3 *",
         "param:#3 Vector3 *"
       ],
-      "src/_ZN19daObjFlamethrower_c8BehaviorEv.cpp": [
-        "param:#1 int *",
-        "param:#2 int *",
-        "param:#3 int *"
-      ],
       "src/_ZN25RotatingUpDownPlatformUtm13InitResourcesEv.cpp": [
         "param:#1 Vector3 *",
         "param:#2 Vector3 *",
@@ -4563,6 +4554,11 @@
         "param:#1 Vector3 *",
         "param:#2 Vector3 *",
         "param:#3 Vector3 *"
+      ],
+      "src/actors/daObjFlamethrower_c.cpp": [
+        "param:#1 int *",
+        "param:#2 int *",
+        "param:#3 int *"
       ]
     },
     "Vec3_ApproachHorz": {
@@ -12261,10 +12257,6 @@
         "param:#4 const void *",
         "return:unsigned int"
       ],
-      "src/_ZN19daObjFlamethrower_c8BehaviorEv.cpp": [
-        "param:#4 const Vector3 *",
-        "return:unsigned int"
-      ],
       "src/_ZN25RotatingUpDownPlatformUtm8BehaviorEv.cpp": [
         "param:#4 const Vector3 *",
         "param:#5 unsigned int"
@@ -12453,6 +12445,10 @@
       "src/unnamed/ov063/func_ov063_0211cc18.c": [
         "param:#4 const Vector3 *",
         "param:#5 unsigned int",
+        "return:unsigned int"
+      ],
+      "src/actors/daObjFlamethrower_c.cpp": [
+        "param:#4 const Vector3 *",
         "return:unsigned int"
       ]
     },
@@ -13486,9 +13482,6 @@
       "include/decl_Player.h": [
         "return:void"
       ],
-      "src/_ZN19daObjFlamethrower_c8BehaviorEv.cpp": [
-        "return:void"
-      ],
       "src/_ZN8Fireball8BehaviorEv.cpp": [
         "return:void"
       ],
@@ -13499,6 +13492,9 @@
         "return:void"
       ],
       "src/game/actors/d_a_obj_fl_maruta.cpp": [
+        "return:void"
+      ],
+      "src/actors/daObjFlamethrower_c.cpp": [
         "return:void"
       ]
     },
@@ -15886,9 +15882,6 @@
       "src/_ZN17BowserPuzzlePiece8BehaviorEv.cpp": [
         "return:char *"
       ],
-      "src/_ZN19daObjFlamethrower_c8BehaviorEv.cpp": [
-        "return:char *"
-      ],
       "src/_ZN5Unagi8BehaviorEv.cpp": [
         "return:void *"
       ],
@@ -16290,6 +16283,9 @@
       ],
       "src/unnamed/ov063/func_ov063_0211cc18.c": [
         "return:void *"
+      ],
+      "src/actors/daObjFlamethrower_c.cpp": [
+        "return:char *"
       ]
     },
     "_ZN8dActor_c10PoofDustAtERK7Vector3": {
@@ -17806,11 +17802,11 @@
       ]
     },
     "_ZN8dCcPos_c4InitERK7Vector35Fix12IiES4_jj": {
-      "src/_ZN19daObjFlamethrower_c13InitResourcesEv.cpp": [
-        "param:#2 Vec3 *"
-      ],
       "src/game/actors/d_a_tree.cpp": [
         "param:#2 const Vector3 &"
+      ],
+      "src/actors/daObjFlamethrower_c.cpp": [
+        "param:#2 Vec3 *"
       ]
     },
     "_ZN8dCcPos_cD1Ev": {
@@ -36322,12 +36318,12 @@
       ]
     },
     "func_02022774": {
-      "src/_ZN19daObjFlamethrower_c8BehaviorEv.cpp": [
+      "src/actors/daObjFlamethrower_c.cpp": [
         "param:#5 int"
       ]
     },
     "func_02022864": {
-      "src/_ZN19daObjFlamethrower_c8BehaviorEv.cpp": [
+      "src/actors/daObjFlamethrower_c.cpp": [
         "param:#5 int"
       ]
     },
