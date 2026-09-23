@@ -1,4 +1,4 @@
-# Super Mario 64 DS Decompilation (sm64ds-decomp)
+# Super Mario 64 DS Decompilation
 
 [![Discord Server][discord-badge]][discord]
 
