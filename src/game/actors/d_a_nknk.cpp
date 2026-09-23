@@ -1,10 +1,17 @@
 //cpp
-/* Koopa movement, shell reactions, animation, and drawing.
- * Retail RTTI identifies daNknk_c; both normal and small profiles construct it.
- * The inline destructor and ordinary factories emit the matching lifecycle.
- * This text-only TU supplies all 39 functions; canonical metadata stays in ROM.
- * The manifest preserves source lineage; remaining raw views are in issue #2871.
- * Source functions run in reverse ROM order for mwccarm 2004/b56 emission.
+/* daNknk_c -- Koopa the Troopa.
+ *
+ * A walker that can be separated from its shell.  The actor resolves the actor
+ * its collider last touched (dCc otherOwner, +0x134) each frame, and reacts to
+ * whatever collision flags (+0x130) the base class left behind: stomped,
+ * punched, spun, hit by a shell, burned.  Each reaction picks a state number
+ * into +0x10c and the state machine below does the rest.  Both the normal and
+ * the small registry profiles construct this same class.
+ *
+ * Some helpers below still read fields through raw offsets; tracked in #2871.
+ *
+ * Function order in this file is REVERSE ROM order: mwccarm 2004/b56 emits one
+ * .text section per function, last-defined first.  Do not sort.
  */
 // Inline definitions in Koopa.h, emitted here by the two factories:
 #include "Koopa.h"
@@ -168,40 +175,32 @@ extern void LoadBlueCoinModel(void* c);
 /* TUBUILD CONFLICT -- alternate declaration of _ZN8dActor_c24KillAndTrackInDeathTableEv, from the legacy file for _ZN5Koopa8BehaviorEv, NOT applied: extern void _ZN8dActor_c24KillAndTrackInDeathTableEv(void *self); */
 }
 
-/* -------------------------------------------------------------------------- */
 /* ROM ordinal 38 -- daNknk_c_classInit_NOKONOKO, 0x0211970c, size 0x50 */
-/* -------------------------------------------------------------------------- */
 // @symbol daNknk_c_classInit_NOKONOKO
-extern "C" {  /* .c-derived member: C linkage for the whole block */
+extern "C" {
 daNknk_c *daNknk_c_classInit_NOKONOKO()
 {
     return new daNknk_c;
 }
 }
 
-/* -------------------------------------------------------------------------- */
 /* ROM ordinal 37 -- daNknk_c_classInit_NOKONOKO_S, 0x021196bc, size 0x50 */
-/* -------------------------------------------------------------------------- */
 // @symbol daNknk_c_classInit_NOKONOKO_S
-extern "C" {  /* .c-derived member: C linkage for the whole block */
+extern "C" {
 daNknk_c *daNknk_c_classInit_NOKONOKO_S()
 {
     return new daNknk_c;
 }
 }
 
-/* -------------------------------------------------------------------------- */
 /* ROM ordinal 36 -- _ZN8daNknk_c13OnYoshiTryEatEv, 0x021196a8, size 0x14 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN8daNknk_c13OnYoshiTryEatEv
 s32 daNknk_c::OnYoshiTryEat() {
   if(mModelIndex==0) return 6;
   return 5;
 }
 
-/* -------------------------------------------------------------------------- */
 /* ROM ordinal 35 -- _ZN8daNknk_c13OnTurnIntoEggER6Player, 0x02119628, size 0x80 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN8daNknk_c13OnTurnIntoEggER6Player
 // Community name: Koopa_OnTurnIntoEgg
 /* daNknk_c::OnTurnIntoEgg -- vtable slot 19, verified against ov062 relocs.txt:
@@ -221,9 +220,7 @@ void daNknk_c::OnTurnIntoEgg(Player &player)
     KillAndTrackInDeathTable();
 }
 
-/* -------------------------------------------------------------------------- */
 /* ROM ordinal 34 -- _ZN8daNknk_c16OnAimedAtWithEggEv, 0x02119608, size 0x20 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN8daNknk_c16OnAimedAtWithEggEv
 // Community name: Koopa_OnAimedAtWithEgg
 /* daNknk_c::OnAimedAtWithEgg - recovered from vtable slot identity */
@@ -236,9 +233,7 @@ s32 daNknk_c::OnAimedAtWithEgg() {
     return r;
 }
 
-/* -------------------------------------------------------------------------- */
 /* ROM ordinal 33 -- _ZN8daNknk_c13InitResourcesEv, 0x02119420, size 0x1e8 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN8daNknk_c13InitResourcesEv
 int daNknk_c::InitResources()
 {
@@ -308,9 +303,7 @@ int daNknk_c::InitResources()
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
 /* ROM ordinal 32 -- _ZN8daNknk_c8BehaviorEv, 0x021190ec, size 0x334 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN8daNknk_c8BehaviorEv
 int daNknk_c::Behavior()
 {
@@ -420,9 +413,7 @@ int daNknk_c::Behavior()
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
 /* ROM ordinal 31 -- _ZN8daNknk_c6RenderEv, 0x02118f84, size 0x168 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN8daNknk_c6RenderEv
 int daNknk_c::Render()
 {
@@ -451,9 +442,7 @@ int daNknk_c::Render()
   return 1;
 }
 
-/* -------------------------------------------------------------------------- */
 /* ROM ordinal 30 -- _ZN8daNknk_c16OnPendingDestroyEv, 0x02118f80, size 0x4 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN8daNknk_c16OnPendingDestroyEv
 /* recovered: shared header, real C++ method
  *
@@ -463,9 +452,7 @@ void daNknk_c::OnPendingDestroy()
 {
 }
 
-/* -------------------------------------------------------------------------- */
 /* ROM ordinal 29 -- _ZN8daNknk_c16CleanupResourcesEv, 0x02118f04, size 0x7c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN8daNknk_c16CleanupResourcesEv
 extern "C" {
 extern void UnloadBlueCoinModel(void *c);
@@ -489,9 +476,7 @@ int daNknk_c::CleanupResources()
   return 1;
 }
 
-/* -------------------------------------------------------------------------- */
 /* ROM ordinal 28 -- func_ov062_02118de8, 0x02118de8, size 0x11c */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov062_02118de8
 extern "C" void func_ov062_02118de8(char *c)
 {
@@ -524,11 +509,9 @@ extern "C" void func_ov062_02118de8(char *c)
     func_ov062_02118058(c);
 }
 
-/* -------------------------------------------------------------------------- */
 /* ROM ordinal 27 -- func_ov062_02118cdc, 0x02118cdc, size 0x10c */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov062_02118cdc
-extern "C" {  /* .c-derived member: C linkage for the whole block */
+extern "C" {
 namespace tu {  /* namespaced: the file-scope view is (void*) */
 void func_ov062_02118cdc(char *c)
 {
@@ -555,11 +538,9 @@ void func_ov062_02118cdc(char *c)
 }
 }  /* namespace tu */
 
-/* -------------------------------------------------------------------------- */
 /* ROM ordinal 26 -- func_ov062_02118b4c, 0x02118b4c, size 0x190 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov062_02118b4c
-extern "C" {  /* .c-derived member: C linkage for the whole block */
+extern "C" {
 namespace tu {  /* namespaced: the file-scope view is (void*) */
 void func_ov062_02118b4c(char *self) {
     daNknk_c *obj = (daNknk_c *)self;
@@ -596,13 +577,9 @@ void func_ov062_02118b4c(char *self) {
 }
 }  /* namespace tu */
 
-/* -------------------------------------------------------------------------- */
 /* ROM ordinal 25 -- func_ov062_02118a50, 0x02118a50, size 0xfc */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov062_02118a50
-/* recovered: shared common types, declarations from a shared header */
-/* recovered: shared common types */
-extern "C" {  /* .c-derived member: C linkage for the whole block */
+extern "C" {
 namespace tu {  /* namespaced: a conflicting file-scope view exists */
 void func_ov062_02118a50(char *c)
 {
@@ -637,9 +614,7 @@ void func_ov062_02118a50(char *c)
 }
 }  /* namespace tu */
 
-/* -------------------------------------------------------------------------- */
 /* ROM ordinal 24 -- func_ov062_02118a00, 0x02118a00, size 0x50 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov062_02118a00
 namespace tu {  /* namespaced: a conflicting file-scope view exists */
 extern "C" void func_ov062_02118a00(void *c) {
@@ -656,11 +631,9 @@ extern "C" void func_ov062_02118a00(void *c) {
 }
 }  /* namespace tu */
 
-/* -------------------------------------------------------------------------- */
 /* ROM ordinal 23 -- func_ov062_02118718, 0x02118718, size 0x2e8 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov062_02118718
-extern "C" {  /* .c-derived member: C linkage for the whole block */
+extern "C" {
 void func_ov062_02118718(char *c)
 {
     daNknk_c *self = (daNknk_c *)c;
@@ -726,11 +699,9 @@ void func_ov062_02118718(char *c)
 }
 }
 
-/* -------------------------------------------------------------------------- */
 /* ROM ordinal 22 -- func_ov062_02118588, 0x02118588, size 0x190 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov062_02118588
-extern "C" {  /* .c-derived member: C linkage for the whole block */
+extern "C" {
 void func_ov062_02118588(char *c)
 {
     daNknk_c *self = (daNknk_c *)c;
@@ -786,11 +757,9 @@ void func_ov062_02118588(char *c)
 }
 }
 
-/* -------------------------------------------------------------------------- */
 /* ROM ordinal 21 -- func_ov062_021183e0, 0x021183e0, size 0x1a8 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov062_021183e0
-extern "C" {  /* .c-derived member: C linkage for the whole block */
+extern "C" {
 void func_ov062_021183e0(char *c)
 {
     daNknk_c *self = (daNknk_c *)c;
@@ -834,12 +803,9 @@ void func_ov062_021183e0(char *c)
 }
 }
 
-/* -------------------------------------------------------------------------- */
 /* ROM ordinal 20 -- func_ov062_02118334, 0x02118334, size 0xac */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov062_02118334
-/* recovered: shared common types */
-extern "C" {  /* .c-derived member: C linkage for the whole block */
+extern "C" {
 
 void Vec3_Asr(struct Vec3 *d, struct Vec3 *s, int sh);
 void Matrix4x3_FromTranslation(struct Matrix4x3 *m, int x, int y, int z);
@@ -875,11 +841,9 @@ void func_ov062_02118334(char *c)
 }
 }
 
-/* -------------------------------------------------------------------------- */
 /* ROM ordinal 19 -- func_ov062_02118258, 0x02118258, size 0xdc */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov062_02118258
-extern "C" {  /* .c-derived member: C linkage for the whole block */
+extern "C" {
 namespace tu {  /* namespaced: a (void*) view of this symbol is in scope */
 void func_ov062_02118258(char* c, int lim)
 {
@@ -905,11 +869,9 @@ void func_ov062_02118258(char* c, int lim)
 }
 }  /* namespace tu */
 
-/* -------------------------------------------------------------------------- */
 /* ROM ordinal 18 -- func_ov062_021181a0, 0x021181a0, size 0xb8 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov062_021181a0
-extern "C" {  /* .c-derived member: C linkage for the whole block */
+extern "C" {
 namespace tu {  /* namespaced: a (void*) view of this symbol is in scope */
 void func_ov062_021181a0(char *c) {
     daNknk_c *self = (daNknk_c *)c;
@@ -933,11 +895,9 @@ void func_ov062_021181a0(char *c) {
 }
 }  /* namespace tu */
 
-/* -------------------------------------------------------------------------- */
 /* ROM ordinal 17 -- func_ov062_0211811c, 0x0211811c, size 0x84 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov062_0211811c
-extern "C" {  /* .c-derived member: C linkage for the whole block */
+extern "C" {
 namespace tu {  /* namespaced: a (void*) view of this symbol is in scope */
 void func_ov062_0211811c(char *c) {
     char *b = c + 0x300;
@@ -957,11 +917,9 @@ void func_ov062_0211811c(char *c) {
 }
 }  /* namespace tu */
 
-/* -------------------------------------------------------------------------- */
 /* ROM ordinal 16 -- func_ov062_021180d4, 0x021180d4, size 0x48 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov062_021180d4
-extern "C" {  /* .c-derived member: C linkage for the whole block */
+extern "C" {
 void func_ov062_021180d4(void *c) {
     _Z14ApproachLinearRiii((int*)((char*)c + 0x98), 0, 0x1000);
     int done = _ZN9Animation8FinishedEv((char*)c + 0x350);
@@ -971,11 +929,9 @@ void func_ov062_021180d4(void *c) {
 }
 }
 
-/* -------------------------------------------------------------------------- */
 /* ROM ordinal 15 -- func_ov062_02118058, 0x02118058, size 0x7c */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov062_02118058
-extern "C" {  /* .c-derived member: C linkage for the whole block */
+extern "C" {
 void func_ov062_02118058(char *c){
     daNknk_c *self = (daNknk_c *)c;
   void *o=*(void**)(c+0x3b4);
@@ -990,9 +946,7 @@ void func_ov062_02118058(char *c){
 }
 }
 
-/* -------------------------------------------------------------------------- */
 /* ROM ordinal 14 -- func_ov062_02118004, 0x02118004, size 0x54 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov062_02118004
 /* Signature deliberately copied from the local declaration above: the
    ROM name carries by-value class parameters (e.g. Fix12<int>), which
@@ -1008,17 +962,15 @@ extern "C" void func_ov062_02118004(void *c, int a1) {
     _ZN8Particle20RunningSlidingDustAtE5Fix12IiES1_S1_(x, y, z);
 }
 
-/* -------------------------------------------------------------------------- */
 /* ROM ordinal 13 -- func_ov062_02117c98, 0x02117c98, size 0x36c */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov062_02117c98
-extern "C" {  /* .c-derived member: C linkage for the whole block */
+extern "C" {
 namespace tu {  /* namespaced: a conflicting file-scope view exists */
 void func_ov062_02117c98(void* self)
 {
     u8* c = (u8*)self;
     void* found;
-    int r5;
+    int turnAround;
     s32 flags;
     u32 id;
 
@@ -1030,13 +982,13 @@ void func_ov062_02117c98(void* self)
         return;
 
     flags = *(s32*)(c + 0x130);
-    r5 = (int)(((long long)(int)0));
+    turnAround = (int)(((long long)(int)0));
 
     if (flags & 0x10) {
         Vector3_16 v;
         v.x = (s16)-0x2000;
-        v.y = (s16)r5;
-        v.z = (s16)r5;
+        v.y = (s16)turnAround;
+        v.z = (s16)turnAround;
         // The member's unused Fix12<int> argument is one raw register word.
         // Native aggregate passing adds a load/copy here under 2004/b56;
         // retain decl_Enemy.h's scalar ABI bridge to the actual member symbol.
@@ -1049,12 +1001,12 @@ void func_ov062_02117c98(void* self)
             return;
         }
         *(s32*)(c + 0x10c) = 5;
-        func_ov002_020aea30(self, found, (dBgCh_Actr*)r5);
+        func_ov002_020aea30(self, found, (dBgCh_Actr*)turnAround);
         return;
     }
     if (flags & 0x4000) {
         *(s32*)(c + 0x10c) = 6;
-        r5 = 1;
+        turnAround = 1;
     } else if (flags & 0x447e0) {
         if (*(s32*)(c + 0x390) == 0) {
             func_ov062_02117bf4(self);
@@ -1083,7 +1035,7 @@ void func_ov062_02117c98(void* self)
         u8* f = (u8*)found;
         struct { Vec3 sv; Vec3 hv; } L;
         int shell;
-        shell = (*(u16*)(f + 0xc) == 0xbf) ? 1 : r5;
+        shell = (*(u16*)(f + 0xc) == 0xbf) ? 1 : turnAround;
         if ((int)(((long long)shell)) == 0)
             goto tail;
         if (*(u8*)(f + 0x6f9) != 0) {
@@ -1103,7 +1055,7 @@ void func_ov062_02117c98(void* self)
         }
         if (_ZN6Player9IsOnShellEv(found)) {
             *(s32*)(c + 0x10c) = 5;
-            r5 = 1;
+            turnAround = 1;
             goto tail;
         }
         if (_ZN8dActor_c16JumpedOnByPlayerER5dCc_cR6Player(self, (void*)(c + 0x110), found)) {
@@ -1146,17 +1098,14 @@ void func_ov062_02117c98(void* self)
 
 tail:
     func_ov002_020aea30(self, found, (dBgCh_Actr*)(c + 0x144));
-    if (r5)
+    if (turnAround)
         *(u16*)(c + 0x8e) = *(s16*)(c + 0x94) + 0x8000;
 }
 }
 }  /* namespace tu */
 
-/* -------------------------------------------------------------------------- */
 /* ROM ordinal 12 -- func_ov062_02117bf4, 0x02117bf4, size 0xa4 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov062_02117bf4
-/* recovered: shared common types */
 namespace tu {  /* namespaced: a conflicting file-scope view exists */
 extern "C" void func_ov062_02117bf4(char* c){
     daNknk_c *self = (daNknk_c *)c;
@@ -1179,11 +1128,9 @@ extern "C" void func_ov062_02117bf4(char* c){
 }
 }  /* namespace tu */
 
-/* -------------------------------------------------------------------------- */
 /* ROM ordinal 11 -- func_ov062_02117b9c, 0x02117b9c, size 0x58 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov062_02117b9c
-extern "C" {  /* .c-derived member: C linkage for the whole block */
+extern "C" {
 void *func_ov062_02117b9c(void *c) {
     void *found = 0;
     void *best = 0;
@@ -1201,24 +1148,20 @@ void *func_ov062_02117b9c(void *c) {
 }
 }
 
-/* -------------------------------------------------------------------------- */
 /* ROM ordinal 10 -- func_ov062_02117b60, 0x02117b60, size 0x3c */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov062_02117b60
-extern "C" {  /* .c-derived member: C linkage for the whole block */
+extern "C" {
 int func_ov062_02117b60(void* c)
 {
-    void* r1 = *(void**)((char*)c + 0x3b4);
-    if (!r1) return 0x61a8000;
-    return Vec3_Dist((char*)c + 0x5c, (char*)r1 + 0x5c);
+    void* target = *(void**)((char*)c + 0x3b4);
+    if (!target) return 0x61a8000;
+    return Vec3_Dist((char*)c + 0x5c, (char*)target + 0x5c);
 }
 }
 
-/* -------------------------------------------------------------------------- */
 /* ROM ordinal 9 -- func_ov062_02117b48, 0x02117b48, size 0x18 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov062_02117b48
-extern "C" {  /* .c-derived member: C linkage for the whole block */
+extern "C" {
 namespace tu {  /* namespaced: a conflicting file-scope view exists */
 void func_ov062_02117b48(char *p)
 {
@@ -1230,11 +1173,9 @@ void func_ov062_02117b48(char *p)
 }
 }  /* namespace tu */
 
-/* -------------------------------------------------------------------------- */
 /* ROM ordinal 8 -- func_ov062_02117acc, 0x02117acc, size 0x7c */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov062_02117acc
-extern "C" {  /* .c-derived member: C linkage for the whole block */
+extern "C" {
 void func_ov062_02117acc(char *c){
     daNknk_c *self = (daNknk_c *)c;
   switch(self->mState){
@@ -1247,9 +1188,7 @@ void func_ov062_02117acc(char *c){
 }
 }
 
-/* -------------------------------------------------------------------------- */
 /* ROM ordinal 7 -- func_ov062_02117a3c, 0x02117a3c, size 0x90 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov062_02117a3c
 extern "C" void func_ov062_02117a3c(char *c)
 {
@@ -1264,9 +1203,7 @@ extern "C" void func_ov062_02117a3c(char *c)
     }
 }
 
-/* -------------------------------------------------------------------------- */
 /* ROM ordinal 6 -- func_ov062_021179e4, 0x021179e4, size 0x58 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov062_021179e4
 namespace tu {
 extern "C" void func_ov062_021179e4(daNknk_c* c) {
@@ -1281,11 +1218,9 @@ extern "C" void func_ov062_021179e4(daNknk_c* c) {
 }
 }
 
-/* -------------------------------------------------------------------------- */
 /* ROM ordinal 5 -- func_ov062_02117994, 0x02117994, size 0x50 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov062_02117994
-extern "C" {  /* .c-derived member: C linkage for the whole block */
+extern "C" {
 void func_ov062_02117994(char *c, int idx) {
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
         (ModelAnim*)(c + 0x300),
@@ -1298,12 +1233,10 @@ void func_ov062_02117994(char *c, int idx) {
 }
 }
 
-/* -------------------------------------------------------------------------- */
 /* ROM ordinal 4 -- func_ov062_02117724, 0x02117724, size 0x270 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov062_02117724
 // 6f: keep constant live / flip coloring
-extern "C" {  /* .c-derived member: C linkage for the whole block */
+extern "C" {
 namespace tu {  /* namespaced: conflicting file-scope views exist */
 void func_ov062_02117724(char *t, unsigned int a1, unsigned int a2, unsigned int a3, unsigned short a4) /* uxth vs a1-a3: ROM compares h<=a4 after a halfword arg */
 {
@@ -1364,11 +1297,9 @@ void func_ov062_02117724(char *t, unsigned int a1, unsigned int a2, unsigned int
 }
 }  /* namespace tu */
 
-/* -------------------------------------------------------------------------- */
 /* ROM ordinal 3 -- func_ov062_021175c0, 0x021175c0, size 0x164 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov062_021175c0
-extern "C" {  /* .c-derived member: C linkage for the whole block */
+extern "C" {
 namespace tu {  /* namespaced: conflicting file-scope views exist */
 void func_ov062_021175c0(char *c)
 {
@@ -1423,9 +1354,7 @@ void func_ov062_021175c0(char *c)
 }
 }  /* namespace tu */
 
-/* -------------------------------------------------------------------------- */
 /* ROM ordinal 2 -- func_ov062_02117570, 0x02117570, size 0x50 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov062_02117570
 namespace tu {  /* namespaced: conflicting file-scope views exist */
 extern "C" {

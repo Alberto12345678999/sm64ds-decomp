@@ -223,18 +223,15 @@ void func_ov074_0211fa74(char* c);
 void func_ov074_0211fa08(char* c);
 void func_ov074_0211f5b8(char* c);
 int func_ov074_0211f38c(u8* c);
-void func_ov074_0211f344(void* r6, unsigned char r5);
+void func_ov074_0211f344(void* self, unsigned char value);
 void func_ov074_0211f244(dActor_c *self);
 void func_ov074_0211f154(char* c);
 extern int func_ov074_02121a20(void* c, int idx);
 extern int func_ov074_021216f4(void* c);
 }
 
-/* -------------------------------------------------------------------------- */
 /* ROM ordinal 37 -- func_ov074_02121300, 0x02121300, size 0x80 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov074_02121300
-/* recovered: shared common types */
 #include "common.h"
 extern "C" {
 
@@ -252,12 +249,9 @@ void func_ov074_02121300(char* c){
 }
 }
 
-/* -------------------------------------------------------------------------- */
 /* ROM ordinal 36 -- func_ov074_02121270, 0x02121270, size 0x90 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov074_02121270
-/* recovered: shared common types */
-extern "C" {  /* .c-derived member: C linkage for the whole block */
+extern "C" {
 void func_ov074_02121270(char* r4, char* r8, int r7){
   char* dst;
   *(int*)r4 = 0;
@@ -273,13 +267,9 @@ void func_ov074_02121270(char* r4, char* r8, int r7){
 }
 }
 
-/* -------------------------------------------------------------------------- */
 /* ROM ordinal 35 -- func_ov074_02120d74, 0x02120d74, size 0x4fc */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov074_02120d74
-/* recovered: shared common types, declarations from a shared header */
-/* recovered: shared common types */
-extern "C" {  /* .c-derived member: C linkage for the whole block */
+extern "C" {
 void func_ov074_02120d74(char *a)
 {
     struct Vector3 v0;
@@ -425,11 +415,9 @@ void func_ov074_02120d74(char *a)
 }
 }
 
-/* -------------------------------------------------------------------------- */
 /* ROM ordinal 34 -- func_ov074_02120bb8, 0x02120bb8, size 0x1bc */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov074_02120bb8
-extern "C" {  /* .c-derived member: C linkage for the whole block */
+extern "C" {
 void func_ov074_02120bb8(char *self, char *p1, char *p2, int mode)
 {
     Vector3 v, dst, src, delta;
@@ -480,24 +468,20 @@ void func_ov074_02120bb8(char *self, char *p1, char *p2, int mode)
 }
 }
 
-/* -------------------------------------------------------------------------- */
 /* ROM ordinal 33 -- func_ov074_02120b90, 0x02120b90, size 0x28 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov074_02120b90
-extern "C" {  /* .c-derived member: C linkage for the whole block */
+extern "C" {
 void func_ov074_02120b90(void *c) {
     int idx = *(unsigned char*)((char*)c + 0x604);
-    int r3 = *(int*)((char*)c + 0x5f0);
-    unsigned short r1 = data_ov074_02122dfc[idx];
-    *(short*)((char*)c + 0x5f8) = r3 * r1;
+    int base = *(int*)((char*)c + 0x5f0);
+    unsigned short scale = data_ov074_02122dfc[idx];
+    *(short*)((char*)c + 0x5f8) = base * scale;
 }
 }
 
-/* -------------------------------------------------------------------------- */
 /* ROM ordinal 32 -- func_ov074_02120b24, 0x02120b24, size 0x6c */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov074_02120b24
-extern "C" {  /* .c-derived member: C linkage for the whole block */
+extern "C" {
 int func_ov074_02120b24(char* c)
 {
     int num = *(short*)(c + 0x5f6) << 12;
@@ -512,11 +496,9 @@ int func_ov074_02120b24(char* c)
 }
 }
 
-/* -------------------------------------------------------------------------- */
 /* ROM ordinal 31 -- func_ov074_0212087c, 0x0212087c, size 0x2a8 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov074_0212087c
-extern "C" {  /* .c-derived member: C linkage for the whole block */
+extern "C" {
 void func_ov074_0212087c(int* out, char* self, int n_)
 {
     int n;
@@ -601,9 +583,7 @@ void func_ov074_0212087c(int* out, char* self, int n_)
 }
 }
 
-/* -------------------------------------------------------------------------- */
 /* ROM ordinal 30 -- func_ov074_02120808, 0x02120808, size 0x74 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov074_02120808
 extern "C" void func_ov074_02120808(char* c)
 {
@@ -614,16 +594,14 @@ extern "C" void func_ov074_02120808(char* c)
     *(int *)(((int)(c + 0x5f0))) *= -1;
 }
 
-/* -------------------------------------------------------------------------- */
 /* ROM ordinal 29 -- func_ov074_021207b8, 0x021207b8, size 0x50 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov074_021207b8
 /* func_ov074_021207b8 — if func_ov074_02121a20(this, 6) and the animation at
  * this+0x260 has finished, flip the angle at this+0x8e by 0x8000 and return 1;
  * else return 0.
  * Callees: func_ov074_02121a20, _ZN9Animation8FinishedEv.
  */
-extern "C" {  /* .c-derived member: C linkage for the whole block */
+extern "C" {
 int func_ov074_021207b8(struct Obj* self)
 {
     if (func_ov074_02121a20(self, 6)) {
@@ -636,11 +614,9 @@ int func_ov074_021207b8(struct Obj* self)
 }
 }
 
-/* -------------------------------------------------------------------------- */
 /* ROM ordinal 28 -- func_ov074_021206c8, 0x021206c8, size 0xf0 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov074_021206c8
-extern "C" {  /* .c-derived member: C linkage for the whole block */
+extern "C" {
 int func_ov074_021206c8(char *c) {
     if (func_ov074_02121a20(c, 8) != 0) {
         if (ApproachAngle((short *)(c + 0x5f6), 0, 0x1e, 0x20, 1) == 0) {
@@ -668,9 +644,7 @@ ret0:
 }
 }
 
-/* -------------------------------------------------------------------------- */
 /* ROM ordinal 27 -- func_ov074_021204c0, 0x021204c0, size 0x208 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov074_021204c0
 /* recovered: Goomboss (daKuriKing_c) shrink/grow interpolation tick.
  *
@@ -699,7 +673,7 @@ ret0:
  *
  * Matched byte-for-byte with mwccarm 2004/b56 (ov074); linkcheck VERIFIED.
  */
-extern "C" {  /* .c-derived member: C linkage for the whole block */
+extern "C" {
 int func_ov074_021204c0(char* c) {
     struct Vector3 v;
     int d, k;
@@ -738,9 +712,7 @@ int func_ov074_021204c0(char* c) {
 }
 }
 
-/* -------------------------------------------------------------------------- */
 /* ROM ordinal 26 -- func_ov074_02120474, 0x02120474, size 0x4c */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov074_02120474
 extern "C" {
 int func_ov074_02120474(char* c) {
@@ -757,9 +729,7 @@ int func_ov074_02120474(char* c) {
 }
 }
 
-/* -------------------------------------------------------------------------- */
 /* ROM ordinal 25 -- func_ov074_0212042c, 0x0212042c, size 0x48 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov074_0212042c
 struct C; typedef void (C::*PMF)();
 struct PmfEntry { PMF pmf[2]; };
@@ -767,25 +737,19 @@ extern PmfEntry data_ov074_021230f8[];
 struct C { char pad[0x5cc]; int idx; };
 extern "C" void func_ov074_0212042c(char *cc) { C *c = (C *)cc; int j = c->idx; (c->*data_ov074_021230f8[j].pmf[1])(); }
 
-/* -------------------------------------------------------------------------- */
 /* ROM ordinal 24 -- func_ov074_021203e4, 0x021203e4, size 0x48 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov074_021203e4
 extern "C" void func_ov074_021203e4(char *cc, int i) { C *c = (C *)cc; c->idx = i; int j = c->idx; (c->*data_ov074_021230f8[j].pmf[0])(); }
 
-/* -------------------------------------------------------------------------- */
 /* ROM ordinal 23 -- func_ov074_021203e0, 0x021203e0, size 0x4 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov074_021203e0
-extern "C" {  /* .c-derived member: C linkage for the whole block */
+extern "C" {
 void func_ov074_021203e0(void)
 {
 }
 }
 
-/* -------------------------------------------------------------------------- */
 /* ROM ordinal 22 -- func_ov074_021201f0, 0x021201f0, size 0x1f0 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov074_021201f0
 /* recovered: Goomboss (daKuriKing_c) state-0 tick -- the intro cutscene.
  *
@@ -806,7 +770,7 @@ void func_ov074_021203e0(void)
  *
  * Matched byte-for-byte with mwccarm 2004/b56 (ov074); linkcheck VERIFIED.
  */
-extern "C" {  /* .c-derived member: C linkage for the whole block */
+extern "C" {
 void func_ov074_021201f0(char* c) {
     struct Ang16 { short v[3]; };
     struct Ang16 ang;
@@ -867,19 +831,15 @@ void func_ov074_021201f0(char* c) {
 }
 }
 
-/* -------------------------------------------------------------------------- */
 /* ROM ordinal 21 -- func_ov074_021201ec, 0x021201ec, size 0x4 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov074_021201ec
-extern "C" {  /* .c-derived member: C linkage for the whole block */
+extern "C" {
 void func_ov074_021201ec(void)
 {
 }
 }
 
-/* -------------------------------------------------------------------------- */
 /* ROM ordinal 20 -- func_ov074_0212018c, 0x0212018c, size 0x60 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov074_0212018c
 extern "C" {
 extern void func_02011d20(void);
@@ -896,20 +856,16 @@ void func_ov074_0212018c(char *c)
 }
 }
 
-/* -------------------------------------------------------------------------- */
 /* ROM ordinal 19 -- func_ov074_0212016c, 0x0212016c, size 0x20 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov074_0212016c
-extern "C" {  /* .c-derived member: C linkage for the whole block */
+extern "C" {
 void func_ov074_0212016c(void *c) {
     func_ov074_02121a4c((char*)c, 0xa);
     func_ov074_02120b90(c);
 }
 }
 
-/* -------------------------------------------------------------------------- */
 /* ROM ordinal 18 -- func_ov074_02120080, 0x02120080, size 0xec */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov074_02120080
 extern "C" {
 void func_ov074_02120080(char* c){
@@ -930,21 +886,17 @@ void func_ov074_02120080(char* c){
 }
 }
 
-/* -------------------------------------------------------------------------- */
 /* ROM ordinal 17 -- func_ov074_0212007c, 0x0212007c, size 0x4 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov074_0212007c
-extern "C" {  /* .c-derived member: C linkage for the whole block */
+extern "C" {
 void func_ov074_0212007c(void)
 {
 }
 }
 
-/* -------------------------------------------------------------------------- */
 /* ROM ordinal 16 -- func_ov074_0211ffcc, 0x0211ffcc, size 0xb0 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov074_0211ffcc
-extern "C" {  /* .c-derived member: C linkage for the whole block */
+extern "C" {
 void func_ov074_0211ffcc(char* c) {
   if (func_ov074_02121a20(c, 5) == 0) {
     if (func_ov074_021206c8(c) == 0) return;
@@ -964,23 +916,17 @@ void func_ov074_0211ffcc(char* c) {
 }
 }
 
-/* -------------------------------------------------------------------------- */
 /* ROM ordinal 15 -- func_ov074_0211ffac, 0x0211ffac, size 0x20 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov074_0211ffac
-extern "C" {  /* .c-derived member: C linkage for the whole block */
+extern "C" {
 void func_ov074_0211ffac(char* c) {
     func_ov074_02120808(c);
     *(unsigned short *)(c + 0x500 + 0xfc) = 0;
 }
 }
 
-/* -------------------------------------------------------------------------- */
 /* ROM ordinal 14 -- func_ov074_0211fd74, 0x0211fd74, size 0x238 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov074_0211fd74
-/* recovered: shared common types, declarations from a shared header */
-/* recovered: shared common types */
 extern "C" void func_ov074_0211fd74(void* self)
 {
     u8* c = (u8*)self;
@@ -997,9 +943,9 @@ extern "C" void func_ov074_0211fd74(void* self)
     }
 
 L90:;
-    int r5 = data_ov074_02122d80[*(u8*)(c+0x604)];
+    int spawnTarget = data_ov074_02122d80[*(u8*)(c+0x604)];
     u8* pl = (u8*)_ZN8dActor_c13ClosestPlayerEv(self);
-    if (*(u8*)(c+0x604) == 1 && *(s32*)(pl+8) != 3) r5 = r5 + 1;
+    if (*(u8*)(c+0x604) == 1 && *(s32*)(pl+8) != 3) spawnTarget = spawnTarget + 1;
 
     if (_ZN9Animation8FinishedEv((void*)(c+0x260)) == 0) return;
     if (DecIfAbove0_Short((u16*)(c+0x5fc)) != 0) return;
@@ -1038,15 +984,13 @@ L90:;
     }
     if (*(u8*)(c+0x602) % dv == 0) *(s32*)(c+0x268) = 0;
 
-    if (*(u8*)(c+0x602) < r5) return;
+    if (*(u8*)(c+0x602) < spawnTarget) return;
     func_ov074_021203e4((char*)self, 3);
 }
 
-/* -------------------------------------------------------------------------- */
 /* ROM ordinal 13 -- func_ov074_0211fd48, 0x0211fd48, size 0x2c */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov074_0211fd48
-extern "C" {  /* .c-derived member: C linkage for the whole block */
+extern "C" {
 void func_ov074_0211fd48(char *c)
 {
     unsigned char value;
@@ -1059,11 +1003,9 @@ void func_ov074_0211fd48(char *c)
 }
 }
 
-/* -------------------------------------------------------------------------- */
 /* ROM ordinal 12 -- func_ov074_0211fc38, 0x0211fc38, size 0x110 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov074_0211fc38
-extern "C" {  /* .c-derived member: C linkage for the whole block */
+extern "C" {
 void func_ov074_0211fc38(char* c)
 {
     if (ApproachAngle(c + 0x5f6, 0, 0xa, 0x100, 1) != 0) goto reset;
@@ -1089,21 +1031,17 @@ reset:
 }
 }
 
-/* -------------------------------------------------------------------------- */
 /* ROM ordinal 11 -- func_ov074_0211fc34, 0x0211fc34, size 0x4 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov074_0211fc34
-extern "C" {  /* .c-derived member: C linkage for the whole block */
+extern "C" {
 void func_ov074_0211fc34(void)
 {
 }
 }
 
-/* -------------------------------------------------------------------------- */
 /* ROM ordinal 10 -- func_ov074_0211fbd0, 0x0211fbd0, size 0x64 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov074_0211fbd0
-extern "C" {  /* .c-derived member: C linkage for the whole block */
+extern "C" {
 int func_ov074_0211fbd0(char* c){
     if(ApproachAngle((char*)c+0x5f6, 0, 0xa, 0x100, 1)==0)
         return ((int (*)(char*, int))func_ov074_021203e4)(c, 3);
@@ -1111,11 +1049,9 @@ int func_ov074_0211fbd0(char* c){
 }
 }
 
-/* -------------------------------------------------------------------------- */
 /* ROM ordinal 9 -- func_ov074_0211fb84, 0x0211fb84, size 0x4c */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov074_0211fb84
-extern "C" {  /* .c-derived member: C linkage for the whole block */
+extern "C" {
 void func_ov074_0211fb84(char* c){
   func_ov074_02120808(c);
   char* b=c+0x500;
@@ -1128,11 +1064,9 @@ void func_ov074_0211fb84(char* c){
 }
 }
 
-/* -------------------------------------------------------------------------- */
 /* ROM ordinal 8 -- func_ov074_0211fa74, 0x0211fa74, size 0x110 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov074_0211fa74
-extern "C" {  /* .c-derived member: C linkage for the whole block */
+extern "C" {
 void func_ov074_0211fa74(char* c)
 {
     char* a = c;
@@ -1168,11 +1102,9 @@ void func_ov074_0211fa74(char* c)
 }
 }
 
-/* -------------------------------------------------------------------------- */
 /* ROM ordinal 7 -- func_ov074_0211fa08, 0x0211fa08, size 0x6c */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov074_0211fa08
-extern "C" {  /* .c-derived member: C linkage for the whole block */
+extern "C" {
 void func_ov074_0211fa08(char* c){
   *(char*)(c+0x604)=0;
   int v=func_01ffa344((int)data_ov074_02122e4c[1]);
@@ -1187,9 +1119,7 @@ void func_ov074_0211fa08(char* c){
 }
 }
 
-/* -------------------------------------------------------------------------- */
 /* ROM ordinal 6 -- func_ov074_0211f5b8, 0x0211f5b8, size 0x450 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov074_0211f5b8
 extern "C" void func_ov074_0211f5b8(char* c)
 {
@@ -1327,85 +1257,83 @@ extern "C" void func_ov074_0211f5b8(char* c)
     }
 }
 
-/* -------------------------------------------------------------------------- */
+/* Release one Goomba on a timer, and report whether the whole wave has been
+   released.  The wave is built in three tiers: the first seven Goombas ring
+   the base, the next five sit higher on a narrower ring, the next three higher
+   and narrower still, and the sixteenth onward spawns dead centre, highest of
+   all.  The spawn count needed is a table lookup on the phase
+   byte at 0x604, with one extra on phase 1 unless the closest player's mode
+   word reads 3. */
 /* ROM ordinal 5 -- func_ov074_0211f38c, 0x0211f38c, size 0x22c */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov074_0211f38c
-/* recovered: shared common types, declarations from a shared header */
-/* recovered: shared common types */
-extern "C" {  /* .c-derived member: C linkage for the whole block */
+extern "C" {
 int func_ov074_0211f38c(u8* c){
-    struct Vector3 p0, p1;
-    struct Vector3_16 ang;
-    int mult;
-    int r5;
-    void* pl;
-    p0.x=0; p0.y=0; p0.z=0;
-    ang.x=0; ang.y=0; ang.z=0;
-    p0.x=*(int*)(c+0x5c);
-    p0.y=*(int*)(c+0x60);
-    p0.z=*(int*)(c+0x64);
-    p0.y+=0xe4000;
-    p1.x=p0.x;
-    p1.y=p0.y;
-    p1.z=p0.z;
-    ang.y=(short)*(short*)(c+0x8e);
+    struct Vector3 spawnPos, basePos;
+    struct Vector3_16 spawnAngle;
+    int radius;
+    int spawnTarget;
+    void* player;
+    spawnPos.x=0; spawnPos.y=0; spawnPos.z=0;
+    spawnAngle.x=0; spawnAngle.y=0; spawnAngle.z=0;
+    spawnPos.x=*(int*)(c+0x5c);
+    spawnPos.y=*(int*)(c+0x60);
+    spawnPos.z=*(int*)(c+0x64);
+    spawnPos.y+=0xe4000;
+    basePos.x=spawnPos.x;
+    basePos.y=spawnPos.y;
+    basePos.z=spawnPos.z;
+    spawnAngle.y=(short)*(short*)(c+0x8e);
     if(DecIfAbove0_Short((u16*)(c+0x5fc))==0){
-        u8 t=c[0x602];
-        if(t<=6){
-            ang.y=(short)(t*0x2492+ang.y);
-            mult=0x18c000;
-        } else if(t<=0xb){
-            p0.y+=0xc4000;
-            ang.y=(short)((c[0x602]-7)*0x3333+ang.y);
-            mult=0x108000;
-        } else if(t>0xe){
-            p0.y+=0x24c000;
-            mult=0;
+        u8 spawned=c[0x602];
+        if(spawned<=6){
+            spawnAngle.y=(short)(spawned*0x2492+spawnAngle.y);
+            radius=0x18c000;
+        } else if(spawned<=0xb){
+            spawnPos.y+=0xc4000;
+            spawnAngle.y=(short)((c[0x602]-7)*0x3333+spawnAngle.y);
+            radius=0x108000;
+        } else if(spawned>0xe){
+            spawnPos.y+=0x24c000;
+            radius=0;
         } else {
-            p0.y+=0x188000;
-            ang.y=(short)((c[0x602]-0xc)*0x5555+ang.y);
-            mult=0x84000;
+            spawnPos.y+=0x188000;
+            spawnAngle.y=(short)((c[0x602]-0xc)*0x5555+spawnAngle.y);
+            radius=0x84000;
         }
         {
-            int s=((u16)ang.y>>4)<<1;
-            p0.x += (int)(((s64)mult * data_02082214[s] + 0x800) >> 0xc);
-            p0.z += (int)(((s64)mult * data_02082214[s+1] + 0x800) >> 0xc);
+            int sinIdx=((u16)spawnAngle.y>>4)<<1;
+            spawnPos.x += (int)(((s64)radius * data_02082214[sinIdx] + 0x800) >> 0xc);
+            spawnPos.z += (int)(((s64)radius * data_02082214[sinIdx+1] + 0x800) >> 0xc);
         }
-        ang.x=Vec3_VertAngle(&p1, &p0);
-        _ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(0xc7, 0x1111, &p0, &ang, (signed char)c[0xcc], -1);
+        spawnAngle.x=Vec3_VertAngle(&basePos, &spawnPos);
+        _ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(0xc7, 0x1111, &spawnPos, &spawnAngle, (signed char)c[0xcc], -1);
         {
             u8* pc=(u8*)(c+0x602);
             *pc+=1;
         }
         *(short*)((c+0x500)+0xfc)=2;
     }
-    r5=data_ov074_02122d80[c[0x604]];
-    pl=_ZN8dActor_c13ClosestPlayerEv(c);
-    if(c[0x604]==1){ if(*(int*)((char*)pl+8)!=3) r5+=1; }
-    return c[0x602]>=r5 ? 1 : 0;
+    spawnTarget=data_ov074_02122d80[c[0x604]];
+    player=_ZN8dActor_c13ClosestPlayerEv(c);
+    if(c[0x604]==1){ if(*(int*)((char*)player+8)!=3) spawnTarget+=1; }
+    return c[0x602]>=spawnTarget ? 1 : 0;
 }
 }
 
-/* -------------------------------------------------------------------------- */
 /* ROM ordinal 4 -- func_ov074_0211f344, 0x0211f344, size 0x48 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov074_0211f344
-extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov074_0211f344(void* r6, unsigned char r5) {
-  void* r1 = (void*)_ZN8dActor_c15FindWithActorIDEjPS_(0xc7, 0);
-  while (r1) {
-    if (r1 != r6) *(unsigned char*)((char*)r1 + 0x60a) = r5;
-    r1 = (void*)_ZN8dActor_c15FindWithActorIDEjPS_(0xc7, r1);
+extern "C" {
+void func_ov074_0211f344(void* self, unsigned char value) {
+  void* other = (void*)_ZN8dActor_c15FindWithActorIDEjPS_(0xc7, 0);
+  while (other) {
+    if (other != self) *(unsigned char*)((char*)other + 0x60a) = value;
+    other = (void*)_ZN8dActor_c15FindWithActorIDEjPS_(0xc7, other);
   }
 }
 }
 
-/* -------------------------------------------------------------------------- */
 /* ROM ordinal 3 -- func_ov074_0211f244, 0x0211f244, size 0x100 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov074_0211f244
-/* recovered: shared common types */
 extern "C" void func_ov074_0211f244(dActor_c *self)
 {
     dActor_c *a = dActor_c::FindWithActorID(0xc7, 0);
@@ -1438,16 +1366,13 @@ extern "C" void func_ov074_0211f244(dActor_c *self)
     } while (a != 0);
 }
 
-/* -------------------------------------------------------------------------- */
 /* ROM ordinal 2 -- func_ov074_0211f154, 0x0211f154, size 0xf0 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov074_0211f154
-/* recovered: shared common types */
 /* func_ov074_0211f154 at 0x0211f154
  *
  * Matched byte-for-byte with mwccarm 1.2/sp2p3 (ov074).
  */
-extern "C" {  /* .c-derived member: C linkage for the whole block */
+extern "C" {
 void func_ov074_0211f154(char* c) {
     struct Vector3 look, pos, in, out;
     void* cam;
