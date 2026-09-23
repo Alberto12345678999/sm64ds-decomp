@@ -1,9 +1,9 @@
 {
   "id": "ov090/daMenbo_c",
   "module": "ov090",
-  "source": "src_tu/actors/daMenbo_c.cpp",
+  "source": "src/actors/daMenbo_c.cpp",
   "promoted_source": "src/actors/daMenbo_c.cpp",
-  "status": "text-verified",
+  "status": "promoted",
   "boundary_confidence": "medium",
   "boundary_evidence": [
     "contiguous linker run: 0x2130f00..0x2132654, 24 function(s), from build/tu_map.json (tools/tu_map.py)",

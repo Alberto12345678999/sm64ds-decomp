@@ -211,9 +211,9 @@ void  func_02012694(int id, const Vector3* pos);
 /* arm9 engine */
 int   _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
           unsigned int a0, unsigned int a1, int a2, int a3, int a4, int a5, int a6);
-BMD_File* _ZN5Model8LoadFileER13SharedFilePtr(SharedFilePtr* f);
+void* _ZN5Model8LoadFileER13SharedFilePtr(SharedFilePtr& f);
 void  _ZN9ModelBase7SetFileEP8BMD_Fileii(void* self, BMD_File* f, int a, int b);
-void  _ZN9Animation8LoadFileER13SharedFilePtr(SharedFilePtr* f);
+char* _ZN9Animation8LoadFileER13SharedFilePtr(SharedFilePtr& f);
 void  _ZN9Animation7AdvanceEv(void* self);
 int   _ZN9Animation8FinishedEv(void* self);
 int   _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void* self, BCA_File* f, int a, LocFix12 rate, unsigned int n);
@@ -222,8 +222,8 @@ int   _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void* self, BCA_File* f, int a
 void  _ZN5dCc_c5ClearEv(void* self);
 void  _ZN5dCc_c6UpdateEv(void* self);
 void  _ZN10dCcAcPos_c21SetPosRelativeToActorERK7Vector3(void* self, void* v);
-void  _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(void* self, dActor_c* a, Vector3* v, LocFix12 r, LocFix12 h, unsigned int e, unsigned int g);
-void  _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void* self, dActor_c* a, LocFix12 r, LocFix12 h, Vector3_16* p, Vector3_16* q);
+void  _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(void* self, dActor_c* a, const Vector3* v, LocFix12 r, LocFix12 h, unsigned int e, unsigned int g);
+void  _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void* self, int a, LocFix12 r, LocFix12 h, int p, int q);
 int   _ZNK10dBgCh_Actr8IsOnWallEv(void* self);
 int   SurfaceInfo_TestFlag0x20(const SurfaceInfo* p);
 void  func_0203558c(void* self);
@@ -265,10 +265,14 @@ extern SharedFilePtr data_ov090_02134488;
 extern SharedFilePtr data_ov090_02134490;
 extern SharedFilePtr data_ov090_02134498;
 extern SharedFilePtr data_ov090_021344a0;
-extern MenboStateFn  data_ov090_021344e4;
-extern MenboStateFn  data_ov090_021344f4;
-extern MenboStateFn  data_ov090_02134504;
-extern MenboStateFn  data_ov090_02134514;
+/* The four state-table nodes. Spelled char, not MenboStateFn*, because
+ * decl_common.h already declares data_ov090_02134504 that way and one
+ * translation unit cannot contradict a shared header; the other three follow
+ * the same convention so the four read alike. Each call site casts. */
+extern char          data_ov090_021344e4;
+extern char          data_ov090_021344f4;
+extern char          data_ov090_02134504;
+extern char          data_ov090_02134514;
 
 /* This TU's own free helpers, forward-declared so the ROM-ascending bodies
  * below can call each other in either direction. func_ov090_02130f94 is not
@@ -558,9 +562,9 @@ int func_ov090_02131584(char* c)
     if (v >= 0x3b)
         *(int*)(((int)c + 0x390)) += 1;
     if (*(int*)(c + 0x390) > 2 || func_ov090_021314a0(c) == 1)
-        func_ov090_02131e00((MenboState*)c, &data_ov090_02134514);
+        func_ov090_02131e00((MenboState*)c, (MenboStateFn*)&data_ov090_02134514);
     if (*(unsigned char*)(c + 0x39c) == 1)
-        func_ov090_02131e00((MenboState*)c, &data_ov090_02134504);
+        func_ov090_02131e00((MenboState*)c, (MenboStateFn*)&data_ov090_02134504);
     return 1;
 }
 
@@ -717,11 +721,11 @@ int func_ov090_02131648(MenboState* c)
     }
 
     if (*(int*)(self + 0x390) > 0x1e && *(u8*)(self + 0x39e) == 0) {
-        func_ov090_02131e00(c, &data_ov090_021344e4);
+        func_ov090_02131e00(c, (MenboStateFn*)&data_ov090_021344e4);
     }
 
     if (*(u8*)(self + 0x39c) == 1) {
-        func_ov090_02131e00(c, &data_ov090_02134504);
+        func_ov090_02131e00(c, (MenboStateFn*)&data_ov090_02134504);
     }
 
     return 1;
@@ -759,11 +763,11 @@ int func_ov090_02131ac4(char* c)
         *(int*)(c + 0x378) = *(int*)(c + 0x60);
         *(int*)(c + 0x37c) = *(int*)(c + 0x64);
         *(short*)(c + 0x39a) = (short)(((unsigned int)RandomIntInternal(&data_0209e650) >> 8) << 0xd);
-        func_ov090_02131e00((MenboState*)c, &data_ov090_021344e4);
+        func_ov090_02131e00((MenboState*)c, (MenboStateFn*)&data_ov090_021344e4);
     }
     ApproachAngle((short*)(c + 0x94), *(short*)(c + 0x39a), 1, 0x100, 0x100);
     if (*(unsigned short*)(c + 0x100) == 0)
-        func_ov090_02131e00((MenboState*)c, &data_ov090_021344f4);
+        func_ov090_02131e00((MenboState*)c, (MenboStateFn*)&data_ov090_021344f4);
     return 1;
 }
 
@@ -821,7 +825,7 @@ int func_ov090_02131c48(char* c)
             int* q = (int*)(((int)c + 0x390));
             *q = *q + 1;
             if (*(int*)(c + 0x390) > 0x14)
-                func_ov090_02131e00((MenboState*)c, &data_ov090_02134504);
+                func_ov090_02131e00((MenboState*)c, (MenboStateFn*)&data_ov090_02134504);
         }
     }
 
@@ -830,7 +834,7 @@ int func_ov090_02131c48(char* c)
         *(int*)(c + 0x378) = *(int*)(c + 0x60);
         *(int*)(c + 0x37c) = *(int*)(c + 0x64);
         *(s16*)(c + 0x39a) = (s16)(((unsigned)RandomIntInternal(&data_0209e650) >> 8) << 13);
-        func_ov090_02131e00((MenboState*)c, &data_ov090_021344e4);
+        func_ov090_02131e00((MenboState*)c, (MenboStateFn*)&data_ov090_021344e4);
     }
 
     return 1;
@@ -1089,12 +1093,12 @@ int daMenbo_c::InitResources()
     Vector3 pos;
     Vector3 v;
 
-    f = _ZN5Model8LoadFileER13SharedFilePtr(&data_ov090_021344a0);
+    f = (BMD_File*)_ZN5Model8LoadFileER13SharedFilePtr(data_ov090_021344a0);
     _ZN9ModelBase7SetFileEP8BMD_Fileii(&mModelAnim, f, 1, -1);
-    _ZN9Animation8LoadFileER13SharedFilePtr(&data_ov090_02134488);
-    _ZN9Animation8LoadFileER13SharedFilePtr(&data_ov090_02134480);
-    _ZN9Animation8LoadFileER13SharedFilePtr(&data_ov090_02134490);
-    _ZN9Animation8LoadFileER13SharedFilePtr(&data_ov090_02134498);
+    _ZN9Animation8LoadFileER13SharedFilePtr(data_ov090_02134488);
+    _ZN9Animation8LoadFileER13SharedFilePtr(data_ov090_02134480);
+    _ZN9Animation8LoadFileER13SharedFilePtr(data_ov090_02134490);
+    _ZN9Animation8LoadFileER13SharedFilePtr(data_ov090_02134498);
 
     mTerminalVelocity = -0x3c000;
 
@@ -1108,7 +1112,7 @@ int daMenbo_c::InitResources()
     mScaleX = 0x1000;
     mScaleY = 0x1000;
     mScaleZ = 0x1000;
-    _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(&mWithMeshClsn, (dActor_c*)c, 0xc8000, 0, (Vector3_16*)0, (Vector3_16*)0);
+    _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(&mWithMeshClsn, (int)c, 0xc8000, 0, 0, 0);
     func_0203558c(&mWithMeshClsn);
 
     unk_108 = 1;
@@ -1123,7 +1127,7 @@ int daMenbo_c::InitResources()
             unk_374 = mPosX;
             unk_378 = mPosY;
             unk_37c = mPosZ;
-            func_ov090_02131e00((MenboState*)c, &data_ov090_021344f4);
+            func_ov090_02131e00((MenboState*)c, (MenboStateFn*)&data_ov090_021344f4);
             return 1;
         }
     }
@@ -1159,7 +1163,7 @@ int daMenbo_c::InitResources()
         unk_37c = mPosZ;
 
         if (unk_39c != 0) {
-            func_ov090_02131e00((MenboState*)c, &data_ov090_021344f4);
+            func_ov090_02131e00((MenboState*)c, (MenboStateFn*)&data_ov090_021344f4);
             return 1;
         }
 
@@ -1170,7 +1174,7 @@ int daMenbo_c::InitResources()
             mPrevAngleY = *(short*)&unk_39a;
             mAngleY = mPrevAngleY;
         }
-        func_ov090_02131e00((MenboState*)c, &data_ov090_021344e4);
+        func_ov090_02131e00((MenboState*)c, (MenboStateFn*)&data_ov090_021344e4);
     }
 
     return 1;
