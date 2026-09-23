@@ -31625,27 +31625,27 @@ matched: yes</title></rect><rect x="1589.35" y="140.87" width="5.65" height="2.9
 module: ov021
 addr: 0x021136c8
 size: 108 bytes
-matched: yes</title></rect><rect x="1058.35" y="175.78" width="3.69" height="3.84" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11VolcanoRingD1Ev
+matched: yes</title></rect><rect x="1058.35" y="175.78" width="3.69" height="3.84" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14daObjFl_Ring_cD1Ev
 module: ov022
 addr: 0x021111a0
 size: 68 bytes
-matched: yes</title></rect><rect x="1058.35" y="179.62" width="3.69" height="4.97" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11VolcanoRingD0Ev
+matched: yes</title></rect><rect x="1058.35" y="179.62" width="3.69" height="4.97" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14daObjFl_Ring_cD0Ev
 module: ov022
 addr: 0x021111e4
 size: 88 bytes
-matched: yes</title></rect><rect x="1058.35" y="184.59" width="3.69" height="4.07" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11VolcanoRing16CleanupResourcesEv
+matched: yes</title></rect><rect x="1058.35" y="184.59" width="3.69" height="4.07" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14daObjFl_Ring_c16CleanupResourcesEv
 module: ov022
 addr: 0x0211123c
 size: 72 bytes
-matched: yes</title></rect><rect x="1058.35" y="188.66" width="3.69" height="2.26" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11VolcanoRing6RenderEv
+matched: yes</title></rect><rect x="1058.35" y="188.66" width="3.69" height="2.26" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14daObjFl_Ring_c6RenderEv
 module: ov022
 addr: 0x02111284
 size: 40 bytes
-matched: yes</title></rect><rect x="1062.04" y="175.78" width="6.83" height="15.14" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11VolcanoRing8BehaviorEv
+matched: yes</title></rect><rect x="1062.04" y="175.78" width="6.83" height="15.14" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14daObjFl_Ring_c8BehaviorEv
 module: ov022
 addr: 0x021112ac
 size: 496 bytes
-matched: yes</title></rect><rect x="1068.87" y="175.78" width="3.03" height="12.94" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11VolcanoRing13InitResourcesEv
+matched: yes</title></rect><rect x="1068.87" y="175.78" width="3.03" height="12.94" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14daObjFl_Ring_c13InitResourcesEv
 module: ov022
 addr: 0x0211149c
 size: 188 bytes
