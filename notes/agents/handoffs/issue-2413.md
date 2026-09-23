@@ -19,9 +19,9 @@ This document describes this commit. The queue records its immutable output SHA.
   `a81adfa3702637cf566bcc97167786387eb582e6`; `299660871` is the *current*
   merge-base with main, not a replacement for it. Both travel.
 - Separate evidence commits and required artifacts in this commit: none pinned
-  separately. [notes/data/class-facts/daBmb_c.json](../../../notes/data/class-facts/daBmb_c.json),
-  [config/tu_manifest.d/ov102/daBmb_c.json](../../../config/tu_manifest.d/ov102/daBmb_c.json), [include/daBmb_c.h](../../../include/daBmb_c.h) and
-  [src/actors/daBmb_c.cpp](../../../src/actors/daBmb_c.cpp) are all in this commit.
+  separately. `notes/data/class-facts/daBmb_c.json`,
+  [config/tu_manifest.d/ov102/daBmb_c.json](../../../config/tu_manifest.d/ov102/daBmb_c.json), `include/daBmb_c.h` and
+  `src/actors/daBmb_c.cpp` are all in this commit.
 - Next action, responsible role and blockers: independent verification
   (`verifier`). One blocker stands between this candidate and a green PR, and it
   is a gate defect, not a source defect — see "Blocker" below.
@@ -38,16 +38,16 @@ This document describes this commit. The queue records its immutable output SHA.
   [ov102](../../../config/arm9/overlays/ov102/symbols.txt) data records `_ZTV7daBmb_c` (`0x0214e558`) and `_ZTI7daBmb_c`
   (`0x0214e508`).
 - Reserved source/header/config surfaces actually touched:
-  [src/actors/daBmb_c.cpp](../../../src/actors/daBmb_c.cpp), [include/daBmb_c.h](../../../include/daBmb_c.h),
+  `src/actors/daBmb_c.cpp`, `include/daBmb_c.h`,
   [config/tu_manifest.d/ov102/daBmb_c.json](../../../config/tu_manifest.d/ov102/daBmb_c.json),
   [config/arm9/overlays/ov102/symbols.txt](../../../config/arm9/overlays/ov102/symbols.txt),
   [config/arm9/overlays/ov102/delinks.txt](../../../config/arm9/overlays/ov102/delinks.txt).
 - Also touched, outside the reservation and deliberately narrow: this class's own
-  row in [notes/data/tu-promotion-queue.tsv](../../../notes/data/tu-promotion-queue.tsv) (a derived line count), and
-  [langmode-baseline.json](../../../langmode-baseline.json), which is restored to main's own file rather than
-  changed. [include/decl_common.h](../../../include/decl_common.h), [attribution.json](../../../attribution.json),
-  [symbols/actor_renames.tsv](../../../symbols/actor_renames.tsv), [config/converted-baseline.json](../../../config/converted-baseline.json),
-  [config/converted-backslide-exceptions.jsonl](../../../config/converted-backslide-exceptions.jsonl) carry v1 edits inherited from the
+  row in `notes/data/tu-promotion-queue.tsv` (a derived line count), and
+  `langmode-baseline.json`, which is restored to main's own file rather than
+  changed. `include/decl_common.h`, `attribution.json`,
+  `symbols/actor_renames.tsv`, `config/converted-baseline.json` ,
+  `config/converted-backslide-exceptions.jsonl` carry v1 edits inherited from the
   input commit and were not reconciled here; they belong to the integration lane.
 - ROM observations: [ov102](../../../config/arm9/overlays/ov102/symbols.txt) `0x0214e4fc` holds `"7daBmb_c\0"`; `_ZTI7daBmb_c` at
   `0x0214e508` points its `+4` word at that string and its `+8` word at
