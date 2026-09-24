@@ -1590,17 +1590,17 @@ ov055	0x02111860	MirrorLuigi_Spawn	daLuigi_c_classInit	reconstructed classInit; 
 ov055	0x02111abc	data_ov055_02111abc	MirrorLuigi_SpawnInfo	spawninfo
 ov055	0x02111abc	MirrorLuigi_SpawnInfo	g_profile_LUIGI	reconstructed profile global; literal ROM ID LUIGI+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov055	0x02111ae0	data_ov055_02111ae0	_ZTV9daLuigi_c	vtable alloc=0x20c
-ov056	0x021111a0	func_ov056_021111a0	_ZN17BigMovingIceBlockD1Ev	vtable slot 16
-ov056	0x021111e4	func_ov056_021111e4	_ZN17BigMovingIceBlockD0Ev	vtable slot 17
-ov056	0x0211123c	func_ov056_0211123c	_ZN17BigMovingIceBlock16CleanupResourcesEv	vtable slot 3
-ov056	0x02111284	func_ov056_02111284	_ZN17BigMovingIceBlock6RenderEv	vtable slot 9
-ov056	0x021112ac	func_ov056_021112ac	_ZN17BigMovingIceBlock8BehaviorEv	vtable slot 6
-ov056	0x021114e0	func_ov056_021114e0	_ZN17BigMovingIceBlock13InitResourcesEv	vtable slot 0
+ov056	0x021111a0	func_ov056_021111a0	_ZN18daObjEwmIceBlock_cD1Ev	vtable slot 16
+ov056	0x021111e4	func_ov056_021111e4	_ZN18daObjEwmIceBlock_cD0Ev	vtable slot 17
+ov056	0x0211123c	func_ov056_0211123c	_ZN18daObjEwmIceBlock_c16CleanupResourcesEv	vtable slot 3
+ov056	0x02111284	func_ov056_02111284	_ZN18daObjEwmIceBlock_c6RenderEv	vtable slot 9
+ov056	0x021112ac	func_ov056_021112ac	_ZN18daObjEwmIceBlock_c8BehaviorEv	vtable slot 6
+ov056	0x021114e0	func_ov056_021114e0	_ZN18daObjEwmIceBlock_c13InitResourcesEv	vtable slot 0
 ov056	0x02111594	func_ov056_02111594	BigMovingIceBlock_Spawn	spawnfunc
 ov056	0x02111594	BigMovingIceBlock_Spawn	daObjEwmIceBlock_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov056	0x02113344	data_ov056_02113344	BigMovingIceBlock_SpawnInfo	spawninfo
 ov056	0x02113344	BigMovingIceBlock_SpawnInfo	g_profile_EWM_ICE_BLOCK	reconstructed profile global; literal ROM ID EWM_ICE_BLOCK+registry role+later EAD lineage; exact SM64DS spelling not preserved
-ov056	0x02113368	data_ov056_02113368	_ZTV17BigMovingIceBlock	vtable alloc=0x330
+ov056	0x02113368	data_ov056_02113368	_ZTV18daObjEwmIceBlock_c	vtable alloc=0x330
 ov058	0x021111a0	func_ov058_021111a0	_ZN13daObjCloset_cD1Ev	vtable slot 16
 ov058	0x021111e0	func_ov058_021111e0	_ZN13daObjCloset_cD0Ev	vtable slot 17
 ov058	0x02111234	func_ov058_02111234	_ZN13daObjCloset_c16CleanupResourcesEv	vtable slot 3

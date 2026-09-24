@@ -667,10 +667,6 @@
     "src/_ZN16daObjFallBlock_cD1Ev.cpp",
     "src/_ZN16daObjKaitendai_cD0Ev.cpp",
     "src/_ZN16daObjKaitendai_cD1Ev.cpp",
-    "src/_ZN17BigMovingIceBlock16CleanupResourcesEv.cpp",
-    "src/_ZN17BigMovingIceBlock6RenderEv.cpp",
-    "src/_ZN17BigMovingIceBlockD0Ev.cpp",
-    "src/_ZN17BigMovingIceBlockD1Ev.cpp",
     "src/_ZN17BowserPuzzlePiece16CleanupResourcesEv.cpp",
     "src/_ZN17BowserPuzzlePiece6RenderEv.cpp",
     "src/_ZN17BowserPuzzlePieceD0Ev.cpp",
@@ -3002,6 +2998,10 @@
     "src/actors/daObjCtRotateBlock_c.cpp#_ZN20daObjCtRotateBlock_c16CleanupResourcesEv",
     "src/actors/daObjCtRotateBlock_c.cpp#_ZN20daObjCtRotateBlock_c6RenderEv",
     "src/actors/daObjCtRotateBlock_c.cpp#_ZN20daObjCtRotateBlock_cD0Ev",
-    "src/actors/daObjCtRotateBlock_c.cpp#_ZN20daObjCtRotateBlock_cD1Ev"
+    "src/actors/daObjCtRotateBlock_c.cpp#_ZN20daObjCtRotateBlock_cD1Ev",
+    "src/actors/daObjEwmIceBlock_c.cpp#_ZN18daObjEwmIceBlock_c16CleanupResourcesEv",
+    "src/actors/daObjEwmIceBlock_c.cpp#_ZN18daObjEwmIceBlock_c6RenderEv",
+    "src/actors/daObjEwmIceBlock_c.cpp#_ZN18daObjEwmIceBlock_cD0Ev",
+    "src/actors/daObjEwmIceBlock_c.cpp#_ZN18daObjEwmIceBlock_cD1Ev"
   ]
 }

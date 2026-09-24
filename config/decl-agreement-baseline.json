@@ -1563,6 +1563,9 @@
       ],
       "src/unnamed/ov063/func_ov063_02117cdc.c": [
         "param:#1 int *"
+      ],
+      "src/actors/daObjEwmIceBlock_c.cpp": [
+        "param:#1 Vector3 *"
       ]
     },
     "LoadArchive": {
@@ -4309,6 +4312,11 @@
         "param:#1 Vector3 *",
         "param:#2 Vector3 *",
         "param:#3 Vector3 *"
+      ],
+      "src/actors/daObjEwmIceBlock_c.cpp": [
+        "param:#1 Vector3 *",
+        "param:#2 Vector3 *",
+        "param:#3 Vector3 *"
       ]
     },
     "SublevelToLevel": {
@@ -5495,6 +5503,10 @@
       "src/game/actors/d_a_obj_wl_polelift.cpp": [
         "param:#1 Vector3 *",
         "param:#2 Vector3 *"
+      ],
+      "src/actors/daObjEwmIceBlock_c.cpp": [
+        "param:#1 Vector3 *",
+        "param:#2 Vector3 *"
       ]
     },
     "Vec3_MulScalarInPlace": {
@@ -5854,6 +5866,11 @@
         "param:#3 Vector3 *"
       ],
       "src/game/actors/d_a_star_gate.cpp": [
+        "param:#1 Vector3 *",
+        "param:#2 Vector3 *",
+        "param:#3 Vector3 *"
+      ],
+      "src/actors/daObjEwmIceBlock_c.cpp": [
         "param:#1 Vector3 *",
         "param:#2 Vector3 *",
         "param:#3 Vector3 *"
@@ -6712,9 +6729,6 @@
       "src/_ZN15FireSeaElevator8BehaviorEv.cpp": [
         "return:int"
       ],
-      "src/_ZN17BigMovingIceBlock13InitResourcesEv.cpp": [
-        "return:int"
-      ],
       "src/_ZN8CccArena13InitResourcesEv.cpp": [
         "return:int"
       ],
@@ -6758,9 +6772,6 @@
         "return:int"
       ],
       "src/_ZN15FireSeaElevator8BehaviorEv.cpp": [
-        "return:int"
-      ],
-      "src/_ZN17BigMovingIceBlock13InitResourcesEv.cpp": [
         "return:int"
       ]
     },
@@ -10895,9 +10906,6 @@
       "src/_ZN15FireSeaElevator13InitResourcesEv.cpp": [
         "kind:data"
       ],
-      "src/_ZN17BigMovingIceBlock13InitResourcesEv.cpp": [
-        "kind:data"
-      ],
       "src/_ZN17BowserSkyPlatform13InitResourcesEv.cpp": [
         "arity:0",
         "mangled:0 parameter(s)"
@@ -11212,9 +11220,6 @@
       "src/_ZN16daKing_Donketu_c13InitResourcesEv.cpp": [
         "param:#1 SharedFilePtr *",
         "return:struct BMD_File *"
-      ],
-      "src/_ZN17BigMovingIceBlock13InitResourcesEv.cpp": [
-        "param:#1 void *"
       ],
       "src/_ZN17BowserPuzzlePiece13InitResourcesEv.cpp": [
         "return:BMD_File *"
@@ -14490,10 +14495,6 @@
         "return:int"
       ],
       "src/_ZN15RotatingFirebar13InitResourcesEv.cpp": [
-        "param:#1 void *",
-        "return:void *"
-      ],
-      "src/_ZN17BigMovingIceBlock13InitResourcesEv.cpp": [
         "param:#1 void *",
         "return:void *"
       ],
@@ -18369,9 +18370,6 @@
         "param:#2 struct BMD_File *",
         "return:void"
       ],
-      "src/_ZN17BigMovingIceBlock13InitResourcesEv.cpp": [
-        "return:void"
-      ],
       "src/_ZN17BowserPuzzlePiece13InitResourcesEv.cpp": [
         "return:void"
       ],
@@ -19091,9 +19089,6 @@
       "src/_ZN15RollingIronBall13InitResourcesEv.cpp": [
         "param:#2 void *"
       ],
-      "src/_ZN17BigMovingIceBlock8BehaviorEv.cpp": [
-        "param:#2 void *"
-      ],
       "src/_ZN22RotatingUpDownPlatform13InitResourcesEv.cpp": [
         "param:#2 void *"
       ],
@@ -19160,6 +19155,9 @@
         "return:int"
       ],
       "src/game/actors/d_a_pg_rcer.cpp": [
+        "return:int"
+      ],
+      "src/actors/daObjEwmIceBlock_c.cpp": [
         "return:int"
       ],
       "src/actors/daObjSm_Lift_c.cpp": [
@@ -36558,9 +36556,6 @@
       "src/_ZN12MetalNetLift13InitResourcesEv.cpp": [
         "param:#2 void *"
       ],
-      "src/_ZN17BigMovingIceBlock13InitResourcesEv.cpp": [
-        "param:#2 void *"
-      ],
       "src/_ZN17BowserSkyPlatform13InitResourcesEv.cpp": [
         "param:#2 void *"
       ],
@@ -36683,6 +36678,9 @@
       ],
       "src/actors/daObjCtMecha10_c.cpp": [
         "param:#1 dBgW *",
+        "param:#2 void *"
+      ],
+      "src/actors/daObjEwmIceBlock_c.cpp": [
         "param:#2 void *"
       ],
       "src/actors/daObjCtRotateBlock_c.cpp": [
