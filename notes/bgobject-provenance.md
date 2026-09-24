@@ -750,7 +750,7 @@ same offsets:
 * `include/daObjBk_Lift_c.h` — `mHorzSpeed`, `mTerminalVelocity`, `mVertSpeed`.
 * `include/daObjMc_Metalnet_c.h` — `param1` (0x008), `mAngleY`, `mClsnMat` (0x2ec).
 * `include/daObjKm2_Ami_Bou_c.h` — `param1`, `mAngleY`.
-* `include/daObjIceBoard_c.h` and `include/RotatingFirebar.h` — `mAngleY`, and `mFlags`
+* `include/daObjIceBoard_c.h` and `include/daObjFl_KomaU_c.h` — `mAngleY`, and `mFlags`
   (0x0b0).
 * `include/daObjFm_Battan_c.h` — `mCamSpacePosX` (0x074), `mClsnMat` (0x2ec).
 * `include/FortressTower.h` — `actorID` (0x00c).

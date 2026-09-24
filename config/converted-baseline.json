@@ -621,10 +621,6 @@
     "src/_ZN15RollingIronBall8BehaviorEv.cpp",
     "src/_ZN15RollingIronBallD0Ev.cpp",
     "src/_ZN15RollingIronBallD1Ev.cpp",
-    "src/_ZN15RotatingFirebar16CleanupResourcesEv.cpp",
-    "src/_ZN15RotatingFirebar6RenderEv.cpp",
-    "src/_ZN15RotatingFirebarD0Ev.cpp",
-    "src/_ZN15RotatingFirebarD1Ev.cpp",
     "src/_ZN15TextureSequence6UpdateER15ModelComponents.cpp",
     "src/_ZN15TextureSequence7PrepareER8BMD_FileR8BTP_File.cpp",
     "src/_ZN15TextureSequence8LoadFileER13SharedFilePtr.cpp",
@@ -3002,6 +2998,10 @@
     "src/actors/daObjEwmIceBlock_c.cpp#_ZN18daObjEwmIceBlock_c16CleanupResourcesEv",
     "src/actors/daObjEwmIceBlock_c.cpp#_ZN18daObjEwmIceBlock_c6RenderEv",
     "src/actors/daObjEwmIceBlock_c.cpp#_ZN18daObjEwmIceBlock_cD0Ev",
-    "src/actors/daObjEwmIceBlock_c.cpp#_ZN18daObjEwmIceBlock_cD1Ev"
+    "src/actors/daObjEwmIceBlock_c.cpp#_ZN18daObjEwmIceBlock_cD1Ev",
+    "src/actors/daObjFl_KomaU_c.cpp#_ZN15daObjFl_KomaU_c16CleanupResourcesEv",
+    "src/actors/daObjFl_KomaU_c.cpp#_ZN15daObjFl_KomaU_c6RenderEv",
+    "src/actors/daObjFl_KomaU_c.cpp#_ZN15daObjFl_KomaU_cD0Ev",
+    "src/actors/daObjFl_KomaU_c.cpp#_ZN15daObjFl_KomaU_cD1Ev"
   ]
 }

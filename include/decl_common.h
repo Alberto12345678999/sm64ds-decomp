@@ -545,7 +545,7 @@ extern int _ZTV20daObjWanwanShutter_c[];
 extern int _ZTV10daSldMng_c[];
 extern int _ZTV13daObjCloset_c;
 extern int _ZTV15RollingIronBall[];
-extern int _ZTV15RotatingFirebar[];
+extern int _ZTV15daObjFl_KomaU_c[];
 extern int _ZTV16daObjCtMecha08_c[];
 extern int _ZTV15dScMgCurling2_c[];
 extern int _ZTV15dScMgPachinko_c[];

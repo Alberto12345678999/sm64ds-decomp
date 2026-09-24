@@ -1848,12 +1848,12 @@ ov064	0x021180d4	func_ov064_021180d4	_ZN14daObjFl_Gura_c16CleanupResourcesEv	ROM
 ov064	0x021180e8	func_ov064_021180e8	_ZN14daObjFl_Gura_c13InitResourcesEv	ROM RTTI class identity; vtable slot 0 (was _ZN18TiltingPlatformLll13InitResourcesEv)
 ov064	0x021180fc	func_ov064_021180fc	TiltingPlatformLll_Spawn	spawnfunc
 ov064	0x021180fc	TiltingPlatformLll_Spawn	daObjFl_Gura_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
-ov064	0x02118138	func_ov064_02118138	_ZN15RotatingFirebarD1Ev	vtable slot 16
-ov064	0x02118194	func_ov064_02118194	_ZN15RotatingFirebarD0Ev	vtable slot 17
-ov064	0x02118204	func_ov064_02118204	_ZN15RotatingFirebar16CleanupResourcesEv	vtable slot 3
-ov064	0x0211824c	func_ov064_0211824c	_ZN15RotatingFirebar6RenderEv	vtable slot 9
-ov064	0x02118274	func_ov064_02118274	_ZN15RotatingFirebar8BehaviorEv	vtable slot 6
-ov064	0x02118480	func_ov064_02118480	_ZN15RotatingFirebar13InitResourcesEv	vtable slot 0
+ov064	0x02118138	func_ov064_02118138	_ZN15daObjFl_KomaU_cD1Ev	vtable slot 16
+ov064	0x02118194	func_ov064_02118194	_ZN15daObjFl_KomaU_cD0Ev	vtable slot 17
+ov064	0x02118204	func_ov064_02118204	_ZN15daObjFl_KomaU_c16CleanupResourcesEv	vtable slot 3
+ov064	0x0211824c	func_ov064_0211824c	_ZN15daObjFl_KomaU_c6RenderEv	vtable slot 9
+ov064	0x02118274	func_ov064_02118274	_ZN15daObjFl_KomaU_c8BehaviorEv	vtable slot 6
+ov064	0x02118480	func_ov064_02118480	_ZN15daObjFl_KomaU_c13InitResourcesEv	vtable slot 0
 ov064	0x02118564	func_ov064_02118564	RotatingFirebar_Spawn	spawnfunc
 ov064	0x02118564	RotatingFirebar_Spawn	daObjFl_KomaU_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov064	0x021185c0	func_ov064_021185c0	_ZN7daBbl_cD1Ev	vtable slot 16
@@ -1931,7 +1931,7 @@ ov064	0x0211bd08	TiltingPlatformLll_SpawnInfo	g_profile_FL_GURA	reconstructed pr
 ov064	0x0211bd2c	data_ov064_0211bd2c	_ZTV14daObjFl_Gura_c	ROM RTTI class identity; vtable alloc=? (was _ZTV18TiltingPlatformLll)
 ov064	0x0211bdec	data_ov064_0211bdec	RotatingFirebar_SpawnInfo	spawninfo
 ov064	0x0211bdec	RotatingFirebar_SpawnInfo	g_profile_FL_KOMA_U	reconstructed profile global; literal ROM ID FL_KOMA_U+registry role+later EAD lineage; exact SM64DS spelling not preserved
-ov064	0x0211be10	data_ov064_0211be10	_ZTV15RotatingFirebar	vtable alloc=0x540
+ov064	0x0211be10	data_ov064_0211be10	_ZTV15daObjFl_KomaU_c	vtable alloc=0x540
 ov064	0x0211bec8	data_ov064_0211bec8	LavaBubble_SpawnInfo	spawninfo
 ov064	0x0211bec8	LavaBubble_SpawnInfo	g_profile_BUBBLE	reconstructed profile global; literal ROM ID BUBBLE+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov064	0x0211beec	data_ov064_0211beec	_ZTV7daBbl_c	vtable alloc=0x31c
