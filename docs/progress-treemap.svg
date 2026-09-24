@@ -31461,11 +31461,11 @@ matched: yes</title></rect><rect x="1454.04" y="138.17" width="1.65" height="5.6
 module: ov020
 addr: 0x0211372c
 size: 60 bytes
-matched: yes</title></rect><rect x="1465.69" y="134.22" width="4.02" height="4.40" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12WorkElevatorD1Ev
+matched: yes</title></rect><rect x="1465.69" y="134.22" width="4.02" height="4.40" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN17daObjCvNewsLift_cD1Ev
 module: ov021
 addr: 0x021111a0
 size: 116 bytes
-matched: yes</title></rect><rect x="1465.69" y="138.62" width="4.02" height="5.16" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12WorkElevatorD0Ev
+matched: yes</title></rect><rect x="1465.69" y="138.62" width="4.02" height="5.16" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN17daObjCvNewsLift_cD0Ev
 module: ov021
 addr: 0x02111214
 size: 136 bytes
@@ -31477,19 +31477,19 @@ matched: yes</title></rect><rect x="1476.22" y="134.22" width="6.77" height="9.5
 module: ov021
 addr: 0x02111434
 size: 424 bytes
-matched: yes</title></rect><rect x="1482.99" y="134.22" width="3.77" height="4.70" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12WorkElevator16CleanupResourcesEv
+matched: yes</title></rect><rect x="1482.99" y="134.22" width="3.77" height="4.70" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN17daObjCvNewsLift_c16CleanupResourcesEv
 module: ov021
 addr: 0x021115dc
 size: 116 bytes
-matched: yes</title></rect><rect x="1482.99" y="138.92" width="3.77" height="4.86" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12WorkElevator6RenderEv
+matched: yes</title></rect><rect x="1482.99" y="138.92" width="3.77" height="4.86" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN17daObjCvNewsLift_c6RenderEv
 module: ov021
 addr: 0x02111650
 size: 120 bytes
-matched: yes</title></rect><rect x="1486.76" y="134.22" width="23.05" height="9.57" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12WorkElevator8BehaviorEv
+matched: yes</title></rect><rect x="1486.76" y="134.22" width="23.05" height="9.57" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN17daObjCvNewsLift_c8BehaviorEv
 module: ov021
 addr: 0x021116c8
 size: 1444 bytes
-matched: yes</title></rect><rect x="1509.81" y="134.22" width="9.58" height="9.57" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12WorkElevator13InitResourcesEv
+matched: yes</title></rect><rect x="1509.81" y="134.22" width="9.58" height="9.57" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN17daObjCvNewsLift_c13InitResourcesEv
 module: ov021
 addr: 0x02111c6c
 size: 600 bytes
