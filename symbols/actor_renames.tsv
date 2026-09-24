@@ -3022,12 +3022,12 @@ ov100	0x02148498	Fish_SpawnInfo	g_profile_FISH	reconstructed profile global; lit
 ov100	0x021484bc	data_ov100_021484bc	_ZTV4Fish	vtable alloc=0x160
 ov100	0x02148558	data_ov100_02148558	PathLift_SpawnInfo	spawninfo
 ov100	0x02148558	PathLift_SpawnInfo	g_profile_PATH_LIFT	reconstructed profile global; literal ROM ID PATH_LIFT+registry role+later EAD lineage; exact SM64DS spelling not preserved; row recorded retroactively -- the rename reached symbols.txt without a ledger entry
-ov102	0x02148a80	func_ov102_02148a80	_ZN13FortressTowerD1Ev	vtable slot 16
-ov102	0x02148ac4	func_ov102_02148ac4	_ZN13FortressTowerD0Ev	vtable slot 17
-ov102	0x02148b1c	func_ov102_02148b1c	_ZN13FortressTower16CleanupResourcesEv	vtable slot 3
-ov102	0x02148b80	func_ov102_02148b80	_ZN13FortressTower6RenderEv	vtable slot 9
-ov102	0x02148ba8	func_ov102_02148ba8	_ZN13FortressTower8BehaviorEv	vtable slot 6
-ov102	0x02148c94	func_ov102_02148c94	_ZN13FortressTower13InitResourcesEv	vtable slot 0
+ov102	0x02148a80	func_ov102_02148a80	_ZN15daObjSimpleBg_cD1Ev	vtable slot 16
+ov102	0x02148ac4	func_ov102_02148ac4	_ZN15daObjSimpleBg_cD0Ev	vtable slot 17
+ov102	0x02148b1c	func_ov102_02148b1c	_ZN15daObjSimpleBg_c16CleanupResourcesEv	vtable slot 3
+ov102	0x02148b80	func_ov102_02148b80	_ZN15daObjSimpleBg_c6RenderEv	vtable slot 9
+ov102	0x02148ba8	func_ov102_02148ba8	_ZN15daObjSimpleBg_c8BehaviorEv	vtable slot 6
+ov102	0x02148c94	func_ov102_02148c94	_ZN15daObjSimpleBg_c13InitResourcesEv	vtable slot 0
 ov102	0x02148e9c	func_ov102_02148e9c	RopeBarrier_Spawn	spawnfunc
 ov102	0x02148e9c	RopeBarrier_Spawn	daObjSimpleBg_c_classInit_MC_HAZAD	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov102	0x02148ecc	func_ov102_02148ecc	CgStairs_Spawn	spawnfunc
@@ -3087,7 +3087,7 @@ ov102	0x0214e150	data_ov102_0214e150	CgStairs_SpawnInfo	spawninfo
 ov102	0x0214e150	CgStairs_SpawnInfo	g_profile_MC_DODAI	reconstructed profile global; literal ROM ID MC_DODAI+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov102	0x0214e16c	data_ov102_0214e16c	RopeBarrier_SpawnInfo	spawninfo
 ov102	0x0214e16c	RopeBarrier_SpawnInfo	g_profile_MC_HAZAD	reconstructed profile global; literal ROM ID MC_HAZAD+registry role+later EAD lineage; exact SM64DS spelling not preserved
-ov102	0x0214e1d8	data_ov102_0214e1d8	_ZTV13FortressTower	vtable alloc=0x320
+ov102	0x0214e1d8	data_ov102_0214e1d8	_ZTV15daObjSimpleBg_c	vtable alloc=0x320
 ov102	0x0214e3cc	data_ov102_0214e3cc	ExclamationBlockVs_SpawnInfo	spawninfo
 ov102	0x0214e3cc	ExclamationBlockVs_SpawnInfo	g_profile_VS_ITEM_BLOCK	reconstructed profile global; literal ROM ID VS_ITEM_BLOCK+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov102	0x0214e3e8	data_ov102_0214e3e8	QuestionBlock_SpawnInfo	spawninfo

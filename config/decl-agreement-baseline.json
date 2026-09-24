@@ -11191,9 +11191,6 @@
       "src/_ZN12daBgSnmHed_c13InitResourcesEv.cpp": [
         "param:#1 void *"
       ],
-      "src/_ZN13FortressTower13InitResourcesEv.cpp": [
-        "param:#1 void *"
-      ],
       "src/_ZN13MontyMoleRock13InitResourcesEv.cpp": [
         "param:#1 void *",
         "return:int"
@@ -14483,10 +14480,6 @@
       ],
       "src/_ZN12MetalNetLift13InitResourcesEv.cpp": [
         "return:KCL_File *"
-      ],
-      "src/_ZN13FortressTower13InitResourcesEv.cpp": [
-        "param:#1 void *",
-        "return:void *"
       ],
       "src/_ZN17daObjBk_Botaosi_c13InitResourcesEv.cpp": [
         "param:#1 void *",
@@ -18341,9 +18334,6 @@
       "src/_ZN12daDossyCap_c13InitResourcesEv.cpp": [
         "return:void"
       ],
-      "src/_ZN13FortressTower13InitResourcesEv.cpp": [
-        "return:void"
-      ],
       "src/_ZN13MontyMoleRock13InitResourcesEv.cpp": [
         "param:#2 int"
       ],
@@ -21649,9 +21639,6 @@
       "src/_ZN11dCapEnemy_c11GetCapStateEv.cpp": [
         "return:int"
       ],
-      "src/_ZN13FortressTower8BehaviorEv.cpp": [
-        "return:unsigned char []"
-      ],
       "src/_ZN14UnchainedChomp8BehaviorEv.cpp": [
         "return:unsigned char []"
       ],
@@ -21668,6 +21655,9 @@
         "return:unsigned char []"
       ],
       "src/game/actors/d_a_obj_mc_water.cpp": [
+        "return:unsigned char []"
+      ],
+      "src/actors/daObjSimpleBg_c.cpp": [
         "return:unsigned char []"
       ]
     },
@@ -31637,16 +31627,6 @@
     "data_ov102_0214d70c": {
       "src/_ZN10KoopaShell16CleanupResourcesEv.cpp": [
         "return:int []"
-      ]
-    },
-    "data_ov102_0214e188": {
-      "src/_ZN13FortressTower16CleanupResourcesEv.cpp": [
-        "return:char []"
-      ]
-    },
-    "data_ov102_0214e18c": {
-      "src/_ZN13FortressTower16CleanupResourcesEv.cpp": [
-        "return:char []"
       ]
     },
     "data_ov102_0214e7d0": {

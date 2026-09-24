@@ -753,7 +753,6 @@ same offsets:
 * `include/daObjIceBoard_c.h` and `include/daObjFl_KomaU_c.h` — `mAngleY`, and `mFlags`
   (0x0b0).
 * `include/daObjFm_Battan_c.h` — `mCamSpacePosX` (0x074), `mClsnMat` (0x2ec).
-* `include/FortressTower.h` — `actorID` (0x00c).
 * `include/daObjC0Water_c.h` — `mCamSpacePosX`.
 * `include/TTC_MovingBeam.h` — `mTerminalVelocity`, `mVertSpeed`, `mClsnMat`.
 * `include/daObjSlIceBlock_c.h` — `mHorzSpeed`.
@@ -771,4 +770,5 @@ same offsets:
   `dBgActor_c::mClsnMat` (0x2ec + 0x14), and naming a matrix element from a single
   `s16` read would be an invention.
 * The classes with no fields of their own — `daObjMc_Metalnet_c`, `daObjIceBoard_c`,
-  `FortressTower`, `daObjTdWater_c` — have nothing left to name.
+  `daObjTdWater_c` — have nothing left to name. `daObjSimpleBg_c` names `mVariant`
+  at 0x31e, the file-table row.
