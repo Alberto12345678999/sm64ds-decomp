@@ -1740,9 +1740,6 @@
       ]
     },
     "Math_Function_0203b14c": {
-      "src/_ZN12HealingHeart8BehaviorEv.cpp": [
-        "return:void"
-      ],
       "src/_ZN7SkiLift8BehaviorEv.cpp": [
         "return:void"
       ],
@@ -11175,9 +11172,6 @@
       "src/_ZN12FortressWall13InitResourcesEv.cpp": [
         "param:#1 void *"
       ],
-      "src/_ZN12HealingHeart13InitResourcesEv.cpp": [
-        "return:BMD_File *"
-      ],
       "src/_ZN12MetalNetLift13InitResourcesEv.cpp": [
         "return:BMD_File *"
       ],
@@ -12391,9 +12385,6 @@
       ],
       "src/actors/daObjFl_Ring_c.cpp": [
         "param:#2 void *"
-      ],
-      "src/_ZN12HealingHeart8BehaviorEv.cpp": [
-        "param:#2 const Vector3 *"
       ],
       "src/_ZN15TtcRotatingCube8BehaviorEv.cpp": [
         "param:#2 void *"
@@ -15548,9 +15539,6 @@
       "src/_ZN11RollingRock8BehaviorEv.cpp": [
         "return:void *"
       ],
-      "src/_ZN12HealingHeart8BehaviorEv.cpp": [
-        "return:void *"
-      ],
       "src/_ZN13MontyMoleRock8BehaviorEv.cpp": [
         "return:void *"
       ],
@@ -17523,9 +17511,6 @@
         "param:#1 void *",
         "return:void *"
       ],
-      "src/_ZN12HealingHeart13InitResourcesEv.cpp": [
-        "return:BCA_File *"
-      ],
       "src/_ZN15dMg3DEspModel_c13InitResourcesEv.cpp": [
         "param:#1 void *",
         "return:void"
@@ -17717,9 +17702,6 @@
       ]
     },
     "_ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj": {
-      "src/_ZN12HealingHeart13InitResourcesEv.cpp": [
-        "param:#5 unsigned int"
-      ],
       "src/_ZN14UnknownVsEntry13InitResourcesEv.cpp": [
         "param:#5 unsigned int"
       ],
@@ -18356,9 +18338,6 @@
         "return:void"
       ],
       "src/_ZN11CrazedCrate13InitResourcesEv.cpp": [
-        "return:void"
-      ],
-      "src/_ZN12HealingHeart13InitResourcesEv.cpp": [
         "return:void"
       ],
       "src/_ZN12MetalNetLift13InitResourcesEv.cpp": [

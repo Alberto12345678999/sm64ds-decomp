@@ -447,10 +447,6 @@
     "src/_ZN12FortressWall6RenderEv.cpp",
     "src/_ZN12FortressWallD0Ev.cpp",
     "src/_ZN12FortressWallD1Ev.cpp",
-    "src/_ZN12HealingHeart16CleanupResourcesEv.cpp",
-    "src/_ZN12HealingHeart6RenderEv.cpp",
-    "src/_ZN12HealingHeartD0Ev.cpp",
-    "src/_ZN12HealingHeartD1Ev.cpp",
     "src/_ZN12MetalNetLift6RenderEv.cpp",
     "src/_ZN12MetalNetLiftD0Ev.cpp",
     "src/_ZN12MetalNetLiftD1Ev.cpp",
@@ -3002,6 +2998,10 @@
     "src/nds_print.c",
     "src/nds_printf.c",
     "src/unnamed/ov063/__sinit_ov063_0211e3cc.c",
-    "src/unnamed/ov063/__sinit_ov063_0211e590.c"
+    "src/unnamed/ov063/__sinit_ov063_0211e590.c",
+    "src/actors/daObjHeart_c.cpp#_ZN12daObjHeart_c16CleanupResourcesEv",
+    "src/actors/daObjHeart_c.cpp#_ZN12daObjHeart_c6RenderEv",
+    "src/actors/daObjHeart_c.cpp#_ZN12daObjHeart_cD0Ev",
+    "src/actors/daObjHeart_c.cpp#_ZN12daObjHeart_cD1Ev"
   ]
 }

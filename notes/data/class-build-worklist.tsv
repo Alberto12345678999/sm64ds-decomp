@@ -147,7 +147,7 @@ daObjDlPyramidDummy_c	DONE	include\PyramidTag.h  [alias: header uses pre-rename 
 daObjFire_c	DONE	include\daObjFire_c.h	dActor_c	0	ov002	6
 daObjFl_Coin_c	PARTIAL	include\daObjFl_Coin_c.h	dActor_c	0	ov064	4
 daObjFlamethrower_c	DONE	include\daObjFlamethrower_c.h  [alias: header uses pre-rename name]	dActor_c	0	ov095	4
-daObjHeart_c	DONE	include\HealingHeart.h  [alias: header uses pre-rename name]	dActor_c	0	ov002	6
+daObjHeart_c	DONE	include\daObjHeart_c.h	dActor_c	0	ov002	6
 daObjHsBillboard_c	DONE	include\daObjHsBillboard_c.h	dActor_c	0	ov031	5
 daObjKb1Billboard_c	DONE	include\daObjKb1Billboard_c.h	dActor_c	0	ov044	6
 daObjKinokoTag_c	DONE	include\daObjKinokoTag_c.h	dActor_c	0	ov002	7
