@@ -1,44 +1,50 @@
 //cpp
-/* dScMgCup_c -- the cup-shuffle minigame, ov006, 32 functions
- * (.text 0x020de988..0x020e0638).
+/* Shell game (MG_CUP). Three cups shuffle on the sub screen; touch the one
+ * whose unk_5462 matches unk_5468.
  *
- * Functions run in ROM order here, lowest address first: `#pragma
- * defer_codegen off` below makes the compiler emit each function as it reads
- * it, keeps the per-function optimiser brackets scoped, and puts D1 ahead of
- * D0 the way the cartridge has them. Removing it changes the code.
- *
- * Still raw: the func_ and data_ helpers are unnamed in symbols.txt; the
- * words at 0x5400..0x5408, 0x541c, 0x542c..0x5430 and the bytes at
- * 0x5469..0x546d are padding in dScMgCup_c.h; the eight State names,
- * Virtual50 and OnYoshiTryEat are inferred, not from the cartridge; and the
- * factory builds the object by hand because the class has no constructor
- * declared yet.
+ * Leftover: func_ov006_020dec88 calls the mangled Fix12 OAM::Render.
+ *   include/OAM.h will not declare that overload.
+ * Leftover: func_ov006_020ded00 keeps two spellings of frame. One shared
+ *   spelling reuses the address and the body shrinks.
+ * Leftover: func_ov006_020def80 keeps the 0x5000 bases. mFlags[i] / mAnim[i]
+ *   come out 0xa0 bytes instead of 0xa4.
+ * Leftover: StatePrepareShuffle re-reads mTimer as raw+0x5000+0x41c and
+ *   decrements mSparkleShuffles through a byte pointer. The member form misses.
+ * Leftover: StateShuffle's angle read-modify-write stays on raw+0x5400.
+ *   mShuffleAngle += folds the address.
+ * Leftover: Render's frame index stays ((int *)raw + k)[0x1510], and the
+ *   cup x/y in that call stay two different spellings.
+ * Leftover: Behavior's mAnim / mFrame / mTick loads stay (int) casts.
+ * Leftover: the factory is still _ZN11dScMgBase_cC2Ev plus SysTracker C1.
+ *   There is no dScMgCup_c constructor.
  */
 
 #include "dScMgCup_c.h"
 #include "types.h"
 #include "decl_common.h"
+#include "OamAttr.h"
 
-/* One row of data_ov006_0213c094: a packed left/right nibble pair per round. */
-typedef struct { u8 pad; u8 lo:4; u8 hi:4; } Entry094;
+/* data_ov006_0213c094: swap count, then two speed-row nibbles.
+   StateSetup reads byte [kind * 2]. df024 reads .lo / .hi. */
+typedef struct { u8 swaps; u8 lo:4; u8 hi:4; } RoundRow;
 
-/* A row of the cup-position tables at data_ov006_0213c0a8 and nearby. */
-typedef struct { int a, b; } Pair6;
+/* data_ov006_0213c0a8 is the three rest positions. 0213c0ac is one word
+   later, so [i].x there is cup i's y. */
+struct RestPos { s32 x, y; };
 
-/* The initializer at 0x021303d0 proves an eight-entry member-function table. */
+/* data_ov006_0213c0c0 is the three swap pairs. 0213c0c4 is one word later,
+   so [i].a there is the second cup. */
+struct IdxPair { s32 a, b; };
+
+/* __sinit_ov006_021303d0 writes this eight-entry table. */
 typedef void (dScMgCup_c::*PMF)();
 
-/* One row of an animation table in data_ov006_0213c0d8: {sprite id, length}. */
-typedef struct Frame {
-    int a, b;
-} Frame;
-
-/* InitResources writes the cup positions through this view: mArray2 is
-   still an opaque byte array in the header. */
-typedef struct CupPosView {
-    char _p0[0x53e8];
-    Pair6 pairs[3];  /* 0x53e8 */
-} CupPosView;
+/* One step of data_ov006_0213c0d8. list is an OamAttr run ending at attr3
+   0xffff (func_ov006_020deed8). ticks == 0 means Behavior does not advance. */
+struct AnimStep {
+    OamAttr *list;
+    int ticks;
+};
 
 namespace Sound {
     void PlayBank2_2D(unsigned int id);
@@ -70,12 +76,12 @@ extern unsigned char DecIfAbove0_Byte(unsigned char *counter);
 extern int func_02053200(int x);
 extern int func_ov004_020af770(int a0, int a1, int a2, int a3, int a4, int a5, unsigned short a6);
 extern int data_0209e650;
-extern Entry094 data_ov006_0213c094[];
+extern RoundRow data_ov006_0213c094[];
 extern s16 data_ov006_0213c0f4[];
-extern Pair6 data_ov006_0213c0c0[];
-extern Pair6 data_ov006_0213c0c4[];
-extern Pair6 data_ov006_0213c0a8[];
-extern Pair6 data_ov006_0213c0ac[];
+extern IdxPair data_ov006_0213c0c0[];
+extern IdxPair data_ov006_0213c0c4[];
+extern RestPos data_ov006_0213c0a8[];
+extern RestPos data_ov006_0213c0ac[];
 extern int RandomIntInternal(int *seed);
 extern void func_ov004_020b0a54(int c);
 extern void func_ov006_020def80(char *self, int i);
@@ -99,7 +105,7 @@ extern signed char data_ov006_0213c084[];
 extern signed char data_ov006_0213c085[];
 extern void func_ov006_020df024(char *o);
 extern void func_ov006_020c2924(char *c);
-/* The live per-cup {x, y} pair at +0x53e8, seen from Render. */
+/* Render spells cup y as this view. mCup[cup].y changes that call. */
 struct P8 { int a; int b; };
 void func_ov006_020debb4(char *a, int b);
 void func_ov006_020deed8(int a0, void *a1, int a2, int a3, int a4, int a5);
@@ -108,7 +114,7 @@ void func_ov004_020b2574(int arg0, int arg1);
 void func_ov004_020b1e34(void *a, int b, int c, int d);
 extern char data_ov006_02139df4[];
 extern PMF data_ov006_02141870[];
-extern Frame *data_ov006_0213c0d8[];
+extern AnimStep *data_ov006_0213c0d8[];
 extern u8 data_0209d45c;
 extern u8 data_0209d454;
 extern int data_0208ee44;
@@ -127,16 +133,16 @@ extern void *_ZTV10dScMgCup_c[];
 }
 
 #pragma defer_codegen off
+/* Emit each function as it is read, so D1 lands ahead of D0. */
 
 // @symbol _ZN10dScMgCup_cD1Ev
-/* Tears down in reverse construction order. The rest (the tracker, the
-   base chain) is inlined from dScMgSingle3DBase_c's destructor. This one
-   definition emits D0 as well. */
+/* Reverse of the factory: cups, effects, then the model. The tracker and
+   the base chain are the inlined dScMgSingle3DBase_c destructor. */
 dScMgCup_c::~dScMgCup_c()
 {
-    __cxa_vec_cleanup(mArray2, 3, 8, (void *)NullDestructor_0203d47c);
-    __cxa_vec_cleanup(mArray1, 0x20, 0x18, (void *)func_ov006_020deac4);
-    func_ov006_020c3288((char *)this + 0x4f38);
+    __cxa_vec_cleanup(mCup, 3, 8, (void *)NullDestructor_0203d47c);
+    __cxa_vec_cleanup(mFx, 0x20, 0x18, (void *)func_ov006_020deac4);
+    func_ov006_020c3288((char *)&mModel);
 }
 
 extern "C" void func_ov006_020deac4(void)
@@ -145,33 +151,35 @@ extern "C" void func_ov006_020deac4(void)
 
 extern "C" int func_ov006_020deac8(char *sprite, int, int, int)
 {
+    CupFx *fx = (CupFx *)sprite;
     int slot = 0;
     do {
-        if (*(unsigned char *)(sprite + 0x15) == 0)
+        if (fx->active == 0)
             break;
         slot++;
-        sprite += 0x18;
+        fx++;
     } while (slot < 0x20);
     return slot;
 }
 
 extern "C" void func_ov006_020deaf0(char *sprite, int cup, int dx, int dy)
 {
+    CupFx *fx = (CupFx *)sprite;
     int i;
     for (i = 0; i < 0x20; i++) {
-        if (*(unsigned char *)(sprite + 0x15) != 0) {
-            if (cup == *(signed char *)(sprite + 0x17)) {
-                func_ov006_020dec5c(sprite, dx, dy);
+        if (fx->active != 0) {
+            if (cup == fx->cup) {
+                func_ov006_020dec5c((char *)fx, dx, dy);
             }
         }
-        sprite += 0x18;
+        fx++;
     }
 }
 
 extern "C" int func_ov006_020deb48(char *sprites, int kind, int x, int y, signed char cup) {
     int slot = func_ov006_020deac8(sprites, kind, x, y);
     if (slot >= 0 && slot < 0x20) {
-        func_ov006_020ded84(sprites + slot * 0x18, kind, x, y, cup);
+        func_ov006_020ded84((char *)((CupFx *)sprites + slot), kind, x, y, cup);
         return slot;
     }
     return -1;
@@ -179,49 +187,55 @@ extern "C" int func_ov006_020deb48(char *sprites, int kind, int x, int y, signed
 
 extern "C" void func_ov006_020debb4(char *sprite, int cup)
 {
+    CupFx *fx = (CupFx *)sprite;
     int i = 0;
     do {
-        if (*(unsigned char *)(sprite + 0x15) != 0 && cup == *(signed char *)(sprite + 0x17))
-            func_ov006_020dec88(sprite);
+        if (fx->active != 0 && cup == fx->cup)
+            func_ov006_020dec88((char *)fx);
         i++;
-        sprite += 0x18;
+        fx++;
     } while (i < 0x20);
 }
 
 extern "C" void func_ov006_020debfc(char *sprites)
 {
+    CupFx *fx = (CupFx *)sprites;
     int i;
-    char *sprite = sprites;
     for (i = 0; i < 0x20; i++) {
-        if (*(unsigned char *)(sprite + 0x15)) func_ov006_020ded00((int)sprite);
-        sprite += 0x18;
+        if (fx->active) func_ov006_020ded00((int)fx);
+        fx++;
     }
 }
 
 extern "C" void func_ov006_020dec3c(char *sprite) {
+    CupFx *fx = (CupFx *)sprite;
     int i;
     for (i = 0; i < 0x20; i++) {
-        *(unsigned char *)(sprite + 0x15) = 0;
-        sprite += 0x18;
+        fx->active = 0;
+        fx++;
     }
 }
 
 extern "C" void func_ov006_020dec5c(char* sprite, int dx, int dy)
 {
-    if (*(unsigned char*)(sprite + 0x16) != 1)
+    CupFx *fx = (CupFx *)sprite;
+    if (fx->kind != 1)
         return;
-    *(int*)sprite += dx;
-    *(int*)(sprite + 4) += dy;
+    fx->x += dx;
+    fx->y += dy;
 }
 
 extern "C" void func_ov006_020dec88(char* sprite)
 {
-    int idx = *(signed char*)(sprite + 0x12) + *(unsigned char*)(sprite + 0x13) * 6;
+    CupFx *fx = (CupFx *)sprite;
+    int idx = fx->frame + fx->row * 6;
+    /* Fix12 overload. OAM.h does not declare it: a by-value Fix12 homes
+       r0-r3 on the stack. */
     _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(
         1,
         (struct OamAttr*)data_ov006_0213c074[data_ov006_0213c064[idx]],
-        *(int*)sprite >> 12,
-        *(int*)(sprite + 4) >> 12,
+        fx->x >> 12,
+        fx->y >> 12,
         -1,
         -1,
         data_ov006_0213c114[idx],
@@ -252,37 +266,39 @@ extern "C" void func_ov006_020ded00(int sprite)
 
 extern "C" void func_ov006_020ded84(char* sprite, int kind, int x, int y, signed char cup)
 {
+    CupFx *fx = (CupFx *)sprite;
     if (kind == 2) {
-        *(unsigned char*)(sprite + 0x16) = 0;
-        *(unsigned char*)(sprite + 0x13) = 1;
+        fx->kind = 0;
+        fx->row = 1;
     } else {
-        *(unsigned char*)(sprite + 0x16) = (unsigned char)kind;
-        *(unsigned char*)(sprite + 0x13) = 0;
+        fx->kind = (unsigned char)kind;
+        fx->row = 0;
     }
-    *(signed char*)(sprite + 0x17) = cup;
-    *(unsigned char*)(sprite + 0x15) = 1;
-    *(int*)sprite = x;
-    *(int*)(sprite + 4) = y;
-    *(int*)(sprite + 8) = 0;
-    *(int*)(sprite + 0xc) = 0;
-    if (*(unsigned char*)(sprite + 0x13) != 0)
-        *(unsigned char*)(sprite + 0x12) = 7;
+    fx->cup = cup;
+    fx->active = 1;
+    fx->x = x;
+    fx->y = y;
+    fx->vx = 0;
+    fx->vy = 0;
+    if (fx->row != 0)
+        fx->frame = 7;
     else
-        *(unsigned char*)(sprite + 0x12) = 5;
-    *(unsigned char*)(sprite + 0x14) = 3;
+        fx->frame = 5;
+    fx->delay = 3;
 }
 
 extern "C" void func_ov006_020dedfc(char *raw, int anim, int frame, int cup)
 {
+    dScMgCup_c *self = (dScMgCup_c *)raw;
     if (anim == 6) {
         if (frame == 4) {
-            func_02012718(0x1cf, (int)*(void **)(raw + (cup << 3) + 0x5000 + 0x3e8));
+            func_02012718(0x1cf, self->mCup[cup].x);
         } else if (frame == 5 || frame == 0xb) {
-            func_02012718(0x1d0, (int)*(void **)(raw + (cup << 3) + 0x5000 + 0x3e8));
+            func_02012718(0x1d0, self->mCup[cup].x);
         }
     }
-    if (anim == 5 && frame == 6 && cup == *(unsigned char *)(raw + 0x5000 + 0x46d)) {
-        func_02012718(0x1ce, (int)*(void **)(raw + (cup << 3) + 0x5000 + 0x3e8));
+    if (anim == 5 && frame == 6 && cup == self->mRevealCup) {
+        func_02012718(0x1ce, self->mCup[cup].x);
     }
     if (anim != 1 && anim != 4) return;
     if (frame != 4) return;
@@ -291,12 +307,12 @@ extern "C" void func_ov006_020dedfc(char *raw, int anim, int frame, int cup)
 
 extern "C" void func_ov006_020deed8(int scene, void *list, int x, int y, int scale, int modeArg)
 {
-    unsigned char *entry;
+    OamAttr *entry;
     int mode;
     int sx;
     int sy;
 
-    entry = (unsigned char *)list;
+    entry = (OamAttr *)list;
     sx = x >> 12;
     sy = y >> 12;
     mode = modeArg;
@@ -306,15 +322,16 @@ extern "C" void func_ov006_020deed8(int scene, void *list, int x, int y, int sca
         int oam = func_ov004_020af770((int)entry, sx, sy, -1, -1, scale, 0);
         if (oam != 0) {
             if (mode == 2) {
-                if ((unsigned)(*(int *)(entry + 4) << 0x10) >> 0x1c == 3) {
+                /* Loaded as one word; the shifts keep attr2 bits 12..15, the palette. */
+                if ((unsigned)(*(int *)((char *)entry + 4) << 0x10) >> 0x1c == 3) {
                     int *p = (int *)(oam + 4);
                     *p = (*p & ~0xf000) | 0x4000;
                 }
             }
         }
-        if (*(unsigned short *)(entry + 6) == 0xffff)
+        if (entry->attr3 == 0xffff)
             break;
-        entry += 8;
+        entry++;
     }
 }
 
@@ -372,39 +389,40 @@ epilogue:
 
 extern "C" void func_ov006_020df024(char *raw)
 {
+    dScMgCup_c *self = (dScMgCup_c *)raw;
     u32 rnd = (u32)RandomIntInternal(&data_0209e650);
     u32 bits = rnd >> 0x10;
     int row;
     int rem;
 
     if (bits & 1) {
-        row = data_ov006_0213c094[*(u8*)(raw + 0x5461)].hi;
+        row = data_ov006_0213c094[self->unk_5461].hi;
     } else {
-        row = data_ov006_0213c094[*(u8*)(raw + 0x5461)].lo;
+        row = data_ov006_0213c094[self->unk_5461].lo;
     }
 
     row = row * 2;
     if (bits & 2)
         row += 1;
 
-    *(s16*)(raw + 0x545e) = data_ov006_0213c0f4[row];
+    self->mShuffleSpeed = data_ov006_0213c0f4[row];
 
     rem = (rnd >> 0x18) % 3;
-    *(int*)(raw + 0x542c) = data_ov006_0213c0c0[rem].a;
-    *(int*)(raw + 0x5430) = data_ov006_0213c0c4[rem].a;
+    self->mSwap0 = data_ov006_0213c0c0[rem].a;
+    self->mSwap1 = data_ov006_0213c0c4[rem].a;
 
-    *(int*)(raw + 0x5400) = (data_ov006_0213c0a8[*(int*)(raw + 0x5430)].a +
-                            data_ov006_0213c0a8[*(int*)(raw + 0x542c)].a) / 2;
-    *(int*)(raw + 0x5404) = (data_ov006_0213c0ac[*(int*)(raw + 0x5430)].a +
-                            data_ov006_0213c0ac[*(int*)(raw + 0x542c)].a) / 2;
-    *(int*)(raw + 0x5408) = *(int*)(raw + 0x5400) -
-                           data_ov006_0213c0a8[*(int*)(raw + 0x542c)].a;
-    *(s16*)(raw + 0x545c) = 0;
+    self->mMidX = (data_ov006_0213c0a8[self->mSwap1].x +
+                   data_ov006_0213c0a8[self->mSwap0].x) / 2;
+    self->mMidY = (data_ov006_0213c0ac[self->mSwap1].x +
+                   data_ov006_0213c0ac[self->mSwap0].x) / 2;
+    self->mHalfX = self->mMidX -
+                   data_ov006_0213c0a8[self->mSwap0].x;
+    self->mShuffleAngle = 0;
 
     {
-        u8 kind = *(u8*)(raw + 0x5461);
+        u8 kind = self->unk_5461;
         if (kind == 7) {
-            if (*(u8*)(raw + 0x5460) == *(u8*)(raw + 0x546c)) {
+            if (self->unk_5460 == self->mFakeOutAt) {
                 goto set1;
             }
         }
@@ -418,10 +436,10 @@ extern "C" void func_ov006_020df024(char *raw)
             }
         }
     set1:
-        *(u8*)(raw + 0x546a) = 1;
+        self->mFakeOut = 1;
         return;
     set0:
-        *(u8*)(raw + 0x546a) = 0;
+        self->mFakeOut = 0;
         return;
     }
 }
@@ -434,10 +452,9 @@ void dScMgCup_c::StateIdle()
 // @symbol _ZN10dScMgCup_c11StateFinishEv
 void dScMgCup_c::StateFinish()
 {
-    char *raw = (char *)this;
-    *(int*)(raw + 0x541c) -= 1;
-    if (*(int*)(raw + 0x5000 + 0x41c) > 0) return;
-    if (*(unsigned char*)(raw + 0x5000 + 0x469) != 0) {
+    mTimer -= 1;
+    if (mTimer > 0) return;
+    if (mCorrect != 0) {
         if (mHudScore < 0x270f) mHudScore += 1;
         if (mHudScore > unk_0b8) unk_0b8 = mHudScore;
         func_ov004_020b0a54(0);
@@ -457,32 +474,30 @@ void dScMgCup_c::StateFinish()
 #pragma opt_strength_reduction off
 void dScMgCup_c::StateResult()
 {
-    char *raw = (char *)this;
     int score;
     int i;
-    int *countdown = (int *)(raw + 0x541c);
-    *countdown = *countdown - 1;
-    if (*(int *)(raw + 0x5000 + 0x41c) > 0) return;
+
+    mTimer = mTimer - 1;
+    if (mTimer > 0) return;
     for (i = 0; i < 3; i++) {
-        u8 *flag = (u8 *)(raw + i + 0x5465);
-        if (*flag == 0) {
-            *flag = 1;
-            func_ov006_020def80(raw, i);
+        if (mFlags[i] == 0) {
+            mFlags[i] = 1;
+            func_ov006_020def80((char *)this, i);
         }
     }
     score = mHudScore;
-    if (*(u8 *)(raw + 0x5000 + 0x469) != 0) {
-        *(int *)(raw + 0x5000 + 0x41c) = 0x3c;
-        func_ov006_020c2594(raw + 0x4f38);
+    if (mCorrect != 0) {
+        mTimer = 0x3c;
+        func_ov006_020c2594(&mModel);
         score++;
     } else {
-        func_ov004_020b1b78(raw, 1);
+        func_ov004_020b1b78(this, 1);
         if (unk_0a8 > 0) {
-            *(int *)(raw + 0x5000 + 0x41c) = 0x96;
-            func_ov006_020c2664(raw + 0x4f38);
+            mTimer = 0x96;
+            func_ov006_020c2664((char *)&mModel);
         } else {
-            *(int *)(raw + 0x5000 + 0x41c) = 0x1e;
-            func_ov006_020c2440(raw + 0x4f38);
+            mTimer = 0x1e;
+            func_ov006_020c2440((char *)&mModel);
         }
         func_02012790(0x12f);
     }
@@ -515,31 +530,31 @@ void dScMgCup_c::StateSelect()
     }
 
     for (cup = 0; cup < 3; cup++) {
-        int dx = touchX - (*(int*)(raw + cup * 8 + 0x5000 + 0x3e8) >> 12);
-        int dy = touchY - (*(int*)(raw + cup * 8 + 0x5000 + 0x3ec) >> 12);
+        int dx = touchX - (mCup[cup].x >> 12);
+        int dy = touchY - (mCup[cup].y >> 12);
         if (dx > 0x10 || dx < -0x28 || dy > 0x18 || dy < -0x20) continue;
 
         mFlags[cup] = 1;
         func_ov006_020def80(raw, cup);
 
         if (unk_5468 == unk_5462[cup]) {
-            *(unsigned char*)(raw + 0x5000 + 0x469) = 1;
-            unk_5434[cup] = 6;
+            mCorrect = 1;
+            mAnim[cup] = 6;
         } else {
-            *(unsigned char*)(raw + 0x5000 + 0x469) = 0;
+            mCorrect = 0;
         }
 
         mState = 5;
-        *(int*)(raw + 0x5000 + 0x41c) = 0x3c;
+        mTimer = 0x3c;
         FreeGfxSlotsById(0x1d);
 
         {
             unsigned int idx2 = data_020a0e40[0];
             unsigned char a1 = *(volatile unsigned char*)&data_020a0deb[idx2 * 4];
             unsigned char a2 = *(volatile unsigned char*)&data_020a0dea[idx2 * 4];
-            unk_50dc = 1;
-            unk_50d4 = a2;
-            unk_50d8 = a1;
+            mTouchLock = 1;
+            mTouchX = a2;
+            mTouchY = a1;
         }
         Sound::PlayBank2_2D(0x1cd);
         return;
@@ -550,9 +565,8 @@ void dScMgCup_c::StateSelect()
 // @symbol _ZN10dScMgCup_c17StateWaitForInputEv
 void dScMgCup_c::StateWaitForInput()
 {
-    char *raw = (char *)this;
-    *(int *)(raw + 0x541c) -= 1;
-    if (*(int *)(raw + 0x541c) > 0)
+    mTimer -= 1;
+    if (mTimer > 0)
         return;
     func_ov004_020b0cac(0xf, 0x80, 0x38, 0, -1, 0xd);
     mState = 4;
@@ -588,49 +602,49 @@ void dScMgCup_c::StateShuffle()
     {
         int slot = mIds[*(int*)(raw + 0x542c)];
         int cosine = data_02082214[(mShuffleAngle >> 4) * 2 + 1];
-        oldX = *(int*)(raw + slot * 8 + 0x53e8);
-        oldY = *(int*)(raw + slot * 8 + 0x53ec);
-        *(int*)(raw + slot * 8 + 0x53e8) = *(int*)(raw + 0x5400)
+        oldX = mCup[slot].x;
+        oldY = mCup[slot].y;
+        mCup[slot].x = *(int*)(raw + 0x5400)
             - (int)(((long long)cosine * *(int*)(raw + 0x5408) + 0x800) >> 12);
     }
     {
         int slot = mIds[*(int*)(raw + 0x542c)];
-        *(int*)(raw + slot * 8 + 0x53ec) = *(int*)(raw + 0x5404)
+        mCup[slot].y = *(int*)(raw + 0x5404)
             - (int)((data_02082214[(mShuffleAngle >> 4) * 2] * 0x14000LL + 0x800) >> 12);
     }
     {
         int slot = mIds[*(int*)(raw + 0x542c)];
-        mOnes[slot] = ((*(int*)(raw + slot * 8 + 0x53ec) - *(int*)(raw + 0x5404)) >> 7) + 0x1000;
+        mOnes[slot] = ((mCup[slot].y - *(int*)(raw + 0x5404)) >> 7) + 0x1000;
     }
     {
         int slot = mIds[*(int*)(raw + 0x542c)];
-        func_ov006_020deaf0(raw + 0x50e8, (u8)(s8)slot,
-            *(int*)(raw + slot * 8 + 0x53e8) - oldX,
-            *(int*)(raw + slot * 8 + 0x53ec) - oldY);
+        func_ov006_020deaf0((char *)mFx, (u8)(s8)slot,
+            mCup[slot].x - oldX,
+            mCup[slot].y - oldY);
     }
 
     {
         int slot = mIds[*(int*)(raw + 0x5430)];
         int cosine = data_02082214[(mShuffleAngle >> 4) * 2 + 1];
-        oldX = *(int*)(raw + slot * 8 + 0x53e8);
-        oldY = *(int*)(raw + slot * 8 + 0x53ec);
-        *(int*)(raw + slot * 8 + 0x53e8) = *(int*)(raw + 0x5400)
+        oldX = mCup[slot].x;
+        oldY = mCup[slot].y;
+        mCup[slot].x = *(int*)(raw + 0x5400)
             + (int)(((long long)cosine * *(int*)(raw + 0x5408) + 0x800) >> 12);
     }
     {
         int slot = mIds[*(int*)(raw + 0x5430)];
-        *(int*)(raw + slot * 8 + 0x53ec) = *(int*)(raw + 0x5404)
+        mCup[slot].y = *(int*)(raw + 0x5404)
             + (int)((data_02082214[(mShuffleAngle >> 4) * 2] * 0x14000LL + 0x800) >> 12);
     }
     {
         int slot = mIds[*(int*)(raw + 0x5430)];
-        mOnes[slot] = ((*(int*)(raw + slot * 8 + 0x53ec) - *(int*)(raw + 0x5404)) >> 7) + 0x1000;
+        mOnes[slot] = ((mCup[slot].y - *(int*)(raw + 0x5404)) >> 7) + 0x1000;
     }
     {
         int slot = mIds[*(int*)(raw + 0x5430)];
-        func_ov006_020deaf0(raw + 0x50e8, (u8)(s8)slot,
-            *(int*)(raw + slot * 8 + 0x53e8) - oldX,
-            *(int*)(raw + slot * 8 + 0x53ec) - oldY);
+        func_ov006_020deaf0((char *)mFx, (u8)(s8)slot,
+            mCup[slot].x - oldX,
+            mCup[slot].y - oldY);
     }
 
     {
@@ -677,16 +691,16 @@ void dScMgCup_c::StateShuffle()
             {
                 int slot = mIds[*(int*)(raw + 0x542c)];
                 i = (cnt >> 2) & 7;
-                func_ov006_020deb48(raw + 0x50e8, 2,
-                    *(int*)(raw + slot * 8 + 0x53e8) + (data_ov006_0213c084[i * 2] << 12),
-                    *(int*)(raw + slot * 8 + 0x53ec) + (data_ov006_0213c085[i * 2] << 12),
+                func_ov006_020deb48((char *)mFx, 2,
+                    mCup[slot].x + (data_ov006_0213c084[i * 2] << 12),
+                    mCup[slot].y + (data_ov006_0213c085[i * 2] << 12),
                     slot);
             }
             {
                 int slot = mIds[*(int*)(raw + 0x5430)];
-                func_ov006_020deb48(raw + 0x50e8, 2,
-                    *(int*)(raw + slot * 8 + 0x53e8) + (data_ov006_0213c084[i * 2] << 12),
-                    *(int*)(raw + slot * 8 + 0x53ec) + (data_ov006_0213c085[i * 2] << 12),
+                func_ov006_020deb48((char *)mFx, 2,
+                    mCup[slot].x + (data_ov006_0213c084[i * 2] << 12),
+                    mCup[slot].y + (data_ov006_0213c085[i * 2] << 12),
                     slot);
             }
         }
@@ -697,32 +711,32 @@ void dScMgCup_c::StateShuffle()
             {
                 int slot = mIds[*(int*)(raw + 0x542c)];
                 i = (cnt >> 1) & 7;
-                func_ov006_020deb48(raw + 0x50e8, 1,
-                    *(int*)(raw + slot * 8 + 0x53e8) + (data_ov006_0213c084[i * 2] << 12),
-                    *(int*)(raw + slot * 8 + 0x53ec) + (data_ov006_0213c085[i * 2] << 12),
+                func_ov006_020deb48((char *)mFx, 1,
+                    mCup[slot].x + (data_ov006_0213c084[i * 2] << 12),
+                    mCup[slot].y + (data_ov006_0213c085[i * 2] << 12),
                     slot);
             }
             {
                 int slot = mIds[*(int*)(raw + 0x5430)];
-                func_ov006_020deb48(raw + 0x50e8, 1,
-                    *(int*)(raw + slot * 8 + 0x53e8) + (data_ov006_0213c084[i * 2] << 12),
-                    *(int*)(raw + slot * 8 + 0x53ec) + (data_ov006_0213c085[i * 2] << 12),
+                func_ov006_020deb48((char *)mFx, 1,
+                    mCup[slot].x + (data_ov006_0213c084[i * 2] << 12),
+                    mCup[slot].y + (data_ov006_0213c085[i * 2] << 12),
                     slot);
             }
         }
         if ((*(int*)(raw + 0x541c) & 3) == 0) {
             {
                 int slot = mIds[*(int*)(raw + 0x542c)];
-                func_ov006_020deb48(raw + 0x50e8, 0,
-                    *(int*)(raw + slot * 8 + 0x53e8) - 0xe000,
-                    *(int*)(raw + slot * 8 + 0x53ec) + 0x1c000,
+                func_ov006_020deb48((char *)mFx, 0,
+                    mCup[slot].x - 0xe000,
+                    mCup[slot].y + 0x1c000,
                     slot);
             }
             {
                 int slot = mIds[*(int*)(raw + 0x5430)];
-                func_ov006_020deb48(raw + 0x50e8, 0,
-                    *(int*)(raw + slot * 8 + 0x53e8) - 0xe000,
-                    *(int*)(raw + slot * 8 + 0x53ec) + 0x1c000,
+                func_ov006_020deb48((char *)mFx, 0,
+                    mCup[slot].x - 0xe000,
+                    mCup[slot].y + 0x1c000,
                     slot);
             }
         }
@@ -738,6 +752,7 @@ void dScMgCup_c::StatePrepareShuffle()
     char *raw = (char *)this;
     int *countdown = (int *)(raw + 0x541c);
     *countdown = *countdown - 1;
+    /* Same word as mTimer. The 0x5000 split is a second load; mTimer > 0 misses. */
     if (*(int *)(raw + 0x5000 + 0x41c) > 0) return;
     func_ov006_020df024(raw);
     if (*(unsigned char *)(raw + 0x5000 + 0x46b) != 0) {
@@ -750,7 +765,6 @@ void dScMgCup_c::StatePrepareShuffle()
 // @symbol _ZN10dScMgCup_c10StateSetupEv
 void dScMgCup_c::StateSetup()
 {
-    char *raw = (char *)this;
     int i;
     int score;
     unsigned int rnd;
@@ -758,14 +772,14 @@ void dScMgCup_c::StateSetup()
     unsigned int kind;
     unsigned int picked;
 
-    (*(int *)(raw + 0x541c))--;
-    if (*(int *)(raw + 0x541c) > 0) {
+    mTimer--;
+    if (mTimer > 0) {
         return;
     }
 
     for (i = 0; i < 3; i++) {
         mFlags[i] = 0;
-        func_ov006_020def80(raw, i);
+        func_ov006_020def80((char *)this, i);
     }
 
     score = mHudScore;
@@ -778,8 +792,7 @@ void dScMgCup_c::StateSetup()
         unk_5461 = (unsigned char)kind;
     }
 
-    unk_5460 =
-        ((unsigned char *)data_ov006_0213c094)[unk_5461 * 2];
+    unk_5460 = ((unsigned char *)data_ov006_0213c094)[unk_5461 * 2];
 
     if (score > 3) {
         rnd = (unsigned int)RandomIntInternal(&data_0209e650);
@@ -792,17 +805,17 @@ void dScMgCup_c::StateSetup()
         unk_5468 = 2;
     }
 
-    *(unsigned char *)(raw + 0x546b) = 0;
-    *(unsigned char *)(raw + 0x5469) = 0;
+    mSparkleShuffles = 0;
+    mCorrect = 0;
     mState = 1;
-    *(int *)(raw + 0x541c) = 0x1e;
-    *(unsigned char *)(raw + 0x546d) = 0xff;
+    mTimer = 0x1e;
+    mRevealCup = 0xff;
     mShuffleSound = 0;
     FreeGfxSlotsById(0x1d);
 
     rnd = (unsigned int)RandomIntInternal(&data_0209e650);
     picked = (rnd % 10) + 1;
-    *(unsigned char *)(raw + 0x546c) = (unsigned char)picked;
+    mFakeOutAt = (unsigned char)picked;
 
     if (mPromptBlinkCount == 0) {
         mPromptEnabled = 1;
@@ -812,12 +825,10 @@ void dScMgCup_c::StateSetup()
 }
 
 // @symbol _ZN10dScMgCup_c9Virtual50Ev
-/* Slot 20: forwards to the component at this + 0x4f38. */
+/* Slot 20: the win animation on mModel. */
 void dScMgCup_c::Virtual50()
 {
-    char *p = (char *)this;
-
-    func_ov006_020c2594(p + 0x4f38);
+    func_ov006_020c2594(&mModel);
 }
 
 #pragma push
@@ -825,8 +836,6 @@ void dScMgCup_c::Virtual50()
 #pragma opt_common_subs off
 void dScMgCup_c::OnYoshiTryEat(int msg)
 {
-    char *raw = (char *)this;
-
     int i;
 
     if (msg == 3 || msg == 0x12) {
@@ -858,18 +867,18 @@ void dScMgCup_c::OnYoshiTryEat(int msg)
 
     for (i = 0; i < 3; i++) {
         if (unk_5462[i] != 0) {
-            unk_5434[i] = 3;
+            mAnim[i] = 3;
         } else {
-            unk_5434[i] = 0;
+            mAnim[i] = 0;
         }
-        unk_5440[i] = 0;
-        unk_544c[i] = 0;
+        mFrame[i] = 0;
+        mTick[i] = 0;
     }
 
-    *(int *)(raw + 0x5000 + 0x41c) = 0x3c;
+    mTimer = 0x3c;
     mState = 0;
-    unk_50dc = 0;
-    func_ov006_020c2924(raw + 0x4f38);
+    mTouchLock = 0;
+    func_ov006_020c2924((char *)&mModel);
 
     unk_0bc = mHudScore;
     if (unk_0bc > 0x270e) {
@@ -901,7 +910,7 @@ s32 dScMgCup_c::Render()
         for (j = 0; j < limit - 1; j++) {
             next = order[j + 1];
             cur = order[j];
-            if (*(int*)(raw + cur * 8 + 0x53ec) < *(int*)(raw + next * 8 + 0x53ec)) {
+            if (mCup[cur].y < mCup[next].y) {
                 order[j] = next;
                 order[j + 1] = cur;
             }
@@ -913,9 +922,9 @@ s32 dScMgCup_c::Render()
        changes. */
     for (k = 0; k < 3; k++) {
         cup = order[k];
-        func_ov006_020debb4(raw + 0x50e8, (char)cup);
+        func_ov006_020debb4((char *)mFx, (char)cup);
         func_ov006_020deed8((int)raw,
-            (void *)data_ov006_0213c0d8[unk_5434[cup]][((int*)raw + k)[0x1510]].a,
+            (void *)data_ov006_0213c0d8[mAnim[cup]][((int*)raw + k)[0x1510]].list,
             *(int*)(raw + cup * 8 + 0x53e8),
             ((struct P8*)raw + cup)[0xa7d].b,
             mOnes[cup],
@@ -929,7 +938,7 @@ s32 dScMgCup_c::Render()
 
     func_ov004_020b2574(unk_0a8, 1);
     func_ov004_020b1e34(raw, 0xe0, 0x14, 1);
-    func_ov006_020c29dc(raw + 0x4f38);
+    func_ov006_020c29dc((char *)&mModel);
     return 1;
 }
 
@@ -945,8 +954,8 @@ s32 dScMgCup_c::Behavior()
     int i;
     (this->*data_ov006_02141870[mState])();
     for (i = 0; i < 3; i++) {
-        Frame *anim = &data_ov006_0213c0d8[*(int *)(((int)raw + i * 4 + 0x5434))][*(int *)(raw + i * 4 + 0x5440)];
-        int length = anim->b;
+        AnimStep *anim = &data_ov006_0213c0d8[*(int *)(((int)raw + i * 4 + 0x5434))][*(int *)(raw + i * 4 + 0x5440)];
+        int length = anim->ticks;
         if (length != 0) {
             *(int *)(((int)raw + i * 4 + 0x544c)) += 1;
             if (*(int *)(((int)raw + i * 4 + 0x544c)) >= length) {
@@ -957,8 +966,8 @@ s32 dScMgCup_c::Behavior()
             }
         }
     }
-    func_ov006_020debfc(raw + 0x50e8);
-    func_ov006_020c2b8c(raw + 0x4f38);
+    func_ov006_020debfc((char *)mFx);
+    func_ov006_020c2b8c((char *)&mModel);
     return 1;
 }
 #pragma pop
@@ -968,12 +977,11 @@ s32 dScMgCup_c::Behavior()
    places the three cups and starts a game through OnYoshiTryEat(3). */
 s32 dScMgCup_c::InitResources()
 {
-    char *raw = (char *)this;
     void *file;
 
     data_0209d45c = 0x11;
-    func_ov006_020c225c(raw + 0x4660);
-    if (func_ov006_020c3050(raw + 0x4f38) == 0)
+    func_ov006_020c225c((char *)pad_4660);
+    if (func_ov006_020c3050((char *)&mModel) == 0)
         return 0;
 
     {
@@ -1018,8 +1026,8 @@ s32 dScMgCup_c::InitResources()
     {
         int i;
         for (i = 0; i < 3; i++) {
-            ((CupPosView *)raw)->pairs[i].a = data_ov006_0213c0a8[i].a;
-            ((CupPosView *)raw)->pairs[i].b = data_ov006_0213c0a8[i].b;
+            mCup[i].x = data_ov006_0213c0a8[i].x;
+            mCup[i].y = data_ov006_0213c0a8[i].y;
             mOnes[i] = 0x1000;
             mIds[i] = i;
             mFlags[i] = 1;
@@ -1027,26 +1035,26 @@ s32 dScMgCup_c::InitResources()
     }
 
     OnYoshiTryEat(3);
-    func_ov006_020dec3c(raw + 0x50e8);
+    func_ov006_020dec3c((char *)mFx);
     return 1;
 }
 
 // @symbol dScMgCup_c_classInit
-/* Builds the scene by hand (operator new, base constructor, vtables,
-   member arrays) because the class has no constructor declared yet. */
+/* No dScMgCup_c constructor. Base ctor, intermediate vtable, the tracker,
+   then this vtable, the model, the effects, the cups. */
 extern "C" void *dScMgCup_c_classInit()
 {
-    char *scene = (char *)_ZN7fBase_cnwEj(sizeof(dScMgCup_c));
+    dScMgCup_c *scene = (dScMgCup_c *)_ZN7fBase_cnwEj(sizeof(dScMgCup_c));
     if (scene) {
         _ZN11dScMgBase_cC2Ev(scene);
         *(void **)scene = _ZTV19dScMgSingle3DBase_c;
-        _ZN8Particle10SysTrackerC1Ev(scene + 0x471c);
+        _ZN8Particle10SysTrackerC1Ev(&scene->mSysTracker);
         *(void **)scene = _ZTV10dScMgCup_c + 2;
-        func_ov006_020c33dc(scene + 0x4f38);
-        __cxa_vec_ctor(scene + 0x50e8, 0x20, 0x18,
+        func_ov006_020c33dc(&scene->mModel);
+        __cxa_vec_ctor(scene->mFx, 0x20, 0x18,
                       (void *)func_ov006_020e0634,
                       (void *)func_ov006_020deac4);
-        __cxa_vec_ctor(scene + 0x53e8, 3, 8,
+        __cxa_vec_ctor(scene->mCup, 3, 8,
                       (void *)func_0203d738,
                       (void *)NullDestructor_0203d47c);
     }
