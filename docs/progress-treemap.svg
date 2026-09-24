@@ -32141,11 +32141,11 @@ matched: yes</title></rect><rect x="1258.93" y="175.78" width="4.24" height="3.6
 module: ov025
 addr: 0x02111cf4
 size: 76 bytes
-matched: yes</title></rect><rect x="1258.93" y="179.42" width="4.24" height="3.64" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11PyramidStepD1Ev
+matched: yes</title></rect><rect x="1258.93" y="179.42" width="4.24" height="3.64" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14daObjDpBrock_cD1Ev
 module: ov025
 addr: 0x02111d40
 size: 76 bytes
-matched: yes</title></rect><rect x="1258.93" y="183.06" width="4.24" height="4.60" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11PyramidStepD0Ev
+matched: yes</title></rect><rect x="1258.93" y="183.06" width="4.24" height="4.60" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14daObjDpBrock_cD0Ev
 module: ov025
 addr: 0x02111d8c
 size: 96 bytes
@@ -32157,19 +32157,19 @@ matched: yes</title></rect><rect x="1263.17" y="175.78" width="2.20" height="5.9
 module: ov025
 addr: 0x02111e30
 size: 64 bytes
-matched: yes</title></rect><rect x="1263.17" y="181.69" width="2.20" height="5.17" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11PyramidStep16CleanupResourcesEv
+matched: yes</title></rect><rect x="1263.17" y="181.69" width="2.20" height="5.17" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14daObjDpBrock_c16CleanupResourcesEv
 module: ov025
 addr: 0x02111e70
 size: 56 bytes
-matched: yes</title></rect><rect x="1263.17" y="186.86" width="2.20" height="4.06" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11PyramidStep6RenderEv
+matched: yes</title></rect><rect x="1263.17" y="186.86" width="2.20" height="4.06" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14daObjDpBrock_c6RenderEv
 module: ov025
 addr: 0x02111ea8
 size: 44 bytes
-matched: yes</title></rect><rect x="1265.38" y="175.78" width="6.33" height="6.54" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11PyramidStep8BehaviorEv
+matched: yes</title></rect><rect x="1265.38" y="175.78" width="6.33" height="6.54" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14daObjDpBrock_c8BehaviorEv
 module: ov025
 addr: 0x02111ed4
 size: 204 bytes
-matched: yes</title></rect><rect x="1265.38" y="182.32" width="6.33" height="8.59" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11PyramidStep13InitResourcesEv
+matched: yes</title></rect><rect x="1265.38" y="182.32" width="6.33" height="8.59" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14daObjDpBrock_c13InitResourcesEv
 module: ov025
 addr: 0x02111fa0
 size: 268 bytes
