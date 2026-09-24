@@ -4443,7 +4443,7 @@
         "param:#2 Vector3 *",
         "param:#3 const Vector3 *"
       ],
-      "src/_ZN14KnockDownPlank13InitResourcesEv.cpp": [
+      "src/_ZN17daObjBk_Botaosi_c13InitResourcesEv.cpp": [
         "param:#1 Vector3 *",
         "param:#2 Vector3 *",
         "param:#3 Vector3 *"
@@ -7555,7 +7555,7 @@
       "src/_ZN11CrazedCrate13InitResourcesEv.cpp": [
         "return:void"
       ],
-      "src/_ZN14KnockDownPlank13InitResourcesEv.cpp": [
+      "src/_ZN17daObjBk_Botaosi_c13InitResourcesEv.cpp": [
         "return:void"
       ],
       "src/_ZN15TtcRotatingCube13InitResourcesEv.cpp": [
@@ -11185,7 +11185,7 @@
         "param:#1 void *",
         "return:int"
       ],
-      "src/_ZN14KnockDownPlank13InitResourcesEv.cpp": [
+      "src/_ZN17daObjBk_Botaosi_c13InitResourcesEv.cpp": [
         "param:#1 void *"
       ],
       "src/_ZN14daWater_Ring_c13InitResourcesEv.cpp": [
@@ -14484,7 +14484,7 @@
         "param:#1 void *",
         "return:void *"
       ],
-      "src/_ZN14KnockDownPlank13InitResourcesEv.cpp": [
+      "src/_ZN17daObjBk_Botaosi_c13InitResourcesEv.cpp": [
         "param:#1 void *",
         "return:void *"
       ],
@@ -15459,7 +15459,7 @@
       "src/_ZN12daBgSnmHed_c6State2Ev.cpp": [
         "arity:3"
       ],
-      "src/_ZN14KnockDownPlank8BehaviorEv.cpp": [
+      "src/_ZN17daObjBk_Botaosi_c8BehaviorEv.cpp": [
         "arity:3"
       ],
       "src/_ZN8Goomboss8BehaviorEv.cpp": [
@@ -18355,7 +18355,7 @@
       "src/_ZN13MontyMoleRock13InitResourcesEv.cpp": [
         "param:#2 int"
       ],
-      "src/_ZN14KnockDownPlank13InitResourcesEv.cpp": [
+      "src/_ZN17daObjBk_Botaosi_c13InitResourcesEv.cpp": [
         "return:void"
       ],
       "src/_ZN15FireSeaElevator13InitResourcesEv.cpp": [
@@ -18537,7 +18537,7 @@
       ]
     },
     "_ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c": {
-      "src/_ZN14KnockDownPlank13InitResourcesEv.cpp": [
+      "src/_ZN17daObjBk_Botaosi_c13InitResourcesEv.cpp": [
         "param:#2 Vector3 *"
       ],
       "src/_ZN3MrI13InitResourcesEv.cpp": [
@@ -18614,7 +18614,7 @@
       ]
     },
     "_ZN9dBgCh_GndD1Ev": {
-      "src/_ZN14KnockDownPlank13InitResourcesEv.cpp": [
+      "src/_ZN17daObjBk_Botaosi_c13InitResourcesEv.cpp": [
         "arity:1",
         "return:void"
       ],
@@ -22961,7 +22961,7 @@
       ]
     },
     "data_020a0e68": {
-      "src/_ZN14KnockDownPlank13InitResourcesEv.cpp": [
+      "src/_ZN17daObjBk_Botaosi_c13InitResourcesEv.cpp": [
         "return:int"
       ],
       "src/_ZN14UnknownVsEntry13InitResourcesEv.cpp": [
@@ -45810,18 +45810,18 @@
       "include/decl_common.h": [
         "arity:0"
       ],
-      "src/_ZN14KnockDownPlank11OnAttacked2ER8dActor_c.cpp": [
+      "src/_ZN17daObjBk_Botaosi_c11OnAttacked2ER8dActor_c.cpp": [
         "return:int"
       ]
     },
     "func_ov015_021114f0": {
-      "src/_ZN14KnockDownPlank8BehaviorEv.cpp": [
-        "param:#1 KnockDownPlank *"
+      "src/_ZN17daObjBk_Botaosi_c8BehaviorEv.cpp": [
+        "param:#1 daObjBk_Botaosi_c *"
       ]
     },
     "func_ov015_0211166c": {
-      "src/_ZN14KnockDownPlank8BehaviorEv.cpp": [
-        "param:#1 KnockDownPlank *"
+      "src/_ZN17daObjBk_Botaosi_c8BehaviorEv.cpp": [
+        "param:#1 daObjBk_Botaosi_c *"
       ]
     },
     "func_ov016_02111bf0": {

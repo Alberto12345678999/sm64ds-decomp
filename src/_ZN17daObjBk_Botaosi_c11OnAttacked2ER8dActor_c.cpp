@@ -1,8 +1,8 @@
 //cpp
-// @symbol _ZN14KnockDownPlank11OnAttacked2ER8dActor_c
-#include "KnockDownPlank.h"
+// @symbol _ZN17daObjBk_Botaosi_c11OnAttacked2ER8dActor_c
+#include "daObjBk_Botaosi_c.h"
 
-/* KnockDownPlank::OnAttacked2 -- vtable slot 23, ov015 0x02111408.
+/* daObjBk_Botaosi_c::OnAttacked2 -- vtable slot 23, ov015 0x02111408.
  *
  * A pure tail-call veneer to func_ov015_02111414(this, &other), the class's
  * own shared (non-virtual, unmigrated) hit handler -- OnKicked (slot 24,
@@ -17,7 +17,7 @@ extern "C" {
 extern int func_ov015_02111414(void *self, void *other);
 }
 
-int KnockDownPlank::OnAttacked2(dActor_c &other)
+int daObjBk_Botaosi_c::OnAttacked2(dActor_c &other)
 {
     return func_ov015_02111414(this, &other);
 }

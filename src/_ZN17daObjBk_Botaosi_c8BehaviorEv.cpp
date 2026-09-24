@@ -1,6 +1,6 @@
 //cpp
-// @symbol _ZN14KnockDownPlank8BehaviorEv
-#include "KnockDownPlank.h"
+// @symbol _ZN17daObjBk_Botaosi_c8BehaviorEv
+#include "daObjBk_Botaosi_c.h"
 #include "Sound.h"
 
 extern "C" {
@@ -9,11 +9,11 @@ void _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(
     dActor_c *self, const Vector3 *pos, Fix12i strength);
 s32 _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(
     dBgActor_c *self, Fix12i rangeOffset, Fix12i drawDistance);
-void func_ov015_0211166c(KnockDownPlank *plank);
-s32 func_ov015_021114f0(KnockDownPlank *plank);
+void func_ov015_0211166c(daObjBk_Botaosi_c *plank);
+s32 func_ov015_021114f0(daObjBk_Botaosi_c *plank);
 }
 
-int KnockDownPlank::Behavior()
+int daObjBk_Botaosi_c::Behavior()
 {
     switch (mState) {
     case 0:

@@ -681,7 +681,7 @@ In the C twin, `0x074` becomes `mCamSpacePosX`.
 
 ---
 
-## KnockDownPlank (`include/KnockDownPlank.h`, [ov015](../config/arm9/overlays/ov015/symbols.txt), size 0x39c)
+## daObjBk_Botaosi_c (`include/daObjBk_Botaosi_c.h`, [ov015](../config/arm9/overlays/ov015/symbols.txt), size 0x39c)
 
 | Offset | Name | Evidence |
 | --- | --- | --- |

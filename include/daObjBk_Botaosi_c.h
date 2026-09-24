@@ -1,5 +1,5 @@
-#ifndef KNOCKDOWNPLANK_H
-#define KNOCKDOWNPLANK_H
+#ifndef DAOBJBK_BOTAOSI_C_H
+#define DAOBJBK_BOTAOSI_C_H
 
 #include "types.h"
 #include "dBgW_KcMbg.h"
@@ -19,7 +19,7 @@
 #include "dBgActor_c.h"
 #include "ShadowModel.h"
 
-struct KnockDownPlank : dBgActor_c {
+struct daObjBk_Botaosi_c : dBgActor_c {
     u8  pad_31e[0x2];
     ShadowModel mShadowModel;         /* 0x320 */
     u8  pad_348[0x30];
@@ -37,13 +37,13 @@ struct KnockDownPlank : dBgActor_c {
     s16 mWobbleTimer;                      /* 0x394 */
     s8 mKnockDir;                       /* 0x396 */
     u8 mState;                       /* 0x397 */
-    /* daObjBk_Botaosi_c_classInit, the one factory storing _ZTV14KnockDownPlank
+    /* daObjBk_Botaosi_c_classInit, the one factory storing _ZTV17daObjBk_Botaosi_c
        (ov015:0x02114420), calls fBase_c::operator new(0x39c). The field span
        stopping at 0x398 is a lower bound, not the size. */
     u8 pad_398[0x4];                  /* 0x398, to the ROM's 0x39c */
 
     /* --- vtable --- */
-    virtual ~KnockDownPlank();
+    virtual ~daObjBk_Botaosi_c();
 
     int InitResources();
     int CleanupResources();
@@ -57,7 +57,7 @@ struct KnockDownPlank : dBgActor_c {
 
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
-typedef char KnockDownPlank_size_must_be_0x39c[sizeof(KnockDownPlank) == 0x39c ? 1 : -1];
+typedef char daObjBk_Botaosi_c_size_must_be_0x39c[sizeof(daObjBk_Botaosi_c) == 0x39c ? 1 : -1];
 #endif
 
 #else
@@ -65,7 +65,7 @@ typedef char KnockDownPlank_size_must_be_0x39c[sizeof(KnockDownPlank) == 0x39c ?
 /* The C spelling of the same object, flat. Kept because the D0 file is a C
    translation unit that reads these fields, and D0 is compiler-generated so it
    can never be migrated. Same arrangement as include/ShadowModel.h. */
-struct KnockDownPlank {
+struct daObjBk_Botaosi_c {
     u8  pad_000[0x5c];
     s32 mPosX;            /* 0x05c */
     s32 mPosY;            /* 0x060 */
@@ -77,7 +77,7 @@ struct KnockDownPlank {
     /* Model member, named by _ZN5ModelD1Ev at +0xd4 -- a relocation the ROM build checks.
        D1 and not D2, so it is this type and not an inlined base. Was a u8 marker. */
     Model mModel;            /* 0x0d4 */
-    /* dBgW_KcMbg member. The cartridge's own ~KnockDownPlank calls _ZN10dBgW_KcMbgD1Ev
+    /* dBgW_KcMbg member. The cartridge's own ~daObjBk_Botaosi_c calls _ZN10dBgW_KcMbgD1Ev
        at +0x124 (D0/D1), a relocation the ROM build checks; recovered by
        tools/dtor_members.py. D1 and not D2, so it is this type and not an inlined base. */
     dBgW_KcMbg mMeshCollider;            /* 0x124 */
@@ -99,4 +99,4 @@ struct KnockDownPlank {
 
 #endif /* __cplusplus */
 
-#endif /* KNOCKDOWNPLANK_H */
+#endif /* DAOBJBK_BOTAOSI_C_H */

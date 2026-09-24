@@ -1,7 +1,7 @@
 //cpp
-// @symbol _ZN14KnockDownPlank13InitResourcesEv
+// @symbol _ZN17daObjBk_Botaosi_c13InitResourcesEv
 /* recovered: named members + shared header, real C++ method */
-#include "KnockDownPlank.h"
+#include "daObjBk_Botaosi_c.h"
 #include "dBgCh_Gnd.h"
 
 extern "C" {
@@ -30,7 +30,7 @@ extern unsigned char data_0209f220;
 
 // 6f: keep constant live / flip coloring
 #pragma opt_propagation off
-int KnockDownPlank::InitResources()
+int daObjBk_Botaosi_c::InitResources()
 {
     /* Dumb word storage, not a typed local: a dBgCh_Gnd local now
        synthesizes its constructor at the declaration, but the ROM constructs

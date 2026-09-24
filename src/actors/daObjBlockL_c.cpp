@@ -17,7 +17,7 @@
  * Leftover: linkedActor + 0x3b0 / + 0xd6 are unnamed per-actor bytes
  *   this helper clears/sets.
  * Leftover: data_0209f2f8 reads as the level ID and data_0209f220 as
- *   a star flag (same pattern in the KnockDownPlank TU); neither has
+ *   a star flag (same pattern in the daObjBk_Botaosi_c TU); neither has
  *   a shared home.
  * Leftover: IsStarCollectedInCurLevel is a shared coined helper;
  *   naming belongs at its definition.

@@ -6207,7 +6207,7 @@ the thing that holds it back is outside those knobs.
 
 ## 6cj. `opt_propagation off` is a BLUNT instrument: it buys one folded statement and pays for it with the whole function's colouring. `opt_foldconstants off` buys the same statement and charges nothing (func_ov015_021114f0, div 8 -> 0, 2026-09-13, run link100 lane CRK-O)
 
-`func_ov015_021114f0` (ov015, 0x17c) is KnockDownPlank's drop-shadow scale. It sat at 8
+`func_ov015_021114f0` (ov015, 0x17c) is daObjBk_Botaosi_c's drop-shadow scale. It sat at 8
 through three lanes, and its banner blamed the residue on the ROM's compiler refusing to
 reuse a just-dead register (6bs). That was wrong. Every one of the 8 words was bought by
 the file's own first line, `#pragma opt_propagation off`.
@@ -7500,7 +7500,7 @@ r0 untouched in 36, and 2004/b56 reproduces BOTH groups on the matched members (
 r1/r2 group have matched source, five of them ov063 siblings), so the skip is
 source-reachable and the question was what separates the groups. Not the count of
 `mov r0,<home>` copies in the body (`daDpLift_c::Behavior` has three and a selector in r0;
-`KnockDownPlank::Behavior` has the identical `switch (mState)` spelling and a selector in
+`daObjBk_Botaosi_c::Behavior` has the identical `switch (mState)` spelling and a selector in
 r1), so the property lives in the case bodies, not the switch. What separates them is a case
 that consumes r0 STRAIGHT FROM THE ENTRY without a copy: `func_ov063_021172a8`, the
 dispatcher that calls this very function, is matched with its selector in r1 and its cases

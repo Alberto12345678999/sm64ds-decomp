@@ -259,7 +259,7 @@ daObjCtMecha08_c	6	213	ov065	yes	yes	unmatched:1;compiler-only:>=11(derived from
 dScMgFlower_c	2	871	ov006	yes	yes	pragma:1;compiler-only:>=13(derived from own chain: 6 classes incl. self via build/rtti.json; floor 2x6+1)	dScMgSingle3DBase_c	text-only
 Painting	27	953	ov080	yes	no	no-legacy-source:1;pragma:1;compiler-only:>=9(derived from own chain: 4 classes incl. self via build/rtti.json + include/ base clause; floor 2x4+1)	-	text-only
 BowserShockwaves	6	208	ov060	yes	no	unmatched:1;compiler-only:>=9(derived from own chain: 4 classes incl. self via build/rtti.json + include/ base clause; floor 2x4+1)	-	text-only
-KnockDownPlank	11	340	ov015	yes	no	pragma:2;compiler-only:>=11(derived from own chain: 5 classes incl. self via build/rtti.json + include/ base clause; floor 2x5+1);not-in-delinks:1	daObjBkBillboard_c	text-only
+daObjBk_Botaosi_c	11	340	ov015	yes	no	pragma:2;compiler-only:>=11(derived from own chain: 5 classes incl. self via build/rtti.json + include/ base clause; floor 2x5+1);not-in-delinks:1	daObjBkBillboard_c	text-only
 BookSwitch+Unagi	20	918	ov016	partial	no	pragma:2;multi-class-tu:2;compiler-only:>=11(derived from own chain: 5 classes incl. self via build/rtti.json + include/ base clause; floor 2x5+1; excludes 1 unresolved: BookSwitch)	daObjKi_Ita_c	text-only
 dCapIcon_c	1	199	ov001	no	yes	pragma:1;compiler-only:>=3(derived from own chain: 1 classes incl. self via build/rtti.json; floor 2x1+1)	-	text-only
 UNATTRIBUTED	1457	-	(all overlays)	-	-	321 unattributed .text runs in non-arm9-core modules;no class name recoverable from mangled name/RTTI/tu_map -- needs manual attribution before a promotion can target them	-	-
