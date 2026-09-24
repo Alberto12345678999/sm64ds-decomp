@@ -33749,31 +33749,31 @@ matched: yes</title></rect><rect x="1098.25" y="262.15" width="7.16" height="3.4
 module: ov036
 addr: 0x02111904
 size: 56 bytes
-matched: yes</title></rect><rect x="1098.25" y="265.56" width="7.16" height="4.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10DonutBlockD1Ev
+matched: yes</title></rect><rect x="1098.25" y="265.56" width="7.16" height="4.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN16daObjRc_Tikuwa_cD1Ev
 module: ov036
 addr: 0x0211193c
 size: 76 bytes
-matched: yes</title></rect><rect x="1105.41" y="251.44" width="3.81" height="10.98" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10DonutBlockD0Ev
+matched: yes</title></rect><rect x="1105.41" y="251.44" width="3.81" height="10.98" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN16daObjRc_Tikuwa_cD0Ev
 module: ov036
 addr: 0x02111988
 size: 96 bytes
-matched: yes</title></rect><rect x="1105.41" y="262.41" width="3.81" height="7.77" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10DonutBlock16CleanupResourcesEv
+matched: yes</title></rect><rect x="1105.41" y="262.41" width="3.81" height="7.77" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN16daObjRc_Tikuwa_c16CleanupResourcesEv
 module: ov036
 addr: 0x021119e8
 size: 68 bytes
-matched: yes</title></rect><rect x="1109.23" y="251.44" width="1.30" height="1.34" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10DonutBlock16OnPendingDestroyEv
+matched: yes</title></rect><rect x="1109.23" y="251.44" width="1.30" height="1.34" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN16daObjRc_Tikuwa_c16OnPendingDestroyEv
 module: ov036
 addr: 0x02111a2c
 size: 4 bytes
-matched: yes</title></rect><rect x="1109.23" y="252.77" width="1.30" height="17.41" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10DonutBlock6RenderEv
+matched: yes</title></rect><rect x="1109.23" y="252.77" width="1.30" height="17.41" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN16daObjRc_Tikuwa_c6RenderEv
 module: ov036
 addr: 0x02111a30
 size: 52 bytes
-matched: yes</title></rect><rect x="1110.53" y="251.44" width="13.39" height="11.07" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10DonutBlock8BehaviorEv
+matched: yes</title></rect><rect x="1110.53" y="251.44" width="13.39" height="11.07" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN16daObjRc_Tikuwa_c8BehaviorEv
 module: ov036
 addr: 0x02111a64
 size: 340 bytes
-matched: yes</title></rect><rect x="1110.53" y="262.50" width="13.39" height="7.68" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10DonutBlock13InitResourcesEv
+matched: yes</title></rect><rect x="1110.53" y="262.50" width="13.39" height="7.68" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN16daObjRc_Tikuwa_c13InitResourcesEv
 module: ov036
 addr: 0x02111bb8
 size: 236 bytes
