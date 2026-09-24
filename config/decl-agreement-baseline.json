@@ -23,11 +23,6 @@
       ]
     },
     "AddVec3": {
-      "src/_ZN17daObjCvNewsLift_c8BehaviorEv.cpp": [
-        "param:#1 const Vector3 *",
-        "param:#2 const Vector3 *",
-        "param:#3 Vector3 *"
-      ],
       "src/_ZN21SnowmanBreathParticle14UpdatePositionEv.cpp": [
         "param:#1 const Vector3 *",
         "param:#2 const Vector3 *",
@@ -1393,11 +1388,6 @@
       "src/func_ov007_020bfe4c.c": [
         "return:void"
       ],
-      "src/func_ov021_02112024.cpp": [
-        "param:#1 Matrix4x3 *",
-        "param:#2 Matrix4x3 *",
-        "return:void"
-      ],
       "src/func_ov075_0211aa00.c": [
         "return:void"
       ],
@@ -1949,9 +1939,6 @@
       "src/Matrix4x3_ApplyInPlaceToRotationY.c": [
         "param:#2 short"
       ],
-      "src/_ZN17daObjCvNewsLift_c8BehaviorEv.cpp": [
-        "param:#2 short"
-      ],
       "src/_ZN15TtcRotatingCube12UpdateShadowEv.cpp": [
         "param:#2 short"
       ],
@@ -2240,10 +2227,6 @@
         "param:#2 const Matrix4x3 *"
       ],
       "src/_ZN10daSnmBth_c15IsPlayerInRangeEv.cpp": [
-        "param:#1 const Vector3 *",
-        "param:#2 const Matrix4x3 *"
-      ],
-      "src/_ZN17daObjCvNewsLift_c8BehaviorEv.cpp": [
         "param:#1 const Vector3 *",
         "param:#2 const Matrix4x3 *"
       ],
@@ -3044,10 +3027,6 @@
       ],
       "src/func_ov006_020ceabc.c": [
         "param:#1 int *"
-      ],
-      "src/func_ov021_02112024.cpp": [
-        "param:#2 Vector3 *",
-        "param:#3 Vector3 *"
       ]
     },
     "Quaternion_SLerp": {
@@ -4888,10 +4867,6 @@
     },
     "Vec3_Equal": {
       "src/_Z14ApproachLinearR7Vector3RKS_5Fix12IiE.cpp": [
-        "param:#1 const Vector3 *",
-        "param:#2 const Vector3 *"
-      ],
-      "src/_ZN17daObjCvNewsLift_c8BehaviorEv.cpp": [
         "param:#1 const Vector3 *",
         "param:#2 const Vector3 *"
       ],
@@ -7389,10 +7364,6 @@
       "include/decl_dBgW_KcMbg.h": [
         "arity:1",
         "return:void"
-      ],
-      "src/d_a_obj_cv_news_lift.cpp": [
-        "arity:1",
-        "return:void"
       ]
     },
     "_ZN10dCcAcPos_c21SetPosRelativeToActorERK7Vector3": {
@@ -7948,10 +7919,6 @@
       "src/_ZN10MrBlizzard8BehaviorEv.cpp": [
         "param:#2 void *",
         "param:#3 void *"
-      ],
-      "src/_ZN11daDonketu_c8BehaviorEv.cpp": [
-        "param:#2 dBgCh_Actr *",
-        "param:#3 ModelAnim *"
       ],
       "src/_ZN9Spindrift8BehaviorEv.cpp": [
         "param:#2 void *",
@@ -10954,10 +10921,6 @@
         "arity:0",
         "mangled:0 parameter(s)"
       ],
-      "src/_ZN17daObjCvNewsLift_c13InitResourcesEv.cpp": [
-        "arity:0",
-        "mangled:0 parameter(s)"
-      ],
       "src/_ZN14SquarePathLift13InitResourcesEv.cpp": [
         "kind:data"
       ],
@@ -11566,10 +11529,6 @@
         "arity:1",
         "return:void"
       ],
-      "src/d_a_obj_cv_news_lift.cpp": [
-        "arity:1",
-        "return:void"
-      ],
       "src/d_a_obj_path_lift.cpp": [
         "arity:1",
         "return:void"
@@ -12100,9 +12059,6 @@
       "src/_ZN8MugenBgm8BehaviorEv.cpp": [
         "return:int"
       ],
-      "src/_ZN9daRFlag_c8BehaviorEv.cpp": [
-        "return:int"
-      ],
       "src/actors/daPkn_c.cpp": [
         "return:int"
       ],
@@ -12160,10 +12116,6 @@
         "param:#1 int",
         "param:#4 void *",
         "param:#5 unsigned int"
-      ],
-      "src/_ZN17daObjCvNewsLift_c8BehaviorEv.cpp": [
-        "param:#4 const void *",
-        "return:unsigned int"
       ],
       "src/_ZN25RotatingUpDownPlatformUtm8BehaviorEv.cpp": [
         "param:#4 const Vector3 *",
@@ -12461,9 +12413,6 @@
       "src/func_ov071_02120b14.cpp": [
         "param:#2 const void *"
       ],
-      "src/func_ov077_02124eb0.cpp": [
-        "param:#2 void *"
-      ],
       "src/func_ov084_0212d86c.c": [
         "param:#2 void *"
       ],
@@ -12480,9 +12429,6 @@
       ],
       "src/_ZN12HealingHeart8BehaviorEv.cpp": [
         "param:#2 const Vector3 *"
-      ],
-      "src/_ZN17daObjCvNewsLift_c8BehaviorEv.cpp": [
-        "param:#2 const void *"
       ],
       "src/_ZN15TtcRotatingCube8BehaviorEv.cpp": [
         "param:#2 void *"
@@ -13583,9 +13529,6 @@
         "param:#6 unsigned int",
         "param:#7 unsigned int",
         "return:void"
-      ],
-      "src/func_ov077_021250a8.cpp": [
-        "param:#1 struct Player *"
       ],
       "src/func_ov080_02124208.c": [
         "param:#5 unsigned int",
@@ -15100,10 +15043,6 @@
         "param:#6 const Vector3_16 *",
         "return:unsigned int"
       ],
-      "src/func_ov077_02125bb4.c": [
-        "param:#6 const void *",
-        "return:unsigned int"
-      ],
       "src/func_ov079_0212682c.c": [
         "return:void *"
       ],
@@ -15666,9 +15605,6 @@
       "src/_ZN11RollingRock8BehaviorEv.cpp": [
         "return:void *"
       ],
-      "src/_ZN11daDonketu_c8BehaviorEv.cpp": [
-        "return:char *"
-      ],
       "src/_ZN12HealingHeart8BehaviorEv.cpp": [
         "return:void *"
       ],
@@ -15933,12 +15869,6 @@
       "src/func_ov071_02120b14.cpp": [
         "return:void *"
       ],
-      "src/func_ov077_02124eb0.cpp": [
-        "return:void *"
-      ],
-      "src/func_ov077_021250a8.cpp": [
-        "return:struct dActor_c *"
-      ],
       "src/func_ov079_0212682c.c": [
         "return:void *"
       ],
@@ -16142,12 +16072,6 @@
       "src/func_ov065_0211704c.c": [
         "param:#1 char *",
         "param:#2 Vector3 *",
-        "param:#3 unsigned int"
-      ],
-      "src/func_ov077_02124eb0.cpp": [
-        "param:#3 unsigned int"
-      ],
-      "src/func_ov077_021253a4.cpp": [
         "param:#3 unsigned int"
       ],
       "src/func_ov079_02123804.c": [
@@ -17040,21 +16964,11 @@
         "param:#5 int",
         "param:#6 int"
       ],
-      "src/_ZN11daDonketu_c8BehaviorEv.cpp": [
-        "param:#3 const Vector3 *",
-        "param:#4 const Vector3s *",
-        "param:#5 int",
-        "param:#6 int",
-        "return:char *"
-      ],
       "src/_ZN12EnemySpawner8BehaviorEv.cpp": [
         "param:#3 void *",
         "param:#5 int",
         "param:#6 int",
         "return:void *"
-      ],
-      "src/_ZN12daBDonketu_c13InitResourcesEv.cpp": [
-        "param:#3 const Vector3 *"
       ],
       "src/_ZN12daDossyCap_c8BehaviorEv.cpp": [
         "param:#3 void *",
@@ -17926,9 +17840,6 @@
         "param:#5 unsigned int"
       ],
       "src/_ZN8YoshiEgg13InitResourcesEv.cpp": [
-        "param:#5 unsigned int"
-      ],
-      "src/_ZN9daRFlag_c13InitResourcesEv.cpp": [
         "param:#5 unsigned int"
       ],
       "src/_ZN9MontyMole13InitResourcesEv.cpp": [
@@ -18947,10 +18858,6 @@
         "param:#2 const Vector3 *",
         "param:#3 const Vector3 *"
       ],
-      "src/_ZN17daObjCvNewsLift_c8BehaviorEv.cpp": [
-        "param:#2 const Vector3 *",
-        "param:#3 const Vector3 *"
-      ],
       "src/actors/daPopoi_c.cpp": [
         "param:#2 Vector3 *",
         "param:#3 Vector3 *"
@@ -19170,9 +19077,6 @@
       ],
       "src/func_ov072_02120fd4.cpp": [
         "param:#2 int *"
-      ],
-      "src/func_ov077_02124d08.cpp": [
-        "param:#2 Vector3 *"
       ],
       "src/func_ov098_02139228.cpp": [
         "param:#2 Vector3 *"
@@ -19861,12 +19765,6 @@
         "param:#2 int",
         "param:#3 int"
       ],
-      "src/d_a_obj_cv_news_lift.cpp": [
-        "param:#2 int",
-        "param:#3 int",
-        "param:#4 void *",
-        "param:#5 void *"
-      ],
       "src/d_a_obj_fl_koma_u.cpp": [
         "param:#2 int",
         "param:#3 int",
@@ -20105,15 +20003,6 @@
       "src/func_ov072_021212c0.cpp": [
         "arity:1"
       ],
-      "src/func_ov077_021253a4.cpp": [
-        "arity:1"
-      ],
-      "src/func_ov077_02125550.cpp": [
-        "arity:1"
-      ],
-      "src/func_ov077_02125bb4.c": [
-        "arity:1"
-      ],
       "src/func_ov089_0213162c.c": [
         "arity:1"
       ],
@@ -20174,18 +20063,6 @@
         "arity:1"
       ],
       "src/func_ov002_020ed0d4.c": [
-        "arity:1"
-      ],
-      "src/func_ov077_02124d08.cpp": [
-        "arity:1"
-      ],
-      "src/func_ov077_021253a4.cpp": [
-        "arity:1"
-      ],
-      "src/func_ov077_02125550.cpp": [
-        "arity:1"
-      ],
-      "src/func_ov077_02125908.c": [
         "arity:1"
       ],
       "src/func_ov080_0212500c.cpp": [
@@ -21362,9 +21239,6 @@
     "data_0209d4c8": {
       "src/_ZN5Stage10PS_CleanupEv.cpp": [
         "return:int []"
-      ],
-      "src/_ZN9daRFlag_c8BehaviorEv.cpp": [
-        "return:char []"
       ],
       "src/actors/daRFlag_c.cpp": [
         "return:char []"
@@ -28274,24 +28148,13 @@
       ]
     },
     "data_ov021_02113a60": {
-      "src/_ZN17daObjCvNewsLift_c13InitResourcesEv.cpp": [
-        "return:CLPS_Block"
-      ],
       "src/actors/daObjCvNewsLift_c.cpp": [
         "return:CLPS_Block"
       ]
     },
     "data_ov021_02113a80": {
-      "src/_ZN17daObjCvNewsLift_c13InitResourcesEv.cpp": [
-        "return:CLPS_Block"
-      ],
       "src/actors/daObjCvNewsLift_c.cpp": [
         "return:CLPS_Block"
-      ]
-    },
-    "data_ov021_02114740": {
-      "src/_ZN17daObjCvNewsLift_c8BehaviorEv.cpp": [
-        "return:unsigned short []"
       ]
     },
     "data_ov021_021148d0": {
@@ -28300,33 +28163,21 @@
       ]
     },
     "data_ov021_021149a0": {
-      "src/_ZN17daObjCvNewsLift_c13InitResourcesEv.cpp": [
-        "return:WorkElevatorFile"
-      ],
       "src/actors/daObjCvNewsLift_c.cpp": [
         "return:NewsLiftFile"
       ]
     },
     "data_ov021_021149a8": {
-      "src/_ZN17daObjCvNewsLift_c13InitResourcesEv.cpp": [
-        "return:WorkElevatorFile"
-      ],
       "src/actors/daObjCvNewsLift_c.cpp": [
         "return:NewsLiftFile"
       ]
     },
     "data_ov021_021149b0": {
-      "src/_ZN17daObjCvNewsLift_c13InitResourcesEv.cpp": [
-        "return:WorkElevatorFile"
-      ],
       "src/actors/daObjCvNewsLift_c.cpp": [
         "return:NewsLiftFile"
       ]
     },
     "data_ov021_021149b8": {
-      "src/_ZN17daObjCvNewsLift_c13InitResourcesEv.cpp": [
-        "return:WorkElevatorFile"
-      ],
       "src/actors/daObjCvNewsLift_c.cpp": [
         "return:NewsLiftFile"
       ]
@@ -30736,12 +30587,6 @@
     "data_ov077_02127c14": {
       "src/__sinit_ov077_0212749c.c": [
         "return:char []"
-      ],
-      "src/func_ov077_02125480.cpp": [
-        "return:int []"
-      ],
-      "src/func_ov077_02125b1c.cpp": [
-        "return:void * []"
       ]
     },
     "data_ov077_02127c88": {
@@ -36750,10 +36595,6 @@
       "src/_ZN12MetalNetLift13InitResourcesEv.cpp": [
         "param:#2 void *"
       ],
-      "src/_ZN17daObjCvNewsLift_c13InitResourcesEv.cpp": [
-        "param:#1 dBgW *",
-        "param:#2 void *"
-      ],
       "src/_ZN17BowserSkyPlatform13InitResourcesEv.cpp": [
         "param:#2 void *"
       ],
@@ -36850,10 +36691,6 @@
         "param:#2 void *"
       ],
       "src/_ZN12MetalNetLift13InitResourcesEv.cpp": [
-        "param:#2 void *"
-      ],
-      "src/_ZN17daObjCvNewsLift_c13InitResourcesEv.cpp": [
-        "param:#1 dBgW *",
         "param:#2 void *"
       ],
       "src/_ZN14SquarePathLift13InitResourcesEv.cpp": [
@@ -46176,92 +46013,34 @@
         "kind:data"
       ]
     },
-    "func_ov021_0211129c": {
-      "src/_ZN17daObjCvNewsLift_c13InitResourcesEv.cpp": [
-        "param:#1 daObjCvNewsLift_c *"
-      ],
-      "src/_ZN17daObjCvNewsLift_c8BehaviorEv.cpp": [
-        "param:#1 daObjCvNewsLift_c *"
-      ]
-    },
     "func_ov021_02111434": {
       "include/decl_common.h": [
-        "return:int"
-      ],
-      "src/_ZN17daObjCvNewsLift_c13InitResourcesEv.cpp": [
-        "param:#1 daObjCvNewsLift_c *",
-        "return:void"
-      ],
-      "src/_ZN17daObjCvNewsLift_c8BehaviorEv.cpp": [
-        "param:#1 daObjCvNewsLift_c *",
-        "return:void"
-      ]
-    },
-    "func_ov021_02111ec4": {
-      "src/func_ov021_02111edc.cpp": [
-        "arity:2",
         "return:int"
       ]
     },
     "func_ov021_02111edc": {
       "include/decl_common.h": [
         "kind:data"
-      ],
-      "src/_ZN17daObjCvNewsLift_c13InitResourcesEv.cpp": [
-        "arity:0",
-        "return:void"
-      ]
-    },
-    "func_ov021_02111f1c": {
-      "src/func_ov021_02111f34.cpp": [
-        "arity:2",
-        "return:int"
       ]
     },
     "func_ov021_02111f34": {
       "include/decl_common.h": [
         "kind:data"
-      ],
-      "src/_ZN17daObjCvNewsLift_c13InitResourcesEv.cpp": [
-        "arity:0",
-        "return:void"
-      ]
-    },
-    "func_ov021_02111f74": {
-      "src/func_ov021_02111f8c.cpp": [
-        "arity:2",
-        "return:int"
       ]
     },
     "func_ov021_02111f8c": {
       "include/decl_common.h": [
         "kind:data"
-      ],
-      "src/_ZN17daObjCvNewsLift_c13InitResourcesEv.cpp": [
-        "arity:0",
-        "return:void"
       ]
     },
     "func_ov021_02111fe4": {
       "include/decl_common.h": [
         "kind:data"
-      ],
-      "src/_ZN17daObjCvNewsLift_c13InitResourcesEv.cpp": [
-        "arity:0"
-      ]
-    },
-    "func_ov021_02112024": {
-      "src/func_ov021_02112128.c": [
-        "return:int"
       ]
     },
     "func_ov021_02112128": {
       "include/decl_common.h": [
         "kind:data"
-      ],
-      "src/_ZN17daObjCvNewsLift_c13InitResourcesEv.cpp": [
-        "arity:0",
-        "return:void"
       ]
     },
     "func_ov022_02111558": {
@@ -46586,12 +46365,6 @@
     },
     "func_ov064_02116110": {
       "include/decl_common.h": [
-        "param:#1 char *"
-      ],
-      "src/_ZN11daDonketu_c14UpdateRunStateEv.cpp": [
-        "param:#1 char *"
-      ],
-      "src/_ZN12daBDonketu_c14UpdateRunStateEv.cpp": [
         "param:#1 char *"
       ]
     },
