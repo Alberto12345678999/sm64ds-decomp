@@ -6712,9 +6712,6 @@
       "src/_ZN10DonutBlock13InitResourcesEv.cpp": [
         "return:int"
       ],
-      "src/_ZN14SquarePathLift13InitResourcesEv.cpp": [
-        "return:int"
-      ],
       "src/_ZN15FireSeaElevator8BehaviorEv.cpp": [
         "return:int"
       ],
@@ -6761,9 +6758,6 @@
     },
     "_ZN10dBgActor_c21UpdateModelPosAndRotYEv": {
       "src/_ZN10DonutBlock13InitResourcesEv.cpp": [
-        "return:int"
-      ],
-      "src/_ZN14SquarePathLift13InitResourcesEv.cpp": [
         "return:int"
       ],
       "src/_ZN15FireSeaElevator8BehaviorEv.cpp": [
@@ -10901,9 +10895,6 @@
         "arity:0",
         "mangled:0 parameter(s)"
       ],
-      "src/_ZN14SquarePathLift13InitResourcesEv.cpp": [
-        "kind:data"
-      ],
       "src/_ZN15FireSeaElevator13InitResourcesEv.cpp": [
         "kind:data"
       ],
@@ -11201,9 +11192,6 @@
         "return:int"
       ],
       "src/_ZN14KnockDownPlank13InitResourcesEv.cpp": [
-        "param:#1 void *"
-      ],
-      "src/_ZN14SquarePathLift13InitResourcesEv.cpp": [
         "param:#1 void *"
       ],
       "src/_ZN14daWater_Ring_c13InitResourcesEv.cpp": [
@@ -14506,10 +14494,6 @@
         "return:void *"
       ],
       "src/_ZN14KnockDownPlank13InitResourcesEv.cpp": [
-        "param:#1 void *",
-        "return:void *"
-      ],
-      "src/_ZN14SquarePathLift13InitResourcesEv.cpp": [
         "param:#1 void *",
         "return:void *"
       ],
@@ -18395,9 +18379,6 @@
       "src/_ZN14KnockDownPlank13InitResourcesEv.cpp": [
         "return:void"
       ],
-      "src/_ZN14SquarePathLift13InitResourcesEv.cpp": [
-        "return:void"
-      ],
       "src/_ZN15FireSeaElevator13InitResourcesEv.cpp": [
         "param:#2 int",
         "return:void"
@@ -19130,9 +19111,6 @@
       ],
       "src/_ZN12MetalNetLift13InitResourcesEv.cpp": [
         "param:#2 Vector3 *"
-      ],
-      "src/_ZN14SquarePathLift8BehaviorEv.cpp": [
-        "param:#2 void *"
       ],
       "src/_ZN15RollingIronBall13InitResourcesEv.cpp": [
         "param:#2 void *"
@@ -36621,9 +36599,6 @@
         "param:#2 void *"
       ],
       "src/_ZN12MetalNetLift13InitResourcesEv.cpp": [
-        "param:#2 void *"
-      ],
-      "src/_ZN14SquarePathLift13InitResourcesEv.cpp": [
         "param:#2 void *"
       ],
       "src/_ZN15TtcRotatingCube13InitResourcesEv.cpp": [

@@ -1566,18 +1566,18 @@ ov047	0x021124ec	data_ov047_021124ec	StairsBs_SpawnInfo	spawninfo
 ov047	0x021124ec	StairsBs_SpawnInfo	g_profile_KM3_DORIFU	reconstructed profile global; literal ROM ID KM3_DORIFU+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov047	0x0211254c	data_ov047_0211254c	_ZTV17daObjKm3_Dorifu_c	vtable alloc=0x320
 ov052	0x02111410	daObjEmmLog_c_Spawn	daObjEmmLog_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
-ov052	0x02111440	func_ov052_02111440	_ZN14SquarePathLiftD1Ev	vtable slot 16
-ov052	0x02111484	func_ov052_02111484	_ZN14SquarePathLiftD0Ev	vtable slot 17
-ov052	0x021114dc	func_ov052_021114dc	_ZN14SquarePathLift16CleanupResourcesEv	vtable slot 3
-ov052	0x02111524	func_ov052_02111524	_ZN14SquarePathLift6RenderEv	vtable slot 9
-ov052	0x0211154c	func_ov052_0211154c	_ZN14SquarePathLift8BehaviorEv	vtable slot 6
-ov052	0x0211177c	func_ov052_0211177c	_ZN14SquarePathLift13InitResourcesEv	vtable slot 0
+ov052	0x02111440	func_ov052_02111440	_ZN14daObjEmmYuka_cD1Ev	vtable slot 16
+ov052	0x02111484	func_ov052_02111484	_ZN14daObjEmmYuka_cD0Ev	vtable slot 17
+ov052	0x021114dc	func_ov052_021114dc	_ZN14daObjEmmYuka_c16CleanupResourcesEv	vtable slot 3
+ov052	0x02111524	func_ov052_02111524	_ZN14daObjEmmYuka_c6RenderEv	vtable slot 9
+ov052	0x0211154c	func_ov052_0211154c	_ZN14daObjEmmYuka_c8BehaviorEv	vtable slot 6
+ov052	0x0211177c	func_ov052_0211177c	_ZN14daObjEmmYuka_c13InitResourcesEv	vtable slot 0
 ov052	0x02111830	func_ov052_02111830	SquarePathLift_Spawn	spawnfunc
 ov052	0x02111830	SquarePathLift_Spawn	daObjEmmYuka_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov052	0x021124fc	data_ov052_021124fc	g_profile_EMM_LOG	reconstructed profile global; literal ROM ID EMM_LOG+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov052	0x021125cc	data_ov052_021125cc	SquarePathLift_SpawnInfo	spawninfo
 ov052	0x021125cc	SquarePathLift_SpawnInfo	g_profile_EMM_YUKA	reconstructed profile global; literal ROM ID EMM_YUKA+registry role+later EAD lineage; exact SM64DS spelling not preserved
-ov052	0x021125f0	data_ov052_021125f0	_ZTV14SquarePathLift	vtable alloc=0x330
+ov052	0x021125f0	data_ov052_021125f0	_ZTV14daObjEmmYuka_c	vtable alloc=0x330
 ov055	0x021111a0	func_ov055_021111a0	_ZN9daLuigi_cD1Ev	vtable slot 16
 ov055	0x021111f8	func_ov055_021111f8	_ZN9daLuigi_cD0Ev	vtable slot 17
 ov055	0x02111318	func_ov055_02111318	_ZN9daLuigi_c16CleanupResourcesEv	vtable slot 3

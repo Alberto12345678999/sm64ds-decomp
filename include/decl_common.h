@@ -517,7 +517,6 @@ extern int _ZTV15daObjYajirusi_c[];
 extern int _ZTV14EnemySwitchTag[];
 extern int _ZTV9daSetSE_c[];
 extern int _ZTV14QuestionSwitch[];
-extern int _ZTV14SquarePathLift[];
 extern int _ZTV14TTC_MovingBeam[];
 extern int _ZTV14UnknownVsEntry[];
 extern int _ZTV14dScMgCurling_c[];
