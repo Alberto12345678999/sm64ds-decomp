@@ -6934,7 +6934,7 @@
         "param:#5 Vector3_16 *",
         "param:#6 Vector3_16 *"
       ],
-      "src/_ZN8Snowball13InitResourcesEv.cpp": [
+      "src/actors/daSnowball_c.cpp": [
         "param:#2 void *",
         "param:#5 void *"
       ],
@@ -11289,9 +11289,6 @@
         "param:#1 void *"
       ],
       "src/_ZN8SignPost13InitResourcesEv.cpp": [
-        "param:#1 void *"
-      ],
-      "src/_ZN8Snowball13InitResourcesEv.cpp": [
         "param:#1 void *"
       ],
       "src/_ZN9MontyMole13InitResourcesEv.cpp": [
@@ -30720,11 +30717,8 @@
       "src/_ZN10MrBlizzard16CleanupResourcesEv.cpp": [
         "return:SharedFilePtr"
       ],
-      "src/_ZN8Snowball13InitResourcesEv.cpp": [
-        "return:char"
-      ],
-      "src/_ZN8Snowball16CleanupResourcesEv.cpp": [
-        "return:int []"
+      "src/actors/daSnowball_c.cpp": [
+        "return:SharedFilePtr"
       ]
     },
     "data_ov081_02128d98": {

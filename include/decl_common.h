@@ -706,7 +706,6 @@ extern int _ZTV14CutsceneObject[];
 extern int _ZTV17ExtendingPlatform[];
 extern int _ZTV10DonutBlock[];
 extern int _ZTV8SignPost[];
-extern int _ZTV8Snowball[];
 extern int _ZTV16daObjFm_Battan_c[];
 extern int _ZTV8YoshiEgg[];
 extern int _ZTV8dScene_c[];

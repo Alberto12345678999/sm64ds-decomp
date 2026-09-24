@@ -1,9 +1,9 @@
-#ifndef SNOWBALL_H
-#define SNOWBALL_H
+#ifndef DASNOWBALL_C_H
+#define DASNOWBALL_C_H
 
 #include "types.h"
 
-/* Derives from dEnemyBase_c, on the evidence of its own destructor: `_ZN8SnowballD1Ev`
+/* Derives from dEnemyBase_c, on the evidence of its own destructor: `_ZN12daSnowball_cD1Ev`
  * stores this vtable, destroys its members in reverse declaration order, then
  * calls `dEnemyBase_c::~dEnemyBase_c`. Everything this header used to restate below 0x110
  * belongs to that chain and is inherited now.
@@ -19,7 +19,7 @@
  * also rename things its callers spell.
  *
  * SIZE IS THE ROM'S OWN, not a rounded-up field span: `Snowball_Spawn` calls
- * `fBase_c::operator new(908)` -- 0x38c -- and stores `_ZTV8Snowball`,
+ * `fBase_c::operator new(908)` -- 0x38c -- and stores `_ZTV12daSnowball_c`,
  * so that literal IS this class's sizeof. The observed fields only span to
  * 0x388; the difference is trailing space no source reads.
  *
@@ -43,7 +43,7 @@
 #include "TextureTransformer.h"
 #include "dBgCh_Actr.h"
 
-struct Snowball : dEnemyBase_c {
+struct daSnowball_c : dEnemyBase_c {
     dCcAc_c           mdCcAc_c;   /* 0x110 */
     dBgCh_Actr                 mWithMeshClsn;         /* 0x144 */
     Model                        mModel;                /* 0x300 */
@@ -55,7 +55,7 @@ struct Snowball : dEnemyBase_c {
     u8  pad_388[0x4];
 
     /* --- vtable --- */
-    virtual ~Snowball();
+    virtual ~daSnowball_c();
 
     int Behavior();
     int InitResources();
@@ -66,7 +66,7 @@ struct Snowball : dEnemyBase_c {
 
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
-typedef char Snowball_size_must_be_0x38c[sizeof(Snowball) == 0x38c ? 1 : -1];
+typedef char daSnowball_c_size_must_be_0x38c[sizeof(daSnowball_c) == 0x38c ? 1 : -1];
 #endif
 
-#endif /* SNOWBALL_H */
+#endif /* DASNOWBALL_C_H */

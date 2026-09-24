@@ -2457,13 +2457,13 @@ ov081	0x0212588c	func_ov081_0212588c	_ZN10MrBlizzard8BehaviorEv	vtable slot 6
 ov081	0x02125ba0	func_ov081_02125ba0	_ZN10MrBlizzard13InitResourcesEv	vtable slot 0
 ov081	0x02125ec0	func_ov081_02125ec0	MrBlizzard_Spawn	spawnfunc
 ov081	0x02125ec0	MrBlizzard_Spawn	daSnowman_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
-ov081	0x02125f14	func_ov081_02125f14	_ZN8SnowballD1Ev	vtable slot 16
-ov081	0x02125f5c	func_ov081_02125f5c	_ZN8SnowballD0Ev	vtable slot 17
-ov081	0x02126298	func_ov081_02126298	_ZN8Snowball16CleanupResourcesEv	vtable slot 3
-ov081	0x021262bc	func_ov081_021262bc	_ZN8Snowball16OnPendingDestroyEv	vtable slot 12
-ov081	0x021262c0	func_ov081_021262c0	_ZN8Snowball6RenderEv	vtable slot 9
-ov081	0x021262ec	func_ov081_021262ec	_ZN8Snowball8BehaviorEv	vtable slot 6
-ov081	0x021263b8	func_ov081_021263b8	_ZN8Snowball13InitResourcesEv	vtable slot 0
+ov081	0x02125f14	func_ov081_02125f14	_ZN12daSnowball_cD1Ev	vtable slot 16
+ov081	0x02125f5c	func_ov081_02125f5c	_ZN12daSnowball_cD0Ev	vtable slot 17
+ov081	0x02126298	func_ov081_02126298	_ZN12daSnowball_c16CleanupResourcesEv	vtable slot 3
+ov081	0x021262bc	func_ov081_021262bc	_ZN12daSnowball_c16OnPendingDestroyEv	vtable slot 12
+ov081	0x021262c0	func_ov081_021262c0	_ZN12daSnowball_c6RenderEv	vtable slot 9
+ov081	0x021262ec	func_ov081_021262ec	_ZN12daSnowball_c8BehaviorEv	vtable slot 6
+ov081	0x021263b8	func_ov081_021263b8	_ZN12daSnowball_c13InitResourcesEv	vtable slot 0
 ov081	0x021264b4	func_ov081_021264b4	Snowball_Spawn	spawnfunc
 ov081	0x021264b4	Snowball_Spawn	daSnowball_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov081	0x02126504	func_ov081_02126504	_ZN8daGmch_cD1Ev	vtable slot 16 (was _ZN8MoneybagD1Ev)
@@ -2491,7 +2491,7 @@ ov081	0x021289cc	MrBlizzard_SpawnInfo	g_profile_SNOWMAN	reconstructed profile gl
 ov081	0x021289f0	data_ov081_021289f0	_ZTV10MrBlizzard	vtable alloc=?
 ov081	0x02128a98	data_ov081_02128a98	Snowball_SpawnInfo	spawninfo
 ov081	0x02128a98	Snowball_SpawnInfo	g_profile_SNOWBALL	reconstructed profile global; literal ROM ID SNOWBALL+registry role+later EAD lineage; exact SM64DS spelling not preserved
-ov081	0x02128abc	data_ov081_02128abc	_ZTV8Snowball	vtable alloc=0x38c
+ov081	0x02128abc	data_ov081_02128abc	_ZTV12daSnowball_c	vtable alloc=0x38c
 ov081	0x02128be0	data_ov081_02128be0	Moneybag_SpawnInfo	spawninfo
 ov081	0x02128be0	Moneybag_SpawnInfo	g_profile_GAMAGUCHI	reconstructed profile global; literal ROM ID GAMAGUCHI+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov081	0x02128c04	data_ov081_02128c04	_ZTV8daGmch_c	vtable alloc=0x3f4 (was _ZTV8Moneybag -- the same class under its cartridge RTTI name, not a different owner, so the alloc figure stands: daGmch_c_classInit at 0x02127adc passes the literal 1012 = 0x3f4 to fBase_c::operator new and include/daGmch_c.h asserts sizeof(daGmch_c) == 0x3f4)
