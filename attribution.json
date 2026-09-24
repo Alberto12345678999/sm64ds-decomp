@@ -4807,6 +4807,18 @@
     "src/actors/daObjCtRotateBlock_c.cpp#_ZN20daObjCtRotateBlock_c6RenderEv": "tangosdev",
     "src/actors/daObjCtRotateBlock_c.cpp#_ZN20daObjCtRotateBlock_c8BehaviorEv": "aitddlabs",
     "src/actors/daObjCtRotateBlock_c.cpp#_ZN20daObjCtRotateBlock_cD0Ev": "tangosdev",
-    "src/actors/daObjCtRotateBlock_c.cpp#_ZN20daObjCtRotateBlock_cD1Ev": "tangosdev"
+    "src/actors/daObjCtRotateBlock_c.cpp#_ZN20daObjCtRotateBlock_cD1Ev": "tangosdev",
+    "src/actors/daShark_c.cpp#_ZN9daShark_cD1Ev": "tangosdev",
+    "src/actors/daShark_c.cpp#_ZN9daShark_cD0Ev": "tangosdev",
+    "src/actors/daShark_c.cpp#func_ov090_02133710": "tangosdev",
+    "src/actors/daShark_c.cpp#func_ov090_02133830": "tangosdev",
+    "src/actors/daShark_c.cpp#func_ov090_0213387c": "tangosdev",
+    "src/actors/daShark_c.cpp#func_ov090_021338b4": "tangosdev",
+    "src/actors/daShark_c.cpp#func_ov090_02133904": "tangosdev",
+    "src/actors/daShark_c.cpp#_ZN9daShark_c16CleanupResourcesEv": "tangosdev",
+    "src/actors/daShark_c.cpp#_ZN9daShark_c16OnPendingDestroyEv": "andrewboudreau",
+    "src/actors/daShark_c.cpp#_ZN9daShark_c6RenderEv": "tangosdev",
+    "src/actors/daShark_c.cpp#_ZN9daShark_c8BehaviorEv": "andrewboudreau",
+    "src/actors/daShark_c.cpp#_ZN9daShark_c13InitResourcesEv": "tangosdev"
   }
 }

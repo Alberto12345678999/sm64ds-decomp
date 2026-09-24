@@ -2682,6 +2682,7 @@ ov090	0x0213423c	data_ov090_0213423c	_ZTV9daManta_c	vtable alloc=?
 ov090	0x02134300	data_ov090_02134300	CheepCheep_SpawnInfo	spawninfo
 ov090	0x02134300	CheepCheep_SpawnInfo	g_profile_PUKUPUKU	reconstructed profile global; literal ROM ID PUKUPUKU+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov090	0x02134324	data_ov090_02134324	_ZTV12daPukupuku_c	vtable alloc=0x388
+ov090	0x021343b0	data_ov090_021343b0	_ZTS9daShark_c	RTTI type-name string; cartridge bytes are 9daShark_c
 ov090	0x021343c8	data_ov090_021343c8	Shark_SpawnInfo	spawninfo
 ov090	0x021343c8	Shark_SpawnInfo	g_profile_SHARK	reconstructed profile global; literal ROM ID SHARK+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov090	0x021343ec	data_ov090_021343ec	_ZTV9daShark_c	vtable alloc=0x3a0
