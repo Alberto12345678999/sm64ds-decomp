@@ -11,53 +11,9 @@ src/d_a_menbo.c:
     complete
     .text start:0x02132654 end:0x0213269c
 
-src/_ZN9daManta_cD1Ev.cpp:
+src/actors/daManta_c.cpp:
     complete
-    .text start:0x0213269c end:0x021326dc
-
-src/_ZN9daManta_cD0Ev.cpp:
-    complete
-    .text start:0x021326dc end:0x02132730
-
-src/func_ov090_02132730.cpp:
-    complete
-    .text start:0x02132730 end:0x021327e4
-
-src/func_ov090_021327e4.cpp:
-    complete
-    .text start:0x021327e4 end:0x02132a58
-
-src/func_ov090_02132a58.cpp:
-    complete
-    .text start:0x02132a58 end:0x02132ac4
-
-src/func_ov090_02132ac4.cpp:
-    complete
-    .text start:0x02132ac4 end:0x02132b14
-
-src/func_ov090_02132b14.c:
-    complete
-    .text start:0x02132b14 end:0x02132c1c
-
-src/_ZN9daManta_c16CleanupResourcesEv.cpp:
-    complete
-    .text start:0x02132c1c end:0x02132c64
-
-src/_ZN9daManta_c16OnPendingDestroyEv.cpp:
-    complete
-    .text start:0x02132c64 end:0x02132c68
-
-src/_ZN9daManta_c6RenderEv.cpp:
-    complete
-    .text start:0x02132c68 end:0x02132c94
-
-src/_ZN9daManta_c8BehaviorEv.cpp:
-    complete
-    .text start:0x02132c94 end:0x02132e38
-
-src/_ZN9daManta_c13InitResourcesEv.cpp:
-    complete
-    .text start:0x02132e38 end:0x02132fe8
+    .text start:0x0213269c end:0x02132fe8
 
 src/d_a_manta.c:
     complete

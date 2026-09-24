@@ -4844,6 +4844,18 @@
     "src/actors/daObjRc_Tikuwa_c.cpp#_ZN16daObjRc_Tikuwa_c16OnPendingDestroyEv": "andrewboudreau",
     "src/actors/daObjRc_Tikuwa_c.cpp#_ZN16daObjRc_Tikuwa_c6RenderEv": "tangosdev",
     "src/actors/daObjRc_Tikuwa_c.cpp#_ZN16daObjRc_Tikuwa_c8BehaviorEv": "tangosdev",
-    "src/actors/daObjRc_Tikuwa_c.cpp#_ZN16daObjRc_Tikuwa_c13InitResourcesEv": "tangosdev"
+    "src/actors/daObjRc_Tikuwa_c.cpp#_ZN16daObjRc_Tikuwa_c13InitResourcesEv": "tangosdev",
+    "src/actors/daManta_c.cpp#_ZN9daManta_cD1Ev": "tangosdev",
+    "src/actors/daManta_c.cpp#_ZN9daManta_cD0Ev": "tangosdev",
+    "src/actors/daManta_c.cpp#func_ov090_02132730": "tangosdev",
+    "src/actors/daManta_c.cpp#func_ov090_021327e4": "aitddlabs",
+    "src/actors/daManta_c.cpp#func_ov090_02132a58": "tangosdev",
+    "src/actors/daManta_c.cpp#func_ov090_02132ac4": "tangosdev",
+    "src/actors/daManta_c.cpp#func_ov090_02132b14": "tangosdev",
+    "src/actors/daManta_c.cpp#_ZN9daManta_c16CleanupResourcesEv": "tangosdev",
+    "src/actors/daManta_c.cpp#_ZN9daManta_c16OnPendingDestroyEv": "tangosdev",
+    "src/actors/daManta_c.cpp#_ZN9daManta_c6RenderEv": "tangosdev",
+    "src/actors/daManta_c.cpp#_ZN9daManta_c8BehaviorEv": "tangosdev",
+    "src/actors/daManta_c.cpp#_ZN9daManta_c13InitResourcesEv": "tangosdev"
   }
 }

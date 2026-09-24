@@ -1497,7 +1497,7 @@
       "src/_ZN4Coin8BehaviorEv.cpp": [
         "param:#1 char *"
       ],
-      "src/_ZN9daManta_c8BehaviorEv.cpp": [
+      "src/actors/daManta_c.cpp": [
         "param:#1 Vector3 *"
       ],
       "src/actors/daShark_c.cpp": [
@@ -4680,7 +4680,7 @@
         "param:#1 int *",
         "param:#2 int *"
       ],
-      "src/func_ov090_02132b14.c": [
+      "src/actors/daManta_c.cpp": [
         "param:#1 Vector3 *",
         "param:#2 Vector3 *"
       ],
@@ -5677,7 +5677,7 @@
         "param:#2 int *",
         "param:#3 int *"
       ],
-      "src/_ZN9daManta_c8BehaviorEv.cpp": [
+      "src/actors/daManta_c.cpp": [
         "param:#1 Vector3 *",
         "param:#2 Vector3 *",
         "param:#3 Vector3 *"
@@ -7457,7 +7457,7 @@
       "src/_ZN9SpikeBomb13InitResourcesEv.cpp": [
         "param:#3 const Vector3 &"
       ],
-      "src/_ZN9daManta_c13InitResourcesEv.cpp": [
+      "src/actors/daManta_c.cpp": [
         "param:#3 const Vector3 &"
       ],
       "src/actors/daBombking_c.cpp": [
@@ -13493,7 +13493,7 @@
         "param:#6 unsigned int",
         "param:#7 unsigned int"
       ],
-      "src/func_ov090_02132730.cpp": [
+      "src/actors/daManta_c.cpp": [
         "param:#2 const Vector3 &",
         "param:#5 unsigned int",
         "param:#6 unsigned int",
@@ -15829,7 +15829,7 @@
       "src/func_ov089_02131b18.c": [
         "return:char *"
       ],
-      "src/func_ov090_02132730.cpp": [
+      "src/actors/daManta_c.cpp": [
         "return:Player *"
       ],
       "src/actors/daShark_c.cpp": [
@@ -16062,7 +16062,7 @@
         "param:#4 int",
         "return:void"
       ],
-      "src/func_ov090_021327e4.cpp": [
+      "src/actors/daManta_c.cpp": [
         "param:#4 int",
         "return:void *"
       ]
@@ -17223,7 +17223,7 @@
         "param:#6 int",
         "return:void"
       ],
-      "src/func_ov090_021327e4.cpp": [
+      "src/actors/daManta_c.cpp": [
         "param:#5 int",
         "param:#6 int",
         "return:void *"
@@ -18143,7 +18143,7 @@
         "param:#5 unsigned int",
         "return:int"
       ],
-      "src/func_ov090_02132a58.cpp": [
+      "src/actors/daManta_c.cpp": [
         "param:#5 unsigned int",
         "return:int"
       ],
@@ -22939,9 +22939,6 @@
       ],
       "src/_ZN8YoshiEgg8BehaviorEv.cpp": [
         "return:int"
-      ],
-      "src/_ZN9daManta_c8BehaviorEv.cpp": [
-        "return:char []"
       ],
       "src/actors/daShark_c.cpp": [
         "return:char []"
@@ -31270,9 +31267,6 @@
     "data_ov090_0213452c": {
       "src/__sinit_ov090_02133ea8.c": [
         "return:char []"
-      ],
-      "src/func_ov090_02132a58.cpp": [
-        "return:void * []"
       ]
     },
     "data_ov090_0213455c": {
@@ -33116,7 +33110,7 @@
         "param:#1 int",
         "return:void"
       ],
-      "src/func_ov090_021327e4.cpp": [
+      "src/actors/daManta_c.cpp": [
         "return:void"
       ],
       "src/func_ov100_02144528.c": [
@@ -46720,11 +46714,6 @@
       "src/_ZN3Key13OnTurnIntoEggER6Player.cpp": [
         "param:#1 Key *",
         "param:#2 Player *"
-      ]
-    },
-    "func_ov090_02132ac4": {
-      "src/_ZN9daManta_c13InitResourcesEv.cpp": [
-        "param:#1 unsigned char *"
       ]
     },
     "func_ov091_02131cb0": {
