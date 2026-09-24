@@ -240,11 +240,6 @@
     "src/_ZN10BulletBill6RenderEv.cpp",
     "src/_ZN10BulletBillD0Ev.cpp",
     "src/_ZN10BulletBillD1Ev.cpp",
-    "src/_ZN10DonutBlock16CleanupResourcesEv.cpp",
-    "src/_ZN10DonutBlock16OnPendingDestroyEv.cpp",
-    "src/_ZN10DonutBlock6RenderEv.cpp",
-    "src/_ZN10DonutBlockD0Ev.cpp",
-    "src/_ZN10DonutBlockD1Ev.cpp",
     "src/_ZN10FaderColorD2Ev.cpp",
     "src/_ZN10HootTheOwl16CleanupResourcesEv.cpp",
     "src/_ZN10HootTheOwl16OnPendingDestroyEv.cpp",
@@ -3002,6 +2997,11 @@
     "src/actors/daObjSimpleBg_c.cpp#_ZN15daObjSimpleBg_c16CleanupResourcesEv",
     "src/actors/daObjSimpleBg_c.cpp#_ZN15daObjSimpleBg_c6RenderEv",
     "src/actors/daObjSimpleBg_c.cpp#_ZN15daObjSimpleBg_cD0Ev",
-    "src/actors/daObjSimpleBg_c.cpp#_ZN15daObjSimpleBg_cD1Ev"
+    "src/actors/daObjSimpleBg_c.cpp#_ZN15daObjSimpleBg_cD1Ev",
+    "src/actors/daObjRc_Tikuwa_c.cpp#_ZN16daObjRc_Tikuwa_c16CleanupResourcesEv",
+    "src/actors/daObjRc_Tikuwa_c.cpp#_ZN16daObjRc_Tikuwa_c16OnPendingDestroyEv",
+    "src/actors/daObjRc_Tikuwa_c.cpp#_ZN16daObjRc_Tikuwa_c6RenderEv",
+    "src/actors/daObjRc_Tikuwa_c.cpp#_ZN16daObjRc_Tikuwa_cD0Ev",
+    "src/actors/daObjRc_Tikuwa_c.cpp#_ZN16daObjRc_Tikuwa_cD1Ev"
   ]
 }

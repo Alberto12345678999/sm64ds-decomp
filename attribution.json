@@ -4837,6 +4837,13 @@
     "src/actors/daObjSimpleBg_c.cpp#_ZN15daObjSimpleBg_c16CleanupResourcesEv": "tangosdev",
     "src/actors/daObjSimpleBg_c.cpp#_ZN15daObjSimpleBg_c6RenderEv": "tangosdev",
     "src/actors/daObjSimpleBg_c.cpp#_ZN15daObjSimpleBg_c8BehaviorEv": "tangosdev",
-    "src/actors/daObjSimpleBg_c.cpp#_ZN15daObjSimpleBg_c13InitResourcesEv": "tangosdev"
+    "src/actors/daObjSimpleBg_c.cpp#_ZN15daObjSimpleBg_c13InitResourcesEv": "tangosdev",
+    "src/actors/daObjRc_Tikuwa_c.cpp#_ZN16daObjRc_Tikuwa_cD1Ev": "tangosdev",
+    "src/actors/daObjRc_Tikuwa_c.cpp#_ZN16daObjRc_Tikuwa_cD0Ev": "tangosdev",
+    "src/actors/daObjRc_Tikuwa_c.cpp#_ZN16daObjRc_Tikuwa_c16CleanupResourcesEv": "tangosdev",
+    "src/actors/daObjRc_Tikuwa_c.cpp#_ZN16daObjRc_Tikuwa_c16OnPendingDestroyEv": "andrewboudreau",
+    "src/actors/daObjRc_Tikuwa_c.cpp#_ZN16daObjRc_Tikuwa_c6RenderEv": "tangosdev",
+    "src/actors/daObjRc_Tikuwa_c.cpp#_ZN16daObjRc_Tikuwa_c8BehaviorEv": "tangosdev",
+    "src/actors/daObjRc_Tikuwa_c.cpp#_ZN16daObjRc_Tikuwa_c13InitResourcesEv": "tangosdev"
   }
 }

@@ -6732,9 +6732,6 @@
       ]
     },
     "_ZN10dBgActor_c19UpdateClsnPosAndRotEv": {
-      "src/_ZN10DonutBlock13InitResourcesEv.cpp": [
-        "return:int"
-      ],
       "src/_ZN15FireSeaElevator8BehaviorEv.cpp": [
         "return:int"
       ],
@@ -6777,9 +6774,6 @@
       ]
     },
     "_ZN10dBgActor_c21UpdateModelPosAndRotYEv": {
-      "src/_ZN10DonutBlock13InitResourcesEv.cpp": [
-        "return:int"
-      ],
       "src/_ZN15FireSeaElevator8BehaviorEv.cpp": [
         "return:int"
       ]
@@ -6823,10 +6817,6 @@
         "param:#1 char *",
         "param:#2 dActor_c *",
         "param:#5 Vector3_16 *"
-      ],
-      "src/_ZN10DonutBlock13InitResourcesEv.cpp": [
-        "param:#2 void *",
-        "return:int"
       ],
       "src/_ZN10HootTheOwl13InitResourcesEv.cpp": [
         "param:#2 void *",
@@ -7165,6 +7155,11 @@
       "src/game/actors/daTrs_c/_ZN7daTrs_c13InitResourcesEv.cpp": [
         "param:#2 void *",
         "param:#5 void *"
+      ],
+      "src/actors/daObjRc_Tikuwa_c.cpp": [
+        "param:#2 dActor_c *",
+        "param:#5 void *",
+        "param:#6 void *"
       ]
     },
     "_ZN10dBgCh_ActrC1Ev": {
@@ -7179,11 +7174,6 @@
       ]
     },
     "_ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block": {
-      "src/_ZN10DonutBlock13InitResourcesEv.cpp": [
-        "param:#2 int",
-        "param:#5 int",
-        "return:int"
-      ],
       "src/_ZN10daKpa2Bg_c13InitResourcesEv.cpp": [
         "return:int"
       ],
@@ -7323,6 +7313,9 @@
         "param:#6 CLPS_Block &"
       ],
       "src/game/actors/daObjCtMecha05_c.cpp": [
+        "param:#3 Matrix4x3 *"
+      ],
+      "src/actors/daObjRc_Tikuwa_c.cpp": [
         "param:#3 Matrix4x3 *"
       ],
       "src/actors/daObjCtMecha11_c.cpp": [
@@ -10868,10 +10861,6 @@
       ]
     },
     "_ZN4dBgW21UpdatePosWithVelocityERS_P8dActor_cR5dBgPiR7Vector3P10Vector3_16S8_": {
-      "src/_ZN10DonutBlock13InitResourcesEv.cpp": [
-        "arity:0",
-        "mangled:0 parameter(s)"
-      ],
       "src/_ZN22RotatingUpDownPlatform13InitResourcesEv.cpp": [
         "kind:data"
       ],
@@ -11142,10 +11131,6 @@
       "src/_ZN10BulletBill13InitResourcesEv.cpp": [
         "param:#1 void *",
         "return:BMD_File *"
-      ],
-      "src/_ZN10DonutBlock13InitResourcesEv.cpp": [
-        "param:#1 void *",
-        "return:int"
       ],
       "src/_ZN10LavaSeesaw13InitResourcesEv.cpp": [
         "param:#1 void *"
@@ -14451,10 +14436,6 @@
       ]
     },
     "_ZN7dBgW_Kc8LoadFileER13SharedFilePtr": {
-      "src/_ZN10DonutBlock13InitResourcesEv.cpp": [
-        "param:#1 void *",
-        "return:int"
-      ],
       "src/_ZN10LavaSeesaw13InitResourcesEv.cpp": [
         "param:#1 void *",
         "return:void *"
@@ -18310,9 +18291,6 @@
       ]
     },
     "_ZN9ModelBase7SetFileEP8BMD_Fileii": {
-      "src/_ZN10DonutBlock13InitResourcesEv.cpp": [
-        "param:#2 int"
-      ],
       "src/_ZN10MrBlizzard13InitResourcesEv.cpp": [
         "return:void"
       ],
@@ -19802,9 +19780,6 @@
       ]
     },
     "dBgCh_Actr_UpdateContinuous_Veneer": {
-      "src/_ZN10DonutBlock8BehaviorEv.cpp": [
-        "arity:1"
-      ],
       "src/_ZN10SlidingBox8BehaviorEv.cpp": [
         "arity:1"
       ],
@@ -19916,6 +19891,9 @@
         "arity:1"
       ],
       "src/game/actors/daPiano_c/d_a_piano.cpp": [
+        "arity:1"
+      ],
+      "src/actors/daObjRc_Tikuwa_c.cpp": [
         "arity:1"
       ]
     },
@@ -36403,9 +36381,6 @@
       ]
     },
     "func_020393c4": {
-      "src/_ZN10DonutBlock13InitResourcesEv.cpp": [
-        "param:#2 void *"
-      ],
       "src/actors/daObjCvNewsLift_c.cpp": [
         "param:#1 dBgW *",
         "param:#2 void *"
@@ -36485,12 +36460,13 @@
       ],
       "src/game/actors/d_a_obj_wc_obj05.cpp": [
         "param:#2 void *"
+      ],
+      "src/actors/daObjRc_Tikuwa_c.cpp": [
+        "param:#1 dBgW *",
+        "param:#2 void *"
       ]
     },
     "func_020393d4": {
-      "src/_ZN10DonutBlock13InitResourcesEv.cpp": [
-        "param:#2 void *"
-      ],
       "src/_ZN10LavaSeesaw13InitResourcesEv.cpp": [
         "param:#2 void *"
       ],
@@ -36635,6 +36611,10 @@
         "param:#2 void *"
       ],
       "src/actors/daObjCtMecha10_c.cpp": [
+        "param:#1 dBgW *",
+        "param:#2 void *"
+      ],
+      "src/actors/daObjRc_Tikuwa_c.cpp": [
         "param:#1 dBgW *",
         "param:#2 void *"
       ],

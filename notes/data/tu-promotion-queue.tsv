@@ -107,7 +107,7 @@ dMgPsOpt_c	11	343	ov004	yes	yes	compiler-only:unknown(no chain for dMgPsOpt_c: n
 daWater_Ring_c	14	365	ov064	yes	no	compiler-only:>=11(derived from own chain: 5 classes incl. self via build/rtti.json + include/ base clause; floor 2x5+1)	daObjFl_Gura_c	text-only
 daObjBk_Lift_c	9	301	ov015	yes	yes	compiler-only:>=11(derived from own chain: 5 classes incl. self via build/rtti.json; floor 2x5+1)	daObjBkBillboard_c	text-only
 daObjHatenaBlock_c	1	1342	ov102	yes	yes	compiler-only:>=11(derived from own chain: 5 classes incl. self via build/rtti.json; floor 2x5+1)	-	text-only
-DonutBlock	7	174	ov036	yes	no	compiler-only:>=11(derived from own chain: 5 classes incl. self via build/rtti.json + include/ base clause; floor 2x5+1)	daObjRcBuranko_c	text-only
+daObjRc_Tikuwa_c	7	174	ov036	yes	yes	compiler-only:>=11(derived from own chain: 5 classes incl. self via build/rtti.json + include/ base clause; floor 2x5+1)	daObjRcBuranko_c	text-only
 daBbl_c	13	276	ov064	yes	yes	compiler-only:>=11(derived from own chain: 5 classes incl. self via build/rtti.json + include/ base clause; floor 2x5+1)	daObjFl_Gura_c	text-only
 daObjCasket_c	13	288	ov071	yes	yes	compiler-only:>=11(derived from own chain: 5 classes incl. self via build/rtti.json + include/ base clause; floor 2x5+1)	daEyBm_c	text-only
 daWbm_c	13	474	ov098	yes	yes	compiler-only:>=11(derived from own chain: 5 classes incl. self via build/rtti.json + include/ base clause; floor 2x5+1)	daObjYajirusi_c	text-only

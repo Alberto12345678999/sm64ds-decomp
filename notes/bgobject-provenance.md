@@ -616,7 +616,7 @@ In the C twin, `0x340`/`0x344` were repointed to `mdCcAc_c_hitFlags` /
 
 ---
 
-## DonutBlock (`include/DonutBlock.h`, [ov036](../config/arm9/overlays/ov036/symbols.txt), size 0x4ec)
+## daObjRc_Tikuwa_c (`include/daObjRc_Tikuwa_c.h`, [ov036](../config/arm9/overlays/ov036/symbols.txt), size 0x4ec)
 
 | Offset | Name | Evidence |
 | --- | --- | --- |
