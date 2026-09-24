@@ -36469,27 +36469,27 @@ matched: yes</title></rect><rect x="1111.04" y="436.45" width="7.08" height="4.0
 module: ov064
 addr: 0x021180fc
 size: 60 bytes
-matched: yes</title></rect><rect x="1111.04" y="440.45" width="7.08" height="6.13" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15RotatingFirebarD1Ev
+matched: yes</title></rect><rect x="1111.04" y="440.45" width="7.08" height="6.13" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15daObjFl_KomaU_cD1Ev
 module: ov064
 addr: 0x02118138
 size: 92 bytes
-matched: yes</title></rect><rect x="1111.04" y="446.59" width="7.08" height="7.47" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15RotatingFirebarD0Ev
+matched: yes</title></rect><rect x="1111.04" y="446.59" width="7.08" height="7.47" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15daObjFl_KomaU_cD0Ev
 module: ov064
 addr: 0x02118194
 size: 112 bytes
-matched: yes</title></rect><rect x="1111.04" y="454.05" width="7.08" height="4.80" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15RotatingFirebar16CleanupResourcesEv
+matched: yes</title></rect><rect x="1111.04" y="454.05" width="7.08" height="4.80" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15daObjFl_KomaU_c16CleanupResourcesEv
 module: ov064
 addr: 0x02118204
 size: 72 bytes
-matched: yes</title></rect><rect x="1111.04" y="458.86" width="7.08" height="2.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15RotatingFirebar6RenderEv
+matched: yes</title></rect><rect x="1111.04" y="458.86" width="7.08" height="2.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15daObjFl_KomaU_c6RenderEv
 module: ov064
 addr: 0x0211824c
 size: 40 bytes
-matched: yes</title></rect><rect x="1111.04" y="461.52" width="7.08" height="34.94" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15RotatingFirebar8BehaviorEv
+matched: yes</title></rect><rect x="1111.04" y="461.52" width="7.08" height="34.94" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15daObjFl_KomaU_c8BehaviorEv
 module: ov064
 addr: 0x02118274
 size: 524 bytes
-matched: yes</title></rect><rect x="1111.04" y="496.46" width="7.08" height="15.20" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15RotatingFirebar13InitResourcesEv
+matched: yes</title></rect><rect x="1111.04" y="496.46" width="7.08" height="15.20" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15daObjFl_KomaU_c13InitResourcesEv
 module: ov064
 addr: 0x02118480
 size: 228 bytes
