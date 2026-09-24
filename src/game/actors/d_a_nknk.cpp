@@ -286,7 +286,7 @@ int daNknk_c::InitResources()
     mState = 1;
     func_ov062_02117994(((char*)this), 0);
 
-    unk_106 = 0;
+    mCliffState = 0;
     mInvincibleTimer = 0;
     unk_39c = mPosX;
     unk_3a0 = mPosY;
