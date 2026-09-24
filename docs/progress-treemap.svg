@@ -33621,35 +33621,35 @@ matched: yes</title></rect><rect x="1582.42" y="222.92" width="2.74" height="3.4
 module: ov035
 addr: 0x021116bc
 size: 48 bytes
-matched: yes</title></rect><rect x="1585.17" y="222.92" width="4.35" height="3.47" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN16SpinningPlatformD1Ev
+matched: yes</title></rect><rect x="1585.17" y="222.92" width="4.35" height="3.47" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN16daObjCtMecha11_cD1Ev
 module: ov035
 addr: 0x021116ec
 size: 76 bytes
-matched: yes</title></rect><rect x="1589.51" y="222.92" width="5.49" height="3.47" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN16SpinningPlatformD0Ev
+matched: yes</title></rect><rect x="1589.51" y="222.92" width="5.49" height="3.47" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN16daObjCtMecha11_cD0Ev
 module: ov035
 addr: 0x02111738
 size: 96 bytes
-matched: yes</title></rect><rect x="1576.93" y="226.39" width="5.43" height="9.94" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN16SpinningPlatform12UpdateShadowEv
+matched: yes</title></rect><rect x="1576.93" y="226.39" width="5.43" height="9.94" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN16daObjCtMecha11_c12UpdateShadowEv
 module: ov035
 addr: 0x02111798
 size: 272 bytes
-matched: yes</title></rect><rect x="1576.93" y="236.32" width="5.43" height="2.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN16SpinningPlatform11UpdateModelEv
+matched: yes</title></rect><rect x="1576.93" y="236.32" width="5.43" height="2.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN16daObjCtMecha11_c11UpdateModelEv
 module: ov035
 addr: 0x021118a8
 size: 72 bytes
-matched: yes</title></rect><rect x="1576.93" y="238.95" width="5.43" height="2.48" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN16SpinningPlatform16CleanupResourcesEv
+matched: yes</title></rect><rect x="1576.93" y="238.95" width="5.43" height="2.48" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN16daObjCtMecha11_c16CleanupResourcesEv
 module: ov035
 addr: 0x021118f0
 size: 68 bytes
-matched: yes</title></rect><rect x="1582.36" y="226.39" width="1.42" height="5.58" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN16SpinningPlatform6RenderEv
+matched: yes</title></rect><rect x="1582.36" y="226.39" width="1.42" height="5.58" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN16daObjCtMecha11_c6RenderEv
 module: ov035
 addr: 0x02111934
 size: 40 bytes
-matched: yes</title></rect><rect x="1583.78" y="226.39" width="11.22" height="5.58" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN16SpinningPlatform8BehaviorEv
+matched: yes</title></rect><rect x="1583.78" y="226.39" width="11.22" height="5.58" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN16daObjCtMecha11_c8BehaviorEv
 module: ov035
 addr: 0x0211195c
 size: 316 bytes
-matched: yes</title></rect><rect x="1582.36" y="231.97" width="5.36" height="9.47" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN16SpinningPlatform13InitResourcesEv
+matched: yes</title></rect><rect x="1582.36" y="231.97" width="5.36" height="9.47" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN16daObjCtMecha11_c13InitResourcesEv
 module: ov035
 addr: 0x02111a98
 size: 256 bytes
