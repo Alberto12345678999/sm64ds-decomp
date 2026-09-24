@@ -631,11 +631,6 @@
     "src/_ZN15TextureSequenceC1Ev.cpp",
     "src/_ZN15TextureSequenceD0Ev.cpp",
     "src/_ZN15TextureSequenceD1Ev.cpp",
-    "src/_ZN15TtcRotatingCube11UpdateModelEv.cpp",
-    "src/_ZN15TtcRotatingCube16CleanupResourcesEv.cpp",
-    "src/_ZN15TtcRotatingCube6RenderEv.cpp",
-    "src/_ZN15TtcRotatingCubeD0Ev.cpp",
-    "src/_ZN15TtcRotatingCubeD1Ev.cpp",
     "src/actors/daObjCtMecha08_c.cpp#_ZN16daObjCtMecha08_c16CleanupResourcesEv",
     "src/actors/daObjCtMecha08_c.cpp#_ZN16daObjCtMecha08_c6RenderEv",
     "src/actors/daObjCtMecha08_c.cpp#_ZN16daObjCtMecha08_cD0Ev",
@@ -3002,6 +2997,11 @@
     "src/actors/daObjCtMecha11_c.cpp#_ZN16daObjCtMecha11_c16CleanupResourcesEv",
     "src/actors/daObjCtMecha11_c.cpp#_ZN16daObjCtMecha11_c6RenderEv",
     "src/actors/daObjCtMecha11_c.cpp#_ZN16daObjCtMecha11_cD0Ev",
-    "src/actors/daObjCtMecha11_c.cpp#_ZN16daObjCtMecha11_cD1Ev"
+    "src/actors/daObjCtMecha11_c.cpp#_ZN16daObjCtMecha11_cD1Ev",
+    "src/actors/daObjCtRotateBlock_c.cpp#_ZN20daObjCtRotateBlock_c11UpdateModelEv",
+    "src/actors/daObjCtRotateBlock_c.cpp#_ZN20daObjCtRotateBlock_c16CleanupResourcesEv",
+    "src/actors/daObjCtRotateBlock_c.cpp#_ZN20daObjCtRotateBlock_c6RenderEv",
+    "src/actors/daObjCtRotateBlock_c.cpp#_ZN20daObjCtRotateBlock_cD0Ev",
+    "src/actors/daObjCtRotateBlock_c.cpp#_ZN20daObjCtRotateBlock_cD1Ev"
   ]
 }

@@ -212,41 +212,9 @@ src/_ZN14DorriePlatformC1Ev.cpp:
     complete
     .text start:0x021196bc end:0x021196d8
 
-src/_ZN15TtcRotatingCubeD1Ev.cpp:
+src/actors/daObjCtRotateBlock_c.cpp:
     complete
-    .text start:0x021196d8 end:0x0211972c
-
-src/_ZN15TtcRotatingCubeD0Ev.cpp:
-    complete
-    .text start:0x0211972c end:0x02119794
-
-src/_ZN15TtcRotatingCube12UpdateShadowEv.cpp:
-    complete
-    .text start:0x02119794 end:0x021198a0
-
-src/_ZN15TtcRotatingCube10UpdateClsnEv.cpp:
-    complete
-    .text start:0x021198a0 end:0x0211990c
-
-src/_ZN15TtcRotatingCube11UpdateModelEv.cpp:
-    complete
-    .text start:0x0211990c end:0x02119984
-
-src/_ZN15TtcRotatingCube16CleanupResourcesEv.cpp:
-    complete
-    .text start:0x02119984 end:0x021199fc
-
-src/_ZN15TtcRotatingCube6RenderEv.cpp:
-    complete
-    .text start:0x021199fc end:0x02119a50
-
-src/_ZN15TtcRotatingCube8BehaviorEv.cpp:
-    complete
-    .text start:0x02119a50 end:0x02119c38
-
-src/_ZN15TtcRotatingCube13InitResourcesEv.cpp:
-    complete
-    .text start:0x02119c38 end:0x02119ebc
+    .text start:0x021196d8 end:0x02119ebc
 
 src/d_a_obj_ct_rotate_block_ct_mecha02.c:
     complete

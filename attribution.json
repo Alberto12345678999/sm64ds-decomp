@@ -4793,6 +4793,15 @@
     "src/actors/daObjCtMecha11_c.cpp#_ZN16daObjCtMecha11_c16CleanupResourcesEv": "tangosdev",
     "src/actors/daObjCtMecha11_c.cpp#_ZN16daObjCtMecha11_c6RenderEv": "tangosdev",
     "src/actors/daObjCtMecha11_c.cpp#_ZN16daObjCtMecha11_c8BehaviorEv": "lunavyqo",
-    "src/actors/daObjCtMecha11_c.cpp#_ZN16daObjCtMecha11_c13InitResourcesEv": "tangosdev"
+    "src/actors/daObjCtMecha11_c.cpp#_ZN16daObjCtMecha11_c13InitResourcesEv": "tangosdev",
+    "src/actors/daObjCtRotateBlock_c.cpp#_ZN20daObjCtRotateBlock_c10UpdateClsnEv": "andrewboudreau",
+    "src/actors/daObjCtRotateBlock_c.cpp#_ZN20daObjCtRotateBlock_c11UpdateModelEv": "andrewboudreau",
+    "src/actors/daObjCtRotateBlock_c.cpp#_ZN20daObjCtRotateBlock_c12UpdateShadowEv": "andrewboudreau",
+    "src/actors/daObjCtRotateBlock_c.cpp#_ZN20daObjCtRotateBlock_c13InitResourcesEv": "tangosdev",
+    "src/actors/daObjCtRotateBlock_c.cpp#_ZN20daObjCtRotateBlock_c16CleanupResourcesEv": "tangosdev",
+    "src/actors/daObjCtRotateBlock_c.cpp#_ZN20daObjCtRotateBlock_c6RenderEv": "tangosdev",
+    "src/actors/daObjCtRotateBlock_c.cpp#_ZN20daObjCtRotateBlock_c8BehaviorEv": "aitddlabs",
+    "src/actors/daObjCtRotateBlock_c.cpp#_ZN20daObjCtRotateBlock_cD0Ev": "tangosdev",
+    "src/actors/daObjCtRotateBlock_c.cpp#_ZN20daObjCtRotateBlock_cD1Ev": "tangosdev"
   }
 }
