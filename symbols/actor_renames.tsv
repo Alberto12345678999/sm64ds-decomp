@@ -1357,14 +1357,14 @@ ov035	0x0211165c	RotatingCogSmall_Spawn	daObjCtMecha10_c_classInit_CT_MECHA12S	r
 ov035	0x0211168c	func_ov035_0211168c	daObjCtMecha10_c_classInit_CT_MECHA12L	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov035	0x021116bc	func_ov035_021116bc	RotatingClockHand_Spawn	spawnfunc
 ov035	0x021116bc	RotatingClockHand_Spawn	daObjCtMecha10_c_classInit_CT_MECHA10	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
-ov035	0x021116ec	func_ov035_021116ec	_ZN16SpinningPlatformD1Ev	vtable slot 16; method-symbol spelling and class-only TU
-ov035	0x02111738	func_ov035_02111738	_ZN16SpinningPlatformD0Ev	vtable slot 17; method-symbol spelling and class-only TU
-ov035	0x02111798	func_ov035_02111798	_ZN16SpinningPlatform12UpdateShadowEv	SpinningPlatform TU helper; direct class-only call from Behavior
-ov035	0x021118a8	func_ov035_021118a8	_ZN16SpinningPlatform11UpdateModelEv	SpinningPlatform TU helper; direct class-only calls from InitResources and Behavior
-ov035	0x021118f0	func_ov035_021118f0	_ZN16SpinningPlatform16CleanupResourcesEv	vtable slot 3; method-symbol spelling and class-only TU
-ov035	0x02111934	func_ov035_02111934	_ZN16SpinningPlatform6RenderEv	vtable slot 9; method-symbol spelling and class-only TU
-ov035	0x0211195c	func_ov035_0211195c	_ZN16SpinningPlatform8BehaviorEv	vtable slot 6; method-symbol spelling and class-only TU
-ov035	0x02111a98	func_ov035_02111a98	_ZN16SpinningPlatform13InitResourcesEv	vtable slot 0; method-symbol spelling and class-only TU
+ov035	0x021116ec	func_ov035_021116ec	_ZN16daObjCtMecha11_cD1Ev	vtable slot 16; method-symbol spelling and class-only TU
+ov035	0x02111738	func_ov035_02111738	_ZN16daObjCtMecha11_cD0Ev	vtable slot 17; method-symbol spelling and class-only TU
+ov035	0x02111798	func_ov035_02111798	_ZN16daObjCtMecha11_c12UpdateShadowEv	daObjCtMecha11_c TU helper; direct class-only call from Behavior
+ov035	0x021118a8	func_ov035_021118a8	_ZN16daObjCtMecha11_c11UpdateModelEv	daObjCtMecha11_c TU helper; direct class-only calls from InitResources and Behavior
+ov035	0x021118f0	func_ov035_021118f0	_ZN16daObjCtMecha11_c16CleanupResourcesEv	vtable slot 3; method-symbol spelling and class-only TU
+ov035	0x02111934	func_ov035_02111934	_ZN16daObjCtMecha11_c6RenderEv	vtable slot 9; method-symbol spelling and class-only TU
+ov035	0x0211195c	func_ov035_0211195c	_ZN16daObjCtMecha11_c8BehaviorEv	vtable slot 6; method-symbol spelling and class-only TU
+ov035	0x02111a98	func_ov035_02111a98	_ZN16daObjCtMecha11_c13InitResourcesEv	vtable slot 0; method-symbol spelling and class-only TU
 ov035	0x02111b98	func_ov035_02111b98	SpinningPlatform_Spawn	spawnfunc
 ov035	0x02111b98	SpinningPlatform_Spawn	daObjCtMecha11_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov035	0x02112aa4	data_ov035_02112aa4	RotatingClockHand_SpawnInfo	spawninfo
@@ -1375,7 +1375,7 @@ ov035	0x02112adc	RotatingCogSmall_SpawnInfo	g_profile_CT_MECHA12S	reconstructed 
 ov035	0x02112b00	data_ov035_02112b00	_ZTV16daObjCtMecha10_c	vtable alloc=0x330 (was _ZTV16RotatingCogSmall)
 ov035	0x02112ba8	data_ov035_02112ba8	SpinningPlatform_SpawnInfo	spawninfo
 ov035	0x02112ba8	SpinningPlatform_SpawnInfo	g_profile_CT_MECHA11	reconstructed profile global; literal ROM ID CT_MECHA11+registry role+later EAD lineage; exact SM64DS spelling not preserved
-ov035	0x02112bcc	data_ov035_02112bcc	_ZTV16SpinningPlatform	vtable alloc=0x380; ROM RTTI name is daObjCtMecha11_c
+ov035	0x02112bcc	data_ov035_02112bcc	_ZTV16daObjCtMecha11_c	vtable alloc=0x380; ROM RTTI name is daObjCtMecha11_c
 ov036	0x02111414	func_ov036_02111414	SwingingPlatform_Spawn	spawnfunc
 ov036	0x02111414	SwingingPlatform_Spawn	daObjRcBuranko_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov036	0x02111544	func_ov036_02111544	RotatingPlatformRr_Spawn	spawnfunc

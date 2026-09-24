@@ -655,11 +655,6 @@
     "src/actors/daObjCtMecha10_c.cpp#_ZN16daObjCtMecha10_c6RenderEv",
     "src/actors/daObjCtMecha10_c.cpp#_ZN16daObjCtMecha10_cD0Ev",
     "src/actors/daObjCtMecha10_c.cpp#_ZN16daObjCtMecha10_cD1Ev",
-    "src/_ZN16SpinningPlatform11UpdateModelEv.cpp",
-    "src/_ZN16SpinningPlatform16CleanupResourcesEv.cpp",
-    "src/_ZN16SpinningPlatform6RenderEv.cpp",
-    "src/_ZN16SpinningPlatformD0Ev.cpp",
-    "src/_ZN16SpinningPlatformD1Ev.cpp",
     "src/_ZN16dPathLiftActor_c12BaseBehaviorEv.cpp",
     "src/_ZN16dPathLiftActor_c9AfterClsnEi.cpp",
     "src/_ZN16dPathLiftActor_cD0Ev.cpp",
@@ -3002,6 +2997,11 @@
     "src/actors/daObjSm_Lift_c.cpp#_ZN14daObjSm_Lift_c15OnHitByMegaCharER6Player",
     "src/actors/daObjSm_Lift_c.cpp#_ZN14daObjSm_Lift_c6RenderEv",
     "src/actors/daObjSm_Lift_c.cpp#_ZN14daObjSm_Lift_cD0Ev",
-    "src/actors/daObjSm_Lift_c.cpp#_ZN14daObjSm_Lift_cD1Ev"
+    "src/actors/daObjSm_Lift_c.cpp#_ZN14daObjSm_Lift_cD1Ev",
+    "src/actors/daObjCtMecha11_c.cpp#_ZN16daObjCtMecha11_c11UpdateModelEv",
+    "src/actors/daObjCtMecha11_c.cpp#_ZN16daObjCtMecha11_c16CleanupResourcesEv",
+    "src/actors/daObjCtMecha11_c.cpp#_ZN16daObjCtMecha11_c6RenderEv",
+    "src/actors/daObjCtMecha11_c.cpp#_ZN16daObjCtMecha11_cD0Ev",
+    "src/actors/daObjCtMecha11_c.cpp#_ZN16daObjCtMecha11_cD1Ev"
   ]
 }

@@ -4785,6 +4785,14 @@
     "src/actors/daObjSm_Lift_c.cpp#_ZN14daObjSm_Lift_c16CleanupResourcesEv": "tangosdev",
     "src/actors/daObjSm_Lift_c.cpp#_ZN14daObjSm_Lift_c6RenderEv": "tangosdev",
     "src/actors/daObjSm_Lift_c.cpp#_ZN14daObjSm_Lift_c8BehaviorEv": "lunavyqo",
-    "src/actors/daObjSm_Lift_c.cpp#_ZN14daObjSm_Lift_c13InitResourcesEv": "lunavyqo"
+    "src/actors/daObjSm_Lift_c.cpp#_ZN14daObjSm_Lift_c13InitResourcesEv": "lunavyqo",
+    "src/actors/daObjCtMecha11_c.cpp#_ZN16daObjCtMecha11_cD1Ev": "tangosdev",
+    "src/actors/daObjCtMecha11_c.cpp#_ZN16daObjCtMecha11_cD0Ev": "tangosdev",
+    "src/actors/daObjCtMecha11_c.cpp#_ZN16daObjCtMecha11_c12UpdateShadowEv": "andrewboudreau",
+    "src/actors/daObjCtMecha11_c.cpp#_ZN16daObjCtMecha11_c11UpdateModelEv": "andrewboudreau",
+    "src/actors/daObjCtMecha11_c.cpp#_ZN16daObjCtMecha11_c16CleanupResourcesEv": "tangosdev",
+    "src/actors/daObjCtMecha11_c.cpp#_ZN16daObjCtMecha11_c6RenderEv": "tangosdev",
+    "src/actors/daObjCtMecha11_c.cpp#_ZN16daObjCtMecha11_c8BehaviorEv": "lunavyqo",
+    "src/actors/daObjCtMecha11_c.cpp#_ZN16daObjCtMecha11_c13InitResourcesEv": "tangosdev"
   }
 }

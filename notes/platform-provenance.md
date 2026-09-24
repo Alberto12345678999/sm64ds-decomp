@@ -390,7 +390,7 @@ symbol names.
 No fields of its own: `StairsBs_Spawn` passes 0xdcc, which `daObjDorifu_c` fills.
 It overrides slots 0 and 3, which the base leaves null.
 
-## `include/SpinningPlatform.h`
+## `include/daObjCtMecha11_c.h`
 
 `mClsnMat` at 0x2ec: `InitResources` hands `this+0x2ec` to `dBgW_KcMbg::SetFile`
 as its `const Matrix4x3 &`. Was a `u8` marker plus its pad.
