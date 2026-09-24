@@ -4735,6 +4735,20 @@
     "src/actors/daObjDpBrock_c.cpp#_ZN14daObjDpBrock_c6RenderEv": "tangosdev",
     "src/actors/daObjDpBrock_c.cpp#_ZN14daObjDpBrock_c8BehaviorEv": "tangosdev",
     "src/actors/daObjDpBrock_c.cpp#_ZN14daObjDpBrock_c13InitResourcesEv": "andrewboudreau",
-    "src/actors/daObjDpBrock_c.cpp#daObjDpBrock_c_classInit": "tangosdev"
+    "src/actors/daObjDpBrock_c.cpp#daObjDpBrock_c_classInit": "tangosdev",
+    "src/actors/daObjCasket_c.cpp#_ZN13daObjCasket_cD1Ev": "tangosdev",
+    "src/actors/daObjCasket_c.cpp#_ZN13daObjCasket_cD0Ev": "tangosdev",
+    "src/actors/daObjCasket_c.cpp#func_ov071_02122080": "tangosdev",
+    "src/actors/daObjCasket_c.cpp#func_ov071_021220c8": "tangosdev",
+    "src/actors/daObjCasket_c.cpp#func_ov071_02122194": "ruspecial",
+    "src/actors/daObjCasket_c.cpp#func_ov071_021221bc": "andrewboudreau",
+    "src/actors/daObjCasket_c.cpp#func_ov071_021223b0": "tangosdev",
+    "src/actors/daObjCasket_c.cpp#func_ov071_021223c8": "tangosdev",
+    "src/actors/daObjCasket_c.cpp#func_ov071_02122414": "tangosdev",
+    "src/actors/daObjCasket_c.cpp#_ZN13daObjCasket_c16CleanupResourcesEv": "tangosdev",
+    "src/actors/daObjCasket_c.cpp#_ZN13daObjCasket_c6RenderEv": "tangosdev",
+    "src/actors/daObjCasket_c.cpp#_ZN13daObjCasket_c8BehaviorEv": "aitddlabs",
+    "src/actors/daObjCasket_c.cpp#_ZN13daObjCasket_c13InitResourcesEv": "tangosdev",
+    "src/actors/daObjCasket_c.cpp#daObjCasket_c_classInit": "tangosdev"
   }
 }
