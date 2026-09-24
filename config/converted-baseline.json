@@ -1163,10 +1163,6 @@
     "src/_ZN7Message19DisplaySaveMenuTextEt.cpp",
     "src/_ZN7Message21DisplayLevelClearTextEta.cpp",
     "src/_ZN7PathPtr6FromIDEj.cpp",
-    "src/_ZN7SkiLift15OnHitByMegaCharER6Player.cpp",
-    "src/_ZN7SkiLift6RenderEv.cpp",
-    "src/_ZN7SkiLiftD0Ev.cpp",
-    "src/_ZN7SkiLiftD1Ev.cpp",
     "src/_ZN7Tornado16CleanupResourcesEv.cpp",
     "src/_ZN7Tornado6RenderEv.cpp",
     "src/_ZN7TornadoD0Ev.cpp",
@@ -3002,6 +2998,10 @@
     "src/actors/daObjHeart_c.cpp#_ZN12daObjHeart_c16CleanupResourcesEv",
     "src/actors/daObjHeart_c.cpp#_ZN12daObjHeart_c6RenderEv",
     "src/actors/daObjHeart_c.cpp#_ZN12daObjHeart_cD0Ev",
-    "src/actors/daObjHeart_c.cpp#_ZN12daObjHeart_cD1Ev"
+    "src/actors/daObjHeart_c.cpp#_ZN12daObjHeart_cD1Ev",
+    "src/actors/daObjSm_Lift_c.cpp#_ZN14daObjSm_Lift_c15OnHitByMegaCharER6Player",
+    "src/actors/daObjSm_Lift_c.cpp#_ZN14daObjSm_Lift_c6RenderEv",
+    "src/actors/daObjSm_Lift_c.cpp#_ZN14daObjSm_Lift_cD0Ev",
+    "src/actors/daObjSm_Lift_c.cpp#_ZN14daObjSm_Lift_cD1Ev"
   ]
 }

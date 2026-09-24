@@ -305,11 +305,11 @@ below 0x320 is `fBase_c`'s and `dActor_c`'s, restated by `gen_header.py`.
 bytes of padding by the generated header; every access in the ROM is 32-bit, so
 they are `s32` / `u32` now. Same offsets, same size, byte-verified.
 
-## `include/daObjSm_Lift_c.h` (SkiLift)
+## `include/daObjSm_Lift_c.h` (daObjSm_Lift_c)
 
 An RTTI-derived flat placeholder credited to a `deepen_rtti.py` that has
 never existed in this repo (see notes/minigame-provenance.md), shared by
-`SkiLift::InitResources` and [func_ov018_021122ec](../src/game/actors/d_a_pg_mthr.cpp) ([ov018](../config/arm9/overlays/ov018/symbols.txt)).
+`daObjSm_Lift_c::InitResources` and [func_ov018_021122ec](../src/game/actors/d_a_pg_mthr.cpp) ([ov018](../config/arm9/overlays/ov018/symbols.txt)).
 
 | offset | name | evidence |
 |---|---|---|

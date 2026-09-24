@@ -4777,6 +4777,14 @@
     "src/actors/daObjHeart_c.cpp#_ZN12daObjHeart_c6RenderEv": "tangosdev",
     "src/actors/daObjHeart_c.cpp#_ZN12daObjHeart_c8BehaviorEv": "tangosdev",
     "src/actors/daObjHeart_c.cpp#_ZN12daObjHeart_c13InitResourcesEv": "tangosdev",
-    "src/actors/daObjHeart_c.cpp#daObjHeart_c_classInit": "tangosdev"
+    "src/actors/daObjHeart_c.cpp#daObjHeart_c_classInit": "tangosdev",
+    "src/actors/daObjSm_Lift_c.cpp#_ZN14daObjSm_Lift_cD1Ev": "andrewboudreau",
+    "src/actors/daObjSm_Lift_c.cpp#_ZN14daObjSm_Lift_cD0Ev": "tangosdev",
+    "src/actors/daObjSm_Lift_c.cpp#_ZN14daObjSm_Lift_c15OnHitByMegaCharER6Player": "tangosdev",
+    "src/actors/daObjSm_Lift_c.cpp#func_ov018_02111278": "tangosdev",
+    "src/actors/daObjSm_Lift_c.cpp#_ZN14daObjSm_Lift_c16CleanupResourcesEv": "tangosdev",
+    "src/actors/daObjSm_Lift_c.cpp#_ZN14daObjSm_Lift_c6RenderEv": "tangosdev",
+    "src/actors/daObjSm_Lift_c.cpp#_ZN14daObjSm_Lift_c8BehaviorEv": "lunavyqo",
+    "src/actors/daObjSm_Lift_c.cpp#_ZN14daObjSm_Lift_c13InitResourcesEv": "lunavyqo"
   }
 }

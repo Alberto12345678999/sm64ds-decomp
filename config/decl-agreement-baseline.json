@@ -1740,9 +1740,6 @@
       ]
     },
     "Math_Function_0203b14c": {
-      "src/_ZN7SkiLift8BehaviorEv.cpp": [
-        "return:void"
-      ],
       "src/func_0200bec4.c": [
         "return:void"
       ],
@@ -1757,6 +1754,9 @@
         "return:void"
       ],
       "src/game/actors/d_a_obj_bk_dossunbar.cpp": [
+        "return:void"
+      ],
+      "src/actors/daObjSm_Lift_c.cpp": [
         "return:void"
       ]
     },
@@ -4635,10 +4635,6 @@
         "param:#1 Vector3 *",
         "param:#2 Vector3 *"
       ],
-      "src/func_ov018_02111278.cpp": [
-        "param:#1 Vector3 *",
-        "param:#2 Vector3 *"
-      ],
       "src/func_ov064_02119f1c.cpp": [
         "param:#1 Vector3 *",
         "param:#2 Vector3 *"
@@ -4690,6 +4686,10 @@
         "param:#2 const Vector3 *"
       ],
       "src/unnamed/ov063/func_ov063_0211640c.c": [
+        "param:#1 Vector3 *",
+        "param:#2 Vector3 *"
+      ],
+      "src/actors/daObjSm_Lift_c.cpp": [
         "param:#1 Vector3 *",
         "param:#2 Vector3 *"
       ]
@@ -4890,10 +4890,6 @@
         "param:#2 const void *"
       ],
       "src/_ZN6Player4HurtERK7Vector3j5Fix12IiEjjj.cpp": [
-        "param:#1 const void *",
-        "param:#2 const void *"
-      ],
-      "src/_ZN7SkiLift8BehaviorEv.cpp": [
         "param:#1 const void *",
         "param:#2 const void *"
       ],
@@ -5146,6 +5142,10 @@
       "src/unnamed/ov063/func_ov063_0211c89c.c": [
         "param:#1 const Vec3 *",
         "param:#2 const Vec3 *"
+      ],
+      "src/actors/daObjSm_Lift_c.cpp": [
+        "param:#1 const void *",
+        "param:#2 const void *"
       ]
     },
     "Vec3_HorzDist": {
@@ -5158,10 +5158,6 @@
         "param:#2 const void *"
       ],
       "src/_ZN16BowserShockwaves8BehaviorEv.cpp": [
-        "param:#1 const void *",
-        "param:#2 const void *"
-      ],
-      "src/_ZN7SkiLift8BehaviorEv.cpp": [
         "param:#1 const void *",
         "param:#2 const void *"
       ],
@@ -5300,6 +5296,10 @@
       "src/unnamed/ov063/func_ov063_02117650.c": [
         "param:#1 Vector3 *",
         "param:#2 Vector3 *"
+      ],
+      "src/actors/daObjSm_Lift_c.cpp": [
+        "param:#1 const void *",
+        "param:#2 const void *"
       ]
     },
     "Vec3_HorzLen": {
@@ -6729,9 +6729,6 @@
       "src/_ZN11BillBlaster8BehaviorEv.cpp": [
         "param:#5 int"
       ],
-      "src/_ZN7SkiLift8BehaviorEv.cpp": [
-        "param:#5 int"
-      ],
       "src/_ZN8SignPost8BehaviorEv.cpp": [
         "param:#5 int"
       ],
@@ -6739,6 +6736,9 @@
         "param:#5 int"
       ],
       "src/game/actors/d_a_obj_maruta.cpp": [
+        "param:#5 int"
+      ],
+      "src/actors/daObjSm_Lift_c.cpp": [
         "param:#5 int"
       ]
     },
@@ -10920,9 +10920,6 @@
       "src/_ZN6ToxBox13InitResourcesEv.cpp": [
         "kind:data"
       ],
-      "src/_ZN7SkiLift13InitResourcesEv.cpp": [
-        "kind:data"
-      ],
       "src/_ZN8CccArena13InitResourcesEv.cpp": [
         "kind:data"
       ],
@@ -10955,6 +10952,9 @@
         "kind:data"
       ],
       "src/game/actors/d_a_obj_wc_obj05.cpp": [
+        "kind:data"
+      ],
+      "src/actors/daObjSm_Lift_c.cpp": [
         "kind:data"
       ]
     },
@@ -11273,9 +11273,6 @@
       "src/_ZN6Fwoosh13InitResourcesEv.cpp": [
         "param:#1 void *"
       ],
-      "src/_ZN7SkiLift13InitResourcesEv.cpp": [
-        "param:#1 void *"
-      ],
       "src/_ZN7Tornado13InitResourcesEv.cpp": [
         "param:#1 void *",
         "return:int"
@@ -11440,6 +11437,9 @@
       ],
       "src/minigames/d_s_mg_trampoline2.cpp": [
         "return:BMD_File *"
+      ],
+      "src/actors/daObjSm_Lift_c.cpp": [
+        "param:#1 void *"
       ]
     },
     "_ZN5ModelC1Ev": {
@@ -12099,11 +12099,6 @@
         "param:#5 unsigned int",
         "return:unsigned int"
       ],
-      "src/_ZN7SkiLift8BehaviorEv.cpp": [
-        "param:#4 void *",
-        "param:#5 unsigned int",
-        "return:unsigned int"
-      ],
       "src/_ZN7Tornado6State0Ev.cpp": [
         "param:#4 const void *",
         "param:#5 unsigned int",
@@ -12260,6 +12255,11 @@
       ],
       "src/actors/daObjFlamethrower_c.cpp": [
         "param:#4 const Vector3 *",
+        "return:unsigned int"
+      ],
+      "src/actors/daObjSm_Lift_c.cpp": [
+        "param:#4 void *",
+        "param:#5 unsigned int",
         "return:unsigned int"
       ]
     },
@@ -14535,10 +14535,6 @@
         "param:#1 void *",
         "return:void"
       ],
-      "src/_ZN7SkiLift13InitResourcesEv.cpp": [
-        "param:#1 void *",
-        "return:void *"
-      ],
       "src/_ZN8CccArena13InitResourcesEv.cpp": [
         "param:#1 int",
         "return:int"
@@ -14591,6 +14587,10 @@
         "return:void *"
       ],
       "src/game/actors/d_a_obj_ki_fune.cpp": [
+        "param:#1 void *",
+        "return:void *"
+      ],
+      "src/actors/daObjSm_Lift_c.cpp": [
         "param:#1 void *",
         "return:void *"
       ]
@@ -18413,9 +18413,6 @@
       "src/_ZN6Fwoosh13InitResourcesEv.cpp": [
         "return:void"
       ],
-      "src/_ZN7SkiLift13InitResourcesEv.cpp": [
-        "return:void"
-      ],
       "src/_ZN7Tornado13InitResourcesEv.cpp": [
         "return:void"
       ],
@@ -18525,6 +18522,9 @@
         "return:void"
       ],
       "src/actors/daMenbo_c.cpp": [
+        "return:void"
+      ],
+      "src/actors/daObjSm_Lift_c.cpp": [
         "return:void"
       ]
     },
@@ -19077,10 +19077,10 @@
       "include/decl_PathPtr.h": [
         "return:int"
       ],
-      "src/_ZN7SkiLift8BehaviorEv.cpp": [
+      "src/func_ov002_020efcf4.c": [
         "return:int"
       ],
-      "src/func_ov002_020efcf4.c": [
+      "src/actors/daObjSm_Lift_c.cpp": [
         "return:int"
       ]
     },
@@ -19102,9 +19102,6 @@
       ],
       "src/_ZN5Unagi13InitResourcesEv.cpp": [
         "param:#2 char *"
-      ],
-      "src/_ZN7SkiLift8BehaviorEv.cpp": [
-        "param:#2 void *"
       ],
       "src/_ZN9daShark_c13InitResourcesEv.cpp": [
         "param:#2 void *"
@@ -19150,13 +19147,13 @@
       ],
       "src/game/actors/d_a_pg_rcer.cpp": [
         "param:#2 void *"
+      ],
+      "src/actors/daObjSm_Lift_c.cpp": [
+        "param:#2 void *"
       ]
     },
     "_ZNK7PathPtr8NumNodesEv": {
       "include/decl_PathPtr.h": [
-        "return:int"
-      ],
-      "src/_ZN7SkiLift13InitResourcesEv.cpp": [
         "return:int"
       ],
       "src/actors/daBgSnmBdy_c.cpp": [
@@ -19166,6 +19163,9 @@
         "return:int"
       ],
       "src/game/actors/d_a_pg_rcer.cpp": [
+        "return:int"
+      ],
+      "src/actors/daObjSm_Lift_c.cpp": [
         "return:int"
       ]
     },
@@ -45871,7 +45871,7 @@
       "include/decl_common.h": [
         "kind:data"
       ],
-      "src/_ZN7SkiLift13InitResourcesEv.cpp": [
+      "src/actors/daObjSm_Lift_c.cpp": [
         "kind:data"
       ]
     },

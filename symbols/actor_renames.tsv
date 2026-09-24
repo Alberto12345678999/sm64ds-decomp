@@ -849,13 +849,13 @@ ov017	0x02111bd4	daObjKsWater_c_SpawnInfo	g_profile_KS_MIZU	reconstructed profil
 ov017	0x02111bf8	data_ov017_02111bf8	_ZTV14daObjKsWater_c	vtable alloc=0x340
 ov018	0x02111818	func_ov018_02111818	SkiLift_Spawn	spawnfunc
 ov018	0x02111818	SkiLift_Spawn	daObjSm_Lift_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
-ov018	0x02111848	func_ov018_02111848	_ZN10daPgMthr_cD1Ev	vtable slot 16 (was _ZN7SkiLiftD1Ev)
-ov018	0x02111898	func_ov018_02111898	_ZN10daPgMthr_cD0Ev	vtable slot 17 (was _ZN7SkiLiftD0Ev)
-ov018	0x021123ec	func_ov018_021123ec	_ZN10daPgMthr_c16CleanupResourcesEv	vtable slot 3 (was _ZN7SkiLift16CleanupResourcesEv)
-ov018	0x02112450	func_ov018_02112450	_ZN10daPgMthr_c16OnPendingDestroyEv	vtable slot 12 (was _ZN7SkiLift16OnPendingDestroyEv)
-ov018	0x02112454	func_ov018_02112454	_ZN10daPgMthr_c6RenderEv	vtable slot 9 (was _ZN7SkiLift6RenderEv)
-ov018	0x02112480	func_ov018_02112480	_ZN10daPgMthr_c8BehaviorEv	vtable slot 6 (was _ZN7SkiLift8BehaviorEv)
-ov018	0x021124d0	func_ov018_021124d0	_ZN10daPgMthr_c13InitResourcesEv	vtable slot 0 (was _ZN7SkiLift13InitResourcesEv)
+ov018	0x02111848	func_ov018_02111848	_ZN10daPgMthr_cD1Ev	vtable slot 16 (was _ZN14daObjSm_Lift_cD1Ev)
+ov018	0x02111898	func_ov018_02111898	_ZN10daPgMthr_cD0Ev	vtable slot 17 (was _ZN14daObjSm_Lift_cD0Ev)
+ov018	0x021123ec	func_ov018_021123ec	_ZN10daPgMthr_c16CleanupResourcesEv	vtable slot 3 (was _ZN14daObjSm_Lift_c16CleanupResourcesEv)
+ov018	0x02112450	func_ov018_02112450	_ZN10daPgMthr_c16OnPendingDestroyEv	vtable slot 12 (was _ZN14daObjSm_Lift_c16OnPendingDestroyEv)
+ov018	0x02112454	func_ov018_02112454	_ZN10daPgMthr_c6RenderEv	vtable slot 9 (was _ZN14daObjSm_Lift_c6RenderEv)
+ov018	0x02112480	func_ov018_02112480	_ZN10daPgMthr_c8BehaviorEv	vtable slot 6 (was _ZN14daObjSm_Lift_c8BehaviorEv)
+ov018	0x021124d0	func_ov018_021124d0	_ZN10daPgMthr_c13InitResourcesEv	vtable slot 0 (was _ZN14daObjSm_Lift_c13InitResourcesEv)
 ov018	0x0211267c	func_ov018_0211267c	MotherPenguin_Spawn	spawnfunc
 ov018	0x0211267c	MotherPenguin_Spawn	daPgMthr_c_classInit	reconstructed classInit; ROM RTTI class daPgMthr_c + PENGUIN_MOTHER registry profile + later EAD lineage; exact SM64DS spelling not preserved
 ov018	0x0211278c	func_ov018_0211278c	daSCre_c_Spawn	spawnfunc
@@ -871,7 +871,7 @@ ov018	0x021138a8	data_ov018_021138a8	SkiLift_SpawnInfo	spawninfo
 ov018	0x021138a8	SkiLift_SpawnInfo	g_profile_SM_LIFT	reconstructed profile global; literal ROM ID SM_LIFT+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov018	0x02113998	data_ov018_02113998	MotherPenguin_SpawnInfo	spawninfo
 ov018	0x02113998	MotherPenguin_SpawnInfo	g_profile_PENGUIN_MOTHER	reconstructed profile global; literal ROM ID PENGUIN_MOTHER+registry role+later EAD lineage; exact SM64DS spelling not preserved
-ov018	0x021139bc	data_ov018_021139bc	_ZTV10daPgMthr_c	vtable alloc=? (was _ZTV7SkiLift)
+ov018	0x021139bc	data_ov018_021139bc	_ZTV10daPgMthr_c	vtable alloc=? (was _ZTV14daObjSm_Lift_c)
 ov018	0x02113a00	data_ov018_02113a00	BridgePenguin_SpawnInfo	spawninfo
 ov018	0x02113a50	data_ov018_02113a50	daSCre_c_SpawnInfo	spawninfo
 ov018	0x02113a50	daSCre_c_SpawnInfo	g_profile_STAR_CREATE	reconstructed profile global; literal ROM ID STAR_CREATE+registry role+later EAD lineage; exact SM64DS spelling not preserved
