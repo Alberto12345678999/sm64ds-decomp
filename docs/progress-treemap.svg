@@ -40721,35 +40721,35 @@ matched: yes</title></rect><rect x="1549.18" y="617.56" width="7.72" height="5.4
 module: ov079
 addr: 0x02126d64
 size: 88 bytes
-matched: yes</title></rect><rect x="1549.18" y="623.05" width="7.72" height="4.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11BillBlasterD1Ev
+matched: yes</title></rect><rect x="1549.18" y="623.05" width="7.72" height="4.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN18daObjBkKillerdai_cD1Ev
 module: ov079
 addr: 0x02126dbc
 size: 68 bytes
-matched: yes</title></rect><rect x="1549.18" y="627.30" width="7.72" height="5.49" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11BillBlasterD0Ev
+matched: yes</title></rect><rect x="1549.18" y="627.30" width="7.72" height="5.49" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN18daObjBkKillerdai_cD0Ev
 module: ov079
 addr: 0x02126e00
 size: 88 bytes
-matched: yes</title></rect><rect x="1549.18" y="632.79" width="7.72" height="7.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11BillBlaster4KillEv
+matched: yes</title></rect><rect x="1549.18" y="632.79" width="7.72" height="7.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN18daObjBkKillerdai_c4KillEv
 module: ov079
 addr: 0x02126e58
 size: 116 bytes
-matched: yes</title></rect><rect x="1556.90" y="599.59" width="4.72" height="5.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11BillBlaster15OnHitByMegaCharER6Player
+matched: yes</title></rect><rect x="1556.90" y="599.59" width="4.72" height="5.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN18daObjBkKillerdai_c15OnHitByMegaCharER6Player
 module: ov079
 addr: 0x02126ecc
 size: 56 bytes
-matched: yes</title></rect><rect x="1561.62" y="599.59" width="8.09" height="5.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11BillBlaster16CleanupResourcesEv
+matched: yes</title></rect><rect x="1561.62" y="599.59" width="8.09" height="5.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN18daObjBkKillerdai_c16CleanupResourcesEv
 module: ov079
 addr: 0x02126f04
 size: 96 bytes
-matched: yes</title></rect><rect x="1569.71" y="599.59" width="3.37" height="5.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11BillBlaster6RenderEv
+matched: yes</title></rect><rect x="1569.71" y="599.59" width="3.37" height="5.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN18daObjBkKillerdai_c6RenderEv
 module: ov079
 addr: 0x02126f64
 size: 40 bytes
-matched: yes</title></rect><rect x="1573.08" y="599.59" width="21.92" height="5.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11BillBlaster8BehaviorEv
+matched: yes</title></rect><rect x="1573.08" y="599.59" width="21.92" height="5.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN18daObjBkKillerdai_c8BehaviorEv
 module: ov079
 addr: 0x02126f8c
 size: 260 bytes
-matched: yes</title></rect><rect x="1556.90" y="605.30" width="8.21" height="17.12" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11BillBlaster13InitResourcesEv
+matched: yes</title></rect><rect x="1556.90" y="605.30" width="8.21" height="17.12" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN18daObjBkKillerdai_c13InitResourcesEv
 module: ov079
 addr: 0x02127090
 size: 292 bytes
