@@ -2403,82 +2403,55 @@
     },
     "MultiCopyHalf": {
       "src/_ZN2GX10LoadBGPlttEPKvjj.cpp": [
-        "arity:3"
+        "param:#3 unsigned int"
       ],
       "src/_ZN2GX11LoadOBJPlttEPKvjj.cpp": [
-        "arity:3"
+        "param:#3 unsigned int"
       ],
       "src/_ZN3GXS10LoadBGPlttEPKvjj.cpp": [
-        "arity:3"
+        "param:#3 unsigned int"
       ],
       "src/_ZN3GXS11LoadOBJPlttEPKvjj.cpp": [
-        "arity:3"
-      ],
-      "src/actors/dScMgAmida_c.cpp": [
-        "arity:3"
+        "param:#3 unsigned int"
       ],
       "src/func_020555a4.c": [
-        "arity:3"
+        "param:#3 unsigned int"
       ],
       "src/func_020562b4.c": [
-        "arity:3"
+        "param:#3 unsigned int"
       ],
       "src/func_02056374.c": [
-        "arity:3"
+        "param:#3 unsigned int"
       ],
       "src/func_020563d4.c": [
-        "arity:3"
-      ],
-      "src/func_02056434.c": [
-        "arity:3"
-      ],
-      "src/func_02056494.c": [
-        "arity:3"
-      ],
-      "src/func_020564f4.c": [
-        "arity:3"
-      ],
-      "src/func_02056554.c": [
-        "arity:3"
+        "param:#3 unsigned int"
       ],
       "src/func_02059eb0.c": [
-        "arity:3"
+        "param:#3 unsigned int"
       ],
       "src/func_02061188.c": [
-        "arity:3"
-      ],
-      "src/func_02062990.c": [
-        "arity:3"
+        "param:#3 unsigned int"
       ],
       "src/func_02062aa4.cpp": [
-        "arity:3"
+        "param:#3 unsigned int"
       ],
       "src/func_02062df0.c": [
-        "arity:3"
-      ],
-      "src/func_02067f68.c": [
-        "arity:3"
-      ],
-      "src/func_020681b8.c": [
-        "arity:3"
-      ],
-      "src/func_0206853c.c": [
-        "arity:3"
+        "param:#3 unsigned int"
       ],
       "src/func_02068680.c": [
-        "arity:3"
+        "param:#1 int"
       ],
       "src/func_020690b0.c": [
-        "arity:3"
+        "param:#3 unsigned int"
       ],
       "src/func_ov002_020f39ec.c": [
-        "arity:3"
+        "param:#3 unsigned int"
       ],
       "src/func_ov007_020c0638.c": [
-        "arity:3"
+        "param:#1 char *"
       ],
       "src/func_ov007_020c940c.c": [
-        "arity:3"
+        "param:#1 int"
       ]
     },
     "MultiCopy_Int": {
