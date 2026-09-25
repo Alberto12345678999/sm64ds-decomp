@@ -1,5 +1,5 @@
-#ifndef JETSTREAM_H
-#define JETSTREAM_H
+#ifndef DAWATER_HAKIDASI_C_H
+#define DAWATER_HAKIDASI_C_H
 
 #include "types.h"
 
@@ -23,13 +23,13 @@
 #include "dCcAc_c.h"
 #include "dBgCh_Actr.h"
 
-struct JetStream : dEnemyBase_c {
+struct daWater_Hakidasi_c : dEnemyBase_c {
     /* What mState points at. Behavior calls the handler at +0x08 through it and
        nothing else in the tree reads the rest, so only that field is evidenced.
        Same shape as Bullet::State -- see include/Bullet.h. */
     struct State {
         u8  pad_00[0x8];
-        void (JetStream::*mMain)();   /* 0x08 */
+        void (daWater_Hakidasi_c::*mMain)();   /* 0x08 */
     };
 
     dCcAc_c mdCcAc_c;/* 0x110 */
@@ -45,7 +45,7 @@ struct JetStream : dEnemyBase_c {
     s32 unk_318;                      /* 0x318 */
 
     /* --- vtable --- */
-    virtual ~JetStream();
+    virtual ~daWater_Hakidasi_c();
 
     virtual s32 Behavior();
     virtual s32 CleanupResources();
@@ -61,7 +61,7 @@ struct JetStream : dEnemyBase_c {
 
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
-typedef char JetStream_size_must_be_0x378[sizeof(JetStream) == 0x378 ? 1 : -1];
+typedef char daWater_Hakidasi_c_size_must_be_0x378[sizeof(daWater_Hakidasi_c) == 0x378 ? 1 : -1];
 #endif
 
 #else
@@ -69,7 +69,7 @@ typedef char JetStream_size_must_be_0x378[sizeof(JetStream) == 0x378 ? 1 : -1];
 /* The C spelling of the same object, flat. Kept because the D0 file is a C
    translation unit that reads these fields, and D0 is compiler-generated so it
    can never be migrated. Same arrangement as include/ShadowModel.h. */
-struct JetStream {
+struct daWater_Hakidasi_c {
     u8  pad_000[0x8];
     u32 param1;            /* 0x008 */
     u8  pad_00c[0x80];
@@ -113,4 +113,4 @@ struct JetStream {
 
 #endif /* __cplusplus */
 
-#endif /* JETSTREAM_H */
+#endif /* DAWATER_HAKIDASI_C_H */

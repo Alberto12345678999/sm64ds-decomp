@@ -353,7 +353,7 @@ daStar_c	DONE	include\PowerStar.h  [alias: header uses pre-rename name]	dEnemyBa
 daTBasket_c	DONE	include\daTBasket_c.h	dEnemyBase_c	0	ov063	6
 daWanwan2_c	DONE	include\UnchainedChomp.h  [alias: header uses pre-rename name]	dEnemyBase_c	0	ov100	8
 daWanwan_c	DONE	include\daWanwan_c.h	dEnemyBase_c	0	ov014	6
-daWater_Hakidasi_c	DONE	include\JetStream.h  [alias: header uses pre-rename name]	dEnemyBase_c	0	ov064	7
+daWater_Hakidasi_c	DONE	include\daWater_Hakidasi_c.h	dEnemyBase_c	0	ov064	7
 daWater_Ring_c	DONE	include\daWater_Ring_c.h	dEnemyBase_c	0	ov064	7
 daWater_Suikomi_c	DONE	include\daWater_Suikomi_c.h	dEnemyBase_c	0	ov026	7
 daWater_Tatumaki_c	DONE	include\Whirlpool.h  [alias: header uses pre-rename name]	dEnemyBase_c	0	ov026	7

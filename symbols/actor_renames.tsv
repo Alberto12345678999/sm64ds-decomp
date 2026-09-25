@@ -1875,13 +1875,13 @@ ov064	0x021192d0	func_ov064_021192d0	BowserPuzzleManager_Spawn	spawnfunc
 ov064	0x021192d0	BowserPuzzleManager_Spawn	daObjFl_Coin_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov064	0x02119300	func_ov064_02119300	BowserPuzzlePiece_Spawn	spawnfunc
 ov064	0x02119300	BowserPuzzlePiece_Spawn	daObjFl_Puzzle_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
-ov064	0x02119330	func_ov064_02119330	_ZN9JetStreamD1Ev	vtable slot 16 (was _ZN17BowserPuzzlePieceD1Ev)
-ov064	0x02119368	func_ov064_02119368	_ZN9JetStreamD0Ev	vtable slot 17 (was _ZN17BowserPuzzlePieceD0Ev)
-ov064	0x02119880	func_ov064_02119880	_ZN9JetStream16CleanupResourcesEv	vtable slot 3 (was _ZN17BowserPuzzlePiece16CleanupResourcesEv)
-ov064	0x021198b0	func_ov064_021198b0	_ZN9JetStream16OnPendingDestroyEv	vtable slot 12 (was _ZN17BowserPuzzlePiece16OnPendingDestroyEv)
-ov064	0x021198b4	func_ov064_021198b4	_ZN9JetStream6RenderEv	vtable slot 9 (was _ZN17BowserPuzzlePiece6RenderEv)
-ov064	0x021198bc	func_ov064_021198bc	_ZN9JetStream8BehaviorEv	vtable slot 6 (was _ZN17BowserPuzzlePiece8BehaviorEv)
-ov064	0x0211992c	func_ov064_0211992c	_ZN9JetStream13InitResourcesEv	vtable slot 0 (was _ZN17BowserPuzzlePiece13InitResourcesEv)
+ov064	0x02119330	func_ov064_02119330	_ZN18daWater_Hakidasi_cD1Ev	vtable slot 16 (was _ZN17BowserPuzzlePieceD1Ev)
+ov064	0x02119368	func_ov064_02119368	_ZN18daWater_Hakidasi_cD0Ev	vtable slot 17 (was _ZN17BowserPuzzlePieceD0Ev)
+ov064	0x02119880	func_ov064_02119880	_ZN18daWater_Hakidasi_c16CleanupResourcesEv	vtable slot 3 (was _ZN17BowserPuzzlePiece16CleanupResourcesEv)
+ov064	0x021198b0	func_ov064_021198b0	_ZN18daWater_Hakidasi_c16OnPendingDestroyEv	vtable slot 12 (was _ZN17BowserPuzzlePiece16OnPendingDestroyEv)
+ov064	0x021198b4	func_ov064_021198b4	_ZN18daWater_Hakidasi_c6RenderEv	vtable slot 9 (was _ZN17BowserPuzzlePiece6RenderEv)
+ov064	0x021198bc	func_ov064_021198bc	_ZN18daWater_Hakidasi_c8BehaviorEv	vtable slot 6 (was _ZN17BowserPuzzlePiece8BehaviorEv)
+ov064	0x0211992c	func_ov064_0211992c	_ZN18daWater_Hakidasi_c13InitResourcesEv	vtable slot 0 (was _ZN17BowserPuzzlePiece13InitResourcesEv)
 ov064	0x02119a18	func_ov064_02119a18	JetStream_Spawn	spawnfunc
 ov064	0x02119a18	JetStream_Spawn	daWater_Hakidasi_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov064	0x02119a58	func_ov064_02119a58	_ZN14daWater_Ring_cD1Ev	vtable slot 16
@@ -1942,7 +1942,7 @@ ov064	0x0211c17c	BowserPuzzleManager_SpawnInfo	g_profile_FL_COIN	reconstructed p
 ov064	0x0211c25c	data_ov064_0211c25c	_ZTV17BowserPuzzlePiece	vtable alloc=? (was _ZTV19BowserPuzzleManager)
 ov064	0x0211c310	data_ov064_0211c310	JetStream_SpawnInfo	spawninfo
 ov064	0x0211c310	JetStream_SpawnInfo	g_profile_WATER_HAKIDASI	reconstructed profile global; literal ROM ID WATER_HAKIDASI+registry role+later EAD lineage; exact SM64DS spelling not preserved
-ov064	0x0211c334	data_ov064_0211c334	_ZTV9JetStream	vtable alloc=? (was _ZTV17BowserPuzzlePiece)
+ov064	0x0211c334	data_ov064_0211c334	_ZTV18daWater_Hakidasi_c	vtable alloc=? (was _ZTV17BowserPuzzlePiece)
 ov064	0x0211c3fc	data_ov064_0211c3fc	WaterRing_SpawnInfo	spawninfo
 ov064	0x0211c3fc	WaterRing_SpawnInfo	g_profile_WATER_RING	reconstructed profile global; literal ROM ID WATER_RING+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov064	0x0211c420	data_ov064_0211c420	_ZTV14daWater_Ring_c	vtable alloc=0x390

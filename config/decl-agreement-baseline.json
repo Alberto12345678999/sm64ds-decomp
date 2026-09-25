@@ -1447,7 +1447,7 @@
       "src/_ZN8SaveData26CountStarsCollectedInLevelEj.cpp": [
         "param:#1 int"
       ],
-      "src/_ZN9JetStream13InitResourcesEv.cpp": [
+      "src/actors/daWater_Hakidasi_c.cpp": [
         "param:#1 int"
       ],
       "src/_ZN9PowerStar13InitResourcesEv.cpp": [
@@ -1995,7 +1995,7 @@
       "src/func_ov025_02111dec.cpp": [
         "param:#2 short"
       ],
-      "src/func_ov064_021193b4.c": [
+      "src/actors/daWater_Hakidasi_c.cpp": [
         "param:#2 short"
       ],
       "src/func_ov065_02117624.c": [
@@ -2348,7 +2348,7 @@
       "src/func_ov060_02117db8.c": [
         "param:#1 Vec3 *"
       ],
-      "src/func_ov064_021193b4.c": [
+      "src/actors/daWater_Hakidasi_c.cpp": [
         "param:#1 Vec3 *",
         "param:#3 Vec3 *"
       ],
@@ -14877,7 +14877,7 @@
         "param:#6 const void *",
         "return:unsigned int"
       ],
-      "src/func_ov064_021193b4.c": [
+      "src/actors/daWater_Hakidasi_c.cpp": [
         "param:#1 int",
         "param:#2 int",
         "param:#6 int",
@@ -16001,7 +16001,7 @@
         "param:#6 int",
         "return:void"
       ],
-      "src/func_ov064_021193b4.c": [
+      "src/actors/daWater_Hakidasi_c.cpp": [
         "param:#2 Vec3 *",
         "param:#4 int",
         "return:void"
@@ -16117,7 +16117,7 @@
       "src/func_ov034_02112348.c": [
         "return:char *"
       ],
-      "src/func_ov064_021193b4.c": [
+      "src/actors/daWater_Hakidasi_c.cpp": [
         "return:char *"
       ],
       "src/func_ov065_02117780.c": [
@@ -17101,7 +17101,7 @@
         "param:#6 int",
         "return:char *"
       ],
-      "src/func_ov064_021193b4.c": [
+      "src/actors/daWater_Hakidasi_c.cpp": [
         "param:#3 Vec3 *",
         "param:#4 Vec3_16 *",
         "param:#5 int",
@@ -22933,7 +22933,7 @@
       "src/func_ov034_02112484.cpp": [
         "return:char []"
       ],
-      "src/func_ov064_021193b4.c": [
+      "src/actors/daWater_Hakidasi_c.cpp": [
         "return:int"
       ],
       "src/func_ov065_02117404.cpp": [
@@ -24079,9 +24079,6 @@
       "src/_ZN9JetStream13InitResourcesEv.cpp": [
         "return:SharedFilePtr"
       ],
-      "src/_ZN9JetStream16CleanupResourcesEv.cpp": [
-        "return:char"
-      ],
       "src/__sinit_ov002_02100560.c": [
         "return:void *"
       ],
@@ -24177,9 +24174,6 @@
         "return:char []"
       ],
       "src/_ZN14daWater_Ring_c16CleanupResourcesEv.cpp": [
-        "return:char"
-      ],
-      "src/_ZN9JetStream16CleanupResourcesEv.cpp": [
         "return:char"
       ],
       "src/__sinit_ov002_02100560.c": [
@@ -32881,7 +32875,7 @@
         "param:#1 int",
         "return:void"
       ],
-      "src/func_ov064_021193b4.c": [
+      "src/actors/daWater_Hakidasi_c.cpp": [
         "param:#1 int",
         "return:void"
       ],
@@ -45991,11 +45985,6 @@
         "param:#1 int",
         "param:#2 int",
         "return:int"
-      ]
-    },
-    "func_ov064_0211987c": {
-      "src/_ZN9JetStream8BehaviorEv.cpp": [
-        "arity:1"
       ]
     },
     "func_ov064_02119ecc": {
