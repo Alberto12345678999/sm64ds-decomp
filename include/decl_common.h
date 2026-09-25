@@ -717,7 +717,6 @@ extern int _ZTV8daYegg_c[];
 extern int _ZTV10daChRoom_c[];
 extern int _ZTV12daDossyCap_c[];
 extern int _ZTV9MontyMole[];
-extern int _ZTV9OneUpLogo[];
 extern int _ZTV9PowerStar[];
 extern int _ZTV11PowerFlower[];
 extern int _ZTV9Spindrift[];

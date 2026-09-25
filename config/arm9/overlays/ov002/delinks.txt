@@ -2478,37 +2478,9 @@ src/game/actors/d_a_obj_number.cpp:
     complete
     .text start:0x020f0894 end:0x020f0dd0
 
-src/_ZN9OneUpLogoD1Ev.cpp:
+src/actors/daObj1UpLogo_c.cpp:
     complete
-    .text start:0x020f0dd0 end:0x020f0e08
-
-src/_ZN9OneUpLogoD0Ev.cpp:
-    complete
-    .text start:0x020f0e08 end:0x020f0e54
-
-src/func_ov002_020f0e54.c:
-    complete
-    .text start:0x020f0e54 end:0x020f0e78
-
-src/_ZN9OneUpLogo16CleanupResourcesEv.cpp:
-    complete
-    .text start:0x020f0e78 end:0x020f0ea8
-
-src/_ZN9OneUpLogo6RenderEv.cpp:
-    complete
-    .text start:0x020f0ea8 end:0x020f0f08
-
-src/_ZN9OneUpLogo8BehaviorEv.cpp:
-    complete
-    .text start:0x020f0f08 end:0x020f107c
-
-src/_ZN9OneUpLogo13InitResourcesEv.cpp:
-    complete
-    .text start:0x020f107c end:0x020f1170
-
-src/d_a_obj1_up_logo.c:
-    complete
-    .text start:0x020f1170 end:0x020f11b0
+    .text start:0x020f0dd0 end:0x020f11b0
 
 src/game/actors/d_a_obj_bc_switch.cpp:
     complete

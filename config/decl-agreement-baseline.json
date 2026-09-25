@@ -8554,9 +8554,6 @@
       "src/_ZN8Goomboss13InitResourcesEv.cpp": [
         "param:#5 unsigned int"
       ],
-      "src/_ZN9OneUpLogo13InitResourcesEv.cpp": [
-        "param:#5 unsigned int"
-      ],
       "src/actors/Eyerok.cpp": [
         "param:#5 unsigned int"
       ],
@@ -8652,6 +8649,9 @@
         "param:#5 unsigned int",
         "return:unsigned int"
       ],
+      "src/actors/daObj1UpLogo_c.cpp": [
+        "param:#5 unsigned int"
+      ],
       "src/actors/daBgSnmHed_c.cpp": [
         "param:#5 unsigned int"
       ],
@@ -8684,9 +8684,6 @@
       ],
       "src/_ZN8Goomboss13InitResourcesEv.cpp": [
         "param:#1 void *"
-      ],
-      "src/_ZN9OneUpLogo13InitResourcesEv.cpp": [
-        "return:void"
       ],
       "src/actors/Goomboss.cpp": [
         "param:#1 void *"
@@ -15028,9 +15025,6 @@
       "src/_ZN8dActor_c19DisappearPoofDustAtERK7Vector3.cpp": [
         "return:void"
       ],
-      "src/_ZN9OneUpLogo8BehaviorEv.cpp": [
-        "return:void"
-      ],
       "src/actors/Goomboss.cpp": [
         "return:void"
       ],
@@ -15242,6 +15236,9 @@
         "return:void"
       ],
       "src/unnamed/ov063/func_ov063_021177b0.c": [
+        "return:void"
+      ],
+      "src/actors/daObj1UpLogo_c.cpp": [
         "return:void"
       ],
       "src/actors/daBgSnmHed_c.cpp": [
@@ -25399,16 +25396,16 @@
     "data_ov002_02110a9c": {
       "src/__sinit_ov002_02107298.c": [
         "return:int []"
+      ],
+      "src/actors/daObj1UpLogo_c.cpp": [
+        "return:SharedFilePtr"
       ]
     },
     "data_ov002_02110aa4": {
       "src/_ZN6Player16CleanupResourcesEv.cpp": [
         "return:char []"
       ],
-      "src/_ZN9OneUpLogo13InitResourcesEv.cpp": [
-        "return:SharedFilePtr"
-      ],
-      "src/_ZN9OneUpLogo16CleanupResourcesEv.cpp": [
+      "src/actors/daObj1UpLogo_c.cpp": [
         "return:SharedFilePtr"
       ]
     },

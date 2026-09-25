@@ -141,7 +141,7 @@ spent. **Run first; 10 minutes, and it de-risks every later "is it me or is it t
 |[ov002](../config/arm9/overlays/ov002/symbols.txt)| 0x20b5734|  n=7|  L=164|  `daObjFire_c`|                uncorrob|
 |[ov002](../config/arm9/overlays/ov002/symbols.txt)| 0x20b6e08|  n=5|  L=67|   `WaterfallMist`|            uncorrob|
 |[ov002](../config/arm9/overlays/ov002/symbols.txt)| 0x20ec388|  n=8|  L=148|  `daWarpkun_c`|             uncorrob|
-|[ov002](../config/arm9/overlays/ov002/symbols.txt)| 0x20f0dd0|  n=8|  L=176|  `OneUpLogo`|                uncorrob|
+|[ov002](../config/arm9/overlays/ov002/symbols.txt)| 0x20f0dd0|  n=8|  L=176|  `daObj1UpLogo_c`|                uncorrob|
 |[ov006](../config/arm9/overlays/ov006/symbols.txt)| 0x20dbd54|  n=3|  L=36|   `MgPicturePoker`|           uncorrob|
 |[ov006](../config/arm9/overlays/ov006/symbols.txt)| 0x20fa6ac|  n=2|  L=30|   `MgPairAGoneAndOn`|         uncorrob|
 |[ov006](../config/arm9/overlays/ov006/symbols.txt)| 0x210a400|  n=2|  L=32|   `MgMushroomRoulette`|       uncorrob|
