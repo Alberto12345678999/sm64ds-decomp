@@ -6889,10 +6889,6 @@
         "param:#5 void *",
         "param:#6 void *"
       ],
-      "src/_ZN6ToxBox13InitResourcesEv.cpp": [
-        "param:#2 dActor_c *",
-        "param:#5 void *"
-      ],
       "src/_ZN8Fireball13InitResourcesEv.cpp": [
         "param:#2 void *",
         "param:#5 void *"
@@ -7320,10 +7316,6 @@
       ],
       "src/func_ov064_02118fa4.cpp": [
         "param:#2 const Matrix4x3 &"
-      ],
-      "src/func_ov092_02131a88.cpp": [
-        "param:#2 Matrix4x3 &",
-        "return:int"
       ],
       "src/func_ov098_021397c8.cpp": [
         "param:#2 Matrix4x3 &",
@@ -10881,9 +10873,6 @@
       "src/_ZN6Eyerok13InitResourcesEv.cpp": [
         "kind:data"
       ],
-      "src/_ZN6ToxBox13InitResourcesEv.cpp": [
-        "kind:data"
-      ],
       "src/func_ov066_02116db0.c": [
         "kind:data"
       ],
@@ -12354,9 +12343,6 @@
         "param:#2 const Vector3 *"
       ],
       "src/func_ov089_021311c0.c": [
-        "param:#2 void *"
-      ],
-      "src/func_ov092_021311b0.cpp": [
         "param:#2 void *"
       ],
       "src/func_ov098_02138344.cpp": [
@@ -15171,9 +15157,6 @@
       "src/func_ov081_021260fc.cpp": [
         "return:void"
       ],
-      "src/func_ov092_021311b0.cpp": [
-        "return:void"
-      ],
       "src/func_ov100_02141fb0.cpp": [
         "return:void"
       ],
@@ -15387,15 +15370,6 @@
         "arity:3"
       ],
       "src/func_ov079_02125504.c": [
-        "arity:3"
-      ],
-      "src/func_ov092_02131010.cpp": [
-        "arity:3"
-      ],
-      "src/func_ov092_021311b0.cpp": [
-        "arity:3"
-      ],
-      "src/func_ov092_021315ac.c": [
         "arity:3"
       ],
       "src/func_ov098_0213aa28.c": [
@@ -15737,9 +15711,6 @@
         "return:void *"
       ],
       "src/func_ov091_021339fc.c": [
-        "return:void *"
-      ],
-      "src/func_ov092_021319b0.cpp": [
         "return:void *"
       ],
       "src/func_ov094_021357a4.c": [
@@ -19701,12 +19672,6 @@
       "src/func_ov089_02131b18.c": [
         "arity:1"
       ],
-      "src/func_ov092_02131010.cpp": [
-        "arity:1"
-      ],
-      "src/func_ov092_021311b0.cpp": [
-        "arity:1"
-      ],
       "src/func_ov098_02138344.cpp": [
         "arity:1"
       ],
@@ -22765,9 +22730,6 @@
       ],
       "src/_ZN6Player6RenderEv.cpp": [
         "return:int"
-      ],
-      "src/_ZN6ToxBox13InitResourcesEv.cpp": [
-        "return:Mtx43"
       ],
       "src/_ZN8YoshiEgg8BehaviorEv.cpp": [
         "return:int"
@@ -32366,19 +32328,6 @@
       "src/func_ov091_021339fc.c": [
         "param:#1 int"
       ],
-      "src/func_ov092_02131010.cpp": [
-        "param:#1 int",
-        "param:#2 int *"
-      ],
-      "src/func_ov092_021311b0.cpp": [
-        "param:#1 int"
-      ],
-      "src/func_ov092_021315ac.c": [
-        "param:#1 int"
-      ],
-      "src/func_ov092_02131878.c": [
-        "param:#1 int"
-      ],
       "src/func_ov094_021359d8.cpp": [
         "param:#1 int",
         "return:int"
@@ -36166,9 +36115,6 @@
         "param:#2 void *"
       ],
       "src/_ZN6Eyerok13InitResourcesEv.cpp": [
-        "param:#2 void *"
-      ],
-      "src/_ZN6ToxBox13InitResourcesEv.cpp": [
         "param:#2 void *"
       ],
       "src/_ZN9daDossy_c13InitResourcesEv.cpp": [
@@ -41427,11 +41373,6 @@
         "return:int"
       ]
     },
-    "func_ov002_020de328": {
-      "src/func_ov092_02131010.cpp": [
-        "arity:0"
-      ]
-    },
     "func_ov002_020de3d0": {
       "include/decl_common.h": [
         "param:#1 void *"
@@ -46351,40 +46292,6 @@
     "func_ov091_02132380": {
       "include/decl_common.h": [
         "kind:data"
-      ]
-    },
-    "func_ov092_021314d0": {
-      "src/func_ov092_02131578.c": [
-        "return:int"
-      ]
-    },
-    "func_ov092_021316d8": {
-      "src/func_ov092_02131620.c": [
-        "param:#5 int"
-      ],
-      "src/func_ov092_02131650.c": [
-        "param:#5 int"
-      ],
-      "src/func_ov092_02131680.c": [
-        "param:#5 int"
-      ],
-      "src/func_ov092_021316b0.c": [
-        "param:#5 int"
-      ]
-    },
-    "func_ov092_02131878": {
-      "src/func_ov092_021319b0.cpp": [
-        "param:#3 int"
-      ]
-    },
-    "func_ov092_021319b0": {
-      "src/func_ov092_02131578.c": [
-        "return:int"
-      ]
-    },
-    "func_ov092_02131a88": {
-      "src/_ZN6ToxBox8BehaviorEv.cpp": [
-        "param:#1 ToxBox *"
       ]
     },
     "func_ov094_02136188": {
