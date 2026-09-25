@@ -13110,6 +13110,8 @@
     },
     "_ZN6Player17SetNoControlStateEhih": {
       "src/_ZN6Player12St_Walk_InitEv.cpp": [
+        "param:#2 unsigned char",
+        "param:#4 unsigned char",
         "return:void"
       ],
       "src/func_ov002_020e8ef0.cpp": [
