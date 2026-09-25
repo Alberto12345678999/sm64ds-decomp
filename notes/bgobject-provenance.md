@@ -437,14 +437,14 @@ whole-object shadow casts are `&mModelAnim` and `&mModel`.
 
 ---
 
-## FortressWall (`include/FortressWall.h`, [ov079](../config/arm9/overlays/ov079/symbols.txt), size 0x324)
+## daObjBk_Kabe_c (`include/daObjBk_Kabe_c.h`, [ov079](../config/arm9/overlays/ov079/symbols.txt), size 0x324)
 
-Bodies read: `src/_ZN12FortressWall13InitResourcesEv.cpp`,
-`src/_ZN12FortressWall8BehaviorEv.cpp`, `src/_ZN12FortressWall6RenderEv.cpp`,
-`src/_ZN12FortressWall4KillEv.cpp`,
-`src/_ZN12FortressWall16CleanupResourcesEv.cpp`,
-`src/_ZN12FortressWall24OnHitByCannonBlastedCharER8dActor_c.cpp`,
-`src/FortressWall_Spawn.c`, `src/FortressWallBreakable_Spawn.c`.
+Bodies read: `src/actors/daObjBk_Kabe_c.cpp`, which now holds the whole
+translation unit. `InitResources`, `Behavior`, `Render`, `Kill`,
+`CleanupResources` and `OnHitByCannonBlastedChar` were read as one-function
+sources (then under the coined name `FortressWall`) before the fold, together
+with the two factories, then `src/FortressWall_Spawn.c` and
+`src/FortressWallBreakable_Spawn.c`.
 
 Two actors share this class: `FortressWallBreakable_Spawn` (actorID 0x30) and
 `FortressWall_Spawn`. Every field is about telling those two apart.

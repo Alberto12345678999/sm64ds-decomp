@@ -7157,9 +7157,6 @@
       "src/_ZN10daKpa2Bg_c13InitResourcesEv.cpp": [
         "return:int"
       ],
-      "src/_ZN12FortressWall13InitResourcesEv.cpp": [
-        "return:int"
-      ],
       "src/_ZN12MetalNetLift13InitResourcesEv.cpp": [
         "param:#3 Matrix4x3 *"
       ],
@@ -11122,9 +11119,6 @@
         "param:#1 void *",
         "return:void"
       ],
-      "src/_ZN12FortressWall13InitResourcesEv.cpp": [
-        "param:#1 void *"
-      ],
       "src/_ZN12MetalNetLift13InitResourcesEv.cpp": [
         "return:BMD_File *"
       ],
@@ -14377,10 +14371,6 @@
         "param:#1 void *",
         "return:void *"
       ],
-      "src/_ZN12FortressWall13InitResourcesEv.cpp": [
-        "param:#1 void *",
-        "return:void *"
-      ],
       "src/_ZN12MetalNetLift13InitResourcesEv.cpp": [
         "return:KCL_File *"
       ],
@@ -14961,9 +14951,6 @@
         "return:void"
       ],
       "src/actors/daGrock_c.cpp": [
-        "return:void"
-      ],
-      "src/_ZN12FortressWall4KillEv.cpp": [
         "return:void"
       ],
       "src/_ZN21SnowmanBreathParticle12CheckSnowmanEv.cpp": [

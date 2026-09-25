@@ -470,7 +470,6 @@ extern int _ZTV11daTrsTrap_c[];
 extern int _ZTV11daWarpkun_c[];
 extern int _ZTV12EnemySpawner[];
 extern int _ZTV19daObjFlamethrower_c[];
-extern int _ZTV12FortressWall[];
 extern int _ZTV7dBgW_Kc[];
 extern int _ZTV12WaterSuction[];
 extern int _ZTV12dScMgLuigi_c[];

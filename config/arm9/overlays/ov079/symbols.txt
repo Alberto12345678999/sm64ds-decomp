@@ -54,14 +54,14 @@ _ZN18daObjBkKillerdai_c6RenderEv kind:function(arm,size=0x28) addr:0x02126f64
 _ZN18daObjBkKillerdai_c8BehaviorEv kind:function(arm,size=0x104) addr:0x02126f8c
 _ZN18daObjBkKillerdai_c13InitResourcesEv kind:function(arm,size=0x124) addr:0x02127090
 daObjBkKillerdai_c_classInit kind:function(arm,size=0x30) addr:0x021271b4
-_ZN12FortressWallD1Ev kind:function(arm,size=0x44) addr:0x021271e4
-_ZN12FortressWallD0Ev kind:function(arm,size=0x58) addr:0x02127228
-_ZN12FortressWall4KillEv kind:function(arm,size=0x60) addr:0x02127280
-_ZN12FortressWall24OnHitByCannonBlastedCharER8dActor_c kind:function(arm,size=0x20) addr:0x021272e0
-_ZN12FortressWall16CleanupResourcesEv kind:function(arm,size=0x64) addr:0x02127300
-_ZN12FortressWall6RenderEv kind:function(arm,size=0x40) addr:0x02127364
-_ZN12FortressWall8BehaviorEv kind:function(arm,size=0xf0) addr:0x021273a4
-_ZN12FortressWall13InitResourcesEv kind:function(arm,size=0xe8) addr:0x02127494
+_ZN14daObjBk_Kabe_cD1Ev kind:function(arm,size=0x44) addr:0x021271e4
+_ZN14daObjBk_Kabe_cD0Ev kind:function(arm,size=0x58) addr:0x02127228
+_ZN14daObjBk_Kabe_c4KillEv kind:function(arm,size=0x60) addr:0x02127280
+_ZN14daObjBk_Kabe_c24OnHitByCannonBlastedCharER8dActor_c kind:function(arm,size=0x20) addr:0x021272e0
+_ZN14daObjBk_Kabe_c16CleanupResourcesEv kind:function(arm,size=0x64) addr:0x02127300
+_ZN14daObjBk_Kabe_c6RenderEv kind:function(arm,size=0x40) addr:0x02127364
+_ZN14daObjBk_Kabe_c8BehaviorEv kind:function(arm,size=0xf0) addr:0x021273a4
+_ZN14daObjBk_Kabe_c13InitResourcesEv kind:function(arm,size=0xe8) addr:0x02127494
 daObjBk_Kabe_c_classInit_BK_KABE01 kind:function(arm,size=0x30) addr:0x0212757c
 daObjBk_Kabe_c_classInit_BK_KABE00 kind:function(arm,size=0x30) addr:0x021275ac
 data_ov079_021275dc kind:data(any) addr:0x021275dc
@@ -118,7 +118,7 @@ data_ov079_0212805c kind:data(any) addr:0x0212805c
 data_ov079_02128060 kind:data(any) addr:0x02128060
 g_profile_BK_KABE00 kind:data(any) addr:0x02128070 ambiguous
 g_profile_BK_KABE01 kind:data(any) addr:0x0212808c ambiguous
-_ZTV12FortressWall kind:data(any) addr:0x021280b0
+_ZTV14daObjBk_Kabe_c kind:data(any) addr:0x021280b0
 data_ov079_02128140 kind:bss addr:0x02128140
 data_ov079_02128148 kind:bss addr:0x02128148
 data_ov079_02128150 kind:bss addr:0x02128150
