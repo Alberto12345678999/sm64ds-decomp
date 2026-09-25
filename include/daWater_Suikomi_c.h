@@ -1,5 +1,5 @@
-#ifndef WATERSUCTION_H
-#define WATERSUCTION_H
+#ifndef DAWATER_SUIKOMI_C_H
+#define DAWATER_SUIKOMI_C_H
 
 #include "types.h"
 
@@ -23,14 +23,14 @@
 #include "dCcAcPos_c.h"
 #include "dBgCh_Actr.h"
 
-struct WaterSuction : dEnemyBase_c {
+struct daWater_Suikomi_c : dEnemyBase_c {
     dCcAcPos_c mdCcAcPos_c;/* 0x110 */
     dBgCh_Actr mWithMeshClsn;       /* 0x150 */
     u8  pad_30c[0x8];
     s32 unk_314;                      /* 0x314 */
 
     /* --- vtable --- */
-    virtual ~WaterSuction();
+    virtual ~daWater_Suikomi_c();
 
     int Behavior();
     int CleanupResources();
@@ -41,7 +41,7 @@ struct WaterSuction : dEnemyBase_c {
 
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
-typedef char WaterSuction_size_must_be_0x318[sizeof(WaterSuction) == 0x318 ? 1 : -1];
+typedef char daWater_Suikomi_c_size_must_be_0x318[sizeof(daWater_Suikomi_c) == 0x318 ? 1 : -1];
 #endif
 
 #else
@@ -49,7 +49,7 @@ typedef char WaterSuction_size_must_be_0x318[sizeof(WaterSuction) == 0x318 ? 1 :
 /* The C spelling of the same object, flat. Kept because the D0 file is a C
    translation unit that reads these fields, and D0 is compiler-generated so it
    can never be migrated. Same arrangement as include/ShadowModel.h. */
-struct WaterSuction {
+struct daWater_Suikomi_c {
     u8  pad_000[0x8];
     s32 param1;            /* 0x008 */
     u8  pad_00c[0x80];
@@ -64,7 +64,7 @@ struct WaterSuction {
     u8  pad_101[0xf];
     /* dCcAcPos_c member, named by the class's own destructor calling
        dCcAcPos_c's D1 at +0x110 -- a relocation the ROM build
-       checks. Was a u8 marker. [_ZN12WaterSuctionD1Ev.c] */
+       checks. Was a u8 marker. [src/_ZN17daWater_Suikomi_cD1Ev.cpp] */
     dCcAcPos_c mdCcAcPos_c;            /* 0x110 */
     u8  mWithMeshClsn;            /* 0x150 */
     u8  pad_151[0x1c3];
@@ -73,4 +73,4 @@ struct WaterSuction {
 
 #endif /* __cplusplus */
 
-#endif /* WATERSUCTION_H */
+#endif /* DAWATER_SUIKOMI_C_H */

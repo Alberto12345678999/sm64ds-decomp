@@ -5024,6 +5024,11 @@
     "src/actors/daSnmBth_c.cpp#_ZN10daSnmBth_c16OnPendingDestroyEv": "andrewboudreau",
     "src/actors/daSnmBth_c.cpp#_ZN10daSnmBth_c6RenderEv": "tangosdev",
     "src/actors/daSnmBth_c.cpp#_ZN10daSnmBth_c8BehaviorEv": "tangosdev",
-    "src/actors/daSnmBth_c.cpp#_ZN10daSnmBth_c13InitResourcesEv": "tangosdev"
+    "src/actors/daSnmBth_c.cpp#_ZN10daSnmBth_c13InitResourcesEv": "tangosdev",
+    "src/actors/daWater_Suikomi_c.cpp#_ZN17daWater_Suikomi_c16CleanupResourcesEv": "tangosdev",
+    "src/actors/daWater_Suikomi_c.cpp#_ZN17daWater_Suikomi_c16OnPendingDestroyEv": "tangosdev",
+    "src/actors/daWater_Suikomi_c.cpp#_ZN17daWater_Suikomi_c6RenderEv": "tangosdev",
+    "src/actors/daWater_Suikomi_c.cpp#_ZN17daWater_Suikomi_c8BehaviorEv": "tangosdev",
+    "src/actors/daWater_Suikomi_c.cpp#_ZN17daWater_Suikomi_c13InitResourcesEv": "tangosdev"
   }
 }

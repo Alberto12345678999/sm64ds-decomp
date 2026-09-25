@@ -7391,7 +7391,7 @@
       "src/_ZN10StarMarker13InitResourcesEv.cpp": [
         "param:#3 const void *"
       ],
-      "src/_ZN12WaterSuction13InitResourcesEv.cpp": [
+      "src/actors/daWater_Suikomi_c.cpp": [
         "param:#3 V3 *"
       ],
       "src/_ZN14UnchainedChomp13InitResourcesEv.cpp": [
