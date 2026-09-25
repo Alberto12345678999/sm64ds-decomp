@@ -151,7 +151,7 @@ daObjHeart_c	DONE	include\daObjHeart_c.h	dActor_c	0	ov002	6
 daObjHsBillboard_c	DONE	include\daObjHsBillboard_c.h	dActor_c	0	ov031	5
 daObjKb1Billboard_c	DONE	include\daObjKb1Billboard_c.h	dActor_c	0	ov044	6
 daObjKinokoTag_c	DONE	include\daObjKinokoTag_c.h	dActor_c	0	ov002	7
-daObjKm2_Nobiru_c	DONE	include\ExtendingPlatform.h  [alias: header uses pre-rename name]	dActor_c	0	ov045	9
+daObjKm2_Nobiru_c	DONE	include\daObjKm2_Nobiru_c.h  [alias: header uses pre-rename name]	dActor_c	0	ov045	9
 daObjKumo_c	DONE	include\daObjKumo_c.h	dActor_c	0	ov039	6
 daObjLava_c	DONE	include\daObjLava_c.h	dActor_c	0	ov002	3
 daObjNumber_c	DONE	include\daObjNumber_c.h	dActor_c	0	ov002	6

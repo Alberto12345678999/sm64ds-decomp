@@ -662,13 +662,6 @@
     "src/_ZN17BowserSkyPlatform8BehaviorEv.cpp",
     "src/_ZN17BowserSkyPlatformD0Ev.cpp",
     "src/_ZN17BowserSkyPlatformD1Ev.cpp",
-    "src/_ZN17ExtendingPlatform16CleanupResourcesEv.cpp",
-    "src/_ZN17ExtendingPlatform16OnPendingDestroyEv.cpp",
-    "src/_ZN17ExtendingPlatform20UpdateModelTransformEv.cpp",
-    "src/_ZN17ExtendingPlatform23UpdateColliderTransformEv.cpp",
-    "src/_ZN17ExtendingPlatform6RenderEv.cpp",
-    "src/_ZN17ExtendingPlatformD0Ev.cpp",
-    "src/_ZN17ExtendingPlatformD1Ev.cpp",
     "src/actors/daObjSimpleLift_c.cpp#_ZN17daObjSimpleLift_c16CleanupResourcesEv",
     "src/actors/daObjSimpleLift_c.cpp#_ZN17daObjSimpleLift_c6RenderEv",
     "src/actors/daObjSimpleLift_c.cpp#_ZN17daObjSimpleLift_cD0Ev",
@@ -3002,6 +2995,13 @@
     "src/actors/daObjRc_Tikuwa_c.cpp#_ZN16daObjRc_Tikuwa_c16OnPendingDestroyEv",
     "src/actors/daObjRc_Tikuwa_c.cpp#_ZN16daObjRc_Tikuwa_c6RenderEv",
     "src/actors/daObjRc_Tikuwa_c.cpp#_ZN16daObjRc_Tikuwa_cD0Ev",
-    "src/actors/daObjRc_Tikuwa_c.cpp#_ZN16daObjRc_Tikuwa_cD1Ev"
+    "src/actors/daObjRc_Tikuwa_c.cpp#_ZN16daObjRc_Tikuwa_cD1Ev",
+    "src/actors/daObjKm2_Nobiru_c.cpp#_ZN17daObjKm2_Nobiru_c16CleanupResourcesEv",
+    "src/actors/daObjKm2_Nobiru_c.cpp#_ZN17daObjKm2_Nobiru_c16OnPendingDestroyEv",
+    "src/actors/daObjKm2_Nobiru_c.cpp#_ZN17daObjKm2_Nobiru_c20UpdateModelTransformEv",
+    "src/actors/daObjKm2_Nobiru_c.cpp#_ZN17daObjKm2_Nobiru_c23UpdateColliderTransformEv",
+    "src/actors/daObjKm2_Nobiru_c.cpp#_ZN17daObjKm2_Nobiru_c6RenderEv",
+    "src/actors/daObjKm2_Nobiru_c.cpp#_ZN17daObjKm2_Nobiru_cD0Ev",
+    "src/actors/daObjKm2_Nobiru_c.cpp#_ZN17daObjKm2_Nobiru_cD1Ev"
   ]
 }

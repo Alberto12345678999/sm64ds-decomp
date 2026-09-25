@@ -8407,7 +8407,7 @@
       ]
     },
     "_ZN14dBgW_KcMbgSclY7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block": {
-      "src/_ZN17ExtendingPlatform13InitResourcesEv.cpp": [
+      "src/actors/daObjKm2_Nobiru_c.cpp": [
         "param:#3 const Matrix4x3 &",
         "param:#6 CLPS_Block &"
       ]
@@ -28633,11 +28633,6 @@
         "return:CLPS_Block"
       ]
     },
-    "data_ov045_021125b0": {
-      "src/_ZN17ExtendingPlatform13InitResourcesEv.cpp": [
-        "return:CLPS_Block"
-      ]
-    },
     "data_ov045_02112f08": {
       "src/game/actors/d_a_obj_km2_ukishima.cpp": [
         "return:ResourceDescriptor"
@@ -36719,10 +36714,7 @@
       ]
     },
     "func_0203aad0": {
-      "src/_ZN17ExtendingPlatform6RenderEv.cpp": [
-        "param:#1 dBgW_KcMbgSclY *"
-      ],
-      "src/_ZN17ExtendingPlatform8BehaviorEv.cpp": [
+      "src/actors/daObjKm2_Nobiru_c.cpp": [
         "param:#1 dBgW_KcMbgSclY *"
       ]
     },
