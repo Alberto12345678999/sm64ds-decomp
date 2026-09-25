@@ -309,7 +309,7 @@ daOts_c	DONE	include\daOts_c.h	dEnemyBase_c	3	ov064	11
 dCapEnemy_c	DONE	include\dCapEnemy_c.h	dEnemyBase_c	2	arm9;ov002	14
 da1up_c	DONE	include\da1up_c.h	dEnemyBase_c	0	ov002	9
 daBakubaku_c	DONE	include\daBakubaku_c.h	dEnemyBase_c	0	ov032	8
-daBasabasa_c	DONE	include\Swoop.h  [alias: header uses pre-rename name]	dEnemyBase_c	0	ov065	10
+daBasabasa_c	DONE	include\daBasabasa_c.h  [alias: header uses pre-rename name]	dEnemyBase_c	0	ov065	10
 daBbl_c	DONE	include\daBbl_c.h	dEnemyBase_c	0	ov064	8
 daBmb_c	DONE	include\daBmb_c.h	dEnemyBase_c	0	ov102	9
 daBombking_c	DONE	include\daBombking_c.h	dEnemyBase_c	0	ov078	8

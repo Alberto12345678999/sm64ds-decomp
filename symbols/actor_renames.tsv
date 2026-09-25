@@ -1954,13 +1954,13 @@ ov064	0x0211c5a4	Clam_SpawnInfo	g_profile_OBJ_SHELL	reconstructed profile global
 ov064	0x0211c5c8	data_ov064_0211c5c8	_ZTV12daObjShell_c	vtable alloc=0x174
 ov065	0x02116f48	func_ov065_02116f48	Snufit_Spawn	spawnfunc
 ov065	0x02116f48	Snufit_Spawn	daYurei_Mucho_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
-ov065	0x02116f98	func_ov065_02116f98	_ZN5SwoopD1Ev	vtable slot 16
-ov065	0x02116fe8	func_ov065_02116fe8	_ZN5SwoopD0Ev	vtable slot 17
-ov065	0x02117aa4	func_ov065_02117aa4	_ZN5Swoop16CleanupResourcesEv	vtable slot 3
-ov065	0x02117aec	func_ov065_02117aec	_ZN5Swoop16OnPendingDestroyEv	vtable slot 12
-ov065	0x02117af0	func_ov065_02117af0	_ZN5Swoop6RenderEv	vtable slot 9
-ov065	0x02117b64	func_ov065_02117b64	_ZN5Swoop8BehaviorEv	vtable slot 6
-ov065	0x02117d80	func_ov065_02117d80	_ZN5Swoop13InitResourcesEv	vtable slot 0
+ov065	0x02116f98	func_ov065_02116f98	_ZN12daBasabasa_cD1Ev	vtable slot 16
+ov065	0x02116fe8	func_ov065_02116fe8	_ZN12daBasabasa_cD0Ev	vtable slot 17
+ov065	0x02117aa4	func_ov065_02117aa4	_ZN12daBasabasa_c16CleanupResourcesEv	vtable slot 3
+ov065	0x02117aec	func_ov065_02117aec	_ZN12daBasabasa_c16OnPendingDestroyEv	vtable slot 12
+ov065	0x02117af0	func_ov065_02117af0	_ZN12daBasabasa_c6RenderEv	vtable slot 9
+ov065	0x02117b64	func_ov065_02117b64	_ZN12daBasabasa_c8BehaviorEv	vtable slot 6
+ov065	0x02117d80	func_ov065_02117d80	_ZN12daBasabasa_c13InitResourcesEv	vtable slot 0
 ov065	0x02117ee8	func_ov065_02117ee8	Swoop_Spawn	spawnfunc
 ov065	0x02117ee8	Swoop_Spawn	daBasabasa_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov065	0x02117f40	func_ov065_02117f40	_ZN9daDossy_cD1Ev	vtable slot 16 (was _ZN6DorrieD1Ev)
@@ -2033,7 +2033,7 @@ ov065	0x0211cb80	data_ov065_0211cb80	Snufit_SpawnInfo	spawninfo
 ov065	0x0211cb80	Snufit_SpawnInfo	g_profile_YUREI_MUCHO	reconstructed profile global; literal ROM ID YUREI_MUCHO+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov065	0x0211cc7c	data_ov065_0211cc7c	Swoop_SpawnInfo	spawninfo
 ov065	0x0211cc7c	Swoop_SpawnInfo	g_profile_BASABASA	reconstructed profile global; literal ROM ID BASABASA+registry role+later EAD lineage; exact SM64DS spelling not preserved
-ov065	0x0211cca0	data_ov065_0211cca0	_ZTV5Swoop	vtable alloc=0x440
+ov065	0x0211cca0	data_ov065_0211cca0	_ZTV12daBasabasa_c	vtable alloc=0x440
 ov065	0x0211cd84	data_ov065_0211cd84	Dorrie_SpawnInfo	spawninfo
 ov065	0x0211cd84	Dorrie_SpawnInfo	g_profile_DOSSY	reconstructed profile global; literal ROM ID DOSSY+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov065	0x0211cda0	data_ov065_0211cda0	DorrieCap_SpawnInfo	spawninfo

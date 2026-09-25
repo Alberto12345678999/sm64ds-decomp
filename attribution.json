@@ -5134,6 +5134,27 @@
     "src/actors/daHanachan_c.cpp#_ZN12daHanachan_c16CleanupResourcesEv": "tangosdev",
     "src/actors/daHanachan_c.cpp#_ZN12daHanachan_c6RenderEv": "tangosdev",
     "src/actors/daHanachan_c.cpp#_ZN12daHanachan_c8BehaviorEv": "tangosdev",
-    "src/actors/daHanachan_c.cpp#_ZN12daHanachan_c13InitResourcesEv": "andrewboudreau"
+    "src/actors/daHanachan_c.cpp#_ZN12daHanachan_c13InitResourcesEv": "andrewboudreau",
+    "src/actors/daBasabasa_c.cpp#_ZN12daBasabasa_cD1Ev": "tangosdev",
+    "src/actors/daBasabasa_c.cpp#_ZN12daBasabasa_cD0Ev": "tangosdev",
+    "src/actors/daBasabasa_c.cpp#func_ov065_0211704c": "lunavyqo",
+    "src/actors/daBasabasa_c.cpp#func_ov065_02117404": "tangosdev",
+    "src/actors/daBasabasa_c.cpp#func_ov065_021175b0": "tangosdev",
+    "src/actors/daBasabasa_c.cpp#func_ov065_02117624": "tangosdev",
+    "src/actors/daBasabasa_c.cpp#func_ov065_021176fc": "tangosdev",
+    "src/actors/daBasabasa_c.cpp#func_ov065_02117780": "ruspecial",
+    "src/actors/daBasabasa_c.cpp#func_ov065_021177e4": "andrewboudreau",
+    "src/actors/daBasabasa_c.cpp#func_ov065_02117888": "tangosdev",
+    "src/actors/daBasabasa_c.cpp#func_ov065_021178fc": "tangosdev",
+    "src/actors/daBasabasa_c.cpp#func_ov065_02117944": "tangosdev",
+    "src/actors/daBasabasa_c.cpp#func_ov065_02117994": "tangosdev",
+    "src/actors/daBasabasa_c.cpp#_ZN12daBasabasa_c16CleanupResourcesEv": "tangosdev",
+    "src/actors/daBasabasa_c.cpp#_ZN12daBasabasa_c16OnPendingDestroyEv": "tangosdev",
+    "src/actors/daBasabasa_c.cpp#_ZN12daBasabasa_c6RenderEv": "tangosdev",
+    "src/actors/daBasabasa_c.cpp#_ZN12daBasabasa_c8BehaviorEv": "tangosdev",
+    "src/actors/daBasabasa_c.cpp#_ZN12daBasabasa_c13InitResourcesEv": "tangosdev",
+    "src/actors/daBasabasa_c.cpp#_ZN12daBasabasa_c16OnAimedAtWithEggEv": "tangosdev",
+    "src/actors/daBasabasa_c.cpp#_ZN12daBasabasa_c13OnTurnIntoEggER6Player": "tangosdev",
+    "src/actors/daBasabasa_c.cpp#_ZN12daBasabasa_c13OnYoshiTryEatEv": "andrewboudreau"
   }
 }
