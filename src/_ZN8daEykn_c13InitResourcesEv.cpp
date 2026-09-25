@@ -1,5 +1,5 @@
 //cpp
-// @symbol _ZN3MrI13InitResourcesEv
+// @symbol _ZN8daEykn_c13InitResourcesEv
 // MATCHED 0/166 at size 0x298 (2004/b56).
 //
 // This sat at 3/166 across two campaigns, both declaring it floored. The whole residue
@@ -32,7 +32,7 @@
 // of SetFile; named/const/register/bool/byte/short spellings of the two 1 constants at
 // four declaration positions; void* vs BMD_File* parameter spellings; and Model::LoadFile
 // declared by pointer vs reference.
-#include "MrI.h"
+#include "daEykn_c.h"
 
 struct BMD_File;
 struct BTP_File;
@@ -65,7 +65,7 @@ extern "C" Matrix4x3 IDENTITY_MATRIX4X3;
 
 struct M48 { int w[12]; };
 
-s32 MrI::InitResources()
+s32 daEykn_c::InitResources()
 {
     char *c = (char *)this;
     BMD_File *bmd;

@@ -5118,7 +5118,7 @@ the size-gap tie-break inside `closeness`; the candidate sizes are exact and equ
 rows. It is the metric.
 
 The same split explains a row that read as wrong and is not.
-`_ZN3MrI13InitResourcesEv` (ov071, 0x02121734, 0x298) stores `divergences: 2`, and both its
+`_ZN8daEykn_c13InitResourcesEv` (ov071, 0x02121734, 0x298) stores `divergences: 2`, and both its
 committed file banner and `fdiff.py` say 3/166. Both are right.
 `nearmiss_db.py reeval --dry-run` over all 59 rows reports `50 unchanged, 0 drifted, 9
 unscorable`, so the stored 2 reproduces exactly under the live evaluator; the 3 is the
@@ -6725,7 +6725,7 @@ same way. Eighteen are already byte-exact and always were -- the HAND-ASM PRIMIT
 which carry the banner as a policy marker under the 09-09 ruling -- and the remaining eleven
 keep their residue exactly (func_02009e70 96, `dScStarSel_c::Behavior` 11,
 func_ov015_021114f0 8, func_ov007_020bfd70 7, `Model::LoadCompressedTextureToVram` 5,
-`Stage::InitResources` 4, func_ov075_0211afb0 4, `MrI::InitResources` 3, `OAM::Render` 2,
+`Stage::InitResources` 4, func_ov075_0211afb0 4, `daEykn_c::InitResources` 3, `OAM::Render` 2,
 func_0202ffec 2). Do not go looking for a second free match here; there is one, and this
 was it.
 
@@ -6748,7 +6748,7 @@ link time.
 
 **Addendum (2026-09-13, run link100 wave 12).** Two rows in the list above have since matched,
 neither by a flag: `Stage::InitResources` (a callee's definition takes a second argument, 6cy)
-and `MrI::InitResources` (a callee takes the actor, 6cx addendum). Both were declaration defects
+and `daEykn_c::InitResources` (a callee takes the actor, 6cx addendum). Both were declaration defects
 of the 6cx class; the flag reading of the remaining rows stands.
 
 ## 6cp. Running the permuter on a C++ near-miss: set the LANGUAGE in cc.txt, keep the UNMANGLED name, regenerate the relocs, and check the C port's FRAME first (run link100 crack wave 9, lanes CRK-E, CRK-B, CRK-G, CRK-P, 2026-09-13)
@@ -7536,11 +7536,11 @@ passes, or a `void` declaration for a callee whose value the ROM keeps (PR #2528
 missing-return-value lever is the same class seen from the other side). A callee's
 declaration is part of the register-allocation input of every function that calls it.
 
-**Addendum (2026-09-13, run link100 wave 12 lane W12-9): second instance, `MrI::InitResources`
+**Addendum (2026-09-13, run link100 wave 12 lane W12-9): second instance, `daEykn_c::InitResources`
 MATCHED (3 -> 0); the two-regime coupling on func_ov006_020fdaf0 (7 -> 6); two ASAP/ALAP
 scheduling floors named.**
 
-`_ZN3MrI13InitResourcesEv` (ov071 0x02121734, 0x298) sat at three words for a month: the slot
+`_ZN8daEykn_c13InitResourcesEv` (ov071 0x02121734, 0x298) sat at three words for a month: the slot
 of `mov r2,#1` in the ModelBase::SetFile argument setup at +0x20 (ROM `mov r2,#1 / mov r1,r0 /
 add r0,r4,#0xd4 / mov r3,r2`, every draft `mov r1,r0 / add r0,r4,#0xd4 / mov r2,#1 / mov r3,r2`).
 CRK-O's micro-lab had reduced it to "a third call ahead of the site in the block loses the
@@ -7626,7 +7626,7 @@ because a callee the draft declared too narrowly was still going to read it. Bef
 the callee's definition in src/ for a parameter that register would carry. Here the tell was
 that r1 stayed untouched for 22 instructions and through an if-chain that only used r0 and r7.
 6cx's func_ov063_02117cdc is the same class from the other side (a `(void)` declaration freed
-r0 the ROM kept for `this`), and 6cx's addendum (MrI::InitResources) a third instance.
+r0 the ROM kept for `this`), and 6cx's addendum (daEykn_c::InitResources) a third instance.
 
 Two smaller things from the same landing:
 * At div 0 match.py reported four WRONG reloc destinations that no earlier lane could see (the
