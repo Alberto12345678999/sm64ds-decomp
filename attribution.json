@@ -4950,6 +4950,25 @@
     "src/actors/daObjPile_c.cpp#_ZN11daObjPile_c16CleanupResourcesEv": "tangosdev",
     "src/actors/daObjPile_c.cpp#_ZN11daObjPile_c6RenderEv": "tangosdev",
     "src/actors/daObjPile_c.cpp#_ZN11daObjPile_c8BehaviorEv": "tangosdev",
-    "src/actors/daObjPile_c.cpp#_ZN11daObjPile_c13InitResourcesEv": "tangosdev"
+    "src/actors/daObjPile_c.cpp#_ZN11daObjPile_c13InitResourcesEv": "tangosdev",
+    "src/actors/daBgSnmHed_c.cpp#_ZN12daBgSnmHed_cD1Ev": "andrewboudreau",
+    "src/actors/daBgSnmHed_c.cpp#_ZN12daBgSnmHed_cD0Ev": "andrewboudreau",
+    "src/actors/daBgSnmHed_c.cpp#_ZN12daBgSnmHed_c11UpdateModelEv": "andrewboudreau",
+    "src/actors/daBgSnmHed_c.cpp#_ZN12daBgSnmHed_c6State3Ev": "andrewboudreau",
+    "src/actors/daBgSnmHed_c.cpp#_ZN12daBgSnmHed_c10InitState3Ev": "andrewboudreau",
+    "src/actors/daBgSnmHed_c.cpp#_ZN12daBgSnmHed_c6State2Ev": "andrewboudreau",
+    "src/actors/daBgSnmHed_c.cpp#_ZN12daBgSnmHed_c10InitState2Ev": "andrewboudreau",
+    "src/actors/daBgSnmHed_c.cpp#_ZN12daBgSnmHed_c6State1Ev": "andrewboudreau",
+    "src/actors/daBgSnmHed_c.cpp#_ZN12daBgSnmHed_c10InitState1Ev": "andrewboudreau",
+    "src/actors/daBgSnmHed_c.cpp#_ZN12daBgSnmHed_c6State0Ev": "andrewboudreau",
+    "src/actors/daBgSnmHed_c.cpp#_ZN12daBgSnmHed_c10InitState0Ev": "andrewboudreau",
+    "src/actors/daBgSnmHed_c.cpp#_ZN12daBgSnmHed_c17CallStateBehaviorEv": "andrewboudreau",
+    "src/actors/daBgSnmHed_c.cpp#_ZN12daBgSnmHed_c13CallStateInitEv": "andrewboudreau",
+    "src/actors/daBgSnmHed_c.cpp#_ZN12daBgSnmHed_c8SetStateEi": "andrewboudreau",
+    "src/actors/daBgSnmHed_c.cpp#_ZN12daBgSnmHed_c16CleanupResourcesEv": "tangosdev",
+    "src/actors/daBgSnmHed_c.cpp#_ZN12daBgSnmHed_c16OnPendingDestroyEv": "andrewboudreau",
+    "src/actors/daBgSnmHed_c.cpp#_ZN12daBgSnmHed_c6RenderEv": "tangosdev",
+    "src/actors/daBgSnmHed_c.cpp#_ZN12daBgSnmHed_c8BehaviorEv": "tangosdev",
+    "src/actors/daBgSnmHed_c.cpp#_ZN12daBgSnmHed_c13InitResourcesEv": "tangosdev"
   }
 }
