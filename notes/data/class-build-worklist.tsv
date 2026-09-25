@@ -103,7 +103,7 @@ daBgSnwmn_c	DONE	include\daBgSnwmn_c.h	dActor_c	0	ov072	7
 daBookGen_c	DONE	include\BookShotSpawner.h  [alias: header uses pre-rename name]	dActor_c	0	ov020	5
 daBrq_c	DONE	include\daBrq_c.h	dActor_c	0	ov070	18
 daBtfly_c	DONE	include\daBtfly_c.h  [alias: header uses pre-rename name]	dActor_c	0	ov100	15
-daBttBk_c	DONE	include\CrazedCrate.h  [alias: header uses pre-rename name]	dActor_c	0	ov080	9
+daBttBk_c	DONE	include\daBttBk_c.h	dActor_c	0	ov080	9
 daCamTag_c	DONE	include\daCamTag_c.h	dActor_c	0	ov002	7
 daChRoom_c	DONE	include\daChRoom_c.h	dActor_c	0	ov002	7
 daChScene_c	DONE	include\daChScene_c.h	dActor_c	0	ov002	7

@@ -2418,13 +2418,13 @@ ov080	0x02124998	func_ov080_02124998	MontyMoleRock_Spawn	spawnfunc
 ov080	0x02124998	MontyMoleRock_Spawn	daChoro_Rock_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov080	0x021249e0	func_ov080_021249e0	MontyMole_Spawn	spawnfunc
 ov080	0x021249e0	MontyMole_Spawn	daChoropu_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
-ov080	0x02124a20	func_ov080_02124a20	_ZN11CrazedCrateD1Ev	vtable slot 16
-ov080	0x02124a68	func_ov080_02124a68	_ZN11CrazedCrateD0Ev	vtable slot 17
-ov080	0x02125158	func_ov080_02125158	_ZN11CrazedCrate16CleanupResourcesEv	vtable slot 3
-ov080	0x0212517c	func_ov080_0212517c	_ZN11CrazedCrate16OnPendingDestroyEv	vtable slot 12
-ov080	0x02125180	func_ov080_02125180	_ZN11CrazedCrate6RenderEv	vtable slot 9
-ov080	0x021251cc	func_ov080_021251cc	_ZN11CrazedCrate8BehaviorEv	vtable slot 6
-ov080	0x021251ec	func_ov080_021251ec	_ZN11CrazedCrate13InitResourcesEv	vtable slot 0
+ov080	0x02124a20	func_ov080_02124a20	_ZN9daBttBk_cD1Ev	vtable slot 16
+ov080	0x02124a68	func_ov080_02124a68	_ZN9daBttBk_cD0Ev	vtable slot 17
+ov080	0x02125158	func_ov080_02125158	_ZN9daBttBk_c16CleanupResourcesEv	vtable slot 3
+ov080	0x0212517c	func_ov080_0212517c	_ZN9daBttBk_c16OnPendingDestroyEv	vtable slot 12
+ov080	0x02125180	func_ov080_02125180	_ZN9daBttBk_c6RenderEv	vtable slot 9
+ov080	0x021251cc	func_ov080_021251cc	_ZN9daBttBk_c8BehaviorEv	vtable slot 6
+ov080	0x021251ec	func_ov080_021251ec	_ZN9daBttBk_c13InitResourcesEv	vtable slot 0
 ov080	0x021253b4	func_ov080_021253b4	CrazedCrate_Spawn	spawnfunc
 ov080	0x021253b4	CrazedCrate_Spawn	daBttBk_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov080	0x02126f8c	func_ov080_02126f8c	Painting_Spawn	spawnfunc
@@ -2437,7 +2437,7 @@ ov080	0x0212802c	data_ov080_0212802c	_ZTV13MontyMoleRock	vtable alloc=0x18c
 ov080	0x021280b0	data_ov080_021280b0	_ZTV9MontyMole	vtable alloc=0x18c
 ov080	0x02128174	data_ov080_02128174	CrazedCrate_SpawnInfo	spawninfo
 ov080	0x02128174	CrazedCrate_SpawnInfo	g_profile_BATTA_BLOCK	reconstructed profile global; literal ROM ID BATTA_BLOCK+registry role+later EAD lineage; exact SM64DS spelling not preserved
-ov080	0x02128198	data_ov080_02128198	_ZTV11CrazedCrate	vtable alloc=0x378
+ov080	0x02128198	data_ov080_02128198	_ZTV9daBttBk_c	vtable alloc=0x378
 ov080	0x02128290	data_ov080_02128290	Painting_SpawnInfo	spawninfo
 ov080	0x02128290	Painting_SpawnInfo	g_profile_PICTURE_GATE	reconstructed profile global; literal ROM ID PICTURE_GATE+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov081	0x02123740	func_ov081_02123740	_ZN9SpindriftD1Ev	vtable slot 16

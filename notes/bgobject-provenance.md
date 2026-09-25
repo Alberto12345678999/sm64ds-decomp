@@ -79,7 +79,7 @@ per-function files, now together in `src/actors/daObjBlockS_c.cpp`),
 
 In the `#else` C twin only, three offsets that are `dActor_c`'s and are already named
 on the C++ side of the very same header were repointed to those names — the same
-correction `include/CrazedCrate.h` documents having made: `0x09c` → `mVertAccel`
+correction `include/daBttBk_c.h` (then `CrazedCrate.h`) documents having made: `0x09c` → `mVertAccel`
 (`InitResources` writes `-0x2000`), `0x0a0` → `mTerminalVelocity` (`-0x3c000`),
 `0x0b0` → `mFlags`.
 

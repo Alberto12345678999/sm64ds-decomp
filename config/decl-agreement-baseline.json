@@ -1916,6 +1916,9 @@
       ],
       "src/func_ov094_021362e0.c": [
         "param:#1 Mtx43 *"
+      ],
+      "src/actors/daBttBk_c.cpp": [
+        "param:#1 Mtx43 *"
       ]
     },
     "Matrix4x3_FromQuaternion": {
@@ -5422,6 +5425,10 @@
       ],
       "src/game/actors/d_a_jgm.cpp": [
         "return:void"
+      ],
+      "src/actors/daBttBk_c.cpp": [
+        "param:#1 Vector3 *",
+        "return:void"
       ]
     },
     "Vec3_MulScalar": {
@@ -7141,6 +7148,10 @@
         "param:#2 void *",
         "param:#5 void *"
       ],
+      "src/actors/daBttBk_c.cpp": [
+        "param:#2 void *",
+        "param:#5 void *"
+      ],
       "src/actors/daOwl_c.cpp": [
         "param:#2 void *",
         "param:#5 void *"
@@ -7568,6 +7579,9 @@
     },
     "_ZN11ShadowModel10InitCuboidEv": {
       "src/_ZN11CrazedCrate13InitResourcesEv.cpp": [
+        "return:void"
+      ],
+      "src/actors/daBttBk_c.cpp": [
         "return:void"
       ],
       "src/actors/daObjBlockS_c.cpp": [
@@ -11376,6 +11390,9 @@
         "param:#1 void *"
       ],
       "src/actors/daObjSm_Lift_c.cpp": [
+        "param:#1 void *"
+      ],
+      "src/actors/daBttBk_c.cpp": [
         "param:#1 void *"
       ],
       "src/actors/daObjEwbIce_c.cpp": [
@@ -15236,6 +15253,9 @@
       "src/unnamed/ov063/func_ov063_021177b0.c": [
         "return:void"
       ],
+      "src/actors/daBttBk_c.cpp": [
+        "return:void"
+      ],
       "src/actors/daObjEwbIce_c.cpp": [
         "return:void"
       ],
@@ -15825,6 +15845,9 @@
       "src/actors/daMenbo_c.cpp": [
         "return:void *"
       ],
+      "src/actors/daBttBk_c.cpp": [
+        "return:void *"
+      ],
       "src/actors/daOwl_c.cpp": [
         "return:int"
       ],
@@ -15940,6 +15963,10 @@
       ],
       "src/actors/daMenbo_c.cpp": [
         "param:#2 const void *",
+        "param:#3 unsigned int"
+      ],
+      "src/actors/daBttBk_c.cpp": [
+        "param:#2 const Vector3 &",
         "param:#3 unsigned int"
       ],
       "src/actors/daObjPile_c.cpp": [
@@ -16359,6 +16386,9 @@
         "param:#7 unsigned int"
       ],
       "src/game/actors/daObjPathLift_c.cpp": [
+        "param:#7 unsigned int"
+      ],
+      "src/actors/daBttBk_c.cpp": [
         "param:#7 unsigned int"
       ],
       "src/actors/daObjCtRotateBlock_c.cpp": [
@@ -18366,6 +18396,9 @@
       "src/actors/daObjSm_Lift_c.cpp": [
         "return:void"
       ],
+      "src/actors/daBttBk_c.cpp": [
+        "return:void"
+      ],
       "src/actors/daObjEwbIce_c.cpp": [
         "param:#2 int"
       ],
@@ -19824,6 +19857,9 @@
         "arity:1"
       ],
       "src/game/actors/daBrq_c.cpp": [
+        "arity:1"
+      ],
+      "src/actors/daBttBk_c.cpp": [
         "arity:1"
       ]
     },
@@ -22953,6 +22989,9 @@
       ],
       "src/minigames/d_s_mg_jump2.cpp": [
         "return:int"
+      ],
+      "src/actors/daBttBk_c.cpp": [
+        "return:Mtx43"
       ],
       "src/actors/daObjCtRotateBlock_c.cpp": [
         "return:int []"

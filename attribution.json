@@ -5057,6 +5057,26 @@
     "src/actors/daOwl_c.cpp#_ZN7daOwl_c16OnPendingDestroyEv": "tangosdev",
     "src/actors/daOwl_c.cpp#_ZN7daOwl_c6RenderEv": "tangosdev",
     "src/actors/daOwl_c.cpp#_ZN7daOwl_c8BehaviorEv": "tangosdev",
-    "src/actors/daOwl_c.cpp#_ZN7daOwl_c13InitResourcesEv": "lunavyqo"
+    "src/actors/daOwl_c.cpp#_ZN7daOwl_c13InitResourcesEv": "lunavyqo",
+    "src/actors/daBttBk_c.cpp#_ZN9daBttBk_cD1Ev": "tangosdev",
+    "src/actors/daBttBk_c.cpp#_ZN9daBttBk_cD0Ev": "tangosdev",
+    "src/actors/daBttBk_c.cpp#_ZN9daBttBk_c13OnYoshiTryEatEv": "tangosdev",
+    "src/actors/daBttBk_c.cpp#func_ov080_02124acc": "lunavyqo",
+    "src/actors/daBttBk_c.cpp#func_ov080_02124c3c": "lunavyqo",
+    "src/actors/daBttBk_c.cpp#func_ov080_02124e60": "tangosdev",
+    "src/actors/daBttBk_c.cpp#func_ov080_02124eb0": "tangosdev",
+    "src/actors/daBttBk_c.cpp#func_ov080_02124edc": "lunavyqo",
+    "src/actors/daBttBk_c.cpp#func_ov080_02124fec": "tangosdev",
+    "src/actors/daBttBk_c.cpp#func_ov080_0212500c": "tangosdev",
+    "src/actors/daBttBk_c.cpp#func_ov080_0212509c": "tangosdev",
+    "src/actors/daBttBk_c.cpp#func_ov080_021250c8": "tangosdev",
+    "src/actors/daBttBk_c.cpp#func_ov080_02125104": "tangosdev",
+    "src/actors/daBttBk_c.cpp#func_ov080_0212513c": "ruspecial",
+    "src/actors/daBttBk_c.cpp#_ZN9daBttBk_c16CleanupResourcesEv": "tangosdev",
+    "src/actors/daBttBk_c.cpp#_ZN9daBttBk_c16OnPendingDestroyEv": "tangosdev",
+    "src/actors/daBttBk_c.cpp#_ZN9daBttBk_c6RenderEv": "tangosdev",
+    "src/actors/daBttBk_c.cpp#_ZN9daBttBk_c8BehaviorEv": "tangosdev",
+    "src/actors/daBttBk_c.cpp#_ZN9daBttBk_c13InitResourcesEv": "tangosdev",
+    "src/actors/daBttBk_c.cpp#_ZN9daBttBk_c13OnTurnIntoEggER6Player": "andrewboudreau"
   }
 }
