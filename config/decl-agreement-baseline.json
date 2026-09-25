@@ -4359,11 +4359,6 @@
         "return:unsigned char"
       ]
     },
-    "UnloadArchive": {
-      "src/func_02018770.c": [
-        "arity:0"
-      ]
-    },
     "UpdateMinimap": {
       "src/_ZN6dMap_c8BehaviorEv.cpp": [
         "param:#1 int *",
