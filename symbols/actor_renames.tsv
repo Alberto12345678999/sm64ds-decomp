@@ -2440,12 +2440,12 @@ ov080	0x02128174	CrazedCrate_SpawnInfo	g_profile_BATTA_BLOCK	reconstructed profi
 ov080	0x02128198	data_ov080_02128198	_ZTV9daBttBk_c	vtable alloc=0x378
 ov080	0x02128290	data_ov080_02128290	Painting_SpawnInfo	spawninfo
 ov080	0x02128290	Painting_SpawnInfo	g_profile_PICTURE_GATE	reconstructed profile global; literal ROM ID PICTURE_GATE+registry role+later EAD lineage; exact SM64DS spelling not preserved
-ov081	0x02123740	func_ov081_02123740	_ZN9SpindriftD1Ev	vtable slot 16
-ov081	0x02123788	func_ov081_02123788	_ZN9SpindriftD0Ev	vtable slot 17
-ov081	0x02123bec	func_ov081_02123bec	_ZN9Spindrift16CleanupResourcesEv	vtable slot 3
-ov081	0x02123c1c	func_ov081_02123c1c	_ZN9Spindrift6RenderEv	vtable slot 9
-ov081	0x02123c6c	func_ov081_02123c6c	_ZN9Spindrift8BehaviorEv	vtable slot 6
-ov081	0x02123ed0	func_ov081_02123ed0	_ZN9Spindrift13InitResourcesEv	vtable slot 0
+ov081	0x02123740	func_ov081_02123740	_ZN8daHuwa_cD1Ev	vtable slot 16
+ov081	0x02123788	func_ov081_02123788	_ZN8daHuwa_cD0Ev	vtable slot 17
+ov081	0x02123bec	func_ov081_02123bec	_ZN8daHuwa_c16CleanupResourcesEv	vtable slot 3
+ov081	0x02123c1c	func_ov081_02123c1c	_ZN8daHuwa_c6RenderEv	vtable slot 9
+ov081	0x02123c6c	func_ov081_02123c6c	_ZN8daHuwa_c8BehaviorEv	vtable slot 6
+ov081	0x02123ed0	func_ov081_02123ed0	_ZN8daHuwa_c13InitResourcesEv	vtable slot 0
 ov081	0x02124040	func_ov081_02124040	Spindrift_Spawn	spawnfunc
 ov081	0x02124040	Spindrift_Spawn	daHuwa_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov081	0x02124090	func_ov081_02124090	_ZN10MrBlizzardD1Ev	vtable slot 16
@@ -2485,7 +2485,7 @@ ov081	0x021280a0	func_ov081_021280a0	IceBlock_Spawn	spawnfunc
 ov081	0x021280a0	IceBlock_Spawn	daObjIceBlock_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov081	0x02128858	data_ov081_02128858	Spindrift_SpawnInfo	spawninfo
 ov081	0x02128858	Spindrift_SpawnInfo	g_profile_HUWAHUWA	reconstructed profile global; literal ROM ID HUWAHUWA+registry role+later EAD lineage; exact SM64DS spelling not preserved
-ov081	0x0212887c	data_ov081_0212887c	_ZTV9Spindrift	vtable alloc=0x39c
+ov081	0x0212887c	data_ov081_0212887c	_ZTV8daHuwa_c	vtable alloc=0x39c
 ov081	0x021289cc	data_ov081_021289cc	MrBlizzard_SpawnInfo	spawninfo
 ov081	0x021289cc	MrBlizzard_SpawnInfo	g_profile_SNOWMAN	reconstructed profile global; literal ROM ID SNOWMAN+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov081	0x021289f0	data_ov081_021289f0	_ZTV10MrBlizzard	vtable alloc=?

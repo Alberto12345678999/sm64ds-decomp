@@ -320,7 +320,7 @@ All DS names below confirmed as live mangled symbols (`_ZTV*`, `_ZN*D1Ev`) in
 | `bhvFlyGuy` | → | `FlyGuy` | [ov070](../../config/arm9/overlays/ov070/symbols.txt) |
 | `bhvSnufit` / `bhvSwoop` | → | `Snufit` / `Swoop` | [ov065](../../config/arm9/overlays/ov065/symbols.txt) |
 | `bhvScuttlebug` | → | `Scuttlebug` | [ov071](../../config/arm9/overlays/ov071/symbols.txt) |
-| `bhvSpindrift` | → | `Spindrift` | [ov081](../../config/arm9/overlays/ov081/symbols.txt) |
+| `bhvSpindrift` | → | `daHuwa_c` | [ov081](../../config/arm9/overlays/ov081/symbols.txt) |
 | `bhvWigglerHead`/`Body` | → | `Wiggler` | [ov034](../../config/arm9/overlays/ov034/symbols.txt) |
 | `bhvPiranhaPlant` | → | `PiranhaPlant` (+`FirePiranhaPlantBig/Small`) | [ov084](../../config/arm9/overlays/ov084/symbols.txt) |
 | `bhvEnemyLakitu` / camera Lakitu | → | `daJgm_c` / `daC_Jugem_c` | [ov077](../../config/arm9/overlays/ov077/symbols.txt) / [ov085](../../config/arm9/overlays/ov085/symbols.txt) |

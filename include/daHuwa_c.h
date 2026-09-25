@@ -1,12 +1,12 @@
-#ifndef SPINDRIFT_H
-#define SPINDRIFT_H
+#ifndef DAHUWA_C_H
+#define DAHUWA_C_H
 
 #include "types.h"
 
 /* Derives from dEnemyBase_c, and TWO INDEPENDENT WITNESSES agree on the layout: the
- * class's own destructor `_ZN9SpindriftD1Ev` destroys each member, and
+ * class's own destructor `_ZN8daHuwa_cD1Ev` destroys each member, and
  * `Spindrift_Spawn` constructs the same types at the same offsets before
- * storing `_ZTV9Spindrift`. Everything this header used to restate below 0x110
+ * storing `_ZTV8daHuwa_c`. Everything this header used to restate below 0x110
  * belongs to dEnemyBase_c and dActor_c and is inherited now.
  *
  * The members close on each other, which is what makes the layout a reading
@@ -40,7 +40,7 @@
 #include "ShadowModel.h"
 #include "dBgCh_Actr.h"
 
-struct Spindrift : dEnemyBase_c {
+struct daHuwa_c : dEnemyBase_c {
     ModelAnim                    mModelAnim;            /* 0x110 */
     ShadowModel                  mShadowModel;          /* 0x174 */
     dCcAc_c           mdCcAc_c;   /* 0x19c */
@@ -51,7 +51,7 @@ struct Spindrift : dEnemyBase_c {
     u8  pad_39b[0x1];
 
     /* --- vtable --- */
-    virtual ~Spindrift();
+    virtual ~daHuwa_c();
 
     virtual s32   OnYoshiTryEat();         /* slot 18 */
     virtual void  OnTurnIntoEgg(Player &player); /* slot 19 */
@@ -66,7 +66,7 @@ struct Spindrift : dEnemyBase_c {
 
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
-typedef char Spindrift_size_must_be_0x39c[sizeof(Spindrift) == 0x39c ? 1 : -1];
+typedef char daHuwa_c_size_must_be_0x39c[sizeof(daHuwa_c) == 0x39c ? 1 : -1];
 #endif
 
-#endif /* SPINDRIFT_H */
+#endif /* DAHUWA_C_H */
