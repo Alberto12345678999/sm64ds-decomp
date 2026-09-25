@@ -41169,15 +41169,15 @@ matched: yes</title></rect><rect x="1257.70" y="708.30" width="19.54" height="23
 module: ov080
 addr: 0x02127b2c
 size: 1076 bytes
-matched: yes</title></rect><rect x="1148.57" y="764.14" width="6.17" height="5.42" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9SpindriftD1Ev
+matched: yes</title></rect><rect x="1148.57" y="764.14" width="6.17" height="5.42" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daHuwa_cD1Ev
 module: ov081
 addr: 0x02123740
 size: 72 bytes
-matched: yes</title></rect><rect x="1148.57" y="769.56" width="6.17" height="6.93" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9SpindriftD0Ev
+matched: yes</title></rect><rect x="1148.57" y="769.56" width="6.17" height="6.93" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daHuwa_cD0Ev
 module: ov081
 addr: 0x02123788
 size: 92 bytes
-matched: yes</title></rect><rect x="1148.57" y="776.48" width="6.17" height="0.60" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9Spindrift16OnAimedAtWithEggEv
+matched: yes</title></rect><rect x="1148.57" y="776.48" width="6.17" height="0.60" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daHuwa_c16OnAimedAtWithEggEv
 module: ov081
 addr: 0x021237e4
 size: 8 bytes
@@ -41193,27 +41193,27 @@ matched: yes</title></rect><rect x="1154.74" y="764.14" width="8.11" height="11.
 module: ov081
 addr: 0x02123b20
 size: 204 bytes
-matched: yes</title></rect><rect x="1154.74" y="775.82" width="8.11" height="2.75" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9Spindrift16CleanupResourcesEv
+matched: yes</title></rect><rect x="1154.74" y="775.82" width="8.11" height="2.75" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daHuwa_c16CleanupResourcesEv
 module: ov081
 addr: 0x02123bec
 size: 48 bytes
-matched: yes</title></rect><rect x="1154.74" y="778.57" width="8.11" height="4.58" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9Spindrift6RenderEv
+matched: yes</title></rect><rect x="1154.74" y="778.57" width="8.11" height="4.58" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daHuwa_c6RenderEv
 module: ov081
 addr: 0x02123c1c
 size: 80 bytes
-matched: yes</title></rect><rect x="1154.74" y="783.15" width="8.11" height="35.05" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9Spindrift8BehaviorEv
+matched: yes</title></rect><rect x="1154.74" y="783.15" width="8.11" height="35.05" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daHuwa_c8BehaviorEv
 module: ov081
 addr: 0x02123c6c
 size: 612 bytes
-matched: yes</title></rect><rect x="1154.74" y="818.20" width="8.11" height="15.12" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9Spindrift13InitResourcesEv
+matched: yes</title></rect><rect x="1154.74" y="818.20" width="8.11" height="15.12" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daHuwa_c13InitResourcesEv
 module: ov081
 addr: 0x02123ed0
 size: 264 bytes
-matched: yes</title></rect><rect x="1154.74" y="833.32" width="8.11" height="5.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9Spindrift13OnTurnIntoEggER6Player
+matched: yes</title></rect><rect x="1154.74" y="833.32" width="8.11" height="5.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daHuwa_c13OnTurnIntoEggER6Player
 module: ov081
 addr: 0x02123fd8
 size: 96 bytes
-matched: yes</title></rect><rect x="1162.85" y="764.14" width="5.70" height="0.65" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9Spindrift13OnYoshiTryEatEv
+matched: yes</title></rect><rect x="1162.85" y="764.14" width="5.70" height="0.65" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daHuwa_c13OnYoshiTryEatEv
 module: ov081
 addr: 0x02124038
 size: 8 bytes
