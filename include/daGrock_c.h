@@ -1,9 +1,9 @@
-#ifndef ROLLINGROCK_H
-#define ROLLINGROCK_H
+#ifndef DAGROCK_C_H
+#define DAGROCK_C_H
 
 #include "types.h"
 
-/* Derives from dEnemyBase_c, on the evidence of its own destructor: `_ZN11RollingRockD1Ev`
+/* Derives from dEnemyBase_c, on the evidence of its own destructor: `_ZN9daGrock_cD1Ev`
  * stores this vtable, destroys its members in reverse declaration order, then
  * calls `dEnemyBase_c::~dEnemyBase_c`. Everything this header used to restate below 0x110
  * belongs to that chain and is inherited now.
@@ -19,7 +19,7 @@
  * also rename things its callers spell.
  *
  * SIZE IS THE ROM'S OWN, not a rounded-up field span: `daGrock_c_classInit` calls
- * `fBase_c::operator new(968)` -- 0x3c8 -- and stores `_ZTV11RollingRock`,
+ * `fBase_c::operator new(968)` -- 0x3c8 -- and stores `_ZTV9daGrock_c`,
  * so that literal IS this class's sizeof. The observed fields only span to
  * 0x3c4; the difference is trailing space no source reads.
  *
@@ -38,7 +38,7 @@
 #include "TextureTransformer.h"
 #include "dBgCh_Actr.h"
 
-struct RollingRock : dEnemyBase_c {
+struct daGrock_c : dEnemyBase_c {
     Model                        mModel;                /* 0x110 */
     ShadowModel                  mShadowModel;          /* 0x160 */
     u8  pad_188[0x30];
@@ -54,7 +54,7 @@ struct RollingRock : dEnemyBase_c {
     u8  pad_3c3[0x5];
 
     /* --- vtable --- */
-    virtual ~RollingRock();
+    virtual ~daGrock_c();
 
     virtual s32   OnAimedAtWithEgg();      /* slot 29 */
 
@@ -66,7 +66,7 @@ struct RollingRock : dEnemyBase_c {
 
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
-typedef char RollingRock_size_must_be_0x3c8[sizeof(RollingRock) == 0x3c8 ? 1 : -1];
+typedef char daGrock_c_size_must_be_0x3c8[sizeof(daGrock_c) == 0x3c8 ? 1 : -1];
 #endif
 
-#endif /* ROLLINGROCK_H */
+#endif /* DAGROCK_C_H */

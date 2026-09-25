@@ -8,53 +8,9 @@ src/actors/daObjCvNewsLift_c.cpp:
     complete
     .text start:0x021111a0 end:0x021121e8
 
-src/_ZN11RollingRockD1Ev.cpp:
+src/actors/daGrock_c.cpp:
     complete
-    .text start:0x021121e8 end:0x02112230
-
-src/_ZN11RollingRockD0Ev.cpp:
-    complete
-    .text start:0x02112230 end:0x0211228c
-
-src/_ZN11RollingRock16OnAimedAtWithEggEv.cpp:
-    complete
-    .text start:0x0211228c end:0x02112294
-
-src/func_ov021_02112294.c:
-    complete
-    .text start:0x02112294 end:0x021122fc
-
-src/func_ov021_021122fc.cpp:
-    complete
-    .text start:0x021122fc end:0x021123b0
-
-src/func_ov021_021123b0.c:
-    complete
-    .text start:0x021123b0 end:0x02112544
-
-src/func_ov021_02112544.cpp:
-    complete
-    .text start:0x02112544 end:0x021127b4
-
-src/func_ov021_021127b4.c:
-    complete
-    .text start:0x021127b4 end:0x021127f8
-
-src/_ZN11RollingRock16CleanupResourcesEv.cpp:
-    complete
-    .text start:0x021127f8 end:0x0211281c
-
-src/_ZN11RollingRock6RenderEv.cpp:
-    complete
-    .text start:0x0211281c end:0x02112854
-
-src/_ZN11RollingRock8BehaviorEv.cpp:
-    complete
-    .text start:0x02112854 end:0x02112b2c
-
-src/_ZN11RollingRock13InitResourcesEv.cpp:
-    complete
-    .text start:0x02112b2c end:0x02112d64
+    .text start:0x021121e8 end:0x02112d64
 
 src/d_a_grock.c:
     complete

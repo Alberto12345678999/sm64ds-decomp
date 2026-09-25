@@ -447,7 +447,6 @@ extern int _ZTV20daObjCannonShutter_c[];
 extern int _ZTV18daObjMc_Metalnet_c[];
 extern int _ZTV11CrazedCrate[];
 extern int _ZTV11PyramidStep[];
-extern int _ZTV11RollingRock[];
 extern int _ZTV11daChScene_c[];
 extern int _ZTV11daFeather_c[];
 extern int _ZTV11dCapEnemy_c[];

@@ -20,7 +20,7 @@ one, add it here AND, if it recurs, as a rule in `swarm.py` so the free tier can
 The known divergence is that `v = *(T *)p` is a blind byte move in C and scalarises
 to the members' own types in C++. The documented fix -- copy through a struct whose
 only member is an array -- is usually described as restoring the `ldm`/`stm` pair.
-It does more than that, and `RollingRock::Behavior` (ov021 0x02112854, 0x2d8) is the
+It does more than that, and `daGrock_c::Behavior` (ov021 0x02112854, 0x2d8) is the
 case that shows it.
 
 Copying a `Vector3_16` out of an actor at +0x92 as a method scalarised to three

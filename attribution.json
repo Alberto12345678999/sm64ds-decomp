@@ -4898,6 +4898,18 @@
     "src/actors/daObjSeesaw_c.cpp#_ZN13daObjSeesaw_c16CleanupResourcesEv": "tangosdev",
     "src/actors/daObjSeesaw_c.cpp#_ZN13daObjSeesaw_c6RenderEv": "tangosdev",
     "src/actors/daObjSeesaw_c.cpp#_ZN13daObjSeesaw_c8BehaviorEv": "tangosdev",
-    "src/actors/daObjSeesaw_c.cpp#_ZN13daObjSeesaw_c13InitResourcesEv": "tangosdev"
+    "src/actors/daObjSeesaw_c.cpp#_ZN13daObjSeesaw_c13InitResourcesEv": "tangosdev",
+    "src/actors/daGrock_c.cpp#_ZN9daGrock_cD1Ev": "tangosdev",
+    "src/actors/daGrock_c.cpp#_ZN9daGrock_cD0Ev": "tangosdev",
+    "src/actors/daGrock_c.cpp#_ZN9daGrock_c16OnAimedAtWithEggEv": "tangosdev",
+    "src/actors/daGrock_c.cpp#func_ov021_02112294": "tangosdev",
+    "src/actors/daGrock_c.cpp#func_ov021_021122fc": "tangosdev",
+    "src/actors/daGrock_c.cpp#func_ov021_021123b0": "tangosdev",
+    "src/actors/daGrock_c.cpp#func_ov021_02112544": "ruspecial",
+    "src/actors/daGrock_c.cpp#func_ov021_021127b4": "tangosdev",
+    "src/actors/daGrock_c.cpp#_ZN9daGrock_c16CleanupResourcesEv": "tangosdev",
+    "src/actors/daGrock_c.cpp#_ZN9daGrock_c6RenderEv": "tangosdev",
+    "src/actors/daGrock_c.cpp#_ZN9daGrock_c8BehaviorEv": "ruspecial",
+    "src/actors/daGrock_c.cpp#_ZN9daGrock_c13InitResourcesEv": "tangosdev"
   }
 }
