@@ -191,37 +191,9 @@ src/d_a_klr.c:
     complete
     .text start:0x02126d64 end:0x02126dbc
 
-src/_ZN11BillBlasterD1Ev.cpp:
+src/actors/daObjBkKillerdai_c.cpp:
     complete
-    .text start:0x02126dbc end:0x02126e00
-
-src/_ZN11BillBlasterD0Ev.cpp:
-    complete
-    .text start:0x02126e00 end:0x02126e58
-
-src/_ZN11BillBlaster4KillEv.cpp:
-    complete
-    .text start:0x02126e58 end:0x02126ecc
-
-src/_ZN11BillBlaster15OnHitByMegaCharER6Player.cpp:
-    complete
-    .text start:0x02126ecc end:0x02126f04
-
-src/_ZN11BillBlaster16CleanupResourcesEv.cpp:
-    complete
-    .text start:0x02126f04 end:0x02126f64
-
-src/_ZN11BillBlaster6RenderEv.cpp:
-    complete
-    .text start:0x02126f64 end:0x02126f8c
-
-src/_ZN11BillBlaster8BehaviorEv.cpp:
-    complete
-    .text start:0x02126f8c end:0x02127090
-
-src/_ZN11BillBlaster13InitResourcesEv.cpp:
-    complete
-    .text start:0x02127090 end:0x021271b4
+    .text start:0x02126dbc end:0x021271b4
 
 src/d_a_obj_bk_killerdai.c:
     complete

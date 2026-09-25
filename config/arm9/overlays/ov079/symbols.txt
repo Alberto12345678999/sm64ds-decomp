@@ -45,14 +45,14 @@ _ZN10BulletBill6RenderEv kind:function(arm,size=0x3c) addr:0x02126a48
 _ZN10BulletBill8BehaviorEv kind:function(arm,size=0x1c0) addr:0x02126a84
 _ZN10BulletBill13InitResourcesEv kind:function(arm,size=0x120) addr:0x02126c44
 daKlr_c_classInit kind:function(arm,size=0x58) addr:0x02126d64
-_ZN11BillBlasterD1Ev kind:function(arm,size=0x44) addr:0x02126dbc
-_ZN11BillBlasterD0Ev kind:function(arm,size=0x58) addr:0x02126e00
-_ZN11BillBlaster4KillEv kind:function(arm,size=0x74) addr:0x02126e58
-_ZN11BillBlaster15OnHitByMegaCharER6Player kind:function(arm,size=0x38) addr:0x02126ecc
-_ZN11BillBlaster16CleanupResourcesEv kind:function(arm,size=0x60) addr:0x02126f04
-_ZN11BillBlaster6RenderEv kind:function(arm,size=0x28) addr:0x02126f64
-_ZN11BillBlaster8BehaviorEv kind:function(arm,size=0x104) addr:0x02126f8c
-_ZN11BillBlaster13InitResourcesEv kind:function(arm,size=0x124) addr:0x02127090
+_ZN18daObjBkKillerdai_cD1Ev kind:function(arm,size=0x44) addr:0x02126dbc
+_ZN18daObjBkKillerdai_cD0Ev kind:function(arm,size=0x58) addr:0x02126e00
+_ZN18daObjBkKillerdai_c4KillEv kind:function(arm,size=0x74) addr:0x02126e58
+_ZN18daObjBkKillerdai_c15OnHitByMegaCharER6Player kind:function(arm,size=0x38) addr:0x02126ecc
+_ZN18daObjBkKillerdai_c16CleanupResourcesEv kind:function(arm,size=0x60) addr:0x02126f04
+_ZN18daObjBkKillerdai_c6RenderEv kind:function(arm,size=0x28) addr:0x02126f64
+_ZN18daObjBkKillerdai_c8BehaviorEv kind:function(arm,size=0x104) addr:0x02126f8c
+_ZN18daObjBkKillerdai_c13InitResourcesEv kind:function(arm,size=0x124) addr:0x02127090
 daObjBkKillerdai_c_classInit kind:function(arm,size=0x30) addr:0x021271b4
 _ZN12FortressWallD1Ev kind:function(arm,size=0x44) addr:0x021271e4
 _ZN12FortressWallD0Ev kind:function(arm,size=0x58) addr:0x02127228
@@ -108,7 +108,7 @@ data_ov079_02127f64 kind:data(any) addr:0x02127f64
 _ZTI18daObjBkKillerdai_c kind:data(any) addr:0x02127f70
 _ZTS18daObjBkKillerdai_c kind:data(any) addr:0x02127f7c
 g_profile_BK_KILLER_DAI kind:data(any) addr:0x02127f94 ambiguous
-_ZTV11BillBlaster kind:data(any) addr:0x02127fb8
+_ZTV18daObjBkKillerdai_c kind:data(any) addr:0x02127fb8
 data_ov079_02127fec kind:data(any) addr:0x02127fec ambiguous
 data_ov079_02128008 kind:data(any) addr:0x02128008 ambiguous
 _ZTI14daObjBk_Kabe_c kind:data(any) addr:0x02128038

@@ -344,10 +344,6 @@
     "src/_ZN11BabyPenguin6RenderEv.cpp",
     "src/_ZN11BabyPenguinD0Ev.cpp",
     "src/_ZN11BabyPenguinD1Ev.cpp",
-    "src/_ZN11BillBlaster15OnHitByMegaCharER6Player.cpp",
-    "src/_ZN11BillBlaster6RenderEv.cpp",
-    "src/_ZN11BillBlasterD0Ev.cpp",
-    "src/_ZN11BillBlasterD1Ev.cpp",
     "src/_ZN11BobOmbBuddy16CleanupResourcesEv.cpp",
     "src/_ZN11BobOmbBuddy6RenderEv.cpp",
     "src/_ZN11BobOmbBuddyD0Ev.cpp",
@@ -3002,6 +2998,10 @@
     "src/actors/daFRing_c.cpp#_ZN9daFRing_c16CleanupResourcesEv",
     "src/actors/daFRing_c.cpp#_ZN9daFRing_c6RenderEv",
     "src/actors/daFRing_c.cpp#_ZN9daFRing_cD0Ev",
-    "src/actors/daFRing_c.cpp#_ZN9daFRing_cD1Ev"
+    "src/actors/daFRing_c.cpp#_ZN9daFRing_cD1Ev",
+    "src/actors/daObjBkKillerdai_c.cpp#_ZN18daObjBkKillerdai_c15OnHitByMegaCharER6Player",
+    "src/actors/daObjBkKillerdai_c.cpp#_ZN18daObjBkKillerdai_c6RenderEv",
+    "src/actors/daObjBkKillerdai_c.cpp#_ZN18daObjBkKillerdai_cD0Ev",
+    "src/actors/daObjBkKillerdai_c.cpp#_ZN18daObjBkKillerdai_cD1Ev"
   ]
 }
