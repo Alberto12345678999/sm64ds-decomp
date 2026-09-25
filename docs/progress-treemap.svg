@@ -43501,11 +43501,11 @@ matched: yes</title></rect><rect x="1342.42" y="981.85" width="7.07" height="13.
 module: ov094
 addr: 0x021367e8
 size: 464 bytes
-matched: yes</title></rect><rect x="1359.48" y="779.74" width="4.02" height="6.61" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9SeesawBobD1Ev
+matched: yes</title></rect><rect x="1359.48" y="779.74" width="4.02" height="6.61" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN13daObjSeesaw_cD1Ev
 module: ov095
 addr: 0x02135700
 size: 68 bytes
-matched: yes</title></rect><rect x="1363.51" y="779.74" width="5.21" height="6.61" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9SeesawBobD0Ev
+matched: yes</title></rect><rect x="1363.51" y="779.74" width="5.21" height="6.61" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN13daObjSeesaw_cD0Ev
 module: ov095
 addr: 0x02135744
 size: 88 bytes
@@ -43513,7 +43513,7 @@ matched: yes</title></rect><rect x="1368.71" y="779.74" width="3.55" height="6.6
 module: ov095
 addr: 0x0213579c
 size: 60 bytes
-matched: yes</title></rect><rect x="1372.26" y="779.74" width="14.44" height="6.61" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9SeesawBob15OnGroundPoundedER8dActor_c
+matched: yes</title></rect><rect x="1372.26" y="779.74" width="14.44" height="6.61" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN13daObjSeesaw_c15OnGroundPoundedER8dActor_c
 module: ov095
 addr: 0x021357d8
 size: 244 bytes
@@ -43525,19 +43525,19 @@ matched: yes</title></rect><rect x="1397.11" y="779.74" width="4.26" height="6.6
 module: ov095
 addr: 0x0213597c
 size: 72 bytes
-matched: yes</title></rect><rect x="1359.48" y="786.35" width="5.29" height="7.40" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9SeesawBob16CleanupResourcesEv
+matched: yes</title></rect><rect x="1359.48" y="786.35" width="5.29" height="7.40" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN13daObjSeesaw_c16CleanupResourcesEv
 module: ov095
 addr: 0x021359c4
 size: 100 bytes
-matched: yes</title></rect><rect x="1364.77" y="786.35" width="2.12" height="7.40" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9SeesawBob6RenderEv
+matched: yes</title></rect><rect x="1364.77" y="786.35" width="2.12" height="7.40" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN13daObjSeesaw_c6RenderEv
 module: ov095
 addr: 0x02135a28
 size: 40 bytes
-matched: yes</title></rect><rect x="1366.89" y="786.35" width="15.44" height="7.40" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9SeesawBob8BehaviorEv
+matched: yes</title></rect><rect x="1366.89" y="786.35" width="15.44" height="7.40" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN13daObjSeesaw_c8BehaviorEv
 module: ov095
 addr: 0x02135a50
 size: 292 bytes
-matched: yes</title></rect><rect x="1382.33" y="786.35" width="19.04" height="7.40" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9SeesawBob13InitResourcesEv
+matched: yes</title></rect><rect x="1382.33" y="786.35" width="19.04" height="7.40" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN13daObjSeesaw_c13InitResourcesEv
 module: ov095
 addr: 0x02135b74
 size: 360 bytes
