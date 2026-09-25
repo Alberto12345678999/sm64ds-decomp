@@ -40757,35 +40757,35 @@ matched: yes</title></rect><rect x="1556.90" y="622.43" width="8.21" height="2.8
 module: ov079
 addr: 0x021271b4
 size: 48 bytes
-matched: yes</title></rect><rect x="1556.90" y="625.24" width="8.21" height="3.99" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12FortressWallD1Ev
+matched: yes</title></rect><rect x="1556.90" y="625.24" width="8.21" height="3.99" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14daObjBk_Kabe_cD1Ev
 module: ov079
 addr: 0x021271e4
 size: 68 bytes
-matched: yes</title></rect><rect x="1556.90" y="629.23" width="8.21" height="5.16" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12FortressWallD0Ev
+matched: yes</title></rect><rect x="1556.90" y="629.23" width="8.21" height="5.16" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14daObjBk_Kabe_cD0Ev
 module: ov079
 addr: 0x02127228
 size: 88 bytes
-matched: yes</title></rect><rect x="1556.90" y="634.39" width="8.21" height="5.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12FortressWall4KillEv
+matched: yes</title></rect><rect x="1556.90" y="634.39" width="8.21" height="5.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14daObjBk_Kabe_c4KillEv
 module: ov079
 addr: 0x02127280
 size: 96 bytes
-matched: yes</title></rect><rect x="1565.11" y="605.30" width="2.19" height="7.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12FortressWall24OnHitByCannonBlastedCharER8dActor_c
+matched: yes</title></rect><rect x="1565.11" y="605.30" width="2.19" height="7.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14daObjBk_Kabe_c24OnHitByCannonBlastedCharER8dActor_c
 module: ov079
 addr: 0x021272e0
 size: 32 bytes
-matched: yes</title></rect><rect x="1567.30" y="605.30" width="6.86" height="7.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12FortressWall16CleanupResourcesEv
+matched: yes</title></rect><rect x="1567.30" y="605.30" width="6.86" height="7.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14daObjBk_Kabe_c16CleanupResourcesEv
 module: ov079
 addr: 0x02127300
 size: 100 bytes
-matched: yes</title></rect><rect x="1574.16" y="605.30" width="4.39" height="7.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12FortressWall6RenderEv
+matched: yes</title></rect><rect x="1574.16" y="605.30" width="4.39" height="7.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14daObjBk_Kabe_c6RenderEv
 module: ov079
 addr: 0x02127364
 size: 64 bytes
-matched: yes</title></rect><rect x="1578.55" y="605.30" width="16.45" height="7.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12FortressWall8BehaviorEv
+matched: yes</title></rect><rect x="1578.55" y="605.30" width="16.45" height="7.02" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14daObjBk_Kabe_c8BehaviorEv
 module: ov079
 addr: 0x021273a4
 size: 240 bytes
-matched: yes</title></rect><rect x="1565.11" y="612.33" width="5.70" height="19.59" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12FortressWall13InitResourcesEv
+matched: yes</title></rect><rect x="1565.11" y="612.33" width="5.70" height="19.59" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14daObjBk_Kabe_c13InitResourcesEv
 module: ov079
 addr: 0x02127494
 size: 232 bytes
