@@ -196,11 +196,11 @@ src/d_a_snowman.c:
     complete
     .text start:0x02125ec0 end:0x02125f14
 
-src/_ZN8SnowballD1Ev.cpp:
+src/_ZN12daSnowball_cD1Ev.cpp:
     complete
     .text start:0x02125f14 end:0x02125f5c
 
-src/_ZN8SnowballD0Ev.cpp:
+src/_ZN12daSnowball_cD0Ev.cpp:
     complete
     .text start:0x02125f5c end:0x02125fb8
 
@@ -224,25 +224,9 @@ src/func_ov081_02126224.c:
     complete
     .text start:0x02126224 end:0x02126298
 
-src/_ZN8Snowball16CleanupResourcesEv.cpp:
+src/actors/daSnowball_c.cpp:
     complete
-    .text start:0x02126298 end:0x021262bc
-
-src/_ZN8Snowball16OnPendingDestroyEv.cpp:
-    complete
-    .text start:0x021262bc end:0x021262c0
-
-src/_ZN8Snowball6RenderEv.cpp:
-    complete
-    .text start:0x021262c0 end:0x021262ec
-
-src/_ZN8Snowball8BehaviorEv.cpp:
-    complete
-    .text start:0x021262ec end:0x021263b8
-
-src/_ZN8Snowball13InitResourcesEv.cpp:
-    complete
-    .text start:0x021263b8 end:0x021264b4
+    .text start:0x02126298 end:0x021264b4
 
 src/d_a_snowball.c:
     complete

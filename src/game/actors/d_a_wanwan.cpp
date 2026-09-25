@@ -45,13 +45,13 @@
  * data_ov014_* names and the sinit file IDs belong with that sinit. This is a
  * text-only TU, so g_profile_WANWAN is not defined here (S14). The byte at
  * ClosestPlayer()+0x6fb is a Player field this TU reads; naming it belongs on
- * Player. The spawned stump is reached through Stump::mBusy -- Stump.h does
+ * Player. The spawned stump is reached through daObjPile_c::mBusy -- daObjPile_c.h does
  * not disturb this TU's matrix copies.
  */
 
 #include "common.h"
 #include "daWanwan_c.h"
-#include "Stump.h"
+#include "daObjPile_c.h"
 #include "decl_common.h"
 #include "SharedFilePtr.h"
 #include "Player.h"
@@ -178,7 +178,7 @@ int daWanwan_c::InitResources()
         kStumpActorId, 0x11, *(Vector3 *)&mPosX, 0, mAreaId, -1);
     mStumpUniqueID = spawned->uniqueID;
     int one = 1;
-    ((Stump *)spawned)->mBusy = (unsigned char)one;
+    ((daObjPile_c *)spawned)->mBusy = (unsigned char)one;
     mFenceUniqueID = 0;
 
     mPosX = mPosX + 0xc8000;

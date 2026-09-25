@@ -1,56 +1,20 @@
 //cpp
-/* dScMgCurling2_c: the two-player curling minigame scene, ov006.
+/* Two-player curling. mPiece falls from the top of the screen and wraps
+ * once y passes 0xc8. mValue is the number SpawnValue drops between two
+ * stones when they collide.
  *
- * This file holds the lower 31 functions of the class (.text
- * 0x020e3854..0x020e5450). func_ov006_020e5450, next in ROM, is not matched
- * yet and the ROM's own bytes cover it, so the 21 functions above it
- * (InitResources, Behavior, Render, OnYoshiTryEat and the rest) still live
- * in their own files.
- *
- * Functions run in ROM order, lowest address first, because of
- * `#pragma defer_codegen off` below; do not reorder, and do not drop that
- * pragma. It also makes the out-of-line destructor come out D1, D0 as in
- * the ROM (the unused D2 trails it and is deadstripped), and it is what
- * lets the push and pop brackets on func_ov006_020e4b00 and DragUpdate
- * bind. Both brackets are needed; each was measured.
- *
- * The destructor is declared first and out of line, so this file owns the
- * key function and emits the vtable and RTTI for the whole base chain.
- *
- * Two arrays inside the object drive most of this file. The ROM names
- * neither, so the comments call them by offset:
- *
- *   0x48c0, 0x32 entries of 0x24: +0x00 and +0x04 an x,y pair in 20.12;
- *     +0x08 and +0x0c the per-axis increments; +0x10 a value the +0x0c
- *     increment ramps toward; +0x14, +0x16 and +0x18 three 16-bit
- *     countdowns; +0x1c update enable and +0x20 draw enable; +0x1d, +0x1e
- *     and +0x1f indices into the pointer-to-member tables
- *     data_ov006_02141988, _021419f8 or _021419b8, and _021419a0; +0x21 and
- *     +0x22 two sprite indices into data_ov006_0213a5e0. Entries are seeded
- *     across the top of the screen and recycled once y passes 0xc8, so they
- *     fall down the screen and wrap (falling snow is the likely reading, but
- *     it is not proven).
- *
- *   0x4fe0, 0x3c entries of 0x18: +0x00 and +0x04 an x,y pair in 20.12;
- *     +0x0c a y increment that decays by 0x40 a frame; +0x10 a 16-bit
- *     lifetime; +0x12 a 16-bit value drawn as the sprite's number; +0x14 a
- *     live flag and +0x15 a 1-or-2 mode. One is spawned between two stones
- *     whenever they collide (SpawnValue).
- *
- * Still raw:
- * - Both arrays and the 0x4870 records are untyped in dScMgCurling2_c.h, so
- *   they are reached by offset. Giving them structs is what unblocks
- *   typed access here.
- * - The twelve func_ov006_ functions keep their C names because the
- *   unpromoted files above the gap (and decl_common.h) call them by those
- *   names. They become methods when that half is promoted.
- * - The seventeen methods have coined names; the header gives the
- *   derivation from the pointer-to-member tables.
- * - cstd::atan2 takes Fix12<int> by value, so it stays mangled.
- * - decl_common.h is left out: eight of its declarations of these
- *   functions disagree with the matched definitions.
+ * Leftover: SpawnValue still reads the other stone as
+ *   raw + 0x4000 + other * 0x30 + 0x660. mStone[other] folds that into one
+ *   constant and loses the raw + 0x4000 base the ROM shares.
+ * Leftover: DragUpdate and func_ov006_020e513c call
+ *   _ZN4cstd5atan2E5Fix12IiES1_. cstd::atan2 takes Fix12 by value.
+ * Leftover: func_ov006_020e4a84 and func_ov006_020e4b00 still walk the
+ *   five records at 0x4870 by offset. This file does not name them.
+ * Leftover: func_ov006_020e513c stays a free function. SpawnValue is the
+ *   call it makes here, and func_ov006_020e5e3c.c calls the C spelling.
  */
 
+/* Required: ROM order, and the brackets on func_ov006_020e4b00 and DragUpdate. */
 #pragma defer_codegen off
 
 #include "types.h"
@@ -122,49 +86,46 @@ dScMgCurling2_c::~dScMgCurling2_c()
 
 
 // @symbol func_ov006_020e38b0
-/* Draw every live entry of the 0x4fe0 array, mode picking
- * the last argument. */
-extern "C" void func_ov006_020e38b0(char *raw)
+/* Draw every live mValue. mode 1 and mode 2 pick the last argument. */
+extern "C" void func_ov006_020e38b0(dScMgCurling2_c *self)
 {
     int i;
-    char *entry = raw;
     for (i = 0; i < 0x3c; i++) {
-        unsigned char mode = *(unsigned char *)(entry + 0x4ff5);
+        unsigned char mode = self->mValue[i].mode;
         if (mode != 0) {
-            int x = *(int *)(entry + 0x4fe0) >> 0xc;
-            int y = *(int *)(entry + 0x4fe4) >> 0xc;
-            int value = *(unsigned short *)(entry + 0x4ff2);
+            int x = self->mValue[i].x >> 0xc;
+            int y = self->mValue[i].y >> 0xc;
+            int value = self->mValue[i].value;
             if (mode == 1) {
                 func_ov004_020b1ea4(x, y, value, -1, -1, 0, 0);
             } else {
                 func_ov004_020b1ea4(x, y, value, -1, -1, 0, 0x32);
             }
         }
-        entry += 0x18;
     }
 }
 
 
 // @symbol func_ov006_020e3948
-/* Age the 0x4fe0 array one frame: run the lifetime down,
- * apply and decay the y increment, and clear the entry when it expires. */
-extern "C" void func_ov006_020e3948(char *p)
+/* Age mValue one frame: count lifetime down, apply yInc and decay it
+ * by 0x40, and clear the entry when the lifetime expires. */
+extern "C" void func_ov006_020e3948(dScMgCurling2_c *self)
 {
     int i;
-    for (i = 0; i < 0x3c; i++, p += 0x18)
+    for (i = 0; i < 0x3c; i++)
     {
-        if (*(unsigned char *)(p + 0x4ff4) != 0)
+        if (self->mValue[i].live != 0)
         {
-            if (*(unsigned short *)(p + 0x4ff0) != 0)
+            if (self->mValue[i].lifetime != 0)
             {
-                *(unsigned short *)(p + 0x4ff0) -= 1;
-                *(int *)(p + 0x4fe4) += *(int *)(p + 0x4fec);
-                *(int *)(p + 0x4fec) -= 0x40;
+                self->mValue[i].lifetime -= 1;
+                self->mValue[i].y += self->mValue[i].yInc;
+                self->mValue[i].yInc -= 0x40;
             }
             else
             {
-                *(unsigned char *)(p + 0x4ff4) = 0;
-                *(unsigned char *)(p + 0x4ff5) = 0;
+                self->mValue[i].live = 0;
+                self->mValue[i].mode = 0;
             }
         }
     }
@@ -172,10 +133,10 @@ extern "C" void func_ov006_020e3948(char *p)
 
 
 // @symbol _ZN15dScMgCurling2_c10SpawnValueEii
-/* Take the first free 0x4fe0 entry and place it midway between the two
- * stones. The payload is (n+1)*10 when either stone
- * carries the 0x468d flag and (n+1)*100 when neither does, where n is the
- * 0x55bf counter, saturating at 0x17.
+/* Take the first free mValue and place it midway between the two
+ * stones. The number is (n+1)*10 when either stone carries the 0x468d
+ * flag and (n+1)*100 when neither does, where n is the 0x55bf counter,
+ * saturating at 0x17.
  *
  * `raw + 0x4000 + other * 0x30 + 0x660` is the same kind of record as
  * `raw + stone * 0x30 + 0x4660` on the other operand. Folding the split
@@ -185,214 +146,194 @@ void dScMgCurling2_c::SpawnValue(int stone, int other)
 {
     char *raw = (char *)this;
     int i;
-    char *entry;
     int sx;
     int sy;
     unsigned char *count;
 
-    entry = raw;
-    for (i = 0; i < 0x3c; i++, entry += 0x18) {
-        if (*(unsigned char *)(entry + 0x4ff4) != 0) continue;
+    for (i = 0; i < 0x3c; i++) {
+        if (mValue[i].live != 0) continue;
 
         sx = *(int *)(raw + stone * 0x30 + 0x4660) + *(int *)(raw + 0x4000 + other * 0x30 + 0x660);
         sy = *(int *)(raw + stone * 0x30 + 0x4664) + *(int *)(raw + 0x4000 + other * 0x30 + 0x664);
 
-        *(unsigned char *)(raw + i * 0x18 + 0x4ff4) = 1;
-        *(unsigned char *)(raw + 0x4ff5 + i * 0x18) = 1;
-        *(int *)(raw + i * 0x18 + 0x4fe0) = sx >> 1;
-        *(int *)(raw + i * 0x18 + 0x4fe4) = sy >> 1;
-        *(unsigned short *)(raw + i * 0x18 + 0x4ff0) = 0x40;
-        *(int *)(raw + i * 0x18 + 0x4fe8) = 0;
-        *(int *)(raw + i * 0x18 + 0x4fec) = 0;
+        mValue[i].live = 1;
+        mValue[i].mode = 1;
+        mValue[i].x = sx >> 1;
+        mValue[i].y = sy >> 1;
+        mValue[i].lifetime = 0x40;
+        mValue[i].xInc = 0;
+        mValue[i].yInc = 0;
 
         /* The && and || arms really do compute the same value; collapsing them
            into one `||` changes the code, so the ROM branched twice too. */
         if (*(unsigned char *)(raw + stone * 0x30 + 0x468d) != 0 && *(unsigned char *)(raw + 0x4000 + other * 0x30 + 0x68d) != 0) {
-            *(unsigned short *)(raw + 0x4ff2 + i * 0x18) = (*(unsigned char *)(raw + 0x55bf) + 1) * 10;
+            mValue[i].value = (*(unsigned char *)(raw + 0x55bf) + 1) * 10;
         } else if (*(unsigned char *)(raw + stone * 0x30 + 0x468d) != 0 || *(unsigned char *)(raw + 0x4000 + other * 0x30 + 0x68d) != 0) {
-            *(unsigned short *)(raw + 0x4ff2 + i * 0x18) = (*(unsigned char *)(raw + 0x55bf) + 1) * 10;
+            mValue[i].value = (*(unsigned char *)(raw + 0x55bf) + 1) * 10;
         } else {
-            *(unsigned short *)(raw + 0x4ff2 + i * 0x18) = (*(unsigned char *)(raw + 0x55bf) + 1) * 100;
-            *(unsigned char *)(raw + 0x4ff5 + i * 0x18) = 2;
+            mValue[i].value = (*(unsigned char *)(raw + 0x55bf) + 1) * 100;
+            mValue[i].mode = 2;
         }
 
         count = (unsigned char *)(raw + 0x55bf);
         *count = *count + 1;
         if (*(unsigned char *)(raw + 0x55bf) >= 0x17) *(unsigned char *)(raw + 0x55bf) = 0x17;
-        func_ov004_020adb1c(*(unsigned short *)(raw + 0x4ff2 + i * 0x18) + func_ov004_020adbc0());
+        func_ov004_020adb1c(mValue[i].value + func_ov004_020adbc0());
         return;
     }
 }
 
 
 // @symbol func_ov006_020e3b9c
-/* Clear the 0x4fe0 array. */
-extern "C" void func_ov006_020e3b9c(char *p)
+/* Clear every collision value. */
+extern "C" void func_ov006_020e3b9c(dScMgCurling2_c *self)
 {
     int i;
     for (i = 0; i < 0x3c; i++) {
-        *(unsigned char *)(p + 0x4ff4) = 0;
-        *(unsigned char *)(p + 0x4ff5) = 0;
-        p += 0x18;
+        self->mValue[i].live = 0;
+        self->mValue[i].mode = 0;
     }
 }
 
 
 // @symbol func_ov006_020e3bc4
-/* Draw every draw-enabled entry of the 0x48c0 array as two
- * stacked sprites from data_ov006_0213a5e0. */
-extern "C" void func_ov006_020e3bc4(char *c)
+/* Draw every piece whose drawEnable is set, as two stacked sprites
+ * from data_ov006_0213a5e0. */
+extern "C" void func_ov006_020e3bc4(dScMgCurling2_c *self)
 {
     int i;
     for (i = 0; i < 0x32; i++) {
-        if (*(unsigned char *)(c + 0x48e0)) {
-            int x = *(int *)(c + 0x48c0) >> 0xc;
-            int y = *(int *)(c + 0x48c4) >> 0xc;
-            func_ov004_020af948(data_ov006_0213a5e0[*(unsigned char *)(c + 0x48e1)], x, y, 0);
-            DrawOamSprite(data_ov006_0213a5e0[*(unsigned char *)(c + 0x48e2)], x, y, 0);
+        if (self->mPiece[i].drawEnable) {
+            int x = self->mPiece[i].x >> 0xc;
+            int y = self->mPiece[i].y >> 0xc;
+            func_ov004_020af948(data_ov006_0213a5e0[self->mPiece[i].sprite0], x, y, 0);
+            DrawOamSprite(data_ov006_0213a5e0[self->mPiece[i].sprite1], x, y, 0);
         }
-        c += 0x24;
     }
 }
 
 
 // @symbol _ZN15dScMgCurling2_c13StepYRampDownEi
-/* 0x48c0 callback: run the +0x18 countdown down, else ease
- * +0x0c back toward 0x100, else clear the +0x1f index. */
+/* countdown3, else ease yInc back toward 0x100, else clear yIndex. */
 void dScMgCurling2_c::StepYRampDown(int entry)
 {
-    char *raw = (char *)this;
-    int off = entry * 0x24;
-    if (*(unsigned short *)(raw + 0x48d8 + off) != 0) {
-        short *p = (short *)(raw + 0x48d8 + off);
+    if (mPiece[entry].countdown3 != 0) {
+        short *p = (short *)&mPiece[entry].countdown3;
         *p = (short)(*(unsigned short *)p - 1);
         if (*p < 0)
             *p = 0;
-    } else if (*(int *)(raw + 0x48cc + off) > 0x100) {
-        int *q = (int *)(raw + 0x48cc + off);
+    } else if (mPiece[entry].yInc > 0x100) {
+        int *q = &mPiece[entry].yInc;
         *q = *q - 0x10;
         if ((short)*q < 0x100)
             *q = 0x100;
     } else {
-        *(unsigned char *)(raw + off + 0x48df) = 0;
+        mPiece[entry].yIndex = 0;
     }
 }
 
 
 // @symbol _ZN15dScMgCurling2_c11StepYRampUpEi
-/* 0x48c0 callback: ramp +0x0c up toward +0x10, then run the
- * +0x18 countdown down, reseeding it and the +0x1f index when it expires. */
+/* Ramp yInc up toward yTarget, then run countdown3 down. When it
+ * expires, set yIndex to 2 and reseed the countdown. */
 void dScMgCurling2_c::StepYRampUp(int entry)
 {
-    char *raw = (char *)this;
-    int off = entry * 0x24;
-    if (*(int *)(raw + 0x48d0 + off) > *(int *)(raw + 0x48cc + off)) {
-        *(int *)(raw + 0x48cc + off) += 0x10;
-        if (*(int *)(raw + 0x48d0 + off) > *(int *)(raw + 0x48cc + off))
-            *(int *)(raw + 0x48cc + off) = *(int *)(raw + 0x48d0 + off);
+    if (mPiece[entry].yTarget > mPiece[entry].yInc) {
+        mPiece[entry].yInc += 0x10;
+        if (mPiece[entry].yTarget > mPiece[entry].yInc)
+            mPiece[entry].yInc = mPiece[entry].yTarget;
     }
-    if (*(unsigned short *)(raw + 0x48d8 + off) != 0) {
-        *(unsigned short *)(raw + 0x48d8 + off) = *(unsigned short *)(raw + 0x48d8 + off) - 1;
-        if (*(short *)(raw + 0x48d8 + off) < 0) *(short *)(raw + 0x48d8 + off) = 0;
+    if (mPiece[entry].countdown3 != 0) {
+        mPiece[entry].countdown3 = mPiece[entry].countdown3 - 1;
+        if (*(short *)&mPiece[entry].countdown3 < 0) *(short *)&mPiece[entry].countdown3 = 0;
     } else {
-        *(unsigned char *)(raw + off + 0x48df) = 2;
-        *(short *)(raw + 0x48d8 + off) = (short)(unsigned char)((((0x20 * (((unsigned int)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff)) >> 0xf)) + 0x20);
+        mPiece[entry].yIndex = 2;
+        *(short *)&mPiece[entry].countdown3 = (short)(unsigned char)((((0x20 * (((unsigned int)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff)) >> 0xf)) + 0x20);
     }
 }
 
 
 // @symbol _ZN15dScMgCurling2_c12StepYRestartEi
-/* 0x48c0 callback: zero +0x0c, pick a fresh +0x10 target and
- * +0x18 countdown, and set the +0x1f index to 1. */
+/* Zero yInc, pick a fresh yTarget and countdown3, set yIndex to 1. */
 void dScMgCurling2_c::StepYRestart(int entry)
 {
-    char *raw = (char *)this;
-    int off = entry * 0x24;
     unsigned int rnd;
 
-    *(int *)(raw + 0x48cc + off) = 0;
+    mPiece[entry].yInc = 0;
     rnd = ((unsigned)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff;
-    *(int *)(raw + 0x48d0 + off) = (((rnd << 4) >> 15) << 4) + 0x300;
-    *(unsigned char *)(raw + 0x48df + off) = 1;
+    mPiece[entry].yTarget = (((rnd << 4) >> 15) << 4) + 0x300;
+    mPiece[entry].yIndex = 1;
     rnd = ((unsigned)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff;
     rnd = ((rnd << 5) >> 15) + 0x20;
-    *(short *)(raw + 0x48d8 + off) = (unsigned char)rnd;
+    *(short *)&mPiece[entry].countdown3 = (unsigned char)rnd;
 }
 
 
 // @symbol _ZN15dScMgCurling2_c11StepXSettleEi
-/* 0x48c0 callback: step the position, hold while a
- * countdown runs, then bleed the x increment toward zero 8 a frame from either
- * side and clear the +0x1e index once it lands.  The hold tests +0x14 and
- * decrements +0x16 -- the ROM's own asymmetry, and StepXPushNeg and StepXPushPos do
- * not share it. */
+/* Step the piece, hold while countdown is set (the hold decrements
+ * countdown2, not countdown), then bleed xInc toward zero 8 a frame. */
 void dScMgCurling2_c::StepXSettle(int entry)
 {
-    char *base = (char *)this;
-    int off = entry * 0x24;
-    /* Three cached bases, declared in the ROM's own load order.  Reordering
-       them, or folding them back into base + constant, moves bytes. */
-    char *vx = base + 0x48c8;
-    char *x = base + 0x48c0;
-    char *y = base + 0x48c4;
-    *(int *)(x + off) = *(int *)(x + off) + *(int *)(vx + off);
-    *(int *)(y + off) = *(int *)(y + off) + *(int *)(base + off + 0x48cc);
-    if (*(u16 *)(base + off + 0x48d4) != 0) {
-        char *timer = base + 0x48d6;
-        *(u16 *)(timer + off) = *(u16 *)(timer + off) - 1;
-        if (*(s16 *)(timer + off) < 0) *(s16 *)(timer + off) = 0;
+    /* xInc, x, y: the ROM loads those bases in that order. */
+    s32 *xInc = &mPiece[entry].xInc;
+    s32 *x = &mPiece[entry].x;
+    s32 *y = &mPiece[entry].y;
+    *x = *x + *xInc;
+    *y = *y + mPiece[entry].yInc;
+    if (mPiece[entry].countdown != 0) {
+        u16 *timer = &mPiece[entry].countdown2;
+        *timer = *timer - 1;
+        if (*(s16 *)timer < 0) *(s16 *)timer = 0;
         return;
     }
-    if (*(int *)(vx + off) > 0) {
-        *(int *)(vx + off) = *(int *)(vx + off) - 8;
-        if ((s16)*(int *)(vx + off) < 0) *(int *)(vx + off) = 0;
+    if (*xInc > 0) {
+        *xInc = *xInc - 8;
+        if ((s16)*xInc < 0) *xInc = 0;
         return;
     }
-    if (*(int *)(vx + off) < 0) {
-        *(int *)(vx + off) = *(int *)(vx + off) + 8;
-        if (*(int *)(vx + off) > 0) *(int *)(vx + off) = 0;
+    if (*xInc < 0) {
+        *xInc = *xInc + 8;
+        if (*xInc > 0) *xInc = 0;
         return;
     }
-    *(u8 *)(base + off + 0x48de) = 0;
+    mPiece[entry].xIndex = 0;
 }
 
 
 // @symbol _ZN15dScMgCurling2_c12StepXPushNegEi
-/* 0x48c0 callback: step the position, hold for the +0x14
- * countdown, then push the x increment negative to a -0x300 floor, hold again
- * for +0x16, and hand over to index 3 with a fresh countdown. */
+/* Step the piece, hold for countdown, push xInc down to a -0x300
+ * floor (the store at the floor is +0x300), hold for countdown2, then
+ * hand xIndex to 3. */
 void dScMgCurling2_c::StepXPushNeg(int entry)
 {
-    char *base = (char *)this;
-    int off = entry * 0x24;
     unsigned short count;
 
-    *(int *)(base + 0x48c0 + off) = *(int *)(base + 0x48c0 + off) + *(int *)(base + 0x48c8 + off);
-    *(int *)(base + 0x48c4 + off) = *(int *)(base + 0x48c4 + off) + *(int *)(base + 0x48cc + off);
+    mPiece[entry].x = mPiece[entry].x + mPiece[entry].xInc;
+    mPiece[entry].y = mPiece[entry].y + mPiece[entry].yInc;
 
-    if (*(unsigned short *)(base + 0x48d4 + off) != 0) {
-        *(unsigned short *)(base + 0x48d4 + off) = *(unsigned short *)(base + 0x48d4 + off) - 1;
-        if (*(short *)(base + 0x48d4 + off) < 0)
-            *(unsigned short *)(base + 0x48d4 + off) = 0;
+    if (mPiece[entry].countdown != 0) {
+        mPiece[entry].countdown = mPiece[entry].countdown - 1;
+        if (*(short *)&mPiece[entry].countdown < 0)
+            mPiece[entry].countdown = 0;
         return;
     }
 
-    if (*(int *)(base + 0x48c8 + off) > -0x300) {
-        *(int *)(base + 0x48c8 + off) -= 8;
-        if (*(int *)(base + 0x48c8 + off) <= -0x300)
-            *(int *)(base + 0x48c8 + off) = 0x300;
+    if (mPiece[entry].xInc > -0x300) {
+        mPiece[entry].xInc -= 8;
+        if (mPiece[entry].xInc <= -0x300)
+            mPiece[entry].xInc = 0x300;
     }
 
-    count = *(unsigned short *)(base + 0x48d6 + off);
+    count = mPiece[entry].countdown2;
     if (count != 0) {
-        *(unsigned short *)(base + 0x48d6 + off) = count - 1;
-        if (*(short *)(base + 0x48d6 + off) < 0)
-            *(unsigned short *)(base + 0x48d6 + off) = 0;
+        mPiece[entry].countdown2 = count - 1;
+        if (*(short *)&mPiece[entry].countdown2 < 0)
+            mPiece[entry].countdown2 = 0;
         return;
     }
 
-    *(unsigned char *)(base + 0x48de + off) = 3;
-    *(unsigned short *)(base + 0x48d6 + off) = (unsigned char)(((((unsigned int)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) << 5 >> 0xf) + 0x20);
+    mPiece[entry].xIndex = 3;
+    mPiece[entry].countdown2 = (unsigned char)(((((unsigned int)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) << 5 >> 0xf) + 0x20);
 }
 
 
@@ -401,139 +342,121 @@ void dScMgCurling2_c::StepXPushNeg(int entry)
  * other way to a +0x300 ceiling. */
 void dScMgCurling2_c::StepXPushPos(int entry)
 {
-    char *base = (char *)this;
-    int off = entry * 0x24;
     unsigned short count;
 
-    *(int *)(base + 0x48c0 + off) += *(int *)(base + 0x48c8 + off);
-    *(int *)(base + 0x48c4 + off) += *(int *)(base + 0x48cc + off);
+    mPiece[entry].x += mPiece[entry].xInc;
+    mPiece[entry].y += mPiece[entry].yInc;
 
-    count = *(unsigned short *)(base + 0x48d4 + off);
+    count = mPiece[entry].countdown;
     if (count != 0) {
-        *(short *)(base + 0x48d4 + off) = count - 1;
-        if (*(short *)(base + 0x48d4 + off) < 0)
-            *(short *)(base + 0x48d4 + off) = 0;
+        *(short *)&mPiece[entry].countdown = count - 1;
+        if (*(short *)&mPiece[entry].countdown < 0)
+            *(short *)&mPiece[entry].countdown = 0;
         return;
     }
 
-    if (*(int *)(base + 0x48c8 + off) < 0x300) {
-        *(int *)(base + 0x48c8 + off) += 8;
-        if (*(int *)(base + 0x48c8 + off) >= 0x300)
-            *(int *)(base + 0x48c8 + off) = 0x300;
+    if (mPiece[entry].xInc < 0x300) {
+        mPiece[entry].xInc += 8;
+        if (mPiece[entry].xInc >= 0x300)
+            mPiece[entry].xInc = 0x300;
     }
 
-    count = *(unsigned short *)(base + 0x48d6 + off);
+    count = mPiece[entry].countdown2;
     if (count != 0) {
-        *(short *)(base + 0x48d6 + off) = count - 1;
-        if (*(short *)(base + 0x48d6 + off) < 0)
-            *(short *)(base + 0x48d6 + off) = 0;
+        *(short *)&mPiece[entry].countdown2 = count - 1;
+        if (*(short *)&mPiece[entry].countdown2 < 0)
+            *(short *)&mPiece[entry].countdown2 = 0;
         return;
     }
 
-    *(char *)(base + 0x48de + off) = 3;
-    *(short *)(base + 0x48d6 + off) = (((((unsigned int)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) << 5) >> 0xf) + 0x20 & 0xff;
+    *(char *)&mPiece[entry].xIndex = 3;
+    *(short *)&mPiece[entry].countdown2 = (((((unsigned int)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) << 5) >> 0xf) + 0x20 & 0xff;
 }
 
 
 // @symbol _ZN15dScMgCurling2_c9StepXPickEi
-/* 0x48c0 callback: hold for the +0x14 countdown, then zero
- * the x increment, pick the next +0x1e index out of data_ov006_0212e4f4 and
- * reseed both countdowns. */
+/* Hold for countdown, then zero xInc, pick xIndex from
+ * data_ov006_0212e4f4 and reseed both countdowns. */
 void dScMgCurling2_c::StepXPick(int entry)
 {
-    char *raw = (char *)this;
-    int off = entry * 0x24;
-    if (*(unsigned short *)(raw + 0x48d4 + off) != 0) {
-        *(unsigned short *)(raw + 0x48d4 + off) = *(unsigned short *)(raw + 0x48d4 + off) - 1;
-        if (*(short *)(raw + 0x48d4 + off) < 0) *(short *)(raw + 0x48d4 + off) = 0;
+    if (mPiece[entry].countdown != 0) {
+        mPiece[entry].countdown = mPiece[entry].countdown - 1;
+        if (*(short *)&mPiece[entry].countdown < 0) *(short *)&mPiece[entry].countdown = 0;
         return;
     }
-    *(int *)(raw + 0x48c8 + off) = 0;
-    *(unsigned char *)(raw + 0x48de + off) = data_ov006_0212e4f4[(((unsigned int)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) << 1 >> 15];
-    *(unsigned short *)(raw + 0x48d4 + off) = (short)(unsigned char)((0x10 * (((unsigned int)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff)) >> 0xf);
-    *(unsigned short *)(raw + 0x48d6 + off) = (short)(unsigned char)(((0x40 * (((unsigned int)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff)) >> 0xf) + 0x60);
+    mPiece[entry].xInc = 0;
+    mPiece[entry].xIndex = data_ov006_0212e4f4[(((unsigned int)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) << 1 >> 15];
+    mPiece[entry].countdown = (short)(unsigned char)((0x10 * (((unsigned int)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff)) >> 0xf);
+    mPiece[entry].countdown2 = (short)(unsigned char)(((0x40 * (((unsigned int)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff)) >> 0xf) + 0x60);
 }
 
 
 // @symbol _ZN15dScMgCurling2_c9StepXAndYEi
-/* Run one 0x48c0 entry's two pointer-to-member callbacks,
- * indexed by the +0x1e and +0x1f state bytes.
- *
- * The second load really goes through `(char *)self` where the first goes
- * through `raw`; making the two agree changes the code. */
+/* Run one piece's xIndex callback, then its yIndex callback.
+ * yIndex is re-read through the pointer-to-member receiver. */
 void dScMgCurling2_c::StepXAndY(int entry)
 {
-    char *raw = (char *)this;
-    C *self = (C *)raw;
-    int off = entry * 0x24;
-    unsigned char k0 = *(unsigned char *)(raw + off + 0x48de);
+    C *self = (C *)this;
+    unsigned char k0 = mPiece[entry].xIndex;
     (self->*data_ov006_021419f8[k0])(entry);
-    unsigned char k1 = *(unsigned char *)((char *)self + off + 0x48df);
+    unsigned char k1 = ((dScMgCurling2_c *)self)->mPiece[entry].yIndex;
     (self->*data_ov006_021419a0[k1])(entry);
 }
 
 
 // @symbol _ZN15dScMgCurling2_c15StepXSettleFastEi
-/* 0x48c0 callback: step the position, then bleed the x
- * increment toward zero 0x20 a frame and clear the +0x1e index on arrival. */
+/* Step the piece, then bleed xInc toward zero 0x20 a frame. */
 void dScMgCurling2_c::StepXSettleFast(int entry)
 {
-    char *base = (char *)this;
-    int off = entry * 0x24;
-    /* x, vx, y -- the ROM's load order, not a tidy one.  Do not reorder. */
-    int *x = (int *)(base + 0x48c0 + off);
-    int *vx = (int *)(base + 0x48c8 + off);
-    int *y = (int *)(base + 0x48c4 + off);
-    *x += *vx;
-    *y += *(int *)(base + off + 0x48cc);
-    if (*vx > 0) {
-        *vx -= 0x20;
-        if ((int)(short)*vx < 0) *vx = 0;
-    } else if (*vx < 0) {
-        *vx += 0x20;
-        if (*vx > 0) *vx = 0;
+    /* x, xInc, y -- the ROM's load order, not a tidy one. */
+    int *x = &mPiece[entry].x;
+    int *xInc = &mPiece[entry].xInc;
+    int *y = &mPiece[entry].y;
+    *x += *xInc;
+    *y += mPiece[entry].yInc;
+    if (*xInc > 0) {
+        *xInc -= 0x20;
+        if ((int)(short)*xInc < 0) *xInc = 0;
+    } else if (*xInc < 0) {
+        *xInc += 0x20;
+        if (*xInc > 0) *xInc = 0;
     } else {
-        *(unsigned char *)(base + off + 0x48de) = 0;
+        mPiece[entry].xIndex = 0;
     }
 }
 
 
 // @symbol _ZN15dScMgCurling2_c16StepXPushNegFastEi
-/* 0x48c0 callback: as StepXPushNeg at 0x20 a frame and a -0x400
- * floor, handing over to index 3 without reseeding the countdown. */
+/* As StepXPushNeg, 0x20 a frame and a -0x400 floor. The store at the
+ * floor is +0x400, and xIndex goes to 3 with no new countdown. */
 void dScMgCurling2_c::StepXPushNegFast(int entry)
 {
-    char *raw = (char *)this;
-    int off = entry * 0x24;
+    mPiece[entry].x = mPiece[entry].x + mPiece[entry].xInc;
+    mPiece[entry].y = mPiece[entry].y + mPiece[entry].yInc;
 
-    *(int *)(raw + 0x48c0 + off) =
-        *(int *)(raw + 0x48c0 + off) + *(int *)(raw + 0x48c8 + off);
-    *(int *)(raw + 0x48c4 + off) =
-        *(int *)(raw + 0x48c4 + off) + *(int *)(raw + 0x48cc + off);
-
-    if (*(u16 *)(raw + 0x48d4 + off) != 0) {
-        *(s16 *)(raw + 0x48d4 + off) =
-            (s16)(*(u16 *)(raw + 0x48d4 + off) - 1);
-        if (*(s16 *)(raw + 0x48d4 + off) < 0)
-            *(s16 *)(raw + 0x48d4 + off) = 0;
+    if (mPiece[entry].countdown != 0) {
+        *(s16 *)&mPiece[entry].countdown =
+            (s16)(mPiece[entry].countdown - 1);
+        if (*(s16 *)&mPiece[entry].countdown < 0)
+            *(s16 *)&mPiece[entry].countdown = 0;
         return;
     }
 
-    if (*(int *)(raw + 0x48c8 + off) > -0x400) {
-        *(int *)(raw + 0x48c8 + off) -= 0x20;
-        if (*(int *)(raw + 0x48c8 + off) <= -0x400)
-            *(int *)(raw + 0x48c8 + off) = 0x400;
+    if (mPiece[entry].xInc > -0x400) {
+        mPiece[entry].xInc -= 0x20;
+        if (mPiece[entry].xInc <= -0x400)
+            mPiece[entry].xInc = 0x400;
     }
 
-    if (*(u16 *)(raw + 0x48d6 + off) != 0) {
-        *(s16 *)(raw + 0x48d6 + off) =
-            (s16)(*(u16 *)(raw + 0x48d6 + off) - 1);
-        if (*(s16 *)(raw + 0x48d6 + off) < 0)
-            *(s16 *)(raw + 0x48d6 + off) = 0;
+    if (mPiece[entry].countdown2 != 0) {
+        *(s16 *)&mPiece[entry].countdown2 =
+            (s16)(mPiece[entry].countdown2 - 1);
+        if (*(s16 *)&mPiece[entry].countdown2 < 0)
+            *(s16 *)&mPiece[entry].countdown2 = 0;
         return;
     }
 
-    *(unsigned char *)(raw + 0x48de + off) = 3;
+    mPiece[entry].xIndex = 3;
 }
 
 
@@ -542,190 +465,173 @@ void dScMgCurling2_c::StepXPushNegFast(int entry)
  * ceiling. */
 void dScMgCurling2_c::StepXPushPosFast(int entry)
 {
-    char *raw = (char *)this;
-    int off = entry * 0x24;
-
-    *(int *)(raw + 0x48c0 + off) += *(int *)(raw + 0x48c8 + off);
-    *(int *)(raw + 0x48c4 + off) += *(int *)(raw + 0x48cc + off);
+    mPiece[entry].x += mPiece[entry].xInc;
+    mPiece[entry].y += mPiece[entry].yInc;
 
     {
-        unsigned short count = *(unsigned short *)(raw + 0x48d4 + off);
+        unsigned short count = mPiece[entry].countdown;
         if (count != 0) {
-            *(short *)(raw + 0x48d4 + off) = (short)(count - 1);
-            if (*(short *)(raw + 0x48d4 + off) < 0) {
-                *(short *)(raw + 0x48d4 + off) = 0;
+            *(short *)&mPiece[entry].countdown = (short)(count - 1);
+            if (*(short *)&mPiece[entry].countdown < 0) {
+                *(short *)&mPiece[entry].countdown = 0;
             }
             return;
         }
     }
 
-    if (*(int *)(raw + 0x48c8 + off) < 0x400) {
-        *(int *)(raw + 0x48c8 + off) += 0x20;
-        if (*(int *)(raw + 0x48c8 + off) >= 0x400) {
-            *(int *)(raw + 0x48c8 + off) = 0x400;
+    if (mPiece[entry].xInc < 0x400) {
+        mPiece[entry].xInc += 0x20;
+        if (mPiece[entry].xInc >= 0x400) {
+            mPiece[entry].xInc = 0x400;
         }
     }
 
     {
-        unsigned short count2 = *(unsigned short *)(raw + 0x48d6 + off);
+        unsigned short count2 = mPiece[entry].countdown2;
         if (count2 != 0) {
-            *(short *)(raw + 0x48d6 + off) = (short)(count2 - 1);
-            if (*(short *)(raw + 0x48d6 + off) < 0) {
-                *(short *)(raw + 0x48d6 + off) = 0;
+            *(short *)&mPiece[entry].countdown2 = (short)(count2 - 1);
+            if (*(short *)&mPiece[entry].countdown2 < 0) {
+                *(short *)&mPiece[entry].countdown2 = 0;
             }
             return;
         }
     }
 
-    *(unsigned char *)(raw + 0x48de + off) = 3;
+    mPiece[entry].xIndex = 3;
 }
 
 
 // @symbol _ZN15dScMgCurling2_c13StepXPickFastEi
-/* 0x48c0 callback: hold for the +0x14 countdown, then zero
- * the x increment, pick a fresh y increment and a +0x1e index out of
- * data_ov006_0212e4f8, and reseed both countdowns. */
+/* Hold for countdown, then zero xInc, pick a fresh yInc and an xIndex
+ * from data_ov006_0212e4f8, and reseed both countdowns. */
 void dScMgCurling2_c::StepXPickFast(int entry)
 {
-    char *raw = (char *)this;
-    int off = entry * 0x24;
-    if (*(unsigned short *)(raw + 0x48d4 + off) != 0) {
-        *(unsigned short *)(raw + 0x48d4 + off) = *(unsigned short *)(raw + 0x48d4 + off) - 1;
-        if (*(short *)(raw + 0x48d4 + off) < 0) *(short *)(raw + 0x48d4 + off) = 0;
+    if (mPiece[entry].countdown != 0) {
+        mPiece[entry].countdown = mPiece[entry].countdown - 1;
+        if (*(short *)&mPiece[entry].countdown < 0) *(short *)&mPiece[entry].countdown = 0;
         return;
     }
-    *(int *)(raw + 0x48c8 + off) = 0;
-    *(int *)(raw + 0x48cc + off) = ((((((unsigned int)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) << 5) >> 0xf) << 4) + 0x600;
-    *(unsigned char *)(raw + 0x48de + off) = data_ov006_0212e4f8[(((unsigned int)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) << 1 >> 15];
-    *(unsigned short *)(raw + 0x48d4 + off) = (unsigned short)((((((unsigned int)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) << 4) >> 0xf) & 0xff);
-    *(unsigned short *)(raw + 0x48d6 + off) = (unsigned short)(((((((unsigned int)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) * 0x30) >> 0xf) + 0x30) & 0xff);
+    mPiece[entry].xInc = 0;
+    mPiece[entry].yInc = ((((((unsigned int)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) << 5) >> 0xf) << 4) + 0x600;
+    mPiece[entry].xIndex = data_ov006_0212e4f8[(((unsigned int)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) << 1 >> 15];
+    mPiece[entry].countdown = (unsigned short)((((((unsigned int)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) << 4) >> 0xf) & 0xff);
+    mPiece[entry].countdown2 = (unsigned short)(((((((unsigned int)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) * 0x30) >> 0xf) + 0x30) & 0xff);
 }
 
 
 // @symbol _ZN15dScMgCurling2_c9StepXOnlyEi
-/* Run one 0x48c0 entry's data_ov006_021419b8 callback,
- * indexed by the +0x1e state byte. */
+/* Run one piece's data_ov006_021419b8 callback, indexed by xIndex. */
 void dScMgCurling2_c::StepXOnly(int entry)
 {
-    char *raw = (char *)this;
-    unsigned char idx = *(unsigned char *)(raw + entry * 0x24 + 0x48de);
-    (((C *)raw)->*data_ov006_021419b8[idx])(entry);
+    unsigned char idx = mPiece[entry].xIndex;
+    (((C *)this)->*data_ov006_021419b8[idx])(entry);
 }
 
 
 // @symbol _ZN15dScMgCurling2_c12PickStepModeEi
-/* 0x48c0 callback: pick the +0x1d index out of
- * data_ov006_0212e4fc (entry 1 on one roll in eight) and clear +0x1e.
- */
+/* Pick modeIndex from data_ov006_0212e4fc (1 on one roll in eight)
+ * and clear xIndex. */
 void dScMgCurling2_c::PickStepMode(int entry)
 {
-    char *raw = (char *)this;
     unsigned rnd = (unsigned)RandomIntInternal(&data_0209d4b8);
     int pick = 0;
     unsigned roll = ((rnd >> 16) & 0x7fff) << 3 >> 0xf;
     if (roll == 5) pick = 1;
-    char *rec = raw + entry * 0x24;
-    *(unsigned char *)(rec + 0x48dd) = data_ov006_0212e4fc[pick];
-    *(unsigned char *)(rec + 0x48de) = 0;
+    mPiece[entry].modeIndex = data_ov006_0212e4fc[pick];
+    mPiece[entry].xIndex = 0;
 }
 
 
 // @symbol func_ov006_020e4800
-/* Step every update-enabled 0x48c0 entry through its
- * data_ov006_02141988 callback, and reseed the ones whose y has passed 0xc8
- * back to a random x at y = -0x8000. */
-extern "C" void func_ov006_020e4800(char *raw)
+/* Step every piece whose updateEnable is set, and wrap the ones whose
+ * y has passed 0xc8 back to a random x at y = -0x8000. */
+extern "C" void func_ov006_020e4800(dScMgCurling2_c *self)
 {
     int i;
-    char *entry = raw;
     for (i = 0; i < 0x32; i++) {
-        if (*(unsigned char *)(entry + 0x48dc) != 0) {
-            unsigned char idx = *(unsigned char *)(entry + 0x48dd);
-            (((C *)raw)->*data_ov006_02141988[idx])(i);
-            if ((*(int *)(entry + 0x48c4) >> 0xc) >= 0xc8) {
-                *(int *)(entry + 0x48c0) = (((unsigned int)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) << 5 >> 0xf << 0xf;
-                *(int *)(entry + 0x48c4) = -0x8000;
-                *(unsigned char *)(entry + 0x48de) = 0;
-                *(unsigned char *)(entry + 0x48dd) = 0;
-                *(unsigned char *)(entry + 0x48df) = 0;
+        if (self->mPiece[i].updateEnable != 0) {
+            unsigned char idx = self->mPiece[i].modeIndex;
+            (((C *)self)->*data_ov006_02141988[idx])(i);
+            if ((self->mPiece[i].y >> 0xc) >= 0xc8) {
+                self->mPiece[i].x = (((unsigned int)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) << 5 >> 0xf << 0xf;
+                self->mPiece[i].y = -0x8000;
+                self->mPiece[i].xIndex = 0;
+                self->mPiece[i].modeIndex = 0;
+                self->mPiece[i].yIndex = 0;
             }
         }
-        entry += 0x24;
     }
 }
 
 
 // @symbol func_ov006_020e48d4
-/* Zero all 0x32 entries of the 0x48c0 array, then seed each
- * one: enabled, at a random x, with two random sprite indices whose second is
- * the first plus one to four modulo five, and a y spread over the screen.  The
- * first x, the y at -0x8000 and the first +0x14 store are all overwritten a few
- * lines later; the dead stores are the ROM's, not a merge artifact. */
-extern "C" void func_ov006_020e48d4(char *raw)
+/* Clear every piece, then seed it: enabled, a random x, two sprite
+ * indices (the second is the first plus one to four, modulo five) and a
+ * y spread over the screen. The first x, the y at -0x8000 and the first
+ * countdown store are overwritten a few lines later; those dead stores
+ * are the ROM's. */
+extern "C" void func_ov006_020e48d4(dScMgCurling2_c *self)
 {
     int i;
-    char *entry;
     unsigned int rnd;
     unsigned int v;
     int q;
     unsigned int m;
 
     i = 0;
-    entry = raw;
     for (; i < 0x32; i++)
     {
-        *(int *)(entry + 0x48c0) = 0;
-        *(int *)(entry + 0x48c4) = 0;
-        *(int *)(entry + 0x48c8) = 0;
-        *(int *)(entry + 0x48cc) = 0;
-        *(short *)(entry + 0x48d4) = 0;
-        *(short *)(entry + 0x48d6) = 0;
-        *(short *)(entry + 0x48d8) = 0;
-        *(char *)(entry + 0x48dc) = 0;
-        *(char *)(entry + 0x48dd) = 0;
-        *(char *)(entry + 0x48de) = 0;
-        *(char *)(entry + 0x48df) = 0;
-        *(char *)(entry + 0x48e0) = 0;
-        *(char *)(entry + 0x48e1) = 0;
-        *(char *)(entry + 0x48e2) = 1;
-        entry += 0x24;
+        self->mPiece[i].x = 0;
+        self->mPiece[i].y = 0;
+        self->mPiece[i].xInc = 0;
+        self->mPiece[i].yInc = 0;
+        self->mPiece[i].countdown = 0;
+        self->mPiece[i].countdown2 = 0;
+        self->mPiece[i].countdown3 = 0;
+        self->mPiece[i].updateEnable = 0;
+        self->mPiece[i].modeIndex = 0;
+        self->mPiece[i].xIndex = 0;
+        self->mPiece[i].yIndex = 0;
+        self->mPiece[i].drawEnable = 0;
+        self->mPiece[i].sprite0 = 0;
+        self->mPiece[i].sprite1 = 1;
     }
 
     i = 0;
-    entry = raw;
     for (; i < 0x32; i++)
     {
         rnd = (unsigned int)RandomIntInternal(&data_0209d4b8);
         m = ((rnd >> 16) & 0x7fff) << 5;
-        *(int *)(entry + 0x48c0) = (int)((m >> 0xf)) << 0xf;
-        *(int *)(entry + 0x48c4) = -0x8000;
-        *(char *)(entry + 0x48dc) = 1;
-        *(char *)(entry + 0x48e0) = 1;
-        *(char *)(entry + 0x48dd) = 0;
-        *(char *)(entry + 0x48de) = 0;
+        self->mPiece[i].x = (int)((m >> 0xf)) << 0xf;
+        self->mPiece[i].y = -0x8000;
+        self->mPiece[i].updateEnable = 1;
+        self->mPiece[i].drawEnable = 1;
+        self->mPiece[i].modeIndex = 0;
+        self->mPiece[i].xIndex = 0;
 
         rnd = (unsigned int)RandomIntInternal(&data_0209d4b8);
-        *(char *)(entry + 0x48e1) = (char)(((rnd >> 16) & 0x7fff) * 5 >> 0xf);
+        self->mPiece[i].sprite0 = (char)(((rnd >> 16) & 0x7fff) * 5 >> 0xf);
 
         rnd = (unsigned int)RandomIntInternal(&data_0209d4b8);
-        v = *(unsigned char *)(entry + 0x48e1) + ((((rnd >> 16) & 0x7fff) << 2) >> 0xf) + 1;
+        /* Own local: `mPiece[i].sprite0 + shift` puts the byte in r0. */
+        unsigned char spr = self->mPiece[i].sprite0;
+        v = spr + ((((rnd >> 16) & 0x7fff) << 2) >> 0xf) + 1;
         v = v & 0xff;
         if (v >= 5)
             v = (v - 5) & 0xff;
-        *(char *)(entry + 0x48e2) = (char)v;
+        self->mPiece[i].sprite1 = (char)v;
 
         rnd = (unsigned int)RandomIntInternal(&data_0209d4b8);
-        *(short *)(entry + 0x48d4) = (short)(((i & 7) << 6) + (((rnd >> 16) & 0x7fff) * 0x30 >> 0xf));
+        self->mPiece[i].countdown = (short)(((i & 7) << 6) + (((rnd >> 16) & 0x7fff) * 0x30 >> 0xf));
 
         rnd = (unsigned int)RandomIntInternal(&data_0209d4b8);
         m = ((rnd >> 16) & 0x7fff) << 5;
-        *(int *)(entry + 0x48c0) = (int)((m >> 0xf)) << 0xf;
+        self->mPiece[i].x = (int)((m >> 0xf)) << 0xf;
 
         rnd = (unsigned int)RandomIntInternal(&data_0209d4b8);
         q = (((rnd >> 16) & 0x7fff) * 0x1a) >> 0xf;
-        *(int *)(entry + 0x48c4) = (((q << 3) - 8)) << 0xc;
-        *(short *)(entry + 0x48d4) = 0;
-        entry += 0x24;
+        self->mPiece[i].y = (((q << 3) - 8)) << 0xc;
+        self->mPiece[i].countdown = 0;
     }
 }
 

@@ -20,37 +20,9 @@ src/d_a_obj_ct_mecha10_ct_mecha10.c:
     complete
     .text start:0x021116bc end:0x021116ec
 
-src/_ZN16SpinningPlatformD1Ev.cpp:
+src/actors/daObjCtMecha11_c.cpp:
     complete
-    .text start:0x021116ec end:0x02111738
-
-src/_ZN16SpinningPlatformD0Ev.cpp:
-    complete
-    .text start:0x02111738 end:0x02111798
-
-src/_ZN16SpinningPlatform12UpdateShadowEv.cpp:
-    complete
-    .text start:0x02111798 end:0x021118a8
-
-src/_ZN16SpinningPlatform11UpdateModelEv.cpp:
-    complete
-    .text start:0x021118a8 end:0x021118f0
-
-src/_ZN16SpinningPlatform16CleanupResourcesEv.cpp:
-    complete
-    .text start:0x021118f0 end:0x02111934
-
-src/_ZN16SpinningPlatform6RenderEv.cpp:
-    complete
-    .text start:0x02111934 end:0x0211195c
-
-src/_ZN16SpinningPlatform8BehaviorEv.cpp:
-    complete
-    .text start:0x0211195c end:0x02111a98
-
-src/_ZN16SpinningPlatform13InitResourcesEv.cpp:
-    complete
-    .text start:0x02111a98 end:0x02111b98
+    .text start:0x021116ec end:0x02111b98
 
 src/d_a_obj_ct_mecha11.c:
     complete

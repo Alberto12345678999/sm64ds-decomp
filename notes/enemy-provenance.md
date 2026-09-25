@@ -135,7 +135,7 @@ corresponding raw `c + 0xNNN` pokes in `Behavior`.
 
 | offset | new name | evidence |
 | --- | --- | --- |
-| 0x370 | `mState` | `src/_ZN9daShark_c8BehaviorEv.cpp` reads it as a `SharkBehaviorState *` and calls the pointer-to-member-function at `+8` through `this`; [func_ov090_021338b4](../src/func_ov090_021338b4.cpp)(this, [data_ov090_021345cc](../config/arm9/overlays/ov090/symbols.txt)) at the end of `InitResources` is the setter. |
+| 0x370 | `mState` | `daShark_c::Behavior` (now in [`src/actors/daShark_c.cpp`](../src/actors/daShark_c.cpp)) reads it as a `SharkBehaviorState *` and calls the pointer-to-member-function at `+8` through `this`; `func_ov090_021338b4`(this, [data_ov090_021345cc](../config/arm9/overlays/ov090/symbols.txt)) at the end of `InitResources` is the setter. |
 | 0x374 | `Vector3 mClsnOffset` | `InitResources` zeroes all three words and then passes `&mClsnOffset` as the `const Vector3 &` argument of `dCcAcPos_c::Init` — the collider's offset from the actor. |
 | 0x38c | `mPathNodeCount` | `InitResources`: `= PathPtr::NumNodes()`. `Behavior` wraps `mPathNodeIdx` to 0 when it reaches this value. |
 
