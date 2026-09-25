@@ -5177,6 +5177,24 @@
     "src/actors/daOnms_c.cpp#_ZN8daOnms_c16CleanupResourcesEv": "tangosdev",
     "src/actors/daOnms_c.cpp#_ZN8daOnms_c6RenderEv": "tangosdev",
     "src/actors/daOnms_c.cpp#_ZN8daOnms_c8BehaviorEv": "lunavyqo",
-    "src/actors/daOnms_c.cpp#_ZN8daOnms_c13InitResourcesEv": "lunavyqo"
+    "src/actors/daOnms_c.cpp#_ZN8daOnms_c13InitResourcesEv": "lunavyqo",
+    "src/actors/daFPkn_c.cpp#_ZN8daFPkn_cD1Ev": "tangosdev",
+    "src/actors/daFPkn_c.cpp#_ZN8daFPkn_cD0Ev": "tangosdev",
+    "src/actors/daFPkn_c.cpp#func_ov084_0212d2dc": "tangosdev",
+    "src/actors/daFPkn_c.cpp#func_ov084_0212d42c": "lunavyqo",
+    "src/actors/daFPkn_c.cpp#func_ov084_0212d560": "tangosdev",
+    "src/actors/daFPkn_c.cpp#func_ov084_0212d564": "ruspecial",
+    "src/actors/daFPkn_c.cpp#func_ov084_0212d86c": "lunavyqo",
+    "src/actors/daFPkn_c.cpp#func_ov084_0212dc30": "andrewboudreau",
+    "src/actors/daFPkn_c.cpp#func_ov084_0212ddbc": "lunavyqo",
+    "src/actors/daFPkn_c.cpp#func_ov084_0212e010": "tangosdev",
+    "src/actors/daFPkn_c.cpp#func_ov084_0212e4e0": "tangosdev",
+    "src/actors/daFPkn_c.cpp#_ZN8daFPkn_c16CleanupResourcesEv": "tangosdev",
+    "src/actors/daFPkn_c.cpp#_ZN8daFPkn_c6RenderEv": "tangosdev",
+    "src/actors/daFPkn_c.cpp#_ZN8daFPkn_c8BehaviorEv": "tangosdev",
+    "src/actors/daFPkn_c.cpp#_ZN8daFPkn_c13InitResourcesEv": "lunavyqo",
+    "src/actors/daFPkn_c.cpp#_ZN8daFPkn_c16OnAimedAtWithEggEv": "tangosdev",
+    "src/actors/daFPkn_c.cpp#_ZN8daFPkn_c13OnTurnIntoEggER6Player": "tangosdev",
+    "src/actors/daFPkn_c.cpp#_ZN8daFPkn_c13OnYoshiTryEatEv": "tangosdev"
   }
 }
