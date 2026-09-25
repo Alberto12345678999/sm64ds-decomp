@@ -1,13 +1,13 @@
-/* class CccArena : dBgActor_c. Real C++ form.
+/* class daObjEwbIce_c : dBgActor_c. Real C++ form.
  *
- * Base and size from the factory (src/daObjEwbIce_c_classInit_EWB_ICE_A.c):
+ * Base and size from the factory (src/d_a_obj_ewb_ice_ewb_ice_a.c):
  * fBase_c::operator new(828) -- 0x33c -- then dBgActor_c::dBgActor_c(),
- * then stores _ZTV8CccArena. No intermediate: the destructor stores only
+ * then stores _ZTV13daObjEwbIce_c. No intermediate: the destructor stores only
  * its own vptr and dBgActor_c's, with zero extra member-destructor calls
- * in between (src/_ZN8CccArenaD1Ev.c), so every field below 0x320 is a
- * scalar, not a sub-object.
+ * in between (~daObjEwbIce_c in src/actors/daObjEwbIce_c.cpp), so every
+ * field below 0x320 is a scalar, not a sub-object.
  *
- * dBgActor_c ends at 0x320; CccArena adds 0x1c more bytes, closing exactly
+ * dBgActor_c ends at 0x320; daObjEwbIce_c adds 0x1c more bytes, closing exactly
  * on 0x33c (the operator new literal), matching the old AUTO-GENERATED
  * header's own field span -- kept as-is, just re-parented.
  *
@@ -16,8 +16,8 @@
  * CccArena_Spawn) constructs it for the EWB_ICE_A
  * registry profile.
  */
-#ifndef CCCARENA_H
-#define CCCARENA_H
+#ifndef DAOBJEWBICE_C_H
+#define DAOBJEWBICE_C_H
 #include "types.h"
 #include "dBgW_KcMbg.h"
 
@@ -25,7 +25,7 @@
 
 #include "dBgActor_c.h"
 
-struct CccArena : dBgActor_c {
+struct daObjEwbIce_c : dBgActor_c {
     /* dBgActor_c's own last named fields (unk_31c/unk_31d) are u8, so its
        sizeof (0x320) includes 2 bytes of pure tail padding to reach 4-byte
        alignment. mwcc reuses that tail padding for a derived class's first
@@ -45,10 +45,10 @@ struct CccArena : dBgActor_c {
     s32 unk_338;            /* 0x338 */
 
     /* --- vtable --- */
-    virtual ~CccArena();
+    virtual ~daObjEwbIce_c();
 
     /* Slot 31, dBgActor_c's own new virtual (include/dBgActor_c.h).
-       Attributed by the vtable: _ZTV8CccArena + 4*31 = 0x021231e8 + 0x7c =
+       Attributed by the vtable: _ZTV13daObjEwbIce_c + 4*31 = 0x021231e8 + 0x7c =
        0x02123264; config/arm9/overlays/ov073/relocs.txt confirms
        0x02123264 -> 0x021223f4. NOT the key function: the destructor is
        declared out of line and defined identically in both D1Ev.cpp and
@@ -64,7 +64,7 @@ struct CccArena : dBgActor_c {
 
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
-typedef char CccArena_size_must_be_0x33c[sizeof(CccArena) == 0x33c ? 1 : -1];
+typedef char daObjEwbIce_c_size_must_be_0x33c[sizeof(daObjEwbIce_c) == 0x33c ? 1 : -1];
 #endif
 
 #else
@@ -73,7 +73,7 @@ typedef char CccArena_size_must_be_0x33c[sizeof(CccArena) == 0x33c ? 1 : -1];
 
 /* The C spelling of the same object, flat. Retained for any leftover C
    translation unit, same arrangement as include/ShadowModel.h. */
-struct CccArena {
+struct daObjEwbIce_c {
     u8  pad_000[0xc];
     u16 mActorID;            /* 0x00c */
     u8  pad_00e[0x4e];
@@ -86,7 +86,7 @@ struct CccArena {
     s16 mAngleZ;            /* 0x090 */
     u8  pad_092[0x42];
     Model mModel;            /* 0x0d4 */
-    /* dBgW_KcMbg member. The cartridge's own ~CccArena calls _ZN10dBgW_KcMbgD1Ev at
+    /* dBgW_KcMbg member. The cartridge's own ~daObjEwbIce_c calls _ZN10dBgW_KcMbgD1Ev at
        +0x124 (D0/D1), a relocation the ROM build checks; recovered by
        tools/dtor_members.py. D1 and not D2, so it is this type and not an inlined base. */
     dBgW_KcMbg mMeshCollider;            /* 0x124 */

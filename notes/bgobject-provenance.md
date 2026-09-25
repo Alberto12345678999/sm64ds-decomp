@@ -515,11 +515,11 @@ The promoted header derives from `dBgActor_c` directly and owns two complete
 
 ---
 
-## CccArena (`include/CccArena.h`, [ov073](../config/arm9/overlays/ov073/symbols.txt), size 0x33c)
+## daObjEwbIce_c (`include/daObjEwbIce_c.h`, [ov073](../config/arm9/overlays/ov073/symbols.txt), size 0x33c)
 
 | Offset | Name | Evidence |
 | --- | --- | --- |
-| 0x320 | `mState` | `src/_ZN8CccArena8BehaviorEv.cpp` reads the WORD here as a pointer, tests `*(p + 8)` and calls the pointer-to-member pair at `p + 8` through `this`. The same shape `Eyerok`'s own 0x48c has. `InitResources` installs it through `func_ov073_021223a4(this, &data_ov073_021234b0)`. Declared type left `u8`. |
+| 0x320 | `mState` | `Behavior` ([src/actors/daObjEwbIce_c.cpp](../src/actors/daObjEwbIce_c.cpp)) reads the WORD here as a pointer, tests `*(p + 8)` and calls the pointer-to-member pair at `p + 8` through `this`. The same shape `Eyerok`'s own 0x48c has. `InitResources` installs it through `func_ov073_021223a4(this, &data_ov073_021234b0)`. Declared type left `u8`. |
 | 0x32c | `mVariant` | `InitResources` sets `0`/`1`/`2` for actorID `0xaa`/`0xab`/`0xac` and then uses it as the row index into all three 0xc-stride ov073 tables — `data_ov073_021231bc` (model), `...1c0` (KCL), `...1c4` (CLPS). `CleanupResources` indexes the first two again to `Release()` them. Was inside `pad_321`. |
 | 0x32d | `mSpawnIndex` | `InitResources` copies the value of a per-variant global counter (`data_ov073_02123424` for `0xab`, `...3420` for `0xac`) and then increments that counter — a serial number among the arena pieces of this variant. Was inside `pad_321`. |
 
@@ -763,7 +763,7 @@ same offsets:
 
 ## Left `unk_` across this batch, and why
 
-* `CccArena` 0x330 / 0x334 / 0x338 — written once each by `InitResources`, never read.
+* `daObjEwbIce_c` 0x330 / 0x334 / 0x338 — written once each by `InitResources`, never read.
 * `daObjCtMecha10_c` 0x326 — written the same table value as `mAngleYStep`, never read.
 * `daKpa2Bg_c` 0x56c — zeroed, never read.
 * `RotatingUpDownPlatformUtm` 0x300 in the C twin — that offset is *interior* to

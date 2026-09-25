@@ -689,7 +689,7 @@ extern int _ZTV7daTgz_c[];
 extern int _ZTV7daTor_c[];
 extern int _ZTV7daWbm_c[];
 extern int _ZTV8BookShot[];
-extern int _ZTV8CccArena[];
+extern int _ZTV13daObjEwbIce_c[];
 extern int _ZTV8Fireball[];
 extern int _ZTV8IceBlock[];
 extern int _ZTV9daManta_c[];
