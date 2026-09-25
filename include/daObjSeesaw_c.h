@@ -1,5 +1,5 @@
-#ifndef SEESAWBOB_H
-#define SEESAWBOB_H
+#ifndef DAOBJSEESAW_C_H
+#define DAOBJSEESAW_C_H
 
 #include "types.h"
 #include "dBgW_KcMbg.h"
@@ -28,7 +28,7 @@
 
 #include "dBgActor_c.h"
 
-struct SeesawBob : dBgActor_c {
+struct daObjSeesaw_c : dBgActor_c {
     u8  mVariant;                     /* 0x31e -- 0..6 from actorID; indexes all three ov095 file tables */
     u8  pad_31f[0x1];
     s32 mTiltSound;                   /* 0x320 -- recycled Sound::PlayLong handle, replayed while |mAngleXSpeed| > 0xa */
@@ -36,18 +36,17 @@ struct SeesawBob : dBgActor_c {
     u8  mPoundedThisFrame;            /* 0x326 -- set by OnGroundPounded, cleared by the last statement of Behavior */
 
     /* --- vtable --- */
-    virtual ~SeesawBob();
-
-    int Behavior();
-    int CleanupResources();
-    int InitResources();
-    int Render();
-    virtual void OnGroundPounded(dActor_c &other); /* slot 21 */
+    virtual int InitResources();                       /* slot  0 */
+    virtual int CleanupResources();                    /* slot  3 */
+    virtual int Behavior();                            /* slot  6 */
+    virtual int Render();                              /* slot  9 */
+    virtual ~daObjSeesaw_c();                          /* slots 16, 17 */
+    virtual void OnGroundPounded(dActor_c &other);     /* slot 21 */
 };
 
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
-typedef char SeesawBob_size_must_be_0x328[sizeof(SeesawBob) == 0x328 ? 1 : -1];
+typedef char daObjSeesaw_c_size_must_be_0x328[sizeof(daObjSeesaw_c) == 0x328 ? 1 : -1];
 #endif
 
 #else
@@ -55,7 +54,7 @@ typedef char SeesawBob_size_must_be_0x328[sizeof(SeesawBob) == 0x328 ? 1 : -1];
 /* The C spelling of the same object, flat. Kept because the D0 file is a C
    translation unit that reads these fields, and D0 is compiler-generated so it
    can never be migrated. Same arrangement as include/ShadowModel.h. */
-struct SeesawBob {
+struct daObjSeesaw_c {
     u8  pad_000[0xc];
     u16 actorID;            /* 0x00c */
     u8  pad_00e[0x7e];
@@ -67,7 +66,7 @@ struct SeesawBob {
     /* Model member, named by _ZN5ModelD1Ev at +0xd4 -- a relocation the ROM build checks.
        D1 and not D2, so it is this type and not an inlined base. Was a u8 marker. */
     Model mModel;            /* 0x0d4 */
-    /* dBgW_KcMbg member. The cartridge's own ~SeesawBob calls _ZN10dBgW_KcMbgD1Ev at
+    /* dBgW_KcMbg member. The cartridge's own ~daObjSeesaw_c calls _ZN10dBgW_KcMbgD1Ev at
        +0x124 (D0/D1), a relocation the ROM build checks; recovered by
        tools/dtor_members.py. D1 and not D2, so it is this type and not an inlined base. */
     dBgW_KcMbg mMeshCollider;            /* 0x124 */
@@ -81,4 +80,4 @@ struct SeesawBob {
 
 #endif /* __cplusplus */
 
-#endif /* SEESAWBOB_H */
+#endif /* DAOBJSEESAW_C_H */

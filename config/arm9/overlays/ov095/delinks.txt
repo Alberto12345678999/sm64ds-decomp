@@ -4,45 +4,9 @@
     .ctor       start:0x021373b4 end:0x021373bc kind:rodata align:4
     .data       start:0x021373c0 end:0x02137780 kind:data align:32
     .bss        start:0x02137780 end:0x02137940 kind:bss align:32
-src/_ZN9SeesawBobD1Ev.cpp:
+src/actors/daObjSeesaw_c.cpp:
     complete
-    .text start:0x02135700 end:0x02135744
-
-src/_ZN9SeesawBobD0Ev.cpp:
-    complete
-    .text start:0x02135744 end:0x0213579c
-
-src/func_ov095_0213579c.c:
-    complete
-    .text start:0x0213579c end:0x021357d8
-
-src/_ZN9SeesawBob15OnGroundPoundedER8dActor_c.cpp:
-    complete
-    .text start:0x021357d8 end:0x021358cc
-
-src/func_ov095_021358cc.c:
-    complete
-    .text start:0x021358cc end:0x0213597c
-
-src/func_ov095_0213597c.c:
-    complete
-    .text start:0x0213597c end:0x021359c4
-
-src/_ZN9SeesawBob16CleanupResourcesEv.cpp:
-    complete
-    .text start:0x021359c4 end:0x02135a28
-
-src/_ZN9SeesawBob6RenderEv.cpp:
-    complete
-    .text start:0x02135a28 end:0x02135a50
-
-src/_ZN9SeesawBob8BehaviorEv.cpp:
-    complete
-    .text start:0x02135a50 end:0x02135b74
-
-src/_ZN9SeesawBob13InitResourcesEv.cpp:
-    complete
-    .text start:0x02135b74 end:0x02135cdc
+    .text start:0x02135700 end:0x02135cdc
 
 src/func_ov095_02135cdc.c:
     complete

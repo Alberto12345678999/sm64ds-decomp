@@ -722,7 +722,6 @@ extern int _ZTV9MontyMole[];
 extern int _ZTV9OneUpLogo[];
 extern int _ZTV9PowerStar[];
 extern int _ZTV11PowerFlower[];
-extern int _ZTV9SeesawBob[];
 extern int _ZTV9Spindrift[];
 extern int _ZTV9Whirlpool[];
 extern int _ZTV14daObjTtWater_c[];

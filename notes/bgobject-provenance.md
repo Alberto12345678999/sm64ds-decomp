@@ -564,7 +564,7 @@ In the C twin, `0x0a0` becomes `mTerminalVelocity` and `0x0a8` becomes `mVertSpe
 
 ---
 
-## SeesawBob (`include/SeesawBob.h`, [ov095](../config/arm9/overlays/ov095/symbols.txt), size 0x328)
+## daObjSeesaw_c (`include/daObjSeesaw_c.h`, [ov095](../config/arm9/overlays/ov095/symbols.txt), size 0x328)
 
 | Offset | Name | Evidence |
 | --- | --- | --- |

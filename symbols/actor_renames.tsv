@@ -2802,12 +2802,12 @@ ov094	0x02136798	HootTheOwl_Spawn	daOwl_c_classInit	reconstructed classInit; ROM
 ov094	0x02136a34	data_ov094_02136a34	HootTheOwl_SpawnInfo	spawninfo
 ov094	0x02136a34	HootTheOwl_SpawnInfo	g_profile_OWL	reconstructed profile global; literal ROM ID OWL+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov094	0x02136a58	data_ov094_02136a58	_ZTV10HootTheOwl	vtable alloc=0x3f8
-ov095	0x02135700	func_ov095_02135700	_ZN9SeesawBobD1Ev	vtable slot 16
-ov095	0x02135744	func_ov095_02135744	_ZN9SeesawBobD0Ev	vtable slot 17
-ov095	0x021359c4	func_ov095_021359c4	_ZN9SeesawBob16CleanupResourcesEv	vtable slot 3
-ov095	0x02135a28	func_ov095_02135a28	_ZN9SeesawBob6RenderEv	vtable slot 9
-ov095	0x02135a50	func_ov095_02135a50	_ZN9SeesawBob8BehaviorEv	vtable slot 6
-ov095	0x02135b74	func_ov095_02135b74	_ZN9SeesawBob13InitResourcesEv	vtable slot 0
+ov095	0x02135700	func_ov095_02135700	_ZN13daObjSeesaw_cD1Ev	vtable slot 16
+ov095	0x02135744	func_ov095_02135744	_ZN13daObjSeesaw_cD0Ev	vtable slot 17
+ov095	0x021359c4	func_ov095_021359c4	_ZN13daObjSeesaw_c16CleanupResourcesEv	vtable slot 3
+ov095	0x02135a28	func_ov095_02135a28	_ZN13daObjSeesaw_c6RenderEv	vtable slot 9
+ov095	0x02135a50	func_ov095_02135a50	_ZN13daObjSeesaw_c8BehaviorEv	vtable slot 6
+ov095	0x02135b74	func_ov095_02135b74	_ZN13daObjSeesaw_c13InitResourcesEv	vtable slot 0
 ov095	0x02135ea4	func_ov095_02135ea4	SeesawRr_Spawn	spawnfunc
 ov095	0x02135ea4	SeesawRr_Spawn	daObjSeesaw_c_classInit_RC_SEESAW	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov095	0x02135ed4	func_ov095_02135ed4	SeesawBsZigZag_Spawn	spawnfunc
@@ -2854,7 +2854,7 @@ ov095	0x02137468	data_ov095_02137468	SeesawRr_SpawnInfo	spawninfo
 ov095	0x02137468	SeesawRr_SpawnInfo	g_profile_RC_SEESAW	reconstructed profile global; literal ROM ID RC_SEESAW+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov095	0x02137484	data_ov095_02137484	SeesawBob_SpawnInfo	spawninfo
 ov095	0x02137484	SeesawBob_SpawnInfo	g_profile_BOMB_SEESAW	reconstructed profile global; literal ROM ID BOMB_SEESAW+registry role+later EAD lineage; exact SM64DS spelling not preserved
-ov095	0x021374fc	data_ov095_021374fc	_ZTV9SeesawBob	vtable alloc=0x328
+ov095	0x021374fc	data_ov095_021374fc	_ZTV13daObjSeesaw_c	vtable alloc=0x328
 ov095	0x021375cc	data_ov095_021375cc	UpDownLiftBbh_SpawnInfo	spawninfo
 ov095	0x021375cc	UpDownLiftBbh_SpawnInfo	g_profile_UDLIFT_TERESA	reconstructed profile global; literal ROM ID UDLIFT_TERESA+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov095	0x021375e8	data_ov095_021375e8	UpDownLiftHmc_SpawnInfo	spawninfo
