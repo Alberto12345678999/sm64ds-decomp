@@ -34105,39 +34105,39 @@ matched: yes</title></rect><rect x="1333.94" y="251.44" width="5.35" height="4.3
 module: ov045
 addr: 0x02111808
 size: 56 bytes
-matched: yes</title></rect><rect x="1333.94" y="255.81" width="5.35" height="4.37" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN17ExtendingPlatformD1Ev
+matched: yes</title></rect><rect x="1333.94" y="255.81" width="5.35" height="4.37" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN17daObjKm2_Nobiru_cD1Ev
 module: ov045
 addr: 0x02111840
 size: 56 bytes
-matched: yes</title></rect><rect x="1333.94" y="260.19" width="5.35" height="5.94" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN17ExtendingPlatformD0Ev
+matched: yes</title></rect><rect x="1333.94" y="260.19" width="5.35" height="5.94" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN17daObjKm2_Nobiru_cD0Ev
 module: ov045
 addr: 0x02111878
 size: 76 bytes
-matched: yes</title></rect><rect x="1333.94" y="266.12" width="5.35" height="4.06" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN17ExtendingPlatform23UpdateColliderTransformEv
+matched: yes</title></rect><rect x="1333.94" y="266.12" width="5.35" height="4.06" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN17daObjKm2_Nobiru_c23UpdateColliderTransformEv
 module: ov045
 addr: 0x021118c4
 size: 52 bytes
-matched: yes</title></rect><rect x="1339.30" y="251.44" width="2.68" height="10.00" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN17ExtendingPlatform20UpdateModelTransformEv
+matched: yes</title></rect><rect x="1339.30" y="251.44" width="2.68" height="10.00" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN17daObjKm2_Nobiru_c20UpdateModelTransformEv
 module: ov045
 addr: 0x021118f8
 size: 64 bytes
-matched: yes</title></rect><rect x="1339.30" y="261.43" width="2.68" height="8.75" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN17ExtendingPlatform16CleanupResourcesEv
+matched: yes</title></rect><rect x="1339.30" y="261.43" width="2.68" height="8.75" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN17daObjKm2_Nobiru_c16CleanupResourcesEv
 module: ov045
 addr: 0x02111938
 size: 56 bytes
-matched: yes</title></rect><rect x="1341.97" y="251.44" width="1.78" height="0.94" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN17ExtendingPlatform16OnPendingDestroyEv
+matched: yes</title></rect><rect x="1341.97" y="251.44" width="1.78" height="0.94" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN17daObjKm2_Nobiru_c16OnPendingDestroyEv
 module: ov045
 addr: 0x02111970
 size: 4 bytes
-matched: yes</title></rect><rect x="1341.97" y="252.37" width="1.78" height="17.81" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN17ExtendingPlatform6RenderEv
+matched: yes</title></rect><rect x="1341.97" y="252.37" width="1.78" height="17.81" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN17daObjKm2_Nobiru_c6RenderEv
 module: ov045
 addr: 0x02111974
 size: 76 bytes
-matched: yes</title></rect><rect x="1343.76" y="251.44" width="6.16" height="7.61" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN17ExtendingPlatform8BehaviorEv
+matched: yes</title></rect><rect x="1343.76" y="251.44" width="6.16" height="7.61" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN17daObjKm2_Nobiru_c8BehaviorEv
 module: ov045
 addr: 0x021119c0
 size: 112 bytes
-matched: yes</title></rect><rect x="1343.76" y="259.04" width="6.16" height="11.14" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN17ExtendingPlatform13InitResourcesEv
+matched: yes</title></rect><rect x="1343.76" y="259.04" width="6.16" height="11.14" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN17daObjKm2_Nobiru_c13InitResourcesEv
 module: ov045
 addr: 0x02111a30
 size: 164 bytes
