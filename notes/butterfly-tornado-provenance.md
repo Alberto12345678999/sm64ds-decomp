@@ -1,4 +1,4 @@
-# daBtfly_c, Tornado, StarMarker, ToxBox -- field-name provenance
+# daBtfly_c, daTor_c, StarMarker, ToxBox -- field-name provenance
 
 Four standalone actors whose headers came out of `tools/gen_header.py` with
 observed offsets and placeholder names. The offsets and widths were already
@@ -12,7 +12,7 @@ cartridge under 2004/b56, checked per function with `build_pin`'s `verify`
 
 ## A rule these four share
 
-Tornado and StarMarker remain flat shadow structs that restate `dActor_c`'s
+daTor_c and StarMarker remain flat shadow structs that restate `dActor_c`'s
 bytes. daBtfly_c has since been promoted to genuine `daBtfly_c : dActor_c`
 class form; its inherited fields therefore come directly from
 `include/dActor_c.h` rather than being repeated locally.
@@ -64,20 +64,20 @@ named `daBtfly_c::State0` through `State7` from their exact PMF-table indices.
 before this pass; the writes above are what took them out of the padding.
 
 
-## Tornado (`include/Tornado.h`)
+## daTor_c (`include/daTor_c.h`)
 
-`Tornado::Behavior` switches on `mState` and calls one of three free
+`daTor_c::Behavior` switches on `mState` and calls one of three free
 functions, all inside this class's own address range:
 
-- 0 `src/_ZN7Tornado6State0Ev.cpp` -- dormant at home.
-- 1 `src/_ZN7Tornado6State1Ev.cpp` -- hunting.
-- 2 `src/_ZN7Tornado6State2Ev.cpp` -- winding down.
+- 0 `daTor_c::State0` in `src/actors/daTor_c.cpp` -- dormant at home.
+- 1 `daTor_c::State1` -- hunting.
+- 2 `daTor_c::State2` -- winding down.
 
 | offset | name | evidence |
 | --- | --- | --- |
-| 0x09c | `mVertAccel` | `dActor_c`'s offset; `src/_ZN7Tornado13InitResourcesEv.cpp` sets -0x1000. |
+| 0x09c | `mVertAccel` | `dActor_c`'s offset; `daTor_c::InitResources` sets -0x1000. |
 | 0x0a0 | `mTerminalVelocity` | `dActor_c`'s offset; InitResources sets -0x1e000. |
-| 0x33c | `mCaughtActor` | `src/_ZN7Tornado8BehaviorEv.cpp` resolves `mdCcAc_c.otherOwner` to an actor and stores it here once [func_ov002_020de33c](../src/func_ov002_020de33c.c) approves. State 1 re-tests it through [func_ov002_020de328](../src/func_ov002_020de328.c); state 2 clears it. |
+| 0x33c | `mCaughtActor` | `daTor_c::Behavior` resolves `mdCcAc_c.otherOwner` to an actor and stores it here once [func_ov002_020de33c](../src/func_ov002_020de33c.c) approves. State 1 re-tests it through [func_ov002_020de328](../src/func_ov002_020de328.c); state 2 clears it. |
 | 0x340/0x344/0x348 | `mHomePosX/Y/Z` | InitResources copies `mPos` here. State 0 snaps `mPos` back to it; states 1 and 2 measure every distance from it rather than from where the tornado is. |
 | 0x34c | `mChaseRange` | InitResources builds it from `mParam & 0xff`: `byte * 0x64000`, or 0x5dc000 when the byte is 0xff. State 1 chases only while the player is within it of `mHomePos`. |
 | 0x350 | `mStateTimer` | Behavior counts it up every frame and zeroes it when `mState` changed. State 0 spins up over its first 0x3c, state 2 shrinks over its own 0x3c and gives up at 0x168. |

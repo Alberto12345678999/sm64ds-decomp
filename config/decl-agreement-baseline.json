@@ -4732,10 +4732,6 @@
         "param:#1 const void *",
         "param:#2 const void *"
       ],
-      "src/_ZN7Tornado6State1Ev.cpp": [
-        "param:#1 const void *",
-        "param:#2 const void *"
-      ],
       "src/_ZN8dActor_c13ClosestPlayerEv.cpp": [
         "param:#1 const void *",
         "param:#2 const void *"
@@ -4871,6 +4867,10 @@
       "src/unnamed/ov063/func_ov063_0211c89c.c": [
         "param:#1 const Vec3 *",
         "param:#2 const Vec3 *"
+      ],
+      "src/actors/daTor_c.cpp": [
+        "param:#1 const void *",
+        "param:#2 const void *"
       ]
     },
     "Vec3_DivScalarInPlace": {
@@ -4907,10 +4907,6 @@
         "param:#2 const void *"
       ],
       "src/_ZN6Player4HurtERK7Vector3j5Fix12IiEjjj.cpp": [
-        "param:#1 const void *",
-        "param:#2 const void *"
-      ],
-      "src/_ZN7Tornado6State1Ev.cpp": [
         "param:#1 const void *",
         "param:#2 const void *"
       ],
@@ -5160,6 +5156,10 @@
         "param:#1 const Vec3 *",
         "param:#2 const Vec3 *"
       ],
+      "src/actors/daTor_c.cpp": [
+        "param:#1 const void *",
+        "param:#2 const void *"
+      ],
       "src/actors/daObjSm_Lift_c.cpp": [
         "param:#1 const void *",
         "param:#2 const void *"
@@ -5175,14 +5175,6 @@
         "param:#2 const void *"
       ],
       "src/_ZN16BowserShockwaves8BehaviorEv.cpp": [
-        "param:#1 const void *",
-        "param:#2 const void *"
-      ],
-      "src/_ZN7Tornado6State1Ev.cpp": [
-        "param:#1 const void *",
-        "param:#2 const void *"
-      ],
-      "src/_ZN7Tornado6State2Ev.cpp": [
         "param:#1 const void *",
         "param:#2 const void *"
       ],
@@ -5313,6 +5305,10 @@
       "src/unnamed/ov063/func_ov063_02117650.c": [
         "param:#1 Vector3 *",
         "param:#2 Vector3 *"
+      ],
+      "src/actors/daTor_c.cpp": [
+        "param:#1 const void *",
+        "param:#2 const void *"
       ],
       "src/actors/daObjSm_Lift_c.cpp": [
         "param:#1 const void *",
@@ -6922,10 +6918,6 @@
         "param:#2 dActor_c *",
         "param:#5 void *"
       ],
-      "src/_ZN7Tornado13InitResourcesEv.cpp": [
-        "param:#2 void *",
-        "param:#5 void *"
-      ],
       "src/_ZN7Wiggler13InitResourcesEv.cpp": [
         "param:#2 void *",
         "param:#5 void *"
@@ -7153,6 +7145,10 @@
         "param:#6 Vector3_16 *"
       ],
       "src/game/actors/daTrs_c/_ZN7daTrs_c13InitResourcesEv.cpp": [
+        "param:#2 void *",
+        "param:#5 void *"
+      ],
+      "src/actors/daTor_c.cpp": [
         "param:#2 void *",
         "param:#5 void *"
       ],
@@ -8946,10 +8942,6 @@
         "param:#1 void *",
         "param:#2 void *"
       ],
-      "src/_ZN7Tornado13InitResourcesEv.cpp": [
-        "param:#1 void *",
-        "param:#2 void *"
-      ],
       "src/_ZN8Goomboss13InitResourcesEv.cpp": [
         "param:#1 void *",
         "param:#2 void *"
@@ -8963,6 +8955,10 @@
         "param:#2 void *"
       ],
       "src/func_ov006_020c3050.c": [
+        "param:#1 void *",
+        "param:#2 void *"
+      ],
+      "src/actors/daTor_c.cpp": [
         "param:#1 void *",
         "param:#2 void *"
       ]
@@ -8979,9 +8975,6 @@
         "param:#5 unsigned int"
       ],
       "src/_ZN5Stage23LoadTextureTransformersEv.cpp": [
-        "param:#5 unsigned int"
-      ],
-      "src/_ZN7Tornado13InitResourcesEv.cpp": [
         "param:#5 unsigned int"
       ],
       "src/_ZN8Goomboss13InitResourcesEv.cpp": [
@@ -9055,6 +9048,9 @@
         "param:#2 BTA_File &",
         "param:#5 unsigned int",
         "return:unsigned int"
+      ],
+      "src/actors/daTor_c.cpp": [
+        "param:#5 unsigned int"
       ]
     },
     "_ZN18TextureTransformerC1Ev": {
@@ -11259,10 +11255,6 @@
       "src/_ZN6Fwoosh13InitResourcesEv.cpp": [
         "param:#1 void *"
       ],
-      "src/_ZN7Tornado13InitResourcesEv.cpp": [
-        "param:#1 void *",
-        "return:int"
-      ],
       "src/_ZN7Wiggler13InitResourcesEv.cpp": [
         "param:#1 void *",
         "return:void"
@@ -12082,16 +12074,6 @@
       ],
       "src/_ZN6Player19St_SwingPlayer_MainEv.cpp": [
         "param:#4 void *",
-        "param:#5 unsigned int",
-        "return:unsigned int"
-      ],
-      "src/_ZN7Tornado6State0Ev.cpp": [
-        "param:#4 const void *",
-        "param:#5 unsigned int",
-        "return:unsigned int"
-      ],
-      "src/_ZN7Tornado6State1Ev.cpp": [
-        "param:#4 const void *",
         "param:#5 unsigned int",
         "return:unsigned int"
       ],
@@ -14708,10 +14690,6 @@
       "src/_ZN6Player19St_Electrocute_MainEv.cpp": [
         "return:unsigned int"
       ],
-      "src/_ZN7Tornado6State1Ev.cpp": [
-        "param:#6 const void *",
-        "return:unsigned int"
-      ],
       "src/_ZN7Wiggler8BehaviorEv.cpp": [
         "param:#6 const void *",
         "return:void *"
@@ -15021,6 +14999,10 @@
       "src/actors/daMenbo_c.cpp": [
         "param:#6 int",
         "param:#7 int"
+      ],
+      "src/actors/daTor_c.cpp": [
+        "param:#6 const void *",
+        "return:unsigned int"
       ],
       "src/actors/daObjFl_KomaU_c.cpp": [
         "param:#6 const void *",
@@ -17528,10 +17510,6 @@
         "param:#1 void *",
         "return:void"
       ],
-      "src/_ZN7Tornado13InitResourcesEv.cpp": [
-        "param:#1 void *",
-        "return:int"
-      ],
       "src/_ZN7Wiggler13InitResourcesEv.cpp": [
         "param:#1 void *",
         "return:void"
@@ -17705,9 +17683,6 @@
         "return:int"
       ],
       "src/_ZN6Player18St_YoshiPower_MainEv.cpp": [
-        "param:#5 unsigned int"
-      ],
-      "src/_ZN7Tornado13InitResourcesEv.cpp": [
         "param:#5 unsigned int"
       ],
       "src/_ZN7Wiggler13InitResourcesEv.cpp": [
@@ -18257,6 +18232,9 @@
       "src/actors/daMenbo_c.cpp": [
         "return:int",
         "param:#5 unsigned int"
+      ],
+      "src/actors/daTor_c.cpp": [
+        "param:#5 unsigned int"
       ]
     },
     "_ZN9ModelAnimC1Ev": {
@@ -18362,9 +18340,6 @@
         "return:void"
       ],
       "src/_ZN6Fwoosh13InitResourcesEv.cpp": [
-        "return:void"
-      ],
-      "src/_ZN7Tornado13InitResourcesEv.cpp": [
         "return:void"
       ],
       "src/_ZN7Wiggler13InitResourcesEv.cpp": [
@@ -18867,9 +18842,6 @@
       ],
       "src/_ZN10dBgCh_Actr22UpdateContinuousNoLavaEv.cpp": [
         "param:#2 Vec3 *"
-      ],
-      "src/_ZN7Tornado6State1Ev.cpp": [
-        "param:#2 int *"
       ],
       "src/actors/Scuttlebug.cpp": [
         "param:#2 Vector3 *"
@@ -19783,9 +19755,6 @@
       "src/_ZN10SlidingBox8BehaviorEv.cpp": [
         "arity:1"
       ],
-      "src/_ZN7Tornado6State1Ev.cpp": [
-        "arity:1"
-      ],
       "src/_ZN8Fireball8BehaviorEv.cpp": [
         "arity:1"
       ],
@@ -19891,6 +19860,9 @@
         "arity:1"
       ],
       "src/game/actors/daPiano_c/d_a_piano.cpp": [
+        "arity:1"
+      ],
+      "src/actors/daTor_c.cpp": [
         "arity:1"
       ],
       "src/actors/daObjRc_Tikuwa_c.cpp": [
@@ -31426,16 +31398,6 @@
     "data_ov095_021375a4": {
       "src/actors/daUdlift_c.cpp": [
         "return:CLPS_Block * []"
-      ]
-    },
-    "data_ov096_02137ba8": {
-      "src/_ZN7Tornado16CleanupResourcesEv.cpp": [
-        "return:SharedFilePtr"
-      ]
-    },
-    "data_ov096_02137bb0": {
-      "src/_ZN7Tornado16CleanupResourcesEv.cpp": [
-        "return:SharedFilePtr"
       ]
     },
     "data_ov098_0213c384": {

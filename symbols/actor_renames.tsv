@@ -2876,12 +2876,12 @@ ov096	0x02136d10	func_ov096_02136d10	PokeySegment_Spawn	spawnfunc
 ov096	0x02136d10	PokeySegment_Spawn	daSanbo_c_classInit_SANBO_BODY	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov096	0x02136d60	func_ov096_02136d60	Pokey_Spawn	spawnfunc
 ov096	0x02136d60	Pokey_Spawn	daSanbo_c_classInit_SANBO	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
-ov096	0x02136db0	func_ov096_02136db0	_ZN7TornadoD1Ev	vtable slot 16
-ov096	0x02136df8	func_ov096_02136df8	_ZN7TornadoD0Ev	vtable slot 17
-ov096	0x021373e4	func_ov096_021373e4	_ZN7Tornado16CleanupResourcesEv	vtable slot 3
-ov096	0x02137414	func_ov096_02137414	_ZN7Tornado6RenderEv	vtable slot 9
-ov096	0x02137448	func_ov096_02137448	_ZN7Tornado8BehaviorEv	vtable slot 6
-ov096	0x02137564	func_ov096_02137564	_ZN7Tornado13InitResourcesEv	vtable slot 0
+ov096	0x02136db0	func_ov096_02136db0	_ZN7daTor_cD1Ev	vtable slot 16
+ov096	0x02136df8	func_ov096_02136df8	_ZN7daTor_cD0Ev	vtable slot 17
+ov096	0x021373e4	func_ov096_021373e4	_ZN7daTor_c16CleanupResourcesEv	vtable slot 3
+ov096	0x02137414	func_ov096_02137414	_ZN7daTor_c6RenderEv	vtable slot 9
+ov096	0x02137448	func_ov096_02137448	_ZN7daTor_c8BehaviorEv	vtable slot 6
+ov096	0x02137564	func_ov096_02137564	_ZN7daTor_c13InitResourcesEv	vtable slot 0
 ov096	0x021376bc	func_ov096_021376bc	Tornado_Spawn	spawnfunc
 ov096	0x021376bc	Tornado_Spawn	daTor_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov096	0x02137998	data_ov096_02137998	Pokey_SpawnInfo	spawninfo
@@ -2891,7 +2891,7 @@ ov096	0x021379b4	PokeySegment_SpawnInfo	g_profile_SANBO_BODY	reconstructed profi
 ov096	0x021379d8	data_ov096_021379d8	_ZTV9daSanbo_c	vtable alloc=0x3b0
 ov096	0x02137a6c	data_ov096_02137a6c	Tornado_SpawnInfo	spawninfo
 ov096	0x02137a6c	Tornado_SpawnInfo	g_profile_TORNADO	reconstructed profile global; literal ROM ID TORNADO+registry role+later EAD lineage; exact SM64DS spelling not preserved
-ov096	0x02137a90	data_ov096_02137a90	_ZTV7Tornado	vtable alloc=0x370
+ov096	0x02137a90	data_ov096_02137a90	_ZTV7daTor_c	vtable alloc=0x370
 ov098	0x02137be0	func_ov098_02137be0	_ZN15daObjYajirusi_cD1Ev	vtable slot 16
 ov098	0x02137c2c	func_ov098_02137c2c	_ZN15daObjYajirusi_cD0Ev	vtable slot 17
 ov098	0x02137ccc	_ZN14ArrowSignRight4KillEv	_ZN15daObjYajirusi_c4KillEv	class renamed to its ROM RTTI name 15daObjYajirusi_c (_ZTS15daObjYajirusi_c at ov098 0x0213c36c, _ZTI at 0x0213c360, _ZTV at 0x0213c3d8); method name vtable-slot recovered (slot 31)

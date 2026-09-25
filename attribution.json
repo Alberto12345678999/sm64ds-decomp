@@ -4865,6 +4865,16 @@
     "src/actors/daObjKm2_Nobiru_c.cpp#_ZN17daObjKm2_Nobiru_c16OnPendingDestroyEv": "andrewboudreau",
     "src/actors/daObjKm2_Nobiru_c.cpp#_ZN17daObjKm2_Nobiru_c6RenderEv": "andrewboudreau",
     "src/actors/daObjKm2_Nobiru_c.cpp#_ZN17daObjKm2_Nobiru_c8BehaviorEv": "andrewboudreau",
-    "src/actors/daObjKm2_Nobiru_c.cpp#_ZN17daObjKm2_Nobiru_c13InitResourcesEv": "andrewboudreau"
+    "src/actors/daObjKm2_Nobiru_c.cpp#_ZN17daObjKm2_Nobiru_c13InitResourcesEv": "andrewboudreau",
+    "src/actors/daTor_c.cpp#_ZN7daTor_cD1Ev": "tangosdev",
+    "src/actors/daTor_c.cpp#_ZN7daTor_cD0Ev": "tangosdev",
+    "src/actors/daTor_c.cpp#_ZN7daTor_c10UpdateSpinEi": "andrewboudreau",
+    "src/actors/daTor_c.cpp#_ZN7daTor_c6State2Ev": "andrewboudreau",
+    "src/actors/daTor_c.cpp#_ZN7daTor_c6State1Ev": "andrewboudreau",
+    "src/actors/daTor_c.cpp#_ZN7daTor_c6State0Ev": "andrewboudreau",
+    "src/actors/daTor_c.cpp#_ZN7daTor_c16CleanupResourcesEv": "tangosdev",
+    "src/actors/daTor_c.cpp#_ZN7daTor_c6RenderEv": "tangosdev",
+    "src/actors/daTor_c.cpp#_ZN7daTor_c8BehaviorEv": "tangosdev",
+    "src/actors/daTor_c.cpp#_ZN7daTor_c13InitResourcesEv": "tangosdev"
   }
 }
