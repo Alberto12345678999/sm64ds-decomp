@@ -566,7 +566,6 @@ extern int _ZTV15daObjWc_Obj07_c[];
 extern int _ZTV15daObjYajirusi_c[];
 extern int _ZTV15daObj_Mip_Key_c[];
 extern int _ZTV15daYurei_Mucho_c[];
-extern int _ZTV16BowserShockwaves[];
 extern int _ZTV4dBgW[];
 extern int _ZTV16dScMgPachinko2_c[];
 extern int _ZTV16daObjBC_Switch_c[];

@@ -202,7 +202,7 @@
    ]
   },
   "ov060:0x02119004": {
-   "name": "_ZN16BowserShockwaves13InitResourcesEv",
+   "name": "_ZN9daFRing_c13InitResourcesEv",
    "missing": [
     "func_021115e4",
     "func_021115f4"

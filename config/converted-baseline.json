@@ -629,10 +629,6 @@
     "src/_ZN15dScMgPachinko_c6RenderEv.cpp",
     "src/_ZN15daObjGuragura_cD0Ev.cpp",
     "src/_ZN15daObjGuragura_cD1Ev.cpp",
-    "src/_ZN16BowserShockwaves16CleanupResourcesEv.cpp",
-    "src/_ZN16BowserShockwaves6RenderEv.cpp",
-    "src/_ZN16BowserShockwavesD0Ev.cpp",
-    "src/_ZN16BowserShockwavesD1Ev.cpp",
     "src/actors/daObjCtMecha10_c.cpp#_ZN16daObjCtMecha10_c16CleanupResourcesEv",
     "src/actors/daObjCtMecha10_c.cpp#_ZN16daObjCtMecha10_c6RenderEv",
     "src/actors/daObjCtMecha10_c.cpp#_ZN16daObjCtMecha10_cD0Ev",
@@ -3002,6 +2998,10 @@
     "src/actors/daTor_c.cpp#_ZN7daTor_c16CleanupResourcesEv",
     "src/actors/daTor_c.cpp#_ZN7daTor_c6RenderEv",
     "src/actors/daTor_c.cpp#_ZN7daTor_cD0Ev",
-    "src/actors/daTor_c.cpp#_ZN7daTor_cD1Ev"
+    "src/actors/daTor_c.cpp#_ZN7daTor_cD1Ev",
+    "src/actors/daFRing_c.cpp#_ZN9daFRing_c16CleanupResourcesEv",
+    "src/actors/daFRing_c.cpp#_ZN9daFRing_c6RenderEv",
+    "src/actors/daFRing_c.cpp#_ZN9daFRing_cD0Ev",
+    "src/actors/daFRing_c.cpp#_ZN9daFRing_cD1Ev"
   ]
 }

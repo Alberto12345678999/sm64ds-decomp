@@ -1653,12 +1653,12 @@ ov060	0x02118b2c	func_ov060_02118b2c	_ZN9SpikeBomb8BehaviorEv	vtable slot 6 (was
 ov060	0x02118bb4	func_ov060_02118bb4	_ZN9SpikeBomb13InitResourcesEv	vtable slot 0 (was _ZN17BowserSkyPlatform13InitResourcesEv)
 ov060	0x02118cbc	func_ov060_02118cbc	SpikeBomb_Spawn	spawnfunc
 ov060	0x02118cbc	SpikeBomb_Spawn	daKirai_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
-ov060	0x02118cfc	func_ov060_02118cfc	_ZN16BowserShockwavesD1Ev	vtable slot 16
-ov060	0x02118d64	func_ov060_02118d64	_ZN16BowserShockwavesD0Ev	vtable slot 17
-ov060	0x02118de0	func_ov060_02118de0	_ZN16BowserShockwaves16CleanupResourcesEv	vtable slot 3
-ov060	0x02118e1c	func_ov060_02118e1c	_ZN16BowserShockwaves6RenderEv	vtable slot 9
-ov060	0x02118eb8	func_ov060_02118eb8	_ZN16BowserShockwaves8BehaviorEv	vtable slot 6
-ov060	0x02119004	func_ov060_02119004	_ZN16BowserShockwaves13InitResourcesEv	vtable slot 0
+ov060	0x02118cfc	func_ov060_02118cfc	_ZN9daFRing_cD1Ev	vtable slot 16
+ov060	0x02118d64	func_ov060_02118d64	_ZN9daFRing_cD0Ev	vtable slot 17
+ov060	0x02118de0	func_ov060_02118de0	_ZN9daFRing_c16CleanupResourcesEv	vtable slot 3
+ov060	0x02118e1c	func_ov060_02118e1c	_ZN9daFRing_c6RenderEv	vtable slot 9
+ov060	0x02118eb8	func_ov060_02118eb8	_ZN9daFRing_c8BehaviorEv	vtable slot 6
+ov060	0x02119004	func_ov060_02119004	_ZN9daFRing_c13InitResourcesEv	vtable slot 0
 ov060	0x021191f4	func_ov060_021191f4	BowserShockwaves_Spawn	spawnfunc
 ov060	0x021191f4	BowserShockwaves_Spawn	daFRing_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov060	0x0211a5f4	data_ov060_0211a5f4	Bowser_SpawnInfo	spawninfo
@@ -1680,7 +1680,7 @@ ov060	0x0211aa68	SpikeBomb_SpawnInfo	g_profile_KIRAI	reconstructed profile globa
 ov060	0x0211aa8c	data_ov060_0211aa8c	_ZTV9SpikeBomb	vtable alloc=? (was _ZTV17BowserSkyPlatform)
 ov060	0x0211ab30	data_ov060_0211ab30	BowserShockwaves_SpawnInfo	spawninfo
 ov060	0x0211ab30	BowserShockwaves_SpawnInfo	g_profile_FIRERING	reconstructed profile global; literal ROM ID FIRERING+registry role+later EAD lineage; exact SM64DS spelling not preserved
-ov060	0x0211ab54	data_ov060_0211ab54	_ZTV16BowserShockwaves	vtable alloc=0x218
+ov060	0x0211ab54	data_ov060_0211ab54	_ZTV9daFRing_c	vtable alloc=0x218
 ov062	0x02115ee0	func_ov062_02115ee0	_ZN10daHolhei_cD1Ev	vtable slot 16
 ov062	0x02115f28	func_ov062_02115f28	_ZN10daHolhei_cD0Ev	vtable slot 17
 ov062	0x02116cd8	Chuckya_ChangeState	daHolhei_c_ChangeState	coined dispatcher kept as a C name; class ownership, PMF dispatch, inbound calls and codegen proven; original English name is not

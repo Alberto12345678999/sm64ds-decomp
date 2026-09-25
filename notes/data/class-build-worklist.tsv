@@ -119,7 +119,7 @@ daECreate_c	DONE	include\EnemySpawner.h  [alias: header uses pre-rename name]	dA
 daESwitch_c	DONE	include\EnemySwitchTag.h  [alias: header uses pre-rename name]	dActor_c	0	ov002	5
 daEyBm_c	DONE	include\daEyBm_c.h	dActor_c	0	ov071	12
 daEykn_c	DONE	include\MrI.h  [alias: header uses pre-rename name]	dActor_c	0	ov071	7
-daFRing_c	DONE	include\BowserShockwaves.h  [alias: header uses pre-rename name]	dActor_c	0	ov060	6
+daFRing_c	DONE	include\daFRing_c.h  [alias: header uses pre-rename name]	dActor_c	0	ov060	6
 daFeather_c	DONE	include\daFeather_c.h	dActor_c	0	ov002	6
 daFish_c	DONE	include\Fish.h  [alias: header uses pre-rename name]	dActor_c	0	ov100	7
 daGmch_c	DONE	include\daGmch_c.h	dActor_c	0	ov081	10
