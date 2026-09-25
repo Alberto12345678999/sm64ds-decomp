@@ -58,16 +58,16 @@ func_ov091_02133098 kind:function(arm,size=0x120) addr:0x02133098
 _ZN11daDsnBase_c16CleanupResourcesEv kind:function(arm,size=0x58) addr:0x021331b8
 _ZN11daDsnBase_c6RenderEv kind:function(arm,size=0x44) addr:0x02133210
 _ZN11daDsnBase_c4InitEv kind:function(arm,size=0x1a8) addr:0x02133254
-_ZN5StumpD1Ev kind:function(arm,size=0x44) addr:0x021333fc
-_ZN5StumpD0Ev kind:function(arm,size=0x58) addr:0x02133440
+_ZN11daObjPile_cD1Ev kind:function(arm,size=0x44) addr:0x021333fc
+_ZN11daObjPile_cD0Ev kind:function(arm,size=0x58) addr:0x02133440
 func_ov091_02133498 kind:function(arm,size=0x20) addr:0x02133498
 func_ov091_021334b8 kind:function(arm,size=0x11c) addr:0x021334b8
-_ZN5Stump15OnHitByMegaCharER6Player kind:function(arm,size=0x74) addr:0x021335d4
-_ZN5Stump15OnGroundPoundedER8dActor_c kind:function(arm,size=0x84) addr:0x02133648
-_ZN5Stump16CleanupResourcesEv kind:function(arm,size=0x44) addr:0x021336cc
-_ZN5Stump6RenderEv kind:function(arm,size=0x28) addr:0x02133710
-_ZN5Stump8BehaviorEv kind:function(arm,size=0x174) addr:0x02133738
-_ZN5Stump13InitResourcesEv kind:function(arm,size=0x8c) addr:0x021338ac
+_ZN11daObjPile_c15OnHitByMegaCharER6Player kind:function(arm,size=0x74) addr:0x021335d4
+_ZN11daObjPile_c15OnGroundPoundedER8dActor_c kind:function(arm,size=0x84) addr:0x02133648
+_ZN11daObjPile_c16CleanupResourcesEv kind:function(arm,size=0x44) addr:0x021336cc
+_ZN11daObjPile_c6RenderEv kind:function(arm,size=0x28) addr:0x02133710
+_ZN11daObjPile_c8BehaviorEv kind:function(arm,size=0x174) addr:0x02133738
+_ZN11daObjPile_c13InitResourcesEv kind:function(arm,size=0x8c) addr:0x021338ac
 daObjPile_c_classInit kind:function(arm,size=0x30) addr:0x02133938
 _ZN6FwooshD1Ev kind:function(arm,size=0x40) addr:0x02133968
 _ZN6FwooshD0Ev kind:function(arm,size=0x54) addr:0x021339a8
@@ -154,7 +154,7 @@ _ZTV11daDsnBase_c kind:data(any) addr:0x021351fc
 _ZTI11daObjPile_c kind:data(any) addr:0x0213527c
 _ZTS11daObjPile_c kind:data(any) addr:0x02135288
 g_profile_PILE kind:data(any) addr:0x02135298 ambiguous
-_ZTV5Stump kind:data(any) addr:0x021352bc
+_ZTV11daObjPile_c kind:data(any) addr:0x021352bc
 data_ov091_0213533c kind:data(any) addr:0x0213533c
 data_ov091_02135344 kind:data(any) addr:0x02135344
 data_ov091_0213534c kind:data(any) addr:0x0213534c

@@ -968,11 +968,6 @@
     "src/_ZN5Stage9VE_UpdateEv.cpp",
     "src/_ZN5StageD0Ev.cpp",
     "src/_ZN5StageD1Ev.cpp",
-    "src/_ZN5Stump15OnGroundPoundedER8dActor_c.cpp",
-    "src/_ZN5Stump15OnHitByMegaCharER6Player.cpp",
-    "src/_ZN5Stump6RenderEv.cpp",
-    "src/_ZN5StumpD0Ev.cpp",
-    "src/_ZN5StumpD1Ev.cpp",
     "src/_ZN5Swoop13OnYoshiTryEatEv.cpp",
     "src/_ZN5Swoop16CleanupResourcesEv.cpp",
     "src/_ZN5Swoop16OnAimedAtWithEggEv.cpp",
@@ -3002,6 +2997,11 @@
     "src/actors/daObjBkKillerdai_c.cpp#_ZN18daObjBkKillerdai_c15OnHitByMegaCharER6Player",
     "src/actors/daObjBkKillerdai_c.cpp#_ZN18daObjBkKillerdai_c6RenderEv",
     "src/actors/daObjBkKillerdai_c.cpp#_ZN18daObjBkKillerdai_cD0Ev",
-    "src/actors/daObjBkKillerdai_c.cpp#_ZN18daObjBkKillerdai_cD1Ev"
+    "src/actors/daObjBkKillerdai_c.cpp#_ZN18daObjBkKillerdai_cD1Ev",
+    "src/actors/daObjPile_c.cpp#_ZN11daObjPile_c15OnGroundPoundedER8dActor_c",
+    "src/actors/daObjPile_c.cpp#_ZN11daObjPile_c15OnHitByMegaCharER6Player",
+    "src/actors/daObjPile_c.cpp#_ZN11daObjPile_c6RenderEv",
+    "src/actors/daObjPile_c.cpp#_ZN11daObjPile_cD0Ev",
+    "src/actors/daObjPile_c.cpp#_ZN11daObjPile_cD1Ev"
   ]
 }

@@ -130,7 +130,7 @@ bool daObjBlockL_c::HasNonzeroAngleX()
 /* daObjBlockL_c::OnHitByMegaChar -- vtable slot 27, ov002 0x020b36b4.
  * include/dActor_c.h's own slot 27 supplies the signature, `virtual void
  * OnHitByMegaChar(Player &player)` -- corrected from `int` by
- * Stump::OnHitByMegaChar (include/Stump.h); re-verified here rather than
+ * daObjPile_c::OnHitByMegaChar (include/daObjPile_c.h); re-verified here rather than
  * assumed.
  *
  * player.IncMegaKillCount() then this class's own Kill (slot 31), reached
@@ -229,7 +229,7 @@ int daObjBlockL_c::OnAttacked1(dActor_c &other)
  * (BigBrickBlock_OnGroundPounded, one class too far down -- see
  * actor-class-names-off-by-one). include/dActor_c.h's own slot 21 supplies
  * the signature, `virtual void OnGroundPounded(dActor_c &other)` -- corrected
- * from `int` by Stump::OnGroundPounded (include/Stump.h); re-verified here
+ * from `int` by daObjPile_c::OnGroundPounded (include/daObjPile_c.h); re-verified here
  * rather than assumed.
  *
  * `other.param1 == 3` and `actorID == 0x11` are fBase_c's own fields, already
