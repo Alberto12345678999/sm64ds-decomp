@@ -2790,18 +2790,18 @@ ov092	0x02132018	ToxBox_Spawn	daOnms_c_classInit	reconstructed classInit; ROM RT
 ov092	0x021322ac	data_ov092_021322ac	ToxBox_SpawnInfo	spawninfo
 ov092	0x021322ac	ToxBox_SpawnInfo	g_profile_ONIMASU	reconstructed profile global; literal ROM ID ONIMASU+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov092	0x021322d0	data_ov092_021322d0	_ZTV6ToxBox	vtable alloc=?
-ov094	0x02135700	func_ov094_02135700	_ZN10HootTheOwlD1Ev	vtable slot 16
-ov094	0x02135748	func_ov094_02135748	_ZN10HootTheOwlD0Ev	vtable slot 17
-ov094	0x021363e0	func_ov094_021363e0	_ZN10HootTheOwl16CleanupResourcesEv	vtable slot 3
-ov094	0x02136428	func_ov094_02136428	_ZN10HootTheOwl16OnPendingDestroyEv	vtable slot 12
-ov094	0x0213642c	func_ov094_0213642c	_ZN10HootTheOwl6RenderEv	vtable slot 9
-ov094	0x02136478	func_ov094_02136478	_ZN10HootTheOwl8BehaviorEv	vtable slot 6
-ov094	0x02136634	func_ov094_02136634	_ZN10HootTheOwl13InitResourcesEv	vtable slot 0
+ov094	0x02135700	func_ov094_02135700	_ZN7daOwl_cD1Ev	vtable slot 16
+ov094	0x02135748	func_ov094_02135748	_ZN7daOwl_cD0Ev	vtable slot 17
+ov094	0x021363e0	func_ov094_021363e0	_ZN7daOwl_c16CleanupResourcesEv	vtable slot 3
+ov094	0x02136428	func_ov094_02136428	_ZN7daOwl_c16OnPendingDestroyEv	vtable slot 12
+ov094	0x0213642c	func_ov094_0213642c	_ZN7daOwl_c6RenderEv	vtable slot 9
+ov094	0x02136478	func_ov094_02136478	_ZN7daOwl_c8BehaviorEv	vtable slot 6
+ov094	0x02136634	func_ov094_02136634	_ZN7daOwl_c13InitResourcesEv	vtable slot 0
 ov094	0x02136798	func_ov094_02136798	HootTheOwl_Spawn	spawnfunc
 ov094	0x02136798	HootTheOwl_Spawn	daOwl_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov094	0x02136a34	data_ov094_02136a34	HootTheOwl_SpawnInfo	spawninfo
 ov094	0x02136a34	HootTheOwl_SpawnInfo	g_profile_OWL	reconstructed profile global; literal ROM ID OWL+registry role+later EAD lineage; exact SM64DS spelling not preserved
-ov094	0x02136a58	data_ov094_02136a58	_ZTV10HootTheOwl	vtable alloc=0x3f8
+ov094	0x02136a58	data_ov094_02136a58	_ZTV7daOwl_c	vtable alloc=0x3f8
 ov095	0x02135700	func_ov095_02135700	_ZN13daObjSeesaw_cD1Ev	vtable slot 16
 ov095	0x02135744	func_ov095_02135744	_ZN13daObjSeesaw_cD0Ev	vtable slot 17
 ov095	0x021359c4	func_ov095_021359c4	_ZN13daObjSeesaw_c16CleanupResourcesEv	vtable slot 3

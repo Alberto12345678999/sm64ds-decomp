@@ -1,10 +1,10 @@
-#ifndef HOOTTHEOWL_H
-#define HOOTTHEOWL_H
+#ifndef DAOWL_C_H
+#define DAOWL_C_H
 
 #include "types.h"
 
 /* Derives from dEnemyBase_c, and the class's own destructor is what proves it:
- * `_ZN10HootTheOwlD1Ev` stores this vtable, destroys the four members below in
+ * `_ZN7daOwl_cD1Ev` stores this vtable, destroys the four members below in
  * reverse declaration order, then calls `dEnemyBase_c::~dEnemyBase_c`. Everything this header
  * used to restate below 0x110 belongs to that chain and is inherited now --
  * nine of those markers turned out to be named dActor_c/dEnemyBase_c fields (mAngleX,
@@ -29,8 +29,8 @@
  *   - unk_368 = that Animation's speed (+0x0c); Behavior copies mAnimSpeed
  *     into it, and InitResources sets mAnimSpeed to 0x1000, which is 1.0
  *
- * SIZE IS THE ROM'S OWN, not a rounded-up field span: `HootTheOwl_Spawn` calls
- * `fBase_c::operator new(1016)` -- 0x3f8 -- and stores `_ZTV10HootTheOwl`,
+ * SIZE IS THE ROM'S OWN, not a rounded-up field span: `daOwl_c_classInit` calls
+ * `fBase_c::operator new(1016)` -- 0x3f8 -- and stores `_ZTV7daOwl_c`,
  * so that literal IS this class's sizeof. The observed fields only span to
  * 0x3f4; the difference is trailing space no source reads.
  *
@@ -51,7 +51,7 @@
 #include "ShadowModel.h"
 #include "dBgCh_Actr.h"
 
-struct HootTheOwl : dEnemyBase_c {
+struct daOwl_c : dEnemyBase_c {
     /* What mCurrentState points at. The field was declared `s32` and every one
        of its six uses immediately cast it to a pointer, which is the whole
        evidence for the type: Behavior compares it against four objects in
@@ -59,7 +59,7 @@ struct HootTheOwl : dEnemyBase_c {
        Only that handler is evidenced -- nothing reads the first eight bytes. */
     struct State {
         u8  pad_00[0x8];
-        void (HootTheOwl::*mMain)();  /* 0x08 */
+        void (daOwl_c::*mMain)();  /* 0x08 */
     };
 
     dCcAcPos_c mdCcAcPos_c; /* 0x110 */
@@ -78,7 +78,7 @@ struct HootTheOwl : dEnemyBase_c {
     u8  pad_3f4[0x4];
 
     /* --- vtable --- */
-    virtual ~HootTheOwl();
+    virtual ~daOwl_c();
 
     int Behavior();
     int CleanupResources();
@@ -89,7 +89,7 @@ struct HootTheOwl : dEnemyBase_c {
 
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
-typedef char HootTheOwl_size_must_be_0x3f8[sizeof(HootTheOwl) == 0x3f8 ? 1 : -1];
+typedef char daOwl_c_size_must_be_0x3f8[sizeof(daOwl_c) == 0x3f8 ? 1 : -1];
 #endif
 
-#endif /* HOOTTHEOWL_H */
+#endif /* DAOWL_C_H */

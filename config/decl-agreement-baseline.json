@@ -369,6 +369,9 @@
       ],
       "src/actors/daMenbo_c.cpp": [
         "param:#2 int"
+      ],
+      "src/actors/daOwl_c.cpp": [
+        "param:#2 int"
       ]
     },
     "Bowser_IsAnimAtLastFrame": {
@@ -915,9 +918,6 @@
       ]
     },
     "DecIfAbove0_Short": {
-      "src/_ZN10HootTheOwl8BehaviorEv.cpp": [
-        "return:void"
-      ],
       "src/_ZN10KoopaShell8BehaviorEv.cpp": [
         "param:#1 char *",
         "return:int"
@@ -948,6 +948,9 @@
       ],
       "src/func_ov100_02145014.c": [
         "return:int"
+      ],
+      "src/actors/daOwl_c.cpp": [
+        "return:void"
       ],
       "src/actors/daObjCtMecha11_c.cpp": [
         "param:#1 char *",
@@ -1562,6 +1565,9 @@
       ],
       "src/unnamed/ov063/func_ov063_02117cdc.c": [
         "param:#1 int *"
+      ],
+      "src/actors/daOwl_c.cpp": [
+        "param:#1 OwlVec *"
       ],
       "src/actors/daObjEwmIceBlock_c.cpp": [
         "param:#1 Vector3 *"
@@ -3070,6 +3076,9 @@
         "return:unsigned int"
       ],
       "src/game/actors/d_a_s_bird.cpp": [
+        "return:unsigned int"
+      ],
+      "src/actors/daOwl_c.cpp": [
         "return:unsigned int"
       ],
       "src/actors/daObjCtMecha11_c.cpp": [
@@ -4694,6 +4703,10 @@
       "src/actors/daObjSm_Lift_c.cpp": [
         "param:#1 Vector3 *",
         "param:#2 Vector3 *"
+      ],
+      "src/actors/daOwl_c.cpp": [
+        "param:#1 Vector3 *",
+        "param:#2 Vector3 *"
       ]
     },
     "Vec3_AsrInPlace": {
@@ -4848,6 +4861,10 @@
       "src/unnamed/ov063/func_ov063_0211c89c.c": [
         "param:#1 const Vec3 *",
         "param:#2 const Vec3 *"
+      ],
+      "src/actors/daOwl_c.cpp": [
+        "param:#1 const void *",
+        "param:#2 const void *"
       ],
       "src/actors/daEykn_c.cpp": [
         "param:#1 const void *",
@@ -5142,6 +5159,10 @@
         "param:#2 const void *"
       ],
       "src/actors/daObjSm_Lift_c.cpp": [
+        "param:#1 const void *",
+        "param:#2 const void *"
+      ],
+      "src/actors/daOwl_c.cpp": [
         "param:#1 const void *",
         "param:#2 const void *"
       ],
@@ -5852,6 +5873,11 @@
         "param:#2 Vector3 *",
         "param:#3 Vector3 *"
       ],
+      "src/actors/daOwl_c.cpp": [
+        "param:#1 OwlVec *",
+        "param:#2 OwlVec *",
+        "param:#3 OwlVec *"
+      ],
       "src/actors/daObjEwmIceBlock_c.cpp": [
         "param:#1 Vector3 *",
         "param:#2 Vector3 *",
@@ -5916,6 +5942,10 @@
         "param:#2 const void *"
       ],
       "src/game/actors/d_a_wanwan.cpp": [
+        "param:#1 const void *",
+        "param:#2 const void *"
+      ],
+      "src/actors/daOwl_c.cpp": [
         "param:#1 const void *",
         "param:#2 const void *"
       ]
@@ -6193,6 +6223,11 @@
       "src/game/actors/d_a_c_jugem.cpp": [
         "param:#1 void *",
         "param:#2 const void *",
+        "return:void"
+      ],
+      "src/actors/daOwl_c.cpp": [
+        "param:#1 Vector3 *",
+        "param:#2 const Vector3 *",
         "return:void"
       ]
     },
@@ -6785,10 +6820,6 @@
         "param:#2 dActor_c *",
         "param:#5 Vector3_16 *"
       ],
-      "src/_ZN10HootTheOwl13InitResourcesEv.cpp": [
-        "param:#2 void *",
-        "param:#5 void *"
-      ],
       "src/_ZN10KoopaShell13InitResourcesEv.cpp": [
         "param:#2 dActor_c *",
         "param:#5 Vector3_16 *"
@@ -7110,6 +7141,10 @@
         "param:#2 void *",
         "param:#5 void *"
       ],
+      "src/actors/daOwl_c.cpp": [
+        "param:#2 void *",
+        "param:#5 void *"
+      ],
       "src/actors/daSlide_Box_c.cpp": [
         "param:#2 void *",
         "param:#5 void *"
@@ -7369,15 +7404,15 @@
       ],
       "src/actors/daMenbo_c.cpp": [
         "param:#2 void *"
+      ],
+      "src/actors/daOwl_c.cpp": [
+        "param:#2 void *"
       ]
     },
     "_ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj": {
       "src/_ZN10BulletBill13InitResourcesEv.cpp": [
         "param:#1 char *",
         "param:#3 Vector3 *"
-      ],
-      "src/_ZN10HootTheOwl13InitResourcesEv.cpp": [
-        "param:#3 int *"
       ],
       "src/_ZN10MrBlizzard13InitResourcesEv.cpp": [
         "param:#3 const void *"
@@ -7467,6 +7502,9 @@
       ],
       "src/game/actors/daBrq_c.cpp": [
         "param:#3 const Vector3 &"
+      ],
+      "src/actors/daOwl_c.cpp": [
+        "param:#3 int *"
       ]
     },
     "_ZN10dCcAcPos_cC1Ev": {
@@ -12155,6 +12193,10 @@
         "param:#5 unsigned int",
         "return:unsigned int"
       ],
+      "src/actors/daOwl_c.cpp": [
+        "param:#4 void *",
+        "param:#5 unsigned int"
+      ],
       "src/actors/daObjSeesaw_c.cpp": [
         "param:#4 void *",
         "param:#5 unsigned int"
@@ -15783,6 +15825,9 @@
       "src/actors/daMenbo_c.cpp": [
         "return:void *"
       ],
+      "src/actors/daOwl_c.cpp": [
+        "return:int"
+      ],
       "src/actors/daEykn_c.cpp": [
         "return:void *"
       ]
@@ -16555,6 +16600,9 @@
         "param:#6 unsigned int"
       ],
       "src/unnamed/ov063/func_ov063_021169c4.cpp": [
+        "param:#6 unsigned int"
+      ],
+      "src/actors/daOwl_c.cpp": [
         "param:#6 unsigned int"
       ],
       "src/actors/daEykn_c.cpp": [
@@ -18099,6 +18147,10 @@
       "src/actors/daMenbo_c.cpp": [
         "return:int",
         "param:#5 unsigned int"
+      ],
+      "src/actors/daOwl_c.cpp": [
+        "param:#5 unsigned int",
+        "return:int"
       ],
       "src/actors/daEykn_c.cpp": [
         "param:#5 unsigned int"
@@ -21147,6 +21199,9 @@
         "return:int []"
       ],
       "src/actors/daObjCtMecha10_c.cpp": [
+        "return:int []"
+      ],
+      "src/actors/daOwl_c.cpp": [
         "return:int []"
       ],
       "src/actors/daObjCtMecha11_c.cpp": [
@@ -31190,9 +31245,6 @@
       ]
     },
     "data_ov094_02136b40": {
-      "src/_ZN10HootTheOwl13InitResourcesEv.cpp": [
-        "return:void *"
-      ],
       "src/__sinit_ov094_021367e8.c": [
         "return:S8 []"
       ]
@@ -31203,9 +31255,6 @@
       ]
     },
     "data_ov094_02136b60": {
-      "src/_ZN10HootTheOwl8BehaviorEv.cpp": [
-        "return:char []"
-      ],
       "src/__sinit_ov094_021367e8.c": [
         "return:S8 []"
       ],
@@ -32230,9 +32279,6 @@
       "src/_ZN10BulletBill8BehaviorEv.cpp": [
         "param:#1 int"
       ],
-      "src/_ZN10HootTheOwl8BehaviorEv.cpp": [
-        "param:#1 int"
-      ],
       "src/_ZN10MrBlizzard8BehaviorEv.cpp": [
         "param:#1 int"
       ],
@@ -32570,6 +32616,10 @@
       ],
       "src/actors/daMenbo_c.cpp": [
         "param:#1 int"
+      ],
+      "src/actors/daOwl_c.cpp": [
+        "param:#1 int",
+        "return:int"
       ],
       "src/actors/daObjEwbIce_c.cpp": [
         "param:#1 int",
