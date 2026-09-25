@@ -1,17 +1,15 @@
-/* Derives from dBgActor_c. RTTI carries this class as `daObjBlockS_c`
- * (_ZTI13daObjBlockS_c / _ZTS13daObjBlockS_c, ov098 0x0213c4d4/0x0213c500) but
- * every mangled symbol in the ROM already spells it `Crate` (_ZTV5Crate,
- * _ZN5CrateD1Ev, daObjBlockS_c_classInit, ...), so the C++ class keeps that name -- a real
- * class references its own _ZTV, and a name mismatch only fails at link.
+/* Derives from dBgActor_c. The vtable at ov098 0x0213c534 points at
+ * _ZTI13daObjBlockS_c (0x0213c4d4), whose name string at 0x0213c500 is
+ * "13daObjBlockS_c". The tree used to spell the class Crate.
  *
- * SIZE 0x608, the literal daObjBlockS_c_classInit (src/daObjBlockS_c_classInit.cpp) passes to
+ * SIZE 0x608, the literal daObjBlockS_c_classInit (src/d_a_obj_block_s.cpp) passes to
  * fBase_c::operator new. dBgActor_c ends 0x320; everything from there down is
- * this class's own, confirmed by _ZN5CrateD1Ev.cpp destroying
+ * this class's own, confirmed by _ZN13daObjBlockS_cD1Ev.cpp destroying
  * dCcAcPos_c x2, ShadowModel and dBgCh_Actr in reverse before
  * storing _ZTV10dBgActor_c (inlined) and chaining to dActor_c.
  *
  * 0x0d0..0x0d4 is dBgActor_c's own generic pad (include/dBgActor_c.h), not a
- * Crate field -- InitResources reaches it with a raw `this + 0xd0` write
+ * daObjBlockS_c field -- InitResources reaches it with a raw `this + 0xd0` write
  * instead of a named member, the same idiom dBgActor_c.h documents for
  * daObjRc_Guruguru_c's tail-padding field.
  *
@@ -21,8 +19,8 @@
  * (OnYoshiTryEat), 19 (OnTurnIntoEgg), 21 (OnGroundPounded) and 31 (Kill) are
  * this class's own overrides -- see include/dActor_c.h / include/dBgActor_c.h
  * for the slot table. */
-#ifndef CRATE_H
-#define CRATE_H
+#ifndef DAOBJBLOCKS_C_H
+#define DAOBJBLOCKS_C_H
 #include "types.h"
 #include "Model.h"
 #include "dBgW_KcMbg.h"
@@ -43,7 +41,7 @@ typedef struct Player Player;
 #include "ShadowModel.h"
 #include "dCcAcPos_c.h"
 
-struct Crate : dBgActor_c {
+struct daObjBlockS_c : dBgActor_c {
     dBgCh_Actr mWithMeshClsn;   /* 0x320 */
     u8  pad_4dc[0xc];
     s32 mHomePosX;              /* 0x4e8 */
@@ -74,7 +72,7 @@ struct Crate : dBgActor_c {
     u8  mBreakTimer;            /* 0x606 */
     u8  mCoinsPaid;             /* 0x607 -- read/written by OnTurnIntoEgg (slot 19) */
 
-    virtual ~Crate();
+    virtual ~daObjBlockS_c();
 
     int Behavior();
     int CleanupResources();
@@ -90,7 +88,7 @@ struct Crate : dBgActor_c {
 
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
-typedef char Crate_size_must_be_0x608[sizeof(Crate) == 0x608 ? 1 : -1];
+typedef char daObjBlockS_c_size_must_be_0x608[sizeof(daObjBlockS_c) == 0x608 ? 1 : -1];
 #endif
 
 #else
@@ -98,7 +96,7 @@ typedef char Crate_size_must_be_0x608[sizeof(Crate) == 0x608 ? 1 : -1];
 /* The same object for a C translation unit, flat. Kept for parity with the
  * rest of the family (include/daObjBlockL_c.h, include/daObjFallBlock_c.h)
  * even though no remaining C translation unit needs it. */
-struct Crate {
+struct daObjBlockS_c {
     u8  pad_000[0xc];
     u16 mActorID;               /* 0x00c */
     u8  pad_00e[0x4e];
@@ -116,11 +114,11 @@ struct Crate {
     u32 mFlags;                 /* 0x0b0 */
     u8  pad_0b4[0x1c];
     s32 mEatingPlayer;          /* 0x0d0 */
-    /* Model member. The cartridge's own ~Crate calls _ZN5ModelD1Ev at +0x0d4 (D0/D1), a
+    /* Model member. The cartridge's own ~daObjBlockS_c calls _ZN5ModelD1Ev at +0x0d4 (D0/D1), a
        relocation the ROM build checks; recovered by tools/dtor_members.py. D1 and not
        D2, so it is this type and not an inlined base. */
     Model mModel;               /* 0x0d4 */
-    /* dBgW_KcMbg member. The cartridge's own ~Crate calls _ZN10dBgW_KcMbgD1Ev at +0x124
+    /* dBgW_KcMbg member. The cartridge's own ~daObjBlockS_c calls _ZN10dBgW_KcMbgD1Ev at +0x124
        (D0/D1), a relocation the ROM build checks; recovered by tools/dtor_members.py.
        D1 and not D2, so it is this type and not an inlined base. */
     dBgW_KcMbg mMeshCollider;   /* 0x124 */

@@ -1,10 +1,10 @@
 //cpp
-// @symbol _ZN5Crate4KillEv
+// @symbol _ZN13daObjBlockS_c4KillEv
 /* recovered: named members + real C++ method */
-/* Crate::Kill() -- vtable slot 31. Puffs a simple particle and a dust poof at
+/* daObjBlockS_c::Kill() -- vtable slot 31. Puffs a simple particle and a dust poof at
  * the crate's own position raised 0x28000, plays the break sample from the
  * camera-space position, and parks the crate in state 6. */
-#include "Crate.h"
+#include "daObjBlockS_c.h"
 #include "decl_Actor.h"
 #include "decl_common.h"
 
@@ -14,7 +14,7 @@ void _ZN5Sound9PlayBank3EjRK7Vector3(unsigned int id, const Vector3 *pos);
 void Crate_SetState(char *c, int i);
 }
 
-void Crate::Kill()
+void daObjBlockS_c::Kill()
 {
     Vector3 vec;
     Vector3 vec2;

@@ -2905,12 +2905,12 @@ ov098	0x02137fd0	func_ov098_02137fd0	ArrowSignRight_Spawn	spawnfunc
 ov098	0x02137fd0	ArrowSignRight_Spawn	daObjYajirusi_c_classInit_YAJIRUSI_R	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov098	0x02138008	func_ov098_02138008	ArrowSignLeft_Spawn	spawnfunc
 ov098	0x02138008	ArrowSignLeft_Spawn	daObjYajirusi_c_classInit_YAJIRUSI_L	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
-ov098	0x02138040	func_ov098_02138040	_ZN5CrateD1Ev	vtable slot 16
-ov098	0x021380bc	func_ov098_021380bc	_ZN5CrateD0Ev	vtable slot 17
-ov098	0x02139a50	func_ov098_02139a50	_ZN5Crate16CleanupResourcesEv	vtable slot 3
-ov098	0x02139aa8	func_ov098_02139aa8	_ZN5Crate6RenderEv	vtable slot 9
-ov098	0x02139b0c	func_ov098_02139b0c	_ZN5Crate8BehaviorEv	vtable slot 6
-ov098	0x02139d14	func_ov098_02139d14	_ZN5Crate13InitResourcesEv	vtable slot 0
+ov098	0x02138040	func_ov098_02138040	_ZN13daObjBlockS_cD1Ev	vtable slot 16
+ov098	0x021380bc	func_ov098_021380bc	_ZN13daObjBlockS_cD0Ev	vtable slot 17
+ov098	0x02139a50	func_ov098_02139a50	_ZN13daObjBlockS_c16CleanupResourcesEv	vtable slot 3
+ov098	0x02139aa8	func_ov098_02139aa8	_ZN13daObjBlockS_c6RenderEv	vtable slot 9
+ov098	0x02139b0c	func_ov098_02139b0c	_ZN13daObjBlockS_c8BehaviorEv	vtable slot 6
+ov098	0x02139d14	func_ov098_02139d14	_ZN13daObjBlockS_c13InitResourcesEv	vtable slot 0
 ov098	0x02139f04	func_ov098_02139f04	Crate_Spawn	spawnfunc
 ov098	0x02139f04	Crate_Spawn	daObjBlockS_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov098	0x0213a794	func_ov098_0213a794	daObjFallBlock_c_InitResources	shared InitResources body; Model::LoadFile / dBgW_Kc::LoadFile / CLPS SetFile; called from all four leaf InitResources overrides. C linkage: the base leaves slots 0/3 pure virtual
@@ -2940,7 +2940,7 @@ ov098	0x0213c3d8	data_ov098_0213c3d8	_ZTV15daObjYajirusi_c	vtable alloc=0x380
 ov098	0x0213c434	data_ov098_0213c434	MgShellSmash_SpawnInfo	spawninfo
 ov098	0x0213c510	data_ov098_0213c510	Crate_SpawnInfo	spawninfo
 ov098	0x0213c510	Crate_SpawnInfo	g_profile_BLOCK_S	reconstructed profile global; literal ROM ID BLOCK_S+registry role+later EAD lineage; exact SM64DS spelling not preserved
-ov098	0x0213c534	data_ov098_0213c534	_ZTV5Crate	vtable alloc=?
+ov098	0x0213c534	data_ov098_0213c534	_ZTV13daObjBlockS_c	vtable alloc=?
 ov098	0x0213c67c	data_ov098_0213c67c	Cannon_SpawnInfo	spawninfo
 ov098	0x0213c67c	Cannon_SpawnInfo	g_profile_CANNON	reconstructed profile global; literal ROM ID CANNON+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov098	0x0213c6a0	data_ov098_0213c6a0	_ZTV6Cannon	vtable alloc=0x198

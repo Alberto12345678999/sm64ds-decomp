@@ -10,8 +10,8 @@ _ZN15daObjYajirusi_c8BehaviorEv kind:function(arm,size=0xa4) addr:0x02137e48
 _ZN15daObjYajirusi_c13InitResourcesEv kind:function(arm,size=0xe4) addr:0x02137eec
 daObjYajirusi_c_classInit_YAJIRUSI_R kind:function(arm,size=0x38) addr:0x02137fd0
 daObjYajirusi_c_classInit_YAJIRUSI_L kind:function(arm,size=0x38) addr:0x02138008
-_ZN5CrateD1Ev kind:function(arm,size=0x7c) addr:0x02138040
-_ZN5CrateD0Ev kind:function(arm,size=0x90) addr:0x021380bc
+_ZN13daObjBlockS_cD1Ev kind:function(arm,size=0x7c) addr:0x02138040
+_ZN13daObjBlockS_cD0Ev kind:function(arm,size=0x90) addr:0x021380bc
 func_ov098_0213814c kind:function(arm,size=0x9c) addr:0x0213814c
 func_ov098_021381e8 kind:function(arm,size=0x50) addr:0x021381e8
 func_ov098_02138238 kind:function(arm,size=0xe0) addr:0x02138238
@@ -33,19 +33,19 @@ func_ov098_02138bfc kind:function(arm,size=0xe4) addr:0x02138bfc
 func_ov098_02138ce0 kind:function(arm,size=0x128) addr:0x02138ce0
 func_ov098_02138e08 kind:function(arm,size=0x64) addr:0x02138e08
 func_ov098_02138e6c kind:function(arm,size=0x204) addr:0x02138e6c
-_ZN5Crate4KillEv kind:function(arm,size=0x7c) addr:0x02139070
+_ZN13daObjBlockS_c4KillEv kind:function(arm,size=0x7c) addr:0x02139070
 func_ov098_021390ec kind:function(arm,size=0x13c) addr:0x021390ec
 func_ov098_02139228 kind:function(arm,size=0x47c) addr:0x02139228
 func_ov098_021396a4 kind:function(arm,size=0x124) addr:0x021396a4
 func_ov098_021397c8 kind:function(arm,size=0x88) addr:0x021397c8
 func_ov098_02139850 kind:function(arm,size=0x200) addr:0x02139850
-_ZN5Crate16CleanupResourcesEv kind:function(arm,size=0x58) addr:0x02139a50
-_ZN5Crate6RenderEv kind:function(arm,size=0x64) addr:0x02139aa8
-_ZN5Crate8BehaviorEv kind:function(arm,size=0x208) addr:0x02139b0c
-_ZN5Crate13InitResourcesEv kind:function(arm,size=0x130) addr:0x02139d14
-_ZN5Crate15OnGroundPoundedER8dActor_c kind:function(arm,size=0x20) addr:0x02139e44
-_ZN5Crate13OnYoshiTryEatEv kind:function(arm,size=0x14) addr:0x02139e64
-_ZN5Crate13OnTurnIntoEggER6Player kind:function(arm,size=0x8c) addr:0x02139e78
+_ZN13daObjBlockS_c16CleanupResourcesEv kind:function(arm,size=0x58) addr:0x02139a50
+_ZN13daObjBlockS_c6RenderEv kind:function(arm,size=0x64) addr:0x02139aa8
+_ZN13daObjBlockS_c8BehaviorEv kind:function(arm,size=0x208) addr:0x02139b0c
+_ZN13daObjBlockS_c13InitResourcesEv kind:function(arm,size=0x130) addr:0x02139d14
+_ZN13daObjBlockS_c15OnGroundPoundedER8dActor_c kind:function(arm,size=0x20) addr:0x02139e44
+_ZN13daObjBlockS_c13OnYoshiTryEatEv kind:function(arm,size=0x14) addr:0x02139e64
+_ZN13daObjBlockS_c13OnTurnIntoEggER6Player kind:function(arm,size=0x8c) addr:0x02139e78
 daObjBlockS_c_classInit kind:function(arm,size=0x6c) addr:0x02139f04
 _ZN16daObjFallBlock_cD0Ev kind:function(arm,size=0x58) addr:0x02139f70
 _ZN16daObjFallBlock_cD1Ev kind:function(arm,size=0x44) addr:0x02139fc8
@@ -130,7 +130,7 @@ data_ov098_0213c4e0 kind:data(any) addr:0x0213c4e0
 data_ov098_0213c4f0 kind:data(any) addr:0x0213c4f0
 _ZTS13daObjBlockS_c kind:data(any) addr:0x0213c500
 g_profile_BLOCK_S kind:data(any) addr:0x0213c510 ambiguous
-_ZTV5Crate kind:data(any) addr:0x0213c534
+_ZTV13daObjBlockS_c kind:data(any) addr:0x0213c534
 _ZTV16daObjFallBlock_c kind:data(any) addr:0x0213c5bc
 data_ov098_0213c63c kind:data(any) addr:0x0213c63c
 data_ov098_0213c644 kind:data(any) addr:0x0213c644

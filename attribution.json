@@ -5029,6 +5029,13 @@
     "src/actors/daWater_Suikomi_c.cpp#_ZN17daWater_Suikomi_c16OnPendingDestroyEv": "tangosdev",
     "src/actors/daWater_Suikomi_c.cpp#_ZN17daWater_Suikomi_c6RenderEv": "tangosdev",
     "src/actors/daWater_Suikomi_c.cpp#_ZN17daWater_Suikomi_c8BehaviorEv": "tangosdev",
-    "src/actors/daWater_Suikomi_c.cpp#_ZN17daWater_Suikomi_c13InitResourcesEv": "tangosdev"
+    "src/actors/daWater_Suikomi_c.cpp#_ZN17daWater_Suikomi_c13InitResourcesEv": "tangosdev",
+    "src/actors/daObjBlockS_c.cpp#_ZN13daObjBlockS_c16CleanupResourcesEv": "tangosdev",
+    "src/actors/daObjBlockS_c.cpp#_ZN13daObjBlockS_c6RenderEv": "tangosdev",
+    "src/actors/daObjBlockS_c.cpp#_ZN13daObjBlockS_c8BehaviorEv": "andrewboudreau",
+    "src/actors/daObjBlockS_c.cpp#_ZN13daObjBlockS_c13InitResourcesEv": "tangosdev",
+    "src/actors/daObjBlockS_c.cpp#_ZN13daObjBlockS_c15OnGroundPoundedER8dActor_c": "tangosdev",
+    "src/actors/daObjBlockS_c.cpp#_ZN13daObjBlockS_c13OnYoshiTryEatEv": "tangosdev",
+    "src/actors/daObjBlockS_c.cpp#_ZN13daObjBlockS_c13OnTurnIntoEggER6Player": "tangosdev"
   }
 }

@@ -58,13 +58,12 @@ recorded in the [integration evidence](experiments/pr2874-integration-0920.json)
 
 ---
 
-## Crate (`include/Crate.h`, [ov098](../config/arm9/overlays/ov098/symbols.txt), size 0x608)
+## daObjBlockS_c (`include/daObjBlockS_c.h`, [ov098](../config/arm9/overlays/ov098/symbols.txt), size 0x608)
 
-Bodies read: `src/_ZN5Crate13InitResourcesEv.cpp`, `src/_ZN5Crate8BehaviorEv.cpp`,
-`src/_ZN5Crate6RenderEv.cpp`, `src/_ZN5Crate16CleanupResourcesEv.cpp`,
-`src/_ZN5Crate4KillEv.cpp`, `src/_ZN5Crate13OnTurnIntoEggER6Player.cpp`,
-`src/_ZN5Crate13OnYoshiTryEatEv.cpp`,
-`src/_ZN5Crate15OnGroundPoundedER8dActor_c.cpp`, `src/Crate_SetState.cpp`.
+Formerly the coined `Crate`. Bodies read: `InitResources`, `Behavior`, `Render`,
+`CleanupResources`, `OnTurnIntoEgg`, `OnYoshiTryEat` and `OnGroundPounded` (then
+per-function files, now together in `src/actors/daObjBlockS_c.cpp`),
+`src/_ZN13daObjBlockS_c4KillEv.cpp`, `src/Crate_SetState.cpp`.
 
 | Offset | Name | Evidence |
 | --- | --- | --- |
@@ -90,7 +89,7 @@ Four more C-twin offsets are interior fields of members the C++ side already nam
 exactly those six through the C++ member spellings. They are now
 `mdCcAcPos_c1_posX/Y/Z` and `mdCcAcPos_c2_posX/Y/Z`.
 
-Left `unk_`: nothing in this class's own span. `include/Crate.h`'s `pad_` runs are
+Left `unk_`: nothing in this class's own span. `include/daObjBlockS_c.h`'s `pad_` runs are
 unevidenced and stay padding.
 
 Raw-offset collapses, each re-verified byte-exact:
@@ -98,7 +97,7 @@ Raw-offset collapses, each re-verified byte-exact:
 * `InitResources`: `((char *)this) + 0xd4` → `&mModel`, `+ 0x124` → `&mMeshCollider`,
   `+ 0x2ec` → `&mClsnMat`, `+ 0x320` → `&mWithMeshClsn`. The one remaining raw
   `this + 0xd0` write is deliberate and documented in the header: it is `dBgActor_c`'s
-  generic pad, not a `Crate` field.
+  generic pad, not a `daObjBlockS_c` field.
 * `Behavior`: `*(void **)((char *)&unk_5e4)` → `mHoldingPlayer` (2 sites),
   `(u8 *)((char *)&unk_606)` → `&mBreakTimer`,
   `*(void **)((char *)&unk_5fc) = …` → `mParticleHandle1 = (u32)…` (and `…600`),
@@ -172,12 +171,12 @@ Bodies read: `src/_ZN8SignPost13InitResourcesEv.cpp`,
 | 0x3bc/0x3be/0x3c0 | `mHomeAngleX/Y/Z` | `InitResources` copies `mAngleX/mAngleY/mAngleZ` in the same run. |
 | 0x584 | `mParticleHandle1` | `Behavior` passes it as the first argument of `Particle::System::New` and stores the result back — a recycled handle. Effect `0x13a`. Was inside `pad_584`. |
 | 0x588 | `mParticleHandle2` | same shape through `Particle::System::NewUnkCallback818`, effect `0x13b`. Was inside `pad_584`. |
-| 0x58c | `mBreakTimer` | `Behavior` runs the whole break sequence under `if (0x58c != 0)`: disable the mesh collider, `DecIfAbove0_Byte` once a frame traillng the two particles, and on the frame it hits zero poof the dust and hand off to the class's reset routine [func_ov002_020bae9c.c](../src/func_ov002_020bae9c.c). The same shape `Crate` uses at its own 0x606. Was inside `pad_584`. |
+| 0x58c | `mBreakTimer` | `Behavior` runs the whole break sequence under `if (0x58c != 0)`: disable the mesh collider, `DecIfAbove0_Byte` once a frame traillng the two particles, and on the frame it hits zero poof the dust and hand off to the class's reset routine [func_ov002_020bae9c.c](../src/func_ov002_020bae9c.c). The same shape `daObjBlockS_c` uses at its own 0x606. Was inside `pad_584`. |
 | 0x58e | `mPoundsLeft` | `InitResources` sets `2`. `OnGroundPounded` either sinks the sign by `(mPoundsLeft * 0x2d) << 12` and zeroes it (a hard pound), or by one `0x2d000` step and decrements it. `Behavior` respawns the sign when it is `0`, setting it back to `2`, and only drops the shadow while it is still `2`. A remaining-steps count, not a state. |
 | 0x58f | `mPoundCooldown` | `OnGroundPounded` sets `0xf` on the soft-pound branch and returns early whenever it is nonzero; `Behavior` runs it down with `DecIfAbove0_Byte` once a frame. The gap between two successive pounds. |
 | 0x590 | `mHidden` | `Render` returns without drawing while it is nonzero; `Behavior` skips the collision-range check while it is nonzero and clears it under the same "player is far away" condition that respawns a pounded-in sign. |
 | 0x591 | `mRespawnDelay` | `OnGroundPounded` sets `0x1e` on both branches; `Behavior` requires `DecIfAbove0_Byte(&mRespawnDelay) == 0` **and** `DistToCPlayer > 0x7d0000` before it will restore the sign or clear `mHidden`. |
-| 0x59c | `mHoldingPlayer` | already typed `Player *`; `Behavior` calls `Player::DropActor()` on it through a pause, and `Behavior`/`Render` both read `player + 0xc8` through it. Same shape as `Crate`'s 0x5e4. |
+| 0x59c | `mHoldingPlayer` | already typed `Player *`; `Behavior` calls `Player::DropActor()` on it through a pause, and `Behavior`/`Render` both read `player + 0xc8` through it. Same shape as `daObjBlockS_c`'s 0x5e4. |
 
 In the `#else` C twin only: `0x09c` → `mVertAccel` and `0x0a0` →
 `mTerminalVelocity` (`InitResources` writes `-0x2000` / `-0x3c000` to them through the
