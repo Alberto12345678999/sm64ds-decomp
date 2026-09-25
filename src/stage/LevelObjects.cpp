@@ -147,7 +147,7 @@ struct LVL_Overlay_Layout {
  *
  * LoadMinimapChangeObject stays hand-spelled: it takes a by-value Fix12<int>,
  * which is a runbook section 7 dead end for a real declaration at the call site. */
- // @symbol _Z17LoadSimpleObjectsRN11LVL_Overlay11ObjSubTableEij
+// @symbol _Z17LoadSimpleObjectsRN11LVL_Overlay11ObjSubTableEij
 void LoadSimpleObjects(LVL_Overlay::ObjSubTable& tbl, int areaID, u32 param)
 {
     LVL_Overlay::SimpleEntry* e = (LVL_Overlay::SimpleEntry*)tbl.entries;
@@ -182,7 +182,7 @@ void LoadSimpleObjects(LVL_Overlay::ObjSubTable& tbl, int areaID, u32 param)
  * Vector3s rotation, u16 param. data_ov002_0211118c is a running death-table /
  * spawn-order counter incremented per spawn. The third parameter is part of the
  * shared loader signature and unused here. */
- // @symbol _Z19LoadStandardObjectsRN11LVL_Overlay11ObjSubTableEij
+// @symbol _Z19LoadStandardObjectsRN11LVL_Overlay11ObjSubTableEij
 void LoadStandardObjects(LVL_Overlay::ObjSubTable& tbl, int areaID, u32 param)
 {
     LVL_Overlay::StandardEntry* e = (LVL_Overlay::StandardEntry*)tbl.entries;
@@ -292,7 +292,7 @@ void LoadEntranceObjects(LVL_Overlay::ObjSubTable& tbl, int p2, u32 p3)
  * true of both call sites, and the three-argument spelling was an inference
  * from the tail-call shape that the other caller contradicts. Measured
  * byte-free here. */
- // @symbol _Z19LoadPathNodeObjectsRN11LVL_Overlay11ObjSubTableEij
+// @symbol _Z19LoadPathNodeObjectsRN11LVL_Overlay11ObjSubTableEij
 void LoadPathNodeObjects(LVL_Overlay::ObjSubTable& tbl, int areaID, u32 param)
 {
     func_0203accc((int)tbl.entries);
@@ -302,7 +302,7 @@ void LoadPathNodeObjects(LVL_Overlay::ObjSubTable& tbl, int areaID, u32 param)
  * decl_common.h declares that one `(int, int)`; this file used to declare it
  * `(void *, u32)`. Same arity, so a cast settles it -- unlike func_0203accc
  * above. */
- // @symbol _Z15LoadPathObjectsRN11LVL_Overlay11ObjSubTableEij
+// @symbol _Z15LoadPathObjectsRN11LVL_Overlay11ObjSubTableEij
 void LoadPathObjects(LVL_Overlay::ObjSubTable& tbl, int areaID, u32 param)
 {
     func_0203aca0((int)tbl.entries, tbl.count);
@@ -322,7 +322,7 @@ void LoadViewObjects(LVL_Overlay::ObjSubTable& tbl, int areaID, u32 param)
  * The loop is bottom-tested with a guard rather than top-tested, and that shape
  * is load-bearing: it is what the ROM emits, and a plain `for` reorders the
  * compare. */
- // @symbol _Z25LoadTeleportSourceObjectsRN11LVL_Overlay11ObjSubTableEij
+// @symbol _Z25LoadTeleportSourceObjectsRN11LVL_Overlay11ObjSubTableEij
 void LoadTeleportSourceObjects(LVL_Overlay::ObjSubTable& tbl, int areaID, u32 param)
 {
     LVL_Overlay::TeleportSourceEntry* e =
@@ -501,7 +501,7 @@ void LoadObjects(LVL_Overlay::ObjTable& t, int areaID, u32 param)
  * function in the same TU, so it is called by name -- and the hand-spelled
  * extern had to go, since an `extern "C"` declaration of that literal name and
  * the C++ definition that mangles to it are the same linker symbol. */
-// @symbol __ZN5Stage18LoadClsnAndObjectsER11LVL_OverlayjR7dBgW_Kc
+// @symbol _ZN5Stage18LoadClsnAndObjectsER11LVL_OverlayjR7dBgW_Kc
 void Stage::LoadClsnAndObjects(LVL_Overlay &ovlRef, u32 p, dBgW_Kc &mcRef)
 {
     LVL_Overlay_Layout *ovl = (LVL_Overlay_Layout *)&ovlRef;
