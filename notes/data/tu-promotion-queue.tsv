@@ -145,7 +145,7 @@ daObjClock_c	1	208	ov013	yes	yes	compiler-only:>=9(derived from own chain: 4 cla
 daObjKi_Fune_c	9	170	ov016	yes	yes	compiler-only:>=11(derived from own chain: 5 classes incl. self via build/rtti.json; floor 2x5+1)	daObjKi_Ita_c	text-only
 SlidingBox	7	189	ov016	yes	no	compiler-only:>=11(derived from own chain: 5 classes incl. self via build/rtti.json + include/ base clause; floor 2x5+1)	daObjKi_Ita_c	text-only
 daObjFl_London_c	1	168	ov022	yes	yes	compiler-only:>=11(derived from own chain: 5 classes incl. self via build/rtti.json; floor 2x5+1)	daObjFl_Fall_Block_c	text-only
-LavaSeesaw	7	147	ov022	yes	no	compiler-only:>=11(derived from own chain: 5 classes incl. self via build/rtti.json + include/ base clause; floor 2x5+1)	daObjFl_Fall_Block_c	text-only
+daObjFl_Seesaw_c	7	147	ov022	yes	yes	compiler-only:>=11(derived from own chain: 5 classes incl. self via build/rtti.json + include/ base clause; floor 2x5+1)	daObjFl_Fall_Block_c	text-only
 daObjSlIceBlock_c	7	189	ov027	yes	yes	compiler-only:>=11(derived from own chain: 5 classes incl. self via build/rtti.json + include/ base clause; floor 2x5+1)	daIDonketu_c	text-only
 RickshawBdw	4	79	ov043	yes	no	compiler-only:unknown(no chain for RickshawBdw: no RTTI record in build/rtti.json and no include/ base clause; measure with tubuild verify)	daObjKm1_Ukishima_c	text-only
 daObjKm2_Ukishima_c	1	90	ov045	yes	yes	compiler-only:>=13(derived from own chain: 6 classes incl. self via build/rtti.json; floor 2x6+1)	daObjKm2_Ami_Bou_c	text-only

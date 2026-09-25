@@ -29,13 +29,13 @@ _ZN16daObjFl_London_c6RenderEv kind:function(arm,size=0x28) addr:0x02111aa8
 _ZN16daObjFl_London_c8BehaviorEv kind:function(arm,size=0x10c) addr:0x02111ad0
 _ZN16daObjFl_London_c13InitResourcesEv kind:function(arm,size=0xa0) addr:0x02111bdc
 daObjFl_London_c_classInit kind:function(arm,size=0x30) addr:0x02111c7c
-_ZN10LavaSeesawD1Ev kind:function(arm,size=0x44) addr:0x02111cac
-_ZN10LavaSeesawD0Ev kind:function(arm,size=0x58) addr:0x02111cf0
+_ZN16daObjFl_Seesaw_cD1Ev kind:function(arm,size=0x44) addr:0x02111cac
+_ZN16daObjFl_Seesaw_cD0Ev kind:function(arm,size=0x58) addr:0x02111cf0
 func_ov022_02111d48 kind:function(arm,size=0x48) addr:0x02111d48
-_ZN10LavaSeesaw16CleanupResourcesEv kind:function(arm,size=0x44) addr:0x02111d90
-_ZN10LavaSeesaw6RenderEv kind:function(arm,size=0x28) addr:0x02111dd4
-_ZN10LavaSeesaw8BehaviorEv kind:function(arm,size=0xa4) addr:0x02111dfc
-_ZN10LavaSeesaw13InitResourcesEv kind:function(arm,size=0x9c) addr:0x02111ea0
+_ZN16daObjFl_Seesaw_c16CleanupResourcesEv kind:function(arm,size=0x44) addr:0x02111d90
+_ZN16daObjFl_Seesaw_c6RenderEv kind:function(arm,size=0x28) addr:0x02111dd4
+_ZN16daObjFl_Seesaw_c8BehaviorEv kind:function(arm,size=0xa4) addr:0x02111dfc
+_ZN16daObjFl_Seesaw_c13InitResourcesEv kind:function(arm,size=0x9c) addr:0x02111ea0
 daObjFl_Seesaw_c_classInit kind:function(arm,size=0x30) addr:0x02111f3c
 _ZN17daObjFl_Ukiyuka_cD1Ev kind:function(arm,size=0x50) addr:0x02111f6c
 _ZN17daObjFl_Ukiyuka_cD0Ev kind:function(arm,size=0x64) addr:0x02111fbc
@@ -218,7 +218,7 @@ _ZTI16daObjFl_Seesaw_c kind:data(any) addr:0x02113ff0
 data_ov022_02113ff4 kind:data(any) addr:0x02113ff4 ambiguous
 _ZTS16daObjFl_Seesaw_c kind:data(any) addr:0x02113ffc
 g_profile_FL_SEESAW kind:data(any) addr:0x02114010 ambiguous
-_ZTV10LavaSeesaw kind:data(any) addr:0x02114034
+_ZTV16daObjFl_Seesaw_c kind:data(any) addr:0x02114034
 _ZTI17daObjFl_Ukiyuka_c kind:data(any) addr:0x021140b4
 data_ov022_021140b8 kind:data(any) addr:0x021140b8 ambiguous
 _ZTS17daObjFl_Ukiyuka_c kind:data(any) addr:0x021140c0

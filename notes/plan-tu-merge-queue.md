@@ -162,7 +162,7 @@ cheapest possible probe of post-regeneration [ov006](../config/arm9/overlays/ov0
 |[ov019](../config/arm9/overlays/ov019/symbols.txt)| 0x211261c|  n=5|  L=93|  `daSldMng_c`| |
 |[ov021](../config/arm9/overlays/ov021/symbols.txt)| 0x2112db4|  n=6|  L=105|  `daObjCvShutter_c`| |
 |[ov022](../config/arm9/overlays/ov022/symbols.txt)| 0x2111980|  n=8|  L=181|  `daObjFl_London_c`|               uncorrob|
-|[ov022](../config/arm9/overlays/ov022/symbols.txt)| 0x2111cac|  n=8|  L=170|  `LavaSeesaw`|               uncorrob|
+|[ov022](../config/arm9/overlays/ov022/symbols.txt)| 0x2111cac|  n=8|  L=170|  `daObjFl_Seesaw_c`|               uncorrob|
 
 
 **B3 — R0 · 10 TUs / 53 files / net −43 / 1,076 lines**

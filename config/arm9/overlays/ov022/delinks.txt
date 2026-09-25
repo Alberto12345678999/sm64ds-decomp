@@ -61,33 +61,9 @@ src/actors/daObjFl_London_c.cpp:
     .text start:0x02111980 end:0x02111cac
     .data start:0x02113f2c end:0x02113ff0
 
-src/_ZN10LavaSeesawD1Ev.cpp:
+src/actors/daObjFl_Seesaw_c.cpp:
     complete
-    .text start:0x02111cac end:0x02111cf0
-
-src/_ZN10LavaSeesawD0Ev.cpp:
-    complete
-    .text start:0x02111cf0 end:0x02111d48
-
-src/func_ov022_02111d48.c:
-    complete
-    .text start:0x02111d48 end:0x02111d90
-
-src/_ZN10LavaSeesaw16CleanupResourcesEv.cpp:
-    complete
-    .text start:0x02111d90 end:0x02111dd4
-
-src/_ZN10LavaSeesaw6RenderEv.cpp:
-    complete
-    .text start:0x02111dd4 end:0x02111dfc
-
-src/_ZN10LavaSeesaw8BehaviorEv.cpp:
-    complete
-    .text start:0x02111dfc end:0x02111ea0
-
-src/_ZN10LavaSeesaw13InitResourcesEv.cpp:
-    complete
-    .text start:0x02111ea0 end:0x02111f3c
+    .text start:0x02111cac end:0x02111f3c
 
 src/d_a_obj_fl_seesaw.c:
     complete
