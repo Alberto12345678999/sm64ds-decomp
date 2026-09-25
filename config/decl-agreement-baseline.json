@@ -13080,14 +13080,16 @@
       ]
     },
     "_ZN6Player12Unk_020c9e5cEh": {
-      "src/func_ov002_020e9d18.c": [
-        "param:#1 int",
-        "param:#2 unsigned int"
+      "src/func_ov002_020ea100.cpp": [
+        "param:#1 void *",
+        "param:#2 int"
       ],
       "src/func_ov065_021180d4.c": [
+        "param:#1 dActor_c *",
         "param:#2 unsigned char"
       ],
       "src/func_ov065_021182e4.cpp": [
+        "param:#1 void *",
         "param:#2 unsigned char"
       ]
     },
@@ -13107,26 +13109,19 @@
       ]
     },
     "_ZN6Player17SetNoControlStateEhih": {
-      "src/actors/daObjKey_c.cpp": [
-        "return:int"
+      "src/_ZN6Player12St_Walk_InitEv.cpp": [
+        "return:void"
       ],
       "src/func_ov002_020e8ef0.cpp": [
         "param:#2 int",
-        "param:#4 int",
-        "return:int"
+        "param:#4 int"
       ],
       "src/func_ov065_021183c8.c": [
         "param:#2 int",
-        "param:#4 int",
-        "return:int"
+        "param:#4 int"
       ],
       "src/game/actors/d_a_c_jugem.cpp": [
-        "param:#1 int",
-        "return:int"
-      ],
-      "src/game/actors/d_a_ch_scene.cpp": [
-        "param:#2 int",
-        "param:#4 int"
+        "param:#1 int"
       ]
     },
     "_ZN6Player17St_PunchKick_InitEv": {
@@ -15962,14 +15957,8 @@
       ]
     },
     "_ZN8dActor_c11UpdateCarryER6PlayerRK7Vector3": {
-      "src/actors/daBombking_c.cpp": [
-        "return:Matrix4x3 *"
-      ],
-      "src/func_ov098_02139850.c": [
-        "return:char *"
-      ],
-      "src/game/actors/d_a_holhei.cpp": [
-        "param:#2 int"
+      "src/func_ov072_021210c4.cpp": [
+        "return:void *"
       ]
     },
     "_ZN8dActor_c12ReflectAngleE5Fix12IiES1_s": {
