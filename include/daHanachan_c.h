@@ -1,9 +1,9 @@
-#ifndef WIGGLER_H
-#define WIGGLER_H
+#ifndef DAHANACHAN_C_H
+#define DAHANACHAN_C_H
 
 #include "types.h"
 
-/* The Wiggler. Five body segments, so five of everything -- and EIGHT arrays,
+/* The Wiggler (daHanachan_c). Five body segments, so five of everything -- and EIGHT arrays,
  * which close on eight consecutive boundaries:
  *
  *     dEnemyBase_c                        ends 0x110
@@ -34,7 +34,7 @@
 #include "dBgCh_Actr.h"
 #include "dCcAcPos_c.h"
 
-struct Wiggler : dEnemyBase_c {
+struct daHanachan_c : dEnemyBase_c {
     ModelAnim mModelAnims[5];                        /* 0x110 */
     MaterialChanger mMaterialChangers[5];            /* 0x304 */
     TextureSequence mTextureSequences[5];            /* 0x368 */
@@ -48,7 +48,7 @@ struct Wiggler : dEnemyBase_c {
     u8  unk_702[5];                                  /* 0x702 -- per-segment countdown (DecIfAbove0_Byte) */
     u8  pad_707[0x1];
     dBgCh_Actr mWithMeshClsn;                      /* 0x708 */
-    /* trailing extent the ROM's `new Wiggler` literal proves; see tools/opnew_sizes.py */
+    /* trailing extent the ROM's `new daHanachan_c` literal proves; see tools/opnew_sizes.py */
     u8  pad_8c4[0xc];
     s32 unk_8d0;                                     /* 0x8d0 -- Behavior: destroyed when unk_8d0 + mPosY < -0x1f4000 */
     u8  pad_8d4[0x4];
@@ -64,10 +64,10 @@ struct Wiggler : dEnemyBase_c {
     u8  unk_8e3;                                     /* 0x8e3 -- InitResources: TrackStar result */
     void *unk_8e4;                                   /* 0x8e4 -- Particle::System handle */
 
-    virtual ~Wiggler();
+    virtual ~daHanachan_c();
 
-    /* An override the cartridge proves and this header never declared. _ZTV7Wiggler
-       slot 6 pointed at fBase_c::Behavior; the ROM has ov034:_ZN7Wiggler8BehaviorEv
+    /* An override the cartridge proves and this header never declared. _ZTV12daHanachan_c
+       slot 6 pointed at fBase_c::Behavior; the ROM has ov034:_ZN12daHanachan_c8BehaviorEv
        (0x02112b5c, 0x6e0 bytes), named in symbols.txt but not yet decompiled -- the
        slot needs the symbol, not a body, so declaring it is the whole fix.
        No `virtual` keyword, matching the overrides beside it: a derived declaration
@@ -82,19 +82,19 @@ struct Wiggler : dEnemyBase_c {
 
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
-typedef char Wiggler_size_must_be_0x8e8[sizeof(struct Wiggler) == 0x8e8 ? 1 : -1];
+typedef char daHanachan_c_size_must_be_0x8e8[sizeof(struct daHanachan_c) == 0x8e8 ? 1 : -1];
 #endif
 
 #else
 
 /* The same object for a C translation unit, flat. */
-struct Wiggler {
+struct daHanachan_c {
     u8  pad_000[0x708];
     u8  mWithMeshClsn[0x1bc];      /* 0x708 */
-    /* trailing extent the ROM's `new Wiggler` literal proves; see tools/opnew_sizes.py */
+    /* trailing extent the ROM's `new daHanachan_c` literal proves; see tools/opnew_sizes.py */
     u8 pad_8c4[0x24];
 };
 
 #endif /* __cplusplus */
 
-#endif /* WIGGLER_H */
+#endif /* DAHANACHAN_C_H */

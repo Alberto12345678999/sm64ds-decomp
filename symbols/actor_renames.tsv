@@ -1335,17 +1335,17 @@ ov033	0x02112358	TinyCover_SpawnInfo	g_profile_TT_FUTA	reconstructed profile glo
 ov033	0x0211241c	data_ov033_0211241c	TinyWater_SpawnInfo	spawninfo
 ov033	0x0211241c	TinyWater_SpawnInfo	g_profile_TT_WATER	reconstructed profile global; literal ROM ID TT_WATER+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov033	0x02112440	data_ov033_02112440	_ZTV14daObjTtWater_c	vtable alloc=? (was _ZTV9TinyCover)
-ov034	0x021111a0	func_ov034_021111a0	_ZN7WigglerD1Ev	vtable slot 16
-ov034	0x021112b0	func_ov034_021112b0	_ZN7WigglerD0Ev	vtable slot 17
-ov034	0x02112a5c	func_ov034_02112a5c	_ZN7Wiggler16CleanupResourcesEv	vtable slot 3
-ov034	0x02112af4	func_ov034_02112af4	_ZN7Wiggler6RenderEv	vtable slot 9
-ov034	0x02112b5c	func_ov034_02112b5c	_ZN7Wiggler8BehaviorEv	vtable slot 6
-ov034	0x0211323c	func_ov034_0211323c	_ZN7Wiggler13InitResourcesEv	vtable slot 0
+ov034	0x021111a0	func_ov034_021111a0	_ZN12daHanachan_cD1Ev	vtable slot 16
+ov034	0x021112b0	func_ov034_021112b0	_ZN12daHanachan_cD0Ev	vtable slot 17
+ov034	0x02112a5c	func_ov034_02112a5c	_ZN12daHanachan_c16CleanupResourcesEv	vtable slot 3
+ov034	0x02112af4	func_ov034_02112af4	_ZN12daHanachan_c6RenderEv	vtable slot 9
+ov034	0x02112b5c	func_ov034_02112b5c	_ZN12daHanachan_c8BehaviorEv	vtable slot 6
+ov034	0x0211323c	func_ov034_0211323c	_ZN12daHanachan_c13InitResourcesEv	vtable slot 0
 ov034	0x021136a4	func_ov034_021136a4	Wiggler_Spawn	spawnfunc
 ov034	0x021136a4	Wiggler_Spawn	daHanachan_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov034	0x02114498	data_ov034_02114498	Wiggler_SpawnInfo	spawninfo
 ov034	0x02114498	Wiggler_SpawnInfo	g_profile_HANACHAN	reconstructed profile global; literal ROM ID HANACHAN+registry role+later EAD lineage; exact SM64DS spelling not preserved
-ov034	0x021144bc	data_ov034_021144bc	_ZTV7Wiggler	vtable alloc=?
+ov034	0x021144bc	data_ov034_021144bc	_ZTV12daHanachan_c	vtable alloc=?
 ov035	0x021111a0	func_ov035_021111a0	_ZN16daObjCtMecha10_cD1Ev	vtable slot 16 (was _ZN16RotatingCogSmallD1Ev)
 ov035	0x021111e4	func_ov035_021111e4	_ZN16daObjCtMecha10_cD0Ev	vtable slot 17 (was _ZN16RotatingCogSmallD0Ev)
 ov035	0x0211123c	func_ov035_0211123c	_ZN16daObjCtMecha10_c16CleanupResourcesEv	vtable slot 3 (was _ZN16RotatingCogSmall16CleanupResourcesEv)
