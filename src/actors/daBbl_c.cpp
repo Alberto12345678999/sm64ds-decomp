@@ -276,7 +276,7 @@ void daBbl_c::OnPendingDestroy()
 // @symbol _ZN7daBbl_c16CleanupResourcesEv
 /* Slot 3. `return 1` with no release calls, which is the finding rather than a
  * stub: every other class in this overlay releases at least one SharedFilePtr
- * here (daObjShell_c 3, daObjTbox_c 4, JetStream 2, daWater_Ring_c 1).
+ * here (daObjShell_c 3, daObjTbox_c 4, daWater_Hakidasi_c 2, daWater_Ring_c 1).
  * daBbl_c loads no file at all, so it has nothing to give back. */
 int daBbl_c::CleanupResources()
 {

@@ -253,7 +253,7 @@ INT_CANON = {
 
 # ------------------------------------------------------------------ scrubbing
 
-def scrub(text):
+def scrub(text, preserve_directives=False):
     """(code, marks). Comments become spaces; string and char literals become spaces.
 
     Line structure is preserved exactly, so an index into `code` maps to the same line
@@ -332,7 +332,8 @@ def scrub(text):
                     continue
                 i = end
                 break
-            out.append("".join(c if c == "\n" else " " for c in text[start:i]))
+            out.append(text[start:i] if preserve_directives else
+                       "".join(c if c == "\n" else " " for c in text[start:i]))
             continue
         out.append(ch)
         i += 1
@@ -899,6 +900,56 @@ class Record(object):
         return "%s (%s)" % (self.ret, ", ".join(params) if params else "void")
 
 
+def _native_lifecycle_head(text):
+    """A qualified nullary lifecycle definition, before any ABI identity claim.
+
+    Restrict inference to ordinary identifier owners and C++98 initializer lists.
+    Parameterized constructors, templates, thunks and shorthand names stay outside
+    this recognition. In particular, a wrapper's native destructor can never be
+    relabeled as its array element's destructor by a nearby @symbol comment.
+    """
+    text = " ".join(text.split())
+    match = re.fullmatch(
+        r"(?P<owner>[A-Za-z_][A-Za-z0-9_]*(?:::[A-Za-z_][A-Za-z0-9_]*)*)"
+        r"::\s*(?P<dtor>~)?(?P<name>[A-Za-z_][A-Za-z0-9_]*)\s*"
+        r"\(\s*(?:void\s*)?\)"
+        r"(?:\s*(?:throw\s*\([^)]*\)|noexcept))?"
+        r"(?P<init>\s*:\s*.+)?", text)
+    if not match or match.group("owner").split("::")[-1] != match.group("name"):
+        return None
+    if match.group("dtor") and match.group("init"):
+        return None
+    return ("destructor" if match.group("dtor") else "constructor",
+            match.group("owner"), match.group("name"))
+
+
+def _parse_native_constructor(text, symbol):
+    """An exactly mapped native nullary C1/C2; no source-visible return type."""
+    head = _native_lifecycle_head(text)
+    if not head or head[0] != "constructor":
+        return None
+    _kind, owner, name = head
+    encoded = "_ZN" + "".join(str(len(part)) + part for part in owner.split("::"))
+    if symbol not in (encoded + "C1Ev", encoded + "C2Ev"):
+        return None
+    return name, "<constructor " + owner + ">", (), True, True, name
+
+
+def _native_constructor_abi(record):
+    """Direct Arm C1/C2 entries return this; native C++ writes no return type."""
+    if not (record.is_definition and record.is_member and record.is_function
+            and record.linkage == "C++" and record.params == ()):
+        return None
+    match = re.fullmatch(r"<constructor ([A-Za-z_][A-Za-z0-9_]*(?:::[A-Za-z_][A-Za-z0-9_]*)*)>", record.ret)
+    if not match:
+        return None
+    owner = match.group(1)
+    encoded = "_ZN" + "".join(str(len(part)) + part for part in owner.split("::"))
+    if record.symbol in (encoded + "C1Ev", encoded + "C2Ev"):
+        return owner, owner + " *"
+    return None
+
+
 def _parse_native_destructor(text, symbol):
     """Native syntax only when its qualified owner exactly names a D0/D1/D2 entry.
 
@@ -1285,6 +1336,7 @@ def parse_file(rel, text, aliases, statics=None):
     """
     code, marks = scrub(text)
     orphans = []
+    unbound_lifecycles = 0
     newlines = line_index(text)
     default_linkage = "C" if rel.endswith(".c") else "C++"
     # `int f()` means zero parameters in C++ and nothing at all in C. A `.h` is
@@ -1349,9 +1401,19 @@ def parse_file(rel, text, aliases, statics=None):
             marked = [s for idx, s in marks if start <= idx < decl_start]
             # A sole file marker can name an orphan only in the existing
             # unambiguous adoption pass below. It can never rename another owner.
-            dtor_symbol = marked[-1] if marked else (marks[0][1] if len(marks) == 1 else None)
-            parsed = (_parse_native_destructor(rest, dtor_symbol)
-                      if cxx and linkage == "C++" else None)
+            lifecycle_symbol = marked[-1] if marked else (marks[0][1] if len(marks) == 1 else None)
+            parsed = None
+            if cxx and linkage == "C++":
+                parsed = (_parse_native_destructor(rest, lifecycle_symbol)
+                          or _parse_native_constructor(rest, lifecycle_symbol))
+                if parsed is None and _native_lifecycle_head(rest):
+                    # The qualified owner and marked ABI entry disagree. Falling
+                    # through misreads Wrapper::~Wrapper() as returning Wrapper::,
+                    # then falsely assigns an element D1 marker to that body.
+                    # Preserve orphan ambiguity even though this body is rejected.
+                    if not marked:
+                        unbound_lifecycles += 1
+                    continue
             if parsed is None:
                 parsed = parse_declarator(rest, aliases, cxx)
             if parsed is None:
@@ -1460,7 +1522,7 @@ def parse_file(rel, text, aliases, statics=None):
     # file, exactly one definition that went unnamed, and no definition already
     # claiming that symbol. A file with two marks or two orphans says nothing about
     # which belongs to which, and still claims nothing.
-    if len(marks) == 1 and len(orphans) == 1:
+    if len(marks) == 1 and len(orphans) == 1 and not unbound_lifecycles:
         symbol = marks[0][1]
         if not any(d.symbol == symbol for d in defs):
             (_, o_rel, o_line, o_ret, o_params, o_linkage, o_member, o_types,
@@ -1598,6 +1660,327 @@ def demangled_arity(symbol, root=REPO):
     return info.get("nargs")
 
 
+def _direct_destructor_marker(text):
+    """One ordinary, exactly encoded direct D1/D2 identity; no ABI guess yet."""
+    _code, marks = scrub(text)
+    if len(marks) != 1:
+        return None
+    symbol = marks[0][1]
+    if not symbol.startswith("_ZN") or not symbol.endswith(("D1Ev", "D2Ev")):
+        return None
+    encoded = symbol[3:-4]
+    parts = []
+    while encoded:
+        size = re.match(r"[1-9][0-9]*", encoded)
+        if size is None:
+            return None
+        length = int(size.group())
+        encoded = encoded[size.end():]
+        name, encoded = encoded[:length], encoded[length:]
+        if len(name) != length or IDENT.fullmatch(name) is None:
+            return None
+        parts.append(name)
+    return (symbol, "::".join(parts)) if parts else None
+
+
+def _inline_directive_text(line):
+    if re.match(r"\s*#", line):
+        return re.sub(r"/\*.*?\*/|//[^\n]*", "", line).strip()
+    return line.strip()
+
+
+def _inline_header_guard(code):
+    nonempty = [_inline_directive_text(line) for line in code.splitlines()
+                if _inline_directive_text(line)]
+    if len(nonempty) >= 3:
+        first = re.fullmatch(r"#\s*ifndef\s+([A-Za-z_][A-Za-z0-9_]*)", nonempty[0])
+        if (first and re.fullmatch(r"#\s*define\s+" + re.escape(first.group(1)), nonempty[1])
+                and re.fullmatch(r"#\s*endif", nonempty[-1])):
+            return first.group(1)
+    return None
+
+
+def _inline_cpp_view(text, header=False, keep_includes=False):
+    """Code, certainty mask, literal includes and macros for bounded inline lookup.
+
+    This is not a preprocessor. Only an ordinary whole-file header guard,
+    __cplusplus, and literal 0/1 conditions are known. This direct Arm ABI check
+    targets the ROM compiler, where _MSC_VER is absent and __cplusplus is set;
+    any attempted definition or undefinition of either selector anywhere in the
+    available include context poisons those assumptions. Unknown branches retain
+    their text but poison any class body they touch; known inactive branches are
+    blanked. Comments/strings keep the existing lexer's handling and offsets.
+    """
+    code, _marks = scrub(text, preserve_directives=True)
+    lines = code.splitlines(True)
+    # The main lexer keeps directive text intact for this pass. Directive-tail
+    # comments are syntax whitespace, including the usual #endif /* GUARD */.
+    guard = _inline_header_guard(code) if header else None
+    states, out, certain, includes, macros = [], [], [], [], set()
+    guard_opened = False
+    scope_depth, scope_known = 0, True
+    for line in lines:
+        directive = re.match(r"\s*#\s*([A-Za-z_][A-Za-z0-9_]*)\s*(.*?)\s*$", _inline_directive_text(line))
+        if directive:
+            kind, arg = directive.groups()
+            if kind in ("if", "ifdef", "ifndef"):
+                known = None
+                if arg == "__cplusplus" and kind in ("ifdef", "ifndef"):
+                    known = kind == "ifdef"
+                elif arg == "_MSC_VER" and kind in ("ifdef", "ifndef"):
+                    known = kind == "ifndef"
+                elif kind == "if" and arg in ("0", "1"):
+                    known = arg == "1"
+                elif kind == "if" and re.fullmatch(r"defined\s*(?:\(\s*__cplusplus\s*\)|__cplusplus)", arg):
+                    known = True
+                elif kind == "ifndef" and arg == guard and not states and not guard_opened:
+                    known = True
+                    guard_opened = True
+                states.append(known)
+            elif kind in ("else", "elif"):
+                if not states:
+                    return code, [False] * len(code), [], macros
+                states[-1] = (not states[-1] if kind == "else" and states[-1] is not None else None)
+            elif kind == "endif":
+                if not states:
+                    return code, [False] * len(code), [], macros
+                states.pop()
+            elif (kind == "include" and all(s is True for s in states)
+                  and (header or (scope_depth == 0 and scope_known))):
+                literal = re.fullmatch(r'"([^"\n]+)"', arg)
+                if literal:
+                    includes.append(literal.group(1))
+            elif kind in ("define", "undef"):
+                name = IDENT.match(arg)
+                if name:
+                    macros.add(name.group())
+            blank = "".join(c if c == "\n" else " " for c in line)
+            out.append(_inline_directive_text(line).ljust(len(line.rstrip('\n'))) + ('\n' if line.endswith('\n') else '')
+                       if keep_includes and kind == "include" and not any(s is False for s in states) else blank)
+            certain.extend([True] * len(line))
+        elif any(s is False for s in states):
+            out.append("".join(c if c == "\n" else " " for c in line))
+            certain.extend([True] * len(line))
+        else:
+            out.append(line)
+            certain.extend([all(s is True for s in states)] * len(line))
+            if any(s is None for s in states) and any(c in line for c in "{}"):
+                scope_known = False
+            scope_depth += line.count("{") - line.count("}")
+    if states:
+        certain = [False] * len(code)
+    return "".join(out), certain, includes, macros
+
+
+def _inline_destructor_classes(code, certain):
+    """Plain global/nested class bodies and their real inline destructor bodies.
+
+    Track qualified ownership, unlike the static-member name index. Namespace,
+    template, union, local-class and macro-generated heads deliberately have no
+    identity here. Declarations and pure/defaulted destructors are not bodies.
+    Duplicate or conditionally uncertain class bodies remain visible to the
+    caller, which refuses to choose between them.
+    """
+    classes, stack = {}, []
+    start = paren = 0
+    for i, ch in enumerate(code):
+        if ch in "([":
+            paren += 1
+        elif ch in ")]":
+            paren -= 1
+        elif paren <= 0 and ch == ";":
+            start = i + 1
+        elif paren <= 0 and ch == "{":
+            raw = code[start:i]
+            head = " ".join(raw.split())
+            while ACCESS_LABEL.match(head):
+                head = ACCESS_LABEL.sub("", head)
+            match = re.fullmatch(r"(?:typedef\s+)?(?:class|struct)\s+([A-Za-z_][A-Za-z0-9_]*)(?:\s*:[^;{}()<>]+)?", head)
+            if match and (not stack or stack[-1] is not None):
+                name = match.group(1)
+                owner = stack[-1]["owner"] + "::" + name if stack else name
+                item = {"owner": owner, "name": name, "start": start + len(raw) - len(raw.lstrip()),
+                        "end": None, "bodies": [], "certain": False}
+                classes.setdefault(owner, []).append(item)
+                stack.append(item)
+            else:
+                if stack and stack[-1] is not None:
+                    item = stack[-1]
+                    rest, _extern, _static, _linkage = _strip_specifiers(head)
+                    if (not _extern and not _static and not _linkage
+                            and re.fullmatch(r"~" + re.escape(item["name"]) + r"\s*\(\s*(?:void\s*)?\)(?:\s*throw\s*\(\s*\))?", rest)):
+                        pos = start + len(raw) - len(raw.lstrip())
+                        item["bodies"].append(pos)
+                stack.append(None)
+            start = i + 1
+        elif paren <= 0 and ch == "}":
+            if stack:
+                item = stack.pop()
+                if item is not None:
+                    item["end"] = i + 1
+                    item["certain"] = all(certain[item["start"]:i + 1])
+            start = i + 1
+    return classes
+
+
+def _literal_header_paths(rel, includes, root):
+    """Compiler's ordinary quoted include search: source directory, then include/.
+
+    No transitive, angle-bracket or macro includes are inferred. Require a real
+    repository header and reject path escapes. A local header shadows include/.
+    """
+    found = []
+    root = pathlib.Path(root).resolve()
+    for name in includes:
+        for path in (root / pathlib.PurePosixPath(rel).parent / name, root / "include" / name):
+            path = path.resolve()
+            try:
+                candidate = path.relative_to(root).as_posix()
+            except ValueError:
+                continue
+            if path.is_file():
+                if candidate.endswith(HEADER_SUFFIXES):
+                    found.append(candidate)
+                break
+    return list(dict.fromkeys(found))
+
+
+def inline_destructor_definitions(root, targets, definitions):
+    """Recover an included inline body for a marked direct destructor carrier.
+
+    A marker requests lookup; it cannot supply a signature. Includes nested in
+    source braces or following conditionally uncertain braces supply no global
+    owner identity. The actual body must
+    have the exact qualified class owner in one directly included header, with no
+    duplicate/conditional identity. Existing out-of-line and flat definitions
+    remain authoritative. Report the header's real location, never the forcing
+    wrapper as the element's definition.
+    """
+    defined = {d.symbol for d in definitions}
+    cache, candidates = {}, {}
+    for rel in targets:
+        if not rel.endswith((".cc", ".cpp")) or not (root / rel).exists():
+            continue
+        text = (root / rel).read_text(encoding="utf-8", errors="replace")
+        marker = _direct_destructor_marker(text)
+        if marker is None or marker[0] in defined:
+            continue
+        symbol, owner = marker
+        _code, _certain, includes, source_macros = _inline_cpp_view(text)
+        context_macros = _inline_include_macros(root, rel, text)
+        if context_macros is None or set(owner.split("::")) & set(context_macros):
+            continue
+        possibilities = []
+        for header in _literal_header_paths(rel, includes, root):
+            if header not in cache:
+                content = (root / header).read_text(encoding="utf-8", errors="replace")
+                code, certain, _includes, macros = _inline_cpp_view(content, header=True)
+                guard = _inline_header_guard(scrub(content, preserve_directives=True)[0])
+                cache[header] = (content, _inline_destructor_classes(code, certain), macros, guard)
+            content, classes, macros, guard = cache[header]
+            for item in classes.get(owner, []):
+                valid = (item["certain"] and len(item["bodies"]) == 1
+                         and not set(owner.split("::")) & (source_macros | macros)
+                         and not (guard and context_macros.get(guard, set()) - {header}))
+                possibilities.append((header, item["bodies"][0] if valid else None, content))
+        if len(possibilities) != 1 or possibilities[0][1] is None:
+            continue
+        header, pos, content = possibilities[0]
+        candidates.setdefault(symbol, {})[(header, pos)] = (owner, content)
+    result = []
+    for symbol, bodies in candidates.items():
+        if len(bodies) != 1:
+            continue
+        (header, pos), (owner, content) = next(iter(bodies.items()))
+        result.append(Record(symbol, header, line_of(line_index(content), pos),
+                             "<destructor " + owner + ">", (), True, "C++", True,
+                             True, owner.split("::")))
+    return result
+
+
+def _inline_include_macros(root, rel, text):
+    """Possible owner renames from the carrier's whole available include context.
+
+    Header bodies are still recovered only through a direct include, but macros
+    can arrive transitively or through a different sibling include. Search every
+    possible branch conservatively. Unresolved/macro/angle includes make this
+    context unknown. The ROM compiler target excludes _MSC_VER branches; a
+    spelled definition/undefinition of either target selector invalidates that
+    assumption.
+    """
+    macros, visited, pending = {}, set(), [(rel, text)]
+    used_names = set()
+    while pending:
+        path, content = pending.pop()
+        if path in visited:
+            continue
+        visited.add(path)
+        # Logical-line splicing is outside this bounded preprocessor view. It can
+        # hide a selector or owner macro from a physical-line scan, so decline the
+        # entire context instead of claiming a body under an unproved expansion.
+        if re.search(r"\\\r?\n", content):
+            return None
+        code, _certain, _includes, local_macros = _inline_cpp_view(
+            content, header=path.endswith(HEADER_SUFFIXES), keep_includes=True)
+        # A textual include can carry an open namespace/class scope into its
+        # caller. Reject scope transfer and uncertain braces rather than pretend
+        # every separately read header starts in the global namespace.
+        visible, _marks = scrub(code)
+        depth = 0
+        for i, char in enumerate(visible):
+            if char in "{}":
+                if not _certain[i]:
+                    return None
+                depth += 1 if char == "{" else -1
+                if depth < 0:
+                    return None
+        if depth:
+            return None
+        used_names.update(IDENT.findall(visible))
+        if {'_MSC_VER', '__cplusplus'} & local_macros:
+            return None
+        for name in local_macros:
+            macros.setdefault(name, set()).add(path)
+        for directive in re.finditer(r"^\s*#\s*include\s+([^\n]*)", code, re.M):
+            arg = directive.group(1)
+            arg = arg.strip()
+            literal = re.fullmatch(r'"([^"\n]+)"', arg)
+            if literal:
+                headers = _literal_header_paths(path, [literal.group(1)], root)
+                if len(headers) != 1:
+                    return None
+                header = headers[0]
+                pending.append((header, (root / header).read_text(encoding="utf-8", errors="replace")))
+            else:
+                return None
+    # Object/function macros may manufacture scopes without spelling the owner
+    # or braces at their use site. Do not attempt expansion: any context macro
+    # used in non-directive code makes this bounded lookup uncertain.
+    return None if used_names & set(macros) else macros
+
+
+def _inline_changed_symbols(touched, base, root):
+    """Widen changed scans for carrier/include edits, without claiming a body.
+
+    A renamed carrier or changed include can remove its old reference. Both
+    carrier versions' marks therefore seed scope even when recovery now fails.
+    Header edits conservatively include all direct destructor carriers: include
+    shadowing/deletion must not hide an unchanged opaque-pointer caller.
+    """
+    carriers = set(p for p in touched if p.endswith((".cc", ".cpp")))
+    if any(p.endswith(HEADER_SUFFIXES) for p in touched):
+        carriers.update(p for p in scan_targets(root) if p.endswith((".cc", ".cpp")))
+    symbols = set()
+    for rel in carriers:
+        path = root / rel
+        versions = [path.read_text(encoding="utf-8", errors="replace")] if path.exists() else []
+        if rel in touched:
+            versions.append(blob_text(rel, base, root))
+        for text in versions:
+            marker = _direct_destructor_marker(text) if text is not None else None
+            if marker is not None:
+                symbols.add(marker[0])
+    return symbols
 def collect(root=REPO, files=None):
     aliases = scalar_typedefs(root)
     targets = list(files) if files is not None else scan_targets(root)
@@ -1618,6 +2001,7 @@ def collect(root=REPO, files=None):
         decls.extend(d)
         defs.extend(f)
         unparsed += u
+    defs.extend(inline_destructor_definitions(root, targets, defs))
     return targets, decls, defs, unparsed
 
 
@@ -1715,7 +2099,7 @@ def disagreements(decls, defs, unmangled, root=REPO):
                                     "function" if ref.is_function else "data"))
                 continue
             if d.is_function and ref.is_function and d is not ref:
-                native = _native_destructor_abi(ref)
+                native = _native_destructor_abi(ref) or _native_constructor_abi(ref)
                 want_return = native[1] if native else ref.ret
                 # An opaque receiver-result pointer is an ABI view, not a claim
                 # that the native C++ destructor has a source-visible result.
@@ -1998,6 +2382,7 @@ def changed_scope(base, root=REPO, head="HEAD"):
             continue
         _d, defs, _u = parse_file(rel, text, aliases)
         defined.update(d.symbol for d in defs)
+    defined.update(_inline_changed_symbols(touched, base, root))
     return touched, defined, total, None
 
 
@@ -2108,6 +2493,196 @@ def print_finding(f, indent="  "):
 
 
 # ------------------------------------------------------------------------- cli
+
+# ------------------------------------------------------- header redeclarations
+
+# A local declaration can carry this marker, on its own line or the line above, to
+# say why it cannot use the header's spelling (the Fix12 wall, a header that clashes
+# with a shadow type, ...). It ends the finding; the reason is for the reviewer.
+LOCAL_EXTERN_MARK = re.compile(r"local extern:\s*\S")
+HUNK = re.compile(r"^@@ -\d+(?:,\d+)? \+(\d+)(?:,(\d+))? @@")
+
+
+def added_lines(base, rels, root=REPO):
+    """{rel: set of line numbers} each file ADDS against `base`, renames followed."""
+    out = {}
+    for rel in rels:
+        proc = subprocess.run(["git", "diff", "-U0", "-M", "--no-color", base, "--",
+                               rel], cwd=str(root), capture_output=True, text=True)
+        lines = set()
+        for row in proc.stdout.splitlines():
+            m = HUNK.match(row)
+            if m:
+                start, count = int(m.group(1)), int(m.group(2) or 1)
+                lines.update(range(start, start + count))
+        if not lines and blob_text(rel, base, root) is None:
+            # Untracked: `git diff` says nothing about a file git has never seen,
+            # and every line of it is new.
+            text = (pathlib.Path(root) / rel).read_text(encoding="utf-8",
+                                                       errors="replace")
+            lines = set(range(1, len(text.splitlines()) + 1))
+        out[rel] = lines
+    return out
+
+
+def _generated_catch_all(rel):
+    """The decl_*.h headers: AUTO-GENERATED extern catch-alls, not a class's interface.
+
+    A local copy of one of their declarations is not drift from a header, it is the
+    tree's convention: notes/tu-promotion-conventions.md section 2 puts `_ZTV<C>` in
+    the promoted TU source even though decl_common.h declares it, and warns that
+    including decl_common.h costs a TU its typing freedom."""
+    return pathlib.PurePosixPath(rel).name.startswith("decl_")
+
+
+def header_declarations(decls, root=REPO):
+    """({symbol: headers declaring it at file scope}, {(class, method, nargs): headers}).
+
+    The second map is read out of class bodies, which `collect()` does not record:
+    `static System *FromUniqueID(u32);` inside Particle__System.h is how a header
+    declares `_ZN8Particle6System12FromUniqueIDEj`. Arity is part of the key so an
+    overload with a different argument count does not answer for this one."""
+    flat = {}
+    for d in decls:
+        if d.file.startswith("include/") and not _generated_catch_all(d.file):
+            flat.setdefault(d.symbol, set()).add(d.file)
+    members = {}
+    for rel in scan_targets(root):
+        if not rel.startswith("include/") or not rel.endswith(HEADER_SUFFIXES):
+            continue
+        if _generated_catch_all(rel):
+            continue
+        code, _marks = scrub((pathlib.Path(root) / rel).read_text(
+            encoding="utf-8", errors="replace"))
+        for cls, stmt in class_body_statements(code):
+            body = " ".join(stmt.split())
+            while True:
+                shorter = ACCESS_LABEL.sub("", body)
+                if shorter == body:
+                    break
+                body = shorter
+            if not body or re.match(r"^(typedef|using|template|friend)\b", body):
+                continue
+            rest, _extern, _static, _override = _strip_specifiers(body)
+            parsed = parse_declarator(rest, {}, True) if rest else None
+            if parsed is None:
+                continue
+            name, _ret, params, is_fn, member, _owner = parsed
+            if not is_fn or member or params is UNSPECIFIED:
+                continue
+            members.setdefault((cls, name, len(params)), set()).add(rel)
+    return flat, members
+
+
+def c_includable_headers(root=REPO):
+    """Headers some C (not //cpp) source in src/ already includes: proven C-safe."""
+    ok = set()
+    for rel in scan_targets(root):
+        if not rel.startswith("src/"):
+            continue
+        text = (pathlib.Path(root) / rel).read_text(encoding="utf-8", errors="replace")
+        if text.startswith("//cpp"):
+            continue
+        for m in re.finditer(r'^\s*#\s*include\s+"([^"]+)"', text, re.M):
+            ok.add("include/" + m.group(1))
+    return ok
+
+
+def _local_count(symbol, decls):
+    return sum(1 for d in decls if d.symbol == symbol and d.file.startswith("src/"))
+
+
+def _base_local_count(symbol, base, root=REPO):
+    proc = subprocess.run(["git", "grep", "-l", "-F", symbol, base, "--", "src"],
+                          cwd=str(root), capture_output=True, text=True)
+    aliases = scalar_typedefs(root)
+    n = 0
+    for row in proc.stdout.splitlines():
+        rel = row.split(":", 1)[1] if ":" in row else row
+        text = blob_text(rel, base, root)
+        if text is None:
+            continue
+        d, _f, _u = parse_file(rel, text, aliases)
+        n += sum(1 for r in d if r.symbol == symbol)
+    return n
+
+
+def _demangled(symbol, root=REPO):
+    try:
+        sys.path.insert(0, str(pathlib.Path(root) / "tools"))
+        import demangle as _demangle
+        return _demangle.demangle(symbol) or {}
+    except Exception:
+        return {}
+
+
+def _demangled_member(symbol, root=REPO):
+    """(class, method, nargs) the Itanium name states, or None."""
+    info = _demangled(symbol, root)
+    key = (info.get("class"), info.get("method"), info.get("nargs"))
+    return key if all(k is not None for k in key) else None
+
+
+def _takes_fix12_by_value(symbol, root=REPO):
+    """The Fix12 wall (notes/mwccarm-codegen.md 6az): passing Fix12<int> by value
+    costs the CALLER bytes, so a call site cannot use the header's spelling and
+    keeps a local declaration with a scalar parameter. Not drift; exempt."""
+    return symbol.startswith("_Z") and "Fix12<int>" in (
+        _demangled(symbol, root).get("args") or [])
+
+
+def new_header_redeclarations(base, touched, decls, root=REPO):
+    """Local declarations this branch ADDS for symbols a header already declares.
+
+    The tree carries thousands of these already (a file writes its own `extern`
+    instead of including the header), and they drift: #3091 found local externs of
+    Particle::System::FromUniqueID in several spellings while Particle__System.h
+    declared it correctly all along. This is a ratchet: a finding needs a declaration
+    on a line the branch adds AND a rise in that symbol's count of src/
+    redeclarations, so a promotion that only MOVES externs is clean."""
+    root = pathlib.Path(root)
+    srcs = [r for r in touched if r.startswith("src/") and (root / r).exists()]
+    if not srcs:
+        return []
+    added = added_lines(base, srcs, root)
+    flat, members = header_declarations(decls, root)
+    c_ok = None
+    texts = {}
+    candidates = []
+    for d in decls:
+        if d.file not in added or d.line not in added[d.file]:
+            continue
+        if d.file not in texts:
+            texts[d.file] = (root / d.file).read_text(
+                encoding="utf-8", errors="replace").splitlines()
+        text_lines = texts[d.file]
+        cxx = bool(text_lines) and text_lines[0].startswith("//cpp")
+        around = " ".join(text_lines[max(d.line - 2, 0):d.line])
+        if LOCAL_EXTERN_MARK.search(around) or _takes_fix12_by_value(d.symbol, root):
+            continue
+        headers = set(flat.get(d.symbol, ()))
+        if not cxx and headers:
+            if c_ok is None:
+                c_ok = c_includable_headers(root)
+            headers &= c_ok
+        if cxx and d.symbol.startswith("_Z"):
+            key = _demangled_member(d.symbol, root)
+            if key is not None:
+                headers |= members.get(key, set())
+        if headers:
+            candidates.append((d, sorted(headers)))
+    out = []
+    counts = {}
+    for d, headers in candidates:
+        if d.symbol not in counts:
+            counts[d.symbol] = (_base_local_count(d.symbol, base, root),
+                                _local_count(d.symbol, decls))
+        was, now = counts[d.symbol]
+        if now > was:
+            out.append({"symbol": d.symbol, "file": d.file, "line": d.line,
+                        "headers": headers, "was": was, "now": now})
+    return out
+
 
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
@@ -2239,6 +2814,24 @@ def main(argv=None):
         for f in sorted(findings, key=lambda x: (x["symbol"], x["file"], x["line"])):
             print_finding(f)
 
+    redeclared = []
+    if touched is not None:
+        redeclared = new_header_redeclarations(args.changed, touched, decls, REPO)
+        if redeclared:
+            print("\nFAIL: %d new local declaration(s) of a symbol a header already "
+                  "declares:\n" % len(redeclared))
+            for r in redeclared:
+                print("  %s:%d  %s" % (r["file"], r["line"], r["symbol"]))
+                print("      declared in %s; src/ redeclarations %d -> %d"
+                      % (", ".join(r["headers"]), r["was"], r["now"]))
+            print("\nInclude the header and use its spelling instead of a local copy:")
+            print("local copies drift from the header and from each other. REBUILD after")
+            print("the edit. If the header's spelling cannot be used (the Fix12 wall, a")
+            print("header that clashes with a shadow type), keep the local declaration")
+            print("and put `local extern: <reason>` in a comment on it or the line above.")
+        else:
+            print("  no new local redeclarations of header-declared symbols")
+
     known = load_baseline(BASELINE)
     new = [f for f in findings if key_of(f) not in known]
     if touched is None:
@@ -2249,7 +2842,7 @@ def main(argv=None):
 
     if not new:
         print("  no new declaration disagreements")
-        return 0
+        return 1 if redeclared else 0
 
     print("\nFAIL: %d declaration(s) contradict the symbol's definition:\n" % len(new))
     for f in sorted(new, key=lambda x: (x["symbol"], x["file"], x["line"])):

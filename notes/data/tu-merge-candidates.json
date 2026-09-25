@@ -2678,17 +2678,17 @@
    "start": "0x21111a0",
    "end": "0x211150c",
    "classes": [
-    "FireSeaElevator"
+    "daObjKm2_Agaru_c"
    ],
    "n_functions_map": 9,
    "n_files": 9,
    "files": [
-    "src/_ZN15FireSeaElevatorD1Ev.cpp",
-    "src/_ZN15FireSeaElevatorD0Ev.c",
-    "src/_ZN15FireSeaElevator16CleanupResourcesEv.cpp",
-    "src/_ZN15FireSeaElevator6RenderEv.cpp",
-    "src/_ZN15FireSeaElevator8BehaviorEv.cpp",
-    "src/_ZN15FireSeaElevator13InitResourcesEv.cpp",
+    "src/_ZN16daObjKm2_Agaru_cD1Ev.cpp",
+    "src/_ZN16daObjKm2_Agaru_cD0Ev.c",
+    "src/_ZN16daObjKm2_Agaru_c16CleanupResourcesEv.cpp",
+    "src/_ZN16daObjKm2_Agaru_c6RenderEv.cpp",
+    "src/_ZN16daObjKm2_Agaru_c8BehaviorEv.cpp",
+    "src/_ZN16daObjKm2_Agaru_c13InitResourcesEv.cpp",
     "src/func_ov045_021114a8.cpp",
     "src/func_ov045_021114c8.c",
     "src/d_a_obj_km2_agaru.c"
@@ -29621,23 +29621,23 @@
    "start": "0x2131bdc",
    "end": "0x2132360",
    "classes": [
-    "RotatingUpDownPlatform"
+    "daLinelift2_c"
    ],
    "n_functions_map": 13,
    "n_files": 13,
    "files": [
     "src/d_a_obj_rotate_updown_lift_updown_lift.c",
-    "src/_ZN22RotatingUpDownPlatformD1Ev.c",
-    "src/_ZN22RotatingUpDownPlatformD0Ev.c",
+    "src/_ZN13daLinelift2_cD1Ev.c",
+    "src/_ZN13daLinelift2_cD0Ev.c",
     "src/func_ov091_02131cb0.c",
     "src/func_ov091_02131db8.c",
     "src/func_ov091_02131ef0.c",
     "src/func_ov091_02131f9c.c",
     "src/func_ov091_02132000.c",
-    "src/_ZN22RotatingUpDownPlatform16CleanupResourcesEv.cpp",
-    "src/_ZN22RotatingUpDownPlatform6RenderEv.cpp",
-    "src/_ZN22RotatingUpDownPlatform8BehaviorEv.cpp",
-    "src/_ZN22RotatingUpDownPlatform13InitResourcesEv.cpp",
+    "src/_ZN13daLinelift2_c16CleanupResourcesEv.cpp",
+    "src/_ZN13daLinelift2_c6RenderEv.cpp",
+    "src/_ZN13daLinelift2_c8BehaviorEv.cpp",
+    "src/_ZN13daLinelift2_c13InitResourcesEv.cpp",
     "src/func_ov091_02132380.c"
    ],
    "ext_mix": {
@@ -30164,23 +30164,23 @@
    "start": "0x213a900",
    "end": "0x213b47c",
    "classes": [
-    "Cannon"
+    "daCnn_c"
    ],
    "n_functions_map": 13,
    "n_files": 13,
    "files": [
-    "src/_ZN6CannonD1Ev.cpp",
-    "src/_ZN6CannonD0Ev.cpp",
+    "src/_ZN7daCnn_cD1Ev.cpp",
+    "src/_ZN7daCnn_cD0Ev.cpp",
     "src/func_ov098_0213a984.c",
     "src/func_ov098_0213aa28.c",
     "src/func_ov098_0213ad08.c",
     "src/func_ov098_0213ade8.c",
     "src/func_ov098_0213b0a4.cpp",
     "src/func_ov098_0213b15c.cpp",
-    "src/_ZN6Cannon16CleanupResourcesEv.c",
-    "src/_ZN6Cannon6RenderEv.cpp",
-    "src/_ZN6Cannon8BehaviorEv.cpp",
-    "src/_ZN6Cannon13InitResourcesEv.cpp",
+    "src/_ZN7daCnn_c16CleanupResourcesEv.c",
+    "src/_ZN7daCnn_c6RenderEv.cpp",
+    "src/_ZN7daCnn_c8BehaviorEv.cpp",
+    "src/_ZN7daCnn_c13InitResourcesEv.cpp",
     "src/daCnn_c_classInit.cpp"
    ],
    "ext_mix": {

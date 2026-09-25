@@ -14,6 +14,7 @@
  * Leftover: the func_0203/data_ helpers and homes keep linker names.
  */
 #include "fBase_c.h"
+#include "Heap.h"
 
 struct fBaseActorInfo {
     u32 unk_000;
@@ -21,47 +22,11 @@ struct fBaseActorInfo {
     u16 renderPriority;
 };
 
-/* ------------------------------------------------------------------------- *
- * RECONCILED DECLARATIONS
- *
- * include/decl_common.h is deliberately NOT included, and this is the case its
- * warning in the skill notes describes. It declares three of the names below
- * with signatures that CONTRADICT the way this class's own sources use them:
- *
- *     decl_common.h                   what these functions are actually passed
- *     extern void func_0203b27c(int, int);   (&list, &node) -- two pointers
- *     extern int  data_020a4b6c;             taken by address as a list head
- *     extern int  data_020a4b48/54/60/...    (unused here)
- *
- * Seen from one TU those become two incompatible extern "C" declarations of one
- * name, which mwcc rejects outright as "illegal function overloading". The
- * skill's rule is to drop the header and restate the few lines it supplied,
- * keeping the MOST COMPLETE observation of each -- which is what follows. Every
- * one of these appeared in two or more of the legacy one-function files; where
- * they disagreed only in `int` vs `void *` vs `char` spelling of the same
- * address, the pointer spelling is kept.
- * ------------------------------------------------------------------------- */
+/* Keep the list-head and pointer signatures used here local: decl_common.h
+ * gives incompatible integer declarations for some of these symbols. */
 extern "C" {
 
-/* The node destructor each fBase_c destructor variant runs twice.
- *
- * NAME CORRECTED. This block used to declare it `func_020440e8`, and so does
- * include/decl_common.h. NO MODULE EXPORTS THAT NAME: arm9's own
- * config/arm9/symbols.txt:1842 gives 0x020440e8 as
- * `_ZN11fLiNdBaPr_cD1Ev kind:function(arm,size=0x1c)`, and there is a source
- * for it at src/_ZN11fLiNdBaPr_cD1Ev.cpp. A shadow TU is not in the build, so
- * the fabricated name compiled and byte-matched here and would only have
- * surfaced as `Undefined : "func_020440e8"` at ROM link time, on promotion --
- * the same failure mode daObjKm3_Dorifu_c hit. Declared under the real mangled
- * name: same address, same relocation, a reference that resolves.
- *
- * This is still a poorer recovery than the legacy one-function file that held
- * fBase_c::~fBase_c,
- * which is a real `fBase_c::~fBase_c() {}` and lets the compiler synthesize
- * both member teardowns. Restoring that here means unwinding the three
- * hand-mangled D0/D1/D2 definitions below, and a hand-mangled D0 beside a real
- * destructor is the known mwccarm ICE (ELFgen.c:483). Left for the promotion
- * of this TU, which has to solve the destructor shape anyway. */
+/* The ABI destructor variants below destroy both process-list nodes. */
 extern "C" void _ZN11fLiNdBaPr_cD1Ev(void *node);
 
 /* Intrusive-list operations on the four global list heads below. All four take
@@ -110,22 +75,15 @@ extern void *func_02043810(void *p);
    one that says what it is. */
 extern void *_ZTV7fBase_c[];
 
-/* Heap and Memory, by their exact ROM names.
-   `void *` rather than `Heap *` throughout, deliberately: include/Heap.h has a
-   real polymorphic Heap class, but Virtual34 and Virtual38 both reach two of
-   its fields by raw offset (`+4` flags word, `+8` top-of-heap) rather than by
-   member, and reconciling those onto named members is a per-function codegen
-   change this round has no reason to risk. include/Heap.h itself declares
-   InitializeSolidHeapAsDefault as returning `void *`, so that part is the
-   tree's own choice, not an evasion. Memory::Deallocate and data_020a0eac come
-   from include/fBase_c.h, which needs them for its inline operator delete. */
-extern void *_ZN4Heap28InitializeSolidHeapAsDefaultEjPS_i(u32 size, void *root,
-                                                          int align);
+/* Heap's methods come from include/Heap.h. The heap locals stay `void *`
+   (and are cast at each call), deliberately: Virtual34 and Virtual38 both
+   reach two of its fields by raw offset (`+4` flags word, `+8` top-of-heap)
+   rather than by member, and reconciling those onto named members is a
+   per-function codegen change this round has no reason to risk.
+   include/Heap.h itself declares InitializeSolidHeapAsDefault as returning
+   `void *`. Memory::Deallocate and data_020a0eac come from include/fBase_c.h,
+   which needs them for its inline operator delete. */
 extern void *_ZN6Memory8AllocateEjiP4Heap(unsigned int size, int align, void *heap);
-extern void  _ZN4Heap20RestoreFromTemporaryEv(void);
-extern void  _ZN4Heap8_DestroyEv(void *h);
-extern u32   _ZN4Heap21MaxAllocationUnitSizeEv(void *h);
-extern u32   _ZN4Heap11ResizeToFitEv(void *h);
 
 }
 
@@ -196,49 +154,26 @@ extern "C" fBase_c *_ZN7fBase_cD2Ev(fBase_c *self)
     return self;
 }
 
-/* The per-frame driver: run the `before` guard, then the work, then the
- * `after` hook with a VirtualFuncSuccess code derived from the work's result.
- * The three arguments are POINTERS TO MEMBER FUNCTIONS -- the mangled name says
- * so (`MS_FivE`, `MS_FbvE`, `MS_FvjE` = pointer-to-member-of-fBase_c), and
- * that is the one part of a mangled parameter list this project did not have to
- * guess, because no other type spells `M`.
- *
- * KEPT AS AN extern "C" FREE FUNCTION WITH AN EXPLICIT `self`. The mangled name
- * describes a real method, so the honest form would be a member. It is not used
- * here for a measured reason: a pointer-to-member of a POLYMORPHIC class is a
- * different representation from one of the flat `struct fBase_c { int v0(); }`
- * the legacy file declared, and the legacy shadow is what these bytes were
- * recovered against. Swapping in the real class here is a codegen change, not a
- * spelling change. The local shadow it needed could not survive in this TU
- * (the name collides with the real class), so the parameters are declared with
- * a distinctly-named stand-in instead and the definition stays extern "C".
- */
-struct ActorBase_ProcessSelf {
-    int v0();
-};
-typedef int  (ActorBase_ProcessSelf::*ActorBase_PMFi)();
-typedef void (ActorBase_ProcessSelf::*ActorBase_PMFv)(int);
-
+/* Run the guard, then the action when allowed, and always notify the after hook. */
 // @symbol _ZN7fBase_c7ProcessEMS_FivEMS_FbvEMS_FvjE
-extern "C" int _ZN7fBase_c7ProcessEMS_FivEMS_FbvEMS_FvjE(
-    ActorBase_ProcessSelf *self, ActorBase_PMFi b, ActorBase_PMFi a,
-    ActorBase_PMFv c)
+int fBase_c::Process(ProcessFunction action, BeforeProcessFunction before,
+                     AfterProcessFunction after)
 {
-    int r = (self->*a)();
-    int code;
-    if (r != 0) {
-        r = (self->*b)();
-        if (r == -1) code = 3;
-        else if (r == 1) code = 2;
-        else code = 1;
+    int result = (this->*before)();
+    u32 status;
+    if (result != 0) {
+        result = (this->*action)();
+        if (result == -1) status = 3;
+        else if (result == 1) status = 2;
+        else status = 1;
     } else {
-        code = 0;
+        status = 0;
     }
-    (self->*c)(code);
-    return r;
+    (this->*after)(status);
+    return result;
 }
 
-/* vtable slot 0. Base loads nothing and returns VS_FAIL (1).
+/* vtable slot 0. Default initialization succeeds without loading resources.
  *
  * THE KEY FUNCTION, AND THE REASON THIS ONE IS NOT A METHOD. See the file
  * banner: a real `s32 fBase_c::InitResources()` anywhere makes that TU emit
@@ -248,14 +183,14 @@ extern "C" int _ZN7fBase_c7ProcessEMS_FivEMS_FbvEMS_FvjE(
 // @symbol _ZN7fBase_c13InitResourcesEv
 extern "C" int _ZN7fBase_c13InitResourcesEv(void)
 {
-    return 1; /* VS_FAIL */
+    return 1;
 }
 
-/* vtable slot 1, the init guard. Base returns VS_FAIL (1). */
+/* vtable slot 1. Allow initialization by default. */
 // @symbol _ZN7fBase_c19BeforeInitResourcesEv
 bool fBase_c::BeforeInitResources()
 {
-    return 1; /* VS_FAIL */
+    return 1;
 }
 
 /* vtable slot 2. Only acts on VS_SUCCESS (2): unlink from the pending list,
@@ -267,27 +202,26 @@ void fBase_c::AfterInitResources(u32 vfSuccess)
 {
     if (vfSuccess != 2)
         return;
-    func_0203b27c(data_020a4b88, ((char *)this) + 0x28);
+    func_0203b27c(data_020a4b88, &manager.behaviorNode);
     volatile int *p = data_02099f24;
     bool b = (p[0] == 3);
     if (b) {
-        *(bool *)((char *)&unk_010) = true;
+        unk_010 = 1;
         return;
     }
-    func_0204405c(data_020a4b78, ((char *)this) + 0x28);
-    func_0204405c(data_020a4b98, ((char *)this) + 0x38);
-    *(bool *)((char *)&aliveState) = true;
+    func_0204405c(data_020a4b78, &manager.behaviorNode);
+    func_0204405c(data_020a4b98, &manager.renderNode);
+    aliveState = 1;
 }
 
-/* vtable slot 3. Base releases nothing and returns VS_FAIL (1). */
+/* vtable slot 3. Default cleanup succeeds without releasing resources. */
 // @symbol _ZN7fBase_c16CleanupResourcesEv
 s32 fBase_c::CleanupResources()
 {
-    return 1; /* VS_FAIL */
+    return 1;
 }
 
-/* vtable slot 4. Refuses cleanup while lifecycleState is still busy, or once the
- * scene node has been unlinked. */
+/* vtable slot 4. Wait for pending lifecycle work and remaining scene children. */
 // @symbol _ZN7fBase_c22BeforeCleanupResourcesEv
 int fBase_c::BeforeCleanupResources()
 {
@@ -304,29 +238,9 @@ ret1:
     return 1;
 }
 
-/* vtable slot 5, and the one member that destroys the object. Only runs on
- * VS_SUCCESS (2): unlink the scene node and the behaviour node, tear down the
- * actor's own heap and lifecycle state, then run the destructor and free.
- *
- * THE DESTRUCTOR CALL IS A VIRTUAL DISPATCH THROUGH vtable+0x40, AND THAT IS
- * SLOT 16 -- the D1 complete-object destructor, NOT OnPendingDestroy, which is
- * slot 12 at vtable+0x30. include/fBase_c.h records the same thing: calling
- * vtable+0x40 OnPendingDestroy would describe a leak, because the deallocation
- * on the next line is separate.
- *
- * Written as `this->~fBase_c()`, which is a real virtual call: for a class
- * with a virtual destructor an explicit pseudo-destructor call dispatches on
- * the dynamic type, so it lands on slot 16 exactly as the ROM does. The legacy
- * file had to fake this with a shadow class carrying a dummy
- * `virtual void Destructor();` at index 16, and that shadow could not survive
- * in this TU -- its name is the real class's.
- *
- * NOTE ON WHAT THIS MEMBER'S ENROLMENT STATUS WAS: this is the one function of
- * the 24 whose legacy file is NOT marked `complete` in config/arm9/delinks.txt,
- * so it is not compiled by the ROM build today; dsd supplies its bytes from the
- * cartridge instead. It does reproduce -- verified under the pin both as the
- * legacy file and here -- but "matching" and "enrolled" are different
- * questions, and this one was only ever the former. */
+/* On success, unlink the actor, release its heap and pending lifecycle work,
+ * then call the virtual complete-object destructor (slot 16) and deallocate.
+ * This function is enrolled with the rest of the production TU. */
 // @symbol _ZN7fBase_c21AfterCleanupResourcesEj
 void fBase_c::AfterCleanupResources(u32 vfSuccess)
 {
@@ -335,18 +249,18 @@ void fBase_c::AfterCleanupResources(u32 vfSuccess)
     func_0203b3c0(data_020a4b6c, &manager.sceneNode);
     func_0203b27c(data_020a4ba8, &manager.behaviorNode);
     if (heap)
-        _ZN4Heap8_DestroyEv(heap);
+        ((Heap *)heap)->_Destroy();
     if (lifecycleState)
         func_02044334(lifecycleState);
     this->~fBase_c();   /* vtable+0x40 = slot 16 = D1 */
     _ZN6Memory10DeallocateEPvP4Heap(this, data_020a0eac);
 }
 
-/* vtable slot 6, the per-frame update tick. Base does nothing, VS_FAIL (1). */
+/* vtable slot 6. The default update succeeds without doing any work. */
 // @symbol _ZN7fBase_c8BehaviorEv
 s32 fBase_c::Behavior()
 {
-    return 1; /* VS_FAIL */
+    return 1;
 }
 
 /* vtable slot 7. Skips the tick once the actor is marked for death, or when
@@ -371,11 +285,11 @@ void fBase_c::AfterBehavior(u32 vfSuccess)
     u32 unused = vfSuccess;
 }
 
-/* vtable slot 9. Base draws nothing and returns VS_FAIL (1). */
+/* vtable slot 9. The default render succeeds without drawing anything. */
 // @symbol _ZN7fBase_c6RenderEv
 s32 fBase_c::Render()
 {
-    return 1; /* VS_FAIL */
+    return 1;
 }
 
 /* vtable slot 10. The render twin of BeforeBehavior, on bit 3 instead of 1. */
@@ -584,17 +498,13 @@ void fBase_c::MarkForDestruction()
     OnPendingDestroy();   /* vtable+0x30 = slot 12 */
 }
 
-/* The parent-actor accessor: follow manager.sceneNode.parent (0x14 -- the
- * legacy file read it as p[0x14/4], i.e. the first word of the manager) and
- * return the owner back-pointer the constructor writes at its +0x10. Reads as
- * fBase_c but is unnamed in config, and func_02043880 above is its only
- * caller in this run. */
+/* Return the parent scene node's actor, or null at the root. */
 // @symbol func_02043810
 extern "C" void *func_02043810(void *base)
 {
-    int *q = (int *)((int *)base)[0x14 / 4];
-    if (q)
-        return (void *)q[0x10 / 4];
+    fBase_c::SceneNode *parent = ((fBase_c *)base)->manager.sceneNode.parent;
+    if (parent)
+        return parent->owner;
     return 0;
 }
 
@@ -606,7 +516,7 @@ extern "C" void *func_02043810(void *base)
  * `this->v15()` in the legacy shadow is slot 15, which the real class names
  * OnHeapCreated -- so this now reads as the virtual it is. The heap's flags
  * word (+4) and top (+8) are still reached by raw offset: see the note on the
- * Heap declarations above. */
+ * Heap note above. */
 // @symbol _ZN7fBase_c9Virtual34Ejj
 int fBase_c::Virtual34(u32 a, u32 b)
 {
@@ -617,7 +527,7 @@ int fBase_c::Virtual34(u32 a, u32 b)
         return 1;
 
     if (a != 0) {
-        h = _ZN4Heap28InitializeSolidHeapAsDefaultEjPS_i(a, (void *)b, 0x20);
+        h = Heap::InitializeSolidHeapAsDefault(a, (Heap *)b, 0x20);
         if (h != 0) {
             u32 flagA = (*(u32 *)((char *)h + 4)) & 0x10;
             if (flagA != 0)
@@ -630,16 +540,16 @@ int fBase_c::Virtual34(u32 a, u32 b)
                 void *allocRes = _ZN6Memory8AllocateEjiP4Heap(0x10, 4, 0);
                 okA = (allocRes != 0) ? (u32)res : 0;
             }
-            _ZN4Heap20RestoreFromTemporaryEv();
+            Heap::RestoreFromTemporary();
             if (okA == 0) {
-                _ZN4Heap8_DestroyEv(h);
+                ((Heap *)h)->_Destroy();
                 h = 0;
             } else {
                 u32 topA = *(u32 *)((char *)h + 8);
-                avail = topA - _ZN4Heap21MaxAllocationUnitSizeEv(h);
+                avail = topA - ((Heap *)h)->MaxAllocationUnitSize();
                 avail = (avail + 0x1f) & ~0x1f;
                 if (a == avail) {
-                    _ZN4Heap11ResizeToFitEv(h);
+                    ((Heap *)h)->ResizeToFit();
                     heap = h;
                     return 1;
                 }
@@ -648,7 +558,7 @@ int fBase_c::Virtual34(u32 a, u32 b)
     }
 
     if (h == 0) {
-        h = _ZN4Heap28InitializeSolidHeapAsDefaultEjPS_i((u32)-1, (void *)b, 0x20);
+        h = Heap::InitializeSolidHeapAsDefault((u32)-1, (Heap *)b, 0x20);
         u32 flagB = (*(u32 *)((char *)h + 4)) & 0x10;
         if (flagB != 0)
             _ZN6Memory8AllocateEjiP4Heap(0x10, 4, 0);
@@ -658,14 +568,14 @@ int fBase_c::Virtual34(u32 a, u32 b)
             if (allocRes2 == 0)
                 a = 0;
         }
-        _ZN4Heap20RestoreFromTemporaryEv();
+        Heap::RestoreFromTemporary();
         if (a == 0) {
-            _ZN4Heap8_DestroyEv(h);
+            ((Heap *)h)->_Destroy();
             MarkForDestruction();
             return 0;
         }
         u32 topB = *(u32 *)((char *)h + 8);
-        avail = topB - _ZN4Heap21MaxAllocationUnitSizeEv(h);
+        avail = topB - ((Heap *)h)->MaxAllocationUnitSize();
         avail = (avail + 0x1f) & ~0x1f;
     }
 
@@ -675,37 +585,37 @@ int fBase_c::Virtual34(u32 a, u32 b)
     {
         u32 topH = *(u32 *)((char *)h + 8);
         void *h2 = 0;
-        u32 availInH = topH - _ZN4Heap21MaxAllocationUnitSizeEv(h);
+        u32 availInH = topH - ((Heap *)h)->MaxAllocationUnitSize();
         u32 needed = ((availInH + 0xf) & ~0xf) + 0x30;
-        if (needed < _ZN4Heap21MaxAllocationUnitSizeEv((void *)b)) {
-            h2 = _ZN4Heap28InitializeSolidHeapAsDefaultEjPS_i(avail, (void *)b, 0x20);
+        if (needed < ((Heap *)b)->MaxAllocationUnitSize()) {
+            h2 = Heap::InitializeSolidHeapAsDefault(avail, (Heap *)b, 0x20);
         }
         if (h2 != 0) {
             if ((u32)h2 < (u32)h) {
-                _ZN4Heap8_DestroyEv(h);
+                ((Heap *)h)->_Destroy();
                 h = 0;
                 int res3 = OnHeapCreated();
                 u32 okC = (u32)res3;
-                _ZN4Heap20RestoreFromTemporaryEv();
+                Heap::RestoreFromTemporary();
                 if (okC == 0) {
-                    _ZN4Heap8_DestroyEv(h2);
+                    ((Heap *)h2)->_Destroy();
                     h2 = h;
                 }
             } else {
-                _ZN4Heap20RestoreFromTemporaryEv();
-                _ZN4Heap8_DestroyEv(h2);
+                Heap::RestoreFromTemporary();
+                ((Heap *)h2)->_Destroy();
                 h2 = 0;
             }
         }
         if (h2 != 0) {
-            _ZN4Heap11ResizeToFitEv(h2);
+            ((Heap *)h2)->ResizeToFit();
             heap = h2;
             return 1;
         }
     }
 
     if (h != 0) {
-        _ZN4Heap11ResizeToFitEv(h);
+        ((Heap *)h)->ResizeToFit();
         heap = h;
         return 1;
     }
@@ -718,20 +628,15 @@ fail:
 /* vtable slot 14 (vtable+0x38). The short form of Virtual34: one attempt, no
  * right-sizing retry.
  *
- * The legacy file reached Heap and Memory through local classes with real
- * methods (`h->_Destroy()`, `Heap::RestoreFromTemporary()`,
- * `Memory::Allocate(...)`) while Virtual34 reached the same ROM functions
- * through their mangled names. Both spellings compile to the same non-virtual
- * direct calls, but two definitions of `struct Heap` cannot coexist in one TU,
- * so this member is reconciled onto Virtual34's mangled-name form -- the one of
- * the two that needs no class definition at all. */
+ * Heap is reached through include/Heap.h's real methods, the same
+ * non-virtual direct calls Virtual34 makes. */
 // @symbol _ZN7fBase_c9Virtual38Ejj
 int fBase_c::Virtual38(u32 a, u32 b)
 {
     if (heap != 0)
         return 1;
     if (a != 0) {
-        void *h = _ZN4Heap28InitializeSolidHeapAsDefaultEjPS_i(a, (void *)b, 0x20);
+        void *h = Heap::InitializeSolidHeapAsDefault(a, (Heap *)b, 0x20);
         if (h != 0) {
             int ok;
             int flag = (*(int *)((char *)h + 4)) & 0x10;
@@ -742,10 +647,10 @@ int fBase_c::Virtual38(u32 a, u32 b)
                 if (_ZN6Memory8AllocateEjiP4Heap(0x10, 4, 0) == 0)
                     ok = 0;
             }
-            _ZN4Heap21MaxAllocationUnitSizeEv(h);
-            _ZN4Heap20RestoreFromTemporaryEv();
+            ((Heap *)h)->MaxAllocationUnitSize();
+            Heap::RestoreFromTemporary();
             if (ok == 0) {
-                _ZN4Heap8_DestroyEv(h);
+                ((Heap *)h)->_Destroy();
             } else {
                 heap = h;
                 return 1;
@@ -757,22 +662,16 @@ int fBase_c::Virtual38(u32 a, u32 b)
 }
 
 /* vtable slot 15 (vtable+0x3c), fired by Virtual34/Virtual38 once the actor's
- * heap exists. Base returns VS_FAIL (1); leaf classes override. */
+ * heap exists. The default hook accepts the heap. */
 // @symbol _ZN7fBase_c13OnHeapCreatedEv
 bool fBase_c::OnHeapCreated()
 {
-    return 1; /* VS_FAIL */
+    return 1;
 }
 
-/* THE LOWEST FUNCTION OF THE RUN, and the one include/fBase_c.h's old
- * 0x02043494 start excluded. Every actor factory in the image calls it -- the
- * literal it is passed is how this project reads each class's size -- so it is
- * unambiguously this class's member.
- *
- * NOT declared in the class, and that is not a choice either: CW 1.2 rejects an
- * in-class declaration of operator new outright ("illegal 'operator'
- * declaration"). Its counterpart operator delete IS accepted in-class and is
- * declared there, which is what lets the destructors above reproduce D0. */
+/* Actor-heap allocation, cleared before construction. The configured ABI takes
+ * unsigned; the class's size_t operator-new overload forwards here because
+ * the compiler requires size_t for an in-class operator new. */
 // @symbol _ZN7fBase_cnwEj
 extern "C" void *_ZN7fBase_cnwEj(unsigned int size)
 {
