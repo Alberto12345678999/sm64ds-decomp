@@ -42204,19 +42204,6 @@
         "arity:1"
       ]
     },
-    "func_ov004_020b743c": {
-      "src/func_ov004_020b7460.c": [
-        "arity:0"
-      ]
-    },
-    "func_ov004_020b7460": {
-      "src/func_ov004_020b6ddc.c": [
-        "arity:1"
-      ],
-      "src/func_ov004_020b6f88.c": [
-        "arity:1"
-      ]
-    },
     "func_ov004_020b8a8c": {
       "include/decl_common.h": [
         "arity:1"
