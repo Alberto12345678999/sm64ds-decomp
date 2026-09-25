@@ -112,33 +112,9 @@ src/game/actors/d_a_obj_ki_ita.cpp:
     complete
     .text start:0x02112ef4 end:0x02112ff8
 
-src/_ZN10SlidingBoxD1Ev.cpp:
+src/actors/daSlide_Box_c.cpp:
     complete
-    .text start:0x02112ff8 end:0x02113044
-
-src/_ZN10SlidingBoxD0Ev.cpp:
-    complete
-    .text start:0x02113044 end:0x021130a4
-
-src/_ZN10SlidingBox11UpdateModelEv.cpp:
-    complete
-    .text start:0x021130a4 end:0x021130ec
-
-src/_ZN10SlidingBox16CleanupResourcesEv.cpp:
-    complete
-    .text start:0x021130ec end:0x02113130
-
-src/_ZN10SlidingBox6RenderEv.cpp:
-    complete
-    .text start:0x02113130 end:0x02113158
-
-src/_ZN10SlidingBox8BehaviorEv.cpp:
-    complete
-    .text start:0x02113158 end:0x02113434
-
-src/_ZN10SlidingBox13InitResourcesEv.cpp:
-    complete
-    .text start:0x02113434 end:0x02113510
+    .text start:0x02112ff8 end:0x02113510
 
 src/d_a_slide_box.c:
     complete

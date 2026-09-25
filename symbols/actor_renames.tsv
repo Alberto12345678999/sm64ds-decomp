@@ -812,12 +812,12 @@ ov016	0x02112ec4	func_ov016_02112ec4	RockPillar_Spawn	spawnfunc
 ov016	0x02112ec4	RockPillar_Spawn	daObjKi_Hasira_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov016	0x02112fbc	func_ov016_02112fbc	FloatOnWaterPlatformJrb_Spawn	spawnfunc
 ov016	0x02112fbc	FloatOnWaterPlatformJrb_Spawn	daObjKi_Ita_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
-ov016	0x02112ff8	func_ov016_02112ff8	_ZN10SlidingBoxD1Ev	vtable slot 16 (was _ZN23FloatOnWaterPlatformJrbD1Ev)
-ov016	0x02113044	func_ov016_02113044	_ZN10SlidingBoxD0Ev	vtable slot 17 (was _ZN23FloatOnWaterPlatformJrbD0Ev)
-ov016	0x021130ec	func_ov016_021130ec	_ZN10SlidingBox16CleanupResourcesEv	vtable slot 3 (was _ZN23FloatOnWaterPlatformJrb16CleanupResourcesEv)
-ov016	0x02113130	func_ov016_02113130	_ZN10SlidingBox6RenderEv	vtable slot 9 (was _ZN23FloatOnWaterPlatformJrb6RenderEv)
-ov016	0x02113158	func_ov016_02113158	_ZN10SlidingBox8BehaviorEv	vtable slot 6 (was _ZN23FloatOnWaterPlatformJrb8BehaviorEv)
-ov016	0x02113434	func_ov016_02113434	_ZN10SlidingBox13InitResourcesEv	vtable slot 0 (was _ZN23FloatOnWaterPlatformJrb13InitResourcesEv)
+ov016	0x02112ff8	func_ov016_02112ff8	_ZN13daSlide_Box_cD1Ev	vtable slot 16 (was _ZN23FloatOnWaterPlatformJrbD1Ev)
+ov016	0x02113044	func_ov016_02113044	_ZN13daSlide_Box_cD0Ev	vtable slot 17 (was _ZN23FloatOnWaterPlatformJrbD0Ev)
+ov016	0x021130ec	func_ov016_021130ec	_ZN13daSlide_Box_c16CleanupResourcesEv	vtable slot 3 (was _ZN23FloatOnWaterPlatformJrb16CleanupResourcesEv)
+ov016	0x02113130	func_ov016_02113130	_ZN13daSlide_Box_c6RenderEv	vtable slot 9 (was _ZN23FloatOnWaterPlatformJrb6RenderEv)
+ov016	0x02113158	func_ov016_02113158	_ZN13daSlide_Box_c8BehaviorEv	vtable slot 6 (was _ZN23FloatOnWaterPlatformJrb8BehaviorEv)
+ov016	0x02113434	func_ov016_02113434	_ZN13daSlide_Box_c13InitResourcesEv	vtable slot 0 (was _ZN23FloatOnWaterPlatformJrb13InitResourcesEv)
 ov016	0x02113510	func_ov016_02113510	SlidingBox_Spawn	spawnfunc
 ov016	0x02113510	SlidingBox_Spawn	daSlide_Box_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov016	0x02114898	data_ov016_02114898	BookSwitch_SpawnInfo	spawninfo
@@ -835,7 +835,7 @@ ov016	0x02114ba8	data_ov016_02114ba8	FloatOnWaterPlatformJrb_SpawnInfo	spawninfo
 ov016	0x02114ba8	FloatOnWaterPlatformJrb_SpawnInfo	g_profile_KI_ITA	reconstructed profile global; literal ROM ID KI_ITA+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov016	0x02114c68	data_ov016_02114c68	SlidingBox_SpawnInfo	spawninfo
 ov016	0x02114c68	SlidingBox_SpawnInfo	g_profile_SLIDE_BOX	reconstructed profile global; literal ROM ID SLIDE_BOX+registry role+later EAD lineage; exact SM64DS spelling not preserved
-ov016	0x02114c8c	data_ov016_02114c8c	_ZTV10SlidingBox	vtable alloc=? (was _ZTV23FloatOnWaterPlatformJrb)
+ov016	0x02114c8c	data_ov016_02114c8c	_ZTV13daSlide_Box_c	vtable alloc=? (was _ZTV23FloatOnWaterPlatformJrb)
 ov017	0x021111a0	func_ov017_021111a0	_ZN14daObjKsWater_cD1Ev	vtable slot 16
 ov017	0x021111ec	func_ov017_021111ec	_ZN14daObjKsWater_cD0Ev	vtable slot 17
 ov017	0x0211124c	func_ov017_0211124c	_ZN14daObjKsWater_c16CleanupResourcesEv	vtable slot 3

@@ -224,7 +224,7 @@ first module where a `config_tu/` conversion becomes conceivable.
 **B7 — R1 · 8 TUs / 63 files / net −55 / 1,440 lines**
 | TU | Address | Files | Description | Status |
 |----|---------|-------|-------------|--------|
-|[ov016](../config/arm9/overlays/ov016/symbols.txt)| 0x2112ff8|  n=8|   `SlidingBox`|           CONF2 pcov=3|
+|[ov016](../config/arm9/overlays/ov016/symbols.txt)| 0x2112ff8|  n=8|   `daSlide_Box_c`|           CONF2 pcov=3|
 |[ov017](../config/arm9/overlays/ov017/symbols.txt)| 0x21111a0|  n=7|   `daObjKsWater_c`|            CONF2 WHOLEMOD pcov=2|
 |[ov022](../config/arm9/overlays/ov022/symbols.txt)| 0x21111a0|  n=9|   `daObjFl_Ring_c`|          CONF1|
 |[ov022](../config/arm9/overlays/ov022/symbols.txt)| 0x21116c4|  n=9|   `daObjFl_Block_c`|  CONF2|

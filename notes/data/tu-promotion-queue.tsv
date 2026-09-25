@@ -143,7 +143,7 @@ IceBlock	9	318	ov081	yes	no	compiler-only:>=11(derived from own chain: 5 classes
 dMgState_c	4	91	ov004	yes	no	intact-object:blocked(TU owns two function-local bss statics; text-only isolate_many and compiler-only deadstrip re-import both refuse, intact-object links and reproduces the ROM but needs a storage alias rombuild does not support; see the manifest notes)	dScMgBase_c	text-only
 daObjClock_c	1	208	ov013	yes	yes	compiler-only:>=9(derived from own chain: 4 classes incl. self via build/rtti.json; floor 2x4+1)	daObjClockHuriko_c	text-only
 daObjKi_Fune_c	9	170	ov016	yes	yes	compiler-only:>=11(derived from own chain: 5 classes incl. self via build/rtti.json; floor 2x5+1)	daObjKi_Ita_c	text-only
-SlidingBox	7	189	ov016	yes	no	compiler-only:>=11(derived from own chain: 5 classes incl. self via build/rtti.json + include/ base clause; floor 2x5+1)	daObjKi_Ita_c	text-only
+daSlide_Box_c	7	189	ov016	yes	yes	compiler-only:>=11(derived from own chain: 5 classes incl. self via build/rtti.json + include/ base clause; floor 2x5+1)	daObjKi_Ita_c	text-only
 daObjFl_London_c	1	168	ov022	yes	yes	compiler-only:>=11(derived from own chain: 5 classes incl. self via build/rtti.json; floor 2x5+1)	daObjFl_Fall_Block_c	text-only
 daObjFl_Seesaw_c	7	147	ov022	yes	yes	compiler-only:>=11(derived from own chain: 5 classes incl. self via build/rtti.json + include/ base clause; floor 2x5+1)	daObjFl_Fall_Block_c	text-only
 daObjSlIceBlock_c	7	189	ov027	yes	yes	compiler-only:>=11(derived from own chain: 5 classes incl. self via build/rtti.json + include/ base clause; floor 2x5+1)	daIDonketu_c	text-only
