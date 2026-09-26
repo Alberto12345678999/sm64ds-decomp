@@ -5253,6 +5253,17 @@
     "src/game/actors/d_a_obj_ice_block.cpp#_ZN15daObjIceBlock_c6RenderEv": "tangosdev",
     "src/game/actors/d_a_obj_ice_block.cpp#_ZN15daObjIceBlock_c8BehaviorEv": "lunavyqo",
     "src/game/actors/d_a_obj_ice_block.cpp#_ZN15daObjIceBlock_c13InitResourcesEv": "tangosdev",
-    "src/game/actors/d_a_obj_ice_block.cpp#daObjIceBlock_c_classInit": "tangosdev"
+    "src/game/actors/d_a_obj_ice_block.cpp#daObjIceBlock_c_classInit": "tangosdev",
+    "src/game/actors/d_a_klr.cpp#_ZN7daKlr_cD1Ev": "tangosdev",
+    "src/game/actors/d_a_klr.cpp#_ZN7daKlr_cD0Ev": "tangosdev",
+    "src/game/actors/d_a_klr.cpp#_ZN7daKlr_c16OnAimedAtWithEggEv": "tangosdev",
+    "src/game/actors/d_a_klr.cpp#func_ov079_02126704": "tangosdev",
+    "src/game/actors/d_a_klr.cpp#func_ov079_02126794": "tangosdev",
+    "src/game/actors/d_a_klr.cpp#func_ov079_0212682c": "tangosdev",
+    "src/game/actors/d_a_klr.cpp#_ZN7daKlr_c16CleanupResourcesEv": "tangosdev",
+    "src/game/actors/d_a_klr.cpp#_ZN7daKlr_c6RenderEv": "tangosdev",
+    "src/game/actors/d_a_klr.cpp#_ZN7daKlr_c8BehaviorEv": "lunavyqo",
+    "src/game/actors/d_a_klr.cpp#_ZN7daKlr_c13InitResourcesEv": "tangosdev",
+    "src/game/actors/d_a_klr.cpp#daKlr_c_classInit": "tangosdev"
   }
 }
