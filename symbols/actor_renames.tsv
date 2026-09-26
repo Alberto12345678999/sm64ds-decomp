@@ -2373,12 +2373,12 @@ ov079	0x02126588	func_ov079_02126588	WhompKing_Spawn	spawnfunc
 ov079	0x02126588	WhompKing_Spawn	daBtn_c_classInit_BATANKING	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov079	0x021265e8	func_ov079_021265e8	Whomp_Spawn	spawnfunc
 ov079	0x021265e8	Whomp_Spawn	daBtn_c_classInit_BATAN	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
-ov079	0x02126648	func_ov079_02126648	_ZN10BulletBillD1Ev	vtable slot 16
-ov079	0x02126698	func_ov079_02126698	_ZN10BulletBillD0Ev	vtable slot 17
-ov079	0x02126a18	func_ov079_02126a18	_ZN10BulletBill16CleanupResourcesEv	vtable slot 3
-ov079	0x02126a48	func_ov079_02126a48	_ZN10BulletBill6RenderEv	vtable slot 9
-ov079	0x02126a84	func_ov079_02126a84	_ZN10BulletBill8BehaviorEv	vtable slot 6
-ov079	0x02126c44	func_ov079_02126c44	_ZN10BulletBill13InitResourcesEv	vtable slot 0
+ov079	0x02126648	func_ov079_02126648	_ZN7daKlr_cD1Ev	vtable slot 16
+ov079	0x02126698	func_ov079_02126698	_ZN7daKlr_cD0Ev	vtable slot 17
+ov079	0x02126a18	func_ov079_02126a18	_ZN7daKlr_c16CleanupResourcesEv	vtable slot 3
+ov079	0x02126a48	func_ov079_02126a48	_ZN7daKlr_c6RenderEv	vtable slot 9
+ov079	0x02126a84	func_ov079_02126a84	_ZN7daKlr_c8BehaviorEv	vtable slot 6
+ov079	0x02126c44	func_ov079_02126c44	_ZN7daKlr_c13InitResourcesEv	vtable slot 0
 ov079	0x02126d64	func_ov079_02126d64	BulletBill_Spawn	spawnfunc
 ov079	0x02126d64	BulletBill_Spawn	daKlr_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov079	0x021271b4	func_ov079_021271b4	BillBlaster_Spawn	spawnfunc
@@ -2400,7 +2400,7 @@ ov079	0x02127c5c	Whomp_SpawnInfo	g_profile_BATAN	reconstructed profile global; l
 ov079	0x02127c80	data_ov079_02127c80	_ZTV5Whomp	vtable alloc=0x610
 ov079	0x02127ec4	data_ov079_02127ec4	BulletBill_SpawnInfo	spawninfo
 ov079	0x02127ec4	BulletBill_SpawnInfo	g_profile_KILLER	reconstructed profile global; literal ROM ID KILLER+registry role+later EAD lineage; exact SM64DS spelling not preserved
-ov079	0x02127ee8	data_ov079_02127ee8	_ZTV10BulletBill	vtable alloc=0x3e0
+ov079	0x02127ee8	data_ov079_02127ee8	_ZTV7daKlr_c	vtable alloc=0x3e0
 ov079	0x02127f94	data_ov079_02127f94	BillBlaster_SpawnInfo	spawninfo
 ov079	0x02127f94	BillBlaster_SpawnInfo	g_profile_BK_KILLER_DAI	reconstructed profile global; literal ROM ID BK_KILLER_DAI+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov079	0x02128070	data_ov079_02128070	FortressWallBreakable_SpawnInfo	spawninfo
@@ -2481,12 +2481,12 @@ ov081	0x02127854	func_ov081_02127854	_ZN8daGmch_c8BehaviorEv	vtable slot 6 (was 
 ov081	0x021278a8	func_ov081_021278a8	_ZN8daGmch_c13InitResourcesEv	vtable slot 0 (was _ZN8Moneybag13InitResourcesEv)
 ov081	0x02127adc	func_ov081_02127adc	Moneybag_Spawn	spawnfunc
 ov081	0x02127adc	Moneybag_Spawn	daGmch_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
-ov081	0x02127b34	func_ov081_02127b34	_ZN8IceBlockD1Ev	vtable slot 16
-ov081	0x02127b80	func_ov081_02127b80	_ZN8IceBlockD0Ev	vtable slot 17
-ov081	0x02127d98	func_ov081_02127d98	_ZN8IceBlock16CleanupResourcesEv	vtable slot 3
-ov081	0x02127ddc	func_ov081_02127ddc	_ZN8IceBlock6RenderEv	vtable slot 9
-ov081	0x02127e1c	func_ov081_02127e1c	_ZN8IceBlock8BehaviorEv	vtable slot 6
-ov081	0x02127ff0	func_ov081_02127ff0	_ZN8IceBlock13InitResourcesEv	vtable slot 0
+ov081	0x02127b34	func_ov081_02127b34	_ZN15daObjIceBlock_cD1Ev	vtable slot 16
+ov081	0x02127b80	func_ov081_02127b80	_ZN15daObjIceBlock_cD0Ev	vtable slot 17
+ov081	0x02127d98	func_ov081_02127d98	_ZN15daObjIceBlock_c16CleanupResourcesEv	vtable slot 3
+ov081	0x02127ddc	func_ov081_02127ddc	_ZN15daObjIceBlock_c6RenderEv	vtable slot 9
+ov081	0x02127e1c	func_ov081_02127e1c	_ZN15daObjIceBlock_c8BehaviorEv	vtable slot 6
+ov081	0x02127ff0	func_ov081_02127ff0	_ZN15daObjIceBlock_c13InitResourcesEv	vtable slot 0
 ov081	0x021280a0	func_ov081_021280a0	IceBlock_Spawn	spawnfunc
 ov081	0x021280a0	IceBlock_Spawn	daObjIceBlock_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov081	0x02128858	data_ov081_02128858	Spindrift_SpawnInfo	spawninfo
@@ -2503,7 +2503,7 @@ ov081	0x02128be0	Moneybag_SpawnInfo	g_profile_GAMAGUCHI	reconstructed profile gl
 ov081	0x02128c04	data_ov081_02128c04	_ZTV8daGmch_c	vtable alloc=0x3f4 (was _ZTV8Moneybag -- the same class under its cartridge RTTI name, not a different owner, so the alloc figure stands: daGmch_c_classInit at 0x02127adc passes the literal 1012 = 0x3f4 to fBase_c::operator new and include/daGmch_c.h asserts sizeof(daGmch_c) == 0x3f4)
 ov081	0x02128ca0	data_ov081_02128ca0	IceBlock_SpawnInfo	spawninfo
 ov081	0x02128ca0	IceBlock_SpawnInfo	g_profile_ICE_BLOCK_LL	reconstructed profile global; literal ROM ID ICE_BLOCK_LL+registry role+later EAD lineage; exact SM64DS spelling not preserved
-ov081	0x02128cc4	data_ov081_02128cc4	_ZTV8IceBlock	vtable alloc=0x368
+ov081	0x02128cc4	data_ov081_02128cc4	_ZTV15daObjIceBlock_c	vtable alloc=0x368
 ov084	0x02129020	func_ov084_02129020	_ZN7daKrb_cD1Ev	vtable slot 16
 ov084	0x02129070	func_ov084_02129070	_ZN7daKrb_cD0Ev	vtable slot 17
 ov084	0x0212b510	func_ov084_0212b510	_ZN7daKrb_c16CleanupResourcesEv	vtable slot 3
@@ -2761,7 +2761,7 @@ ov091	0x02134e80	data_ov091_02134e80	ArrowPathLift_SpawnInfo	spawninfo
 ov091	0x02134e80	ArrowPathLift_SpawnInfo	g_profile_KM3_LIFT	reconstructed profile global; literal ROM ID KM3_LIFT+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov091	0x02134e9c	data_ov091_02134e9c	SquareMetalNetLift_SpawnInfo	spawninfo
 ov091	0x02134e9c	SquareMetalNetLift_SpawnInfo	g_profile_KM2_SUSUMU	reconstructed profile global; literal ROM ID KM2_SUSUMU+registry role+later EAD lineage; exact SM64DS spelling not preserved
-ov091	0x02134ec0	data_ov091_02134ec0	_ZTV13daLinelift2_c	vtable alloc=0x3a8
+ov091	0x02134ec0	data_ov091_02134ec0	_ZTV13daLinelift2_c	vtable alloc=0x358
 ov091	0x02134f60	data_ov091_02134f60	SlidingPlatformBdw_SpawnInfo	spawninfo
 ov091	0x02134f60	SlidingPlatformBdw_SpawnInfo	g_profile_KM1_DERU	reconstructed profile global; literal ROM ID KM1_DERU+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov091	0x02134f7c	data_ov091_02134f7c	SlidingPlatformBsWide_SpawnInfo	spawninfo
