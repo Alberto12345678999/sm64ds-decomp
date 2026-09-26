@@ -40677,15 +40677,15 @@ matched: yes</title></rect><rect x="1537.67" y="632.67" width="11.51" height="4.
 module: ov079
 addr: 0x021265e8
 size: 96 bytes
-matched: yes</title></rect><rect x="1537.67" y="636.68" width="11.51" height="3.34" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10BulletBillD1Ev
+matched: yes</title></rect><rect x="1537.67" y="636.68" width="11.51" height="3.34" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7daKlr_cD1Ev
 module: ov079
 addr: 0x02126648
 size: 80 bytes
-matched: yes</title></rect><rect x="1549.18" y="584.34" width="11.34" height="4.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10BulletBillD0Ev
+matched: yes</title></rect><rect x="1549.18" y="584.34" width="11.34" height="4.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7daKlr_cD0Ev
 module: ov079
 addr: 0x02126698
 size: 100 bytes
-matched: yes</title></rect><rect x="1560.53" y="584.34" width="0.91" height="4.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10BulletBill16OnAimedAtWithEggEv
+matched: yes</title></rect><rect x="1560.53" y="584.34" width="0.91" height="4.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7daKlr_c16OnAimedAtWithEggEv
 module: ov079
 addr: 0x021266fc
 size: 8 bytes
@@ -40701,19 +40701,19 @@ matched: yes</title></rect><rect x="1549.18" y="588.58" width="21.51" height="11
 module: ov079
 addr: 0x0212682c
 size: 492 bytes
-matched: yes</title></rect><rect x="1570.69" y="588.58" width="2.10" height="11.01" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10BulletBill16CleanupResourcesEv
+matched: yes</title></rect><rect x="1570.69" y="588.58" width="2.10" height="11.01" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7daKlr_c16CleanupResourcesEv
 module: ov079
 addr: 0x02126a18
 size: 48 bytes
-matched: yes</title></rect><rect x="1572.79" y="588.58" width="2.62" height="11.01" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10BulletBill6RenderEv
+matched: yes</title></rect><rect x="1572.79" y="588.58" width="2.62" height="11.01" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7daKlr_c6RenderEv
 module: ov079
 addr: 0x02126a48
 size: 60 bytes
-matched: yes</title></rect><rect x="1575.41" y="588.58" width="19.59" height="11.01" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10BulletBill8BehaviorEv
+matched: yes</title></rect><rect x="1575.41" y="588.58" width="19.59" height="11.01" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7daKlr_c8BehaviorEv
 module: ov079
 addr: 0x02126a84
 size: 448 bytes
-matched: yes</title></rect><rect x="1549.18" y="599.59" width="7.72" height="17.97" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10BulletBill13InitResourcesEv
+matched: yes</title></rect><rect x="1549.18" y="599.59" width="7.72" height="17.97" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7daKlr_c13InitResourcesEv
 module: ov079
 addr: 0x02126c44
 size: 288 bytes
