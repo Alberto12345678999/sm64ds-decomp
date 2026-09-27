@@ -1,5 +1,5 @@
-#ifndef MRBLIZZARD_H
-#define MRBLIZZARD_H
+#ifndef DASNOWMAN_C_H
+#define DASNOWMAN_C_H
 
 #include "types.h"
 
@@ -30,7 +30,7 @@
 #include "ShadowModel.h"
 #include "dBgCh_Actr.h"
 
-struct MrBlizzard : dEnemyBase_c {
+struct daSnowman_c : dEnemyBase_c {
     dCcAcPos_c mdCcAcPos_c;/* 0x110 */
     dBgCh_Actr mWithMeshClsn;       /* 0x150 */
     ModelAnim mModelAnim;             /* 0x30c */
@@ -54,7 +54,7 @@ struct MrBlizzard : dEnemyBase_c {
     Vector3 mHomePos;                 /* 0x44c */
 
     /* --- vtable --- */
-    virtual ~MrBlizzard();
+    virtual ~daSnowman_c();
 
     virtual s32   OnAimedAtWithEgg();      /* slot 29 */
 
@@ -72,7 +72,7 @@ struct MrBlizzard : dEnemyBase_c {
 
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
-typedef char MrBlizzard_size_must_be_0x46c[sizeof(MrBlizzard) == 0x46c ? 1 : -1];
+typedef char daSnowman_c_size_must_be_0x46c[sizeof(daSnowman_c) == 0x46c ? 1 : -1];
 #endif
 
 #else
@@ -80,7 +80,7 @@ typedef char MrBlizzard_size_must_be_0x46c[sizeof(MrBlizzard) == 0x46c ? 1 : -1]
 /* The C spelling of the same object, flat. Kept because the D0 file is a C
    translation unit that reads these fields, and D0 is compiler-generated so it
    can never be migrated. Same arrangement as include/ShadowModel.h. */
-struct MrBlizzard {
+struct daSnowman_c {
     u8  pad_000[0x8];
     s32 mParam;            /* 0x008 */
     u8  pad_00c[0x50];
@@ -109,15 +109,15 @@ struct MrBlizzard {
     u8  pad_10b[0x5];
     /* dCcAcPos_c member, named by the class's own destructor calling
        dCcAcPos_c's D1 at +0x110 -- a relocation the ROM build
-       checks. Was a u8 marker. [_ZN10MrBlizzardD1Ev.c] */
+       checks. Was a u8 marker. [_ZN11daSnowman_cD1Ev.c] */
     dCcAcPos_c mdCcAcPos_c;            /* 0x110 */
     /* dBgCh_Actr member, named by the class's own destructor calling
        dBgCh_Actr's D1 at +0x150 -- a relocation the ROM build
-       checks. Was a u8 marker. [_ZN10MrBlizzardD1Ev.c] */
+       checks. Was a u8 marker. [_ZN11daSnowman_cD1Ev.c] */
     dBgCh_Actr mWithMeshClsn;            /* 0x150 */
     /* ModelAnim member, named by the class's own destructor calling
        ModelAnim's D1 at +0x30c -- a relocation the ROM build
-       checks. Was a u8 marker. [_ZN10MrBlizzardD1Ev.c] */
+       checks. Was a u8 marker. [_ZN11daSnowman_cD1Ev.c] */
     ModelAnim mModelAnim;            /* 0x30c */
     u8  mShadowModel;            /* 0x370 */
     u8  pad_371[0x87];
@@ -139,4 +139,4 @@ struct MrBlizzard {
 
 #endif /* __cplusplus */
 
-#endif /* MRBLIZZARD_H */
+#endif /* DASNOWMAN_C_H */

@@ -102,7 +102,7 @@ Blocked pool: 214 TUs. Traps, in descending attractiveness:
 `shadow -> text-verified -> link-verified -> data-verified -> promoted`
 `tubuild.py inspect|create|compile|verify|partial|linkcheck|promote` (promote is `--dry-run` only)
 
-Wall-clock ESTIMATES ONLY (no builds were run this pass): Tier-1 create+compile seconds-to-minutes, but 15-60 min of reconcile iteration per TU is the real cost; verify ~a minute; linkcheck is the expensive step, minutes per TU, and where vtable-anchor failures surface. Tier-2 is ~N compiles for N members — budget hours for the 35-member MrBlizzard.
+Wall-clock ESTIMATES ONLY (no builds were run this pass): Tier-1 create+compile seconds-to-minutes, but 15-60 min of reconcile iteration per TU is the real cost; verify ~a minute; linkcheck is the expensive step, minutes per TU, and where vtable-anchor failures surface. Tier-2 is ~N compiles for N members — budget hours for the 35-member daSnowman_c.
 
 `rombuild.py` is the FINAL verdict on any merge, not `build_pin`. Run it SERIALLY — concurrent builds against the shared `build/` produce fake failures.
 

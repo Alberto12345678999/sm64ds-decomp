@@ -101,12 +101,12 @@ Left `unk_`:
 
 ---
 
-## `MrBlizzard` (`include/MrBlizzard.h`, [ov081](../config/arm9/overlays/ov081/symbols.txt))
+## `daSnowman_c` (`include/daSnowman_c.h`, [ov081](../config/arm9/overlays/ov081/symbols.txt))
 
 | offset | new name | evidence |
 | --- | --- | --- |
-| 0x3f8 | `void *mState` | `src/_ZN10MrBlizzard8BehaviorEv.cpp`'s local shadow places `PMF *pp` at 0x3f8, calls the pointer-to-member-function at `pp[1]` through `this`, and compares the word against four [ov081](../config/arm9/overlays/ov081/symbols.txt) state tables ([data_ov081_02128e24](../config/arm9/overlays/ov081/symbols.txt) / [_02128e64](../config/arm9/overlays/ov081/symbols.txt) / [_02128e84](../config/arm9/overlays/ov081/symbols.txt) / [_02128e94](../config/arm9/overlays/ov081/symbols.txt)). [func_ov081_02125488](../src/func_ov081_02125488.cpp)`(this, ...)` in `InitResources` is the setter. Previously unnamed inside `pad_398`. |
-| 0x400 | `mCapUniqueID` | `Behavior` spawns actor `0x10d` only when `SaveData::HasPlayerLostCap()` and this word is 0, then stores the spawned actor's unique id (`*(int*)(spawned + 4)`, the same `+4` `daMoray_c` uses for `mStarUniqueID`) into it. `src/_ZN10MrBlizzard6RenderEv.cpp` hides material 2 when it is non-zero — the head is bare once the cap actor exists. |
+| 0x3f8 | `void *mState` | `daSnowman_c::Behavior` in `src/actors/daSnowman_c.cpp` reads it through a local shadow that places `PMF *pp` at 0x3f8, calls the pointer-to-member-function at `pp[1]` through `this`, and compares the word against four [ov081](../config/arm9/overlays/ov081/symbols.txt) state tables ([data_ov081_02128e24](../config/arm9/overlays/ov081/symbols.txt) / [_02128e64](../config/arm9/overlays/ov081/symbols.txt) / [_02128e84](../config/arm9/overlays/ov081/symbols.txt) / [_02128e94](../config/arm9/overlays/ov081/symbols.txt)). [func_ov081_02125488](../src/actors/daSnowman_c.cpp)`(this, ...)` in `InitResources` is the setter. Previously unnamed inside `pad_398`. |
+| 0x400 | `mCapUniqueID` | `Behavior` spawns actor `0x10d` only when `SaveData::HasPlayerLostCap()` and this word is 0, then stores the spawned actor's unique id (`*(int*)(spawned + 4)`, the same `+4` `daMoray_c` uses for `mStarUniqueID`) into it. `daSnowman_c::Render` (in `src/actors/daSnowman_c.cpp`) hides material 2 when it is non-zero — the head is bare once the cap actor exists. |
 | 0x414 | `mInitAngleY` | `InitResources`, immediately after `mAngleY = mPrevAngleY`: `mInitAngleY = mAngleY`. |
 | 0x420 | `mPathNodeCount` | `InitResources` (`mType == 0` branch): `= PathPtr::NumNodes()`. |
 | 0x424 | `mPathNodeIndex` | passed to `PathPtr::GetNode(pos, index)` and then set to 1 in the same branch. |
@@ -114,7 +114,7 @@ Left `unk_`:
 
 Left `unk_`:
 
-- **0x3fc** — `mUniqueID_3fc`. Not a plain scalar: [func_ov081_02124134](../src/func_ov081_02124134.c) hands it to
+- **0x3fc** — `mUniqueID_3fc`. Not a plain scalar: [func_ov081_02124134](../src/actors/daSnowman_c.cpp) hands it to
   `dActor_c::FindWithID`, shoves the actor it finds (`+0x9c = -0x2000`,
   `+0xa0 = -0x28000`) and then clears it -- exactly what it does one field later with
   `mCapUniqueID`. Which actor it tracks is not evidenced, so the offset stands in for
@@ -237,7 +237,7 @@ remaining `unk_` fields resolve; the header's own prose already described two of
 | 0x428 | `Vector3 mStuckCheckPos` | written from `mPosX/Y/Z` in `InitResources`; `Behavior` compares `Vec3_Dist(&mPosX, &mStuckCheckPos) < 0xa000` and, while the enemy stays inside that radius, ticks the already-named `mStuckTimer`; the moment it leaves, the timer is zeroed and this field is re-recorded from the current position. |
 | 0x44c | `mSavedParam` | last statement of `InitResources`: a copy of `param1`, taken *after* the earlier `param1 &= 0xf0ff` masking. Named for what it holds; no matched body reads it back. |
 | 0x458 | `mTimer458` | `InitResources` zeroes it; `Behavior` sets it to `0x5a` when `mStuckTimer` hits 0x1e on a capped goomba, and both the release path (`mStuckTimer >= 0x12c && mTimer458 == 0`) and the fall-through (`if (mTimer458 == 0) mStuckTimer = 0`) gate on it reaching 0. Nothing in a matched body decrements it, so "a timer" is the whole of the evidence and the offset stays in the name. |
-| 0x45a | `mInitAngleY` | `InitResources`: `= mPrevAngleY`. Same shape as `daMoray_c`, `MrBlizzard`, `daBombking_c` and `PiranhaPlant`. |
+| 0x45a | `mInitAngleY` | `InitResources`: `= mPrevAngleY`. Same shape as `daMoray_c`, `daSnowman_c`, `daBombking_c` and `PiranhaPlant`. |
 | 0x464 | `mRewardType` | `InitResources`: `= (param1 >> 4) & 0xf`. Value 1 calls `dActor_c::TrackStar` and loads the silver-star assets; value 2 loads the silver-star assets only; anything else does neither. It selects what this goomba is worth. |
 | 0x465 | `mStarTracked` | `InitResources` presets it to -1 and, when `mRewardType == 1`, assigns `dActor_c::TrackStar(mStarID, 1)` into it. Same call and same role as `daBombking_c`'s 0x507. |
 | 0x466 | `mStarID` | `InitResources`: `= (param1 >> 0xc) & 0xf`, and it is the star-id argument of `TrackStar`. Same as `daBombking_c`'s 0x509. |

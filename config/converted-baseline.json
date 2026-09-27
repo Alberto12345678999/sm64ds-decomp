@@ -253,11 +253,6 @@
     "src/_ZN10ModelAnim24CopyERKS_Pcj.cpp",
     "src/_ZN10ModelAnim2C1Ev.cpp",
     "src/_ZN10ModelAnim2D1Ev.cpp",
-    "src/_ZN10MrBlizzard16CleanupResourcesEv.cpp",
-    "src/_ZN10MrBlizzard16OnAimedAtWithEggEv.cpp",
-    "src/_ZN10MrBlizzard16OnPendingDestroyEv.cpp",
-    "src/_ZN10MrBlizzardD0Ev.cpp",
-    "src/_ZN10MrBlizzardD1Ev.cpp",
     "src/_ZN10PyramidTag8BehaviorEv.cpp",
     "src/_ZN10PyramidTagD0Ev.cpp",
     "src/_ZN10PyramidTagD1Ev.cpp",
@@ -3019,6 +3014,11 @@
     "src/actors/daMoray_c.cpp#_ZN9daMoray_c16CleanupResourcesEv",
     "src/actors/daMoray_c.cpp#_ZN9daMoray_c16OnPendingDestroyEv",
     "src/_ZN9daMoray_cD0Ev.cpp",
-    "src/_ZN9daMoray_cD1Ev.cpp"
+    "src/_ZN9daMoray_cD1Ev.cpp",
+    "src/actors/daSnowman_c.cpp#_ZN11daSnowman_c16CleanupResourcesEv",
+    "src/actors/daSnowman_c.cpp#_ZN11daSnowman_c16OnAimedAtWithEggEv",
+    "src/actors/daSnowman_c.cpp#_ZN11daSnowman_c16OnPendingDestroyEv",
+    "src/actors/daSnowman_c.cpp#_ZN11daSnowman_cD0Ev",
+    "src/actors/daSnowman_c.cpp#_ZN11daSnowman_cD1Ev"
   ]
 }
