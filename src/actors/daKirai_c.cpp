@@ -43,8 +43,12 @@ extern void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *self, Vector3 *v, unsi
    temporaries grow the frame by 8 and InitResources by 0x10. */
 extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
     dCcAcPos_c *self, dActor_c *actor, const Vector3 &v, int radius, int height, unsigned flags, unsigned vulnFlags);
-extern SharedFilePtr data_ov060_0211b1c4;
-extern KiraiState data_ov060_0211b1d8[];
+/* local extern: the model file and the state table keep the spellings
+   include/decl_common.h and the ov060 sinit already give them (a byte, and a
+   word array); retyping either here opens a new declaration-agreement
+   disagreement, so each is cast at its one use instead. */
+extern char data_ov060_0211b1c4;
+extern int data_ov060_0211b1d8[];
 }
 
 // @symbol _ZN9daKirai_cD1Ev
@@ -257,7 +261,7 @@ void func_ov060_02118970(daKirai_c *self)
 // @symbol _ZN9daKirai_c16CleanupResourcesEv
 int daKirai_c::CleanupResources()
 {
-    data_ov060_0211b1c4.Release();
+    ((SharedFilePtr *)&data_ov060_0211b1c4)->Release();
     return 1;
 }
 
@@ -273,7 +277,7 @@ int daKirai_c::Render()
 // @symbol _ZN9daKirai_c8BehaviorEv
 int daKirai_c::Behavior()
 {
-    (this->*data_ov060_0211b1d8[mStateIndex])();
+    (this->*((KiraiState *)data_ov060_0211b1d8)[mStateIndex])();
     func_ov060_02118690(this);
     mdCcAcPos_c.Clear();
     Vector3 v;
@@ -291,7 +295,7 @@ int daKirai_c::InitResources()
     Vector3 v;
     Vector3 z;
 
-    mModel.SetFile((BMD_File *)Model::LoadFile(data_ov060_0211b1c4), 1, -1);
+    mModel.SetFile((BMD_File *)Model::LoadFile(*(SharedFilePtr *)&data_ov060_0211b1c4), 1, -1);
     v.x = 0;
     v.y = -0x96000;
     v.z = 0;
