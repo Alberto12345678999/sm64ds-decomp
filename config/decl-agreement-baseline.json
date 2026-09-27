@@ -4631,10 +4631,6 @@
         "param:#1 Vector3 *",
         "param:#2 Vector3 *"
       ],
-      "src/func_ov064_02119f1c.cpp": [
-        "param:#1 Vector3 *",
-        "param:#2 Vector3 *"
-      ],
       "src/func_ov072_02120d04.cpp": [
         "param:#1 Vector3 *",
         "param:#2 Vector3 *"
@@ -4698,6 +4694,10 @@
         "param:#2 Vector3 *"
       ],
       "src/actors/daOwl_c.cpp": [
+        "param:#1 Vector3 *",
+        "param:#2 Vector3 *"
+      ],
+      "src/actors/daWater_Ring_c.cpp": [
         "param:#1 Vector3 *",
         "param:#2 Vector3 *"
       ]
@@ -7441,10 +7441,6 @@
       "src/_ZN14UnchainedChomp13InitResourcesEv.cpp": [
         "param:#3 const Vector3 &"
       ],
-      "src/_ZN14daWater_Ring_c13InitResourcesEv.cpp": [
-        "param:#1 char *",
-        "param:#3 Vector3 *"
-      ],
       "src/_ZN16daKing_Donketu_c13InitResourcesEv.cpp": [
         "param:#2 struct dActor_c *",
         "param:#3 Vector3 *"
@@ -7517,6 +7513,10 @@
       ],
       "src/actors/daOwl_c.cpp": [
         "param:#3 int *"
+      ],
+      "src/actors/daWater_Ring_c.cpp": [
+        "param:#1 char *",
+        "param:#3 Vector3 *"
       ]
     },
     "_ZN10dCcAcPos_cC1Ev": {
@@ -8946,10 +8946,6 @@
         "param:#1 void *",
         "param:#2 void *"
       ],
-      "src/_ZN14daWater_Ring_c13InitResourcesEv.cpp": [
-        "param:#1 BMD_File *",
-        "param:#2 BTA_File *"
-      ],
       "src/_ZN5Stage23LoadTextureTransformersEv.cpp": [
         "param:#1 void *",
         "param:#2 void *"
@@ -8973,14 +8969,14 @@
       "src/actors/daTor_c.cpp": [
         "param:#1 void *",
         "param:#2 void *"
+      ],
+      "src/actors/daWater_Ring_c.cpp": [
+        "param:#1 BMD_File *",
+        "param:#2 BTA_File *"
       ]
     },
     "_ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj": {
       "src/_ZN12dScMg3DEsp_c13InitResourcesEv.cpp": [
-        "param:#5 unsigned int"
-      ],
-      "src/_ZN14daWater_Ring_c13InitResourcesEv.cpp": [
-        "param:#1 char *",
         "param:#5 unsigned int"
       ],
       "src/_ZN5Stage23LoadTextureTransformersEv.cpp": [
@@ -9062,6 +9058,10 @@
         "param:#5 unsigned int"
       ],
       "src/actors/daTor_c.cpp": [
+        "param:#5 unsigned int"
+      ],
+      "src/actors/daWater_Ring_c.cpp": [
+        "param:#1 char *",
         "param:#5 unsigned int"
       ]
     },
@@ -11164,10 +11164,6 @@
       "src/_ZN17daObjBk_Botaosi_c13InitResourcesEv.cpp": [
         "param:#1 void *"
       ],
-      "src/_ZN14daWater_Ring_c13InitResourcesEv.cpp": [
-        "param:#1 void *",
-        "return:BMD_File *"
-      ],
       "src/_ZN16daObjKm2_Agaru_c13InitResourcesEv.cpp": [
         "param:#1 void *",
         "return:int"
@@ -11405,6 +11401,10 @@
       ],
       "src/game/actors/d_a_btn.cpp": [
         "param:#1 void *"
+      ],
+      "src/actors/daWater_Ring_c.cpp": [
+        "param:#1 void *",
+        "return:BMD_File *"
       ]
     },
     "_ZN5ModelC1Ev": {
@@ -15673,9 +15673,6 @@
       "src/func_ov064_02118d3c.c": [
         "return:char *"
       ],
-      "src/func_ov064_02119afc.cpp": [
-        "return:void *"
-      ],
       "src/func_ov066_0211603c.c": [
         "return:void *"
       ],
@@ -15827,6 +15824,9 @@
         "return:int"
       ],
       "src/actors/daEykn_c.cpp": [
+        "return:void *"
+      ],
+      "src/actors/daWater_Ring_c.cpp": [
         "return:void *"
       ]
     },
@@ -16389,12 +16389,6 @@
         "return:short"
       ],
       "src/func_ov026_02111b24.c": [
-        "return:int"
-      ],
-      "src/func_ov064_02119afc.cpp": [
-        "return:short"
-      ],
-      "src/func_ov064_02119ea0.c": [
         "return:int"
       ],
       "src/func_ov066_0211603c.c": [
@@ -24078,12 +24072,6 @@
       ]
     },
     "data_ov002_0210da10": {
-      "src/_ZN14daWater_Ring_c13InitResourcesEv.cpp": [
-        "return:char []"
-      ],
-      "src/_ZN14daWater_Ring_c16CleanupResourcesEv.cpp": [
-        "return:char"
-      ],
       "src/__sinit_ov002_02100560.c": [
         "return:void *"
       ]
@@ -28876,11 +28864,6 @@
     "data_ov064_0211ba6c": {
       "src/actors/daObjFl_UkiKi_c.cpp": [
         "return:CLPS_Block"
-      ]
-    },
-    "data_ov064_0211c3d0": {
-      "src/_ZN14daWater_Ring_c13InitResourcesEv.cpp": [
-        "return:int []"
       ]
     },
     "data_ov064_0211c728": {
@@ -45774,9 +45757,6 @@
     "func_ov064_02119ecc": {
       "include/decl_common.h": [
         "param:#1 char *"
-      ],
-      "src/func_ov064_02119afc.cpp": [
-        "return:void"
       ]
     },
     "func_ov065_02118248": {

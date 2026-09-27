@@ -554,11 +554,6 @@
     "src/_ZN14dScMgCurling_c8BehaviorEv.cpp",
     "src/_ZN14daObjUkiyuka_cD0Ev.cpp",
     "src/_ZN14daObjUkiyuka_cD1Ev.cpp",
-    "src/_ZN14daWater_Ring_c16CleanupResourcesEv.cpp",
-    "src/_ZN14daWater_Ring_c16OnPendingDestroyEv.cpp",
-    "src/_ZN14daWater_Ring_c6RenderEv.cpp",
-    "src/_ZN14daWater_Ring_cD0Ev.cpp",
-    "src/_ZN14daWater_Ring_cD1Ev.cpp",
     "src/_ZN15BookShotSpawner13InitResourcesEv.cpp",
     "src/_ZN15BookShotSpawner16CleanupResourcesEv.cpp",
     "src/_ZN15BookShotSpawner8BehaviorEv.cpp",
@@ -3019,6 +3014,11 @@
     "src/actors/daObjCtMecha09_c.cpp#_ZN16daObjCtMecha09_c16CleanupResourcesEv",
     "src/actors/daObjCtMecha09_c.cpp#_ZN16daObjCtMecha09_c6RenderEv",
     "src/actors/daObjCtMecha09_c.cpp#_ZN16daObjCtMecha09_cD0Ev",
-    "src/actors/daObjCtMecha09_c.cpp#_ZN16daObjCtMecha09_cD1Ev"
+    "src/actors/daObjCtMecha09_c.cpp#_ZN16daObjCtMecha09_cD1Ev",
+    "src/actors/daWater_Ring_c.cpp#_ZN14daWater_Ring_c16CleanupResourcesEv",
+    "src/actors/daWater_Ring_c.cpp#_ZN14daWater_Ring_c16OnPendingDestroyEv",
+    "src/actors/daWater_Ring_c.cpp#_ZN14daWater_Ring_c6RenderEv",
+    "src/actors/daWater_Ring_c.cpp#_ZN14daWater_Ring_cD0Ev",
+    "src/actors/daWater_Ring_c.cpp#_ZN14daWater_Ring_cD1Ev"
   ]
 }
