@@ -214,7 +214,7 @@
     "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
     "object": "build/tu/ov018-daPgMthr_c/d_a_pg_mthr.o (gitignored)",
     "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
-    "functions_matched": 22,
+    "functions_matched": 23,
     "functions_declared": 23,
     "compilerOnlyOutput": {
       "requested": [
@@ -268,7 +268,7 @@
       "every_declared_function_bytes_match": "PASS",
       "declared_function_set_equals_defined_function_set": "PASS",
       "functions_occur_in_expected_order": "PASS",
-      "relocation_destinations_verified": "FAIL -- see DIFF/objisolate lines above"
+      "relocation_destinations_verified": "PASS"
     },
     "linkcheck": {
       "round": "tools/tubuild.py linkcheck -- scratch dsd delink+lcf, whole-tree mwccarm, mwldarm link, linked-range and module byte comparison, dsd check symbols --fail, full ROM build",
