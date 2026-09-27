@@ -68,9 +68,9 @@ short Vec3_HorzAngle(const Vector3 *a, const Vector3 *b);
 short Vec3_VertAngle(const Vector3 *a, const Vector3 *b);
 int Vec3_Dist(const Vector3 *a, const Vector3 *b);
 int Vec3_HorzDist(const Vector3 *a, const Vector3 *b);
-void Vec3_Sub(Vector3 *out, Vector3 *a, Vector3 *b);
-void SubVec3(Vector3 *a, Vector3 *b, Vector3 *out);
-int LenVec3(Vector3 *v);
+void Vec3_Sub(void *out, void *a, void *b);
+void SubVec3(void *a, void *b, void *out);
+int LenVec3(void *v);
 void Vec3_MulScalar(void *out, void *v, int s);
 void Vec3_Asr(Vector3 *d, Vector3 *s, int sh);
 
