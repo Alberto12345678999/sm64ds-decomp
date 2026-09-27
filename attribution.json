@@ -5550,6 +5550,26 @@
     "src/actors/daWater_Tatumaki_c.cpp#_ZN18daWater_Tatumaki_c16OnPendingDestroyEv": "tangosdev",
     "src/actors/daWater_Tatumaki_c.cpp#_ZN18daWater_Tatumaki_c6RenderEv": "tangosdev",
     "src/actors/daWater_Tatumaki_c.cpp#_ZN18daWater_Tatumaki_c8BehaviorEv": "tangosdev",
-    "src/actors/daWater_Tatumaki_c.cpp#_ZN18daWater_Tatumaki_c13InitResourcesEv": "tangosdev"
+    "src/actors/daWater_Tatumaki_c.cpp#_ZN18daWater_Tatumaki_c13InitResourcesEv": "tangosdev",
+    "src/actors/daObjCtMecha09_c.cpp#_ZN16daObjCtMecha09_cD1Ev": "tangosdev",
+    "src/actors/daObjCtMecha09_c.cpp#_ZN16daObjCtMecha09_cD0Ev": "tangosdev",
+    "src/actors/daObjCtMecha09_c.cpp#func_ov065_0211bc88": "tangosdev",
+    "src/actors/daObjCtMecha09_c.cpp#_ZN16daObjCtMecha09_c16CleanupResourcesEv": "tangosdev",
+    "src/actors/daObjCtMecha09_c.cpp#_ZN16daObjCtMecha09_c6RenderEv": "tangosdev",
+    "src/actors/daObjCtMecha09_c.cpp#_ZN16daObjCtMecha09_c8BehaviorEv": "tangosdev",
+    "src/actors/daWater_Ring_c.cpp#_ZN14daWater_Ring_c6RenderEv": "tangosdev",
+    "src/actors/daWater_Ring_c.cpp#func_ov064_02119afc": "tangosdev",
+    "src/actors/daWater_Ring_c.cpp#_ZN14daWater_Ring_c13InitResourcesEv": "tangosdev",
+    "src/actors/daWater_Ring_c.cpp#_ZN14daWater_Ring_cD1Ev": "tangosdev",
+    "src/actors/daWater_Ring_c.cpp#func_ov064_02119f1c": "tangosdev",
+    "src/actors/daWater_Ring_c.cpp#func_ov064_02119c60": "tangosdev",
+    "src/actors/daWater_Ring_c.cpp#_ZN14daWater_Ring_c16OnPendingDestroyEv": "tangosdev",
+    "src/actors/daWater_Ring_c.cpp#func_ov064_02119ea0": "tangosdev",
+    "src/actors/daWater_Ring_c.cpp#_ZN14daWater_Ring_cD0Ev": "tangosdev",
+    "src/actors/daWater_Ring_c.cpp#_ZN14daWater_Ring_c16CleanupResourcesEv": "tangosdev",
+    "src/actors/daWater_Ring_c.cpp#func_ov064_02119ce4": "tangosdev",
+    "src/actors/daWater_Ring_c.cpp#func_ov064_02119d28": "tangosdev",
+    "src/actors/daWater_Ring_c.cpp#_ZN14daWater_Ring_c8BehaviorEv": "tangosdev",
+    "src/actors/daWater_Ring_c.cpp#func_ov064_02119ecc": "tangosdev"
   }
 }

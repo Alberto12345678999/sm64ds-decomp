@@ -27390,17 +27390,17 @@
    "start": "0x211bbdc",
    "end": "0x211c078",
    "classes": [
-    "TTC_MovingBeam"
+    "daObjCtMecha09_c"
    ],
    "n_functions_map": 8,
    "n_files": 7,
    "files": [
-    "src/_ZN14TTC_MovingBeamD1Ev.cpp",
-    "src/_ZN14TTC_MovingBeamD0Ev.cpp",
+    "src/_ZN16daObjCtMecha09_cD1Ev.cpp",
+    "src/_ZN16daObjCtMecha09_cD0Ev.cpp",
     "src/func_ov065_0211bc88.cpp",
-    "src/_ZN14TTC_MovingBeam16CleanupResourcesEv.cpp",
-    "src/_ZN14TTC_MovingBeam6RenderEv.cpp",
-    "src/_ZN14TTC_MovingBeam13InitResourcesEv.cpp",
+    "src/_ZN16daObjCtMecha09_c16CleanupResourcesEv.cpp",
+    "src/_ZN16daObjCtMecha09_c6RenderEv.cpp",
+    "src/_ZN16daObjCtMecha09_c13InitResourcesEv.cpp",
     "src/d_a_obj_ct_mecha09.c"
    ],
    "ext_mix": {

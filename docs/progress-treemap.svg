@@ -37425,11 +37425,11 @@ matched: yes</title></rect><rect x="1328.11" y="475.90" width="5.89" height="3.9
 module: ov065
 addr: 0x0211bbac
 size: 48 bytes
-matched: yes</title></rect><rect x="1328.11" y="479.80" width="5.89" height="6.18" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14TTC_MovingBeamD1Ev
+matched: yes</title></rect><rect x="1328.11" y="479.80" width="5.89" height="6.18" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN16daObjCtMecha09_cD1Ev
 module: ov065
 addr: 0x0211bbdc
 size: 76 bytes
-matched: yes</title></rect><rect x="1328.11" y="485.98" width="5.89" height="7.80" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14TTC_MovingBeamD0Ev
+matched: yes</title></rect><rect x="1328.11" y="485.98" width="5.89" height="7.80" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN16daObjCtMecha09_cD0Ev
 module: ov065
 addr: 0x0211bc28
 size: 96 bytes
@@ -37437,19 +37437,19 @@ matched: yes</title></rect><rect x="1328.11" y="493.78" width="5.89" height="12.
 module: ov065
 addr: 0x0211bc88
 size: 152 bytes
-matched: yes</title></rect><rect x="1328.11" y="506.13" width="5.89" height="5.53" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14TTC_MovingBeam16CleanupResourcesEv
+matched: yes</title></rect><rect x="1328.11" y="506.13" width="5.89" height="5.53" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN16daObjCtMecha09_c16CleanupResourcesEv
 module: ov065
 addr: 0x0211bd20
 size: 68 bytes
-matched: yes</title></rect><rect x="1334.00" y="472.00" width="8.83" height="2.17" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14TTC_MovingBeam6RenderEv
+matched: yes</title></rect><rect x="1334.00" y="472.00" width="8.83" height="2.17" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN16daObjCtMecha09_c6RenderEv
 module: ov065
 addr: 0x0211bd64
 size: 40 bytes
-matched: yes</title></rect><rect x="1334.00" y="474.17" width="8.83" height="20.37" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14TTC_MovingBeam8BehaviorEv
+matched: yes</title></rect><rect x="1334.00" y="474.17" width="8.83" height="20.37" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN16daObjCtMecha09_c8BehaviorEv
 module: ov065
 addr: 0x0211bd8c
 size: 376 bytes
-matched: yes</title></rect><rect x="1334.00" y="494.54" width="8.83" height="17.12" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14TTC_MovingBeam13InitResourcesEv
+matched: yes</title></rect><rect x="1334.00" y="494.54" width="8.83" height="17.12" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN16daObjCtMecha09_c13InitResourcesEv
 module: ov065
 addr: 0x0211bf04
 size: 316 bytes
