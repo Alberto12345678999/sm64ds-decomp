@@ -1837,11 +1837,6 @@
         "param:#3 short",
         "param:#4 short"
       ],
-      "src/func_ov026_02111f30.c": [
-        "param:#2 short",
-        "param:#3 short",
-        "param:#4 short"
-      ],
       "src/func_ov081_02126224.c": [
         "param:#2 short",
         "param:#3 short",
@@ -1868,6 +1863,11 @@
         "param:#4 short"
       ],
       "src/actors/daMoray_c.cpp": [
+        "param:#2 short",
+        "param:#3 short",
+        "param:#4 short"
+      ],
+      "src/actors/daWater_Tatumaki_c.cpp": [
         "param:#2 short",
         "param:#3 short",
         "param:#4 short"
@@ -2180,10 +2180,6 @@
         "param:#1 const void *",
         "param:#2 const void *"
       ],
-      "src/func_ov080_0212677c.c": [
-        "param:#1 const void *",
-        "param:#2 const void *"
-      ],
       "src/game/actors/d_a_holhei.cpp": [
         "param:#1 const Matrix4x3 *",
         "param:#2 const Matrix4x3 *",
@@ -2312,14 +2308,6 @@
         "param:#1 Vec3 *",
         "param:#2 Mtx43 *"
       ],
-      "src/func_ov026_02111b24.c": [
-        "param:#1 Vec3 *",
-        "param:#3 Vec3 *"
-      ],
-      "src/func_ov026_02111d4c.cpp": [
-        "param:#1 const Vector3 *",
-        "param:#2 const void *"
-      ],
       "src/func_ov060_02117db8.c": [
         "param:#1 Vec3 *"
       ],
@@ -2379,6 +2367,10 @@
       "src/actors/daMoray_c.cpp": [
         "param:#1 const Vector3 *",
         "param:#2 const Matrix4x3 *"
+      ],
+      "src/actors/daWater_Tatumaki_c.cpp": [
+        "param:#1 const Vector3 *",
+        "param:#2 const void *"
       ]
     },
     "MultiCopyHalf": {
@@ -4606,10 +4598,6 @@
         "param:#1 Vector3 *",
         "param:#2 Vector3 *"
       ],
-      "src/func_ov064_02119f1c.cpp": [
-        "param:#1 Vector3 *",
-        "param:#2 Vector3 *"
-      ],
       "src/func_ov072_02120d04.cpp": [
         "param:#1 Vector3 *",
         "param:#2 Vector3 *"
@@ -4677,6 +4665,10 @@
         "param:#2 Vector3 *"
       ],
       "src/actors/daMoray_c.cpp": [
+        "param:#1 Vector3 *",
+        "param:#2 Vector3 *"
+      ],
+      "src/actors/daWater_Ring_c.cpp": [
         "param:#1 Vector3 *",
         "param:#2 Vector3 *"
       ]
@@ -4777,14 +4769,6 @@
       "src/func_ov006_020c4fa4.cpp": [
         "param:#1 Vec3 *",
         "param:#2 Vec3 *"
-      ],
-      "src/func_ov060_02118544.c": [
-        "param:#1 const void *",
-        "param:#2 const void *"
-      ],
-      "src/func_ov060_02118728.c": [
-        "param:#1 Vector3 *",
-        "param:#2 Vector3 *"
       ],
       "src/func_ov066_021175e8.c": [
         "param:#1 const void *",
@@ -4983,10 +4967,6 @@
         "param:#1 const void *",
         "param:#2 const void *"
       ],
-      "src/func_ov026_02111cb4.c": [
-        "param:#1 Vec3 *",
-        "param:#2 Vec3 *"
-      ],
       "src/func_ov066_02116db0.c": [
         "param:#1 const void *",
         "param:#2 const void *"
@@ -5129,6 +5109,10 @@
       "src/actors/daMoray_c.cpp": [
         "param:#1 const void *",
         "param:#2 const void *"
+      ],
+      "src/actors/daWater_Tatumaki_c.cpp": [
+        "param:#1 Vec3 *",
+        "param:#2 Vec3 *"
       ]
     },
     "Vec3_HorzDist": {
@@ -5179,10 +5163,6 @@
       "src/func_ov002_020ea824.c": [
         "param:#1 char *",
         "param:#2 char *"
-      ],
-      "src/func_ov026_02111cb4.c": [
-        "param:#1 Vec3 *",
-        "param:#2 Vec3 *"
       ],
       "src/func_ov064_02117a44.cpp": [
         "param:#1 const void *",
@@ -6161,11 +6141,6 @@
         "param:#1 Vec3 *",
         "param:#2 Vec3 *"
       ],
-      "src/func_ov026_02111b24.c": [
-        "param:#1 Vec3 *",
-        "param:#2 Vec3 *",
-        "return:void"
-      ],
       "src/func_ov066_021171b0.c": [
         "param:#1 void *",
         "param:#2 void *",
@@ -6200,6 +6175,11 @@
         "return:void",
         "param:#1 Vector3 *",
         "param:#2 const Vector3 *"
+      ],
+      "src/actors/daWater_Tatumaki_c.cpp": [
+        "param:#1 Vec3 *",
+        "param:#2 Vec3 *",
+        "return:void"
       ]
     },
     "_Z14ApproachLinearRiii": {
@@ -6343,9 +6323,6 @@
         "return:int"
       ],
       "src/func_ov064_02117a44.cpp": [
-        "return:int"
-      ],
-      "src/func_ov080_021264ec.c": [
         "return:int"
       ],
       "src/actors/daFPkn_c.cpp": [
@@ -6606,10 +6583,10 @@
       "src/func_ov006_020cb2b4.c": [
         "return:void"
       ],
-      "src/func_ov026_02111b24.c": [
+      "src/minigames/d_s_mg_trampoline2.cpp": [
         "return:void"
       ],
-      "src/minigames/d_s_mg_trampoline2.cpp": [
+      "src/actors/daWater_Tatumaki_c.cpp": [
         "return:void"
       ]
     },
@@ -7343,7 +7320,7 @@
       "src/_ZN9PowerStar8BehaviorEv.cpp": [
         "param:#2 const void *"
       ],
-      "src/_ZN9SpikeBomb8BehaviorEv.cpp": [
+      "src/actors/daKirai_c.cpp": [
         "param:#2 void *"
       ],
       "src/actors/Eyerok.cpp": [
@@ -7398,10 +7375,6 @@
       "src/_ZN14UnchainedChomp13InitResourcesEv.cpp": [
         "param:#3 const Vector3 &"
       ],
-      "src/_ZN14daWater_Ring_c13InitResourcesEv.cpp": [
-        "param:#1 char *",
-        "param:#3 Vector3 *"
-      ],
       "src/_ZN16daKing_Donketu_c13InitResourcesEv.cpp": [
         "param:#2 struct dActor_c *",
         "param:#3 Vector3 *"
@@ -7412,7 +7385,7 @@
       "src/_ZN9PowerStar13InitResourcesEv.cpp": [
         "param:#3 Vec3 *"
       ],
-      "src/_ZN9SpikeBomb13InitResourcesEv.cpp": [
+      "src/actors/daKirai_c.cpp": [
         "param:#3 const Vector3 &"
       ],
       "src/actors/daManta_c.cpp": [
@@ -7474,6 +7447,10 @@
         "param:#3 V3 *",
         "param:#6 int",
         "param:#7 int"
+      ],
+      "src/actors/daWater_Ring_c.cpp": [
+        "param:#1 char *",
+        "param:#3 Vector3 *"
       ]
     },
     "_ZN10dCcAcPos_cC1Ev": {
@@ -8893,10 +8870,6 @@
         "param:#1 void *",
         "param:#2 void *"
       ],
-      "src/_ZN14daWater_Ring_c13InitResourcesEv.cpp": [
-        "param:#1 BMD_File *",
-        "param:#2 BTA_File *"
-      ],
       "src/_ZN5Stage23LoadTextureTransformersEv.cpp": [
         "param:#1 void *",
         "param:#2 void *"
@@ -8920,24 +8893,20 @@
       "src/actors/daTor_c.cpp": [
         "param:#1 void *",
         "param:#2 void *"
+      ],
+      "src/actors/daWater_Ring_c.cpp": [
+        "param:#1 BMD_File *",
+        "param:#2 BTA_File *"
       ]
     },
     "_ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj": {
       "src/_ZN12dScMg3DEsp_c13InitResourcesEv.cpp": [
         "param:#5 unsigned int"
       ],
-      "src/_ZN14daWater_Ring_c13InitResourcesEv.cpp": [
-        "param:#1 char *",
-        "param:#5 unsigned int"
-      ],
       "src/_ZN5Stage23LoadTextureTransformersEv.cpp": [
         "param:#5 unsigned int"
       ],
       "src/_ZN8Goomboss13InitResourcesEv.cpp": [
-        "param:#5 unsigned int"
-      ],
-      "src/_ZN9Whirlpool13InitResourcesEv.cpp": [
-        "param:#2 BTA_File &",
         "param:#5 unsigned int"
       ],
       "src/actors/Goomboss.cpp": [
@@ -9009,6 +8978,14 @@
         "param:#5 unsigned int"
       ],
       "src/actors/daTor_c.cpp": [
+        "param:#5 unsigned int"
+      ],
+      "src/actors/daWater_Tatumaki_c.cpp": [
+        "param:#2 BTA_File &",
+        "param:#5 unsigned int"
+      ],
+      "src/actors/daWater_Ring_c.cpp": [
+        "param:#1 char *",
         "param:#5 unsigned int"
       ]
     },
@@ -11111,10 +11088,6 @@
       "src/_ZN17daObjBk_Botaosi_c13InitResourcesEv.cpp": [
         "param:#1 void *"
       ],
-      "src/_ZN14daWater_Ring_c13InitResourcesEv.cpp": [
-        "param:#1 void *",
-        "return:BMD_File *"
-      ],
       "src/_ZN16daObjKm2_Agaru_c13InitResourcesEv.cpp": [
         "param:#1 void *",
         "return:int"
@@ -11190,11 +11163,8 @@
         "param:#1 SharedFilePtr *",
         "return:struct BMD_File *"
       ],
-      "src/_ZN9SpikeBomb13InitResourcesEv.cpp": [
+      "src/actors/daKirai_c.cpp": [
         "param:#1 void *"
-      ],
-      "src/_ZN9Whirlpool13InitResourcesEv.cpp": [
-        "return:BMD_File *"
       ],
       "src/_ZN9daDossy_c13InitResourcesEv.cpp": [
         "param:#1 void *"
@@ -11352,6 +11322,13 @@
       ],
       "src/actors/daMoray_c.cpp": [
         "param:#1 void *"
+      ],
+      "src/actors/daWater_Tatumaki_c.cpp": [
+        "return:BMD_File *"
+      ],
+      "src/actors/daWater_Ring_c.cpp": [
+        "param:#1 void *",
+        "return:BMD_File *"
       ]
     },
     "_ZN5ModelC1Ev": {
@@ -13346,7 +13323,7 @@
         "param:#7 unsigned int",
         "return:void"
       ],
-      "src/func_ov060_02118970.c": [
+      "src/actors/daKirai_c.cpp": [
         "param:#5 unsigned int",
         "param:#6 unsigned int",
         "param:#7 unsigned int",
@@ -14619,11 +14596,6 @@
         "param:#6 const void *",
         "return:void *"
       ],
-      "src/_ZN9Whirlpool8BehaviorEv.cpp": [
-        "param:#6 int",
-        "param:#7 int",
-        "return:void *"
-      ],
       "src/actors/Eyerok.cpp": [
         "param:#6 const void *",
         "return:unsigned int"
@@ -14906,6 +14878,11 @@
       "src/actors/daEykn_c.cpp": [
         "return:void *",
         "param:#6 const void *"
+      ],
+      "src/actors/daWater_Tatumaki_c.cpp": [
+        "param:#6 int",
+        "param:#7 int",
+        "return:void *"
       ]
     },
     "_ZN8Particle6System9NewRippleE5Fix12IiES2_S2_": {
@@ -15091,10 +15068,7 @@
       "src/func_ov060_021172e0.cpp": [
         "return:void"
       ],
-      "src/func_ov060_021185c4.c": [
-        "return:void"
-      ],
-      "src/func_ov060_02118970.c": [
+      "src/actors/daKirai_c.cpp": [
         "return:void"
       ],
       "src/func_ov066_02116c6c.c": [
@@ -15336,10 +15310,7 @@
       "src/func_ov060_02117db8.c": [
         "arity:3"
       ],
-      "src/func_ov060_021185c4.c": [
-        "arity:3"
-      ],
-      "src/func_ov060_02118970.c": [
+      "src/actors/daKirai_c.cpp": [
         "arity:3"
       ],
       "src/actors/daObjCasket_c.cpp": [
@@ -15602,10 +15573,7 @@
       "src/func_ov060_021180e0.cpp": [
         "return:void *"
       ],
-      "src/func_ov060_02118728.c": [
-        "return:void *"
-      ],
-      "src/func_ov060_02118970.c": [
+      "src/actors/daKirai_c.cpp": [
         "return:char *"
       ],
       "src/func_ov064_02118c48.c": [
@@ -15613,9 +15581,6 @@
       ],
       "src/func_ov064_02118d3c.c": [
         "return:char *"
-      ],
-      "src/func_ov064_02119afc.cpp": [
-        "return:void *"
       ],
       "src/func_ov066_0211603c.c": [
         "return:void *"
@@ -15771,6 +15736,9 @@
         "return:void *"
       ],
       "src/actors/daMoray_c.cpp": [
+        "return:void *"
+      ],
+      "src/actors/daWater_Ring_c.cpp": [
         "return:void *"
       ]
     },
@@ -16022,9 +15990,6 @@
       "src/func_ov020_021112b0.c": [
         "return:char *"
       ],
-      "src/func_ov026_02111cb4.c": [
-        "return:char *"
-      ],
       "src/actors/daWater_Hakidasi_c.cpp": [
         "return:char *"
       ],
@@ -16163,7 +16128,7 @@
       "src/func_ov060_021181b4.c": [
         "return:void *"
       ],
-      "src/func_ov060_021184bc.c": [
+      "src/actors/daKirai_c.cpp": [
         "param:#2 char *",
         "return:char *"
       ],
@@ -16267,9 +16232,6 @@
         "param:#7 unsigned int",
         "return:int"
       ],
-      "src/func_ov065_0211bc88.cpp": [
-        "param:#7 unsigned int"
-      ],
       "src/func_ov079_02124188.c": [
         "param:#7 unsigned int"
       ],
@@ -16309,6 +16271,9 @@
       ],
       "src/game/actors/d_a_btn.cpp": [
         "param:#7 unsigned int"
+      ],
+      "src/actors/daObjCtMecha09_c.cpp": [
+        "param:#7 unsigned int"
       ]
     },
     "_ZN8dActor_c18FindExplosionActorER5dCc_c": {
@@ -16329,15 +16294,6 @@
       "src/func_ov002_020b1bfc.cpp": [
         "return:int"
       ],
-      "src/func_ov026_02111b24.c": [
-        "return:int"
-      ],
-      "src/func_ov064_02119afc.cpp": [
-        "return:short"
-      ],
-      "src/func_ov064_02119ea0.c": [
-        "return:int"
-      ],
       "src/func_ov066_0211603c.c": [
         "return:int"
       ],
@@ -16349,6 +16305,9 @@
       ],
       "src/game/actors/d_a_c_jugem.cpp": [
         "return:short"
+      ],
+      "src/actors/daWater_Tatumaki_c.cpp": [
+        "return:int"
       ]
     },
     "_ZN8dActor_c19DisappearPoofDustAtERK7Vector3": {
@@ -17379,9 +17338,6 @@
         "param:#1 SharedFilePtr *",
         "return:void"
       ],
-      "src/_ZN9Whirlpool13InitResourcesEv.cpp": [
-        "return:void"
-      ],
       "src/_ZN9daDossy_c13InitResourcesEv.cpp": [
         "param:#1 void *",
         "return:void *"
@@ -17492,6 +17448,9 @@
       "src/actors/daMoray_c.cpp": [
         "return:void *",
         "param:#1 void *"
+      ],
+      "src/actors/daWater_Tatumaki_c.cpp": [
+        "return:void"
       ]
     },
     "_ZN9FaderWipe14LoadAndSetFileEt": {
@@ -17556,9 +17515,6 @@
         "param:#5 unsigned int"
       ],
       "src/_ZN9PowerStar13InitResourcesEv.cpp": [
-        "param:#5 unsigned int"
-      ],
-      "src/_ZN9Whirlpool13InitResourcesEv.cpp": [
         "param:#5 unsigned int"
       ],
       "src/_ZN9daDossy_c13InitResourcesEv.cpp": [
@@ -18069,6 +18025,9 @@
       ],
       "src/game/actors/d_a_btn.cpp": [
         "param:#5 unsigned int"
+      ],
+      "src/actors/daWater_Tatumaki_c.cpp": [
+        "param:#5 unsigned int"
       ]
     },
     "_ZN9ModelAnimC1Ev": {
@@ -18174,10 +18133,7 @@
         "param:#2 struct BMD_File *",
         "return:void"
       ],
-      "src/_ZN9SpikeBomb13InitResourcesEv.cpp": [
-        "return:void"
-      ],
-      "src/_ZN9Whirlpool13InitResourcesEv.cpp": [
+      "src/actors/daKirai_c.cpp": [
         "return:void"
       ],
       "src/_ZN9daDossy_c13InitResourcesEv.cpp": [
@@ -18282,6 +18238,9 @@
         "return:void"
       ],
       "src/actors/daMoray_c.cpp": [
+        "return:void"
+      ],
+      "src/actors/daWater_Tatumaki_c.cpp": [
         "return:void"
       ]
     },
@@ -20250,9 +20209,6 @@
       ],
       "src/func_ov080_02125fd0.c": [
         "return:int"
-      ],
-      "src/func_ov080_0212677c.c": [
-        "return:int"
       ]
     },
     "data_0209b41c": {
@@ -21029,9 +20985,6 @@
       ]
     },
     "data_0209e650": {
-      "src/_ZN14TTC_MovingBeam8BehaviorEv.cpp": [
-        "return:int []"
-      ],
       "src/_ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs.cpp": [
         "return:int []"
       ],
@@ -21099,6 +21052,9 @@
         "return:int []"
       ],
       "src/actors/daObjCtMecha11_c.cpp": [
+        "return:int []"
+      ],
+      "src/actors/daObjCtMecha09_c.cpp": [
         "return:int []"
       ]
     },
@@ -22764,12 +22720,6 @@
       "src/func_ov016_02111284.c": [
         "return:int []"
       ],
-      "src/func_ov026_02111b24.c": [
-        "return:char"
-      ],
-      "src/func_ov026_02111d4c.cpp": [
-        "return:char"
-      ],
       "src/actors/daWater_Hakidasi_c.cpp": [
         "return:int"
       ],
@@ -22832,6 +22782,9 @@
       ],
       "src/game/actors/d_a_btn.cpp": [
         "return:MatrixWords"
+      ],
+      "src/actors/daWater_Tatumaki_c.cpp": [
+        "return:FlatMat4x3"
       ]
     },
     "data_020a0e9c": {
@@ -24007,12 +23960,6 @@
       ]
     },
     "data_ov002_0210da10": {
-      "src/_ZN14daWater_Ring_c13InitResourcesEv.cpp": [
-        "return:char []"
-      ],
-      "src/_ZN14daWater_Ring_c16CleanupResourcesEv.cpp": [
-        "return:char"
-      ],
       "src/__sinit_ov002_02100560.c": [
         "return:void *"
       ]
@@ -28583,7 +28530,7 @@
       ]
     },
     "data_ov060_0211b1c4": {
-      "src/_ZN9SpikeBomb16CleanupResourcesEv.cpp": [
+      "src/actors/daKirai_c.cpp": [
         "return:char"
       ],
       "src/__sinit_ov060_0211a388.c": [
@@ -28793,11 +28740,6 @@
     "data_ov064_0211ba6c": {
       "src/actors/daObjFl_UkiKi_c.cpp": [
         "return:CLPS_Block"
-      ]
-    },
-    "data_ov064_0211c3d0": {
-      "src/_ZN14daWater_Ring_c13InitResourcesEv.cpp": [
-        "return:int []"
       ]
     },
     "data_ov064_0211c728": {
@@ -31141,11 +31083,6 @@
         "return:ShlState"
       ]
     },
-    "func_020167a4": {
-      "src/actors/daMoray_c.cpp": [
-        "param:#1 BlendModelAnim *"
-      ]
-    },
     "func_ov002_020df300": {
       "src/game/actors/d_a_cnn.cpp": [
         "param:#1 Player *"
@@ -32276,10 +32213,7 @@
       "src/func_ov060_02117db8.c": [
         "param:#1 int"
       ],
-      "src/func_ov060_021185c4.c": [
-        "param:#1 int"
-      ],
-      "src/func_ov060_02118970.c": [
+      "src/actors/daKirai_c.cpp": [
         "param:#1 int"
       ],
       "src/func_ov066_0211603c.c": [
@@ -32889,6 +32823,11 @@
       "src/_ZN14BlendModelAnim9DoSetFileEPcii.cpp": [
         "param:#1 BlendModelAnim *",
         "param:#2 char *"
+      ]
+    },
+    "func_020167a4": {
+      "src/actors/daMoray_c.cpp": [
+        "param:#1 BlendModelAnim *"
       ]
     },
     "func_020169f4": {
@@ -36460,10 +36399,6 @@
       ],
       "src/_ZN6Player16CleanupResourcesEv.cpp": [
         "arity:1"
-      ],
-      "src/_ZN8Painting16CleanupResourcesEv.cpp": [
-        "arity:1",
-        "return:int"
       ],
       "src/_ZN8Particle10SysTrackerD1Ev.cpp": [
         "arity:1"
@@ -45665,9 +45600,6 @@
     "func_ov064_02119ecc": {
       "include/decl_common.h": [
         "param:#1 char *"
-      ],
-      "src/func_ov064_02119afc.cpp": [
-        "return:void"
       ]
     },
     "func_ov065_02118248": {

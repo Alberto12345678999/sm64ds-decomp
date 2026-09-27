@@ -172,31 +172,11 @@ src/d_a_obj_ct_mecha08_ct_mecha08a.c:
     complete
     .text start:0x0211bbac end:0x0211bbdc
 
-src/_ZN14TTC_MovingBeamD1Ev.cpp:
+src/actors/daObjCtMecha09_c.cpp:
     complete
-    .text start:0x0211bbdc end:0x0211bc28
+    .text start:0x0211bbdc end:0x0211bf04
 
-src/_ZN14TTC_MovingBeamD0Ev.cpp:
-    complete
-    .text start:0x0211bc28 end:0x0211bc88
-
-src/func_ov065_0211bc88.cpp:
-    complete
-    .text start:0x0211bc88 end:0x0211bd20
-
-src/_ZN14TTC_MovingBeam16CleanupResourcesEv.cpp:
-    complete
-    .text start:0x0211bd20 end:0x0211bd64
-
-src/_ZN14TTC_MovingBeam6RenderEv.cpp:
-    complete
-    .text start:0x0211bd64 end:0x0211bd8c
-
-src/_ZN14TTC_MovingBeam8BehaviorEv.cpp:
-    complete
-    .text start:0x0211bd8c end:0x0211bf04
-
-src/_ZN14TTC_MovingBeam13InitResourcesEv.cpp:
+src/_ZN16daObjCtMecha09_c13InitResourcesEv.cpp:
     .text start:0x0211bf04 end:0x0211c040
 
 src/d_a_obj_ct_mecha09.c:

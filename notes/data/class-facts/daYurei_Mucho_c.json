@@ -91,7 +91,7 @@
       {"slot": 28, "target": "0x0201012c", "symbol": "arm9 _ZN8dActor_c19OnHitFromUnderneathERS_"},
       {"slot": 30, "target": "0x020100dc", "symbol": "arm9 _ZN8dActor_c25OnAimedAtWithEggReturnVecEv"}
     ],
-    "duplicate_symbol_hazard": "config/arm9/overlays/ov065/symbols.txt declares TWO names at 0x0211cba4: `_ZTV6Snufit` and `_ZTV15daYurei_Mucho_c`. This is the module-wide pattern for coined-name classes in ov065 (_ZTV5Swoop / _ZTV12daBasabasa_c both at 0x0211cca0; _ZTV18daObjCtKaitendai_c / _ZTV18daObjCtKaitendai_c both at 0x0211d3b4; _ZTV15TtcRotatingCube / _ZTV20daObjCtRotateBlock_c both at 0x0211d028; _ZTV14TTC_MovingBeam / _ZTV16daObjCtMecha09_c both at 0x0211d568). The oracle daObjCtMecha05_c has no such alias, so its manifest is NOT a precedent for this. The writer must expect the compiled TU to emit only `_ZTV6Snufit` (the C++ class is spelled Snufit) and should check what objisolate/romdata_check do with the second name before assuming the Mecha05 compiler_only_output block copies over unchanged."
+    "duplicate_symbol_hazard": "config/arm9/overlays/ov065/symbols.txt declares TWO names at 0x0211cba4: `_ZTV6Snufit` and `_ZTV15daYurei_Mucho_c`. This is the module-wide pattern for coined-name classes in ov065 (_ZTV5Swoop / _ZTV12daBasabasa_c both at 0x0211cca0; _ZTV18daObjCtKaitendai_c / _ZTV18daObjCtKaitendai_c both at 0x0211d3b4; _ZTV15TtcRotatingCube / _ZTV20daObjCtRotateBlock_c both at 0x0211d028; _ZTV16daObjCtMecha09_c / _ZTV16daObjCtMecha09_c both at 0x0211d568). The oracle daObjCtMecha05_c has no such alias, so its manifest is NOT a precedent for this. The writer must expect the compiled TU to emit only `_ZTV6Snufit` (the C++ class is spelled Snufit) and should check what objisolate/romdata_check do with the second name before assuming the Mecha05 compiler_only_output block copies over unchanged."
   },
   "destructors": {
     "variants_present": ["D1", "D0"],
@@ -266,7 +266,7 @@
     "ov065_siblings_at_this_base": {
       "promoted": ["daObjCtMecha03_c", "daObjCtMecha04_c", "daObjCtMecha05_c"],
       "text-verified": ["daObjCtKaitendai_c"],
-      "no_manifest": ["Snufit", "Swoop", "daDossy_c", "DorriePlatform", "daDossyCap_c", "TtcRotatingCube", "TtcRotatingGear", "TTC_MovingBeam", "daObjCtRotateBlock_c", "daObjCtKaitendai_c", "daObjCtMecha08_c", "daObjCtMecha09_c"],
+      "no_manifest": ["Snufit", "Swoop", "daDossy_c", "DorriePlatform", "daDossyCap_c", "TtcRotatingCube", "TtcRotatingGear", "daObjCtMecha09_c", "daObjCtRotateBlock_c", "daObjCtKaitendai_c", "daObjCtMecha08_c", "daObjCtMecha09_c"],
       "measured_from": "config/tu_manifest.d/ov065/ at a81adfa37 -- four files only"
     },
     "prose_naming_snufit": ["notes/archive/n64-decomp-cross-reference.md", "notes/data/class-build-worklist.tsv", "notes/data/tu-merge-candidates.json", "notes/data/tu-promotion-queue.tsv", "notes/handoff-marker-typing.md", "symbols/overlay_actors.md"],
