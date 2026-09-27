@@ -4352,7 +4352,7 @@ audit can detect.
 
 ### 6bs TERNARY ORIENTATION is a colouring lever: two rigid regimes, and the bridge between them
 
-Measured on `_ZN14TTC_MovingBeam8BehaviorEv` (ov065, 0x0211bd8c, 0x178), lane TTC of run
+Measured on `_ZN16daObjCtMecha09_c8BehaviorEv` (ov065, 0x0211bd8c, 0x178), lane TTC of run
 vsdec, ~700 compiled variants across 11 product sweeps. The whole body reproduced on the
 first try except one trailing clamp block, which cost the entire session and turned out to
 be a single lever nobody had written down.
