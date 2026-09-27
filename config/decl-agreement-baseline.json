@@ -46552,29 +46552,6 @@
       "src/d_a_obj_fl_koma_u.cpp": [
         "return:void * []"
       ]
-    },
-    "func_ov002_020efa54": {
-      "include/decl_common.h": [
-        "param:#1 char *"
-      ]
-    },
-    "func_ov002_020efaf0": {
-      "src/game/actors/d_a_obj_rc_carpet.cpp": [
-        "param:#1 dPathLiftActor_c *"
-      ],
-      "src/game/actors/daObjPathLift_c.cpp": [
-        "param:#1 dPathLiftActor_c *"
-      ]
-    },
-    "func_ov002_020efcf4": {
-      "src/game/actors/daObjPathLift_c.cpp": [
-        "param:#1 dPathLiftActor_c *"
-      ]
-    },
-    "func_ov079_0212522c": {
-      "include/decl_common.h": [
-        "arity:0"
-      ]
     }
   }
 }
