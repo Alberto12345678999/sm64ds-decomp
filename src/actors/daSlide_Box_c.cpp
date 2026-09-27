@@ -48,6 +48,12 @@ namespace cstd { int fdiv(int a, int b); }
  * the CLPS block SetFile takes. decl_common and the sinit both spell
  * them int[], so this TU keeps that and casts at the use. */
 extern "C" {
+/* dBgCh_Actr::Init's header takes Fix12i (= s32), so the method form
+   mangles the two radii as `i` and names
+   _ZN10dBgCh_Actr4InitEP8dActor_ciiP10Vector3_16S3_, which no object
+   defines. The ROM's is ..._5Fix12IiES3_P10Vector3_16S5_. */
+void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
+    void *self, dActor_c *actor, Fix12i radius, Fix12i height, Vector3_16 *a, Vector3_16 *b);
 extern int data_ov016_02114e74[];
 extern int data_ov016_02114e6c[];
 extern int data_ov016_02113bac[];
@@ -236,7 +242,7 @@ int daSlide_Box_c::InitResources()
     _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
         &mMeshCollider, clsnFile, &mClsnMat, kMeshScale, mAngleY, data_ov016_02113bac);
     func_020393d4(&mMeshCollider, (void *)&dBgW::UpdatePosWithTransform);
-    mWithMeshClsn.Init(this, kClsnRadius, kClsnRadius, 0, 0);
+    _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(&mWithMeshClsn, this, kClsnRadius, kClsnRadius, 0, 0);
     mVertAccel = kGravity;
     mTerminalVelocity = kTerminalVelocity;
     mShip = 0;
