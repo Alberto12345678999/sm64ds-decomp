@@ -152,12 +152,12 @@ The read-modify-write sites keep their raw `*(u8*)((int)c + 0x3ae)` spelling --
 that launder is measured and per-site, and the existing note in
 `src/_ZN4Coin13InitResourcesEv.cpp` explains why.
 
-## PowerFlower -- include/PowerFlower.h
+## daObjPowerUpItem_c -- include/daObjPowerUpItem_c.h
 
 | offset | new name | evidence |
 | --- | --- | --- |
-| 0x3bc | `mGroundY` | `src/_ZN11PowerFlower13InitResourcesEv.cpp` raycasts a `dBgCh_Gnd` from `mPos` with Y + 0x14000 and stores the hit height (`ray + 0x44`), falling back to the probe's own Y when `DetectClsn` finds nothing. |
-| 0x3c0 | `mState` | `src/_ZN11PowerFlower6RenderEv.cpp` switches on it: 0 draws `mModel1`, 1 and 2 draw `mModel2`. |
+| 0x3bc | `mGroundY` | `src/actors/daObjPowerUpItem_c.cpp` raycasts a `dBgCh_Gnd` from `mPos` with Y + 0x14000 and stores the hit height (`ray + 0x44`), falling back to the probe's own Y when `DetectClsn` finds nothing. |
+| 0x3c0 | `mState` | `src/actors/daObjPowerUpItem_c.cpp` switches on it: 0 draws `mModel1`, 1 and 2 draw `mModel2`. |
 | 0x3ca | `mLifeTimer` | seeded 0xb4 (180 frames) in `InitResources`; `Render` skips drawing on odd values once it is below 0x2d, so the flower blinks through its last 45 frames. |
 
 ## daObjNumber_c -- include/daObjNumber_c.h
@@ -203,7 +203,7 @@ Worth naming once here rather than thirteen times below.
   `InitResources`, run through `DecIfAbove0_Byte`/`DecIfAbove0_Short` once a
   frame, and destroying the actor at 0. Where `Render` additionally skips
   drawing on odd values below some threshold, the actor blinks before it goes --
-  `PowerFlower` and `daFeather_c` both do exactly that at 0xb4 down to 0x2d.
+  `daObjPowerUpItem_c` and `daFeather_c` both do exactly that at 0xb4 down to 0x2d.
 - **The particle handle.** `mParticle = Particle::System::New(mParticle, effect,
   pos...)` -- last frame's handle goes back in as the first argument and the
   result is stored again, so one effect is kept alive rather than a new one

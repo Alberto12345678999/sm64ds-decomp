@@ -6363,7 +6363,7 @@
         "param:#2 void *",
         "param:#5 void *"
       ],
-      "src/_ZN11PowerFlower13InitResourcesEv.cpp": [
+      "src/actors/daObjPowerUpItem_c.cpp": [
         "param:#2 void *",
         "param:#5 void *",
         "param:#6 void *"
@@ -10064,9 +10064,6 @@
       "src/_ZN10daKpa2Bg_c13InitResourcesEv.cpp": [
         "param:#1 void *"
       ],
-      "src/_ZN11PowerFlower13InitResourcesEv.cpp": [
-        "param:#1 void *"
-      ],
       "src/_ZN11dCapEnemy_c6AddCapEj.cpp": [
         "param:#1 void *"
       ],
@@ -11716,7 +11713,7 @@
       ]
     },
     "_ZN6Player16InitWingFeathersEb": {
-      "src/func_ov002_020b979c.c": [
+      "src/actors/daObjPowerUpItem_c.cpp": [
         "param:#2 int"
       ]
     },
@@ -13012,13 +13009,9 @@
       "src/func_02022d44.c": [
         "return:unsigned int"
       ],
-      "src/func_ov002_020b91fc.c": [
+      "src/actors/daObjPowerUpItem_c.cpp": [
         "param:#6 const Vector3_16f *",
         "return:void *"
-      ],
-      "src/func_ov002_020b94c4.c": [
-        "param:#6 const void *",
-        "return:unsigned int"
       ],
       "src/func_ov002_020d6998.cpp": [
         "param:#6 const void *",
@@ -13308,7 +13301,7 @@
       "src/func_0200fc44.c": [
         "return:int"
       ],
-      "src/func_ov002_020b9450.cpp": [
+      "src/actors/daObjPowerUpItem_c.cpp": [
         "return:void"
       ],
       "src/func_ov002_020bcdf0.c": [
@@ -13615,9 +13608,6 @@
         "return:struct dActor_c *"
       ],
       "src/func_ov002_020b19dc.c": [
-        "return:void *"
-      ],
-      "src/func_ov002_020b979c.c": [
         "return:void *"
       ],
       "src/func_ov002_020bb42c.c": [
@@ -14028,8 +14018,8 @@
       ]
     },
     "_ZN8dActor_c13SmallPoofDustEv": {
-      "src/func_ov002_020fec94.c": [
-        "return:int"
+      "src/func_ov002_020feb50.cpp": [
+        "return:void"
       ]
     },
     "_ZN8dActor_c13SpawnFireballERK7Vector3PK10Vector3_165Fix12IiES7_j": {
@@ -14285,7 +14275,7 @@
       "src/func_ov002_020b14d8.c": [
         "param:#6 unsigned int"
       ],
-      "src/func_ov002_020b993c.c": [
+      "src/actors/daObjPowerUpItem_c.cpp": [
         "param:#1 char *",
         "param:#6 unsigned int",
         "return:int"
@@ -15539,7 +15529,7 @@
       ]
     },
     "_ZN9dBgCh_Gnd10DetectClsnEv": {
-      "src/func_ov002_020b94c4.c": [
+      "src/actors/daObjPowerUpItem_c.cpp": [
         "param:#1 RG *"
       ]
     },
@@ -15574,7 +15564,7 @@
       "src/func_0200fc44.c": [
         "param:#2 Vector3 *"
       ],
-      "src/func_ov002_020b94c4.c": [
+      "src/actors/daObjPowerUpItem_c.cpp": [
         "param:#2 const Vector3 *"
       ],
       "src/func_ov002_020cfea4.cpp": [
@@ -15636,7 +15626,7 @@
       "src/func_0200fc44.c": [
         "return:void"
       ],
-      "src/func_ov002_020b94c4.c": [
+      "src/actors/daObjPowerUpItem_c.cpp": [
         "return:void"
       ],
       "src/func_ov002_020cfea4.cpp": [
@@ -16588,7 +16578,7 @@
       "src/func_ov002_020b13e0.cpp": [
         "arity:1"
       ],
-      "src/func_ov002_020b94c4.c": [
+      "src/actors/daObjPowerUpItem_c.cpp": [
         "arity:1"
       ],
       "src/func_ov002_020bba28.cpp": [
@@ -18544,9 +18534,6 @@
       ],
       "src/actors/daObj_Mip_Key_c.cpp": [
         "return:Camera *"
-      ],
-      "src/func_ov002_020b9450.cpp": [
-        "return:char *"
       ],
       "src/func_ov002_020d2da0.c": [
         "return:char *"
@@ -28366,7 +28353,7 @@
       ]
     },
     "func_0200fccc": {
-      "src/func_ov002_020b94c4.c": [
+      "src/actors/daObjPowerUpItem_c.cpp": [
         "param:#1 char *"
       ]
     },
@@ -28737,12 +28724,6 @@
       ],
       "src/func_ov002_020b1674.cpp": [
         "param:#1 int",
-        "return:int"
-      ],
-      "src/func_ov002_020b9450.cpp": [
-        "return:int"
-      ],
-      "src/func_ov002_020b96c0.c": [
         "return:int"
       ],
       "src/func_ov002_020e88a8.c": [
@@ -37173,16 +37154,6 @@
         "return:void"
       ]
     },
-    "func_ov002_020b9704": {
-      "include/decl_common.h": [
-        "param:#1 char *"
-      ]
-    },
-    "func_ov002_020b9750": {
-      "include/decl_common.h": [
-        "param:#1 char *"
-      ]
-    },
     "func_ov002_020baa98": {
       "include/decl_common.h": [
         "kind:data"
@@ -42195,22 +42166,16 @@
       ]
     },
     "gPFlowerCloseModelFile": {
-      "src/_ZN11PowerFlower13InitResourcesEv.cpp": [
+      "src/actors/daObjPowerUpItem_c.cpp": [
         "return:void * []"
-      ],
-      "src/_ZN11PowerFlower16CleanupResourcesEv.cpp": [
-        "return:SharedFilePtr"
       ],
       "src/actors/daObjHatenaBlock_c.cpp": [
         "return:char []"
       ]
     },
     "gPFlowerOpenModelFile": {
-      "src/_ZN11PowerFlower13InitResourcesEv.cpp": [
+      "src/actors/daObjPowerUpItem_c.cpp": [
         "return:void * []"
-      ],
-      "src/_ZN11PowerFlower16CleanupResourcesEv.cpp": [
-        "return:SharedFilePtr"
       ],
       "src/actors/daObjHatenaBlock_c.cpp": [
         "return:char []"
