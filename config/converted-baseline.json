@@ -1393,11 +1393,6 @@
     "src/actors/daHuwa_c.cpp#_ZN8daHuwa_cD1Ev",
     "src/actors/daWbm_c.cpp#_ZN7daWbm_cD0Ev",
     "src/actors/daWbm_c.cpp#_ZN7daWbm_cD1Ev",
-    "src/_ZN9Whirlpool16CleanupResourcesEv.cpp",
-    "src/_ZN9Whirlpool16OnPendingDestroyEv.cpp",
-    "src/_ZN9Whirlpool6RenderEv.cpp",
-    "src/_ZN9WhirlpoolD0Ev.cpp",
-    "src/_ZN9WhirlpoolD1Ev.cpp",
     "src/_ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c.cpp",
     "src/_ZN9dBgCh_GndC1Ev.cpp",
     "src/_ZN9dBgCh_GndD0Ev.cpp",
@@ -3019,6 +3014,11 @@
     "src/actors/daWater_Ring_c.cpp#_ZN14daWater_Ring_c16OnPendingDestroyEv",
     "src/actors/daWater_Ring_c.cpp#_ZN14daWater_Ring_c6RenderEv",
     "src/actors/daWater_Ring_c.cpp#_ZN14daWater_Ring_cD0Ev",
-    "src/actors/daWater_Ring_c.cpp#_ZN14daWater_Ring_cD1Ev"
+    "src/actors/daWater_Ring_c.cpp#_ZN14daWater_Ring_cD1Ev",
+    "src/actors/daWater_Tatumaki_c.cpp#_ZN18daWater_Tatumaki_c16CleanupResourcesEv",
+    "src/actors/daWater_Tatumaki_c.cpp#_ZN18daWater_Tatumaki_c16OnPendingDestroyEv",
+    "src/actors/daWater_Tatumaki_c.cpp#_ZN18daWater_Tatumaki_c6RenderEv",
+    "src/actors/daWater_Tatumaki_c.cpp#_ZN18daWater_Tatumaki_cD0Ev",
+    "src/actors/daWater_Tatumaki_c.cpp#_ZN18daWater_Tatumaki_cD1Ev"
   ]
 }

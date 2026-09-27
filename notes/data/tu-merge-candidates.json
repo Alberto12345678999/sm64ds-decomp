@@ -4858,24 +4858,24 @@
    "start": "0x2111aa0",
    "end": "0x21121fc",
    "classes": [
-    "Whirlpool"
+    "daWater_Tatumaki_c"
    ],
    "n_functions_map": 14,
    "n_files": 14,
    "files": [
-    "src/_ZN9WhirlpoolD1Ev.cpp",
-    "src/_ZN9WhirlpoolD0Ev.cpp",
+    "src/_ZN18daWater_Tatumaki_cD1Ev.cpp",
+    "src/_ZN18daWater_Tatumaki_cD0Ev.cpp",
     "src/func_ov026_02111b24.c",
     "src/func_ov026_02111cb4.c",
     "src/func_ov026_02111d4c.cpp",
     "src/func_ov026_02111ed8.c",
     "src/func_ov026_02111ee0.cpp",
     "src/func_ov026_02111f30.c",
-    "src/_ZN9Whirlpool16CleanupResourcesEv.cpp",
-    "src/_ZN9Whirlpool16OnPendingDestroyEv.cpp",
-    "src/_ZN9Whirlpool6RenderEv.cpp",
-    "src/_ZN9Whirlpool8BehaviorEv.cpp",
-    "src/_ZN9Whirlpool13InitResourcesEv.cpp",
+    "src/_ZN18daWater_Tatumaki_c16CleanupResourcesEv.cpp",
+    "src/_ZN18daWater_Tatumaki_c16OnPendingDestroyEv.cpp",
+    "src/_ZN18daWater_Tatumaki_c6RenderEv.cpp",
+    "src/_ZN18daWater_Tatumaki_c8BehaviorEv.cpp",
+    "src/_ZN18daWater_Tatumaki_c13InitResourcesEv.cpp",
     "src/d_a_water_tatumaki.c"
    ],
    "ext_mix": {

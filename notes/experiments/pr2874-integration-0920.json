@@ -5114,8 +5114,8 @@
       "diffs": []
     },
     {
-      "file": "src/_ZN9Whirlpool13InitResourcesEv.cpp",
-      "name": "_ZN9Whirlpool13InitResourcesEv",
+      "file": "src/_ZN18daWater_Tatumaki_c13InitResourcesEv.cpp",
+      "name": "_ZN18daWater_Tatumaki_c13InitResourcesEv",
       "module": "ov026",
       "addr": "0x21120ec",
       "verdict": "VERIFIED",
@@ -5123,8 +5123,8 @@
       "diffs": []
     },
     {
-      "file": "src/_ZN9Whirlpool8BehaviorEv.cpp",
-      "name": "_ZN9Whirlpool8BehaviorEv",
+      "file": "src/_ZN18daWater_Tatumaki_c8BehaviorEv.cpp",
+      "name": "_ZN18daWater_Tatumaki_c8BehaviorEv",
       "module": "ov026",
       "addr": "0x211200c",
       "verdict": "VERIFIED",
@@ -21130,7 +21130,7 @@
           "src/_ZN9PowerStar13AddStarMarkerEv.cpp",
           "src/_ZN9SolidHeap7VSizeofEPv.cpp",
           "src/_ZN18daObjWlSubmarine_c16CleanupResourcesEv.cpp",
-          "src/_ZN9Whirlpool13InitResourcesEv.cpp",
+          "src/_ZN18daWater_Tatumaki_c13InitResourcesEv.cpp",
           "src/_ZN9daDossy_c13InitResourcesEv.cpp",
           "src/d_a_bg_snm_hed.c",
           "src/d_a_btt_bk.c",
@@ -21255,7 +21255,7 @@
           "src/_ZN9PowerStar13AddStarMarkerEv.cpp",
           "src/_ZN9SolidHeap7VSizeofEPv.cpp",
           "src/_ZN18daObjWlSubmarine_c16CleanupResourcesEv.cpp",
-          "src/_ZN9Whirlpool13InitResourcesEv.cpp",
+          "src/_ZN18daWater_Tatumaki_c13InitResourcesEv.cpp",
           "src/_ZN9daDossy_c13InitResourcesEv.cpp",
           "src/d_a_bg_snm_hed.c",
           "src/d_a_btt_bk.c",
@@ -21389,7 +21389,7 @@
           "src/_ZN9PowerStar16CleanupResourcesEv.cpp",
           "src/_ZN9SpikeBomb13InitResourcesEv.cpp",
           "src/_ZN13daObjTtFuta_c13InitResourcesEv.cpp",
-          "src/_ZN9Whirlpool8BehaviorEv.cpp",
+          "src/_ZN18daWater_Tatumaki_c8BehaviorEv.cpp",
           "src/_ZN9daDossy_c16CleanupResourcesEv.cpp",
           "src/d_a_book_book_switch.c",
           "src/d_a_c_jugem.c",
@@ -21512,7 +21512,7 @@
           "src/_ZN9PowerStar16CleanupResourcesEv.cpp",
           "src/_ZN9SpikeBomb13InitResourcesEv.cpp",
           "src/_ZN13daObjTtFuta_c13InitResourcesEv.cpp",
-          "src/_ZN9Whirlpool8BehaviorEv.cpp",
+          "src/_ZN18daWater_Tatumaki_c8BehaviorEv.cpp",
           "src/_ZN9daDossy_c16CleanupResourcesEv.cpp",
           "src/d_a_book_book_switch.c",
           "src/d_a_c_jugem.c",
@@ -21957,8 +21957,8 @@
         "src/_ZN14daObjTtWater_c13InitResourcesEv.cpp",
         "src/_ZN14daObjTtWater_c16CleanupResourcesEv.cpp",
         "src/_ZN9WaterBomb8BehaviorEv.cpp",
-        "src/_ZN9Whirlpool13InitResourcesEv.cpp",
-        "src/_ZN9Whirlpool8BehaviorEv.cpp",
+        "src/_ZN18daWater_Tatumaki_c13InitResourcesEv.cpp",
+        "src/_ZN18daWater_Tatumaki_c8BehaviorEv.cpp",
         "src/_ZN9dScDSMT_c13InitResourcesEv.cpp",
         "src/_ZN9dScDSMT_c16CleanupResourcesEv.cpp",
         "src/_ZN9dScDSMT_c6RenderEv.cpp",
@@ -23743,12 +23743,12 @@
           "name": "_ZN9WaterBomb8BehaviorEv"
         },
         {
-          "file": "src/_ZN9Whirlpool13InitResourcesEv.cpp",
-          "name": "_ZN9Whirlpool13InitResourcesEv"
+          "file": "src/_ZN18daWater_Tatumaki_c13InitResourcesEv.cpp",
+          "name": "_ZN18daWater_Tatumaki_c13InitResourcesEv"
         },
         {
-          "file": "src/_ZN9Whirlpool8BehaviorEv.cpp",
-          "name": "_ZN9Whirlpool8BehaviorEv"
+          "file": "src/_ZN18daWater_Tatumaki_c8BehaviorEv.cpp",
+          "name": "_ZN18daWater_Tatumaki_c8BehaviorEv"
         },
         {
           "file": "src/_ZN9dScDSMT_c13InitResourcesEv.cpp",

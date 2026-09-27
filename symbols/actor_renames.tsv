@@ -1117,13 +1117,13 @@ ov026	0x02111888	func_ov026_02111888	BowserShutter_Spawn	spawnfunc
 ov026	0x02111888	BowserShutter_Spawn	daObjWlKoopaShutter_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov026	0x02111a70	func_ov026_02111a70	Submarine_Spawn	spawnfunc
 ov026	0x02111a70	Submarine_Spawn	daObjWlSubmarine_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
-ov026	0x02111aa0	func_ov026_02111aa0	_ZN9WhirlpoolD1Ev	vtable slot 16 (was _ZN18daObjWlSubmarine_cD1Ev)
-ov026	0x02111ad8	func_ov026_02111ad8	_ZN9WhirlpoolD0Ev	vtable slot 17 (was _ZN18daObjWlSubmarine_cD0Ev)
-ov026	0x02111fa4	func_ov026_02111fa4	_ZN9Whirlpool16CleanupResourcesEv	vtable slot 3 (was _ZN18daObjWlSubmarine_c16CleanupResourcesEv)
-ov026	0x02111fd4	func_ov026_02111fd4	_ZN9Whirlpool16OnPendingDestroyEv	vtable slot 12 (was _ZN18daObjWlSubmarine_c16OnPendingDestroyEv)
-ov026	0x02111fd8	func_ov026_02111fd8	_ZN9Whirlpool6RenderEv	vtable slot 9 (was _ZN18daObjWlSubmarine_c6RenderEv)
-ov026	0x0211200c	func_ov026_0211200c	_ZN9Whirlpool8BehaviorEv	vtable slot 6 (was _ZN18daObjWlSubmarine_c8BehaviorEv)
-ov026	0x021120ec	func_ov026_021120ec	_ZN9Whirlpool13InitResourcesEv	vtable slot 0 (was _ZN18daObjWlSubmarine_c13InitResourcesEv)
+ov026	0x02111aa0	func_ov026_02111aa0	_ZN18daWater_Tatumaki_cD1Ev	vtable slot 16 (was _ZN18daObjWlSubmarine_cD1Ev)
+ov026	0x02111ad8	func_ov026_02111ad8	_ZN18daWater_Tatumaki_cD0Ev	vtable slot 17 (was _ZN18daObjWlSubmarine_cD0Ev)
+ov026	0x02111fa4	func_ov026_02111fa4	_ZN18daWater_Tatumaki_c16CleanupResourcesEv	vtable slot 3 (was _ZN18daObjWlSubmarine_c16CleanupResourcesEv)
+ov026	0x02111fd4	func_ov026_02111fd4	_ZN18daWater_Tatumaki_c16OnPendingDestroyEv	vtable slot 12 (was _ZN18daObjWlSubmarine_c16OnPendingDestroyEv)
+ov026	0x02111fd8	func_ov026_02111fd8	_ZN18daWater_Tatumaki_c6RenderEv	vtable slot 9 (was _ZN18daObjWlSubmarine_c6RenderEv)
+ov026	0x0211200c	func_ov026_0211200c	_ZN18daWater_Tatumaki_c8BehaviorEv	vtable slot 6 (was _ZN18daObjWlSubmarine_c8BehaviorEv)
+ov026	0x021120ec	func_ov026_021120ec	_ZN18daWater_Tatumaki_c13InitResourcesEv	vtable slot 0 (was _ZN18daObjWlSubmarine_c13InitResourcesEv)
 ov026	0x021121bc	func_ov026_021121bc	Whirlpool_Spawn	spawnfunc
 ov026	0x021121bc	Whirlpool_Spawn	daWater_Tatumaki_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov026	0x021121fc	func_ov026_021121fc	_ZN17daWater_Suikomi_cD1Ev	vtable slot 16
@@ -1142,7 +1142,7 @@ ov026	0x02113c48	data_ov026_02113c48	Submarine_SpawnInfo	spawninfo
 ov026	0x02113c48	Submarine_SpawnInfo	g_profile_WL_SUBMARINE	reconstructed profile global; literal ROM ID WL_SUBMARINE+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov026	0x02113d30	data_ov026_02113d30	Whirlpool_SpawnInfo	spawninfo
 ov026	0x02113d30	Whirlpool_SpawnInfo	g_profile_WATER_TATUMAKI	reconstructed profile global; literal ROM ID WATER_TATUMAKI+registry role+later EAD lineage; exact SM64DS spelling not preserved
-ov026	0x02113d54	data_ov026_02113d54	_ZTV9Whirlpool	vtable alloc=? (was _ZTV18daObjWlSubmarine_c)
+ov026	0x02113d54	data_ov026_02113d54	_ZTV18daWater_Tatumaki_c	vtable alloc=? (was _ZTV18daObjWlSubmarine_c)
 ov026	0x02113e00	data_ov026_02113e00	WaterSuction_SpawnInfo	spawninfo
 ov026	0x02113e00	WaterSuction_SpawnInfo	g_profile_WATER_SUIKOMI	reconstructed profile global; literal ROM ID WATER_SUIKOMI+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov026	0x02113e24	data_ov026_02113e24	_ZTV17daWater_Suikomi_c	vtable alloc=0x318
