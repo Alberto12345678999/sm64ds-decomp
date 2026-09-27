@@ -53,7 +53,7 @@ extern "C" {
    _ZN10dBgCh_Actr4InitEP8dActor_ciiP10Vector3_16S3_, which no object
    defines. The ROM's is ..._5Fix12IiES3_P10Vector3_16S5_. */
 void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
-    void *self, dActor_c *actor, Fix12i radius, Fix12i height, Vector3_16 *a, Vector3_16 *b);
+    dBgCh_Actr *self, int actor, Fix12i radius, Fix12i height, int a, int b);
 extern int data_ov016_02114e74[];
 extern int data_ov016_02114e6c[];
 extern int data_ov016_02113bac[];
@@ -242,7 +242,7 @@ int daSlide_Box_c::InitResources()
     _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
         &mMeshCollider, clsnFile, &mClsnMat, kMeshScale, mAngleY, data_ov016_02113bac);
     func_020393d4(&mMeshCollider, (void *)&dBgW::UpdatePosWithTransform);
-    _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(&mWithMeshClsn, this, kClsnRadius, kClsnRadius, 0, 0);
+    _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(&mWithMeshClsn, (int)this, kClsnRadius, kClsnRadius, 0, 0);
     mVertAccel = kGravity;
     mTerminalVelocity = kTerminalVelocity;
     mShip = 0;
