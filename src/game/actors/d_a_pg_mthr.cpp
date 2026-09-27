@@ -108,7 +108,6 @@ extern void Matrix4x3_FromRotationY(void *m, int angle);
 extern void Matrix4x3_ApplyInPlaceToRotationY(Matrix4x3 *mf, short angY);
 extern void Matrix4x3_ApplyInPlaceToRotationX(Matrix4x3 *mf, short angX);
 extern Matrix4x3 data_020a0e68;
-extern void func_ov018_02111a48(char *c, char *p);
 extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *, BCA_File *f, int a, int b, unsigned int c);
 extern void _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(void *, BTP_File &f, int a, int b, unsigned int c);
 extern PgLoadedFile data_ov018_02113c08;
@@ -116,9 +115,7 @@ extern PgLoadedFile data_ov018_02113bf8;
 extern void Matrix4x3_FromTranslation(void *m, int x, int y, int z);
 extern void Matrix4x3_ApplyInPlaceToTranslation(void *m, int x, int y, int z);
 extern unsigned char DecIfAbove0_Byte(unsigned char *p);
-extern void func_ov018_02111b3c(char *c);
 extern dActor_c *func_ov018_021118fc(char *c);
-extern void func_ov018_02111968(char *c, void *found, char *held);
 extern PgLoadedFile data_ov018_02113be8;
 extern PgLoadedFile data_ov018_02113bf0;
 extern char data_ov018_02113c4c[];
@@ -127,7 +124,6 @@ extern void func_ov018_02112398(daPgMthr_c *self);
 extern void func_ov018_0211235c(daPgMthr_c *self);
 extern SharedFilePtr data_ov018_02113c00;
 extern SharedFilePtr *data_ov018_02112c04[2];
-extern void func_ov018_02111d28(dActor_c *self);
 extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, void *act, int a, int b, unsigned int c2, unsigned int d);
 extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void *self, void *act, int a, int b, void *c2, void *d);
 }
@@ -156,7 +152,7 @@ int daPgMthr_c::InitResources()
         return 0;
     /* Cylinder 260 x 300. Flags 0x4800004 / vuln 0x900000. */
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x104000, 0x12c000, 0x4800004, 0x900000);
-    func_ov018_021123d0((char *)this, 0);
+    func_ov018_021123d0(0);
     mVertAccel = -0x2000;
     mTerminalVelocity = -0x3c000;
     mScaleX = 0x1000;
@@ -179,7 +175,7 @@ int daPgMthr_c::InitResources()
     mHomePosY = mPosY;
     mHomePosZ = mPosZ;
     mPlayer = 0;
-    func_ov018_02111d28(this);
+    func_ov018_02111d28();
     return 1;
 }
 
@@ -192,7 +188,7 @@ int daPgMthr_c::Behavior()
     mdCcAc_c.Clear();
     mdCcAc_c.Update();
     mModelAnim.UpdateVerts();
-    func_ov018_02111d28(this);
+    func_ov018_02111d28();
     return 1;
 }
 
@@ -221,13 +217,11 @@ int daPgMthr_c::CleanupResources()
     return 1;
 }
 
-extern "C" {
-void func_ov018_021123d0(char *c, int i)
+// @symbol _ZN10daPgMthr_c19func_ov018_021123d0Ei
+void daPgMthr_c::func_ov018_021123d0(int i)
 {
-    daPgMthr_c *self = (daPgMthr_c *)c;
-    self->mState = data_ov018_02113c4c + (i << 4);
-    func_ov018_02112398(self);
-}
+    mState = data_ov018_02113c4c + (i << 4);
+    func_ov018_02112398(this);
 }
 
 extern "C" void func_ov018_02112398(daPgMthr_c *self)
@@ -242,96 +236,88 @@ extern "C" void func_ov018_0211235c(daPgMthr_c *self)
     (self->* *update)();
 }
 
-// @symbol func_ov018_021122ec
+// @symbol _ZN10daPgMthr_c19func_ov018_021122ecEv
 /* State 0 enter. Idle anim, stopped, not talking. */
-extern "C" {
-int func_ov018_021122ec(char *c)
+int daPgMthr_c::func_ov018_021122ec()
 {
-    daPgMthr_c *self = (daPgMthr_c *)c;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&self->mModelAnim, (BCA_File *)data_ov018_02113bf0.filePtr, 0, 0x1000, 0);
-    self->mModelAnim.speed = 0x1000;
-    _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(&self->mTextureSequence, *(BTP_File *)data_ov018_02113be8.filePtr, 0, 0x1000, 0);
-    self->mHorzSpeed = 0;
-    self->mPlayer = 0;
-    self->unk_37c = 0;
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (BCA_File *)data_ov018_02113bf0.filePtr, 0, 0x1000, 0);
+    mModelAnim.speed = 0x1000;
+    _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(&mTextureSequence, *(BTP_File *)data_ov018_02113be8.filePtr, 0, 0x1000, 0);
+    mHorzSpeed = 0;
+    mPlayer = 0;
+    unk_37c = 0;
     return 1;
 }
-}
 
-extern "C" {
-int func_ov018_02112234(char *c)
+// @symbol _ZN10daPgMthr_c19func_ov018_02112234Ev
+int daPgMthr_c::func_ov018_02112234()
 {
-    daPgMthr_c *self = (daPgMthr_c *)c;
     Player *toucher;
     dActor_c *held;
     Player *near;
 
-    if (self->mGaveStar != 0)
-        func_ov018_02111b3c(c);
-    toucher = (Player *)func_ov018_021118fc(c);
+    if (mGaveStar != 0)
+        func_ov018_02111b3c();
+    toucher = (Player *)func_ov018_021118fc((char *)this);
     held = 0;
     if (toucher != 0) {
         /* Yoshi's baby is in his mouth; this path does not count it. */
         if (toucher->param1 != CHAR_YOSHI)
             held = (dActor_c *)toucher->mHeldObj;
-        func_ov018_02111968(c, toucher, (char *)held);
+        func_ov018_02111968(toucher, (char *)held);
     }
-    near = self->ClosestPlayer();
-    func_ov018_02111a48(c, (char *)near);
-    self->UpdatePos(&self->mdCcAc_c);
-    func_ov018_02111bf0(c, &self->mWithMeshClsn);
-    if (self->mGaveStar == 0 && self->mHoldingBaby == 0) {
-        unsigned int frame = ((unsigned int)self->mModelAnim.currFrame << 4) >> 16;
+    near = ClosestPlayer();
+    func_ov018_02111a48((char *)near);
+    UpdatePos(&mdCcAc_c);
+    func_ov018_02111bf0((char *)this, &mWithMeshClsn);
+    if (mGaveStar == 0 && mHoldingBaby == 0) {
+        unsigned int frame = ((unsigned int)mModelAnim.currFrame << 4) >> 16;
         if (frame == 0x10 || frame == 0x25)
-            func_0201267c(0xdf, &self->mCamSpacePosX);
+            func_0201267c(0xdf, &mCamSpacePosX);
     }
     return 1;
 }
-}
 
-extern "C" {
-int func_ov018_021121dc(char *c)
+// @symbol _ZN10daPgMthr_c19func_ov018_021121dcEv
+int daPgMthr_c::func_ov018_021121dc()
 {
-    daPgMthr_c *self = (daPgMthr_c *)c;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&self->mModelAnim, (BCA_File *)data_ov018_02113bf0.filePtr, 0, 0x1000, 0);
-    self->mModelAnim.speed = 0x1000;
-    self->mTalkStep = 0;
-    self->mTalkTimer = 0x3c;
-    self->unk_37c = 1;
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (BCA_File *)data_ov018_02113bf0.filePtr, 0, 0x1000, 0);
+    mModelAnim.speed = 0x1000;
+    mTalkStep = 0;
+    mTalkTimer = 0x3c;
+    unk_37c = 1;
     return 1;
 }
-}
 
-extern "C" {
-int func_ov018_02111fac(char *c)
+// @symbol _ZN10daPgMthr_c19func_ov018_02111facEv
+int daPgMthr_c::func_ov018_02111fac()
 {
-    daPgMthr_c *self = (daPgMthr_c *)c;
-    switch (self->mTalkStep) {
+    switch (mTalkStep) {
     case 0:
-        if (self->mdCcAc_c.hitFlags & HIT_TOUCH) {
-            if (self->mPlayer->StartTalk(*(fBase_c *)c, 1)) {
-                u8 *p = &self->mTalkStep;
+        if (mdCcAc_c.hitFlags & HIT_TOUCH) {
+            if (mPlayer->StartTalk(*(fBase_c *)this, 1)) {
+                u8 *p = &mTalkStep;
                 *p = *p + 1;
             }
         } else {
-            func_ov018_021123d0(c, 0);
+            func_ov018_021123d0(0);
         }
         break;
     case 1:
-        if (_Z14ApproachLinearRsss(&self->mAngleY,
-                Vec3_HorzAngle((Vector3 *)&self->mPosX, (Vector3 *)&self->mPlayer->mPosX), 0x514)) {
-            Matrix4x3_FromTranslation(&data_020a0e68, self->mPosX, self->mPosY, self->mPosZ);
-            Matrix4x3_ApplyInPlaceToRotationY(&data_020a0e68, self->mAngleY);
+        if (_Z14ApproachLinearRsss(&mAngleY,
+                Vec3_HorzAngle((Vector3 *)&mPosX, (Vector3 *)&mPlayer->mPosX), 0x514)) {
+            Matrix4x3_FromTranslation(&data_020a0e68, mPosX, mPosY, mPosZ);
+            Matrix4x3_ApplyInPlaceToRotationY(&data_020a0e68, mAngleY);
             Matrix4x3_ApplyInPlaceToTranslation(&data_020a0e68, 0, 0x300000, -0x480000);
             {
                 int mouth[3];
                 mouth[0] = data_020a0e68.m[9];
                 mouth[1] = data_020a0e68.m[10];
                 mouth[2] = data_020a0e68.m[11];
-                if (self->mPlayer->ShowMessage(*(fBase_c *)c, self->mMessageId, (Vector3 *)mouth, 0, 0)) {
-                    func_0201267c(0xdf, &self->mCamSpacePosX);
+                if (mPlayer->ShowMessage(*(fBase_c *)this, mMessageId, (Vector3 *)mouth, 0, 0)) {
+                    func_0201267c(0xdf, &mCamSpacePosX);
                     {
-                        u8 *p = &self->mTalkStep;
+                        u8 *p = &mTalkStep;
                         *p = *p + 1;
                     }
                 }
@@ -339,94 +325,91 @@ int func_ov018_02111fac(char *c)
         }
         break;
     case 2:
-        if (self->mPlayer->GetTalkState() == -1) {
-            if (self->mMessageId == MSG_OWN_BABY) {
+        if (mPlayer->GetTalkState() == -1) {
+            if (mMessageId == MSG_OWN_BABY) {
                 unsigned starParam;
                 unsigned char slot;
-                self->mGaveStar = 1;
-                slot = (unsigned char)(self->param1 & 0xf);
+                mGaveStar = 1;
+                slot = (unsigned char)(param1 & 0xf);
                 starParam = (unsigned)slot | 0x40;
-                dActor_c::Spawn(ACTOR_POWER_STAR, starParam, *(Vector3 *)&self->mPosX, 0, self->mAreaId, -1);
+                dActor_c::Spawn(ACTOR_POWER_STAR, starParam, *(Vector3 *)&mPosX, 0, mAreaId, -1);
             }
-            self->mPlayer->DropActor();
+            mPlayer->DropActor();
             {
-                u8 *p = &self->mTalkStep;
+                u8 *p = &mTalkStep;
                 *p = *p + 1;
             }
         }
         break;
     case 3:
-        if (!DecIfAbove0_Byte(&self->mTalkTimer))
-            func_ov018_021123d0(c, 0);
+        if (!DecIfAbove0_Byte(&mTalkTimer))
+            func_ov018_021123d0(0);
         break;
     }
-    func_ov018_02111a48(c, (char *)self->mPlayer);
-    if (self->mGaveStar == 0 && self->mHoldingBaby == 0) {
-        unsigned frame = ((unsigned)self->mModelAnim.currFrame << 4) >> 0x10;
+    func_ov018_02111a48((char *)mPlayer);
+    if (mGaveStar == 0 && mHoldingBaby == 0) {
+        unsigned frame = ((unsigned)mModelAnim.currFrame << 4) >> 0x10;
         if (frame == 0x10 || frame == 0x25)
-            func_0201267c(0xdf, &self->mCamSpacePosX);
+            func_0201267c(0xdf, &mCamSpacePosX);
     }
     return 1;
 }
-}
 
-extern "C" int func_ov018_02111f1c(char *c)
+// @symbol _ZN10daPgMthr_c19func_ov018_02111f1cEv
+int daPgMthr_c::func_ov018_02111f1c()
 {
-    daPgMthr_c *self = (daPgMthr_c *)c;
-    if (self->mPlayer == 0 && self->mGaveStar == 0)
-        func_ov018_021123d0(c, 0);
-    self->mHorzSpeed = 0x5000;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&self->mModelAnim, (BCA_File *)data_ov018_02113c08.filePtr, 0, 0x1000, 0);
-    self->mModelAnim.speed = 0x1000;
-    _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(&self->mTextureSequence, *(BTP_File *)data_ov018_02113bf8.filePtr, 0, 0x1000, 0);
-    self->unk_37c = 2;
+    if (mPlayer == 0 && mGaveStar == 0)
+        func_ov018_021123d0(0);
+    mHorzSpeed = 0x5000;
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (BCA_File *)data_ov018_02113c08.filePtr, 0, 0x1000, 0);
+    mModelAnim.speed = 0x1000;
+    _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(&mTextureSequence, *(BTP_File *)data_ov018_02113bf8.filePtr, 0, 0x1000, 0);
+    unk_37c = 2;
     return 1;
 }
 
-extern "C" int func_ov018_02111e28(dActor_c *act)
+// @symbol _ZN10daPgMthr_c19func_ov018_02111e28Ev
+int daPgMthr_c::func_ov018_02111e28()
 {
-    daPgMthr_c *self = (daPgMthr_c *)act;
-    char *s = (char *)self;
-    _Z14ApproachLinearRsss(&self->mAngleY,
-        Vec3_HorzAngle((Vector3 *)&self->mPosX, (Vector3 *)&self->mPlayer->mPosX), 0x514);
-    self->mPrevAngleY = self->mAngleY;
-    self->UpdatePos(&self->mdCcAc_c);
-    func_ov018_02111bf0(s, &self->mWithMeshClsn);
-    func_ov018_02111a48(s, (char *)self->mPlayer);
-    unsigned int frame = ((unsigned int)self->mModelAnim.currFrame << 4) >> 0x10;
+    _Z14ApproachLinearRsss(&mAngleY,
+        Vec3_HorzAngle((Vector3 *)&mPosX, (Vector3 *)&mPlayer->mPosX), 0x514);
+    mPrevAngleY = mAngleY;
+    UpdatePos(&mdCcAc_c);
+    func_ov018_02111bf0((char *)this, &mWithMeshClsn);
+    func_ov018_02111a48((char *)mPlayer);
+    unsigned int frame = ((unsigned int)mModelAnim.currFrame << 4) >> 0x10;
     if (frame == 9 || frame == 0x15)
-        func_0201267c(0xde, &self->mCamSpacePosX);
+        func_0201267c(0xde, &mCamSpacePosX);
     int holding;
-    if (self->mPlayer->param1 == CHAR_YOSHI)
-        holding = (self->mPlayer->mObjInMouth != 0);
+    if (mPlayer->param1 == CHAR_YOSHI)
+        holding = (mPlayer->mObjInMouth != 0);
     else
-        holding = (self->mPlayer->mHeldObj != 0);
-    if (holding == 0 || Vec3_Dist((Vector3 *)&self->mHomePosX, (Vector3 *)&self->mPlayer->mPosX) > HOME_RANGE) {
-        self->mPlayer = 0;
-        func_ov018_021123d0(s, 0);
+        holding = (mPlayer->mHeldObj != 0);
+    if (holding == 0 || Vec3_Dist((Vector3 *)&mHomePosX, (Vector3 *)&mPlayer->mPosX) > HOME_RANGE) {
+        mPlayer = 0;
+        func_ov018_021123d0(0);
     }
     return 1;
 }
 
-// @symbol func_ov018_02111d28
-extern "C" void func_ov018_02111d28(dActor_c *act)
+// @symbol _ZN10daPgMthr_c19func_ov018_02111d28Ev
+void daPgMthr_c::func_ov018_02111d28()
 {
-    daPgMthr_c *self = (daPgMthr_c *)act;
-    char *s = (char *)self;
-    Matrix4x3_FromRotationY(&self->mModelAnim.mat4x3, self->mAngleY);
+    char *s = (char *)this;
+    Matrix4x3_FromRotationY(&mModelAnim.mat4x3, mAngleY);
     /* 0x114/0x118/0x11c are mat4x3's translation (pos >> 3). Writing those
        through m[] and passing the member into DropShadow, then storing the
        bone back through the same pointer, was 0xfc. ROM is 0x100. */
-    *(int *)(s + 0x114) = self->mPosX >> 3;
-    *(int *)(s + 0x118) = self->mPosY >> 3;
-    *(int *)(s + 0x11c) = self->mPosZ >> 3;
+    *(int *)(s + 0x114) = mPosX >> 3;
+    *(int *)(s + 0x118) = mPosY >> 3;
+    *(int *)(s + 0x11c) = mPosZ >> 3;
     _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
-        self, self->mShadowModel, *(Matrix4x3 *)(s + 0xf0), 0x140000, 0x50000, 0xf);
-    if (self->mLookAngX != 0 || self->mLookAngY != 0) {
-        Matrix4x3 *bone = &self->mModelAnim.data.transforms[LOOK_BONE];
+        this, mShadowModel, *(Matrix4x3 *)(s + 0xf0), 0x140000, 0x50000, 0xf);
+    if (mLookAngX != 0 || mLookAngY != 0) {
+        Matrix4x3 *bone = &mModelAnim.data.transforms[LOOK_BONE];
         data_020a0e68 = *bone;
-        Matrix4x3_ApplyInPlaceToRotationY(&data_020a0e68, self->mLookAngY);
-        Matrix4x3_ApplyInPlaceToRotationX(&data_020a0e68, self->mLookAngX);
+        Matrix4x3_ApplyInPlaceToRotationY(&data_020a0e68, mLookAngY);
+        Matrix4x3_ApplyInPlaceToRotationX(&data_020a0e68, mLookAngX);
         *(Matrix4x3 *)((*(char **)(s + 0xe8)) + 0xf0) = data_020a0e68;
     }
 }
@@ -495,17 +478,15 @@ void func_ov018_02111bf0(void *cv, void *wv)
 }
 }
 
-// @symbol func_ov018_02111b3c
-extern "C" {
-void func_ov018_02111b3c(char *c)
+// @symbol _ZN10daPgMthr_c19func_ov018_02111b3cEv
+void daPgMthr_c::func_ov018_02111b3c()
 {
-    daPgMthr_c *self = (daPgMthr_c *)c;
-    Player *p = self->ClosestPlayer();
+    Player *p = ClosestPlayer();
     dActor_c *held;
 
     if (p == 0)
         return;
-    if (Vec3_Dist((Vector3 *)&self->mHomePosX, (Vector3 *)&p->mPosX) > HOME_RANGE)
+    if (Vec3_Dist((Vector3 *)&mHomePosX, (Vector3 *)&p->mPosX) > HOME_RANGE)
         return;
     if (p->param1 == CHAR_YOSHI)
         held = (dActor_c *)p->mObjInMouth;
@@ -521,15 +502,13 @@ void func_ov018_02111b3c(char *c)
     }
     if (held->param1 != BABY_OWN)
         return;
-    self->mPlayer = p;
-    func_ov018_021123d0(c, 2);
-}
+    mPlayer = p;
+    func_ov018_021123d0(2);
 }
 
-extern "C" {
-void func_ov018_02111a48(char *a, char *b)
+// @symbol _ZN10daPgMthr_c19func_ov018_02111a48EPc
+void daPgMthr_c::func_ov018_02111a48(char *b)
 {
-    daPgMthr_c *self = (daPgMthr_c *)a;
     dActor_c *who;
     Fix12i dist;
     s16 horzAngle;
@@ -543,36 +522,34 @@ void func_ov018_02111a48(char *a, char *b)
         return;
     who = (dActor_c *)b;
 
-    dist = Vec3_HorzDist((Vector3 *)&self->mPosX, (Vector3 *)&who->mPosX);
-    horzAngle = Vec3_HorzAngle((Vector3 *)&self->mPosX, (Vector3 *)&who->mPosX);
+    dist = Vec3_HorzDist((Vector3 *)&mPosX, (Vector3 *)&who->mPosX);
+    horzAngle = Vec3_HorzAngle((Vector3 *)&mPosX, (Vector3 *)&who->mPosX);
 
-    if (dist < LOOK_RANGE && AngleDiff(horzAngle, self->mAngleY) < 0x1400) {
+    if (dist < LOOK_RANGE && AngleDiff(horzAngle, mAngleY) < 0x1400) {
         tz = who->mPosZ;
         ty = who->mPosY + 0x640000;
         tx = who->mPosX;
         lookTarget.x = tx;
         lookTarget.z = tz;
         lookTarget.y = ty;
-        bone = &self->mModelAnim.data.transforms[LOOK_BONE];
+        bone = &mModelAnim.data.transforms[LOOK_BONE];
         nodePos.x = bone->m[9];
         nodePos.y = bone->m[10];
         nodePos.z = bone->m[11];
         vert = Vec3_VertAngle(&nodePos, &lookTarget);
-        delta = horzAngle - self->mAngleY;
+        delta = horzAngle - mAngleY;
     } else {
         vert = 0;
         delta = 0;
     }
 
-    _Z14ApproachLinearRsss(&self->mLookAngY, delta, 0x250);
-    _Z14ApproachLinearRsss(&self->mLookAngX, vert, 0x250);
-}
+    _Z14ApproachLinearRsss(&mLookAngY, delta, 0x250);
+    _Z14ApproachLinearRsss(&mLookAngX, vert, 0x250);
 }
 
-extern "C" {
-void func_ov018_02111968(char *c, void *found, char *heldRaw)
+// @symbol _ZN10daPgMthr_c19func_ov018_02111968EPvPc
+void daPgMthr_c::func_ov018_02111968(void *found, char *heldRaw)
 {
-    daPgMthr_c *self = (daPgMthr_c *)c;
     dActor_c *held = (dActor_c *)heldRaw;
     Player *who = (Player *)found;
 
@@ -580,32 +557,31 @@ void func_ov018_02111968(char *c, void *found, char *heldRaw)
         int baby = held->actorID == ACTOR_BABY_PENGUIN;
         if (baby != 0) {
             if (held->param1 == BABY_OTHER) {
-                self->mPlayer = who;
-                self->mMessageId = MSG_OTHER_BABY;
-                self->mHoldingBaby = 1;
-                func_ov018_021123d0(c, 1);
+                mPlayer = who;
+                mMessageId = MSG_OTHER_BABY;
+                mHoldingBaby = 1;
+                func_ov018_021123d0(1);
                 return;
             }
         }
     }
-    if (self->mGaveStar)
+    if (mGaveStar)
         return;
     if (held) {
         int baby = held->actorID == ACTOR_BABY_PENGUIN;
         if (baby != 0) {
             if (held->param1 == BABY_OWN) {
-                self->mMessageId = MSG_OWN_BABY;
+                mMessageId = MSG_OWN_BABY;
                 goto talk;
             }
         }
     }
-    if (self->mHoldingBaby)
+    if (mHoldingBaby)
         return;
-    self->mMessageId = MSG_NO_BABY;
+    mMessageId = MSG_NO_BABY;
 talk:
-    self->mPlayer = who;
-    func_ov018_021123d0(c, 1);
-}
+    mPlayer = who;
+    func_ov018_021123d0(1);
 }
 
 extern "C" {
