@@ -16,18 +16,19 @@
 #include "daObjCtMecha09_c.h"
 #include "SharedFilePtr.h"
 
+/* Fix12-by-value calls keep their raw ABI declarations (header forms take
+ * Fix12<int> by value, which cannot be called with literals; see
+ * include/dActor_c.h). */
 extern "C" {
-extern void Matrix4x3_FromRotationY(void* m, int angle);
+extern void Matrix4x3_FromRotationY(Matrix4x3 *matrix, int angle);
 extern void _ZN8dActor_c18DropShadowScaleXYZER11ShadowModelR9Matrix4x35Fix12IiES5_S5_j(
-    void* a, void* sm, void* m, int f1, int f2, int f3, unsigned int j);
+    dActor_c *actor, ShadowModel *shadow, Matrix4x3 *matrix,
+    int scaleX, int scaleY, int scaleZ, u32 opacity);
+extern int _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(dBgActor_c *self, int a, int b);
 extern SharedFilePtr data_ov065_0211d9cc;
 extern SharedFilePtr data_ov065_0211d9d4;
-u16 DecIfAbove0_Short(u16 *p);
-int RandomIntInternal(int *seed);
-void _ZN8dActor_c9UpdatePosEP5dCc_c(void *self, void *clsn);
-void _ZN10dBgActor_c21UpdateModelPosAndRotYEv(void *self);
-int _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(void *self, int a, int b);
-void _ZN10dBgActor_c19UpdateClsnPosAndRotEv(void *self);
+extern u16 DecIfAbove0_Short(u16 *p);
+extern int RandomIntInternal(int *seed);
 extern u8 data_0209f2c0;
 extern s32 data_ov065_0211d520[];
 extern s32 data_0209e650[];
@@ -43,16 +44,17 @@ daObjCtMecha09_c::~daObjCtMecha09_c()
 
 // @symbol func_ov065_0211bc88
 /* Drops the beam's shadow when it is close enough to the ground sample. */
-extern "C" void func_ov065_0211bc88(char* c)
+extern "C" void func_ov065_0211bc88(daObjCtMecha09_c *self)
 {
-  int d = *(int*)(c + 0x60) - *(int*)(c + 0x330);
-  if (d < 0) d = -d;
-  if (d > 0x7d0000) return;
-  Matrix4x3_FromRotationY(c + 0x35c, *(short*)(c + 0x8e));
-  *(int*)(c + 0x380) = *(int*)(c + 0x5c) >> 3;
-  *(int*)(c + 0x384) = (*(int*)(c + 0x330) + 0x1000) >> 3;
-  *(int*)(c + 0x388) = *(int*)(c + 0x64) >> 3;
-  _ZN8dActor_c18DropShadowScaleXYZER11ShadowModelR9Matrix4x35Fix12IiES5_S5_j(c, c + 0x334, c + 0x35c, 0x1e0000, 0x32000, 0xfa000, 0xf);
+    int d = self->mPosY - self->mGroundY;
+    if (d < 0) d = -d;
+    if (d > 0x7d0000) return;
+    Matrix4x3_FromRotationY(&self->mShadowMat, self->mAngleY);
+    self->mShadowMat.t.x = self->mPosX >> 3;
+    self->mShadowMat.t.y = (self->mGroundY + 0x1000) >> 3;
+    self->mShadowMat.t.z = self->mPosZ >> 3;
+    _ZN8dActor_c18DropShadowScaleXYZER11ShadowModelR9Matrix4x35Fix12IiES5_S5_j(
+        self, &self->mShadowModel, &self->mShadowMat, 0x1e0000, 0x32000, 0xfa000, 0xf);
 }
 
 // @symbol _ZN16daObjCtMecha09_c16CleanupResourcesEv
@@ -78,49 +80,41 @@ int daObjCtMecha09_c::Render()
  * hold the beam still. Travel is clamped to [mStartPosY, mEndPosY]. */
 int daObjCtMecha09_c::Behavior()
 {
-    char *c = (char *)this;
-    u8 idx = data_0209f2c0;
-    s32 v = *(signed char *)(c + 0x300 + 0x28);
-    *(s32 *)(c + 0xa8) = v * data_ov065_0211d520[idx];
+    u8 setting = data_0209f2c0;
+    mVertSpeed = mDirection * data_ov065_0211d520[setting];
 
-    if (idx == 2) {
-        if (DecIfAbove0_Short((u16 *)(c + 0x32a)) == 0) {
+    if (setting == 2) {
+        if (DecIfAbove0_Short(&mLegTimer) == 0) {
             u16 rnd = (u32)RandomIntInternal(data_0209e650) >> 16;
-            if (rnd >= 0x7fff) {
-                *(signed char *)(c + 0x328) = 1;
-            } else {
-                *(signed char *)(c + 0x328) = -1;
-            }
-            int r = rnd % 6 + 1;
-            *(u16 *)(c + 0x300 + 0x2a) = r * 0x1e;
-            *(u16 *)(c + 0x300 + 0x2c) = *(u16 *)(c + 0x300 + 0x2a);
-        } else {
-            int a = *(u16 *)(c + 0x300 + 0x2c);
-            int b = *(u16 *)(c + 0x300 + 0x2a);
-            if (b >= a - 5) {
-                *(s32 *)(c + 0xa8) = 0;
-            }
+            if (rnd >= 0x7fff)
+                mDirection = 1;
+            else
+                mDirection = -1;
+            mLegTimer = (rnd % 6 + 1) * 30;
+            mLegLength = mLegTimer;
+        } else if (mLegTimer >= mLegLength - 5) {
+            mVertSpeed = 0;
         }
     }
 
-    _ZN8dActor_c9UpdatePosEP5dCc_c(c, 0);
+    UpdatePos(0);
 
     {
-        int y = *(s32 *)(c + 0x60);
-        int lo = *(s32 *)(c + 0x320);
-        int hi = *(s32 *)(c + 0x324);
+        int y = mPosY;
+        int lo = mStartPosY;
+        int hi = mEndPosY;
         int in = 0;
         if (y >= lo)
             in = (y <= hi);
         if (in == 0) {
-            *(s32 *)(c + 0x60) = (y < lo) ? lo : ((y > hi) ? hi : y);
-            *(signed char *)(c + 0x328) = -*(signed char *)(c + 0x300 + 0x28);
+            mPosY = (y < lo) ? lo : ((y > hi) ? hi : y);
+            mDirection = -mDirection;
         }
     }
 
-    _ZN10dBgActor_c21UpdateModelPosAndRotYEv(c);
-    func_ov065_0211bc88(c);
-    if (_ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(c, 0, 0) != 0)
-        _ZN10dBgActor_c19UpdateClsnPosAndRotEv(c);
+    UpdateModelPosAndRotY();
+    func_ov065_0211bc88(this);
+    if (_ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(this, 0, 0) != 0)
+        UpdateClsnPosAndRot();
     return 1;
 }

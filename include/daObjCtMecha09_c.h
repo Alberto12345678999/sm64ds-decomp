@@ -21,10 +21,13 @@
 
 struct daObjCtMecha09_c : dBgActor_c {
     u8  pad_31e[0x2];
-    s32 mStartPosY;                      /* 0x320 */
-    s32 mEndPosY;                      /* 0x324 */
-    u8 mDirection;                       /* 0x328 */
-    u8  pad_329[0x7];
+    s32 mStartPosY;                   /* 0x320 */
+    s32 mEndPosY;                     /* 0x324 */
+    s8  mDirection;                   /* 0x328 -- +1/-1; Behavior reads it ldrsb and negates it at the travel limits */
+    u8  pad_329[0x1];
+    u16 mLegTimer;                    /* 0x32a -- DecIfAbove0_Short countdown for the current leg (setting 2) */
+    u16 mLegLength;                   /* 0x32c -- the leg's full length; the last five frames hold still */
+    u8  pad_32e[0x2];
     s32 mGroundY;                     /* 0x330 -- InitResources' dBgCh_Gnd raycast result, falling back to the probe height */
     ShadowModel mShadowModel;         /* 0x334 */
 
