@@ -35,8 +35,10 @@
  *   takes Fix12<int> by value. This function returns the scalar call;
  *   the method form does not compile.
  * - InitResources: dCcAcPos_c::Init with Fix12<int> by value size-DIFFs
- *   (999 words). The scalar extern matches. dBgCh_Actr::Init matches
- *   as the real call.
+ *   (999 words). The scalar extern matches. dBgCh_Actr::Init is called by
+ *   its ROM symbol: the header's Fix12i (= s32) mangles the radii as `i`
+ *   and names a symbol no object defines, so the member form linked to
+ *   nothing.
  * - Particle::System::New and NewSimple are not declared on
  *   Particle::System (include/Particle__System.h). Player::Hurt is not
  *   declared on Player. Those 5Fix12IiE externs stay.
@@ -88,6 +90,12 @@ struct AngleWords { u16 w[3]; };
 #define grock_star_slot(rock)  (*(s8 *)&(rock)->unk_3c0)
 
 extern "C" {
+/* dBgCh_Actr::Init's header takes Fix12i (= s32), so the method form
+   mangles the two radii as `i` and names
+   _ZN10dBgCh_Actr4InitEP8dActor_ciiP10Vector3_16S3_, which no object
+   defines. The ROM's is ..._5Fix12IiES3_P10Vector3_16S5_. */
+void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
+    void *self, dActor_c *actor, Fix12i radius, Fix12i height, Vector3_16 *a, Vector3_16 *b);
 extern void Vec3_Asr(void *dst, void *src, int n);
 extern void Matrix4x3_FromTranslation(void *m, int x, int y, int z);
 extern void Matrix4x3_ApplyInPlaceToRotationXYZExt(void *m, short a, short b, short c);
@@ -433,7 +441,7 @@ int daGrock_c::InitResources()
         if (mShadowModel.InitCylinder() == 0)
             return 0;
 
-        mWithMeshClsn.Init(this, 0x12c000, 0, 0, 0);
+        _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(&mWithMeshClsn, this, 0x12c000, 0, 0, 0);
         mWithMeshClsn.SetLimMovFlag();
         grock_roll_sound(this) = 0;
 
