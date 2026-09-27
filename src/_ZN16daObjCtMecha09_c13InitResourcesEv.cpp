@@ -1,18 +1,18 @@
 //cpp
-// @symbol _ZN14TTC_MovingBeam13InitResourcesEv
+// @symbol _ZN16daObjCtMecha09_c13InitResourcesEv
 /* recovered: real C++ method on the shared actor and collision-query classes
  *
  * The previous C++-mode source still hand-spelled this function's mangled
- * name and rebuilt TTC_MovingBeam and dBgCh_Gnd as private byte layouts. The
+ * name and rebuilt daObjCtMecha09_c and dBgCh_Gnd as private byte layouts. The
  * shared declarations now carry the period-accurate inheritance and lifecycle
- * evidence: TTC_MovingBeam owns its model/collider through dBgActor_c, while
+ * evidence: daObjCtMecha09_c owns its model/collider through dBgActor_c, while
  * the local dBgCh_Gnd automatically emits the ROM's C1 and D1 calls.
  *
  * dBgW_KcMbg::SetFile remains behind its exact ABI symbol because its Fix12i
  * by-value parameter is a known mwccarm language-mode wall. Everything else
  * below is expressed through the real C++ types and named members.
  */
-#include "TTC_MovingBeam.h"
+#include "daObjCtMecha09_c.h"
 #include "SharedFilePtr.h"
 #include "dBgCh_Gnd.h"
 
@@ -24,7 +24,7 @@ extern SharedFilePtr data_ov065_0211d9d4;
 extern SharedFilePtr data_ov065_0211d9cc;
 extern CLPS_Block func_02112118;
 
-int TTC_MovingBeam::InitResources()
+int daObjCtMecha09_c::InitResources()
 {
     BMD_File *bmd;
     KCL_File *kcl;

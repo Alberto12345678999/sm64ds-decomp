@@ -1,0 +1,225 @@
+{
+  "id": "ov065/daObjCtMecha09_c",
+  "module": "ov065",
+  "source": "src/actors/daObjCtMecha09_c.cpp",
+  "promoted_source": "src/actors/daObjCtMecha09_c.cpp",
+  "status": "promoted",
+  "boundary_confidence": "medium",
+  "boundary_evidence": [
+    "contiguous matched run: 0x211bbdc..0x211bf04, 6 function(s). tu_map's class span continues through InitResources at 0x0211bf04 (not complete) to 0x0211c040; that function and daObjCtMecha09_c_classInit stay out",
+    "class label(s): daObjCtMecha09_c",
+    "module sinit corroboration: 10 sinit(s) / 10 .ctor entries, sinit_vs_tu=ok, corroborated=False (module-wide, NOT narrowed to this one TU -- see notes/tu-reconstruction-pilot-report.md sec 2 for the by-hand narrowing step)"
+  ],
+  "sections": [
+    {
+      "name": ".text",
+      "start": "0x0211bbdc",
+      "end": "0x0211bf04"
+    }
+  ],
+  "functions": [
+    {
+      "symbol": "_ZN16daObjCtMecha09_cD1Ev",
+      "address": "0x0211bbdc",
+      "size": "0x0000004c",
+      "legacy_source": "src/_ZN16daObjCtMecha09_cD1Ev.cpp",
+      "ordinal": 0
+    },
+    {
+      "symbol": "_ZN16daObjCtMecha09_cD0Ev",
+      "address": "0x0211bc28",
+      "size": "0x00000060",
+      "legacy_source": "src/_ZN16daObjCtMecha09_cD0Ev.cpp",
+      "ordinal": 1
+    },
+    {
+      "symbol": "func_ov065_0211bc88",
+      "address": "0x0211bc88",
+      "size": "0x00000098",
+      "legacy_source": "src/func_ov065_0211bc88.cpp",
+      "ordinal": 2
+    },
+    {
+      "symbol": "_ZN16daObjCtMecha09_c16CleanupResourcesEv",
+      "address": "0x0211bd20",
+      "size": "0x00000044",
+      "legacy_source": "src/_ZN16daObjCtMecha09_c16CleanupResourcesEv.cpp",
+      "ordinal": 3
+    },
+    {
+      "symbol": "_ZN16daObjCtMecha09_c6RenderEv",
+      "address": "0x0211bd64",
+      "size": "0x00000028",
+      "legacy_source": "src/_ZN16daObjCtMecha09_c6RenderEv.cpp",
+      "ordinal": 4
+    },
+    {
+      "symbol": "_ZN16daObjCtMecha09_c8BehaviorEv",
+      "address": "0x0211bd8c",
+      "size": "0x00000178",
+      "legacy_source": "src/_ZN16daObjCtMecha09_c8BehaviorEv.cpp",
+      "ordinal": 5
+    }
+  ],
+  "data": [],
+  "bss": [],
+  "notes": [
+    "Six matched functions, 0x0211bbdc..0x0211bf04. InitResources at 0x0211bf04 is not complete (ambiguous CLPS relocation) and is not licensed here. daObjCtMecha09_c_classInit at 0x0211c040 stays in src/d_a_obj_ct_mecha09.c.",
+    "One out-of-line destructor under #pragma defer_codegen off. Text-only: the vtable and RTTI the key function emits are compiler-only output."
+  ],
+  "compiler_only_output": [
+    {
+      "symbol": "_ZN16daObjCtMecha09_cD2Ev",
+      "disposition": "deadstrip",
+      "reason": "Homeless. One out-of-line destructor under #pragma defer_codegen off emits D1, D0, then D2. The cartridge has D1 at ov065:0x0211bbdc and D0 at 0x0211bc28 and no D2. Production isolation discards it. It is emitted after D0, and the licensed functions stay ROM-ascending."
+    },
+    {
+      "symbol": "_ZTV16daObjCtMecha09_c",
+      "disposition": "deadstrip-data",
+      "canonical_module": "ov065",
+      "canonical_address": "0x0211d568",
+      "reason": "The out-of-line destructor is the key function, so this TU emits the vtable. Public address point ov065:0x0211d568 is outside the licensed text span 0x0211bbdc..0x0211bf04. Text-only production isolation discards it after the address-point bias is checked. The coined _ZTV14TTC_MovingBeam alias at the same address was deleted."
+    },
+    {
+      "symbol": "_ZTI16daObjCtMecha09_c",
+      "disposition": "deadstrip-data",
+      "canonical_module": "ov065",
+      "canonical_address": "0x0211d514",
+      "reason": "This class's __si_class_type_info, dragged in with the vtable. Cartridge copy ov065:0x0211d514. Its base word is _ZTI10dBgActor_c."
+    },
+    {
+      "symbol": "_ZTS16daObjCtMecha09_c",
+      "disposition": "deadstrip-data",
+      "canonical_module": "ov065",
+      "canonical_address": "0x0211d530",
+      "reason": "Type-name string 16daObjCtMecha09_c at ov065:0x0211d530."
+    },
+    {
+      "symbol": "_ZTI10dBgActor_c",
+      "disposition": "deadstrip-data",
+      "canonical_module": "ov002",
+      "canonical_address": "0x021089ec",
+      "reason": "Ancestor RTTI passenger. Chain is daObjCtMecha09_c -> dBgActor_c (ov002:0x021089ec) -> dActor_c -> dBase_c -> fBase_c."
+    },
+    {
+      "symbol": "_ZTS10dBgActor_c",
+      "disposition": "deadstrip-data",
+      "canonical_module": "ov002",
+      "canonical_address": "0x02108a04",
+      "reason": "Ancestor type-name string 10dBgActor_c. Cartridge copy ov002:0x02108a04."
+    },
+    {
+      "symbol": "_ZTI8dActor_c",
+      "disposition": "deadstrip-data",
+      "canonical_module": "arm9",
+      "canonical_address": "0x0208e390",
+      "reason": "Ancestor RTTI passenger. Cartridge copy arm9:0x0208e390."
+    },
+    {
+      "symbol": "_ZTS8dActor_c",
+      "disposition": "deadstrip-data",
+      "canonical_module": "arm9",
+      "canonical_address": "0x0208e384",
+      "reason": "Ancestor type-name string 8dActor_c. Cartridge copy arm9:0x0208e384."
+    },
+    {
+      "symbol": "_ZTI7dBase_c",
+      "disposition": "deadstrip-data",
+      "canonical_module": "arm9",
+      "canonical_address": "0x02086e78",
+      "reason": "Ancestor RTTI passenger. Cartridge copy arm9:0x02086e78."
+    },
+    {
+      "symbol": "_ZTS7dBase_c",
+      "disposition": "deadstrip-data",
+      "canonical_module": "arm9",
+      "canonical_address": "0x02086e54",
+      "reason": "Ancestor type-name string 7dBase_c. Cartridge copy arm9:0x02086e54."
+    },
+    {
+      "symbol": "_ZTI7fBase_c",
+      "disposition": "deadstrip-data",
+      "canonical_module": "arm9",
+      "canonical_address": "0x02086d70",
+      "reason": "Root __class_type_info passenger. Cartridge copy arm9:0x02086d70."
+    },
+    {
+      "symbol": "_ZTS7fBase_c",
+      "disposition": "deadstrip-data",
+      "canonical_module": "arm9",
+      "canonical_address": "0x02086e60",
+      "reason": "Root type-name string 7fBase_c. Cartridge copy arm9:0x02086e60."
+    }
+  ],
+  "verification": {
+    "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
+    "toolchain": "tools/mwccarm/2004/b56/mwccarm.exe",
+    "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
+    "object": "build/tu/ov065-daObjCtMecha09_c/daObjCtMecha09_c.o (gitignored)",
+    "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
+    "functions_matched": 6,
+    "functions_declared": 6,
+    "compilerOnlyOutput": {
+      "requested": [
+        "_ZN16daObjCtMecha09_cD2Ev"
+      ],
+      "deadstripped": [
+        "_ZN16daObjCtMecha09_cD2Ev"
+      ],
+      "droppedSections": [
+        9,
+        10,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34
+      ],
+      "data": [
+        "_ZTV16daObjCtMecha09_c",
+        "_ZTI16daObjCtMecha09_c",
+        "_ZTS16daObjCtMecha09_c",
+        "_ZTI10dBgActor_c",
+        "_ZTS10dBgActor_c",
+        "_ZTI8dActor_c",
+        "_ZTS8dActor_c",
+        "_ZTI7dBase_c",
+        "_ZTS7dBase_c",
+        "_ZTI7fBase_c",
+        "_ZTS7fBase_c"
+      ],
+      "dataExternalized": [
+        "_ZTI10dBgActor_c",
+        "_ZTI16daObjCtMecha09_c",
+        "_ZTI7dBase_c",
+        "_ZTI7fBase_c",
+        "_ZTI8dActor_c",
+        "_ZTS10dBgActor_c",
+        "_ZTS16daObjCtMecha09_c",
+        "_ZTS7dBase_c",
+        "_ZTS7fBase_c",
+        "_ZTS8dActor_c",
+        "_ZTV16daObjCtMecha09_c"
+      ]
+    },
+    "criteria": {
+      "every_declared_function_defined": "PASS",
+      "every_declared_function_bytes_match": "PASS",
+      "declared_function_set_equals_defined_function_set": "PASS",
+      "functions_occur_in_expected_order": "PASS",
+      "relocation_destinations_verified": "PASS"
+    }
+  }
+}
