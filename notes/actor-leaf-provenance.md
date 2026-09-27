@@ -156,8 +156,8 @@ that launder is measured and per-site, and the existing note in
 
 | offset | new name | evidence |
 | --- | --- | --- |
-| 0x3bc | `mGroundY` | `InitResources` in `src/actors/daObjPowerUpItem_c.cpp` raycasts a `dBgCh_Gnd` from `mPos` with Y + 0x14000 and stores the hit height (`ray + 0x44`), falling back to the probe's own Y when `DetectClsn` finds nothing. |
-| 0x3c0 | `mState` | `Render` in `src/actors/daObjPowerUpItem_c.cpp` switches on it: 0 draws `mModel1`, 1 and 2 draw `mModel2`. |
+| 0x3bc | `mGroundY` | `src/actors/daObjPowerUpItem_c.cpp` raycasts a `dBgCh_Gnd` from `mPos` with Y + 0x14000 and stores the hit height (`ray + 0x44`), falling back to the probe's own Y when `DetectClsn` finds nothing. |
+| 0x3c0 | `mState` | `src/actors/daObjPowerUpItem_c.cpp` switches on it: 0 draws `mModel1`, 1 and 2 draw `mModel2`. |
 | 0x3ca | `mLifeTimer` | seeded 0xb4 (180 frames) in `InitResources`; `Render` skips drawing on odd values once it is below 0x2d, so the flower blinks through its last 45 frames. |
 
 ## daObjNumber_c -- include/daObjNumber_c.h
