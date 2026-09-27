@@ -29,7 +29,6 @@ extern void _ZN11ShadowModel12InitCylinderEv(void* self);
 extern void* _ZN9Animation8LoadFileER13SharedFilePtr(SharedFilePtr* f);
 extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(void* self, dActor_c* a, Vector3* v, Fix12i r, Fix12i h, unsigned int e, unsigned int g);
 extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void* self, dActor_c* a, Fix12i r, Fix12i h, Vector3_16* p, Vector3_16* q);
-extern short _ZN8dActor_c18HorzAngleToCPlayerEv(void* self);
 extern int ChiefChilly_ChangeState(void* c, PMF* p);
 }
 
@@ -74,7 +73,7 @@ int daKing_Donketu_c::InitResources()
         }
     }
     unk_4c5 = 0xff;
-    mPrevAngleY = _ZN8dActor_c18HorzAngleToCPlayerEv(((char*)this));
+    mPrevAngleY = HorzAngleToCPlayer();
     mAngleY = mPrevAngleY;
     *(short*)(((char*)this)+0x400+0xc6) = mAngleY;
     unk_4bc = 2;

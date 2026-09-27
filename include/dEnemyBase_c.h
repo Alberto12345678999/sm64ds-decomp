@@ -56,9 +56,9 @@ struct dEnemyBase_c : dActor_c {
     /* 0x100 -- 28 subclasses. Frames spent in the current mState: the state
        handlers zero it the instant they change mState, and some count it up
        while others count it down through DecIfAbove0_Short. Derived
-       independently by two passes over disjoint subclass sets (Unagi,
-       MrBlizzard, daShark_c, PiranhaPlant, FirePiranhaPlantBig, daKrb_c) and
-       (Whomp) -- see notes/enemy-provenance.md and
+       independently by two passes over disjoint subclass sets (daMoray_c,
+       daSnowman_c, daShark_c, PiranhaPlant, FirePiranhaPlantBig, daKrb_c) and
+       (daBtn_c) -- see notes/enemy-provenance.md and
        notes/enemy-leaf-provenance.md. Named mStateTimer, not mTimer, because
        daJango_c already owns an unrelated mTimer and the shorter name silently
        rebinds it. */

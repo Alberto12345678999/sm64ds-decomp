@@ -8,7 +8,7 @@
 #include "decl_dBgCh_Actr.h"
 #include "decl_common.h"
 /* recovered: vtable identified, globals resolved */
-/* resolved: VT0 = _ZTV10MrBlizzard */
+/* resolved: VT0 = _ZTV11daSnowman_c */
 /* Reconstructed source-style name: SM64DS proves daSnowman_c through RTTI,
  * allocation size, vtable identity, and the SNOWMAN registry profile;
  * later EAD lineage supplies classInit. Exact original spelling is not
@@ -18,7 +18,7 @@ int *daSnowman_c_classInit(void)
     int *p = (int *)_ZN7fBase_cnwEj(1132);
     if (p) {
         _ZN12dEnemyBase_cC2Ev(p);
-        p[0] = (int)_ZTV10MrBlizzard;
+        p[0] = (int)_ZTV11daSnowman_c;
         _ZN10dCcAcPos_cC1Ev((char *)p + 0x110);
         _ZN10dBgCh_ActrC1Ev((char *)p + 0x150);
         _ZN9ModelAnimC1Ev((char *)p + 0x30c);

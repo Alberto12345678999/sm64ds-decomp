@@ -209,7 +209,7 @@
    ]
   },
   "ov065:0x0211bf04": {
-   "name": "_ZN14TTC_MovingBeam13InitResourcesEv",
+   "name": "_ZN16daObjCtMecha09_c13InitResourcesEv",
    "missing": [
     "func_02112118"
    ]
@@ -273,7 +273,7 @@
    ]
   },
   "ov079:0x02126164": {
-   "name": "_ZN5Whomp13InitResourcesEv",
+   "name": "_ZN7daBtn_c13InitResourcesEv",
    "missing": [
     "func_021135d4"
    ]

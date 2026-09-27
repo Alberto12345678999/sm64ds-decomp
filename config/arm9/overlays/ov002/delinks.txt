@@ -346,77 +346,9 @@ src/game/actors/daObjPushblock_c.cpp:
     complete
     .text start:0x020b8bf0 end:0x020b9148
 
-src/_ZN11PowerFlowerD1Ev.cpp:
+src/actors/daObjPowerUpItem_c.cpp:
     complete
-    .text start:0x020b9148 end:0x020b9198
-
-src/_ZN11PowerFlowerD0Ev.cpp:
-    complete
-    .text start:0x020b9198 end:0x020b91fc
-
-src/func_ov002_020b91fc.c:
-    complete
-    .text start:0x020b91fc end:0x020b92b8
-
-src/func_ov002_020b92b8.c:
-    complete
-    .text start:0x020b92b8 end:0x020b92c4
-
-src/func_ov002_020b92c4.cpp:
-    complete
-    .text start:0x020b92c4 end:0x020b9450
-
-src/func_ov002_020b9450.cpp:
-    complete
-    .text start:0x020b9450 end:0x020b94c4
-
-src/func_ov002_020b94c4.c:
-    complete
-    .text start:0x020b94c4 end:0x020b96c0
-
-src/func_ov002_020b96c0.c:
-    complete
-    .text start:0x020b96c0 end:0x020b9704
-
-src/func_ov002_020b9704.cpp:
-    complete
-    .text start:0x020b9704 end:0x020b9750
-
-src/func_ov002_020b9750.cpp:
-    complete
-    .text start:0x020b9750 end:0x020b979c
-
-src/func_ov002_020b979c.c:
-    complete
-    .text start:0x020b979c end:0x020b993c
-
-src/func_ov002_020b993c.c:
-    complete
-    .text start:0x020b993c end:0x020b9a1c
-
-src/func_ov002_020b9a1c.c:
-    complete
-    .text start:0x020b9a1c end:0x020b9a7c
-
-src/_ZN11PowerFlower16CleanupResourcesEv.cpp:
-    complete
-    .text start:0x020b9a7c end:0x020b9aac
-
-src/_ZN11PowerFlower6RenderEv.cpp:
-    complete
-    .text start:0x020b9aac end:0x020b9b70
-
-src/_ZN11PowerFlower8BehaviorEv.cpp:
-    complete
-    .text start:0x020b9b70 end:0x020b9c00
-
-src/_ZN11PowerFlower13InitResourcesEv.cpp:
-    complete
-    .text start:0x020b9c00 end:0x020b9e04
-
-src/_ZN11PowerFlower13OnYoshiTryEatEv.cpp:
-    complete
-    .text start:0x020b9e04 end:0x020b9e0c
+    .text start:0x020b9148 end:0x020b9e0c
 
 src/d_a_obj_power_up_item.c:
     complete
@@ -2170,7 +2102,7 @@ src/_ZN9PowerStar13InitResourcesEv.cpp:
     complete
     .text start:0x020eb63c end:0x020ebe5c
 
-src/StarCamera_Spawn.cpp:
+src/actors/StarCamera_Spawn.cpp:
     complete
     .text start:0x020ebe5c end:0x020ebe8c
 
@@ -2373,85 +2305,9 @@ src/_ZN16dPathLiftActor_cD1Ev.cpp:
     complete
     .text start:0x020ef390 end:0x020ef3ec
 
-src/func_ov002_020ef3ec.c:
+src/actors/dPathLiftActor_c.cpp:
     complete
-    .text start:0x020ef3ec end:0x020ef3f0
-
-src/func_ov002_020ef3f0.c:
-    complete
-    .text start:0x020ef3f0 end:0x020ef408
-
-src/func_ov002_020ef408.c:
-    complete
-    .text start:0x020ef408 end:0x020ef57c
-
-src/func_ov002_020ef57c.c:
-    complete
-    .text start:0x020ef57c end:0x020ef670
-
-src/func_ov002_020ef670.c:
-    complete
-    .text start:0x020ef670 end:0x020efa44
-
-src/func_ov002_020efa44.c:
-    complete
-    .text start:0x020efa44 end:0x020efa54
-
-src/func_ov002_020efa54.cpp:
-    complete
-    .text start:0x020efa54 end:0x020efaa0
-
-src/_ZN16dPathLiftActor_c12BaseBehaviorEv.cpp:
-    complete
-    .text start:0x020efaa0 end:0x020efaf0
-
-src/func_ov002_020efaf0.cpp:
-    complete
-    .text start:0x020efaf0 end:0x020efbdc
-
-src/func_ov002_020efbdc.c:
-    complete
-    .text start:0x020efbdc end:0x020efc74
-
-src/func_ov002_020efc74.cpp:
-    complete
-    .text start:0x020efc74 end:0x020efcf4
-
-src/func_ov002_020efcf4.c:
-    complete
-    .text start:0x020efcf4 end:0x020efe68
-
-src/func_ov002_020efe68.c:
-    complete
-    .text start:0x020efe68 end:0x020efe7c
-
-src/func_ov002_020efe7c.c:
-    complete
-    .text start:0x020efe7c end:0x020efe9c
-
-src/func_ov002_020efe9c.c:
-    complete
-    .text start:0x020efe9c end:0x020efebc
-
-src/func_ov002_020efebc.c:
-    complete
-    .text start:0x020efebc end:0x020efedc
-
-src/func_ov002_020efedc.c:
-    complete
-    .text start:0x020efedc end:0x020eff04
-
-src/func_ov002_020eff04.cpp:
-    complete
-    .text start:0x020eff04 end:0x020eff18
-
-src/_ZN16dPathLiftActor_c9AfterClsnEi.cpp:
-    complete
-    .text start:0x020eff18 end:0x020eff90
-
-src/func_ov002_020eff90.cpp:
-    complete
-    .text start:0x020eff90 end:0x020effb8
+    .text start:0x020ef3ec end:0x020effb8
 
 src/func_ov002_020effb8.c:
     complete

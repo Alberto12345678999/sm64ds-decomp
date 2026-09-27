@@ -1,4 +1,4 @@
-# Player / Bowser / SpikeBomb field provenance
+# Player / Bowser / daKirai_c field provenance
 
 Why each `unk_NNN` in these headers got the name it has. Every row cites a matched
 body in `src/` and what that body does with the slot; a slot with no row is still
@@ -293,7 +293,7 @@ Bowser decisively, and they read almost all of it. Named from that evidence:
 | 0x424 | `mTalkStep` | `switch` on it: case 0 calls `Player::StartTalk`, case 1 waits for `Player::GetTalkState() == 0` then `Player::ShowMessage`, each case incrementing it. |
 | 0x426 | `mDropsShadow` | gates the `dBgCh_Gnd` raycast that projects Bowser onto the ground and writes the shadow matrix at 0x330 -- the same role `BowserFire::mDropsShadow` was named for. |
 | 0x427 | `mBounceOnLand` | while set, `dBgCh_Actr::JustHitGround()` reflects the vertical speed at -60% (clamped to 0x14000); cleared once he settles. |
-| 0x42b | `mCapActorAlive` | actor 0x10d is the lost cap -- `MrBlizzard` spawns it under `SaveData::HasPlayerLostCap()` and stores its unique id as `mCapUniqueID`. This is the latch saying that actor still exists. |
+| 0x42b | `mCapActorAlive` | actor 0x10d is the lost cap -- `daSnowman_c` spawns it under `SaveData::HasPlayerLostCap()` and stores its unique id as `mCapUniqueID`. This is the latch saying that actor still exists. |
 | 0x444 | `mCutsceneStep` | `switch` on it drives the camera: `Camera::SetFlag_3`, `Camera::SetLookAt`, and the computed eye position at 0x438/0x43c. |
 | 0x446 | `mStompFxLatch` | [func_ov060_02111a28](../src/func_ov060_02111a28.cpp) matches the animation frame at 0x12c against per-animation windows and, on the rising edge only, emits landing dust from the left foot (0x3d4) or right (0x3e0), plays sound 0xb0 and calls `dActor_c::Earthquake`. This is the edge-detect latch that makes it fire once per window. |
 | 0x448 | `mParticleHandle` | stores the result of `Particle::System::New`. |
@@ -311,7 +311,7 @@ Still `unk_` in Bowser, with the reason:
 - **0x429, 0x42a** -- written once by `InitResources` (1 and 5) and read nowhere,
   including in the [ov060](../config/arm9/overlays/ov060/symbols.txt) handlers.
 
-## SpikeBomb
+## daKirai_c
 
 | offset | name | evidence |
 | --- | --- | --- |
@@ -320,9 +320,9 @@ Still `unk_` in Bowser, with the reason:
 | 0x178 | `mHomePosY` | as above; it is the one the `>> 3` term is added to. |
 | 0x17c | `mHomePosZ` | as above. |
 | 0x1a8 | `mSlotIndex` | `InitResources`: `mSlotIndex = AddSpikeBomb(this)`, and `src/AddSpikeBomb.c` returns the index of the first free slot in the eight-entry global [data_0209f3a4](../config/arm9/symbols.txt) (or -1). `src/ClearSpikeBomb.c` takes that index back. |
-| 0x1ae | `mOpacity` | `InitResources` sets 0xff; `SpikeBomb::Render` returns early on `< 8`. Full alpha at spawn plus a "too faint to bother drawing" guard is an opacity byte, and 0xff is not a plausible state id or counter. |
+| 0x1ae | `mOpacity` | `InitResources` sets 0xff; `daKirai_c::Render` returns early on `< 8`. Full alpha at spawn plus a "too faint to bother drawing" guard is an opacity byte, and 0xff is not a plausible state id or counter. |
 
-Left `unk_` in SpikeBomb: **0x180** (`Vec3_HorzLen` of the spawn position, i.e. a
+Left `unk_` in daKirai_c: **0x180** (`Vec3_HorzLen` of the spawn position, i.e. a
 distance from the world origin -- plausibly an orbit radius, but nothing matched
 reads it back) and **0x184** (`0x2ee000`, whose only use is the `>> 3` term added
 to `mHomePosY`).

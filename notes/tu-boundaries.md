@@ -71,7 +71,7 @@ and Koopa apart, with no "how interleaved is too interleaved" threshold to tune.
 **RTTI may extend or create a cluster; it may never bridge two symbol clusters.**
 Gate V2b found this rather than foresight. [ov081](../config/arm9/overlays/ov081/symbols.txt):
 ```sh
-MrBlizzard    0x2124090-0x2125f14
+daSnowman_c    0x2124090-0x2125f14
 Snowball      0x2125f14-0x2126504   abuts exactly — two TUs
 daSnowman_c   0x2125eb8-0x21261d4   RTTI span straddles the boundary
 ```

@@ -46,8 +46,6 @@
  *   true types changes how the caller passes them.
  *   dBgW_KcMbg::SetFile (InitResources' scale 0x199); the header method
  *   homes the argument and changes the code size.
- *   MarkForDestruction in func_ov098_0213a0a8: fBase_c.h spells it void,
- *   and this helper returns the callee's r0.
  *
  * Known limits:
  *   func_020393c4 is a 4-byte store into dBgW+0x1c (unk_1c); this TU stores
@@ -87,12 +85,10 @@ int DecIfAbove0_Byte(u8 *p);
 int DecIfAbove0_Short(u16 *p);
 int Vec3_HorzDist(void *a, void *b);
 int _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(void *self, int a, int b);
-int func_ov098_0213a0a8(daObjFallBlock_c *c);
+void func_ov098_0213a0a8(daObjFallBlock_c *c);
 void func_ov098_0213a0e8(daObjFallBlock_c *c);
 void func_ov098_0213a148(daObjFallBlock_c *c);
 void func_ov098_0213a23c(daObjFallBlock_c *c);
-/* local extern: fBase_c.h declares MarkForDestruction void; func_ov098_0213a0a8 tail-calls it and returns its r0, so the header spelling adds a mov r0, #0 */
-int _ZN7fBase_c18MarkForDestructionEv(void *);
 void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
     void *self, void *kcl, const Matrix4x3 *mat, int scale, short angle, void *clps);
 void func_020393c4(int *p, int v);
@@ -472,13 +468,15 @@ void func_ov098_0213a0e8(daObjFallBlock_c *self)
 
 // @symbol func_ov098_0213a0a8
 extern "C" {
-int func_ov098_0213a0a8(daObjFallBlock_c *c)
+void func_ov098_0213a0a8(daObjFallBlock_c *c)
 {
     dActor_c *a = dActor_c::FindWithID((unsigned int)c->mLinkedStarID);
-    if (a == 0) return _ZN7fBase_c18MarkForDestructionEv(c);
-    int v = *(int *)((char *)a + 0x440); /* POWER_STAR +0x440 */
-    if (v == 4) { v = 0; c->mSuppressed = 0; }
-    return v;
+    if (a == 0) {
+        c->MarkForDestruction();
+        return;
+    }
+    if (*(int *)((char *)a + 0x440) == 4) /* POWER_STAR +0x440 */
+        c->mSuppressed = 0;
 }
 }
 
