@@ -57,7 +57,6 @@ struct PicGateFields {
 
 extern "C" {
 extern int IsStarCollectedInLevel(signed char levelID, int starID);
-extern int _Z14ApproachLinearRiii(int *a, int b, int c);
 extern void func_ov080_021256f8(void *c);
 extern int func_ov080_02125bb0(void *c, int x);
 extern void func_ov080_02125940(void *c);
@@ -66,14 +65,15 @@ extern int data_0209caa0[];
 extern void func_ov080_02126124(void *c);
 extern void func_ov080_02125de0(void *c, int a, int b, int d);
 extern void func_ov080_02125fd0(char *c);
-extern void MulMat4x3Mat4x3(const void *a, const void *b, void *out);
+extern void MulMat4x3Mat4x3(const int *a, const int *b, int *out);
 extern void func_ov080_02125460(char *c);
-extern int data_0209b3ec;
+extern Matrix4x3 data_0209b3ec;
 extern unsigned short DecIfAbove0_Short(unsigned short *p);
-extern int func_0203cbc0(void *a);
+extern void func_0203cbc0(void *a);
 extern void _ZN8dActor_c9SetRangesE5Fix12IiES1_S1_S1_(void *self, int a, int b, int c, int d);
 }
 extern Disp data_ov080_02128628[];
+int ApproachLinear(int &ref, int target, int step);
 
 // @symbol func_ov080_021264ec
 extern "C" {
@@ -82,7 +82,7 @@ void func_ov080_021264ec(char *c)
     if ((unsigned char)((*(unsigned int*)(c + 8) >> 8) & 0x1f) == 7 &&
         !(data_0209caa0[2] & 0x40000) &&
         IsStarCollectedInLevel(0x12, 1)) {
-        if (_Z14ApproachLinearRiii((int*)(c + 0x5c), *(int*)(c + 0x1b0) + 0x802000, 0x13e72))
+        if (ApproachLinear(*(int*)(c + 0x5c), *(int*)(c + 0x1b0) + 0x802000, 0x13e72))
             data_0209caa0[2] |= 0x40000;
         func_ov080_0212555c(c);
     }
@@ -152,7 +152,7 @@ void func_ov080_0212677c(char *self)
     }
 
     *(int *)0x4000444 = z;
-    MulMat4x3Mat4x3((void *)(self + 0xd4), &data_0209b3ec, tmp);
+    MulMat4x3Mat4x3((const int *)(self + 0xd4), (const int *)&data_0209b3ec, tmp);
     *(int *)0x4000440 = 2;
     func_020553a4(tmp);
     *(int *)0x4000440 = 1;
