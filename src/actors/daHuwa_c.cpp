@@ -34,6 +34,7 @@
 #pragma defer_codegen off
 
 #include "common.h"
+#include "decl_Enemy.h"
 #include "daHuwa_c.h"
 #include "Player.h"
 #include "SharedFilePtr.h"
@@ -59,7 +60,7 @@ void MulMat4x3Mat4x3(const int *a, const int *b, int *dst);
 void SubVec3(Vector3 *a, Vector3 *b, Vector3 *out);
 void AddVec3(Vector3 *a, Vector3 *b, Vector3 *out);
 void Vec3_LslInPlace(Vector3 *v, int shift);
-int Vec3_HorzDist(const void *a, const void *b);
+int Vec3_HorzDist(const Vector3 *a, const Vector3 *b);
 short Vec3_HorzAngle(const Vector3 *a, const Vector3 *b);
 
 /* Scalar stand-ins for Fix12<int> by-value callees. The header methods
@@ -71,7 +72,10 @@ void _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
 void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *self, BCA_File *file, int flags, int speed, unsigned int startFrame);
 void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, dActor_c *actor, int radius, int height, unsigned int flags, unsigned int vulnFlags);
 void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void *self, dActor_c *actor, int radius, int height, void *a, void *b);
-void _ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Player5Fix12IiE(void *self, Vector3_16 *vel, void *player, int height);
+/* dEnemyBase_c::KillByInvincibleChar takes a Fix12<int> by value, so the header
+   member form size-DIFFs (0x210 -> 0x218, see the leftover note). decl_Enemy.h
+   already declares the ROM symbol with plain scalars; use that one spelling
+   rather than adding a third local copy. */
 void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *player, void *pos, unsigned int n, int knockback, unsigned int a, unsigned int b, unsigned int c);
 void _ZN6Player10SpinBounceE5Fix12IiE(void *player, int speed);
 }
@@ -308,9 +312,9 @@ int daHuwa_c::Behavior()
             playerPos[0] = src[0];
             playerPos[1] = src[1];
             playerPos[2] = src[2];
-            if (Vec3_HorzDist(&mHomePosX, playerPos) > 0x3e8000)
+            if (Vec3_HorzDist((const Vector3 *)&mHomePosX, (const Vector3 *)playerPos) > 0x3e8000)
                 mTargetAngY = Vec3_HorzAngle((const Vector3 *)&mPosX, (const Vector3 *)&mHomePosX);
-            else if (Vec3_HorzDist((const Vector3 *)&mPosX, playerPos) > 0x12c000)
+            else if (Vec3_HorzDist((const Vector3 *)&mPosX, (const Vector3 *)playerPos) > 0x12c000)
                 mTargetAngY = Vec3_HorzAngle((const Vector3 *)&mPosX, (const Vector3 *)playerPos);
         } else {
             mTargetAngY = Vec3_HorzAngle((const Vector3 *)&mPosX, (const Vector3 *)&mHomePosX);
