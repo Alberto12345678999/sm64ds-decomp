@@ -34,23 +34,36 @@
 #include "dCcAcPos_c.h"
 
 struct daMoray_c : dEnemyBase_c {
+    /* One state is two member-function pointers: init runs once, when
+       func_ov016_02111bf0 installs the state, and execute runs every frame
+       from Behavior. The five tables (0x02114d7c..0x02114dbc, 0x10 each) are
+       filled in by __sinit_ov016_021136ec. */
+    struct State {
+        int (daMoray_c::*init)();
+        int (daMoray_c::*execute)();
+    };
+
     dCcAcPos_c mdCcAcPos_c1;  /* 0x110 */
     dCcAcPos_c mdCcAcPos_c2;  /* 0x150 */
     dBgCh_Actr mWithMeshClsn;                             /* 0x190 */
-    s32 mState;                                             /* 0x34c */
+    const State *mState;                                    /* 0x34c */
     BlendModelAnim mBlendModelAnim;                         /* 0x350 */
-    s32 unk_3c0;                                            /* 0x3c0 */
-    u8  pad_3c4[0x2c];
+    /* Where the carried star sits: the jaw bone's transform (bone 4) moved
+       0x28000 along it. The star actor keeps a pointer to this matrix. */
+    Matrix4x3 mStarMtx;                                     /* 0x3c0 */
     s32 mHomePosX;                                          /* 0x3f0 */
     s32 mHomePosY;                                          /* 0x3f4 */
     s32 mHomePosZ;                                          /* 0x3f8 */
-    u8  pad_3fc[0x8];
+    u8  pad_3fc[0x4];
+    s32 unk_400;                                            /* 0x400 -- zeroed by two state inits */
     s32 mPathID;                                            /* 0x404 */
     s32 mVariant;                                           /* 0x408 */
     s32 mPathNodeCount;                                     /* 0x40c */
     s32 mPathNodeIndex;                                     /* 0x410 */
     u8  mStarParam;                                         /* 0x414 */
-    u8  pad_415[0x3];
+    u8  pad_415[0x1];
+    s16 mStarSpinAngle;                                     /* 0x416 */
+    /* [1..6] bend the body bones; [7] is the target the neck turns toward. */
     s16 mSegmentAngle[8];                                   /* 0x418 */
     s16 mInitAngleX;                                        /* 0x428 */
     s16 mInitAngleY;                                        /* 0x42a */
