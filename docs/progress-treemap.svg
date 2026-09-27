@@ -13789,11 +13789,11 @@ matched: yes</title></rect><rect x="425.09" y="151.26" width="5.17" height="7.73
 module: ov002
 addr: 0x020b910c
 size: 60 bytes
-matched: yes</title></rect><rect x="430.25" y="151.26" width="6.89" height="7.73" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11PowerFlowerD1Ev
+matched: yes</title></rect><rect x="430.25" y="151.26" width="6.89" height="7.73" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN18daObjPowerUpItem_cD1Ev
 module: ov002
 addr: 0x020b9148
 size: 80 bytes
-matched: yes</title></rect><rect x="437.15" y="151.26" width="8.61" height="7.73" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11PowerFlowerD0Ev
+matched: yes</title></rect><rect x="437.15" y="151.26" width="8.61" height="7.73" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN18daObjPowerUpItem_cD0Ev
 module: ov002
 addr: 0x020b9198
 size: 100 bytes
@@ -13841,23 +13841,23 @@ matched: yes</title></rect><rect x="377.08" y="158.98" width="9.85" height="6.49
 module: ov002
 addr: 0x020b9a1c
 size: 96 bytes
-matched: yes</title></rect><rect x="386.93" y="158.98" width="4.92" height="6.49" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11PowerFlower16CleanupResourcesEv
+matched: yes</title></rect><rect x="386.93" y="158.98" width="4.92" height="6.49" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN18daObjPowerUpItem_c16CleanupResourcesEv
 module: ov002
 addr: 0x020b9a7c
 size: 48 bytes
-matched: yes</title></rect><rect x="391.85" y="158.98" width="20.11" height="6.49" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11PowerFlower6RenderEv
+matched: yes</title></rect><rect x="391.85" y="158.98" width="20.11" height="6.49" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN18daObjPowerUpItem_c6RenderEv
 module: ov002
 addr: 0x020b9aac
 size: 196 bytes
-matched: yes</title></rect><rect x="411.96" y="158.98" width="14.77" height="6.49" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11PowerFlower8BehaviorEv
+matched: yes</title></rect><rect x="411.96" y="158.98" width="14.77" height="6.49" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN18daObjPowerUpItem_c8BehaviorEv
 module: ov002
 addr: 0x020b9b70
 size: 144 bytes
-matched: yes</title></rect><rect x="426.73" y="158.98" width="52.94" height="6.49" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11PowerFlower13InitResourcesEv
+matched: yes</title></rect><rect x="426.73" y="158.98" width="52.94" height="6.49" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN18daObjPowerUpItem_c13InitResourcesEv
 module: ov002
 addr: 0x020b9c00
 size: 516 bytes
-matched: yes</title></rect><rect x="479.67" y="158.98" width="0.82" height="6.49" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11PowerFlower13OnYoshiTryEatEv
+matched: yes</title></rect><rect x="479.67" y="158.98" width="0.82" height="6.49" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN18daObjPowerUpItem_c13OnYoshiTryEatEv
 module: ov002
 addr: 0x020b9e04
 size: 8 bytes
@@ -42925,11 +42925,11 @@ matched: yes</title></rect><rect x="1580.93" y="742.58" width="14.07" height="5.
 module: ov090
 addr: 0x02134020
 size: 164 bytes
-matched: yes</title></rect><rect x="1287.24" y="779.74" width="4.08" height="9.07" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN25RotatingUpDownPlatformUtmD1Ev
+matched: yes</title></rect><rect x="1287.24" y="779.74" width="4.08" height="9.07" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN23daObjRotateUpdownLift_cD1Ev
 module: ov091
 addr: 0x02130f00
 size: 76 bytes
-matched: yes</title></rect><rect x="1291.32" y="779.74" width="5.15" height="9.07" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN25RotatingUpDownPlatformUtmD0Ev
+matched: yes</title></rect><rect x="1291.32" y="779.74" width="5.15" height="9.07" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN23daObjRotateUpdownLift_cD0Ev
 module: ov091
 addr: 0x02130f4c
 size: 96 bytes
@@ -42937,11 +42937,11 @@ matched: yes</title></rect><rect x="1296.47" y="779.74" width="10.52" height="9.
 module: ov091
 addr: 0x02130fac
 size: 196 bytes
-matched: yes</title></rect><rect x="1306.99" y="779.74" width="7.51" height="9.07" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN25RotatingUpDownPlatformUtm4KillEv
+matched: yes</title></rect><rect x="1306.99" y="779.74" width="7.51" height="9.07" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN23daObjRotateUpdownLift_c4KillEv
 module: ov091
 addr: 0x02131070
 size: 140 bytes
-matched: yes</title></rect><rect x="1314.50" y="779.74" width="5.37" height="9.07" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN25RotatingUpDownPlatformUtm15OnHitByMegaCharER6Player
+matched: yes</title></rect><rect x="1314.50" y="779.74" width="5.37" height="9.07" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN23daObjRotateUpdownLift_c15OnHitByMegaCharER6Player
 module: ov091
 addr: 0x021310fc
 size: 100 bytes
@@ -42953,19 +42953,19 @@ matched: yes</title></rect><rect x="1345.62" y="779.74" width="3.86" height="9.0
 module: ov091
 addr: 0x02131340
 size: 72 bytes
-matched: yes</title></rect><rect x="1287.24" y="788.81" width="5.76" height="10.82" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN25RotatingUpDownPlatformUtm16CleanupResourcesEv
+matched: yes</title></rect><rect x="1287.24" y="788.81" width="5.76" height="10.82" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN23daObjRotateUpdownLift_c16CleanupResourcesEv
 module: ov091
 addr: 0x02131388
 size: 128 bytes
-matched: yes</title></rect><rect x="1292.99" y="788.81" width="4.32" height="10.82" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN25RotatingUpDownPlatformUtm6RenderEv
+matched: yes</title></rect><rect x="1292.99" y="788.81" width="4.32" height="10.82" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN23daObjRotateUpdownLift_c6RenderEv
 module: ov091
 addr: 0x02131408
 size: 96 bytes
-matched: yes</title></rect><rect x="1297.31" y="788.81" width="52.17" height="10.82" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN25RotatingUpDownPlatformUtm8BehaviorEv
+matched: yes</title></rect><rect x="1297.31" y="788.81" width="52.17" height="10.82" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN23daObjRotateUpdownLift_c8BehaviorEv
 module: ov091
 addr: 0x02131468
 size: 1160 bytes
-matched: yes</title></rect><rect x="1287.24" y="799.63" width="35.19" height="9.57" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN25RotatingUpDownPlatformUtm13InitResourcesEv
+matched: yes</title></rect><rect x="1287.24" y="799.63" width="35.19" height="9.57" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN23daObjRotateUpdownLift_c13InitResourcesEv
 module: ov091
 addr: 0x021318f0
 size: 692 bytes
