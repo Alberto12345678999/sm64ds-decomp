@@ -28,7 +28,6 @@ extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void *th
 extern int _ZN8dActor_c13ClosestPlayerEv(void *thiz);
 extern void func_ov002_020b7f2c(void *c, void *p);
 extern void func_ov002_020b7f7c(void *thiz);
-extern void func_ov001_020ab228(void *c, void *a1, int idx, int a3, int a5);
 }
 
 extern char data_ov002_0210de50;
@@ -219,7 +218,7 @@ int daObjMarioCap_c::InitResources()
             v = 1;
         else
             v = 0;
-        func_ov001_020ab228(((char *)this) + 0x3d0, ((char *)this), mModelIndex & 0xff, unk_400, v);
+        mCapIcon.func_ov001_020ab228((char *)this, mModelIndex & 0xff, unk_400, v);
     }
 
     /* The second materialised param1 read-modify-write, at +0x448; see the
