@@ -26,7 +26,16 @@ struct daObjCvShutter_c : daObjSwdoor_c {
     u8 mEventBit;  /* 0x321 */
     u8 pad_322[2];
 
-    /* Inline empty dtor: mwccarm emits D1 then D0, no D2. */
+    /* Inline empty dtor: mwccarm emits D1 then D0, no D2.
+  *  Their bodies are THREE vptr stores, and the middle one is the finding:
+  *  `daObjCvShutter_c : daObjSwdoor_c : dBgActor_c` emits this class's vptr,
+  * then daObjSwdoor_c's -- inlined, because that destructor is defined in its
+  * class body -- then dBgActor_c's, then dBgActor_c's dBgW_KcMbg and Model,
+  * then dActor_c. A one-level chain would emit two. This class adds no member
+  * with a destructor of its own, and D0's trailing deallocation is the inline
+  * `operator delete` it inherits, which is why nothing here names a heap. */
+    // @symbol _ZN16daObjCvShutter_cD1Ev
+    // @symbol _ZN16daObjCvShutter_cD0Ev
     virtual ~daObjCvShutter_c() {}
     virtual s32 Behavior();           /* slot 6 */
     virtual s32 CleanupResources();   /* slot 3 */

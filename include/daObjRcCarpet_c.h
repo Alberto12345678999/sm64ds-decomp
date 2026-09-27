@@ -29,6 +29,8 @@ struct daObjRcCarpet_c : dPathLiftActor_c {
 
     /* Inline plus vtable instantiation is load-bearing: mwcc emits
        retail's D1 then D0 pair, with no homeless D2. */
+    // @symbol _ZN15daObjRcCarpet_cD1Ev  0x02112158  size 0x70
+    // @symbol _ZN15daObjRcCarpet_cD0Ev  0x021121c8  size 0x84
     virtual ~daObjRcCarpet_c() {}
 
     int InitResources();

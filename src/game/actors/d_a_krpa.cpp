@@ -81,6 +81,7 @@ extern "C" daKrpaSpawnInfo g_profile_KERONPA = {
     0x00ed8000
 };
 
+// @symbol func_ov070_02121ae0
 extern "C" void func_ov070_02121ae0(
     daKrpaFrameController *controller, u32 *frames, u32 count, u32 mode)
 {
@@ -90,6 +91,7 @@ extern "C" void func_ov070_02121ae0(
     controller->cursor = 0;
 }
 
+// @symbol func_ov070_02121a64
 extern "C" u32 func_ov070_02121a64(daKrpaFrameController *controller)
 {
     switch (controller->mode) {
@@ -194,6 +196,7 @@ int daKrpa_c::CleanupResources()
 }
 
 extern "C" {  /* Unresolved func_ names retain their current C ABI spelling. */
+// @symbol func_ov070_02121880
 extern daKrpaState data_ov070_021236ac[];
 extern void func_ov070_02121848(daKrpa_c *self);
 void func_ov070_02121880(daKrpa_c *self, int state) {
@@ -202,12 +205,14 @@ void func_ov070_02121880(daKrpa_c *self, int state) {
 }
 }
 
+// @symbol func_ov070_02121848
 extern "C" void func_ov070_02121848(daKrpa_c *self)
 {
     daKrpaStateMethod *method = &self->mStateMethods->init;
     (self->**method)();
 }
 
+// @symbol func_ov070_0212180c
 extern "C" void func_ov070_0212180c(daKrpa_c *self)
 {
     daKrpaStateMethod *method = &self->mStateMethods->behavior;
@@ -215,6 +220,7 @@ extern "C" void func_ov070_0212180c(daKrpa_c *self)
 }
 
 /* SetAnim is another proven Fix12-by-value caller seam. */
+// @symbol func_ov070_021217ac
 extern "C" {
 extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
     ModelAnim *model, BCA_File *file, int flags, Fix12i speed, u32 startFrame);
@@ -235,6 +241,7 @@ int func_ov070_021217ac(daKrpa_c *self) {
 }
 
 extern "C" {
+// @symbol func_ov070_02121710
 extern u8 DecIfAbove0_Byte(u8 *value);
 extern void func_ov070_02121298(daKrpa_c *self);
 extern void func_ov070_021211c4(daKrpa_c *self);
@@ -262,6 +269,7 @@ int func_ov070_02121710(daKrpa_c *self) {
 }
 
 extern "C" {
+// @symbol func_ov070_021216b8
 int func_ov070_021216b8(daKrpa_c *self) {
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
         &self->mModelAnim, (BCA_File *)data_ov070_021234dc,
@@ -274,6 +282,7 @@ int func_ov070_021216b8(daKrpa_c *self) {
 }
 
 extern "C" {
+// @symbol func_ov070_0212156c
 extern short data_02082214[];
 void func_0201267c(u32 soundID, const Vector3 *pos);
 
@@ -310,6 +319,7 @@ int func_ov070_0212156c(daKrpa_c *self) {
 }
 }
 
+// @symbol func_ov070_02121548
 extern "C" int func_ov070_02121548(daKrpa_c *self)
 {
     self->mdCcAcPos_c.Clear();
@@ -317,6 +327,7 @@ extern "C" int func_ov070_02121548(daKrpa_c *self)
     return 1;
 }
 
+// @symbol func_ov070_021214f8
 extern "C" int func_ov070_021214f8(daKrpa_c *self)
 {
     int flags = self->mFlags;
@@ -333,6 +344,7 @@ extern "C" int func_ov070_021214f8(daKrpa_c *self)
 
 /* Particle::System::NewSimple is not yet declared by its shared header; retain
  * this typed ABI import without guessing the unresolved state's source name. */
+// @symbol func_ov070_02121438
 namespace Sound { void PlayBank0(u32 soundID, const Vector3 &pos); }
 extern "C" u32 _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(
     u32 effectID, Fix12i x, Fix12i y, Fix12i z);
@@ -361,6 +373,7 @@ extern "C" int func_ov070_02121438(daKrpa_c *self)
 
 /* The collision update veneer is retained because it is the retail call
  * destination; the rest are ordinary real class calls. */
+// @symbol func_ov070_021213cc
 extern "C" {
 extern int dBgCh_Actr_UpdateDiscreteNoLava_veneer(dBgCh_Actr *clsn);
 int func_ov070_021213cc(daKrpa_c *self) {
@@ -381,6 +394,7 @@ end:
 
 /* DropShadowRadHeight is a Fix12-by-value caller seam for the same codegen
  * reason as the two Init imports above. */
+// @symbol func_ov070_02121310
 extern "C" void Matrix4x3_FromRotationXYZExt(void *m, int x, int y, int z);
 extern "C" void Matrix4x3_FromRotationY(void *m, int angle);
 extern "C" void _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
@@ -412,6 +426,7 @@ extern int Vec3_Dist(void* a, void* b);
 extern short Vec3_HorzAngle(void* a, void* b);
 }
 
+// @symbol func_ov070_02121298
 extern "C" void func_ov070_02121298(daKrpa_c *self) {
     Player *player = self->ClosestNonVanishPlayer();
     if (!player) {
@@ -427,6 +442,7 @@ extern "C" void func_ov070_02121298(daKrpa_c *self) {
         Vec3_HorzAngle(&self->mPosX, &player->mPosX), 0x800);
 }
 
+// @symbol func_ov070_021211c4
 extern "C" void func_ov070_021211c4(daKrpa_c *self)
 {
     u32 id = self->mdCcAcPos_c.otherOwner;

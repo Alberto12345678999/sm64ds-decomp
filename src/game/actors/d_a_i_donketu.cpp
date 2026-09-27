@@ -167,29 +167,3 @@ int daIDonketu_c::UpdateRunState()
     }
     return value;
 }
-
-/* -------------------------------------------------------------------------- */
-/* _ZN12daIDonketu_cD0Ev 0x02111618 size 0x68 -- are NOT written here.         */
-/*                                                                            */
-/* The destructor is defined INLINE in include/daIDonketu_c.h. Written         */
-/* out-of-line here the real destructor makes mwccarm emit D0 BEFORE D1, the   */
-/* reverse of the cartridge's order, which objisolate refuses for the whole    */
-/* translation unit, and it emits a third D2 body with no ROM home. This       */
-/* entry's own pre-promotion verification block recorded both, as `ordinal     */
-/* pair(s) not in ROM order: [(0, 1)]` and an unhandled _ZN12daIDonketu_cD2Ev  */
-/* in compilerOnlyOutput. The inline definition gives the retail D1/D0 pair in */
-/* ROM order and no D2, while Behavior -- declared out-of-line and first in    */
-/* the class body -- keeps this TU as the class's key-function TU, so it still */
-/* owns the complete _ZTV/_ZTI/_ZTS group declared in this entry's             */
-/* compiler_only_output.                                                      */
-/*                                                                            */
-/* TWO vptr stores and four member destructor calls come out of that one empty */
-/* body: its own vptr, then daOts_c's -- inlined, because that destructor is   */
-/* defined in its class body -- then ShadowModel 0x370, dCcAc_c 0x33c,         */
-/* dBgCh_Actr 0x174 and ModelAnim 0x110 in reverse declaration order, then     */
-/* dEnemyBase_c. daIDonketu_c adds no member with a destructor of its own,     */
-/* only two bytes. D0 is that plus the inherited inline `operator delete`;     */
-/* slot 17 is the deleting variant. Byte-for-byte the same shape as            */
-/* daDonketu_c's and daBDonketu_c's, which is what three siblings sharing a    */
-/* base look like.                                                             */
-/* -------------------------------------------------------------------------- */

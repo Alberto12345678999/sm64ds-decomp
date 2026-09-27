@@ -380,6 +380,7 @@ extern "C" void func_ov064_02116bac(daOts_c* self){
 }
 
 /* -------------------------------------------------------------------------- */
+// @symbol func_ov064_02116754
 extern "C" void func_ov064_02116754(daOts_c* self)
 {
     dActor_c* hitPlayer;
@@ -526,6 +527,7 @@ int func_ov064_021166f0(daOts_c *t)
 }
 
 /* -------------------------------------------------------------------------- */
+// @symbol func_ov064_021165d8
 extern "C" void func_ov064_021165d8(daOts_c* c)
 {
     char *p = (char *)c;
@@ -567,6 +569,7 @@ int daOts_c::UpdateRunState()
 }
 
 /* -------------------------------------------------------------------------- */
+// @symbol func_ov064_02116560
 extern "C" int func_ov064_02116560(daOts_c* c){
   char *p = (char *)c;
   c->UpdateRunState();
@@ -577,6 +580,7 @@ extern "C" int func_ov064_02116560(daOts_c* c){
 }
 
 /* -------------------------------------------------------------------------- */
+// @symbol func_ov064_02116460
 extern "C" void func_ov064_02116460(daOts_c *self)
 {
     char *c = (char *)self;
@@ -606,6 +610,7 @@ extern "C" void func_ov064_02116460(daOts_c *self)
 }
 
 /* -------------------------------------------------------------------------- */
+// @symbol func_ov064_021163c0
 extern "C" void func_ov064_021163c0(char *c)
 {
     /* Named mPrevAngleY / mWithMeshClsn / mHorzSpeed size-DIFF. The
@@ -664,6 +669,7 @@ void daOts_c::PlayDeathSound()
 }
 
 /* -------------------------------------------------------------------------- */
+// @symbol func_ov064_02116220
 extern "C" void func_ov064_02116220(daOts_c* c){
   dBgCh_Gnd rg;
   Vector3 v;
@@ -701,6 +707,7 @@ extern "C" void func_ov064_02116220(daOts_c* c){
 }
 
 /* -------------------------------------------------------------------------- */
+// @symbol func_ov064_0211616c
 extern "C" {
 int func_ov064_0211616c(daOts_c* c) {
     char *p = (char *)c;
@@ -742,6 +749,7 @@ extern "C" int func_ov064_02116110(daOts_c *self, short step){
 }
 
 /* -------------------------------------------------------------------------- */
+// @symbol func_ov064_02115f98
 extern "C" {
 void func_ov064_02115f98(daOts_c* a0, char* a1)
 {

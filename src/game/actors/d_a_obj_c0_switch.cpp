@@ -177,17 +177,3 @@ check:
     if (p != 0) goto check;
 }
 
-/* -------------------------------------------------------------------------- */
-/* _ZN16daObjC0_Switch_cD0Ev 0x021111e4 size 0x58 -- are NOT written here.      */
-/*                                                                             */
-/* The destructor body is INLINE in include/daObjC0_Switch_c.h and declared     */
-/* LAST. Two measurements force that:                                           */
-/*   - out of line, mwcc emits D0 ahead of D1 and the cartridge has D1 first,   */
-/*     which rombuild refuses outright;                                         */
-/*   - out of line it also emits the D2 base-object variant, which the ROM      */
-/*     never carried.                                                           */
-/* Declaring it last, with the factory's `new` instantiating the class, is      */
-/* what emits the used D1/D0 pair in cartridge order and keeps this TU the      */
-/* vtable's home. The body is empty in the ROM too: D1 at 0x021111a0 stores     */
-/* the vtable and tail-calls ~dBgActor_c, with no member teardown.              */
-/* -------------------------------------------------------------------------- */

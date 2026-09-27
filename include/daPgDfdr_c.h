@@ -47,10 +47,20 @@ struct daPgDfdr_c : dBgActor_c {
     u8    pad_3da[0x2];
 
     /* INLINE IS LOAD-BEARING. Out of line, mwccarm emits D0 before D1
-       (cartridge is 0x021118c8 D1 then 0x02111924 D0) plus a D2 with no ROM
-       home. Empty body: the three member teardowns, the vptr store and
-       dBgActor_c's two member teardowns are synthesised. Key function is
-       InitResources, the first declared non-inline virtual. */
+    *   (cartridge is 0x021118c8 D1 then 0x02111924 D0) plus a D2 with no ROM
+    *   home. Empty body: the three member teardowns, the vptr store and
+    *   dBgActor_c's two member teardowns are synthesised. Key function is
+    *   InitResources, the first declared non-inline virtual.
+    *   One vtable store and three member teardowns
+    *   come out of that one empty body: its own vptr, then -- in reverse 
+    * declaration order -- dCcAc_c at +0x398, TextureSequence at +0x384 and
+    * ModelAnim at +0x320, then dBgActor_c's own teardown inlined (its
+    * destructor 
+    * is defined in its class body too), which is dBgW_KcMbg at +0x124 and
+    * Model at +0x0d4, then dActor_c. D0 is that plus the inherited inline `operator delete` found by ordinary lookup on dActor_c two levels up; slot 17 is the deleting variant.
+    */
+    // @symbol _ZN10daPgDfdr_cD0Ev
+    // @symbol _ZN10daPgDfdr_cD1Ev
     virtual ~daPgDfdr_c() {}
 
     virtual s32 InitResources();       /* slot  0 */

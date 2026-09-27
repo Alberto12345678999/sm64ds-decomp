@@ -157,7 +157,7 @@ int daKpFr_c::CleanupResources()
 extern "C" {  /* Unresolved func_ placeholder; retain its current C ABI spelling. */
 extern "C" daKpFrState data_ov070_021236ec[];
 extern void func_ov070_0212200c(void *self);
-
+// @symbol func_ov070_02122044
 void func_ov070_02122044(void *vself, int idx)
 {
     daKpFr_c *self = (daKpFr_c *)vself;
@@ -167,12 +167,14 @@ void func_ov070_02122044(void *vself, int idx)
 }
 
 extern "C" void func_ov070_0212200c(void *raw) {
-    daKpFr_c *self = (daKpFr_c *)raw;
-    daKpFrStateMethod *method = &self->mStateMethods->init;
-    (self->**method)();
+// @symbol func_ov070_0212200c
+  daKpFr_c *self = (daKpFr_c *)raw;
+  daKpFrStateMethod *method = &self->mStateMethods->init;
+  (self->**method)();
 }
 
 extern "C" void func_ov070_02121fd0(char *raw) {
+// @symbol func_ov070_02121fd0    
     daKpFr_c *self = (daKpFr_c *)raw;
     daKpFrStateMethod *method = &self->mStateMethods->behavior;
     (self->**method)();
@@ -193,6 +195,7 @@ int func_ov070_02121fb0(char *raw)
 int ApproachLinear(short &value, short target, short step);
 
 extern "C" {
+// @symbol func_ov070_02121f18
 extern unsigned char DecIfAbove0_Byte(unsigned char* p);
 extern void func_ov070_02121c8c(void* c);
 extern short Vec3_HorzAngle(void* v0, void* v1);
@@ -221,6 +224,7 @@ int func_ov070_02121f18(char* raw) {
 }
 
 extern "C" {  /* Unresolved func_ placeholder; retain its current C ABI spelling. */
+// @symbol func_ov070_02121ef8
 int func_ov070_02121ef8(char *raw)
 {
     daKpFr_c *self = (daKpFr_c *)raw;
@@ -231,6 +235,7 @@ int func_ov070_02121ef8(char *raw)
 }
 
 extern "C" {  /* Unresolved func_ placeholder; retain its current C ABI spelling. */
+// @symbol func_ov070_02121eb0
 extern void func_ov070_02121c8c(void *t);
 int func_ov070_02121eb0(void *c) {
     daKpFr_c *self = (daKpFr_c *)c;
@@ -248,6 +253,7 @@ int func_ov070_02121eb0(void *c) {
 extern "C" {
 /* Fix12-by-value, notes/mwccarm-codegen.md 6az -- header method form homes the
    class args. */
+// @symbol func_ov070_02121e14
 extern void _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
     dActor_c *actor, ShadowModel *shadow, Matrix4x3 *matrix,
     Fix12i radius, Fix12i depth, u32 opacity);
@@ -295,6 +301,7 @@ extern "C" void func_ov070_02121d50(void* vself, void* vclsn) {
 }
 
 extern "C" {  /* Unresolved func_ placeholder; retain its current C ABI spelling. */
+// @symbol func_ov070_02121cbc
 extern void func_ov070_02122044(void* c, int a);
 extern void func_ov070_02121c8c(void* c);
 
@@ -322,6 +329,7 @@ void func_ov070_02121cbc(char* raw){
 }
 
 extern "C" {  /* Unresolved func_ placeholder; retain its current C ABI spelling. */
+// @symbol func_ov070_02121c8c
 extern void func_02012694(int id, void *pos);
 void func_ov070_02121c8c(void *c)
 {
