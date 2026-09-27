@@ -53,9 +53,11 @@ struct daKirai_c : dActor_c {
        [daKirai_c::InitResources] */
     s32 mHomeHorzDist;            /* 0x180 */
     s32 mHomeYOffset;            /* 0x184 */
-    u8  pad_188[0x20];
-    s32 mSlotIndex;            /* 0x1a8 */
-    u8  pad_1ac[0x2];
+    /* uniqueIDs of the other spike bombs (actor 0x11c), taken when this one
+       disarms; zeroed as each one is found gone. [func_ov060_021184bc] */
+    u32 mOtherBombIDs[8];       /* 0x188 */
+    s32 mSlotIndex;            /* 0x1a8 -- AddSpikeBomb's slot */
+    u16 mTimer;                /* 0x1ac -- frames into the swell/explode states */
     u8  mOpacity;            /* 0x1ae */
     u8  pad_1af[0x1];       /* 0x1af, closing on the ROM's 0x1b0 */
 
@@ -73,42 +75,6 @@ struct daKirai_c : dActor_c {
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
 typedef char daKirai_c_size_must_be_0x1b0[sizeof(daKirai_c) == 0x1b0 ? 1 : -1];
 #endif
-
-#else
-
-struct daKirai_c {
-    u8  pad_000[0x5c];
-    s32 mPosX;            /* 0x05c */
-    s32 mPosY;            /* 0x060 */
-    s32 mPosZ;            /* 0x064 */
-    u8  pad_068[0x18];
-    s32 mScaleX;            /* 0x080 */
-    s32 mScaleY;            /* 0x084 */
-    s32 mScaleZ;            /* 0x088 */
-    u8  pad_08c[0x48];
-    /* Model member, named by the class's own destructor calling
-       Model's D1 at +0x0d4 -- a relocation the ROM build
-       checks. Was a u8 marker. [daKirai_c::~daKirai_c] */
-    Model mModel;            /* 0x0d4 */
-    dCcAcPos_c mdCcAcPos_c;       /* 0x124 */
-    u8  pad_164[0xc];
-    s32 mStateIndex;            /* 0x170 */
-    s32 mHomePosX;            /* 0x174 */
-    s32 mHomePosY;            /* 0x178 */
-    s32 mHomePosZ;            /* 0x17c */
-    /* Both taken in InitResources. mHomeHorzDist is Vec3_HorzLen of the spawn
-       position -- how far out in XZ the bomb starts from the world origin.
-       mHomeYOffset is the constant 0x2ee000, and mHomePosY is raised by
-       mHomeYOffset >> 3 right after the home triple is copied.
-       [daKirai_c::InitResources] */
-    s32 mHomeHorzDist;            /* 0x180 */
-    s32 mHomeYOffset;            /* 0x184 */
-    u8  pad_188[0x20];
-    s32 mSlotIndex;            /* 0x1a8 */
-    u8  pad_1ac[0x2];
-    u8  mOpacity;            /* 0x1ae */
-    u8  pad_1af[0x1];       /* 0x1af, closing on the ROM's 0x1b0 */
-};
 
 #endif /* __cplusplus */
 
