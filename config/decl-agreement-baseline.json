@@ -1306,9 +1306,9 @@
         "return:void"
       ],
       "src/actors/daObjCvNewsLift_c.cpp": [
-        "return:void",
         "param:#1 Matrix4x3 *",
-        "param:#2 Matrix4x3 *"
+        "param:#2 Matrix4x3 *",
+        "return:void"
       ],
       "src/actors/daObjGuragura_c.cpp": [
         "param:#1 Matrix4x3 *",
@@ -4702,6 +4702,10 @@
         "param:#1 const void *",
         "param:#2 const void *"
       ],
+      "src/_ZN8Fireball8BehaviorEv.cpp": [
+        "param:#1 const void *",
+        "param:#2 const void *"
+      ],
       "src/actors/daShark_c.cpp": [
         "param:#1 Vector3 *",
         "param:#2 Vector3 *"
@@ -5035,6 +5039,10 @@
         "param:#2 const void *"
       ],
       "src/actors/daMoray_c.cpp": [
+        "param:#1 const void *",
+        "param:#2 const void *"
+      ],
+      "src/actors/daObjFl_Amilift_c.cpp": [
         "param:#1 const void *",
         "param:#2 const void *"
       ]
@@ -5568,6 +5576,11 @@
         "param:#1 Vector3 *",
         "param:#2 Vector3 *",
         "param:#3 Vector3 *"
+      ],
+      "src/actors/daObjFl_Amilift_c.cpp": [
+        "param:#1 Vector3 *",
+        "param:#2 Vector3 *",
+        "param:#3 Vector3 *"
       ]
     },
     "Vec3_VertAngle": {
@@ -5880,9 +5893,9 @@
         "return:void"
       ],
       "src/actors/daMoray_c.cpp": [
-        "return:void",
         "param:#1 Vector3 *",
-        "param:#2 const Vector3 *"
+        "param:#2 const Vector3 *",
+        "return:void"
       ],
       "src/actors/daWater_Tatumaki_c.cpp": [
         "param:#1 Vec3 *",
@@ -5906,6 +5919,9 @@
       ],
       "src/_ZN6Player15St_Balloon_MainEv.cpp": [
         "param:#1 int &"
+      ],
+      "src/_ZN8Fireball8BehaviorEv.cpp": [
+        "return:int"
       ],
       "src/actors/daKrb_c.cpp": [
         "return:int"
@@ -6040,9 +6056,18 @@
       ],
       "src/actors/daFPknBall_c.cpp": [
         "return:int"
+      ],
+      "src/_ZN17daObjFl_Amilift_c8BehaviorEv.cpp": [
+        "return:int"
+      ],
+      "src/actors/daObjFl_Amilift_c.cpp": [
+        "return:int"
       ]
     },
     "_Z14ApproachLinearRsss": {
+      "src/_ZN8Fireball8BehaviorEv.cpp": [
+        "return:int"
+      ],
       "src/actors/Scuttlebug.cpp": [
         "param:#1 short &"
       ],
@@ -6414,6 +6439,10 @@
         "param:#2 void *",
         "param:#5 void *",
         "param:#6 void *"
+      ],
+      "src/_ZN8Fireball13InitResourcesEv.cpp": [
+        "param:#2 void *",
+        "param:#5 void *"
       ],
       "src/_ZN8Goomboss13InitResourcesEv.cpp": [
         "param:#2 void *",
@@ -6848,6 +6877,12 @@
         "param:#2 int",
         "param:#6 int",
         "return:int"
+      ],
+      "src/_ZN17daObjFl_Amilift_c13InitResourcesEv.cpp": [
+        "param:#3 Matrix4x3 *"
+      ],
+      "src/actors/daObjFl_Amilift_c.cpp": [
+        "param:#3 Matrix4x3 *"
       ]
     },
     "_ZN10dBgW_KcMbg9TransformERK9Matrix4x3s": {
@@ -9855,6 +9890,9 @@
       ],
       "src/actors/daSnowman_c.cpp": [
         "return:int"
+      ],
+      "src/actors/daObjFl_Amilift_c.cpp": [
+        "return:int"
       ]
     },
     "_ZN4cstd6strlenEPKc": {
@@ -9921,6 +9959,14 @@
       ],
       "src/func_ov066_02118188.c": [
         "kind:data"
+      ],
+      "src/_ZN17daObjFl_Amilift_c13InitResourcesEv.cpp": [
+        "arity:0",
+        "mangled:0 parameter(s)"
+      ],
+      "src/actors/daObjFl_Amilift_c.cpp": [
+        "arity:0",
+        "mangled:0 parameter(s)"
       ]
     },
     "_ZN4dBgW6EnableEP8dActor_c": {
@@ -10193,6 +10239,12 @@
       ],
       "src/actors/daObjRotateUpdownLift_c.cpp": [
         "param:#1 void *"
+      ],
+      "src/_ZN17daObjFl_Amilift_c13InitResourcesEv.cpp": [
+        "return:BMD_File *"
+      ],
+      "src/actors/daObjFl_Amilift_c.cpp": [
+        "return:BMD_File *"
       ]
     },
     "_ZN5ModelD1Ev": {
@@ -10805,9 +10857,9 @@
         "return:unsigned int"
       ],
       "src/actors/daGrock_c.cpp": [
-        "return:void *",
         "param:#4 void *",
-        "param:#5 unsigned int"
+        "param:#5 unsigned int",
+        "return:void *"
       ],
       "src/func_ov060_021132a4.c": [
         "param:#4 void *",
@@ -10959,6 +11011,9 @@
       "src/_ZN6Player6BounceE5Fix12IiE.cpp": [
         "param:#2 void *",
         "return:int"
+      ],
+      "src/_ZN8Fireball8BehaviorEv.cpp": [
+        "param:#2 const void *"
       ],
       "src/actors/Scuttlebug.cpp": [
         "param:#2 const void *"
@@ -11744,6 +11799,9 @@
       "include/decl_Player.h": [
         "return:void"
       ],
+      "src/_ZN8Fireball8BehaviorEv.cpp": [
+        "return:void"
+      ],
       "src/func_ov060_02116740.cpp": [
         "return:void"
       ],
@@ -11912,10 +11970,10 @@
         "return:void"
       ],
       "src/actors/daGrock_c.cpp": [
-        "return:void",
         "param:#5 unsigned int",
         "param:#6 unsigned int",
-        "param:#7 unsigned int"
+        "param:#7 unsigned int",
+        "return:void"
       ],
       "src/func_ov060_021128c0.cpp": [
         "param:#2 const Vector3 &",
@@ -11955,10 +12013,10 @@
         "return:void"
       ],
       "src/actors/daShark_c.cpp": [
-        "return:void",
         "param:#5 unsigned int",
         "param:#6 unsigned int",
-        "param:#7 unsigned int"
+        "param:#7 unsigned int",
+        "return:void"
       ],
       "src/func_ov098_02138e6c.cpp": [
         "param:#5 unsigned int",
@@ -12015,11 +12073,11 @@
         "return:void"
       ],
       "src/actors/daMenbo_c.cpp": [
-        "return:void",
         "param:#3 int",
         "param:#5 int",
         "param:#6 int",
-        "param:#7 int"
+        "param:#7 int",
+        "return:void"
       ],
       "src/actors/daBasabasa_c.cpp": [
         "param:#5 unsigned int",
@@ -12761,8 +12819,14 @@
         "return:void *"
       ],
       "src/actors/daObjRotateUpdownLift_c.cpp": [
-        "return:void *",
-        "param:#1 void *"
+        "param:#1 void *",
+        "return:void *"
+      ],
+      "src/_ZN17daObjFl_Amilift_c13InitResourcesEv.cpp": [
+        "return:KCL_File *"
+      ],
+      "src/actors/daObjFl_Amilift_c.cpp": [
+        "return:KCL_File *"
       ]
     },
     "_ZN7dCcAc_c10GetOwnerIDEv": {
@@ -13057,6 +13121,10 @@
         "param:#6 const void *",
         "return:unsigned int"
       ],
+      "src/func_ov002_020f8b24.c": [
+        "param:#6 const void *",
+        "return:void *"
+      ],
       "src/func_ov006_020c8f20.cpp": [
         "param:#6 const Vector3_16f *",
         "return:System *"
@@ -13101,8 +13169,8 @@
         "return:unsigned int"
       ],
       "src/actors/daFPkn_c.cpp": [
-        "return:unsigned int",
-        "param:#6 const void *"
+        "param:#6 const void *",
+        "return:unsigned int"
       ],
       "src/func_ov089_021311c0.c": [
         "param:#6 const void *",
@@ -13171,8 +13239,8 @@
         "return:void *"
       ],
       "src/actors/daFPknBall_c.cpp": [
-        "return:void *",
-        "param:#6 const void *"
+        "param:#6 const void *",
+        "return:void *"
       ]
     },
     "_ZN8Particle6System9NewRippleE5Fix12IiES2_S2_": {
@@ -13200,6 +13268,9 @@
         "return:void"
       ],
       "src/_ZN6Player4HurtERK7Vector3j5Fix12IiEjjj.cpp": [
+        "return:void"
+      ],
+      "src/_ZN8Fireball8BehaviorEv.cpp": [
         "return:void"
       ],
       "src/_ZN8SignPost4KillEv.cpp": [
@@ -13427,11 +13498,11 @@
       "src/game/actors/d_a_btn.cpp": [
         "return:void"
       ],
-      "src/actors/daFPknBall_c.cpp": [
-        "return:void"
-      ],
       "src/actors/daObjRotateUpdownLift_c.cpp": [
         "return:System *"
+      ],
+      "src/actors/daFPknBall_c.cpp": [
+        "return:void"
       ]
     },
     "_ZN8Particle7Manager9AddSystemEiR7Vector3": {
@@ -13585,6 +13656,9 @@
       ],
       "src/_ZN17BowserPuzzlePiece8BehaviorEv.cpp": [
         "return:char *"
+      ],
+      "src/_ZN8Fireball8BehaviorEv.cpp": [
+        "return:void *"
       ],
       "src/_ZN9PowerStar13InitResourcesEv.cpp": [
         "return:char *"
@@ -14083,6 +14157,9 @@
         "param:#2 char *",
         "return:char *"
       ],
+      "src/func_ov002_020f897c.c": [
+        "return:void *"
+      ],
       "src/func_ov060_02113740.c": [
         "return:void *"
       ],
@@ -14112,10 +14189,10 @@
       "src/unnamed/ov063/func_ov063_02119c18.c": [
         "return:void *"
       ],
-      "src/actors/daFPknBall_c.cpp": [
+      "src/actors/daObjRotateUpdownLift_c.cpp": [
         "return:void *"
       ],
-      "src/actors/daObjRotateUpdownLift_c.cpp": [
+      "src/actors/daFPknBall_c.cpp": [
         "return:void *"
       ]
     },
@@ -14130,6 +14207,9 @@
       ]
     },
     "_ZN8dActor_c18ClosestWithActorIDEj": {
+      "src/func_ov002_020f897c.c": [
+        "return:void *"
+      ],
       "src/actors/daFPknBall_c.cpp": [
         "return:void *"
       ]
@@ -14187,8 +14267,8 @@
         "return:int"
       ],
       "src/actors/daObjCtMecha11_c.cpp": [
-        "return:int",
-        "param:#7 unsigned int"
+        "param:#7 unsigned int",
+        "return:int"
       ],
       "src/game/actors/d_a_btn.cpp": [
         "param:#7 unsigned int"
@@ -14197,8 +14277,8 @@
         "param:#7 unsigned int"
       ],
       "src/actors/daObjRotateUpdownLift_c.cpp": [
-        "return:int",
-        "param:#7 unsigned int"
+        "param:#7 unsigned int",
+        "return:int"
       ]
     },
     "_ZN8dActor_c18HorzAngleToCPlayerEv": {
@@ -14213,6 +14293,9 @@
       ]
     },
     "_ZN8dActor_c19DisappearPoofDustAtERK7Vector3": {
+      "src/_ZN8Fireball8BehaviorEv.cpp": [
+        "param:#2 const Vec3F *"
+      ],
       "src/actors/daFPknBall_c.cpp": [
         "param:#2 const Vec3F *"
       ]
@@ -14291,9 +14374,12 @@
       "src/func_ov002_020ed7f8.c": [
         "param:#6 unsigned int"
       ],
-      "src/actors/daGrock_c.cpp": [
-        "return:int",
+      "src/func_ov002_020f8b24.c": [
         "param:#6 unsigned int"
+      ],
+      "src/actors/daGrock_c.cpp": [
+        "param:#6 unsigned int",
+        "return:int"
       ],
       "src/func_ov060_0211577c.c": [
         "param:#6 unsigned int"
@@ -14589,6 +14675,18 @@
         "param:#5 int",
         "param:#6 int"
       ],
+      "src/func_ov002_020f88ec.c": [
+        "param:#3 void *",
+        "param:#5 int",
+        "param:#6 int",
+        "return:char *"
+      ],
+      "src/func_ov002_020f897c.c": [
+        "param:#3 const Vector3 *",
+        "param:#5 int",
+        "param:#6 int",
+        "return:void *"
+      ],
       "src/func_ov009_0211145c.c": [
         "param:#3 void *",
         "param:#5 int",
@@ -14745,21 +14843,21 @@
         "return:void *"
       ],
       "src/actors/daMoray_c.cpp": [
-        "return:void *",
         "param:#5 int",
-        "param:#6 int"
-      ],
-      "src/actors/daFPknBall_c.cpp": [
-        "return:char *",
-        "param:#3 void *",
-        "param:#5 int",
-        "param:#6 int"
+        "param:#6 int",
+        "return:void *"
       ],
       "src/actors/daObjRotateUpdownLift_c.cpp": [
-        "return:int",
         "param:#3 void *",
         "param:#5 int",
-        "param:#6 int"
+        "param:#6 int",
+        "return:int"
+      ],
+      "src/actors/daFPknBall_c.cpp": [
+        "param:#3 void *",
+        "param:#5 int",
+        "param:#6 int",
+        "return:char *"
       ]
     },
     "_ZN8dActor_c7FindEggER5dCc_c": {
@@ -14957,8 +15055,8 @@
         "return:void *"
       ],
       "src/actors/daMoray_c.cpp": [
-        "return:void *",
-        "param:#1 void *"
+        "param:#1 void *",
+        "return:void *"
       ],
       "src/actors/daWater_Tatumaki_c.cpp": [
         "return:void"
@@ -15307,9 +15405,9 @@
         "return:int"
       ],
       "src/actors/daShark_c.cpp": [
-        "return:int",
         "param:#1 char *",
-        "param:#5 unsigned int"
+        "param:#5 unsigned int",
+        "return:int"
       ],
       "src/func_ov100_02143ae0.c": [
         "param:#1 char *",
@@ -15387,8 +15485,8 @@
         "return:int"
       ],
       "src/actors/daMenbo_c.cpp": [
-        "return:int",
-        "param:#5 unsigned int"
+        "param:#5 unsigned int",
+        "return:int"
       ],
       "src/actors/daObjKey_c.cpp": [
         "param:#5 unsigned int"
@@ -15519,6 +15617,12 @@
         "return:void"
       ],
       "src/actors/daObjRotateUpdownLift_c.cpp": [
+        "return:void"
+      ],
+      "src/_ZN17daObjFl_Amilift_c13InitResourcesEv.cpp": [
+        "return:void"
+      ],
+      "src/actors/daObjFl_Amilift_c.cpp": [
         "return:void"
       ]
     },
@@ -15973,6 +16077,12 @@
         "param:#2 void *"
       ],
       "src/actors/daMoray_c.cpp": [
+        "param:#2 void *"
+      ],
+      "src/_ZN17daObjFl_Amilift_c13InitResourcesEv.cpp": [
+        "param:#2 Vector3 *"
+      ],
+      "src/actors/daObjFl_Amilift_c.cpp": [
         "param:#2 void *"
       ]
     },
@@ -16544,6 +16654,9 @@
       ]
     },
     "dBgCh_Actr_UpdateContinuous_Veneer": {
+      "src/_ZN8Fireball8BehaviorEv.cpp": [
+        "arity:1"
+      ],
       "src/_ZN9daDossy_c8BehaviorEv.cpp": [
         "arity:1"
       ],
@@ -25626,6 +25739,15 @@
       ],
       "src/_ZN12MetalNetLift16CleanupResourcesEv.cpp": [
         "return:int []"
+      ],
+      "src/_ZN17daObjFl_Amilift_c13InitResourcesEv.cpp": [
+        "return:SharedFilePtr"
+      ],
+      "src/_ZN17daObjFl_Amilift_c16CleanupResourcesEv.cpp": [
+        "return:int []"
+      ],
+      "src/actors/daObjFl_Amilift_c.cpp": [
+        "return:SharedFilePtr"
       ]
     },
     "data_ov064_0211c730": {
@@ -25634,6 +25756,15 @@
       ],
       "src/_ZN12MetalNetLift16CleanupResourcesEv.cpp": [
         "return:int []"
+      ],
+      "src/_ZN17daObjFl_Amilift_c13InitResourcesEv.cpp": [
+        "return:SharedFilePtr"
+      ],
+      "src/_ZN17daObjFl_Amilift_c16CleanupResourcesEv.cpp": [
+        "return:int []"
+      ],
+      "src/actors/daObjFl_Amilift_c.cpp": [
+        "return:SharedFilePtr"
       ]
     },
     "data_ov064_0211c800": {
@@ -28678,6 +28809,9 @@
       "src/_ZN6Player16St_BurnFire_MainEv.cpp": [
         "param:#2 const void *"
       ],
+      "src/_ZN8Fireball8BehaviorEv.cpp": [
+        "param:#2 const void *"
+      ],
       "src/_ZN8Goomboss8BehaviorEv.cpp": [
         "param:#1 int"
       ],
@@ -28814,8 +28948,8 @@
         "arity:3"
       ],
       "src/actors/daShark_c.cpp": [
-        "return:int",
-        "param:#1 int"
+        "param:#1 int",
+        "return:int"
       ],
       "src/func_ov100_02141fb0.cpp": [
         "param:#1 int"
@@ -28914,11 +29048,11 @@
       "src/actors/daMoray_c.cpp": [
         "param:#1 int"
       ],
-      "src/actors/daFPknBall_c.cpp": [
-        "param:#2 const void *"
-      ],
       "src/actors/daObjRotateUpdownLift_c.cpp": [
         "param:#1 int"
+      ],
+      "src/actors/daFPknBall_c.cpp": [
+        "param:#2 const void *"
       ]
     },
     "func_02012718": {
@@ -29002,8 +29136,8 @@
         "return:void"
       ],
       "src/actors/dMeter_c.cpp": [
-        "return:void",
-        "param:#1 int"
+        "param:#1 int",
+        "return:void"
       ],
       "src/actors/dScGameOver_c.cpp": [
         "param:#1 int",
@@ -32556,6 +32690,12 @@
       ],
       "src/actors/dPathLiftActor_c.cpp": [
         "param:#1 char *"
+      ],
+      "src/_ZN17daObjFl_Amilift_c13InitResourcesEv.cpp": [
+        "param:#2 void *"
+      ],
+      "src/actors/daObjFl_Amilift_c.cpp": [
+        "param:#2 void *"
       ]
     },
     "func_020393d4": {
@@ -32709,6 +32849,12 @@
         "param:#2 void *"
       ],
       "src/actors/daObjRotateUpdownLift_c.cpp": [
+        "param:#2 void *"
+      ],
+      "src/_ZN17daObjFl_Amilift_c13InitResourcesEv.cpp": [
+        "param:#2 void *"
+      ],
+      "src/actors/daObjFl_Amilift_c.cpp": [
         "param:#2 void *"
       ]
     },
