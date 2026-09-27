@@ -7698,22 +7698,22 @@
    "start": "0x2130f00",
    "end": "0x2131bdc",
    "classes": [
-    "RotatingUpDownPlatformUtm"
+    "daObjRotateUpdownLift_c"
    ],
    "n_functions_map": 12,
    "n_files": 12,
    "files": [
-    "src/_ZN25RotatingUpDownPlatformUtmD1Ev.cpp",
-    "src/_ZN25RotatingUpDownPlatformUtmD0Ev.cpp",
+    "src/_ZN23daObjRotateUpdownLift_cD1Ev.cpp",
+    "src/_ZN23daObjRotateUpdownLift_cD0Ev.cpp",
     "src/func_ov091_02130fac.cpp",
-    "src/_ZN25RotatingUpDownPlatformUtm4KillEv.cpp",
-    "src/_ZN25RotatingUpDownPlatformUtm15OnHitByMegaCharER6Player.cpp",
+    "src/_ZN23daObjRotateUpdownLift_c4KillEv.cpp",
+    "src/_ZN23daObjRotateUpdownLift_c15OnHitByMegaCharER6Player.cpp",
     "src/func_ov091_02131160.c",
     "src/func_ov091_02131340.c",
-    "src/_ZN25RotatingUpDownPlatformUtm16CleanupResourcesEv.cpp",
-    "src/_ZN25RotatingUpDownPlatformUtm6RenderEv.cpp",
-    "src/_ZN25RotatingUpDownPlatformUtm8BehaviorEv.cpp",
-    "src/_ZN25RotatingUpDownPlatformUtm13InitResourcesEv.cpp",
+    "src/_ZN23daObjRotateUpdownLift_c16CleanupResourcesEv.cpp",
+    "src/_ZN23daObjRotateUpdownLift_c6RenderEv.cpp",
+    "src/_ZN23daObjRotateUpdownLift_c8BehaviorEv.cpp",
+    "src/_ZN23daObjRotateUpdownLift_c13InitResourcesEv.cpp",
     "src/d_a_obj_rotate_updown_lift_hs_updown_lift.c"
    ],
    "ext_mix": {
