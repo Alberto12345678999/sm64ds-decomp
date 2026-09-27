@@ -6720,6 +6720,11 @@
       "src/actors/daSnowman_c.cpp": [
         "param:#2 void *",
         "param:#5 void *"
+      ],
+      "src/actors/daObjPowerUpItem_c.cpp": [
+        "param:#2 void *",
+        "param:#5 void *",
+        "param:#6 void *"
       ]
     },
     "_ZN10dBgCh_ActrD1Ev": {
@@ -10211,6 +10216,9 @@
       "src/actors/daWater_Ring_c.cpp": [
         "param:#1 void *",
         "return:BMD_File *"
+      ],
+      "src/actors/daObjPowerUpItem_c.cpp": [
+        "param:#1 void *"
       ]
     },
     "_ZN5ModelD1Ev": {
@@ -13182,6 +13190,10 @@
         "param:#6 int",
         "param:#7 int",
         "return:void *"
+      ],
+      "src/actors/daObjPowerUpItem_c.cpp": [
+        "return:void *",
+        "param:#6 const Vector3_16f *"
       ]
     },
     "_ZN8Particle6System9NewRippleE5Fix12IiES2_S2_": {
@@ -13437,6 +13449,9 @@
         "return:void"
       ],
       "src/game/actors/d_a_btn.cpp": [
+        "return:void"
+      ],
+      "src/actors/daObjPowerUpItem_c.cpp": [
         "return:void"
       ]
     },
@@ -13825,6 +13840,9 @@
       ],
       "src/actors/daWater_Ring_c.cpp": [
         "return:void *"
+      ],
+      "src/actors/daObjPowerUpItem_c.cpp": [
+        "return:void *"
       ]
     },
     "_ZN8dActor_c10PoofDustAtERK7Vector3": {
@@ -14026,6 +14044,9 @@
     "_ZN8dActor_c13SmallPoofDustEv": {
       "src/func_ov002_020fec94.c": [
         "return:int"
+      ],
+      "src/actors/daObjPowerUpItem_c.cpp": [
+        "return:void"
       ]
     },
     "_ZN8dActor_c13SpawnFireballERK7Vector3PK10Vector3_165Fix12IiES7_j": {
@@ -14395,6 +14416,11 @@
         "param:#6 unsigned int"
       ],
       "src/actors/daSnowman_c.cpp": [
+        "param:#6 unsigned int"
+      ],
+      "src/actors/daObjPowerUpItem_c.cpp": [
+        "return:int",
+        "param:#1 char *",
         "param:#6 unsigned int"
       ]
     },
@@ -15577,6 +15603,9 @@
       ],
       "src/func_ov060_0211577c.c": [
         "param:#2 Vec3 *"
+      ],
+      "src/actors/daObjPowerUpItem_c.cpp": [
+        "param:#2 const Vector3 *"
       ]
     },
     "_ZN9dBgCh_GndD1Ev": {
@@ -15635,6 +15664,9 @@
         "return:void"
       ],
       "src/func_ov060_0211577c.c": [
+        "return:void"
+      ],
+      "src/actors/daObjPowerUpItem_c.cpp": [
         "return:void"
       ]
     },
@@ -16642,6 +16674,9 @@
         "arity:1"
       ],
       "src/actors/daObjRc_Tikuwa_c.cpp": [
+        "arity:1"
+      ],
+      "src/actors/daObjPowerUpItem_c.cpp": [
         "arity:1"
       ]
     },
@@ -18563,6 +18598,9 @@
       ],
       "src/game/actors/d_a_btn.cpp": [
         "return:int"
+      ],
+      "src/actors/daObjPowerUpItem_c.cpp": [
+        "return:char *"
       ]
     },
     "data_0209f31c": {
@@ -28910,6 +28948,9 @@
       ],
       "src/actors/daMoray_c.cpp": [
         "param:#1 int"
+      ],
+      "src/actors/daObjPowerUpItem_c.cpp": [
+        "return:int"
       ]
     },
     "func_02012718": {
@@ -42163,11 +42204,17 @@
     "gPFlowerCloseModelFile": {
       "src/actors/daObjHatenaBlock_c.cpp": [
         "return:char []"
+      ],
+      "src/actors/daObjPowerUpItem_c.cpp": [
+        "return:void * []"
       ]
     },
     "gPFlowerOpenModelFile": {
       "src/actors/daObjHatenaBlock_c.cpp": [
         "return:char []"
+      ],
+      "src/actors/daObjPowerUpItem_c.cpp": [
+        "return:void * []"
       ]
     },
     "gPianoAttackAnimationFile": {
@@ -42207,6 +42254,21 @@
     "_ZTV15daObjFl_KomaU_c": {
       "src/d_a_obj_fl_koma_u.cpp": [
         "return:void * []"
+      ]
+    },
+    "_ZN6Player16InitWingFeathersEb": {
+      "src/actors/daObjPowerUpItem_c.cpp": [
+        "param:#2 int"
+      ]
+    },
+    "_ZN9dBgCh_Gnd10DetectClsnEv": {
+      "src/actors/daObjPowerUpItem_c.cpp": [
+        "param:#1 RG *"
+      ]
+    },
+    "func_0200fccc": {
+      "src/actors/daObjPowerUpItem_c.cpp": [
+        "param:#1 char *"
       ]
     }
   }
