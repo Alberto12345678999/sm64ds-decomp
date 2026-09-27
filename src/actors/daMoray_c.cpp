@@ -442,7 +442,7 @@ void daMoray_c::OnPendingDestroy()
 // @symbol _ZN9daMoray_c6RenderEv
 
 
-struct UnagiRenderStep {
+struct MorayRenderStep {
     s32 unk_00;
     s32 unk_04;
     s32 angleScale;
@@ -451,14 +451,14 @@ struct UnagiRenderStep {
 extern "C" {
 void func_020167a4(BlendModelAnim *model);
 void func_0204531c(ModelComponents *data, s32 weight);
-extern UnagiRenderStep data_ov016_02114908[];
+extern MorayRenderStep data_ov016_02114908[];
 }
 
 
 s32 daMoray_c::Render()
 {
     int i;
-    UnagiRenderStep *step;
+    MorayRenderStep *step;
     char *bone;
 
     func_020167a4(&mBlendModelAnim);
