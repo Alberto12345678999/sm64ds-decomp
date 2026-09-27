@@ -14,8 +14,8 @@
 extern "C" {
 extern void ClearSpikeBomb(int idx);
 extern char *_ZN8dActor_c15FindWithActorIDEjPS_(unsigned int id, char *p);
-extern int Vec3_HorzLen(const void *v);
-extern int Vec3_Dist(const void *a, const void *b);
+extern int Vec3_HorzLen(const Vector3 *v);
+extern int Vec3_Dist(const Vector3 *a, const Vector3 *b);
 extern void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int id, int x, int y, int z);
 extern void func_02012694(int a, void* b);
 extern void _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(void* self, struct Vector3* v, int f);
@@ -101,10 +101,10 @@ void func_ov060_021184bc(char *c)
 int func_ov060_02118544(char *c, void *v) {
     int h, r2;
     if (*(int*)(c + 0x170) != 0) return 0;
-    h = Vec3_HorzLen(v);
+    h = Vec3_HorzLen((Vector3 *)v);
     r2 = *(int*)(c + 0x180);
     if (h >= r2 - 0x12c000 && h <= r2 + 0x12c000) {
-        if (Vec3_Dist(c + 0x174, v) < *(int*)(c + 0x184)) return 1;
+        if (Vec3_Dist((Vector3 *)(c + 0x174), (Vector3 *)v) < *(int*)(c + 0x184)) return 1;
     }
     return 0;
 }

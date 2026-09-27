@@ -216,7 +216,7 @@ Worth naming once here rather than thirteen times below.
 | 0x180 | `mHomeHorzDist` | `Vec3_HorzLen` of the spawn position -- how far out in XZ the bomb starts from the world origin. |
 | 0x184 | `mHomeYOffset` | the constant 0x2ee000; `mHomePosY` is raised by `mHomeYOffset >> 3` immediately after the home triple is copied. |
 
-Source: `src/_ZN9daKirai_c13InitResourcesEv.cpp`. Both branches of the header
+Source: `src/actors/daKirai_c.cpp` (`daKirai_c::InitResources`). Both branches of the header
 carry the rename.
 
 ## daObjHeart_c -- include/daObjHeart_c.h

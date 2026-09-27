@@ -50,7 +50,7 @@ struct daKirai_c : dActor_c {
        position -- how far out in XZ the bomb starts from the world origin.
        mHomeYOffset is the constant 0x2ee000, and mHomePosY is raised by
        mHomeYOffset >> 3 right after the home triple is copied.
-       [_ZN9daKirai_c13InitResourcesEv.cpp] */
+       [daKirai_c::InitResources] */
     s32 mHomeHorzDist;            /* 0x180 */
     s32 mHomeYOffset;            /* 0x184 */
     u8  pad_188[0x20];
@@ -88,7 +88,7 @@ struct daKirai_c {
     u8  pad_08c[0x48];
     /* Model member, named by the class's own destructor calling
        Model's D1 at +0x0d4 -- a relocation the ROM build
-       checks. Was a u8 marker. [_ZN9daKirai_cD0Ev.c] */
+       checks. Was a u8 marker. [daKirai_c::~daKirai_c] */
     Model mModel;            /* 0x0d4 */
     dCcAcPos_c mdCcAcPos_c;       /* 0x124 */
     u8  pad_164[0xc];
@@ -100,7 +100,7 @@ struct daKirai_c {
        position -- how far out in XZ the bomb starts from the world origin.
        mHomeYOffset is the constant 0x2ee000, and mHomePosY is raised by
        mHomeYOffset >> 3 right after the home triple is copied.
-       [_ZN9daKirai_c13InitResourcesEv.cpp] */
+       [daKirai_c::InitResources] */
     s32 mHomeHorzDist;            /* 0x180 */
     s32 mHomeYOffset;            /* 0x184 */
     u8  pad_188[0x20];
