@@ -56,6 +56,8 @@ struct daBakubaku_c : dEnemyBase_c {
 
     /* Inline empty dtor: mwccarm emits D1 then D0, no D2. */
     virtual ~daBakubaku_c() {}
+
+    int func_ov032_02111ff4(void *state);
 };
 
 #ifndef SM64DS_PLATFORM_PC

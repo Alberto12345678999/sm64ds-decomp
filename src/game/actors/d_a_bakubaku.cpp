@@ -111,7 +111,6 @@ extern Vector3 data_ov032_021137d8; /* head cylinder */
 int func_ov032_02111254(daBakubaku_c *self);
 int func_ov032_02111350(daBakubaku_c *self);
 void func_ov032_021113fc(daBakubaku_c *self);
-int func_ov032_02111ff4(void *self, void *state);
 void func_ov032_02112044(daBakubaku_c *self);
 
 int Vec3_HorzDist(const Vector3 *a, const Vector3 *b);
@@ -208,7 +207,7 @@ s32 daBakubaku_c::InitResources()
         &mModelAnim, data_ov032_02113a50.file, 0, 0x1000, 0);
     mModelAnim.speed = 0x1000;
 
-    func_ov032_02111ff4(this, &data_ov032_02113a8c);
+    func_ov032_02111ff4(&data_ov032_02113a8c);
     return 1;
 }
 
@@ -297,15 +296,14 @@ extern "C" void func_ov032_02112044(daBakubaku_c *self)
 /* Install mState and run its enter function. Enter returns int, so this
    PMF is not Behavior's void one. */
 typedef int (daBakubaku_c::*EnterFn)();
-// @symbol func_ov032_02111ff4
-extern "C" int func_ov032_02111ff4(void *cv, void *pv)
+// @symbol _ZN12daBakubaku_c19func_ov032_02111ff4EPv
+int daBakubaku_c::func_ov032_02111ff4(void *pv)
 {
-    daBakubaku_c *c = (daBakubaku_c *)cv;
     EnterFn *p = (EnterFn *)pv;
-    c->mState = (BakubakuState *)p;
-    EnterFn *q = (EnterFn *)c->mState;
+    mState = (BakubakuState *)p;
+    EnterFn *q = (EnterFn *)mState;
     if (*q == 0) return 1;
-    return (c->*(*q))();
+    return (this->*(*q))();
 }
 
 /* Wander enter: random yaw and a state timer. */
@@ -354,15 +352,15 @@ extern "C" int func_ov032_02111e24(daBakubaku_c *self)
     MulVec3Mat4x3(in, &data_020a0e68, out);
     self->mVertSpeed = out[1];
     if (func_ov032_02111254(self) == 1) {
-        func_ov032_02111ff4(self, &data_ov032_02113aac);
+        self->func_ov032_02111ff4(&data_ov032_02113aac);
         return 1;
     }
     if (*(unsigned short *)&self->mStateTimer == 0) {
         unsigned int r = (unsigned int)RandomIntInternal(data_0209e650);
         if (((r >> 8) & 3) == 0) {
-            func_ov032_02111ff4(self, &data_ov032_02113a9c);
+            self->func_ov032_02111ff4(&data_ov032_02113a9c);
         } else {
-            func_ov032_02111ff4(self, &data_ov032_02113a8c);
+            self->func_ov032_02111ff4(&data_ov032_02113a8c);
         }
     }
     return 1;
@@ -386,11 +384,11 @@ extern "C" int func_ov032_02111dd8(daBakubaku_c *self)
 extern "C" int func_ov032_02111d7c(daBakubaku_c *self)
 {
     if (func_ov032_02111254(self) == 1) {
-        func_ov032_02111ff4(self, &data_ov032_02113aac);
+        self->func_ov032_02111ff4(&data_ov032_02113aac);
         return 1;
     }
     if (*(unsigned short *)&self->mStateTimer == 0)
-        func_ov032_02111ff4(self, &data_ov032_02113a8c);
+        self->func_ov032_02111ff4(&data_ov032_02113a8c);
     return 1;
 }
 
@@ -417,7 +415,7 @@ give_up:
         _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
             &self->mModelAnim, data_ov032_02113a50.file, 0, 0x1000, 0);
         self->mChaseCooldown = 0x64;
-        func_ov032_02111ff4(self, &data_ov032_02113a8c);
+        self->func_ov032_02111ff4(&data_ov032_02113a8c);
         return 1;
     }
 aim:
@@ -445,9 +443,9 @@ aim:
                     &self->mModelAnim, data_ov032_02113a48.file,
                     0x40000000, 0x1000, 0);
                 if (self->mAngTarget > 0)
-                    func_ov032_02111ff4(self, &data_ov032_02113a7c);
+                    self->func_ov032_02111ff4(&data_ov032_02113a7c);
                 else
-                    func_ov032_02111ff4(self, &data_ov032_02113abc);
+                    self->func_ov032_02111ff4(&data_ov032_02113abc);
                 return 1;
             }
         }
@@ -555,7 +553,7 @@ pitched: ;
                 _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
                     &self->mModelAnim, data_ov032_02113a50.file,
                     0, 0x1000, 0);
-                func_ov032_02111ff4(self, &data_ov032_02113a8c);
+                self->func_ov032_02111ff4(&data_ov032_02113a8c);
                 return 1;
             }
         }
@@ -632,7 +630,7 @@ pitched: ;
         _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
             &self->mModelAnim, data_ov032_02113a50.file,
             0, 0x1000, 0);
-        func_ov032_02111ff4(self, &data_ov032_02113a8c);
+        self->func_ov032_02111ff4(&data_ov032_02113a8c);
     }
     goto done;
 
