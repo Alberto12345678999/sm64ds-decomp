@@ -1,9 +1,9 @@
-#ifndef WHIRLPOOL_H
-#define WHIRLPOOL_H
+#ifndef DAWATER_TATUMAKI_C_H
+#define DAWATER_TATUMAKI_C_H
 
 #include "types.h"
 
-/* Derives from dEnemyBase_c, on the evidence of its own destructor: `_ZN9WhirlpoolD1Ev`
+/* Derives from dEnemyBase_c, on the evidence of its own destructor: `_ZN18daWater_Tatumaki_cD1Ev`
  * stores this vtable, destroys its members in reverse declaration order, then
  * calls `dEnemyBase_c::~dEnemyBase_c`. Everything this header used to restate below 0x110
  * belongs to that chain and is inherited now.
@@ -37,7 +37,7 @@
 #include "TextureTransformer.h"
 #include "dBgCh_Actr.h"
 
-struct Whirlpool : dEnemyBase_c {
+struct daWater_Tatumaki_c : dEnemyBase_c {
     s32                          unk_110;               /* 0x110 */
     ModelAnim                    mModelAnim;            /* 0x114 */
     TextureTransformer           mTextureTransformer;   /* 0x178 */
@@ -50,7 +50,7 @@ struct Whirlpool : dEnemyBase_c {
     u8  pad_1b9[0x3];
 
     /* --- vtable --- */
-    virtual ~Whirlpool();
+    virtual ~daWater_Tatumaki_c();
 
     int Behavior();
     int InitResources();
@@ -61,7 +61,7 @@ struct Whirlpool : dEnemyBase_c {
 
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
-typedef char Whirlpool_size_must_be_0x1bc[sizeof(Whirlpool) == 0x1bc ? 1 : -1];
+typedef char daWater_Tatumaki_c_size_must_be_0x1bc[sizeof(daWater_Tatumaki_c) == 0x1bc ? 1 : -1];
 #endif
 
-#endif /* WHIRLPOOL_H */
+#endif /* DAWATER_TATUMAKI_C_H */

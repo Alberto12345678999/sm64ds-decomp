@@ -241,7 +241,7 @@ daObjCtMecha03_c	DONE	include\daObjCtMecha03_c.h	dBgActor_c	0	ov065	6
 daObjCtMecha04_c	DONE	include\daObjCtMecha04_c.h	dBgActor_c	0	ov065	9
 daObjCtMecha05_c	DONE	include\daObjCtMecha05_c.h	dBgActor_c	0	ov065	6
 daObjCtMecha08_c	DONE	include\daObjCtMecha08_c.h  [alias: header uses pre-rename name]	dBgActor_c	0	ov065	6
-daObjCtMecha09_c	DONE	include\TTC_MovingBeam.h  [alias: header uses pre-rename name]	dBgActor_c	0	ov065	6
+daObjCtMecha09_c	DONE	include\daObjCtMecha09_c.h  [alias: header uses pre-rename name]	dBgActor_c	0	ov065	6
 daObjCtMecha10_c	DONE	include\daObjCtMecha10_c.h	dBgActor_c	0	ov035	6
 daObjCtMecha11_c	DONE	include\daObjCtMecha11_c.h	dBgActor_c	0	ov035	8
 daObjCtRotateBlock_c	DONE	include\daObjCtRotateBlock_c.h  [alias: header uses pre-rename name]	dBgActor_c	0	ov065	9
@@ -356,7 +356,7 @@ daWanwan_c	DONE	include\daWanwan_c.h	dEnemyBase_c	0	ov014	6
 daWater_Hakidasi_c	DONE	include\daWater_Hakidasi_c.h	dEnemyBase_c	0	ov064	7
 daWater_Ring_c	DONE	include\daWater_Ring_c.h	dEnemyBase_c	0	ov064	7
 daWater_Suikomi_c	DONE	include\daWater_Suikomi_c.h	dEnemyBase_c	0	ov026	7
-daWater_Tatumaki_c	DONE	include\Whirlpool.h  [alias: header uses pre-rename name]	dEnemyBase_c	0	ov026	7
+daWater_Tatumaki_c	DONE	include\daWater_Tatumaki_c.h  [alias: header uses pre-rename name]	dEnemyBase_c	0	ov026	7
 daWbm_c	DONE	include\daWbm_c.h	dEnemyBase_c	0	ov098	6
 daYegg_c	DONE	include\YoshiEgg.h  [alias: header uses pre-rename name]	dEnemyBase_c	0	ov002	6
 daYurei_Mucho_c	DONE	include\daYurei_Mucho_c.h	dEnemyBase_c	0	ov065	10
