@@ -104,7 +104,6 @@ extern void _ZN15MaterialChanger7SetFileER8BMA_Filei5Fix12IiEj(void *m, void *f,
 /* Three-register reconstructed interface; death-state stores also use r3. */
 extern void func_ov002_020aea30(void *self, void *actor, void *collision);
 extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *m, void *f, int a, int fix, unsigned int j);
-extern void func_ov084_0212a580(char *self);
 extern void func_ov084_021294d0(char *self);
 extern int *data_ov084_0213088c;
 extern int data_ov084_02130248[];
@@ -566,7 +565,7 @@ int func_ov084_02129a00(char *self) {
         return 1;
     }
 
-    func_ov084_0212a580(self);
+    ((daKrb_c *)self)->func_ov084_0212a580();
     ((dCc_c *)(self + 0x180))->Clear();
     if (*(u8 *)(self + 0x107) != 0) {
         func_ov084_021294d0(self);
@@ -873,36 +872,36 @@ block_68:
 }
 }
 
-// @symbol func_ov084_0212a580
+// @symbol _ZN7daKrb_c19func_ov084_0212a580Ev
 /* Signature deliberately copied from the local declaration above: the
    ROM name carries by-value class parameters (e.g. Fix12<int>), which
    mwccarm passes differently at the call site, so declaring the true
    types breaks the byte match. See notes/mwccarm-codegen.md 6az. */
-extern "C" void func_ov084_0212a580(char* c){
+void daKrb_c::func_ov084_0212a580(){
     Vector3_16_local rotation;
     Vector3 pos;
     Vector3 arg;
     Vector3_16_local arg16;
 
-    Matrix4x3_FromRotationY(c + 0x38c, *(short*)(c + 0x8e));
-    *(int*)(c + 0x3b0) = *(int*)(c + 0x5c) >> 3;
-    *(int*)(c + 0x3b4) = *(int*)(c + 0x60) >> 3;
-    *(int*)(c + 0x3b8) = *(int*)(c + 0x64) >> 3;
-    rotation.x = *(short*)(c + 0x8c);
-    rotation.y = *(short*)(c + 0x8e);
-    rotation.z = *(short*)(c + 0x90);
-    if ((*(int*)(c + 0xb0) & 0x40000 ? 1 : 0) == 0) {
-        if (((dBgCh_Actr *)(c + 0x1b4))->IsOnGround()) {
-            _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(c, c + 0x3d4, c + 0x38c, *(int*)(c + 0x80) * 0x50, 0x1e000, 0xf);
+    Matrix4x3_FromRotationY((char *)this + 0x38c, *(short*)((char *)this + 0x8e));
+    *(int*)((char *)this + 0x3b0) = *(int*)((char *)this + 0x5c) >> 3;
+    *(int*)((char *)this + 0x3b4) = *(int*)((char *)this + 0x60) >> 3;
+    *(int*)((char *)this + 0x3b8) = *(int*)((char *)this + 0x64) >> 3;
+    rotation.x = *(short*)((char *)this + 0x8c);
+    rotation.y = *(short*)((char *)this + 0x8e);
+    rotation.z = *(short*)((char *)this + 0x90);
+    if ((*(int*)((char *)this + 0xb0) & 0x40000 ? 1 : 0) == 0) {
+        if (((dBgCh_Actr *)((char *)this + 0x1b4))->IsOnGround()) {
+            _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j((char *)this, (char *)this + 0x3d4, (char *)this + 0x38c, *(int*)((char *)this + 0x80) * 0x50, 0x1e000, 0xf);
         } else {
-            _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(c, c + 0x3d4, c + 0x38c, *(int*)(c + 0x80) * 0x50, 0x96000, 0xf);
+            _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j((char *)this, (char *)this + 0x3d4, (char *)this + 0x38c, *(int*)((char *)this + 0x80) * 0x50, 0x96000, 0xf);
         }
     }
     pos.x = 0;
     pos.z = 0;
     pos.y = 0x6c000;
-    pos.x += ((short*)data_02082214)[(*(unsigned short*)(c + 0x8e) >> 4) * 2] * 10;
-    pos.z += ((short*)data_02082214)[(*(unsigned short*)(c + 0x8e) >> 4) * 2 + 1] * 10;
+    pos.x += ((short*)data_02082214)[(*(unsigned short*)((char *)this + 0x8e) >> 4) * 2] * 10;
+    pos.z += ((short*)data_02082214)[(*(unsigned short*)((char *)this + 0x8e) >> 4) * 2 + 1] * 10;
     arg.x = ((int*)&pos)[0];
     arg.y = ((int*)&pos)[1];
     arg.z = ((int*)&pos)[2];
@@ -910,7 +909,7 @@ extern "C" void func_ov084_0212a580(char* c){
     arg16.y = ((unsigned short*)&rotation)[1];
     arg16.z = ((unsigned short*)&rotation)[2];
     /* equal-arm ternary forces arg16 setup (r2) before arg (r1) — matches ROM call-arg order */
-    _ZN11dCapEnemy_c12UpdateCapPosERK7Vector3RK10Vector3_16((dCapEnemy_c*)c, arg, c ? arg16 : arg16);
+    _ZN11dCapEnemy_c12UpdateCapPosERK7Vector3RK10Vector3_16((dCapEnemy_c*)this, arg, this ? arg16 : arg16);
 }
 
 // @symbol func_ov084_0212a6f8
@@ -1033,25 +1032,24 @@ void func_ov084_0212a774(char *c)
 }
 }
 
-// @symbol func_ov084_0212aab0
 void ApproachLinear(short &v, short t, short step);
 
-extern "C" void func_ov084_0212aab0(char *c)
+// @symbol _ZN7daKrb_c19func_ov084_0212aab0Ev
+void daKrb_c::func_ov084_0212aab0()
 {
-    daKrb_c *goomba = (daKrb_c *)c;
-    if (goomba->mWithMeshClsn.JustHitGround()) {
-        switch (goomba->mGoombaType) {
-        case 2: goomba->HugeLandingDust(true); break;
-        case 1: goomba->LandingDust(true); break;
+    if (mWithMeshClsn.JustHitGround()) {
+        switch (mGoombaType) {
+        case 2: HugeLandingDust(true); break;
+        case 1: LandingDust(true); break;
         }
     }
-    if (goomba->mWithMeshClsn.IsOnGround()) {
-        goomba->mState = 0;
-        goomba->mdCcAc_c.flags &= ~4;
+    if (mWithMeshClsn.IsOnGround()) {
+        mState = 0;
+        mdCcAc_c.flags &= ~4;
     } else {
-        ApproachLinear(goomba->mPrevAngleY, *(short *)((char *)goomba + 0x45c), 0x800);
+        ApproachLinear(mPrevAngleY, *(short *)((char *)this + 0x45c), 0x800);
     }
-    goomba->mAngleY = goomba->mPrevAngleY;
+    mAngleY = mPrevAngleY;
 }
 
 // @symbol func_ov084_0212ab48
@@ -1439,7 +1437,7 @@ int daKrb_c::Behavior()
             return 1;
         }
         if (func_ov084_021298d0(((char*)this)) == 0)
-            func_ov084_0212a580(((char*)this));
+            func_ov084_0212a580();
         return 1;
     }
 
@@ -1521,7 +1519,7 @@ int daKrb_c::Behavior()
     ((dCc_c *)&mdCcAc_c)->Clear();
     if (mDeathState == 0)
         ((dCc_c *)&mdCcAc_c)->Update();
-    func_ov084_0212a580(((char*)this));
+    func_ov084_0212a580();
     func_ov084_02129238(((char*)this));
 
     if (mState == 0) {
