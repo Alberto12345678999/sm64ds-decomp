@@ -43,8 +43,7 @@
  *       Particle::System::NewSimple (also absent from Particle.h).
  *
  *   (b) No usable declaration: dActor_c::Earthquake is not on dActor_c.h
- *       (func_ov102_02149c78). KillAndTrackInDeathTable is void, but
- *       func_ov102_021494cc returns the bl's r0.
+ *       (func_ov102_02149c78).
  *
  * Known limits:
  *   func_020393a4 / func_02039394 poke mMeshCollider, which has no setter
@@ -174,8 +173,6 @@ extern int DecIfAbove0_Short(void *p);
 extern void Matrix4x3_FromRotationY(void *m, int angle);
 extern void func_020393a4(int *p, int v);
 extern void func_02039394(int *p, int v);
-/* local extern: dActor_c.h declares it void, but func_ov102_021494cc returns the bl's r0 */
-extern int _ZN8dActor_c24KillAndTrackInDeathTableEv(void *self);
 extern void _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(void *self, void *pos, s32 radius);
 extern void _ZN8dActor_c18DropShadowScaleXYZER11ShadowModelR9Matrix4x35Fix12IiES5_S5_j(void *self, void *shadow, void *mtx, int fix, int t1, int t2, unsigned int n);
 extern int _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(void *self, int a, int b);
@@ -826,7 +823,7 @@ void func_ov102_0214953c(char* c, int p1, int p2)
 
 // @symbol func_ov102_021494cc
 extern "C" {
-int func_ov102_021494cc(char* c){
+void func_ov102_021494cc(char* c){
   int s[3];
   func_ov102_02149684(s, (int*)c);
   int count = (*(unsigned int*)(c+8) >> 8) & 0xff;
@@ -834,7 +831,7 @@ int func_ov102_021494cc(char* c){
   int w[3];
   w[0] = s[0]; w[1] = s[1]; w[2] = s[2];
   func_ov102_02149100(c, (Vector3 *)w, count, 0x1800, 0);
-  return _ZN8dActor_c24KillAndTrackInDeathTableEv(c);
+  ((dActor_c *)c)->KillAndTrackInDeathTable();
 }
 }
 
