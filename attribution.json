@@ -5644,6 +5644,15 @@
     "src/actors/daWater_Ring_c.cpp#func_ov064_02119ce4": "tangosdev",
     "src/actors/daWater_Ring_c.cpp#func_ov064_02119d28": "tangosdev",
     "src/actors/daWater_Ring_c.cpp#_ZN14daWater_Ring_c8BehaviorEv": "tangosdev",
-    "src/actors/daWater_Ring_c.cpp#func_ov064_02119ecc": "tangosdev"
+    "src/actors/daWater_Ring_c.cpp#func_ov064_02119ecc": "tangosdev",
+    "src/actors/dMg3DEspAnimSet_c.cpp#_ZN17dMg3DEspAnimSet_c6RenderEv": "tangosdev",
+    "src/actors/dMg3DEspAnimSet_c.cpp#_ZN17dMg3DEspAnimSet_c8BehaviorEv": "ruspecial",
+    "src/actors/dMg3DEspAnimSet_c.cpp#_ZN17dMg3DEspAnimSet_c5ResetEv": "tangosdev",
+    "src/actors/dMg3DEspAnimSet_c.cpp#func_ov006_020e792c": "tangosdev",
+    "src/actors/dMg3DEspAnimSet_c.cpp#func_ov006_020e7940": "tangosdev",
+    "src/actors/dMg3DEspAnimSet_c.cpp#func_ov006_020e794c": "tangosdev",
+    "src/actors/dMg3DEspAnimSet_c.cpp#_ZN17dMg3DEspAnimSet_c13InitResourcesEv": "andrewboudreau",
+    "src/actors/dMg3DEspAnimSet_c.cpp#_ZN17dMg3DEspAnimSet_cD1Ev": "tangosdev",
+    "src/actors/dMg3DEspAnimSet_c.cpp#_ZN17dMg3DEspAnimSet_cC1Ev": "tangosdev"
   }
 }
