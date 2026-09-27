@@ -635,7 +635,7 @@ extern int _ZTV7daTrs_c[];
 extern int _ZTV4Coin[];
 extern int _ZTV5Koopa[];
 extern int _ZTV9daSanbo_c[];
-extern int _ZTV5Unagi[];
+extern int _ZTV9daMoray_c[];
 extern int _ZTV7daBtn_c[];
 extern int _ZTV7daBmb_c[];
 extern int _ZTV6Bowser[];

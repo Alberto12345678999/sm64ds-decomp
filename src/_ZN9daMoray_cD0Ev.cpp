@@ -1,8 +1,8 @@
 //cpp
-// @symbol _ZN5UnagiD0Ev
+// @symbol _ZN9daMoray_cD0Ev
 /* recovered: real C++ deleting destructor -- the compiler emits the whole body
  *
- * Destroy through Unagi and dEnemyBase_c, then hand the object back through dActor_c's
+ * Destroy through daMoray_c and dEnemyBase_c, then hand the object back through dActor_c's
  * inline operator delete, which is why nothing here mentions a heap. The array
  * cleanup at 0x448 is Vector3[7]; see the note in the D1 file.
  *
@@ -11,11 +11,11 @@
  * real header is in scope. Declaring the destructor is enough; the compiler
  * writes the rest.
  */
-#include "Unagi.h"
+#include "daMoray_c.h"
 
 #ifdef _MSC_VER
 /* THE HOST NEEDS THE ROM'S FLAT D0 NAME, AND MSVC NEVER EMITS IT. MSVC
- * folds the Itanium destructor variants into the one ~Unagi() it
+ * folds the Itanium destructor variants into the one ~daMoray_c() it
  * emits, which the class's D1 file already defines, so compiling the
  * definition below as well would define that symbol twice. This arm
  * spells out, in terms of it, what the deleting destructor this file is
@@ -24,14 +24,14 @@
  * class-specific operator delete. Nothing here reaches mwccarm: it builds
  * the `#else` arm and emits the ROM bytes it always emitted, and the
  * object is byte-identical either way. */
-extern "C" Unagi *_ZN5UnagiD0Ev(Unagi *thiz)
+extern "C" daMoray_c *_ZN9daMoray_cD0Ev(daMoray_c *thiz)
 {
-    thiz->Unagi::~Unagi();         /* the D1 body, through the one host symbol */
-    Unagi::operator delete(thiz);  /* the class-specific delete D0 ends with */
+    thiz->daMoray_c::~daMoray_c();         /* the D1 body, through the one host symbol */
+    daMoray_c::operator delete(thiz);  /* the class-specific delete D0 ends with */
     return thiz;
 }
 #else
-Unagi::~Unagi()
+daMoray_c::~daMoray_c()
 {
 }
 #endif

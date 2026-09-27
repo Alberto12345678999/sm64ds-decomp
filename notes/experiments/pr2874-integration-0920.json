@@ -3737,8 +3737,8 @@
       "diffs": []
     },
     {
-      "file": "src/_ZN5Unagi13InitResourcesEv.cpp",
-      "name": "_ZN5Unagi13InitResourcesEv",
+      "file": "src/_ZN9daMoray_c13InitResourcesEv.cpp",
+      "name": "_ZN9daMoray_c13InitResourcesEv",
       "module": "ov016",
       "addr": "0x21121c0",
       "verdict": "VERIFIED",
@@ -3746,8 +3746,8 @@
       "diffs": []
     },
     {
-      "file": "src/_ZN5Unagi8BehaviorEv.cpp",
-      "name": "_ZN5Unagi8BehaviorEv",
+      "file": "src/_ZN9daMoray_c8BehaviorEv.cpp",
+      "name": "_ZN9daMoray_c8BehaviorEv",
       "module": "ov016",
       "addr": "0x2112010",
       "verdict": "VERIFIED",
@@ -20322,7 +20322,7 @@
           "src/_ZN4Heap6SizeofEPv.cpp",
           "src/_ZN7daTgz_c13InitResourcesEv.cpp",
           "src/_ZN5Stage7LoadFogEv.cpp",
-          "src/_ZN5Unagi13InitResourcesEv.cpp",
+          "src/_ZN9daMoray_c13InitResourcesEv.cpp",
           "src/_ZN6Bowser8BehaviorEv.cpp",
           "src/_ZN6Coffin13InitResourcesEv.cpp",
           "src/_ZN6Klepto13InitResourcesEv.cpp",
@@ -20446,7 +20446,7 @@
           "src/_ZN4Heap6SizeofEPv.cpp",
           "src/_ZN7daTgz_c13InitResourcesEv.cpp",
           "src/_ZN5Stage7LoadFogEv.cpp",
-          "src/_ZN5Unagi13InitResourcesEv.cpp",
+          "src/_ZN9daMoray_c13InitResourcesEv.cpp",
           "src/_ZN6Bowser8BehaviorEv.cpp",
           "src/_ZN6Coffin13InitResourcesEv.cpp",
           "src/_ZN6Klepto13InitResourcesEv.cpp",
@@ -20581,7 +20581,7 @@
           "src/_ZN4Heap8AllocateEji.cpp",
           "src/_ZN5Stage11RenderModelEv.cpp",
           "src/_ZN5Stump16CleanupResourcesEv.cpp",
-          "src/_ZN5Unagi8BehaviorEv.cpp",
+          "src/_ZN9daMoray_c8BehaviorEv.cpp",
           "src/_ZN6Bullet13InitResourcesEv.cpp",
           "src/_ZN6Coffin16CleanupResourcesEv.cpp",
           "src/_ZN6Klepto8BehaviorEv.cpp",
@@ -20706,7 +20706,7 @@
           "src/_ZN4Heap8AllocateEji.cpp",
           "src/_ZN5Stage11RenderModelEv.cpp",
           "src/_ZN5Stump16CleanupResourcesEv.cpp",
-          "src/_ZN5Unagi8BehaviorEv.cpp",
+          "src/_ZN9daMoray_c8BehaviorEv.cpp",
           "src/_ZN6Bullet13InitResourcesEv.cpp",
           "src/_ZN6Coffin16CleanupResourcesEv.cpp",
           "src/_ZN6Klepto8BehaviorEv.cpp",
@@ -21804,8 +21804,8 @@
         "src/_ZN5Timer10StartTimerEv.cpp",
         "src/_ZN5Timer7GetTimeEv.cpp",
         "src/_ZN5Timer9StopTimerEv.cpp",
-        "src/_ZN5Unagi13InitResourcesEv.cpp",
-        "src/_ZN5Unagi8BehaviorEv.cpp",
+        "src/_ZN9daMoray_c13InitResourcesEv.cpp",
+        "src/_ZN9daMoray_c8BehaviorEv.cpp",
         "src/_ZN5Whomp13InitResourcesEv.cpp",
         "src/_ZN5Whomp16CleanupResourcesEv.cpp",
         "src/_ZN5dBgCh21ShouldPassThroughImplEPvRK4CLPSRKS_b.cpp",
@@ -23131,12 +23131,12 @@
           "name": "_ZN5Timer9StopTimerEv"
         },
         {
-          "file": "src/_ZN5Unagi13InitResourcesEv.cpp",
-          "name": "_ZN5Unagi13InitResourcesEv"
+          "file": "src/_ZN9daMoray_c13InitResourcesEv.cpp",
+          "name": "_ZN9daMoray_c13InitResourcesEv"
         },
         {
-          "file": "src/_ZN5Unagi8BehaviorEv.cpp",
-          "name": "_ZN5Unagi8BehaviorEv"
+          "file": "src/_ZN9daMoray_c8BehaviorEv.cpp",
+          "name": "_ZN9daMoray_c8BehaviorEv"
         },
         {
           "file": "src/_ZN5Whomp13InitResourcesEv.cpp",

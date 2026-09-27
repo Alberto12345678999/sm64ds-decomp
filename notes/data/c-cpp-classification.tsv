@@ -495,7 +495,7 @@ src/TurnBacklightOn.c	PURE-C	arm9				1		None		-
 src/d_a_obj_hm_bskt.c	S1-stores-rom-vptr	ov030			stores _ZTV13daObjHmBskt_c	1		None	_ZTV13daObjHmBskt_c	-
 src/d_a_mky_monkey_star.c	WEAK-refs-only	ov030				1		None		-
 src/d_a_mky_monkey_thief.c	WEAK-refs-only	ov030				1		None		-
-src/d_a_moray.c	S1-stores-rom-vptr	ov016			stores _ZTV5Unagi	1		None	_ZTV5Unagi	-
+src/d_a_moray.c	S1-stores-rom-vptr	ov016			stores _ZTV9daMoray_c	1		None	_ZTV9daMoray_c	-
 src/UnloadArchive.c	PURE-C	arm9				1		None		-
 src/UnloadArchives.c	PURE-C	arm9				1		None		-
 src/UnloadBlueCoinModel.c	WEAK-refs-only	arm9				1		None		-

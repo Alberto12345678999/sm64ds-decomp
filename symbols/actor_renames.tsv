@@ -788,14 +788,14 @@ ov015	0x021147c4	RotatingPlatformWf_SpawnInfo	g_profile_BK_UKISIMA	reconstructed
 ov015	0x021148b8	data_ov015_021148b8	daObjBk_Fall_Block_c_SpawnInfo	spawninfo
 ov015	0x021148b8	daObjBk_Fall_Block_c_SpawnInfo	g_profile_BK_DOWN_B	reconstructed profile global; literal ROM ID BK_DOWN_B+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov015	0x021148dc	data_ov015_021148dc	_ZTV20daObjBk_Fall_Block_c	vtable alloc=0x34c
-ov016	0x021111a0	func_ov016_021111a0	_ZN5UnagiD1Ev	vtable slot 16
-ov016	0x02111208	func_ov016_02111208	_ZN5UnagiD0Ev	vtable slot 17
+ov016	0x021111a0	func_ov016_021111a0	_ZN9daMoray_cD1Ev	vtable slot 16
+ov016	0x02111208	func_ov016_02111208	_ZN9daMoray_cD0Ev	vtable slot 17
 ov016	0x021115a4	func_ov016_021115a4	BookSwitch_Spawn	spawnfunc
-ov016	0x02111f38	func_ov016_02111f38	_ZN5Unagi16CleanupResourcesEv	vtable slot 3
-ov016	0x02111f80	func_ov016_02111f80	_ZN5Unagi16OnPendingDestroyEv	vtable slot 12
-ov016	0x02111f84	func_ov016_02111f84	_ZN5Unagi6RenderEv	vtable slot 9
-ov016	0x02112010	func_ov016_02112010	_ZN5Unagi8BehaviorEv	vtable slot 6
-ov016	0x021121c0	func_ov016_021121c0	_ZN5Unagi13InitResourcesEv	vtable slot 0
+ov016	0x02111f38	func_ov016_02111f38	_ZN9daMoray_c16CleanupResourcesEv	vtable slot 3
+ov016	0x02111f80	func_ov016_02111f80	_ZN9daMoray_c16OnPendingDestroyEv	vtable slot 12
+ov016	0x02111f84	func_ov016_02111f84	_ZN9daMoray_c6RenderEv	vtable slot 9
+ov016	0x02112010	func_ov016_02112010	_ZN9daMoray_c8BehaviorEv	vtable slot 6
+ov016	0x021121c0	func_ov016_021121c0	_ZN9daMoray_c13InitResourcesEv	vtable slot 0
 ov016	0x02112588	func_ov016_02112588	Unagi_Spawn	spawnfunc
 ov016	0x02112588	Unagi_Spawn	daMoray_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov016	0x0211260c	func_ov016_0211260c	_ZN14daObjKi_Fune_cD1Ev	vtable slot 16 (was _ZN6ShipUpD1Ev)
@@ -823,7 +823,7 @@ ov016	0x02113510	SlidingBox_Spawn	daSlide_Box_c_classInit	reconstructed classIni
 ov016	0x02114898	data_ov016_02114898	BookSwitch_SpawnInfo	spawninfo
 ov016	0x021148e0	data_ov016_021148e0	Unagi_SpawnInfo	spawninfo
 ov016	0x021148e0	Unagi_SpawnInfo	g_profile_MORAY	reconstructed profile global; literal ROM ID MORAY+registry role+later EAD lineage; exact SM64DS spelling not preserved
-ov016	0x02114958	data_ov016_02114958	_ZTV5Unagi	vtable alloc=0x4b0
+ov016	0x02114958	data_ov016_02114958	_ZTV9daMoray_c	vtable alloc=0x4b0
 ov016	0x021149fc	data_ov016_021149fc	ShipDown_SpawnInfo	spawninfo
 ov016	0x021149fc	ShipDown_SpawnInfo	g_profile_KI_FUNE	reconstructed profile global; literal ROM ID KI_FUNE+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov016	0x02114a18	data_ov016_02114a18	ShipUp_SpawnInfo	spawninfo

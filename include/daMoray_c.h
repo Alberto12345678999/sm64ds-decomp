@@ -1,5 +1,5 @@
-#ifndef UNAGI_H
-#define UNAGI_H
+#ifndef DAMORAY_C_H
+#define DAMORAY_C_H
 
 #include "types.h"
 
@@ -14,7 +14,7 @@
  *     Vector3[7]                0x448 + 0x054 = 0x49c  -> mStarUniqueID
  *
  * unk_360 and unk_3ac are gone: both fall INSIDE the BlendModelAnim at 0x350
- * (+0x10 and +0x5c), so they were never Unagi's fields -- the generated header
+ * (+0x10 and +0x5c), so they were never daMoray_c's fields -- the generated header
  * declared them beside a `u8 mBlendModelAnim` marker whose padding stopped
  * short of the real object.
  *
@@ -33,7 +33,7 @@
 #include "dBgCh_Actr.h"
 #include "dCcAcPos_c.h"
 
-struct Unagi : dEnemyBase_c {
+struct daMoray_c : dEnemyBase_c {
     dCcAcPos_c mdCcAcPos_c1;  /* 0x110 */
     dCcAcPos_c mdCcAcPos_c2;  /* 0x150 */
     dBgCh_Actr mWithMeshClsn;                             /* 0x190 */
@@ -59,10 +59,10 @@ struct Unagi : dEnemyBase_c {
     Vector3 mStarPos;                                       /* 0x43c */
     Vector3 mSegmentPos[7];                                 /* 0x448 */
     s32 mStarUniqueID;                                      /* 0x49c */
-    /* trailing extent the ROM's `new Unagi` literal proves; see tools/opnew_sizes.py */
+    /* trailing extent the ROM's `new daMoray_c` literal proves; see tools/opnew_sizes.py */
     u8 pad_4a0[0x10];
 
-    virtual ~Unagi();
+    virtual ~daMoray_c();
 
     virtual s32 InitResources();
     virtual s32 CleanupResources();
@@ -73,7 +73,7 @@ struct Unagi : dEnemyBase_c {
 
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
-typedef char Unagi_size_must_be_0x4b0[sizeof(struct Unagi) == 0x4b0 ? 1 : -1];
+typedef char daMoray_c_size_must_be_0x4b0[sizeof(struct daMoray_c) == 0x4b0 ? 1 : -1];
 #endif
 
 #else
@@ -81,7 +81,7 @@ typedef char Unagi_size_must_be_0x4b0[sizeof(struct Unagi) == 0x4b0 ? 1 : -1];
 /* The same object for a C translation unit, flat -- Render and D0 are C files
    that read these fields, and D0 is compiler-generated so it can never be
    migrated. Same arrangement as include/dBgActor_c.h. */
-struct Unagi {
+struct daMoray_c {
     u8  pad_000[0x8];
     u32 mParam;            /* 0x008 */
     u8  pad_00c[0x50];
@@ -137,10 +137,10 @@ struct Unagi {
     s32 mStarPosZ;            /* 0x444 */
     u8  pad_448[0x54];
     s32 mStarUniqueID;            /* 0x49c */
-    /* trailing extent the ROM's `new Unagi` literal proves; see tools/opnew_sizes.py */
+    /* trailing extent the ROM's `new daMoray_c` literal proves; see tools/opnew_sizes.py */
     u8 pad_4a0[0x10];
 };
 
 #endif /* __cplusplus */
 
-#endif /* UNAGI_H */
+#endif /* DAMORAY_C_H */

@@ -333,7 +333,7 @@ daKuriKing_c	DONE	include\Goomboss.h  [alias: header uses pre-rename name]	dEnem
 daManta_c	DONE	include\daManta_c.h  [alias: header uses pre-rename name]	dEnemyBase_c	0	ov090	7
 daMenbo_c	DONE	include\daMenbo_c.h  [alias: header uses pre-rename name]	dEnemyBase_c	0	ov090	10
 daMip_c	DONE	include\daMip_c.h	dEnemyBase_c	0	ov085	8
-daMoray_c	DONE	include\Unagi.h  [alias: header uses pre-rename name]	dEnemyBase_c	0	ov016	7
+daMoray_c	DONE	include\daMoray_c.h  [alias: header uses pre-rename name]	dEnemyBase_c	0	ov016	7
 daNknk_c	DONE	include\Koopa.h  [alias: header uses pre-rename name]	dEnemyBase_c	0	ov062	10
 daObjKey_c	DONE	include\daObjKey_c.h  [alias: header uses pre-rename name]	dEnemyBase_c	0	ov089	8
 daObjMarioCap_c	DONE	include\daObjMarioCap_c.h	dEnemyBase_c	0	ov002	9

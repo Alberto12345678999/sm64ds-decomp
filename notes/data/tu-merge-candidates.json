@@ -24363,13 +24363,13 @@
    "end": "0x211260c",
    "classes": [
     "BookSwitch",
-    "Unagi"
+    "daMoray_c"
    ],
    "n_functions_map": 21,
    "n_files": 20,
    "files": [
-    "src/_ZN5UnagiD1Ev.cpp",
-    "src/_ZN5UnagiD0Ev.cpp",
+    "src/_ZN9daMoray_cD1Ev.cpp",
+    "src/_ZN9daMoray_cD0Ev.cpp",
     "src/func_ov016_02111284.c",
     "src/func_ov016_02111534.c",
     "src/BookSwitch_Spawn.c",
@@ -24382,11 +24382,11 @@
     "src/func_ov016_021119ec.c",
     "src/func_ov016_02111bac.cpp",
     "src/func_ov016_02111bf0.cpp",
-    "src/_ZN5Unagi16CleanupResourcesEv.cpp",
-    "src/_ZN5Unagi16OnPendingDestroyEv.cpp",
-    "src/_ZN5Unagi6RenderEv.cpp",
-    "src/_ZN5Unagi8BehaviorEv.cpp",
-    "src/_ZN5Unagi13InitResourcesEv.cpp",
+    "src/_ZN9daMoray_c16CleanupResourcesEv.cpp",
+    "src/_ZN9daMoray_c16OnPendingDestroyEv.cpp",
+    "src/_ZN9daMoray_c6RenderEv.cpp",
+    "src/_ZN9daMoray_c8BehaviorEv.cpp",
+    "src/_ZN9daMoray_c13InitResourcesEv.cpp",
     "src/d_a_moray.c"
    ],
    "ext_mix": {

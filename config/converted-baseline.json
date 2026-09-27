@@ -955,10 +955,6 @@
     "src/_ZN5Timer10StartTimerEv.cpp",
     "src/_ZN5Timer7GetTimeEv.cpp",
     "src/_ZN5Timer9StopTimerEv.cpp",
-    "src/_ZN5Unagi16CleanupResourcesEv.cpp",
-    "src/_ZN5Unagi16OnPendingDestroyEv.cpp",
-    "src/_ZN5UnagiD0Ev.cpp",
-    "src/_ZN5UnagiD1Ev.cpp",
     "src/game/actors/d_a_btn.cpp#_ZN7daBtn_c16CleanupResourcesEv",
     "src/game/actors/d_a_btn.cpp#_ZN7daBtn_c16OnAimedAtWithEggEv",
     "src/game/actors/d_a_btn.cpp#_ZN7daBtn_c25OnAimedAtWithEggReturnVecEv",
@@ -3019,6 +3015,10 @@
     "src/actors/daKirai_c.cpp#_ZN9daKirai_c16CleanupResourcesEv",
     "src/actors/daKirai_c.cpp#_ZN9daKirai_c6RenderEv",
     "src/actors/daKirai_c.cpp#_ZN9daKirai_cD0Ev",
-    "src/actors/daKirai_c.cpp#_ZN9daKirai_cD1Ev"
+    "src/actors/daKirai_c.cpp#_ZN9daKirai_cD1Ev",
+    "src/actors/daMoray_c.cpp#_ZN9daMoray_c16CleanupResourcesEv",
+    "src/actors/daMoray_c.cpp#_ZN9daMoray_c16OnPendingDestroyEv",
+    "src/_ZN9daMoray_cD0Ev.cpp",
+    "src/_ZN9daMoray_cD1Ev.cpp"
   ]
 }
