@@ -31,13 +31,10 @@ struct daObjCtMecha09_c : dBgActor_c {
     /* --- vtable --- */
     virtual ~daObjCtMecha09_c();
 
-    /* An override the cartridge proves and this header never declared.
-       _ZTV16daObjCtMecha09_c slot 6 pointed at fBase_c::Behavior; the ROM has
-       ov065:_ZN16daObjCtMecha09_c8BehaviorEv (0x0211bd8c, 0x178 bytes), named in
-       symbols.txt but not yet decompiled -- the slot needs the symbol, not a body.
-       No `virtual` keyword, matching the overrides beside it: a derived declaration
-       of a base virtual overrides whether or not it repeats the word.
-       Measured by tools/romdata_check.py, the only gate that reads vtable bytes. */
+    /* Behavior overrides fBase_c::Behavior: _ZTV16daObjCtMecha09_c slot 6 holds
+       _ZN16daObjCtMecha09_c8BehaviorEv (ov065 0x0211bd8c). No `virtual` keyword,
+       matching the overrides beside it: a derived declaration of a base virtual
+       overrides whether or not it repeats the word. */
     int Behavior();
     int CleanupResources();
     int InitResources();
@@ -54,42 +51,6 @@ struct daObjCtMecha09_c : dBgActor_c {
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
 typedef char daObjCtMecha09_c_size_must_be_0x38c[sizeof(daObjCtMecha09_c) == 0x38c ? 1 : -1];
 #endif
-
-#else
-
-/* The C spelling of the same object, flat. Kept because the D0 file is a C
-   translation unit that reads these fields, and D0 is compiler-generated so it
-   can never be migrated. Same arrangement as include/ShadowModel.h. */
-struct daObjCtMecha09_c {
-    u8  pad_000[0x8];
-    s32 mParam;            /* 0x008 */
-    u8  pad_00c[0x50];
-    s32 mPosX;            /* 0x05c */
-    s32 mPosY;            /* 0x060 */
-    s32 mPosZ;            /* 0x064 */
-    u8  pad_068[0x26];
-    s16 mAngleY;            /* 0x08e */
-    u8  pad_090[0x10];
-    s32 mTerminalVelocity;            /* 0x0a0 */
-    u8  pad_0a4[0x4];
-    s32 mVertSpeed;            /* 0x0a8 */
-    u8  pad_0ac[0x28];
-    /* Model member, named by _ZN5ModelD1Ev at +0xd4 -- a relocation the ROM build checks.
-       D1 and not D2, so it is this type and not an inlined base. Was a u8 marker. */
-    Model mModel;            /* 0x0d4 */
-    /* dBgW_KcMbg member, named by the class's own destructor calling
-       dBgW_KcMbg's D1 at +0x124 -- a relocation the ROM build
-       checks. Was a u8 marker. [_ZN16daObjCtMecha09_cD1Ev.c] */
-    dBgW_KcMbg mMeshCollider;            /* 0x124 */
-    u8  mClsnMat;            /* 0x2ec */
-    u8  pad_2ed[0x33];
-    s32 mStartPosY;            /* 0x320 */
-    s32 mEndPosY;            /* 0x324 */
-    u8  mDirection;            /* 0x328 */
-    u8  pad_329[0x7];
-    s32 mGroundY;            /* 0x330 */
-    ShadowModel mShadowModel; /* 0x334 */
-};
 
 #endif /* __cplusplus */
 

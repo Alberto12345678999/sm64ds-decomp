@@ -9,8 +9,7 @@
 /* Reconstructed source-style name: SM64DS proves daObjCtMecha09_c through
  * RTTI, allocation size, vtable identity, and the CT_MECHA09 registry profile;
  * later EAD lineage supplies classInit. Exact original spelling is not
- * preserved. The project's daObjCtMecha09_c implementation alias remains
- * unchanged. Historical alias: TTC_MovingBeam_Spawn. */
+ * preserved. Historical aliases: TTC_MovingBeam, TTC_MovingBeam_Spawn. */
 int *daObjCtMecha09_c_classInit(void)
 {
     int *p = (int *)_ZN7fBase_cnwEj(908);
