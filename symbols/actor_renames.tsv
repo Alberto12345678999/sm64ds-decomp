@@ -1164,6 +1164,10 @@ ov027	0x02111594	func_ov027_02111594	SlidingIceSpawner_Spawn	spawnfunc
 ov027	0x02111594	SlidingIceSpawner_Spawn	daObjSlIceBlock_c_classInit_SL_ICEBLOCK	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov027	0x0211186c	func_ov027_0211186c	daIDonketu_c_Spawn	spawnfunc
 ov027	0x0211186c	daIDonketu_c_Spawn	daIDonketu_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
+ov027	0x02111a28	func_ov027_02111a28	_ZN10daPgDfdr_c19func_ov027_02111a28Ev	daPgDfdr_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov027	0x02111cfc	func_ov027_02111cfc	_ZN10daPgDfdr_c19func_ov027_02111cfcEv	daPgDfdr_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov027	0x02111d38	func_ov027_02111d38	_ZN10daPgDfdr_c19func_ov027_02111d38Ev	daPgDfdr_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov027	0x02111d70	func_ov027_02111d70	_ZN10daPgDfdr_c19func_ov027_02111d70Ei	daPgDfdr_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
 ov027	0x0211207c	func_ov027_0211207c	daPgDfdr_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov027	0x021120c4	func_ov027_021120c4	_ZN10daSnmBth_cD1Ev	vtable slot 16
 ov027	0x02112104	func_ov027_02112104	_ZN10daSnmBth_cD0Ev	vtable slot 17
