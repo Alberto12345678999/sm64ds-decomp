@@ -105,8 +105,8 @@ Left `unk_`:
 
 | offset | new name | evidence |
 | --- | --- | --- |
-| 0x3f8 | `void *mState` | `src/_ZN11daSnowman_c8BehaviorEv.cpp`'s local shadow places `PMF *pp` at 0x3f8, calls the pointer-to-member-function at `pp[1]` through `this`, and compares the word against four [ov081](../config/arm9/overlays/ov081/symbols.txt) state tables ([data_ov081_02128e24](../config/arm9/overlays/ov081/symbols.txt) / [_02128e64](../config/arm9/overlays/ov081/symbols.txt) / [_02128e84](../config/arm9/overlays/ov081/symbols.txt) / [_02128e94](../config/arm9/overlays/ov081/symbols.txt)). [func_ov081_02125488](../src/func_ov081_02125488.cpp)`(this, ...)` in `InitResources` is the setter. Previously unnamed inside `pad_398`. |
-| 0x400 | `mCapUniqueID` | `Behavior` spawns actor `0x10d` only when `SaveData::HasPlayerLostCap()` and this word is 0, then stores the spawned actor's unique id (`*(int*)(spawned + 4)`, the same `+4` `Unagi` uses for `mStarUniqueID`) into it. `src/_ZN11daSnowman_c6RenderEv.cpp` hides material 2 when it is non-zero — the head is bare once the cap actor exists. |
+| 0x3f8 | `void *mState` | `daSnowman_c::Behavior` in `src/actors/daSnowman_c.cpp` reads it through a local shadow that places `PMF *pp` at 0x3f8, calls the pointer-to-member-function at `pp[1]` through `this`, and compares the word against four [ov081](../config/arm9/overlays/ov081/symbols.txt) state tables ([data_ov081_02128e24](../config/arm9/overlays/ov081/symbols.txt) / [_02128e64](../config/arm9/overlays/ov081/symbols.txt) / [_02128e84](../config/arm9/overlays/ov081/symbols.txt) / [_02128e94](../config/arm9/overlays/ov081/symbols.txt)). [func_ov081_02125488](../src/actors/daSnowman_c.cpp)`(this, ...)` in `InitResources` is the setter. Previously unnamed inside `pad_398`. |
+| 0x400 | `mCapUniqueID` | `Behavior` spawns actor `0x10d` only when `SaveData::HasPlayerLostCap()` and this word is 0, then stores the spawned actor's unique id (`*(int*)(spawned + 4)`, the same `+4` `Unagi` uses for `mStarUniqueID`) into it. `daSnowman_c::Render` (in `src/actors/daSnowman_c.cpp`) hides material 2 when it is non-zero — the head is bare once the cap actor exists. |
 | 0x414 | `mInitAngleY` | `InitResources`, immediately after `mAngleY = mPrevAngleY`: `mInitAngleY = mAngleY`. |
 | 0x420 | `mPathNodeCount` | `InitResources` (`mType == 0` branch): `= PathPtr::NumNodes()`. |
 | 0x424 | `mPathNodeIndex` | passed to `PathPtr::GetNode(pos, index)` and then set to 1 in the same branch. |
@@ -114,7 +114,7 @@ Left `unk_`:
 
 Left `unk_`:
 
-- **0x3fc** — `mUniqueID_3fc`. Not a plain scalar: [func_ov081_02124134](../src/func_ov081_02124134.c) hands it to
+- **0x3fc** — `mUniqueID_3fc`. Not a plain scalar: [func_ov081_02124134](../src/actors/daSnowman_c.cpp) hands it to
   `dActor_c::FindWithID`, shoves the actor it finds (`+0x9c = -0x2000`,
   `+0xa0 = -0x28000`) and then clears it -- exactly what it does one field later with
   `mCapUniqueID`. Which actor it tracks is not evidenced, so the offset stands in for

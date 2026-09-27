@@ -15,6 +15,8 @@
 #include "common.h"
 #include "daSnowman_c.h"
 #include "SharedFilePtr.h"
+#include "PathPtr.h"
+#include "SaveData.h"
 
 /* Eight-byte path handle. PathPtr.h's constructor would run on a local and
  * then the explicit C1 call would run it again, so this POD stands in. */
@@ -58,7 +60,7 @@ extern int data_0209e650;
 extern s16 data_ov081_021289a4;
 extern s16 data_ov081_021289a6;
 extern s16 data_ov081_021289a8;
-extern char data_ov081_02128e94[];
+extern char data_ov081_02128e94;
 extern char *_ZN8dActor_c22ClosestNonVanishPlayerEv(char *self);
 extern s16 Vec3_HorzAngle(const struct Vector3 *v0, const struct Vector3 *v1);
 extern void ApproachAngle(void *p, int target, int a, int b, int c);
@@ -84,7 +86,6 @@ extern unsigned _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8Cal
 extern void *_ZN7PathPtrC1Ev(void *self);
 extern void _ZN7PathPtr6FromIDEj(void *self, unsigned int id);
 extern void _ZNK7PathPtr7GetNodeER7Vector3j(void *self, void *v, unsigned int i);
-extern int _ZNK7PathPtr8NumNodesEv(void *self);
 extern void Vec3_Sub(struct Vector3 *out, struct Vector3 *a, struct Vector3 *b);
 extern int LenVec3(struct Vector3 *v);
 extern Fix12i Vec3_Dist(const struct Vector3 *a, const struct Vector3 *b);
@@ -100,8 +101,6 @@ extern void _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiE
     void *self, void *sm, void *mtx, int a, int b, unsigned int g);
 extern struct Matrix4x3 data_020a0e68;
 extern void _ZN5Model6RenderEPK7Vector3(void *, void *);
-extern void _ZN5Model12HideMaterialEii(void *, int, int);
-extern void _ZN5Model12ShowMaterialEii(void *, int, int);
 extern int _ZN12dEnemyBase_c26UpdateKillByInvincibleCharER10dBgCh_ActrR9ModelAnimj(
     void *self, void *wm, void *anim, unsigned n);
 extern int _ZN12dEnemyBase_c11UpdateDeathER10dBgCh_Actr(void *self, void *wm);
@@ -113,7 +112,6 @@ extern void _ZN5dCc_c5ClearEv(void *self);
 extern void _ZN5dCc_c6UpdateEv(void *self);
 extern void _ZN9Animation7AdvanceEv(void *self);
 extern int _ZN9Animation8FinishedEv(void *self);
-extern int _ZNK9Animation12WillHitFrameEi(void *self, int frame);
 extern void *_ZN5Model8LoadFileER13SharedFilePtr(void *fp);
 extern void _ZN9ModelBase7SetFileEP8BMD_Fileii(void *self, void *f, int a, int b);
 extern void _ZN11ShadowModel12InitCylinderEv(void *self);
@@ -131,7 +129,6 @@ extern void Matrix4x3_ApplyInPlaceToRotationX(void *m, short ang);
 extern void MulVec3Mat4x3(void *a, void *m, void *b);
 extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
     void *self, void *bca, int a, int fix, unsigned int b);
-extern int _ZN8SaveData16HasPlayerLostCapEv(void);
 extern int data_ov081_02128e34[];
 extern char data_ov081_02128e44[];
 extern char data_ov081_02128e54[];
@@ -139,7 +136,7 @@ extern char data_ov081_02128e64[];
 extern char data_ov081_02128e74[];
 extern char data_ov081_02128e84[];
 extern char data_ov081_02128e24[];
-extern char data_ov081_02128e14[];
+extern void *data_ov081_02128e14;
 extern char data_ov081_02128ea4[];
 extern SharedFilePtr data_ov081_02128d90;
 extern SharedFilePtr data_ov081_02128db0;
@@ -594,7 +591,7 @@ extern "C" int func_ov081_02124b98(char* c) {
             *(int*)((char*)target + 0x5c) = *(int*)(c + 0x434);
             *(int*)((char*)target + 0x60) = *(int*)(c + 0x438);
             *(int*)((char*)target + 0x64) = *(int*)(c + 0x43c);
-            if (_ZNK9Animation12WillHitFrameEi(c + 0x35c, 0xa) != 0) {
+            if (((daSnowman_c *)c)->mModelAnim.WillHitFrame(0xa) != 0) {
                 in.x = 0; in.y = 0; in.z = 0x1e000;
                 out.x = 0; out.y = 0; out.z = 0;
                 v[0].x = 0; v[0].y = 0; v[0].z = 0;
@@ -710,7 +707,7 @@ int func_ov081_02124f20(char *c){
       *(int*)(c+0xa8)=0;
       *(int*)(c+0x9c)=0;
       *(int*)(c+0x60)=*(int*)(c+0x450);
-      func_ov081_02125488(c, data_ov081_02128e14);
+      func_ov081_02125488(c, &data_ov081_02128e14);
     }
   }
   func_ov081_0212423c(c, 0);
@@ -1032,9 +1029,9 @@ int daSnowman_c::Render()
   if(s==3) return 1;
   if(s==2){
     if(mCapUniqueID)
-      _ZN5Model12HideMaterialEii(((char *)this)+0x30c,0,2);
+      mModelAnim.HideMaterial(0,2);
     else
-      _ZN5Model12ShowMaterialEii(((char *)this)+0x30c,0,2);
+      mModelAnim.ShowMaterial(0,2);
   }
   _ZN5Model6RenderEPK7Vector3(((char *)this)+0x30c, ((char *)this)+0x80);
   return 1;
@@ -1049,14 +1046,14 @@ int daSnowman_c::Behavior()
     if (mType == 3) {
         switch (*(unsigned char*)(c + 0x469)) {
         case 0:
-            if (_ZN8SaveData16HasPlayerLostCapEv()) *(unsigned char*)(c + 0x469) = 1;
+            if (SaveData::HasPlayerLostCap()) *(unsigned char*)(c + 0x469) = 1;
             else *(unsigned char*)(c + 0x469) = 2;
             break;
         case 1:
-            if (!_ZN8SaveData16HasPlayerLostCapEv()) *(unsigned char*)(c + 0x469) = 2;
+            if (!SaveData::HasPlayerLostCap()) *(unsigned char*)(c + 0x469) = 2;
             break;
         case 2:
-            if (_ZN8SaveData16HasPlayerLostCapEv()) mType = 2;
+            if (SaveData::HasPlayerLostCap()) mType = 2;
             break;
         }
         return 1;
@@ -1077,7 +1074,7 @@ int daSnowman_c::Behavior()
     if (mType == 2
         && (char*)((C*)this)->pp != (char *)&data_ov081_02128e94
         && (char*)((C*)this)->pp != (char *)&data_ov081_02128e24
-        && _ZN8SaveData16HasPlayerLostCapEv()
+        && SaveData::HasPlayerLostCap()
         && mCapUniqueID == 0) {
 
         p = (char*)_ZN8dActor_c13ClosestPlayerEv(c);
@@ -1149,7 +1146,7 @@ int daSnowman_c::InitResources()
 
     if (_ZN8dActor_c18GetBitInDeathTableEv(((char *)this)) != 0) {
         if (mType == 2) {
-            if (_ZN8SaveData16HasPlayerLostCapEv() != 0) {
+            if (SaveData::HasPlayerLostCap() != 0) {
                 _ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(0xdf, 0x200,
                     &mHomePos, 0, mAreaId, -1);
             } else {
@@ -1168,7 +1165,7 @@ int daSnowman_c::InitResources()
         char pp[8];
         _ZN7PathPtrC1Ev(pp);
         _ZN7PathPtr6FromIDEj(pp, mPathId);
-        mPathNodeCount = _ZNK7PathPtr8NumNodesEv(pp);
+        mPathNodeCount = ((PathPtr *)pp)->NumNodes();
     }
 
     mScaleX = 0x1000;
