@@ -1462,6 +1462,9 @@
       ],
       "src/game/actors/d_a_obj_ki_fune.cpp": [
         "param:#1 int"
+      ],
+      "src/actors/daMoray_c.cpp": [
+        "param:#1 int"
       ]
     },
     "IsStarCollectedInCurLevel": {
@@ -1863,6 +1866,11 @@
         "param:#2 short",
         "param:#3 short",
         "param:#4 short"
+      ],
+      "src/actors/daMoray_c.cpp": [
+        "param:#2 short",
+        "param:#3 short",
+        "param:#4 short"
       ]
     },
     "Matrix4x3_ApplyInPlaceToRotationY": {
@@ -1887,6 +1895,13 @@
       "src/func_ov002_020e3f90.c": [
         "param:#1 M48 *",
         "param:#2 int"
+      ]
+    },
+    "Matrix4x3_ApplyInPlaceToRotationZXYExt": {
+      "src/actors/daMoray_c.cpp": [
+        "param:#2 short",
+        "param:#3 short",
+        "param:#4 short"
       ]
     },
     "Matrix4x3_ApplyInPlaceToTranslation": {
@@ -2038,6 +2053,9 @@
         "param:#2 short"
       ],
       "src/actors/daObjKey_c.cpp": [
+        "param:#2 short"
+      ],
+      "src/actors/daMoray_c.cpp": [
         "param:#2 short"
       ]
     },
@@ -2357,6 +2375,10 @@
       "src/actors/daBasabasa_c.cpp": [
         "param:#1 const void *",
         "param:#2 const void *"
+      ],
+      "src/actors/daMoray_c.cpp": [
+        "param:#1 const Vector3 *",
+        "param:#2 const Matrix4x3 *"
       ]
     },
     "MultiCopyHalf": {
@@ -4653,6 +4675,10 @@
       "src/actors/daOwl_c.cpp": [
         "param:#1 Vector3 *",
         "param:#2 Vector3 *"
+      ],
+      "src/actors/daMoray_c.cpp": [
+        "param:#1 Vector3 *",
+        "param:#2 Vector3 *"
       ]
     },
     "Vec3_AsrInPlace": {
@@ -5099,6 +5125,10 @@
       "src/game/actors/d_a_btn.cpp": [
         "param:#1 const void *",
         "param:#2 const void *"
+      ],
+      "src/actors/daMoray_c.cpp": [
+        "param:#1 const void *",
+        "param:#2 const void *"
       ]
     },
     "Vec3_HorzDist": {
@@ -5239,6 +5269,10 @@
         "param:#2 const void *"
       ],
       "src/actors/dPathLiftActor_c.cpp": [
+        "param:#1 const void *",
+        "param:#2 const void *"
+      ],
+      "src/actors/daMoray_c.cpp": [
         "param:#1 const void *",
         "param:#2 const void *"
       ]
@@ -5891,6 +5925,10 @@
       "src/actors/daOwl_c.cpp": [
         "param:#1 const void *",
         "param:#2 const void *"
+      ],
+      "src/actors/daMoray_c.cpp": [
+        "param:#1 const void *",
+        "param:#2 const void *"
       ]
     },
     "Vram__Map": {
@@ -6157,6 +6195,11 @@
         "param:#1 Vector3 *",
         "param:#2 const Vector3 *",
         "return:void"
+      ],
+      "src/actors/daMoray_c.cpp": [
+        "return:void",
+        "param:#1 Vector3 *",
+        "param:#2 const Vector3 *"
       ]
     },
     "_Z14ApproachLinearRiii": {
@@ -7424,6 +7467,13 @@
       ],
       "src/actors/daOwl_c.cpp": [
         "param:#3 int *"
+      ],
+      "src/actors/daMoray_c.cpp": [
+        "param:#1 char *",
+        "param:#2 char *",
+        "param:#3 V3 *",
+        "param:#6 int",
+        "param:#7 int"
       ]
     },
     "_ZN10dCcAcPos_cC1Ev": {
@@ -8293,6 +8343,9 @@
         "return:int"
       ],
       "src/func_ov075_02114ddc.cpp": [
+        "param:#2 void *"
+      ],
+      "src/actors/daMoray_c.cpp": [
         "param:#2 void *"
       ]
     },
@@ -11295,6 +11348,9 @@
         "return:int"
       ],
       "src/game/actors/d_a_btn.cpp": [
+        "param:#1 void *"
+      ],
+      "src/actors/daMoray_c.cpp": [
         "param:#1 void *"
       ]
     },
@@ -15713,6 +15769,9 @@
       ],
       "src/actors/daEykn_c.cpp": [
         "return:void *"
+      ],
+      "src/actors/daMoray_c.cpp": [
+        "return:void *"
       ]
     },
     "_ZN8dActor_c10PoofDustAtERK7Vector3": {
@@ -17119,6 +17178,11 @@
       "src/actors/daEykn_c.cpp": [
         "return:void *",
         "param:#3 Vector3 *"
+      ],
+      "src/actors/daMoray_c.cpp": [
+        "return:void *",
+        "param:#5 int",
+        "param:#6 int"
       ]
     },
     "_ZN8dActor_c7FindEggER5dCc_c": {
@@ -17130,6 +17194,11 @@
       ],
       "src/actors/daEykn_c.cpp": [
         "return:void *"
+      ]
+    },
+    "_ZN8dActor_c9SetRangesE5Fix12IiES1_S1_S1_": {
+      "src/actors/daMoray_c.cpp": [
+        "param:#1 char *"
       ]
     },
     "_ZN8dActor_c9TrackStarEjj": {
@@ -17419,6 +17488,10 @@
       "src/game/actors/d_a_btn.cpp": [
         "param:#1 void *",
         "return:void *"
+      ],
+      "src/actors/daMoray_c.cpp": [
+        "return:void *",
+        "param:#1 void *"
       ]
     },
     "_ZN9FaderWipe14LoadAndSetFileEt": {
@@ -18207,6 +18280,9 @@
       ],
       "src/game/actors/d_a_btn.cpp": [
         "return:void"
+      ],
+      "src/actors/daMoray_c.cpp": [
+        "return:void"
       ]
     },
     "_ZN9dBgCh_Gnd10DetectClsnEv": {
@@ -18811,6 +18887,9 @@
         "param:#2 void *"
       ],
       "src/actors/daObjSm_Lift_c.cpp": [
+        "param:#2 void *"
+      ],
+      "src/actors/daMoray_c.cpp": [
         "param:#2 void *"
       ]
     },
@@ -27397,21 +27476,33 @@
     "data_ov016_02114d20": {
       "src/__sinit_ov016_021136ec.c": [
         "return:S8"
+      ],
+      "src/actors/daMoray_c.cpp": [
+        "return:SharedFilePtr"
       ]
     },
     "data_ov016_02114d28": {
       "src/__sinit_ov016_021136ec.c": [
         "return:S8"
+      ],
+      "src/actors/daMoray_c.cpp": [
+        "return:SharedFilePtr"
       ]
     },
     "data_ov016_02114d30": {
       "src/__sinit_ov016_021136ec.c": [
         "return:S8"
+      ],
+      "src/actors/daMoray_c.cpp": [
+        "return:SharedFilePtr"
       ]
     },
     "data_ov016_02114d38": {
       "src/__sinit_ov016_021136ec.c": [
         "return:S8"
+      ],
+      "src/actors/daMoray_c.cpp": [
+        "return:SharedFilePtr"
       ]
     },
     "data_ov016_02114d7c": {
@@ -31050,6 +31141,11 @@
         "return:ShlState"
       ]
     },
+    "func_020167a4": {
+      "src/actors/daMoray_c.cpp": [
+        "param:#1 BlendModelAnim *"
+      ]
+    },
     "func_ov002_020df300": {
       "src/game/actors/d_a_cnn.cpp": [
         "param:#1 Player *"
@@ -32363,6 +32459,9 @@
         "param:#1 int"
       ],
       "src/actors/dPathLiftActor_c.cpp": [
+        "param:#1 int"
+      ],
+      "src/actors/daMoray_c.cpp": [
         "param:#1 int"
       ]
     },
@@ -36949,6 +37048,9 @@
         "param:#1 ModelComponents *"
       ],
       "src/_ZN14BlendModelAnim9Virtual10ER9Matrix4x3.cpp": [
+        "param:#1 ModelComponents *"
+      ],
+      "src/actors/daMoray_c.cpp": [
         "param:#1 ModelComponents *"
       ]
     },
