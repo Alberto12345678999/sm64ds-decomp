@@ -1,11 +1,11 @@
-#include "Unagi.h"
+#include "daMoray_c.h"
 extern void *_ZN7fBase_cnwEj(unsigned);
 extern void *_ZN12dEnemyBase_cC2Ev(void *);
 extern void *_ZN10dCcAcPos_cC1Ev(void *);
 extern void *_ZN10dBgCh_ActrC1Ev(void *);
 extern void *_ZN14BlendModelAnimC1Ev(void *);
 extern void __cxa_vec_ctor(void*, int, int, void*, void*);
-extern int _ZTV5Unagi[];
+extern int _ZTV9daMoray_c[];
 extern int _ZN7Vector3D1Ev[];
 extern int func_0203d384[];
 /* Reconstructed source-style name: SM64DS proves daMoray_c through RTTI,
@@ -14,10 +14,10 @@ extern int func_0203d384[];
  * preserved. Historical alias: Unagi_Spawn. */
 int *daMoray_c_classInit(void)
 {
-    int *p = (int *)_ZN7fBase_cnwEj(sizeof(struct Unagi));
+    int *p = (int *)_ZN7fBase_cnwEj(sizeof(struct daMoray_c));
     if (p) {
         _ZN12dEnemyBase_cC2Ev(p);
-        p[0] = (int)_ZTV5Unagi;
+        p[0] = (int)_ZTV9daMoray_c;
         _ZN10dCcAcPos_cC1Ev((char *)p + 0x110);
         _ZN10dCcAcPos_cC1Ev((char *)p + 0x150);
         _ZN10dBgCh_ActrC1Ev((char *)p + 0x190);

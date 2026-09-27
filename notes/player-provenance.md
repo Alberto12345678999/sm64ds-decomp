@@ -1,4 +1,4 @@
-# Player / Bowser / SpikeBomb field provenance
+# Player / Bowser / daKirai_c field provenance
 
 Why each `unk_NNN` in these headers got the name it has. Every row cites a matched
 body in `src/` and what that body does with the slot; a slot with no row is still
@@ -311,7 +311,7 @@ Still `unk_` in Bowser, with the reason:
 - **0x429, 0x42a** -- written once by `InitResources` (1 and 5) and read nowhere,
   including in the [ov060](../config/arm9/overlays/ov060/symbols.txt) handlers.
 
-## SpikeBomb
+## daKirai_c
 
 | offset | name | evidence |
 | --- | --- | --- |
@@ -320,9 +320,9 @@ Still `unk_` in Bowser, with the reason:
 | 0x178 | `mHomePosY` | as above; it is the one the `>> 3` term is added to. |
 | 0x17c | `mHomePosZ` | as above. |
 | 0x1a8 | `mSlotIndex` | `InitResources`: `mSlotIndex = AddSpikeBomb(this)`, and `src/AddSpikeBomb.c` returns the index of the first free slot in the eight-entry global [data_0209f3a4](../config/arm9/symbols.txt) (or -1). `src/ClearSpikeBomb.c` takes that index back. |
-| 0x1ae | `mOpacity` | `InitResources` sets 0xff; `SpikeBomb::Render` returns early on `< 8`. Full alpha at spawn plus a "too faint to bother drawing" guard is an opacity byte, and 0xff is not a plausible state id or counter. |
+| 0x1ae | `mOpacity` | `InitResources` sets 0xff; `daKirai_c::Render` returns early on `< 8`. Full alpha at spawn plus a "too faint to bother drawing" guard is an opacity byte, and 0xff is not a plausible state id or counter. |
 
-Left `unk_` in SpikeBomb: **0x180** (`Vec3_HorzLen` of the spawn position, i.e. a
+Left `unk_` in daKirai_c: **0x180** (`Vec3_HorzLen` of the spawn position, i.e. a
 distance from the world origin -- plausibly an orbit radius, but nothing matched
 reads it back) and **0x184** (`0x2ee000`, whose only use is the `>> 3` term added
 to `mHomePosY`).

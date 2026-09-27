@@ -1,0 +1,170 @@
+{
+  "id": "ov016/daMoray_c",
+  "module": "ov016",
+  "source": "src/actors/daMoray_c.cpp",
+  "promoted_source": "src/actors/daMoray_c.cpp",
+  "status": "promoted",
+  "boundary_confidence": "medium",
+  "boundary_evidence": [
+    "contiguous linker run: 0x21115c0..0x2112588, 15 function(s). tools/tu_map.py clusters 0x21111a0..0x2112588 because daMoray_c's destructors and BookSwitch_Spawn overlap one span; BookSwitch_Spawn, func_ov016_02111284 and func_ov016_02111534 sit in the gap and stay out, as do D1 and D0.",
+    "class label(s): daMoray_c",
+    "module sinit corroboration: 5 sinit(s) / 5 .ctor entries, sinit_vs_tu=ok, corroborated=False (module-wide, NOT narrowed to this one TU -- see notes/tu-reconstruction-pilot-report.md sec 2 for the by-hand narrowing step)"
+  ],
+  "sections": [
+    {
+      "name": ".text",
+      "start": "0x021115c0",
+      "end": "0x02112588"
+    }
+  ],
+  "functions": [
+    {
+      "symbol": "func_ov016_021115c0",
+      "address": "0x021115c0",
+      "size": "0x00000158",
+      "legacy_source": "src/func_ov016_021115c0.c",
+      "ordinal": 0
+    },
+    {
+      "symbol": "func_ov016_02111718",
+      "address": "0x02111718",
+      "size": "0x00000040",
+      "legacy_source": "src/func_ov016_02111718.cpp",
+      "ordinal": 1
+    },
+    {
+      "symbol": "func_ov016_02111758",
+      "address": "0x02111758",
+      "size": "0x00000108",
+      "legacy_source": "src/func_ov016_02111758.cpp",
+      "ordinal": 2
+    },
+    {
+      "symbol": "func_ov016_02111860",
+      "address": "0x02111860",
+      "size": "0x00000054",
+      "legacy_source": "src/func_ov016_02111860.cpp",
+      "ordinal": 3
+    },
+    {
+      "symbol": "func_ov016_021118b4",
+      "address": "0x021118b4",
+      "size": "0x000000e0",
+      "legacy_source": "src/func_ov016_021118b4.cpp",
+      "ordinal": 4
+    },
+    {
+      "symbol": "func_ov016_02111994",
+      "address": "0x02111994",
+      "size": "0x00000058",
+      "legacy_source": "src/func_ov016_02111994.cpp",
+      "ordinal": 5
+    },
+    {
+      "symbol": "func_ov016_021119ec",
+      "address": "0x021119ec",
+      "size": "0x000001c0",
+      "legacy_source": "src/func_ov016_021119ec.c",
+      "ordinal": 6
+    },
+    {
+      "symbol": "func_ov016_02111bac",
+      "address": "0x02111bac",
+      "size": "0x00000044",
+      "legacy_source": "src/func_ov016_02111bac.cpp",
+      "ordinal": 7
+    },
+    {
+      "symbol": "func_ov016_02111bf0",
+      "address": "0x02111bf0",
+      "size": "0x00000050",
+      "legacy_source": "src/func_ov016_02111bf0.cpp",
+      "ordinal": 8
+    },
+    {
+      "symbol": "func_ov016_02111c40",
+      "address": "0x02111c40",
+      "size": "0x000002f8",
+      "legacy_source": "src/func_ov016_02111c40.c",
+      "ordinal": 9
+    },
+    {
+      "symbol": "_ZN9daMoray_c16CleanupResourcesEv",
+      "address": "0x02111f38",
+      "size": "0x00000048",
+      "legacy_source": "src/_ZN9daMoray_c16CleanupResourcesEv.cpp",
+      "ordinal": 10
+    },
+    {
+      "symbol": "_ZN9daMoray_c16OnPendingDestroyEv",
+      "address": "0x02111f80",
+      "size": "0x00000004",
+      "legacy_source": "src/_ZN9daMoray_c16OnPendingDestroyEv.cpp",
+      "ordinal": 11
+    },
+    {
+      "symbol": "_ZN9daMoray_c6RenderEv",
+      "address": "0x02111f84",
+      "size": "0x0000008c",
+      "legacy_source": "src/_ZN9daMoray_c6RenderEv.cpp",
+      "ordinal": 12
+    },
+    {
+      "symbol": "_ZN9daMoray_c8BehaviorEv",
+      "address": "0x02112010",
+      "size": "0x000001b0",
+      "legacy_source": "src/_ZN9daMoray_c8BehaviorEv.cpp",
+      "ordinal": 13
+    },
+    {
+      "symbol": "_ZN9daMoray_c13InitResourcesEv",
+      "address": "0x021121c0",
+      "size": "0x000003c8",
+      "legacy_source": "src/_ZN9daMoray_c13InitResourcesEv.cpp",
+      "ordinal": 14
+    }
+  ],
+  "data": [],
+  "bss": [],
+  "notes": [
+    "Fifteen-function run 0x021115c0..0x02112588. Destructors and the factory are not in this TU."
+  ],
+  "compiler_only_output": [
+    {
+      "symbol": "_ZN7Vector3D1Ev",
+      "disposition": "deadstrip-duplicate",
+      "canonical_module": "arm9",
+      "canonical_address": "0x020072c0",
+      "reason": "include/types.h defines Vector3::~Vector3() inline and empty. The path, lunge and player-relative helpers take Vector3 locals, so this TU emits that four-byte body once as vague linkage. The cartridge's copy is arm9:0x020072c0 (src/_ZN7Vector3D1Ev.cpp); this object is not its home."
+    }
+  ],
+  "verification": {
+    "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
+    "toolchain": "tools/mwccarm/2004/b56/mwccarm.exe",
+    "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
+    "object": "build/tu/ov016-daMoray_c/daMoray_c.o (gitignored)",
+    "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
+    "functions_matched": 15,
+    "functions_declared": 15,
+    "compilerOnlyOutput": {
+      "requested": [
+        "_ZN7Vector3D1Ev"
+      ],
+      "deadstripped": [
+        "_ZN7Vector3D1Ev"
+      ],
+      "droppedSections": [
+        7
+      ],
+      "data": [],
+      "dataExternalized": []
+    },
+    "criteria": {
+      "every_declared_function_defined": "PASS",
+      "every_declared_function_bytes_match": "PASS",
+      "declared_function_set_equals_defined_function_set": "PASS",
+      "functions_occur_in_expected_order": "PASS",
+      "relocation_destinations_verified": "PASS"
+    }
+  }
+}

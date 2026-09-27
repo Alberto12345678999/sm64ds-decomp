@@ -491,65 +491,9 @@ src/d_a_kpa3_bg.c:
     complete
     .text start:0x02118408 end:0x02118438
 
-src/_ZN9SpikeBombD1Ev.cpp:
+src/actors/daKirai_c.cpp:
     complete
-    .text start:0x02118438 end:0x02118470
-
-src/_ZN9SpikeBombD0Ev.cpp:
-    complete
-    .text start:0x02118470 end:0x021184bc
-
-src/func_ov060_021184bc.c:
-    complete
-    .text start:0x021184bc end:0x02118544
-
-src/func_ov060_02118544.c:
-    complete
-    .text start:0x02118544 end:0x021185c4
-
-src/func_ov060_021185c4.c:
-    complete
-    .text start:0x021185c4 end:0x02118690
-
-src/func_ov060_02118690.c:
-    complete
-    .text start:0x02118690 end:0x021186d8
-
-src/func_ov060_021186d8.c:
-    complete
-    .text start:0x021186d8 end:0x02118728
-
-src/func_ov060_02118728.c:
-    complete
-    .text start:0x02118728 end:0x02118834
-
-src/func_ov060_02118834.c:
-    complete
-    .text start:0x02118834 end:0x021188e8
-
-src/func_ov060_021188e8.c:
-    complete
-    .text start:0x021188e8 end:0x02118970
-
-src/func_ov060_02118970.c:
-    complete
-    .text start:0x02118970 end:0x02118ab0
-
-src/_ZN9SpikeBomb16CleanupResourcesEv.cpp:
-    complete
-    .text start:0x02118ab0 end:0x02118ad4
-
-src/_ZN9SpikeBomb6RenderEv.cpp:
-    complete
-    .text start:0x02118ad4 end:0x02118b2c
-
-src/_ZN9SpikeBomb8BehaviorEv.cpp:
-    complete
-    .text start:0x02118b2c end:0x02118bb4
-
-src/_ZN9SpikeBomb13InitResourcesEv.cpp:
-    complete
-    .text start:0x02118bb4 end:0x02118cbc
+    .text start:0x02118438 end:0x02118cbc
 
 src/d_a_kirai.c:
     complete

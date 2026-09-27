@@ -159,7 +159,7 @@ wrong. [ov080](../config/arm9/overlays/ov080/symbols.txt) really does have 5 TUs
 ```sh
 0x2123740  MontyMole, MontyMoleRock, daChoropu_c
 0x2124a20  CrazedCrate, daBttBk_c
-0x2125404  Painting
+0x2125404  daPicGate_c
 0x2126fbc  daPicGate_c        <- labelled by RTTI; no mangled name ever named it
 ```
 
