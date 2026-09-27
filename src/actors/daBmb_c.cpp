@@ -18,10 +18,11 @@
  * - The word after mClipResult (dActor_c pad, 0xc8) is a Matrix4x3* while
  *   mVariant is 2. Naming it would be a field on dActor_c. Player+0xc8 is
  *   that same pad on the carrier, tested as a nonzero int.
- * - Arms 0 and 2 (func_ov102_0214bf64 / 0214bd90) stay free functions. A
- *   member cannot hold a block-scope extern "C", and the two bodies disagree
- *   with the rest of the file: Vec3_HorzAngle over Bmb_Vec3 versus Vector3,
- *   and func_0200fc44 with 4 arguments versus 3.
+ * - func_ov102_0214bf64 stays a free function. Its body casts to Bmb_Bf64Obj,
+ *   a different object. func_ov102_0214bd90 and func_ov102_0214b03c are methods:
+ *   the first argument is this Bob-omb. bd90 still passes four arguments to
+ *   func_0200fc44; aa18 passes three. The file-scope prototype is the real
+ *   three-argument definition, and the block-scope spellings stay.
  * - func_ov102_0214ad14, 0214ae1c and 0214b384 are called from other overlays,
  *   so those labels stay. data_ov102_* are the file handles; SharedFilePtr
  *   has no fields, so the loaded BCA is still the word at +4.
@@ -93,7 +94,6 @@ int   func_ov102_0214aa18(void *self);
 int   func_ov102_0214ab1c(void *self);
 void  func_ov102_0214ad40(void *self);
 void  func_ov102_0214ae1c(void *self);
-void  func_ov102_0214b03c(void *self);
 void  func_ov102_0214b128(void *self);
 int   func_ov102_0214b248(void *self);
 void  func_ov102_0214b384(void *self, unsigned int level);
@@ -127,6 +127,11 @@ void  _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void *, dActor
    call sites bind the same address through the reference instead. */
 void  _Z14ApproachLinearRsss(short &v, short target, short step);
 void  func_ov102_0214b3b8(void *c);
+/* Real definitions: src/func_0201267c.cpp and src/func_0200fc44.c.
+   The methods call through these so the names stay unmangled. bd90 and aa18
+   redeclare func_0200fc44 at block scope with their own argument counts. */
+void  func_0201267c(unsigned int id, const Vector3 *v);
+int   func_0200fc44(int a, Vector3 *pos, int flag);
 
 extern signed char   data_0209f2f8;
 extern unsigned char data_0209f220;
@@ -279,7 +284,7 @@ int daBmb_c::Behavior()
         }
     }
 
-    func_ov102_0214b03c(this);
+    func_ov102_0214b03c();
     if (mState != 5) {
         if (mVertAccel != 0) {
             if ((mdCc_c.hitFlags & 0x10) != 0) {
@@ -531,39 +536,31 @@ void daBmb_c::State1() {
 
 /* ==========================================================================
  *
- * mState arm 2, and it STAYS A FREE FUNCTION for the same reason arm 0 does, with
- * a harder instance of it: this body recovered func_0200fc44 with FOUR parameters
- * and func_ov102_0214aa18 recovered the same symbol with THREE.  Both spellings
- * byte-match their own body; one file-scope declaration cannot serve both without
- * changing an argument count at a call site, which is not byte-neutral.  It also
- * spells dBgCh_Actr::JustHitGround over char * where aa18 spells it over void *.
+ * mState arm 2. The first argument is this Bob-omb. The four-argument
+ * func_0200fc44 spelling stays at block scope; the file-scope prototype is
+ * the three-argument definition.
  * ======================================================================== */
 
-extern "C" {
-
-// @symbol func_ov102_0214bd90
-void func_ov102_0214bd90(char* self){
+// @symbol _ZN7daBmb_c19func_ov102_0214bd90Ev
+void daBmb_c::func_ov102_0214bd90(){
   extern int _ZNK10dBgCh_Actr13JustHitGroundEv(char* c);
   extern void func_0200fc44(char* c, struct Vector3* v, int a, int z);
-  daBmb_c *bmb = (daBmb_c *)self;
 
-  if (bmb->mWithMeshClsn.JustHitGround()) {
+  if (mWithMeshClsn.JustHitGround()) {
     struct Vector3 v;
-    v.x = bmb->mPosX;
-    v.y = bmb->mPosY;
-    v.z = bmb->mPosZ;
-    func_0200fc44(self, &v, 1, v.z);
+    v.x = mPosX;
+    v.y = mPosY;
+    v.z = mPosZ;
+    func_0200fc44((char *)this, &v, 1, v.z);
   }
-  if (bmb->mWithMeshClsn.IsOnGround()) {
-    if (bmb->mChasePlayer == 0) {
-      bmb->mHorzSpeed = 0x5000;
+  if (mWithMeshClsn.IsOnGround()) {
+    if (mChasePlayer == 0) {
+      mHorzSpeed = 0x5000;
     }
-    func_ov102_0214beb4(self);
+    func_ov102_0214beb4(this);
   } else {
-    bmb->State1();
+    State1();
   }
-}
-
 }
 
 /* ==========================================================================
@@ -1189,31 +1186,24 @@ void func_ov102_0214b128(void *cv) {
 /* ==========================================================================
  * ======================================================================== */
 
-extern "C" {
-
-// @symbol func_ov102_0214b03c
-void func_ov102_0214b03c(void *cv){
+// @symbol _ZN7daBmb_c19func_ov102_0214b03cEv
+void daBmb_c::func_ov102_0214b03c(){
   extern void func_0201267c(int, void*);
-  extern void func_ov102_0214bf64(void*);
-  extern void func_ov102_0214bd90(void*);
 
-  daBmb_c *self = (daBmb_c *)cv;
-  if(self->mState < 2 && self->mModelAnim.file == *((BCA_File **)((char *)&data_ov102_0214e9c0 + 4))){
-    if(((Animation *)((char *)self + 0x350))->WillHitFrame(0) != 0
-       || ((Animation *)((char *)self + 0x350))->WillHitFrame(0x10) != 0){
-      func_0201267c(0x132, &self->mCamSpacePosX);
+  if(mState < 2 && mModelAnim.file == *((BCA_File **)((char *)&data_ov102_0214e9c0 + 4))){
+    if(((Animation *)((char *)this + 0x350))->WillHitFrame(0) != 0
+       || ((Animation *)((char *)this + 0x350))->WillHitFrame(0x10) != 0){
+      func_0201267c(0x132, &mCamSpacePosX);
     }
   }
-  switch(self->mState){
-  case 0: func_ov102_0214bf64(self); return;
-  case 1: self->State1(); return;
-  case 2: func_ov102_0214bd90((char *)self); return;
-  case 3: self->State3(); return;
-  case 4: self->State4(); return;
-  case 5: self->State5(); return;
+  switch(mState){
+  case 0: func_ov102_0214bf64(this); return;
+  case 1: State1(); return;
+  case 2: func_ov102_0214bd90(); return;
+  case 3: State3(); return;
+  case 4: State4(); return;
+  case 5: State5(); return;
   }
-}
-
 }
 
 /* ==========================================================================

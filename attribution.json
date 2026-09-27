@@ -855,6 +855,8 @@
     "src/actors/daBmb_c.cpp#_ZN7daBmb_c16OnAimedAtWithEggEv": "tangosdev",
     "src/actors/daBmb_c.cpp#_ZN7daBmb_c13OnTurnIntoEggER6Player": "tangosdev",
     "src/actors/daBmb_c.cpp#_ZN7daBmb_c16CleanupResourcesEv": "tangosdev",
+    "src/actors/daBmb_c.cpp#_ZN7daBmb_c19func_ov102_0214b03cEv": "tangosdev",
+    "src/actors/daBmb_c.cpp#_ZN7daBmb_c19func_ov102_0214bd90Ev": "tangosdev",
     "src/actors/daBmb_c.cpp#_ZN7daBmb_c6RenderEv": "tangosdev",
     "src/actors/daBmb_c.cpp#_ZN7daBmb_c8BehaviorEv": "lunavyqo",
     "src/actors/daBmb_c.cpp#_ZN7daBmb_c13InitResourcesEv": "tangosdev",

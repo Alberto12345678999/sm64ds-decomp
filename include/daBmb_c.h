@@ -128,16 +128,18 @@ struct daBmb_c : dEnemyBase_c {
     /* Four of the six arms of the mState state machine.  The NUMBER is what the
        cartridge proves: func_ov102_0214b03c switches on mState (+0x3dc) and
        dispatches exactly six bodies for 0..5, one each, and nothing else reads the
-       field to choose between them.  The NAMES are coined -- ov102 carries these
+       field to choose between them.  State1/3/4/5 are coined -- ov102 carries these
        addresses and no identifier -- so they claim the index and nothing more; what
-       each arm does is written at its body.  Arms 0 and 2 stay free functions
-       (func_ov102_0214bf64, func_ov102_0214bd90): their recovered bodies carry
-       block-scope extern "C" declarations that contradict declarations other members
-       of this TU own, and a member function may not hold a linkage specification. */
+       each arm does is written at its body.  Arm 0 stays a free function
+       (func_ov102_0214bf64): its body casts to Bmb_Bf64Obj, a different object.
+       func_ov102_0214bd90 and func_ov102_0214b03c are methods; the address is the
+       method name. */
     void State1();
     void State3();
     int  State4();
     void State5();
+    void func_ov102_0214bd90();
+    void func_ov102_0214b03c();
 
     /* Leaf adapter until fBase_c::operator new(unsigned long) lands (#2570).
        `return new daBmb_c()` then routes through the retail allocator. */
