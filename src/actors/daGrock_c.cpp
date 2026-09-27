@@ -95,7 +95,7 @@ extern "C" {
    _ZN10dBgCh_Actr4InitEP8dActor_ciiP10Vector3_16S3_, which no object
    defines. The ROM's is ..._5Fix12IiES3_P10Vector3_16S5_. */
 void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
-    void *self, dActor_c *actor, Fix12i radius, Fix12i height, Vector3_16 *a, Vector3_16 *b);
+    dBgCh_Actr *self, int actor, Fix12i radius, Fix12i height, int a, int b);
 extern void Vec3_Asr(void *dst, void *src, int n);
 extern void Matrix4x3_FromTranslation(void *m, int x, int y, int z);
 extern void Matrix4x3_ApplyInPlaceToRotationXYZExt(void *m, short a, short b, short c);
@@ -441,7 +441,7 @@ int daGrock_c::InitResources()
         if (mShadowModel.InitCylinder() == 0)
             return 0;
 
-        _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(&mWithMeshClsn, this, 0x12c000, 0, 0, 0);
+        _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(&mWithMeshClsn, (int)this, 0x12c000, 0, 0, 0);
         mWithMeshClsn.SetLimMovFlag();
         grock_roll_sound(this) = 0;
 
