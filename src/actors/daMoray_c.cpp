@@ -53,7 +53,7 @@ extern void *data_ov016_02114dac;
 extern void *data_ov016_02114dbc;
 extern Vector3 data_ov016_02114d4c;
 
-extern unsigned char data_0209f220;         /* the current level */
+extern unsigned char data_0209f220;
 extern Matrix4x3 data_020a0e68;             /* the shared scratch matrix */
 
 int AngleDiff(int a, int b);
@@ -85,8 +85,9 @@ void MulMat4x3Mat4x3(void *m1, void *m0, void *mF);
 void func_ov016_02111284(void *actor);
 int func_ov016_02111bf0(daMoray_c *self, const daMoray_c::State *state);
 
-/* local extern: the headers take their Fix12<int> arguments by value, which
-   is a different argument sequence from the plain words the ROM passes. */
+/* local extern: the header spellings take Fix12<int> by value, and Fix12
+   has no int constructor, so a call through them cannot be written with
+   these literals (measured: dCcAcPos_c::Init fails to compile). */
 void _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(void *self, void *file, int blendFrames, int flags, int speed, unsigned short startFrame);
 void _ZN8dActor_c9SetRangesE5Fix12IiES1_S1_S1_(dActor_c *self, int offsetY, int radius, int clipDistance, int farDistance);
 void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(dCcAcPos_c *self, dActor_c *actor, const Vector3 *offset, int radius, int height, u32 flags, u32 vulnFlags);
@@ -94,6 +95,15 @@ int _Z14ApproachLinearR7Vector3RKS_5Fix12IiE(Vector3 &cur, const Vector3 &target
 /* local extern: include/ModelBase.h does not declare SetFile. */
 int _ZN9ModelBase7SetFileEP8BMD_Fileii(void *self, void *file, int a, int b);
 }
+
+/* Render's per-segment bend table, one 0xc record per body bone. */
+struct MorayRenderStep {
+    s32 unk_00;
+    s32 unk_04;
+    s32 angleScale;
+};
+
+extern "C" MorayRenderStep data_ov016_02114908[];
 
 void ApproachLinear(short &value, short target, short step);
 namespace cstd { int fdiv(int a, int b); }
@@ -416,14 +426,6 @@ s32 daMoray_c::CleanupResources()
 void daMoray_c::OnPendingDestroy()
 {
 }
-
-struct MorayRenderStep {
-    s32 unk_00;
-    s32 unk_04;
-    s32 angleScale;
-};
-
-extern "C" MorayRenderStep data_ov016_02114908[];
 
 #pragma push
 #pragma opt_strength_reduction off
