@@ -6377,6 +6377,11 @@
       ]
     },
     "_ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_": {
+      "src/actors/daObjPowerUpItem_c.cpp": [
+        "param:#2 void *",
+        "param:#5 void *",
+        "param:#6 void *"
+      ],
       "src/game/actors/d_a_hyuhyu.cpp": [
         "param:#2 dActor_c *",
         "param:#5 Vector3_16 *",
@@ -11730,6 +11735,11 @@
         "return:void"
       ]
     },
+    "_ZN6Player16InitWingFeathersEb": {
+      "src/actors/daObjPowerUpItem_c.cpp": [
+        "param:#2 int"
+      ]
+    },
     "_ZN6Player17SetNoControlStateEhih": {
       "src/_ZN6Player12St_Walk_InitEv.cpp": [
         "param:#2 unsigned char",
@@ -12866,6 +12876,10 @@
       ]
     },
     "_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE": {
+      "src/actors/daObjPowerUpItem_c.cpp": [
+        "param:#6 const Vector3_16f *",
+        "return:void *"
+      ],
       "src/game/actors/d_a_hyuhyu.cpp": [
         "param:#6 const Vector3_16 *"
       ],
@@ -13284,6 +13298,9 @@
         "return:void"
       ],
       "src/actors/daObjHatenaBlock_c.cpp": [
+        "return:void"
+      ],
+      "src/actors/daObjPowerUpItem_c.cpp": [
         "return:void"
       ],
       "src/actors/daObjShell_c.cpp": [
@@ -14024,6 +14041,9 @@
       ]
     },
     "_ZN8dActor_c13SmallPoofDustEv": {
+      "src/func_ov002_020feb50.cpp": [
+        "return:void"
+      ],
       "src/func_ov002_020fec94.c": [
         "return:int"
       ]
@@ -14265,6 +14285,11 @@
       ],
       "src/actors/daObjMarioCap_c.cpp": [
         "param:#6 int"
+      ],
+      "src/actors/daObjPowerUpItem_c.cpp": [
+        "param:#1 char *",
+        "param:#6 unsigned int",
+        "return:int"
       ],
       "src/actors/daOts_c.cpp": [
         "param:#6 unsigned int"
@@ -15529,6 +15554,11 @@
         "return:void"
       ]
     },
+    "_ZN9dBgCh_Gnd10DetectClsnEv": {
+      "src/actors/daObjPowerUpItem_c.cpp": [
+        "param:#1 RG *"
+      ]
+    },
     "_ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c": {
       "src/_ZN17daObjBk_Botaosi_c13InitResourcesEv.cpp": [
         "param:#2 Vector3 *"
@@ -15537,6 +15567,9 @@
         "param:#2 void *"
       ],
       "src/_ZN6Player19St_TornadoSpin_MainEv.cpp": [
+        "param:#2 const Vector3 *"
+      ],
+      "src/actors/daObjPowerUpItem_c.cpp": [
         "param:#2 const Vector3 *"
       ],
       "src/func_0200b590.c": [
@@ -15593,6 +15626,9 @@
         "return:void"
       ],
       "src/actors/daObjMarioCap_c.cpp": [
+        "return:void"
+      ],
+      "src/actors/daObjPowerUpItem_c.cpp": [
         "return:void"
       ],
       "src/actors/daTgz_c.cpp": [
@@ -16556,6 +16592,9 @@
         "arity:1"
       ],
       "src/actors/daChair_c.cpp": [
+        "arity:1"
+      ],
+      "src/actors/daObjPowerUpItem_c.cpp": [
         "arity:1"
       ],
       "src/actors/daPeach_c.cpp": [
@@ -27721,6 +27760,11 @@
     "data_ov102_0214ea58": {
       "src/game/actors/d_a_shl.cpp": [
         "return:ShlState"
+      ]
+    },
+    "func_0200fccc": {
+      "src/actors/daObjPowerUpItem_c.cpp": [
+        "param:#1 char *"
       ]
     },
     "func_ov002_020df300": {
@@ -42163,11 +42207,17 @@
     "gPFlowerCloseModelFile": {
       "src/actors/daObjHatenaBlock_c.cpp": [
         "return:char []"
+      ],
+      "src/actors/daObjPowerUpItem_c.cpp": [
+        "return:void * []"
       ]
     },
     "gPFlowerOpenModelFile": {
       "src/actors/daObjHatenaBlock_c.cpp": [
         "return:char []"
+      ],
+      "src/actors/daObjPowerUpItem_c.cpp": [
+        "return:void * []"
       ]
     },
     "gPianoAttackAnimationFile": {

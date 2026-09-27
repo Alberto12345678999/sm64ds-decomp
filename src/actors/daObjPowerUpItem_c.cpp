@@ -49,22 +49,19 @@ extern void* _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8Callba
     u32 id, u32 a, int x, int y, int z, const struct Vector3_16f* rot, struct Callback* cb);
 extern signed short data_02082214[];
 extern void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int, int, int, int);
-extern int func_02012694(unsigned int id, const Vector3 *v);
-extern char *data_0209f318;
+extern void func_02012694(unsigned int id, const Vector3 *v);
+extern void *data_0209f318;
 extern void func_0203568c(int *p, int v);
 extern void func_02035684(int *p, int v);
-extern void _ZN8dActor_c9UpdatePosEP5dCc_c(void* self, void* c);
 extern void dBgCh_Actr_UpdateContinuous_Veneer(void* p);
 extern int _ZNK10dBgCh_Actr12TouchesWaterEv(void* self);
 extern void *_ZN9dBgCh_GndC1Ev(struct RG*);
 extern void _ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c(struct RG*, const Vector3*, void*);
 extern int _ZN9dBgCh_Gnd10DetectClsnEv(struct RG*);
-extern void _ZN8dActor_c13SmallPoofDustEv(void* self);
 extern void _ZN9dBgCh_GndD1Ev(struct RG*);
 extern void _ZN10dBgCh_Actr18StopDetectingWaterEv(void* self);
 extern int _ZNK10dBgCh_Actr10IsOnGroundEv(void* self);
 extern int func_0200fccc(char* s, int r1);
-extern void* _ZN8dActor_c10FindWithIDEj(u32 id);
 extern int _ZN6Player15IsCollectingCapEv(void* p);
 extern void _ZN6Player16InitWingFeathersEb(void* p, int b);
 extern void _ZN6Player16InitBalloonMarioEv(void* p);
@@ -76,7 +73,6 @@ extern int _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES
 extern void Matrix4x3_FromRotationY(void* m, int angle);
 extern void *gPFlowerCloseModelFile[];
 extern void *gPFlowerOpenModelFile[];
-extern void *_ZN5Model8LoadFileER13SharedFilePtr(void *f);
 extern int _ZN9ModelBase7SetFileEP8BMD_Fileii(void *self, void *f, int a, int b);
 extern int _ZN11ShadowModel12InitCylinderEv(void *self);
 extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
@@ -84,7 +80,6 @@ extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
 extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
     void *self, void *act, Fix12i a, Fix12i b, void *d, void *e);
 extern void _ZN10dBgCh_Actr19StartDetectingWaterEv(void *self);
-extern void *_ZN8dActor_c13ClosestPlayerEv(void *self);
 }
 
 // @symbol _ZN18daObjPowerUpItem_cD1Ev
@@ -172,7 +167,7 @@ extern "C" void func_ov002_020b9450(char *c)
         0x102, ((int *)&pos)[0], ((int *)&pos)[1], ((int *)&pos)[2]);
     func_02012694(0x7d, (const Vector3 *)(c + 0x74));
     *(int *)(c + 0x3c4) = 0;
-    *(short *)(c + 0x8e) = *(short *)(data_0209f318 + 0x17c);
+    *(short *)(c + 0x8e) = *(short *)((char *)data_0209f318 + 0x17c);
     *(char *)(c + 0x3cb) = 0x1b;
 }
 
@@ -206,7 +201,7 @@ extern "C" void func_ov002_020b94c4(char* c)
 
     func_0203568c((int*)(c + 0x200), 0x3c000);
     func_02035684((int*)(c + 0x200), 0x3c000);
-    _ZN8dActor_c9UpdatePosEP5dCc_c(c, c + 0x1cc);
+    ((dActor_c*)c)->UpdatePos((dCc_c*)(c + 0x1cc));
     dBgCh_Actr_UpdateContinuous_Veneer((void*)(c + 0x200));
 
     if (_ZNK10dBgCh_Actr12TouchesWaterEv((void*)(c + 0x200))) {
@@ -222,14 +217,14 @@ extern "C" void func_ov002_020b94c4(char* c)
             if (diff < 0)
                 diff = -diff;
             if (diff > 0x64000) {
-                _ZN8dActor_c13SmallPoofDustEv(c);
+                ((dActor_c*)c)->SmallPoofDust();
                 _ZN7fBase_c18MarkForDestructionEv(c);
                 _ZN9dBgCh_GndD1Ev(&rg);
                 return;
             }
             _ZN10dBgCh_Actr18StopDetectingWaterEv((void*)(c + 0x200));
         } else {
-            _ZN8dActor_c13SmallPoofDustEv(c);
+            ((dActor_c*)c)->SmallPoofDust();
             _ZN7fBase_c18MarkForDestructionEv(c);
             _ZN9dBgCh_GndD1Ev(&rg);
             return;
@@ -274,7 +269,7 @@ extern "C" void func_ov002_020b979c(char* self) {
     u32 id = *(u32*)(self + 0x1f0);
     if (id == 0) return;
 
-    other = (char*)_ZN8dActor_c10FindWithIDEj(id);
+    other = (char*)dActor_c::FindWithID(id);
     if (other == 0) return;
 
     {
@@ -407,8 +402,8 @@ int daObjPowerUpItem_c::InitResources()
     struct Vector3 pos;
     short *angp;
 
-    _ZN5Model8LoadFileER13SharedFilePtr(gPFlowerCloseModelFile);
-    _ZN5Model8LoadFileER13SharedFilePtr(gPFlowerOpenModelFile);
+    Model::LoadFile(*(SharedFilePtr *)gPFlowerCloseModelFile);
+    Model::LoadFile(*(SharedFilePtr *)gPFlowerOpenModelFile);
     if (_ZN9ModelBase7SetFileEP8BMD_Fileii(((char *)this) + 0x124, gPFlowerOpenModelFile[1], 1, -1) == 0)
         return 0;
     if (_ZN9ModelBase7SetFileEP8BMD_Fileii(((char *)this) + 0xd4, gPFlowerCloseModelFile[1], 1, -1) == 0)
@@ -440,7 +435,7 @@ int daObjPowerUpItem_c::InitResources()
     mLifeTimer = 0xb4;
 
     if (param1 == 0xffff) {
-        if (*(int *)((char *)_ZN8dActor_c13ClosestPlayerEv(((char *)this)) + 8) == 1 && _ZN8SaveData16HasPlayerLostCapEv() == 0) {
+        if (*(int *)((char *)((dActor_c *)this)->ClosestPlayer() + 8) == 1 && _ZN8SaveData16HasPlayerLostCapEv() == 0) {
             func_ov002_020b9704(((char *)this), 2);
         } else {
             return 0;
