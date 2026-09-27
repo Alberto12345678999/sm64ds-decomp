@@ -1855,6 +1855,8 @@
     "src/game/actors/d_a_tree.cpp#_ZN8daTree_cD1Ev": "github-actions[bot]",
     "src/game/actors/d_a_wanwan.cpp#_ZN10daWanwan_c13InitResourcesEv": "github-actions[bot]",
     "src/game/actors/d_a_wanwan.cpp#_ZN10daWanwan_c16CleanupResourcesEv": "github-actions[bot]",
+    "src/game/actors/d_a_wanwan.cpp#_ZN10daWanwan_c19func_ov014_02111ebcEi": "github-actions[bot]",
+    "src/game/actors/d_a_wanwan.cpp#_ZN10daWanwan_c19func_ov014_02111f08Ev": "github-actions[bot]",
     "src/game/actors/d_a_wanwan.cpp#_ZN10daWanwan_c6RenderEv": "github-actions[bot]",
     "src/game/actors/d_a_wanwan.cpp#_ZN10daWanwan_c8BehaviorEv": "github-actions[bot]",
     "src/game/actors/d_a_wanwan.cpp#_ZN10daWanwan_cD0Ev": "github-actions[bot]",

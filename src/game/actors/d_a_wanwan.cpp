@@ -59,14 +59,12 @@ extern s16 data_02082214[];
 extern void *data_0209f318;
 
 extern int func_ov014_02111fb8(char *c);
-void func_ov014_02111f08(void *c);
 void func_ov014_02112114(void *c);
 void func_ov014_02111fe0(char *c);
 void func_ov014_0211250c(char *c);
 void func_ov014_0211236c(char *c);
 void func_ov014_021122dc(char *c);
 void func_ov014_02112788(char *c);
-void func_ov014_02111ebc(void *c, int i);
 void func_ov014_02112ea8(void *fence);
 void func_ov102_0214ae1c(void *bomb);
 
@@ -210,7 +208,7 @@ int daWanwan_c::InitResources()
             &mdCcAcPos_c, this, (Vector3 *)v, 0x96000, 0x12c000, 0x200004, 0x26ff0);
     }
 
-    func_ov014_02111ebc(this, 1);
+    func_ov014_02111ebc(1);
 
     {
         /* dst stays the actor. The stores are [dst, #0x524] -- mLinkPos -- and
@@ -266,7 +264,7 @@ int daWanwan_c::Behavior()
         dActor_c *fence = dActor_c::FindWithActorID(kFenceActorId, 0);
         mFenceUniqueID = fence->uniqueID;
     }
-    func_ov014_02111f08(this);
+    func_ov014_02111f08();
     UpdatePos(&mdCcAcPos_c);
     func_ov014_02112114(this);
     if (mChainBroken == 0)
@@ -614,7 +612,7 @@ void func_ov014_02112114(void *cc)
             c->mScaleX = 0x2000;
             c->mScaleY = c->mScaleX;
             c->mScaleZ = c->mScaleY;
-            func_ov014_02111ebc(c, 0);
+            c->func_ov014_02111ebc(0);
             return;
         }
     }
@@ -623,14 +621,14 @@ void func_ov014_02112114(void *cc)
         c->mScaleX = 0x2000;
         c->mScaleY = c->mScaleX;
         c->mScaleZ = c->mScaleY;
-        func_ov014_02111ebc(c, 4);
+        c->func_ov014_02111ebc(4);
         return;
     }
 
     if ((int)(other->actorID == kPlayerActorId) != 0) {
         ang = Vec3_HorzAngle((const Vector3 *)&c->mPosX, (const Vector3 *)&other->mPosX);
         if (c->mdCcAcPos_c.hitFlags & 0x10) {
-            func_ov014_02111ebc(c, 5);
+            c->func_ov014_02111ebc(5);
             c->mPrevAngleY = other->mAngleY;
         }
         if (AngleDiff(ang, c->mAngleY) < 0x4000) {
@@ -647,7 +645,7 @@ void func_ov014_02112114(void *cc)
         return;
     if ((int)(other->actorID == kBobOmbActorId) != 0) {
         func_ov102_0214ae1c(other);
-        func_ov014_02111ebc(c, 4);
+        c->func_ov014_02111ebc(4);
     }
 }
 }
@@ -704,7 +702,7 @@ extern "C" int func_ov014_02111f54(void *raw)
         goto fail;
     if (self->ClosestPlayer()->SetNoControlState(4, -1, 0) == 0)
         goto fail;
-    func_ov014_02111ebc(self, 3);
+    self->func_ov014_02111ebc(3);
     self->mChainBroken = 1;
     return 1;
 fail:
@@ -738,10 +736,10 @@ struct Entry {
 };
 extern Entry data_ov014_0211476c[];
 
-// @symbol func_ov014_02111f08
-extern "C" void func_ov014_02111f08(void *vc)
+// @symbol _ZN10daWanwan_c19func_ov014_02111f08Ev
+void daWanwan_c::func_ov014_02111f08()
 {
-    WanwanState *c = (WanwanState *)vc;
+    WanwanState *c = (WanwanState *)this;
     int j = c->mState;
     (c->*data_ov014_0211476c[j].pmf)();
 }
@@ -754,10 +752,10 @@ struct Entry {
 extern "C" Entry data_ov014_0211476c[];
 }
 
-// @symbol func_ov014_02111ebc
-extern "C" void func_ov014_02111ebc(void *vc, int i)
+// @symbol _ZN10daWanwan_c19func_ov014_02111ebcEi
+void daWanwan_c::func_ov014_02111ebc(int i)
 {
-    WanwanState *c = (WanwanState *)vc;
+    WanwanState *c = (WanwanState *)this;
     c->mState = i;
     int j = c->mState;
     (c->*ent0::data_ov014_0211476c[j].pmf)();
@@ -785,7 +783,7 @@ extern "C" void func_ov014_02111e14(char *raw)
     c->mScaleY = c->mScaleZ;
     if (DecIfAbove0_Short(&c->mActionTimer) != 0)
         return;
-    func_ov014_02111ebc(c, 1);
+    c->func_ov014_02111ebc(1);
 }
 
 // @symbol func_ov014_02111dc4
@@ -822,7 +820,7 @@ extern "C" void func_ov014_02111ca8(char *raw)
         if (d < 0x500000 &&
             AngleDiff(c->mTargetAngY, c->mAngleY) < 0x800 &&
             c->mActionTimer == 0) {
-            func_ov014_02111ebc(c, 2);
+            c->func_ov014_02111ebc(2);
         }
     }
     static_cast<Animation &>(c->mModelAnim).Advance();
@@ -881,7 +879,7 @@ extern "C" int func_ov014_02111af0(char *raw)
         goto adv;
     if (DecIfAbove0_Short(&c->mActionTimer))
         goto adv;
-    func_ov014_02111ebc(c, 1);
+    c->func_ov014_02111ebc(1);
 adv:
     static_cast<Animation &>(c->mModelAnim).Advance();
 }
@@ -1082,7 +1080,7 @@ extern "C" int func_ov014_0211150c(char *raw)
     ApproachAngle(&c->mAngleX, -0x4000, 4, 0x1000, 0x400);
     if (Math_Function_0203b14c(&c->mChainExtension, kChainMax, 0x800, 0x10000, 0x800) == 0) {
         if (DecIfAbove0_Short(&c->mActionTimer) == 0)
-            func_ov014_02111ebc(c, 1);
+            c->func_ov014_02111ebc(1);
     }
 }
 
@@ -1105,7 +1103,7 @@ extern "C" void func_ov014_02111484(char *raw)
 {
     daWanwan_c *c = (daWanwan_c *)raw;
     if (DecIfAbove0_Short(&c->mActionTimer) == 0)
-        func_ov014_02111ebc(c, 1);
+        c->func_ov014_02111ebc(1);
     if (c->mIsOnGround != 0)
         c->mVertSpeed = c->mHorzSpeed;
     ApproachLinear(c->mHorzSpeed, 0, 0x2000);
