@@ -1375,10 +1375,6 @@
     "src/_ZN9SolidHeapC1EPvjP4HeapP18SolidHeapAllocator.cpp",
     "src/_ZN9SolidHeapD0Ev.cpp",
     "src/_ZN9SolidHeapD1Ev.cpp",
-    "src/_ZN9SpikeBomb16CleanupResourcesEv.cpp",
-    "src/_ZN9SpikeBomb6RenderEv.cpp",
-    "src/_ZN9SpikeBombD0Ev.cpp",
-    "src/_ZN9SpikeBombD1Ev.cpp",
     "src/actors/daHuwa_c.cpp#_ZN8daHuwa_c13OnTurnIntoEggER6Player",
     "src/actors/daHuwa_c.cpp#_ZN8daHuwa_c13OnYoshiTryEatEv",
     "src/actors/daHuwa_c.cpp#_ZN8daHuwa_c16CleanupResourcesEv",
@@ -3019,6 +3015,10 @@
     "src/actors/daPicGate_c.cpp#_ZN11daPicGate_c6RenderEv",
     "src/actors/daPicGate_c.cpp#_ZN11daPicGate_c8BehaviorEv",
     "src/_ZN11daPicGate_cD0Ev.cpp",
-    "src/_ZN11daPicGate_cD1Ev.cpp"
+    "src/_ZN11daPicGate_cD1Ev.cpp",
+    "src/actors/daKirai_c.cpp#_ZN9daKirai_c16CleanupResourcesEv",
+    "src/actors/daKirai_c.cpp#_ZN9daKirai_c6RenderEv",
+    "src/actors/daKirai_c.cpp#_ZN9daKirai_cD0Ev",
+    "src/actors/daKirai_c.cpp#_ZN9daKirai_cD1Ev"
   ]
 }

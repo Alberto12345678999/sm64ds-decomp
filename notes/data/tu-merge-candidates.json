@@ -26232,13 +26232,13 @@
    "start": "0x2118438",
    "end": "0x2118cfc",
    "classes": [
-    "SpikeBomb"
+    "daKirai_c"
    ],
    "n_functions_map": 16,
    "n_files": 16,
    "files": [
-    "src/_ZN9SpikeBombD1Ev.cpp",
-    "src/_ZN9SpikeBombD0Ev.cpp",
+    "src/_ZN9daKirai_cD1Ev.cpp",
+    "src/_ZN9daKirai_cD0Ev.cpp",
     "src/func_ov060_021184bc.c",
     "src/func_ov060_02118544.c",
     "src/func_ov060_021185c4.c",
@@ -26248,10 +26248,10 @@
     "src/func_ov060_02118834.c",
     "src/func_ov060_021188e8.c",
     "src/func_ov060_02118970.c",
-    "src/_ZN9SpikeBomb16CleanupResourcesEv.cpp",
-    "src/_ZN9SpikeBomb6RenderEv.cpp",
-    "src/_ZN9SpikeBomb8BehaviorEv.cpp",
-    "src/_ZN9SpikeBomb13InitResourcesEv.cpp",
+    "src/_ZN9daKirai_c16CleanupResourcesEv.cpp",
+    "src/_ZN9daKirai_c6RenderEv.cpp",
+    "src/_ZN9daKirai_c8BehaviorEv.cpp",
+    "src/_ZN9daKirai_c13InitResourcesEv.cpp",
     "src/d_a_kirai.c"
    ],
    "ext_mix": {

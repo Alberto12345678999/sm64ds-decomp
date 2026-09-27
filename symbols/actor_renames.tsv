@@ -1651,12 +1651,12 @@ ov060	0x02117c30	func_ov060_02117c30	_ZN10daKpa2Bg_c13InitResourcesEv	vtable slo
 ov060	0x02117cdc	func_ov060_02117cdc	daKpa2Bg_c_classInit	spawnfunc
 ov060	0x02118408	func_ov060_02118408	BowserSkyPlatform_Spawn	spawnfunc
 ov060	0x02118408	BowserSkyPlatform_Spawn	daKpa3Bg_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
-ov060	0x02118438	func_ov060_02118438	_ZN9SpikeBombD1Ev	vtable slot 16 (was _ZN17BowserSkyPlatformD1Ev)
-ov060	0x02118470	func_ov060_02118470	_ZN9SpikeBombD0Ev	vtable slot 17 (was _ZN17BowserSkyPlatformD0Ev)
-ov060	0x02118ab0	func_ov060_02118ab0	_ZN9SpikeBomb16CleanupResourcesEv	vtable slot 3 (was _ZN17BowserSkyPlatform16CleanupResourcesEv)
-ov060	0x02118ad4	func_ov060_02118ad4	_ZN9SpikeBomb6RenderEv	vtable slot 9 (was _ZN17BowserSkyPlatform6RenderEv)
-ov060	0x02118b2c	func_ov060_02118b2c	_ZN9SpikeBomb8BehaviorEv	vtable slot 6 (was _ZN17BowserSkyPlatform8BehaviorEv)
-ov060	0x02118bb4	func_ov060_02118bb4	_ZN9SpikeBomb13InitResourcesEv	vtable slot 0 (was _ZN17BowserSkyPlatform13InitResourcesEv)
+ov060	0x02118438	func_ov060_02118438	_ZN9daKirai_cD1Ev	vtable slot 16 (was _ZN17BowserSkyPlatformD1Ev)
+ov060	0x02118470	func_ov060_02118470	_ZN9daKirai_cD0Ev	vtable slot 17 (was _ZN17BowserSkyPlatformD0Ev)
+ov060	0x02118ab0	func_ov060_02118ab0	_ZN9daKirai_c16CleanupResourcesEv	vtable slot 3 (was _ZN17BowserSkyPlatform16CleanupResourcesEv)
+ov060	0x02118ad4	func_ov060_02118ad4	_ZN9daKirai_c6RenderEv	vtable slot 9 (was _ZN17BowserSkyPlatform6RenderEv)
+ov060	0x02118b2c	func_ov060_02118b2c	_ZN9daKirai_c8BehaviorEv	vtable slot 6 (was _ZN17BowserSkyPlatform8BehaviorEv)
+ov060	0x02118bb4	func_ov060_02118bb4	_ZN9daKirai_c13InitResourcesEv	vtable slot 0 (was _ZN17BowserSkyPlatform13InitResourcesEv)
 ov060	0x02118cbc	func_ov060_02118cbc	SpikeBomb_Spawn	spawnfunc
 ov060	0x02118cbc	SpikeBomb_Spawn	daKirai_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov060	0x02118cfc	func_ov060_02118cfc	_ZN9daFRing_cD1Ev	vtable slot 16
@@ -1683,7 +1683,7 @@ ov060	0x0211a964	data_ov060_0211a964	BowserSkyPlatform_SpawnInfo	spawninfo
 ov060	0x0211a964	BowserSkyPlatform_SpawnInfo	g_profile_KOOPA3BG	reconstructed profile global; literal ROM ID KOOPA3BG+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov060	0x0211aa68	data_ov060_0211aa68	SpikeBomb_SpawnInfo	spawninfo
 ov060	0x0211aa68	SpikeBomb_SpawnInfo	g_profile_KIRAI	reconstructed profile global; literal ROM ID KIRAI+registry role+later EAD lineage; exact SM64DS spelling not preserved
-ov060	0x0211aa8c	data_ov060_0211aa8c	_ZTV9SpikeBomb	vtable alloc=? (was _ZTV17BowserSkyPlatform)
+ov060	0x0211aa8c	data_ov060_0211aa8c	_ZTV9daKirai_c	vtable alloc=? (was _ZTV17BowserSkyPlatform)
 ov060	0x0211ab30	data_ov060_0211ab30	BowserShockwaves_SpawnInfo	spawninfo
 ov060	0x0211ab30	BowserShockwaves_SpawnInfo	g_profile_FIRERING	reconstructed profile global; literal ROM ID FIRERING+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov060	0x0211ab54	data_ov060_0211ab54	_ZTV9daFRing_c	vtable alloc=0x218

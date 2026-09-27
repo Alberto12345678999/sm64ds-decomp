@@ -1,7 +1,7 @@
 /* Seeded from matched-function evidence by tools/gen_header.py, then given its
  * real base and real member types by hand.
  *
- * class SpikeBomb: 5 matched functions.
+ * class daKirai_c: 5 matched functions.
  *
  * Two sub-objects, each checked twice -- once by that class's own size assertion,
  * once by closing exactly on the next named field:
@@ -19,14 +19,14 @@
  *
  * It used to say 0x32c, "not inferred from the fields", on the authority of
  * daKpa3Bg_c_classInit -- a DIFFERENT CLASS's factory. That is the pair-by-name
- * error: daKirai_c_classInit is the factory that stores _ZTV9SpikeBomb, and it asks
+ * error: daKirai_c_classInit is the factory that stores _ZTV9daKirai_c, and it asks
  * fBase_c::operator new for 0x1b0. BowserSkyPlatform's own assert is 0x32c and is
  * correct; this class simply inherited its number, and 0x17d bytes of tail padding
  * were invented to reach it.
  *
  * Field NAMES for the unk_ entries are placeholders. */
-#ifndef SPIKEBOMB_H
-#define SPIKEBOMB_H
+#ifndef DAKIRAI_C_H
+#define DAKIRAI_C_H
 #include "types.h"
 #include "Model.h"
 #include "dCcAcPos_c.h"
@@ -35,7 +35,7 @@
 
 #include "dActor_c.h"
 
-struct SpikeBomb : dActor_c {
+struct daKirai_c : dActor_c {
     u8  pad_0d0[0x4];
     /* Named by the class's own destructor calling Model's D1 at +0x0d4 -- a
        relocation the ROM build checks. */
@@ -50,7 +50,7 @@ struct SpikeBomb : dActor_c {
        position -- how far out in XZ the bomb starts from the world origin.
        mHomeYOffset is the constant 0x2ee000, and mHomePosY is raised by
        mHomeYOffset >> 3 right after the home triple is copied.
-       [_ZN9SpikeBomb13InitResourcesEv.cpp] */
+       [daKirai_c::InitResources] */
     s32 mHomeHorzDist;            /* 0x180 */
     s32 mHomeYOffset;            /* 0x184 */
     u8  pad_188[0x20];
@@ -60,7 +60,7 @@ struct SpikeBomb : dActor_c {
     u8  pad_1af[0x1];       /* 0x1af, closing on the ROM's 0x1b0 */
 
     /* --- vtable, in ROM order. Do not reorder. --- */
-    virtual ~SpikeBomb();       /* slots 16 (D1), 17 (D0) */
+    virtual ~daKirai_c();       /* slots 16 (D1), 17 (D0) */
 
     /* --- non-virtual --- */
     int CleanupResources();
@@ -71,12 +71,12 @@ struct SpikeBomb : dActor_c {
 
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
-typedef char SpikeBomb_size_must_be_0x1b0[sizeof(SpikeBomb) == 0x1b0 ? 1 : -1];
+typedef char daKirai_c_size_must_be_0x1b0[sizeof(daKirai_c) == 0x1b0 ? 1 : -1];
 #endif
 
 #else
 
-struct SpikeBomb {
+struct daKirai_c {
     u8  pad_000[0x5c];
     s32 mPosX;            /* 0x05c */
     s32 mPosY;            /* 0x060 */
@@ -88,7 +88,7 @@ struct SpikeBomb {
     u8  pad_08c[0x48];
     /* Model member, named by the class's own destructor calling
        Model's D1 at +0x0d4 -- a relocation the ROM build
-       checks. Was a u8 marker. [_ZN9SpikeBombD0Ev.c] */
+       checks. Was a u8 marker. [daKirai_c::~daKirai_c] */
     Model mModel;            /* 0x0d4 */
     dCcAcPos_c mdCcAcPos_c;       /* 0x124 */
     u8  pad_164[0xc];
@@ -100,7 +100,7 @@ struct SpikeBomb {
        position -- how far out in XZ the bomb starts from the world origin.
        mHomeYOffset is the constant 0x2ee000, and mHomePosY is raised by
        mHomeYOffset >> 3 right after the home triple is copied.
-       [_ZN9SpikeBomb13InitResourcesEv.cpp] */
+       [daKirai_c::InitResources] */
     s32 mHomeHorzDist;            /* 0x180 */
     s32 mHomeYOffset;            /* 0x184 */
     u8  pad_188[0x20];

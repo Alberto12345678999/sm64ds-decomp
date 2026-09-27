@@ -4799,14 +4799,6 @@
         "param:#1 const void *",
         "param:#2 const void *"
       ],
-      "src/func_ov060_02118544.c": [
-        "param:#1 const void *",
-        "param:#2 const void *"
-      ],
-      "src/func_ov060_02118728.c": [
-        "param:#1 Vector3 *",
-        "param:#2 Vector3 *"
-      ],
       "src/func_ov066_021175e8.c": [
         "param:#1 const void *",
         "param:#2 const void *"
@@ -7371,7 +7363,7 @@
       "src/_ZN9PowerStar8BehaviorEv.cpp": [
         "param:#2 const void *"
       ],
-      "src/_ZN9SpikeBomb8BehaviorEv.cpp": [
+      "src/actors/daKirai_c.cpp": [
         "param:#2 void *"
       ],
       "src/actors/Eyerok.cpp": [
@@ -7443,7 +7435,7 @@
       "src/_ZN9PowerStar13InitResourcesEv.cpp": [
         "param:#3 Vec3 *"
       ],
-      "src/_ZN9SpikeBomb13InitResourcesEv.cpp": [
+      "src/actors/daKirai_c.cpp": [
         "param:#3 const Vector3 &"
       ],
       "src/actors/daManta_c.cpp": [
@@ -11227,7 +11219,7 @@
         "param:#1 SharedFilePtr *",
         "return:struct BMD_File *"
       ],
-      "src/_ZN9SpikeBomb13InitResourcesEv.cpp": [
+      "src/actors/daKirai_c.cpp": [
         "param:#1 void *"
       ],
       "src/_ZN9daDossy_c13InitResourcesEv.cpp": [
@@ -13384,7 +13376,7 @@
         "param:#7 unsigned int",
         "return:void"
       ],
-      "src/func_ov060_02118970.c": [
+      "src/actors/daKirai_c.cpp": [
         "param:#5 unsigned int",
         "param:#6 unsigned int",
         "param:#7 unsigned int",
@@ -15129,10 +15121,7 @@
       "src/func_ov060_021172e0.cpp": [
         "return:void"
       ],
-      "src/func_ov060_021185c4.c": [
-        "return:void"
-      ],
-      "src/func_ov060_02118970.c": [
+      "src/actors/daKirai_c.cpp": [
         "return:void"
       ],
       "src/func_ov066_02116c6c.c": [
@@ -15374,10 +15363,7 @@
       "src/func_ov060_02117db8.c": [
         "arity:3"
       ],
-      "src/func_ov060_021185c4.c": [
-        "arity:3"
-      ],
-      "src/func_ov060_02118970.c": [
+      "src/actors/daKirai_c.cpp": [
         "arity:3"
       ],
       "src/actors/daObjCasket_c.cpp": [
@@ -15646,10 +15632,7 @@
       "src/func_ov060_021180e0.cpp": [
         "return:void *"
       ],
-      "src/func_ov060_02118728.c": [
-        "return:void *"
-      ],
-      "src/func_ov060_02118970.c": [
+      "src/actors/daKirai_c.cpp": [
         "return:char *"
       ],
       "src/func_ov064_02118c48.c": [
@@ -16201,7 +16184,7 @@
       "src/func_ov060_021181b4.c": [
         "return:void *"
       ],
-      "src/func_ov060_021184bc.c": [
+      "src/actors/daKirai_c.cpp": [
         "param:#2 char *",
         "return:char *"
       ],
@@ -18218,7 +18201,7 @@
         "param:#2 struct BMD_File *",
         "return:void"
       ],
-      "src/_ZN9SpikeBomb13InitResourcesEv.cpp": [
+      "src/actors/daKirai_c.cpp": [
         "return:void"
       ],
       "src/_ZN9daDossy_c13InitResourcesEv.cpp": [
@@ -28630,7 +28613,7 @@
       ]
     },
     "data_ov060_0211b1c4": {
-      "src/_ZN9SpikeBomb16CleanupResourcesEv.cpp": [
+      "src/actors/daKirai_c.cpp": [
         "return:char"
       ],
       "src/__sinit_ov060_0211a388.c": [
@@ -32326,10 +32309,7 @@
       "src/func_ov060_02117db8.c": [
         "param:#1 int"
       ],
-      "src/func_ov060_021185c4.c": [
-        "param:#1 int"
-      ],
-      "src/func_ov060_02118970.c": [
+      "src/actors/daKirai_c.cpp": [
         "param:#1 int"
       ],
       "src/func_ov066_0211603c.c": [

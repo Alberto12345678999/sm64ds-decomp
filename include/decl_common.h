@@ -576,7 +576,6 @@ extern int _ZTV16daObjKinokoTag_c[];
 extern int _ZTV16daObjKm2_Agaru_c[];
 extern int _ZTV16daObjRcBuranko_c[];
 extern int _ZTV16daObjRc_Tikuwa_c[];
-extern int _ZTV9SpikeBomb[];
 extern int _ZTV17daObjSimpleLift_c[];
 extern int _ZTV17daObjBk_Botaosi_c[];
 extern int _ZTV17daObjBk_Rotebar_c[];
