@@ -28670,13 +28670,13 @@
    "start": "0x2125404",
    "end": "0x2126fbc",
    "classes": [
-    "Painting"
+    "daPicGate_c"
    ],
    "n_functions_map": 29,
    "n_files": 28,
    "files": [
-    "src/_ZN8PaintingD1Ev.cpp",
-    "src/_ZN8PaintingD0Ev.c",
+    "src/_ZN11daPicGate_cD1Ev.cpp",
+    "src/_ZN11daPicGate_cD0Ev.c",
     "src/func_ov080_02125460.c",
     "src/func_ov080_0212555c.c",
     "src/func_ov080_02125630.cpp",
@@ -28697,11 +28697,11 @@
     "src/func_ov080_0212677c.c",
     "src/func_ov080_021269b8.c",
     "src/func_ov080_02126a54.c",
-    "src/_ZN8Painting16CleanupResourcesEv.cpp",
-    "src/_ZN8Painting16OnPendingDestroyEv.cpp",
-    "src/_ZN8Painting6RenderEv.cpp",
-    "src/_ZN8Painting8BehaviorEv.cpp",
-    "src/_ZN8Painting13InitResourcesEv.cpp",
+    "src/_ZN11daPicGate_c16CleanupResourcesEv.cpp",
+    "src/_ZN11daPicGate_c16OnPendingDestroyEv.cpp",
+    "src/_ZN11daPicGate_c6RenderEv.cpp",
+    "src/_ZN11daPicGate_c8BehaviorEv.cpp",
+    "src/_ZN11daPicGate_c13InitResourcesEv.cpp",
     "src/daPicGate_c_classInit.c"
    ],
    "ext_mix": {

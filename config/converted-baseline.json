@@ -1161,11 +1161,6 @@
     "src/_ZN8MugenBgm6RenderEv.cpp",
     "src/_ZN8MugenBgmD0Ev.cpp",
     "src/_ZN8MugenBgmD1Ev.cpp",
-    "src/_ZN8Painting16OnPendingDestroyEv.cpp",
-    "src/_ZN8Painting6RenderEv.cpp",
-    "src/_ZN8Painting8BehaviorEv.cpp",
-    "src/_ZN8PaintingD0Ev.cpp",
-    "src/_ZN8PaintingD1Ev.cpp",
     "src/_ZN8Particle10LimitPlane4FuncERNS_10EffectDataEPcR7Vector3.cpp",
     "src/_ZN8Particle10SysTracker6UpdateEv.cpp",
     "src/_ZN8Particle10SysTracker8Contents4LinkERNS1_5EntryE.cpp",
@@ -3019,6 +3014,11 @@
     "src/actors/daWater_Tatumaki_c.cpp#_ZN18daWater_Tatumaki_c16OnPendingDestroyEv",
     "src/actors/daWater_Tatumaki_c.cpp#_ZN18daWater_Tatumaki_c6RenderEv",
     "src/actors/daWater_Tatumaki_c.cpp#_ZN18daWater_Tatumaki_cD0Ev",
-    "src/actors/daWater_Tatumaki_c.cpp#_ZN18daWater_Tatumaki_cD1Ev"
+    "src/actors/daWater_Tatumaki_c.cpp#_ZN18daWater_Tatumaki_cD1Ev",
+    "src/actors/daPicGate_c.cpp#_ZN11daPicGate_c16OnPendingDestroyEv",
+    "src/actors/daPicGate_c.cpp#_ZN11daPicGate_c6RenderEv",
+    "src/actors/daPicGate_c.cpp#_ZN11daPicGate_c8BehaviorEv",
+    "src/_ZN11daPicGate_cD0Ev.cpp",
+    "src/_ZN11daPicGate_cD1Ev.cpp"
   ]
 }

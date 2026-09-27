@@ -2189,10 +2189,6 @@
         "param:#1 const void *",
         "param:#2 const void *"
       ],
-      "src/func_ov080_0212677c.c": [
-        "param:#1 const void *",
-        "param:#2 const void *"
-      ],
       "src/game/actors/d_a_holhei.cpp": [
         "param:#1 const Matrix4x3 *",
         "param:#2 const Matrix4x3 *",
@@ -6378,9 +6374,6 @@
         "return:int"
       ],
       "src/func_ov064_02117a44.cpp": [
-        "return:int"
-      ],
-      "src/func_ov080_021264ec.c": [
         "return:int"
       ],
       "src/actors/daFPkn_c.cpp": [
@@ -20300,9 +20293,6 @@
         "return:int"
       ],
       "src/func_ov080_02125fd0.c": [
-        "return:int"
-      ],
-      "src/func_ov080_0212677c.c": [
         "return:int"
       ]
     },
@@ -36522,10 +36512,6 @@
       ],
       "src/_ZN6Player16CleanupResourcesEv.cpp": [
         "arity:1"
-      ],
-      "src/_ZN8Painting16CleanupResourcesEv.cpp": [
-        "arity:1",
-        "return:int"
       ],
       "src/_ZN8Particle10SysTrackerD1Ev.cpp": [
         "arity:1"

@@ -5,7 +5,7 @@
 | Initializer | Classifier owner | Ownership verdict | Regeneration verdict |
 | --- | --- | --- | --- |
 | [__sinit_ov002_02107370](../src/__sinit_ov002_02107370.c) | [ov002](../config/arm9/overlays/ov002/symbols.txt)/`CutsceneObject+daDemo_c` | **CONFIRMED HIGH for the combined original TU.** Do not narrow it to one class: the resource half is tied to `CutsceneObject`, while ten PMF tables and all 69 used PMF descriptors stay in the same 146-function multi-class TU. | **Structurally exact but not symbol-ready.** Ordinary global objects and PMF arrays generate the exact `0xc18` `.init` bytes and relocation shape, but stand-in type/member spellings are not licensed production symbols. |
-| [__sinit_ov080_02127b2c](../src/__sinit_ov080_02127b2c.c) | [ov080](../config/arm9/overlays/ov080/symbols.txt)/`Painting` | **CONFIRMED HIGH and narrowable to `Painting`.** All 19 resource objects and the 12-entry PMF table are consumed within the 29-function Painting TU; all 12 descriptor targets are internal. | **Structurally exact but not symbol-ready.** Ordinary globals generate the exact `0x434` `.init` bytes and relocation shape; original resource-wrapper and unnamed member spellings remain to be recovered. |
+| [__sinit_ov080_02127b2c](../src/__sinit_ov080_02127b2c.c) | [ov080](../config/arm9/overlays/ov080/symbols.txt)/`daPicGate_c` | **CONFIRMED HIGH and narrowable to `daPicGate_c`.** All 19 resource objects and the 12-entry PMF table are consumed within the 29-function daPicGate_c TU; all 12 descriptor targets are internal. | **Structurally exact but not symbol-ready.** Ordinary globals generate the exact `0x434` `.init` bytes and relocation shape; original resource-wrapper and unnamed member spellings remain to be recovered. |
 
 Both committed C transcriptions independently pass strict byte and linked-ROM
 verification under pinned mwccarm 2004/b56. This audit confirms ownership; it
@@ -74,12 +74,12 @@ The `56 -> 60 -> 63` text-unit ordering agrees with `.ctor` order. It is useful
 corroboration, but overlay 2 has more candidate TUs than initializers, so order
 alone is not the ownership proof.
 
-## [ov080](../config/arm9/overlays/ov080/symbols.txt)/`Painting`
+## [ov080](../config/arm9/overlays/ov080/symbols.txt)/`daPicGate_c`
 
 ### TU boundary and consumers
 
 The candidate is [ov080](../config/arm9/overlays/ov080/symbols.txt):`2`, text span `0x02125404..0x02126fbc`, with 29
-functions and class label `Painting`. Its neighbors are `CrazedCrate`
+functions and class label `daPicGate_c`. Its neighbors are `CrazedCrate`
 (`0x02124a20..0x02125404`) and `daObjMaruta_c`
 (`0x02126fbc..0x0212714c`).
 
@@ -90,11 +90,11 @@ array at [data_ov080_02128628](../config/arm9/overlays/ov080/symbols.txt).
 - Data table [data_ov080_0212775c](../config/arm9/overlays/ov080/symbols.txt) contains 19 consecutive relocations, one to
   every resource object. [func_ov080_02125630](../src/func_ov080_02125630.cpp)'s closing literal-pool
   relocation at `0x021256f4` points to that table. Both the function and the
-  table belong to the Painting text/data cluster.
-- `Painting::InitResources` loads the PMF destination at `0x02126f7c` and
+  table belong to the daPicGate_c text/data cluster.
+- `daPicGate_c::InitResources` loads the PMF destination at `0x02126f7c` and
   dispatches through it.
 - The twelve source descriptors at `0x02128214..0x0212826c` all relocate to
-  functions inside the Painting span. Every descriptor has addend 0 and
+  functions inside the daPicGate_c span. Every descriptor has addend 0 and
   `this` adjustment 0.
 - There are no source-scanned external consumers, unmapped consumers, or raw
   ROM relocation edges to another candidate TU.
@@ -106,9 +106,9 @@ initializer order agree exactly:
 
 1. `MontyMole+MontyMoleRock` / [__sinit_ov080_021278c0](../src/__sinit_ov080_021278c0.c);
 2. `CrazedCrate` / [__sinit_ov080_02127a60](../src/__sinit_ov080_02127a60.c);
-3. `Painting` / [__sinit_ov080_02127b2c](../src/__sinit_ov080_02127b2c.c).
+3. `daPicGate_c` / [__sinit_ov080_02127b2c](../src/__sinit_ov080_02127b2c.c).
 
-The Painting entry is [.p__sinit_ov080_02127b2c](../config/arm9/overlays/ov080/symbols.txt) at `0x02127f68`, relocating to
+The daPicGate_c entry is [.p__sinit_ov080_02127b2c](../config/arm9/overlays/ov080/symbols.txt) at `0x02127f68`, relocating to
 `0x02127b2c`. This order is corroboration in addition to the direct global,
 data-table, and PMF edges.
 

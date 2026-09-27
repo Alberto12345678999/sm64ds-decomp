@@ -701,7 +701,7 @@ SKIP PowerFlower: ov002:0x20b9b70 already claimed by daObjPushblock_c (vtable sl
 SKIP PowerFlower: ov002:0x20b9aac already claimed by daObjPushblock_c (vtable slot 9)
 SKIP PowerFlower: ov002:0x20b9148 already claimed by daObjPushblock_c (vtable slot 16)
 SKIP PowerFlower: ov002:0x20b9198 already claimed by daObjPushblock_c (vtable slot 17)
-NOVTABLE actor 307 Painting (alloc=0x1bc)
+NOVTABLE actor 307 daPicGate_c (alloc=0x1bc)
 AMBIG actor 311 MONTY_MOLE_ROCK: ['ov080', 'ov079'] -> ov080
 SKIP SlidingBox: ov016:0x2114c8c already claimed by FloatOnWaterPlatformJrb (vtable alloc=?)
 SKIP SlidingBox: ov016:0x2113434 already claimed by FloatOnWaterPlatformJrb (vtable slot 0)

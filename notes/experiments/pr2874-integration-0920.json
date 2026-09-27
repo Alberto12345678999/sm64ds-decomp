@@ -4727,8 +4727,8 @@
       "diffs": []
     },
     {
-      "file": "src/_ZN8Painting13InitResourcesEv.cpp",
-      "name": "_ZN8Painting13InitResourcesEv",
+      "file": "src/_ZN11daPicGate_c13InitResourcesEv.cpp",
+      "name": "_ZN11daPicGate_c13InitResourcesEv",
       "module": "ov080",
       "addr": "0x2126ca0",
       "verdict": "VERIFIED",
@@ -20862,7 +20862,7 @@
           "src/_ZN7dWipe_c11AdvanceFadeEv.cpp",
           "src/_ZN8BookShot8BehaviorEv.cpp",
           "src/_ZN8Goomboss8BehaviorEv.cpp",
-          "src/_ZN8Painting13InitResourcesEv.cpp",
+          "src/_ZN11daPicGate_c13InitResourcesEv.cpp",
           "src/_ZN8SaveData14SaveDataToCartEPcjj.cpp",
           "src/_ZN8Snowball13InitResourcesEv.cpp",
           "src/_ZN8dActor_cC2Ev.cpp",
@@ -20987,7 +20987,7 @@
           "src/_ZN7dWipe_c11AdvanceFadeEv.cpp",
           "src/_ZN8BookShot8BehaviorEv.cpp",
           "src/_ZN8Goomboss8BehaviorEv.cpp",
-          "src/_ZN8Painting13InitResourcesEv.cpp",
+          "src/_ZN11daPicGate_c13InitResourcesEv.cpp",
           "src/_ZN8SaveData14SaveDataToCartEPcjj.cpp",
           "src/_ZN8Snowball13InitResourcesEv.cpp",
           "src/_ZN8dActor_cC2Ev.cpp",
@@ -21914,7 +21914,7 @@
         "src/_ZN8IceBlock8BehaviorEv.cpp",
         "src/_ZN8MugenBgm13InitResourcesEv.cpp",
         "src/_ZN8MugenBgm8BehaviorEv.cpp",
-        "src/_ZN8Painting13InitResourcesEv.cpp",
+        "src/_ZN11daPicGate_c13InitResourcesEv.cpp",
         "src/_ZN8Particle10SysTracker10InitialiseEv.cpp",
         "src/_ZN8Particle10SysTracker6UpdateEv.cpp",
         "src/_ZN8Particle10SysTrackerD1Ev.cpp",
@@ -23571,8 +23571,8 @@
           "name": "_ZN8MugenBgm8BehaviorEv"
         },
         {
-          "file": "src/_ZN8Painting13InitResourcesEv.cpp",
-          "name": "_ZN8Painting13InitResourcesEv"
+          "file": "src/_ZN11daPicGate_c13InitResourcesEv.cpp",
+          "name": "_ZN11daPicGate_c13InitResourcesEv"
         },
         {
           "file": "src/_ZN8Particle10SysTracker10InitialiseEv.cpp",
