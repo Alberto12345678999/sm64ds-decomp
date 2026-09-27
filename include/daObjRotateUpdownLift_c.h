@@ -1,8 +1,9 @@
-/* class RotatingUpDownPlatformUtm : dBgActor_c. Real C++ form.
+/* class daObjRotateUpdownLift_c : dBgActor_c. Real C++ form.
  *
- * Base and size from the factory (src/RotatingUpDownPlatformUtm_Spawn.c):
+ * Base and size from the factory
+ * (src/d_a_obj_rotate_updown_lift_hs_updown_lift.c):
  * fBase_c::operator new(936) -- 0x3a8 -- then dBgActor_c::dBgActor_c(), then
- * stores _ZTV25RotatingUpDownPlatformUtm. No intermediate base: one non-base
+ * stores _ZTV23daObjRotateUpdownLift_c. No intermediate base: one non-base
  * vtable store, matching the D1 destructor below.
  *
  * dBgActor_c ends at 0x320 (include/dBgActor_c.h). Members below that offset
@@ -23,8 +24,8 @@
  * whose descriptor at 0x02134c14 is reconstructed as
  * g_profile_HS_UPDOWN_LIFT.
  */
-#ifndef ROTATINGUPDOWNPLATFORMUTM_H
-#define ROTATINGUPDOWNPLATFORMUTM_H
+#ifndef DAOBJROTATEUPDOWNLIFT_C_H
+#define DAOBJROTATEUPDOWNLIFT_C_H
 #include "types.h"
 #include "dBgW_KcMbg.h"
 
@@ -33,7 +34,7 @@
 #include "dBgActor_c.h"
 #include "ShadowModel.h"
 
-struct RotatingUpDownPlatformUtm : dBgActor_c {
+struct daObjRotateUpdownLift_c : dBgActor_c {
     /* Named by the class's own destructor calling ShadowModel's D1 at +0x320
        -- a relocation the ROM build checks. Was a u8 marker. */
     ShadowModel mShadowModel;    /* 0x320 */
@@ -60,10 +61,10 @@ struct RotatingUpDownPlatformUtm : dBgActor_c {
     u8  pad_3a6[0x2];
 
     /* --- vtable --- */
-    virtual ~RotatingUpDownPlatformUtm();
+    virtual ~daObjRotateUpdownLift_c();
 
     /* Slot 31, dBgActor_c's own new virtual (include/dBgActor_c.h). Attributed
-       by the vtable: _ZTV25RotatingUpDownPlatformUtm carries 0x02131070 at
+       by the vtable: _ZTV23daObjRotateUpdownLift_c carries 0x02131070 at
        slot 31, matching config/arm9/overlays/ov091/relocs.txt
        (0x02134cd8 -> 0x02131070). NOT the key function: the destructor above
        is declared out of line and defined identically in both D1Ev.cpp and
@@ -84,7 +85,7 @@ struct RotatingUpDownPlatformUtm : dBgActor_c {
 
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
-typedef char RotatingUpDownPlatformUtm_size_must_be_0x3a8[sizeof(RotatingUpDownPlatformUtm) == 0x3a8 ? 1 : -1];
+typedef char daObjRotateUpdownLift_c_size_must_be_0x3a8[sizeof(daObjRotateUpdownLift_c) == 0x3a8 ? 1 : -1];
 #endif
 
 #else
@@ -93,7 +94,7 @@ typedef char RotatingUpDownPlatformUtm_size_must_be_0x3a8[sizeof(RotatingUpDownP
 
 /* The same object spelled flat, for the compiler-generated destructor, which
    lives in a C translation unit and can never be migrated. */
-struct RotatingUpDownPlatformUtm {
+struct daObjRotateUpdownLift_c {
     u8  pad_000[0x8];
     s32 mSpawnParam;            /* 0x008 */
     u16 mActorID;            /* 0x00c */

@@ -2692,12 +2692,12 @@ ov090	0x021343b0	data_ov090_021343b0	_ZTS9daShark_c	RTTI type-name string; cartr
 ov090	0x021343c8	data_ov090_021343c8	Shark_SpawnInfo	spawninfo
 ov090	0x021343c8	Shark_SpawnInfo	g_profile_SHARK	reconstructed profile global; literal ROM ID SHARK+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov090	0x021343ec	data_ov090_021343ec	_ZTV9daShark_c	vtable alloc=0x3a0
-ov091	0x02130f00	func_ov091_02130f00	_ZN25RotatingUpDownPlatformUtmD1Ev	vtable slot 16
-ov091	0x02130f4c	func_ov091_02130f4c	_ZN25RotatingUpDownPlatformUtmD0Ev	vtable slot 17
-ov091	0x02131388	func_ov091_02131388	_ZN25RotatingUpDownPlatformUtm16CleanupResourcesEv	vtable slot 3
-ov091	0x02131408	func_ov091_02131408	_ZN25RotatingUpDownPlatformUtm6RenderEv	vtable slot 9
-ov091	0x02131468	func_ov091_02131468	_ZN25RotatingUpDownPlatformUtm8BehaviorEv	vtable slot 6
-ov091	0x021318f0	func_ov091_021318f0	_ZN25RotatingUpDownPlatformUtm13InitResourcesEv	vtable slot 0
+ov091	0x02130f00	func_ov091_02130f00	_ZN23daObjRotateUpdownLift_cD1Ev	vtable slot 16
+ov091	0x02130f4c	func_ov091_02130f4c	_ZN23daObjRotateUpdownLift_cD0Ev	vtable slot 17
+ov091	0x02131388	func_ov091_02131388	_ZN23daObjRotateUpdownLift_c16CleanupResourcesEv	vtable slot 3
+ov091	0x02131408	func_ov091_02131408	_ZN23daObjRotateUpdownLift_c6RenderEv	vtable slot 9
+ov091	0x02131468	func_ov091_02131468	_ZN23daObjRotateUpdownLift_c8BehaviorEv	vtable slot 6
+ov091	0x021318f0	func_ov091_021318f0	_ZN23daObjRotateUpdownLift_c13InitResourcesEv	vtable slot 0
 ov091	0x02131ba4	func_ov091_02131ba4	RotatingUpDownPlatformUtm_Spawn	spawnfunc
 ov091	0x02131ba4	RotatingUpDownPlatformUtm_Spawn	daObjRotateUpdownLift_c_classInit_HS_UPDOWN_LIFT	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov091	0x02131bdc	func_ov091_02131bdc	RotatingUpDownPlatform_Spawn	spawnfunc
@@ -2756,7 +2756,7 @@ ov091	0x02134bf8	data_ov091_02134bf8	RotatingUpDownPlatform_SpawnInfo	spawninfo
 ov091	0x02134bf8	RotatingUpDownPlatform_SpawnInfo	g_profile_UPDOWN_LIFT	reconstructed profile global; literal ROM ID UPDOWN_LIFT+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov091	0x02134c14	data_ov091_02134c14	RotatingUpDownPlatformUtm_SpawnInfo	spawninfo
 ov091	0x02134c14	RotatingUpDownPlatformUtm_SpawnInfo	g_profile_HS_UPDOWN_LIFT	reconstructed profile global; literal ROM ID HS_UPDOWN_LIFT+registry role+later EAD lineage; exact SM64DS spelling not preserved
-ov091	0x02134c5c	data_ov091_02134c5c	_ZTV25RotatingUpDownPlatformUtm	vtable alloc=0x3a8
+ov091	0x02134c5c	data_ov091_02134c5c	_ZTV23daObjRotateUpdownLift_c	vtable alloc=0x3a8
 ov091	0x02134e80	data_ov091_02134e80	ArrowPathLift_SpawnInfo	spawninfo
 ov091	0x02134e80	ArrowPathLift_SpawnInfo	g_profile_KM3_LIFT	reconstructed profile global; literal ROM ID KM3_LIFT+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov091	0x02134e9c	data_ov091_02134e9c	SquareMetalNetLift_SpawnInfo	spawninfo
