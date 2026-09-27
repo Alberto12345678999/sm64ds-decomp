@@ -1591,13 +1591,13 @@
    "start": "0x20b9148",
    "end": "0x20b9e64",
    "classes": [
-    "PowerFlower"
+    "daObjPowerUpItem_c"
    ],
    "n_functions_map": 19,
    "n_files": 19,
    "files": [
-    "src/_ZN11PowerFlowerD1Ev.cpp",
-    "src/_ZN11PowerFlowerD0Ev.c",
+    "src/_ZN18daObjPowerUpItem_cD1Ev.cpp",
+    "src/_ZN18daObjPowerUpItem_cD0Ev.c",
     "src/func_ov002_020b91fc.c",
     "src/func_ov002_020b92b8.c",
     "src/func_ov002_020b92c4.cpp",
@@ -1609,11 +1609,11 @@
     "src/func_ov002_020b979c.c",
     "src/func_ov002_020b993c.c",
     "src/func_ov002_020b9a1c.c",
-    "src/_ZN11PowerFlower16CleanupResourcesEv.c",
-    "src/_ZN11PowerFlower6RenderEv.cpp",
-    "src/_ZN11PowerFlower8BehaviorEv.cpp",
-    "src/_ZN11PowerFlower13InitResourcesEv.cpp",
-    "src/_ZN11PowerFlower13OnYoshiTryEatEv.cpp",
+    "src/_ZN18daObjPowerUpItem_c16CleanupResourcesEv.c",
+    "src/_ZN18daObjPowerUpItem_c6RenderEv.cpp",
+    "src/_ZN18daObjPowerUpItem_c8BehaviorEv.cpp",
+    "src/_ZN18daObjPowerUpItem_c13InitResourcesEv.cpp",
+    "src/_ZN18daObjPowerUpItem_c13OnYoshiTryEatEv.cpp",
     "src/d_a_obj_power_up_item.c"
    ],
    "ext_mix": {

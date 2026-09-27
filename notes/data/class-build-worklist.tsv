@@ -155,7 +155,7 @@ daObjKm2_Nobiru_c	DONE	include\daObjKm2_Nobiru_c.h  [alias: header uses pre-rena
 daObjKumo_c	DONE	include\daObjKumo_c.h	dActor_c	0	ov039	6
 daObjLava_c	DONE	include\daObjLava_c.h	dActor_c	0	ov002	3
 daObjNumber_c	DONE	include\daObjNumber_c.h	dActor_c	0	ov002	6
-daObjPowerUpItem_c	DONE	include\PowerFlower.h  [alias: header uses pre-rename name]	dActor_c	0	ov002	7
+daObjPowerUpItem_c	DONE	include\daObjPowerUpItem_c.h  [alias: header uses pre-rename name]	dActor_c	0	ov002	7
 daObjRc_Hane_c	DONE	include\daObjRc_Hane_c.h	dActor_c	0	ov036	6
 daObjShell_c	DONE	include\daObjShell_c.h	dActor_c	0	ov064	6
 daObjTbox_c	DONE	include\daObjTbox_c.h	dActor_c	0	ov064	15

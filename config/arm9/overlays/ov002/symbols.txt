@@ -313,8 +313,8 @@ _ZN16daObjPushblock_c6RenderEv kind:function(arm,size=0x28) addr:0x020b8dac
 _ZN16daObjPushblock_c8BehaviorEv kind:function(arm,size=0x20c) addr:0x020b8dd4
 _ZN16daObjPushblock_c13InitResourcesEv kind:function(arm,size=0x12c) addr:0x020b8fe0
 daObjPushblock_c_classInit kind:function(arm,size=0x3c) addr:0x020b910c
-_ZN11PowerFlowerD1Ev kind:function(arm,size=0x50) addr:0x020b9148
-_ZN11PowerFlowerD0Ev kind:function(arm,size=0x64) addr:0x020b9198
+_ZN18daObjPowerUpItem_cD1Ev kind:function(arm,size=0x50) addr:0x020b9148
+_ZN18daObjPowerUpItem_cD0Ev kind:function(arm,size=0x64) addr:0x020b9198
 func_ov002_020b91fc kind:function(arm,size=0xbc) addr:0x020b91fc
 func_ov002_020b92b8 kind:function(arm,size=0xc) addr:0x020b92b8
 func_ov002_020b92c4 kind:function(arm,size=0x18c) addr:0x020b92c4
@@ -326,11 +326,11 @@ func_ov002_020b9750 kind:function(arm,size=0x4c) addr:0x020b9750
 func_ov002_020b979c kind:function(arm,size=0x1a0) addr:0x020b979c
 func_ov002_020b993c kind:function(arm,size=0xe0) addr:0x020b993c
 func_ov002_020b9a1c kind:function(arm,size=0x60) addr:0x020b9a1c
-_ZN11PowerFlower16CleanupResourcesEv kind:function(arm,size=0x30) addr:0x020b9a7c
-_ZN11PowerFlower6RenderEv kind:function(arm,size=0xc4) addr:0x020b9aac
-_ZN11PowerFlower8BehaviorEv kind:function(arm,size=0x90) addr:0x020b9b70
-_ZN11PowerFlower13InitResourcesEv kind:function(arm,size=0x204) addr:0x020b9c00
-_ZN11PowerFlower13OnYoshiTryEatEv kind:function(arm,size=0x8) addr:0x020b9e04
+_ZN18daObjPowerUpItem_c16CleanupResourcesEv kind:function(arm,size=0x30) addr:0x020b9a7c
+_ZN18daObjPowerUpItem_c6RenderEv kind:function(arm,size=0xc4) addr:0x020b9aac
+_ZN18daObjPowerUpItem_c8BehaviorEv kind:function(arm,size=0x90) addr:0x020b9b70
+_ZN18daObjPowerUpItem_c13InitResourcesEv kind:function(arm,size=0x204) addr:0x020b9c00
+_ZN18daObjPowerUpItem_c13OnYoshiTryEatEv kind:function(arm,size=0x8) addr:0x020b9e04
 daObjPowerUpItem_c_classInit kind:function(arm,size=0x58) addr:0x020b9e0c
 _ZN13daObjSwitch_cD1Ev kind:function(arm,size=0x44) addr:0x020b9e64
 _ZN13daObjSwitch_cD0Ev kind:function(arm,size=0x58) addr:0x020b9ea8
@@ -1839,7 +1839,6 @@ _ZTI18daObjPowerUpItem_c kind:data(any) addr:0x0210977c
 _ZTS18daObjPowerUpItem_c kind:data(any) addr:0x02109788
 g_profile_POWER_UP_ITEM kind:data(any) addr:0x021097a0
 data_ov002_021097bc kind:data(any) addr:0x021097bc
-_ZTV11PowerFlower kind:data(any) addr:0x02109800
 _ZTV18daObjPowerUpItem_c kind:data(any) addr:0x02109800
 data_ov002_0210987c kind:data(any) addr:0x0210987c
 data_ov002_02109884 kind:data(any) addr:0x02109884
