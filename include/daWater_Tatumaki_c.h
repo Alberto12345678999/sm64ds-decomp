@@ -14,7 +14,7 @@
  *     0x178 TextureTransformer         0x14   -> 0x18c
  *
  * Typing them absorbed these markers, which were a member's insides:
- *   - 0x184 unk_184      = mTextureTransformer + 0x0c
+ *   - 0x184 unk_184      = mTextureTransformer.speed (Animation +0x0c)
  *
  * Member NAMES are the ones this header already used -- a rebase should not
  * also rename things its callers spell.
@@ -38,16 +38,34 @@
 #include "dBgCh_Actr.h"
 
 struct daWater_Tatumaki_c : dEnemyBase_c {
-    s32                          unk_110;               /* 0x110 */
+    /* One state of the whirlpool: `enter` runs once when the state is
+       installed (func_ov026_02111ee0), `execute` every frame from Behavior.
+       The two records live in ov026 .bss (0x02113f2c, 0x02113f3c); the
+       static initializer 0x02112c94 copies each pair of member pointers in
+       from .data 0x02113cec..0x02113d04. State, enter and execute are coined
+       names. */
+    struct State {
+        int (daWater_Tatumaki_c::*enter)();
+        int (daWater_Tatumaki_c::*execute)();
+    };
+
+    const State                 *mState;                /* 0x110 */
     ModelAnim                    mModelAnim;            /* 0x114 */
     TextureTransformer           mTextureTransformer;   /* 0x178 */
-    u8  pad_18c[0x1c];
-    s32                          unk_1a8;               /* 0x1a8 */
-    s32                          unk_1ac;               /* 0x1ac */
-    s32                          unk_1b0;               /* 0x1b0 */
-    u8  pad_1b4[0x4];
-    u8                           unk_1b8;               /* 0x1b8 */
-    u8  pad_1b9[0x3];
+    /* Set once the player has been dragged under the whirlpool's centre and
+       KillPlayer has run, so it runs once. */
+    s32                          mPlayerKilled;         /* 0x18c */
+    s32                          unk_190;               /* 0x190 -- only ever zeroed */
+    /* The captured player orbits mCenter: mPullRadius out along mPullAngle,
+       at height mPullHeight, and mPullPos chases that point. */
+    s32                          mPullHeight;           /* 0x194 */
+    s32                          mPullRadius;           /* 0x198 */
+    Vector3                      mPullPos;              /* 0x19c */
+    /* The spawn position lowered by 0x64 -- the bottom of the funnel. */
+    Vector3                      mCenter;               /* 0x1a8 */
+    s16                          mPullAngle;            /* 0x1b4 */
+    s16                          mPullSpin;             /* 0x1b6 -- added to mPullAngle each frame */
+    u32                          mParticleID;           /* 0x1b8 -- Particle::System::New handle, effect 0x139 */
 
     /* --- vtable --- */
     virtual ~daWater_Tatumaki_c();
