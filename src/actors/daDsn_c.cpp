@@ -35,19 +35,15 @@
    header declares it in a form this TU can call. Kept above the first
    @symbol marker so no member is charged with the spellings.
 
-   func_ov091_* are daDsnBase_c's shared state steps. They keep ROM labels
-   and C linkage because daDkk_c::Behavior (ov025) calls the same seven by
-   name across the module boundary. */
+   func_ov091_02132ff4, func_ov091_02132e98 and func_ov091_02132e64 stay
+   C-linkage. func_ov091_02133098, func_ov091_02133020, func_ov091_02132f04
+   and func_ov091_02132dc0 are daDsnBase_c methods. */
 extern "C" {
 void *_ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int id, int x, int y, int z);
 void func_02012694(unsigned int id, const Vector3 *pos);
-void func_ov091_02133020(char *c);
 void func_ov091_02132ff4(char *c);
-void func_ov091_02132f04(char *c);
 void func_ov091_02132e98(char *c);
 void func_ov091_02132e64(char *c);
-void func_ov091_02133098(char *c);
-int func_ov091_02132dc0(char *c);
 int _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(void *c, int a, int b);
 }
 
@@ -98,7 +94,7 @@ int daDsn_c::Behavior()
             if (mHoldTimer != 0) {
                 mHoldTimer--;
             } else {
-                func_ov091_02133020((char *)this);
+                func_ov091_02133020();
             }
         }
         break;
@@ -109,14 +105,14 @@ int daDsn_c::Behavior()
     case 2:
         if (mTriggered != 0) {
             (*(s32 *)&mTextureSequence.currFrame) = 0;
-            func_ov091_02132f04((char *)this);
+            func_ov091_02132f04();
         } else {
             ((Animation *)&mTextureSequence)->Advance();
             if (((Animation *)&mTextureSequence)->Finished() != 0) {
                 if (mHoldTimer != 0) {
                     mHoldTimer--;
                 } else {
-                    func_ov091_02132f04((char *)this);
+                    func_ov091_02132f04();
                 }
             } else {
                 mHoldTimer = 5;
@@ -141,9 +137,9 @@ int daDsn_c::Behavior()
         break;
     }
     UpdateModelPosAndRotY();
-    func_ov091_02133098((char *)this);
+    func_ov091_02133098();
     if (_ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_((char *)this, 0, 0) == 0) {
-        if (func_ov091_02132dc0((char *)this) == 0)
+        if (func_ov091_02132dc0() == 0)
             goto done;
     }
     UpdateClsnPosAndRot();

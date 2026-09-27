@@ -32,9 +32,10 @@
  *   0x1a8 -> 0x1a4; the body calls func_020393d4.
  * - CleanupResources reloads mFileTable around each Release. One pointer
  *   across the three calls is a 20-word DIFF.
- * - The seven helpers stay func_ov091_*. daDsn_c::Behavior and
- *   daDkk_c::Behavior call those symbols; DsnCycle only names the shared
- *   tail inside this TU.
+ * - func_ov091_02132ff4, func_ov091_02132e98 and func_ov091_02132e64 stay
+ *   extern "C". func_ov091_02133098, func_ov091_02133020, func_ov091_02132f04
+ *   and func_ov091_02132dc0 are methods; the address is the method name.
+ *   DsnCycle only names the shared tail inside this TU.
  */
 
 #include "daDsnBase_c.h"
@@ -256,50 +257,49 @@ int daDsnBase_c::CleanupResources()
  * translation shifted. mClipRadius is also func_ov091_02132dc0's trigger
  * radius. The clipRadius pointer and the braced clamp are load-bearing;
  * see the file comment. */
-// @symbol func_ov091_02133098
-extern "C" void func_ov091_02133098(char *c)
+// @symbol _ZN11daDsnBase_c19func_ov091_02133098Ev
+void daDsnBase_c::func_ov091_02133098()
 {
-    daDsnBase_c *self = (daDsnBase_c *)c;
-    DsnCycle *cycle = (DsnCycle *)self;
+    DsnCycle *cycle = (DsnCycle *)this;
     int shadowDrop = 0x20000;
-    int heightAboveGround = self->mPosY - cycle->groundY;
+    int heightAboveGround = mPosY - cycle->groundY;
     if (heightAboveGround <= 0x14000) {
         heightAboveGround = 0x14000;
         shadowDrop = 0;
     }
     int radius = (int)(((long long)heightAboveGround * 0x60 + 0x800) >> 12);
-    s32 *clipRadius = &self->mClipRadius;
-    DsnBaseFileTable *files = (DsnBaseFileTable *)self->mFileTable;
+    s32 *clipRadius = &mClipRadius;
+    DsnBaseFileTable *files = (DsnBaseFileTable *)mFileTable;
     int scaleX = files->shadowExtentX - radius;
     if (scaleX < 0xa000)
         scaleX = 0xa000;
     int scaleZ = files->shadowExtentZ - radius;
     if (scaleZ < 0xa000)
         scaleZ = 0xa000;
-    self->mClipRadius = heightAboveGround + 0x8c000;
+    mClipRadius = heightAboveGround + 0x8c000;
     {
-        int clamped = self->mClipRadius;
+        int clamped = mClipRadius;
         if (clamped < 0x200000)
             clamped = 0x200000;
-        self->mClipRadius = clamped;
+        mClipRadius = clamped;
     }
     *clipRadius = *clipRadius >> 3;
-    cycle->shadowMtx = self->mModel.mat4x3;
+    cycle->shadowMtx = mModel.mat4x3;
     cycle->shadowMtx.m[9] = cycle->posX >> 3;
     cycle->shadowMtx.m[10] = (cycle->posY - shadowDrop) >> 3;
     cycle->shadowMtx.m[11] = cycle->posZ >> 3;
     _ZN8dActor_c18DropShadowScaleXYZER11ShadowModelR9Matrix4x35Fix12IiES5_S5_j(
-        self, &self->mShadowModel, &cycle->shadowMtx,
+        this, &mShadowModel, &cycle->shadowMtx,
         scaleX, heightAboveGround + 0x28000, scaleZ, 0xf);
 }
 
 /* State 0, the rise. Climbs 0xa000 a frame toward the stored top height
  * (0x390); on arrival snaps to it, moves to state 1 and rolls the hover
  * time (0xa..0x27 frames). */
-// @symbol func_ov091_02133020
-extern "C" void func_ov091_02133020(char *c)
+// @symbol _ZN11daDsnBase_c19func_ov091_02133020Ev
+void daDsnBase_c::func_ov091_02133020()
 {
-    DsnCycle *self = (DsnCycle *)c;
+    DsnCycle *self = (DsnCycle *)this;
     self->posY += 0xa000;
     if (self->posY < self->riseY)
         return;
@@ -324,36 +324,35 @@ extern "C" void func_ov091_02132ff4(char *c)
  * stored ground (0x394) snaps to it, stops, moves to state 3 and lands:
  * the Thwomp (DOSUN) raises its landing dust, Grindel spawns particle 0x2e,
  * and both shake the camera and play 0xc7. */
-// @symbol func_ov091_02132f04
-extern "C" void func_ov091_02132f04(char *c)
+// @symbol _ZN11daDsnBase_c19func_ov091_02132f04Ev
+void daDsnBase_c::func_ov091_02132f04()
 {
-    daDsnBase_c *self = (daDsnBase_c *)c;
     Vector3 dustPos;
     Vector3 quakePos;
-    self->mVertSpeed = self->mVertSpeed - 0x4000;
-    self->mPosY = self->mPosY + self->mVertSpeed;
-    DsnCycle *cycle = (DsnCycle *)self;
-    if (self->mPosY > cycle->groundY)
+    mVertSpeed = mVertSpeed - 0x4000;
+    mPosY = mPosY + mVertSpeed;
+    DsnCycle *cycle = (DsnCycle *)this;
+    if (mPosY > cycle->groundY)
         return;
-    self->mPosY = cycle->groundY;
-    self->mVertSpeed = 0;
+    mPosY = cycle->groundY;
+    mVertSpeed = 0;
     cycle->state = 3;
     cycle->timer = 0xa;
-    int isDosun = (self->actorID == kDosunActorID);
+    int isDosun = (actorID == kDosunActorID);
     if (isDosun != 0) {
-        self->HugeLandingDust(true);
+        HugeLandingDust(true);
     } else {
-        dustPos.x = self->mPosX;
-        dustPos.y = self->mPosY;
-        dustPos.z = self->mPosZ;
+        dustPos.x = mPosX;
+        dustPos.y = mPosY;
+        dustPos.z = mPosZ;
         dustPos.y = dustPos.y + 0x3c000;
         _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x2e, dustPos.x, dustPos.y, dustPos.z);
     }
-    quakePos.x = self->mPosX;
-    quakePos.y = self->mPosY;
-    quakePos.z = self->mPosZ;
-    _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(self, quakePos, 0x7d0000);
-    func_0201267c(0xc7, &self->mCamSpacePosX);
+    quakePos.x = mPosX;
+    quakePos.y = mPosY;
+    quakePos.z = mPosZ;
+    _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(this, quakePos, 0x7d0000);
+    func_0201267c(0xc7, &mCamSpacePosX);
 }
 
 /* State 3, the rest. Spends the landing timer, then moves to state 4 with
@@ -389,21 +388,20 @@ extern "C" void func_ov091_02132e64(char *c)
  * position. The aimPos block is dead by value -- the distance check reads
  * the actor origin, not it -- but it keeps the OnAimedAtWithEgg
  * call and the three stores the ROM emits. */
-// @symbol func_ov091_02132dc0
-extern "C" int func_ov091_02132dc0(char *c)
+// @symbol _ZN11daDsnBase_c19func_ov091_02132dc0Ev
+int daDsnBase_c::func_ov091_02132dc0()
 {
-    daDsnBase_c *self = (daDsnBase_c *)c;
-    dActor_c *egg = self->ClosestWithActorID(kYoshiEggActorID);
+    dActor_c *egg = ClosestWithActorID(kYoshiEggActorID);
     if (egg != 0) {
         Vector3 aimPos;
-        aimPos.x = self->mPosX;
-        aimPos.y = self->mPosY;
-        aimPos.z = self->mPosZ;
-        aimPos.y = aimPos.y + self->OnAimedAtWithEgg();
-        if (Vec3_Dist((const Vector3 *)&self->mPosX,
-                      (const Vector3 *)&egg->mPosX) < (self->mClipRadius << 3)) {
-            if (!self->mMeshCollider.IsEnabled()) {
-                self->mMeshCollider.Enable(self);
+        aimPos.x = mPosX;
+        aimPos.y = mPosY;
+        aimPos.z = mPosZ;
+        aimPos.y = aimPos.y + OnAimedAtWithEgg();
+        if (Vec3_Dist((const Vector3 *)&mPosX,
+                      (const Vector3 *)&egg->mPosX) < (mClipRadius << 3)) {
+            if (!mMeshCollider.IsEnabled()) {
+                mMeshCollider.Enable(this);
                 return 1;
             }
         }

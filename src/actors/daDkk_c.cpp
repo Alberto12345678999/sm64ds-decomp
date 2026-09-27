@@ -157,9 +157,9 @@ int daDkk_c::Behavior()
 {
     char *c = (char *)this;
     switch (mState) {
-    case 0: func_ov091_02133020(c); break;
+    case 0: ((daDsnBase_c *)c)->func_ov091_02133020(); break;
     case 1: func_ov091_02132ff4(c); break;
-    case 2: func_ov091_02132f04(c); break;
+    case 2: ((daDsnBase_c *)c)->func_ov091_02132f04(); break;
     case 3: func_ov091_02132e98(c); break;
     case 4: func_ov091_02132e64(c); break;
     case 5: func_ov025_02111a84(c); break;
@@ -167,10 +167,10 @@ int daDkk_c::Behavior()
     case 7: func_ov025_021119a4(c); break;
     }
     UpdateModelPosAndRotY();
-    func_ov091_02133098(c);
+    ((daDsnBase_c *)c)->func_ov091_02133098();
     /* IsClsnInRange: header method form refused (Fix12-by-value 6az). */
     if (_ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(c, 0, 0) != 0 ||
-        func_ov091_02132dc0(c) != 0) {
+        ((daDsnBase_c *)c)->func_ov091_02132dc0() != 0) {
         UpdateClsnPosAndRot();
     }
     return 1;
