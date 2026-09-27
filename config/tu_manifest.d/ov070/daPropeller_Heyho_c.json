@@ -67,7 +67,7 @@
       "ordinal": 5
     },
     {
-      "symbol": "func_ov070_0211f48c",
+      "symbol": "_ZN19daPropeller_Heyho_c19func_ov070_0211f48cEv",
       "address": "0x0211f48c",
       "size": "0x00000164",
       "legacy_source": "src/func_ov070_0211f48c.c",
@@ -81,7 +81,7 @@
       "ordinal": 7
     },
     {
-      "symbol": "func_ov070_0211f62c",
+      "symbol": "_ZN19daPropeller_Heyho_c19func_ov070_0211f62cEv",
       "address": "0x0211f62c",
       "size": "0x00000068",
       "legacy_source": "src/func_ov070_0211f62c.c",
@@ -95,7 +95,7 @@
       "ordinal": 9
     },
     {
-      "symbol": "func_ov070_0211f6e0",
+      "symbol": "_ZN19daPropeller_Heyho_c19func_ov070_0211f6e0Ev",
       "address": "0x0211f6e0",
       "size": "0x000003a0",
       "legacy_source": "src/func_ov070_0211f6e0.c",
@@ -839,7 +839,7 @@
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
     "toolchain": "tools/mwccarm/2004/b56/mwccarm.exe",
     "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
-    "object": "build/tu/ov070-daPropeller_Heyho_c/daPropeller_Heyho_c.o (gitignored)",
+    "object": "build/tu/ov070-daPropeller_Heyho_c/d_a_propeller_heyho.o (gitignored)",
     "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
     "functions_matched": 27,
     "functions_declared": 27,
