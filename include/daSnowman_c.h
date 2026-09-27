@@ -5,11 +5,7 @@
 
 /* Derives from dEnemyBase_c: the destructor stores this class's vtable, then the
  * base's, then destroys whatever the base owns before chaining further up.
- * Everything this header used to restate below 0x110 belonged to the
- * chain above and is inherited now.
- *
- * SIZE IS THE OBSERVED FIELD SPAN, rounded up. It guards this declaration; it
- * is not independent evidence about the ROM.
+ * Everything below 0x110 belongs to the chain above and is inherited.
  *
  * SM64DS proves this class as daSnowman_c through RTTI, allocation size and
  * vtable identity. The factory and profile spellings below are reconstructed
@@ -20,9 +16,10 @@
  * allocates 0x46c and installs this class's cartridge vtable. It backs the
  * SNOWMAN registry profile, whose descriptor at 0x021289cc is reconstructed
  * as g_profile_SNOWMAN.
+ *
+ * Field names from 0x398 down marked "coined" are named for what the matched
+ * bodies in src/actors/daSnowman_c.cpp do with them, not recovered.
  */
-
-#ifdef __cplusplus
 
 #include "dEnemyBase_c.h"
 #include "ModelAnim.h"
@@ -31,27 +28,50 @@
 #include "dBgCh_Actr.h"
 
 struct daSnowman_c : dEnemyBase_c {
-    dCcAcPos_c mdCcAcPos_c;/* 0x110 */
-    dBgCh_Actr mWithMeshClsn;       /* 0x150 */
+    /* One state: `enter` runs once from func_ov081_02125488, `execute` every
+       frame from Behavior. The ten records live in ov081 .bss
+       (0x02128e14..0x02128ea4, 0x10 apart); __sinit_ov081_02128154 copies
+       each pair of member pointers in from .data 0x021288f8..0x02128998.
+       State, enter and execute are coined names. */
+    struct State {
+        int (daSnowman_c::*enter)();
+        int (daSnowman_c::*execute)();
+    };
+
+    dCcAcPos_c mdCcAcPos_c;           /* 0x110 */
+    dBgCh_Actr mWithMeshClsn;         /* 0x150 */
     ModelAnim mModelAnim;             /* 0x30c */
     ShadowModel mShadowModel;         /* 0x370 */
-    u8  pad_398[0x60];
-    /* The state pointer. func_ov081_02125488 sets it (InitResources passes
-       data_ov081_02128e54 / _02128e84), and Behavior calls the
-       pointer-to-member-function at +8 through it and compares it against the
-       ov081 state tables _02128e24 / _02128e64 / _02128e84 / _02128e94. */
-    void *mState;                     /* 0x3f8 */
-    s32 mUniqueID_3fc;                /* 0x3fc */
+    Matrix4x3 mShadowMatrix;          /* 0x398 -- coined; handed to DropShadowRadHeight */
+    /* Coined. The render step builds it from bone 5 of mModelAnim and hands
+       its address to the cap actor at +0xc8, which rides on it. */
+    Matrix4x3 mCapMatrix;             /* 0x3c8 */
+    State *mState;                    /* 0x3f8 */
+    /* Coined. The uniqueID of the actor func_ov081_02124dfc spawns (0xe0);
+       it is carried at mHandPos and thrown toward the closest player. */
+    u32 mSnowballID;                  /* 0x3fc */
     s32 mCapUniqueID;                 /* 0x400 */
-    u8  pad_404[0x10];
+    u8  pad_404[0x4];
+    s32 unk_408;                      /* 0x408 -- hop counter while walking; turn sign while spinning */
+    s32 mClosestPlayerIdx;            /* 0x40c -- coined; written by func_ov081_021245e8 */
+    s32 unk_410;                      /* 0x410 -- frame counter */
     s16 mInitAngleY;                  /* 0x414 */
     u8  pad_416[0x2];
     s32 mPathId;                      /* 0x418 */
     s32 mType;                        /* 0x41c */
     s32 mPathNodeCount;               /* 0x420 */
     s32 mPathNodeIndex;               /* 0x424 */
-    u8  pad_428[0x24];
+    u8  pad_428[0xc];
+    Vector3 mHandPos;                 /* 0x434 -- coined; the held snowball is pinned here */
+    Vector3 mCapPos;                  /* 0x440 -- coined; the cap actor is pinned here */
     Vector3 mHomePos;                 /* 0x44c */
+    s32 mHopStep;                     /* 0x458 -- coined; distance moved per frame toward a path node */
+    s32 mSinkOffsetY;                 /* 0x45c -- coined; added to mPosY when rendering */
+    u32 mParticleID1;                 /* 0x460 -- coined; Particle::System::New handle */
+    u32 mParticleID2;                 /* 0x464 -- coined; Particle::System::New handle */
+    u8  unk_468;                      /* 0x468 */
+    u8  unk_469;                      /* 0x469 */
+    u8  pad_46a[0x2];
 
     /* --- vtable --- */
     virtual ~daSnowman_c();
@@ -63,80 +83,11 @@ struct daSnowman_c : dEnemyBase_c {
     int InitResources();
     void OnPendingDestroy();
     int Render();
-
-    /* Tail padding. The field span stops short of the real size: MrBlizzard_Spawn
-       calls fBase_c::operator new(0x46c), read off the retail
-       instruction. A span is only a LOWER BOUND. */
-    u8 pad_458[0x14];      /* 0x458, to the ROM's 0x46c */
 };
 
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
 typedef char daSnowman_c_size_must_be_0x46c[sizeof(daSnowman_c) == 0x46c ? 1 : -1];
 #endif
-
-#else
-
-/* The C spelling of the same object, flat. Kept because the D0 file is a C
-   translation unit that reads these fields, and D0 is compiler-generated so it
-   can never be migrated. Same arrangement as include/ShadowModel.h. */
-struct daSnowman_c {
-    u8  pad_000[0x8];
-    s32 mParam;            /* 0x008 */
-    u8  pad_00c[0x50];
-    s32 mPosX;            /* 0x05c */
-    s32 mPosY;            /* 0x060 */
-    s32 mPosZ;            /* 0x064 */
-    u8  pad_068[0x18];
-    s32 mScaleX;            /* 0x080 */
-    s32 mScaleY;            /* 0x084 */
-    s32 mScaleZ;            /* 0x088 */
-    u8  pad_08c[0x2];
-    s16 mAngleY;            /* 0x08e */
-    u8  pad_090[0x4];
-    s16 mPrevAngleY;            /* 0x094 */
-    u8  pad_096[0x6];
-    s32 mVertAccel;            /* 0x09c */
-    s32 mTerminalVelocity;            /* 0x0a0 */
-    u8  pad_0a4[0xc];
-    s32 mFlags;            /* 0x0b0 */
-    u8  pad_0b4[0x18];
-    s8  mAreaId;            /* 0x0cc */
-    u8  pad_0cd[0x3b];
-    u8  unk_108;            /* 0x108 */
-    u8  pad_109[0x1];
-    u8  unk_10a;            /* 0x10a */
-    u8  pad_10b[0x5];
-    /* dCcAcPos_c member, named by the class's own destructor calling
-       dCcAcPos_c's D1 at +0x110 -- a relocation the ROM build
-       checks. Was a u8 marker. [_ZN11daSnowman_cD1Ev.c] */
-    dCcAcPos_c mdCcAcPos_c;            /* 0x110 */
-    /* dBgCh_Actr member, named by the class's own destructor calling
-       dBgCh_Actr's D1 at +0x150 -- a relocation the ROM build
-       checks. Was a u8 marker. [_ZN11daSnowman_cD1Ev.c] */
-    dBgCh_Actr mWithMeshClsn;            /* 0x150 */
-    /* ModelAnim member, named by the class's own destructor calling
-       ModelAnim's D1 at +0x30c -- a relocation the ROM build
-       checks. Was a u8 marker. [_ZN11daSnowman_cD1Ev.c] */
-    ModelAnim mModelAnim;            /* 0x30c */
-    u8  mShadowModel;            /* 0x370 */
-    u8  pad_371[0x87];
-    void *mState;            /* 0x3f8 */
-    s32 mUniqueID_3fc;      /* 0x3fc */
-    s32 mCapUniqueID;            /* 0x400 */
-    u8  pad_404[0x10];
-    s16 mInitAngleY;            /* 0x414 */
-    u8  pad_416[0x2];
-    s32 mPathId;            /* 0x418 */
-    s32 mType;            /* 0x41c */
-    s32 mPathNodeCount;            /* 0x420 */
-    s32 mPathNodeIndex;            /* 0x424 */
-    u8  pad_428[0x24];
-    s32 mHomePosX;            /* 0x44c */
-    s32 mHomePosY;            /* 0x450 */
-    s32 mHomePosZ;            /* 0x454 */
-};
-
-#endif /* __cplusplus */
 
 #endif /* DASNOWMAN_C_H */
