@@ -624,7 +624,7 @@ reorder: run B1–B9 (no normalizer needed) and hold B10–B11.
 ## 5. The Tier 2 campaign — 73 TUs / 1,338 files / net −1,265 / 40,621 lines
 
 Sizes: 31 TUs at 10–14 members, 11 at 15–19, 18 at 20–24, **13 at 25+** (largest:
-[ov081](../config/arm9/overlays/ov081/symbols.txt)/`MrBlizzard` 35, [ov102](../config/arm9/overlays/ov102/symbols.txt)/`BobOmb` 35, [ov077](../config/arm9/overlays/ov077/symbols.txt)/`daTgz_c` 34, [ov077](../config/arm9/overlays/ov077/symbols.txt)/`daJgm_c` 32,
+[ov081](../config/arm9/overlays/ov081/symbols.txt)/`daSnowman_c` 35, [ov102](../config/arm9/overlays/ov102/symbols.txt)/`BobOmb` 35, [ov077](../config/arm9/overlays/ov077/symbols.txt)/`daTgz_c` 34, [ov077](../config/arm9/overlays/ov077/symbols.txt)/`daJgm_c` 32,
 [ov085](../config/arm9/overlays/ov085/symbols.txt)/`daMip_c` 32). 18 are multi-class. 48 of 73 need the normalizer.
 
 ### 5.1 Greedy admission
@@ -809,7 +809,7 @@ builds**, for −567 files (5.1% of `src/`).
 Tier 2 whole: unmeasurable until the daOnms_c probe returns. Lower bound ~1,338 compiles for
 one linear pass, ~2,700 with the retry, plus reconcile on 40,621 lines — **plausibly
 2.5–4× Tier 1's effort for 2.2× the files**, with partial results that cost more to
-review. [ov081](../config/arm9/overlays/ov081/symbols.txt)/`MrBlizzard` (35 members, 1,416 lines, 17 local-struct files, 9 normalizer
+review. [ov081](../config/arm9/overlays/ov081/symbols.txt)/`daSnowman_c` (35 members, 1,416 lines, 17 local-struct files, 9 normalizer
 files) is the worst single unit; budget it in hours, alone.
 
 **Bounding the commitment:** B0 + Pilot 1 is ~1 hour and settles whether the toolchain and
