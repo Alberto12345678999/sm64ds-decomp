@@ -1512,6 +1512,9 @@
       ],
       "src/actors/daSnowman_c.cpp": [
         "param:#1 Vector3 *"
+      ],
+      "src/actors/daObjRotateUpdownLift_c.cpp": [
+        "param:#1 Vector3 *"
       ]
     },
     "LoadArchive": {
@@ -1968,6 +1971,9 @@
         "param:#2 short"
       ],
       "src/actors/daMoray_c.cpp": [
+        "param:#2 short"
+      ],
+      "src/actors/daObjRotateUpdownLift_c.cpp": [
         "param:#2 short"
       ]
     },
@@ -4163,6 +4169,11 @@
         "param:#1 Vector3 *",
         "param:#2 Vector3 *",
         "param:#3 Vector3 *"
+      ],
+      "src/actors/daObjRotateUpdownLift_c.cpp": [
+        "param:#1 Vector3 *",
+        "param:#2 Vector3 *",
+        "param:#3 Vector3 *"
       ]
     },
     "SublevelToLevel": {
@@ -5206,6 +5217,10 @@
       "src/actors/daSnowman_c.cpp": [
         "param:#1 Vector3 *",
         "param:#2 Vector3 *"
+      ],
+      "src/actors/daObjRotateUpdownLift_c.cpp": [
+        "param:#1 Vector3 *",
+        "param:#2 const Vector3 *"
       ]
     },
     "Vec3_MulScalarInPlace": {
@@ -5545,6 +5560,11 @@
         "param:#3 Vector3 *"
       ],
       "src/actors/daSnowman_c.cpp": [
+        "param:#1 Vector3 *",
+        "param:#2 Vector3 *",
+        "param:#3 Vector3 *"
+      ],
+      "src/actors/daObjRotateUpdownLift_c.cpp": [
         "param:#1 Vector3 *",
         "param:#2 Vector3 *",
         "param:#3 Vector3 *"
@@ -9873,6 +9893,9 @@
       "src/game/actors/d_a_btn.cpp": [
         "arity:0",
         "mangled:0 parameter(s)"
+      ],
+      "src/actors/daObjRotateUpdownLift_c.cpp": [
+        "kind:data"
       ]
     },
     "_ZN4dBgW22UpdatePosWithTransformERS_P8dActor_cR5dBgPiR7Vector3P10Vector3_16S8_": {
@@ -10170,6 +10193,9 @@
       "src/actors/daWater_Ring_c.cpp": [
         "param:#1 void *",
         "return:BMD_File *"
+      ],
+      "src/actors/daObjRotateUpdownLift_c.cpp": [
+        "param:#1 void *"
       ]
     },
     "_ZN5ModelD1Ev": {
@@ -10876,6 +10902,10 @@
       ],
       "src/actors/daObjSeesaw_c.cpp": [
         "param:#4 void *",
+        "param:#5 unsigned int"
+      ],
+      "src/actors/daObjRotateUpdownLift_c.cpp": [
+        "param:#4 const Vector3 *",
         "param:#5 unsigned int"
       ]
     },
@@ -12732,6 +12762,10 @@
       "src/game/actors/d_a_btn.cpp": [
         "param:#1 void *",
         "return:void *"
+      ],
+      "src/actors/daObjRotateUpdownLift_c.cpp": [
+        "return:void *",
+        "param:#1 void *"
       ]
     },
     "_ZN7dCcAc_c10GetOwnerIDEv": {
@@ -13402,6 +13436,9 @@
       ],
       "src/game/actors/d_a_btn.cpp": [
         "return:void"
+      ],
+      "src/actors/daObjRotateUpdownLift_c.cpp": [
+        "return:System *"
       ]
     },
     "_ZN8Particle7Manager9AddSystemEiR7Vector3": {
@@ -14087,6 +14124,9 @@
       ],
       "src/unnamed/ov063/func_ov063_02119c18.c": [
         "return:void *"
+      ],
+      "src/actors/daObjRotateUpdownLift_c.cpp": [
+        "return:void *"
       ]
     },
     "_ZN8dActor_c15HugeLandingDustEb": {
@@ -14164,6 +14204,10 @@
         "param:#7 unsigned int"
       ],
       "src/actors/daObjCtMecha09_c.cpp": [
+        "param:#7 unsigned int"
+      ],
+      "src/actors/daObjRotateUpdownLift_c.cpp": [
+        "return:int",
         "param:#7 unsigned int"
       ]
     },
@@ -14724,6 +14768,12 @@
       ],
       "src/actors/daMoray_c.cpp": [
         "return:void *",
+        "param:#5 int",
+        "param:#6 int"
+      ],
+      "src/actors/daObjRotateUpdownLift_c.cpp": [
+        "return:int",
+        "param:#3 void *",
         "param:#5 int",
         "param:#6 int"
       ]
@@ -15482,6 +15532,9 @@
         "return:void"
       ],
       "src/actors/daWater_Tatumaki_c.cpp": [
+        "return:void"
+      ],
+      "src/actors/daObjRotateUpdownLift_c.cpp": [
         "return:void"
       ]
     },
@@ -19696,6 +19749,9 @@
       ],
       "src/actors/daWater_Tatumaki_c.cpp": [
         "return:FlatMat4x3"
+      ],
+      "src/actors/daObjRotateUpdownLift_c.cpp": [
+        "return:char []"
       ]
     },
     "data_020a0e9c": {
@@ -28885,6 +28941,9 @@
       ],
       "src/actors/daMoray_c.cpp": [
         "param:#1 int"
+      ],
+      "src/actors/daObjRotateUpdownLift_c.cpp": [
+        "param:#1 int"
       ]
     },
     "func_02012718": {
@@ -32672,6 +32731,9 @@
         "param:#2 void *"
       ],
       "src/game/actors/d_a_btn.cpp": [
+        "param:#2 void *"
+      ],
+      "src/actors/daObjRotateUpdownLift_c.cpp": [
         "param:#2 void *"
       ]
     },
