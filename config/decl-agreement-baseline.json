@@ -325,6 +325,7 @@
         "param:#2 int"
       ],
       "src/game/actors/d_a_propeller_heyho.cpp": [
+        "param:#2 int",
         "return:void"
       ],
       "src/game/actors/d_a_wanwan.cpp": [
