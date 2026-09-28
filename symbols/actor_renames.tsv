@@ -883,6 +883,14 @@ ov018	0x02113b10	daObjIceBoard_c_classInitInfo	g_profile_ICE_BOARD	reconstructed
 ov018	0x02113b34	data_ov018_02113b34	_ZTV15daObjIceBoard_c	vtable alloc=0x320
 ov019	0x021111a0	func_ov019_021111a0	_ZN10daPgRcer_cD1Ev	vtable slot 16
 ov019	0x021111f0	func_ov019_021111f0	_ZN10daPgRcer_cD0Ev	vtable slot 17
+ov019	0x0211127c	func_ov019_0211127c	_ZN10daPgRcer_c19func_ov019_0211127cEP7Vector3j	daPgRcer_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov019	0x021112b8	func_ov019_021112b8	_ZN10daPgRcer_c19func_ov019_021112b8Ev	daPgRcer_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov019	0x0211131c	func_ov019_0211131c	_ZN10daPgRcer_c19func_ov019_0211131cEv	daPgRcer_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov019	0x021113b0	func_ov019_021113b0	_ZN10daPgRcer_c19func_ov019_021113b0Ev	daPgRcer_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov019	0x02112168	func_ov019_02112168	_ZN10daPgRcer_c19func_ov019_02112168Ev	daPgRcer_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov019	0x02112268	func_ov019_02112268	_ZN10daPgRcer_c19func_ov019_02112268Ev	daPgRcer_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov019	0x021122a4	func_ov019_021122a4	_ZN10daPgRcer_c19func_ov019_021122a4Ev	daPgRcer_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov019	0x021122dc	func_ov019_021122dc	_ZN10daPgRcer_c19func_ov019_021122dcEi	daPgRcer_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
 ov019	0x021122f8	func_ov019_021122f8	_ZN10daPgRcer_c16CleanupResourcesEv	vtable slot 3
 ov019	0x0211235c	func_ov019_0211235c	_ZN10daPgRcer_c16OnPendingDestroyEv	vtable slot 12
 ov019	0x02112360	func_ov019_02112360	_ZN10daPgRcer_c6RenderEv	vtable slot 9
