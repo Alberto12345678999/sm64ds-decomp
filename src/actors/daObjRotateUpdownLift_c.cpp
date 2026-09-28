@@ -48,6 +48,7 @@
 #include "SharedFilePtr.h"
 #include "dBgW.h"
 #include "dBgCh_Gnd.h"
+#include "decl_Platform.h"
 
 /* Plain 12-byte point. Vector3's destructor is empty but the type is not
    POD, and the copies below are three-word ldm/stm with no cleanup. */
@@ -119,16 +120,17 @@ void SubVec3(void *a, void *b, void *c);
 int LenVec3(void *v);
 int Vec3_HorzDist(const Vector3 *a, const Vector3 *b);
 void func_02012694(unsigned int id, const Vector3 *pos);
-void func_020393a4(dBgW *collider, int range);
-void func_02039394(dBgW *collider, int range);
-void func_020393d4(dBgW *collider, void *callback);
+/* dBgW range/callback setters. Their C definitions take int *; the calls
+   cast &mMeshCollider. */
+void func_020393a4(int *collider, int range);
+void func_02039394(int *collider, int range);
+void func_020393d4(int *collider, void *callback);
 void func_ov091_02130fac(daObjRotateUpdownLift_c *lift);
 int func_ov091_02131160(daObjRotateUpdownLift_c *lift);
 void func_ov091_02131340(daObjRotateUpdownLift_c *lift);
 
-void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int id, int x, int y, int z);
+void *_ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int id, int x, int y, int z);
 void _ZN8dActor_c9SetRangesE5Fix12IiES1_S1_S1_(void *self, int a, int b, int c, int d);
-int _ZN10dBgActor_c20UpdateKillByMegaCharEsss5Fix12IiE(void *self, s16 a, s16 b, s16 c, int d);
 int _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(void *self, int a, int b);
 int _ZN8dActor_c18DropShadowScaleXYZER11ShadowModelR9Matrix4x35Fix12IiES5_S5_j(
     void *self, void *shadow, void *mat, int sx, int sy, int sz, unsigned int opacity);
@@ -465,8 +467,8 @@ int daObjRotateUpdownLift_c::Behavior()
         isHs = (isHs == 0x1e);
         if (isHs == 0) {
             func_ov091_02131160(this);
-            func_020393a4(&mMeshCollider, 0x150000);
-            func_02039394(&mMeshCollider, 0x1000);
+            func_020393a4((int *)&mMeshCollider, 0x150000);
+            func_02039394((int *)&mMeshCollider, 0x1000);
             if (_ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(this, 0x150000, 0x1000) != 0)
                 UpdateClsnPosAndRot();
         } else {
@@ -546,7 +548,7 @@ int daObjRotateUpdownLift_c::InitResources()
     _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
         &mMeshCollider, (KCL_File *)kcl, &mClsnMat, 0x199, mAngleY,
         data_ov091_02134c38[variant].clps);
-    func_020393d4(&mMeshCollider, (void *)&dBgW::UpdatePosAndAngs);
+    func_020393d4((int *)&mMeshCollider, (void *)&dBgW::UpdatePosAndAngs);
 
     {
         int py;
