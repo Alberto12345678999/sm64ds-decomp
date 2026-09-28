@@ -68,7 +68,7 @@ extern void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Bloc
 extern void func_020393d4(void *clsn, void *callback);
 }
 
-/* Radius and height passed to the mesh query, 20.0 in 20.12. */
+/* Radius and height passed to dBgCh_Actr::Init, 20.0 in 20.12. */
 enum { kClsnRadius = 0x14000 };
 
 /* Scale every moving mesh hands to SetFile. */
