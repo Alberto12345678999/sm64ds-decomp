@@ -18777,11 +18777,11 @@ matched: yes</title></rect><rect x="764.50" y="34.92" width="7.19" height="3.11"
 module: ov003
 addr: 0x020b05bc
 size: 80 bytes
-matched: yes</title></rect><rect x="764.50" y="38.03" width="7.19" height="11.34" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov003_020b060c
+matched: yes</title></rect><rect x="764.50" y="38.03" width="7.19" height="11.34" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN13dScGameOver_c19func_ov003_020b060cEv
 module: ov003
 addr: 0x020b060c
 size: 292 bytes
-matched: yes</title></rect><rect x="771.69" y="27.00" width="2.85" height="21.98" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov003_020b0730
+matched: yes</title></rect><rect x="771.69" y="27.00" width="2.85" height="21.98" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN13dScGameOver_c19func_ov003_020b0730Ei
 module: ov003
 addr: 0x020b0730
 size: 224 bytes
@@ -19957,7 +19957,7 @@ matched: yes</title></rect><rect x="1493.01" y="37.71" width="6.84" height="11.6
 module: ov005
 addr: 0x020c0250
 size: 296 bytes
-matched: yes</title></rect><rect x="1499.86" y="27.00" width="15.42" height="14.89" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov005_020c0378
+matched: yes</title></rect><rect x="1499.86" y="27.00" width="15.42" height="14.89" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11dScMiniGm_c19func_ov005_020c0378Ev
 module: ov005
 addr: 0x020c0378
 size: 852 bytes
