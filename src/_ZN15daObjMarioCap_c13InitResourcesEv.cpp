@@ -48,7 +48,7 @@ extern char data_ov002_0210df54;
 int daObjMarioCap_c::InitResources()
 {
     int flag;
-    int v;
+    unsigned char v;
 
     mType = param1 & 0xff;
     mModelIndex = (param1 >> 8) & 0xf;
