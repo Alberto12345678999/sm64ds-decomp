@@ -631,15 +631,6 @@
     "Crate_SetState": {
       "src/actors/daObjBlockS_c.cpp": [
         "param:#1 char *"
-      ],
-      "src/_ZN13daObjBlockS_c4KillEv.cpp": [
-        "param:#1 char *"
-      ],
-      "src/func_ov098_0213814c.cpp": [
-        "return:int"
-      ],
-      "src/func_ov098_02138344.cpp": [
-        "param:#1 char *"
       ]
     },
     "CrossVec3": {
@@ -1688,14 +1679,14 @@
       "src/func_ov075_02114ac4.cpp": [
         "return:void"
       ],
-      "src/func_ov098_02139850.c": [
-        "param:#1 char *",
-        "return:void"
-      ],
       "src/game/actors/d_a_obj_bk_dossunbar.cpp": [
         "return:void"
       ],
       "src/actors/daObjSm_Lift_c.cpp": [
+        "return:void"
+      ],
+      "src/actors/daObjBlockS_c.cpp": [
+        "param:#1 char *",
         "return:void"
       ]
     },
@@ -4332,11 +4323,6 @@
         "param:#2 Vector3 *",
         "param:#3 Vector3 *"
       ],
-      "src/func_ov098_02139228.cpp": [
-        "param:#1 Vector3 *",
-        "param:#2 Vector3 *",
-        "param:#3 Vector3 *"
-      ],
       "src/func_ov100_021437d4.c": [
         "param:#1 Vector3 *",
         "param:#2 Vector3 *",
@@ -4351,6 +4337,11 @@
         "param:#1 Vector3 *",
         "param:#2 const Vector3 *",
         "param:#3 const Vector3 *"
+      ],
+      "src/actors/daObjBlockS_c.cpp": [
+        "param:#1 Vector3 *",
+        "param:#2 Vector3 *",
+        "param:#3 Vector3 *"
       ]
     },
     "Vec3_ApproachHorz": {
@@ -5954,9 +5945,6 @@
       "src/func_ov064_02117a44.cpp": [
         "return:int"
       ],
-      "src/func_ov098_02139228.cpp": [
-        "return:int"
-      ],
       "src/func_ov100_021424c0.c": [
         "param:#1 char *"
       ],
@@ -5976,6 +5964,9 @@
         "return:int"
       ],
       "src/actors/daObjFl_Amilift_c.cpp": [
+        "return:int"
+      ],
+      "src/actors/daObjBlockS_c.cpp": [
         "return:int"
       ]
     },
@@ -6660,12 +6651,12 @@
       ]
     },
     "_ZN10dBgW_KcMbg9TransformERK9Matrix4x3s": {
-      "src/func_ov064_02118fa4.cpp": [
-        "param:#2 const Matrix4x3 &"
-      ],
-      "src/func_ov098_021397c8.cpp": [
+      "src/actors/daObjBlockS_c.cpp": [
         "param:#2 Matrix4x3 &",
         "return:int"
+      ],
+      "src/func_ov064_02118fa4.cpp": [
+        "param:#2 const Matrix4x3 &"
       ]
     },
     "_ZN10dBgW_KcMbgD1Ev": {
@@ -9782,12 +9773,6 @@
       "src/func_ov066_02118188.c": [
         "return:void"
       ],
-      "src/func_ov098_021381e8.c": [
-        "return:void"
-      ],
-      "src/func_ov098_02138238.c": [
-        "return:void"
-      ],
       "src/game/actors/d_a_btn.cpp": [
         "return:void"
       ]
@@ -10652,11 +10637,6 @@
         "param:#5 unsigned int",
         "return:unsigned int"
       ],
-      "src/func_ov098_02139228.cpp": [
-        "param:#4 const Vector3 *",
-        "param:#5 unsigned int",
-        "return:unsigned int"
-      ],
       "src/func_ov100_021424c0.c": [
         "param:#1 int",
         "param:#4 char *",
@@ -10734,6 +10714,11 @@
       "src/actors/daObjRotateUpdownLift_c.cpp": [
         "param:#4 const Vector3 *",
         "param:#5 unsigned int"
+      ],
+      "src/actors/daObjBlockS_c.cpp": [
+        "param:#4 const Vector3 *",
+        "param:#5 unsigned int",
+        "return:unsigned int"
       ]
     },
     "_ZN5Sound8SetMusicEjj": {
@@ -10847,9 +10832,6 @@
       "src/actors/daObjFl_Ring_c.cpp": [
         "param:#2 void *"
       ],
-      "src/_ZN13daObjBlockS_c4KillEv.cpp": [
-        "param:#2 const Vector3 *"
-      ],
       "src/actors/daObjSwdoor_c.cpp": [
         "param:#2 const Vector3 *"
       ],
@@ -10859,17 +10841,14 @@
       "src/func_ov089_021311c0.c": [
         "param:#2 void *"
       ],
-      "src/func_ov098_02138344.cpp": [
-        "param:#2 const Vector3 *"
-      ],
-      "src/func_ov098_02139228.cpp": [
-        "param:#2 const Vector3 *"
-      ],
       "src/unnamed/ov063/func_ov063_0211cc18.c": [
         "param:#2 const Vector3 *"
       ],
       "src/actors/daCoin_c.cpp": [
         "param:#2 char *"
+      ],
+      "src/actors/daObjBlockS_c.cpp": [
+        "param:#2 const Vector3 *"
       ]
     },
     "_ZN5Stage17PS_UpdateSaveMenuEb": {
@@ -10984,9 +10963,6 @@
     },
     "_ZN5dCc_c5ClearEv": {
       "src/_ZN6Player17St_PunchKick_InitEv.cpp": [
-        "return:int"
-      ],
-      "src/func_ov098_0213814c.cpp": [
         "return:int"
       ]
     },
@@ -11764,12 +11740,6 @@
         "param:#6 unsigned int",
         "param:#7 unsigned int"
       ],
-      "src/func_ov098_02138e6c.cpp": [
-        "param:#5 unsigned int",
-        "param:#6 unsigned int",
-        "param:#7 unsigned int",
-        "return:void"
-      ],
       "src/func_ov100_02141fb0.cpp": [
         "param:#5 unsigned int",
         "param:#6 unsigned int",
@@ -11832,6 +11802,12 @@
         "return:void"
       ],
       "src/actors/daSnowman_c.cpp": [
+        "param:#5 unsigned int",
+        "param:#6 unsigned int",
+        "param:#7 unsigned int",
+        "return:void"
+      ],
+      "src/actors/daObjBlockS_c.cpp": [
         "param:#5 unsigned int",
         "param:#6 unsigned int",
         "param:#7 unsigned int",
@@ -12330,6 +12306,9 @@
       ]
     },
     "_ZN6Player7TryGrabER8dActor_c": {
+      "src/actors/daObjBlockS_c.cpp": [
+        "param:#2 void *"
+      ],
       "src/func_02010304.cpp": [
         "param:#2 void *"
       ],
@@ -12337,9 +12316,6 @@
         "param:#2 char *"
       ],
       "src/func_ov002_020d85fc.cpp": [
-        "param:#2 void *"
-      ],
-      "src/func_ov098_02138e6c.cpp": [
         "param:#2 void *"
       ]
     },
@@ -12361,10 +12337,10 @@
       "src/_ZN8SignPost8BehaviorEv.cpp": [
         "return:void"
       ],
-      "src/func_ov060_02115c1c.c": [
+      "src/actors/daObjBlockS_c.cpp": [
         "return:void"
       ],
-      "src/func_ov098_021388bc.cpp": [
+      "src/func_ov060_02115c1c.c": [
         "return:void"
       ]
     },
@@ -12966,9 +12942,6 @@
       "src/actors/daGrock_c.cpp": [
         "return:void"
       ],
-      "src/_ZN13daObjBlockS_c4KillEv.cpp": [
-        "return:void"
-      ],
       "src/_ZN6Player16InitBalloonMarioEv.cpp": [
         "return:void"
       ],
@@ -13208,6 +13181,9 @@
       ],
       "src/actors/daObjRotateUpdownLift_c.cpp": [
         "return:System *"
+      ],
+      "src/actors/daObjBlockS_c.cpp": [
+        "return:void"
       ]
     },
     "_ZN8Particle7Manager9AddSystemEiR7Vector3": {
@@ -13545,12 +13521,6 @@
       "src/func_ov089_0213162c.c": [
         "return:char *"
       ],
-      "src/func_ov098_02138bfc.c": [
-        "return:void *"
-      ],
-      "src/func_ov098_02138e6c.cpp": [
-        "return:void *"
-      ],
       "src/func_ov100_02141fb0.cpp": [
         "return:void *"
       ],
@@ -13573,6 +13543,9 @@
         "return:void *"
       ],
       "src/actors/daFPknBall_c.cpp": [
+        "return:void *"
+      ],
+      "src/actors/daObjBlockS_c.cpp": [
         "return:void *"
       ]
     },
@@ -13614,9 +13587,6 @@
       ],
       "src/actors/daFPkn_c.cpp": [
         "param:#2 const void *",
-        "param:#3 unsigned int"
-      ],
-      "src/func_ov098_02138e08.c": [
         "param:#3 unsigned int"
       ],
       "src/game/actors/d_a_holhei.cpp": [
@@ -13661,6 +13631,9 @@
         "param:#2 Vector3 *",
         "param:#3 unsigned int",
         "return:int"
+      ],
+      "src/actors/daObjBlockS_c.cpp": [
+        "param:#3 unsigned int"
       ]
     },
     "_ZN8dActor_c11SpawnNumberERK7Vector3jbtPS_": {
@@ -13892,9 +13865,6 @@
         "param:#7 unsigned int",
         "return:int"
       ],
-      "src/func_ov098_021396a4.cpp": [
-        "param:#7 unsigned int"
-      ],
       "src/game/actors/d_a_obj_fm_battan.cpp": [
         "param:#7 unsigned int",
         "return:int"
@@ -13927,6 +13897,9 @@
       ],
       "src/actors/daObjRotateUpdownLift_c.cpp": [
         "return:int",
+        "param:#7 unsigned int"
+      ],
+      "src/actors/daObjBlockS_c.cpp": [
         "param:#7 unsigned int"
       ]
     },
@@ -15436,14 +15409,14 @@
       "src/actors/dEnemyBase_c.cpp": [
         "return:SurfaceInfo *"
       ],
+      "src/actors/daObjBlockS_c.cpp": [
+        "return:dBgPi *"
+      ],
       "src/func_ov002_020eea84.c": [
         "return:char *"
       ],
       "src/func_ov020_02111b28.cpp": [
         "return:int"
-      ],
-      "src/func_ov098_021390ec.cpp": [
-        "return:dBgPi *"
       ],
       "src/game/actors/d_a_pg_mthr.cpp": [
         "return:dBgPiRaw *"
@@ -15494,6 +15467,9 @@
       "src/_ZN10dBgCh_Actr22UpdateContinuousNoLavaEv.cpp": [
         "param:#2 Vec3 *"
       ],
+      "src/actors/daObjBlockS_c.cpp": [
+        "param:#2 Vector3 *"
+      ],
       "src/func_02008cb4.c": [
         "param:#2 Vec3 *"
       ],
@@ -15524,9 +15500,6 @@
       "src/func_ov060_021128c0.cpp": [
         "param:#2 Vector3 *"
       ],
-      "src/func_ov098_02139228.cpp": [
-        "param:#2 Vector3 *"
-      ],
       "src/func_ov100_02142130.cpp": [
         "param:#2 Vector3 *"
       ]
@@ -15549,6 +15522,10 @@
       "include/decl_dBgPi.h": [
         "return:int"
       ],
+      "src/actors/daObjBlockS_c.cpp": [
+        "param:#1 int",
+        "return:int"
+      ],
       "src/func_ov002_020cfea4.cpp": [
         "return:int"
       ],
@@ -15559,10 +15536,6 @@
         "return:int"
       ],
       "src/func_ov060_02113740.c": [
-        "return:int"
-      ],
-      "src/func_ov098_02138bfc.c": [
-        "param:#1 int",
         "return:int"
       ]
     },
@@ -16252,21 +16225,6 @@
         "arity:1"
       ],
       "src/func_ov089_0213162c.c": [
-        "arity:1"
-      ],
-      "src/func_ov098_02138344.cpp": [
-        "arity:1"
-      ],
-      "src/func_ov098_021384fc.cpp": [
-        "arity:1"
-      ],
-      "src/func_ov098_02138734.cpp": [
-        "arity:1"
-      ],
-      "src/func_ov098_021388bc.cpp": [
-        "arity:1"
-      ],
-      "src/func_ov098_021389f8.cpp": [
         "arity:1"
       ],
       "src/game/actors/d_a_kp_fr.cpp": [
@@ -27972,13 +27930,13 @@
       ]
     },
     "func_02010844": {
+      "src/actors/daObjBlockS_c.cpp": [
+        "return:short"
+      ],
       "src/actors/daObjMarioCap_c.cpp": [
         "return:short"
       ],
       "src/func_ov060_0211577c.c": [
-        "return:short"
-      ],
-      "src/func_ov098_02139228.cpp": [
         "return:short"
       ],
       "src/game/actors/d_a_holhei.cpp": [
@@ -41517,29 +41475,6 @@
     "func_ov098_02138b70": {
       "include/decl_common.h": [
         "param:#1 char *"
-      ]
-    },
-    "func_ov098_02138ce0": {
-      "src/func_ov098_0213814c.cpp": [
-        "return:int"
-      ]
-    },
-    "func_ov098_02139228": {
-      "src/func_ov098_02138344.cpp": [
-        "return:void"
-      ],
-      "src/func_ov098_021389f8.cpp": [
-        "return:void"
-      ]
-    },
-    "func_ov098_021397c8": {
-      "src/func_ov098_0213814c.cpp": [
-        "return:int"
-      ]
-    },
-    "func_ov098_02139850": {
-      "src/func_ov098_0213814c.cpp": [
-        "return:int"
       ]
     },
     "func_ov098_0213a2cc": {
