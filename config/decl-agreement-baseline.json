@@ -7715,6 +7715,10 @@
       "src/_ZN17dMg3DEspAnimSet_c13InitResourcesEv.cpp": [
         "param:#1 int",
         "param:#2 void *"
+      ],
+      "src/actors/dMg3DEspAnimSet_c.cpp": [
+        "param:#1 int",
+        "param:#2 void *"
       ]
     },
     "_ZN15MaterialChanger7SetFileER8BMA_Filei5Fix12IiEj": {
@@ -7729,6 +7733,10 @@
         "param:#5 unsigned int"
       ],
       "src/actors/Goomboss.cpp": [
+        "param:#5 unsigned int"
+      ],
+      "src/actors/dMg3DEspAnimSet_c.cpp": [
+        "param:#1 char *",
         "param:#5 unsigned int"
       ],
       "src/actors/daKrb_c.cpp": [
@@ -10120,6 +10128,10 @@
       "src/_ZN9MontyMole13InitResourcesEv.cpp": [
         "param:#1 SharedFilePtr *",
         "return:struct BMD_File *"
+      ],
+      "src/actors/dMg3DEspAnimSet_c.cpp": [
+        "param:#1 void *",
+        "return:int"
       ],
       "src/actors/daKirai_c.cpp": [
         "param:#1 void *"
@@ -14833,6 +14845,10 @@
         "param:#1 void *",
         "return:void *"
       ],
+      "src/actors/dMg3DEspAnimSet_c.cpp": [
+        "param:#1 void *",
+        "return:int"
+      ],
       "src/func_ov002_020e5948.c": [
         "param:#1 void *",
         "return:void"
@@ -14942,6 +14958,11 @@
         "param:#5 unsigned int"
       ],
       "src/actors/Scuttlebug.cpp": [
+        "param:#5 unsigned int"
+      ],
+      "src/actors/dMg3DEspAnimSet_c.cpp": [
+        "param:#1 char *",
+        "param:#2 int",
         "param:#5 unsigned int"
       ],
       "src/actors/dMgJump3DMario_c.cpp": [
@@ -15392,6 +15413,10 @@
       ],
       "src/_ZN9MontyMole13InitResourcesEv.cpp": [
         "param:#2 struct BMD_File *",
+        "return:void"
+      ],
+      "src/actors/dMg3DEspAnimSet_c.cpp": [
+        "param:#2 int",
         "return:void"
       ],
       "src/actors/daKirai_c.cpp": [
@@ -23163,6 +23188,9 @@
     "data_ov006_02141e6c": {
       "src/_ZN17dMg3DEspAnimSet_c13InitResourcesEv.cpp": [
         "return:int"
+      ],
+      "src/actors/dMg3DEspAnimSet_c.cpp": [
+        "return:int"
       ]
     },
     "data_ov006_02141e74": {
@@ -23190,6 +23218,9 @@
     },
     "data_ov006_02141e94": {
       "src/_ZN17dMg3DEspAnimSet_c13InitResourcesEv.cpp": [
+        "return:int"
+      ],
+      "src/actors/dMg3DEspAnimSet_c.cpp": [
         "return:int"
       ]
     },
