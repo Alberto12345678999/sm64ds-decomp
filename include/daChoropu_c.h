@@ -40,13 +40,12 @@ struct daChoropu_c : dActor_c {
     /* dCcAc_c member, named by the class's own destructor calling
        dCcAc_c's D1 at +0x138. [_ZN11daChoropu_cD0Ev.c] */
     dCcAc_c mdCcAc_c;            /* 0x138 */
-    u8  unk_16c;            /* 0x16c */
-    u8  pad_16d[0xf];
-    s32 unk_17c;            /* 0x17c */
+    u32 mPartnerIDs[4];     /* 0x16c -- other daChoropu_c of the same group, by unique ID */
+    s32 mState;             /* 0x17c -- row of the state table, see daChoropu_c.cpp */
     u8  unk_180;            /* 0x180 */
     u8  unk_181;            /* 0x181 */
     u8  unk_182;            /* 0x182 */
-    u8  unk_183;            /* 0x183 */
+    u8  mNumPartners;       /* 0x183 -- entries used in mPartnerIDs */
     u8  unk_184;            /* 0x184 */
     u8  pad_185[0x3];
     s32 unk_188;            /* 0x188 */

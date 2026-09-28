@@ -183,10 +183,13 @@ Listed so the next reader does not repeat the search.
   to be read: `func_ov080_02124acc` stores the carrier actor there and
   `func_ov080_02124c3c`/`func_ov080_02124edc` read it.
 - `daChoropu_c` 0x17c/0x180..0x184/0x188 and the 16 bytes from 0x16c: all written
-  in `src/_ZN11daChoropu_c13InitResourcesEv.cpp` -- 0x180 is `param1 & 0xf`, 0x182
-  is `(param1 >> 4) & 0xf`, 0x181 is 1 when 0x180 is 0 and `(param1 >> 8) & 1`
-  otherwise -- and none of them is read by any enrolled body. Which nibble means
-  what is a guess until the class's other functions are enrolled.
+  in `InitResources` in `src/actors/daChoropu_c.cpp` -- 0x180 is `param1 & 0xf`,
+  0x182 is `(param1 >> 4) & 0xf`, 0x181 is 1 when 0x180 is 0 and `(param1 >> 8) & 1`
+  otherwise. The ov080 TU promotion enrolled the readers, and three are now named
+  from them: 0x16c `mPartnerIDs[4]` and 0x183 `mNumPartners` (filled from the
+  same-group moles by `func_ov080_02123fcc`, read by `func_ov080_02124088` and
+  `func_ov080_02124360`), and 0x17c `mState` (the index into `Behavior`'s state
+  table). 0x180..0x182, 0x184 and 0x188 are still `unk_`.
 - `daFRing_c` 0x214: zeroed in
   `src/actors/daFRing_c.cpp` InitResources, and Behavior reads it as the shock frame.
 
