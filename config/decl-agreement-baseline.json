@@ -14525,7 +14525,7 @@
       ]
     },
     "_ZN9Animation7AdvanceEv": {
-      "src/_ZN14UnknownVsEntry8BehaviorEv.cpp": [
+      "src/_ZN9dEntObj_c8BehaviorEv.cpp": [
         "return:int"
       ],
       "src/func_ov002_020f64ac.c": [
@@ -14655,7 +14655,7 @@
       ]
     },
     "_ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj": {
-      "src/_ZN14UnknownVsEntry13InitResourcesEv.cpp": [
+      "src/_ZN9dEntObj_c13InitResourcesEv.cpp": [
         "param:#5 unsigned int"
       ],
       "src/_ZN15dMg3DEspModel_c13InitResourcesEv.cpp": [
@@ -15748,7 +15748,7 @@
         "return:void * []"
       ]
     },
-    "_ZTV14UnknownVsEntry": {
+    "_ZTV9dEntObj_c": {
       "include/decl_common.h": [
         "return:int []"
       ]
@@ -18767,7 +18767,7 @@
       ]
     },
     "data_0209fc5c": {
-      "src/_ZN14UnknownVsEntry8BehaviorEv.cpp": [
+      "src/_ZN9dEntObj_c8BehaviorEv.cpp": [
         "return:unsigned char"
       ],
       "src/func_ov075_02119dc4.cpp": [
@@ -19244,7 +19244,7 @@
       "src/_ZN17daObjBk_Botaosi_c13InitResourcesEv.cpp": [
         "return:int"
       ],
-      "src/_ZN14UnknownVsEntry13InitResourcesEv.cpp": [
+      "src/_ZN9dEntObj_c13InitResourcesEv.cpp": [
         "return:char"
       ],
       "src/_ZN16daKing_Donketu_c8BehaviorEv.cpp": [
@@ -26158,42 +26158,42 @@
       ]
     },
     "data_ov075_0211d384": {
-      "src/_ZN14UnknownVsEntry13InitResourcesEv.cpp": [
+      "src/_ZN9dEntObj_c13InitResourcesEv.cpp": [
         "return:char"
       ],
-      "src/_ZN14UnknownVsEntry16CleanupResourcesEv.cpp": [
+      "src/_ZN9dEntObj_c16CleanupResourcesEv.cpp": [
         "return:char []"
       ]
     },
     "data_ov075_0211d38c": {
-      "src/_ZN14UnknownVsEntry13InitResourcesEv.cpp": [
+      "src/_ZN9dEntObj_c13InitResourcesEv.cpp": [
         "return:char"
       ],
-      "src/_ZN14UnknownVsEntry16CleanupResourcesEv.cpp": [
+      "src/_ZN9dEntObj_c16CleanupResourcesEv.cpp": [
         "return:char []"
       ]
     },
     "data_ov075_0211d394": {
-      "src/_ZN14UnknownVsEntry13InitResourcesEv.cpp": [
+      "src/_ZN9dEntObj_c13InitResourcesEv.cpp": [
         "return:char"
       ],
-      "src/_ZN14UnknownVsEntry16CleanupResourcesEv.cpp": [
+      "src/_ZN9dEntObj_c16CleanupResourcesEv.cpp": [
         "return:char []"
       ]
     },
     "data_ov075_0211d39c": {
-      "src/_ZN14UnknownVsEntry13InitResourcesEv.cpp": [
+      "src/_ZN9dEntObj_c13InitResourcesEv.cpp": [
         "return:char"
       ],
-      "src/_ZN14UnknownVsEntry16CleanupResourcesEv.cpp": [
+      "src/_ZN9dEntObj_c16CleanupResourcesEv.cpp": [
         "return:char []"
       ]
     },
     "data_ov075_0211d3a4": {
-      "src/_ZN14UnknownVsEntry13InitResourcesEv.cpp": [
+      "src/_ZN9dEntObj_c13InitResourcesEv.cpp": [
         "return:char"
       ],
-      "src/_ZN14UnknownVsEntry16CleanupResourcesEv.cpp": [
+      "src/_ZN9dEntObj_c16CleanupResourcesEv.cpp": [
         "return:char []"
       ],
       "src/__sinit_ov075_0211b5e0.c": [
@@ -26204,7 +26204,7 @@
       ]
     },
     "data_ov075_0211d3ac": {
-      "src/_ZN14UnknownVsEntry16CleanupResourcesEv.cpp": [
+      "src/_ZN9dEntObj_c16CleanupResourcesEv.cpp": [
         "return:char []"
       ],
       "src/__sinit_ov075_0211b5e0.c": [
@@ -26215,23 +26215,23 @@
       ]
     },
     "data_ov075_0211d3b4": {
-      "src/_ZN14UnknownVsEntry13InitResourcesEv.cpp": [
+      "src/_ZN9dEntObj_c13InitResourcesEv.cpp": [
         "return:char"
       ],
-      "src/_ZN14UnknownVsEntry16CleanupResourcesEv.cpp": [
+      "src/_ZN9dEntObj_c16CleanupResourcesEv.cpp": [
         "return:char []"
       ]
     },
     "data_ov075_0211d3bc": {
-      "src/_ZN14UnknownVsEntry13InitResourcesEv.cpp": [
+      "src/_ZN9dEntObj_c13InitResourcesEv.cpp": [
         "return:char"
       ],
-      "src/_ZN14UnknownVsEntry16CleanupResourcesEv.cpp": [
+      "src/_ZN9dEntObj_c16CleanupResourcesEv.cpp": [
         "return:char []"
       ]
     },
     "data_ov075_0211d3c4": {
-      "src/_ZN14UnknownVsEntry16CleanupResourcesEv.cpp": [
+      "src/_ZN9dEntObj_c16CleanupResourcesEv.cpp": [
         "return:char []"
       ],
       "src/__sinit_ov075_0211b5e0.c": [
@@ -26242,26 +26242,26 @@
       ]
     },
     "data_ov075_0211d3cc": {
-      "src/_ZN14UnknownVsEntry13InitResourcesEv.cpp": [
+      "src/_ZN9dEntObj_c13InitResourcesEv.cpp": [
         "return:char"
       ],
-      "src/_ZN14UnknownVsEntry16CleanupResourcesEv.cpp": [
+      "src/_ZN9dEntObj_c16CleanupResourcesEv.cpp": [
         "return:char []"
       ]
     },
     "data_ov075_0211d3d4": {
-      "src/_ZN14UnknownVsEntry13InitResourcesEv.cpp": [
+      "src/_ZN9dEntObj_c13InitResourcesEv.cpp": [
         "return:char"
       ],
-      "src/_ZN14UnknownVsEntry16CleanupResourcesEv.cpp": [
+      "src/_ZN9dEntObj_c16CleanupResourcesEv.cpp": [
         "return:char []"
       ]
     },
     "data_ov075_0211d3dc": {
-      "src/_ZN14UnknownVsEntry13InitResourcesEv.cpp": [
+      "src/_ZN9dEntObj_c13InitResourcesEv.cpp": [
         "return:char"
       ],
-      "src/_ZN14UnknownVsEntry16CleanupResourcesEv.cpp": [
+      "src/_ZN9dEntObj_c16CleanupResourcesEv.cpp": [
         "return:char []"
       ],
       "src/__sinit_ov075_0211b5e0.c": [
@@ -26269,18 +26269,18 @@
       ]
     },
     "data_ov075_0211d3e4": {
-      "src/_ZN14UnknownVsEntry13InitResourcesEv.cpp": [
+      "src/_ZN9dEntObj_c13InitResourcesEv.cpp": [
         "return:char"
       ],
-      "src/_ZN14UnknownVsEntry16CleanupResourcesEv.cpp": [
+      "src/_ZN9dEntObj_c16CleanupResourcesEv.cpp": [
         "return:char []"
       ]
     },
     "data_ov075_0211d3ec": {
-      "src/_ZN14UnknownVsEntry13InitResourcesEv.cpp": [
+      "src/_ZN9dEntObj_c13InitResourcesEv.cpp": [
         "return:char"
       ],
-      "src/_ZN14UnknownVsEntry16CleanupResourcesEv.cpp": [
+      "src/_ZN9dEntObj_c16CleanupResourcesEv.cpp": [
         "return:char []"
       ],
       "src/__sinit_ov075_0211b5e0.c": [
@@ -26288,23 +26288,23 @@
       ]
     },
     "data_ov075_0211d3f4": {
-      "src/_ZN14UnknownVsEntry13InitResourcesEv.cpp": [
+      "src/_ZN9dEntObj_c13InitResourcesEv.cpp": [
         "return:char"
       ],
-      "src/_ZN14UnknownVsEntry16CleanupResourcesEv.cpp": [
+      "src/_ZN9dEntObj_c16CleanupResourcesEv.cpp": [
         "return:char []"
       ]
     },
     "data_ov075_0211d3fc": {
-      "src/_ZN14UnknownVsEntry13InitResourcesEv.cpp": [
+      "src/_ZN9dEntObj_c13InitResourcesEv.cpp": [
         "return:char"
       ],
-      "src/_ZN14UnknownVsEntry16CleanupResourcesEv.cpp": [
+      "src/_ZN9dEntObj_c16CleanupResourcesEv.cpp": [
         "return:char []"
       ]
     },
     "data_ov075_0211d404": {
-      "src/_ZN14UnknownVsEntry16CleanupResourcesEv.cpp": [
+      "src/_ZN9dEntObj_c16CleanupResourcesEv.cpp": [
         "return:char []"
       ],
       "src/__sinit_ov075_0211b5e0.c": [
@@ -26312,7 +26312,7 @@
       ]
     },
     "data_ov075_0211d40c": {
-      "src/_ZN14UnknownVsEntry16CleanupResourcesEv.cpp": [
+      "src/_ZN9dEntObj_c16CleanupResourcesEv.cpp": [
         "return:char []"
       ],
       "src/__sinit_ov075_0211b5e0.c": [
@@ -26323,7 +26323,7 @@
       ]
     },
     "data_ov075_0211d414": {
-      "src/_ZN14UnknownVsEntry16CleanupResourcesEv.cpp": [
+      "src/_ZN9dEntObj_c16CleanupResourcesEv.cpp": [
         "return:char []"
       ],
       "src/__sinit_ov075_0211b5e0.c": [
@@ -26331,10 +26331,10 @@
       ]
     },
     "data_ov075_0211d41c": {
-      "src/_ZN14UnknownVsEntry13InitResourcesEv.cpp": [
+      "src/_ZN9dEntObj_c13InitResourcesEv.cpp": [
         "return:char"
       ],
-      "src/_ZN14UnknownVsEntry16CleanupResourcesEv.cpp": [
+      "src/_ZN9dEntObj_c16CleanupResourcesEv.cpp": [
         "return:char []"
       ],
       "src/__sinit_ov075_0211b5e0.c": [
@@ -26342,10 +26342,10 @@
       ]
     },
     "data_ov075_0211d424": {
-      "src/_ZN14UnknownVsEntry13InitResourcesEv.cpp": [
+      "src/_ZN9dEntObj_c13InitResourcesEv.cpp": [
         "return:char"
       ],
-      "src/_ZN14UnknownVsEntry16CleanupResourcesEv.cpp": [
+      "src/_ZN9dEntObj_c16CleanupResourcesEv.cpp": [
         "return:char []"
       ],
       "src/__sinit_ov075_0211b5e0.c": [
@@ -26356,10 +26356,10 @@
       ]
     },
     "data_ov075_0211d42c": {
-      "src/_ZN14UnknownVsEntry13InitResourcesEv.cpp": [
+      "src/_ZN9dEntObj_c13InitResourcesEv.cpp": [
         "return:char"
       ],
-      "src/_ZN14UnknownVsEntry16CleanupResourcesEv.cpp": [
+      "src/_ZN9dEntObj_c16CleanupResourcesEv.cpp": [
         "return:char []"
       ],
       "src/__sinit_ov075_0211b5e0.c": [
@@ -41443,7 +41443,7 @@
       ]
     },
     "func_ov075_0211b3d8": {
-      "src/_ZN14UnknownVsEntry6RenderEv.cpp": [
+      "src/_ZN9dEntObj_c6RenderEv.cpp": [
         "return:void"
       ]
     },

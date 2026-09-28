@@ -1,17 +1,17 @@
 //cpp
 #include "types.h"
-// @symbol _ZN14UnknownVsEntry8BehaviorEv
+// @symbol _ZN9dEntObj_c8BehaviorEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 #include "decl_common.h"
 /* recovered: named members + shared header, real C++ method */
-#include "UnknownVsEntry.h"
+#include "dEntObj_c.h"
 extern "C" {
 extern void func_ov075_021152d4(void* self);
 extern int _ZN9Animation7AdvanceEv(void* a);
 }
 extern u8 data_0209fc5c;
 
-int UnknownVsEntry::Behavior()
+int dEntObj_c::Behavior()
 {
     if (mSuspended == 0) {
         int i;
@@ -60,7 +60,7 @@ int UnknownVsEntry::Behavior()
             int r = func_0203da9c();
             func_ov075_021151b4(((char*)this), r);
             /* 0x90c is +0x50 inside the ModelAnim at 0x8bc -- its Animation base,
-               which the cartridge's own ~UnknownVsEntry proves is there
+               which the cartridge's own ~dEntObj_c proves is there
                (tools/dtor_members.py). Advance is non-virtual, so this is the same
                direct bl to _ZN9Animation7AdvanceEv with this adjusted by +0x50. */
             mModelAnim.Advance();

@@ -1,6 +1,6 @@
 //cpp
 // @symbol _ZN15UnknownVsPlayerD1Ev
-#include "UnknownVsEntry.h"
+#include "dEntObj_c.h"
 
 UnknownVsPlayer::~UnknownVsPlayer()
 {

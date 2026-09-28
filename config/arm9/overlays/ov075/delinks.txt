@@ -4,11 +4,11 @@
     .ctor       start:0x0211c5a4 end:0x0211c5b0 kind:rodata align:4
     .data       start:0x0211c5c0 end:0x0211d380 kind:data align:32
     .bss        start:0x0211d380 end:0x0211d9c0 kind:bss align:32
-src/_ZN14UnknownVsEntryD1Ev.cpp:
+src/_ZN9dEntObj_cD1Ev.cpp:
     complete
     .text start:0x02113ee0 end:0x02113f54
 
-src/_ZN14UnknownVsEntryD0Ev.cpp:
+src/_ZN9dEntObj_cD0Ev.cpp:
     complete
     .text start:0x02113f54 end:0x02113fdc
 
@@ -152,19 +152,19 @@ src/func_ov075_021152d4.cpp:
     complete
     .text start:0x021152d4 end:0x02115388
 
-src/_ZN14UnknownVsEntry16CleanupResourcesEv.cpp:
+src/_ZN9dEntObj_c16CleanupResourcesEv.cpp:
     complete
     .text start:0x02115388 end:0x021154cc
 
-src/_ZN14UnknownVsEntry6RenderEv.cpp:
+src/_ZN9dEntObj_c6RenderEv.cpp:
     complete
     .text start:0x021154cc end:0x0211555c
 
-src/_ZN14UnknownVsEntry8BehaviorEv.cpp:
+src/_ZN9dEntObj_c8BehaviorEv.cpp:
     complete
     .text start:0x0211555c end:0x021156e0
 
-src/_ZN14UnknownVsEntry13InitResourcesEv.cpp:
+src/_ZN9dEntObj_c13InitResourcesEv.cpp:
     complete
     .text start:0x021156e0 end:0x021159f4
 

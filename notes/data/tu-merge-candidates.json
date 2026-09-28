@@ -28063,13 +28063,13 @@
    "start": "0x2113ee0",
    "end": "0x2115a88",
    "classes": [
-    "UnknownVsEntry"
+    "dEntObj_c"
    ],
    "n_functions_map": 48,
    "n_files": 48,
    "files": [
-    "src/_ZN14UnknownVsEntryD1Ev.cpp",
-    "src/_ZN14UnknownVsEntryD0Ev.c",
+    "src/_ZN9dEntObj_cD1Ev.cpp",
+    "src/_ZN9dEntObj_cD0Ev.c",
     "src/func_ov075_02113fdc.c",
     "src/func_ov075_02114010.c",
     "src/func_ov075_021140e4.c",
@@ -28105,10 +28105,10 @@
     "src/func_ov075_0211524c.c",
     "src/func_ov075_02115290.c",
     "src/func_ov075_021152d4.cpp",
-    "src/_ZN14UnknownVsEntry16CleanupResourcesEv.cpp",
-    "src/_ZN14UnknownVsEntry6RenderEv.cpp",
-    "src/_ZN14UnknownVsEntry8BehaviorEv.cpp",
-    "src/_ZN14UnknownVsEntry13InitResourcesEv.cpp",
+    "src/_ZN9dEntObj_c16CleanupResourcesEv.cpp",
+    "src/_ZN9dEntObj_c6RenderEv.cpp",
+    "src/_ZN9dEntObj_c8BehaviorEv.cpp",
+    "src/_ZN9dEntObj_c13InitResourcesEv.cpp",
     "src/dEntObj_c_classInit.cpp",
     "src/func_ov075_02115a88.c",
     "src/func_ov075_0211ab38.c",

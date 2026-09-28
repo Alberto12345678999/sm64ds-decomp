@@ -1,7 +1,7 @@
 //cpp
-// @symbol _ZN14UnknownVsEntry13InitResourcesEv
+// @symbol _ZN9dEntObj_c13InitResourcesEv
 #include "decl_common.h"
-#include "UnknownVsEntry.h"
+#include "dEntObj_c.h"
 extern "C" {
 extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void* thiz, void* bca, int a, int fx, unsigned int f);
 extern void func_ov075_021152d4(char* self);
@@ -33,7 +33,7 @@ extern char data_020a0e68;
 
 struct M48 { int w[12]; };
 
-int UnknownVsEntry::InitResources()
+int dEntObj_c::InitResources()
 {
     int i; int kind; UnknownVsPlayer* player;
 
@@ -75,7 +75,7 @@ int UnknownVsEntry::InitResources()
 
     func_0203c178(&data_020a0e68, 0x7d000, 0x7d000, 0x7d000);
     /* 0x888 is +0x1c inside the Model at 0x86c -- its mat4x3. The cartridge's own
-       ~UnknownVsEntry proves the extent; see tools/dtor_members.py. */
+       ~dEntObj_c proves the extent; see tools/dtor_members.py. */
     *(struct M48*)((char*)&mModel.mat4x3) = *(struct M48*)&data_020a0e68;
 
     if (param1 != 1) {

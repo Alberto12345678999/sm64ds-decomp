@@ -1,9 +1,9 @@
 //cpp
-// @symbol _ZN14UnknownVsEntry16CleanupResourcesEv
+// @symbol _ZN9dEntObj_c16CleanupResourcesEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 #include "decl_common.h"
 /* recovered: named members + shared header, real C++ method */
-#include "UnknownVsEntry.h"
+#include "dEntObj_c.h"
 #include "SharedFilePtr.h"
 extern char data_ov075_0211d404[];
 extern char data_ov075_0211d3c4[];
@@ -28,7 +28,7 @@ extern char data_ov075_0211d3fc[];
 extern char data_ov075_0211d3bc[];
 extern char data_ov075_0211d3e4[];
 
-int UnknownVsEntry::CleanupResources()
+int dEntObj_c::CleanupResources()
 {
     CleanCommonModelDataArr();
     ((SharedFilePtr *)(data_ov075_0211d404))->Release();

@@ -742,7 +742,7 @@ src/_ZN14MrI_Projectile13OnYoshiTryEatEv.c	P1-vtable+mangled	ov071	daEyBm_c	MrI_
 src/_ZN14MrI_Projectile16CleanupResourcesEv.c	P1-vtable+mangled	ov071	daEyBm_c	MrI_Projectile/daEyBm_c	vtable daEyBm_c slot 3 @0x2121d08 | _ZN14MrI_Projectile16CleanupResourcesEv	1		True		-
 src/_ZN14MrI_Projectile16OnPendingDestroyEv.c	P1-vtable+mangled	ov071	daEyBm_c	MrI_Projectile/daEyBm_c	vtable daEyBm_c slot 12 @0x2121d10 | _ZN14MrI_Projectile16OnPendingDestroyEv	1		True		-
 src/_ZN14MrI_ProjectileD0Ev.c	DTOR-ONLY	ov071	daEyBm_c	MrI_Projectile/daEyBm_c	_ZN14MrI_ProjectileD0Ev	1		True		-
-src/_ZN14UnknownVsEntryD0Ev.c	DTOR-ONLY	ov075	dEntObj_c	UnknownVsEntry/dEntObj_c	_ZN14UnknownVsEntryD0Ev	1		True	_ZTV14UnknownVsEntry	-
+src/_ZN9dEntObj_cD0Ev.c	DTOR-ONLY	ov075	dEntObj_c	dEntObj_c/dEntObj_c	_ZN9dEntObj_cD0Ev	1		True	_ZTV9dEntObj_c	-
 src/_ZN15FaderBrightnessD2Ev.c	DTOR-ONLY	arm9		FaderBrightness	_ZN15FaderBrightnessD2Ev	1		True		-
 src/_ZN16daObjKm2_Agaru_cD0Ev.c	DTOR-ONLY	ov045	daObjKm2_Agaru_c	daObjKm2_Agaru_c/daObjKm2_Agaru_c	_ZN16daObjKm2_Agaru_cD0Ev	1		True	_ZTV10dBgActor_c/_ZTV16daObjKm2_Agaru_c	-
 src/_ZN15IceSlideManagerD0Ev.c	DTOR-ONLY	ov019	daSldMng_c	IceSlideManager/daSldMng_c	_ZN15IceSlideManagerD0Ev	1		True	_ZTV15IceSlideManager	-

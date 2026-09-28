@@ -1,7 +1,7 @@
 //cpp
-// @symbol _ZN14UnknownVsEntry6RenderEv
+// @symbol _ZN9dEntObj_c6RenderEv
 /* recovered: named members + shared header, real C++ method */
-#include "UnknownVsEntry.h"
+#include "dEntObj_c.h"
 extern "C" {
 void func_ov075_02114be4(void* p);
 void func_ov075_0211b3d8(void* p);
@@ -11,7 +11,7 @@ namespace Particle {
 void RenderAll();
 }
 
-int UnknownVsEntry::Render()
+int dEntObj_c::Render()
 {
     mModel.Render(0);
     ShadowModel::RenderAll();

@@ -3,9 +3,14 @@
  * ModelAnim, and four 0x158-byte player records. The record constructor and
  * destructor were previously anonymous address symbols; their four member
  * constructor/destructor calls prove the typed prefix below, while the array
- * stride proves its trailing extent. */
-#ifndef UNKNOWNVSENTRY_H
-#define UNKNOWNVSENTRY_H
+ * stride proves its trailing extent.
+ *
+ * The class name is the ROM's own: _ZTS9dEntObj_c at ov075:0x0211c648, with
+ * _ZTI9dEntObj_c at 0x0211c66c and the vtable _ZTV9dEntObj_c at 0x0211c6a0.
+ * UnknownVsPlayer has no vtable and no RTTI, so the cartridge gives it no
+ * name and the project's name stays. */
+#ifndef DENTOBJ_C_H
+#define DENTOBJ_C_H
 #include "types.h"
 
 #ifdef __cplusplus
@@ -39,7 +44,7 @@ typedef char UnknownVsPlayer_size_must_be_0x158[
     sizeof(UnknownVsPlayer) == 0x158 ? 1 : -1];
 #endif
 
-struct UnknownVsEntry : dBase_c {
+struct dEntObj_c : dBase_c {
     Particle::SysTracker mParticles;   /* 0x050 */
     Model mModel;                      /* 0x86c */
     ModelAnim mModelAnim;              /* 0x8bc */
@@ -58,7 +63,7 @@ struct UnknownVsEntry : dBase_c {
     u8 mPlayerCount;                   /* 0xf43 */
     u8 mSuspended;                     /* 0xf44 */
 
-    virtual ~UnknownVsEntry();
+    virtual ~dEntObj_c();
     virtual int InitResources();
     virtual int CleanupResources();
     virtual int Behavior();
@@ -68,7 +73,7 @@ struct UnknownVsEntry : dBase_c {
 #else
 
 /* Flat compatibility view for C consumers. */
-struct UnknownVsEntry {
+struct dEntObj_c {
     u8 pad_000[0x8];
     s32 mParam;                        /* 0x008 */
     u8  pad_00c[0x44];
@@ -94,7 +99,7 @@ struct UnknownVsEntry {
 
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
-typedef char UnknownVsEntry_size_must_be_0xf48[sizeof(struct UnknownVsEntry) == 0xf48 ? 1 : -1];
+typedef char dEntObj_c_size_must_be_0xf48[sizeof(struct dEntObj_c) == 0xf48 ? 1 : -1];
 #endif
 
 #endif
