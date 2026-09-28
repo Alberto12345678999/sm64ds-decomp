@@ -1,45 +1,43 @@
 //cpp
-/* dScStarSel_c -- the star-select screen, ov003. NINE of the class's
- * fifteen functions; see PARTIAL FOLD below for why the other six stay in
+/* dScStarSel_c -- the star-select screen, ov003. ELEVEN of the class's
+ * fifteen functions; see PARTIAL FOLD below for why the other four stay in
  * their own files.
  *
  * The screen between the level select and the level itself: a row of star
  * plates for the picked course, a character strip along the bottom, and a
  * cursor the D-pad walks across both. What is written here is the whole
- * drawing half of that -- Render (slot 9), the empty OnPendingDestroy
- * (slot 12), and the seven free helpers Render and Behavior drive.
- * .text 0x020adec0..0x020af038, 4472 bytes, one object, byte-identical to
+ * drawing half of that -- the destructor (slots 16/17), the seven free
+ * helpers Render and Behavior drive, the empty OnPendingDestroy (slot 12)
+ * and Render (slot 9).
+ * .text 0x020addfc..0x020af038, 4668 bytes, one object, byte-identical to
  * retail through the real link.
  *
- * Source order is the reverse of the ROM's -- mwccarm emits .text in
- * reverse source order. Do not reorder.
+ * Source order IS the ROM's: `#pragma defer_codegen off` below makes
+ * mwccarm emit .text in source order instead of reverse. Do not reorder.
  *
  * PARTIAL FOLD, and exactly where the line falls. The class occupies one
- * contiguous linker run, 0x020addfc..0x020b0580, fifteen functions. Two
- * separate things keep six of them out of this file:
+ * contiguous linker run, 0x020addfc..0x020b0580, fifteen functions.
+ * Behavior (slot 6, 0x020af038..0x020af86c) does not match. It is a
+ * long-standing near-miss and it did not close when folded in here; the
+ * residual is register allocation only, no schedule change. It sits in the
+ * MIDDLE of the run, and a delinks entry carries exactly one .text range,
+ * so a licensed range cannot skip it. That splits the run in two and this
+ * file is the larger side: everything from the destructor up to Behavior.
  *
- * - Behavior (slot 6, 0x020af038..0x020af86c) does not match. It is a
- *   long-standing near-miss and it did not close when folded in here; the
- *   residual is register allocation only, no schedule change. It sits in
- *   the MIDDLE of the run, and a delinks entry carries exactly one .text
- *   range, so a licensed range cannot skip it. That splits the run in two
- *   and this file is the larger side.
- * - The destructor pair (D1 0x020addfc, D0 0x020ade54) cannot come along
- *   either, and the reason is worth recording. The cartridge places D1
- *   BELOW D0. mwccarm only emits them in that order when the destructor is
- *   defined inline in the class body AND the same TU defines the class's
- *   key function -- here InitResources, the first declared non-inline
- *   virtual. Defined out of line instead, mwccarm emits D0 before D1 and
- *   also emits a base-object D2 the cartridge does not carry. So D1/D0 can
- *   only be folded together with InitResources, which lives on the far
- *   side of Behavior. Measured both ways: with Behavior's draft body in
- *   place, the whole fifteen-function file emits every function in exact
- *   ROM-ascending order with no D2 at all. Closing Behavior therefore
- *   collapses all six leftovers at once -- it is the single blocker.
+ * THE DESTRUCTOR. The cartridge places D1 (0x020addfc) BELOW D0
+ * (0x020ade54). Under deferred codegen an out-of-line destructor emits D2,
+ * D0, D1 -- the wrong order -- which is why the destructor pair used to
+ * stay in its own files. With `#pragma defer_codegen off` and the file in
+ * ascending order, the same out-of-line definition emits D1, D0, D2: the
+ * cartridge's order, both byte-identical, written first so they land
+ * first. The extra D2 is unreferenced and is dropped at link, as the
+ * retail link did. Because the destructor is the first declared
+ * non-inline virtual in dScStarSel_c.h, it is the key function, so this
+ * file also emits the vtable and the typeinfo chain; the cartridge's
+ * copies of those are outside this range and stay canonical.
  *
- * Still in their own files: _ZN12dScStarSel_cD1Ev, _ZN12dScStarSel_cD0Ev,
- * Behavior, CleanupResources, InitResources and the factory
- * dScStarSel_c_classInit.
+ * Still in their own files: Behavior, CleanupResources, InitResources and
+ * the factory dScStarSel_c_classInit.
  *
  * #pragma opt_strength_reduction off is FILE-GLOBAL and last-wins in
  * mwccarm 2004/b56, not positional, so it applies to every function here
@@ -48,7 +46,9 @@
  * the only one in which all of these functions reproduce. Leaving both at
  * their defaults, or turning loop invariants off as well, costs Render 0x10
  * bytes of frame. Bracketing it around a single member does nothing --
- * measured; the last directive in the file wins for the whole file.
+ * measured; the last directive in the file wins for the whole file. (Those
+ * measurements predate `defer_codegen off`; here the directive sits above
+ * every function, so it covers all eleven in either regime.)
  *
  * common.h MUST precede dScStarSel_c.h. With the order reversed, Render
  * builds 0x18 bytes long. That is the only include-order constraint found.
@@ -80,6 +80,7 @@
  *   pair has not been recovered field-by-field yet. See dScStarSel_c.h.
  */
 
+#pragma defer_codegen off
 #pragma opt_strength_reduction off
 #include "common.h"
 #include "dScStarSel_c.h"
@@ -125,6 +126,7 @@ extern s32 data_020a0db0;
 extern u8 data_0209caa0[];
 extern Matrix4x3 data_020a0e68;
 extern void *_ZN3OAM7NUMBERSE[];
+extern void *_ZN3OAM5TIMESE;
 extern u8 data_ov001_020ab938;
 extern u8 data_ov001_020ab940;
 extern void *data_ov001_020abb18[];
@@ -148,6 +150,379 @@ extern u8 data_0209caa0[0x50];
  * actually differed; only the return spelling did, and every call site in
  * this file consumes it as `!= 0`. The declaration above is the one they
  * all already held. */
+}
+
+/* -------------------------------------------------------------------------- */
+/* ROM ordinal 0/1 -- _ZN12dScStarSel_cD1Ev 0x020addfc, _ZN12dScStarSel_cD0Ev 0x020ade54 */
+/* -------------------------------------------------------------------------- */
+// @symbol _ZN12dScStarSel_cD1Ev
+/* Written first so D1 and D0 are emitted first, as in the cartridge. The
+ * body is empty: tearing down the Model pair (__cxa_vec_cleanup) and the
+ * base destructors is all compiler-generated. */
+dScStarSel_c::~dScStarSel_c()
+{
+}
+
+// @symbol _ZN12dScStarSel_cD0Ev
+/* The deleting destructor has no source of its own: mwccarm emits it from
+ * the definition above, directly after D1, ending with dScene_c's inline
+ * operator delete. */
+
+/* -------------------------------------------------------------------------- */
+/* ROM ordinal 2 -- func_ov003_020adec0, 0x020adec0, size 0x90 */
+/* -------------------------------------------------------------------------- */
+// @symbol func_ov003_020adec0
+extern "C" {  /* .c-derived member: C linkage for the whole block */
+int func_ov003_020adec0(char* c, unsigned int r6){
+  unsigned char m = *(unsigned char*)(c+0x130);
+  if(m == 4){
+    unsigned char* p = data_ov003_020b169c;
+    int r0;
+    for(r0 = 0; r0 < 3; r0++){
+      if(r6 == *p) return r0;
+      p++;
+    }
+  } else if(m >= 2){
+    int r5 = 0;
+    int r4;
+    for(r4 = 0; r4 < 3; r4++){
+      if(SaveData::IsCharacterUnlocked((unsigned int)r4) != 0){
+        if((unsigned int)r4 == r6) return r5;
+        r5++;
+      }
+    }
+  }
+  return 0;
+}
+}
+
+/* -------------------------------------------------------------------------- */
+/* ROM ordinal 3 -- func_ov003_020adf50, 0x020adf50, size 0x78 */
+/* -------------------------------------------------------------------------- */
+// @symbol func_ov003_020adf50
+extern "C" {  /* .c-derived member: C linkage for the whole block */
+int func_ov003_020adf50(char* c){
+  unsigned char m = *(unsigned char*)(c+0x130);
+  if(m == 4){
+    return data_ov003_020b169c[*(unsigned char*)(c+0x134)];
+  }
+  if(m >= 2){
+    int r5 = 0;
+    int r4 = 0;
+    for(; r4 < 3; r4++){
+      if(SaveData::IsCharacterUnlocked((unsigned int)r4) != 0){
+        if(r5 == *(unsigned char*)(c+0x134)) return r4;
+        r5++;
+      }
+    }
+  }
+  return 0;
+}
+}
+
+/* -------------------------------------------------------------------------- */
+/* ROM ordinal 4 -- func_ov003_020adfc8, 0x020adfc8, size 0xe8 */
+/* -------------------------------------------------------------------------- */
+// @symbol func_ov003_020adfc8
+extern "C" {
+extern int SublevelToLevel(int i);
+extern void func_ov003_020ae1a4(char* sl, int r);
+extern void* _ZN3OAM7NUMBERSE[];
+extern void* _ZN3OAM4COINE[];
+void func_ov003_020adfc8(char* sl) {
+    int sb = 0xb8;
+    int lvl = SublevelToLevel(data_02092110);
+    int coin = SaveData::GetCoinRecord(lvl);
+    func_ov003_020ae1a4(sl, coin);
+    int i;
+    for (i = 2; i >= 0; i--) {
+        signed char d = *(signed char*)(sl + i + 0x121);
+        if (d >= 0) {
+            OAM::Render(0, (OamAttr *)_ZN3OAM7NUMBERSE[d], sb, 0x4c, 8, -1, 0);
+            sb -= 9;
+        }
+    }
+    OAM::Render(0, (OamAttr *)&_ZN3OAM5TIMESE, sb, 0x54, -1, -1, 0);
+    OAM::Render(0, (OamAttr *)_ZN3OAM4COINE, sb - 0x10, 0x4c, -1, -1, 0);
+}
+}
+
+/* -------------------------------------------------------------------------- */
+/* ROM ordinal 5 -- func_ov003_020ae0b0, 0x020ae0b0, size 0xf4 */
+/* -------------------------------------------------------------------------- */
+// @symbol func_ov003_020ae0b0
+extern "C" {  /* .c-derived member: C linkage for the whole block */
+int SublevelToLevel(int i);
+unsigned char NumStars(void);
+void func_ov003_020ae1a4(char *sl, int r);
+extern void *_ZN3OAM7NUMBERSE[];
+extern void *_ZN3OAM10POWER_STARE;
+void func_ov003_020ae0b0(char *sl)
+{
+  int sb;
+  int r8;
+  if (SublevelToLevel(data_02092110) >= 0xf)
+  {
+    r8 = 0xa0;
+    sb = 0xb8;
+  }
+  else
+  {
+    r8 = 0xac;
+    sb = 0xf4;
+  }
+  func_ov003_020ae1a4(sl, NumStars());
+  {
+    int i = 2;
+    do
+    {
+      signed char d = *((signed char *) ((sl + i) + 0x121));
+      if (d >= 0)
+      {
+        OAM::Render(0, (OamAttr *)_ZN3OAM7NUMBERSE[d], sb, r8, 8, -1, 0);
+        sb -= 9;
+      }
+      i--;
+    }
+    while (i >= 0);
+  }
+  OAM::Render(0, (OamAttr *)&_ZN3OAM5TIMESE, sb, r8 + 8, -1, -1, 0);
+  OAM::Render(0, (OamAttr *)&_ZN3OAM10POWER_STARE, sb - 0x10, r8 + 8, -1, -1, 0);
+}
+}
+
+/* -------------------------------------------------------------------------- */
+/* ROM ordinal 6 -- func_ov003_020ae1a4, 0x020ae1a4, size 0x94 */
+/* -------------------------------------------------------------------------- */
+// @symbol func_ov003_020ae1a4
+extern "C" {  /* .c-derived member: C linkage for the whole block */
+void func_ov003_020ae1a4(char *c, int sb)
+{
+    int found = 0;
+    int one = 1;
+    int m1 = -1;
+    int i;
+    for (i = 0; i < 3; i++) {
+        unsigned short d = data_ov003_020b16ac[i];
+        int q = sb / d;
+        if (q == 0 && found == 0 && i != 2) {
+            (c + i)[0x121] = (char)m1;
+        } else {
+            found = one;
+            (c + i)[0x121] = (char)q;
+        }
+        sb = (unsigned short)(sb % d);
+    }
+}
+}
+
+/* -------------------------------------------------------------------------- */
+/* ROM ordinal 7 -- func_ov003_020ae238, 0x020ae238, size 0x120 */
+/* -------------------------------------------------------------------------- */
+// @symbol func_ov003_020ae238
+extern "C" {  /* .c-derived member: C linkage for the whole block */
+int SublevelToLevel(int i);
+void _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(int b, void *attr, int x, int y, int a, int cc, int fx, int t, int e, int f);
+void func_ov003_020ae1a4(char *sl, int r);
+extern signed char data_0209f2f4[];
+extern void *_ZN3OAM10LIFE_ICONSE[];
+extern void *_ZN3OAM5TIMESE;
+extern void *_ZN3OAM7NUMBERSE[];
+void func_ov003_020ae238(char *sl)
+{
+  int sb;
+  int r8;
+  if (SublevelToLevel(data_02092110) >= 0xf)
+  {
+    r8 = 0xa0;
+    sb = 0x50;
+  }
+  else
+  {
+    sb = 0x10;
+    r8 = 0xac;
+  }
+  _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, _ZN3OAM10LIFE_ICONSE[*((unsigned char *) (sl + 0x116))], sb, r8 + 8, -1, -1, 0x1000, 0x1000, 0, -1);
+  OAM::Render(0, (OamAttr *)&_ZN3OAM5TIMESE, sb + 0x10, r8 + 8, -1, -1, 0);
+  func_ov003_020ae1a4(sl, (unsigned short) data_0209f2f4[0]);
+  {
+    int i = 0;
+    sb += 0x18;
+    do
+    {
+      signed char d = *((signed char *) ((sl + i) + 0x121));
+      if (d >= 0)
+      {
+        OAM::Render(0, (OamAttr *)_ZN3OAM7NUMBERSE[d], sb, r8, 8, -1, 0);
+        sb += 9;
+      }
+      i++;
+    }
+    while (i < 3);
+  }
+}
+}
+
+/* -------------------------------------------------------------------------- */
+/* ROM ordinal 8 -- func_ov003_020ae358, 0x020ae358, size 0x398 */
+/* -------------------------------------------------------------------------- */
+// @symbol func_ov003_020ae358
+/* recovered: the per-frame update for the ov003 character-select cursor.
+ *
+ * data_020a0e40 selects the active record in the 4-byte-stride tables at
+ * data_020a0de8..deb. If byte 0 of that record is set and byte 1 (data_020a0de9)
+ * says the slot is unlocked, the cursor tests whether the touch point at c+0x12b
+ * is inside the record's box; a hit arms the "picked" state at c+0x133/0x132,
+ * seeds the timers at c+0x118/0x119 and plays sound data_0209caa0[0x41] + 0x3c.
+ *
+ * Failing that, the three unlocked characters are scanned in order: for each i,
+ * the touch point at (c+i)+0x124 / +0x128 is tested against bytes 2 and 3 of the
+ * same record, and a hit records the character index in c+0x132, data_02092128
+ * and data_02092114 before playing the same sound.
+ *
+ * With no record active (sect2) the d-pad half of the control word data_020a0e58
+ * moves the selection: the repeat timer at c+0x106 counts down, and while it is
+ * zero a held left/right steps c+0x134 within [0, c+0x130 - 2] and reloads the
+ * timer with 0x10 or 8 depending on data_020a0e5a.
+ *
+ * Codegen note: the stride belongs in the TYPE, and the INDEX is what gets named.
+ * The 4-byte records are declared `[][4]` so each read refolds its own scale
+ * (`add r2, r4, r1, lsl #2`); flattening data_020a0dea/deb to a bare `[]` with an
+ * explicit `* 4` costs 17 words, and the same is true of data_020a0e5a. The last
+ * six words were a register transposition between the `c + i` and record-row
+ * address temps, and what closed it was naming the INDEX (`int ri`) for the second
+ * record read instead of naming the row POINTER: a named row pointer welds both
+ * reads onto one address temp and inverts the r2/r3 assignment, while the named
+ * index leaves each read to fold its own scale and hands the row temp r2.
+ */
+extern "C" {  /* .c-derived member: C linkage for the whole block */
+void func_ov003_020ae358(char *c)
+{
+  int idx = data_020a0e40;
+  int unlocked = 0;
+  int i;
+  if (data_020a0de8[idx][0] != 0)
+  {
+    unlocked = data_020a0de9[idx][0] != 0;
+  }
+  if (unlocked == 0)
+  {
+    goto sect2;
+  }
+  if ((((unsigned char) (data_020a0dea[idx][0] - 0x58)) < 0x50) && (((unsigned char) ((data_020a0deb[idx][0] - (*((unsigned char *) (c + 0x12b)))) + 0x28)) < 0x50))
+  {
+    *((unsigned char *) (c + 0x133)) = 2;
+    *((unsigned char *) (c + 0x132)) = 3;
+    *((unsigned char *) (c + 0x118)) = (unsigned char) (data_0208ee44 * 6);
+    *((unsigned char *) (c + 0x139)) = 1;
+    *((unsigned char *) (c + 0x119)) = 0x10;
+    func_02012790(data_0209caa0[0x41] + 0x3c);
+    return;
+  }
+  if ((*((unsigned char *) (c + 0x130))) <= 1)
+  {
+    return;
+  }
+  if (data_0209caa0[0x41] != 3)
+  {
+    return;
+  }
+  for (i = 0; i < 3; i++)
+  {
+    if (SaveData::IsCharacterUnlocked(i) != 0)
+    {
+      int ri = data_020a0e40;
+      if (((unsigned short) ((data_020a0de8[data_020a0e40][2] - (*((unsigned char *) ((c + i) + 0x124)))) + 0x18)) < 0x30)
+      {
+        if (((unsigned short) ((data_020a0de8[ri][3] - (*((unsigned char *) ((c + i) + 0x128)))) + 0x18)) < 0x2b)
+        {
+          *((unsigned char *) (c + 0x133)) = 1;
+          *((unsigned char *) (c + 0x134)) = (unsigned char) func_ov003_020adec0(c, i);
+          data_02092128 = (unsigned char) i;
+          data_02092114 = (unsigned char) i;
+          *((unsigned char *) (c + 0x132)) = (unsigned char) i;
+          *((unsigned char *) (c + 0x118)) = (unsigned char) (data_0208ee44 * 3);
+          *((unsigned char *) (c + 0x139)) = 2;
+          *((unsigned char *) (c + 0x119)) = 0x10;
+          func_02012790(data_0209caa0[0x41] + 0x3c);
+          return;
+        }
+      }
+    }
+  }
+
+  return;
+  sect2:
+  if (data_0209caa0[0x42] == 0)
+  {
+    unsigned short ctrl = data_020a0e58[0];
+    if ((ctrl & 0x30) != 0)
+    {
+      unsigned short timer = *((unsigned short *) (c + 0x106));
+      unsigned char nr;
+      if (timer != 0)
+      {
+        *((unsigned short *) (c + 0x106)) -= 1;
+        return;
+      }
+      if ((*((unsigned char *) (c + 0x135))) == 0)
+      {
+        return;
+      }
+      if ((*((unsigned char *) (c + 0x133))) != 1)
+      {
+        return;
+      }
+      if ((*((unsigned char *) (c + 0x130))) < 3)
+      {
+        return;
+      }
+      nr = *((unsigned char *) (c + 0x134));
+      if (ctrl & 0x20)
+      {
+        if (((data_020a0e58[1] & 0x20) != 0) || (timer == 0))
+        {
+          *((unsigned short *) (c + 0x106)) = (data_020a0e5a[idx][0] & 0x20) ? (0x10) : (8);
+          if ((*((unsigned char *) (c + 0x134))) != 0)
+          {
+            nr = nr - 1;
+          }
+        }
+      }
+      else
+        if (ctrl & 0x10)
+      {
+        if (((data_020a0e58[1] & 0x10) != 0) || (timer == 0))
+        {
+          *((unsigned short *) (c + 0x106)) = (data_020a0e5a[idx][0] & 0x10) ? (0x10) : (8);
+          if ((*((unsigned char *) (c + 0x134))) != ((*((unsigned char *) (c + 0x130))) - 2))
+          {
+            nr = nr + 1;
+          }
+        }
+      }
+      if (nr == (*((unsigned char *) (c + 0x134))))
+      {
+        return;
+      }
+      *((unsigned char *) (c + 0x134)) = nr;
+      func_02012790(0x12e);
+      return;
+    }
+  }
+
+  *((unsigned short *) (c + 0x106)) = 0;
+}
+}
+
+/* -------------------------------------------------------------------------- */
+/* ROM ordinal 9 -- _ZN12dScStarSel_c16OnPendingDestroyEv, 0x020ae6f0, size 0x4 */
+/* -------------------------------------------------------------------------- */
+// @symbol _ZN12dScStarSel_c16OnPendingDestroyEv
+/* recovered: real C++ method */
+/* dScStarSel_c::OnPendingDestroy() -- vtable slot 12. Empty override. */
+void dScStarSel_c::OnPendingDestroy()
+{
 }
 
 /* -------------------------------------------------------------------------- */
@@ -326,362 +701,4 @@ s32 dScStarSel_c::Render()
         }
     }
     return 1;
-}
-
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 9 -- _ZN12dScStarSel_c16OnPendingDestroyEv, 0x020ae6f0, size 0x4 */
-/* -------------------------------------------------------------------------- */
-// @symbol _ZN12dScStarSel_c16OnPendingDestroyEv
-/* recovered: real C++ method */
-/* dScStarSel_c::OnPendingDestroy() -- vtable slot 12. Empty override. */
-void dScStarSel_c::OnPendingDestroy()
-{
-}
-
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 8 -- func_ov003_020ae358, 0x020ae358, size 0x398 */
-/* -------------------------------------------------------------------------- */
-// @symbol func_ov003_020ae358
-/* recovered: the per-frame update for the ov003 character-select cursor.
- *
- * data_020a0e40 selects the active record in the 4-byte-stride tables at
- * data_020a0de8..deb. If byte 0 of that record is set and byte 1 (data_020a0de9)
- * says the slot is unlocked, the cursor tests whether the touch point at c+0x12b
- * is inside the record's box; a hit arms the "picked" state at c+0x133/0x132,
- * seeds the timers at c+0x118/0x119 and plays sound data_0209caa0[0x41] + 0x3c.
- *
- * Failing that, the three unlocked characters are scanned in order: for each i,
- * the touch point at (c+i)+0x124 / +0x128 is tested against bytes 2 and 3 of the
- * same record, and a hit records the character index in c+0x132, data_02092128
- * and data_02092114 before playing the same sound.
- *
- * With no record active (sect2) the d-pad half of the control word data_020a0e58
- * moves the selection: the repeat timer at c+0x106 counts down, and while it is
- * zero a held left/right steps c+0x134 within [0, c+0x130 - 2] and reloads the
- * timer with 0x10 or 8 depending on data_020a0e5a.
- *
- * Codegen note: the stride belongs in the TYPE, and the INDEX is what gets named.
- * The 4-byte records are declared `[][4]` so each read refolds its own scale
- * (`add r2, r4, r1, lsl #2`); flattening data_020a0dea/deb to a bare `[]` with an
- * explicit `* 4` costs 17 words, and the same is true of data_020a0e5a. The last
- * six words were a register transposition between the `c + i` and record-row
- * address temps, and what closed it was naming the INDEX (`int ri`) for the second
- * record read instead of naming the row POINTER: a named row pointer welds both
- * reads onto one address temp and inverts the r2/r3 assignment, while the named
- * index leaves each read to fold its own scale and hands the row temp r2.
- */
-extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov003_020ae358(char *c)
-{
-  int idx = data_020a0e40;
-  int unlocked = 0;
-  int i;
-  if (data_020a0de8[idx][0] != 0)
-  {
-    unlocked = data_020a0de9[idx][0] != 0;
-  }
-  if (unlocked == 0)
-  {
-    goto sect2;
-  }
-  if ((((unsigned char) (data_020a0dea[idx][0] - 0x58)) < 0x50) && (((unsigned char) ((data_020a0deb[idx][0] - (*((unsigned char *) (c + 0x12b)))) + 0x28)) < 0x50))
-  {
-    *((unsigned char *) (c + 0x133)) = 2;
-    *((unsigned char *) (c + 0x132)) = 3;
-    *((unsigned char *) (c + 0x118)) = (unsigned char) (data_0208ee44 * 6);
-    *((unsigned char *) (c + 0x139)) = 1;
-    *((unsigned char *) (c + 0x119)) = 0x10;
-    func_02012790(data_0209caa0[0x41] + 0x3c);
-    return;
-  }
-  if ((*((unsigned char *) (c + 0x130))) <= 1)
-  {
-    return;
-  }
-  if (data_0209caa0[0x41] != 3)
-  {
-    return;
-  }
-  for (i = 0; i < 3; i++)
-  {
-    if (SaveData::IsCharacterUnlocked(i) != 0)
-    {
-      int ri = data_020a0e40;
-      if (((unsigned short) ((data_020a0de8[data_020a0e40][2] - (*((unsigned char *) ((c + i) + 0x124)))) + 0x18)) < 0x30)
-      {
-        if (((unsigned short) ((data_020a0de8[ri][3] - (*((unsigned char *) ((c + i) + 0x128)))) + 0x18)) < 0x2b)
-        {
-          *((unsigned char *) (c + 0x133)) = 1;
-          *((unsigned char *) (c + 0x134)) = (unsigned char) func_ov003_020adec0(c, i);
-          data_02092128 = (unsigned char) i;
-          data_02092114 = (unsigned char) i;
-          *((unsigned char *) (c + 0x132)) = (unsigned char) i;
-          *((unsigned char *) (c + 0x118)) = (unsigned char) (data_0208ee44 * 3);
-          *((unsigned char *) (c + 0x139)) = 2;
-          *((unsigned char *) (c + 0x119)) = 0x10;
-          func_02012790(data_0209caa0[0x41] + 0x3c);
-          return;
-        }
-      }
-    }
-  }
-
-  return;
-  sect2:
-  if (data_0209caa0[0x42] == 0)
-  {
-    unsigned short ctrl = data_020a0e58[0];
-    if ((ctrl & 0x30) != 0)
-    {
-      unsigned short timer = *((unsigned short *) (c + 0x106));
-      unsigned char nr;
-      if (timer != 0)
-      {
-        *((unsigned short *) (c + 0x106)) -= 1;
-        return;
-      }
-      if ((*((unsigned char *) (c + 0x135))) == 0)
-      {
-        return;
-      }
-      if ((*((unsigned char *) (c + 0x133))) != 1)
-      {
-        return;
-      }
-      if ((*((unsigned char *) (c + 0x130))) < 3)
-      {
-        return;
-      }
-      nr = *((unsigned char *) (c + 0x134));
-      if (ctrl & 0x20)
-      {
-        if (((data_020a0e58[1] & 0x20) != 0) || (timer == 0))
-        {
-          *((unsigned short *) (c + 0x106)) = (data_020a0e5a[idx][0] & 0x20) ? (0x10) : (8);
-          if ((*((unsigned char *) (c + 0x134))) != 0)
-          {
-            nr = nr - 1;
-          }
-        }
-      }
-      else
-        if (ctrl & 0x10)
-      {
-        if (((data_020a0e58[1] & 0x10) != 0) || (timer == 0))
-        {
-          *((unsigned short *) (c + 0x106)) = (data_020a0e5a[idx][0] & 0x10) ? (0x10) : (8);
-          if ((*((unsigned char *) (c + 0x134))) != ((*((unsigned char *) (c + 0x130))) - 2))
-          {
-            nr = nr + 1;
-          }
-        }
-      }
-      if (nr == (*((unsigned char *) (c + 0x134))))
-      {
-        return;
-      }
-      *((unsigned char *) (c + 0x134)) = nr;
-      func_02012790(0x12e);
-      return;
-    }
-  }
-
-  *((unsigned short *) (c + 0x106)) = 0;
-}
-}
-
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 7 -- func_ov003_020ae238, 0x020ae238, size 0x120 */
-/* -------------------------------------------------------------------------- */
-// @symbol func_ov003_020ae238
-extern "C" {  /* .c-derived member: C linkage for the whole block */
-int SublevelToLevel(int i);
-void _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(int b, void *attr, int x, int y, int a, int cc, int fx, int t, int e, int f);
-void func_ov003_020ae1a4(char *sl, int r);
-extern signed char data_0209f2f4[];
-extern void *_ZN3OAM10LIFE_ICONSE[];
-extern void *_ZN3OAM5TIMESE;
-extern void *_ZN3OAM7NUMBERSE[];
-void func_ov003_020ae238(char *sl)
-{
-  int sb;
-  int r8;
-  if (SublevelToLevel(data_02092110) >= 0xf)
-  {
-    r8 = 0xa0;
-    sb = 0x50;
-  }
-  else
-  {
-    sb = 0x10;
-    r8 = 0xac;
-  }
-  _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, _ZN3OAM10LIFE_ICONSE[*((unsigned char *) (sl + 0x116))], sb, r8 + 8, -1, -1, 0x1000, 0x1000, 0, -1);
-  OAM::Render(0, (OamAttr *)&_ZN3OAM5TIMESE, sb + 0x10, r8 + 8, -1, -1, 0);
-  func_ov003_020ae1a4(sl, (unsigned short) data_0209f2f4[0]);
-  {
-    int i = 0;
-    sb += 0x18;
-    do
-    {
-      signed char d = *((signed char *) ((sl + i) + 0x121));
-      if (d >= 0)
-      {
-        OAM::Render(0, (OamAttr *)_ZN3OAM7NUMBERSE[d], sb, r8, 8, -1, 0);
-        sb += 9;
-      }
-      i++;
-    }
-    while (i < 3);
-  }
-}
-}
-
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 6 -- func_ov003_020ae1a4, 0x020ae1a4, size 0x94 */
-/* -------------------------------------------------------------------------- */
-// @symbol func_ov003_020ae1a4
-extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov003_020ae1a4(char *c, int sb)
-{
-    int found = 0;
-    int one = 1;
-    int m1 = -1;
-    int i;
-    for (i = 0; i < 3; i++) {
-        unsigned short d = data_ov003_020b16ac[i];
-        int q = sb / d;
-        if (q == 0 && found == 0 && i != 2) {
-            (c + i)[0x121] = (char)m1;
-        } else {
-            found = one;
-            (c + i)[0x121] = (char)q;
-        }
-        sb = (unsigned short)(sb % d);
-    }
-}
-}
-
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 5 -- func_ov003_020ae0b0, 0x020ae0b0, size 0xf4 */
-/* -------------------------------------------------------------------------- */
-// @symbol func_ov003_020ae0b0
-extern "C" {  /* .c-derived member: C linkage for the whole block */
-int SublevelToLevel(int i);
-unsigned char NumStars(void);
-void func_ov003_020ae1a4(char *sl, int r);
-extern void *_ZN3OAM7NUMBERSE[];
-extern void *_ZN3OAM5TIMESE;
-extern void *_ZN3OAM10POWER_STARE;
-void func_ov003_020ae0b0(char *sl)
-{
-  int sb;
-  int r8;
-  if (SublevelToLevel(data_02092110) >= 0xf)
-  {
-    r8 = 0xa0;
-    sb = 0xb8;
-  }
-  else
-  {
-    r8 = 0xac;
-    sb = 0xf4;
-  }
-  func_ov003_020ae1a4(sl, NumStars());
-  {
-    int i = 2;
-    do
-    {
-      signed char d = *((signed char *) ((sl + i) + 0x121));
-      if (d >= 0)
-      {
-        OAM::Render(0, (OamAttr *)_ZN3OAM7NUMBERSE[d], sb, r8, 8, -1, 0);
-        sb -= 9;
-      }
-      i--;
-    }
-    while (i >= 0);
-  }
-  OAM::Render(0, (OamAttr *)&_ZN3OAM5TIMESE, sb, r8 + 8, -1, -1, 0);
-  OAM::Render(0, (OamAttr *)&_ZN3OAM10POWER_STARE, sb - 0x10, r8 + 8, -1, -1, 0);
-}
-}
-
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 4 -- func_ov003_020adfc8, 0x020adfc8, size 0xe8 */
-/* -------------------------------------------------------------------------- */
-// @symbol func_ov003_020adfc8
-extern "C" {
-extern int SublevelToLevel(int i);
-extern void func_ov003_020ae1a4(char* sl, int r);
-extern void* _ZN3OAM7NUMBERSE[];
-extern void* _ZN3OAM4COINE[];
-void func_ov003_020adfc8(char* sl) {
-    int sb = 0xb8;
-    int lvl = SublevelToLevel(data_02092110);
-    int coin = SaveData::GetCoinRecord(lvl);
-    func_ov003_020ae1a4(sl, coin);
-    int i;
-    for (i = 2; i >= 0; i--) {
-        signed char d = *(signed char*)(sl + i + 0x121);
-        if (d >= 0) {
-            OAM::Render(0, (OamAttr *)_ZN3OAM7NUMBERSE[d], sb, 0x4c, 8, -1, 0);
-            sb -= 9;
-        }
-    }
-    OAM::Render(0, (OamAttr *)&_ZN3OAM5TIMESE, sb, 0x54, -1, -1, 0);
-    OAM::Render(0, (OamAttr *)_ZN3OAM4COINE, sb - 0x10, 0x4c, -1, -1, 0);
-}
-}
-
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 3 -- func_ov003_020adf50, 0x020adf50, size 0x78 */
-/* -------------------------------------------------------------------------- */
-// @symbol func_ov003_020adf50
-extern "C" {  /* .c-derived member: C linkage for the whole block */
-int func_ov003_020adf50(char* c){
-  unsigned char m = *(unsigned char*)(c+0x130);
-  if(m == 4){
-    return data_ov003_020b169c[*(unsigned char*)(c+0x134)];
-  }
-  if(m >= 2){
-    int r5 = 0;
-    int r4 = 0;
-    for(; r4 < 3; r4++){
-      if(SaveData::IsCharacterUnlocked((unsigned int)r4) != 0){
-        if(r5 == *(unsigned char*)(c+0x134)) return r4;
-        r5++;
-      }
-    }
-  }
-  return 0;
-}
-}
-
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 2 -- func_ov003_020adec0, 0x020adec0, size 0x90 */
-/* -------------------------------------------------------------------------- */
-// @symbol func_ov003_020adec0
-extern "C" {  /* .c-derived member: C linkage for the whole block */
-int func_ov003_020adec0(char* c, unsigned int r6){
-  unsigned char m = *(unsigned char*)(c+0x130);
-  if(m == 4){
-    unsigned char* p = data_ov003_020b169c;
-    int r0;
-    for(r0 = 0; r0 < 3; r0++){
-      if(r6 == *p) return r0;
-      p++;
-    }
-  } else if(m >= 2){
-    int r5 = 0;
-    int r4;
-    for(r4 = 0; r4 < 3; r4++){
-      if(SaveData::IsCharacterUnlocked((unsigned int)r4) != 0){
-        if((unsigned int)r4 == r6) return r5;
-        r5++;
-      }
-    }
-  }
-  return 0;
-}
 }
