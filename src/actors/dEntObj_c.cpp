@@ -166,13 +166,19 @@ typedef struct S48 { int w[12]; } S48;
 /* -------------------------------------------------------------------------- */
 /* 0x02113ee0 _ZN9dEntObj_cD1Ev, 0x02113f54 _ZN9dEntObj_cD0Ev                 */
 /* -------------------------------------------------------------------------- */
+// @symbol _ZN9dEntObj_cD1Ev
 dEntObj_c::~dEntObj_c()
 {
 }
 
+// @symbol _ZN9dEntObj_cD0Ev
+/* The deleting destructor (D0) has no source of its own: the compiler emits
+   it from the definition above. */
+
 /* -------------------------------------------------------------------------- */
 /* 0x02113fdc _ZN15UnknownVsPlayerD1Ev                                        */
 /* -------------------------------------------------------------------------- */
+// @symbol _ZN15UnknownVsPlayerD1Ev
 UnknownVsPlayer::~UnknownVsPlayer()
 {
 }
@@ -856,6 +862,7 @@ extern "C" void func_ov075_021152d4(dEntObj_c *self)
 /* -------------------------------------------------------------------------- */
 /* 0x02115388 _ZN9dEntObj_c16CleanupResourcesEv                               */
 /* -------------------------------------------------------------------------- */
+// @symbol _ZN9dEntObj_c16CleanupResourcesEv
 int dEntObj_c::CleanupResources()
 {
     CleanCommonModelDataArr();
@@ -893,6 +900,7 @@ int dEntObj_c::CleanupResources()
 /* -------------------------------------------------------------------------- */
 /* 0x021154cc _ZN9dEntObj_c6RenderEv                                          */
 /* -------------------------------------------------------------------------- */
+// @symbol _ZN9dEntObj_c6RenderEv
 int dEntObj_c::Render()
 {
     mModel.Render(0);
@@ -916,6 +924,7 @@ int dEntObj_c::Render()
 /* -------------------------------------------------------------------------- */
 /* 0x0211555c _ZN9dEntObj_c8BehaviorEv                                        */
 /* -------------------------------------------------------------------------- */
+// @symbol _ZN9dEntObj_c8BehaviorEv
 int dEntObj_c::Behavior()
 {
     if (mSuspended == 0) {
@@ -974,6 +983,7 @@ int dEntObj_c::Behavior()
 /* -------------------------------------------------------------------------- */
 /* 0x021156e0 _ZN9dEntObj_c13InitResourcesEv                                  */
 /* -------------------------------------------------------------------------- */
+// @symbol _ZN9dEntObj_c13InitResourcesEv
 int dEntObj_c::InitResources()
 {
     int i; int kind; UnknownVsPlayer* player;
@@ -1094,6 +1104,7 @@ extern "C" dEntObj_c* dEntObj_c_classInit(void){
 /* -------------------------------------------------------------------------- */
 /* 0x02115a88 _ZN15UnknownVsPlayerC1Ev                                        */
 /* -------------------------------------------------------------------------- */
+// @symbol _ZN15UnknownVsPlayerC1Ev
 UnknownVsPlayer::UnknownVsPlayer()
 {
 }
