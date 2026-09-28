@@ -1383,7 +1383,6 @@ extern int func_ov007_020b6f4c(void);
 extern int func_ov007_020c3ba8(int);
 extern int func_ov007_020c3df4(int, int);
 extern int func_ov010_02111984[];
-extern int func_ov015_021114f0(void*);
 extern void func_ov016_02111c40(void*);
 extern int func_ov018_02111804[];
 /* Returns nothing: ov018 0x02111d18..0x02111d24 pops straight to bx lr with no
@@ -2442,8 +2441,6 @@ extern void func_ov007_020cb3dc(int);
 extern void func_ov013_02111430(char*);
 extern void func_ov014_02111ebc(void*, int);
 extern void func_ov015_02111214(char*);
-extern void func_ov015_02111414(void);
-extern void func_ov015_0211166c(void*);
 extern void func_ov015_021123c8(void*);
 extern int func_ov015_021128f8();
 extern void func_ov016_02111284(void*);
