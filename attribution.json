@@ -1412,6 +1412,7 @@
     "src/game/actors/d_a_bakubaku.cpp#_ZN12daBakubaku_c16CleanupResourcesEv": "github-actions[bot]",
     "src/game/actors/d_a_bakubaku.cpp#_ZN12daBakubaku_c16OnAimedAtWithEggEv": "github-actions[bot]",
     "src/game/actors/d_a_bakubaku.cpp#_ZN12daBakubaku_c16OnPendingDestroyEv": "github-actions[bot]",
+    "src/game/actors/d_a_bakubaku.cpp#_ZN12daBakubaku_c19func_ov032_02111ff4EPv": "github-actions[bot]",
     "src/game/actors/d_a_bakubaku.cpp#_ZN12daBakubaku_c6RenderEv": "github-actions[bot]",
     "src/game/actors/d_a_bakubaku.cpp#_ZN12daBakubaku_c8BehaviorEv": "github-actions[bot]",
     "src/game/actors/d_a_bakubaku.cpp#_ZN12daBakubaku_cD0Ev": "tangosdev",
