@@ -24291,11 +24291,17 @@
     "data_ov016_02114d7c": {
       "src/__sinit_ov016_021136ec.c": [
         "return:S8 []"
+      ],
+      "src/actors/daMoray_c.cpp": [
+        "return:daMoray_c::State"
       ]
     },
     "data_ov016_02114d8c": {
       "src/__sinit_ov016_021136ec.c": [
         "return:S8 []"
+      ],
+      "src/actors/daMoray_c.cpp": [
+        "return:daMoray_c::State"
       ],
       "src/func_ov016_02111534.c": [
         "return:int []"
@@ -24304,11 +24310,17 @@
     "data_ov016_02114d9c": {
       "src/__sinit_ov016_021136ec.c": [
         "return:S8 []"
+      ],
+      "src/actors/daMoray_c.cpp": [
+        "return:daMoray_c::State"
       ]
     },
     "data_ov016_02114dac": {
       "src/__sinit_ov016_021136ec.c": [
         "return:S8 []"
+      ],
+      "src/actors/daMoray_c.cpp": [
+        "return:daMoray_c::State"
       ]
     },
     "data_ov016_02114dbc": {
