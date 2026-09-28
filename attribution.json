@@ -5720,7 +5720,7 @@
     "src/actors/daObjFl_Amilift_c.cpp#func_ov064_02117c24": "tangosdev",
     "src/actors/daObjFl_Amilift_c.cpp#_ZN17daObjFl_Amilift_c16CleanupResourcesEv": "tangosdev",
     "src/actors/daObjFl_Amilift_c.cpp#_ZN17daObjFl_Amilift_c6RenderEv": "tangosdev",
-    "src/actors/daObjFl_Amilift_c.cpp#_ZN17daObjFl_Amilift_c8BehaviorEv": "tangosdev",
+    "src/actors/daObjFl_Amilift_c.cpp#_ZN17daObjFl_Amilift_c8BehaviorEv": "lunavyqo",
     "src/actors/daObjFl_Amilift_c.cpp#_ZN17daObjFl_Amilift_c13InitResourcesEv": "tangosdev"
   }
 }

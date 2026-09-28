@@ -149,7 +149,7 @@ Each row: the tree named an ancestor and skipped the class in between.
     daObjRc_Dorifu_c                 : daObjDorifu_c      tree said Platform
     daObjBk_Fall_Block_c             : daObjFallBlock_c   tree said dBgActor_c
     daObjKm2_Fall_Block_c            : daObjFallBlock_c   tree said dBgActor_c
-    daObjFl_Gura_c   (daObjFl_Amilift_c)  : daObjGuragura_c    tree said Platform
+    daObjFl_Gura_c   (MetalNetLift)  : daObjGuragura_c    tree said Platform
     daObjKm2_Gura_c                  : daObjGuragura_c    tree said Platform
     daObjKm3_Kaitendai_c             : daObjKaitendai_c   tree said Platform
     daObjWc_Obj07_c                  : daObjKaitendai_c   tree said Platform
