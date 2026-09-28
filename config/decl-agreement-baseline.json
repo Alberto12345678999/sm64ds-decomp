@@ -23,7 +23,7 @@
       ]
     },
     "AddVec3": {
-      "src/_ZN6dMap_c8BehaviorEv.cpp": [
+      "src/actors/dMap_c.cpp": [
         "param:#1 Vector3 *",
         "param:#2 Vector3 *",
         "param:#3 Vector3 *"
@@ -930,7 +930,7 @@
       "src/_ZN15dScMgPachinko_c13InitResourcesEv.cpp": [
         "param:#1 int"
       ],
-      "src/_ZN6dMap_c13InitResourcesEv.cpp": [
+      "src/actors/dMap_c.cpp": [
         "param:#1 int"
       ],
       "src/_ZN7dScMB_c13InitResourcesEv.cpp": [
@@ -1375,7 +1375,7 @@
       "src/_ZN5Stage9PS_RenderEv.cpp": [
         "param:#1 int"
       ],
-      "src/_ZN6dMap_c19UpdateLevelSpecificEv.cpp": [
+      "src/actors/dMap_c.cpp": [
         "param:#1 int"
       ],
       "src/_ZN8SaveData26CountStarsCollectedInLevelEj.cpp": [
@@ -4177,7 +4177,7 @@
       ]
     },
     "UpdateMinimap": {
-      "src/_ZN6dMap_c8BehaviorEv.cpp": [
+      "src/actors/dMap_c.cpp": [
         "param:#1 int *",
         "param:#2 int",
         "param:#3 int",
@@ -4638,7 +4638,7 @@
       ]
     },
     "Vec3_DivScalarInPlace": {
-      "src/_ZN6dMap_c20GetPosFromMinimapPosER7Vector3S1_5Fix12IiEsS1_.cpp": [
+      "src/actors/dMap_c.cpp": [
         "param:#1 Vec3 *",
         "return:void"
       ]
@@ -5174,8 +5174,8 @@
       "src/game/actors/d_a_red_bombhei.cpp": [
         "param:#1 Vector3 *"
       ],
-      "src/_ZN6dMap_c15GetPosOnMinimapER7Vector3S1_5Fix12IiEsS1_.cpp": [
-        "param:#1 Vector3 *"
+      "src/actors/dMap_c.cpp": [
+        "param:#1 Vec3 *"
       ],
       "src/func_02008cb4.c": [
         "param:#1 Vec3 *"
@@ -5198,12 +5198,7 @@
         "param:#2 Vector3 *",
         "param:#4 Vector3 *"
       ],
-      "src/_ZN6dMap_c15GetPosOnMinimapER7Vector3S1_5Fix12IiEsS1_.cpp": [
-        "param:#1 Vector3 *",
-        "param:#2 const Vector3 *",
-        "param:#4 const Vector3 *"
-      ],
-      "src/_ZN6dMap_c20GetPosFromMinimapPosER7Vector3S1_5Fix12IiEsS1_.cpp": [
+      "src/actors/dMap_c.cpp": [
         "param:#1 Vec3 *",
         "param:#2 Vec3 *",
         "param:#4 Vec3 *"
@@ -5309,17 +5304,7 @@
         "param:#2 Vector3 *",
         "param:#3 Vector3 *"
       ],
-      "src/_ZN6dMap_c15GetPosOnMinimapER7Vector3S1_5Fix12IiEsS1_.cpp": [
-        "param:#1 Vector3 *",
-        "param:#2 Vector3 *",
-        "param:#3 Vector3 *"
-      ],
-      "src/_ZN6dMap_c21FixTHIPaintingRoomPosER7Vector3.cpp": [
-        "param:#1 Vector3 *",
-        "param:#2 Vector3 *",
-        "param:#3 Vector3 *"
-      ],
-      "src/_ZN6dMap_c8BehaviorEv.cpp": [
+      "src/actors/dMap_c.cpp": [
         "param:#1 Vector3 *",
         "param:#2 Vector3 *",
         "param:#3 Vector3 *"
@@ -8455,7 +8440,7 @@
       "src/_ZN12dScMgSlot1_c13InitResourcesEv.cpp": [
         "return:char *"
       ],
-      "src/_ZN6dMap_c13InitResourcesEv.cpp": [
+      "src/actors/dMap_c.cpp": [
         "return:void *"
       ],
       "src/actors/dScMiniGm_c.cpp": [
@@ -8643,9 +8628,6 @@
       "src/_ZN11dScMgBase_c9Virtual88Eiiii.cpp": [
         "return:int *"
       ],
-      "src/_ZN6dMap_c13InitResourcesEv.cpp": [
-        "return:void *"
-      ],
       "src/func_0200f220.c": [
         "return:char *"
       ],
@@ -8697,7 +8679,7 @@
         "param:#1 volatile void *",
         "param:#5 unsigned short"
       ],
-      "src/_ZN6dMap_c8BehaviorEv.cpp": [
+      "src/actors/dMap_c.cpp": [
         "param:#5 unsigned short"
       ],
       "src/actors/dScMgAmida_c.cpp": [
@@ -9369,7 +9351,7 @@
       ]
     },
     "_ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi": {
-      "src/_ZN6dMap_c6RenderEv.cpp": [
+      "src/actors/dMap_c.cpp": [
         "return:void"
       ],
       "src/_ZN7dScMB_c15graphCallback_c14GraphCallback3Ev.cpp": [
@@ -9428,7 +9410,7 @@
       "src/_ZN5Stage9PS_RenderEv.cpp": [
         "param:#1 int"
       ],
-      "src/_ZN6dMap_c6RenderEv.cpp": [
+      "src/actors/dMap_c.cpp": [
         "param:#1 int"
       ],
       "src/func_0202048c.cpp": [
@@ -12394,18 +12376,6 @@
     "_ZN6PlayerC1Ev": {
       "src/d_a_ply.cpp": [
         "return:Player *"
-      ]
-    },
-    "_ZN6dMap_c20GetPosFromMinimapPosER7Vector3S1_5Fix12IiEsS1_": {
-      "src/_ZN6dMap_c8BehaviorEv.cpp": [
-        "param:#1 Vector3 *",
-        "param:#2 Vector3 *",
-        "param:#5 Vector3 *"
-      ]
-    },
-    "_ZN6dMap_c21FixTHIPaintingRoomPosER7Vector3": {
-      "src/_ZN6dMap_c8BehaviorEv.cpp": [
-        "param:#1 Vector3 *"
       ]
     },
     "_ZN7Clipper13Func_020150E8ER7Vector35Fix12IiEPh": {
@@ -16933,7 +16903,7 @@
       "src/_ZN5Stage8BehaviorEv.cpp": [
         "return:unsigned int"
       ],
-      "src/_ZN6dMap_c8BehaviorEv.cpp": [
+      "src/actors/dMap_c.cpp": [
         "return:unsigned int"
       ],
       "src/_ZN7Message12UpdateWindowEv.cpp": [
@@ -17144,13 +17114,7 @@
       "src/_ZN6Player13InitResourcesEv.cpp": [
         "return:CAA0"
       ],
-      "src/_ZN6dMap_c19UpdateLevelSpecificEv.cpp": [
-        "return:unsigned int []"
-      ],
-      "src/_ZN6dMap_c6RenderEv.cpp": [
-        "return:unsigned int []"
-      ],
-      "src/_ZN6dMap_c8BehaviorEv.cpp": [
+      "src/actors/dMap_c.cpp": [
         "return:unsigned int []"
       ],
       "src/_ZN8MugenBgm8BehaviorEv.cpp": [
@@ -18182,7 +18146,7 @@
       "src/_ZN6Player22St_GrabBowserTail_InitEv.cpp": [
         "return:int *"
       ],
-      "src/_ZN6dMap_c8BehaviorEv.cpp": [
+      "src/actors/dMap_c.cpp": [
         "return:Obj *"
       ],
       "src/_ZN8Goomboss8BehaviorEv.cpp": [
@@ -18286,11 +18250,6 @@
         "return:int"
       ]
     },
-    "data_0209f33c": {
-      "src/_ZN6dMap_c8BehaviorEv.cpp": [
-        "return:Obj *"
-      ]
-    },
     "data_0209f340": {
       "src/StartWithFarCamera.c": [
         "return:unsigned char *"
@@ -18362,11 +18321,8 @@
       "src/_ZN5Stage8BehaviorEv.cpp": [
         "return:char * []"
       ],
-      "src/_ZN6dMap_c6RenderEv.cpp": [
+      "src/actors/dMap_c.cpp": [
         "return:Player * []"
-      ],
-      "src/_ZN6dMap_c8BehaviorEv.cpp": [
-        "return:Obj * []"
       ],
       "src/_ZN8MugenBgm8BehaviorEv.cpp": [
         "return:char * []"
@@ -18415,7 +18371,7 @@
       "src/AddSpikeBomb.c": [
         "return:void * []"
       ],
-      "src/_ZN6dMap_c8BehaviorEv.cpp": [
+      "src/actors/dMap_c.cpp": [
         "return:Obj * []"
       ]
     },
@@ -18428,12 +18384,12 @@
       ]
     },
     "data_0209f3e8": {
-      "src/_ZN6dMap_c8BehaviorEv.cpp": [
+      "src/actors/dMap_c.cpp": [
         "return:Obj * []"
       ]
     },
     "data_0209f40c": {
-      "src/_ZN6dMap_c8BehaviorEv.cpp": [
+      "src/actors/dMap_c.cpp": [
         "return:Obj * []"
       ]
     },
@@ -18649,7 +18605,7 @@
       "src/_ZN5Stage8BehaviorEv.cpp": [
         "return:UnkVis *"
       ],
-      "src/_ZN6dMap_c8BehaviorEv.cpp": [
+      "src/actors/dMap_c.cpp": [
         "return:VtblOwner *"
       ],
       "src/_ZN8dScene_c14BeforeBehaviorEv.cpp": [
@@ -18998,7 +18954,7 @@
       ]
     },
     "data_020a0db0": {
-      "src/_ZN6dMap_c6RenderEv.cpp": [
+      "src/actors/dMap_c.cpp": [
         "return:unsigned int"
       ],
       "src/actors/dScMgD3DBase_c.cpp": [
@@ -21890,11 +21846,6 @@
     "data_ov002_02111148": {
       "src/func_02029600.c": [
         "return:unsigned char"
-      ]
-    },
-    "data_ov002_02111154": {
-      "src/_ZN6dMap_c6RenderEv.cpp": [
-        "return:unsigned char []"
       ]
     },
     "data_ov002_0211117c": {
