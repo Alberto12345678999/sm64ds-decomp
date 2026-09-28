@@ -21,8 +21,9 @@
  *   claim. FlyGuy_ChangeState keeps its C-ABI name. Helpers stay func_ov070_*
  *   (cartridge addresses, no identifiers). ApproachAngle int-target vs short
  *   via block-scope extern (this TU). V3w/V3h array-wrapper for struct copy
- *   (this TU). func_ov070_0211f48c / 0211f62c / 0211f6e0 keep char* for the
- *   inherited dActor/Player offsets and the V3w copy (this TU, measured).
+ *   (this TU). func_ov070_0211f48c / 0211f62c / 0211f6e0 keep
+ *   `(char *)this + off` for the inherited dActor/Player offsets and the V3w
+ *   copy (this TU, measured).
  */
 
 #include "daPropeller_Heyho_c.h"
