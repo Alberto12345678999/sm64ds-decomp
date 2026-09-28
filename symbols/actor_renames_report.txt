@@ -135,11 +135,11 @@ AMBIG actor 68 WORK_ELEVATOR: ['ov021', 'ov015'] -> ov021
 AMBIG actor 70 ROLLING_LOG_LLL: ['ov022', 'ov034'] -> ov022
 AMBIG actor 71 VOLCANO_RING: ['ov022', 'ov026'] -> ov022
 NOVTABLE actor 71 daObjFl_Ring_c (alloc=0x328)
-SKIP TiltingPlatformLll: ov064:0x211bd2c already claimed by MetalNetLift (vtable alloc=0x350)
-SKIP TiltingPlatformLll: ov064:0x21180e8 already claimed by MetalNetLift (vtable slot 0)
-SKIP TiltingPlatformLll: ov064:0x21180d4 already claimed by MetalNetLift (vtable slot 3)
-SKIP TiltingPlatformLll: ov064:0x2118020 already claimed by MetalNetLift (vtable slot 16)
-SKIP TiltingPlatformLll: ov064:0x2118070 already claimed by MetalNetLift (vtable slot 17)
+SKIP TiltingPlatformLll: ov064:0x211bd2c already claimed by daObjFl_Amilift_c (vtable alloc=0x350)
+SKIP TiltingPlatformLll: ov064:0x21180e8 already claimed by daObjFl_Amilift_c (vtable slot 0)
+SKIP TiltingPlatformLll: ov064:0x21180d4 already claimed by daObjFl_Amilift_c (vtable slot 3)
+SKIP TiltingPlatformLll: ov064:0x2118020 already claimed by daObjFl_Amilift_c (vtable slot 16)
+SKIP TiltingPlatformLll: ov064:0x2118070 already claimed by daObjFl_Amilift_c (vtable slot 17)
 NOVTABLE actor 73 daObjFl_London_c (alloc=0x320)
 NOVTABLE actor 74 daObjFl_Block_c (alloc=0x328)
 NOVTABLE actor 77 LavaSeesaw (alloc=0x324)
