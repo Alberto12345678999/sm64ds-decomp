@@ -2374,6 +2374,7 @@ ov077	0x02127a74	HeaveHo_SpawnInfo	g_profile_POPOI	reconstructed profile global;
 ov077	0x02127a98	data_ov077_02127a98	_ZTV9daPopoi_c	vtable alloc=?
 ov078	0x02123740	func_ov078_02123740	_ZN12daBombking_cD1Ev	vtable slot 16 (was _ZN10KingBobOmbD1Ev)
 ov078	0x02123798	func_ov078_02123798	_ZN12daBombking_cD0Ev	vtable slot 17 (was _ZN10KingBobOmbD0Ev)
+ov078	0x02123eb8	func_ov078_02123eb8	_ZN12daBombking_c19func_ov078_02123eb8Ev	daBombking_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
 ov078	0x02125ff4	func_ov078_02125ff4	_ZN12daBombking_c16CleanupResourcesEv	vtable slot 3 (was _ZN10KingBobOmb16CleanupResourcesEv)
 ov078	0x021260a8	func_ov078_021260a8	_ZN12daBombking_c16OnPendingDestroyEv	vtable slot 12 (was _ZN10KingBobOmb16OnPendingDestroyEv)
 ov078	0x021260ac	func_ov078_021260ac	_ZN12daBombking_c6RenderEv	vtable slot 9 (was _ZN10KingBobOmb6RenderEv)
