@@ -232,19 +232,22 @@ so `daDossyCap_c_classInit` is inside the unit but so is a second class's.
 The unit is 0x02117f40..0x021196d8 — 29 functions, 3 classes — which is what
 `notes/data/tu-promotion-queue.tsv` already calls `daDossy_c+DorriePlatform+daDossyCap_c`.
 
-Two blockers on that unit, independent of each other:
+The unit is now promoted as one file, `src/actors/daDossy_c.cpp` (29/29; its manifest entry is
+`ov065/DorriePlatform+daDossyCap_c+daDossy_c`). The two blockers
+this section used to list, and how each resolved:
 
-* **`DorriePlatform` is still a coined name.** The ROM's own RTTI spells the main class
+* **`DorriePlatform` is a coined name.** The ROM's own RTTI spells the main class
   `daDossy_c` (`_ZTS9daDossy_c` 0x0211cd34, `_ZTI9daDossy_c` 0x0211cd40, vtable 0x0211ce48),
-  and that rename has since landed: the overlay's symbols and
-  `notes/data/tu-promotion-queue.tsv` both spell it `daDossy_c` now, so it is no longer a
-  prerequisite. `DorriePlatform` has no RTTI at all, so there is no ROM spelling to rename
-  it to, and it still blocks the fold.
-* **The generated shadow does not compile.** `tubuild create` on the real candidate emits 17
-  human-review items — 16 conflicting `extern` declarations plus one body it cannot split at
-  all, because `src/func_ov065_021182e4.cpp` defines it inside an `extern "C"` block — and the
-  result fails under 2004/b56 on a redefined `dBgW` and a redeclared `data_ov065_0211c080`.
-  Five `#pragma` directives survive in the legacy sources on top of that.
+  and that rename landed first. `DorriePlatform` has no RTTI at all (no virtuals), so there is
+  no ROM spelling to rename it to — and for the same reason its name reaches no emitted
+  RTTI or vtable, so it did not block the fold after all.
+* **The generated shadow did not compile.** `tubuild create` on the candidate emitted 17
+  human-review items — 16 conflicting `extern` declarations plus one body it could not split,
+  because the legacy `func_ov065_021182e4` source defined it inside an `extern "C"` block —
+  and failed under 2004/b56 on a redefined `dBgW` and a redeclared `data_ov065_0211c080`. The
+  promoted file was written by hand with one unified declaration set; of the legacy
+  `#pragma` directives only `opt_common_subs off` and `opt_strength_reduction off` survive,
+  file-wide.
 
 The general lesson: a complete, correctly-homed RTTI triple says the *name* is real. It says
 nothing about where the *file* boundary falls. Check the span for overlap before scoping a fold.
