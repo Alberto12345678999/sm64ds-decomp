@@ -323,11 +323,3 @@ void func_ov065_0211ac0c(daObjCtMecha05_c *actor)
         0xdc000, 0x32000, 0x28a000, 0xf);
 }
 }
-
-/* -------------------------------------------------------------------------- */
-/*   _ZN16daObjCtMecha05_cD1Ev  0x0211ab60  size 0x4c  (complete-object)      */
-/*   _ZN16daObjCtMecha05_cD0Ev  0x0211abac  size 0x60  (deleting)            */
-/* -------------------------------------------------------------------------- */
-/* No separate body lives here. The inline virtual destructor in the class
- * declaration and this TU's vtable instantiation make mwccarm emit retail's
- * D1 then D0 order, without the extra D2 produced by an out-of-line body. */

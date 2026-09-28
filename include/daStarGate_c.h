@@ -45,6 +45,8 @@ struct daStarGate_c : dActor_c {
     u8          mCloseDoorTimer; /* 0x114 */
     u8          pad_115[0x3];
 
+    // @symbol _ZN12daStarGate_cD1Ev
+    // @symbol _ZN12daStarGate_cD0Ev
     virtual ~daStarGate_c() {}
 
     virtual s32 InitResources();

@@ -100,6 +100,8 @@ struct daObjWakame_c : dActor_c {
        BECAUSE mModelAnim has a destructor of its own, which is exactly why this
        class's D1 is 0x30 bytes where a scalar-only sibling's is 0x24. Writing
        anything between the braces would add code the cartridge does not have. */
+       // @symbol _ZN13daObjWakame_cD1Ev
+       // @symbol _ZN13daObjWakame_cD0Ev
     virtual ~daObjWakame_c() {}         /* slots 16 (D1), 17 (D0) */
 };
 

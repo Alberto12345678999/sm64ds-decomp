@@ -22,6 +22,8 @@ struct daObjFl_London_c : dBgActor_c {
     /* The destructor is declared FIRST and defined INLINE: mwcc then emits the
      * D1/D0 pair in retail order and no homeless D2, which is what lets the
      * whole class isolate into one translation unit. */
+     // @symbol _ZN16daObjFl_London_cD1Ev
+     // @symbol _ZN16daObjFl_London_cD0Ev
     virtual ~daObjFl_London_c() {}         /* slots 16 (D1), 17 (D0) */
 
     virtual s32   InitResources();         /* slot  0 */

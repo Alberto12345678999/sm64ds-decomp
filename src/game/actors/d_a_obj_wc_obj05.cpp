@@ -204,5 +204,3 @@ s32 daObjWc_Obj05_c::CleanupResources()
     return 1;
 }
 
-/* daObjWc_Obj05_c's inline class-body destructor is instantiated by the
- * definitions above. mwccarm emits D1 and D0 into this object. */

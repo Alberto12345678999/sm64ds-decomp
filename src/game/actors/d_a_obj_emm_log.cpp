@@ -110,8 +110,3 @@ s32 daObjEmmLog_c::CleanupResources()
     data_ov052_021124d4.collision->Release();
     return 1;
 }
-
-// @symbol _ZN13daObjEmmLog_cD1Ev
-// @symbol _ZN13daObjEmmLog_cD0Ev
-/* Both destructors are emitted from the INLINE `~daObjEmmLog_c() {}` in
- * include/daObjEmmLog_c.h -- there is deliberately no body here. */

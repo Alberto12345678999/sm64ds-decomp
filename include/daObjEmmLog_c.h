@@ -25,6 +25,8 @@ struct daObjEmmLog_c : dBgActor_c {
     s32 mBobAmplitude;      /* 0x324 -- 0x64000, or the spawn byte * 0xa000 */
 
     /* Inline empty dtor: mwccarm emits D1 then D0, no D2. */
+    // @symbol _ZN13daObjEmmLog_cD1Ev
+    // @symbol _ZN13daObjEmmLog_cD0Ev
     virtual ~daObjEmmLog_c() {}
 
     s32 InitResources();      /* slot  0 */

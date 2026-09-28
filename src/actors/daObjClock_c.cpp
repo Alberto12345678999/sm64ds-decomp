@@ -187,22 +187,3 @@ void func_ov013_02111430(daObjClock_c *self)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* -------------------------------------------------------------------------- */
-// @symbol _ZN12daObjClock_cD1Ev
-// @symbol _ZN12daObjClock_cD0Ev
-/* Both destructors are emitted from the INLINE `~daObjClock_c() {}` in
- * include/daObjClock_c.h -- there is deliberately no body here.
- *
- * A complete-object destructor stores this class's vtable over the one the base
- * constructor left, destroys members in reverse declaration order, then runs the
- * base subobject destructor; the deleting destructor does that and calls
- * operator delete. All of it follows from `: dActor_c` and the member types, so
- * the compiler writes both bodies and the bytes still reproduce.
- *
- * Defining ~daObjClock_c() out of line HERE instead would break the TU two ways:
- * mwccarm would emit D0 at 0x021113ec's slot before D1 at 0x021113bc's,
- * reversing ROM order so objisolate refuses the entire TU, and it would emit a
- * third symbol, D2, which has no address anywhere in the cartridge. See the
- * vtable comment in the header.
- */

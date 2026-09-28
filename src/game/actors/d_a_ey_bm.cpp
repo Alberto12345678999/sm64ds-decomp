@@ -298,4 +298,3 @@ int daEyBm_c::OnYoshiTryEat()
     return 4;
 }
 
-/* The inline class destructor and InitResources vtable instantiation emit both naturally. */

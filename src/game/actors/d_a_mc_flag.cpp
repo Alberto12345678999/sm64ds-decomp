@@ -82,10 +82,3 @@ s32 daMcFlag_c::CleanupResources()
     data_ov009_02113eb0.Release();
     return 1;
 }
-
-/* -------------------------------------------------------------------------- */
-/*   _ZN10daMcFlag_cD1Ev  0x02112078  size 0x30  (complete-object destructor) */
-/*   _ZN10daMcFlag_cD0Ev  0x021120a8  size 0x44  (deleting destructor)        */
-/* -------------------------------------------------------------------------- */
-// @symbol _ZN10daMcFlag_cD0Ev
-// @symbol _ZN10daMcFlag_cD1Ev

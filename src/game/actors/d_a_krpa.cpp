@@ -471,12 +471,3 @@ int daKrpa_c::OnYoshiTryEat()
     return 5;
 }
 
-// @symbol _ZN8daKrpa_cD0Ev
-
-/* No separate body: the inline class destructor plus vtable instantiation
- * makes mwcc emit the retail deleting variant after D1. */
-
-// @symbol _ZN8daKrpa_cD1Ev
-
-/* No separate body: the inline class destructor emits this complete variant
- * first, through the class vtable instantiated in this TU. */

@@ -28,6 +28,8 @@ struct daObjHatenaSwitch_c : dBgActor_c {
 
     /* Inline plus the out-of-line InitResources key function makes mwccarm
      * emit retail D1 then D0 without a retained D2 or forcing helper. */
+    // @symbol _ZN19daObjHatenaSwitch_cD1Ev
+    // @symbol _ZN19daObjHatenaSwitch_cD0Ev
     virtual ~daObjHatenaSwitch_c() {}
 
     virtual s32 InitResources();

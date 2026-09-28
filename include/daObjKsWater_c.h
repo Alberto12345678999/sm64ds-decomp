@@ -38,6 +38,8 @@ extern "C" void *_ZN7fBase_cnwEj(unsigned size);
  */
 
 struct daObjKsWater_c : dBgActor_c {
+    // @symbol _ZN14daObjKsWater_cD1Ev
+    // @symbol _ZN14daObjKsWater_cD0Ev
     virtual ~daObjKsWater_c() {}                  /* slots 16, 17 */
 
     virtual int InitResources();                  /* slot 0 */

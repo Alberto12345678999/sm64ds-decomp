@@ -18,7 +18,15 @@ struct daObjBk_Rotebar_c : dBgActor_c {
     s8  mPauseTimer;   /* 0x31e -- 0x3c; DecIfAbove0_Byte gates the turn */
     s32 mTurnSound;    /* 0x320 -- recycled Sound::PlayLong handle */
 
-    /* Inline empty dtor: mwccarm emits D1 then D0, no D2. */
+    /* Inline empty dtor: mwccarm emits D1 then D0, no D2.
+     * Both bodies are short because the chain is short: this class's vptr
+     * store, then dBgActor_c's -- inlined, its destructor is defined in its
+     * class body -- then dBgActor_c's Model and dBgW_KcMbg, then dActor_c. This
+     * class adds no member with a destructor of its own. D0's trailing
+     * deallocation is the inherited inline operator delete, which is why
+     * nothing in the source names a heap.*/
+    // @symbol _ZN17daObjBk_Rotebar_cD1Ev
+    // @symbol _ZN17daObjBk_Rotebar_cD0Ev
     virtual ~daObjBk_Rotebar_c() {}
 
     s32 InitResources();      /* slot  0 */

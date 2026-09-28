@@ -235,11 +235,3 @@ extern "C" void func_ov002_020f0438(void *self)
     if (thiz->mGroupRole != 2) return;
     thiz->MarkForDestruction();
 }
-
-/* -------------------------------------------------------------------------- */
-/*   _ZN9daSCoin_cD1Ev  0x020f03c4  size 0x30  (complete-object destructor)   */
-/*   _ZN9daSCoin_cD0Ev  0x020f03f4  size 0x44  (deleting destructor)          */
-/* -------------------------------------------------------------------------- */
-
-// @symbol _ZN9daSCoin_cD0Ev
-// @symbol _ZN9daSCoin_cD1Ev

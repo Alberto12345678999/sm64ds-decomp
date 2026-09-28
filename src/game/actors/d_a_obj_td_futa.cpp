@@ -93,20 +93,3 @@ s32 daObjTdFuta_c::CleanupResources()
     data_ov032_02113acc.Release();
     return 1;
 }
-
-// @symbol _ZN13daObjTdFuta_cD1Ev
-// @symbol _ZN13daObjTdFuta_cD0Ev
-/* NOT WRITTEN HERE ON PURPOSE. The destructor body is INLINE in
- * include/daObjTdFuta_c.h and declared LAST. Two measurements force that:
- *   - out of line, mwcc emits D0 ahead of D1 and the cartridge has D1 first,
- *     which rombuild refuses outright;
- *   - out of line it also emits the D2 base-object variant, which the ROM
- *     never carried.
- * Declaring it last, with the factory's `new` instantiating the class, is
- * what emits the used D1/D0 pair in cartridge order and keeps this TU the
- * vtable's home.
- *
- * Both bodies are short because the chain is short and this class adds no
- * member of its own: this class's vptr store, then dBgActor_c's -- inlined,
- * which destroys the Model at 0xd4 and the dBgW_KcMbg at 0x124 -- then
- * dActor_c. */

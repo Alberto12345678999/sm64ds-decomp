@@ -38,6 +38,8 @@ struct daObjMc_Metalnet_c : dBgActor_c {
        and a homeless D2, and objisolate rejects the whole translation unit.
        Defined in the class body it emits D1 then D0 and no D2. Safe here
        because the class is a leaf: nothing derives from it. */
+       // @symbol _ZN18daObjMc_Metalnet_cD1Ev
+       // @symbol _ZN18daObjMc_Metalnet_cD0Ev
     virtual ~daObjMc_Metalnet_c() {}        /* slots 16 (D1), 17 (D0) */
 
     virtual s32   InitResources();          /* slot  0 */

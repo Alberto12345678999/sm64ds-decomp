@@ -108,6 +108,8 @@ struct daOts_c : dEnemyBase_c {
        does not have. Being inline also leaves this class without a key function, so
        merely including this header does not emit _ZTV7daOts_c. Same reasoning, same
        wording, as include/dBgActor_c.h. */
+       // @symbol _ZN7daOts_cD1Ev
+       // @symbol _ZN7daOts_cD0Ev
     virtual ~daOts_c() {}
 
     /* The three slots this class owns outright, each named by the diff above rather

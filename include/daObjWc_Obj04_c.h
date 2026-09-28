@@ -59,6 +59,8 @@ struct daObjWc_Obj04_c : dBgActor_c {
         return _ZN7fBase_cnwEj((unsigned)size);
     }
 
+    // @symbol _ZN15daObjWc_Obj04_cD1Ev
+    // @symbol _ZN15daObjWc_Obj04_cD0Ev
     virtual ~daObjWc_Obj04_c() {}     /* slots 16 (D1), 17 (D0) */
 };
 

@@ -20,6 +20,8 @@ struct daObjKb1Billboard_c : dActor_c {
 
     /* InitResources is the first out-of-line virtual/key function. The inline
      * destructor lets mwccarm emit the retail D1/D0 pair and class RTTI/vtable. */
+     // @symbol _ZN19daObjKb1Billboard_cD1Ev
+     // @symbol _ZN19daObjKb1Billboard_cD0Ev
     virtual ~daObjKb1Billboard_c() {}
 
     virtual s32 InitResources();

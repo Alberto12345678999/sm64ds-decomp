@@ -68,18 +68,20 @@ struct daPkn_c : dEnemyBase_c {
        at 0x0212eb48 and carries no D2 anywhere, which is what mwccarm 2004/b56
        emits for an inline in-class destructor; the out-of-line form emits
        D2/D0/D1 in the wrong order plus a homeless D2. The typed member list
-       above makes the empty body own the dCcAcPos_c, the two dCcAc_c, the
-       dBgCh_Actr, the Model and the ModelAnim teardowns in that
-       reverse-declaration order, and the chain into _ZN12dEnemyBase_cD2Ev --
+       above makes the empty body own the `dCcAcPos_c`, the two `dCcAc_c`, the
+       `dBgCh_Actr`, the Model and the ModelAnim teardowns in that
+       reverse-declaration order, and the chain into `_ZN12dEnemyBase_cD2Ev` --
        which is exactly what both ROM bodies do.
 
-       With the destructor inline, OnAimedAtWithEgg becomes the first
+       With the destructor inline, `OnAimedAtWithEgg` becomes the first
        out-of-line virtual this class declares -- the key function -- so the
        compiler emits the vtable and the RTTI group into the translation unit
-       that defines it, src/actors/daPkn_c.cpp. They do not ship from here:
+       that defines it, `src/actors/daPkn_c.cpp`. They do not ship from here:
        ov084 delinks no .data, so text-only isolation discards all three and
        the ROM copies stand -- see compiler_only_output in
-       config/tu_manifest.d/ov084/daPkn_c.json. */
+       `config/tu_manifest.d/ov084/daPkn_c.json`. */
+       // @symbol _ZN7daPkn_cD1Ev
+       // @symbol _ZN7daPkn_cD0Ev
     virtual ~daPkn_c() {}
 
     virtual s32   OnAimedAtWithEgg();      /* slot 29 -- key function */

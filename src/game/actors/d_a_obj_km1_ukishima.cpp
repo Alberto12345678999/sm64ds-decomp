@@ -141,12 +141,3 @@ s32 daObjKm1_Ukishima_c::CleanupResources()
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* -------------------------------------------------------------------------- */
-// @symbol _ZN19daObjKm1_Ukishima_cD1Ev
-// @symbol _ZN19daObjKm1_Ukishima_cD0Ev
-/* NOT WRITTEN HERE ON PURPOSE. The inline `~daObjKm1_Ukishima_c() {}` in the
-   header is the whole source of both variants: from an inline body mwcc emits
-   D1 and then D0 -- the cartridge's own order -- and no D2, which is the order
-   and the set the ROM carries. Written out of line here instead, mwcc emits D0
-   ahead of D1 and rombuild refuses the object outright. */

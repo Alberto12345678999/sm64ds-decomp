@@ -81,6 +81,8 @@ struct da1up_c : dEnemyBase_c {
        class's key function: the ROM puts D1 at 0x020aee40 below D0 at
        0x020aee88 with no D2, and out-of-line plus `#pragma defer_codegen off`
        is the form that reproduces that order. */
+       // @symbol _ZN7da1up_cD1Ev
+       // @symbol _ZN7da1up_cD0Ev
     virtual ~da1up_c();
 
     virtual s32   InitResources();               /* slot  0 */

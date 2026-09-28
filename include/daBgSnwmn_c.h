@@ -62,6 +62,8 @@ struct daBgSnwmn_c : dActor_c {
 
     /* Declared last and inline so class instantiation emits the retail D1/D0
        pair in that order, with no separate D2 body. */
+       // @symbol _ZN11daBgSnwmn_cD1Ev
+       // @symbol _ZN11daBgSnwmn_cD0Ev
     virtual ~daBgSnwmn_c() {}                            /* slots 16 (D1), 17 (D0) */
 };
 

@@ -108,13 +108,15 @@ struct daBmb_c : dEnemyBase_c {
        at 0x0214a9b4 and carries no D2 anywhere, which is what mwccarm 2004/b56
        emits for an inline in-class destructor; the out-of-line form emits
        D2/D0/D1 in the wrong order plus a homeless D2. The typed member list
-       above makes the empty body own the ShadowModel, ModelAnim, dBgCh_Actr and
-       dCcAc_c teardowns and the chain into _ZN12dEnemyBase_cD2Ev.
+       above makes the empty body own the `ShadowModel`, `ModelAnim`, `dBgCh_Actr` and
+       `dCcAc_c` teardowns and the chain into `_ZN12dEnemyBase_cD2Ev`.
 
-       With the destructor inline, OnYoshiTryEat becomes the first out-of-line
+       With the destructor inline, `OnYoshiTryEat` becomes the first out-of-line
        virtual this class declares -- the key function -- so the vtable and the
        RTTI group land in the translation unit that defines it,
-       src/actors/daBmb_c.cpp. */
+       `src/actors/daBmb_c.cpp`. */
+       // @symbol _ZN7daBmb_cD1Ev
+       // @symbol _ZN7daBmb_cD0Ev
     virtual ~daBmb_c() {}
 
     virtual s32   OnYoshiTryEat();         /* slot 18 -- key function */

@@ -508,7 +508,3 @@ foundPlayer:
     }
     return 1;
 }
-
-/* The inline destructor and InitResources key function emit the retail D1/D0
- * group without a retained D2 or forcing helper. */
-

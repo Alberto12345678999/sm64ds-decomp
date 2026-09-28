@@ -147,17 +147,3 @@ s32 daObjClockHuriko_c::CleanupResources()
     data_ov013_02112280.Release();
     return 1;
 }
-
-/* -------------------------------------------------------------------------- */
-/* -------------------------------------------------------------------------- */
-// @symbol _ZN18daObjClockHuriko_cD1Ev
-// @symbol _ZN18daObjClockHuriko_cD0Ev
-/* Both destructors are emitted from the INLINE `~daObjClockHuriko_c() {}` in
- * include/daObjClockHuriko_c.h -- there is deliberately no body here.
- *
- * Defining ~daObjClockHuriko_c() out of line HERE instead would break the TU
- * two ways: mwccarm would emit D0 at 0x021111d0's slot before D1 at
- * 0x021111a0's, reversing ROM order so objisolate refuses the entire TU, and
- * it would emit a third symbol, D2, which has no address anywhere in the
- * cartridge. See the vtable comment in the header.
- */

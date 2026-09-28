@@ -19,6 +19,8 @@ struct daObjFm_Battan_c : dBgActor_c {
     /* InitResources is deliberately the first out-of-line virtual/key
      * function. mwccarm then owns this class's RTTI/vtable and emits the
      * retail D1/D0 pair from this inline destructor, with no retained D2. */
+     // @symbol _ZN16daObjFm_Battan_cD1Ev
+     // @symbol _ZN16daObjFm_Battan_cD0Ev
     virtual ~daObjFm_Battan_c() {}
     virtual int InitResources();
     virtual int CleanupResources();
