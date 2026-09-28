@@ -147,7 +147,7 @@ For a class whose destructor stores its own vptr and then `dBgActor_c`'s
 chaining to `dActor_c`: all three of those are `dBgActor_c`'s own. Everything such
 a header used to restate below 0x31e was `dActor_c`'s and `dBgActor_c`'s, and is
 inherited. This applies to `daObjSimpleLift_c`, `daObjFl_Block_c`,
-`daObjRc_Guruguru_c`, `RotatingUpDownPlatformUtm` and their siblings.
+`daObjRc_Guruguru_c`, `daObjRotateUpdownLift_c` and their siblings.
 
 Where a size assertion is only the observed field span rounded up, it guards the
 declaration and is **not** independent evidence about the ROM. Where a factory's
@@ -209,11 +209,11 @@ two `Fix12<int>`, and that type is an aggregate with no converting constructor
 from `int`, so materialising a zero one costs stack traffic the ROM does not have.
 The pair goes in registers exactly as two ints either way.
 
-## `include/RotatingUpDownPlatformUtm.h`
+## `include/daObjRotateUpdownLift_c.h`
 
 Base and size from the factory (`src/d_a_obj_rotate_updown_lift_hs_updown_lift.c`):
 `fBase_c::operator new(936)` — 0x3a8 — then `dBgActor_c::dBgActor_c()`, then stores
-`_ZTV25RotatingUpDownPlatformUtm`. No intermediate base: one non-base vtable
+`_ZTV23daObjRotateUpdownLift_c`. No intermediate base: one non-base vtable
 store, matching the D1 destructor.
 
 `dBgActor_c` ends at 0x320. Members below that used to be restated here under
@@ -252,7 +252,7 @@ a layout claim this pass did not need to make.
 
 `Kill` is slot 31, `dBgActor_c`'s own new virtual, attributed by the vtable:
 [arm9/overlays/ov091/relocs.txt](../config/arm9/overlays/ov091/relocs.txt) has 0x02134cd8 → 0x02131070, and
-`_ZTV25RotatingUpDownPlatformUtm + 4*31 = 0x02134cd8`. It is **not** the key
+`_ZTV23daObjRotateUpdownLift_c + 4*31 = 0x02134cd8`. It is **not** the key
 function: the destructor is declared out of line and defined identically in both
 `D1Ev.cpp` and `D0Ev.cpp`, so those two TUs keep emitting the vtable — checked
 with `objisolate`, not assumed.

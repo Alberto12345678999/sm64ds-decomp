@@ -26,7 +26,7 @@
  *   naming three words is not worth pulling Player.h into a TU that has no
  *   other use for it.
  * - unk_31c/unk_31d stay: the mega-knockback armed flag and its 30-frame fuse
- *   to Kill(), but RotatingUpDownPlatformUtm::Kill also writes unk_31c, so
+ *   to Kill(), but daObjRotateUpdownLift_c::Kill also writes unk_31c, so
  *   renaming is a shared-header plus leaf change, out of scope for this TU.
  * - data_020a0e68 is the shared scratch matrix; no header owns it, TU-local.
  */

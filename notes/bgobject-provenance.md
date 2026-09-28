@@ -765,7 +765,7 @@ same offsets:
 * `daObjEwbIce_c` 0x330 / 0x334 / 0x338 — written once each by `InitResources`, never read.
 * `daObjCtMecha10_c` 0x326 — written the same table value as `mAngleYStep`, never read.
 * `daKpa2Bg_c` 0x56c — zeroed, never read.
-* `RotatingUpDownPlatformUtm` 0x300 in the C twin — that offset is *interior* to
+* `daObjRotateUpdownLift_c` 0x300 in the C twin — that offset is *interior* to
   `dBgActor_c::mClsnMat` (0x2ec + 0x14), and naming a matrix element from a single
   `s16` read would be an invention.
 * The classes with no fields of their own — `daObjMc_Metalnet_c`, `daObjIceBoard_c`,

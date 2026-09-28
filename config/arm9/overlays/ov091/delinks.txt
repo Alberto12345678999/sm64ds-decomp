@@ -4,49 +4,9 @@
     .ctor       start:0x02134b68 end:0x02134b80 kind:rodata align:4
     .data       start:0x02134ba0 end:0x02135440 kind:data align:32
     .bss        start:0x02135440 end:0x021356e0 kind:bss align:32
-src/_ZN25RotatingUpDownPlatformUtmD1Ev.cpp:
+src/actors/daObjRotateUpdownLift_c.cpp:
     complete
-    .text start:0x02130f00 end:0x02130f4c
-
-src/_ZN25RotatingUpDownPlatformUtmD0Ev.cpp:
-    complete
-    .text start:0x02130f4c end:0x02130fac
-
-src/func_ov091_02130fac.cpp:
-    complete
-    .text start:0x02130fac end:0x02131070
-
-src/_ZN25RotatingUpDownPlatformUtm4KillEv.cpp:
-    complete
-    .text start:0x02131070 end:0x021310fc
-
-src/_ZN25RotatingUpDownPlatformUtm15OnHitByMegaCharER6Player.cpp:
-    complete
-    .text start:0x021310fc end:0x02131160
-
-src/func_ov091_02131160.c:
-    complete
-    .text start:0x02131160 end:0x02131340
-
-src/func_ov091_02131340.c:
-    complete
-    .text start:0x02131340 end:0x02131388
-
-src/_ZN25RotatingUpDownPlatformUtm16CleanupResourcesEv.cpp:
-    complete
-    .text start:0x02131388 end:0x02131408
-
-src/_ZN25RotatingUpDownPlatformUtm6RenderEv.cpp:
-    complete
-    .text start:0x02131408 end:0x02131468
-
-src/_ZN25RotatingUpDownPlatformUtm8BehaviorEv.cpp:
-    complete
-    .text start:0x02131468 end:0x021318f0
-
-src/_ZN25RotatingUpDownPlatformUtm13InitResourcesEv.cpp:
-    complete
-    .text start:0x021318f0 end:0x02131ba4
+    .text start:0x02130f00 end:0x02131ba4
 
 src/d_a_obj_rotate_updown_lift_hs_updown_lift.c:
     complete

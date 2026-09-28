@@ -2270,8 +2270,8 @@
       "diffs": []
     },
     {
-      "file": "src/_ZN11PowerFlower13InitResourcesEv.cpp",
-      "name": "_ZN11PowerFlower13InitResourcesEv",
+      "file": "src/_ZN18daObjPowerUpItem_c13InitResourcesEv.cpp",
+      "name": "_ZN18daObjPowerUpItem_c13InitResourcesEv",
       "module": "ov002",
       "addr": "0x20b9c00",
       "verdict": "VERIFIED",
@@ -2279,8 +2279,8 @@
       "diffs": []
     },
     {
-      "file": "src/_ZN11PowerFlower8BehaviorEv.cpp",
-      "name": "_ZN11PowerFlower8BehaviorEv",
+      "file": "src/_ZN18daObjPowerUpItem_c8BehaviorEv.cpp",
+      "name": "_ZN18daObjPowerUpItem_c8BehaviorEv",
       "module": "ov002",
       "addr": "0x20b9b70",
       "verdict": "VERIFIED",
@@ -3395,8 +3395,8 @@
       "diffs": []
     },
     {
-      "file": "src/_ZN25RotatingUpDownPlatformUtm13InitResourcesEv.cpp",
-      "name": "_ZN25RotatingUpDownPlatformUtm13InitResourcesEv",
+      "file": "src/_ZN23daObjRotateUpdownLift_c13InitResourcesEv.cpp",
+      "name": "_ZN23daObjRotateUpdownLift_c13InitResourcesEv",
       "module": "ov091",
       "addr": "0x21318f0",
       "verdict": "VERIFIED",
@@ -3404,8 +3404,8 @@
       "diffs": []
     },
     {
-      "file": "src/_ZN25RotatingUpDownPlatformUtm16CleanupResourcesEv.cpp",
-      "name": "_ZN25RotatingUpDownPlatformUtm16CleanupResourcesEv",
+      "file": "src/_ZN23daObjRotateUpdownLift_c16CleanupResourcesEv.cpp",
+      "name": "_ZN23daObjRotateUpdownLift_c16CleanupResourcesEv",
       "module": "ov091",
       "addr": "0x2131388",
       "verdict": "VERIFIED",
@@ -3413,8 +3413,8 @@
       "diffs": []
     },
     {
-      "file": "src/_ZN25RotatingUpDownPlatformUtm8BehaviorEv.cpp",
-      "name": "_ZN25RotatingUpDownPlatformUtm8BehaviorEv",
+      "file": "src/_ZN23daObjRotateUpdownLift_c8BehaviorEv.cpp",
+      "name": "_ZN23daObjRotateUpdownLift_c8BehaviorEv",
       "module": "ov091",
       "addr": "0x2131468",
       "verdict": "VERIFIED",
@@ -20041,7 +20041,7 @@
           "src/game/actors/d_a_obj_ki_fune.cpp",
           "src/_ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block.c",
           "src/_ZN11BillBlaster16CleanupResourcesEv.cpp",
-          "src/_ZN11PowerFlower13InitResourcesEv.cpp",
+          "src/_ZN18daObjPowerUpItem_c13InitResourcesEv.cpp",
           "src/_ZN11dCapEnemy_c12Unk_02005d94Ev.cpp",
           "src/_ZN11dScMgBase_c25OnAimedAtWithEggReturnVecEv.cpp",
           "src/_ZN11daC_Jugem_c8BehaviorEv.cpp",
@@ -20062,7 +20062,7 @@
           "src/_ZN16dScMgSmartball_c8BehaviorEv.cpp",
           "src/_ZN17BowserSkyPlatform16CleanupResourcesEv.cpp",
           "src/_ZN19FloatOnLavaPlatform16CleanupResourcesEv.cpp",
-          "src/_ZN25RotatingUpDownPlatformUtm16CleanupResourcesEv.cpp",
+          "src/_ZN23daObjRotateUpdownLift_c16CleanupResourcesEv.cpp",
           "src/_ZN3Key13InitResourcesEv.cpp",
           "src/_ZN4Coin13OnTurnIntoEggER6Player.cpp",
           "src/_ZN4Heap6IntactEv.cpp",
@@ -20160,7 +20160,7 @@
           "src/game/actors/d_a_obj_ki_fune.cpp",
           "src/_ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block.c",
           "src/_ZN11BillBlaster16CleanupResourcesEv.cpp",
-          "src/_ZN11PowerFlower13InitResourcesEv.cpp",
+          "src/_ZN18daObjPowerUpItem_c13InitResourcesEv.cpp",
           "src/_ZN11dCapEnemy_c12Unk_02005d94Ev.cpp",
           "src/_ZN11dScMgBase_c25OnAimedAtWithEggReturnVecEv.cpp",
           "src/_ZN11daC_Jugem_c8BehaviorEv.cpp",
@@ -20181,7 +20181,7 @@
           "src/_ZN16dScMgSmartball_c8BehaviorEv.cpp",
           "src/_ZN17BowserSkyPlatform16CleanupResourcesEv.cpp",
           "src/_ZN19FloatOnLavaPlatform16CleanupResourcesEv.cpp",
-          "src/_ZN25RotatingUpDownPlatformUtm16CleanupResourcesEv.cpp",
+          "src/_ZN23daObjRotateUpdownLift_c16CleanupResourcesEv.cpp",
           "src/_ZN3Key13InitResourcesEv.cpp",
           "src/_ZN4Coin13OnTurnIntoEggER6Player.cpp",
           "src/_ZN4Heap6IntactEv.cpp",
@@ -20295,7 +20295,7 @@
           "src/_ZN10StarMarker8BehaviorEv.cpp",
           "src/_ZN10dScEntry_c13InitResourcesEv.cpp",
           "src/_ZN11CrazedCrate13InitResourcesEv.cpp",
-          "src/_ZN11PowerFlower8BehaviorEv.cpp",
+          "src/_ZN18daObjPowerUpItem_c8BehaviorEv.cpp",
           "src/_ZN11dCapEnemy_c15RespawnIfHasCapEv.cpp",
           "src/_ZN11dScMgBase_c9Virtual7CEv.cpp",
           "src/_ZN11daDonketu_c13InitResourcesEv.cpp",
@@ -20316,7 +20316,7 @@
           "src/_ZN16dScMgSmartball_c8OnPushedEv.cpp",
           "src/_ZN17SlidingPlatformWf16CleanupResourcesEv.cpp",
           "src/_ZN19FloatOnLavaPlatform8BehaviorEv.cpp",
-          "src/_ZN25RotatingUpDownPlatformUtm8BehaviorEv.cpp",
+          "src/_ZN23daObjRotateUpdownLift_c8BehaviorEv.cpp",
           "src/_ZN3Key16CleanupResourcesEv.cpp",
           "src/_ZN4Coin8BehaviorEv.cpp",
           "src/_ZN4Heap6SizeofEPv.cpp",
@@ -20419,7 +20419,7 @@
           "src/_ZN10StarMarker8BehaviorEv.cpp",
           "src/_ZN10dScEntry_c13InitResourcesEv.cpp",
           "src/_ZN11CrazedCrate13InitResourcesEv.cpp",
-          "src/_ZN11PowerFlower8BehaviorEv.cpp",
+          "src/_ZN18daObjPowerUpItem_c8BehaviorEv.cpp",
           "src/_ZN11dCapEnemy_c15RespawnIfHasCapEv.cpp",
           "src/_ZN11dScMgBase_c9Virtual7CEv.cpp",
           "src/_ZN11daDonketu_c13InitResourcesEv.cpp",
@@ -20440,7 +20440,7 @@
           "src/_ZN16dScMgSmartball_c8OnPushedEv.cpp",
           "src/_ZN17SlidingPlatformWf16CleanupResourcesEv.cpp",
           "src/_ZN19FloatOnLavaPlatform8BehaviorEv.cpp",
-          "src/_ZN25RotatingUpDownPlatformUtm8BehaviorEv.cpp",
+          "src/_ZN23daObjRotateUpdownLift_c8BehaviorEv.cpp",
           "src/_ZN3Key16CleanupResourcesEv.cpp",
           "src/_ZN4Coin8BehaviorEv.cpp",
           "src/_ZN4Heap6SizeofEPv.cpp",
@@ -21357,7 +21357,7 @@
           "src/_ZN16dScMgSmartball_c21AfterCleanupResourcesEj.cpp",
           "src/_ZN17BowserPuzzlePiece16CleanupResourcesEv.cpp",
           "src/_ZN19FloatOnLavaPlatform13InitResourcesEv.cpp",
-          "src/_ZN25RotatingUpDownPlatformUtm13InitResourcesEv.cpp",
+          "src/_ZN23daObjRotateUpdownLift_c13InitResourcesEv.cpp",
           "src/_ZN8dMeter_c6RenderEv.cpp",
           "src/_ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2.cpp",
           "src/_ZN4Heap11ResizeToFitEv.cpp",
@@ -21480,7 +21480,7 @@
           "src/_ZN16dScMgSmartball_c21AfterCleanupResourcesEj.cpp",
           "src/_ZN17BowserPuzzlePiece16CleanupResourcesEv.cpp",
           "src/_ZN19FloatOnLavaPlatform13InitResourcesEv.cpp",
-          "src/_ZN25RotatingUpDownPlatformUtm13InitResourcesEv.cpp",
+          "src/_ZN23daObjRotateUpdownLift_c13InitResourcesEv.cpp",
           "src/_ZN8dMeter_c6RenderEv.cpp",
           "src/_ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2.cpp",
           "src/_ZN4Heap11ResizeToFitEv.cpp",
@@ -21639,8 +21639,8 @@
         "src/_ZN11MirrorLuigi13InitResourcesEv.cpp",
         "src/_ZN11MirrorLuigi6RenderEv.cpp",
         "src/_ZN11MirrorLuigi8BehaviorEv.cpp",
-        "src/_ZN11PowerFlower13InitResourcesEv.cpp",
-        "src/_ZN11PowerFlower8BehaviorEv.cpp",
+        "src/_ZN18daObjPowerUpItem_c13InitResourcesEv.cpp",
+        "src/_ZN18daObjPowerUpItem_c8BehaviorEv.cpp",
         "src/_ZN11PyramidLift13InitResourcesEv.cpp",
         "src/_ZN11PyramidStep16CleanupResourcesEv.cpp",
         "src/_ZN11PyramidStep8BehaviorEv.cpp",
@@ -21766,9 +21766,9 @@
         "src/_ZN21daObj_volcanoCannon_c13InitResourcesEv.cpp",
         "src/_ZN22RotatingUpDownPlatform13InitResourcesEv.cpp",
         "src/_ZN22RotatingUpDownPlatform8BehaviorEv.cpp",
-        "src/_ZN25RotatingUpDownPlatformUtm13InitResourcesEv.cpp",
-        "src/_ZN25RotatingUpDownPlatformUtm16CleanupResourcesEv.cpp",
-        "src/_ZN25RotatingUpDownPlatformUtm8BehaviorEv.cpp",
+        "src/_ZN23daObjRotateUpdownLift_c13InitResourcesEv.cpp",
+        "src/_ZN23daObjRotateUpdownLift_c16CleanupResourcesEv.cpp",
+        "src/_ZN23daObjRotateUpdownLift_c8BehaviorEv.cpp",
         "src/_ZN8dMeter_c15RenderTimeTimerEv.cpp",
         "src/_ZN8dMeter_c17RenderHealthMeterEv.cpp",
         "src/_ZN8dMeter_c17UpdateHealthMeterEv.cpp",
@@ -22479,12 +22479,12 @@
           "name": "_ZN11MirrorLuigi8BehaviorEv"
         },
         {
-          "file": "src/_ZN11PowerFlower13InitResourcesEv.cpp",
-          "name": "_ZN11PowerFlower13InitResourcesEv"
+          "file": "src/_ZN18daObjPowerUpItem_c13InitResourcesEv.cpp",
+          "name": "_ZN18daObjPowerUpItem_c13InitResourcesEv"
         },
         {
-          "file": "src/_ZN11PowerFlower8BehaviorEv.cpp",
-          "name": "_ZN11PowerFlower8BehaviorEv"
+          "file": "src/_ZN18daObjPowerUpItem_c8BehaviorEv.cpp",
+          "name": "_ZN18daObjPowerUpItem_c8BehaviorEv"
         },
         {
           "file": "src/_ZN11PyramidLift13InitResourcesEv.cpp",
@@ -22979,16 +22979,16 @@
           "name": "_ZN22RotatingUpDownPlatform8BehaviorEv"
         },
         {
-          "file": "src/_ZN25RotatingUpDownPlatformUtm13InitResourcesEv.cpp",
-          "name": "_ZN25RotatingUpDownPlatformUtm13InitResourcesEv"
+          "file": "src/_ZN23daObjRotateUpdownLift_c13InitResourcesEv.cpp",
+          "name": "_ZN23daObjRotateUpdownLift_c13InitResourcesEv"
         },
         {
-          "file": "src/_ZN25RotatingUpDownPlatformUtm16CleanupResourcesEv.cpp",
-          "name": "_ZN25RotatingUpDownPlatformUtm16CleanupResourcesEv"
+          "file": "src/_ZN23daObjRotateUpdownLift_c16CleanupResourcesEv.cpp",
+          "name": "_ZN23daObjRotateUpdownLift_c16CleanupResourcesEv"
         },
         {
-          "file": "src/_ZN25RotatingUpDownPlatformUtm8BehaviorEv.cpp",
-          "name": "_ZN25RotatingUpDownPlatformUtm8BehaviorEv"
+          "file": "src/_ZN23daObjRotateUpdownLift_c8BehaviorEv.cpp",
+          "name": "_ZN23daObjRotateUpdownLift_c8BehaviorEv"
         },
         {
           "file": "src/_ZN8dMeter_c15RenderTimeTimerEv.cpp",

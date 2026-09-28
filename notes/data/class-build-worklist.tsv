@@ -155,7 +155,7 @@ daObjKm2_Nobiru_c	DONE	include\daObjKm2_Nobiru_c.h  [alias: header uses pre-rena
 daObjKumo_c	DONE	include\daObjKumo_c.h	dActor_c	0	ov039	6
 daObjLava_c	DONE	include\daObjLava_c.h	dActor_c	0	ov002	3
 daObjNumber_c	DONE	include\daObjNumber_c.h	dActor_c	0	ov002	6
-daObjPowerUpItem_c	DONE	include\PowerFlower.h  [alias: header uses pre-rename name]	dActor_c	0	ov002	7
+daObjPowerUpItem_c	DONE	include\daObjPowerUpItem_c.h  [alias: header uses pre-rename name]	dActor_c	0	ov002	7
 daObjRc_Hane_c	DONE	include\daObjRc_Hane_c.h	dActor_c	0	ov036	6
 daObjShell_c	DONE	include\daObjShell_c.h	dActor_c	0	ov064	6
 daObjTbox_c	DONE	include\daObjTbox_c.h	dActor_c	0	ov064	15
@@ -280,7 +280,7 @@ daObjPushblock_c	DONE	include\daObjPushblock_c.h	dBgActor_c	0	ov002	9
 daObjRcBuranko_c	DONE	include\daObjRcBuranko_c.h	dBgActor_c	0	ov036	6
 daObjRc_Guruguru_c	DONE	include\daObjRc_Guruguru_c.h	dBgActor_c	0	ov036	6
 daObjRc_Tikuwa_c	MISSING	include/daObjRc_Tikuwa_c.h (MISSING)	dBgActor_c	0	ov036	0
-daObjRotateUpdownLift_c	DONE	include\RotatingUpDownPlatformUtm.h  [alias: header uses pre-rename name]	dBgActor_c	0	ov091	8
+daObjRotateUpdownLift_c	DONE	include\daObjRotateUpdownLift_c.h  [alias: header uses pre-rename name]	dBgActor_c	0	ov091	8
 daObjSeesaw_c	DONE	include\daObjSeesaw_c.h  [alias: header uses pre-rename name]	dBgActor_c	0	ov095	7
 daObjSimpleBg_c	DONE	include\daObjSimpleBg_c.h  [alias: header uses pre-rename name]	dBgActor_c	0	ov102	6
 daObjSimpleLift_c	DONE	include\daObjSimpleLift_c.h  [alias: header uses pre-rename name]	dBgActor_c	0	ov091	6
@@ -317,7 +317,7 @@ daBook_c	DONE	include\BookShot.h  [alias: header uses pre-rename name]	dEnemyBas
 daBtn_c	DONE	include\daBtn_c.h  [alias: header uses pre-rename name]	dEnemyBase_c	0	ov079	9
 daC_Jugem_c	DONE	include\daC_Jugem_c.h	dEnemyBase_c	0	ov085	7
 daChoro_Rock_c	DONE	include\MontyMoleRock.h  [alias: header uses pre-rename name]	dEnemyBase_c	0	ov080	6
-daFPknBall_c	DONE	include\Fireball.h  [alias: header uses pre-rename name]	dEnemyBase_c	0	ov002	6
+daFPknBall_c	DONE	include\daFPknBall_c.h  [alias: header uses pre-rename name]	dEnemyBase_c	0	ov002	6
 daFPkn_c	DONE	include\daFPkn_c.h	dEnemyBase_c	0	ov084	9
 daGrock_c	DONE	include\daGrock_c.h  [alias: header uses pre-rename name]	dEnemyBase_c	0	ov021	7
 daHanachan_c	DONE	include\daHanachan_c.h  [alias: header uses pre-rename name]	dEnemyBase_c	0	ov034	6

@@ -346,77 +346,9 @@ src/game/actors/daObjPushblock_c.cpp:
     complete
     .text start:0x020b8bf0 end:0x020b9148
 
-src/_ZN11PowerFlowerD1Ev.cpp:
+src/actors/daObjPowerUpItem_c.cpp:
     complete
-    .text start:0x020b9148 end:0x020b9198
-
-src/_ZN11PowerFlowerD0Ev.cpp:
-    complete
-    .text start:0x020b9198 end:0x020b91fc
-
-src/func_ov002_020b91fc.c:
-    complete
-    .text start:0x020b91fc end:0x020b92b8
-
-src/func_ov002_020b92b8.c:
-    complete
-    .text start:0x020b92b8 end:0x020b92c4
-
-src/func_ov002_020b92c4.cpp:
-    complete
-    .text start:0x020b92c4 end:0x020b9450
-
-src/func_ov002_020b9450.cpp:
-    complete
-    .text start:0x020b9450 end:0x020b94c4
-
-src/func_ov002_020b94c4.c:
-    complete
-    .text start:0x020b94c4 end:0x020b96c0
-
-src/func_ov002_020b96c0.c:
-    complete
-    .text start:0x020b96c0 end:0x020b9704
-
-src/func_ov002_020b9704.cpp:
-    complete
-    .text start:0x020b9704 end:0x020b9750
-
-src/func_ov002_020b9750.cpp:
-    complete
-    .text start:0x020b9750 end:0x020b979c
-
-src/func_ov002_020b979c.c:
-    complete
-    .text start:0x020b979c end:0x020b993c
-
-src/func_ov002_020b993c.c:
-    complete
-    .text start:0x020b993c end:0x020b9a1c
-
-src/func_ov002_020b9a1c.c:
-    complete
-    .text start:0x020b9a1c end:0x020b9a7c
-
-src/_ZN11PowerFlower16CleanupResourcesEv.cpp:
-    complete
-    .text start:0x020b9a7c end:0x020b9aac
-
-src/_ZN11PowerFlower6RenderEv.cpp:
-    complete
-    .text start:0x020b9aac end:0x020b9b70
-
-src/_ZN11PowerFlower8BehaviorEv.cpp:
-    complete
-    .text start:0x020b9b70 end:0x020b9c00
-
-src/_ZN11PowerFlower13InitResourcesEv.cpp:
-    complete
-    .text start:0x020b9c00 end:0x020b9e04
-
-src/_ZN11PowerFlower13OnYoshiTryEatEv.cpp:
-    complete
-    .text start:0x020b9e04 end:0x020b9e0c
+    .text start:0x020b9148 end:0x020b9e0c
 
 src/d_a_obj_power_up_item.c:
     complete
@@ -3083,41 +3015,9 @@ src/_ZThn80_N8daDemo_c10anmModel_cD1Ev.cpp:
     complete
     .text start:0x020f8848 end:0x020f8858
 
-src/_ZN8FireballD1Ev.cpp:
+src/actors/daFPknBall_c.cpp:
     complete
-    .text start:0x020f8858 end:0x020f8898
-
-src/_ZN8FireballD0Ev.cpp:
-    complete
-    .text start:0x020f8898 end:0x020f88ec
-
-src/func_ov002_020f88ec.c:
-    complete
-    .text start:0x020f88ec end:0x020f897c
-
-src/func_ov002_020f897c.c:
-    complete
-    .text start:0x020f897c end:0x020f8b24
-
-src/func_ov002_020f8b24.c:
-    complete
-    .text start:0x020f8b24 end:0x020f8c8c
-
-src/_ZN8Fireball6RenderEv.cpp:
-    complete
-    .text start:0x020f8c8c end:0x020f8c94
-
-src/_ZN8Fireball8BehaviorEv.cpp:
-    complete
-    .text start:0x020f8c94 end:0x020f9204
-
-src/_ZN8Fireball13InitResourcesEv.cpp:
-    complete
-    .text start:0x020f9204 end:0x020f92e4
-
-src/_ZN8Fireball13OnYoshiTryEatEv.cpp:
-    complete
-    .text start:0x020f92e4 end:0x020f9304
+    .text start:0x020f8858 end:0x020f9304
 
 src/d_a_f_pkn_ball.c:
     complete
