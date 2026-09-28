@@ -14,22 +14,19 @@
  * is not independent evidence about the ROM.
  */
 
-#ifdef __cplusplus
-
 #include "dBgActor_c.h"
 #include "Model.h"
 
 struct daObjDlPyramid_c : dBgActor_c {
     u8  pad_31e[0x2];
     /* The class's own model. NOT "mModel": dBgActor_c's inherited
-       Model at 0xd4 already owns that name, and the flat C twin below
-       restates both. */
+       Model at 0xd4 already owns that name. */
     Model mTopModel;                 /* 0x320 */
-    /* The second collision matrix: InitResources passes `this + 0x370' as the
-       `const Matrix4x3 &' argument of dBgW_KcMbg::SetFile, and 0x370 + 0x30
-       lands exactly on mHomePosX. Left a u8 marker, the idiom this family's
-       C twins already use. */
-    u8  mClsnMat2[0x30];              /* 0x370 */
+    /* The collider's own matrix: InitResources passes it as the
+       `const Matrix4x3 &' argument of dBgW_KcMbg::SetFile, and the per-frame
+       collider update rebuilds it from the yaw and the actor position.
+       0x370 + 0x30 lands exactly on mHomePosX. */
+    Matrix4x3 mClsnMat2;              /* 0x370 */
     s32 mHomePosX;                    /* 0x3a0 -- InitResources copies mPosX/Y/Z here */
     s32 mHomePosY;                    /* 0x3a4 */
     s32 mHomePosZ;                    /* 0x3a8 */
@@ -53,55 +50,5 @@ struct daObjDlPyramid_c : dBgActor_c {
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
 typedef char daObjDlPyramid_c_size_must_be_0x3b8[sizeof(daObjDlPyramid_c) == 0x3b8 ? 1 : -1];
 #endif
-
-#else
-
-/* The C spelling of the same object, flat. Kept because the D0 file is a C
-   translation unit that reads these fields, and D0 is compiler-generated so it
-   can never be migrated. Same arrangement as include/ShadowModel.h. */
-struct daObjDlPyramid_c {
-    u8  pad_000[0x5c];
-    s32 mPosX;            /* 0x05c */
-    s32 mPosY;            /* 0x060 */
-    s32 mPosZ;            /* 0x064 */
-    u8  pad_068[0xc];
-    /* 0x074..0x08e is dActor_c's, and dActor_c.h is de-bannered -- hand-reconstructed, not generated. Was one u8
-       marker over the whole range. */
-    s32 mCamSpacePosX;           /* 0x074 */
-    s32 mCamSpacePosY;           /* 0x078 */
-    s32 mCamSpacePosZ;           /* 0x07c */
-    s32 mScaleX;                 /* 0x080 */
-    s32 mScaleY;                 /* 0x084 */
-    s32 mScaleZ;                 /* 0x088 */
-    s16 mAngleX;                 /* 0x08c */
-    s16 mAngleY;            /* 0x08e */
-    u8  pad_090[0x44];
-    /* Model member, named by the class's own destructor calling
-       Model's D1 at +0x0d4 -- a relocation the ROM build
-       checks. Was a u8 marker. [_ZN16daObjDlPyramid_cD1Ev.c] */
-    Model mModel;             /* 0x0d4 - dBgActor_c's, restated flat */
-    /* dBgW_KcMbg member. The cartridge's own ~daObjDlPyramid_c calls _ZN10dBgW_KcMbgD1Ev at
-       +0x124 (D0/D1), a relocation the ROM build checks; recovered by
-       tools/dtor_members.py. D1 and not D2, so it is this type and not an inlined base. */
-    dBgW_KcMbg mMeshCollider;            /* 0x124 */
-    u8  pad_2ec[0x34];
-    /* Model member, named by _ZN5ModelD1Ev at +0x320 -- a relocation the ROM build checks.
-       D1 and not D2, so it is this type and not an inlined base. The marker's pad ran 0x30
-       bytes PAST the end of the object; that space is not evidenced and stays explicit
-       padding rather than being folded into the member. */
-    Model mTopModel;             /* 0x320 */
-    u8  mClsnMat2[0x30];    /* 0x370 */
-    s32 mHomePosX;            /* 0x3a0 */
-    s32 mHomePosY;            /* 0x3a4 */
-    s32 mHomePosZ;            /* 0x3a8 */
-    s32 mSpinParticleID;            /* 0x3ac */
-    s16 mAngVelY;            /* 0x3b0 */
-    u16 mStateTimer;            /* 0x3b2 */
-    s16 mSoundTimer;            /* 0x3b4 */
-    u8  mNumTagsTriggered;            /* 0x3b6 */
-    u8  mState;            /* 0x3b7 */
-};
-
-#endif /* __cplusplus */
 
 #endif /* DAOBJDLPYRAMID_C_H */
