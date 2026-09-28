@@ -335,6 +335,8 @@ extern "C" void func_ov027_02111994(daPgDfdr_c *self)
     self->mClsnMat.m[11] = self->mPosZ;
     self->mMeshCollider.Transform(self->mClsnMat, self->mAngleY);
 }
+// @symbol _ZN10daPgDfdr_cD1Ev
+// @symbol _ZN10daPgDfdr_cD0Ev
 /* -------------------------------------------------------------------------- */
 /* ROM ordinals 0 and 1 -- _ZN10daPgDfdr_cD1Ev 0x021118c8 size 0x5c and        */
 /* _ZN10daPgDfdr_cD0Ev 0x02111924 size 0x70 -- are NOT written here.           */
