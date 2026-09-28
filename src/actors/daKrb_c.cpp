@@ -15,7 +15,8 @@
  *   The header call size-DIFFs (0212a6f8, 02129a00, 0212a580, 02129ed4,
  *   InitResources). The bridges below pass those bits as scalars and still
  *   name the 5Fix12IiE symbols.
- * - dBgCh_Actr::Init is Fix12i on the header and matches as a real call.
+ * - dBgCh_Actr::Init stays the mangled free call. types.h makes Fix12i a
+ *   plain s32, so the header method mangles as int and the link fails.
  * - Player::Hurt, Player::Bounce and dActor_c::IsTooFarAwayFromPlayer are
  *   not declared on those classes. The scalar bridges stay in this file.
  * - dBgCh_Actr::GetFloorResult and dCapEnemy_c::UpdateCapPos have no header
@@ -1651,7 +1652,7 @@ int daKrb_c::InitResources()
     if (mGoombaType == 2)
         *(int*)(((int)c + 0x19c) & 0xFFFFFFFFFFFFFFFF) &= ~0x8000;
 
-    ((dBgCh_Actr *)(c + 0x1b4))->Init((dActor_c *)c, *(int*)(c + 0x80) * 0x3c, *(int*)(c + 0x80) * 0x3c, 0, 0);
+    _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(c + 0x1b4, c, *(int*)(c + 0x80) * 0x3c, *(int*)(c + 0x80) * 0x3c, 0, 0);
     ((dBgCh_Actr *)(c + 0x1b4))->StartDetectingWater();
 
     mSoundLatchFlags = 0;
