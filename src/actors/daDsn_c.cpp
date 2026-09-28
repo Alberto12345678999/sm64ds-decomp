@@ -29,7 +29,7 @@
  *   Scalar ints match r0 = id, r1/r2/r3 = x/y/z.
  * - OnHitByMegaChar: Sound::Play(3, 0x1e, &mCamSpacePosX) grows it 0x9c to
  *   0xa0 and the reloc is _ZN5Sound4PlayEjjRK7Vector3, not func_02012694.
- *   src/func_02012694.cpp is the bank-3 veneer the ROM calls.
+ *   func_02012694 is the bank-3 veneer the ROM calls.
  * - The seven func_ov091_* names stay. They are defined in
  *   src/actors/daDsnBase_c.cpp and daDkk_c calls the same symbols.
  */
@@ -37,32 +37,25 @@
 #include "daDsn_c.h"
 #include "Player.h"
 
-struct SharedFilePtr;
-struct CLPS_Block;
+/* data_ov091_02135138 is the six-word table daDsnBase_c::Init reads out of
+   the pointer this leaf stores:
+     +0x00 SharedFilePtr * BMD      +0x0c SharedFilePtr * BTP
+     +0x04 SharedFilePtr * KCL      +0x10 shadow extent X
+     +0x08 CLPS block (not a file)  +0x14 shadow extent Z
+   It is declared int [] as include/decl_common.h has it. The symbol stays
+   the overlay's; this TU does not own the bytes.
 
-/* The six slots daDsnBase_c::Init reads out of the pointer this leaf stores.
-   The symbol stays the overlay's; this TU does not own the bytes. */
-struct DosunFileTable {
-    SharedFilePtr *model;      /* +0x00 BMD */
-    SharedFilePtr *collision;  /* +0x04 KCL */
-    CLPS_Block *clps;          /* +0x08 not a file */
-    SharedFilePtr *texAnim;    /* +0x0c BTP */
-    s32 shadowExtentX;         /* +0x10 */
-    s32 shadowExtentZ;         /* +0x14 */
-};
-
-/* The seven cycle helpers are defined in src/actors/daDsnBase_c.cpp
-   (char * there) and called by daDkk_c under the same C names. A class
-   pointer here is the same register. */
+   The seven cycle helpers are defined in daDsnBase_c's TU with a char *
+   parameter and called by daDkk_c under the same C names. */
 extern "C" {
-extern DosunFileTable data_ov091_02135138;
-void func_ov091_02133020(daDsnBase_c *self); /* rise */
-void func_ov091_02132ff4(daDsnBase_c *self); /* hover */
-void func_ov091_02132f04(daDsnBase_c *self); /* slam */
-void func_ov091_02132e98(daDsnBase_c *self); /* rest */
-void func_ov091_02132e64(daDsnBase_c *self); /* recover */
-void func_ov091_02133098(daDsnBase_c *self); /* drop shadow */
-int func_ov091_02132dc0(daDsnBase_c *self);  /* Yoshi egg within mClipRadius */
+extern int data_ov091_02135138[];
+void func_ov091_02133020(char *self); /* rise */
+void func_ov091_02132ff4(char *self); /* hover */
+void func_ov091_02132f04(char *self); /* slam */
+void func_ov091_02132e98(char *self); /* rest */
+void func_ov091_02132e64(char *self); /* recover */
+void func_ov091_02133098(char *self); /* drop shadow */
+int func_ov091_02132dc0(char *self);  /* Yoshi egg within mClipRadius */
 void *_ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int id, int x, int y, int z);
 void func_02012694(unsigned int id, const Vector3 *pos);
 int _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(void *self, int radius, int yOffset);
@@ -76,7 +69,7 @@ int _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(void *self, int radius, int yOff
    CLPS, BTP, then the two shadow extents. Overlay .data owns the bytes. */
 int daDsn_c::InitResources()
 {
-    mFileTable = (int)&data_ov091_02135138;
+    mFileTable = (int)data_ov091_02135138;
     int result = Init();
     mState = 0;
     mHoldTimer = 0;
@@ -116,31 +109,31 @@ int daDsn_c::Behavior()
             if (mHoldTimer != 0)
                 mHoldTimer--;
             else
-                func_ov091_02133020(this); /* rise */
+                func_ov091_02133020((char *)this); /* rise */
         }
         break;
     }
     case 1:
-        func_ov091_02132ff4(this); /* hover */
+        func_ov091_02132ff4((char *)this); /* hover */
         break;
     case 2:
         if (mTriggered != 0) {
             mTextureSequence.currFrame = 0;
-            func_ov091_02132f04(this); /* slam */
+            func_ov091_02132f04((char *)this); /* slam */
         } else {
             mTextureSequence.Advance();
             if (mTextureSequence.Finished() != 0) {
                 if (mHoldTimer != 0)
                     mHoldTimer--;
                 else
-                    func_ov091_02132f04(this); /* slam */
+                    func_ov091_02132f04((char *)this); /* slam */
             } else {
                 mHoldTimer = 5;
             }
         }
         break;
     case 3:
-        func_ov091_02132e98(this); /* rest */
+        func_ov091_02132e98((char *)this); /* rest */
         if (mState == 4) {
             if (mTriggered != 0) {
                 mRetrigger = 0x5a;
@@ -153,13 +146,13 @@ int daDsn_c::Behavior()
             mTriggered = 0;
             mRetrigger = 0x5a;
         }
-        func_ov091_02132e64(this); /* recover */
+        func_ov091_02132e64((char *)this); /* recover */
         break;
     }
     UpdateModelPosAndRotY();
-    func_ov091_02133098(this); /* drop shadow */
+    func_ov091_02133098((char *)this); /* drop shadow */
     if (_ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(this, 0, 0) != 0 ||
-        func_ov091_02132dc0(this) != 0)
+        func_ov091_02132dc0((char *)this) != 0)
         UpdateClsnPosAndRot();
     return 1;
 }
