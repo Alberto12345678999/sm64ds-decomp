@@ -24133,21 +24133,27 @@
     "data_ov014_02114968": {
       "src/__sinit_ov014_02113118.c": [
         "return:S8"
+      ],
+      "src/game/actors/d_a_wanwan.cpp": [
+        "return:SharedFilePtr"
       ]
     },
     "data_ov014_02114970": {
       "src/game/actors/d_a_wanwan.cpp": [
-        "return:char"
+        "return:SharedFilePtr"
       ]
     },
     "data_ov014_02114978": {
       "src/__sinit_ov014_02113118.c": [
         "return:S8"
+      ],
+      "src/game/actors/d_a_wanwan.cpp": [
+        "return:SharedFilePtr"
       ]
     },
     "data_ov014_02114980": {
       "src/game/actors/d_a_wanwan.cpp": [
-        "return:char"
+        "return:SharedFilePtr"
       ]
     },
     "data_ov014_021149b8": {
