@@ -295,4 +295,3 @@ int daEyBm_c::OnYoshiTryEat()
 {
     return 4;
 }
-

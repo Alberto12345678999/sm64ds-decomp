@@ -176,4 +176,3 @@ check:
     p = dActor_c::FindWithActorID(0x22, p);
     if (p != 0) goto check;
 }
-

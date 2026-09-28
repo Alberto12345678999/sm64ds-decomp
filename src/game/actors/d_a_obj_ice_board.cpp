@@ -138,4 +138,3 @@ void daObjIceBoard_c::OnHitByMegaChar(Player &player)
     player.IncMegaKillCount();
     Kill();
 }
-

@@ -208,4 +208,3 @@ void daObjWc_Obj03_c::CheckClsnWithPlayer()
     water->mTargetPosY = mPosY;
     Sound::PlayBank3(0x63, *(Vector3 *)&mCamSpacePosX);
 }
-

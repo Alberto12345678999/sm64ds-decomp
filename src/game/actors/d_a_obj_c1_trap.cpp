@@ -91,7 +91,7 @@ void func_ov010_02111984(
  * Every instruction the cartridge has here falls out of the one `new`.
  * The header's inline operator new keeps the allocation on fBase_c::operator
  * new; without it the call relocates to the unavailable global `_Znwm`. */
-// @symbol daObjC1_Trap_c_classInit 
+// @symbol daObjC1_Trap_c_classInit
 extern "C" daObjC1_Trap_c *daObjC1_Trap_c_classInit()
 {
     return new daObjC1_Trap_c();

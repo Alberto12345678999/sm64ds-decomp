@@ -22,13 +22,13 @@ struct daObjHsBillboard_c : dActor_c {
     u8    mVariant;        /* 0x124 -- index into data_ov031_02111424 */
 
     /* InitResources is the first out-of-line virtual/key function. The inline
-     * destructor lets mwccarm emit the retail D1/D0 pair and class RTTI/vtable. 
+     * destructor lets mwccarm emit the retail D1/D0 pair and class RTTI/vtable.
      * The inline `~daObjHsBillboard_c() {}` in the
      * header is the whole source of both variants: from an inline body mwcc emits
      * D1 and then D0 -- the cartridge's own order -- and no D2. Written out of
      * line in the source instead they come out D0-before-D1 and the isolation step rejects
      * the object.
-     * 
+     *
      * Both bodies are short because the chain is short: this class's vptr store,
      * then the owned Model at 0xd4, then dActor_c's own teardown, which is where
      * the actor-list unlink lives. D0's trailing deallocation is the inherited

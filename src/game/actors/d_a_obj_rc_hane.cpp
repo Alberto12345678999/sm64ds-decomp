@@ -245,4 +245,3 @@ s32 daObjRc_Hane_c::CleanupResources()
     data_ov036_02114070.Release();
     return 1;
 }
-

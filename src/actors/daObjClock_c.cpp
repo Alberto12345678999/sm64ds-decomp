@@ -186,4 +186,3 @@ void func_ov013_02111430(daObjClock_c *self)
     self->mModel.mat4x3.t.z = self->mPosZ >> 3;
 }
 }
-

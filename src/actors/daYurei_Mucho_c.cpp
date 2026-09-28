@@ -702,5 +702,3 @@ int daYurei_Mucho_c::func_ov065_02115f84()
     KillAndTrackInDeathTable();
     return func_02012694(0x11e, &mCamSpacePosX);
 }
-
-

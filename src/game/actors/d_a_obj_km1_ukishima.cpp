@@ -140,4 +140,3 @@ s32 daObjKm1_Ukishima_c::CleanupResources()
     data_ov043_021125e0.Release();
     return 1;
 }
-

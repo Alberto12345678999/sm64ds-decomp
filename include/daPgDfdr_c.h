@@ -52,10 +52,10 @@ struct daPgDfdr_c : dBgActor_c {
     *   dBgActor_c's two member teardowns are synthesised. Key function is
     *   InitResources, the first declared non-inline virtual.
     *   One vtable store and three member teardowns
-    *   come out of that one empty body: its own vptr, then -- in reverse 
+    *   come out of that one empty body: its own vptr, then -- in reverse
     * declaration order -- dCcAc_c at +0x398, TextureSequence at +0x384 and
     * ModelAnim at +0x320, then dBgActor_c's own teardown inlined (its
-    * destructor 
+    * destructor
     * is defined in its class body too), which is dBgW_KcMbg at +0x124 and
     * Model at +0x0d4, then dActor_c. D0 is that plus the inherited inline `operator delete` found by ordinary lookup on dActor_c two levels up; slot 17 is the deleting variant.
     */

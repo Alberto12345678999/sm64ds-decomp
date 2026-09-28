@@ -121,4 +121,3 @@ void func_ov039_02111214(daObjKumo_c *t)
     t->mModel.mat4x3.t.z = t->mPosZ >> 3;
 }
 }
-

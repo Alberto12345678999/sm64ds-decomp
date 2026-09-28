@@ -357,4 +357,3 @@ int daObjBC_Switch_c::CleanupResources()
     daObjBC_Switch_c_ClsnFile.Release();
     return 1;
 }
-
