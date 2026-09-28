@@ -669,7 +669,7 @@ In the C twin, `0x074` becomes `mCamSpacePosX`, `0x08e` `mAngleY`, `0x094`
 
 ---
 
-## PyramidTop (`include/PyramidTop.h`, [ov024](../config/arm9/overlays/ov024/symbols.txt), size 0x3b8)
+## daObjDlPyramid_c (`include/daObjDlPyramid_c.h`, [ov024](../config/arm9/overlays/ov024/symbols.txt), size 0x3b8)
 
 | Offset | Name | Evidence |
 | --- | --- | --- |

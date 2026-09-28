@@ -1,5 +1,5 @@
-#ifndef PYRAMIDTOP_H
-#define PYRAMIDTOP_H
+#ifndef DAOBJDLPYRAMID_C_H
+#define DAOBJDLPYRAMID_C_H
 
 #include "types.h"
 #include "dBgW_KcMbg.h"
@@ -19,7 +19,7 @@
 #include "dBgActor_c.h"
 #include "Model.h"
 
-struct PyramidTop : dBgActor_c {
+struct daObjDlPyramid_c : dBgActor_c {
     u8  pad_31e[0x2];
     /* The class's own model. NOT "mModel": dBgActor_c's inherited
        Model at 0xd4 already owns that name, and the flat C twin below
@@ -41,7 +41,7 @@ struct PyramidTop : dBgActor_c {
     u8 mState;                       /* 0x3b7 */
 
     /* --- vtable --- */
-    virtual ~PyramidTop();
+    virtual ~daObjDlPyramid_c();
 
     int Behavior();
     int CleanupResources();
@@ -51,7 +51,7 @@ struct PyramidTop : dBgActor_c {
 
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
-typedef char PyramidTop_size_must_be_0x3b8[sizeof(PyramidTop) == 0x3b8 ? 1 : -1];
+typedef char daObjDlPyramid_c_size_must_be_0x3b8[sizeof(daObjDlPyramid_c) == 0x3b8 ? 1 : -1];
 #endif
 
 #else
@@ -59,7 +59,7 @@ typedef char PyramidTop_size_must_be_0x3b8[sizeof(PyramidTop) == 0x3b8 ? 1 : -1]
 /* The C spelling of the same object, flat. Kept because the D0 file is a C
    translation unit that reads these fields, and D0 is compiler-generated so it
    can never be migrated. Same arrangement as include/ShadowModel.h. */
-struct PyramidTop {
+struct daObjDlPyramid_c {
     u8  pad_000[0x5c];
     s32 mPosX;            /* 0x05c */
     s32 mPosY;            /* 0x060 */
@@ -78,9 +78,9 @@ struct PyramidTop {
     u8  pad_090[0x44];
     /* Model member, named by the class's own destructor calling
        Model's D1 at +0x0d4 -- a relocation the ROM build
-       checks. Was a u8 marker. [_ZN10PyramidTopD1Ev.c] */
+       checks. Was a u8 marker. [_ZN16daObjDlPyramid_cD1Ev.c] */
     Model mModel;             /* 0x0d4 - dBgActor_c's, restated flat */
-    /* dBgW_KcMbg member. The cartridge's own ~PyramidTop calls _ZN10dBgW_KcMbgD1Ev at
+    /* dBgW_KcMbg member. The cartridge's own ~daObjDlPyramid_c calls _ZN10dBgW_KcMbgD1Ev at
        +0x124 (D0/D1), a relocation the ROM build checks; recovered by
        tools/dtor_members.py. D1 and not D2, so it is this type and not an inlined base. */
     dBgW_KcMbg mMeshCollider;            /* 0x124 */
@@ -104,4 +104,4 @@ struct PyramidTop {
 
 #endif /* __cplusplus */
 
-#endif /* PYRAMIDTOP_H */
+#endif /* DAOBJDLPYRAMID_C_H */

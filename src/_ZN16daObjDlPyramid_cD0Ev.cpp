@@ -1,21 +1,21 @@
 //cpp
-// @symbol _ZN10PyramidTopD0Ev
+// @symbol _ZN16daObjDlPyramid_cD0Ev
 /* recovered: real C++ deleting destructor -- the compiler emits the whole body
  *
  * D0 is the DELETING destructor: destroy through this class and its bases --
  * which is why more than one vptr store appears -- then return the object to
- * its heap. Nobody writes that; declaring `~PyramidTop()` is enough, because mwcc
+ * its heap. Nobody writes that; declaring `~daObjDlPyramid_c()` is enough, because mwcc
  * emits D2, D0 and D1 together and objisolate keeps the one this file is bound
  * to.
  *
  * The deallocation is an inline operator delete, which is why nothing below
  * mentions a heap.
  */
-#include "PyramidTop.h"
+#include "daObjDlPyramid_c.h"
 
 #ifdef _MSC_VER
 /* THE HOST NEEDS THE ROM'S FLAT D0 NAME, AND MSVC NEVER EMITS IT. MSVC
- * folds the Itanium destructor variants into the one ~PyramidTop() it
+ * folds the Itanium destructor variants into the one ~daObjDlPyramid_c() it
  * emits, which the class's D1 file already defines, so compiling the
  * definition below as well would define that symbol twice. This arm
  * spells out, in terms of it, what the deleting destructor this file is
@@ -24,14 +24,14 @@
  * class-specific operator delete. Nothing here reaches mwccarm: it builds
  * the `#else` arm and emits the ROM bytes it always emitted, and the
  * object is byte-identical either way. */
-extern "C" PyramidTop *_ZN10PyramidTopD0Ev(PyramidTop *thiz)
+extern "C" daObjDlPyramid_c *_ZN16daObjDlPyramid_cD0Ev(daObjDlPyramid_c *thiz)
 {
-    thiz->PyramidTop::~PyramidTop();    /* the D1 body, through the one host symbol */
-    PyramidTop::operator delete(thiz);  /* the class-specific delete D0 ends with */
+    thiz->daObjDlPyramid_c::~daObjDlPyramid_c();    /* the D1 body, through the one host symbol */
+    daObjDlPyramid_c::operator delete(thiz);  /* the class-specific delete D0 ends with */
     return thiz;
 }
 #else
-PyramidTop::~PyramidTop()
+daObjDlPyramid_c::~daObjDlPyramid_c()
 {
 }
 #endif

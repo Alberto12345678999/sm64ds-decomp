@@ -1,10 +1,10 @@
 //cpp
-// @symbol _ZN10PyramidTag8BehaviorEv
+// @symbol _ZN21daObjDlPyramidDummy_c8BehaviorEv
 
-#include "PyramidTag.h"
-#include "PyramidTop.h"
+#include "daObjDlPyramidDummy_c.h"
+#include "daObjDlPyramid_c.h"
 
-s32 PyramidTag::Behavior()
+s32 daObjDlPyramidDummy_c::Behavior()
 {
     if (mCylinder.otherOwner != 0) {
         if (mPyramidTopID == 0) {
@@ -12,7 +12,7 @@ s32 PyramidTag::Behavior()
             return 1;
         }
 
-        PyramidTop *top = (PyramidTop *)dActor_c::FindWithID(mPyramidTopID);
+        daObjDlPyramid_c *top = (daObjDlPyramid_c *)dActor_c::FindWithID(mPyramidTopID);
         if (top != 0)
             ++top->mNumTagsTriggered;
 

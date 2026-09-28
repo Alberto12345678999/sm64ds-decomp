@@ -570,7 +570,7 @@ src/_ZN16daObjFl_London_cD0Ev.c	DTOR-ONLY	ov022	daObjFl_London_c	daObjFl_London_
 src/_ZN10LavaSeesawD0Ev.c	DTOR-ONLY	ov022	daObjFl_Seesaw_c	LavaSeesaw/daObjFl_Seesaw_c	_ZN10LavaSeesawD0Ev	1		True	_ZTV10LavaSeesaw/_ZTV10dBgActor_c	-
 src/_ZN10ModelAnim213Func_020162C4Eji5Fix12IiEt.c	P3-mangled-method-only	arm9		ModelAnim2	_ZN10ModelAnim213Func_020162C4Eji5Fix12IiEt	1		True		by-value-class-param
 src/_ZN10ModelAnim2C1Ev.c	P3-mangled-method-only	arm9		ModelAnim2	_ZN10ModelAnim2C1Ev	1		True	_ZTV10ModelAnim2	-
-src/_ZN10PyramidTagD0Ev.c	DTOR-ONLY	ov024	daObjDlPyramidDummy_c	PyramidTag/daObjDlPyramidDummy_c	_ZN10PyramidTagD0Ev	1		True		-
+src/_ZN21daObjDlPyramidDummy_cD0Ev.c	DTOR-ONLY	ov024	daObjDlPyramidDummy_c	daObjDlPyramidDummy_c/daObjDlPyramidDummy_c	_ZN21daObjDlPyramidDummy_cD0Ev	1		True		-
 src/_ZN10RockPillarD0Ev.c	DTOR-ONLY	ov016	daObjKi_Hasira_c	RockPillar/daObjKi_Hasira_c	_ZN10RockPillarD0Ev	1		True	_ZTV10RockPillar/_ZTV10dBgActor_c	-
 src/_ZN10Scuttlebug16CleanupResourcesEv.c	P1-vtable+mangled	ov071	daSpd_c	Scuttlebug/daSpd_c	vtable daSpd_c slot 3 @0x2120308 | _ZN10Scuttlebug16CleanupResourcesEv	1		True		-
 src/_ZN10Scuttlebug16OnPendingDestroyEv.c	P1-vtable+mangled	ov071	daSpd_c	Scuttlebug/daSpd_c	vtable daSpd_c slot 12 @0x2120338 | _ZN10Scuttlebug16OnPendingDestroyEv	1		True		-

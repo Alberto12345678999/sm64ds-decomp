@@ -1,11 +1,11 @@
 //cpp
-// @symbol _ZN10PyramidTagD0Ev
+// @symbol _ZN21daObjDlPyramidDummy_cD0Ev
 
-#include "PyramidTag.h"
+#include "daObjDlPyramidDummy_c.h"
 
 #ifdef _MSC_VER
 /* THE HOST NEEDS THE ROM'S FLAT D0 NAME, AND MSVC NEVER EMITS IT. MSVC
- * folds the Itanium destructor variants into the one ~PyramidTag() it
+ * folds the Itanium destructor variants into the one ~daObjDlPyramidDummy_c() it
  * emits, which the class's D1 file already defines, so compiling the
  * definition below as well would define that symbol twice. This arm
  * spells out, in terms of it, what the deleting destructor this file is
@@ -14,14 +14,14 @@
  * class-specific operator delete. Nothing here reaches mwccarm: it builds
  * the `#else` arm and emits the ROM bytes it always emitted, and the
  * object is byte-identical either way. */
-extern "C" PyramidTag *_ZN10PyramidTagD0Ev(PyramidTag *thiz)
+extern "C" daObjDlPyramidDummy_c *_ZN21daObjDlPyramidDummy_cD0Ev(daObjDlPyramidDummy_c *thiz)
 {
-    thiz->PyramidTag::~PyramidTag();    /* the D1 body, through the one host symbol */
-    PyramidTag::operator delete(thiz);  /* the class-specific delete D0 ends with */
+    thiz->daObjDlPyramidDummy_c::~daObjDlPyramidDummy_c();    /* the D1 body, through the one host symbol */
+    daObjDlPyramidDummy_c::operator delete(thiz);  /* the class-specific delete D0 ends with */
     return thiz;
 }
 #else
-PyramidTag::~PyramidTag()
+daObjDlPyramidDummy_c::~daObjDlPyramidDummy_c()
 {
 }
 #endif

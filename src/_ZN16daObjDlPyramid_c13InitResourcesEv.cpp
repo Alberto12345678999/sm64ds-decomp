@@ -1,9 +1,9 @@
 //cpp
-// @symbol _ZN10PyramidTop13InitResourcesEv
+// @symbol _ZN16daObjDlPyramid_c13InitResourcesEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 #include "decl_common.h"
 /* recovered: named members + shared header, real C++ method */
-#include "PyramidTop.h"
+#include "daObjDlPyramid_c.h"
 #include "dBgW.h"
 extern "C" {
 extern void* _ZN5Model8LoadFileER13SharedFilePtr(void* fp);
@@ -15,7 +15,7 @@ extern void _ZN5Event8ClearBitEj(unsigned int n);
 extern void _ZN4dBgW16UpdatePosAndAngsERS_P8dActor_cR5dBgPiR7Vector3P10Vector3_16S8_(void);
 }
 
-int PyramidTop::InitResources()
+int daObjDlPyramid_c::InitResources()
 {
     void* m = _ZN5Model8LoadFileER13SharedFilePtr(data_ov024_02113968);
     _ZN9ModelBase7SetFileEP8BMD_Fileii(((char*)this) + 0x320, m, 1, -1);

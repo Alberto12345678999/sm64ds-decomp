@@ -1,16 +1,16 @@
 //cpp
 #include "Sound.h"
 #include "types.h"
-// @symbol _ZN10PyramidTop8BehaviorEv
+// @symbol _ZN16daObjDlPyramid_c8BehaviorEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 #include "decl_common.h"
 /* recovered: named members + shared header, real C++ method */
-#include "PyramidTop.h"
+#include "daObjDlPyramid_c.h"
 extern "C" {
 extern void _ZN5Sound9PlayBank3EjRK7Vector3(unsigned int bank, void* pos);
 }
 
-int PyramidTop::Behavior()
+int daObjDlPyramid_c::Behavior()
 {
     u8 state = mState;
     switch (state) {

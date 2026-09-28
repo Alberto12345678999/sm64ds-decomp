@@ -1,7 +1,7 @@
 //cpp
-// @symbol _ZN10PyramidTag13InitResourcesEv
+// @symbol _ZN21daObjDlPyramidDummy_c13InitResourcesEv
 
-#include "PyramidTag.h"
+#include "daObjDlPyramidDummy_c.h"
 
 /* dCcAc_c::Init takes Fix12<int> values by value. Spelling those as the real
  * class type makes mwccarm home the register arguments and grows this caller,
@@ -9,7 +9,7 @@
 extern "C" void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
     void *, dActor_c *, Fix12i, Fix12i, u32, u32);
 
-s32 PyramidTag::InitResources()
+s32 daObjDlPyramidDummy_c::InitResources()
 {
     dActor_c *top = dActor_c::FindWithActorID(0x55, 0);
     if (top == 0) {
