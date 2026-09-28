@@ -20,9 +20,9 @@
  *   that same pad on the carrier, tested as a nonzero int.
  * - func_ov102_0214bf64 stays a free function. Its body casts to Bmb_Bf64Obj,
  *   a different object. func_ov102_0214bd90 and func_ov102_0214b03c are methods:
- *   the first argument is this Bob-omb. bd90 still passes four arguments to
- *   func_0200fc44; aa18 passes three. The file-scope prototype is the real
- *   three-argument definition, and the block-scope spellings stay.
+ *   the first argument is this Bob-omb. Both methods call func_0200fc44 and
+ *   func_0201267c through the file-scope extern "C" prototypes: a block-scope
+ *   extern inside a member gets C++ linkage and the module stops linking.
  * - func_ov102_0214ad14, 0214ae1c and 0214b384 are called from other overlays,
  *   so those labels stay. data_ov102_* are the file handles; SharedFilePtr
  *   has no fields, so the loaded BCA is still the word at +4.
@@ -127,9 +127,9 @@ void  _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void *, dActor
    call sites bind the same address through the reference instead. */
 void  _Z14ApproachLinearRsss(short &v, short target, short step);
 void  func_ov102_0214b3b8(void *c);
-/* Real definitions: src/func_0201267c.cpp and src/func_0200fc44.c.
-   The methods call through these so the names stay unmangled. bd90 and aa18
-   redeclare func_0200fc44 at block scope with their own argument counts. */
+/* Real definitions: func_0201267c and func_0200fc44 (arm9).
+   The methods call through these so the names stay unmangled. aa18, a free
+   function, still redeclares func_0200fc44 at block scope. */
 void  func_0201267c(unsigned int id, const Vector3 *v);
 int   func_0200fc44(int a, Vector3 *pos, int flag);
 
@@ -536,22 +536,18 @@ void daBmb_c::State1() {
 
 /* ==========================================================================
  *
- * mState arm 2. The first argument is this Bob-omb. The four-argument
- * func_0200fc44 spelling stays at block scope; the file-scope prototype is
- * the three-argument definition.
+ * mState arm 2. The first argument is this Bob-omb. It calls func_0200fc44
+ * through the file-scope three-argument prototype, the definition's own.
  * ======================================================================== */
 
 // @symbol _ZN7daBmb_c19func_ov102_0214bd90Ev
 void daBmb_c::func_ov102_0214bd90(){
-  extern int _ZNK10dBgCh_Actr13JustHitGroundEv(char* c);
-  extern void func_0200fc44(char* c, struct Vector3* v, int a, int z);
-
   if (mWithMeshClsn.JustHitGround()) {
     struct Vector3 v;
     v.x = mPosX;
     v.y = mPosY;
     v.z = mPosZ;
-    func_0200fc44((char *)this, &v, 1, v.z);
+    func_0200fc44((int)this, &v, 1);
   }
   if (mWithMeshClsn.IsOnGround()) {
     if (mChasePlayer == 0) {
@@ -1188,12 +1184,10 @@ void func_ov102_0214b128(void *cv) {
 
 // @symbol _ZN7daBmb_c19func_ov102_0214b03cEv
 void daBmb_c::func_ov102_0214b03c(){
-  extern void func_0201267c(int, void*);
-
   if(mState < 2 && mModelAnim.file == *((BCA_File **)((char *)&data_ov102_0214e9c0 + 4))){
     if(((Animation *)((char *)this + 0x350))->WillHitFrame(0) != 0
        || ((Animation *)((char *)this + 0x350))->WillHitFrame(0x10) != 0){
-      func_0201267c(0x132, &mCamSpacePosX);
+      func_0201267c(0x132, (const Vector3 *)&mCamSpacePosX);
     }
   }
   switch(mState){
