@@ -8,17 +8,9 @@ src/actors/dEntObj_c.cpp:
     complete
     .text start:0x02113ee0 end:0x02115ab8
 
-src/_ZN10dScEntry_cD1Ev.cpp:
-    complete
-    .text start:0x02115ab8 end:0x02115b28
-
-src/_ZN10dScEntry_cD0Ev.cpp:
-    complete
-    .text start:0x02115b28 end:0x02115bac
-
 src/actors/dScEntry_c.cpp:
     complete
-    .text start:0x02115bac end:0x02116128
+    .text start:0x02115ab8 end:0x02116128
 
 src/func_ov075_021165b0.c:
     complete
