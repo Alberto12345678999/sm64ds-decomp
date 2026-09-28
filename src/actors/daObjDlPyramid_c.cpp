@@ -62,17 +62,27 @@ void func_ov024_021114c4(daObjDlPyramid_c *self);
 /* -------------------------------------------------------------------------- */
 /* 0x021111a0 _ZN16daObjDlPyramid_cD1Ev, 0x021111ec _ZN16daObjDlPyramid_cD0Ev   */
 /* -------------------------------------------------------------------------- */
+// @symbol _ZN16daObjDlPyramid_cD1Ev
 daObjDlPyramid_c::~daObjDlPyramid_c()
 {
 }
+
+// @symbol _ZN16daObjDlPyramid_cD0Ev
+/* The deleting destructor (D0) has no source of its own: the compiler emits
+   it from the definition above. */
 
 /* -------------------------------------------------------------------------- */
 /* 0x0211124c _ZN21daObjDlPyramidDummy_cD1Ev,                                  */
 /* 0x0211127c _ZN21daObjDlPyramidDummy_cD0Ev                                   */
 /* -------------------------------------------------------------------------- */
+// @symbol _ZN21daObjDlPyramidDummy_cD1Ev
 daObjDlPyramidDummy_c::~daObjDlPyramidDummy_c()
 {
 }
+
+// @symbol _ZN21daObjDlPyramidDummy_cD0Ev
+/* The deleting destructor (D0) has no source of its own: the compiler emits
+   it from the definition above. */
 
 /* The top has finished sinking: four puffs of dust at the old summit, then
  * the top removes itself and raises the event the level script waits on. */
