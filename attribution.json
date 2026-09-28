@@ -6060,6 +6060,16 @@
     "src/actors/dMap_c.cpp#_ZN6dMap_c8BehaviorEv": "andrewboudreau",
     "src/actors/dMap_c.cpp#_ZN6dMap_c13InitResourcesEv": "andrewboudreau",
     "src/actors/dMap_c.cpp#_ZN6dMap_c20GetPosFromMinimapPosER7Vector3S1_5Fix12IiEsS1_": "tangosdev",
-    "src/actors/dMap_c.cpp#_ZN6dMap_c15GetPosOnMinimapER7Vector3S1_5Fix12IiEsS1_": "tangosdev"
+    "src/actors/dMap_c.cpp#_ZN6dMap_c15GetPosOnMinimapER7Vector3S1_5Fix12IiEsS1_": "tangosdev",
+    "src/actors/dScDSMT_c.cpp#_ZN9dScDSMT_cD1Ev": "tangosdev",
+    "src/actors/dScDSMT_c.cpp#_ZN9dScDSMT_cD0Ev": "andrewboudreau",
+    "src/actors/dScDSMT_c.cpp#func_ov007_020cc0cc": "tangosdev",
+    "src/actors/dScDSMT_c.cpp#func_ov007_020cc0e4": "tangosdev",
+    "src/actors/dScDSMT_c.cpp#_ZN9dScDSMT_c15graphCallback_c14GraphCallback2Ev": "tangosdev",
+    "src/actors/dScDSMT_c.cpp#_ZN9dScDSMT_c15graphCallback_c14GraphCallback0Ev": "andrewboudreau",
+    "src/actors/dScDSMT_c.cpp#func_ov007_020cc118": "tangosdev",
+    "src/actors/dScDSMT_c.cpp#func_ov007_020cc168": "tangosdev",
+    "src/actors/dScDSMT_c.cpp#_ZN9dScDSMT_c16OnPendingDestroyEv": "tangosdev",
+    "src/actors/dScDSMT_c.cpp#_ZN9dScDSMT_c6RenderEv": "tangosdev"
   }
 }
