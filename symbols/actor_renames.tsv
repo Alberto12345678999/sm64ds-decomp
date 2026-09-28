@@ -1850,6 +1850,16 @@ ov063	0x0211eb58	data_ov063_0211eb58	_ZTV20daObjTh_Fall_Block_c	vtable alloc=0x3
 ov063	0x0211ed10	data_ov063_0211ed10	daPiano_c_SpawnInfo	spawninfo
 ov063	0x0211ed10	daPiano_c_SpawnInfo	g_profile_PIANO	reconstructed profile global; literal ROM ID PIANO+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov063	0x0211ed34	data_ov063_0211ed34	_ZTV9daPiano_c	vtable alloc=?
+ov064	0x02115f98	func_ov064_02115f98	_ZN7daOts_c19func_ov064_02115f98EPc	daOts_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov064	0x02116110	func_ov064_02116110	_ZN7daOts_c19func_ov064_02116110Es	daOts_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov064	0x0211616c	func_ov064_0211616c	_ZN7daOts_c19func_ov064_0211616cEv	daOts_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov064	0x02116220	func_ov064_02116220	_ZN7daOts_c19func_ov064_02116220Ev	daOts_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov064	0x02116460	func_ov064_02116460	_ZN7daOts_c19func_ov064_02116460Ev	daOts_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov064	0x02116560	func_ov064_02116560	_ZN7daOts_c19func_ov064_02116560Ev	daOts_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov064	0x021165d8	func_ov064_021165d8	_ZN7daOts_c19func_ov064_021165d8Ev	daOts_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov064	0x021166f0	func_ov064_021166f0	_ZN7daOts_c19func_ov064_021166f0Ev	daOts_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov064	0x02116754	func_ov064_02116754	_ZN7daOts_c19func_ov064_02116754Ev	daOts_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov064	0x02116bac	func_ov064_02116bac	_ZN7daOts_c19func_ov064_02116bacEv	daOts_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
 ov064	0x02116ca0	func_ov064_02116ca0	_ZN7daOts_c16CleanupResourcesEv	vtable slot 3 (was _ZN11daDonketu_c16CleanupResourcesEv)
 ov064	0x02116cf0	func_ov064_02116cf0	_ZN7daOts_c6RenderEv	vtable slot 9 (was _ZN11daDonketu_c6RenderEv)
 ov064	0x02116d1c	func_ov064_02116d1c	_ZN7daOts_c14BehaviorCommonEv	shared Behavior worker; children wrap from slot 6; class ownership/layout/named daOts callees proven; original English name is not
