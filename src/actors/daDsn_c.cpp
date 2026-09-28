@@ -4,7 +4,7 @@
  * The dropping leaf of daDsnBase_c. Grindel (daDkk_c, ov025) is the sibling
  * that slides. The base owns the shared cycle -- rise, hover, slam, rest,
  * recover -- plus the drop-shadow update and the Yoshi-egg wake, as seven
- * C helpers in src/actors/daDsnBase_c.cpp. This leaf owns the trigger that
+ * helpers in src/actors/daDsnBase_c.cpp. This leaf owns the trigger that
  * cuts that cycle short, the texture-frame countdown in front of the rise
  * and the slam, and the mega-character kill.
  *
@@ -31,7 +31,8 @@
  *   0xa0 and the reloc is _ZN5Sound4PlayEjjRK7Vector3, not func_02012694.
  *   func_02012694 is the bank-3 veneer the ROM calls.
  * - The seven func_ov091_* names stay. They are defined in
- *   src/actors/daDsnBase_c.cpp and daDkk_c calls the same symbols.
+ *   src/actors/daDsnBase_c.cpp and daDkk_c calls the same symbols. Four
+ *   are daDsnBase_c methods now. Three stay C-linkage.
  */
 
 #include "daDsn_c.h"
@@ -45,17 +46,15 @@
    It is declared int [] as include/decl_common.h has it. The symbol stays
    the overlay's; this TU does not own the bytes.
 
-   The seven cycle helpers are defined in daDsnBase_c's TU with a char *
-   parameter and called by daDkk_c under the same C names. */
+   func_ov091_02132ff4, func_ov091_02132e98 and func_ov091_02132e64 stay
+   C-linkage with a char * parameter. func_ov091_02133098,
+   func_ov091_02133020, func_ov091_02132f04 and func_ov091_02132dc0 are
+   daDsnBase_c methods. */
 extern "C" {
 extern int data_ov091_02135138[];
-void func_ov091_02133020(char *self); /* rise */
 void func_ov091_02132ff4(char *self); /* hover */
-void func_ov091_02132f04(char *self); /* slam */
 void func_ov091_02132e98(char *self); /* rest */
 void func_ov091_02132e64(char *self); /* recover */
-void func_ov091_02133098(char *self); /* drop shadow */
-int func_ov091_02132dc0(char *self);  /* Yoshi egg within mClipRadius */
 void *_ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int id, int x, int y, int z);
 void func_02012694(unsigned int id, const Vector3 *pos);
 int _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(void *self, int radius, int yOffset);
@@ -109,7 +108,7 @@ int daDsn_c::Behavior()
             if (mHoldTimer != 0)
                 mHoldTimer--;
             else
-                func_ov091_02133020((char *)this); /* rise */
+                func_ov091_02133020(); /* rise */
         }
         break;
     }
@@ -119,14 +118,14 @@ int daDsn_c::Behavior()
     case 2:
         if (mTriggered != 0) {
             mTextureSequence.currFrame = 0;
-            func_ov091_02132f04((char *)this); /* slam */
+            func_ov091_02132f04(); /* slam */
         } else {
             mTextureSequence.Advance();
             if (mTextureSequence.Finished() != 0) {
                 if (mHoldTimer != 0)
                     mHoldTimer--;
                 else
-                    func_ov091_02132f04((char *)this); /* slam */
+                    func_ov091_02132f04(); /* slam */
             } else {
                 mHoldTimer = 5;
             }
@@ -150,9 +149,9 @@ int daDsn_c::Behavior()
         break;
     }
     UpdateModelPosAndRotY();
-    func_ov091_02133098((char *)this); /* drop shadow */
+    func_ov091_02133098(); /* drop shadow */
     if (_ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(this, 0, 0) != 0 ||
-        func_ov091_02132dc0((char *)this) != 0)
+        func_ov091_02132dc0() != 0) /* Yoshi egg within mClipRadius */
         UpdateClsnPosAndRot();
     return 1;
 }
