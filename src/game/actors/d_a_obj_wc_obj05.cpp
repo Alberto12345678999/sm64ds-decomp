@@ -203,6 +203,7 @@ s32 daObjWc_Obj05_c::CleanupResources()
     ((SharedFilePtr *)data_ov029_02114284)->Release();
     return 1;
 }
-
+// @symbol _ZN15daObjWc_Obj05_cD1Ev
+// @symbol _ZN15daObjWc_Obj05_cD0Ev
 /* daObjWc_Obj05_c's inline class-body destructor is instantiated by the
  * definitions above. mwccarm emits D1 and D0 into this object. */

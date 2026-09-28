@@ -323,7 +323,8 @@ void func_ov065_0211ac0c(daObjCtMecha05_c *actor)
         0xdc000, 0x32000, 0x28a000, 0xf);
 }
 }
-
+// @symbol _ZN16daObjCtMecha05_cD1Ev
+// @symbol _ZN16daObjCtMecha05_cD0Ev
 /* -------------------------------------------------------------------------- */
 /*   _ZN16daObjCtMecha05_cD1Ev  0x0211ab60  size 0x4c  (complete-object)      */
 /*   _ZN16daObjCtMecha05_cD0Ev  0x0211abac  size 0x60  (deleting)            */

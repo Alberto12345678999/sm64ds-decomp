@@ -393,5 +393,7 @@ void daObjC1_Trap_c::State4()
     mAngleZ = -0x3c00;
 }
 
-/*
+// @symbol _ZN14daObjC1_Trap_cD1Ev
+// @symbol _ZN14daObjC1_Trap_cD0Ev
+/* ROM ordinals 1 and 0 are emitted from the inline destructor and the
  * InitResources-owned vtable: D1 at 0x021111a0, D0 at 0x021111ec. */

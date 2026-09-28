@@ -211,3 +211,18 @@ extern "C" void func_ov100_02146e70(daObjPathLift_c *self)
             groundDepth, scaleZ, 0xf);
     }
 }
+// @symbol _ZN15daObjPathLift_cD1Ev
+// @symbol _ZN15daObjPathLift_cD0Ev
+/* -------------------------------------------------------------------------- */
+/* ROM ordinals 0 and 1 -- the destructor group.                              */
+/*   _ZN15daObjPathLift_cD1Ev  0x02146d7c  size 0x70                          */
+/*   _ZN15daObjPathLift_cD0Ev  0x02146dec  size 0x84                          */
+/* Both come from the `~daObjPathLift_c() {}` in the header: the compiler     */
+/* writes the group, and only the INLINE form writes it in the cartridge's    */
+/* order. An out-of-line definition here emits D2, D0, D1 instead, which is   */
+/* why this class's destructor is declared with a body and defined nowhere    */
+/* in this file. mwcc still emits _ZTV15daObjPathLift_c for it, so the        */
+/* vtable and the RTTI records stay comparable to the cartridge -- see this   */
+/* TU's compiler_only_output rows, which check every one of them and then     */
+/* discard the copy dsd already delinks.                                     */
+/* -------------------------------------------------------------------------- */

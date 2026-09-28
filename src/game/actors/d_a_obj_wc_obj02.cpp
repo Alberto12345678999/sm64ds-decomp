@@ -217,6 +217,7 @@ int daObjWc_Obj02_c::CleanupResources()
     data_ov029_02114248.Release();
     return 1;
 }
-
+// @symbol _ZN15daObjWc_Obj02_cD1Ev
+// @symbol _ZN15daObjWc_Obj02_cD0Ev
 /* daObjWc_Obj02_c's inline class-body destructor is instantiated by the
  * definitions above. mwccarm emits D1 and D0 into this object. */

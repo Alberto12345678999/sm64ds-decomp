@@ -293,5 +293,6 @@ int daEyBm_c::OnYoshiTryEat()
 {
     return 4;
 }
-
+// @symbol _ZN8daEyBm_cD1Ev
+// @symbol _ZN8daEyBm_cD0Ev
 /* The inline class destructor and InitResources vtable instantiation emit both naturally. */
