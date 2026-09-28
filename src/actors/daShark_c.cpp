@@ -12,7 +12,7 @@
  *
  * #pragma defer_codegen off emits .text in source order. The out-of-line
  * destructor is the key function, so it emits D1 then D0. The factory
- * stays in src/d_a_shark.c. g_profile_SHARK is not this TU.
+ * (daShark_c_classInit) is not in this TU. g_profile_SHARK is not this TU.
  *
  * The two state words __sinit_ov090_02134020 copies into data_ov090_021345cc
  * are pointer-to-member records (function, this-delta 0): enter is
