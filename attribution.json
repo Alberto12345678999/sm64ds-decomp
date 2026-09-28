@@ -6061,7 +6061,7 @@
     "src/actors/dMap_c.cpp#_ZN6dMap_c13InitResourcesEv": "andrewboudreau",
     "src/actors/dMap_c.cpp#_ZN6dMap_c20GetPosFromMinimapPosER7Vector3S1_5Fix12IiEsS1_": "tangosdev",
     "src/actors/dMap_c.cpp#_ZN6dMap_c15GetPosOnMinimapER7Vector3S1_5Fix12IiEsS1_": "tangosdev",
-    "src/actors/dEntObj_c.cpp#_ZN9dEntObj_cD1Ev": "andrewboudreau",
+    "src/actors/dEntObj_c.cpp#_ZN9dEntObj_cD1Ev": "tangosdev",
     "src/actors/dEntObj_c.cpp#_ZN9dEntObj_cD0Ev": "andrewboudreau",
     "src/actors/dEntObj_c.cpp#_ZN15UnknownVsPlayerD1Ev": "tangosdev",
     "src/actors/dEntObj_c.cpp#func_ov075_02114010": "tangosdev",

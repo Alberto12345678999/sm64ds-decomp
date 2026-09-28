@@ -41,14 +41,14 @@ extern "C" {
 void _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
     void *anim, void *file, int numBlendFrames, int flags, int speed, unsigned short startFrame);
 void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-    void *anim, void *file, int flags, int speed, unsigned int startFrame);
+    void *anim, void *file, int flags, int speed, unsigned short startFrame);
 void _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
-    void *seq, void *file, int flags, int speed, unsigned int startFrame);
-void _ZN7Clipper13Func_02015560ER9Matrix4x3R7Vector35Fix12IiES3_(
+    void *seq, void *file, int flags, int speed, unsigned short startFrame);
+int _ZN7Clipper13Func_02015560ER9Matrix4x3R7Vector35Fix12IiES3_(
     void *clipper, void *mat, void *src, int scale, void *dst);
 void _ZN11ShadowModel9InitModelEP9Matrix4x35Fix12IiES3_S3_j(
-    void *shadow, Matrix4x3 *mat, int radius, int height, int depth, unsigned int flags);
-unsigned _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
+    void *shadow, Matrix4x3 *mat, int radius, int height, int depth, unsigned char flags);
+int _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
     unsigned handle, unsigned id, int x, int y, int z, const Vector3_16 *dir, void *callback);
 void _ZN3G3i13PerspectiveW_E5Fix12IiES1_S1_S1_S1_S1_bP9Matrix4x3(
     int sinFov, int cosFov, int aspect, int nearZ, int farZ, int scaleW, bool load, Matrix4x3 *m);
@@ -58,16 +58,16 @@ int RandomIntInternal(int *seed);
 short Vec3_HorzAngle(const Vector3 *a, const Vector3 *b);
 void Vec3_Asr(Vector3 *dst, Vector3 *src, int shift);
 void Vec3_MulScalarInPlace(Vector3 *v, int scale);
-void MulVec3Mat4x3(const Vector3 *v, const Matrix4x3 *m, Vector3 *out);
+void MulVec3Mat4x3(Vector3 *v, Matrix4x3 *m, Vector3 *out);
 void Matrix4x3_FromTranslation(Matrix4x3 *m, int x, int y, int z);
 void Matrix4x3_ApplyInPlaceToRotationY(Matrix4x3 *m, short angY);
-void Math_Function_0203b14c(int *p, int target, int a, int b, int c);
-int DecIfAbove0_Byte(char *p);
+int Math_Function_0203b14c(int *p, int target, int a, int b, int c);
+unsigned char DecIfAbove0_Byte(unsigned char *p);
 int func_0201251c(int a, int b, void *pos, int c);
-void func_02012174(int a, int b);
-void func_02012790(int sound);
+unsigned int func_02012174(unsigned int a, unsigned int b);
+unsigned int func_02012790(unsigned int sound);
 void func_020167a4(void *model);
-void func_ov075_0211b3d8(void *p);
+int func_ov075_0211b3d8(void *p);
 long long __aeabi_uidiv(unsigned int n, int d);
 
 extern Matrix4x3 data_020a0e68;
@@ -401,7 +401,7 @@ extern "C" void func_ov075_0211473c(UnknownVsPlayer *p)
 // @symbol func_ov075_0211478c
 extern "C" void func_ov075_0211478c(UnknownVsPlayer *p)
 {
-    int waiting = DecIfAbove0_Byte((char *)&p->mWaitTimer);
+    int waiting = DecIfAbove0_Byte(&p->mWaitTimer);
     if (waiting) return;
     p->mAngleY = 0;
     p->mMoveState = 3;
