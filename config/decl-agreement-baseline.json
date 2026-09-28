@@ -411,11 +411,6 @@
         "param:#1 char *"
       ]
     },
-    "ChiefChilly_ChangeState": {
-      "src/_ZN16daKing_Donketu_c13InitResourcesEv.cpp": [
-        "param:#2 struct PMF *"
-      ]
-    },
     "CollectStar": {
       "src/CollectStarInLevel.c": [
         "param:#1 signed char"
@@ -1719,13 +1714,10 @@
       ]
     },
     "Matrix4x3_ApplyInPlaceToRotationX": {
-      "src/_ZN16daKing_Donketu_c8BehaviorEv.cpp": [
+      "src/actors/daKing_Donketu_c.cpp": [
         "param:#2 int"
       ],
       "src/actors/daBombking_c.cpp": [
-        "param:#2 int"
-      ],
-      "src/actors/daKing_Donketu_c.cpp": [
         "param:#2 int"
       ],
       "src/actors/daPopoi_c.cpp": [
@@ -5016,10 +5008,6 @@
       ]
     },
     "Vec3_Lsl": {
-      "src/_ZN16daKing_Donketu_c8BehaviorEv.cpp": [
-        "param:#1 Vector3 *",
-        "param:#2 Vector3 *"
-      ],
       "src/_ZN8dActor_c11UpdateCarryER6PlayerRK7Vector3.cpp": [
         "param:#1 Vector3 *",
         "param:#2 const Vector3 *"
@@ -6198,8 +6186,8 @@
         "param:#5 void *",
         "param:#6 void *"
       ],
-      "src/_ZN16daKing_Donketu_c13InitResourcesEv.cpp": [
-        "param:#2 struct dActor_c *",
+      "src/actors/daKing_Donketu_c.cpp": [
+        "param:#2 dActor_c *",
         "param:#5 Vector3_16 *",
         "param:#6 Vector3_16 *"
       ],
@@ -6674,7 +6662,7 @@
       ]
     },
     "_ZN10dCcAcPos_c21SetPosRelativeToActorERK7Vector3": {
-      "src/_ZN16daKing_Donketu_c8BehaviorEv.cpp": [
+      "src/actors/daKing_Donketu_c.cpp": [
         "param:#2 const Vector3 *"
       ],
       "src/_ZN6Player17St_LedgeHang_InitEv.cpp": [
@@ -6709,8 +6697,7 @@
       "src/_ZN14UnchainedChomp13InitResourcesEv.cpp": [
         "param:#3 const Vector3 &"
       ],
-      "src/_ZN16daKing_Donketu_c13InitResourcesEv.cpp": [
-        "param:#2 struct dActor_c *",
+      "src/actors/daKing_Donketu_c.cpp": [
         "param:#3 Vector3 *"
       ],
       "src/_ZN6Eyerok13InitResourcesEv.cpp": [
@@ -6823,7 +6810,7 @@
       ]
     },
     "_ZN11ShadowModel12InitCylinderEv": {
-      "src/_ZN16daKing_Donketu_c13InitResourcesEv.cpp": [
+      "src/actors/daKing_Donketu_c.cpp": [
         "return:void"
       ],
       "src/_ZN6Eyerok13InitResourcesEv.cpp": [
@@ -9913,9 +9900,9 @@
       "src/_ZN15daObjMarioCap_c13InitResourcesEv.cpp": [
         "param:#1 void *"
       ],
-      "src/_ZN16daKing_Donketu_c13InitResourcesEv.cpp": [
+      "src/actors/daKing_Donketu_c.cpp": [
         "param:#1 SharedFilePtr *",
-        "return:struct BMD_File *"
+        "return:BMD_File *"
       ],
       "src/_ZN17BowserPuzzlePiece13InitResourcesEv.cpp": [
         "return:BMD_File *"
@@ -14547,7 +14534,7 @@
         "param:#1 void *",
         "return:void"
       ],
-      "src/_ZN16daKing_Donketu_c13InitResourcesEv.cpp": [
+      "src/actors/daKing_Donketu_c.cpp": [
         "param:#1 SharedFilePtr *",
         "return:void *"
       ],
@@ -15123,8 +15110,7 @@
       "src/_ZN17daObjBk_Botaosi_c13InitResourcesEv.cpp": [
         "return:void"
       ],
-      "src/_ZN16daKing_Donketu_c13InitResourcesEv.cpp": [
-        "param:#2 struct BMD_File *",
+      "src/actors/daKing_Donketu_c.cpp": [
         "return:void"
       ],
       "src/_ZN17BowserPuzzlePiece13InitResourcesEv.cpp": [
@@ -15645,7 +15631,7 @@
       "include/decl_Animation.h": [
         "return:int"
       ],
-      "src/_ZN16daKing_Donketu_c8BehaviorEv.cpp": [
+      "src/actors/daKing_Donketu_c.cpp": [
         "return:int"
       ],
       "src/_ZN6Player18St_YoshiPower_MainEv.cpp": [
@@ -19246,9 +19232,6 @@
       ],
       "src/_ZN14UnknownVsEntry13InitResourcesEv.cpp": [
         "return:char"
-      ],
-      "src/_ZN16daKing_Donketu_c8BehaviorEv.cpp": [
-        "return:Mat4x3"
       ],
       "src/_ZN6Player6RenderEv.cpp": [
         "return:int"
@@ -25993,54 +25976,14 @@
         "return:PgBbyState []"
       ]
     },
-    "data_ov073_02123280": {
-      "src/_ZN16daKing_Donketu_c13InitResourcesEv.cpp": [
-        "return:SharedFilePtr"
-      ]
-    },
-    "data_ov073_02123288": {
-      "src/_ZN16daKing_Donketu_c13InitResourcesEv.cpp": [
-        "return:SharedFilePtr"
-      ]
-    },
-    "data_ov073_02123290": {
-      "src/_ZN16daKing_Donketu_c13InitResourcesEv.cpp": [
-        "return:SharedFilePtr"
-      ]
-    },
-    "data_ov073_02123298": {
-      "src/_ZN16daKing_Donketu_c13InitResourcesEv.cpp": [
-        "return:SharedFilePtr"
-      ]
-    },
-    "data_ov073_021232a0": {
-      "src/_ZN16daKing_Donketu_c13InitResourcesEv.cpp": [
-        "return:SharedFilePtr"
-      ]
-    },
-    "data_ov073_021232a8": {
-      "src/_ZN16daKing_Donketu_c13InitResourcesEv.cpp": [
-        "return:SharedFilePtr"
-      ]
-    },
-    "data_ov073_021232b0": {
-      "src/_ZN16daKing_Donketu_c13InitResourcesEv.cpp": [
-        "return:SharedFilePtr"
-      ]
-    },
-    "data_ov073_021232b8": {
-      "src/_ZN16daKing_Donketu_c13InitResourcesEv.cpp": [
-        "return:SharedFilePtr"
-      ]
-    },
     "data_ov073_02123320": {
       "src/__sinit_ov073_02122874.c": [
         "return:S16"
       ]
     },
     "data_ov073_02123330": {
-      "src/_ZN16daKing_Donketu_c13InitResourcesEv.cpp": [
-        "return:struct PMF"
+      "src/actors/daKing_Donketu_c.cpp": [
+        "return:char []"
       ],
       "src/__sinit_ov073_02122874.c": [
         "return:S16"
@@ -26054,11 +25997,17 @@
     "data_ov073_02123350": {
       "src/__sinit_ov073_02122874.c": [
         "return:S16"
+      ],
+      "src/actors/daKing_Donketu_c.cpp": [
+        "return:char []"
       ]
     },
     "data_ov073_02123360": {
       "src/__sinit_ov073_02122874.c": [
         "return:S16"
+      ],
+      "src/actors/daKing_Donketu_c.cpp": [
+        "return:char []"
       ]
     },
     "data_ov073_02123370": {
@@ -26089,6 +26038,9 @@
     "data_ov073_021233c0": {
       "src/__sinit_ov073_02122874.c": [
         "return:S16"
+      ],
+      "src/actors/daKing_Donketu_c.cpp": [
+        "return:char []"
       ]
     },
     "data_ov073_021233d0": {
@@ -26104,6 +26056,9 @@
     "data_ov073_021233f0": {
       "src/__sinit_ov073_02122874.c": [
         "return:S16"
+      ],
+      "src/actors/daKing_Donketu_c.cpp": [
+        "return:char []"
       ]
     },
     "data_ov073_02123400": {
@@ -28270,7 +28225,7 @@
       "src/_ZN14UnchainedChomp8BehaviorEv.cpp": [
         "param:#1 int"
       ],
-      "src/_ZN16daKing_Donketu_c8BehaviorEv.cpp": [
+      "src/actors/daKing_Donketu_c.cpp": [
         "param:#1 int"
       ],
       "src/_ZN6Player16St_BurnFire_MainEv.cpp": [
@@ -28292,9 +28247,6 @@
         "param:#1 int"
       ],
       "src/actors/daDgr_c.cpp": [
-        "param:#1 int"
-      ],
-      "src/actors/daKing_Donketu_c.cpp": [
         "param:#1 int"
       ],
       "src/actors/daObjYajirusi_c.cpp": [
@@ -41247,11 +41199,6 @@
     "func_ov071_02120278": {
       "include/decl_common.h": [
         "param:#1 char *"
-      ]
-    },
-    "func_ov073_0211f61c": {
-      "src/_ZN16daKing_Donketu_c8BehaviorEv.cpp": [
-        "return:void"
       ]
     },
     "func_ov073_021223a4": {
