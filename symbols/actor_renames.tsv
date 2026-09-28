@@ -854,6 +854,17 @@ ov018	0x02111818	func_ov018_02111818	SkiLift_Spawn	spawnfunc
 ov018	0x02111818	SkiLift_Spawn	daObjSm_Lift_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov018	0x02111848	func_ov018_02111848	_ZN10daPgMthr_cD1Ev	vtable slot 16 (was _ZN14daObjSm_Lift_cD1Ev)
 ov018	0x02111898	func_ov018_02111898	_ZN10daPgMthr_cD0Ev	vtable slot 17 (was _ZN14daObjSm_Lift_cD0Ev)
+ov018	0x02111968	func_ov018_02111968	_ZN10daPgMthr_c19func_ov018_02111968EPvPc	daPgMthr_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov018	0x02111a48	func_ov018_02111a48	_ZN10daPgMthr_c19func_ov018_02111a48EPc	daPgMthr_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov018	0x02111b3c	func_ov018_02111b3c	_ZN10daPgMthr_c19func_ov018_02111b3cEv	daPgMthr_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov018	0x02111d28	func_ov018_02111d28	_ZN10daPgMthr_c19func_ov018_02111d28Ev	daPgMthr_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov018	0x02111e28	func_ov018_02111e28	_ZN10daPgMthr_c19func_ov018_02111e28Ev	daPgMthr_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov018	0x02111f1c	func_ov018_02111f1c	_ZN10daPgMthr_c19func_ov018_02111f1cEv	daPgMthr_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov018	0x02111fac	func_ov018_02111fac	_ZN10daPgMthr_c19func_ov018_02111facEv	daPgMthr_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov018	0x021121dc	func_ov018_021121dc	_ZN10daPgMthr_c19func_ov018_021121dcEv	daPgMthr_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov018	0x02112234	func_ov018_02112234	_ZN10daPgMthr_c19func_ov018_02112234Ev	daPgMthr_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov018	0x021122ec	func_ov018_021122ec	_ZN10daPgMthr_c19func_ov018_021122ecEv	daPgMthr_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov018	0x021123d0	func_ov018_021123d0	_ZN10daPgMthr_c19func_ov018_021123d0Ei	daPgMthr_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
 ov018	0x021123ec	func_ov018_021123ec	_ZN10daPgMthr_c16CleanupResourcesEv	vtable slot 3 (was _ZN14daObjSm_Lift_c16CleanupResourcesEv)
 ov018	0x02112450	func_ov018_02112450	_ZN10daPgMthr_c16OnPendingDestroyEv	vtable slot 12 (was _ZN14daObjSm_Lift_c16OnPendingDestroyEv)
 ov018	0x02112454	func_ov018_02112454	_ZN10daPgMthr_c6RenderEv	vtable slot 9 (was _ZN14daObjSm_Lift_c6RenderEv)
