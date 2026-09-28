@@ -135,8 +135,6 @@ extern "C" void func_ov014_02112ea8(daObjWanwanShutter_c *a)
         a->mMeshCollider.Disable();
 }
 
-// @symbol _ZN20daObjWanwanShutter_cD1Ev
-// @symbol _ZN20daObjWanwanShutter_cD0Ev
 /* NOT WRITTEN HERE ON PURPOSE. The inline `~daObjWanwanShutter_c() {}` in the
    header is the whole source of both variants: from an inline body mwcc emits
    D1 and then D0 -- the cartridge's own order -- and no D2. Writing the body

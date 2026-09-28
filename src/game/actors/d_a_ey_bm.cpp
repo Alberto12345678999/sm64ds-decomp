@@ -88,9 +88,8 @@ extern "C" DaEyBmSpawnInfo g_profile_EYEKUN_BEAM = {
     0x01000000
 };
 
-
-extern "C" {
 // @symbol _ZN8daEyBm_c13InitResourcesEv
+extern "C" {
 /* Known by-value Fix12 compiler walls: these exact ABI imports preserve the
  * retail register calling convention while the owned objects remain typed. */
 extern int _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
@@ -125,9 +124,8 @@ int daEyBm_c::InitResources()
     return 1;
 }
 
-
-extern "C" {
 // @symbol _ZN8daEyBm_c8BehaviorEv
+extern "C" {
 extern void Matrix4x3_FromRotationY(Matrix4x3 *matrix, s16 angle);
 extern void Matrix4x3_ApplyInPlaceToRotationX(Matrix4x3 *matrix, s16 angle);
 extern void MulVec3Mat4x3(
@@ -266,7 +264,7 @@ void daEyBm_c::HurtPlayer()
  * 0x02121b50, size 0x54. The coined mangling uses a reference; a pointer
  * would generate identical ARM. The retail caller passes the owned
  * collision subobject explicitly in r1. */
-// @symbol _ZN8daEyBm_c15UpdateCollisionER10dBgCh_Actr 
+// @symbol _ZN8daEyBm_c15UpdateCollisionER10dBgCh_Actr
 extern "C" void dBgCh_Actr_UpdateDiscreteNoLava_veneer(dBgCh_Actr *collision);
 
 void daEyBm_c::UpdateCollision(dBgCh_Actr &collision)
