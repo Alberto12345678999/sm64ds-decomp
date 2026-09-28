@@ -49,12 +49,12 @@ ov002	0x020b0a84	func_ov002_020b0a84	_ZN11daChScene_c8BehaviorEv	vtable slot 6 (
 ov002	0x020b0d88	func_ov002_020b0d88	_ZN11daChScene_c13InitResourcesEv	vtable slot 0 (was _ZN11VirtualDoor13InitResourcesEv)
 ov002	0x020b0f24	func_ov002_020b0f24	daChScene_c_Spawn	spawnfunc
 ov002	0x020b0f24	daChScene_c_Spawn	daChScene_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
-ov002	0x020b0f54	func_ov002_020b0f54	_ZN4CoinD1Ev	vtable slot 16
-ov002	0x020b0fa4	func_ov002_020b0fa4	_ZN4CoinD0Ev	vtable slot 17
-ov002	0x020b2198	func_ov002_020b2198	_ZN4Coin16CleanupResourcesEv	vtable slot 3
-ov002	0x020b2284	func_ov002_020b2284	_ZN4Coin6RenderEv	vtable slot 9
-ov002	0x020b2324	func_ov002_020b2324	_ZN4Coin8BehaviorEv	vtable slot 6
-ov002	0x020b2508	func_ov002_020b2508	_ZN4Coin13InitResourcesEv	vtable slot 0
+ov002	0x020b0f54	func_ov002_020b0f54	_ZN8daCoin_cD1Ev	vtable slot 16
+ov002	0x020b0fa4	func_ov002_020b0fa4	_ZN8daCoin_cD0Ev	vtable slot 17
+ov002	0x020b2198	func_ov002_020b2198	_ZN8daCoin_c16CleanupResourcesEv	vtable slot 3
+ov002	0x020b2284	func_ov002_020b2284	_ZN8daCoin_c6RenderEv	vtable slot 9
+ov002	0x020b2324	func_ov002_020b2324	_ZN8daCoin_c8BehaviorEv	vtable slot 6
+ov002	0x020b2508	func_ov002_020b2508	_ZN8daCoin_c13InitResourcesEv	vtable slot 0
 ov002	0x020b2a98	func_ov002_020b2a98	BlueCoin_Spawn	spawnfunc
 ov002	0x020b2a98	BlueCoin_Spawn	daCoin_c_classInit_BLUE_COIN	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov002	0x020b2af0	func_ov002_020b2af0	RedCoin_Spawn	spawnfunc
@@ -344,7 +344,7 @@ ov002	0x021087ac	data_ov002_021087ac	RedCoin_SpawnInfo	spawninfo
 ov002	0x021087ac	RedCoin_SpawnInfo	g_profile_RED_COIN	reconstructed profile global; literal ROM ID RED_COIN+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov002	0x021087c8	data_ov002_021087c8	BlueCoin_SpawnInfo	spawninfo
 ov002	0x021087c8	BlueCoin_SpawnInfo	g_profile_BLUE_COIN	reconstructed profile global; literal ROM ID BLUE_COIN+registry role+later EAD lineage; exact SM64DS spelling not preserved
-ov002	0x021087ec	data_ov002_021087ec	_ZTV4Coin	vtable alloc=0x3b4
+ov002	0x021087ec	data_ov002_021087ec	_ZTV8daCoin_c	vtable alloc=0x3b4
 ov002	0x02108884	data_ov002_02108884	daFeather_c_SpawnInfo	spawninfo
 ov002	0x02108884	daFeather_c_SpawnInfo	g_profile_FEATHER	reconstructed profile global; literal ROM ID FEATHER+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov002	0x021088a8	data_ov002_021088a8	_ZTV11daFeather_c	vtable alloc=0x388
@@ -3804,6 +3804,101 @@ ov065	0x02116744	func_ov065_02116744	_ZN15daYurei_Mucho_c19func_ov065_02116744Ev
 ov065	0x021168a8	func_ov065_021168a8	_ZN15daYurei_Mucho_c19func_ov065_021168a8Ev	daYurei_Mucho_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
 ov065	0x0211691c	func_ov065_0211691c	_ZN15daYurei_Mucho_c19func_ov065_0211691cEPNS_5StateE	daYurei_Mucho_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
 ov065	0x0211696c	func_ov065_0211696c	_ZN15daYurei_Mucho_c19func_ov065_0211696cEv	daYurei_Mucho_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov002	0x020b5ab4	func_ov002_020b5ab4	_ZN17daObjFloatBoard_c19func_ov002_020b5ab4Ev	daObjFloatBoard_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov002	0x020b5b98	func_ov002_020b5b98	_ZN17daObjFloatBoard_c19func_ov002_020b5b98Ev	daObjFloatBoard_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov002	0x020b7200	func_ov002_020b7200	_ZN15daObjMarioCap_c19func_ov002_020b7200Ev	daObjMarioCap_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov002	0x020b74d0	func_ov002_020b74d0	_ZN15daObjMarioCap_c19func_ov002_020b74d0Ev	daObjMarioCap_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov002	0x020b76ec	func_ov002_020b76ec	_ZN15daObjMarioCap_c19func_ov002_020b76ecEv	daObjMarioCap_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov002	0x020b7c30	func_ov002_020b7c30	_ZN15daObjMarioCap_c19func_ov002_020b7c30Ev	daObjMarioCap_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov002	0x020b7cec	func_ov002_020b7cec	_ZN15daObjMarioCap_c19func_ov002_020b7cecEv	daObjMarioCap_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov002	0x020b7d58	func_ov002_020b7d58	_ZN15daObjMarioCap_c19func_ov002_020b7d58Ev	daObjMarioCap_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov002	0x020b7d9c	func_ov002_020b7d9c	_ZN15daObjMarioCap_c19func_ov002_020b7d9cEv	daObjMarioCap_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov002	0x020b7e08	func_ov002_020b7e08	_ZN15daObjMarioCap_c19func_ov002_020b7e08Ev	daObjMarioCap_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov002	0x020b7f7c	func_ov002_020b7f7c	_ZN15daObjMarioCap_c19func_ov002_020b7f7cEv	daObjMarioCap_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov002	0x020bc990	func_ov002_020bc990	_ZN20daObjCannonShutter_c19func_ov002_020bc990Ev	daObjCannonShutter_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov002	0x020f0438	func_ov002_020f0438	_ZN9daSCoin_c19func_ov002_020f0438Ev	daSCoin_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov002	0x020f051c	func_ov002_020f051c	_ZN9daSCoin_c19func_ov002_020f051cEv	daSCoin_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov002	0x020f05f4	func_ov002_020f05f4	_ZN9daSCoin_c19func_ov002_020f05f4Ev	daSCoin_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov002	0x020bda48	func_ov002_020bda48	_ZN6Player19func_ov002_020bda48Ev	Player method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov002	0x020bdd9c	func_ov002_020bdd9c	_ZN6Player19func_ov002_020bdd9cEv	Player method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov002	0x020bdef0	func_ov002_020bdef0	_ZN6Player19func_ov002_020bdef0Ev	Player method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov002	0x020bdf8c	func_ov002_020bdf8c	_ZN6Player19func_ov002_020bdf8cEv	Player method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov002	0x020be3b0	func_ov002_020be3b0	_ZN6Player19func_ov002_020be3b0Ev	Player method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov002	0x020beabc	func_ov002_020beabc	_ZN6Player19func_ov002_020beabcEv	Player method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov002	0x020beb38	func_ov002_020beb38	_ZN6Player19func_ov002_020beb38Ev	Player method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov002	0x020bf13c	func_ov002_020bf13c	_ZN6Player19func_ov002_020bf13cEv	Player method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov002	0x020bf40c	func_ov002_020bf40c	_ZN6Player19func_ov002_020bf40cEv	Player method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov002	0x020bf5e0	func_ov002_020bf5e0	_ZN6Player19func_ov002_020bf5e0Ev	Player method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov002	0x020bf88c	func_ov002_020bf88c	_ZN6Player19func_ov002_020bf88cEv	Player method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov002	0x020bf90c	func_ov002_020bf90c	_ZN6Player19func_ov002_020bf90cEv	Player method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov002	0x020bf9d4	func_ov002_020bf9d4	_ZN6Player19func_ov002_020bf9d4Ev	Player method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov002	0x020bfa74	func_ov002_020bfa74	_ZN6Player19func_ov002_020bfa74Ev	Player method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov002	0x020bfec0	func_ov002_020bfec0	_ZN6Player19func_ov002_020bfec0Ev	Player method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov002	0x020c0434	func_ov002_020c0434	_ZN6Player19func_ov002_020c0434Ev	Player method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov002	0x020c04ac	func_ov002_020c04ac	_ZN6Player19func_ov002_020c04acEv	Player method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov002	0x020c04e0	func_ov002_020c04e0	_ZN6Player19func_ov002_020c04e0Ev	Player method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov002	0x020c0688	func_ov002_020c0688	_ZN6Player19func_ov002_020c0688Ev	Player method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov002	0x020c0cbc	func_ov002_020c0cbc	_ZN6Player19func_ov002_020c0cbcEv	Player method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov002	0x020c1234	func_ov002_020c1234	_ZN6Player19func_ov002_020c1234Ev	Player method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov002	0x020c133c	func_ov002_020c133c	_ZN6Player19func_ov002_020c133cEv	Player method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov002	0x020c231c	func_ov002_020c231c	_ZN6Player19func_ov002_020c231cEv	Player method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov002	0x020c29d4	func_ov002_020c29d4	_ZN6Player19func_ov002_020c29d4Ev	Player method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov002	0x020c2e78	func_ov002_020c2e78	_ZN6Player19func_ov002_020c2e78Ev	Player method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov002	0x020c38a0	func_ov002_020c38a0	_ZN6Player19func_ov002_020c38a0Ev	Player method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov002	0x020c3a48	func_ov002_020c3a48	_ZN6Player19func_ov002_020c3a48Ev	Player method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov002	0x020c3bdc	func_ov002_020c3bdc	_ZN6Player19func_ov002_020c3bdcEv	Player method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov002	0x020c3cf0	func_ov002_020c3cf0	_ZN6Player19func_ov002_020c3cf0Ev	Player method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov002	0x020c3ea0	func_ov002_020c3ea0	_ZN6Player19func_ov002_020c3ea0Ev	Player method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov002	0x020c4188	func_ov002_020c4188	_ZN6Player19func_ov002_020c4188Ev	Player method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov002	0x020c44c4	func_ov002_020c44c4	_ZN6Player19func_ov002_020c44c4Ev	Player method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov002	0x020c47f4	func_ov002_020c47f4	_ZN6Player19func_ov002_020c47f4Ev	Player method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov002	0x020c5444	func_ov002_020c5444	_ZN6Player19func_ov002_020c5444Ev	Player method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov002	0x020c5d0c	func_ov002_020c5d0c	_ZN6Player19func_ov002_020c5d0cEv	Player method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov002	0x020c61ac	func_ov002_020c61ac	_ZN6Player19func_ov002_020c61acEv	Player method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov002	0x020c6538	func_ov002_020c6538	_ZN6Player19func_ov002_020c6538Ev	Player method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov002	0x020c6908	func_ov002_020c6908	_ZN6Player19func_ov002_020c6908Ev	Player method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov002	0x020c6adc	func_ov002_020c6adc	_ZN6Player19func_ov002_020c6adcEv	Player method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov002	0x020c6fe4	func_ov002_020c6fe4	_ZN6Player19func_ov002_020c6fe4Ev	Player method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov002	0x020c70ac	func_ov002_020c70ac	_ZN6Player19func_ov002_020c70acEv	Player method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov002	0x020c7194	func_ov002_020c7194	_ZN6Player19func_ov002_020c7194Ev	Player method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov002	0x020c71e0	func_ov002_020c71e0	_ZN6Player19func_ov002_020c71e0Ev	Player method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov002	0x020c7350	func_ov002_020c7350	_ZN6Player19func_ov002_020c7350Ev	Player method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov002	0x020c75f0	func_ov002_020c75f0	_ZN6Player19func_ov002_020c75f0Ev	Player method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov002	0x020c7cbc	func_ov002_020c7cbc	_ZN6Player19func_ov002_020c7cbcEv	Player method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov002	0x020c7f10	func_ov002_020c7f10	_ZN6Player19func_ov002_020c7f10Ev	Player method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov002	0x020c7ff8	func_ov002_020c7ff8	_ZN6Player19func_ov002_020c7ff8Ev	Player method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov002	0x020c8540	func_ov002_020c8540	_ZN6Player19func_ov002_020c8540Ev	Player method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov002	0x020c8714	func_ov002_020c8714	_ZN6Player19func_ov002_020c8714Ev	Player method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov002	0x020c897c	func_ov002_020c897c	_ZN6Player19func_ov002_020c897cEv	Player method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov002	0x020c8a4c	func_ov002_020c8a4c	_ZN6Player19func_ov002_020c8a4cEv	Player method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov002	0x020c8b54	func_ov002_020c8b54	_ZN6Player19func_ov002_020c8b54Ev	Player method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov002	0x020c8b78	func_ov002_020c8b78	_ZN6Player19func_ov002_020c8b78Ev	Player method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov002	0x020c8cb0	func_ov002_020c8cb0	_ZN6Player19func_ov002_020c8cb0Ev	Player method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov002	0x020c8d14	func_ov002_020c8d14	_ZN6Player19func_ov002_020c8d14Ev	Player method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov002	0x020c8f0c	func_ov002_020c8f0c	_ZN6Player19func_ov002_020c8f0cEv	Player method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov002	0x020c8f80	func_ov002_020c8f80	_ZN6Player19func_ov002_020c8f80Ev	Player method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov002	0x020c9128	func_ov002_020c9128	_ZN6Player19func_ov002_020c9128Ev	Player method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov002	0x020c91bc	func_ov002_020c91bc	_ZN6Player19func_ov002_020c91bcEv	Player method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov002	0x020c924c	func_ov002_020c924c	_ZN6Player19func_ov002_020c924cEv	Player method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov002	0x020c9288	func_ov002_020c9288	_ZN6Player19func_ov002_020c9288Ev	Player method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov002	0x020c92fc	func_ov002_020c92fc	_ZN6Player19func_ov002_020c92fcEv	Player method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov002	0x020c94a4	func_ov002_020c94a4	_ZN6Player19func_ov002_020c94a4Ev	Player method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov002	0x020c965c	func_ov002_020c965c	_ZN6Player19func_ov002_020c965cEv	Player method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov002	0x020c97e0	func_ov002_020c97e0	_ZN6Player19func_ov002_020c97e0Ev	Player method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov002	0x020c97f8	func_ov002_020c97f8	_ZN6Player19func_ov002_020c97f8Ev	Player method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov002	0x020c9840	func_ov002_020c9840	_ZN6Player19func_ov002_020c9840Ev	Player method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov002	0x020c98a4	func_ov002_020c98a4	_ZN6Player19func_ov002_020c98a4Ev	Player method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov002	0x020c9a04	func_ov002_020c9a04	_ZN6Player19func_ov002_020c9a04Ev	Player method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov002	0x020c9ac0	func_ov002_020c9ac0	_ZN6Player19func_ov002_020c9ac0Ev	Player method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov002	0x020c9b10	func_ov002_020c9b10	_ZN6Player19func_ov002_020c9b10Ev	Player method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov002	0x020c9b5c	func_ov002_020c9b5c	_ZN6Player19func_ov002_020c9b5cEv	Player method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov002	0x020c9c00	func_ov002_020c9c00	_ZN6Player19func_ov002_020c9c00Ev	Player method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov002	0x020c9c4c	func_ov002_020c9c4c	_ZN6Player19func_ov002_020c9c4cEv	Player method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov002	0x020c9cc0	func_ov002_020c9cc0	_ZN6Player19func_ov002_020c9cc0Ev	Player method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov002	0x020c9d1c	func_ov002_020c9d1c	_ZN6Player19func_ov002_020c9d1cEv	Player method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov002	0x020c9d68	func_ov002_020c9d68	_ZN6Player19func_ov002_020c9d68Ev	Player method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov002	0x020c9e18	func_ov002_020c9e18	_ZN6Player19func_ov002_020c9e18Ev	Player method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov002	0x020ca108	func_ov002_020ca108	_ZN6Player19func_ov002_020ca108Ev	Player method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
 ov062	0x021164e8	func_ov062_021164e8	_ZN10daHolhei_c19func_ov062_021164e8Ev	daHolhei_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
 ov062	0x021165e8	func_ov062_021165e8	_ZN10daHolhei_c19func_ov062_021165e8Ev	daHolhei_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
 ov062	0x021167c0	func_ov062_021167c0	_ZN10daHolhei_c19func_ov062_021167c0Ev	daHolhei_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.

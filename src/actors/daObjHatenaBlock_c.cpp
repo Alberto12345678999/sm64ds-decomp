@@ -82,6 +82,7 @@
 #include "SharedFilePtr.h"
 #include "Sound.h"
 #include "SaveData.h"
+#include "daSCoin_c.h"
 
 struct CLPS_Block;
 struct KCL_File;
@@ -179,7 +180,6 @@ extern int _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(void *self, int a, int b)
 extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *thiz, void *bca, int a, int fx, unsigned int f);
 extern void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(void *thiz, void *kcl, void *mtx, int fix, short s, void *clps);
 extern void func_ov102_0214ad14(void *actor);
-extern void func_ov002_020f0438(void *actor);
 extern void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned id, int x, int y, int z);
 
 int func_ov102_02149078(dActor_c *self);
@@ -633,7 +633,7 @@ extern "C" void func_ov102_021498e0(C *self)
     held = *(void **)(c + 0x3f4);
     if (held != 0) {
         if (*(u16 *)((char *)held + 0xc) == 0x149)
-            func_ov002_020f0438(held);
+            ((daSCoin_c *)held)->func_ov002_020f0438();
         *(void **)(c + 0x3f4) = 0;
     }
     Sound::PlayBank3(0, *(Vector3 *)(c + 0x74));
