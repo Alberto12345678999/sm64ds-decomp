@@ -2676,6 +2676,9 @@ ov090	0x02132fe8	func_ov090_02132fe8	MantaRay_Spawn	spawnfunc
 ov090	0x02132fe8	MantaRay_Spawn	daManta_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov090	0x02133034	func_ov090_02133034	_ZN12daPukupuku_cD1Ev	vtable slot 16
 ov090	0x02133074	func_ov090_02133074	_ZN12daPukupuku_cD0Ev	vtable slot 17
+ov090	0x02133190	func_ov090_02133190	_ZN12daPukupuku_c19func_ov090_02133190Ev	daPukupuku_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov090	0x02133200	func_ov090_02133200	_ZN12daPukupuku_c19func_ov090_02133200Ev	daPukupuku_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov090	0x021332e8	func_ov090_021332e8	_ZN12daPukupuku_c19func_ov090_021332e8EPM10PukuStateCFivE	daPukupuku_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
 ov090	0x021333ac	func_ov090_021333ac	_ZN12daPukupuku_c16CleanupResourcesEv	vtable slot 3
 ov090	0x021333dc	func_ov090_021333dc	_ZN12daPukupuku_c16OnPendingDestroyEv	vtable slot 12
 ov090	0x021333e0	func_ov090_021333e0	_ZN12daPukupuku_c6RenderEv	vtable slot 9
