@@ -231,6 +231,7 @@
     "src/actors/dScMiniGm_c.cpp#func_ov005_020c0140": "lunavyqo",
     "src/actors/dScMiniGm_c.cpp#func_ov005_020c0250": "tangosdev",
     "src/actors/dScMiniGm_c.cpp#func_ov005_020c0378": "tangosdev",
+    "src/actors/dScMiniGm_c.cpp#_ZN11dScMiniGm_c19func_ov005_020c0378Ev": "tangosdev",
     "src/actors/dScMiniGm_c.cpp#func_ov005_020c06cc": "tangosdev",
     "src/actors/dScMiniGm_c.cpp#func_ov005_020c0878": "lunavyqo",
     "src/actors/dScMiniGm_c.cpp#_ZN11dScMiniGm_c16OnPendingDestroyEv": "tangosdev",
