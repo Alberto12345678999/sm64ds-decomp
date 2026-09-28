@@ -20,16 +20,12 @@ extern "C" void *_ZN7fBase_cnwEj(unsigned size);
  *                           dBgActor_c's size: this class adds no fields.
  *
  * The adjacent 0x021139a4 table is a different class: RTTI names it
- * `daObjTdWater_c` (HUGE_WATER, 107).
+ * daObjTdWater_c (HUGE_WATER, 107).
  *
  * The destructor is declared LAST and INLINE on purpose. Class instantiation
  * via the factory's `new` emits the retail D1/D0 pair in cartridge order
  * without a separate leaf D2 body; out of line mwccarm emits D0 ahead of D1
- * and adds the D2 the ROM never carried.
- * Both bodies are short because the chain is short and this class adds no
- * member of its own: this class's vptr store, then `dBgActor_c`'s -- inlined,
- * which destroys the `Model` at 0xd4 and the `dBgW_KcMbg` at 0x124 -- then
- * `dActor_c`. */
+ * and adds the D2 the ROM never carried. */
 struct daObjTdFuta_c : dBgActor_c {
     virtual s32 InitResources();           /* slot  0 */
     virtual s32 CleanupResources();        /* slot  3 */
@@ -43,8 +39,6 @@ struct daObjTdFuta_c : dBgActor_c {
         return _ZN7fBase_cnwEj((unsigned)size);
     }
 
-    // @symbol _ZN13daObjTdFuta_cD1Ev
-    // @symbol _ZN13daObjTdFuta_cD0Ev
     virtual ~daObjTdFuta_c() {}            /* slots 16 (D1), 17 (D0) */
 };
 

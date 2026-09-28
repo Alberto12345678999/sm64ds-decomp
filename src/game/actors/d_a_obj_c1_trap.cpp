@@ -118,6 +118,7 @@ extern "C" void func_ov010_02111984(
 }
 
 // @symbol _ZN14daObjC1_Trap_c11OnCollisionER8dActor_c
+
 void daObjC1_Trap_c::OnCollision(dActor_c &other)
 {
     daObjC1_Trap_c *spawner;
@@ -168,6 +169,7 @@ void daObjC1_Trap_c::OnCollision(dActor_c &other)
 }
 
 // @symbol _ZN14daObjC1_Trap_c13InitResourcesEv
+
 int daObjC1_Trap_c::InitResources()
 {
     mTrapActive = 0;
@@ -240,6 +242,7 @@ int daObjC1_Trap_c::InitResources()
 }
 
 // @symbol _ZN14daObjC1_Trap_c8BehaviorEv
+
 int daObjC1_Trap_c::Behavior()
 {
     if (mIsSpawner) {
@@ -255,6 +258,7 @@ int daObjC1_Trap_c::Behavior()
 }
 
 // @symbol _ZN14daObjC1_Trap_c6RenderEv
+
 int daObjC1_Trap_c::Render()
 {
     if (!mIsSpawner)
@@ -263,6 +267,7 @@ int daObjC1_Trap_c::Render()
 }
 
 // @symbol _ZN14daObjC1_Trap_c16CleanupResourcesEv
+
 int daObjC1_Trap_c::CleanupResources()
 {
     if (mMeshCollider.IsEnabled())
@@ -275,6 +280,7 @@ int daObjC1_Trap_c::CleanupResources()
 }
 
 // @symbol _ZN14daObjC1_Trap_c20UpdateModelTransformEv
+
 void daObjC1_Trap_c::UpdateModelTransform()
 {
     int angleY = (int)(u16)mAngleY >> 4;
@@ -296,6 +302,7 @@ void daObjC1_Trap_c::UpdateModelTransform()
 }
 
 // @symbol _ZN14daObjC1_Trap_c24UpdateCollisionTransformEv
+
 void daObjC1_Trap_c::UpdateCollisionTransform()
 {
     Matrix4x3_FromTranslation(
@@ -307,6 +314,7 @@ void daObjC1_Trap_c::UpdateCollisionTransform()
 }
 
 // @symbol _ZN14daObjC1_Trap_c10GetSpawnerEv
+
 daObjC1_Trap_c *daObjC1_Trap_c::GetSpawner()
 {
     if (mSpawnerID == 0) {
@@ -322,6 +330,7 @@ daObjC1_Trap_c *daObjC1_Trap_c::GetSpawner()
 }
 
 // @symbol _ZN14daObjC1_Trap_c6State0Ev
+
 void daObjC1_Trap_c::State0()
 {
     Player *player = ClosestPlayer();
@@ -341,6 +350,7 @@ void daObjC1_Trap_c::State0()
 }
 
 // @symbol _ZN14daObjC1_Trap_c6State1Ev
+
 void daObjC1_Trap_c::State1()
 {
     daObjC1_Trap_c *spawner = GetSpawner();
@@ -357,6 +367,7 @@ void daObjC1_Trap_c::State1()
 }
 
 // @symbol _ZN14daObjC1_Trap_c6State2Ev
+
 void daObjC1_Trap_c::State2()
 {
     daObjC1_Trap_c *spawner = GetSpawner();
@@ -365,6 +376,7 @@ void daObjC1_Trap_c::State2()
 }
 
 // @symbol _ZN14daObjC1_Trap_c6State3Ev
+
 void daObjC1_Trap_c::State3()
 {
     mAngleZ += 0x400;
@@ -375,7 +387,11 @@ void daObjC1_Trap_c::State3()
 }
 
 // @symbol _ZN14daObjC1_Trap_c6State4Ev
+
 void daObjC1_Trap_c::State4()
 {
     mAngleZ = -0x3c00;
 }
+
+/*
+ * InitResources-owned vtable: D1 at 0x021111a0, D0 at 0x021111ec. */

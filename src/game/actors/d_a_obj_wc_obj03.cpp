@@ -208,3 +208,22 @@ void daObjWc_Obj03_c::CheckClsnWithPlayer()
     water->mTargetPosY = mPosY;
     Sound::PlayBank3(0x63, *(Vector3 *)&mCamSpacePosX);
 }
+
+/* -------------------------------------------------------------------------- */
+/* -------------------------------------------------------------------------- */
+// @symbol _ZN15daObjWc_Obj03_cD1Ev
+// @symbol _ZN15daObjWc_Obj03_cD0Ev
+/* NOT WRITTEN HERE ON PURPOSE. The destructor body is INLINE in
+ * include/daObjWc_Obj03_c.h and declared LAST. Two measurements force that:
+ *   - out of line, mwcc emits D0 ahead of D1 and the cartridge has D1 first,
+ *     which rombuild refuses outright;
+ *   - out of line it also emits the D2 base-object variant, which the ROM
+ *     never carried.
+ * Declaring it last, with the factory's `new` instantiating the class, is
+ * what emits the used D1/D0 pair in cartridge order and keeps this TU the
+ * vtable's home.
+ *
+ * Both bodies destroy dCcAc_c at +0x124 and Model at +0xd4 in reverse
+ * construction order, then chain to dActor_c. D0 then returns the object to
+ * the actor heap through dActor_c's inline operator delete.
+ */

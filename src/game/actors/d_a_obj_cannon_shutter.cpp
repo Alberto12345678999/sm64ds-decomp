@@ -226,3 +226,11 @@ void daObjCannonShutter_c::func_ov002_020bc990()
     func_0201277c(0x47);
     mOpening = 1;
 }
+
+/* -------------------------------------------------------------------------- */
+/* -------------------------------------------------------------------------- */
+// @symbol _ZN20daObjCannonShutter_cD1Ev
+// @symbol _ZN20daObjCannonShutter_cD0Ev
+/* NOT WRITTEN HERE ON PURPOSE. The inline `~daObjCannonShutter_c() {}` in the
+   header is the whole source of both variants: from an inline body mwcc emits
+   D1 and then D0 -- the cartridge's own order -- and no D2. */

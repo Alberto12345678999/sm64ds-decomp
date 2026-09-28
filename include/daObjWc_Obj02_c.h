@@ -35,8 +35,6 @@ struct daObjWc_Obj02_c : dBgActor_c {
 
     /* Inline is load-bearing: out of line mwccarm emits D2, D0, D1, while
      * the ROM has D1 then D0 and no D2. */
-    // @symbol _ZN15daObjWc_Obj02_cD1Ev
-    // @symbol _ZN15daObjWc_Obj02_cD0Ev
     virtual ~daObjWc_Obj02_c() {}
 
     /* Overrides of fBase_c's slots 0, 3, 6 and 9. Virtualness is inherited. */

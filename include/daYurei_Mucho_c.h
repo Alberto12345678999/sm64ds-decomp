@@ -56,15 +56,7 @@ struct daYurei_Mucho_c : dEnemyBase_c {
     u8  pad_3e2[2];                   /* unobserved */
 
     /* --- vtable --- */
-    /* The inline form emits the retail D1/D0 pair under the pinned compiler.
-     * D1 stores the vptr, then destroys the ShadowModel at 0x364, the ModelAnim
-     * at 0x300, the dBgCh_Actr at 0x144 and the dCcAc_c at 0x110 in reverse
-     * declaration order, and tails into ov002 _ZN12dEnemyBase_cD2Ev. D0 repeats
-     * that body verbatim -- it does NOT call D1 -- and then hands the object
-     * back to the game heap. All of that is a consequence of the class
-     * declaration; none of it is written out. */
-    // @symbol _ZN15daYurei_Mucho_cD1Ev
-    // @symbol _ZN15daYurei_Mucho_cD0Ev
+    /* The inline form emits the retail D1/D0 pair under the pinned compiler. */
     virtual ~daYurei_Mucho_c() {}
 
     virtual s32   OnYoshiTryEat();         /* slot 18 */

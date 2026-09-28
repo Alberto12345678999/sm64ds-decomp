@@ -105,8 +105,6 @@ struct daPropeller_Heyho_c : dEnemyBase_c {
     s16                          mTargetAngY;           /* 0x3e6 */
 
     /* --- vtable --- */
-    // @symbol _ZN19daPropeller_Heyho_cD1Ev
-    // @symbol _ZN19daPropeller_Heyho_cD0Ev
     virtual ~daPropeller_Heyho_c() {}
 
     virtual s32   OnYoshiTryEat();         /* slot 18 */

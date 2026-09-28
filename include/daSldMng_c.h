@@ -46,8 +46,6 @@ struct daSldMng_c : dActor_c {
 
     /* Declared last and inline so class instantiation emits the retail D1/D0
        pair in that order, with no separate D2 body. */
-    // @symbol _ZN10daSldMng_cD1Ev
-    // @symbol _ZN10daSldMng_cD0Ev
     virtual ~daSldMng_c() {}
 };
 

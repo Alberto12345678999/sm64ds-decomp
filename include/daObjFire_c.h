@@ -26,8 +26,6 @@ struct daObjFire_c : dActor_c {
 
     /* Inline and first: out-of-line mwccarm emits D0 before D1; retail
        has D1 at 0x020b5734 below D0 at 0x020b5764. */
-    // @symbol _ZN11daObjFire_cD0Ev
-    // @symbol _ZN11daObjFire_cD1Ev
     virtual ~daObjFire_c() {}
     virtual int  InitResources();               /* slot  0 */
     virtual int  Behavior();                    /* slot  6 */

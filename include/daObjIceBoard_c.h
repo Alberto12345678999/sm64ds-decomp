@@ -47,8 +47,6 @@ struct daObjIceBoard_c : dBgActor_c {
         return _ZN7fBase_cnwEj((unsigned)size);
     }
 
-    // @symbol _ZN15daObjIceBoard_cD1Ev
-    // @symbol _ZN15daObjIceBoard_cD0Ev
     virtual ~daObjIceBoard_c() {}                 /* slots 16, 17 */
 };
 

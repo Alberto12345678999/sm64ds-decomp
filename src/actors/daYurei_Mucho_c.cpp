@@ -702,3 +702,16 @@ int daYurei_Mucho_c::func_ov065_02115f84()
     KillAndTrackInDeathTable();
     return func_02012694(0x11e, &mCamSpacePosX);
 }
+
+
+/* -------------------------------------------------------------------------- */
+/* No separate body lives here. The inline virtual destructor in the directly
+ * included class header makes mwccarm emit retail's D1 then D0 pair without
+ * the otherwise homeless D2 variant an out-of-line definition produces.
+ *
+ * D1 stores the vptr, then destroys the ShadowModel at 0x364, the ModelAnim at
+ * 0x300, the dBgCh_Actr at 0x144 and the dCcAc_c at 0x110 in reverse
+ * declaration order, and tails into ov002 _ZN12dEnemyBase_cD2Ev. D0 repeats
+ * that body verbatim -- it does NOT call D1 -- and then hands the object back
+ * to the game heap. All of that is a consequence of the class declaration;
+ * none of it is written out. */

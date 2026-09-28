@@ -140,3 +140,24 @@ extern "C" void func_ov002_020bc488(daObjWakame_c *t)
     t->mModelAnim.mat4x3.t.y = t->mPosY >> 3;
     t->mModelAnim.mat4x3.t.z = t->mPosZ >> 3;
 }
+
+/* -------------------------------------------------------------------------- */
+/* -------------------------------------------------------------------------- */
+/* _ZN13daObjWakame_cD0Ev (vtable slot 17, the deleting destructor) is NOT
+ * hand-written here. A hand-written mangled D0 next to a real out-of-line D1
+ * ICEs mwccarm 2004/b56 (ELFgen.c:483); the compiler synthesizes D0 itself from
+ * D1, and its tail -- `bl _ZN6Memory10DeallocateEPvP4Heap` at 0x020bc470 -- is
+ * the inline operator delete, which is why nothing here mentions a heap. */
+
+/* -------------------------------------------------------------------------- */
+/* -------------------------------------------------------------------------- */
+// @symbol _ZN13daObjWakame_cD1Ev
+/* recovered: real C++ destructor -- the compiler emits the whole body.
+ * Vtable slot 16: one vptr store, the member destroyed, then the tail into
+ * ~dActor_c.
+ *
+ * (no definition here: `virtual ~daObjWakame_c() {}` is in
+ * include/daObjWakame_c.h, and that placement is load-bearing rather than
+ * stylistic -- out of line, mwccarm emits D0 before D1 and adds a homeless D2,
+ * and objisolate then refuses this whole TU. The header carries the reasoning and
+ * the leaf measurement that makes it safe.) */

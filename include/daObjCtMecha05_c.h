@@ -37,8 +37,6 @@ struct daObjCtMecha05_c : dBgActor_c {
 
     /* Declared last and inline so class instantiation emits the retail D1/D0
      * pair in cartridge order without a separate leaf D2 body. */
-    // @symbol _ZN16daObjCtMecha05_cD1Ev
-    // @symbol _ZN16daObjCtMecha05_cD0Ev
     virtual ~daObjCtMecha05_c() {}
 };
 

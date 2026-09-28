@@ -44,8 +44,6 @@ struct daObjSwdoor_c : dBgActor_c {
        _ZN13daObjSwdoor_cD1Ev (which does exist out of line, at ov002 0x020bab64,
        still under its func_ov002_ name). An out-of-line declaration here would
        make each descendant emit a `bl` the ROM does not have. */
-      // @symbol _ZN14daObjBSwdoor_cD1Ev
-      // @symbol _ZN14daObjBSwdoor_cD0Ev
     virtual ~daObjSwdoor_c() {}
 
     /* Slot 9, ov002 0x020babf0 -- this class's only real slot, so declaring

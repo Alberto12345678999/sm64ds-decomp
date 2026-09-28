@@ -171,3 +171,24 @@ void func_ov036_0211123c(daObjRcBuranko_c *self)
     self->mModel.mat4x3.m[11] = self->mPosZ >> 3;
 }
 }
+
+/* -------------------------------------------------------------------------- */
+/* -------------------------------------------------------------------------- */
+// @symbol _ZN16daObjRcBuranko_cD1Ev
+// @symbol _ZN16daObjRcBuranko_cD0Ev
+/* NOT WRITTEN HERE ON PURPOSE. The destructor body is INLINE in
+ * include/daObjRcBuranko_c.h and declared FIRST. Two measurements force that:
+ *   - out of line, mwcc emits D0 ahead of D1 and the cartridge has D1 first,
+ *     which rombuild refuses outright;
+ *   - out of line it also emits the D2 base-object variant, which the ROM
+ *     never carried.
+ * Declaring it first is what makes this TU the vtable's home, so _ZTV and the
+ * RTTI pair land here rather than in whichever other TU happens to name them.
+ *
+ * Both bodies are short because the chain is short: this class's vptr store,
+ * then dBgActor_c's -- inlined, its destructor is defined in its class body --
+ * then dBgActor_c's Model and dBgW_KcMbg, then dActor_c. This class adds only
+ * an s16, which has no destructor of its own. D0's trailing deallocation is
+ * the inherited inline operator delete, which is why nothing here names a
+ * heap.
+ */

@@ -27,8 +27,6 @@ struct daChRoom_c : dActor_c {
     u8 pad_0d0[0x4];
 
     /* Inline empty dtor: mwccarm emits D1 then D0, no D2. */
-    // @symbol _ZN10daChRoom_cD1Ev
-    // @symbol _ZN10daChRoom_cD0Ev
     virtual ~daChRoom_c() {}            /* slots 16 (D1), 17 (D0) */
 
     virtual s32 InitResources();        /* slot 0  -- 0x020b0938 */

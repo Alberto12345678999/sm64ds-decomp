@@ -285,3 +285,7 @@ int daDgr_c::func_ov025_0211123c()
     }
     return 0;
 }
+
+// @symbol _ZN7daDgr_cD1Ev
+// @symbol _ZN7daDgr_cD0Ev
+/* Defined by `virtual ~daDgr_c() {}` in daDgr_c.h. */

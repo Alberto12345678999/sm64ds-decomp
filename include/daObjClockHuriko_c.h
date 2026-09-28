@@ -113,8 +113,6 @@ struct daObjClockHuriko_c : dActor_c {
        function is the first DECLARED non-inline virtual, so this ordering is
        what makes src/game/actors/d_a_obj_clock_huriko.cpp the TU that emits the
        _ZTV/_ZTI/_ZTS group -- exactly what the promotion needs it to be. --- */
-       // @symbol _ZN18daObjClockHuriko_cD1Ev
-       // @symbol _ZN18daObjClockHuriko_cD0Ev
     virtual ~daObjClockHuriko_c() {}
 
     /* --- overrides of inherited fBase_c slots dActor_c left untouched.

@@ -90,8 +90,6 @@ struct daDkk_c : daDsnBase_c {
        InitResources, the first declared virtual that is now neither inline nor
        pure. That is a member src/actors/daDkk_c.cpp defines, so that TU is the
        one that emits _ZTV7daDkk_c. */
-    // @symbol _ZN7daDkk_cD1Ev
-    // @symbol _ZN7daDkk_cD0Ev
     virtual ~daDkk_c() {}
 
     int InitResources();

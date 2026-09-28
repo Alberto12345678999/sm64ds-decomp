@@ -40,8 +40,6 @@ struct daObjAbuku_c : dActor_c {
     }
 
     /* Inline and last so instantiation emits retail D1 then D0 and no D2. */
-    // @symbol _ZN12daObjAbuku_cD1Ev
-    // @symbol _ZN12daObjAbuku_cD0Ev
     virtual ~daObjAbuku_c() {}            /* slots 16 (D1), 17 (D0) */
 };
 

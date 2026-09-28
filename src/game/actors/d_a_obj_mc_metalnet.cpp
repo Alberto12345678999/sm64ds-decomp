@@ -149,3 +149,17 @@ s32 daObjMc_Metalnet_c::CleanupResources()
     data_ov009_02113e88.Release();
     return 1;
 }
+
+// @symbol _ZN18daObjMc_Metalnet_cD1Ev
+// @symbol _ZN18daObjMc_Metalnet_cD0Ev
+/* NOT WRITTEN HERE ON PURPOSE. The inline `~daObjMc_Metalnet_c() {}` in the
+   header is the whole source of both variants: from an inline body mwcc emits
+   D1 and then D0 -- the cartridge's own order -- and no D2. Writing the body
+   out of line here instead flips them to D0-before-D1 and the isolation step
+   rejects the object.
+
+   Their bodies are two vptr stores and the member destructions, every one a
+   consequence of `daObjMc_Metalnet_c : dBgActor_c`: this class's vptr, then
+   dBgActor_c's -- inlined, because that destructor is defined in its class
+   body -- then dBgActor_c's Model and dBgW_KcMbg, then dActor_c. This class
+   adds no member with a destructor of its own. */

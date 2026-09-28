@@ -143,3 +143,12 @@ s32 daObjTdWater_c::CleanupResources()
     data_ov032_02113af4.Release();
     return 1;
 }
+
+// @symbol _ZN14daObjTdWater_cD0Ev
+// @symbol _ZN14daObjTdWater_cD1Ev
+/* NOT WRITTEN HERE ON PURPOSE. The inline `~daObjTdWater_c() {}` in the
+   header is the whole source of both variants: from an inline body mwcc emits
+   D1 and then D0 -- the cartridge's own order -- and no leaf D2. Writing the
+   body out of line here instead flips them to D0-before-D1 and the isolation
+   step rejects the object.
+ */

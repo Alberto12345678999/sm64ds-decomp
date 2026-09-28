@@ -120,8 +120,6 @@ struct daBgSnmBdy_c : dActor_c {
        pair in that order, at the bottom of the run, with no separate D2 body.
        Keep the brace on the signature line -- check_header_offsets only arms
        its body skip when the signature line itself carries the `{`. */
-       // @symbol _ZN12daBgSnmBdy_cD1Ev
-       // @symbol _ZN12daBgSnmBdy_cD0Ev
     virtual ~daBgSnmBdy_c() {}          /* slots 16 (D1), 17 (D0) */
 };
 

@@ -43,8 +43,6 @@ struct daObjKinokoTag_c : dActor_c {
     /* InitResources is the first out-of-line virtual/key function. Together
      * with this inline destructor, mwccarm owns the retail D1/D0 pair and the
      * complete class RTTI/vtable group without retaining a D2 body. */
-    // @symbol _ZN16daObjKinokoTag_cD1Ev
-    // @symbol _ZN16daObjKinokoTag_cD0Ev
     virtual ~daObjKinokoTag_c() {}    /* slots 16, 17 */
 
     virtual s32 InitResources();      /* slot 0 */

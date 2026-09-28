@@ -28,9 +28,6 @@ extern "C" void *_ZN7fBase_cnwEj(unsigned size);
  * (D1 at 0x02111728, then D0 at 0x02111760) without a separate leaf D2 body;
  * out of line mwccarm emits D0 ahead of D1 and adds the D2 the ROM never
  * carried.
- * Both bodies destroy dCcAc_c at +0x124 and Model at +0xd4 in reverse
- * construction order, then chain to dActor_c. D0 then returns the object to
- * the actor heap through dActor_c's inline operator delete.
  */
 struct daObjWc_Obj03_c : dActor_c {
     u8      pad_0d0[0x4];
@@ -57,8 +54,6 @@ struct daObjWc_Obj03_c : dActor_c {
         return _ZN7fBase_cnwEj((unsigned)size);
     }
 
-    // @symbol _ZN15daObjWc_Obj03_cD1Ev
-    // @symbol _ZN15daObjWc_Obj03_cD0Ev
     virtual ~daObjWc_Obj03_c() {}             /* slots 16 (D1), 17 (D0) */
 };
 

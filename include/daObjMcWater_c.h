@@ -40,8 +40,6 @@ struct daObjMcWater_c : dBgActor_c {
        Defined in the class body it yields the retail D1/D0 pair and no D2.
        First non-inline virtual below (InitResources) is then the key function,
        so this class's TU still homes _ZTV/_ZTI/_ZTS. */
-       // @symbol _ZN14daObjMcWater_cD1Ev
-       // @symbol _ZN14daObjMcWater_cD0Ev
     virtual ~daObjMcWater_c() {}
 
     virtual int InitResources();       /* slot  0 */

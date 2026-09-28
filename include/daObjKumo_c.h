@@ -37,15 +37,9 @@ struct daObjKumo_c : dActor_c {
     Model mModel;            /* 0x0d4 */
 
     /* MEASURED -- INLINE ON PURPOSE. The class TU is the only place these
-     * two are emitted; with the body out of line mwcc emits D0 ahead of D1
-     * and the ROM has D1 first (rombuild refuses the object outright). An
-     * inline body also drops the D2 variant the cartridge never carried.
-     * Their bodies are one vptr store, then mModel destroyed, then ~dActor_c --
-     * the direct-base chain the RTTI states. D0's trailing deallocation is the
-     * inline `operator delete` it inherits, which is why nothing here names a
-     * heap. */
-    // @symbol _ZN11daObjKumo_cD1Ev
-    // @symbol _ZN11daObjKumo_cD0Ev
+       two are emitted; with the body out of line mwcc emits D0 ahead of D1
+       and the ROM has D1 first (rombuild refuses the object outright). An
+       inline body also drops the D2 variant the cartridge never carried. */
     virtual ~daObjKumo_c() {}          /* slots 16 (D1), 17 (D0) */
 
     virtual int InitResources();       /* slot  0 */

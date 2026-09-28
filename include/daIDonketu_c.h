@@ -67,17 +67,7 @@ struct daIDonketu_c : daOts_c {
        verification block recorded it as `ordinal pair(s) not in ROM order: [(0,1)]`)
        -- plus a third D2 with no ROM home. Defined here it emits the retail D1/D0
        pair in ROM order and no D2. Unlike daOts_c's and dEnemyBase_c's, this body is
-       inlined by nobody: the class has no descendants.
-
-       TWO vptr stores and four member destructor calls come out of that one
-       empty body: its own vptr, then daOts_c's -- inlined, because that
-       destructor is defined in its class body -- then ShadowModel 0x370,
-       dCcAc_c 0x33c, dBgCh_Actr 0x174 and ModelAnim 0x110 in reverse
-       declaration order, then dEnemyBase_c. This class adds no member with a
-       destructor of its own, only two bytes. D0 is that plus the inherited
-       inline `operator delete`; slot 17 is the deleting variant. Byte-for-byte
-       the same shape as daDonketu_c's and daBDonketu_c's, which is what three
-       siblings sharing a base look like. */
+       inlined by nobody: the class has no descendants. */
     virtual ~daIDonketu_c() {}          /* slots 16 (D1), 17 (D0) */
 
     /* THE KEY FUNCTION IS Behavior -- the first DECLARED non-inline virtual, not

@@ -81,8 +81,6 @@ struct daChScene_c : dActor_c {
      * 0x021086b0 -- the class's own vtable slot -- so no other class names it
      * as a base and no other TU's codegen moves with this. See the leaf proof
      * in src/game/actors/d_a_ch_scene.cpp. */
-    // @symbol _ZN11daChScene_cD1Ev
-    // @symbol _ZN11daChScene_cD0Ev
     virtual ~daChScene_c() {}
 
     virtual s32 InitResources();

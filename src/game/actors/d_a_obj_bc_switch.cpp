@@ -357,3 +357,44 @@ int daObjBC_Switch_c::CleanupResources()
     daObjBC_Switch_c_ClsnFile.Release();
     return 1;
 }
+
+/* -------------------------------------------------------------------------- */
+/* -------------------------------------------------------------------------- */
+// @symbol _ZN16daObjBC_Switch_cD0Ev
+/* recovered: real C++ deleting destructor -- the compiler emits the whole body
+ *
+ * D0 is the DELETING destructor: destroy through this class and its bases --
+ * which is why more than one vptr store appears -- then return the object to
+ * its heap. Nobody writes that; declaring the destructor is enough. With the
+ * body inline in the class declaration mwcc emits exactly D1 and D0, in that
+ * order, and no D2 -- which is the ROM's shape, so both variants are licensed
+ * functions of this TU and neither needs a deadstrip policy row.
+ *
+ * The deallocation is an inline operator delete, which is why nothing below
+ * mentions a heap.
+ *
+ * Deleted here: this legacy file's own body was a real out-of-line
+ * daObjBC_Switch_c::~daObjBC_Switch_c(), identical to the one the legacy D1
+ * file carried -- the plain D0/D1 redefinition collapse, not the mwcc ICE
+ * shape. Neither copy survives: the single definition now lives in the class
+ * body in include/daObjBC_Switch_c.h, and the compiler emits both variants
+ * from it, byte-identical to the ROM.
+ */
+
+/* -------------------------------------------------------------------------- */
+/* -------------------------------------------------------------------------- */
+// @symbol _ZN16daObjBC_Switch_cD1Ev
+/* recovered: real C++ destructor -- the compiler emits the whole body
+ *
+ * Two vtable stores and three destructor calls, every one a consequence of
+ * `struct daObjBC_Switch_c : dBgActor_c`: its own vptr, then dBgActor_c's -- inlined,
+ * because dBgActor_c's destructor is defined in its class body -- then
+ * dBgActor_c's Model and dBgW_KcMbg, then dActor_c. This class adds no
+ * member with a destructor of its own.
+ */
+/* The destructor body lives in the class declaration in
+ * include/daObjBC_Switch_c.h. Out of line here, mwcc emitted D0 before D1;
+ * the ROM has D1 at 0x020f11b0 then D0 at 0x020f11f4, and production
+ * isolation places .text in emission order, so the out-of-line spelling
+ * failed linkcheck even though objisolate called it clean. Inline in the
+ * class body it emits D1, D0 and no D2. */

@@ -42,8 +42,6 @@ struct daObjRcBuranko_c : dBgActor_c {
     /* MEASURED -- INLINE ON PURPOSE, and declared first, so this TU is the
        vtable's home. Both ROM bodies are empty; an inline body also drops the
        D2 variant the cartridge never carried. */
-       // @symbol _ZN16daObjRcBuranko_cD1Ev
-       // @symbol _ZN16daObjRcBuranko_cD0Ev
     virtual ~daObjRcBuranko_c() {}  /* slots 16 (D1), 17 (D0) */
 
     /* declared in reverse of ROM address order, as the TU emits them */

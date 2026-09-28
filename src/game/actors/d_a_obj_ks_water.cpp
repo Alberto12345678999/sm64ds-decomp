@@ -9,9 +9,9 @@
  * overlay_actors.md: ov017 SHIP_WATER(62). Ugly RTTI name is final.
  *
  * FUNCTION ORDER IS DELIBERATELY THE REVERSE OF THE ROM'S -- mwccarm 2004/b56
- * emits one `.text section` per function in the REVERSE of source order, so the
+ * emits one .text section per function in the REVERSE of source order, so the
  * highest-address ROM function is written FIRST here. Do not reorder. The
- * inline destructor in `include/daObjKsWater_c.h` emits the retail D1/D0 pair
+ * inline destructor in include/daObjKsWater_c.h emits the retail D1/D0 pair
  * first and emits no D2 body.
  *
  * deslop leftovers:
@@ -153,3 +153,14 @@ int daObjKsWater_c::CleanupResources()
     data_ov017_02111c80.Release();
     return 1;
 }
+
+/* -------------------------------------------------------------------------- */
+/* -------------------------------------------------------------------------- */
+// @symbol _ZN14daObjKsWater_cD1Ev
+// @symbol _ZN14daObjKsWater_cD0Ev
+/* NOT WRITTEN HERE ON PURPOSE. The inline `~daObjKsWater_c() {}` in the
+   header is the whole source of both variants: from an inline body mwcc emits
+   D1 and then D0 -- the cartridge's own order -- and no leaf D2. Writing the
+   body out of line here instead flips them to D0-before-D1 and the isolation
+   step rejects the object.
+ */

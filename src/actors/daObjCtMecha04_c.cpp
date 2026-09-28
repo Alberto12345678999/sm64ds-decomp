@@ -299,3 +299,9 @@ void daObjCtMecha04_c::UpdateShadow()
         this, &mShadowModel, &mShadowMat,
         0x1f4000, 0x32000, 0x320000, 0xf);
 }
+
+/* -------------------------------------------------------------------------- */
+/* -------------------------------------------------------------------------- */
+/* No separate body lives here. The inline virtual destructor in the directly
+ * included class header makes mwccarm emit retail's D1 then D0 order without
+ * the otherwise homeless D2 variant. */

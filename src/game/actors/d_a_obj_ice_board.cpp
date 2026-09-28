@@ -138,3 +138,22 @@ void daObjIceBoard_c::OnHitByMegaChar(Player &player)
     player.IncMegaKillCount();
     Kill();
 }
+
+// @symbol _ZN15daObjIceBoard_cD1Ev
+// @symbol _ZN15daObjIceBoard_cD0Ev
+/* NOT WRITTEN HERE ON PURPOSE. The destructor body is INLINE in
+ * include/daObjIceBoard_c.h and declared LAST. Two measurements force that:
+ *   - out of line, mwcc emits D0 ahead of D1 and the cartridge has D1 first,
+ *     which rombuild refuses outright;
+ *   - out of line it also emits the D2 base-object variant, which the ROM
+ *     never carried.
+ * Declaring it last, with the factory's `new` instantiating the class, is
+ * what emits the used D1/D0 pair in cartridge order and keeps this TU the
+ * vtable's home.
+ *
+ * Both bodies are short because the chain is short and this class adds no
+ * member of its own: this class's vptr store, then dBgActor_c's -- inlined,
+ * its destructor is defined in its class body -- then dBgActor_c's Model and
+ * dBgW_KcMbg, then dActor_c. D0's trailing deallocation is the inherited
+ * inline operator delete, which is why nothing here names a heap.
+ */

@@ -25,8 +25,6 @@ struct daObjKm1_Ukishima_c : dBgActor_c {
        two are emitted; with the body out of line mwcc emits D0 ahead of D1
        and the ROM has D1 first (rombuild refuses the object outright). An
        inline body also drops the D2 variant the cartridge never carried. */
-    // @symbol _ZN19daObjKm1_Ukishima_cD1Ev
-    // @symbol _ZN19daObjKm1_Ukishima_cD0Ev
     virtual ~daObjKm1_Ukishima_c() {}          /* slots 16 (D1), 17 (D0) */
 
     virtual s32   InitResources();         /* slot  0 */

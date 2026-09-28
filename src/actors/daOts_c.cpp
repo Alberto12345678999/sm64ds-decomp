@@ -823,3 +823,30 @@ int daOts_c::OnAimedAtWithEgg()
 
     return aimHeight;
 }
+
+/* -------------------------------------------------------------------------- */
+// @symbol _ZN7daOts_cD0Ev
+/* recovered: real C++ deleting destructor, defined inline in the header
+ *
+ * ~daOts_c is defined in the class body -- the three classes derived from it
+ * inline its vptr store rather than calling it, which the compiler can only do
+ * from a visible body. So this file cannot define it, and the one-function
+ * shard needed a stand-in CleanupResources to make the compiler emit the
+ * vtable. Nothing forces D0 here: this TU defines the real CleanupResources
+ * (slot 3), the class's key function, so the vtable is emitted here and drags
+ * both destructor variants with it.
+ *
+ * D0 is the deleting half: destroy through daOts_c's four members and
+ * dEnemyBase_c, then hand the object back through Memory::Deallocate.
+ */
+
+/* -------------------------------------------------------------------------- */
+// @symbol _ZN7daOts_cD1Ev
+/* recovered: real C++ destructor, defined inline in the header
+ *
+ * The body the key function forces out is the class's own layout evidence: the
+ * ROM destroys a ShadowModel at 0x370, a dCcAc_c at 0x33c, a dBgCh_Actr at
+ * 0x174 and a ModelAnim at 0x110, then chains to _ZN12dEnemyBase_cD2Ev, and
+ * every one of those offsets is where the members' asserted sizes put them.
+ * Nothing forces D1 here either -- see the D0 note above.
+ */

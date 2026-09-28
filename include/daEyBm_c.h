@@ -52,8 +52,6 @@ struct daEyBm_c : dActor_c {
     /* Inline plus vtable instantiation is load-bearing: mwcc emits retail's
        D1 then D0 pair, with no homeless D2. InitResources is the first
        out-of-line virtual and anchors this TU's vtable/RTTI group. */
-       // @symbol _ZN8daEyBm_cD1Ev
-       // @symbol _ZN8daEyBm_cD0Ev
     virtual ~daEyBm_c() {}
 
     virtual s32  InitResources();       /* slot 0 */

@@ -33,8 +33,6 @@ struct daObjC1_Trap_c : dBgActor_c {
     /* --- vtable --- */
     /* Inline so InitResources can own the vtable and emit retail's D1 then D0
        pair without an extra D2. */
-    // @symbol _ZN14daObjC1_Trap_cD1Ev
-    // @symbol _ZN14daObjC1_Trap_cD0Ev
     virtual ~daObjC1_Trap_c() {}
 
     virtual int InitResources();

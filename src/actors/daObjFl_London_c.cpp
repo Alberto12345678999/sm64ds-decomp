@@ -155,3 +155,14 @@ extern "C" void func_ov022_02111a1c(daObjFl_London_c *t)
     t->mModel.mat4x3.m[10] = t->mPosY >> 3;
     t->mModel.mat4x3.m[11] = t->mPosZ >> 3;
 }
+
+// @symbol _ZN16daObjFl_London_cD1Ev
+// @symbol _ZN16daObjFl_London_cD0Ev
+/* Both destructors are emitted from the INLINE `~daObjFl_London_c() {}` in
+ * include/daObjFl_London_c.h -- there is deliberately no body here.
+ *
+ * Defining ~daObjFl_London_c() out of line HERE instead would break the TU two
+ * ways: mwccarm would emit D0 at 0x021119c4 before D1 at 0x02111980, reversing
+ * ROM order so objisolate refuses the entire TU, and it would emit a third
+ * symbol, D2, which has no address anywhere in the cartridge.
+ */

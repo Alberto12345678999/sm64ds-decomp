@@ -26,8 +26,6 @@ struct daDonketu_c : daOts_c {
        guide. */
     s32 mBigBullyID;                    /* 0x3fc */
 
-    // @symbol _ZN11daDonketu_cD0Ev
-    // @symbol _ZN11daDonketu_cD1Ev
     virtual ~daDonketu_c() {}
 
     /* methods */

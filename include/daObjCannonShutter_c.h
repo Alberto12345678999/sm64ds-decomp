@@ -40,8 +40,6 @@ struct daObjCannonShutter_c : dBgActor_c {
        (cartridge is 0x020bc8f4 D1 then 0x020bc938 D0) plus a D2 with no ROM
        home. Empty body: this class adds no member with a destructor; the
        vptr store and dBgActor_c's two member teardowns are synthesised. */
-    // @symbol _ZN20daObjCannonShutter_cD1Ev
-    // @symbol _ZN20daObjCannonShutter_cD0Ev
     virtual ~daObjCannonShutter_c() {}
 
     int Behavior();

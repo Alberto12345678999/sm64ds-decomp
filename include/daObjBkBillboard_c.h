@@ -19,8 +19,6 @@ struct daObjBkBillboard_c : dActor_c {
     Model mModel;            /* 0x0d4 */
 
     /* Inline empty dtor: mwccarm emits D1 then D0, no D2. */
-    // @symbol _ZN18daObjBkBillboard_cD1Ev
-    // @symbol _ZN18daObjBkBillboard_cD0Ev
     virtual ~daObjBkBillboard_c() {}     /* slots 16 (D1), 17 (D0) */
 
     virtual s32 InitResources();         /* slot  0 */

@@ -42,8 +42,6 @@ struct daObjWanwanShutter_c : dBgActor_c {
      * dBgActor_c's own inline destructor, which destroys the Model at 0xd4
      * and the dBgW_KcMbg at 0x124. Do not write those members as padding.
      */
-     // @symbol _ZN20daObjWanwanShutter_cD1Ev
-     // @symbol _ZN20daObjWanwanShutter_cD0Ev
     virtual ~daObjWanwanShutter_c() {}  /* slots 16 (D1), 17 (D0) */
 
     /* Diffed slot by slot against _ZTV10dBgActor_c (ov002 0x0210ae38): of the

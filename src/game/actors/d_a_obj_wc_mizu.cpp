@@ -236,3 +236,14 @@ extern "C" void func_ov029_02112250(daObjWc_Mizu_c *self)
     self->mClsnMat.m[11] = self->mPosZ;
     self->mMeshCollider.Transform(self->mClsnMat, self->mAngleY);
 }
+
+/* -------------------------------------------------------------------------- */
+/* -------------------------------------------------------------------------- */
+// @symbol _ZN14daObjWc_Mizu_cD1Ev
+// @symbol _ZN14daObjWc_Mizu_cD0Ev
+/* NOT WRITTEN HERE ON PURPOSE. The inline `~daObjWc_Mizu_c() {}` in the
+   header is the whole source of both variants: from an inline body mwcc emits
+   D1 and then D0 -- the cartridge's own order -- and no leaf D2. Writing the
+   body out of line here instead flips them to D0-before-D1 and the isolation
+   step rejects the object.
+ */

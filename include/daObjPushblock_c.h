@@ -38,8 +38,6 @@ struct daObjPushblock_c : dBgActor_c {
        home. Empty body: mWithMeshClsn teardown, the vptr store and
        dBgActor_c's two member teardowns are synthesised. Key function is
        InitResources, the first declared non-inline virtual. */
-      // @symbol _ZN16daObjPushblock_cD1Ev
-      // @symbol _ZN16daObjPushblock_cD0Ev
     virtual ~daObjPushblock_c() {}          /* slots 16 (D1), 17 (D0) */
 
     int InitResources();

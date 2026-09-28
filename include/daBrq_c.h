@@ -62,10 +62,6 @@ struct daBrq_c : dActor_c {
     u8                        mStateTimer;                   /* 0x430 */
     u8                        pad_431[0x3];
 
-    /* The inline destructor and InitResources key function emit the retail
-     * D1/D0 group without a retained D2 or forcing helper. */
-    // @symbol _ZN7daBrq_cD1Ev
-    // @symbol _ZN7daBrq_cD0Ev
     virtual ~daBrq_c() {}
 
     virtual s32 InitResources();

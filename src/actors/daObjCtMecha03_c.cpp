@@ -239,3 +239,7 @@ extern "C" void func_ov065_02119fe8(daObjCtMecha03_c *self)
     _ZN8dActor_c18DropShadowScaleXYZER11ShadowModelR9Matrix4x35Fix12IiES5_S5_j(
         self, &self->mShadowModel, &self->mShadowMat, 0x12c000, 0x12c000, 0x78000, 0xf);
 }
+
+/* No separate body lives here. The inline virtual destructor in the directly
+ * included class header makes mwccarm emit retail's D1 then D0 order without
+ * the otherwise homeless D2 variant. */

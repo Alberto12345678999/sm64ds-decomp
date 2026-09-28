@@ -66,8 +66,6 @@ struct daObjRc_Hane_c : dActor_c {
        pair land here rather than in whichever other TU happens to name them.
        The body is empty because the chain is short: this class's vptr store,
        then CommonModel's destructor, then dActor_c's. */
-    // @symbol _ZN14daObjRc_Hane_cD1Ev
-    // @symbol _ZN14daObjRc_Hane_cD0Ev
     virtual ~daObjRc_Hane_c() {}      /* slots 16 (D1), 17 (D0) */
 
     virtual s32 InitResources();      /* slot  0 */

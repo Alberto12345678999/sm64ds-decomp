@@ -143,3 +143,13 @@ s32 daObjRc_Guruguru_c::CleanupResources()
     ((SharedFilePtr *)data_ov036_02113d78[1])->Release();
     return 1;
 }
+
+/* -------------------------------------------------------------------------- */
+/* -------------------------------------------------------------------------- */
+// @symbol _ZN18daObjRc_Guruguru_cD1Ev
+// @symbol _ZN18daObjRc_Guruguru_cD0Ev
+/* NOT WRITTEN HERE ON PURPOSE. The inline `~daObjRc_Guruguru_c() {}` in the
+   header is the whole source of both variants: from an inline body mwcc emits
+   D1 and then D0 -- the cartridge's own order -- and no D2, which is the order
+   and the set the ROM carries. Written out of line here instead, mwcc emits D0
+   ahead of D1 and rombuild refuses the object outright. */

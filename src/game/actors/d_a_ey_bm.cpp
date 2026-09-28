@@ -191,7 +191,6 @@ int daEyBm_c::Render()
             mParticle2, 0x47, mPosX, mPosY, mPosZ, 0);
     return 1;
 }
-
 // @symbol _ZN8daEyBm_c16OnPendingDestroyEv
 void daEyBm_c::OnPendingDestroy()
 {
@@ -202,7 +201,6 @@ int daEyBm_c::CleanupResources()
 {
     return 1;
 }
-
 // @symbol _ZN8daEyBm_c12UpdateShadowEv
 extern "C" void _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
     dActor_c *actor, ShadowModel *shadow, Matrix4x3 *matrix,
@@ -295,3 +293,5 @@ int daEyBm_c::OnYoshiTryEat()
 {
     return 4;
 }
+
+/* The inline class destructor and InitResources vtable instantiation emit both naturally. */

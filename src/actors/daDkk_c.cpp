@@ -263,3 +263,17 @@ int daDkk_c::OnAimedAtWithEgg()
 {
     return 0xce000;
 }
+
+/* -------------------------------------------------------------------------- */
+/*
+ * (0x021118c8) are deliberately NOT written here. include/daDkk_c.h defines
+ * ~daDkk_c() in the class body, and that is what makes mwccarm emit the pair in
+ * the cartridge's D1-then-D0 order with no D2. What the two superseded shards
+ * carried was an out-of-line `daDkk_c::~daDkk_c() {}' apiece and no forcing
+ * scaffold of any kind -- each shard compiled alone, and compiling alone is
+ * exactly why neither ever exposed the D2, D0, D1 order the out-of-line form
+ * really emits. Owning the key function above drags both variants in, so no
+ * scaffold is needed here either, and both bodies come out byte-identical.
+ * -------------------------------------------------------------------------- */
+// @symbol _ZN7daDkk_cD1Ev
+// @symbol _ZN7daDkk_cD0Ev

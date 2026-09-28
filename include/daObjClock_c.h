@@ -49,8 +49,6 @@ struct daObjClock_c : dActor_c {
        function is the first DECLARED non-inline virtual, so this ordering is
        what makes src/actors/daObjClock_c.cpp the TU that emits the
        _ZTV/_ZTI/_ZTS group -- exactly what the promotion needs it to be. --- */
-    // @symbol _ZN12daObjClock_cD1Ev
-    // @symbol _ZN12daObjClock_cD0Ev
     virtual ~daObjClock_c() {}         /* slots 16 (D1), 17 (D0) */
 
     /* --- overrides of inherited fBase_c slots dActor_c left untouched.

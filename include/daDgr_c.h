@@ -86,26 +86,24 @@ struct daDgr_c : dBgActor_c {
      * D1 BELOW D0, and carries no D2 at all. mwccarm 2004/b56 emits exactly
      * that pair, in exactly that order, only for a destructor defined in the
      * class body; the out-of-line form emits D2, D0, D1 plus a homeless D2 and
-     * fails linkcheck's ROM-ascending `.text` audit. The body is empty because
+     * fails linkcheck's ROM-ascending .text audit. The body is empty because
      * this class owns no member with a destructor of its own -- the compiler
-     * emits the two vtable stores and `dBgActor_c`'s Model / `dBgW_KcMbg`
+     * emits the two vtable stores and dBgActor_c's Model / dBgW_KcMbg
      * teardowns from the base clause alone.
      *
      * (This header previously declared it out of line, reasoning by analogy
-     * with `include/daObjBlockL_c.h`. The analogy is wrong for this class: the
+     * with include/daObjBlockL_c.h. The analogy is wrong for this class: the
      * ROM's own D1/D0 addresses settle it, and the one-function shards could
      * not see the ordering because each held only one variant.)
      *
      * SIDE EFFECT, AND IT IS BENIGN: an inline destructor is skipped when the
-     * key function is chosen, so the key function is now `InitResources` -- the
+     * key function is chosen, so the key function is now InitResources -- the
      * first non-inline virtual DECLARED below -- and no longer the destructor.
-     * Both live in `src/actors/daDgr_c.cpp`, so the same eleven data symbols
-     * (`_ZTV7daDgr_c` plus ten RTTI records) are emitted from the same TU either
+     * Both live in src/actors/daDgr_c.cpp, so the same eleven data symbols
+     * (_ZTV7daDgr_c plus ten RTTI records) are emitted from the same TU either
      * way and the promotion's compiler_only_output stays at 12 rows; the
      * correction did not move the eligibility bracket. Declaring a new virtual
-     * ABOVE `InitResources` would move the key function again. */
-     // @symbol _ZN7daDgr_cD1Ev
-     // @symbol _ZN7daDgr_cD0Ev
+     * ABOVE InitResources would move the key function again. */
     virtual ~daDgr_c() {}
 
     /* --- overrides of inherited fBase_c slots. Each takes its base's index

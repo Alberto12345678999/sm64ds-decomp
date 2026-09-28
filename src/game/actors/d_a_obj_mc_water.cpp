@@ -164,3 +164,14 @@ extern "C" void func_ov009_02111b1c(daObjMcWater_c *self)
         dActor_c::Spawn(0xc5, 0, vec[i], 0, self->mAreaId, -1);
     }
 }
+
+/* -------------------------------------------------------------------------- */
+/* -------------------------------------------------------------------------- */
+// @symbol _ZN14daObjMcWater_cD1Ev
+// @symbol _ZN14daObjMcWater_cD0Ev
+/* NOT WRITTEN HERE ON PURPOSE. The inline `~daObjMcWater_c() {}` in the
+   header is the whole source of both variants: from an inline body mwcc emits
+   D1 and then D0 -- the cartridge's own order -- and no leaf D2. Writing the
+   body out of line here instead flips them to D0-before-D1 and the isolation
+   step rejects the object.
+ */

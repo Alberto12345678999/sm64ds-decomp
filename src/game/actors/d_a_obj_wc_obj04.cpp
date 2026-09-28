@@ -186,5 +186,25 @@ extern "C" void func_ov029_021126dc(daObjWc_Obj04_c *c)
     c->mClsnMat2.m[11] = c->mPosZ;
 }
 
+/* -------------------------------------------------------------------------- */
+/* -------------------------------------------------------------------------- */
+// @symbol _ZN15daObjWc_Obj04_cD1Ev
+// @symbol _ZN15daObjWc_Obj04_cD0Ev
+/* NOT WRITTEN HERE ON PURPOSE. The destructor body is INLINE in
+ * include/daObjWc_Obj04_c.h and declared LAST. Two measurements force that:
+ *   - out of line, mwcc emits D0 ahead of D1 and the cartridge has D1 first,
+ *     which rombuild refuses outright;
+ *   - out of line it also emits the D2 base-object variant, which the ROM
+ *     never carried.
+ * Declaring it last, with the factory's `new` instantiating the class, is
+ * what emits the used D1/D0 pair in cartridge order and keeps this TU the
+ * vtable's home.
+ *
+ * Both bodies destroy Model at +0x320 first, then the inlined dBgActor_c
+ * step stores _ZTV10dBgActor_c, destroys dBgW_KcMbg at +0x124 and Model at
+ * +0xd4, and chains to dActor_c. D0 then returns the object to the actor
+ * heap through dActor_c's inline operator delete.
+ */
+
 /* Closes the `optimize_for_size on` opened above. */
 #pragma optimize_for_size off
