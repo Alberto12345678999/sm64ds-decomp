@@ -40365,7 +40365,7 @@ matched: yes</title></rect><rect x="1447.96" y="552.43" width="21.90" height="8.
 module: ov078
 addr: 0x02123d3c
 size: 380 bytes
-matched: yes</title></rect><rect x="1469.86" y="552.43" width="5.76" height="8.09" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov078_02123eb8
+matched: yes</title></rect><rect x="1469.86" y="552.43" width="5.76" height="8.09" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12daBombking_c19func_ov078_02123eb8Ev
 module: ov078
 addr: 0x02123eb8
 size: 100 bytes
