@@ -20,7 +20,7 @@
  *   state records (FlyGuy_ChangeState) are sinit-owned BSS, not this TU's data
  *   claim. FlyGuy_ChangeState keeps its C-ABI name. Helpers stay func_ov070_*
  *   (cartridge addresses, no identifiers). ApproachAngle int-target vs short
- *   via block-scope extern (this TU). V3w/V3h array-wrapper for struct copy
+ *   via namespace ApproachAngleInt (this TU). V3w/V3h array-wrapper for struct copy
  *   (this TU). func_ov070_0211f48c / 0211f62c / 0211f6e0 keep
  *   `(char *)this + off` for the inherited dActor/Player offsets and the V3w
  *   copy (this TU, measured).
@@ -535,6 +535,15 @@ int func_ov070_0211fa80(daPropeller_Heyho_c *c) {
 }
 }
 
+/* ApproachAngle, int-target view (byte-load-bearing: the target is not
+ * narrowed to short). The file-scope C declarations take a short target. A
+ * block-scope extern inside a member function gets C++ linkage and names a
+ * symbol nothing defines, so the view is a C-linkage redeclaration in its own
+ * namespace, used by func_ov070_0211f6e0 and func_ov070_0211f48c. */
+namespace ApproachAngleInt {
+extern "C" int ApproachAngle(s16 *angle, int target, int step, int maxDelta, int minDelta);
+}
+
 /* -------------------------------------------------------------------------- */
 extern "C" {
 typedef int s32;
@@ -552,7 +561,7 @@ extern daPropeller_Heyho_c::State data_ov070_021235dc;
 extern s32 data_0209f32c;
 extern int data_020a0e68[];
 
-/* (ApproachAngle: this file's own int-target view, declared inside the function body) */
+/* (ApproachAngle: this file's own int-target view, namespace ApproachAngleInt above) */
 extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void* self, void* bca, int a, int fix, unsigned int j);
 extern int FlyGuy_ChangeState(daPropeller_Heyho_c* c, daPropeller_Heyho_c::State* p);
 extern short Vec3_VertAngle(void* v1, void* v0);
@@ -566,7 +575,6 @@ extern void MulVec3Mat4x3(void* v, void* m, void* res);
 // @symbol _ZN19daPropeller_Heyho_c19func_ov070_0211f6e0Ev
 int daPropeller_Heyho_c::func_ov070_0211f6e0()
 {
-    extern int ApproachAngle(s16* angle, int target, int step, int maxDelta, int minDelta); /* byte-load-bearing: int target */
     char* player;
     Vector3 tmp;
     Vector3 v;
@@ -575,8 +583,8 @@ int daPropeller_Heyho_c::func_ov070_0211f6e0()
     s16 half;
     s32 z;
 
-    ApproachAngle((s16*)((char *)this + 0x94), mTargetAngY, 0x100, 0x1000, 0x1000);
-    ApproachAngle((s16*)((char *)this + 0x96), 0, 0x100, 0x1000, 0x1000);
+    ApproachAngleInt::ApproachAngle((s16*)((char *)this + 0x94), mTargetAngY, 0x100, 0x1000, 0x1000);
+    ApproachAngleInt::ApproachAngle((s16*)((char *)this + 0x96), 0, 0x100, 0x1000, 0x1000);
 
     if (((Animation *)((char *)this + 0x350))->Finished()) {
         if (mStateStep == 0) {
@@ -652,7 +660,7 @@ int daPropeller_Heyho_c::func_ov070_0211f6e0()
         aim.z = tz;
     }
     vAngle = Vec3_VertAngle((Vector3*)((char *)this + 0x5c), &aim);
-    ApproachAngle((s16*)((char *)this + 0x92), vAngle, 0xa, 0x200, 0x100);
+    ApproachAngleInt::ApproachAngle((s16*)((char *)this + 0x92), vAngle, 0xa, 0x200, 0x100);
 
     v.z = 0x11000;
     if (*(s32*)((char *)this + 0x60) <= *(s32*)((char*)&tmp + 4) + 0x5000 ||
@@ -663,7 +671,7 @@ int daPropeller_Heyho_c::func_ov070_0211f6e0()
     }
 
     half = (*(s16*)((char *)this + 0x94) - mTargetAngY) / 2;
-    ApproachAngle((s16*)((char *)this + 0x96), half, 0xa, 0x100, 0x50);
+    ApproachAngleInt::ApproachAngle((s16*)((char *)this + 0x96), half, 0xa, 0x100, 0x50);
 
     Matrix4x3_FromRotationY(data_020a0e68, *(s16*)((char *)this + 0x8e));
     Matrix4x3_ApplyInPlaceToRotationX(data_020a0e68, *(s16*)((char *)this + 0x92));
@@ -728,7 +736,7 @@ extern "C" int func_ov070_0211f5f0(daPropeller_Heyho_c *c) {
 /* -------------------------------------------------------------------------- */
 extern "C" {
 short Vec3_HorzAngle(void* a, void* b);
-/* (ApproachAngle: this file's own int-target view, declared inside the function body) */
+/* (ApproachAngle: this file's own int-target view, namespace ApproachAngleInt above) */
 short Vec3_VertAngle(void* a, void* b);
 void* _ZN8dActor_c13SpawnFireballERK7Vector3PK10Vector3_165Fix12IiES7_j(void* self, void* pos, void* vel, int a, int b, unsigned int d);
 void func_02012694(int a, void* p);
@@ -740,7 +748,6 @@ extern daPropeller_Heyho_c::State data_ov070_0212359c;
 
 // @symbol _ZN19daPropeller_Heyho_c19func_ov070_0211f48cEv
 int daPropeller_Heyho_c::func_ov070_0211f48c() {
-    extern void ApproachAngle(short* p, int target, int a, int b, int limit); /* byte-load-bearing: int target */
     char* pl;
     struct Vector3_16 vel;
     struct Vector3 posbuf;
@@ -758,7 +765,7 @@ int daPropeller_Heyho_c::func_ov070_0211f48c() {
         tmp.z = posbuf.z;
         mTargetAngY = Vec3_HorzAngle((char *)this + 0x5c, &tmp);
     }
-    ApproachAngle((short*)((char *)this + 0x94), mTargetAngY, 0xa, 0x400, 0x200);
+    ApproachAngleInt::ApproachAngle((short*)((char *)this + 0x94), mTargetAngY, 0xa, 0x400, 0x200);
 
 hitframe:
     if (((Animation *)((char *)this + 0x350))->WillHitFrame(0xd) != 0) {
