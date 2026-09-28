@@ -6060,6 +6060,13 @@
     "src/actors/dMap_c.cpp#_ZN6dMap_c8BehaviorEv": "andrewboudreau",
     "src/actors/dMap_c.cpp#_ZN6dMap_c13InitResourcesEv": "andrewboudreau",
     "src/actors/dMap_c.cpp#_ZN6dMap_c20GetPosFromMinimapPosER7Vector3S1_5Fix12IiEsS1_": "tangosdev",
-    "src/actors/dMap_c.cpp#_ZN6dMap_c15GetPosOnMinimapER7Vector3S1_5Fix12IiEsS1_": "tangosdev"
+    "src/actors/dMap_c.cpp#_ZN6dMap_c15GetPosOnMinimapER7Vector3S1_5Fix12IiEsS1_": "tangosdev",
+    "src/actors/daWater_Suikomi_c.cpp#_ZN17daWater_Suikomi_cD1Ev": "lunavyqo",
+    "src/actors/daWater_Suikomi_c.cpp#_ZN17daWater_Suikomi_cD0Ev": "lunavyqo",
+    "src/actors/daWater_Suikomi_c.cpp#func_ov026_02112280": "tangosdev",
+    "src/actors/daWater_Suikomi_c.cpp#func_ov026_021122b0": "tangosdev",
+    "src/actors/daWater_Suikomi_c.cpp#func_ov026_021122cc": "tangosdev",
+    "src/actors/daWater_Suikomi_c.cpp#func_ov026_021122d4": "tangosdev",
+    "src/actors/daWater_Suikomi_c.cpp#func_ov026_02112324": "tangosdev"
   }
 }

@@ -32,37 +32,9 @@ src/d_a_water_tatumaki.c:
     complete
     .text start:0x021121bc end:0x021121fc
 
-src/_ZN17daWater_Suikomi_cD1Ev.cpp:
-    complete
-    .text start:0x021121fc end:0x02112234
-
-src/_ZN17daWater_Suikomi_cD0Ev.cpp:
-    complete
-    .text start:0x02112234 end:0x02112280
-
-src/func_ov026_02112280.c:
-    complete
-    .text start:0x02112280 end:0x021122b0
-
-src/func_ov026_021122b0.c:
-    complete
-    .text start:0x021122b0 end:0x021122cc
-
-src/func_ov026_021122cc.c:
-    complete
-    .text start:0x021122cc end:0x021122d4
-
-src/func_ov026_021122d4.cpp:
-    complete
-    .text start:0x021122d4 end:0x02112324
-
-src/func_ov026_02112324.c:
-    complete
-    .text start:0x02112324 end:0x02112328
-
 src/actors/daWater_Suikomi_c.cpp:
     complete
-    .text start:0x02112328 end:0x02112450
+    .text start:0x021121fc end:0x02112450
 
 src/d_a_water_suikomi.c:
     complete
