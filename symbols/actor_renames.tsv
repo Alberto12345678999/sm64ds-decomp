@@ -2448,6 +2448,7 @@ ov080	0x021253b4	func_ov080_021253b4	CrazedCrate_Spawn	spawnfunc
 ov080	0x021253b4	CrazedCrate_Spawn	daBttBk_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov080	0x02126f8c	func_ov080_02126f8c	Painting_Spawn	spawnfunc
 ov080	0x02126f8c	Painting_Spawn	daPicGate_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
+ov080	0x02127094	func_ov080_02127094	_ZN13daObjMaruta_c19func_ov080_02127094Ev	daObjMaruta_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
 ov080	0x02127fec	data_ov080_02127fec	MontyMole_SpawnInfo	spawninfo
 ov080	0x02127fec	MontyMole_SpawnInfo	g_profile_CHOROPU	reconstructed profile global; literal ROM ID CHOROPU+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov080	0x02128008	data_ov080_02128008	MontyMoleRock_SpawnInfo	spawninfo
