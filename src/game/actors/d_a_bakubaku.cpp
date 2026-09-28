@@ -36,8 +36,9 @@
  *   g_profile_BAKUBAKU is this TU's .data. It stays here, not on the class.
  *
  * Measured on this file, not copied from a sibling:
- *   mWithMeshClsn.Init is dBgCh_Actr's header method. It matches, Fix12i
- *   and all. 02111ff4 calls enter as int (daBakubaku_c::*)(); that matches
+ *   dBgCh_Actr::Init stays a mangled free call: types.h makes Fix12i a
+ *   plain s32, so the header method mangles as int and the link fails
+ *   (undefined dBgCh_Actr::Init(dActor_c*, int, int, ...)). 02111ff4 calls enter as int (daBakubaku_c::*)(); that matches
  *   too. The record type stays out of the class: a member PMF of
  *   daBakubaku_c inside the class is the ICE.
  *   ModelAnim::SetAnim, dCcAcPos_c::Init, and DropShadowRadHeight with a
@@ -70,10 +71,6 @@ struct BakubakuState {
     void (daBakubaku_c::*main)();
 };
 
-struct BmdHandle {
-    s32 fileId;
-    BMD_File *file;
-};
 struct BcaHandle {
     s32 fileId;
     BCA_File *file;
@@ -93,10 +90,12 @@ typedef char BakubakuSpawnInfo_size_must_be_0x1c[
     sizeof(BakubakuSpawnInfo) == 0x1c ? 1 : -1];
 
 extern "C" {
-extern BmdHandle data_ov032_02113a40;
-extern BcaHandle data_ov032_02113a48;
-extern BcaHandle data_ov032_02113a50;
-extern BakubakuState data_ov032_02113a8c; /* wander */
+/* These four keep the int spellings __sinit_ov032_02112c10 and
+   decl_common.h give them; uses cast to SharedFilePtr/BcaHandle/BakubakuState. */
+extern int data_ov032_02113a40[];
+extern int data_ov032_02113a48;
+extern int data_ov032_02113a50;
+extern int data_ov032_02113a8c; /* wander */
 extern BakubakuState data_ov032_02113a9c; /* pause */
 extern BakubakuState data_ov032_02113aac; /* chase */
 extern BakubakuState data_ov032_02113a7c; /* surface */
@@ -133,6 +132,8 @@ void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
 void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
     dCcAcPos_c *self, dActor_c *actor, const Vector3 &offset,
     int radius, int height, u32 d, u32 e);
+void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
+    dBgCh_Actr *self, dActor_c *actor, int radius, int height, void *a, void *b);
 void _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
     void *self, void *sm, void *mtx, int f, int g, unsigned int h);
 void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(
@@ -176,7 +177,7 @@ s32 daBakubaku_c::InitResources()
     Vector3 headOffset;
     void *f;
 
-    f = Model::LoadFile(*(SharedFilePtr *)&data_ov032_02113a40);
+    f = Model::LoadFile(*(SharedFilePtr *)data_ov032_02113a40);
     mModelAnim.SetFile((BMD_File *)f, 1, -1);
     mShadowModel.InitCylinder();
     Animation::LoadFile(*(SharedFilePtr *)&data_ov032_02113a50);
@@ -200,14 +201,15 @@ s32 daBakubaku_c::InitResources()
     mSpawnPosY = mPosY;
     mSpawnPosZ = mPosZ;
 
-    mWithMeshClsn.Init(this, 0x64000, 0, 0, 0);
+    _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
+        &mWithMeshClsn, this, 0x64000, 0, 0, 0);
 
     mTerminalVelocity = -0x1e000;
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-        &mModelAnim, data_ov032_02113a50.file, 0, 0x1000, 0);
+        &mModelAnim, ((BcaHandle *)&data_ov032_02113a50)->file, 0, 0x1000, 0);
     mModelAnim.speed = 0x1000;
 
-    func_ov032_02111ff4(&data_ov032_02113a8c);
+    func_ov032_02111ff4((BakubakuState *)&data_ov032_02113a8c);
     return 1;
 }
 
@@ -269,7 +271,7 @@ void daBakubaku_c::OnPendingDestroy()
 // @symbol _ZN12daBakubaku_c16CleanupResourcesEv
 s32 daBakubaku_c::CleanupResources()
 {
-    ((SharedFilePtr *)&data_ov032_02113a40)->Release();
+    ((SharedFilePtr *)data_ov032_02113a40)->Release();
     ((SharedFilePtr *)&data_ov032_02113a50)->Release();
     ((SharedFilePtr *)&data_ov032_02113a48)->Release();
     return 1;
@@ -360,7 +362,7 @@ extern "C" int func_ov032_02111e24(daBakubaku_c *self)
         if (((r >> 8) & 3) == 0) {
             self->func_ov032_02111ff4(&data_ov032_02113a9c);
         } else {
-            self->func_ov032_02111ff4(&data_ov032_02113a8c);
+            self->func_ov032_02111ff4((BakubakuState *)&data_ov032_02113a8c);
         }
     }
     return 1;
@@ -388,7 +390,7 @@ extern "C" int func_ov032_02111d7c(daBakubaku_c *self)
         return 1;
     }
     if (*(unsigned short *)&self->mStateTimer == 0)
-        self->func_ov032_02111ff4(&data_ov032_02113a8c);
+        self->func_ov032_02111ff4((BakubakuState *)&data_ov032_02113a8c);
     return 1;
 }
 
@@ -413,9 +415,9 @@ extern "C" int func_ov032_02111b9c(daBakubaku_c *self)
 give_up:
     {
         _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-            &self->mModelAnim, data_ov032_02113a50.file, 0, 0x1000, 0);
+            &self->mModelAnim, ((BcaHandle *)&data_ov032_02113a50)->file, 0, 0x1000, 0);
         self->mChaseCooldown = 0x64;
-        self->func_ov032_02111ff4(&data_ov032_02113a8c);
+        self->func_ov032_02111ff4((BakubakuState *)&data_ov032_02113a8c);
         return 1;
     }
 aim:
@@ -440,7 +442,7 @@ aim:
                 self->mHorzSpeed = 0x14000;
                 self->unk_429 = 0;
                 _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-                    &self->mModelAnim, data_ov032_02113a48.file,
+                    &self->mModelAnim, ((BcaHandle *)&data_ov032_02113a48)->file,
                     0x40000000, 0x1000, 0);
                 if (self->mAngTarget > 0)
                     self->func_ov032_02111ff4(&data_ov032_02113a7c);
@@ -551,9 +553,9 @@ pitched: ;
                 self->mBodyClsn.flags &= ~kCcCharMove;
                 self->mHeadClsn.flags &= ~kCcCharMove;
                 _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-                    &self->mModelAnim, data_ov032_02113a50.file,
+                    &self->mModelAnim, ((BcaHandle *)&data_ov032_02113a50)->file,
                     0, 0x1000, 0);
-                self->func_ov032_02111ff4(&data_ov032_02113a8c);
+                self->func_ov032_02111ff4((BakubakuState *)&data_ov032_02113a8c);
                 return 1;
             }
         }
@@ -628,9 +630,9 @@ pitched: ;
         self->mAngTarget = self->mAngleY;
         self->mFlags = 3;
         _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-            &self->mModelAnim, data_ov032_02113a50.file,
+            &self->mModelAnim, ((BcaHandle *)&data_ov032_02113a50)->file,
             0, 0x1000, 0);
-        self->func_ov032_02111ff4(&data_ov032_02113a8c);
+        self->func_ov032_02111ff4((BakubakuState *)&data_ov032_02113a8c);
     }
     goto done;
 
