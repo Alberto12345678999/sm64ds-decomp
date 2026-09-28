@@ -52,8 +52,8 @@
 #include "dBgCh_Lin.h"
 
 /* decl_common.h already declares every address-named symbol this TU touches --
- * func_ov025_021119a4/021119f4/02111a84, func_ov091_02132dc0/02132e64/02132e98/
- * 02132f04/02132ff4/02133020/02133098 and data_ov025_02113814 -- all taking
+ * func_ov025_021119a4/021119f4/02111a84, func_ov091_02132e64/02132e98/02132ff4
+ * and data_ov025_02113814 -- all taking
  * char*, where several shards had spelled them void*. The real header wins;
  * their shadow declarations are gone and the definitions below match it.
  *

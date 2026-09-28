@@ -101,9 +101,9 @@ struct DsnCycle {
 
 /* --------------------------------------------------------------------------
  * The one file-scope extern "C" region. Everything here is reached from a
- * body below that cannot declare it in its own scope. The seven func_ov091_*
- * come from decl_common.h instead (all (char*), the real header wins), so
- * they are not restated.
+ * body below that cannot declare it in its own scope.
+ * func_ov091_02132ff4/02132e98/02132e64 come from decl_common.h (all (char*),
+ * the real header wins), so they are not restated.
  * ------------------------------------------------------------------------ */
 extern "C" {
 
