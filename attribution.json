@@ -1229,6 +1229,7 @@
     "src/_ZN9ModelBaseC2Ev.cpp": "tangosdev",
     "src/_ZN9MontyMole16OnAimedAtWithEggEv.c": "tangosdev",
     "src/_ZN9MontyMole16OnAimedAtWithEggEv.cpp": "tangosdev",
+    "src/_ZN11daChoropu_c16OnAimedAtWithEggEv.cpp": "tangosdev",
     "src/_ZN9MontyMoleD0Ev.cpp": "tangosdev",
     "src/_ZN9MovingBar15OnHitByMegaCharER6Player.c": "tangosdev",
     "src/_ZN9MovingBar15OnHitByMegaCharER6Player.cpp": "tangosdev",

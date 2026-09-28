@@ -20,7 +20,7 @@ src/_ZN14daChoro_Rock_cD0Ev.cpp:
     complete
     .text start:0x02123804 end:0x02123858
 
-src/_ZN9MontyMole16OnAimedAtWithEggEv.cpp:
+src/_ZN11daChoropu_c16OnAimedAtWithEggEv.cpp:
     complete
     .text start:0x02123858 end:0x02123860
 

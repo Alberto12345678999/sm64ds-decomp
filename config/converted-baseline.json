@@ -1332,7 +1332,7 @@
     "src/_ZN9ModelBaseC2Ev.cpp",
     "src/_ZN9ModelBaseD1Ev.cpp",
     "src/_ZN11daChoropu_c16CleanupResourcesEv.cpp",
-    "src/_ZN9MontyMole16OnAimedAtWithEggEv.cpp",
+    "src/_ZN11daChoropu_c16OnAimedAtWithEggEv.cpp",
     "src/_ZN11daChoropu_c6RenderEv.cpp",
     "src/_ZN11daChoropu_cD0Ev.cpp",
     "src/_ZN11daChoropu_cD1Ev.cpp",
