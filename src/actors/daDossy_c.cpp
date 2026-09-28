@@ -123,23 +123,27 @@ typedef void (daDossy_c::*StateFunc)();
 extern "C" StateFunc data_ov065_0211d7fc[];
 
 /* ROM ordinal 28 */
+// @symbol _ZN14DorriePlatformC1Ev
 DorriePlatform::DorriePlatform()
 {
 }
 
 /* ROM ordinal 27 */
+// @symbol daDossy_c_classInit
 extern "C" daDossy_c *daDossy_c_classInit(void)
 {
     return new daDossy_c();
 }
 
 /* ROM ordinal 26 */
+// @symbol daDossyCap_c_classInit
 extern "C" daDossyCap_c *daDossyCap_c_classInit(void)
 {
     return new daDossyCap_c();
 }
 
 /* ROM ordinal 25 */
+// @symbol _ZN12daDossyCap_c13OnYoshiTryEatEv
 int daDossyCap_c::OnYoshiTryEat()
 {
     return 4;
@@ -147,6 +151,7 @@ int daDossyCap_c::OnYoshiTryEat()
 
 /* ROM ordinal 24 */
 #pragma long_calls on
+// @symbol func_ov065_021195d0
 extern "C" int func_ov065_021195d0(void *a, void *b, void *c)
 {
     return ((int (*)(void *, void *))func_ov065_02119594)(b, c);
@@ -155,6 +160,7 @@ extern "C" int func_ov065_021195d0(void *a, void *b, void *c)
 
 /* ROM ordinal 23 */
 #pragma long_calls on
+// @symbol func_ov065_021195bc
 extern "C" int func_ov065_021195bc(void *a, void *b, void *c)
 {
     return ((int (*)(void *, void *))func_ov065_0211956c)(b, c);
@@ -162,6 +168,7 @@ extern "C" int func_ov065_021195bc(void *a, void *b, void *c)
 #pragma long_calls off
 
 /* ROM ordinal 22 */
+// @symbol func_ov065_02119594
 extern "C" void func_ov065_02119594(daDossy_c *dossy, dActor_c *other)
 {
     BOOL isPlayer = (other->actorID == 0xbf) ? TRUE : FALSE;
@@ -172,6 +179,7 @@ extern "C" void func_ov065_02119594(daDossy_c *dossy, dActor_c *other)
 }
 
 /* ROM ordinal 21 */
+// @symbol func_ov065_0211956c
 extern "C" void func_ov065_0211956c(daDossy_c *dossy, dActor_c *other)
 {
     BOOL isPlayer = (other->actorID == 0xbf) ? TRUE : FALSE;
@@ -182,6 +190,7 @@ extern "C" void func_ov065_0211956c(daDossy_c *dossy, dActor_c *other)
 }
 
 /* ROM ordinal 20 */
+// @symbol _ZN12daDossyCap_c13InitResourcesEv
 int daDossyCap_c::InitResources()
 {
     mModel.SetFile((BMD_File *)LOADED_FILE(data_ov002_0210d9c0), 1, -1);
@@ -192,6 +201,7 @@ int daDossyCap_c::InitResources()
 }
 
 /* ROM ordinal 19 */
+// @symbol _ZN9daDossy_c13InitResourcesEv
 int daDossy_c::InitResources()
 {
     int i;
@@ -279,6 +289,7 @@ int daDossy_c::InitResources()
 }
 
 /* ROM ordinal 18 */
+// @symbol func_ov065_02119210
 extern "C" int func_ov065_02119210(unsigned char *c)
 {
     daDossyCap_c *cap = (daDossyCap_c *)c;
@@ -287,6 +298,7 @@ extern "C" int func_ov065_02119210(unsigned char *c)
 }
 
 /* ROM ordinal 17 */
+// @symbol _ZN12daDossyCap_c8BehaviorEv
 int daDossyCap_c::Behavior()
 {
     daDossy_c *carrier = (daDossy_c *)mCarrier;
@@ -327,6 +339,7 @@ int daDossyCap_c::Behavior()
 }
 
 /* ROM ordinal 16 */
+// @symbol _ZN9daDossy_c8BehaviorEv
 int daDossy_c::Behavior()
 {
     int d;
@@ -384,6 +397,7 @@ int daDossy_c::Behavior()
 }
 
 /* ROM ordinal 15 */
+// @symbol _ZN12daDossyCap_c6RenderEv
 int daDossyCap_c::Render()
 {
     unsigned int flags = mCapIcon.mFlags;
@@ -398,6 +412,7 @@ int daDossyCap_c::Render()
 }
 
 /* ROM ordinal 14 */
+// @symbol _ZN9daDossy_c6RenderEv
 int daDossy_c::Render()
 {
     mModelAnim.Render(0);
@@ -405,6 +420,7 @@ int daDossy_c::Render()
 }
 
 /* ROM ordinal 13 */
+// @symbol _ZN9daDossy_c16CleanupResourcesEv
 int daDossy_c::CleanupResources()
 {
     int i;
@@ -423,6 +439,7 @@ int daDossy_c::CleanupResources()
 }
 
 /* ROM ordinal 12 */
+// @symbol func_ov065_02118cc4
 extern "C" void func_ov065_02118cc4(char *t)
 {
     daDossy_c *dossy = (daDossy_c *)t;
@@ -433,6 +450,7 @@ extern "C" void func_ov065_02118cc4(char *t)
 }
 
 /* ROM ordinal 11 */
+// @symbol func_ov065_02118c4c
 extern "C" void func_ov065_02118c4c(char *c)
 {
     daDossyCap_c *cap = (daDossyCap_c *)c;
@@ -445,6 +463,7 @@ extern "C" void func_ov065_02118c4c(char *c)
 }
 
 /* ROM ordinal 10 */
+// @symbol func_ov065_02118838
 extern "C" void func_ov065_02118838(char *c)
 {
     daDossy_c *dossy = (daDossy_c *)c;
@@ -536,6 +555,7 @@ extern "C" void func_ov065_02118838(char *c)
 }
 
 /* ROM ordinal 9 */
+// @symbol func_ov065_02118634
 extern "C" void func_ov065_02118634(daDossy_c *dossy)
 {
     int landed = 0;
@@ -601,6 +621,7 @@ extern "C" void func_ov065_02118634(daDossy_c *dossy)
 }
 
 /* ROM ordinal 8 */
+// @symbol func_ov065_021183c8
 extern "C" void func_ov065_021183c8(daDossy_c *dossy)
 {
     Vector3 playerPos;
@@ -658,6 +679,7 @@ extern "C" void func_ov065_021183c8(daDossy_c *dossy)
 }
 
 /* ROM ordinal 7 */
+// @symbol func_ov065_021182e4
 extern "C" void func_ov065_021182e4(daDossy_c *dossy)
 {
     switch (dossy->mStateState) {
@@ -680,6 +702,7 @@ extern "C" void func_ov065_021182e4(daDossy_c *dossy)
 }
 
 /* ROM ordinal 6 */
+// @symbol func_ov065_02118248
 extern "C" int func_ov065_02118248(daDossy_c *dossy)
 {
     int hidden = (int)((dossy->mFlags & 8) != 0);
@@ -704,6 +727,7 @@ extern "C" int func_ov065_02118248(daDossy_c *dossy)
 }
 
 /* ROM ordinal 5 */
+// @symbol func_ov065_021180d4
 extern "C" int func_ov065_021180d4(char *self)
 {
     daDossyCap_c *cap = (daDossyCap_c *)self;
@@ -760,6 +784,7 @@ fail:
 }
 
 /* ROM ordinal 4 */
+// @symbol _ZN14DorriePlatformD1Ev
 DorriePlatform::~DorriePlatform()
 {
 }
