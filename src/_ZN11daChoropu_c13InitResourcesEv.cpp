@@ -1,9 +1,9 @@
 //cpp
-// @symbol _ZN9MontyMole13InitResourcesEv
+// @symbol _ZN11daChoropu_c13InitResourcesEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 #include "decl_common.h"
 /* recovered: named members + shared header, real C++ method */
-#include "MontyMole.h"
+#include "daChoropu_c.h"
 /* SharedFilePtr stays incomplete: Model.h forward-declares it and its layout is
    deliberately not recovered (include/SharedFilePtr.h). Used only by address here. */
 typedef struct BMD_File BMD_File;
@@ -21,7 +21,7 @@ extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void* self, BCA_File* f,
 extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void* self, dActor_c* a, Fix12i r, Fix12i h, unsigned int e, unsigned int g);
 }
 
-int MontyMole::InitResources()
+int daChoropu_c::InitResources()
 {
     int i;
     for (i = 0; i < 4; i++) _ZN9Animation8LoadFileER13SharedFilePtr(data_ov080_0212766c[i]);

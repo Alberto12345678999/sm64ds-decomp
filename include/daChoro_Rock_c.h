@@ -1,5 +1,5 @@
-#ifndef MONTYMOLEROCK_H
-#define MONTYMOLEROCK_H
+#ifndef DACHORO_ROCK_C_H
+#define DACHORO_ROCK_C_H
 
 #include "types.h"
 
@@ -24,14 +24,14 @@
 #include "dCcAc_c.h"
 #include "dBgCh_Actr.h"
 
-struct MontyMoleRock : dEnemyBase_c {
+struct daChoro_Rock_c : dEnemyBase_c {
     Model mModel;                     /* 0x110 */
     dCcAc_c mdCcAc_c;/* 0x160 */
     dBgCh_Actr mWithMeshClsn;       /* 0x194 */
     u8 mIsSmall;                       /* 0x350 */
 
     /* --- vtable --- */
-    virtual ~MontyMoleRock();
+    virtual ~daChoro_Rock_c();
 
     virtual s32 Behavior();
     virtual s32 CleanupResources();
@@ -41,7 +41,7 @@ struct MontyMoleRock : dEnemyBase_c {
 
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
-typedef char MontyMoleRock_size_must_be_0x354[sizeof(MontyMoleRock) == 0x354 ? 1 : -1];
+typedef char daChoro_Rock_c_size_must_be_0x354[sizeof(daChoro_Rock_c) == 0x354 ? 1 : -1];
 #endif
 
 #else
@@ -49,7 +49,7 @@ typedef char MontyMoleRock_size_must_be_0x354[sizeof(MontyMoleRock) == 0x354 ? 1
 /* The C spelling of the same object, flat. Kept because the D0 file is a C
    translation unit that reads these fields, and D0 is compiler-generated so it
    can never be migrated. Same arrangement as include/ShadowModel.h. */
-struct MontyMoleRock {
+struct daChoro_Rock_c {
     u8  pad_000[0x8];
     s32 param1;            /* 0x008 */
     u8  pad_00c[0x74];
@@ -65,15 +65,15 @@ struct MontyMoleRock {
     Model mModel;            /* 0x110 */
     /* dCcAc_c member, named by the class's own destructor calling
        dCcAc_c's D1 at +0x160 -- a relocation the ROM build
-       checks. Was a u8 marker. [_ZN13MontyMoleRockD1Ev.c] */
+       checks. Was a u8 marker. [_ZN14daChoro_Rock_cD1Ev.c] */
     dCcAc_c mdCcAc_c;            /* 0x160 */
     /* dBgCh_Actr member, named by the class's own destructor calling
        dBgCh_Actr's D1 at +0x194 -- a relocation the ROM build
-       checks. Was a u8 marker. [_ZN13MontyMoleRockD1Ev.c] */
+       checks. Was a u8 marker. [_ZN14daChoro_Rock_cD1Ev.c] */
     dBgCh_Actr mWithMeshClsn;            /* 0x194 */
     u8  mIsSmall;            /* 0x350 */
 };
 
 #endif /* __cplusplus */
 
-#endif /* MONTYMOLEROCK_H */
+#endif /* DACHORO_ROCK_C_H */

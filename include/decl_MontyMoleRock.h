@@ -20,7 +20,7 @@
 extern "C" {
 #endif
 
-extern int _ZN13MontyMoleRockD0Ev(void*);
+extern int _ZN14daChoro_Rock_cD0Ev(void*);
 
 
 #ifdef __cplusplus

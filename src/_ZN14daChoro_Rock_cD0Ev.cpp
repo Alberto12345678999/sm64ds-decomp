@@ -1,21 +1,21 @@
 //cpp
-// @symbol _ZN9MontyMoleD0Ev
+// @symbol _ZN14daChoro_Rock_cD0Ev
 /* recovered: real C++ deleting destructor -- the compiler emits the whole body
  *
  * D0 is the DELETING destructor: destroy through this class and its bases --
  * which is why more than one vptr store appears -- then return the object to
- * its heap. Nobody writes that; declaring `~MontyMole()` is enough, because mwcc
+ * its heap. Nobody writes that; declaring `~daChoro_Rock_c()` is enough, because mwcc
  * emits D2, D0 and D1 together and objisolate keeps the one this file is bound
  * to.
  *
  * The deallocation is an inline operator delete, which is why nothing below
  * mentions a heap.
  */
-#include "MontyMole.h"
+#include "daChoro_Rock_c.h"
 
 #ifdef _MSC_VER
 /* THE HOST NEEDS THE ROM'S FLAT D0 NAME, AND MSVC NEVER EMITS IT. MSVC
- * folds the Itanium destructor variants into the one ~MontyMole() it
+ * folds the Itanium destructor variants into the one ~daChoro_Rock_c() it
  * emits, which the class's D1 file already defines, so compiling the
  * definition below as well would define that symbol twice. This arm
  * spells out, in terms of it, what the deleting destructor this file is
@@ -24,14 +24,14 @@
  * class-specific operator delete. Nothing here reaches mwccarm: it builds
  * the `#else` arm and emits the ROM bytes it always emitted, and the
  * object is byte-identical either way. */
-extern "C" MontyMole *_ZN9MontyMoleD0Ev(MontyMole *thiz)
+extern "C" daChoro_Rock_c *_ZN14daChoro_Rock_cD0Ev(daChoro_Rock_c *thiz)
 {
-    thiz->MontyMole::~MontyMole();     /* the D1 body, through the one host symbol */
-    MontyMole::operator delete(thiz);  /* the class-specific delete D0 ends with */
+    thiz->daChoro_Rock_c::~daChoro_Rock_c();  /* the D1 body, through the one host symbol */
+    daChoro_Rock_c::operator delete(thiz);   /* the class-specific delete D0 ends with */
     return thiz;
 }
 #else
-MontyMole::~MontyMole()
+daChoro_Rock_c::~daChoro_Rock_c()
 {
 }
 #endif

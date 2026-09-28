@@ -1,9 +1,9 @@
 //cpp
 #include "dActor_c.h"
 #include "dCc_c.h"
-// @symbol _ZN9MontyMole8BehaviorEv
+// @symbol _ZN11daChoropu_c8BehaviorEv
 /* recovered: named members + shared header, real C++ method */
-#include "MontyMole.h"
+#include "daChoropu_c.h"
 struct C;
 typedef void (C::*PMF)();
 struct Entry { PMF pmf[1]; };
@@ -14,7 +14,7 @@ int func_ov080_02124208(void* c);
 void func_ov080_021243d8(char* t);
 }
 
-int MontyMole::Behavior()
+int daChoropu_c::Behavior()
 {
     char* p = (char*)((C*)this);
     ((dActor_c *)p)->MakeVanishLuigiWork(*(dCc_c *)(p + 0x138));

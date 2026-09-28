@@ -1,9 +1,9 @@
 //cpp
-// @symbol _ZN13MontyMoleRock8BehaviorEv
+// @symbol _ZN14daChoro_Rock_c8BehaviorEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 #include "decl_common.h"
 /* recovered: named members + shared header, real C++ method */
-#include "MontyMoleRock.h"
+#include "daChoro_Rock_c.h"
 extern "C" void _ZN7fBase_c18MarkForDestructionEv(void*);
 extern "C" void* _ZN8dActor_c10FindWithIDEj(unsigned int);
 extern "C" void _ZN8dActor_c19MakeVanishLuigiWorkER5dCc_c(void*, void*);
@@ -18,7 +18,7 @@ extern "C" int RandomIntInternal(int *seed);
 
 extern int data_0209e650;
 
-s32 MontyMoleRock::Behavior()
+s32 daChoro_Rock_c::Behavior()
 {
     unsigned char *c = (unsigned char *)((void *)this);
     unsigned char *o;

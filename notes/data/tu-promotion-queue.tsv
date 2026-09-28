@@ -138,7 +138,7 @@ daUdlift_c	11	347	ov095	yes	yes	compiler-only:>=11(derived from own chain: 5 cla
 daObj_volcanoCannon_c+daObjFlMaruta_c	11	203	ov022	partial	yes	multi-class-tu:2;classif:no-header:daObjFlMaruta_c;compiler-only:>=16(derived from own chain: 7 classes incl. self via build/rtti.json; floor 2x7+2)	daObjFl_Fall_Block_c	text-only
 daObjKm2_Agaru_c	6	168	ov045	yes	yes	compiler-only:>=11(derived from own chain: 5 classes incl. self via build/rtti.json + include/ base clause; floor 2x5+1)	daObjKm2_Ami_Bou_c	text-only
 daObjPile_c	10	286	ov091	yes	yes	compiler-only:>=11(derived from own chain: 5 classes incl. self via build/rtti.json + include/ base clause; floor 2x5+1)	-	text-only
-MontyMole+MontyMoleRock	24	854	ov080	yes	no	multi-class-tu:2;compiler-only:>=14(derived from own chain: 6 classes incl. self via build/rtti.json + include/ base clause; floor 2x6+2)	-	text-only
+daChoropu_c+daChoro_Rock_c	24	854	ov080	yes	no	multi-class-tu:2;compiler-only:>=14(derived from own chain: 6 classes incl. self via build/rtti.json + include/ base clause; floor 2x6+2)	-	text-only
 daObjIceBlock_c	9	318	ov081	yes	yes	compiler-only:>=11(derived from own chain: 5 classes incl. self via build/rtti.json + include/ base clause; floor 2x5+1)	-	text-only
 dMgState_c	4	91	ov004	yes	no	intact-object:blocked(TU owns two function-local bss statics; text-only isolate_many and compiler-only deadstrip re-import both refuse, intact-object links and reproduces the ROM but needs a storage alias rombuild does not support; see the manifest notes)	dScMgBase_c	text-only
 daObjClock_c	1	208	ov013	yes	yes	compiler-only:>=9(derived from own chain: 4 classes incl. self via build/rtti.json; floor 2x4+1)	daObjClockHuriko_c	text-only

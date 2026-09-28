@@ -6185,7 +6185,7 @@
         "param:#5 void *",
         "param:#6 void *"
       ],
-      "src/_ZN13MontyMoleRock13InitResourcesEv.cpp": [
+      "src/_ZN14daChoro_Rock_c13InitResourcesEv.cpp": [
         "param:#2 void *",
         "return:int"
       ],
@@ -7029,7 +7029,7 @@
         "arity:0"
       ]
     },
-    "_ZN13MontyMoleRockD0Ev": {
+    "_ZN14daChoro_Rock_cD0Ev": {
       "include/decl_MontyMoleRock.h": [
         "return:int"
       ]
@@ -9900,7 +9900,7 @@
       "src/_ZN17daObjFl_Amilift_c13InitResourcesEv.cpp": [
         "return:BMD_File *"
       ],
-      "src/_ZN13MontyMoleRock13InitResourcesEv.cpp": [
+      "src/_ZN14daChoro_Rock_c13InitResourcesEv.cpp": [
         "param:#1 void *",
         "return:int"
       ],
@@ -9946,7 +9946,7 @@
       "src/_ZN8SignPost13InitResourcesEv.cpp": [
         "param:#1 void *"
       ],
-      "src/_ZN9MontyMole13InitResourcesEv.cpp": [
+      "src/_ZN11daChoropu_c13InitResourcesEv.cpp": [
         "param:#1 SharedFilePtr *",
         "return:struct BMD_File *"
       ],
@@ -11558,7 +11558,7 @@
       ]
     },
     "_ZN6Player4HurtERK7Vector3j5Fix12IiEjjj": {
-      "src/_ZN13MontyMoleRock8BehaviorEv.cpp": [
+      "src/_ZN14daChoro_Rock_c8BehaviorEv.cpp": [
         "param:#5 unsigned int",
         "param:#6 unsigned int",
         "param:#7 unsigned int",
@@ -12563,13 +12563,13 @@
       "src/_ZN10BowserTail13InitResourcesEv.cpp": [
         "return:int"
       ],
-      "src/_ZN13MontyMoleRock13InitResourcesEv.cpp": [
+      "src/_ZN14daChoro_Rock_c13InitResourcesEv.cpp": [
         "return:int"
       ],
       "src/_ZN6Bullet13InitResourcesEv.cpp": [
         "param:#1 char *"
       ],
-      "src/_ZN9MontyMole13InitResourcesEv.cpp": [
+      "src/_ZN11daChoropu_c13InitResourcesEv.cpp": [
         "param:#2 struct dActor_c *"
       ],
       "src/func_ov002_020bae9c.c": [
@@ -13356,7 +13356,7 @@
       "src/_ZN10StarMarker8BehaviorEv.cpp": [
         "return:char *"
       ],
-      "src/_ZN13MontyMoleRock8BehaviorEv.cpp": [
+      "src/_ZN14daChoro_Rock_c8BehaviorEv.cpp": [
         "return:void *"
       ],
       "src/_ZN17BowserPuzzlePiece8BehaviorEv.cpp": [
@@ -14184,7 +14184,7 @@
         "param:#6 int",
         "return:int"
       ],
-      "src/_ZN13MontyMoleRock8BehaviorEv.cpp": [
+      "src/_ZN14daChoro_Rock_c8BehaviorEv.cpp": [
         "param:#3 void *",
         "param:#5 int",
         "param:#6 int",
@@ -14571,7 +14571,7 @@
         "param:#1 void *",
         "return:void *"
       ],
-      "src/_ZN9MontyMole13InitResourcesEv.cpp": [
+      "src/_ZN11daChoropu_c13InitResourcesEv.cpp": [
         "param:#1 SharedFilePtr *",
         "return:void *"
       ],
@@ -14682,7 +14682,7 @@
       "src/_ZN8YoshiEgg13InitResourcesEv.cpp": [
         "param:#5 unsigned int"
       ],
-      "src/_ZN9MontyMole13InitResourcesEv.cpp": [
+      "src/_ZN11daChoropu_c13InitResourcesEv.cpp": [
         "param:#2 struct BCA_File *",
         "param:#5 unsigned int"
       ],
@@ -15117,7 +15117,7 @@
       "src/_ZN12daDossyCap_c13InitResourcesEv.cpp": [
         "return:void"
       ],
-      "src/_ZN13MontyMoleRock13InitResourcesEv.cpp": [
+      "src/_ZN14daChoro_Rock_c13InitResourcesEv.cpp": [
         "param:#2 int"
       ],
       "src/_ZN17daObjBk_Botaosi_c13InitResourcesEv.cpp": [
@@ -15143,7 +15143,7 @@
       "src/_ZN8Goomboss13InitResourcesEv.cpp": [
         "return:void"
       ],
-      "src/_ZN9MontyMole13InitResourcesEv.cpp": [
+      "src/_ZN11daChoropu_c13InitResourcesEv.cpp": [
         "param:#2 struct BMD_File *",
         "return:void"
       ],
@@ -26672,7 +26672,7 @@
       ]
     },
     "data_ov080_021283c8": {
-      "src/_ZN13MontyMoleRock13InitResourcesEv.cpp": [
+      "src/_ZN14daChoro_Rock_c13InitResourcesEv.cpp": [
         "return:int []"
       ],
       "src/__sinit_ov080_021278c0.c": [
@@ -41454,7 +41454,7 @@
       ]
     },
     "func_ov080_02124208": {
-      "src/_ZN9MontyMole8BehaviorEv.cpp": [
+      "src/_ZN11daChoropu_c8BehaviorEv.cpp": [
         "return:int"
       ]
     },

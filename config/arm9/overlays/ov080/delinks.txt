@@ -4,19 +4,19 @@
     .ctor       start:0x02127f60 end:0x02127f6c kind:rodata align:4
     .data       start:0x02127f80 end:0x021283c0 kind:data align:32
     .bss        start:0x021283c0 end:0x02128860 kind:bss align:32
-src/_ZN9MontyMoleD1Ev.cpp:
+src/_ZN11daChoropu_cD1Ev.cpp:
     complete
     .text start:0x02123740 end:0x02123778
 
-src/_ZN9MontyMoleD0Ev.cpp:
+src/_ZN11daChoropu_cD0Ev.cpp:
     complete
     .text start:0x02123778 end:0x021237c4
 
-src/_ZN13MontyMoleRockD1Ev.cpp:
+src/_ZN14daChoro_Rock_cD1Ev.cpp:
     complete
     .text start:0x021237c4 end:0x02123804
 
-src/_ZN13MontyMoleRockD0Ev.cpp:
+src/_ZN14daChoro_Rock_cD0Ev.cpp:
     complete
     .text start:0x02123804 end:0x02123858
 
@@ -68,35 +68,35 @@ src/func_ov080_02124418.c:
     complete
     .text start:0x02124418 end:0x02124458
 
-src/_ZN9MontyMole16CleanupResourcesEv.cpp:
+src/_ZN11daChoropu_c16CleanupResourcesEv.cpp:
     complete
     .text start:0x02124458 end:0x021244b4
 
-src/_ZN13MontyMoleRock16CleanupResourcesEv.cpp:
+src/_ZN14daChoro_Rock_c16CleanupResourcesEv.cpp:
     complete
     .text start:0x021244b4 end:0x021244d8
 
-src/_ZN9MontyMole6RenderEv.cpp:
+src/_ZN11daChoropu_c6RenderEv.cpp:
     complete
     .text start:0x021244d8 end:0x02124500
 
-src/_ZN13MontyMoleRock6RenderEv.cpp:
+src/_ZN14daChoro_Rock_c6RenderEv.cpp:
     complete
     .text start:0x02124500 end:0x02124530
 
-src/_ZN9MontyMole8BehaviorEv.cpp:
+src/_ZN11daChoropu_c8BehaviorEv.cpp:
     complete
     .text start:0x02124530 end:0x0212459c
 
-src/_ZN13MontyMoleRock8BehaviorEv.cpp:
+src/_ZN14daChoro_Rock_c8BehaviorEv.cpp:
     complete
     .text start:0x0212459c end:0x0212478c
 
-src/_ZN9MontyMole13InitResourcesEv.cpp:
+src/_ZN11daChoropu_c13InitResourcesEv.cpp:
     complete
     .text start:0x0212478c end:0x021248b4
 
-src/_ZN13MontyMoleRock13InitResourcesEv.cpp:
+src/_ZN14daChoro_Rock_c13InitResourcesEv.cpp:
     complete
     .text start:0x021248b4 end:0x02124998
 

@@ -1,9 +1,9 @@
 //cpp
-// @symbol _ZN9MontyMole16OnAimedAtWithEggEv
+// @symbol _ZN11daChoropu_c16OnAimedAtWithEggEv
 /* recovered: real C++ method, vtable slot 29. */
-#include "MontyMole.h"
+#include "daChoropu_c.h"
 
-s32 MontyMole::OnAimedAtWithEgg()
+s32 daChoropu_c::OnAimedAtWithEgg()
 {
     return 163840;
 }

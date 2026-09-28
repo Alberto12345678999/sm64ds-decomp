@@ -2466,18 +2466,18 @@ ov079	0x02128070	FortressWallBreakable_SpawnInfo	g_profile_BK_KABE00	reconstruct
 ov079	0x0212808c	data_ov079_0212808c	FortressWall_SpawnInfo	spawninfo
 ov079	0x0212808c	FortressWall_SpawnInfo	g_profile_BK_KABE01	reconstructed profile global; literal ROM ID BK_KABE01+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov079	0x021280b0	data_ov079_021280b0	_ZTV14daObjBk_Kabe_c	vtable alloc=0x324
-ov080	0x02123740	func_ov080_02123740	_ZN9MontyMoleD1Ev	vtable slot 16
-ov080	0x02123778	func_ov080_02123778	_ZN9MontyMoleD0Ev	vtable slot 17
-ov080	0x021237c4	func_ov080_021237c4	_ZN13MontyMoleRockD1Ev	vtable slot 16
-ov080	0x02123804	func_ov080_02123804	_ZN13MontyMoleRockD0Ev	vtable slot 17
-ov080	0x02124458	func_ov080_02124458	_ZN9MontyMole16CleanupResourcesEv	vtable slot 3
-ov080	0x021244b4	func_ov080_021244b4	_ZN13MontyMoleRock16CleanupResourcesEv	vtable slot 3
-ov080	0x021244d8	func_ov080_021244d8	_ZN9MontyMole6RenderEv	vtable slot 9
-ov080	0x02124500	func_ov080_02124500	_ZN13MontyMoleRock6RenderEv	vtable slot 9
-ov080	0x02124530	func_ov080_02124530	_ZN9MontyMole8BehaviorEv	vtable slot 6
-ov080	0x0212459c	func_ov080_0212459c	_ZN13MontyMoleRock8BehaviorEv	vtable slot 6
-ov080	0x0212478c	func_ov080_0212478c	_ZN9MontyMole13InitResourcesEv	vtable slot 0
-ov080	0x021248b4	func_ov080_021248b4	_ZN13MontyMoleRock13InitResourcesEv	vtable slot 0
+ov080	0x02123740	func_ov080_02123740	_ZN11daChoropu_cD1Ev	vtable slot 16
+ov080	0x02123778	func_ov080_02123778	_ZN11daChoropu_cD0Ev	vtable slot 17
+ov080	0x021237c4	func_ov080_021237c4	_ZN14daChoro_Rock_cD1Ev	vtable slot 16
+ov080	0x02123804	func_ov080_02123804	_ZN14daChoro_Rock_cD0Ev	vtable slot 17
+ov080	0x02124458	func_ov080_02124458	_ZN11daChoropu_c16CleanupResourcesEv	vtable slot 3
+ov080	0x021244b4	func_ov080_021244b4	_ZN14daChoro_Rock_c16CleanupResourcesEv	vtable slot 3
+ov080	0x021244d8	func_ov080_021244d8	_ZN11daChoropu_c6RenderEv	vtable slot 9
+ov080	0x02124500	func_ov080_02124500	_ZN14daChoro_Rock_c6RenderEv	vtable slot 9
+ov080	0x02124530	func_ov080_02124530	_ZN11daChoropu_c8BehaviorEv	vtable slot 6
+ov080	0x0212459c	func_ov080_0212459c	_ZN14daChoro_Rock_c8BehaviorEv	vtable slot 6
+ov080	0x0212478c	func_ov080_0212478c	_ZN11daChoropu_c13InitResourcesEv	vtable slot 0
+ov080	0x021248b4	func_ov080_021248b4	_ZN14daChoro_Rock_c13InitResourcesEv	vtable slot 0
 ov080	0x02124998	func_ov080_02124998	MontyMoleRock_Spawn	spawnfunc
 ov080	0x02124998	MontyMoleRock_Spawn	daChoro_Rock_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov080	0x021249e0	func_ov080_021249e0	MontyMole_Spawn	spawnfunc
@@ -2498,8 +2498,8 @@ ov080	0x02127fec	data_ov080_02127fec	MontyMole_SpawnInfo	spawninfo
 ov080	0x02127fec	MontyMole_SpawnInfo	g_profile_CHOROPU	reconstructed profile global; literal ROM ID CHOROPU+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov080	0x02128008	data_ov080_02128008	MontyMoleRock_SpawnInfo	spawninfo
 ov080	0x02128008	MontyMoleRock_SpawnInfo	g_profile_CHORO_ROCK	reconstructed profile global; literal ROM ID CHORO_ROCK+registry role+later EAD lineage; exact SM64DS spelling not preserved
-ov080	0x0212802c	data_ov080_0212802c	_ZTV13MontyMoleRock	vtable alloc=0x18c
-ov080	0x021280b0	data_ov080_021280b0	_ZTV9MontyMole	vtable alloc=0x18c
+ov080	0x0212802c	data_ov080_0212802c	_ZTV14daChoro_Rock_c	vtable alloc=0x18c
+ov080	0x021280b0	data_ov080_021280b0	_ZTV11daChoropu_c	vtable alloc=0x18c
 ov080	0x02128174	data_ov080_02128174	CrazedCrate_SpawnInfo	spawninfo
 ov080	0x02128174	CrazedCrate_SpawnInfo	g_profile_BATTA_BLOCK	reconstructed profile global; literal ROM ID BATTA_BLOCK+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov080	0x02128198	data_ov080_02128198	_ZTV9daBttBk_c	vtable alloc=0x378

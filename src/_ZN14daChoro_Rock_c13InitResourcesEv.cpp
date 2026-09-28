@@ -1,7 +1,7 @@
 //cpp
-// @symbol _ZN13MontyMoleRock13InitResourcesEv
+// @symbol _ZN14daChoro_Rock_c13InitResourcesEv
 /* recovered: named members + shared header, real C++ method */
-#include "MontyMoleRock.h"
+#include "daChoro_Rock_c.h"
 extern "C" {
 int _ZN5Model8LoadFileER13SharedFilePtr(void*);
 int _ZN9ModelBase7SetFileEP8BMD_Fileii(void*,int,int,int);
@@ -10,7 +10,7 @@ int _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void*,void*,int,
 extern int data_ov080_021283c8[];
 }
 
-s32 MontyMoleRock::InitResources()
+s32 daChoro_Rock_c::InitResources()
 {
   int m = _ZN5Model8LoadFileER13SharedFilePtr(data_ov080_021283c8);
   if(_ZN9ModelBase7SetFileEP8BMD_Fileii(((char*)this)+0x110, m, 1, -1) == 0) return 0;
