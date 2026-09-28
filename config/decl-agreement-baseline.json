@@ -7023,11 +7023,6 @@
         "arity:0"
       ]
     },
-    "_ZN14daChoro_Rock_cD0Ev": {
-      "include/decl_MontyMoleRock.h": [
-        "return:int"
-      ]
-    },
     "_ZN13SharedFilePtr7ReleaseEv": {
       "src/_ZN11dCapEnemy_c6AddCapEj.cpp": [
         "return:int"
