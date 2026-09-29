@@ -586,9 +586,8 @@ void func_ov006_02115248(dScMgSmartball_c *self, int *origin);
    recovered body (func_ov006_0210d740, pre-migration) exactly, destroying the
    arrays in reverse of the factory's construction order. The own-vtable store
    and the chain to ~dScMgBase_c() are compiler-generated; dScMgBase_c's
-   destructor is NOT inlined here (it has real statements, and mwcc refuses to
-   inline that across a TU boundary), so the ROM calls _ZN11dScMgBase_cD2Ev as a
-   real bl -- exactly what a plain chain to the immediate base emits.
+   destructor remains an out-of-line call under the pinned 2004/b56 build,
+   matching the ROM's bl to _ZN11dScMgBase_cD2Ev.
 
    D0 is that same teardown followed by the heap return, through an inline
    `operator delete`, which is why nothing below mentions a heap. Nobody writes
@@ -1936,28 +1935,11 @@ void* func_ov006_021101bc(char* c, int a1, int a2, int* src){
 /* ROM ordinal 33 -- func_ov006_02110244, 0x02110244, size 0x27c */
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov006_02110244
-/* NOT a Player method, despite the name. ov006, 0x02110244.
- *
- * This is the file that contaminated include/Player.h. It reads 0x08 and 0x0c
- * as a fix12 2D coordinate pair -- differencing them against another point and
- * feeding the result to a distance helper. On a real Player those offsets are
- * fBase_c's param1 and actorID/aliveState/shouldBeKilled, which cannot be a
- * position. It is some other ov006 class at a shared RAM address.
- *
- * Because it was the only evidence for Player.h's `unk_00c` being an s32, and
- * for `unk_030` and `mModelAnim1` existing at all, those fields can now be
- * dropped from that header.
- *
- * It was also the ONLY C translation unit including Player.h, so with this
- * detached the header can become C++-only and shed its #else branch -- the
- * dual-branch shape that silently split in #980 when a rename landed on one
- * side only.
- *
- * Kept under the mangled name because renaming the symbol is a config change;
- * this commit is src-only.
+/* Smartball object collision helper. Offsets 0x08 and 0x0c hold the
+ * object's fixed-point 2D coordinates, used here for distance checks.
  */
 /* Local layout: only what this function actually touches. */
-extern "C" {  /* .c-derived member: C linkage for the whole block */
+extern "C" {  /* local collision helper: C linkage */
 int func_ov006_02110244(struct Owl *self, struct S *v) {
     struct S d;
     struct S p, t1, t2, t3;

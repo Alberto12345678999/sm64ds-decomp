@@ -15,7 +15,7 @@
  * Nothing reads inside the table itself, so its size is bounded only by
  * what follows it, and that bound is 0xac, not the 0xb8 the first draft of
  * this header claimed: a THREE-ELEMENT s32 array sits at 0x4fe4, indexed by
- * five of this class's methods (Render's local
+ * five of this class's methods (the legacy Render's local
  * `struct T4fe4 { char pad[0x4fe4]; int vals[3]; }` names it outright, and
  * InitResources, func_ov006_0210af64, func_ov006_0210adac and
  * func_ov006_0210ab08 all index it as

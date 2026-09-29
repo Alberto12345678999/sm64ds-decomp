@@ -47,3 +47,13 @@ Exact-commit production, attribution, relocation, and independent source-review 
 ## Coordination
 
 The user explicitly authorized releasing the missing-worktree reservations `pr2877-interface-repair-0921` and `promote-puzzle-state-0928`. Their history and artifacts were preserved while their reservations were cancelled. Replacement task `mg-promotions-finish-0930` owns this work; global per-symbol attribution and declaration/converted identities were reconciled in the integration lane without changing unrelated owners' mappings. Wired worktrees and the earlier byte-verified Moneybag commit remain preserved. The primary dirty checkout was not edited.
+
+## Independent review repairs
+
+The final review corrected obsolete Smartball history and qualified the destructor codegen observation to the pinned build. Slot3's layout comment now identifies its retired Render struct as legacy evidence.
+
+Cup Render now indexes the existing `mFrame[k]` field. The old comment claiming that spelling changed code was unsupported: before and after objects are identical across all 22,056 bytes (SHA-256 `777dbb9b72e9e30a39ad032bc99a0c1f4e746a3a7f3eaeb7d29b61cb819525ab`). The remaining x/y spellings are unchanged. This repairs inherited finding SCMG2877-01 in the current source.
+
+Fresh RTTI, vtable, and TU-map extraction fed `queue_audit.Tree.measure` for the affected queue rows. State uses the verified intact-object route; Slot's combined row records its separately enrolled tail and unmatched Behavior. The obsolete standalone Slot1 row was removed: the mapper class label at 02119824..02119904 covers Smartball's factory and callback, both explicitly owned by the Smartball manifest. The Smartball family row retains `already_promoted=no` under the checker’s per-class-manifest semantics, with an explicit production-owner note covering all 132 functions. Luigi, Memory2, Flower, and Cup line counts and pragma-file counts were refreshed; unrelated rows were preserved. This corrects inherited LUI2876-05 and MEM2875-05 evidence to the current tree.
+
+The additional missing-worktree reservation `pr2500-cup-source-repair-0911` was cancelled under the user's unlock instruction, preserving its history. Its missing worktree was `C:/tmp/sm64ds-vcup-r2398-0911`. The replacement task reserved Cup's Render repair and queue accounting before applying them. Cancellation releases a reservation; it does not certify that old verifier's unfinished review.
