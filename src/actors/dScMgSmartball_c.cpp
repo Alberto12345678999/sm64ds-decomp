@@ -533,7 +533,6 @@ extern void func_ov004_020b0a54(int);
 
 
 extern "C" {
-void func_ov006_0210d894(void);
 void func_ov006_0210f998(void);
 int func_ov006_021146ac(struct S28 *p);
 void func_ov006_021146f4(void* a, char* b);

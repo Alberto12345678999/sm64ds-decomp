@@ -1,9 +1,9 @@
 {
   "id": "ov006/dScMgSmartball_c",
   "module": "ov006",
-  "source": "src_tu/actors/dScMgSmartball_c.cpp",
+  "source": "src/actors/dScMgSmartball_c.cpp",
   "promoted_source": "src/actors/dScMgSmartball_c.cpp",
-  "status": "text-verified",
+  "status": "promoted",
   "boundary_confidence": "medium",
   "boundary_evidence": [
     "Contiguous ov006 linker run 0x0210d740..0x02119904: 130 existing scene/object functions followed by the scene factory and its empty particle-element constructor (132 functions total).",
