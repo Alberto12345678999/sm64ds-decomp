@@ -1,9 +1,9 @@
 //cpp
-// @symbol _ZN8MugenBgm6RenderEv
+// @symbol _ZN12daMugenBGM_c6RenderEv
 
-#include "MugenBgm.h"
+#include "daMugenBGM_c.h"
 
-int MugenBgm::Render()
+int daMugenBGM_c::Render()
 {
     return 1;
 }

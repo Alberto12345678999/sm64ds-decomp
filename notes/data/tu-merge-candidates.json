@@ -17201,19 +17201,19 @@
    "start": "0x20f1bc4",
    "end": "0x20f1f70",
    "classes": [
-    "MugenBgm"
+    "daMugenBGM_c"
    ],
    "n_functions_map": 9,
    "n_files": 9,
    "files": [
-    "src/_ZN8MugenBgmD1Ev.cpp",
-    "src/_ZN8MugenBgmD0Ev.cpp",
+    "src/_ZN12daMugenBGM_cD1Ev.cpp",
+    "src/_ZN12daMugenBGM_cD0Ev.cpp",
     "src/func_ov002_020f1c20.c",
-    "src/_ZN8MugenBgm16CleanupResourcesEv.cpp",
-    "src/_ZN8MugenBgm16OnPendingDestroyEv.cpp",
-    "src/_ZN8MugenBgm6RenderEv.cpp",
-    "src/_ZN8MugenBgm8BehaviorEv.cpp",
-    "src/_ZN8MugenBgm13InitResourcesEv.cpp",
+    "src/_ZN12daMugenBGM_c16CleanupResourcesEv.cpp",
+    "src/_ZN12daMugenBGM_c16OnPendingDestroyEv.cpp",
+    "src/_ZN12daMugenBGM_c6RenderEv.cpp",
+    "src/_ZN12daMugenBGM_c8BehaviorEv.cpp",
+    "src/_ZN12daMugenBGM_c13InitResourcesEv.cpp",
     "src/d_a_mugen_bgm.c"
    ],
    "ext_mix": {

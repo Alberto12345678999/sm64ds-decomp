@@ -1,9 +1,9 @@
 //cpp
-// @symbol _ZN8MugenBgm16CleanupResourcesEv
+// @symbol _ZN12daMugenBGM_c16CleanupResourcesEv
 
-#include "MugenBgm.h"
+#include "daMugenBGM_c.h"
 
-int MugenBgm::CleanupResources()
+int daMugenBGM_c::CleanupResources()
 {
     return 1;
 }

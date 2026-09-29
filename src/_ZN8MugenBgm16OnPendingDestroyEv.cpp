@@ -1,8 +1,8 @@
 //cpp
-// @symbol _ZN8MugenBgm16OnPendingDestroyEv
+// @symbol _ZN12daMugenBGM_c16OnPendingDestroyEv
 
-#include "MugenBgm.h"
+#include "daMugenBGM_c.h"
 
-void MugenBgm::OnPendingDestroy()
+void daMugenBGM_c::OnPendingDestroy()
 {
 }

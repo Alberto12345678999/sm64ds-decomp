@@ -1,8 +1,8 @@
 //cpp
-// @symbol _ZN8MugenBgmD1Ev
+// @symbol _ZN12daMugenBGM_cD1Ev
 
-#include "MugenBgm.h"
+#include "daMugenBGM_c.h"
 
-MugenBgm::~MugenBgm()
+daMugenBGM_c::~daMugenBGM_c()
 {
 }
