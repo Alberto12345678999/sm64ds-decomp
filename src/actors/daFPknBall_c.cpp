@@ -34,6 +34,7 @@
 
 #include "common.h"
 #include "Player.h"
+#include "Sound.h"
 #include "daFPknBall_c.h"
 
 bool ApproachLinear(short &value, short target, short step);
@@ -107,8 +108,6 @@ void func_ov002_020f8b24(void* self);
 int func_ov002_020ad660(void* cc, void* pp, void* r5p, int flags);
 void _ZN8dActor_c19DisappearPoofDustAtERK7Vector3(void* self, const struct Vec3F* v);
 s16 Vec3_HorzAngle(const void* a, const void* b);
-void* _ZN8dActor_c10FindWithIDEj(u32 id);
-void _ZN5Sound9PlayBank0EjRK7Vector3(u32 id, const void* pos);
 void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(u32 id, s32 x, s32 y, s32 z);
 void func_02012694(u32 id, const void* v);
 void dBgCh_Actr_UpdateContinuous_Veneer(void* p);
@@ -317,7 +316,7 @@ int daFPknBall_c::Behavior() {
     hitByID = mdCcAc_c.otherOwner;
     if (hitByID != 0) {
         if ((mdCcAc_c.hitFlags & 0x8000) == 0) {
-            hitActor = _ZN8dActor_c10FindWithIDEj((u32)hitByID);
+            hitActor = dActor_c::FindWithID((u32)hitByID);
             if (hitActor != 0) {
                 if (mdCcAc_c.hitFlags & HIT_MEGA_CHARACTER) {
                     /* Knocked away from the hitter: a short hop into death state 8. */
@@ -332,7 +331,7 @@ int daFPknBall_c::Behavior() {
                     mDeathState = 8;
                     mVertAccel = -0x2000;
                     mTerminalVelocity = -0x32000;
-                    _ZN5Sound9PlayBank0EjRK7Vector3(9, &mCamSpacePosX);
+                    Sound::PlayBank0(9, *(Vector3*)&mCamSpacePosX);
                     sparkPos.x = mPosX;
                     sparkPos.y = mPosY;
                     sparkPos.z = mPosZ;
