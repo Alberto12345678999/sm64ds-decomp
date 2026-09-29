@@ -319,8 +319,9 @@ void func_ov002_020b13e0(daCoin_c *coin)
 }
 
 /* Refreshes the model matrices (rotation from mAngleY, translation as position
- * >> 3) and the shadow, once per frame. The shadow is skipped for a coin that
- * is beyond mFarDistance, inactive, or (for a red coin) sitting in a block.
+ * >> 3) and the shadow, once per frame. The shadow is skipped while the
+ * 0x40000 yoshi-mouth state bit is set, for an inactive coin, and for a red
+ * coin sitting in a block.
  * FLOOR_DYNAMIC drops it 500 units with a fixed radius; FLOOR_FIXED sizes it
  * from the distance down to mFloorPosY. */
 // @symbol func_ov002_020b14d8
@@ -334,7 +335,7 @@ void func_ov002_020b14d8(char *self)
     extern void _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
         void *c, void *sm, void *mtx, int a, int b, unsigned int u);
 
-    int beyondFar;
+    int inYoshiMouth;
     int floorState;
 
     Matrix4x3_FromRotationY(&coin->mCommonModel1.mat4x3, coin->mAngleY);
@@ -347,9 +348,9 @@ void func_ov002_020b14d8(char *self)
     coin->mShadowMat.m[10] = coin->mPosY >> 3;
     coin->mShadowMat.m[11] = coin->mPosZ >> 3;
 
-    beyondFar = coin->mFlags & 0x40000;
-    beyondFar = beyondFar != 0;
-    if (beyondFar) return;
+    inYoshiMouth = coin->mFlags & 0x40000;
+    inYoshiMouth = inYoshiMouth != 0;
+    if (inYoshiMouth) return;
 
     if (((CoinFlagBits*)&coin->mCoinFlags)->active == 0) return;
 
@@ -907,12 +908,12 @@ s32 daCoin_c::CleanupResources()
 int daCoin_c::Render()
 {
     int flags;
-    int beyondFar;
+    int inYoshiMouth;
 
     if (!((CoinFlagBits *)&mCoinFlags)->active) return 1;
     flags = mFlags;
-    beyondFar = (flags & 0x40000) != 0;
-    if (beyondFar) return 1;
+    inYoshiMouth = (flags & 0x40000) != 0;
+    if (inYoshiMouth) return 1;
     {
         /* blinks during the last 44 ticks of the disappear timer */
         unsigned short timer = mDisappearTimer;
