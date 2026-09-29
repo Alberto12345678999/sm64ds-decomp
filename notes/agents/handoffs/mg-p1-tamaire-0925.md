@@ -23,7 +23,7 @@ This document describes this commit. The queue records its immutable output SHA.
 
 ## What changed and why
 
-Tamaire is scene 0x171, profile MG_TAMAIRE, class `dScMgPachinko2_c` in ov006, all [ROM].
+Tamaire is scene 0x171, profile MG_TAMAIRE, class `dScMgPachinko2_c` in [ov006](../../../config/arm9/overlays/ov006/symbols.txt), all [ROM].
 It derives directly from `dScMgBase_c` and exists only as one-function files. This is its
 first readability pass: mechanical themes only, no new names, no symbol renames.
 
@@ -32,14 +32,14 @@ first readability pass: mechanical themes only, no new names, no symbol renames.
 - `Render` includes `include/decl_common.h`, which declares its eight helpers with the same
   `(void*)` parameter, and drops its duplicate local block and the stale comment that said
   the header used empty parameter lists.
-- `OnYoshiTryEat` drops a duplicate declaration of `func_ov006_02103bfc`.
+- `OnYoshiTryEat` drops a duplicate declaration of [func_ov006_02103bfc](../../../src/actors/dScMgPachinko2_c.cpp)(ROM Ordinal 68).
 - Comments in the six method files and the class header now state what the code does, in
   short form. Each shape the compiler forces carries one short comment naming what it
   forces.
 - The factory `src/d_s_mg_pachinko2.c` is unchanged (R11, R12).
 
 Reserved surfaces touched: the six method files, `include/dScMgPachinko2_c.h` (comments
-only) and this handoff. `config/arm9/overlays/ov006/delinks.txt` and the factory path were
+only) and this handoff. [config/arm9/overlays/ov006/delinks.txt](../../../config/arm9/overlays/ov006/delinks.txt) and the factory path were
 reserved for the theme-4 move, which did not land.
 
 ## Findings
@@ -60,7 +60,7 @@ reserved for the theme-4 move, which did not land.
   Local `namespace` declarations compile to an identical object (see Theme results).
 - **R5, fixed.** `Render`'s local helper declarations duplicated `include/decl_common.h` and
   its comment misdescribed that header.
-- **R6, fixed.** `OnYoshiTryEat` redeclared `func_ov006_02103bfc` exactly as
+- **R6, fixed.** `OnYoshiTryEat` redeclared [func_ov006_02103bfc](../../../src/minigames/d_s_mg_pachinko2_c.cpp)(ROM Ordinal 68) exactly as
   `include/decl_common.h` does.
 - **R7, deferred (codegen-forced).** `OnYoshiTryEat` reads `unk_0bc` through a const view
   `ro`. Re-measured: `unk_0bc = unk_0bc + 1` grows the function from 0x6c to 0x70 bytes.
@@ -76,13 +76,13 @@ reserved for the theme-4 move, which did not land.
 - **R11, deferred (measured negative).** Theme 4 in the factory: see Theme results. The
   factory keeps its hand-built form.
 - **R12, deferred.** The factory banner is stale. It says the `data_*` symbol is unnamed,
-  but `config/arm9/overlays/ov006/symbols.txt` also names 0x0213dbbc
+  but [config/arm9/overlays/ov006/symbols.txt](../../../config/arm9/overlays/ov006/symbols.txt) also names 0x0213dbbc
   `_ZTV16dScMgPachinko2_c`. It says the base C2 call cannot be written in C++, but
   `new dScMgPachinko2_c` emits exactly that call. The brief leaves the factory as it is
   when theme 4 does not land, so the banner waits for the pass that moves the factory.
 - **R13, deferred (theme 8).** `Behavior` cannot include `include/decl_common.h`: its local
-  declarations of `func_ov006_02100084`, `func_ov006_021024e0`, `func_ov006_020fffec` and
-  `func_ov004_020b0a54` take `void *`, and the header's take `char *` or `int`. mwccarm
+  declarations of [func_ov006_02100084](../../../src/actors/dScMgPachinko_c.cpp)(ROM Ordinal 13), [func_ov006_021024e0](../../../src/actors/dScMgPachinko_c.cpp)(ROM Ordinal 45), [func_ov006_020fffec](../../../src/actors/dScMgPachinko_c.cpp)(ROM Ordinal 11) and
+  [func_ov004_020b0a54](../../../src_tu/actors/unit_ov004_020b0a38.cpp)(ROM Ordinal 17) take `void *`, and the header's take `char *` or `int`. mwccarm
   rejects the include with "illegal function overloading" on those four lines. The call
   `func_ov004_020b0a54((void *)0x10)` keeps its cast for the same reason.
 - **R14, deferred (pass 2).** Locals named after stack slots (`sp4`, `sp8`, `spC`, `spE`),
@@ -104,11 +104,11 @@ reserved for the theme-4 move, which did not land.
 - **Theme 4, measured negative here.** `dScMgPachinko2_c_classInit` rewritten as
   `extern "C" void *dScMgPachinko2_c_classInit() { return new dScMgPachinko2_c; }` in a
   C++ file compiles to the same `.text`, since the implicit constructor inlines and no C1 is
-  needed. The vptr literal's relocation, however, moves from `data_ov006_0213dbbc` + 0 to
+  needed. The vptr literal's relocation, however, moves from [data_ov006_0213dbbc](../../../config/arm9/overlays/ov006/symbols.txt) + 0 to
   `_ZTV16dScMgPachinko2_c` + 8. `tools/objisolate.py` subtracts the 8-byte vtable preamble
   only while it rewrites an object, and `isolate()` returns early when there is nothing to
   drop, as in a one-function object. So the full link writes 0x0213dbc4 where the ROM has
-  0x0213dbbc. rombuild's intact-TU control reported ov006 not byte-exact, with this
+  0x0213dbbc. rombuild's intact-TU control reported [ov006](../../../config/arm9/overlays/ov006/symbols.txt) not byte-exact, with this
   function as its one mismatch. The D0 and D1 files store the same vtable correctly because
   their objects carry sections to drop. A tooling change that applies the correction to
   every object would unblock this theme for one-function factories; it belongs in its own
@@ -118,7 +118,7 @@ reserved for the theme-4 move, which did not land.
   rule in `tools/check_profile_campaign.py` (read from the tool, not run on the moved tree).
   That file and its `.json` twin, which also record the factory path, are outside this
   reservation. The experiment was reverted.
-- **Theme 7, not applicable.** None of these files uses `data_ov004_020beb68`.
+- **Theme 7, not applicable.** None of these files uses [data_ov004_020beb68](../../../config/arm9/overlays/ov004/symbols.txt).
 - **Theme 11, not applicable.** No hand-rolled vtable view here; slot 18 is already a real
   override.
 - **Theme 14, not applicable.** The six methods handle no Fix12 value.
@@ -132,19 +132,19 @@ cartridge dump. The commit after it adds only this file.
 - **Baseline, before any edit.** `python tools/rombuild.py -j8 --no-rom`: exit 0,
   7,069 enrolled sources, all compiled (0 reused), 11,214 of 11,214 source-built functions
   reproducing, 0 mismatching, 106 of 106 modules exact. The seven batch objects, and later
-  the header's other consumer `func_ov006_02102fe8`, were copied aside as the base.
-- **Per-edit loop.** After each of six steps (Behavior, InitResources, Render,
-  OnYoshiTryEat, the two destructor comments, the header) `python tools/rombuild.py -j8
+  the header's other consumer [func_ov006_02102fe8](../../../src/actors/dScMgPachinko2_c.cpp)(ROM Ordinal 60), were copied aside as the base.
+- **Per-edit loop.** After each of six steps (`Behavior`, `InitResources`, `Render`,
+  `OnYoshiTryEat`, the two destructor comments, the header) `python tools/rombuild.py -j8
   --no-rom` exited 0 with 11,214 of 11,214 reproducing and 106 of 106 modules exact, and
   compiled exactly the edited files (1, 1, 1, 1, 2, then 7 for the header's consumers).
   Each step was also compared object against object; every step was identical.
 - **No tubuild verify.** This batch has no TU; its sources are one-function files.
 - **Object comparison** (pyelftools, base against candidate, the build's objects): all
-  eight objects (six methods, the factory, `func_ov006_02102fe8`) are identical in every
+  eight objects (six methods, the factory, [func_ov006_02102fe8](../../../src/actors/dScMgPachinko2_c.cpp)) are identical in every
   section's bytes, in relocations by (offset, type, symbol, addend), and in defined and
   undefined symbol sets. The object files are also identical as whole files: each
-  candidate SHA256 equals its base, for example `8ef99cfc...a6ac15` for Behavior and
-  `9b698157...6d310` for InitResources.
+  candidate SHA256 equals its base, for example `8ef99cfc...a6ac15` for `Behavior` and
+  `9b698157...6d310` for `InitResources`.
 - **`python tools/rombuild.py -j8`**: exit 0. ROM built; `intactTuRom.identical` is true,
   SHA256 `d1506e90efae5e2d2cf119926a4ac2a291bd5ca78349d09d5024e1a918c478e8` equal to the
   expected image. 11,214 of 11,214 source-built functions reproducing, 0 mismatching;
@@ -178,8 +178,8 @@ cartridge dump. The commit after it adds only this file.
   stored with CRLF. Each of the seven sources keeps its one symbol marker, and ROM function
   order and `#pragma` use are unchanged (none of these files has a pragma).
 - **Theme-4 experiment** (reverted): with the factory as a C++ file and its
-  `config/arm9/overlays/ov006/delinks.txt` entry moved to match, `python tools/rombuild.py
-  -j8 --no-rom` exited 1: ov006 not byte-exact, one mismatching function
+  [config/arm9/overlays/ov006/delinks.txt](../../../config/arm9/overlays/ov006/delinks.txt) entry moved to match, `python tools/rombuild.py
+  -j8 --no-rom` exited 1: [ov006](../../../config/arm9/overlays/ov006/symbols.txt) not byte-exact, one mismatching function
   (`dScMgPachinko2_c_classInit`, one word). The linked word at 0x02104288 was 0x0213dbc4;
   the ROM has 0x0213dbbc.
 - **Not run:** private validation and GitHub checks; no PR exists.

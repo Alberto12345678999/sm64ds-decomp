@@ -39,7 +39,7 @@ method conversion, layout, raw-field access, lifecycle body, vtable/RTTI,
 initializer ownership or data owner. Existing ABI bridges and shadow layout
 remain outside this bounded follow-up. It adds no claim of original names or
 additional class reconstruction. The 15-function production TU remains enrolled
-in ov091 over `0x02131c14..0x02132404`; vtable data spans
+in [ov091](../../../config/arm9/overlays/ov091/symbols.txt) over `0x02131c14..0x02132404`; vtable data spans
 `0x02134eb8..0x02134f40` including its preamble.
 All source paths and symbol attribution remain unchanged.
 
