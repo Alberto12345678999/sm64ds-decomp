@@ -1,28 +1,52 @@
 //cpp
-/* daFPknBall_c (FPAKUN_BALL), ov002 0x020f8858..0x020f9304.
+/* daFPknBall_c (FPAKUN_BALL, actor 254): the fireball the fire piranha plant
+ * spits. daFPkn_c hands it to dActor_c::SpawnFireball with param1 = 3. It
+ * flies along its heading until it has covered mMaxDistance (1500 units),
+ * burns a Player it touches, and is knocked away when its collider reports
+ * hitFlags bit 0x10 (mega character, by dCc_c.h's unverified table).
+ * On expiry, a wall or water it puffs into dust and destroys itself.
+ * ov002 0x020f8858..0x020f9304.
  *
- * RTTI names daFPknBall_c. daFPknBall_c_classInit at 0x020f9304 follows this
- * run and is not in it. One out-of-line destructor under
+ * NAME: RTTI names daFPknBall_c. daFPknBall_c_classInit at 0x020f9304 follows
+ * this run and is not in it. One out-of-line destructor under
  * #pragma defer_codegen off emits D1, D0, then a homeless D2, and .text
  * follows source order. common.h is first so the flat Matrix4x3 is what
  * the particle helper copies.
+ *
+ * Known limits:
+ * - Callees are still reached by their mangled names. The Particle::System,
+ *   dCcAc_c::Init and dBgCh_Actr::Init calls pass Fix12<int> by value; the
+ *   dBgCh_Actr veneer and TouchesWater have no declaration in a header. The
+ *   rest (Spawn, ClosestPlayer, Sound::PlayBank0, ...) were not tried as
+ *   member calls in this pass.
+ * - The file-local POD Vec3F is not types.h's Vector3, which is not a POD;
+ *   the struct copies in Behavior only come out right with the POD.
+ * - The Bool enum and the volatile sparkPos are codegen scaffolding that
+ *   Behavior needs; they mean nothing to the reader.
+ * - Behavior adds dActor_c virtual slot 29 (the header calls it
+ *   OnAimedAtWithEgg) to the spark's Y. That name does not fit this use, so
+ *   the call goes through the local Obj table.
+ * - func_ov002_020f897c sets a byte at +0x42b on the actor with ID 279 (0x117)
+ *   so a second cap is not dropped; nothing here names that field.
  */
 
 #pragma defer_codegen off
 
 #include "common.h"
+#include "Player.h"
 #include "daFPknBall_c.h"
 
 bool ApproachLinear(short &value, short target, short step);
+int ApproachLinear(int &value, int target, int step);
 
 typedef struct { s32 x, y, z; } Vec3;
 
 struct Vector3_16f;
 
 struct Vec3F { int x, y, z; };
-struct Vec3P { int x, y, z; Vec3P() {} };
 enum Bool { FALSE, TRUE };
 
+/* Only slot 29 is called; the rest keep it at the right vtable offset. */
 struct Obj {
     virtual int m00(); virtual int m01(); virtual int m02(); virtual int m03();
     virtual int m04(); virtual int m05(); virtual int m06(); virtual int m07();
@@ -32,6 +56,34 @@ struct Obj {
     virtual int m20(); virtual int m21(); virtual int m22(); virtual int m23();
     virtual int m24(); virtual int m25(); virtual int m26(); virtual int m27();
     virtual int m28(); virtual int m29();
+};
+
+/* Actor IDs, from symbols/actor_debug_names.tsv. */
+enum {
+    ACTOR_FPAKUN_BALL = 254,
+    ACTOR_KOOPA = 279,
+    ACTOR_OBJ_MARIO_CAP = 269,
+    ACTOR_COIN = 288,
+    ACTOR_PLAYER = 191
+};
+
+/* dActor_c::mFlags bits the framework leaves to actor code. */
+enum {
+    MFLAG_YOSHI_MOUTH_A = 0x20000,
+    MFLAG_YOSHI_MOUTH_B = 0x40000
+};
+
+/* The ball's param1 & 7, named for what Behavior does with it. Variant 3 is
+ * what daFPkn_c spawns; other values are not distinguished here. */
+enum {
+    VARIANT_DROPS_ITEM = 0,
+    VARIANT_KEEPS_HEADING = 3,
+    VARIANT_COIN_DROP = 4
+};
+
+/* dCc_c::hitFlags bit, per the table in dCc_c.h. */
+enum {
+    HIT_MEGA_CHARACTER = 0x10
 };
 
 extern "C" {
@@ -64,7 +116,6 @@ void _ZN6Player4BurnEv(void* self);
 void func_02012694(u32 id, const void* v);
 void _ZN7fBase_c18MarkForDestructionEv(void* self);
 void dBgCh_Actr_UpdateContinuous_Veneer(void* p);
-int _Z14ApproachLinearRiii(void* p, s32 target, s32 step);
 int _ZNK10dBgCh_Actr8IsOnWallEv(void* self);
 int _ZNK10dBgCh_Actr12TouchesWaterEv(void* self);
 void func_ov002_020f897c(void* self);
@@ -86,101 +137,111 @@ daFPknBall_c::~daFPknBall_c()
 }
 
 // @symbol func_ov002_020f88ec
+/* Roll 0..9; on 0..3 spawn a coin (actor 288) at the ball's position and zero
+ * its velocity words. Called when a variant-4 ball ends by range or water. */
 extern "C" {
 void func_ov002_020f88ec(char* c)
 {
-    char* a;
+    char* coin;
     if (((unsigned int)RandomIntInternal(&data_0209e650) >> 0x10) % 10 >= 4) return;
-    a = _ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(0x120, 0, c + 0x5c, 0, *(signed char*)(c + 0xcc), -1);
-    if (a != 0) {
-        *(int*)(a + 0xa4) = 0;
-        *(int*)(a + 0xa8) = 0;
-        *(int*)(a + 0xac) = 0;
+    coin = _ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(ACTOR_COIN, 0, c + 0x5c, 0, *(signed char*)(c + 0xcc), -1);
+    if (coin != 0) {
+        *(int*)(coin + 0xa4) = 0;
+        *(int*)(coin + 0xa8) = 0;
+        *(int*)(coin + 0xac) = 0;
     }
 }
 }
 
 // @symbol func_ov002_020f897c
+/* Death drop of a variant-0 ball. Rolls 0..9. On 4..9, gives up if any
+ * FPAKUN_BALL already exists. Otherwise, if the closest player's param1 is 3
+ * and the actor 279 has not yet handed one out, spawns a cap (actor 269) for a
+ * random unlocked character 0..2 and marks actor 279's byte at +0x42b. If none
+ * of that happens, a roll below 4 spawns a coin as func_ov002_020f88ec does. */
 extern "C" {
 void func_ov002_020f897c(void* self)
 {
-    char* sl = (char*)self;
-    u8 n = (u8)(((u32)RandomIntInternal(&data_0209e650) >> 0x10) % 10);
-    if (n >= 4) {
-        if (_ZN8dActor_c18ClosestWithActorIDEj(sl, 0xfe) != 0) return;
+    char* ball = (char*)self;
+    u8 roll = (u8)(((u32)RandomIntInternal(&data_0209e650) >> 0x10) % 10);
+    if (roll >= 4) {
+        if (_ZN8dActor_c18ClosestWithActorIDEj(ball, ACTOR_FPAKUN_BALL) != 0) return;
     }
     {
-        void* p = _ZN8dActor_c13ClosestPlayerEv(sl);
-        char* sb;
-        if (p != 0 && *(int*)((char*)p + 8) == 3 &&
-            (sb = (char*)_ZN8dActor_c15FindWithActorIDEjPS_(0x117, 0)) != 0 &&
-            *(u8*)(sb + 0x42b) == 0) {
+        void* player = _ZN8dActor_c13ClosestPlayerEv(ball);
+        char* koopa;
+        if (player != 0 && *(int*)((char*)player + 8) == 3 &&
+            (koopa = (char*)_ZN8dActor_c15FindWithActorIDEjPS_(ACTOR_KOOPA, 0)) != 0 &&
+            *(u8*)(koopa + 0x42b) == 0) {
             int c;
             int idx;
-            int mask = 0;
+            int unlocked = 0;
             for (c = 0; c < 3; c++) {
                 if (_ZN8SaveData19IsCharacterUnlockedEj(c) != 0) {
-                    mask = (mask | (1 << c)) & 0xff;
+                    unlocked = (unlocked | (1 << c)) & 0xff;
                 }
             }
             do {
                 idx = ((u32)RandomIntInternal(&data_0209e650) >> 0x10) % 3;
-            } while ((mask & (1 << idx)) == 0);
-            if (_ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(0x10d, (idx << 8) | 0xb,
-                    (struct Vector3*)(sl + 0x5c), (struct Vector3_16*)(sl + 0x8c),
-                    *(s8*)(sl + 0xcc), -1) != 0) {
-                *(u8*)(sb + 0x42b) = 1;
+            } while ((unlocked & (1 << idx)) == 0);
+            if (_ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(ACTOR_OBJ_MARIO_CAP, (idx << 8) | 0xb,
+                    (struct Vector3*)(ball + 0x5c), (struct Vector3_16*)(ball + 0x8c),
+                    *(s8*)(ball + 0xcc), -1) != 0) {
+                *(u8*)(koopa + 0x42b) = 1;
                 return;
             }
         }
     }
-    if (n >= 4) return;
+    if (roll >= 4) return;
     {
-        void* r = _ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(0x120, 0,
-            (struct Vector3*)(sl + 0x5c), 0, *(s8*)(sl + 0xcc), -1);
-        if (r != 0) {
-            *(int*)((char*)r + 0xa4) = 0;
-            *(int*)((char*)r + 0xa8) = 0;
-            *(int*)((char*)r + 0xac) = 0;
+        void* coin = _ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(ACTOR_COIN, 0,
+            (struct Vector3*)(ball + 0x5c), 0, *(s8*)(ball + 0xcc), -1);
+        if (coin != 0) {
+            *(int*)((char*)coin + 0xa4) = 0;
+            *(int*)((char*)coin + 0xa8) = 0;
+            *(int*)((char*)coin + 0xac) = 0;
         }
     }
 }
 }
 
 // @symbol func_ov002_020f8b24
+/* Per-frame visuals: refresh the two trail particles at the ball's position
+ * (x mirrored when mMirrored is set), move the shadow matrix to that
+ * position >> 3, and draw the drop shadow. */
 extern "C" {
 void func_ov002_020f8b24(void* arg0)
 {
     char* c = (char*)arg0;
-    Vec3 v;
-    Vec3 asr;
+    Vec3 pos;
+    Vec3 shadowPos;
 
     {
         s32 x = *(s32*)(c + 0x5c);
-        v.x = x;
-        v.y = *(s32*)(c + 0x60);
-        v.z = *(s32*)(c + 0x64);
+        pos.x = x;
+        pos.y = *(s32*)(c + 0x60);
+        pos.z = *(s32*)(c + 0x64);
         if (*(u8*)(c + 0x36e) != 0)
-            v.x = x * (u32)-1;
+            pos.x = x * (u32)-1;
     }
-    v.y = v.y + data_ov002_02100320[*(u8*)(c + 0x36d)];
+    pos.y = pos.y + data_ov002_02100320[*(u8*)(c + 0x36d)];
 
     *(u32*)(c + 0x370) = _ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f(
-        *(u32*)(c + 0x370), data_ov002_02100334[*(u8*)(c + 0x36d)], v.x, v.y, v.z, 0);
+        *(u32*)(c + 0x370), data_ov002_02100334[*(u8*)(c + 0x36d)], pos.x, pos.y, pos.z, 0);
 
     *(void**)(c + 0x374) = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-        *(u32*)(c + 0x374), data_ov002_02100348[*(u8*)(c + 0x36d)], v.x, v.y, v.z, 0, 0);
+        *(u32*)(c + 0x374), data_ov002_02100348[*(u8*)(c + 0x36d)], pos.x, pos.y, pos.z, 0, 0);
 
     {
         s32 x = *(s32*)(c + 0x5c);
-        v.x = x;
-        v.y = *(s32*)(c + 0x60);
-        v.z = *(s32*)(c + 0x64);
+        pos.x = x;
+        pos.y = *(s32*)(c + 0x60);
+        pos.z = *(s32*)(c + 0x64);
         if (*(u8*)(c + 0x36e) != 0)
-            v.x = x * (u32)-1;
+            pos.x = x * (u32)-1;
     }
-    Vec3_Asr(&asr, &v, 3);
-    Matrix4x3_FromTranslation(&data_020a0e68, asr.x, asr.y, asr.z);
+    Vec3_Asr(&shadowPos, &pos, 3);
+    Matrix4x3_FromTranslation(&data_020a0e68, shadowPos.x, shadowPos.y, shadowPos.z);
     *(Matrix4x3*)(c + 0x328) = data_020a0e68;
     _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
         c, c + 0x300, c + 0x328, 0x28000, 0x64000, 0xf);
@@ -194,180 +255,186 @@ int daFPknBall_c::Render()
 }
 
 // @symbol _ZN12daFPknBall_c8BehaviorEv
-/* _ZN12daFPknBall_c8BehaviorEv at 0x020f8c94 -- a real daFPknBall_c:: method now.
+/* _ZN12daFPknBall_c8BehaviorEv at 0x020f8c94.
  *
- * The file-local POD `struct Vector3` is renamed `Vec3F` rather than dropped.
- * types.h's Vector3 is NOT a POD, and the two cannot both be named Vector3 in one
- * TU; keeping the POD spelling is deliberate (a C++ struct copy scalarises to the
- * members' own types, which is what a non-POD substitution would change here).
- * Renaming a file-local type cannot move a byte. The choice is per-function and
- * has to be measured: src/actors/dEnemyBase_c.cpp carried the same POD shadow and
- * dropping it for types.h's real Vector3 cost nothing there, so the shadow is gone
- * in that TU. Re-measure before assuming either answer applies here.
+ * Order of business: while Yoshi has the ball in his mouth (either mouth
+ * flag) only the visuals run. Then the clsn result: 2 puffs into dust, any
+ * other non-zero result just refreshes the visuals. Then aim (at the closest
+ * player unless the variant is 3), handle whatever hit the collider, steer,
+ * move, and die on range, wall or water.
+ *
+ * The file-local POD Vec3F stands in for types.h's Vector3, which is not a
+ * POD: a struct copy of it scalarises differently, and this function needs the
+ * POD's. The choice is per function and has to be measured (see the note in
+ * dEnemyBase_c.cpp, where the real Vector3 costs nothing).
  */
 int daFPknBall_c::Behavior() {
-    char* c = (char*)this;
-    struct Vec3F v1;
-    volatile struct Vec3F pt;
-    struct Vec3F v2, v3, w1, w2, w3;
-    int f;
-    int res;
-    void* found;
-    int lr;
-    int id134;
+    struct Vec3F dustPos1;
+    volatile struct Vec3F sparkPos;
+    struct Vec3F dustPos2, dustPos3, dustArg1, dustArg2, dustArg3;
+    int flags;
+    int clsnResult;
+    void* hitActor;
+    int flatSpeed;
+    int hitByID;
 
-    f = *(int*)(c + 0xb0);
+    flags = mFlags;
     {
-        enum Bool b = (enum Bool)((f & 0x20000) != 0);
+        enum Bool b = (enum Bool)((flags & MFLAG_YOSHI_MOUTH_A) != 0);
         if (b != FALSE) {
-            func_ov002_020f8b24(c);
+            func_ov002_020f8b24(this);
             return 1;
         }
     }
     {
-        enum Bool b = (enum Bool)((f & 0x40000) != 0);
+        enum Bool b = (enum Bool)((flags & MFLAG_YOSHI_MOUTH_B) != 0);
         if (b != FALSE) {
             return 1;
         }
     }
 
-    res = func_ov002_020ad660(c, c + 0x144, 0, 2);
-    if (res != 0) {
-        if (res == 2) {
-            int x = *(int*)(c + 0x5c);
-            v1.x = x;
-            v1.y = *(int*)(c + 0x60);
-            v1.z = *(int*)(c + 0x64);
-            if (*(u8*)(c + 0x36e) != 0)
-                v1.x = x * (u32)-1;
-            v1.y += 0x50000;
-            ((int*)&w1)[0] = ((int*)&v1)[0];
-            ((int*)&w1)[1] = ((int*)&v1)[1];
-            ((int*)&w1)[2] = ((int*)&v1)[2];
-            _ZN8dActor_c19DisappearPoofDustAtERK7Vector3(c, &w1);
+    clsnResult = func_ov002_020ad660(this, &mWithMeshClsn, 0, 2);
+    if (clsnResult != 0) {
+        if (clsnResult == 2) {
+            int x = mPosX;
+            dustPos1.x = x;
+            dustPos1.y = mPosY;
+            dustPos1.z = mPosZ;
+            if (mMirrored != 0)
+                dustPos1.x = x * (u32)-1;
+            dustPos1.y += 0x50000;
+            ((int*)&dustArg1)[0] = ((int*)&dustPos1)[0];
+            ((int*)&dustArg1)[1] = ((int*)&dustPos1)[1];
+            ((int*)&dustArg1)[2] = ((int*)&dustPos1)[2];
+            _ZN8dActor_c19DisappearPoofDustAtERK7Vector3(this, &dustArg1);
         } else {
-            func_ov002_020f8b24(c);
+            func_ov002_020f8b24(this);
         }
         return 1;
     }
 
-    *(void**)(c + 0x358) = _ZN8dActor_c13ClosestPlayerEv(c);
-    if (*(void**)(c + 0x358) != 0 && *(u8*)(c + 0x36d) != 3) {
-        *(s16*)(c + 0x368) = Vec3_HorzAngle(c + 0x5c, (char*)(*(void**)(c + 0x358)) + 0x5c);
+    mTargetPlayer = (Player*)_ZN8dActor_c13ClosestPlayerEv(this);
+    if (mTargetPlayer != 0 && mVariant != VARIANT_KEEPS_HEADING) {
+        mTargetAngleY = Vec3_HorzAngle(&mPosX, &mTargetPlayer->mPosX);
     } else {
-        *(s16*)(c + 0x368) = *(s16*)(c + 0x8e);
+        mTargetAngleY = mAngleY;
     }
 
-    id134 = *(int*)(c + 0x134);
-    if (id134 != 0) {
-        if ((*(int*)(c + 0x130) & 0x8000) == 0) {
-            found = _ZN8dActor_c10FindWithIDEj((u32)id134);
-            if (found != 0) {
-                if (*(int*)(c + 0x130) & 0x10) {
-                    *(u32*)(((int)c + 0xb0)) &= ~0x10000001;
-                    *(s16*)(c + 0x94) = Vec3_HorzAngle((char*)found + 0x5c, c + 0x5c);
-                    *(int*)(c + 0x98) = 0xa000;
-                    *(int*)(c + 0xa8) = 0x28000;
-                    *(s16*)(c + 0x102) = 0x1e;
-                    *(s16*)(c + 0xec) = 0;
-                    *(s16*)(c + 0xee) = 0;
-                    *(s16*)(c + 0xf0) = 0;
-                    *(int*)(c + 0x10c) = 8;
-                    *(int*)(c + 0x9c) = -0x2000;
-                    *(int*)(c + 0xa0) = -0x32000;
-                    _ZN5Sound9PlayBank0EjRK7Vector3(9, c + 0x74);
-                    pt.x = *(int*)(c + 0x5c);
-                    pt.y = *(int*)(c + 0x60);
-                    pt.z = *(int*)(c + 0x64);
+    hitByID = mdCcAc_c.otherOwner;
+    if (hitByID != 0) {
+        if ((mdCcAc_c.hitFlags & 0x8000) == 0) {
+            hitActor = _ZN8dActor_c10FindWithIDEj((u32)hitByID);
+            if (hitActor != 0) {
+                if (mdCcAc_c.hitFlags & HIT_MEGA_CHARACTER) {
+                    /* Knocked away from the hitter: a short hop into death state 8. */
+                    mFlags &= ~0x10000001;
+                    mPrevAngleY = Vec3_HorzAngle((char*)hitActor + 0x5c, &mPosX);
+                    mHorzSpeed = 0xa000;
+                    mVertSpeed = 0x28000;
+                    mDeathTimer = 0x1e;
+                    mSpinRateX = 0;
+                    mSpinRateY = 0;
+                    mSpinRateZ = 0;
+                    mDeathState = 8;
+                    mVertAccel = -0x2000;
+                    mTerminalVelocity = -0x32000;
+                    _ZN5Sound9PlayBank0EjRK7Vector3(9, &mCamSpacePosX);
+                    sparkPos.x = mPosX;
+                    sparkPos.y = mPosY;
+                    sparkPos.z = mPosZ;
                     {
-                        int ret = ((Obj*)c)->m29();
+                        int slot29 = ((Obj*)this)->m29();
                         int px, py, pz;
-                        py = pt.y;
-                        px = pt.x;
-                        py = py + ret;
-                        pz = pt.z;
-                        pt.y = py;
+                        py = sparkPos.y;
+                        px = sparkPos.x;
+                        py = py + slot29;
+                        pz = sparkPos.z;
+                        sparkPos.y = py;
                         _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x43, px, py, pz);
                     }
-                    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x44, pt.x, pt.y, pt.z);
-                    func_ov002_020f8b24(c);
-                    _ZN5dCc_c5ClearEv(c + 0x110);
+                    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x44, sparkPos.x, sparkPos.y, sparkPos.z);
+                    func_ov002_020f8b24(this);
+                    _ZN5dCc_c5ClearEv(&mdCcAc_c);
                     return 1;
                 }
                 {
-                    enum Bool isbf = (enum Bool)(*(u16*)((char*)found + 0xc) == 0xbf);
-                    if (isbf != FALSE && *(u8*)((char*)found + 0x6f9) == 0 && *(u8*)((char*)found + 0x6fb) == 0) {
-                        _ZN6Player4BurnEv(found);
+                    enum Bool hitPlayer = (enum Bool)(((Player*)hitActor)->actorID == ACTOR_PLAYER);
+                    if (hitPlayer != FALSE && ((Player*)hitActor)->mIsMetal == 0 && ((Player*)hitActor)->mIsVanish == 0) {
+                        _ZN6Player4BurnEv(hitActor);
                         {
-                            int x = *(int*)(c + 0x5c);
-                            v2.x = x;
-                            v2.y = *(int*)(c + 0x60);
-                            v2.z = *(int*)(c + 0x64);
-                            if (*(u8*)(c + 0x36e) != 0)
-                                v2.x = x * (u32)-1;
-                            v2.y += 0x50000;
-                            ((int*)&w2)[0] = ((int*)&v2)[0];
-                            ((int*)&w2)[1] = ((int*)&v2)[1];
-                            ((int*)&w2)[2] = ((int*)&v2)[2];
-                            _ZN8dActor_c19DisappearPoofDustAtERK7Vector3(c, &w2);
+                            int x = mPosX;
+                            dustPos2.x = x;
+                            dustPos2.y = mPosY;
+                            dustPos2.z = mPosZ;
+                            if (mMirrored != 0)
+                                dustPos2.x = x * (u32)-1;
+                            dustPos2.y += 0x50000;
+                            ((int*)&dustArg2)[0] = ((int*)&dustPos2)[0];
+                            ((int*)&dustArg2)[1] = ((int*)&dustPos2)[1];
+                            ((int*)&dustArg2)[2] = ((int*)&dustPos2)[2];
+                            _ZN8dActor_c19DisappearPoofDustAtERK7Vector3(this, &dustArg2);
                         }
-                        if (*(u8*)(c + 0x36d) == 4)
-                            func_02012694(0x157, c + 0x74);
-                        _ZN7fBase_c18MarkForDestructionEv(c);
+                        if (mVariant == VARIANT_COIN_DROP)
+                            func_02012694(0x157, &mCamSpacePosX);
+                        _ZN7fBase_c18MarkForDestructionEv(this);
                     }
                 }
             }
         } else {
-            *(int*)(((int)c + 0x128)) |= 1;
+            mdCcAc_c.flags |= 1;
         }
     }
 
-    dBgCh_Actr_UpdateContinuous_Veneer(c + 0x144);
-    if (_Z14ApproachLinearRiii(c + 0x98, *(int*)(c + 0x35c), 0x999) != 0) {
-        ApproachLinear(*(short *)(c + 0x94), *(s16*)(c + 0x368), 0x200);
+    dBgCh_Actr_UpdateContinuous_Veneer(&mWithMeshClsn);
+    if (ApproachLinear(mHorzSpeed, mTargetSpeed, 0x999) != 0) {
+        ApproachLinear(mPrevAngleY, mTargetAngleY, 0x200);
     }
 
-    lr = (*(int*)(c + 0x98) * data_02082214[(*(u16*)(c + 0x92) >> 4) * 2 + 1]) / 4096;
-    *(int*)(c + 0xa4) = (lr * data_02082214[(*(u16*)(c + 0x94) >> 4) * 2]) / 4096;
-    *(int*)(c + 0xa8) = (-*(int*)(c + 0x98) * data_02082214[(*(u16*)(c + 0x92) >> 4) * 2]) / 4096;
-    *(int*)(c + 0xac) = (lr * data_02082214[(*(u16*)(c + 0x94) >> 4) * 2 + 1]) / 4096;
-    *(int*)(((int)c + 0x5c)) += *(int*)(c + 0xa4);
-    *(int*)(((int)c + 0x60)) += *(int*)(c + 0xa8);
-    *(int*)(((int)c + 0x64)) += *(int*)(c + 0xac);
+    /* mPrevAngleY is the heading (ApproachLinear steers it toward
+     * mTargetAngleY) and mPrevAngleX the pitch; data_02082214 holds (sin, cos)
+     * pairs in fix12. */
+    flatSpeed = (mHorzSpeed * data_02082214[((u16)mPrevAngleX >> 4) * 2 + 1]) / 4096;
+    unk_0a4 = (flatSpeed * data_02082214[((u16)mPrevAngleY >> 4) * 2]) / 4096;
+    mVertSpeed = (-mHorzSpeed * data_02082214[((u16)mPrevAngleX >> 4) * 2]) / 4096;
+    unk_0ac = (flatSpeed * data_02082214[((u16)mPrevAngleY >> 4) * 2 + 1]) / 4096;
+    mPosX += unk_0a4;
+    mPosY += mVertSpeed;
+    mPosZ += unk_0ac;
 
-    _ZN5dCc_c5ClearEv(c + 0x110);
-    _ZN5dCc_c6UpdateEv(c + 0x110);
-    *(int*)(((int)c + 0x360)) += *(int*)(c + 0x98);
+    _ZN5dCc_c5ClearEv(&mdCcAc_c);
+    _ZN5dCc_c6UpdateEv(&mdCcAc_c);
+    mDistanceFlown += mHorzSpeed;
 
-    if (*(int*)(c + 0x360) > *(int*)(c + 0x364)
-        || _ZNK10dBgCh_Actr8IsOnWallEv(c + 0x144) != 0
-        || _ZNK10dBgCh_Actr12TouchesWaterEv(c + 0x144) != 0) {
-        u8 st = *(u8*)(c + 0x36d);
-        if (st == 0) {
-            func_ov002_020f897c(c);
-        } else if (st == 4 && _ZNK10dBgCh_Actr8IsOnWallEv(c + 0x144) == 0) {
-            func_ov002_020f88ec(c);
+    if (mDistanceFlown > mMaxDistance
+        || _ZNK10dBgCh_Actr8IsOnWallEv(&mWithMeshClsn) != 0
+        || _ZNK10dBgCh_Actr12TouchesWaterEv(&mWithMeshClsn) != 0) {
+        u8 variant = mVariant;
+        if (variant == VARIANT_DROPS_ITEM) {
+            func_ov002_020f897c(this);
+        } else if (variant == VARIANT_COIN_DROP && _ZNK10dBgCh_Actr8IsOnWallEv(&mWithMeshClsn) == 0) {
+            func_ov002_020f88ec((char*)this);
         }
         {
-            int x = *(int*)(c + 0x5c);
-            v3.x = x;
-            v3.y = *(int*)(c + 0x60);
-            v3.z = *(int*)(c + 0x64);
-            if (*(u8*)(c + 0x36e) != 0)
-                v3.x = x * (u32)-1;
-            v3.y += 0x50000;
-            ((int*)&w3)[0] = ((int*)&v3)[0];
-            ((int*)&w3)[1] = ((int*)&v3)[1];
-            ((int*)&w3)[2] = ((int*)&v3)[2];
-            _ZN8dActor_c19DisappearPoofDustAtERK7Vector3(c, &w3);
+            int x = mPosX;
+            dustPos3.x = x;
+            dustPos3.y = mPosY;
+            dustPos3.z = mPosZ;
+            if (mMirrored != 0)
+                dustPos3.x = x * (u32)-1;
+            dustPos3.y += 0x50000;
+            ((int*)&dustArg3)[0] = ((int*)&dustPos3)[0];
+            ((int*)&dustArg3)[1] = ((int*)&dustPos3)[1];
+            ((int*)&dustArg3)[2] = ((int*)&dustPos3)[2];
+            _ZN8dActor_c19DisappearPoofDustAtERK7Vector3(this, &dustArg3);
         }
-        if (*(u8*)(c + 0x36d) == 4)
-            func_02012694(0x157, c + 0x74);
-        _ZN7fBase_c18MarkForDestructionEv(c);
+        if (mVariant == VARIANT_COIN_DROP)
+            func_02012694(0x157, &mCamSpacePosX);
+        _ZN7fBase_c18MarkForDestructionEv(this);
     }
 
-    *(u16*)(((int)c + 0x100)) += 1;
-    func_ov002_020f8b24(c);
+    /* The ROM loads this halfword unsigned, so not the s16 mStateTimer += 1. */
+    *(u16*)&mStateTimer += 1;
+    func_ov002_020f8b24(this);
     return 1;
 }
 
@@ -381,15 +448,15 @@ int daFPknBall_c::InitResources()
     _ZN10dBgCh_Actr19StartDetectingWaterEv((char*)&mWithMeshClsn);
     mStateTimer = 0;
     unk_36a = 0;
-    unk_360 = 0;
-    unk_364 = 0x5dc000;
-    unk_36d = param1 & 7;
-    unk_370 = 0;
-    unk_374 = 0;
+    mDistanceFlown = 0;
+    mMaxDistance = 0x5dc000;
+    mVariant = param1 & 7;
+    mTrailEffect = 0;
+    mSparkEffect = 0;
     {
-        unsigned char v = unk_36d;
-        if (v != 0 && v != 4) {
-            *(unsigned int*)(((int)((char*)&mdCcAc_c.vulnFlags))) |= 0x8000;
+        unsigned char v = mVariant;
+        if (v != VARIANT_DROPS_ITEM && v != VARIANT_COIN_DROP) {
+            mdCcAc_c.vulnFlags |= 0x8000;
         }
     }
     return 1;
@@ -397,8 +464,8 @@ int daFPknBall_c::InitResources()
 
 // @symbol _ZN12daFPknBall_c13OnYoshiTryEatEv
 s32 daFPknBall_c::OnYoshiTryEat() {
-    unsigned char b = unk_36d;
-    if (b != 0 && b != 4)
+    unsigned char b = mVariant;
+    if (b != VARIANT_DROPS_ITEM && b != VARIANT_COIN_DROP)
         return 5;
     return 0;
 }
