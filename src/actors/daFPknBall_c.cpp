@@ -132,15 +132,16 @@ daFPknBall_c::~daFPknBall_c()
 /* Roll 0..9; on 0..3 spawn a coin (actor 288) at the ball's position and zero
  * its velocity words. Called when a variant-4 ball ends by range or water. */
 extern "C" {
-void func_ov002_020f88ec(char* c)
+void func_ov002_020f88ec(char* self)
 {
-    char* coin;
+    daFPknBall_c* ball = (daFPknBall_c*)self;
+    dActor_c* coin;
     if (((unsigned int)RandomIntInternal(&data_0209e650) >> 0x10) % 10 >= 4) return;
-    coin = _ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(ACTOR_COIN, 0, c + 0x5c, 0, *(signed char*)(c + 0xcc), -1);
+    coin = dActor_c::Spawn(ACTOR_COIN, 0, *(Vector3*)&ball->mPosX, 0, ball->mAreaId, -1);
     if (coin != 0) {
-        *(int*)(coin + 0xa4) = 0;
-        *(int*)(coin + 0xa8) = 0;
-        *(int*)(coin + 0xac) = 0;
+        coin->unk_0a4 = 0;
+        coin->mVertSpeed = 0;
+        coin->unk_0ac = 0;
     }
 }
 }
@@ -154,16 +155,16 @@ void func_ov002_020f88ec(char* c)
 extern "C" {
 void func_ov002_020f897c(void* self)
 {
-    char* ball = (char*)self;
+    daFPknBall_c* ball = (daFPknBall_c*)self;
     u8 roll = (u8)(((u32)RandomIntInternal(&data_0209e650) >> 0x10) % 10);
     if (roll >= 4) {
-        if (_ZN8dActor_c18ClosestWithActorIDEj(ball, ACTOR_FPAKUN_BALL) != 0) return;
+        if (ball->ClosestWithActorID(ACTOR_FPAKUN_BALL) != 0) return;
     }
     {
-        void* player = _ZN8dActor_c13ClosestPlayerEv(ball);
+        Player* player = ball->ClosestPlayer();
         char* koopa;
-        if (player != 0 && *(int*)((char*)player + 8) == 3 &&
-            (koopa = (char*)_ZN8dActor_c15FindWithActorIDEjPS_(ACTOR_KOOPA, 0)) != 0 &&
+        if (player != 0 && player->param1 == 3 &&
+            (koopa = (char*)dActor_c::FindWithActorID(ACTOR_KOOPA, 0)) != 0 &&
             *(u8*)(koopa + 0x42b) == 0) {
             int c;
             int idx;
@@ -176,9 +177,9 @@ void func_ov002_020f897c(void* self)
             do {
                 idx = ((u32)RandomIntInternal(&data_0209e650) >> 0x10) % 3;
             } while ((unlocked & (1 << idx)) == 0);
-            if (_ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(ACTOR_OBJ_MARIO_CAP, (idx << 8) | 0xb,
-                    (struct Vector3*)(ball + 0x5c), (struct Vector3_16*)(ball + 0x8c),
-                    *(s8*)(ball + 0xcc), -1) != 0) {
+            if (dActor_c::Spawn(ACTOR_OBJ_MARIO_CAP, (idx << 8) | 0xb,
+                    *(Vector3*)&ball->mPosX, (Vector3_16*)&ball->mAngleX,
+                    ball->mAreaId, -1) != 0) {
                 *(u8*)(koopa + 0x42b) = 1;
                 return;
             }
@@ -186,12 +187,12 @@ void func_ov002_020f897c(void* self)
     }
     if (roll >= 4) return;
     {
-        void* coin = _ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(ACTOR_COIN, 0,
-            (struct Vector3*)(ball + 0x5c), 0, *(s8*)(ball + 0xcc), -1);
+        dActor_c* coin = dActor_c::Spawn(ACTOR_COIN, 0,
+            *(Vector3*)&ball->mPosX, 0, ball->mAreaId, -1);
         if (coin != 0) {
-            *(int*)((char*)coin + 0xa4) = 0;
-            *(int*)((char*)coin + 0xa8) = 0;
-            *(int*)((char*)coin + 0xac) = 0;
+            coin->unk_0a4 = 0;
+            coin->mVertSpeed = 0;
+            coin->unk_0ac = 0;
         }
     }
 }
