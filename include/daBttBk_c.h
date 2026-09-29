@@ -60,8 +60,10 @@ struct daBttBk_c : dActor_c {
        class's own destructor's D1 call at +0x180.
        [daBttBk_c_classInit in src/d_a_btt_bk.c; D0] */
     dBgCh_Actr mWithMeshClsn;            /* 0x180 */
-    u8  pad_33c[0x38];
-    s32 unk_374;            /* 0x374 */
+    u8  mShadowMtx[0x30];   /* 0x33c -- Matrix4x3 for the drop shadow (func_ov080_02124c3c) */
+    char *mStateRow;        /* 0x36c -- current row of the state table */
+    s32 mState;             /* 0x370 -- index stored by each state's enter function */
+    dActor_c *mCarrier;     /* 0x374 -- the actor this crate rides, or null */
 
     virtual ~daBttBk_c();            /* slots 16 (D1), 17 (D0) */
 
