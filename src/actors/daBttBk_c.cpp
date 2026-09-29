@@ -134,8 +134,8 @@ extern "C" void func_ov080_02124acc(char *c)
     if (other == 0) return;
     int isId0xbf = (int)(other->actorID == 0xbf);
     if (isId0xbf == 0) return;
-    int hasBit17 = (int)((self->mFlags & 0x20000) != 0);
-    if (hasBit17) { func_ov080_0212513c((char *)self, 2); return; }
+    int inYoshiMouthA = (int)((self->mFlags & 0x20000) != 0);
+    if (inYoshiMouthA) { func_ov080_0212513c((char *)self, 2); return; }
     if ((self->mdCcAc_c.hitFlags & 0x10) == 0) return;
     ((Player *)other)->IncMegaKillCount();
     Vector3 v; Vector3 v2; Vector3 v3;
@@ -168,8 +168,8 @@ extern "C" void func_ov080_02124c3c(daBttBk_c *self)
     Vector3 t;
     Vector3 pos;
     int flags = self->mFlags;
-    int hasBit18 = (flags & 0x40000) != 0;
-    if (hasBit18 != false) return;
+    int inYoshiMouthB = (flags & 0x40000) != 0;
+    if (inYoshiMouthB != false) return;
     dActor_c *carrier = self->mCarrier;
     if (carrier != 0) {
         int hasBit14 = (flags & 0x4000) != 0;
@@ -224,10 +224,10 @@ extern "C" void func_ov080_02124c3c(daBttBk_c *self)
 extern "C" int func_ov080_02124e60(daBttBk_c *self)
 {
     int flags = self->mFlags;
-    int hasBit17 = (flags & 0x20000) ? 1 : 0;
-    if (hasBit17 != 0) goto done;
-    int hasBit18 = (flags & 0x40000) ? 1 : 0;
-    if (hasBit18 != 0) goto done;
+    int inYoshiMouthA = (flags & 0x20000) ? 1 : 0;
+    if (inYoshiMouthA != 0) goto done;
+    int inYoshiMouthB = (flags & 0x40000) ? 1 : 0;
+    if (inYoshiMouthB != 0) goto done;
     *(int *)self->pad_0d0 = 0;
     ((Fn2513c1)func_ov080_0212513c)((char *)self);
 done:

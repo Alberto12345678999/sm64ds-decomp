@@ -14,8 +14,8 @@
  * - ModelAnim::SetAnim is called by its mangled name and the ModelAnim/
  *   Animation views are reached by cast: both take Fix12<int> by value (see
  *   notes/mwccarm-codegen.md 6az).
- * - Offsets 0xa4, 0xac (dActor_c padding) and 0xe8 (inside the Model's
- *   ModelComponents) are still read raw; no member covers them.
+ * - Offsets 0xa4, 0xac (dActor_c's unk_0a4 / unk_0ac) and 0xe8 (inside the
+ *   Model's ModelComponents) are still read raw, through words[] and a cast.
  */
 #include "common.h"
 #include "daPeach_c.h"
@@ -152,7 +152,7 @@ void daPeach_c::UpdateLookAt()
  * the copy and uses nothing of it. */
 void daPeach_c::UpdateGroundCollision(dBgCh_Actr *clsn)
 {
-    int *words = (int *)this;    /* 0xa4 and 0xac are dActor_c padding */
+    int *words = (int *)this;    /* 0xa4 and 0xac are dActor_c's unk_0a4 / unk_0ac */
     int floorN[3];
     int wallN[3];
     dBgCh_Actr_UpdateContinuous_Veneer(clsn);

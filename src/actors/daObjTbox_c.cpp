@@ -48,6 +48,8 @@
  * - data_ov064_0211c98c, the three PMF pairs, and the four SharedFilePtr
  *   handles are overlay data this TU consumes and does not own.
  * - The "// address (size)" line above each definition is its ROM location.
+ * - The sixteen one-function sources this TU consolidates are recorded, with
+ *   their retired paths, in its manifest entry.
  *
  * ROM address order:
  *   [ 0] 0x0211a200  _ZN11daObjTbox_cD1Ev
@@ -173,7 +175,7 @@ int daObjTbox_c::Render()
 
 // 0x0211a77c (0x48)
 // @symbol _ZN11daObjTbox_c16CleanupResourcesEv
-/* Four releases, and the split is the finding: two handles live in this
+/* Four releases: two handles live in this
  * overlay and two in ov002, borrowed from the always-resident module. The
  * ROM's order is own-first, borrowed-after. */
 int daObjTbox_c::CleanupResources()

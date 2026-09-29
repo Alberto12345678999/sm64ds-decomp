@@ -30,7 +30,7 @@
  * Known limits:
  * - The Particle::System, Sound::PlayLong, dCcPos_c::Init and Player::BlowAway /
  *   HasFinishedTalking calls keep their mangled names; Fix12<int> arguments are
- *   passed by value (mwccarm 6az wall), and byte gates cannot see a wrong link.
+ *   passed by value (mwccarm 6az wall); match.py wildcards these relocations.
  * - SnowmanBreathParticle is a coined name (no ROM type string).
  * - mInvModelMat stays flat words: a Matrix4x3 member reorders the destructors.
  * - IsPlayerInRange keeps its goto chain: folding the six range tests into one ||

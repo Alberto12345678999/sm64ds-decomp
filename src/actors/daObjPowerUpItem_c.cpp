@@ -62,7 +62,9 @@ enum {
 };
 
 /* The life timer never runs for a flower with this param1 (see
- * func_ov002_020b91fc); InitResources starts it in FLOWER_STATE_RESTING. */
+ * func_ov002_020b91fc). InitResources starts such a flower resting only when
+ * the closest player is Luigi and SaveData::HasPlayerLostCap is false;
+ * otherwise it returns 0. */
 #define FLOWER_PARAM_PERSISTENT 0xffff
 
 /* Actor IDs from symbols/actor_debug_names.tsv. */
@@ -453,7 +455,7 @@ int daObjPowerUpItem_c::Render()
 {
   int f = (int)((mFlags & 0x40000) != 0);
   if (f != 0) return 1;
-  /* blinks through the last 44 ticks of mLifeTimer */
+  /* blinks while mLifeTimer is below 0x2d */
   unsigned char st = mLifeTimer;
   if (st < 0x2d && (st & 1)) return 1;
   switch (mState) {

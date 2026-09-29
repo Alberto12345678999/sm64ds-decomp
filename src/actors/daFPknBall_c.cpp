@@ -21,10 +21,12 @@
  *   SaveData::IsCharacterUnlocked, func_02012694 and func_ov002_020ad660
  *   have no declaration in a header.
  * - The file-local POD Vec3F is not types.h's Vector3, which is not a POD;
- *   the struct copies in Behavior only come out right with the POD.
+ *   the struct copies in Behavior are kept on the POD spelling from the
+ *   byte-matching recovery. The choice is per function; re-measure before
+ *   assuming it applies elsewhere.
  * - The Bool enum and the volatile sparkPos are codegen scaffolding that
- *   Behavior needs (measured: removing the Bool enum from the mouth-flag
- *   tests broke the link verification). They mean nothing to the reader.
+ *   Behavior needs, kept from the byte-matching recovery and not re-measured
+ *   in this pass. They mean nothing to the reader.
  * - Behavior adds dActor_c virtual slot 29 (the header calls it
  *   OnAimedAtWithEgg) to the spark's Y. That name does not fit this use, so
  *   the call goes through the local Obj table.
@@ -249,8 +251,8 @@ int daFPknBall_c::Render()
 // @symbol _ZN12daFPknBall_c8BehaviorEv
 /* _ZN12daFPknBall_c8BehaviorEv at 0x020f8c94.
  *
- * Order of business: while Yoshi has the ball in his mouth (either mouth
- * flag) only the visuals run. Then the clsn result: 2 puffs into dust, any
+ * Order of business: with the first Yoshi-mouth flag set only the visuals run;
+ * with the second nothing runs. Then the clsn result: 2 puffs into dust, any
  * other non-zero result just refreshes the visuals. Then aim (at the closest
  * player unless the variant is 3), handle whatever hit the collider, steer,
  * move, and die on range, wall or water.

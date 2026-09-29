@@ -175,7 +175,7 @@ int func_ov064_02117bdc(void *c)
 
 // @symbol func_ov064_02117c24
 /* State 0, waiting: while the player is on the lift, count frames (Behavior
- * does the counting); after 20 of them, or at once if auto-run, turn toward
+ * does the counting); once more than 20 have counted, or at once if auto-run, turn toward
  * the next node and start walking forward. With nobody on it the counter
  * is held at 0. */
 extern "C" {

@@ -21,7 +21,8 @@
  *    count at +0xd6 stays a raw offset.
  *  - Several bodies keep `(int)ptr + off`, `(long long)` and LAUNDER-style
  *    casts and mangled `_ZN` callee names from the byte-matching recovery;
- *    they were not retried as plain member expressions.
+ *    they were not retried as plain member expressions;
+ *    the one place this was measured is noted in InitResources.
  */
 
 #pragma defer_codegen off
@@ -398,7 +399,7 @@ void func_ov002_020b1674(char *coinArg, char *playerArg)
 /* Red coin picked up: plays bank-3 sound 0x11 (0x12 for a swimming player),
  * gives 2 coins and 0x200 health. For a coin with a spawn filter of 1..7 it
  * also counts the red coin, puts up the running total as a score popup and plays
- * sound 0x2f + total. When the eighth is collected it spawns a STAR (0xb2) 480
+ * sound 0x2f + total. When the eighth is collected it spawns a STAR (0xb2) 120
  * units above the coin's STARBASE and hands that marker over to the star. */
 // @symbol func_ov002_020b16c4
 #define LAUNDER(p) ((int)(p))
@@ -598,11 +599,11 @@ void func_ov002_020b1a60(daCoin_c *coin)
 }
 
 /* Handler that launches the coin when the player comes near: with no bounces
- * yet, and the closest player within 600 units (300 in level 0xb), it takes
+ * yet, and the closest player within 1200 units (600 in level 0xb), it takes
  * the player's horizontal speed (clamped to 20..40 units, doubled in level
  * 0xb) as its own, gets an upward speed of 20 units, counts one bounce, enables
- * limited movement and sets the disappear timer to 0x1c2. It then plays sound
- * 0x52 on a first landing on an ordinary floor. */
+ * limited movement and sets the disappear timer to 0x1c2. On any landing on a
+ * floor without surface flag 0x20 it plays sound 0x52 and hops (0x19000). */
 // @symbol func_ov002_020b1ad4
 extern "C" {
 void func_ov002_020b1ad4(daCoin_c *coin)
@@ -915,7 +916,7 @@ int daCoin_c::Render()
     inYoshiMouth = (flags & 0x40000) != 0;
     if (inYoshiMouth) return 1;
     {
-        /* blinks during the last 44 ticks of the disappear timer */
+        /* blinks while the disappear timer is below 0x2d */
         unsigned short timer = mDisappearTimer;
         if (timer < 0x2d && (timer & 1)) return 1;
     }
@@ -998,8 +999,10 @@ s32 daCoin_c::InitResources()
      * the two models, the shadow cylinder, the actor collider and the mesh
      * collider, then sets the disappear and no-collision timers.
      *
-     * Raw offsets kept (not retried as members):
-     *  - mCoinFlags is read-modify-written as `*(u8*)((int)this + 0x3ae)`.
+     * Raw offsets kept:
+     *  - Every read-modify-write of mCoinFlags is spelled
+     *    `*(u8*)((int)this + 0x3ae)`; spelled as the member, InitResources
+     *    changes size (measured). The launder is per site, not per field.
      *  - `*(s32*)((int)this + 0x190) |= 1` sets flags bit 0 of mdCc_c
      *    (dCc_c::flags at +0x18 of the sub-object at 0x178).
      *

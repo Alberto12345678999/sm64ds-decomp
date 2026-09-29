@@ -23,12 +23,12 @@
  * and dEnemyBase_c's own 0x110 closes exactly on the first of them.
  *
  * Typing them absorbed four markers that were their insides:
- *   - flags = mdCcAcPos_c.flags  (dCc_c +0x18)
+ *   - unk_128 = mdCcAcPos_c.flags  (dCc_c +0x18)
  *   - mAnimation = the ModelAnim's Animation base (+0x50)
- *   - currFrame = that Animation's frame count; Behavior reads it as `>> 12`,
- *     the integer frame of a 20.12 fixed-point count
- *   - speed = that Animation's speed; Behavior copies mAnimSpeed into it, and
- *     InitResources sets mAnimSpeed to 0x1000, which is 1.0
+ *   - unk_364 = that Animation's currFrame (+0x08); Behavior reads it as
+ *     `>> 12`, the integer frame of a 20.12 fixed-point count
+ *   - unk_368 = that Animation's speed (+0x0c); Behavior copies mAnimSpeed
+ *     into it, and InitResources sets mAnimSpeed to 0x1000, which is 1.0
  *
  * Size is the ROM's own, not a rounded-up field span: `daOwl_c_classInit`
  * calls `fBase_c::operator new(1016)` -- 0x3f8 -- and stores `_ZTV7daOwl_c`.

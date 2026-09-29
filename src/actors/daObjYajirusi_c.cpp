@@ -168,8 +168,7 @@ void daObjYajirusi_c::OnHitByMegaChar(Player &player)
 // 0x02137d40 (0x40)
 // @symbol _ZN15daObjYajirusi_c11OnAttacked1ER8dActor_c
 /* Vtable slot identity: Kill() is slot 31. The other actor's actorID (offset
- * 0xc) has no public C++ name on dActor_c, so it stays a raw read, as in the
- * sibling overrides that read another actor's fields. */
+ * 0xc) is read raw, as found. */
 int daObjYajirusi_c::OnAttacked1(dActor_c &other)
 {
     unsigned r = (*(unsigned short*)((char*)&other + 0xc) == 0xce) ? 1u : 0u;

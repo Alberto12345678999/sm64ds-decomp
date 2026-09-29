@@ -224,8 +224,8 @@ extern "C" int func_ov094_021358b4(void *t)
 }
 
 // @symbol func_ov094_0213598c
-/* Enter of the return state: restart the fade and play the second clip at
- * double speed. */
+/* Enter of the return state: restart the fade and play the animation
+ * data_ov094_02136af8[1] at double speed. */
 extern "C" int func_ov094_0213598c(char *c)
 {
     daOwl_c *owl = (daOwl_c *)c;
@@ -237,8 +237,8 @@ extern "C" int func_ov094_0213598c(char *c)
 }
 
 // @symbol func_ov094_021359d8
-/* Main of the carry state. Starts a long sound on the first frame, makes a
- * one-shot call (id 0x139) once per animation loop, levels the pitch, and
+/* Main of the carry state. Once the 30-frame timer has run out it keeps
+ * sound 0x18c playing, plays sound 0x139 once per animation loop, levels the pitch, and
  * hands the rider back (to the return state) when the rider lets go, is lost,
  * or the owl hits a wall. */
 extern "C" int func_ov094_021359d8(void *thiz)
@@ -304,7 +304,7 @@ end:
 }
 
 // @symbol func_ov094_02135bd4
-/* Enter of the carry state: 30-frame timer, second clip at double speed. */
+/* Enter of the carry state: 30-frame timer, animation data_ov094_02136af8[1] at double speed. */
 extern "C" int func_ov094_02135bd4(void *c)
 {
     daOwl_c *owl = (daOwl_c *)c;
@@ -381,7 +381,7 @@ extern "C" int func_ov094_02135c28(void *thiz)
 }
 
 // @symbol func_ov094_02135e64
-/* Enter of the hover state: first clip at normal speed, random heading and a
+/* Enter of the hover state: animation data_ov094_02136af0[1] at normal speed, random heading and a
  * 50..113 frame wander timer. */
 extern "C" int func_ov094_02135e64(char *c)
 {
@@ -424,7 +424,7 @@ extern "C" int func_ov094_02135ee0(void *self)
 }
 
 // @symbol func_ov094_02135fe0
-/* Enter of the talk state: stop, and play the first clip. */
+/* Enter of the talk state: stop, and play the animation data_ov094_02136af0[1]. */
 extern "C" int func_ov094_02135fe0(char *c)
 {
     daOwl_c *owl = (daOwl_c *)c;
@@ -482,7 +482,7 @@ extern "C" int func_ov094_02136024(char *c)
 }
 
 // @symbol func_ov094_02136150
-/* Enter of the dormant state: second animation file (data_ov094_02136af0 + 4). */
+/* Enter of the dormant state: animation data_ov094_02136af0[1]. */
 extern "C" int func_ov094_02136150(char *c)
 {
     daOwl_c *owl = (daOwl_c *)c;

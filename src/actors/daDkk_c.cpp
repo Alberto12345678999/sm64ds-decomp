@@ -20,7 +20,7 @@
  *   keep their (int)this + 0x39e integer-cast form: the named stores CSE.
  * - func_ov091_* are shared daDsnBase leaf helpers; data_ov025_02113814 is
  *   the file-table handle.
- * - Leaf operator new(unsigned long) until fBase_c's own lands.
+ * - Leaf operator new(unsigned long): fBase_c declares none yet.
  * - g_profile_DONKAKU stays overlay data (not this TU).
  * - func_0201267c stays a free function.
  */

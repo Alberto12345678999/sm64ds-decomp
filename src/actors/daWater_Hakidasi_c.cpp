@@ -1,12 +1,13 @@
 //cpp
-/* daWater_Hakidasi_c: a water jet (registry profile WATER_HAKIDASI, ov064).
+/* daWater_Hakidasi_c: a water spout that spawns WATER_RING actors (registry profile
+ * WATER_HAKIDASI, ov064).
  * 11 functions, .text 0x02119330..0x02119a18.
  *
  * ROM evidence: _ZTS18daWater_Hakidasi_c is "18daWater_Hakidasi_c" at ov064
  * 0x0211c2f8; _ZTI at 0x0211c2ec reads [__si_class_type_info, that string,
  * _ZTI12dEnemyBase_c]. The vtable's address point is 0x0211c334; the word
  * before it is that _ZTI. The tree previously called the class JetStream
- * (coined).
+ * (coined; the actors it spawns are WATER_RINGs, not jets).
  *
  * The out-of-line destructor is the key function, so this TU emits _ZTV/_ZTI/
  * _ZTS. Under `#pragma defer_codegen off` it comes out D1 (0x02119330), D0
@@ -24,7 +25,7 @@
  *   `m1 = -1` as found; they were needed to match.
  * - The player is read through raw offsets (0x5c..0x64 position, 0x6f9
  *   Player::mIsMetal); Player.h is not pulled into this TU.
- * - The spawned jet's fields at 0xa4, 0xac and 0x38c have no member yet.
+ * - The spawned ring's fields at 0xa4, 0xac and 0x38c have no member yet.
  * - Particle::System::New and dCcAc_c::Init stay mangled extern "C" calls,
  *   with Fix12<int> spelled as int (see InitResources).
  */
@@ -79,10 +80,10 @@ daWater_Hakidasi_c::~daWater_Hakidasi_c()
 }
 
 /* Per-frame update. Moves a non-metal player's position while within
- * 0x3e8000 of the jet, spawns actor 0xf4 every 0x50 frames (recording its
- * uniqueID in the mSpawnedIDs ring), and counts hits reported in mHitActor
- * against that ring. At a count of 5 it waits 0x1e frames, spawns actor 0xb2
- * and sets mHitCount to 0xa. */
+ * 0x3e8000 of the spout, spawns a WATER_RING (actor 0xf4) every 0x50 frames
+ * (recording its uniqueID in the mSpawnedIDs buffer), and counts the rings the
+ * player passes, as reported in mPassedRing, in spawn order. At a count of 5 it
+ * waits 0x1e frames, spawns a STAR (actor 0xb2) and sets mRingsPassed to 0xa. */
 // @symbol func_ov064_021193b4
 extern "C" {
 int func_ov064_021193b4(daWater_Hakidasi_c *self)
@@ -95,7 +96,7 @@ int func_ov064_021193b4(daWater_Hakidasi_c *self)
     struct Vec3 hitPos2;
     char *player;
     int dist;
-    dActor_c *jet;
+    dActor_c *ring;
     int i;
     dActor_c *hit;
     int uid;
@@ -143,15 +144,15 @@ int func_ov064_021193b4(daWater_Hakidasi_c *self)
         }
         self->mdCcAc_c.Clear();
         self->mdCcAc_c.dCc_c::Update();
-        if (dist > 0x7d0000 && self->mHitCount < 5) {
-            self->mHitCount = 0;
+        if (dist > 0x7d0000 && self->mRingsPassed < 5) {
+            self->mRingsPassed = 0;
         }
     }
 
     if (self->unk_318 == 0) {
         self->mParticle = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
             self->mParticle, 0x138, self->mPosX, self->mPosY, self->mPosZ, 0, 0);
-        if (self->mHitCount < 5) {
+        if (self->mRingsPassed < 5) {
             if (*(u16 *)&self->mStateTimer == 0) {
                 ax = *(volatile u16 *)&self->mAngleX;
                 ay = *(volatile u16 *)&self->mAngleY;
@@ -166,40 +167,40 @@ int func_ov064_021193b4(daWater_Hakidasi_c *self)
                     tx = (s16)(tx + 0x4000);
                     vr->x = (u16)tx;
                 }
-                jet = dActor_c::Spawn(0xf4, 2, *(Vector3 *)&self->mPosX, (Vector3_16 *)&rot, self->mAreaId, -1);
-                if (jet != 0) {
-                    self->mSpawnedIDs[self->mSpawnedHead] = jet->uniqueID;
+                ring = dActor_c::Spawn(0xf4, 2, *(Vector3 *)&self->mPosX, (Vector3_16 *)&rot, self->mAreaId, -1);
+                if (ring != 0) {
+                    self->mSpawnedIDs[self->mSpawnedHead] = ring->uniqueID;
                     headp = (int *)(int)M(&self->mSpawnedHead);
                     *headp = *headp + 1;
                     if (self->mSpawnedHead >= 0x14) {
                         self->mSpawnedHead = 0;
                     }
-                    *(daWater_Hakidasi_c **)((char *)jet + 0x38c) = self;
-                    *(int *)((char *)jet + 0xa4) = 0;
-                    jet->mVertSpeed = 0x5000;
-                    *(int *)((char *)jet + 0xac) = 0;
+                    *(daWater_Hakidasi_c **)((char *)ring + 0x38c) = self;
+                    *(int *)((char *)ring + 0xa4) = 0;
+                    ring->mVertSpeed = 0x5000;
+                    *(int *)((char *)ring + 0xac) = 0;
                 }
                 self->mStateTimer = 0x50;
             }
-            hit = self->mHitActor;
+            hit = self->mPassedRing;
             if (hit != 0) {
-                if (self->mHitCount == 0) {
+                if (self->mRingsPassed == 0) {
                     uid = hit->uniqueID;
 #pragma opt_strength_reduction off
                     for (i = 0; i < 0x14; i++) {
                         u32 slot = self->mSpawnedIDs[i];
                         if (slot == uid) {
                             self->mMatchedSlot = i;
-                            hitsp = (int *)(int)M(&self->mHitCount);
+                            hitsp = (int *)(int)M(&self->mRingsPassed);
                             *hitsp = *hitsp + 1;
                             func_02012790(0x25);
-                            hit = self->mHitActor;
+                            hit = self->mPassedRing;
                             posp = (int *)(int)M(&hit->mPosX);
                             hitPos1.x = posp[0];
                             hitPos1.y = posp[1];
                             hitPos1.z = posp[2];
-                            self->SpawnNumber(*(Vector3 *)&hitPos1, self->mHitCount, 0, 0, 0);
-                            self->mHitActor = 0;
+                            self->SpawnNumber(*(Vector3 *)&hitPos1, self->mRingsPassed, 0, 0, 0);
+                            self->mPassedRing = 0;
                             return 1;
                         }
                     }
@@ -210,30 +211,30 @@ int func_ov064_021193b4(daWater_Hakidasi_c *self)
                         self->mMatchedSlot = 0;
                     }
                     {
-                        uid = self->mHitActor->uniqueID;
+                        uid = self->mPassedRing->uniqueID;
                         i = self->mMatchedSlot;
                         while (1) {
                             u32 slot = self->mSpawnedIDs[i];
                             if (slot == uid) {
-                                hitsp = (int *)(int)M(&self->mHitCount);
+                                hitsp = (int *)(int)M(&self->mRingsPassed);
                                 *hitsp = *hitsp + 1;
                                 func_02012790(0x25);
-                                hit = self->mHitActor;
+                                hit = self->mPassedRing;
                                 posp = (int *)(int)M(&hit->mPosX);
                                 hitPos2.x = posp[0];
                                 hitPos2.y = posp[1];
                                 hitPos2.z = posp[2];
-                                self->SpawnNumber(*(Vector3 *)&hitPos2, self->mHitCount, 0, 0, 0);
-                                self->mHitActor = 0;
+                                self->SpawnNumber(*(Vector3 *)&hitPos2, self->mRingsPassed, 0, 0, 0);
+                                self->mPassedRing = 0;
                                 return 1;
                             }
                             break;
                         }
                     }
                 }
-                self->mHitCount = 0;
+                self->mRingsPassed = 0;
                 self->mMatchedSlot = 0;
-                self->mHitActor = 0;
+                self->mPassedRing = 0;
             }
         }
     } else {
@@ -241,7 +242,7 @@ int func_ov064_021193b4(daWater_Hakidasi_c *self)
             self->mParticle, 0x7b, self->mPosX, self->mPosY, self->mPosZ, 0, 0);
     }
 
-    if (self->mHitCount == 5) {
+    if (self->mRingsPassed == 5) {
         timerp = (int *)(int)M(&self->mRewardTimer);
         rewardPos.x = self->mPosX;
         rewardPos.y = self->mPosY;
@@ -250,7 +251,7 @@ int func_ov064_021193b4(daWater_Hakidasi_c *self)
         *timerp = *timerp + 1;
         if (self->mRewardTimer > 0x1e) {
             dActor_c::Spawn(0xb2, self->unk_314 | 0x40, *(Vector3 *)&rewardPos, (Vector3_16 *)&self->mAngleX, self->mAreaId, -1);
-            self->mHitCount = 0xa;
+            self->mRingsPassed = 0xa;
         }
     }
     return 1;
@@ -263,7 +264,7 @@ int func_ov064_021193b4(daWater_Hakidasi_c *self)
 // @symbol func_ov064_021197fc
 extern "C" int func_ov064_021197fc(daWater_Hakidasi_c *self) {
     int i = 0;
-    self->mHitActor = 0;
+    self->mPassedRing = 0;
     self->mSpawnedHead = i;
     self->mMatchedSlot = i;
     for (int v = i; i < 20; i++) {
@@ -280,7 +281,7 @@ extern "C" void func_ov064_0211987c(void *c)
 {
 }
 
-/* Gives back the two shared files the jet renders from. Both live in ov002,
+/* Gives back the two shared files the spout renders from. Both live in ov002,
  * not in this overlay: the class borrows models the always-resident module
  * owns, so the handles are released rather than freed. */
 // @symbol _ZN18daWater_Hakidasi_c16CleanupResourcesEv

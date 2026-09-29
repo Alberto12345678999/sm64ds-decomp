@@ -4,9 +4,10 @@
 #include "types.h"
 
 /* daFPknBall_c (FPAKUN_BALL, actor 254): the fireball the fire piranha plant
- * (daFPkn_c) spits. It flies straight along its heading for a fixed distance,
- * burns a Player it touches (Player::Burn) and dies in a puff of dust when it
- * runs out of range, hits a wall or touches water.
+ * (daFPkn_c) spits. As daFPkn_c spawns it (variant 3) it keeps its heading
+ * for a fixed distance, where other variants steer toward the closest player.
+ * It burns a Player it touches (Player::Burn) and dies in a puff of dust when
+ * it runs out of range, hits a wall or touches water.
  *
  * Derives from dEnemyBase_c, on the evidence of its own destructor:
  * `_ZN12daFPknBall_cD1Ev` stores this vtable, destroys its members in reverse
