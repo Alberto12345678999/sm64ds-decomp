@@ -15,7 +15,7 @@
  *   _ZN9daBttBk_cD0Ev  the same four members destroyed in reverse,
  *       then ~dActor_c.
  *
- * SIZE 0x378 is the factory's own literal; unk_374 (4 bytes, 0x374) closes
+ * SIZE 0x378 is the factory's own literal; mCarrier (4 bytes, 0x374) closes
  * exactly on it.
  *
  * Everything below 0x0d0 duplicated dActor_c's own fields under placeholder
@@ -27,10 +27,10 @@
  * mWithMeshClsn was mistyped `u8` at 0x180 in the generated header --
  * daBttBk_c_classInit calls _ZN10dBgCh_ActrC1Ev at that offset, so it is the
  * real 0x1bc-byte member (0x180..0x33c). The 0x38 bytes from 0x33c..0x374
- * stay padding here, but src/actors/daBttBk_c.cpp now evidences them: a
- * shadow matrix at 0x33c (func_ov080_02124c3c), the current state-table
- * row at 0x36c and its index at 0x370; unk_374 holds the carrier actor
- * (func_ov080_02124acc stores it, 02124c3c/02124edc read it).
+ * are named from how daBttBk_c.cpp uses them: a shadow matrix at 0x33c
+ * (func_ov080_02124c3c), the current state-table row at 0x36c and its index
+ * at 0x370; mCarrier holds the carrier actor (func_ov080_02124acc stores it,
+ * 02124c3c/02124edc read it).
  *
  * THE VTABLE was diffed slot by slot against _ZTV8dActor_c. daBttBk_c
  * overrides slot 0 (InitResources), slot 3 (CleanupResources), slot 6
