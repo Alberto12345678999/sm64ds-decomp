@@ -1,7 +1,7 @@
 /* class daObjRotateUpdownLift_c : dBgActor_c. Real C++ form.
  *
  * Base and size from the factory
- * (src/d_a_obj_rotate_updown_lift_hs_updown_lift.c):
+ * daObjRotateUpdownLift_c_classInit_HS_UPDOWN_LIFT:
  * fBase_c::operator new(936) -- 0x3a8 -- then dBgActor_c::dBgActor_c(), then
  * stores _ZTV23daObjRotateUpdownLift_c. No intermediate base: one non-base
  * vtable store, matching the D1 destructor below.
