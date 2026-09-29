@@ -14,8 +14,8 @@
  *
  * Known limits:
  * - dBgActor_c::IsClsnInRange, dActor_c::Earthquake and
- *   Particle::System::NewSimple take Fix12<int> by value (notes/mwccarm-
- *   codegen.md 6az), so they stay mangled TU-local externs.
+ *   Particle::System::NewSimple take Fix12<int> by value (see
+ *   notes/mwccarm-codegen.md 6az), so they stay mangled TU-local externs.
  * - The 0x39e / 0x39f accesses in func_ov025_021119a4, 021119f4 and 02111a84
  *   keep their (int)this + 0x39e integer-cast form: the named stores CSE.
  * - func_ov091_* are shared daDsnBase leaf helpers; data_ov025_02113814 is
