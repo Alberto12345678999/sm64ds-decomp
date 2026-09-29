@@ -32,8 +32,7 @@ struct daDpLift_c : dBgActor_c {
     s32 mBasePosX;                    /* 0x370 */
     s32 mBasePosY;                    /* 0x374 */
     s32 mBasePosZ;                    /* 0x378 */
-    /* Ten points, the n-th 0x1cc000 below the lift's spawn position (n = 1..10).
-       Formerly mBulletPositions / mNextBullet. */
+    /* Ten points, the n-th 0x1cc000 below the lift's spawn position (n = 1..10). */
     Vector3 mMarkerPositions[10];     /* 0x37c */
     u16 mShakeTimer;                  /* 0x3f4 */
     u8  mState;                       /* 0x3f6 */

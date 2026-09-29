@@ -27,7 +27,7 @@ struct daObjPile_c : dBgActor_c {
     /* dBgActor_c ends at 0x31e (its own sizeof rounds up to 0x320); these two
        bytes are this class's own, in the base's tail padding -- same reuse
        include/daObjFl_Ring_c.h documents at the same offset. mStepsLeft is
-       read off its uses: InitResources sets 3, each ground pound decrements it,
+       read off its uses: InitResources sets 3, each ordinary ground pound decrements it,
        a mega hit sinks the pile by mStepsLeft steps and zeroes it, and both
        hit handlers ignore the pile at 0. The other names are placeholders:
        offsets, widths and read/write sites are observed from

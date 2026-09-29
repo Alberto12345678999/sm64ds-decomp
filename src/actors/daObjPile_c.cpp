@@ -188,7 +188,8 @@ s32 daObjPile_c::Behavior()
             s16 diff = (s16)(angle - mPrevAngle);
             int val = mAngleDelta;
             int *p;
-            /* A turn of more than 100 units against the running total restarts it. */
+            /* A single-frame angle change of more than 100 against the running
+             * total's direction restarts it. */
             if ((val > 0 && diff < -100) || (val < 0 && diff > 100))
                 mAngleDelta = 0;
             p = &mAngleDelta;

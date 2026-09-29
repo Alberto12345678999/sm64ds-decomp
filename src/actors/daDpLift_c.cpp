@@ -10,9 +10,9 @@
  * cartridge's RTTI spelling: _ZTS at ov025 0x021139a0 is the byte string
  * "10daDpLift_c", and _ZTI at 0x02113994 reads
  * [__si_class_type_info, that string, _ZTI10dBgActor_c]. mHadClsn is set by
- * the collision callback InitResources installs (func_ov025_021125dc): it
- * stores 1 when the other actor's ID is 0xbf, PLAYER in
- * symbols/actor_debug_names.tsv.
+ * the collision callback InitResources installs (func_ov025_021125dc, which
+ * forwards to func_ov025_021125bc): it stores 1 when the other actor's ID is
+ * 0xbf, PLAYER in symbols/actor_debug_names.tsv.
  *
  * The destructor is the key function, declared first in the class header and
  * defined first below, so this TU emits _ZTV10daDpLift_c and the RTTI chain

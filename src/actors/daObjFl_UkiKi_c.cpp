@@ -1,7 +1,7 @@
 //cpp
 /*
  * daObjFl_UkiKi_c: the FL_UKI_KI profile (actor 82), a bobbing platform in
- * Lethal Lava Land (ov022; its files are named FloatingFloorLllBig_*). A
+ * Lethal Lava Land (ov022; the tree names its files FloatingFloorLllBig_*). A
  * dBgActor_c that remembers its spawn height, sets mPosY to that height plus
  * a sine term every frame, and re-syncs the mesh collider when it is in
  * range.
@@ -23,7 +23,9 @@
  * The factory is part of this run: daObjFl_UkiKi_c_classInit at 0x02112350
  * abuts the member run with a zero gap on both sides. ov022's previous
  * function is daObjFl_Ukiyuka_c's classInit ending exactly at 0x02112130, and
- * the next is daObjFl_Fall_Block_cD1Ev starting exactly at 0x02112380. The
+ * the next is daObjFl_Fall_Block_cD1Ev starting exactly at 0x02112380, so the
+ * whole 0x02112130..0x02112380 window is this class's and nothing unlabelled
+ * sits at either edge. The
  * ROM bytes allocate 0x328, call dBgActor_c's ctor and store
  * &_ZTV15daObjFl_UkiKi_c[2] -- exactly what `new daObjFl_UkiKi_c()` compiles
  * to, so the factory is written that way rather than by hand.

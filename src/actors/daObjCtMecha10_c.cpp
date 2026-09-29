@@ -14,7 +14,8 @@
  * it arrives and mStepTimer runs out, the target advances by mAngleYStep and
  * the timer is re-seeded from data_ov035_02111ef4[state][clock setting]. Under
  * clock setting 2 the dwell is re-rolled instead, and every time mDirTimer
- * expires the step flips sign for a randomly chosen span. Setting 3 stops the
+ * expires the step direction is re-picked at random (forward two times in
+ * three, otherwise reversed). Setting 3 stops the
  * cog: the body only keeps the model and collider where the actor is and
  * returns.
  *
@@ -122,7 +123,9 @@ int daObjCtMecha10_c::InitResources()
 /* Clock setting 3 stops the cog: hold position and leave. Otherwise turn
    toward the target, and once there and the dwell has run out, advance the
    target one step and re-seed the dwell. Setting 2 also re-rolls the dwell
-   at random and flips the step's sign whenever mDirTimer expires. */
+   at random and, whenever mDirTimer expires, picks the step's direction at
+   random: forward two times in three for 0x5a..0x10e frames, otherwise
+   reversed for 0x1e frames. */
 int daObjCtMecha10_c::Behavior()
 {
     if (data_0209f2c0[0] == 3) {

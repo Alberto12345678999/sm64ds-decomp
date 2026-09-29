@@ -1,6 +1,7 @@
 //cpp
-/* daKpa2Bg_c -- KOOPA2BG, a dBgActor_c in ov060 that spins its model and moving
- * mesh collider about all three axes. The class name is the ROM's own RTTI
+/* daKpa2Bg_c -- KOOPA2BG, a dBgActor_c in ov060 that adds mAngleX/Y/ZSpeed to its
+ * angles every frame (InitResources zeroes the speeds). The model matrix
+ * follows the X and Z angles; the moving mesh collider follows all three. The class name is the ROM's own RTTI
  * spelling (evidence in include/daKpa2Bg_c.h).
  *
  * ROM span 0x02117980..0x02117cdc: D1 through InitResources, nine functions in
@@ -13,7 +14,7 @@
  *   form, and the class header alone reaches the .r/.t spelling, which
  *   inflates func_ov060_02117a64 and func_ov060_02117ae0.
  * - The three helpers keep their ROM-address names and take a char *self;
- *   giving them the class type is a symbol rename this TU does not own.
+ *   making them members would rename their symbols, which is not done here.
  * - Behavior keeps the rematerialised angle pointers, see the comment there.
  * - dBgW_KcMbg::SetFile stays a mangled bridge.
  */

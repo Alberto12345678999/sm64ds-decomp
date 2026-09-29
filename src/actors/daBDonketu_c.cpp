@@ -150,8 +150,7 @@ int daBDonketu_c::Behavior()
         UpdateWMClsn(mWithMeshClsn, 0);
         if (mWithMeshClsn.IsOnGround() != 0) {
             func_0200fa8c(this, 0);
-            /* Through a pointer: the plain member increment comes out three
-               words short of the ROM. */
+            /* Kept as the ROM-matching spelling: a pointer increment. */
             u8 *count = &mNumBulliesKilled;
             *count = *count + 1;
         }

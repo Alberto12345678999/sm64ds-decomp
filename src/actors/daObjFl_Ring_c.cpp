@@ -3,9 +3,9 @@
  * 6 function(s), .text 0x021111a0..0x02111558.
  *
  * FL_RING, the fire ring of Lethal Lava Land (ov022): a dBgActor_c that turns
- * about Y at a rate kept in its own Z channel (mPrevAngleZ). It rests at
- * -0x100 per frame; a trigger slows it to 0 and holds it there while a 0x96
- * frame cooldown runs, during which it spawns actor 0xf3 (OBJ_VOLCANO_CANNON,
+ * about Y at a rate kept in its own Z channel (mPrevAngleZ). It starts at
+ * -0x100 per frame (or the placement's Z angle); a trigger
+ * slows it to 0 and holds it there while a 0x96 frame cooldown runs, during which it spawns actor 0xf3 (OBJ_VOLCANO_CANNON,
  * daObj_volcanoCannon_c) whenever it is on screen and its spawn guard has run
  * down. Then the rate returns to -0x100.
  *
