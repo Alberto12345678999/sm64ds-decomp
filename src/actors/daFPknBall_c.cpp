@@ -110,13 +110,8 @@ s16 Vec3_HorzAngle(const void* a, const void* b);
 void* _ZN8dActor_c10FindWithIDEj(u32 id);
 void _ZN5Sound9PlayBank0EjRK7Vector3(u32 id, const void* pos);
 void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(u32 id, s32 x, s32 y, s32 z);
-void _ZN5dCc_c5ClearEv(void* self);
-void _ZN5dCc_c6UpdateEv(void* self);
-void _ZN6Player4BurnEv(void* self);
 void func_02012694(u32 id, const void* v);
-void _ZN7fBase_c18MarkForDestructionEv(void* self);
 void dBgCh_Actr_UpdateContinuous_Veneer(void* p);
-int _ZNK10dBgCh_Actr8IsOnWallEv(void* self);
 int _ZNK10dBgCh_Actr12TouchesWaterEv(void* self);
 void func_ov002_020f897c(void* self);
 void func_ov002_020f88ec(char* self);
@@ -124,7 +119,6 @@ extern s16 data_02082214[];
 extern int _ZN11ShadowModel12InitCylinderEv(void* thiz);
 extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void* thiz, void* actor, int fix12, int t, unsigned int a, unsigned int b);
 extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void* thiz, void* actor, int fix12, int t, void* vec, int last);
-extern void _ZN10dBgCh_Actr19StartDetectingWaterEv(void* thiz);
 }
 
 // @symbol _ZN12daFPknBall_cD1Ev
@@ -313,7 +307,7 @@ int daFPknBall_c::Behavior() {
         return 1;
     }
 
-    mTargetPlayer = (Player*)_ZN8dActor_c13ClosestPlayerEv(this);
+    mTargetPlayer = ClosestPlayer();
     if (mTargetPlayer != 0 && mVariant != VARIANT_KEEPS_HEADING) {
         mTargetAngleY = Vec3_HorzAngle(&mPosX, &mTargetPlayer->mPosX);
     } else {
@@ -354,13 +348,13 @@ int daFPknBall_c::Behavior() {
                     }
                     _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x44, sparkPos.x, sparkPos.y, sparkPos.z);
                     func_ov002_020f8b24(this);
-                    _ZN5dCc_c5ClearEv(&mdCcAc_c);
+                    mdCcAc_c.Clear();
                     return 1;
                 }
                 {
                     enum Bool hitPlayer = (enum Bool)(((Player*)hitActor)->actorID == ACTOR_PLAYER);
                     if (hitPlayer != FALSE && ((Player*)hitActor)->mIsMetal == 0 && ((Player*)hitActor)->mIsVanish == 0) {
-                        _ZN6Player4BurnEv(hitActor);
+                        ((Player*)hitActor)->Burn();
                         {
                             int x = mPosX;
                             dustPos2.x = x;
@@ -376,7 +370,7 @@ int daFPknBall_c::Behavior() {
                         }
                         if (mVariant == VARIANT_COIN_DROP)
                             func_02012694(0x157, &mCamSpacePosX);
-                        _ZN7fBase_c18MarkForDestructionEv(this);
+                        MarkForDestruction();
                     }
                 }
             }
@@ -401,17 +395,17 @@ int daFPknBall_c::Behavior() {
     mPosY += mVertSpeed;
     mPosZ += unk_0ac;
 
-    _ZN5dCc_c5ClearEv(&mdCcAc_c);
-    _ZN5dCc_c6UpdateEv(&mdCcAc_c);
+    mdCcAc_c.Clear();
+    mdCcAc_c.Update();
     mDistanceFlown += mHorzSpeed;
 
     if (mDistanceFlown > mMaxDistance
-        || _ZNK10dBgCh_Actr8IsOnWallEv(&mWithMeshClsn) != 0
+        || mWithMeshClsn.IsOnWall() != 0
         || _ZNK10dBgCh_Actr12TouchesWaterEv(&mWithMeshClsn) != 0) {
         u8 variant = mVariant;
         if (variant == VARIANT_DROPS_ITEM) {
             func_ov002_020f897c(this);
-        } else if (variant == VARIANT_COIN_DROP && _ZNK10dBgCh_Actr8IsOnWallEv(&mWithMeshClsn) == 0) {
+        } else if (variant == VARIANT_COIN_DROP && mWithMeshClsn.IsOnWall() == 0) {
             func_ov002_020f88ec((char*)this);
         }
         {
@@ -429,7 +423,7 @@ int daFPknBall_c::Behavior() {
         }
         if (mVariant == VARIANT_COIN_DROP)
             func_02012694(0x157, &mCamSpacePosX);
-        _ZN7fBase_c18MarkForDestructionEv(this);
+        MarkForDestruction();
     }
 
     /* The ROM loads this halfword unsigned, so not the s16 mStateTimer += 1. */
@@ -445,7 +439,7 @@ int daFPknBall_c::InitResources()
         return 0;
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x28000, 0x50000, 0x200002, 0);
     _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(&mWithMeshClsn, this, 0x32000, 0x32000, 0, 0);
-    _ZN10dBgCh_Actr19StartDetectingWaterEv((char*)&mWithMeshClsn);
+    mWithMeshClsn.StartDetectingWater();
     mStateTimer = 0;
     unk_36a = 0;
     mDistanceFlown = 0;
