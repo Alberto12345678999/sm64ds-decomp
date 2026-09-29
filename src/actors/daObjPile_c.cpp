@@ -148,11 +148,8 @@ void daObjPile_c::OnGroundPounded(dActor_c &other)
         return;
     Sound::PlayBank3(0x62, *(const Vector3 *)&mCamSpacePosX);
     int f = 0;
-    if (other.param1 == 2) goto set;
-    if (((Player &)other).mIsMega == 0) goto done;
-set:
-    f = 1;
-done:
+    if (other.param1 == 2 || ((Player &)other).mIsMega != 0)
+        f = 1;
     func_ov091_021334b8((char *)this, f);
 }
 
@@ -180,13 +177,18 @@ s32 daObjPile_c::Behavior()
     if (mStepsLeft == 3
         && GetBitInDeathTable() == 0
         && player->mPosY < mPosY + 0x64000) {
+        /* The player is less than 100 units above the pile: watch how far it
+           circles the pile, and drop coins once the summed turn passes three
+           full turns (0x30000 in 0x10000-per-turn angle units). */
         int angle = HorzAngleToCPlayer();
         if (DistToCPlayer() > 0x190000) {
+            /* Farther than 400 units away. */
             mAngleDelta = 0;
         } else {
             s16 diff = (s16)(angle - mPrevAngle);
             int val = mAngleDelta;
             int *p;
+            /* A turn of more than 100 units against the running total restarts it. */
             if ((val > 0 && diff < -100) || (val < 0 && diff > 100))
                 mAngleDelta = 0;
             p = &mAngleDelta;
