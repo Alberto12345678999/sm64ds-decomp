@@ -14,20 +14,23 @@
  * the particle helper copies.
  *
  * Known limits:
- * - Callees are still reached by their mangled names. The Particle::System,
- *   dCcAc_c::Init and dBgCh_Actr::Init calls pass Fix12<int> by value; the
- *   dBgCh_Actr veneer and TouchesWater have no declaration in a header. The
- *   rest (Spawn, ClosestPlayer, Sound::PlayBank0, ...) were not tried as
- *   member calls in this pass.
+ * - The Particle::System calls, dCcAc_c::Init, dBgCh_Actr::Init and
+ *   dActor_c::DropShadowRadHeight pass Fix12<int> by value, so they stay
+ *   mangled calls (dActor_c.h notes why such methods are never defined as
+ *   members). The dBgCh_Actr::UpdateContinuous veneer, TouchesWater,
+ *   SaveData::IsCharacterUnlocked, func_02012694 and func_ov002_020ad660
+ *   have no declaration in a header.
  * - The file-local POD Vec3F is not types.h's Vector3, which is not a POD;
  *   the struct copies in Behavior only come out right with the POD.
  * - The Bool enum and the volatile sparkPos are codegen scaffolding that
- *   Behavior needs; they mean nothing to the reader.
+ *   Behavior needs (measured: removing the Bool enum from the mouth-flag
+ *   tests broke the link verification). They mean nothing to the reader.
  * - Behavior adds dActor_c virtual slot 29 (the header calls it
  *   OnAimedAtWithEgg) to the spark's Y. That name does not fit this use, so
  *   the call goes through the local Obj table.
  * - func_ov002_020f897c sets a byte at +0x42b on the actor with ID 279 (0x117)
  *   so a second cap is not dropped; nothing here names that field.
+ * - mStateTimer is incremented through a u16 cast: the ROM loads it unsigned.
  */
 
 #pragma defer_codegen off
@@ -89,11 +92,7 @@ enum {
 
 extern "C" {
 extern int RandomIntInternal(int* seed);
-extern char* _ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(unsigned int a, unsigned int b, void* v, void* w, int e, int f);
 extern int data_0209e650;
-extern void* _ZN8dActor_c18ClosestWithActorIDEj(void* self, u32 id);
-extern void* _ZN8dActor_c13ClosestPlayerEv(void* self);
-extern void* _ZN8dActor_c15FindWithActorIDEjPS_(u32 id, void* prev);
 extern int _ZN8SaveData19IsCharacterUnlockedEj(u32 c);
 extern u32 _ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f(u32 a, u32 b, Fix12i c, Fix12i d, Fix12i e, const struct Vector3_16f* f);
 extern void* _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(u32 a, u32 b, Fix12i c, Fix12i d, Fix12i e, const void* f, void* g);
@@ -205,39 +204,39 @@ void func_ov002_020f897c(void* self)
 extern "C" {
 void func_ov002_020f8b24(void* arg0)
 {
-    char* c = (char*)arg0;
+    daFPknBall_c* ball = (daFPknBall_c*)arg0;
     Vec3 pos;
     Vec3 shadowPos;
 
     {
-        s32 x = *(s32*)(c + 0x5c);
+        s32 x = ball->mPosX;
         pos.x = x;
-        pos.y = *(s32*)(c + 0x60);
-        pos.z = *(s32*)(c + 0x64);
-        if (*(u8*)(c + 0x36e) != 0)
+        pos.y = ball->mPosY;
+        pos.z = ball->mPosZ;
+        if (ball->mMirrored != 0)
             pos.x = x * (u32)-1;
     }
-    pos.y = pos.y + data_ov002_02100320[*(u8*)(c + 0x36d)];
+    pos.y = pos.y + data_ov002_02100320[ball->mVariant];
 
-    *(u32*)(c + 0x370) = _ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f(
-        *(u32*)(c + 0x370), data_ov002_02100334[*(u8*)(c + 0x36d)], pos.x, pos.y, pos.z, 0);
+    ball->mTrailEffect = _ZN8Particle6System17NewUnkCallback818Ejj5Fix12IiES2_S2_PK11Vector3_16f(
+        ball->mTrailEffect, data_ov002_02100334[ball->mVariant], pos.x, pos.y, pos.z, 0);
 
-    *(void**)(c + 0x374) = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-        *(u32*)(c + 0x374), data_ov002_02100348[*(u8*)(c + 0x36d)], pos.x, pos.y, pos.z, 0, 0);
+    ball->mSparkEffect = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
+        (u32)ball->mSparkEffect, data_ov002_02100348[ball->mVariant], pos.x, pos.y, pos.z, 0, 0);
 
     {
-        s32 x = *(s32*)(c + 0x5c);
+        s32 x = ball->mPosX;
         pos.x = x;
-        pos.y = *(s32*)(c + 0x60);
-        pos.z = *(s32*)(c + 0x64);
-        if (*(u8*)(c + 0x36e) != 0)
+        pos.y = ball->mPosY;
+        pos.z = ball->mPosZ;
+        if (ball->mMirrored != 0)
             pos.x = x * (u32)-1;
     }
     Vec3_Asr(&shadowPos, &pos, 3);
     Matrix4x3_FromTranslation(&data_020a0e68, shadowPos.x, shadowPos.y, shadowPos.z);
-    *(Matrix4x3*)(c + 0x328) = data_020a0e68;
+    ball->mShadowMat = data_020a0e68;
     _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
-        c, c + 0x300, c + 0x328, 0x28000, 0x64000, 0xf);
+        ball, &ball->mShadowModel, &ball->mShadowMat, 0x28000, 0x64000, 0xf);
 }
 }
 
