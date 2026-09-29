@@ -135,7 +135,7 @@ s32 daSCoin_c::CleanupResources()
  * Returns without spawning when there is no such marker. */
 void daSCoin_c::func_ov002_020f05f4()
 {
-    /* MATCH form: dActor_c::Spawn as marker real method size-DIFFs (s8/s16
+    /* MATCH form: dActor_c::Spawn as a real method size-DIFFs (s8/s16
      * areaID/deathTableID vs the scalar ABI). Named mPosX/Y/Z on the
      * STAR_MARKER also size-DIFFs; keep the int* +0x5c copy. */
     char *marker = 0;
@@ -206,8 +206,8 @@ void daSCoin_c::func_ov002_020f051c()
 /* Collection handler. Finds the group leader by mLeaderUniqueID; unless this
  * coin is mGroupId 0xf, its mGroupId must equal the leader's mCollectedCount.
  * Plays func_02012790(0x25), bumps the leader's count, spawns the count as a
- * number, and marks the collider flags. The fifth collection starts the
- * leader's mDeathTimer at 0x1e frames; otherwise a mGroupRole 2 coin destroys
+ * number, and marks the collider flags. The fifth collection starts this
+ * coin's mDeathTimer at 0x1e frames; otherwise a mGroupRole 2 coin destroys
  * itself. */
 void daSCoin_c::func_ov002_020f0438()
 {

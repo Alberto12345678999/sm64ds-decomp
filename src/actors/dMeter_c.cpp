@@ -47,8 +47,8 @@
  * - HUDInfo, S154, Rec18 and VObj below are file-local shadows of objects the
  *   tree has no header for; they carry only the offsets and slot this TU uses.
  * - The OAM class below stands in for the OamAttr statics include/OAM.h lacks.
- * - The d8IsOne* locals in InitResources are all `data_0209f2d8 == 1`; what
- *   that byte selects is not established here.
+ * - data_0209f2d8 is CURRENT_GAMEMODE (symbols/verified.tsv); mode 1 is the one
+ *   dMap_c draws its VS icons for.
  */
 
 #include "dMeter_c.h"
@@ -205,8 +205,8 @@ int dMeter_c::InitResources()
     /* Main and sub engine OBJ VRAM. */
     char* objVramMain = (char*)0x6400000;
     char* objVramSub = (char*)0x6600000;
-    int d8IsOneArt = (data_0209f2d8 == 1);
-    if (d8IsOneArt != 0) {
+    int isVsMode = (data_0209f2d8 == 1);
+    if (isVsMode != 0) {
         void* h;
         if (GetOwnerLanguage() == 5) {
             h = LoadFile(0xB003);
@@ -298,12 +298,12 @@ int dMeter_c::InitResources()
         Deallocate(h);
     }
 
-    int d8IsOneTimer = 0;
+    int isVsTimer = 0;
     unk62 = 0;
     unk64 = 0xB4;
     mVsTimerY = 0xA;
-    if (data_0209f2d8 == 1) d8IsOneTimer = 1;
-    if (d8IsOneTimer != 0) {
+    if (data_0209f2d8 == 1) isVsTimer = 1;
+    if (isVsTimer != 0) {
         if (data_0209f2f8 == 0x33) mVsTimer = 0x1E;
         else if (data_0209f2f8 == 0x2B) *(volatile u16 *)&mVsTimer = 0x1E;
         else mVsTimer = 0x1E;
@@ -328,18 +328,18 @@ int dMeter_c::InitResources()
 
     /* Nine pixels per digit of NumStars(). */
     int starDigitsWidth = 0;
-    int d8IsOneStars;
-    if (data_0209f2d8 == 1) d8IsOneStars = 1; else d8IsOneStars = 0;
-    if (d8IsOneStars == 0) {
+    int isVsStars;
+    if (data_0209f2d8 == 1) isVsStars = 1; else isVsStars = 0;
+    if (isVsStars == 0) {
         int n = NumStars();
         if (n > 0x63) starDigitsWidth = 0x1B;
         else if (n > 9) starDigitsWidth = 0x12;
         else starDigitsWidth = 9;
     }
 
-    int d8IsOneLayout;
-    if (data_0209f2d8 == 1) d8IsOneLayout = 1; else d8IsOneLayout = 0;
-    if (d8IsOneLayout != 0) {
+    int isVsLayout;
+    if (data_0209f2d8 == 1) isVsLayout = 1; else isVsLayout = 0;
+    if (isVsLayout != 0) {
         data_ov002_02111178 = 0;
         mLifeCountX = 0x10;
         mStarCountX = 0xF0;
@@ -475,8 +475,6 @@ body:
 
 /* ROM ordinal 16 -- _ZN8dMeter_c6RenderEv, 0x020fd5e0, size 0x1c4 */
 // @symbol _ZN8dMeter_c6RenderEv
-/* recovered: named members + shared header, real C++ method, declarations from a shared header */
-/* recovered: named members + shared header, real C++ method */
 // _ZN8dMeter_c6RenderEv at 0x020fd5e0
 // Matched byte-for-byte with mwccarm 1.2/sp2p3 (ov002).
 int dMeter_c::Render()
@@ -529,7 +527,6 @@ end:
 
 /* ROM ordinal 15 -- _ZN8dMeter_c16OnPendingDestroyEv, 0x020fd5dc, size 0x4 */
 // @symbol _ZN8dMeter_c16OnPendingDestroyEv
-/* recovered: named members + shared header, real C++ method */
 /* dMeter_c::OnPendingDestroy() at 0x020fd5dc (ov002) -- vtable slot 12.
  * Empty override; the dMeter_c does nothing when marked for destruction.
  */
@@ -540,7 +537,6 @@ void dMeter_c::OnPendingDestroy()
 
 /* ROM ordinal 14 -- _ZN8dMeter_c16CleanupResourcesEv, 0x020fd5d4, size 0x8 */
 // @symbol _ZN8dMeter_c16CleanupResourcesEv
-/* recovered: named members + shared header, real C++ method */
 /* dMeter_c::CleanupResources() at 0x020fd5d4 (ov002) -- vtable slot 3.
  * Returns VS_FAIL (1); the dMeter_c holds no SharedFilePtr/heap resources to
  * release on death. dMeter_c : dBase_c : fBase_c.
@@ -553,8 +549,6 @@ s32 dMeter_c::CleanupResources()
 
 /* ROM ordinal 13 -- _ZN8dMeter_c17UpdateHealthMeterEv, 0x020fd218, size 0x3bc */
 // @symbol _ZN8dMeter_c17UpdateHealthMeterEv
-/* recovered: named members + shared header, real C++ method, declarations from a shared header */
-/* recovered: named members + shared header, real C++ method */
 void dMeter_c::UpdateHealthMeter()
 {
     int chr = data_0209f250;
@@ -679,8 +673,6 @@ void dMeter_c::UpdateHealthMeter()
 
 /* ROM ordinal 12 -- _ZN8dMeter_c17RenderHealthMeterEv, 0x020fcfec, size 0x22c */
 // @symbol _ZN8dMeter_c17RenderHealthMeterEv
-/* recovered: named members + shared header, real C++ method, declarations from a shared header */
-/* recovered: named members + shared header, real C++ method */
 // _ZN8dMeter_c17RenderHealthMeterEv at 0x020fcfec
 // Matched byte-for-byte with mwccarm 1.2/sp2p3 (ov002).
 void dMeter_c::RenderHealthMeter()
@@ -761,9 +753,7 @@ void dMeter_c::UpdateVsTimer()
 
 /* ROM ordinal 10 -- _ZN8dMeter_c13RenderVsTimerEv, 0x020fca18, size 0x484 */
 // @symbol _ZN8dMeter_c13RenderVsTimerEv
-/* recovered: named members + shared header, real C++ method
- *
- * The VS-mode countdown: a localised "TIME" caption, and below it either the
+/* The VS-mode countdown: a localised "TIME" caption, and below it either the
  * remaining seconds or a localised "TIME UP".
  *
  * Both captions are chosen by a GetOwnerLanguage() ladder testing 5, 4, 3, 2
@@ -870,9 +860,7 @@ void dMeter_c::RenderCoinCount()
 
 /* ROM ordinal 8 -- _ZN8dMeter_c14RenderRedCoinsEv, 0x020fc77c, size 0xa0 */
 // @symbol _ZN8dMeter_c14RenderRedCoinsEv
-/* recovered: shared header, real C++ method
- *
- * Draws one sprite per red coin still to collect, stepping 0xb across from
+/* Draws one sprite per red coin still to collect, stepping 0xb across from
  * x=0x10. Both the count (data_0209f30c) and the row selector (data_0209f310)
  * are indexed by the same data_0209f250.
  *
@@ -901,9 +889,7 @@ void dMeter_c::RenderRedCoins()
 
 /* ROM ordinal 7 -- _ZN8dMeter_c15RenderStarCountEv, 0x020fc458, size 0x324 */
 // @symbol _ZN8dMeter_c15RenderStarCountEv
-/* recovered: named members + shared header, real C++ method
- *
- * Draws the star counter: the star icon, an "x", and up to three digits laid
+/* Draws the star counter: the star icon, an "x", and up to three digits laid
  * out RIGHT to LEFT from mStarCountX, skipping the -1 slots CalculateDigits
  * blanked.
  *
@@ -986,9 +972,7 @@ void dMeter_c::RenderStarCount()
 
 /* ROM ordinal 6 -- _ZN8dMeter_c17RenderSilverStarsEv, 0x020fc3c4, size 0x94 */
 // @symbol _ZN8dMeter_c17RenderSilverStarsEv
-/* recovered: shared header, real C++ method
- *
- * Draws one sprite per silver star collected, in a row starting at x=0x10 and
+/* Draws one sprite per silver star collected, in a row starting at x=0x10 and
  * stepping 0x11 across at y=0xa. The count comes from data_0209f310 indexed by
  * data_0209f250 -- the same byte dMeter_c::RenderRedCoins reads, where a non-zero
  * value instead pushes the red-coin row from y=0xa down to y=0x1c. So this row
@@ -1120,9 +1104,7 @@ void dMeter_c::RenderLifeCount()
 
 /* ROM ordinal 3 -- _ZN8dMeter_c15CalculateDigitsEt, 0x020fbdac, size 0x8c */
 // @symbol _ZN8dMeter_c15CalculateDigitsEt
-/* recovered: named members + shared header, real C++ method
- *
- * Splits a count into the three decimal digits the dMeter_c draws, most significant
+/* Splits a count into the three decimal digits the dMeter_c draws, most significant
  * first, and blanks leading zeros by writing -1 rather than a digit.
  *
  * The suppression stops at i != 2, so the units digit is always drawn: a value
@@ -1151,8 +1133,6 @@ void dMeter_c::CalculateDigits(unsigned short value)
 
 /* ROM ordinal 2 -- _ZN8dMeter_c15RenderTimeTimerEv, 0x020fb96c, size 0x440 */
 // @symbol _ZN8dMeter_c15RenderTimeTimerEv
-/* recovered: named members + shared header, real C++ method, declarations from a shared header */
-/* recovered: named members + shared header, real C++ method */
 // _ZN8dMeter_c15RenderTimeTimerEv at 0x020fb96c (ov002)
 void dMeter_c::RenderTimeTimer()
 {

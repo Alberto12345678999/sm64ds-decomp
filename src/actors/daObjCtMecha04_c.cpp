@@ -111,8 +111,8 @@ void daObjCtMecha04_c::MoveActorOnBelt(dActor_c &actor)
     u16 angleForX = (u16)mAngleY;
     int angleIndexForX = angleForX >> 4;
     int beltStepForX = mBeltSpeed << 2;
-    int factorX = data_02082214[angleIndexForX * 2];
-    int deltaX = (int)((((s64)beltStepForX * factorX) + 0x800) >> 12);
+    int sinY = data_02082214[angleIndexForX * 2];
+    int deltaX = (int)((((s64)beltStepForX * sinY) + 0x800) >> 12);
     s32 *actorPosX = &actor.mPosX;
     int oldX = *actorPosX;
     *actorPosX = oldX + deltaX;
@@ -121,9 +121,9 @@ void daObjCtMecha04_c::MoveActorOnBelt(dActor_c &actor)
     int angleIndexForZ = angleForZ >> 4;
     int beltStepForZ = mBeltSpeed << 2;
     s32 *actorPosZ = actorPosX + 2;
-    int factorZ = data_02082214[(angleIndexForZ * 2) + 1];
+    int cosY = data_02082214[(angleIndexForZ * 2) + 1];
     int oldZ = *actorPosZ;
-    int deltaZ = (int)((((s64)beltStepForZ * factorZ) + 0x800) >> 12);
+    int deltaZ = (int)((((s64)beltStepForZ * cosY) + 0x800) >> 12);
     *actorPosZ = oldZ + deltaZ;
 }
 

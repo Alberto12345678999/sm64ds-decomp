@@ -75,8 +75,8 @@
  *   field-by-field: include/dScStarSel_c.h holds it as opaque bytes. The
  *   accessor macros below name each offset by what this file does with it;
  *   they are file-local views, not header members. Offsets that are only
- *   copied or compared without a visible meaning (0x118, 0x119, 0x137 and
- *   the level-number limit 0xf) are left as numbers.
+ *   copied or compared without a visible meaning (0x118, 0x119, the
+ *   ANIM_MODE 1 phase byte 0x137 and the level-number limit 0xf) are left as numbers.
  */
 
 #pragma opt_strength_reduction off
@@ -95,9 +95,9 @@
 /* Named views onto the storage between the Model pair and the end of the
  * object. Fixed-point values are 20.12 (0x1000 = 1.0), as the OAM::Render
  * scale arguments and the 0x1000 steps below show. */
-#define SCALE_X(p)        FW(p, 0x50)   /* scale of the bottom sprite */
+#define SCALE_X(p)        FW(p, 0x50)   /* scale of the panel sprite at (0x80, PANEL_Y) */
 #define SCALE_Y(p)        FW(p, 0x54)
-#define ICON_SCALE_X(p)   FW(p, 0x58)   /* scale of the picked character icon */
+#define ICON_SCALE_X(p)   FW(p, 0x58)   /* scale of the icon under CHAR_CURSOR */
 #define ICON_SCALE_Y(p)   FW(p, 0x5c)
 #define IDLE_ICON_SCALE(p) FW(p, 0x60)  /* scale of the other character icons */
 #define REPEAT_TIMER(p)   (*(u16 *)((u8 *)(p) + 0x106))   /* D-pad auto-repeat */
@@ -113,7 +113,7 @@
 #define CHAR_Y(p, i)      FB((u8 *)(p) + (i), 0x128)
 #define PANEL_Y(p)        FB(p, 0x12b)
 #define CHAR_SPRITE(p, i) FB((u8 *)(p) + (i), 0x12c)
-#define STRIP_MODE(p)     FB(p, 0x130)
+#define STRIP_MODE(p)     FB(p, 0x130)  /* strip slots + 1; 4 = fixed order from data_ov003_020b169c */
 #define PLATE_MASK(p)     FB(p, 0x131)  /* bit i: extra sprite behind plate i */
 #define PICKED_CHAR(p)    FB(p, 0x132)
 #define CURSOR_MODE(p)    FB(p, 0x133)  /* 0 plates, 1 character strip, else fixed */
@@ -375,8 +375,8 @@ extern "C" {  /* .c-derived members: C linkage for the whole block */
 // Failing that (and only with STRIP_MODE above 1 and data_0209caa0[0x41] == 3),
 // the three characters are scanned in order: for each unlocked i, bytes 2 and 3
 // of the same record are tested against CHAR_X/CHAR_Y, and a hit sets
-// CURSOR_MODE 1, CHAR_CURSOR, PICKED_CHAR, data_02092128 and data_02092114 to the
-// character, ANIM_MODE 2, and plays the same sound.
+// CURSOR_MODE 1, CHAR_CURSOR to its strip slot, and PICKED_CHAR, data_02092128
+// and data_02092114 to the character, ANIM_MODE 2, and plays the same sound.
 //
 // With no record active (label sect2) the d-pad half of the control word
 // data_020a0e58 moves the selection: REPEAT_TIMER counts down, and while it is

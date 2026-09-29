@@ -5,8 +5,8 @@
  *
  * One translation unit, eleven functions, 0x020f975c..0x020fb8bc: the
  * destructor pair, the two coordinate helpers FixTHIPaintingRoomPos and
- * UpdateLevelSpecific, the four fBase_c/dBase_c virtuals the class overrides
- * (CleanupResources, OnPendingDestroy, Render, Behavior), InitResources, and
+ * UpdateLevelSpecific, the five fBase_c/dBase_c virtuals it overrides
+ * (InitResources, CleanupResources, OnPendingDestroy, Render, Behavior), and
  * the two minimap-space projection helpers at the tail (GetPosFromMinimapPos,
  * GetPosOnMinimap). This is dMap_c's key-function TU, so the object also
  * carries the class's vtable and RTTI chain; the manifest licenses those
@@ -14,13 +14,13 @@
  *
  * Known limits:
  * - Behavior keeps its goto structure. The labels are named for the offset in
- *   the ROM function (L274 is +0x274, L2a4 is +0x2a4); no loop or switch
- *   rewrite has been tried on it.
+ *   the ROM function (L274 is +0x274, L2a4 is +0x2a4).
  * - Player, Obj and Vtbl below are file-local slices of the objects Render and
  *   Behavior touch, not the real classes. The shared world state they read
  *   (the data_0209f... player table, camera and flags) keeps its address names.
- * - The OAM, G2x and Vec3 helpers are called by their mangled or address
- *   names, and the two projection helpers are extern "C" definitions.
+ * - The OAM, G2x and Vec3 helpers are reached through C-linkage or
+ *   hand-mangled externs, and the two projection helpers are extern "C"
+ *   definitions.
  */
 #include "dMap_c.h"
 #include "decl_common.h"
@@ -219,8 +219,8 @@ void dMap_c::FixTHIPaintingRoomPos(Vector3 & v_)
 
 // @symbol _ZN6dMap_c19UpdateLevelSpecificEv
 /* Per-sublevel touch-ups to the BG3 buffer that GetBG3CharPtr returns. Each
- * case writes rows of consecutive u16 tile numbers, and only once its own
- * condition holds: a star collected, an event bit, or a bit in data_0209caa0. */
+ * case writes rows of consecutive u16 tile numbers, and only when its
+ * condition holds (cases 7 and 8 also need data_0209f220 >= 2): a star collected, an event bit, or a bit in data_0209caa0. */
 void dMap_c::UpdateLevelSpecific()
 {
     int sublevel = data_0209f2f8;

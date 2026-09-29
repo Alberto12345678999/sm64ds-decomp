@@ -237,9 +237,9 @@ extern "C" int func_ov016_02111718(daMoray_c *self)
 extern "C" int func_ov016_02111758(daMoray_c *self)
 {
     Vector3 localOffset;
-    Vector3 worldOffset;
+    Vector3 worldTarget;
     localOffset.x = 0; localOffset.y = 0; localOffset.z = 0;
-    worldOffset.x = 0; worldOffset.y = 0; worldOffset.z = 0;
+    worldTarget.x = 0; worldTarget.y = 0; worldTarget.z = 0;
     unsigned int frame = (unsigned int)self->mBlendModelAnim.currFrame << 4 >> 0x10;
     if (frame >= 0x15 && frame <= 0x3c) {
         if (data_0209f220 == 1) {
@@ -249,11 +249,11 @@ extern "C" int func_ov016_02111758(daMoray_c *self)
         }
         Matrix4x3_FromRotationY(&data_020a0e68, self->mAngleY);
         Matrix4x3_ApplyInPlaceToRotationX(&data_020a0e68, self->mAngleX);
-        MulVec3Mat4x3(&localOffset, &data_020a0e68, &worldOffset);
-        worldOffset.x += self->mHomePosX;
-        worldOffset.y += self->mHomePosY;
-        worldOffset.z += self->mHomePosZ;
-        _Z14ApproachLinearR7Vector3RKS_5Fix12IiE(*(Vector3 *)&self->mPosX, worldOffset, 0x14000);
+        MulVec3Mat4x3(&localOffset, &data_020a0e68, &worldTarget);
+        worldTarget.x += self->mHomePosX;
+        worldTarget.y += self->mHomePosY;
+        worldTarget.z += self->mHomePosZ;
+        _Z14ApproachLinearR7Vector3RKS_5Fix12IiE(*(Vector3 *)&self->mPosX, worldTarget, 0x14000);
     }
     if (self->mBlendModelAnim.Finished()) {
         self->mHorzSpeed = 0;
@@ -277,18 +277,18 @@ extern "C" int func_ov016_02111860(daMoray_c *self)
 extern "C" int func_ov016_021118b4(daMoray_c *self)
 {
     Vector3 localOffset;
-    Vector3 worldOffset;
+    Vector3 worldTarget;
     localOffset.x = 0; localOffset.y = 0; localOffset.z = 0;
-    worldOffset.x = 0; worldOffset.y = 0; worldOffset.z = 0;
+    worldTarget.x = 0; worldTarget.y = 0; worldTarget.z = 0;
     localOffset.z = 0x76c000;
     Matrix4x3_FromRotationY(&data_020a0e68, self->mAngleY);
     Matrix4x3_ApplyInPlaceToRotationX(&data_020a0e68, self->mAngleX);
-    MulVec3Mat4x3(&localOffset, &data_020a0e68, &worldOffset);
-    worldOffset.x += self->mHomePosX;
-    worldOffset.y += self->mHomePosY;
-    worldOffset.z += self->mHomePosZ;
-    _Z14ApproachLinearR7Vector3RKS_5Fix12IiE(*(Vector3 *)&self->mPosX, worldOffset, 0x14000);
-    if (Vec3_Dist((Vector3 *)&self->mPosX, &worldOffset) < 0x14000) {
+    MulVec3Mat4x3(&localOffset, &data_020a0e68, &worldTarget);
+    worldTarget.x += self->mHomePosX;
+    worldTarget.y += self->mHomePosY;
+    worldTarget.z += self->mHomePosZ;
+    _Z14ApproachLinearR7Vector3RKS_5Fix12IiE(*(Vector3 *)&self->mPosX, worldTarget, 0x14000);
+    if (Vec3_Dist((Vector3 *)&self->mPosX, &worldTarget) < 0x14000) {
         func_02012694(0xfa, (const Vector3 *)&self->mCamSpacePosX);
         func_ov016_02111bf0(self, &data_ov016_02114dbc);
     }
@@ -409,7 +409,7 @@ extern "C" int func_ov016_02111bf0(daMoray_c *self, const daMoray_c::State *stat
 extern "C" void func_ov016_02111c40(daMoray_c *self)
 {
     Vector3 localOffset;
-    Vector3 worldOffset;
+    Vector3 worldTarget;
     Vector3 asr;
     int zero[1];
     int i;
@@ -426,13 +426,13 @@ extern "C" void func_ov016_02111c40(daMoray_c *self)
     localOffset.z = -0x190000;
     localOffset.x = 0;
     localOffset.y = 0;
-    worldOffset.x = 0;
-    worldOffset.y = 0;
-    worldOffset.z = 0;
+    worldTarget.x = 0;
+    worldTarget.y = 0;
+    worldTarget.z = 0;
     Matrix4x3_FromRotationY(&data_020a0e68, self->mAngleY);
-    MulVec3Mat4x3(&localOffset, &data_020a0e68, &worldOffset);
-    Matrix4x3_FromTranslation(&data_020a0e68, (self->mPosX + worldOffset.x) >> 3, self->mPosY >> 3,
-                              (self->mPosZ + worldOffset.z) >> 3);
+    MulVec3Mat4x3(&localOffset, &data_020a0e68, &worldTarget);
+    Matrix4x3_FromTranslation(&data_020a0e68, (self->mPosX + worldTarget.x) >> 3, self->mPosY >> 3,
+                              (self->mPosZ + worldTarget.z) >> 3);
     Matrix4x3_ApplyInPlaceToRotationZXYExt(&data_020a0e68, self->mAngleX, self->mAngleY, self->mAngleZ);
     self->mBlendModelAnim.mat4x3 = data_020a0e68;
     ApproachLinear(self->mSegmentAngle[6], self->mSegmentAngle[7], 0x40);
