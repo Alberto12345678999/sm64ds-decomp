@@ -106,7 +106,6 @@ extern s32 data_ov002_02100348[];
 extern Matrix4x3 data_020a0e68;
 void func_ov002_020f8b24(void* self);
 int func_ov002_020ad660(void* cc, void* pp, void* r5p, int flags);
-void _ZN8dActor_c19DisappearPoofDustAtERK7Vector3(void* self, const struct Vec3F* v);
 s16 Vec3_HorzAngle(const void* a, const void* b);
 void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(u32 id, s32 x, s32 y, s32 z);
 void func_02012694(u32 id, const void* v);
@@ -299,7 +298,7 @@ int daFPknBall_c::Behavior() {
             ((int*)&dustArg1)[0] = ((int*)&dustPos1)[0];
             ((int*)&dustArg1)[1] = ((int*)&dustPos1)[1];
             ((int*)&dustArg1)[2] = ((int*)&dustPos1)[2];
-            _ZN8dActor_c19DisappearPoofDustAtERK7Vector3(this, &dustArg1);
+            DisappearPoofDustAt(*(Vector3*)&dustArg1);
         } else {
             func_ov002_020f8b24(this);
         }
@@ -365,7 +364,7 @@ int daFPknBall_c::Behavior() {
                             ((int*)&dustArg2)[0] = ((int*)&dustPos2)[0];
                             ((int*)&dustArg2)[1] = ((int*)&dustPos2)[1];
                             ((int*)&dustArg2)[2] = ((int*)&dustPos2)[2];
-                            _ZN8dActor_c19DisappearPoofDustAtERK7Vector3(this, &dustArg2);
+                            DisappearPoofDustAt(*(Vector3*)&dustArg2);
                         }
                         if (mVariant == VARIANT_COIN_DROP)
                             func_02012694(0x157, &mCamSpacePosX);
@@ -418,7 +417,7 @@ int daFPknBall_c::Behavior() {
             ((int*)&dustArg3)[0] = ((int*)&dustPos3)[0];
             ((int*)&dustArg3)[1] = ((int*)&dustPos3)[1];
             ((int*)&dustArg3)[2] = ((int*)&dustPos3)[2];
-            _ZN8dActor_c19DisappearPoofDustAtERK7Vector3(this, &dustArg3);
+            DisappearPoofDustAt(*(Vector3*)&dustArg3);
         }
         if (mVariant == VARIANT_COIN_DROP)
             func_02012694(0x157, &mCamSpacePosX);
