@@ -44,7 +44,7 @@
  *
  *     dBgActor_c            0x000 + 0x324 = 0x324   -> mModel2
  *     Model               0x324 + 0x050 = 0x374   -> mMovingMeshCollider2
- *     dBgW_KcMbg  0x374 + 0x1c8 = 0x53c   -> padding, then unk_56c
+ *     dBgW_KcMbg  0x374 + 0x1c8 = 0x53c   -> padding, then mSoundHandle
  *
  * mMovingMeshCollider2 was a `u8` marker with 0x1f7 bytes of pad behind it; the pad
  * was the object.
@@ -52,7 +52,7 @@
  * sizeof is 0x570, which is not inferred from the fields: daKpa2Bg_c_classInit
  * asks fBase_c::operator new for 1392 bytes.
  *
- * Field NAMES for the unk_ entries are placeholders. */
+ * pad_53c is not read or written by any function in this class's TU. */
 #ifndef DAKPA2BG_C_H
 #define DAKPA2BG_C_H
 #include "types.h"
@@ -73,7 +73,7 @@ struct daKpa2Bg_c : dBgActor_c {
     Model mModel2;                              /* 0x324 */
     dBgW_KcMbg mMovingMeshCollider2;    /* 0x374 */
     u8  pad_53c[0x30];
-    s32 unk_56c;            /* 0x56c */
+    s32 mSoundHandle;       /* 0x56c -- the handle Sound_PlayIfNotActive returns; InitResources zeroes it */
 
     /* --- vtable, in ROM order. Do not reorder. --- */
     /* Out of line in the cpp, under defer_codegen off: one definition emits
@@ -118,7 +118,7 @@ struct daKpa2Bg_c {
     Model mModel2;            /* 0x324 */
     dBgW_KcMbg mMovingMeshCollider2;    /* 0x374 */
     u8  pad_53c[0x30];
-    s32 unk_56c;            /* 0x56c */
+    s32 mSoundHandle;       /* 0x56c */
 };
 
 #endif /* __cplusplus */
