@@ -23,14 +23,6 @@
  * is deliberately not redeclared here.
  */
 struct daObjFl_Amilift_c : dBgActor_c {
-    /* mState values. The state handlers live in a three-entry table in ov064's
-       .data (see daObjFl_Amilift_c.cpp), indexed by mState. */
-    enum {
-        STATE_WAIT = 0,       /* waits at the start for the player to stand on it */
-        STATE_FORWARD = 1,    /* walking toward higher node indices */
-        STATE_BACKWARD = 2    /* walking back toward node 0 */
-    };
-
     s32 mSinkOffset;      /* 0x320 -- eased toward -0x28000 while the player is on it */
     s32 mBobOffset;       /* 0x324 -- sin(mBobPhase) * 10, added to the height */
     s16 mBobPhase;        /* 0x328 */
@@ -59,6 +51,14 @@ struct daObjFl_Amilift_c : dBgActor_c {
     virtual s32   CleanupResources();      /* slot  3 */
     virtual s32   Behavior();              /* slot  6 */
     virtual s32   Render();                /* slot  9 */
+
+    /* mState values. The state handlers live in a three-entry table in ov064's
+       .data (see daObjFl_Amilift_c.cpp), indexed by mState. */
+    enum {
+        STATE_WAIT = 0,       /* waits at the start for the player to stand on it */
+        STATE_FORWARD = 1,    /* walking toward higher node indices */
+        STATE_BACKWARD = 2    /* walking back toward node 0 */
+    };
 };
 
 #ifndef SM64DS_PLATFORM_PC
