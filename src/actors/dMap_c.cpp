@@ -1,13 +1,26 @@
 //cpp
-/* dMap_c, the touch-screen minimap actor (ov002).
+/* dMap_c -- the touch-screen minimap actor (ov002). It derives from dBase_c; the class
+ * name is the cartridge's RTTI spelling (_ZTS6dMap_c at 0x0210c158, _ZTI6dMap_c
+ * at 0x0210c168, _ZTV6dMap_c at 0x0210c1c0).
  *
  * One translation unit, eleven functions, 0x020f975c..0x020fb8bc: the
  * destructor pair, the two coordinate helpers FixTHIPaintingRoomPos and
- * UpdateLevelSpecific, the four fBase_c/dBase_c virtuals the class
- * overrides, and the two minimap-space projection helpers at the tail.
- * This is dMap_c's key-function TU, so the object also carries the class's
- * vtable and its RTTI chain; the manifest licenses those against their ROM
- * homes (config/tu_manifest.d/ov002/dMap_c.json).
+ * UpdateLevelSpecific, the four fBase_c/dBase_c virtuals the class overrides
+ * (CleanupResources, OnPendingDestroy, Render, Behavior), InitResources, and
+ * the two minimap-space projection helpers at the tail (GetPosFromMinimapPos,
+ * GetPosOnMinimap). This is dMap_c's key-function TU, so the object also
+ * carries the class's vtable and RTTI chain; the manifest licenses those
+ * against their ROM homes (config/tu_manifest.d/ov002/dMap_c.json).
+ *
+ * Known limits:
+ * - Behavior keeps its goto structure. The labels are named for the offset in
+ *   the ROM function (L274 is +0x274, L2a4 is +0x2a4); no loop or switch
+ *   rewrite has been tried on it.
+ * - Player, Obj and Vtbl below are file-local slices of the objects Render and
+ *   Behavior touch, not the real classes. The shared world state they read
+ *   (the data_0209f... player table, camera and flags) keeps its address names.
+ * - The OAM, G2x and Vec3 helpers are called by their mangled or address
+ *   names, and the two projection helpers are extern "C" definitions.
  */
 #include "dMap_c.h"
 #include "decl_common.h"
@@ -67,9 +80,10 @@ struct VtblOwner { Vtbl *vt; };
 
 struct Vec3 { int x, y, z; };
 
-#define F218 (*(s32 *)(((int)self + 0x218)))
-#define FANG (*(s16 *)(((int)self + 0x21c)))
-#define F254 (*(u8 *)(((int)self + 0x254)))
+/* An icon is drawn when it lies within 16 pixels of the 256x192 screen. */
+#define ICON_X_VISIBLE(x) ((u16)((x) + 0x10) < 0x120)
+#define ICON_Y_VISIBLE(y) ((u16)((y) + 0x10) < 0xe0)
+/* Fix12 multiply with rounding. */
 #define FMUL(a, b) ((s32)((((long long)(a) * (b)) + 0x800) >> 12))
 
 extern "C" {
@@ -158,8 +172,7 @@ dMap_c::~dMap_c()
  */
 
 // @symbol _ZN6dMap_c21FixTHIPaintingRoomPosER7Vector3
-/* recovered: shared header, real C++ method (static)
- *
+/*
  * Bends a position inside the THI painting room so the minimap draws it in the
  * right place -- the room's real geometry and its map are not the same shape.
  *
@@ -174,7 +187,6 @@ dMap_c::~dMap_c()
  * No `this`: the ROM keeps r0 (the Vector3) in r4 and clobbers r1 before any
  * use, so the only incoming pointer is the argument. See include/dMap_c.h.
  */
-/* recovered: named members + shared header */
 void dMap_c::FixTHIPaintingRoomPos(Vector3 & v_)
 {
     struct Vector3* v = &v_;
@@ -206,15 +218,18 @@ void dMap_c::FixTHIPaintingRoomPos(Vector3 & v_)
 }
 
 // @symbol _ZN6dMap_c19UpdateLevelSpecificEv
+/* Per-sublevel touch-ups to the BG3 buffer that GetBG3CharPtr returns. Each
+ * case writes rows of consecutive u16 tile numbers, and only once its own
+ * condition holds: a star collected, an event bit, or a bit in data_0209caa0. */
 void dMap_c::UpdateLevelSpecific()
 {
-    int state = data_0209f2f8;
-    switch (state) {
+    int sublevel = data_0209f2f8;
+    switch (sublevel) {
     case 7: {
         u16* p;
         u16 tile;
         int i;
-        if (!IsStarCollected(SublevelToLevel(state), 1)) return;
+        if (!IsStarCollected(SublevelToLevel(sublevel), 1)) return;
         if (data_0209f220 < 2) return;
         p = (u16*)((char*)G2S::GetBG3CharPtr() - 0x734);
         tile = 0x39c;
@@ -232,7 +247,7 @@ void dMap_c::UpdateLevelSpecific()
         u16 tile;
         int i;
         u16* p;
-        if (!IsStarCollected(SublevelToLevel(state), 1)) return;
+        if (!IsStarCollected(SublevelToLevel(sublevel), 1)) return;
         if (data_0209f220 < 2) return;
         p = (u16*)((char*)G2S::GetBG3CharPtr() - 0x6ea);
         tile = 0x35c;
@@ -358,7 +373,6 @@ void dMap_c::UpdateLevelSpecific()
 }
 
 // @symbol _ZN6dMap_c16CleanupResourcesEv
-/* recovered: named members + shared header, real C++ method */
 /* dMap_c::CleanupResources() at 0x020f9e8c (ov002) -- vtable slot 3.
  * Returns VS_FAIL (1); the minimap holds no SharedFilePtr/heap resources
  * to release on death. dMap_c : dBase_c : fBase_c.
@@ -370,7 +384,6 @@ s32 dMap_c::CleanupResources()
 }
 
 // @symbol _ZN6dMap_c16OnPendingDestroyEv
-/* recovered: named members + shared header, real C++ method */
 /* dMap_c::OnPendingDestroy() at 0x020f9e94 (ov002) -- vtable slot 12.
  * Empty override; the minimap does nothing when marked for destruction.
  */
@@ -383,26 +396,26 @@ void dMap_c::OnPendingDestroy()
 // @symbol _ZN6dMap_c6RenderEv
 int dMap_c::Render()
 {
-    u8 a = data_0209f20c;
-    u8 b = data_0209f2c4;
-    u8 d = data_0209f294;
+    u8 flag20c = data_0209f20c;
+    u8 flag2c4 = data_0209f2c4;
+    u8 flag294 = data_0209f294;
     int i;
     int j;
     u8 idx = data_0209f250;
 
-    if ((u8)(d | (b | a)) == 0 || !(data_0209caa0[2] & 0x80) || (a != 0 && (u32)data_0209f2d4 < 3)) {
-        Player *pl = data_0209f394[idx];
+    if ((u8)(flag294 | (flag2c4 | flag20c)) == 0 || !(data_0209caa0[2] & 0x80) || (flag20c != 0 && (u32)data_0209f2d4 < 3)) {
+        Player *player = data_0209f394[idx];
         int vs = (data_0209f2d8 == 1);
         if (vs != 0) {
             _ZN3OAM9RenderSubEP7OamAttriiii(
-                _ZN3OAM18MM_VS_PLAYER_ICONSE[pl->unk8 + idx * 4],
+                _ZN3OAM18MM_VS_PLAYER_ICONSE[player->unk8 + idx * 4],
                 this->mPlayerIconX[idx], this->mPlayerIconY[idx], -1, 2);
             {
-                u16 ang = (s16)this->mAngle + ((pl->unk8E ^ 0xffff) + 0x8001);
-                int t = ((u16)(s16)ang >> 4) * 2;
-                s16 sn = data_02082214[t + 1];
+                u16 ang = (s16)this->mAngle + ((player->unk8E ^ 0xffff) + 0x8001);
+                int angIdx = ((u16)(s16)ang >> 4) * 2;
+                s16 sn = data_02082214[angIdx + 1];
                 this->mArrowMatrixA = (s16)(((s64)sn * this->mArrowScale + 0x800) >> 0xc);
-                s16 cn = data_02082214[t];
+                s16 cn = data_02082214[angIdx];
                 this->mArrowMatrixB = (s16)(((s64)cn * this->mArrowScale + 0x800) >> 0xc);
                 this->mArrowMatrixC = -this->mArrowMatrixB;
                 this->mArrowMatrixD = this->mArrowMatrixA;
@@ -413,9 +426,9 @@ int dMap_c::Render()
                 for (i = 0, j = 0; i < 4; i++, j += 4) {
                     if (i != idx) {
                         int y = this->mPlayerIconY[i];
-                        if ((u16)(y + 0x10) < 0xe0) {
+                        if (ICON_Y_VISIBLE(y)) {
                             int x = this->mPlayerIconX[i];
-                            if ((u16)(x + 0x10) < 0x120) {
+                            if (ICON_X_VISIBLE(x)) {
                                 if (data_ov002_02111148 == this->mPlayerMapIDs[i]) {
                                     _ZN3OAM9RenderSubEP7OamAttriiii(
                                         _ZN3OAM20MM_VS_PLAYER_ICONS_SE[j + data_0209f394[i]->unk8],
@@ -427,14 +440,16 @@ int dMap_c::Render()
                 }
             }
         } else {
-            u16 t = pl->unk6C8;
-            if (t == 0 || ((t / 10) & 1) == 0) {
+            u16 flickerTimer = player->unk6C8;
+            /* While the timer is nonzero the icon is skipped on alternate
+             * spans of 10. */
+            if (flickerTimer == 0 || ((flickerTimer / 10) & 1) == 0) {
                 if (this->mInIntroCutscene == 0) {
                     int icon;
-                    if (pl->HasNoCap() != 0)
-                        icon = pl->unk6D9 * 4 + 3;
+                    if (player->HasNoCap() != 0)
+                        icon = player->unk6D9 * 4 + 3;
                     else
-                        icon = pl->unk8 + pl->unk6D9 * 4;
+                        icon = player->unk8 + player->unk6D9 * 4;
                     _ZN3OAM9RenderSubEP7OamAttriiii(_ZN3OAM15MM_PLAYER_ICONSE[icon],
                         this->mPlayerIconX[idx], this->mPlayerIconY[idx], -1, 2);
                 }
@@ -443,14 +458,14 @@ int dMap_c::Render()
                     if (s != 0) {
                         u16 ang;
                         if (s == 1)
-                            ang = (pl->unk8E ^ 0xffff) + 0x8001;
+                            ang = (player->unk8E ^ 0xffff) + 0x8001;
                         else
-                            ang = (s16)this->mAngle + ((pl->unk8E ^ 0xffff) + 0x8001);
+                            ang = (s16)this->mAngle + ((player->unk8E ^ 0xffff) + 0x8001);
                         {
-                            int t2 = ((u16)(s16)ang >> 4) * 2;
-                            s16 sn = data_02082214[t2 + 1];
+                            int angIdx = ((u16)(s16)ang >> 4) * 2;
+                            s16 sn = data_02082214[angIdx + 1];
                             this->mArrowMatrixA = (s16)(((s64)sn * this->mArrowScale + 0x800) >> 0xc);
-                            s16 cn = data_02082214[t2];
+                            s16 cn = data_02082214[angIdx];
                             this->mArrowMatrixB = (s16)(((s64)cn * this->mArrowScale + 0x800) >> 0xc);
                             this->mArrowMatrixC = -this->mArrowMatrixB;
                             this->mArrowMatrixD = this->mArrowMatrixA;
@@ -482,9 +497,9 @@ int dMap_c::Render()
                                 int icon = flag + k * 2;
                                 {
                                     int y = this->mStarIconY[i];
-                                    if ((u16)(y + 0x10) < 0xe0) {
+                                    if (ICON_Y_VISIBLE(y)) {
                                         int x = this->mStarIconX[i];
-                                        if ((u16)(x + 0x10) < 0x120) {
+                                        if (ICON_X_VISIBLE(x)) {
                                             _ZN3OAM9RenderSubEP7OamAttriiii(_ZN3OAM15MM_STAR_MARKERSE[icon],
                                                 x, y, -1, 2);
                                         }
@@ -515,9 +530,9 @@ int dMap_c::Render()
                 if (*p1 != 0) {
                     if (data_ov002_02111148 == this->mCapMapIDs[i]) {
                         int y = this->mCapIconY[i];
-                        if ((u16)(y + 0x10) < 0xe0) {
+                        if (ICON_Y_VISIBLE(y)) {
                             int x = this->mCapIconX[i];
-                            if ((u16)(x + 0x10) < 0x120) {
+                            if (ICON_X_VISIBLE(x)) {
                                 _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2(1, tbl[*p2], x, y, -1, 2, 0);
                             }
                         }
@@ -542,9 +557,9 @@ int dMap_c::Render()
         for (i = 0; i < 8; i++) {
             if (data_ov002_02111148 == this->mSpikeBombMapIDs[i]) {
                 int y = this->mSpikeBombIconY[i];
-                if ((u16)(y + 0x10) < 0xe0) {
+                if (ICON_Y_VISIBLE(y)) {
                     int x = this->mSpikeBombIconX[i];
-                    if ((u16)(x + 0x10) < 0x120) {
+                    if (ICON_X_VISIBLE(x)) {
                         _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2(1, _ZN3OAM13MM_SPIKE_BOMBE, x, y, -1, 2, 0);
                     }
                 }
@@ -558,42 +573,27 @@ int dMap_c::Render()
 #pragma opt_strength_reduction on
 
 // @symbol _ZN6dMap_c8BehaviorEv
-/* recovered: named members + shared header, real C++ method, shadow struct removed
+/* One frame of the minimap: pick the map for the focus object, scroll and
+ * scale the BG, then project every icon onto the screen.
  *
- * One frame of the minimap. This file's whole point is that it no longer
- * carries its own idea of what a dMap_c is: the pre-image declared a private
- * `struct dMap_c` describing the object in full, and every field access went
- * through it. That shadow is gone and the shared header serves instead.
- *
- * The shadow was RICHER than dMap_c.h, which is why it existed. It declared
- * twelve ranges as ARRAYS and indexed them -- 0x070, 0x080, 0x0a0, 0x0d0,
- * 0x100, 0x124, 0x180, 0x1a0, 0x21e, 0x222, 0x23a, 0x249 -- where the header
- * had flat padding, so the header simply could not express what this function
- * does. Those arrays are in the header now and the reconstruction is
- * offset-neutral: the struct still spans 0x256.
- *
- * Two disagreements between the two views, both settled toward the header:
- *   0x1e0 and 0x1f4  the shadow called each a Vector3; only two sites need
- *                    that, and they take `(Vector3*)&mMapCenterWorldX` rather than the
- *                    header asserting a type the other eight matched
- *                    functions never see.
- *   0x21c            the shadow said s16 and then cast EVERY read to (u16).
- *                    The header's u16 says the same thing without the casts.
+ * The 0x1e0 and 0x1f4 triples (mMapOrigin*, mMapCenterWorld*) are taken as
+ * Vector3 at the sites that hand them to Vec3 helpers, rather than the header
+ * declaring a Vector3 the other functions never need. mAngle is a u16 in the
+ * header; the one `+= 0x40` reads it as s16, hence the cast at that site.
  */
 s32 dMap_c::Behavior()
 {
-    dMap_c *self = this;
-    Obj *obj;
-    Vector3 v8, v14, v20, v2c, v38;
-    Vector3 *op;
+    Obj *focus;
+    Vector3 miniPos, focusPos, clampedWorld, playerPos, scrollDelta;
+    Vector3 *focusPosSrc;
     Obj *player;
     Obj *cam;
-    u32 orv;
+    u32 flagsOr;
     s32 i;
 
     cam = data_0209f318;
     player = (Obj *)data_0209f394[data_0209f250];
-    obj = 0;
+    focus = 0;
 
     if (data_0209f5bc->vt->f[5](data_0209f5bc) == 0) goto L274;
     if (data_0209b454 & 0x40000000) goto L274;
@@ -601,22 +601,22 @@ s32 dMap_c::Behavior()
     if (data_0209f350[data_0209f250] != 0) goto L274;
     if (_ZN6Player12Unk_020ca8f8Ev(player) == 1) goto L274;
 
-    if (self->mTouchCircleTimer != 0) {
-        F254 -= data_0208ee44;
+    if (this->mTouchCircleTimer != 0) {
+        this->mTouchCircleTimer -= data_0208ee44;
     }
 
-    orv = data_0209f2c4 | data_0209f20c | data_0209f294;
-    if ((u8)orv) goto L200;
+    flagsOr = data_0209f2c4 | data_0209f20c | data_0209f294;
+    if ((u8)flagsOr) goto L200;
     if (data_02092110 >= 0) goto L200;
     if (data_0209f204 != 0) goto L200;
     if (data_ov002_02111150 != 0) goto L200;
     if (data_0209d660 != 0) goto L200;
     {
         u8 v = data_0209f4ac[data_020a0e40 * 0x18];
-        if (v == 0 && self->mTouchCircleTimer == 0) goto L200;
+        if (v == 0 && this->mTouchCircleTimer == 0) goto L200;
         data_0209d454 |= 4;
         if (v != 0) {
-            self->mTouchCircleTimer = 0x1e;
+            this->mTouchCircleTimer = 0x1e;
             SetSubBg2Offset(0x100 - data_0209f4a8[data_020a0e40 * 0x18],
                             0x80 - data_0209f4a9[data_020a0e40 * 0x18]);
         }
@@ -635,11 +635,11 @@ L200:
             if ((data_0209caa0[2] & 0x80) == 0) goto L2a4;
         }
         data_0209d454 &= ~4;
-        if (!(u8)orv) {
+        if (!(u8)flagsOr) {
             *(volatile s32 *)0x4001000 = (*(volatile s32 *)0x4001000 & ~0x1f00) | (data_0209d454 << 8);
             *(volatile u16 *)0x4001050 = 0;
         }
-        self->mTouchCircleTimer = 0;
+        this->mTouchCircleTimer = 0;
         goto L2a4;
     }
 
@@ -664,17 +664,17 @@ L318:
         s32 b = (data_0209f2d8 == 0);
         if (b == 0) goto L360;
         if (data_0209caa0[2] & 0x80) goto L360;
-        if (self->mInIntroCutscene != 0) goto L360;
+        if (this->mInIntroCutscene != 0) goto L360;
     }
 L350:
-    self->mAngle = 0;
+    this->mAngle = 0;
     goto L3e0;
 
 L360:
-    if (self->mInIntroCutscene == 0) goto L3a4;
+    if (this->mInIntroCutscene == 0) goto L3a4;
     if (data_ov002_0211114c == 0) goto L3e0;
-    FANG += 0x40;
-    if ((u16)self->mAngle >= 0x8000)
+    *(s16 *)&this->mAngle += 0x40;   // read signed here; the header member is u16
+    if ((u16)this->mAngle >= 0x8000)
         data_ov002_0211114c = 0;
     goto L3e0;
 
@@ -685,64 +685,65 @@ L3a4:
         if (f & 0xc000) goto L3e0;
         if (f & 8) goto L3e0;
     }
-    self->mAngle = (s16)(cam->f17c & 0xffe0);
+    this->mAngle = (s16)(cam->f17c & 0xffe0);
 
 L3e0:
-    obj = (Obj *)cam->f110;
+    /* The object at camera+0x110 is what the map follows. */
+    focus = (Obj *)cam->f110;
 
 L3e8:
-    if (obj == 0) goto Lae4;
+    if (focus == 0) goto Lae4;
 
-    if (self->mInIntroCutscene == 0) goto L44c;
+    if (this->mInIntroCutscene == 0) goto L44c;
     if (data_ov002_02111144 == 0) goto L4d8;
-    F218 -= 9;
-    if (self->mTargetInvScale <= self->mInvScale) goto L4d8;
-    self->mInvScale = self->mTargetInvScale;
+    this->mInvScale -= 9;
+    if (this->mTargetInvScale <= this->mInvScale) goto L4d8;
+    this->mInvScale = this->mTargetInvScale;
     data_ov002_02111144 = 0;
     data_ov002_0211114c = 1;
     goto L4d8;
 
 L44c:
     if (data_0209d660 == 0) goto L47c;
-    if (self->mInvScale < 0xbb8)
-        F218 += 0x1c;
+    if (this->mInvScale < 0xbb8)
+        this->mInvScale += 0x1c;
     goto L4d8;
 
 L47c:
-    if (self->mTargetInvScale <= self->mInvScale) goto L4b0;
-    F218 += 0x1c;
-    if (self->mTargetInvScale < self->mInvScale)
-        self->mInvScale = self->mTargetInvScale;
+    if (this->mTargetInvScale <= this->mInvScale) goto L4b0;
+    this->mInvScale += 0x1c;
+    if (this->mTargetInvScale < this->mInvScale)
+        this->mInvScale = this->mTargetInvScale;
     goto L4d8;
 
 L4b0:
-    if (self->mTargetInvScale >= self->mInvScale) goto L4d8;
-    F218 -= 0x1c;
-    if (self->mTargetInvScale > self->mInvScale)
-        self->mInvScale = self->mTargetInvScale;
+    if (this->mTargetInvScale >= this->mInvScale) goto L4d8;
+    this->mInvScale -= 0x1c;
+    if (this->mTargetInvScale > this->mInvScale)
+        this->mInvScale = this->mTargetInvScale;
 
 L4d8:
-    self->mCurrentScale = _ZN4cstd4fdivEii(self->mScale, self->mInvScale);
-    { s32 s1 = data_02082214[(((s32)(u16)self->mAngle >> 4) * 2) + 1];
-      self->mBgMatrixA = FMUL(s1, self->mInvScale); }
-    { s32 s2 = data_02082214[((s32)(u16)self->mAngle >> 4) * 2];
-      self->mBgMatrixB = FMUL(s2, self->mInvScale); }
-    self->mBgMatrixC = -self->mBgMatrixB;
-    self->mBgMatrixD = self->mBgMatrixA;
-    ((Vector3*)&self->mMapCenterWorldX)->x = ((Vector3*)&self->mMapOriginX)->x;
-    ((Vector3*)&self->mMapCenterWorldX)->y = ((Vector3*)&self->mMapOriginX)->y;
-    ((Vector3*)&self->mMapCenterWorldX)->z = ((Vector3*)&self->mMapOriginX)->z;
-    self->mMapCenterX = self->mMapCenterOffset + ((FMUL(((Vector3*)&self->mMapCenterWorldX)->x, self->mScale) + 0x800) >> 12);
-    self->mMapCenterY = self->mMapCenterOffset + ((FMUL(((Vector3*)&self->mMapCenterWorldX)->z, self->mScale) + 0x800) >> 12);
+    this->mCurrentScale = _ZN4cstd4fdivEii(this->mScale, this->mInvScale);
+    { s32 s1 = data_02082214[(((s32)(u16)this->mAngle >> 4) * 2) + 1];
+      this->mBgMatrixA = FMUL(s1, this->mInvScale); }
+    { s32 s2 = data_02082214[((s32)(u16)this->mAngle >> 4) * 2];
+      this->mBgMatrixB = FMUL(s2, this->mInvScale); }
+    this->mBgMatrixC = -this->mBgMatrixB;
+    this->mBgMatrixD = this->mBgMatrixA;
+    ((Vector3*)&this->mMapCenterWorldX)->x = ((Vector3*)&this->mMapOriginX)->x;
+    ((Vector3*)&this->mMapCenterWorldX)->y = ((Vector3*)&this->mMapOriginX)->y;
+    ((Vector3*)&this->mMapCenterWorldX)->z = ((Vector3*)&this->mMapOriginX)->z;
+    this->mMapCenterX = this->mMapCenterOffset + ((FMUL(((Vector3*)&this->mMapCenterWorldX)->x, this->mScale) + 0x800) >> 12);
+    this->mMapCenterY = this->mMapCenterOffset + ((FMUL(((Vector3*)&this->mMapCenterWorldX)->z, this->mScale) + 0x800) >> 12);
 
-    op = (Vector3 *)(((int)obj + 0x5c));
-    v14 = *op;
-    FixTHIPaintingRoomPos(v14);
-    _ZN6dMap_c15GetPosOnMinimapER7Vector3S1_5Fix12IiEsS1_(&v14, (Vector3*)&self->mMapCenterWorldX, self->mCurrentScale, self->mAngle, &v8);
+    focusPosSrc = (Vector3 *)(((int)focus + 0x5c));
+    focusPos = *focusPosSrc;
+    FixTHIPaintingRoomPos(focusPos);
+    _ZN6dMap_c15GetPosOnMinimapER7Vector3S1_5Fix12IiEsS1_(&focusPos, (Vector3*)&this->mMapCenterWorldX, this->mCurrentScale, this->mAngle, &miniPos);
     {
         s32 p = data_0209f250;
-        self->mPlayerIconX[p] = (v8.x + 0x800) >> 12;
-        self->mPlayerIconY[p] = (v8.z + 0x800) >> 12;
+        this->mPlayerIconX[p] = (miniPos.x + 0x800) >> 12;
+        this->mPlayerIconY[p] = (miniPos.z + 0x800) >> 12;
 
         if (SublevelToLevel(data_0209f2f8) != 0x1d) goto B1;
         if (data_0209f2f8 != 1) goto L6a4;
@@ -752,91 +753,98 @@ B1:
         if (SublevelToLevel(data_0209f2f8) != 0x13) goto L6f0;
         if (data_0209f2f8 != 0x2e) goto L6f0;
 L6a4:
-        if (self->mPlayerIconX[p] < 0x60) { v8.x = 0x60000; }
-        else if (self->mPlayerIconX[p] > 0xa0) { v8.x = 0xa0000; }
-        if (self->mPlayerIconY[p] < 0x40) { v8.z = 0x40000; }
-        else if (self->mPlayerIconY[p] > 0x80) { v8.z = 0x80000; }
+        if (this->mPlayerIconX[p] < 0x60) { miniPos.x = 0x60000; }
+        else if (this->mPlayerIconX[p] > 0xa0) { miniPos.x = 0xa0000; }
+        if (this->mPlayerIconY[p] < 0x40) { miniPos.z = 0x40000; }
+        else if (this->mPlayerIconY[p] > 0x80) { miniPos.z = 0x80000; }
         goto L738;
 L6f0:
-        if (self->mPlayerIconX[p] < 0x24) { v8.x = 0x24000; }
-        else if (self->mPlayerIconX[p] > 0xdc) { v8.x = 0xdc000; }
-        if (self->mPlayerIconY[p] < 0x24) { v8.z = 0x24000; }
-        else if (self->mPlayerIconY[p] > 0x9c) { v8.z = 0x9c000; }
+        if (this->mPlayerIconX[p] < 0x24) { miniPos.x = 0x24000; }
+        else if (this->mPlayerIconX[p] > 0xdc) { miniPos.x = 0xdc000; }
+        if (this->mPlayerIconY[p] < 0x24) { miniPos.z = 0x24000; }
+        else if (this->mPlayerIconY[p] > 0x9c) { miniPos.z = 0x9c000; }
     }
 L738:
-    _ZN6dMap_c20GetPosFromMinimapPosER7Vector3S1_5Fix12IiEsS1_(&v8, (Vector3*)&self->mMapCenterWorldX, self->mCurrentScale, self->mAngle, &v20);
-    Vec3_Sub(&v38, &v14, &v20);
-    AddVec3((Vector3*)&self->mMapCenterWorldX, &v38, (Vector3*)&self->mMapCenterWorldX);
-    self->mMapCenterX = self->mMapCenterOffset + ((FMUL(((Vector3*)&self->mMapCenterWorldX)->x, self->mScale) + 0x800) >> 12);
-    self->mMapCenterY = self->mMapCenterOffset + ((FMUL(((Vector3*)&self->mMapCenterWorldX)->z, self->mScale) + 0x800) >> 12);
+    _ZN6dMap_c20GetPosFromMinimapPosER7Vector3S1_5Fix12IiEsS1_(&miniPos, (Vector3*)&this->mMapCenterWorldX, this->mCurrentScale, this->mAngle, &clampedWorld);
+    Vec3_Sub(&scrollDelta, &focusPos, &clampedWorld);
+    AddVec3((Vector3*)&this->mMapCenterWorldX, &scrollDelta, (Vector3*)&this->mMapCenterWorldX);
+    this->mMapCenterX = this->mMapCenterOffset + ((FMUL(((Vector3*)&this->mMapCenterWorldX)->x, this->mScale) + 0x800) >> 12);
+    this->mMapCenterY = this->mMapCenterOffset + ((FMUL(((Vector3*)&this->mMapCenterWorldX)->z, this->mScale) + 0x800) >> 12);
 
+    /* Project each object list onto the map. A missing object gets map id -1. Stars whose
+     * kind byte in data_0209f37c is 4 are the ones Render draws as MM_RED_COIN. */
     for (i = 0; i < 4; i++) {
         Obj *o = (Obj *)data_0209f394[i];
         if (o != 0) {
-        v2c = *(Vector3 *)(((int)o + 0x5c));
-        FixTHIPaintingRoomPos(v2c);
-        _ZN6dMap_c15GetPosOnMinimapER7Vector3S1_5Fix12IiEsS1_(&v2c, (Vector3*)&self->mMapCenterWorldX, self->mCurrentScale, self->mAngle, &v8);
-        self->mPlayerIconX[i] = (v8.x + 0x800) >> 12;
-        self->mPlayerIconY[i] = (v8.z + 0x800) >> 12;
-        if (i != data_0209f250)
-            self->mPlayerMapIDs[i] = (s8)GetMinimapID(o, -1);
-        else
-            self->mPlayerMapIDs[i] = (s8)GetMinimapID(o, data_ov002_02111148);
+            playerPos = *(Vector3 *)(((int)o + 0x5c));
+            FixTHIPaintingRoomPos(playerPos);
+            _ZN6dMap_c15GetPosOnMinimapER7Vector3S1_5Fix12IiEsS1_(&playerPos, (Vector3*)&this->mMapCenterWorldX, this->mCurrentScale, this->mAngle, &miniPos);
+            this->mPlayerIconX[i] = (miniPos.x + 0x800) >> 12;
+            this->mPlayerIconY[i] = (miniPos.z + 0x800) >> 12;
+            if (i != data_0209f250)
+                this->mPlayerMapIDs[i] = (s8)GetMinimapID(o, -1);
+            else
+                this->mPlayerMapIDs[i] = (s8)GetMinimapID(o, data_ov002_02111148);
         } else {
-            self->mPlayerMapIDs[i] = -1;
+            this->mPlayerMapIDs[i] = -1;
         }
     }
 
     for (i = 0; i < 0xc; i++) {
         Obj *o = data_0209f40c[i];
         if (o != 0) {
-        _ZN6dMap_c15GetPosOnMinimapER7Vector3S1_5Fix12IiEsS1_(&o->pos, (Vector3*)&self->mMapCenterWorldX, self->mCurrentScale, self->mAngle, &v8);
-        self->mStarIconX[i] = (v8.x + 0x800) >> 12;
-        self->mStarIconY[i] = (v8.z + 0x800) >> 12;
-        if (data_0209f37c[i] != 4)
-            self->mStarMapIDs[i] = (s8)GetMinimapID(o, -1);
-        else
-            self->mStarMapIDs[i] = 1;
+            _ZN6dMap_c15GetPosOnMinimapER7Vector3S1_5Fix12IiEsS1_(&o->pos, (Vector3*)&this->mMapCenterWorldX, this->mCurrentScale, this->mAngle, &miniPos);
+            this->mStarIconX[i] = (miniPos.x + 0x800) >> 12;
+            this->mStarIconY[i] = (miniPos.z + 0x800) >> 12;
+            if (data_0209f37c[i] != 4)
+                this->mStarMapIDs[i] = (s8)GetMinimapID(o, -1);
+            else
+                this->mStarMapIDs[i] = 1;
         } else {
-            self->mStarMapIDs[i] = -1;
+            this->mStarMapIDs[i] = -1;
         }
     }
 
     for (i = 0; i < 9; i++) {
         Obj *o = data_0209f3e8[i];
         if (o != 0) {
-        _ZN6dMap_c15GetPosOnMinimapER7Vector3S1_5Fix12IiEsS1_(&o->pos, (Vector3*)&self->mMapCenterWorldX, self->mCurrentScale, self->mAngle, &v8);
-        self->mCapIconX[i] = (v8.x + 0x800) >> 12;
-        self->mCapIconY[i] = (v8.z + 0x800) >> 12;
-        self->mCapMapIDs[i] = (s8)GetMinimapID(o, -1);
-        } else { self->mCapMapIDs[i] = -1; }
+            _ZN6dMap_c15GetPosOnMinimapER7Vector3S1_5Fix12IiEsS1_(&o->pos, (Vector3*)&this->mMapCenterWorldX, this->mCurrentScale, this->mAngle, &miniPos);
+            this->mCapIconX[i] = (miniPos.x + 0x800) >> 12;
+            this->mCapIconY[i] = (miniPos.z + 0x800) >> 12;
+            this->mCapMapIDs[i] = (s8)GetMinimapID(o, -1);
+        } else {
+            this->mCapMapIDs[i] = -1;
+        }
     }
 
+    /* The star key: Render blinks it under the same two flag tests. */
     if (data_0209caa0[1] & 0x40) goto La64;
     if ((data_0209caa0[2] & 0x20000) == 0) goto La64;
     {
         Obj *o = (Obj *)data_0209f33c;
-        if (o == 0) { self->mStarKeyMapID = -1; goto La64; }
-        _ZN6dMap_c15GetPosOnMinimapER7Vector3S1_5Fix12IiEsS1_(&o->pos, (Vector3*)&self->mMapCenterWorldX, self->mCurrentScale, self->mAngle, &v8);
-        self->mStarKeyIconX = (v8.x + 0x800) >> 12;
-        self->mStarKeyIconY = (v8.z + 0x800) >> 12;
-        self->mStarKeyMapID = 1;
+        if (o == 0) { this->mStarKeyMapID = -1; goto La64; }
+        _ZN6dMap_c15GetPosOnMinimapER7Vector3S1_5Fix12IiEsS1_(&o->pos, (Vector3*)&this->mMapCenterWorldX, this->mCurrentScale, this->mAngle, &miniPos);
+        this->mStarKeyIconX = (miniPos.x + 0x800) >> 12;
+        this->mStarKeyIconY = (miniPos.z + 0x800) >> 12;
+        this->mStarKeyMapID = 1;
     }
 
 La64:
     for (i = 0; i < 8; i++) {
         Obj *o = data_0209f3a4[i];
         if (o != 0) {
-        _ZN6dMap_c15GetPosOnMinimapER7Vector3S1_5Fix12IiEsS1_(&o->pos, (Vector3*)&self->mMapCenterWorldX, self->mCurrentScale, self->mAngle, &v8);
-        self->mSpikeBombIconX[i] = (v8.x + 0x800) >> 12;
-        self->mSpikeBombIconY[i] = (v8.z + 0x800) >> 12;
-        self->mSpikeBombMapIDs[i] = o->f0cc;
-        } else { self->mSpikeBombMapIDs[i] = -1; }
+            _ZN6dMap_c15GetPosOnMinimapER7Vector3S1_5Fix12IiEsS1_(&o->pos, (Vector3*)&this->mMapCenterWorldX, this->mCurrentScale, this->mAngle, &miniPos);
+            this->mSpikeBombIconX[i] = (miniPos.x + 0x800) >> 12;
+            this->mSpikeBombIconY[i] = (miniPos.z + 0x800) >> 12;
+            this->mSpikeBombMapIDs[i] = o->f0cc;
+        } else {
+            this->mSpikeBombMapIDs[i] = -1;
+        }
     }
 
 Lae4:
     {
-        s32 id = GetMinimapID(obj, data_ov002_02111148);
+        s32 id = GetMinimapID(focus, data_ov002_02111148);
         if (id == data_ov002_02111148) goto Lc30;
         if (id >= 0x10) goto Lc30;
         if (id < 0) goto Lbf0;
@@ -864,10 +872,10 @@ Lbf0:
 Lc00:
         *(volatile s32 *)0x4001000 = (*(volatile s32 *)0x4001000 & ~0x1f00) | (data_0209d454 << 8);
         data_ov002_02111148 = (s8)id;
-        self->mTargetInvScale = GetMinimapScale(id);
+        this->mTargetInvScale = GetMinimapScale(id);
     }
 Lc30:
-    UpdateMinimap(&self->mBgMatrixA, self->mMapCenterX, self->mMapCenterY, self->mMapCenterX - 0x80, self->mMapCenterY - 0x60);
+    UpdateMinimap(&this->mBgMatrixA, this->mMapCenterX, this->mMapCenterY, this->mMapCenterX - 0x80, this->mMapCenterY - 0x60);
     return 1;
 }
 
@@ -891,7 +899,6 @@ extern s32 data_0209fc48;
 
 #pragma opt_strength_reduction off
 // @symbol _ZN6dMap_c13InitResourcesEv
-/* recovered: named members + shared header, real C++ method */
 int dMap_c::InitResources()
 {
     u16 *p;
@@ -991,13 +998,13 @@ int dMap_c::InitResources()
                     mInvScale = (mTargetInvScale) << 1;
                     mAngle = 0;
                     mInIntroCutscene = 1;
-                    goto unk218_done;
+                    goto scale_done;
                 }
             }
         }
         mInvScale = mTargetInvScale;
         mInIntroCutscene = 0;
-    unk218_done:;
+    scale_done:;
     }
 
     data_ov002_02111150 = 0;
@@ -1025,7 +1032,6 @@ int dMap_c::InitResources()
 #pragma opt_strength_reduction on
 
 // @symbol _ZN6dMap_c20GetPosFromMinimapPosER7Vector3S1_5Fix12IiEsS1_
-/* recovered: named members + shared header */
 extern "C" void _ZN6dMap_c20GetPosFromMinimapPosER7Vector3S1_5Fix12IiEsS1_(
     Vector3* a, Vector3* b, int c, short d, Vector3* e)
 {
