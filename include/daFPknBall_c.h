@@ -3,22 +3,28 @@
 
 #include "types.h"
 
-/* Derives from dEnemyBase_c, on the evidence of its own destructor: `_ZN12daFPknBall_cD1Ev`
- * stores this vtable, destroys its members in reverse declaration order, then
- * calls `dEnemyBase_c::~dEnemyBase_c`. Everything this header used to restate below 0x110
- * belongs to that chain and is inherited now.
+/* daFPknBall_c (FPAKUN_BALL, actor 254): the fireball the fire piranha plant
+ * (daFPkn_c) spits. It flies straight along its heading for a fixed distance,
+ * burns a Player it touches (Player::Burn) and dies in a puff of dust when it
+ * runs out of range, hits a wall or touches water.
  *
- * The members close exactly on one another:
+ * Derives from dEnemyBase_c, on the evidence of its own destructor:
+ * `_ZN12daFPknBall_cD1Ev` stores this vtable, destroys its members in reverse
+ * declaration order, then calls `dEnemyBase_c::~dEnemyBase_c`. The allocation
+ * is 888 (0x378) bytes (`daFPknBall_c_classInit`).
+ *
+ * The typed members close exactly on one another:
  *
  *     0x110 dCcAc_c         0x34   -> 0x144
- *     0x144 dBgCh_Actr               0x1bc  -> 0x300
- *     0x300 ShadowModel                0x28   -> 0x328
+ *     0x144 dBgCh_Actr      0x1bc  -> 0x300
+ *     0x300 ShadowModel     0x28   -> 0x328
+ *     0x328 Matrix4x3       0x30   -> 0x358
  *
- * Typing them absorbed these markers, which were a member's insides:
- *   - 0x12c unk_12c      = mdCcAc_c + 0x1c
+ * The 0x12c word the old header carried as unk_12c is mdCcAc_c + 0x1c.
  *
- * Member NAMES are the ones this header already used -- a rebase should not
- * also rename things its callers spell.
+ * Member NAMES that predate this comment (mdCcAc_c, mWithMeshClsn, mShadowModel)
+ * are kept so callers spelling them still compile; the rest are named for what
+ * Behavior does with them.
  *
  * SIZE IS THE OBSERVED FIELD SPAN, rounded up. It guards this declaration; it
  * is not independent evidence about the ROM.
@@ -37,16 +43,19 @@ struct daFPknBall_c : dEnemyBase_c {
     dCcAc_c           mdCcAc_c;   /* 0x110 */
     dBgCh_Actr                 mWithMeshClsn;         /* 0x144 */
     ShadowModel                  mShadowModel;          /* 0x300 */
-    u8  pad_328[0x38];
-    s32                          unk_360;               /* 0x360 */
-    s32                          unk_364;               /* 0x364 */
-    u8  pad_368[0x2];
-    u16                          unk_36a;               /* 0x36a */
+    Matrix4x3                    mShadowMat;            /* 0x328 -- translation only; the ball's position >> 3 */
+    struct Player *              mTargetPlayer;         /* 0x358 -- ClosestPlayer, refreshed every Behavior */
+    s32                          mTargetSpeed;          /* 0x35c -- what mHorzSpeed approaches; dActor_c.h names SpawnFireball's fourth argument unk35c; daFPkn_c passes 0xa000 */
+    s32                          mDistanceFlown;        /* 0x360 -- sum of mHorzSpeed each frame */
+    s32                          mMaxDistance;          /* 0x364 -- 0x5dc000 (1500 units) from InitResources */
+    s16                          mTargetAngleY;         /* 0x368 -- toward the player, else the current heading */
+    u16                          unk_36a;               /* 0x36a -- zeroed by InitResources, otherwise unused */
     u8  pad_36c[0x1];
-    u8                           unk_36d;               /* 0x36d */
-    u8  pad_36e[0x2];
-    s32                          unk_370;               /* 0x370 */
-    s32                          unk_374;               /* 0x374 */
+    u8                           mVariant;              /* 0x36d -- param1 & 7; daFPkn_c spawns 3. Other than 0 and 4, InitResources sets vulnFlags 0x8000 and OnYoshiTryEat returns 5 */
+    u8                           mMirrored;             /* 0x36e -- when set, the effect and dust position uses -x; never written by this class */
+    u8  pad_36f[0x1];
+    u32                          mTrailEffect;          /* 0x370 -- last result of Particle::System::NewUnkCallback818, passed back in each frame */
+    void *                       mSparkEffect;          /* 0x374 -- last result of Particle::System::New, passed back in each frame */
 
     /* --- vtable --- */
     virtual ~daFPknBall_c();
