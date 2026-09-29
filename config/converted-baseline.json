@@ -7,7 +7,7 @@
     "no_codegen_trick",
     "no_mangled_refs"
   ],
-  "count": 3032,
+  "count": 3033,
   "converted": [
     "src/ARMMathLoadState.c",
     "src/ARMMathSaveState.c",
@@ -3040,6 +3040,7 @@
     "src/actors/daFPkn_c.cpp#daFPkn_c_classInit_FIREPAKUN_S",
     "src/actors/daFPkn_c.cpp#daFPkn_c_classInit_PAKUN2",
     "src/actors/daObjEwmIceBlock_c.cpp#daObjEwmIceBlock_c_classInit",
-    "src/actors/daObjCloset_c.cpp#daObjCloset_c_classInit"
+    "src/actors/daObjCloset_c.cpp#daObjCloset_c_classInit",
+    "src/actors/daJango_c.cpp#daJango_c_classInit"
   ]
 }
