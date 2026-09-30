@@ -2,11 +2,11 @@
 #include "TextureTransformer.h"
 #include "TextureSequence.h"
 #include "MaterialChanger.h"
-// @symbol _ZN8Goomboss6RenderEv
+// @symbol _ZN12daKuriKing_c6RenderEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 #include "decl_common.h"
 /* recovered: named members + shared header, real C++ method */
-#include "Goomboss.h"
+#include "daKuriKing_c.h"
 extern "C" {
 }
 struct Sub {
@@ -14,7 +14,7 @@ struct Sub {
   virtual void v3(); virtual void v4(); virtual void m(void*);
 };
 
-int Goomboss::Render()
+int daKuriKing_c::Render()
 {
   if(param1==0x1111) return func_ov074_021222e0(((char*)this));
   if(mShouldRender==0) return 1;

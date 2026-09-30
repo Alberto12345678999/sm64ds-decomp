@@ -196,7 +196,7 @@
     "total_lines": "921 -> 952 measured. 952 - 31 (src/d_a_pkn.c) = 921 exactly, confirming the same off-by-one shard.",
     "sibling_oracle": "`-` is wrong at this base. Two promoted TUs share daPkn_c's exact ancestor chain X -> dEnemyBase_c -> dActor_c -> dBase_c -> fBase_c: src/actors/daOts_c.cpp (ov064, 22 functions, config/tu_manifest.d/ov064/daOts_c.json) and src/actors/daObjMarioCap_c.cpp (ov002, 29 of 30 functions). Both are text-only promotions -- daOts_c's manifest has sections = [.text] only, data = [] and bss = [] -- and both handle the vtable through the manifest's compiler_only_output list rather than by owning .data.",
     "compiler_only": ">=11 is an ESTIMATE carried in the queue file, not a measurement. This scout did not measure it; doing so requires building the TU, which is stage 2.",
-    "no_promoted_class_in_ov084": "0 of the 31 files in src/actors/ is an ov084 class. src/actors/Goomboss.cpp merely declares func_ov084_021296b0 and data_ov084_02130cf8 as externs -- that is the ov074 -> daKrb_c call, unrelated to this class."
+    "no_promoted_class_in_ov084": "0 of the 31 files in src/actors/ is an ov084 class. src/actors/daKuriKing_c.cpp merely declares func_ov084_021296b0 and data_ov084_02130cf8 as externs -- that is the ov074 -> daKrb_c call, unrelated to this class."
   },
 
   "state_machine": {

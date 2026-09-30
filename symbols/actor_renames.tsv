@@ -2320,12 +2320,12 @@ ov073	0x02123184	CccBigIce_SpawnInfo	g_profile_EWB_ICE_B	reconstructed profile g
 ov073	0x021231a0	data_ov073_021231a0	CccSmallIce_SpawnInfo	spawninfo
 ov073	0x021231a0	CccSmallIce_SpawnInfo	g_profile_EWB_ICE_C	reconstructed profile global; literal ROM ID EWB_ICE_C+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov073	0x021231e8	data_ov073_021231e8	_ZTV13daObjEwbIce_c	vtable alloc=0x33c
-ov074	0x0211f000	func_ov074_0211f000	_ZN8GoombossD1Ev	vtable slot 16
-ov074	0x0211f0a0	func_ov074_0211f0a0	_ZN8GoombossD0Ev	vtable slot 17
-ov074	0x02121abc	func_ov074_02121abc	_ZN8Goomboss16CleanupResourcesEv	vtable slot 3
-ov074	0x02121b70	func_ov074_02121b70	_ZN8Goomboss6RenderEv	vtable slot 9
-ov074	0x02121bf0	func_ov074_02121bf0	_ZN8Goomboss8BehaviorEv	vtable slot 6
-ov074	0x02121e98	func_ov074_02121e98	_ZN8Goomboss13InitResourcesEv	vtable slot 0
+ov074	0x0211f000	func_ov074_0211f000	_ZN12daKuriKing_cD1Ev	vtable slot 16
+ov074	0x0211f0a0	func_ov074_0211f0a0	_ZN12daKuriKing_cD0Ev	vtable slot 17
+ov074	0x02121abc	func_ov074_02121abc	_ZN12daKuriKing_c16CleanupResourcesEv	vtable slot 3
+ov074	0x02121b70	func_ov074_02121b70	_ZN12daKuriKing_c6RenderEv	vtable slot 9
+ov074	0x02121bf0	func_ov074_02121bf0	_ZN12daKuriKing_c8BehaviorEv	vtable slot 6
+ov074	0x02121e98	func_ov074_02121e98	_ZN12daKuriKing_c13InitResourcesEv	vtable slot 0
 ov074	0x02122764	func_ov074_02122764	ExplosionGoomba_Spawn	spawnfunc
 ov074	0x02122764	ExplosionGoomba_Spawn	daKuriKing_c_classInit_KURIKING_VANISH	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov074	0x02122838	func_ov074_02122838	Goomboss_Spawn	spawnfunc
@@ -2334,7 +2334,7 @@ ov074	0x02122e78	data_ov074_02122e78	Goomboss_SpawnInfo	spawninfo
 ov074	0x02122e78	Goomboss_SpawnInfo	g_profile_KURIKING	reconstructed profile global; literal ROM ID KURIKING+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov074	0x02122e94	data_ov074_02122e94	ExplosionGoomba_SpawnInfo	spawninfo
 ov074	0x02122e94	ExplosionGoomba_SpawnInfo	g_profile_KURIKING_VANISH	reconstructed profile global; literal ROM ID KURIKING_VANISH+registry role+later EAD lineage; exact SM64DS spelling not preserved
-ov074	0x02122eb8	data_ov074_02122eb8	_ZTV8Goomboss	vtable alloc=0x610
+ov074	0x02122eb8	data_ov074_02122eb8	_ZTV12daKuriKing_c	vtable alloc=0x610
 ov075	0x02113ee0	func_ov075_02113ee0	_ZN9dEntObj_cD1Ev	vtable slot 16
 ov075	0x02113f54	func_ov075_02113f54	_ZN9dEntObj_cD0Ev	vtable slot 17
 ov075	0x02115388	func_ov075_02115388	_ZN9dEntObj_c16CleanupResourcesEv	vtable slot 3

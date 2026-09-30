@@ -27962,13 +27962,13 @@
    "end": "0x212290c",
    "classes": [
     "ExplosionGoomba",
-    "Goomboss"
+    "daKuriKing_c"
    ],
    "n_functions_map": 55,
    "n_files": 52,
    "files": [
-    "src/_ZN8GoombossD1Ev.cpp",
-    "src/_ZN8GoombossD0Ev.c",
+    "src/_ZN12daKuriKing_cD1Ev.cpp",
+    "src/_ZN12daKuriKing_cD0Ev.c",
     "src/func_ov074_0211f154.c",
     "src/func_ov074_0211f244.cpp",
     "src/func_ov074_0211f344.c",
@@ -28009,10 +28009,10 @@
     "src/func_ov074_0212199c.c",
     "src/func_ov074_02121a20.c",
     "src/func_ov074_02121a4c.cpp",
-    "src/_ZN8Goomboss16CleanupResourcesEv.cpp",
-    "src/_ZN8Goomboss6RenderEv.cpp",
-    "src/_ZN8Goomboss8BehaviorEv.cpp",
-    "src/_ZN8Goomboss13InitResourcesEv.cpp",
+    "src/_ZN12daKuriKing_c16CleanupResourcesEv.cpp",
+    "src/_ZN12daKuriKing_c6RenderEv.cpp",
+    "src/_ZN12daKuriKing_c8BehaviorEv.cpp",
+    "src/_ZN12daKuriKing_c13InitResourcesEv.cpp",
     "src/func_ov074_0212229c.c",
     "src/func_ov074_021222e0.cpp",
     "src/func_ov074_021223bc.cpp",

@@ -1,11 +1,11 @@
-#ifndef GOOMBOSS_H
-#define GOOMBOSS_H
+#ifndef DAKURIKING_C_H
+#define DAKURIKING_C_H
 
 #include "types.h"
 #include "ModelAnim.h"
 #include "dBgCh_Actr.h"
 
-/* The Goomboss. Its destructor is the layout, and eight boundaries close on
+/* The daKuriKing_c. Its destructor is the layout, and eight boundaries close on
  * sizes other headers assert:
  *
  *     dEnemyBase_c                        ends 0x110
@@ -21,16 +21,18 @@
  * SIX OF THE GENERATED FIELDS WERE THE Vector3 ARRAY'S OWN COMPONENTS: the
  * header had split a Vector3[3] at 0x3ac into nine scalars and named six of
  * them (elements 1 and 2). Both branches spell the array now. Two more former
- * unknowns sat inside embedded animations rather than in Goomboss at all --
+ * unknowns sat inside embedded animations rather than in daKuriKing_c at all --
  * 0x3d8 is the MaterialChanger's Animation cursor (+0x08) and 0x3f0 is the
  * TextureSequence's playback speed (+0x0c); see include/Animation.h.
  *
  * Field provenance: notes/enemy-leaf-provenance.md.
  *
- * SM64DS RTTI names the implementation daKuriKing_c. The reconstructed
- * factory daKuriKing_c_classInit_KURIKING (historical alias
- * Goomboss_Spawn) constructs it for the KURIKING
- * registry profile.
+ * The cartridge names this class daKuriKing_c: _ZTI12daKuriKing_c at
+ * ov074:0x02122e30 and _ZTS12daKuriKing_c at 0x02122e3c, with the vtable
+ * this class owns at 0x02122eb8. The tree used to spell it Goomboss; the
+ * rename and its ABI argument are in the manifest's class-label note. The
+ * reconstructed factory daKuriKing_c_classInit_KURIKING (historical alias
+ * Goomboss_Spawn) constructs it for the KURIKING registry profile.
  */
 
 #ifdef __cplusplus
@@ -44,7 +46,7 @@
 #include "dBgCh_Actr.h"
 #include "dCcAcPos_c.h"
 
-struct Goomboss : dEnemyBase_c {
+struct daKuriKing_c : dEnemyBase_c {
     dCcAcPos_c mdCc_cs[4];  /* 0x110 */
     ModelAnim mModelAnim;                         /* 0x210 */
     ShadowModel mShadowModels[3];                 /* 0x274 */
@@ -100,32 +102,32 @@ struct Goomboss : dEnemyBase_c {
     /* Layer-3 music one-shot during the intro talk. */
     u8  mMusicStarted;                        /* 0x60c */
     /* The field span ends at 0x60d, but a span is only a LOWER BOUND. Both factories
-       that store _ZTV8Goomboss (ov074:0x02122eb8) -- daKuriKing_c_classInit_KURIKING and
+       that store _ZTV12daKuriKing_c (ov074:0x02122eb8) -- daKuriKing_c_classInit_KURIKING and
        daKuriKing_c_classInit_KURIKING_VANISH -- call fBase_c::operator new(0x610). Two factories
        building one actor is a spawn-info variant, not a second class. */
     u8  pad_60d[0x3];                         /* 0x60d, to the ROM's 0x610 */
 
-    virtual ~Goomboss();
+    virtual ~daKuriKing_c();
 
     virtual s32 Behavior();
     virtual s32 CleanupResources();
-    /* Declared here so src/_ZN8Goomboss13InitResourcesEv.cpp can be a real method
+    /* Declared here so src/_ZN12daKuriKing_c13InitResourcesEv.cpp can be a real method
        rather than an extern "C" free function under the mangled name. Safe to
-       declare virtual: ~Goomboss is still the first virtual DECLARED, so the key
-       function -- and with it _ZTV8Goomboss -- stays where it already was. */
+       declare virtual: ~daKuriKing_c is still the first virtual DECLARED, so the key
+       function -- and with it _ZTV12daKuriKing_c -- stays where it already was. */
     virtual s32 InitResources();
     virtual s32 Render();
 };
 
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
-typedef char Goomboss_size_must_be_0x610[sizeof(Goomboss) == 0x610 ? 1 : -1];
+typedef char daKuriKing_c_size_must_be_0x610[sizeof(daKuriKing_c) == 0x610 ? 1 : -1];
 #endif
 
 #else
 
 /* The same object for a C translation unit, flat. */
-struct Goomboss {
+struct daKuriKing_c {
     u8  pad_000[0x8];
     s32 mParam;            /* 0x008 */
     u8  pad_00c[0x50];
@@ -205,4 +207,4 @@ struct Goomboss {
 
 #endif /* __cplusplus */
 
-#endif /* GOOMBOSS_H */
+#endif /* DAKURIKING_C_H */

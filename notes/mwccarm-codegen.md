@@ -4039,7 +4039,7 @@ or one that outranks a call-return-coalesced web against a loop-invariant one. N
 
 ## 6bq. Three homing levers and a store-order rank lever (ov074 daKuriKing_c, two MATCHED, one at div 11, 2026-08-30)
 
-The Goomboss overlay's three unsourced bodies. Two fell on the first day; the third is
+The Kuri King overlay's three unsourced bodies. Two fell on the first day; the third is
 one lever short. What they share is that every single blocker was a question about
 which locals mwccarm keeps IN MEMORY, and in what order the source touches them.
 
