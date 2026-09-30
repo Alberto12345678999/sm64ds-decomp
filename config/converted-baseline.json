@@ -609,7 +609,7 @@
     "src/_ZN16dScMgSmartball_c8OnPushedEv.cpp",
     "src/_ZN16dScMgSmartball_cD0Ev.cpp",
     "src/_ZN16dScMgSmartball_cD1Ev.cpp",
-    "src/_ZN16daKing_Donketu_c16OnAimedAtWithEggEv.cpp",
+    "src/actors/daKing_Donketu_c.cpp#_ZN16daKing_Donketu_c16OnAimedAtWithEggEv",
     "src/_ZN16daObjFallBlock_cD0Ev.cpp",
     "src/_ZN16daObjFallBlock_cD1Ev.cpp",
     "src/_ZN16daObjKaitendai_cD0Ev.cpp",
