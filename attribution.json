@@ -4127,6 +4127,8 @@
     "src/actors/daObjDorifu_c.cpp#_ZN13daObjDorifu_c6RenderEv": "tangosdev",
     "src/actors/daObjDorifu_c.cpp#_ZN13daObjDorifu_c8BehaviorEv": "andrewboudreau",
     "src/actors/daObjDorifu_c.cpp#_ZN13daObjDorifu_c13InitResourcesEP20daObjDorifuResources": "andrewboudreau",
+    "src/actors/dScEntry_c.cpp#_ZN10dScEntry_cD1Ev": "tangosdev",
+    "src/actors/dScEntry_c.cpp#_ZN10dScEntry_cD0Ev": "tangosdev",
     "src/actors/dScEntry_c.cpp#_ZN10dScEntry_c6icon_cD1Ev": "tangosdev",
     "src/actors/dScEntry_c.cpp#_ZN12OamAnimationD1Ev": "andrewboudreau",
     "src/actors/dScEntry_c.cpp#_ZN10dScEntry_c6icon_c6RenderEv": "lunavyqo",
