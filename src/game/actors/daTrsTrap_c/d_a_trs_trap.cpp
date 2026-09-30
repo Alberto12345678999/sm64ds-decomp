@@ -95,7 +95,7 @@ extern "C" {
 void func_ov063_0211c684(char *c);
 void func_ov063_0211c6f8(char *c);
 void func_ov063_0211c82c(char *c);
-void func_ov063_0211d28c(void *a, void *b, void *c);
+void func_ov063_0211d28c(dBgW *clsn, daTrsTrap_c *self, dActor_c *actor);
 /* dBgW callback-word stores (see above). */
 void func_020393d4(int *p, int v);
 void func_020393c4(int *p, int v);
