@@ -12,8 +12,9 @@
  * tears them down in reverse, so they could become typed members. They stay
  * raw storage until the factory and the destructor change together.
  *
- * The destructor is the key function, defined out of line; the D1 and D0
- * files carry the same definition. dScMgBase_c's operator delete serves D0.
+ * The destructor is the key function, defined out of line in
+ * src/actors/dMg3DEspAnimSet_c.cpp, which emits both D1 and D0.
+ * dScMgBase_c's operator delete serves D0.
  */
 #ifndef DSCMG3DESP_C_H
 #define DSCMG3DESP_C_H

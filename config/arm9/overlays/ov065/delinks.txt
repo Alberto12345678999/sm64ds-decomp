@@ -62,14 +62,7 @@ src/d_a_obj_ct_mecha08_ct_mecha08a.c:
 
 src/actors/daObjCtMecha09_c.cpp:
     complete
-    .text start:0x0211bbdc end:0x0211bf04
-
-src/_ZN16daObjCtMecha09_c13InitResourcesEv.cpp:
-    .text start:0x0211bf04 end:0x0211c040
-
-src/d_a_obj_ct_mecha09.c:
-    complete
-    .text start:0x0211c040 end:0x0211c078
+    .text start:0x0211bbdc end:0x0211c078
 
 src/__sinit_ov065_0211c110.c:
     complete

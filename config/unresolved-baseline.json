@@ -259,7 +259,7 @@
    ]
   },
   "ov074:0x02121e98": {
-   "name": "_ZN8Goomboss13InitResourcesEv",
+   "name": "_ZN12daKuriKing_c13InitResourcesEv",
    "missing": [
     "func_021123f4",
     "func_021124ac"
