@@ -6139,6 +6139,16 @@
     "src/actors/daChoropu_c.cpp#_ZN11daChoropu_c8BehaviorEv": "tangosdev",
     "src/actors/daChoropu_c.cpp#_ZN14daChoro_Rock_c8BehaviorEv": "tangosdev",
     "src/actors/daChoropu_c.cpp#_ZN11daChoropu_c13InitResourcesEv": "tangosdev",
-    "src/actors/daChoropu_c.cpp#_ZN14daChoro_Rock_c13InitResourcesEv": "tangosdev"
+    "src/actors/daChoropu_c.cpp#_ZN14daChoro_Rock_c13InitResourcesEv": "tangosdev",
+    "src/actors/daObjKey_c.cpp#_ZN10daObjKey_cD1Ev": "tangosdev",
+    "src/actors/daObjKey_c.cpp#_ZN10daObjKey_cD0Ev": "tangosdev",
+    "src/actors/daObjKey_c.cpp#func_ov089_02130fb4": "lunavyqo",
+    "src/actors/daObjKey_c.cpp#UnloadKeyModels": "tangosdev",
+    "src/actors/daObjKey_c.cpp#LoadKeyModels": "tangosdev",
+    "src/actors/daObjKey_c.cpp#func_ov089_0213115c": "tangosdev",
+    "src/actors/daObjKey_c.cpp#_ZN10daObjKey_c16StateFlyToCenterEv": "ruspecial",
+    "src/actors/daObjKey_c.cpp#_ZN10daObjKey_c13StateStarJumpEv": "ruspecial",
+    "src/actors/daObjKey_c.cpp#daObjKey_c_classInit_LAST_STAR": "tangosdev",
+    "src/actors/daObjKey_c.cpp#daObjKey_c_classInit_OBJ_KEY": "tangosdev"
   }
 }
