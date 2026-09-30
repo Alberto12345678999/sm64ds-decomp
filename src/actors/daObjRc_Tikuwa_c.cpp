@@ -172,7 +172,7 @@ extern "C" void func_ov036_02111ca4(void *self, void *clsn)
 
 /* -------------------------------------------------------------------------- */
 /* The C-ABI callback InitResources installs into dBgW's slot. It drops the
- * receiver dBgW passes first and hands the block itself to the method. */
+ * receiver dBgW passes first and hands the block itself to the body above. */
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov036_02111cc4
 extern "C" void func_ov036_02111cc4(void *dBgW, void *self, void *clsn)
@@ -181,8 +181,9 @@ extern "C" void func_ov036_02111cc4(void *dBgW, void *self, void *clsn)
 }
 
 /* -------------------------------------------------------------------------- */
-/* Factory: `return new` inherits fBase_c::operator new, which is the 0x4ec
- * allocation the cartridge's own factory makes. */
+/* Factory: `return new` goes through the class's leaf operator new adapter
+ * to fBase_c::operator new -- the 0x4ec allocation the cartridge's own
+ * factory makes. */
 /* -------------------------------------------------------------------------- */
 // @symbol daObjRc_Tikuwa_c_classInit
 extern "C" daObjRc_Tikuwa_c *daObjRc_Tikuwa_c_classInit()
