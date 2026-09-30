@@ -71,29 +71,30 @@ struct daCoin_c : dActor_c {
     dBgCh_Actr mWithMeshClsn;            /* 0x1ac */
     Matrix4x3 mShadowMat;        /* 0x368 */
     s32 mFloorPosY;            /* 0x398 */
-    u8  pad_39c[0x4];
+    /* Read only by func_ov002_020b1a60, which copies that actor's position
+       (raised by 0xc8000) into the coin every frame. Nothing in the tree
+       writes it. */
+    dActor_c *mFollowTarget;            /* 0x39c */
     s32 mCoinType;            /* 0x3a0 */
     s32 mBehaviorType;            /* 0x3a4 */
-    s16 mDisappearTimer;            /* 0x3a8 */
+    u16 mDisappearTimer;            /* 0x3a8 -- every read in the ROM is ldrh */
     u8  mNoClsnTimer;            /* 0x3aa */
     /* param1 bits 4..6 for a red (0x121) or blue (0x122) coin, 0xff otherwise
        -- the same three-bit value LoadObjects compares against data_0209f220 to
        decide whether an object belongs to the entrance the level was started
-       from (src/stage/LevelObjects.cpp). A red coin
-       claims a star-marker slot only when it matches (or the level is 0x13); a
-       blue coin with a filter under 8 clears bit 0 of mCoinFlags.
-       [daCoin_c::InitResources, src/actors/daCoin_c.cpp] */
+       from. A red coin claims a
+       star-marker slot only when it matches (or the level is 0x13); a blue
+       coin with a filter under 8 clears bit 0 of mCoinFlags. */
     u8  mSpawnFilter;            /* 0x3ab */
     s8  mTrackStarID;            /* 0x3ac */
     u8  pad_3ad[0x1];
-    /* The flag byte the header comment above already describes. Bit 0 gates
-       Render entirely; Behavior tests bits 0 and 1. Every read-modify-write of
-       it keeps its raw `*(u8*)((int)c + 0x3ae)` spelling on purpose -- see the
-       "FOUR SITES KEEP RAW OFFSETS" note in
-       daCoin_c::InitResources (src/actors/daCoin_c.cpp). [daCoin_c::Render,
-       daCoin_c::Behavior] */
+    /* Packed flags; the bit layout is CoinFlagBits in daCoin_c.cpp. Bit 0
+       gates Render entirely; Behavior tests bits 0 and 1. The read-modify-write
+       sites keep a raw `*(u8*)((int)this + 0x3ae)` spelling. */
     u8  mCoinFlags;            /* 0x3ae */
-    u8  pad_3af[0x1];
+    /* Set to 1 by func_ov002_020b1008 once it has looked for a BLOCK_L
+       actor near a red coin, so the search runs one time. */
+    u8  mBlockScanned;            /* 0x3af */
     u8  mInBrickBlock;            /* 0x3b0 */
 
     virtual ~daCoin_c();            /* slots 16 (D1), 17 (D0) */

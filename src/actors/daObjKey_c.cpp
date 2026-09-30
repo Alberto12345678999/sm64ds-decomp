@@ -1,12 +1,12 @@
 //cpp
-/* Castle key and the last Power Star -- ov089/daObjKey_c.
- * OBJ_KEY is actor 0x11a (282); LAST_STAR is 0x11b (283). Both factories
- * install this vtable. param1 & 7 picks the kind: 7 uses the power-star
- * model (data_ov002_0211094c, file 0x8015) and func_ov089_0213162c; 3 uses
- * func_ov089_021311c0; the other six kinds are StateDrop. Those two bodies,
- * the destructors, and the factories sit outside this run and stay there.
+/* daObjKey_c (ov089): OBJ_KEY is actor 0x11a (282) and LAST_STAR is 0x11b
+ * (283); both factories install this vtable. param1 & 7 picks the kind: 7 uses
+ * the power-star model (data_ov002_0211094c, file 0x8015) and
+ * func_ov089_0213162c; 3 uses func_ov089_021311c0; the other six kinds are
+ * StateDrop. Those two bodies, the destructors, and the factories sit outside
+ * this run and stay there.
  *
- * deslop leftovers:
+ * Known limits:
  * - StateDrop: mWithMeshClsn.UpdateContinuous() is the same size (0x2b4) but
  *   the reloc target is _ZN10dBgCh_Actr16UpdateContinuousEv. The ROM calls the
  *   veneer at arm9:0x020383fc.
@@ -24,11 +24,13 @@
  *   called by name.
  * - func_ov089_02131df4: one control arm (mState != 7) size 0x110 -> 0xe8
  *   (-0x28). The ROM has both copies.
- *   func_ov089_02131dcc / func_ov089_02131df4 stay C names: the shards call
- *   them that way. common.h's flat Matrix4x3 keeps the translation in m[9..11].
- *   The carry sparkle reads the first bone's word at +0xc; BMD_Bone does not
- *   name it. g_profile_OBJ_KEY / LAST_STAR stay outside this TU.
- *   data_0209f318 as Camera * matches, but the plurality is void * so the
+ * - func_ov089_02131dcc / func_ov089_02131df4 stay C names: the shards call
+ *   them that way.
+ * - common.h's flat Matrix4x3 keeps the translation in m[9..11].
+ * - The carry sparkle reads the first bone's word at +0xc; BMD_Bone does not
+ *   name it.
+ * - g_profile_OBJ_KEY / LAST_STAR stay outside this TU.
+ * - data_0209f318 as Camera * matches, but the plurality is void * so the
  *   cast stays.
  */
 
@@ -145,9 +147,6 @@ extern int data_0209cef0;
 void func_ov089_02131df4(char *c, char *p);
 }
 
-/* -------------------------------------------------------------------------- */
-/* _ZN10daObjKey_c9StateDropEv, 0x02131b18 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN10daObjKey_c9StateDropEv
 void daObjKey_c::StateDrop()
 {
@@ -228,9 +227,6 @@ void daObjKey_c::StateDrop()
     }
 }
 
-/* -------------------------------------------------------------------------- */
-/* func_ov089_02131dcc, 0x02131dcc */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov089_02131dcc
 /* Last-star path. (char *, char *) is the spelling the shards declare. */
 extern "C" void func_ov089_02131dcc(char *c, char *p)
@@ -242,9 +238,6 @@ extern "C" void func_ov089_02131dcc(char *c, char *p)
     key->MarkForDestruction();
 }
 
-/* -------------------------------------------------------------------------- */
-/* func_ov089_02131df4, 0x02131df4 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov089_02131df4
 extern "C" void func_ov089_02131df4(char *c, char *p)
 {
@@ -282,9 +275,6 @@ extern "C" void func_ov089_02131df4(char *c, char *p)
     }
 }
 
-/* -------------------------------------------------------------------------- */
-/* _ZN10daObjKey_c13OnTurnIntoEggER6Player, 0x02131f04 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN10daObjKey_c13OnTurnIntoEggER6Player
 void daObjKey_c::OnTurnIntoEgg(Player &player)
 {
@@ -295,17 +285,11 @@ void daObjKey_c::OnTurnIntoEgg(Player &player)
     return func_ov089_02131dcc((char *)this, (char *)&player);
 }
 
-/* -------------------------------------------------------------------------- */
-/* _ZN10daObjKey_c13OnYoshiTryEatEv, 0x02131f4c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN10daObjKey_c13OnYoshiTryEatEv
 s32 daObjKey_c::OnYoshiTryEat() {
     return 4;
 }
 
-/* -------------------------------------------------------------------------- */
-/* _ZN10daObjKey_c20UpdateModelTransformEv, 0x02131f54 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN10daObjKey_c20UpdateModelTransformEv
 void daObjKey_c::UpdateModelTransform()
 {
@@ -328,9 +312,6 @@ void daObjKey_c::UpdateModelTransform()
         _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(this, &mShadowModel, &mShadowMatrix, SHADOW_R, SHADOW_DEPTH, SHADOW_OPACITY);
 }
 
-/* -------------------------------------------------------------------------- */
-/* _ZN10daObjKey_c16CleanupResourcesEv, 0x02132084 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN10daObjKey_c16CleanupResourcesEv
 int daObjKey_c::CleanupResources()
 {
@@ -346,9 +327,6 @@ int daObjKey_c::CleanupResources()
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* _ZN10daObjKey_c6RenderEv, 0x021320f0 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN10daObjKey_c6RenderEv
 int daObjKey_c::Render()
 {
@@ -366,9 +344,6 @@ int daObjKey_c::Render()
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* _ZN10daObjKey_c8BehaviorEv, 0x02132194 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN10daObjKey_c8BehaviorEv
 int daObjKey_c::Behavior()
 {
@@ -452,9 +427,6 @@ int daObjKey_c::Behavior()
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* _ZN10daObjKey_c13InitResourcesEv, 0x021324a4 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN10daObjKey_c13InitResourcesEv
 int daObjKey_c::InitResources()
 {
