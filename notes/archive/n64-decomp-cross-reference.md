@@ -459,7 +459,7 @@ at `0x020d3dcc`–`0x020d3de0`, threshold and factor both exact.
 
 Earlier notes described the [ov098](../../config/arm9/overlays/ov098/symbols.txt) jump table (30/45/60/100 → `+0x5f0`) as a surface-type→speed
 table. **It is quicksand sink depth.** [ov098](../../config/arm9/overlays/ov098/symbols.txt) is the Shifting Sand Land object overlay;
-[func_ov098_02139228](../../src/func_ov098_02139228.cpp) = `Crate::UpdateQuicksand`. `+0x5f0` is target sink depth, `+0x5f4` current,
+[func_ov098_02139228](../../src/actors/daObjBlockS_c.cpp) = `Crate::UpdateQuicksand`. `+0x5f0` is target sink depth, `+0x5f4` current,
 approached at 0.5/frame. Render position is built as `pos.y − this[0x5f4]` — verbatim N64
 `mario.c:1552` `o->header.gfx.pos[1] -= m->quicksandDepth`.
 

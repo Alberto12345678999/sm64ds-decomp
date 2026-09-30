@@ -61,9 +61,9 @@ recorded in the [integration evidence](experiments/pr2874-integration-0920.json)
 ## daObjBlockS_c (`include/daObjBlockS_c.h`, [ov098](../config/arm9/overlays/ov098/symbols.txt), size 0x608)
 
 Formerly the coined `Crate`. Bodies read: `InitResources`, `Behavior`, `Render`,
-`CleanupResources`, `OnTurnIntoEgg`, `OnYoshiTryEat` and `OnGroundPounded` (then
-per-function files, now together in `src/actors/daObjBlockS_c.cpp`),
-`src/_ZN13daObjBlockS_c4KillEv.cpp`, `src/Crate_SetState.cpp`.
+`CleanupResources`, `OnTurnIntoEgg`, `OnYoshiTryEat`, `OnGroundPounded`, `Kill` and
+`Crate_SetState` (then per-function files, now together in
+`src/actors/daObjBlockS_c.cpp`).
 
 | Offset | Name | Evidence |
 | --- | --- | --- |
@@ -104,7 +104,7 @@ Raw-offset collapses, each re-verified byte-exact:
   and the two `(char *)&mPosX` / `(char *)&mHomePosX` double casts.
 * `Render`: `(Sub *)((char *)&mModel)` → `(Sub *)&mModel`.
 
-`Crate_SetState.cpp` keeps its local `struct C` shadow on purpose: it calls through a
+`Crate_SetState` keeps a local flat shadow (`BlockSStateHost`) on purpose: it calls through a
 pointer-to-member function, and that representation is not the same for a polymorphic
 class as for the flat shadow the ROM's own code is built against.
 
