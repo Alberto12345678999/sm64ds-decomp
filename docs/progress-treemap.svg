@@ -36661,11 +36661,11 @@ matched: yes</title></rect><rect x="1188.38" y="442.00" width="6.52" height="5.5
 module: ov064
 addr: 0x02119368
 size: 76 bytes
-matched: yes</title></rect><rect x="1128.67" y="447.50" width="9.01" height="57.45" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov064_021193b4
+matched: yes</title></rect><rect x="1128.67" y="447.50" width="9.01" height="57.45" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN18daWater_Hakidasi_c19func_ov064_021193b4Ev
 module: ov064
 addr: 0x021193b4
 size: 1096 bytes
-matched: yes</title></rect><rect x="1128.67" y="504.95" width="9.01" height="2.52" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov064_021197fc
+matched: yes</title></rect><rect x="1128.67" y="504.95" width="9.01" height="2.52" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN18daWater_Hakidasi_c19func_ov064_021197fcEv
 module: ov064
 addr: 0x021197fc
 size: 48 bytes
@@ -36673,7 +36673,7 @@ matched: yes</title></rect><rect x="1128.67" y="507.47" width="9.01" height="4.1
 module: ov064
 addr: 0x0211982c
 size: 80 bytes
-matched: yes</title></rect><rect x="1137.68" y="447.50" width="0.48" height="3.93" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov064_0211987c
+matched: yes</title></rect><rect x="1137.68" y="447.50" width="0.48" height="3.93" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN18daWater_Hakidasi_c19func_ov064_0211987cEv
 module: ov064
 addr: 0x0211987c
 size: 4 bytes
