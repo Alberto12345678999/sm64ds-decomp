@@ -6309,6 +6309,15 @@
     "src/actors/daKing_Donketu_c.cpp#_ZN16daKing_Donketu_c13InitResourcesEv": "tangosdev",
     "src/actors/daKing_Donketu_c.cpp#_ZN16daKing_Donketu_c16OnAimedAtWithEggEv": "tangosdev",
     "src/actors/dScStarSel_c.cpp#_ZN12dScStarSel_cD1Ev": "tangosdev",
-    "src/actors/dScStarSel_c.cpp#_ZN12dScStarSel_cD0Ev": "tangosdev"
+    "src/actors/dScStarSel_c.cpp#_ZN12dScStarSel_cD0Ev": "tangosdev",
+    "src/actors/daMugenBGM_c.cpp#_ZN12daMugenBGM_cD1Ev": "tangosdev",
+    "src/actors/daMugenBGM_c.cpp#_ZN12daMugenBGM_cD0Ev": "tangosdev",
+    "src/actors/daMugenBGM_c.cpp#func_ov002_020f1c20": "tangosdev",
+    "src/actors/daMugenBGM_c.cpp#_ZN12daMugenBGM_c16CleanupResourcesEv": "tangosdev",
+    "src/actors/daMugenBGM_c.cpp#_ZN12daMugenBGM_c16OnPendingDestroyEv": "tangosdev",
+    "src/actors/daMugenBGM_c.cpp#_ZN12daMugenBGM_c6RenderEv": "tangosdev",
+    "src/actors/daMugenBGM_c.cpp#_ZN12daMugenBGM_c8BehaviorEv": "tangosdev",
+    "src/actors/daMugenBGM_c.cpp#_ZN12daMugenBGM_c13InitResourcesEv": "tangosdev",
+    "src/actors/daMugenBGM_c.cpp#daMugenBGM_c_classInit": "tangosdev"
   }
 }
