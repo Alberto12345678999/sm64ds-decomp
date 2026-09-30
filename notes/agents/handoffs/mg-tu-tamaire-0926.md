@@ -144,46 +144,46 @@ both in one bracket. Round 2 changed no bracket.
 
 | Member | Pragma | Bracket | Control (pragma deleted) |
 |---|---|---|---|
-| `func_ov006_020ff534` | `opt_strength_reduction off` | own push and pop | size changes |
-| `func_ov006_020ff534` | `opt_common_subs off` | own push and pop | size changes |
-| `func_ov006_020ff690` | `opt_common_subs off` | own push and pop | size changes |
-| `func_ov006_020ff8c8` | `opt_common_subs off` | own push and pop | size changes |
-| `func_ov006_020ffb54` | `opt_common_subs off` | own push and pop | size changes |
-| `func_ov006_020ffde4` | `opt_common_subs off` | own push and pop | size changes |
-| `func_ov006_020fff84` | `opt_strength_reduction off` | own push and pop | size changes |
-| `func_ov006_020fffec` | `opt_strength_reduction off` | own push and pop | 11 words change |
-| `func_ov006_021006f4` | `opt_strength_reduction off` | own push and pop | size changes |
-| `func_ov006_0210076c` | `opt_strength_reduction off` | own push and pop | size changes |
-| `func_ov006_0210076c` | `opt_common_subs off` | own push and pop | size changes |
-| `func_ov006_021009b8` | `opt_common_subs off` | own push and pop | size changes |
-| `func_ov006_02100bac` | `opt_common_subs off` | own push and pop | size changes |
-| `func_ov006_02100f7c` | `opt_common_subs off` | own push and pop | size changes |
-| `func_ov006_02101088` | `opt_common_subs off` | own push and pop | size changes |
-| `func_ov006_02101148` | `opt_common_subs off` | own push and pop | size changes |
-| `func_ov006_02101224` | `opt_common_subs off` | own push and pop | size changes |
-| `func_ov006_021012cc` | `opt_common_subs off` | own push and pop | size changes |
-| `func_ov006_021016ec` | `opt_common_subs off` | own push and pop | size changes |
-| `func_ov006_021019e0` | `opt_common_subs off` | own push and pop | size changes |
-| `func_ov006_02101af0` | `opt_common_subs off` | own push and pop | size changes |
-| `func_ov006_02101e88` | `opt_common_subs off` | own push and pop | size changes |
-| `func_ov006_021020c4` | `opt_common_subs off` | own push and pop | size changes |
-| `func_ov006_02102274` | `opt_common_subs off` | own push and pop | size changes |
-| `func_ov006_021024e0` | `opt_strength_reduction off` | own push and pop | size changes |
-| `func_ov006_021027e4` | `opt_loop_invariants off` | own push and pop | 10 words change |
-| `func_ov006_02102864` | `opt_loop_invariants off` | own push and pop | size changes |
-| `func_ov006_02102864` | `opt_dead_assignments off` | own push and pop | 4 words change |
-| `func_ov006_02102c3c` | `opt_strength_reduction off` | own push and pop | size changes |
-| `func_ov006_02102c3c` | `opt_common_subs off` | own push and pop | size changes |
-| `func_ov006_02102de4` | `opt_strength_reduction off` | own push and pop | size changes |
-| `func_ov006_02102e8c` | `opt_strength_reduction off` | own push and pop | size changes |
-| `func_ov006_02103360` | `opt_common_subs off` | own push and pop | size changes |
-| `func_ov006_02103608` | `opt_strength_reduction off` | not carried | no change: inert |
-| `func_ov006_02103608` | `opt_common_subs off` | own push and pop | size changes |
-| `func_ov006_0210371c` | `opt_common_subs off` | own push and pop | size changes |
-| `func_ov006_02103870` | `opt_common_subs off` | own push and pop | size changes |
-| `func_ov006_02103994` | `opt_common_subs off` | own push and pop | 63 words change |
-| `func_ov006_02103ac0` | `opt_strength_reduction off` | own push and pop | size changes |
-| `func_ov006_02103bfc` | `opt_strength_reduction off` | own push and pop | size changes |
+| [func_ov006_020ff534](../../../src/actors/dScMgPachinko2_c.cpp)(ROM Ordinal 4) | `opt_strength_reduction off` | own push and pop | size changes |
+| [func_ov006_020ff534](../../../src/actors/dScMgPachinko2_c.cpp)(ROM Ordinal 4) | `opt_common_subs off` | own push and pop | size changes |
+| [func_ov006_020ff690](../../../src/actors/dScMgPachinko2_c.cpp)(ROM Ordinal 5) | `opt_common_subs off` | own push and pop | size changes |
+| [func_ov006_020ff8c8](../../../src/actors/dScMgPachinko2_c.cpp)(ROM Ordinal 6) | `opt_common_subs off` | own push and pop | size changes |
+| [func_ov006_020ffb54](../../../src/actors/dScMgPachinko2_c.cpp)(ROM Ordinal 7) | `opt_common_subs off` | own push and pop | size changes |
+| [func_ov006_020ffde4](../../../src/actors/dScMgPachinko2_c.cpp)(ROM Ordinal 8) | `opt_common_subs off` | own push and pop | size changes |
+| [func_ov006_020fff84](../../../src/actors/dScMgPachinko2_c.cpp)(ROM Ordinal 10) | `opt_strength_reduction off` | own push and pop | size changes |
+| [func_ov006_020fffec](../../../src/actors/dScMgPachinko2_c.cpp)(ROM Ordinal 11) | `opt_strength_reduction off` | own push and pop | 11 words change |
+| [func_ov006_021006f4](../../../src/actors/dScMgPachinko2_c.cpp)(ROM Ordinal 25) | `opt_strength_reduction off` | own push and pop | size changes |
+| [func_ov006_0210076c](../../../src/actors/dScMgPachinko2_c.cpp)(ROM Ordinal 27) | `opt_strength_reduction off` | own push and pop | size changes |
+| [func_ov006_0210076c](../../../src/actors/dScMgPachinko2_c.cpp)(ROM Ordinal 27) | `opt_common_subs off` | own push and pop | size changes |
+| [func_ov006_021009b8](../../../src/actors/dScMgPachinko2_c.cpp)(ROM Ordinal 28) | `opt_common_subs off` | own push and pop | size changes |
+| [func_ov006_02100bac](../../../src/actors/dScMgPachinko2_c.cpp)(ROM Ordinal 30) | `opt_common_subs off` | own push and pop | size changes |
+| [func_ov006_02100f7c](../../../src/actors/dScMgPachinko2_c.cpp)(ROM Ordinal 33) | `opt_common_subs off` | own push and pop | size changes |
+| [func_ov006_02101088](../../../src/actors/dScMgPachinko2_c.cpp)(ROM Ordinal 34) | `opt_common_subs off` | own push and pop | size changes |
+| [func_ov006_02101148](../../../src/actors/dScMgPachinko2_c.cpp)(ROM Ordinal 35) | `opt_common_subs off` | own push and pop | size changes |
+| [func_ov006_02101224](../../../src/actors/dScMgPachinko2_c.cpp)(ROM Ordinal 36) | `opt_common_subs off` | own push and pop | size changes |
+| [func_ov006_021012cc](../../../src/actors/dScMgPachinko2_c.cpp)(ROM Ordinal 37) | `opt_common_subs off` | own push and pop | size changes |
+| [func_ov006_021016ec](../../../src/actors/dScMgPachinko2_c.cpp)(ROM Ordinal 38) | `opt_common_subs off` | own push and pop | size changes |
+| [func_ov006_021019e0](../../../src/actors/dScMgPachinko2_c.cpp)(ROM Ordinal 39) | `opt_common_subs off` | own push and pop | size changes |
+| [func_ov006_02101af0](../../../src/actors/dScMgPachinko2_c.cpp)(ROM Ordinal 40) | `opt_common_subs off` | own push and pop | size changes |
+| [func_ov006_02101e88](../../../src/actors/dScMgPachinko2_c.cpp)(ROM Ordinal 41) | `opt_common_subs off` | own push and pop | size changes |
+| [func_ov006_021020c4](../../../src/actors/dScMgPachinko2_c.cpp)(ROM Ordinal 42) | `opt_common_subs off` | own push and pop | size changes |
+| [func_ov006_02102274](../../../src/actors/dScMgPachinko2_c.cpp)(ROM Ordinal 43) | `opt_common_subs off` | own push and pop | size changes |
+| [func_ov006_021024e0](../../../src/actors/dScMgPachinko2_c.cpp)(ROM Ordinal 45) | `opt_strength_reduction off` | own push and pop | size changes |
+| [func_ov006_021027e4](../../../src/actors/dScMgPachinko2_c.cpp)(ROM Ordinal 51) | `opt_loop_invariants off` | own push and pop | 10 words change |
+| [func_ov006_02102864](../../../src/actors/dScMgPachinko2_c.cpp)(ROM Ordinal 52) | `opt_loop_invariants off` | own push and pop | size changes |
+| [func_ov006_02102864](../../../src/actors/dScMgPachinko2_c.cpp)(ROM Ordinal 52) | `opt_dead_assignments off` | own push and pop | 4 words change |
+| [func_ov006_02102c3c](../../../src/actors/dScMgPachinko2_c.cpp)(ROM Ordinal 48) | `opt_strength_reduction off` | own push and pop | size changes |
+| [func_ov006_02102c3c](../../../src/actors/dScMgPachinko2_c.cpp)(ROM Ordinal 53) | `opt_common_subs off` | own push and pop | size changes |
+| [func_ov006_02102de4](../../../src/actors/dScMgPachinko2_c.cpp)(ROM Ordinal 56) | `opt_strength_reduction off` | own push and pop | size changes |
+| [func_ov006_02102e8c](../../../src/actors/dScMgPachinko2_c.cpp)(ROM Ordinal 57) | `opt_strength_reduction off` | own push and pop | size changes |
+| [func_ov006_02103360](../../../src/actors/dScMgPachinko2_c.cpp)(ROM Ordinal 61) | `opt_common_subs off` | own push and pop | size changes |
+| [func_ov006_02103608](../../../src/actors/dScMgPachinko2_c.cpp)(ROM Ordinal 62) | `opt_strength_reduction off` | not carried | no change: inert |
+| [func_ov006_02103608](../../../src/actors/dScMgPachinko2_c.cpp)(ROM Ordinal 62) | `opt_common_subs off` | own push and pop | size changes |
+| [func_ov006_0210371c](../../../src/actors/dScMgPachinko2_c.cpp)(ROM Ordinal 63) | `opt_common_subs off` | own push and pop | size changes |
+| [func_ov006_02103870](../../../src/actors/dScMgPachinko2_c.cpp)(ROM Ordinal 64) | `opt_common_subs off` | own push and pop | size changes |
+| [func_ov006_02103994](../../../src/actors/dScMgPachinko2_c.cpp)(ROM Ordinal 66) | `opt_common_subs off` | own push and pop | 63 words change |
+| [func_ov006_02103ac0](../../../src/actors/dScMgPachinko2_c.cpp)(ROM Ordinal 67) | `opt_strength_reduction off` | own push and pop | size changes |
+| [func_ov006_02103bfc](../../../src/actors/dScMgPachinko2_c.cpp)(ROM Ordinal 68) | `opt_strength_reduction off` | own push and pop | size changes |
 
 [func_ov006_02103608](../../../src/actors/dScMgPachinko2_c.cpp)(ROM Ordinal 62) was re-checked with both of its pragmas deleted: its
 size changes, so its remaining `opt_common_subs off` bracket stays proven.
