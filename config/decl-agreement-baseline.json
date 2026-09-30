@@ -884,9 +884,6 @@
       ]
     },
     "DecompressLZ16": {
-      "src/_ZN11dScMgCoin_c13InitResourcesEv.cpp": [
-        "param:#1 int"
-      ],
       "src/_ZN12dScMg3DEsp_c13InitResourcesEv.cpp": [
         "param:#1 int"
       ],
@@ -956,6 +953,9 @@
         "param:#1 int"
       ],
       "src/minigames/d_s_mg_trampoline2.cpp": [
+        "param:#1 int"
+      ],
+      "src/actors/dScMgCoin_c.cpp": [
         "param:#1 int"
       ]
     },
@@ -9964,15 +9964,6 @@
       "src/func_ov006_020d8d84.c": [
         "return:void"
       ],
-      "src/func_ov006_020dd0e0.c": [
-        "return:void"
-      ],
-      "src/func_ov006_020ddd6c.cpp": [
-        "return:void"
-      ],
-      "src/func_ov006_020de0e0.cpp": [
-        "return:void"
-      ],
       "src/func_ov006_020e2dbc.c": [
         "return:void"
       ],
@@ -18697,9 +18688,6 @@
       "src/func_ov004_020b6c9c.c": [
         "return:unsigned char []"
       ],
-      "src/func_ov006_020de0e0.cpp": [
-        "return:unsigned char []"
-      ],
       "src/func_ov006_020e5a0c.c": [
         "return:unsigned char []"
       ],
@@ -21533,12 +21521,6 @@
       ],
       "src/func_ov006_020c14bc.cpp": [
         "return:V *"
-      ],
-      "src/func_ov006_020dd0e0.c": [
-        "return:void *"
-      ],
-      "src/func_ov006_020de440.cpp": [
-        "return:void *"
       ]
     },
     "data_ov004_020beb6c": {
@@ -22343,16 +22325,13 @@
       ]
     },
     "data_ov006_02141810": {
-      "src/_ZN11dScMgCoin_c8BehaviorEv.cpp": [
-        "return:Entry []"
+      "src/__sinit_ov006_0213014c.c": [
+        "return:Pair []"
       ]
     },
     "data_ov006_02141840": {
       "src/__sinit_ov006_0213014c.c": [
         "return:Pair []"
-      ],
-      "src/func_ov006_020ddd6c.cpp": [
-        "return:Entry []"
       ]
     },
     "data_ov006_02141a40": {
@@ -36875,7 +36854,7 @@
       "src/func_ov004_020b484c.c": [
         "arity:5"
       ],
-      "src/func_ov006_020dd658.c": [
+      "src/actors/dScMgCoin_c.cpp": [
         "arity:5"
       ]
     },
@@ -37007,9 +36986,6 @@
     },
     "func_ov004_020b0a54": {
       "src/_ZN15dScMgPachinko_c8BehaviorEv.cpp": [
-        "param:#1 void *"
-      ],
-      "src/func_ov006_020de0e0.cpp": [
         "param:#1 void *"
       ]
     },
@@ -37746,46 +37722,6 @@
     "func_ov006_020d836c": {
       "src/func_ov006_020d8cc4.cpp": [
         "return:int"
-      ]
-    },
-    "func_ov006_020dbe9c": {
-      "src/_ZN11dScMgCoin_c6RenderEv.cpp": [
-        "param:#1 dScMgCoin_c *"
-      ]
-    },
-    "func_ov006_020dc298": {
-      "src/_ZN11dScMgCoin_c8BehaviorEv.cpp": [
-        "param:#1 dScMgCoin_c *"
-      ]
-    },
-    "func_ov006_020dc754": {
-      "src/_ZN11dScMgCoin_c8BehaviorEv.cpp": [
-        "param:#1 dScMgCoin_c *"
-      ]
-    },
-    "func_ov006_020dc900": {
-      "src/_ZN11dScMgCoin_c8BehaviorEv.cpp": [
-        "param:#1 dScMgCoin_c *"
-      ]
-    },
-    "func_ov006_020dc99c": {
-      "src/_ZN11dScMgCoin_c6RenderEv.cpp": [
-        "param:#1 dScMgCoin_c *"
-      ]
-    },
-    "func_ov006_020dcc48": {
-      "src/_ZN11dScMgCoin_c6RenderEv.cpp": [
-        "arity:1"
-      ]
-    },
-    "func_ov006_020dd2cc": {
-      "src/func_ov006_020de440.cpp": [
-        "param:#1 char *"
-      ]
-    },
-    "func_ov006_020dd594": {
-      "src/_ZN11dScMgCoin_c6RenderEv.cpp": [
-        "param:#1 dScMgCoin_c *"
       ]
     },
     "func_ov006_020e12d0": {
