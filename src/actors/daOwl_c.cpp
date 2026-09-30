@@ -3,7 +3,7 @@
  * player comes near, then hovers around an anchor point, talks to the player
  * (message 0xa2) and, once the talk is over, can pick the player up and carry
  * it.
- * 21 functions, .text 0x02135700..0x02136798.
+ * 22 functions, .text 0x02135700..0x021367e8.
  *
  * NAME: _ZTS7daOwl_c is "7daOwl_c" at ov094 0x02136a10; _ZTI at 0x02136a28
  * reads [__si_class_type_info, that string, _ZTI12dEnemyBase_c]. The vtable's
@@ -24,8 +24,15 @@
  * _ZTS. Under `#pragma defer_codegen off` it comes out D1 (0x02135700), D0
  * (0x02135748), then a D2 the cartridge has no home for (manifest: deadstrip);
  * the same pragma lays .text down in source order, so this file is ROM-ascending.
- * The next function, daOwl_c_classInit at 0x02136798, is a separate TU
- * (src/d_a_owl.c) and stays out.
+ * daOwl_c_classInit (0x02136798..0x021367e8, historical alias
+ * HootTheOwl_Spawn) now appends after InitResources, at the end of source
+ * order:
+ * fBase_c::operator new(size_t) forwards `return new daOwl_c();` to the same
+ * _ZN7fBase_cnwEj(1016) allocator the loose factory called by hand, and
+ * daOwl_c has no user-declared constructor, so the inherited dEnemyBase_c
+ * ctor plus the vtable store plus the four member subobjects in field order
+ * (dCcAcPos_c, dBgCh_Actr, ModelAnim, ShadowModel) come from the implicit
+ * default constructor with zero mangled calls.
  *
  * Known limits:
  * - The state handlers are extern "C" functions named by address that take the
@@ -673,4 +680,10 @@ int daOwl_c::InitResources()
     return 0;
 ret1:
     return 1;
+}
+
+// @symbol daOwl_c_classInit
+extern "C" daOwl_c *daOwl_c_classInit()
+{
+    return new daOwl_c();
 }

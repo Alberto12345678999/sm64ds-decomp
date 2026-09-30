@@ -118,6 +118,10 @@
    "ref": "src_tu/actors/daObj_volcanoCannon_c.cpp"
   },
   {
+   "file": "notes/agents/handoffs/readable-ov092-onms-0925b.md",
+   "ref": "src/d_a_onms.cpp"
+  },
+  {
    "file": "notes/archive/crack-loop-runbook.md",
    "ref": "notes/pret-idioms.md"
   },
@@ -514,6 +518,10 @@
    "ref": "tools/foo.py"
   },
   {
+   "file": "tools/check_decl_agreement.py",
+   "ref": "src/func_ov065_021183c8.c"
+  },
+  {
    "file": "tools/check_header_offsets.py",
    "ref": "include/ClsnResult.h"
   },
@@ -656,6 +664,10 @@
   {
    "file": "tools/symscope.py",
    "ref": "src/Foo.cpp"
+  },
+  {
+   "file": "tools/test_check_decl_agreement.py",
+   "ref": "src/func_ov065_021183c8.c"
   },
   {
    "file": "tools/test_demember_calls.py",
