@@ -51,7 +51,7 @@
  *   The func_ov102_* helpers keep their linker names: offset soup and PMF
  *   dispatch through data_ov102_0214e890 / 0214e870 / 0214e8c0. None coined.
  *   data_ov002_0210da58 and gPFlower* stay char[]. A SharedFilePtr decl
- *   would outvote the char[] spelling that Goomboss, daFeather and
+ *   would outvote the char[] spelling that daKuriKing_c, daFeather and
  *   PowerFlower share, and check_decl_agreement would flag those files; and
  *   Init's LoadFile still treats each slot as the model handle.
  *
@@ -149,7 +149,7 @@ extern SharedFilePtr data_ov002_0210d9c0;
 extern SharedFilePtr data_ov002_0210d9d8;
 extern SharedFilePtr data_ov002_0210d9e0;
 /* da58 / gPFlower*: SharedFilePtr here would outvote the char[]
-   spelling Goomboss, daFeather and PowerFlower share, so
+   spelling daKuriKing_c, daFeather and PowerFlower share, so
    check_decl_agreement would flag those files. */
 extern SharedFilePtr data_ov002_0210da18;
 extern SharedFilePtr data_ov002_0210da30;

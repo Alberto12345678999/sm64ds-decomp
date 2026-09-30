@@ -1,9 +1,9 @@
 //cpp
-// @symbol _ZN8Goomboss16CleanupResourcesEv
+// @symbol _ZN12daKuriKing_c16CleanupResourcesEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 #include "decl_common.h"
 /* recovered: named members + shared header, real C++ method */
-#include "Goomboss.h"
+#include "daKuriKing_c.h"
 #include "SharedFilePtr.h"
 extern "C" {
 int func_ov074_0212229c(int* c);
@@ -14,7 +14,7 @@ extern char data_ov074_02123000;
 extern char data_ov074_02123040;
 }
 
-int Goomboss::CleanupResources()
+int daKuriKing_c::CleanupResources()
 {
     int i;
     int v = ((int*)this)[2];

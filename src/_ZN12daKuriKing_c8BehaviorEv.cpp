@@ -1,9 +1,9 @@
 //cpp
-// @symbol _ZN8Goomboss8BehaviorEv
+// @symbol _ZN12daKuriKing_c8BehaviorEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 #include "decl_common.h"
 /* recovered: named members + shared header, real C++ method */
-#include "Goomboss.h"
+#include "daKuriKing_c.h"
 typedef long long s64;
 
 extern "C" {
@@ -19,7 +19,7 @@ extern void _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(void *thiz, Vector3 *v,
 
 extern char *data_0209f318;
 
-int Goomboss::Behavior()
+int daKuriKing_c::Behavior()
 {
     int t;
     int u;

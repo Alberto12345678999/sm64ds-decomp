@@ -1,6 +1,6 @@
 //cpp
-#include "Goomboss.h"
-#include "Goomboss.h"
+#include "daKuriKing_c.h"
+#include "daKuriKing_c.h"
 #include "MaterialChanger.h"
 #include "TextureSequence.h"
 #include "types.h"
@@ -55,7 +55,7 @@ extern u16 data_ov074_02122e04[];
 extern u16 data_ov074_02122dfc[];
 extern s16 data_02082214[];
 
-int Goomboss::InitResources()
+int daKuriKing_c::InitResources()
 {
     char *self = (char *)this;
     s32 i;

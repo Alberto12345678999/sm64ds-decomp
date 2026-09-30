@@ -1,6 +1,11 @@
 //cpp
-/* Goomboss, the goomba-king boss. ROM RTTI is daKuriKing_c
- * (_ZTI12daKuriKing_c at ov074:0x02122e30); this tree keeps the coined name.
+/* daKuriKing_c, the goomba-king boss. ROM RTTI is daKuriKing_c
+ * (_ZTI12daKuriKing_c at ov074:0x02122e30, _ZTS12daKuriKing_c at 0x02122e3c),
+ * and the vtable it owns is at ov074:0x02122eb8. This tree used to spell the
+ * class Goomboss; the rename is recorded in the manifest's class-label note.
+ * The factories daKuriKing_c_classInit_KURIKING / _KURIKING_VANISH already
+ * carried the cartridge's spelling, and Goomboss_Spawn survives only as a
+ * historical alias.
  * Partial TU: the unmatched draft func_ov074_02121380 (size 0x374, no
  * delinks entry) holes the run, so this file is only the lower side, the
  * licensed run 0x0211f154..0x02121380 (36 functions). D1 is the first
@@ -10,15 +15,15 @@
  * Source is REVERSE of ROM order (highest address first). Do not reorder.
  *
  * Leftover: the func_ov074 helpers keep linker names. State dispatch is
- * still a pointer-to-member on a non-virtual stand-in, because Goomboss's
+ * still a pointer-to-member on a non-virtual stand-in, because daKuriKing_c's
  * own member pointer is a different size. The matrix at 0x37c stays a cast;
- * a Matrix4x3 member would run ~Vector3 from ~Goomboss.
+ * a Matrix4x3 member would run ~Vector3 from ~daKuriKing_c.
  */
 
-/* common.h BEFORE Goomboss.h: with the structured Matrix4x3,
+/* common.h BEFORE daKuriKing_c.h: with the structured Matrix4x3,
  * func_ov074_02121270/02121300 go long on whole-matrix assignment. */
 #include "common.h"
-#include "Goomboss.h"
+#include "daKuriKing_c.h"
 #include "types.h"
 #include "decl_common.h"
 #include "SharedFilePtr.h"
@@ -102,41 +107,41 @@ extern void Matrix4x3_FromTranslation(void* m, int x, int y, int z);
  * every intra-TU call is a forward reference. */
 extern "C" {
 void func_ov074_02121300(char* c);
-void func_ov074_02121270(char* r4, Goomboss* r8, int r7);
+void func_ov074_02121270(char* r4, daKuriKing_c* r8, int r7);
 void func_ov074_02120d74(char *a);
 void func_ov074_02120bb8(char *self, char *p1, char *p2, int mode);
-void func_ov074_02120b90(Goomboss *c);
-int func_ov074_02120b24(Goomboss* c);
-void func_ov074_0212087c(int* out, Goomboss* self, int n_);
-void func_ov074_02120808(Goomboss* c);
-int func_ov074_021207b8(Goomboss* self);
-int func_ov074_021206c8(Goomboss *c);
-int func_ov074_021204c0(Goomboss* c);
-int func_ov074_02120474(Goomboss* c);
+void func_ov074_02120b90(daKuriKing_c *c);
+int func_ov074_02120b24(daKuriKing_c* c);
+void func_ov074_0212087c(int* out, daKuriKing_c* self, int n_);
+void func_ov074_02120808(daKuriKing_c* c);
+int func_ov074_021207b8(daKuriKing_c* self);
+int func_ov074_021206c8(daKuriKing_c *c);
+int func_ov074_021204c0(daKuriKing_c* c);
+int func_ov074_02120474(daKuriKing_c* c);
 void func_ov074_0212042c(char *cc);
 void func_ov074_021203e4(char *cc, int i);
 void func_ov074_021203e0(void);
-void func_ov074_021201f0(Goomboss* c);
+void func_ov074_021201f0(daKuriKing_c* c);
 void func_ov074_021201ec(void);
-void func_ov074_0212018c(Goomboss *c);
-void func_ov074_0212016c(Goomboss *c);
-void func_ov074_02120080(Goomboss* c);
+void func_ov074_0212018c(daKuriKing_c *c);
+void func_ov074_0212016c(daKuriKing_c *c);
+void func_ov074_02120080(daKuriKing_c* c);
 void func_ov074_0212007c(void);
-void func_ov074_0211ffcc(Goomboss* c);
-void func_ov074_0211ffac(Goomboss* c);
-void func_ov074_0211fd74(Goomboss* self);
-void func_ov074_0211fd48(Goomboss *c);
-void func_ov074_0211fc38(Goomboss* c);
+void func_ov074_0211ffcc(daKuriKing_c* c);
+void func_ov074_0211ffac(daKuriKing_c* c);
+void func_ov074_0211fd74(daKuriKing_c* self);
+void func_ov074_0211fd48(daKuriKing_c *c);
+void func_ov074_0211fc38(daKuriKing_c* c);
 void func_ov074_0211fc34(void);
-int func_ov074_0211fbd0(Goomboss* c);
-void func_ov074_0211fb84(Goomboss* c);
-void func_ov074_0211fa74(Goomboss* c);
-void func_ov074_0211fa08(Goomboss* c);
-void func_ov074_0211f5b8(Goomboss* c);
-int func_ov074_0211f38c(Goomboss* c);
-void func_ov074_0211f344(Goomboss* self, unsigned char value);
-void func_ov074_0211f244(Goomboss *self);
-void func_ov074_0211f154(Goomboss* c);
+int func_ov074_0211fbd0(daKuriKing_c* c);
+void func_ov074_0211fb84(daKuriKing_c* c);
+void func_ov074_0211fa74(daKuriKing_c* c);
+void func_ov074_0211fa08(daKuriKing_c* c);
+void func_ov074_0211f5b8(daKuriKing_c* c);
+int func_ov074_0211f38c(daKuriKing_c* c);
+void func_ov074_0211f344(daKuriKing_c* self, unsigned char value);
+void func_ov074_0211f244(daKuriKing_c *self);
+void func_ov074_0211f154(daKuriKing_c* c);
 extern int func_ov074_02121a20(void* c, int idx);
 extern int func_ov074_021216f4(void* c);
 }
@@ -152,7 +157,7 @@ extern void Matrix4x3_ApplyInPlaceToRotationY(void* m, short a);
 extern void Matrix4x3_ApplyInPlaceToScale(void* m, int x, int y, int z);
 extern struct Matrix4x3 data_020a0e68;
 void func_ov074_02121300(char* raw){
-  Goomboss* c = (Goomboss*)raw;
+  daKuriKing_c* c = (daKuriKing_c*)raw;
   struct Vector3 v;
   Vec3_Asr(&v, (struct Vector3*)&c->mPosX, 3);
   Matrix4x3_FromTranslation(&data_020a0e68, v.x, v.y, v.z);
@@ -164,7 +169,7 @@ void func_ov074_02121300(char* raw){
 
 // @symbol func_ov074_02121270
 extern "C" {
-void func_ov074_02121270(char* r4, Goomboss* r8, int r7){
+void func_ov074_02121270(char* r4, daKuriKing_c* r8, int r7){
   char* dst;
   *(int*)r4 = 0;
   *(int*)(r4 + 4) = 0;
@@ -183,7 +188,7 @@ void func_ov074_02121270(char* r4, Goomboss* r8, int r7){
 extern "C" {
 void func_ov074_02120d74(char *raw)
 {
-    Goomboss *a = (Goomboss *)raw;
+    daKuriKing_c *a = (daKuriKing_c *)raw;
     struct Vector3 v0;
     struct Vector3 v1;
     struct Vector3 v2;
@@ -332,7 +337,7 @@ void func_ov074_02120d74(char *raw)
 extern "C" {
 void func_ov074_02120bb8(char *raw, char *p1raw, char *p2raw, int mode)
 {
-    Goomboss *self = (Goomboss *)raw;
+    daKuriKing_c *self = (daKuriKing_c *)raw;
     dActor_c *p1 = (dActor_c *)p1raw;
     dCcAcPos_c *p2 = (dCcAcPos_c *)p2raw;
     Vector3 v, dst, src, delta;
@@ -385,7 +390,7 @@ void func_ov074_02120bb8(char *raw, char *p1raw, char *p2raw, int mode)
 
 // @symbol func_ov074_02120b90
 extern "C" {
-void func_ov074_02120b90(Goomboss *c) {
+void func_ov074_02120b90(daKuriKing_c *c) {
     int idx = c->mSizeIndex;
     int base = c->mDirection;
     unsigned short scale = data_ov074_02122dfc[idx];
@@ -395,7 +400,7 @@ void func_ov074_02120b90(Goomboss *c) {
 
 // @symbol func_ov074_02120b24
 extern "C" {
-int func_ov074_02120b24(Goomboss* c)
+int func_ov074_02120b24(daKuriKing_c* c)
 {
     int num = c->mWalkSpeed << 12;
     int den;
@@ -411,7 +416,7 @@ int func_ov074_02120b24(Goomboss* c)
 
 // @symbol func_ov074_0212087c
 extern "C" {
-void func_ov074_0212087c(int* out, Goomboss* self, int n_)
+void func_ov074_0212087c(int* out, daKuriKing_c* self, int n_)
 {
     int n;
 
@@ -496,7 +501,7 @@ void func_ov074_0212087c(int* out, Goomboss* self, int n_)
 }
 
 // @symbol func_ov074_02120808
-extern "C" void func_ov074_02120808(Goomboss* c)
+extern "C" void func_ov074_02120808(daKuriKing_c* c)
 {
     int ang = (short)(c->mWalkAngle + c->mDirection * 0x4500);
     if (AngleDiff(ang, ((dActor_c *)((char*)c))->HorzAngleToCPlayer()) <= 0x4000)
@@ -510,7 +515,7 @@ extern "C" void func_ov074_02120808(Goomboss* c)
  * a turn and return 1. Otherwise return 0.
  */
 extern "C" {
-int func_ov074_021207b8(Goomboss* self)
+int func_ov074_021207b8(daKuriKing_c* self)
 {
     if (func_ov074_02121a20(self, 6)) {
         if (self->mModelAnim.Finished()) {
@@ -524,7 +529,7 @@ int func_ov074_021207b8(Goomboss* self)
 
 // @symbol func_ov074_021206c8
 extern "C" {
-int func_ov074_021206c8(Goomboss *c) {
+int func_ov074_021206c8(daKuriKing_c *c) {
     if (func_ov074_02121a20(c, 8) != 0) {
         if (ApproachAngle(&c->mWalkSpeed, 0, 0x1e, 0x20, 1) == 0) {
             if ((unsigned short)(c->mModelAnim.currFrame >> 12) == 0) {
@@ -552,7 +557,7 @@ ret0:
 }
 
 // @symbol func_ov074_021204c0
-/* recovered: Goomboss (daKuriKing_c) shrink/grow interpolation tick.
+/* recovered: daKuriKing_c (daKuriKing_c) shrink/grow interpolation tick.
  *
  * Reached from func_ov074_0211f860 and func_ov074_0211fb44. Picks a pair of
  * float sizes out of data_ov074_02122e4c (12288.0f, 9557.0f, 6826.0f,
@@ -580,7 +585,7 @@ ret0:
  * Matched byte-for-byte with mwccarm 2004/b56 (ov074); linkcheck VERIFIED.
  */
 extern "C" {
-int func_ov074_021204c0(Goomboss* c) {
+int func_ov074_021204c0(daKuriKing_c* c) {
     struct Vector3 v;
     int d, k;
 
@@ -620,7 +625,7 @@ int func_ov074_021204c0(Goomboss* c) {
 
 // @symbol func_ov074_02120474
 extern "C" {
-int func_ov074_02120474(Goomboss* c) {
+int func_ov074_02120474(daKuriKing_c* c) {
     c->mMaterialChanger.Advance();
     unsigned char idx = c->mSizeIndex;
     unsigned int val = c->mMaterialChanger.currFrame;
@@ -635,27 +640,27 @@ int func_ov074_02120474(Goomboss* c) {
 }
 
 // @symbol func_ov074_0212042c
-/* data_ov074_021230f8 is copied as 8-byte records (__sinit_ov074). Goomboss
- * has virtuals, so a Goomboss::* is wider than that; the call stays on this
+/* data_ov074_021230f8 is copied as 8-byte records (__sinit_ov074). daKuriKing_c
+ * has virtuals, so a daKuriKing_c::* is wider than that; the call stays on this
  * stand-in. The word it reads is mState. */
-struct GoombossPmf;
-typedef void (GoombossPmf::*GoombossPMF)();
-struct GoombossPmfEntry { GoombossPMF pmf[2]; };
-extern GoombossPmfEntry data_ov074_021230f8[];
-struct GoombossPmf { char pad[0x5cc]; s32 mState; };
+struct KuriKingPmf;
+typedef void (KuriKingPmf::*KuriKingPMF)();
+struct KuriKingPmfEntry { KuriKingPMF pmf[2]; };
+extern KuriKingPmfEntry data_ov074_021230f8[];
+struct KuriKingPmf { char pad[0x5cc]; s32 mState; };
 extern "C" void func_ov074_0212042c(char *raw) {
-    Goomboss *self = (Goomboss *)raw;
-    GoombossPmf *c = (GoombossPmf *)self;
+    daKuriKing_c *self = (daKuriKing_c *)raw;
+    KuriKingPmf *c = (KuriKingPmf *)self;
     int j = self->mState;
     (c->*data_ov074_021230f8[j].pmf[1])();
 }
 
 // @symbol func_ov074_021203e4
 extern "C" void func_ov074_021203e4(char *raw, int i) {
-    Goomboss *self = (Goomboss *)raw;
+    daKuriKing_c *self = (daKuriKing_c *)raw;
     self->mState = i;
     int j = self->mState;
-    GoombossPmf *c = (GoombossPmf *)self;
+    KuriKingPmf *c = (KuriKingPmf *)self;
     (c->*data_ov074_021230f8[j].pmf[0])();
 }
 
@@ -667,7 +672,7 @@ void func_ov074_021203e0(void)
 }
 
 // @symbol func_ov074_021201f0
-/* recovered: Goomboss (daKuriKing_c) state-0 tick -- the intro cutscene.
+/* recovered: daKuriKing_c (daKuriKing_c) state-0 tick -- the intro cutscene.
  *
  * Frames the boss for the opening conversation: pins the camera to a fixed
  * look-at/eye pair derived from the boss position, turns the closest player
@@ -687,7 +692,7 @@ void func_ov074_021203e0(void)
  * Matched byte-for-byte with mwccarm 2004/b56 (ov074); linkcheck VERIFIED.
  */
 extern "C" {
-void func_ov074_021201f0(Goomboss* c) {
+void func_ov074_021201f0(daKuriKing_c* c) {
     struct Ang16 { short v[3]; };
     struct Ang16 ang;
     struct Vector3 look, pos;
@@ -758,7 +763,7 @@ void func_ov074_021201ec(void)
 extern "C" {
 extern void func_02011d20(void);
 extern char *data_0209f318;
-void func_ov074_0212018c(Goomboss *c)
+void func_ov074_0212018c(daKuriKing_c *c)
 {
     if (((Player *)c->mTalkPlayer)->GetTalkState() != -1)
         return;
@@ -772,7 +777,7 @@ void func_ov074_0212018c(Goomboss *c)
 
 // @symbol func_ov074_0212016c
 extern "C" {
-void func_ov074_0212016c(Goomboss *c) {
+void func_ov074_0212016c(daKuriKing_c *c) {
     func_ov074_02121a4c((char*)c, 0xa);
     func_ov074_02120b90(c);
 }
@@ -780,7 +785,7 @@ void func_ov074_0212016c(Goomboss *c) {
 
 // @symbol func_ov074_02120080
 extern "C" {
-void func_ov074_02120080(Goomboss* c){
+void func_ov074_02120080(daKuriKing_c* c){
   if(c->mSpawnedCount == 0){
     func_ov074_021203e4((char*)c, 2);
     return;
@@ -807,7 +812,7 @@ void func_ov074_0212007c(void)
 
 // @symbol func_ov074_0211ffcc
 extern "C" {
-void func_ov074_0211ffcc(Goomboss* c) {
+void func_ov074_0211ffcc(daKuriKing_c* c) {
   if (func_ov074_02121a20(c, 5) == 0) {
     if (func_ov074_021206c8(c) == 0) return;
     func_ov074_02121a4c((char*)c, 5);
@@ -828,14 +833,14 @@ void func_ov074_0211ffcc(Goomboss* c) {
 
 // @symbol func_ov074_0211ffac
 extern "C" {
-void func_ov074_0211ffac(Goomboss* c) {
+void func_ov074_0211ffac(daKuriKing_c* c) {
     func_ov074_02120808(c);
     c->mTimer = 0;
 }
 }
 
 // @symbol func_ov074_0211fd74
-extern "C" void func_ov074_0211fd74(Goomboss* self)
+extern "C" void func_ov074_0211fd74(daKuriKing_c* self)
 {
     if (func_ov074_02121a20(self, 6) != 0) {
         if (func_ov074_021207b8(self) == 0) return;
@@ -897,7 +902,7 @@ L90:;
 
 // @symbol func_ov074_0211fd48
 extern "C" {
-void func_ov074_0211fd48(Goomboss *c)
+void func_ov074_0211fd48(daKuriKing_c *c)
 {
     unsigned char value;
 
@@ -911,7 +916,7 @@ void func_ov074_0211fd48(Goomboss *c)
 
 // @symbol func_ov074_0211fc38
 extern "C" {
-void func_ov074_0211fc38(Goomboss* c)
+void func_ov074_0211fc38(daKuriKing_c* c)
 {
     if (ApproachAngle(&c->mWalkSpeed, 0, 0xa, 0x100, 1) != 0) goto reset;
     if (c->mModelAnim.Finished() == 0) return;
@@ -945,7 +950,7 @@ void func_ov074_0211fc34(void)
 
 // @symbol func_ov074_0211fbd0
 extern "C" {
-int func_ov074_0211fbd0(Goomboss* c){
+int func_ov074_0211fbd0(daKuriKing_c* c){
     if(ApproachAngle(&c->mWalkSpeed, 0, 0xa, 0x100, 1)==0)
         return ((int (*)(char*, int))func_ov074_021203e4)((char*)c, 3);
     return func_ov074_021216f4(c);
@@ -954,7 +959,7 @@ int func_ov074_0211fbd0(Goomboss* c){
 
 // @symbol func_ov074_0211fb84
 extern "C" {
-void func_ov074_0211fb84(Goomboss* c){
+void func_ov074_0211fb84(daKuriKing_c* c){
   func_ov074_02120808(c);
   c->mScalePhase = 0;
   c->mSubState = 0;
@@ -967,12 +972,12 @@ void func_ov074_0211fb84(Goomboss* c){
 
 // @symbol func_ov074_0211fa74
 extern "C" {
-void func_ov074_0211fa74(Goomboss* c)
+void func_ov074_0211fa74(daKuriKing_c* c)
 {
     /* 0x603 does not fit an ARM immediate, so the increment is an address
      * materialized from the pool. A plain mSubState++ drops that and comes
      * out 0x14 short. */
-    Goomboss* a = c;
+    daKuriKing_c* a = c;
     int b;
     switch (a->mSubState) {
     case 0:
@@ -1007,7 +1012,7 @@ void func_ov074_0211fa74(Goomboss* c)
 
 // @symbol func_ov074_0211fa08
 extern "C" {
-void func_ov074_0211fa08(Goomboss* c){
+void func_ov074_0211fa08(daKuriKing_c* c){
   c->mSizeIndex = 0;
   int v=func_01ffa344((int)data_ov074_02122e4c[1]);
   c->mScaleX = v;
@@ -1022,7 +1027,7 @@ void func_ov074_0211fa08(Goomboss* c){
 }
 
 // @symbol func_ov074_0211f5b8
-extern "C" void func_ov074_0211f5b8(Goomboss* c)
+extern "C" void func_ov074_0211f5b8(daKuriKing_c* c)
 {
     Vector3 vzero;
     Vector3 vmsg;
@@ -1166,7 +1171,7 @@ extern "C" void func_ov074_0211f5b8(Goomboss* c)
    extra on size 1 unless the closest player's param1 reads 3. */
 // @symbol func_ov074_0211f38c
 extern "C" {
-int func_ov074_0211f38c(Goomboss* c){
+int func_ov074_0211f38c(daKuriKing_c* c){
     struct Vector3 spawnPos, basePos;
     struct Vector3_16 spawnAngle;
     int radius;
@@ -1218,23 +1223,23 @@ int func_ov074_0211f38c(Goomboss* c){
 
 // @symbol func_ov074_0211f344
 extern "C" {
-void func_ov074_0211f344(Goomboss* self, unsigned char value) {
-  Goomboss* other = (Goomboss*)dActor_c::FindWithActorID(0xc7, 0);
+void func_ov074_0211f344(daKuriKing_c* self, unsigned char value) {
+  daKuriKing_c* other = (daKuriKing_c*)dActor_c::FindWithActorID(0xc7, 0);
   while (other) {
     if (other != self) other->mShouldRender = value;
-    other = (Goomboss*)dActor_c::FindWithActorID(0xc7, other);
+    other = (daKuriKing_c*)dActor_c::FindWithActorID(0xc7, other);
   }
 }
 }
 
 // @symbol func_ov074_0211f244
-extern "C" void func_ov074_0211f244(Goomboss *self)
+extern "C" void func_ov074_0211f244(daKuriKing_c *self)
 {
-    Goomboss *a = (Goomboss *)dActor_c::FindWithActorID(0xc7, 0);
+    daKuriKing_c *a = (daKuriKing_c *)dActor_c::FindWithActorID(0xc7, 0);
     if (a == 0) return;
     do {
         if (a != self) {
-            Goomboss *t = a;
+            daKuriKing_c *t = a;
             t->mVertAccel = -0xa000;
             int rv = (unsigned int)RandomIntInternal(&data_0209e650) >> 8;
             t->mTimer = 0x30;
@@ -1256,13 +1261,13 @@ extern "C" void func_ov074_0211f244(Goomboss *self)
             t->mAngleZ = z;
             t->mLaunched = 1;
         }
-        a = (Goomboss *)dActor_c::FindWithActorID(0xc7, a);
+        a = (daKuriKing_c *)dActor_c::FindWithActorID(0xc7, a);
     } while (a != 0);
 }
 
 // @symbol func_ov074_0211f154
 extern "C" {
-void func_ov074_0211f154(Goomboss* c) {
+void func_ov074_0211f154(daKuriKing_c* c) {
     struct Vector3 look, pos, in, out;
     void* cam;
     cam = data_0209f318;
