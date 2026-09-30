@@ -77,7 +77,7 @@ dMgDilarCardObj_c	MISSING	include/dMgDilarCardObj_c.h (MISSING)	dMgCardObj_c	0	o
 dActor_c	DONE	include\dActor_c.h	dBase_c	95	arm9	81
 dScene_c	DONE	include\dScene_c.h	dBase_c	10	arm9	19
 dView_c	DONE	include\View.h  [alias: header uses pre-rename name]	dBase_c	1	arm9	3
-dEntObj_c	DONE	include\UnknownVsEntry.h  [alias: header uses pre-rename name]	dBase_c	0	ov075	6
+dEntObj_c	DONE	include\dEntObj_c.h  [alias: header uses pre-rename name]	dBase_c	0	ov075	6
 dMap_c	DONE	include\dMap_c.h  [alias: header uses pre-rename name]	dBase_c	0	ov002	11
 dMeter_c	DONE	include\dMeter_c.h  [alias: header uses pre-rename name]	dBase_c	0	ov002	19
 dPa_c::level_c::bubbleCallback_c	DONE	include\dPa_c.h  [alias: header uses pre-rename name]	dPa_c::level_c::simpleCallback_c	0		0
