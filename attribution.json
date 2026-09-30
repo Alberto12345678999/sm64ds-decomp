@@ -6280,6 +6280,16 @@
     "src/actors/daDossy_c.cpp#_ZN12daDossyCap_c13OnYoshiTryEatEv": "andrewboudreau",
     "src/actors/daDossy_c.cpp#daDossyCap_c_classInit": "tangosdev",
     "src/actors/daDossy_c.cpp#daDossy_c_classInit": "tangosdev",
-    "src/actors/daDossy_c.cpp#_ZN14DorriePlatformC1Ev": "andrewboudreau"
+    "src/actors/daDossy_c.cpp#_ZN14DorriePlatformC1Ev": "andrewboudreau",
+    "src/actors/dScDSMT_c.cpp#_ZN9dScDSMT_cD1Ev": "tangosdev",
+    "src/actors/dScDSMT_c.cpp#_ZN9dScDSMT_cD0Ev": "andrewboudreau",
+    "src/actors/dScDSMT_c.cpp#func_ov007_020cc0cc": "tangosdev",
+    "src/actors/dScDSMT_c.cpp#func_ov007_020cc0e4": "tangosdev",
+    "src/actors/dScDSMT_c.cpp#_ZN9dScDSMT_c15graphCallback_c14GraphCallback2Ev": "tangosdev",
+    "src/actors/dScDSMT_c.cpp#_ZN9dScDSMT_c15graphCallback_c14GraphCallback0Ev": "andrewboudreau",
+    "src/actors/dScDSMT_c.cpp#func_ov007_020cc118": "tangosdev",
+    "src/actors/dScDSMT_c.cpp#func_ov007_020cc168": "tangosdev",
+    "src/actors/dScDSMT_c.cpp#_ZN9dScDSMT_c16OnPendingDestroyEv": "tangosdev",
+    "src/actors/dScDSMT_c.cpp#_ZN9dScDSMT_c6RenderEv": "tangosdev"
   }
 }

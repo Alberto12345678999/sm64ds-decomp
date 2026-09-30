@@ -1370,7 +1370,7 @@
         "param:#1 unsigned int",
         "param:#2 unsigned char"
       ],
-      "src/func_ov007_020cc168.c": [
+      "src/actors/dScDSMT_c.cpp": [
         "param:#1 int"
       ],
       "src/game/actors/d_a_obj_ki_fune.cpp": [
@@ -13000,9 +13000,6 @@
       ],
       "src/func_ov002_020e8ef0.cpp": [
         "return:int"
-      ],
-      "src/func_ov007_020cc168.c": [
-        "return:int"
       ]
     },
     "_ZN8SaveData13SaveMinigamesEP16MinigameSaveData": {
@@ -16123,7 +16120,7 @@
       "src/func_020196cc.c": [
         "return:unsigned char []"
       ],
-      "src/func_ov007_020cc168.c": [
+      "src/actors/dScDSMT_c.cpp": [
         "return:unsigned char []"
       ]
     },
@@ -16398,11 +16395,6 @@
       ],
       "src/_ZN9dScDSMT_c8BehaviorEv.cpp": [
         "return:char *"
-      ]
-    },
-    "data_0209b340": {
-      "src/func_ov007_020cc168.c": [
-        "return:unsigned char []"
       ]
     },
     "data_0209b3ec": {
@@ -23194,11 +23186,6 @@
     "data_ov007_02104c24": {
       "src/func_ov007_020c951c.c": [
         "return:void *"
-      ]
-    },
-    "data_ov007_02104c28": {
-      "src/func_ov007_020cc118.c": [
-        "return:short"
       ]
     },
     "data_ov009_02113c20": {
@@ -38614,7 +38601,7 @@
       ]
     },
     "func_ov007_020b6eb4": {
-      "src/_ZN9dScDSMT_c15graphCallback_c14GraphCallback2Ev.cpp": [
+      "src/actors/dScDSMT_c.cpp": [
         "arity:1",
         "return:void"
       ]

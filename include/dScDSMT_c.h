@@ -77,9 +77,10 @@ struct dScDSMT_c : dScene_c {
                                     Behavior passes &fader to SetFaders. */
 
     /* Declared first -- key function; see the family convention discussed
-       in dScene_c.h. Never defined as a real method in any TU: both D1 and
-       D0 are plain functions carrying their literal mangled name
-       (src/_ZN9dScDSMT_cD1Ev.cpp, src/_ZN9dScDSMT_cD0Ev.c). */
+       in dScene_c.h. Defined out of line in src/actors/dScDSMT_c.cpp, which
+       therefore emits the vtable. Out of line only while that TU cannot
+       also hold InitResources (see its PARTIAL FOLD note); the whole-class
+       fold makes this `virtual ~dScDSMT_c() {}`, as dScTitle_c has it. */
     virtual ~dScDSMT_c();                                /* slots 16 (D1), 17 (D0) */
 
     /* --- overrides, in _ZTV8dScene_c/_ZTV7fBase_c order. --- */
