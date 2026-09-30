@@ -56,6 +56,11 @@ struct daWater_Hakidasi_c : dEnemyBase_c {
     virtual void OnPendingDestroy();
     virtual s32 Render();
 
+    /* Helpers taking this (S33): the ROM address is the method name. */
+    int func_ov064_021193b4();
+    int func_ov064_021197fc();
+    void func_ov064_0211987c();
+
     /* The tail runs to the ROM's 0x378: daWater_Hakidasi_c_classInit calls
        fBase_c::operator new(0x378), read off the retail instruction. A span is
        only a LOWER BOUND. func_ov064_021197fc zeroes all of it below. */

@@ -33,14 +33,14 @@
       "ordinal": 1
     },
     {
-      "symbol": "func_ov064_021193b4",
+      "symbol": "_ZN18daWater_Hakidasi_c19func_ov064_021193b4Ev",
       "address": "0x021193b4",
       "size": "0x00000448",
       "legacy_source": "src/func_ov064_021193b4.c",
       "ordinal": 2
     },
     {
-      "symbol": "func_ov064_021197fc",
+      "symbol": "_ZN18daWater_Hakidasi_c19func_ov064_021197fcEv",
       "address": "0x021197fc",
       "size": "0x00000030",
       "legacy_source": "src/func_ov064_021197fc.cpp",
@@ -54,7 +54,7 @@
       "ordinal": 4
     },
     {
-      "symbol": "func_ov064_0211987c",
+      "symbol": "_ZN18daWater_Hakidasi_c19func_ov064_0211987cEv",
       "address": "0x0211987c",
       "size": "0x00000004",
       "legacy_source": "src/func_ov064_0211987c.c",
