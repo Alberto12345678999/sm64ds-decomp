@@ -6,11 +6,7 @@
     .bss        start:0x02148600 end:0x02148a80 kind:bss align:32
 src/actors/daBtfly_c.cpp:
     complete
-    .text start:0x02140d80 end:0x02141ea4
-
-src/d_a_btfly.c:
-    complete
-    .text start:0x02141ea4 end:0x02141f04
+    .text start:0x02140d80 end:0x02141f04
 
 src/_ZN15RollingIronBallD1Ev.cpp:
     complete
@@ -284,11 +280,7 @@ src/game/actors/d_a_fish.cpp:
 
 src/game/actors/daObjPathLift_c.cpp:
     complete
-    .text start:0x02146d7c end:0x02147328
-
-src/d_a_obj_path_lift.cpp:
-    complete
-    .text start:0x02147328 end:0x021473a4
+    .text start:0x02146d7c end:0x021473a4
 
 src/__sinit_ov100_021473bc.c:
     complete

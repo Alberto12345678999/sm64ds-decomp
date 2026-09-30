@@ -19,7 +19,7 @@ The candidate is [ov002](../config/arm9/overlays/ov002/symbols.txt):`60`, text s
 functions and RTTI labels `CutsceneObject` and `daDemo_c`. [Overlay 2](../config/arm9/overlays/ov002/symbols.txt) is not on
 `tu_map`'s under-segmented list. The immediately surrounding candidate units are:
 
-- [ov002](../config/arm9/overlays/ov002/symbols.txt):`59`, `0x020f1bc4..0x020f1f70`, `MugenBgm`;
+- [ov002](../config/arm9/overlays/ov002/symbols.txt):`59`, `0x020f1bc4..0x020f1f70`, `daMugenBGM_c`;
 - [ov002](../config/arm9/overlays/ov002/symbols.txt):`61`, `0x020f8838..0x020f8858`, the two `daDemo_c::anmModel_c`
   `this`-adjusting destructor thunks;
 - [ov002](../config/arm9/overlays/ov002/symbols.txt):`62`, `0x020f8858..0x020f934c`, `daFPknBall_c`.
@@ -104,7 +104,7 @@ array at [data_ov080_02128628](../config/arm9/overlays/ov080/symbols.txt).
 Overlay 80 has three initializers and three `.ctor` entries. The text units and
 initializer order agree exactly:
 
-1. `MontyMole+MontyMoleRock` / [__sinit_ov080_021278c0](../src/__sinit_ov080_021278c0.c);
+1. `daChoropu_c+daChoro_Rock_c` / [__sinit_ov080_021278c0](../src/__sinit_ov080_021278c0.c);
 2. `CrazedCrate` / [__sinit_ov080_02127a60](../src/__sinit_ov080_02127a60.c);
 3. `daPicGate_c` / [__sinit_ov080_02127b2c](../src/__sinit_ov080_02127b2c.c).
 

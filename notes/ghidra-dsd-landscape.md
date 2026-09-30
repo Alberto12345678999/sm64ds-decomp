@@ -500,7 +500,7 @@ Note the sizes differ — 0x100 ([ov002](../config/arm9/overlays/ov002/symbols.t
 references a symbol its own module never otherwise calls.
 
 **G8.3 — `0x02123804` stays open.** [high] Its single caller [func_ov002_020ec670](../src/func_ov002_020ec670.c) makes
-no unambiguous call to any of [ov077](../config/arm9/overlays/ov077/symbols.txt)/[ov078](../config/arm9/overlays/ov078/symbols.txt)/[ov079](../config/arm9/overlays/ov079/symbols.txt)/[ov080](../config/arm9/overlays/ov080/symbols.txt), so co-residency says nothing. The [ov080](../config/arm9/overlays/ov080/symbols.txt) candidate is named (`_ZN13MontyMoleRockD0Ev`, size 0x54) and the others are placeholders
+no unambiguous call to any of [ov077](../config/arm9/overlays/ov077/symbols.txt)/[ov078](../config/arm9/overlays/ov078/symbols.txt)/[ov079](../config/arm9/overlays/ov079/symbols.txt)/[ov080](../config/arm9/overlays/ov080/symbols.txt), so co-residency says nothing. The [ov080](../config/arm9/overlays/ov080/symbols.txt) candidate is named (`_ZN14daChoro_Rock_cD0Ev`, size 0x54) and the others are placeholders
 of size 0x8 / 0x60 / 0x288. Needs different evidence — a call-shape or runtime check.
 
 **G8.4 — Ghidra independently corroborates the [ov006](../config/arm9/overlays/ov006/symbols.txt) → [ov004](../config/arm9/overlays/ov004/symbols.txt) verdict.** [high] See §9:

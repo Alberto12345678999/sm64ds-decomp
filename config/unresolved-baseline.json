@@ -284,12 +284,6 @@
     "normalize"
    ]
   },
-  "ov089:0x0213162c": {
-   "name": "func_ov089_0213162c",
-   "missing": [
-    "data_02111b68"
-   ]
-  },
   "ov096:0x02137564": {
    "name": "_ZN7daTor_c13InitResourcesEv",
    "missing": [

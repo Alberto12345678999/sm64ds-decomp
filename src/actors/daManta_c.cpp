@@ -8,11 +8,16 @@
  * from param1 bits 12..15. A cylinder on data_ov090_02134200 hurts
  * PLAYER (191).
  *
- * daManta_c_classInit abuts this run and stays in src/d_a_manta.c.
- * g_profile_MANTA stays in its own file. #pragma defer_codegen off
- * below emits .text in source order, which is the ROM order.
+ * daManta_c_classInit (0x02132fe8..0x02133034, historical alias
+ * MantaRay_Spawn) hand-called fBase_c::operator new(1028) + the inherited
+ * dEnemyBase_c ctor + this class's vtable store + three member subobjects
+ * in field order (dCcAcPos_c, dBgCh_Actr, ModelAnim). daManta_c has no
+ * user-declared constructor, so `new daManta_c()` reproduces the identical
+ * sequence. g_profile_MANTA stays in its own file. #pragma defer_codegen off
+ * below emits .text in source order, which is the ROM order, so the
+ * classInit factory appends after InitResources.
  *
- * deslop leftovers:
+ * Known limits:
  * - func_ov090_021327e4: mRingIDs[mRingRead] != mHitRing->uniqueID is 1
  *   word (cmp r1, r0; the cartridge is cmp r0, r1). Both operand orders
  *   missed. The address dance below keeps cmp r0, r1.
@@ -150,68 +155,63 @@ extern "C" int func_ov090_021327e4(daManta_c *self)
     self->mModelAnim.Advance();
     func_ov090_02132730(self);
 
-    if (self->mRingCount >= MANTA_RING_GOAL)
-        goto Ldecay;
-
-    if (*(unsigned short *)&self->mStateTimer == 0) {
-        spawned = dActor_c::Spawn(
-            MANTA_WATER_RING, 1, self->mRingPos, (Vector3_16 *)&self->mAngleX,
-            self->mAreaId, -1);
-        if (spawned != 0) {
-            self->mRingIDs[self->mRingWrite] = spawned->uniqueID;
-            self->mRingWrite += 1;
-            if (self->mRingWrite >= MANTA_RING_SLOTS)
-                self->mRingWrite = 0;
-            ((daWater_Ring_c *)spawned)->unk_38c = (char *)self;
-        }
-        self->mStateTimer = MANTA_RING_INTERVAL;
-    }
-
-    if (self->mHitRing == 0)
-        goto Ldecay;
-
-    if (self->mRingCount == 0) {
-        int i;
-        int key = self->mHitRing->uniqueID;
-        for (i = 0; i < MANTA_RING_SLOTS; i++) {
-            int slot = self->mRingIDs[i];
-            if (slot == key) {
-                self->mRingRead = i;
-                self->mRingCount += 1;
-                func_02012790(MANTA_COLLECT_JINGLE);
-                num1 = *(Vector3 *)&self->mHitRing->mPosX;
-                self->SpawnNumber(num1, self->mRingCount, 0, 0, 0);
-                self->mHitRing = 0;
-                return 1;
+    if (self->mRingCount < MANTA_RING_GOAL) {
+        if (*(unsigned short *)&self->mStateTimer == 0) {
+            spawned = dActor_c::Spawn(
+                MANTA_WATER_RING, 1, self->mRingPos, (Vector3_16 *)&self->mAngleX,
+                self->mAreaId, -1);
+            if (spawned != 0) {
+                self->mRingIDs[self->mRingWrite] = spawned->uniqueID;
+                self->mRingWrite += 1;
+                if (self->mRingWrite >= MANTA_RING_SLOTS)
+                    self->mRingWrite = 0;
+                ((daWater_Ring_c *)spawned)->unk_38c = (char *)self;
             }
+            self->mStateTimer = MANTA_RING_INTERVAL;
         }
-        goto Lreset;
-    } else {
-        self->mRingRead += 1;
-        if (self->mRingRead >= MANTA_RING_SLOTS)
+
+        if (self->mHitRing != 0) {
+            if (self->mRingCount == 0) {
+                int i;
+                int key = self->mHitRing->uniqueID;
+                for (i = 0; i < MANTA_RING_SLOTS; i++) {
+                    int slot = self->mRingIDs[i];
+                    if (slot == key) {
+                        self->mRingRead = i;
+                        self->mRingCount += 1;
+                        func_02012790(MANTA_COLLECT_JINGLE);
+                        num1 = *(Vector3 *)&self->mHitRing->mPosX;
+                        self->SpawnNumber(num1, self->mRingCount, 0, 0, 0);
+                        self->mHitRing = 0;
+                        return 1;
+                    }
+                }
+            } else {
+                self->mRingRead += 1;
+                if (self->mRingRead >= MANTA_RING_SLOTS)
+                    self->mRingRead = 0;
+                /* A direct != here is the same loads and then `cmp r1, r0`.
+                 * The cartridge has `cmp r0, r1`. The two ints keep that order. */
+                int slotAddr = self->mRingRead;
+                int ringId = (int)self->mHitRing;
+                slotAddr = (int)((char *)self + (slotAddr << 2));
+                ringId = *(int *)(ringId + 4);
+                slotAddr = *(int *)(slotAddr + 0x3ac);
+                if (slotAddr == ringId) {
+                    self->mRingCount += 1;
+                    func_02012790(MANTA_COLLECT_JINGLE);
+                    num2 = *(Vector3 *)&self->mHitRing->mPosX;
+                    self->SpawnNumber(num2, self->mRingCount, 0, 0, 0);
+                    self->mHitRing = 0;
+                    return 1;
+                }
+            }
+            self->mRingCount = 0;
             self->mRingRead = 0;
-        /* A direct != here is the same loads and then `cmp r1, r0`.
-         * The cartridge has `cmp r0, r1`. The two ints keep that order. */
-        int slotAddr = self->mRingRead;
-        int ringId = (int)self->mHitRing;
-        slotAddr = (int)((char *)self + (slotAddr << 2));
-        ringId = *(int *)(ringId + 4);
-        slotAddr = *(int *)(slotAddr + 0x3ac);
-        if (slotAddr != ringId)
-            goto Lreset;
-        self->mRingCount += 1;
-        func_02012790(MANTA_COLLECT_JINGLE);
-        num2 = *(Vector3 *)&self->mHitRing->mPosX;
-        self->SpawnNumber(num2, self->mRingCount, 0, 0, 0);
-        self->mHitRing = 0;
-        return 1;
+            self->mHitRing = 0;
+        }
     }
 
-Lreset:
-    self->mRingCount = 0;
-    self->mRingRead = 0;
-    self->mHitRing = 0;
-Ldecay:
     if (self->mRingCount == MANTA_RING_GOAL) {
         self->mStarDelay += 1;
         if (self->mStarDelay > MANTA_STAR_WAIT) {
@@ -341,13 +341,13 @@ int daManta_c::Behavior()
         MulVec3Mat4x3(&forward, &data_020a0e68, (Vector3 *)&unk_0a4);
     }
     {
-        int s = mVertSpeed + mVertAccel;
-        int m2 = mTerminalVelocity;
-        int ac = unk_0ac;
-        if (s >= m2)
-            m2 = s;
-        mVertSpeed = m2;
-        unk_0ac = ac;
+        int speed = mVertSpeed + mVertAccel;
+        int clamped = mTerminalVelocity;
+        int keep0ac = unk_0ac;
+        if (speed >= clamped)
+            clamped = speed;
+        mVertSpeed = clamped;
+        unk_0ac = keep0ac;
     }
     UpdatePosWithOnlySpeed(&mdCcAcPos_c);
     func_ov090_02132b14(this);
@@ -411,4 +411,10 @@ int daManta_c::InitResources()
 
     func_ov090_02132ac4(this, (MantaState *)&data_ov090_0213454c);
     return 1;
+}
+
+// @symbol daManta_c_classInit
+extern "C" daManta_c *daManta_c_classInit()
+{
+    return new daManta_c();
 }

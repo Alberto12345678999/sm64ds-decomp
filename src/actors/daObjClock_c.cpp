@@ -26,7 +26,7 @@
  *   [7] 0x0211163c  daObjClock_c_classInit_CLOCK_SHORT   (factory, actor 292)
  *   [8] 0x02111674  daObjClock_c_classInit_CLOCK_LONG    (factory, actor 293)
  *
- * deslop leftovers:
+ * Known limits:
  * - data_ov013_021116ac / data_ov013_021116b0: per-hand angular speed and
  *   SharedFilePtr handles. This TU consumes them; overlay .data owns them.
  * - two C-linkage factories stay CLOCK_SHORT / CLOCK_LONG: EAD would name
@@ -49,8 +49,6 @@ extern SharedFilePtr *data_ov013_021116b0[];
 void func_ov013_02111430(daObjClock_c *self);
 }
 
-/* -------------------------------------------------------------------------- */
-/* -------------------------------------------------------------------------- */
 /* ONE CLASS, TWO PROFILES. CLOCK_LONG (actor 293) and CLOCK_SHORT (actor 292)
  * each own a descriptor and a separate factory; both install the same
  * vtable at 0x02112200 and the same 0x128 allocation, and InitResources tells
@@ -105,10 +103,9 @@ extern "C" ClockSpawnInfo g_profile_CLOCK_SHORT = {
     0x00064000, 0x000fa000, 0x00c80000, 0x00640000
 };
 
-/* -------------------------------------------------------------------------- */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN12daObjClock_c13InitResourcesEv
-/* recovered: typed actor, model, and shared-file ownership */
+/* Hand 0 is the long hand (actor 293), hand 1 the short (actor 292); loads that
+ * hand's model file through data_ov013_021116b0[mHandIndex]. */
 int daObjClock_c::InitResources()
 {
     int isLongHand = (int)(actorID == 0x125);
@@ -125,10 +122,12 @@ int daObjClock_c::InitResources()
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN12daObjClock_c8BehaviorEv
-/* recovered: real C++ method over inherited actor fields */
+/* With data_02092110[0] <= 0 the hand advances mAngleZ by its per-hand speed
+ * in data_ov013_021116ac. With it above 0, the long hand (mHandIndex 0) writes
+ * data_0209f2c0[0] from the quadrant of -mAngleZ while its area is showing:
+ * below 0x2000 and from 0xe000 up is 3, 0x2000..0x5fff is 0, 0x6000..0x9fff is
+ * 2, 0xa000..0xdfff is 1. Either way the model matrix is rebuilt last. */
 int daObjClock_c::Behavior()
 {
     if (data_02092110[0] <= 0) {
@@ -150,28 +149,20 @@ int daObjClock_c::Behavior()
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN12daObjClock_c6RenderEv
-/* recovered: real C++ method over the owned Model */
 int daObjClock_c::Render()
 {
     mModel.Render(0);
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN12daObjClock_c16CleanupResourcesEv
-/* recovered: typed file ownership through the shared class APIs */
 int daObjClock_c::CleanupResources()
 {
     data_ov013_021116b0[mHandIndex]->Release();
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov013_02111430
 /* Rebuild the owned model matrix from inherited actor angles and position.
  * Not a vtable slot and not provably a member, so it keeps its func_ name.
@@ -187,8 +178,6 @@ void func_ov013_02111430(daObjClock_c *self)
 }
 }
 
-/* -------------------------------------------------------------------------- */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN12daObjClock_cD1Ev
 // @symbol _ZN12daObjClock_cD0Ev
 /* Both destructors are emitted from the INLINE `~daObjClock_c() {}` in
