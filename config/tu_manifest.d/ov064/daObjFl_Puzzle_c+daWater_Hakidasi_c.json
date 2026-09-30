@@ -1,0 +1,261 @@
+{
+  "id": "ov064/daObjFl_Puzzle_c+daWater_Hakidasi_c",
+  "module": "ov064",
+  "source": "src/actors/daWater_Hakidasi_c.cpp",
+  "promoted_source": "src/actors/daObjFl_Puzzle_c+daWater_Hakidasi_c.cpp",
+  "status": "promoted",
+  "boundary_confidence": "medium",
+  "boundary_evidence": [
+    "contiguous linker run: 0x02119330..0x02119a18, 11 function(s), from build/tu_map.json (tools/tu_map.py). All eleven already lived in src/actors/daWater_Hakidasi_c.cpp with complete delinks entries; this promotion splices those entries into one TU entry, no source moves.",
+    "class label(s): daWater_Hakidasi_c, daObjFl_Puzzle_c. Every function in the run is Hakidasi's; Puzzle contributes no code here (no-header class per the queue) and the factory daWater_Hakidasi_c_classInit at 0x02119a18 stays out, as the file header records.",
+    "S33: func_ov064_021193b4/021197fc/0211987c are daWater_Hakidasi_c methods (11/11 MATCH as members); func_ov064_0211982c stays a free function over the TU-local C/PMF state-table view.",
+    "module sinit corroboration: 11 sinit(s) / 11 .ctor entries, sinit_vs_tu=ok, corroborated=False (module-wide)"
+  ],
+  "sections": [
+    {
+      "name": ".text",
+      "start": "0x02119330",
+      "end": "0x02119a18"
+    }
+  ],
+  "functions": [
+    {
+      "symbol": "_ZN18daWater_Hakidasi_cD1Ev",
+      "address": "0x02119330",
+      "size": "0x00000038",
+      "legacy_source": "src/actors/daWater_Hakidasi_c.cpp",
+      "ordinal": 0
+    },
+    {
+      "symbol": "_ZN18daWater_Hakidasi_cD0Ev",
+      "address": "0x02119368",
+      "size": "0x0000004c",
+      "legacy_source": "src/actors/daWater_Hakidasi_c.cpp",
+      "ordinal": 1
+    },
+    {
+      "symbol": "_ZN18daWater_Hakidasi_c19func_ov064_021193b4Ev",
+      "address": "0x021193b4",
+      "size": "0x00000448",
+      "legacy_source": "src/actors/daWater_Hakidasi_c.cpp",
+      "ordinal": 2
+    },
+    {
+      "symbol": "_ZN18daWater_Hakidasi_c19func_ov064_021197fcEv",
+      "address": "0x021197fc",
+      "size": "0x00000030",
+      "legacy_source": "src/actors/daWater_Hakidasi_c.cpp",
+      "ordinal": 3
+    },
+    {
+      "symbol": "func_ov064_0211982c",
+      "address": "0x0211982c",
+      "size": "0x00000050",
+      "legacy_source": "src/actors/daWater_Hakidasi_c.cpp",
+      "ordinal": 4
+    },
+    {
+      "symbol": "_ZN18daWater_Hakidasi_c19func_ov064_0211987cEv",
+      "address": "0x0211987c",
+      "size": "0x00000004",
+      "legacy_source": "src/actors/daWater_Hakidasi_c.cpp",
+      "ordinal": 5
+    },
+    {
+      "symbol": "_ZN18daWater_Hakidasi_c16CleanupResourcesEv",
+      "address": "0x02119880",
+      "size": "0x00000030",
+      "legacy_source": "src/actors/daWater_Hakidasi_c.cpp",
+      "ordinal": 6
+    },
+    {
+      "symbol": "_ZN18daWater_Hakidasi_c16OnPendingDestroyEv",
+      "address": "0x021198b0",
+      "size": "0x00000004",
+      "legacy_source": "src/actors/daWater_Hakidasi_c.cpp",
+      "ordinal": 7
+    },
+    {
+      "symbol": "_ZN18daWater_Hakidasi_c6RenderEv",
+      "address": "0x021198b4",
+      "size": "0x00000008",
+      "legacy_source": "src/actors/daWater_Hakidasi_c.cpp",
+      "ordinal": 8
+    },
+    {
+      "symbol": "_ZN18daWater_Hakidasi_c8BehaviorEv",
+      "address": "0x021198bc",
+      "size": "0x00000070",
+      "legacy_source": "src/actors/daWater_Hakidasi_c.cpp",
+      "ordinal": 9
+    },
+    {
+      "symbol": "_ZN18daWater_Hakidasi_c13InitResourcesEv",
+      "address": "0x0211992c",
+      "size": "0x000000ec",
+      "legacy_source": "src/actors/daWater_Hakidasi_c.cpp",
+      "ordinal": 10
+    }
+  ],
+  "data": [],
+  "bss": [],
+  "notes": [
+    "The out-of-line destructor is the key function: under #pragma defer_codegen off it emits D1 (0x02119330), D0 (0x02119368) and a homeless D2 (deadstripped); the file is ROM-ascending.",
+    "create CONFLICT warnings: none. The three S33 renames (func_ov064_* to _ZN18daWater_Hakidasi_c19*Ev) were verified 11/11 as members before promotion."
+  ],
+  "verification": {
+    "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
+    "toolchain": "tools/mwccarm/2004/b56/mwccarm.exe",
+    "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
+    "object": "build/tu/ov064-daObjFl_Puzzle_c+daWater_Hakidasi_c/daWater_Hakidasi_c.o (gitignored)",
+    "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
+    "functions_matched": 11,
+    "functions_declared": 11,
+    "compilerOnlyOutput": {
+      "requested": [
+        "_ZN18daWater_Hakidasi_cD2Ev"
+      ],
+      "deadstripped": [
+        "_ZN18daWater_Hakidasi_cD2Ev"
+      ],
+      "droppedSections": [
+        9,
+        10,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40
+      ],
+      "data": [
+        "_ZTV18daWater_Hakidasi_c",
+        "_ZTI18daWater_Hakidasi_c",
+        "_ZTS18daWater_Hakidasi_c",
+        "_ZTI12dEnemyBase_c",
+        "_ZTS12dEnemyBase_c",
+        "_ZTI8dActor_c",
+        "_ZTS8dActor_c",
+        "_ZTI7dBase_c",
+        "_ZTS7dBase_c",
+        "_ZTI7fBase_c",
+        "_ZTS7fBase_c"
+      ],
+      "dataExternalized": [
+        "_ZTI12dEnemyBase_c",
+        "_ZTI18daWater_Hakidasi_c",
+        "_ZTI7dBase_c",
+        "_ZTI7fBase_c",
+        "_ZTI8dActor_c",
+        "_ZTS12dEnemyBase_c",
+        "_ZTS18daWater_Hakidasi_c",
+        "_ZTS7dBase_c",
+        "_ZTS7fBase_c",
+        "_ZTS8dActor_c",
+        "_ZTV18daWater_Hakidasi_c"
+      ]
+    },
+    "criteria": {
+      "every_declared_function_defined": "PASS",
+      "every_declared_function_bytes_match": "PASS",
+      "declared_function_set_equals_defined_function_set": "PASS",
+      "functions_occur_in_expected_order": "PASS",
+      "relocation_destinations_verified": "PASS"
+    }
+  },
+  "compiler_only_output": [
+    {
+      "symbol": "_ZN18daWater_Hakidasi_cD2Ev",
+      "disposition": "deadstrip",
+      "reason": "Homeless. One out-of-line destructor definition emits D1, D0 and D2 under #pragma defer_codegen off; the cartridge carries D1 at 0x02119330 and D0 at 0x02119368 and no D2."
+    },
+    {
+      "symbol": "_ZTV18daWater_Hakidasi_c",
+      "disposition": "deadstrip-data",
+      "canonical_module": "ov064",
+      "canonical_address": "0x0211c334",
+      "reason": "Own vtable, emitted because this TU defines the key function (out-of-line destructor). Cartridge copy at ov064:0x0211c334 (address point), outside the .text run claimed."
+    },
+    {
+      "symbol": "_ZTI18daWater_Hakidasi_c",
+      "disposition": "deadstrip-data",
+      "canonical_module": "ov064",
+      "canonical_address": "0x0211c2ec",
+      "reason": "Own typeinfo (__si_class_type_info over _ZTI12dEnemyBase_c). Cartridge copy at ov064:0x0211c2ec."
+    },
+    {
+      "symbol": "_ZTS18daWater_Hakidasi_c",
+      "disposition": "deadstrip-data",
+      "canonical_module": "ov064",
+      "canonical_address": "0x0211c2f8",
+      "reason": "Own type-name; bytes spell \"18daWater_Hakidasi_c\", source of the class name. Cartridge copy at ov064:0x0211c2f8."
+    },
+    {
+      "symbol": "_ZTI12dEnemyBase_c",
+      "disposition": "deadstrip-data",
+      "canonical_module": "ov002",
+      "canonical_address": "0x021081c0",
+      "reason": "Immediate base typeinfo. Cartridge copy at ov002:0x021081c0."
+    },
+    {
+      "symbol": "_ZTS12dEnemyBase_c",
+      "disposition": "deadstrip-data",
+      "canonical_module": "ov002",
+      "canonical_address": "0x021081cc",
+      "reason": "Immediate base type-name. Cartridge copy at ov002:0x021081cc."
+    },
+    {
+      "symbol": "_ZTI8dActor_c",
+      "disposition": "deadstrip-data",
+      "canonical_module": "arm9",
+      "canonical_address": "0x0208e390",
+      "reason": "Inherited base typeinfo. Cartridge copy in arm9 at 0x0208e390."
+    },
+    {
+      "symbol": "_ZTS8dActor_c",
+      "disposition": "deadstrip-data",
+      "canonical_module": "arm9",
+      "canonical_address": "0x0208e384",
+      "reason": "Inherited base type-name. Cartridge copy in arm9 at 0x0208e384."
+    },
+    {
+      "symbol": "_ZTI7dBase_c",
+      "disposition": "deadstrip-data",
+      "canonical_module": "arm9",
+      "canonical_address": "0x02086e78",
+      "reason": "Inherited base typeinfo. Cartridge copy in arm9 at 0x02086e78."
+    },
+    {
+      "symbol": "_ZTS7dBase_c",
+      "disposition": "deadstrip-data",
+      "canonical_module": "arm9",
+      "canonical_address": "0x02086e54",
+      "reason": "Inherited base type-name. Cartridge copy in arm9 at 0x02086e54."
+    },
+    {
+      "symbol": "_ZTI7fBase_c",
+      "disposition": "deadstrip-data",
+      "canonical_module": "arm9",
+      "canonical_address": "0x02086d70",
+      "reason": "Inherited base typeinfo. Cartridge copy in arm9 at 0x02086d70."
+    },
+    {
+      "symbol": "_ZTS7fBase_c",
+      "disposition": "deadstrip-data",
+      "canonical_module": "arm9",
+      "canonical_address": "0x02086e60",
+      "reason": "Inherited base type-name. Cartridge copy in arm9 at 0x02086e60."
+    }
+  ]
+}
