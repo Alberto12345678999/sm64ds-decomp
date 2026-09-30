@@ -6459,6 +6459,8 @@
     "src/actors/dScMgHanachan_c.cpp#func_ov006_020ea8e0": "tangosdev",
     "src/actors/dScMgHanachan_c.cpp#func_ov006_020ea914": "tangosdev",
     "src/actors/daObjDlPyramid_c.cpp#daObjDlPyramidDummy_c_classInit": "tangosdev",
-    "src/actors/daObjDlPyramid_c.cpp#daObjDlPyramid_c_classInit": "tangosdev"
+    "src/actors/daObjDlPyramid_c.cpp#daObjDlPyramid_c_classInit": "tangosdev",
+    "src/actors/dCapEnemy_c.cpp#_ZN11dCapEnemy_cD2Ev": "tangosdev",
+    "src/actors/dCapEnemy_c.cpp#_ZN11dCapEnemy_cD0Ev": "tangosdev"
   }
 }
