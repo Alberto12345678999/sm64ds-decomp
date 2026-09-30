@@ -6290,6 +6290,13 @@
     "src/actors/dScDSMT_c.cpp#func_ov007_020cc118": "tangosdev",
     "src/actors/dScDSMT_c.cpp#func_ov007_020cc168": "tangosdev",
     "src/actors/dScDSMT_c.cpp#_ZN9dScDSMT_c16OnPendingDestroyEv": "tangosdev",
-    "src/actors/dScDSMT_c.cpp#_ZN9dScDSMT_c6RenderEv": "tangosdev"
+    "src/actors/dScDSMT_c.cpp#_ZN9dScDSMT_c6RenderEv": "tangosdev",
+    "src/actors/daSnowball_c.cpp#_ZN12daSnowball_cD1Ev": "tangosdev",
+    "src/actors/daSnowball_c.cpp#_ZN12daSnowball_cD0Ev": "tangosdev",
+    "src/actors/daSnowball_c.cpp#func_ov081_02125fb8": "andrewboudreau",
+    "src/actors/daSnowball_c.cpp#func_ov081_021260fc": "tangosdev",
+    "src/actors/daSnowball_c.cpp#func_ov081_021261b8": "tangosdev",
+    "src/actors/daSnowball_c.cpp#func_ov081_021261d4": "tangosdev",
+    "src/actors/daSnowball_c.cpp#func_ov081_02126224": "tangosdev"
   }
 }
