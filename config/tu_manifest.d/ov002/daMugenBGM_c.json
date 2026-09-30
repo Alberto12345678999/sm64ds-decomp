@@ -1,9 +1,9 @@
 {
   "id": "ov002/daMugenBGM_c",
   "module": "ov002",
-  "source": "src_tu/actors/daMugenBGM_c.cpp",
+  "source": "src/actors/daMugenBGM_c.cpp",
   "promoted_source": "src/actors/daMugenBGM_c.cpp",
-  "status": "text-verified",
+  "status": "promoted",
   "boundary_confidence": "medium",
   "boundary_evidence": [
     "contiguous linker run: 0x020f1bc4..0x020f1f70, 9 function(s). build/tu_map.json labels 0x020f1bc4..0x020f1f40 daMugenBGM_c and leaves daMugenBGM_c_classInit at 0x020f1f40 in its own unlabelled unit. That cut is tu_map's class labelling, not a linker boundary: zero-gap factory folded per queue header and #3318 precedent; next class D1 (_ZN14CutsceneObjectD1Ev) starts exactly at 0x020f1f70.",
