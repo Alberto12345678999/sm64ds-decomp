@@ -7,10 +7,13 @@
  * A dropped cap slides down slopes, blinks through the last half of its
  * timer and is destroyed when the timer ends (unless flag 0x60000 is set).
  *
- * Twenty-nine of the run's thirty functions. OnYoshiTryEat is the key
- * function -- the first out-of-line virtual daObjMarioCap_c declares after
- * the inline destructor in daObjMarioCap_c.h -- so the compiler owns retail's
- * D1/D0 pair and the complete RTTI/vtable group, and no D2 is retained.
+ * The whole cap unit of ov002 .text, 0x020b6f18..0x020b8bf0, 31 functions:
+ * the D1/D0 pair, the state helpers and methods, InitResources and the
+ * registry factory daObjMarioCap_c_classInit (`return new`, through the
+ * class's leaf operator new). OnYoshiTryEat is the key function -- the first
+ * out-of-line virtual daObjMarioCap_c declares after the inline destructor in
+ * daObjMarioCap_c.h -- so the compiler owns retail's D1/D0 pair and the
+ * complete RTTI/vtable group, and no D2 is retained.
  *
  * DO NOT "TIDY" THESE -- each one is load-bearing:
  *
@@ -42,13 +45,11 @@
  *   6az). dBgCh_Actr::GetFloorResult / GetWallResult are not declared.
  *
  * Known limits:
- *   classInit stays in src/d_a_obj_mario_cap.c. InitResources (0x020b86d0..
- *   0x020b8b98) sits between the licensed range and the factory and does not
- *   reproduce, so folding `return new daObjMarioCap_c()` would punch a hole
- *   in .text. Leaf operator new is on the class for when that join is legal.
- *   _ZN15daObjMarioCap_c13InitResourcesEv is held out: the cartridge body is
- *   0x4c8 bytes at 0x020b86d0..0x020b8b98, the pinned 2004/b56 emits 0x4d0,
- *   8 bytes over, and there is no `complete` marker.
+ *   InitResources keeps two `(u32)param1` read-side casts; spelled plainly,
+ *   2004/b56 materialises the param1 address once for each read-modify-write
+ *   and the body grows from 0x4c8 to 0x4d0 (see the comments at both sites).
+ *   It also keeps the dCcAc_c::Init / dBgCh_Actr::Init calls mangled: both
+ *   take Fix12<int> by value.
  *   The data_ov002_0210de* / 0210df* handles have no recovered names in
  *   symbols.txt, so none are coined.
  *   The SharedFilePtr header has no fields; CleanupResources still casts the
@@ -151,6 +152,10 @@ int   _ZN4cstd4fdivEii(int a, int b);
 void *_ZNK10dBgCh_Actr13GetWallResultEv(void *self);
 char *_ZNK10dBgCh_Actr14GetFloorResultEv(void *self);
 
+/* dCcAc_c::Init and dBgCh_Actr::Init take Fix12<int> by value, which has no
+   implicit int conversion (notes/mwccarm-codegen.md 6az). */
+extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *thiz, void *actor, s32 f1, s32 f2, u32 a, u32 b);
+extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void *thiz, void *actor, s32 f1, s32 f2, void *v, void *w);
 
 void *_ZN9dBgCh_GndC1Ev(char *ray);
 void  _ZN9dBgCh_GndD1Ev(char *ray);
@@ -187,6 +192,197 @@ extern struct AnimRec *data_ov002_020ff0a0[];
 extern struct AnimRec *data_ov002_020ff0b8[];
 extern int            *data_ov002_020ff0c4[];
 
+}
+
+// @symbol daObjMarioCap_c_classInit
+extern "C" daObjMarioCap_c *daObjMarioCap_c_classInit(void)
+{
+    return new daObjMarioCap_c();
+}
+
+// @symbol _ZN15daObjMarioCap_c13InitResourcesEv
+int daObjMarioCap_c::InitResources()
+{
+    int flag;
+    unsigned char v;
+
+    mType = param1 & 0xff;
+    mModelIndex = (param1 >> 8) & 0xf;
+    unk_400 = (param1 >> 0xc) & 0xf;
+
+    if (mType == 0xff)
+        mType = 0;
+
+    if (mModelIndex >= 3)
+        return 0;
+
+    if (mType == 0x11 || mType == 4) {
+        if (unk_400 > 2)
+            unk_400 = 0;
+    } else {
+        if (unk_400 > 1)
+            unk_400 = 0;
+    }
+
+    switch (mType) {
+    case 0xf:
+        Animation::LoadFile(*(SharedFilePtr *)&data_ov002_0210de50);
+        Animation::LoadFile(*(SharedFilePtr *)&data_ov002_0210de60);
+        Animation::LoadFile(*(SharedFilePtr *)&data_ov002_0210de48);
+        break;
+    case 0x14:
+    case 0x15:
+    case 0x16:
+        Animation::LoadFile(*(SharedFilePtr *)&data_ov002_0210de28);
+        Animation::LoadFile(*(SharedFilePtr *)&data_ov002_0210de08);
+        Animation::LoadFile(*(SharedFilePtr *)&data_ov002_0210de20);
+        Animation::LoadFile(*(SharedFilePtr *)&data_ov002_0210de40);
+        Animation::LoadFile(*(SharedFilePtr *)&data_ov002_0210de10);
+        Animation::LoadFile(*(SharedFilePtr *)&data_ov002_0210de00);
+        Animation::LoadFile(*(SharedFilePtr *)&data_ov002_0210de58);
+        Animation::LoadFile(*(SharedFilePtr *)&data_ov002_0210de18);
+        break;
+    case 0x10:
+    case 0x11:
+    case 0x12:
+    case 0x13:
+    default:
+        Animation::LoadFile(*(SharedFilePtr *)&data_ov002_0210de30);
+        Animation::LoadFile(*(SharedFilePtr *)&data_ov002_0210de38);
+        break;
+    }
+
+    if (mModelAnim.SetFile(
+            (BMD_File *)Model::LoadFile(*(SharedFilePtr *)data_ov002_020ff0ac[mModelIndex]),
+            1, -1) == 0)
+        return 0;
+
+    mShadowModel.InitCylinder();
+
+    mScaleX = 0x1000;
+    mScaleY = 0x1000;
+    mScaleZ = 0x1000;
+
+    flag = 0;
+
+    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x1e000, 0x1e000, 0x800002, 0);
+    _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(&mWithMeshClsn, this, 0x1e000, 0x16000, 0, 0);
+
+    unk_3c4 = mPosX;
+    unk_3c8 = mPosY;
+    unk_3cc = mPosZ;
+
+    mVertAccel = -0x1000;
+    mTerminalVelocity = -0x1e000;
+
+    switch (mType) {
+    default:
+        break;
+    case 0:
+        *(s32 *)(((long long)((char *)&mdCcAc_c.vulnFlags))) |= 0x8000;
+        unk_400 = 4;
+        func_ov002_020b7f2c((C *)this, (PMF *)&data_ov002_0210df64);
+        break;
+    case 1:
+        unk_400 = 0xff;
+        func_ov002_020b7f2c((C *)this, (PMF *)&data_ov002_0210df84);
+        break;
+    case 2:
+        *(s32 *)(((long long)((char *)&mdCcAc_c.vulnFlags))) |= 0x8000;
+        unk_400 = 4;
+        func_ov002_020b7f2c((C *)this, (PMF *)&data_ov002_0210df04);
+        break;
+    case 3:
+        unk_400 = 0xff;
+        func_ov002_020b7f2c((C *)this, (PMF *)&data_ov002_0210df24);
+        break;
+    case 19:
+        unk_400 = 0xff;
+        *(void **)&unk_3c0 = ClosestPlayer();
+        func_ov002_020b7f2c((C *)this, (PMF *)&data_ov002_0210df54);
+        unk_401 = 1;
+        break;
+    case 20:
+    case 21:
+    case 22:
+        func_ov002_020b7f7c();
+        /* fallthrough */
+    case 10:
+    case 15:
+        unk_400 = 0xff;
+        func_ov002_020b7f2c((C *)this, (PMF *)&data_ov002_0210df74);
+        break;
+    case 12:
+        unk_400 = 4;
+        func_ov002_020b7f2c((C *)this, (PMF *)&data_ov002_0210df14);
+        break;
+    case 13:
+        unk_400 = 4;
+        func_ov002_020b7f2c((C *)this, (PMF *)&data_ov002_0210df44);
+        break;
+    case 14:
+        unk_400 = 2;
+        mdCcAc_c.radius = 0x32000;
+        mdCcAc_c.height = 0x32000;
+        /* Spelt plainly (`param1 = param1 - 0xa;`), both sides of this
+           assignment are the same expression, and 2004/b56 value-numbers
+           them together and materialises the address once (`add r3, r5, #8`
+           at +0x37c, then `ldr r0, [r3]` and `str r2, [r3]`), where the ROM
+           folds the offset into both accesses. A redundant cast on the read
+           side is enough to make the two sides textually different and
+           reach the folded form -- no `volatile` needed, so tools/tiers.py
+           never reads this as a codegen trick. Same residue and same lever
+           as src/_ZN4Door13InitResourcesEv.c and the second site below. */
+        param1 = (u32)param1 - 0xa;
+        mType = 4;
+        func_ov002_020b7f2c((C *)this, (PMF *)&data_ov002_0210df34);
+        break;
+    case 17:
+        mdCcAc_c.radius = 0x32000;
+        mdCcAc_c.height = 0x32000;
+        flag = 1;
+        func_ov002_020b7f2c((C *)this, (PMF *)&data_ov002_0210df34);
+        break;
+    case 6:
+    case 7:
+    case 8:
+    case 9:
+        unk_400 = 0xff;
+        mdCcAc_c.radius = 0x32000;
+        mdCcAc_c.height = 0x32000;
+        func_ov002_020b7f2c((C *)this, (PMF *)&data_ov002_0210df34);
+        break;
+    case 5:
+    case 11:
+    case 18:
+        mAreaId = -1;
+        /* fallthrough */
+    case 16:
+        unk_400 = 3;
+        /* fallthrough */
+    case 4:
+        mdCcAc_c.radius = 0x32000;
+        mdCcAc_c.height = 0x32000;
+        func_ov002_020b7f2c((C *)this, (PMF *)&data_ov002_0210df34);
+        break;
+    }
+
+    mModelAnim.speed = 0x1000;
+
+    if (unk_400 != 0xff) {
+        if (flag != 0)
+            v = 1;
+        else
+            v = 0;
+        mCapIcon.func_ov001_020ab228((char *)this, mModelIndex & 0xff, unk_400, v);
+    }
+
+    /* The second materialised param1 read-modify-write, at +0x448; see the
+       first one in case 14 for the mechanism. Measured: with both casts the
+       candidate is 0x4c8 and 0 of 306 words differ; with neither it is 0x4d0,
+       and over the shared prefix 98 of 308 differ. */
+    param1 = (u32)param1 & 0xfff;
+    return 1;
 }
 
 // @symbol _ZN15daObjMarioCap_c8BehaviorEv

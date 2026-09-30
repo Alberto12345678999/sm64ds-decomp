@@ -7,7 +7,7 @@
     "no_codegen_trick",
     "no_mangled_refs"
   ],
-  "count": 3062,
+  "count": 3065,
   "converted": [
     "src/ARMMathLoadState.c",
     "src/ARMMathSaveState.c",
@@ -2777,8 +2777,8 @@
     "src/actors/daTrs_c.cpp#_ZN11daTrsIcon_c13InitResourcesEv",
     "src/actors/daTrs_c.cpp#_ZN11daTrsIcon_cD0Ev",
     "src/actors/daTrs_c.cpp#_ZN11daTrsIcon_cD1Ev",
-    "src/game/actors/daTrsTrap_c/_ZN11daTrsTrap_cD0Ev.cpp",
-    "src/game/actors/daTrsTrap_c/_ZN11daTrsTrap_cD1Ev.cpp",
+    "src/game/actors/daTrsTrap_c/d_a_trs_trap.cpp#_ZN11daTrsTrap_cD0Ev",
+    "src/game/actors/daTrsTrap_c/d_a_trs_trap.cpp#_ZN11daTrsTrap_cD1Ev",
     "src/game/actors/daTrsTrap_c/d_a_trs_trap.cpp#_ZN11daTrsTrap_c16CleanupResourcesEv",
     "src/game/actors/daTrsTrap_c/d_a_trs_trap.cpp#_ZN11daTrsTrap_c16OnPendingDestroyEv",
     "src/game/actors/daTrsTrap_c/d_a_trs_trap.cpp#_ZN11daTrsTrap_c6RenderEv",
@@ -3013,8 +3013,8 @@
     "src/actors/daKirai_c.cpp#_ZN9daKirai_cD1Ev",
     "src/actors/daMoray_c.cpp#_ZN9daMoray_c16CleanupResourcesEv",
     "src/actors/daMoray_c.cpp#_ZN9daMoray_c16OnPendingDestroyEv",
-    "src/_ZN9daMoray_cD0Ev.cpp",
-    "src/_ZN9daMoray_cD1Ev.cpp",
+    "src/actors/daMoray_c.cpp#_ZN9daMoray_cD0Ev",
+    "src/actors/daMoray_c.cpp#_ZN9daMoray_cD1Ev",
     "src/actors/daSnowman_c.cpp#_ZN11daSnowman_c16CleanupResourcesEv",
     "src/actors/daSnowman_c.cpp#_ZN11daSnowman_c16OnAimedAtWithEggEv",
     "src/actors/daSnowman_c.cpp#_ZN11daSnowman_c16OnPendingDestroyEv",
@@ -3070,6 +3070,9 @@
     "src/actors/daObjEmmYuka_c.cpp#daObjEmmYuka_c_classInit",
     "src/actors/dMg3DEspAnimSet_c.cpp#_ZN12dScMg3DEsp_cD1Ev",
     "src/actors/dMg3DEspAnimSet_c.cpp#_ZN12dScMg3DEsp_cD0Ev",
-    "src/actors/dMg3DEspAnimSet_c.cpp#_ZN12dScMg3DEsp_c6RenderEv"
+    "src/actors/dMg3DEspAnimSet_c.cpp#_ZN12dScMg3DEsp_c6RenderEv",
+    "src/actors/daObjCtMecha09_c.cpp#daObjCtMecha09_c_classInit",
+    "src/actors/daMoray_c.cpp#BookSwitch_Spawn",
+    "src/actors/daObjMarioCap_c.cpp#daObjMarioCap_c_classInit"
   ]
 }
