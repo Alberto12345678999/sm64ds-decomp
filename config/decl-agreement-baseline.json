@@ -6093,7 +6093,7 @@
         "param:#2 void *",
         "param:#5 void *"
       ],
-      "src/_ZN15daObjMarioCap_c13InitResourcesEv.cpp": [
+      "src/actors/daObjMarioCap_c.cpp": [
         "param:#2 void *",
         "param:#5 void *",
         "param:#6 void *"
@@ -9697,9 +9697,6 @@
         "return:BMD_File *"
       ],
       "src/_ZN15RollingIronBall13InitResourcesEv.cpp": [
-        "param:#1 void *"
-      ],
-      "src/_ZN15daObjMarioCap_c13InitResourcesEv.cpp": [
         "param:#1 void *"
       ],
       "src/actors/daKing_Donketu_c.cpp": [
@@ -13353,9 +13350,6 @@
       "src/_ZN14UnchainedChomp8BehaviorEv.cpp": [
         "return:dActor_c *"
       ],
-      "src/_ZN15daObjMarioCap_c13InitResourcesEv.cpp": [
-        "return:int"
-      ],
       "src/actors/daChoropu_c.cpp": [
         "return:char *"
       ],
@@ -14127,10 +14121,6 @@
       ]
     },
     "_ZN9Animation8LoadFileER13SharedFilePtr": {
-      "src/_ZN15daObjMarioCap_c13InitResourcesEv.cpp": [
-        "param:#1 void *",
-        "return:void"
-      ],
       "src/actors/daKing_Donketu_c.cpp": [
         "param:#1 SharedFilePtr *",
         "return:void *"
@@ -19962,71 +19952,6 @@
         "return:Vector3 []"
       ]
     },
-    "data_ov002_0210de00": {
-      "src/_ZN15daObjMarioCap_c13InitResourcesEv.cpp": [
-        "return:char"
-      ]
-    },
-    "data_ov002_0210de08": {
-      "src/_ZN15daObjMarioCap_c13InitResourcesEv.cpp": [
-        "return:char"
-      ]
-    },
-    "data_ov002_0210de10": {
-      "src/_ZN15daObjMarioCap_c13InitResourcesEv.cpp": [
-        "return:char"
-      ]
-    },
-    "data_ov002_0210de18": {
-      "src/_ZN15daObjMarioCap_c13InitResourcesEv.cpp": [
-        "return:char"
-      ]
-    },
-    "data_ov002_0210de20": {
-      "src/_ZN15daObjMarioCap_c13InitResourcesEv.cpp": [
-        "return:char"
-      ]
-    },
-    "data_ov002_0210de28": {
-      "src/_ZN15daObjMarioCap_c13InitResourcesEv.cpp": [
-        "return:char"
-      ]
-    },
-    "data_ov002_0210de30": {
-      "src/_ZN15daObjMarioCap_c13InitResourcesEv.cpp": [
-        "return:char"
-      ]
-    },
-    "data_ov002_0210de38": {
-      "src/_ZN15daObjMarioCap_c13InitResourcesEv.cpp": [
-        "return:char"
-      ]
-    },
-    "data_ov002_0210de40": {
-      "src/_ZN15daObjMarioCap_c13InitResourcesEv.cpp": [
-        "return:char"
-      ]
-    },
-    "data_ov002_0210de48": {
-      "src/_ZN15daObjMarioCap_c13InitResourcesEv.cpp": [
-        "return:char"
-      ]
-    },
-    "data_ov002_0210de50": {
-      "src/_ZN15daObjMarioCap_c13InitResourcesEv.cpp": [
-        "return:char"
-      ]
-    },
-    "data_ov002_0210de58": {
-      "src/_ZN15daObjMarioCap_c13InitResourcesEv.cpp": [
-        "return:char"
-      ]
-    },
-    "data_ov002_0210de60": {
-      "src/_ZN15daObjMarioCap_c13InitResourcesEv.cpp": [
-        "return:char"
-      ]
-    },
     "data_ov002_0210df04": {
       "src/__sinit_ov002_02101064.c": [
         "return:S16"
@@ -20055,6 +19980,9 @@
     "data_ov002_0210df54": {
       "src/__sinit_ov002_02101064.c": [
         "return:S16"
+      ],
+      "src/actors/daObjMarioCap_c.cpp": [
+        "return:char"
       ]
     },
     "data_ov002_0210df64": {
@@ -35836,9 +35764,6 @@
       ],
       "src/_ZN11dCapEnemy_c6AddCapEj.cpp": [
         "param:#5 int"
-      ],
-      "src/_ZN15daObjMarioCap_c13InitResourcesEv.cpp": [
-        "param:#5 int"
       ]
     },
     "func_ov002_020ae968": {
@@ -35896,11 +35821,6 @@
       "src/game/actors/d_a_obj_km3_kurumajiku.cpp": [
         "param:#1 daObjKm3_Kurumajiku_c *",
         "param:#2 ResourceDescriptor *"
-      ]
-    },
-    "func_ov002_020b7f2c": {
-      "src/_ZN15daObjMarioCap_c13InitResourcesEv.cpp": [
-        "return:void"
       ]
     },
     "func_ov002_020baa98": {
