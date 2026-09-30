@@ -6307,6 +6307,8 @@
     "src/actors/daWater_Suikomi_c.cpp#func_ov026_02112324": "tangosdev",
     "src/actors/daKing_Donketu_c.cpp#_ZN16daKing_Donketu_c8BehaviorEv": "lunavyqo",
     "src/actors/daKing_Donketu_c.cpp#_ZN16daKing_Donketu_c13InitResourcesEv": "tangosdev",
-    "src/actors/daKing_Donketu_c.cpp#_ZN16daKing_Donketu_c16OnAimedAtWithEggEv": "tangosdev"
+    "src/actors/daKing_Donketu_c.cpp#_ZN16daKing_Donketu_c16OnAimedAtWithEggEv": "tangosdev",
+    "src/actors/dScStarSel_c.cpp#_ZN12dScStarSel_cD1Ev": "tangosdev",
+    "src/actors/dScStarSel_c.cpp#_ZN12dScStarSel_cD0Ev": "tangosdev"
   }
 }
