@@ -24895,6 +24895,11 @@
         "return:S8 []"
       ]
     },
+    "data_ov065_0211d720": {
+      "src/__sinit_ov065_0211c440.c": [
+        "return:char []"
+      ]
+    },
     "data_ov065_0211d768": {
       "src/__sinit_ov065_0211c440.c": [
         "return:char []"
