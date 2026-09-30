@@ -3939,7 +3939,7 @@
     "src/game/actors/d_a_obj_number.cpp#func_ov002_020f0918": "tangosdev",
     "src/actors/daObjCtKaitendai_c.cpp#_ZN18daObjCtKaitendai_cD1Ev": "andrewboudreau",
     "src/actors/daObjCtKaitendai_c.cpp#_ZN18daObjCtKaitendai_cD0Ev": "andrewboudreau",
-    "src/actors/daObjCtKaitendai_c.cpp#func_ov065_0211b40c": "tangosdev",
+    "src/actors/daObjCtKaitendai_c.cpp#_ZN18daObjCtKaitendai_c19func_ov065_0211b40cEv": "tangosdev",
     "src/actors/daObjCtKaitendai_c.cpp#_ZN18daObjCtKaitendai_c16CleanupResourcesEv": "andrewboudreau",
     "src/actors/daObjCtKaitendai_c.cpp#_ZN18daObjCtKaitendai_c6RenderEv": "tangosdev",
     "src/actors/daObjCtKaitendai_c.cpp#_ZN18daObjCtKaitendai_c8BehaviorEv": "andrewboudreau",
