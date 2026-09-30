@@ -24806,16 +24806,6 @@
         "return:int []"
       ]
     },
-    "data_ov065_0211d9cc": {
-      "src/__sinit_ov065_0211ca74.c": [
-        "return:int []"
-      ]
-    },
-    "data_ov065_0211d9d4": {
-      "src/__sinit_ov065_0211ca74.c": [
-        "return:int []"
-      ]
-    },
     "data_ov066_0211abe0": {
       "src/_ZN6Eyerok13InitResourcesEv.cpp": [
         "return:signed char"
@@ -40681,6 +40671,16 @@
     "_ZTV15daObjFl_KomaU_c": {
       "src/d_a_obj_fl_koma_u.cpp": [
         "return:void * []"
+      ]
+    },
+    "data_ov065_0211d9cc": {
+      "src/actors/daObjCtMecha09_c.cpp": [
+        "return:SharedFilePtr"
+      ]
+    },
+    "data_ov065_0211d9d4": {
+      "src/actors/daObjCtMecha09_c.cpp": [
+        "return:SharedFilePtr"
       ]
     }
   }

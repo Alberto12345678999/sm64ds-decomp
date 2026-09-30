@@ -7,7 +7,7 @@
     "no_codegen_trick",
     "no_mangled_refs"
   ],
-  "count": 3062,
+  "count": 3063,
   "converted": [
     "src/ARMMathLoadState.c",
     "src/ARMMathSaveState.c",
@@ -3070,6 +3070,7 @@
     "src/actors/daObjEmmYuka_c.cpp#daObjEmmYuka_c_classInit",
     "src/actors/dMg3DEspAnimSet_c.cpp#_ZN12dScMg3DEsp_cD1Ev",
     "src/actors/dMg3DEspAnimSet_c.cpp#_ZN12dScMg3DEsp_cD0Ev",
-    "src/actors/dMg3DEspAnimSet_c.cpp#_ZN12dScMg3DEsp_c6RenderEv"
+    "src/actors/dMg3DEspAnimSet_c.cpp#_ZN12dScMg3DEsp_c6RenderEv",
+    "src/actors/daObjCtMecha09_c.cpp#daObjCtMecha09_c_classInit"
   ]
 }

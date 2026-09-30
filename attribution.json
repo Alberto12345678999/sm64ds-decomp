@@ -5951,6 +5951,8 @@
     "src/actors/daObjCtMecha09_c.cpp#_ZN16daObjCtMecha09_c16CleanupResourcesEv": "tangosdev",
     "src/actors/daObjCtMecha09_c.cpp#_ZN16daObjCtMecha09_c6RenderEv": "tangosdev",
     "src/actors/daObjCtMecha09_c.cpp#_ZN16daObjCtMecha09_c8BehaviorEv": "tangosdev",
+    "src/actors/daObjCtMecha09_c.cpp#_ZN16daObjCtMecha09_c13InitResourcesEv": "tangosdev",
+    "src/actors/daObjCtMecha09_c.cpp#daObjCtMecha09_c_classInit": "tangosdev",
     "src/actors/daWater_Ring_c.cpp#_ZN14daWater_Ring_c6RenderEv": "tangosdev",
     "src/actors/daWater_Ring_c.cpp#func_ov064_02119afc": "tangosdev",
     "src/actors/daWater_Ring_c.cpp#_ZN14daWater_Ring_c13InitResourcesEv": "tangosdev",
