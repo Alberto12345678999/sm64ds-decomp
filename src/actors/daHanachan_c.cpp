@@ -1,16 +1,14 @@
 //cpp
-/* Production translation unit for ov034/daHanachan_c, the Wiggler.
- * 34 function(s), .text 0x021111a0..0x021136a4.
+/* daHanachan_c: the Wiggler (ov034, registry profile HANACHAN). 34 functions,
+ * .text 0x021111a0..0x021136a4: D1, D0, four virtual methods and 28
+ * non-virtual members (22 state functions, SetState, ExecState and four
+ * helpers). The run is gap-free and this is the only class in it.
  *
- * NAME: _ZTS12daHanachan_c is "12daHanachan_c" at ov034 0x02114478; _ZTI at
- * 0x0211445c reads [__si_class_type_info, that string, _ZTI12dEnemyBase_c].
- * The vtable's address point is 0x021144bc; the word before it (0x021144b8)
- * is that _ZTI. The tree previously called the class Wiggler (coined).
- *
- * D1, D0 and four virtual methods, with 28 non-virtual members between
- * them: 22 state functions, SetState, ExecState and four helpers. The run is
- * gap-free and this is the only class in it. daHanachan_c_classInit at
- * 0x021136a4 is the next function and is not part of this translation unit.
+ * ROM evidence: _ZTS12daHanachan_c is "12daHanachan_c" at ov034 0x02114478;
+ * _ZTI at 0x0211445c reads [__si_class_type_info, that string,
+ * _ZTI12dEnemyBase_c]. The vtable's address point is 0x021144bc; the word
+ * before it (0x021144b8) is that _ZTI. The tree previously called the class
+ * Wiggler (coined).
  *
  * #pragma defer_codegen off emits .text in source order, so the file is
  * ROM-ascending. One out-of-line destructor is the key function, so this TU
@@ -37,11 +35,11 @@ extern daHanachan_c::State data_ov034_02114538[];
 extern "C" {
 extern int _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *anim, void *file, int flags, int speed, unsigned int startFrame);
 extern void **data_ov034_02113888[];
-extern "C" int DecIfAbove0_Byte(void*);
+extern int DecIfAbove0_Byte(void*);
 extern void **data_ov034_0211389c[];
 extern void **data_ov034_02113860[];
-extern "C" int Math_Function_0203b14c(void *base, int a, int b, int c, int d);
-extern "C" int data_ov034_021138c4[];
+extern int Math_Function_0203b14c(void *base, int a, int b, int c, int d);
+extern int data_ov034_021138c4[];
 extern void func_0201267c(int, void *);
 extern void _ZN6Camera9SetFlag_3Ev(void* cam);
 extern short Vec3_HorzAngle(const void* a, const void* b);
@@ -56,9 +54,9 @@ extern int data_ov034_02114488[];
 void _ZN5Sound22LoadAndSetMusic_Layer3Ej(unsigned);
 void _ZN5Sound22StopLoadedMusic_Layer3Ev(void);
 extern char data_020a0e68[];
-extern "C" void Matrix4x3_FromRotationY(void *m, int angle);
-extern "C" void MulVec3Mat4x3(void *in, void *m, void *out);
-extern "C" void Vec3_Add(void *out, void *a, void *b);
+extern void Matrix4x3_FromRotationY(void *m, int angle);
+extern void MulVec3Mat4x3(void *in, void *m, void *out);
+extern void Vec3_Add(void *out, void *a, void *b);
 extern void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *self, struct Vector3 *v, unsigned int b, int c, unsigned int d, unsigned int e, unsigned int f);
 extern int NormalizeVec3IfNonZero(void *v);
 extern void Vec3_MulScalarInPlace(void *v, int s);
@@ -351,7 +349,7 @@ void daHanachan_c::StateDamageInit()
 void daHanachan_c::StateMoveMain()
 {
     int len;
-    int r4;
+    int rnd;
     int v[3];
 
     Vec3_Sub(v, &mPosX, &mHomePos);
@@ -368,26 +366,26 @@ void daHanachan_c::StateMoveMain()
     }
 
     if (DecIfAbove0_Byte(&mStateTimer) == 0) {
-        r4 = RandomIntInternal(&data_0209e650);
+        rnd = RandomIntInternal(&data_0209e650);
         {
-            unsigned char db = mHealth;
-            unsigned int hi;
-            if (db <= 3 || (((hi = (unsigned int)r4 >> 0x1b)) & 1) == 0) {
+            unsigned char health = mHealth;
+            unsigned int bits;
+            if (health <= 3 || (((bits = (unsigned int)rnd >> 0x1b)) & 1) == 0) {
                 mTargetAngleY = HorzAngleToCPlayer();
             } else {
-                mTargetAngleY = (short)((hi & 0xf) << 0xc);
+                mTargetAngleY = (short)((bits & 0xf) << 0xc);
             }
         }
-        mStateTimer = (unsigned char)((unsigned int)(r4 + 0x1e) >> 0x1b);
+        mStateTimer = (unsigned char)((unsigned int)(rnd + 0x1e) >> 0x1b);
         mStateTimer = (unsigned char)(mStateTimer - (4 - mHealth) * 0x1e);
         if (mStateTimer >= 0x40)
             mStateTimer = 0;
     }
 
     if (mWithMeshClsn.IsOnWall() != 0 || len > 0x5dc000) {
-        r4 = RandomIntInternal(&data_0209e650);
+        rnd = RandomIntInternal(&data_0209e650);
         mTargetAngleY = Vec3_HorzAngle(&mPosX, &mHomePos);
-        mStateTimer = (unsigned char)((unsigned int)(r4 + 0x1e) >> 0x1b);
+        mStateTimer = (unsigned char)((unsigned int)(rnd + 0x1e) >> 0x1b);
         mStateTimer = (unsigned char)(mStateTimer - (4 - mHealth) * 0x1e);
         if (mStateTimer >= 0x40)
             mStateTimer = 0;

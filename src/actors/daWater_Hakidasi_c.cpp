@@ -1,24 +1,33 @@
 //cpp
-/* Production translation unit for ov064/daWater_Hakidasi_c.
- * 11 function(s), .text 0x02119330..0x02119a18. The water jet
- * (registry profile WATER_HAKIDASI).
+/* daWater_Hakidasi_c: a water spout that spawns WATER_RING actors (registry profile
+ * WATER_HAKIDASI, ov064).
+ * 11 functions, .text 0x02119330..0x02119a18.
  *
- * NAME: _ZTS18daWater_Hakidasi_c is "18daWater_Hakidasi_c" at ov064 0x0211c2f8;
- * _ZTI at 0x0211c2ec reads [__si_class_type_info, that string,
+ * ROM evidence: _ZTS18daWater_Hakidasi_c is "18daWater_Hakidasi_c" at ov064
+ * 0x0211c2f8; _ZTI at 0x0211c2ec reads [__si_class_type_info, that string,
  * _ZTI12dEnemyBase_c]. The vtable's address point is 0x0211c334; the word
  * before it is that _ZTI. The tree previously called the class JetStream
- * (coined).
+ * (coined; the actors it spawns are WATER_RINGs, not jets).
  *
  * The out-of-line destructor is the key function, so this TU emits _ZTV/_ZTI/
  * _ZTS. Under `#pragma defer_codegen off` it comes out D1 (0x02119330), D0
  * (0x02119368), then a D2 the cartridge has no home for (manifest: deadstrip);
  * the same pragma lays .text down in source order, so this file is
- * ROM-ascending. The factory daWater_Hakidasi_c_classInit (0x02119a18) stays
- * in its own source, src/d_a_water_hakidasi.c.
+ * ROM-ascending.
  *
- * `#pragma opt_strength_reduction off` is required inside func_ov064_021193b4
- * and is turned back on immediately after that function: the pragma is
- * file-global, and the later members matched without it.
+ * Known limits:
+ * - The factory daWater_Hakidasi_c_classInit (0x02119a18) stays a
+ *   one-function C source.
+ * - `#pragma opt_strength_reduction off` is required inside
+ *   func_ov064_021193b4 and is turned back on right after it: the pragma is
+ *   file-global and the later members matched without it.
+ * - func_ov064_021193b4 keeps its M() launders, the volatile rot block and
+ *   `m1 = -1` as found; they were needed to match.
+ * - The player is read through raw offsets (0x5c..0x64 position, 0x6f9
+ *   Player::mIsMetal); Player.h is not pulled into this TU.
+ * - The spawned ring's fields at 0xa4, 0xac and 0x38c have no member yet.
+ * - Particle::System::New and dCcAc_c::Init stay mangled extern "C" calls,
+ *   with Fix12<int> spelled as int (see InitResources).
  */
 
 #include "daWater_Hakidasi_c.h"
@@ -28,14 +37,6 @@
 
 struct Vec3 { int x, y, z; };
 struct Vec3_16 { s16 x, y, z; };
-
-struct Foo {
-    char padding[0x31c];
-    int field31c;
-    int arr[20];
-    int field370;
-    int field374;
-};
 
 typedef int Fix12i;
 
@@ -66,6 +67,7 @@ extern SharedFilePtr data_ov002_0210d9a8;
 extern signed char data_0209f2f8;
 extern unsigned char data_0209f220;
 
+/* Identity, but it keeps the address expression from being folded into the access. */
 #define M(p) (p)
 
 /* D0 is the deleting destructor: it destroys through this class and its
@@ -77,176 +79,179 @@ daWater_Hakidasi_c::~daWater_Hakidasi_c()
 {
 }
 
+/* Per-frame update. Moves a non-metal player's position while within
+ * 0x3e8000 of the spout, spawns a WATER_RING (actor 0xf4) every 0x50 frames
+ * (recording its uniqueID in the mSpawnedIDs buffer), and counts the rings the
+ * player passes, as reported in mPassedRing, in spawn order. At a count of 5 it
+ * waits 0x1e frames, spawns a STAR (actor 0xb2) and sets mRingsPassed to 0xa. */
 // @symbol func_ov064_021193b4
 extern "C" {
-int func_ov064_021193b4(char *c)
+int func_ov064_021193b4(daWater_Hakidasi_c *self)
 {
     struct Vec3_16 rot;
-    struct Vec3 base;
-    struct Vec3 off;
-    struct Vec3 spos;
-    struct Vec3 npos1;
-    struct Vec3 npos2;
-    char *p;
+    struct Vec3 vec;
+    struct Vec3 delta;
+    struct Vec3 rewardPos;
+    struct Vec3 hitPos1;
+    struct Vec3 hitPos2;
+    char *player;
     int dist;
-    char *spawned;
+    dActor_c *ring;
     int i;
-    char *hit;
+    dActor_c *hit;
     int uid;
-    int *pp;
-    int px, py, pz, nx, ny, nz;
-    int *p370;
-    int *p30c;
-    int *p374;
-    int *p310;
+    int *playerPos;
+    int px, py, pz;
+    int *headp;
+    int *hitsp;
+    int *slotp;
+    int *timerp;
     int *posp;
     u16 ax, ay, az;
     s16 tx;
     int m1;
 
-    p = (char *)((dActor_c *)c)->ClosestPlayer();
-    if (p != 0 && *(u8 *)(p + 0x6f9) == 0) {
-        dist = ((dActor_c *)c)->DistToCPlayer();
+    player = (char *)self->ClosestPlayer();
+    if (player != 0 && *(u8 *)(player + 0x6f9) == 0) {     /* Player::mIsMetal */
+        dist = self->DistToCPlayer();
         if (dist < 0x3e8000) {
             dist = (0x3e8000 - dist) / 30;
-            base.x = 0;
-            base.y = 0;
-            base.z = dist;
-            off.x = 0;
-            off.y = 0;
-            off.z = 0;
-            Matrix4x3_FromRotationY(&data_020a0e68, (s16)(((dActor_c *)c)->HorzAngleToCPlayer() + 0x8000));
+            vec.x = 0;
+            vec.y = 0;
+            vec.z = dist;
+            delta.x = 0;
+            delta.y = 0;
+            delta.z = 0;
+            Matrix4x3_FromRotationY(&data_020a0e68, (s16)(self->HorzAngleToCPlayer() + 0x8000));
             Matrix4x3_ApplyInPlaceToRotationX(&data_020a0e68, -0x4000);
-            MulVec3Mat4x3(&base, &data_020a0e68, &off);
-            pp = (int *)(int)M(p + 0x5c);
-            px = pp[0];
-            base.x = px;
-            py = pp[1];
-            base.y = py;
-            pz = pp[2];
-            base.z = pz;
+            MulVec3Mat4x3(&vec, &data_020a0e68, &delta);
+            playerPos = (int *)(int)M(player + 0x5c);
+            px = playerPos[0];
+            vec.x = px;
+            py = playerPos[1];
+            vec.y = py;
+            pz = playerPos[2];
+            vec.z = pz;
             {
-                int tnx = px + off.x;
-                base.y = py + off.y;
-                base.z = pz + off.z;
-                base.x = tnx;
-                *(int *)(p + 0x5c) = tnx;
-                *(int *)(p + 0x60) = base.y;
-                *(int *)(p + 0x64) = base.z;
+                int newX = px + delta.x;
+                vec.y = py + delta.y;
+                vec.z = pz + delta.z;
+                vec.x = newX;
+                *(int *)(player + 0x5c) = newX;
+                *(int *)(player + 0x60) = vec.y;
+                *(int *)(player + 0x64) = vec.z;
             }
         }
-        ((dCc_c *)(c + 0x110))->Clear();
-        ((dCc_c *)(c + 0x110))->dCc_c::Update();
-        if (dist > 0x7d0000 && *(int *)(c + 0x30c) < 5) {
-            *(int *)(c + 0x30c) = 0;
+        self->mdCcAc_c.Clear();
+        self->mdCcAc_c.dCc_c::Update();
+        if (dist > 0x7d0000 && self->mRingsPassed < 5) {
+            self->mRingsPassed = 0;
         }
     }
 
-    if (*(int *)(c + 0x318) == 0) {
-        *(int *)(c + 0x304) = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-            *(int *)(c + 0x304), 0x138,
-            *(int *)(c + 0x5c), *(int *)(c + 0x60), *(int *)(c + 0x64), 0, 0);
-        if (*(int *)(c + 0x30c) < 5) {
-            if (*(u16 *)(c + 0x100) == 0) {
-                ax = *(volatile u16 *)(c + 0x8c);
-                ay = *(volatile u16 *)(c + 0x8e);
+    if (self->unk_318 == 0) {
+        self->mParticle = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
+            self->mParticle, 0x138, self->mPosX, self->mPosY, self->mPosZ, 0, 0);
+        if (self->mRingsPassed < 5) {
+            if (*(u16 *)&self->mStateTimer == 0) {
+                ax = *(volatile u16 *)&self->mAngleX;
+                ay = *(volatile u16 *)&self->mAngleY;
                 {
                     volatile struct Vec3_16 *vr = &rot;
                     vr->x = ax;
                     vr->y = ay;
-                    az = *(u16 *)(c + 0x90);
+                    az = *(u16 *)&self->mAngleZ;
                     tx = (s16)vr->x;
                     m1 = -1;
                     vr->z = az;
                     tx = (s16)(tx + 0x4000);
                     vr->x = (u16)tx;
                 }
-                spawned = (char *)dActor_c::Spawn(0xf4, 2, *(Vector3 *)(c + 0x5c), (Vector3_16 *)&rot, *(signed char *)(c + 0xcc), -1);
-                if (spawned != 0) {
-                    *(int *)(c + 0x320 + (*(int *)(c + 0x370) * 4)) = *(int *)(spawned + 4);
-                    p370 = (int *)(int)M(c + 0x370);
-                    *p370 = *p370 + 1;
-                    if (*(int *)(c + 0x370) >= 0x14) {
-                        *(int *)(c + 0x370) = 0;
+                ring = dActor_c::Spawn(0xf4, 2, *(Vector3 *)&self->mPosX, (Vector3_16 *)&rot, self->mAreaId, -1);
+                if (ring != 0) {
+                    self->mSpawnedIDs[self->mSpawnedHead] = ring->uniqueID;
+                    headp = (int *)(int)M(&self->mSpawnedHead);
+                    *headp = *headp + 1;
+                    if (self->mSpawnedHead >= 0x14) {
+                        self->mSpawnedHead = 0;
                     }
-                    *(char **)(spawned + 0x38c) = c;
-                    *(int *)(spawned + 0xa4) = 0;
-                    *(int *)(spawned + 0xa8) = 0x5000;
-                    *(int *)(spawned + 0xac) = 0;
+                    *(daWater_Hakidasi_c **)((char *)ring + 0x38c) = self;
+                    *(int *)((char *)ring + 0xa4) = 0;
+                    ring->mVertSpeed = 0x5000;
+                    *(int *)((char *)ring + 0xac) = 0;
                 }
-                *(u16 *)(c + 0x100) = 0x50;
+                self->mStateTimer = 0x50;
             }
-            hit = *(char **)(c + 0x31c);
+            hit = self->mPassedRing;
             if (hit != 0) {
-                if (*(int *)(c + 0x30c) == 0) {
-                    uid = *(int *)(hit + 4);
+                if (self->mRingsPassed == 0) {
+                    uid = hit->uniqueID;
 #pragma opt_strength_reduction off
                     for (i = 0; i < 0x14; i++) {
-                        int slot = *(int *)(c + 0x320 + i * 4);
+                        u32 slot = self->mSpawnedIDs[i];
                         if (slot == uid) {
-                            *(int *)(c + 0x374) = i;
-                            p30c = (int *)(int)M(c + 0x30c);
-                            *p30c = *p30c + 1;
+                            self->mMatchedSlot = i;
+                            hitsp = (int *)(int)M(&self->mRingsPassed);
+                            *hitsp = *hitsp + 1;
                             func_02012790(0x25);
-                            hit = *(char **)(c + 0x31c);
-                            posp = (int *)(int)M(hit + 0x5c);
-                            npos1.x = posp[0];
-                            npos1.y = posp[1];
-                            npos1.z = posp[2];
-                            ((dActor_c *)c)->SpawnNumber(*(Vector3 *)&npos1, *(unsigned int *)(c + 0x30c), 0, 0, 0);
-                            *(char **)(c + 0x31c) = 0;
+                            hit = self->mPassedRing;
+                            posp = (int *)(int)M(&hit->mPosX);
+                            hitPos1.x = posp[0];
+                            hitPos1.y = posp[1];
+                            hitPos1.z = posp[2];
+                            self->SpawnNumber(*(Vector3 *)&hitPos1, self->mRingsPassed, 0, 0, 0);
+                            self->mPassedRing = 0;
                             return 1;
                         }
                     }
                 } else {
-                    p374 = (int *)(int)M(c + 0x374);
-                    *p374 = *p374 + 1;
-                    if (*(int *)(c + 0x374) >= 0x14) {
-                        *(int *)(c + 0x374) = 0;
+                    slotp = (int *)(int)M(&self->mMatchedSlot);
+                    *slotp = *slotp + 1;
+                    if (self->mMatchedSlot >= 0x14) {
+                        self->mMatchedSlot = 0;
                     }
                     {
-                        uid = *(int *)(*(char **)(c + 0x31c) + 4);
-                        i = *(int *)(c + 0x374);
+                        uid = self->mPassedRing->uniqueID;
+                        i = self->mMatchedSlot;
                         while (1) {
-                            int slot = *(int *)(c + 0x320 + i * 4);
+                            u32 slot = self->mSpawnedIDs[i];
                             if (slot == uid) {
-                                p30c = (int *)(int)M(c + 0x30c);
-                                *p30c = *p30c + 1;
+                                hitsp = (int *)(int)M(&self->mRingsPassed);
+                                *hitsp = *hitsp + 1;
                                 func_02012790(0x25);
-                                hit = *(char **)(c + 0x31c);
-                                posp = (int *)(int)M(hit + 0x5c);
-                                npos2.x = posp[0];
-                                npos2.y = posp[1];
-                                npos2.z = posp[2];
-                                ((dActor_c *)c)->SpawnNumber(*(Vector3 *)&npos2, *(unsigned int *)(c + 0x30c), 0, 0, 0);
-                                *(char **)(c + 0x31c) = 0;
+                                hit = self->mPassedRing;
+                                posp = (int *)(int)M(&hit->mPosX);
+                                hitPos2.x = posp[0];
+                                hitPos2.y = posp[1];
+                                hitPos2.z = posp[2];
+                                self->SpawnNumber(*(Vector3 *)&hitPos2, self->mRingsPassed, 0, 0, 0);
+                                self->mPassedRing = 0;
                                 return 1;
                             }
                             break;
                         }
                     }
                 }
-                *(int *)(c + 0x30c) = 0;
-                *(int *)(c + 0x374) = 0;
-                *(char **)(c + 0x31c) = 0;
+                self->mRingsPassed = 0;
+                self->mMatchedSlot = 0;
+                self->mPassedRing = 0;
             }
         }
     } else {
-        *(int *)(c + 0x304) = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-            *(int *)(c + 0x304), 0x7b,
-            *(int *)(c + 0x5c), *(int *)(c + 0x60), *(int *)(c + 0x64), 0, 0);
+        self->mParticle = _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
+            self->mParticle, 0x7b, self->mPosX, self->mPosY, self->mPosZ, 0, 0);
     }
 
-    if (*(int *)(c + 0x30c) == 5) {
-        p310 = (int *)(int)M(c + 0x310);
-        spos.x = *(int *)(c + 0x5c);
-        spos.y = *(int *)(c + 0x60);
-        spos.z = *(int *)(c + 0x64);
-        spos.y = spos.y - 0x64000;
-        *p310 = *p310 + 1;
-        if (*(int *)(c + 0x310) > 0x1e) {
-            dActor_c::Spawn(0xb2, *(int *)(c + 0x314) | 0x40, *(Vector3 *)&spos, (Vector3_16 *)(c + 0x8c), *(signed char *)(c + 0xcc), -1);
-            *(int *)(c + 0x30c) = 0xa;
+    if (self->mRingsPassed == 5) {
+        timerp = (int *)(int)M(&self->mRewardTimer);
+        rewardPos.x = self->mPosX;
+        rewardPos.y = self->mPosY;
+        rewardPos.z = self->mPosZ;
+        rewardPos.y = rewardPos.y - 0x64000;
+        *timerp = *timerp + 1;
+        if (self->mRewardTimer > 0x1e) {
+            dActor_c::Spawn(0xb2, self->unk_314 | 0x40, *(Vector3 *)&rewardPos, (Vector3_16 *)&self->mAngleX, self->mAreaId, -1);
+            self->mRingsPassed = 0xa;
         }
     }
     return 1;
@@ -255,14 +260,15 @@ int func_ov064_021193b4(char *c)
 
 #pragma opt_strength_reduction on
 
+/* Clears the hit actor, the ring head, the matched slot and the ring. */
 // @symbol func_ov064_021197fc
-extern "C" int func_ov064_021197fc(Foo *c) {
+extern "C" int func_ov064_021197fc(daWater_Hakidasi_c *self) {
     int i = 0;
-    c->field31c = i;
-    c->field370 = i;
-    c->field374 = i;
+    self->mPassedRing = 0;
+    self->mSpawnedHead = i;
+    self->mMatchedSlot = i;
     for (int v = i; i < 20; i++) {
-        c->arr[i] = v;
+        self->mSpawnedIDs[i] = v;
     }
     return 1;
 }
@@ -275,7 +281,7 @@ extern "C" void func_ov064_0211987c(void *c)
 {
 }
 
-/* Gives back the two shared files the jet renders from. Both live in ov002,
+/* Gives back the two shared files the spout renders from. Both live in ov002,
  * not in this overlay: the class borrows models the always-resident module
  * owns, so the handles are released rather than freed. */
 // @symbol _ZN18daWater_Hakidasi_c16CleanupResourcesEv

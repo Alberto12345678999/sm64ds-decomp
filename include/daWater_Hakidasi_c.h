@@ -35,7 +35,10 @@ struct daWater_Hakidasi_c : dEnemyBase_c {
     dCcAc_c mdCcAc_c;/* 0x110 */
     dBgCh_Actr mWithMeshClsn;       /* 0x144 */
     State *mState;                  /* 0x300 -- run every frame by Behavior */
-    u8  pad_304[0x10];
+    s32 mParticle;                  /* 0x304 -- Particle::System::New handle, re-fed every frame */
+    u8  pad_308[0x4];
+    s32 mRingsPassed;                  /* 0x30c -- rings passed in order, 0..5, then 0xa once the STAR spawns */
+    s32 mRewardTimer;               /* 0x310 -- frames until the STAR spawns; counts while mRingsPassed is 5 */
     /* Both are decoded out of the spawn word (fBase_c::param1) by InitResources
        and never read back anywhere in the tree, so what they select is unknown:
        0x314 takes nibble 3 (param1 >> 12 & 0xf), 0x318 takes bit 0 but only when
@@ -53,10 +56,13 @@ struct daWater_Hakidasi_c : dEnemyBase_c {
     virtual void OnPendingDestroy();
     virtual s32 Render();
 
-    /* Tail padding. The field span stops short of the real size: daWater_Hakidasi_c_classInit
-       calls fBase_c::operator new(0x378), read off the retail
-       instruction. A span is only a LOWER BOUND. */
-    u8 pad_31c[0x5c];      /* 0x31c, to the ROM's 0x378 */
+    /* The tail runs to the ROM's 0x378: daWater_Hakidasi_c_classInit calls
+       fBase_c::operator new(0x378), read off the retail instruction. A span is
+       only a LOWER BOUND. func_ov064_021197fc zeroes all of it below. */
+    dActor_c *mPassedRing;            /* 0x31c -- set by a spawned WATER_RING (daWater_Ring_c) when the player passes through it */
+    u32 mSpawnedIDs[20];            /* 0x320 -- uniqueIDs of the WATER_RINGs it spawned, a 20-entry ring buffer */
+    s32 mSpawnedHead;               /* 0x370 -- next ring slot to write */
+    s32 mMatchedSlot;               /* 0x374 -- buffer slot where mPassedRing was found */
 };
 
 #ifndef SM64DS_PLATFORM_PC

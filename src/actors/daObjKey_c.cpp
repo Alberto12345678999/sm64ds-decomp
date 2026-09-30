@@ -1,15 +1,15 @@
 //cpp
-/* Castle key and the last Power Star -- ov089/daObjKey_c.
- * OBJ_KEY is actor 0x11a (282); LAST_STAR is 0x11b (283). Both factories
- * install this vtable. param1 & 7 picks the kind: 7 uses the power-star
- * model (data_ov002_0211094c, file 0x8015) and StateStarJump; 3 uses
- * StateFlyToCenter; the other six kinds are StateDrop. The TU is the whole
- * of ov089's .text, 0x02130f00..0x02132880: the destructor (key function)
- * first, the free helpers, the three states, the virtuals, then both
- * factories. __sinit_ov089_021328d4, which fills the state table, stays its
- * own .init file.
+/* daObjKey_c (ov089): OBJ_KEY is actor 0x11a (282) and LAST_STAR is 0x11b
+ * (283); both factories install this vtable. param1 & 7 picks the kind: 7 uses
+ * the power-star model (data_ov002_0211094c, file 0x8015) and StateStarJump; 3
+ * uses StateFlyToCenter; the other six kinds are StateDrop.
  *
- * deslop leftovers:
+ * The TU is the whole of ov089's .text, 0x02130f00..0x02132880: the destructor
+ * (key function) first, the free helpers, the three states, the virtuals, then
+ * both factories. __sinit_ov089_021328d4, which fills the state table, stays
+ * its own .init file.
+ *
+ * Known limits:
  * - StateDrop: mWithMeshClsn.UpdateContinuous() is the same size (0x2b4) but
  *   the reloc target is _ZN10dBgCh_Actr16UpdateContinuousEv. The ROM calls the
  *   veneer at arm9:0x020383fc.
@@ -27,19 +27,21 @@
  *   called by name.
  * - func_ov089_02131df4: one control arm (mState != 7) size 0x110 -> 0xe8
  *   (-0x28). The ROM has both copies.
- *   func_ov089_02130fb4, func_ov089_0213115c, func_ov089_02131dcc and
+ * - func_ov089_02130fb4, func_ov089_0213115c, func_ov089_02131dcc and
  *   func_ov089_02131df4 stay C names on (char *): every caller is now in this
  *   file, so they are members in waiting (decl_common.h still declares the
- *   first two by these names). LoadKeyModels / UnloadKeyModels are C by
- *   necessity: Door, Player and the bosses call them by name.
+ *   first two by these names).
+ * - LoadKeyModels / UnloadKeyModels are C by necessity: Door, Player and the
+ *   bosses call them by name.
  * - StateFlyToCenter / StateStarJump: the Fix12<int> calls (Particle::System::New,
- *   ApproachLinear, Sound::ChangeMusicVolume) go by symbol for the same
- *   reason as StateDrop's. mStateTimer is counted through a u16 pointer; the
- *   ROM compares it unsigned.
- *   common.h's flat Matrix4x3 keeps the translation in m[9..11].
- *   The carry sparkle reads the first bone's word at +0xc; BMD_Bone does not
- *   name it. g_profile_OBJ_KEY / LAST_STAR stay outside this TU.
- *   data_0209f318 as Camera * matches, but the plurality is void * so the
+ *   ApproachLinear, Sound::ChangeMusicVolume) go by symbol for the same reason
+ *   as StateDrop's. mStateTimer is counted through a u16 pointer; the ROM
+ *   compares it unsigned.
+ * - common.h's flat Matrix4x3 keeps the translation in m[9..11].
+ * - The carry sparkle reads the first bone's word at +0xc; BMD_Bone does not
+ *   name it.
+ * - g_profile_OBJ_KEY / LAST_STAR stay outside this TU.
+ * - data_0209f318 as Camera * matches, but the plurality is void * so the
  *   cast stays.
  */
 
@@ -186,9 +188,6 @@ extern int data_ov055_02111b68;
 /* local extern: no header declares cstd; its ROM symbol is _ZN4cstd4sqrtEy. */
 namespace cstd { s32 sqrt(u64 value); }
 
-/* -------------------------------------------------------------------------- */
-/* _ZN10daObjKey_cD1Ev, 0x02130f00 / _ZN10daObjKey_cD0Ev, 0x02130f50 */
-/* -------------------------------------------------------------------------- */
 /* The key function, defined first. Under defer_codegen off it emits D1, D0 and
  * a D2 the cartridge does not keep, then the vtable and RTTI chain. */
 // @symbol _ZN10daObjKey_cD1Ev
@@ -197,9 +196,6 @@ daObjKey_c::~daObjKey_c()
 {
 }
 
-/* -------------------------------------------------------------------------- */
-/* func_ov089_02130fb4, 0x02130fb4 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov089_02130fb4
 /* Aim a jump at target so it lands in 30 frames with its peak `height` above
  * the higher end. Sets gravity, the launch speed and the heading. */
@@ -239,9 +235,7 @@ extern "C" void func_ov089_02130fb4(char *c, int *p, int height)
     key->mPrevAngleY = Vec3_HorzAngle((Vector3 *)&key->mPosX, target);
 }
 
-/* -------------------------------------------------------------------------- */
 /* UnloadKeyModels, 0x021310cc */
-/* -------------------------------------------------------------------------- */
 // @symbol UnloadKeyModels
 /* Door, Player and the bosses that drop a key call these two by name. */
 extern "C" void UnloadKeyModels(int kind)
@@ -254,9 +248,7 @@ extern "C" void UnloadKeyModels(int kind)
     ((SharedFilePtr *)data_ov089_021328b4[kind])->Release();
 }
 
-/* -------------------------------------------------------------------------- */
 /* LoadKeyModels, 0x02131114 */
-/* -------------------------------------------------------------------------- */
 // @symbol LoadKeyModels
 extern "C" void LoadKeyModels(int kind)
 {
@@ -270,9 +262,6 @@ extern "C" void LoadKeyModels(int kind)
     Model::LoadFile(*extra);
 }
 
-/* -------------------------------------------------------------------------- */
-/* func_ov089_0213115c, 0x0213115c */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov089_0213115c
 /* Start collect animation `anim` (1..4); 0 or anything past 4 clears it. */
 extern "C" void func_ov089_0213115c(char *c, int anim)
@@ -287,9 +276,6 @@ extern "C" void func_ov089_0213115c(char *c, int anim)
                                                  ANIM_FLAGS, ANIM_SPEED, 0);
 }
 
-/* -------------------------------------------------------------------------- */
-/* _ZN10daObjKey_c16StateFlyToCenterEv, 0x021311c0 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN10daObjKey_c16StateFlyToCenterEv
 /* Kind 3. Take the camera, fade the music, then fly toward the room's origin,
  * bounce once on the home height and settle 800 units above it until touched. */
@@ -422,9 +408,6 @@ void daObjKey_c::StateFlyToCenter()
         mParticleID[2], FX_TRAIL_C, v.x, v.y, v.z, 0, 0);
 }
 
-/* -------------------------------------------------------------------------- */
-/* _ZN10daObjKey_c13StateStarJumpEv, 0x0213162c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN10daObjKey_c13StateStarJumpEv
 /* Kind 7, the power star. Take the camera, jump to a spot beside the nearest
  * player, bounce to rest, hand the camera back and wait to be collected, then
@@ -579,10 +562,6 @@ void daObjKey_c::StateStarJump()
     }
 }
 
-
-/* -------------------------------------------------------------------------- */
-/* _ZN10daObjKey_c9StateDropEv, 0x02131b18 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN10daObjKey_c9StateDropEv
 void daObjKey_c::StateDrop()
 {
@@ -663,9 +642,6 @@ void daObjKey_c::StateDrop()
     }
 }
 
-/* -------------------------------------------------------------------------- */
-/* func_ov089_02131dcc, 0x02131dcc */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov089_02131dcc
 /* Last-star path. (char *, char *) is the spelling the shards declare. */
 extern "C" void func_ov089_02131dcc(char *c, char *p)
@@ -677,9 +653,6 @@ extern "C" void func_ov089_02131dcc(char *c, char *p)
     key->MarkForDestruction();
 }
 
-/* -------------------------------------------------------------------------- */
-/* func_ov089_02131df4, 0x02131df4 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov089_02131df4
 extern "C" void func_ov089_02131df4(char *c, char *p)
 {
@@ -717,9 +690,6 @@ extern "C" void func_ov089_02131df4(char *c, char *p)
     }
 }
 
-/* -------------------------------------------------------------------------- */
-/* _ZN10daObjKey_c13OnTurnIntoEggER6Player, 0x02131f04 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN10daObjKey_c13OnTurnIntoEggER6Player
 void daObjKey_c::OnTurnIntoEgg(Player &player)
 {
@@ -730,17 +700,11 @@ void daObjKey_c::OnTurnIntoEgg(Player &player)
     return func_ov089_02131dcc((char *)this, (char *)&player);
 }
 
-/* -------------------------------------------------------------------------- */
-/* _ZN10daObjKey_c13OnYoshiTryEatEv, 0x02131f4c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN10daObjKey_c13OnYoshiTryEatEv
 s32 daObjKey_c::OnYoshiTryEat() {
     return 4;
 }
 
-/* -------------------------------------------------------------------------- */
-/* _ZN10daObjKey_c20UpdateModelTransformEv, 0x02131f54 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN10daObjKey_c20UpdateModelTransformEv
 void daObjKey_c::UpdateModelTransform()
 {
@@ -763,9 +727,6 @@ void daObjKey_c::UpdateModelTransform()
         _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(this, &mShadowModel, &mShadowMatrix, SHADOW_R, SHADOW_DEPTH, SHADOW_OPACITY);
 }
 
-/* -------------------------------------------------------------------------- */
-/* _ZN10daObjKey_c16CleanupResourcesEv, 0x02132084 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN10daObjKey_c16CleanupResourcesEv
 int daObjKey_c::CleanupResources()
 {
@@ -781,9 +742,6 @@ int daObjKey_c::CleanupResources()
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* _ZN10daObjKey_c6RenderEv, 0x021320f0 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN10daObjKey_c6RenderEv
 int daObjKey_c::Render()
 {
@@ -801,9 +759,6 @@ int daObjKey_c::Render()
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* _ZN10daObjKey_c8BehaviorEv, 0x02132194 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN10daObjKey_c8BehaviorEv
 int daObjKey_c::Behavior()
 {
@@ -887,9 +842,6 @@ int daObjKey_c::Behavior()
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* _ZN10daObjKey_c13InitResourcesEv, 0x021324a4 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN10daObjKey_c13InitResourcesEv
 int daObjKey_c::InitResources()
 {
@@ -961,9 +913,6 @@ int daObjKey_c::InitResources()
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* daObjKey_c_classInit_LAST_STAR, 0x021327d0 */
-/* -------------------------------------------------------------------------- */
 /* Both profiles build the same class. fBase_c's inline operator new forwards to
  * _ZN7fBase_cnwEj; the implicit constructor inlines dEnemyBase_c's base step,
  * the vptr store and the five member constructors. */
@@ -973,9 +922,6 @@ extern "C" daObjKey_c *daObjKey_c_classInit_LAST_STAR()
     return new daObjKey_c();
 }
 
-/* -------------------------------------------------------------------------- */
-/* daObjKey_c_classInit_OBJ_KEY, 0x02132828 */
-/* -------------------------------------------------------------------------- */
 // @symbol daObjKey_c_classInit_OBJ_KEY
 extern "C" daObjKey_c *daObjKey_c_classInit_OBJ_KEY()
 {
