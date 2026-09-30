@@ -17,6 +17,8 @@
 #include "dBgActor_c.h"
 #include "Model.h"
 
+extern "C" void *_ZN7fBase_cnwEj(unsigned size);
+
 struct daObjDlPyramid_c : dBgActor_c {
     u8  pad_31e[0x2];
     /* The class's own model. NOT "mModel": dBgActor_c's inherited
@@ -44,6 +46,13 @@ struct daObjDlPyramid_c : dBgActor_c {
     int CleanupResources();
     int InitResources();
     int Render();
+
+    /* Leaf adapter until fBase_c::operator new(size_t) lands.
+       `return new daObjDlPyramid_c` then routes through the retail allocator,
+       which is what the cartridge's factory at 0x02111874 calls. */
+    static void *operator new(size_t size) {
+        return _ZN7fBase_cnwEj((unsigned)size);
+    }
 };
 
 #ifndef SM64DS_PLATFORM_PC

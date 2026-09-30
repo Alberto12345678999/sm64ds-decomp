@@ -1,6 +1,6 @@
 //cpp
-/* daObjDlPyramid_c and daObjDlPyramidDummy_c. ov024 0x021111a0..0x0211183c,
- * 14 functions.
+/* daObjDlPyramid_c and daObjDlPyramidDummy_c. ov024 0x021111a0..0x021118ac,
+ * 16 functions.
  *
  * The pyramid top in Shifting Sand Land and the four invisible tags on its
  * faces. Each tag that is touched looks the top up by unique ID and bumps
@@ -10,12 +10,22 @@
  * ROM names from _ZTS16daObjDlPyramid_c and _ZTS21daObjDlPyramidDummy_c.
  * Vtables _ZTV16daObjDlPyramid_c at 0x021138c8 and
  * _ZTV21daObjDlPyramidDummy_c at 0x02113844. The two classInit factories
- * after InitResources (0x0211183c, 0x02111874) are a separate run and stay
- * out.
+ * that follow InitResources (0x0211183c, 0x02111874) are zero-gap and folded
+ * in here; the next run starts at 0x021118ac.
  *
  * #pragma defer_codegen off lays .text down in source order, so the file
  * reads in ROM order. The four helpers keep their unmangled ROM-only
  * names and take the top by pointer.
+ *
+ * deslop
+ * Leftover: the four helpers keep their unmangled ROM-only names
+ *   (func_ov024_021112c0, 02111350, 02111480, 021114c4). They are this TU's
+ *   own statics/helpers, not vtable slots, and no header names them.
+ * Leftover: dBgW_KcMbg::SetFile, Model::LoadFile and dCcAc_c::Init keep
+ *   their mangled extern-C spellings. SetFile takes Fix12<int> by value
+ *   (Fix12 wall, notes/mwccarm-codegen.md 6az).
+ * Leftover: data_ov024_02113960 / 02113968 / 021129f0 are the overlay's
+ *   KCL/BMD handles and CLPS block, in .data this TU does not own.
  */
 
 #include "daObjDlPyramid_c.h"
@@ -265,4 +275,23 @@ s32 daObjDlPyramidDummy_c::InitResources()
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
         &mCylinder, this, 0x7d000, 0x28000, 2, 0x400000);
     return 1;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Factories. `return new` routes through each class's operator new adapter,
+   which forwards to fBase_c::operator new -- the allocator the cartridge's
+   own factories call. Spelled by hand they read as a four-step C
+   transcription; this is the original shape. */
+/* -------------------------------------------------------------------------- */
+// @symbol daObjDlPyramidDummy_c_classInit
+extern "C" daObjDlPyramidDummy_c *daObjDlPyramidDummy_c_classInit()
+{
+    return new daObjDlPyramidDummy_c;
+}
+
+/* -------------------------------------------------------------------------- */
+// @symbol daObjDlPyramid_c_classInit
+extern "C" daObjDlPyramid_c *daObjDlPyramid_c_classInit()
+{
+    return new daObjDlPyramid_c;
 }
