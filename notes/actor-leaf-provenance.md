@@ -318,7 +318,7 @@ Sources: `src/_ZN14EnemySwitchTag13InitResourcesEv.cpp`,
 | --- | --- | --- |
 | 0x174 | `mCarrier` | the actor the cap is riding, a pointer spelt `s32`. `Behavior` returns immediately when it is null; otherwise it copies the cap position out of that actor 0x0d8 triple and its two angles out of that actor +0xe4 and `dActor_c::mAngleY`. |
 
-Source: `src/_ZN12daDossyCap_c8BehaviorEv.cpp`.
+Source: `daDossyCap_c::Behavior` in `src/actors/daDossy_c.cpp`.
 
 ## Scuttlebug -- include/Scuttlebug.h
 
