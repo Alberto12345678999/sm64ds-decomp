@@ -6297,6 +6297,13 @@
     "src/actors/daSnowball_c.cpp#func_ov081_021260fc": "tangosdev",
     "src/actors/daSnowball_c.cpp#func_ov081_021261b8": "tangosdev",
     "src/actors/daSnowball_c.cpp#func_ov081_021261d4": "tangosdev",
-    "src/actors/daSnowball_c.cpp#func_ov081_02126224": "tangosdev"
+    "src/actors/daSnowball_c.cpp#func_ov081_02126224": "tangosdev",
+    "src/actors/daWater_Suikomi_c.cpp#_ZN17daWater_Suikomi_cD1Ev": "lunavyqo",
+    "src/actors/daWater_Suikomi_c.cpp#_ZN17daWater_Suikomi_cD0Ev": "lunavyqo",
+    "src/actors/daWater_Suikomi_c.cpp#func_ov026_02112280": "tangosdev",
+    "src/actors/daWater_Suikomi_c.cpp#func_ov026_021122b0": "tangosdev",
+    "src/actors/daWater_Suikomi_c.cpp#func_ov026_021122cc": "tangosdev",
+    "src/actors/daWater_Suikomi_c.cpp#func_ov026_021122d4": "tangosdev",
+    "src/actors/daWater_Suikomi_c.cpp#func_ov026_02112324": "tangosdev"
   }
 }

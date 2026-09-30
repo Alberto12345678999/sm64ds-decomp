@@ -13239,9 +13239,6 @@
       "src/func_ov020_0211174c.c": [
         "return:void *"
       ],
-      "src/func_ov026_02112280.c": [
-        "return:void *"
-      ],
       "src/func_ov060_021125f0.c": [
         "return:char *"
       ],
@@ -40258,11 +40255,6 @@
     "func_ov025_021125dc": {
       "include/decl_common.h": [
         "kind:data"
-      ]
-    },
-    "func_ov026_02112324": {
-      "include/decl_common.h": [
-        "arity:1"
       ]
     },
     "func_ov029_021116c4": {
