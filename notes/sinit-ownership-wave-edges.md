@@ -19,7 +19,7 @@ The candidate is [ov002](../config/arm9/overlays/ov002/symbols.txt):`60`, text s
 functions and RTTI labels `CutsceneObject` and `daDemo_c`. [Overlay 2](../config/arm9/overlays/ov002/symbols.txt) is not on
 `tu_map`'s under-segmented list. The immediately surrounding candidate units are:
 
-- [ov002](../config/arm9/overlays/ov002/symbols.txt):`59`, `0x020f1bc4..0x020f1f70`, `MugenBgm`;
+- [ov002](../config/arm9/overlays/ov002/symbols.txt):`59`, `0x020f1bc4..0x020f1f70`, `daMugenBGM_c`;
 - [ov002](../config/arm9/overlays/ov002/symbols.txt):`61`, `0x020f8838..0x020f8858`, the two `daDemo_c::anmModel_c`
   `this`-adjusting destructor thunks;
 - [ov002](../config/arm9/overlays/ov002/symbols.txt):`62`, `0x020f8858..0x020f934c`, `daFPknBall_c`.

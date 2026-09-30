@@ -2656,7 +2656,7 @@
       ]
     },
     "NumStars": {
-      "src/_ZN8MugenBgm8BehaviorEv.cpp": [
+      "src/_ZN12daMugenBGM_c8BehaviorEv.cpp": [
         "return:unsigned int"
       ],
       "src/actors/daTrs_c.cpp": [
@@ -5221,7 +5221,7 @@
         "param:#2 Vector3 *",
         "param:#3 Vector3 *"
       ],
-      "src/_ZN8MugenBgm8BehaviorEv.cpp": [
+      "src/_ZN12daMugenBGM_c8BehaviorEv.cpp": [
         "param:#1 int *",
         "param:#2 int *",
         "param:#3 int *"
@@ -10324,7 +10324,7 @@
       "src/_ZN5Stage9LC_UpdateEv.cpp": [
         "return:void"
       ],
-      "src/_ZN8MugenBgm8BehaviorEv.cpp": [
+      "src/_ZN12daMugenBGM_c8BehaviorEv.cpp": [
         "return:int"
       ],
       "src/actors/daPkn_c.cpp": [
@@ -16657,7 +16657,7 @@
       "src/actors/dMap_c.cpp": [
         "return:unsigned int []"
       ],
-      "src/_ZN8MugenBgm8BehaviorEv.cpp": [
+      "src/_ZN12daMugenBGM_c8BehaviorEv.cpp": [
         "return:unsigned char []"
       ],
       "src/_ZN8SaveData12ReadFileDataEjP12FileSaveData.cpp": [
@@ -17683,7 +17683,7 @@
       "src/_ZN8Goomboss8BehaviorEv.cpp": [
         "return:char *"
       ],
-      "src/_ZN8MugenBgm8BehaviorEv.cpp": [
+      "src/_ZN12daMugenBGM_c8BehaviorEv.cpp": [
         "return:char *"
       ],
       "src/actors/Goomboss.cpp": [
@@ -17849,7 +17849,7 @@
       "src/actors/dMap_c.cpp": [
         "return:Player * []"
       ],
-      "src/_ZN8MugenBgm8BehaviorEv.cpp": [
+      "src/_ZN12daMugenBGM_c8BehaviorEv.cpp": [
         "return:char * []"
       ],
       "src/actors/dMeter_c.cpp": [

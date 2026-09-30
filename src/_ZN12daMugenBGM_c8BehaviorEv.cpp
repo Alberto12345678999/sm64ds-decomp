@@ -1,10 +1,10 @@
 //cpp
 #include "types.h"
-// @symbol _ZN8MugenBgm8BehaviorEv
+// @symbol _ZN12daMugenBGM_c8BehaviorEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 #include "decl_common.h"
 /* recovered: named members + shared header, real C++ method */
-#include "MugenBgm.h"
+#include "daMugenBGM_c.h"
 extern "C" {
 void Vec3_Sub(int* out, int* a, int* b);
 void Vec3_RotateYAndTranslate(int* out, int* in, short angle, int* src);
@@ -21,7 +21,7 @@ extern int data_020a0ebc[];
 extern u8 data_0209caa0[];
 extern char* data_0209f318;
 
-int MugenBgm::Behavior()
+int daMugenBGM_c::Behavior()
 {
     int vol;
     int flag;

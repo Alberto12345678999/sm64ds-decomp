@@ -284,22 +284,22 @@ ov002	0x020f19fc	func_ov002_020f19fc	_ZN9daSetSE_c8BehaviorEv	vtable slot 6 (was
 ov002	0x020f1ac4	func_ov002_020f1ac4	_ZN9daSetSE_c13InitResourcesEv	vtable slot 0 (was _ZN14EnemySwitchTag13InitResourcesEv)
 ov002	0x020f1b94	func_ov002_020f1b94	daSetSE_c_Spawn	spawnfunc
 ov002	0x020f1b94	daSetSE_c_Spawn	daSetSE_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
-ov002	0x020f1bc4	func_ov002_020f1bc4	_ZN8MugenBgmD1Ev	vtable slot 16 (was _ZN19AmbientSoundEffectsD1Ev)
-ov002	0x020f1be8	func_ov002_020f1be8	_ZN8MugenBgmD0Ev	vtable slot 17 (was _ZN19AmbientSoundEffectsD0Ev)
-ov002	0x020f1c50	func_ov002_020f1c50	_ZN8MugenBgm16CleanupResourcesEv	vtable slot 3 (was _ZN19AmbientSoundEffects16CleanupResourcesEv)
-ov002	0x020f1c58	func_ov002_020f1c58	_ZN8MugenBgm16OnPendingDestroyEv	vtable slot 12 (was _ZN19AmbientSoundEffects16OnPendingDestroyEv)
-ov002	0x020f1c5c	func_ov002_020f1c5c	_ZN8MugenBgm6RenderEv	vtable slot 9 (was _ZN19AmbientSoundEffects6RenderEv)
-ov002	0x020f1c64	func_ov002_020f1c64	_ZN8MugenBgm8BehaviorEv	vtable slot 6 (was _ZN19AmbientSoundEffects8BehaviorEv)
-ov002	0x020f1eb4	func_ov002_020f1eb4	_ZN8MugenBgm13InitResourcesEv	vtable slot 0 (was _ZN19AmbientSoundEffects13InitResourcesEv)
+ov002	0x020f1bc4	func_ov002_020f1bc4	_ZN12daMugenBGM_cD1Ev	vtable slot 16 (was _ZN19AmbientSoundEffectsD1Ev)
+ov002	0x020f1be8	func_ov002_020f1be8	_ZN12daMugenBGM_cD0Ev	vtable slot 17 (was _ZN19AmbientSoundEffectsD0Ev)
+ov002	0x020f1c50	func_ov002_020f1c50	_ZN12daMugenBGM_c16CleanupResourcesEv	vtable slot 3 (was _ZN19AmbientSoundEffects16CleanupResourcesEv)
+ov002	0x020f1c58	func_ov002_020f1c58	_ZN12daMugenBGM_c16OnPendingDestroyEv	vtable slot 12 (was _ZN19AmbientSoundEffects16OnPendingDestroyEv)
+ov002	0x020f1c5c	func_ov002_020f1c5c	_ZN12daMugenBGM_c6RenderEv	vtable slot 9 (was _ZN19AmbientSoundEffects6RenderEv)
+ov002	0x020f1c64	func_ov002_020f1c64	_ZN12daMugenBGM_c8BehaviorEv	vtable slot 6 (was _ZN19AmbientSoundEffects8BehaviorEv)
+ov002	0x020f1eb4	func_ov002_020f1eb4	_ZN12daMugenBGM_c13InitResourcesEv	vtable slot 0 (was _ZN19AmbientSoundEffects13InitResourcesEv)
 ov002	0x020f1f40	func_ov002_020f1f40	MugenBgm_Spawn	spawnfunc
 ov002	0x020f1f40	MugenBgm_Spawn	daMugenBGM_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
-ov002	0x020f1f70	func_ov002_020f1f70	_ZN14CutsceneObjectD1Ev	vtable slot 16 (was _ZN8MugenBgmD1Ev)
-ov002	0x020f1f94	func_ov002_020f1f94	_ZN14CutsceneObjectD0Ev	vtable slot 17 (was _ZN8MugenBgmD0Ev)
-ov002	0x020f8028	func_ov002_020f8028	_ZN14CutsceneObject16CleanupResourcesEv	vtable slot 3 (was _ZN8MugenBgm16CleanupResourcesEv)
-ov002	0x020f80a8	func_ov002_020f80a8	_ZN14CutsceneObject16OnPendingDestroyEv	vtable slot 12 (was _ZN8MugenBgm16OnPendingDestroyEv)
-ov002	0x020f80ac	func_ov002_020f80ac	_ZN14CutsceneObject6RenderEv	vtable slot 9 (was _ZN8MugenBgm6RenderEv)
-ov002	0x020f81c4	func_ov002_020f81c4	_ZN14CutsceneObject8BehaviorEv	vtable slot 6 (was _ZN8MugenBgm8BehaviorEv)
-ov002	0x020f83a4	func_ov002_020f83a4	_ZN14CutsceneObject13InitResourcesEv	vtable slot 0 (was _ZN8MugenBgm13InitResourcesEv)
+ov002	0x020f1f70	func_ov002_020f1f70	_ZN14CutsceneObjectD1Ev	vtable slot 16 (was _ZN12daMugenBGM_cD1Ev)
+ov002	0x020f1f94	func_ov002_020f1f94	_ZN14CutsceneObjectD0Ev	vtable slot 17 (was _ZN12daMugenBGM_cD0Ev)
+ov002	0x020f8028	func_ov002_020f8028	_ZN14CutsceneObject16CleanupResourcesEv	vtable slot 3 (was _ZN12daMugenBGM_c16CleanupResourcesEv)
+ov002	0x020f80a8	func_ov002_020f80a8	_ZN14CutsceneObject16OnPendingDestroyEv	vtable slot 12 (was _ZN12daMugenBGM_c16OnPendingDestroyEv)
+ov002	0x020f80ac	func_ov002_020f80ac	_ZN14CutsceneObject6RenderEv	vtable slot 9 (was _ZN12daMugenBGM_c6RenderEv)
+ov002	0x020f81c4	func_ov002_020f81c4	_ZN14CutsceneObject8BehaviorEv	vtable slot 6 (was _ZN12daMugenBGM_c8BehaviorEv)
+ov002	0x020f83a4	func_ov002_020f83a4	_ZN14CutsceneObject13InitResourcesEv	vtable slot 0 (was _ZN12daMugenBGM_c13InitResourcesEv)
 ov002	0x020f8808	func_ov002_020f8808	CutsceneObject_Spawn	spawnfunc
 ov002	0x020f8808	CutsceneObject_Spawn	daDemo_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov002	0x020f8858	func_ov002_020f8858	_ZN12daFPknBall_cD1Ev	vtable slot 16
@@ -454,10 +454,10 @@ ov002	0x0210b47c	daSetSE_c_SpawnInfo	g_profile_SET_SE	reconstructed profile glob
 ov002	0x0210b4c8	data_ov002_0210b4c8	_ZTV9daSetSE_c	vtable alloc=? (was _ZTV14EnemySwitchTag)
 ov002	0x0210b560	data_ov002_0210b560	MugenBgm_SpawnInfo	spawninfo
 ov002	0x0210b560	MugenBgm_SpawnInfo	g_profile_MUGEN_BGM	reconstructed profile global; literal ROM ID MUGEN_BGM+registry role+later EAD lineage; exact SM64DS spelling not preserved
-ov002	0x0210b584	data_ov002_0210b584	_ZTV8MugenBgm	vtable alloc=? (was _ZTV19AmbientSoundEffects)
+ov002	0x0210b584	data_ov002_0210b584	_ZTV12daMugenBGM_c	vtable alloc=? (was _ZTV19AmbientSoundEffects)
 ov002	0x0210ba60	data_ov002_0210ba60	CutsceneObject_SpawnInfo	spawninfo
 ov002	0x0210ba60	CutsceneObject_SpawnInfo	g_profile_DEMO	reconstructed profile global; literal ROM ID DEMO+registry role+later EAD lineage; exact SM64DS spelling not preserved
-ov002	0x0210bd60	data_ov002_0210bd60	_ZTV14CutsceneObject	vtable alloc=? (was _ZTV8MugenBgm)
+ov002	0x0210bd60	data_ov002_0210bd60	_ZTV14CutsceneObject	vtable alloc=? (was _ZTV12daMugenBGM_c)
 ov002	0x0210bf70	data_ov002_0210bf70	Fireball_SpawnInfo	spawninfo
 ov002	0x0210bf70	Fireball_SpawnInfo	g_profile_FPAKUN_BALL	reconstructed profile global; literal ROM ID FPAKUN_BALL+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov002	0x0210bf94	data_ov002_0210bf94	_ZTV12daFPknBall_c	vtable alloc=0x378
