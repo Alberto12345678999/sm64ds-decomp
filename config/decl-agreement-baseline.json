@@ -2650,10 +2650,10 @@
       ]
     },
     "NumStars": {
-      "src/_ZN12daMugenBGM_c8BehaviorEv.cpp": [
+      "src/actors/daTrs_c.cpp": [
         "return:unsigned int"
       ],
-      "src/actors/daTrs_c.cpp": [
+      "src/actors/daMugenBGM_c.cpp": [
         "return:unsigned int"
       ]
     },
@@ -5209,11 +5209,6 @@
         "param:#2 Vector3 *",
         "param:#3 Vector3 *"
       ],
-      "src/_ZN12daMugenBGM_c8BehaviorEv.cpp": [
-        "param:#1 int *",
-        "param:#2 int *",
-        "param:#3 int *"
-      ],
       "src/actors/daManta_c.cpp": [
         "param:#1 Vector3 *",
         "param:#2 Vector3 *",
@@ -5402,6 +5397,11 @@
         "param:#1 Vector3 *",
         "param:#2 Vector3 *",
         "param:#3 Vector3 *"
+      ],
+      "src/actors/daMugenBGM_c.cpp": [
+        "param:#1 int *",
+        "param:#2 int *",
+        "param:#3 int *"
       ]
     },
     "Vec3_VertAngle": {
@@ -10239,9 +10239,6 @@
       "src/_ZN5Stage9LC_UpdateEv.cpp": [
         "return:void"
       ],
-      "src/_ZN12daMugenBGM_c8BehaviorEv.cpp": [
-        "return:int"
-      ],
       "src/actors/daPkn_c.cpp": [
         "return:int"
       ],
@@ -10291,6 +10288,9 @@
         "return:int"
       ],
       "src/actors/daBgSnmHed_c.cpp": [
+        "return:int"
+      ],
+      "src/actors/daMugenBGM_c.cpp": [
         "return:int"
       ]
     },
@@ -16541,9 +16541,6 @@
       "src/actors/dMap_c.cpp": [
         "return:unsigned int []"
       ],
-      "src/_ZN12daMugenBGM_c8BehaviorEv.cpp": [
-        "return:unsigned char []"
-      ],
       "src/_ZN8SaveData12ReadFileDataEjP12FileSaveData.cpp": [
         "return:int"
       ],
@@ -16626,6 +16623,9 @@
         "return:unsigned int []"
       ],
       "src/stage/LevelObjects.cpp": [
+        "return:unsigned char []"
+      ],
+      "src/actors/daMugenBGM_c.cpp": [
         "return:unsigned char []"
       ]
     },
@@ -17567,9 +17567,6 @@
       "src/_ZN8Goomboss8BehaviorEv.cpp": [
         "return:char *"
       ],
-      "src/_ZN12daMugenBGM_c8BehaviorEv.cpp": [
-        "return:char *"
-      ],
       "src/actors/Goomboss.cpp": [
         "return:char *"
       ],
@@ -17614,6 +17611,9 @@
       ],
       "src/game/actors/d_a_btn.cpp": [
         "return:int"
+      ],
+      "src/actors/daMugenBGM_c.cpp": [
+        "return:char *"
       ]
     },
     "data_0209f31c": {
@@ -17733,9 +17733,6 @@
       "src/actors/dMap_c.cpp": [
         "return:Player * []"
       ],
-      "src/_ZN12daMugenBGM_c8BehaviorEv.cpp": [
-        "return:char * []"
-      ],
       "src/actors/dMeter_c.cpp": [
         "return:HUDInfo * []"
       ],
@@ -17773,6 +17770,9 @@
         "return:Player * []"
       ],
       "src/actors/daSnowman_c.cpp": [
+        "return:char * []"
+      ],
+      "src/actors/daMugenBGM_c.cpp": [
         "return:char * []"
       ]
     },
@@ -21134,11 +21134,6 @@
     "data_ov002_02110aec": {
       "src/ProcessKuppaScript.cpp": [
         "return:unsigned int"
-      ]
-    },
-    "data_ov002_02110af8": {
-      "src/func_ov002_020f1c20.c": [
-        "return:int"
       ]
     },
     "data_ov002_02110b50": {
