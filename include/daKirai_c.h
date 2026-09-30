@@ -1,30 +1,19 @@
-/* Seeded from matched-function evidence by tools/gen_header.py, then given its
- * real base and real member types by hand.
+/* daKirai_c: the spike bomb. 5 matched functions, sizeof 0x1b0.
  *
- * class daKirai_c: 5 matched functions.
+ * Layout, each sub-object checked by its own size assertion and by closing
+ * exactly on the next named field:
  *
- * Two sub-objects, each checked twice -- once by that class's own size assertion,
- * once by closing exactly on the next named field:
+ *     dActor_c     0x000 + 0x0d0 = 0x0d0   -> pad_0d0
+ *     Model        0x0d4 + 0x050 = 0x124   -> mdCcAcPos_c
+ *     dCcAcPos_c   0x124 + 0x040 = 0x164   -> padding, then mStateIndex
  *
- *     dActor_c                      0x000 + 0x0d0 = 0x0d0   -> pad_0d0
- *     Model                      0x0d4 + 0x050 = 0x124   -> mdCcAcPos_c
- *     dCcAcPos_c  0x124 + 0x040 = 0x164   -> padding, then mStateIndex
+ * The class's own destructor calls dCcAcPos_c's D1 at +0x124, which is what
+ * makes mdCcAcPos_c an object rather than a marker byte with padding behind it.
  *
- * mdCcAcPos_c was a `u8` marker with 0x4b bytes of pad behind it.
- * The pad was the object: the class's own destructor calls
- * dCcAcPos_c's D1 at +0x124, and 0x40 lands exactly where the next
- * declared field starts.
- *
- * sizeof is 0x1b0, and it IS the field span: the last field mOpacity ends at 0x1af.
- *
- * It used to say 0x32c, "not inferred from the fields", on the authority of
- * daKpa3Bg_c_classInit -- a DIFFERENT CLASS's factory. That is the pair-by-name
- * error: daKirai_c_classInit is the factory that stores _ZTV9daKirai_c, and it asks
- * fBase_c::operator new for 0x1b0. BowserSkyPlatform's own assert is 0x32c and is
- * correct; this class simply inherited its number, and 0x17d bytes of tail padding
- * were invented to reach it.
- *
- * Field NAMES for the unk_ entries are placeholders. */
+ * sizeof is the field span: the last field mOpacity ends at 0x1af, and
+ * daKirai_c_classInit (the factory that stores _ZTV9daKirai_c) asks
+ * fBase_c::operator new for 0x1b0. An earlier 0x32c came from
+ * daKpa3Bg_c_classInit, a different class's factory. */
 #ifndef DAKIRAI_C_H
 #define DAKIRAI_C_H
 #include "types.h"
