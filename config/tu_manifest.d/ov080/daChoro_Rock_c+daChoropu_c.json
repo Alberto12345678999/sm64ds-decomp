@@ -1,5 +1,5 @@
 {
-  "id": "ov080/daChoropu_c",
+  "id": "ov080/daChoro_Rock_c+daChoropu_c",
   "module": "ov080",
   "source": "src/actors/daChoropu_c.cpp",
   "promoted_source": "src/actors/daChoropu_c.cpp",

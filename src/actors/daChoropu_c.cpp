@@ -1,5 +1,5 @@
 //cpp
-/* ov080/daChoropu_c -- the Monty Mole (daChoropu_c) and the rock it throws
+/* ov080/daChoro_Rock_c+daChoropu_c -- the Monty Mole (daChoropu_c) and the rock it throws
  * (daChoro_Rock_c). 24 functions, .text 0x02123740..0x02124998.
  *
  * Class identity comes from the ROM RTTI:
