@@ -18,7 +18,7 @@ run. That structure is still legible in the ROM, and three workstreams want it:
   not retain some multi-function destructor output. Production TU support now
   exists; measure the candidate's emitted code/data and current tool restrictions
   instead of treating the old zero-enrollment census as a current blocker.
-* **A production TU can contain several classes.** MontyMole and MontyMoleRock
+* **A production TU can contain several classes.** daChoropu_c and daChoro_Rock_c
   provide a co-residence example. Preserve the evidenced boundary for promotion;
   an explicitly scoped method conversion or fix can still ship independently.
 * **`static` decisions during langmode conversion** want the file-locality evidence.
@@ -36,11 +36,11 @@ daRNk_c, daRFlag_c and Klepto really do sit in five contiguous runs.
 **interleaved in source order**, not grouped by class:
 
 ```sh
-_ZN9MontyMoleD1Ev                 _ZN9MontyMoleD0Ev
-_ZN13MontyMoleRockD1Ev            _ZN13MontyMoleRockD0Ev
-_ZN9MontyMole16CleanupResourcesEv _ZN13MontyMoleRock16CleanupResourcesEv
-_ZN9MontyMole6RenderEv            _ZN13MontyMoleRock6RenderEv
-_ZN9MontyMole8BehaviorEv          _ZN13MontyMoleRock8BehaviorEv
+_ZN11daChoropu_cD1Ev                 _ZN11daChoropu_cD0Ev
+_ZN14daChoro_Rock_cD1Ev              _ZN14daChoro_Rock_cD0Ev
+_ZN11daChoropu_c16CleanupResourcesEv _ZN14daChoro_Rock_c16CleanupResourcesEv
+_ZN11daChoropu_c6RenderEv            _ZN14daChoro_Rock_c6RenderEv
+_ZN11daChoropu_c8BehaviorEv          _ZN14daChoro_Rock_c8BehaviorEv
 MontyMoleRock_Spawn               MontyMole_Spawn
 ```
 
@@ -55,7 +55,7 @@ Treat a class as an **interval**, not a block:
 
 Forced by the linker, not a heuristic: a TU is contiguous, so if two classes were
 separate objects one object's run would have to sit inside the other's. Union-find
-over that relation collapses MontyMole+MontyMoleRock automatically and leaves daHolhei_c
+over that relation collapses daChoropu_c+daChoro_Rock_c automatically and leaves daHolhei_c
 and Koopa apart, with no "how interleaved is too interleaved" threshold to tune.
 
 ## Two label sources, and why they are not equal
