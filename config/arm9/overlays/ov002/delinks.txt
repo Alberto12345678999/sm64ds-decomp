@@ -2315,6 +2315,7 @@ src/_ZN12daMugenBGM_c8BehaviorEv.cpp:
     .text start:0x020f1c64 end:0x020f1eb4
 
 src/_ZN12daMugenBGM_c13InitResourcesEv.cpp:
+    complete
     .text start:0x020f1eb4 end:0x020f1f40
 
 src/d_a_mugen_bgm.c:
