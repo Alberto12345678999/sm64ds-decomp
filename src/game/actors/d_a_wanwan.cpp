@@ -692,13 +692,13 @@ extern "C" int func_ov014_02111fb8(char *raw)
 }
 
 // @symbol func_ov014_02111f54
-/* Start the release cutscene when the stump's mState is 0 and the player
+/* Start the release cutscene when the stump's mStepsLeft is 0 and the player
  * accepts the no-control lock. */
 extern "C" int func_ov014_02111f54(void *raw)
 {
     daWanwan_c *self = (daWanwan_c *)raw;
     daObjPile_c *stump = (daObjPile_c *)dActor_c::FindWithID((unsigned)self->mStumpUniqueID);
-    if (stump->mState != 0)
+    if (stump->mStepsLeft != 0)
         goto fail;
     if (self->ClosestPlayer()->SetNoControlState(4, -1, 0) == 0)
         goto fail;

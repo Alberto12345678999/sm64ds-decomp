@@ -5,19 +5,7 @@
     .bss        start:0x02123280 end:0x021234e0 kind:bss align:32
 src/actors/daKing_Donketu_c.cpp:
     complete
-    .text start:0x0211f000 end:0x021218a0
-
-src/_ZN16daKing_Donketu_c8BehaviorEv.cpp:
-    complete
-    .text start:0x021218a0 end:0x02121ccc
-
-src/_ZN16daKing_Donketu_c13InitResourcesEv.cpp:
-    complete
-    .text start:0x02121ccc end:0x02121ec0
-
-src/_ZN16daKing_Donketu_c16OnAimedAtWithEggEv.cpp:
-    complete
-    .text start:0x02121ec0 end:0x02121ec8
+    .text start:0x0211f000 end:0x02121ec8
 
 src/d_a_king_donketu.cpp:
     complete

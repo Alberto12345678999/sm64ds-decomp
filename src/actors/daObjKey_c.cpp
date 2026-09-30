@@ -1,12 +1,15 @@
 //cpp
-/* Castle key and the last Power Star -- ov089/daObjKey_c.
- * OBJ_KEY is actor 0x11a (282); LAST_STAR is 0x11b (283). Both factories
- * install this vtable. param1 & 7 picks the kind: 7 uses the power-star
- * model (data_ov002_0211094c, file 0x8015) and func_ov089_0213162c; 3 uses
- * func_ov089_021311c0; the other six kinds are StateDrop. Those two bodies,
- * the destructors, and the factories sit outside this run and stay there.
+/* daObjKey_c (ov089): OBJ_KEY is actor 0x11a (282) and LAST_STAR is 0x11b
+ * (283); both factories install this vtable. param1 & 7 picks the kind: 7 uses
+ * the power-star model (data_ov002_0211094c, file 0x8015) and StateStarJump; 3
+ * uses StateFlyToCenter; the other six kinds are StateDrop.
  *
- * deslop leftovers:
+ * The TU is the whole of ov089's .text, 0x02130f00..0x02132880: the destructor
+ * (key function) first, the free helpers, the three states, the virtuals, then
+ * both factories. __sinit_ov089_021328d4, which fills the state table, stays
+ * its own .init file.
+ *
+ * Known limits:
  * - StateDrop: mWithMeshClsn.UpdateContinuous() is the same size (0x2b4) but
  *   the reloc target is _ZN10dBgCh_Actr16UpdateContinuousEv. The ROM calls the
  *   veneer at arm9:0x020383fc.
@@ -24,11 +27,21 @@
  *   called by name.
  * - func_ov089_02131df4: one control arm (mState != 7) size 0x110 -> 0xe8
  *   (-0x28). The ROM has both copies.
- *   func_ov089_02131dcc / func_ov089_02131df4 stay C names: the shards call
- *   them that way. common.h's flat Matrix4x3 keeps the translation in m[9..11].
- *   The carry sparkle reads the first bone's word at +0xc; BMD_Bone does not
- *   name it. g_profile_OBJ_KEY / LAST_STAR stay outside this TU.
- *   data_0209f318 as Camera * matches, but the plurality is void * so the
+ * - func_ov089_02130fb4, func_ov089_0213115c, func_ov089_02131dcc and
+ *   func_ov089_02131df4 stay C names on (char *): every caller is now in this
+ *   file, so they are members in waiting (decl_common.h still declares the
+ *   first two by these names).
+ * - LoadKeyModels / UnloadKeyModels are C by necessity: Door, Player and the
+ *   bosses call them by name.
+ * - StateFlyToCenter / StateStarJump: the Fix12<int> calls (Particle::System::New,
+ *   ApproachLinear, Sound::ChangeMusicVolume) go by symbol for the same reason
+ *   as StateDrop's. mStateTimer is counted through a u16 pointer; the ROM
+ *   compares it unsigned.
+ * - common.h's flat Matrix4x3 keeps the translation in m[9..11].
+ * - The carry sparkle reads the first bone's word at +0xc; BMD_Bone does not
+ *   name it.
+ * - g_profile_OBJ_KEY / LAST_STAR stay outside this TU.
+ * - data_0209f318 as Camera * matches, but the plurality is void * so the
  *   cast stays.
  */
 
@@ -40,6 +53,7 @@
 #include "Camera.h"
 #include "Sound.h"
 #include "SharedFilePtr.h"
+#include "Message.h"
 
 #pragma defer_codegen off
 
@@ -94,7 +108,21 @@ enum {
     SHADOW_OPACITY = 0xf,
     BONE_Y_MUL = 0x23,
     ANIM_FLAGS = 0x40000000,
-    ANIM_SPEED = 0x1000
+    ANIM_SPEED = 0x1000,
+    JUMP_FRAMES = 30,
+    JUMP_HEIGHT = 0x190000,
+    JUMP_TARGET_Y = 0x64000,
+    CAM_Y = 0x78000,
+    LAND_Y = 0xa000,
+    SND_FLY = 0x73,
+    SND_BOUNCE = 0x74,
+    FLY_VY = 0x50000,
+    BOUNCE_VY = 0x41000,
+    HOVER_Y = 0xc8000,
+    CAM_STEP = 0x28000,
+    FX_TRAIL_A = 0xb4,
+    FX_TRAIL_B = 0xb5,
+    FX_TRAIL_C = 0xb6
 };
 
 /* Filled by __sinit_ov089_021328d4 and indexed by mState. */
@@ -143,11 +171,397 @@ extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void *th
 extern char data_ov002_0211094c;
 extern int data_0209cef0;
 void func_ov089_02131df4(char *c, char *p);
+void func_ov089_02131dcc(char *c, char *p);
+extern int Vec3_HorzDist(const Vector3 *a, const Vector3 *b);
+extern short Vec3_HorzAngle(const Vector3 *a, const Vector3 *b);
+/* The collect animations, by mAnimID. */
+extern ObjKeyFile *data_ov089_02132880[];
+/* Fix12<int> by value: called by symbol. */
+extern int _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(unsigned int id, int vol);
+extern int _Z14ApproachLinearR7Vector3RKS_5Fix12IiE(Vector3 &value, const Vector3 &target, int step);
+/* Level-overlay BSS: ov089 relocs record the store as claimed by fourteen
+   overlays, and ov055 is the one that names 0x02111b68 unambiguous kind:bss
+   (the func_ov002_020e3e00 precedent for its neighbours 0x02111b64/6c). */
+extern int data_ov055_02111b68;
 }
 
-/* -------------------------------------------------------------------------- */
-/* _ZN10daObjKey_c9StateDropEv, 0x02131b18 */
-/* -------------------------------------------------------------------------- */
+/* local extern: no header declares cstd; its ROM symbol is _ZN4cstd4sqrtEy. */
+namespace cstd { s32 sqrt(u64 value); }
+
+/* The key function, defined first. Under defer_codegen off it emits D1, D0 and
+ * a D2 the cartridge does not keep, then the vtable and RTTI chain. */
+// @symbol _ZN10daObjKey_cD1Ev
+// @symbol _ZN10daObjKey_cD0Ev
+daObjKey_c::~daObjKey_c()
+{
+}
+
+// @symbol func_ov089_02130fb4
+/* Aim a jump at target so it lands in 30 frames with its peak `height` above
+ * the higher end. Sets gravity, the launch speed and the heading. */
+extern "C" void func_ov089_02130fb4(char *c, int *p, int height)
+{
+    daObjKey_c *key = (daObjKey_c *)c;
+    Vector3 *target = (Vector3 *)p;
+    /* One register each: dy becomes the frames to the peak, height the frames after it. */
+    int dy = target->y - key->mPosY;
+    if (dy < 0)
+        dy = -dy;
+    {
+        int s0 = cstd::sqrt((unsigned long long)(long long)height);
+        int s1 = cstd::sqrt((unsigned long long)(long long)(height + dy));
+        int s2 = cstd::sqrt((unsigned long long)(long long)height);
+        dy = (s0 * JUMP_FRAMES) / (s1 + s2);
+    }
+    {
+        int left = -(height << 1);
+        int den = dy * dy;
+        height = JUMP_FRAMES - dy;
+        key->mVertAccel = left / den;
+    }
+    if (target->y >= key->mPosY) {
+        int a = key->mVertAccel;
+        if (a < 0)
+            a = -a;
+        key->mVertSpeed = height * a;
+    } else {
+        int a = key->mVertAccel;
+        if (a < 0)
+            a = -a;
+        key->mVertSpeed = (dy + 1) * a;
+    }
+    key->mTerminalVelocity = TERMINAL_VY;
+    key->mHorzSpeed = Vec3_HorzDist((Vector3 *)&key->mPosX, target) / JUMP_FRAMES;
+    key->mPrevAngleY = Vec3_HorzAngle((Vector3 *)&key->mPosX, target);
+}
+
+/* UnloadKeyModels, 0x021310cc */
+// @symbol UnloadKeyModels
+/* Door, Player and the bosses that drop a key call these two by name. */
+extern "C" void UnloadKeyModels(int kind)
+{
+    if (kind >= 8)
+        return;
+    ((SharedFilePtr *)data_ov089_02132894[kind])->Release();
+    if (data_ov089_021328b4[kind] == 0)
+        return;
+    ((SharedFilePtr *)data_ov089_021328b4[kind])->Release();
+}
+
+/* LoadKeyModels, 0x02131114 */
+// @symbol LoadKeyModels
+extern "C" void LoadKeyModels(int kind)
+{
+    SharedFilePtr *extra;
+    if (kind >= 8)
+        return;
+    Model::LoadFile(*(SharedFilePtr *)data_ov089_02132894[kind]);
+    extra = (SharedFilePtr *)data_ov089_021328b4[kind];
+    if (extra == 0)
+        return;
+    Model::LoadFile(*extra);
+}
+
+// @symbol func_ov089_0213115c
+/* Start collect animation `anim` (1..4); 0 or anything past 4 clears it. */
+extern "C" void func_ov089_0213115c(char *c, int anim)
+{
+    daObjKey_c *key = (daObjKey_c *)c;
+    if (anim == 0 || anim >= 5) {
+        key->mAnimID = 0;
+        return;
+    }
+    key->mAnimID = anim;
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&key->mModelAnim, data_ov089_02132880[anim]->ptr,
+                                                 ANIM_FLAGS, ANIM_SPEED, 0);
+}
+
+// @symbol _ZN10daObjKey_c16StateFlyToCenterEv
+/* Kind 3. Take the camera, fade the music, then fly toward the room's origin,
+ * bounce once on the home height and settle 800 units above it until touched. */
+void daObjKey_c::StateFlyToCenter()
+{
+    Vector3 v;
+    Vector3 center1;
+    Vector3 center2;
+    Camera *cam = (Camera *)data_0209f318;
+
+    switch (mStep) {
+    case 0:
+        {
+            /* Pointer copies: indexing cam directly folds the offsets into the loads. */
+            Vector3 *lookAt;
+            Vector3 *pos;
+            Vector3 *camLookAt;
+            mFlags |= FLAG_CAM_TAKEOVER;
+            data_0209b454 |= FLAG_CAM_TAKEOVER;
+            lookAt = &cam->lookAt;
+            camLookAt = &mCamLookAt;
+            mCamLookAt.x = lookAt->x;
+            mCamLookAt.y = lookAt->y;
+            mCamLookAt.z = lookAt->z;
+            pos = &cam->pos;
+            mSavedCamLookAt.x = camLookAt->x;
+            mSavedCamLookAt.y = camLookAt->y;
+            mSavedCamLookAt.z = camLookAt->z;
+            mSavedCamPos.x = pos->x;
+            mSavedCamPos.y = pos->y;
+            mSavedCamPos.z = pos->z;
+            _ZN6Camera9SetFlag_3Ev(cam);
+            mStep++;
+            _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(0, data_0209b490 / 15);
+            break;
+        }
+
+    case 1:
+        {
+            u16 *timer = (u16 *)&mStateTimer;
+            *timer = *timer + 1;
+            if (*timer < 70)
+                break;
+            mStep++;
+            *timer = 0;
+            Sound::PlayBank3(SND_FLY, *(Vector3 *)&mCamSpacePosX);
+            center1.x = 0;
+            center1.y = 0;
+            center1.z = 0;
+            mVertSpeed = FLY_VY;
+            mHorzSpeed = Vec3_HorzDist((Vector3 *)&mPosX, &center1) / 80;
+            mPrevAngleY = Vec3_HorzAngle((Vector3 *)&mPosX, &center1);
+            mBounceCount = 0;
+            mVertAccel = GRAVITY;
+            Message::EndTalk();
+            break;
+        }
+
+    case 2:
+        v.x = mPosX;
+        v.y = mPosY;
+        v.z = mPosZ;
+        v.y = v.y + Y_LOOK;
+        _Z14ApproachLinearR7Vector3RKS_5Fix12IiE(mCamLookAt, v, CAM_STEP);
+        cam->SetLookAt(mCamLookAt);
+        center2.x = 0;
+        center2.y = 0;
+        center2.z = 0;
+        Vec3_ApproachHorz(&mPosX, &center2, mHorzSpeed);
+        if (mBounceCount == 0) {
+            if (mVertSpeed < 0) {
+                int floor = mHomePos.y;
+                if (mPosY < floor) {
+                    mPosY = floor;
+                    mVertSpeed = BOUNCE_VY;
+                    mHorzSpeed = 0;
+                    mBounceCount++;
+                    Sound::PlayBank3(SND_BOUNCE, *(Vector3 *)&mCamSpacePosX);
+                }
+            }
+        } else {
+            if (mVertSpeed < 0) {
+                int hover = mHomePos.y + HOVER_Y;
+                if (mPosY < hover) {
+                    mPosY = hover;
+                    mVertSpeed = 0;
+                    mVertAccel = 0;
+                    mStep++;
+                    mStateTimer = 0;
+                    mdCcAcPos_c.flags &= ~CC_DISABLED;
+                    cam->mFlags &= ~8;
+                    mFlags &= ~FLAG_CAM_TAKEOVER;
+                    data_0209b454 &= ~FLAG_CAM_TAKEOVER;
+                }
+            }
+        }
+        break;
+
+    case 3:
+        {
+            u32 id = mdCcAcPos_c.otherOwner;
+            dActor_c *found;
+            if (id == 0)
+                break;
+            found = dActor_c::FindWithID(id);
+            if (found == 0)
+                break;
+            if ((mdCcAcPos_c.hitFlags & HIT_PLAYER) == 0)
+                break;
+            func_ov089_02131dcc((char *)this, (char *)found);
+            return;
+        }
+    }
+
+    Matrix4x3_FromTranslation(&data_020a0e68, mPosX, mPosY, mPosZ);
+    Matrix4x3_ApplyInPlaceToRotationY(&data_020a0e68, mPrevAngleY);
+    MulMat4x3Mat4x3(mModelAnim.data.transforms, &data_020a0e68, &data_020a0e68);
+    v.x = data_020a0e68.m[9];
+    v.y = data_020a0e68.m[10];
+    v.z = data_020a0e68.m[11];
+    SubVec3(&v, &mPosX, &v);
+    Vec3_LslInPlace(&v, 3);
+    AddVec3(&v, &mPosX, &v);
+    v.y = mScaleX * 13 + v.y;
+    mParticleID[0] = (u32)_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
+        mParticleID[0], FX_TRAIL_A, v.x, v.y, v.z, 0, 0);
+    mParticleID[1] = (u32)_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
+        mParticleID[1], FX_TRAIL_B, v.x, v.y, v.z, 0, 0);
+    mParticleID[2] = (u32)_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
+        mParticleID[2], FX_TRAIL_C, v.x, v.y, v.z, 0, 0);
+}
+
+// @symbol _ZN10daObjKey_c13StateStarJumpEv
+/* Kind 7, the power star. Take the camera, jump to a spot beside the nearest
+ * player, bounce to rest, hand the camera back and wait to be collected, then
+ * ride along with the player while the collect animation plays. */
+void daObjKey_c::StateStarJump()
+{
+    Vector3 v;
+    Vector3 target;
+    Camera *cam = (Camera *)data_0209f318;
+
+    if (mStep < 3) {
+        v.x = mPosX;
+        v.y = mPosY;
+        v.z = mPosZ;
+        v.y = v.y + Y_SPARK;
+        mParticleID[0] = (u32)_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
+            mParticleID[0], FX_FALL, v.x, v.y, v.z, 0, 0);
+    }
+    if (mStep >= 2)
+        dBgCh_Actr_UpdateContinuous_Veneer((char *)&mWithMeshClsn);
+
+    switch (mStep) {
+    case 0:
+        {
+            Vector3 *lookAt;
+            Vector3 *pos;
+            Player *player;
+            s32 *playerPos;
+            mFlags |= FLAG_CAM_TAKEOVER;
+            data_0209b454 |= FLAG_CAM_TAKEOVER;
+            lookAt = &cam->lookAt;
+            mSavedCamLookAt.x = lookAt->x;
+            pos = &cam->pos;
+            mSavedCamLookAt.y = lookAt->y;
+            mSavedCamLookAt.z = lookAt->z;
+            mSavedCamPos.x = pos->x;
+            mSavedCamPos.y = pos->y;
+            mSavedCamPos.z = pos->z;
+            _ZN6Camera9SetFlag_3Ev(cam);
+            v.x = mPosX;
+            v.y = mPosY;
+            v.z = mPosZ;
+            v.y = v.y + Y_LOOK;
+            cam->SetLookAt(v);
+            player = ClosestPlayer();
+            playerPos = &player->mPosX;
+            v.x = playerPos[0];
+            v.y = playerPos[1];
+            v.z = playerPos[2];
+            v.y = v.y + CAM_Y;
+            cam->SetPos(v);
+            mJumpTarget.x = v.x;
+            mJumpTarget.z = -v.z;
+            mJumpTarget.y = JUMP_TARGET_Y;
+            if (v.x >= -0x1f4000)
+                mJumpTarget.x = v.x - 0x12c000;
+            else
+                mJumpTarget.x = v.x;
+            {
+                int az = v.z < 0 ? -v.z : v.z;
+                if (az < 0xc8000) {
+                    mJumpTarget.z = -v.z;
+                    if (v.z >= 0)
+                        mJumpTarget.z -= 0xc8000;
+                    else
+                        mJumpTarget.z += 0xc8000;
+                } else {
+                    mJumpTarget.z = -v.z;
+                }
+            }
+            target.x = mJumpTarget.x;
+            target.y = mJumpTarget.y;
+            target.z = mJumpTarget.z;
+            func_ov089_02130fb4((char *)this, (int *)&target, JUMP_HEIGHT);
+            mStep++;
+            return;
+        }
+
+    case 1:
+        cam->SetLookAt(v);
+        if (Vec3_HorzDist((Vector3 *)&mPosX, &mJumpTarget) >= mHorzSpeed)
+            return;
+        mPosX = mJumpTarget.x;
+        mPosY = mJumpTarget.y;
+        mPosZ = mJumpTarget.z;
+        mPosY += LAND_Y;
+        mVertSpeed = POP_VY;
+        mVertAccel = GRAVITY;
+        mHorzSpeed = 0;
+        mStep++;
+        return;
+
+    case 2:
+        cam->SetLookAt(v);
+        if (mWithMeshClsn.JustHitGround()) {
+            mVertSpeed = -mVertSpeed >> 1;
+            func_02012694(SND_LAND, (Vector3 *)&mCamSpacePosX);
+            return;
+        }
+        if (mWithMeshClsn.IsOnGround() == 0)
+            return;
+        mStep++;
+        mdCcAcPos_c.flags &= ~CC_DISABLED;
+        mParticleID[0] = 0;
+        mStateTimer = 0;
+        data_ov055_02111b68 = 1;
+        return;
+
+    case 3:
+        {
+            u16 *timer = (u16 *)&mStateTimer;
+            *timer = *timer + 1;
+            if (*timer < 30)
+                return;
+            cam->SetLookAt(mSavedCamLookAt);
+            cam->SetPos(mSavedCamPos);
+            cam->mFlags &= ~8;
+            mFlags &= ~FLAG_CAM_TAKEOVER;
+            data_0209b454 &= ~FLAG_CAM_TAKEOVER;
+            mStep++;
+            return;
+        }
+
+    case 4:
+        {
+            u32 id = mdCcAcPos_c.otherOwner;
+            dActor_c *found;
+            if (id == 0)
+                return;
+            found = dActor_c::FindWithID(id);
+            if (found == 0)
+                return;
+            if ((mdCcAcPos_c.hitFlags & HIT_PLAYER) == 0)
+                return;
+            func_ov089_02131df4((char *)this, (char *)found);
+            mStep++;
+            return;
+        }
+
+    case 5:
+        {
+            s32 *pos = &mPlayer->mPosX;
+            mPosX = pos[0];
+            mPosY = pos[1];
+            mPosZ = pos[2];
+            mAngleY = mPlayer->mAngleY;
+            mModelAnim.Advance();
+            if (mModelAnim.Finished())
+                mStep++;
+            return;
+        }
+    }
+}
+
 // @symbol _ZN10daObjKey_c9StateDropEv
 void daObjKey_c::StateDrop()
 {
@@ -228,9 +642,6 @@ void daObjKey_c::StateDrop()
     }
 }
 
-/* -------------------------------------------------------------------------- */
-/* func_ov089_02131dcc, 0x02131dcc */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov089_02131dcc
 /* Last-star path. (char *, char *) is the spelling the shards declare. */
 extern "C" void func_ov089_02131dcc(char *c, char *p)
@@ -242,9 +653,6 @@ extern "C" void func_ov089_02131dcc(char *c, char *p)
     key->MarkForDestruction();
 }
 
-/* -------------------------------------------------------------------------- */
-/* func_ov089_02131df4, 0x02131df4 */
-/* -------------------------------------------------------------------------- */
 // @symbol func_ov089_02131df4
 extern "C" void func_ov089_02131df4(char *c, char *p)
 {
@@ -282,9 +690,6 @@ extern "C" void func_ov089_02131df4(char *c, char *p)
     }
 }
 
-/* -------------------------------------------------------------------------- */
-/* _ZN10daObjKey_c13OnTurnIntoEggER6Player, 0x02131f04 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN10daObjKey_c13OnTurnIntoEggER6Player
 void daObjKey_c::OnTurnIntoEgg(Player &player)
 {
@@ -295,17 +700,11 @@ void daObjKey_c::OnTurnIntoEgg(Player &player)
     return func_ov089_02131dcc((char *)this, (char *)&player);
 }
 
-/* -------------------------------------------------------------------------- */
-/* _ZN10daObjKey_c13OnYoshiTryEatEv, 0x02131f4c */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN10daObjKey_c13OnYoshiTryEatEv
 s32 daObjKey_c::OnYoshiTryEat() {
     return 4;
 }
 
-/* -------------------------------------------------------------------------- */
-/* _ZN10daObjKey_c20UpdateModelTransformEv, 0x02131f54 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN10daObjKey_c20UpdateModelTransformEv
 void daObjKey_c::UpdateModelTransform()
 {
@@ -328,9 +727,6 @@ void daObjKey_c::UpdateModelTransform()
         _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(this, &mShadowModel, &mShadowMatrix, SHADOW_R, SHADOW_DEPTH, SHADOW_OPACITY);
 }
 
-/* -------------------------------------------------------------------------- */
-/* _ZN10daObjKey_c16CleanupResourcesEv, 0x02132084 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN10daObjKey_c16CleanupResourcesEv
 int daObjKey_c::CleanupResources()
 {
@@ -346,9 +742,6 @@ int daObjKey_c::CleanupResources()
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* _ZN10daObjKey_c6RenderEv, 0x021320f0 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN10daObjKey_c6RenderEv
 int daObjKey_c::Render()
 {
@@ -366,9 +759,6 @@ int daObjKey_c::Render()
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* _ZN10daObjKey_c8BehaviorEv, 0x02132194 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN10daObjKey_c8BehaviorEv
 int daObjKey_c::Behavior()
 {
@@ -452,9 +842,6 @@ int daObjKey_c::Behavior()
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* _ZN10daObjKey_c13InitResourcesEv, 0x021324a4 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN10daObjKey_c13InitResourcesEv
 int daObjKey_c::InitResources()
 {
@@ -524,4 +911,19 @@ int daObjKey_c::InitResources()
     if (data_0209cef0 == 0)
         Event::ClearBit(EVENT_KEY);
     return 1;
+}
+
+/* Both profiles build the same class. fBase_c's inline operator new forwards to
+ * _ZN7fBase_cnwEj; the implicit constructor inlines dEnemyBase_c's base step,
+ * the vptr store and the five member constructors. */
+// @symbol daObjKey_c_classInit_LAST_STAR
+extern "C" daObjKey_c *daObjKey_c_classInit_LAST_STAR()
+{
+    return new daObjKey_c();
+}
+
+// @symbol daObjKey_c_classInit_OBJ_KEY
+extern "C" daObjKey_c *daObjKey_c_classInit_OBJ_KEY()
+{
+    return new daObjKey_c();
 }

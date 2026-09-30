@@ -2286,40 +2286,9 @@ src/game/actors/d_a_set_se.cpp:
     complete
     .text start:0x020f198c end:0x020f1bc4
 
-src/_ZN8MugenBgmD1Ev.cpp:
+src/actors/daMugenBGM_c.cpp:
     complete
-    .text start:0x020f1bc4 end:0x020f1be8
-
-src/_ZN8MugenBgmD0Ev.cpp:
-    complete
-    .text start:0x020f1be8 end:0x020f1c20
-
-src/func_ov002_020f1c20.c:
-    complete
-    .text start:0x020f1c20 end:0x020f1c50
-
-src/_ZN8MugenBgm16CleanupResourcesEv.cpp:
-    complete
-    .text start:0x020f1c50 end:0x020f1c58
-
-src/_ZN8MugenBgm16OnPendingDestroyEv.cpp:
-    complete
-    .text start:0x020f1c58 end:0x020f1c5c
-
-src/_ZN8MugenBgm6RenderEv.cpp:
-    complete
-    .text start:0x020f1c5c end:0x020f1c64
-
-src/_ZN8MugenBgm8BehaviorEv.cpp:
-    complete
-    .text start:0x020f1c64 end:0x020f1eb4
-
-src/_ZN8MugenBgm13InitResourcesEv.cpp:
-    .text start:0x020f1eb4 end:0x020f1f40
-
-src/d_a_mugen_bgm.c:
-    complete
-    .text start:0x020f1f40 end:0x020f1f70
+    .text start:0x020f1bc4 end:0x020f1f70
 
 src/_ZN14CutsceneObjectD1Ev.cpp:
     complete
@@ -2919,49 +2888,9 @@ src/game/actors/d_a_sound_obj.cpp:
     complete
     .text start:0x020f934c end:0x020f975c
 
-src/_ZN6dMap_cD1Ev.cpp:
+src/actors/dMap_c.cpp:
     complete
-    .text start:0x020f975c end:0x020f978c
-
-src/_ZN6dMap_cD0Ev.cpp:
-    complete
-    .text start:0x020f978c end:0x020f97d0
-
-src/_ZN6dMap_c21FixTHIPaintingRoomPosER7Vector3.cpp:
-    complete
-    .text start:0x020f97d0 end:0x020f99a8
-
-src/_ZN6dMap_c19UpdateLevelSpecificEv.cpp:
-    complete
-    .text start:0x020f99a8 end:0x020f9e8c
-
-src/_ZN6dMap_c16CleanupResourcesEv.cpp:
-    complete
-    .text start:0x020f9e8c end:0x020f9e94
-
-src/_ZN6dMap_c16OnPendingDestroyEv.cpp:
-    complete
-    .text start:0x020f9e94 end:0x020f9e98
-
-src/_ZN6dMap_c6RenderEv.cpp:
-    complete
-    .text start:0x020f9e98 end:0x020fa690
-
-src/_ZN6dMap_c8BehaviorEv.cpp:
-    complete
-    .text start:0x020fa690 end:0x020fb38c
-
-src/_ZN6dMap_c13InitResourcesEv.cpp:
-    complete
-    .text start:0x020fb38c end:0x020fb804
-
-src/_ZN6dMap_c20GetPosFromMinimapPosER7Vector3S1_5Fix12IiEsS1_.cpp:
-    complete
-    .text start:0x020fb804 end:0x020fb85c
-
-src/_ZN6dMap_c15GetPosOnMinimapER7Vector3S1_5Fix12IiEsS1_.cpp:
-    complete
-    .text start:0x020fb85c end:0x020fb8bc
+    .text start:0x020f975c end:0x020fb8bc
 
 src/d_map.cpp:
     complete

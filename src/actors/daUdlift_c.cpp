@@ -1,11 +1,15 @@
 //cpp
-/* ov095 daUdlift_c -- the up/down lift in Big Boo's Haunt (UDLIFT_TERESA),
- * Hazy Maze Cave (UDLIFT) and Rainbow Ride (RC_RIFT02).
+/*
+ * daUdlift_c: the up/down lift of ov095, one class behind three profiles --
+ * UDLIFT_TERESA (0x20), UDLIFT (0x21) and RC_RIFT02 (0x83). The tree's
+ * earlier factory names put them in Big Boo's Haunt, Hazy Maze Cave and
+ * Rainbow Ride; that placement comes from those names, not from anything read
+ * out of the ROM here.
  *
- * It waits at one end of a vertical shaft, travels when a player steps on,
- * and stops with a thud at the other end. Behavior dispatches mState through
- * data_ov095_02137910, the pointer-to-member table the overlay static
- * initializer fills:
+ * It waits at one end of a vertical shaft, travels when a rider boards or the
+ * player crosses the middle, and stops at the other end. Behavior dispatches
+ * mState through data_ov095_02137910, the pointer-to-member table the overlay
+ * static initializer fills:
  *
  *   0 StateWait          wait at the current end
  *   1 StateMoveUp        climb to mTopY
@@ -13,17 +17,17 @@
  *   3 StateStop          stopped; wait again once re-armed
  *   4 StateStopAtBottom  stopped at the bottom; climb once re-armed
  *
- * mMode is 0 on the Haunt and Cave lifts (follow the player) and 1 on
- * Rainbow Ride (park in StateStopAtBottom). InitResources never stores 2;
- * the mMode == 2 arm is still in the cartridge.
+ * mMode is 0 for UDLIFT_TERESA and UDLIFT (follow the player) and 1 for
+ * RC_RIFT02 (park in StateStopAtBottom). InitResources never stores 2; the
+ * mMode == 2 arm is still in the cartridge.
  *
  * The destructor is inline and empty in include/daUdlift_c.h, so
- * InitResources is the key function and the header emits D1 then D0 with
- * no D2. mwccarm emits .text in reverse source order. The functions below
- * are written from the highest address down. Do not reorder them, and do
- * not write the destructor out of line.
+ * InitResources is the key function and the header emits D1 then D0 with no
+ * D2. mwccarm emits .text in reverse source order, so the functions below are
+ * written from the highest address down. Do not reorder them, and do not
+ * write the destructor out of line.
  *
- * deslop leftovers:
+ * Known limits:
  * - InitResources, StateWait, StateMoveDown: the actorID test has to be
  *   `(int)(actorID == id) != 0`. A plain `actorID == id`, and that compare
  *   without the `(int)` cast, both shrink the same three functions.
@@ -92,7 +96,6 @@ void func_020393c4(void *collider, void *callback);
 void func_ov095_02136788(void *a, void *b, void *c);
 }
 
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN10daUdlift_c13InitResourcesEv
 int daUdlift_c::InitResources()
 {
@@ -136,7 +139,6 @@ int daUdlift_c::InitResources()
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN10daUdlift_c8BehaviorEv
 int daUdlift_c::Behavior()
 {
@@ -153,8 +155,8 @@ int daUdlift_c::Behavior()
     if (_ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(this, 0, 0) != 0)
         UpdateClsnPosAndRot();
 
-    /* Waiting or stopped: once the rider has landed somewhere else, forget
-       them and arm the trigger again. */
+    /* Waiting or stopped: once the rider is on the ground and mIsRidden is
+       clear, forget them and arm the trigger again. */
     if (mState == 0 || mState == 3 || mState == 4) {
         if (mRider != 0 && mRider->IsInAir() == 0 && mIsRidden == 0) {
             mRider = 0;
@@ -167,7 +169,6 @@ int daUdlift_c::Behavior()
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN10daUdlift_c6RenderEv
 int daUdlift_c::Render()
 {
@@ -175,7 +176,6 @@ int daUdlift_c::Render()
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN10daUdlift_c16CleanupResourcesEv
 int daUdlift_c::CleanupResources()
 {
@@ -187,7 +187,6 @@ int daUdlift_c::CleanupResources()
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN10daUdlift_c9StateWaitEv
 /* State 0, waiting. A newly boarded rider sends the lift to the other end.
  * Otherwise, when the closest player crosses mMiddleY away from the lift, the
@@ -210,8 +209,8 @@ void daUdlift_c::StateWait()
         middleY = mMiddleY;
         if (player->mPosY > middleY)
             return;
-        /* Rainbow Ride does not chase across the middle. The (int) flag
-           keeps the branch; a plain compare shrinks this function. */
+        /* RC_RIFT02 does not follow the player across the middle. The (int)
+           flag keeps the branch; a plain compare shrinks this function. */
         if ((int)(actorID == RC_RIFT02) != 0)
             return;
         if (mPlayerPosY > middleY) {
@@ -242,7 +241,6 @@ void daUdlift_c::StateWait()
     }
 }
 
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN10daUdlift_c11StateMoveUpEv
 /* State 1, climbing: speed up toward 10 units a frame and stop at mTopY. */
 void daUdlift_c::StateMoveUp()
@@ -267,7 +265,6 @@ void daUdlift_c::StateMoveUp()
     mState = 3;
 }
 
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN10daUdlift_c13StateMoveDownEv
 /* State 2, descending: speed up toward 10 units a frame and stop at
  * mBottomY. */
@@ -275,7 +272,7 @@ void daUdlift_c::StateMoveDown()
 {
     mSoundHandle = Sound::PlayLong(
         mSoundHandle, 3, 0x82, *(Vector3 *)&mCamSpacePosX, 0);
-    /* HMC plays a one-shot on the first frame. The (int) flag keeps the
+    /* UDLIFT plays a one-shot (bank 3, id 0x40) on the first frame. The (int) flag keeps the
        branch; a plain compare shrinks this function. One Vector3& shared
        with PlayLong also grows it, so the second pun stays. */
     if (mStateTimer == 0 && (int)(actorID == UDLIFT) != 0)
@@ -303,10 +300,9 @@ void daUdlift_c::StateMoveDown()
     mState = 3;
 }
 
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN10daUdlift_c17StateStopAtBottomEv
-/* State 4, stopped at the bottom: land with a thud and a camera shake, and
- * climb again once re-armed. */
+/* State 4, stopped at the bottom: on the first frame play bank-3 sound 0x6b
+ * and call Earthquake at the lift, then climb again once re-armed. */
 void daUdlift_c::StateStopAtBottom()
 {
     mVertSpeed = 0;
@@ -320,9 +316,9 @@ void daUdlift_c::StateStopAtBottom()
         mState = 1;
 }
 
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN10daUdlift_c9StateStopEv
-/* State 3, stopped: the same landing, then wait again once re-armed. */
+/* State 3, stopped: the same first-frame sound and Earthquake, then wait
+ * again once re-armed. */
 void daUdlift_c::StateStop()
 {
     mVertSpeed = 0;

@@ -20,37 +20,9 @@ src/d_a_snowman.c:
     complete
     .text start:0x02125ec0 end:0x02125f14
 
-src/_ZN12daSnowball_cD1Ev.cpp:
-    complete
-    .text start:0x02125f14 end:0x02125f5c
-
-src/_ZN12daSnowball_cD0Ev.cpp:
-    complete
-    .text start:0x02125f5c end:0x02125fb8
-
-src/func_ov081_02125fb8.c:
-    complete
-    .text start:0x02125fb8 end:0x021260fc
-
-src/func_ov081_021260fc.cpp:
-    complete
-    .text start:0x021260fc end:0x021261b8
-
-src/func_ov081_021261b8.c:
-    complete
-    .text start:0x021261b8 end:0x021261d4
-
-src/func_ov081_021261d4.cpp:
-    complete
-    .text start:0x021261d4 end:0x02126224
-
-src/func_ov081_02126224.c:
-    complete
-    .text start:0x02126224 end:0x02126298
-
 src/actors/daSnowball_c.cpp:
     complete
-    .text start:0x02126298 end:0x021264b4
+    .text start:0x02125f14 end:0x021264b4
 
 src/d_a_snowball.c:
     complete

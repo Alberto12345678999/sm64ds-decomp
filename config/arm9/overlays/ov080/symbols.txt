@@ -1,8 +1,8 @@
-_ZN9MontyMoleD1Ev kind:function(arm,size=0x38) addr:0x02123740
-_ZN9MontyMoleD0Ev kind:function(arm,size=0x4c) addr:0x02123778
-_ZN13MontyMoleRockD1Ev kind:function(arm,size=0x40) addr:0x021237c4
-_ZN13MontyMoleRockD0Ev kind:function(arm,size=0x54) addr:0x02123804
-_ZN9MontyMole16OnAimedAtWithEggEv kind:function(arm,size=0x8) addr:0x02123858
+_ZN11daChoropu_cD1Ev kind:function(arm,size=0x38) addr:0x02123740
+_ZN11daChoropu_cD0Ev kind:function(arm,size=0x4c) addr:0x02123778
+_ZN14daChoro_Rock_cD1Ev kind:function(arm,size=0x40) addr:0x021237c4
+_ZN14daChoro_Rock_cD0Ev kind:function(arm,size=0x54) addr:0x02123804
+_ZN11daChoropu_c16OnAimedAtWithEggEv kind:function(arm,size=0x8) addr:0x02123858
 func_ov080_02123860 kind:function(arm,size=0xc4) addr:0x02123860
 func_ov080_02123924 kind:function(arm,size=0x110) addr:0x02123924
 func_ov080_02123a34 kind:function(arm,size=0x1f0) addr:0x02123a34
@@ -14,14 +14,14 @@ func_ov080_02124208 kind:function(arm,size=0x158) addr:0x02124208
 func_ov080_02124360 kind:function(arm,size=0x78) addr:0x02124360
 func_ov080_021243d8 kind:function(arm,size=0x40) addr:0x021243d8
 func_ov080_02124418 kind:function(arm,size=0x40) addr:0x02124418
-_ZN9MontyMole16CleanupResourcesEv kind:function(arm,size=0x5c) addr:0x02124458
-_ZN13MontyMoleRock16CleanupResourcesEv kind:function(arm,size=0x24) addr:0x021244b4
-_ZN9MontyMole6RenderEv kind:function(arm,size=0x28) addr:0x021244d8
-_ZN13MontyMoleRock6RenderEv kind:function(arm,size=0x30) addr:0x02124500
-_ZN9MontyMole8BehaviorEv kind:function(arm,size=0x6c) addr:0x02124530
-_ZN13MontyMoleRock8BehaviorEv kind:function(arm,size=0x1f0) addr:0x0212459c
-_ZN9MontyMole13InitResourcesEv kind:function(arm,size=0x128) addr:0x0212478c
-_ZN13MontyMoleRock13InitResourcesEv kind:function(arm,size=0xe4) addr:0x021248b4
+_ZN11daChoropu_c16CleanupResourcesEv kind:function(arm,size=0x5c) addr:0x02124458
+_ZN14daChoro_Rock_c16CleanupResourcesEv kind:function(arm,size=0x24) addr:0x021244b4
+_ZN11daChoropu_c6RenderEv kind:function(arm,size=0x28) addr:0x021244d8
+_ZN14daChoro_Rock_c6RenderEv kind:function(arm,size=0x30) addr:0x02124500
+_ZN11daChoropu_c8BehaviorEv kind:function(arm,size=0x6c) addr:0x02124530
+_ZN14daChoro_Rock_c8BehaviorEv kind:function(arm,size=0x1f0) addr:0x0212459c
+_ZN11daChoropu_c13InitResourcesEv kind:function(arm,size=0x128) addr:0x0212478c
+_ZN14daChoro_Rock_c13InitResourcesEv kind:function(arm,size=0xe4) addr:0x021248b4
 daChoro_Rock_c_classInit kind:function(arm,size=0x48) addr:0x02124998
 daChoropu_c_classInit kind:function(arm,size=0x40) addr:0x021249e0
 _ZN9daBttBk_cD1Ev kind:function(arm,size=0x48) addr:0x02124a20
@@ -112,11 +112,9 @@ _ZTS11daChoropu_c kind:data(any) addr:0x02127fc8
 _ZTS14daChoro_Rock_c kind:data(any) addr:0x02127fd8
 g_profile_CHOROPU kind:data(any) addr:0x02127fec ambiguous
 g_profile_CHORO_ROCK kind:data(any) addr:0x02128008 ambiguous
-_ZTV13MontyMoleRock kind:data(any) addr:0x0212802c
 _ZTV14daChoro_Rock_c kind:data(any) addr:0x0212802c
 data_ov080_02128070 kind:data(any) addr:0x02128070 ambiguous
 data_ov080_0212808c kind:data(any) addr:0x0212808c ambiguous
-_ZTV9MontyMole kind:data(any) addr:0x021280b0
 _ZTV11daChoropu_c kind:data(any) addr:0x021280b0
 data_ov080_0212812c kind:data(any) addr:0x0212812c
 data_ov080_02128134 kind:data(any) addr:0x02128134

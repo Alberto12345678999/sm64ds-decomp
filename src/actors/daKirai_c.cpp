@@ -1,8 +1,7 @@
 //cpp
-/* daKirai_c, ov060 0x02118438..0x02118cbc.
- * daKirai_c_classInit stays out.
- *
- * The spike bomb. Every live bomb registers with the spike-bomb slot table
+/* daKirai_c: the spike bomb (ov060, .text 0x02118438..0x02118cbc;
+ * daKirai_c_classInit stays out).
+ * Every live bomb registers with the spike-bomb slot table
  * (AddSpikeBomb) and keeps the uniqueIDs of its siblings (actor 0x11c) so that,
  * once they have all gone off, the one nearest the player can re-arm.
  *
@@ -93,11 +92,11 @@ void func_ov060_021184bc(daKirai_c *self)
 // @symbol func_ov060_02118544
 int func_ov060_02118544(daKirai_c *self, Vector3 *pos)
 {
-    int h, r2;
+    int horz, homeHorz;
     if (self->mStateIndex != 0) return 0;
-    h = Vec3_HorzLen(pos);
-    r2 = self->mHomeHorzDist;
-    if (h >= r2 - 0x12c000 && h <= r2 + 0x12c000) {
+    horz = Vec3_HorzLen(pos);
+    homeHorz = self->mHomeHorzDist;
+    if (horz >= homeHorz - 0x12c000 && horz <= homeHorz + 0x12c000) {
         if (Vec3_Dist((Vector3 *)&self->mHomePosX, pos) < self->mHomeYOffset) return 1;
     }
     return 0;
@@ -231,7 +230,7 @@ void func_ov060_021188e8(daKirai_c *self)
 void func_ov060_02118970(daKirai_c *self)
 {
     dActor_c *a;
-    Vector3 v1, v2;
+    Vector3 quakePos, hurtPos;
     int isPlayer; /* int, not bool: measured, a bool local misses */
     unsigned int id;
     id = self->mdCcAcPos_c.otherOwner;
@@ -246,14 +245,14 @@ void func_ov060_02118970(daKirai_c *self)
     _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xab, self->mPosX, self->mPosY, self->mPosZ);
     _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xac, self->mPosX, self->mPosY, self->mPosZ);
     func_02012694(0x2f, &self->mCamSpacePosX);
-    v1.x = self->mPosX;
-    v1.y = self->mPosY;
-    v1.z = self->mPosZ;
-    _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(self, &v1, 0x7d0000);
-    v2.x = self->mPosX;
-    v2.y = self->mPosY;
-    v2.z = self->mPosZ;
-    _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(a, &v2, 2, 0xc000, 1, 0, 1);
+    quakePos.x = self->mPosX;
+    quakePos.y = self->mPosY;
+    quakePos.z = self->mPosZ;
+    _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(self, &quakePos, 0x7d0000);
+    hurtPos.x = self->mPosX;
+    hurtPos.y = self->mPosY;
+    hurtPos.z = self->mPosZ;
+    _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(a, &hurtPos, 2, 0xc000, 1, 0, 1);
     func_ov060_021184bc(self);
 }
 }

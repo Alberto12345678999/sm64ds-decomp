@@ -11,21 +11,25 @@
  * existing ROM/data and source owners. The scale vector uses its configured
  * identity data_ov002_0210af00. Compiler-emitted class metadata is separately
  * measured against its configured ROM homes and discarded from this text slice.
- * Completing lifecycle and state-data ownership remains deferred work.
  *
  * Function order is the REVERSE of the ROM's: mwccarm 2004/b56 emits one .text
  * section per function and lays them out in reverse source order, so the
- * highest-address ROM function is written first. Do not reorder.
+ * highest-address ROM function is written first. Do not reorder. The
+ * "// address (size)" line above each definition is its ROM location.
  *
- * deslop
- * Leftover: several helpers keep their mangled extern "C" spellings, and a few of
- *   those declarations are vaguer than the definitions they name (banked in
+ * Known limits:
+ * - Completing lifecycle and state-data ownership (the two destructors, the
+ *   state table and its initializer) is deferred; they keep their legacy sources.
+ * - Several helpers keep their mangled extern "C" spellings, and a few of those
+ *   declarations are vaguer than the definitions they name (banked in
  *   config/decl-agreement-baseline.json). Tightening one changes its call sites,
- *   which is matching work needing its own byte proof -- not done here.
+ *   which is matching work needing its own byte proof.
+ * - StateFall keeps its this-relative casts for mFallAngle (0x44a), mFallStartY
+ *   (0x444) and mPosY (0x60): naming the members makes mwcc reuse the signed
+ *   load and drops 12 bytes.
  */
 
-
-/* Header order preserves the measured mwccarm 2004/b56 output. */
+// Header order preserves the measured mwccarm 2004/b56 output.
 #include "PathLift.h"
 #include "types.h"
 #include "decl_PathPtr.h"
@@ -59,19 +63,14 @@ void func_02012694(int a, void *p);
 
 extern "C" PathLiftState data_ov002_0210af2c[];
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 21 -- func_ov002_020eff90, 0x020eff90, size 0x28 */
-/* -------------------------------------------------------------------------- */
+// 0x020eff90 (0x28)
 // @symbol func_ov002_020eff90
 extern "C" void func_ov002_020eff90(int unused, dPathLiftActor_c* lift, int x) {
   lift->AfterClsn(x);
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 20 -- _ZN16dPathLiftActor_c9AfterClsnEi, 0x020eff18, size 0x78 */
-/* -------------------------------------------------------------------------- */
+// 0x020eff18 (0x78)
 // @symbol _ZN16dPathLiftActor_c9AfterClsnEi
-/* recovered: named members + shared header, real C++ method */
 void dPathLiftActor_c::AfterClsn(int)
 {
     if (Param08ModeIs1Or2() != 0 &&
@@ -86,9 +85,7 @@ void dPathLiftActor_c::AfterClsn(int)
     mAfterClsnRan = 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 19 -- func_ov002_020eff04, 0x020eff04, size 0x14 */
-/* -------------------------------------------------------------------------- */
+// 0x020eff04 (0x14)
 // @symbol _ZNK16dPathLiftActor_c11IsUnk42cSetEv
 int dPathLiftActor_c::IsUnk42cSet() const {
   unsigned char v = unk_42c;
@@ -96,9 +93,7 @@ int dPathLiftActor_c::IsUnk42cSet() const {
   return 0;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 18 -- func_ov002_020efedc, 0x020efedc, size 0x28 */
-/* -------------------------------------------------------------------------- */
+// 0x020efedc (0x28)
 // @symbol _ZNK16dPathLiftActor_c17Param08ModeIs1Or2Ev
 int dPathLiftActor_c::Param08ModeIs1Or2() const
 {
@@ -109,49 +104,38 @@ int dPathLiftActor_c::Param08ModeIs1Or2() const
     return r;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 17 -- func_ov002_020efebc, 0x020efebc, size 0x20 */
-/* -------------------------------------------------------------------------- */
+// 0x020efebc (0x20)
 // @symbol _ZNK16dPathLiftActor_c14Param08ModeIs2Ev
 int dPathLiftActor_c::Param08ModeIs2() const {
     return (unsigned char)((param1 >> 8) & 3) == 2;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 16 -- func_ov002_020efe9c, 0x020efe9c, size 0x20 */
-/* -------------------------------------------------------------------------- */
+// 0x020efe9c (0x20)
 // @symbol _ZNK16dPathLiftActor_c14Param12ModeIs1Ev
 int dPathLiftActor_c::Param12ModeIs1() const {
     return (unsigned char)((param1 >> 0xc) & 3) == 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 15 -- func_ov002_020efe7c, 0x020efe7c, size 0x20 */
-/* -------------------------------------------------------------------------- */
+// 0x020efe7c (0x20)
 // @symbol _ZNK16dPathLiftActor_c14Param10ModeIs1Ev
 int dPathLiftActor_c::Param10ModeIs1() const {
     return (unsigned char)((param1 >> 0xa) & 3) == 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 14 -- func_ov002_020efe68, 0x020efe68, size 0x14 */
-/* -------------------------------------------------------------------------- */
+// 0x020efe68 (0x14)
 // @symbol _ZNK16dPathLiftActor_c16HasNonzeroAngleZEv
 int dPathLiftActor_c::HasNonzeroAngleZ() const {
   return mAngleZ != 0;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 13 -- func_ov002_020efcf4, 0x020efcf4, size 0x174 */
-/* -------------------------------------------------------------------------- */
+// 0x020efcf4 (0x174)
 // @symbol _ZN16dPathLiftActor_c16UpdatePathModelsEv
-/* recovered: shared common types */
 void dPathLiftActor_c::UpdatePathModels()
 {
     int idx;
     int found;
     int i;
-    int r6;
+    int modelNode;
     struct Vector3 node;
     int one;
 
@@ -182,19 +166,19 @@ void dPathLiftActor_c::UpdatePathModels()
             }
         }
 
-        r6 = i * mPathDirection + idx;
+        modelNode = i * mPathDirection + idx;
         if (mPath.Loops()) {
-            if (r6 >= (int)mPath.NumNodes()) {
-                r6 -= mPath.NumNodes();
+            if (modelNode >= (int)mPath.NumNodes()) {
+                modelNode -= mPath.NumNodes();
             }
-            if (r6 < 0) {
-                r6 += mPath.NumNodes();
+            if (modelNode < 0) {
+                modelNode += mPath.NumNodes();
             }
-        } else if (r6 >= (int)mPath.NumNodes()) {
+        } else if (modelNode >= (int)mPath.NumNodes()) {
             continue;
         }
-        if (r6 < (int)mPath.NumNodes() && r6 >= 0) {
-            mPath.GetNode(node, r6);
+        if (modelNode < (int)mPath.NumNodes() && modelNode >= 0) {
+            mPath.GetNode(node, modelNode);
             mModels[i].mat4x3.t.x = node.x >> 3;
             mModels[i].mat4x3.t.y = node.y >> 3;
             mModels[i].mat4x3.t.z = node.z >> 3;
@@ -202,11 +186,8 @@ void dPathLiftActor_c::UpdatePathModels()
     }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 12 -- func_ov002_020efc74, 0x020efc74, size 0x80 */
-/* -------------------------------------------------------------------------- */
+// 0x020efc74 (0x80)
 // @symbol _ZN16dPathLiftActor_c16RenderPathModelsEv
-/* recovered: shared common types */
 void dPathLiftActor_c::RenderPathModels()
 {
     if (Param12ModeIs1() == 0) return;
@@ -221,9 +202,7 @@ void dPathLiftActor_c::RenderPathModels()
     } while (i < 3);
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 11 -- func_ov002_020efbdc, 0x020efbdc, size 0x98 */
-/* -------------------------------------------------------------------------- */
+// 0x020efbdc (0x98)
 // @symbol _ZN16dPathLiftActor_c9ResetPathEv
 void dPathLiftActor_c::ResetPath()
 {
@@ -242,9 +221,7 @@ void dPathLiftActor_c::ResetPath()
     else SetState(1);
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 10 -- func_ov002_020efaf0, 0x020efaf0, size 0xec */
-/* -------------------------------------------------------------------------- */
+// 0x020efaf0 (0xec)
 // @symbol _ZN16dPathLiftActor_c17BaseInitResourcesEv
 struct BMD_File;
 struct PathStuff { void* a; void* file; };  // data_0210d9f0: load [4]
@@ -275,9 +252,7 @@ void dPathLiftActor_c::BaseInitResources()
     func_020393c4((char *)&mMeshCollider, (int)&func_ov002_020eff90);
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 9 -- _ZN16dPathLiftActor_c12BaseBehaviorEv, 0x020efaa0, size 0x50 */
-/* -------------------------------------------------------------------------- */
+// 0x020efaa0 (0x50)
 // @symbol _ZN16dPathLiftActor_c12BaseBehaviorEv
 void dPathLiftActor_c::BaseBehavior()
 {
@@ -286,9 +261,7 @@ void dPathLiftActor_c::BaseBehavior()
     mAfterClsnRan = 0;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 8 -- func_ov002_020efa54, 0x020efa54, size 0x4c */
-/* -------------------------------------------------------------------------- */
+// 0x020efa54 (0x4c)
 // @symbol _ZN16dPathLiftActor_c8SetStateEi
 void dPathLiftActor_c::SetState(int state) {
     mState = state;
@@ -296,35 +269,29 @@ void dPathLiftActor_c::SetState(int state) {
     (this->*data_ov002_0210af2c[next].init)();
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 7 -- func_ov002_020efa44, 0x020efa44, size 0x10 */
-/* -------------------------------------------------------------------------- */
+// 0x020efa44 (0x10)
 // @symbol _ZN16dPathLiftActor_c13StatePathInitEv
 void dPathLiftActor_c::StatePathInit()
 {
     mWaitTimer = 300;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 6 -- func_ov002_020ef670, 0x020ef670, size 0x3d4 */
-/* -------------------------------------------------------------------------- */
+// 0x020ef670 (0x3d4)
 // @symbol _ZN16dPathLiftActor_c9StatePathEv
-/* recovered: shared common types, declarations from a shared header */
-/* recovered: shared common types */
 void dPathLiftActor_c::StatePath()
 {
-    struct Vector3 prev, node, diff1, diff2, scaled1, scaled2;
-    int looped;
-    int ad2;
-    int ad1;
-    int hdist;
-    int dv;
-    int len2;
-    int delta;
-    short sl;
-    short sb;
-    short q2;
-    int len1;
+    struct Vector3 destNode, srcNode, fromDest, segment, stepA, stepB;
+    int arrived;
+    int pitchDiff;
+    int yawDiff;
+    int horzDist;
+    int segFrames;
+    int segLen;
+    int srcIdx;
+    short targetYaw;
+    short targetPitch;
+    short pitchStep;
+    int destDist;
 
     if (Param08ModeIs2() != 0) {
         if (mAfterClsnRan == 0) {
@@ -337,64 +304,64 @@ void dPathLiftActor_c::StatePath()
         }
     }
 
-    delta = mCurrPathNode - mPathDirection;
-    looped = 0;
+    srcIdx = mCurrPathNode - mPathDirection;
+    arrived = 0;
     if (mPath.Loops()) {
         if (mPathDirection > 0) {
-            if (delta < 0) delta = mPath.NumNodes() - 1;
+            if (srcIdx < 0) srcIdx = mPath.NumNodes() - 1;
         } else {
-            if (delta >= (int)mPath.NumNodes()) delta = 0;
+            if (srcIdx >= (int)mPath.NumNodes()) srcIdx = 0;
         }
-        mPath.GetNode(node, delta);
+        mPath.GetNode(srcNode, srcIdx);
     } else {
-        if (delta < 0 || delta >= (int)mPath.NumNodes()) {
-            node.x = mPosX;
-            node.y = mPosY;
-            node.z = mPosZ;
+        if (srcIdx < 0 || srcIdx >= (int)mPath.NumNodes()) {
+            srcNode.x = mPosX;
+            srcNode.y = mPosY;
+            srcNode.z = mPosZ;
         } else {
-            mPath.GetNode(node, delta);
+            mPath.GetNode(srcNode, srcIdx);
         }
     }
-    mPath.GetNode(prev, mCurrPathNode);
+    mPath.GetNode(destNode, mCurrPathNode);
 
-    Vec3_Sub(&diff1, &mPosX, &prev);
-    len1 = LenVec3(&diff1);
-    Vec3_Sub(&diff2, &node, &prev);
-    len2 = LenVec3(&diff2);
-    dv = _ZN4cstd4fdivEii(len2, mHorzSpeed) / 0x1000;
+    Vec3_Sub(&fromDest, &mPosX, &destNode);
+    destDist = LenVec3(&fromDest);
+    Vec3_Sub(&segment, &srcNode, &destNode);
+    segLen = LenVec3(&segment);
+    segFrames = _ZN4cstd4fdivEii(segLen, mHorzSpeed) / 0x1000;
 
-    hdist = Vec3_HorzDist(&node, &prev);
-    if (hdist != 0) {
+    horzDist = Vec3_HorzDist(&srcNode, &destNode);
+    if (horzDist != 0) {
         if (mPathDirection > 0) {
-            sl = Vec3_HorzAngle(&node, &prev);
-            sb = Vec3_VertAngle(&node, &prev);
+            targetYaw = Vec3_HorzAngle(&srcNode, &destNode);
+            targetPitch = Vec3_VertAngle(&srcNode, &destNode);
         } else {
-            sl = Vec3_HorzAngle(&prev, &node);
-            sb = Vec3_VertAngle(&prev, &node);
+            targetYaw = Vec3_HorzAngle(&destNode, &srcNode);
+            targetPitch = Vec3_VertAngle(&destNode, &srcNode);
         }
     } else {
-        sl = mAngleY;
-        sb = mAngleX;
+        targetYaw = mAngleY;
+        targetPitch = mAngleX;
     }
 
-    ad1 = AngleDiff(mPrevPathAngle.y, sl);
-    ad2 = AngleDiff(mPrevPathAngle.x, sb);
-    q2 = (short)(ad2 / dv);
-    ApproachLinear(mAngleY, sl, (short)(ad1 / dv));
+    yawDiff = AngleDiff(mPrevPathAngle.y, targetYaw);
+    pitchDiff = AngleDiff(mPrevPathAngle.x, targetPitch);
+    pitchStep = (short)(pitchDiff / segFrames);
+    ApproachLinear(mAngleY, targetYaw, (short)(yawDiff / segFrames));
     if (HasNonzeroAngleZ() != 0) {
-        ApproachLinear(mAngleX, sb, q2);
+        ApproachLinear(mAngleX, targetPitch, pitchStep);
     }
 
-    if (len1 == 0 || len1 <= mHorzSpeed) {
-        Vec3_MulScalar(&scaled1, &diff1, _ZN4cstd4fdivEii(mHorzSpeed, len1));
-        SubVec3(&mPosX, &scaled1, &mPosX);
-        looped = 1;
+    if (destDist == 0 || destDist <= mHorzSpeed) {
+        Vec3_MulScalar(&stepA, &fromDest, _ZN4cstd4fdivEii(mHorzSpeed, destDist));
+        SubVec3(&mPosX, &stepA, &mPosX);
+        arrived = 1;
     } else {
-        Vec3_MulScalar(&scaled2, &diff1, _ZN4cstd4fdivEii(mHorzSpeed, len1));
-        SubVec3(&mPosX, &scaled2, &mPosX);
+        Vec3_MulScalar(&stepB, &fromDest, _ZN4cstd4fdivEii(mHorzSpeed, destDist));
+        SubVec3(&mPosX, &stepB, &mPosX);
     }
 
-    if (looped == 0) return;
+    if (arrived == 0) return;
 
     mCurrPathNode += mPathDirection;
     if (mCurrPathNode < 0) {
@@ -423,9 +390,7 @@ void dPathLiftActor_c::StatePath()
     mPrevPathAngle.z = mAngleZ;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 5 -- func_ov002_020ef57c, 0x020ef57c, size 0xf4 */
-/* -------------------------------------------------------------------------- */
+// 0x020ef57c (0xf4)
 // @symbol _ZN16dPathLiftActor_c13StateFallInitEv
 void dPathLiftActor_c::StateFallInit()
 {
@@ -460,9 +425,7 @@ void dPathLiftActor_c::StateFallInit()
   }
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 4 -- func_ov002_020ef408, 0x020ef408, size 0x174 */
-/* -------------------------------------------------------------------------- */
+// 0x020ef408 (0x174)
 // @symbol _ZN16dPathLiftActor_c9StateFallEv
 void dPathLiftActor_c::StateFall()
 {
@@ -505,9 +468,7 @@ void dPathLiftActor_c::StateFall()
     MarkForDestruction();
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 3 -- func_ov002_020ef3f0, 0x020ef3f0, size 0x18 */
-/* -------------------------------------------------------------------------- */
+// 0x020ef3f0 (0x18)
 // @symbol _ZN16dPathLiftActor_c13StateWaitInitEv
 void dPathLiftActor_c::StateWaitInit()
 {
@@ -515,9 +476,7 @@ void dPathLiftActor_c::StateWaitInit()
     mWaitTimer = 300;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 2 -- func_ov002_020ef3ec, 0x020ef3ec, size 0x4 */
-/* -------------------------------------------------------------------------- */
+// 0x020ef3ec (0x4)
 // @symbol _ZN16dPathLiftActor_c9StateWaitEv
 void dPathLiftActor_c::StateWait()
 {
