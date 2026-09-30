@@ -96,12 +96,8 @@
     "functions_matched": 9,
     "functions_declared": 9,
     "compilerOnlyOutput": {
-      "requested": [
-        "_ZN12daMugenBGM_cD2Ev"
-      ],
-      "deadstripped": [
-        "_ZN12daMugenBGM_cD2Ev"
-      ],
+      "requested": [],
+      "deadstripped": [],
       "droppedSections": [
         5,
         6,
@@ -116,9 +112,7 @@
         15,
         16,
         17,
-        18,
-        19,
-        20
+        18
       ],
       "data": [
         "_ZTI7fBase_c",
@@ -147,16 +141,11 @@
       "every_declared_function_defined": "PASS",
       "every_declared_function_bytes_match": "PASS",
       "declared_function_set_equals_defined_function_set": "PASS",
-      "functions_occur_in_expected_order": "PARTIAL -- ordinal pair(s) not in ROM order: [(0, 1)]",
+      "functions_occur_in_expected_order": "PASS",
       "relocation_destinations_verified": "PASS"
     }
   },
   "compiler_only_output": [
-    {
-      "symbol": "_ZN12daMugenBGM_cD2Ev",
-      "disposition": "deadstrip",
-      "reason": "Compiler-generated base destructor from the single out-of-line ~daMugenBGM_c. The cartridge has D1 at 0x020f1bc4 and D0 at 0x020f1be8 and no D2; vtable slots 16/17 hold D1 and D0 only."
-    },
     {
       "symbol": "_ZTI7fBase_c",
       "disposition": "deadstrip-data",

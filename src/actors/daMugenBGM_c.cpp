@@ -189,10 +189,9 @@ int func_ov002_020f1c20(void)
 }
 
 /* -------------------------------------------------------------------------- */
-/* D1 then D0 from one out-of-line definition; the homeless D2 is deadstripped. */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN12daMugenBGM_cD1Ev
 // @symbol _ZN12daMugenBGM_cD0Ev
-daMugenBGM_c::~daMugenBGM_c()
-{
-}
+/* Both destructors come from the inline `~daMugenBGM_c() {}` in
+ * include/daMugenBGM_c.h; the `new daMugenBGM_c` in the factory instantiates
+ * them. An out-of-line definition here emits D0 before D1 (the cartridge has
+ * D1 at 0x020f1bc4, D0 at 0x020f1be8) plus a D2 the cartridge never had. */
