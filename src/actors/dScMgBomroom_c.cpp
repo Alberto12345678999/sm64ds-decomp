@@ -293,14 +293,28 @@ void func_ov006_020d5d90(char *base, int idx)
 }
 }
 
+/* The scene keeps its per-slot UI state as 0x10-stride entries at
+ * +0x6260, +0x6280 and +0x62b0, two slots each. The loop helpers
+ * (5dd4, 6278, 63ac, 65c8, 669c) address an entry as slot * 0x10 bytes into
+ * scene storage and do not model it as a 16-byte array, which they would
+ * index far past its end. That byte-base form matches only with strength
+ * reduction off, so each of the five carries its own bracket. The PMF
+ * receiver classes stay incomplete. */
 // @symbol func_ov006_020d5dd4
+#pragma push
+#pragma opt_strength_reduction off
 extern "C" {
-void func_ov006_020d5dd4(char (*c)[16])
+void func_ov006_020d5dd4(char* sceneBytes)
 {
-    int i;
-    for (i = 0; i < 2; i++) { c[i][0x62bc] = 0; c[i][0x62bd] = 0; }
+    int slot;
+    for (slot = 0; slot < 2; slot++) {
+        char* slotBase = sceneBytes + slot * 0x10;
+        slotBase[0x62bc] = 0;
+        slotBase[0x62bd] = 0;
+    }
 }
 }
+#pragma pop
 
 // @symbol func_ov006_020d5dfc
 extern "C" {
@@ -547,23 +561,25 @@ void func_ov006_020d6264(int raw, int index){
 }
 
 // @symbol func_ov006_020d6278
+#pragma push
+#pragma opt_strength_reduction off
 extern "C" {
 class C_6278;
 typedef void (C_6278::*PMF_6278)(int);
-class C_6278 { public: int dummy; };
-struct Row_6278 { u8 d[0x10]; };
 extern "C" PMF_6278 data_ov006_021416c0[];
 extern "C" void func_ov006_020d6278(C_6278 *self)
 {
-    Row_6278 *rows = (Row_6278 *)self;
-    for (int i = 0; i < 2; i++) {
-        if (rows[i].d[0x628d]) {
-            u8 state = rows[i].d[0x628c];
-            (self->*data_ov006_021416c0[state])(i);
+    u8* sceneBytes = (u8*)self;
+    for (int slot = 0; slot < 2; slot++) {
+        u8* slotBase = sceneBytes + slot * 0x10;
+        if (slotBase[0x628d]) {
+            u8 state = slotBase[0x628c];
+            (self->*data_ov006_021416c0[state])(slot);
         }
     }
 }
 }
+#pragma pop
 
 // @symbol func_ov006_020d62e0
 #pragma push
@@ -606,12 +622,20 @@ void func_ov006_020d634c(char *raw, int index)
 }
 
 // @symbol func_ov006_020d63ac
+#pragma push
+#pragma opt_strength_reduction off
 extern "C" {
-void func_ov006_020d63ac(char (*rows)[16]){
-  int i;
-  for(i=0;i<2;i++){ rows[i][0x628d]=0; rows[i][0x628e]=0; }
+void func_ov006_020d63ac(char* sceneBytes)
+{
+    int slot;
+    for (slot = 0; slot < 2; slot++) {
+        char* slotBase = sceneBytes + slot * 0x10;
+        slotBase[0x628d] = 0;
+        slotBase[0x628e] = 0;
+    }
 }
 }
+#pragma pop
 
 // @symbol func_ov006_020d63d4
 extern "C" {
@@ -702,23 +726,25 @@ void func_ov006_020d65b4(int raw, int index){
 }
 
 // @symbol func_ov006_020d65c8
+#pragma push
+#pragma opt_strength_reduction off
 extern "C" {
 class C_65c8;
 typedef void (C_65c8::*PMF_65c8)(int);
-class C_65c8 { public: int dummy; };
-struct Row_65c8 { u8 d[0x10]; };
 extern "C" PMF_65c8 data_ov006_02141680[];
 extern "C" void func_ov006_020d65c8(C_65c8 *self)
 {
-    Row_65c8 *rows = (Row_65c8 *)self;
-    for (int i = 0; i < 2; i++) {
-        if (rows[i].d[0x626d]) {
-            u8 state = rows[i].d[0x626c];
-            (self->*data_ov006_02141680[state])(i);
+    u8* sceneBytes = (u8*)self;
+    for (int slot = 0; slot < 2; slot++) {
+        u8* slotBase = sceneBytes + slot * 0x10;
+        if (slotBase[0x626d]) {
+            u8 state = slotBase[0x626c];
+            (self->*data_ov006_02141680[state])(slot);
         }
     }
 }
 }
+#pragma pop
 
 // @symbol func_ov006_020d6630
 #pragma push
@@ -741,12 +767,20 @@ void func_ov006_020d6630(void *p) {
 #pragma pop
 
 // @symbol func_ov006_020d669c
+#pragma push
+#pragma opt_strength_reduction off
 extern "C" {
-void func_ov006_020d669c(char (*rows)[16]){
-  int i;
-  for(i=0;i<2;i++){ rows[i][0x626d]=0; rows[i][0x626e]=0; }
+void func_ov006_020d669c(char* sceneBytes)
+{
+    int slot;
+    for (slot = 0; slot < 2; slot++) {
+        char* slotBase = sceneBytes + slot * 0x10;
+        slotBase[0x626d] = 0;
+        slotBase[0x626e] = 0;
+    }
 }
 }
+#pragma pop
 
 // @symbol func_ov006_020d66c4
 extern "C" {
@@ -2419,10 +2453,10 @@ void func_ov006_020d907c(void *p)
     *(unsigned char *)(c + 0x62fb) = 0;
     *(unsigned char *)(c + 0x62fc) = 0;
     func_ov004_020adb1c(0);
-    func_ov006_020d669c((char (*)[16])c);
-    func_ov006_020d63ac((char (*)[16])c);
+    func_ov006_020d669c(c);
+    func_ov006_020d63ac(c);
     func_ov006_020d6084(c);
-    func_ov006_020d5dd4((char (*)[16])c);
+    func_ov006_020d5dd4(c);
     func_ov006_020d5c60(c);
     func_ov006_020d5b00(c);
 }
