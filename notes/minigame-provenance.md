@@ -152,7 +152,7 @@ shared definition in include/Particle__SysTracker.h, which Stage.h also uses.
 
 **0x4700..0x4718** (seven fields) were split out of the former `pad_4660[0xbc]`:
 dScMgRoulette_c's Render (_ZN15dScMgRoulette_c6RenderEv, in src/actors/dScMgRoulette_c.cpp) and dScMg3DEsp_c's Render
-(src/_ZN12dScMg3DEsp_c6RenderEv.cpp) both write those exact offsets, so they belong to
+(_ZN12dScMg3DEsp_c6RenderEv, in src/actors/dMg3DEspAnimSet_c.cpp) both write those exact offsets, so they belong to
 this class, not either leaf. The camera angle at 0x4718 comes from
 Camera_UpdateMatrices (see the camera section below); 0x471a..0x471b has no
 matched access and stays padding.

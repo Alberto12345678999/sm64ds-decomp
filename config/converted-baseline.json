@@ -7,7 +7,7 @@
     "no_codegen_trick",
     "no_mangled_refs"
   ],
-  "count": 3059,
+  "count": 3062,
   "converted": [
     "src/ARMMathLoadState.c",
     "src/ARMMathSaveState.c",
@@ -437,7 +437,7 @@
     "src/actors/daObjCvNewsLift_c.cpp#_ZN17daObjCvNewsLift_cD1Ev",
     "src/_ZN12dBgCh_SphCrrD0Ev.cpp",
     "src/_ZN12dBgCh_SphCrrD1Ev.cpp",
-    "src/_ZN12dScMg3DEsp_c16CleanupResourcesEv.cpp",
+    "src/actors/dMg3DEspAnimSet_c.cpp#_ZN12dScMg3DEsp_c16CleanupResourcesEv",
     "src/_ZN12dScMgAmida_c5Unk36Ev.cpp",
     "src/_ZN12dScMgAmida_c9Virtual8CEv.cpp",
     "src/_ZN12dScMgSlot1_cD0Ev.cpp",
@@ -542,9 +542,9 @@
     "src/_ZN14dBgW_KcMbgSclYC1Ev.cpp",
     "src/_ZN14dBgW_KcMbgSclYD0Ev.cpp",
     "src/_ZN14dBgW_KcMbgSclYD1Ev.cpp",
-    "src/_ZN14dScMgBomroom_c6RenderEv.cpp",
-    "src/_ZN14dScMgBomroom_cD0Ev.cpp",
-    "src/_ZN14dScMgBomroom_cD1Ev.cpp",
+    "src/actors/dScMgBomroom_c.cpp#_ZN14dScMgBomroom_c6RenderEv",
+    "src/actors/dScMgBomroom_c.cpp#_ZN14dScMgBomroom_cD0Ev",
+    "src/actors/dScMgBomroom_c.cpp#_ZN14dScMgBomroom_cD1Ev",
     "src/_ZN14dScMgCurling_c6RenderEv.cpp",
     "src/_ZN14dScMgCurling_c8BehaviorEv.cpp",
     "src/_ZN14daObjUkiyuka_cD0Ev.cpp",
@@ -588,7 +588,7 @@
     "src/actors/daObjCtMecha08_c.cpp#_ZN16daObjCtMecha08_cD1Ev",
     "src/actors/dEntObj_c.cpp#_ZN15UnknownVsPlayerC1Ev",
     "src/actors/dEntObj_c.cpp#_ZN15UnknownVsPlayerD1Ev",
-    "src/_ZN15dMg3DEspModel_cD1Ev.cpp",
+    "src/actors/dMg3DEspAnimSet_c.cpp#_ZN15dMg3DEspModel_cD1Ev",
     "src/_ZN15dScMgCurling2_c6RenderEv.cpp",
     "src/_ZN15dScMgPachinko_c6RenderEv.cpp",
     "src/_ZN15daObjGuragura_cD0Ev.cpp",
@@ -3067,6 +3067,9 @@
     "src/actors/daObjTtFuta_c.cpp#daObjTtFuta_c_classInit",
     "src/actors/daObjTtWater_c.cpp#daObjTtWater_c_classInit",
     "src/actors/daObjKm2_Nobiru_c.cpp#daObjKm2_Nobiru_c_classInit",
-    "src/actors/daObjEmmYuka_c.cpp#daObjEmmYuka_c_classInit"
+    "src/actors/daObjEmmYuka_c.cpp#daObjEmmYuka_c_classInit",
+    "src/actors/dMg3DEspAnimSet_c.cpp#_ZN12dScMg3DEsp_cD1Ev",
+    "src/actors/dMg3DEspAnimSet_c.cpp#_ZN12dScMg3DEsp_cD0Ev",
+    "src/actors/dMg3DEspAnimSet_c.cpp#_ZN12dScMg3DEsp_c6RenderEv"
   ]
 }
