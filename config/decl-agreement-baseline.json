@@ -9238,9 +9238,6 @@
       "src/func_ov004_020aff38.cpp": [
         "return:int"
       ],
-      "src/func_ov006_020ea914.cpp": [
-        "return:void"
-      ],
       "src/func_ov075_0211621c.c": [
         "return:int *"
       ],
@@ -15525,11 +15522,6 @@
         "param:#4 void (*)(void)",
         "return:int"
       ],
-      "src/func_ov006_020ea324.c": [
-        "param:#2 int",
-        "param:#3 int",
-        "param:#4 void *"
-      ],
       "src/func_ov006_02115b0c.c": [
         "param:#2 int",
         "param:#3 int",
@@ -21704,10 +21696,7 @@
       ]
     },
     "data_ov006_02137cd8": {
-      "src/func_ov006_020ea350.c": [
-        "return:char []"
-      ],
-      "src/func_ov006_020ea670.c": [
+      "src/actors/dScMgHanachan_c.cpp": [
         "return:char []"
       ]
     },
@@ -22449,22 +22438,12 @@
         "return:S8 []"
       ]
     },
-    "data_ov006_02141fe4": {
-      "src/func_ov006_020ea350.c": [
-        "return:int []"
-      ],
-      "src/func_ov006_020ea658.c": [
-        "return:unsigned char []"
-      ]
-    },
     "data_ov006_02142018": {
       "src/__sinit_ov006_02130df8.c": [
         "return:int []"
-      ]
-    },
-    "data_ov006_02142044": {
-      "src/func_ov006_020ea71c.c": [
-        "return:Ent71c []"
+      ],
+      "src/actors/dScMgHanachan_c.cpp": [
+        "return:void * []"
       ]
     },
     "data_ov006_02142188": {
@@ -31881,9 +31860,6 @@
       ]
     },
     "func_0203d388": {
-      "src/func_ov006_020ea914.cpp": [
-        "param:#1 Vec2 *"
-      ],
       "src/func_ov006_0210d93c.c": [
         "param:#1 V2 *"
       ],
@@ -31956,10 +31932,6 @@
       "src/func_ov004_020b5108.c": [
         "param:#1 int *",
         "param:#2 const int *"
-      ],
-      "src/func_ov006_020ea914.cpp": [
-        "param:#1 Vec2 *",
-        "param:#2 Vec2 *"
       ],
       "src/minigames/d_s_mg_card.cpp": [
         "param:#1 int *",
@@ -36946,9 +36918,6 @@
       ],
       "src/func_ov004_020b6948.c": [
         "param:#4 int"
-      ],
-      "src/func_ov006_020ea350.c": [
-        "param:#4 int"
       ]
     },
     "func_ov004_020afb20": {
@@ -37838,14 +37807,6 @@
     "func_ov006_020e8d08": {
       "src/func_ov006_020e989c.cpp": [
         "param:#1 char *"
-      ]
-    },
-    "func_ov006_020ea324": {
-      "include/dScMgHanachan_c.h": [
-        "arity:0"
-      ],
-      "include/decl_common.h": [
-        "arity:0"
       ]
     },
     "func_ov006_020ea3d0": {

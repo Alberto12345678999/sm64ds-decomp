@@ -6339,6 +6339,18 @@
     "src/actors/dScMgCoin_c.cpp#_ZN11dScMgCoin_c13OnYoshiTryEatEi": "andrewboudreau",
     "src/actors/dScMgCoin_c.cpp#_ZN11dScMgCoin_c6RenderEv": "andrewboudreau",
     "src/actors/dScMgCoin_c.cpp#_ZN11dScMgCoin_c8BehaviorEv": "andrewboudreau",
-    "src/actors/dScMgCoin_c.cpp#_ZN11dScMgCoin_c13InitResourcesEv": "andrewboudreau"
+    "src/actors/dScMgCoin_c.cpp#_ZN11dScMgCoin_c13InitResourcesEv": "andrewboudreau",
+    "src/actors/dScMgHanachan_c.cpp#_ZN15dScMgHanachan_cD1Ev": "andrewboudreau",
+    "src/actors/dScMgHanachan_c.cpp#_ZN15dScMgHanachan_cD0Ev": "andrewboudreau",
+    "src/actors/dScMgHanachan_c.cpp#func_ov006_020ea324": "tangosdev",
+    "src/actors/dScMgHanachan_c.cpp#func_ov006_020ea350": "tangosdev",
+    "src/actors/dScMgHanachan_c.cpp#func_ov006_020ea3d0": "tangosdev",
+    "src/actors/dScMgHanachan_c.cpp#func_ov006_020ea5f0": "tangosdev",
+    "src/actors/dScMgHanachan_c.cpp#func_ov006_020ea658": "tangosdev",
+    "src/actors/dScMgHanachan_c.cpp#func_ov006_020ea670": "andrewboudreau",
+    "src/actors/dScMgHanachan_c.cpp#func_ov006_020ea71c": "andrewboudreau",
+    "src/actors/dScMgHanachan_c.cpp#func_ov006_020ea81c": "tangosdev",
+    "src/actors/dScMgHanachan_c.cpp#func_ov006_020ea8e0": "tangosdev",
+    "src/actors/dScMgHanachan_c.cpp#func_ov006_020ea914": "tangosdev"
   }
 }

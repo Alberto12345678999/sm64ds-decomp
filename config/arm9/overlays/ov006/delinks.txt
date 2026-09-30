@@ -1938,56 +1938,9 @@ src/d_s_mg3_d_esp.cpp:
     complete
     .text start:0x020ea1f0 end:0x020ea280
 
-src/_ZN15dScMgHanachan_cD1Ev.cpp:
-    complete
-    .text start:0x020ea280 end:0x020ea2c8
-
-src/_ZN15dScMgHanachan_cD0Ev.cpp:
-    complete
-    .text start:0x020ea2c8 end:0x020ea324
-
-src/func_ov006_020ea324.c:
-    complete
-    .text start:0x020ea324 end:0x020ea350
-
-src/func_ov006_020ea350.c:
-    complete
-    .text start:0x020ea350 end:0x020ea3d0
-
-src/func_ov006_020ea3d0.c:
-    complete
-    .text start:0x020ea3d0 end:0x020ea5f0
-
-src/func_ov006_020ea5f0.c:
-    complete
-    .text start:0x020ea5f0 end:0x020ea658
-
-src/func_ov006_020ea658.c:
-    complete
-    .text start:0x020ea658 end:0x020ea670
-
-src/func_ov006_020ea670.c:
-    complete
-    .text start:0x020ea670 end:0x020ea71c
-
-src/func_ov006_020ea71c.c:
-    complete
-    .text start:0x020ea71c end:0x020ea81c
-
-src/func_ov006_020ea81c.c:
-    complete
-    .text start:0x020ea81c end:0x020ea8e0
-
-src/func_ov006_020ea8e0.c:
-    complete
-    .text start:0x020ea8e0 end:0x020ea914
-
-src/func_ov006_020ea914.cpp:
-    .text start:0x020ea914 end:0x020eac38
-
 src/actors/dScMgHanachan_c.cpp:
     complete
-    .text start:0x020eac38 end:0x020ede18
+    .text start:0x020ea280 end:0x020ede18
 
 src/minigames/d_s_mg_hanachan.cpp:
     complete
