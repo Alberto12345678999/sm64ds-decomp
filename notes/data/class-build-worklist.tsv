@@ -143,7 +143,7 @@ daObjC1Peach_c	DONE	include\daObjC1Peach_c.h  [alias: header uses pre-rename nam
 daObjClockHuriko_c	DONE	include\daObjClockHuriko_c.h	dActor_c	0	ov013	6
 daObjClock_c	DONE	include\daObjClock_c.h	dActor_c	0	ov013	6
 daObjCloset_c	DONE	include\daObjCloset_c.h  [alias: header uses pre-rename name]	dActor_c	0	ov058	5
-daObjDlPyramidDummy_c	DONE	include\PyramidTag.h  [alias: header uses pre-rename name]	dActor_c	0	ov024	4
+daObjDlPyramidDummy_c	DONE	include\daObjDlPyramidDummy_c.h  [alias: header uses pre-rename name]	dActor_c	0	ov024	4
 daObjFire_c	DONE	include\daObjFire_c.h	dActor_c	0	ov002	6
 daObjFl_Coin_c	PARTIAL	include\daObjFl_Coin_c.h	dActor_c	0	ov064	4
 daObjFlamethrower_c	DONE	include\daObjFlamethrower_c.h  [alias: header uses pre-rename name]	dActor_c	0	ov095	4
@@ -246,7 +246,7 @@ daObjCtMecha10_c	DONE	include\daObjCtMecha10_c.h	dBgActor_c	0	ov035	6
 daObjCtMecha11_c	DONE	include\daObjCtMecha11_c.h	dBgActor_c	0	ov035	8
 daObjCtRotateBlock_c	DONE	include\daObjCtRotateBlock_c.h  [alias: header uses pre-rename name]	dBgActor_c	0	ov065	9
 daObjCvNewsLift_c	DONE	include\daObjCvNewsLift_c.h	dBgActor_c	0	ov021	6
-daObjDlPyramid_c	DONE	include\PyramidTop.h  [alias: header uses pre-rename name]	dBgActor_c	0	ov024	6
+daObjDlPyramid_c	DONE	include\daObjDlPyramid_c.h  [alias: header uses pre-rename name]	dBgActor_c	0	ov024	6
 daObjDpBrock_c	DONE	include\daObjDpBrock_c.h	dBgActor_c	0	ov025	6
 daObjEmmLog_c	DONE	include\daObjEmmLog_c.h	dBgActor_c	0	ov052	6
 daObjEmmYuka_c	DONE	include\daObjEmmYuka_c.h	dBgActor_c	0	ov052	6

@@ -6192,6 +6192,20 @@
     "src/actors/daObjBk_Botaosi_c.cpp#_ZN17daObjBk_Botaosi_c6RenderEv": "tangosdev",
     "src/actors/daObjBk_Botaosi_c.cpp#_ZN17daObjBk_Botaosi_c8BehaviorEv": "lunavyqo",
     "src/actors/daObjBk_Botaosi_c.cpp#_ZN17daObjBk_Botaosi_c13InitResourcesEv": "lunavyqo",
-    "src/actors/daObjBk_Botaosi_c.cpp#daObjBk_Botaosi_c_classInit": "tangosdev"
+    "src/actors/daObjBk_Botaosi_c.cpp#daObjBk_Botaosi_c_classInit": "tangosdev",
+    "src/actors/daObjDlPyramid_c.cpp#_ZN16daObjDlPyramid_cD1Ev": "tangosdev",
+    "src/actors/daObjDlPyramid_c.cpp#_ZN16daObjDlPyramid_cD0Ev": "tangosdev",
+    "src/actors/daObjDlPyramid_c.cpp#_ZN21daObjDlPyramidDummy_cD1Ev": "tangosdev",
+    "src/actors/daObjDlPyramid_c.cpp#_ZN21daObjDlPyramidDummy_cD0Ev": "tangosdev",
+    "src/actors/daObjDlPyramid_c.cpp#func_ov024_021112c0": "andrewboudreau",
+    "src/actors/daObjDlPyramid_c.cpp#func_ov024_02111350": "andrewboudreau",
+    "src/actors/daObjDlPyramid_c.cpp#func_ov024_02111480": "tangosdev",
+    "src/actors/daObjDlPyramid_c.cpp#func_ov024_021114c4": "tangosdev",
+    "src/actors/daObjDlPyramid_c.cpp#_ZN16daObjDlPyramid_c16CleanupResourcesEv": "tangosdev",
+    "src/actors/daObjDlPyramid_c.cpp#_ZN16daObjDlPyramid_c6RenderEv": "tangosdev",
+    "src/actors/daObjDlPyramid_c.cpp#_ZN16daObjDlPyramid_c8BehaviorEv": "andrewboudreau",
+    "src/actors/daObjDlPyramid_c.cpp#_ZN21daObjDlPyramidDummy_c8BehaviorEv": "tangosdev",
+    "src/actors/daObjDlPyramid_c.cpp#_ZN16daObjDlPyramid_c13InitResourcesEv": "tangosdev",
+    "src/actors/daObjDlPyramid_c.cpp#_ZN21daObjDlPyramidDummy_c13InitResourcesEv": "tangosdev"
   }
 }

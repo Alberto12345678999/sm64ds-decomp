@@ -1086,16 +1086,16 @@ ov023	0x02111728	Squasher_Spawn	daObjFm_Battan_c_classInit	reconstructed classIn
 ov023	0x02111fc0	data_ov023_02111fc0	Squasher_SpawnInfo	spawninfo; evidence-bounded C ABI alias
 ov023	0x02111fc0	Squasher_SpawnInfo	g_profile_FM_BATTAN	reconstructed profile global; literal ROM ID FM_BATTAN+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov023	0x02111fe4	data_ov023_02111fe4	_ZTV16daObjFm_Battan_c	vtable alloc=0x37c; class identity proven by RTTI/ZTS
-ov024	0x021111a0	func_ov024_021111a0	_ZN10PyramidTopD1Ev	vtable slot 16
-ov024	0x021111ec	func_ov024_021111ec	_ZN10PyramidTopD0Ev	vtable slot 17
-ov024	0x0211124c	func_ov024_0211124c	_ZN10PyramidTagD1Ev	vtable slot 16
-ov024	0x0211127c	func_ov024_0211127c	_ZN10PyramidTagD0Ev	vtable slot 17
-ov024	0x02111504	func_ov024_02111504	_ZN10PyramidTop16CleanupResourcesEv	vtable slot 3
-ov024	0x0211153c	func_ov024_0211153c	_ZN10PyramidTop6RenderEv	vtable slot 9
-ov024	0x02111568	func_ov024_02111568	_ZN10PyramidTop8BehaviorEv	vtable slot 6
-ov024	0x02111668	func_ov024_02111668	_ZN10PyramidTag8BehaviorEv	vtable slot 6
-ov024	0x021116ec	func_ov024_021116ec	_ZN10PyramidTop13InitResourcesEv	vtable slot 0
-ov024	0x021117c8	func_ov024_021117c8	_ZN10PyramidTag13InitResourcesEv	vtable slot 0
+ov024	0x021111a0	func_ov024_021111a0	_ZN16daObjDlPyramid_cD1Ev	vtable slot 16
+ov024	0x021111ec	func_ov024_021111ec	_ZN16daObjDlPyramid_cD0Ev	vtable slot 17
+ov024	0x0211124c	func_ov024_0211124c	_ZN21daObjDlPyramidDummy_cD1Ev	vtable slot 16
+ov024	0x0211127c	func_ov024_0211127c	_ZN21daObjDlPyramidDummy_cD0Ev	vtable slot 17
+ov024	0x02111504	func_ov024_02111504	_ZN16daObjDlPyramid_c16CleanupResourcesEv	vtable slot 3
+ov024	0x0211153c	func_ov024_0211153c	_ZN16daObjDlPyramid_c6RenderEv	vtable slot 9
+ov024	0x02111568	func_ov024_02111568	_ZN16daObjDlPyramid_c8BehaviorEv	vtable slot 6
+ov024	0x02111668	func_ov024_02111668	_ZN21daObjDlPyramidDummy_c8BehaviorEv	vtable slot 6
+ov024	0x021116ec	func_ov024_021116ec	_ZN16daObjDlPyramid_c13InitResourcesEv	vtable slot 0
+ov024	0x021117c8	func_ov024_021117c8	_ZN21daObjDlPyramidDummy_c13InitResourcesEv	vtable slot 0
 ov024	0x0211183c	func_ov024_0211183c	PyramidTag_Spawn	spawnfunc
 ov024	0x0211183c	PyramidTag_Spawn	daObjDlPyramidDummy_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov024	0x02111874	func_ov024_02111874	PyramidTop_Spawn	spawnfunc
@@ -1104,8 +1104,8 @@ ov024	0x02113804	data_ov024_02113804	PyramidTop_SpawnInfo	spawninfo
 ov024	0x02113804	PyramidTop_SpawnInfo	g_profile_DL_PYRAMID	reconstructed profile global; literal ROM ID DL_PYRAMID+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov024	0x02113820	data_ov024_02113820	PyramidTag_SpawnInfo	spawninfo
 ov024	0x02113820	PyramidTag_SpawnInfo	g_profile_DL_PYRAMID_DUMMY	reconstructed profile global; literal ROM ID DL_PYRAMID_DUMMY+registry role+later EAD lineage; exact SM64DS spelling not preserved
-ov024	0x02113844	data_ov024_02113844	_ZTV10PyramidTag	vtable alloc=0x3b8
-ov024	0x021138c8	data_ov024_021138c8	_ZTV10PyramidTop	vtable alloc=0x3b8
+ov024	0x02113844	data_ov024_02113844	_ZTV21daObjDlPyramidDummy_c	vtable alloc=0x3b8
+ov024	0x021138c8	data_ov024_021138c8	_ZTV16daObjDlPyramid_c	vtable alloc=0x3b8
 ov025	0x0211123c	func_ov025_0211123c	_ZN7daDgr_c19func_ov025_0211123cEv	daDgr_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
 ov025	0x021112e0	func_ov025_021112e0	_ZN7daDgr_c19func_ov025_021112e0Ev	daDgr_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
 ov025	0x02111344	func_ov025_02111344	_ZN7daDgr_c19func_ov025_02111344Ev	daDgr_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.

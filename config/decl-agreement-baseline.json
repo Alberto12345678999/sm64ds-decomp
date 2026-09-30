@@ -1877,9 +1877,6 @@
       "src/actors/daTrs_c.cpp": [
         "param:#2 short"
       ],
-      "src/func_ov024_02111480.cpp": [
-        "param:#2 short"
-      ],
       "src/actors/daWater_Hakidasi_c.cpp": [
         "param:#2 short"
       ],
@@ -6608,6 +6605,12 @@
       ],
       "src/func_ov064_02118fa4.cpp": [
         "param:#2 const Matrix4x3 &"
+      ],
+      "src/func_ov065_02118838.cpp": [
+        "param:#2 const Matrix4x3 *"
+      ],
+      "src/unnamed/ov063/func_ov063_0211c6f8.cpp": [
+        "param:#2 void *"
       ]
     },
     "_ZN10dBgW_KcMbgD1Ev": {
@@ -9622,10 +9625,6 @@
         "mangled:0 parameter(s)",
         "return:int"
       ],
-      "src/_ZN10PyramidTop13InitResourcesEv.cpp": [
-        "arity:0",
-        "mangled:0 parameter(s)"
-      ],
       "src/_ZN10daKpa2Bg_c13InitResourcesEv.cpp": [
         "arity:0",
         "mangled:0 parameter(s)",
@@ -9729,9 +9728,6 @@
       ]
     },
     "_ZN5Event8ClearBitEj": {
-      "src/_ZN10PyramidTop13InitResourcesEv.cpp": [
-        "return:void"
-      ],
       "src/_ZN14EnemySwitchTag13InitResourcesEv.cpp": [
         "return:void"
       ],
@@ -9803,9 +9799,6 @@
       ],
       "src/LoadSilverStarAndNumber.c": [
         "return:void"
-      ],
-      "src/_ZN10PyramidTop13InitResourcesEv.cpp": [
-        "param:#1 void *"
       ],
       "src/_ZN10StarMarker13InitResourcesEv.cpp": [
         "param:#1 void *"
@@ -10750,9 +10743,6 @@
       ]
     },
     "_ZN5Sound9PlayBank3EjRK7Vector3": {
-      "src/_ZN10PyramidTop8BehaviorEv.cpp": [
-        "param:#2 void *"
-      ],
       "src/actors/daObjFl_Ring_c.cpp": [
         "param:#2 void *"
       ],
@@ -12386,10 +12376,6 @@
         "param:#1 void *",
         "return:void *"
       ],
-      "src/_ZN10PyramidTop13InitResourcesEv.cpp": [
-        "param:#1 void *",
-        "return:void *"
-      ],
       "src/_ZN10daKpa2Bg_c13InitResourcesEv.cpp": [
         "param:#1 void *",
         "return:void *"
@@ -12972,9 +12958,6 @@
         "return:void"
       ],
       "src/func_ov002_020edca4.c": [
-        "return:void"
-      ],
-      "src/func_ov024_021112c0.c": [
         "return:void"
       ],
       "src/func_ov060_021135fc.c": [
@@ -14907,9 +14890,6 @@
       ]
     },
     "_ZN9ModelBase7SetFileEP8BMD_Fileii": {
-      "src/_ZN10PyramidTop13InitResourcesEv.cpp": [
-        "return:void"
-      ],
       "src/_ZN17daObjFl_Amilift_c13InitResourcesEv.cpp": [
         "return:void"
       ],
@@ -31891,9 +31871,6 @@
       "src/actors/daKpa2Bg_c.cpp": [
         "param:#2 void *",
         "return:int"
-      ],
-      "src/_ZN10PyramidTop13InitResourcesEv.cpp": [
-        "param:#2 void *"
       ],
       "src/_ZN10daKpa2Bg_c13InitResourcesEv.cpp": [
         "param:#2 void *",
