@@ -898,9 +898,6 @@
         "param:#2 int",
         "return:int"
       ],
-      "src/_ZN14dScMgBomroom_c13InitResourcesEv.cpp": [
-        "param:#1 int"
-      ],
       "src/_ZN15dScMgPachinko_c13InitResourcesEv.cpp": [
         "param:#1 int"
       ],
@@ -2906,12 +2903,6 @@
       ],
       "src/actors/dScMgTeresa_c.cpp": [
         "param:#1 void *"
-      ],
-      "src/func_ov006_020d5ab0.cpp": [
-        "param:#1 void *"
-      ],
-      "src/func_ov006_020d5e5c.c": [
-        "return:int"
       ],
       "src/minigames/d_s_mg_m_carlo2.cpp": [
         "return:int"
@@ -7963,9 +7954,6 @@
       "src/_ZN12dScMgSlot1_c13InitResourcesEv.cpp": [
         "return:char *"
       ],
-      "src/_ZN14dScMgBomroom_c13InitResourcesEv.cpp": [
-        "return:char *"
-      ],
       "src/_ZN15dScMgCurling2_c13InitResourcesEv.cpp": [
         "return:char *"
       ],
@@ -8508,14 +8496,6 @@
         "param:#5 unsigned short"
       ],
       "src/_ZN12dScMgSlot3_c13InitResourcesEv.cpp": [
-        "param:#5 unsigned short"
-      ],
-      "src/_ZN14dScMgBomroom_c13InitResourcesEv.cpp": [
-        "param:#1 volatile void *",
-        "param:#5 unsigned short"
-      ],
-      "src/_ZN14dScMgBomroom_c13OnYoshiTryEatEi.cpp": [
-        "param:#1 volatile void *",
         "param:#5 unsigned short"
       ],
       "src/_ZN14dScMgCurling_c13InitResourcesEv.cpp": [
@@ -9942,26 +9922,6 @@
         "return:void"
       ],
       "src/func_ov006_020d1958.cpp": [
-        "return:void"
-      ],
-      "src/func_ov006_020d5b10.c": [
-        "return:void"
-      ],
-      "src/func_ov006_020d5e1c.c": [
-        "param:#1 int",
-        "return:void"
-      ],
-      "src/func_ov006_020d5e3c.c": [
-        "param:#1 int",
-        "return:void"
-      ],
-      "src/func_ov006_020d7e7c.c": [
-        "return:void"
-      ],
-      "src/func_ov006_020d8af8.c": [
-        "return:void"
-      ],
-      "src/func_ov006_020d8d84.c": [
         "return:void"
       ],
       "src/func_ov006_020dd0e0.c": [
@@ -18509,9 +18469,6 @@
       ],
       "src/func_ov004_020b6ddc.c": [
         "return:unsigned char [][]"
-      ],
-      "src/func_ov006_020d836c.cpp": [
-        "return:int []"
       ],
       "src/func_ov006_020e26f8.c": [
         "return:TblEnt []"
@@ -33599,12 +33556,6 @@
         "return:int"
       ]
     },
-    "func_02056554": {
-      "src/_ZN14dScMgBomroom_c13InitResourcesEv.cpp": [
-        "param:#2 unsigned int",
-        "param:#3 unsigned int"
-      ]
-    },
     "func_02056e4c": {
       "src/func_02059700.c": [
         "param:#1 int",
@@ -37061,9 +37012,6 @@
     "func_ov004_020b1a5c": {
       "src/actors/dScMgPachinko_c.cpp": [
         "return:int"
-      ],
-      "src/func_ov006_020d5dfc.cpp": [
-        "return:int"
       ]
     },
     "func_ov004_020b1b08": {
@@ -37710,42 +37658,6 @@
       ],
       "src/func_ov006_020d1ba0.cpp": [
         "arity:1"
-      ]
-    },
-    "func_ov006_020d5dd4": {
-      "src/func_ov006_020d907c.c": [
-        "param:#1 char *"
-      ]
-    },
-    "func_ov006_020d5dfc": {
-      "src/_ZN14dScMgBomroom_c6RenderEv.cpp": [
-        "arity:1",
-        "return:int"
-      ]
-    },
-    "func_ov006_020d5e5c": {
-      "src/_ZN14dScMgBomroom_c6RenderEv.cpp": [
-        "return:int"
-      ]
-    },
-    "func_ov006_020d63ac": {
-      "src/func_ov006_020d907c.c": [
-        "param:#1 char *"
-      ]
-    },
-    "func_ov006_020d669c": {
-      "src/func_ov006_020d907c.c": [
-        "param:#1 char *"
-      ]
-    },
-    "func_ov006_020d672c": {
-      "src/_ZN14dScMgBomroom_c6RenderEv.cpp": [
-        "return:int"
-      ]
-    },
-    "func_ov006_020d836c": {
-      "src/func_ov006_020d8cc4.cpp": [
-        "return:int"
       ]
     },
     "func_ov006_020dbe9c": {

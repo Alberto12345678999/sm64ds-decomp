@@ -1329,7 +1329,6 @@ extern int func_ov006_020cd658(unsigned char*, int);
 extern void func_ov006_020d5ab0(void*);
 extern void func_ov006_020d5c88(void*);
 extern void func_ov006_020d5dfc();
-extern void func_ov006_020d5e5c();
 extern void func_ov006_020d6098(void*);
 extern void func_ov006_020d63d4(void*);
 /* func_ov006_020d672c: the recorded declaration was `int f()` -- decl_headers.py
