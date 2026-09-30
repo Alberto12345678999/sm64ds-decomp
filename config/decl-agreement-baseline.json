@@ -11415,12 +11415,6 @@
         "param:#7 unsigned int",
         "return:void"
       ],
-      "src/func_ov016_02111284.c": [
-        "param:#5 unsigned int",
-        "param:#6 unsigned int",
-        "param:#7 unsigned int",
-        "return:void"
-      ],
       "src/actors/daGrock_c.cpp": [
         "return:void",
         "param:#5 unsigned int",
@@ -11530,6 +11524,12 @@
         "param:#6 unsigned int",
         "param:#7 unsigned int",
         "return:void"
+      ],
+      "src/actors/daMoray_c.cpp": [
+        "return:void",
+        "param:#5 unsigned int",
+        "param:#6 unsigned int",
+        "param:#7 unsigned int"
       ]
     },
     "_ZN6Player7IsInAirEv": {
@@ -13127,9 +13127,6 @@
         "return:char *"
       ],
       "src/func_ov009_02111234.cpp": [
-        "return:void *"
-      ],
-      "src/func_ov016_02111284.c": [
         "return:void *"
       ],
       "src/func_ov020_02111340.c": [
@@ -18689,9 +18686,6 @@
       "src/func_ov002_020ed0d4.c": [
         "return:int []"
       ],
-      "src/func_ov016_02111284.c": [
-        "return:int []"
-      ],
       "src/actors/daWater_Hakidasi_c.cpp": [
         "return:int"
       ],
@@ -23346,9 +23340,6 @@
       ],
       "src/actors/daMoray_c.cpp": [
         "return:daMoray_c::State"
-      ],
-      "src/func_ov016_02111534.c": [
-        "return:int []"
       ]
     },
     "data_ov016_02114d9c": {
@@ -23370,9 +23361,6 @@
     "data_ov016_02114dbc": {
       "src/__sinit_ov016_021136ec.c": [
         "return:S8 []"
-      ],
-      "src/func_ov016_02111284.c": [
-        "return:int"
       ]
     },
     "data_ov016_02114e1c": {
@@ -39904,11 +39892,6 @@
     "func_ov015_02111214": {
       "include/decl_common.h": [
         "param:#1 char *"
-      ]
-    },
-    "func_ov016_02111bf0": {
-      "src/func_ov016_02111534.c": [
-        "return:void"
       ]
     },
     "func_ov018_021117e8": {
