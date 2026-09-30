@@ -6479,6 +6479,11 @@
     "src/actors/dScMgHanachan_c.cpp#func_ov006_020ea8e0": "tangosdev",
     "src/actors/dScMgHanachan_c.cpp#func_ov006_020ea914": "tangosdev",
     "src/actors/daObjDlPyramid_c.cpp#daObjDlPyramidDummy_c_classInit": "tangosdev",
-    "src/actors/daObjDlPyramid_c.cpp#daObjDlPyramid_c_classInit": "tangosdev"
+    "src/actors/daObjDlPyramid_c.cpp#daObjDlPyramid_c_classInit": "tangosdev",
+    "src/actors/daObjMarioCap_c.cpp#_ZN15daObjMarioCap_c13InitResourcesEv": "andrewboudreau",
+    "src/actors/daObjMarioCap_c.cpp#daObjMarioCap_c_classInit": "tangosdev",
+    "src/actors/daObjMarioCap_c.cpp#_ZN15daObjMarioCap_cD0Ev": "andrewboudreau",
+    "src/actors/daObjMarioCap_c.cpp#_ZN15daObjMarioCap_c19func_ov002_020b7200Ev": "andrewboudreau",
+    "src/actors/daObjMarioCap_c.cpp#func_ov002_020b7b70": "andrewboudreau"
   }
 }
