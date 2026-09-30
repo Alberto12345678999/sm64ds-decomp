@@ -60,7 +60,7 @@ reserved for the theme-4 move, which did not land.
   Local `namespace` declarations compile to an identical object (see Theme results).
 - **R5, fixed.** `Render`'s local helper declarations duplicated `include/decl_common.h` and
   its comment misdescribed that header.
-- **R6, fixed.** `OnYoshiTryEat` redeclared [func_ov006_02103bfc](../../../src/minigames/d_s_mg_pachinko2_c.cpp)(ROM Ordinal 68) exactly as
+- **R6, fixed.** `OnYoshiTryEat` redeclared [func_ov006_02103bfc](../../../src/actors/dScMgPachinko2_c.cpp)(ROM Ordinal 68) exactly as
   `include/decl_common.h` does.
 - **R7, deferred (codegen-forced).** `OnYoshiTryEat` reads `unk_0bc` through a const view
   `ro`. Re-measured: `unk_0bc = unk_0bc + 1` grows the function from 0x6c to 0x70 bytes.
