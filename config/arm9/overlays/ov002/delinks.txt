@@ -225,14 +225,7 @@ src/game/actors/d_a_obj_waterfall.cpp:
 
 src/actors/daObjMarioCap_c.cpp:
     complete
-    .text start:0x020b6f18 end:0x020b86d0
-
-src/_ZN15daObjMarioCap_c13InitResourcesEv.cpp:
-    .text start:0x020b86d0 end:0x020b8b98
-
-src/d_a_obj_mario_cap.c:
-    complete
-    .text start:0x020b8b98 end:0x020b8bf0
+    .text start:0x020b6f18 end:0x020b8bf0
 
 src/game/actors/daObjPushblock_c.cpp:
     complete
