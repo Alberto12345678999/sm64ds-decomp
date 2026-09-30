@@ -17,8 +17,8 @@
  *   Fog::Init takes Fix12<int> by value; a real method call homes the
  *   argument and size-DIFFs the caller (notes/mwccarm-codegen.md 6az).
  * Leftover: func_ov002_020f1c20 keeps its C-ABI cartridge name. It is this
- *   TU's own fog accessor (returns sMugenFog when sMugenArea matches),
- *   not a vtable slot.
+ *   TU's own fog accessor (returns the stored Fog instance when the stored
+ *   area matches the current one), not a vtable slot.
  * Leftover: data_ov002_02110af0 / 02110af4 / 02110af8 are this TU's stored
  *   area, angle and Fog instance; data_0209f250 / 0209f394 / 020a0ebc /
  *   0209caa0 / 0209f318 / 0208e434 / 02092120 are arm9 scene state this TU
@@ -26,8 +26,6 @@
  * Leftover: g_profile_MUGEN_BGM lives outside this TU.
  */
 
-/* Includes: union of the legacy files'. decl_common.h carries the sMugen
- * area/angle/fog externs and the mangled ABI seam used below. */
 #include "daMugenBGM_c.h"
 #include "types.h"
 #include "decl_common.h"
@@ -53,9 +51,7 @@ void* _Znwj(unsigned int);
 
 extern int _ZTV12daMugenBGM_c[];
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 8 -- daMugenBGM_c_classInit, 0x020f1f40, size 0x30. Folded
-   factory (S2): hand-rolled fBase_cnwEj + dActor_c C2 + vptr punch is
-   `return new daMugenBGM_c`. Inherits fBase_c::operator new. */
+/* Factory: `return new` inherits fBase_c::operator new. */
 /* -------------------------------------------------------------------------- */
 // @symbol daMugenBGM_c_classInit
 extern "C" daMugenBGM_c *daMugenBGM_c_classInit(void)
@@ -63,8 +59,6 @@ extern "C" daMugenBGM_c *daMugenBGM_c_classInit(void)
     return new daMugenBGM_c;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 7 -- _ZN12daMugenBGM_c13InitResourcesEv, 0x020f1eb4, size 0x8c */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN12daMugenBGM_c13InitResourcesEv
 int daMugenBGM_c::InitResources()
@@ -90,8 +84,6 @@ int daMugenBGM_c::InitResources()
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 6 -- _ZN12daMugenBGM_c8BehaviorEv, 0x020f1c64, size 0x250 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN12daMugenBGM_c8BehaviorEv
 int daMugenBGM_c::Behavior()
@@ -166,8 +158,6 @@ int daMugenBGM_c::Behavior()
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 5 -- _ZN12daMugenBGM_c6RenderEv, 0x020f1c5c, size 0x8 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN12daMugenBGM_c6RenderEv
 int daMugenBGM_c::Render()
 {
@@ -175,15 +165,11 @@ int daMugenBGM_c::Render()
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 4 -- _ZN12daMugenBGM_c16OnPendingDestroyEv, 0x020f1c58, size 0x4 */
-/* -------------------------------------------------------------------------- */
 // @symbol _ZN12daMugenBGM_c16OnPendingDestroyEv
 void daMugenBGM_c::OnPendingDestroy()
 {
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 3 -- _ZN12daMugenBGM_c16CleanupResourcesEv, 0x020f1c50, size 0x8 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN12daMugenBGM_c16CleanupResourcesEv
 int daMugenBGM_c::CleanupResources()
@@ -191,8 +177,6 @@ int daMugenBGM_c::CleanupResources()
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 2 -- func_ov002_020f1c20, 0x020f1c20, size 0x30 */
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov002_020f1c20
 extern "C" {  /* .c-derived member: C linkage for the whole block */
@@ -205,9 +189,7 @@ int func_ov002_020f1c20(void)
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinals 0-1 -- D1 0x020f1bc4 then D0 0x020f1be8. Single out-of-line
-   definition emits both variants; the homeless D2 is deadstripped.
-   Same arrangement as src/actors/daObjBk_Botaosi_c.cpp. */
+/* D1 then D0 from one out-of-line definition; the homeless D2 is deadstripped. */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN12daMugenBGM_cD1Ev
 // @symbol _ZN12daMugenBGM_cD0Ev
