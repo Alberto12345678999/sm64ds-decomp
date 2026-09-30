@@ -6179,6 +6179,19 @@
     "src/actors/daObjKey_c.cpp#_ZN10daObjKey_c16StateFlyToCenterEv": "ruspecial",
     "src/actors/daObjKey_c.cpp#_ZN10daObjKey_c13StateStarJumpEv": "ruspecial",
     "src/actors/daObjKey_c.cpp#daObjKey_c_classInit_LAST_STAR": "tangosdev",
-    "src/actors/daObjKey_c.cpp#daObjKey_c_classInit_OBJ_KEY": "tangosdev"
+    "src/actors/daObjKey_c.cpp#daObjKey_c_classInit_OBJ_KEY": "tangosdev",
+    "src/actors/daObjBk_Botaosi_c.cpp#_ZN17daObjBk_Botaosi_cD1Ev": "tangosdev",
+    "src/actors/daObjBk_Botaosi_c.cpp#_ZN17daObjBk_Botaosi_cD0Ev": "tangosdev",
+    "src/actors/daObjBk_Botaosi_c.cpp#_ZN17daObjBk_Botaosi_c15OnHitByMegaCharER6Player": "tangosdev",
+    "src/actors/daObjBk_Botaosi_c.cpp#_ZN17daObjBk_Botaosi_c8OnKickedER8dActor_c": "ruspecial",
+    "src/actors/daObjBk_Botaosi_c.cpp#_ZN17daObjBk_Botaosi_c11OnAttacked2ER8dActor_c": "ruspecial",
+    "src/actors/daObjBk_Botaosi_c.cpp#func_ov015_02111414": "tangosdev",
+    "src/actors/daObjBk_Botaosi_c.cpp#func_ov015_021114f0": "tangosdev",
+    "src/actors/daObjBk_Botaosi_c.cpp#func_ov015_0211166c": "tangosdev",
+    "src/actors/daObjBk_Botaosi_c.cpp#_ZN17daObjBk_Botaosi_c16CleanupResourcesEv": "tangosdev",
+    "src/actors/daObjBk_Botaosi_c.cpp#_ZN17daObjBk_Botaosi_c6RenderEv": "tangosdev",
+    "src/actors/daObjBk_Botaosi_c.cpp#_ZN17daObjBk_Botaosi_c8BehaviorEv": "lunavyqo",
+    "src/actors/daObjBk_Botaosi_c.cpp#_ZN17daObjBk_Botaosi_c13InitResourcesEv": "lunavyqo",
+    "src/actors/daObjBk_Botaosi_c.cpp#daObjBk_Botaosi_c_classInit": "tangosdev"
   }
 }
