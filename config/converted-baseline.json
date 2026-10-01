@@ -7,7 +7,7 @@
     "no_codegen_trick",
     "no_mangled_refs"
   ],
-  "count": 3084,
+  "count": 3085,
   "converted": [
     "src/ARMMathLoadState.c",
     "src/ARMMathSaveState.c",
@@ -3092,6 +3092,7 @@
     "src/actors/daObjPowerUpItem_c.cpp#daObjPowerUpItem_c_classInit",
     "src/actors/daDonketu_c.cpp#daDonketu_c_classInit",
     "src/actors/daBDonketu_c.cpp#daBDonketu_c_classInit",
-    "src/actors/daObjFl_KomaU_c.cpp#daObjFl_KomaU_c_classInit"
+    "src/actors/daObjFl_KomaU_c.cpp#daObjFl_KomaU_c_classInit",
+    "src/actors/daWater_Hakidasi_c.cpp#daWater_Hakidasi_c_classInit"
   ]
 }

@@ -146,11 +146,7 @@ src/d_a_obj_fl_puzzle.c:
 
 src/actors/daWater_Hakidasi_c.cpp:
     complete
-    .text start:0x02119330 end:0x02119a18
-
-src/d_a_water_hakidasi.c:
-    complete
-    .text start:0x02119a18 end:0x02119a58
+    .text start:0x02119330 end:0x02119a58
 
 src/actors/daWater_Ring_c.cpp:
     complete

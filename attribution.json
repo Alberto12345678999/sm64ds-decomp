@@ -5532,6 +5532,7 @@
     "src/actors/daWater_Hakidasi_c.cpp#_ZN18daWater_Hakidasi_c6RenderEv": "andrewboudreau",
     "src/actors/daWater_Hakidasi_c.cpp#_ZN18daWater_Hakidasi_c8BehaviorEv": "andrewboudreau",
     "src/actors/daWater_Hakidasi_c.cpp#_ZN18daWater_Hakidasi_c13InitResourcesEv": "andrewboudreau",
+    "src/actors/daWater_Hakidasi_c.cpp#daWater_Hakidasi_c_classInit": "tangosdev",
     "src/actors/daHanachan_c.cpp#_ZN12daHanachan_cD1Ev": "tangosdev",
     "src/actors/daHanachan_c.cpp#_ZN12daHanachan_cD0Ev": "tangosdev",
     "src/actors/daHanachan_c.cpp#_ZN12daHanachan_c20StateDamageStartMainEv": "lunavyqo",
