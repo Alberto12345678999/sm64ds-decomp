@@ -6,7 +6,10 @@
  * the flag test in state 1 (func_ov080_02124edc), breaks it into dust and
  * five coins.
  *
- * ov080 .text 0x02124a20..0x021253b4, 20 functions.
+ * ov080 .text 0x02124a20..0x02125404, 21 functions: tu_map's 20-function run
+ * 0x02124a20..0x021253b4 plus the abutting registry factory
+ * daBttBk_c_classInit (0x021253b4; reconstructed name, historical alias
+ * CrazedCrate_Spawn), written last.
  *
  * NAME: daBttBk_c is the cartridge's RTTI spelling -- _ZTS at ov080
  * 0x0212815c is the byte string "9daBttBk_c", and _ZTI at 0x02128168 reads
@@ -56,9 +59,6 @@
  *   the ROM ABI.
  * - func_ov080_02124acc, 02124edc, 021250c8 and 0212513c are declared with
  *   `char *` in decl_common.h, so those keep a `char *` parameter.
- * - The factory daBttBk_c_classInit (0x021253b4; reconstructed name,
- *   historical alias CrazedCrate_Spawn) sits just past this run's right edge
- *   and stays a one-function C source.
  * - The carrier's +0xc8 pointer (a Matrix4x3) is read raw; dActor_c has no
  *   member there yet.
  */
@@ -450,4 +450,10 @@ void daBttBk_c::OnTurnIntoEgg(Player &player)
     _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(6, vec.x, vec.y, vec.z);
     Sound::PlayBank3(0x41, *(Vector3 *)&mCamSpacePosX);
     MarkForDestruction();
+}
+
+// @symbol daBttBk_c_classInit
+extern "C" daBttBk_c *daBttBk_c_classInit()
+{
+    return new daBttBk_c();
 }

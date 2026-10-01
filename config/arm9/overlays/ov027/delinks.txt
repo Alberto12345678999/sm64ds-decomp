@@ -18,11 +18,7 @@ src/actors/daPgDfdr_c.cpp:
 
 src/actors/daSnmBth_c.cpp:
     complete
-    .text start:0x021120c4 end:0x02112ab4
-
-src/d_a_snm_bth.c:
-    complete
-    .text start:0x02112ab4 end:0x02112b14
+    .text start:0x021120c4 end:0x02112b14
 
 src/__sinit_ov027_02112cb0.c:
     complete

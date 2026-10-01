@@ -1,5 +1,6 @@
 //cpp
-/* daHuwa_c, the Spindrift (HUWAHUWA). ov081, twelve functions.
+/* daHuwa_c, the Spindrift (HUWAHUWA). ov081, thirteen functions,
+ * .text 0x02123740..0x02124090.
  *
  * common.h is first so Matrix4x3 stays the flat { s32 m[12]; }. The death
  * and shadow helpers index that matrix through .m. daHuwa_c.h pulls in
@@ -9,8 +10,9 @@
  * destructor is the key function, so this TU emits _ZTV/_ZTI/_ZTS and a D2
  * the cartridge has no home for (manifest: deadstrip).
  *
- * daHuwa_c_classInit and g_profile_HUWAHUWA stay in other files. The two
- * file handles are constructed by __sinit_ov081_021280e8 (file ids 813 and
+ * The registry factory daHuwa_c_classInit (0x02124040) abuts the run and is
+ * written last; g_profile_HUWAHUWA stays in another file. The two file
+ * handles are constructed by __sinit_ov081_021280e8 (file ids 813 and
  * 814); this TU only loads and releases them.
  *
  * deslop leftovers:
@@ -381,4 +383,10 @@ void daHuwa_c::OnTurnIntoEgg(Player &player)
 s32 daHuwa_c::OnYoshiTryEat()
 {
     return 6;
+}
+
+// @symbol daHuwa_c_classInit
+extern "C" daHuwa_c *daHuwa_c_classInit()
+{
+    return new daHuwa_c();
 }

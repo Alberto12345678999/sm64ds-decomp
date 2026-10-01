@@ -8,13 +8,14 @@
   "boundary_evidence": [
     "contiguous linker run: 0x2119a58..0x211a1b0, 14 function(s), from build/tu_map.json (tools/tu_map.py)",
     "class label(s): daWater_Ring_c",
-    "module sinit corroboration: 11 sinit(s) / 11 .ctor entries, sinit_vs_tu=ok, corroborated=False (module-wide, NOT narrowed to this one TU -- see notes/tu-reconstruction-pilot-report.md sec 2 for the by-hand narrowing step)"
+    "module sinit corroboration: 11 sinit(s) / 11 .ctor entries, sinit_vs_tu=ok, corroborated=False (module-wide, NOT narrowed to this one TU -- see notes/tu-reconstruction-pilot-report.md sec 2 for the by-hand narrowing step)",
+    "classInit tail fold (0930c): daWater_Ring_c_classInit (0x0211a1b0..0x0211a200) abuts this TU's range with no gap and is now inside it; tu_map cuts on symbol name and left it out. The unit is 0x02119a58..0x0211a200, bounded above by src/actors/daObjTbox_c.cpp, which starts exactly at 0x0211a200."
   ],
   "sections": [
     {
       "name": ".text",
       "start": "0x02119a58",
-      "end": "0x0211a1b0"
+      "end": "0x0211a200"
     }
   ],
   "functions": [
@@ -115,6 +116,13 @@
       "size": "0x00000120",
       "legacy_source": "src/_ZN14daWater_Ring_c13InitResourcesEv.cpp",
       "ordinal": 13
+    },
+    {
+      "symbol": "daWater_Ring_c_classInit",
+      "address": "0x0211a1b0",
+      "size": "0x00000050",
+      "legacy_source": "src/d_a_water_ring.c",
+      "ordinal": 14
     }
   ],
   "data": [],
@@ -125,7 +133,8 @@
     "tubuild create warning (RESOLVED): ApproachLinear and MarkForDestruction externs differed only in parameter names; one declaration covers both call sites.",
     "tubuild create warning (RESOLVED): HorzAngleToCPlayer was declared short at one call site and s32 at the other. The short declaration is the one the sign-bit test in func_ov064_02119afc needs, and func_ov064_02119ea0 still matches with it.",
     "data_ov002_0210da10 is one extern SharedFilePtr. The char and char[] spellings were the same object.",
-    "data_ov064_0211c3d0 is the int[3] InitResources indexes. func_ov064_02119afc copies it through a Vector3 cast."
+    "data_ov064_0211c3d0 is the int[3] InitResources indexes. func_ov064_02119afc copies it through a Vector3 cast.",
+    "classInit tail fold (0930c): folded the registry factory daWater_Ring_c_classInit (0x0211a1b0..0x0211a200) into this promoted TU and widened the complete delinks.txt claim to 0x02119a58..0x0211a200. The loose source hand-called fBase_c::operator new(912), dEnemyBase_c's base constructor, stored _ZTV14daWater_Ring_c, then constructed the dCcAcPos_c, dBgCh_Actr, Model and TextureTransformer members. daWater_Ring_c declares no constructor, so the implicit one emits that sequence and the factory is `return new daWater_Ring_c();`. Under `#pragma defer_codegen off` it is written at the end of the file."
   ],
   "compiler_only_output": [
     {
@@ -224,8 +233,8 @@
     "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
     "object": "build/tu/ov064-daWater_Ring_c/daWater_Ring_c.o (gitignored)",
     "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
-    "functions_matched": 14,
-    "functions_declared": 14,
+    "functions_matched": 15,
+    "functions_declared": 15,
     "compilerOnlyOutput": {
       "requested": [
         "_ZN14daWater_Ring_cD2Ev",
@@ -239,8 +248,6 @@
         9,
         10,
         13,
-        33,
-        34,
         35,
         36,
         37,
@@ -255,7 +262,9 @@
         46,
         47,
         48,
-        49
+        49,
+        50,
+        51
       ],
       "data": [
         "_ZTI7fBase_c",

@@ -1,6 +1,6 @@
 //cpp
-/* ov027/daSnmBth_c -- the snowman's breath (d_a_snm_bth). 16 functions,
- * .text 0x021120c4..0x02112ab4.
+/* ov027/daSnmBth_c -- the snowman's breath (d_a_snm_bth). 17 functions,
+ * .text 0x021120c4..0x02112b14, the end of ov027 .text.
  *
  * daSnmBth_c owns fifty SnowmanBreathParticle members. The particle's eight
  * functions sit in the cartridge between this actor's destructors and its
@@ -24,8 +24,8 @@
  * ROM-ascending. A Matrix4x3 member, whose implicit destructor runs
  * Vector3's inline one, flips the group back to D2, D0, D1 even with the
  * pragma (measured), which is why mInvModelMat is flat words in
- * daSnmBth_c.h. The particle array does not have that effect. The factory
- * daSnmBth_c_classInit (0x02112ab4) follows this run and is not in it.
+ * daSnmBth_c.h. The particle array does not have that effect. The registry
+ * factory daSnmBth_c_classInit (0x02112ab4) is the last function.
  *
  * Known limits:
  * - The Particle::System, Sound::PlayLong, dCcPos_c::Init and Player::BlowAway /
@@ -414,4 +414,14 @@ int daSnmBth_c::InitResources()
     InvMat4x3(&data_020a0e68, &data_020a0e68);
     *(MatrixWords *)&mInvModelMat = *(MatrixWords *)&data_020a0e68;
     return 1;
+}
+
+/* Reconstructed source-style name: SM64DS proves daSnmBth_c through RTTI,
+ * allocation size, vtable identity, and the SNOWMAN_BREATH registry profile;
+ * later EAD lineage supplies classInit. Exact original spelling is not
+ * preserved. Historical alias: SnowmanBreath_Spawn. */
+// @symbol daSnmBth_c_classInit
+extern "C" daSnmBth_c *daSnmBth_c_classInit()
+{
+    return new daSnmBth_c();
 }

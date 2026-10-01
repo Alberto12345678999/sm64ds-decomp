@@ -1,10 +1,15 @@
 //cpp
-/* daBasabasa_c (BASABASA, the swoop), ov065 0x02116f98..0x02117ee8.
+/* daBasabasa_c (BASABASA, the swoop), ov065 0x02116f98..0x02117f40,
+ * 22 functions.
  *
  * RTTI names daBasabasa_c. The vtable address point is 0x0211cca0; the word
  * at -4 is _ZTI12daBasabasa_c (0x0211cc60), whose string at 0x0211cc6c is
- * "12daBasabasa_c" and whose single base is dEnemyBase_c. The factory
- * daBasabasa_c_classInit at 0x02117ee8 follows this run and is not in it.
+ * "12daBasabasa_c" and whose single base is dEnemyBase_c. The registry
+ * factory daBasabasa_c_classInit (0x02117ee8..0x02117f40, historical alias
+ * Swoop_Spawn) closes the run: operator new(0x440), the dEnemyBase_c
+ * constructor, this class's vtable store and the five member constructors,
+ * which is exactly `new daBasabasa_c()`. Its name is reconstructed from the
+ * BASABASA profile; retail does not store it.
  *
  * The out-of-line destructor is the key function, so this TU emits the
  * vtable and RTTI. Under `#pragma defer_codegen off` it comes out D1, D0,
@@ -509,4 +514,10 @@ void daBasabasa_c::OnTurnIntoEgg(Player &player)
 s32 daBasabasa_c::OnYoshiTryEat()
 {
     return 4;
+}
+
+// @symbol daBasabasa_c_classInit
+extern "C" daBasabasa_c *daBasabasa_c_classInit()
+{
+    return new daBasabasa_c();
 }

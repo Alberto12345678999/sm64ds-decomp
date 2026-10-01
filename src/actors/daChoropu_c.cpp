@@ -1,6 +1,8 @@
 //cpp
 /* ov080/daChoro_Rock_c+daChoropu_c -- the Monty Mole (daChoropu_c) and the rock it throws
- * (daChoro_Rock_c). 24 functions, .text 0x02123740..0x02124998.
+ * (daChoro_Rock_c). 26 functions, .text 0x02123740..0x02124a20: tu_map's
+ * 24-function run 0x02123740..0x02124998 plus the two registry factories
+ * that abut it, daChoro_Rock_c_classInit and daChoropu_c_classInit.
  *
  * Class identity comes from the ROM RTTI:
  *   daChoropu_c     _ZTI 0x02127fbc, _ZTS 0x02127fc8, _ZTV 0x021280b0
@@ -29,10 +31,11 @@
  *    symbol the ROM does not have;
  *  - LAUND() keeps three field addresses opaque in func_ov080_02124088;
  *  - data_ov080_021283d0..021283e8 are still typed `int[]` (they are
- *    SharedFilePtr animation slots -- data_ov080_0212766c points at them);
- *  - the factories daChoro_Rock_c_classInit (0x02124998) and
- *    daChoropu_c_classInit (0x021249e0) sit past this span and stay in their
- *    own files.
+ *    SharedFilePtr animation slots -- data_ov080_0212766c points at them).
+ *
+ * The registry factories daChoro_Rock_c_classInit (0x02124998) and
+ * daChoropu_c_classInit (0x021249e0) come last, in ROM order. Neither class
+ * declares a constructor, so each is a plain `return new`.
  */
 
 #include "decl_common.h"
@@ -694,4 +697,16 @@ s32 daChoro_Rock_c::InitResources()
         mScaleZ = 0x800;
     }
     return 1;
+}
+
+// @symbol daChoro_Rock_c_classInit
+extern "C" daChoro_Rock_c *daChoro_Rock_c_classInit()
+{
+    return new daChoro_Rock_c();
+}
+
+// @symbol daChoropu_c_classInit
+extern "C" daChoropu_c *daChoropu_c_classInit()
+{
+    return new daChoropu_c();
 }

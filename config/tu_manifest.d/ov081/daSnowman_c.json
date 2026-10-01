@@ -8,13 +8,14 @@
   "boundary_evidence": [
     "contiguous linker run: 0x2124090..0x2125ec0, 34 function(s), from build/tu_map.json (tools/tu_map.py)",
     "class label(s): daSnowman_c",
-    "module sinit corroboration: 5 sinit(s) / 5 .ctor entries, sinit_vs_tu=ok, corroborated=False (module-wide, NOT narrowed to this one TU -- see notes/tu-reconstruction-pilot-report.md sec 2 for the by-hand narrowing step)"
+    "module sinit corroboration: 5 sinit(s) / 5 .ctor entries, sinit_vs_tu=ok, corroborated=False (module-wide, NOT narrowed to this one TU -- see notes/tu-reconstruction-pilot-report.md sec 2 for the by-hand narrowing step)",
+    "classInit fold (0930c): the SNOWMAN registry factory daSnowman_c_classInit (0x02125ec0, 0x54) abuts the run's end 0x02125ec0 with no gap and no other symbol between; tu_map left it in its own unlabelled unit because it cuts on symbol name. The widened range 0x02124090..0x02125f14 (35 functions) ends where the daSnowball_c TU (src/actors/daSnowball_c.cpp) begins."
   ],
   "sections": [
     {
       "name": ".text",
       "start": "0x02124090",
-      "end": "0x02125ec0"
+      "end": "0x02125f14"
     }
   ],
   "functions": [
@@ -255,13 +256,21 @@
       "size": "0x00000008",
       "legacy_source": "src/_ZN11daSnowman_c16OnAimedAtWithEggEv.cpp",
       "ordinal": 33
+    },
+    {
+      "symbol": "daSnowman_c_classInit",
+      "address": "0x02125ec0",
+      "size": "0x00000054",
+      "legacy_source": "src/d_a_snowman.c",
+      "ordinal": 34
     }
   ],
   "data": [],
   "bss": [],
   "notes": [
-    "Whole class, text only. daSnowman_c_classInit at 0x02125ec0 is the next function and is not part of this TU.",
-    "Renamed from the cartridge type string 11daSnowman_c. The coined vtable label was dropped; the ROM name _ZTV11daSnowman_c stays."
+    "Whole class, text only. The abutting registry factory daSnowman_c_classInit (0x02125ec0) was folded in by the 0930c classInit fold (below).",
+    "Renamed from the cartridge type string 11daSnowman_c. The coined vtable label was dropped; the ROM name _ZTV11daSnowman_c stays.",
+    "classInit fold (0930c): daSnowman_c_classInit is folded in last, in ROM order, under the file's `#pragma defer_codegen off`, as `return new daSnowman_c();`. The retired one-function source hand-called fBase_c::operator new(1132 = 0x46c), dEnemyBase_c's C2 constructor, this class's vtable store and the four member C1 constructors (dCcAcPos_c 0x110, dBgCh_Actr 0x150, ModelAnim 0x30c, ShadowModel 0x370); daSnowman_c has no user-declared constructor, so the synthesized one emits the identical sequence and no new compiler-only output. tubuild verify: 35/35 MATCH, objisolate clean, reloc-destinations clean, TEXT-VERIFIED. Retired src/d_a_snowman.c; its credit carries in attribution.json as a path#symbol override."
   ],
   "compiler_only_output": [
     {
@@ -360,8 +369,8 @@
     "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
     "object": "build/tu/ov081-daSnowman_c/daSnowman_c.o (gitignored)",
     "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
-    "functions_matched": 34,
-    "functions_declared": 34,
+    "functions_matched": 35,
+    "functions_declared": 35,
     "compilerOnlyOutput": {
       "requested": [
         "_ZN11daSnowman_cD2Ev",
@@ -375,8 +384,6 @@
         9,
         10,
         15,
-        72,
-        73,
         74,
         75,
         76,
@@ -391,7 +398,9 @@
         85,
         86,
         87,
-        88
+        88,
+        89,
+        90
       ],
       "data": [
         "_ZTI7fBase_c",
