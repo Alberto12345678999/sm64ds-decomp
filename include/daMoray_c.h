@@ -26,8 +26,6 @@
  * cartridge vtable for the MORAY registry profile.
  */
 
-#ifdef __cplusplus
-
 #include "dEnemyBase_c.h"
 #include "BlendModelAnim.h"
 #include "dBgCh_Actr.h"
@@ -88,73 +86,5 @@ struct daMoray_c : dEnemyBase_c {
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
 typedef char daMoray_c_size_must_be_0x4b0[sizeof(struct daMoray_c) == 0x4b0 ? 1 : -1];
 #endif
-
-#else
-
-/* The same object for a C translation unit, flat. Its one C consumer was the
-   loose factory daMoray_c_classInit, which took its size; that factory is now
-   C++ in the promoted daMoray_c TU.
-   Same arrangement as include/dBgActor_c.h. */
-struct daMoray_c {
-    u8  pad_000[0x8];
-    u32 mParam;            /* 0x008 */
-    u8  pad_00c[0x50];
-    s32 mPosX;            /* 0x05c */
-    s32 mPosY;            /* 0x060 */
-    s32 mPosZ;            /* 0x064 */
-    u8  pad_068[0x24];
-    s16 mAngleX;            /* 0x08c */
-    s16 mAngleY;            /* 0x08e */
-    s16 mAngleZ;            /* 0x090 */
-    s16 mPrevAngleX;            /* 0x092 */
-    s16 mPrevAngleY;            /* 0x094 */
-    s16 mPrevAngleZ;            /* 0x096 */
-    u8  pad_098[0x8];
-    s32 mTerminalVelocity;            /* 0x0a0 */
-    u8  pad_0a4[0x28];
-    s8  mAreaId;            /* 0x0cc */
-    u8  pad_0cd[0x33];
-    u8  mStateTimer;            /* 0x100 */
-    u8  pad_101[0xf];
-    u8  mdCcAcPos_c1;            /* 0x110 */
-    u8  pad_111[0x3f];
-    u8  mdCcAcPos_c2;            /* 0x150 */
-    u8  pad_151[0x3f];
-    u8  mWithMeshClsn;            /* 0x190 */
-    u8  pad_191[0x1bb];
-    s32 mState;            /* 0x34c */
-    u8  mBlendModelAnim;            /* 0x350 */
-    u8  pad_351[0xf];
-    s32 unk_360;            /* 0x360 */
-    u8  pad_364[0x48];
-    s32 unk_3ac;            /* 0x3ac */
-    u8  pad_3b0[0x4];
-    s32 unk_3b4;            /* 0x3b4 */
-    u8  pad_3b8[0x38];
-    s32 mHomePosX;            /* 0x3f0 */
-    s32 mHomePosY;            /* 0x3f4 */
-    s32 mHomePosZ;            /* 0x3f8 */
-    u8  pad_3fc[0x8];
-    s32 mPathID;            /* 0x404 */
-    s32 mVariant;            /* 0x408 */
-    s32 mPathNodeCount;            /* 0x40c */
-    s32 mPathNodeIndex;            /* 0x410 */
-    u8  mStarParam;            /* 0x414 */
-    u8  pad_415[0x3];
-    s16 mSegmentAngle[8];            /* 0x418 */
-    s16 mInitAngleX;            /* 0x428 */
-    s16 mInitAngleY;            /* 0x42a */
-    s16 mInitAngleZ;            /* 0x42c */
-    u8  pad_42e[0xe];
-    s32 mStarPosX;            /* 0x43c */
-    s32 mStarPosY;            /* 0x440 */
-    s32 mStarPosZ;            /* 0x444 */
-    u8  pad_448[0x54];
-    s32 mStarUniqueID;            /* 0x49c */
-    /* trailing extent the ROM's `new daMoray_c` literal proves; see tools/opnew_sizes.py */
-    u8 pad_4a0[0x10];
-};
-
-#endif /* __cplusplus */
 
 #endif /* DAMORAY_C_H */
