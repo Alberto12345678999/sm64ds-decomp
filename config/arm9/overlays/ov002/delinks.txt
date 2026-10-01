@@ -78,23 +78,7 @@ src/d_a_obj_block_l_block_l.c:
 
 src/actors/daObjBlockItemTag_c.cpp:
     complete
-    .text start:0x020b415c end:0x020b45e0
-
-src/d_a_obj_block_item_tag_blk_slvstar_tag.c:
-    complete
-    .text start:0x020b45e0 end:0x020b4610
-
-src/d_a_obj_block_item_tag_blk_gnshell_tag.c:
-    complete
-    .text start:0x020b4610 end:0x020b4640
-
-src/d_a_obj_block_item_tag_blk_skinoko_tag.c:
-    complete
-    .text start:0x020b4640 end:0x020b4670
-
-src/d_a_obj_block_item_tag_blk_okinoko_tag.c:
-    complete
-    .text start:0x020b4670 end:0x020b46a0
+    .text start:0x020b415c end:0x020b46a0
 
 src/game/actors/d_a_obj_kinoko_tag.cpp:
     complete
