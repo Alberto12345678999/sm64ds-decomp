@@ -6048,7 +6048,7 @@
         "param:#2 char *",
         "param:#5 void *"
       ],
-      "src/_ZN6Bowser13InitResourcesEv.cpp": [
+      "src/_ZN7daKpa_c13InitResourcesEv.cpp": [
         "param:#2 void *",
         "param:#5 void *",
         "param:#6 void *"
@@ -7347,7 +7347,7 @@
       ]
     },
     "_ZN15TextureSequence6UpdateER15ModelComponents": {
-      "src/_ZN6Bowser6RenderEv.cpp": [
+      "src/_ZN7daKpa_c6RenderEv.cpp": [
         "param:#2 void *"
       ],
       "src/_ZN6Player6RenderEv.cpp": [
@@ -7371,7 +7371,7 @@
       ]
     },
     "_ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj": {
-      "src/_ZN6Bowser13InitResourcesEv.cpp": [
+      "src/_ZN7daKpa_c13InitResourcesEv.cpp": [
         "param:#5 unsigned int"
       ],
       "src/_ZN12daKuriKing_c13InitResourcesEv.cpp": [
@@ -7477,7 +7477,7 @@
         "param:#1 void *",
         "return:void"
       ],
-      "src/_ZN6Bowser13InitResourcesEv.cpp": [
+      "src/_ZN7daKpa_c13InitResourcesEv.cpp": [
         "param:#1 void *",
         "return:void"
       ],
@@ -9553,7 +9553,7 @@
       "src/_ZN5Stage13InitResourcesEv.cpp": [
         "param:#1 void *"
       ],
-      "src/_ZN6Bowser13InitResourcesEv.cpp": [
+      "src/_ZN7daKpa_c13InitResourcesEv.cpp": [
         "param:#1 void *"
       ],
       "src/_ZN12daKuriKing_c13InitResourcesEv.cpp": [
@@ -12036,7 +12036,7 @@
       ]
     },
     "_ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj": {
-      "src/_ZN10BowserTail13InitResourcesEv.cpp": [
+      "src/_ZN11daKpaTail_c13InitResourcesEv.cpp": [
         "return:int"
       ],
       "src/func_ov002_020bae9c.c": [
@@ -13555,7 +13555,7 @@
         "param:#6 int",
         "return:void *"
       ],
-      "src/_ZN6Bowser13InitResourcesEv.cpp": [
+      "src/_ZN7daKpa_c13InitResourcesEv.cpp": [
         "param:#3 void *",
         "param:#5 int",
         "param:#6 int",
@@ -13873,7 +13873,7 @@
         "param:#1 void *",
         "return:int"
       ],
-      "src/_ZN6Bowser13InitResourcesEv.cpp": [
+      "src/_ZN7daKpa_c13InitResourcesEv.cpp": [
         "param:#1 void *",
         "return:void"
       ],
@@ -14351,7 +14351,7 @@
         "param:#2 int",
         "return:void"
       ],
-      "src/_ZN6Bowser13InitResourcesEv.cpp": [
+      "src/_ZN7daKpa_c13InitResourcesEv.cpp": [
         "return:void"
       ],
       "src/_ZN12daKuriKing_c13InitResourcesEv.cpp": [
@@ -17176,7 +17176,7 @@
       "src/_ZN5Stage9RenderFogEv.cpp": [
         "return:int []"
       ],
-      "src/_ZN6Bowser8BehaviorEv.cpp": [
+      "src/_ZN7daKpa_c8BehaviorEv.cpp": [
         "return:char *"
       ],
       "src/_ZN6Player11St_Fly_InitEv.cpp": [
@@ -23811,12 +23811,12 @@
       ]
     },
     "data_ov060_0211927c": {
-      "src/_ZN6Bowser16CleanupResourcesEv.cpp": [
+      "src/_ZN7daKpa_c16CleanupResourcesEv.cpp": [
         "return:SharedFilePtr * []"
       ]
     },
     "data_ov060_021192dc": {
-      "src/_ZN6Bowser16CleanupResourcesEv.cpp": [
+      "src/_ZN7daKpa_c16CleanupResourcesEv.cpp": [
         "return:SharedFilePtr * []"
       ],
       "src/func_ov060_02111cc0.cpp": [
@@ -23903,7 +23903,7 @@
       ]
     },
     "data_ov060_0211ac78": {
-      "src/_ZN6Bowser16CleanupResourcesEv.cpp": [
+      "src/_ZN7daKpa_c16CleanupResourcesEv.cpp": [
         "return:char"
       ],
       "src/__sinit_ov060_021195dc.c": [
@@ -23977,7 +23977,7 @@
       ]
     },
     "data_ov060_0211b208": {
-      "src/_ZN6Bowser16CleanupResourcesEv.cpp": [
+      "src/_ZN7daKpa_c16CleanupResourcesEv.cpp": [
         "return:char"
       ],
       "src/__sinit_ov060_0211a428.c": [
@@ -25836,10 +25836,10 @@
       ]
     },
     "data_ov089_02132c50": {
-      "src/_ZN6Bowser13InitResourcesEv.cpp": [
+      "src/_ZN7daKpa_c13InitResourcesEv.cpp": [
         "return:int []"
       ],
-      "src/_ZN6Bowser16CleanupResourcesEv.cpp": [
+      "src/_ZN7daKpa_c16CleanupResourcesEv.cpp": [
         "return:char"
       ]
     },
@@ -26681,7 +26681,7 @@
       "include/decl_common.h": [
         "arity:1"
       ],
-      "src/_ZN6Bowser13InitResourcesEv.cpp": [
+      "src/_ZN7daKpa_c13InitResourcesEv.cpp": [
         "arity:1"
       ]
     },
@@ -39275,7 +39275,7 @@
       "include/decl_common.h": [
         "arity:3"
       ],
-      "src/_ZN6Bowser13InitResourcesEv.cpp": [
+      "src/_ZN7daKpa_c13InitResourcesEv.cpp": [
         "arity:3"
       ],
       "src/func_ov060_02112350.c": [

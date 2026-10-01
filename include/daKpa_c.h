@@ -1,7 +1,7 @@
 /* Seeded from matched-function evidence by tools/gen_header.py, then given its
  * real base and real member types by hand.
  *
- * class Bowser: 5 matched functions.
+ * class daKpa_c: 5 matched functions.
  *
  * Five sub-objects, and every one's asserted size closes EXACTLY on the next named
  * field -- five independent confirmations of one layout:
@@ -24,8 +24,8 @@
  * happens to end there too.
  *
  * Field NAMES for the unk_ entries are placeholders. */
-#ifndef BOWSER_H
-#define BOWSER_H
+#ifndef DAKPA_C_H
+#define DAKPA_C_H
 #include "types.h"
 #include "ModelAnim.h"
 #include "TextureSequence.h"
@@ -37,7 +37,7 @@
 
 #include "dActor_c.h"
 
-struct Bowser : dActor_c {
+struct daKpa_c : dActor_c {
     u8  pad_0d0[0x4];
     ModelAnim mModelAnim;                                   /* 0x0d4 */
     TextureSequence mTextureSequence;                       /* 0x138 */
@@ -45,7 +45,7 @@ struct Bowser : dActor_c {
     ShadowModel mShadowModel;                               /* 0x308 */
     u8  pad_330[0x30];
     dCcAcPos_c mdCcAcPos_c;   /* 0x360 */
-    /* A POINTER, not an s32. Bowser::Behavior assigns it straight from
+    /* A POINTER, not an s32. daKpa_c::Behavior assigns it straight from
        dActor_c::ClosestPlayer() and then re-spelt every read of the slot as
        `*(dActor_c **)((char *)&mTargetPlayer)`; typing it here deletes all three
        of those casts. Declared dActor_c* rather than Player* on purpose --
@@ -93,7 +93,7 @@ struct Bowser : dActor_c {
     s32 mSoundID;            /* 0x450 */
 
     /* --- vtable, in ROM order. Do not reorder. --- */
-    virtual ~Bowser();                  /* slots 16 (D1), 17 (D0) */
+    virtual ~daKpa_c();                  /* slots 16 (D1), 17 (D0) */
 
     /* --- non-virtual --- */
     int InitResources();
@@ -105,7 +105,7 @@ struct Bowser : dActor_c {
 
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
-typedef char Bowser_size_must_be_0x454[sizeof(Bowser) == 0x454 ? 1 : -1];
+typedef char Bowser_size_must_be_0x454[sizeof(daKpa_c) == 0x454 ? 1 : -1];
 #endif
 
 #else
@@ -114,7 +114,7 @@ typedef char Bowser_size_must_be_0x454[sizeof(Bowser) == 0x454 ? 1 : -1];
    dActor_c's fields from and so spells the whole layout flat. Every current includer
    is a .cpp; this half is kept so that a future C one gets the right offsets
    rather than a parse error. */
-struct Bowser {
+struct daKpa_c {
     u8  pad_000[0x4];
     s32 uniqueID;            /* 0x004 */
     s32 mParam;            /* 0x008 */

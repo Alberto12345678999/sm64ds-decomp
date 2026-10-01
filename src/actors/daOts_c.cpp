@@ -2,7 +2,7 @@
 /* daOts_c -- shared base of the three Bully variants (BULLY 215 / BIG_BULLY 216
  * / CHILL_BULLY 217 (debug ICE_DONKETU)), ov064 0x02115ee0..0x02117070.
  *
- * ov064 is mixed (treasure chest, metal net lift, LLL tilting platform, Bowser
+ * ov064 is mixed (treasure chest, metal net lift, LLL tilting platform, daKpa_c
  * puzzle, rotating firebar, lava bubble, bully, water ring, jet stream, clam).
  * RTTI names this class daOts_c; overlay_actors maps the three children to
  * BULLY 215 / BIG_BULLY 216 / CHILL_BULLY 217 (debug ICE_DONKETU). Ugly RTTI

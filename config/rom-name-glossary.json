@@ -181,7 +181,7 @@
       "note": "Stage dir data/stage/clock_tower in the ROM file-name table (extracted/overlays/overlay_0000.bin); every CT_MECHA* model is special_obj/ct_mecha_objNN."
     },
     "Km": {
-      "gloss": "Koopa Map -- a Bowser stage (Km1/Km2/Km3 are the three)",
+      "gloss": "Koopa Map -- a daKpa_c stage (Km1/Km2/Km3 are the three)",
       "confidence": "high",
       "note": "Stage dirs data/stage/koopa1_map..koopa3_map in the ROM file-name table (extracted/overlays/overlay_0000.bin); the boss arenas are koopaN_boss (Kb). ov043/ov045/ov047 carry the three courses' furniture."
     },
@@ -234,7 +234,7 @@
       "note": "Stage dir data/stage/tibi_deka_t; TT_FUTA(104) = TINY_COVER, TT_WATER(105) = TINY_WATER (ov033)."
     },
     "Kb": {
-      "gloss": "Koopa Boss -- a Bowser battle arena (Kb1/Kb2/Kb3)",
+      "gloss": "Koopa Boss -- a daKpa_c battle arena (Kb1/Kb2/Kb3)",
       "confidence": "high",
       "note": "Stage dirs data/stage/koopa1_boss..koopa3_boss; the file table has kb1_ball, kb2_stage, kb3_stage. KB1_BILLBOARD(301) = ORANGE_BALL_BILLBOARD, ov044 (include/daObjKb1Billboard_c.h:1). Mirrors Km = koopaN_map."
     },
@@ -282,7 +282,7 @@
     },
     "Kpa": {
       "ja": "クッパ",
-      "gloss": "Koopa -- Bowser",
+      "gloss": "Koopa -- daKpa_c",
       "confidence": "high"
     },
     "Hanachan": {
@@ -351,7 +351,7 @@
       "ja": "機雷",
       "gloss": "naval mine",
       "confidence": "high",
-      "note": "daKirai_c sits in ov060 with the Bowser fight."
+      "note": "daKirai_c sits in ov060 with the daKpa_c fight."
     },
     "Ukiyuka": {
       "ja": "浮き床",
@@ -929,9 +929,9 @@
     },
     "Koopa": {
       "ja": "クッパ",
-      "gloss": "Koopa -- Bowser (NOT a Koopa Troopa)",
+      "gloss": "Koopa -- daKpa_c (NOT a Koopa Troopa)",
       "confidence": "high",
-      "note": "In EAD usage Koopa is Bowser: KOOPA(279) = BOWSER, WL_KOOPA_SHUTTER(91) = BOWSER_SHUTTER (commit 49e7449f63 renamed BowserShutter to daObjWlKoopaShutter_c). A Koopa Troopa is Nokonoko."
+      "note": "In EAD usage Koopa is daKpa_c: KOOPA(279) = BOWSER, WL_KOOPA_SHUTTER(91) = BOWSER_SHUTTER (commit 49e7449f63 renamed BowserShutter to daObjWlKoopaShutter_c). A Koopa Troopa is Nokonoko."
     },
     "Koma": {
       "ja": "独楽",

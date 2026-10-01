@@ -6714,6 +6714,8 @@
     "src/actors/daDoor_c.cpp#_ZN8daDoor_c6RenderEv": "tangosdev",
     "src/actors/daDoor_c.cpp#_ZN8daDoor_c8BehaviorEv": "tangosdev",
     "src/actors/daDoor_c.cpp#_ZN8daDoor_c13InitResourcesEv": "lunavyqo",
-    "src/actors/daDoor_c.cpp#daDoor_c_classInit": "tangosdev"
+    "src/actors/daDoor_c.cpp#daDoor_c_classInit": "tangosdev",
+    "src/actors/dCapEnemy_c.cpp#_ZN11dCapEnemy_cD2Ev": "tangosdev",
+    "src/actors/dCapEnemy_c.cpp#_ZN11dCapEnemy_cD0Ev": "tangosdev"
   }
 }
