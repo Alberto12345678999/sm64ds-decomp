@@ -33,7 +33,7 @@
       "ordinal": 1
     },
     {
-      "symbol": "func_ov065_0211bc88",
+      "symbol": "_ZN16daObjCtMecha09_c19func_ov065_0211bc88Ev",
       "address": "0x0211bc88",
       "size": "0x00000098",
       "legacy_source": "src/func_ov065_0211bc88.cpp",

@@ -43,6 +43,9 @@ struct daObjCtMecha09_c : dBgActor_c {
     int InitResources();
     int Render();
 
+    /* Helper taking this (S33): the ROM address is the method name. */
+    void func_ov065_0211bc88();
+
     /* Tail padding. The field span stops short of the real size:
        daObjCtMecha09_c_classInit (historical alias TTC_MovingBeam_Spawn)
        calls fBase_c::operator new(0x38c), read off the retail
