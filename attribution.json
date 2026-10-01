@@ -9,6 +9,8 @@
   },
   "overrides": {
     "src/_ZN9ModelBase12ApplyOpacityEjj.cpp": "ruspecial",
+    "src/_ZN11daKpaTail_c16CleanupResourcesEv.cpp": "tangosdev",
+    "src/_ZN11daKpaTail_c6RenderEv.cpp": "tangosdev",
     "src/START_INTRO_MINIMAP_ZOOM.c": "tangosdev",
     "src/_ZN10LavaBridge13InitResourcesEv.c": "tangosdev",
     "src/_ZN10LavaBridge13InitResourcesEv.cpp": "tangosdev",
