@@ -5462,9 +5462,9 @@ three matched by respelling the read and nothing else. First matched with CVCAST
 #2523); respelt to the plain redundant cast for the ratchet reason above, same bytes,
 same relocations, lane MATCH3B:
 
-  * `Door::InitResources`, ov100 0x021455a0 0x2fc -- one site (`param1 >> 0x10`). Before:
+  * `daDoor_c::InitResources`, ov100 0x021455a0 0x2fc -- one site (`param1 >> 0x10`). Before:
     0x300, 156 of 192 words differing over the shared prefix. After: 0 of 191.
-  * `RollingIronBall::InitResources`, ov100 0x02142de0 0x38c -- one site (`param1 >> 4`).
+  * `daIbl_c::InitResources`, ov100 0x02142de0 0x38c -- one site (`param1 >> 4`).
     Before: 0x390, 186 of 228. After: 0 of 227.
   * `daObjMarioCap_c::InitResources`, ov002 0x020b86d0 0x4c8 -- two sites
     (`param1 -= 0xa` at +0x37c and `param1 &= 0xfff` at +0x448). Before: 0x4d0, 98 of 308.
