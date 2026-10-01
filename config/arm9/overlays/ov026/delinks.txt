@@ -10,11 +10,7 @@ src/game/actors/d_a_obj_wl_polelift.cpp:
 
 src/actors/daObjWlKoopaShutter_c.cpp:
     complete
-    .text start:0x021116c8 end:0x02111888
-
-src/d_a_obj_wl_koopa_shutter.c:
-    complete
-    .text start:0x02111888 end:0x021118b8
+    .text start:0x021116c8 end:0x021118b8
 
 src/actors/daObjWlSubmarine_c.cpp:
     complete

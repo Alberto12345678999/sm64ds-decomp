@@ -4825,6 +4825,7 @@
     "src/actors/daObjWlKoopaShutter_c.cpp#_ZN21daObjWlKoopaShutter_c8BehaviorEv": "tangosdev",
     "src/actors/daObjWlKoopaShutter_c.cpp#_ZN21daObjWlKoopaShutter_cD0Ev": "andrewboudreau",
     "src/actors/daObjWlKoopaShutter_c.cpp#_ZN21daObjWlKoopaShutter_cD1Ev": "tangosdev",
+    "src/actors/daObjWlKoopaShutter_c.cpp#daObjWlKoopaShutter_c_classInit": "tangosdev",
     "src/actors/daObjTtWater_c.cpp#_ZN14daObjTtWater_c13InitResourcesEv": "tangosdev",
     "src/actors/daObjTtWater_c.cpp#_ZN14daObjTtWater_c16CleanupResourcesEv": "tangosdev",
     "src/actors/daObjTtWater_c.cpp#_ZN14daObjTtWater_c6RenderEv": "tangosdev",

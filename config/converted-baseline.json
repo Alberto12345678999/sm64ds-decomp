@@ -7,7 +7,7 @@
     "no_codegen_trick",
     "no_mangled_refs"
   ],
-  "count": 3065,
+  "count": 3066,
   "converted": [
     "src/ARMMathLoadState.c",
     "src/ARMMathSaveState.c",
@@ -3073,6 +3073,7 @@
     "src/actors/dMg3DEspAnimSet_c.cpp#_ZN12dScMg3DEsp_c6RenderEv",
     "src/actors/daObjCtMecha09_c.cpp#daObjCtMecha09_c_classInit",
     "src/actors/daMoray_c.cpp#BookSwitch_Spawn",
-    "src/actors/daObjMarioCap_c.cpp#daObjMarioCap_c_classInit"
+    "src/actors/daObjMarioCap_c.cpp#daObjMarioCap_c_classInit",
+    "src/actors/daObjWlKoopaShutter_c.cpp#daObjWlKoopaShutter_c_classInit"
   ]
 }
