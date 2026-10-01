@@ -2883,11 +2883,7 @@ src/game/actors/d_a_sound_obj.cpp:
 
 src/actors/dMap_c.cpp:
     complete
-    .text start:0x020f975c end:0x020fb8bc
-
-src/d_map.cpp:
-    complete
-    .text start:0x020fb8bc end:0x020fb8f8
+    .text start:0x020f975c end:0x020fb8f8
 
 src/actors/dMeter_c.cpp:
     complete
