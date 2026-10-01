@@ -56,7 +56,7 @@ Both warnings independently reproduce at input and candidate:
 
 - `_ZN9dScDSMT_c8BehaviorEv`: BLIND-2, diffs []; unresolved overlay_64 at +0x184
   and overlay_66 at +0x188, R_ARM_ABS32, addend 0.
-- [func_ov089_0213162c](../../../src/func_ov089_0213162c.c): BLIND-1, diffs []; unresolved data_02111b68 at +0x4e0,
+- [func_ov089_0213162c](../../../src/actors/daObjKey_c.cpp): BLIND-1, diffs []; unresolved data_02111b68 at +0x4e0,
   R_ARM_ABS32, addend 0.
 
 All three edited functions independently return VERIFIED, diffs [], blind 0.
