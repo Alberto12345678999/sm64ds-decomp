@@ -1,7 +1,7 @@
 //cpp
-// @symbol _ZN15RollingIronBall6RenderEv
+// @symbol _ZN7daIbl_c6RenderEv
 /* recovered: named members + shared header, real C++ method */
-#include "RollingIronBall.h"
+#include "daIbl_c.h"
 struct EmbeddedClass {
   virtual void method(void* a);
   virtual void dummy1();
@@ -11,7 +11,7 @@ struct EmbeddedClass {
   virtual void virtualMethod(char* a);
 };
 
-int RollingIronBall::Render()
+int daIbl_c::Render()
 {
   unsigned char b = mVariant;
   if(b){

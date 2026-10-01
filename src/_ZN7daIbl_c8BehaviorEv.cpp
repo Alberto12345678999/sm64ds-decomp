@@ -1,7 +1,7 @@
 //cpp
-// @symbol _ZN15RollingIronBall8BehaviorEv
+// @symbol _ZN7daIbl_c8BehaviorEv
 /* recovered: named members + shared header, real C++ method */
-#include "RollingIronBall.h"
+#include "daIbl_c.h"
 typedef void (*FnPtr)(void*);
 struct VtEntry {
     int field0;
@@ -9,7 +9,7 @@ struct VtEntry {
 };
 extern struct VtEntry data_ov100_0214867c[];
 
-int RollingIronBall::Behavior()
+int daIbl_c::Behavior()
 {
     unsigned char idx = mVariant;
     struct VtEntry* e = (struct VtEntry*)((char*)data_ov100_0214867c + ((int)idx << 3));

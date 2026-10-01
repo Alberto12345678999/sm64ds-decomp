@@ -8,7 +8,7 @@
 #include "decl_dBgCh_Actr.h"
 #include "decl_common.h"
 /* recovered: vtable identified, globals resolved */
-/* resolved: VT0 = _ZTV15RollingIronBall */
+/* resolved: VT0 = _ZTV7daIbl_c */
 extern void *_ZN7PathPtrC1Ev(void *);
 /* Reconstructed source-style name: SM64DS proves daIbl_c through RTTI,
  * allocation size, vtable identity, and the IRONBALL registry profile;
@@ -19,7 +19,7 @@ int *daIbl_c_classInit(void)
     int *p = (int *)_ZN7fBase_cnwEj(1020);
     if (p) {
         _ZN12dEnemyBase_cC2Ev(p);
-        p[0] = (int)_ZTV15RollingIronBall;
+        p[0] = (int)_ZTV7daIbl_c;
         _ZN10dBgCh_ActrC1Ev((char *)p + 0x110);
         _ZN5ModelC1Ev((char *)p + 0x2cc);
         _ZN11ShadowModelC1Ev((char *)p + 0x31c);

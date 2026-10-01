@@ -6068,7 +6068,7 @@
         "param:#5 void *",
         "param:#6 void *"
       ],
-      "src/_ZN15RollingIronBall13InitResourcesEv.cpp": [
+      "src/_ZN7daIbl_c13InitResourcesEv.cpp": [
         "param:#2 void *",
         "param:#5 void *"
       ],
@@ -9577,7 +9577,7 @@
       "src/_ZN17daObjFl_Amilift_c13InitResourcesEv.cpp": [
         "return:BMD_File *"
       ],
-      "src/_ZN15RollingIronBall13InitResourcesEv.cpp": [
+      "src/_ZN7daIbl_c13InitResourcesEv.cpp": [
         "param:#1 void *"
       ],
       "src/actors/daKing_Donketu_c.cpp": [
@@ -14891,7 +14891,7 @@
       "src/_ZN17daObjFl_Amilift_c13InitResourcesEv.cpp": [
         "param:#2 Vector3 *"
       ],
-      "src/_ZN15RollingIronBall13InitResourcesEv.cpp": [
+      "src/_ZN7daIbl_c13InitResourcesEv.cpp": [
         "param:#2 void *"
       ],
       "src/func_0200b0fc.c": [

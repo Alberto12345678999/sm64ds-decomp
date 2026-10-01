@@ -1,5 +1,5 @@
 //cpp
-// @symbol _ZN15RollingIronBall13InitResourcesEv
+// @symbol _ZN7daIbl_c13InitResourcesEv
 /* Byte-matches under the pinned 2004/b56, 0x38c for 0x38c, relocation
    destinations checked. It did not until the param1 shift below was respelt;
    the extra `add r1, r4, #8` this file used to emit at +0x60 is described at
@@ -11,7 +11,7 @@
 #include "decl_dBgCh_Actr.h"
 #include "decl_common.h"
 /* recovered: named members + shared header, real C++ method */
-#include "RollingIronBall.h"
+#include "daIbl_c.h"
 // C linkage: these are ROM symbols named by their final linker name. Without
 // it the compiler mangles the name a second time and the call resolves to
 // nothing -- which the byte gate cannot see, because a relocated word is a
@@ -32,7 +32,7 @@ extern char data_ov100_02148668;
 extern int data_02092138;
 extern signed char data_0209f2f8;
 
-int RollingIronBall::InitResources()
+int daIbl_c::InitResources()
 {
     int kind;
     int d;

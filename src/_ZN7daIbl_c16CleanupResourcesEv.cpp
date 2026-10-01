@@ -1,11 +1,11 @@
 //cpp
-// @symbol _ZN15RollingIronBall16CleanupResourcesEv
+// @symbol _ZN7daIbl_c16CleanupResourcesEv
 /* recovered: named members + shared header, real C++ method */
-#include "RollingIronBall.h"
+#include "daIbl_c.h"
 #include "SharedFilePtr.h"
 extern char data_ov100_02148668;
 
-int RollingIronBall::CleanupResources()
+int daIbl_c::CleanupResources()
 {
     char *file = *(char **)((char *)&unk_3a8);
 
