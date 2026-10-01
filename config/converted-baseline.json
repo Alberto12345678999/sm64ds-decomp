@@ -7,7 +7,7 @@
     "no_codegen_trick",
     "no_mangled_refs"
   ],
-  "count": 3086,
+  "count": 3093,
   "converted": [
     "src/ARMMathLoadState.c",
     "src/ARMMathSaveState.c",
@@ -1027,7 +1027,7 @@
     "src/actors/daObjCasket_c.cpp#_ZN13daObjCasket_c6RenderEv",
     "src/actors/daObjCasket_c.cpp#_ZN13daObjCasket_cD0Ev",
     "src/actors/daObjCasket_c.cpp#_ZN13daObjCasket_cD1Ev",
-    "src/_ZN6Eyerok16OnAimedAtWithEggEv.cpp",
+    "src/actors/Eyerok.cpp#_ZN6Eyerok16OnAimedAtWithEggEv",
     "src/_ZN6EyerokD0Ev.cpp",
     "src/_ZN6EyerokD1Ev.cpp",
     "src/game/actors/d_a_hyuhyu.cpp#_ZN10daHyuhyu_c13OnTurnIntoEggER6Player",
@@ -3094,6 +3094,13 @@
     "src/actors/daBDonketu_c.cpp#daBDonketu_c_classInit",
     "src/actors/daObjFl_KomaU_c.cpp#daObjFl_KomaU_c_classInit",
     "src/actors/daWater_Hakidasi_c.cpp#daWater_Hakidasi_c_classInit",
-    "src/actors/daWater_Ring_c.cpp#daWater_Ring_c_classInit"
+    "src/actors/daWater_Ring_c.cpp#daWater_Ring_c_classInit",
+    "src/actors/daObjWlKoopaShutter_c.cpp#daObjWlKoopaShutter_c_classInit",
+    "src/actors/daObjWlSubmarine_c.cpp#daObjWlSubmarine_c_classInit",
+    "src/actors/daWater_Tatumaki_c.cpp#daWater_Tatumaki_c_classInit",
+    "src/actors/daWater_Suikomi_c.cpp#daWater_Suikomi_c_classInit",
+    "src/actors/daSnmBth_c.cpp#daSnmBth_c_classInit",
+    "src/actors/daObjCtMecha11_c.cpp#daObjCtMecha11_c_classInit",
+    "src/actors/daLuigi_c.cpp#daLuigi_c_classInit"
   ]
 }

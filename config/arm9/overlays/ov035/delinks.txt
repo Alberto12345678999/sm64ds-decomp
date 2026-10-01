@@ -10,11 +10,7 @@ src/actors/daObjCtMecha10_c.cpp:
 
 src/actors/daObjCtMecha11_c.cpp:
     complete
-    .text start:0x021116ec end:0x02111b98
-
-src/d_a_obj_ct_mecha11.c:
-    complete
-    .text start:0x02111b98 end:0x02111bd0
+    .text start:0x021116ec end:0x02111bd0
 
 src/__sinit_ov035_02111f04.c:
     complete

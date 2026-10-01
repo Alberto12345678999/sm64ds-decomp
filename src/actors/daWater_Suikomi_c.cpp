@@ -1,6 +1,6 @@
 //cpp
 /* Production translation unit for ov026/daWater_Suikomi_c.
- * 12 function(s), .text 0x021121fc..0x02112450. The WATER_SUIKOMI actor, the
+ * 13 function(s), .text 0x021121fc..0x02112490. The WATER_SUIKOMI actor, the
  * water suction in Wet-Dry World.
  *
  * NAME: _ZTS17daWater_Suikomi_c is "17daWater_Suikomi_c" at ov026 0x02113dec;
@@ -12,8 +12,8 @@
  * in the cartridge).
  *
  * This is the whole unit: the destructor pair, the five state-machine
- * helpers between D0 and CleanupResources, then the five virtuals. The
- * helpers are not virtuals: 0x021122cc and 0x021122b0 are the two
+ * helpers between D0 and CleanupResources, the five virtuals, then the
+ * factory. The helpers are not virtuals: 0x021122cc and 0x021122b0 are the two
  * member-function pointers that ov026's last static initializer (0x02112d68)
  * copies from 0x02113dd8/0x02113dd0 into the state record at 0x02113f58;
  * func_ov026_021122d4 installs a state record at +0x30c (InitResources hands
@@ -25,8 +25,8 @@
  * The out-of-line destructor is the key function, so this TU emits
  * _ZTV/_ZTI/_ZTS17daWater_Suikomi_c; the manifest's compiler_only_output rows
  * route those (and the homeless D2) to the cartridge's own copies. The
- * factory daWater_Suikomi_c_classInit starts at 0x02112450
- * (src/d_a_water_suikomi.c) and is not absorbed.
+ * registry factory daWater_Suikomi_c_classInit (0x02112450) closes the unit
+ * and ov026's .text.
  *
  * Under `#pragma defer_codegen off` .text is laid down in source order, so
  * this file is ROM-ascending.
@@ -177,4 +177,14 @@ int daWater_Suikomi_c::InitResources()
     _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(&mdCcAcPos_c, this, &vec, 0x64000, 0xa4000, 0x800006, 0);
     func_ov026_021122d4(this, &data_ov026_02113f58);
     return 1;
+}
+
+/* Reconstructed source-style name: SM64DS proves daWater_Suikomi_c through
+ * RTTI, allocation size, vtable identity, and the WATER_SUIKOMI registry
+ * profile; later EAD lineage supplies classInit. Exact original spelling is
+ * not preserved. Historical alias: WaterSuction_Spawn. */
+// @symbol daWater_Suikomi_c_classInit
+extern "C" daWater_Suikomi_c *daWater_Suikomi_c_classInit()
+{
+    return new daWater_Suikomi_c();
 }

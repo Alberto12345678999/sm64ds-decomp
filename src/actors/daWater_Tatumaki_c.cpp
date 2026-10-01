@@ -5,7 +5,8 @@
  * unless they are metal. The model is water_tatumaki.bmd (handle 0x4a9) and
  * the joint animation is water_tatumaki.bca (handle 0x4a8). The texture
  * animation is the overlay BTA at data_ov026_02112f40, not a NitroFS file.
- * The factory stays in src/d_a_water_tatumaki.c. No g_profile in this TU.
+ * Fourteen functions, ov026 .text 0x02111aa0..0x021121fc; the registry
+ * factory daWater_Tatumaki_c_classInit is the last. No g_profile in this TU.
  *
  * Distances below are 20.12 (1.0 == 0x1000). Angles are s16, full circle
  * 0x10000.
@@ -395,4 +396,14 @@ int daWater_Tatumaki_c::InitResources()
 
     func_ov026_02111ee0(this, STATE_SPIN);
     return 1;
+}
+
+/* Reconstructed source-style name: SM64DS proves daWater_Tatumaki_c through
+ * RTTI, allocation size, vtable identity, and the WATER_TATUMAKI registry
+ * profile; later EAD lineage supplies classInit. Exact original spelling is
+ * not preserved. Historical alias: Whirlpool_Spawn. */
+// @symbol daWater_Tatumaki_c_classInit
+extern "C" daWater_Tatumaki_c *daWater_Tatumaki_c_classInit()
+{
+    return new daWater_Tatumaki_c();
 }

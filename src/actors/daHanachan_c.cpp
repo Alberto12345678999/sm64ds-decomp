@@ -1,8 +1,9 @@
 //cpp
-/* daHanachan_c: the Wiggler (ov034, registry profile HANACHAN). 34 functions,
- * .text 0x021111a0..0x021136a4: D1, D0, four virtual methods and 28
+/* daHanachan_c: the Wiggler (ov034, registry profile HANACHAN). 35 functions,
+ * .text 0x021111a0..0x02113820: D1, D0, four virtual methods, 28
  * non-virtual members (22 state functions, SetState, ExecState and four
- * helpers). The run is gap-free and this is the only class in it.
+ * helpers) and the factory. The run is gap-free and this is the only class
+ * in it.
  *
  * ROM evidence: _ZTS12daHanachan_c is "12daHanachan_c" at ov034 0x02114478;
  * _ZTI at 0x0211445c reads [__si_class_type_info, that string,
@@ -13,7 +14,8 @@
  * #pragma defer_codegen off emits .text in source order, so the file is
  * ROM-ascending. One out-of-line destructor is the key function, so this TU
  * emits _ZTV, _ZTI and _ZTS: D1 (0x021111a0), D0 (0x021112b0), then a D2 the
- * cartridge has no home for (manifest: deadstrip).
+ * cartridge has no home for (manifest: deadstrip). The registry factory
+ * daHanachan_c_classInit (0x021136a4) closes the unit and ov034's .text.
  */
 
 #pragma defer_codegen off
@@ -1170,3 +1172,58 @@ int daHanachan_c::InitResources()
     return 1;
 }
 
+
+/* The factory's hand-built construction sequence. */
+extern "C" {
+extern void *_ZN7fBase_cnwEj(unsigned int size);
+extern void *_ZN12dEnemyBase_cC2Ev(void *p);
+extern void __cxa_vec_ctor(void *arr, unsigned int count, unsigned int size, void (*ctor)(void *), void (*dtor)(void *));
+extern void *_ZN10dBgCh_ActrC1Ev(void *p);
+extern void *_ZN10dCcAcPos_cC1Ev(void *p);
+extern dCcAcPos_c *_ZN10dCcAcPos_cD1Ev(dCcAcPos_c *p);
+extern void func_0203d73c(void);
+extern void *_ZN8Vector3sD1Ev(void *p);
+extern void func_0203d384(void);
+extern void *_ZN7Vector3D1Ev(void *p);
+extern void *_ZN15TextureSequenceC1Ev(void *p);
+extern TextureSequence *_ZN15TextureSequenceD1Ev(TextureSequence *p);
+extern void *_ZN15MaterialChangerC1Ev(void *p);
+extern MaterialChanger *_ZN15MaterialChangerD1Ev(MaterialChanger *p);
+extern void *_ZN9ModelAnimC1Ev(void *p);
+extern ModelAnim *_ZN9ModelAnimD1Ev(ModelAnim *p);
+}
+extern int _ZTV12daHanachan_c[];
+
+/* Reconstructed source-style name: SM64DS proves daHanachan_c through RTTI,
+ * allocation size, vtable identity, and the HANACHAN registry profile;
+ * later EAD lineage supplies classInit. Exact original spelling is not
+ * preserved. Historical alias: Wiggler_Spawn.
+ *
+ * Not `new daHanachan_c()`: types.h's Vector3 and Vector3s have no
+ * user-declared constructor, so an idiomatic `new` skips the ROM's
+ * per-element __cxa_vec_ctor(..., func_0203d384 / func_0203d73c, ...) calls
+ * over the two Vector3 arrays and the Vector3s array (measured: 999 words
+ * differ, first wrong relocation _ZN15TextureSequenceC1Ev). Kept as the loose
+ * file's explicit hand-built sequence; the one change the fold required is the
+ * vtable store: this TU owns the key function and so defines
+ * _ZTV12daHanachan_c at the start of the vtable object, two words ahead of the
+ * address point. */
+// @symbol daHanachan_c_classInit
+extern "C" daHanachan_c *daHanachan_c_classInit()
+{
+    char *c = (char *)_ZN7fBase_cnwEj(sizeof(daHanachan_c));
+    if (c) {
+        _ZN12dEnemyBase_cC2Ev(c);
+        *(int **)c = &_ZTV12daHanachan_c[2];
+        __cxa_vec_ctor(c + 0x110, 5, 0x64, (void (*)(void *))_ZN9ModelAnimC1Ev, (void (*)(void *))_ZN9ModelAnimD1Ev);
+        __cxa_vec_ctor(c + 0x304, 5, 0x14, (void (*)(void *))_ZN15MaterialChangerC1Ev, (void (*)(void *))_ZN15MaterialChangerD1Ev);
+        __cxa_vec_ctor(c + 0x368, 5, 0x14, (void (*)(void *))_ZN15TextureSequenceC1Ev, (void (*)(void *))_ZN15TextureSequenceD1Ev);
+        __cxa_vec_ctor(c + 0x3cc, 5, 0xc, (void (*)(void *))func_0203d384, (void (*)(void *))_ZN7Vector3D1Ev);
+        __cxa_vec_ctor(c + 0x408, 5, 0xc, (void (*)(void *))func_0203d384, (void (*)(void *))_ZN7Vector3D1Ev);
+        __cxa_vec_ctor(c + 0x444, 5, 6, (void (*)(void *))func_0203d73c, (void (*)(void *))_ZN8Vector3sD1Ev);
+        __cxa_vec_ctor(c + 0x478, 5, 0x40, (void (*)(void *))_ZN10dCcAcPos_cC1Ev, (void (*)(void *))_ZN10dCcAcPos_cD1Ev);
+        __cxa_vec_ctor(c + 0x5b8, 5, 0x40, (void (*)(void *))_ZN10dCcAcPos_cC1Ev, (void (*)(void *))_ZN10dCcAcPos_cD1Ev);
+        _ZN10dBgCh_ActrC1Ev(c + 0x708);
+    }
+    return (daHanachan_c *)c;
+}
