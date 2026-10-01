@@ -6033,7 +6033,7 @@
     "src/actors/daWater_Tatumaki_c.cpp#daWater_Tatumaki_c_classInit": "tangosdev",
     "src/actors/daObjCtMecha09_c.cpp#_ZN16daObjCtMecha09_cD1Ev": "tangosdev",
     "src/actors/daObjCtMecha09_c.cpp#_ZN16daObjCtMecha09_cD0Ev": "tangosdev",
-    "src/actors/daObjCtMecha09_c.cpp#func_ov065_0211bc88": "tangosdev",
+    "src/actors/daObjCtMecha09_c.cpp#_ZN16daObjCtMecha09_c19func_ov065_0211bc88Ev": "tangosdev",
     "src/actors/daObjCtMecha09_c.cpp#_ZN16daObjCtMecha09_c16CleanupResourcesEv": "tangosdev",
     "src/actors/daObjCtMecha09_c.cpp#_ZN16daObjCtMecha09_c6RenderEv": "tangosdev",
     "src/actors/daObjCtMecha09_c.cpp#_ZN16daObjCtMecha09_c8BehaviorEv": "tangosdev",
