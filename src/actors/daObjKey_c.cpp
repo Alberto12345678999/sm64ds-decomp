@@ -31,7 +31,7 @@
  *   func_ov089_02131df4 stay C names on (char *): every caller is now in this
  *   file, so they are members in waiting (decl_common.h still declares the
  *   first two by these names).
- * - LoadKeyModels / UnloadKeyModels are C by necessity: Door, Player and the
+ * - LoadKeyModels / UnloadKeyModels are C by necessity: daDoor_c, Player and the
  *   bosses call them by name.
  * - StateFlyToCenter / StateStarJump: the Fix12<int> calls (Particle::System::New,
  *   ApproachLinear, Sound::ChangeMusicVolume) go by symbol for the same reason
@@ -237,7 +237,7 @@ extern "C" void func_ov089_02130fb4(char *c, int *p, int height)
 
 /* UnloadKeyModels, 0x021310cc */
 // @symbol UnloadKeyModels
-/* Door, Player and the bosses that drop a key call these two by name. */
+/* daDoor_c, Player and the bosses that drop a key call these two by name. */
 extern "C" void UnloadKeyModels(int kind)
 {
     if (kind >= 8)
