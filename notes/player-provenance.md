@@ -1,4 +1,4 @@
-# Player / Bowser / daKirai_c field provenance
+# Player / daKpa_c / daKirai_c field provenance
 
 Why each `unk_NNN` in these headers got the name it has. Every row cites a matched
 body in `src/` and what that body does with the slot; a slot with no row is still
@@ -235,16 +235,16 @@ So the rule for this lever is not "naming is free". Naming is free; *deleting a
 cast* is not, and collapsing a poke deletes casts on both sides of a
 read-modify-write.
 
-## Bowser
+## daKpa_c
 
 Five matched functions only, so the evidence is thin and most of the header is
-still `unk_`. Both halves of `Bowser.h` carry every rename: the file has a
+still `unk_`. Both halves of `daKpa_c.h` carry every rename: the file has a
 `#else` C twin that spells the whole layout flat, and a name changed in only one
 half is a spelling that compiles nowhere and that no gate reports.
 
 | offset | name | evidence |
 | --- | --- | --- |
-| 0x3b0 | `mHomePosX` | `Bowser::InitResources` copies `mPosX/Y/Z` into 0x3b0/0x3b4/0x3b8 once, in the same block that sets `mVertAccel` and `mTerminalVelocity`. Saved-at-spawn position. |
+| 0x3b0 | `mHomePosX` | `daKpa_c::InitResources` copies `mPosX/Y/Z` into 0x3b0/0x3b4/0x3b8 once, in the same block that sets `mVertAccel` and `mTerminalVelocity`. Saved-at-spawn position. |
 | 0x3b4 | `mHomePosY` | as above. |
 | 0x3b8 | `mHomePosZ` | as above. |
 | 0x3ec | `mDistToTarget` | `Behavior`: `mDistToTarget = Vec3_HorzDist(&mPosX, &target->mPosX)` when `ClosestPlayer()` returned something, and `~0x80000000` (INT_MAX, "infinitely far") when it did not. |
@@ -256,8 +256,8 @@ half is a spelling that compiles nowhere and that no gate reports.
 `mTargetPlayer` (0x3a0) was declared `s32` and every read of it was spelt
 `*(dActor_c **)((char *)&mTargetPlayer)` -- three of those in `Behavior`, on top of
 an `(int)` cast on the store. It is now `dActor_c *`, and
-`_ZN6Bowser8BehaviorEv` still reproduces byte-for-byte under 2004/b56, as does
-`_ZN6Bowser13InitResourcesEv`, which zeroes it. So a pointer-typed member does
+`_ZN7daKpa_c8BehaviorEv` still reproduces byte-for-byte under 2004/b56, as does
+`_ZN7daKpa_c13InitResourcesEv`, which zeroes it. So a pointer-typed member does
 *not* change how mwcc loads it here; the four casts were pure noise and are gone,
 and `Vec3_HorzAngle` / `Vec3_HorzDist` now take `(Vector3 *)&mTargetPlayer->mPosX`
 instead of `(char *) ... + 0x5c`.
@@ -265,23 +265,23 @@ instead of `(char *) ... + 0x5c`.
 Two details that are not free and are worth copying:
 
 - It is `dActor_c *`, not `Player *`, even though `dActor_c::ClosestPlayer()`
-  returns `Player *`. `Bowser.h` cannot include `Player.h`, so `Player` is only
+  returns `Player *`. `daKpa_c.h` cannot include `Player.h`, so `Player` is only
   forward-declared, and mwcc rejects the implicit `Player *` -> `dActor_c *`
   conversion outright ("illegal implicit conversion") because it cannot see the
   derivation. The store therefore keeps ONE cast, `(dActor_c *)ClosestPlayer()`,
   which is exact: `dActor_c` is the base at offset 0, so no adjustment is
   involved.
-- The `#else` C twin of `Bowser.h` has no `dActor_c` declaration in scope, so
+- The `#else` C twin of `daKpa_c.h` has no `dActor_c` declaration in scope, so
   there the slot is `void *` -- same width, same offset, and the two halves still
   agree.
 
 Every "read by nothing matched" reason below was withdrawn on 2026-08-24. They
-were all decided by searching Bowser's own mangled methods, which is three files;
-Bowser's behaviour is in [ov060](../config/arm9/overlays/ov060/symbols.txt), dispatched through the pointer-to-member table
+were all decided by searching daKpa_c's own mangled methods, which is three files;
+daKpa_c's behaviour is in [ov060](../config/arm9/overlays/ov060/symbols.txt), dispatched through the pointer-to-member table
 [data_ov060_0211aeb4](../config/arm9/overlays/ov060/symbols.txt)`[*(int *)(this + 0x410)]` that [func_ov060_02112434](../src/func_ov060_02112434.cpp) calls.
 A data-table dispatch names no caller, so the call graph never reaches those
 state functions -- but `tools/handler_owner.py` attributes ~30 [ov060](../config/arm9/overlays/ov060/symbols.txt) handlers to
-Bowser decisively, and they read almost all of it. Named from that evidence:
+daKpa_c decisively, and they read almost all of it. Named from that evidence:
 
 | offset | name | evidence |
 | --- | --- | --- |
@@ -291,7 +291,7 @@ Bowser decisively, and they read almost all of it. Named from that evidence:
 | 0x414 | `mVariantID` | `param1 & 3`, wrapped by `if (== 3) = 0`, then used to index [data_ov060_02119264](../config/arm9/overlays/ov060/symbols.txt) for the byte at 0x41e. A variant selector that picks per-instance configuration -- which is exactly the part the old note called a guess. |
 | 0x41c | `mOpacity` | the missing `0xff` exists: [func_ov060_021123dc](../src/func_ov060_021123dc.c) writes `0xff` here and to 0x41d, and [func_ov060_02112434](../src/func_ov060_02112434.cpp) steps 0x41c toward 0x41d by 0x14 a frame, clamping at 0xff and 0, while another handler passes `*(u8 *)(this + 0x41c) >> 3` to `ModelBase::ApplyOpacity` -- 0..255 scaled to the DS's 5-bit alpha. `Render`'s `< 8` early-out is the invisible case. |
 | 0x424 | `mTalkStep` | `switch` on it: case 0 calls `Player::StartTalk`, case 1 waits for `Player::GetTalkState() == 0` then `Player::ShowMessage`, each case incrementing it. |
-| 0x426 | `mDropsShadow` | gates the `dBgCh_Gnd` raycast that projects Bowser onto the ground and writes the shadow matrix at 0x330 -- the same role `daKpaFire_c::mDropsShadow` was named for. |
+| 0x426 | `mDropsShadow` | gates the `dBgCh_Gnd` raycast that projects daKpa_c onto the ground and writes the shadow matrix at 0x330 -- the same role `daKpaFire_c::mDropsShadow` was named for. |
 | 0x427 | `mBounceOnLand` | while set, `dBgCh_Actr::JustHitGround()` reflects the vertical speed at -60% (clamped to 0x14000); cleared once he settles. |
 | 0x42b | `mCapActorAlive` | actor 0x10d is the lost cap -- `daSnowman_c` spawns it under `SaveData::HasPlayerLostCap()` and stores its unique id as `mCapUniqueID`. This is the latch saying that actor still exists. |
 | 0x444 | `mCutsceneStep` | `switch` on it drives the camera: `Camera::SetFlag_3`, `Camera::SetLookAt`, and the computed eye position at 0x438/0x43c. |
@@ -300,10 +300,10 @@ Bowser decisively, and they read almost all of it. Named from that evidence:
 | 0x44c | `mSoundHandle` | stores the result of `Sound::PlayLong`, and passes it back as that call's first argument. |
 | 0x450 | `mSoundID` | set to 0xba, compared against 0xba, and passed to `Sound::PlayLong` as the sound id. |
 
-Still `unk_` in Bowser, with the reason:
+Still `unk_` in daKpa_c, with the reason:
 
 - **0x416** -- `(param1 >> 2) & 1`. Unlike 0x414 this one really is consumed by
-  nothing, in the methods or in any handler attributed to Bowser.
+  nothing, in the methods or in any handler attributed to daKpa_c.
 - **0x423** -- a counter, reset beside `dBgCh_Actr::ClearGroundFlag` and
   incremented both when he settles on the ground and when a handler launches him
   upward. Nothing compares it, so whether it counts bounces, throws or landings

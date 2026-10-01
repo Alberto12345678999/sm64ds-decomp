@@ -127,8 +127,8 @@ daJgm_c	DONE	include\daJgm_c.h  [alias: header uses pre-rename name]	dActor_c	0	
 daKinopio_c	DONE	include\daKinopio_c.h	dActor_c	0	ov085	14
 daKirai_c	DONE	include\daKirai_c.h  [alias: header uses pre-rename name]	dActor_c	0	ov060	6
 daKpFr_c	DONE	include\daKpFr_c.h	dActor_c	0	ov070	8
-daKpaTail_c	DONE	include\BowserTail.h  [alias: header uses pre-rename name]	dActor_c	0	ov060	6
-daKpa_c	DONE	include\Bowser.h  [alias: header uses pre-rename name]	dActor_c	0	ov060	7
+daKpaTail_c	DONE	include\daKpaTail_c.h  [alias: header uses pre-rename name]	dActor_c	0	ov060	6
+daKpa_c	DONE	include\daKpa_c.h  [alias: header uses pre-rename name]	dActor_c	0	ov060	7
 daKrpa_c	DONE	include\daKrpa_c.h	dActor_c	0	ov070	8
 daLuigi_c	DONE	include\daLuigi_c.h  [alias: header uses pre-rename name]	dActor_c	0	ov055	7
 daMcFlag_c	DONE	include\daMcFlag_c.h	dActor_c	0	ov009	6

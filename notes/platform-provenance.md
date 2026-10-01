@@ -366,7 +366,7 @@ filename.**
 
 ## `include/daObjKm3_Dorifu_c.h` — the crossed names
 
-The Bowser-in-the-Sky drifting platform. ROM name `daObjKm3_Dorifu_c`. It does
+The daKpa_c-in-the-Sky drifting platform. ROM name `daObjKm3_Dorifu_c`. It does
 not derive from `dBgActor_c`; it derives from `daObjDorifu_c`, which does. The
 destructor stores three vptrs and destroys `daObjDorifu_c`'s `Model[5]` and
 `dBgW_KcMbg[5]` in between, all of it from the base declaration.

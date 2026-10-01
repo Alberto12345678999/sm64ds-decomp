@@ -1,13 +1,13 @@
 //cpp
-// @symbol _ZN6Bowser13InitResourcesEv
+// @symbol _ZN7daKpa_c13InitResourcesEv
 /* recovered: named members + shared header, real C++ method
  *
- * The other half of Bowser::CleanupResources. Every handle this loads is one
+ * The other half of daKpa_c::CleanupResources. Every handle this loads is one
  * the cleanup releases, in the same order and with the same counts -- one
  * single, a 0x1c-entry table, a six-entry table, then two more singles, the
  * last of which (data_ov089_02132c50) lives in ov089 rather than this overlay.
  * That pairing is why the siblings' CleanupResources are bare `return 1`s:
- * Bowser loads the whole fight's resources, so Bowser frees them.
+ * daKpa_c loads the whole fight's resources, so daKpa_c frees them.
  *
  * The two loops are reproduced rather than unrolled, for the same reason as in
  * the cleanup: 0x1c and 6 are the counts the ROM's own comparisons test.
@@ -26,7 +26,7 @@
  * The early `return 0` when ShadowModel::InitCylinder fails is the ROM's -- the
  * only failure path in the function.
  */
-#include "Bowser.h"
+#include "daKpa_c.h"
 #include "TextureSequence.h"
 
 extern "C" {
@@ -53,7 +53,7 @@ extern int data_ov089_02132c50[];
 extern int data_ov060_0211ac28[];
 }
 
-int Bowser::InitResources()
+int daKpa_c::InitResources()
 {
     int i;
     Vector3 pos;

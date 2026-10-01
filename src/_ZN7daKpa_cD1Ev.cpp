@@ -1,5 +1,5 @@
 //cpp
-// @symbol _ZN6BowserD1Ev
+// @symbol _ZN7daKpa_cD1Ev
 /* recovered: real C++ destructor -- the compiler emits the whole body
  *
  * The stand-in structs this file used to carry -- `struct dActor_c { char pad[0xd0]; }`
@@ -13,8 +13,8 @@
  * order -- then chains to dActor_c. That order is the evidence the declaration order
  * is right.
  */
-#include "Bowser.h"
+#include "daKpa_c.h"
 
-Bowser::~Bowser()
+daKpa_c::~daKpa_c()
 {
 }

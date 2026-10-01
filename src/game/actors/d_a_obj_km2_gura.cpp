@@ -1,6 +1,6 @@
 //cpp
 /**
- * Bowser in the Fire Sea's tilting slab.
+ * daKpa_c in the Fire Sea's tilting slab.
  *
  * No fields. InitResources / CleanupResources hand this overlay's
  * model and collision files to daObjGuragura_c's shared ov002 helpers.

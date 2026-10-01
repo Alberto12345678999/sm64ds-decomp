@@ -1,6 +1,6 @@
 //cpp
 /**
- * Bowser in the Dark World's drifting stairs (`dorifu`).
+ * daKpa_c in the Dark World's drifting stairs (`dorifu`).
  *
  * No fields of its own. InitResources / CleanupResources hand this
  * overlay's five-plank file table to daObjDorifu_c's shared

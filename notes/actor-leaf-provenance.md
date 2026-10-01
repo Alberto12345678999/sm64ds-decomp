@@ -1,7 +1,7 @@
 # dActor_c leaf classes -- field-naming provenance
 
 Evidence for every `unk_NNN` renamed on a class whose immediate base is
-`dActor_c` (excluding `Player`, `Bowser` and `dBgActor_c`, which have their own
+`dActor_c` (excluding `Player`, `daKpa_c` and `dBgActor_c`, which have their own
 notes). Naming is byte-neutral: nothing here changes a compiled byte, and every
 row was taken with `reproducing: 11,059`, `mismatching: 0`,
 `module fidelity: 106/106 exact` on both sides of the edit.
@@ -330,13 +330,13 @@ Source: `src/actors/Scuttlebug.cpp`, which absorbed the one-function
 `Behavior` file when ov071/Scuttlebug was promoted into a single
 translation unit.
 
-## BowserTail -- include/BowserTail.h
+## daKpaTail_c -- include/daKpaTail_c.h
 
 | offset | new name | evidence |
 | --- | --- | --- |
-| 0x108 | `mBowserUniqueID` | `Behavior` resolves it with `dActor_c::FindWithID` and parks the tail 0x8c units out from Bowser's position along his facing angle. The file already said so in prose. |
+| 0x108 | `mBowserUniqueID` | `Behavior` resolves it with `dActor_c::FindWithID` and parks the tail 0x8c units out from daKpa_c's position along his facing angle. The file already said so in prose. |
 
-Source: `src/_ZN10BowserTail8BehaviorEv.cpp`.
+Source: `src/_ZN11daKpaTail_c8BehaviorEv.cpp`.
 
 ## daRedBombhei_c -- include/daRedBombhei_c.h
 

@@ -1,7 +1,7 @@
 /* Seeded from matched-function evidence by tools/gen_header.py, then given its
  * real base and real member type by hand.
  *
- * class BowserTail: 4 matched functions.
+ * class daKpaTail_c: 4 matched functions.
  *
  * One sub-object, and its offset is checked twice -- once by dCcAc_c's
  * own size assertion, once by closing exactly on the next named field:
@@ -18,8 +18,8 @@
  * base class to inherit them from.
  *
  * Field NAMES for the unk_ entries are placeholders. */
-#ifndef BOWSERTAIL_H
-#define BOWSERTAIL_H
+#ifndef DAKPATAIL_C_H
+#define DAKPATAIL_C_H
 #include "types.h"
 #include "dCcAc_c.h"
 
@@ -27,19 +27,19 @@
 
 #include "dActor_c.h"
 
-struct BowserTail : dActor_c {
+struct daKpaTail_c : dActor_c {
     u8  pad_0d0[0x4];
     /* Named by the class's own destructor calling dCcAc_c's D1 at
        +0x0d4 -- a relocation the ROM build checks. */
     dCcAc_c mdCcAc_c;     /* 0x0d4 */
-    /* Bowser's fBase_c::uniqueID. Behavior resolves it with
+    /* daKpa_c's fBase_c::uniqueID. Behavior resolves it with
        dActor_c::FindWithID and parks the tail 0x8c units out from his position
-       along his facing angle. [_ZN10BowserTail8BehaviorEv.cpp] */
+       along his facing angle. [_ZN11daKpaTail_c8BehaviorEv.cpp] */
     u32 mBowserUniqueID;                                /* 0x108 */
     u8  pad_10c[0xc];
 
     /* --- vtable, in ROM order. Do not reorder. --- */
-    virtual ~BowserTail();              /* slots 16 (D1), 17 (D0) */
+    virtual ~daKpaTail_c();              /* slots 16 (D1), 17 (D0) */
 
     /* --- non-virtual --- */
     int CleanupResources();
@@ -50,12 +50,12 @@ struct BowserTail : dActor_c {
 
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
-typedef char BowserTail_size_must_be_0x118[sizeof(BowserTail) == 0x118 ? 1 : -1];
+typedef char BowserTail_size_must_be_0x118[sizeof(daKpaTail_c) == 0x118 ? 1 : -1];
 #endif
 
 #else
 
-struct BowserTail {
+struct daKpaTail_c {
     u8  pad_000[0x5c];
     s32 mPosX;            /* 0x05c */
     s32 mPosY;            /* 0x060 */
@@ -63,7 +63,7 @@ struct BowserTail {
     u8  pad_068[0x6c];
     /* dCcAc_c member, named by the class's own destructor calling
        dCcAc_c's D1 at +0x0d4 -- a relocation the ROM build
-       checks. Was a u8 marker. [_ZN10BowserTailD0Ev.c] */
+       checks. Was a u8 marker. [_ZN11daKpaTail_cD0Ev.c] */
     dCcAc_c mdCcAc_c;            /* 0x0d4 */
     u32 mBowserUniqueID;            /* 0x108 */
     u8  pad_10c[0xc];

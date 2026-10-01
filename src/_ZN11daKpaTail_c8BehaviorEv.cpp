@@ -1,8 +1,8 @@
 //cpp
-// @symbol _ZN10BowserTail8BehaviorEv
+// @symbol _ZN11daKpaTail_c8BehaviorEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header
  *
- * The tail follows Bowser: find him by the uniqueID stashed in mBowserUniqueID, then park
+ * The tail follows daKpa_c: find him by the uniqueID stashed in mBowserUniqueID, then park
  * this actor 0x8c units out from his position along his facing angle.
  * data_02082214 is a sin/cos table indexed by angle>>4, two shorts per entry.
  *
@@ -11,18 +11,18 @@
  * never needed.
  *
  * THE POINTER BUMP AND THE volatile ARE LOAD-BEARING, both measured. Reading
- * Bowser's fields the obvious way -- `bowser->mPrevAngleY`, `bowser->mPosX` and so
+ * daKpa_c's fields the obvious way -- `bowser->mPrevAngleY`, `bowser->mPosX` and so
  * on, which the real dActor_c now makes possible -- compiles and does not reproduce
  * the ROM. The bump to +0x5c and the three loads off it are what the original
  * source did, and the offsets are dActor_c's: 0x94 is mPrevAngleY, 0x5c..0x64 are
  * mPosX/mPosY/mPosZ.
  */
 #include "decl_common.h"
-#include "BowserTail.h"
+#include "daKpaTail_c.h"
 
 extern short data_02082214[];
 
-int BowserTail::Behavior()
+int daKpaTail_c::Behavior()
 {
     dActor_c* a = dActor_c::FindWithID(mBowserUniqueID);
     if (!a) return 1;
