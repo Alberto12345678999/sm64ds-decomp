@@ -11,8 +11,9 @@
  * Ordinary functions are written highest ROM address first. mwccarm emits
  * one .text section per function in reverse source order. ~daDsn_c() is
  * inline in include/daDsn_c.h, which is what places D1 then D0 at the
- * bottom of the section list. The factory is src/d_a_dsn.c, immediately
- * after this range. g_profile_DOSUN stays overlay data.
+ * bottom of the section list. The registry factory daDsn_c_classInit is
+ * the highest address, so it is written first. g_profile_DOSUN stays
+ * overlay data.
  *
  * deslop leftovers:
  * - Behavior: `(frame - 1) << 12` is one lsl #12 and the function shrinks
@@ -61,6 +62,21 @@ int _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(void *self, int radius, int yOff
 }
 
 /* -------------------------------------------------------------------------- */
+
+// @symbol daDsn_c_classInit
+/* Reconstructed source-style name: SM64DS proves daDsn_c through RTTI,
+ * allocation size, vtable identity, and the DOSUN registry profile;
+ * later EAD lineage supplies classInit. Exact original spelling is not
+ * preserved. Historical alias: Thwomp_Spawn.
+ *
+ * The whole body falls out of the one `new`: operator new(932 == 0x3a4),
+ * dBgActor_c::C2, the mid-construction daDsnBase_c vptr,
+ * TextureSequence@0x324, ShadowModel@0x338 and this class's vptr are the
+ * implicit constructor, inlined. */
+extern "C" daDsn_c *daDsn_c_classInit()
+{
+    return new daDsn_c();
+}
 
 // @symbol _ZN7daDsn_c13InitResourcesEv
 /* Vtable slot 0. Stores this leaf's file table and starts the cycle at rest.

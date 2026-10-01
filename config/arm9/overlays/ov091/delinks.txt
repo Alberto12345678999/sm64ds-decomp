@@ -18,11 +18,7 @@ src/actors/daObjSimpleLift_c.cpp:
 
 src/actors/daDsn_c.cpp:
     complete
-    .text start:0x02132938 end:0x02132cb8
-
-src/d_a_dsn.c:
-    complete
-    .text start:0x02132cb8 end:0x02132d04
+    .text start:0x02132938 end:0x02132d04
 
 src/_ZN11daDsnBase_cD0Ev.cpp:
     complete

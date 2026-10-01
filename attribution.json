@@ -5028,6 +5028,7 @@
     "src/actors/daDsn_c.cpp#_ZN7daDsn_c15OnHitByMegaCharER6Player": "andrewboudreau",
     "src/actors/daDsn_c.cpp#_ZN7daDsn_c8BehaviorEv": "lunavyqo",
     "src/actors/daDsn_c.cpp#_ZN7daDsn_c13InitResourcesEv": "tangosdev",
+    "src/actors/daDsn_c.cpp#daDsn_c_classInit": "tangosdev",
     "src/actors/daObjCtMecha08_c.cpp#_ZN16daObjCtMecha08_cD1Ev": "tangosdev",
     "src/actors/daObjCtMecha08_c.cpp#_ZN16daObjCtMecha08_cD0Ev": "tangosdev",
     "src/actors/daObjCtMecha08_c.cpp#_ZN16daObjCtMecha08_c16CleanupResourcesEv": "tangosdev",
