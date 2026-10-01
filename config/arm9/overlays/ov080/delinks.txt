@@ -10,11 +10,7 @@ src/actors/daChoropu_c.cpp:
 
 src/actors/daBttBk_c.cpp:
     complete
-    .text start:0x02124a20 end:0x021253b4
-
-src/d_a_btt_bk.c:
-    complete
-    .text start:0x021253b4 end:0x02125404
+    .text start:0x02124a20 end:0x02125404
 
 src/_ZN11daPicGate_cD1Ev.cpp:
     complete

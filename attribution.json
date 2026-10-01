@@ -5500,6 +5500,7 @@
     "src/actors/daBttBk_c.cpp#_ZN9daBttBk_c8BehaviorEv": "tangosdev",
     "src/actors/daBttBk_c.cpp#_ZN9daBttBk_c13InitResourcesEv": "tangosdev",
     "src/actors/daBttBk_c.cpp#_ZN9daBttBk_c13OnTurnIntoEggER6Player": "andrewboudreau",
+    "src/actors/daBttBk_c.cpp#daBttBk_c_classInit": "tangosdev",
     "src/actors/daHuwa_c.cpp#_ZN8daHuwa_cD1Ev": "tangosdev",
     "src/actors/daHuwa_c.cpp#_ZN8daHuwa_cD0Ev": "tangosdev",
     "src/actors/daHuwa_c.cpp#_ZN8daHuwa_c16OnAimedAtWithEggEv": "tangosdev",
