@@ -7876,11 +7876,6 @@
         "return:void"
       ]
     },
-    "_ZN21SnowmanBreathParticleD1Ev": {
-      "src/d_a_snm_bth.c": [
-        "return:void"
-      ]
-    },
     "_ZN22ExpandingHeapAllocator10DeallocateEPv": {
       "include/decl_ExpandingHeapAllocator.h": [
         "return:void"
@@ -15497,10 +15492,6 @@
         "param:#3 int",
         "param:#4 void *",
         "param:#5 void *"
-      ],
-      "src/d_a_snm_bth.c": [
-        "param:#2 int",
-        "param:#3 int"
       ],
       "src/d_s_mg_flower.cpp": [
         "param:#2 int",
