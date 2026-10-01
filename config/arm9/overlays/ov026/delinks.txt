@@ -14,11 +14,7 @@ src/actors/daObjWlKoopaShutter_c.cpp:
 
 src/actors/daObjWlSubmarine_c.cpp:
     complete
-    .text start:0x021118b8 end:0x02111a70
-
-src/d_a_obj_wl_submarine.c:
-    complete
-    .text start:0x02111a70 end:0x02111aa0
+    .text start:0x021118b8 end:0x02111aa0
 
 src/actors/daWater_Tatumaki_c.cpp:
     complete

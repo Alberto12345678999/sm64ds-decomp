@@ -4811,6 +4811,7 @@
     "src/actors/daObjWlSubmarine_c.cpp#_ZN18daObjWlSubmarine_c16CleanupResourcesEv": "tangosdev",
     "src/actors/daObjWlSubmarine_c.cpp#_ZN18daObjWlSubmarine_c6RenderEv": "tangosdev",
     "src/actors/daObjWlSubmarine_c.cpp#_ZN18daObjWlSubmarine_c13InitResourcesEv": "tangosdev",
+    "src/actors/daObjWlSubmarine_c.cpp#daObjWlSubmarine_c_classInit": "tangosdev",
     "src/actors/daObjTtFuta_c.cpp#_ZN13daObjTtFuta_cD1Ev": "andrewboudreau",
     "src/actors/daObjTtFuta_c.cpp#_ZN13daObjTtFuta_cD0Ev": "andrewboudreau",
     "src/actors/daObjTtFuta_c.cpp#_ZN13daObjTtFuta_c15OnGroundPoundedER8dActor_c": "tangosdev",
