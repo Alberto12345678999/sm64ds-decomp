@@ -416,21 +416,21 @@ Exact carries: the `0x52` lossFactor term (= N64's `0.02f`), the `100.0` forward
 
 | class | DS | N64 | |
 |---|---|---|---|
-| VERY_SLIPPERY | 0.1 | 0.2 | |
-| SLIPPERY | 0.35 | 0.7 | |
-| default | 1.0 | 2.0 | |
-| NOT_SLIPPERY | 1.0 | 3.0 | retuned |
+| `VERY_SLIPPERY` | 0.1 | 0.2 | |
+| `SLIPPERY` | 0.35 | 0.7 | |
+| `default` | 1.0 | 2.0 | |
+| `NOT_SLIPPERY` | 1.0 | 3.0 | retuned |
 
 DS halved the table so `default == 1.0` and the coefficient argument becomes the literal decel
 rate. **The 1 : 3.5 : 10 ratio is preserved exactly.** A rescale, not a redesign. Callers pass
-`2.0` from `UpdateWalkingSpeed` — the same number N64 passes to `apply_slope_decel`.
+`2.0` from `UpdateWalkingSpeed` — the same number N64 passes to [apply_slope_decel](https://github.com/n64decomp/sm64/blob/master/src/game/mario_actions_moving.c#L393).
 
 ### 9.5 What was genuinely replaced
 
-N64's `update_walking_speed` core is **absent**. Verified: `1.1` (`0x119A`/`0x1199`) and `43.0`
+N64's [update_walking_speed](https://github.com/n64decomp/sm64/blob/master/src/game/mario_actions_moving.c#L434) core is **absent**. Verified: `1.1` (`0x119A`/`0x1199`) and `43.0`
 (`0x2B000`) have **zero occurrences in all 394 KB of [ov002](../../config/arm9/overlays/ov002/symbols.txt)** — no literal, no ARM immediate, no
-reciprocal multiply, no magic-number division. Also absent from the walk chain: the `48.0` cap,
-the `32.0`/`24.0` targets, the `0.95` `normal.y` gate.
+reciprocal multiply, no magic-number division. Also absent from the walk chain: the [`48.0` cap](https://github.com/n64decomp/sm64/blob/master/src/game/mario_actions_moving.c#L360-361),
+[the `32.0`/`24.0` targets](https://github.com/n64decomp/sm64/blob/master/src/game/mario_actions_moving.c#L438-441), the [`0.95` `normal.y`](https://github.com/n64decomp/sm64/blob/master/src/game/mario_actions_moving.c#L378) gate.
 
 DS substitutes a constant-rate approach toward a banded stick-magnitude target:
 
@@ -456,16 +456,16 @@ Earlier notes described the [ov098](../../config/arm9/overlays/ov098/symbols.txt
 table. **It is quicksand sink depth.** [ov098](../../config/arm9/overlays/ov098/symbols.txt) is the Shifting Sand Land object overlay;
 [func_ov098_02139228](../../src/actors/daObjBlockS_c.cpp) = `Crate::UpdateQuicksand`. `+0x5f0` is target sink depth, `+0x5f4` current,
 approached at 0.5/frame. Render position is built as `pos.y − this[0x5f4]` — verbatim N64
-`mario.c:1552` `o->header.gfx.pos[1] -= m->quicksandDepth`.
+`mario.c`:[1552](https://github.com/n64decomp/sm64/blob/master/src/game/mario.c#L1552) `o->header.gfx.pos[1] -= m->quicksandDepth`.
 
 | tier | N64 max | DS max (CLPS type) |
 |---|---|---|
 | shallow | 10.0 | 30.0 (type 6) |
 | shallow-moving | 25.0 | 45.0 (type 7) |
 | normal | **60.0** | **60.0** (type 8) |
-| deep → terminal | 160.0 → `ACT_QUICKSAND_DEATH` | 100.0 (type 9) → `Crate_SetState(6)` |
+| deep → terminal | 160.0 → [ACT_QUICKSAND_DEATH](https://github.com/n64decomp/sm64/blob/master/include/sm64.h#L350) | 100.0 (type 9) → `Crate_SetState(6)` |
 
-So **CLPS surface-type values 6-9 are the four quicksand types.** Corroborated on the Player side:
+So **CLPS surface-type values 6-9 are the four quicksand types.** Corroborated on the `Player` side:
 `0x020c2ab8` clears the quicksand flag when type is outside `6..9`.
 
 ### 9.7 Search traps confirmed the hard way
