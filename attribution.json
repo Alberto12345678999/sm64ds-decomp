@@ -5067,6 +5067,7 @@
     "src/actors/daLuigi_c.cpp#_ZN9daLuigi_c6RenderEv": "tangosdev",
     "src/actors/daLuigi_c.cpp#_ZN9daLuigi_c8BehaviorEv": "ruspecial",
     "src/actors/daLuigi_c.cpp#_ZN9daLuigi_c13InitResourcesEv": "tangosdev",
+    "src/actors/daLuigi_c.cpp#daLuigi_c_classInit": "tangosdev",
     "src/actors/daObjHmMaruta_c.cpp#_ZN15daObjHmMaruta_cD1Ev": "tangosdev",
     "src/actors/daObjHmMaruta_c.cpp#_ZN15daObjHmMaruta_cD0Ev": "tangosdev",
     "src/actors/daObjHmMaruta_c.cpp#_ZN15daObjHmMaruta_c16CleanupResourcesEv": "tangosdev",

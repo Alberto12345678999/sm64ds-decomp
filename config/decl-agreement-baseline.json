@@ -7583,9 +7583,6 @@
       "src/_ZN6PlayerC1Ev.cpp": [
         "return:void"
       ],
-      "src/d_a_luigi.cpp": [
-        "return:void"
-      ],
       "src/func_ov006_020c3288.c": [
         "return:int"
       ]
@@ -15440,13 +15437,6 @@
       "src/d_a_kuri_king_kuriking_vanish.cpp": [
         "param:#2 int",
         "param:#3 int"
-      ],
-      "src/d_a_luigi.cpp": [
-        "param:#2 int",
-        "param:#3 int",
-        "param:#4 void *",
-        "param:#5 void *",
-        "return:void *"
       ],
       "src/d_a_moray.c": [
         "param:#2 int",
