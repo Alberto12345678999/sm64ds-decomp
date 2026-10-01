@@ -1,9 +1,9 @@
 //cpp
-// @symbol _ZN8SignPost6RenderEv
+// @symbol _ZN15daObjTatefuda_c6RenderEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 #include "decl_common.h"
 /* recovered: named members + shared header, real C++ method */
-#include "SignPost.h"
+#include "daObjTatefuda_c.h"
 extern "C" {
 }
 struct Sub041 {
@@ -11,7 +11,7 @@ struct Sub041 {
   virtual void v3(); virtual void v4(); virtual void v5(int);
 };
 
-int SignPost::Render()
+int daObjTatefuda_c::Render()
 {
   if (mHidden != 0) return 1;
   void* r = mHoldingPlayer;

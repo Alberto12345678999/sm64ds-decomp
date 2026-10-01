@@ -1,9 +1,9 @@
 //cpp
-// @symbol _ZN8SignPost13InitResourcesEv
+// @symbol _ZN15daObjTatefuda_c13InitResourcesEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 #include "decl_common.h"
 /* recovered: named members + shared header, real C++ method */
-#include "SignPost.h"
+#include "daObjTatefuda_c.h"
 #include "dBgCh_Gnd.h"
 /* Model::LoadFile and dBgW_Kc::LoadFile by their real ROM symbols, carried
    forward from #1554. decl_common.h's ModelLoadFile / MeshColliderLoadFile are
@@ -11,7 +11,7 @@
    wildcards, so the byte gate never saw it. */
 extern "C" void *_ZN5Model8LoadFileER13SharedFilePtr(void *);
 extern "C" void *_ZN7dBgW_Kc8LoadFileER13SharedFilePtr(void *);
-/* THREE OF THE SHADOWS ARE GONE, because SignPost.h now says `SignPost :
+/* THREE OF THE SHADOWS ARE GONE, because daObjTatefuda_c.h now says `daObjTatefuda_c :
    dBgActor_c` and dBgActor_c.h brings in the real dBgActor_c, Model/ModelBase and
    dBgW_KcMbg. Each one is replaced by the thing it was standing in for:
 
@@ -47,7 +47,7 @@ extern "C" CLPS_Block data_ov002_0210d714;
 
 struct V3 { int x, y, z; };
 
-int SignPost::InitResources()
+int daObjTatefuda_c::InitResources()
 {
     void *mf = _ZN5Model8LoadFileER13SharedFilePtr(&data_ov002_0210e064);
     mModel.SetFile((BMD_File*)mf, 1, -1);

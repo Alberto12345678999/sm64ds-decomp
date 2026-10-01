@@ -1,12 +1,12 @@
 //cpp
-// @symbol _ZN8SignPost8BehaviorEv
-/* SignPost::Behavior -- vtable slot 6. Real C++ method over the shared header.
+// @symbol _ZN15daObjTatefuda_c8BehaviorEv
+/* daObjTatefuda_c::Behavior -- vtable slot 6. Real C++ method over the shared header.
  *
  * This was an extern "C" free function over a raw `char *c`, with every field
  * reached by literal offset and a local one-word Vector3. Naming the fields is
  * what proved four of them exist at all: 0x354 (mClsnResult), 0x380
  * (mShadowMat) and 0x584/0x588/0x58c (the two particle handles and the break
- * countdown) were all inside explicit `pad_` runs in include/SignPost.h until
+ * countdown) were all inside explicit `pad_` runs in include/daObjTatefuda_c.h until
  * this body was read. Byte-exact under 2004/b56 after the conversion.
  *
  * What it does, in order: drop the sign if the player carrying it is holding it
@@ -20,7 +20,7 @@
  * LD() is a no-op macro the legacy file used to MARK its read-modify-write
  * sites on mFlags. It is kept, with its name, so the marking survives -- it
  * emits nothing, and it is not the reason those sites take an address. */
-#include "SignPost.h"
+#include "daObjTatefuda_c.h"
 #include "Player.h"
 
 enum Bool { FALSE, TRUE };
@@ -50,7 +50,7 @@ extern "C" void _ZN5dCc_c5ClearEv(void *self);
 extern "C" void _ZN5dCc_c6UpdateEv(void *self);
 extern "C" void func_ov002_020bafc0(char *self);
 
-int SignPost::Behavior()
+int daObjTatefuda_c::Behavior()
 {
     struct Vector3 v;
     struct Vector3 vec, vec2;

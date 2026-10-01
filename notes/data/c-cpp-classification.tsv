@@ -1011,8 +1011,8 @@ src/_ZN8Particle7Manager9AddSystemEiR7Vector3.c	P3-mangled-method-only	arm9		Man
 src/_ZN8Particle7Texture12AllocPalVramEjb.c	P3-mangled-method-only	arm9		Texture	_ZN8Particle7Texture12AllocPalVramEjb	1		False		no-header:Texture
 src/_ZN8Particle7Texture12AllocTexVramEjb.c	P3-mangled-method-only	arm9		Texture	_ZN8Particle7Texture12AllocTexVramEjb	1		False		no-header:Texture
 src/_ZN8Particle9RenderAllEv.c	P3-mangled-method-only	arm9		Particle	_ZN8Particle9RenderAllEv	1		True		-
-src/_ZN8SignPostD0Ev.c	DTOR-ONLY	ov002	daObjTatefuda_c	SignPost/daObjTatefuda_c	_ZN8SignPostD0Ev	1		True	_ZTV10dBgActor_c	-
-src/_ZN8SignPostD1Ev.c	DTOR-ONLY	ov002	daObjTatefuda_c	SignPost/daObjTatefuda_c	_ZN8SignPostD1Ev	1		True	_ZTV10dBgActor_c	-
+src/_ZN15daObjTatefuda_cD0Ev.c	DTOR-ONLY	ov002	daObjTatefuda_c	daObjTatefuda_c/daObjTatefuda_c	_ZN15daObjTatefuda_cD0Ev	1		True	_ZTV10dBgActor_c	-
+src/_ZN15daObjTatefuda_cD1Ev.c	DTOR-ONLY	ov002	daObjTatefuda_c	daObjTatefuda_c/daObjTatefuda_c	_ZN15daObjTatefuda_cD1Ev	1		True	_ZTV10dBgActor_c	-
 src/_ZN8Squasher8BehaviorEv.c	P1-vtable+mangled	ov023	daObjFm_Battan_c	Squasher/daObjFm_Battan_c	vtable daObjFm_Battan_c slot 6 @0x21113b0 | _ZN8Squasher8BehaviorEv	1		True		-
 src/_ZN8daYegg_cD0Ev.c	DTOR-ONLY	ov002	daYegg_c	daYegg_c/daYegg_c	_ZN8daYegg_cD0Ev	1		True		-
 src/_ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs.c	P3-mangled-method-only	arm9		dActor_c	_ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs	1		True		by-value-class-param

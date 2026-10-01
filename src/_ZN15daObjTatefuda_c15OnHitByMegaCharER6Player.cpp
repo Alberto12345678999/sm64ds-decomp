@@ -1,10 +1,10 @@
 //cpp
-// @symbol _ZN8SignPost15OnHitByMegaCharER6Player
-#include "SignPost.h"
+// @symbol _ZN15daObjTatefuda_c15OnHitByMegaCharER6Player
+#include "daObjTatefuda_c.h"
 #include "Player.h"
 
-/* SignPost::OnHitByMegaChar -- vtable slot 27, ov002 0x020bb374.
- * reloc: _ZTV8SignPost+0x6c -> 0x020bb374, _ZTV10dBgActor_c+0x6c ->
+/* daObjTatefuda_c::OnHitByMegaChar -- vtable slot 27, ov002 0x020bb374.
+ * reloc: _ZTV15daObjTatefuda_c+0x6c -> 0x020bb374, _ZTV10dBgActor_c+0x6c ->
  * 0x02010130 (different, real override).
  *
  * SIGNATURE FROM include/dActor_c.h's OWN SLOT 27, `virtual void
@@ -17,7 +17,7 @@
 
 extern "C" void func_02012694(int a, void *b);
 
-void SignPost::OnHitByMegaChar(Player &player)
+void daObjTatefuda_c::OnHitByMegaChar(Player &player)
 {
     player.IncMegaKillCount();
     func_02012694(0x1d, &mCamSpacePosX);

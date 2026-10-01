@@ -154,14 +154,14 @@ was measured instead.
 
 ---
 
-## SignPost (`include/SignPost.h`, [ov002](../config/arm9/overlays/ov002/symbols.txt), size 0x5a4)
+## daObjTatefuda_c (`include/daObjTatefuda_c.h`, [ov002](../config/arm9/overlays/ov002/symbols.txt), size 0x5a4)
 
-Bodies read: `src/_ZN8SignPost13InitResourcesEv.cpp`,
-`src/_ZN8SignPost8BehaviorEv.cpp`, `src/_ZN8SignPost6RenderEv.cpp`,
-`src/_ZN8SignPost16CleanupResourcesEv.cpp`, `src/_ZN8SignPost4KillEv.cpp`,
-`src/_ZN8SignPost15OnGroundPoundedER8dActor_c.cpp`,
-`src/_ZN8SignPost11OnAttacked1ER8dActor_c.cpp`,
-`src/_ZN8SignPost15OnHitByMegaCharER6Player.cpp`.
+Bodies read: `src/_ZN15daObjTatefuda_c13InitResourcesEv.cpp`,
+`src/_ZN15daObjTatefuda_c8BehaviorEv.cpp`, `src/_ZN15daObjTatefuda_c6RenderEv.cpp`,
+`src/_ZN15daObjTatefuda_c16CleanupResourcesEv.cpp`, `src/_ZN15daObjTatefuda_c4KillEv.cpp`,
+`src/_ZN15daObjTatefuda_c15OnGroundPoundedER8dActor_c.cpp`,
+`src/_ZN15daObjTatefuda_c11OnAttacked1ER8dActor_c.cpp`,
+`src/_ZN15daObjTatefuda_c15OnHitByMegaCharER6Player.cpp`.
 
 | Offset | Name | Evidence |
 | --- | --- | --- |
@@ -185,13 +185,13 @@ which is what `include/dBgActor_c.h` calls that offset and what `InitResources` 
 to `dBgW_KcMbg::SetFile`. The marker stays `u8`, the idiom the twin already uses for
 `mdCcAc_c` and `mShadowModel`.
 
-`src/_ZN8SignPost8BehaviorEv.cpp` was an `extern "C"` free function over a raw
+`src/_ZN15daObjTatefuda_c8BehaviorEv.cpp` was an `extern "C"` free function over a raw
 `char *c` with 30 literal offsets and a local one-word `Vector3`; it is now a real
-`int SignPost::Behavior()`. That conversion is what turned 0x354, 0x380, 0x584, 0x588
+`int daObjTatefuda_c::Behavior()`. That conversion is what turned 0x354, 0x380, 0x584, 0x588
 and 0x58c from padding into evidenced fields. It needed one declaration added to the
 header — `int Behavior();`, placed **after** `virtual void Kill()` so that Kill stays
 this class's key function. `tools/eligible.py` gains exactly one name,
-`_ZN8SignPost8BehaviorEv`, and loses none.
+`_ZN15daObjTatefuda_c8BehaviorEv`, and loses none.
 
 Raw-offset collapses, each re-verified byte-exact: `Render`'s
 `*(void **)((char *)&unk_59c)` and `(Sub041 *)((char *)&mModel)`,
@@ -702,7 +702,7 @@ In the C twin, `0x074` becomes `mCamSpacePosX`.
 
 | Offset | Name | Evidence |
 | --- | --- | --- |
-| 0x348 | `mShadowMat` | `Behavior` passes `&mShadowMat` as the `Matrix4x3 &` argument of `dActor_c::DropShadowScaleXYZ(ShadowModel &, Matrix4x3 &, ...)`, with `mShadowModel` as the argument before it. `0x348 + 0x30 = 0x378`. The same shape `SignPost` and `daObjHatenaBlock_c` already carry. |
+| 0x348 | `mShadowMat` | `Behavior` passes `&mShadowMat` as the `Matrix4x3 &` argument of `dActor_c::DropShadowScaleXYZ(ShadowModel &, Matrix4x3 &, ...)`, with `mShadowModel` as the argument before it. `0x348 + 0x30 = 0x378`. The same shape `daObjTatefuda_c` and `daObjHatenaBlock_c` already carry. |
 | 0x37c | `mVariant` | `InitResources` sets `0`/`1` from actorID and uses it as the row index into all three ov098 resource columns `data_ov098_0213c380/384/388`. |
 
 The rename carried into `src/actors/daObjYajirusi_c.cpp` (promoted from `src_tu/`) as well as `src/`.

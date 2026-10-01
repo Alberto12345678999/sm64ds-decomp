@@ -1,8 +1,8 @@
 //cpp
-// @symbol _ZN8SignPost4KillEv
-/* SignPost::Kill() at ov002 0x020bb3b8, 0x74 bytes -- vtable slot 31.
+// @symbol _ZN15daObjTatefuda_c4KillEv
+/* daObjTatefuda_c::Kill() at ov002 0x020bb3b8, 0x74 bytes -- vtable slot 31.
  *
- * ATTRIBUTED BY THE VTABLE. _ZTV8SignPost (ov002 0x02109af8, and the same
+ * ATTRIBUTED BY THE VTABLE. _ZTV15daObjTatefuda_c (ov002 0x02109af8, and the same
  * address as _ZTV15daObjTatefuda_c) carries 0x020bb3b8 at vtable + 0x7c, which
  * is slot 31, while _ZTV10dBgActor_c carries _ZN10dBgActor_c4KillEv at the same slot
  * and both tables carry dActor_c's 0x020100dc at slot 30. So this is this class's
@@ -24,7 +24,7 @@
  * as its mangled name -- its parameters are Fix12<int> BY VALUE and declaring
  * the true types changes how the caller passes them. Both points are argued in
  * full in src/_ZN10dBgActor_c4KillEv.cpp. */
-#include "SignPost.h"
+#include "daObjTatefuda_c.h"
 #include "Sound.h"
 
 extern "C" void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(
@@ -34,7 +34,7 @@ extern "C" void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(
    symbol. It returns int; Kill drops it. */
 extern "C" int func_ov002_020bae9c(void *self);
 
-void SignPost::Kill()
+void daObjTatefuda_c::Kill()
 {
     Vector3 pos;
     Vector3 dustPos;

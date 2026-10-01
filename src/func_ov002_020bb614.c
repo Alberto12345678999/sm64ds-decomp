@@ -3,9 +3,9 @@
 /* recovered: shared common types */
 #include "common.h"
 
-/* SignPost's talk routine, ov002 0x020bb614, 0x3dc bytes. Called on the
- * signpost (`c` is a SignPost *, the class that owns 0x020bb23c..0x020bc240;
- * see include/SignPost.h) once a player has started talking to it.
+/* daObjTatefuda_c's talk routine, ov002 0x020bb614, 0x3dc bytes. Called on the
+ * signpost (`c` is a daObjTatefuda_c *, the class that owns 0x020bb23c..0x020bc240;
+ * see include/daObjTatefuda_c.h) once a player has started talking to it.
  *
  * It walks the player through a three step approach and then shows the sign's
  * message: step 0 turns the player toward the reading spot (or skips straight

@@ -1,10 +1,10 @@
 //cpp
-// @symbol _ZN8SignPostD1Ev
+// @symbol _ZN15daObjTatefuda_cD1Ev
 /* recovered: real C++ destructor -- inline in the class, forced out of line here
  *
- * SignPost.h defines `~SignPost() {}` in the class body on purpose (which is
+ * daObjTatefuda_c.h defines `~daObjTatefuda_c() {}` in the class body on purpose (which is
  * why its derived-free destructors inline, and why the header comment keeps
- * it). A TU that merely includes the header then emits no _ZN8SignPostD1Ev,
+ * it). A TU that merely includes the header then emits no _ZN15daObjTatefuda_cD1Ev,
  * but the ROM carries one at ov002 0x020badd0 -- so this TU asks for it
  * explicitly: the call below cannot be satisfied by the inline copy alone,
  * mwcc has to emit the out-of-line variant, and objisolate drops the forcing
@@ -13,9 +13,9 @@
  * Model members torn down in reverse declaration order, the dBgActor_c base
  * step last.
  */
-#include "SignPost.h"
+#include "daObjTatefuda_c.h"
 
-void _force_SignPostD1(SignPost *p)
+void _force_SignPostD1(daObjTatefuda_c *p)
 {
-    p->~SignPost();
+    p->~daObjTatefuda_c();
 }

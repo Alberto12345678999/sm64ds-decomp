@@ -1,24 +1,24 @@
 //cpp
 #include "Sound.h"
 #include "dBgActor_c.h"
-// @symbol _ZN8SignPost15OnGroundPoundedER8dActor_c
-#include "SignPost.h"
+// @symbol _ZN15daObjTatefuda_c15OnGroundPoundedER8dActor_c
+#include "daObjTatefuda_c.h"
 #include "dActor_c.h"
 
-/* SignPost::OnGroundPounded -- vtable slot 21, ov002 0x020bb27c.
- * reloc: _ZTV8SignPost+0x54 -> 0x020bb27c, _ZTV10dBgActor_c+0x54 ->
+/* daObjTatefuda_c::OnGroundPounded -- vtable slot 21, ov002 0x020bb27c.
+ * reloc: _ZTV15daObjTatefuda_c+0x54 -> 0x020bb27c, _ZTV10dBgActor_c+0x54 ->
  * 0x02010148 (different, real override).
  *
  * include/dActor_c.h's own slot 21 supplies the signature -- `void`, the
  * tree-wide fix from daObjPile_c::OnGroundPounded (36bc6d1df).
  *
- * mPoundsLeft/mPoundCooldown/mRespawnDelay are this class's own fields (include/SignPost.h);
+ * mPoundsLeft/mPoundCooldown/mRespawnDelay are this class's own fields (include/daObjTatefuda_c.h);
  * mPoundCooldown and mRespawnDelay were undescribed padding until this method's body
  * proved they are read/written. `&other + 0x703` reads past dActor_c's own
  * span -- same raw-offset reading daObjPile_c::OnGroundPounded records
  * for its own slot 21. */
 
-void SignPost::OnGroundPounded(dActor_c &other)
+void daObjTatefuda_c::OnGroundPounded(dActor_c &other)
 {
     if (mPoundsLeft == 0) return;
     if (mPoundCooldown != 0) return;
