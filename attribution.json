@@ -5912,6 +5912,7 @@
     "src/actors/daSnowman_c.cpp#_ZN11daSnowman_c8BehaviorEv": "tangosdev",
     "src/actors/daSnowman_c.cpp#_ZN11daSnowman_c13InitResourcesEv": "tangosdev",
     "src/actors/daSnowman_c.cpp#_ZN11daSnowman_c16OnAimedAtWithEggEv": "tangosdev",
+    "src/actors/daSnowman_c.cpp#daSnowman_c_classInit": "tangosdev",
     "src/actors/daMoray_c.cpp#_ZN9daMoray_cD1Ev": "tangosdev",
     "src/actors/daMoray_c.cpp#_ZN9daMoray_cD0Ev": "tangosdev",
     "src/actors/daMoray_c.cpp#func_ov016_02111284": "lunavyqo",
