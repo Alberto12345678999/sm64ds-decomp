@@ -335,3 +335,19 @@ extern "C" void func_ov027_02111994(daPgDfdr_c *self)
     self->mClsnMat.m[11] = self->mPosZ;
     self->mMeshCollider.Transform(self->mClsnMat, self->mAngleY);
 }
+// @symbol _ZN10daPgDfdr_cD1Ev
+// @symbol _ZN10daPgDfdr_cD0Ev
+/* -------------------------------------------------------------------------- */
+/* ROM ordinals 0 and 1 -- _ZN10daPgDfdr_cD1Ev 0x021118c8 size 0x5c and        */
+/* _ZN10daPgDfdr_cD0Ev 0x02111924 size 0x70 -- are NOT written here.           */
+/*                                                                            */
+/* The destructor is defined INLINE in include/daPgDfdr_c.h; see change (1) in */
+/* this file's header for why. One vtable store and three member teardowns     */
+/* come out of that one empty body: its own vptr, then -- in reverse           */
+/* declaration order -- dCcAc_c at +0x398, TextureSequence at +0x384 and       */
+/* ModelAnim at +0x320, then dBgActor_c's own teardown inlined (its destructor */
+/* is defined in its class body too), which is dBgW_KcMbg at +0x124 and Model  */
+/* at +0x0d4, then dActor_c. D0 is that plus the inherited inline `operator    */
+/* delete` found by ordinary lookup on dActor_c two levels up; slot 17 is the  */
+/* deleting variant.                                                          */
+/* -------------------------------------------------------------------------- */
