@@ -7,7 +7,7 @@
     "no_codegen_trick",
     "no_mangled_refs"
   ],
-  "count": 3062,
+  "count": 3060,
   "converted": [
     "src/ARMMathLoadState.c",
     "src/ARMMathSaveState.c",
@@ -383,9 +383,7 @@
     "src/_ZN11dCapEnemy_c14RenderCapModelEPK7Vector3.cpp",
     "src/_ZN11dCapEnemy_c14UnloadCapModelEv.cpp",
     "src/_ZN11dCapEnemy_cC2Ev.cpp",
-    "src/actors/dCapEnemy_c.cpp#_ZN11dCapEnemy_cD0Ev",
     "src/_ZN11dCapEnemy_cD1Ev.cpp",
-    "src/actors/dCapEnemy_c.cpp#_ZN11dCapEnemy_cD2Ev",
     "src/_ZN11dScMgBase_c11OnAttacked1Ev.cpp",
     "src/_ZN11dScMgBase_c11OnAttacked2Ev.cpp",
     "src/_ZN11dScMgBase_c13OnTurnIntoEggEi.cpp",
