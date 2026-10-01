@@ -7,7 +7,7 @@
     "no_codegen_trick",
     "no_mangled_refs"
   ],
-  "count": 3068,
+  "count": 3069,
   "converted": [
     "src/ARMMathLoadState.c",
     "src/ARMMathSaveState.c",
@@ -3076,6 +3076,7 @@
     "src/actors/daObjMarioCap_c.cpp#daObjMarioCap_c_classInit",
     "src/actors/daObjWlKoopaShutter_c.cpp#daObjWlKoopaShutter_c_classInit",
     "src/actors/daObjWlSubmarine_c.cpp#daObjWlSubmarine_c_classInit",
-    "src/actors/daWater_Tatumaki_c.cpp#daWater_Tatumaki_c_classInit"
+    "src/actors/daWater_Tatumaki_c.cpp#daWater_Tatumaki_c_classInit",
+    "src/actors/daWater_Suikomi_c.cpp#daWater_Suikomi_c_classInit"
   ]
 }

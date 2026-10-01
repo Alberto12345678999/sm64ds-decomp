@@ -22,11 +22,7 @@ src/actors/daWater_Tatumaki_c.cpp:
 
 src/actors/daWater_Suikomi_c.cpp:
     complete
-    .text start:0x021121fc end:0x02112450
-
-src/d_a_water_suikomi.c:
-    complete
-    .text start:0x02112450 end:0x02112490
+    .text start:0x021121fc end:0x02112490
 
 src/__sinit_ov026_02112b7c.c:
     complete

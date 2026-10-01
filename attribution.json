@@ -6328,6 +6328,7 @@
     "src/actors/daWater_Suikomi_c.cpp#func_ov026_021122cc": "tangosdev",
     "src/actors/daWater_Suikomi_c.cpp#func_ov026_021122d4": "tangosdev",
     "src/actors/daWater_Suikomi_c.cpp#func_ov026_02112324": "tangosdev",
+    "src/actors/daWater_Suikomi_c.cpp#daWater_Suikomi_c_classInit": "tangosdev",
     "src/actors/daKing_Donketu_c.cpp#_ZN16daKing_Donketu_c8BehaviorEv": "lunavyqo",
     "src/actors/daKing_Donketu_c.cpp#_ZN16daKing_Donketu_c13InitResourcesEv": "tangosdev",
     "src/actors/daKing_Donketu_c.cpp#_ZN16daKing_Donketu_c16OnAimedAtWithEggEv": "tangosdev",
