@@ -34497,19 +34497,19 @@ matched: yes</title></rect><rect x="1591.51" y="261.56" width="3.49" height="8.6
 module: ov058
 addr: 0x02111688
 size: 92 bytes
-matched: yes</title></rect><rect x="1058.35" y="302.18" width="7.94" height="5.16" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN6BowserD1Ev
+matched: yes</title></rect><rect x="1058.35" y="302.18" width="7.94" height="5.16" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7daKpa_cD1Ev
 module: ov060
 addr: 0x02111900
 size: 80 bytes
-matched: yes</title></rect><rect x="1058.35" y="307.35" width="7.94" height="6.45" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN6BowserD0Ev
+matched: yes</title></rect><rect x="1058.35" y="307.35" width="7.94" height="6.45" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7daKpa_cD0Ev
 module: ov060
 addr: 0x02111950
 size: 100 bytes
-matched: yes</title></rect><rect x="1058.35" y="313.80" width="7.94" height="3.10" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10BowserTailD1Ev
+matched: yes</title></rect><rect x="1058.35" y="313.80" width="7.94" height="3.10" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11daKpaTail_cD1Ev
 module: ov060
 addr: 0x021119b4
 size: 48 bytes
-matched: yes</title></rect><rect x="1058.35" y="316.89" width="7.94" height="4.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10BowserTailD0Ev
+matched: yes</title></rect><rect x="1058.35" y="316.89" width="7.94" height="4.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11daKpaTail_cD0Ev
 module: ov060
 addr: 0x021119e4
 size: 68 bytes
@@ -34777,39 +34777,39 @@ matched: yes</title></rect><rect x="1186.96" y="302.18" width="33.92" height="4.
 module: ov060
 addr: 0x02115d68
 size: 280 bytes
-matched: yes</title></rect><rect x="1220.88" y="302.18" width="15.51" height="4.23" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN6Bowser16CleanupResourcesEv
+matched: yes</title></rect><rect x="1220.88" y="302.18" width="15.51" height="4.23" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7daKpa_c16CleanupResourcesEv
 module: ov060
 addr: 0x02115e80
 size: 128 bytes
-matched: yes</title></rect><rect x="1236.39" y="302.18" width="0.97" height="4.23" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10BowserTail16CleanupResourcesEv
+matched: yes</title></rect><rect x="1236.39" y="302.18" width="0.97" height="4.23" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11daKpaTail_c16CleanupResourcesEv
 module: ov060
 addr: 0x02115f00
 size: 8 bytes
-matched: yes</title></rect><rect x="1237.36" y="302.18" width="0.48" height="4.23" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN6Bowser16OnPendingDestroyEv
+matched: yes</title></rect><rect x="1237.36" y="302.18" width="0.48" height="4.23" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7daKpa_c16OnPendingDestroyEv
 module: ov060
 addr: 0x02115f08
 size: 4 bytes
-matched: yes</title></rect><rect x="1146.75" y="306.42" width="6.11" height="6.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN6Bowser6RenderEv
+matched: yes</title></rect><rect x="1146.75" y="306.42" width="6.11" height="6.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7daKpa_c6RenderEv
 module: ov060
 addr: 0x02115f0c
 size: 80 bytes
-matched: yes</title></rect><rect x="1152.86" y="306.42" width="0.61" height="6.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10BowserTail6RenderEv
+matched: yes</title></rect><rect x="1152.86" y="306.42" width="0.61" height="6.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11daKpaTail_c6RenderEv
 module: ov060
 addr: 0x02115f5c
 size: 8 bytes
-matched: yes</title></rect><rect x="1153.47" y="306.42" width="21.09" height="6.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN6Bowser8BehaviorEv
+matched: yes</title></rect><rect x="1153.47" y="306.42" width="21.09" height="6.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7daKpa_c8BehaviorEv
 module: ov060
 addr: 0x02115f64
 size: 276 bytes
-matched: yes</title></rect><rect x="1174.56" y="306.42" width="14.06" height="6.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10BowserTail8BehaviorEv
+matched: yes</title></rect><rect x="1174.56" y="306.42" width="14.06" height="6.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11daKpaTail_c8BehaviorEv
 module: ov060
 addr: 0x02116078
 size: 184 bytes
-matched: yes</title></rect><rect x="1188.63" y="306.42" width="49.22" height="6.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN6Bowser13InitResourcesEv
+matched: yes</title></rect><rect x="1188.63" y="306.42" width="49.22" height="6.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7daKpa_c13InitResourcesEv
 module: ov060
 addr: 0x02116130
 size: 644 bytes
-matched: yes</title></rect><rect x="1146.75" y="313.12" width="8.86" height="3.47" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10BowserTail13InitResourcesEv
+matched: yes</title></rect><rect x="1146.75" y="313.12" width="8.86" height="3.47" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11daKpaTail_c13InitResourcesEv
 module: ov060
 addr: 0x021163b4
 size: 60 bytes
