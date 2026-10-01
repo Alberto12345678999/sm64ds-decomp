@@ -26,7 +26,7 @@
 struct daWater_Hakidasi_c : dEnemyBase_c {
     /* What mState points at. Behavior calls the handler at +0x08 through it and
        nothing else in the tree reads the rest, so only that field is evidenced.
-       Same shape as Bullet::State -- see include/Bullet.h. */
+       Same shape as daPropeller_Heyho_Fire_c::State -- see include/daPropeller_Heyho_Fire_c.h. */
     struct State {
         u8  pad_00[0x8];
         void (daWater_Hakidasi_c::*mMain)();   /* 0x08 */

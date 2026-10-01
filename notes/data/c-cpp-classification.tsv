@@ -1014,7 +1014,7 @@ src/_ZN8Particle9RenderAllEv.c	P3-mangled-method-only	arm9		Particle	_ZN8Particl
 src/_ZN8SignPostD0Ev.c	DTOR-ONLY	ov002	daObjTatefuda_c	SignPost/daObjTatefuda_c	_ZN8SignPostD0Ev	1		True	_ZTV10dBgActor_c	-
 src/_ZN8SignPostD1Ev.c	DTOR-ONLY	ov002	daObjTatefuda_c	SignPost/daObjTatefuda_c	_ZN8SignPostD1Ev	1		True	_ZTV10dBgActor_c	-
 src/_ZN8Squasher8BehaviorEv.c	P1-vtable+mangled	ov023	daObjFm_Battan_c	Squasher/daObjFm_Battan_c	vtable daObjFm_Battan_c slot 6 @0x21113b0 | _ZN8Squasher8BehaviorEv	1		True		-
-src/_ZN8YoshiEggD0Ev.c	DTOR-ONLY	ov002	daYegg_c	YoshiEgg/daYegg_c	_ZN8YoshiEggD0Ev	1		True		-
+src/_ZN8daYegg_cD0Ev.c	DTOR-ONLY	ov002	daYegg_c	daYegg_c/daYegg_c	_ZN8daYegg_cD0Ev	1		True		-
 src/_ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs.c	P3-mangled-method-only	arm9		dActor_c	_ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs	1		True		by-value-class-param
 src/_ZN8dActor_c12ReflectAngleE5Fix12IiES1_s.c	P3-mangled-method-only	arm9		dActor_c	_ZN8dActor_c12ReflectAngleE5Fix12IiES1_s	1		True		by-value-class-param
 src/_ZN8dActor_c13SpawnFireballERK7Vector3PK10Vector3_165Fix12IiES7_j.c	P3-mangled-method-only	arm9		dActor_c	_ZN8dActor_c13SpawnFireballERK7Vector3PK10Vector3_165Fix12IiES7_j	1		True		by-value-class-param

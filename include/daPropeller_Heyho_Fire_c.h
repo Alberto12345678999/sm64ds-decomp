@@ -1,9 +1,14 @@
-#ifndef BULLET_H
-#define BULLET_H
+#ifndef DAPROPELLER_HEYHO_FIRE_C_H
+#define DAPROPELLER_HEYHO_FIRE_C_H
 
 #include "types.h"
 
-/* Derives from dEnemyBase_c, on the evidence of its own destructor: `_ZN6BulletD1Ev`
+/* The propeller Shy Guy's fireball (registry profile PROPELLER_HEYHO_FIRE).
+ * The cartridge's RTTI names the class: _ZTI24daPropeller_Heyho_Fire_c at
+ * 0x0210d608, _ZTS24daPropeller_Heyho_Fire_c at 0x0210d614, and the vtable
+ * _ZTV24daPropeller_Heyho_Fire_c at 0x0210d654 that the factory and destructor store.
+ *
+ * Derives from dEnemyBase_c, on the evidence of its own destructor: `_ZN24daPropeller_Heyho_Fire_cD1Ev`
  * stores this vtable, destroys its members in reverse declaration order, then
  * calls `dEnemyBase_c::~dEnemyBase_c`. Everything this header used to restate below 0x110
  * belongs to that chain and is inherited now.
@@ -30,14 +35,14 @@
 #include "TextureTransformer.h"
 #include "dBgCh_Actr.h"
 
-struct Bullet : dEnemyBase_c {
+struct daPropeller_Heyho_Fire_c : dEnemyBase_c {
     /* What mCurrentState points at. Behavior calls the handler at +0x08
        through it; only that handler is evidenced. The field was reachable only
        through the `struct dActor_c { char pad[0x350]; Holder* h; }` stand-in that
        file used to carry, so the generated header never had it. */
     struct State {
         u8  pad_00[0x8];
-        void (Bullet::*mMain)();      /* 0x08 */
+        void (daPropeller_Heyho_Fire_c::*mMain)();      /* 0x08 */
     };
 
     dCcAc_c           mdCcAc_c;   /* 0x110 */
@@ -48,7 +53,7 @@ struct Bullet : dEnemyBase_c {
     s32                          unk_358;               /* 0x358 */
 
     /* --- vtable --- */
-    virtual ~Bullet();
+    virtual ~daPropeller_Heyho_Fire_c();
 
     int Behavior();
     int CleanupResources();
@@ -59,7 +64,7 @@ struct Bullet : dEnemyBase_c {
 
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
-typedef char Bullet_size_must_be_0x35c[sizeof(Bullet) == 0x35c ? 1 : -1];
+typedef char daPropeller_Heyho_Fire_c_size_must_be_0x35c[sizeof(daPropeller_Heyho_Fire_c) == 0x35c ? 1 : -1];
 #endif
 
-#endif /* BULLET_H */
+#endif /* DAPROPELLER_HEYHO_FIRE_C_H */

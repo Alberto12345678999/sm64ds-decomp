@@ -499,9 +499,9 @@ Two readings, and choosing between them is a human call:
 Note the sizes differ — 0x100 ([ov002](../config/arm9/overlays/ov002/symbols.txt)) vs 0xbc ([ov004](../config/arm9/overlays/ov004/symbols.txt)) — which argues against a straight duplicate and so favours the first reading. Either way, a matched file currently
 references a symbol its own module never otherwise calls.
 
-**G8.3 — `0x02123804` stays open.** [high] Its single caller [func_ov002_020ec670](../src/func_ov002_020ec670.c) makes
+**G8.3 — `0x02123804` stays open.** [high] Its single caller [func_ov002_020ec670](../src/actors/daYegg_c.cpp) makes
 no unambiguous call to any of [ov077](../config/arm9/overlays/ov077/symbols.txt)/[ov078](../config/arm9/overlays/ov078/symbols.txt)/[ov079](../config/arm9/overlays/ov079/symbols.txt)/[ov080](../config/arm9/overlays/ov080/symbols.txt), so co-residency says nothing. The [ov080](../config/arm9/overlays/ov080/symbols.txt) candidate is named (`_ZN14daChoro_Rock_cD0Ev`, size 0x54) and the others are placeholders
-of size 0x8 / 0x60 / 0x288. Needs different evidence — a call-shape or runtime check.
+of size 0x8 / 0x60 / 0x288. Needs different evidence — a call-shape or runtime check. **Since settled by the call's guard, not by residency:** the call runs only for actor types 0xa4/0xa5 (BATAN/BATANKING, both `daBtn_c`, in [ov079](../config/arm9/overlays/ov079/symbols.txt)), so the source names `func_ov079_02123804`.
 
 **G8.4 — Ghidra independently corroborates the [ov006](../config/arm9/overlays/ov006/symbols.txt) → [ov004](../config/arm9/overlays/ov004/symbols.txt) verdict.** [high] See §9:
 the SyncDsd'd decompilation of [func_ov006_020dbe9c](../src/actors/dScMgCoin_c.cpp) names its callee

@@ -1,5 +1,5 @@
-#ifndef YOSHIEGG_H
-#define YOSHIEGG_H
+#ifndef DAYEGG_C_H
+#define DAYEGG_C_H
 
 #include "types.h"
 #include "dEnemyBase_c.h"
@@ -8,9 +8,11 @@
 #include "ShadowModel.h"
 #include "dBgCh_Actr.h"
 
-/* daYegg_c in the ROM's RTTI. Derives from dEnemyBase_c, and both witnesses agree:
- * daYegg_c_classInit allocates 0x42c, calls _ZN12dEnemyBase_cC2Ev, stores _ZTV8YoshiEgg and
- * constructs the four members below in order; _ZN8YoshiEggD1Ev destroys the same four
+/* The Yoshi egg. The cartridge's RTTI names the class: _ZTS8daYegg_c at 0x0210ad78,
+ * _ZTI8daYegg_c at 0x0210ad84, and the vtable _ZTV8daYegg_c at 0x0210adb4 that the
+ * factory and destructor store. Derives from dEnemyBase_c, and both witnesses agree:
+ * daYegg_c_classInit allocates 0x42c, calls _ZN12dEnemyBase_cC2Ev, stores _ZTV8daYegg_c and
+ * constructs the four members below in order; _ZN8daYegg_cD1Ev destroys the same four
  * in reverse and chains to _ZN12dEnemyBase_cD2Ev.
  *
  * SIZE 0x42c, the literal in the factory's fBase_c::operator new. ShadowModel ends
@@ -21,7 +23,7 @@
  * the Animation base sits at +0x50, so 0x300 + 0x50 is mModelAnim's Animation
  * subobject. It disappears here because the type expresses it.
  */
-struct YoshiEgg : dEnemyBase_c {
+struct daYegg_c : dEnemyBase_c {
     dCcAc_c  mdCcAc_c;    /* 0x110 */
     dBgCh_Actr        mWithMeshClsn;          /* 0x144 */
     ModelAnim           mModelAnim;             /* 0x300 */
@@ -63,7 +65,7 @@ struct YoshiEgg : dEnemyBase_c {
     u8  unk_428;                                /* 0x428 -- param1 >> 4 */
     u8  pad_429[0x3];
 
-    virtual ~YoshiEgg();
+    virtual ~daYegg_c();
 
     /* methods */
     int Behavior();
@@ -74,7 +76,7 @@ struct YoshiEgg : dEnemyBase_c {
 
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
-typedef char YoshiEgg_size_must_be_0x42c[sizeof(YoshiEgg) == 0x42c ? 1 : -1];
+typedef char daYegg_c_size_must_be_0x42c[sizeof(daYegg_c) == 0x42c ? 1 : -1];
 #endif
 
-#endif /* YOSHIEGG_H */
+#endif /* DAYEGG_C_H */
