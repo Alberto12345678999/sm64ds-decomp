@@ -1,5 +1,5 @@
-#ifndef DOOR_H
-#define DOOR_H
+#ifndef DADOOR_C_H
+#define DADOOR_C_H
 
 #include "types.h"
 #include "dActor_c.h"
@@ -9,53 +9,48 @@
  * distinct from StarDoor and daChRoom_c which are their own classes/headers.
  *
  * DERIVATION. tools/rtti_extract.py has the RTTI record at ov100 0x02148158,
- * mangled "8daDoor_c" -- the ROM struct name, which is NOT the name this
- * header uses -- with ONE base, dActor_c, at subobject offset 0.
+ * mangled "8daDoor_c", with ONE base, dActor_c, at subobject offset 0.
  *
- * "Door" is a coined name, and the cartridge disagrees with it: _ZTS8daDoor_c
- * at ov100 0x0214814c is a data symbol whose BYTES spell "8daDoor_c", so
- * renaming this class to daDoor_c is what would let that string be
- * data-verified. The tree is currently inconsistent about it -- _ZTV4Door
- * (coined, from the earlier destructor-pair slice) sits three symbols away
- * from _ZTS8daDoor_c and _ZTI8daDoor_c (the ROM's own). That inconsistency
- * predates this header and is deliberately not resolved here; folding both
- * consumers onto this one header is what makes resolving it a single rename
- * instead of two. It is a leaf: nothing in the image derives from it.
+ * NAME. The cartridge names this class: _ZTS8daDoor_c at 0x0214814c,
+ * _ZTI8daDoor_c at 0x02148158, and the vtable _ZTV8daDoor_c at 0x02148188
+ * that the factory and destructor store. Earlier work coined the name
+ * "Door" for it (_ZTV4Door, _ZN4DoorD1Ev and so on); every one of those now
+ * spells the ROM's name. It is a leaf: nothing in the image derives from it.
  *
- * VTABLE. data_02148188 (_ZTV4Door) is 31 slots, the same count as dActor_c's
+ * VTABLE. data_02148188 (_ZTV8daDoor_c) is 31 slots, the same count as dActor_c's
  * own table -- confirmed with tools/rtti_vtables.py --own daDoor_c, which also
- * shows the destructor pair already migrated under the coined name "Door"
- * (_ZN4DoorD1Ev / _ZN4DoorD0Ev, ov100 0x021443f4 / 0x02144424) by earlier
+ * shows the destructor pair already migrated as a method pair
+ * (_ZN8daDoor_cD1Ev / _ZN8daDoor_cD0Ev, ov100 0x021443f4 / 0x02144424) by earlier
  * work, before this class had its own header. This class overrides five
  * slots beyond the destructor:
  *
- *   0   InitResources      ov100 0x021455a0  (src/_ZN4Door13InitResourcesEv.c)
- *   3   CleanupResources   ov100 0x0214542c  (src/_ZN4Door16CleanupResourcesEv.cpp)
- *   6   Behavior           ov100 0x02145550  (src/_ZN4Door8BehaviorEv.cpp)
- *   9   Render             ov100 0x021454c8  (src/_ZN4Door6RenderEv.cpp)
- *   12  OnPendingDestroy   ov100 0x021454c4  (src/_ZN4Door16OnPendingDestroyEv.c)
+ *   0   InitResources      ov100 0x021455a0  (src/_ZN8daDoor_c13InitResourcesEv.c)
+ *   3   CleanupResources   ov100 0x0214542c  (src/_ZN8daDoor_c16CleanupResourcesEv.cpp)
+ *   6   Behavior           ov100 0x02145550  (src/_ZN8daDoor_c8BehaviorEv.cpp)
+ *   9   Render             ov100 0x021454c8  (src/_ZN8daDoor_c6RenderEv.cpp)
+ *   12  OnPendingDestroy   ov100 0x021454c4  (src/_ZN8daDoor_c16OnPendingDestroyEv.c)
  *
  * (config/arm9/overlays/ov100/relocs.txt: 0x02148188/0x02148194/0x021481a0/
  * 0x021481ac/0x021481b8 -- the vtable words at slots 0/3/6/9/12 -- each load
  * exactly the addresses above.) All five bytes still match; only the symbol
  * NAMES were placeholders (func_ov100_0214xxxx), now renamed.
  *
- * REAL METHOD STATUS. CleanupResources and Behavior are genuine `Door::`
+ * REAL METHOD STATUS. CleanupResources and Behavior are genuine `daDoor_c::`
  * definitions. InitResources, Render and OnPendingDestroy still use the
  * historical free-function ABI spelling; each needs its own byte-verified
  * conversion rather than being inferred from the declaration alone.
  *
  * THEIR FIELD ACCESS, HOWEVER, IS NOW THIS HEADER'S. The naming slice left
- * Door described by two headers at once: this one, and the generated flat
- * placeholder include/daDoor_c.h, which restated dActor_c's fields inline as
- * pad_000[0x5c] + unk_05c/unk_060/... and which _ZN4Door6RenderEv.cpp and
- * _ZN4Door13InitResourcesEv.c both included. daDoor_c.h is DELETED; both
- * files now take a Door and name their fields, through the C++ class below
+ * daDoor_c described by two headers at once: this one, and the generated flat
+ * placeholder that once sat at include/daDoor_c.h, which restated dActor_c's
+ * fields inline as pad_000[0x5c] + unk_05c/unk_060/... and which _ZN8daDoor_c6RenderEv.cpp and
+ * _ZN8daDoor_c13InitResourcesEv.c both included. That placeholder is gone; both
+ * files now take a daDoor_c and name their fields, through the C++ class below
  * or the C-mode branch after it. Every offset is unchanged and both files
  * were re-measured: Render is byte-exact under the pinned 2004/b56, and
  * InitResources compiles to output IDENTICAL to its pre-fold bytes.
  *
- * src/_ZN4Door13InitResourcesEv.c ALREADY FAILED TO BYTE-MATCH before the
+ * src/_ZN8daDoor_c13InitResourcesEv.c ALREADY FAILED TO BYTE-MATCH before the
  * rename, by one instruction (candidate 0x300 against the ROM's 0x2fc), and
  * the fold neither caused nor changed that. It byte-matches now: the gap was
  * an address the compiler materialised for a read-modify-write of param1
@@ -66,7 +61,7 @@
  * for that range, so dsd supplies it from the cartridge and the ROM build
  * does not yet compile the file. That is a layout question and is untouched.
  *
- * SIZE. daDoor_c_classInit.c calls `_ZN7fBase_cnwEj(328)` -- 0x148 -- for a fresh Door,
+ * SIZE. daDoor_c_classInit.c calls `_ZN7fBase_cnwEj(328)` -- 0x148 -- for a fresh daDoor_c,
  * then _ZN8dActor_cC2Ev and _ZN9ModelAnimC1Ev at +0xd4. dActor_c is 0xd0
  * (include/dActor_c.h) and ModelAnim is 0x64 (include/ModelAnim.h), so the
  * embedded ModelAnim runs 0xd4..0x138 (the same 4-byte alignment pad
@@ -82,7 +77,7 @@
  * typing it was future work. They were never unidentified. include/Model.h
  * names slot 4 Virtual10(Matrix4x3&) at vtable offset 0x10 and slot 5
  * Render(const Vector3*) at 0x14, and those are exactly the two the ROM
- * dispatches in _ZN4Door6RenderEv (`ldr r2,[r2,#0x10]`, `ldr r2,[r2,#0x14]`);
+ * dispatches in _ZN8daDoor_c6RenderEv (`ldr r2,[r2,#0x10]`, `ldr r2,[r2,#0x14]`);
  * CleanupResources' third call is slot 1, the deleting destructor. Four
  * independent things agree the object is a Model and not merely Model-shaped:
  * InitResources allocates it `_Znwj(0x50)` and sizeof(Model) is 0x50; it runs
@@ -103,7 +98,7 @@
 
 #ifdef __cplusplus
 
-struct Door : dActor_c {
+struct daDoor_c : dActor_c {
     u8  pad_0d0[0x4];
     /* Named by daDoor_c_classInit.c's own _ZN9ModelAnimC1Ev call at +0xd4 -- a
        relocation the ROM build checks, same idiom as include/dBgActor_c.h's
@@ -128,27 +123,27 @@ struct Door : dActor_c {
                        data_ov089_02132c50.
          mKeyModelIdx -- param1 - 8 for that same 9..0xd range, re-zeroed for
                        param1 0xc; indexes LoadKeyModels/data_ov089_02132894.
-       [_ZN4Door13InitResourcesEv.c, _ZN4Door6RenderEv.cpp,
-        _ZN4Door16CleanupResourcesEv.cpp] */
+       [_ZN8daDoor_c13InitResourcesEv.c, _ZN8daDoor_c6RenderEv.cpp,
+        _ZN8daDoor_c16CleanupResourcesEv.cpp] */
     Model *mKeyModel;          /* 0x138 -- owned, see SIZE above */
     void *mKeyFile;           /* 0x13c -- released through SharedFilePtr */
-    /* Behavior casts this to a node whose +0x8 is a `void (Door::*)(int)` and
-       calls it on this Door; written by src/func_ov100_021453d8.cpp.
-       [_ZN4Door8BehaviorEv.cpp] */
+    /* Behavior casts this to a node whose +0x8 is a `void (daDoor_c::*)(int)` and
+       calls it on this daDoor_c; written by src/func_ov100_021453d8.cpp.
+       [_ZN8daDoor_c8BehaviorEv.cpp] */
     void *mCallbackNode;           /* 0x140 -- callback-node pointer, see SIZE above */
     s8   mKeyModelIdx;            /* 0x144 -- key-model index */
     u8   pad_145[0x3];
 
     /* --- vtable. Declared first, deliberately -- it is already the key
-       function (see DERIVATION above): _ZN4DoorD1Ev.c / _ZN4DoorD0Ev.c define
-       it as extern "C" free functions, never as a real `Door::~Door()`, so
+       function (see DERIVATION above): _ZN8daDoor_cD1Ev.c / _ZN8daDoor_cD0Ev.c define
+       it as extern "C" free functions, never as a real `daDoor_c::~daDoor_c()`, so
        nothing here changes which TU the vtable is emitted from. --- */
-    virtual ~Door();
+    virtual ~daDoor_c();
 
     /* --- overrides of inherited fBase_c slots dActor_c left untouched (see
        include/dActor_c.h: "Slots 0, 3, 6, 9, 12 ... still point at the
        fBase_c implementations"). CleanupResources and Behavior are real
-       Door methods; the remaining overrides retain their historical ABI
+       daDoor_c methods; the remaining overrides retain their historical ABI
        spellings until each can be converted without changing ROM bytes. --- */
     virtual s32 InitResources();          /* slot 0 */
     virtual s32 CleanupResources();       /* slot 3 */
@@ -161,7 +156,7 @@ struct Door : dActor_c {
    evidences. A silently-added member anywhere fails this. */
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
-typedef char Door_size_must_be_0x148[sizeof(Door) == 0x148 ? 1 : -1];
+typedef char daDoor_c_size_must_be_0x148[sizeof(daDoor_c) == 0x148 ? 1 : -1];
 #endif
 
 #else
@@ -183,7 +178,7 @@ typedef char Door_size_must_be_0x148[sizeof(Door) == 0x148 ? 1 : -1];
    base.mAngleX/Y/Z, 0x0a4/0x0a8/0x0ac base.unk_0a4/mVertSpeed/unk_0ac,
    0x0e8 mModel.data.transforms, and mKeyModelIdx is this class's own and keeps
    its name. */
-struct Door {
+struct daDoor_c {
     struct dActor_c base;    /* 0x000..0x0cf */
     u8  pad_0d0[0x4];
     ModelAnim mModel;        /* 0x0d4..0x137 */
@@ -199,13 +194,13 @@ struct Door {
    which is the whole point of nesting them rather than restating offsets. */
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
-typedef char Door_size_must_be_0x148[sizeof(struct Door) == 0x148 ? 1 : -1];
+typedef char daDoor_c_size_must_be_0x148[sizeof(struct daDoor_c) == 0x148 ? 1 : -1];
 #endif
 
-/* So a source declaring a Door reads the same in both modes, the way
+/* So a source declaring a daDoor_c reads the same in both modes, the way
    include/ModelAnim.h does it. */
-typedef struct Door Door;
+typedef struct daDoor_c daDoor_c;
 
 #endif /* __cplusplus */
 
-#endif /* DOOR_H */
+#endif /* DADOOR_C_H */

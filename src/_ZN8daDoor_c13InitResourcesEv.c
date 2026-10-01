@@ -1,17 +1,17 @@
-// @symbol _ZN4Door13InitResourcesEv
-#include "Door.h"
-// recovered name: Door::InitResources
+// @symbol _ZN8daDoor_c13InitResourcesEv
+#include "daDoor_c.h"
+// recovered name: daDoor_c::InitResources
 /* recovered: renamed to Class_Method, vtable slot 0 */
-/* Door::InitResources -- vtable slot 0, ov100 0x021455a0. Declared as an
- * override in include/Door.h, defined here as a free function taking the
+/* daDoor_c::InitResources -- vtable slot 0, ov100 0x021455a0. Declared as an
+ * override in include/daDoor_c.h, defined here as a free function taking the
  * object pointer explicitly, the same idiom the rest of the class uses and
  * the one src/actors/ActorBase.cpp uses for fBase_c's own slot 0.
  *
- * FOLDED ONTO include/Door.h. This file used to include the generated flat
+ * FOLDED ONTO include/daDoor_c.h. This file used to include the generated flat
  * placeholder include/daDoor_c.h -- which restated dActor_c's fields inline
  * as pad_000[0x5c] + unk_05c/unk_060/... -- and reach the rest of the object
- * through raw `c + 0xNN` arithmetic. It now takes a `struct Door *` and names
- * every field through the C-mode branch of Door.h, which nests
+ * through raw `c + 0xNN` arithmetic. It now takes a `struct daDoor_c *` and names
+ * every field through the C-mode branch of daDoor_c.h, which nests
  * `struct dActor_c` and `ModelAnim` rather than restating their offsets. What
  * that buys, beyond the names: 0x05c/0x060/0x064 are dActor_c's mPosX/Y/Z and
  * 0x08e its mAngleY, so the opening call is visibly "rotate my own position
@@ -33,11 +33,11 @@
  *
  * NOT RENAMED BUT WORTH RECORDING: the block near the end writes mPosX,
  * mPosY + 0xb4000 and mPosZ into 0x0a4/0x0a8/0x0ac. dActor_c.h names the
- * middle of those three `mVertSpeed`, which cannot be what a Door is storing
+ * middle of those three `mVertSpeed`, which cannot be what a daDoor_c is storing
  * there -- three consecutive words taking a position triple say 0x0a4..0x0af
  * is a second Vector3 for at least this class. Left spelt as dActor_c has
  * it, because renaming a base field on one derived class's evidence is a
- * dActor_c change with 62-plus consumers, not a Door one. */
+ * dActor_c change with 62-plus consumers, not a daDoor_c one. */
 enum { false, true };
 
 typedef struct { int x, y, z; } Vec3;
@@ -88,14 +88,14 @@ extern void *_Znwj(unsigned int sz);
 extern void *_ZN5ModelC1Ev(void *self);
 extern unsigned char data_0209f250;
 extern int data_0209f394[];
-/* Returns int: _ZN4Door8BehaviorEv passes its result straight into the
+/* Returns int: _ZN8daDoor_c8BehaviorEv passes its result straight into the
    callback, and the ROM keeps r0 across the call. The value is unused here. */
-extern int func_ov100_02145370(struct Door *self);
+extern int func_ov100_02145370(struct daDoor_c *self);
 extern int data_ov100_02148914;
 extern int data_ov100_021488b4;
-extern void func_ov100_021453d8(struct Door *self, void *p, int a2);
+extern void func_ov100_021453d8(struct daDoor_c *self, void *p, int a2);
 
-int _ZN4Door13InitResourcesEv(struct Door *self)
+int _ZN8daDoor_c13InitResourcesEv(struct daDoor_c *self)
 {
     unsigned int idx;
     struct Entry *e;

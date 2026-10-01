@@ -58,7 +58,7 @@ int daIbl_c::InitResources()
        redundant cast on the read side is enough to make the two sides
        textually different and reach the folded form -- no `volatile`
        needed, so tools/tiers.py never reads this as a codegen trick. Same
-       residue, same lever, as src/_ZN4Door13InitResourcesEv.c. Measured:
+       residue, same lever, as src/_ZN8daDoor_c13InitResourcesEv.c. Measured:
        with the cast the candidate is 0x38c and 0 of 227 words differ;
        without it 0x390, and over the shared prefix 186 of 228 differ. */
     param1 = (u32)param1 >> 4;

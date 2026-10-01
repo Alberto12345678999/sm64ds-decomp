@@ -1,26 +1,26 @@
 //cpp
-// @symbol _ZN4Door6RenderEv
-#include "Door.h"
-// recovered name: Door::Render
+// @symbol _ZN8daDoor_c6RenderEv
+#include "daDoor_c.h"
+// recovered name: daDoor_c::Render
 /* recovered: renamed to Class_Method, vtable slot 9 */
-/* Door::Render -- vtable slot 9, ov100 0x021454c8. Declared in include/Door.h
- * and defined here as a real Door::Render() method; the object is `this` and
+/* daDoor_c::Render -- vtable slot 9, ov100 0x021454c8. Declared in include/daDoor_c.h
+ * and defined here as a real daDoor_c::Render() method; the object is `this` and
  * every field is named.
  *
- * FOLDED ONTO include/Door.h. This file used to include the generated flat
+ * FOLDED ONTO include/daDoor_c.h. This file used to include the generated flat
  * placeholder include/daDoor_c.h and reach its own object through raw
- * `c + 0xNN` arithmetic; it now takes a Door* and names every field. Nothing
+ * `c + 0xNN` arithmetic; it now takes a daDoor_c* and names every field. Nothing
  * about the offsets changed -- the byte gate is unchanged either way -- but
  * three of them turn out to say something:
  *
- *   0x08c / 0x090   dActor_c::mAngleX / mAngleZ, which a Door does NOT use as
+ *   0x08c / 0x090   dActor_c::mAngleX / mAngleZ, which a daDoor_c does NOT use as
  *                   angles. Both are loaded `ldrsh` and then sign-extended
  *                   through byte width (`lsl #0x18` / `asr #0x18`) before
  *                   IsAreaShowing sees them, so what is stored is a signed
  *                   BYTE area id in a halfword slot -- one per side. A door
  *                   joins two areas and renders if either is on screen. Only
  *                   mAngleY (0x08e) is a real angle for this class; see
- *                   _ZN4Door13InitResourcesEv.c, which rotates the door's
+ *                   _ZN8daDoor_c13InitResourcesEv.c, which rotates the door's
  *                   position by it.
  *   0x0e8           mModel.data.transforms -- the door's own bone transform
  *                   array (ModelBase::data at +0x08, ModelComponents::
@@ -30,7 +30,7 @@
  * The two virtual calls are Model's, not shadow slots: include/Model.h names
  * vtable slot 4 `Virtual10(Matrix4x3&)` (offset 0x10) and slot 5
  * `Render(const Vector3*)` (offset 0x14), which is exactly what the ROM
- * dispatches -- `ldr r2,[r2,#0x10]` and `ldr r2,[r2,#0x14]`. include/Door.h
+ * dispatches -- `ldr r2,[r2,#0x10]` and `ldr r2,[r2,#0x14]`. include/daDoor_c.h
  * previously recorded these as "unidentified Model vtable slots"; they are
  * identified, so the local V1/V2 shadow structs this file carried are gone.
  *
@@ -39,7 +39,7 @@
 extern "C" {
 extern unsigned char IsAreaShowing(int idx);
 }
-int Door::Render() {
+int daDoor_c::Render() {
     if (IsAreaShowing((char)mAngleX) == 0) {
         if (IsAreaShowing((char)mAngleZ) == 0) goto done;
     }

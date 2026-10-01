@@ -1,15 +1,15 @@
 //cpp
-// @symbol _ZN4DoorD1Ev
+// @symbol _ZN8daDoor_cD1Ev
 /* recovered: real C++ destructor -- the compiler emits the whole body
  *
  * The hand-written version spelled out what a complete-object destructor does
  * anyway: store this class's vtable over the one the base constructor left,
  * destroy the members in reverse declaration order, then run the base
- * subobject destructor. All of it follows from `struct Door : dActor_c` and the member types
+ * subobject destructor. All of it follows from `struct daDoor_c : dActor_c` and the member types
  * in the header, so the body is empty and the bytes still reproduce.
  */
-#include "Door.h"
+#include "daDoor_c.h"
 
-Door::~Door()
+daDoor_c::~daDoor_c()
 {
 }

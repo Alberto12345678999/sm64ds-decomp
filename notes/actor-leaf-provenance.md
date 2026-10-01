@@ -37,18 +37,18 @@ from `mPos` with `0x64000` added to Y right after -- no enrolled body reads it
 back, so what it is for is unevidenced); 0x3a8 (zeroed, never read); 0x3cb (set
 to 0x96, never read).
 
-## Door -- include/Door.h
+## daDoor_c -- include/daDoor_c.h
 
 | offset | new name | evidence |
 | --- | --- | --- |
-| 0x138 | `mKeyModel` | `new Model` + `ModelBase::SetFile` in `src/_ZN4Door13InitResourcesEv.c`; `Virtual10(mModel.data.transforms)` then `Render(0)` in `src/_ZN4Door6RenderEv.cpp`, where the local holding it is already called `key`; `delete key` through Model's vtable slot 1 in `src/_ZN4Door16CleanupResourcesEv.cpp`. Owned by the Door. |
+| 0x138 | `mKeyModel` | `new Model` + `ModelBase::SetFile` in `src/_ZN8daDoor_c13InitResourcesEv.c`; `Virtual10(mModel.data.transforms)` then `Render(0)` in `src/_ZN8daDoor_c6RenderEv.cpp`, where the local holding it is already called `key`; `delete key` through Model's vtable slot 1 in `src/_ZN8daDoor_c16CleanupResourcesEv.cpp`. Owned by the door. |
 | 0x13c | `mKeyFile` | handed to `Model::LoadFile` and `Release()`d as a `SharedFilePtr`. Three sources in `InitResources`: [data_ov002_0211094c](../config/arm9/overlays/ov002/symbols.txt), `func_02132894[mKeyModelIdx + 1]` for the keyed-door `param1` range, else [data_ov089_02132c50](../config/arm9/overlays/ov089/symbols.txt). |
-| 0x140 | `mCallbackNode` | `src/_ZN4Door8BehaviorEv.cpp` casts it to a node whose `+0x8` is a `void (Door::*)(int)` and calls it on this Door. |
+| 0x140 | `mCallbackNode` | `src/_ZN8daDoor_c8BehaviorEv.cpp` casts it to a node whose `+0x8` is a `void (daDoor_c::*)(int)` and calls it on this door. |
 | 0x144 | `mKeyModelIdx` | `param1 - 8` for `param1` in 9..0xd, re-zeroed for `param1 == 0xc`; indexes `LoadKeyModels` and `func_02132894`. The header already carried "key-model index" as a comment. |
 
 Not touched: `unk_0a4` / `unk_0ac` reached through `self->base` are
 `dActor_c`'s own fields, and `include/dActor_c.h` is frozen for this pass --
-the existing note in `src/_ZN4Door13InitResourcesEv.c` about that triple stands.
+the existing note in `src/_ZN8daDoor_c13InitResourcesEv.c` about that triple stands.
 
 ## daSCoin_c -- include/daSCoin_c.h
 

@@ -9591,7 +9591,7 @@
         "param:#1 void *",
         "return:int"
       ],
-      "src/_ZN4Door13InitResourcesEv.c": [
+      "src/_ZN8daDoor_c13InitResourcesEv.c": [
         "param:#1 void *"
       ],
       "src/_ZN5Stage13InitResourcesEv.cpp": [
@@ -13955,7 +13955,7 @@
         "param:#1 void *",
         "return:int"
       ],
-      "src/_ZN4Door13InitResourcesEv.c": [
+      "src/_ZN8daDoor_c13InitResourcesEv.c": [
         "param:#1 void *",
         "return:void *"
       ],
@@ -14052,7 +14052,7 @@
         "param:#2 int",
         "param:#5 unsigned int"
       ],
-      "src/_ZN4Door13InitResourcesEv.c": [
+      "src/_ZN8daDoor_c13InitResourcesEv.c": [
         "param:#5 unsigned int"
       ],
       "src/_ZN6Player15St_Balloon_InitEv.cpp": [
@@ -14433,7 +14433,7 @@
         "param:#2 int",
         "return:void"
       ],
-      "src/_ZN4Door13InitResourcesEv.c": [
+      "src/_ZN8daDoor_c13InitResourcesEv.c": [
         "return:void"
       ],
       "src/_ZN6Bowser13InitResourcesEv.cpp": [
@@ -17458,7 +17458,7 @@
       "src/GiveCoins.c": [
         "return:int []"
       ],
-      "src/_ZN4Door13InitResourcesEv.c": [
+      "src/_ZN8daDoor_c13InitResourcesEv.c": [
         "return:int []"
       ],
       "src/_ZN5Stage15IsPauseDisabledEv.cpp": [
@@ -20752,7 +20752,7 @@
       ]
     },
     "data_ov002_0211094c": {
-      "src/_ZN4Door13InitResourcesEv.c": [
+      "src/_ZN8daDoor_c13InitResourcesEv.c": [
         "return:int"
       ],
       "src/__sinit_ov002_02106e40.c": [
@@ -25940,7 +25940,7 @@
       ]
     },
     "data_ov089_02132c50": {
-      "src/_ZN4Door13InitResourcesEv.c": [
+      "src/_ZN8daDoor_c13InitResourcesEv.c": [
         "return:int"
       ],
       "src/_ZN6Bowser13InitResourcesEv.cpp": [
@@ -26159,7 +26159,7 @@
       ]
     },
     "data_ov100_02148204": {
-      "src/_ZN4Door16CleanupResourcesEv.cpp": [
+      "src/_ZN8daDoor_c16CleanupResourcesEv.cpp": [
         "return:Elem []"
       ],
       "src/func_ov100_02144cf8.c": [
@@ -26218,10 +26218,10 @@
       ]
     },
     "data_ov100_02148744": {
-      "src/_ZN4Door13InitResourcesEv.c": [
+      "src/_ZN8daDoor_c13InitResourcesEv.c": [
         "return:int"
       ],
-      "src/_ZN4Door16CleanupResourcesEv.cpp": [
+      "src/_ZN8daDoor_c16CleanupResourcesEv.cpp": [
         "return:void *"
       ]
     },
@@ -26229,7 +26229,7 @@
       "include/decl_common.h": [
         "return:int"
       ],
-      "src/_ZN4Door13InitResourcesEv.c": [
+      "src/_ZN8daDoor_c13InitResourcesEv.c": [
         "return:int"
       ],
       "src/func_ov100_02144730.cpp": [
@@ -39987,12 +39987,12 @@
       ]
     },
     "func_ov100_02145370": {
-      "src/_ZN4Door13InitResourcesEv.c": [
-        "param:#1 Door *",
+      "src/_ZN8daDoor_c13InitResourcesEv.c": [
+        "param:#1 daDoor_c *",
         "return:int"
       ],
-      "src/_ZN4Door8BehaviorEv.cpp": [
-        "param:#1 Door *",
+      "src/_ZN8daDoor_c8BehaviorEv.cpp": [
+        "param:#1 daDoor_c *",
         "return:int"
       ]
     },
@@ -40000,8 +40000,8 @@
       "include/decl_common.h": [
         "param:#1 char *"
       ],
-      "src/_ZN4Door13InitResourcesEv.c": [
-        "param:#1 Door *",
+      "src/_ZN8daDoor_c13InitResourcesEv.c": [
+        "param:#1 daDoor_c *",
         "return:void"
       ],
       "src/func_ov100_021444e8.c": [

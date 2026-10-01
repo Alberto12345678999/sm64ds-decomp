@@ -5462,7 +5462,7 @@ three matched by respelling the read and nothing else. First matched with CVCAST
 #2523); respelt to the plain redundant cast for the ratchet reason above, same bytes,
 same relocations, lane MATCH3B:
 
-  * `Door::InitResources`, ov100 0x021455a0 0x2fc -- one site (`param1 >> 0x10`). Before:
+  * `daDoor_c::InitResources`, ov100 0x021455a0 0x2fc -- one site (`param1 >> 0x10`). Before:
     0x300, 156 of 192 words differing over the shared prefix. After: 0 of 191.
   * `daIbl_c::InitResources`, ov100 0x02142de0 0x38c -- one site (`param1 >> 4`).
     Before: 0x390, 186 of 228. After: 0 of 227.

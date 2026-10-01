@@ -139,11 +139,11 @@ src/d_a_wanwan2.cpp:
     complete
     .text start:0x021442dc end:0x021443f4
 
-src/_ZN4DoorD1Ev.cpp:
+src/_ZN8daDoor_cD1Ev.cpp:
     complete
     .text start:0x021443f4 end:0x02144424
 
-src/_ZN4DoorD0Ev.cpp:
+src/_ZN8daDoor_cD0Ev.cpp:
     complete
     .text start:0x02144424 end:0x02144468
 
@@ -243,23 +243,23 @@ src/func_ov100_021453d8.cpp:
     complete
     .text start:0x021453d8 end:0x0214542c
 
-src/_ZN4Door16CleanupResourcesEv.cpp:
+src/_ZN8daDoor_c16CleanupResourcesEv.cpp:
     complete
     .text start:0x0214542c end:0x021454c4
 
-src/_ZN4Door16OnPendingDestroyEv.cpp:
+src/_ZN8daDoor_c16OnPendingDestroyEv.cpp:
     complete
     .text start:0x021454c4 end:0x021454c8
 
-src/_ZN4Door6RenderEv.cpp:
+src/_ZN8daDoor_c6RenderEv.cpp:
     complete
     .text start:0x021454c8 end:0x02145550
 
-src/_ZN4Door8BehaviorEv.cpp:
+src/_ZN8daDoor_c8BehaviorEv.cpp:
     complete
     .text start:0x02145550 end:0x021455a0
 
-src/_ZN4Door13InitResourcesEv.c:
+src/_ZN8daDoor_c13InitResourcesEv.c:
     .text start:0x021455a0 end:0x0214589c
 
 src/d_a_door.c:
