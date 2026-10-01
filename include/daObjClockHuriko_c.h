@@ -57,8 +57,8 @@
  * stays a free function under its func_ name -- it is not a vtable slot, and
  * nothing in the cartridge says whether it is a member.
  *
- * REAL METHODS, NOT THE FREE-FUNCTION IDIOM. Older recoveries (include/daDoor_c.h,
- * src/actors/ActorBase.cpp) declare the override here but define
+ * REAL METHODS, NOT THE FREE-FUNCTION IDIOM. Older recoveries (daDoor_c before
+ * its promotion, src/actors/ActorBase.cpp) declare the override here but define
  * it as a free function under a hand-written mangled `extern "C"` name. That
  * idiom cannot survive promotion. With the destructor inline the key function
  * is the first DECLARED non-inline virtual -- InitResources -- and a

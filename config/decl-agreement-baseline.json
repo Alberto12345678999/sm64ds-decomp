@@ -872,14 +872,14 @@
       "src/func_0200987c.c": [
         "return:int"
       ],
-      "src/func_ov100_02145014.c": [
-        "return:int"
-      ],
       "src/actors/daOwl_c.cpp": [
         "return:void"
       ],
       "src/actors/daObjCtMecha11_c.cpp": [
         "param:#1 char *",
+        "return:int"
+      ],
+      "src/actors/daDoor_c.cpp": [
         "return:int"
       ]
     },
@@ -5141,15 +5141,6 @@
         "param:#2 const Vector3 *",
         "param:#4 const Vector3 *"
       ],
-      "src/func_ov100_02145170.c": [
-        "param:#1 Vector3 *",
-        "param:#2 const Vector3 *",
-        "param:#4 const Vector3 *"
-      ],
-      "src/func_ov100_02145370.c": [
-        "param:#4 Vector3 *",
-        "return:void *"
-      ],
       "src/game/actors/d_a_ch_room.cpp": [
         "param:#1 Vector3 *",
         "param:#4 Vector3 *"
@@ -5301,11 +5292,6 @@
         "param:#3 Vector3 *"
       ],
       "src/func_ov075_0211ab38.c": [
-        "param:#1 Vector3 *",
-        "param:#2 Vector3 *",
-        "param:#3 Vector3 *"
-      ],
-      "src/func_ov100_02145370.c": [
         "param:#1 Vector3 *",
         "param:#2 Vector3 *",
         "param:#3 Vector3 *"
@@ -9564,9 +9550,6 @@
         "param:#1 void *",
         "return:int"
       ],
-      "src/_ZN8daDoor_c13InitResourcesEv.c": [
-        "param:#1 void *"
-      ],
       "src/_ZN5Stage13InitResourcesEv.cpp": [
         "param:#1 void *"
       ],
@@ -9661,6 +9644,9 @@
         "param:#1 void *"
       ],
       "src/actors/daIbl_c.cpp": [
+        "param:#1 void *"
+      ],
+      "src/actors/daDoor_c.cpp": [
         "param:#1 void *"
       ]
     },
@@ -9961,13 +9947,13 @@
         "param:#3 const Vector3 *",
         "return:void"
       ],
-      "src/func_ov100_02144730.cpp": [
-        "param:#3 void *",
-        "return:void"
-      ],
       "src/actors/daYegg_c.cpp": [
         "return:void",
         "param:#3 const void *"
+      ],
+      "src/actors/daDoor_c.cpp": [
+        "param:#3 void *",
+        "return:void"
       ]
     },
     "_ZN5Sound17ChangeMusicVolumeEj5Fix12IiE": {
@@ -10013,10 +9999,7 @@
       "src/func_ov060_021130c0.c": [
         "return:void"
       ],
-      "src/func_ov100_02144468.c": [
-        "return:void"
-      ],
-      "src/func_ov100_02144528.c": [
+      "src/actors/daDoor_c.cpp": [
         "return:void"
       ]
     },
@@ -10111,15 +10094,6 @@
       "src/func_ov004_020ae274.c": [
         "return:void"
       ],
-      "src/func_ov100_02144fcc.cpp": [
-        "return:int"
-      ],
-      "src/func_ov100_02145014.c": [
-        "return:void"
-      ],
-      "src/func_ov100_02145080.c": [
-        "return:int"
-      ],
       "src/game/actors/d_a_c_jugem.cpp": [
         "param:#5 bool",
         "return:int"
@@ -10145,6 +10119,9 @@
         "return:int"
       ],
       "src/actors/daMugenBGM_c.cpp": [
+        "return:int"
+      ],
+      "src/actors/daDoor_c.cpp": [
         "return:int"
       ]
     },
@@ -13727,12 +13704,6 @@
         "param:#6 int",
         "return:char *"
       ],
-      "src/func_ov100_02144a38.c": [
-        "param:#3 const Vector3 *",
-        "param:#5 int",
-        "param:#6 int",
-        "return:void *"
-      ],
       "src/stage/LevelObjects.cpp": [
         "param:#3 const Vector3 *",
         "param:#5 int",
@@ -13784,6 +13755,12 @@
         "return:void *"
       ],
       "src/actors/daWanwan2_c.cpp": [
+        "param:#3 const Vector3 *",
+        "param:#5 int",
+        "param:#6 int",
+        "return:void *"
+      ],
+      "src/actors/daDoor_c.cpp": [
         "param:#3 const Vector3 *",
         "param:#5 int",
         "param:#6 int",
@@ -13896,10 +13873,6 @@
         "param:#1 void *",
         "return:int"
       ],
-      "src/_ZN8daDoor_c13InitResourcesEv.c": [
-        "param:#1 void *",
-        "return:void *"
-      ],
       "src/_ZN6Bowser13InitResourcesEv.cpp": [
         "param:#1 void *",
         "return:void"
@@ -13967,6 +13940,10 @@
       "src/actors/Eyerok.cpp": [
         "param:#1 void *",
         "return:void"
+      ],
+      "src/actors/daDoor_c.cpp": [
+        "param:#1 void *",
+        "return:void *"
       ]
     },
     "_ZN9FaderWipe14LoadAndSetFileEt": {
@@ -13991,9 +13968,6 @@
       "src/_ZN17dMg3DEspAnimSet_c13InitResourcesEv.cpp": [
         "param:#1 char *",
         "param:#2 int",
-        "param:#5 unsigned int"
-      ],
-      "src/_ZN8daDoor_c13InitResourcesEv.c": [
         "param:#5 unsigned int"
       ],
       "src/_ZN6Player15St_Balloon_InitEv.cpp": [
@@ -14347,6 +14321,9 @@
         "param:#1 char *",
         "param:#5 unsigned int",
         "return:int"
+      ],
+      "src/actors/daDoor_c.cpp": [
+        "param:#5 unsigned int"
       ]
     },
     "_ZN9ModelAnimD1Ev": {
@@ -14372,9 +14349,6 @@
       ],
       "src/_ZN17dMg3DEspAnimSet_c13InitResourcesEv.cpp": [
         "param:#2 int",
-        "return:void"
-      ],
-      "src/_ZN8daDoor_c13InitResourcesEv.c": [
         "return:void"
       ],
       "src/_ZN6Bowser13InitResourcesEv.cpp": [
@@ -14427,6 +14401,9 @@
         "return:void"
       ],
       "src/actors/daObjFl_Amilift_c.cpp": [
+        "return:void"
+      ],
+      "src/actors/daDoor_c.cpp": [
         "return:void"
       ]
     },
@@ -14916,7 +14893,7 @@
       "src/func_ov060_02114e9c.cpp": [
         "return:int"
       ],
-      "src/func_ov100_02144730.cpp": [
+      "src/actors/daDoor_c.cpp": [
         "return:int"
       ]
     },
@@ -14927,13 +14904,10 @@
       "src/func_ov060_0211747c.c": [
         "return:int"
       ],
-      "src/func_ov100_02144730.cpp": [
-        "return:int"
-      ],
-      "src/func_ov100_0214491c.c": [
-        "return:int"
-      ],
       "src/actors/Eyerok.cpp": [
+        "return:int"
+      ],
+      "src/actors/daDoor_c.cpp": [
         "return:int"
       ]
     },
@@ -15708,11 +15682,11 @@
       "src/actors/daObjClock_c.cpp": [
         "return:signed char []"
       ],
-      "src/func_ov100_02144730.cpp": [
-        "return:char"
-      ],
       "src/game/actors/d_a_obj_clock_huriko.cpp": [
         "return:signed char []"
+      ],
+      "src/actors/daDoor_c.cpp": [
+        "return:char"
       ]
     },
     "data_02092114": {
@@ -16121,7 +16095,7 @@
       "src/actors/daTrs_c.cpp": [
         "return:int []"
       ],
-      "src/func_ov100_02144f84.c": [
+      "src/actors/daDoor_c.cpp": [
         "return:int []"
       ]
     },
@@ -16137,7 +16111,7 @@
       ]
     },
     "data_0209b49c": {
-      "src/func_ov100_02144f84.c": [
+      "src/actors/daDoor_c.cpp": [
         "return:int []"
       ]
     },
@@ -16293,15 +16267,6 @@
       "src/func_ov007_020cc600.c": [
         "return:unsigned char []"
       ],
-      "src/func_ov100_02144528.c": [
-        "return:unsigned char []"
-      ],
-      "src/func_ov100_02144730.cpp": [
-        "return:char"
-      ],
-      "src/func_ov100_02144cf8.c": [
-        "return:GlobCaa0"
-      ],
       "src/game/actors/d_a_obj_hatena_switch.cpp": [
         "return:unsigned int []"
       ],
@@ -16313,6 +16278,9 @@
       ],
       "src/actors/daMugenBGM_c.cpp": [
         "return:unsigned char []"
+      ],
+      "src/actors/daDoor_c.cpp": [
+        "return:GlobCaa0"
       ]
     },
     "data_0209cae4": {
@@ -16983,9 +16951,6 @@
       ],
       "src/func_0200d7a4.c": [
         "return:int"
-      ],
-      "src/func_ov100_02145370.c": [
-        "return:unsigned char []"
       ]
     },
     "data_0209f258": {
@@ -17274,12 +17239,6 @@
       "src/func_ov002_020f6c60.c": [
         "return:char *"
       ],
-      "src/func_ov100_02144730.cpp": [
-        "return:char"
-      ],
-      "src/func_ov100_02144950.c": [
-        "return:char *"
-      ],
       "src/game/actors/d_a_set_se.cpp": [
         "return:Camera *"
       ],
@@ -17293,6 +17252,9 @@
         "return:int"
       ],
       "src/actors/daMugenBGM_c.cpp": [
+        "return:char *"
+      ],
+      "src/actors/daDoor_c.cpp": [
         "return:char *"
       ]
     },
@@ -17392,9 +17354,6 @@
       "src/GiveCoins.c": [
         "return:int []"
       ],
-      "src/_ZN8daDoor_c13InitResourcesEv.c": [
-        "return:int []"
-      ],
       "src/_ZN5Stage15IsPauseDisabledEv.cpp": [
         "return:int []"
       ],
@@ -17434,9 +17393,6 @@
       "src/func_ov002_020dd908.c": [
         "return:char * []"
       ],
-      "src/func_ov100_02145370.c": [
-        "return:char * []"
-      ],
       "src/game/actors/d_a_ch_room.cpp": [
         "return:dActor_c * []"
       ],
@@ -17453,6 +17409,9 @@
         "return:char * []"
       ],
       "src/actors/daMugenBGM_c.cpp": [
+        "return:char * []"
+      ],
+      "src/actors/daDoor_c.cpp": [
         "return:char * []"
       ]
     },
@@ -18410,6 +18369,9 @@
       ],
       "src/actors/daWanwan2_c.cpp": [
         "return:char []"
+      ],
+      "src/actors/daDoor_c.cpp": [
+        "return:M48"
       ]
     },
     "data_020a0e9c": {
@@ -18441,14 +18403,14 @@
       "src/func_ov006_020ce108.cpp": [
         "return:Vector3"
       ],
-      "src/func_ov100_02145370.c": [
-        "return:int"
-      ],
       "src/game/actors/d_a_ch_room.cpp": [
         "return:char"
       ],
       "src/game/actors/d_a_star_gate.cpp": [
         "return:char []"
+      ],
+      "src/actors/daDoor_c.cpp": [
+        "return:int"
       ]
     },
     "data_020a0edc": {
@@ -20686,11 +20648,11 @@
       ]
     },
     "data_ov002_0211094c": {
-      "src/_ZN8daDoor_c13InitResourcesEv.c": [
-        "return:int"
-      ],
       "src/__sinit_ov002_02106e40.c": [
         "return:void *"
+      ],
+      "src/actors/daDoor_c.cpp": [
+        "return:int"
       ]
     },
     "data_ov002_02110954": {
@@ -25874,9 +25836,6 @@
       ]
     },
     "data_ov089_02132c50": {
-      "src/_ZN8daDoor_c13InitResourcesEv.c": [
-        "return:int"
-      ],
       "src/_ZN6Bowser13InitResourcesEv.cpp": [
         "return:int []"
       ],
@@ -26087,14 +26046,6 @@
         "return:State []"
       ]
     },
-    "data_ov100_02148204": {
-      "src/_ZN8daDoor_c16CleanupResourcesEv.cpp": [
-        "return:Elem []"
-      ],
-      "src/func_ov100_02144cf8.c": [
-        "return:signed char []"
-      ]
-    },
     "data_ov100_02148600": {
       "src/__sinit_ov100_021473bc.c": [
         "return:char []"
@@ -26131,43 +26082,13 @@
       ]
     },
     "data_ov100_02148704": {
-      "src/func_ov100_02144528.c": [
-        "return:unsigned char []"
-      ],
-      "src/func_ov100_02144730.cpp": [
+      "src/actors/daDoor_c.cpp": [
         "return:unsigned char"
-      ]
-    },
-    "data_ov100_02148708": {
-      "src/func_ov100_02145070.c": [
-        "return:short []"
-      ]
-    },
-    "data_ov100_02148744": {
-      "src/_ZN8daDoor_c13InitResourcesEv.c": [
-        "return:int"
-      ],
-      "src/_ZN8daDoor_c16CleanupResourcesEv.cpp": [
-        "return:void *"
       ]
     },
     "data_ov100_021488b4": {
       "include/decl_common.h": [
         "return:int"
-      ],
-      "src/_ZN8daDoor_c13InitResourcesEv.c": [
-        "return:int"
-      ],
-      "src/func_ov100_02144730.cpp": [
-        "return:char"
-      ]
-    },
-    "data_ov100_021488f4": {
-      "src/func_ov100_02144bf4.cpp": [
-        "return:char []"
-      ],
-      "src/func_ov100_02144cf8.c": [
-        "return:char []"
       ]
     },
     "data_ov100_02148948": {
@@ -27063,20 +26984,6 @@
         "return:int",
         "param:#1 int"
       ],
-      "src/func_ov100_02144528.c": [
-        "param:#1 int"
-      ],
-      "src/func_ov100_02144730.cpp": [
-        "param:#1 int"
-      ],
-      "src/func_ov100_02144950.c": [
-        "param:#1 int",
-        "return:int"
-      ],
-      "src/func_ov100_02144ccc.c": [
-        "param:#1 int",
-        "param:#2 char *"
-      ],
       "src/game/actors/d_a_bakubaku.cpp": [
         "param:#1 int"
       ],
@@ -27145,6 +27052,10 @@
       "src/actors/daWanwan2_c.cpp": [
         "param:#1 int",
         "return:int"
+      ],
+      "src/actors/daDoor_c.cpp": [
+        "param:#1 int",
+        "return:int"
       ]
     },
     "func_02012718": {
@@ -27172,7 +27083,7 @@
         "param:#1 int",
         "return:unsigned short"
       ],
-      "src/func_ov100_02144528.c": [
+      "src/actors/daDoor_c.cpp": [
         "param:#1 int",
         "return:void"
       ]
@@ -27432,10 +27343,6 @@
       "src/actors/daManta_c.cpp": [
         "return:void"
       ],
-      "src/func_ov100_02144528.c": [
-        "param:#1 int",
-        "return:void"
-      ],
       "src/game/actors/d_a_c_jugem.cpp": [
         "param:#1 int",
         "return:void"
@@ -27457,6 +27364,10 @@
         "return:void"
       ],
       "src/actors/daSnowman_c.cpp": [
+        "param:#1 int",
+        "return:void"
+      ],
+      "src/actors/daDoor_c.cpp": [
         "param:#1 int",
         "return:void"
       ]
@@ -39865,61 +39776,9 @@
         "param:#1 char *"
       ]
     },
-    "func_ov100_02144950": {
-      "src/func_ov100_021446f8.c": [
-        "arity:3",
-        "return:void"
-      ]
-    },
     "func_ov100_02144fcc": {
-      "src/func_ov100_021444e8.c": [
-        "arity:2"
-      ],
       "src/game/actors/d_a_star_gate.cpp": [
         "arity:1"
-      ]
-    },
-    "func_ov100_02145080": {
-      "src/func_ov100_02144730.cpp": [
-        "return:void"
-      ]
-    },
-    "func_ov100_02145170": {
-      "src/func_ov100_021451c4.cpp": [
-        "return:int"
-      ]
-    },
-    "func_ov100_02145370": {
-      "src/_ZN8daDoor_c13InitResourcesEv.c": [
-        "param:#1 daDoor_c *",
-        "return:int"
-      ],
-      "src/_ZN8daDoor_c8BehaviorEv.cpp": [
-        "param:#1 daDoor_c *",
-        "return:int"
-      ]
-    },
-    "func_ov100_021453d8": {
-      "include/decl_common.h": [
-        "param:#1 char *"
-      ],
-      "src/_ZN8daDoor_c13InitResourcesEv.c": [
-        "param:#1 daDoor_c *",
-        "return:void"
-      ],
-      "src/func_ov100_021444e8.c": [
-        "param:#3 void *",
-        "return:void"
-      ],
-      "src/func_ov100_02144730.cpp": [
-        "param:#3 void *",
-        "return:void"
-      ],
-      "src/func_ov100_021449c8.cpp": [
-        "param:#3 void *"
-      ],
-      "src/func_ov100_02144cf8.c": [
-        "param:#3 void *"
       ]
     },
     "func_ov100_0214700c": {

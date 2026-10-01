@@ -5,8 +5,10 @@
 #include "dActor_c.h"
 #include "ModelAnim.h"
 
-/* The plain warp door -- the leaf dActor_c child at ov100 0x021443f4..0x02145948,
- * distinct from StarDoor and daChRoom_c which are their own classes/headers.
+/* The plain warp door -- the leaf dActor_c child whose code is the ov100
+ * linker unit 0x021443f4..0x021458d4, src/actors/daDoor_c.cpp (its registry
+ * factory included; daStarGate_c starts at 0x021458d4). Distinct from
+ * StarDoor and daChRoom_c, which are their own classes/headers.
  *
  * DERIVATION. tools/rtti_extract.py has the RTTI record at ov100 0x02148158,
  * mangled "8daDoor_c", with ONE base, dActor_c, at subobject offset 0.
@@ -24,53 +26,39 @@
  * work, before this class had its own header. This class overrides five
  * slots beyond the destructor:
  *
- *   0   InitResources      ov100 0x021455a0  (src/_ZN8daDoor_c13InitResourcesEv.c)
- *   3   CleanupResources   ov100 0x0214542c  (src/_ZN8daDoor_c16CleanupResourcesEv.cpp)
- *   6   Behavior           ov100 0x02145550  (src/_ZN8daDoor_c8BehaviorEv.cpp)
- *   9   Render             ov100 0x021454c8  (src/_ZN8daDoor_c6RenderEv.cpp)
- *   12  OnPendingDestroy   ov100 0x021454c4  (src/_ZN8daDoor_c16OnPendingDestroyEv.c)
+ *   0   InitResources      ov100 0x021455a0
+ *   3   CleanupResources   ov100 0x0214542c
+ *   6   Behavior           ov100 0x02145550
+ *   9   Render             ov100 0x021454c8
+ *   12  OnPendingDestroy   ov100 0x021454c4
+ *
+ * all five in src/actors/daDoor_c.cpp.
  *
  * (config/arm9/overlays/ov100/relocs.txt: 0x02148188/0x02148194/0x021481a0/
  * 0x021481ac/0x021481b8 -- the vtable words at slots 0/3/6/9/12 -- each load
- * exactly the addresses above.) All five bytes still match; only the symbol
- * NAMES were placeholders (func_ov100_0214xxxx), now renamed.
+ * exactly the addresses above.)
  *
- * REAL METHOD STATUS. CleanupResources and Behavior are genuine `daDoor_c::`
- * definitions. InitResources, Render and OnPendingDestroy still use the
- * historical free-function ABI spelling; each needs its own byte-verified
- * conversion rather than being inferred from the declaration alone.
+ * REAL METHOD STATUS. The destructor and all five overrides are genuine
+ * `daDoor_c::` definitions in src/actors/daDoor_c.cpp, byte-exact under the
+ * pinned 2004/b56 and built from that one translation unit. InitResources
+ * was the last to convert: it was a C free function taking the object
+ * explicitly, and its param1 shift keeps the redundant cast that reaches the
+ * ROM's folded read-modify-write (described at that line).
  *
- * THEIR FIELD ACCESS, HOWEVER, IS NOW THIS HEADER'S. The naming slice left
- * daDoor_c described by two headers at once: this one, and the generated flat
- * placeholder that once sat at include/daDoor_c.h, which restated dActor_c's
- * fields inline as pad_000[0x5c] + unk_05c/unk_060/... and which _ZN8daDoor_c6RenderEv.cpp and
- * _ZN8daDoor_c13InitResourcesEv.c both included. That placeholder is gone; both
- * files now take a daDoor_c and name their fields, through the C++ class below
- * or the C-mode branch after it. Every offset is unchanged and both files
- * were re-measured: Render is byte-exact under the pinned 2004/b56, and
- * InitResources compiles to output IDENTICAL to its pre-fold bytes.
+ * The flat C placeholder that once restated dActor_c's fields inline
+ * (pad_000[0x5c] + unk_05c/unk_060/...) is gone; every member names its
+ * fields through the class below.
  *
- * src/_ZN8daDoor_c13InitResourcesEv.c ALREADY FAILED TO BYTE-MATCH before the
- * rename, by one instruction (candidate 0x300 against the ROM's 0x2fc), and
- * the fold neither caused nor changed that. It byte-matches now: the gap was
- * an address the compiler materialised for a read-modify-write of param1
- * that the ROM keeps folded into both accesses, and the file's own comment at
- * that line records the respelling that closes it.
- *
- * config/arm9/overlays/ov100/delinks.txt still carries no `complete` marker
- * for that range, so dsd supplies it from the cartridge and the ROM build
- * does not yet compile the file. That is a layout question and is untouched.
- *
- * SIZE. daDoor_c_classInit.c calls `_ZN7fBase_cnwEj(328)` -- 0x148 -- for a fresh daDoor_c,
- * then _ZN8dActor_cC2Ev and _ZN9ModelAnimC1Ev at +0xd4. dActor_c is 0xd0
+ * SIZE. daDoor_c_classInit's `new daDoor_c` calls fBase_c's operator new
+ * with 328 -- 0x148 -- then _ZN8dActor_cC2Ev and _ZN9ModelAnimC1Ev at +0xd4. dActor_c is 0xd0
  * (include/dActor_c.h) and ModelAnim is 0x64 (include/ModelAnim.h), so the
  * embedded ModelAnim runs 0xd4..0x138 (the same 4-byte alignment pad
  * include/dBgActor_c.h takes before its own Model member). That leaves
  * 0x138..0x147 (0x10 = 16 bytes) as this class's own storage, all of it
  * touched by the five sources above: two heap-owned pointers at 0x138/0x13c,
- * a callback-node pointer at 0x140 (read in Behavior as a pointer-to-member
- * dispatch, written in src/func_ov100_021453d8.cpp -- out of this slice), and
- * a key-model index byte at 0x144.
+ * a state pointer at 0x140 (read in Behavior as a pointer-to-member
+ * dispatch, written by func_ov100_021453d8), and a key-model index byte at
+ * 0x144.
  *
  * 0x138 IS A Model*, and this header used to say the opposite -- that the
  * virtual calls through it "resolve to unidentified Model vtable slots" and
@@ -100,7 +88,7 @@
 
 struct daDoor_c : dActor_c {
     u8  pad_0d0[0x4];
-    /* Named by daDoor_c_classInit.c's own _ZN9ModelAnimC1Ev call at +0xd4 -- a
+    /* Named by daDoor_c_classInit's own _ZN9ModelAnimC1Ev call at +0xd4 -- a
        relocation the ROM build checks, same idiom as include/dBgActor_c.h's
        mModel. */
     ModelAnim mModel;        /* 0x0d4 */
@@ -123,28 +111,26 @@ struct daDoor_c : dActor_c {
                        data_ov089_02132c50.
          mKeyModelIdx -- param1 - 8 for that same 9..0xd range, re-zeroed for
                        param1 0xc; indexes LoadKeyModels/data_ov089_02132894.
-       [_ZN8daDoor_c13InitResourcesEv.c, _ZN8daDoor_c6RenderEv.cpp,
-        _ZN8daDoor_c16CleanupResourcesEv.cpp] */
+       [src/actors/daDoor_c.cpp] */
     Model *mKeyModel;          /* 0x138 -- owned, see SIZE above */
     void *mKeyFile;           /* 0x13c -- released through SharedFilePtr */
-    /* Behavior casts this to a node whose +0x8 is a `void (daDoor_c::*)(int)` and
-       calls it on this daDoor_c; written by src/func_ov100_021453d8.cpp.
-       [_ZN8daDoor_c8BehaviorEv.cpp] */
+    /* The current state: a 16-byte {enter, execute} pair of
+       pointers-to-member, one of the nine tables data_ov100_021488a4 ..
+       data_ov100_02148924. func_ov100_021453d8 stores it and calls the enter
+       half; Behavior calls the execute half, a `void (daDoor_c::*)(int)` at
+       +0x8, on this daDoor_c. [src/actors/daDoor_c.cpp] */
     void *mCallbackNode;           /* 0x140 -- callback-node pointer, see SIZE above */
     s8   mKeyModelIdx;            /* 0x144 -- key-model index */
     u8   pad_145[0x3];
 
-    /* --- vtable. Declared first, deliberately -- it is already the key
-       function (see DERIVATION above): _ZN8daDoor_cD1Ev.c / _ZN8daDoor_cD0Ev.c define
-       it as extern "C" free functions, never as a real `daDoor_c::~daDoor_c()`, so
-       nothing here changes which TU the vtable is emitted from. --- */
+    /* --- vtable. The out-of-line destructor is the key function:
+       src/actors/daDoor_c.cpp defines it, so that TU emits D1, D0, the vtable
+       and the RTTI. --- */
     virtual ~daDoor_c();
 
     /* --- overrides of inherited fBase_c slots dActor_c left untouched (see
        include/dActor_c.h: "Slots 0, 3, 6, 9, 12 ... still point at the
-       fBase_c implementations"). CleanupResources and Behavior are real
-       daDoor_c methods; the remaining overrides retain their historical ABI
-       spellings until each can be converted without changing ROM bytes. --- */
+       fBase_c implementations"), all five real daDoor_c methods. --- */
     virtual s32 InitResources();          /* slot 0 */
     virtual s32 CleanupResources();       /* slot 3 */
     virtual s32 Behavior();               /* slot 6 */
@@ -152,7 +138,7 @@ struct daDoor_c : dActor_c {
     virtual void OnPendingDestroy();      /* slot 12 */
 };
 
-/* Holds the chain to the size daDoor_c_classInit.c's operator new(0x148) call
+/* Holds the chain to the size daDoor_c_classInit's operator new(0x148) call
    evidences. A silently-added member anywhere fails this. */
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */

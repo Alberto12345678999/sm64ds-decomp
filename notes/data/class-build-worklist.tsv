@@ -112,7 +112,7 @@ daChoropu_c	DONE	include\daChoropu_c.h  [alias: header uses pre-rename name]	dAc
 daCnn_c	DONE	include\daCnn_c.h  [alias: header uses pre-rename name]	dActor_c	0	ov098	6
 daCoin_c	DONE	include\Coin.h  [alias: header uses pre-rename name]	dActor_c	0	ov002	8
 daDemo_c	DONE	include\daDemo_c.h	dActor_c	0	ov002	4
-daDoor_c	DONE	include\daDoor_c.h  [alias: header uses pre-rename name]	dActor_c	0	ov100	7
+daDoor_c	DONE	include\daDoor_c.h	dActor_c	0	ov100	7
 daDossyCap_c	DONE	include\daDossyCap_c.h	dActor_c	0	ov065	6
 daDossy_c	DONE	include\daDossy_c.h  [alias: header uses pre-rename name]	dActor_c	0	ov065	6
 daECreate_c	DONE	include\EnemySpawner.h  [alias: header uses pre-rename name]	dActor_c	0	ov002	5

@@ -7,7 +7,7 @@
     "no_codegen_trick",
     "no_mangled_refs"
   ],
-  "count": 3109,
+  "count": 3110,
   "converted": [
     "src/ARMMathLoadState.c",
     "src/ARMMathSaveState.c",
@@ -804,12 +804,12 @@
     "src/actors/daCoin_c.cpp#_ZN8daCoin_c13OnYoshiTryEatEv",
     "src/actors/daCoin_c.cpp#_ZN8daCoin_cD0Ev",
     "src/actors/daCoin_c.cpp#_ZN8daCoin_cD1Ev",
-    "src/_ZN8daDoor_c16CleanupResourcesEv.cpp",
-    "src/_ZN8daDoor_c16OnPendingDestroyEv.cpp",
-    "src/_ZN8daDoor_c6RenderEv.cpp",
-    "src/_ZN8daDoor_c8BehaviorEv.cpp",
-    "src/_ZN8daDoor_cD0Ev.cpp",
-    "src/_ZN8daDoor_cD1Ev.cpp",
+    "src/actors/daDoor_c.cpp#_ZN8daDoor_c16CleanupResourcesEv",
+    "src/actors/daDoor_c.cpp#_ZN8daDoor_c16OnPendingDestroyEv",
+    "src/actors/daDoor_c.cpp#_ZN8daDoor_c6RenderEv",
+    "src/actors/daDoor_c.cpp#_ZN8daDoor_c8BehaviorEv",
+    "src/actors/daDoor_c.cpp#_ZN8daDoor_cD0Ev",
+    "src/actors/daDoor_c.cpp#_ZN8daDoor_cD1Ev",
     "src/game/actors/d_a_fish.cpp#_ZN8daFish_c16CleanupResourcesEv",
     "src/game/actors/d_a_fish.cpp#_ZN8daFish_c16OnPendingDestroyEv",
     "src/game/actors/d_a_fish.cpp#_ZN8daFish_c6RenderEv",
@@ -3117,6 +3117,7 @@
     "src/actors/daObjRotateUpdownLift_c.cpp#daObjRotateUpdownLift_c_classInit_UPDOWN_LIFT",
     "src/actors/daDsn_c.cpp#daDsn_c_classInit",
     "src/actors/daObjPile_c.cpp#daObjPile_c_classInit",
-    "src/actors/daIbl_c.cpp#daIbl_c_classInit"
+    "src/actors/daIbl_c.cpp#daIbl_c_classInit",
+    "src/actors/daDoor_c.cpp#daDoor_c_classInit"
   ]
 }
