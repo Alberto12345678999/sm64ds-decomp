@@ -6,15 +6,7 @@
     .bss        start:0x02135440 end:0x021356e0 kind:bss align:32
 src/actors/daObjRotateUpdownLift_c.cpp:
     complete
-    .text start:0x02130f00 end:0x02131ba4
-
-src/d_a_obj_rotate_updown_lift_hs_updown_lift.c:
-    complete
-    .text start:0x02131ba4 end:0x02131bdc
-
-src/d_a_obj_rotate_updown_lift_updown_lift.c:
-    complete
-    .text start:0x02131bdc end:0x02131c14
+    .text start:0x02130f00 end:0x02131c14
 
 src/game/actors/d_a_linelift2.cpp:
     complete
@@ -22,43 +14,11 @@ src/game/actors/d_a_linelift2.cpp:
 
 src/actors/daObjSimpleLift_c.cpp:
     complete
-    .text start:0x02132404 end:0x021327e8
-
-src/d_a_obj_simple_lift_bk_transbar.c:
-    complete
-    .text start:0x021327e8 end:0x02132818
-
-src/d_a_obj_simple_lift_km2_rifut02.c:
-    complete
-    .text start:0x02132818 end:0x02132848
-
-src/d_a_obj_simple_lift_km2_rifut01.c:
-    complete
-    .text start:0x02132848 end:0x02132878
-
-src/d_a_obj_simple_lift_rc_rift01.c:
-    complete
-    .text start:0x02132878 end:0x021328a8
-
-src/d_a_obj_simple_lift_km3_deru02.c:
-    complete
-    .text start:0x021328a8 end:0x021328d8
-
-src/d_a_obj_simple_lift_km3_deru01.c:
-    complete
-    .text start:0x021328d8 end:0x02132908
-
-src/d_a_obj_simple_lift_km1_deru.c:
-    complete
-    .text start:0x02132908 end:0x02132938
+    .text start:0x02132404 end:0x02132938
 
 src/actors/daDsn_c.cpp:
     complete
-    .text start:0x02132938 end:0x02132cb8
-
-src/d_a_dsn.c:
-    complete
-    .text start:0x02132cb8 end:0x02132d04
+    .text start:0x02132938 end:0x02132d04
 
 src/_ZN11daDsnBase_cD0Ev.cpp:
     complete
@@ -74,11 +34,7 @@ src/actors/daDsnBase_c.cpp:
 
 src/actors/daObjPile_c.cpp:
     complete
-    .text start:0x021333fc end:0x02133938
-
-src/d_a_obj_pile.c:
-    complete
-    .text start:0x02133938 end:0x02133968
+    .text start:0x021333fc end:0x02133968
 
 src/game/actors/d_a_hyuhyu.cpp:
     complete

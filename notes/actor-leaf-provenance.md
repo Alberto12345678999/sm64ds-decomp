@@ -174,7 +174,7 @@ one up, and its parameter list is half the evidence here.
 | 0x14c | `mDelay` | the `delay` argument of `SpawnNumber`: while nonzero `Behavior` returns immediately and `Render` decrements it and draws nothing. |
 | 0x14e | `mState` | the bounce. 0: rising, and the first frame back below `mStartPosY` snaps to that floor, sets `mVertSpeed` 0xf000 and advances to 1. 1: the next fall below the floor emits particle 0xd2 and marks the popup for destruction. |
 
-## daBttBk_c (was CrazedCrate), MontyMole -- nothing named
+## daBttBk_c (was CrazedCrate), daChoropu_c (was MontyMole) -- nothing named
 
 Listed so the next reader does not repeat the search.
 
@@ -182,11 +182,14 @@ Listed so the next reader does not repeat the search.
   state-machine helpers were promoted into `src/actors/daBttBk_c.cpp` it turned out
   to be read: `func_ov080_02124acc` stores the carrier actor there and
   `func_ov080_02124c3c`/`func_ov080_02124edc` read it.
-- `MontyMole` 0x17c/0x180..0x184/0x188 and the 16 bytes from 0x16c: all written
-  in `src/_ZN9MontyMole13InitResourcesEv.cpp` -- 0x180 is `param1 & 0xf`, 0x182
-  is `(param1 >> 4) & 0xf`, 0x181 is 1 when 0x180 is 0 and `(param1 >> 8) & 1`
-  otherwise -- and none of them is read by any enrolled body. Which nibble means
-  what is a guess until the class's other functions are enrolled.
+- `daChoropu_c` 0x17c/0x180..0x184/0x188 and the 16 bytes from 0x16c: all written
+  in `InitResources` in `src/actors/daChoropu_c.cpp` -- 0x180 is `param1 & 0xf`,
+  0x182 is `(param1 >> 4) & 0xf`, 0x181 is 1 when 0x180 is 0 and `(param1 >> 8) & 1`
+  otherwise. The ov080 TU promotion enrolled the readers, and three are now named
+  from them: 0x16c `mPartnerIDs[4]` and 0x183 `mNumPartners` (filled from the
+  same-group moles by `func_ov080_02123fcc`, read by `func_ov080_02124088` and
+  `func_ov080_02124360`), and 0x17c `mState` (the index into `Behavior`'s state
+  table). 0x180..0x182, 0x184 and 0x188 are still `unk_`.
 - `daFRing_c` 0x214: zeroed in
   `src/actors/daFRing_c.cpp` InitResources, and Behavior reads it as the shock frame.
 
@@ -315,7 +318,7 @@ Sources: `src/_ZN14EnemySwitchTag13InitResourcesEv.cpp`,
 | --- | --- | --- |
 | 0x174 | `mCarrier` | the actor the cap is riding, a pointer spelt `s32`. `Behavior` returns immediately when it is null; otherwise it copies the cap position out of that actor 0x0d8 triple and its two angles out of that actor +0xe4 and `dActor_c::mAngleY`. |
 
-Source: `src/_ZN12daDossyCap_c8BehaviorEv.cpp`.
+Source: `daDossyCap_c::Behavior` in `src/actors/daDossy_c.cpp`.
 
 ## Scuttlebug -- include/Scuttlebug.h
 

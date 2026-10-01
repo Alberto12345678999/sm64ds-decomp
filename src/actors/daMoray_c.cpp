@@ -8,23 +8,38 @@
  *   02114dac  swim out     init 02111994, execute 021118b4
  *   02114dbc  path swim    init 02111718, execute 021115c0
  *   02114d7c  retreat      init BookSwitch_Spawn, execute func_ov016_02111534
- * The retreat pair is not in this TU. BookSwitch_Spawn sets mStateTimer to
- * 100 and mHorzSpeed to 0x14000; func_ov016_02111534 restores the spawn
- * angles when that timer hits 0 and goes back to den wait.
+ * BookSwitch_Spawn sets mStateTimer to 100 and mHorzSpeed to 0x14000;
+ * func_ov016_02111534 restores the spawn angles when that timer hits 0 and
+ * goes back to den wait.
+ *
+ * BookSwitch_Spawn is the configured symbol name, not an identity. It came
+ * from the automated spawn-table naming pass, and nothing ties the function
+ * to a book switch: its only reference is the retreat state's init word at
+ * 0x02114898, it writes daMoray_c's mStateTimer and mHorzSpeed, and it sits
+ * inside this unit between two daMoray_c state functions. It keeps that name
+ * here because renaming it is a symbols-and-ledger change of its own.
  *
  * Which variant InitResources keeps depends on data_0209f220 (the entrance
  * filter) and whether stars 1 and 2 of sublevel 8 are collected. Variant 2
  * lowers its home and waits in the den. Variant 1 carries a held STAR
- * (actor 0xb2). Variant 0 swims the path. Anything else returns 0.
+ * (actor 178, STAR). Variant 0 swims the path. Anything else returns 0.
  *
- * Destructors and daMoray_c_classInit are the neighbouring TUs.
- * func_ov016_02111284 (between them and this run) places the hit cylinders.
+ * This file is the whole linker unit 0x021111a0..0x0211260c, 21 functions:
+ * D1 and D0 first (the start of ov016 .text, so nothing sits below them),
+ * then func_ov016_02111284, which places the hit cylinders, the retreat pair,
+ * the fifteen functions from the path-swim execute to InitResources, and
+ * last the registry factory daMoray_c_classInit (0x02112588).
+ * The out-of-line destructor is the key function, so this TU also emits the
+ * vtable and the RTTI. The factory is not `return new daMoray_c()`: that
+ * skips the ROM's __cxa_vec_ctor(..., func_0203d384, ...) over mSegmentPos,
+ * because types.h's Vector3 has no user-declared constructor (see the
+ * factory).
  * `#pragma defer_codegen off` keeps this file in ROM order. It also scopes
  * opt_propagation off on the den-wait execute and opt_strength_reduction
  * off on Render. common.h stays first: the pose reads the flat Matrix4x3
  * words m[9], m[10], m[11].
  *
- * deslop leftovers:
+ * Known limits (kept from the byte-matching recovery, not re-measured):
  * - BlendModelAnim::SetAnim with a Fix12<int> speed grows
  *   func_ov016_02111718 from 0x40 to 0x48 (+2 words). A named local and a
  *   compound literal cost the same. func_ov016_02111860, 02111994 and
@@ -60,6 +75,8 @@
  *   which is that wrapper.
  * - Sound::Play(3, 0xfa, pos) grows func_ov016_02111860 from 0x54 to 0x58.
  *   func_02012694 is Play with bank 3. The other call sites use it too.
+ * - The gotos in Behavior and InitResources, and the raw dActor_c+0xc8
+ *   carrier cast, are kept from the byte-matching recovery.
  */
 
 #include "common.h"
@@ -71,6 +88,10 @@
 #include "Player.h"
 
 #pragma defer_codegen off
+
+enum {
+    ACTOR_STAR = 178,
+};
 
 /* decl_common.h types the four file handles as char[] and the state tables
  * as char / void *. This TU repeats the names it uses. SharedFilePtr.h
@@ -133,9 +154,10 @@ void MulMat4x3Mat4x3(void *m1, void *m0, void *mF);
 
 void func_ov016_02111284(void *actor);
 int func_ov016_02111bf0(daMoray_c *self, const daMoray_c::State *state);
+void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *self, Vector3 *v, u32 a, int fix, u32 b, u32 d, u32 e);
 
 /* Header methods take Fix12<int> by value. Brace-init compiles and homes
-   the argument (see the leftover list). These scalars are the calls that
+   the argument (see Known limits). These scalars are the calls that
    match. */
 void _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(void *self, void *file, int blendFrames, int flags, int speed, unsigned short startFrame);
 void _ZN8dActor_c9SetRangesE5Fix12IiES1_S1_S1_(dActor_c *self, int offsetY, int radius, int clipDistance, int farDistance);
@@ -174,6 +196,165 @@ extern "C" MorayRenderStep data_ov016_02114908[];
 bool ApproachLinear(short &value, short target, short step);
 namespace cstd { int fdiv(int a, int b); }
 
+/* Out of line, and FIRST in this ROM-ascending file: that puts D1 and D0 at
+ * 0x021111a0 / 0x02111208, the two lowest addresses in the unit.
+ *
+ * One array cleanup, four member destructors and the chain into
+ * dEnemyBase_c, all of it in reverse declaration order out of daMoray_c.h.
+ * The array at 0x448 is Vector3[7]: the ROM destroys it with
+ * __cxa_vec_cleanup(ptr, 7, 0xc, _ZN7Vector3D1Ev), and 0xc is
+ * sizeof(Vector3). D0 then hands the object back through dActor_c's inline
+ * operator delete. mwcc also emits D2, which the ROM does not have; the
+ * manifest licenses it as deadstrip. */
+// @symbol _ZN9daMoray_cD1Ev
+// @symbol _ZN9daMoray_cD0Ev
+daMoray_c::~daMoray_c()
+{
+}
+
+/* Places both hit cylinders. On entrance 1, outside path swim, the second
+   cylinder (0x150) goes to a fixed point moved along the facing. The first
+   (0x110) steps through mSegmentPos, one segment per call, and hurts the
+   actor it last hit when that actor is the PLAYER (0xbf). Called from
+   Behavior. */
+// @symbol func_ov016_02111284
+extern "C" void func_ov016_02111284(void *actor)
+{
+    char *c = (char *)actor;
+    Vector3 va;
+    Vector3 vb;
+    Vector3 out;
+    Vector3 hv;
+    int r4;
+    int r6;
+    void *p;
+    int t;
+    u32 id;
+    int *ctr;
+    int idx;
+    int *px;
+
+    *(volatile int *)&va.x = *(int *)(c + 0x5c);
+    *(volatile int *)&va.y = *(int *)(c + 0x60);
+    *(volatile int *)&va.z = *(int *)(c + 0x64);
+
+    vb.x = 0;
+    vb.y = 0;
+    vb.z = 0;
+    out.x = 0;
+    out.y = 0;
+    out.z = 0;
+
+    r4 = 0x52000;
+
+    if (data_0209f220 == 1 && *(int *)(c + 0x34c) != (int)&data_ov016_02114dbc) {
+        r6 = 0x128000;
+        r6 = -r6;
+        vb.y = r6;
+        vb.z = 0x7c000;
+        va.x = 0x15e0000;
+        va.y = 0xfee90000;
+        va.z = 0x65e000;
+        Matrix4x3_FromRotationY(&data_020a0e68, *(short *)(c + 0x8e));
+        MulVec3Mat4x3(&vb, &data_020a0e68, &out);
+        va.x = va.x + out.x;
+        va.y = va.y + out.y;
+        va.z = va.z + out.z;
+        *(int *)(c + 0x184) = va.x;
+        {
+            int c1 = 0xc8000;
+            *(int *)(c + 0x188) = va.y;
+            int c2 = 0xf0000;
+            *(int *)(c + 0x18c) = va.z;
+            *(int *)(c + 0x154) = c1;
+            *(int *)(c + 0x158) = c2;
+        }
+    }
+
+    ctr = (int *)(c + 0x3fc);
+    *ctr = *ctr + 1;
+    if (*(int *)(c + 0x3fc) > 6)
+        *(int *)(c + 0x3fc) = 0;
+
+    idx = *(int *)(c + 0x3fc);
+    if (idx == 5)
+        r4 = 0xb8000;
+    vb.y = 0;
+    vb.x = 0;
+    vb.z = 0;
+    out.x = 0;
+    out.y = 0;
+    out.z = 0;
+    vb.y = -0x48000;
+    if (*(int *)(c + 0x3fc) == 5)
+        vb.z = 0x7c000;
+
+    Matrix4x3_FromRotationY(&data_020a0e68, *(short *)(c + 0x8e));
+    MulVec3Mat4x3(&vb, &data_020a0e68, &out);
+
+    {
+        /* Three int bases stepped by a byte index keep the * 0xc per axis. */
+        int *p448 = (int *)(c + 0x448);
+        int *p44c = (int *)(c + 0x44c);
+        int *p450 = (int *)(c + 0x450);
+        int idx2 = *(int *)(c + 0x3fc);
+        ((int *)((char *)p448 + idx2 * 0xc))[0] = ((int *)((char *)p448 + idx2 * 0xc))[0] + out.x;
+        idx2 = *(int *)(c + 0x3fc);
+        ((int *)((char *)p44c + idx2 * 0xc))[0] = ((int *)((char *)p44c + idx2 * 0xc))[0] + out.y;
+        idx2 = *(int *)(c + 0x3fc);
+        ((int *)((char *)p450 + idx2 * 0xc))[0] = ((int *)((char *)p450 + idx2 * 0xc))[0] + out.z;
+        idx2 = *(int *)(c + 0x3fc);
+        px = (int *)((char *)p448 + idx2 * 0xc);
+        *(int *)(c + 0x144) = px[0];
+        *(int *)(c + 0x148) = px[1];
+        *(int *)(c + 0x14c) = px[2];
+    }
+
+    *(int *)(c + 0x114) = r4;
+    *(int *)(c + 0x118) = 0x70000;
+
+    id = *(u32 *)(c + 0x134);
+    if (id == 0)
+        return;
+
+    p = dActor_c::FindWithID(id);
+    t = (int)(*(u16 *)((char *)p + 0xc) == 0xbf);
+    if (t == 0)
+        return;
+
+    hv.x = *(int *)(c + 0x5c);
+    hv.y = *(int *)(c + 0x60);
+    hv.z = *(int *)(c + 0x64);
+    _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(p, &hv, 3, 0xc000, 1, 0, 1);
+}
+
+/* Retreat execute. When the timer set by the retreat init runs out, stops,
+   turns back to the spawn angles and returns to den wait. */
+// @symbol func_ov016_02111534
+extern "C" int func_ov016_02111534(daMoray_c *self)
+{
+    if (*(u16 *)&self->mStateTimer == 0) {
+        self->mHorzSpeed = 0;
+        self->mPrevAngleX = self->mInitAngleX;
+        self->mPrevAngleY = self->mInitAngleY;
+        self->mPrevAngleZ = self->mInitAngleZ;
+        self->mAngleX = self->mPrevAngleX;
+        self->mAngleY = self->mPrevAngleY;
+        self->mAngleZ = self->mPrevAngleZ;
+        func_ov016_02111bf0(self, &data_ov016_02114d8c);
+    }
+    return 1;
+}
+
+/* Retreat init: 100 frames at 0x14000. */
+// @symbol BookSwitch_Spawn
+extern "C" int BookSwitch_Spawn(daMoray_c *self)
+{
+    self->mStateTimer = 100;
+    self->mHorzSpeed = 0x14000;
+    return 1;
+}
+
 /* Path-swim execute. Turns toward the current node and steps to the next
    one on arrival. Variant 1, back at node 0, enters the retreat state. */
 // @symbol func_ov016_021115c0
@@ -184,17 +365,17 @@ extern "C" int func_ov016_021115c0(daMoray_c *self)
     Vector3 diff;
     Vector3 scaled;
     int len;
-    short ha;
+    short headingToNode;
 
     path.FromID(self->mPathID);
     path.GetNode(node, self->mPathNodeIndex);
 
-    ha = Vec3_HorzAngle((Vector3 *)&self->mPosX, &node);
+    headingToNode = Vec3_HorzAngle((Vector3 *)&self->mPosX, &node);
     {
-        int d = AngleDiff(ha, self->mPrevAngleY);
-        self->mSegmentAngle[7] = d / 2;
+        int turn = AngleDiff(headingToNode, self->mPrevAngleY);
+        self->mSegmentAngle[7] = turn / 2;
     }
-    ApproachLinear(self->mPrevAngleY, ha, 0x80);
+    ApproachLinear(self->mPrevAngleY, headingToNode, 0x80);
 
     ApproachLinear(self->mPrevAngleX, Vec3_VertAngle((Vector3 *)&self->mPosX, &node), 0x80);
 
@@ -230,24 +411,24 @@ extern "C" int func_ov016_02111718(daMoray_c *self)
 // @symbol func_ov016_02111758
 extern "C" int func_ov016_02111758(daMoray_c *self)
 {
-    Vector3 in;
-    Vector3 out;
-    in.x = 0; in.y = 0; in.z = 0;
-    out.x = 0; out.y = 0; out.z = 0;
+    Vector3 localOffset;
+    Vector3 worldTarget;
+    localOffset.x = 0; localOffset.y = 0; localOffset.z = 0;
+    worldTarget.x = 0; worldTarget.y = 0; worldTarget.z = 0;
     unsigned int frame = (unsigned int)self->mBlendModelAnim.currFrame << 4 >> 0x10;
     if (frame >= 0x15 && frame <= 0x3c) {
         if (data_0209f220 == 1) {
-            in.z = 0x2bc000;
+            localOffset.z = 0x2bc000;
         } else {
-            in.z = 0x1f4000;
+            localOffset.z = 0x1f4000;
         }
         Matrix4x3_FromRotationY(&data_020a0e68, self->mAngleY);
         Matrix4x3_ApplyInPlaceToRotationX(&data_020a0e68, self->mAngleX);
-        MulVec3Mat4x3(&in, &data_020a0e68, &out);
-        out.x += self->mHomePosX;
-        out.y += self->mHomePosY;
-        out.z += self->mHomePosZ;
-        _Z14ApproachLinearR7Vector3RKS_5Fix12IiE(*(Vector3 *)&self->mPosX, out, 0x14000);
+        MulVec3Mat4x3(&localOffset, &data_020a0e68, &worldTarget);
+        worldTarget.x += self->mHomePosX;
+        worldTarget.y += self->mHomePosY;
+        worldTarget.z += self->mHomePosZ;
+        _Z14ApproachLinearR7Vector3RKS_5Fix12IiE(*(Vector3 *)&self->mPosX, worldTarget, 0x14000);
     }
     if (self->mBlendModelAnim.Finished()) {
         self->mHorzSpeed = 0;
@@ -270,19 +451,19 @@ extern "C" int func_ov016_02111860(daMoray_c *self)
 // @symbol func_ov016_021118b4
 extern "C" int func_ov016_021118b4(daMoray_c *self)
 {
-    Vector3 in;
-    Vector3 out;
-    in.x = 0; in.y = 0; in.z = 0;
-    out.x = 0; out.y = 0; out.z = 0;
-    in.z = 0x76c000;
+    Vector3 localOffset;
+    Vector3 worldTarget;
+    localOffset.x = 0; localOffset.y = 0; localOffset.z = 0;
+    worldTarget.x = 0; worldTarget.y = 0; worldTarget.z = 0;
+    localOffset.z = 0x76c000;
     Matrix4x3_FromRotationY(&data_020a0e68, self->mAngleY);
     Matrix4x3_ApplyInPlaceToRotationX(&data_020a0e68, self->mAngleX);
-    MulVec3Mat4x3(&in, &data_020a0e68, &out);
-    out.x += self->mHomePosX;
-    out.y += self->mHomePosY;
-    out.z += self->mHomePosZ;
-    _Z14ApproachLinearR7Vector3RKS_5Fix12IiE(*(Vector3 *)&self->mPosX, out, 0x14000);
-    if (Vec3_Dist((Vector3 *)&self->mPosX, &out) < 0x14000) {
+    MulVec3Mat4x3(&localOffset, &data_020a0e68, &worldTarget);
+    worldTarget.x += self->mHomePosX;
+    worldTarget.y += self->mHomePosY;
+    worldTarget.z += self->mHomePosZ;
+    _Z14ApproachLinearR7Vector3RKS_5Fix12IiE(*(Vector3 *)&self->mPosX, worldTarget, 0x14000);
+    if (Vec3_Dist((Vector3 *)&self->mPosX, &worldTarget) < 0x14000) {
         func_02012694(0xfa, (const Vector3 *)&self->mCamSpacePosX);
         func_ov016_02111bf0(self, &data_ov016_02114dbc);
     }
@@ -314,7 +495,7 @@ extern "C" int func_ov016_021119ec(daMoray_c *self)
     int thrHorz;
     int thrVert;
     int thrAng;
-    unsigned char stage;
+    unsigned char entrance;
     int zero;
     int dy;
 
@@ -329,19 +510,19 @@ extern "C" int func_ov016_021119ec(daMoray_c *self)
 
     player = self->ClosestPlayer();
     if (player != 0) {
-        /* ACDB order: x,y,z then stage -- colors y/z as r2 and stage as r1 */
+        /* ACDB order: x,y,z then entrance -- colors y/z as r2 and entrance as r1 */
         const Vector3 *pos = (const Vector3 *)&player->mPosX;
         playerPos.x = pos->x;
         playerPos.y = pos->y;
         playerPos.z = pos->z;
-        stage = data_0209f220;
+        entrance = data_0209f220;
 
         thrHorz = 0x3e8000;
         thrAng = 0x3300;
         thrVert = 0x418000;
         thrVert += 0x3e8000;
 
-        if (stage == 1) {
+        if (entrance == 1) {
             zero = 0;
             local.z = zero;
             local.z = 0x64000;
@@ -402,43 +583,43 @@ extern "C" int func_ov016_02111bf0(daMoray_c *self, const daMoray_c::State *stat
 // @symbol func_ov016_02111c40
 extern "C" void func_ov016_02111c40(daMoray_c *self)
 {
-    Vector3 in;
-    Vector3 out;
+    Vector3 localOffset;
+    Vector3 worldTarget;
     Vector3 asr;
     int zero[1];
     int i;
     daMoray_c *row;
-    int base;
+    int transformOffset;
     Vector3 *pos;
-    Matrix4x3 *mat_src;
+    Matrix4x3 *modelMtx;
     dActor_c *star;
-    u32 id;
+    u32 starUniqueID;
 
     Vec3_Asr(&asr, (Vector3 *)&self->mPosX, 3);
     Matrix4x3_FromTranslation(&data_020a0e68, asr.x, asr.y, asr.z);
-    in.z = 0;
-    in.z = -0x190000;
-    in.x = 0;
-    in.y = 0;
-    out.x = 0;
-    out.y = 0;
-    out.z = 0;
+    localOffset.z = 0;
+    localOffset.z = -0x190000;
+    localOffset.x = 0;
+    localOffset.y = 0;
+    worldTarget.x = 0;
+    worldTarget.y = 0;
+    worldTarget.z = 0;
     Matrix4x3_FromRotationY(&data_020a0e68, self->mAngleY);
-    MulVec3Mat4x3(&in, &data_020a0e68, &out);
-    Matrix4x3_FromTranslation(&data_020a0e68, (self->mPosX + out.x) >> 3, self->mPosY >> 3,
-                              (self->mPosZ + out.z) >> 3);
+    MulVec3Mat4x3(&localOffset, &data_020a0e68, &worldTarget);
+    Matrix4x3_FromTranslation(&data_020a0e68, (self->mPosX + worldTarget.x) >> 3, self->mPosY >> 3,
+                              (self->mPosZ + worldTarget.z) >> 3);
     Matrix4x3_ApplyInPlaceToRotationZXYExt(&data_020a0e68, self->mAngleX, self->mAngleY, self->mAngleZ);
     self->mBlendModelAnim.mat4x3 = data_020a0e68;
     ApproachLinear(self->mSegmentAngle[6], self->mSegmentAngle[7], 0x40);
     i = 0;
-    mat_src = &self->mBlendModelAnim.mat4x3;
+    modelMtx = &self->mBlendModelAnim.mat4x3;
     self->mSegmentAngle[5] = self->mSegmentAngle[6];
     /* mSegmentPos[i] / transforms[i] is 0x10 smaller than this walk
        (func_ov016_02111c40 0x2f8 -> 0x2e8). row steps one Vector3 at a time
        so the clear and the << 3 hit mSegmentPos[i] through the actor base;
        pos receives the bone translation before that shift. */
     row = self;
-    base = i;
+    transformOffset = i;
     pos = self->mSegmentPos;
     zero[0] = i;
     do {
@@ -447,8 +628,8 @@ extern "C" void func_ov016_02111c40(daMoray_c *self)
         row->mSegmentPos[0].y = zero[0];
         row->mSegmentPos[0].z = zero[0];
         dst = &data_020a0e68;
-        *dst = *mat_src;
-        MulMat4x3Mat4x3((char *)self->mBlendModelAnim.data.transforms + base, dst, dst);
+        *dst = *modelMtx;
+        MulMat4x3Mat4x3((char *)self->mBlendModelAnim.data.transforms + transformOffset, dst, dst);
         pos->x = dst->m[9];
         pos->y = dst->m[10];
         pos->z = dst->m[11];
@@ -456,15 +637,15 @@ extern "C" void func_ov016_02111c40(daMoray_c *self)
         row->mSegmentPos[0].y = row->mSegmentPos[0].y << 3;
         row->mSegmentPos[0].z = row->mSegmentPos[0].z << 3;
         row = (daMoray_c *)((char *)row + sizeof(Vector3));
-        base += 0x30;
+        transformOffset += 0x30;
         pos++;
         i++;
     } while (i < 7);
-    id = self->mStarUniqueID;
-    if (id == 0) {
+    starUniqueID = self->mStarUniqueID;
+    if (starUniqueID == 0) {
         return;
     }
-    star = dActor_c::FindWithID(id);
+    star = dActor_c::FindWithID(starUniqueID);
     if (star == 0) {
         return;
     }
@@ -529,7 +710,7 @@ s32 daMoray_c::Render()
 s32 daMoray_c::Behavior()
 {
     dActor_c *star;
-    unsigned id;
+    unsigned starUniqueID;
 
     DecIfAbove0_Short((u16 *)&mStateTimer);
     if (mState->execute)
@@ -540,9 +721,9 @@ s32 daMoray_c::Behavior()
     mAngleZ = mPrevAngleZ;
     func_ov016_02111c40(this);
 
-    id = mStarUniqueID;
-    if (id != 0) {
-        star = FindWithID(id);
+    starUniqueID = mStarUniqueID;
+    if (starUniqueID != 0) {
+        star = FindWithID(starUniqueID);
         if (star == 0)
             goto clear_id;
         if (mVariant == 1) {
@@ -550,8 +731,8 @@ s32 daMoray_c::Behavior()
             if (player != 0) {
                 if (Vec3_Dist(&mStarPos, (const Vector3 *)&player->mPosX) < 0xfa000) {
                     star->MarkForDestruction();
-                    /* 0xb2 is STAR. 0x40 releases it; InitResources spawned it held (| 0x50). */
-                    Spawn(0xb2, mStarParam | 0x40, mStarPos, 0, mAreaId, -1);
+                    /* 0x40 releases the STAR; InitResources spawned it held (| 0x50). */
+                    Spawn(ACTOR_STAR, mStarParam | 0x40, mStarPos, 0, mAreaId, -1);
                     mStarUniqueID = 0;
                     goto after_first;
                 }
@@ -584,8 +765,8 @@ s32 daMoray_c::Behavior()
 s32 daMoray_c::InitResources()
 {
     Vector3 node;
-    Vector3 v1;
-    Vector3 v2;
+    Vector3 cylOffset1;
+    Vector3 cylOffset2;
     int i;
     void *file;
     dActor_c *spawned;
@@ -614,10 +795,10 @@ s32 daMoray_c::InitResources()
     mHomePosY = mPosY;
     mHomePosZ = mPosZ;
     mTerminalVelocity = -0x1e000;
-    v1 = data_ov016_02114d4c;
-    _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(&mdCcAcPos_c1, this, &v1, 0x32000, 0x50000, 0x200004, 0);
-    v2 = data_ov016_02114d4c;
-    _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(&mdCcAcPos_c2, this, &v2, 0x32000, 0x50000, 0x200000, 0);
+    cylOffset1 = data_ov016_02114d4c;
+    _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(&mdCcAcPos_c1, this, &cylOffset1, 0x32000, 0x50000, 0x200004, 0);
+    cylOffset2 = data_ov016_02114d4c;
+    _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(&mdCcAcPos_c2, this, &cylOffset2, 0x32000, 0x50000, 0x200000, 0);
 
     /* Second bind is unused. Dropping the constructor and FromID shrinks
        InitResources by 0x14, so the ROM really does call them. */
@@ -658,8 +839,8 @@ stage2_path:
 check_param1:
     if (mVariant != 1)
         goto ret0_b;
-    /* STAR, held (| 0x50). Behavior releases it with | 0x40. */
-    spawned = Spawn(0xb2, mStarParam | 0x50, *(Vector3 *)&mPosX, 0, mAreaId, -1);
+    /* Held (| 0x50). Behavior releases it with | 0x40. */
+    spawned = Spawn(ACTOR_STAR, mStarParam | 0x50, *(Vector3 *)&mPosX, 0, mAreaId, -1);
     if (spawned != 0) {
         mStarUniqueID = spawned->uniqueID;
         spawned->mFlags = 0;
@@ -678,7 +859,7 @@ check_param0:
         path.FromID(mPathID);
         /* Both nodes are written to mPos; the second sticks. The facing
            below is against `node`, which this block does not fill. Sending
-           node 0 there is the one-word DIFF in the leftover list. */
+           node 0 there is the one-word DIFF listed under Known limits. */
         path.GetNode(*(Vector3 *)&mPosX, 0);
         path.GetNode(*(Vector3 *)&mPosX, 1);
     }
@@ -702,4 +883,50 @@ tail:
     mInitAngleY = mAngleY;
     mInitAngleZ = mAngleZ;
     return 1;
+}
+
+extern "C" {
+extern void *_ZN7fBase_cnwEj(unsigned int);
+extern void *_ZN12dEnemyBase_cC2Ev(void *);
+extern void *_ZN10dCcAcPos_cC1Ev(void *);
+extern void *_ZN10dBgCh_ActrC1Ev(void *);
+extern void *_ZN14BlendModelAnimC1Ev(void *);
+extern void func_0203d384(void);
+extern void *_ZN7Vector3D1Ev(void *);
+/* The array runtime discards lifecycle receiver results. */
+extern void __cxa_vec_ctor(void *arr, unsigned int count, unsigned int size,
+                           void (*ctor)(void *), void (*dtor)(void *));
+extern int _ZTV9daMoray_c[];
+}
+
+/* Reconstructed source-style name: SM64DS proves daMoray_c through RTTI,
+ * allocation size, vtable identity, and the MORAY registry profile; later
+ * EAD lineage supplies classInit. Exact original spelling is not preserved.
+ * Historical alias: Unagi_Spawn.
+ *
+ * Not written as `new daMoray_c()`: types.h's Vector3 has no user-declared
+ * constructor, so the implicit daMoray_c constructor would skip the ROM's
+ * per-element __cxa_vec_ctor(..., func_0203d384, ...) over mSegmentPos.
+ * Reproducing it needs a real Vector3 default constructor in the shared
+ * header, which every other Vector3 consumer would recompile under. The
+ * factory keeps the loose file's hand-built sequence, as
+ * daObjFlamethrower_c_classInit does. This TU owns the key function and so
+ * defines _ZTV9daMoray_c from the start of the vtable object (the two-word
+ * RTTI header); the vptr store reads `&_ZTV9daMoray_c[2]` to reach slot 0. */
+// @symbol daMoray_c_classInit
+extern "C" daMoray_c *daMoray_c_classInit()
+{
+    daMoray_c *p = (daMoray_c *)_ZN7fBase_cnwEj(sizeof(daMoray_c));
+    if (p) {
+        _ZN12dEnemyBase_cC2Ev(p);
+        *(void ***)p = (void **)&_ZTV9daMoray_c[2];
+        _ZN10dCcAcPos_cC1Ev(&p->mdCcAcPos_c1);
+        _ZN10dCcAcPos_cC1Ev(&p->mdCcAcPos_c2);
+        _ZN10dBgCh_ActrC1Ev(&p->mWithMeshClsn);
+        _ZN14BlendModelAnimC1Ev(&p->mBlendModelAnim);
+        __cxa_vec_ctor(p->mSegmentPos, 7, sizeof(Vector3),
+                       (void (*)(void *))func_0203d384,
+                       (void (*)(void *))_ZN7Vector3D1Ev);
+    }
+    return p;
 }

@@ -69,11 +69,11 @@ extern int data_ov002_0211094c;
    -- a literal-pool LOAD, not an arm_call -- and ov089 names 0x02132894
    `data_ov089_02132894`, sitting in that overlay's .rodata between
    data_ov089_02132880 and data_ov089_021328b4, so it is 0x20 bytes: the eight
-   SharedFilePtr* entries src/LoadKeyModels.cpp bounds-checks with `idx >= 8`.
+   SharedFilePtr* entries LoadKeyModels bounds-checks with `idx >= 8`.
    That is the table LoadKeyModels loads into, which is why the call on the line
    below is handed the very same index this is then subscripted by, and
-   src/UnloadKeyModels.cpp and src/actors/daObjKey_c.cpp already declare
-   and subscript it under this name with this element type. */
+   src/actors/daObjKey_c.cpp, home of LoadKeyModels and UnloadKeyModels, declares
+   and subscripts it under this name with this element type. */
 extern void *data_ov089_02132894[];
 extern void LoadKeyModels(int idx);
 extern int data_ov089_02132c50;

@@ -22,10 +22,12 @@
  * the height above mGroundY.
  *
  * #pragma defer_codegen off lays .text down in source order. The out-of-line
- * destructor emits D1 then D0. Factories and both profiles stay out of
- * this TU.
+ * destructor emits D1 then D0. The two registry factories abut the rest of
+ * the run and come last, HS_UPDOWN_LIFT's first; both profiles stay out of
+ * this TU. The "// address (size)" line above each definition is its ROM
+ * location.
  *
- * deslop leftovers:
+ * Known limits:
  * - Kill: Particle::System::NewSimple(Fix12<int> x, y, z) is +0x24
  *   (0x8c -> 0xb0). The scalar extern passes the three positions in r1-r3.
  * - func_ov091_02131160: dActor_c::DropShadowScaleXYZ as a method is +0x1c
@@ -139,9 +141,7 @@ void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
     int scale, s16 angY, CLPS_Block *clps);
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 0 -- _ZN23daObjRotateUpdownLift_cD1Ev, 0x02130f00, size 0x4c */
-/* -------------------------------------------------------------------------- */
+// 0x02130f00 (0x4c)
 // @symbol _ZN23daObjRotateUpdownLift_cD1Ev
 // @symbol _ZN23daObjRotateUpdownLift_cD0Ev
 daObjRotateUpdownLift_c::~daObjRotateUpdownLift_c()
@@ -157,9 +157,7 @@ extern "C" daObjRotateUpdownLift_c *_ZN23daObjRotateUpdownLift_cD0Ev(daObjRotate
 }
 #endif
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 2 -- func_ov091_02130fac, 0x02130fac, size 0xc4 */
-/* -------------------------------------------------------------------------- */
+// 0x02130fac (0xc4)
 // @symbol func_ov091_02130fac
 /* Put a killed lift back on its spawn node. The watcher calls this. */
 extern "C" void func_ov091_02130fac(daObjRotateUpdownLift_c *lift)
@@ -183,9 +181,7 @@ extern "C" void func_ov091_02130fac(daObjRotateUpdownLift_c *lift)
     lift->mPosZ = tmp[1].z;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 3 -- _ZN23daObjRotateUpdownLift_c4KillEv, 0x02131070, size 0x8c */
-/* -------------------------------------------------------------------------- */
+// 0x02131070 (0x8c)
 // @symbol _ZN23daObjRotateUpdownLift_c4KillEv
 void daObjRotateUpdownLift_c::Kill()
 {
@@ -199,9 +195,7 @@ void daObjRotateUpdownLift_c::Kill()
         mMeshCollider.Disable();
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 4 -- _ZN23daObjRotateUpdownLift_c15OnHitByMegaCharER6Player, 0x021310fc, size 0x64 */
-/* -------------------------------------------------------------------------- */
+// 0x021310fc (0x64)
 // @symbol _ZN23daObjRotateUpdownLift_c15OnHitByMegaCharER6Player
 /* HS_UPDOWN_LIFT ignores the hit. The others count it, play 0x1e, and
    snap yaw back to the previous angle. */
@@ -217,9 +211,7 @@ void daObjRotateUpdownLift_c::OnHitByMegaChar(Player &player)
     mAngleY = mPrevAngleY;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 5 -- func_ov091_02131160, 0x02131160, size 0x1e0 */
-/* -------------------------------------------------------------------------- */
+// 0x02131160 (0x1e0)
 // @symbol func_ov091_02131160
 /* Aim the cuboid shadow and the clip volume. Called every frame except
    for HS_UPDOWN_LIFT. */
@@ -229,51 +221,49 @@ extern "C" int func_ov091_02131160(daObjRotateUpdownLift_c *lift)
        as a Matrix4x3 * steals r4 from `this` and the function grows. The
        three translation words are stored from `this`, not from that pointer. */
     char *c = (char *)lift;
-    VariantWords v0 = data_ov091_02134bac;
-    VariantWords v1 = data_ov091_02134bd0;
-    VariantWords v2 = data_ov091_02134bb8;
-    VariantWords v3 = data_ov091_02134ba0;
+    VariantWords shadowBaseY = data_ov091_02134bac;
+    VariantWords shadowSizeX = data_ov091_02134bd0;
+    VariantWords shadowSizeZ = data_ov091_02134bb8;
+    VariantWords clipCap = data_ov091_02134ba0;
 
     Matrix4x3_FromRotationY((Matrix4x3 *)(c + 0x348), lift->mAngleY);
     *(int *)(c + 0x36c) = lift->mPosX >> 3;
 
-    int idx = (u16)lift->mAngleX >> 4;
-    int s = data_02082214[idx << 1];
-    int sa = s < 0 ? -s : s;
-    int scaled = (int)(((long long)sa * 0xa0000 + 0x800) >> 12);
-    int b5 = lift->mVariant;
-    int base = v0.v[b5];
+    int sinIdx = (u16)lift->mAngleX >> 4;
+    int sine = data_02082214[sinIdx << 1];
+    int sineAbs = sine < 0 ? -sine : sine;
+    int scaled = (int)(((long long)sineAbs * 0xa0000 + 0x800) >> 12);
+    int variantA = lift->mVariant;
+    int base = shadowBaseY.v[variantA];
     int sum = base + scaled;
     int py = lift->mPosY;
     *(int *)(c + 0x370) = (py - sum) >> 3;
     *(int *)(c + 0x374) = lift->mPosZ >> 3;
 
-    int b5b = lift->mVariant;
+    int variantB = lift->mVariant;
     int h = lift->mPosY - lift->mGroundY;
     if (h <= 0x1000)
         h = 0x1000;
-    int cap = v3.v[b5b];
+    int cap = clipCap.v[variantB];
     if (h + 0x100000 >= cap)
         cap = h + 0x100000;
     lift->mClipOffsetY = -((int)(h + ((unsigned)h >> 31)) >> 1);
     lift->mClipRadius = (int)(cap + ((unsigned)cap >> 31)) >> 4;
 
     int shr = (int)(((long long)h * 32 + 0x800) >> 12);
-    int idx2 = (u16)lift->mAngleX >> 4;
-    int b5c = lift->mVariant;
-    int sx = v1.v[b5c] - shr;
-    int cosine = data_02082214[(idx2 << 1) + 1];
+    int cosIdx = (u16)lift->mAngleX >> 4;
+    int variantC = lift->mVariant;
+    int sx = shadowSizeX.v[variantC] - shr;
+    int cosine = data_02082214[(cosIdx << 1) + 1];
     int fac = 0xa0000 - shr;
     if (cosine < 0)
         cosine = -cosine;
     return _ZN8dActor_c18DropShadowScaleXYZER11ShadowModelR9Matrix4x35Fix12IiES5_S5_j(
         c, c + 0x320, c + 0x348, sx, h,
-        v2.v[b5c] + (int)(((long long)fac * cosine + 0x800) >> 12), 0xf);
+        shadowSizeZ.v[variantC] + (int)(((long long)fac * cosine + 0x800) >> 12), 0xf);
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 6 -- func_ov091_02131340, 0x02131340, size 0x48 */
-/* -------------------------------------------------------------------------- */
+// 0x02131340 (0x48)
 // @symbol func_ov091_02131340
 /* Write the model matrix: full rotation, translation at 1/8 of position. */
 extern "C" void func_ov091_02131340(daObjRotateUpdownLift_c *lift)
@@ -285,9 +275,7 @@ extern "C" void func_ov091_02131340(daObjRotateUpdownLift_c *lift)
     lift->mModel.mat4x3.t.z = lift->mPosZ >> 3;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 7 -- _ZN23daObjRotateUpdownLift_c16CleanupResourcesEv, 0x02131388, size 0x80 */
-/* -------------------------------------------------------------------------- */
+// 0x02131388 (0x80)
 // @symbol _ZN23daObjRotateUpdownLift_c16CleanupResourcesEv
 int daObjRotateUpdownLift_c::CleanupResources()
 {
@@ -300,9 +288,7 @@ int daObjRotateUpdownLift_c::CleanupResources()
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 8 -- _ZN23daObjRotateUpdownLift_c6RenderEv, 0x02131408, size 0x60 */
-/* -------------------------------------------------------------------------- */
+// 0x02131408 (0x60)
 // @symbol _ZN23daObjRotateUpdownLift_c6RenderEv
 int daObjRotateUpdownLift_c::Render()
 {
@@ -314,9 +300,7 @@ int daObjRotateUpdownLift_c::Render()
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 9 -- _ZN23daObjRotateUpdownLift_c8BehaviorEv, 0x02131468, size 0x488 */
-/* -------------------------------------------------------------------------- */
+// 0x02131468 (0x488)
 // @symbol _ZN23daObjRotateUpdownLift_c8BehaviorEv
 int daObjRotateUpdownLift_c::Behavior()
 {
@@ -345,42 +329,42 @@ int daObjRotateUpdownLift_c::Behavior()
         isParent = actorID;
         isParent = (isParent == 0x1d);
         if (isParent != 0) {
-            daObjRotateUpdownLift_c *a;
-            daObjRotateUpdownLift_c *b;
+            daObjRotateUpdownLift_c *platform0;
+            daObjRotateUpdownLift_c *platform1;
             if ((daObjRotateUpdownLift_c *)mPlatform0 == 0
                 || (daObjRotateUpdownLift_c *)mPlatform1 == 0) {
-                daObjRotateUpdownLift_c *found;
-                found = (daObjRotateUpdownLift_c *)FindWithActorID(0x1d, 0);
-                if (found != 0) {
+                daObjRotateUpdownLift_c *nearby;
+                nearby = (daObjRotateUpdownLift_c *)FindWithActorID(0x1d, 0);
+                if (nearby != 0) {
                     do {
-                        if (found != this
+                        if (nearby != this
                             && Vec3_HorzDist((Vector3 *)&mPosX,
-                                             (Vector3 *)&found->mPosX) < 0xa0000) {
+                                             (Vector3 *)&nearby->mPosX) < 0xa0000) {
                             if ((daObjRotateUpdownLift_c *)mPlatform0 == 0)
-                                mPlatform0 = (s32)found;
+                                mPlatform0 = (s32)nearby;
                             else if ((daObjRotateUpdownLift_c *)mPlatform1 == 0)
-                                mPlatform1 = (s32)found;
+                                mPlatform1 = (s32)nearby;
                         }
-                        found = (daObjRotateUpdownLift_c *)FindWithActorID(0x1d, found);
-                    } while (found != 0);
+                        nearby = (daObjRotateUpdownLift_c *)FindWithActorID(0x1d, nearby);
+                    } while (nearby != 0);
                 }
             }
-            a = (daObjRotateUpdownLift_c *)mPlatform0;
-            if (a != 0) {
-                b = (daObjRotateUpdownLift_c *)mPlatform1;
-                if (b != 0) {
+            platform0 = (daObjRotateUpdownLift_c *)mPlatform0;
+            if (platform0 != 0) {
+                platform1 = (daObjRotateUpdownLift_c *)mPlatform1;
+                if (platform1 != 0) {
                     int offScreen;
-                    if (a->mIsDead != 0 && b->mIsDead != 0)
+                    if (platform0->mIsDead != 0 && platform1->mIsDead != 0)
                         keepSound = 0;
                     offScreen = (mFlags & 8) ? 1 : 0;
                     if (offScreen != 0) {
                         if (DistToCPlayer() > 0x7d0000) {
-                            a = (daObjRotateUpdownLift_c *)mPlatform0;
-                            if (a->mIsDead != 0)
-                                func_ov091_02130fac(a);
-                            b = (daObjRotateUpdownLift_c *)mPlatform1;
-                            if (b->mIsDead != 0)
-                                func_ov091_02130fac(b);
+                            platform0 = (daObjRotateUpdownLift_c *)mPlatform0;
+                            if (platform0->mIsDead != 0)
+                                func_ov091_02130fac(platform0);
+                            platform1 = (daObjRotateUpdownLift_c *)mPlatform1;
+                            if (platform1->mIsDead != 0)
+                                func_ov091_02130fac(platform1);
                         }
                     }
                 }
@@ -480,9 +464,7 @@ int daObjRotateUpdownLift_c::Behavior()
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/* ROM ordinal 10 -- _ZN23daObjRotateUpdownLift_c13InitResourcesEv, 0x021318f0, size 0x2b4 */
-/* -------------------------------------------------------------------------- */
+// 0x021318f0 (0x2b4)
 // @symbol _ZN23daObjRotateUpdownLift_c13InitResourcesEv
 int daObjRotateUpdownLift_c::InitResources()
 {
@@ -568,4 +550,18 @@ int daObjRotateUpdownLift_c::InitResources()
     mSpawnAngleY = mAngleY;
     mSpawnAngleZ = mAngleZ;
     return 1;
+}
+
+// 0x02131ba4 (0x38)
+// @symbol daObjRotateUpdownLift_c_classInit_HS_UPDOWN_LIFT
+extern "C" daObjRotateUpdownLift_c *daObjRotateUpdownLift_c_classInit_HS_UPDOWN_LIFT()
+{
+    return new daObjRotateUpdownLift_c();
+}
+
+// 0x02131bdc (0x38)
+// @symbol daObjRotateUpdownLift_c_classInit_UPDOWN_LIFT
+extern "C" daObjRotateUpdownLift_c *daObjRotateUpdownLift_c_classInit_UPDOWN_LIFT()
+{
+    return new daObjRotateUpdownLift_c();
 }

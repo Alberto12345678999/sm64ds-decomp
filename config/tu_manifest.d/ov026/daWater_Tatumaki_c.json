@@ -8,13 +8,14 @@
   "boundary_evidence": [
     "contiguous linker run: 0x2111aa0..0x21121bc, 13 function(s), from build/tu_map.json (tools/tu_map.py)",
     "class label(s): daWater_Tatumaki_c",
-    "module sinit corroboration: 5 sinit(s) / 5 .ctor entries, sinit_vs_tu=ok, corroborated=False (module-wide, NOT narrowed to this one TU -- see notes/tu-reconstruction-pilot-report.md sec 2 for the by-hand narrowing step)"
+    "module sinit corroboration: 5 sinit(s) / 5 .ctor entries, sinit_vs_tu=ok, corroborated=False (module-wide, NOT narrowed to this one TU -- see notes/tu-reconstruction-pilot-report.md sec 2 for the by-hand narrowing step)",
+    "classInit fold: the daWater_Tatumaki_c_classInit registry factory (profile WATER_TATUMAKI, historical alias Whirlpool_Spawn), 0x021121bc..0x021121fc, abuts this TU's InitResources with no gap; tu_map leaves it unlabelled because it cuts on symbol name. Folded as `return new daWater_Tatumaki_c();` at the end of the file (defer_codegen off, source order). The unit is now 0x02111aa0..0x021121fc, 14 functions, bounded above by daWater_Suikomi_c's first function at 0x021121fc (src/actors/daWater_Suikomi_c.cpp)."
   ],
   "sections": [
     {
       "name": ".text",
       "start": "0x02111aa0",
-      "end": "0x021121bc"
+      "end": "0x021121fc"
     }
   ],
   "functions": [
@@ -108,6 +109,13 @@
       "size": "0x000000d0",
       "legacy_source": "src/_ZN18daWater_Tatumaki_c13InitResourcesEv.cpp",
       "ordinal": 12
+    },
+    {
+      "symbol": "daWater_Tatumaki_c_classInit",
+      "address": "0x021121bc",
+      "size": "0x00000040",
+      "legacy_source": "src/d_a_water_tatumaki.c",
+      "ordinal": 13
     }
   ],
   "data": [],
@@ -218,8 +226,8 @@
     "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
     "object": "build/tu/ov026-daWater_Tatumaki_c/daWater_Tatumaki_c.o (gitignored)",
     "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
-    "functions_matched": 13,
-    "functions_declared": 13,
+    "functions_matched": 14,
+    "functions_declared": 14,
     "compilerOnlyOutput": {
       "requested": [
         "_ZN18daWater_Tatumaki_cD2Ev",
@@ -232,9 +240,7 @@
       "droppedSections": [
         9,
         10,
-        17,
-        31,
-        32,
+        13,
         33,
         34,
         35,
@@ -249,7 +255,9 @@
         44,
         45,
         46,
-        47
+        47,
+        48,
+        49
       ],
       "data": [
         "_ZTV18daWater_Tatumaki_c",

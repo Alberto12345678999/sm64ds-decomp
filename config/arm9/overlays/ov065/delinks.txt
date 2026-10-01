@@ -10,139 +10,15 @@ src/actors/daYurei_Mucho_c.cpp:
 
 src/actors/daBasabasa_c.cpp:
     complete
-    .text start:0x02116f98 end:0x02117ee8
+    .text start:0x02116f98 end:0x02117f40
 
-src/d_a_basabasa.c:
+src/actors/daDossy_c.cpp:
     complete
-    .text start:0x02117ee8 end:0x02117f40
-
-src/_ZN9daDossy_cD1Ev.cpp:
-    complete
-    .text start:0x02117f40 end:0x02117fa8
-
-src/_ZN9daDossy_cD0Ev.cpp:
-    complete
-    .text start:0x02117fa8 end:0x02118024
-
-src/_ZN12daDossyCap_cD1Ev.cpp:
-    complete
-    .text start:0x02118024 end:0x02118064
-
-src/_ZN12daDossyCap_cD0Ev.cpp:
-    complete
-    .text start:0x02118064 end:0x021180b8
-
-src/_ZN14DorriePlatformD1Ev.cpp:
-    complete
-    .text start:0x021180b8 end:0x021180d4
-
-src/func_ov065_021180d4.c:
-    complete
-    .text start:0x021180d4 end:0x02118248
-
-src/func_ov065_02118248.cpp:
-    complete
-    .text start:0x02118248 end:0x021182e4
-
-src/func_ov065_021182e4.cpp:
-    complete
-    .text start:0x021182e4 end:0x021183c8
-
-src/func_ov065_021183c8.c:
-    complete
-    .text start:0x021183c8 end:0x02118634
-
-src/func_ov065_02118634.c:
-    complete
-    .text start:0x02118634 end:0x02118838
-
-src/func_ov065_02118838.cpp:
-    complete
-    .text start:0x02118838 end:0x02118c4c
-
-src/func_ov065_02118c4c.c:
-    complete
-    .text start:0x02118c4c end:0x02118cc4
-
-src/func_ov065_02118cc4.c:
-    complete
-    .text start:0x02118cc4 end:0x02118d04
-
-src/_ZN9daDossy_c16CleanupResourcesEv.cpp:
-    complete
-    .text start:0x02118d04 end:0x02118d80
-
-src/_ZN9daDossy_c6RenderEv.cpp:
-    complete
-    .text start:0x02118d80 end:0x02118da8
-
-src/_ZN12daDossyCap_c6RenderEv.cpp:
-    complete
-    .text start:0x02118da8 end:0x02118df0
-
-src/_ZN9daDossy_c8BehaviorEv.cpp:
-    complete
-    .text start:0x02118df0 end:0x021190a8
-
-src/_ZN12daDossyCap_c8BehaviorEv.cpp:
-    complete
-    .text start:0x021190a8 end:0x02119210
-
-src/func_ov065_02119210.c:
-    complete
-    .text start:0x02119210 end:0x02119228
-
-src/_ZN9daDossy_c13InitResourcesEv.cpp:
-    complete
-    .text start:0x02119228 end:0x021194e8
-
-src/_ZN12daDossyCap_c13InitResourcesEv.cpp:
-    complete
-    .text start:0x021194e8 end:0x0211956c
-
-src/func_ov065_0211956c.c:
-    complete
-    .text start:0x0211956c end:0x02119594
-
-src/func_ov065_02119594.c:
-    complete
-    .text start:0x02119594 end:0x021195bc
-
-src/func_ov065_021195bc.c:
-    complete
-    .text start:0x021195bc end:0x021195d0
-
-src/func_ov065_021195d0.c:
-    complete
-    .text start:0x021195d0 end:0x021195e4
-
-src/_ZN12daDossyCap_c13OnYoshiTryEatEv.cpp:
-    complete
-    .text start:0x021195e4 end:0x021195ec
-
-src/d_a_dossy_cap.c:
-    complete
-    .text start:0x021195ec end:0x02119634
-
-src/d_a_dossy.c:
-    complete
-    .text start:0x02119634 end:0x021196bc
-
-src/_ZN14DorriePlatformC1Ev.cpp:
-    complete
-    .text start:0x021196bc end:0x021196d8
+    .text start:0x02117f40 end:0x021196d8
 
 src/actors/daObjCtRotateBlock_c.cpp:
     complete
-    .text start:0x021196d8 end:0x02119ebc
-
-src/d_a_obj_ct_rotate_block_ct_mecha02.c:
-    complete
-    .text start:0x02119ebc end:0x02119efc
-
-src/d_a_obj_ct_rotate_block_ct_mecha01.c:
-    complete
-    .text start:0x02119efc end:0x02119f3c
+    .text start:0x021196d8 end:0x02119f3c
 
 src/actors/daObjCtMecha03_c.cpp:
     complete
@@ -162,26 +38,11 @@ src/actors/daObjCtKaitendai_c.cpp:
 
 src/actors/daObjCtMecha08_c.cpp:
     complete
-    .text start:0x0211b7f0 end:0x0211bb7c
-
-src/d_a_obj_ct_mecha08_ct_mecha08b.c:
-    complete
-    .text start:0x0211bb7c end:0x0211bbac
-
-src/d_a_obj_ct_mecha08_ct_mecha08a.c:
-    complete
-    .text start:0x0211bbac end:0x0211bbdc
+    .text start:0x0211b7f0 end:0x0211bbdc
 
 src/actors/daObjCtMecha09_c.cpp:
     complete
-    .text start:0x0211bbdc end:0x0211bf04
-
-src/_ZN16daObjCtMecha09_c13InitResourcesEv.cpp:
-    .text start:0x0211bf04 end:0x0211c040
-
-src/d_a_obj_ct_mecha09.c:
-    complete
-    .text start:0x0211c040 end:0x0211c078
+    .text start:0x0211bbdc end:0x0211c078
 
 src/__sinit_ov065_0211c110.c:
     complete

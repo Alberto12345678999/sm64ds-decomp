@@ -58,6 +58,38 @@
    "ref": "src_tu/actors/Koopa"
   },
   {
+   "file": "notes/agents/handoffs/mg-p1-3desp-0925.md",
+   "ref": "src/_ZN12dScMg3DEsp_c13InitResourcesEv.cpp"
+  },
+  {
+   "file": "notes/agents/handoffs/mg-p1-3desp-0925.md",
+   "ref": "src/_ZN12dScMg3DEsp_c13OnYoshiTryEatEi.cpp"
+  },
+  {
+   "file": "notes/agents/handoffs/mg-p1-3desp-0925.md",
+   "ref": "src/_ZN12dScMg3DEsp_c16CleanupResourcesEv.cpp"
+  },
+  {
+   "file": "notes/agents/handoffs/mg-p1-3desp-0925.md",
+   "ref": "src/_ZN12dScMg3DEsp_c6RenderEv.cpp"
+  },
+  {
+   "file": "notes/agents/handoffs/mg-p1-3desp-0925.md",
+   "ref": "src/_ZN12dScMg3DEsp_c8BehaviorEv.cpp"
+  },
+  {
+   "file": "notes/agents/handoffs/mg-p1-3desp-0925.md",
+   "ref": "src/_ZN12dScMg3DEsp_c9Virtual50Ev.cpp"
+  },
+  {
+   "file": "notes/agents/handoffs/mg-p1-3desp-0925.md",
+   "ref": "src/_ZN12dScMg3DEsp_cD0Ev.cpp"
+  },
+  {
+   "file": "notes/agents/handoffs/mg-p1-3desp-0925.md",
+   "ref": "src/_ZN12dScMg3DEsp_cD1Ev.cpp"
+  },
+  {
    "file": "notes/agents/handoffs/mg-p1-factories-0926.md",
    "ref": "src/d_s_mg_bomroom.c"
   },
@@ -114,8 +146,24 @@
    "ref": "src/d_s_mg_pachinko2.c"
   },
   {
+   "file": "notes/agents/handoffs/minigame-esp-state-readable-0922.md",
+   "ref": "src/func_ov006_020e7f5c.cpp"
+  },
+  {
    "file": "notes/agents/handoffs/pr2231-rescue-ov022-ov013-batch2.md",
    "ref": "src_tu/actors/daObj_volcanoCannon_c.cpp"
+  },
+  {
+   "file": "notes/agents/handoffs/promote-ov055-luigi-0923.md",
+   "ref": "src/d_a_luigi.cpp"
+  },
+  {
+   "file": "notes/agents/handoffs/readable-ov055-luigi-0925.md",
+   "ref": "src/d_a_luigi.cpp"
+  },
+  {
+   "file": "notes/agents/handoffs/readable-ov092-onms-0925b.md",
+   "ref": "src/d_a_onms.cpp"
   },
   {
    "file": "notes/archive/crack-loop-runbook.md",
@@ -168,6 +216,14 @@
   {
    "file": "notes/bgobject-provenance.md",
    "ref": "src/FortressWall_Spawn.c"
+  },
+  {
+   "file": "notes/bgobject-provenance.md",
+   "ref": "src/_ZN6Eyerok13InitResourcesEv.cpp"
+  },
+  {
+   "file": "notes/bgobject-provenance.md",
+   "ref": "src/_ZN6Eyerok16OnAimedAtWithEggEv.cpp"
   },
   {
    "file": "notes/bgobject-provenance.md",
@@ -324,6 +380,10 @@
   {
    "file": "notes/plan-cpp-language-mode.md",
    "ref": "src/_ZN9ActorBaseC1Ev.cpp"
+  },
+  {
+   "file": "notes/platform-provenance.md",
+   "ref": "src/d_a_obj_rotate_updown_lift_hs_updown_lift.c"
   },
   {
    "file": "notes/port-selftest-bmp-gate.md",
@@ -514,6 +574,10 @@
    "ref": "tools/foo.py"
   },
   {
+   "file": "tools/check_decl_agreement.py",
+   "ref": "src/func_ov065_021183c8.c"
+  },
+  {
    "file": "tools/check_header_offsets.py",
    "ref": "include/ClsnResult.h"
   },
@@ -656,6 +720,10 @@
   {
    "file": "tools/symscope.py",
    "ref": "src/Foo.cpp"
+  },
+  {
+   "file": "tools/test_check_decl_agreement.py",
+   "ref": "src/func_ov065_021183c8.c"
   },
   {
    "file": "tools/test_demember_calls.py",

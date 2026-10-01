@@ -152,7 +152,7 @@ shared definition in include/Particle__SysTracker.h, which Stage.h also uses.
 
 **0x4700..0x4718** (seven fields) were split out of the former `pad_4660[0xbc]`:
 dScMgRoulette_c's Render (_ZN15dScMgRoulette_c6RenderEv, in src/actors/dScMgRoulette_c.cpp) and dScMg3DEsp_c's Render
-(src/_ZN12dScMg3DEsp_c6RenderEv.cpp) both write those exact offsets, so they belong to
+(_ZN12dScMg3DEsp_c6RenderEv, in src/actors/dMg3DEspAnimSet_c.cpp) both write those exact offsets, so they belong to
 this class, not either leaf. The camera angle at 0x4718 comes from
 Camera_UpdateMatrices (see the camera section below); 0x471a..0x471b has no
 matched access and stays padding.
@@ -606,7 +606,7 @@ Only the fields several descendants corroborate are named here; this class has
 
 | Offset | Name | Evidence |
 | --- | --- | --- |
-| 0x0b4 | `mHudScore` | `dScMgBase_c::BeforeInitResources` zeroes it. [func_ov004_020adb1c](../src/func_ov004_020adb1c.c) -- the routine that writes the dMeter_c counter word at scene+0x464c -- is handed it directly by `func_ov006_02125364` (part of:[d_s_mg_bsc.cpp](../src/minigames/d_s_mg_bsc.cpp), func 15 used to assemble TU) and [func_ov006_020ea3d0.c](../src/func_ov006_020ea3d0.c); dScMgMemory_c and dScMgSound_c seed it in their own InitResources; dScMgCard_c::Render keeps its own high-water mark of it; dScMgAmida_c::Behavior copies its round score into it. Deliberately NOT called `mScore`: five leaves already have a field of their own by that name, and naming the base's the same would silently shadow every one of them (see the round-2 `mPrevPosX` incident). |
+| 0x0b4 | `mHudScore` | `dScMgBase_c::BeforeInitResources` zeroes it. [func_ov004_020adb1c](../src/func_ov004_020adb1c.c) -- the routine that writes the dMeter_c counter word at scene+0x464c -- is handed it directly by `func_ov006_02125364` (part of:[d_s_mg_bsc.cpp](../src/minigames/d_s_mg_bsc.cpp), func 15 used to assemble TU) and [func_ov006_020ea3d0](../src/actors/dScMgHanachan_c.cpp); dScMgMemory_c and dScMgSound_c seed it in their own InitResources; dScMgCard_c::Render keeps its own high-water mark of it; dScMgAmida_c::Behavior copies its round score into it. Deliberately NOT called `mScore`: five leaves already have a field of their own by that name, and naming the base's the same would silently shadow every one of them (see the round-2 `mPrevPosX` incident). |
 | 0x21c | `mSavedMainBgBits` | src/_ZN11dScMgBase_c16OnAimedAtWithEggEv.cpp (slot 29) stores [data_0209d45c](../config/arm9/symbols.txt) here; src/_ZN11dScMgBase_c25OnAimedAtWithEggReturnVecEv.cpp (slot 30) restores it from here. |
 | 0x220 | `mSavedSubBgBits` | The same save/restore pair for [data_0209d454](../config/arm9/symbols.txt). |
 | 0x224 | `mSavedScreenSwap` | Saved as `(POWCNT1 & 0x8000) >> 15` and restored as `n << 15` by that same pair. |

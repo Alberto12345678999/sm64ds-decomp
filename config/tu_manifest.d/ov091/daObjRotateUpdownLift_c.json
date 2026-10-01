@@ -8,13 +8,14 @@
   "boundary_evidence": [
     "contiguous linker run: 0x2130f00..0x2131ba4, 11 function(s), from build/tu_map.json (tools/tu_map.py)",
     "class label(s): daObjRotateUpdownLift_c",
-    "module sinit corroboration: 6 sinit(s) / 6 .ctor entries, sinit_vs_tu=ok, corroborated=False (module-wide, NOT narrowed to this one TU -- see notes/tu-reconstruction-pilot-report.md sec 2 for the by-hand narrowing step)"
+    "module sinit corroboration: 6 sinit(s) / 6 .ctor entries, sinit_vs_tu=ok, corroborated=False (module-wide, NOT narrowed to this one TU -- see notes/tu-reconstruction-pilot-report.md sec 2 for the by-hand narrowing step)",
+    "classInit fold (0930c): the HS_UPDOWN_LIFT and UPDOWN_LIFT registry factories daObjRotateUpdownLift_c_classInit_HS_UPDOWN_LIFT (0x02131ba4, 0x38) and daObjRotateUpdownLift_c_classInit_UPDOWN_LIFT (0x02131bdc, 0x38) abut the run's end 0x02131ba4 back to back, with no gap and no other symbol between; tu_map left each in its own unlabelled unit because it cuts on symbol name. The widened range 0x02130f00..0x02131c14 (13 functions) ends where the next delinks entry, src/game/actors/d_a_linelift2.cpp, begins."
   ],
   "sections": [
     {
       "name": ".text",
       "start": "0x02130f00",
-      "end": "0x02131ba4"
+      "end": "0x02131c14"
     }
   ],
   "functions": [
@@ -94,6 +95,20 @@
       "size": "0x000002b4",
       "legacy_source": "src/_ZN23daObjRotateUpdownLift_c13InitResourcesEv.cpp",
       "ordinal": 10
+    },
+    {
+      "symbol": "daObjRotateUpdownLift_c_classInit_HS_UPDOWN_LIFT",
+      "address": "0x02131ba4",
+      "size": "0x00000038",
+      "legacy_source": "src/d_a_obj_rotate_updown_lift_hs_updown_lift.c",
+      "ordinal": 11
+    },
+    {
+      "symbol": "daObjRotateUpdownLift_c_classInit_UPDOWN_LIFT",
+      "address": "0x02131bdc",
+      "size": "0x00000038",
+      "legacy_source": "src/d_a_obj_rotate_updown_lift_updown_lift.c",
+      "ordinal": 12
     }
   ],
   "data": [],
@@ -106,7 +121,8 @@
     "tubuild create warning (RESOLVED): CONFLICT: extern declaration 'Matrix4x3_FromRotationY' differs between the legacy file that used to hold func_ov091_02131160 and the one that held _ZN23daObjRotateUpdownLift_c13InitResourcesEv; kept the first, the other is commented out for review",
     "tubuild create warning (RESOLVED): CONFLICT: extern declaration 'MulVec3Mat4x3' differs between the legacy file that used to hold _ZN23daObjRotateUpdownLift_c8BehaviorEv and the one that held _ZN23daObjRotateUpdownLift_c13InitResourcesEv; kept the first, the other is commented out for review",
     "tubuild create warning (RESOLVED): CONFLICT: extern declaration 'func_ov091_02131340' differs between the legacy file that used to hold _ZN23daObjRotateUpdownLift_c8BehaviorEv and the one that held _ZN23daObjRotateUpdownLift_c13InitResourcesEv; kept the first, the other is commented out for review",
-    "tubuild create warning (RESOLVED): CONFLICT: extern declaration '_ZN10dBgActor_c19UpdateClsnPosAndRotEv' differs between the legacy file that used to hold _ZN23daObjRotateUpdownLift_c8BehaviorEv and the one that held _ZN23daObjRotateUpdownLift_c13InitResourcesEv; kept the first, the other is commented out for review"
+    "tubuild create warning (RESOLVED): CONFLICT: extern declaration '_ZN10dBgActor_c19UpdateClsnPosAndRotEv' differs between the legacy file that used to hold _ZN23daObjRotateUpdownLift_c8BehaviorEv and the one that held _ZN23daObjRotateUpdownLift_c13InitResourcesEv; kept the first, the other is commented out for review",
+    "classInit fold (0930c): both factories are folded in last, in ROM order (HS_UPDOWN_LIFT then UPDOWN_LIFT), under the file's `#pragma defer_codegen off`, each as `return new daObjRotateUpdownLift_c();`. Each retired one-function source hand-called fBase_c::operator new(936 = 0x3a8), dBgActor_c's C2 constructor, this class's vtable store and ShadowModel's C1 constructor at 0x320; daObjRotateUpdownLift_c has no user-declared constructor, so the synthesized one reproduces that sequence. The new-expression makes mwccarm emit _ZN10dBgActor_cD2Ev, licensed as a compiler_only_output deadstrip row. tubuild verify: 13/13 MATCH, objisolate clean, reloc-destinations clean, TEXT-VERIFIED. Retired src/d_a_obj_rotate_updown_lift_hs_updown_lift.c and src/d_a_obj_rotate_updown_lift_updown_lift.c; their credit carries in attribution.json as path#symbol overrides."
   ],
   "compiler_only_output": [
     {
@@ -120,6 +136,11 @@
       "canonical_module": "arm9",
       "canonical_address": "0x020072c0",
       "reason": "Vector3 four-byte destructor, vague linkage from Vector3 locals. The cartridge owns the one copy at arm9:0x020072c0."
+    },
+    {
+      "symbol": "_ZN10dBgActor_cD2Ev",
+      "disposition": "deadstrip",
+      "reason": "classInit fold (0930c): each daObjRotateUpdownLift_c_classInit_* factory's `new daObjRotateUpdownLift_c()` instantiates the class, so mwccarm emits dBgActor_c's vague-linkage base-object destructor helper (the same byproduct licensed for ov091/daObjSimpleLift_c and documented in src/actors/daObjHatenaBlock_c.cpp). No configured ROM symbol of that name exists and nothing relocates to it once the licensed D1/D0 pair is retained."
     },
     {
       "symbol": "_ZTI7fBase_c",
@@ -196,7 +217,7 @@
       "disposition": "deadstrip-data",
       "canonical_module": "ov091",
       "canonical_address": "0x02134c5c",
-      "reason": "key-function vtable. Both labels share ov091:0x02134c5c; the factories stay out of this TU."
+      "reason": "key-function vtable. Both labels share ov091:0x02134c5c."
     }
   ],
   "verification": {
@@ -205,14 +226,16 @@
     "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
     "object": "build/tu/ov091-daObjRotateUpdownLift_c/daObjRotateUpdownLift_c.o (gitignored)",
     "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
-    "functions_matched": 11,
-    "functions_declared": 11,
+    "functions_matched": 13,
+    "functions_declared": 13,
     "compilerOnlyOutput": {
       "requested": [
         "_ZN23daObjRotateUpdownLift_cD2Ev",
-        "_ZN7Vector3D1Ev"
+        "_ZN7Vector3D1Ev",
+        "_ZN10dBgActor_cD2Ev"
       ],
       "deadstripped": [
+        "_ZN10dBgActor_cD2Ev",
         "_ZN23daObjRotateUpdownLift_cD2Ev",
         "_ZN7Vector3D1Ev"
       ],
@@ -220,12 +243,8 @@
         9,
         10,
         15,
-        29,
-        30,
         31,
         32,
-        33,
-        34,
         35,
         36,
         37,
@@ -236,7 +255,13 @@
         42,
         43,
         44,
-        45
+        45,
+        46,
+        47,
+        48,
+        49,
+        50,
+        51
       ],
       "data": [
         "_ZTI7fBase_c",

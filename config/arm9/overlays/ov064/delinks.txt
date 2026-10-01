@@ -10,19 +10,11 @@ src/actors/daOts_c.cpp:
 
 src/actors/daDonketu_c.cpp:
     complete
-    .text start:0x02117070 end:0x02117444
-
-src/d_a_donketu.c:
-    complete
-    .text start:0x02117444 end:0x021174a0
+    .text start:0x02117070 end:0x021174a0
 
 src/actors/daBDonketu_c.cpp:
     complete
-    .text start:0x021174a0 end:0x0211791c
-
-src/d_a_b_donketu.c:
-    complete
-    .text start:0x0211791c end:0x02117978
+    .text start:0x021174a0 end:0x02117978
 
 src/actors/daObjFl_Amilift_c.cpp:
     complete
@@ -46,11 +38,7 @@ src/game/actors/d_a_obj_fl_gura.cpp:
 
 src/actors/daObjFl_KomaU_c.cpp:
     complete
-    .text start:0x02118138 end:0x02118564
-
-src/d_a_obj_fl_koma_u.cpp:
-    complete
-    .text start:0x02118564 end:0x021185c0
+    .text start:0x02118138 end:0x021185c0
 
 src/actors/daBbl_c.cpp:
     complete
@@ -158,19 +146,11 @@ src/d_a_obj_fl_puzzle.c:
 
 src/actors/daWater_Hakidasi_c.cpp:
     complete
-    .text start:0x02119330 end:0x02119a18
-
-src/d_a_water_hakidasi.c:
-    complete
-    .text start:0x02119a18 end:0x02119a58
+    .text start:0x02119330 end:0x02119a58
 
 src/actors/daWater_Ring_c.cpp:
     complete
-    .text start:0x02119a58 end:0x0211a1b0
-
-src/d_a_water_ring.c:
-    complete
-    .text start:0x0211a1b0 end:0x0211a200
+    .text start:0x02119a58 end:0x0211a200
 
 src/actors/daObjTbox_c.cpp:
     complete

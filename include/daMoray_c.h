@@ -91,9 +91,10 @@ typedef char daMoray_c_size_must_be_0x4b0[sizeof(struct daMoray_c) == 0x4b0 ? 1 
 
 #else
 
-/* The same object for a C translation unit, flat -- Render and D0 are C files
-   that read these fields, and D0 is compiler-generated so it can never be
-   migrated. Same arrangement as include/dBgActor_c.h. */
+/* The same object for a C translation unit, flat. Its one C consumer was the
+   loose factory daMoray_c_classInit, which took its size; that factory is now
+   C++ in the promoted daMoray_c TU.
+   Same arrangement as include/dBgActor_c.h. */
 struct daMoray_c {
     u8  pad_000[0x8];
     u32 mParam;            /* 0x008 */
