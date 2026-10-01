@@ -6197,6 +6197,8 @@
     "src/actors/daChoropu_c.cpp#_ZN14daChoro_Rock_c8BehaviorEv": "tangosdev",
     "src/actors/daChoropu_c.cpp#_ZN11daChoropu_c13InitResourcesEv": "tangosdev",
     "src/actors/daChoropu_c.cpp#_ZN14daChoro_Rock_c13InitResourcesEv": "tangosdev",
+    "src/actors/daChoropu_c.cpp#daChoro_Rock_c_classInit": "tangosdev",
+    "src/actors/daChoropu_c.cpp#daChoropu_c_classInit": "tangosdev",
     "src/actors/daObjKey_c.cpp#_ZN10daObjKey_cD1Ev": "tangosdev",
     "src/actors/daObjKey_c.cpp#_ZN10daObjKey_cD0Ev": "tangosdev",
     "src/actors/daObjKey_c.cpp#func_ov089_02130fb4": "lunavyqo",

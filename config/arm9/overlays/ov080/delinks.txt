@@ -6,15 +6,7 @@
     .bss        start:0x021283c0 end:0x02128860 kind:bss align:32
 src/actors/daChoropu_c.cpp:
     complete
-    .text start:0x02123740 end:0x02124998
-
-src/d_a_choro_rock.c:
-    complete
-    .text start:0x02124998 end:0x021249e0
-
-src/d_a_choropu.c:
-    complete
-    .text start:0x021249e0 end:0x02124a20
+    .text start:0x02123740 end:0x02124a20
 
 src/actors/daBttBk_c.cpp:
     complete
