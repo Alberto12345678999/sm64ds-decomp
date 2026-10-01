@@ -6637,6 +6637,19 @@
     "src/actors/daYegg_c.cpp#_ZN8daYegg_c6RenderEv": "tangosdev",
     "src/actors/daYegg_c.cpp#_ZN8daYegg_c8BehaviorEv": "tangosdev",
     "src/actors/daYegg_c.cpp#_ZN8daYegg_c13InitResourcesEv": "andrewboudreau",
-    "src/actors/daYegg_c.cpp#daYegg_c_classInit": "tangosdev"
+    "src/actors/daYegg_c.cpp#daYegg_c_classInit": "tangosdev",
+    "src/actors/daPropeller_Heyho_Fire_c.cpp#_ZN24daPropeller_Heyho_Fire_cD1Ev": "tangosdev",
+    "src/actors/daPropeller_Heyho_Fire_c.cpp#_ZN24daPropeller_Heyho_Fire_cD0Ev": "tangosdev",
+    "src/actors/daPropeller_Heyho_Fire_c.cpp#func_ov002_020feb50": "tangosdev",
+    "src/actors/daPropeller_Heyho_Fire_c.cpp#func_ov002_020fec94": "tangosdev",
+    "src/actors/daPropeller_Heyho_Fire_c.cpp#func_ov002_020fed18": "tangosdev",
+    "src/actors/daPropeller_Heyho_Fire_c.cpp#func_ov002_020fed2c": "tangosdev",
+    "src/actors/daPropeller_Heyho_Fire_c.cpp#func_ov002_020fed7c": "tangosdev",
+    "src/actors/daPropeller_Heyho_Fire_c.cpp#_ZN24daPropeller_Heyho_Fire_c16CleanupResourcesEv": "tangosdev",
+    "src/actors/daPropeller_Heyho_Fire_c.cpp#_ZN24daPropeller_Heyho_Fire_c16OnPendingDestroyEv": "tangosdev",
+    "src/actors/daPropeller_Heyho_Fire_c.cpp#_ZN24daPropeller_Heyho_Fire_c6RenderEv": "tangosdev",
+    "src/actors/daPropeller_Heyho_Fire_c.cpp#_ZN24daPropeller_Heyho_Fire_c8BehaviorEv": "tangosdev",
+    "src/actors/daPropeller_Heyho_Fire_c.cpp#_ZN24daPropeller_Heyho_Fire_c13InitResourcesEv": "tangosdev",
+    "src/actors/daPropeller_Heyho_Fire_c.cpp#daPropeller_Heyho_Fire_c_classInit": "tangosdev"
   }
 }

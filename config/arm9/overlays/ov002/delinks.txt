@@ -2722,56 +2722,9 @@ src/actors/dM3dGLin.cpp:
     complete
     .text start:0x020fea84 end:0x020feabc
 
-src/_ZN24daPropeller_Heyho_Fire_cD1Ev.cpp:
+src/actors/daPropeller_Heyho_Fire_c.cpp:
     complete
-    .text start:0x020feabc end:0x020feafc
-
-src/_ZN24daPropeller_Heyho_Fire_cD0Ev.cpp:
-    complete
-    .text start:0x020feafc end:0x020feb50
-
-src/func_ov002_020feb50.cpp:
-    complete
-    .text start:0x020feb50 end:0x020fec94
-
-src/func_ov002_020fec94.c:
-    complete
-    .text start:0x020fec94 end:0x020fed18
-
-src/func_ov002_020fed18.c:
-    complete
-    .text start:0x020fed18 end:0x020fed2c
-
-src/func_ov002_020fed2c.cpp:
-    complete
-    .text start:0x020fed2c end:0x020fed7c
-
-src/func_ov002_020fed7c.c:
-    complete
-    .text start:0x020fed7c end:0x020fedf0
-
-src/_ZN24daPropeller_Heyho_Fire_c16CleanupResourcesEv.cpp:
-    complete
-    .text start:0x020fedf0 end:0x020fee14
-
-src/_ZN24daPropeller_Heyho_Fire_c16OnPendingDestroyEv.cpp:
-    complete
-    .text start:0x020fee14 end:0x020fee18
-
-src/_ZN24daPropeller_Heyho_Fire_c6RenderEv.cpp:
-    complete
-    .text start:0x020fee18 end:0x020fee44
-
-src/_ZN24daPropeller_Heyho_Fire_c8BehaviorEv.cpp:
-    complete
-    .text start:0x020fee44 end:0x020feef4
-
-src/_ZN24daPropeller_Heyho_Fire_c13InitResourcesEv.cpp:
-    .text start:0x020feef4 end:0x020fefcc
-
-src/d_a_propeller_heyho_fire.c:
-    complete
-    .text start:0x020fefcc end:0x020ff014
+    .text start:0x020feabc end:0x020ff014
 
 src/__sinit_ov002_02100560.c:
     complete

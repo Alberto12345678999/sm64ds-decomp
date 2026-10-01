@@ -1722,11 +1722,6 @@
         "param:#3 short",
         "param:#4 short"
       ],
-      "src/func_ov002_020fed7c.c": [
-        "param:#2 short",
-        "param:#3 short",
-        "param:#4 short"
-      ],
       "src/actors/daGrock_c.cpp": [
         "param:#2 short",
         "param:#3 short",
@@ -1748,6 +1743,11 @@
         "param:#4 short"
       ],
       "src/actors/daWater_Tatumaki_c.cpp": [
+        "param:#2 short",
+        "param:#3 short",
+        "param:#4 short"
+      ],
+      "src/actors/daPropeller_Heyho_Fire_c.cpp": [
         "param:#2 short",
         "param:#3 short",
         "param:#4 short"
@@ -6092,11 +6092,6 @@
         "param:#5 void *",
         "param:#6 void *"
       ],
-      "src/_ZN24daPropeller_Heyho_Fire_c13InitResourcesEv.cpp": [
-        "param:#1 char *",
-        "param:#2 dActor_c *",
-        "param:#5 Vector3_16 *"
-      ],
       "src/_ZN6Player13InitResourcesEv.cpp": [
         "param:#2 void *",
         "param:#5 void *",
@@ -6384,6 +6379,11 @@
         "param:#2 void *",
         "param:#5 void *",
         "param:#6 void *"
+      ],
+      "src/actors/daPropeller_Heyho_Fire_c.cpp": [
+        "param:#1 char *",
+        "param:#2 dActor_c *",
+        "param:#5 Vector3_16 *"
       ]
     },
     "_ZN10dBgCh_ActrD1Ev": {
@@ -9600,10 +9600,6 @@
       "src/_ZN6Bowser13InitResourcesEv.cpp": [
         "param:#1 void *"
       ],
-      "src/_ZN24daPropeller_Heyho_Fire_c13InitResourcesEv.cpp": [
-        "param:#1 void *",
-        "return:BMD_File *"
-      ],
       "src/_ZN12daKuriKing_c13InitResourcesEv.cpp": [
         "param:#1 void *"
       ],
@@ -9685,6 +9681,10 @@
         "return:BMD_File *"
       ],
       "src/actors/Eyerok.cpp": [
+        "param:#1 void *"
+      ],
+      "src/actors/daPropeller_Heyho_Fire_c.cpp": [
+        "return:BMD_File *",
         "param:#1 void *"
       ]
     },
@@ -11261,14 +11261,6 @@
         "param:#6 unsigned int",
         "param:#7 unsigned int"
       ],
-      "src/func_ov002_020feb50.cpp": [
-        "param:#1 char *",
-        "param:#2 const Vector3 &",
-        "param:#5 unsigned int",
-        "param:#6 unsigned int",
-        "param:#7 unsigned int",
-        "return:void"
-      ],
       "src/actors/daGrock_c.cpp": [
         "return:void",
         "param:#5 unsigned int",
@@ -11387,6 +11379,14 @@
       ],
       "src/actors/daYegg_c.cpp": [
         "return:void",
+        "param:#5 unsigned int",
+        "param:#6 unsigned int",
+        "param:#7 unsigned int"
+      ],
+      "src/actors/daPropeller_Heyho_Fire_c.cpp": [
+        "return:void",
+        "param:#1 char *",
+        "param:#2 const Vector3 &",
         "param:#5 unsigned int",
         "param:#6 unsigned int",
         "param:#7 unsigned int"
@@ -12094,9 +12094,6 @@
       "src/_ZN10BowserTail13InitResourcesEv.cpp": [
         "return:int"
       ],
-      "src/_ZN24daPropeller_Heyho_Fire_c13InitResourcesEv.cpp": [
-        "param:#1 char *"
-      ],
       "src/func_ov002_020bae9c.c": [
         "param:#1 char *",
         "param:#2 char *"
@@ -12106,6 +12103,9 @@
       ],
       "src/actors/daYegg_c.cpp": [
         "param:#4 unsigned int"
+      ],
+      "src/actors/daPropeller_Heyho_Fire_c.cpp": [
+        "param:#1 char *"
       ]
     },
     "_ZN7dCcAc_cD1Ev": {
@@ -12123,9 +12123,6 @@
         "return:int"
       ],
       "src/func_ov002_020e7e58.cpp": [
-        "return:int"
-      ],
-      "src/func_ov002_020fec94.c": [
         "return:int"
       ],
       "src/func_ov060_021180e0.cpp": [
@@ -12974,9 +12971,6 @@
       "src/func_ov002_020ef2a4.cpp": [
         "return:void *"
       ],
-      "src/func_ov002_020feb50.cpp": [
-        "return:char *"
-      ],
       "src/func_ov009_02111234.cpp": [
         "return:void *"
       ],
@@ -13050,6 +13044,9 @@
         "return:void *"
       ],
       "src/actors/daYegg_c.cpp": [
+        "return:char *"
+      ],
+      "src/actors/daPropeller_Heyho_Fire_c.cpp": [
         "return:char *"
       ]
     },
@@ -13224,11 +13221,6 @@
       ],
       "src/func_ov080_021256f8.c": [
         "return:char *"
-      ]
-    },
-    "_ZN8dActor_c13SmallPoofDustEv": {
-      "src/func_ov002_020feb50.cpp": [
-        "return:void"
       ]
     },
     "_ZN8dActor_c13SpawnFireballERK7Vector3PK10Vector3_165Fix12IiES7_j": {
@@ -18480,6 +18472,9 @@
         "return:char []"
       ],
       "src/actors/daYegg_c.cpp": [
+        "return:M48"
+      ],
+      "src/actors/daPropeller_Heyho_Fire_c.cpp": [
         "return:M48"
       ]
     },
@@ -24349,11 +24344,11 @@
       ]
     },
     "data_ov065_0211d610": {
-      "src/_ZN24daPropeller_Heyho_Fire_c16CleanupResourcesEv.cpp": [
-        "return:int []"
-      ],
       "src/actors/daYurei_Mucho_c.cpp": [
         "return:SharedFilePtr"
+      ],
+      "src/actors/daPropeller_Heyho_Fire_c.cpp": [
+        "return:int []"
       ]
     },
     "data_ov065_0211d618": {
@@ -27091,13 +27086,6 @@
       "src/func_ov002_020e88a8.c": [
         "param:#1 int"
       ],
-      "src/func_ov002_020feb50.cpp": [
-        "param:#2 const Vector3 &"
-      ],
-      "src/func_ov002_020fec94.c": [
-        "param:#1 int",
-        "return:int"
-      ],
       "src/func_ov060_02113564.c": [
         "arity:3"
       ],
@@ -27237,6 +27225,9 @@
       ],
       "src/actors/daObjRotateUpdownLift_c.cpp": [
         "param:#1 int"
+      ],
+      "src/actors/daPropeller_Heyho_Fire_c.cpp": [
+        "param:#2 const Vector3 &"
       ]
     },
     "func_02012718": {
@@ -36105,11 +36096,6 @@
         "param:#1 int",
         "param:#3 void *",
         "param:#4 void *",
-        "return:int"
-      ]
-    },
-    "func_ov002_020feb50": {
-      "src/func_ov002_020fec94.c": [
         "return:int"
       ]
     },
