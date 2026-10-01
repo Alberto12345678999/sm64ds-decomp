@@ -10,37 +10,48 @@
  *
  * FUNCTION ORDER IS DELIBERATELY THE REVERSE OF THE ROM'S -- mwccarm 2004/b56
  * emits one .text section per function in the REVERSE of source order, so the
- * highest-address ROM function is written first. A destructor's D0/D1/D2 group
- * is the documented exception: they come from ONE definition and the compiler
- * chooses their relative order.
+ * highest-address ROM function is written first.
  *
- * D0 has no source of its own. mwccarm emits D1, D2 and D0 from the single
- * out-of-line `dCapEnemy_c::~dCapEnemy_c() {}` below; there is no second
- * definition to write and writing one is a redefinition error. D0's @symbol
- * marker is therefore parked at its ROM ordinal above this note, so that every
- * member defined in this TU carries a marker.
+ * The destructor is never defined in this TU: a single out-of-line
+ * `~dCapEnemy_c()` would emit the whole D1/D2/D0 group, and the D1 copy --
+ * homed in arm9 at 0x0200651c -- comes out STB_GLOBAL, which isolation will
+ * not deadstrip as a duplicate. D2 and D0 are spelled out below as two
+ * extern "C" ABI bodies instead, D0 then D2 so the reversal emits D2 below
+ * D0 as the cartridge has it. With no key function defined the compiler
+ * emits no vtable, RTTI or stray D1 here; the cartridge copies stay
+ * ROM-provided.
  */
 #include "dCapEnemy_c.h"
+#include "decl_common.h"
+#include "decl_Model.h"
+
+extern "C" void _ZN10dCapIcon_cD1Ev(void *);
+extern "C" void _ZN12dEnemyBase_cD2Ev(void *);
 
 /* -------------------------------------------------------------------------- */
 /* ROM ordinal 1 -- _ZN11dCapEnemy_cD0Ev, 0x020aedf4, size 0x4c */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN11dCapEnemy_cD0Ev
-/* The DELETING destructor: destroy through this class and its bases -- which is
- * why more than one vptr store appears -- then return the object to its heap.
- * Nobody writes that. Declaring `~dCapEnemy_c()` is enough; the deallocation is
- * an inline operator delete, which is why nothing here mentions a heap.
- *
- * No body: emitted by the definition below. See the file header.
+/* The DELETING destructor: store this vtable, destroy the members in reverse
+ * declaration order (CapIcon at 0x164, Model at 0x114), chain to
+ * dEnemyBase_c's base-object destructor, then hand the object back to the
+ * actor heap.
  */
+extern "C" dCapEnemy_c *_ZN11dCapEnemy_cD0Ev(dCapEnemy_c *self)
+{
+    *(int *)self = (int)_ZTV11dCapEnemy_c;
+    _ZN10dCapIcon_cD1Ev(&self->mCapIcon);
+    _ZN5ModelD1Ev(&self->mModel);
+    _ZN12dEnemyBase_cD2Ev(self);
+    _ZN6Memory10DeallocateEPvP4Heap(self, data_020a0eac);
+    return self;
+}
 
 /* -------------------------------------------------------------------------- */
 /* ROM ordinal 0 -- _ZN11dCapEnemy_cD2Ev, 0x020aedbc, size 0x38 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN11dCapEnemy_cD2Ev
-/* recovered: real C++ destructor -- the compiler emits the whole body
- *
- * The base-object variant, and the one every derived cap enemy chains to.
+/* The base-object variant, and the one every derived cap enemy chains to.
  * It is byte-identical to D1 at arm9 0x0200651c -- dCapEnemy_c has no virtual
  * bases -- modulo the three relocated `bl` words, which is why this address
  * spent so long carrying the placeholder name func_ov002_020aedbc while arm9
@@ -52,6 +63,11 @@
  * at all and is reached only by `bl` from daTrs_c's and daKrb_c's destructors
  * tearing down their base sub-object, which is exactly what D2 is for.
  */
-dCapEnemy_c::~dCapEnemy_c()
+extern "C" dCapEnemy_c *_ZN11dCapEnemy_cD2Ev(dCapEnemy_c *self)
 {
+    *(int *)self = (int)_ZTV11dCapEnemy_c;
+    _ZN10dCapIcon_cD1Ev(&self->mCapIcon);
+    _ZN5ModelD1Ev(&self->mModel);
+    _ZN12dEnemyBase_cD2Ev(self);
+    return self;
 }

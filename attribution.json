@@ -6650,6 +6650,8 @@
     "src/actors/daPropeller_Heyho_Fire_c.cpp#_ZN24daPropeller_Heyho_Fire_c6RenderEv": "tangosdev",
     "src/actors/daPropeller_Heyho_Fire_c.cpp#_ZN24daPropeller_Heyho_Fire_c8BehaviorEv": "tangosdev",
     "src/actors/daPropeller_Heyho_Fire_c.cpp#_ZN24daPropeller_Heyho_Fire_c13InitResourcesEv": "tangosdev",
-    "src/actors/daPropeller_Heyho_Fire_c.cpp#daPropeller_Heyho_Fire_c_classInit": "tangosdev"
+    "src/actors/daPropeller_Heyho_Fire_c.cpp#daPropeller_Heyho_Fire_c_classInit": "tangosdev",
+    "src/actors/dCapEnemy_c.cpp#_ZN11dCapEnemy_cD2Ev": "tangosdev",
+    "src/actors/dCapEnemy_c.cpp#_ZN11dCapEnemy_cD0Ev": "tangosdev"
   }
 }
