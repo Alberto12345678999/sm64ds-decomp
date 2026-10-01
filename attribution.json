@@ -5209,6 +5209,7 @@
     "src/actors/daObjFl_KomaU_c.cpp#_ZN15daObjFl_KomaU_c6RenderEv": "tangosdev",
     "src/actors/daObjFl_KomaU_c.cpp#_ZN15daObjFl_KomaU_c8BehaviorEv": "ruspecial",
     "src/actors/daObjFl_KomaU_c.cpp#_ZN15daObjFl_KomaU_c13InitResourcesEv": "andrewboudreau",
+    "src/actors/daObjFl_KomaU_c.cpp#daObjFl_KomaU_c_classInit": "tangosdev",
     "src/actors/daObjEwbIce_c.cpp#_ZN13daObjEwbIce_cD1Ev": "tangosdev",
     "src/actors/daObjEwbIce_c.cpp#_ZN13daObjEwbIce_cD0Ev": "tangosdev",
     "src/actors/daObjEwbIce_c.cpp#func_ov073_0212202c": "tangosdev",
