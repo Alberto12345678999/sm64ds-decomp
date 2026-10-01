@@ -15,7 +15,7 @@ extern void _ZN11ShadowModelD1Ev(void*);
 extern void *_ZN11ShadowModelC1Ev(void*);
 extern void *_ZN7Vector3D1Ev(void*);
 extern void func_0203d384(void*);
-extern void* _ZTV8Goomboss[];
+extern void* _ZTV12daKuriKing_c[];
 /* Reconstructed source-style name: SM64DS proves daKuriKing_c through RTTI,
  * allocation size, vtable identity, and the KURIKING registry profile;
  * later EAD lineage supplies classInit. Exact original spelling is not
@@ -24,7 +24,7 @@ void* daKuriKing_c_classInit_KURIKING(void){
   char* p=(char*)_ZN7fBase_cnwEj(0x610);
   if(p){
     _ZN12dEnemyBase_cC2Ev(p);
-    *(void***)p=(void**)_ZTV8Goomboss;
+    *(void***)p=(void**)_ZTV12daKuriKing_c;
     __cxa_vec_ctor(p+0x110, 4, 0x40, (void (*)(void *))_ZN10dCcAcPos_cC1Ev, _ZN10dCcAcPos_cD1Ev);
     _ZN9ModelAnimC1Ev(p+0x210);
     __cxa_vec_ctor(p+0x274, 3, 0x28, (void (*)(void *))_ZN11ShadowModelC1Ev, _ZN11ShadowModelD1Ev);

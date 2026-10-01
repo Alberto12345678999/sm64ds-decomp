@@ -8,13 +8,14 @@
   "boundary_evidence": [
     "contiguous linker run: 0x20f975c..0x20fb8bc, 11 function(s), from build/tu_map.json (tools/tu_map.py)",
     "class label(s): dMap_c",
-    "module sinit corroboration: 26 sinit(s) / 26 .ctor entries, sinit_vs_tu=ok, corroborated=False (module-wide, NOT narrowed to this one TU -- see notes/tu-reconstruction-pilot-report.md sec 2 for the by-hand narrowing step)"
+    "module sinit corroboration: 26 sinit(s) / 26 .ctor entries, sinit_vs_tu=ok, corroborated=False (module-wide, NOT narrowed to this one TU -- see notes/tu-reconstruction-pilot-report.md sec 2 for the by-hand narrowing step)",
+    "classInit tail fold (0930c): dMap_c_classInit (0x020fb8bc..0x020fb8f8) abuts this TU's range with no gap and is now inside it; tu_map cuts on symbol name and left it out. The unit is 0x020f975c..0x020fb8f8, bounded above by src/actors/dMeter_c.cpp, whose D1 starts exactly at 0x020fb8f8."
   ],
   "sections": [
     {
       "name": ".text",
       "start": "0x020f975c",
-      "end": "0x020fb8bc"
+      "end": "0x020fb8f8"
     }
   ],
   "functions": [
@@ -94,6 +95,13 @@
       "size": "0x00000060",
       "legacy_source": "src/_ZN6dMap_c15GetPosOnMinimapER7Vector3S1_5Fix12IiEsS1_.cpp",
       "ordinal": 10
+    },
+    {
+      "symbol": "dMap_c_classInit",
+      "address": "0x020fb8bc",
+      "size": "0x0000003c",
+      "legacy_source": "src/d_map.cpp",
+      "ordinal": 11
     }
   ],
   "data": [],
@@ -110,6 +118,11 @@
       "canonical_module": "arm9",
       "canonical_address": "0x020072c0",
       "reason": "Vector3 locals odr-use the vague-linkage empty destructor. The cartridge keeps one copy at arm9:0x020072c0 (size 0x4); this TU emits a duplicate and production isolation discards it after a byte compare."
+    },
+    {
+      "symbol": "_ZN7dBase_cD2Ev",
+      "disposition": "deadstrip",
+      "reason": "classInit tail fold (0930c): the folded factory's `return new dMap_c();` instantiates the class, so mwccarm emits dBase_c's base-object destructor helper after dMap_c_classInit. The cartridge has dBase_c D1/D0 only (arm9 0x02013e80..0x02013edc), no D2; no configured ROM symbol and no inbound relocation once the licensed function set is retained (same row as ov003/dScTitle_c)."
     },
     {
       "symbol": "_ZTS7fBase_c",
@@ -186,7 +199,8 @@
     "tubuild create warning (RESOLVED): CONFLICT: extern declaration 'data_ov002_02111150' differs between the legacy file that used to hold _ZN6dMap_c8BehaviorEv and the one that held _ZN6dMap_c13InitResourcesEv; kept the first, the other is commented out for review",
     "tubuild create warning (RESOLVED): CONFLICT: extern declaration 'Vec3_Sub' differs between the legacy file that used to hold _ZN6dMap_c21FixTHIPaintingRoomPosER7Vector3 and the one that held _ZN6dMap_c20GetPosFromMinimapPosER7Vector3S1_5Fix12IiEsS1_; kept the first, the other is commented out for review",
     "Text-verified 11/11 (2026-09-28, tu-ov002-batch-0928). The earlier Behavior near-miss (0xcf8 against 0xcfc) was not a register-allocation limit: under '#pragma defer_codegen off' mwccarm generates a function at the next top-level token after its closing brace, not at the brace, so the '#pragma opt_strength_reduction off' written directly after Behavior was still in force when Behavior was generated. Compiled alone with defer_codegen off, Behavior matches; with a trailing opt_strength_reduction off and nothing between, it does not; with any top-level declaration between, it does. The TU now places InitResources' own extern block between the two, and all eleven members match with emission order exact.",
-    "RTTI/vtable: this is dMap_c's key-function TU, so the object emits _ZTV6dMap_c plus the _ZTI/_ZTS chain up to fBase_c. Every one has a ROM home (ov002 _ZTS6dMap_c 0x0210c158, _ZTI6dMap_c 0x0210c168, _ZTV6dMap_c address point 0x0210c1c0; arm9 dBase_c/fBase_c records) and is licensed deadstrip-data in compiler_only_output, the daCoin_c shape. The homeless D2 and the duplicate Vector3 D1 are deadstripped the same way."
+    "RTTI/vtable: this is dMap_c's key-function TU, so the object emits _ZTV6dMap_c plus the _ZTI/_ZTS chain up to fBase_c. Every one has a ROM home (ov002 _ZTS6dMap_c 0x0210c158, _ZTI6dMap_c 0x0210c168, _ZTV6dMap_c address point 0x0210c1c0; arm9 dBase_c/fBase_c records) and is licensed deadstrip-data in compiler_only_output, the daCoin_c shape. The homeless D2 and the duplicate Vector3 D1 are deadstripped the same way.",
+    "classInit tail fold (0930c): folded the registry factory dMap_c_classInit (0x020fb8bc..0x020fb8f8) into this promoted TU and widened the complete delinks.txt claim to 0x020f975c..0x020fb8f8. The loose source hand-called fBase_c::operator new(sizeof(dMap_c)), fBase_c's base constructor, and stored _ZTV7dBase_c then _ZTV6dMap_c. dMap_c and dBase_c declare no constructor, so the implicit default constructor emits exactly that sequence and the factory is `return new dMap_c();`, which binds fBase_c's inline operator new. The TU keeps `#pragma defer_codegen off`, so the factory is written last, after GetPosOnMinimap. The embedded verification.linkcheck block predates this fold and records the pre-fold range; link proof for the widened range is the lane's full rombuild and prepush_linkcheck run."
   ],
   "verification": {
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
@@ -194,23 +208,23 @@
     "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
     "object": "build/tu/ov002-dMap_c/dMap_c.o (gitignored)",
     "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
-    "functions_matched": 11,
-    "functions_declared": 11,
+    "functions_matched": 12,
+    "functions_declared": 12,
     "compilerOnlyOutput": {
       "requested": [
         "_ZN6dMap_cD2Ev",
-        "_ZN7Vector3D1Ev"
+        "_ZN7Vector3D1Ev",
+        "_ZN7dBase_cD2Ev"
       ],
       "deadstripped": [
         "_ZN6dMap_cD2Ev",
-        "_ZN7Vector3D1Ev"
+        "_ZN7Vector3D1Ev",
+        "_ZN7dBase_cD2Ev"
       ],
       "droppedSections": [
         9,
         10,
         13,
-        28,
-        29,
         30,
         31,
         32,
@@ -219,7 +233,11 @@
         35,
         36,
         37,
-        38
+        38,
+        39,
+        40,
+        41,
+        42
       ],
       "data": [
         "_ZTS7fBase_c",

@@ -8,13 +8,14 @@
   "boundary_evidence": [
     "contiguous linker run: 0x20f8858..0x20f9304, 9 function(s), from build/tu_map.json (tools/tu_map.py)",
     "class label(s): daFPknBall_c",
-    "module sinit corroboration: 26 sinit(s) / 26 .ctor entries, sinit_vs_tu=ok, corroborated=False (module-wide, NOT narrowed to this one TU -- see notes/tu-reconstruction-pilot-report.md sec 2 for the by-hand narrowing step)"
+    "module sinit corroboration: 26 sinit(s) / 26 .ctor entries, sinit_vs_tu=ok, corroborated=False (module-wide, NOT narrowed to this one TU -- see notes/tu-reconstruction-pilot-report.md sec 2 for the by-hand narrowing step)",
+    "classInit tail fold (0930c): daFPknBall_c_classInit (0x020f9304..0x020f934c) abuts this TU's range with no gap and is now inside it; tu_map cuts on symbol name and left it out. The unit is 0x020f8858..0x020f934c, bounded above by src/game/actors/d_a_sound_obj.cpp, which starts exactly at 0x020f934c."
   ],
   "sections": [
     {
       "name": ".text",
       "start": "0x020f8858",
-      "end": "0x020f9304"
+      "end": "0x020f934c"
     }
   ],
   "functions": [
@@ -80,13 +81,21 @@
       "size": "0x00000020",
       "legacy_source": "src/_ZN12daFPknBall_c13OnYoshiTryEatEv.cpp",
       "ordinal": 8
+    },
+    {
+      "symbol": "daFPknBall_c_classInit",
+      "address": "0x020f9304",
+      "size": "0x00000048",
+      "legacy_source": "src/d_a_f_pkn_ball.c",
+      "ordinal": 9
     }
   ],
   "data": [],
   "bss": [],
   "notes": [
-    "Text span 0x020f8858..0x020f9304, 9 functions, class daFPknBall_c only. daFPknBall_c_classInit at 0x020f9304 is the next function and is not absorbed.",
-    "One out-of-line destructor under #pragma defer_codegen off. D2 is homeless deadstrip. The vtable and the ancestor RTTI chain are deadstrip-data at their existing addresses. The coined _ZTV8Fireball alias was deleted."
+    "Text span 0x020f8858..0x020f934c, 10 functions, class daFPknBall_c only; the last is its registry factory daFPknBall_c_classInit (0x020f9304), folded in the 0930c classInit tail pass.",
+    "One out-of-line destructor under #pragma defer_codegen off. D2 is homeless deadstrip. The vtable and the ancestor RTTI chain are deadstrip-data at their existing addresses. The coined _ZTV8Fireball alias was deleted.",
+    "classInit tail fold (0930c): folded the registry factory daFPknBall_c_classInit (0x020f9304..0x020f934c) into this promoted TU and widened the complete delinks.txt claim to 0x020f8858..0x020f934c. The loose source hand-called fBase_c::operator new(888), dEnemyBase_c's base constructor, stored _ZTV12daFPknBall_c, then constructed the dCcAc_c, dBgCh_Actr and ShadowModel members. daFPknBall_c declares no constructor, so the implicit one emits that sequence and the factory is `return new daFPknBall_c();`. Under `#pragma defer_codegen off` it is written at the end of the file."
   ],
   "compiler_only_output": [
     {
@@ -178,8 +187,8 @@
     "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
     "object": "build/tu/ov002-daFPknBall_c/daFPknBall_c.o (gitignored)",
     "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
-    "functions_matched": 9,
-    "functions_declared": 9,
+    "functions_matched": 10,
+    "functions_declared": 10,
     "compilerOnlyOutput": {
       "requested": [
         "_ZN12daFPknBall_cD2Ev"
@@ -190,8 +199,6 @@
       "droppedSections": [
         9,
         10,
-        23,
-        24,
         25,
         26,
         27,
@@ -206,7 +213,9 @@
         36,
         37,
         38,
-        39
+        39,
+        40,
+        41
       ],
       "data": [
         "_ZTV12daFPknBall_c",

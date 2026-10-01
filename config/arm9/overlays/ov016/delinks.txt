@@ -4,33 +4,9 @@
     .ctor       start:0x02113abc end:0x02113ad0 kind:rodata align:4
     .data       start:0x02113ae0 end:0x02114d20 kind:data align:32
     .bss        start:0x02114d20 end:0x02114ea0 kind:bss align:32
-src/_ZN9daMoray_cD1Ev.cpp:
-    complete
-    .text start:0x021111a0 end:0x02111208
-
-src/_ZN9daMoray_cD0Ev.cpp:
-    complete
-    .text start:0x02111208 end:0x02111284
-
-src/func_ov016_02111284.c:
-    complete
-    .text start:0x02111284 end:0x02111534
-
-src/func_ov016_02111534.c:
-    complete
-    .text start:0x02111534 end:0x021115a4
-
-src/BookSwitch_Spawn.c:
-    complete
-    .text start:0x021115a4 end:0x021115c0
-
 src/actors/daMoray_c.cpp:
     complete
-    .text start:0x021115c0 end:0x02112588
-
-src/d_a_moray.c:
-    complete
-    .text start:0x02112588 end:0x0211260c
+    .text start:0x021111a0 end:0x0211260c
 
 src/game/actors/d_a_obj_ki_fune.cpp:
     complete

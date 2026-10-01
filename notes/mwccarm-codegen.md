@@ -4039,7 +4039,7 @@ or one that outranks a call-return-coalesced web against a loop-invariant one. N
 
 ## 6bq. Three homing levers and a store-order rank lever (ov074 daKuriKing_c, two MATCHED, one at div 11, 2026-08-30)
 
-The Goomboss overlay's three unsourced bodies. Two fell on the first day; the third is
+The Kuri King overlay's three unsourced bodies. Two fell on the first day; the third is
 one lever short. What they share is that every single blocker was a question about
 which locals mwccarm keeps IN MEMORY, and in what order the source touches them.
 
@@ -6659,7 +6659,8 @@ reproduced in a 15-instruction toy, `_abwork/crkh/toyprobe.py`:
 * Two MATCHED precedents that 6u's corpus scan missed, both single-condition guards with a
   five-instruction return block that keeps its branch:
       src/func_02062d10.cpp       `bne` over an arm containing `cmp r0,#0 / beq`
-      src/func_ov006_020e83bc.c   `bge` over an arm containing `cmp r0,#0 / movgt / strgt`
+      func_ov006_020e83bc         `bge` over an arm containing `cmp r0,#0 / movgt / strgt`
+                                  (now in src/actors/dMg3DEspAnimSet_c.cpp)
   Both are the final `else` of an if / else-if / else chain, so the jumped-over arm is the
   else-if body and contains that arm's own test. The multi-predecessor precedents 6u names
   (src/func_ov007_020b1f2c.c, src/func_ov002_020d85fc.cpp) are `&&` chains.
@@ -7547,7 +7548,7 @@ CRK-O's micro-lab had reduced it to "a third call ahead of the site in the block
 constant-first order", which is true and was still not the lever. The draft declared the first
 call `void LoadBlueCoinModel(void)` and called it with no argument. Nine matched callers in the
 tree (daPkn_c, daSanbo_c, daTrs_c, BookShotSpawner, FirePiranhaPlantBig, Koopa, daKrb_c,
-BookShot, YoshiEgg) declare it `(void *)` and pass the actor, and the cartridge enters the call
+BookShot, daYegg_c) declare it `(void *)` and pass the actor, and the cartridge enters the call
 with `this` still in r0. `LoadBlueCoinModel(this)` closes the function: match.py MATCHING,
 linkcheck VERIFIED. The body of LoadBlueCoinModel never reads r0; what the argument buys is the
 incoming parameter's r0 web staying live through the entry block into the first call (this

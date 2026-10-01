@@ -34,7 +34,7 @@ the historical `ghidra_out` drafts ran elsewhere or has been removed.
 
 **G1.5 — The historical verdict on raw Ghidra drafts is mixed, and recorded.** [high]
 `CLAIMS.md` cites them by name both ways: a win ([ov102](../config/arm9/overlays/ov102/symbols.txt) [func_ov102_0214b53c](../src/actors/daBmb_c.cpp) — "Ghidra
-dest + ROM-order angle" → byte-identical) and repeated losses ([ov006](../config/arm9/overlays/ov006/symbols.txt) [func_ov006_020dbe9c](../src/func_ov006_020dbe9c.c) — "Ghidra missed s64 matrix"; [arm9](../config/arm9/symbols.txt) `OAM::Render` — "Ghidra dump div=999 (frame 0x44)";
+dest + ROM-order angle" → byte-identical) and repeated losses ([ov006](../config/arm9/overlays/ov006/symbols.txt) [func_ov006_020dbe9c](../src/actors/dScMgCoin_c.cpp) — "Ghidra missed s64 matrix"; [arm9](../config/arm9/symbols.txt) `OAM::Render` — "Ghidra dump div=999 (frame 0x44)";
 [ov006](../config/arm9/overlays/ov006/symbols.txt) [func_ov006_0211e72c](../src/actors/dScMgTeresa_c.cpp) — "Ghidra-shaped 30w attractor" that*stalls* at 26 words).
 `README.md:102` states the house position: useful for reading a function, "its output
 never matches on its own."
@@ -499,12 +499,12 @@ Two readings, and choosing between them is a human call:
 Note the sizes differ — 0x100 ([ov002](../config/arm9/overlays/ov002/symbols.txt)) vs 0xbc ([ov004](../config/arm9/overlays/ov004/symbols.txt)) — which argues against a straight duplicate and so favours the first reading. Either way, a matched file currently
 references a symbol its own module never otherwise calls.
 
-**G8.3 — `0x02123804` stays open.** [high] Its single caller [func_ov002_020ec670](../src/func_ov002_020ec670.c) makes
+**G8.3 — `0x02123804` stays open.** [high] Its single caller [func_ov002_020ec670](../src/actors/daYegg_c.cpp) makes
 no unambiguous call to any of [ov077](../config/arm9/overlays/ov077/symbols.txt)/[ov078](../config/arm9/overlays/ov078/symbols.txt)/[ov079](../config/arm9/overlays/ov079/symbols.txt)/[ov080](../config/arm9/overlays/ov080/symbols.txt), so co-residency says nothing. The [ov080](../config/arm9/overlays/ov080/symbols.txt) candidate is named (`_ZN14daChoro_Rock_cD0Ev`, size 0x54) and the others are placeholders
-of size 0x8 / 0x60 / 0x288. Needs different evidence — a call-shape or runtime check.
+of size 0x8 / 0x60 / 0x288. Needs different evidence — a call-shape or runtime check. **Since settled by the call's guard, not by residency:** the call runs only for actor types 0xa4/0xa5 (BATAN/BATANKING, both `daBtn_c`, in [ov079](../config/arm9/overlays/ov079/symbols.txt)), so the source names `func_ov079_02123804`.
 
 **G8.4 — Ghidra independently corroborates the [ov006](../config/arm9/overlays/ov006/symbols.txt) → [ov004](../config/arm9/overlays/ov004/symbols.txt) verdict.** [high] See §9:
-the SyncDsd'd decompilation of [func_ov006_020dbe9c](../src/func_ov006_020dbe9c.c) names its callee
+the SyncDsd'd decompilation of [func_ov006_020dbe9c](../src/actors/dScMgCoin_c.cpp) names its callee
 [func_ov004_020b023c](../src/func_ov004_020b023c.cpp). That is a third, independent line of evidence for [ov006](../config/arm9/overlays/ov006/symbols.txt) co-residing with [ov004](../config/arm9/overlays/ov004/symbols.txt) rather than [ov003](../config/arm9/overlays/ov003/symbols.txt) — arrived at through the imported relocation table rather than through the `relocs.txt` histogram.
 
 **G8.5 — Applying these is a symbol-rename change, with the usual hazards.** [high]
@@ -542,7 +542,7 @@ extension links `cpp_demangle`):
 |---|---|
 | [func_ov102_0214b53c](../src/actors/daBmb_c.cpp) | `Matrix4x3_FromRotationY`, `MulMat4x3Mat4x3`, `Vec3_Lsl`, `Vec3_LslInPlace`, `IsFrontSliding`, `LostGrabbedObject`, `UpdateCarry`, [func_ov002_020e496c](../src/func_ov002_020e496c.c) |
 | `OAM::Render` | `GetObjWidth`, `GetObjHeight`, `LoadAffineParams`, `fdiv` — and the function itself comes back as `OAM::Render(...)` with 10 parameters, not `FUN_02020994` |
-| [func_ov006_020dbe9c](../src/func_ov006_020dbe9c.c) | [func_ov004_020b023c](../src/func_ov004_020b023c.cpp) — **correctly attributed to [ov004](../config/arm9/overlays/ov004/symbols.txt)** |
+| [func_ov006_020dbe9c](../src/actors/dScMgCoin_c.cpp) | [func_ov004_020b023c](../src/func_ov004_020b023c.cpp) — **correctly attributed to [ov004](../config/arm9/overlays/ov004/symbols.txt)** |
 
 This is the whole delta over the old raw-binary path, and it is a real one: a draft that
 says `MulMat4x3Mat4x3(...)` tells the LLM tier what the function *is*, where
@@ -556,7 +556,7 @@ there is nothing for SyncDsd to import. Class layouts would have to come from ou
 headers via Ghidra's data-type manager, which nothing currently does.
 
 **G9.4 — The specific historical miss is still missed.** [high] [CLAIMS.md](../CLAIMS.md) records
-[ov006](../config/arm9/overlays/ov006/symbols.txt) [func_ov006_020dbe9c](../src/func_ov006_020dbe9c.c) as "Ghidra missed s64 matrix". The SyncDsd'd draft is:
+[ov006](../config/arm9/overlays/ov006/symbols.txt) [func_ov006_020dbe9c](../src/actors/dScMgCoin_c.cpp) as "Ghidra missed s64 matrix". The SyncDsd'd draft is:
 
 ```c
 void func_ov006_020dbe9c(int param_1) {

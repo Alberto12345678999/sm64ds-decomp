@@ -40,7 +40,7 @@ written the way the original was.
 | `_ZN14UnchainedChompD0Ev` | [ov100](../config/arm9/overlays/ov100/symbols.txt) 0x02143290 0xe0 | 3 `__destroy_arr` + 4 sub-object dtors + chain |
 | `_ZN11dCapEnemy_cD0Ev` | [ov002](../config/arm9/overlays/ov002/symbols.txt) 0x020aedf4 0x4c | 2 sub-object dtors, base chain |
 | `_ZN15daObjMarioCap_cD0Ev` | [ov002](../config/arm9/overlays/ov002/symbols.txt) 0x020b6f68 0x64 | 5 sub-object dtors, base chain |
-| `_ZN8Goomboss13InitResourcesEv` | [ov074](../config/arm9/overlays/ov074/symbols.txt) 0x02121e98 0x404 | name mangling; header decl added |
+| `_ZN12daKuriKing_c13InitResourcesEv` | [ov074](../config/arm9/overlays/ov074/symbols.txt) 0x02121e98 0x404 | name mangling; header decl added |
 | `_ZN12daFPknBall_c8BehaviorEv` | [ov002](../config/arm9/overlays/ov002/symbols.txt) 0x020f8c94 0x570 | name mangling |
 
 Every one passed `tools/match.py` (byte comparison *and* relocation destination)
@@ -226,7 +226,7 @@ and **never** consult the extension. Ten `.cpp` files tree-wide carry the marker
 an `#include`, so the build compiles them as **c99**.
 
 The standing advice has been to leave them alone because they match as c99. Twice now
-that has been wrong. `Goomboss` moved to byte 0, still matched, and became a real
+that has been wrong. `daKuriKing_c` moved to byte 0, still matched, and became a real
 method. `daKrb_c::InitResources` was worse: the inert marker was not what stood between
 it and a match -- 916 came out the same either way -- but it stopped `fdiff` and the
 permuter from compiling the file at all, which is presumably why a four-byte near-miss

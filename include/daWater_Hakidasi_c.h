@@ -26,7 +26,7 @@
 struct daWater_Hakidasi_c : dEnemyBase_c {
     /* What mState points at. Behavior calls the handler at +0x08 through it and
        nothing else in the tree reads the rest, so only that field is evidenced.
-       Same shape as Bullet::State -- see include/Bullet.h. */
+       Same shape as daPropeller_Heyho_Fire_c::State -- see include/daPropeller_Heyho_Fire_c.h. */
     struct State {
         u8  pad_00[0x8];
         void (daWater_Hakidasi_c::*mMain)();   /* 0x08 */
@@ -55,6 +55,11 @@ struct daWater_Hakidasi_c : dEnemyBase_c {
     virtual s32 InitResources();
     virtual void OnPendingDestroy();
     virtual s32 Render();
+
+    /* Helpers taking this (S33): the ROM address is the method name. */
+    int func_ov064_021193b4();
+    int func_ov064_021197fc();
+    void func_ov064_0211987c();
 
     /* The tail runs to the ROM's 0x378: daWater_Hakidasi_c_classInit calls
        fBase_c::operator new(0x378), read off the retail instruction. A span is

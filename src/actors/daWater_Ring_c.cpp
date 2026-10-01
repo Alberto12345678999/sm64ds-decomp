@@ -1,8 +1,8 @@
 //cpp
 /* Production translation unit for ov064/daWater_Ring_c.
- * 14 function(s), .text 0x02119a58..0x0211a1b0.
- * The factory daWater_Ring_c_classInit at 0x0211a1b0 is the next function
- * and stays out. One out-of-line destructor emits D1 then D0;
+ * 15 function(s), .text 0x02119a58..0x0211a200. The last is the registry
+ * factory daWater_Ring_c_classInit (0x0211a1b0), `new daWater_Ring_c()`.
+ * One out-of-line destructor emits D1 then D0;
  * `#pragma defer_codegen off` lays .text down in source order.
  *
  * The seven func_ov064_* helpers are the state bodies daWater_Ring_c::State
@@ -260,4 +260,14 @@ int daWater_Ring_c::InitResources()
     unk_380 = 0x1f;
     func_ov064_02119ecc(this, (const daWater_Ring_c::State *)data_ov064_0211c954);
     return 1;
+}
+
+/* Reconstructed source-style name: SM64DS proves daWater_Ring_c through
+ * RTTI, allocation size, vtable identity, and the WATER_RING registry
+ * profile; later EAD lineage supplies classInit. Exact original spelling is
+ * not preserved. Historical alias: WaterRing_Spawn. */
+// @symbol daWater_Ring_c_classInit
+extern "C" daWater_Ring_c *daWater_Ring_c_classInit()
+{
+    return new daWater_Ring_c();
 }

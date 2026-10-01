@@ -4,11 +4,13 @@
  * Stands where the current player stands, with X and facing negated, and
  * draws that pose on two models. The body copies the player's bone
  * transforms and flips X; the second model follows body bone 15. A request
- * word fades the reflection in. The factory daLuigi_c_classInit and
- * g_profile_LUIGI stay in src/d_a_luigi.cpp; this TU ends at 0x02111860.
+ * word fades the reflection in. Twelve functions, .text
+ * 0x021111a0..0x021118d4; the factory daLuigi_c_classInit (0x02111860) closes
+ * the unit and ov055's .text.
  *
  * mwccarm emits one .text section per function in the reverse of source
- * order, so the members are written highest address first.
+ * order, so the members are written highest address first, starting with
+ * the factory.
  *
  * deslop leftovers:
  * - InitResources: a local holding Model::LoadFile's return, reused by
@@ -126,6 +128,16 @@ void Matrix4x3_ApplyInPlaceToRotationY(Matrix4x3 *m, short angY);
 void _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(dActor_c *self, ShadowModel *shadow, Matrix4x3 *mat, int radius, int depth, unsigned char opacity);
 void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(ModelAnim *model, BCA_File *file, int flags, int speed, unsigned short start);
 void _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(TextureSequence *seq, BTP_File *file, int flags, int speed, unsigned short start);
+}
+
+/* Reconstructed source-style name: SM64DS proves daLuigi_c through RTTI,
+ * allocation size, vtable identity, and the LUIGI registry profile;
+ * later EAD lineage supplies classInit. Exact original spelling is not
+ * preserved. Historical alias: MirrorLuigi_Spawn. */
+// @symbol daLuigi_c_classInit
+extern "C" daLuigi_c *daLuigi_c_classInit()
+{
+    return new daLuigi_c();
 }
 
 // @symbol _ZN9daLuigi_c13InitResourcesEv

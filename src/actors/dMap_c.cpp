@@ -3,12 +3,13 @@
  * name is the cartridge's RTTI spelling (_ZTS6dMap_c at 0x0210c158, _ZTI6dMap_c
  * at 0x0210c168, _ZTV6dMap_c at 0x0210c1c0).
  *
- * One translation unit, eleven functions, 0x020f975c..0x020fb8bc: the
+ * One translation unit, twelve functions, 0x020f975c..0x020fb8f8: the
  * destructor pair, the two coordinate helpers FixTHIPaintingRoomPos and
  * UpdateLevelSpecific, the five fBase_c/dBase_c virtuals it overrides
- * (InitResources, CleanupResources, OnPendingDestroy, Render, Behavior), and
- * the two minimap-space projection helpers at the tail (GetPosFromMinimapPos,
- * GetPosOnMinimap). This is dMap_c's key-function TU, so the object also
+ * (InitResources, CleanupResources, OnPendingDestroy, Render, Behavior), the
+ * two minimap-space projection helpers (GetPosFromMinimapPos,
+ * GetPosOnMinimap), and the MAP registry factory dMap_c_classInit at the
+ * tail, written as `return new dMap_c();`. This is dMap_c's key-function TU, so the object also
  * carries the class's vtable and RTTI chain; the manifest licenses those
  * against their ROM homes (config/tu_manifest.d/ov002/dMap_c.json).
  *
@@ -1052,3 +1053,14 @@ void _ZN6dMap_c15GetPosOnMinimapER7Vector3S1_5Fix12IiEsS1_(Vector3* out, Vector3
 }
 }
 
+
+/* Reconstructed source-style name: SM64DS proves dMap_c through RTTI,
+ * allocation size, vtable identity, and the MAP registry profile;
+ * later EAD lineage supplies classInit. Exact original spelling is not
+ * preserved. Historical alias: Minimap_Spawn. It was once labelled
+ * _ZN6dMap_cC1Ev, but it takes no `this`: it is the registry factory. */
+// @symbol dMap_c_classInit
+extern "C" dMap_c *dMap_c_classInit()
+{
+    return new dMap_c();
+}

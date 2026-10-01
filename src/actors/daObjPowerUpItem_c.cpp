@@ -4,13 +4,14 @@
  *
  * ROM evidence: _ZTS18daObjPowerUpItem_c is the cartridge type name; the tree's
  * earlier coined spelling was PowerFlower (same vtable, ov002 0x02109800).
- * 18 functions, .text 0x020b9148..0x020b9e0c.
+ * 19 functions, .text 0x020b9148..0x020b9e64.
  *
  * The out-of-line destructor is the key function, so this TU emits _ZTV/_ZTI/
  * _ZTS. Under `#pragma defer_codegen off` it comes out D1 (0x020b9148), D0
  * (0x020b9198), then a D2 the cartridge has no home for; the same pragma lays
- * .text down in source order, so this file is ROM-ascending.
- * daObjPowerUpItem_c_classInit (0x020b9e0c) stays out of this TU.
+ * .text down in source order, so this file is ROM-ascending. The last
+ * function is the registry factory daObjPowerUpItem_c_classInit
+ * (0x020b9e0c), `new daObjPowerUpItem_c()`.
  *
  * common.h comes before the class header so the flat Matrix4x3 stands. The
  * two matrix copies were matched against that spelling; Matrix4x3.t is not
@@ -544,4 +545,14 @@ int daObjPowerUpItem_c::InitResources()
 s32 daObjPowerUpItem_c::OnYoshiTryEat()
 {
     return 5;
+}
+
+/* Reconstructed source-style name: SM64DS proves daObjPowerUpItem_c through
+ * RTTI, allocation size, vtable identity, and the POWER_UP_ITEM registry
+ * profile; later EAD lineage supplies classInit. Exact original spelling is
+ * not preserved. Historical alias: PowerFlower_Spawn. */
+// @symbol daObjPowerUpItem_c_classInit
+extern "C" daObjPowerUpItem_c *daObjPowerUpItem_c_classInit()
+{
+    return new daObjPowerUpItem_c();
 }

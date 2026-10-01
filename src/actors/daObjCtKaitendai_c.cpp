@@ -33,7 +33,8 @@
  *   mPrevAngleY = mPrevAngleY + mPrevAngleZ comes out 0x134, against
  *   Behavior's 0x138. The pointer is what keeps the halfword multiply
  *   and the reload into mAngleY.
- * - func_ov065_0211b40c keeps the name in ov065's symbols.txt.
+ * - func_ov065_0211b40c is a daObjCtKaitendai_c method under its ROM
+ *   address (S33); symbols.txt carries the mangled spelling.
  * - data_ov065_0211d334 (the 200/400 speeds) and data_ov065_0211d35c
  *   (the two resource rows) are not this TU's data. Neither are
  *   g_profile_CT_MECHA06 / CT_MECHA07.
@@ -79,7 +80,6 @@ extern void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Bloc
     dBgW_KcMbg *thisp, KCL_File *kcl, const Matrix4x3 &mtx, int fix, short s,
     CLPS_Block &clps);
 extern void func_020393d4(void *p, void *v);
-extern void func_ov065_0211b40c(daObjCtKaitendai_c *c);
 extern unsigned int RandomIntInternal(int *seed);
 extern u8 data_0209f2c0;              /* clock setting: 0 slow, 1 fast, 2 random, 3 stopped */
 extern int data_0209e650;             /* shared RNG state */
@@ -179,7 +179,7 @@ int daObjCtKaitendai_c::Behavior()
     mAngleY = mPrevAngleY;
 
     UpdateModelPosAndRotY();
-    func_ov065_0211b40c(this);
+    func_ov065_0211b40c();
 
     if (_ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(this, 0, 0) != 0)
         UpdateClsnPosAndRot();
@@ -204,13 +204,13 @@ int daObjCtKaitendai_c::CleanupResources()
     return 1;
 }
 
-// @symbol func_ov065_0211b40c
+// @symbol _ZN18daObjCtKaitendai_c19func_ov065_0211b40cEv
 /* Copy the model matrix, plant its translation Y on the floor probe,
  * and drop the shadow. m[10] is that Y in the flat Matrix4x3. */
-extern "C" void func_ov065_0211b40c(daObjCtKaitendai_c *c)
+void daObjCtKaitendai_c::func_ov065_0211b40c()
 {
-    c->mShadowMat = c->mModel.mat4x3;
-    c->mShadowMat.m[10] = (c->mGroundY + 0x32000) >> 3;
+    mShadowMat = mModel.mat4x3;
+    mShadowMat.m[10] = (mGroundY + 0x32000) >> 3;
     _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
-        c, &c->mShadowModel, &c->mShadowMat, 0x258000, 0xc8000, 0xf);
+        this, &mShadowModel, &mShadowMat, 0x258000, 0xc8000, 0xf);
 }

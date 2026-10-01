@@ -22,7 +22,8 @@
  * the height above mGroundY.
  *
  * #pragma defer_codegen off lays .text down in source order. The out-of-line
- * destructor emits D1 then D0. Factories and both profiles stay out of
+ * destructor emits D1 then D0. The two registry factories abut the rest of
+ * the run and come last, HS_UPDOWN_LIFT's first; both profiles stay out of
  * this TU. The "// address (size)" line above each definition is its ROM
  * location.
  *
@@ -549,4 +550,18 @@ int daObjRotateUpdownLift_c::InitResources()
     mSpawnAngleY = mAngleY;
     mSpawnAngleZ = mAngleZ;
     return 1;
+}
+
+// 0x02131ba4 (0x38)
+// @symbol daObjRotateUpdownLift_c_classInit_HS_UPDOWN_LIFT
+extern "C" daObjRotateUpdownLift_c *daObjRotateUpdownLift_c_classInit_HS_UPDOWN_LIFT()
+{
+    return new daObjRotateUpdownLift_c();
+}
+
+// 0x02131bdc (0x38)
+// @symbol daObjRotateUpdownLift_c_classInit_UPDOWN_LIFT
+extern "C" daObjRotateUpdownLift_c *daObjRotateUpdownLift_c_classInit_UPDOWN_LIFT()
+{
+    return new daObjRotateUpdownLift_c();
 }

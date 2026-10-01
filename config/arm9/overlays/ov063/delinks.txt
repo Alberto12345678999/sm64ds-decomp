@@ -8,65 +8,13 @@ src/actors/daTrs_c.cpp:
     complete
     .text start:0x02115ee0 end:0x0211c600
 
-src/game/actors/daTrsTrap_c/_ZN11daTrsTrap_cD1Ev.cpp:
-    complete
-    .text start:0x0211c600 end:0x0211c638
-
-src/game/actors/daTrsTrap_c/_ZN11daTrsTrap_cD0Ev.cpp:
-    complete
-    .text start:0x0211c638 end:0x0211c684
-
-src/unnamed/ov063/func_ov063_0211c684.c:
-    complete
-    .text start:0x0211c684 end:0x0211c6f8
-
-src/unnamed/ov063/func_ov063_0211c6f8.cpp:
-    complete
-    .text start:0x0211c6f8 end:0x0211c770
-
-src/unnamed/ov063/func_ov063_0211c770.c:
-    complete
-    .text start:0x0211c770 end:0x0211c7b0
-
-src/unnamed/ov063/func_ov063_0211c7b0.c:
-    complete
-    .text start:0x0211c7b0 end:0x0211c82c
-
-src/unnamed/ov063/func_ov063_0211c82c.c:
-    complete
-    .text start:0x0211c82c end:0x0211c89c
-
-src/unnamed/ov063/func_ov063_0211c89c.c:
-    complete
-    .text start:0x0211c89c end:0x0211cae8
-
-src/unnamed/ov063/func_ov063_0211cae8.c:
-    complete
-    .text start:0x0211cae8 end:0x0211cb54
-
-src/unnamed/ov063/func_ov063_0211cb54.c:
-    complete
-    .text start:0x0211cb54 end:0x0211cc18
-
-src/unnamed/ov063/func_ov063_0211cc18.c:
-    complete
-    .text start:0x0211cc18 end:0x0211cdec
-
 src/game/actors/daTrsTrap_c/d_a_trs_trap.cpp:
     complete
-    .text start:0x0211cdec end:0x0211d270
-
-src/unnamed/ov063/func_ov063_0211d270.cpp:
-    complete
-    .text start:0x0211d270 end:0x0211d28c
-
-src/unnamed/ov063/func_ov063_0211d28c.c:
-    complete
-    .text start:0x0211d28c end:0x0211d2a0
+    .text start:0x0211c600 end:0x0211d270
 
 src/game/actors/daTrsTrap_c/d_a_trs_trap_classinits.cpp:
     complete
-    .text start:0x0211d2a0 end:0x0211d3a0
+    .text start:0x0211d270 end:0x0211d3a0
 
 src/game/actors/d_a_obj_th_fall_block.cpp:
     complete
