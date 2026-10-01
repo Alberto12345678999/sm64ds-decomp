@@ -34821,11 +34821,11 @@ matched: yes</title></rect><rect x="1146.75" y="319.84" width="8.86" height="5.3
 module: ov060
 addr: 0x02116428
 size: 92 bytes
-matched: yes</title></rect><rect x="1146.75" y="325.16" width="8.86" height="3.70" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10BowserFireD1Ev
+matched: yes</title></rect><rect x="1146.75" y="325.16" width="8.86" height="3.70" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11daKpaFire_cD1Ev
 module: ov060
 addr: 0x02116484
 size: 64 bytes
-matched: yes</title></rect><rect x="1146.75" y="328.86" width="8.86" height="4.86" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10BowserFireD0Ev
+matched: yes</title></rect><rect x="1146.75" y="328.86" width="8.86" height="4.86" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11daKpaFire_cD0Ev
 module: ov060
 addr: 0x021164c4
 size: 84 bytes
@@ -34909,19 +34909,19 @@ matched: yes</title></rect><rect x="1203.69" y="322.32" width="15.01" height="5.
 module: ov060
 addr: 0x02117624
 size: 160 bytes
-matched: yes</title></rect><rect x="1218.70" y="322.32" width="0.75" height="5.46" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10BowserFire16CleanupResourcesEv
+matched: yes</title></rect><rect x="1218.70" y="322.32" width="0.75" height="5.46" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11daKpaFire_c16CleanupResourcesEv
 module: ov060
 addr: 0x021176c4
 size: 8 bytes
-matched: yes</title></rect><rect x="1219.45" y="322.32" width="0.75" height="5.46" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10BowserFire6RenderEv
+matched: yes</title></rect><rect x="1219.45" y="322.32" width="0.75" height="5.46" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11daKpaFire_c6RenderEv
 module: ov060
 addr: 0x021176cc
 size: 8 bytes
-matched: yes</title></rect><rect x="1220.20" y="322.32" width="17.64" height="5.46" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10BowserFire8BehaviorEv
+matched: yes</title></rect><rect x="1220.20" y="322.32" width="17.64" height="5.46" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11daKpaFire_c8BehaviorEv
 module: ov060
 addr: 0x021176d4
 size: 188 bytes
-matched: yes</title></rect><rect x="1163.91" y="327.78" width="26.48" height="8.21" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10BowserFire13InitResourcesEv
+matched: yes</title></rect><rect x="1163.91" y="327.78" width="26.48" height="8.21" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11daKpaFire_c13InitResourcesEv
 module: ov060
 addr: 0x02117790
 size: 424 bytes
