@@ -5956,6 +5956,7 @@
     "src/actors/daPicGate_c.cpp#_ZN11daPicGate_c6RenderEv": "tangosdev",
     "src/actors/daPicGate_c.cpp#_ZN11daPicGate_c8BehaviorEv": "tangosdev",
     "src/actors/daPicGate_c.cpp#_ZN11daPicGate_c13InitResourcesEv": "tangosdev",
+    "src/actors/daPicGate_c.cpp#daPicGate_c_classInit": "andrewboudreau",
     "src/actors/daWater_Tatumaki_c.cpp#func_ov026_02111b24": "tangosdev",
     "src/actors/daWater_Tatumaki_c.cpp#func_ov026_02111cb4": "tangosdev",
     "src/actors/daWater_Tatumaki_c.cpp#func_ov026_02111d4c": "tangosdev",
