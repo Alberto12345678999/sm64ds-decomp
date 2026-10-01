@@ -33,6 +33,12 @@ extern s8 data_ov066_0211abe0;
 extern s8 data_ov066_0211ae04;
 extern s8 data_ov066_0211ae0c;
 extern "C" char _ZN4dBgW22UpdatePosWithTransformERS_P8dActor_cR5dBgPiR7Vector3P10Vector3_16S8_;
+/* CLPS blocks in ov025 .data, the overlay resident below ov066 at these
+ * addresses (tools/overlay_residency.py rules out every other candidate). */
+struct CLPS_Block;
+extern "C" CLPS_Block data_ov025_02112c08;
+extern "C" CLPS_Block data_ov025_02112ca8;
+extern "C" CLPS_Block data_ov025_02112d48;
 
 /* extern "C" is load-bearing on every mangled/C-named declaration below: without
    it a .cpp file mangles the name a SECOND time (e.g.
@@ -157,7 +163,7 @@ int Eyerok::InitResources()
         data_ov066_0211abe4 = 1;
         data_ov066_0211ae04 = 1;
         data_ov066_0211abe0 = 3;
-        _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(&mMeshCollider2, data_ov066_0211ae24[1], &mClsnMat2, 0x199, mAngleY, &func_02112ca8);
+        _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(&mMeshCollider2, data_ov066_0211ae24[1], &mClsnMat2, 0x199, mAngleY, &data_ov025_02112ca8);
         func_020393d4(&mMeshCollider2, &_ZN4dBgW22UpdatePosWithTransformERS_P8dActor_cR5dBgPiR7Vector3P10Vector3_16S8_);
         func_020393c4(&mMeshCollider2, &func_ov066_0211a35c);
         ((dBgW *)&mMeshCollider2)->Enable(this);
@@ -171,10 +177,10 @@ int Eyerok::InitResources()
         mSpawnPosY = mPosY;
         mSpawnPosZ = mPosZ;
         if (mPartIdx == 1) {
-            _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(&mMeshCollider2, data_ov066_0211ae14[1], &mClsnMat2, 0x199, mAngleY, &func_02112c08);
+            _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(&mMeshCollider2, data_ov066_0211ae14[1], &mClsnMat2, 0x199, mAngleY, &data_ov025_02112c08);
             mRestPosX -= 0x31F000;
         } else {
-            _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(&mMeshCollider2, data_ov066_0211aeac[1], &mClsnMat2, 0x199, mAngleY, &func_02112d48);
+            _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(&mMeshCollider2, data_ov066_0211aeac[1], &mClsnMat2, 0x199, mAngleY, &data_ov025_02112d48);
             mRestPosX += 0x31F000;
         }
         func_020393d4(&mMeshCollider2, &_ZN4dBgW22UpdatePosWithTransformERS_P8dActor_cR5dBgPiR7Vector3P10Vector3_16S8_);

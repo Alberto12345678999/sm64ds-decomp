@@ -14,11 +14,11 @@ extern void **data_ov066_0211ae94;
 extern void **data_ov066_0211ae9c;
 extern void **data_ov066_0211ae34;
 extern void **data_ov066_0211ae1c;
-/* Bare C names in a .cpp file mangle to _Z13func_02112cc8v etc, which are
-   phantoms no module defines. */
-extern "C" void func_02112cc8();
-extern "C" void func_02112c88();
-extern "C" void func_02112cd8_updatepos();
+/* CLPS blocks in ov025 .data, the overlay resident below ov066 at these
+ * addresses (tools/overlay_residency.py rules out every other candidate). */
+struct CLPS_Block;
+extern "C" CLPS_Block data_ov025_02112cc8;
+extern "C" CLPS_Block data_ov025_02112c88;
 extern "C" void func_ov066_0211a35c();
 
 extern "C" void func_ov066_021166c8(void *thiz)
@@ -38,13 +38,13 @@ extern "C" void func_ov066_021166c8(void *thiz)
 
     if (*(int *)(c + 0x49c) == 1) {
         _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(c + 0x674, (&data_ov066_0211ae34)[1], c + 0x83c, 0x199,
-                                   *(short *)(c + 0x8e), (void *)func_02112cc8);
+                                   *(short *)(c + 0x8e), &data_ov025_02112cc8);
     } else {
         _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(c + 0x674, (&data_ov066_0211ae1c)[1], c + 0x83c, 0x199,
-                                   *(short *)(c + 0x8e), (void *)func_02112c88);
+                                   *(short *)(c + 0x8e), &data_ov025_02112c88);
     }
 
-    func_020393d4(c + 0x674, (void *)func_02112cd8_updatepos);
+    func_020393d4(c + 0x674, (void *)&dBgW::UpdatePosWithTransform);
     func_020393c4(c + 0x674, (void *)func_ov066_0211a35c);
     func_020398fc(c + 0x674);
     ((dBgW *)(c + 0x674))->Enable((dActor_c *)(c));

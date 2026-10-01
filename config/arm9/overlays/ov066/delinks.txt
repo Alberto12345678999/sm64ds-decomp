@@ -36,6 +36,7 @@ src/func_ov066_021165cc.c:
     .text start:0x021165cc end:0x021166c8
 
 src/func_ov066_021166c8.cpp:
+    complete
     .text start:0x021166c8 end:0x021168b0
 
 src/func_ov066_021168b0.c:
@@ -67,6 +68,7 @@ src/func_ov066_02116d14.cpp:
     .text start:0x02116d14 end:0x02116db0
 
 src/func_ov066_02116db0.c:
+    complete
     .text start:0x02116db0 end:0x02117190
 
 src/func_ov066_02117190.c:
@@ -82,6 +84,7 @@ src/func_ov066_021175bc.c:
     .text start:0x021175bc end:0x021175e8
 
 src/func_ov066_021175e8.c:
+    complete
     .text start:0x021175e8 end:0x02117bd0
 
 src/func_ov066_02117bd0.c:
@@ -89,6 +92,7 @@ src/func_ov066_02117bd0.c:
     .text start:0x02117bd0 end:0x02117bf0
 
 src/func_ov066_02117bf0.c:
+    complete
     .text start:0x02117bf0 end:0x02118168
 
 src/func_ov066_02118168.c:
@@ -96,6 +100,7 @@ src/func_ov066_02118168.c:
     .text start:0x02118168 end:0x02118188
 
 src/func_ov066_02118188.c:
+    complete
     .text start:0x02118188 end:0x021184c0
 
 src/actors/Eyerok.cpp:
@@ -103,6 +108,7 @@ src/actors/Eyerok.cpp:
     .text start:0x021184c0 end:0x02119ce8
 
 src/_ZN6Eyerok13InitResourcesEv.cpp:
+    complete
     .text start:0x02119ce8 end:0x0211a2dc
 
 src/_ZN6Eyerok16OnAimedAtWithEggEv.cpp:

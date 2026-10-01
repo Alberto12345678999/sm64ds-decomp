@@ -1,8 +1,7 @@
 //cpp
 /* Eyerok, the two-handed pyramid boss (.text 0x021184c0..0x02119ce8).
  * ROM RTTI daIwante_c (_ZTS10daIwante_c ov066:0x0211ad30); this tree keeps
- * the coined name. Partial: shards 8,16,20,22,24,59 reference 0x02112c08..
- * (co-resident overlay, unresolved), so they can't link.
+ * the coined name. Partial: the rest of the unit is still separate shards.
  *
  * Source is ROM-ascending under defer_codegen off. Do not reorder.
  *

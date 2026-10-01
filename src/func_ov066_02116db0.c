@@ -32,8 +32,10 @@ extern char data_ov066_0211ae14[];
 extern char data_ov066_0211aeac[];
 extern char data_ov066_0211b06c;
 extern int _ZN4dBgW22UpdatePosWithTransformERS_P8dActor_cR5dBgPiR7Vector3P10Vector3_16S8_;
-extern int func_02112c08;
-extern int func_02112d48;
+/* CLPS blocks in ov025 .data, the overlay resident below ov066 at these
+ * addresses (tools/overlay_residency.py rules out every other candidate). */
+extern struct CLPS_Block data_ov025_02112c08;
+extern struct CLPS_Block data_ov025_02112d48;
 extern int func_ov066_0211a35c;
 
 int func_ov066_02116db0(void *thiz)
@@ -109,11 +111,11 @@ int func_ov066_02116db0(void *thiz)
             if (*(int *)(c + 0x49c) == 1)
                 _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
                     c + 0x674, *(void **)(data_ov066_0211ae14 + 4), c + 0x83c, 0x199,
-                    *(s16 *)(c + 0x8e), &func_02112c08);
+                    *(s16 *)(c + 0x8e), &data_ov025_02112c08);
             else
                 _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
                     c + 0x674, *(void **)(data_ov066_0211aeac + 4), c + 0x83c, 0x199,
-                    *(s16 *)(c + 0x8e), &func_02112d48);
+                    *(s16 *)(c + 0x8e), &data_ov025_02112d48);
             func_020393d4(c + 0x674, &_ZN4dBgW22UpdatePosWithTransformERS_P8dActor_cR5dBgPiR7Vector3P10Vector3_16S8_);
             func_020393c4(c + 0x674, &func_ov066_0211a35c);
             func_020398fc(c + 0x674);
