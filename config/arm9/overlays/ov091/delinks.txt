@@ -34,11 +34,7 @@ src/actors/daDsnBase_c.cpp:
 
 src/actors/daObjPile_c.cpp:
     complete
-    .text start:0x021333fc end:0x02133938
-
-src/d_a_obj_pile.c:
-    complete
-    .text start:0x02133938 end:0x02133968
+    .text start:0x021333fc end:0x02133968
 
 src/game/actors/d_a_hyuhyu.cpp:
     complete
