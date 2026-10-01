@@ -5164,6 +5164,7 @@
     "src/actors/daObjCtMecha11_c.cpp#_ZN16daObjCtMecha11_c6RenderEv": "tangosdev",
     "src/actors/daObjCtMecha11_c.cpp#_ZN16daObjCtMecha11_c8BehaviorEv": "lunavyqo",
     "src/actors/daObjCtMecha11_c.cpp#_ZN16daObjCtMecha11_c13InitResourcesEv": "tangosdev",
+    "src/actors/daObjCtMecha11_c.cpp#daObjCtMecha11_c_classInit": "tangosdev",
     "src/actors/daObjCtRotateBlock_c.cpp#_ZN20daObjCtRotateBlock_c10UpdateClsnEv": "andrewboudreau",
     "src/actors/daObjCtRotateBlock_c.cpp#_ZN20daObjCtRotateBlock_c11UpdateModelEv": "andrewboudreau",
     "src/actors/daObjCtRotateBlock_c.cpp#_ZN20daObjCtRotateBlock_c12UpdateShadowEv": "andrewboudreau",
