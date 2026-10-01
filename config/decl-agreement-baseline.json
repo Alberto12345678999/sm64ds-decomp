@@ -12137,9 +12137,6 @@
       "src/__sinit_ov102_0214de70.c": [
         "kind:data"
       ],
-      "src/d_a_moray.c": [
-        "kind:data"
-      ],
       "src/func_ov002_020f6c60.c": [
         "kind:data"
       ]
@@ -15471,12 +15468,6 @@
         "param:#4 void *",
         "param:#5 void *",
         "return:void *"
-      ],
-      "src/d_a_moray.c": [
-        "param:#2 int",
-        "param:#3 int",
-        "param:#4 void *",
-        "param:#5 void *"
       ],
       "src/d_a_obj_closet.cpp": [
         "param:#2 int",
@@ -31626,9 +31617,6 @@
       ],
       "src/d_a_kuri_king_kuriking_vanish.cpp": [
         "arity:1"
-      ],
-      "src/d_a_moray.c": [
-        "kind:data"
       ],
       "src/d_a_obj_flamethrower.cpp": [
         "arity:1"

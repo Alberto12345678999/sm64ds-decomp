@@ -5935,6 +5935,7 @@
     "src/actors/daMoray_c.cpp#_ZN9daMoray_c6RenderEv": "tangosdev",
     "src/actors/daMoray_c.cpp#_ZN9daMoray_c8BehaviorEv": "tangosdev",
     "src/actors/daMoray_c.cpp#_ZN9daMoray_c13InitResourcesEv": "tangosdev",
+    "src/actors/daMoray_c.cpp#daMoray_c_classInit": "tangosdev",
     "src/actors/daKirai_c.cpp#_ZN9daKirai_cD1Ev": "tangosdev",
     "src/actors/daKirai_c.cpp#_ZN9daKirai_cD0Ev": "tangosdev",
     "src/actors/daKirai_c.cpp#func_ov060_021184bc": "tangosdev",
