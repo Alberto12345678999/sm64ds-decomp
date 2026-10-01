@@ -18,11 +18,7 @@ src/actors/daObjWlSubmarine_c.cpp:
 
 src/actors/daWater_Tatumaki_c.cpp:
     complete
-    .text start:0x02111aa0 end:0x021121bc
-
-src/d_a_water_tatumaki.c:
-    complete
-    .text start:0x021121bc end:0x021121fc
+    .text start:0x02111aa0 end:0x021121fc
 
 src/actors/daWater_Suikomi_c.cpp:
     complete

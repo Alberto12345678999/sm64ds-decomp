@@ -5965,6 +5965,7 @@
     "src/actors/daWater_Tatumaki_c.cpp#_ZN18daWater_Tatumaki_c6RenderEv": "tangosdev",
     "src/actors/daWater_Tatumaki_c.cpp#_ZN18daWater_Tatumaki_c8BehaviorEv": "tangosdev",
     "src/actors/daWater_Tatumaki_c.cpp#_ZN18daWater_Tatumaki_c13InitResourcesEv": "tangosdev",
+    "src/actors/daWater_Tatumaki_c.cpp#daWater_Tatumaki_c_classInit": "tangosdev",
     "src/actors/daObjCtMecha09_c.cpp#_ZN16daObjCtMecha09_cD1Ev": "tangosdev",
     "src/actors/daObjCtMecha09_c.cpp#_ZN16daObjCtMecha09_cD0Ev": "tangosdev",
     "src/actors/daObjCtMecha09_c.cpp#func_ov065_0211bc88": "tangosdev",
