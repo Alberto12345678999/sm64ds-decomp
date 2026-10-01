@@ -17,8 +17,10 @@
  * This file is ROM-descending: deferred codegen reverses emission back
  * into ROM order. The destructor pair is spelled out at the tail as
  * extern "C" ABI bodies (D0 then D1) so the reversal emits D1 below D0
- * as the cartridge has it; with no key-function definition this TU emits
- * no vtable, RTTI or homeless D2.
+ * as the cartridge has it -- an out-of-line ~daKpaFire_c() group would
+ * emit D0 first plus a homeless D2. InitResources stays the key function
+ * (declared before the destructor, defined out-of-line here) so the
+ * vtable and RTTI chain still emit into this TU.
  *
  * Known limits:
  * - The twenty func_ov060_* helpers stay free functions over raw offsets.
@@ -855,7 +857,7 @@ extern "C" void _ZN12dEnemyBase_cD2Ev(void *);
 // @symbol _ZN11daKpaFire_cD0Ev
 extern "C" daKpaFire_c *_ZN11daKpaFire_cD0Ev(daKpaFire_c *self)
 {
-    *(int *)self = (int)_ZTV11daKpaFire_c;
+    *(int *)self = (int)(_ZTV11daKpaFire_c + 2);
     _ZN11ShadowModelD1Ev(&self->mShadowModel);
     _ZN7dCcAc_cD1Ev(&self->mdCcAc_c);
     _ZN10dBgCh_ActrD1Ev(&self->mWithMeshClsn);
@@ -867,7 +869,7 @@ extern "C" daKpaFire_c *_ZN11daKpaFire_cD0Ev(daKpaFire_c *self)
 // @symbol _ZN11daKpaFire_cD1Ev
 extern "C" daKpaFire_c *_ZN11daKpaFire_cD1Ev(daKpaFire_c *self)
 {
-    *(int *)self = (int)_ZTV11daKpaFire_c;
+    *(int *)self = (int)(_ZTV11daKpaFire_c + 2);
     _ZN11ShadowModelD1Ev(&self->mShadowModel);
     _ZN7dCcAc_cD1Ev(&self->mdCcAc_c);
     _ZN10dBgCh_ActrD1Ev(&self->mWithMeshClsn);

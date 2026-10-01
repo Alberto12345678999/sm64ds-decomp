@@ -204,10 +204,87 @@
   "data": [],
   "bss": [],
   "notes": [
-    "No destructor definition in this TU: the ROM's D1 (0x02116484) and D0 (0x021164c4) are hand-spelled extern \"C\" ABI variants, written D0-then-D1 so deferred codegen emits them D1, D0 in ROM order. With no key function defined the compiler emits no vtable, RTTI or D2 here; the cartridge copies stay ROM-provided.",
+    "Destructor pair: no destructor definition in this TU -- the ROM carries D1 (0x02116484) and D0 (0x021164c4) with no D2, hand-spelled as extern \"C\" ABI bodies written D0-then-D1 so deferred codegen emits them D1, D0 in ROM order. InitResources is the key function (first non-inline virtual declared, defined out-of-line here), so the vtable and RTTI chain still emit into this TU and deadstrip against their cartridge homes.",
     "create CONFLICT warnings: extern-declaration clashes across the 26 legacy shards resolved to the definition-matching forms (kept-first); the TUBUILD comment rows dropped, the daKpaFire_c.h layout kept."
   ],
   "compiler_only_output": [
+    {
+      "symbol": "_ZTV11daKpaFire_c",
+      "disposition": "deadstrip-data",
+      "canonical_module": "ov060",
+      "canonical_address": "0x0211a7f4",
+      "reason": "Own vtable, emitted because InitResources is defined out-of-line here and is the first non-inline virtual declared (the key function); the destructor itself is hand-spelled extern \"C\" ABI bodies. Cartridge copy at ov060:0x0211a7f4 (address point), outside the .text run claimed."
+    },
+    {
+      "symbol": "_ZTI11daKpaFire_c",
+      "disposition": "deadstrip-data",
+      "canonical_module": "ov060",
+      "canonical_address": "0x0211a7b4",
+      "reason": "Own typeinfo (__si_class_type_info over _ZTI12dEnemyBase_c). Cartridge copy at ov060:0x0211a7b4."
+    },
+    {
+      "symbol": "_ZTS11daKpaFire_c",
+      "disposition": "deadstrip-data",
+      "canonical_module": "ov060",
+      "canonical_address": "0x0211a7c0",
+      "reason": "Own type-name; bytes spell \"11daKpaFire_c\", source of the class name. Cartridge copy at ov060:0x0211a7c0."
+    },
+    {
+      "symbol": "_ZTI12dEnemyBase_c",
+      "disposition": "deadstrip-data",
+      "canonical_module": "ov002",
+      "canonical_address": "0x021081c0",
+      "reason": "Immediate base typeinfo. Cartridge copy at ov002:0x021081c0."
+    },
+    {
+      "symbol": "_ZTS12dEnemyBase_c",
+      "disposition": "deadstrip-data",
+      "canonical_module": "ov002",
+      "canonical_address": "0x021081cc",
+      "reason": "Immediate base type-name. Cartridge copy at ov002:0x021081cc."
+    },
+    {
+      "symbol": "_ZTI8dActor_c",
+      "disposition": "deadstrip-data",
+      "canonical_module": "arm9",
+      "canonical_address": "0x0208e390",
+      "reason": "Inherited base typeinfo. Cartridge copy in arm9 at 0x0208e390."
+    },
+    {
+      "symbol": "_ZTS8dActor_c",
+      "disposition": "deadstrip-data",
+      "canonical_module": "arm9",
+      "canonical_address": "0x0208e384",
+      "reason": "Inherited base type-name. Cartridge copy in arm9 at 0x0208e384."
+    },
+    {
+      "symbol": "_ZTI7dBase_c",
+      "disposition": "deadstrip-data",
+      "canonical_module": "arm9",
+      "canonical_address": "0x02086e78",
+      "reason": "Inherited base typeinfo. Cartridge copy in arm9 at 0x02086e78."
+    },
+    {
+      "symbol": "_ZTS7dBase_c",
+      "disposition": "deadstrip-data",
+      "canonical_module": "arm9",
+      "canonical_address": "0x02086e54",
+      "reason": "Inherited base type-name. Cartridge copy in arm9 at 0x02086e54."
+    },
+    {
+      "symbol": "_ZTI7fBase_c",
+      "disposition": "deadstrip-data",
+      "canonical_module": "arm9",
+      "canonical_address": "0x02086d70",
+      "reason": "Inherited base typeinfo. Cartridge copy in arm9 at 0x02086d70."
+    },
+    {
+      "symbol": "_ZTS7fBase_c",
+      "disposition": "deadstrip-data",
+      "canonical_module": "arm9",
+      "canonical_address": "0x02086e60",
+      "reason": "Inherited base type-name. Cartridge copy in arm9 at 0x02086e60."
+    },
     {
       "symbol": "_ZN7Vector3D1Ev",
       "disposition": "deadstrip-duplicate",
@@ -232,10 +309,51 @@
         "_ZN7Vector3D1Ev"
       ],
       "droppedSections": [
-        52
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        69
       ],
-      "data": [],
-      "dataExternalized": []
+      "data": [
+        "_ZTV11daKpaFire_c",
+        "_ZTI11daKpaFire_c",
+        "_ZTS11daKpaFire_c",
+        "_ZTI12dEnemyBase_c",
+        "_ZTS12dEnemyBase_c",
+        "_ZTI8dActor_c",
+        "_ZTS8dActor_c",
+        "_ZTI7dBase_c",
+        "_ZTS7dBase_c",
+        "_ZTI7fBase_c",
+        "_ZTS7fBase_c"
+      ],
+      "dataExternalized": [
+        "_ZTI11daKpaFire_c",
+        "_ZTI12dEnemyBase_c",
+        "_ZTI7dBase_c",
+        "_ZTI7fBase_c",
+        "_ZTI8dActor_c",
+        "_ZTS11daKpaFire_c",
+        "_ZTS12dEnemyBase_c",
+        "_ZTS7dBase_c",
+        "_ZTS7fBase_c",
+        "_ZTS8dActor_c",
+        "_ZTV11daKpaFire_c"
+      ]
     },
     "criteria": {
       "every_declared_function_defined": "PASS",

@@ -59,13 +59,17 @@ struct daKpaFire_c : dEnemyBase_c {
     s32 mSoundID;            /* 0x388 */
 
     /* --- vtable, in ROM order. Do not reorder. --- */
-    virtual ~daKpaFire_c();              /* slots 0 (D1), 1 (D0) */
-
-    /* --- non-virtual --- */
+    /* All four overrides sit at fixed fBase_c slots, so declaration order is
+       free; InitResources is declared first and defined out-of-line in the TU,
+       which makes it the key function and emits the vtable/RTTI there. The
+       destructor comes last: it has no out-of-line definition at all (the TU
+       spells D1/D0 as extern "C" ABI bodies), so no destructor group or D2 is
+       emitted. */
     int InitResources();
     int CleanupResources();
     int Render();
     int Behavior();
+    virtual ~daKpaFire_c();              /* slots 16 (D1), 17 (D0) */
 };
 
 #ifndef SM64DS_PLATFORM_PC
