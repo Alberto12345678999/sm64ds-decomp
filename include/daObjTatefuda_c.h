@@ -128,7 +128,7 @@ struct daObjTatefuda_c : dBgActor_c {
        assert below is unaffected.
 
        It is also this class's KEY FUNCTION, the destructor above being inline,
-       so src/_ZN15daObjTatefuda_c4KillEv.cpp emits _ZTV15daObjTatefuda_c, _ZTI15daObjTatefuda_c and the
+       so src/actors/daObjTatefuda_c.cpp emits _ZTV15daObjTatefuda_c, _ZTI15daObjTatefuda_c and the
        destructor variants alongside the one function it is bound to.
        objisolate.py reduces the object back to that one 0x74 .text before
        eligible.py and rombuild.py judge it -- checked, not assumed. */

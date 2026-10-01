@@ -1,9 +1,9 @@
 {
   "id": "ov002/daObjTatefuda_c",
   "module": "ov002",
-  "source": "src_tu/actors/daObjTatefuda_c.cpp",
+  "source": "src/actors/daObjTatefuda_c.cpp",
   "promoted_source": "src/actors/daObjTatefuda_c.cpp",
-  "status": "text-verified",
+  "status": "promoted",
   "boundary_confidence": "medium",
   "boundary_evidence": [
     "contiguous linker run: 0x020badd0..0x020bc3c8, 28 function(s), from build/tu_map.json (tools/tu_map.py, regenerated post-rename as ov002/daObjTatefuda_c). 27 carry complete delinks entries; func_ov002_020bb614 (the talk routine) verifies OK under the pin and is marked complete with this promotion. Boundaries medium on both sides; the daObjSwdoor_c run ends exactly where this one opens (0x020badd0), and daObjTatefuda_c_classInit (0x020bc3c8) abuts its end.",

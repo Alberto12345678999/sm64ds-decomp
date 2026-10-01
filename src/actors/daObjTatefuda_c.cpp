@@ -918,8 +918,7 @@ void func_ov002_020bb42c(char* self){
  * (types.h), so a whole-object assignment compiles to an ldm/stm pair, four
  * instructions where the ROM has six. Particle::System::NewSimple stays spelled
  * as its mangled name -- its parameters are Fix12<int> BY VALUE and declaring
- * the true types changes how the caller passes them. Both points are argued in
- * full in src/_ZN10dBgActor_c4KillEv.cpp. */
+ * the true types changes how the caller passes them. */
 /* This class's own reset routine, still unnamed and still under its func_ov002_
    symbol. It returns int; Kill drops it. */
 void daObjTatefuda_c::Kill()
