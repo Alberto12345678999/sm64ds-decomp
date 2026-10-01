@@ -34,6 +34,9 @@ struct daObjCtKaitendai_c : dBgActor_c {
     int Behavior();
     int Render();
 
+    /* Helper taking this (S33): the ROM address is the method name. */
+    void func_ov065_0211b40c();
+
     /* Declared last and inline so class instantiation emits the retail D1/D0
      * pair in cartridge order without a separate leaf D2 body. */
     virtual ~daObjCtKaitendai_c() {}

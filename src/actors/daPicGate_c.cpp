@@ -19,9 +19,10 @@
  *
  * The five handlers keep func_ov080_* names: the state-table descriptors
  * relocate to those symbols. #pragma defer_codegen off keeps .text in
- * source order. The destructor pair, daPicGate_c_classInit, and
- * g_profile_PICTURE_GATE are outside this run. SetRanges is the int
- * adapter; dActor_c.h does not declare the member.
+ * source order. The destructor pair and g_profile_PICTURE_GATE are outside
+ * this run. The abutting registry factory daPicGate_c_classInit
+ * (0x02126f8c) is written last, built by hand (see the note above it).
+ * SetRanges is the int adapter; dActor_c.h does not declare the member.
  *
  * deslop leftovers:
  * - func_ov080_021264ec and func_ov080_021269b8: mWavePhase += phaseStep
@@ -98,7 +99,13 @@ extern u8 data_ov080_02127714[];
 extern void func_020553a4(void *mtx);
 extern void *data_ov080_02127834;
 extern void func_0203cbc0(void *a);
+/* daPicGate_c_classInit builds the object by hand; see the note above it. */
+extern void *_ZN8dActor_cC2Ev(void *self);
 }
+
+/* The cartridge's vtable label is the address point (slot 0), and the
+   vtable itself is emitted with the destructor, outside this file. */
+extern int _ZTV11daPicGate_c[];
 namespace Memory { void *operator_new2(unsigned int size); }
 
 /* Call-site names. The symbols stay the ROM's: the state table relocates
@@ -435,4 +442,23 @@ s32 daPicGate_c::InitResources() {
     }
     BuildGateMatrix(this);
     return 1;
+}
+
+/* daPicGate_c_classInit is not `new daPicGate_c()`. ~daPicGate_c() is the
+ * key function and is defined outside this file, so the new-expression's
+ * vptr store reaches the undefined _ZTV11daPicGate_c with addend 8 (the
+ * start-of-object spelling); the cartridge stores the address-point label
+ * itself, and production isolation refuses an undefined vtable reference
+ * with a nonzero addend (measured: the rombuild link control fails on it).
+ * The factory keeps the hand-built sequence: operator new(0x1bc), the
+ * dActor_c constructor, the vtable store. */
+// @symbol daPicGate_c_classInit
+extern "C" daPicGate_c *daPicGate_c_classInit()
+{
+    int *p = (int *)_ZN7fBase_cnwEj(sizeof(daPicGate_c));
+    if (p) {
+        _ZN8dActor_cC2Ev(p);
+        p[0] = (int)_ZTV11daPicGate_c;
+    }
+    return (daPicGate_c *)p;
 }

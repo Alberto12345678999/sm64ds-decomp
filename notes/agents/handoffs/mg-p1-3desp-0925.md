@@ -22,7 +22,7 @@ This document describes this commit. The queue records its immutable output SHA.
 ## What changed and why
 
 - Class/TU/symbol and module-qualified ROM scope: `dScMg3DEsp_c` (scene 0x185, profile
-  `MG_3DESP`), its eight single-function files in ov006 (`0x020e7660..0x020e777c` for D1
+  `MG_3DESP`), its eight single-function files in [ov006](../../../config/arm9/overlays/ov006/) (`0x020e7660..0x020e777c` for D1
   and D0, `0x020e9c10..0x020ea1f0` for the six methods), and `include/dScMg3DEsp_c.h`.
 - Reserved source/header/config surfaces actually touched: the eight `src` files, the
   header and this note. No config, symbols, delinks, attribution or baseline file changed.
@@ -61,9 +61,9 @@ This document describes this commit. The queue records its immutable output SHA.
   casts strip the `volatile`: without them mwcc rejects the copy (`illegal operands`).
 - **R6, fixed.** The `zero` temporary is gone; literal zeros match.
 - **R7, fixed.** Ten local redeclarations in `InitResources` repeated `decl_common.h`
-  exactly (`InitialiseVramGlobals`, `func_ov004_020b04d0`, `Deallocate`, `func_02056374`,
-  `func_ov004_020b0cac`, three `data_ov006_*` handles, `data_ov004_020bc880` and
-  `data_ov004_020bc884`). They are deleted. Each symbol keeps a plurality that agrees
+  exactly (`InitialiseVramGlobals`, [func_ov004_020b04d0](../../../src/func_ov004_020b04d0.c), `Deallocate`, `func_02056374`,
+  [func_ov004_020b0cac](../../../src/func_ov004_020b0cac.c), three `data_ov006_*` handles, [data_ov004_020bc880](../../../config/arm9/overlays/ov004/symbols.txt) and
+  [data_ov004_020bc884](../../../config/arm9/overlays/ov004/symbols.txt)). They are deleted. Each symbol keeps a plurality that agrees
   with its definition.
 - **R8, deferred.** The `G2S::GetBG2CharPtr`, `GXS::LoadBGPltt`, `GXS::LoadOBJPltt` and
   `G3X::SetFog` calls stay mangled: no header declares those namespaces. A local
@@ -75,7 +75,7 @@ This document describes this commit. The queue records its immutable output SHA.
 - **R11, fixed.** `OnYoshiTryEat` drops its `char *c` and `self` aliases, and its
   `int *p` increment is now `unk_0bc++`.
 - **R12, fixed.** `OnYoshiTryEat` clears the singleton's score as
-  `((dScMgBase_c*)data_ov004_020beb68)->mHudScore` instead of `+ 0xb4`.
+  `((dScMgBase_c*)`[data_ov004_020beb68](../../../config/arm9/overlays/ov004/symbols.txt)`)->mHudScore` instead of `+ 0xb4`.
 - **R13, kept with a comment.** The clamp right after `unk_0bc = 0` looks dead, but
   removing it shortens the function by 16 bytes. The cap `0x270e` is written `9998`.
 - **R14, fixed.** `Render` drops its `char *c` alias, a local `TextureTransformer`
@@ -100,7 +100,7 @@ This document describes this commit. The queue records its immutable output SHA.
   why the members stay raw.
 - **R19, fixed.** The `CleanupResources`, `Virtual50`, D1 and D0 comments are shortened
   to their facts.
-- **R20, deferred.** Calls to the ov006 helpers cast `(char *)this`: `decl_common.h`
+- **R20, deferred.** Calls to the [ov006](../../../config/arm9/overlays/ov006/symbols.txt) helpers cast `(char *)this`: `decl_common.h`
   declares them with `char *`, and their C definitions take `char *` (one takes
   `Outer *`). This is why the `(char *)this` count in `Render` rises from 1 to 4 while
   its alias goes away.
@@ -162,7 +162,7 @@ were copied into the worktree.
   - `intactTuRom.identical` is true; the ROM sha256 is
     `d1506e90efae5e2d2cf119926a4ac2a291bd5ca78349d09d5024e1a918c478e8`, the expected one.
   - `objectCache`: compiled 7069, reused 0, so the eight files were compiled from this
-    tree. All eight are enrolled in the ov006 `delinks.txt` and listed in
+    tree. All eight are enrolled in the [ov006 `delinks.txt`](../../../config/arm9/overlays/ov006/delinks.txt) and listed in
     `build/objects.txt`.
   - 11,214 of 11,214 functions reproduce, 0 mismatch; module fidelity 106 of 106 exact;
     ROM-build analysis PASS.
@@ -197,7 +197,7 @@ were copied into the worktree.
   - `python tools/check_decl_agreement.py`: exit 0, no new disagreements; 15,207
     disagreements, 35,881 declarations, 1,030 healed banked entries.
   - The same check with these nine files at the base: 15,213 disagreements, 35,896
-    declarations, 1,024 healed banked entries. `data_ov006_0213c88c` has one
+    declarations, 1,024 healed banked entries. [data_ov006_0213c88c](../../../config/arm9/overlays/ov006/symbols.txt) has one
     declaration, this file's, so retyping it moves no count.
 - **Other static gates**, each exit 0:
   - `python tools/prepush_attribution.py --base e63828444b --head HEAD`: 7241 tracked,

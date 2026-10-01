@@ -22,7 +22,7 @@ Convention: instance members `mFoo`.
 | 0x410 | `mPathNodeIndex` | `InitResources` sets it to 1, then to 8, and clamps it to 4 when `mPathNodeIndex >= mPathNodeCount`. Only meaning consistent with being bounded by the node count. |
 | 0x414 | `mStarParam` | `InitResources`: `mStarParam = (param1 >> 0xc) & 0xf`. Its only two reads are `mStarParam \| 0x50` (`InitResources`) and `mStarParam \| 0x40` (`Behavior`), each the spawn parameter of actor `0xb2`, the star. |
 | 0x418..0x426 | `s16 mSegmentAngle[8]` | `InitResources` zeroes indices 0..6 through the base of 0x418 and then element 7 at 0x426 explicitly; `Render` in `src/actors/daMoray_c.cpp` reads elements 1..6, multiplies each by [data_ov016_02114908](../config/arm9/overlays/ov016/symbols.txt)`[i].angleScale` and adds the result into the bone's rotation word at `bone + 0x1e`. Eight `s16`s, driving one bone angle each. |
-| 0x428/0x42a/0x42c | `mInitAngleX/Y/Z` | last three statements of `InitResources`: copied verbatim from `mAngleX/Y/Z`. Named for the capture, and [func_ov016_02111534](../src/func_ov016_02111534.c) does read all three back, restoring them into `mPrevAngleX/Y/Z`. |
+| 0x428/0x42a/0x42c | `mInitAngleX/Y/Z` | last three statements of `InitResources`: copied verbatim from `mAngleX/Y/Z`. Named for the capture, and [func_ov016_02111534](../src/actors/daMoray_c.cpp) does read all three back, restoring them into `mPrevAngleX/Y/Z`. |
 | 0x43c | `Vector3 mStarPos` | `Behavior` passes `&mStarPos` to `Vec3_Dist` against the closest player's `+0x5c` (a position), passes `mStarPos` by reference as the spawn position of actor `0xb2`, and every frame copies its three words into the tracked star's `+0x5c/+0x60/+0x64`. Three consecutive words used only as a world position, and only ever the star's. |
 | 0x448 | `Vector3 mSegmentPos[7]` | already typed `Vector3[7]` — the ROM destroys it with `__destroy_arr(ptr, 7, 0xc, Vector3::~Vector3)`. `InitResources`' tail loop writes the actor's position into all seven. Renamed from `unk_448` to match `mSegmentAngle`; the loop's `char*` walker was replaced with `mSegmentPos[i].x/y/z`, byte-neutral. |
 
@@ -76,11 +76,11 @@ Additional observed fields:
 
 ---
 
-## `BowserFire` (`include/BowserFire.h`, [ov060](../config/arm9/overlays/ov060/symbols.txt))
+## `daKpaFire_c` (`include/daKpaFire_c.h`, [ov060](../config/arm9/overlays/ov060/symbols.txt))
 
 | offset | new name | evidence |
 | --- | --- | --- |
-| 0x35c | `mVariant` | `src/_ZN10BowserFire13InitResourcesEv.cpp`: `mVariant = param1 & 7`. It is then the index into both behaviour tables — [data_ov060_0211af74](../config/arm9/overlays/ov060/symbols.txt)`[mVariant]` (called once at init) and [data_ov060_0211afb4](../config/arm9/overlays/ov060/symbols.txt)`[mVariant].pmf` (called every frame in `Behavior`) — and `mVariant == 0` is what disables the collider by setting `mdCcAc_c.flags \|= 1`. |
+| 0x35c | `mVariant` | `src/_ZN11daKpaFire_c13InitResourcesEv.cpp`: `mVariant = param1 & 7`. It is then the index into both behaviour tables — [data_ov060_0211af74](../config/arm9/overlays/ov060/symbols.txt)`[mVariant]` (called once at init) and [data_ov060_0211afb4](../config/arm9/overlays/ov060/symbols.txt)`[mVariant].pmf` (called every frame in `Behavior`) — and `mVariant == 0` is what disables the collider by setting `mdCcAc_c.flags \|= 1`. |
 | 0x364 | `mGroundY` | `InitResources` casts a `dBgCh_Gnd` ray down from the actor's position and stores `rc.clsnY` on a hit, `mPosY` on a miss. |
 | 0x374 | `mFrameCount` (`u16`) | zeroed in `InitResources`, incremented by 1 at the top of every `Behavior`. Widened from `s16` to `u16` to match the `unsigned short` the ROM's read-modify-write used, which is now spelled `mFrameCount += 1;`. |
 

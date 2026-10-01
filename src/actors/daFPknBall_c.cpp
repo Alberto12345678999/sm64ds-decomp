@@ -5,10 +5,10 @@
  * burns a Player it touches, and is knocked away when its collider reports
  * hitFlags bit 0x10 (mega character, by dCc_c.h's unverified table).
  * On expiry, a wall or water it puffs into dust and destroys itself.
- * ov002 0x020f8858..0x020f9304.
+ * ov002 0x020f8858..0x020f934c, 10 functions; the last is the registry
+ * factory daFPknBall_c_classInit (0x020f9304), `new daFPknBall_c()`.
  *
- * NAME: RTTI names daFPknBall_c. daFPknBall_c_classInit at 0x020f9304 follows
- * this run and is not in it. One out-of-line destructor under
+ * NAME: RTTI names daFPknBall_c. One out-of-line destructor under
  * #pragma defer_codegen off emits D1, D0, then a homeless D2, and .text
  * follows source order. common.h is first so the flat Matrix4x3 is what
  * the particle helper copies.
@@ -462,4 +462,14 @@ s32 daFPknBall_c::OnYoshiTryEat() {
     if (b != VARIANT_DROPS_ITEM && b != VARIANT_COIN_DROP)
         return 5;
     return 0;
+}
+
+/* Reconstructed source-style name: SM64DS proves daFPknBall_c through RTTI,
+ * allocation size, vtable identity, and the FPAKUN_BALL registry profile;
+ * later EAD lineage supplies classInit. Exact original spelling is not
+ * preserved. Historical alias: Fireball_Spawn. */
+// @symbol daFPknBall_c_classInit
+extern "C" daFPknBall_c *daFPknBall_c_classInit()
+{
+    return new daFPknBall_c();
 }

@@ -1,7 +1,8 @@
 //cpp
 /* daWater_Hakidasi_c: a water spout that spawns WATER_RING actors (registry profile
  * WATER_HAKIDASI, ov064).
- * 11 functions, .text 0x02119330..0x02119a18.
+ * 12 functions, .text 0x02119330..0x02119a58. The last is the registry
+ * factory daWater_Hakidasi_c_classInit (0x02119a18), `new daWater_Hakidasi_c()`.
  *
  * ROM evidence: _ZTS18daWater_Hakidasi_c is "18daWater_Hakidasi_c" at ov064
  * 0x0211c2f8; _ZTI at 0x0211c2ec reads [__si_class_type_info, that string,
@@ -16,11 +17,9 @@
  * ROM-ascending.
  *
  * Known limits:
- * - The factory daWater_Hakidasi_c_classInit (0x02119a18) stays a
- *   one-function C source.
  * - func_ov064_0211982c keeps its C-ABI cartridge name and TU-local C/PMF
  *   view: it reads the state-table slot at +0x350, while Behavior reads
- *   the handler at +0x08 through State::mMain. Same survivor as Bullet's
+ *   the handler at +0x08 through State::mMain. Same survivor as daPropeller_Heyho_Fire_c's
  *   func_ov002_020fed2c.
  * - `#pragma opt_strength_reduction off` is required inside
  *   func_ov064_021193b4 and is turned back on right after it: the pragma is
@@ -310,7 +309,7 @@ s32 daWater_Hakidasi_c::Render()
 }
 
 /* The state pointer at 0x300 is daWater_Hakidasi_c::State (see the header),
- * the same shape and treatment as Bullet::Behavior. */
+ * the same shape and treatment as daPropeller_Heyho_Fire_c::Behavior. */
 // @symbol _ZN18daWater_Hakidasi_c8BehaviorEv
 s32 daWater_Hakidasi_c::Behavior()
 {
@@ -346,4 +345,14 @@ s32 daWater_Hakidasi_c::InitResources()
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, (dActor_c*)this, 0xc8000, 0x190000, 0x800004, 0);
     func_ov064_0211982c((C *)this, (PMF *)&data_ov064_0211c934);
     return 1;
+}
+
+/* Reconstructed source-style name: SM64DS proves daWater_Hakidasi_c through
+ * RTTI, allocation size, vtable identity, and the WATER_HAKIDASI registry
+ * profile; later EAD lineage supplies classInit. Exact original spelling is
+ * not preserved. Historical alias: JetStream_Spawn. */
+// @symbol daWater_Hakidasi_c_classInit
+extern "C" daWater_Hakidasi_c *daWater_Hakidasi_c_classInit()
+{
+    return new daWater_Hakidasi_c();
 }

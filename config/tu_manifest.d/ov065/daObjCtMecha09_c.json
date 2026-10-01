@@ -4,9 +4,9 @@
   "source": "src/actors/daObjCtMecha09_c.cpp",
   "promoted_source": "src/actors/daObjCtMecha09_c.cpp",
   "status": "promoted",
-  "boundary_confidence": "medium",
+  "boundary_confidence": "high",
   "boundary_evidence": [
-    "contiguous matched run: 0x211bbdc..0x211bf04, 6 function(s). tu_map's class span continues through InitResources at 0x0211bf04 (not complete) to 0x0211c040; that function and daObjCtMecha09_c_classInit stay out",
+    "The whole daObjCtMecha09_c unit of ov065 .text, 0x0211bbdc..0x0211c078: D1 (0x0211bbdc) through InitResources (0x0211bf04, 0x13c) and the zero-gap registry factory daObjCtMecha09_c_classInit (0x0211c040, 0x38). tu_map's linker unit is 0x0211bbdc..0x0211c040 and puts the factory in its own unlabelled unit right after it. The previous delinks entry, src/d_a_obj_ct_mecha08_ct_mecha08a.c (daObjCtMecha08_c_classInit_CT_MECHA08A), ends at 0x0211bbdc; the factory ends where ov065 .text ends (0x0211c078), and the next entry is __sinit_ov065_0211c110 in .init.",
     "class label(s): daObjCtMecha09_c",
     "module sinit corroboration: 10 sinit(s) / 10 .ctor entries, sinit_vs_tu=ok, corroborated=False (module-wide, NOT narrowed to this one TU -- see notes/tu-reconstruction-pilot-report.md sec 2 for the by-hand narrowing step)"
   ],
@@ -14,7 +14,7 @@
     {
       "name": ".text",
       "start": "0x0211bbdc",
-      "end": "0x0211bf04"
+      "end": "0x0211c078"
     }
   ],
   "functions": [
@@ -33,7 +33,7 @@
       "ordinal": 1
     },
     {
-      "symbol": "func_ov065_0211bc88",
+      "symbol": "_ZN16daObjCtMecha09_c19func_ov065_0211bc88Ev",
       "address": "0x0211bc88",
       "size": "0x00000098",
       "legacy_source": "src/func_ov065_0211bc88.cpp",
@@ -59,12 +59,27 @@
       "size": "0x00000178",
       "legacy_source": "src/_ZN16daObjCtMecha09_c8BehaviorEv.cpp",
       "ordinal": 5
+    },
+    {
+      "symbol": "_ZN16daObjCtMecha09_c13InitResourcesEv",
+      "address": "0x0211bf04",
+      "size": "0x0000013c",
+      "legacy_source": "src/_ZN16daObjCtMecha09_c13InitResourcesEv.cpp",
+      "ordinal": 6
+    },
+    {
+      "symbol": "daObjCtMecha09_c_classInit",
+      "address": "0x0211c040",
+      "size": "0x00000038",
+      "legacy_source": "src/d_a_obj_ct_mecha09.c",
+      "ordinal": 7
     }
   ],
   "data": [],
   "bss": [],
   "notes": [
-    "Six matched functions, 0x0211bbdc..0x0211bf04. InitResources at 0x0211bf04 is not complete (ambiguous CLPS relocation) and is not licensed here. daObjCtMecha09_c_classInit at 0x0211c040 stays in src/d_a_obj_ct_mecha09.c.",
+    "Widened from the six-function run 0x0211bbdc..0x0211bf04 to the whole unit. The folded files were _ZN16daObjCtMecha09_c13InitResourcesEv.cpp and d_a_obj_ct_mecha09.c (daObjCtMecha09_c_classInit, now `return new daObjCtMecha09_c();`); attribution.json keeps each one's credit through a path#symbol override.",
+    "InitResources was not complete before: its literal pool loads 0x02112118, which dsd marks overlays(12,13,24,33,35,43,45,47,52,53,56). tools/overlay_residency.py settles that set to ov035, the only candidate that can be resident beside ov065, so the source names data_ov035_02112118 (the old shard used the placeholder func_02112118, which nothing defines).",
     "One out-of-line destructor under #pragma defer_codegen off. Text-only: the vtable and RTTI the key function emits are compiler-only output."
   ],
   "compiler_only_output": [
@@ -74,11 +89,28 @@
       "reason": "Homeless. One out-of-line destructor under #pragma defer_codegen off emits D1, D0, then D2. The cartridge has D1 at ov065:0x0211bbdc and D0 at 0x0211bc28 and no D2. Production isolation discards it. It is emitted after D0, and the licensed functions stay ROM-ascending."
     },
     {
+      "symbol": "_ZN10dBgActor_cD2Ev",
+      "disposition": "deadstrip",
+      "reason": "Compiler-emitted base-object destructor helper (dBgActor_c's destructor is defined in its class body). It appears once the folded factory instantiates the class (`new daObjCtMecha09_c()`); D1 and D0 inline it, so it has no configured ROM symbol and no inbound relocation once the homeless D2 is dropped. Same disposition as ov098/daObjBlockS_c."
+    },
+    {
+      "symbol": "_ZN7Vector3D1Ev",
+      "disposition": "deadstrip-duplicate",
+      "canonical_module": "arm9",
+      "canonical_address": "0x020072c0",
+      "reason": "InitResources declares a local Vector3 (the ground probe position), so this TU odr-uses inline ~Vector3 and re-emits it as vague linkage. The cartridge's copy lives at arm9:0x020072c0, already owned by another source; deadstrip-duplicate, same disposition as ov098/daObjBlockS_c."
+    },
+    {
+      "symbol": "_ZN9Matrix4x3D1Ev",
+      "disposition": "deadstrip",
+      "reason": "mwccarm emits Matrix4x3's vague-linkage D1 while lowering the synthesized constructor from `return new daObjCtMecha09_c()` over the Matrix4x3 member mShadowMat at 0x35c; no configured ROM symbol of that name exists in any module and no surviving reference reaches it. Same row as config/tu_manifest.d/ov063/daTrsTrap_c_classInit.json."
+    },
+    {
       "symbol": "_ZTV16daObjCtMecha09_c",
       "disposition": "deadstrip-data",
       "canonical_module": "ov065",
       "canonical_address": "0x0211d568",
-      "reason": "The out-of-line destructor is the key function, so this TU emits the vtable. Public address point ov065:0x0211d568 is outside the licensed text span 0x0211bbdc..0x0211bf04. Text-only production isolation discards it after the address-point bias is checked. The coined _ZTV14TTC_MovingBeam alias at the same address was deleted."
+      "reason": "The out-of-line destructor is the key function, so this TU emits the vtable. Public address point ov065:0x0211d568 is outside the licensed text span 0x0211bbdc..0x0211c078. D1 and the folded factory (`return new daObjCtMecha09_c()`) store this vptr; text-only production isolation rebinds those stores to the ROM home and discards the copy. The coined _ZTV14TTC_MovingBeam alias at the same address was deleted."
     },
     {
       "symbol": "_ZTI16daObjCtMecha09_c",
@@ -157,23 +189,25 @@
     "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
     "object": "build/tu/ov065-daObjCtMecha09_c/daObjCtMecha09_c.o (gitignored)",
     "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
-    "functions_matched": 6,
-    "functions_declared": 6,
+    "functions_matched": 8,
+    "functions_declared": 8,
     "compilerOnlyOutput": {
       "requested": [
-        "_ZN16daObjCtMecha09_cD2Ev"
+        "_ZN16daObjCtMecha09_cD2Ev",
+        "_ZN10dBgActor_cD2Ev",
+        "_ZN7Vector3D1Ev",
+        "_ZN9Matrix4x3D1Ev"
       ],
       "deadstripped": [
-        "_ZN16daObjCtMecha09_cD2Ev"
+        "_ZN10dBgActor_cD2Ev",
+        "_ZN16daObjCtMecha09_cD2Ev",
+        "_ZN7Vector3D1Ev",
+        "_ZN9Matrix4x3D1Ev"
       ],
       "droppedSections": [
         9,
         10,
-        18,
-        19,
         20,
-        21,
-        22,
         23,
         24,
         25,
@@ -185,7 +219,15 @@
         31,
         32,
         33,
-        34
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42
       ],
       "data": [
         "_ZTV16daObjCtMecha09_c",

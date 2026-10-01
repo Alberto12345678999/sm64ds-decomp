@@ -11,6 +11,9 @@
  * The ten state handlers stay address-named: each one is a pointer-to-member
  * in a daSnowman_c::State, and the ROM symbol is the address.
  *
+ * .text 0x02124090..0x02125f14, 35 functions. The registry factory
+ * daSnowman_c_classInit (0x02125ec0) abuts the rest and is written last.
+ *
  * deslop leftovers:
  * - func_ov081_0212423c: naming player mPosX/Y/Z is 0x190 -> 0x18c.
  * - func_ov081_021245e8: the same loads are 0xb8 -> 0xb4.
@@ -1102,4 +1105,10 @@ int daSnowman_c::InitResources()
 /* Slot 29. Callers add this to the actor's Y before the egg-aim particles. */
 s32 daSnowman_c::OnAimedAtWithEgg() {
     return 0x98000;
+}
+
+// @symbol daSnowman_c_classInit
+extern "C" daSnowman_c *daSnowman_c_classInit()
+{
+    return new daSnowman_c();
 }

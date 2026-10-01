@@ -566,7 +566,7 @@ agreeing, all previously silent.
 Corpus-wide only **three** width conflicts survive, all the same benign shape — the derived
 header carries a `u8` marker where the base declares a real type:
 
-    Bullet   @0xac vs Enemy: base s32, derived u8
+    daPropeller_Heyho_Fire_c   @0xac vs Enemy: base s32, derived u8
     daManta_c @0xa4 vs Enemy: base s32, derived u8
     daShark_c    @0xa4 vs Enemy: base s32, derived u8
 

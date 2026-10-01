@@ -1,8 +1,9 @@
 //cpp
-/* dMeter_c -- the in-game HUD (METER), ov002 0x020fb8f8..0x020fe154.
+/* dMeter_c -- the in-game HUD (METER), ov002 0x020fb8f8..0x020fe190.
  *
- * One translation unit, nineteen functions, the way the cartridge's own build
- * had it. This replaces nineteen one-function shards. Their bodies are
+ * One translation unit, twenty functions, the way the cartridge's own build
+ * had it: nineteen members, which replaced nineteen one-function shards, plus
+ * the METER registry factory. The members' bodies are
  * unchanged apart from spelling: the four members include/dMeter_c.h did not
  * declare are now real methods rather than hand-mangled extern "C" free
  * functions, the offset casts that reached this object's fields are now the
@@ -34,9 +35,10 @@
  * the licensed .text is no longer ROM-ascending; inlining additionally deletes
  * the homeless D2 that no module gives a symbol to.
  *
- * The factory is NOT in this TU. dMeter_c_classInit begins at 0x020fe154,
- * immediately past this entry's end, and keeps its own source. dMap_c's
- * translation unit ends immediately below, at 0x020fb8f8.
+ * The registry factory dMeter_c_classInit (0x020fe154..0x020fe190) closes the
+ * unit, written as `return new dMeter_c();`. dMap_c's translation unit ends
+ * immediately below, at 0x020fb8f8; src/stage/LevelObjects.cpp starts
+ * immediately above, at 0x020fe190.
  *
  * FUNCTION ORDER IS THE REVERSE OF THE ROM'S -- mwccarm 2004/b56 emits one
  * .text section per function in reverse source order, so the highest-address ROM
@@ -196,6 +198,18 @@ void func_0203da4c(void);
 /* reconciled: data_ov002_0211117c is declared above as `unsigned char []`. The legacy file for InitResources spelled it `u8 data_ov002_0211117c[0]`, a zero-length
  * array; the unsized form is the one every use here needs -- the element reads at
  * [0] and the byte read at line 663 takes its address directly. */
+}
+
+/* ROM ordinal 19 -- dMeter_c_classInit, 0x020fe154, size 0x3c.
+ * Reconstructed source-style name: SM64DS proves dMeter_c through RTTI,
+ * allocation size, vtable identity, and the METER registry profile;
+ * later EAD lineage supplies classInit. Exact original spelling is not
+ * preserved. Historical alias: HUD_Spawn. It was once labelled
+ * _ZN8dMeter_cC1Ev, but it takes no `this`: it is the registry factory. */
+// @symbol dMeter_c_classInit
+extern "C" dMeter_c *dMeter_c_classInit()
+{
+    return new dMeter_c();
 }
 
 /* ROM ordinal 18 -- _ZN8dMeter_c13InitResourcesEv, 0x020fda04, size 0x750 */
