@@ -204,16 +204,21 @@
   "data": [],
   "bss": [],
   "notes": [
-    "Destructor pair: no destructor definition in this TU -- the ROM carries D1 (0x02116484) and D0 (0x021164c4) with no D2, hand-spelled as extern \"C\" ABI bodies written D0-then-D1 so deferred codegen emits them D1, D0 in ROM order. InitResources is the key function (first non-inline virtual declared, defined out-of-line here), so the vtable and RTTI chain still emit into this TU and deadstrip against their cartridge homes.",
+    "The out-of-line destructor is the key function. The file is ROM-descending under deferred codegen; only the destructor is bracketed by #pragma defer_codegen off/on, so it is generated at parse time ahead of the deferred queue and emits D1 (0x02116484), D0 (0x021164c4) and a homeless D2 (deadstripped). Left deferred it emits D2, D0, D1 and the D1/D0 pair inverts.",
     "create CONFLICT warnings: extern-declaration clashes across the 26 legacy shards resolved to the definition-matching forms (kept-first); the TUBUILD comment rows dropped, the daKpaFire_c.h layout kept."
   ],
   "compiler_only_output": [
+    {
+      "symbol": "_ZN11daKpaFire_cD2Ev",
+      "disposition": "deadstrip",
+      "reason": "Homeless. One out-of-line destructor definition emits D1, D0 and D2 under #pragma defer_codegen off; the cartridge carries D1 at 0x02116484 and D0 at 0x021164c4 and no D2."
+    },
     {
       "symbol": "_ZTV11daKpaFire_c",
       "disposition": "deadstrip-data",
       "canonical_module": "ov060",
       "canonical_address": "0x0211a7f4",
-      "reason": "Own vtable, emitted because InitResources is defined out-of-line here and is the first non-inline virtual declared (the key function); the destructor itself is hand-spelled extern \"C\" ABI bodies. Cartridge copy at ov060:0x0211a7f4 (address point), outside the .text run claimed."
+      "reason": "Own vtable, emitted because this TU defines the key function (out-of-line destructor). Cartridge copy at ov060:0x0211a7f4 (address point), outside the .text run claimed."
     },
     {
       "symbol": "_ZTI11daKpaFire_c",
@@ -303,16 +308,14 @@
     "functions_declared": 26,
     "compilerOnlyOutput": {
       "requested": [
+        "_ZN11daKpaFire_cD2Ev",
         "_ZN7Vector3D1Ev"
       ],
       "deadstripped": [
+        "_ZN11daKpaFire_cD2Ev",
         "_ZN7Vector3D1Ev"
       ],
       "droppedSections": [
-        5,
-        6,
-        7,
-        8,
         9,
         10,
         11,
@@ -326,7 +329,13 @@
         19,
         20,
         21,
-        69
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        71
       ],
       "data": [
         "_ZTV11daKpaFire_c",

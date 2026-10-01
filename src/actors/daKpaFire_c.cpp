@@ -14,13 +14,14 @@
  * 0x0211a7f4 name it daKpaFire_c, and daKpaFire_c_classInit builds it
  * for the KOOPAFIRE registry profile.
  *
- * This file is ROM-descending: deferred codegen reverses emission back
- * into ROM order. The destructor pair is spelled out at the tail as
- * extern "C" ABI bodies (D0 then D1) so the reversal emits D1 below D0
- * as the cartridge has it -- an out-of-line ~daKpaFire_c() group would
- * emit D0 first plus a homeless D2. InitResources stays the key function
- * (declared before the destructor, defined out-of-line here) so the
- * vtable and RTTI chain still emit into this TU.
+ * The out-of-line destructor is the key function, so this TU emits the
+ * vtable and RTTI (manifest: deadstrip-data against the homed triple).
+ * The file is ROM-descending: codegen is deferred, so .text comes out in
+ * reverse source order. The destructor alone is bracketed by
+ * `#pragma defer_codegen off/on`, so it is generated as it is parsed --
+ * ahead of every deferred function -- and comes out D1, D0, then a D2 the
+ * cartridge has no home for (manifest: deadstrip). Left deferred it comes
+ * out D2, D0, D1 and the ROM's D1-before-D0 pair at 0x02116484 inverts.
  *
  * Known limits:
  * - The twenty func_ov060_* helpers stay free functions over raw offsets.
@@ -56,8 +57,6 @@
 #include "decl_common.h"
 #include "dBgCh_Actr.h"
 #include "decl_dBgCh_Actr.h"
-#include "decl_dCcAc_c.h"
-#include "decl_ShadowModel.h"
 #include "dBgCh_Gnd.h"
 #include "dActor_c.h"
 
@@ -121,7 +120,7 @@ extern ActorFn data_ov060_0211af74[];
 // @symbol _ZN11daKpaFire_c13InitResourcesEv
 /* recovered: named members + shared header, real C++ method
  *
- * daKpaFire_c holds no file references of its own -- Bowser loads and frees the
+ * daKpaFire_c holds no file references of its own -- daKpa_c loads and frees the
  * whole fight -- so this sets up collision and state rather than resources.
  *
  * All three shadow declarations are gone:
@@ -255,7 +254,7 @@ int daKpaFire_c::Render()
 /* recovered: shared header, real C++ method
  *
  * `return 1` with no releases, which is the finding rather than a stub:
- * daKpaFire_c holds no SharedFilePtr of its own. Bowser loads and frees the
+ * daKpaFire_c holds no SharedFilePtr of its own. daKpa_c loads and frees the
  * whole fight's files -- 0x1c models, six more, and three singles -- and the
  * fire it breathes borrows from that set without taking a reference.
  */
@@ -843,36 +842,16 @@ void func_ov060_02116518(char* self, u32 kind, int a2, int a3)
 }
 }
 
-extern "C" void _ZN12dEnemyBase_cD2Ev(void *);
-
 /* -------------------------------------------------------------------------- */
-/* The destructor pair. One out-of-line `~daKpaFire_c()` would emit its variant
- * group D0 then D1, but the cartridge runs D1 (0x02116484) below D0
- * (0x021164c4), so the pair is spelled out as two extern "C" bodies -- written
- * D0 then D1 because deferred codegen reverses emission (the ActorBase idiom).
- * No compiler-emitted group means there is no homeless D2 to deadstrip.
- * Each body does what the variants do: store this vtable, destroy the members
- * in reverse declaration order, chain to dEnemyBase_c's base-object
- * destructor; D0 then hands the object back to the actor heap. */
-// @symbol _ZN11daKpaFire_cD0Ev
-extern "C" daKpaFire_c *_ZN11daKpaFire_cD0Ev(daKpaFire_c *self)
-{
-    *(int *)self = (int)(_ZTV11daKpaFire_c + 2);
-    _ZN11ShadowModelD1Ev(&self->mShadowModel);
-    _ZN7dCcAc_cD1Ev(&self->mdCcAc_c);
-    _ZN10dBgCh_ActrD1Ev(&self->mWithMeshClsn);
-    _ZN12dEnemyBase_cD2Ev(self);
-    _ZN6Memory10DeallocateEPvP4Heap(self, data_020a0eac);
-    return self;
-}
-
+/* D1 then D0 from one out-of-line definition; the homeless D2 is deadstripped. */
+/* -------------------------------------------------------------------------- */
 // @symbol _ZN11daKpaFire_cD1Ev
-extern "C" daKpaFire_c *_ZN11daKpaFire_cD1Ev(daKpaFire_c *self)
+// @symbol _ZN11daKpaFire_cD0Ev
+/* The compiler writes both bodies: store this vtable, destroy the members in
+ * reverse declaration order, chain to dEnemyBase_c, then (D0) the inline
+ * operator delete. */
+#pragma defer_codegen off
+daKpaFire_c::~daKpaFire_c()
 {
-    *(int *)self = (int)(_ZTV11daKpaFire_c + 2);
-    _ZN11ShadowModelD1Ev(&self->mShadowModel);
-    _ZN7dCcAc_cD1Ev(&self->mdCcAc_c);
-    _ZN10dBgCh_ActrD1Ev(&self->mWithMeshClsn);
-    _ZN12dEnemyBase_cD2Ev(self);
-    return self;
 }
+#pragma defer_codegen on
