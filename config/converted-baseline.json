@@ -7,7 +7,7 @@
     "no_codegen_trick",
     "no_mangled_refs"
   ],
-  "count": 3065,
+  "count": 3086,
   "converted": [
     "src/ARMMathLoadState.c",
     "src/ARMMathSaveState.c",
@@ -3073,6 +3073,27 @@
     "src/actors/dMg3DEspAnimSet_c.cpp#_ZN12dScMg3DEsp_c6RenderEv",
     "src/actors/daObjCtMecha09_c.cpp#daObjCtMecha09_c_classInit",
     "src/actors/daMoray_c.cpp#BookSwitch_Spawn",
-    "src/actors/daObjMarioCap_c.cpp#daObjMarioCap_c_classInit"
+    "src/actors/daObjMarioCap_c.cpp#daObjMarioCap_c_classInit",
+    "src/actors/dMap_c.cpp#dMap_c_classInit",
+    "src/actors/dMeter_c.cpp#dMeter_c_classInit",
+    "src/actors/daCoin_c.cpp#daCoin_c_classInit_BLUE_COIN",
+    "src/actors/daCoin_c.cpp#daCoin_c_classInit_RED_COIN",
+    "src/actors/daCoin_c.cpp#daCoin_c_classInit_COIN",
+    "src/actors/daFPknBall_c.cpp#daFPknBall_c_classInit",
+    "src/actors/daObjBlockItemTag_c.cpp#daObjBlockItemTag_c_classInit_BLK_SLVSTAR_TAG",
+    "src/actors/daObjBlockItemTag_c.cpp#daObjBlockItemTag_c_classInit_BLK_GNSHELL_TAG",
+    "src/actors/daObjBlockItemTag_c.cpp#daObjBlockItemTag_c_classInit_BLK_SKINOKO_TAG",
+    "src/actors/daObjBlockItemTag_c.cpp#daObjBlockItemTag_c_classInit_BLK_OKINOKO_TAG",
+    "src/actors/daObjBlockL_c.cpp#daObjBlockL_c_classInit_BK_FUTA",
+    "src/actors/daObjBlockL_c.cpp#daObjBlockL_c_classInit_BLOCK_LL",
+    "src/actors/daObjBlockL_c.cpp#daObjBlockL_c_classInit_SW_BLOCK_L",
+    "src/actors/daObjBlockL_c.cpp#daObjBlockL_c_classInit_DP_BLOCK_L",
+    "src/actors/daObjBlockL_c.cpp#daObjBlockL_c_classInit_BLOCK_L",
+    "src/actors/daObjPowerUpItem_c.cpp#daObjPowerUpItem_c_classInit",
+    "src/actors/daDonketu_c.cpp#daDonketu_c_classInit",
+    "src/actors/daBDonketu_c.cpp#daBDonketu_c_classInit",
+    "src/actors/daObjFl_KomaU_c.cpp#daObjFl_KomaU_c_classInit",
+    "src/actors/daWater_Hakidasi_c.cpp#daWater_Hakidasi_c_classInit",
+    "src/actors/daWater_Ring_c.cpp#daWater_Ring_c_classInit"
   ]
 }

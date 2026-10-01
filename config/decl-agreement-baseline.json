@@ -12137,9 +12137,6 @@
       "src/__sinit_ov102_0214de70.c": [
         "kind:data"
       ],
-      "src/d_a_moray.c": [
-        "kind:data"
-      ],
       "src/func_ov002_020f6c60.c": [
         "kind:data"
       ]
@@ -14013,9 +14010,6 @@
       ]
     },
     "_ZN8dCcPos_cD1Ev": {
-      "src/d_a_obj_fl_koma_u.cpp": [
-        "return:void"
-      ],
       "src/d_a_obj_flamethrower.cpp": [
         "return:void"
       ]
@@ -15472,21 +15466,9 @@
         "param:#5 void *",
         "return:void *"
       ],
-      "src/d_a_moray.c": [
-        "param:#2 int",
-        "param:#3 int",
-        "param:#4 void *",
-        "param:#5 void *"
-      ],
       "src/d_a_obj_closet.cpp": [
         "param:#2 int",
         "param:#3 int"
-      ],
-      "src/d_a_obj_fl_koma_u.cpp": [
-        "param:#2 int",
-        "param:#3 int",
-        "param:#4 void *",
-        "param:#5 void *"
       ],
       "src/d_a_obj_flamethrower.cpp": [
         "param:#2 int",
@@ -31627,9 +31609,6 @@
       "src/d_a_kuri_king_kuriking_vanish.cpp": [
         "arity:1"
       ],
-      "src/d_a_moray.c": [
-        "kind:data"
-      ],
       "src/d_a_obj_flamethrower.cpp": [
         "arity:1"
       ]
@@ -40530,11 +40509,6 @@
       "src/ShowCrashScreen.c": [
         "param:#2 const char *",
         "param:#3 unsigned int"
-      ]
-    },
-    "_ZTV15daObjFl_KomaU_c": {
-      "src/d_a_obj_fl_koma_u.cpp": [
-        "return:void * []"
       ]
     },
     "data_ov065_0211d9cc": {

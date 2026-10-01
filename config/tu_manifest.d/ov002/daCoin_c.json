@@ -8,13 +8,14 @@
   "boundary_evidence": [
     "contiguous linker run: 0x20b0f54..0x20b2a98, 28 function(s), from build/tu_map.json (tools/tu_map.py)",
     "class label(s): daCoin_c",
-    "module sinit corroboration: 26 sinit(s) / 26 .ctor entries, sinit_vs_tu=ok, corroborated=False (module-wide, NOT narrowed to this one TU -- see notes/tu-reconstruction-pilot-report.md sec 2 for the by-hand narrowing step)"
+    "module sinit corroboration: 26 sinit(s) / 26 .ctor entries, sinit_vs_tu=ok, corroborated=False (module-wide, NOT narrowed to this one TU -- see notes/tu-reconstruction-pilot-report.md sec 2 for the by-hand narrowing step)",
+    "classInit tail fold (0930c): the three registry factories daCoin_c_classInit_BLUE_COIN / _RED_COIN / _COIN (0x020b2a98..0x020b2ba0) abut this TU's range with no gap, contiguous with each other, and are now inside it; tu_map cuts on symbol name and left them out. The unit is 0x020b0f54..0x020b2ba0, bounded above by src/game/actors/daFeather_c/daFeather_c.cpp, which starts exactly at 0x020b2ba0."
   ],
   "sections": [
     {
       "name": ".text",
       "start": "0x020b0f54",
-      "end": "0x020b2a98"
+      "end": "0x020b2ba0"
     }
   ],
   "functions": [
@@ -213,6 +214,27 @@
       "size": "0x00000008",
       "legacy_source": "src/_ZN8daCoin_c13OnYoshiTryEatEv.cpp",
       "ordinal": 27
+    },
+    {
+      "symbol": "daCoin_c_classInit_BLUE_COIN",
+      "address": "0x020b2a98",
+      "size": "0x00000058",
+      "legacy_source": "src/d_a_coin_blue_coin.c",
+      "ordinal": 28
+    },
+    {
+      "symbol": "daCoin_c_classInit_RED_COIN",
+      "address": "0x020b2af0",
+      "size": "0x00000058",
+      "legacy_source": "src/d_a_coin_red_coin.c",
+      "ordinal": 29
+    },
+    {
+      "symbol": "daCoin_c_classInit_COIN",
+      "address": "0x020b2b48",
+      "size": "0x00000058",
+      "legacy_source": "src/d_a_coin_coin.c",
+      "ordinal": 30
     }
   ],
   "data": [],
@@ -244,7 +266,8 @@
     "tubuild create warning (RESOLVED): CONFLICT: local declaration ('struct', 'BF3ae') differs between the legacy file that used to hold func_ov002_020b10e4 and the one that held func_ov002_020b14d8; kept the first, the other is commented out for review -- RESOLVED: each function kept the declaration it was matched with, at block scope inside its own extern \"C\" function or in the C++ member own extern \"C\" block. The two spellings are not collapsed at file scope.",
     "tubuild create warning (RESOLVED): CONFLICT: local declaration ('typedef', 'Vector3') differs between the legacy file that used to hold func_ov002_020b1008 and the one that held func_ov002_020b16c4; kept the first, the other is commented out for review -- RESOLVED: each function kept the declaration it was matched with, at block scope inside its own extern \"C\" function or in the C++ member own extern \"C\" block. The two spellings are not collapsed at file scope.",
     "tubuild create warning (RESOLVED): CONFLICT: local declaration ('typedef', 'Vector3') differs between the legacy file that used to hold func_ov002_020b1008 and the one that held func_ov002_020b1ad4; kept the first, the other is commented out for review -- RESOLVED: each function kept the declaration it was matched with, at block scope inside its own extern \"C\" function or in the C++ member own extern \"C\" block. The two spellings are not collapsed at file scope.",
-    "tubuild create warning (RESOLVED): CONFLICT: local declaration ('enum', '<anonymous enum in this file>') differs between the legacy file that used to hold func_ov002_020b14d8 and the one that held func_ov002_020b1cc0; kept the first, the other is commented out for review -- RESOLVED: each function kept the declaration it was matched with, at block scope inside its own extern \"C\" function or in the C++ member own extern \"C\" block. The two spellings are not collapsed at file scope."
+    "tubuild create warning (RESOLVED): CONFLICT: local declaration ('enum', '<anonymous enum in this file>') differs between the legacy file that used to hold func_ov002_020b14d8 and the one that held func_ov002_020b1cc0; kept the first, the other is commented out for review -- RESOLVED: each function kept the declaration it was matched with, at block scope inside its own extern \"C\" function or in the C++ member own extern \"C\" block. The two spellings are not collapsed at file scope.",
+    "classInit tail fold (0930c): folded the three per-profile registry factories daCoin_c_classInit_BLUE_COIN (0x020b2a98), _RED_COIN (0x020b2af0) and _COIN (0x020b2b48), each 0x58 bytes, into this promoted TU and widened the complete delinks.txt claim to 0x020b0f54..0x020b2ba0. Each loose source hand-called fBase_c::operator new(948), dActor_c's base constructor, stored _ZTV8daCoin_c, then constructed the two CommonModel members, the ShadowModel, the dCcAc_c and the dBgCh_Actr. daCoin_c declares no constructor, so the implicit one emits exactly that sequence and each factory is `return new daCoin_c();`. Under `#pragma defer_codegen off` the factories are written at the end of the file in ROM order."
   ],
   "compiler_only_output": [
     {
@@ -329,8 +352,8 @@
     "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
     "object": "build/tu/ov002-daCoin_c/daCoin_c.o (gitignored)",
     "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
-    "functions_matched": 28,
-    "functions_declared": 28,
+    "functions_matched": 31,
+    "functions_declared": 31,
     "compilerOnlyOutput": {
       "requested": [
         "_ZN8daCoin_cD2Ev",
@@ -344,12 +367,6 @@
         9,
         10,
         17,
-        62,
-        63,
-        64,
-        65,
-        66,
-        67,
         68,
         69,
         70,
@@ -357,7 +374,13 @@
         72,
         73,
         74,
-        75
+        75,
+        76,
+        77,
+        78,
+        79,
+        80,
+        81
       ],
       "data": [
         "_ZTS7fBase_c",
