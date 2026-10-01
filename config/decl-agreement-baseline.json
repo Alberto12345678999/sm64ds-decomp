@@ -14205,6 +14205,12 @@
         "param:#4 void *",
         "param:#5 void *"
       ],
+      "src/actors/Eyerok.cpp": [
+        "param:#2 int",
+        "param:#3 int",
+        "param:#4 void *",
+        "param:#5 void *"
+      ],
       "src/actors/dScMgAmida_c.cpp": [
         "param:#2 int",
         "param:#3 int",
@@ -14223,12 +14229,6 @@
         "param:#4 void *",
         "param:#5 void *",
         "return:int"
-      ],
-      "src/d_a_iwante.cpp": [
-        "param:#2 int",
-        "param:#3 int",
-        "param:#4 void *",
-        "param:#5 void *"
       ],
       "src/d_a_kuri_king_kuriking.cpp": [
         "param:#2 int",
@@ -37225,17 +37225,6 @@
     "func_ov065_0211ad70": {
       "include/decl_common.h": [
         "param:#1 char *"
-      ]
-    },
-    "func_ov066_0211a2e4": {
-      "src/func_ov066_0211a35c.c": [
-        "param:#2 void *",
-        "return:int"
-      ]
-    },
-    "func_ov066_0211a35c": {
-      "include/decl_common.h": [
-        "kind:data"
       ]
     },
     "func_ov070_0211f100": {
