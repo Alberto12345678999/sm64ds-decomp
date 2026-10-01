@@ -1,15 +1,15 @@
 //cpp
-// @symbol _ZN10BowserFire13InitResourcesEv
+// @symbol _ZN11daKpaFire_c13InitResourcesEv
 /* recovered: named members + shared header, real C++ method
  *
- * BowserFire holds no file references of its own -- Bowser loads and frees the
+ * daKpaFire_c holds no file references of its own -- Bowser loads and frees the
  * whole fight -- so this sets up collision and state rather than resources.
  *
  * All three shadow declarations are gone:
  *   - `struct Vector3 { int x, y, z; }`   -> the real types.h Vector3.
  *   - `struct dBgCh_Gnd { ... }`      -> the real dBgCh_Gnd.h.
  *   - `struct dActor_c { }`                  -> the real dActor_c.h.
- * ...along with the magic offsets on `char *c`, now named BowserFire members.
+ * ...along with the magic offsets on `char *c`, now named daKpaFire_c members.
  *
  * The dBgCh_Gnd one is the interesting fix. The stand-in declared
  * `int floor[12]` at 0x14 and then read `floor[12]` -- one PAST its own bound,
@@ -23,7 +23,7 @@
  * with one of an empty class. Under the pin it does: swapping the empty
  * stand-in for the real dActor_c is byte-identical.
  *
- * The `|= 1` at 0x2e8 was briefly named as a BowserFire field of its own. It
+ * The `|= 1` at 0x2e8 was briefly named as a daKpaFire_c field of its own. It
  * is not one. 0x2d0 + 0x18 lands inside mdCcAc_c, and
  * dCc_c::flags is at 0x18, documented as "bit 0 makes Update bail" --
  * which is precisely what setting bit 0 does, and precisely what this branch
@@ -33,7 +33,7 @@
  * The doubled write to pos.y is the ROM's own shape and is kept verbatim: the
  * seed is read into a local, stored, then overwritten with seed + 0x32000.
  */
-#include "BowserFire.h"
+#include "daKpaFire_c.h"
 #include "dBgCh_Gnd.h"
 #include "dActor_c.h"
 
@@ -49,7 +49,7 @@ extern int _ZN9dBgCh_Gnd10DetectClsnEv(dBgCh_Gnd *self);
 
 extern ActorFn data_ov060_0211af74[];
 
-int BowserFire::InitResources()
+int daKpaFire_c::InitResources()
 {
     Vector3 pos;
 

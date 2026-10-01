@@ -76,11 +76,11 @@ Additional observed fields:
 
 ---
 
-## `BowserFire` (`include/BowserFire.h`, [ov060](../config/arm9/overlays/ov060/symbols.txt))
+## `daKpaFire_c` (`include/daKpaFire_c.h`, [ov060](../config/arm9/overlays/ov060/symbols.txt))
 
 | offset | new name | evidence |
 | --- | --- | --- |
-| 0x35c | `mVariant` | `src/_ZN10BowserFire13InitResourcesEv.cpp`: `mVariant = param1 & 7`. It is then the index into both behaviour tables — [data_ov060_0211af74](../config/arm9/overlays/ov060/symbols.txt)`[mVariant]` (called once at init) and [data_ov060_0211afb4](../config/arm9/overlays/ov060/symbols.txt)`[mVariant].pmf` (called every frame in `Behavior`) — and `mVariant == 0` is what disables the collider by setting `mdCcAc_c.flags \|= 1`. |
+| 0x35c | `mVariant` | `src/_ZN11daKpaFire_c13InitResourcesEv.cpp`: `mVariant = param1 & 7`. It is then the index into both behaviour tables — [data_ov060_0211af74](../config/arm9/overlays/ov060/symbols.txt)`[mVariant]` (called once at init) and [data_ov060_0211afb4](../config/arm9/overlays/ov060/symbols.txt)`[mVariant].pmf` (called every frame in `Behavior`) — and `mVariant == 0` is what disables the collider by setting `mdCcAc_c.flags \|= 1`. |
 | 0x364 | `mGroundY` | `InitResources` casts a `dBgCh_Gnd` ray down from the actor's position and stores `rc.clsnY` on a hit, `mPosY` on a miss. |
 | 0x374 | `mFrameCount` (`u16`) | zeroed in `InitResources`, incremented by 1 at the top of every `Behavior`. Widened from `s16` to `u16` to match the `unsigned short` the ROM's read-modify-write used, which is now spelled `mFrameCount += 1;`. |
 
