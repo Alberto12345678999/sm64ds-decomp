@@ -47,10 +47,10 @@ constants came back exact.
 
 [data_ov002_0210a59c](../../config/arm9/overlays/ov002/symbols.txt), file offset `0x5CF3C` in `overlay_0002.bin`, raw words:
 
-```sh
-0x5cf3c: 0002a000  # ->  42.0
-0x5cf40: 00034000  # ->  52.0
-0x5cf44: 00045000  # ->  69.0
+```text
+0x5cf3c: 0002a000  ->  42.0
+0x5cf40: 00034000  ->  52.0
+0x5cf44: 00045000  ->  69.0
 ```
 
 N64 `src/game/mario.c`:[824](https://github.com/n64decomp/sm64/blob/master/src/game/mario.c#L824) / [786](https://github.com/n64decomp/sm64/blob/master/src/game/mario.c#L786) / [797](https://github.com/n64decomp/sm64/blob/master/src/game/mario.c#L797) — `ACT_JUMP` 42.0f, `ACT_DOUBLE_JUMP` 52.0f,
@@ -77,7 +77,7 @@ tuning, not a natural constant. Re-emitted at 8 other Player sites.
 
 ### 2.3 Wing-cap flutter — same gate, same numbers
 
-DS [St_Shell_Main](../../src/actors/Player.cpp)(ROM Ordinal 255) 0x020cc5cc-0x020cc5ec: `mHasWings` AND descending AND A-held →
+DS [St_Shell_Main](../../src/actors/Player.cpp) (ROM ordinal 255) 0x020cc5cc-0x020cc5ec: `mHasWings` AND descending AND A-held →
 `mVertAccel = -2.0`, `mTerminalVelocity = -37.5`.
 
 N64 `mario_step.c`:[566](https://github.com/n64decomp/sm64/blob/master/src/game/mario_step.c#L566)-[574](https://github.com/n64decomp/sm64/blob/master/src/game/mario_step.c#L574) — `MARIO_WING_CAP && vel[1] < 0.0f && (input & INPUT_A_DOWN)`
@@ -95,12 +95,16 @@ N64 `mario_step.c`:[566](https://github.com/n64decomp/sm64/blob/master/src/game/
 | `St_SideFlip_Init` 0x020e1a90/9c | 8.0, 62.0 | [mario.c:838-839](https://github.com/n64decomp/sm64/blob/master/src/game/mario.c#L838-L839) |
 | `St_WaterJump_Init` 0x020e166c | 42.0 | [mario.c:808](https://github.com/n64decomp/sm64/blob/master/src/game/mario.c#L808) |
 | `St_Dive_Init` 0x020dd1ec | +15.0 | [mario.c:857](https://github.com/n64decomp/sm64/blob/master/src/game/mario.c#L857) |
-| `St_Jump_Init` 0x020e2524 | ×0.7998 (0xccc) | mario.c:[787](https://github.com/n64decomp/sm64/blob/master/src/game/mario.c#L787)/[798](https://github.com/n64decomp/sm64/blob/master/src/game/mario.c#L798)/[825](https://github.com/n64decomp/sm64/blob/master/src/game/mario.c#L825)...
+| `St_Jump_Init` 0x020e2524 | ×0.7998 (0xccc) | mario.c:[787](https://github.com/n64decomp/sm64/blob/master/src/game/mario.c#L787)/[798](https://github.com/n64decomp/sm64/blob/master/src/game/mario.c#L798)/[825](https://github.com/n64decomp/sm64/blob/master/src/game/mario.c#L825) (`*= 0.8f`) |
+| `St_Jump_Init` 0x020e23a8 | 20.0 triple-jump gate | [mario.c:1051](https://github.com/n64decomp/sm64/blob/master/src/game/mario.c#L1051) |
+| air helper 0x020e2a8c-0x020e2aac | backwards drag 16.0 / 2.0 | [mario_actions_airborne.c:207](https://github.com/n64decomp/sm64/blob/master/src/game/mario_actions_airborne.c#L207) |
+
+Retuned rather than copied: speed caps (DS 60.0/100.0/40.0 vs N64 48.0), slide kick,
 Mario's collider (DS 50/50/40 vs N64 30/24, hitbox 37/160).
 
 ### 2.5 Arctangent table — byte-identical
 
-N64 [include/trig_tables.inc.c:1296](https://github.com/n64decomp/sm64/blob/master/include/trig_tables.inc.c#L1296) `s16 gArctanTable[0x401]` vs DS table at **0x020994e0**(`data_020994e0` in [config/arm9/symbols.txt](../../config/arm9/symbols.txt)):
+N64 [include/trig_tables.inc.c:1296](https://github.com/n64decomp/sm64/blob/master/include/trig_tables.inc.c#L1296) `s16 gArctanTable[0x401]` vs DS table at **0x020994e0** (`data_020994e0` in [config/arm9/symbols.txt](../../config/arm9/symbols.txt)):
 **1025/1025 entries identical, zero mismatches.** Same 8-way octant fold with the same
 `0x4000`/`0x8000`/`0xC000` constants (`cstd::atan2` @ 0x0203b4dc vs N64 [math_util.c:713-750](https://github.com/n64decomp/sm64/blob/master/src/engine/math_util.c#L713-L750)).
 
@@ -130,7 +134,7 @@ cross-check. Low confidence on its own (round numbers), but useful.
 | Matrices | 4×4 f32 | 4×3 Fix12 (NitroSDK G3) |
 | sqrt / divide / sin / cos | software tables | DS hardware DIV/SQRT MMIO, BIOS `swi 0x0d`, `FX_SinCosTable_` |
 
-`find_floor` equivalent is `MeshCollider::DetectClsn(RaycastGround&)` @ **[0x01ffd3f8](../../src/_ZN7dBgW_Kc10DetectClsnER9dBgCh_Gnd.cpp) - (`_ZN7dBgW_Kc10DetectClsnER9dBgCh_Gnd.cpp`)** (ITCM, 0x498 bytes).
+`find_floor` equivalent is `MeshCollider::DetectClsn(RaycastGround&)` @ **[0x01ffd3f8](../../src/_ZN7dBgW_Kc10DetectClsnER9dBgCh_Gnd.cpp)** (ITCM, 0x498 bytes).
 
 ---
 
@@ -157,7 +161,7 @@ a documented contamination vector worth a policy note. *This was not verified �
 
 ## 5. Defects found along the way (actionable)
 
-1. **[src/_ZN6Player16St_WallJump_InitEv.cpp](../../src/_ZN6Player16St_WallJump_InitEv.cpp)** is misattributed.** Its own banner admits it is
+1. **[src/_ZN6Player16St_WallJump_InitEv.cpp](../../src/_ZN6Player16St_WallJump_InitEv.cpp) is misattributed.** Its own banner admits it is
    *"NOT a Player method"*; it dereferences `this+0x4eb0`, `+0x4eb4`, `+0x4ee5` — ~0x4700 bytes
    past the end of a 0x768-byte `Player`. The real `St_WallJump_Main` is in [ov002](../../config/arm9/overlays/ov002/symbols.txt); this one is in
    [ov006](../../config/arm9/overlays/ov006/symbols.txt). **The bad assumption has already leaked into `include/Player.h:536-540`** as a footnote
@@ -255,7 +259,7 @@ confirmed from the double-vptr-store in `_ZN5ActorC2Ev`).
 while DS *must* use a numeric table (overlay-relocated code may not be resident when level
 placement data is read), there is no shared axis on which to compare numbering. DS's `ActorIDs`
 clusters related enemies (Goomba 200-202, Koopa 203-205, Bob-omb 206-208, Boo 209-214, Bully
-215-218); N64's `behavior_data.c` definition order shows no such clustering ([Bully at line 4050](https://github.com/n64decomp/sm64/blob/master/data/behavior_data.c#L4050)) sits between [Amp at 3852](https://github.com/n64decomp/sm64/blob/master/data/behavior_data.c#L3852) and [Koopa at 5079](https://github.com/n64decomp/sm64/blob/master/data/behavior_data.c#L5079), nowhere near [Boo at 2984](https://github.com/n64decomp/sm64/blob/master/data/behavior_data.c#L2984). **Convergent at best.**
+215-218); N64's `behavior_data.c` definition order shows no such clustering ([Bully at line 4050](https://github.com/n64decomp/sm64/blob/master/data/behavior_data.c#L4050) sits between [Amp at 3852](https://github.com/n64decomp/sm64/blob/master/data/behavior_data.c#L3852) and [Koopa at 5079](https://github.com/n64decomp/sm64/blob/master/data/behavior_data.c#L5079), nowhere near [Boo at 2984](https://github.com/n64decomp/sm64/blob/master/data/behavior_data.c#L2984)). **Convergent at best.**
 
 ### 8.2 Per-actor constants
 
@@ -280,7 +284,7 @@ the hitbox with size**. A real behavioral difference — DS fixed what reads as 
 ([bobomb.inc.c:3](https://github.com/n64decomp/sm64/blob/master/src/game/behaviors/bobomb.inc.c#L3)-[13](https://github.com/n64decomp/sm64/blob/master/src/game/behaviors/bobomb.inc.c#L13)). Close on radius, ~29% off on height. Convergent, not shared data.
 
 **daWanwan_c** — DS side **[T2, unmatched]**: claimed 150.0 / 300.0 vs N64 80 / 160
-([chain_chomp.inc.c:15](https://github.com/n64decomp/sm64/blob/master/src/game/behaviors/chain_chomp.inc.c#L15)-[25](https://github.com/n64decomp/sm64/blob/master/src/game/behaviors/chain_chomp.inc.c#L25). That is a suspiciously uniform 1.875× on both axes; worth re-checking
+([chain_chomp.inc.c:15](https://github.com/n64decomp/sm64/blob/master/src/game/behaviors/chain_chomp.inc.c#L15)-[25](https://github.com/n64decomp/sm64/blob/master/src/game/behaviors/chain_chomp.inc.c#L25)). That is a suspiciously uniform 1.875× on both axes; worth re-checking
 against a confirmed match before anyone relies on it.
 
 **Whomp** — structural convergence: both games special-case Whomp with **mesh** collision rather
@@ -349,7 +353,7 @@ physics almost verbatim and replaced N64's acceleration curve.** Both halves are
 
 ### 9.1 The slipperiness class system — STRUCTURAL REUSE, T1
 
-N64 derives a 4-value floor class from surface ID + area terrain type ([mario_get_floor_class](https://github.com/n64decomp/sm64/blob/master/src/game/mario.c#L387])).
+N64 derives a 4-value floor class from surface ID + area terrain type ([mario_get_floor_class](https://github.com/n64decomp/sm64/blob/master/src/game/mario.c#L387)).
 **DS stores the class directly in the collision data**: CLPS **bits 12-14** (getter `func_02037e58`,
 3 bits) *is* the slipperiness class. It is **not** a terrain/material type — the 3-bit/mask-7
 resemblance to N64's [TERRAIN_MASK 0x0007](https://github.com/n64decomp/sm64/blob/master/include/surface_terrains.h#L186) is a coincidence of arity. DS artists author
@@ -429,8 +433,8 @@ rate. **The 1 : 3.5 : 10 ratio is preserved exactly.** A rescale, not a redesign
 
 N64's [update_walking_speed](https://github.com/n64decomp/sm64/blob/master/src/game/mario_actions_moving.c#L434) core is **absent**. Verified: `1.1` (`0x119A`/`0x1199`) and `43.0`
 (`0x2B000`) have **zero occurrences in all 394 KB of [ov002](../../config/arm9/overlays/ov002/symbols.txt)** — no literal, no ARM immediate, no
-reciprocal multiply, no magic-number division. Also absent from the walk chain: the [`48.0` cap](https://github.com/n64decomp/sm64/blob/master/src/game/mario_actions_moving.c#L360-361),
-[the `32.0`/`24.0` targets](https://github.com/n64decomp/sm64/blob/master/src/game/mario_actions_moving.c#L438-441), the [`0.95` `normal.y`](https://github.com/n64decomp/sm64/blob/master/src/game/mario_actions_moving.c#L378) gate.
+reciprocal multiply, no magic-number division. Also absent from the walk chain: the [`48.0` cap](https://github.com/n64decomp/sm64/blob/master/src/game/mario_actions_moving.c#L360-L361),
+[the `32.0`/`24.0` targets](https://github.com/n64decomp/sm64/blob/master/src/game/mario_actions_moving.c#L438-L441), the [`0.95` `normal.y`](https://github.com/n64decomp/sm64/blob/master/src/game/mario_actions_moving.c#L378) gate.
 
 DS substitutes a constant-rate approach toward a banded stick-magnitude target:
 
