@@ -4862,6 +4862,7 @@
     "src/actors/daBDonketu_c.cpp#_ZN12daBDonketu_c6RenderEv": "tangosdev",
     "src/actors/daBDonketu_c.cpp#_ZN12daBDonketu_c8BehaviorEv": "tangosdev",
     "src/actors/daBDonketu_c.cpp#_ZN12daBDonketu_c13InitResourcesEv": "andrewboudreau",
+    "src/actors/daBDonketu_c.cpp#daBDonketu_c_classInit": "tangosdev",
     "src/actors/daBtfly_c.cpp#_ZN9daBtfly_cD1Ev": "andrewboudreau",
     "src/actors/daBtfly_c.cpp#_ZN9daBtfly_cD0Ev": "andrewboudreau",
     "src/actors/daBtfly_c.cpp#_ZN9daBtfly_c6State7Ev": "lunavyqo",
