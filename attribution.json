@@ -5354,6 +5354,8 @@
     "src/actors/daObjRotateUpdownLift_c.cpp#_ZN23daObjRotateUpdownLift_c6RenderEv": "tangosdev",
     "src/actors/daObjRotateUpdownLift_c.cpp#_ZN23daObjRotateUpdownLift_c8BehaviorEv": "tangosdev",
     "src/actors/daObjRotateUpdownLift_c.cpp#_ZN23daObjRotateUpdownLift_c13InitResourcesEv": "tangosdev",
+    "src/actors/daObjRotateUpdownLift_c.cpp#daObjRotateUpdownLift_c_classInit_HS_UPDOWN_LIFT": "tangosdev",
+    "src/actors/daObjRotateUpdownLift_c.cpp#daObjRotateUpdownLift_c_classInit_UPDOWN_LIFT": "tangosdev",
     "src/actors/daBgSnmHed_c.cpp#_ZN12daBgSnmHed_cD1Ev": "andrewboudreau",
     "src/actors/daBgSnmHed_c.cpp#_ZN12daBgSnmHed_cD0Ev": "andrewboudreau",
     "src/actors/daBgSnmHed_c.cpp#_ZN12daBgSnmHed_c11UpdateModelEv": "andrewboudreau",

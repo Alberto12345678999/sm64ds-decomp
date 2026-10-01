@@ -6,15 +6,7 @@
     .bss        start:0x02135440 end:0x021356e0 kind:bss align:32
 src/actors/daObjRotateUpdownLift_c.cpp:
     complete
-    .text start:0x02130f00 end:0x02131ba4
-
-src/d_a_obj_rotate_updown_lift_hs_updown_lift.c:
-    complete
-    .text start:0x02131ba4 end:0x02131bdc
-
-src/d_a_obj_rotate_updown_lift_updown_lift.c:
-    complete
-    .text start:0x02131bdc end:0x02131c14
+    .text start:0x02130f00 end:0x02131c14
 
 src/game/actors/d_a_linelift2.cpp:
     complete
