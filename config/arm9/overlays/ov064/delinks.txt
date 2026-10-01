@@ -150,11 +150,7 @@ src/actors/daWater_Hakidasi_c.cpp:
 
 src/actors/daWater_Ring_c.cpp:
     complete
-    .text start:0x02119a58 end:0x0211a1b0
-
-src/d_a_water_ring.c:
-    complete
-    .text start:0x0211a1b0 end:0x0211a200
+    .text start:0x02119a58 end:0x0211a200
 
 src/actors/daObjTbox_c.cpp:
     complete

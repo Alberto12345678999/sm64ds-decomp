@@ -6000,6 +6000,7 @@
     "src/actors/daWater_Ring_c.cpp#func_ov064_02119d28": "tangosdev",
     "src/actors/daWater_Ring_c.cpp#_ZN14daWater_Ring_c8BehaviorEv": "tangosdev",
     "src/actors/daWater_Ring_c.cpp#func_ov064_02119ecc": "tangosdev",
+    "src/actors/daWater_Ring_c.cpp#daWater_Ring_c_classInit": "tangosdev",
     "src/actors/dMg3DEspAnimSet_c.cpp#_ZN17dMg3DEspAnimSet_c6RenderEv": "tangosdev",
     "src/actors/dMg3DEspAnimSet_c.cpp#_ZN17dMg3DEspAnimSet_c8BehaviorEv": "ruspecial",
     "src/actors/dMg3DEspAnimSet_c.cpp#_ZN17dMg3DEspAnimSet_c5ResetEv": "tangosdev",
