@@ -6035,6 +6035,7 @@
     "src/actors/daFPknBall_c.cpp#_ZN12daFPknBall_c8BehaviorEv": "andrewboudreau",
     "src/actors/daFPknBall_c.cpp#_ZN12daFPknBall_c13InitResourcesEv": "ruspecial",
     "src/actors/daFPknBall_c.cpp#_ZN12daFPknBall_c13OnYoshiTryEatEv": "tangosdev",
+    "src/actors/daFPknBall_c.cpp#daFPknBall_c_classInit": "tangosdev",
     "src/actors/daObjPowerUpItem_c.cpp#_ZN18daObjPowerUpItem_cD1Ev": "tangosdev",
     "src/actors/daObjPowerUpItem_c.cpp#_ZN18daObjPowerUpItem_cD0Ev": "tangosdev",
     "src/actors/daObjPowerUpItem_c.cpp#func_ov002_020b91fc": "lunavyqo",

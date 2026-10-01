@@ -7,7 +7,7 @@
     "no_codegen_trick",
     "no_mangled_refs"
   ],
-  "count": 3070,
+  "count": 3071,
   "converted": [
     "src/ARMMathLoadState.c",
     "src/ARMMathSaveState.c",
@@ -3078,6 +3078,7 @@
     "src/actors/dMeter_c.cpp#dMeter_c_classInit",
     "src/actors/daCoin_c.cpp#daCoin_c_classInit_BLUE_COIN",
     "src/actors/daCoin_c.cpp#daCoin_c_classInit_RED_COIN",
-    "src/actors/daCoin_c.cpp#daCoin_c_classInit_COIN"
+    "src/actors/daCoin_c.cpp#daCoin_c_classInit_COIN",
+    "src/actors/daFPknBall_c.cpp#daFPknBall_c_classInit"
   ]
 }

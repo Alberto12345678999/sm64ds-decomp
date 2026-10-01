@@ -2859,11 +2859,7 @@ src/_ZThn80_N8daDemo_c10anmModel_cD1Ev.cpp:
 
 src/actors/daFPknBall_c.cpp:
     complete
-    .text start:0x020f8858 end:0x020f9304
-
-src/d_a_f_pkn_ball.c:
-    complete
-    .text start:0x020f9304 end:0x020f934c
+    .text start:0x020f8858 end:0x020f934c
 
 src/game/actors/d_a_sound_obj.cpp:
     complete
