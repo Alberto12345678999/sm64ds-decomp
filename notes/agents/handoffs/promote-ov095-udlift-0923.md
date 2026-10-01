@@ -119,7 +119,7 @@ and this note were added after the byte and link gates ran.
   106/106 modules exact. `python tools/prepush_linkcheck.py --range
   eb8f46d46a..HEAD` exit 0: 657 consumers of the two changed headers, 2057
   checked, 2055 verified, 0 blocking. The 2 warnings are BLIND-2 on
-  `_ZN9dScDSMT_c8BehaviorEv` and BLIND-1 on [func_ov089_0213162c](../../../src/func_ov089_0213162c.c), both files
+  `_ZN9dScDSMT_c8BehaviorEv` and BLIND-1 on [func_ov089_0213162c](../../../src/actors/daObjKey_c.cpp), both files
   this change does not touch.
 ---
 - `python tools/tubuild.py verify ov095/daUdlift_c`: 11/11 MATCH, objisolate
