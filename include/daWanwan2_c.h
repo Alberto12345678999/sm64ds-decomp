@@ -39,8 +39,9 @@ struct daWanwan2_c : dEnemyBase_c {
     Model               mModels[6];         /* 0x370 */
     ShadowModel         mShadowModels[6];   /* 0x550 */
     ShadowModel         mShadowModel;       /* 0x640 */
-    /* Behavior loads a pointer from here and calls a member function through it --
-       see the note in _ZN11daWanwan2_c8BehaviorEv.cpp. */
+    /* The current state: a pair of pointers-to-member (enter, execute) that
+       func_ov100_02143b18 stores and calls and Behavior calls every frame --
+       see ChompState in src/actors/daWanwan2_c.cpp. */
     void               *unk_668;            /* 0x668 */
     u8  pad_66c[0x40];
     s32 unk_6ac;                            /* 0x6ac */
