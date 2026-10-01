@@ -24,11 +24,9 @@
  * allocation literal -- the layout does not close without it. Reading only
  * the destructor leaves the class eight bytes short.
  *
- * (InitResources still does not reproduce -- a size disagreement, not a
- * compile error. That predates this header: it fails identically on ff7872bf,
- * where the class was still flat. Its body carries laundering hacks and a
- * volatile read and wants its own matching session. Every other function of
- * this class reproduces.)
+ * Every function of the class reproduces, in one translation unit:
+ * src/actors/daIbl_c.cpp is the whole linker unit 0x02141f04..0x021431c4,
+ * factory included.
  *
  * SIZE IS THE ROM'S OWN: `daIbl_c_classInit` calls
  * `fBase_c::operator new(1020)` -- 0x3fc -- and stores this class's
