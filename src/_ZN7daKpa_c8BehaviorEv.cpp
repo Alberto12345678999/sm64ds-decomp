@@ -1,5 +1,5 @@
 //cpp
-// @symbol _ZN6Bowser8BehaviorEv
+// @symbol _ZN7daKpa_c8BehaviorEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header
  *
  * One frame of the fight: pick the closest player and record the angle and distance
@@ -22,7 +22,7 @@
  */
 #include "types.h"
 #include "decl_common.h"
-#include "Bowser.h"
+#include "daKpa_c.h"
 
 extern "C" {
 extern int RandomIntInternal(int* seed);
@@ -32,7 +32,7 @@ extern int data_0209e650;
 extern char* data_0209f318;
 }
 
-int Bowser::Behavior()
+int daKpa_c::Behavior()
 {
     RandomIntInternal(&data_0209e650);
     mTargetPlayer = (dActor_c *)ClosestPlayer();

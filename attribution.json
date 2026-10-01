@@ -6678,6 +6678,8 @@
     "src/actors/daObjTatefuda_c.cpp#_ZN15daObjTatefuda_c16CleanupResourcesEv": "tangosdev",
     "src/actors/daObjTatefuda_c.cpp#_ZN15daObjTatefuda_c6RenderEv": "tangosdev",
     "src/actors/daObjTatefuda_c.cpp#_ZN15daObjTatefuda_c8BehaviorEv": "tangosdev",
-    "src/actors/daObjTatefuda_c.cpp#_ZN15daObjTatefuda_c13InitResourcesEv": "tangosdev"
+    "src/actors/daObjTatefuda_c.cpp#_ZN15daObjTatefuda_c13InitResourcesEv": "tangosdev",
+    "src/actors/dCapEnemy_c.cpp#_ZN11dCapEnemy_cD2Ev": "tangosdev",
+    "src/actors/dCapEnemy_c.cpp#_ZN11dCapEnemy_cD0Ev": "tangosdev"
   }
 }

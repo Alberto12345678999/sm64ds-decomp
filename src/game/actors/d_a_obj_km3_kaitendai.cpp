@@ -1,6 +1,6 @@
 //cpp
 /**
- * Bowser in the Sky's spinning disc.
+ * daKpa_c in the Sky's spinning disc.
  *
  * No fields. InitResources / CleanupResources hand this overlay's
  * model and collision files to daObjKaitendai_c's shared ov002

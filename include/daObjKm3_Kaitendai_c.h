@@ -7,7 +7,7 @@
 extern "C" void *_ZN7fBase_cnwEj(unsigned size);
 
 /**
- * Bowser in the Sky's spinning disc. No fields of its own:
+ * daKpa_c in the Sky's spinning disc. No fields of its own:
  * sizeof(daObjKm3_Kaitendai_c) == 0x320 == sizeof(dBgActor_c).
  * Overrides the two slots the base leaves null (InitResources,
  * CleanupResources) and hands this overlay's model/collision

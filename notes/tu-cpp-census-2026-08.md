@@ -80,7 +80,7 @@ Blocked pool: 214 TUs. Traps, in descending attractiveness:
 - [ov007](../config/arm9/overlays/ov007/symbols.txt) @0x20b72a0 (389) / @0x20ad660 (123) — no class label, low boundaries, ZERO sinits so no witness is constructible. [ov007](../config/arm9/overlays/ov007/symbols.txt) is where the map knows least and looks most confident.
 - [ov006](../config/arm9/overlays/ov006/symbols.txt) `dScMg*` family — newly attractive after regeneration, but carries `#pragma opt_*` on up to 35 members in one TU. TUs carrying `#pragma opt_*` CANNOT be merged as-is.
 - [ov004](../config/arm9/overlays/ov004/symbols.txt) @0x20b42c0 (107) — unattributed, low/low, swallower.
-- [ov063](../config/arm9/overlays/ov063/symbols.txt) Boo family (94) / [ov060](../config/arm9/overlays/ov060/symbols.txt) Bowser (80) — correct groupings, DEFERRED not wrong: clear the pragmas and the incomplete members and they promote into the safe pool.
+- [ov063](../config/arm9/overlays/ov063/symbols.txt) Boo family (94) / [ov060](../config/arm9/overlays/ov060/symbols.txt) daKpa_c (80) — correct groupings, DEFERRED not wrong: clear the pragmas and the incomplete members and they promote into the safe pool.
 
 ## 6. Breakage modes for a merge (detect BEFORE committing)
 
