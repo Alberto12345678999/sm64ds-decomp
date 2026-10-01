@@ -226,7 +226,7 @@ void daEyBm_c::UpdateShadow()
 /*
  * 0x02121ba4, size 0xc8. Player::Hurt retains the measured by-value Fix12
  * ABI seam; Player itself and all accessed fields are the real type. */
- // @symbol _ZN8daEyBm_c10HurtPlayerEv
+// @symbol _ZN8daEyBm_c10HurtPlayerEv
 extern "C" void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(
     Player *player, const DaEyBmVector3Words *position, u32 source,
     Fix12i amount, u32 a, u32 b, u32 c);
@@ -262,7 +262,7 @@ void daEyBm_c::HurtPlayer()
  * 0x02121b50, size 0x54. The coined mangling uses a reference; a pointer
  * would generate identical ARM. The retail caller passes the owned
  * collision subobject explicitly in r1. */
- // @symbol _ZN8daEyBm_c15UpdateCollisionER10dBgCh_Actr
+// @symbol _ZN8daEyBm_c15UpdateCollisionER10dBgCh_Actr
 extern "C" void dBgCh_Actr_UpdateDiscreteNoLava_veneer(dBgCh_Actr *collision);
 
 void daEyBm_c::UpdateCollision(dBgCh_Actr &collision)
@@ -275,7 +275,7 @@ void daEyBm_c::UpdateCollision(dBgCh_Actr &collision)
 /*
  * 0x02121b08, size 0x48. Particle::System::New is not yet shared-header
  * declared, so this exact typed ABI import remains local. */
- // @symbol _ZN8daEyBm_c18SpawnDestroyEffectEv
+// @symbol _ZN8daEyBm_c18SpawnDestroyEffectEv
 extern "C" u32 _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
     u32 uniqueID, u32 effectID, Fix12i x, Fix12i y, Fix12i z,
     const Vector3_16f *rotation, Particle::Callback *callback);
@@ -293,5 +293,6 @@ int daEyBm_c::OnYoshiTryEat()
 {
     return 4;
 }
-
+// @symbol _ZN8daEyBm_cD1Ev
+// @symbol _ZN8daEyBm_cD0Ev
 /* The inline class destructor and InitResources vtable instantiation emit both naturally. */

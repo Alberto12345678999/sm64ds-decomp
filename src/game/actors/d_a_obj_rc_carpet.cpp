@@ -217,3 +217,6 @@ extern "C" void func_ov036_0211224c(daObjRcCarpet_c *self)
     *(s32 *)((char *)self + 0x318) = self->mPosZ;
     self->mMeshCollider.Transform(self->mClsnMat, self->mAngleY);
 }
+/* ROM ordinals 0/1 are emitted by the inline virtual destructor:*/
+// @symbol _ZN15daObjRcCarpet_cD1Ev
+// @symbol _ZN15daObjRcCarpet_cD0Ev
