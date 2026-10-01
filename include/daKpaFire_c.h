@@ -1,7 +1,7 @@
 /* Seeded from matched-function evidence by tools/gen_header.py, then given its
  * real base and real member types by hand.
  *
- * class BowserFire: 4 matched functions.
+ * class daKpaFire_c: 4 matched functions.
  *
  * The three sub-objects are the real classes, and each one's size is pinned by
  * that class's own static assertion, so the offsets below are checked twice --
@@ -12,7 +12,7 @@
  *     ShadowModel         0x304 + 0x028 = 0x32c   -> padding
  *
  * There is NO unk_2e8 here any more, and its absence is the point. An earlier
- * revision named 0x2e8 as a BowserFire field on the strength of a single
+ * revision named 0x2e8 as a daKpaFire_c field on the strength of a single
  * `|= 1`. It is not one: 0x2d0 + 0x18 lands inside mdCcAc_c, and
  * dCc_c::flags is at 0x18 and is documented as "bit 0 makes Update
  * bail" -- which is exactly what setting bit 0 does. It was the sub-object's
@@ -20,8 +20,8 @@
  *
  * Offsets/widths are observed, not guessed. Gaps are explicit padding.
  * Field NAMES for the unk_ entries are placeholders. */
-#ifndef BOWSERFIRE_H
-#define BOWSERFIRE_H
+#ifndef DAKPAFIRE_C_H
+#define DAKPAFIRE_C_H
 #include "types.h"
 
 #ifdef __cplusplus
@@ -31,7 +31,12 @@
 #include "dCcAc_c.h"
 #include "ShadowModel.h"
 
-struct BowserFire : dEnemyBase_c {
+/* ROM identity (SM64DS proves daKpaFire_c, not the coined BowserFire):
+ * _ZTI11daKpaFire_c at ov060 0x0211a7b4, _ZTS11daKpaFire_c at 0x0211a7c0
+ * ("11daKpaFire_c"), _ZTV11daKpaFire_c at 0x0211a7f4 whose typeinfo word
+ * points at that _ZTI. daKpaFire_c_classInit (0x02117938, KOOPAFIRE profile)
+ * stores this vtable; the D1/D0 below fill its slots 16/17. */
+struct daKpaFire_c : dEnemyBase_c {
     dBgCh_Actr mWithMeshClsn;                 /* 0x110 */
     s32 mUniqueID_2cc;                                /* 0x2cc */
     dCcAc_c mdCcAc_c;     /* 0x2d0 */
@@ -54,7 +59,7 @@ struct BowserFire : dEnemyBase_c {
     s32 mSoundID;            /* 0x388 */
 
     /* --- vtable, in ROM order. Do not reorder. --- */
-    virtual ~BowserFire();              /* slots 0 (D1), 1 (D0) */
+    virtual ~daKpaFire_c();              /* slots 0 (D1), 1 (D0) */
 
     /* --- non-virtual --- */
     int InitResources();
@@ -65,12 +70,12 @@ struct BowserFire : dEnemyBase_c {
 
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
-typedef char BowserFire_size_must_be_0x38c[sizeof(BowserFire) == 0x38c ? 1 : -1];
+typedef char daKpaFire_c_size_must_be_0x38c[sizeof(daKpaFire_c) == 0x38c ? 1 : -1];
 #endif
 
 #else
 
-struct BowserFire {
+struct daKpaFire_c {
     u8  pad_000[0x8];
     s32 mParam;            /* 0x008 */
     u8  pad_00c[0x50];

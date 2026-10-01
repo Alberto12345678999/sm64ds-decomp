@@ -324,11 +324,11 @@ src/d_a_kpa.c:
     complete
     .text start:0x02116428 end:0x02116484
 
-src/_ZN10BowserFireD1Ev.cpp:
+src/_ZN11daKpaFire_cD1Ev.cpp:
     complete
     .text start:0x02116484 end:0x021164c4
 
-src/_ZN10BowserFireD0Ev.cpp:
+src/_ZN11daKpaFire_cD0Ev.cpp:
     complete
     .text start:0x021164c4 end:0x02116518
 
@@ -412,19 +412,19 @@ src/func_ov060_02117624.cpp:
     complete
     .text start:0x02117624 end:0x021176c4
 
-src/_ZN10BowserFire16CleanupResourcesEv.cpp:
+src/_ZN11daKpaFire_c16CleanupResourcesEv.cpp:
     complete
     .text start:0x021176c4 end:0x021176cc
 
-src/_ZN10BowserFire6RenderEv.cpp:
+src/_ZN11daKpaFire_c6RenderEv.cpp:
     complete
     .text start:0x021176cc end:0x021176d4
 
-src/_ZN10BowserFire8BehaviorEv.cpp:
+src/_ZN11daKpaFire_c8BehaviorEv.cpp:
     complete
     .text start:0x021176d4 end:0x02117790
 
-src/_ZN10BowserFire13InitResourcesEv.cpp:
+src/_ZN11daKpaFire_c13InitResourcesEv.cpp:
     complete
     .text start:0x02117790 end:0x02117938
 

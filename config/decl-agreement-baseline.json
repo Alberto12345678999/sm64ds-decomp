@@ -6054,7 +6054,7 @@
         "param:#5 Vector3_16 *",
         "param:#6 Vector3_16 *"
       ],
-      "src/_ZN10BowserFire13InitResourcesEv.cpp": [
+      "src/_ZN11daKpaFire_c13InitResourcesEv.cpp": [
         "param:#2 void *",
         "param:#5 void *"
       ],
@@ -15489,7 +15489,7 @@
       ]
     },
     "dBgCh_Actr_UpdateDiscreteNoLava_veneer": {
-      "src/_ZN10BowserFire8BehaviorEv.cpp": [
+      "src/_ZN11daKpaFire_c8BehaviorEv.cpp": [
         "arity:1"
       ],
       "src/actors/Scuttlebug.cpp": [

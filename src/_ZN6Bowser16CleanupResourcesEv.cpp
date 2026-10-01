@@ -10,7 +10,7 @@
  * the ROM's own comparisons test against, and the tables are arrays of
  * POINTERS to handles, unlike the singles which are handles themselves.
  *
- * That is why his siblings release almost nothing -- BowserFire and BowserTail
+ * That is why his siblings release almost nothing -- daKpaFire_c and BowserTail
  * hold no reference at all, and daFRing_c shares 0211b208 with him.
  */
 #include "Bowser.h"
