@@ -19,7 +19,7 @@
  * Known limits:
  * - func_ov064_0211982c keeps its C-ABI cartridge name and TU-local C/PMF
  *   view: it reads the state-table slot at +0x350, while Behavior reads
- *   the handler at +0x08 through State::mMain. Same survivor as Bullet's
+ *   the handler at +0x08 through State::mMain. Same survivor as daPropeller_Heyho_Fire_c's
  *   func_ov002_020fed2c.
  * - `#pragma opt_strength_reduction off` is required inside
  *   func_ov064_021193b4 and is turned back on right after it: the pragma is
@@ -309,7 +309,7 @@ s32 daWater_Hakidasi_c::Render()
 }
 
 /* The state pointer at 0x300 is daWater_Hakidasi_c::State (see the header),
- * the same shape and treatment as Bullet::Behavior. */
+ * the same shape and treatment as daPropeller_Heyho_Fire_c::Behavior. */
 // @symbol _ZN18daWater_Hakidasi_c8BehaviorEv
 s32 daWater_Hakidasi_c::Behavior()
 {

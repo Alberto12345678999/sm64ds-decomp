@@ -1,20 +1,20 @@
 //cpp
-// @symbol _ZN6Bullet8BehaviorEv
+// @symbol _ZN24daPropeller_Heyho_Fire_c8BehaviorEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 #include "decl_common.h"
 /* recovered: named members + shared header, real C++ method */
-#include "Bullet.h"
+#include "daPropeller_Heyho_Fire_c.h"
 
 /* This file used to carry `struct dActor_c { char pad[0x350]; Holder* h; }` and
  * cast `this` to it. That stand-in was how the state pointer at 0x350 was
- * reached; Bullet.h declares it now, so the cast and the three dummy structs
+ * reached; daPropeller_Heyho_Fire_c.h declares it now, so the cast and the three dummy structs
  * are gone.
  */
 extern "C" {
 extern unsigned short DecIfAbove0_Short(unsigned short* p);
 }
 
-int Bullet::Behavior()
+int daPropeller_Heyho_Fire_c::Behavior()
 {
     DecIfAbove0_Short((unsigned short*)&mStateTimer);
     State* h = mCurrentState;

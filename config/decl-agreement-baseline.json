@@ -6080,7 +6080,7 @@
         "param:#5 void *",
         "param:#6 void *"
       ],
-      "src/_ZN6Bullet13InitResourcesEv.cpp": [
+      "src/_ZN24daPropeller_Heyho_Fire_c13InitResourcesEv.cpp": [
         "param:#1 char *",
         "param:#2 dActor_c *",
         "param:#5 Vector3_16 *"
@@ -9588,7 +9588,7 @@
       "src/_ZN6Bowser13InitResourcesEv.cpp": [
         "param:#1 void *"
       ],
-      "src/_ZN6Bullet13InitResourcesEv.cpp": [
+      "src/_ZN24daPropeller_Heyho_Fire_c13InitResourcesEv.cpp": [
         "param:#1 void *",
         "return:BMD_File *"
       ],
@@ -12083,7 +12083,7 @@
       "src/_ZN10BowserTail13InitResourcesEv.cpp": [
         "return:int"
       ],
-      "src/_ZN6Bullet13InitResourcesEv.cpp": [
+      "src/_ZN24daPropeller_Heyho_Fire_c13InitResourcesEv.cpp": [
         "param:#1 char *"
       ],
       "src/func_ov002_020bae9c.c": [
@@ -24391,7 +24391,7 @@
       ]
     },
     "data_ov065_0211d610": {
-      "src/_ZN6Bullet16CleanupResourcesEv.cpp": [
+      "src/_ZN24daPropeller_Heyho_Fire_c16CleanupResourcesEv.cpp": [
         "return:int []"
       ],
       "src/actors/daYurei_Mucho_c.cpp": [

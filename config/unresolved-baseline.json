@@ -130,7 +130,7 @@
    ]
   },
   "ov002:0x020feef4": {
-   "name": "_ZN6Bullet13InitResourcesEv",
+   "name": "_ZN24daPropeller_Heyho_Fire_c13InitResourcesEv",
    "missing": [
     "func_0211d610"
    ]

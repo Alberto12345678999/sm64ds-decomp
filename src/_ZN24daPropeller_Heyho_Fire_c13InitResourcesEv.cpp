@@ -1,10 +1,10 @@
 //cpp
 #include "types.h"
-// @symbol _ZN6Bullet13InitResourcesEv
+// @symbol _ZN24daPropeller_Heyho_Fire_c13InitResourcesEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 #include "decl_common.h"
 /* recovered: named members + shared header, real C++ method */
-#include "Bullet.h"
+#include "daPropeller_Heyho_Fire_c.h"
 struct dActor_c;
 struct Vector3_16;
 struct BMD_File;
@@ -15,7 +15,7 @@ extern "C" int _ZN9ModelBase7SetFileEP8BMD_Fileii(char* self, struct BMD_File* f
 extern "C" void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(char* self, struct dActor_c* a, int r, int h, u32 f1, u32 f2);
 extern "C" void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(char* self, struct dActor_c* a, int r, int h, struct Vector3_16* rot, int f);
 
-int Bullet::InitResources()
+int daPropeller_Heyho_Fire_c::InitResources()
 {
     struct BMD_File* f = _ZN5Model8LoadFileER13SharedFilePtr(func_0211d610);
     if (_ZN9ModelBase7SetFileEP8BMD_Fileii(((char*)this)+0x300, f, 1, -1) == 0) return 0;

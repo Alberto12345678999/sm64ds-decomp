@@ -199,7 +199,7 @@ ambiguity -- and it is now the biggest single block of work left.
 | `src/_ZN14CutsceneObject13InitResourcesEv.cpp` | [ov002](../config/arm9/overlays/ov002/symbols.txt) | `0x02113c20` in the level slot; [ov002](../config/arm9/overlays/ov002/symbols.txt) is resident for every level. |
 | `src/actors/daFRing_c.cpp` | [ov060](../config/arm9/overlays/ov060/symbols.txt) | narrowed to the three Bowser levels ([ov044](../config/arm9/overlays/ov044/symbols.txt)/[ov046](../config/arm9/overlays/ov046/symbols.txt)/[ov048](../config/arm9/overlays/ov048/symbols.txt)); all 19 candidate symbols are dsd placeholders. **Since settled by the data, not by residency:** only [ov048](../config/arm9/overlays/ov048/symbols.txt) holds an animation record at `0x021115e4` and `0x021115f4` (a 0x64 frame count, then pointers ov048's own relocations resolve into its data); ov044's words there lie inside `g_profile_KB1_BILLBOARD` and ov046's carry no relocations. The source names `data_ov048_021115e4` / `data_ov048_021115f4`. |
 | `src/actors/daObjKey_c.cpp` (`daObjKey_c::StateStarJump`, was `func_ov089_0213162c`) | [ov089](../config/arm9/overlays/ov089/symbols.txt) | [ov089](../config/arm9/overlays/ov089/symbols.txt) is loaded by many levels. The source names `data_ov055_02111b68`, the one unambiguous `kind:bss` row at that address, following `src/func_ov002_020e3e00.cpp` for its neighbours `0x02111b64`/`0x02111b6c`. |
-| `src/_ZN6Bullet13InitResourcesEv.cpp` | [ov002](../config/arm9/overlays/ov002/symbols.txt) | [ov065](../config/arm9/overlays/ov065/symbols.txt) vs [ov075](../config/arm9/overlays/ov075/symbols.txt) (see below). |
+| `src/_ZN24daPropeller_Heyho_Fire_c13InitResourcesEv.cpp` | [ov002](../config/arm9/overlays/ov002/symbols.txt) | [ov065](../config/arm9/overlays/ov065/symbols.txt) vs [ov075](../config/arm9/overlays/ov075/symbols.txt) (see below). |
 | `src/_ZN8CapEnemy6AddCapEj.c` | [arm9](../config/arm9/symbols.txt) | [ov002](../config/arm9/overlays/ov002/symbols.txt) vs [ov007](../config/arm9/overlays/ov007/symbols.txt); arm9 spans both. |
 | `src/func_02008b4c.c` | [arm9](../config/arm9/symbols.txt) | [ov002](../config/arm9/overlays/ov002/symbols.txt) vs [ov006](../config/arm9/overlays/ov006/symbols.txt); both hold a real function. |
 | `src/func_02029408.c` | [arm9](../config/arm9/symbols.txt) | [ov002](../config/arm9/overlays/ov002/symbols.txt) `_ZN6Player8CanPauseEv` vs [ov004](../config/arm9/overlays/ov004/symbols.txt) (see below). |
@@ -214,7 +214,7 @@ evidence, and none is a function -- only `data(any)` or `bss`. So a flagged
 candidate is a placeholder and an unflagged one is a symbol dsd derived
 independently. Where exactly one candidate is unflagged:
 
-- `_ZN6Bullet13InitResourcesEv` `0x0211d610` -> **[ov065](../config/arm9/overlays/ov065/symbols.txt)** ([ov075](../config/arm9/overlays/ov075/symbols.txt)'s is flagged)
+- `_ZN24daPropeller_Heyho_Fire_c13InitResourcesEv` `0x0211d610` -> **[ov065](../config/arm9/overlays/ov065/symbols.txt)** ([ov075](../config/arm9/overlays/ov075/symbols.txt)'s is flagged)
 - `func_0201a458` `0x0211d9c0` -> **[ov065](../config/arm9/overlays/ov065/symbols.txt)**; `0x02140d80` -> **[ov100](../config/arm9/overlays/ov100/symbols.txt)** (which is what
   `func_02034fbc` loads immediately before calling it)
 - `func_02029408` `0x020bd828` -> **[ov002](../config/arm9/overlays/ov002/symbols.txt)** `_ZN6Player8CanPauseEv`**
