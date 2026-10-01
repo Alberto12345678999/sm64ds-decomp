@@ -1959,11 +1959,11 @@ src/game/actors/d_a_warpkun.cpp:
     complete
     .text start:0x020ec388 end:0x020ec56c
 
-src/_ZN8YoshiEggD1Ev.cpp:
+src/_ZN8daYegg_cD1Ev.cpp:
     complete
     .text start:0x020ec56c end:0x020ec5b4
 
-src/_ZN8YoshiEggD0Ev.cpp:
+src/_ZN8daYegg_cD0Ev.cpp:
     complete
     .text start:0x020ec5b4 end:0x020ec610
 
@@ -2070,19 +2070,19 @@ src/func_ov002_020eddc4.c:
     complete
     .text start:0x020eddc4 end:0x020edf54
 
-src/_ZN8YoshiEgg16CleanupResourcesEv.cpp:
+src/_ZN8daYegg_c16CleanupResourcesEv.cpp:
     complete
     .text start:0x020edf54 end:0x020edf98
 
-src/_ZN8YoshiEgg6RenderEv.cpp:
+src/_ZN8daYegg_c6RenderEv.cpp:
     complete
     .text start:0x020edf98 end:0x020ee010
 
-src/_ZN8YoshiEgg8BehaviorEv.cpp:
+src/_ZN8daYegg_c8BehaviorEv.cpp:
     complete
     .text start:0x020ee010 end:0x020ee144
 
-src/_ZN8YoshiEgg13InitResourcesEv.cpp:
+src/_ZN8daYegg_c13InitResourcesEv.cpp:
     complete
     .text start:0x020ee144 end:0x020ee3d8
 

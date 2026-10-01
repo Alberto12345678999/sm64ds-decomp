@@ -8,18 +8,17 @@
 #include "decl_dBgCh_Actr.h"
 #include "decl_common.h"
 /* recovered: vtable identified, globals resolved */
-/* resolved: VT0 = _ZTV8YoshiEgg */
+/* resolved: VT0 = _ZTV8daYegg_c */
 /* Reconstructed source-style name: SM64DS proves daYegg_c through RTTI,
  * allocation size, vtable identity, and the YOSHI_EGG registry profile;
  * later EAD lineage supplies classInit. Exact original spelling is not
- * preserved. The project's YoshiEgg implementation aliases remain unchanged.
- * Historical alias: YoshiEgg_Spawn. */
+ * preserved. Historical alias: YoshiEgg_Spawn. */
 int *daYegg_c_classInit(void)
 {
     int *p = (int *)_ZN7fBase_cnwEj(1068);
     if (p) {
         _ZN12dEnemyBase_cC2Ev(p);
-        p[0] = (int)_ZTV8YoshiEgg;
+        p[0] = (int)_ZTV8daYegg_c;
         _ZN7dCcAc_cC1Ev((char *)p + 0x110);
         _ZN10dBgCh_ActrC1Ev((char *)p + 0x144);
         _ZN9ModelAnimC1Ev((char *)p + 0x300);

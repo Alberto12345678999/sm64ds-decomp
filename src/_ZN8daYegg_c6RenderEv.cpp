@@ -1,10 +1,10 @@
 //cpp
-// @symbol _ZN8YoshiEgg6RenderEv
+// @symbol _ZN8daYegg_c6RenderEv
 /* recovered: named members + shared header, real C++ method -- vtable slot 9 */
-#include "YoshiEgg.h"
+#include "daYegg_c.h"
 #include "Player.h"
 
-int YoshiEgg::Render()
+int daYegg_c::Render()
 {
     /* The temporary is load-bearing and must not be folded into the `if`, the
        same way it is in daBakubaku_c::Render: `if (mFlags & 0x40000)` tests the

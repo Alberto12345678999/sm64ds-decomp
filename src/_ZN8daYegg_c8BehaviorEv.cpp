@@ -1,9 +1,9 @@
 //cpp
-// @symbol _ZN8YoshiEgg8BehaviorEv
+// @symbol _ZN8daYegg_c8BehaviorEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 #include "decl_common.h"
 /* recovered: named members + shared header, real C++ method */
-#include "YoshiEgg.h"
+#include "daYegg_c.h"
 #include "Player.h"
 extern "C" {
 extern int data_020a0e68;
@@ -12,7 +12,7 @@ extern void Vec3_Add(void *out, void *a, void *b);
 extern void func_ov002_020edca4(void *c);
 }
 
-int YoshiEgg::Behavior()
+int daYegg_c::Behavior()
 {
     Vector3 vin;
     Vector3 vmid;

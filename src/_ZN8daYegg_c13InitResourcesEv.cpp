@@ -1,13 +1,13 @@
 //cpp
-// @symbol _ZN8YoshiEgg13InitResourcesEv
+// @symbol _ZN8daYegg_c13InitResourcesEv
 /* recovered: named members + shared header, real C++ method
  *
- * Vtable slot 0. This was the last YoshiEgg function still written as a C free
+ * Vtable slot 0. This was the last daYegg_c function still written as a C free
  * function reaching every field through a raw offset -- it named not one member,
- * which is why it could not even include its own header once YoshiEgg became a
+ * which is why it could not even include its own header once daYegg_c became a
  * real dEnemyBase_c subclass.
  */
-#include "YoshiEgg.h"
+#include "daYegg_c.h"
 #include "SharedFilePtr.h"
 
 extern "C" {
@@ -39,7 +39,7 @@ void LoadBlueCoinModel(void *self);
 
 #pragma opt_strength_reduction off
 
-int YoshiEgg::InitResources()
+int daYegg_c::InitResources()
 {
     int idx;
     int i;

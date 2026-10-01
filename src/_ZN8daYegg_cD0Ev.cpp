@@ -1,21 +1,21 @@
 //cpp
-// @symbol _ZN8YoshiEggD0Ev
+// @symbol _ZN8daYegg_cD0Ev
 /* recovered: real C++ deleting destructor -- the compiler emits the whole body
  *
  * D0 is the DELETING destructor: destroy through this class and its bases --
  * which is why more than one vptr store appears -- then return the object to
- * its heap. Nobody writes that; declaring `~YoshiEgg()` is enough, because mwcc
+ * its heap. Nobody writes that; declaring `~daYegg_c()` is enough, because mwcc
  * emits D2, D0 and D1 together and objisolate keeps the one this file is bound
  * to.
  *
  * The deallocation is an inline operator delete, which is why nothing below
  * mentions a heap.
  */
-#include "YoshiEgg.h"
+#include "daYegg_c.h"
 
 #ifdef _MSC_VER
 /* THE HOST NEEDS THE ROM'S FLAT D0 NAME, AND MSVC NEVER EMITS IT. MSVC
- * folds the Itanium destructor variants into the one ~YoshiEgg() it
+ * folds the Itanium destructor variants into the one ~daYegg_c() it
  * emits, which the class's D1 file already defines, so compiling the
  * definition below as well would define that symbol twice. This arm
  * spells out, in terms of it, what the deleting destructor this file is
@@ -24,14 +24,14 @@
  * class-specific operator delete. Nothing here reaches mwccarm: it builds
  * the `#else` arm and emits the ROM bytes it always emitted, and the
  * object is byte-identical either way. */
-extern "C" YoshiEgg *_ZN8YoshiEggD0Ev(YoshiEgg *thiz)
+extern "C" daYegg_c *_ZN8daYegg_cD0Ev(daYegg_c *thiz)
 {
-    thiz->YoshiEgg::~YoshiEgg();      /* the D1 body, through the one host symbol */
-    YoshiEgg::operator delete(thiz);  /* the class-specific delete D0 ends with */
+    thiz->daYegg_c::~daYegg_c();      /* the D1 body, through the one host symbol */
+    daYegg_c::operator delete(thiz);  /* the class-specific delete D0 ends with */
     return thiz;
 }
 #else
-YoshiEgg::~YoshiEgg()
+daYegg_c::~daYegg_c()
 {
 }
 #endif

@@ -6104,7 +6104,7 @@
         "param:#2 void *",
         "param:#5 void *"
       ],
-      "src/_ZN8YoshiEgg13InitResourcesEv.cpp": [
+      "src/_ZN8daYegg_c13InitResourcesEv.cpp": [
         "param:#2 dActor_c *",
         "param:#5 void *",
         "param:#6 void *"
@@ -13860,7 +13860,7 @@
       ]
     },
     "_ZN8dActor_c9TrackStarEjj": {
-      "src/_ZN8YoshiEgg13InitResourcesEv.cpp": [
+      "src/_ZN8daYegg_c13InitResourcesEv.cpp": [
         "return:unsigned char"
       ],
       "src/game/actors/d_a_btn.cpp": [
@@ -14070,7 +14070,7 @@
       "src/_ZN12daKuriKing_c13InitResourcesEv.cpp": [
         "param:#5 unsigned int"
       ],
-      "src/_ZN8YoshiEgg13InitResourcesEv.cpp": [
+      "src/_ZN8daYegg_c13InitResourcesEv.cpp": [
         "param:#5 unsigned int"
       ],
       "src/_ZN9PowerStar13InitResourcesEv.cpp": [
@@ -18411,7 +18411,7 @@
       "src/_ZN6Player6RenderEv.cpp": [
         "return:int"
       ],
-      "src/_ZN8YoshiEgg8BehaviorEv.cpp": [
+      "src/_ZN8daYegg_c8BehaviorEv.cpp": [
         "return:int"
       ],
       "src/actors/daShark_c.cpp": [
@@ -20041,10 +20041,10 @@
       ]
     },
     "data_ov002_0210e6b0": {
-      "src/_ZN8YoshiEgg13InitResourcesEv.cpp": [
+      "src/_ZN8daYegg_c13InitResourcesEv.cpp": [
         "return:char []"
       ],
-      "src/_ZN8YoshiEgg16CleanupResourcesEv.cpp": [
+      "src/_ZN8daYegg_c16CleanupResourcesEv.cpp": [
         "return:char"
       ],
       "src/__sinit_ov002_021019d0.c": [
@@ -20234,7 +20234,7 @@
       ]
     },
     "data_ov002_0210eb78": {
-      "src/_ZN8YoshiEgg16CleanupResourcesEv.cpp": [
+      "src/_ZN8daYegg_c16CleanupResourcesEv.cpp": [
         "return:char"
       ],
       "src/func_ov002_020ed0d4.c": [
