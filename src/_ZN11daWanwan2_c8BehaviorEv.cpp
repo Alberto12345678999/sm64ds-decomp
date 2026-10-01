@@ -1,16 +1,16 @@
 //cpp
-// @symbol _ZN14UnchainedChomp8BehaviorEv
+// @symbol _ZN11daWanwan2_c8BehaviorEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 #include "decl_common.h"
 /* recovered: named members + shared header, real C++ method */
-#include "UnchainedChomp.h"
+#include "daWanwan2_c.h"
 struct dCc_c;
 /* NOT the real dActor_c, and deliberately not named one. This stand-in exists
    solely to give the pointer-to-member below a representation: a PMF on a
    non-polymorphic, single-base class is laid out differently from one on the
    real dActor_c, so the shape here is codegen, not decoration. Naming it dActor_c
    used to work only because this file included no header that defined the
-   real one; with UnchainedChomp.h in scope that became a redefinition, and
+   real one; with daWanwan2_c.h in scope that became a redefinition, and
    letting the PMF bind to the real dActor_c makes mwccarm abort with an
    internal compiler error rather than a diagnostic. */
 struct ChompPmfSelf;
@@ -40,7 +40,7 @@ extern unsigned char data_0209f2d8[];
 
 struct ChompPmfSelf { char pad[0x800]; };
 
-int UnchainedChomp::Behavior()
+int daWanwan2_c::Behavior()
 {
     char *c = (char *)((ChompPmfSelf *)this);
     DecIfAbove0_Short((unsigned short *)(c + 0x6ca));

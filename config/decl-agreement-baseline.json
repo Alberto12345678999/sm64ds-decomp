@@ -227,7 +227,7 @@
       "src/actors/daObjFl_Ring_c.cpp": [
         "param:#2 int"
       ],
-      "src/_ZN14UnchainedChomp8BehaviorEv.cpp": [
+      "src/_ZN11daWanwan2_c8BehaviorEv.cpp": [
         "return:void"
       ],
       "src/_ZN6Player12St_Walk_MainEv.cpp": [
@@ -1396,7 +1396,7 @@
       "src/_ZN10dBgW_KcMbg9TransformERK9Matrix4x3s.cpp": [
         "param:#1 Vector3 *"
       ],
-      "src/_ZN14UnchainedChomp8BehaviorEv.cpp": [
+      "src/_ZN11daWanwan2_c8BehaviorEv.cpp": [
         "param:#1 Vector3 *"
       ],
       "src/actors/daManta_c.cpp": [
@@ -5183,7 +5183,7 @@
         "param:#2 const Vector3 *",
         "param:#3 const Vector3 *"
       ],
-      "src/_ZN14UnchainedChomp8BehaviorEv.cpp": [
+      "src/_ZN11daWanwan2_c8BehaviorEv.cpp": [
         "param:#1 Vector3 *",
         "param:#2 Vector3 *",
         "param:#3 Vector3 *"
@@ -5705,7 +5705,7 @@
       "src/_ZN17daObjFl_Amilift_c8BehaviorEv.cpp": [
         "return:int"
       ],
-      "src/_ZN14UnchainedChomp8BehaviorEv.cpp": [
+      "src/_ZN11daWanwan2_c8BehaviorEv.cpp": [
         "param:#1 int &"
       ],
       "src/_ZN6Camera8BehaviorEv.cpp": [
@@ -6573,7 +6573,7 @@
       "src/actors/daWater_Suikomi_c.cpp": [
         "param:#3 V3 *"
       ],
-      "src/_ZN14UnchainedChomp13InitResourcesEv.cpp": [
+      "src/_ZN11daWanwan2_c13InitResourcesEv.cpp": [
         "param:#3 const Vector3 &"
       ],
       "src/actors/daKing_Donketu_c.cpp": [
@@ -13195,7 +13195,7 @@
       "src/_ZN11dCapEnemy_c21DestroyIfCapNotNeededEv.cpp": [
         "return:unsigned char *"
       ],
-      "src/_ZN14UnchainedChomp8BehaviorEv.cpp": [
+      "src/_ZN11daWanwan2_c8BehaviorEv.cpp": [
         "return:dActor_c *"
       ],
       "src/actors/daChoropu_c.cpp": [
@@ -13306,7 +13306,7 @@
       ]
     },
     "_ZN8dActor_c15HugeLandingDustEb": {
-      "src/_ZN14UnchainedChomp8BehaviorEv.cpp": [
+      "src/_ZN11daWanwan2_c8BehaviorEv.cpp": [
         "param:#2 bool"
       ]
     },
@@ -13628,7 +13628,7 @@
         "param:#6 int",
         "return:void *"
       ],
-      "src/_ZN14UnchainedChomp8BehaviorEv.cpp": [
+      "src/_ZN11daWanwan2_c8BehaviorEv.cpp": [
         "param:#5 int",
         "param:#6 int"
       ],
@@ -17147,7 +17147,7 @@
       "src/_ZN11dCapEnemy_c11GetCapStateEv.cpp": [
         "return:int"
       ],
-      "src/_ZN14UnchainedChomp8BehaviorEv.cpp": [
+      "src/_ZN11daWanwan2_c8BehaviorEv.cpp": [
         "return:unsigned char []"
       ],
       "src/_ZN6Player16InitWingFeathersEb.cpp": [
@@ -27038,7 +27038,7 @@
       "src/actors/daGrock_c.cpp": [
         "param:#1 int"
       ],
-      "src/_ZN14UnchainedChomp8BehaviorEv.cpp": [
+      "src/_ZN11daWanwan2_c8BehaviorEv.cpp": [
         "param:#1 int"
       ],
       "src/_ZN6Player16St_BurnFire_MainEv.cpp": [
@@ -39957,8 +39957,8 @@
       ]
     },
     "func_ov100_02143b18": {
-      "src/_ZN14UnchainedChomp13InitResourcesEv.cpp": [
-        "param:#1 UnchainedChomp *",
+      "src/_ZN11daWanwan2_c13InitResourcesEv.cpp": [
+        "param:#1 daWanwan2_c *",
         "return:void"
       ]
     },

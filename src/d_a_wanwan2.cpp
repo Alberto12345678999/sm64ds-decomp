@@ -1,6 +1,6 @@
 //cpp
 // @symbol daWanwan2_c_classInit
-#include "UnchainedChomp.h"
+#include "daWanwan2_c.h"
 
 extern "C" {
 void *_ZN7fBase_cnwEj(unsigned int size);
@@ -11,7 +11,7 @@ ModelAnim *_ZN9ModelAnimC1Ev(ModelAnim *object);
 ShadowModel *_ZN11ShadowModelC1Ev(ShadowModel *object);
 void __cxa_vec_ctor(void *base, unsigned int count, unsigned int stride,
     void (*ctor)(void *), void (*dtor)(void *));
-extern void *_ZTV14UnchainedChomp;
+extern void *_ZTV11daWanwan2_c;
 Model *_ZN5ModelC1Ev(Model *object);
 Model *_ZN5ModelD1Ev(Model *object);
 ShadowModel *_ZN11ShadowModelD1Ev(ShadowModel *object);
@@ -27,13 +27,13 @@ void func_0203d73c(void);
  * preserved. Historical alias: UnchainedChomp_Spawn. */
 /* Array callbacks receive the element address and discard lifecycle results.
  * The empty func_0203d384/func_0203d73c callbacks ignore that address. */
-extern "C" UnchainedChomp *daWanwan2_c_classInit()
+extern "C" daWanwan2_c *daWanwan2_c_classInit()
 {
-    UnchainedChomp *actor =
-        (UnchainedChomp *)_ZN7fBase_cnwEj(sizeof(UnchainedChomp));
+    daWanwan2_c *actor =
+        (daWanwan2_c *)_ZN7fBase_cnwEj(sizeof(daWanwan2_c));
     if (actor) {
         _ZN12dEnemyBase_cC2Ev(actor);
-        *(void **)actor = &_ZTV14UnchainedChomp;
+        *(void **)actor = &_ZTV11daWanwan2_c;
         _ZN10dCcAcPos_cC1Ev(&actor->mdCcAcPos_c);
         _ZN10dBgCh_ActrC1Ev(&actor->mWithMeshClsn);
         _ZN9ModelAnimC1Ev(&actor->mModelAnim);

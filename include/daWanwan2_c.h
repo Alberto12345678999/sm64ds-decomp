@@ -1,5 +1,5 @@
-#ifndef UNCHAINEDCHOMP_H
-#define UNCHAINEDCHOMP_H
+#ifndef DAWANWAN2_C_H
+#define DAWANWAN2_C_H
 
 #include "types.h"
 #include "dEnemyBase_c.h"
@@ -25,12 +25,14 @@
  * same counts and strides, and allocates 0x7a4 -- so 0x18 of tail is spare and stays
  * padding.
  *
- * SM64DS RTTI names the implementation daWanwan2_c. The reconstructed
- * factory daWanwan2_c_classInit (historical alias
+ * SM64DS RTTI names the implementation daWanwan2_c: _ZTI11daWanwan2_c at
+ * 0x02148014, _ZTS11daWanwan2_c at 0x02148020, and the vtable
+ * _ZTV11daWanwan2_c at 0x02148054 that the factory and destructor store.
+ * The reconstructed factory daWanwan2_c_classInit (historical alias
  * UnchainedChomp_Spawn) constructs it for the WANWAN2
  * registry profile.
  */
-struct UnchainedChomp : dEnemyBase_c {
+struct daWanwan2_c : dEnemyBase_c {
     dCcAcPos_c mdCcAcPos_c;  /* 0x110 */
     dBgCh_Actr        mWithMeshClsn;      /* 0x150 */
     ModelAnim           mModelAnim;         /* 0x30c */
@@ -38,7 +40,7 @@ struct UnchainedChomp : dEnemyBase_c {
     ShadowModel         mShadowModels[6];   /* 0x550 */
     ShadowModel         mShadowModel;       /* 0x640 */
     /* Behavior loads a pointer from here and calls a member function through it --
-       see the note in _ZN14UnchainedChomp8BehaviorEv.cpp. */
+       see the note in _ZN11daWanwan2_c8BehaviorEv.cpp. */
     void               *unk_668;            /* 0x668 */
     u8  pad_66c[0x40];
     s32 unk_6ac;                            /* 0x6ac */
@@ -56,7 +58,7 @@ struct UnchainedChomp : dEnemyBase_c {
     Vector3s            mUnk_768[6];        /* 0x768 */
     u8  pad_78c[0x18];
 
-    virtual ~UnchainedChomp();
+    virtual ~daWanwan2_c();
 
     virtual s32   OnAimedAtWithEgg();      /* slot 29 */
 
@@ -70,7 +72,7 @@ struct UnchainedChomp : dEnemyBase_c {
 
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
-typedef char UnchainedChomp_size_must_be_0x7a4[sizeof(UnchainedChomp) == 0x7a4 ? 1 : -1];
+typedef char daWanwan2_c_size_must_be_0x7a4[sizeof(daWanwan2_c) == 0x7a4 ? 1 : -1];
 #endif
 
-#endif /* UNCHAINEDCHOMP_H */
+#endif /* DAWANWAN2_C_H */

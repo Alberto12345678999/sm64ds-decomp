@@ -1,8 +1,8 @@
 //cpp
-// @symbol _ZN14UnchainedChomp13InitResourcesEv
+// @symbol _ZN11daWanwan2_c13InitResourcesEv
 
 #include "SharedFilePtr.h"
-#include "UnchainedChomp.h"
+#include "daWanwan2_c.h"
 #include "PathPtr.h"
 
 extern "C" {
@@ -10,7 +10,7 @@ void LoadSilverStarAndNumber();
 void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
     dCcAcPos_c *clsn, dActor_c *actor, const Vector3 &offset,
     s32 radius, s32 height, u32 flags, u32 vulnFlags);
-void func_ov100_02143b18(UnchainedChomp *chomp, void *data);
+void func_ov100_02143b18(daWanwan2_c *chomp, void *data);
 
 extern SharedFilePtr data_ov002_0211092c;
 extern SharedFilePtr data_ov100_021486bc;
@@ -21,7 +21,7 @@ extern s32 data_ov100_02148008[3];
 extern s32 data_ov100_021486f4;
 }
 
-int UnchainedChomp::InitResources()
+int daWanwan2_c::InitResources()
 {
     Model::LoadFile(data_ov002_0211092c);
     mModelAnim.SetFile((BMD_File *)Model::LoadFile(data_ov100_021486bc), 1, -1);
