@@ -6677,9 +6677,6 @@
       ]
     },
     "_ZN10dCcAcPos_cD1Ev": {
-      "src/d_a_hanachan.c": [
-        "return:int"
-      ],
       "src/d_a_kuri_king_kuriking.cpp": [
         "return:void"
       ],
@@ -7409,9 +7406,6 @@
     "_ZN15MaterialChangerD1Ev": {
       "src/_ZN6PlayerC1Ev.cpp": [
         "return:void"
-      ],
-      "src/d_a_hanachan.c": [
-        "return:int"
       ]
     },
     "_ZN15TextureSequence17UpdateFileOffsetsER8BTP_File": {
@@ -7588,9 +7582,6 @@
     "_ZN15TextureSequenceD1Ev": {
       "src/_ZN6PlayerC1Ev.cpp": [
         "return:void"
-      ],
-      "src/d_a_hanachan.c": [
-        "return:int"
       ],
       "src/d_a_luigi.cpp": [
         "return:void"
@@ -14555,9 +14546,6 @@
       "include/decl_ModelAnim.h": [
         "return:void"
       ],
-      "src/d_a_hanachan.c": [
-        "return:int"
-      ],
       "src/func_ov006_020c3e70.cpp": [
         "return:void"
       ],
@@ -15427,13 +15415,6 @@
         "param:#5 void *"
       ],
       "src/d_a_dp_lift.cpp": [
-        "param:#2 int",
-        "param:#3 int",
-        "param:#4 void *",
-        "param:#5 void *",
-        "return:int"
-      ],
-      "src/d_a_hanachan.c": [
         "param:#2 int",
         "param:#3 int",
         "param:#4 void *",
@@ -31608,10 +31589,6 @@
       ]
     },
     "func_0203d384": {
-      "src/d_a_hanachan.c": [
-        "arity:1",
-        "return:int"
-      ],
       "src/d_a_kuri_king_kuriking.cpp": [
         "arity:1"
       ],
@@ -31720,12 +31697,6 @@
       ],
       "src/func_ov006_021295ac.cpp": [
         "arity:1"
-      ]
-    },
-    "func_0203d73c": {
-      "src/d_a_hanachan.c": [
-        "arity:1",
-        "return:int"
       ]
     },
     "func_0203d81c": {

@@ -5556,6 +5556,7 @@
     "src/actors/daHanachan_c.cpp#_ZN12daHanachan_c6RenderEv": "tangosdev",
     "src/actors/daHanachan_c.cpp#_ZN12daHanachan_c8BehaviorEv": "tangosdev",
     "src/actors/daHanachan_c.cpp#_ZN12daHanachan_c13InitResourcesEv": "andrewboudreau",
+    "src/actors/daHanachan_c.cpp#daHanachan_c_classInit": "tangosdev",
     "src/actors/daBasabasa_c.cpp#_ZN12daBasabasa_cD1Ev": "tangosdev",
     "src/actors/daBasabasa_c.cpp#_ZN12daBasabasa_cD0Ev": "tangosdev",
     "src/actors/daBasabasa_c.cpp#func_ov065_0211704c": "lunavyqo",
