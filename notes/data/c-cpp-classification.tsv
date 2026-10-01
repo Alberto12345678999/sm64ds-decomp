@@ -107,7 +107,7 @@ src/DisableSoundPlayersForCredits.c	WEAK-refs-only	arm9				1		None		-
 src/DisableVramBanks.c	PURE-C	arm9				1		None		-
 src/Div.c	PURE-C					0		None		not-in-delinks
 src/d_a_obj_rc_tikuwa.c	WEAK-refs-only	ov036				1		None		-
-src/d_a_door.c	S1-stores-rom-vptr	ov100			stores _ZTV4Door	1		None	_ZTV4Door	-
+src/d_a_door.c	S1-stores-rom-vptr	ov100			stores _ZTV8daDoor_c	1		None	_ZTV8daDoor_c	-
 src/daDossyCap_c_classInit.c	WEAK-refs-only	ov065				1		None		-
 src/DotVec3.c	PURE-C	arm9				1		None		-
 src/Enable3dEngines.c	PURE-C	arm9				1		None		-
@@ -879,10 +879,10 @@ src/_ZN12daObjShell_cD0Ev.cpp	DTOR-ONLY	ov064	daObjShell_c	daObjShell_c/daObjShe
 src/_ZN4Coin13InitResourcesEv.c	P1-vtable+mangled	ov002	daCoin_c	Coin/daCoin_c	vtable daCoin_c slot 0 @0x20b2508 | _ZN4Coin13InitResourcesEv	1		True		-
 src/_ZN4Coin16CleanupResourcesEv.c	P1-vtable+mangled	ov002	daCoin_c	Coin/daCoin_c	vtable daCoin_c slot 3 @0x20b2198 | _ZN4Coin16CleanupResourcesEv	1		True		-
 src/_ZN4CoinD0Ev.c	DTOR-ONLY	ov002	daCoin_c	Coin/daCoin_c	_ZN4CoinD0Ev	1		True		-
-src/_ZN4Door13InitResourcesEv.c	P1-vtable+mangled	ov100	daDoor_c	Door/daDoor_c	vtable daDoor_c slot 0 @0x21455a0 | _ZN4Door13InitResourcesEv	1		True		-
-src/_ZN4Door16OnPendingDestroyEv.c	P1-vtable+mangled	ov100	daDoor_c	Door/daDoor_c	vtable daDoor_c slot 12 @0x21454c4 | _ZN4Door16OnPendingDestroyEv	1		True		-
-src/_ZN4DoorD0Ev.c	DTOR-ONLY	ov100	daDoor_c	Door/daDoor_c	_ZN4DoorD0Ev	1		True	_ZTV4Door	-
-src/_ZN4DoorD1Ev.c	DTOR-ONLY	ov100	daDoor_c	Door/daDoor_c	_ZN4DoorD1Ev	1		True	_ZTV4Door	-
+src/_ZN8daDoor_c13InitResourcesEv.c	P1-vtable+mangled	ov100	daDoor_c	daDoor_c/daDoor_c	vtable daDoor_c slot 0 @0x21455a0 | _ZN8daDoor_c13InitResourcesEv	1		True		-
+src/_ZN8daDoor_c16OnPendingDestroyEv.c	P1-vtable+mangled	ov100	daDoor_c	daDoor_c/daDoor_c	vtable daDoor_c slot 12 @0x21454c4 | _ZN8daDoor_c16OnPendingDestroyEv	1		True		-
+src/_ZN8daDoor_cD0Ev.c	DTOR-ONLY	ov100	daDoor_c	daDoor_c/daDoor_c	_ZN8daDoor_cD0Ev	1		True	_ZTV8daDoor_c	-
+src/_ZN8daDoor_cD1Ev.c	DTOR-ONLY	ov100	daDoor_c	daDoor_c/daDoor_c	_ZN8daDoor_cD1Ev	1		True	_ZTV8daDoor_c	-
 src/_ZN11daChScene_cD0Ev.c	DTOR-ONLY	ov002	daChScene_c	daChScene_c/daChScene_c	_ZN11daChScene_cD0Ev	1		True	_ZTV11daChScene_c	-
 src/_ZN8daFish_c16OnPendingDestroyEv.c	P1-vtable+mangled	ov100	daFish_c	daFish_c/daFish_c	vtable daFish_c slot 12 @0x2146b00 | _ZN8daFish_c16OnPendingDestroyEv	1		True		-
 src/_ZN8daFish_cD0Ev.cpp	DTOR-ONLY	ov100	daFish_c	daFish_c/daFish_c	_ZN8daFish_cD0Ev	1		True		-

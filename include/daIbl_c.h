@@ -1,12 +1,12 @@
-#ifndef ROLLINGIRONBALL_H
-#define ROLLINGIRONBALL_H
+#ifndef DAIBL_C_H
+#define DAIBL_C_H
 
 #include "types.h"
 
 /* Derives from dEnemyBase_c, and TWO INDEPENDENT WITNESSES agree on the layout:
- * the class's own destructor `_ZN15RollingIronBallD1Ev` destroys each member, and
+ * the class's own destructor `_ZN7daIbl_cD1Ev` destroys each member, and
  * `daIbl_c_classInit` constructs the same types at the same offsets before
- * storing `_ZTV15RollingIronBall`. Everything this header used to restate below
+ * storing `_ZTV7daIbl_c`. Everything this header used to restate below
  * 0x110 belongs to dEnemyBase_c and dActor_c and is inherited now.
  *
  * The members close on each other, which is what makes the layout a
@@ -24,17 +24,17 @@
  * allocation literal -- the layout does not close without it. Reading only
  * the destructor leaves the class eight bytes short.
  *
- * (InitResources still does not reproduce -- a size disagreement, not a
- * compile error. That predates this header: it fails identically on ff7872bf,
- * where the class was still flat. Its body carries laundering hacks and a
- * volatile read and wants its own matching session. Every other function of
- * this class reproduces.)
+ * Every function of the class reproduces, in one translation unit:
+ * src/actors/daIbl_c.cpp is the whole linker unit 0x02141f04..0x021431c4,
+ * factory included.
  *
  * SIZE IS THE ROM'S OWN: `daIbl_c_classInit` calls
  * `fBase_c::operator new(1020)` -- 0x3fc -- and stores this class's
  * vtable, so that literal IS this class's sizeof.
  *
- * SM64DS RTTI names the implementation daIbl_c. The reconstructed
+ * SM64DS RTTI names the implementation daIbl_c: _ZTS7daIbl_c at
+ * 0x02147f40, _ZTI7daIbl_c at 0x02147f4c, and the vtable _ZTV7daIbl_c at
+ * 0x02147f7c that the factory and destructor store. The reconstructed
  * factory daIbl_c_classInit (historical alias
  * RollingIronBall_Spawn) constructs it for the IRONBALL
  * registry profile.
@@ -47,7 +47,7 @@
 #include "ShadowModel.h"
 #include "dBgCh_Actr.h"
 
-struct RollingIronBall : dEnemyBase_c {
+struct daIbl_c : dEnemyBase_c {
     dBgCh_Actr                 mWithMeshClsn;         /* 0x110 */
     Model                        mModel;                /* 0x2cc */
     ShadowModel                  mShadowModel;          /* 0x31c */
@@ -92,7 +92,7 @@ struct RollingIronBall : dEnemyBase_c {
     PathPtr                      mPathPtr;              /* 0x3f4 */
 
     /* --- vtable --- */
-    virtual ~RollingIronBall();
+    virtual ~daIbl_c();
 
     virtual s32   OnAimedAtWithEgg();      /* slot 29 */
 
@@ -104,7 +104,7 @@ struct RollingIronBall : dEnemyBase_c {
 
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
-typedef char RollingIronBall_size_must_be_0x3fc[sizeof(RollingIronBall) == 0x3fc ? 1 : -1];
+typedef char daIbl_c_size_must_be_0x3fc[sizeof(daIbl_c) == 0x3fc ? 1 : -1];
 #endif
 
-#endif /* ROLLINGIRONBALL_H */
+#endif /* DAIBL_C_H */
