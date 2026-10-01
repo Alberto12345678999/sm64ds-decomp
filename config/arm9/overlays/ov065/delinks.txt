@@ -38,15 +38,7 @@ src/actors/daObjCtKaitendai_c.cpp:
 
 src/actors/daObjCtMecha08_c.cpp:
     complete
-    .text start:0x0211b7f0 end:0x0211bb7c
-
-src/d_a_obj_ct_mecha08_ct_mecha08b.c:
-    complete
-    .text start:0x0211bb7c end:0x0211bbac
-
-src/d_a_obj_ct_mecha08_ct_mecha08a.c:
-    complete
-    .text start:0x0211bbac end:0x0211bbdc
+    .text start:0x0211b7f0 end:0x0211bbdc
 
 src/actors/daObjCtMecha09_c.cpp:
     complete
