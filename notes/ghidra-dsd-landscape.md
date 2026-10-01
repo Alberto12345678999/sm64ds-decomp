@@ -305,7 +305,7 @@ that dsd cannot attribute to [overlay 2](../config/arm9/overlays/ov002/symbols.t
 The next three (`0x020aea30`, `0x020adc74`, `0x020ada40`) account for another 69. Four
 addresses cover 126 of 135.
 
-**G5.4 — The data side is dominated by two tables.** [high] [data_02090864](../config/arm9/symbols.txt) alone
+**G5.4 — The data side is dominated by two tables.** [high] [ACTOR_SPAWN_TABLE](../config/arm9/symbols.txt) alone
 accounts for **244** entries and [data_02092208](../config/arm9/symbols.txt) for 51; the rest of the top-12 are ten
 `data_ov006_*` blocks at 21-23 each. A 244-entry ambiguous run at one address is a
 function-pointer table, not 244 independent problems.
