@@ -4972,6 +4972,7 @@
     "src/actors/daDonketu_c.cpp#_ZN11daDonketu_c16UpdateDeathStateEv": "andrewboudreau",
     "src/actors/daDonketu_c.cpp#_ZN11daDonketu_c8BehaviorEv": "lunavyqo",
     "src/actors/daDonketu_c.cpp#_ZN11daDonketu_c13InitResourcesEv": "ruspecial",
+    "src/actors/daDonketu_c.cpp#daDonketu_c_classInit": "tangosdev",
     "src/actors/daObjShell_c.cpp#_ZN12daObjShell_cD1Ev": "andrewboudreau",
     "src/actors/daObjShell_c.cpp#_ZN12daObjShell_cD0Ev": "tangosdev",
     "src/actors/daObjShell_c.cpp#func_ov064_0211a9b4": "tangosdev",

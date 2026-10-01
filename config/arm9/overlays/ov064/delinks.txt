@@ -10,11 +10,7 @@ src/actors/daOts_c.cpp:
 
 src/actors/daDonketu_c.cpp:
     complete
-    .text start:0x02117070 end:0x02117444
-
-src/d_a_donketu.c:
-    complete
-    .text start:0x02117444 end:0x021174a0
+    .text start:0x02117070 end:0x021174a0
 
 src/actors/daBDonketu_c.cpp:
     complete
