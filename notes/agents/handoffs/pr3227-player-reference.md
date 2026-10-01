@@ -1,15 +1,15 @@
 # PR #3227: Player reference parameter
 
-Input: dbd94c7c483db1b6c5603c7ec2a680b46461643e.
-Task: pr3227-player-reference. Producer/integration owner: codex-pr3227-reference.
-Independent reviewer: kpa3_review. Endpoint: push to existing PR #3227; no merge.
+Input: `dbd94c7c483db1b6c5603c7ec2a680b46461643e`.
+Task: `pr3227-player-reference`. Producer/integration owner: `codex-pr3227-reference`.
+Independent reviewer: `kpa3_review`. Endpoint: push to existing PR #3227; no merge.
 
 ## Scope and authorization
 
-Change func_ov002_020d7430 to take Player&, update its two source callers, and
+Change [func_ov002_020d7430](../../../src/func_ov002_020d7430.cpp) to take `Player&`, update its two source callers, and
 remove its obsolete char* declaration from include/decl_common.h. The user
 explicitly confirmed this exact prepared patch, including the scoped header edit
-while jump-contract-repair-0918 reserves that header. That task's branch and
+while `jump-contract-repair-0918` reserves that header. That task's branch and
 reservation remain untouched. No other shared-header declarations change.
 
 The existing Player method passes *this directly. The remaining legacy free
@@ -27,9 +27,9 @@ The prior handoff pr3227-player-caller.md records those inherited limitations.
 The prepared patch's three functions independently passed the pinned compiler's
 linked-byte probe before application: VERIFIED, diffs [], blind 0 for each:
 
-- ov002 func_ov002_020d6790: 0x020d6790, size 0x208.
-- ov002 func_ov002_020d7430: 0x020d7430, size 0xd4.
-- ov002 Player::St_YoshiPower_Main: 0x020d7504, size 0x9cc.
+- [ov002](../../../config/arm9/overlays/ov002/symbols.txt) [func_ov002_020d6790](../../../src/func_ov002_020d6790.cpp): 0x020d6790, size 0x208.
+- [ov002](../../../config/arm9/overlays/ov002/symbols.txt) [func_ov002_020d7430](../../../src/func_ov002_020d7430.cpp): 0x020d7430, size 0xd4.
+- [ov002](../../../config/arm9/overlays/ov002/symbols.txt) [Player::St_YoshiPower_Main](../../../src/_ZN6Player18St_YoshiPower_MainEv.cpp): 0x020d7504, size 0x9cc.
 
 Applied production declaration check:
 `python tools/check_decl_agreement.py --changed dbd94c7c483db1b6c5603c7ec2a680b46461643e`
@@ -54,13 +54,13 @@ No tracked verification tools or acceptance criteria were changed.
 
 Both warnings independently reproduce at input and candidate:
 
-- _ZN9dScDSMT_c8BehaviorEv: BLIND-2, diffs []; unresolved overlay_64 at +0x184
+- `_ZN9dScDSMT_c8BehaviorEv`: BLIND-2, diffs []; unresolved overlay_64 at +0x184
   and overlay_66 at +0x188, R_ARM_ABS32, addend 0.
-- func_ov089_0213162c: BLIND-1, diffs []; unresolved data_02111b68 at +0x4e0,
+- [func_ov089_0213162c](../../../src/func_ov089_0213162c.c): BLIND-1, diffs []; unresolved data_02111b68 at +0x4e0,
   R_ARM_ABS32, addend 0.
 
 All three edited functions independently return VERIFIED, diffs [], blind 0.
-The reviewer checked source commit 85fc2ffe75c6564884e634b9191ea7ab2f361b10
+The reviewer checked source commit `85fc2ffe75c6564884e634b9191ea7ab2f361b10`
 against the exact input base in an isolated wired worktree. The reviewer also ran
 declaration and attribution checks, and found no actionable source defects. Root
 attribution check: 0 changed, 0 lost. This proof-note update changes no reviewed code.
