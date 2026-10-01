@@ -80,7 +80,7 @@ Additional observed fields:
 
 | offset | new name | evidence |
 | --- | --- | --- |
-| 0x35c | `mVariant` | `src/_ZN11daKpaFire_c13InitResourcesEv.cpp`: `mVariant = param1 & 7`. It is then the index into both behaviour tables — [data_ov060_0211af74](../config/arm9/overlays/ov060/symbols.txt)`[mVariant]` (called once at init) and [data_ov060_0211afb4](../config/arm9/overlays/ov060/symbols.txt)`[mVariant].pmf` (called every frame in `Behavior`) — and `mVariant == 0` is what disables the collider by setting `mdCcAc_c.flags \|= 1`. |
+| 0x35c | `mVariant` | `src/actors/daKpaFire_c.cpp`: `mVariant = param1 & 7`. It is then the index into both behaviour tables — [data_ov060_0211af74](../config/arm9/overlays/ov060/symbols.txt)`[mVariant]` (called once at init) and [data_ov060_0211afb4](../config/arm9/overlays/ov060/symbols.txt)`[mVariant].pmf` (called every frame in `Behavior`) — and `mVariant == 0` is what disables the collider by setting `mdCcAc_c.flags \|= 1`. |
 | 0x364 | `mGroundY` | `InitResources` casts a `dBgCh_Gnd` ray down from the actor's position and stores `rc.clsnY` on a hit, `mPosY` on a miss. |
 | 0x374 | `mFrameCount` (`u16`) | zeroed in `InitResources`, incremented by 1 at the top of every `Behavior`. Widened from `s16` to `u16` to match the `unsigned short` the ROM's read-modify-write used, which is now spelled `mFrameCount += 1;`. |
 
@@ -88,14 +88,14 @@ Left `unk_`:
 
 - **0x2cc, 0x37c, 0x380, 0x384, 0x388** — written to 0 (or copied from each other) in
   `InitResources` and never read in a matched body.
-- **0x360** — `mShadowRadiusScale`. [func_ov060_02117624](../src/func_ov060_02117624.cpp) passes `*(0x368) * this`
+- **0x360** — `mShadowRadiusScale`. [func_ov060_02117624](../src/actors/daKpaFire_c.cpp) passes `*(0x368) * this`
   as the radius argument of `dActor_c::DropShadowRadHeight`, so the 0x2000 is a
   Fix12 2.0 multiplier on the shadow's base radius.
 - **0x370** — an `s32` incremented once per `Behavior`, alongside `mFrameCount`. Two
   free-running counters in one class, and nothing reads either, so there is no evidence
   for which is which; the raw poke stays rather than pick a name at random.
 - **0x378** — `(param1 >> 4) & 3`. Provenance without meaning: no matched body reads it.
-- **0x379** — `mDropsShadow`. [func_ov060_02117624](../src/func_ov060_02117624.cpp) returns immediately when it is 0,
+- **0x379** — `mDropsShadow`. [func_ov060_02117624](../src/actors/daKpaFire_c.cpp) returns immediately when it is 0,
   before it drops the shadow at all, so `mVariant != 0` is deciding which variants
   cast one.
 

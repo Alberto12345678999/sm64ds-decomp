@@ -1,9 +1,9 @@
 {
   "id": "ov060/daKpaFire_c",
   "module": "ov060",
-  "source": "src_tu/actors/daKpaFire_c.cpp",
+  "source": "src/actors/daKpaFire_c.cpp",
   "promoted_source": "src/actors/daKpaFire_c.cpp",
-  "status": "text-verified",
+  "status": "promoted",
   "boundary_confidence": "medium",
   "boundary_evidence": [
     "contiguous linker run: 0x02116484..0x02117938, 26 function(s), from build/tu_map.json (tools/tu_map.py, regenerated post-rename as ov060/daKpaFire_c). All 26 carry complete delinks entries; boundaries high on both sides.",
