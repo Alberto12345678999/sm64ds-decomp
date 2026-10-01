@@ -2,7 +2,7 @@
 // @symbol _ZN11daKpaFire_c13InitResourcesEv
 /* recovered: named members + shared header, real C++ method
  *
- * daKpaFire_c holds no file references of its own -- Bowser loads and frees the
+ * daKpaFire_c holds no file references of its own -- daKpa_c loads and frees the
  * whole fight -- so this sets up collision and state rather than resources.
  *
  * All three shadow declarations are gone:

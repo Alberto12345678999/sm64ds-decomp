@@ -1937,8 +1937,8 @@
       "diffs": []
     },
     {
-      "file": "src/_ZN10BowserTail8BehaviorEv.cpp",
-      "name": "_ZN10BowserTail8BehaviorEv",
+      "file": "src/_ZN11daKpaTail_c8BehaviorEv.cpp",
+      "name": "_ZN11daKpaTail_c8BehaviorEv",
       "module": "ov060",
       "addr": "0x2116078",
       "verdict": "VERIFIED",
@@ -3170,8 +3170,8 @@
       "diffs": []
     },
     {
-      "file": "src/_ZN16BowserShockwaves13InitResourcesEv.cpp",
-      "name": "_ZN16BowserShockwaves13InitResourcesEv",
+      "file": "src/_ZN17daKpa_cShockwaves13InitResourcesEv.cpp",
+      "name": "_ZN17daKpa_cShockwaves13InitResourcesEv",
       "module": "ov060",
       "addr": "0x2119004",
       "verdict": "VERIFIED",
@@ -3179,8 +3179,8 @@
       "diffs": []
     },
     {
-      "file": "src/_ZN16BowserShockwaves8BehaviorEv.cpp",
-      "name": "_ZN16BowserShockwaves8BehaviorEv",
+      "file": "src/_ZN17daKpa_cShockwaves8BehaviorEv.cpp",
+      "name": "_ZN17daKpa_cShockwaves8BehaviorEv",
       "module": "ov060",
       "addr": "0x2118eb8",
       "verdict": "VERIFIED",
@@ -3791,8 +3791,8 @@
       "diffs": []
     },
     {
-      "file": "src/_ZN6Bowser8BehaviorEv.cpp",
-      "name": "_ZN6Bowser8BehaviorEv",
+      "file": "src/_ZN7daKpa_c8BehaviorEv.cpp",
+      "name": "_ZN7daKpa_c8BehaviorEv",
       "module": "ov060",
       "addr": "0x2115f64",
       "verdict": "VERIFIED",
@@ -20323,7 +20323,7 @@
           "src/_ZN7daTgz_c13InitResourcesEv.cpp",
           "src/_ZN5Stage7LoadFogEv.cpp",
           "src/_ZN9daMoray_c13InitResourcesEv.cpp",
-          "src/_ZN6Bowser8BehaviorEv.cpp",
+          "src/_ZN7daKpa_c8BehaviorEv.cpp",
           "src/_ZN6Coffin13InitResourcesEv.cpp",
           "src/_ZN6Klepto13InitResourcesEv.cpp",
           "src/_ZN6Player12St_Fall_MainEv.cpp",
@@ -20447,7 +20447,7 @@
           "src/_ZN7daTgz_c13InitResourcesEv.cpp",
           "src/_ZN5Stage7LoadFogEv.cpp",
           "src/_ZN9daMoray_c13InitResourcesEv.cpp",
-          "src/_ZN6Bowser8BehaviorEv.cpp",
+          "src/_ZN7daKpa_c8BehaviorEv.cpp",
           "src/_ZN6Coffin13InitResourcesEv.cpp",
           "src/_ZN6Klepto13InitResourcesEv.cpp",
           "src/_ZN6Player12St_Fall_MainEv.cpp",
@@ -21070,7 +21070,7 @@
           "src/actors/dScTitle_c.cpp",
           "src/game/actors/d_a_obj_cannon_shutter.cpp",
           "src/SublevelToLevel.c",
-          "src/_ZN10BowserTail8BehaviorEv.cpp",
+          "src/_ZN11daKpaTail_c8BehaviorEv.cpp",
           "src/_ZN10DonutBlock13InitResourcesEv.cpp",
           "src/_ZN11daSnowman_c13InitResourcesEv.cpp",
           "src/_ZN10RockPillar13InitResourcesEv.cpp",
@@ -21094,7 +21094,7 @@
           "src/_ZN14dScMgBomroom_c13OnYoshiTryEatEi.cpp",
           "src/_ZN15FireSeaElevator13InitResourcesEv.cpp",
           "src/_ZN15TtcRotatingGear13InitResourcesEv.cpp",
-          "src/_ZN16BowserShockwaves13InitResourcesEv.cpp",
+          "src/_ZN17daKpa_cShockwaves13InitResourcesEv.cpp",
           "src/_ZN16dScMgSmartball_c13InitResourcesEv.cpp",
           "src/_ZN17BowserPuzzlePiece13InitResourcesEv.cpp",
           "src/_ZN19FirePiranhaPlantBig8BehaviorEv.cpp",
@@ -21195,7 +21195,7 @@
           "src/actors/dScTitle_c.cpp",
           "src/game/actors/d_a_obj_cannon_shutter.cpp",
           "src/SublevelToLevel.c",
-          "src/_ZN10BowserTail8BehaviorEv.cpp",
+          "src/_ZN11daKpaTail_c8BehaviorEv.cpp",
           "src/_ZN10DonutBlock13InitResourcesEv.cpp",
           "src/_ZN11daSnowman_c13InitResourcesEv.cpp",
           "src/_ZN10RockPillar13InitResourcesEv.cpp",
@@ -21219,7 +21219,7 @@
           "src/_ZN14dScMgBomroom_c13OnYoshiTryEatEi.cpp",
           "src/_ZN15FireSeaElevator13InitResourcesEv.cpp",
           "src/_ZN15TtcRotatingGear13InitResourcesEv.cpp",
-          "src/_ZN16BowserShockwaves13InitResourcesEv.cpp",
+          "src/_ZN17daKpa_cShockwaves13InitResourcesEv.cpp",
           "src/_ZN16dScMgSmartball_c13InitResourcesEv.cpp",
           "src/_ZN17BowserPuzzlePiece13InitResourcesEv.cpp",
           "src/_ZN19FirePiranhaPlantBig8BehaviorEv.cpp",
@@ -21353,7 +21353,7 @@
           "src/_ZN14dScMgCurling_c13InitResourcesEv.cpp",
           "src/_ZN15FireSeaElevator16CleanupResourcesEv.cpp",
           "src/_ZN15TtcRotatingGear16CleanupResourcesEv.cpp",
-          "src/_ZN16BowserShockwaves8BehaviorEv.cpp",
+          "src/_ZN17daKpa_cShockwaves8BehaviorEv.cpp",
           "src/_ZN16dScMgSmartball_c21AfterCleanupResourcesEj.cpp",
           "src/_ZN17BowserPuzzlePiece16CleanupResourcesEv.cpp",
           "src/_ZN19FloatOnLavaPlatform13InitResourcesEv.cpp",
@@ -21476,7 +21476,7 @@
           "src/_ZN14dScMgCurling_c13InitResourcesEv.cpp",
           "src/_ZN15FireSeaElevator16CleanupResourcesEv.cpp",
           "src/_ZN15TtcRotatingGear16CleanupResourcesEv.cpp",
-          "src/_ZN16BowserShockwaves8BehaviorEv.cpp",
+          "src/_ZN17daKpa_cShockwaves8BehaviorEv.cpp",
           "src/_ZN16dScMgSmartball_c21AfterCleanupResourcesEj.cpp",
           "src/_ZN17BowserPuzzlePiece16CleanupResourcesEv.cpp",
           "src/_ZN19FloatOnLavaPlatform13InitResourcesEv.cpp",
@@ -21602,7 +21602,7 @@
         "src/Camera_UpdateMatrices.c",
         "src/SublevelToLevel.c",
         "src/_ZN10BowserFire8BehaviorEv.cpp",
-        "src/_ZN10BowserTail8BehaviorEv.cpp",
+        "src/_ZN11daKpaTail_c8BehaviorEv.cpp",
         "src/_ZN19daObjBlockItemTag_c16CleanupResourcesEv.cpp",
         "src/_ZN19daObjBlockItemTag_c8BehaviorEv.cpp",
         "src/_ZN10DonutBlock13InitResourcesEv.cpp",
@@ -21741,8 +21741,8 @@
         "src/_ZN15dScMgPachinko_c13InitResourcesEv.cpp",
         "src/_ZN15dScMgPachinko_c13OnYoshiTryEatEi.cpp",
         "src/_ZN15daObjMarioCap_c13InitResourcesEv.cpp",
-        "src/_ZN16BowserShockwaves13InitResourcesEv.cpp",
-        "src/_ZN16BowserShockwaves8BehaviorEv.cpp",
+        "src/_ZN17daKpa_cShockwaves13InitResourcesEv.cpp",
+        "src/_ZN17daKpa_cShockwaves8BehaviorEv.cpp",
         "src/_ZN16RotatingCogSmall13InitResourcesEv.cpp",
         "src/_ZN16RotatingCogSmall16CleanupResourcesEv.cpp",
         "src/_ZN16dScMgPachinko2_c13InitResourcesEv.cpp",
@@ -21810,7 +21810,7 @@
         "src/_ZN5Whomp16CleanupResourcesEv.cpp",
         "src/_ZN5dBgCh21ShouldPassThroughImplEPvRK4CLPSRKS_b.cpp",
         "src/_ZN5dCc_c6UpdateEv.cpp",
-        "src/_ZN6Bowser8BehaviorEv.cpp",
+        "src/_ZN7daKpa_c8BehaviorEv.cpp",
         "src/_ZN6Bullet13InitResourcesEv.cpp",
         "src/_ZN6Bullet8BehaviorEv.cpp",
         "src/_ZN6Camera11ChangeStateEPNS_5StateE.cpp",
@@ -22331,8 +22331,8 @@
           "name": "_ZN10BowserFire8BehaviorEv"
         },
         {
-          "file": "src/_ZN10BowserTail8BehaviorEv.cpp",
-          "name": "_ZN10BowserTail8BehaviorEv"
+          "file": "src/_ZN11daKpaTail_c8BehaviorEv.cpp",
+          "name": "_ZN11daKpaTail_c8BehaviorEv"
         },
         {
           "file": "src/_ZN19daObjBlockItemTag_c16CleanupResourcesEv.cpp",
@@ -22879,12 +22879,12 @@
           "name": "_ZN15daObjMarioCap_c13InitResourcesEv"
         },
         {
-          "file": "src/_ZN16BowserShockwaves13InitResourcesEv.cpp",
-          "name": "_ZN16BowserShockwaves13InitResourcesEv"
+          "file": "src/_ZN17daKpa_cShockwaves13InitResourcesEv.cpp",
+          "name": "_ZN17daKpa_cShockwaves13InitResourcesEv"
         },
         {
-          "file": "src/_ZN16BowserShockwaves8BehaviorEv.cpp",
-          "name": "_ZN16BowserShockwaves8BehaviorEv"
+          "file": "src/_ZN17daKpa_cShockwaves8BehaviorEv.cpp",
+          "name": "_ZN17daKpa_cShockwaves8BehaviorEv"
         },
         {
           "file": "src/_ZN16RotatingCogSmall13InitResourcesEv.cpp",
@@ -23155,8 +23155,8 @@
           "name": "_ZN5dCc_c6UpdateEv"
         },
         {
-          "file": "src/_ZN6Bowser8BehaviorEv.cpp",
-          "name": "_ZN6Bowser8BehaviorEv"
+          "file": "src/_ZN7daKpa_c8BehaviorEv.cpp",
+          "name": "_ZN7daKpa_c8BehaviorEv"
         },
         {
           "file": "src/_ZN6Bullet13InitResourcesEv.cpp",

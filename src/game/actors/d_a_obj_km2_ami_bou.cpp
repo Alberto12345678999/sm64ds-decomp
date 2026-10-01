@@ -1,6 +1,6 @@
 //cpp
 /**
- * Bowser in the Fire Sea net pole.
+ * daKpa_c in the Fire Sea net pole.
  *
  * Oscillates vertically from the sine table. param1 != 0xffff
  * drops spawn Y by 300 and bobs up by 7; otherwise bobs down by 3.

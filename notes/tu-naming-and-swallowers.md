@@ -77,7 +77,7 @@ English ones:
 | --- | --- | --- |
 | [ov080](../config/arm9/overlays/ov080/symbols.txt) | `daChoropu_c` + `daChoro_Rock_c` | — (was MontyMole + MontyMoleRock) |
 | [ov002](../config/arm9/overlays/ov002/symbols.txt) | `daStar_c` + `daStarBase_c` | PowerStar + PowerStarBase |
-| [ov060](../config/arm9/overlays/ov060/symbols.txt) | `daKpa_c` + `daKpaTail_c` | Bowser + BowserTail |
+| [ov060](../config/arm9/overlays/ov060/symbols.txt) | `daKpa_c` + `daKpaTail_c` | daKpa_c + daKpaTail_c |
 | [ov065](../config/arm9/overlays/ov065/symbols.txt) | `daDossy_c` + `daDossyCap_c` | — (was Dorrie + DorrieCap) |
 | [ov020](../config/arm9/overlays/ov020/symbols.txt) | `daBook_c` + `daBookGen_c` | BookShot + BookShotSpawner |
 | [ov026](../config/arm9/overlays/ov026/symbols.txt) | `daWater_Suikomi_c` + `daWater_Tatumaki_c` | — |

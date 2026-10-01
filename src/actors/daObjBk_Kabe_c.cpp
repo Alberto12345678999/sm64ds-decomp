@@ -1,5 +1,5 @@
 //cpp
-/* Bowser's castle walls (BK_KABE00 and BK_KABE01).
+/* daKpa_c's castle walls (BK_KABE00 and BK_KABE01).
  *
  * The breakable wall, actor 0x30, does not die in Kill. Kill plays the
  * break sound at the camera-space position and a puff on the wall, then

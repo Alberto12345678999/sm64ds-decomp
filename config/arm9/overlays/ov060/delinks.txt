@@ -4,19 +4,19 @@
     .ctor       start:0x0211a4bc end:0x0211a4d4 kind:rodata align:4
     .data       start:0x0211a4e0 end:0x0211abe0 kind:data align:32
     .bss        start:0x0211abe0 end:0x0211b240 kind:bss align:32
-src/_ZN6BowserD1Ev.cpp:
+src/_ZN7daKpa_cD1Ev.cpp:
     complete
     .text start:0x02111900 end:0x02111950
 
-src/_ZN6BowserD0Ev.cpp:
+src/_ZN7daKpa_cD0Ev.cpp:
     complete
     .text start:0x02111950 end:0x021119b4
 
-src/_ZN10BowserTailD1Ev.cpp:
+src/_ZN11daKpaTail_cD1Ev.cpp:
     complete
     .text start:0x021119b4 end:0x021119e4
 
-src/_ZN10BowserTailD0Ev.cpp:
+src/_ZN11daKpaTail_cD0Ev.cpp:
     complete
     .text start:0x021119e4 end:0x02111a28
 
@@ -280,39 +280,39 @@ src/func_ov060_02115d68.cpp:
     complete
     .text start:0x02115d68 end:0x02115e80
 
-src/_ZN6Bowser16CleanupResourcesEv.cpp:
+src/_ZN7daKpa_c16CleanupResourcesEv.cpp:
     complete
     .text start:0x02115e80 end:0x02115f00
 
-src/_ZN10BowserTail16CleanupResourcesEv.cpp:
+src/_ZN11daKpaTail_c16CleanupResourcesEv.cpp:
     complete
     .text start:0x02115f00 end:0x02115f08
 
-src/_ZN6Bowser16OnPendingDestroyEv.cpp:
+src/_ZN7daKpa_c16OnPendingDestroyEv.cpp:
     complete
     .text start:0x02115f08 end:0x02115f0c
 
-src/_ZN6Bowser6RenderEv.cpp:
+src/_ZN7daKpa_c6RenderEv.cpp:
     complete
     .text start:0x02115f0c end:0x02115f5c
 
-src/_ZN10BowserTail6RenderEv.cpp:
+src/_ZN11daKpaTail_c6RenderEv.cpp:
     complete
     .text start:0x02115f5c end:0x02115f64
 
-src/_ZN6Bowser8BehaviorEv.cpp:
+src/_ZN7daKpa_c8BehaviorEv.cpp:
     complete
     .text start:0x02115f64 end:0x02116078
 
-src/_ZN10BowserTail8BehaviorEv.cpp:
+src/_ZN11daKpaTail_c8BehaviorEv.cpp:
     complete
     .text start:0x02116078 end:0x02116130
 
-src/_ZN6Bowser13InitResourcesEv.cpp:
+src/_ZN7daKpa_c13InitResourcesEv.cpp:
     complete
     .text start:0x02116130 end:0x021163b4
 
-src/_ZN10BowserTail13InitResourcesEv.cpp:
+src/_ZN11daKpaTail_c13InitResourcesEv.cpp:
     complete
     .text start:0x021163b4 end:0x021163f0
 

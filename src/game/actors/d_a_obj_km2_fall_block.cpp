@@ -1,6 +1,6 @@
 //cpp
 /**
- * Bowser in the Fire Sea's falling block.
+ * daKpa_c in the Fire Sea's falling block.
  *
  * No fields. InitResources / CleanupResources hand this overlay's
  * model and collision files to daObjFallBlock_c's shared ov098

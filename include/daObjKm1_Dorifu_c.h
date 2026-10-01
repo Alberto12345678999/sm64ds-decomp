@@ -7,7 +7,7 @@
 extern "C" void *_ZN7fBase_cnwEj(unsigned size);
 
 /**
- * Bowser in the Dark World's drifting stairs (`dorifu`). No fields of
+ * daKpa_c in the Dark World's drifting stairs (`dorifu`). No fields of
  * its own: the factory allocates 0xdcc, which daObjDorifu_c fills
  * (mPlankModels[5] at 0x320, mPlankClsn[5] at 0x4b0).
  * Overrides the two slots the base leaves null (InitResources,
