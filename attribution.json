@@ -6063,6 +6063,7 @@
     "src/actors/daObjPowerUpItem_c.cpp#_ZN18daObjPowerUpItem_c8BehaviorEv": "tangosdev",
     "src/actors/daObjPowerUpItem_c.cpp#_ZN18daObjPowerUpItem_c13InitResourcesEv": "andrewboudreau",
     "src/actors/daObjPowerUpItem_c.cpp#_ZN18daObjPowerUpItem_c13OnYoshiTryEatEv": "tangosdev",
+    "src/actors/daObjPowerUpItem_c.cpp#daObjPowerUpItem_c_classInit": "tangosdev",
     "src/actors/daTrs_c.cpp#_ZN7daTrs_cD1Ev": "tangosdev",
     "src/actors/daTrs_c.cpp#_ZN7daTrs_cD0Ev": "tangosdev",
     "src/actors/daTrs_c.cpp#_ZN11daTBasket_cD1Ev": "tangosdev",

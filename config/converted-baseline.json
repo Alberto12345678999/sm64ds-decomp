@@ -7,7 +7,7 @@
     "no_codegen_trick",
     "no_mangled_refs"
   ],
-  "count": 3080,
+  "count": 3081,
   "converted": [
     "src/ARMMathLoadState.c",
     "src/ARMMathSaveState.c",
@@ -3088,6 +3088,7 @@
     "src/actors/daObjBlockL_c.cpp#daObjBlockL_c_classInit_BLOCK_LL",
     "src/actors/daObjBlockL_c.cpp#daObjBlockL_c_classInit_SW_BLOCK_L",
     "src/actors/daObjBlockL_c.cpp#daObjBlockL_c_classInit_DP_BLOCK_L",
-    "src/actors/daObjBlockL_c.cpp#daObjBlockL_c_classInit_BLOCK_L"
+    "src/actors/daObjBlockL_c.cpp#daObjBlockL_c_classInit_BLOCK_L",
+    "src/actors/daObjPowerUpItem_c.cpp#daObjPowerUpItem_c_classInit"
   ]
 }
