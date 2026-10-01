@@ -10,11 +10,7 @@ src/actors/daYurei_Mucho_c.cpp:
 
 src/actors/daBasabasa_c.cpp:
     complete
-    .text start:0x02116f98 end:0x02117ee8
-
-src/d_a_basabasa.c:
-    complete
-    .text start:0x02117ee8 end:0x02117f40
+    .text start:0x02116f98 end:0x02117f40
 
 src/actors/daDossy_c.cpp:
     complete
