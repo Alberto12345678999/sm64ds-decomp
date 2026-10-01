@@ -14,11 +14,11 @@
  * 0x0211a7f4 name it daKpaFire_c, and daKpaFire_c_classInit builds it
  * for the KOOPAFIRE registry profile.
  *
- * The out-of-line destructor is the key function, so this TU emits the
- * vtable and RTTI (manifest: deadstrip-data against the homed triple).
- * Under `#pragma defer_codegen off` it comes out D1, D0, then a D2 the
- * cartridge has no home for (manifest: deadstrip); the same pragma lays
- * .text down in source order, so this file is ROM-ascending.
+ * This file is ROM-descending: deferred codegen reverses emission back
+ * into ROM order. The destructor pair is spelled out at the tail as
+ * extern "C" ABI bodies (D0 then D1) so the reversal emits D1 below D0
+ * as the cartridge has it; with no key-function definition this TU emits
+ * no vtable, RTTI or homeless D2.
  *
  * Known limits:
  * - The twenty func_ov060_* helpers stay free functions over raw offsets.
@@ -54,6 +54,8 @@
 #include "decl_common.h"
 #include "dBgCh_Actr.h"
 #include "decl_dBgCh_Actr.h"
+#include "decl_dCcAc_c.h"
+#include "decl_ShadowModel.h"
 #include "dBgCh_Gnd.h"
 #include "dActor_c.h"
 
@@ -839,14 +841,36 @@ void func_ov060_02116518(char* self, u32 kind, int a2, int a3)
 }
 }
 
+extern "C" void _ZN12dEnemyBase_cD2Ev(void *);
+
 /* -------------------------------------------------------------------------- */
-/* D1 then D0 from one out-of-line definition; the homeless D2 is deadstripped. */
-/* -------------------------------------------------------------------------- */
-// @symbol _ZN11daKpaFire_cD1Ev
+/* The destructor pair. One out-of-line `~daKpaFire_c()` would emit its variant
+ * group D0 then D1, but the cartridge runs D1 (0x02116484) below D0
+ * (0x021164c4), so the pair is spelled out as two extern "C" bodies -- written
+ * D0 then D1 because deferred codegen reverses emission (the ActorBase idiom).
+ * No compiler-emitted group means there is no homeless D2 to deadstrip.
+ * Each body does what the variants do: store this vtable, destroy the members
+ * in reverse declaration order, chain to dEnemyBase_c's base-object
+ * destructor; D0 then hands the object back to the actor heap. */
 // @symbol _ZN11daKpaFire_cD0Ev
-/* The compiler writes both bodies: store this vtable, destroy the members in
- * reverse declaration order, chain to dEnemyBase_c, then (D0) the inline
- * operator delete. */
-daKpaFire_c::~daKpaFire_c()
+extern "C" daKpaFire_c *_ZN11daKpaFire_cD0Ev(daKpaFire_c *self)
 {
+    *(int *)self = (int)_ZTV11daKpaFire_c;
+    _ZN11ShadowModelD1Ev(&self->mShadowModel);
+    _ZN7dCcAc_cD1Ev(&self->mdCcAc_c);
+    _ZN10dBgCh_ActrD1Ev(&self->mWithMeshClsn);
+    _ZN12dEnemyBase_cD2Ev(self);
+    _ZN6Memory10DeallocateEPvP4Heap(self, data_020a0eac);
+    return self;
+}
+
+// @symbol _ZN11daKpaFire_cD1Ev
+extern "C" daKpaFire_c *_ZN11daKpaFire_cD1Ev(daKpaFire_c *self)
+{
+    *(int *)self = (int)_ZTV11daKpaFire_c;
+    _ZN11ShadowModelD1Ev(&self->mShadowModel);
+    _ZN7dCcAc_cD1Ev(&self->mdCcAc_c);
+    _ZN10dBgCh_ActrD1Ev(&self->mWithMeshClsn);
+    _ZN12dEnemyBase_cD2Ev(self);
+    return self;
 }
