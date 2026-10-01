@@ -238,9 +238,8 @@ the offset better than `unk_100` does.
 
 ## daIbl_c (`include/daIbl_c.h`, ov100)
 
-Bodies read: `src/_ZN7daIbl_c13InitResourcesEv.cpp`,
-`src/_ZN7daIbl_c8BehaviorEv.cpp`,
-`src/_ZN7daIbl_c6RenderEv.cpp`.
+Bodies read (all in `src/actors/daIbl_c.cpp`): `daIbl_c::InitResources`,
+`daIbl_c::Behavior`, `daIbl_c::Render`.
 
 | offset | name | evidence |
 | --- | --- | --- |
