@@ -4888,6 +4888,7 @@
     "src/actors/dMeter_c.cpp#_ZN8dMeter_c6RenderEv": "andrewboudreau",
     "src/actors/dMeter_c.cpp#_ZN8dMeter_c8BehaviorEv": "ruspecial",
     "src/actors/dMeter_c.cpp#_ZN8dMeter_c13InitResourcesEv": "mitchellcairns",
+    "src/actors/dMeter_c.cpp#dMeter_c_classInit": "andrewboudreau",
     "src/actors/dMgPsOpt_c.cpp#_ZN10dMgPsOpt_c11TouchIcon_c6RenderEv": "andrewboudreau",
     "src/actors/dMgPsOpt_c.cpp#func_ov004_020b8dc0": "tangosdev",
     "src/actors/dMgPsOpt_c.cpp#func_ov004_020b8ee0": "tangosdev",

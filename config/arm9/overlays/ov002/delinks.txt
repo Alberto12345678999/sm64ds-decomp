@@ -2887,11 +2887,7 @@ src/actors/dMap_c.cpp:
 
 src/actors/dMeter_c.cpp:
     complete
-    .text start:0x020fb8f8 end:0x020fe154
-
-src/d_meter.cpp:
-    complete
-    .text start:0x020fe154 end:0x020fe190
+    .text start:0x020fb8f8 end:0x020fe190
 
 src/stage/LevelObjects.cpp:
     complete
