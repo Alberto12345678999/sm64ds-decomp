@@ -42,19 +42,7 @@ src/game/actors/d_a_ch_scene.cpp:
 
 src/actors/daCoin_c.cpp:
     complete
-    .text start:0x020b0f54 end:0x020b2a98
-
-src/d_a_coin_blue_coin.c:
-    complete
-    .text start:0x020b2a98 end:0x020b2af0
-
-src/d_a_coin_red_coin.c:
-    complete
-    .text start:0x020b2af0 end:0x020b2b48
-
-src/d_a_coin_coin.c:
-    complete
-    .text start:0x020b2b48 end:0x020b2ba0
+    .text start:0x020b0f54 end:0x020b2ba0
 
 src/game/actors/daFeather_c/daFeather_c.cpp:
     complete

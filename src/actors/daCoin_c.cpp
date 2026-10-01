@@ -3,9 +3,9 @@
  *
  * ROM evidence: _ZTS8daCoin_c at ov002:0x02108778, _ZTI8daCoin_c at 0x02108784,
  * _ZTV8daCoin_c at 0x021087ec. The coined vtable name _ZTV4Coin was the same
- * object; this TU keeps the ROM name. The run is 0x020b0f54..0x020b2a98, 28
- * functions. The three factories at 0x020b2a98 (daCoin_c_classInit_BLUE_COIN,
- * _RED_COIN, _COIN) stay in their own files.
+ * object; this TU keeps the ROM name. The run is 0x020b0f54..0x020b2ba0, 31
+ * functions, ending with the three registry factories
+ * (daCoin_c_classInit_BLUE_COIN, _RED_COIN, _COIN), each `new daCoin_c()`.
  *
  * One out-of-line destructor is the key function. Under
  * `#pragma defer_codegen off` it emits D1, D0, then a D2 the cartridge does not
@@ -1212,4 +1212,28 @@ void daCoin_c::OnTurnIntoEgg(Player &player)
 s32 daCoin_c::OnYoshiTryEat()
 {
     return 4;
+}
+
+/* The three registry factories, one per spawn profile, in ROM order.
+ * Reconstructed source-style names: SM64DS proves daCoin_c through RTTI,
+ * allocation size, vtable identity, and the BLUE_COIN, RED_COIN and COIN
+ * registry profiles; later EAD lineage supplies classInit. Exact original
+ * spellings are not preserved. Historical aliases: BlueCoin_Spawn,
+ * RedCoin_Spawn, Coin_Spawn. */
+// @symbol daCoin_c_classInit_BLUE_COIN
+extern "C" daCoin_c *daCoin_c_classInit_BLUE_COIN()
+{
+    return new daCoin_c();
+}
+
+// @symbol daCoin_c_classInit_RED_COIN
+extern "C" daCoin_c *daCoin_c_classInit_RED_COIN()
+{
+    return new daCoin_c();
+}
+
+// @symbol daCoin_c_classInit_COIN
+extern "C" daCoin_c *daCoin_c_classInit_COIN()
+{
+    return new daCoin_c();
 }

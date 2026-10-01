@@ -7,7 +7,7 @@
     "no_codegen_trick",
     "no_mangled_refs"
   ],
-  "count": 3067,
+  "count": 3070,
   "converted": [
     "src/ARMMathLoadState.c",
     "src/ARMMathSaveState.c",
@@ -3075,6 +3075,9 @@
     "src/actors/daMoray_c.cpp#BookSwitch_Spawn",
     "src/actors/daObjMarioCap_c.cpp#daObjMarioCap_c_classInit",
     "src/actors/dMap_c.cpp#dMap_c_classInit",
-    "src/actors/dMeter_c.cpp#dMeter_c_classInit"
+    "src/actors/dMeter_c.cpp#dMeter_c_classInit",
+    "src/actors/daCoin_c.cpp#daCoin_c_classInit_BLUE_COIN",
+    "src/actors/daCoin_c.cpp#daCoin_c_classInit_RED_COIN",
+    "src/actors/daCoin_c.cpp#daCoin_c_classInit_COIN"
   ]
 }
