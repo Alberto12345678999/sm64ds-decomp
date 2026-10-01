@@ -5513,6 +5513,7 @@
     "src/actors/daHuwa_c.cpp#_ZN8daHuwa_c13InitResourcesEv": "tangosdev",
     "src/actors/daHuwa_c.cpp#_ZN8daHuwa_c13OnTurnIntoEggER6Player": "tangosdev",
     "src/actors/daHuwa_c.cpp#_ZN8daHuwa_c13OnYoshiTryEatEv": "andrewboudreau",
+    "src/actors/daHuwa_c.cpp#daHuwa_c_classInit": "tangosdev",
     "src/actors/daWater_Hakidasi_c.cpp#_ZN18daWater_Hakidasi_cD1Ev": "tangosdev",
     "src/actors/daWater_Hakidasi_c.cpp#_ZN18daWater_Hakidasi_cD0Ev": "tangosdev",
     "src/actors/daWater_Hakidasi_c.cpp#func_ov064_021193b4": "lunavyqo",
