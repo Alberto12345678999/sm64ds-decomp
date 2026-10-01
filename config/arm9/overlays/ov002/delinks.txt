@@ -12,13 +12,9 @@ src/actors/dEnemyBase_c.cpp:
     complete
     .text start:0x020ad838 end:0x020aedbc
 
-src/_ZN11dCapEnemy_cD2Ev.cpp:
+src/actors/dCapEnemy_c.cpp:
     complete
-    .text start:0x020aedbc end:0x020aedf4
-
-src/_ZN11dCapEnemy_cD0Ev.cpp:
-    complete
-    .text start:0x020aedf4 end:0x020aee40
+    .text start:0x020aedbc end:0x020aee40
 
 src/actors/da1up_c.cpp:
     complete
@@ -42,19 +38,7 @@ src/game/actors/d_a_ch_scene.cpp:
 
 src/actors/daCoin_c.cpp:
     complete
-    .text start:0x020b0f54 end:0x020b2a98
-
-src/d_a_coin_blue_coin.c:
-    complete
-    .text start:0x020b2a98 end:0x020b2af0
-
-src/d_a_coin_red_coin.c:
-    complete
-    .text start:0x020b2af0 end:0x020b2b48
-
-src/d_a_coin_coin.c:
-    complete
-    .text start:0x020b2b48 end:0x020b2ba0
+    .text start:0x020b0f54 end:0x020b2ba0
 
 src/game/actors/daFeather_c/daFeather_c.cpp:
     complete
@@ -66,47 +50,11 @@ src/game/actors/d_a_obj_abuku.cpp:
 
 src/actors/daObjBlockL_c.cpp:
     complete
-    .text start:0x020b35a0 end:0x020b406c
-
-src/d_a_obj_block_l_bk_futa.c:
-    complete
-    .text start:0x020b406c end:0x020b409c
-
-src/d_a_obj_block_l_block_ll.c:
-    complete
-    .text start:0x020b409c end:0x020b40cc
-
-src/d_a_obj_block_l_sw_block_l.c:
-    complete
-    .text start:0x020b40cc end:0x020b40fc
-
-src/d_a_obj_block_l_dp_block_l.c:
-    complete
-    .text start:0x020b40fc end:0x020b412c
-
-src/d_a_obj_block_l_block_l.c:
-    complete
-    .text start:0x020b412c end:0x020b415c
+    .text start:0x020b35a0 end:0x020b415c
 
 src/actors/daObjBlockItemTag_c.cpp:
     complete
-    .text start:0x020b415c end:0x020b45e0
-
-src/d_a_obj_block_item_tag_blk_slvstar_tag.c:
-    complete
-    .text start:0x020b45e0 end:0x020b4610
-
-src/d_a_obj_block_item_tag_blk_gnshell_tag.c:
-    complete
-    .text start:0x020b4610 end:0x020b4640
-
-src/d_a_obj_block_item_tag_blk_skinoko_tag.c:
-    complete
-    .text start:0x020b4640 end:0x020b4670
-
-src/d_a_obj_block_item_tag_blk_okinoko_tag.c:
-    complete
-    .text start:0x020b4670 end:0x020b46a0
+    .text start:0x020b415c end:0x020b46a0
 
 src/game/actors/d_a_obj_kinoko_tag.cpp:
     complete
@@ -233,11 +181,7 @@ src/game/actors/daObjPushblock_c.cpp:
 
 src/actors/daObjPowerUpItem_c.cpp:
     complete
-    .text start:0x020b9148 end:0x020b9e0c
-
-src/d_a_obj_power_up_item.c:
-    complete
-    .text start:0x020b9e0c end:0x020b9e64
+    .text start:0x020b9148 end:0x020b9e64
 
 src/actors/daObjSwitch_c.cpp:
     complete
@@ -2011,136 +1955,9 @@ src/game/actors/d_a_warpkun.cpp:
     complete
     .text start:0x020ec388 end:0x020ec56c
 
-src/_ZN8YoshiEggD1Ev.cpp:
+src/actors/daYegg_c.cpp:
     complete
-    .text start:0x020ec56c end:0x020ec5b4
-
-src/_ZN8YoshiEggD0Ev.cpp:
-    complete
-    .text start:0x020ec5b4 end:0x020ec610
-
-src/func_ov002_020ec610.c:
-    complete
-    .text start:0x020ec610 end:0x020ec628
-
-src/func_ov002_020ec628.c:
-    complete
-    .text start:0x020ec628 end:0x020ec640
-
-src/func_ov002_020ec640.c:
-    complete
-    .text start:0x020ec640 end:0x020ec654
-
-src/func_ov002_020ec654.c:
-    complete
-    .text start:0x020ec654 end:0x020ec670
-
-src/func_ov002_020ec670.c:
-    .text start:0x020ec670 end:0x020ec728
-
-src/func_ov002_020ec728.c:
-    complete
-    .text start:0x020ec728 end:0x020ec80c
-
-src/func_ov002_020ec80c.c:
-    complete
-    .text start:0x020ec80c end:0x020ec938
-
-src/func_ov002_020ec938.cpp:
-    complete
-    .text start:0x020ec938 end:0x020ec978
-
-src/func_ov002_020ec978.c:
-    complete
-    .text start:0x020ec978 end:0x020ec9c4
-
-src/func_ov002_020ec9c4.c:
-    complete
-    .text start:0x020ec9c4 end:0x020ecad4
-
-src/func_ov002_020ecad4.c:
-    complete
-    .text start:0x020ecad4 end:0x020ecb0c
-
-src/func_ov002_020ecb0c.c:
-    complete
-    .text start:0x020ecb0c end:0x020ecd18
-
-src/func_ov002_020ecd18.cpp:
-    complete
-    .text start:0x020ecd18 end:0x020ecf94
-
-src/func_ov002_020ecf94.c:
-    complete
-    .text start:0x020ecf94 end:0x020ecfc8
-
-src/func_ov002_020ecfc8.c:
-    complete
-    .text start:0x020ecfc8 end:0x020ed0d4
-
-src/func_ov002_020ed0d4.c:
-    complete
-    .text start:0x020ed0d4 end:0x020ed5b0
-
-src/func_ov002_020ed5b0.c:
-    complete
-    .text start:0x020ed5b0 end:0x020ed63c
-
-src/func_ov002_020ed63c.cpp:
-    complete
-    .text start:0x020ed63c end:0x020ed684
-
-src/func_ov002_020ed684.cpp:
-    complete
-    .text start:0x020ed684 end:0x020ed6cc
-
-src/func_ov002_020ed6cc.c:
-    complete
-    .text start:0x020ed6cc end:0x020ed738
-
-src/func_ov002_020ed738.cpp:
-    complete
-    .text start:0x020ed738 end:0x020ed7f8
-
-src/func_ov002_020ed7f8.c:
-    complete
-    .text start:0x020ed7f8 end:0x020ed998
-
-src/func_ov002_020ed998.cpp:
-    complete
-    .text start:0x020ed998 end:0x020edb3c
-
-src/func_ov002_020edb3c.cpp:
-    complete
-    .text start:0x020edb3c end:0x020edca4
-
-src/func_ov002_020edca4.c:
-    complete
-    .text start:0x020edca4 end:0x020eddc4
-
-src/func_ov002_020eddc4.c:
-    complete
-    .text start:0x020eddc4 end:0x020edf54
-
-src/_ZN8YoshiEgg16CleanupResourcesEv.cpp:
-    complete
-    .text start:0x020edf54 end:0x020edf98
-
-src/_ZN8YoshiEgg6RenderEv.cpp:
-    complete
-    .text start:0x020edf98 end:0x020ee010
-
-src/_ZN8YoshiEgg8BehaviorEv.cpp:
-    complete
-    .text start:0x020ee010 end:0x020ee144
-
-src/_ZN8YoshiEgg13InitResourcesEv.cpp:
-    complete
-    .text start:0x020ee144 end:0x020ee3d8
-
-src/d_a_yegg.c:
-    complete
-    .text start:0x020ee3d8 end:0x020ee42c
+    .text start:0x020ec56c end:0x020ee42c
 
 src/actors/dBgActor_c.cpp:
     complete
@@ -2871,11 +2688,7 @@ src/_ZThn80_N8daDemo_c10anmModel_cD1Ev.cpp:
 
 src/actors/daFPknBall_c.cpp:
     complete
-    .text start:0x020f8858 end:0x020f9304
-
-src/d_a_f_pkn_ball.c:
-    complete
-    .text start:0x020f9304 end:0x020f934c
+    .text start:0x020f8858 end:0x020f934c
 
 src/game/actors/d_a_sound_obj.cpp:
     complete
@@ -2883,19 +2696,11 @@ src/game/actors/d_a_sound_obj.cpp:
 
 src/actors/dMap_c.cpp:
     complete
-    .text start:0x020f975c end:0x020fb8bc
-
-src/d_map.cpp:
-    complete
-    .text start:0x020fb8bc end:0x020fb8f8
+    .text start:0x020f975c end:0x020fb8f8
 
 src/actors/dMeter_c.cpp:
     complete
-    .text start:0x020fb8f8 end:0x020fe154
-
-src/d_meter.cpp:
-    complete
-    .text start:0x020fe154 end:0x020fe190
+    .text start:0x020fb8f8 end:0x020fe190
 
 src/stage/LevelObjects.cpp:
     complete
@@ -2913,56 +2718,9 @@ src/actors/dM3dGLin.cpp:
     complete
     .text start:0x020fea84 end:0x020feabc
 
-src/_ZN6BulletD1Ev.cpp:
+src/actors/daPropeller_Heyho_Fire_c.cpp:
     complete
-    .text start:0x020feabc end:0x020feafc
-
-src/_ZN6BulletD0Ev.cpp:
-    complete
-    .text start:0x020feafc end:0x020feb50
-
-src/func_ov002_020feb50.cpp:
-    complete
-    .text start:0x020feb50 end:0x020fec94
-
-src/func_ov002_020fec94.c:
-    complete
-    .text start:0x020fec94 end:0x020fed18
-
-src/func_ov002_020fed18.c:
-    complete
-    .text start:0x020fed18 end:0x020fed2c
-
-src/func_ov002_020fed2c.cpp:
-    complete
-    .text start:0x020fed2c end:0x020fed7c
-
-src/func_ov002_020fed7c.c:
-    complete
-    .text start:0x020fed7c end:0x020fedf0
-
-src/_ZN6Bullet16CleanupResourcesEv.cpp:
-    complete
-    .text start:0x020fedf0 end:0x020fee14
-
-src/_ZN6Bullet16OnPendingDestroyEv.cpp:
-    complete
-    .text start:0x020fee14 end:0x020fee18
-
-src/_ZN6Bullet6RenderEv.cpp:
-    complete
-    .text start:0x020fee18 end:0x020fee44
-
-src/_ZN6Bullet8BehaviorEv.cpp:
-    complete
-    .text start:0x020fee44 end:0x020feef4
-
-src/_ZN6Bullet13InitResourcesEv.cpp:
-    .text start:0x020feef4 end:0x020fefcc
-
-src/d_a_propeller_heyho_fire.c:
-    complete
-    .text start:0x020fefcc end:0x020ff014
+    .text start:0x020feabc end:0x020ff014
 
 src/__sinit_ov002_02100560.c:
     complete

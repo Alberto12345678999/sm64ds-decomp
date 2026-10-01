@@ -1,7 +1,7 @@
 //cpp
-/* daBDonketu_c -- the Big Bully (BOSS_DONKETU), ov064 0x021174a0..0x0211791c.
+/* daBDonketu_c -- the Big Bully (BOSS_DONKETU), ov064 0x021174a0..0x02117978.
  *
- * One translation unit, seven functions, the way the cartridge's own build had
+ * One translation unit, eight functions, the way the cartridge's own build had
  * it. It replaces seven one-function shards whose bodies are unchanged; their
  * local declarations are collected into the single extern block below, and the
  * destructor is inline in include/daBDonketu_c.h.
@@ -30,8 +30,9 @@
  * the licensed .text is no longer ROM-ascending; inlining additionally deletes
  * the homeless D2 that no module gives a symbol to.
  *
- * The factory is NOT in this TU. daBDonketu_c_classInit begins at 0x0211791c,
- * immediately past this entry's end, and keeps its own source.
+ * The registry factory daBDonketu_c_classInit (0x0211791c) is the last
+ * function, `new daBDonketu_c()`; the unit is 0x021174a0..0x02117978, eight
+ * functions.
  *
  * FUNCTION ORDER IS THE REVERSE OF THE ROM'S -- mwccarm 2004/b56 emits one
  * .text section per function in reverse source order, so the highest-address ROM
@@ -54,6 +55,18 @@
 
 extern "C" {
 extern s16 data_02082214[];
+}
+
+/* ROM ordinal 7 -- daBDonketu_c_classInit, 0x0211791c, size 0x5c. Written
+ * first so reverse-order emission puts it last. Reconstructed source-style
+ * name: SM64DS proves daBDonketu_c through RTTI, allocation size, vtable
+ * identity, and the BOSS_DONKETU registry profile; later EAD lineage supplies
+ * classInit. Exact original spelling is not preserved. Historical alias:
+ * BigBully_Spawn. */
+// @symbol daBDonketu_c_classInit
+extern "C" daBDonketu_c *daBDonketu_c_classInit()
+{
+    return new daBDonketu_c();
 }
 
 /* ROM ordinal 6, 0x02117784, size 0x198.

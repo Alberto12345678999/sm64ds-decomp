@@ -32,8 +32,8 @@
  * - two C-linkage factories stay CLOCK_SHORT / CLOCK_LONG: EAD would name
  *   both daObjClock_c_classInit (not_apply=global_classinit_name_collision).
  * - Matrix4x3_FromRotationZXYExt stays the C helper (no class method).
- * - func_ov013_02111430 keeps its func_ name: not a vtable slot, and
- *   nothing in the cartridge says it is a member.
+ * - func_ov013_02111430 is a daObjClock_c method under its ROM address
+ *   (S33); symbols.txt carries the mangled spelling.
  */
 
 #include "daObjClock_c.h"
@@ -46,7 +46,6 @@ extern signed char data_02092110[];
 extern unsigned char data_0209f2c0[];
 extern short data_ov013_021116ac[];
 extern SharedFilePtr *data_ov013_021116b0[];
-void func_ov013_02111430(daObjClock_c *self);
 }
 
 /* ONE CLASS, TWO PROFILES. CLOCK_LONG (actor 293) and CLOCK_SHORT (actor 292)
@@ -118,7 +117,7 @@ int daObjClock_c::InitResources()
         SharedFilePtr &file = *data_ov013_021116b0[index];
         mModel.SetFile((BMD_File *)Model::LoadFile(file), 1, -1);
     }
-    func_ov013_02111430(this);
+    func_ov013_02111430();
     return 1;
 }
 
@@ -145,7 +144,7 @@ int daObjClock_c::Behavior()
         else if (angle >= 0xe000)
             data_0209f2c0[0] = 3;
     }
-    func_ov013_02111430(this);
+    func_ov013_02111430();
     return 1;
 }
 
@@ -163,19 +162,17 @@ int daObjClock_c::CleanupResources()
     return 1;
 }
 
-// @symbol func_ov013_02111430
+// @symbol _ZN12daObjClock_c19func_ov013_02111430Ev
 /* Rebuild the owned model matrix from inherited actor angles and position.
- * Not a vtable slot and not provably a member, so it keeps its func_ name.
+ * A daObjClock_c method under its ROM address (S33).
  * The marker above is not decoration -- without it tools/tiers.py folds this
  * body into the preceding member's fragment. */
-extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov013_02111430(daObjClock_c *self)
+void daObjClock_c::func_ov013_02111430()
 {
-    Matrix4x3_FromRotationZXYExt(&self->mModel.mat4x3, self->mAngleX, self->mAngleY, self->mAngleZ);
-    self->mModel.mat4x3.t.x = self->mPosX >> 3;
-    self->mModel.mat4x3.t.y = self->mPosY >> 3;
-    self->mModel.mat4x3.t.z = self->mPosZ >> 3;
-}
+    Matrix4x3_FromRotationZXYExt(&mModel.mat4x3, mAngleX, mAngleY, mAngleZ);
+    mModel.mat4x3.t.x = mPosX >> 3;
+    mModel.mat4x3.t.y = mPosY >> 3;
+    mModel.mat4x3.t.z = mPosZ >> 3;
 }
 
 // @symbol _ZN12daObjClock_cD1Ev

@@ -1,6 +1,6 @@
 //cpp
 /* Production translation unit for ov091/daObjPile_c.
- * 10 function(s), .text 0x021333fc..0x02133938.
+ * 11 function(s), .text 0x021333fc..0x02133968.
  *
  * PILE, the stump: it starts with three steps to sink. A ground pound sinks it
  * one step, a mega hit sinks the rest, and reaching the bottom drops coins.
@@ -13,8 +13,8 @@
  * _ZTS. Under `#pragma defer_codegen off` it comes out D1 (0x021333fc), D0
  * (0x02133440), then a D2 the cartridge has no home for (manifest: deadstrip);
  * the same pragma lays .text down in source order, so this file is ROM-ascending.
- * The factory daObjPile_c_classInit (0x02133938) sits just past this run's
- * right edge and stays a one-function source.
+ * The registry factory daObjPile_c_classInit (0x02133938) abuts the rest
+ * of the run and is written last.
  *
  * Known limits:
  * - dBgActor_c::IsClsnInRangeOnScreen, dActor_c::SpawnCoins and
@@ -229,4 +229,10 @@ s32 daObjPile_c::InitResources()
         &mMeshCollider, k, &mClsnMat, 0x199, mAngleY, data_ov002_0210d874);
     mStepsLeft = 3;
     return 1;
+}
+
+// @symbol daObjPile_c_classInit
+extern "C" daObjPile_c *daObjPile_c_classInit()
+{
+    return new daObjPile_c();
 }

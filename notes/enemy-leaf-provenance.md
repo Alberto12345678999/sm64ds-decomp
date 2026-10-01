@@ -32,7 +32,7 @@ once, here, rather than per class.
 
 | offset | name | evidence |
 | --- | --- | --- |
-| 0x300 | `mState` (`State *`) | `src/actors/daWater_Hakidasi_c.cpp` loads the pointer word at 0x300 every frame, tests the word at `+0x08` of what it points at, and if non-zero calls it as a pointer-to-member on `this`. That is the same object `Bullet::State` describes (`include/Bullet.h`, handler at +0x08) and the same `mState` spelling `daHolhei_c`, `daKing_Donketu_c` and `daBakubaku_c` already use for it. Only `+0x08` is evidenced; the first two words stay padding. |
+| 0x300 | `mState` (`State *`) | `src/actors/daWater_Hakidasi_c.cpp` loads the pointer word at 0x300 every frame, tests the word at `+0x08` of what it points at, and if non-zero calls it as a pointer-to-member on `this`. That is the same object `daPropeller_Heyho_Fire_c::State` describes (`include/daPropeller_Heyho_Fire_c.h`, handler at +0x08) and the same `mState` spelling `daHolhei_c`, `daKing_Donketu_c` and `daBakubaku_c` already use for it. Only `+0x08` is evidenced; the first two words stay padding. |
 
 Left `unk_`:
 

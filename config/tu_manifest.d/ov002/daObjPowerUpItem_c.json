@@ -8,13 +8,14 @@
   "boundary_evidence": [
     "contiguous linker run: 0x20b9148..0x20b9e0c, 18 function(s), from build/tu_map.json (tools/tu_map.py)",
     "class label(s): daObjPowerUpItem_c",
-    "module sinit corroboration: 26 sinit(s) / 26 .ctor entries, sinit_vs_tu=ok, corroborated=False (module-wide, NOT narrowed to this one TU -- see notes/tu-reconstruction-pilot-report.md sec 2 for the by-hand narrowing step)"
+    "module sinit corroboration: 26 sinit(s) / 26 .ctor entries, sinit_vs_tu=ok, corroborated=False (module-wide, NOT narrowed to this one TU -- see notes/tu-reconstruction-pilot-report.md sec 2 for the by-hand narrowing step)",
+    "classInit tail fold (0930c): daObjPowerUpItem_c_classInit (0x020b9e0c..0x020b9e64) abuts this TU's range with no gap and is now inside it; tu_map cuts on symbol name and left it out. The unit is 0x020b9148..0x020b9e64, bounded above by src/actors/daObjSwitch_c.cpp, which starts exactly at 0x020b9e64."
   ],
   "sections": [
     {
       "name": ".text",
       "start": "0x020b9148",
-      "end": "0x020b9e0c"
+      "end": "0x020b9e64"
     }
   ],
   "functions": [
@@ -143,13 +144,21 @@
       "size": "0x00000008",
       "legacy_source": "src/_ZN18daObjPowerUpItem_c13OnYoshiTryEatEv.cpp",
       "ordinal": 17
+    },
+    {
+      "symbol": "daObjPowerUpItem_c_classInit",
+      "address": "0x020b9e0c",
+      "size": "0x00000058",
+      "legacy_source": "src/d_a_obj_power_up_item.c",
+      "ordinal": 18
     }
   ],
   "data": [],
   "bss": [],
   "notes": [
-    "Cartridge RTTI name is daObjPowerUpItem_c (_ZTS18daObjPowerUpItem_c). The licensed run is the one .text span 0x020b9148..0x020b9e0c (18 functions). daObjPowerUpItem_c_classInit at 0x020b9e0c stays out.",
-    "The destructor is declared in the header and defined once, out of line, first in the file. Under #pragma defer_codegen off that emits D1 then D0 in ROM order, plus a homeless D2."
+    "Cartridge RTTI name is daObjPowerUpItem_c (_ZTS18daObjPowerUpItem_c). The licensed run is the one .text span 0x020b9148..0x020b9e64 (19 functions); the last is the registry factory daObjPowerUpItem_c_classInit (0x020b9e0c), folded in the 0930c classInit tail pass.",
+    "The destructor is declared in the header and defined once, out of line, first in the file. Under #pragma defer_codegen off that emits D1 then D0 in ROM order, plus a homeless D2.",
+    "classInit tail fold (0930c): folded the registry factory daObjPowerUpItem_c_classInit (0x020b9e0c..0x020b9e64) into this promoted TU and widened the complete delinks.txt claim to 0x020b9148..0x020b9e64. The loose source hand-called fBase_c::operator new(972), dActor_c's base constructor, stored _ZTV18daObjPowerUpItem_c, then constructed the two Model members, the ShadowModel, the dCcAc_c and the dBgCh_Actr. daObjPowerUpItem_c declares no constructor, so the implicit one emits that sequence and the factory is `return new daObjPowerUpItem_c();`. Under `#pragma defer_codegen off` it is written at the end of the file."
   ],
   "compiler_only_output": [
     {
@@ -169,7 +178,7 @@
       "disposition": "deadstrip-data",
       "canonical_module": "ov002",
       "canonical_address": "0x02109800",
-      "reason": "Key function is the out-of-line destructor, so this TU emits the vtable. symbols.txt names the address point ov002:0x02109800; the licensed span is only .text 0x020b9148..0x020b9e0c."
+      "reason": "Key function is the out-of-line destructor, so this TU emits the vtable. symbols.txt names the address point ov002:0x02109800; the licensed span is only .text 0x020b9148..0x020b9e64."
     },
     {
       "symbol": "_ZTI18daObjPowerUpItem_c",
@@ -234,8 +243,8 @@
     "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
     "object": "build/tu/ov002-daObjPowerUpItem_c/daObjPowerUpItem_c.o (gitignored)",
     "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
-    "functions_matched": 18,
-    "functions_declared": 18,
+    "functions_matched": 19,
+    "functions_declared": 19,
     "compilerOnlyOutput": {
       "requested": [
         "_ZN18daObjPowerUpItem_cD2Ev",
@@ -249,8 +258,6 @@
         9,
         10,
         18,
-        41,
-        42,
         43,
         44,
         45,
@@ -262,7 +269,9 @@
         51,
         52,
         53,
-        54
+        54,
+        55,
+        56
       ],
       "data": [
         "_ZTV18daObjPowerUpItem_c",

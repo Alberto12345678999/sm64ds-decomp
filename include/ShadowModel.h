@@ -82,7 +82,7 @@ struct ShadowModel : ModelBase {
        callee's r0 is this function's. Same evidence as ModelBase::SetFile. */
     int InitCylinder();
     /* int for the same reason, and by the same evidence: 0x02015ed8 also ends in
-       `bx ip`, so SetFile's r0 flows straight out. YoshiEgg::InitResources and
+       `bx ip`, so SetFile's r0 flows straight out. daYegg_c::InitResources and
        daDsnBase_c::Init both test the result and bail on 0. */
     int InitCuboid();
 

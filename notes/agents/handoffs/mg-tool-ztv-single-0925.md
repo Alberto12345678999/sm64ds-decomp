@@ -57,7 +57,7 @@ All commands ran in the producer worktree with the pinned `2004/b56` compiler.
 | `python tools/port_refcheck.py` | 0 | 408 references resolve |
 | `python tools/tiers_ratchet.py --check` | 0 | CONVERTED ratchet PASS, baseline 3001, current 3216 |
 
-The five pytest failures are identical with the base objisolate and come from fixture state, not isolation. `test_list_finds_polelift_and_its_module_neighbours` and `test_inspect_polelift_reproduces_the_pilots_static_findings` find no ov045 candidate TU `daObjKm2_Ami_Bou_c` in the local tu_map. `test_verify_reproduces_pilot_1s_7_of_7_and_clean_objisolate` reports all seven functions matching and objisolate clean, but not the text `_ZTV18daObjKm2_Ami_Bou_c` it expects. `test_promote_dry_run_refuses_a_tu_that_is_not_link_verified_but_still_explains` finds no `OneUpLogo` manifest entry. `test_splice_refuses_a_span_it_cannot_tile_exactly` reports 18 legacy sources outside their span.
+The five pytest failures are identical with the base objisolate and come from fixture state, not isolation. `test_list_finds_polelift_and_its_module_neighbours` and `test_inspect_polelift_reproduces_the_pilots_static_findings` find no [ov045](../../../config/arm9/overlays/ov045/symbols.txt) candidate TU `daObjKm2_Ami_Bou_c` in the local tu_map. `test_verify_reproduces_pilot_1s_7_of_7_and_clean_objisolate` reports all seven functions matching and objisolate clean, but not the text `_ZTV18daObjKm2_Ami_Bou_c` it expects. `test_promote_dry_run_refuses_a_tu_that_is_not_link_verified_but_still_explains` finds no `OneUpLogo` manifest entry. `test_splice_refuses_a_span_it_cannot_tile_exactly` reports 18 legacy sources outside their span.
 
 ### Whole-object comparison
 
@@ -86,7 +86,7 @@ Its object holds a single 0x34-byte `.text` with three relocations: `_ZN7fBase_c
 
 | Command | Exit | Result |
 |---|---|---|
-| `python tools/rombuild.py -j8` with the base objisolate | 1 | addend stays 8. The strict stock control fails ov006: 105 of 106 modules exact, one differing byte in `d_s_mg_pachinko2` (0x02104258, size 0x34). The word at 0x02104288 is 0x0213dbc4 where ov006 has 0x0213dbbc. No ROM is built and the report has no `intactTuRom` |
+| `python tools/rombuild.py -j8` with the base objisolate | 1 | addend stays 8. The strict stock control fails [ov006](../../../config/arm9/overlays/ov006/symbols.txt): 105 of 106 modules exact, one differing byte in `d_s_mg_pachinko2` (0x02104258, size 0x34). The word at 0x02104288 is 0x0213dbc4 where [ov006](../../../config/arm9/overlays/ov006/symbols.txt) has 0x0213dbbc. No ROM is built and the report has no `intactTuRom` |
 | `python tools/rombuild.py -j8` with the fix | 0 | addend 0, `intactTuRom.identical` true, 11,214 of 11,214 reproducing, 106 of 106 exact |
 | `git checkout HEAD -- src/d_s_mg_pachinko2.c`, then `python tools/rombuild.py -j8` | 0 | `git status` shows only the two tool files; the rebuilt `d_s_mg_pachinko2.o` is byte-identical to the base build's |
 

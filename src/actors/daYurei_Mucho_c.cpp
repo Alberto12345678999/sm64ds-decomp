@@ -705,6 +705,8 @@ int daYurei_Mucho_c::func_ov065_02115f84()
 
 
 /* -------------------------------------------------------------------------- */
+// @symbol _ZN15daYurei_Mucho_cD1Ev
+// @symbol _ZN15daYurei_Mucho_cD0Ev
 /* No separate body lives here. The inline virtual destructor in the directly
  * included class header makes mwccarm emit retail's D1 then D0 pair without
  * the otherwise homeless D2 variant an out-of-line definition produces.

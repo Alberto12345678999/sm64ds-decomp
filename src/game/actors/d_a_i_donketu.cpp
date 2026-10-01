@@ -165,7 +165,8 @@ int daIDonketu_c::UpdateRunState()
     }
     return value;
 }
-
+// @symbol _ZN12daIDonketu_cD1Ev
+// @symbol _ZN12daIDonketu_cD0Ev
 /* -------------------------------------------------------------------------- */
 /* _ZN12daIDonketu_cD0Ev 0x02111618 size 0x68 -- are NOT written here.         */
 /*                                                                            */

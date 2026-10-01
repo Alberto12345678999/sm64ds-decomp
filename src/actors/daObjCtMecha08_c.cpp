@@ -18,7 +18,8 @@
  * cartridge's own copies at ov065 0x0211d494 / 0x0211d434 / 0x0211d440.
  *
  * SOURCE ORDER IS REVERSE ROM ORDER. mwccarm 2004/b56 emits .text back to
- * front under this tree's flags, so InitResources is written first and
+ * front under this tree's flags, so the two classInit factories are written
+ * first (CT_MECHA08A, then CT_MECHA08B), then InitResources, and
  * CleanupResources last; the destructor pair comes off the in-class
  * `~daObjCtMecha08_c() {}` in include/daObjCtMecha08_c.h and lands ahead of
  * everything, D1 then D0, which is the order the cartridge has (0x0211b7f0,
@@ -44,8 +45,18 @@
  *   overlay this object overlay is loaded beside.
  * - data_0209f2c0 is arm9's clock-setting byte and data_0209e650 the
  *   shared RNG state.
- * - g_profile_CT_MECHA08A / CT_MECHA08B and their two classInit
- *   factories live outside this TU, at 0x0211bb7c and above.
+ * - g_profile_CT_MECHA08A / CT_MECHA08B live outside this TU.
+ *
+ * 8 functions, ov065 .text 0x0211b7f0..0x0211bbdc. The two registry
+ * factories close the run: daObjCtMecha08_c_classInit_CT_MECHA08B
+ * (0x0211bb7c, historical alias TtcMovingCubeB_Spawn) and
+ * daObjCtMecha08_c_classInit_CT_MECHA08A (0x0211bbac, historical alias
+ * TtcMovingCubeA_Spawn). Each is operator new(0x330), the dBgActor_c
+ * constructor and the vtable store, which is exactly
+ * `new daObjCtMecha08_c()`; their names are reconstructed from the profiles
+ * and retail does not store them. The new-expression also emits
+ * dBgActor_c's base-object destructor, which has no ROM home (manifest:
+ * deadstrip).
  */
 
 #include "daObjCtMecha08_c.h"
@@ -76,6 +87,18 @@ int _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(void *self, int a, int b);
 void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
     dBgW_KcMbg *self, KCL_File *file, const Matrix4x3 *mat,
     Fix12i scale, s16 angle, CLPS_Block *clps);
+}
+
+// @symbol daObjCtMecha08_c_classInit_CT_MECHA08A
+extern "C" daObjCtMecha08_c *daObjCtMecha08_c_classInit_CT_MECHA08A()
+{
+    return new daObjCtMecha08_c();
+}
+
+// @symbol daObjCtMecha08_c_classInit_CT_MECHA08B
+extern "C" daObjCtMecha08_c *daObjCtMecha08_c_classInit_CT_MECHA08B()
+{
+    return new daObjCtMecha08_c();
 }
 
 // @symbol _ZN16daObjCtMecha08_c13InitResourcesEv

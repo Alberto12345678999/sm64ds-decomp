@@ -14,9 +14,9 @@ This document describes this commit. The queue records its immutable output SHA.
 
 ## What changed and why
 
-- Scope: the six one-function ov006 factories that #3190 rewrote as `return new dScMgX_c;`. They were C++ under a `.c` name. Each now has a `.cpp` name.
+- Scope: the six one-function [ov006](../../../config/arm9/overlays/ov006/symbols.txt) factories that #3190 rewrote as `return new dScMgX_c;`. They were C++ under a `.c` name. Each now has a `.cpp` name.
 
-| New path | Symbol | ov006 address, size | Registry row |
+| New path | Symbol | [ov006](../../../config/arm9/overlays/ov006/symbols.txt) address, size | Registry row |
 |---|---|---|---|
 | `src/d_s_mg_bomroom.cpp` | `dScMgBomroom_c_classInit` | 0x020d9574, 0x30 | `MG_BOMROOM` |
 | `src/d_s_mg_curling.cpp` | `dScMgCurling_c_classInit` | 0x020e3820, 0x34 | `MG_CURLING` |
@@ -28,7 +28,7 @@ This document describes this commit. The queue records its immutable output SHA.
 - `srcpath.new_path_for(<symbol>, '.cpp')` returns each new path, and `srcpath.path_for(<symbol>)` resolves to it after the rename.
 - Surfaces touched:
   - the six sources (rename only);
-  - `config/arm9/overlays/ov006/delinks.txt`: the six path header lines only;
+  - [config/arm9/overlays/ov006/delinks.txt](../../../config/arm9/overlays/ov006/delinks.txt): the six path header lines only;
   - `symbols/profile_reconstruction_registry.tsv` and `.json`, `symbols/profile_reconstruction_pilot.tsv` and `.json`;
   - `notes/tu-filename-reconstruction-pilot.md`, `notes/minigames/themes.md`;
   - `config/dead-reference-baseline.json`;
@@ -44,7 +44,7 @@ Cells were compared between the base and HEAD blobs, as parsed TSV rows and as J
 - `symbols/profile_reconstruction_registry.json`: the same 12 cells, in `rows[378]`, `[380]`, `[384]`, `[385]`, `[390]` and `[397]`.
 - `symbols/profile_reconstruction_pilot.tsv` and `.json`: 2 cells each. `current_factory_file` of `MG_CURLING` (json `rows[18]`) and `MG_CURLING_J` (`rows[19]`). No other pilot cell named an old path. `class_filename_candidate` and `probable_filename` were already `.cpp`.
 - `notes/tu-filename-reconstruction-pilot.md`: rows `MG_CURLING` and `MG_CURLING_J` (lines 107 and 108). Only the link text and target of the current-source column changed.
-  - PR #3195 changes line 94 (`STAR_CAMERA`) of this doc. It also changes line 377 of ov006 `delinks.txt`.
+  - PR #3195 changes line 94 (`STAR_CAMERA`) of this doc. It also changes line 377 of [ov006's `delinks.txt`](../../../config/arm9/overlays/ov006/delinks.txt).
   - `git merge-tree --write-tree 937bd706a4 13beca99a4` (the #3195 head) exits 0 with tree `f5e33b1aa6`. That tree carries both edits in both files. The same command from this commit also exits 0.
   - No other open PR touches any file in this change.
 - The generator would agree with the 12 registry cells. `profile_reconstruction.source_for` resolves each factory through `srcpath.path_for`, which now returns the `.cpp` path. `assign_factory_filenames` copies that extension. This was checked by calling `source_for` alone.
@@ -133,7 +133,7 @@ Private validation: not run. Independent verification of this exact candidate is
 |---|---|---|---|
 | `notes/agents/handoffs/mg-p1-factories-0926.md` | 8 lines | historical handoff of #3190 | kept; its six dead references are banked |
 | `config/dead-reference-baseline.json` | 6 rows | the bank for the handoff above | added by this change |
-| `config/tu_manifest.d/ov006/dScMgPanel_c.json` | 2 (`boundary_evidence[3]`, `notes[7]`) | prose in the Panel TU manifest | kept unchanged; no gate reads them as paths |
+| [config/tu_manifest.d/ov006/dScMgPanel_c.json](../../../config/tu_manifest.d/ov006/dScMgPanel_c.json) | 2 (`boundary_evidence[3]`, `notes[7]`) | prose in the Panel TU manifest | kept unchanged; no gate reads them as paths |
 | `notes/data/class-facts/dScMgPanel_c.json` | 3 (`candidate_text.factory_is_excluded`, `factory.verification`, `queue_row_corrections[0].why`) | prose in a scout facts record | kept unchanged, as a record |
 | `notes/experiments/pr2874-integration-0920.json` | 25 (`strict_relocations[].file`, `consumer_partition_audit` commands, files and inventory rows) | record of the 0920 integration experiment | kept unchanged, as a record |
 | `notes/data/c-cpp-classification.tsv` | 6 rows | generated census of `.c` files | kept unchanged; a refresh drops these six rows |
@@ -144,4 +144,4 @@ Private validation: not run. Independent verification of this exact candidate is
 1. rombuild picks the language from the `//cpp` marker alone. A `//cpp` file renamed from `.c` to `.cpp` gets the same command line apart from the path, and here produced byte-identical objects. The `assign_factory_filenames` docstring says a `.c` to `.cpp` rename "would cost the byte match". That holds only for a `.c` file without `//cpp`.
 2. `prepush_attribution.py` keys lineage on the path without its extension. An extension-only rename is neither "moved" nor "renamed" in its summary, so it prints `0 renamed with credit intact`, not 6. Credit is still checked, on the stem, and the per-stem authors above are unchanged. No `attribution.json` override was needed.
 3. Without the registry edit, `check_profile_campaign` would not fail. The control above reads the six rows as pending (385 complete, 6 pending), and the tool fails on pending rows only under `--strict`. Only the unchanged counts show that the edit is complete.
-4. PR #3195 also edits ov006 `delinks.txt` (line 377), not only the pilot doc. Both files merge cleanly with this branch.
+4. PR #3195 also edits [ov006 `delinks.txt`](../../../config/arm9/overlays/ov006/delinks.txt) (line 377), not only the pilot doc. Both files merge cleanly with this branch.

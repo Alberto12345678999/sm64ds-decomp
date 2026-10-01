@@ -1,6 +1,6 @@
 //cpp
 /* Production translation unit for ov081/daSnowball_c.
- * 12 function(s), .text 0x02125f14..0x021264b4. The SNOWBALL actor.
+ * 13 function(s), .text 0x02125f14..0x02126504. The SNOWBALL actor.
  *
  * NAME: _ZTS12daSnowball_c is "12daSnowball_c" at ov081 0x02128a88; _ZTI at
  * 0x02128a7c reads [__si_class_type_info, that string, _ZTI12dEnemyBase_c],
@@ -9,12 +9,11 @@
  * (coined; that spelling is not in the cartridge).
  *
  * This is the whole unit: the destructor pair, the five state and collision
- * helpers that sit between it and the virtuals, then the five virtuals. The
+ * helpers that sit between it and the virtuals, the five virtuals, then the
+ * registry factory daSnowball_c_classInit (0x021264b4). The
  * out-of-line destructor is the key function, so this TU emits
  * _ZTV/_ZTI/_ZTS12daSnowball_c; the manifest's compiler_only_output rows
- * route those (and the homeless D2) to the cartridge's own copies. The
- * factory daSnowball_c_classInit starts at 0x021264b4 (src/d_a_snowball.c)
- * and is not absorbed.
+ * route those (and the homeless D2) to the cartridge's own copies.
  *
  * decl_common.h is first so common.h's Matrix4x3 wins over math/Matrix.h.
  * Under `#pragma defer_codegen off` .text is laid down in source order, so
@@ -261,4 +260,10 @@ int daSnowball_c::InitResources()
 
     func_ov081_021261d4((SnowballStateOwner *)this, (SnowballStatePMF *)&data_ov081_02128eb4);
     return 1;
+}
+
+// @symbol daSnowball_c_classInit
+extern "C" daSnowball_c *daSnowball_c_classInit()
+{
+    return new daSnowball_c();
 }

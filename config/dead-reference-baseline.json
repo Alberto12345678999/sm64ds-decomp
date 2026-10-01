@@ -154,6 +154,14 @@
    "ref": "src_tu/actors/daObj_volcanoCannon_c.cpp"
   },
   {
+   "file": "notes/agents/handoffs/promote-ov055-luigi-0923.md",
+   "ref": "src/d_a_luigi.cpp"
+  },
+  {
+   "file": "notes/agents/handoffs/readable-ov055-luigi-0925.md",
+   "ref": "src/d_a_luigi.cpp"
+  },
+  {
    "file": "notes/agents/handoffs/readable-ov092-onms-0925b.md",
    "ref": "src/d_a_onms.cpp"
   },
@@ -208,6 +216,14 @@
   {
    "file": "notes/bgobject-provenance.md",
    "ref": "src/FortressWall_Spawn.c"
+  },
+  {
+   "file": "notes/bgobject-provenance.md",
+   "ref": "src/_ZN6Eyerok13InitResourcesEv.cpp"
+  },
+  {
+   "file": "notes/bgobject-provenance.md",
+   "ref": "src/_ZN6Eyerok16OnAimedAtWithEggEv.cpp"
   },
   {
    "file": "notes/bgobject-provenance.md",
@@ -364,6 +380,10 @@
   {
    "file": "notes/plan-cpp-language-mode.md",
    "ref": "src/_ZN9ActorBaseC1Ev.cpp"
+  },
+  {
+   "file": "notes/platform-provenance.md",
+   "ref": "src/d_a_obj_rotate_updown_lift_hs_updown_lift.c"
   },
   {
    "file": "notes/port-selftest-bmp-gate.md",

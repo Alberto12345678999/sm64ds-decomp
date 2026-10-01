@@ -130,7 +130,7 @@
    ]
   },
   "ov002:0x020feef4": {
-   "name": "_ZN6Bullet13InitResourcesEv",
+   "name": "_ZN24daPropeller_Heyho_Fire_c13InitResourcesEv",
    "missing": [
     "func_0211d610"
    ]
@@ -212,50 +212,6 @@
    "name": "_ZN16daObjCtMecha09_c13InitResourcesEv",
    "missing": [
     "func_02112118"
-   ]
-  },
-  "ov066:0x021166c8": {
-   "name": "func_ov066_021166c8",
-   "missing": [
-    "func_02112c88",
-    "func_02112cc8",
-    "func_02112cd8_updatepos"
-   ]
-  },
-  "ov066:0x02116db0": {
-   "name": "func_ov066_02116db0",
-   "missing": [
-    "func_02112c08",
-    "func_02112d48"
-   ]
-  },
-  "ov066:0x021175e8": {
-   "name": "func_ov066_021175e8",
-   "missing": [
-    "func_02112c08",
-    "func_02112d48"
-   ]
-  },
-  "ov066:0x02117bf0": {
-   "name": "func_ov066_02117bf0",
-   "missing": [
-    "func_02112c08",
-    "func_02112d48"
-   ]
-  },
-  "ov066:0x02118188": {
-   "name": "func_ov066_02118188",
-   "missing": [
-    "func_02112c08",
-    "func_02112d48"
-   ]
-  },
-  "ov066:0x02119ce8": {
-   "name": "_ZN6Eyerok13InitResourcesEv",
-   "missing": [
-    "func_02112c08",
-    "func_02112ca8",
-    "func_02112d48"
    ]
   },
   "ov074:0x02121e98": {

@@ -58,7 +58,7 @@ struct daBttBk_c : dActor_c {
     dCcAc_c mdCcAc_c;            /* 0x14c */
     /* dBgCh_Actr member, named by daBttBk_c_classInit's own C1 call and the
        class's own destructor's D1 call at +0x180.
-       [daBttBk_c_classInit in src/d_a_btt_bk.c; D0] */
+       [daBttBk_c_classInit and D0, src/actors/daBttBk_c.cpp] */
     dBgCh_Actr mWithMeshClsn;            /* 0x180 */
     u8  mShadowMtx[0x30];   /* 0x33c -- Matrix4x3 for the drop shadow (func_ov080_02124c3c) */
     char *mStateRow;        /* 0x36c -- current row of the state table */

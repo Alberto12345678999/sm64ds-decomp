@@ -56,19 +56,19 @@ daObjCtMecha09_c::~daObjCtMecha09_c()
 {
 }
 
-// @symbol func_ov065_0211bc88
+// @symbol _ZN16daObjCtMecha09_c19func_ov065_0211bc88Ev
 /* Drops the beam's shadow when it is close enough to the ground sample. */
-extern "C" void func_ov065_0211bc88(daObjCtMecha09_c *self)
+void daObjCtMecha09_c::func_ov065_0211bc88()
 {
-    int d = self->mPosY - self->mGroundY;
+    int d = mPosY - mGroundY;
     if (d < 0) d = -d;
     if (d > 0x7d0000) return;
-    Matrix4x3_FromRotationY(&self->mShadowMat, self->mAngleY);
-    self->mShadowMat.t.x = self->mPosX >> 3;
-    self->mShadowMat.t.y = (self->mGroundY + 0x1000) >> 3;
-    self->mShadowMat.t.z = self->mPosZ >> 3;
+    Matrix4x3_FromRotationY(&mShadowMat, mAngleY);
+    mShadowMat.t.x = mPosX >> 3;
+    mShadowMat.t.y = (mGroundY + 0x1000) >> 3;
+    mShadowMat.t.z = mPosZ >> 3;
     _ZN8dActor_c18DropShadowScaleXYZER11ShadowModelR9Matrix4x35Fix12IiES5_S5_j(
-        self, &self->mShadowModel, &self->mShadowMat, 0x1e0000, 0x32000, 0xfa000, 0xf);
+        this, &mShadowModel, &mShadowMat, 0x1e0000, 0x32000, 0xfa000, 0xf);
 }
 
 // @symbol _ZN16daObjCtMecha09_c16CleanupResourcesEv
@@ -127,7 +127,7 @@ int daObjCtMecha09_c::Behavior()
     }
 
     UpdateModelPosAndRotY();
-    func_ov065_0211bc88(this);
+    func_ov065_0211bc88();
     if (_ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(this, 0, 0) != 0)
         UpdateClsnPosAndRot();
     return 1;
