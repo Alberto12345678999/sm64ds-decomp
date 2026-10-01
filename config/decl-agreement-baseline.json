@@ -39364,11 +39364,6 @@
         "kind:data"
       ]
     },
-    "func_ov013_02111430": {
-      "include/decl_common.h": [
-        "param:#1 char *"
-      ]
-    },
     "func_ov015_02111214": {
       "include/decl_common.h": [
         "param:#1 char *"
