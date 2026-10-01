@@ -74,15 +74,16 @@
  * ov002's and Cleanup only Releases it; naming belongs in ov002.
  * g_profile_KING_DONKETU lives outside this TU (S14).
  *
- * SCOPE. 46 of the class's 47 functions: the whole tu_map unit,
- * 0x0211f000..0x02121ec8. Behavior needs `opt_propagation off`, which at file
- * scope recompiles eight other members; here it is a push/pop bracket around
- * Behavior alone (see the note above Behavior for why the closing pop sits
- * behind a declaration). classInit, the abutting factory at 0x02121ec8, is
- * outside the unit and stays in src/d_a_king_donketu.cpp, so there is no
- * `return new` here. daKing_Donketu_c_classInit is a reconstructed
- * name (RTTI daKing_Donketu_c, KING_DONKETU registry); retail does not store
- * that spelling, and the historical alias was ChiefChilly_Spawn.
+ * SCOPE. All 47 of the class's functions, 0x0211f000..0x02121f90: the whole
+ * tu_map unit (0x0211f000..0x02121ec8) plus the abutting registry factory
+ * daKing_Donketu_c_classInit (0x02121ec8..0x02121f90), written last. Behavior
+ * needs `opt_propagation off`, which at file scope recompiles eight other
+ * members; here it is a push/pop bracket around Behavior alone (see the note
+ * above Behavior for why the closing pop sits behind a declaration).
+ * daKing_Donketu_c_classInit is a reconstructed name (RTTI daKing_Donketu_c,
+ * KING_DONKETU registry); retail does not store that spelling, and the
+ * historical alias was ChiefChilly_Spawn. It keeps the hand-built
+ * construction rather than `return new` (see the note above it).
  *
  * Function order is ROM-ascending, not reversed.
  */
@@ -201,7 +202,22 @@ extern void _ZN10dCcAcPos_c21SetPosRelativeToActorERK7Vector3(void *self, const 
 extern void _ZN5dCc_c5ClearEv(void *self);
 extern void _ZN5dCc_c6UpdateEv(void *self);
 extern void _ZN14BlendModelAnim7AdvanceEv(void *self);
+/* daKing_Donketu_c_classInit builds the object by hand; see the note above it. */
+extern void *_ZN7fBase_cnwEj(unsigned int size);
+extern void *_ZN12dEnemyBase_cC2Ev(void *self);
+extern void *_ZN10dCcAcPos_cC1Ev(void *self);
+extern void *_ZN10dBgCh_ActrC1Ev(void *self);
+extern void *_ZN14BlendModelAnimC1Ev(void *self);
+extern void *_ZN11ShadowModelC1Ev(void *self);
+extern void *_ZN7Vector3D1Ev(void *self);
+extern void func_0203d384(void);
+/* The array runtime discards lifecycle receiver results. */
+extern void __cxa_vec_ctor(void *arr, unsigned int count, unsigned int size, void (*ctor)(void *), void (*dtor)(void *));
 }
+
+/* This TU defines the class vtable (the destructor is its key function), so
+   the symbol is the start of the vtable object; slot 0 is two words in. */
+extern int _ZTV16daKing_Donketu_c[];
 
 // @symbol _ZN16daKing_Donketu_cD1Ev
 // @symbol _ZN16daKing_Donketu_cD0Ev
@@ -1815,4 +1831,30 @@ int daKing_Donketu_c::InitResources()
 s32 daKing_Donketu_c::OnAimedAtWithEgg()
 {
     return 0x64000;
+}
+
+/* daKing_Donketu_c_classInit is not `new daKing_Donketu_c()`: types.h's
+ * Vector3 has no user-declared constructor, so the synthesized constructor
+ * skips the per-element __cxa_vec_ctor(..., func_0203d384, ...) calls the
+ * cartridge makes over mWaypointsA, mWaypointsB and unk_4d4 (measured: the
+ * new-expression DIFFs). The registry factory therefore keeps its hand-built
+ * sequence: operator new(0x504), the dEnemyBase_c constructor, the vtable
+ * store, the four member constructors and the three Vector3 array
+ * constructions. */
+// @symbol daKing_Donketu_c_classInit
+extern "C" daKing_Donketu_c *daKing_Donketu_c_classInit()
+{
+    char *p = (char *)_ZN7fBase_cnwEj(sizeof(daKing_Donketu_c));
+    if (p) {
+        _ZN12dEnemyBase_cC2Ev(p);
+        *(void **)p = &_ZTV16daKing_Donketu_c[2];
+        _ZN10dCcAcPos_cC1Ev(p + 0x110);
+        _ZN10dBgCh_ActrC1Ev(p + 0x150);
+        _ZN14BlendModelAnimC1Ev(p + 0x30c);
+        _ZN11ShadowModelC1Ev(p + 0x380);
+        __cxa_vec_ctor(p + 0x3e8, 8, 0xc, (void (*)(void *))func_0203d384, (void (*)(void *))_ZN7Vector3D1Ev);
+        __cxa_vec_ctor(p + 0x448, 8, 0xc, (void (*)(void *))func_0203d384, (void (*)(void *))_ZN7Vector3D1Ev);
+        __cxa_vec_ctor(p + 0x4d4, 2, 0xc, (void (*)(void *))func_0203d384, (void (*)(void *))_ZN7Vector3D1Ev);
+    }
+    return (daKing_Donketu_c *)p;
 }

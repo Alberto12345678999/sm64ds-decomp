@@ -7,7 +7,7 @@
     "no_codegen_trick",
     "no_mangled_refs"
   ],
-  "count": 3093,
+  "count": 3108,
   "converted": [
     "src/ARMMathLoadState.c",
     "src/ARMMathSaveState.c",
@@ -3101,6 +3101,21 @@
     "src/actors/daWater_Suikomi_c.cpp#daWater_Suikomi_c_classInit",
     "src/actors/daSnmBth_c.cpp#daSnmBth_c_classInit",
     "src/actors/daObjCtMecha11_c.cpp#daObjCtMecha11_c_classInit",
-    "src/actors/daLuigi_c.cpp#daLuigi_c_classInit"
+    "src/actors/daLuigi_c.cpp#daLuigi_c_classInit",
+    "src/actors/daBasabasa_c.cpp#daBasabasa_c_classInit",
+    "src/actors/daObjCtRotateBlock_c.cpp#daObjCtRotateBlock_c_classInit_CT_MECHA02",
+    "src/actors/daObjCtRotateBlock_c.cpp#daObjCtRotateBlock_c_classInit_CT_MECHA01",
+    "src/actors/daObjCtMecha08_c.cpp#daObjCtMecha08_c_classInit_CT_MECHA08B",
+    "src/actors/daObjCtMecha08_c.cpp#daObjCtMecha08_c_classInit_CT_MECHA08A",
+    "src/actors/daChoropu_c.cpp#daChoro_Rock_c_classInit",
+    "src/actors/daChoropu_c.cpp#daChoropu_c_classInit",
+    "src/actors/daBttBk_c.cpp#daBttBk_c_classInit",
+    "src/actors/daHuwa_c.cpp#daHuwa_c_classInit",
+    "src/actors/daSnowman_c.cpp#daSnowman_c_classInit",
+    "src/actors/daSnowball_c.cpp#daSnowball_c_classInit",
+    "src/actors/daObjRotateUpdownLift_c.cpp#daObjRotateUpdownLift_c_classInit_HS_UPDOWN_LIFT",
+    "src/actors/daObjRotateUpdownLift_c.cpp#daObjRotateUpdownLift_c_classInit_UPDOWN_LIFT",
+    "src/actors/daDsn_c.cpp#daDsn_c_classInit",
+    "src/actors/daObjPile_c.cpp#daObjPile_c_classInit"
   ]
 }

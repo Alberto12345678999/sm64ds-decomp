@@ -382,6 +382,10 @@
    "ref": "src/_ZN9ActorBaseC1Ev.cpp"
   },
   {
+   "file": "notes/platform-provenance.md",
+   "ref": "src/d_a_obj_rotate_updown_lift_hs_updown_lift.c"
+  },
+  {
    "file": "notes/port-selftest-bmp-gate.md",
    "ref": "port/hal/host_settings.cpp"
   },

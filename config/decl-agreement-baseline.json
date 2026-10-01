@@ -15314,12 +15314,6 @@
         "param:#4 void *",
         "param:#5 void *"
       ],
-      "src/d_a_king_donketu.cpp": [
-        "param:#2 int",
-        "param:#3 int",
-        "param:#4 void *",
-        "param:#5 void *"
-      ],
       "src/d_a_kuri_king_kuriking.cpp": [
         "param:#2 int",
         "param:#3 int"

@@ -8,13 +8,14 @@
   "boundary_evidence": [
     "contiguous linker run: 0x2123740..0x2124998, 24 function(s), from build/tu_map.json (tools/tu_map.py)",
     "class label(s): daChoro_Rock_c, daChoropu_c",
-    "module sinit corroboration: 3 sinit(s) / 3 .ctor entries, sinit_vs_tu=ok, corroborated=False (module-wide, NOT narrowed to this one TU -- see notes/tu-reconstruction-pilot-report.md sec 2 for the by-hand narrowing step)"
+    "module sinit corroboration: 3 sinit(s) / 3 .ctor entries, sinit_vs_tu=ok, corroborated=False (module-wide, NOT narrowed to this one TU -- see notes/tu-reconstruction-pilot-report.md sec 2 for the by-hand narrowing step)",
+    "classInit fold (0930c): the CHORO_ROCK and CHOROPU registry factories daChoro_Rock_c_classInit (0x02124998, 0x48) and daChoropu_c_classInit (0x021249e0, 0x40) abut the tu_map run's end 0x02124998 back to back, with no gap and no other symbol between; tu_map left each in its own unlabelled unit because it cuts on symbol name. The widened range 0x02123740..0x02124a20 (26 functions) ends where the daBttBk_c TU (src/actors/daBttBk_c.cpp) begins."
   ],
   "sections": [
     {
       "name": ".text",
       "start": "0x02123740",
-      "end": "0x02124998"
+      "end": "0x02124a20"
     }
   ],
   "functions": [
@@ -185,6 +186,20 @@
       "size": "0x000000e4",
       "legacy_source": "src/_ZN14daChoro_Rock_c13InitResourcesEv.cpp",
       "ordinal": 23
+    },
+    {
+      "symbol": "daChoro_Rock_c_classInit",
+      "address": "0x02124998",
+      "size": "0x00000048",
+      "legacy_source": "src/d_a_choro_rock.c",
+      "ordinal": 24
+    },
+    {
+      "symbol": "daChoropu_c_classInit",
+      "address": "0x021249e0",
+      "size": "0x00000040",
+      "legacy_source": "src/d_a_choropu.c",
+      "ordinal": 25
     }
   ],
   "data": [],
@@ -214,7 +229,8 @@
     "tubuild create warning (RESOLVED): CONFLICT: extern declaration '_ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj' differs between the legacy file that used to hold func_ov080_02123a34 and the one that held _ZN11daChoropu_c13InitResourcesEv; kept the first, the other is commented out for review -- RESOLVED: one file-scope declaration of this symbol survives in the promoted TU and every member uses it; the commented-out alternative is gone. Verified: 24/24 MATCH.",
     "tubuild create warning (RESOLVED): CONFLICT: extern declaration '_ZN5Model8LoadFileER13SharedFilePtr' differs between the legacy file that used to hold _ZN11daChoropu_c13InitResourcesEv and the one that held _ZN14daChoro_Rock_c13InitResourcesEv; kept the first, the other is commented out for review -- RESOLVED: no declaration of this mangled symbol survives in the promoted TU; its members call the real member function instead. Verified: 24/24 MATCH.",
     "tubuild create warning (RESOLVED): CONFLICT: extern declaration '_ZN9ModelBase7SetFileEP8BMD_Fileii' differs between the legacy file that used to hold _ZN11daChoropu_c13InitResourcesEv and the one that held _ZN14daChoro_Rock_c13InitResourcesEv; kept the first, the other is commented out for review -- RESOLVED: no declaration of this mangled symbol survives in the promoted TU; its members call the real member function instead. Verified: 24/24 MATCH.",
-    "tubuild create warning (RESOLVED): CONFLICT: extern declaration '_ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj' differs between the legacy file that used to hold _ZN11daChoropu_c13InitResourcesEv and the one that held _ZN14daChoro_Rock_c13InitResourcesEv; kept the first, the other is commented out for review -- RESOLVED: one file-scope declaration of this symbol survives in the promoted TU and every member uses it; the commented-out alternative is gone. Verified: 24/24 MATCH."
+    "tubuild create warning (RESOLVED): CONFLICT: extern declaration '_ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj' differs between the legacy file that used to hold _ZN11daChoropu_c13InitResourcesEv and the one that held _ZN14daChoro_Rock_c13InitResourcesEv; kept the first, the other is commented out for review -- RESOLVED: one file-scope declaration of this symbol survives in the promoted TU and every member uses it; the commented-out alternative is gone. Verified: 24/24 MATCH.",
+    "classInit fold (0930c): daChoro_Rock_c_classInit and daChoropu_c_classInit are folded in last, in ROM order, under the file's `#pragma defer_codegen off`, each as `return new X();`. The retired one-function sources hand-called fBase_c::operator new (852 = 0x354 / 396 = 0x18c), the base constructor (dEnemyBase_c C2 / dActor_c C2), the vtable store and the member C1 constructors (Model 0x110, dCcAc_c 0x160, dBgCh_Actr 0x194 / ModelAnim 0xd4, dCcAc_c 0x138); neither class has a user-declared constructor, so the synthesized ones emit the identical sequence and no new compiler-only output. tubuild verify: 26/26 MATCH, objisolate clean, reloc-destinations clean, TEXT-VERIFIED. Retired src/d_a_choro_rock.c and src/d_a_choropu.c; their credit carries in attribution.json as path#symbol overrides."
   ],
   "compiler_only_output": [
     {
@@ -339,8 +355,8 @@
     "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
     "object": "build/tu/ov080-daChoropu_c/daChoropu_c.o (gitignored)",
     "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
-    "functions_matched": 24,
-    "functions_declared": 24,
+    "functions_matched": 26,
+    "functions_declared": 26,
     "compilerOnlyOutput": {
       "requested": [
         "_ZN11daChoropu_cD2Ev",
@@ -358,10 +374,6 @@
         15,
         16,
         22,
-        55,
-        56,
-        57,
-        58,
         59,
         60,
         61,
@@ -379,7 +391,11 @@
         73,
         74,
         75,
-        76
+        76,
+        77,
+        78,
+        79,
+        80
       ],
       "data": [
         "_ZTV11daChoropu_c",

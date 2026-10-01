@@ -6,23 +6,11 @@
     .bss        start:0x021283c0 end:0x02128860 kind:bss align:32
 src/actors/daChoropu_c.cpp:
     complete
-    .text start:0x02123740 end:0x02124998
-
-src/d_a_choro_rock.c:
-    complete
-    .text start:0x02124998 end:0x021249e0
-
-src/d_a_choropu.c:
-    complete
-    .text start:0x021249e0 end:0x02124a20
+    .text start:0x02123740 end:0x02124a20
 
 src/actors/daBttBk_c.cpp:
     complete
-    .text start:0x02124a20 end:0x021253b4
-
-src/d_a_btt_bk.c:
-    complete
-    .text start:0x021253b4 end:0x02125404
+    .text start:0x02124a20 end:0x02125404
 
 src/_ZN11daPicGate_cD1Ev.cpp:
     complete
@@ -94,11 +82,7 @@ src/func_ov080_02126124.c:
 
 src/actors/daPicGate_c.cpp:
     complete
-    .text start:0x021264ec end:0x02126f8c
-
-src/d_a_pic_gate.c:
-    complete
-    .text start:0x02126f8c end:0x02126fbc
+    .text start:0x021264ec end:0x02126fbc
 
 src/_ZN13daObjMaruta_cD0Ev.cpp:
     complete
