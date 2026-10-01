@@ -18,15 +18,7 @@ src/actors/daDossy_c.cpp:
 
 src/actors/daObjCtRotateBlock_c.cpp:
     complete
-    .text start:0x021196d8 end:0x02119ebc
-
-src/d_a_obj_ct_rotate_block_ct_mecha02.c:
-    complete
-    .text start:0x02119ebc end:0x02119efc
-
-src/d_a_obj_ct_rotate_block_ct_mecha01.c:
-    complete
-    .text start:0x02119efc end:0x02119f3c
+    .text start:0x021196d8 end:0x02119f3c
 
 src/actors/daObjCtMecha03_c.cpp:
     complete

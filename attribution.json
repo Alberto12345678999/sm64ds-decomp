@@ -5171,6 +5171,8 @@
     "src/actors/daObjCtRotateBlock_c.cpp#_ZN20daObjCtRotateBlock_c8BehaviorEv": "aitddlabs",
     "src/actors/daObjCtRotateBlock_c.cpp#_ZN20daObjCtRotateBlock_cD0Ev": "tangosdev",
     "src/actors/daObjCtRotateBlock_c.cpp#_ZN20daObjCtRotateBlock_cD1Ev": "tangosdev",
+    "src/actors/daObjCtRotateBlock_c.cpp#daObjCtRotateBlock_c_classInit_CT_MECHA02": "tangosdev",
+    "src/actors/daObjCtRotateBlock_c.cpp#daObjCtRotateBlock_c_classInit_CT_MECHA01": "tangosdev",
     "src/actors/daShark_c.cpp#_ZN9daShark_cD1Ev": "tangosdev",
     "src/actors/daShark_c.cpp#_ZN9daShark_cD0Ev": "tangosdev",
     "src/actors/daShark_c.cpp#func_ov090_02133710": "tangosdev",
