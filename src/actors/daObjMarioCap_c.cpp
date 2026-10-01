@@ -332,7 +332,8 @@ int daObjMarioCap_c::InitResources()
            side is enough to make the two sides textually different and
            reach the folded form -- no `volatile` needed, so tools/tiers.py
            never reads this as a codegen trick. Same residue and same lever
-           as src/_ZN8daDoor_c13InitResourcesEv.c and the second site below. */
+           as daDoor_c::InitResources (src/actors/daDoor_c.cpp) and the second
+           site below. */
         param1 = (u32)param1 - 0xa;
         mType = 4;
         func_ov002_020b7f2c((C *)this, (PMF *)&data_ov002_0210df34);
