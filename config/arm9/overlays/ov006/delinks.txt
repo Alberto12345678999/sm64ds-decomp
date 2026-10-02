@@ -2482,11 +2482,7 @@ src/actors/dScMgFlower_c.cpp:
 
 src/d_s_mg_flower.cpp:
     complete
-    .text start:0x0212b7f8 end:0x0212b88c
-
-src/func_ov006_0212b88c.c:
-    complete
-    .text start:0x0212b88c end:0x0212b890
+    .text start:0x0212b7f8 end:0x0212b890
 
 src/__sinit_ov006_0212f4c4.c:
     complete

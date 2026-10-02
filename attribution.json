@@ -6791,6 +6791,8 @@
     "src/actors/dScMgSnowball_c.cpp#func_ov006_0212a224": "tangosdev",
     "src/actors/dScMgSnowball_c.cpp#func_ov006_0212a274": "tangosdev",
     "src/actors/dScMgSnowball_c.cpp#func_ov006_0212a2e0": "andrewboudreau",
-    "src/actors/dScMgSnowball_c.cpp#func_ov006_0212a3c0": "tangosdev"
+    "src/actors/dScMgSnowball_c.cpp#func_ov006_0212a3c0": "tangosdev",
+    "src/d_s_mg_flower.cpp#dScMgFlower_c_classInit": "tangosdev",
+    "src/d_s_mg_flower.cpp#func_ov006_0212b88c": "tangosdev"
   }
 }
