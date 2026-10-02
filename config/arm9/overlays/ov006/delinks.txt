@@ -1567,6 +1567,7 @@ src/func_ov006_020fca1c.c:
     .text start:0x020fca1c end:0x020fcb4c
 
 src/func_ov006_020fcb4c.c:
+    complete
     .text start:0x020fcb4c end:0x020fcd8c
 
 src/func_ov006_020fcd8c.c:
@@ -1604,6 +1605,10 @@ src/func_ov006_020fd9cc.c:
 src/func_ov006_020fda7c.cpp:
     complete
     .text start:0x020fda7c end:0x020fdaf0
+
+src/func_ov006_020fdaf0.c:
+    complete
+    .text start:0x020fdaf0 end:0x020fdd40
 
 src/func_ov006_020fdd40.cpp:
     complete
