@@ -6,11 +6,13 @@
   "status": "promoted",
   "boundary_confidence": "high",
   "boundary_evidence": [
-    "WIDENED over 0x020ad660..0x020b2220, 108 functions (ROM ordinals 0..107) -- every function of the tu_map ov004 unit (0x020ad660..0x020b2c58, class label dScMgBase_c) below the one unmatched function. The earlier claim was the eight scene overrides at 0x020b04e8..0x020b0a38; the 100 shards around them were folded in.",
-    "LOWER EDGE: 0x020ad660 is the first byte of ov004's .text (config/arm9/overlays/ov004/delinks.txt), so nothing sits below it. The class evidence reaches that edge: dScMgBase_c::Virtual8C is the first function and the 0x020b04e8 scene overrides are the same class's.",
-    "UPPER EDGE: func_ov004_020b2220 (size 0x224) does not match, has no source, and is not claimed here; it is a ROM-fallback hole. The TU continues past it. The unit ends at 0x020b2c58 with 16 more dScMgBase_c shards at 0x020b2444..0x020b2c58 (~dScMgBase_c D1 at 0x020b2a84 among them) that stay loose until the hole matches; this manifest stops at the hole.",
-    "class label(s): dScMgBase_c. The TU's own RTTI/vtable evidence: the graphCallback_c key function (GraphCallback0, 0x020ae0d4) is in range, so this TU emits _ZTVN11dScMgBase_c15graphCallback_cE (data_ov004_020bc03c), _ZTIN11dScMgBase_c15graphCallback_cE (0x020bbf78) and _ZTSN11dScMgBase_c15graphCallback_cE (0x020bc04c). ~dScMgBase_c, the key function of dScMgBase_c itself, is above the hole, so the dScMgBase_c vtable (_ZTV11dScMgBase_c 0x020bc0c0) and RTTI are not emitted here.",
-    "SOURCE ORDER IS ROM-ASCENDING, lowest address first, under #pragma defer_codegen off; tubuild verify reports all 108 in ROM-ascending emission order. #pragma opt_strength_reduction off (func_ov004_020af5e0) and opt_common_subs off (func_ov004_020ae858) are push/pop brackets around one function each.",
+    "WHOLE UNIT. tu_map calls 0x020ad660..0x020b2c58 one contiguous ov004 linker run labelled dScMgBase_c (build/tu_map.json, tools/tu_map.py). This TU licenses all 125 functions, ROM ordinals 0..124, as one complete .text claim.",
+    "LOWER EDGE: 0x020ad660 is the first byte of ov004's .text (config/arm9/overlays/ov004/delinks.txt), so nothing sits below it. The class evidence reaches that edge: dScMgBase_c::Virtual8C is the first function.",
+    "UPPER EDGE: the unit ends with _ZN11dScMgBase_cC2Ev (0x020b2adc, size 0x17c) at 0x020b2c58. tu_map starts its next ov004 unit there (0x020b2c58..0x020b8714, 137 functions, no class label), whose first function func_ov004_020b2c58 is its own enrolled source.",
+    "WIDENED from the earlier 108-function claim 0x020ad660..0x020b2220. func_ov004_020b2220 (size 0x224), the one unmatched function that bounded it, byte-matched, and with it the run is one piece. 17 sources were folded: func_ov004_020b2220 and the 16 above it, func_ov004_020b2444 through the constructor, including slots 31 to 33 (Virtual7C, Virtual80, Virtual84), the four empty or trivial slots 18 to 21, the destructor and the constructor.",
+    "DESTRUCTOR ORDER. The cartridge has D2 at 0x020b29c0, D0 at 0x020b2a18 and D1 at 0x020b2a84, then C2. 64 ov006 relocations name D2 (descendants' base-subobject teardown) and the _ZTV11dScMgBase_c slots at 0x020bc100/0x020bc104 name D1 and D0, so the symbols.txt names are the right way round. Under defer_codegen off one out-of-line ~dScMgBase_c() emits D1, D0, D2; inside a defer_codegen on bracket, with the constructor written before it, mwccarm emits D2, D0, D1, C2 in cartridge order.",
+    "KEY FUNCTION. ~dScMgBase_c is the class's first declared virtual and is now defined here, so this TU emits _ZTV/_ZTI/_ZTS11dScMgBase_c and the ancestor RTTI chain (fBase_c, dBase_c, dScene_c) alongside graphCallback_c's records (GraphCallback0, 0x020ae0d4, is that class's key function). Each is a deadstrip-data row with its canonical symbols.txt home; ov004 .data stays ROM-owned, so the TU stays text-only. The homeless C1 and the vague-linkage _ZN8dScene_cD2Ev and _ZN7dBase_cD2Ev are deadstrip rows.",
+    "SOURCE ORDER IS ROM-ASCENDING, lowest address first, under #pragma defer_codegen off, except the deferred constructor/destructor bracket at the end described above; tubuild verify reports all 125 in ROM-ascending emission order. #pragma opt_strength_reduction off (func_ov004_020af5e0), opt_common_subs off (func_ov004_020ae858) and opt_propagation off (func_ov004_020b2220) are push/pop brackets around one function each.",
     "OUTPUT PATH: src/minigames/d_s_mg_base.cpp, unchanged.",
     "module sinit corroboration: 4 sinit(s) / 4 .ctor entries, sinit_vs_tu=ok, corroborated=False (module-wide, NOT narrowed to this one TU -- see notes/tu-reconstruction-pilot-report.md sec 2 for the by-hand narrowing step). sinit 1 at 0x020b948c constructs the graphCallback_c static through func_ov004_020ae104 (this TU) and fills the 0x40 x 0x20 record array at data_ov004_020bebe8 that func_ov004_020adfc4 and func_ov004_020adf70 (this TU) allocate from."
   ],
@@ -18,7 +20,7 @@
     {
       "name": ".text",
       "start": "0x020ad660",
-      "end": "0x020b2220"
+      "end": "0x020b2c58"
     }
   ],
   "functions": [
@@ -777,14 +779,135 @@
       "size": "0x0000037c",
       "legacy_source": "src/func_ov004_020b1ea4.c",
       "ordinal": 107
+    },
+    {
+      "symbol": "func_ov004_020b2220",
+      "address": "0x020b2220",
+      "size": "0x00000224",
+      "legacy_source": "src/func_ov004_020b2220.c",
+      "ordinal": 108
+    },
+    {
+      "symbol": "func_ov004_020b2444",
+      "address": "0x020b2444",
+      "size": "0x00000130",
+      "legacy_source": "src/func_ov004_020b2444.c",
+      "ordinal": 109
+    },
+    {
+      "symbol": "func_ov004_020b2574",
+      "address": "0x020b2574",
+      "size": "0x000000e8",
+      "legacy_source": "src/func_ov004_020b2574.c",
+      "ordinal": 110
+    },
+    {
+      "symbol": "_ZN11dScMgBase_c9Virtual84Ev",
+      "address": "0x020b265c",
+      "size": "0x00000198",
+      "legacy_source": "src/_ZN11dScMgBase_c9Virtual84Ev.cpp",
+      "ordinal": 111
+    },
+    {
+      "symbol": "_ZN11dScMgBase_c9Virtual80Ev",
+      "address": "0x020b27f4",
+      "size": "0x0000008c",
+      "legacy_source": "src/_ZN11dScMgBase_c9Virtual80Ev.cpp",
+      "ordinal": 112
+    },
+    {
+      "symbol": "_ZN11dScMgBase_c9Virtual7CEv",
+      "address": "0x020b2880",
+      "size": "0x0000008c",
+      "legacy_source": "src/_ZN11dScMgBase_c9Virtual7CEv.cpp",
+      "ordinal": 113
+    },
+    {
+      "symbol": "func_ov004_020b290c",
+      "address": "0x020b290c",
+      "size": "0x00000074",
+      "legacy_source": "src/func_ov004_020b290c.c",
+      "ordinal": 114
+    },
+    {
+      "symbol": "func_ov004_020b2980",
+      "address": "0x020b2980",
+      "size": "0x0000000c",
+      "legacy_source": "src/func_ov004_020b2980.c",
+      "ordinal": 115
+    },
+    {
+      "symbol": "_ZN11dScMgBase_c15OnGroundPoundedEv",
+      "address": "0x020b298c",
+      "size": "0x00000004",
+      "legacy_source": "src/_ZN11dScMgBase_c15OnGroundPoundedEv.cpp",
+      "ordinal": 116
+    },
+    {
+      "symbol": "_ZN11dScMgBase_c9Virtual50Ev",
+      "address": "0x020b2990",
+      "size": "0x00000004",
+      "legacy_source": "src/_ZN11dScMgBase_c9Virtual50Ev.cpp",
+      "ordinal": 117
+    },
+    {
+      "symbol": "_ZN11dScMgBase_c13OnTurnIntoEggEi",
+      "address": "0x020b2994",
+      "size": "0x00000008",
+      "legacy_source": "src/_ZN11dScMgBase_c13OnTurnIntoEggEi.cpp",
+      "ordinal": 118
+    },
+    {
+      "symbol": "_ZN11dScMgBase_c13OnYoshiTryEatEi",
+      "address": "0x020b299c",
+      "size": "0x00000004",
+      "legacy_source": "src/_ZN11dScMgBase_c13OnYoshiTryEatEi.cpp",
+      "ordinal": 119
+    },
+    {
+      "symbol": "func_ov004_020b29a0",
+      "address": "0x020b29a0",
+      "size": "0x00000020",
+      "legacy_source": "src/func_ov004_020b29a0.cpp",
+      "ordinal": 120
+    },
+    {
+      "symbol": "_ZN11dScMgBase_cD2Ev",
+      "address": "0x020b29c0",
+      "size": "0x00000058",
+      "legacy_source": "src/_ZN11dScMgBase_cD2Ev.cpp",
+      "ordinal": 121
+    },
+    {
+      "symbol": "_ZN11dScMgBase_cD0Ev",
+      "address": "0x020b2a18",
+      "size": "0x0000006c",
+      "legacy_source": "src/_ZN11dScMgBase_cD0Ev.cpp",
+      "ordinal": 122
+    },
+    {
+      "symbol": "_ZN11dScMgBase_cD1Ev",
+      "address": "0x020b2a84",
+      "size": "0x00000058",
+      "legacy_source": "src/_ZN11dScMgBase_cD1Ev.cpp",
+      "ordinal": 123
+    },
+    {
+      "symbol": "_ZN11dScMgBase_cC2Ev",
+      "address": "0x020b2adc",
+      "size": "0x0000017c",
+      "legacy_source": "src/_ZN11dScMgBase_cC2Ev.cpp",
+      "ordinal": 124
     }
   ],
   "data": [],
   "bss": [],
   "notes": [
-    "Generated by tools/tubuild.py create for the eight scene overrides, then widened by hand to 108 functions: the 100 one-function shards were folded in ROM order and retired.",
-    "Declaration conflicts between the folded shards are resolved by keeping each former file's own declarations in a namespace named for its address (extern \"C\" inside, so every symbol keeps its unmangled ROM name). The shards disagree about the types of the same globals (data_ov004_020beb68, data_0209b308, data_ov004_020bebe8, ...) and about the layout of local structs (C, E, Obj, ...); merging them changes codegen. dScMgBase_c members are defined at global scope and pull in just their file's names with using-declarations.",
-    "func_ov004_020af5e0 keeps its shard's #pragma opt_strength_reduction off and func_ov004_020ae858 its #pragma opt_common_subs off, each in a push/pop bracket. FreeGfxSlotsById copies its argument into the loop counter before comparing (i = arg; if (i == 0x1d)): the shard's `i = arg == 0x1d` was C and under C++ materialises the comparison as a bool.",
+    "Generated by tools/tubuild.py create for the eight scene overrides, then widened by hand: first to 108 functions below func_ov004_020b2220, then, once that function matched, to the whole 125-function unit. Every folded one-function source was retired.",
+    "Declaration conflicts between the folded shards are resolved by keeping each former file's own declarations in a namespace named for its address (extern \"C\" inside, so every symbol keeps its unmangled ROM name). The shards disagree about the types of the same globals (data_ov004_020beb68, data_0209b308, data_0209d45c, data_ov004_020bebe8, ...) and about the layout of local structs (C, E, M, Obj, ...); merging them changes codegen. dScMgBase_c members are defined at global scope and pull in just their file's names with using-declarations.",
+    "func_ov004_020af5e0 keeps its shard's #pragma opt_strength_reduction off, func_ov004_020ae858 its #pragma opt_common_subs off and func_ov004_020b2220 its #pragma opt_propagation off, each in a push/pop bracket. FreeGfxSlotsById copies its argument into the loop counter before comparing (i = arg; if (i == 0x1d)): the shard's `i = arg == 0x1d` was C and under C++ materialises the comparison as a bool.",
+    "func_ov004_020b2220 matches through local static inline FX_Mul (with a named s64 product) and MTX_Rot22 helpers, the NitroSDK shapes; with the products written out in the body the thousands counter is allocated to ip or r3 instead of r0.",
+    "The D2 and D0 shards carried _MSC_VER arms giving the host the flat D2 and D0 names. They are kept as one #ifdef _MSC_VER block after the destructor; mwccarm never defines _MSC_VER.",
     "The file-global #pragma opt_strength_reduction off the eight-member TU carried is gone: BeforeBehavior matches without it once the file is ROM-ascending under defer_codegen off."
   ],
   "verification": {
@@ -793,8 +916,8 @@
     "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
     "object": "build/tu/ov004-dScMgBase_c/d_s_mg_base.o (gitignored)",
     "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
-    "functions_matched": 108,
-    "functions_declared": 108,
+    "functions_matched": 125,
+    "functions_declared": 125,
     "criteria": {
       "every_declared_function_defined": "PASS",
       "every_declared_function_bytes_match": "PASS",
@@ -804,33 +927,79 @@
     },
     "linkcheck": {
       "result": "unavailable-for-this-TU",
-      "why": "tools/tubuild.py linkcheck routes a promoted TU down the intact-object path and refuses at [4/8] because this TU is text-only (data: [], bss: []). The whole-tree production build (python tools/rombuild.py) is the link proof for the widened range; the earlier link-verified record covered only 0x020b04e8..0x020b0a38 and is replaced."
+      "why": "tools/tubuild.py linkcheck routes a promoted TU down the intact-object path and refuses at [4/8] because this TU is text-only (data: [], bss: []). The whole-tree production build (python tools/rombuild.py) is the link proof for the whole-unit range 0x020ad660..0x020b2c58."
     },
     "compilerOnlyOutput": {
-      "requested": [],
-      "deadstripped": [],
+      "requested": [
+        "_ZN11dScMgBase_cC1Ev",
+        "_ZN8dScene_cD2Ev",
+        "_ZN7dBase_cD2Ev"
+      ],
+      "deadstripped": [
+        "_ZN11dScMgBase_cC1Ev",
+        "_ZN7dBase_cD2Ev",
+        "_ZN8dScene_cD2Ev"
+      ],
       "droppedSections": [
-        201,
-        202,
-        203,
-        204,
-        205,
-        206,
-        207,
-        208
+        228,
+        229,
+        230,
+        231,
+        232,
+        233,
+        236,
+        237,
+        238,
+        239,
+        240,
+        241,
+        242,
+        243,
+        244,
+        245,
+        246,
+        247,
+        248,
+        249,
+        250,
+        251,
+        252,
+        253,
+        254,
+        255,
+        256,
+        257
       ],
       "data": [
         "_ZTVN11dScMgBase_c15graphCallback_cE",
         "_ZTIN11dScMgBase_c15graphCallback_cE",
         "_ZTSN11dScMgBase_c15graphCallback_cE",
         "_ZTIN8dGraph_c10callback_cE",
-        "_ZTSN8dGraph_c10callback_cE"
+        "_ZTSN8dGraph_c10callback_cE",
+        "_ZTV11dScMgBase_c",
+        "_ZTI11dScMgBase_c",
+        "_ZTS11dScMgBase_c",
+        "_ZTI8dScene_c",
+        "_ZTS8dScene_c",
+        "_ZTI7dBase_c",
+        "_ZTS7dBase_c",
+        "_ZTI7fBase_c",
+        "_ZTS7fBase_c"
       ],
       "dataExternalized": [
+        "_ZTI11dScMgBase_c",
+        "_ZTI7dBase_c",
+        "_ZTI7fBase_c",
+        "_ZTI8dScene_c",
         "_ZTIN11dScMgBase_c15graphCallback_cE",
         "_ZTIN8dGraph_c10callback_cE",
+        "_ZTS11dScMgBase_c",
+        "_ZTS7dBase_c",
+        "_ZTS7fBase_c",
+        "_ZTS8dScene_c",
         "_ZTSN11dScMgBase_c15graphCallback_cE",
         "_ZTSN8dGraph_c10callback_cE",
+        "_ZTV11dScMgBase_c",
         "_ZTVN11dScMgBase_c15graphCallback_cE"
       ]
     }
@@ -870,6 +1039,84 @@
       "disposition": "deadstrip-data",
       "canonical_module": "arm9",
       "canonical_address": "0x0208ee24",
+      "reason": "ancestor RTTI name passenger; the canonical cartridge copy is independently enrolled"
+    },
+    {
+      "symbol": "_ZN11dScMgBase_cC1Ev",
+      "disposition": "deadstrip",
+      "reason": "mwccarm emits the complete-object constructor beside the licensed C2; the ROM has no configured C1 home and no relocation anywhere in the image names one (every descendant constructs its base through C2)"
+    },
+    {
+      "symbol": "_ZN8dScene_cD2Ev",
+      "disposition": "deadstrip",
+      "reason": "vague-linkage base-object destructor helper from dScene_c's inline destructor; the licensed D2/D0/D1 inline it, it has no configured ROM symbol and no inbound relocation"
+    },
+    {
+      "symbol": "_ZN7dBase_cD2Ev",
+      "disposition": "deadstrip",
+      "reason": "vague-linkage base-object destructor helper from dBase_c's inline destructor; the licensed D2/D0/D1 inline it, it has no configured ROM symbol and no inbound relocation"
+    },
+    {
+      "symbol": "_ZTV11dScMgBase_c",
+      "disposition": "deadstrip-data",
+      "canonical_module": "ov004",
+      "canonical_address": "0x020bc0c0",
+      "reason": "this class vtable; the canonical cartridge copy remains ROM-gap owned"
+    },
+    {
+      "symbol": "_ZTI11dScMgBase_c",
+      "disposition": "deadstrip-data",
+      "canonical_module": "ov004",
+      "canonical_address": "0x020bbf6c",
+      "reason": "this class RTTI record; the canonical cartridge copy remains ROM-gap owned"
+    },
+    {
+      "symbol": "_ZTS11dScMgBase_c",
+      "disposition": "deadstrip-data",
+      "canonical_module": "ov004",
+      "canonical_address": "0x020bbf84",
+      "reason": "this class RTTI name; the canonical cartridge copy remains ROM-gap owned"
+    },
+    {
+      "symbol": "_ZTI8dScene_c",
+      "disposition": "deadstrip-data",
+      "canonical_module": "arm9",
+      "canonical_address": "0x020914d4",
+      "reason": "ancestor RTTI passenger; the canonical cartridge copy is independently enrolled"
+    },
+    {
+      "symbol": "_ZTS8dScene_c",
+      "disposition": "deadstrip-data",
+      "canonical_module": "arm9",
+      "canonical_address": "0x020914b0",
+      "reason": "ancestor RTTI name passenger; the canonical cartridge copy is independently enrolled"
+    },
+    {
+      "symbol": "_ZTI7dBase_c",
+      "disposition": "deadstrip-data",
+      "canonical_module": "arm9",
+      "canonical_address": "0x02086e78",
+      "reason": "ancestor RTTI passenger; the canonical cartridge copy is independently enrolled"
+    },
+    {
+      "symbol": "_ZTS7dBase_c",
+      "disposition": "deadstrip-data",
+      "canonical_module": "arm9",
+      "canonical_address": "0x02086e54",
+      "reason": "ancestor RTTI name passenger; the canonical cartridge copy is independently enrolled"
+    },
+    {
+      "symbol": "_ZTI7fBase_c",
+      "disposition": "deadstrip-data",
+      "canonical_module": "arm9",
+      "canonical_address": "0x02086d70",
+      "reason": "ancestor RTTI passenger; the canonical cartridge copy is independently enrolled"
+    },
+    {
+      "symbol": "_ZTS7fBase_c",
+      "disposition": "deadstrip-data",
+      "canonical_module": "arm9",
+      "canonical_address": "0x02086e60",
       "reason": "ancestor RTTI name passenger; the canonical cartridge copy is independently enrolled"
     }
   ],
