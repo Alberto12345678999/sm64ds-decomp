@@ -84,7 +84,7 @@ extern "C" {
 }
 
 int dScMgBase_c::Virtual8C()
-{ 
+{
     return (param1 & 0xff) != 0;
 }
 
@@ -661,7 +661,7 @@ extern "C" {
 }
 
 int dScMgBase_c::graphCallback_c::GraphCallback3()
-{ 
+{
     dScMgBase_c *p = mScene;
 
     if (p != 0) {
@@ -689,7 +689,7 @@ extern "C" {
 }
 
 int dScMgBase_c::graphCallback_c::GraphCallback2()
-{ 
+{
     dScMgBase_c *p = mScene;
 
     if (p == 0) {
@@ -718,7 +718,7 @@ extern "C" {
 }
 
 int dScMgBase_c::graphCallback_c::GraphCallback1()
-{ 
+{
     dScMgBase_c *p = mScene;
 
     if (p != 0) {
@@ -748,7 +748,7 @@ extern "C" {
 }
 
 int dScMgBase_c::graphCallback_c::GraphCallback0()
-{ 
+{
     dScMgBase_c *p = mScene;
 
     if (p != 0) {
@@ -786,7 +786,7 @@ extern "C" {
 }
 
 int dScMgBase_c::OnPushed()
-{ 
+{
     return mMenuOpen == 0;
 }
 
@@ -839,7 +839,7 @@ extern "C" {
 }
 
 int dScMgBase_c::OnAttacked1()
-{ 
+{
     return 1;
 }
 
@@ -853,7 +853,7 @@ extern "C" {
 }
 
 int dScMgBase_c::OnAttacked2()
-{ 
+{
     return 1;
 }
 
@@ -1770,7 +1770,7 @@ extern "C" {
 }
 
 void dScMgBase_c::OnHitByMegaChar()
-{ 
+{
     void *c = (void *)this;
 
     struct dScMgBase_c *self = (struct dScMgBase_c *)(void *)c;
@@ -2156,10 +2156,14 @@ void func_ov004_020afc18(void* a0, int a1, int a2, int a3, int a4, void* a5){
 }
 }
 
+/* OAM::Render is a C++-linkage member of the global OAM namespace, so its
+ * declaration sits outside the address namespace and its extern "C" block. */
+struct OamAttr; struct Matrix2x2;
+namespace OAM { void Render(bool a, OamAttr *b, int c, int d, int e, int f, Matrix2x2 *g); }
+
 // @symbol DrawOamSprite
 namespace s20afcf8 {
 extern "C" {
-struct OamAttr; struct Matrix2x2;
 struct Base {
     virtual int v00(); virtual int v01(); virtual int v02(); virtual int v03();
     virtual int v04(); virtual int v05(); virtual int v06(); virtual int v07();
@@ -2169,7 +2173,6 @@ struct Base {
     virtual int v20(); virtual int v21(); virtual int v22(); virtual int v23();
     virtual int v24(); virtual int v25(); virtual int m();
 };
-namespace OAM { void Render(bool a, OamAttr *b, int c, int d, int e, int f, Matrix2x2 *g); }
 extern "C" Base *data_ov004_020beb68;
 
 extern "C" void DrawOamSprite(void *arg0, void *arg1, int arg2, void *arg3)
@@ -2392,7 +2395,7 @@ extern "C" {
 }
 
 int dScMgBase_c::OnHitByCannonBlastedChar()
-{ 
+{
     return 0;
 }
 
