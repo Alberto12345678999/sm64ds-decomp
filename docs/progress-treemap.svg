@@ -13985,11 +13985,11 @@ matched: yes</title></rect><rect x="557.32" y="165.47" width="14.87" height="8.5
 module: ov002
 addr: 0x020bad10
 size: 192 bytes
-matched: yes</title></rect><rect x="572.19" y="165.47" width="7.13" height="8.59" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8SignPostD1Ev
+matched: yes</title></rect><rect x="572.19" y="165.47" width="7.13" height="8.59" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15daObjTatefuda_cD1Ev
 module: ov002
 addr: 0x020badd0
 size: 92 bytes
-matched: yes</title></rect><rect x="579.32" y="165.47" width="8.67" height="8.59" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8SignPostD0Ev
+matched: yes</title></rect><rect x="579.32" y="165.47" width="8.67" height="8.59" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15daObjTatefuda_cD0Ev
 module: ov002
 addr: 0x020bae2c
 size: 112 bytes
@@ -14009,19 +14009,19 @@ matched: yes</title></rect><rect x="374.79" y="174.07" width="43.96" height="7.2
 module: ov002
 addr: 0x020bb060
 size: 476 bytes
-matched: yes</title></rect><rect x="418.74" y="174.07" width="5.91" height="7.21" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8SignPost11OnAttacked1ER8dActor_c
+matched: yes</title></rect><rect x="418.74" y="174.07" width="5.91" height="7.21" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15daObjTatefuda_c11OnAttacked1ER8dActor_c
 module: ov002
 addr: 0x020bb23c
 size: 64 bytes
-matched: yes</title></rect><rect x="424.65" y="174.07" width="22.90" height="7.21" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8SignPost15OnGroundPoundedER8dActor_c
+matched: yes</title></rect><rect x="424.65" y="174.07" width="22.90" height="7.21" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15daObjTatefuda_c15OnGroundPoundedER8dActor_c
 module: ov002
 addr: 0x020bb27c
 size: 248 bytes
-matched: yes</title></rect><rect x="447.55" y="174.07" width="6.28" height="7.21" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8SignPost15OnHitByMegaCharER6Player
+matched: yes</title></rect><rect x="447.55" y="174.07" width="6.28" height="7.21" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15daObjTatefuda_c15OnHitByMegaCharER6Player
 module: ov002
 addr: 0x020bb374
 size: 68 bytes
-matched: yes</title></rect><rect x="453.83" y="174.07" width="10.71" height="7.21" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8SignPost4KillEv
+matched: yes</title></rect><rect x="453.83" y="174.07" width="10.71" height="7.21" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15daObjTatefuda_c4KillEv
 module: ov002
 addr: 0x020bb3b8
 size: 116 bytes
@@ -14081,19 +14081,19 @@ matched: yes</title></rect><rect x="445.42" y="181.27" width="7.34" height="6.53
 module: ov002
 addr: 0x020bbda4
 size: 72 bytes
-matched: yes</title></rect><rect x="452.76" y="181.27" width="6.93" height="6.53" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8SignPost16CleanupResourcesEv
+matched: yes</title></rect><rect x="452.76" y="181.27" width="6.93" height="6.53" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15daObjTatefuda_c16CleanupResourcesEv
 module: ov002
 addr: 0x020bbdec
 size: 68 bytes
-matched: yes</title></rect><rect x="459.69" y="181.27" width="11.82" height="6.53" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8SignPost6RenderEv
+matched: yes</title></rect><rect x="459.69" y="181.27" width="11.82" height="6.53" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15daObjTatefuda_c6RenderEv
 module: ov002
 addr: 0x020bbe30
 size: 116 bytes
-matched: yes</title></rect><rect x="471.52" y="181.27" width="94.18" height="6.53" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8SignPost8BehaviorEv
+matched: yes</title></rect><rect x="471.52" y="181.27" width="94.18" height="6.53" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15daObjTatefuda_c8BehaviorEv
 module: ov002
 addr: 0x020bbea4
 size: 924 bytes
-matched: yes</title></rect><rect x="565.70" y="181.27" width="39.95" height="6.53" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8SignPost13InitResourcesEv
+matched: yes</title></rect><rect x="565.70" y="181.27" width="39.95" height="6.53" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15daObjTatefuda_c13InitResourcesEv
 module: ov002
 addr: 0x020bc240
 size: 392 bytes
@@ -30137,7 +30137,7 @@ matched: yes</title></rect><rect x="1217.66" y="76.63" width="4.74" height="4.11
 module: ov013
 addr: 0x021113ec
 size: 68 bytes
-matched: yes</title></rect><rect x="1222.39" y="76.63" width="5.02" height="4.11" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov013_02111430
+matched: yes</title></rect><rect x="1222.39" y="76.63" width="5.02" height="4.11" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12daObjClock_c19func_ov013_02111430Ev
 module: ov013
 addr: 0x02111430
 size: 72 bytes
@@ -31273,19 +31273,19 @@ matched: yes</title></rect><rect x="1294.96" y="134.22" width="1.25" height="9.5
 module: ov019
 addr: 0x02112b14
 size: 80 bytes
-matched: yes</title></rect><rect x="1306.22" y="134.22" width="2.90" height="4.25" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8BookShotD1Ev
+matched: yes</title></rect><rect x="1306.22" y="134.22" width="2.90" height="4.25" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daBook_cD1Ev
 module: ov020
 addr: 0x021111a0
 size: 80 bytes
-matched: yes</title></rect><rect x="1306.22" y="138.47" width="2.90" height="5.31" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8BookShotD0Ev
+matched: yes</title></rect><rect x="1306.22" y="138.47" width="2.90" height="5.31" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daBook_cD0Ev
 module: ov020
 addr: 0x021111f0
 size: 100 bytes
-matched: yes</title></rect><rect x="1309.12" y="134.22" width="3.80" height="1.46" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15BookShotSpawnerD1Ev
+matched: yes</title></rect><rect x="1309.12" y="134.22" width="3.80" height="1.46" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11daBookGen_cD1Ev
 module: ov020
 addr: 0x02111254
 size: 36 bytes
-matched: yes</title></rect><rect x="1309.12" y="135.68" width="3.80" height="2.27" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15BookShotSpawnerD0Ev
+matched: yes</title></rect><rect x="1309.12" y="135.68" width="3.80" height="2.27" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11daBookGen_cD0Ev
 module: ov020
 addr: 0x02111278
 size: 56 bytes
@@ -31345,39 +31345,39 @@ matched: yes</title></rect><rect x="1371.41" y="134.22" width="4.71" height="7.0
 module: ov020
 addr: 0x0211216c
 size: 216 bytes
-matched: yes</title></rect><rect x="1371.41" y="141.29" width="4.71" height="2.49" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8BookShot16CleanupResourcesEv
+matched: yes</title></rect><rect x="1371.41" y="141.29" width="4.71" height="2.49" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daBook_c16CleanupResourcesEv
 module: ov020
 addr: 0x02112244
 size: 76 bytes
-matched: yes</title></rect><rect x="1376.12" y="134.22" width="2.77" height="2.89" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15BookShotSpawner16CleanupResourcesEv
+matched: yes</title></rect><rect x="1376.12" y="134.22" width="2.77" height="2.89" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11daBookGen_c16CleanupResourcesEv
 module: ov020
 addr: 0x02112290
 size: 52 bytes
-matched: yes</title></rect><rect x="1376.12" y="137.11" width="2.77" height="6.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8BookShot6RenderEv
+matched: yes</title></rect><rect x="1376.12" y="137.11" width="2.77" height="6.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daBook_c6RenderEv
 module: ov020
 addr: 0x021122c4
 size: 120 bytes
-matched: yes</title></rect><rect x="1378.89" y="134.22" width="6.84" height="4.96" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8BookShot8BehaviorEv
+matched: yes</title></rect><rect x="1378.89" y="134.22" width="6.84" height="4.96" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daBook_c8BehaviorEv
 module: ov020
 addr: 0x0211233c
 size: 220 bytes
-matched: yes</title></rect><rect x="1378.89" y="139.18" width="6.84" height="4.60" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15BookShotSpawner8BehaviorEv
+matched: yes</title></rect><rect x="1378.89" y="139.18" width="6.84" height="4.60" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11daBookGen_c8BehaviorEv
 module: ov020
 addr: 0x02112418
 size: 204 bytes
-matched: yes</title></rect><rect x="1385.72" y="134.22" width="10.38" height="9.57" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8BookShot13InitResourcesEv
+matched: yes</title></rect><rect x="1385.72" y="134.22" width="10.38" height="9.57" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daBook_c13InitResourcesEv
 module: ov020
 addr: 0x021124e4
 size: 644 bytes
-matched: yes</title></rect><rect x="1396.11" y="134.22" width="2.26" height="4.10" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15BookShotSpawner13InitResourcesEv
+matched: yes</title></rect><rect x="1396.11" y="134.22" width="2.26" height="4.10" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11daBookGen_c13InitResourcesEv
 module: ov020
 addr: 0x02112768
 size: 60 bytes
-matched: yes</title></rect><rect x="1396.11" y="138.32" width="2.26" height="2.73" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8BookShot16OnAimedAtWithEggEv
+matched: yes</title></rect><rect x="1396.11" y="138.32" width="2.26" height="2.73" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daBook_c16OnAimedAtWithEggEv
 module: ov020
 addr: 0x021127a4
 size: 40 bytes
-matched: yes</title></rect><rect x="1396.11" y="141.05" width="2.26" height="2.73" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8BookShot13OnYoshiTryEatEv
+matched: yes</title></rect><rect x="1396.11" y="141.05" width="2.26" height="2.73" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daBook_c13OnYoshiTryEatEv
 module: ov020
 addr: 0x021127cc
 size: 40 bytes
@@ -34497,19 +34497,19 @@ matched: yes</title></rect><rect x="1591.51" y="261.56" width="3.49" height="8.6
 module: ov058
 addr: 0x02111688
 size: 92 bytes
-matched: yes</title></rect><rect x="1058.35" y="302.18" width="7.94" height="5.16" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN6BowserD1Ev
+matched: yes</title></rect><rect x="1058.35" y="302.18" width="7.94" height="5.16" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7daKpa_cD1Ev
 module: ov060
 addr: 0x02111900
 size: 80 bytes
-matched: yes</title></rect><rect x="1058.35" y="307.35" width="7.94" height="6.45" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN6BowserD0Ev
+matched: yes</title></rect><rect x="1058.35" y="307.35" width="7.94" height="6.45" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7daKpa_cD0Ev
 module: ov060
 addr: 0x02111950
 size: 100 bytes
-matched: yes</title></rect><rect x="1058.35" y="313.80" width="7.94" height="3.10" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10BowserTailD1Ev
+matched: yes</title></rect><rect x="1058.35" y="313.80" width="7.94" height="3.10" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11daKpaTail_cD1Ev
 module: ov060
 addr: 0x021119b4
 size: 48 bytes
-matched: yes</title></rect><rect x="1058.35" y="316.89" width="7.94" height="4.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10BowserTailD0Ev
+matched: yes</title></rect><rect x="1058.35" y="316.89" width="7.94" height="4.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11daKpaTail_cD0Ev
 module: ov060
 addr: 0x021119e4
 size: 68 bytes
@@ -34777,39 +34777,39 @@ matched: yes</title></rect><rect x="1186.96" y="302.18" width="33.92" height="4.
 module: ov060
 addr: 0x02115d68
 size: 280 bytes
-matched: yes</title></rect><rect x="1220.88" y="302.18" width="15.51" height="4.23" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN6Bowser16CleanupResourcesEv
+matched: yes</title></rect><rect x="1220.88" y="302.18" width="15.51" height="4.23" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7daKpa_c16CleanupResourcesEv
 module: ov060
 addr: 0x02115e80
 size: 128 bytes
-matched: yes</title></rect><rect x="1236.39" y="302.18" width="0.97" height="4.23" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10BowserTail16CleanupResourcesEv
+matched: yes</title></rect><rect x="1236.39" y="302.18" width="0.97" height="4.23" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11daKpaTail_c16CleanupResourcesEv
 module: ov060
 addr: 0x02115f00
 size: 8 bytes
-matched: yes</title></rect><rect x="1237.36" y="302.18" width="0.48" height="4.23" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN6Bowser16OnPendingDestroyEv
+matched: yes</title></rect><rect x="1237.36" y="302.18" width="0.48" height="4.23" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7daKpa_c16OnPendingDestroyEv
 module: ov060
 addr: 0x02115f08
 size: 4 bytes
-matched: yes</title></rect><rect x="1146.75" y="306.42" width="6.11" height="6.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN6Bowser6RenderEv
+matched: yes</title></rect><rect x="1146.75" y="306.42" width="6.11" height="6.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7daKpa_c6RenderEv
 module: ov060
 addr: 0x02115f0c
 size: 80 bytes
-matched: yes</title></rect><rect x="1152.86" y="306.42" width="0.61" height="6.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10BowserTail6RenderEv
+matched: yes</title></rect><rect x="1152.86" y="306.42" width="0.61" height="6.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11daKpaTail_c6RenderEv
 module: ov060
 addr: 0x02115f5c
 size: 8 bytes
-matched: yes</title></rect><rect x="1153.47" y="306.42" width="21.09" height="6.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN6Bowser8BehaviorEv
+matched: yes</title></rect><rect x="1153.47" y="306.42" width="21.09" height="6.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7daKpa_c8BehaviorEv
 module: ov060
 addr: 0x02115f64
 size: 276 bytes
-matched: yes</title></rect><rect x="1174.56" y="306.42" width="14.06" height="6.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10BowserTail8BehaviorEv
+matched: yes</title></rect><rect x="1174.56" y="306.42" width="14.06" height="6.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11daKpaTail_c8BehaviorEv
 module: ov060
 addr: 0x02116078
 size: 184 bytes
-matched: yes</title></rect><rect x="1188.63" y="306.42" width="49.22" height="6.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN6Bowser13InitResourcesEv
+matched: yes</title></rect><rect x="1188.63" y="306.42" width="49.22" height="6.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7daKpa_c13InitResourcesEv
 module: ov060
 addr: 0x02116130
 size: 644 bytes
-matched: yes</title></rect><rect x="1146.75" y="313.12" width="8.86" height="3.47" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10BowserTail13InitResourcesEv
+matched: yes</title></rect><rect x="1146.75" y="313.12" width="8.86" height="3.47" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11daKpaTail_c13InitResourcesEv
 module: ov060
 addr: 0x021163b4
 size: 60 bytes
@@ -34821,11 +34821,11 @@ matched: yes</title></rect><rect x="1146.75" y="319.84" width="8.86" height="5.3
 module: ov060
 addr: 0x02116428
 size: 92 bytes
-matched: yes</title></rect><rect x="1146.75" y="325.16" width="8.86" height="3.70" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10BowserFireD1Ev
+matched: yes</title></rect><rect x="1146.75" y="325.16" width="8.86" height="3.70" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11daKpaFire_cD1Ev
 module: ov060
 addr: 0x02116484
 size: 64 bytes
-matched: yes</title></rect><rect x="1146.75" y="328.86" width="8.86" height="4.86" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10BowserFireD0Ev
+matched: yes</title></rect><rect x="1146.75" y="328.86" width="8.86" height="4.86" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11daKpaFire_cD0Ev
 module: ov060
 addr: 0x021164c4
 size: 84 bytes
@@ -34909,19 +34909,19 @@ matched: yes</title></rect><rect x="1203.69" y="322.32" width="15.01" height="5.
 module: ov060
 addr: 0x02117624
 size: 160 bytes
-matched: yes</title></rect><rect x="1218.70" y="322.32" width="0.75" height="5.46" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10BowserFire16CleanupResourcesEv
+matched: yes</title></rect><rect x="1218.70" y="322.32" width="0.75" height="5.46" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11daKpaFire_c16CleanupResourcesEv
 module: ov060
 addr: 0x021176c4
 size: 8 bytes
-matched: yes</title></rect><rect x="1219.45" y="322.32" width="0.75" height="5.46" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10BowserFire6RenderEv
+matched: yes</title></rect><rect x="1219.45" y="322.32" width="0.75" height="5.46" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11daKpaFire_c6RenderEv
 module: ov060
 addr: 0x021176cc
 size: 8 bytes
-matched: yes</title></rect><rect x="1220.20" y="322.32" width="17.64" height="5.46" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10BowserFire8BehaviorEv
+matched: yes</title></rect><rect x="1220.20" y="322.32" width="17.64" height="5.46" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11daKpaFire_c8BehaviorEv
 module: ov060
 addr: 0x021176d4
 size: 188 bytes
-matched: yes</title></rect><rect x="1163.91" y="327.78" width="26.48" height="8.21" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN10BowserFire13InitResourcesEv
+matched: yes</title></rect><rect x="1163.91" y="327.78" width="26.48" height="8.21" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11daKpaFire_c13InitResourcesEv
 module: ov060
 addr: 0x02117790
 size: 424 bytes
@@ -37433,7 +37433,7 @@ matched: yes</title></rect><rect x="1328.11" y="485.98" width="5.89" height="7.8
 module: ov065
 addr: 0x0211bc28
 size: 96 bytes
-matched: yes</title></rect><rect x="1328.11" y="493.78" width="5.89" height="12.35" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov065_0211bc88
+matched: yes</title></rect><rect x="1328.11" y="493.78" width="5.89" height="12.35" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN16daObjCtMecha09_c19func_ov065_0211bc88Ev
 module: ov065
 addr: 0x0211bc88
 size: 152 bytes
@@ -44309,15 +44309,15 @@ matched: yes</title></rect><rect x="1428.69" y="879.10" width="8.80" height="5.6
 module: ov100
 addr: 0x02141ea4
 size: 96 bytes
-matched: yes</title></rect><rect x="1437.49" y="879.10" width="6.60" height="5.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15RollingIronBallD1Ev
+matched: yes</title></rect><rect x="1437.49" y="879.10" width="6.60" height="5.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7daIbl_cD1Ev
 module: ov100
 addr: 0x02141f04
 size: 72 bytes
-matched: yes</title></rect><rect x="1444.09" y="879.10" width="8.43" height="5.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15RollingIronBallD0Ev
+matched: yes</title></rect><rect x="1444.09" y="879.10" width="8.43" height="5.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7daIbl_cD0Ev
 module: ov100
 addr: 0x02141f4c
 size: 92 bytes
-matched: yes</title></rect><rect x="1452.53" y="879.10" width="0.73" height="5.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15RollingIronBall16OnAimedAtWithEggEv
+matched: yes</title></rect><rect x="1452.53" y="879.10" width="0.73" height="5.67" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7daIbl_c16OnAimedAtWithEggEv
 module: ov100
 addr: 0x02141fa8
 size: 8 bytes
@@ -44353,19 +44353,19 @@ matched: yes</title></rect><rect x="1376.62" y="980.70" width="14.40" height="14
 module: ov100
 addr: 0x02142b90
 size: 396 bytes
-matched: yes</title></rect><rect x="1391.02" y="884.78" width="2.77" height="12.01" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15RollingIronBall16CleanupResourcesEv
+matched: yes</title></rect><rect x="1391.02" y="884.78" width="2.77" height="12.01" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7daIbl_c16CleanupResourcesEv
 module: ov100
 addr: 0x02142d1c
 size: 64 bytes
-matched: yes</title></rect><rect x="1393.79" y="884.78" width="2.60" height="12.01" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15RollingIronBall6RenderEv
+matched: yes</title></rect><rect x="1393.79" y="884.78" width="2.60" height="12.01" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7daIbl_c6RenderEv
 module: ov100
 addr: 0x02142d5c
 size: 60 bytes
-matched: yes</title></rect><rect x="1396.38" y="884.78" width="3.12" height="12.01" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15RollingIronBall8BehaviorEv
+matched: yes</title></rect><rect x="1396.38" y="884.78" width="3.12" height="12.01" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7daIbl_c8BehaviorEv
 module: ov100
 addr: 0x02142d98
 size: 72 bytes
-matched: yes</title></rect><rect x="1399.50" y="884.78" width="39.29" height="12.01" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN15RollingIronBall13InitResourcesEv
+matched: yes</title></rect><rect x="1399.50" y="884.78" width="39.29" height="12.01" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7daIbl_c13InitResourcesEv
 module: ov100
 addr: 0x02142de0
 size: 908 bytes
@@ -44373,11 +44373,11 @@ matched: yes</title></rect><rect x="1438.79" y="884.78" width="3.81" height="12.
 module: ov100
 addr: 0x0214316c
 size: 88 bytes
-matched: yes</title></rect><rect x="1442.60" y="884.78" width="8.83" height="12.01" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14UnchainedChompD1Ev
+matched: yes</title></rect><rect x="1442.60" y="884.78" width="8.83" height="12.01" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11daWanwan2_cD1Ev
 module: ov100
 addr: 0x021431c4
 size: 204 bytes
-matched: yes</title></rect><rect x="1451.42" y="884.78" width="9.69" height="12.01" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14UnchainedChompD0Ev
+matched: yes</title></rect><rect x="1451.42" y="884.78" width="9.69" height="12.01" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11daWanwan2_cD0Ev
 module: ov100
 addr: 0x02143290
 size: 224 bytes
@@ -44413,23 +44413,23 @@ matched: yes</title></rect><rect x="1466.24" y="896.79" width="17.52" height="9.
 module: ov100
 addr: 0x02143b68
 size: 328 bytes
-matched: yes</title></rect><rect x="1483.76" y="896.79" width="4.70" height="9.73" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14UnchainedChomp16CleanupResourcesEv
+matched: yes</title></rect><rect x="1483.76" y="896.79" width="4.70" height="9.73" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11daWanwan2_c16CleanupResourcesEv
 module: ov100
 addr: 0x02143cb0
 size: 88 bytes
-matched: yes</title></rect><rect x="1391.02" y="906.92" width="5.26" height="8.69" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14UnchainedChomp6RenderEv
+matched: yes</title></rect><rect x="1391.02" y="906.92" width="5.26" height="8.69" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11daWanwan2_c6RenderEv
 module: ov100
 addr: 0x02143d0c
 size: 88 bytes
-matched: yes</title></rect><rect x="1391.02" y="915.61" width="5.26" height="79.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14UnchainedChomp8BehaviorEv
+matched: yes</title></rect><rect x="1391.02" y="915.61" width="5.26" height="79.39" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11daWanwan2_c8BehaviorEv
 module: ov100
 addr: 0x02143d64
 size: 804 bytes
-matched: yes</title></rect><rect x="1396.28" y="906.52" width="5.83" height="52.44" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14UnchainedChomp13InitResourcesEv
+matched: yes</title></rect><rect x="1396.28" y="906.52" width="5.83" height="52.44" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11daWanwan2_c13InitResourcesEv
 module: ov100
 addr: 0x02144088
 size: 588 bytes
-matched: yes</title></rect><rect x="1396.28" y="958.97" width="5.83" height="0.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14UnchainedChomp16OnAimedAtWithEggEv
+matched: yes</title></rect><rect x="1396.28" y="958.97" width="5.83" height="0.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11daWanwan2_c16OnAimedAtWithEggEv
 module: ov100
 addr: 0x021442d4
 size: 8 bytes
@@ -44437,11 +44437,11 @@ matched: yes</title></rect><rect x="1396.28" y="959.68" width="5.83" height="24.
 module: ov100
 addr: 0x021442dc
 size: 280 bytes
-matched: yes</title></rect><rect x="1396.28" y="984.65" width="5.83" height="4.28" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN4DoorD1Ev
+matched: yes</title></rect><rect x="1396.28" y="984.65" width="5.83" height="4.28" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daDoor_cD1Ev
 module: ov100
 addr: 0x021443f4
 size: 48 bytes
-matched: yes</title></rect><rect x="1396.28" y="988.93" width="5.83" height="6.07" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN4DoorD0Ev
+matched: yes</title></rect><rect x="1396.28" y="988.93" width="5.83" height="6.07" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daDoor_cD0Ev
 module: ov100
 addr: 0x02144424
 size: 68 bytes
@@ -44541,19 +44541,19 @@ matched: yes</title></rect><rect x="1467.89" y="915.48" width="7.32" height="5.9
 module: ov100
 addr: 0x021453d8
 size: 84 bytes
-matched: yes</title></rect><rect x="1475.21" y="915.48" width="13.25" height="5.96" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN4Door16CleanupResourcesEv
+matched: yes</title></rect><rect x="1475.21" y="915.48" width="13.25" height="5.96" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daDoor_c16CleanupResourcesEv
 module: ov100
 addr: 0x0214542c
 size: 152 bytes
-matched: yes</title></rect><rect x="1414.19" y="921.74" width="6.96" height="10.17" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN4Door6RenderEv
+matched: yes</title></rect><rect x="1414.19" y="921.74" width="6.96" height="10.17" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daDoor_c6RenderEv
 module: ov100
 addr: 0x021454c8
 size: 136 bytes
-matched: yes</title></rect><rect x="1414.19" y="931.91" width="6.96" height="5.98" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN4Door8BehaviorEv
+matched: yes</title></rect><rect x="1414.19" y="931.91" width="6.96" height="5.98" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daDoor_c8BehaviorEv
 module: ov100
 addr: 0x02145550
 size: 80 bytes
-matched: yes</title></rect><rect x="1414.19" y="937.89" width="6.96" height="57.11" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN4Door13InitResourcesEv
+matched: yes</title></rect><rect x="1414.19" y="937.89" width="6.96" height="57.11" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daDoor_c13InitResourcesEv
 module: ov100
 addr: 0x021455a0
 size: 764 bytes

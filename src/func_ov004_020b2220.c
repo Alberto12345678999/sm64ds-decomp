@@ -1,7 +1,7 @@
 // @symbol func_ov004_020b2220
 /* recovered: minigame framework (dScMgBase_c block): draws a score number rotated by an angle through a 2x2 matrix and the sprite chain. */
 // NONMATCHING: div 33 of 137 words. mwccarm 2004/b56, --module ov004,
-// @ 0x020b2220 size 0x224. Residue class: colouring; TU member ov004/unit020b0a38.
+// @ 0x020b2220 size 0x224. Residue class: colouring; unit ov004/dScMgBase_c (the hole its TU continues past).
 // Draft from nearmiss/db.jsonl (stored divergence 33), landed 2026-09-14 under Tango's ruling that the functionally-equivalent C
 // drafts live on main with an honest banner so the port and readers have source. Logic is
 // verified only as far as the residue class implies: register names and instruction order

@@ -1,6 +1,6 @@
 //cpp
 /**
- * Bowser in the Sky's drifting stairs (`dorifu`). Twin of the BitDW
+ * daKpa_c in the Sky's drifting stairs (`dorifu`). Twin of the BitDW
  * leaf (`daObjKm1_Dorifu_c`).
  *
  * No fields of its own. InitResources / CleanupResources hand this

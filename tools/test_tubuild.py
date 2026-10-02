@@ -599,6 +599,91 @@ def test_symbol_binding_policy_only_promotes_exact_owned_local():
     assert rewritten["bind"] == "STB_GLOBAL"
 
 
+def _binding_rewrite_fixture():
+    if not _toolchain():
+        raise unittest.SkipTest("needs the pinned compiler")
+    return _compile_tu_fixture(
+        'static int first;\nstatic int second;\n'
+        'extern "C" int *owner[] = {&first, &second};\n')
+
+
+def _binding_symbol_table(obj):
+    import io
+    from elftools.elf.elffile import ELFFile
+    return ELFFile(io.BytesIO(obj)).get_section_by_name(".symtab")
+
+
+def test_binding_rewrite_updates_local_boundary_without_changing_storage_or_relocs():
+    import io
+    from elftools.elf.elffile import ELFFile
+
+    raw = _binding_rewrite_fixture()
+    before = ELFFile(io.BytesIO(raw))
+    table = before.get_section_by_name(".symtab")
+    locals_ = [(index, sym) for index, sym in enumerate(table.iter_symbols())
+               if sym.name in ("first", "second")]
+    assert len(locals_) == 2
+    assert all(sym["st_info"]["bind"] == "STB_LOCAL" for _, sym in locals_)
+    assert [index for index, _ in locals_] == list(range(table["sh_info"] - 2,
+                                                        table["sh_info"]))
+
+    # Exercise promotion of one trailing local and of both, as in dMgState's
+    # function-local table plus guard. Relocations still use the same indices.
+    for selected in (locals_[-1:], locals_):
+        out, report = tubuild.OI.rewrite_symbol_bindings(
+            raw, {sym.name: ("STB_LOCAL", "STB_GLOBAL") for _, sym in selected})
+        assert out is not None, report
+        after = ELFFile(io.BytesIO(out))
+        rewritten = after.get_section_by_name(".symtab")
+        assert rewritten["sh_info"] == selected[0][0]
+        assert [sym.name for sym in rewritten.iter_symbols()] == \
+            [sym.name for sym in table.iter_symbols()]
+        assert all((index < rewritten["sh_info"]) ==
+                   (sym["st_info"]["bind"] == "STB_LOCAL")
+                   for index, sym in enumerate(rewritten.iter_symbols()))
+        for old_section, new_section in zip(before.iter_sections(), after.iter_sections()):
+            if old_section.name != ".symtab":
+                assert old_section.header == new_section.header
+                assert old_section.data() == new_section.data()
+
+        # No instruction, symbol coordinate, addend, index or string can change:
+        # only the licensed binding bytes and the section's sh_info are writable.
+        symtab_index = next(index for index, section in enumerate(before.iter_sections())
+                            if section.name == ".symtab")
+        boundary_offset = before["e_shoff"] + symtab_index * before["e_shentsize"] + 28
+        allowed = set(range(boundary_offset, boundary_offset + 4))
+        allowed.update(table["sh_offset"] + index * table["sh_entsize"] + 12
+                       for index, _ in selected)
+        assert len(raw) == len(out)
+        assert {index for index, pair in enumerate(zip(raw, out))
+                if pair[0] != pair[1]} <= allowed
+
+
+def test_binding_rewrite_rejects_noncontiguous_locals():
+    raw = _binding_rewrite_fixture()
+    table = _binding_symbol_table(raw)
+    first_local = next(sym for sym in table.iter_symbols()
+                       if sym.name in ("first", "second"))
+    out, report = tubuild.OI.rewrite_symbol_bindings(
+        raw, {first_local.name: ("STB_LOCAL", "STB_GLOBAL")})
+    assert out is None
+    assert "local symbol after a nonlocal" in report["error"]
+    assert first_local["st_info"]["bind"] == "STB_LOCAL"
+
+
+def test_binding_rewrite_preserves_nonlocal_conversion_boundary():
+    raw = _binding_rewrite_fixture()
+    boundary = _binding_symbol_table(raw)["sh_info"]
+    weak, report = tubuild.OI.rewrite_symbol_bindings(
+        raw, {"owner": ("STB_GLOBAL", "STB_WEAK")})
+    assert weak is not None, report
+    assert _binding_symbol_table(weak)["sh_info"] == boundary
+    restored, report = tubuild.OI.rewrite_symbol_bindings(
+        weak, {"owner": ("STB_WEAK", "STB_GLOBAL")})
+    assert restored is not None, report
+    assert restored == raw
+
+
 def test_derived_function_applies_its_exact_manifest_binding_rewrite():
     if not _toolchain():
         raise unittest.SkipTest("needs the pinned compiler")

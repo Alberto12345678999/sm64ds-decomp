@@ -7,7 +7,7 @@
 extern "C" void *_ZN7fBase_cnwEj(unsigned size);
 
 /**
- * Bowser in the Sky's rickshaw axle (`kurumajiku`). No fields of
+ * daKpa_c in the Sky's rickshaw axle (`kurumajiku`). No fields of
  * its own: the factory allocates 0x330, which daObjKurumajiku_c
  * fills (four mounted-actor IDs at 0x320). Overrides the two slots
  * the base leaves null (InitResources, CleanupResources) and hands

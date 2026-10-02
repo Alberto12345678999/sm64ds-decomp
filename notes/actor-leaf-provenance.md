@@ -1,7 +1,7 @@
 # dActor_c leaf classes -- field-naming provenance
 
 Evidence for every `unk_NNN` renamed on a class whose immediate base is
-`dActor_c` (excluding `Player`, `Bowser` and `dBgActor_c`, which have their own
+`dActor_c` (excluding `Player`, `daKpa_c` and `dBgActor_c`, which have their own
 notes). Naming is byte-neutral: nothing here changes a compiled byte, and every
 row was taken with `reproducing: 11,059`, `mismatching: 0`,
 `module fidelity: 106/106 exact` on both sides of the edit.
@@ -37,18 +37,18 @@ from `mPos` with `0x64000` added to Y right after -- no enrolled body reads it
 back, so what it is for is unevidenced); 0x3a8 (zeroed, never read); 0x3cb (set
 to 0x96, never read).
 
-## Door -- include/Door.h
+## daDoor_c -- include/daDoor_c.h, src/actors/daDoor_c.cpp
 
 | offset | new name | evidence |
 | --- | --- | --- |
-| 0x138 | `mKeyModel` | `new Model` + `ModelBase::SetFile` in `src/_ZN4Door13InitResourcesEv.c`; `Virtual10(mModel.data.transforms)` then `Render(0)` in `src/_ZN4Door6RenderEv.cpp`, where the local holding it is already called `key`; `delete key` through Model's vtable slot 1 in `src/_ZN4Door16CleanupResourcesEv.cpp`. Owned by the Door. |
+| 0x138 | `mKeyModel` | `new Model` + `ModelBase::SetFile` in `daDoor_c::InitResources`; `Virtual10(mModel.data.transforms)` then `Render(0)` in `daDoor_c::Render`, where the local holding it is already called `key`; `delete key` through Model's vtable slot 1 in `daDoor_c::CleanupResources`. Owned by the door. |
 | 0x13c | `mKeyFile` | handed to `Model::LoadFile` and `Release()`d as a `SharedFilePtr`. Three sources in `InitResources`: [data_ov002_0211094c](../config/arm9/overlays/ov002/symbols.txt), `func_02132894[mKeyModelIdx + 1]` for the keyed-door `param1` range, else [data_ov089_02132c50](../config/arm9/overlays/ov089/symbols.txt). |
-| 0x140 | `mCallbackNode` | `src/_ZN4Door8BehaviorEv.cpp` casts it to a node whose `+0x8` is a `void (Door::*)(int)` and calls it on this Door. |
+| 0x140 | `mCallbackNode` | `daDoor_c::Behavior` casts it to a node whose `+0x8` is a `void (daDoor_c::*)(int)` and calls it on this door. |
 | 0x144 | `mKeyModelIdx` | `param1 - 8` for `param1` in 9..0xd, re-zeroed for `param1 == 0xc`; indexes `LoadKeyModels` and `func_02132894`. The header already carried "key-model index" as a comment. |
 
 Not touched: `unk_0a4` / `unk_0ac` reached through `self->base` are
 `dActor_c`'s own fields, and `include/dActor_c.h` is frozen for this pass --
-the existing note in `src/_ZN4Door13InitResourcesEv.c` about that triple stands.
+the existing note in `daDoor_c::InitResources` about that triple stands.
 
 ## daSCoin_c -- include/daSCoin_c.h
 
@@ -330,13 +330,13 @@ Source: `src/actors/Scuttlebug.cpp`, which absorbed the one-function
 `Behavior` file when ov071/Scuttlebug was promoted into a single
 translation unit.
 
-## BowserTail -- include/BowserTail.h
+## daKpaTail_c -- include/daKpaTail_c.h
 
 | offset | new name | evidence |
 | --- | --- | --- |
-| 0x108 | `mBowserUniqueID` | `Behavior` resolves it with `dActor_c::FindWithID` and parks the tail 0x8c units out from Bowser's position along his facing angle. The file already said so in prose. |
+| 0x108 | `mBowserUniqueID` | `Behavior` resolves it with `dActor_c::FindWithID` and parks the tail 0x8c units out from daKpa_c's position along his facing angle. The file already said so in prose. |
 
-Source: `src/_ZN10BowserTail8BehaviorEv.cpp`.
+Source: `src/actors/daKpa_c.cpp`.
 
 ## daRedBombhei_c -- include/daRedBombhei_c.h
 

@@ -5462,9 +5462,9 @@ three matched by respelling the read and nothing else. First matched with CVCAST
 #2523); respelt to the plain redundant cast for the ratchet reason above, same bytes,
 same relocations, lane MATCH3B:
 
-  * `Door::InitResources`, ov100 0x021455a0 0x2fc -- one site (`param1 >> 0x10`). Before:
+  * `daDoor_c::InitResources`, ov100 0x021455a0 0x2fc -- one site (`param1 >> 0x10`). Before:
     0x300, 156 of 192 words differing over the shared prefix. After: 0 of 191.
-  * `RollingIronBall::InitResources`, ov100 0x02142de0 0x38c -- one site (`param1 >> 4`).
+  * `daIbl_c::InitResources`, ov100 0x02142de0 0x38c -- one site (`param1 >> 4`).
     Before: 0x390, 186 of 228. After: 0 of 227.
   * `daObjMarioCap_c::InitResources`, ov002 0x020b86d0 0x4c8 -- two sites
     (`param1 -= 0xa` at +0x37c and `param1 &= 0xfff` at +0x448). Before: 0x4d0, 98 of 308.
@@ -7547,8 +7547,8 @@ add r0,r4,#0xd4 / mov r3,r2`, every draft `mov r1,r0 / add r0,r4,#0xd4 / mov r2,
 CRK-O's micro-lab had reduced it to "a third call ahead of the site in the block loses the
 constant-first order", which is true and was still not the lever. The draft declared the first
 call `void LoadBlueCoinModel(void)` and called it with no argument. Nine matched callers in the
-tree (daPkn_c, daSanbo_c, daTrs_c, BookShotSpawner, FirePiranhaPlantBig, Koopa, daKrb_c,
-BookShot, daYegg_c) declare it `(void *)` and pass the actor, and the cartridge enters the call
+tree (daPkn_c, daSanbo_c, daTrs_c, daBookGen_c, FirePiranhaPlantBig, Koopa, daKrb_c,
+daBook_c, daYegg_c) declare it `(void *)` and pass the actor, and the cartridge enters the call
 with `this` still in r0. `LoadBlueCoinModel(this)` closes the function: match.py MATCHING,
 linkcheck VERIFIED. The body of LoadBlueCoinModel never reads r0; what the argument buys is the
 incoming parameter's r0 web staying live through the entry block into the first call (this

@@ -7,7 +7,7 @@
 extern "C" void *_ZN7fBase_cnwEj(unsigned size);
 
 /**
- * Bowser in the Fire Sea's falling block. No fields of its own: the
+ * daKpa_c in the Fire Sea's falling block. No fields of its own: the
  * factory allocates 0x34c, which daObjFallBlock_c fills. Overrides
  * the two slots the base leaves null (InitResources,
  * CleanupResources) and hands this overlay's model/collision
