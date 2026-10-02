@@ -40,21 +40,6 @@
 struct Player;
 
 struct daRNk_c : dEnemyBase_c {
-    /* mState: which handler Behavior runs this frame. Behavior indexes a table
-       of six pointers-to-member at data_ov062_0211e0a4 (filled at start-up by
-       __sinit_ov062_0211d4a0, in this order) and calls the one at mState.
-       Transitions: 0 -> 1; 1 -> 2 when the race is accepted, or back to 0 when
-       it is declined (or the player is not Mario); 2 -> 3 -> 4 -> 5; 5 is
-       never left. */
-    enum State {
-        STATE_WAIT_FOR_PLAYER = 0,  /* func_ov062_0211a9c4: idle until the player is close, then start the talk */
-        STATE_OFFER_RACE = 1,       /* func_ov062_0211a740: turn to the player, ask the question, read the answer */
-        STATE_RACE = 2,             /* func_ov062_0211a1f4: run the path to the flag */
-        STATE_PULL_UP = 3,          /* func_ov062_0211a168: slow down after the flag until the animation ends */
-        STATE_STOP = 4,             /* func_ov062_0211a0f0: brake to a halt and go back to the idle animation */
-        STATE_POST_RACE_TALK = 5    /* func_ov062_02119be0: talk about who won; repeatable chat afterwards */
-    };
-
     dCcAc_c         mdCcAc_c;                        /* 0x110 */
     dBgCh_Actr      mWithMeshClsn;                   /* 0x144 */
     ModelAnim       mModelAnim;                      /* 0x300 */
@@ -131,6 +116,21 @@ struct daRNk_c : dEnemyBase_c {
     int CleanupResources();
     int InitResources();
     int Render();
+
+    /* mState: which handler Behavior runs this frame. Behavior indexes a table
+       of six pointers-to-member at data_ov062_0211e0a4 (filled at start-up by
+       __sinit_ov062_0211d4a0, in this order) and calls the one at mState.
+       Transitions: 0 -> 1; 1 -> 2 when the race is accepted, or back to 0 when
+       it is declined (or the player is not Mario); 2 -> 3 -> 4 -> 5; 5 is
+       never left. */
+    enum State {
+        STATE_WAIT_FOR_PLAYER = 0,  /* func_ov062_0211a9c4: idle until the player is close, then start the talk */
+        STATE_OFFER_RACE = 1,       /* func_ov062_0211a740: turn to the player, ask the question, read the answer */
+        STATE_RACE = 2,             /* func_ov062_0211a1f4: run the path to the flag */
+        STATE_PULL_UP = 3,          /* func_ov062_0211a168: slow down after the flag until the animation ends */
+        STATE_STOP = 4,             /* func_ov062_0211a0f0: brake to a halt and go back to the idle animation */
+        STATE_POST_RACE_TALK = 5    /* func_ov062_02119be0: talk about who won; repeatable chat afterwards */
+    };
 };
 
 #ifndef SM64DS_PLATFORM_PC

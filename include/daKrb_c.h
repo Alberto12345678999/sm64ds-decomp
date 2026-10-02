@@ -30,71 +30,6 @@
 struct Player;
 
 struct daKrb_c : dCapEnemy_c {
-    /* Size class, stored in mGoombaType by InitResources from the actor id
-       (KURIBO_S 201 -> 0, KURIBO 200 -> 1, KURIBO_L 202 -> 2). Type 3 is the
-       KURIBO spawned by the Goomba King (daKuriKing_c): it is created with
-       spawn parameter 0xeeee or 0xeeef, keeps the king's uniqueID in
-       mTargetUniqueID and walks toward a spot func_ov074_0212087c derives from
-       the king and mMinionIndex. The per-type tables at
-       data_ov084_02130204..02130268 are indexed by this value. */
-    enum GoombaType {
-        GOOMBA_SMALL = 0,
-        GOOMBA_NORMAL = 1,
-        GOOMBA_LARGE = 2,
-        GOOMBA_KING_MINION = 3
-    };
-
-    /* mState indexes the five-entry record table data_ov084_02130d74 that
-       __sinit_ov084_0213035c fills in this order; Behavior calls the record's
-       pointer-to-member. The names say what each handler does. */
-    enum State {
-        STATE_WALK = 0,       /* func_ov084_0212b2dc: wander, chase, or (minion) follow the king */
-        STATE_HOP_START = 1,  /* func_ov084_0212ab48: start a hop (-> STATE_AIRBORNE); set by func_ov084_02129ed4 when the Goomba touches the player in STATE_WALK */
-        STATE_AIRBORNE = 2,   /* func_ov084_0212aab0: in the air, turning toward mTargetAngleY */
-        STATE_TUMBLE = 3,     /* func_ov084_0212a774: thrown clear (func_ov084_02129168) after the cap came off or a Yoshi-held Goomba landed */
-        STATE_PAUSE = 4       /* func_ov084_0212a6f8: stand still until mWanderRerollTimer runs out; nothing in this TU enters it */
-    };
-
-    /* mRewardType, from bits 4..7 of the spawn parameter. Types 1 and 2 both
-       load the silver-star model and spawn a SILVER_STAR (179) plus a STARBASE
-       (180) when the Goomba dies; type 2 only does so when mStarID equals
-       data_0209f344[data_0209f208[0]], and becomes 3 once it has. */
-    enum RewardType {
-        REWARD_NONE = 0,
-        REWARD_SILVER_STAR = 1,
-        REWARD_SILVER_STAR_IF_CURRENT = 2,
-        REWARD_SPENT = 3
-    };
-
-    /* mDeathState (dEnemyBase_c) values this class writes in its hit reaction
-       (func_ov084_02129ed4), named for the hit that sets them. */
-    enum DeathState {
-        DEATH_NONE = 0,
-        DEATH_STOMPED = 1,       /* jumped on, or a spin / ground-pound hit */
-        DEATH_PUNCHED = 2,
-        DEATH_KICKED = 3,        /* kick, breakdance or slide kick (hit bits 0x380) */
-        DEATH_FIRE = 4,
-        DEATH_DIVE_OR_EGG = 5,   /* dive or egg hit (bits 0x2400), or touched by a Player for whom IsOnShell() is true */
-        DEATH_EXPLOSION = 6,
-        DEATH_HIT_20000 = 7      /* hit bit 0x20000 (not in dCc_c.h's table), or a hit reported during the Yoshi-eat update or STATE_TUMBLE */
-    };
-
-    /* unk_108 (dEnemyBase_c) is the kind of coin SpawnCoin drops: its value
-       minus one indexes the u16 table at data_ov002_020ff014 = {288 COIN,
-       289 RED_COIN, 290 BLUE_COIN}. 0 drops nothing. */
-    enum CoinKind {
-        COIN_NONE = 0,
-        COIN_PLAIN = 1,
-        COIN_RED = 2,
-        COIN_BLUE = 3
-    };
-
-    /* mMoveFlags bits. */
-    enum MoveFlags {
-        MOVE_AVOIDING = 1,        /* last AngleAwayFromWallOrCliff call turned the Goomba away */
-        MOVE_STEP_SOUND_LATCH = 2 /* footstep sound already played for this step */
-    };
-
     dCcAc_c mdCcAc_c;         /* 0x180 */
     dBgCh_Actr mWithMeshClsn; /* 0x1b4 */
     ModelAnim mModelAnim;     /* 0x370 */
@@ -184,6 +119,71 @@ struct daKrb_c : dCapEnemy_c {
 
     void func_ov084_0212a580();
     void func_ov084_0212aab0();
+
+    /* Size class, stored in mGoombaType by InitResources from the actor id
+       (KURIBO_S 201 -> 0, KURIBO 200 -> 1, KURIBO_L 202 -> 2). Type 3 is the
+       KURIBO spawned by the Goomba King (daKuriKing_c): it is created with
+       spawn parameter 0xeeee or 0xeeef, keeps the king's uniqueID in
+       mTargetUniqueID and walks toward a spot func_ov074_0212087c derives from
+       the king and mMinionIndex. The per-type tables at
+       data_ov084_02130204..02130268 are indexed by this value. */
+    enum GoombaType {
+        GOOMBA_SMALL = 0,
+        GOOMBA_NORMAL = 1,
+        GOOMBA_LARGE = 2,
+        GOOMBA_KING_MINION = 3
+    };
+
+    /* mState indexes the five-entry record table data_ov084_02130d74 that
+       __sinit_ov084_0213035c fills in this order; Behavior calls the record's
+       pointer-to-member. The names say what each handler does. */
+    enum State {
+        STATE_WALK = 0,       /* func_ov084_0212b2dc: wander, chase, or (minion) follow the king */
+        STATE_HOP_START = 1,  /* func_ov084_0212ab48: start a hop (-> STATE_AIRBORNE); set by func_ov084_02129ed4 when the Goomba touches the player in STATE_WALK */
+        STATE_AIRBORNE = 2,   /* func_ov084_0212aab0: in the air, turning toward mTargetAngleY */
+        STATE_TUMBLE = 3,     /* func_ov084_0212a774: thrown clear (func_ov084_02129168) after the cap came off or a Yoshi-held Goomba landed */
+        STATE_PAUSE = 4       /* func_ov084_0212a6f8: stand still until mWanderRerollTimer runs out; nothing in this TU enters it */
+    };
+
+    /* mRewardType, from bits 4..7 of the spawn parameter. Types 1 and 2 both
+       load the silver-star model and spawn a SILVER_STAR (179) plus a STARBASE
+       (180) when the Goomba dies; type 2 only does so when mStarID equals
+       data_0209f344[data_0209f208[0]], and becomes 3 once it has. */
+    enum RewardType {
+        REWARD_NONE = 0,
+        REWARD_SILVER_STAR = 1,
+        REWARD_SILVER_STAR_IF_CURRENT = 2,
+        REWARD_SPENT = 3
+    };
+
+    /* mDeathState (dEnemyBase_c) values this class writes in its hit reaction
+       (func_ov084_02129ed4), named for the hit that sets them. */
+    enum DeathState {
+        DEATH_NONE = 0,
+        DEATH_STOMPED = 1,       /* jumped on, or a spin / ground-pound hit */
+        DEATH_PUNCHED = 2,
+        DEATH_KICKED = 3,        /* kick, breakdance or slide kick (hit bits 0x380) */
+        DEATH_FIRE = 4,
+        DEATH_DIVE_OR_EGG = 5,   /* dive or egg hit (bits 0x2400), or touched by a Player for whom IsOnShell() is true */
+        DEATH_EXPLOSION = 6,
+        DEATH_HIT_20000 = 7      /* hit bit 0x20000 (not in dCc_c.h's table), or a hit reported during the Yoshi-eat update or STATE_TUMBLE */
+    };
+
+    /* unk_108 (dEnemyBase_c) is the kind of coin SpawnCoin drops: its value
+       minus one indexes the u16 table at data_ov002_020ff014 = {288 COIN,
+       289 RED_COIN, 290 BLUE_COIN}. 0 drops nothing. */
+    enum CoinKind {
+        COIN_NONE = 0,
+        COIN_PLAIN = 1,
+        COIN_RED = 2,
+        COIN_BLUE = 3
+    };
+
+    /* mMoveFlags bits. */
+    enum MoveFlags {
+        MOVE_AVOIDING = 1,        /* last AngleAwayFromWallOrCliff call turned the Goomba away */
+        MOVE_STEP_SOUND_LATCH = 2 /* footstep sound already played for this step */
+    };
 };
 
 #ifndef SM64DS_PLATFORM_PC
