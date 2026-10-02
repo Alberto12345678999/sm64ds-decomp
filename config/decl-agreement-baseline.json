@@ -5654,7 +5654,8 @@
         "param:#1 int &"
       ],
       "src/actors/daKpa_c.cpp": [
-        "param:#1 int &"
+        "param:#1 int &",
+        "return:int"
       ],
       "src/actors/dMg3DHeyhoObjAdapter_c.cpp": [
         "return:int"
@@ -12769,6 +12770,9 @@
       "src/actors/daKpa_c.cpp": [
         "return:char *",
         "return:void *"
+      ],
+      "src/func_ov060_021180e0.cpp": [
+        "return:void *"
       ]
     },
     "_ZN8dActor_c10PoofDustAtERK7Vector3": {
@@ -13016,6 +13020,9 @@
         "return:void *"
       ],
       "src/actors/daKpa_c.cpp": [
+        "return:void *"
+      ],
+      "src/func_ov060_021181b4.c": [
         "return:void *"
       ]
     },
@@ -20886,7 +20893,8 @@
         "return:char []"
       ],
       "src/actors/dMg3DHeyhoObjAdapter_c.cpp": [
-        "return:SharedFilePtr"
+        "return:SharedFilePtr",
+        "return:int []"
       ]
     },
     "data_ov006_02140338": {
@@ -20894,7 +20902,8 @@
         "return:char []"
       ],
       "src/actors/dMg3DHeyhoObjAdapter_c.cpp": [
-        "return:SharedFilePtr"
+        "return:SharedFilePtr",
+        "return:int []"
       ]
     },
     "data_ov006_021403f4": {

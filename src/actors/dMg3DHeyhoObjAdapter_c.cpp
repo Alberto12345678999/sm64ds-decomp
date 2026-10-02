@@ -1517,6 +1517,7 @@ void func_ov006_020c4d1c(void)
 /* ---- func_ov006_020c4cd8 ---- */
 namespace n020c4cd8 {
 extern "C" {
+/* local extern: byte-proved alias spelling for a call by mangled name on a member subobject, as in the original one-function source */
 void _ZN9Animation7AdvanceEv(void *);
 void func_ov006_020c4c00(void *c);
 }
