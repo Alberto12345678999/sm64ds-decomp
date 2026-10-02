@@ -7198,6 +7198,20 @@ local, the k0/prim preheader form) fold back or cost a frame slot (285 words, 0x
 source forms with strength reduction on or off are not the ROM's shape (a mul per access, or 288+
 words). Verdict unchanged: a compiler-side scheduling difference; the stored 164 stands.
 
+**Addendum (2026-10-02, lane mgwiden-cd744hole-1002h, 164 -> 46).** The "stored 164" was the
+inherited draft, not the candidate this section measures. Rewriting the draft as that candidate
+lands at the ROM's exact size: per-row `Vec3 *v0/*v1` and `int *n0/*n1` pointers, each
+post-incremented, the `G3_Vtx` inline above, texcoords indexed `i*4+k`, and no declared constant
+locals (point 2). With `int k;` declared AFTER the four row pointers the size is exactly 0x45c
+(0x460 with k first), and the frame, stack webs and register assignment all match the ROM. The
+46 words left are the scheduling difference point 3 describes, in loop 1's x/y/z issue order
+and pointer step, plus a swapped vertex-pointer and row-counter step in loop 2. The "none
+reaches 0x45c" bound above applies to the register-exact candidate of 2026-09-13, not to this
+one: here 2004/b56, 1.2 base, sp2 and sp2p3 all reach 46 at 0x45c. 22 pragmas, 720 C89
+declaration orders and 24 index spellings leave it at 46 or worse. The matched func_ov080_0212677c
+(daPicGate) shows b56's own z-first, y-late order, so the ROM's x/y/z order still has no
+source lever.
+
 ## 6ct. A value assigned to a variable the optimiser will not propagate gets its own colour, and that is the handle 6cq said did not exist: func_ov075_0211afb0 MATCHED (div 4 -> 0, 2026-09-13, run link100 wave 11 lane WALL-B)
 
 `func_ov075_0211afb0` (ov075 0x0211afb0, 0x21c) sat at four words for three campaigns
