@@ -7752,6 +7752,24 @@ after the atan2, computing E late, indexing the table inline without E, s16 or l
 and caching the speed in a local. Reusing `k` for the E index goes to 289/0x530. Reusing c/s or k/s for nmx/nmy
 goes to about 297.
 
+**6. The twin, func_ov006_020e20bc (Shuffle Shell, ov006 0x020e20bc, 0x5e0): 203 -> 53 (2026-10-02, lane
+mgwiden-curling-1002d, about 40 measured cells plus permutation and declaration-order sweeps).** Same metric.
+Points 5(a)-(e) port across and are all in the draft, rewritten as C++ on the class header. Three more levers were
+needed here. (f) The first rotated term written as `dx = FMUL(sN, vmx); dx -= FMUL(cN, vmy);` gives the ROM's issue
+order for that pair of products and is what reaches the exact size (0x5e4 -> 0x5e0). Splitting the other seven
+terms the same way changes nothing. (g) One `k` index reused for all four table reads (both stones' velocities and
+both contact rotations, with `rel = -ang; ... rel = -rel;`) orders the table loads. Reusing it for the C/E pair took the draft to 67, and for
+the A/B pair too, to 64. (h) With the rest fixed, the declaration order of the block's named locals still moves the
+named-spill slots. A hill-climb over that order put rg at sp0, as the ROM has it (56 -> 53). Inert, or worse:
+every one of the 1120 statement orders of the rotation block (identical code: the scheduler orders by dependency
+height); an inline function for FMUL (105); caching the speeds (85); reusing c/s for the velocity reads (80);
+RD in the outer `dy` (65); s16/int for `ang` (0x5d8); int/s16 for `rel` (0x5d0/0x5dc); `<< 1` and `1 + k`
+spellings (identical). The same body compiled as C is 0x5d4.
+Open at 53: the pool spill slots (ROM &idx.angle, &idx.speed, &i.angle at sp4/8/c and RD at sp1c; ours
+spc/8/1c and sp4), the moving stone's index (+0x108: the ROM shifts once and adds the +1 after the other stone's
+index), and the contact-angle truncation (the ROM issues its `lsl #16` at +0x160 and defers the first rotation's
+`<<1`, where this draft does both late, around +0x1c0).
+
 ## 6da. A scalar stack parameter the loop uses directly is register-homed in PARAMETER ORDER, and that is the only thing that puts its load ahead of the last self-home store: OAM::Render MATCHED (div 2 -> 0, 2026-09-13, run link100 lane W12-5)
 
 `_ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii` (arm9 0x02020994, 0x690) was the game's one
