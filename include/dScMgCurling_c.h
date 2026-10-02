@@ -1,6 +1,6 @@
 /* class dScMgCurling_c : dScMgBase_c. Confirmed leaf -- no RTTI record
- * names it as a base (tools/rtti_extract.py). Its D1
- * (src/_ZN11dScMgCurling_cD1Ev.cpp) writes only its own vtable then calls
+ * names it as a base (tools/rtti_extract.py). Its D1 (in
+ * src/actors/dScMgCurling_c.cpp) writes only its own vtable then calls
  * dScMgBase_c's D2 directly; no members here need explicit destruction.
  *
  * Fields below 0x4660 (dScMgBase_c's own asserted size) are INHERITED, not
@@ -33,7 +33,8 @@ typedef char dScMgCurling_stone_size_must_be_0x2c[sizeof(struct dScMgCurling_sto
 
 struct dScMgCurling_c : dScMgBase_c {
     /* Declared, not defined inline -- a leaf, so nothing needs to inline
-       it; real body in src/_ZN11dScMgCurling_cD1Ev.cpp / _D0Ev.cpp. */
+       it; real body in src/actors/dScMgCurling_c.cpp, which is the whole
+       class. */
     virtual ~dScMgCurling_c();
 
     virtual s32 InitResources();  /* slot 0 */
@@ -43,7 +44,8 @@ struct dScMgCurling_c : dScMgBase_c {
 
     /* Slot 18 (one of dScMgBase_c's own undeclared new slots 18-35) is
        left unnamed here too, same reasoning as dScMgBase_c.h's own -- its
-       target (src/func_ov006_020e3470.cpp) has a "recovered name" of
+       target (_ZN14dScMgCurling_c13OnYoshiTryEatEi, in
+       src/actors/dScMgCurling_c.cpp) had a "recovered name" of
        OnYoshiTryEat_020e3470, which is wrong (same tree-wide mislabel
        documented in notes/dscene-c-siblings-census.md section 3): its
        body sets fields and calls helpers, nothing like a destructor. */

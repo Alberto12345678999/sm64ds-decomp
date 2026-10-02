@@ -1430,9 +1430,6 @@
       "src/_ZN13dScMgTeresa_c13InitResourcesEv.cpp": [
         "return:void *"
       ],
-      "src/_ZN14dScMgCurling_c13InitResourcesEv.cpp": [
-        "return:void *"
-      ],
       "src/_ZN15dScMgCurling2_c13InitResourcesEv.cpp": [
         "return:void *"
       ],
@@ -1489,6 +1486,9 @@
       "src/minigames/d_s_mg_base.cpp": [
         "return:void",
         "arity:0"
+      ],
+      "src/actors/dScMgCurling_c.cpp": [
+        "return:void *"
       ]
     },
     "LoadFont": {
@@ -7857,13 +7857,6 @@
       "src/_ZN12dScMgSlot1_c13InitResourcesEv.cpp": [
         "param:#5 unsigned short"
       ],
-      "src/_ZN14dScMgCurling_c13InitResourcesEv.cpp": [
-        "param:#5 unsigned short"
-      ],
-      "src/_ZN14dScMgCurling_c13OnYoshiTryEatEi.cpp": [
-        "param:#1 volatile void *",
-        "param:#5 unsigned short"
-      ],
       "src/_ZN15dScMgCurling2_c13InitResourcesEv.cpp": [
         "param:#5 unsigned short"
       ],
@@ -7941,6 +7934,9 @@
         "param:#3 int",
         "param:#4 int",
         "param:#5 int"
+      ],
+      "src/actors/dScMgCurling_c.cpp": [
+        "param:#5 unsigned short"
       ]
     },
     "_ZN3G2x18SetBlendBrightnessEPVtts": {
@@ -9073,12 +9069,6 @@
         "return:void"
       ],
       "src/func_ov006_020d1958.cpp": [
-        "return:void"
-      ],
-      "src/func_ov006_020e2dbc.c": [
-        "return:void"
-      ],
-      "src/func_ov006_020e2f78.c": [
         "return:void"
       ],
       "src/func_ov006_020e5ffc.c": [
@@ -17015,9 +17005,6 @@
       "src/func_ov004_020b65e4.c": [
         "return:unsigned char [][]"
       ],
-      "src/func_ov006_020e26f8.c": [
-        "return:TblEnt []"
-      ],
       "src/func_ov006_020fe2e4.c": [
         "return:unsigned char [][]"
       ],
@@ -17067,9 +17054,6 @@
       "src/func_ov006_020d1958.cpp": [
         "return:unsigned char [][]"
       ],
-      "src/func_ov006_020e26f8.c": [
-        "return:TblEnt []"
-      ],
       "src/func_ov006_020fe2e4.c": [
         "return:unsigned char [][]"
       ],
@@ -17101,9 +17085,6 @@
       ],
       "src/func_ov006_020d1958.cpp": [
         "return:unsigned char [][]"
-      ],
-      "src/func_ov006_020e26f8.c": [
-        "return:TblEnt []"
       ],
       "src/func_ov006_020fe2e4.c": [
         "return:unsigned char [][]"
@@ -34331,11 +34312,6 @@
         "return:int"
       ]
     },
-    "func_ov004_020adc1c": {
-      "src/_ZN14dScMgCurling_c6RenderEv.cpp": [
-        "arity:1"
-      ]
-    },
     "func_ov004_020adc3c": {
       "src/minigames/d_s_mg_base.cpp": [
         "return:unsigned int",
@@ -34361,10 +34337,10 @@
       ]
     },
     "func_ov004_020adc74": {
-      "src/_ZN14dScMgCurling_c13InitResourcesEv.cpp": [
+      "src/_ZN15dScMgCurling2_c13InitResourcesEv.cpp": [
         "return:char *"
       ],
-      "src/_ZN15dScMgCurling2_c13InitResourcesEv.cpp": [
+      "src/actors/dScMgCurling_c.cpp": [
         "return:char *"
       ]
     },
@@ -34494,9 +34470,6 @@
       ]
     },
     "func_ov004_020b19f0": {
-      "src/_ZN14dScMgCurling_c6RenderEv.cpp": [
-        "param:#1 int"
-      ],
       "src/_ZN15dScMgCurling2_c6RenderEv.cpp": [
         "arity:0"
       ],
@@ -34505,6 +34478,9 @@
         "return:void"
       ],
       "src/actors/dScMgPachinko_c.cpp": [
+        "param:#1 int"
+      ],
+      "src/actors/dScMgCurling_c.cpp": [
         "param:#1 int"
       ]
     },
@@ -34999,12 +34975,6 @@
         "arity:1"
       ]
     },
-    "func_ov006_020e12d0": {
-      "src/_ZN14dScMgCurling_c8BehaviorEv.cpp": [
-        "param:#1 C *",
-        "return:int"
-      ]
-    },
     "func_ov006_020e1554": {
       "include/decl_common.h": [
         "param:#1 char *"
@@ -35015,36 +34985,9 @@
         "return:int"
       ]
     },
-    "func_ov006_020e1dc8": {
-      "src/func_ov006_020e2c08.c": [
-        "param:#1 char *"
-      ]
-    },
-    "func_ov006_020e20bc": {
-      "src/func_ov006_020e285c.c": [
-        "arity:0"
-      ]
-    },
-    "func_ov006_020e2dbc": {
-      "src/func_ov006_020e3210.c": [
-        "return:int"
-      ]
-    },
     "func_ov006_020e3078": {
       "include/decl_common.h": [
         "arity:2",
-        "return:int"
-      ]
-    },
-    "func_ov006_020e3388": {
-      "src/_ZN14dScMgCurling_c13InitResourcesEv.cpp": [
-        "param:#1 char *"
-      ],
-      "src/_ZN14dScMgCurling_c13OnYoshiTryEatEi.cpp": [
-        "param:#1 void *"
-      ],
-      "src/func_ov006_020e3210.c": [
-        "param:#1 char *",
         "return:int"
       ]
     },
