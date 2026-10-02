@@ -42,8 +42,8 @@ struct daWanwan2_c : dEnemyBase_c {
     dCcAcPos_c mdCcAcPos_c;  /* 0x110 */
     dBgCh_Actr        mWithMeshClsn;      /* 0x150 */
     ModelAnim           mModelAnim;         /* 0x30c -- the chomp's body; its mat4x3 is the body matrix */
-    Model               mModels[daWanwan2_NUM_LINKS];         /* 0x370 -- one per chain link; mat4x3 is that link's matrix */
-    ShadowModel         mShadowModels[daWanwan2_NUM_LINKS];   /* 0x550 -- the links' drop shadows */
+    Model               mModels[6];                           /* 0x370 -- one per chain link; mat4x3 is that link's matrix */
+    ShadowModel         mShadowModels[6];                     /* 0x550 -- the links' drop shadows */
     ShadowModel         mShadowModel;       /* 0x640 -- the body's drop shadow */
     /* The current state: a pair of pointers-to-member (enter, execute) that
        func_ov100_02143b18 stores and calls and Behavior calls every frame --
@@ -92,15 +92,15 @@ struct daWanwan2_c : dEnemyBase_c {
        3000/4096 (for link 0, the movement from the anchor 250 units behind the
        chomp, not from its old position). Link 5 is the last; func_ov100_021435e8
        keeps its actor there. */
-    Vector3             mLinkPos[daWanwan2_NUM_LINKS];        /* 0x6d8 */
-    Vector3             mLinkVel[daWanwan2_NUM_LINKS];        /* 0x720 */
-    Vector3s            mUnk_768[daWanwan2_NUM_LINKS];        /* 0x768 -- constructed and destroyed, never read in this class's source */
+    Vector3             mLinkPos[6];                          /* 0x6d8 */
+    Vector3             mLinkVel[6];                          /* 0x720 */
+    Vector3s            mUnk_768[6];                          /* 0x768 -- constructed and destroyed, never read in this class's source */
     /* A lower bound on the Y that func_ov100_021437d4 drifts link i toward (the
        link, placed 50 units from the one before it, can still end below it).
        Each is rewritten every step as the chomp's Y minus 200 units, or the
        link's own Y when that bound would be more than 200 units above it.
        InitResources does not set them, so the first step clamps against 0. */
-    s32                 mLinkMinY[daWanwan2_NUM_LINKS];       /* 0x78c */
+    s32                 mLinkMinY[6];                         /* 0x78c */
 
     virtual ~daWanwan2_c();
 
