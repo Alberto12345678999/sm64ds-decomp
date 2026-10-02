@@ -109,7 +109,7 @@ Code size  ███████████████████████
 ```
 MATCHED    ██████████████████████████████  99.8%   11,368 / 11,389 functions
            of which 121 are byte-exact assembly (hand-written in the original, not C)
-CONVERTED  █████████░░░░░░░░░░░░░░░░░░░░░  30.2%   3,442 / 11,386 functions
+CONVERTED  █████████░░░░░░░░░░░░░░░░░░░░░  30.2%   3,443 / 11,386 functions
 LINKED     ████████████████████████████░░  93.5%   10,595 / 11,328 matched TUs
 ```
 <!-- tiers:end -->
