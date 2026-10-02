@@ -982,7 +982,7 @@ src/_ZN7fBase_cD0Ev.cpp	DTOR-ONLY	arm9	fBase_c	fBase_c	_ZN7fBase_cD0Ev	1		True		
 src/_ZN7fBase_cD1Ev.cpp	DTOR-ONLY	arm9	fBase_c	fBase_c	_ZN7fBase_cD1Ev	1		True	_ZTV7fBase_c	-
 src/_ZN7fBase_cD2Ev.cpp	DTOR-ONLY	arm9		fBase_c	_ZN7fBase_cD2Ev	1		True	_ZTV7fBase_c	-
 src/_ZN12daBDonketu_cD0Ev.c	DTOR-ONLY	ov064	daBDonketu_c	daBDonketu_c/daBDonketu_c	_ZN12daBDonketu_cD0Ev	1		True	_ZTV12daBDonketu_c	-
-src/_ZN8BookShotD0Ev.c	DTOR-ONLY	ov020	daBook_c	BookShot/daBook_c	_ZN8BookShotD0Ev	1		True		-
+src/_ZN8daBook_cD0Ev.c	DTOR-ONLY	ov020	daBook_c	daBook_c/daBook_c	_ZN8daBook_cD0Ev	1		True		-
 src/_ZN15daObjWc_Obj05_cD0Ev.c	DTOR-ONLY	ov029	daObjWc_Obj05_c	daObjWc_Obj05_c/daObjWc_Obj05_c	_ZN15daObjWc_Obj05_cD0Ev	1		True	_ZTV10dBgActor_c/_ZTV15daObjWc_Obj05_c	-
 src/_ZN12daKuriKing_cD0Ev.cpp	DTOR-ONLY	ov074	daKuriKing_c	daKuriKing_c	_ZN12daKuriKing_cD0Ev	1		True	_ZTV12daKuriKing_c	-
 src/_ZN18daObjMc_Metalnet_c16OnPendingDestroyEv.c	P1-vtable+mangled	ov009	daObjMc_Metalnet_c	daObjMc_Metalnet_c/daObjMc_Metalnet_c	vtable daObjMc_Metalnet_c slot 12 @0x2111ea4 | _ZN18daObjMc_Metalnet_c16OnPendingDestroyEv	1		True		-

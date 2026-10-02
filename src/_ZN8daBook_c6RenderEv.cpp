@@ -1,9 +1,9 @@
 //cpp
-// @symbol _ZN8BookShot6RenderEv
+// @symbol _ZN8daBook_c6RenderEv
 
-#include "BookShot.h"
+#include "daBook_c.h"
 
-int BookShot::Render()
+int daBook_c::Render()
 {
     bool isHidden = mFlags & 0x40000;
     if (isHidden != 0)

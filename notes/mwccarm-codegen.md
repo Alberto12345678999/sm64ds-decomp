@@ -7548,7 +7548,7 @@ CRK-O's micro-lab had reduced it to "a third call ahead of the site in the block
 constant-first order", which is true and was still not the lever. The draft declared the first
 call `void LoadBlueCoinModel(void)` and called it with no argument. Nine matched callers in the
 tree (daPkn_c, daSanbo_c, daTrs_c, BookShotSpawner, FirePiranhaPlantBig, Koopa, daKrb_c,
-BookShot, daYegg_c) declare it `(void *)` and pass the actor, and the cartridge enters the call
+daBook_c, daYegg_c) declare it `(void *)` and pass the actor, and the cartridge enters the call
 with `this` still in r0. `LoadBlueCoinModel(this)` closes the function: match.py MATCHING,
 linkcheck VERIFIED. The body of LoadBlueCoinModel never reads r0; what the argument buys is the
 incoming parameter's r0 web staying live through the entry block into the first call (this

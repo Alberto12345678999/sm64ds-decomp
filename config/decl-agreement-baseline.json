@@ -23008,10 +23008,10 @@
       "src/_ZN15BookShotSpawner16CleanupResourcesEv.cpp": [
         "return:int"
       ],
-      "src/_ZN8BookShot13InitResourcesEv.cpp": [
+      "src/_ZN8daBook_c13InitResourcesEv.cpp": [
         "return:SharedFilePtr"
       ],
-      "src/_ZN8BookShot16CleanupResourcesEv.cpp": [
+      "src/_ZN8daBook_c16CleanupResourcesEv.cpp": [
         "return:int"
       ],
       "src/__sinit_ov020_02113674.c": [
@@ -23019,10 +23019,10 @@
       ]
     },
     "data_ov020_02114aa8": {
-      "src/_ZN8BookShot13InitResourcesEv.cpp": [
+      "src/_ZN8daBook_c13InitResourcesEv.cpp": [
         "return:SharedFilePtr"
       ],
-      "src/_ZN8BookShot16CleanupResourcesEv.cpp": [
+      "src/_ZN8daBook_c16CleanupResourcesEv.cpp": [
         "return:int"
       ],
       "src/__sinit_ov020_02113674.c": [
@@ -23030,10 +23030,10 @@
       ]
     },
     "data_ov020_02114ab0": {
-      "src/_ZN8BookShot13InitResourcesEv.cpp": [
+      "src/_ZN8daBook_c13InitResourcesEv.cpp": [
         "return:SharedFilePtr"
       ],
-      "src/_ZN8BookShot16CleanupResourcesEv.cpp": [
+      "src/_ZN8daBook_c16CleanupResourcesEv.cpp": [
         "return:int"
       ],
       "src/__sinit_ov020_02113674.c": [
@@ -23044,7 +23044,7 @@
       "src/_ZN15BookShotSpawner13InitResourcesEv.cpp": [
         "return:int []"
       ],
-      "src/_ZN8BookShot13InitResourcesEv.cpp": [
+      "src/_ZN8daBook_c13InitResourcesEv.cpp": [
         "return:SharedFilePtr"
       ],
       "src/__sinit_ov020_02113674.c": [

@@ -4,11 +4,11 @@
     .ctor       start:0x02113768 end:0x02113770 kind:rodata align:4
     .data       start:0x02113780 end:0x02114aa0 kind:data align:32
     .bss        start:0x02114aa0 end:0x02114b20 kind:bss align:32
-src/_ZN8BookShotD1Ev.cpp:
+src/_ZN8daBook_cD1Ev.cpp:
     complete
     .text start:0x021111a0 end:0x021111f0
 
-src/_ZN8BookShotD0Ev.cpp:
+src/_ZN8daBook_cD0Ev.cpp:
     complete
     .text start:0x021111f0 end:0x02111254
 
@@ -76,7 +76,7 @@ src/func_ov020_0211216c.cpp:
     complete
     .text start:0x0211216c end:0x02112244
 
-src/_ZN8BookShot16CleanupResourcesEv.cpp:
+src/_ZN8daBook_c16CleanupResourcesEv.cpp:
     complete
     .text start:0x02112244 end:0x02112290
 
@@ -84,11 +84,11 @@ src/_ZN15BookShotSpawner16CleanupResourcesEv.cpp:
     complete
     .text start:0x02112290 end:0x021122c4
 
-src/_ZN8BookShot6RenderEv.cpp:
+src/_ZN8daBook_c6RenderEv.cpp:
     complete
     .text start:0x021122c4 end:0x0211233c
 
-src/_ZN8BookShot8BehaviorEv.cpp:
+src/_ZN8daBook_c8BehaviorEv.cpp:
     complete
     .text start:0x0211233c end:0x02112418
 
@@ -96,7 +96,7 @@ src/_ZN15BookShotSpawner8BehaviorEv.cpp:
     complete
     .text start:0x02112418 end:0x021124e4
 
-src/_ZN8BookShot13InitResourcesEv.cpp:
+src/_ZN8daBook_c13InitResourcesEv.cpp:
     complete
     .text start:0x021124e4 end:0x02112768
 
@@ -104,11 +104,11 @@ src/_ZN15BookShotSpawner13InitResourcesEv.cpp:
     complete
     .text start:0x02112768 end:0x021127a4
 
-src/_ZN8BookShot16OnAimedAtWithEggEv.cpp:
+src/_ZN8daBook_c16OnAimedAtWithEggEv.cpp:
     complete
     .text start:0x021127a4 end:0x021127cc
 
-src/_ZN8BookShot13OnYoshiTryEatEv.cpp:
+src/_ZN8daBook_c13OnYoshiTryEatEv.cpp:
     complete
     .text start:0x021127cc end:0x021127f4
 

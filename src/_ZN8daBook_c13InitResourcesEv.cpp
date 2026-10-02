@@ -1,9 +1,9 @@
 //cpp
 #include "common.h"
 #include "types.h"
-// @symbol _ZN8BookShot13InitResourcesEv
+// @symbol _ZN8daBook_c13InitResourcesEv
 /* recovered: named members + shared header, real C++ method */
-#include "BookShot.h"
+#include "daBook_c.h"
 struct dActor_c; struct Vector3; struct Vector3_16; struct BMD_File;
 /* SharedFilePtr stays incomplete: Model.h forward-declares it and its layout is
    deliberately not recovered (include/SharedFilePtr.h). Used only by address here. */
@@ -31,7 +31,7 @@ extern SharedFilePtr data_ov020_02114ab0;
 
 extern struct Matrix4x3 IDENTITY_MATRIX4X3;
 
-int BookShot::InitResources()
+int daBook_c::InitResources()
 {
     Model::LoadFile(data_ov020_02114aa0);
     Model::LoadFile(data_ov020_02114ab8);

@@ -1,12 +1,12 @@
-#ifndef BOOKSHOT_H
-#define BOOKSHOT_H
+#ifndef DABOOK_C_H
+#define DABOOK_C_H
 
 #include "types.h"
 
 /* Derives from dEnemyBase_c, and TWO INDEPENDENT WITNESSES agree on the layout: the
- * class's own destructor `_ZN8BookShotD1Ev` destroys each member, and
+ * class's own destructor `_ZN8daBook_cD1Ev` destroys each member, and
  * `daBook_c_classInit_SHOOT_BOOK` constructs the same types at the same offsets after
- * storing `_ZTV8BookShot`. Everything this header used to restate below 0x110
+ * storing `_ZTV8daBook_c`. Everything this header used to restate below 0x110
  * belongs to dEnemyBase_c and dActor_c and is inherited now.
  *
  * The members close on each other, which is what makes the layout a reading
@@ -22,9 +22,10 @@
  * -- 0x454 -- and stores this class's vtable, so that literal IS this
  * class's sizeof.
  *
- * The ROM's RTTI names this class daBook_c.
- *
- * SM64DS RTTI names the implementation daBook_c. The reconstructed factory
+ * NAME. The cartridge's RTTI names this class daBook_c: _ZTS8daBook_c at
+ * ov020 0x0211482c, _ZTI8daBook_c at 0x02114844, _ZTV8daBook_c at 0x0211495c.
+ * It was carried here under the coined name BookShot until that was replaced
+ * by the ROM's. The reconstructed factory
  * daBook_c_classInit_SHOOT_BOOK (historical alias BookShot_Spawn) installs this class's
  * cartridge vtable for the SHOOT_BOOK registry profile.
  */
@@ -36,7 +37,7 @@
 #include "ShadowModel.h"
 #include "dBgCh_Actr.h"
 
-struct BookShot : dEnemyBase_c {
+struct daBook_c : dEnemyBase_c {
     ModelAnim                    mModelAnim;            /* 0x110 */
     Model                        mModel;                /* 0x174 */
     ShadowModel                  mShadowModel;          /* 0x1c4 */
@@ -61,7 +62,7 @@ struct BookShot : dEnemyBase_c {
     u8  pad_451[0x3];
 
     /* --- vtable --- */
-    virtual ~BookShot();
+    virtual ~daBook_c();
 
     virtual s32   OnYoshiTryEat();         /* slot 18 */
     virtual s32   OnAimedAtWithEgg();      /* slot 29 */
@@ -75,7 +76,7 @@ struct BookShot : dEnemyBase_c {
 
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
-typedef char BookShot_size_must_be_0x454[sizeof(BookShot) == 0x454 ? 1 : -1];
+typedef char daBook_c_size_must_be_0x454[sizeof(daBook_c) == 0x454 ? 1 : -1];
 #endif
 
-#endif /* BOOKSHOT_H */
+#endif /* DABOOK_C_H */

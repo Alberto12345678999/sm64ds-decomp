@@ -9,7 +9,7 @@
 #include "decl_dBgCh_Actr.h"
 #include "decl_common.h"
 /* recovered: vtable identified, globals resolved */
-/* resolved: VT0 = _ZTV8BookShot */
+/* resolved: VT0 = _ZTV8daBook_c */
 /* Reconstructed source-style name: SM64DS proves daBook_c through RTTI,
  * allocation size, vtable identity, and the SHOOT_BOOK registry profile;
  * later EAD lineage supplies classInit. Exact original spelling is not
@@ -19,7 +19,7 @@ int *daBook_c_classInit_SHOOT_BOOK(void)
     int *p = (int *)_ZN7fBase_cnwEj(1108);
     if (p) {
         _ZN12dEnemyBase_cC2Ev(p);
-        p[0] = (int)_ZTV8BookShot;
+        p[0] = (int)_ZTV8daBook_c;
         _ZN9ModelAnimC1Ev((char *)p + 0x110);
         _ZN5ModelC1Ev((char *)p + 0x174);
         _ZN11ShadowModelC1Ev((char *)p + 0x1c4);

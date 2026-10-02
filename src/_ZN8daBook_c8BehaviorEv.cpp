@@ -1,14 +1,14 @@
 //cpp
-// @symbol _ZN8BookShot8BehaviorEv
+// @symbol _ZN8daBook_c8BehaviorEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 #include "decl_common.h"
 /* recovered: named members + shared header, real C++ method */
-#include "BookShot.h"
+#include "daBook_c.h"
 extern "C" {
 extern void func_0200f760(void* self, char* actor);
 }
 
-int BookShot::Behavior()
+int daBook_c::Behavior()
 {
     func_0200f760(this, (char*)&mdCcAcPos_c);
     if (UpdateYoshiEat(mWithMeshClsn) != 0) {
