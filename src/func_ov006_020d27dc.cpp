@@ -1,20 +1,16 @@
 //cpp
 // @symbol func_ov006_020d27dc
-/* recovered: Mario's Slides (dScMgAmida_c block): the large per-frame routine that walks the ladder objects. */
-// NONMATCHING: div 17 of 914 words. mwccarm 2004/b56, --module ov006,
-// @ 0x020d27dc size 0xe48. Residue: one branch shape. b56 if-converts the `< 5` arm
-// of the `*(s32 *)(p + 0x5374) >= 5` test, while the ROM keeps a `blt` at +0x564 over
-// an arm with no conditional in it. A two-way bare return on `(p + 1) - p` at the end
-// of the `>= 5` arm keeps that branch and brings this function to one differing bit
-// (`movs` for the ROM's `mov` at +0x57c). That form is a compiler probe, not period
-// source, so this body leaves it out; the probe is kept in nearmiss/db.jsonl and
-// described in notes/mwccarm-codegen.md 6cn.
-// Draft from nearmiss/db.jsonl (stored divergence 17), landed 2026-09-14 under Tango's ruling that the functionally-equivalent C
-// drafts live on main with an honest banner so the port and readers have source. Logic is
-// verified only as far as the residue class implies: register names and instruction order
-// for the shape-exact rows, NOT an independent execution audit for the others. Counts as
-// decompiled, not matched; tools/enroll.py leaves it out of the ROM build, which keeps the
-// original bytes for this range. A byte-exact match replaces this file and drops the banner.
+/* Mario's Slides (dScMgAmida_c block): the large per-frame routine that walks the ladder objects. */
+// Byte-exact under mwccarm 2004/b56 (--module ov006, 0x020d27dc, size 0xe48), relocations
+// checked with tools/match.py --strict-relocs.
+// History: first landed 2026-09-14 as an unmatched draft from nearmiss/db.jsonl (17 of
+// 914 words), then brought to one bit (a `movs` for the ROM's `mov` at +0x57c) by a probe
+// that was not period source. The last word was the `blt` at +0x564. b56's conditional
+// optimiser predicates the target arm of a two-way branch only when both arms end in the
+// same block. Here the next-round store (`0x46d0 = 0`) and the 0x1e path of the
+// other branch both reach the single `return` after the `if (sl == 1)` if/else, while the
+// five-round arm returns on its own. The two arms therefore end in different blocks and
+// the branch is kept, as in the ROM (notes/mwccarm-codegen.md 6cn).
 #pragma opt_strength_reduction off
 #pragma opt_common_subs off
 
@@ -208,31 +204,29 @@ extern "C" void func_ov006_020d27dc(void *arg0)
                                 }
                                 *flag = c1;
                                 *(s32 *)(p + 0x46cc) += 1;
-                                if (*(s32 *)(p + 0x46cc) >= *(s32 *)(p + 0x46c8)) {
-                                    if (*(u8 *)(p + 0x46d5) == 0) {
-                                        *(s32 *)((int)p + 0x5374) += 1;
-                                        *(s32 *)(p + 0x53e8) += 1;
-                                        if (*(s32 *)(p + 0x53e8) > 0x270f) {
-                                            *(s32 *)(p + 0x53e8) = 0x270f;
-                                        }
-                                        *(s32 *)(p + 0x53e0) = 0x78;
-                                        return;
+                                if (*(s32 *)(p + 0x46cc) < *(s32 *)(p + 0x46c8)) {
+                                    continue;
+                                }
+                                if (*(u8 *)(p + 0x46d5) == 0) {
+                                    *(s32 *)((int)p + 0x5374) += 1;
+                                    *(s32 *)(p + 0x53e8) += 1;
+                                    if (*(s32 *)(p + 0x53e8) > 0x270f) {
+                                        *(s32 *)(p + 0x53e8) = 0x270f;
                                     }
-                                    *(s32 *)(p + 0x53e0) = 0x1e;
+                                    *(s32 *)(p + 0x53e0) = 0x78;
                                     return;
                                 }
-                                continue;
-                            }
-
-                            {
+                                *(s32 *)(p + 0x53e0) = 0x1e;
+                            } else {
                                 s32 *d2 = (s32 *)((int)(p + idx * 8) + 0x4660);
+                                s32 t;
                                 func_02012718((void *) v10, *d2 << 0xc);
                                 func_02012718((void *) 0x1c1, *d2 << 0xc);
-                            }
-                            *flag = c1;
-                            *(s32 *)(p + 0x46cc) += 1;
-                            if (*(s32 *)(p + 0x46cc) >= *(s32 *)(p + 0x46c8)) {
-                                s32 t;
+                                *flag = c1;
+                                *(s32 *)(p + 0x46cc) += 1;
+                                if (*(s32 *)(p + 0x46cc) < *(s32 *)(p + 0x46c8)) {
+                                    continue;
+                                }
                                 *(s32 *)((int)p + 0x5374) += 1;
                                 *(s32 *)(p + 0x53e8) += 1;
                                 if (*(s32 *)(p + 0x53e8) > 0x270f) {
@@ -254,16 +248,15 @@ extern "C" void func_ov006_020d27dc(void *arg0)
                                 if (*(s32 *)(p + 0x5368) > 0x64) {
                                     *(s32 *)(p + 0x5368) = 0x64;
                                 }
-                                if (*(s32 *)((int)p + 0x5374) >= 5) {
+                                if (*(s32 *)(p + 0x5374) >= 5) {
                                     *(s32 *)(p + 0x53c0) = 0x3c;
                                     *(s32 *)(p + 0x46d0) = 2;
                                     *(u8 *)(p + 0x46d4) = 1;
                                     return;
                                 }
                                 *(s32 *)(p + 0x46d0) = 0;
-                                return;
                             }
-                            continue;
+                            return;
                         }
 
                         if (((struct Obj *)p)->m90() != 0) {

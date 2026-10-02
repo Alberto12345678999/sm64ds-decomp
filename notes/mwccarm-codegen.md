@@ -6710,6 +6710,31 @@ moving the `< 5` arm's code to a label after the loop, unreachable `goto` target
 arm, `while`/`for` spellings of the test (they rotate the test), and every frontend-foldable
 spelling of the `< 5` arm's store.
 
+**Resolution (2026-10-02, round 1002h): MATCHED, and the rule above is a symptom of a
+structural one.** Read out of `mwccarm.exe` 2004/b56: the pass that prints "AFTER CONDITIONAL
+OPTIMIZATION" (driver at 0x4f1650, pass at 0x4f10c0) runs after register allocation and BEFORE
+branch-to-epilogue duplication, so every `return` is still a `b` to the one epilogue block. It
+walks the blocks last to first and predicates only two shapes, each arm at most 5 PCode
+instructions:
+
+* triangle: the fall-through block F has exactly one predecessor (the branch block) and its
+  one successor is the branch target T, so F is predicated;
+* diamond: F and T each have exactly one predecessor (the branch block) and exactly one
+  successor, and it is the SAME join block J; then F and/or T is predicated.
+
+The early-return guard here is a diamond whose join is the epilogue. Anything that splits the
+jumped-over arm into more than one block (the conditional region above) breaks "F has one
+successor J", and so does giving the two arms DIFFERENT successors. The cost-free way to do
+that: end the small arm in a non-empty block with two or more predecessors instead of the
+epilogue, which in source is a `return` shared with another path. Blocks are merged and empty
+blocks dropped before the pass, so that shared return block survives to the decision only
+because of its second predecessor. The branch pass after it then threads both branches to the
+epilogue, and the final code is identical. `func_ov006_020d27dc` matched this way: the 0x1e
+path and the next-round store of its `sl == 1` if/else fall to one `return` after the if/else,
+while the five-round arm returns on its own. A goto to a shared `return` label gives the same
+bytes. When the ROM keeps a branch over a small return arm and the arm has no conditional,
+look for another path in the function that could share that arm's `return`.
+
 ## 6co. The verification chain compiled C++ with exceptions ON and the build never does: one "7-word floor" was the flag, not the source (func_ov006_020ea914, div 7 -> 0, 2026-09-13, run link100 lane CRK-B)
 
 `func_ov006_020ea914` (ov006 0x020ea914, 0x324) is the five-point trailing-segment OAM
