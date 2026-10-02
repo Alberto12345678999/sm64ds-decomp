@@ -845,21 +845,10 @@ src/func_ov004_020b8688.c:
     complete
     .text start:0x020b8688 end:0x020b8714
 
-src/_ZN10dMgState_c6RenderEv.cpp:
+src/actors/dMgState_c.cpp:
     complete
-    .text start:0x020b8714 end:0x020b8778
-
-src/_ZN10dMgState_c8BehaviorEv.cpp:
-    complete
-    .text start:0x020b8778 end:0x020b87e0
-
-src/_ZN10dMgState_c8SetStateEi.cpp:
-    complete
-    .text start:0x020b87e0 end:0x020b8a70
-
-src/_ZN10dMgState_cC1Ev.cpp:
-    complete
-    .text start:0x020b8a70 end:0x020b8a8c
+    .text start:0x020b8714 end:0x020b8a8c
+    .bss start:0x020bfd04 end:0x020bfda8
 
 src/func_ov004_020b8a8c.c:
     complete
