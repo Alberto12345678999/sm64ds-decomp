@@ -1,0 +1,341 @@
+{
+  "id": "ov006/unit020cd744",
+  "module": "ov006",
+  "source": "src/actors/unit020cd744.cpp",
+  "promoted_source": "src/actors/unit020cd744.cpp",
+  "status": "promoted",
+  "boundary_confidence": "medium",
+  "boundary_evidence": [
+    "Lower edge 0x020cd744: the previous linker unit (tu_map) is the promoted dMgTrmpln2Mario_c TU, whose .text ends exactly there.",
+    "Data is not exclusive to this unit: the run reads the Mario TU's globals at 0x021405a8..0x021405b4 and the score words 0x02140818/0x02140828/0x02140830 that d_s_mg_trampoline2 also uses, plus its own bss 0x02140808..0x0214095c (function-local statics with guard words and Vector3 destructor nodes) and rodata/data words in 0x0212e070..0x0212e0f0 and 0x0213b31c..0x0213b3a4. Shared globals do not move the .text edge, so the unit is folded text only.",
+    "Upper edge 0x020cf2fc: the unit continues to 0x020d1018, but func_ov006_020cf2fc (0x45c) is an unmatched NONMATCHING draft and is not enrolled, so the claim stops there. The 19 functions from 0x020cf758 to 0x020d1018, including func_ov006_020d01e0, stay one-function sources until it matches.",
+    "39 functions, contiguous, every one a one-function shard that already byte-matched; no gaps inside 0x020cd744..0x020cf2fc.",
+    "No RTTI, vtable or sinit record separates this run into smaller units, so interior boundaries are unproven and it is folded as the lower part of the tu_map unit, text only."
+  ],
+  "sections": [
+    {
+      "name": ".text",
+      "start": "0x020cd744",
+      "end": "0x020cf2fc"
+    }
+  ],
+  "functions": [
+    {
+      "symbol": "func_ov006_020cd744",
+      "address": "0x020cd744",
+      "size": "0x00000074",
+      "legacy_source": "src/func_ov006_020cd744.c",
+      "ordinal": 0
+    },
+    {
+      "symbol": "func_ov006_020cd7b8",
+      "address": "0x020cd7b8",
+      "size": "0x000000ac",
+      "legacy_source": "src/func_ov006_020cd7b8.c",
+      "ordinal": 1
+    },
+    {
+      "symbol": "func_ov006_020cd864",
+      "address": "0x020cd864",
+      "size": "0x00000128",
+      "legacy_source": "src/func_ov006_020cd864.c",
+      "ordinal": 2
+    },
+    {
+      "symbol": "func_ov006_020cd98c",
+      "address": "0x020cd98c",
+      "size": "0x00000024",
+      "legacy_source": "src/func_ov006_020cd98c.c",
+      "ordinal": 3
+    },
+    {
+      "symbol": "func_ov006_020cd9b0",
+      "address": "0x020cd9b0",
+      "size": "0x00000120",
+      "legacy_source": "src/func_ov006_020cd9b0.c",
+      "ordinal": 4
+    },
+    {
+      "symbol": "func_ov006_020cdad0",
+      "address": "0x020cdad0",
+      "size": "0x0000001c",
+      "legacy_source": "src/func_ov006_020cdad0.c",
+      "ordinal": 5
+    },
+    {
+      "symbol": "func_ov006_020cdaec",
+      "address": "0x020cdaec",
+      "size": "0x00000128",
+      "legacy_source": "src/func_ov006_020cdaec.c",
+      "ordinal": 6
+    },
+    {
+      "symbol": "func_ov006_020cdc14",
+      "address": "0x020cdc14",
+      "size": "0x00000024",
+      "legacy_source": "src/func_ov006_020cdc14.c",
+      "ordinal": 7
+    },
+    {
+      "symbol": "func_ov006_020cdc38",
+      "address": "0x020cdc38",
+      "size": "0x00000030",
+      "legacy_source": "src/func_ov006_020cdc38.c",
+      "ordinal": 8
+    },
+    {
+      "symbol": "func_ov006_020cdc68",
+      "address": "0x020cdc68",
+      "size": "0x00000024",
+      "legacy_source": "src/func_ov006_020cdc68.c",
+      "ordinal": 9
+    },
+    {
+      "symbol": "func_ov006_020cdc8c",
+      "address": "0x020cdc8c",
+      "size": "0x00000058",
+      "legacy_source": "src/func_ov006_020cdc8c.c",
+      "ordinal": 10
+    },
+    {
+      "symbol": "func_ov006_020cdce4",
+      "address": "0x020cdce4",
+      "size": "0x00000024",
+      "legacy_source": "src/func_ov006_020cdce4.c",
+      "ordinal": 11
+    },
+    {
+      "symbol": "func_ov006_020cdd08",
+      "address": "0x020cdd08",
+      "size": "0x00000120",
+      "legacy_source": "src/func_ov006_020cdd08.c",
+      "ordinal": 12
+    },
+    {
+      "symbol": "func_ov006_020cde28",
+      "address": "0x020cde28",
+      "size": "0x00000024",
+      "legacy_source": "src/func_ov006_020cde28.c",
+      "ordinal": 13
+    },
+    {
+      "symbol": "func_ov006_020cde4c",
+      "address": "0x020cde4c",
+      "size": "0x00000030",
+      "legacy_source": "src/func_ov006_020cde4c.c",
+      "ordinal": 14
+    },
+    {
+      "symbol": "func_ov006_020cde7c",
+      "address": "0x020cde7c",
+      "size": "0x00000024",
+      "legacy_source": "src/func_ov006_020cde7c.c",
+      "ordinal": 15
+    },
+    {
+      "symbol": "func_ov006_020cdea0",
+      "address": "0x020cdea0",
+      "size": "0x0000004c",
+      "legacy_source": "src/func_ov006_020cdea0.c",
+      "ordinal": 16
+    },
+    {
+      "symbol": "func_ov006_020cdeec",
+      "address": "0x020cdeec",
+      "size": "0x00000030",
+      "legacy_source": "src/func_ov006_020cdeec.c",
+      "ordinal": 17
+    },
+    {
+      "symbol": "func_ov006_020cdf1c",
+      "address": "0x020cdf1c",
+      "size": "0x00000004",
+      "legacy_source": "src/func_ov006_020cdf1c.c",
+      "ordinal": 18
+    },
+    {
+      "symbol": "func_ov006_020cdf20",
+      "address": "0x020cdf20",
+      "size": "0x0000001c",
+      "legacy_source": "src/func_ov006_020cdf20.c",
+      "ordinal": 19
+    },
+    {
+      "symbol": "func_ov006_020cdf3c",
+      "address": "0x020cdf3c",
+      "size": "0x00000170",
+      "legacy_source": "src/func_ov006_020cdf3c.c",
+      "ordinal": 20
+    },
+    {
+      "symbol": "func_ov006_020ce0ac",
+      "address": "0x020ce0ac",
+      "size": "0x0000005c",
+      "legacy_source": "src/func_ov006_020ce0ac.cpp",
+      "ordinal": 21
+    },
+    {
+      "symbol": "func_ov006_020ce108",
+      "address": "0x020ce108",
+      "size": "0x00000364",
+      "legacy_source": "src/func_ov006_020ce108.cpp",
+      "ordinal": 22
+    },
+    {
+      "symbol": "func_ov006_020ce46c",
+      "address": "0x020ce46c",
+      "size": "0x00000208",
+      "legacy_source": "src/func_ov006_020ce46c.c",
+      "ordinal": 23
+    },
+    {
+      "symbol": "func_ov006_020ce674",
+      "address": "0x020ce674",
+      "size": "0x0000022c",
+      "legacy_source": "src/func_ov006_020ce674.c",
+      "ordinal": 24
+    },
+    {
+      "symbol": "func_ov006_020ce8a0",
+      "address": "0x020ce8a0",
+      "size": "0x000000e8",
+      "legacy_source": "src/func_ov006_020ce8a0.cpp",
+      "ordinal": 25
+    },
+    {
+      "symbol": "func_ov006_020ce988",
+      "address": "0x020ce988",
+      "size": "0x000000a4",
+      "legacy_source": "src/func_ov006_020ce988.cpp",
+      "ordinal": 26
+    },
+    {
+      "symbol": "func_ov006_020cea2c",
+      "address": "0x020cea2c",
+      "size": "0x00000090",
+      "legacy_source": "src/func_ov006_020cea2c.cpp",
+      "ordinal": 27
+    },
+    {
+      "symbol": "func_ov006_020ceabc",
+      "address": "0x020ceabc",
+      "size": "0x000001f8",
+      "legacy_source": "src/func_ov006_020ceabc.c",
+      "ordinal": 28
+    },
+    {
+      "symbol": "func_ov006_020cecb4",
+      "address": "0x020cecb4",
+      "size": "0x0000000c",
+      "legacy_source": "src/func_ov006_020cecb4.c",
+      "ordinal": 29
+    },
+    {
+      "symbol": "func_ov006_020cecc0",
+      "address": "0x020cecc0",
+      "size": "0x000000c4",
+      "legacy_source": "src/func_ov006_020cecc0.cpp",
+      "ordinal": 30
+    },
+    {
+      "symbol": "func_ov006_020ced84",
+      "address": "0x020ced84",
+      "size": "0x0000006c",
+      "legacy_source": "src/func_ov006_020ced84.c",
+      "ordinal": 31
+    },
+    {
+      "symbol": "func_ov006_020cedf0",
+      "address": "0x020cedf0",
+      "size": "0x0000006c",
+      "legacy_source": "src/func_ov006_020cedf0.c",
+      "ordinal": 32
+    },
+    {
+      "symbol": "func_ov006_020cee5c",
+      "address": "0x020cee5c",
+      "size": "0x00000080",
+      "legacy_source": "src/func_ov006_020cee5c.c",
+      "ordinal": 33
+    },
+    {
+      "symbol": "func_ov006_020ceedc",
+      "address": "0x020ceedc",
+      "size": "0x00000038",
+      "legacy_source": "src/func_ov006_020ceedc.c",
+      "ordinal": 34
+    },
+    {
+      "symbol": "func_ov006_020cef14",
+      "address": "0x020cef14",
+      "size": "0x00000090",
+      "legacy_source": "src/func_ov006_020cef14.c",
+      "ordinal": 35
+    },
+    {
+      "symbol": "func_ov006_020cefa4",
+      "address": "0x020cefa4",
+      "size": "0x0000009c",
+      "legacy_source": "src/func_ov006_020cefa4.c",
+      "ordinal": 36
+    },
+    {
+      "symbol": "func_ov006_020cf040",
+      "address": "0x020cf040",
+      "size": "0x000000e4",
+      "legacy_source": "src/func_ov006_020cf040.c",
+      "ordinal": 37
+    },
+    {
+      "symbol": "func_ov006_020cf124",
+      "address": "0x020cf124",
+      "size": "0x000001d8",
+      "legacy_source": "src/func_ov006_020cf124.c",
+      "ordinal": 38
+    }
+  ],
+  "data": [],
+  "bss": [],
+  "notes": [
+    "Text-only fold of the lower part of the 0x020cd744..0x020d1018 linker unit; data and bss stay in the ROM image. The unit runs on past 0x020cf2fc, but that function does not match yet, so the claim stops below it.",
+    "include/types.h gives Vector3 an empty inline destructor, so this TU emits _ZN7Vector3D1Ev; it is licensed as a deadstrip duplicate of the arm9 copy."
+  ],
+  "verification": {
+    "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
+    "toolchain": "tools/mwccarm/2004/b56/mwccarm.exe",
+    "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
+    "object": "build/tu/ov006-unit020cd744/unit020cd744.o (gitignored)",
+    "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
+    "functions_matched": 39,
+    "functions_declared": 39,
+    "compilerOnlyOutput": {
+      "requested": [
+        "_ZN7Vector3D1Ev"
+      ],
+      "deadstripped": [
+        "_ZN7Vector3D1Ev"
+      ],
+      "droppedSections": [
+        11
+      ],
+      "data": [],
+      "dataExternalized": []
+    },
+    "criteria": {
+      "every_declared_function_defined": "PASS",
+      "every_declared_function_bytes_match": "PASS",
+      "declared_function_set_equals_defined_function_set": "PASS",
+      "functions_occur_in_expected_order": "PASS",
+      "relocation_destinations_verified": "PASS"
+    }
+  },
+  "compiler_only_output": [
+    {
+      "symbol": "_ZN7Vector3D1Ev",
+      "disposition": "deadstrip-duplicate",
+      "canonical_module": "arm9",
+      "canonical_address": "0x020072c0",
+      "reason": "include/types.h gives Vector3 an empty inline destructor, so this TU re-emits it with vague linkage for the Vector3 locals in func_ov006_020cd864, func_ov006_020cdaec and func_ov006_020ce108. The cartridge keeps exactly one copy at arm9:0x020072c0, kind:function(arm,size=0x4), owned by the enrolled `complete` source src/_ZN7Vector3D1Ev.cpp. This object's copy is the identical 4-byte `bx lr` body (1e ff 2f e1) with no relocations; rombuild compares the body against those cartridge bytes before discarding the duplicate."
+    }
+  ]
+}
