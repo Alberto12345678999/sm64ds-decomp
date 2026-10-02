@@ -1,45 +1,61 @@
 // @symbol func_ov006_020fc8c0
-/* recovered: Bob-omb Squad (dScMgPachinko_c block): a 30-entry loop over 0x38-byte records, each pushed through func_ov004_020b023c with a table-scaled value. */
-// NONMATCHING: div 6 of 60 words. mwccarm 2004/b56, --module ov006,
-// @ 0x020fc8c0 size 0xf0. Residue class: 6bs register recycle (shape-exact: every word agrees except register names).
-// Draft from nearmiss/db.jsonl (stored divergence 6), landed 2026-09-14 under Tango's ruling that the functionally-equivalent C
-// drafts live on main with an honest banner so the port and readers have source. Logic is
-// verified only as far as the residue class implies: register names and instruction order
-// for the shape-exact rows, NOT an independent execution audit for the others. Counts as
-// decompiled, not matched; tools/enroll.py leaves it out of the ROM build, which keeps the
-// original bytes for this range. A byte-exact match replaces this file and drops the banner.
+/* Bob-omb Squad (dScMgPachinko_c): draws the 30 balls. Each record is 0x38
+ * bytes from 0x4660 in the scene (mBall[i]). A ball whose byte at +0x2d is set
+ * is drawn with the sprite the byte at +0x33 picks, at its position plus the
+ * offset at +0x10/+0x14, through a 2x2 rotate-and-scale matrix: the u16 at
+ * +0x24 is the angle (>> 4 indexes the shared sine/cosine table) and the
+ * 20.12 value at +0x20 is the scale.
+ *
+ * The fixed-point multiply is the NitroSDK FX_Mul shape, written as a local
+ * inline, as the score drawer func_ov004_020b2220 does. With the products
+ * written out in the body the compiler puts the scale in the first smull's
+ * Rm instead of the table value.
+ *
+ * `opt_prelinearize off` is file-wide on purpose. Codegen is deferred to the
+ * end of the file, so the setting in force there is the one that applies; a
+ * push/pop bracket around the function would restore it before it is read.
+ * With it on, every callee-saved register in the loop rotates by one place.
+ *
+ * Matched 2026-10-02 (mwccarm 2004/b56, --module ov006, 0x020fc8c0, 0xf0).
+ * The earlier draft, from the near-miss database, sat at 6 of 60 words.
+ */
 typedef long long s64;
+typedef short s16;
 
-struct V { int a, b, c, d; };
-extern void func_ov004_020b023c(void *a, int b, int c, int d, struct V *v);
-extern short data_02082214[];
+struct Matrix2x2 { int _00, _01, _10, _11; };
+
+extern void func_ov004_020b023c(void *sprite, int x, int y, int a3, void *m);
+extern s16 data_02082214[];
 extern int data_ov006_02136cd4[];
 
-void func_ov006_020fc8c0(char *c)
+#pragma opt_prelinearize off
+
+static inline int FX_Mul(int v1, int v2)
+{
+    s64 t = (s64)v1 * v2;
+    return (int)((t + 0x800) >> 12);
+}
+
+void func_ov006_020fc8c0(char *scene)
 {
     int i;
-    char *o = c;
-    for (i = 0; i < 0x1e; i++, o += 0x38) {
-        char *r2 = o + 0x4000;
-        if (*(unsigned char *)(r2 + 0x68d) != 0) {
-            int sb = ((int)*(unsigned short *)(o + 0x4684) >> 4) << 1;
-            int ip = *(int *)(r2 + 0x680);
-            int bidx = *(unsigned char *)(r2 + 0x693);
-            struct V v;
-            int v_a = (int)(((s64)data_02082214[sb + 1] * ip + 0x800) >> 0xc);
-            int v_b = (int)(((s64)data_02082214[sb] * ip + 0x800) >> 0xc);
-            int b = (*(int *)(r2 + 0x660) + *(int *)(r2 + 0x670)) >> 0xc;
-            int c2 = (*(int *)(r2 + 0x664) + *(int *)(r2 + 0x674)) >> 0xc;
-            v.a = v_a;
-            v.b = v_b;
-            v.c = -v_b;
-            v.d = v_a;
-            func_ov004_020b023c(
-                (void *) data_ov006_02136cd4[bidx],
-                b,
-                c2,
-                -1,
-                &v);
+    char *ball = scene;
+    for (i = 0; i < 30; i++, ball += 0x38) {
+        char *p = ball + 0x4000;
+        if (*(unsigned char *)(p + 0x68d) != 0) {
+            int idx = ((int)*(unsigned short *)(ball + 0x4684) >> 4) << 1;
+            int scale = *(int *)(p + 0x680);
+            int sprite = *(unsigned char *)(p + 0x693);
+            struct Matrix2x2 m;
+            int cosv = FX_Mul(data_02082214[idx + 1], scale);
+            int sinv = FX_Mul(data_02082214[idx], scale);
+            int x = (*(int *)(p + 0x660) + *(int *)(p + 0x670)) >> 12;
+            int y = (*(int *)(p + 0x664) + *(int *)(p + 0x674)) >> 12;
+            m._00 = cosv;
+            m._01 = sinv;
+            m._10 = -sinv;
+            m._11 = cosv;
+            func_ov004_020b023c((void *)data_ov006_02136cd4[sprite], x, y, -1, &m);
         }
     }
 }
