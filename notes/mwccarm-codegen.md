@@ -7797,6 +7797,18 @@ swaps. Worse: reusing `k` or `rel` for the E index (0x578, extra spills), a tabl
 missing is one that delays a load the scheduler wants early without adding a slot; the twin never needed it
 because its contact table words are read through the shared `k` after the negation.
 
+A narrower diagnosis from round 1002f (39 more cells, still 30). The draft colours the sign word of
+sP (the `asr #31`) ip; the ROM colours it r3, right after vex's `orr r0,r0,r3,lsl#20`. In ip, its
+spill store has a write-after-read edge against the k+1 index temp, and that edge is what hoists the
+whole sP chain above the hit stone's table chain and swaps the c / sP.hi slots (0x34/0x38), which
+is the +0x3d0 reload. So the missing lever is a dependency or colouring change, not a statement
+position: every placement of the sP/cP reads, and every declaration-order move of sP/cP, is inert.
+Worse: operand swaps in the sP/cP products (42, 45, or 0x520), dx before dy (49), rel through the
+hitAngle reference (41), the idx speed through a pointer (0x564), reusing c/s for the contact words
+(0x548), the 0x1b000 constant first or as a long long (0x524), and the twin's split first statement
+(0x558: the frame drops 0x7c -> 0x6c and the table base leaves r3). The five opt_* pragmas each
+change the size.
+
 ## 6da. A scalar stack parameter the loop uses directly is register-homed in PARAMETER ORDER, and that is the only thing that puts its load ahead of the last self-home store: OAM::Render MATCHED (div 2 -> 0, 2026-09-13, run link100 lane W12-5)
 
 `_ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii` (arm9 0x02020994, 0x690) was the game's one
