@@ -1,24 +1,33 @@
 //cpp
 // @symbol func_ov006_020e5450
 /* recovered: Shell Smash (dScMgCurling2_c): a per-index update with sqrt and atan2 over the shell records. */
-// NONMATCHING: div 70 of 344 words. mwccarm 2004/b56, --module ov006,
-// @ 0x020e5450 size 0x560 (exact size, 24 words of shape difference). Residue class:
-// scheduling and colouring inside the collision block. The ROM computes &mStone[i].angle
-// and loads the trig table base before the idx angle load; it loads the two table words
-// for the contact angle after the other stone's table words and sign-extends them only
-// after vex; it orders the 0x4668 and table literals the other way; and one idx.y reload
-// colours r1 where this draft gives r0.
+// NONMATCHING: div 30 of 344 words. mwccarm 2004/b56, --module ov006,
+// @ 0x020e5450 size 0x560 (exact size). Residue class: one contiguous schedule
+// residue in the collision block, +0x1b4..+0x224, plus one reload of the slot it
+// moves at +0x3d0. This draft hoists the contact angle's table word (sP) and its
+// asr #31 sign-extension above the hit stone's table chain, spilling the sign at
+// sp+0x34 ahead of the hit stone's cosine at 0x38; the ROM loads the two contact
+// table words after the hit stone's cosine and sine, sign-extends both after vex,
+// and keeps the cosine at 0x34 with the signs at 0x38 and 0x3c.
 // Draft first banked from nearmiss/db.jsonl at 191, landed 2026-09-14 under Tango's ruling
 // that functionally-equivalent drafts live on main with an honest banner so the port and
-// readers have source. Improved to 70 on 2026-10-02. The changes were: the contact block reuses dx and dy for the
-// moving stone's new velocity, so the slots follow the ROM frame; the c, s, k and rel
-// temporaries are reused for both stones, so the schedule follows the ROM order; each
-// product names the table value first, which gives smull's operand order; and the first
-// wall clamp keeps the overshoot in xi, as the ROM does, so the second test reads it.
+// readers have source. Improved to 70 on 2026-10-02 (dx/dy reuse, one rel/k/c/s set for
+// both stones, table value first in each product, overshoot kept in xi), then to 30 the
+// same day with the twin func_ov006_020e20bc's levers: the hit stone's angle is bound as
+// a reference right after atan2, before the velocities are read (70 -> 43); the x
+// quotient is taken before the y quotient, which colours the idx.y reload r1 (43 -> 41);
+// and the three fields written after a call (the hit stone's x and y, the moving
+// stone's x for the sound) are reached through pointers assigned after the dx/dy
+// reads, so their addresses sit in the frame chain while the dx/dy addressing stays
+// (41 -> 30; assigning them before the reads grows the frame and the function to
+// 0x540). Inert at 30: every placement of the sP/cP reads, E unscaled or inlined,
+// s16 or long long for sP/cP, explicit wide copies, a cached hit speed, the hit
+// stone's sine before its cosine, declaration-order swaps. Worse: reusing k or rel for
+// the E index (0x578), a table pointer for T[E] (0x51c), references for the two stones
+// (size change), rereading T[E] for the 0x1b000 products (0x56c).
 // Counts as decompiled, not matched. tools/enroll.py leaves it out of the ROM build, which
 // keeps the original bytes for this range. A byte-exact match replaces this file and
 // drops the banner.
-// @symbol func_ov006_020e5450
 #include "dScMgCurling2_c.h"
 
 extern "C" {
@@ -62,10 +71,17 @@ extern "C" void func_ov006_020e5450(dScMgCurling2_c *self, int idx)
             int vey;
             int yi;
             int xi;
+            int *pHitX;
+            int *pX;
+            int *pHitY;
 
             dx = self->mStone[i].x - self->mStone[idx].x;
             dy = self->mStone[i].y - self->mStone[idx].y;
+            pHitX = &self->mStone[i].x;
+            pX = &self->mStone[idx].x;
+            pHitY = &self->mStone[i].y;
             ang = _ZN4cstd5atan2E5Fix12IiES1_(dy, dx);
+            u16 &hitAngle = self->mStone[i].angle;
             E = (ang >> 4) * 2;
             rel = self->mStone[idx].angle - ang;
             k = (rel >> 4) * 2;
@@ -89,22 +105,22 @@ extern "C" void func_ov006_020e5450(dScMgCurling2_c *self, int idx)
             self->mStone[idx].speed = _ZN4cstd4sqrtEy((u64)((long long)dy * dy + (long long)dx * dx));
             self->mStone[idx].x = self->mStone[i].x - FMUL(cP, 0x1b000);
             self->mStone[idx].y = self->mStone[i].y - FMUL(sP, 0x1b000);
-            yi = self->mStone[idx].y >> 12;
             xi = self->mStone[idx].x >> 12;
+            yi = self->mStone[idx].y >> 12;
             if (xi - 0xc < 0) {
                 xi = self->mStone[idx].x - 0xc000;
-                self->mStone[i].x += xi;
+                *pHitX += xi;
                 self->mStone[idx].x = 0xc000;
             }
             if (xi + 0xc > 0x100) {
-                self->mStone[i].x += self->mStone[idx].x - 0xf4000;
+                *pHitX += self->mStone[idx].x - 0xf4000;
                 self->mStone[idx].x = 0xf4000;
             }
             if (yi - 0xc < -0xe0) {
                 self->mStone[idx].y = -0xd4000;
-                self->mStone[i].y = self->mStone[idx].y + 0x18000;
+                *pHitY = self->mStone[idx].y + 0x18000;
             }
-            self->mStone[i].angle = _ZN4cstd5atan2E5Fix12IiES1_(ney, nex);
+            hitAngle = _ZN4cstd5atan2E5Fix12IiES1_(ney, nex);
             self->mStone[i].speed = _ZN4cstd4sqrtEy((u64)((long long)nex * nex + (long long)ney * ney));
             self->mStone[idx].state = 1;
             self->mStone[i].state = 1;
@@ -113,7 +129,7 @@ extern "C" void func_ov006_020e5450(dScMgCurling2_c *self, int idx)
             } else {
                 self->mStone[i].fast = 0;
             }
-            func_02012718((void *) 0xe8, self->mStone[idx].x);
+            func_02012718((void *) 0xe8, *pX);
             self->SpawnValue(idx, i);
             return;
         }
