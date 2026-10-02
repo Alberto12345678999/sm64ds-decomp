@@ -45,7 +45,7 @@ MontyMoleRock_Spawn               MontyMole_Spawn
 ```
 
 A name-change detector turns [ov080](../config/arm9/overlays/ov080/symbols.txt)'s three TUs into thirteen. [ov020](../config/arm9/overlays/ov020/symbols.txt)
-(BookShot/BookShotSpawner) and [ov063](../config/arm9/overlays/ov063/symbols.txt) (Boo/BooCage/BigBooIcon) interleave the same way.
+(daBook_c/daBookGen_c) and [ov063](../config/arm9/overlays/ov063/symbols.txt) (Boo/BooCage/BigBooIcon) interleave the same way.
 
 ## The rule that works
 
