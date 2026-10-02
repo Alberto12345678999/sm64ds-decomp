@@ -612,7 +612,7 @@
     },
     "linkcheck": {
       "round": "tools/tubuild.py linkcheck -- scratch dsd delink+lcf, whole-tree mwccarm, mwldarm link, linked-range and module byte comparison, dsd check symbols --fail, full ROM build",
-      "result": "scratch-link-verified",
+      "result": "scratch-data-verified",
       "scratch": "build/tu/ov078-daBombking_c/link (gitignored)",
       "phases": {
         "delink": true,
@@ -636,19 +636,70 @@
           "end": "0x02126660",
           "differingBytes": 0,
           "firstDiff": null
+        },
+        {
+          "section": ".data",
+          "start": "0x02126e0c",
+          "end": "0x02126ec8",
+          "differingBytes": 0,
+          "firstDiff": null
         }
       ],
       "objectAudit": {
         "counts": {
-          "LICENSED": 52
+          "LICENSED": 56
         },
         "emittedTextOrderIsRomAscending": true,
         "nonLicensedSymbols": [],
         "unlicensedSections": []
       },
       "nontextSectionOrder": {
-        "groups": [],
-        "objisolate": null,
+        "groups": [
+          {
+            "section": ".data",
+            "original": [
+              107,
+              109,
+              111,
+              112
+            ],
+            "desired": [
+              112,
+              111,
+              107,
+              109
+            ]
+          }
+        ],
+        "objisolate": {
+          "reordered": [
+            {
+              "section": ".data",
+              "original": [
+                107,
+                109,
+                111,
+                112
+              ],
+              "desired": [
+                112,
+                111,
+                107,
+                109
+              ],
+              "slots": [
+                107,
+                109,
+                111,
+                112
+              ]
+            }
+          ],
+          "symbolIndices": 4,
+          "sectionLinks": 0,
+          "sectionInfos": 3,
+          "error": null
+        },
         "errors": null
       },
       "linkedStorageAliases": null,
