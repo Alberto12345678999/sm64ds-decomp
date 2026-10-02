@@ -366,7 +366,7 @@
     },
     "linkcheck": {
       "round": "tools/tubuild.py linkcheck -- scratch dsd delink+lcf, whole-tree mwccarm, mwldarm link, linked-range and module byte comparison, dsd check symbols --fail, full ROM build",
-      "result": "data-verified",
+      "result": "scratch-data-verified",
       "scratch": "build/tu/ov004-unit020b2c84/link (gitignored)",
       "phases": {
         "delink": true,
@@ -476,6 +476,14 @@
       "addend": 0,
       "target_module": "ov004",
       "target_address": "0x020b9f54"
+    }
+  ],
+  "symbol_binding_rewrites": [
+    {
+      "symbol": "data_ov004_020bc6e8",
+      "from": "STB_LOCAL",
+      "to": "STB_GLOBAL",
+      "evidence": "The table is file-local in the source, as the anonymous template it replaces was. DSD requires a global symbol at the configured .data address; changing the ELF binding preserves all storage, relocations and emitted bytes."
     }
   ]
 }

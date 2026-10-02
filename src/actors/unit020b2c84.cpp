@@ -168,7 +168,7 @@ extern int data_0209e650;
 extern Obj *data_ov004_020beb68;
 extern S3 data_ov004_020bc27c;
 extern int data_ov004_020b9f54;
-EntryTable data_ov004_020bc6e8 = { { { 0, 0 }, { 0x140, (int)&data_ov004_020b9f54 } } };
+static EntryTable data_ov004_020bc6e8 = { { { 0, 0 }, { 0x140, (int)&data_ov004_020b9f54 } } };
 extern int data_ov006_021346bc;
 extern int data_ov004_020beb6c;
 extern int data_ov004_020bc150;
