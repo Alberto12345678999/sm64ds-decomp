@@ -278,7 +278,7 @@ Two details that are not free and are worth copying:
 Every "read by nothing matched" reason below was withdrawn on 2026-08-24. They
 were all decided by searching daKpa_c's own mangled methods, which is three files;
 daKpa_c's behaviour is in [ov060](../config/arm9/overlays/ov060/symbols.txt), dispatched through the pointer-to-member table
-[data_ov060_0211aeb4](../config/arm9/overlays/ov060/symbols.txt)`[*(int *)(this + 0x410)]` that [func_ov060_02112434](../src/func_ov060_02112434.cpp) calls.
+[data_ov060_0211aeb4](../config/arm9/overlays/ov060/symbols.txt)`[*(int *)(this + 0x410)]` that [func_ov060_02112434](../src/actors/daKpa_c.cpp) calls.
 A data-table dispatch names no caller, so the call graph never reaches those
 state functions -- but `tools/handler_owner.py` attributes ~30 [ov060](../config/arm9/overlays/ov060/symbols.txt) handlers to
 daKpa_c decisively, and they read almost all of it. Named from that evidence:
@@ -289,13 +289,13 @@ daKpa_c decisively, and they read almost all of it. Named from that evidence:
 | 0x3fc | `mTimer` | incremented as a `u16`, tested `== 0`, and `& 1` for alternate-frame work. |
 | 0x40c | `mState` | assigned 0, 1, 5, 0xd and 0x13 by different state handlers and compared against 4. An enum-like state word, distinct from the pmf index at 0x410. |
 | 0x414 | `mVariantID` | `param1 & 3`, wrapped by `if (== 3) = 0`, then used to index [data_ov060_02119264](../config/arm9/overlays/ov060/symbols.txt) for the byte at 0x41e. A variant selector that picks per-instance configuration -- which is exactly the part the old note called a guess. |
-| 0x41c | `mOpacity` | the missing `0xff` exists: [func_ov060_021123dc](../src/func_ov060_021123dc.c) writes `0xff` here and to 0x41d, and [func_ov060_02112434](../src/func_ov060_02112434.cpp) steps 0x41c toward 0x41d by 0x14 a frame, clamping at 0xff and 0, while another handler passes `*(u8 *)(this + 0x41c) >> 3` to `ModelBase::ApplyOpacity` -- 0..255 scaled to the DS's 5-bit alpha. `Render`'s `< 8` early-out is the invisible case. |
+| 0x41c | `mOpacity` | the missing `0xff` exists: [func_ov060_021123dc](../src/actors/daKpa_c.cpp) writes `0xff` here and to 0x41d, and [func_ov060_02112434](../src/actors/daKpa_c.cpp) steps 0x41c toward 0x41d by 0x14 a frame, clamping at 0xff and 0, while another handler passes `*(u8 *)(this + 0x41c) >> 3` to `ModelBase::ApplyOpacity` -- 0..255 scaled to the DS's 5-bit alpha. `Render`'s `< 8` early-out is the invisible case. |
 | 0x424 | `mTalkStep` | `switch` on it: case 0 calls `Player::StartTalk`, case 1 waits for `Player::GetTalkState() == 0` then `Player::ShowMessage`, each case incrementing it. |
 | 0x426 | `mDropsShadow` | gates the `dBgCh_Gnd` raycast that projects daKpa_c onto the ground and writes the shadow matrix at 0x330 -- the same role `daKpaFire_c::mDropsShadow` was named for. |
 | 0x427 | `mBounceOnLand` | while set, `dBgCh_Actr::JustHitGround()` reflects the vertical speed at -60% (clamped to 0x14000); cleared once he settles. |
 | 0x42b | `mCapActorAlive` | actor 0x10d is the lost cap -- `daSnowman_c` spawns it under `SaveData::HasPlayerLostCap()` and stores its unique id as `mCapUniqueID`. This is the latch saying that actor still exists. |
 | 0x444 | `mCutsceneStep` | `switch` on it drives the camera: `Camera::SetFlag_3`, `Camera::SetLookAt`, and the computed eye position at 0x438/0x43c. |
-| 0x446 | `mStompFxLatch` | [func_ov060_02111a28](../src/func_ov060_02111a28.cpp) matches the animation frame at 0x12c against per-animation windows and, on the rising edge only, emits landing dust from the left foot (0x3d4) or right (0x3e0), plays sound 0xb0 and calls `dActor_c::Earthquake`. This is the edge-detect latch that makes it fire once per window. |
+| 0x446 | `mStompFxLatch` | [func_ov060_02111a28](../src/actors/daKpa_c.cpp) matches the animation frame at 0x12c against per-animation windows and, on the rising edge only, emits landing dust from the left foot (0x3d4) or right (0x3e0), plays sound 0xb0 and calls `dActor_c::Earthquake`. This is the edge-detect latch that makes it fire once per window. |
 | 0x448 | `mParticleHandle` | stores the result of `Particle::System::New`. |
 | 0x44c | `mSoundHandle` | stores the result of `Sound::PlayLong`, and passes it back as that call's first argument. |
 | 0x450 | `mSoundID` | set to 0xba, compared against 0xba, and passed to `Sound::PlayLong` as the sound id. |

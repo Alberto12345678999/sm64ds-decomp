@@ -336,7 +336,7 @@ translation unit.
 | --- | --- | --- |
 | 0x108 | `mBowserUniqueID` | `Behavior` resolves it with `dActor_c::FindWithID` and parks the tail 0x8c units out from daKpa_c's position along his facing angle. The file already said so in prose. |
 
-Source: `src/_ZN11daKpaTail_c8BehaviorEv.cpp`.
+Source: `src/actors/daKpa_c.cpp`.
 
 ## daRedBombhei_c -- include/daRedBombhei_c.h
 
