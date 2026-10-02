@@ -2,7 +2,13 @@
 // @symbol func_ov006_020d27dc
 /* recovered: Mario's Slides (dScMgAmida_c block): the large per-frame routine that walks the ladder objects. */
 // NONMATCHING: div 17 of 914 words. mwccarm 2004/b56, --module ov006,
-// @ 0x020d27dc size 0xe48. Residue class: no mechanism named; one branch shape.
+// @ 0x020d27dc size 0xe48. Residue: one branch shape. b56 if-converts the `< 5` arm
+// of the `*(s32 *)(p + 0x5374) >= 5` test, while the ROM keeps a `blt` at +0x564 over
+// an arm with no conditional in it. A two-way bare return on `(p + 1) - p` at the end
+// of the `>= 5` arm keeps that branch and brings this function to one differing bit
+// (`movs` for the ROM's `mov` at +0x57c). That form is a compiler probe, not period
+// source, so this body leaves it out; the probe is kept in nearmiss/db.jsonl and
+// described in notes/mwccarm-codegen.md 6cn.
 // Draft from nearmiss/db.jsonl (stored divergence 17), landed 2026-09-14 under Tango's ruling that the functionally-equivalent C
 // drafts live on main with an honest banner so the port and readers have source. Logic is
 // verified only as far as the residue class implies: register names and instruction order
