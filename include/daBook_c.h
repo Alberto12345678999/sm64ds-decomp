@@ -39,30 +39,6 @@
 #include "dBgCh_Actr.h"
 
 struct daBook_c : dEnemyBase_c {
-    /* Which of the two behaviours the profile selected; InitResources sets it
-       from actorID and Behavior switches on it. */
-    enum Kind {
-        KIND_FLYING_BOOK = 0,   /* SHOOT_BOOK and KILLER_BOOK: run mState 0..5 */
-        KIND_SWITCH_BOOK = 1    /* BOOK_SWITCH: runs mState 6..10 */
-    };
-
-    /* mState, for both kinds. */
-    enum State {
-        /* KIND_FLYING_BOOK */
-        STATE_WAIT = 0,         /* KILLER_BOOK idles until the player is close and in front */
-        STATE_TILT_BACK = 1,    /* tips back, then swaps the plain model for the animated one */
-        STATE_WIND_UP = 2,      /* plays its animation, turns to face the player and swells, then launches */
-        STATE_FLY = 3,          /* travels in a straight line until it hits something */
-        STATE_SPAWNED = 4,      /* SHOOT_BOOK starts here: waits three frames, then jumps to full speed and STATE_FLY */
-        STATE_YOSHI_SKID = 5,   /* slides to a stop after Yoshi lets go, then resumes mSavedState */
-        /* KIND_SWITCH_BOOK */
-        STATE_SWITCH_WAIT = 6,  /* waits for the daTrsTrap_c bookshelf to raise bit 3 of its mBookFlags */
-        STATE_SWITCH_RETRACT = 7, /* slides back into the shelf */
-        STATE_SWITCH_READY = 8, /* collider on; waits to be hit */
-        STATE_SWITCH_PUSH = 9,  /* slides forward, then reports itself to the partner */
-        STATE_SWITCH_DONE = 10  /* waits for the partner's verdict */
-    };
-
     ModelAnim                    mModelAnim;            /* 0x110 */
     Model                        mModel;                /* 0x174 */
     ShadowModel                  mShadowModel;          /* 0x1c4 */
@@ -116,6 +92,30 @@ struct daBook_c : dEnemyBase_c {
     int CleanupResources();
     int InitResources();
     int Render();
+
+    /* Which of the two behaviours the profile selected; InitResources sets it
+       from actorID and Behavior switches on it. */
+    enum Kind {
+        KIND_FLYING_BOOK = 0,   /* SHOOT_BOOK and KILLER_BOOK: run mState 0..5 */
+        KIND_SWITCH_BOOK = 1    /* BOOK_SWITCH: runs mState 6..10 */
+    };
+
+    /* mState, for both kinds. */
+    enum State {
+        /* KIND_FLYING_BOOK */
+        STATE_WAIT = 0,         /* KILLER_BOOK idles until the player is close and in front */
+        STATE_TILT_BACK = 1,    /* tips back, then swaps the plain model for the animated one */
+        STATE_WIND_UP = 2,      /* plays its animation, turns to face the player and swells, then launches */
+        STATE_FLY = 3,          /* travels in a straight line until it hits something */
+        STATE_SPAWNED = 4,      /* SHOOT_BOOK starts here: waits three frames, then jumps to full speed and STATE_FLY */
+        STATE_YOSHI_SKID = 5,   /* slides to a stop after Yoshi lets go, then resumes mSavedState */
+        /* KIND_SWITCH_BOOK */
+        STATE_SWITCH_WAIT = 6,  /* waits for the daTrsTrap_c bookshelf to raise bit 3 of its mBookFlags */
+        STATE_SWITCH_RETRACT = 7, /* slides back into the shelf */
+        STATE_SWITCH_READY = 8, /* collider on; waits to be hit */
+        STATE_SWITCH_PUSH = 9,  /* slides forward, then reports itself to the partner */
+        STATE_SWITCH_DONE = 10  /* waits for the partner's verdict */
+    };
 };
 
 #ifndef SM64DS_PLATFORM_PC
