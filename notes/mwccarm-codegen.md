@@ -7624,6 +7624,20 @@ callee's parameter type names, the byte loaded before the guard) leave the cmp a
 are the same ASAP-versus-ALAP policy delta, and neither is reachable through a receiver because
 the value in question is a constant (the first) or a flag (the second), not a register web.
 
+Positive control for the second (round 1002f, about 250 more cells). With the guard, flag and x
+loads all `volatile` (a 64-cell mask matrix; cells 110111, 111011 and 111111), b56 emits the ROM's
+exact tail: the four stack stores, then `mov ip,r4; cmp sl,#0; movne ip,sb` at +0x64..+0x6c, the
+flag byte live in sl, nine pushes and the 0x1c frame. So the compiler can produce the ROM's
+schedule, and the whole residue is one ordering lever: keep the 0x676 byte live in a callee-saved
+register across the stores. `volatile` is not admissible here (notes/matching-style.md confines it
+to MMIO), and those cells score 33 because the prologue reshuffles. What none of the cells tried:
+a legitimate ordering constraint between the flag load and the select (an aliasing store, a
+call, or a by-reference read). That is the next lever to try, not more register-rank
+permutations. Also measured inert or worse: Fix12<int> by-value temps (always oversize, so the
+0x1c frame is the ninth push rounded to 8, not a class temp), declaration order (the named
+`tbl` local is load-bearing; unnamed costs a word), struct and index views of ptr+0x4660,
+2-D table types, 17 pragmas on the best two shapes, and -O1..-O4,s.
+
 ## 6cy. A "dead mov" residue can be an argument the caller really passes: check every callee's DEFINITION, not its declaration, before banking a 6bs residue (Stage::InitResources MATCHED, div 3 -> 0, 2026-09-13, run link100 wave 12 lane W12-6)
 
 Stage::InitResources (arm9 0x0202cc0c, 0xa84) sat one word short for three campaigns (6av, 6bs,
@@ -7769,6 +7783,45 @@ Open at 53: the pool spill slots (ROM &idx.angle, &idx.speed, &i.angle at sp4/8/
 spc/8/1c and sp4), the moving stone's index (+0x108: the ROM shifts once and adds the +1 after the other stone's
 index), and the contact-angle truncation (the ROM issues its `lsl #16` at +0x160 and defers the first rotation's
 `<<1`, where this draft does both late, around +0x1c0).
+
+**7. The twin MATCHED, and the pointer-local lever carries half-way to 020e5450 (2026-10-02, lane
+mgwiden-curltwins-1002e): func_ov006_020e20bc 53 -> 0, func_ov006_020e5450 70 -> 30.** Same metric. Three
+spellings closed 020e20bc from point 6's 53, and the first two are frame levers, not schedule levers. (i) The
+contact angle is negated right after atan2 and before the velocity reads (`rel = -ang;` as the next statement).
+(j) The three fields written after a call (the hit stone's x and y, the moving stone's x for the sound) are
+reached through pointer locals taken beside each stone's reads: a named pointer ranks in the frame like any
+named local, in declaration order, so their addresses leave the compiler's spill pool and sit in the named
+chain, which is where the ROM keeps them (pool slots sp4/8/c in point 6 are exactly these three addresses).
+(k) The moving stone's new x velocity reuses the outer `dx`, which drops it to the end of the pool. With those
+three the declaration-order climb of point 6 was no longer needed. The file is in src/actors/dScMgCurling_c.cpp
+and the class is widened to its whole 46-function unit.
+The same levers on 020e5450: the hit stone's angle bound as a reference right after atan2 (`u16 &hitAngle =
+self->mStone[i].angle;`, a reference ranks like a pointer local) took it 70 -> 43; computing `xi` before `yi`
+colours the idx.y reload r1 as the ROM has it (43 -> 41); and pointer locals for &i.x, &idx.x and &i.y, assigned
+AFTER the outer dx/dy reads and used only in the wall clamps and the sound call, 41 -> 30. Position matters:
+assigned before the dx/dy reads, the same pointers grow the frame and the body is 0x540, because the compiler
+then addresses dx/dy through them. Open at 30: one contiguous schedule residue +0x1b4..+0x224, where this draft
+hoists the T[E] (sP) load and its `asr #31` above the hit stone's table chain and spills the sign at sp+0x34
+ahead of the hit cosine at 0x38, while the ROM loads T[E]/T[E+1] after the hit cosine and sine, sign-extends
+both after vex, and keeps the cosine at 0x34 with the signs at 0x38/0x3c; plus the +0x3d0 reload of that slot.
+Inert at 30 (about 20 cells): every source position of the sP/cP reads, E unscaled or inlined, s16 or long long
+for sP/cP, explicit wide copies, a cached hit speed, sine before cosine on the hit stone, declaration-order
+swaps. Worse: reusing `k` or `rel` for the E index (0x578, extra spills), a table pointer `tp = &T[E]` (0x51c),
+`Stone &a/&b` references (size change), rereading T[E] for the 0x1b000 products (0x56c). The lever that is
+missing is one that delays a load the scheduler wants early without adding a slot; the twin never needed it
+because its contact table words are read through the shared `k` after the negation.
+
+A narrower diagnosis from round 1002f (39 more cells, still 30). The draft colours the sign word of
+sP (the `asr #31`) ip; the ROM colours it r3, right after vex's `orr r0,r0,r3,lsl#20`. In ip, its
+spill store has a write-after-read edge against the k+1 index temp, and that edge is what hoists the
+whole sP chain above the hit stone's table chain and swaps the c / sP.hi slots (0x34/0x38), which
+is the +0x3d0 reload. So the missing lever is a dependency or colouring change, not a statement
+position: every placement of the sP/cP reads, and every declaration-order move of sP/cP, is inert.
+Worse: operand swaps in the sP/cP products (42, 45, or 0x520), dx before dy (49), rel through the
+hitAngle reference (41), the idx speed through a pointer (0x564), reusing c/s for the contact words
+(0x548), the 0x1b000 constant first or as a long long (0x524), and the twin's split first statement
+(0x558: the frame drops 0x7c -> 0x6c and the table base leaves r3). The five opt_* pragmas each
+change the size.
 
 ## 6da. A scalar stack parameter the loop uses directly is register-homed in PARAMETER ORDER, and that is the only thing that puts its load ahead of the last self-home store: OAM::Render MATCHED (div 2 -> 0, 2026-09-13, run link100 lane W12-5)
 
