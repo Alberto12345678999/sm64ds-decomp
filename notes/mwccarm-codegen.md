@@ -7701,6 +7701,27 @@ open: the speed base is minted before the sin/cos table address in the ROM and a
 order (ROM nex, ney, &i.x, &idx.x, &i.y, &i.angle, nmx, nmy, ybase, anglebase, speedbase; ours nmx/nmy at
 8/0xc) does not move with nmx/nmy as expressions (0x550) or declared late (identical).
 
+**5. Follow-up, 187 -> 70 (2026-10-02, lane mgwiden-curling2-1002c, ~42 measured cells).** All four of these levers
+are in the draft. They were measured under the same match.py metric, with exact size 0x560 throughout.
+(a) The frame-slot order in point 4 is a pool question, not a declaration question. If the moving stone's new
+velocity is stored in the outer `dx`/`dy` rather than in fresh `nmx`/`nmy` (`dy = cP*vex - sP*vmy;
+dx = sP*vex + cP*vmy`), those two get a second definition and drop from the named-spill chain into the spill pool.
+That gives the ROM slots: nmx -> dx gives 86, and nmx -> dy with nmy -> dx gives 80. (b) Reusing ONE set of
+`rel`/`k`/`c`/`s` temporaries for both stones' table reads adds WAR edges, and those force the ROM's issue order
+for the two blocks. (c) The table value is written FIRST in every product (`FMUL(c, speed)`, `FMUL(cP, vex)`),
+because smull's Rm/Rs follow source operand order. (d) The first wall clamp keeps the overshoot in `xi`
+(`xi = idx.x - 0xc000; i.x += xi;`), which is what the ROM's second test reads. (e) The atan2 block written as
+`dx = i.x - idx.x; dy = i.y - idx.y; atan2(dy, dx)` closes the +0xa8 window at full size. The dy-first, dy-held and
+assignment-in-argument spellings all go 0x540.
+Open at 70: the ROM forms &i.angle (`add r0,r0,r6`, spilled to sp+0x14) and loads the table base before the
+idx-angle load at +0x108, where this draft forms it late (+0x198). The ROM loads T[E]/T[E+1] after the other
+stone's table words and sign-extends them after vex (+0x220), where this draft hoists the T[E] load and its
+`asr #31` to +0x1b4. The ROM mints the 0x4668 literal before the table address. One idx.y reload colours r1 in the
+ROM and r0 here (+0x3f4). These were measured inert, byte-identical at 70: moving the sP/cP statements anywhere
+after the atan2, computing E late, indexing the table inline without E, s16 or long long types for sP/cP/c/s,
+and caching the speed in a local. Reusing `k` for the E index goes to 289/0x530. Reusing c/s or k/s for nmx/nmy
+goes to about 297.
+
 ## 6da. A scalar stack parameter the loop uses directly is register-homed in PARAMETER ORDER, and that is the only thing that puts its load ahead of the last self-home store: OAM::Render MATCHED (div 2 -> 0, 2026-09-13, run link100 lane W12-5)
 
 `_ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii` (arm9 0x02020994, 0x690) was the game's one

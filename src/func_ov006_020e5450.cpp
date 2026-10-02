@@ -1,14 +1,23 @@
 //cpp
 // @symbol func_ov006_020e5450
 /* recovered: Shell Smash (dScMgCurling2_c): a per-index update with sqrt and atan2 over the shell records. */
-// NONMATCHING: div 191 of 344 words. mwccarm 2004/b56, --module ov006,
-// @ 0x020e5450 size 0x560. Residue class: colouring and ordering (W12-14 seed 187 in the DB).
-// Draft from nearmiss/db.jsonl (stored divergence 191), landed 2026-09-14 under Tango's ruling that the functionally-equivalent C
-// drafts live on main with an honest banner so the port and readers have source. Logic is
-// verified only as far as the residue class implies: register names and instruction order
-// for the shape-exact rows, NOT an independent execution audit for the others. Counts as
-// decompiled, not matched; tools/enroll.py leaves it out of the ROM build, which keeps the
-// original bytes for this range. A byte-exact match replaces this file and drops the banner.
+// NONMATCHING: div 70 of 344 words. mwccarm 2004/b56, --module ov006,
+// @ 0x020e5450 size 0x560 (exact size, 24 words of shape difference). Residue class:
+// scheduling and colouring inside the collision block. The ROM computes &mStone[i].angle
+// and loads the trig table base before the idx angle load; it loads the two table words
+// for the contact angle after the other stone's table words and sign-extends them only
+// after vex; it orders the 0x4668 and table literals the other way; and one idx.y reload
+// colours r1 where this draft gives r0.
+// Draft first banked from nearmiss/db.jsonl at 191, landed 2026-09-14 under Tango's ruling
+// that functionally-equivalent drafts live on main with an honest banner so the port and
+// readers have source. Improved to 70 on 2026-10-02. The changes were: the contact block reuses dx and dy for the
+// moving stone's new velocity, so the slots follow the ROM frame; the c, s, k and rel
+// temporaries are reused for both stones, so the schedule follows the ROM order; each
+// product names the table value first, which gives smull's operand order; and the first
+// wall clamp keeps the overshoot in xi, as the ROM does, so the second test reads it.
+// Counts as decompiled, not matched. tools/enroll.py leaves it out of the ROM build, which
+// keeps the original bytes for this range. A byte-exact match replaces this file and
+// drops the banner.
 // @symbol func_ov006_020e5450
 #include "dScMgCurling2_c.h"
 
@@ -32,58 +41,59 @@ extern "C" void func_ov006_020e5450(dScMgCurling2_c *self, int idx)
         if (idx == i) continue;
         if (self->mStone[i].state == 0) continue;
         if (self->mStone[i].state == 3) continue;
+        dy = self->mStone[i].y;
         dx = self->mStone[i].x - self->mStone[idx].x;
-        dy = self->mStone[i].y - self->mStone[idx].y;
-        if ((_ZN4cstd4sqrtEy((u64)((long long)dy * dy + (long long)dx * dx)) >> 12) >= 0x18) continue;
+        dy -= self->mStone[idx].y;
+        if ((_ZN4cstd4sqrtEy((u64)((long long)dx * dx + (long long)dy * dy)) >> 12) >= 0x18) continue;
         {
             int nex;
             int ney;
             u16 ang;
-            u16 relA;
-            u16 relB;
-            int A;
-            int B;
+            u16 rel;
+            int k;
             int E;
-            int cM;
-            int sM;
-            int cE;
-            int sE;
+            int c;
+            int s;
             int sP;
             int cP;
             int vmx;
             int vmy;
             int vex;
             int vey;
-            int nmx;
-            int nmy;
             int yi;
             int xi;
 
-
-            ang = _ZN4cstd5atan2E5Fix12IiES1_(self->mStone[i].y - self->mStone[idx].y, self->mStone[i].x - self->mStone[idx].x);
+            dx = self->mStone[i].x - self->mStone[idx].x;
+            dy = self->mStone[i].y - self->mStone[idx].y;
+            ang = _ZN4cstd5atan2E5Fix12IiES1_(dy, dx);
             E = (ang >> 4) * 2;
-            relA = self->mStone[idx].angle - ang;
-            A = (relA >> 4) * 2;
-            cM = data_02082214[A + 1];
-            sM = data_02082214[A];
-            relB = self->mStone[i].angle - ang;
-            B = (relB >> 4) * 2;
-            cE = data_02082214[B + 1];
-            sE = data_02082214[B];
+            rel = self->mStone[idx].angle - ang;
+            k = (rel >> 4) * 2;
+            c = data_02082214[k + 1];
+            s = data_02082214[k];
+            vmx = FMUL(c, self->mStone[idx].speed);
+            vmy = FMUL(s, self->mStone[idx].speed);
+            rel = self->mStone[i].angle - ang;
+            k = (rel >> 4) * 2;
+            c = data_02082214[k + 1];
+            s = data_02082214[k];
             sP = data_02082214[E];
             cP = data_02082214[E + 1];
-vmx = FMUL(cM, self->mStone[idx].speed); vmy = FMUL(sM, self->mStone[idx].speed);
-            vex = FMUL(cE, self->mStone[i].speed);
-            vey = FMUL(sE, self->mStone[i].speed);
-nmx = FMUL(cP, vex); nmx -= FMUL(vmy, sP); nmy = FMUL(vex, sP) + FMUL(vmy, cP); nex = FMUL(cP, vmx); nex -= FMUL(sP, vey); ney = FMUL(sP, vmx) + FMUL(cP, vey);
-            self->mStone[idx].angle = _ZN4cstd5atan2E5Fix12IiES1_(nmy, nmx);
-            self->mStone[idx].speed = _ZN4cstd4sqrtEy((u64)((long long)nmx * nmx + (long long)nmy * nmy));
+            vex = FMUL(c, self->mStone[i].speed);
+            vey = FMUL(s, self->mStone[i].speed);
+            dy = FMUL(cP, vex) - FMUL(sP, vmy);
+            dx = FMUL(sP, vex) + FMUL(cP, vmy);
+            nex = FMUL(cP, vmx) - FMUL(sP, vey);
+            ney = FMUL(sP, vmx) + FMUL(cP, vey);
+            self->mStone[idx].angle = _ZN4cstd5atan2E5Fix12IiES1_(dx, dy);
+            self->mStone[idx].speed = _ZN4cstd4sqrtEy((u64)((long long)dy * dy + (long long)dx * dx));
             self->mStone[idx].x = self->mStone[i].x - FMUL(cP, 0x1b000);
             self->mStone[idx].y = self->mStone[i].y - FMUL(sP, 0x1b000);
             yi = self->mStone[idx].y >> 12;
             xi = self->mStone[idx].x >> 12;
             if (xi - 0xc < 0) {
-                self->mStone[i].x += self->mStone[idx].x - 0xc000;
+                xi = self->mStone[idx].x - 0xc000;
+                self->mStone[i].x += xi;
                 self->mStone[idx].x = 0xc000;
             }
             if (xi + 0xc > 0x100) {
