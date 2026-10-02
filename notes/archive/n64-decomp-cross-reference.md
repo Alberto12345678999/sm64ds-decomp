@@ -404,8 +404,8 @@ the `±0x4000` sign flip. One DS addition: accel is scaled by `clamp(forwardVel 
 a no-op at speeds ≤ 20.
 
 `Player::UpdateSliding` @ `0x020c06fc` fuses N64's [update_sliding](https://github.com/n64decomp/sm64/blob/master/src/game/mario_actions_moving.c#L219) + [update_sliding_angle](https://github.com/n64decomp/sm64/blob/master/src/game/mario_actions_moving.c#L159).
-Exact carries: the[ `0x52` lossFactor term](https://github.com/n64decomp/sm64/blob/master/src/game/mario_actions_moving.c#L159) (= [N64's `0.02f`](https://github.com/n64decomp/sm64/blob/master/src/game/mario_actions_moving.c#L239)), [the `100.0` forward-vel cap](https://github.com/n64decomp/sm64/blob/master/src/game/mario_actions_moving.c#L210), the
-[`(!mario_floor_is_slope(m) && m->forwardVel * m->forwardVel < stopSpeed * stopSpeed → vel = 0` stop test](https://github.com/n64decomp/sm64/blob/master/src/game/mario_actions_moving.c#L275). Same caller set as N64
+Exact carries: the [`0x52` lossFactor term](https://github.com/n64decomp/sm64/blob/master/src/game/mario_actions_moving.c#L159) (= [N64's `0.02f`](https://github.com/n64decomp/sm64/blob/master/src/game/mario_actions_moving.c#L239)), [the `100.0` forward-vel cap](https://github.com/n64decomp/sm64/blob/master/src/game/mario_actions_moving.c#L210), the
+[`!mario_floor_is_slope(m) && m->forwardVel * m->forwardVel < stopSpeed * stopSpeed` → `vel = 0` stop test](https://github.com/n64decomp/sm64/blob/master/src/game/mario_actions_moving.c#L275). Same caller set as N64
 (butt slide, stomach slide, slide kick, crouch, thrown, land).
 
 **Two N64 quirks were deliberately removed:**
@@ -451,15 +451,15 @@ N64 reaches 32.0 in ~45 frames on a decaying curve; DS reaches 36.0 in 36 frames
 ramp. DS-only machinery with no N64 counterpart: the 1.2×/rate-30 dash boost, a per-character
 speed factor table [@ 0x020FF170](../../config/arm9/overlays/ov002/symbols.txt)(`data_ov002_020ff170`), a 30-frame character-1 ramp, a 24-frame tightening turn radius.
 
-Quicksand is the exception — **carried over verbatim**: [`if (m->quicksandDepth > 10.0f) targetSpeed *= 6.25/m->quicksandDepth`
-at](https://github.com/n64decomp/sm64/blob/master/src/game/mario_actions_moving.c#L447) `0x020d3dcc`–`0x020d3de0`, threshold and factor both exact.
+Quicksand is the exception — **carried over verbatim**: [`if (m->quicksandDepth > 10.0f) targetSpeed *= 6.25 / m->quicksandDepth`](https://github.com/n64decomp/sm64/blob/master/src/game/mario_actions_moving.c#L447)
+at `0x020d3dcc`–`0x020d3de0`, threshold and factor both exact.
 
 ### 9.6 The [ov098](../../config/arm9/overlays/ov098/symbols.txt) table is quicksand depth, not speed
 
 Earlier notes described the [ov098](../../config/arm9/overlays/ov098/symbols.txt) jump table (30/45/60/100 → `+0x5f0`) as a surface-type→speed
 table. **It is quicksand sink depth.** [ov098](../../config/arm9/overlays/ov098/symbols.txt) is the Shifting Sand Land object overlay;
 [func_ov098_02139228](../../src/actors/daObjBlockS_c.cpp) = `Crate::UpdateQuicksand`. `+0x5f0` is target sink depth, `+0x5f4`([mClsnYOffset](../../include/daObjBlockS_c.h)) current,
-approached at 0.5/frame. Render position is built as [`((int *)&t)[1] = t.y - mClsnYOffset` at](../../src/actors/daObjBlockS_c.cpp)(https://github.com/tangosdev/sm64ds-decomp/blob/main/src/actors/daObjBlockS_c.cpp#L1051) — verbatim N64
+approached at 0.5/frame. Render position is built as `pos.y − this[0x5f4]` (`t.y - mClsnYOffset` in [the TU](../../src/actors/daObjBlockS_c.cpp)) — verbatim N64
 `mario.c`:[1552](https://github.com/n64decomp/sm64/blob/master/src/game/mario.c#L1552) `o->header.gfx.pos[1] -= m->quicksandDepth`.
 
 | tier | N64 max | DS max (CLPS type) |
@@ -470,7 +470,7 @@ approached at 0.5/frame. Render position is built as [`((int *)&t)[1] = t.y - mC
 | deep → terminal | 160.0 → [ACT_QUICKSAND_DEATH](https://github.com/n64decomp/sm64/blob/master/include/sm64.h#L350) | 100.0 (type 9) → `Crate_SetState(6)` |
 
 So **CLPS surface-type values 6-9 are the four quicksand types.** Corroborated on the `Player` side:
-`0x020c2ab8`([mSurfaceType](../../include/Player.h)) clears the quicksand flag when type is outside `6..9`.
+`0x020c2ab8` clears the quicksand flag when the surface type ([mSurfaceType](../../include/Player.h), `+0x664`) is outside `6..9`.
 
 ### 9.7 Search traps confirmed the hard way
 
@@ -485,24 +485,33 @@ So **CLPS surface-type values 6-9 are the four quicksand types.** Corroborated o
   `0x020d4080` `0x4000` is 4.0 fx12 — same hex values, opposite readings, ~40 instructions apart.
 
 ### 9.8 Names earned by this pass
-| Relocs address 1 | Probable Func names | Relocs batch 2 | batch 2 probable names
-|--------------|-----------|--------------|--------------|
-|`0x02037e58` | `CLPS::GetSlipperiness` ·| [0x02037e38](../../src/func_02037e38.c) | `CLPS::GetSurfaceType` ·|
-|[ov002](../../config/arm9/overlays/ov002/symbols.txt):`0x020f02c8` | `GetSlideAccelForClass` ·| [0x020f030c](../../src/func_ov002_020f030c.c) | `GetSlideLossFactorForClass` ·|
-|`0x020f035c` | `FloorIsSlope` ·| [0x020c031c](../../src/actors/Player.cpp), ROM Ordinal 55 | `Player::GetFloorClass` ·|
-|`0x020c04e0` | `Player::ApplySlopeAccel` ·| [0x020c06fc](../../src/actors/Player.cpp), ROM Ordinal 61 | `Player::UpdateSliding` ·|
-|`0x020bf56c` | `Player::GetSlopeDecelCoef` ·| [0x020c16ec](../../src/actors/Player.cpp), ROM Ordinal 68 | `Player::SetFloorSurfaceInfo` ·|
-|`0x020d4d88` | `Player::UpdateGroundSpeed` ·| [0x020d3b9c](../../src/func_ov002_020d3b9c.c) | `Player::UpdateWalkingSpeed` ·|
-|`0x020d45c0` | `Player::Walk_UpdateRunDustFx` ·| [0x020d413c](../../src/func_ov002_020d413c.c) | `Player::Walk_UpdateBodyLean` ·|
-|`0x020bf30c` | `Player::ScaleSpeedByCharacter` ·| [0x020c29d4](../../src/actors/Player.cpp) (current [_ZN6Player19func_ov002_020c29d4Ev](../../config/tu_manifest.d/ov002/Player.json),ROM Ordinal 88)    | `Player::UpdateQuicksandFlag` ·|
-|[ov098](../../config/arm9/overlays/ov098/symbols.txt):`0x02139228` | `Crate::UpdateQuicksand` ·| [ov002](../../config/arm9/overlays/ov002/symbols.txt):[0x02110514](../../src/_ZN6Player14St_Crouch_MainEv.cpp), probable `_ZN6Player14St_Crouch_MainEv.cpp`, see [verified.tsv](../../symbols/verified.tsv)| `St_Crawl` state descriptor|
+| Address | Name earned |
+|---------|-------------|
+| `0x02037e58` | `CLPS::GetSlipperiness` |
+| [`0x02037e38`](../../src/func_02037e38.c) | `CLPS::GetSurfaceType` |
+| [ov002](../../config/arm9/overlays/ov002/symbols.txt):`0x020f02c8` | `GetSlideAccelForClass` |
+| [`0x020f030c`](../../src/func_ov002_020f030c.c) | `GetSlideLossFactorForClass` |
+| `0x020f035c` | `FloorIsSlope` |
+| [`0x020c031c`](../../src/actors/Player.cpp) (ROM ordinal 55) | `Player::GetFloorClass` |
+| `0x020c04e0` | `Player::ApplySlopeAccel` |
+| [`0x020c06fc`](../../src/actors/Player.cpp) (ROM ordinal 61) | `Player::UpdateSliding` |
+| `0x020bf56c` | `Player::GetSlopeDecelCoef` |
+| [`0x020c16ec`](../../src/actors/Player.cpp) (ROM ordinal 68) | `Player::SetFloorSurfaceInfo` |
+| `0x020d4d88` | `Player::UpdateGroundSpeed` |
+| [`0x020d3b9c`](../../src/func_ov002_020d3b9c.c) | `Player::UpdateWalkingSpeed` |
+| `0x020d45c0` | `Player::Walk_UpdateRunDustFx` |
+| [`0x020d413c`](../../src/func_ov002_020d413c.c) | `Player::Walk_UpdateBodyLean` |
+| `0x020bf30c` | `Player::ScaleSpeedByCharacter` |
+| [`0x020c29d4`](../../src/actors/Player.cpp) (ROM ordinal 81; currently [`_ZN6Player19func_ov002_020c29d4Ev`](../../config/tu_manifest.d/ov002/Player.json)) | `Player::UpdateQuicksandFlag` |
+| [ov098](../../config/arm9/overlays/ov098/symbols.txt):`0x02139228` | `Crate::UpdateQuicksand` |
+| [ov002](../../config/arm9/overlays/ov002/symbols.txt):`0x02110514` | `St_Crawl` state descriptor (data; [symbols/verified.tsv](../../symbols/verified.tsv) names it `_ZN6Player8ST_CRAWLE`) |
 
 **Player offsets recovered:**
 | Offset | Description |
 |--------|-------------|
 | `+0x8e` | visual yaw |
 | `+0x94` | moveYaw |
-| `+0x98` | forwardVel - `unit020b4aa4.cpp`'s [func_ov004_020b51f0](../../config/tu_manifest.d/ov004/unit020b4aa4.json) |
+| `+0x98` | forwardVel |
 | `+0xa8` | velY |
 | `+0x554/558/55c` | floorNormal xyz (fx12, already rescaled from KCL's 0x400) - [mFloorNormalX; mFloorNormalY; mFloorNormalZ](../../include/Player.h) |
 | `+0x644` | floorHeight - [mGroundY](../../include/Player.h) |
