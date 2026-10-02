@@ -89,18 +89,6 @@
  * declaration is what makes the compiler act on it.
  */
 struct daOts_c : dEnemyBase_c {
-    /* Tail::mState (reached through tail()), written by BehaviorCommon's switch and by the helpers it calls.
-       Which child classes use which states is theirs to say; these names describe
-       what the shared handlers in src/actors/daOts_c.cpp do. */
-    enum State {
-        STATE_RETURN_HOME = 0,  /* walks toward mHomePos at 5 units a frame; switches to STATE_CHASE once the player is within 800 units of it */
-        STATE_CHASE = 1,        /* the child's UpdateRunState runs; back to STATE_RETURN_HOME when the player is not within 1000 units of mHomePos */
-        STATE_KNOCKED_BACK = 2, /* after a hit: slides to a stop, hops twice, waits, then resumes STATE_CHASE */
-        STATE_LEDGE_TURN = 3,   /* IsGoingOffCliff fired: turns about, then back to STATE_RETURN_HOME after 15 frames */
-        STATE_DYING = 4,        /* floor surface type 1 under it: death animation; UpdateDeathState (the child's) runs */
-        STATE_REMOVE = 5        /* floor surface type 4, 5 or 0x13 under it: MarkForDestruction */
-    };
-
     /* A view of the whole object that names the bytes 0x398..0x3f9, which the
        children still declare as pad_398 (see the SIZE note above). The offsets in
        the comments are object offsets: the struct starts at the top of the object
@@ -228,6 +216,18 @@ struct daOts_c : dEnemyBase_c {
     int func_ov064_021166f0();
     void func_ov064_02116754();
     void func_ov064_02116bac();
+
+    /* Tail::mState (reached through tail()), written by BehaviorCommon's switch and by the helpers it calls.
+       Which child classes use which states is theirs to say; these names describe
+       what the shared handlers in src/actors/daOts_c.cpp do. */
+    enum State {
+        STATE_RETURN_HOME = 0,  /* walks toward mHomePos at 5 units a frame; switches to STATE_CHASE once the player is within 800 units of it */
+        STATE_CHASE = 1,        /* the child's UpdateRunState runs; back to STATE_RETURN_HOME when the player is not within 1000 units of mHomePos */
+        STATE_KNOCKED_BACK = 2, /* after a hit: slides to a stop, hops twice, waits, then resumes STATE_CHASE */
+        STATE_LEDGE_TURN = 3,   /* IsGoingOffCliff fired: turns about, then back to STATE_RETURN_HOME after 15 frames */
+        STATE_DYING = 4,        /* floor surface type 1 under it: death animation; UpdateDeathState (the child's) runs */
+        STATE_REMOVE = 5        /* floor surface type 4, 5 or 0x13 under it: MarkForDestruction */
+    };
 };
 
 #ifndef SM64DS_PLATFORM_PC

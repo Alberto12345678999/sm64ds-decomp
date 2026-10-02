@@ -129,21 +129,6 @@ struct daObjTatefuda_c : dBgActor_c {
        player when it looks for someone to hurt. */
     Player *mLastHolder;             /* 0x5a0 */
 
-    /* mState values, as the rows of data_ov002_0210e084 read. Each row is
-       {enter, update}; the addresses are the ov002 helpers in the .cpp.
-         row 0  enter 020bba24 (empty)      update 020bb9fc
-         row 1  enter 020bb9f0              update 020bb614
-         row 2  enter 020bbd50              update 020bbcb8
-         row 3  enter 020bbc78              update 020bbb14
-         row 4  enter 020bbac8              update 020bba28 */
-    enum State {
-        STATE_IDLE    = 0,   /* standing; polls for a talk or a grab */
-        STATE_TALK    = 1,   /* a player is talking to the sign */
-        STATE_CARRIED = 2,   /* held by a player */
-        STATE_THROWN  = 3,   /* launched with a horizontal and a vertical speed, spinning */
-        STATE_DROPPED = 4    /* released at the holder's position; its X angle turns toward 0x4000 */
-    };
-
     /* --- vtable --- */
     /* INLINE ON PURPOSE, for the reason include/dBgActor_c.h gives for its own.
        Nothing derives from daObjTatefuda_c, so no subclass can be made to emit a `bl`
@@ -180,6 +165,21 @@ struct daObjTatefuda_c : dBgActor_c {
     void OnGroundPounded(dActor_c &other);   /* slot 21 */
     int  OnAttacked1(dActor_c &other);       /* slot 22 */
     void OnHitByMegaChar(Player &player);    /* slot 27 */
+
+    /* mState values, as the rows of data_ov002_0210e084 read. Each row is
+       {enter, update}; the addresses are the ov002 helpers in the .cpp.
+         row 0  enter 020bba24 (empty)      update 020bb9fc
+         row 1  enter 020bb9f0              update 020bb614
+         row 2  enter 020bbd50              update 020bbcb8
+         row 3  enter 020bbc78              update 020bbb14
+         row 4  enter 020bbac8              update 020bba28 */
+    enum State {
+        STATE_IDLE    = 0,   /* standing; polls for a talk or a grab */
+        STATE_TALK    = 1,   /* a player is talking to the sign */
+        STATE_CARRIED = 2,   /* held by a player */
+        STATE_THROWN  = 3,   /* launched with a horizontal and a vertical speed, spinning */
+        STATE_DROPPED = 4    /* released at the holder's position; its X angle turns toward 0x4000 */
+    };
 };
 
 #ifndef SM64DS_PLATFORM_PC

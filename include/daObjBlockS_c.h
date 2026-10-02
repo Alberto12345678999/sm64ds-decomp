@@ -44,19 +44,6 @@ typedef struct Player Player;
 #include "dCcAcPos_c.h"
 
 struct daObjBlockS_c : dBgActor_c {
-    /* The values of mState: each indexes one {enter, update} pair in the table
-       at data_ov098_0213c878 (see src/actors/daObjBlockS_c.cpp). The names
-       describe what the handlers do; the ROM stores none. */
-    enum State {
-        STATE_IDLE      = 0,    /* sitting where it was placed or landed */
-        STATE_CARRIED   = 1,    /* held by mHoldingPlayer */
-        STATE_THROWN    = 2,    /* released by a player, flying */
-        STATE_SPIT_OUT  = 3,    /* put in front of the player at 0x0d0 and launched */
-        STATE_BOUNCING  = 4,    /* tumbling, with mBounceCount bounces left */
-        STATE_IN_MOUTH  = 5,    /* entered when the 0x20000 / 0x40000 flags are set; may follow the player at 0x0d0 */
-        STATE_BROKEN    = 6     /* invisible; waits to respawn at its home */
-    };
-
     dBgCh_Actr mWithMeshClsn;   /* 0x320 */
     /* Face normal of the floor under the crate, fix12 (1.0 == 0x1000): the
        target of SurfaceInfo::CopyNormalTo in the slide step, read back as
@@ -128,6 +115,19 @@ struct daObjBlockS_c : dBgActor_c {
     virtual void OnTurnIntoEgg(Player &player);         /* slot 19 */
     virtual void OnGroundPounded(dActor_c &other);      /* slot 21 */
     virtual void Kill();                                /* slot 31 */
+
+    /* The values of mState: each indexes one {enter, update} pair in the table
+       at data_ov098_0213c878 (see src/actors/daObjBlockS_c.cpp). The names
+       describe what the handlers do; the ROM stores none. */
+    enum State {
+        STATE_IDLE      = 0,    /* sitting where it was placed or landed */
+        STATE_CARRIED   = 1,    /* held by mHoldingPlayer */
+        STATE_THROWN    = 2,    /* released by a player, flying */
+        STATE_SPIT_OUT  = 3,    /* put in front of the player at 0x0d0 and launched */
+        STATE_BOUNCING  = 4,    /* tumbling, with mBounceCount bounces left */
+        STATE_IN_MOUTH  = 5,    /* entered when the 0x20000 / 0x40000 flags are set; may follow the player at 0x0d0 */
+        STATE_BROKEN    = 6     /* invisible; waits to respawn at its home */
+    };
 };
 
 #ifndef SM64DS_PLATFORM_PC

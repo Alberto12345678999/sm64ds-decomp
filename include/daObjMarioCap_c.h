@@ -43,29 +43,6 @@ extern "C" void *_ZN7fBase_cnwEj(unsigned size);
  * daObjWaterfall_c.
  */
 struct daObjMarioCap_c : dEnemyBase_c {
-    /* What the cap is, from the low byte of param1 (0xff reads as 0). Only the
-       values the code gives a meaning to are named; the rest are plain numbers
-       in InitResources' switch, where most pick a state (see mStateEntry), a
-       collider size and a cap-icon kind (types 23..0xfe enter no state).
-       Bits 8..11 of param1 are the cap's character (mModelIndex), bits 12..15
-       the icon kind (mIconKind, range-checked there). */
-    enum Type {
-        TYPE_RESPAWNING = 4,     /* (param1 type 14 is rewritten to this by InitResources.)
-                                    Once the player has finished taking it, the taken-state
-                                    handler spawns a fresh OBJ_MARIO_CAP with the current
-                                    param1 at mHomePos */
-        TYPE_VANISH_LUIGI_A = 6, /* touch calls Player::InitVanishLuigi and removes the cap;
-                                    just runs the touch check */
-        TYPE_VANISH_LUIGI_B = 7, /* the touch acts like 6, but this one has a 210 / 120 frame
-                                    countdown (game mode 1 / others), slides, blinks and
-                                    expires */
-        TYPE_METAL_WARIO_A = 8,  /* touch calls Player::InitMetalWario and removes the cap;
-                                    just runs the touch check */
-        TYPE_METAL_WARIO_B = 9,  /* the touch acts like 8, with the same countdown, slide
-                                    and blink as 7 */
-        TYPE_START_TAKEN = 19    /* InitResources puts it straight into the taken state */
-    };
-
     dCcAc_c  mdCcAc_c;    /* 0x110 */
     dBgCh_Actr        mWithMeshClsn;          /* 0x144 */
     ModelAnim           mModelAnim;             /* 0x300 */
@@ -190,6 +167,29 @@ struct daObjMarioCap_c : dEnemyBase_c {
     static void *operator new(size_t size) {
         return _ZN7fBase_cnwEj((unsigned)size);
     }
+
+    /* What the cap is, from the low byte of param1 (0xff reads as 0). Only the
+       values the code gives a meaning to are named; the rest are plain numbers
+       in InitResources' switch, where most pick a state (see mStateEntry), a
+       collider size and a cap-icon kind (types 23..0xfe enter no state).
+       Bits 8..11 of param1 are the cap's character (mModelIndex), bits 12..15
+       the icon kind (mIconKind, range-checked there). */
+    enum Type {
+        TYPE_RESPAWNING = 4,     /* (param1 type 14 is rewritten to this by InitResources.)
+                                    Once the player has finished taking it, the taken-state
+                                    handler spawns a fresh OBJ_MARIO_CAP with the current
+                                    param1 at mHomePos */
+        TYPE_VANISH_LUIGI_A = 6, /* touch calls Player::InitVanishLuigi and removes the cap;
+                                    just runs the touch check */
+        TYPE_VANISH_LUIGI_B = 7, /* the touch acts like 6, but this one has a 210 / 120 frame
+                                    countdown (game mode 1 / others), slides, blinks and
+                                    expires */
+        TYPE_METAL_WARIO_A = 8,  /* touch calls Player::InitMetalWario and removes the cap;
+                                    just runs the touch check */
+        TYPE_METAL_WARIO_B = 9,  /* the touch acts like 8, with the same countdown, slide
+                                    and blink as 7 */
+        TYPE_START_TAKEN = 19    /* InitResources puts it straight into the taken state */
+    };
 };
 
 #ifndef SM64DS_PLATFORM_PC
