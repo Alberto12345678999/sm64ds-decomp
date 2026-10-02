@@ -485,17 +485,27 @@ So **CLPS surface-type values 6-9 are the four quicksand types.** Corroborated o
   `0x020d4080` `0x4000` is 4.0 fx12 — same hex values, opposite readings, ~40 instructions apart.
 
 ### 9.8 Names earned by this pass
-| Relocs batch 1 | Probable Func names | Relocs batch 2 | Probable funcs batch 2 names
-|--------------|-----------|--------------|--------------|
-|[0x02037e58](../../src/func_02037e58.c) | `CLPS::GetSlipperiness` | [0x02037e38](../../src/func_02037e38.c) | `CLPS::GetSurfaceType` ·|
-|[ov002](../../config/arm9/overlays/ov002/symbols.txt):[0x020f02c8](../../src/func_ov002_020f02c8.c) | `GetSlideAccelForClass` | [0x020f030c](../../src/func_ov002_020f030c.c) | `GetSlideLossFactorForClass` |
-|[0x020f035c](../../src/func_ov002_020f035c.c) | `FloorIsSlope` | [0x020c031c](../../src/actors/Player.cpp), ROM Ordinal 55 | `Player::GetFloorClass` |
-|[0x020c04e0](../../src/actors/Player.cpp)(current [_ZN6Player19func_ov002_020c04e0Ev](../../config/tu_manifest.d/ov002/Player.json), ROM Ordinal 59) | `Player::ApplySlopeAccel` | [0x020c06fc](../../src/actors/Player.cpp), ROM Ordinal 61 | `Player::UpdateSliding` |
-|[0x020bf56c](../../src/actors/Player.cpp)(current [func_ov002_020bf56c](../../config/tu_manifest.d/ov002/Player.json), ROM Ordinal 46) | `Player::GetSlopeDecelCoef` | [0x020c16ec](../../src/actors/Player.cpp), ROM Ordinal 68 | `Player::SetFloorSurfaceInfo` |
-|[0x020d4d88](../../src/func_ov002_020d4d88.c) | `Player::UpdateGroundSpeed` | [0x020d3b9c](../../src/func_ov002_020d3b9c.c) | `Player::UpdateWalkingSpeed` |
-|[0x020d45c0](../../src/func_ov002_020d45c0.c) | `Player::Walk_UpdateRunDustFx` | [0x020d413c](../../src/func_ov002_020d413c.c) | `Player::Walk_UpdateBodyLean` |
-|[0x020bf30c](../../src/actors/Player.cpp)[Player_ScaleByCharFactor](../../config/tu_manifest.d/ov002/Player.json), ROM Ordinal 40) | `Player::ScaleSpeedByCharacter` | [0x020c29d4](../../src/actors/Player.cpp) (current [Player_ScaleByCharFactor](../../config/tu_manifest.d/ov002/Player.json), ROM Ordinal 88)    | `Player::UpdateQuicksandFlag` |
-|[ov098](../../config/arm9/overlays/ov098/symbols.txt):[0x02139228](../../src/actors/daObjBlockS_c.cpp)([func_ov098_02139228](../../config/tu_manifest.d/ov098/daObjBlockS_c.json), ROM Ordinal 25) | `Crate::UpdateQuicksand` | [ov002](../../config/arm9/overlays/ov002/symbols.txt):[0x02110514](../../src/_ZN6Player14St_Crouch_MainEv.cpp), probable `_ZN6Player14St_Crouch_MainEv.cpp`, see [verified.tsv](../../symbols/verified.tsv)| `St_Crawl` state descriptor|
+
+| Address | Name earned |
+|---------|-------------|
+| [`0x02037e58`](../../src/func_02037e58.c) | `CLPS::GetSlipperiness` |
+| [`0x02037e38`](../../src/func_02037e38.c) | `CLPS::GetSurfaceType` |
+| [ov002](../../config/arm9/overlays/ov002/symbols.txt):[`0x020f02c8`](../../src/func_ov002_020f02c8.c) | `GetSlideAccelForClass` |
+| [`0x020f030c`](../../src/func_ov002_020f030c.c) | `GetSlideLossFactorForClass` |
+| [`0x020f035c`](../../src/func_ov002_020f035c.c) | `FloorIsSlope` |
+| [`0x020c031c`](../../src/actors/Player.cpp) (ROM ordinal 55) | `Player::GetFloorClass` |
+| [`0x020c04e0`](../../src/actors/Player.cpp) (ROM ordinal 59; currently [`_ZN6Player19func_ov002_020c04e0Ev`](../../config/tu_manifest.d/ov002/Player.json)) | `Player::ApplySlopeAccel` |
+| [`0x020c06fc`](../../src/actors/Player.cpp) (ROM ordinal 61) | `Player::UpdateSliding` |
+| [`0x020bf56c`](../../src/actors/Player.cpp) (ROM ordinal 46; currently [`func_ov002_020bf56c`](../../config/tu_manifest.d/ov002/Player.json)) | `Player::GetSlopeDecelCoef` |
+| [`0x020c16ec`](../../src/actors/Player.cpp) (ROM ordinal 68) | `Player::SetFloorSurfaceInfo` |
+| [`0x020d4d88`](../../src/func_ov002_020d4d88.c) | `Player::UpdateGroundSpeed` |
+| [`0x020d3b9c`](../../src/func_ov002_020d3b9c.c) | `Player::UpdateWalkingSpeed` |
+| [`0x020d45c0`](../../src/func_ov002_020d45c0.c) | `Player::Walk_UpdateRunDustFx` |
+| [`0x020d413c`](../../src/func_ov002_020d413c.c) | `Player::Walk_UpdateBodyLean` |
+| [`0x020bf30c`](../../src/actors/Player.cpp) (ROM ordinal 40; currently [`Player_ScaleByCharFactor`](../../config/tu_manifest.d/ov002/Player.json)) | `Player::ScaleSpeedByCharacter` |
+| [`0x020c29d4`](../../src/actors/Player.cpp) (ROM ordinal 81; currently [`_ZN6Player19func_ov002_020c29d4Ev`](../../config/tu_manifest.d/ov002/Player.json)) | `Player::UpdateQuicksandFlag` |
+| [ov098](../../config/arm9/overlays/ov098/symbols.txt):[`0x02139228`](../../src/actors/daObjBlockS_c.cpp) (ROM ordinal 25; currently [`func_ov098_02139228`](../../config/tu_manifest.d/ov098/daObjBlockS_c.json)) | `Crate::UpdateQuicksand` |
+| [ov002](../../config/arm9/overlays/ov002/symbols.txt):`0x02110514` | `St_Crawl` state descriptor (data; [symbols/verified.tsv](../../symbols/verified.tsv) names it `_ZN6Player8ST_CRAWLE`) |
 
 **Player offsets recovered:**
 
