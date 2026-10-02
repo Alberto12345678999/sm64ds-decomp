@@ -160,6 +160,10 @@ src/func_ov006_020d25fc.c:
     complete
     .text start:0x020d25fc end:0x020d27dc
 
+src/func_ov006_020d27dc.cpp:
+    complete
+    .text start:0x020d27dc end:0x020d3624
+
 src/actors/dScMgAmida_c.cpp:
     complete
     .text start:0x020d3624 end:0x020d5a54
