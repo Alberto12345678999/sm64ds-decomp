@@ -420,6 +420,10 @@ src/actors/dScMgPachinko_c.cpp:
     complete
     .text start:0x020fa75c end:0x020fc8c0
 
+src/func_ov006_020fc8c0.c:
+    complete
+    .text start:0x020fc8c0 end:0x020fc9b0
+
 src/func_ov006_020fc9b0.c:
     complete
     .text start:0x020fc9b0 end:0x020fca1c
