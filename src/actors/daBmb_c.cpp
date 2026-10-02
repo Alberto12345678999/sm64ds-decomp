@@ -652,8 +652,10 @@ extern "C" {
    it. Hoisting the type changes nothing the compiler emits: the object is
    byte-identical under 2004/b56. */
 typedef struct { int v[4]; } Quad;
-extern "C" Quad data_ov102_0214e514;
-extern "C" Quad data_ov102_0214e524;
+/* Thrown-bob-omb launch speeds, indexed by the carrier's param1 (clamped to 4):
+   horizontal, then vertical. */
+extern "C" Quad data_ov102_0214e514 = {{0x28000, 0x28000, 0x50000, 0x28000}};
+extern "C" Quad data_ov102_0214e524 = {{0xa000, 0xa000, 0x1a000, 0xa000}};
 
 // @symbol func_ov102_0214bc20
 void func_ov102_0214bc20(char* c)

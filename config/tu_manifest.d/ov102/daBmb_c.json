@@ -20,7 +20,7 @@
     {
       "name": ".data",
       "start": "0x0214e4fc",
-      "end": "0x0214e5dc"
+      "end": "0x0214e5d4"
     }
   ],
   "functions": [
@@ -286,14 +286,14 @@
     {
       "symbol": "data_ov102_0214e514",
       "address": "0x0214e514",
-      "size": "0x4",
-      "evidence": "SharedFilePtr; referenced from 0x0214bcbc in this TU's text"
+      "size": "0x10",
+      "evidence": "4-word launch-speed table (Quad); read by func_ov102_0214bc20, referenced from 0x0214bcbc in this TU's text"
     },
     {
       "symbol": "data_ov102_0214e524",
       "address": "0x0214e524",
-      "size": "0x4",
-      "evidence": "SharedFilePtr; referenced from 0x0214bcc0 in this TU's text"
+      "size": "0x10",
+      "evidence": "4-word launch-speed table (Quad); read by func_ov102_0214bc20, referenced from 0x0214bcc0 in this TU's text"
     },
     {
       "symbol": "g_profile_BOMBHEI",
@@ -306,7 +306,7 @@
       "address": "0x0214e558",
       "emitted_storage_address": "0x0214e550",
       "address_point_bias": "0x8",
-      "size": "0x88",
+      "size": "0x84",
       "evidence": "compiler storage includes the two-word ABI preamble; the public address point remains 0x0214e558"
     }
   ],
@@ -413,7 +413,7 @@
     "tubuild create warning (RESOLVED): CONFLICT: extern declaration 'func_ov102_0214c0b8' differs between the legacy file that used to hold func_ov102_0214aa18 and the one that held _ZN7daBmb_c13InitResourcesEv; kept the first, the other is commented out for review; resolved by discarding the generated preamble outright and hand-writing the TU under the declaration policy the file header states: ONE file-scope extern \"C\" region carrying only what the C++-named members need, and every other member keeping its own independently-recovered spellings at BLOCK scope inside its own body, so two members are allowed to disagree about one symbol. No TUBUILD CONFLICT marker survives in the source. 35/35 byte-match.",
     "tubuild create warning (RESOLVED): CONFLICT: extern declaration 'data_ov102_0214e9c0' differs between the legacy file that used to hold func_ov102_0214ab1c and the one that held _ZN7daBmb_c13InitResourcesEv; kept the first, the other is commented out for review; resolved by discarding the generated preamble outright and hand-writing the TU under the declaration policy the file header states: ONE file-scope extern \"C\" region carrying only what the C++-named members need, and every other member keeping its own independently-recovered spellings at BLOCK scope inside its own body, so two members are allowed to disagree about one symbol. No TUBUILD CONFLICT marker survives in the source. 35/35 byte-match.",
     "tubuild create warning (RESOLVED): CONFLICT: extern declaration 'data_ov102_0214e9c8' differs between the legacy file that used to hold func_ov102_0214bd20 and the one that held _ZN7daBmb_c13InitResourcesEv; kept the first, the other is commented out for review; resolved by discarding the generated preamble outright and hand-writing the TU under the declaration policy the file header states: ONE file-scope extern \"C\" region carrying only what the C++-named members need, and every other member keeping its own independently-recovered spellings at BLOCK scope inside its own body, so two members are allowed to disagree about one symbol. No TUBUILD CONFLICT marker survives in the source. 35/35 byte-match.",
-    "FOLDED 2026-10-02: g_profile_BOMBHEI moved into this TU as BmbSpawnInfo (0x1c at ov102:0x0214e534). The profile fold forced the .data claim to span ZTS + ZTI + 2 SharedFilePtr + profile + ZTV (0x0214e4fc..0x0214e5dc, 0xe0), which pulled the class's own _ZTS/_ZTV from compiler-only deadstrip into licensed data and flipped production_mode to intact-object. 5 relocations rows added. tubuild verify 35/35 TEXT-VERIFIED. Copied from daObjKm2_Ami_Bou_c."
+    "FOLDED 2026-10-02: g_profile_BOMBHEI moved into this TU as BmbSpawnInfo (0x1c at ov102:0x0214e534). The profile fold forced the .data claim to span ZTS + ZTI + the two launch-speed tables + profile + ZTV (0x0214e4fc..0x0214e5d4, 0xd8), which pulled the class's own _ZTS/_ZTV from compiler-only deadstrip into licensed data and flipped production_mode to intact-object. 5 relocations rows added. tubuild verify 35/35 TEXT-VERIFIED. Copied from daObjKm2_Ami_Bou_c."
   ],
   "verification": {
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
@@ -472,8 +472,8 @@
       "declared_function_set_equals_defined_function_set": "PASS",
       "functions_occur_in_expected_order": "PASS",
       "relocation_destinations_verified": "PASS",
-      "no_unexpected_vtable_rtti_or_data_emission": "PASS -- after the 2026-10-02 profile fold the TU is intact-object. The vtable and RTTI chain are licensed data in .data (0x0214e4fc..0x0214e5dc). The class's own _ZTS/_ZTV are in the data claim; base-class RTTI is deadstrip-data.",
-      "all_content_sections_licensed": "PASS -- .text 0x0214a96c..0x0214c748 (35 functions) + .data 0x0214e4fc..0x0214e5dc (ZTS + ZTI + 2 SharedFilePtr + profile + ZTV, 0xe0). The linkcheck block proves both ranges byte-identical."
+      "no_unexpected_vtable_rtti_or_data_emission": "PASS -- after the 2026-10-02 profile fold the TU is intact-object. The vtable and RTTI chain are licensed data in .data (0x0214e4fc..0x0214e5d4). The class's own _ZTS/_ZTV are in the data claim; base-class RTTI is deadstrip-data.",
+      "all_content_sections_licensed": "PASS -- .text 0x0214a96c..0x0214c748 (35 functions) + .data 0x0214e4fc..0x0214e5d4 (ZTS + ZTI + the two launch-speed tables + profile + ZTV, 0xe0). The linkcheck block proves both ranges byte-identical."
     },
     "linkcheck": {
       "round": "tools/tubuild.py linkcheck -- scratch dsd delink+lcf, whole-tree mwccarm, mwldarm link, linked-range and module byte comparison, dsd check symbols --fail, full ROM build",
