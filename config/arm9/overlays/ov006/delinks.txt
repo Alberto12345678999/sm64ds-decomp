@@ -192,6 +192,10 @@ src/actors/dScMgCurling_c.cpp:
     complete
     .text start:0x020e0638 end:0x020e20bc
 
+src/func_ov006_020e20bc.cpp:
+    complete
+    .text start:0x020e20bc end:0x020e269c
+
 src/func_ov006_020e269c.c:
     complete
     .text start:0x020e269c end:0x020e26f8
