@@ -6957,6 +6957,27 @@
     "src/actors/unit020c8a30.cpp#func_ov006_020c8c78": "andrewboudreau",
     "src/actors/unit020c8a30.cpp#func_ov006_020c8da8": "ruspecial",
     "src/actors/unit020c8a30.cpp#func_ov006_020c8dcc": "tangosdev",
-    "src/actors/unit020c8a30.cpp#func_ov006_020c8dd0": "tangosdev"
+    "src/actors/unit020c8a30.cpp#func_ov006_020c8dd0": "tangosdev",
+    "src/actors/dMgJump3DMario_c.cpp#func_ov006_020c6f8c": "tangosdev",
+    "src/actors/dMgJump3DMario_c.cpp#func_ov006_020c70d0": "tangosdev",
+    "src/actors/dMgJump3DMario_c.cpp#func_ov006_020c712c": "tangosdev",
+    "src/actors/dMgJump3DMario_c.cpp#func_ov006_020c719c": "tangosdev",
+    "src/actors/dMgJump3DMario_c.cpp#func_ov006_020c72b4": "tangosdev",
+    "src/actors/dMgJump3DMario_c.cpp#func_ov006_020c72c8": "tangosdev",
+    "src/actors/dMgJump3DMario_c.cpp#func_ov006_020c72dc": "ruspecial",
+    "src/actors/dMgJump3DMario_c.cpp#func_ov006_020c7300": "ruspecial",
+    "src/actors/dMgJump3DMario_c.cpp#func_ov006_020c7388": "tangosdev",
+    "src/actors/dMgJump3DMario_c.cpp#func_ov006_020c7418": "tangosdev",
+    "src/actors/dMgJump3DMario_c.cpp#func_ov006_020c7490": "lunavyqo",
+    "src/actors/dMgJump3DMario_c.cpp#func_ov006_020c7574": "tangosdev",
+    "src/actors/dMgJump3DMario_c.cpp#_ZN16dMgJump3DMario_c12Unk_020c762cEv": "andrewboudreau",
+    "src/actors/dMgJump3DMario_c.cpp#_ZN16dMgJump3DMario_c12Unk_020c76d0Ev": "andrewboudreau",
+    "src/actors/dMgJump3DMario_c.cpp#_ZN16dMgJump3DMario_c12Unk_020c76d8Ev": "andrewboudreau",
+    "src/actors/dMgJump3DMario_c.cpp#_ZN16dMgJump3DMario_c19func_ov006_020c7734Ev": "andrewboudreau",
+    "src/actors/dMgJump3DMario_c.cpp#_ZN16dMgJump3DMario_c9StateDampEv": "andrewboudreau",
+    "src/actors/dMgJump3DMario_c.cpp#_ZN16dMgJump3DMario_c8EnterHitEv": "andrewboudreau",
+    "src/actors/dMgJump3DMario_c.cpp#_ZN16dMgJump3DMario_c11StateWindUpEv": "andrewboudreau",
+    "src/actors/dMgJump3DMario_c.cpp#_ZN16dMgJump3DMario_cD1Ev": "andrewboudreau",
+    "src/actors/dMgJump3DMario_c.cpp#_ZN16dMgJump3DMario_cC1Ev": "andrewboudreau"
   }
 }

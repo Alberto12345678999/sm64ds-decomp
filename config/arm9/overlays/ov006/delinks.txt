@@ -574,57 +574,9 @@ src/func_ov006_020c6f70.c:
     complete
     .text start:0x020c6f70 end:0x020c6f8c
 
-src/func_ov006_020c6f8c.c:
-    complete
-    .text start:0x020c6f8c end:0x020c70d0
-
-src/func_ov006_020c70d0.c:
-    complete
-    .text start:0x020c70d0 end:0x020c712c
-
-src/func_ov006_020c712c.c:
-    complete
-    .text start:0x020c712c end:0x020c719c
-
-src/func_ov006_020c719c.c:
-    complete
-    .text start:0x020c719c end:0x020c72b4
-
-src/func_ov006_020c72b4.c:
-    complete
-    .text start:0x020c72b4 end:0x020c72c8
-
-src/func_ov006_020c72c8.c:
-    complete
-    .text start:0x020c72c8 end:0x020c72dc
-
-src/func_ov006_020c72dc.c:
-    complete
-    .text start:0x020c72dc end:0x020c7300
-
-src/func_ov006_020c7300.c:
-    complete
-    .text start:0x020c7300 end:0x020c7388
-
-src/func_ov006_020c7388.c:
-    complete
-    .text start:0x020c7388 end:0x020c7418
-
-src/func_ov006_020c7418.c:
-    complete
-    .text start:0x020c7418 end:0x020c7490
-
-src/func_ov006_020c7490.c:
-    complete
-    .text start:0x020c7490 end:0x020c7574
-
-src/func_ov006_020c7574.c:
-    complete
-    .text start:0x020c7574 end:0x020c762c
-
 src/actors/dMgJump3DMario_c.cpp:
     complete
-    .text start:0x020c762c end:0x020c8a30
+    .text start:0x020c6f8c end:0x020c8a30
 
 src/actors/unit020c8a30.cpp:
     complete

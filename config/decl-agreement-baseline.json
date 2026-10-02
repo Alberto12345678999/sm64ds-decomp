@@ -20995,21 +20995,6 @@
         "return:int"
       ]
     },
-    "data_ov006_0213b010": {
-      "src/func_ov006_020c7388.c": [
-        "return:int []"
-      ]
-    },
-    "data_ov006_0213b014": {
-      "src/func_ov006_020c7490.c": [
-        "return:int []"
-      ]
-    },
-    "data_ov006_0213b018": {
-      "src/func_ov006_020c7388.c": [
-        "return:int []"
-      ]
-    },
     "data_ov006_0213b0ec": {
       "src/func_ov006_020cc37c.cpp": [
         "return:int []"
@@ -21096,42 +21081,6 @@
     "data_ov006_02140404": {
       "src/actors/dMgJump3DMario_c.cpp": [
         "return:unsigned short"
-      ]
-    },
-    "data_ov006_02140414": {
-      "src/func_ov006_020c7490.c": [
-        "return:int []"
-      ]
-    },
-    "data_ov006_02140418": {
-      "src/func_ov006_020c70d0.c": [
-        "return:int []"
-      ],
-      "src/func_ov006_020c712c.c": [
-        "return:int []"
-      ],
-      "src/func_ov006_020c7388.c": [
-        "return:int []"
-      ],
-      "src/func_ov006_020c7490.c": [
-        "return:int []"
-      ]
-    },
-    "data_ov006_02140420": {
-      "src/func_ov006_020c712c.c": [
-        "return:int []"
-      ],
-      "src/func_ov006_020c719c.c": [
-        "return:char *"
-      ],
-      "src/func_ov006_020c7300.c": [
-        "return:Ent *"
-      ],
-      "src/func_ov006_020c7418.c": [
-        "return:char *"
-      ],
-      "src/func_ov006_020c7574.c": [
-        "return:char *"
       ]
     },
     "data_ov006_02140438": {
@@ -36278,16 +36227,6 @@
       "src/minigames/d_s_mg_jump2.cpp": [
         "arity:1",
         "return:void *"
-      ]
-    },
-    "func_ov006_020c7734": {
-      "src/func_ov006_020c70d0.c": [
-        "param:#1 int"
-      ]
-    },
-    "func_ov006_020c7860": {
-      "src/func_ov006_020c712c.c": [
-        "param:#1 int"
       ]
     },
     "func_ov006_020c9c8c": {
