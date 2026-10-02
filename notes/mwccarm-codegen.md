@@ -7624,6 +7624,20 @@ callee's parameter type names, the byte loaded before the guard) leave the cmp a
 are the same ASAP-versus-ALAP policy delta, and neither is reachable through a receiver because
 the value in question is a constant (the first) or a flag (the second), not a register web.
 
+Positive control for the second (round 1002f, about 250 more cells). With the guard, flag and x
+loads all `volatile` (a 64-cell mask matrix; cells 110111, 111011 and 111111), b56 emits the ROM's
+exact tail: the four stack stores, then `mov ip,r4; cmp sl,#0; movne ip,sb` at +0x64..+0x6c, the
+flag byte live in sl, nine pushes and the 0x1c frame. So the compiler can produce the ROM's
+schedule, and the whole residue is one ordering lever: keep the 0x676 byte live in a callee-saved
+register across the stores. `volatile` is not admissible here (notes/matching-style.md confines it
+to MMIO), and those cells score 33 because the prologue reshuffles. What none of the cells tried:
+a legitimate ordering constraint between the flag load and the select (an aliasing store, a
+call, or a by-reference read). That is the next lever to try, not more register-rank
+permutations. Also measured inert or worse: Fix12<int> by-value temps (always oversize, so the
+0x1c frame is the ninth push rounded to 8, not a class temp), declaration order (the named
+`tbl` local is load-bearing; unnamed costs a word), struct and index views of ptr+0x4660,
+2-D table types, 17 pragmas on the best two shapes, and -O1..-O4,s.
+
 ## 6cy. A "dead mov" residue can be an argument the caller really passes: check every callee's DEFINITION, not its declaration, before banking a 6bs residue (Stage::InitResources MATCHED, div 3 -> 0, 2026-09-13, run link100 wave 12 lane W12-6)
 
 Stage::InitResources (arm9 0x0202cc0c, 0xa84) sat one word short for three campaigns (6av, 6bs,
