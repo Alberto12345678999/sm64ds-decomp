@@ -972,6 +972,9 @@
       ],
       "src/func_ov006_02129690.c": [
         "param:#2 int"
+      ],
+      "src/actors/dScMgSnowball_c.cpp": [
+        "param:#2 int"
       ]
     },
     "FS_CloseFile": {
@@ -2583,9 +2586,6 @@
     "NullDestructor_0203d47c": {
       "src/__sinit_020750ec.c": [
         "kind:data"
-      ],
-      "src/func_ov006_021295ac.cpp": [
-        "arity:1"
       ]
     },
     "NumStars": {
@@ -14733,9 +14733,6 @@
       "src/d_s_mg3_d_esp.cpp": [
         "return:int []"
       ],
-      "src/func_ov006_021295ac.cpp": [
-        "return:void *"
-      ],
       "src/minigames/d_s_mg_memory.cpp": [
         "return:void * []"
       ],
@@ -14744,6 +14741,9 @@
       ],
       "src/actors/dScMgSlots.cpp": [
         "return:int []"
+      ],
+      "src/actors/dScMgSnowball_c.cpp": [
+        "return:void *"
       ]
     },
     "_ZTV19daObjFlamethrower_c": {
@@ -15006,12 +15006,6 @@
         "param:#5 void *",
         "return:void *"
       ],
-      "src/func_ov006_021295ac.cpp": [
-        "param:#2 int",
-        "param:#3 int",
-        "param:#4 void *",
-        "param:#5 void *"
-      ],
       "src/game/actors/d_a_obj_rc_carpet.cpp": [
         "param:#2 int",
         "param:#3 int",
@@ -15067,6 +15061,12 @@
         "param:#5 void *"
       ],
       "src/actors/dScMgSmartball_c.cpp": [
+        "param:#2 int",
+        "param:#3 int",
+        "param:#4 void *",
+        "param:#5 void *"
+      ],
+      "src/actors/dScMgSnowball_c.cpp": [
         "param:#2 int",
         "param:#3 int",
         "param:#4 void *",
@@ -20854,11 +20854,6 @@
     "data_ov006_02137cd8": {
       "src/actors/dScMgHanachan_c.cpp": [
         "return:char []"
-      ]
-    },
-    "data_ov006_02139c6c": {
-      "src/actors/dScMgSnowball_c.cpp": [
-        "return:int []"
       ]
     },
     "data_ov006_0213ae00": {
@@ -30752,7 +30747,7 @@
       "src/actors/dScMgAmida_c.cpp": [
         "arity:1"
       ],
-      "src/func_ov006_021295ac.cpp": [
+      "src/actors/dScMgSnowball_c.cpp": [
         "arity:1"
       ]
     },
@@ -36612,16 +36607,6 @@
     "func_ov006_02122c68": {
       "include/decl_common.h": [
         "return:void"
-      ]
-    },
-    "func_ov006_02125800": {
-      "src/func_ov006_021295ac.cpp": [
-        "arity:1"
-      ]
-    },
-    "func_ov006_0212968c": {
-      "src/func_ov006_021295ac.cpp": [
-        "arity:1"
       ]
     },
     "func_ov007_020ad660": {

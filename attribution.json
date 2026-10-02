@@ -7036,6 +7036,27 @@
     "src/actors/daKpa_c.cpp#_ZN7daKpa_c8BehaviorEv": "tangosdev",
     "src/actors/daKpa_c.cpp#_ZN11daKpaTail_c8BehaviorEv": "tangosdev",
     "src/actors/daKpa_c.cpp#_ZN7daKpa_c13InitResourcesEv": "tangosdev",
-    "src/actors/daKpa_c.cpp#_ZN11daKpaTail_c13InitResourcesEv": "tangosdev"
+    "src/actors/daKpa_c.cpp#_ZN11daKpaTail_c13InitResourcesEv": "tangosdev",
+    "src/actors/dScMgSnowball_c.cpp#func_ov006_021295ac": "tangosdev",
+    "src/actors/dScMgSnowball_c.cpp#func_ov006_0212968c": "tangosdev",
+    "src/actors/dScMgSnowball_c.cpp#func_ov006_02129690": "andrewboudreau",
+    "src/actors/dScMgSnowball_c.cpp#func_ov006_0212972c": "tangosdev",
+    "src/actors/dScMgSnowball_c.cpp#func_ov006_021297c0": "tangosdev",
+    "src/actors/dScMgSnowball_c.cpp#func_ov006_02129894": "tangosdev",
+    "src/actors/dScMgSnowball_c.cpp#func_ov006_0212992c": "tangosdev",
+    "src/actors/dScMgSnowball_c.cpp#func_ov006_02129a34": "tangosdev",
+    "src/actors/dScMgSnowball_c.cpp#func_ov006_02129b74": "tangosdev",
+    "src/actors/dScMgSnowball_c.cpp#func_ov006_02129cb0": "tangosdev",
+    "src/actors/dScMgSnowball_c.cpp#func_ov006_02129d94": "tangosdev",
+    "src/actors/dScMgSnowball_c.cpp#func_ov006_02129e28": "tangosdev",
+    "src/actors/dScMgSnowball_c.cpp#func_ov006_02129eec": "tangosdev",
+    "src/actors/dScMgSnowball_c.cpp#func_ov006_0212a000": "tangosdev",
+    "src/actors/dScMgSnowball_c.cpp#func_ov006_0212a110": "tangosdev",
+    "src/actors/dScMgSnowball_c.cpp#func_ov006_0212a224": "tangosdev",
+    "src/actors/dScMgSnowball_c.cpp#func_ov006_0212a274": "tangosdev",
+    "src/actors/dScMgSnowball_c.cpp#func_ov006_0212a2e0": "andrewboudreau",
+    "src/actors/dScMgSnowball_c.cpp#func_ov006_0212a3c0": "tangosdev",
+    "src/d_s_mg_flower.cpp#dScMgFlower_c_classInit": "tangosdev",
+    "src/d_s_mg_flower.cpp#func_ov006_0212b88c": "tangosdev"
   }
 }
