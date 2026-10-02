@@ -3,17 +3,24 @@
 This decompilation builds on reverse-engineering knowledge from the SM64DS community.
 
 ## Symbol names & struct layouts
-- **SplattyDS / DynamicAllocationDecomp** (https://github.com/SplattyDS/DynamicAllocationDecomp)
- , source of verified function/data symbol names (`symbols.x`) and struct/actor-system
-  header knowledge for the EU build. We import their **names and field offsets** (facts /
-  interface) into our symbol database and notes; we do **not** copy their source code -
-  all matching C in `src/` is written from scratch against our own ROM. Their addresses
-  were independently verified against our `dsd` analysis (≈72% land exactly on functions
-  we found, confirming the same EU build).
-- **SplattyDS / SM64DS-ASM-Reference**, **Arisotura / SM64DSe**, and **Gota7 /
-  MoreObjectsMod**, further upstream symbol / reference documentation the above builds on.
+- **SplattyDS / DynamicAllocationDecomp** (https://github.com/SplattyDS/DynamicAllocationDecomp),
+  source of verified function and data symbol names (`symbols.x`) and struct and
+  actor-system header knowledge for the EU build. We import their **names and field
+  offsets** (facts and interface) into our symbol database and notes. We do **not** copy
+  their source code; all matching C in `src/` is written from scratch against our own ROM.
+  Their addresses were independently verified against our `dsd` analysis (about 72% land
+  exactly on functions we found, confirming the same EU build).
+- **SplattyDS / SM64DS-ASM-Reference** (https://github.com/SplattyDS/SM64DS-ASM-Reference),
+  the reference documentation DynamicAllocationDecomp builds on.
+- The people Splatty credits on those repos, whose work the names come out of:
+  **Gota7** (https://github.com/Gota7) for decompiled objects, game documentation and
+  MoreObjectsMod; **pants64DS** (https://github.com/pants64DS) for the shared object
+  resource system and game documentation; and **hayashi-stl** (https://github.com/hayashi-stl)
+  for the DL format and game documentation.
+- **Arisotura / SM64DSe** (https://github.com/Arisotura), further upstream reference work.
 
-If you contribute, keep this separation: import knowledge, write code.
+None of these people are involved in this project, and none of their code is in this
+repo. If you contribute, keep this separation: import knowledge, write code.
 
 ## Matched-function contributions
 - **Ryan Copley** (https://github.com/RyanCopley) - hand-wrote and verified matching C for a
@@ -68,6 +75,9 @@ If you contribute, keep this separation: import knowledge, write code.
   (`tools/reloc_audit.py`) and an opt-in `match.py --strict-relocs` check that verifies each
   reloc slot points at the address `config/**/relocs.txt` records, closing a gap where the
   byte compare wildcards relocated words without checking their destination (PR #47).
+  Has since built the independent source review gate and the v2 multi-agent work protocol
+  (`notes/agents/`), and repaired the PC port's smoke build after the constructor
+  migration (PRs #1713, #1748).
 - **mitchellcairns** (https://github.com/mitchellcairns) - added the C++ decompilation
   index, the safe renaming tools and the ABI naming guide (PR #861); measured the C/C++
   language-mode gap and added the CI ratchet that stops it growing (PRs #1140, #1141);
@@ -86,3 +96,15 @@ If you contribute, keep this separation: import knowledge, write code.
   and ran the phase 1 to 8 passes that link the overlay and data symbols named in the
   provenance and reference notes to the records they stand for (PRs #2123, #2166, #2180,
   #2305, #2381, #2643, #2675, #2724).
+
+## tangOS Console contributions
+- **Andrew Boudreau** (https://github.com/andrewboudreau) - the asm-transcription classifier
+  and the guard that stops a raw assembly transcription from being credited, banked or
+  shipped as a match (tangOS PR #10).
+- **lunavyqo** (https://github.com/lunavyqo) - match conventions, the Prior tries view and
+  attempt-tree logging (tangOS PR #2).
+
+## Inspiration
+- **Chris Lewis** - the `tools/coddog.py` similarity scheduler came out of his
+  [writeup](https://blog.chrislewis.au/the-long-tail-of-llm-assisted-decompilation/) on
+  LLM-assisted decompilation and the Coddog tool it describes.
