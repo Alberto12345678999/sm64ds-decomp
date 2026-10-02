@@ -4791,9 +4791,6 @@
       ],
       "src/func_ov009_0211145c.c": [
         "param:#1 Vector3 *"
-      ],
-      "src/func_ov020_021112b0.c": [
-        "param:#1 Vector3 *"
       ]
     },
     "Vec3_Lsl": {
@@ -5052,6 +5049,11 @@
       ]
     },
     "Vec3_Sub": {
+      "src/game/actors/d_a_book.cpp": [
+        "param:#1 Vector3 *",
+        "param:#2 Vector3 *",
+        "param:#3 Vector3 *"
+      ],
       "src/game/actors/d_a_red_bombhei.cpp": [
         "param:#1 Vector3 *",
         "param:#2 const Vector3 *",
@@ -5181,11 +5183,6 @@
       "src/func_ov009_0211145c.c": [
         "param:#1 Vector3 *",
         "return:int"
-      ],
-      "src/func_ov020_021112b0.c": [
-        "param:#1 Vector3 *",
-        "param:#2 Vector3 *",
-        "param:#3 Vector3 *"
       ],
       "src/func_ov064_02117a14.cpp": [
         "param:#1 Vector3 *",
@@ -5686,9 +5683,6 @@
         "return:int"
       ],
       "src/func_ov006_020cfa44.c": [
-        "return:int"
-      ],
-      "src/func_ov020_02111c30.c": [
         "return:int"
       ],
       "src/func_ov064_02117a44.cpp": [
@@ -6250,6 +6244,11 @@
         "param:#2 void *",
         "param:#5 void *",
         "param:#6 void *"
+      ],
+      "src/game/actors/d_a_book.cpp": [
+        "param:#2 dActor_c *",
+        "param:#5 Vector3_16 *",
+        "param:#6 Vector3_16 *"
       ]
     },
     "_ZN10dBgCh_ActrD1Ev": {
@@ -10242,9 +10241,6 @@
       "src/func_ov002_020eea84.c": [
         "param:#2 void *"
       ],
-      "src/func_ov020_0211174c.c": [
-        "param:#2 void *"
-      ],
       "src/actors/daGrock_c.cpp": [
         "param:#2 void *"
       ],
@@ -12769,15 +12765,6 @@
       "src/func_ov009_02111234.cpp": [
         "return:void *"
       ],
-      "src/func_ov020_02111340.c": [
-        "return:char *"
-      ],
-      "src/func_ov020_021115ac.c": [
-        "return:void *"
-      ],
-      "src/func_ov020_0211174c.c": [
-        "return:void *"
-      ],
       "src/actors/daKirai_c.cpp": [
         "return:char *"
       ],
@@ -12988,9 +12975,6 @@
         "return:char *"
       ],
       "src/func_ov009_0211145c.c": [
-        "return:char *"
-      ],
-      "src/func_ov020_021112b0.c": [
         "return:char *"
       ],
       "src/func_ov080_021256f8.c": [
@@ -13469,12 +13453,6 @@
         "param:#5 int",
         "param:#6 int",
         "return:char *"
-      ],
-      "src/func_ov020_02111340.c": [
-        "param:#3 void *",
-        "param:#5 int",
-        "param:#6 int",
-        "return:int"
       ],
       "src/func_ov064_02118c48.c": [
         "param:#3 const Vector3 *",
@@ -13994,9 +13972,6 @@
       "src/func_ov006_020ccd78.cpp": [
         "param:#5 unsigned int"
       ],
-      "src/func_ov020_02111c30.c": [
-        "param:#5 int"
-      ],
       "src/func_ov074_02121a4c.cpp": [
         "param:#5 unsigned int"
       ],
@@ -14433,9 +14408,6 @@
       "src/func_ov002_020eea84.c": [
         "return:char *"
       ],
-      "src/func_ov020_02111b28.cpp": [
-        "return:int"
-      ],
       "src/game/actors/d_a_pg_mthr.cpp": [
         "return:dBgPiRaw *"
       ]
@@ -14508,9 +14480,6 @@
       ],
       "src/func_ov002_020d8a50.c": [
         "param:#2 Vector3 *"
-      ],
-      "src/func_ov020_02111b28.cpp": [
-        "param:#2 void *"
       ],
       "src/actors/daYegg_c.cpp": [
         "param:#2 void *"
@@ -15094,9 +15063,6 @@
         "arity:1"
       ],
       "src/actors/daObjPowerUpItem_c.cpp": [
-        "arity:1"
-      ],
-      "src/func_ov020_02111b28.cpp": [
         "arity:1"
       ],
       "src/actors/daGrock_c.cpp": [
@@ -16460,10 +16426,10 @@
       "src/actors/daYurei_Mucho_c.cpp": [
         "return:int []"
       ],
-      "src/func_ov020_02111340.c": [
+      "src/game/actors/d_a_bakubaku.cpp": [
         "return:int []"
       ],
-      "src/game/actors/d_a_bakubaku.cpp": [
+      "src/game/actors/d_a_book.cpp": [
         "return:int []"
       ],
       "src/game/actors/d_a_holhei.cpp": [
@@ -22706,50 +22672,35 @@
       ]
     },
     "data_ov020_02114aa0": {
-      "src/_ZN15BookShotSpawner16CleanupResourcesEv.cpp": [
-        "return:int"
-      ],
-      "src/_ZN8BookShot13InitResourcesEv.cpp": [
-        "return:SharedFilePtr"
-      ],
-      "src/_ZN8BookShot16CleanupResourcesEv.cpp": [
-        "return:int"
-      ],
       "src/__sinit_ov020_02113674.c": [
         "return:char []"
+      ],
+      "src/game/actors/d_a_book.cpp": [
+        "return:int []"
       ]
     },
     "data_ov020_02114aa8": {
-      "src/_ZN8BookShot13InitResourcesEv.cpp": [
-        "return:SharedFilePtr"
-      ],
-      "src/_ZN8BookShot16CleanupResourcesEv.cpp": [
-        "return:int"
-      ],
       "src/__sinit_ov020_02113674.c": [
         "return:char []"
+      ],
+      "src/game/actors/d_a_book.cpp": [
+        "return:int []"
       ]
     },
     "data_ov020_02114ab0": {
-      "src/_ZN8BookShot13InitResourcesEv.cpp": [
-        "return:SharedFilePtr"
-      ],
-      "src/_ZN8BookShot16CleanupResourcesEv.cpp": [
-        "return:int"
-      ],
       "src/__sinit_ov020_02113674.c": [
         "return:char []"
+      ],
+      "src/game/actors/d_a_book.cpp": [
+        "return:int []"
       ]
     },
     "data_ov020_02114ab8": {
-      "src/_ZN15BookShotSpawner13InitResourcesEv.cpp": [
-        "return:int []"
-      ],
-      "src/_ZN8BookShot13InitResourcesEv.cpp": [
-        "return:SharedFilePtr"
-      ],
       "src/__sinit_ov020_02113674.c": [
         "return:char []"
+      ],
+      "src/game/actors/d_a_book.cpp": [
+        "return:int []"
       ]
     },
     "data_ov020_02114af0": {
@@ -25484,6 +25435,9 @@
       ],
       "src/actors/daDoor_c.cpp": [
         "return:int"
+      ],
+      "src/__sinit_ov089_021328d4.c": [
+        "return:char []"
       ]
     },
     "data_ov089_02132c60": {
@@ -26474,10 +26428,6 @@
         "param:#1 int"
       ],
       "src/func_ov009_0211145c.c": [
-        "return:int"
-      ],
-      "src/func_ov020_02111aa8.c": [
-        "param:#1 int",
         "return:int"
       ],
       "src/actors/daGrock_c.cpp": [
@@ -38555,7 +38505,7 @@
       ]
     },
     "func_ov063_0211cae8": {
-      "src/func_ov020_0211174c.c": [
+      "src/game/actors/d_a_book.cpp": [
         "param:#2 unsigned int"
       ]
     },
@@ -39015,6 +38965,11 @@
     "data_ov100_021486f4": {
       "src/actors/daWanwan2_c.cpp": [
         "return:ChompState"
+      ]
+    },
+    "data_ov100_02148744": {
+      "src/__sinit_ov100_02147698.c": [
+        "return:char []"
       ]
     }
   }
