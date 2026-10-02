@@ -1,7 +1,7 @@
 /* Seeded from matched-function evidence by tools/gen_header.py, then given its
  * real base by hand.
  *
- * class SignPost: 5 matched functions, 24 evidenced fields. Offsets and widths
+ * class daObjTatefuda_c: 5 matched functions, 24 evidenced fields. Offsets and widths
  * below 0x320 are gone from this header and inherited now; the rest are still
  * observed, with gaps as explicit padding. Field names come from what the
  * matched bodies do with each offset -- the per-offset citations are in
@@ -9,14 +9,15 @@
  * four of the remaining `pad_` runs into real fields (0x354, 0x380, and
  * 0x584/0x588/0x58c).
  *
- * THE BASE IS dBgActor_c, and the destructor says so outright. _ZN8SignPostD1Ev
+ * THE BASE IS dBgActor_c, and the destructor says so outright. _ZN15daObjTatefuda_cD1Ev
  * (ov002 0x020badd0) stores exactly two vtables -- _ZTV15daObjTatefuda_c, then
  * _ZTV10dBgActor_c -- with this class's own three members destroyed between them
  * and dBgActor_c's Model and dBgW_KcMbg destroyed after. Two stores is a
  * DIRECT child; an intermediate layer would have put a third one in between.
  * daObjTatefuda_c_classInit agrees from the other side: it calls _ZN10dBgActor_cC2Ev and then
- * overwrites the vptr with _ZTV8SignPost, which is the same address as
- * _ZTV15daObjTatefuda_c -- one table, two names.
+ * overwrites the vptr with _ZTV15daObjTatefuda_c -- the row that used to be
+ * labeled _ZTV8SignPost at the same address. One table, two names; the coined
+ * one is gone (the class rename).
  *
  * SIZE IS 0x5a4, the literal daObjTatefuda_c_classInit passes to fBase_c::operator new
  * (1444). The last named field, the Player * at 0x59c, closes at 0x5a0, so four
@@ -39,8 +40,8 @@
  * class (as its sibling daObjKanban_c does) among the four direct
  * children that each place a 4-byte-aligned class member there.
  */
-#ifndef SIGNPOST_H
-#define SIGNPOST_H
+#ifndef DAOBJTATEFUDA_C_H
+#define DAOBJTATEFUDA_C_H
 
 /* RECONSTRUCTED NAMES USED IN THIS HEADER. SM64DS RTTI names the
  * implementation(s) below; the registry profile object and the factory
@@ -69,7 +70,7 @@ typedef struct Player Player;
 #include "dCcAc_c.h"
 #include "ShadowModel.h"
 
-struct SignPost : dBgActor_c {
+struct daObjTatefuda_c : dBgActor_c {
     dCcAc_c mdCcAc_c;                /* 0x320 */
     /* Behavior reads this word right after dCc_c::Clear/Update on mdCcAc_c and
        branches on == 3 and <= 1, so it is that collider's result code. It sat
@@ -87,7 +88,7 @@ struct SignPost : dBgActor_c {
     s16 mHomeAngleY;                 /* 0x3be */
     s16 mHomeAngleZ;                 /* 0x3c0 */
     u8  pad_3c2[0x6];
-    /* dBgCh_Actr member. The cartridge's own ~SignPost calls _ZN10dBgCh_ActrD1Ev at
+    /* dBgCh_Actr member. The cartridge's own ~daObjTatefuda_c calls _ZN10dBgCh_ActrD1Ev at
        +0x3c8 (D0/D1), a relocation the ROM build checks; recovered by
        tools/dtor_members.py. D1 and not D2, so it is this type and not an inlined base. */
     dBgCh_Actr mWithMeshClsn;        /* 0x3c8 */
@@ -111,23 +112,23 @@ struct SignPost : dBgActor_c {
 
     /* --- vtable --- */
     /* INLINE ON PURPOSE, for the reason include/dBgActor_c.h gives for its own.
-       Nothing derives from SignPost, so no subclass can be made to emit a `bl`
+       Nothing derives from daObjTatefuda_c, so no subclass can be made to emit a `bl`
        the ROM does not have -- but keeping it inline also keeps this class
        without a key function, so no translation unit that merely includes this
-       header emits _ZTV8SignPost. The out-of-line D1 and D0 at ov002 0x020badd0
+       header emits _ZTV15daObjTatefuda_c. The out-of-line D1 and D0 at ov002 0x020badd0
        and 0x020bae2c are still C translation units defining extern "C" free
        functions under the mangled names, exactly as include/dActor_c.h describes;
-       neither defines SignPost::~SignPost. */
-    virtual ~SignPost() {}
+       neither defines daObjTatefuda_c::~daObjTatefuda_c. */
+    virtual ~daObjTatefuda_c() {}
 
     /* Slot 31, dBgActor_c's own new virtual (include/dBgActor_c.h). This class
-       overrides it: _ZTV8SignPost (ov002 0x02109af8) carries 0x020bb3b8 at
+       overrides it: _ZTV15daObjTatefuda_c (ov002 0x02109af8) carries 0x020bb3b8 at
        vtable + 0x7c where _ZTV10dBgActor_c carries _ZN10dBgActor_c4KillEv, and slot 30
        is dActor_c's 0x020100dc in both. It adds no slot and no field, so the size
        assert below is unaffected.
 
        It is also this class's KEY FUNCTION, the destructor above being inline,
-       so src/_ZN8SignPost4KillEv.cpp emits _ZTV8SignPost, _ZTI8SignPost and the
+       so src/actors/daObjTatefuda_c.cpp emits _ZTV15daObjTatefuda_c, _ZTI15daObjTatefuda_c and the
        destructor variants alongside the one function it is bound to.
        objisolate.py reduces the object back to that one 0x74 .text before
        eligible.py and rombuild.py judge it -- checked, not assumed. */
@@ -149,7 +150,7 @@ struct SignPost : dBgActor_c {
 
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
-typedef char SignPost_size_must_be_0x5a4[sizeof(SignPost) == 0x5a4 ? 1 : -1];
+typedef char daObjTatefuda_c_size_must_be_0x5a4[sizeof(daObjTatefuda_c) == 0x5a4 ? 1 : -1];
 #endif
 
 #else
@@ -157,7 +158,7 @@ typedef char SignPost_size_must_be_0x5a4[sizeof(SignPost) == 0x5a4 ? 1 : -1];
 /* The same object for a C translation unit, which has no base sub-object to
    inherit dBgActor_c's fields from and so spells the layout flat. Same
    arrangement as include/dBgActor_c.h. */
-struct SignPost {
+struct daObjTatefuda_c {
     u8  pad_000[0x5c];
     s32 mPosX;                       /* 0x05c */
     s32 mPosY;                       /* 0x060 */
@@ -172,11 +173,11 @@ struct SignPost {
     u8  pad_0a4[0xc];
     s32 mFlags;                      /* 0x0b0 */
     u8  pad_0b4[0x20];
-    /* Model member. The cartridge's own ~SignPost calls _ZN5ModelD1Ev at +0x0d4
+    /* Model member. The cartridge's own ~daObjTatefuda_c calls _ZN5ModelD1Ev at +0x0d4
        (D0/D1), a relocation the ROM build checks; recovered by tools/dtor_members.py.
        D1 and not D2, so it is this type and not an inlined base. */
     Model mModel;                    /* 0x0d4 */
-    /* dBgW_KcMbg member. The cartridge's own ~SignPost calls _ZN10dBgW_KcMbgD1Ev at
+    /* dBgW_KcMbg member. The cartridge's own ~daObjTatefuda_c calls _ZN10dBgW_KcMbgD1Ev at
        +0x124 (D0/D1), a relocation the ROM build checks; recovered by
        tools/dtor_members.py. D1 and not D2, so it is this type and not an inlined base. */
     dBgW_KcMbg mMeshCollider;        /* 0x124 */
@@ -195,7 +196,7 @@ struct SignPost {
     s16 mHomeAngleY;                 /* 0x3be */
     s16 mHomeAngleZ;                 /* 0x3c0 */
     u8  pad_3c2[0x6];
-    /* dBgCh_Actr member. The cartridge's own ~SignPost calls _ZN10dBgCh_ActrD1Ev at
+    /* dBgCh_Actr member. The cartridge's own ~daObjTatefuda_c calls _ZN10dBgCh_ActrD1Ev at
        +0x3c8 (D0/D1), a relocation the ROM build checks; recovered by
        tools/dtor_members.py. D1 and not D2, so it is this type and not an inlined base. */
     dBgCh_Actr mWithMeshClsn;        /* 0x3c8 */
