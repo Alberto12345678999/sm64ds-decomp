@@ -485,6 +485,7 @@ So **CLPS surface-type values 6-9 are the four quicksand types.** Corroborated o
   `0x020d4080` `0x4000` is 4.0 fx12 — same hex values, opposite readings, ~40 instructions apart.
 
 ### 9.8 Names earned by this pass
+
 | Address | Name earned |
 |---------|-------------|
 | `0x02037e58` | `CLPS::GetSlipperiness` |
@@ -507,6 +508,7 @@ So **CLPS surface-type values 6-9 are the four quicksand types.** Corroborated o
 | [ov002](../../config/arm9/overlays/ov002/symbols.txt):`0x02110514` | `St_Crawl` state descriptor (data; [symbols/verified.tsv](../../symbols/verified.tsv) names it `_ZN6Player8ST_CRAWLE`) |
 
 **Player offsets recovered:**
+
 | Offset | Description |
 |--------|-------------|
 | `+0x8e` | visual yaw |
