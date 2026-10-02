@@ -1,8 +1,8 @@
 //cpp
-// @symbol _ZN10StarMarkerD1Ev
+// @symbol _ZN12daStarBase_cD1Ev
 
-#include "StarMarker.h"
+#include "daStarBase_c.h"
 
-StarMarker::~StarMarker()
+daStarBase_c::~daStarBase_c()
 {
 }
