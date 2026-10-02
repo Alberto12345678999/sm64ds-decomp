@@ -7841,6 +7841,18 @@ hitAngle reference (41), the idx speed through a pointer (0x564), reusing c/s fo
 (0x558: the frame drops 0x7c -> 0x6c and the table base leaves r3). The five opt_* pragmas each
 change the size.
 
+Round 1002g (about 110 more cells, still 30) narrowed the cause and closed more spellings. Drop sP
+from the `FMUL(sP, 0x1b000)` product after the calls (a diagnostic, not a candidate) and the sP
+load falls in after the hit stone's c/s loads, as in the ROM: the sign word that
+64x64 product needs is the whole residue. A call barrier before dy moves both sign words after it,
+sP then cP, so they follow their first use; `#pragma optimize_for_size on` shows the sP sign
+spilled right after the T[E] loads. Worse: `(data_02082214 + 1)[k]` or a pointer `p = &T[k]`
+for the hit stone (0x564), the same on both stones (0x584), `(data_02082214 + 1)[E]` (0x54c).
+Of the 24 orders of the dy/dx/nex/ney statements only dy, dx, ney, nex keeps the size (38); of
+the 80 split forms of those statements (`v = a; v op= b;` or `v = -b; v += a;`) three are
+identical at 30, two give 39 and the rest change the size. s16 sP/cP and c/s declaration order
+are inert. `#pragma scheduling off` and `-opt noschedule` do nothing.
+
 ## 6da. A scalar stack parameter the loop uses directly is register-homed in PARAMETER ORDER, and that is the only thing that puts its load ahead of the last self-home store: OAM::Render MATCHED (div 2 -> 0, 2026-09-13, run link100 lane W12-5)
 
 `_ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii` (arm9 0x02020994, 0x690) was the game's one
