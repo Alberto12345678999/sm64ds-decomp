@@ -1,9 +1,9 @@
 //cpp
-#include "BowserPuzzlePiece.h"
+#include "daObjFl_Puzzle_c.h"
 
 typedef int Fix12i;
 
-typedef void (BowserPuzzlePiece::*PMF)();
+typedef void (daObjFl_Puzzle_c::*PMF)();
 struct Entry { PMF pmf; };
 extern Entry data_ov064_0211c904[];
 
@@ -13,7 +13,7 @@ extern "C" void func_ov064_02119010(void* c);
 extern "C" int _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(void* c, Fix12i a, Fix12i b);
 extern "C" void func_ov064_02118fa4(void* c);
 
-int BowserPuzzlePiece::Behavior() {
+int daObjFl_Puzzle_c::Behavior() {
     func_ov064_02118ee4(this);
     (this->*data_ov064_0211c904[mState].pmf)();
     char* cc = (char*)this;

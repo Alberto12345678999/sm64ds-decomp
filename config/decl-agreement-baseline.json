@@ -6012,7 +6012,7 @@
       "src/_ZN17daObjFl_Amilift_c13InitResourcesEv.cpp": [
         "param:#3 Matrix4x3 *"
       ],
-      "src/_ZN17BowserPuzzlePiece13InitResourcesEv.cpp": [
+      "src/_ZN16daObjFl_Puzzle_c13InitResourcesEv.cpp": [
         "param:#3 const Matrix4x3 &",
         "param:#6 CLPS_Block &"
       ],
@@ -8942,7 +8942,7 @@
       "src/_ZN12daKuriKing_c13InitResourcesEv.cpp": [
         "param:#1 void *"
       ],
-      "src/_ZN17BowserPuzzlePiece13InitResourcesEv.cpp": [
+      "src/_ZN16daObjFl_Puzzle_c13InitResourcesEv.cpp": [
         "return:BMD_File *"
       ],
       "src/_ZN5Stage13InitResourcesEv.cpp": [
@@ -11279,7 +11279,7 @@
       "src/_ZN17daObjFl_Amilift_c13InitResourcesEv.cpp": [
         "return:KCL_File *"
       ],
-      "src/_ZN17BowserPuzzlePiece13InitResourcesEv.cpp": [
+      "src/_ZN16daObjFl_Puzzle_c13InitResourcesEv.cpp": [
         "return:KCL_File *"
       ],
       "src/func_ov002_020b5e58.cpp": [
@@ -12062,7 +12062,7 @@
       "src/_ZN10StarMarker8BehaviorEv.cpp": [
         "return:char *"
       ],
-      "src/_ZN17BowserPuzzlePiece8BehaviorEv.cpp": [
+      "src/_ZN16daObjFl_Puzzle_c8BehaviorEv.cpp": [
         "return:char *"
       ],
       "src/_ZN9PowerStar13InitResourcesEv.cpp": [
@@ -13410,7 +13410,7 @@
       "src/actors/daKing_Donketu_c.cpp": [
         "return:void"
       ],
-      "src/_ZN17BowserPuzzlePiece13InitResourcesEv.cpp": [
+      "src/_ZN16daObjFl_Puzzle_c13InitResourcesEv.cpp": [
         "return:void"
       ],
       "src/_ZN17dMg3DEspAnimSet_c13InitResourcesEv.cpp": [
@@ -22670,7 +22670,7 @@
       ]
     },
     "data_ov064_0211adc8": {
-      "src/_ZN17BowserPuzzlePiece16CleanupResourcesEv.cpp": [
+      "src/_ZN16daObjFl_Puzzle_c16CleanupResourcesEv.cpp": [
         "return:void * []"
       ]
     },
@@ -22707,15 +22707,15 @@
       ]
     },
     "data_ov064_0211c800": {
-      "src/_ZN17BowserPuzzlePiece13InitResourcesEv.cpp": [
+      "src/_ZN16daObjFl_Puzzle_c13InitResourcesEv.cpp": [
         "return:SharedFilePtr"
       ],
-      "src/_ZN17BowserPuzzlePiece16CleanupResourcesEv.cpp": [
+      "src/_ZN16daObjFl_Puzzle_c16CleanupResourcesEv.cpp": [
         "return:void *"
       ]
     },
     "data_ov064_0211c904": {
-      "src/_ZN17BowserPuzzlePiece8BehaviorEv.cpp": [
+      "src/_ZN16daObjFl_Puzzle_c8BehaviorEv.cpp": [
         "return:Entry []"
       ]
     },

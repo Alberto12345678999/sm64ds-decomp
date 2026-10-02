@@ -1,9 +1,9 @@
 //cpp
-// @symbol _ZN17BowserPuzzlePiece13InitResourcesEv
+// @symbol _ZN16daObjFl_Puzzle_c13InitResourcesEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 #include "decl_common.h"
 /* recovered: named members + shared header, real C++ method */
-#include "BowserPuzzlePiece.h"
+#include "daObjFl_Puzzle_c.h"
 struct SharedFilePtr { int x; };
 struct BMD_File;
 struct KCL_File;
@@ -21,7 +21,7 @@ extern SharedFilePtr* data_ov064_0211adc8[];
 extern SharedFilePtr data_ov064_0211c800;
 extern CLPS_Block data_ov064_0211baac;
 
-int BowserPuzzlePiece::InitResources()
+int daObjFl_Puzzle_c::InitResources()
 {
     mType = param1 & 0xf;
     _ZN9ModelBase7SetFileEP8BMD_Fileii(&mModel,

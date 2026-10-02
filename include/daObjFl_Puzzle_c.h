@@ -1,24 +1,20 @@
 /* AUTO-GENERATED from matched-function evidence by tools/gen_header.py
- * class BowserPuzzlePiece: 5 matched functions, 14 evidenced fields.
+ * class daObjFl_Puzzle_c: 5 matched functions, 14 evidenced fields.
  * Offsets/widths are observed, not guessed. Gaps are explicit padding.
  * Field NAMES are placeholders - renaming cannot change codegen. */
-#ifndef BOWSERPUZZLEPIECE_H
-#define BOWSERPUZZLEPIECE_H
+#ifndef DAOBJFL_PUZZLE_C_H
+#define DAOBJFL_PUZZLE_C_H
 #include "dBgActor_c.h"
 
-/* ROM identity versus compatibility spelling:
+/* Lethal Lava Land puzzle piece (FL_PUZZLE).
  *
- * The slot array historically named _ZTV17BowserPuzzlePiece points back to
- * _ZTI16daObjFl_Puzzle_c. Its type-name bytes say daObjFl_Puzzle_c and its
- * sole base is dBgActor_c. BowserPuzzlePiece is the readable compatibility
- * spelling used by the already-matched method symbols, not a claim about the
- * original EAD RTTI name. Per-function isolation therefore discards the
- * compiler-only BowserPuzzlePiece RTTI and rebinds the vptr to the ROM table.
- *
- * The destructor proves that the first 0x320 bytes are one dBgActor_c base:
- * it restores _ZTV10dBgActor_c, destroys the moving-mesh member at 0x124 and
- * Model at 0x0d4, then chains to dActor_c::~dActor_c. */
-struct BowserPuzzlePiece : dBgActor_c {
+ * _ZTI16daObjFl_Puzzle_c is at ov064 0x0211bfa4 and the name bytes at
+ * 0x0211bfc4 say daObjFl_Puzzle_c. The vtable at 0x0211c25c stores that
+ * typeinfo. The sole base is dBgActor_c: the destructor restores
+ * _ZTV10dBgActor_c, destroys the moving-mesh member at 0x124 and Model at
+ * 0x0d4, then chains to dActor_c::~dActor_c.
+ */
+struct daObjFl_Puzzle_c : dBgActor_c {
     u32 mOtherPieceId;       /* 0x320 */
     s32 mStateInfo;            /* 0x324 */
     u8  mStateIndex;            /* 0x328 */
@@ -33,7 +29,7 @@ struct BowserPuzzlePiece : dBgActor_c {
     u8  mCanSpawnCoin;            /* 0x33a */
     /* Inline is load-bearing: the two small forcing translation units emit the
      * ROM's D1 and D0 while objisolate discards their wrappers and D2. */
-    virtual ~BowserPuzzlePiece() {}
+    virtual ~daObjFl_Puzzle_c() {}
 
     /* Overrides of fBase_c's resource/behavior/render slots. */
     int InitResources();
@@ -44,8 +40,8 @@ struct BowserPuzzlePiece : dBgActor_c {
 
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
-typedef char BowserPuzzlePiece_size_must_be_0x33c[
-    sizeof(struct BowserPuzzlePiece) == 0x33c ? 1 : -1];
+typedef char daObjFl_Puzzle_c_size_must_be_0x33c[
+    sizeof(struct daObjFl_Puzzle_c) == 0x33c ? 1 : -1];
 #endif
 
 #endif
