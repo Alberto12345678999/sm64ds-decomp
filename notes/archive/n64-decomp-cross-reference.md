@@ -485,17 +485,17 @@ So **CLPS surface-type values 6-9 are the four quicksand types.** Corroborated o
   `0x020d4080` `0x4000` is 4.0 fx12 — same hex values, opposite readings, ~40 instructions apart.
 
 ### 9.8 Names earned by this pass
-| Reloc adress | Func name |Relocs batch 2| batch 2 names|
+| Relocs address 1 | Probable Func names | Relocs batch 2 | batch 2 probable names
 |--------------|-----------|--------------|--------------|
-|`0x02037e58` | `CLPS::GetSlipperiness` ·| `0x02037e38` | `CLPS::GetSurfaceType` ·|
-|[ov002](../../config/arm9/overlays/ov002/symbols.txt):`0x020f02c8` | `GetSlideAccelForClass` ·| `0x020f030c` | `GetSlideLossFactorForClass` ·|
-|`0x020f035c` | `FloorIsSlope` ·| `0x020c031c` | `Player::GetFloorClass` ·|
-|`0x020c04e0` | `Player::ApplySlopeAccel` ·| `0x020c06fc` | `Player::UpdateSliding` ·|
-|`0x020bf56c` | `Player::GetSlopeDecelCoef` ·| `0x020c16ec` | `Player::SetFloorSurfaceInfo` ·|
-|`0x020d4d88` | `Player::UpdateGroundSpeed` ·| `0x020d3b9c` | `Player::UpdateWalkingSpeed` ·|
-|`0x020d45c0` | `Player::Walk_UpdateRunDustFx` ·| `0x020d413c` | `Player::Walk_UpdateBodyLean` ·|
-|`0x020bf30c` | `Player::ScaleSpeedByCharacter` ·| `0x020c29d4` | `Player::UpdateQuicksandFlag` ·|
-|[ov098](../../config/arm9/overlays/ov098/symbols.txt):`0x02139228` | `Crate::UpdateQuicksand` ·| [ov002](../../config/arm9/overlays/ov002/symbols.txt):`0x02110514`| `St_Crawl` state descriptor|
+|`0x02037e58` | `CLPS::GetSlipperiness` ·| [0x02037e38](../../src/func_02037e38.c) | `CLPS::GetSurfaceType` ·|
+|[ov002](../../config/arm9/overlays/ov002/symbols.txt):`0x020f02c8` | `GetSlideAccelForClass` ·| [0x020f030c](../../src/func_ov002_020f030c.c) | `GetSlideLossFactorForClass` ·|
+|`0x020f035c` | `FloorIsSlope` ·| [0x020c031c](../../src/actors/Player.cpp), ROM Ordinal 55 | `Player::GetFloorClass` ·|
+|`0x020c04e0` | `Player::ApplySlopeAccel` ·| [0x020c06fc](../../src/actors/Player.cpp), ROM Ordinal 61 | `Player::UpdateSliding` ·|
+|`0x020bf56c` | `Player::GetSlopeDecelCoef` ·| [0x020c16ec](../../src/actors/Player.cpp), ROM Ordinal 68 | `Player::SetFloorSurfaceInfo` ·|
+|`0x020d4d88` | `Player::UpdateGroundSpeed` ·| [0x020d3b9c](../../src/func_ov002_020d3b9c.c) | `Player::UpdateWalkingSpeed` ·|
+|`0x020d45c0` | `Player::Walk_UpdateRunDustFx` ·| [0x020d413c](../../src/func_ov002_020d413c.c) | `Player::Walk_UpdateBodyLean` ·|
+|`0x020bf30c` | `Player::ScaleSpeedByCharacter` ·| [0x020c29d4](../../src/actors/Player.cpp) (current [_ZN6Player19func_ov002_020c29d4Ev](../../config/tu_manifest.d/ov002/Player.json),ROM Ordinal 88)    | `Player::UpdateQuicksandFlag` ·|
+|[ov098](../../config/arm9/overlays/ov098/symbols.txt):`0x02139228` | `Crate::UpdateQuicksand` ·| [ov002](../../config/arm9/overlays/ov002/symbols.txt):[0x02110514](../../src/_ZN6Player14St_Crouch_MainEv.cpp), probable `_ZN6Player14St_Crouch_MainEv.cpp`, see [verified.tsv](../../symbols/verified.tsv)| `St_Crawl` state descriptor|
 
 **Player offsets recovered:**
 | Offset | Description |
@@ -504,15 +504,15 @@ So **CLPS surface-type values 6-9 are the four quicksand types.** Corroborated o
 | `+0x94` | moveYaw |
 | `+0x98` | forwardVel - `unit020b4aa4.cpp`'s [func_ov004_020b51f0](../../config/tu_manifest.d/ov004/unit020b4aa4.json) |
 | `+0xa8` | velY |
-| `+0x554/558/55c` | floorNormal xyz (fx12, already rescaled from KCL's 0x400) |
-| `+0x644` | floorHeight |
-| `+0x658` | floorClass |
-| `+0x65c/660/664/66c/670` | CLPS fields |
-| `+0x690` | quicksand Y offset |
-| `+0x69a` | floorAngle |
+| `+0x554/558/55c` | floorNormal xyz (fx12, already rescaled from KCL's 0x400) - [mFloorNormalX; mFloorNormalY; mFloorNormalZ](../../include/Player.h) |
+| `+0x644` | floorHeight - [mGroundY](../../include/Player.h) |
+| `+0x658` | floorClass - [mFloorClass](../../include/Player.h) |
+| `+0x65c/660/664/66c/670` | CLPS fields - [mClpsBits15_18; mClpsBits6_11; mSurfaceType; mGroundSoundType; mClpsWord1Lo](../../include/Player.h) |
+| `+0x690` | quicksand Y offset - [unk_690](../../include/Player.h) |
+| `+0x69a` | floorAngle - [mFloorAngle](../../include/Player.h) |
 | `+0x69c` | slide-yaw delta - [mAngleYSpeed](../../include/Player.h) |
-| `+0x6ba` | quicksandDepth |
-| `+0x6d2` | intendedYaw
+| `+0x6ba` | quicksandDepth - [unk_6ba](../../include/Player.h) |
+| `+0x6d2` | intendedYaw - [mDesiredAngleY](../../include/Player.h) |
 
 ---
 
@@ -536,13 +536,13 @@ So **CLPS surface-type values 6-9 are the four quicksand types.** Corroborated o
 ## 10. On structure (the original question)
 
 **Do not restructure `src/` to mirror the N64 tree.** The flat one-function-per-file layout is
-*forced*, not conventional: `tools/eligible.py` rule 1 rejects any object with more than one
-`.text` section (mwccarm emits one per function), `tools/enroll.py` can only emit one address range
+*forced*, not conventional: [tools/eligible.py](../../tools/eligible.py) rule 1 rejects any object with more than one
+`.text` section (mwccarm emits one per function), [tools/enroll.py](../../tools/enroll.py) can only emit one address range
 per file, and `delinks.txt` carves exactly one contiguous range per entry. Merged TUs fail
 **silently** — the extra functions fall back to ROM bytes and the build still verifies green
-(`tools/layout_check.py`). `notes/rom-build.md:326` already records this.
+([tools/layout_check.py](../../tools/layout_check.py)). [notes/rom-build.md](../../notes/rom-build.md):[326](https://github.com/tangosdev/sm64ds-decomp/blob/main/notes/rom-build.md?plain=1#L326) already records this.
 
 N64's transferable asset is not its directory layout. It is the discipline that the whole artifact
 must reproduce from a clean clone, plus an honest marker for code that does not match. Subsystem
 grouping here should be *logical* (a generated index, never committed while `src/` is flat — see
-`tools/srcpath.py`), and the grouping axis is module/overlay, not N64 subsystem.
+[tools/srcpath.py](../../tools/srcpath.py)), and the grouping axis is module/overlay, not N64 subsystem.
