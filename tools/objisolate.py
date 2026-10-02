@@ -127,7 +127,7 @@ def rename_undefined_symbols(raw, aliases):
 
 
 def rewrite_symbol_bindings(raw, policies):
-    """Rewrite exact defined-symbol bindings in place, preserving every other bit."""
+    """Rewrite bindings and the local-symbol boundary without reordering symbols."""
     requested = dict(policies or {})
     if not requested:
         return bytes(raw), {"rewritten": [], "error": None}
@@ -162,6 +162,21 @@ def rewrite_symbol_bindings(raw, policies):
         rows.append({"symbolIndex": index, "symbol": name,
                      "from": policy[0], "to": policy[1]})
     check = list(ELFFile(io.BytesIO(bytes(out))).get_section_by_name(".symtab").iter_symbols())
+    first_nonlocal = next((index for index, sym in enumerate(check)
+                           if sym["st_info"]["bind"] != "STB_LOCAL"), len(check))
+    if any(sym["st_info"]["bind"] == "STB_LOCAL"
+           for sym in check[first_nonlocal:]):
+        return None, {"rewritten": rows, "error":
+                      "binding rewrite would leave a local symbol after a nonlocal; "
+                      "symbol reordering is not supported"}
+    # ELF requires all locals to precede every nonlocal, with sh_info naming
+    # the first nonlocal. Promoting a suffix of locals changes that boundary
+    # even though every symbol index and relocation remains untouched.
+    import struct
+    symtab_index = next(index for index, section in enumerate(elf.iter_sections())
+                        if section.name == ".symtab")
+    struct.pack_into("<I" if elf.little_endian else ">I", out,
+                     _shdr_offset(elf, symtab_index) + 28, first_nonlocal)
     for row in rows:
         if check[row["symbolIndex"]]["st_info"]["bind"] != row["to"]:
             return None, {"rewritten": rows, "error":
