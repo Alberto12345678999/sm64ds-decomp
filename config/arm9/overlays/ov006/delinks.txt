@@ -28,6 +28,10 @@ src/actors/unit020cd744.cpp:
     complete
     .text start:0x020cd744 end:0x020cf2fc
 
+src/func_ov006_020cf2fc.c:
+    complete
+    .text start:0x020cf2fc end:0x020cf758
+
 src/func_ov006_020cf758.cpp:
     complete
     .text start:0x020cf758 end:0x020cf790

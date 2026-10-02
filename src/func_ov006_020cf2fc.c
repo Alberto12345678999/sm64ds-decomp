@@ -1,19 +1,14 @@
 // @symbol func_ov006_020cf2fc
-/* recovered: shared minigame 3D code (the block before dScMgAmida_c): loads the object's placement and scale matrices, then draws its 4x4 vertex patch (positions at +0x5c, packed normals at +0x2dc) as three triangle strips per face, the back face first with negated normals. */
-// NONMATCHING: div 46 of 279 words. mwccarm 2004/b56, --module ov006,
-// @ 0x020cf2fc size 0x45c. Size, frame, stack webs and register colouring all match;
-// the residue is instruction scheduling only: in the first (back-face) strip loop the
-// vertex word loads issue z, x, then y late with the pointer step beside the y load
-// (ROM: x, y, z together, step after), and in the second loop the vertex pointer step
-// and the row counter step trade places and the inner compare sits earlier.
-// History: first drafted from nearmiss/db.jsonl (stored divergence 164) and landed
-// 2026-09-14 under Tango's ruling that functionally-equivalent C drafts live on main
-// with an honest banner. Rewritten 2026-10-02 with per-row vertex and normal pointers
-// declared ahead of the strip counter, which turns the stack constant webs and the
-// callee-saved colouring into the ROM's without any helper locals (164 -> 46).
-// Counts as decompiled, not matched; tools/enroll.py leaves it out of the ROM build,
-// which keeps the original bytes for this range. A byte-exact match replaces this file
-// and drops the banner.
+/* Shared minigame 3D code (the block before dScMgAmida_c): loads the object's
+ * placement and scale matrices, then draws its 4x4 vertex patch (positions at
+ * +0x5c, packed normals at +0x2dc) as three triangle strips per face, the back
+ * face first with negated normals.
+ *
+ * Provenance: first drafted from nearmiss/db.jsonl (divergence 164) and kept on
+ * main as a decompiled-not-matched draft; rewritten 2026-10-02 with per-row
+ * vertex and normal pointers declared ahead of the strip counter (164 -> 46),
+ * then matched the same day under mwccarm 2004/b56 by stepping each normal
+ * pointer in its own statement instead of inside the REG_NORMAL write. */
 typedef volatile unsigned int vu32;
 typedef unsigned short u16;
 typedef short s16;
@@ -112,11 +107,13 @@ void func_ov006_020cf2fc(char *obj)
     for (k = 0; k < 4; k++)
     {
       REG_TEXCOORD = data_ov006_0212e0b0[i * 4 + k];
-      REG_NORMAL = -*n0++ & 0x3fffffff;
+      REG_NORMAL = -*n0 & 0x3fffffff;
+      n0++;
       SEND_VTX(v0);
       v0++;
       REG_TEXCOORD = data_ov006_0212e0b0[(i + 1) * 4 + k];
-      REG_NORMAL = -*n1++ & 0x3fffffff;
+      REG_NORMAL = -*n1 & 0x3fffffff;
+      n1++;
       SEND_VTX(v1);
       v1++;
     }
@@ -135,11 +132,13 @@ void func_ov006_020cf2fc(char *obj)
     for (k = 0; k < 4; k++)
     {
       REG_TEXCOORD = data_ov006_0212e0b0[(i + 1) * 4 + k];
-      REG_NORMAL = *n1++;
+      REG_NORMAL = *n1;
+      n1++;
       SEND_VTX(v1);
       v1++;
       REG_TEXCOORD = data_ov006_0212e0b0[i * 4 + k];
-      REG_NORMAL = *n0++;
+      REG_NORMAL = *n0;
+      n0++;
       SEND_VTX(v0);
       v0++;
     }
