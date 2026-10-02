@@ -147,7 +147,7 @@ fBase_c > dBase_c > dScene_c
 **The shared ov004 runtime:**
 - `src/actors/dMgPsOpt_c.cpp`
 - `src/actors/dMgState_c.cpp`
-- `src/minigames/d_s_mg_base.cpp` (dScMgBase_c and the helpers beside it, 0x020ad660..0x020b2220)
+- `src/minigames/d_s_mg_base.cpp` (dScMgBase_c and the helpers beside it, 0x020ad660..0x020b2c58)
 
 ## Names: what is known
 

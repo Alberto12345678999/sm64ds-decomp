@@ -77,8 +77,8 @@ work in it (a global write, a function call) and mwcc does *not* inline it:
 dScMgD3DBase_c's own D1 in the ROM (0x38 bytes) calls `_ZN11dScMgBase_cD2Ev` as
 a real `bl`. Compiling dScMgD3DBase_c's destructor against an INLINE-defined
 dScMgBase_c dtor produced exactly 0x84 bytes and `999 word(s) differ`. So the
-destructor is declared here and defined for real in src/_ZN11dScMgBase_cD1Ev.cpp
-and .../_D0Ev.cpp. The class's own `operator delete` copy is a separate matter
+destructor is declared here and defined for real, once, in
+src/minigames/d_s_mg_base.cpp, which emits _ZN11dScMgBase_cD2Ev, D0 and D1 from it. The class's own `operator delete` copy is a separate matter
 and must stay: mwcc only inlines a D0 route through the class itself or its
 immediate base, and for dScMgBase_c's children that immediate base is
 dScMgBase_c, not dScene_c.
@@ -390,7 +390,7 @@ ever reads or writes them, so they are not modelled as a field.
 __destroy_arr / [func_ov006_020d116c](../src/func_ov006_020d116c.c) / NullDestructor_0203d47c: the same
 __destroy_arr(p, count, elemSize, dtor) idiom dScMgBase_c's own D1/D0 use
 for touchIcon_0f4 (see dScMgBase_c.h's file banner and
-src/_ZN11dScMgBase_cD1Ev.cpp) -- declared here, not per-destructor-file,
+_ZN11dScMgBase_cD1Ev in src/minigames/d_s_mg_base.cpp) -- declared here, not per-destructor-file,
 matching dScMgHanachan_c.h's own placement.
 
 ---
