@@ -557,7 +557,7 @@ banner-blink logic).
 
 ## The minigame camera, and the base fields it explains
 
-`src/Camera_UpdateMatrices.c` is the [ov006](../config/arm9/overlays/ov006/symbols.txt) routine every 3D minigame scene
+`Camera_UpdateMatrices` (in `src/actors/unit020bfec0.cpp`) is the [ov006](../config/arm9/overlays/ov006/symbols.txt) routine every 3D minigame scene
 calls once a frame, and the local struct it already carries is the whole story:
 
 ```cpp
