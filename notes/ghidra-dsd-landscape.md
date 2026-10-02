@@ -337,7 +337,7 @@ size 0x24). The rival at that address is [func_ov007_020aed98](../src/func_ov007
 `[[enemy-subclass-census]]`.
 
 **G5.7 — The other 75 ARE the phantom-reference worklist, and this explains its cause.**
-[high] [func_ov006_02115b0c](../src/func_ov006_02115b0c.c):59 declares:
+[high] [func_ov006_02115b0c](../src/actors/dScMgSmartball_c.cpp) declared:
 
 ```c
 extern void *func_020adc74(void *p);
