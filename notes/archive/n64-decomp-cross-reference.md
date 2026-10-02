@@ -21,7 +21,7 @@ Every claim below is graded:
   mangled symbol names the binary itself spells.
 - **T2** — exists only in AI-authored source here. Proves nothing on its own.
 
-Provenance coverage when this was written: `config/match_provenance.jsonl` had 301 records for
+Provenance coverage when this was written: [config/match_provenance.jsonl](../../config/match_provenance.jsonl) had 301 records for
 ~11,089 `src/` files (288 `kind:"ai"`, 12 `kind:"human"`). **Absence of a record means unknown.**
 
 Note the distinction that caused an error mid-investigation: provenance measures *attribution*,
@@ -134,7 +134,7 @@ cross-check. Low confidence on its own (round numbers), but useful.
 | Matrices | 4×4 f32 | 4×3 Fix12 (NitroSDK G3) |
 | sqrt / divide / sin / cos | software tables | DS hardware DIV/SQRT MMIO, BIOS `swi 0x0d`, `FX_SinCosTable_` |
 
-`find_floor` equivalent is `MeshCollider::DetectClsn(RaycastGround&)` @ **[0x01ffd3f8](../../src/_ZN7dBgW_Kc10DetectClsnER9dBgCh_Gnd.cpp)** (ITCM, 0x498 bytes).
+[`find_floor` equivalent](https://github.com/n64decomp/sm64/blob/master/src/engine/surface_collision.c#L513) is `MeshCollider::DetectClsn(RaycastGround&)` @ **[0x01ffd3f8](../../src/_ZN7dBgW_Kc10DetectClsnER9dBgCh_Gnd.cpp)** (ITCM, 0x498 bytes).
 
 ---
 
@@ -153,7 +153,7 @@ Naming in those areas is ROM-derived (`BgCh`, `CLPS`, `KCL_File`, `SurfaceInfo`,
 `SphereClsn`, `RaycastGround`, `Matrix4x3`) — correct provenance. These subsystems are simply
 **under-decompiled**, which is itself a clean, useful negative result.
 
-**Unverified claim, flagged not confirmed:** one agent reported that `notes/actor-naming.md`
+**Unverified claim, flagged not confirmed:** one agent reported that [notes/actor-naming.md](../../notes/actor-naming.md)
 instructs contributors to open a clone of `n64decomp/sm64` while drafting matches. If true that is
 a documented contamination vector worth a policy note. *This was not verified — check it.*
 
@@ -172,9 +172,9 @@ a documented contamination vector worth a policy note. *This was not verified �
    agent that pattern-matches N64 float constants against DS immediates will get these wrong.
 
 3. **The `0x14` false lead.** `BgCh::ShouldPassThroughImpl` (0x02039488) really does contain
-   `cmp r0, #0x14` @ 0x020395a0, and N64 `SURFACE_SLIPPERY` really is 0x14. **Coincidence.** The DS
+   `cmp r0, #0x14` @ 0x020395a0, and N64 [SURFACE_SLIPPERY](https://github.com/n64decomp/sm64/blob/master/include/surface_terrains.h#L16) really is 0x14. **Coincidence.** The DS
    comparison gates pass-through, not slipperiness; N64's pass-through analogue is
-   `SURFACE_VANISH_CAP_WALLS = 0x7B`, unrepresentable in 5 bits. With a 5-bit field and ~9 observed
+   [SURFACE_VANISH_CAP_WALLS = `0x7B`](https://github.com/n64decomp/sm64/blob/master/include/surface_terrains.h#L62) — unrepresentable in 5 bits. With a 5-bit field and ~9 observed
    values, collision with some low N64 ID is near-certain.
 
 4. **[src/AngleDiff.c](../../src/AngleDiff.c)** has no header comment, no `@symbol` line, no matching claim — unlike every
@@ -333,11 +333,11 @@ All DS names below confirmed as live mangled symbols (`_ZTV*`, `_ZN*D1Ev`) in
 1. **`Bookend` → `BookShot`.** The community actor-ID label and the ROM-embedded mangled class name
    disagree. `src/d_a_book_killer_book.c` has `VT0=_ZTV8BookShot`. Trust the mangled name.
 2. **`UkikiThief` is not a class.** `UkikiThief_Spawn` ([ov030](../../config/arm9/overlays/ov030/symbols.txt):0x02114638) instantiates
-   `_ZTV13RollingLogTtm` — identical-code folding. `notes/actor-naming.md:31-33` already warns
+   `_ZTV13RollingLogTtm` — identical-code folding. [notes/actor-naming.md](../actor-naming.md):[31](https://github.com/tangosdev/sm64ds-decomp/blob/main/notes/actor-naming.md?plain=1#L31)-[32](https://github.com/tangosdev/sm64ds-decomp/blob/main/notes/actor-naming.md?plain=1#L32) already warns
    that shared functions are "claimed by the lowest actor id." Re-derive its real behavior; do not
    take `RollingLogTtm` as its semantic identity.
 
-Combined with N64's field vocabulary (`oPosX`/`oAction`/…) and the hitbox constants in
+Combined with N64's field vocabulary ([oPosX](https://github.com/n64decomp/sm64/blob/master/include/object_fields.h#L60)/[oAction](https://github.com/n64decomp/sm64/blob/master/include/object_fields.h#L106)/…) and the hitbox constants in
 `sm64/src/game/behaviors/*.inc.c`, this is directly usable when drafting DS `Behavior()` /
 `InitResources()` or renaming `func_ov###_########` placeholders for these actors.
 
@@ -380,7 +380,7 @@ DS has 6 class values to N64's 4:
 | 4 | cos5° `0xFF0` | 5.3 | 10.0 | 0.98 | 0.1 | [CLASS_VERY_SLIPPERY](https://github.com/n64decomp/sm64/blob/master/include/surface_terrains.h#L159) |
 | 5 | cos1° `0xFFF` | 5.3 | 10.0 | 0.98 | 0.1 | **[TERRAIN_SLIDE](https://github.com/n64decomp/sm64/blob/master/include/surface_terrains.h#L185), promoted to a class** |
 
-Class 5 is not a DS invention. N64's slide rule is [normal.y < 0.9998477f](https://github.com/n64decomp/sm64/blob/master/src/game/mario.c#L577) → force VERY_SLIPPERY;
+Class 5 is not a DS invention. N64's slide rule is [normal.y < 0.9998477f](https://github.com/n64decomp/sm64/blob/master/src/game/mario.c#L577) → force `VERY_SLIPPERY`;
 `0.9998477 × 4096 = 4095.4` → truncates to **4095 = 0xFFF**, and the accel is 5.3 on both sides.
 DS turned N64's special case in front of the switch into a first-class enum value.
 
@@ -398,20 +398,20 @@ all 103 overlays plus arm9. Slope accel pool at `0x20c067c`/`0x80`/`0x84` = `0x5
 
 ### 9.3 Slope accel and sliding
 
-`Player::ApplySlopeAccel` @ `0x020c04e0` is `apply_slope_accel` line for line — steepness via
+`Player::ApplySlopeAccel` @ `0x020c04e0` is [apply_slope_accel](https://github.com/n64decomp/sm64/blob/master/src/game/mario_actions_moving.c#L283) line for line — steepness via
 `Vec3_HorzLen(floorNormal)`, `AngleDiff(floorAngle, moveYaw)`, the slope gate, the 4-way switch,
 the `±0x4000` sign flip. One DS addition: accel is scaled by `clamp(forwardVel − 19.0, 1.0, 1.5)`,
 a no-op at speeds ≤ 20.
 
-`Player::UpdateSliding` @ `0x020c06fc` fuses N64's `update_sliding` + `update_sliding_angle`.
-Exact carries: the `0x52` lossFactor term (= N64's `0.02f`), the `100.0` forward-vel cap, the
-`!FloorIsSlope && |vel| < stopSpeed → vel = 0` stop test. Same caller set as N64
+`Player::UpdateSliding` @ `0x020c06fc` fuses N64's [update_sliding](https://github.com/n64decomp/sm64/blob/master/src/game/mario_actions_moving.c#L219) + [update_sliding_angle](https://github.com/n64decomp/sm64/blob/master/src/game/mario_actions_moving.c#L159).
+Exact carries: the[ `0x52` lossFactor term](https://github.com/n64decomp/sm64/blob/master/src/game/mario_actions_moving.c#L159) (= [N64's `0.02f`](https://github.com/n64decomp/sm64/blob/master/src/game/mario_actions_moving.c#L239)), [the `100.0` forward-vel cap](https://github.com/n64decomp/sm64/blob/master/src/game/mario_actions_moving.c#L210), the
+[`(!mario_floor_is_slope(m) && m->forwardVel * m->forwardVel < stopSpeed * stopSpeed → vel = 0` stop test](https://github.com/n64decomp/sm64/blob/master/src/game/mario_actions_moving.c#L275). Same caller set as N64
 (butt slide, stomach slide, slide kick, crouch, thrown, land).
 
 **Two N64 quirks were deliberately removed:**
 1. **The 10k-glitch guard is gone.** No `if (forward < 0.0f && forwardVel >= 0.0f) forward *= 0.5f + 0.5f*forwardVel/100.0f`. DS uses `forward` raw.
 2. **The trig-derivative rotation hack is gone** — N64's asymmetric `slideVelX/Z` cross-update plus
-   renormalize is replaced by a direct angular delta at `+0x69c` (`sideward/16`, or bucketed by
+   renormalize is replaced by a [direct angular delta at `+0x69c`](../../include/Player.h)([l:295](https://github.com/tangosdev/sm64ds-decomp/blob/main/include/Player.h#L295)) (`sideward/16`, or bucketed by
    stick magnitude up to ≈4.2°/frame). N64's effective ≈2.86°/frame sits inside DS's range.
 
 ### 9.4 Deceleration — the table is N64's, halved
@@ -449,17 +449,17 @@ then:   ApplySlopeAccel()
 
 N64 reaches 32.0 in ~45 frames on a decaying curve; DS reaches 36.0 in 36 frames on a straight
 ramp. DS-only machinery with no N64 counterpart: the 1.2×/rate-30 dash boost, a per-character
-speed factor table @ `0x020FF170`, a 30-frame character-1 ramp, a 24-frame tightening turn radius.
+speed factor table [@ 0x020FF170](../../config/arm9/overlays/ov002/symbols.txt)(`data_ov002_020ff170`), a 30-frame character-1 ramp, a 24-frame tightening turn radius.
 
-Quicksand is the exception — **carried over verbatim**: `if (depth > 10.0) target *= 6.25/depth`
-at `0x020d3dcc`–`0x020d3de0`, threshold and factor both exact.
+Quicksand is the exception — **carried over verbatim**: [`if (m->quicksandDepth > 10.0f) targetSpeed *= 6.25/m->quicksandDepth`
+at](https://github.com/n64decomp/sm64/blob/master/src/game/mario_actions_moving.c#L447) `0x020d3dcc`–`0x020d3de0`, threshold and factor both exact.
 
 ### 9.6 The [ov098](../../config/arm9/overlays/ov098/symbols.txt) table is quicksand depth, not speed
 
 Earlier notes described the [ov098](../../config/arm9/overlays/ov098/symbols.txt) jump table (30/45/60/100 → `+0x5f0`) as a surface-type→speed
 table. **It is quicksand sink depth.** [ov098](../../config/arm9/overlays/ov098/symbols.txt) is the Shifting Sand Land object overlay;
-[func_ov098_02139228](../../src/actors/daObjBlockS_c.cpp) = `Crate::UpdateQuicksand`. `+0x5f0` is target sink depth, `+0x5f4` current,
-approached at 0.5/frame. Render position is built as `pos.y − this[0x5f4]` — verbatim N64
+[func_ov098_02139228](../../src/actors/daObjBlockS_c.cpp) = `Crate::UpdateQuicksand`. `+0x5f0` is target sink depth, `+0x5f4`([mClsnYOffset](../../include/daObjBlockS_c.h)) current,
+approached at 0.5/frame. Render position is built as [`((int *)&t)[1] = t.y - mClsnYOffset` at](../../src/actors/daObjBlockS_c.cpp)(https://github.com/tangosdev/sm64ds-decomp/blob/main/src/actors/daObjBlockS_c.cpp#L1051) — verbatim N64
 `mario.c`:[1552](https://github.com/n64decomp/sm64/blob/master/src/game/mario.c#L1552) `o->header.gfx.pos[1] -= m->quicksandDepth`.
 
 | tier | N64 max | DS max (CLPS type) |
@@ -470,7 +470,7 @@ approached at 0.5/frame. Render position is built as `pos.y − this[0x5f4]` —
 | deep → terminal | 160.0 → [ACT_QUICKSAND_DEATH](https://github.com/n64decomp/sm64/blob/master/include/sm64.h#L350) | 100.0 (type 9) → `Crate_SetState(6)` |
 
 So **CLPS surface-type values 6-9 are the four quicksand types.** Corroborated on the `Player` side:
-`0x020c2ab8` clears the quicksand flag when type is outside `6..9`.
+`0x020c2ab8`([mSurfaceType](../../include/Player.h)) clears the quicksand flag when type is outside `6..9`.
 
 ### 9.7 Search traps confirmed the hard way
 
@@ -485,22 +485,34 @@ So **CLPS surface-type values 6-9 are the four quicksand types.** Corroborated o
   `0x020d4080` `0x4000` is 4.0 fx12 — same hex values, opposite readings, ~40 instructions apart.
 
 ### 9.8 Names earned by this pass
+| Reloc adress | Func name |Relocs batch 2| batch 2 names|
+|--------------|-----------|--------------|--------------|
+|`0x02037e58` | `CLPS::GetSlipperiness` ·| `0x02037e38` | `CLPS::GetSurfaceType` ·|
+|[ov002](../../config/arm9/overlays/ov002/symbols.txt):`0x020f02c8` | `GetSlideAccelForClass` ·| `0x020f030c` | `GetSlideLossFactorForClass` ·|
+|`0x020f035c` | `FloorIsSlope` ·| `0x020c031c` | `Player::GetFloorClass` ·|
+|`0x020c04e0` | `Player::ApplySlopeAccel` ·| `0x020c06fc` | `Player::UpdateSliding` ·|
+|`0x020bf56c` | `Player::GetSlopeDecelCoef` ·| `0x020c16ec` | `Player::SetFloorSurfaceInfo` ·|
+|`0x020d4d88` | `Player::UpdateGroundSpeed` ·| `0x020d3b9c` | `Player::UpdateWalkingSpeed` ·|
+|`0x020d45c0` | `Player::Walk_UpdateRunDustFx` ·| `0x020d413c` | `Player::Walk_UpdateBodyLean` ·|
+|`0x020bf30c` | `Player::ScaleSpeedByCharacter` ·| `0x020c29d4` | `Player::UpdateQuicksandFlag` ·|
+|[ov098](../../config/arm9/overlays/ov098/symbols.txt):`0x02139228` | `Crate::UpdateQuicksand` ·| [ov002](../../config/arm9/overlays/ov002/symbols.txt):`0x02110514`| `St_Crawl` state descriptor|
 
-`0x02037e58` `CLPS::GetSlipperiness` · `0x02037e38` `CLPS::GetSurfaceType` ·
-[ov002](../../config/arm9/overlays/ov002/symbols.txt):`0x020f02c8` `GetSlideAccelForClass` · `0x020f030c` `GetSlideLossFactorForClass` ·
-`0x020f035c` `FloorIsSlope` · `0x020c031c` `Player::GetFloorClass` ·
-`0x020c04e0` `Player::ApplySlopeAccel` · `0x020c06fc` `Player::UpdateSliding` ·
-`0x020bf56c` `Player::GetSlopeDecelCoef` · `0x020c16ec` `Player::SetFloorSurfaceInfo` ·
-`0x020d4d88` `Player::UpdateGroundSpeed` · `0x020d3b9c` `Player::UpdateWalkingSpeed` ·
-`0x020d45c0` `Player::Walk_UpdateRunDustFx` · `0x020d413c` `Player::Walk_UpdateBodyLean` ·
-`0x020bf30c` `Player::ScaleSpeedByCharacter` · `0x020c29d4` `Player::UpdateQuicksandFlag` ·
-[ov098](../../config/arm9/overlays/ov098/symbols.txt):`0x02139228` `Crate::UpdateQuicksand` · [ov002](../../config/arm9/overlays/ov002/symbols.txt):`0x02110514` `St_Crawl` state descriptor
-
-**Player offsets recovered:** `+0x8e` visual yaw · `+0x94` moveYaw · `+0x98` forwardVel ·
-`+0xa8` velY · `+0x554/558/55c` floorNormal xyz (fx12, already rescaled from KCL's 0x400) ·
-`+0x644` floorHeight · `+0x658` floorClass · `+0x65c/660/664/66c/670` CLPS fields ·
-`+0x690` quicksand Y offset · `+0x69a` floorAngle · `+0x69c` slide-yaw delta ·
-`+0x6ba` quicksandDepth · `+0x6d2` intendedYaw
+**Player offsets recovered:**
+| Offset | Description |
+|--------|-------------|
+| `+0x8e` | visual yaw |
+| `+0x94` | moveYaw |
+| `+0x98` | forwardVel - `unit020b4aa4.cpp`'s [func_ov004_020b51f0](../../config/tu_manifest.d/ov004/unit020b4aa4.json) |
+| `+0xa8` | velY |
+| `+0x554/558/55c` | floorNormal xyz (fx12, already rescaled from KCL's 0x400) |
+| `+0x644` | floorHeight |
+| `+0x658` | floorClass |
+| `+0x65c/660/664/66c/670` | CLPS fields |
+| `+0x690` | quicksand Y offset |
+| `+0x69a` | floorAngle |
+| `+0x69c` | slide-yaw delta - [mAngleYSpeed](../../include/Player.h) |
+| `+0x6ba` | quicksandDepth |
+| `+0x6d2` | intendedYaw
 
 ---
 
