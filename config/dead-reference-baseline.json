@@ -154,6 +154,10 @@
    "ref": "src_tu/actors/daObj_volcanoCannon_c.cpp"
   },
   {
+   "file": "notes/agents/handoffs/pr2868-source-repair-0920.md",
+   "ref": "include/BookShot.h"
+  },
+  {
    "file": "notes/agents/handoffs/promote-ov055-luigi-0923.md",
    "ref": "src/d_a_luigi.cpp"
   },
@@ -166,6 +170,38 @@
    "ref": "src/d_a_onms.cpp"
   },
   {
+   "file": "notes/agents/handoffs/shadowback-bookshot-0920.md",
+   "ref": "src/_ZN8BookShot13InitResourcesEv.cpp"
+  },
+  {
+   "file": "notes/agents/handoffs/shadowback-bookshot-0920.md",
+   "ref": "src/_ZN8BookShot8BehaviorEv.cpp"
+  },
+  {
+   "file": "notes/agents/handoffs/shadowback-bookshot-0920.md",
+   "ref": "src/func_ov020_02111418.cpp"
+  },
+  {
+   "file": "notes/agents/handoffs/shadowback-bookshot-0920.md",
+   "ref": "src/func_ov020_02111b28.cpp"
+  },
+  {
+   "file": "notes/agents/handoffs/shadowback-bookshot-0920.md",
+   "ref": "src/func_ov020_02111ee0.cpp"
+  },
+  {
+   "file": "notes/agents/handoffs/shadowback-bookshot-0920.md",
+   "ref": "src/func_ov020_02111fc4.cpp"
+  },
+  {
+   "file": "notes/agents/handoffs/shadowback-bookshot-0920.md",
+   "ref": "src/func_ov020_02112110.cpp"
+  },
+  {
+   "file": "notes/agents/handoffs/shadowback-bookshot-0920.md",
+   "ref": "src/func_ov020_0211216c.cpp"
+  },
+  {
    "file": "notes/archive/crack-loop-runbook.md",
    "ref": "notes/pret-idioms.md"
   },
@@ -176,6 +212,10 @@
   {
    "file": "notes/archive/n64-decomp-cross-reference.md",
    "ref": "include/trig_tables.inc.c"
+  },
+  {
+   "file": "notes/archive/n64-decomp-cross-reference.md",
+   "ref": "src/d_a_book_killer_book.c"
   },
   {
    "file": "notes/archive/n64-decomp-cross-reference.md",
@@ -448,10 +488,6 @@
   {
    "file": "notes/translation-unit-reconstruction-plan.md",
    "ref": "src/game/actors/d_a_holhei.cpp"
-  },
-  {
-   "file": "notes/tu-filename-reconstruction-pilot.md",
-   "ref": "src/BookShotSpawner_Spawn.c"
   },
   {
    "file": "notes/tu-filename-reconstruction-pilot.md",

@@ -15,6 +15,7 @@
  *     0x110 ModelAnim                  0x64    -> 0x174
  *     0x174 Model                      0x50    -> 0x1c4
  *     0x1c4 ShadowModel                0x28    -> 0x1ec
+ *     0x1ec Matrix4x3                  0x30    -> 0x21c
  *     0x21c dCcAcPos_c  0x40    -> 0x25c
  *     0x25c dBgCh_Actr               0x1bc   -> 0x418
  *
@@ -41,8 +42,10 @@ struct daBook_c : dEnemyBase_c {
     ModelAnim                    mModelAnim;            /* 0x110 */
     Model                        mModel;                /* 0x174 */
     ShadowModel                  mShadowModel;          /* 0x1c4 */
-    u8                           unk_1ec;               /* 0x1ec */
-    u8  pad_1ed[0x2f];
+    /* Drop-shadow matrix: InitResources copies IDENTITY_MATRIX4X3 here and
+       func_ov020_0211216c writes the position, scaled by 8, into its
+       translation row before handing it to DropShadowRadHeight. */
+    Matrix4x3                    mShadowMat;            /* 0x1ec */
     dCcAcPos_c    mdCcAcPos_c; /* 0x21c */
     dBgCh_Actr                 mWithMeshClsn;         /* 0x25c */
     s32                          unk_418;               /* 0x418 */
@@ -53,9 +56,8 @@ struct daBook_c : dEnemyBase_c {
     s32                          unk_42c;               /* 0x42c */
     s32                          unk_430;               /* 0x430 */
     s32                          unk_434;               /* 0x434 */
-    s32                          unk_438;               /* 0x438 */
-    s32                          unk_43c;               /* 0x43c */
-    s32                          unk_440;               /* 0x440 */
+    /* Cylinder offset handed to dCcAcPos_c::Init and SetPosRelativeToActor. */
+    Vector3                      mClsnOffset;           /* 0x438 */
     u8  pad_444[0x8];
     s32                          unk_44c;               /* 0x44c */
     u8                           unk_450;               /* 0x450 */
