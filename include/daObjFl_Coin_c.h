@@ -18,7 +18,9 @@ struct daObjFl_Coin_c : dActor_c {
     s8 unk_0d6;
     u8 pad_0d7;
 
-    virtual ~daObjFl_Coin_c(); /* slots 16 (D1), 17 (D0) */
+    /* Inline so this TU emits D1 then D0. An out-of-line body emits D2, D0, D1,
+     * and the cartridge's run is D1 at 0x02118bec then D0 at 0x02118c10. */
+    virtual ~daObjFl_Coin_c() {}
 
     virtual s32 InitResources(); /* slot 0 */
     virtual s32 Behavior();      /* slot 6 */

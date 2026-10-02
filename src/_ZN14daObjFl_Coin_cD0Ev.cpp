@@ -13,6 +13,9 @@
  */
 #include "daObjFl_Coin_c.h"
 
-daObjFl_Coin_c::~daObjFl_Coin_c()
+/* The destructor is inline in the header. This call is what asks for D0.
+ * objisolate keeps the variant this file is bound to. */
+void daObjFl_Coin_c_EmitDeletingDestructor(daObjFl_Coin_c *coin)
 {
+    delete coin;
 }

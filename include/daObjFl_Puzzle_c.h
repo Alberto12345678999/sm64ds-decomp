@@ -36,6 +36,21 @@ struct daObjFl_Puzzle_c : dBgActor_c {
     int CleanupResources();
     int Behavior();
     int Render();
+
+    /* State-table targets and the helpers they call. The address stays in the
+     * name; symbols.txt carries the mangled spelling. Not virtual: the table
+     * at 0x0211c904 is a pointer-to-member array, not extra vtable slots. */
+    void func_ov064_02118c48();
+    void func_ov064_02118cd4();
+    void func_ov064_02118cec();
+    void func_ov064_02118d08();
+    void func_ov064_02118d20();
+    void func_ov064_02118d3c();
+    void func_ov064_02118da0();
+    void func_ov064_02118e24(int a1, int a2, int a3);
+    void func_ov064_02118ee4();
+    void func_ov064_02118fa4();
+    void func_ov064_02119010();
 };
 
 #ifndef SM64DS_PLATFORM_PC

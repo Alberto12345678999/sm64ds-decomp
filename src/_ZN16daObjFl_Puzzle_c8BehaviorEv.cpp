@@ -14,7 +14,7 @@ extern "C" int _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(void* c, Fix12i a, Fi
 extern "C" void func_ov064_02118fa4(void* c);
 
 int daObjFl_Puzzle_c::Behavior() {
-    func_ov064_02118ee4(this);
+    ::func_ov064_02118ee4(this);
     (this->*data_ov064_0211c904[mState].pmf)();
     char* cc = (char*)this;
     char* p = 0;
@@ -25,8 +25,8 @@ int daObjFl_Puzzle_c::Behavior() {
         u16* ctr = &mMoveTimer;
         *ctr = *ctr + 1;
     }
-    func_ov064_02119010(cc);
+    ::func_ov064_02119010(cc);
     if (_ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(cc, 0, 0) != 0)
-        func_ov064_02118fa4(cc);
+        ::func_ov064_02118fa4(cc);
     return 1;
 }

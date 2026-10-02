@@ -26,8 +26,8 @@ int daObjFl_Puzzle_c::InitResources()
     mType = param1 & 0xf;
     _ZN9ModelBase7SetFileEP8BMD_Fileii(&mModel,
         _ZN5Model8LoadFileER13SharedFilePtr(*data_ov064_0211adc8[mType]), 1, -1);
-    func_ov064_02119010(((char*)this));
-    func_ov064_02118fa4(((char*)this));
+    ::func_ov064_02119010(((char*)this));
+    ::func_ov064_02118fa4(((char*)this));
     _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
         &mMeshCollider,
         _ZN7dBgW_Kc8LoadFileER13SharedFilePtr(data_ov064_0211c800),
