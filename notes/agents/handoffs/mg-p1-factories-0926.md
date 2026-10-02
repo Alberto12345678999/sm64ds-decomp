@@ -37,7 +37,7 @@ Each `new` form was compiled with `tools/match.py`'s pinned `2004/b56` flags (C+
 | `src/d_s_mg_pachinko.c` | applied | 0x34, identical | none | linked vptr word `0x0213d9cc`, as before |
 | `src/d_s_mg_panel.c` | applied | 0x34, identical | none | linked vptr word `0x0213e24c`, as before |
 | `src/d_s_mg_slot3.c` | kept | 0x50 against 0x60 | `+0x04` `ldr r0, [pc, #0x40]` against `#0x34` | no [func_ov006_020c221c](../../../src/func_ov006_020c221c.c) at 0x4f38 |
-| `src/d_s_mg_snowball.cpp` | kept | 0x60 against 0x34 | `+0x00` `stmdb sp!, {lr}` against `push {r4, lr}` | `new` inlines a constructor (base C2, `SysTracker`, `Model`) where the ROM calls [func_ov006_021295ac](../../../src/func_ov006_021295ac.cpp) |
+| `src/d_s_mg_snowball.cpp` | kept | 0x60 against 0x34 | `+0x00` `stmdb sp!, {lr}` against `push {r4, lr}` | `new` inlines a constructor (base C2, `SysTracker`, `Model`) where the ROM calls [func_ov006_021295ac](../../../src/actors/dScMgSnowball_c.cpp) |
 | `src/d_s_mg_teresa.c` | applied | 0x34, identical | none | linked vptr word `0x0213fa0c`, as before |
 | `src/minigames/d_s_mg_roulette.cpp` | kept | 0x4c against 0xac | `+0x00` `push {r4, r5, lr}` against `push {r4, lr}` | no table, racer-array or `Model` constructors |
 | `src/minigames/d_s_mg_slot1.cpp` | kept | 0x58 against 0x88 | `+0x04` `ldr r0, [pc, #0x5c]` against `#0x38` | the base C2 and the three vptr stores come out in the ROM's order; the calls [func_ov006_0210c2b0](../../../src/actors/dScMgSlot1_c.cpp) (0x4684, 0x4690) and [func_ov006_0210c208](../../../src/actors/dScMgSlot1_c.cpp) (0x469c) do not |
@@ -50,7 +50,7 @@ What each kept header would need (headers are reserved elsewhere; none was edite
 - Slot3: a typed member at 0x4f38 constructed by [func_ov006_020c221c](../../../src/func_ov006_020c221c.c).
 - Roulette: typed `mTable` ([func_ov006_020c1d80](../../../src/func_ov006_020c1d80.c)), `mArray` (five elements of 0x34, constructor [func_ov006_0210a4ac](../../../src/minigames/d_s_mg_roulette.cpp), destructor [func_ov006_021079c8](../../../src/actors/dScMgRoulette_c.cpp)) and two `Model` members. The header records that typed members destroy in a different order from the ROM's destructor.
 - Slot1: typed members at 0x4684 and 0x4690 ([func_ov006_0210c2b0](../../../src/actors/dScMgSlot1_c.cpp)) and at 0x469c ([func_ov006_0210c208](../../../src/actors/dScMgSlot1_c.cpp)).
-- Snowball: an out-of-line `dScMgSnowball_c();`. In a scratch copy of the header, `match.py --no-strict-relocs` gives MATCHING at 0x34. The link then needs 0x021295ac named `_ZN15dScMgSnowball_cC1Ev` in [ov006 `symbols.txt`](../../../config/arm9/overlays/ov006/symbols.txt) and defined under that name by [src/func_ov006_021295ac.cpp](../../../src/func_ov006_021295ac.cpp), both outside this reservation.
+- Snowball: an out-of-line `dScMgSnowball_c();`. In a scratch copy of the header, `match.py --no-strict-relocs` gives MATCHING at 0x34. The link then needs 0x021295ac named `_ZN15dScMgSnowball_cC1Ev` in [ov006 `symbols.txt`](../../../config/arm9/overlays/ov006/symbols.txt) and defined under that name by [src/actors/dScMgSnowball_c.cpp](../../../src/actors/dScMgSnowball_c.cpp), both outside this reservation.
 - The Single3D children's `new` objects also carry a weak `_ZN19dScMgSingle3DBase_cD2Ev` (0x38), and Slot1's carries the inline `betIcon_c` and `dThIcon_c` destructors. A standalone factory there would need objisolate to drop them. Memory2 avoids this by living in its class's TU.
 
 ## Relocations, before and after
