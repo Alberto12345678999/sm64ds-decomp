@@ -235,9 +235,9 @@ callees or globals that the normal unlinked byte diff would wildcard. See
 Pull requests are then validated automatically. Each changed source file is compiled
 and compared against ROM bytes on a build box, which catches wrong relocation
 destinations and non-reproducing near misses before anything lands. See
-[notes/pr-validation.md](notes/pr-validation.md). Reconstructed C++ also has to pass an
-independent source review before it merges, described in
-[notes/agents/SOURCE-REVIEW-CUTOVER.md](notes/agents/SOURCE-REVIEW-CUTOVER.md).
+[notes/pr-validation.md](notes/pr-validation.md). Class and TU work coordinated through
+[the agent protocol](notes/agents/README.md) also gets an independent source review in
+the work queue before it lands.
 
 ## Setup
 
