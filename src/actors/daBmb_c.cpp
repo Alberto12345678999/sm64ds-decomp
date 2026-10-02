@@ -26,7 +26,6 @@
  * - func_ov102_0214ad14, 0214ae1c and 0214b384 are called from other overlays,
  *   so those labels stay. data_ov102_* are the file handles; SharedFilePtr
  *   has no fields, so the loaded BCA is still the word at +4.
- *   g_profile_BOMBHEI stays outside this file.
  * - func_0203568c / func_02035684 are the out-of-line stores of
  *   mWithMeshClsn.mRadius / mHeight. Inlining them drops the call.
  * - func_ov102_0214b53c keeps the volatile stack pins, and the carrier's
@@ -163,6 +162,31 @@ daBmb_c *daBmb_c_classInit(void)
 }
 
 }
+
+struct BmbSpawnInfo {
+    daBmb_c *(*classInit)();
+    s16 executePriority; /* +4: also BOMBHEI registry id 0x00ce = 206 */
+    s16 renderPriority;  /* +6 */
+    u32 actorFlags;
+    Fix12i clipOffsetY;
+    Fix12i clipRadius;
+    Fix12i clipDistance;
+    Fix12i farDistance;
+};
+typedef char BmbSpawnInfo_size_must_be_0x1c[
+    sizeof(BmbSpawnInfo) == 0x1c ? 1 : -1];
+
+// @symbol g_profile_BOMBHEI
+extern "C" BmbSpawnInfo g_profile_BOMBHEI = {
+    daBmb_c_classInit,
+    0x00ce,
+    0x00d5,
+    2,
+    0x00100000,
+    0x00300000,
+    0x01000000,
+    0
+};
 
 /* ==========================================================================
  * Vtable slot 18.  THE KEY FUNCTION: the first out-of-line virtual this class

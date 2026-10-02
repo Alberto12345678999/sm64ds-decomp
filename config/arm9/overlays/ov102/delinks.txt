@@ -15,6 +15,7 @@ src/actors/daObjHatenaBlock_c.cpp:
 src/actors/daBmb_c.cpp:
     complete
     .text start:0x0214a96c end:0x0214c748
+    .data start:0x0214e4fc end:0x0214e5dc
 
 src/game/actors/d_a_shl.cpp:
     complete
