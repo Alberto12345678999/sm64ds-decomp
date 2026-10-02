@@ -105,7 +105,7 @@ dScMgBase_c; 60+ files across [ov004](../config/arm9/overlays/ov004/symbols.txt)
 as dActor_c's 13 new slots over fBase_c. All 18 targets are already matched
 source (`func_ov004_*` under [arm9/ov004](../config/arm9/overlays/ov004/symbols.txt), [dscene-c-siblings-census.md](../notes/dscene-c-siblings-census.md) section 2), but their signatures are not reconstructed, so they stay undeclared rather than guessed.
 
-**The blink prompt (0x0c0 / 0x0c3 / 0x0c4).** [func_ov004_020b0de0](../src/func_ov004_020b0de0.c), called from
+**The blink prompt (0x0c0 / 0x0c3 / 0x0c4).** [func_ov004_020b0de0](../src/minigames/d_s_mg_base.cpp), called from
 `dScMgBase_c::BeforeRender`, is the whole story: nothing draws unless
 `mPromptEnabled` (0x0c3) is set; while `mPromptBlinkCount` (0x0c4) is below 4 the
 16-bit `mPromptBlinkTimer` (0x0c0) free-runs 0..0x2f, bumping the count each
@@ -407,8 +407,8 @@ name -- a wrong name is a claim the next reader will trust.
 | Offset | Name | Evidence |
 | --- | --- | --- |
 | 0x46d0 | `mState` | The subject of `Behavior`'s own `switch` (src/actors/dScMgAmida_c.cpp): 0 sets the board up and falls into 1, 1 runs the lottery, 2 waits out the result, 3 is the finale. [func_ov006_020d3ba0](../src/actors/dScMgAmida_c.cpp) leaves it at 1. |
-| 0x46d4 | `mFinished` | u8. [func_ov006_020d3ba0](../src/actors/dScMgAmida_c.cpp) zeroes it; Behavior sets it only on the branch that fires when `mRoundCount` reaches 5, and every later read takes the celebration path ([func_ov004_020b0a54](../src/func_ov004_020b0a54.cpp)`(0)` instead of `0x12`, and Render's confetti pass). |
-| 0x4700 | `mLineEndY` | InitResources stores 0x78 or 0x98 here; [func_ov006_020d3ba0](../src/actors/dScMgAmida_c.cpp) passes it as the y2 argument of four [func_ov004_020ae5c4](../src/func_ov004_020ae5c4.cpp) line draws whose other three arguments are literal screen coordinates (x = 0x20/0x60/0xa0/0xe0, y1 = -0xb4 or -0xd4). |
+| 0x46d4 | `mFinished` | u8. [func_ov006_020d3ba0](../src/actors/dScMgAmida_c.cpp) zeroes it; Behavior sets it only on the branch that fires when `mRoundCount` reaches 5, and every later read takes the celebration path ([func_ov004_020b0a54](../src/minigames/d_s_mg_base.cpp)`(0)` instead of `0x12`, and Render's confetti pass). |
+| 0x4700 | `mLineEndY` | InitResources stores 0x78 or 0x98 here; [func_ov006_020d3ba0](../src/actors/dScMgAmida_c.cpp) passes it as the y2 argument of four [func_ov004_020ae5c4](../src/minigames/d_s_mg_base.cpp) line draws whose other three arguments are literal screen coordinates (x = 0x20/0x60/0xa0/0xe0, y1 = -0xb4 or -0xd4). |
 | 0x4724 | `mLanePos[4][2]` | [func_ov006_020d3ba0](../src/actors/dScMgAmida_c.cpp) seeds `{ (0x20 + 0x40*i) << 12, 0xb0 << 12 }`; Behavior adds `mLaneVel` into it; Render draws the lane sprite at `>> 12`. |
 | 0x4744 | `mLaneVel[4][2]` | Added into `mLanePos` once a tick, and its y component loses a fixed 0x100 every tick -- a velocity under gravity. Zeroed by the same reset. |
 | 0x4768 | `mPieces[0x80]` | Renamed from `arr4768`; the element layout is unchanged (see the section above). |
@@ -419,11 +419,11 @@ name -- a wrong name is a claim the next reader will trust.
 | 0x53ac | `mLaneAnimFrame[4]` | Bumped when the timer above wraps, cycles 0..0xd, and indexes the sprite table [data_ov006_0213a458](../config/arm9/overlays/ov006/symbols.txt). |
 | 0x53bc | `mBgScrollPhase` | u16. Render adds 0xc0 a frame and feeds `>> 4` into the shared sine table [data_02082214](../config/arm9/symbols.txt) to get the sub-screen BG2 offset. The 16-bit width comes from the reset's own `*(s16*)` store. |
 | 0x53c0 | `mResultWaitTimer` | Loaded with 0x3c on entry to state 2 and counted down there; at 0 the scene clears `mPromptEnabled` and moves to state 3. |
-| 0x53c4 | `mStartBannerTimer` | Reset to 0x3c right after [func_ov004_020b0cac](../src/func_ov004_020b0cac.c)`(0xd, 0x80, 0x60, ...)` puts banner 0xd on screen; Behavior counts it down and calls `FreeGfxSlotsById(0xd)` on expiry. |
+| 0x53c4 | `mStartBannerTimer` | Reset to 0x3c right after [func_ov004_020b0cac](../src/minigames/d_s_mg_base.cpp)`(0xd, 0x80, 0x60, ...)` puts banner 0xd on screen; Behavior counts it down and calls `FreeGfxSlotsById(0xd)` on expiry. |
 | 0x53d0 | `mEndDelayTimer` | Set to 0xb4 when state 3 begins; Render keeps drawing the play field until it and `mState == 3` agree, then switches to the finale. |
 | 0x53d4 | `mPatternIndex` | [func_ov006_020d3ba0](../src/actors/dScMgAmida_c.cpp) picks it (clamped, or randomised for the harder variant) and then uses it as the row index into five different 0x1c-stride tables in [ov006](../config/arm9/overlays/ov006/symbols.txt). |
 | 0x53e0 | `mRoundTimer` | Behavior counts it down inside state 1; reaching 0 is what ends the round and chooses between another board and the finale. |
-| 0x53e8 | `mScore` | InitResources seeds it from the inherited 0xbc times 5; [func_ov006_020d3ba0](../src/actors/dScMgAmida_c.cpp) clamps it to 0x270f (9999); Behavior pushes it to the dMeter_c counter [func_ov004_020adb1c](../src/func_ov004_020adb1c.c) every tick. |
+| 0x53e8 | `mScore` | InitResources seeds it from the inherited 0xbc times 5; [func_ov006_020d3ba0](../src/actors/dScMgAmida_c.cpp) clamps it to 0x270f (9999); Behavior pushes it to the dMeter_c counter [func_ov004_020adb1c](../src/minigames/d_s_mg_base.cpp) every tick. |
 
 Left `unk_`: 0x46d5 (a second reset flag, only ever zeroed and compared against
 1), 0x470c/0x4710 (two 0x100 x 0x158 byte buffers -- the shape is now in the
@@ -459,7 +459,7 @@ the previous header held as four pads, and a run/dMeter_c block at 0xb9d8.
 | 0xb3d8 | `mArray2Kind[0x80]` | Render's `switch`: 0..2 draw one sprite, 3 picks between two by X. |
 | 0xb9d8 | `mAnimCounter` | Render bumps it and wraps it at 0x20; the obstacle frame is `(n / 4) & 7`. |
 | 0xb9dc | `mTimeLeft` | Frames. Seeded 0x960 or 0x4b0 by variant; Behavior counts it down and plays a tick sound at 60/30/15-frame intervals as it shortens; Render formats it as seconds and centiseconds; 0 ends the run. |
-| 0xb9e0 | `mScore` | Zeroed by the reset, +1 a tick while rolling, handed to the dMeter_c counter [func_ov004_020adb1c](../src/func_ov004_020adb1c.c) at the crash -- the same sink dScMgAmida_c's score uses. |
+| 0xb9e0 | `mScore` | Zeroed by the reset, +1 a tick while rolling, handed to the dMeter_c counter [func_ov004_020adb1c](../src/minigames/d_s_mg_base.cpp) at the crash -- the same sink dScMgAmida_c's score uses. |
 | 0xb9f4 | `mState` | Behavior's `switch`: 0 count-in, 1 rolling, 2/3 crash, 4 melt, 5 over. |
 | 0xb9f8 | `mScreensSwapped` | u8. Behavior sets it from `mPosY >= 0xe8000`; [_ZN15dScMgSnowball_c8OnKickedEv](../src/actors/dScMgSnowball_c.cpp) uses it to flip the POWCNT1 display-swap bit at 0x4000304 and exchange the main/sub BG offsets. |
 | 0xb9fc | `mCountdownTimer` | Seeded 0xf1; state 0 counts it down, plays a beep at 0xf0/0xb4/0x78 and starts the run at 0x3c; Render draws the 3-2-1 banner from `n / 60`. |
@@ -484,7 +484,7 @@ any matched body reads).
 | 0x5000 | `mState` | Behavior's whole body is `(self->*`[data_ov006_02142bdc](../config/arm9/overlays/ov006/symbols.txt)`[n])()` -- it is the index into that pointer-to-member table. Render tests it against 3, 4, 6 and 7 to pick which pass to draw. |
 | 0x500c | `mReelDrawY` | While positive the two marker rows are drawn at `n + 0x10` and `n + 0x60`; at 0 or below a single row is drawn at 0x60. |
 | 0x5010 | `mWinColumn` | Used as `n * 0x50 + 0x20/0x30/0x40` for the payout caption's x, against the same 0x50 column pitch the reels use; a negative value selects the "no win" caption instead. |
-| 0x5018 | `mLamp1Angle` / `mLamp2Angle` (0x501a) | u16 each. Behavior subtracts 0x200 and 0x400 a tick while `mState == 1`; Render hands each to [func_ov004_020afb20](../src/func_ov004_020afb20.cpp) in its rotation argument. InitResources zeroes both. |
+| 0x5018 | `mLamp1Angle` / `mLamp2Angle` (0x501a) | u16 each. Behavior subtracts 0x200 and 0x400 a tick while `mState == 1`; Render hands each to [func_ov004_020afb20](../src/minigames/d_s_mg_base.cpp) in its rotation argument. InitResources zeroes both. |
 | 0x501c | `mReelStrip[3][5]` | Render walks it as `*(u8*)(p + row + 0x501c)` with `p` advancing 5 a reel and `row` taken modulo `mStripLength` -- three reels of five stops. |
 | 0x502e | `mLineActive[3]` | Three bytes gating both the payout-marker pass and the win chime. |
 | 0x5031 | `mResultSymbols[3][3]` | The same walk with `p` advancing 3 a reel, indexed 0..2 -- the 3x3 window the reels stopped on, compared against `mWinSymbol`. |
@@ -606,13 +606,13 @@ Only the fields several descendants corroborate are named here; this class has
 
 | Offset | Name | Evidence |
 | --- | --- | --- |
-| 0x0b4 | `mHudScore` | `dScMgBase_c::BeforeInitResources` zeroes it. [func_ov004_020adb1c](../src/func_ov004_020adb1c.c) -- the routine that writes the dMeter_c counter word at scene+0x464c -- is handed it directly by `func_ov006_02125364` (part of:[d_s_mg_bsc.cpp](../src/minigames/d_s_mg_bsc.cpp), func 15 used to assemble TU) and [func_ov006_020ea3d0](../src/actors/dScMgHanachan_c.cpp); dScMgMemory_c and dScMgSound_c seed it in their own InitResources; dScMgCard_c::Render keeps its own high-water mark of it; dScMgAmida_c::Behavior copies its round score into it. Deliberately NOT called `mScore`: five leaves already have a field of their own by that name, and naming the base's the same would silently shadow every one of them (see the round-2 `mPrevPosX` incident). |
-| 0x21c | `mSavedMainBgBits` | src/_ZN11dScMgBase_c16OnAimedAtWithEggEv.cpp (slot 29) stores [data_0209d45c](../config/arm9/symbols.txt) here; src/_ZN11dScMgBase_c25OnAimedAtWithEggReturnVecEv.cpp (slot 30) restores it from here. |
+| 0x0b4 | `mHudScore` | `dScMgBase_c::BeforeInitResources` zeroes it. [func_ov004_020adb1c](../src/minigames/d_s_mg_base.cpp) -- the routine that writes the dMeter_c counter word at scene+0x464c -- is handed it directly by `func_ov006_02125364` (part of:[d_s_mg_bsc.cpp](../src/minigames/d_s_mg_bsc.cpp), func 15 used to assemble TU) and [func_ov006_020ea3d0](../src/actors/dScMgHanachan_c.cpp); dScMgMemory_c and dScMgSound_c seed it in their own InitResources; dScMgCard_c::Render keeps its own high-water mark of it; dScMgAmida_c::Behavior copies its round score into it. Deliberately NOT called `mScore`: five leaves already have a field of their own by that name, and naming the base's the same would silently shadow every one of them (see the round-2 `mPrevPosX` incident). |
+| 0x21c | `mSavedMainBgBits` | src/minigames/d_s_mg_base.cpp (slot 29) stores [data_0209d45c](../config/arm9/symbols.txt) here; src/minigames/d_s_mg_base.cpp (slot 30) restores it from here. |
 | 0x220 | `mSavedSubBgBits` | The same save/restore pair for [data_0209d454](../config/arm9/symbols.txt). |
 | 0x224 | `mSavedScreenSwap` | Saved as `(POWCNT1 & 0x8000) >> 15` and restored as `n << 15` by that same pair. |
 
 Deliberately left `unk_`: 0x0a8/0x0ac (a pair every leaf seeds together and
-[func_ov004_020ad79c](../src/func_ov004_020ad79c.c) checks against [func_ov004_020ad8b8](../src/func_ov004_020ad8b8.c), but nothing in the
+[func_ov004_020ad79c](../src/minigames/d_s_mg_base.cpp) checks against [func_ov004_020ad8b8](../src/minigames/d_s_mg_base.cpp), but nothing in the
 tree says what it counts -- dScMgRoulette_c reads it through the singleton as a
 bonus added to its payout), 0x0bc (clamped to 0x270e, taken modulo 5, and used
 to scale difficulty in four different leaves -- a progression counter of some
@@ -643,7 +643,7 @@ bytes the reset zeroes and nothing reads).
 | 0x5388 | `mState` | [func_ov006_020dac34](../src/minigames/d_s_mg_card.cpp) in [d_s_mg_card.cpp](../src/minigames/d_s_mg_card.cpp) is one long `switch` on it that mostly `++`s it; [func_ov006_020db720](../src/minigames/d_s_mg_card.cpp) in the same file switches on the same field; the reset in [func_ov006_020db9dc](../src/minigames/d_s_mg_card.cpp) also there, starts it at 1. |
 | 0x538a | `mStateTimer` | Reloaded with 0x10, 0x14, 0x1e, 0x3c or 0x5a on each step and run down to 0 (by `--` or `ApproachLinear2`) before `mState` advances. |
 | 0x5396 | `mFrameCounter` | `dScMgCard_c::Behavior`'s only own statement is `+= 1`; Render blinks the highlighted cards on bit 3. |
-| 0x5398 | `mScore` | Render keeps it as a high-water mark of the base's `mHudScore` and pushes it back out through [func_ov004_020adb1c](../src/func_ov004_020adb1c.c) every frame. |
+| 0x5398 | `mScore` | Render keeps it as a high-water mark of the base's `mHudScore` and pushes it back out through [func_ov004_020adb1c](../src/minigames/d_s_mg_base.cpp) every frame. |
 
 Left `unk_`: 0x538c, and the two highlight pairs 0x538e/0x5390 and
 0x5392/0x5394. Their mechanics are now in the header (Render blinks the card
