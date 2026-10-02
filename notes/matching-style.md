@@ -230,10 +230,10 @@ Also spelled `u16 *p = (u16*)(((int)c + 0x4c0c) & 0xFFFFFFFFFFFFFFFFULL); *p = *
    #define M(a) (*(int*)(((long long)(unsigned)(a)) & 0xFFFFFFFFFFFFFFFFLL))
    #define N(a) (*(int*)(((long long)(long)(a))     & 0xFFFFFFFFFFFFFFFFLL))
    ```
-   (verbatim from `src/func_ov006_02114c04.c`, which needs all three)
+   (verbatim from `func_ov006_02114c04`, which needs all three)
 
 **Landed examples** (all byte-identical, strict relocs, linkcheck VERIFIED):
-`src/func_ov006_02114c04.c` (the clearest -- RMW/single-use split across a whole loop body),
+`func_ov006_02114c04` (the clearest -- RMW/single-use split across a whole loop body),
 `src/func_ov006_0211fe78.c` (63 divergences -> 0 in one edit),
 `src/actors/dScMgBomroom_c.cpp` (`func_ov006_020d8d84`, folded from its shard), `src/func_ov006_0211e8a8.c`.
 
