@@ -362,7 +362,7 @@ extern char func_02112d48;
 extern char func_02113c20;
 extern char func_0211d610[];
 extern char func_ov002_020b5fc4;
-extern char func_ov066_0211a35c;
+extern void func_ov066_0211a35c(void* a, void* b, void* c);
 extern char func_ov091_02132380;
 extern char*Actor_ClosestPlayer(void*);
 extern char*PARTICLE_SYS_TRACKER;

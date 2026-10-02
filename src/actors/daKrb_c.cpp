@@ -54,7 +54,7 @@
  *   02130ce0/ce8/cf0/cc0/cc8/cd0 are BCA handles (SetAnim reads [1]).
  *   0213089c / 0213088c are BMA. 02130258 / 02130208 / 02130228 /
  *   02130238 / 02130248 / 02130268 / 02130204 / 02130218 are the per-type
- *   tables. g_profile_KURIBO / _S / _L stay outside this text TU.
+ *   tables.
  * - Render keeps a volatile Vector3 backup of the scale (frame slot).
  * - func_ov002_020aea30 takes the receiver, the attacker, and a nullable
  *   collision pointer.
@@ -2067,3 +2067,52 @@ extern "C" daKrb_c *daKrb_c_classInit_KURIBO()
 {
     return new daKrb_c();
 }
+
+struct KrbSpawnInfo {
+    daKrb_c *(*classInit)();
+    s16 executePriority; /* +4: also KURIBO registry id 0x00c8 = 200 */
+    s16 renderPriority;  /* +6 */
+    u32 actorFlags;
+    Fix12i clipOffsetY;
+    Fix12i clipRadius;
+    Fix12i clipDistance;
+    Fix12i farDistance;
+};
+typedef char KrbSpawnInfo_size_must_be_0x1c[
+    sizeof(KrbSpawnInfo) == 0x1c ? 1 : -1];
+
+// @symbol g_profile_KURIBO
+extern "C" KrbSpawnInfo g_profile_KURIBO = {
+    daKrb_c_classInit_KURIBO,
+    0x00c8,
+    0x0018,
+    0x10000006,
+    0x00032000,
+    0x00046000,
+    0x01000000,
+    0x01000000
+};
+
+// @symbol g_profile_KURIBO_S
+extern "C" KrbSpawnInfo g_profile_KURIBO_S = {
+    daKrb_c_classInit_KURIBO_S,
+    0x00c9,
+    0x0019,
+    0x10000006,
+    0x00032000,
+    0x00046000,
+    0x006a4000,
+    0x00800000
+};
+
+// @symbol g_profile_KURIBO_L
+extern "C" KrbSpawnInfo g_profile_KURIBO_L = {
+    daKrb_c_classInit_KURIBO_L,
+    0x00ca,
+    0x001a,
+    0x10000006,
+    0x00064000,
+    0x000c8000,
+    0x01000000,
+    0x01000000
+};

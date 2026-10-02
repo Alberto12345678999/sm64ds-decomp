@@ -6710,6 +6710,31 @@ moving the `< 5` arm's code to a label after the loop, unreachable `goto` target
 arm, `while`/`for` spellings of the test (they rotate the test), and every frontend-foldable
 spelling of the `< 5` arm's store.
 
+**Resolution (2026-10-02, round 1002h): MATCHED, and the rule above is a symptom of a
+structural one.** Read out of `mwccarm.exe` 2004/b56: the pass that prints "AFTER CONDITIONAL
+OPTIMIZATION" (driver at 0x4f1650, pass at 0x4f10c0) runs after register allocation and BEFORE
+branch-to-epilogue duplication, so every `return` is still a `b` to the one epilogue block. It
+walks the blocks last to first and predicates only two shapes, each arm at most 5 PCode
+instructions:
+
+* triangle: the fall-through block F has exactly one predecessor (the branch block) and its
+  one successor is the branch target T, so F is predicated;
+* diamond: F and T each have exactly one predecessor (the branch block) and exactly one
+  successor, and it is the SAME join block J; then F and/or T is predicated.
+
+The early-return guard here is a diamond whose join is the epilogue. Anything that splits the
+jumped-over arm into more than one block (the conditional region above) breaks "F has one
+successor J", and so does giving the two arms DIFFERENT successors. The cost-free way to do
+that: end the small arm in a non-empty block with two or more predecessors instead of the
+epilogue, which in source is a `return` shared with another path. Blocks are merged and empty
+blocks dropped before the pass, so that shared return block survives to the decision only
+because of its second predecessor. The branch pass after it then threads both branches to the
+epilogue, and the final code is identical. `func_ov006_020d27dc` matched this way: the 0x1e
+path and the next-round store of its `sl == 1` if/else fall to one `return` after the if/else,
+while the five-round arm returns on its own. A goto to a shared `return` label gives the same
+bytes. When the ROM keeps a branch over a small return arm and the arm has no conditional,
+look for another path in the function that could share that arm's `return`.
+
 ## 6co. The verification chain compiled C++ with exceptions ON and the build never does: one "7-word floor" was the flag, not the source (func_ov006_020ea914, div 7 -> 0, 2026-09-13, run link100 lane CRK-B)
 
 `func_ov006_020ea914` (ov006 0x020ea914, 0x324) is the five-point trailing-segment OAM
@@ -7172,6 +7197,20 @@ The created-receiver spellings (z or x held in a function-scope local, the NRM v
 local, the k0/prim preheader form) fold back or cost a frame slot (285 words, 0x84). Array-indexed
 source forms with strength reduction on or off are not the ROM's shape (a mul per access, or 288+
 words). Verdict unchanged: a compiler-side scheduling difference; the stored 164 stands.
+
+**Addendum (2026-10-02, lane mgwiden-cd744hole-1002h, 164 -> 46).** The "stored 164" was the
+inherited draft, not the candidate this section measures. Rewriting the draft as that candidate
+lands at the ROM's exact size: per-row `Vec3 *v0/*v1` and `int *n0/*n1` pointers, each
+post-incremented, the `G3_Vtx` inline above, texcoords indexed `i*4+k`, and no declared constant
+locals (point 2). With `int k;` declared AFTER the four row pointers the size is exactly 0x45c
+(0x460 with k first), and the frame, stack webs and register assignment all match the ROM. The
+46 words left are the scheduling difference point 3 describes, in loop 1's x/y/z issue order
+and pointer step, plus a swapped vertex-pointer and row-counter step in loop 2. The "none
+reaches 0x45c" bound above applies to the register-exact candidate of 2026-09-13, not to this
+one: here 2004/b56, 1.2 base, sp2 and sp2p3 all reach 46 at 0x45c. 22 pragmas, 720 C89
+declaration orders and 24 index spellings leave it at 46 or worse. The matched func_ov080_0212677c
+(daPicGate) shows b56's own z-first, y-late order, so the ROM's x/y/z order still has no
+source lever.
 
 ## 6ct. A value assigned to a variable the optimiser will not propagate gets its own colour, and that is the handle 6cq said did not exist: func_ov075_0211afb0 MATCHED (div 4 -> 0, 2026-09-13, run link100 wave 11 lane WALL-B)
 
