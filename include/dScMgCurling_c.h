@@ -17,9 +17,13 @@
 struct dScMgCurling_stone {
     s32 x;              /* 0x00 */
     s32 y;              /* 0x04 */
-    u8  unk08[0x21];    /* 0x08 */
+    s32 speed;          /* 0x08 */
+    u8  unk0c[0x1a];    /* 0x0c */
+    u16 angle;          /* 0x26 */
+    u8  state;          /* 0x28, 0 and 3 are skipped by the hit test */
     u8  active;         /* 0x29 */
-    u8  unk2a[0x2];     /* 0x2a */
+    u8  unk2a;          /* 0x2a */
+    u8  fast;           /* 0x2b, speed >= 0x3800 after a hit */
 };
 
 #ifndef SM64DS_PLATFORM_PC
