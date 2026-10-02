@@ -111,8 +111,8 @@ fBase_c > dBase_c > dScene_c
 | 0x169 | MG_CUP | dScMgCup_c | Single3D | `src/actors/dScMgCup_c.cpp` |
 | 0x16a | MG_MEMORY | dScMgMemory_c | Single3D | `src/minigames/d_s_mg_memory.cpp` |
 | 0x16b | MG_MEMORY_J | dScMgMemory2_c | Single3D | `src/actors/dScMgMemory2_c.cpp` |
-| 0x16c | MG_SLOT1 | dScMgSlot1_c | Base | `src/actors/dScMgSlot1_c.cpp` + 5 shards |
-| 0x16d | MG_SLOT3 | dScMgSlot3_c | Single3D | 9 shards (a merged Slot1 and Slot3 unit exists only as a `src_tu` shadow) |
+| 0x16c | MG_SLOT1 | dScMgSlot1_c | Base | `src/actors/dScMgSlots.cpp` (shared with Slot3) + 1 shard |
+| 0x16d | MG_SLOT3 | dScMgSlot3_c | Single3D | `src/actors/dScMgSlots.cpp` (shared with Slot1) |
 | 0x16e | MG_LUIGI | dScMgLuigi_c | Base | `src/actors/dScMgLuigi_c.cpp` |
 | 0x16f | MG_SOUND | dScMgSound_c | Single3D | `src/actors/dScMgSound_c.cpp` |
 | 0x170 | MG_PACHINKO | dScMgPachinko_c | Base | `src/actors/dScMgPachinko_c.cpp` + 4 shards |
@@ -123,7 +123,7 @@ fBase_c > dBase_c > dScene_c
 | 0x175 | MG_JUMP2 | dScMgJump2_c | D3D | `src/minigames/d_s_mg_jump2.cpp` |
 | 0x176 | MG_CURLING | dScMgCurling_c | Base | `src/actors/dScMgCurling_c.cpp` + 4 shards |
 | 0x177 | MG_CURLING_J | dScMgCurling2_c | Base | `src/actors/dScMgCurling2_c.cpp` + 4 shards |
-| 0x178 | MG_SMARTBALL | dScMgSmartball_c | Base | 9 shards (shadow: `src_tu/actors/dScMgSmartball_c.cpp`) |
+| 0x178 | MG_SMARTBALL | dScMgSmartball_c | Base | `src/actors/dScMgSmartball_c.cpp` |
 | 0x179 | MG_SNOWBALL | dScMgSnowball_c | Single3D | `src/actors/dScMgSnowball_c.cpp` |
 | 0x17a | MG_COIN | dScMgCoin_c | Base | `src/actors/dScMgCoin_c.cpp` + 6 shards |
 | 0x17b | MG_CARD | dScMgCard_c | Single3D | `src/minigames/d_s_mg_card.cpp` |
@@ -146,7 +146,8 @@ fBase_c > dBase_c > dScene_c
 
 **The shared ov004 runtime:**
 - `src/actors/dMgPsOpt_c.cpp`
-- the text-verified shadows `src_tu/actors/dMgState_c.cpp` and `src_tu/actors/unit_ov004_020b0a38.cpp`
+- `src/actors/dMgState_c.cpp`
+- the text-verified shadow `src_tu/actors/unit_ov004_020b0a38.cpp`
 
 ## Names: what is known
 
