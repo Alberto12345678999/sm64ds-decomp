@@ -8,6 +8,10 @@ src/minigames/d_s_mg_base.cpp:
     complete
     .text start:0x020ad660 end:0x020b2220
 
+src/func_ov004_020b2220.c:
+    complete
+    .text start:0x020b2220 end:0x020b2444
+
 src/func_ov004_020b2444.c:
     complete
     .text start:0x020b2444 end:0x020b2574
