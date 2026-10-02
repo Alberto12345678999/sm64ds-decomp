@@ -738,10 +738,6 @@
    "ref": "src/Foo.cpp"
   },
   {
-   "file": "tools/test_build_pin.py",
-   "ref": "src/func_ov006_020cb030.cpp"
-  },
-  {
    "file": "tools/test_check_decl_agreement.py",
    "ref": "src/func_ov065_021183c8.c"
   },
