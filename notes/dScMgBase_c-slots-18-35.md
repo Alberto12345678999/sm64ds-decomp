@@ -320,12 +320,13 @@ base declaration and the [ov004](../config/arm9/overlays/ov004/symbols.txt) base
 | 34 | `Virtual88` | 0x020ae3b4 | 4 - **DONE**, 5 declarations; the first slot that takes ARGUMENTS (four, unanimous across seven call sites), the first whose purpose is legible from the body alone (a 4bpp pixel brush), and the first whose rename breaks a cross-file reference -- dScMgAmida_c's override calls the base body directly |
 | 35 | `Virtual8C` | 0x020ad660 | 1 - **DONE**, 2 declarations; the LAST slot of the range, the smallest, and the best-evidenced -- 13 dispatch sites across four leaf classes, all 13 of which consume the return with `cmp r0,#0` |
 
-**Where the base bodies for slots 31, 32 and 33 live.** They (0x020b2880, 0x020b27f4, 0x020b265c) sit above the
-unmatched func_ov004_020b2220, inside the same ov004 unit as the promoted dScMgBase_c TU
+**Where the base bodies for slots 31, 32 and 33 live.** They (0x020b2880, 0x020b27f4, 0x020b265c) are
+members of the promoted dScMgBase_c TU, `src/minigames/d_s_mg_base.cpp`
 ([config/tu_manifest.d/ov004/dScMgBase_c.json](../config/tu_manifest.d/ov004/dScMgBase_c.json)).
-That TU stops at the hole, so these bodies stay loose files under their mangled names
-until the hole matches. The `src_tu/` candidate unit `unit020b0a38` that used to span
-the hole was retired when dScMgBase_c widened, so there is no stale shadow to regenerate.
+They were folded in with the rest of the unit above func_ov004_020b2220 once that function
+byte-matched, so the TU now covers the whole ov004 unit 0x020ad660..0x020b2c58. The
+`src_tu/` candidate unit `unit020b0a38` that used to span the hole was retired earlier, so
+there is no stale shadow to regenerate.
 
 134 descendant overrides plus the base's 18 declarations. Slot 18 was the outlier;
 the median slot touches six classes. **Slot 22 has no descendant overrides at all** —

@@ -5276,6 +5276,17 @@ the three counter zeros moved above the value clamp, and it is worth exactly one
 word. `#pragma opt_propagation off` is load-bearing on this function: without it the same
 source scores 91 to 93 instead of 33.
 
+RESOLVED 2026-10-02: the function matches, and "no source lever reaches it" was wrong. The
+lever is not in the homing order at all but in how the matrix is built. Written as the
+NitroSDK shapes, a local `static inline int FX_Mul(int, int)` that names its `s64` product
+before rounding and a local `MTX_Rot22(&m, sin, cos)` that fills the 2x2, the inlined
+parameters change the allocator's creation order and the thousands counter lands in r0.
+Measured: MTX_Rot22 alone 31; both inlines with the product unnamed 5 (an ip/lr swap left in
+the matrix block); FX_Mul with the named product 0. The counters still have to be declared
+te, hu, th (th, te, hu scores 60) and zeroed after the clamp (39 before it), and
+`opt_propagation off` is still needed (38 without). The source is in
+`src/minigames/d_s_mg_base.cpp`.
+
 **6. `volatile` can be ROM structure rather than a codegen pin, and on `func_ov006_02126b4c`
 it is.**
 

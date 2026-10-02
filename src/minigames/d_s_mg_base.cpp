@@ -1,26 +1,26 @@
 //cpp
 /* ov004/dScMgBase_c -- the behavior every minigame scene shares, and the
  * sprite, OAM and graphics helpers that sit with it
- * (.text 0x020ad660..0x020b2220, 108 functions).
+ * (.text 0x020ad660..0x020b2c58, 125 functions).
  *
- * This is every function of the ov004 linker unit below
- * func_ov004_020b2220. That function does not match yet, so it is left to
- * cartridge bytes and this file stops at it. The unit itself runs on to
- * 0x020b2c58; the 16 dScMgBase_c members above the gap, ~dScMgBase_c
- * among them, are still one-function sources until it matches.
- *
- * Holds the eight scene overrides at 0x020b04e8..0x020b0a38 plus 100
- * former one-function sources folded in around them. Each former source
- * keeps its own namespace block: their local struct views and extern
- * declarations disagree with each other, and unifying them changes code
- * generation, so that is left as separate work.
+ * This is the whole ov004 linker unit, from dScMgBase_c::Virtual8C at the
+ * first byte of ov004's .text up to the constructor, which ends where
+ * func_ov004_020b2c58 begins. It holds the eight scene overrides at
+ * 0x020b04e8..0x020b0a38 plus 117 former one-function sources folded in
+ * around them, among them the score-number drawer func_ov004_020b2220, the
+ * engine and background set-up slots 31 to 33, the destructor and the
+ * constructor. Each former source keeps its own namespace block: their local
+ * struct views and extern declarations disagree with each other, and
+ * unifying them changes code generation, so that is left as separate work.
  *
  * Definitions are in ROM order, lowest address first, under
- * defer_codegen off.
+ * defer_codegen off. The one exception is the constructor and destructor
+ * at the end, which sit in a defer_codegen on bracket with the constructor
+ * written first: see the note there.
  *
  * GraphCallback0, the key function of dScMgBase_c::graphCallback_c, is here,
- * so this file emits that class's vtable and RTTI. dScMgBase_c's own key
- * function (its destructor) is above the gap, so its vtable is not.
+ * and so is ~dScMgBase_c, the key function of dScMgBase_c itself, so this
+ * file emits both classes' vtables and RTTI.
  *
  * Still raw: unk_0a4, 0a8, 0ac, 0b8, 0c8, 462c and 465c are unnamed in the
  * header, and the func_ov004 and data_ov004 helpers they feed are unnamed
@@ -1635,13 +1635,7 @@ extern "C" {
    Reading it back: a hit from underneath closes the three-item overlay menu
    that OnHitByMegaChar opens, resets the polymorphic touch-icon set, and
    re-enables the 3D engines only if the class's own OnHitByCannonBlastedChar
-   says so.
-
-   Still on the daDoor_c route -- an `extern "C"` definition of the mangled name
-   rather than a `dScMgBase_c::` member -- for the reason the rest of this
-   family is: a real out-of-line member definition here risks moving the key
-   function and emitting _ZTV11dScMgBase_c from this TU.  Including the header
-   and calling through it costs nothing; defining a member would. */
+   says so. */
 
 extern "C" void func_02012e1c(char *c);
 extern "C" void Enable3dEngines();
@@ -3514,3 +3508,522 @@ void func_ov004_020b1ea4(int x, int a1, int val, int a3, int a4, int mode, int f
 }
 }
 }
+
+// @symbol func_ov004_020b2220
+#pragma push
+#pragma opt_propagation off
+namespace s20b2220 {
+extern "C" {
+/* Draws a score number rotated by an angle: splits the value (clamped to
+   9999) into thousands, hundreds, tens and units, builds the rotation-and-
+   scale matrix from the sine table, and draws the digits centred on x: four
+   digits from x-0x30, three from x-0x20, two from x-0x10, a lone unit at x.
+   The fixed-point multiply and the 2x2 rotation are the NitroSDK FX_Mul and
+   MTX_Rot22 shapes, written as local inlines. Spelled that way the
+   allocator keeps the thousands counter in r0 as the cartridge does; with
+   the products written out in the body it lands in ip or r3. */
+struct M { int _00, _01, _10, _11; };
+extern void func_ov004_020b1c68(void* a0, int a1, int a2, int a3, int a4, struct M* a5);
+extern s16 data_02082214[];
+extern int data_ov006_02137cd8[];
+
+static inline int FX_Mul(int v1, int v2)
+{
+    s64 t = (s64)v1 * v2;
+    return (int)((t + 0x800) >> 12);
+}
+
+static inline void MTX_Rot22(struct M *p, int sinVal, int cosVal)
+{
+    p->_00 = cosVal;
+    p->_01 = sinVal;
+    p->_10 = -sinVal;
+    p->_11 = cosVal;
+}
+
+static inline s16 FX_SinIdx(int idx) { return data_02082214[idx << 1]; }
+static inline s16 FX_CosIdx(int idx) { return data_02082214[(idx << 1) + 1]; }
+
+void func_ov004_020b2220(int x, int y, int value, int a3, int a4, int scale, u16 angle)
+{
+    struct M m;
+    int idx;
+    int te, hu, th;
+
+    if (value >= 9999) value = 9999;
+    te = hu = th = 0;
+    while (value >= 1000) { value -= 1000; th++; }
+    while (value >= 100) { value -= 100; hu++; }
+    while (value >= 10) { value -= 10; te++; }
+
+    idx = angle >> 4;
+    MTX_Rot22(&m, FX_Mul(FX_SinIdx(idx), scale), FX_Mul(FX_CosIdx(idx), scale));
+
+    if (th != 0) {
+        func_ov004_020b1c68((void *)data_ov006_02137cd8[th], x - 0x30, y, a3, a4, &m);
+        func_ov004_020b1c68((void *)data_ov006_02137cd8[hu], x - 0x10, y, a3, a4, &m);
+        func_ov004_020b1c68((void *)data_ov006_02137cd8[te], x + 0x10, y, a3, a4, &m);
+        x += 0x30;
+    } else if (hu != 0) {
+        func_ov004_020b1c68((void *)data_ov006_02137cd8[hu], x - 0x20, y, a3, a4, &m);
+        func_ov004_020b1c68((void *)data_ov006_02137cd8[te], x, y, a3, a4, &m);
+        x += 0x20;
+    } else if (te != 0) {
+        func_ov004_020b1c68((void *)data_ov006_02137cd8[te], x - 0x10, y, a3, a4, &m);
+        x += 0x10;
+    }
+    func_ov004_020b1c68((void *)data_ov006_02137cd8[value], x, y, a3, a4, &m);
+}
+}
+}
+#pragma pop
+
+// @symbol func_ov004_020b2444
+namespace s20b2444 {
+extern "C" {
+extern int data_ov006_02137cd8[];
+extern void func_ov004_020b1d60(int a0, int a1, int a2, int a3, int a4);
+
+void func_ov004_020b2444(int a1, int a2, int num, int a4, int a5, int sel, int idx)
+{
+    unsigned t = num;
+    int digits = 0;
+    int off;
+    if (num != 0) {
+        do {
+            t /= 10;
+            digits++;
+        } while (t != 0);
+    }
+    off = 0;
+    switch (sel) {
+    case 0:
+        off = (digits << 3) - 8;
+        break;
+    case 1:
+        break;
+    case 2:
+        off = (digits << 4) - 0x10;
+        break;
+    }
+    if (num == 0) {
+        func_ov004_020b1d60(data_ov006_02137cd8[idx], a1, a2, a4, a5);
+        return;
+    }
+    if (num <= 0)
+        return;
+    do {
+        func_ov004_020b1d60(data_ov006_02137cd8[num % 10 + idx], a1 + off, a2, a4, a5);
+        num /= 10;
+        off -= 0x10;
+    } while (num > 0);
+}
+}
+}
+
+// @symbol func_ov004_020b2574
+namespace s20b2574 {
+extern "C" {
+extern int GetGameLanguage(void);
+extern void DrawOamSprite(void *arg0, void *arg1, int arg2, void *arg3);
+extern void func_ov004_020b2444(int a1, int a2, int num, int a4, int a5, int sel, int idx);
+extern void func_ov004_020af948(void *a, int b, int c, void *m);
+extern void **data_ov004_020bbfa8[];
+
+void func_ov004_020b2574(int arg0, int arg1)
+{
+    void **table = data_ov004_020bbfa8[GetGameLanguage()];
+    void *sb = table[0];
+    int b = 12;
+    if (arg1 != 1) {
+        DrawOamSprite(sb, (void *)b, b, 0);
+        DrawOamSprite(data_ov004_020bbfa8[GetGameLanguage()][1], (void *)30, b, 0);
+        func_ov004_020b2444(0x30, b, arg0, 1, -1, 2, 0);
+    } else {
+        int i;
+        for (i = 0; i < arg0; i++) {
+            func_ov004_020af948(sb, b, 12, 0);
+            b += 16;
+        }
+    }
+}
+}
+}
+
+namespace s20b265c {
+extern "C" {
+// @symbol _ZN11dScMgBase_c9Virtual84Ev
+/* dScMgBase_c::Virtual84 - slot 33, and the only slot in this campaign with
+   NOTHING to correct.  There was no `recovered name:` line on this function or
+   on any of its overrides: the recovery pass never guessed a name here, so
+   unlike slots 26, 29, 30, 31 and 32 there is no borrowed label to retire.
+   The ROM names nothing either -- dScMgBase_c is a SCENE (fBase_c -> dBase_c
+   -> dScene_c -> dScMgBase_c) and dActor_c, whose names slots 18-30 borrowed
+   by index, has no slot 33 at all.  Virtual84 is the repo's own no-name
+   spelling, after the +0x84 vtable offset, the same convention fBase_c uses
+   for Virtual34 and Virtual38.  See the slot-33 block in
+   include/dScMgBase_c.h.
+
+   ENGINE BRING-UP.  Graphics modes for both engines (GX mode 1/0/0, GXS mode
+   0), VRAM banks assigned to BG and OBJ on both screens, and BOTH BG-enable
+   shadows -- data_0209d45c for the main engine, data_0209d454 for the sub --
+   initialised to 0x10, which is the value slots 30 and 31 later save, clear
+   bits out of and restore.  A language-indexed character file (indexed by
+   GetGameLanguage into data_ov004_020bbfe4) is decompressed into BOTH engines'
+   BG char VRAM at 0x06404000 and 0x06604000, OBJ palette file 0xc3 is loaded
+   into both, and the scene object is published into the global registry --
+   data_ov004_020beb74[1] = this, then data_0209d4a8 points at that registry.
+   The object fields it touches are its own: +0x68 cleared and +0x6c set to -1.
+
+   WHEN IT RUNS.  First out of dScMgBase_c::BeforeInitResources
+   (ov004:0x020b0930): the +0x84 dispatch at 0x020b09d0 is near the top and
+   slot 31's +0x7c dispatch at 0x020b0a0c is the last thing before the
+   function returns 1.  Slot 32 runs out of AfterInitResources.  So the
+   sequence is: bring the engines up (33), dress the sub screen (31), then
+   dress the main screen (32).
+
+   arity: no explicit parameters, MEASURED.  Scanning arm9 and all 103 overlays
+   for the dispatch pair -- `ldr rD,[rN,#0x84]` with Rn != pc, followed within
+   three instructions by `blx rD`/`bx rD` -- finds exactly two sites image-wide,
+   of which one is in ov004 or ov006: the 0x020b09d0 call above.  It reads
+   `mov r0,r4; ldr r1,[r0]; ldr r1,[r1,#0x84]; blx r1`, so r1 is the loaded
+   pointer and cannot also be a second argument.  The scanner was validated by
+   re-running it at +0x80 and reproducing slot 32's known call site.
+   return type: void, which is what all three bodies do -- none assigns a
+   result and the one caller ignores whatever falls out. */
+extern void _ZN2GX15SetGraphicsModeEiii(int a, int b, int c);
+extern void _ZN3GXS15SetGraphicsModeEi(int a);
+extern void func_ov004_020b2980(void);
+extern void func_ov004_020b290c(void);
+extern void _ZN2GX12SetBankForBGEt(u16 a);
+extern void _ZN2GX13SetBankForOBJEt(u16 a);
+extern void _ZN2GX15SetBankForSubBGEt(u16 a);
+extern void _ZN2GX16SetBankForSubOBJEt(u16 a);
+extern s32 GetGameLanguage(void);
+extern void *func_ov004_020adc68(int id);
+extern void DecompressLZ16(void *src, void *dst);
+extern void Ov004_Deallocate(void *p);
+extern void _ZN4CP1527FlushAndInvalidateDataCacheEjj(void *p, u32 len);
+extern void _ZN2GX11LoadOBJPlttEPKvjj(const void *p, u32 a, u32 b);
+extern void _ZN3GXS11LoadOBJPlttEPKvjj(const void *p, u32 a, u32 b);
+extern void func_ov004_020b0d30(void);
+extern void FreeGfxSlotsById(int arg);
+extern int data_ov004_020beb6c;
+extern u8 data_0209d45c;
+extern int data_ov004_020bbfe4[];
+extern int data_ov004_020beb74[];
+extern u8 data_0209d454;
+extern void **data_0209d4a8;
+extern int data_0208ee44;
+}
+}
+
+void dScMgBase_c::Virtual84()
+{ using s20b265c::DecompressLZ16; using s20b265c::FreeGfxSlotsById; using s20b265c::GetGameLanguage; using s20b265c::Ov004_Deallocate; using s20b265c::_ZN2GX11LoadOBJPlttEPKvjj; using s20b265c::_ZN2GX12SetBankForBGEt; using s20b265c::_ZN2GX13SetBankForOBJEt; using s20b265c::_ZN2GX15SetBankForSubBGEt; using s20b265c::_ZN2GX15SetGraphicsModeEiii; using s20b265c::_ZN2GX16SetBankForSubOBJEt; using s20b265c::_ZN3GXS11LoadOBJPlttEPKvjj; using s20b265c::_ZN3GXS15SetGraphicsModeEi; using s20b265c::_ZN4CP1527FlushAndInvalidateDataCacheEjj; using s20b265c::data_0208ee44; using s20b265c::data_0209d454; using s20b265c::data_0209d45c; using s20b265c::data_0209d4a8; using s20b265c::data_ov004_020bbfe4; using s20b265c::data_ov004_020beb6c; using s20b265c::data_ov004_020beb74; using s20b265c::func_ov004_020adc68; using s20b265c::func_ov004_020b0d30; using s20b265c::func_ov004_020b290c; using s20b265c::func_ov004_020b2980;
+    char *obj = (char *)this;
+
+    void *p;
+
+    data_ov004_020beb6c = 0;
+    obj[0x68] = 0;
+    *(int *)(obj + 0x6c) = -1;
+    *(vu32 *)0x4001000u |= 0x10000u;
+    _ZN2GX15SetGraphicsModeEiii(1, 0, 0);
+    _ZN3GXS15SetGraphicsModeEi(0);
+    *(vu32 *)0x4001000u &= 0xffcfffefu;
+    *(vu16 *)0x4000304u |= 0x8000u;
+    func_ov004_020b2980();
+    func_ov004_020b290c();
+    *(vu32 *)0x4000000u &= ~0x7000000u;
+    *(vu32 *)0x4000000u &= ~0x38000000u;
+    _ZN2GX12SetBankForBGEt(3);
+    _ZN2GX13SetBankForOBJEt(0x10);
+    data_0209d45c = 0x10;
+    _ZN2GX15SetBankForSubBGEt(4);
+    _ZN2GX16SetBankForSubOBJEt(8);
+    p = func_ov004_020adc68(data_ov004_020bbfe4[GetGameLanguage()]);
+    {
+        char *dst = (char *)0x6400000; dst += 0x4000;
+        DecompressLZ16(p, dst);
+    }
+    {
+        char *dst = (char *)0x6600000; dst += 0x4000;
+        DecompressLZ16(p, dst);
+    }
+    Ov004_Deallocate(p);
+    p = func_ov004_020adc68(0xc3);
+    _ZN4CP1527FlushAndInvalidateDataCacheEjj(p, 0x100u);
+    _ZN2GX11LoadOBJPlttEPKvjj(p, 0x100u, 0x100u);
+    _ZN3GXS11LoadOBJPlttEPKvjj(p, 0x100u, 0x100u);
+    Ov004_Deallocate(p);
+    data_0209d454 = 0x10;
+    data_ov004_020beb74[1] = (int)obj;
+    data_0209d4a8 = (void **)data_ov004_020beb74;
+    func_ov004_020b0d30();
+    FreeGfxSlotsById(0x1d);
+    data_0208ee44 = 1;
+}
+
+namespace s20b27f4 {
+extern "C" {
+// @symbol _ZN11dScMgBase_c9Virtual80Ev
+// recovered name: dScMgBase_c_AfterClsn  -- WRONG, see below
+/* recovered: renamed to Class_Method, declarations from a shared header */
+/* dScMgBase_c::Virtual80 - slot 32.
+
+   The `recovered name:` line above is kept visible because it is wrong.  This
+   time the borrowed name is a REAL ROM name -- _ZN16dPathLiftActor_c9AfterClsnEi,
+   declared at include/PathLift.h:58 -- which makes it the more misleading of the
+   two.  dPathLiftActor_c derives from dBgActor_c, which derives from dActor_c;
+   dScMgBase_c is a dScene_c.  The chains share only dBase_c, which adds no
+   virtual, so the two slot 32s have fBase_c's first eighteen entries in common
+   and nothing else.  That AfterClsn also takes an int.  See the slot-32 block in
+   include/dScMgBase_c.h.
+
+   It touches no collision.  It is slot 31 with the other display engine: three
+   read-modify-writes leave the MAIN BG1CNT at 0x0400000a holding exactly 0x1000,
+   the layer's scroll is reset, BG1's bit is cleared from data_0209d45c -- the
+   MAIN BG-enable shadow slot 30 restores the main DISPCNT from, where 31 cleared
+   the sub's data_0209d454 -- and a language-indexed character file plus the
+   shared screen map (file 0x67 here, 0x5b there) are installed.  It builds this
+   minigame's TOP-screen background, from AfterInitResources. */
+extern int GetGameLanguage(void);
+extern unsigned int LoadCompressedFileAt(int fileID, void *target);
+extern unsigned char data_0209d45c[];
+}
+}
+
+void dScMgBase_c::Virtual80()
+{ using s20b27f4::GetGameLanguage; using s20b27f4::LoadCompressedFileAt; using s20b27f4::data_0209d45c;
+    int f;
+    *(volatile unsigned short *)0x400000a = *(volatile unsigned short *)0x400000a & ~3;
+    *(volatile unsigned short *)0x400000a = (*(volatile unsigned short *)0x400000a & 0x43) | 0x1000;
+    *(volatile unsigned short *)0x400000a = *(volatile unsigned short *)0x400000a & ~0x40;
+    SetBg1Offset(0, 0);
+    data_0209d45c[0] &= ~2;
+    f = GetGameLanguage();
+    LoadCompressedFileAt(data_ov004_020bbff8[f], (void *)func_02054ea8());
+    LoadCompressedFileAt(0x67, _ZN2G212GetBG1ScrPtrEv());
+}
+
+namespace s20b2880 {
+extern "C" {
+// @symbol _ZN11dScMgBase_c9Virtual7CEv
+// recovered name: dScMgBase_c_Kill  -- WRONG, see below
+/* recovered: renamed to Class_Method, declarations from a shared header */
+/* dScMgBase_c::Virtual7C - slot 31.
+
+   The `recovered name:` line above is kept visible because it is wrong.  The
+   ROM names nothing here: dScMgBase_c is a SCENE (fBase_c -> dBase_c ->
+   dScene_c -> dScMgBase_c), not an actor, and dActor_c -- whose names slots
+   18-30 borrowed by index -- has no slot 31 at all.  `Kill` was carried across
+   from dBgActor_c, dActor_c's own child, where _ZN10dBgActor_c4KillEv
+   (ov002:0x020ee55c) is that class's new slot 31.  Different branch, same
+   index, no relationship.  See the slot-31 block in include/dScMgBase_c.h.
+
+   It also does not kill anything.  Three read-modify-writes leave the sub
+   engine's BG1CNT holding exactly 0x10 -- priority 0, no mosaic -- then the
+   layer's scroll is reset, BG1's bit is cleared from the sub BG-enable shadow
+   that slot 30 restores the sub DISPCNT from, and a language-indexed character
+   file plus the shared screen map (file 0x5b) are installed.  It builds this
+   minigame's touch-screen background, from BeforeInitResources. */
+extern int GetGameLanguage(void);
+extern unsigned int _ZN3G2S13GetBG1CharPtrEv(void);
+extern unsigned int LoadCompressedFileAt(int fileID, void *target);
+extern void *_ZN3G2S12GetBG1ScrPtrEv(void);
+extern unsigned char data_0209d454[];
+}
+}
+
+int dScMgBase_c::Virtual7C()
+{ using s20b2880::GetGameLanguage; using s20b2880::LoadCompressedFileAt; using s20b2880::_ZN3G2S12GetBG1ScrPtrEv; using s20b2880::_ZN3G2S13GetBG1CharPtrEv; using s20b2880::data_0209d454;
+    int f;
+    *(volatile unsigned short *)0x400100a = (*(volatile unsigned short *)0x400100a & 0x43) | 0x10;
+    *(volatile unsigned short *)0x400100a = *(volatile unsigned short *)0x400100a & ~0x40;
+    *(volatile unsigned short *)0x400100a = *(volatile unsigned short *)0x400100a & ~3;
+    SetSubBg1Offset(0, 0);
+    data_0209d454[0] &= ~2;
+    f = GetGameLanguage();
+    LoadCompressedFileAt(data_ov004_020bc00c[f], (void *)_ZN3G2S13GetBG1CharPtrEv());
+    LoadCompressedFileAt(0x5b, _ZN3G2S12GetBG1ScrPtrEv());
+}
+
+// @symbol func_ov004_020b290c
+namespace s20b290c {
+extern "C" {
+void SetBg0Offset(int a, int b);
+void SetBg1Offset(int a, int b);
+void SetBg2Offset(int a, int b);
+void SetBg3Offset(int a, int b);
+void SetSubBg0Offset(int a, int b);
+void SetSubBg1Offset(int a, int b);
+void SetSubBg2Offset(int a, int b);
+void SetSubBg3Offset(int a, int b);
+
+void func_ov004_020b290c(void) {
+    SetBg0Offset(0, 0);
+    SetBg1Offset(0, 0);
+    SetBg2Offset(0, 0);
+    SetBg3Offset(0, 0);
+    SetSubBg0Offset(0, 0);
+    SetSubBg1Offset(0, 0);
+    SetSubBg2Offset(0, 0);
+    SetSubBg3Offset(0, 0);
+}
+}
+}
+
+// @symbol func_ov004_020b2980
+namespace s20b2980 {
+extern "C" {
+extern void _ZN2GX15DisableAllBanksEv(void);
+void func_ov004_020b2980(void) { _ZN2GX15DisableAllBanksEv(); }
+}
+}
+
+// @symbol _ZN11dScMgBase_c15OnGroundPoundedEv
+// recovered name: dScMgBase_c_OnGroundPounded
+/* recovered: renamed to Class_Method */
+/* dScMgBase_c::OnGroundPounded - recovered from vtable slot identity */
+void dScMgBase_c::OnGroundPounded()
+{
+}
+
+// @symbol _ZN11dScMgBase_c9Virtual50Ev
+/* Minigame slot 20; Virtual50 is a placeholder, not an original name.
+   The reconstructed void contract is documented in dScMgBase_c.h. */
+/* The base does nothing: the ROM body is a single `bx lr`. */
+void dScMgBase_c::Virtual50()
+{
+}
+
+// @symbol _ZN11dScMgBase_c13OnTurnIntoEggEi
+// recovered name: dScMgBase_c_OnTurnIntoEgg
+/* recovered: renamed to Class_Method */
+/* dScMgBase_c::OnTurnIntoEgg - recovered from vtable slot identity */
+/* vtable slot 19. Both the name and the signature are evidenced here: this
+   body carries its own `recovered name:` above, and dScMgJump_c and
+   dScMgBSC_c carry theirs. The parameter is an int, not dActor_c.h:132's
+   `Player &` -- see include/dScMgBase_c.h. The base ignores the mode. */
+int dScMgBase_c::OnTurnIntoEgg(int /* mode */)
+{
+    return 1;
+}
+
+// @symbol _ZN11dScMgBase_c13OnYoshiTryEatEi
+/* vtable slot 18. The name is NOT a `recovered name:` -- this body carried
+   none. It comes from include/dActor_c.h:131 and from ov006/symbols.txt,
+   which already named dScMgCoin_c's override of this slot. The signature,
+   unlike the name, is measured; see include/dScMgBase_c.h.
+   The base ignores both arguments -- every descendant that cares reads
+   them. */
+void dScMgBase_c::OnYoshiTryEat(int arg)
+{
+}
+
+// @symbol func_ov004_020b29a0
+namespace s20b29a0 {
+/* Calls slot 18 of the object it is given, passing the argument through.
+   The class is not recovered, so a local view of nineteen slots stands in. */
+struct Base {
+    virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3();
+    virtual void v4(); virtual void v5(); virtual void v6(); virtual void v7();
+    virtual void v8(); virtual void v9(); virtual void v10(); virtual void v11();
+    virtual void v12(); virtual void v13(); virtual void v14(); virtual void v15();
+    virtual void v16(); virtual void v17(); virtual void v18(void*);
+};
+extern "C" void func_ov004_020b29a0(Base *c, void *arg) { c->v18(arg); }
+}
+
+/* The constructor and destructor are the end of the unit, and the one place
+   the file is not in ROM order. Under defer_codegen off the out-of-line
+   destructor comes out D1, D0, D2; the cartridge has D2, D0, D1 and then C2.
+   With deferred codegen mwccarm emits a run of definitions in reverse, so
+   writing the constructor first and the destructor after it, inside this
+   bracket, produces D2, D0, D1, C2 as on the cartridge. */
+#pragma push
+#pragma defer_codegen on
+
+namespace s20b2adc {
+extern "C" {
+// @symbol _ZN11dScMgBase_cC2Ev
+int func_ov004_020adc3c(void *scene);
+int func_02013580(int value, int arg);
+void func_ov004_020adc00(int value);
+
+extern char data_0209b308;
+extern short data_ov004_020bc070[];
+}
+}
+
+dScMgBase_c::dScMgBase_c()
+    : unk_0a4(0), unk_0c2(1)
+{ using s20b2adc::data_0209b308; using s20b2adc::data_ov004_020bc070; using s20b2adc::func_02013580; using s20b2adc::func_ov004_020adc00; using s20b2adc::func_ov004_020adc3c;
+    mMenuOpen = 0;
+    unk_462c = 0;
+    unk_4630 = 0;
+    unk_4648 = 0;
+
+    data_ov004_020beb68 = this;
+    unk_0bc = *(u32 *)(&data_0209b308 + 0x30);
+
+    mSceneKind = data_ov004_020bc070[(param1 >> 16) & 0xff];
+    *(s32 *)((char *)this + 8) =
+        *(u32 *)((char *)this + 8) & 0xffff;
+    unk_050 = 0;
+    unk_054 = 0;
+
+    if (actorID == 0x16e || actorID == 0x185 ||
+        actorID == 0x16d || actorID == 0x182)
+        mTimeLimit = 0x3c;
+    else
+        mTimeLimit = 0x78;
+
+    unk_060 = 0;
+    mFrameCounter = 0;
+    unk_464c = 0;
+    unk_4654 = 0;
+    unk_4658 = 0;
+    unk_064 = -1;
+
+    func_ov004_020adc00(func_02013580(func_ov004_020adc3c(this), 0));
+}
+
+// @symbol _ZN11dScMgBase_cD2Ev
+// @symbol _ZN11dScMgBase_cD0Ev
+// @symbol _ZN11dScMgBase_cD1Ev
+/* The destructor clears the shared minigame pointer; CodeWarrior supplies the
+   vptr restores and the dScene_c teardown. This one out-of-line definition
+   emits all three variants, D2 at 0x020b29c0, D0 at 0x020b2a18 and D1 at
+   0x020b2a84, in that order inside the deferred bracket. As the first
+   declared virtual it is the key function, so this file also emits the
+   dScMgBase_c vtable and RTTI. */
+dScMgBase_c::~dScMgBase_c()
+{
+    data_ov004_020beb68 = 0;
+}
+
+#ifdef _MSC_VER
+/* THE HOST NEEDS THE ROM'S FLAT D2 AND D0 NAMES, AND MSVC NEVER EMITS THEM.
+ * MSVC folds the Itanium destructor variants into the one ~dScMgBase_c()
+ * above. Descendants tearing down a dScMgBase_c base subobject call the
+ * base-object variant by its flat name; the deleting variant is the D1 body
+ * followed by the class-specific operator delete. Each is spelled here in
+ * terms of the one host destructor, called qualified so it is a direct call.
+ * mwccarm never defines _MSC_VER, so nothing here reaches the cartridge
+ * object. */
+extern "C" dScMgBase_c *_ZN11dScMgBase_cD2Ev(dScMgBase_c *thiz)
+{
+    thiz->dScMgBase_c::~dScMgBase_c();
+    return thiz;
+}
+
+extern "C" dScMgBase_c *_ZN11dScMgBase_cD0Ev(dScMgBase_c *thiz)
+{
+    thiz->dScMgBase_c::~dScMgBase_c();
+    dScMgBase_c::operator delete(thiz);
+    return thiz;
+}
+#endif
+
+#pragma pop
