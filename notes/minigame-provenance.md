@@ -248,11 +248,11 @@ header at all -- its one
 inherited-field access at 0xbc is dScMgBase_c's own pad_0bc, not a named
 field there either, so it now reaches it via a raw char* offset, the same
 idiom dScMgPachinko_c's own slot 18 helper already uses), 31 (now
-`Virtual7C`, src/_ZN12dScMgAmida_c9Virtual7CEv.cpp -- takes no parameters
+`Virtual7C`, _ZN12dScMgAmida_c9Virtual7CEv in src/actors/dScMgAmida_c.cpp -- takes no parameters
 and never touches `this` at all, pure hardware-register/global reset; it
 was left as a raw helper by THIS migration and picked up later, when the
 slot-31 keystone commit named the base slot), 34 (now `Virtual88`,
-src/_ZN12dScMgAmida_c9Virtual88Eiiii.cpp -- the slot's signature is
+_ZN12dScMgAmida_c9Virtual88Eiiii in src/actors/dScMgAmida_c.cpp -- the slot's signature is
 `void(int, int, int, int)`, measured from the seven call sites in
 [ov004](../config/arm9/overlays/ov004/symbols.txt):0x020ae5c4, and this body reads only three of the four because the
 fourth arrives on the stack and it supplies its own size instead; it is
@@ -267,7 +267,7 @@ picked up later, when the slot-34 keystone commit named the base slot --
 it never includes this header either).
 
 rtti_vtables.py --own ALSO reports slot 35, now `Virtual8C`
-(src/_ZN12dScMgAmida_c9Virtual8CEv.cpp, a one-line
+(_ZN12dScMgAmida_c9Virtual8CEv in src/actors/dScMgAmida_c.cpp, a one-line
 `((*(int*)((char*)c+8))&0xff)==1` check, same shape as slot 36 below but
 for a different constant).  The observation recorded here -- that nothing
 in InitResources/AfterCleanupResources/Behavior/Render/D1/D0 calls it, and
@@ -312,10 +312,10 @@ migrated methods.
 
 THE DESTRUCTOR IS NON-TRIVIAL: unlike most siblings, this class explicitly
 destroys FOUR arrays via __destroy_arr, in this exact order, in BOTH D1
-and D0 (src/_ZN12dScMgAmida_cD1Ev.cpp and .../_D0Ev.cpp carry an identical
-body, same shape dScMgHanachan_c's own D1/D0 pair uses): the 0x80x0x18
+and D0 (both emitted from the one ~dScMgAmida_c() in
+src/actors/dScMgAmida_c.cpp, with an identical body, same shape dScMgHanachan_c's own D1/D0 pair uses): the 0x80x0x18
 dScMgAmida_c_Piece array at 0x4768 (own per-element dtor
-[func_ov006_020d116c](../src/func_ov006_020d116c.c), a no-op -- the element type needs no real cleanup),
+func_ov006_020d116c in [src/actors/dScMgAmida_c.cpp](../src/actors/dScMgAmida_c.cpp), a no-op -- the element type needs no real cleanup),
 then the three NullDestructor_0203d47c-based 4x8-byte arrays at 0x4744,
 0x4724, and 0x4660 in that order (their own per-element dtor is also a
 no-op). The base-D2 call and own-vtable-write are compiler generated;
@@ -387,7 +387,7 @@ ever reads or writes them, so they are not modelled as a field.
 
 ### The __destroy_arr declarations
 
-__destroy_arr / [func_ov006_020d116c](../src/func_ov006_020d116c.c) / NullDestructor_0203d47c: the same
+__destroy_arr / func_ov006_020d116c / NullDestructor_0203d47c: the same
 __destroy_arr(p, count, elemSize, dtor) idiom dScMgBase_c's own D1/D0 use
 for touchIcon_0f4 (see dScMgBase_c.h's file banner and
 _ZN11dScMgBase_cD1Ev in src/minigames/d_s_mg_base.cpp) -- declared here, not per-destructor-file,
