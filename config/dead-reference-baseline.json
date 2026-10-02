@@ -50,12 +50,20 @@
    "ref": "src/_ZN8PlatformD0Ev.cpp"
   },
   {
+   "file": "notes/agents/handoffs/issue-2410-humanizer-2.md",
+   "ref": "src/func_ov006_020cb030.cpp"
+  },
+  {
    "file": "notes/agents/handoffs/issue-2411-humanizer-2.md",
    "ref": "src/_ZN5Crate13OnTurnIntoEggER6Player.cpp"
   },
   {
    "file": "notes/agents/handoffs/issue-2411-humanizer-2.md",
    "ref": "src_tu/actors/Koopa"
+  },
+  {
+   "file": "notes/agents/handoffs/issue-2412-humanizer-2.md",
+   "ref": "src/func_ov006_020cb030.cpp"
   },
   {
    "file": "notes/agents/handoffs/mg-p1-3desp-0925.md",
@@ -154,6 +162,10 @@
    "ref": "src_tu/actors/daObj_volcanoCannon_c.cpp"
   },
   {
+   "file": "notes/agents/handoffs/pr2868-source-repair-0920.md",
+   "ref": "include/BookShot.h"
+  },
+  {
    "file": "notes/agents/handoffs/promote-ov055-luigi-0923.md",
    "ref": "src/d_a_luigi.cpp"
   },
@@ -166,6 +178,38 @@
    "ref": "src/d_a_onms.cpp"
   },
   {
+   "file": "notes/agents/handoffs/shadowback-bookshot-0920.md",
+   "ref": "src/_ZN8BookShot13InitResourcesEv.cpp"
+  },
+  {
+   "file": "notes/agents/handoffs/shadowback-bookshot-0920.md",
+   "ref": "src/_ZN8BookShot8BehaviorEv.cpp"
+  },
+  {
+   "file": "notes/agents/handoffs/shadowback-bookshot-0920.md",
+   "ref": "src/func_ov020_02111418.cpp"
+  },
+  {
+   "file": "notes/agents/handoffs/shadowback-bookshot-0920.md",
+   "ref": "src/func_ov020_02111b28.cpp"
+  },
+  {
+   "file": "notes/agents/handoffs/shadowback-bookshot-0920.md",
+   "ref": "src/func_ov020_02111ee0.cpp"
+  },
+  {
+   "file": "notes/agents/handoffs/shadowback-bookshot-0920.md",
+   "ref": "src/func_ov020_02111fc4.cpp"
+  },
+  {
+   "file": "notes/agents/handoffs/shadowback-bookshot-0920.md",
+   "ref": "src/func_ov020_02112110.cpp"
+  },
+  {
+   "file": "notes/agents/handoffs/shadowback-bookshot-0920.md",
+   "ref": "src/func_ov020_0211216c.cpp"
+  },
+  {
    "file": "notes/archive/crack-loop-runbook.md",
    "ref": "notes/pret-idioms.md"
   },
@@ -176,6 +220,10 @@
   {
    "file": "notes/archive/n64-decomp-cross-reference.md",
    "ref": "include/trig_tables.inc.c"
+  },
+  {
+   "file": "notes/archive/n64-decomp-cross-reference.md",
+   "ref": "src/d_a_book_killer_book.c"
   },
   {
    "file": "notes/archive/n64-decomp-cross-reference.md",
@@ -451,10 +499,6 @@
   },
   {
    "file": "notes/tu-filename-reconstruction-pilot.md",
-   "ref": "src/BookShotSpawner_Spawn.c"
-  },
-  {
-   "file": "notes/tu-filename-reconstruction-pilot.md",
    "ref": "src/ChainChomp_Spawn.cpp"
   },
   {
@@ -542,6 +586,10 @@
    "ref": "src/port"
   },
   {
+   "file": "tools/build_pin.py",
+   "ref": "src/func_ov006_020cb030.cpp"
+  },
+  {
    "file": "tools/chaos_db_ci.py",
    "ref": "src/F.c"
   },
@@ -592,6 +640,10 @@
   {
    "file": "tools/d0_migrate.py",
    "ref": "src/_ZN5EnemyD0Ev.c"
+  },
+  {
+   "file": "tools/demember_calls.py",
+   "ref": "src/func_ov006_020cb030.cpp"
   },
   {
    "file": "tools/evidence_history.py",
