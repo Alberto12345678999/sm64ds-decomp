@@ -5,7 +5,7 @@ extern int _ZTV14daObjFl_Coin_c[];
 /* Reconstructed source-style name: SM64DS proves daObjFl_Coin_c through RTTI,
  * allocation size, vtable identity, and the FL_COIN registry profile; later
  * EAD lineage supplies classInit. Exact original spelling is not preserved.
- * The project's daObjFl_Coin_c implementation aliases remain unchanged.
+ * The implementation was earlier named BowserPuzzleManager.
  * Historical alias: BowserPuzzleManager_Spawn. */
 int *daObjFl_Coin_c_classInit(void)
 {
