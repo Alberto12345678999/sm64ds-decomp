@@ -193,7 +193,7 @@
       "rom_build_passes": "NOT RUN"
     },
     "linkcheck": {
-      "round": "tools/tubuild.py linkcheck -- scratch dsd delink+lcf, whole-tree mwccarm, mwldarm link, linked-range and module byte comparison, dsd check symbols --fail vs baseline, full ROM build",
+      "round": "tools/tubuild.py linkcheck -- scratch dsd delink+lcf, whole-tree mwccarm, mwldarm link, linked-range and module byte comparison, dsd check symbols --fail, full ROM build",
       "result": "scratch-data-verified",
       "scratch": "build/tu/ov045-daObjKm2_Ami_Bou_c/link (gitignored)",
       "phases": {
@@ -227,6 +227,14 @@
           "firstDiff": null
         }
       ],
+      "objectAudit": {
+        "counts": {
+          "LICENSED": 10
+        },
+        "emittedTextOrderIsRomAscending": true,
+        "nonLicensedSymbols": [],
+        "unlicensedSections": []
+      },
       "nontextSectionOrder": {
         "groups": [
           {
@@ -240,90 +248,13 @@
               19,
               20,
               22
-            ],
-            "anchors": {
-              "19": [
-                {
-                  "symbol": "_ZTS18daObjKm2_Ami_Bou_c",
-                  "address": 34680192,
-                  "sectionBase": 34680192
-                }
-              ],
-              "20": [
-                {
-                  "symbol": "g_profile_KM2_AMI_BOU",
-                  "address": 34680216,
-                  "sectionBase": 34680216
-                }
-              ],
-              "22": [
-                {
-                  "symbol": "_ZTV18daObjKm2_Ami_Bou_c",
-                  "address": 34680244,
-                  "sectionBase": 34680244
-                }
-              ]
-            }
+            ]
           }
         ],
-        "objisolate": null
+        "objisolate": null,
+        "errors": null
       },
-      "objectAudit": {
-        "counts": {
-          "LICENSED": 10
-        },
-        "orderOk": true,
-        "nonLicensed": [],
-        "unlicensedSections": []
-      },
-      "vtableRebias": {
-        "rebased": [
-          {
-            "symbol": "_ZTV18daObjKm2_Ami_Bou_c",
-            "bias": 8,
-            "oldValue": 0,
-            "newValue": 8,
-            "oldSize": 136,
-            "newSize": 128
-          }
-        ],
-        "aliases": [],
-        "partitions": [],
-        "relocations": [
-          {
-            "section": ".text",
-            "relocationSection": ".rela.text",
-            "offset": 68,
-            "symbol": "_ZTV18daObjKm2_Ami_Bou_c",
-            "type": "R_ARM_ABS32",
-            "oldAddend": 8,
-            "newAddend": 0,
-            "mode": "rebased-definition"
-          },
-          {
-            "section": ".text",
-            "relocationSection": ".rela.text",
-            "offset": 84,
-            "symbol": "_ZTV18daObjKm2_Ami_Bou_c",
-            "type": "R_ARM_ABS32",
-            "oldAddend": 8,
-            "newAddend": 0,
-            "mode": "rebased-definition"
-          },
-          {
-            "section": ".text",
-            "relocationSection": ".rela.text",
-            "offset": 52,
-            "symbol": "_ZTV18daObjKm2_Ami_Bou_c",
-            "type": "R_ARM_ABS32",
-            "oldAddend": 8,
-            "newAddend": 0,
-            "mode": "rebased-definition"
-          }
-        ],
-        "stringTable": null,
-        "error": null
-      },
+      "linkedStorageAliases": null,
       "symbolCheckNewVsBaseline": [],
       "symbolCheckErrors": [
         "[ERROR] Symbol '_deq' in ITCM at 0x01ff9d40 not found in linked binary",
@@ -347,12 +278,13 @@
         "[ERROR] Symbol 'overlay_100' in ARM9 main at 0x00000064 not found in linked binary",
         "[ERROR] Symbol 'overlay_102' in ARM9 main at 0x00000066 not found in linked binary"
       ],
+      "moduleSetSha256": "f9852ffaf80ef19662ab5535df4b13b935188ac3087b5b1d4561c089e4dd802b",
       "rom": {
         "bytes": 16777216,
-        "sha256": "ddab9300b24aeae254192c2a30d812b07ece3adff83230e75c865ed915c9de40",
+        "sha256": "d1506e90efae5e2d2cf119926a4ac2a291bd5ca78349d09d5024e1a918c478e8",
         "matchesStockRom": true
       },
-      "note": "dsd check symbols --fail still fails on the 9 pre-existing ITCM/ARM9-main entries the baseline control also has (0 new), so that check is NOT green; every other phase is, and the full ROM is byte-identical to stock."
+      "linkerOutput": null
     },
     "compilerOnlyOutput": {
       "requested": [
