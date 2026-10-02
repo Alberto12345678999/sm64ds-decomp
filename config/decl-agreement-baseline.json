@@ -87,36 +87,6 @@
         "param:#2 Vector3 *",
         "param:#3 Vector3 *"
       ],
-      "src/func_ov006_020c53f8.c": [
-        "param:#1 Vector3 *",
-        "param:#2 Vector3 *",
-        "param:#3 Vector3 *"
-      ],
-      "src/func_ov006_020c5530.c": [
-        "param:#1 Vector3 *",
-        "param:#2 Vector3 *",
-        "param:#3 Vector3 *"
-      ],
-      "src/func_ov006_020c5bf8.c": [
-        "param:#1 Vector3 *",
-        "param:#2 Vector3 *",
-        "param:#3 Vector3 *"
-      ],
-      "src/func_ov006_020c6088.c": [
-        "param:#1 Vector3 *",
-        "param:#2 Vector3 *",
-        "param:#3 Vector3 *"
-      ],
-      "src/func_ov006_020c61c4.c": [
-        "param:#1 Vector3 *",
-        "param:#2 Vector3 *",
-        "param:#3 Vector3 *"
-      ],
-      "src/func_ov006_020c6a9c.c": [
-        "param:#1 Vector3 *",
-        "param:#2 Vector3 *",
-        "param:#3 Vector3 *"
-      ],
       "src/actors/dMgTrmpln2Mario_c.cpp": [
         "param:#1 Vector3 *",
         "param:#2 Vector3 *",
@@ -188,6 +158,11 @@
         "param:#3 Vector3 *"
       ],
       "src/actors/daHuwa_c.cpp": [
+        "param:#1 Vector3 *",
+        "param:#2 Vector3 *",
+        "param:#3 Vector3 *"
+      ],
+      "src/actors/dMg3DHeyhoObjAdapter_c.cpp": [
         "param:#1 Vector3 *",
         "param:#2 Vector3 *",
         "param:#3 Vector3 *"
@@ -896,18 +871,6 @@
         "param:#1 Vec3 *",
         "param:#2 Vec3 *"
       ],
-      "src/func_ov006_020c47d4.c": [
-        "param:#1 const Vec3 *",
-        "param:#2 const Vec3 *"
-      ],
-      "src/func_ov006_020c49d8.c": [
-        "param:#1 Vec3 *",
-        "param:#2 Vec3 *"
-      ],
-      "src/func_ov006_020c4fa4.cpp": [
-        "param:#1 Vec3 *",
-        "param:#2 Vec3 *"
-      ],
       "src/func_ov006_020ce8a0.cpp": [
         "param:#1 Vector3 *",
         "param:#2 Vector3 *"
@@ -923,6 +886,13 @@
       "src/func_ov007_020c7d60.c": [
         "param:#1 const Vec3 *",
         "param:#2 const Vec3 *"
+      ],
+      "src/actors/dMg3DHeyhoObjAdapter_c.cpp": [
+        "param:#1 Vec3 *",
+        "param:#1 const Vec3 *",
+        "param:#2 Vec3 *",
+        "param:#2 const Vec3 *",
+        "return:Fix12"
       ]
     },
     "DrawOamSprite": {
@@ -2546,25 +2516,7 @@
       "src/actors/dMgJump3DMario_c.cpp": [
         "param:#1 Jump3DVec *"
       ],
-      "src/func_ov006_020c42bc.c": [
-        "param:#1 Vec3 *"
-      ],
-      "src/func_ov006_020c47d4.c": [
-        "param:#1 Vec3 *"
-      ],
-      "src/func_ov006_020c49d8.c": [
-        "param:#1 Vec3 *"
-      ],
-      "src/func_ov006_020c4fa4.cpp": [
-        "param:#1 Vec3 *"
-      ],
-      "src/func_ov006_020c57d4.c": [
-        "param:#1 Vec3 *"
-      ],
-      "src/func_ov006_020c5aa4.c": [
-        "param:#1 Vec3 *"
-      ],
-      "src/func_ov006_020c5ec8.c": [
+      "src/actors/dMg3DHeyhoObjAdapter_c.cpp": [
         "param:#1 Vec3 *"
       ]
     },
@@ -4369,10 +4321,6 @@
         "param:#1 Vector3 *",
         "param:#2 Vector3 *"
       ],
-      "src/func_ov006_020c4fa4.cpp": [
-        "param:#1 Vec3 *",
-        "param:#2 Vec3 *"
-      ],
       "src/game/actors/d_a_c_jugem.cpp": [
         "param:#1 const void *",
         "param:#2 const void *"
@@ -4404,6 +4352,10 @@
       "src/actors/daYegg_c.cpp": [
         "param:#1 const void *",
         "param:#2 const void *"
+      ],
+      "src/actors/dMg3DHeyhoObjAdapter_c.cpp": [
+        "param:#1 Vec3 *",
+        "param:#2 Vec3 *"
       ]
     },
     "Vec3_DivScalarInPlace": {
@@ -4819,18 +4771,6 @@
         "param:#1 Vec3 *",
         "param:#2 const Vec3 *"
       ],
-      "src/func_ov006_020c4c54.cpp": [
-        "param:#1 Vector3 *",
-        "param:#2 Vector3 *"
-      ],
-      "src/func_ov006_020c4fa4.cpp": [
-        "param:#1 Vec3 *",
-        "param:#2 Vec3 *"
-      ],
-      "src/func_ov006_020c6400.c": [
-        "param:#1 Vec3 *",
-        "param:#2 const Vec3 *"
-      ],
       "src/actors/dMgTrmpln2Mario_c.cpp": [
         "param:#1 Vector3 *",
         "param:#2 const Vector3 *"
@@ -4865,6 +4805,13 @@
       ],
       "src/actors/daWanwan2_c.cpp": [
         "param:#2 const void *"
+      ],
+      "src/actors/dMg3DHeyhoObjAdapter_c.cpp": [
+        "param:#1 Vec3 *",
+        "param:#1 Vector3 *",
+        "param:#2 Vec3 *",
+        "param:#2 Vector3 *",
+        "param:#2 const Vec3 *"
       ]
     },
     "Vec3_MulScalarInPlace": {
@@ -5562,18 +5509,6 @@
       "src/func_ov004_020b6234.cpp": [
         "param:#1 int &"
       ],
-      "src/func_ov006_020c4fa4.cpp": [
-        "return:int"
-      ],
-      "src/func_ov006_020c5658.c": [
-        "return:int"
-      ],
-      "src/func_ov006_020c5928.c": [
-        "return:int"
-      ],
-      "src/func_ov006_020c5d28.c": [
-        "return:int"
-      ],
       "src/func_ov006_020cdf3c.c": [
         "return:int"
       ],
@@ -5611,11 +5546,15 @@
         "param:#1 int &"
       ],
       "src/actors/daKpa_c.cpp": [
-        "return:int"
+        "return:int",
+        "param:#1 int &"
       ],
       "src/actors/dMgTrmpln2Mario_c.cpp": [
         "return:int",
         "param:#1 int &"
+      ],
+      "src/actors/dMg3DHeyhoObjAdapter_c.cpp": [
+        "return:int"
       ],
       "src/actors/unit020bfec0.cpp": [
         "return:int"
@@ -5665,9 +5604,6 @@
       "src/func_ov004_020b4a4c.c": [
         "return:void"
       ],
-      "src/func_ov006_020c66bc.c": [
-        "return:void"
-      ],
       "src/actors/dMgTrmpln2Mario_c.cpp": [
         "param:#1 short &",
         "return:void"
@@ -5676,6 +5612,9 @@
         "return:void"
       ],
       "src/actors/daYegg_c.cpp": [
+        "return:void"
+      ],
+      "src/actors/dMg3DHeyhoObjAdapter_c.cpp": [
         "return:void"
       ]
     },
@@ -6656,7 +6595,7 @@
       "src/_ZN11dCapEnemy_c6AddCapEj.cpp": [
         "return:int"
       ],
-      "src/func_ov006_020c6f3c.c": [
+      "src/actors/dMg3DHeyhoObjAdapter_c.cpp": [
         "return:int"
       ]
     },
@@ -12200,6 +12139,11 @@
       ],
       "src/actors/daKpa_c.cpp": [
         "return:void"
+      ],
+      "src/actors/dMg3DHeyhoObjAdapter_c.cpp": [
+        "param:#2 Fix12",
+        "param:#3 Fix12",
+        "param:#4 Fix12"
       ]
     },
     "_ZN8Particle7Manager9AddSystemEiR7Vector3": {
@@ -12495,6 +12439,9 @@
       "src/actors/daKpa_c.cpp": [
         "return:char *",
         "return:void *"
+      ],
+      "src/func_ov060_021180e0.cpp": [
+        "return:void *"
       ]
     },
     "_ZN8dActor_c10PoofDustAtERK7Vector3": {
@@ -12739,6 +12686,9 @@
         "return:void *"
       ],
       "src/actors/daKpa_c.cpp": [
+        "return:void *"
+      ],
+      "src/func_ov060_021181b4.c": [
         "return:void *"
       ]
     },
@@ -13527,10 +13477,6 @@
       "src/func_ov002_020f6618.cpp": [
         "param:#5 unsigned int"
       ],
-      "src/func_ov006_020c6e4c.cpp": [
-        "param:#5 unsigned int",
-        "return:int"
-      ],
       "src/func_ov074_02121a4c.cpp": [
         "param:#5 unsigned int"
       ],
@@ -13662,6 +13608,10 @@
         "param:#1 char *",
         "return:int"
       ],
+      "src/actors/dMg3DHeyhoObjAdapter_c.cpp": [
+        "param:#5 unsigned int",
+        "return:int"
+      ],
       "src/actors/unit020bfec0.cpp": [
         "param:#5 unsigned int"
       ]
@@ -13670,11 +13620,11 @@
       "include/decl_ModelAnim.h": [
         "return:void"
       ],
+      "src/actors/dMg3DHeyhoObjAdapter_c.cpp": [
+        "return:int"
+      ],
       "src/actors/unit020bfec0.cpp": [
         "return:void"
-      ],
-      "src/func_ov006_020c6f3c.c": [
-        "return:int"
       ]
     },
     "_ZN9ModelBase7SetFileEP8BMD_Fileii": {
@@ -16944,14 +16894,14 @@
       ]
     },
     "data_0209f5c0": {
-      "src/func_ov006_020c6e4c.cpp": [
-        "return:GObj *"
-      ],
       "src/func_ov075_02116818.c": [
         "return:void *"
       ],
       "src/func_ov075_02116ad4.c": [
         "return:void *"
+      ],
+      "src/actors/dMg3DHeyhoObjAdapter_c.cpp": [
+        "return:GObj *"
       ]
     },
     "data_0209f5d0": {
@@ -20405,21 +20355,6 @@
         "return:int"
       ]
     },
-    "data_ov006_0213b010": {
-      "src/func_ov006_020c7388.c": [
-        "return:int []"
-      ]
-    },
-    "data_ov006_0213b014": {
-      "src/func_ov006_020c7490.c": [
-        "return:int []"
-      ]
-    },
-    "data_ov006_0213b018": {
-      "src/func_ov006_020c7388.c": [
-        "return:int []"
-      ]
-    },
     "data_ov006_0213b0ec": {
       "src/actors/dMgTrmpln2Mario_c.cpp": [
         "return:int []"
@@ -20457,47 +20392,22 @@
         "return:int []"
       ]
     },
-    "data_ov006_02140304": {
-      "src/func_ov006_020c4d3c.c": [
-        "return:int []"
-      ]
-    },
-    "data_ov006_02140324": {
-      "src/func_ov006_020c40e8.c": [
-        "return:int"
-      ],
-      "src/func_ov006_020c425c.c": [
-        "return:int"
-      ],
-      "src/func_ov006_020c44b4.c": [
-        "return:char *"
-      ],
-      "src/func_ov006_020c4684.c": [
-        "return:char *"
-      ]
-    },
     "data_ov006_02140330": {
       "src/__sinit_ov006_0212f4c4.c": [
         "return:char []"
       ],
-      "src/func_ov006_020c6e4c.cpp": [
-        "return:SharedFilePtr"
+      "src/actors/dMg3DHeyhoObjAdapter_c.cpp": [
+        "return:SharedFilePtr",
+        "return:int []"
       ]
     },
     "data_ov006_02140338": {
       "src/__sinit_ov006_0212f4c4.c": [
         "return:char []"
       ],
-      "src/func_ov006_020c6e4c.cpp": [
-        "return:SharedFilePtr"
-      ]
-    },
-    "data_ov006_021403f4": {
-      "src/func_ov006_020c47d4.c": [
-        "return:struct Obj * []"
-      ],
-      "src/func_ov006_020c4fa4.cpp": [
-        "return:VB * []"
+      "src/actors/dMg3DHeyhoObjAdapter_c.cpp": [
+        "return:SharedFilePtr",
+        "return:int []"
       ]
     },
     "data_ov006_02140400": {
@@ -20508,42 +20418,6 @@
     "data_ov006_02140404": {
       "src/actors/dMgJump3DMario_c.cpp": [
         "return:unsigned short"
-      ]
-    },
-    "data_ov006_02140414": {
-      "src/func_ov006_020c7490.c": [
-        "return:int []"
-      ]
-    },
-    "data_ov006_02140418": {
-      "src/func_ov006_020c70d0.c": [
-        "return:int []"
-      ],
-      "src/func_ov006_020c712c.c": [
-        "return:int []"
-      ],
-      "src/func_ov006_020c7388.c": [
-        "return:int []"
-      ],
-      "src/func_ov006_020c7490.c": [
-        "return:int []"
-      ]
-    },
-    "data_ov006_02140420": {
-      "src/func_ov006_020c712c.c": [
-        "return:int []"
-      ],
-      "src/func_ov006_020c719c.c": [
-        "return:char *"
-      ],
-      "src/func_ov006_020c7300.c": [
-        "return:Ent *"
-      ],
-      "src/func_ov006_020c7418.c": [
-        "return:char *"
-      ],
-      "src/func_ov006_020c7574.c": [
-        "return:char *"
       ]
     },
     "data_ov006_02140438": {
@@ -26497,10 +26371,10 @@
       "src/actors/dMgJump3DMario_c.cpp": [
         "arity:2"
       ],
-      "src/func_ov006_020c6e4c.cpp": [
+      "src/actors/dMgTrmpln2Mario_c.cpp": [
         "arity:2"
       ],
-      "src/actors/dMgTrmpln2Mario_c.cpp": [
+      "src/actors/dMg3DHeyhoObjAdapter_c.cpp": [
         "arity:2"
       ],
       "src/actors/unit020bfec0.cpp": [
@@ -26514,11 +26388,11 @@
       "src/actors/dMgJump3DMario_c.cpp": [
         "arity:2"
       ],
-      "src/func_ov006_020c6e4c.cpp": [
-        "arity:2"
-      ],
       "src/actors/dMgTrmpln2Mario_c.cpp": [
         "arity:3"
+      ],
+      "src/actors/dMg3DHeyhoObjAdapter_c.cpp": [
+        "arity:2"
       ],
       "src/actors/unit020bfec0.cpp": [
         "arity:2"
@@ -26536,7 +26410,7 @@
       "src/actors/daMip_c.cpp": [
         "param:#2 int"
       ],
-      "src/func_ov006_020c6e4c.cpp": [
+      "src/actors/dMg3DHeyhoObjAdapter_c.cpp": [
         "param:#2 int"
       ]
     },
@@ -26548,7 +26422,7 @@
       "src/actors/daMip_c.cpp": [
         "param:#2 int"
       ],
-      "src/func_ov006_020c6e4c.cpp": [
+      "src/actors/dMg3DHeyhoObjAdapter_c.cpp": [
         "param:#1 char *",
         "param:#2 int"
       ]
@@ -30003,23 +29877,15 @@
       ]
     },
     "func_0203ce80": {
-      "src/func_ov006_020c5658.c": [
-        "param:#1 Vec3 *",
-        "param:#2 Vec3 *"
-      ],
-      "src/func_ov006_020c5928.c": [
-        "param:#1 Vec3 *",
-        "param:#2 Vec3 *"
-      ],
-      "src/func_ov006_020c5d28.c": [
-        "param:#1 Vec3 *",
-        "param:#2 Vec3 *"
-      ],
       "src/func_ov006_020cd9b0.c": [
         "param:#1 Vec3 *",
         "param:#2 Vec3 *"
       ],
       "src/func_ov006_020cdd08.c": [
+        "param:#1 Vec3 *",
+        "param:#2 Vec3 *"
+      ],
+      "src/actors/dMg3DHeyhoObjAdapter_c.cpp": [
         "param:#1 Vec3 *",
         "param:#2 Vec3 *"
       ]
@@ -35372,29 +35238,6 @@
         "return:void *"
       ]
     },
-    "func_ov006_020c4710": {
-      "src/func_ov006_020c42bc.c": [
-        "param:#1 Obj *"
-      ]
-    },
-    "func_ov006_020c49d8": {
-      "src/func_ov006_020c4fa4.cpp": [
-        "param:#1 char *"
-      ]
-    },
-    "func_ov006_020c4cd8": {
-      "src/func_ov006_020c42bc.c": [
-        "param:#1 Obj *"
-      ]
-    },
-    "func_ov006_020c4f68": {
-      "src/func_ov006_020c47d4.c": [
-        "param:#1 Self *"
-      ],
-      "src/func_ov006_020c49d8.c": [
-        "param:#1 Self *"
-      ]
-    },
     "func_ov006_020c57d4": {
       "include/decl_common.h": [
         "param:#1 char *"
@@ -35420,11 +35263,6 @@
         "param:#1 char *"
       ]
     },
-    "func_ov006_020c64e4": {
-      "src/func_ov006_020c40e8.c": [
-        "param:#1 int"
-      ]
-    },
     "func_ov006_020c719c": {
       "include/decl_common.h": [
         "param:#1 int",
@@ -35435,16 +35273,6 @@
       "src/minigames/d_s_mg_jump2.cpp": [
         "arity:1",
         "return:void *"
-      ]
-    },
-    "func_ov006_020c7734": {
-      "src/func_ov006_020c70d0.c": [
-        "param:#1 int"
-      ]
-    },
-    "func_ov006_020c7860": {
-      "src/func_ov006_020c712c.c": [
-        "param:#1 int"
       ]
     },
     "func_ov006_020c9c8c": {
@@ -35746,13 +35574,13 @@
       "src/actors/dMgJump3DMario_c.cpp": [
         "return:void"
       ],
-      "src/func_ov006_020c4f68.c": [
-        "return:void"
-      ],
       "src/actors/dMgTrmpln2Mario_c.cpp": [
         "return:void"
       ],
       "src/func_ov006_020ce46c.c": [
+        "return:void"
+      ],
+      "src/actors/dMg3DHeyhoObjAdapter_c.cpp": [
         "return:void"
       ]
     },
@@ -38305,6 +38133,51 @@
     "data_ov100_02148744": {
       "src/__sinit_ov100_02147698.c": [
         "return:char []"
+      ]
+    },
+    "data_ov006_02140304": {
+      "src/actors/dMg3DHeyhoObjAdapter_c.cpp": [
+        "return:int []"
+      ]
+    },
+    "data_ov006_02140324": {
+      "src/actors/dMg3DHeyhoObjAdapter_c.cpp": [
+        "return:Ent *",
+        "return:char *",
+        "return:int"
+      ]
+    },
+    "data_ov006_021403f4": {
+      "src/actors/dMg3DHeyhoObjAdapter_c.cpp": [
+        "return:VB * []",
+        "return:struct Obj * []"
+      ]
+    },
+    "func_ov006_020c4710": {
+      "src/actors/dMg3DHeyhoObjAdapter_c.cpp": [
+        "param:#1 Obj *",
+        "param:#1 struct Obj *"
+      ]
+    },
+    "func_ov006_020c49d8": {
+      "src/actors/dMg3DHeyhoObjAdapter_c.cpp": [
+        "param:#1 char *"
+      ]
+    },
+    "func_ov006_020c4cd8": {
+      "src/actors/dMg3DHeyhoObjAdapter_c.cpp": [
+        "param:#1 Obj *",
+        "param:#1 struct Obj *"
+      ]
+    },
+    "func_ov006_020c4f68": {
+      "src/actors/dMg3DHeyhoObjAdapter_c.cpp": [
+        "param:#1 Self *"
+      ]
+    },
+    "func_ov006_020c64e4": {
+      "src/actors/dMg3DHeyhoObjAdapter_c.cpp": [
+        "param:#1 int"
       ]
     }
   }
