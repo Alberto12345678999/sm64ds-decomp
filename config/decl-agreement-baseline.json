@@ -23005,7 +23005,7 @@
       ]
     },
     "data_ov020_02114aa0": {
-      "src/_ZN15BookShotSpawner16CleanupResourcesEv.cpp": [
+      "src/_ZN11daBookGen_c16CleanupResourcesEv.cpp": [
         "return:int"
       ],
       "src/_ZN8daBook_c13InitResourcesEv.cpp": [
@@ -23041,7 +23041,7 @@
       ]
     },
     "data_ov020_02114ab8": {
-      "src/_ZN15BookShotSpawner13InitResourcesEv.cpp": [
+      "src/_ZN11daBookGen_c13InitResourcesEv.cpp": [
         "return:int []"
       ],
       "src/_ZN8daBook_c13InitResourcesEv.cpp": [

@@ -4,7 +4,7 @@
 #include "decl_ActorBase.h"
 #include "decl_common.h"
 /* recovered: globals resolved */
-/* resolved: VT = _ZTV15BookShotSpawner */
+/* resolved: VT = _ZTV11daBookGen_c */
 /* Reconstructed source-style name: SM64DS proves daBookGen_c through RTTI,
  * allocation size, vtable identity, and the BOOK_GENERATOR registry profile;
  * later EAD lineage supplies classInit. Exact original spelling is not
@@ -12,6 +12,6 @@
 int *daBookGen_c_classInit(void)
 {
     int *p = (int *)_ZN7fBase_cnwEj(216);
-    if (p) { _ZN8dActor_cC2Ev(p); p[0] = (int)_ZTV15BookShotSpawner; }
+    if (p) { _ZN8dActor_cC2Ev(p); p[0] = (int)_ZTV11daBookGen_c; }
     return p;
 }

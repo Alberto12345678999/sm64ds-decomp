@@ -1,6 +1,6 @@
 //cpp
 #include "dActor_c.h"
-#include "BookShotSpawner.h"
+#include "daBookGen_c.h"
 #include "Player.h"
 
 extern "C" {
@@ -8,7 +8,7 @@ extern int Vec3_HorzDist(const Vector3 *a, const Vector3 *b);
 extern short Vec3_HorzAngle(const Vector3 *a, const Vector3 *b);
 }
 
-int BookShotSpawner::Behavior()
+int daBookGen_c::Behavior()
 {
     if (mSpawnTimer > 0x28) {
         Player *player = ClosestPlayer();

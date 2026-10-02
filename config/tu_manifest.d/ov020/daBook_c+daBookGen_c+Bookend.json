@@ -1,13 +1,13 @@
 {
-  "id": "ov020/daBook_c+BookShotSpawner+Bookend",
+  "id": "ov020/daBook_c+daBookGen_c+Bookend",
   "module": "ov020",
-  "source": "src_tu/actors/daBook_c+BookShotSpawner+Bookend.cpp",
+  "source": "src_tu/actors/daBook_c+daBookGen_c+Bookend.cpp",
   "promoted_source": "src/game/actors/d_a_book.cpp",
   "status": "text-verified",
   "boundary_confidence": "high",
   "boundary_evidence": [
     "contiguous linker run: 0x21111a0..0x2112938, 31 function(s), from build/tu_map.json (tools/tu_map.py)",
-    "class label(s): daBook_c, BookShotSpawner, Bookend",
+    "class label(s): daBook_c, daBookGen_c, Bookend",
     "module sinit corroboration: 2 sinit(s) / 2 .ctor entries, sinit_vs_tu=ok, corroborated=True (module-wide, NOT narrowed to this one TU -- see notes/tu-reconstruction-pilot-report.md sec 2 for the by-hand narrowing step)"
   ],
   "sections": [
@@ -33,17 +33,17 @@
       "ordinal": 1
     },
     {
-      "symbol": "_ZN15BookShotSpawnerD1Ev",
+      "symbol": "_ZN11daBookGen_cD1Ev",
       "address": "0x02111254",
       "size": "0x00000024",
-      "legacy_source": "src/_ZN15BookShotSpawnerD1Ev.cpp",
+      "legacy_source": "src/_ZN11daBookGen_cD1Ev.cpp",
       "ordinal": 2
     },
     {
-      "symbol": "_ZN15BookShotSpawnerD0Ev",
+      "symbol": "_ZN11daBookGen_cD0Ev",
       "address": "0x02111278",
       "size": "0x00000038",
-      "legacy_source": "src/_ZN15BookShotSpawnerD0Ev.cpp",
+      "legacy_source": "src/_ZN11daBookGen_cD0Ev.cpp",
       "ordinal": 3
     },
     {
@@ -152,10 +152,10 @@
       "ordinal": 18
     },
     {
-      "symbol": "_ZN15BookShotSpawner16CleanupResourcesEv",
+      "symbol": "_ZN11daBookGen_c16CleanupResourcesEv",
       "address": "0x02112290",
       "size": "0x00000034",
-      "legacy_source": "src/_ZN15BookShotSpawner16CleanupResourcesEv.cpp",
+      "legacy_source": "src/_ZN11daBookGen_c16CleanupResourcesEv.cpp",
       "ordinal": 19
     },
     {
@@ -173,10 +173,10 @@
       "ordinal": 21
     },
     {
-      "symbol": "_ZN15BookShotSpawner8BehaviorEv",
+      "symbol": "_ZN11daBookGen_c8BehaviorEv",
       "address": "0x02112418",
       "size": "0x000000cc",
-      "legacy_source": "src/_ZN15BookShotSpawner8BehaviorEv.cpp",
+      "legacy_source": "src/_ZN11daBookGen_c8BehaviorEv.cpp",
       "ordinal": 22
     },
     {
@@ -187,10 +187,10 @@
       "ordinal": 23
     },
     {
-      "symbol": "_ZN15BookShotSpawner13InitResourcesEv",
+      "symbol": "_ZN11daBookGen_c13InitResourcesEv",
       "address": "0x02112768",
       "size": "0x0000003c",
-      "legacy_source": "src/_ZN15BookShotSpawner13InitResourcesEv.cpp",
+      "legacy_source": "src/_ZN11daBookGen_c13InitResourcesEv.cpp",
       "ordinal": 24
     },
     {
@@ -254,16 +254,16 @@
     "tubuild create warning (RESOLVED): CONFLICT: extern declaration '_Z14ApproachLinearRiii' differs between the legacy file that used to hold func_ov020_021119dc and the one that held func_ov020_02111c30; kept the first, the other is commented out for review",
     "tubuild create warning (RESOLVED): CONFLICT: extern declaration '_ZN8dActor_c13ClosestPlayerEv' differs between the legacy file that used to hold func_ov020_021112b0 and the one that held func_ov020_02111fc4; kept the first, the other is commented out for review",
     "tubuild create warning (RESOLVED): CONFLICT: extern declaration 'func_0201267c' differs between the legacy file that used to hold func_ov020_02111aa8 and the one that held func_ov020_02111fc4; kept the first, the other is commented out for review",
-    "tubuild create warning: CONFLICT: extern declaration 'UnloadBlueCoinModel' differs between the legacy file that used to hold _ZN8daBook_c16CleanupResourcesEv and the one that held _ZN15BookShotSpawner16CleanupResourcesEv; kept the first, the other is commented out for review",
-    "tubuild create warning: CONFLICT: extern declaration 'Vec3_HorzAngle' differs between the legacy file that used to hold func_ov020_02111fc4 and the one that held _ZN15BookShotSpawner8BehaviorEv; kept the first, the other is commented out for review",
-    "tubuild create warning: CONFLICT: extern declaration '_ZN8dActor_c14GetSubtractionEss' differs between the legacy file that used to hold func_ov020_02111fc4 and the one that held _ZN15BookShotSpawner8BehaviorEv; kept the first, the other is commented out for review",
-    "tubuild create warning (RESOLVED): CONFLICT: extern declaration '_ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as' differs between the legacy file that used to hold func_ov020_02111340 and the one that held _ZN15BookShotSpawner8BehaviorEv; kept the first, the other is commented out for review",
+    "tubuild create warning: CONFLICT: extern declaration 'UnloadBlueCoinModel' differs between the legacy file that used to hold _ZN8daBook_c16CleanupResourcesEv and the one that held _ZN11daBookGen_c16CleanupResourcesEv; kept the first, the other is commented out for review",
+    "tubuild create warning: CONFLICT: extern declaration 'Vec3_HorzAngle' differs between the legacy file that used to hold func_ov020_02111fc4 and the one that held _ZN11daBookGen_c8BehaviorEv; kept the first, the other is commented out for review",
+    "tubuild create warning: CONFLICT: extern declaration '_ZN8dActor_c14GetSubtractionEss' differs between the legacy file that used to hold func_ov020_02111fc4 and the one that held _ZN11daBookGen_c8BehaviorEv; kept the first, the other is commented out for review",
+    "tubuild create warning (RESOLVED): CONFLICT: extern declaration '_ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as' differs between the legacy file that used to hold func_ov020_02111340 and the one that held _ZN11daBookGen_c8BehaviorEv; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: extern declaration 'data_ov020_02114aa0' differs between the legacy file that used to hold _ZN8daBook_c16CleanupResourcesEv and the one that held _ZN8daBook_c13InitResourcesEv; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: extern declaration 'data_ov020_02114ab8' differs between the legacy file that used to hold _ZN8daBook_c16CleanupResourcesEv and the one that held _ZN8daBook_c13InitResourcesEv; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: extern declaration 'data_ov020_02114aa8' differs between the legacy file that used to hold _ZN8daBook_c16CleanupResourcesEv and the one that held _ZN8daBook_c13InitResourcesEv; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: extern declaration 'data_ov020_02114ab0' differs between the legacy file that used to hold _ZN8daBook_c16CleanupResourcesEv and the one that held _ZN8daBook_c13InitResourcesEv; kept the first, the other is commented out for review",
-    "tubuild create warning: CONFLICT: extern declaration '_ZN5Model8LoadFileER13SharedFilePtr' differs between the legacy file that used to hold _ZN8daBook_c13InitResourcesEv and the one that held _ZN15BookShotSpawner13InitResourcesEv; kept the first, the other is commented out for review",
-    "tubuild create warning: CONFLICT: extern declaration 'LoadBlueCoinModel' differs between the legacy file that used to hold _ZN8daBook_c13InitResourcesEv and the one that held _ZN15BookShotSpawner13InitResourcesEv; kept the first, the other is commented out for review",
+    "tubuild create warning: CONFLICT: extern declaration '_ZN5Model8LoadFileER13SharedFilePtr' differs between the legacy file that used to hold _ZN8daBook_c13InitResourcesEv and the one that held _ZN11daBookGen_c13InitResourcesEv; kept the first, the other is commented out for review",
+    "tubuild create warning: CONFLICT: extern declaration 'LoadBlueCoinModel' differs between the legacy file that used to hold _ZN8daBook_c13InitResourcesEv and the one that held _ZN11daBookGen_c13InitResourcesEv; kept the first, the other is commented out for review",
     "tubuild create warning: CONFLICT: local declaration ('struct', 'dActor_c') differs between the legacy file that used to hold func_ov020_02111fc4 and the one that held _ZN8daBook_c13InitResourcesEv; kept the first, the other is commented out for review",
     "31/31 MATCH, objisolate clean, reloc-destinations clean -- the first THREE-class TU with TWO real destructor pairs and two TU-owned vtables (+8 at both Spawns). Generated by the repaired create (no hand-assembly); manual reconciliation: SharedFilePtr-vs-int-vs-array views of five data symbols unified on the array side with per-site casts, two whole declaration batteries moved to block scope (int-width args byte-load-bearing), a zero-arg ClosestPlayer view namespaced, daBook_c's hand-mangled D0 collapsed into the real destructor.",
     "Reconstructed source-style factory symbol daBookGen_c_classInit: class identity is ROM-proven by RTTI/allocation/vtable and profile identity by literal ROM ID BOOK_GENERATOR; classInit spelling is later-EAD lineage reconstruction. Historical alias: BookShotSpawner_Spawn."
@@ -272,7 +272,7 @@
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
     "toolchain": "tools/mwccarm/2004/b56/mwccarm.exe",
     "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
-    "object": "build/tu/ov020-daBook_c+BookShotSpawner+Bookend/daBook_c+BookShotSpawner+Bookend.o (gitignored)",
+    "object": "build/tu/ov020-daBook_c+daBookGen_c+Bookend/daBook_c+daBookGen_c+Bookend.o (gitignored)",
     "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
     "functions_matched": 31,
     "functions_declared": 31,
@@ -286,7 +286,7 @@
     "compilerOnlyOutput": {
       "requested": [],
       "unhandled": [
-        "_ZN15BookShotSpawnerD2Ev",
+        "_ZN11daBookGen_cD2Ev",
         "_ZN7Vector3D1Ev",
         "_ZN8daBook_cD2Ev"
       ],
