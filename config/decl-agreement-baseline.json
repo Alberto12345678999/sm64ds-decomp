@@ -888,10 +888,10 @@
         "param:#2 const Vec3 *"
       ],
       "src/actors/dMg3DHeyhoObjAdapter_c.cpp": [
-        "param:#1 const Vec3 *",
-        "param:#2 const Vec3 *",
         "param:#1 Vec3 *",
+        "param:#1 const Vec3 *",
         "param:#2 Vec3 *",
+        "param:#2 const Vec3 *",
         "return:Fix12"
       ]
     },
@@ -4771,8 +4771,8 @@
         "param:#2 const Vec3 *"
       ],
       "src/actors/dMgTrmpln2Mario_c.cpp": [
-        "param:#1 Vec3 *",
-        "param:#2 const Vec3 *"
+        "param:#1 Vector3 *",
+        "param:#2 const Vector3 *"
       ],
       "src/func_ov006_020ce108.cpp": [
         "param:#1 Vector3 *",
@@ -4806,10 +4806,10 @@
         "param:#2 const void *"
       ],
       "src/actors/dMg3DHeyhoObjAdapter_c.cpp": [
-        "param:#1 Vector3 *",
-        "param:#2 Vector3 *",
         "param:#1 Vec3 *",
+        "param:#1 Vector3 *",
         "param:#2 Vec3 *",
+        "param:#2 Vector3 *",
         "param:#2 const Vec3 *"
       ]
     },
@@ -5552,11 +5552,12 @@
         "param:#1 int &"
       ],
       "src/actors/daKpa_c.cpp": [
-        "param:#1 int &",
-        "return:int"
+        "return:int",
+        "param:#1 int &"
       ],
       "src/actors/dMgTrmpln2Mario_c.cpp": [
-        "return:int"
+        "return:int",
+        "param:#1 int &"
       ],
       "src/actors/dMg3DHeyhoObjAdapter_c.cpp": [
         "return:int"
@@ -5610,6 +5611,7 @@
         "param:#1 short &"
       ],
       "src/actors/dMgTrmpln2Mario_c.cpp": [
+        "param:#1 short &",
         "return:void"
       ],
       "src/actors/daWater_Tatumaki_c.cpp": [
@@ -13836,7 +13838,11 @@
         "param:#5 unsigned int"
       ],
       "src/actors/dMgTrmpln2Mario_c.cpp": [
-        "param:#5 unsigned int"
+        "param:#5 unsigned int",
+        "param:#4 unsigned int",
+        "param:#5 int",
+        "param:#1 char *",
+        "return:int"
       ],
       "src/actors/dMg3DHeyhoObjAdapter_c.cpp": [
         "param:#5 unsigned int",
@@ -20637,18 +20643,6 @@
         "return:int []"
       ]
     },
-    "data_ov006_02140304": {
-      "src/actors/dMg3DHeyhoObjAdapter_c.cpp": [
-        "return:int []"
-      ]
-    },
-    "data_ov006_02140324": {
-      "src/actors/dMg3DHeyhoObjAdapter_c.cpp": [
-        "return:int",
-        "return:char *",
-        "return:Ent *"
-      ]
-    },
     "data_ov006_02140330": {
       "src/__sinit_ov006_0212f4c4.c": [
         "return:char []"
@@ -20665,12 +20659,6 @@
       "src/actors/dMg3DHeyhoObjAdapter_c.cpp": [
         "return:SharedFilePtr",
         "return:int []"
-      ]
-    },
-    "data_ov006_021403f4": {
-      "src/actors/dMg3DHeyhoObjAdapter_c.cpp": [
-        "return:struct Obj * []",
-        "return:VB * []"
       ]
     },
     "data_ov006_02140400": {
@@ -26668,7 +26656,7 @@
         "arity:2"
       ],
       "src/actors/dMgTrmpln2Mario_c.cpp": [
-        "arity:2"
+        "arity:3"
       ],
       "src/actors/dMg3DHeyhoObjAdapter_c.cpp": [
         "arity:2"
@@ -35617,28 +35605,6 @@
         "return:void *"
       ]
     },
-    "func_ov006_020c4710": {
-      "src/actors/dMg3DHeyhoObjAdapter_c.cpp": [
-        "param:#1 Obj *",
-        "param:#1 struct Obj *"
-      ]
-    },
-    "func_ov006_020c49d8": {
-      "src/actors/dMg3DHeyhoObjAdapter_c.cpp": [
-        "param:#1 char *"
-      ]
-    },
-    "func_ov006_020c4cd8": {
-      "src/actors/dMg3DHeyhoObjAdapter_c.cpp": [
-        "param:#1 Obj *",
-        "param:#1 struct Obj *"
-      ]
-    },
-    "func_ov006_020c4f68": {
-      "src/actors/dMg3DHeyhoObjAdapter_c.cpp": [
-        "param:#1 Self *"
-      ]
-    },
     "func_ov006_020c57d4": {
       "include/decl_common.h": [
         "param:#1 char *"
@@ -35662,11 +35628,6 @@
     "func_ov006_020c6348": {
       "include/decl_common.h": [
         "param:#1 char *"
-      ]
-    },
-    "func_ov006_020c64e4": {
-      "src/actors/dMg3DHeyhoObjAdapter_c.cpp": [
-        "param:#1 int"
       ]
     },
     "func_ov006_020c719c": {
@@ -38537,8 +38498,53 @@
       ]
     },
     "data_ov100_02148744": {
-      "src/actors/daWanwan2_c.cpp": [
-        "return:ChompState"
+      "src/__sinit_ov100_02147698.c": [
+        "return:char []"
+      ]
+    },
+    "data_ov006_02140304": {
+      "src/actors/dMg3DHeyhoObjAdapter_c.cpp": [
+        "return:int []"
+      ]
+    },
+    "data_ov006_02140324": {
+      "src/actors/dMg3DHeyhoObjAdapter_c.cpp": [
+        "return:Ent *",
+        "return:char *",
+        "return:int"
+      ]
+    },
+    "data_ov006_021403f4": {
+      "src/actors/dMg3DHeyhoObjAdapter_c.cpp": [
+        "return:VB * []",
+        "return:struct Obj * []"
+      ]
+    },
+    "func_ov006_020c4710": {
+      "src/actors/dMg3DHeyhoObjAdapter_c.cpp": [
+        "param:#1 Obj *",
+        "param:#1 struct Obj *"
+      ]
+    },
+    "func_ov006_020c49d8": {
+      "src/actors/dMg3DHeyhoObjAdapter_c.cpp": [
+        "param:#1 char *"
+      ]
+    },
+    "func_ov006_020c4cd8": {
+      "src/actors/dMg3DHeyhoObjAdapter_c.cpp": [
+        "param:#1 Obj *",
+        "param:#1 struct Obj *"
+      ]
+    },
+    "func_ov006_020c4f68": {
+      "src/actors/dMg3DHeyhoObjAdapter_c.cpp": [
+        "param:#1 Self *"
+      ]
+    },
+    "func_ov006_020c64e4": {
+      "src/actors/dMg3DHeyhoObjAdapter_c.cpp": [
+        "param:#1 int"
       ]
     }
   }
