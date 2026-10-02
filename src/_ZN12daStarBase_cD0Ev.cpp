@@ -1,11 +1,11 @@
 //cpp
-// @symbol _ZN10StarMarkerD0Ev
+// @symbol _ZN12daStarBase_cD0Ev
 
-#include "StarMarker.h"
+#include "daStarBase_c.h"
 
 #ifdef _MSC_VER
 /* THE HOST NEEDS THE ROM'S FLAT D0 NAME, AND MSVC NEVER EMITS IT. MSVC
- * folds the Itanium destructor variants into the one ~StarMarker() it
+ * folds the Itanium destructor variants into the one ~daStarBase_c() it
  * emits, which the class's D1 file already defines, so compiling the
  * definition below as well would define that symbol twice. This arm
  * spells out, in terms of it, what the deleting destructor this file is
@@ -14,14 +14,14 @@
  * class-specific operator delete. Nothing here reaches mwccarm: it builds
  * the `#else` arm and emits the ROM bytes it always emitted, and the
  * object is byte-identical either way. */
-extern "C" StarMarker *_ZN10StarMarkerD0Ev(StarMarker *thiz)
+extern "C" daStarBase_c *_ZN12daStarBase_cD0Ev(daStarBase_c *thiz)
 {
-    thiz->StarMarker::~StarMarker();    /* the D1 body, through the one host symbol */
-    StarMarker::operator delete(thiz);  /* the class-specific delete D0 ends with */
+    thiz->daStarBase_c::~daStarBase_c();    /* the D1 body, through the one host symbol */
+    daStarBase_c::operator delete(thiz);  /* the class-specific delete D0 ends with */
     return thiz;
 }
 #else
-StarMarker::~StarMarker()
+daStarBase_c::~daStarBase_c()
 {
 }
 #endif

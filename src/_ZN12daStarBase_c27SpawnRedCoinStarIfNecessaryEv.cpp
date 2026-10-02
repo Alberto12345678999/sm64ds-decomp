@@ -1,13 +1,13 @@
 //cpp
-// @symbol _ZN10StarMarker27SpawnRedCoinStarIfNecessaryEv
+// @symbol _ZN12daStarBase_c27SpawnRedCoinStarIfNecessaryEv
 /* recovered: named members + shared header, real C++ method */
-#include "StarMarker.h"
+#include "daStarBase_c.h"
+#include "daStar_c.h"
 struct Vec3 { int x, y, z; };
 extern "C" signed char NumRedCoins(void);
 extern "C" void* _ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(unsigned int id, unsigned int p, struct Vec3* pos, void* rot, int a, int b);
-extern "C" void _ZN9PowerStar13AddStarMarkerEv(void* p);
 
-void StarMarker::SpawnRedCoinStarIfNecessary()
+void daStarBase_c::SpawnRedCoinStarIfNecessary()
 {
   struct Vec3 v;
   char* star;
@@ -21,7 +21,7 @@ void StarMarker::SpawnRedCoinStarIfNecessary()
   v.y = y + 0x78000;
   star = (char*)_ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(0xb2, mStarID, &v, 0, mAreaId, -1);
   if(star == 0) return;
-  _ZN9PowerStar13AddStarMarkerEv(star);
+  ((daStar_c*)star)->AddStarMarker();
   *(unsigned short*)(((int)star + 0x4a2)) |= 0x1000;
   *(int*)(star+0x434) = uniqueID;
   *(unsigned char*)(((int)((char*)this) + 0x1db)) |= 4;

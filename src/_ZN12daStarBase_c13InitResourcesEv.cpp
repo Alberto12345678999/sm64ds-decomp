@@ -1,10 +1,10 @@
 //cpp
 #include "types.h"
-// @symbol _ZN10StarMarker13InitResourcesEv
+// @symbol _ZN12daStarBase_c13InitResourcesEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 #include "decl_common.h"
 /* recovered: named members + shared header, real C++ method */
-#include "StarMarker.h"
+#include "daStarBase_c.h"
 #include "SharedFilePtr.h"
 #include "dBgCh_Gnd.h"
 
@@ -24,7 +24,7 @@ extern SharedFilePtr data_ov002_0211092c;
 extern u8 data_0209f2d8;
 extern s8 data_0209f2f8;
 
-int StarMarker::InitResources()
+int daStarBase_c::InitResources()
 {
     Vector3 pos;
     Vector3 v0;

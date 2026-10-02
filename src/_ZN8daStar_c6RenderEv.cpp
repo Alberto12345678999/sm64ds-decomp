@@ -1,7 +1,7 @@
 //cpp
-// @symbol _ZN9PowerStar6RenderEv
+// @symbol _ZN8daStar_c6RenderEv
 /* recovered: named members + shared header, real C++ method */
-#include "PowerStar.h"
+#include "daStar_c.h"
 struct Thing { int x; };
 
 struct Sub {
@@ -28,7 +28,7 @@ struct Obj {
     unsigned short b2 : 1;  /* bit 2 */
 };
 
-int PowerStar::Render()
+int daStar_c::Render()
 {
     int locked;
     if (((Obj *)this)->arg80.x == 0) goto done;
