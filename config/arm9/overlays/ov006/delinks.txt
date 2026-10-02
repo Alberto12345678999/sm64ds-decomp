@@ -104,69 +104,9 @@ src/func_ov006_020d100c.c:
     complete
     .text start:0x020d100c end:0x020d1018
 
-src/_ZN12dScMgAmida_cD1Ev.cpp:
-    complete
-    .text start:0x020d1018 end:0x020d10b8
-
-src/_ZN12dScMgAmida_cD0Ev.cpp:
-    complete
-    .text start:0x020d10b8 end:0x020d116c
-
-src/func_ov006_020d116c.c:
-    complete
-    .text start:0x020d116c end:0x020d1170
-
-src/_ZN12dScMgAmida_c9Virtual8CEv.cpp:
-    complete
-    .text start:0x020d1170 end:0x020d1188
-
-src/_ZN12dScMgAmida_c5Unk36Ev.cpp:
-    complete
-    .text start:0x020d1188 end:0x020d11a0
-
-src/_ZN12dScMgAmida_c9Virtual7CEv.cpp:
-    complete
-    .text start:0x020d11a0 end:0x020d122c
-
-src/func_ov006_020d122c.cpp:
-    complete
-    .text start:0x020d122c end:0x020d1450
-
-src/func_ov006_020d1450.c:
-    complete
-    .text start:0x020d1450 end:0x020d14c0
-
-src/_ZN12dScMgAmida_c9Virtual88Eiiii.cpp:
-    complete
-    .text start:0x020d14c0 end:0x020d1958
-
-src/func_ov006_020d1958.cpp:
-    complete
-    .text start:0x020d1958 end:0x020d1a3c
-
-src/func_ov006_020d1a3c.cpp:
-    complete
-    .text start:0x020d1a3c end:0x020d1ba0
-
-src/func_ov006_020d1ba0.cpp:
-    complete
-    .text start:0x020d1ba0 end:0x020d2580
-
-src/func_ov006_020d2580.c:
-    complete
-    .text start:0x020d2580 end:0x020d25fc
-
-src/func_ov006_020d25fc.c:
-    complete
-    .text start:0x020d25fc end:0x020d27dc
-
-src/func_ov006_020d27dc.cpp:
-    complete
-    .text start:0x020d27dc end:0x020d3624
-
 src/actors/dScMgAmida_c.cpp:
     complete
-    .text start:0x020d3624 end:0x020d5a54
+    .text start:0x020d1018 end:0x020d5a54
 
 src/actors/dScMgBomroom_c.cpp:
     complete

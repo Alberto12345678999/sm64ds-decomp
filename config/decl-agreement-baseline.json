@@ -1373,7 +1373,7 @@
       ]
     },
     "LoadCompressedFileAt": {
-      "src/_ZN12dScMgAmida_c9Virtual7CEv.cpp": [
+      "src/actors/dScMgAmida_c.cpp": [
         "param:#1 int"
       ],
       "src/_ZN12dScMgSlot1_c13InitResourcesEv.cpp": [
@@ -7554,7 +7554,7 @@
       ]
     },
     "_ZN3G2S12GetBG1ScrPtrEv": {
-      "src/_ZN12dScMgAmida_c9Virtual7CEv.cpp": [
+      "src/actors/dScMgAmida_c.cpp": [
         "return:void *"
       ],
       "src/_ZN12dScMgSlot1_c13InitResourcesEv.cpp": [
@@ -9048,9 +9048,6 @@
         "return:void"
       ],
       "src/func_ov004_020b63a0.c": [
-        "return:void"
-      ],
-      "src/func_ov006_020d1958.cpp": [
         "return:void"
       ],
       "src/func_ov006_020e5ffc.c": [
@@ -17024,7 +17021,7 @@
       "src/func_ov004_020b65e4.c": [
         "return:unsigned char [][]"
       ],
-      "src/func_ov006_020d1958.cpp": [
+      "src/actors/dScMgAmida_c.cpp": [
         "return:unsigned char [][]"
       ],
       "src/minigames/d_s_mg_card.cpp": [
@@ -17053,7 +17050,7 @@
       "src/func_ov004_020b65e4.c": [
         "return:unsigned char [][]"
       ],
-      "src/func_ov006_020d1958.cpp": [
+      "src/actors/dScMgAmida_c.cpp": [
         "return:unsigned char [][]"
       ],
       "src/minigames/d_s_mg_card.cpp": [
@@ -17091,9 +17088,6 @@
         "return:unsigned char []"
       ],
       "src/_ZN6Player17St_SweepKick_MainEv.cpp": [
-        "return:unsigned char []"
-      ],
-      "src/actors/dScMgAmida_c.cpp": [
         "return:unsigned char []"
       ],
       "src/actors/dScMgCup_c.cpp": [
@@ -25546,9 +25540,6 @@
       "src/_ZN12dScMgSlot1_c8BehaviorEv.cpp": [
         "param:#1 void *"
       ],
-      "src/func_ov006_020d27dc.cpp": [
-        "param:#1 void *"
-      ],
       "src/func_ov006_020e5450.cpp": [
         "param:#1 void *"
       ]
@@ -25716,7 +25707,7 @@
         "param:#1 int",
         "return:void"
       ],
-      "src/func_ov006_020d1ba0.cpp": [
+      "src/actors/dScMgAmida_c.cpp": [
         "param:#1 int",
         "return:void"
       ],
@@ -34902,36 +34893,6 @@
       ],
       "src/minigames/d_s_mg_trampoline2.cpp": [
         "arity:0"
-      ]
-    },
-    "func_ov006_020d1450": {
-      "src/func_ov006_020d1ba0.cpp": [
-        "param:#1 dScMgAmida_c *"
-      ]
-    },
-    "func_ov006_020d1958": {
-      "src/actors/dScMgAmida_c.cpp": [
-        "param:#1 char *"
-      ]
-    },
-    "func_ov006_020d1ba0": {
-      "src/actors/dScMgAmida_c.cpp": [
-        "param:#1 char *"
-      ]
-    },
-    "func_ov006_020d2580": {
-      "src/func_ov006_020d1ba0.cpp": [
-        "param:#1 dScMgAmida_c *",
-        "param:#2 dScMgAmida_c::Point",
-        "param:#3 dScMgAmida_c::Point"
-      ]
-    },
-    "func_ov006_020d3624": {
-      "src/func_ov006_020d1450.c": [
-        "arity:1"
-      ],
-      "src/func_ov006_020d1ba0.cpp": [
-        "arity:1"
       ]
     },
     "func_ov006_020e1554": {
