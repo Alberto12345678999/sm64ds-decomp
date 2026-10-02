@@ -6680,6 +6680,25 @@ mwccarm.exe at on and off, plus peephole and optimize_for_size, 92 compiles),
 all lose far more than the branch is worth, and every one of the 25 installed mwccarm builds
 predicates the same arm.
 
+**Addendum (2026-10-02): the blocker can cost one BIT instead of one word.** A conditional
+region whose two arms are identical survives into the if-conversion decision and is merged
+only afterwards, so it blocks predication but leaves its compare behind as a dead `cmp`
+(measured: `if (p) return; else return;` at the end of the jumped-over arm restores the
+ROM's `blt` and costs exactly that one `cmp sb,#0`). Two refinements: the arms must be bare
+`return`s (identical stores in both arms are folded by the front end before the decision),
+and the condition must be one the front end cannot fold (`c1`, `p == p`, `n == n`,
+`(u32)n >= 0`, `1.0f`, a global's address and a constant-argument inline all fold and change
+nothing). When the condition is `(p + 1) - p`, which the front end leaves alone and the backend
+evaluates to the 1 already materialised for the `strb` that ends the arm, the peephole folds
+the dead compare into that move: `func_ov006_020d27dc` is then size-exact at 914 words with
+one differing bit, `movs r1,#1` where the ROM has `mov r1,#1` (`(p + K) - p` for a K that
+is not already in a register leaves a dead `movs rX,#K` instead). There is no S-bit
+instruction anywhere in the ROM's arm, so this is the floor from the other side, not a match.
+Also measured inert at this site: `break` out of the enclosing loop on either or both arms,
+moving the `< 5` arm's code to a label after the loop, unreachable `goto` targets inside the
+arm, `while`/`for` spellings of the test (they rotate the test), and every frontend-foldable
+spelling of the `< 5` arm's store.
+
 ## 6co. The verification chain compiled C++ with exceptions ON and the build never does: one "7-word floor" was the flag, not the source (func_ov006_020ea914, div 7 -> 0, 2026-09-13, run link100 lane CRK-B)
 
 `func_ov006_020ea914` (ov006 0x020ea914, 0x324) is the five-point trailing-segment OAM
