@@ -1815,10 +1815,10 @@ typedef char BombkingSpawnInfo_size_must_be_0x1c[
 extern "C" BombkingSpawnInfo g_profile_BOMBKING = {
     daBombking_c_classInit,
     0x00bd,
-    0x002d,
-    0x10008083,
-    0x00032000,
-    0x00046000,
-    0x01000000,
-    0x01000000
+    0x002c,
+    0x10000003,
+    0x00000000,
+    0x00190000,
+    0x01fa0000,
+    0x01fa0000
 };
