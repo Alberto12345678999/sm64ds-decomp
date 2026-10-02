@@ -124,7 +124,7 @@ typedef int s32;
 */
 
 /* TUBUILD CONFLICT -- alternate body of typedef 'Vector3', from the legacy file for func_ov060_02114858, NOT applied:
-typedef struct 
+typedef struct
 {
   int x;
   int y;
