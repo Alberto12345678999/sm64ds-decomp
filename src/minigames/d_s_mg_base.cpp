@@ -1,5 +1,31 @@
 //cpp
-/* BANNER */
+/* ov004/dScMgBase_c -- the behavior every minigame scene shares, and the
+ * sprite, OAM and graphics helpers that sit with it
+ * (.text 0x020ad660..0x020b2220, 108 functions).
+ *
+ * This is every function of the ov004 linker unit below
+ * func_ov004_020b2220. That function does not match yet, so it is left to
+ * cartridge bytes and this file stops at it. The unit itself runs on to
+ * 0x020b2c58; the 16 dScMgBase_c members above the gap, ~dScMgBase_c
+ * among them, are still one-function sources until it matches.
+ *
+ * Holds the eight scene overrides at 0x020b04e8..0x020b0a38 plus 100
+ * former one-function sources folded in around them. Each former source
+ * keeps its own namespace block: their local struct views and extern
+ * declarations disagree with each other, and unifying them changes code
+ * generation, so that is left as separate work.
+ *
+ * Definitions are in ROM order, lowest address first, under
+ * defer_codegen off.
+ *
+ * GraphCallback0, the key function of dScMgBase_c::graphCallback_c, is here,
+ * so this file emits that class's vtable and RTTI. dScMgBase_c's own key
+ * function (its destructor) is above the gap, so its vtable is not.
+ *
+ * Still raw: unk_0a4, 0a8, 0ac, 0b8, 0c8, 462c and 465c are unnamed in the
+ * header, and the func_ov004 and data_ov004 helpers they feed are unnamed
+ * in symbols.txt.
+ */
 
 #include "dScMgBase_c.h"
 #include "decl_common.h"
