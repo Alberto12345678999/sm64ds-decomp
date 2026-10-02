@@ -462,13 +462,13 @@ pair is the only construct adjacent to a coloring residual, **try both forms**.
 **Parallel loops want their own locals.** Six structurally identical zero-init loops sharing one
 `i`/`p` pair gave correct instruction shape with permuted registers; giving each loop its own counter
 and pointer fixed the allocation exactly. A declaration-order swap did not.
-(`src/func_ov006_020feba8.c`)
+(`src/actors/dScMgPachinko_c.cpp`, `func_ov006_020feba8`, folded from its shard)
 
 **Assignment order, not declaration order.** Where a 24-permutation *declaration*-order sweep is
 inert, reordering the **assignment / first use** can still flip the entire callee-saved assignment
 (observed: 33 divergences -> 0 from moving one assignment). Source position of the first *use* sets
 web rank. Corollary: an inert decl-order sweep means the lever is **gated**, not dead -- try
-`#pragma opt_lifetimes off` and re-sweep. (`src/func_ov006_020fe750.c`)
+`#pragma opt_lifetimes off` and re-sweep. (`src/actors/dScMgPachinko_c.cpp`, `func_ov006_020fe750`, folded from its shard)
 
 **Prefer a respelling to a pragma.** `#pragma opt_strength_reduction off` and the address-tree
 respelling `((int*)c + k)[0x1510]` both killed a spurious induction variable; the respelling was

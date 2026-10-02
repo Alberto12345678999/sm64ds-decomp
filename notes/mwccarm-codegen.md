@@ -7638,6 +7638,24 @@ permutations. Also measured inert or worse: Fix12<int> by-value temps (always ov
 `tbl` local is load-bearing; unnamed costs a word), struct and index views of ptr+0x4660,
 2-D table types, 17 pragmas on the best two shapes, and -O1..-O4,s.
 
+Round 1002g (about 300 more cells, none below 26 when admissible) narrows the positive control. A
+6-bit mask over the flag, x, lo, hi, y and prio loads (tbl named, `mode=-1; if (flag) mode=1;`)
+gives the ROM tail only for FXLHYP, FXHYP and FXLYP: the flag, x, y and prio loads must all be
+serialized, plus one of lo/hi. The lever is a whole load-chain order, not one edge between the
+flag and the select. Those cells colour the flag lr (with `o` in sl) and score 32-33. Dropping the
+named `o` local under full volatile puts the flag in sl, with the nine pushes, the 0x1c frame and
+the exact tail (30). The residue there is independent of ordering: the -1 constant takes
+callee-saved rank 1, not the ROM's rank 6, because it is hoisted ahead of the locals and anchored
+early by the palette argument. On top of that, scratch colouring differs. An aliasing store or an
+intervening call needs an instruction the ROM body does not have, so the size rules them out.
+Measured inert with plain loads, where the schedule is rigid (F L H cmp mla X Y P, 26-27): the select
+as an inline helper (by value, `const u8&`, `const u8*`, ternary), the ternary inline in the
+call, C89 function-scope declarations, load-order permutations (byte-identical), dead-use and
+self-assign forwarding blockers, every opt_* pragma on and off (only opt_dead_assignments off
+moves, to 27), `scheduling off` (ignored), the -proc arm9 family, -O4,s/-O3,p/-O4, a pointer-typed
+-1, flag/mode declaration positions under the volatile chain, and a struct overlay at
+ptr+0x4000 with plain or bitfield members.
+
 ## 6cy. A "dead mov" residue can be an argument the caller really passes: check every callee's DEFINITION, not its declaration, before banking a 6bs residue (Stage::InitResources MATCHED, div 3 -> 0, 2026-09-13, run link100 wave 12 lane W12-6)
 
 Stage::InitResources (arm9 0x0202cc0c, 0xa84) sat one word short for three campaigns (6av, 6bs,
@@ -7822,6 +7840,18 @@ hitAngle reference (41), the idx speed through a pointer (0x564), reusing c/s fo
 (0x548), the 0x1b000 constant first or as a long long (0x524), and the twin's split first statement
 (0x558: the frame drops 0x7c -> 0x6c and the table base leaves r3). The five opt_* pragmas each
 change the size.
+
+Round 1002g (about 110 more cells, still 30) narrowed the cause and closed more spellings. Drop sP
+from the `FMUL(sP, 0x1b000)` product after the calls (a diagnostic, not a candidate) and the sP
+load falls in after the hit stone's c/s loads, as in the ROM: the sign word that
+64x64 product needs is the whole residue. A call barrier before dy moves both sign words after it,
+sP then cP, so they follow their first use; `#pragma optimize_for_size on` shows the sP sign
+spilled right after the T[E] loads. Worse: `(data_02082214 + 1)[k]` or a pointer `p = &T[k]`
+for the hit stone (0x564), the same on both stones (0x584), `(data_02082214 + 1)[E]` (0x54c).
+Of the 24 orders of the dy/dx/nex/ney statements only dy, dx, ney, nex keeps the size (38); of
+the 80 split forms of those statements (`v = a; v op= b;` or `v = -b; v += a;`) three are
+identical at 30, two give 39 and the rest change the size. s16 sP/cP and c/s declaration order
+are inert. `#pragma scheduling off` and `-opt noschedule` do nothing.
 
 ## 6da. A scalar stack parameter the loop uses directly is register-homed in PARAMETER ORDER, and that is the only thing that puts its load ahead of the last self-home store: OAM::Render MATCHED (div 2 -> 0, 2026-09-13, run link100 lane W12-5)
 
