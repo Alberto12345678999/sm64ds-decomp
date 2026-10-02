@@ -50,12 +50,20 @@
    "ref": "src/_ZN8PlatformD0Ev.cpp"
   },
   {
+   "file": "notes/agents/handoffs/issue-2410-humanizer-2.md",
+   "ref": "src/func_ov006_020cb030.cpp"
+  },
+  {
    "file": "notes/agents/handoffs/issue-2411-humanizer-2.md",
    "ref": "src/_ZN5Crate13OnTurnIntoEggER6Player.cpp"
   },
   {
    "file": "notes/agents/handoffs/issue-2411-humanizer-2.md",
    "ref": "src_tu/actors/Koopa"
+  },
+  {
+   "file": "notes/agents/handoffs/issue-2412-humanizer-2.md",
+   "ref": "src/func_ov006_020cb030.cpp"
   },
   {
    "file": "notes/agents/handoffs/mg-p1-3desp-0925.md",
@@ -542,6 +550,10 @@
    "ref": "src/port"
   },
   {
+   "file": "tools/build_pin.py",
+   "ref": "src/func_ov006_020cb030.cpp"
+  },
+  {
    "file": "tools/chaos_db_ci.py",
    "ref": "src/F.c"
   },
@@ -592,6 +604,10 @@
   {
    "file": "tools/d0_migrate.py",
    "ref": "src/_ZN5EnemyD0Ev.c"
+  },
+  {
+   "file": "tools/demember_calls.py",
+   "ref": "src/func_ov006_020cb030.cpp"
   },
   {
    "file": "tools/evidence_history.py",
@@ -720,6 +736,10 @@
   {
    "file": "tools/symscope.py",
    "ref": "src/Foo.cpp"
+  },
+  {
+   "file": "tools/test_build_pin.py",
+   "ref": "src/func_ov006_020cb030.cpp"
   },
   {
    "file": "tools/test_check_decl_agreement.py",
