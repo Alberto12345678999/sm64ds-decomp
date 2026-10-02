@@ -798,9 +798,6 @@
         "param:#2 int",
         "return:int"
       ],
-      "src/_ZN15dScMgPachinko_c13InitResourcesEv.cpp": [
-        "param:#1 int"
-      ],
       "src/actors/dMap_c.cpp": [
         "param:#1 int"
       ],
@@ -7331,9 +7328,6 @@
       "src/_ZN15dScMgCurling2_c13InitResourcesEv.cpp": [
         "return:char *"
       ],
-      "src/_ZN15dScMgPachinko_c13InitResourcesEv.cpp": [
-        "return:char *"
-      ],
       "src/_ZN5Stage14LoadGraphics2DEbi.cpp": [
         "return:char *"
       ],
@@ -7396,9 +7390,6 @@
     },
     "_ZN2G213GetBG2CharPtrEv": {
       "src/_ZN12dScMgSlot1_c13InitResourcesEv.cpp": [
-        "return:char *"
-      ],
-      "src/_ZN15dScMgPachinko_c13InitResourcesEv.cpp": [
         "return:char *"
       ],
       "src/_ZN5Stage14LoadGraphics2DEbi.cpp": [
@@ -7611,9 +7602,6 @@
       "src/_ZN12dScMgSlot1_c13InitResourcesEv.cpp": [
         "return:char *"
       ],
-      "src/_ZN15dScMgPachinko_c13InitResourcesEv.cpp": [
-        "return:char *"
-      ],
       "src/_ZN5Stage14LoadGraphics2DEbi.cpp": [
         "return:char *"
       ],
@@ -7805,9 +7793,6 @@
     },
     "_ZN3G2S13GetBG2CharPtrEv": {
       "src/_ZN12dScMgSlot1_c13InitResourcesEv.cpp": [
-        "return:char *"
-      ],
-      "src/_ZN15dScMgPachinko_c13InitResourcesEv.cpp": [
         "return:char *"
       ],
       "src/actors/dScMiniGm_c.cpp": [
@@ -8744,9 +8729,6 @@
     "_ZN4cstd4sqrtEy": {
       "src/func_0202ee94.c": [
         "return:unsigned long long"
-      ],
-      "src/func_ov006_020fcb4c.c": [
-        "return:long long"
       ]
     },
     "_ZN4cstd5atan2E5Fix12IiES1_": {
@@ -9085,12 +9067,6 @@
         "return:void"
       ],
       "src/func_ov006_020e628c.c": [
-        "return:void"
-      ],
-      "src/func_ov006_020fe394.cpp": [
-        "return:void"
-      ],
-      "src/func_ov006_020fea70.c": [
         "return:void"
       ],
       "src/func_ov006_0211ebdc.c": [
@@ -17006,6 +16982,9 @@
       "src/actors/dScMgBomroom_c.cpp": [
         "return:Tab []"
       ],
+      "src/actors/dScMgPachinko_c.cpp": [
+        "return:unsigned char [][]"
+      ],
       "src/actors/dScMiniGm_c.cpp": [
         "return:TouchRec []"
       ],
@@ -17018,12 +16997,6 @@
       "src/func_ov006_020e26f8.c": [
         "return:TblEnt []"
       ],
-      "src/func_ov006_020fe2e4.c": [
-        "return:unsigned char [][]"
-      ],
-      "src/func_ov006_020fe394.cpp": [
-        "return:unsigned char [][]"
-      ],
       "src/minigames/d_s_mg_base.cpp": [
         "return:unsigned char [][]"
       ]
@@ -17035,13 +17008,13 @@
       "src/actors/dMgJump3DMario_c.cpp": [
         "return:unsigned char [][]"
       ],
+      "src/actors/dScMgPachinko_c.cpp": [
+        "return:unsigned char [][]"
+      ],
       "src/actors/dScStarSel_c.cpp": [
         "return:unsigned char [][]"
       ],
       "src/func_ov004_020b65e4.c": [
-        "return:unsigned char [][]"
-      ],
-      "src/func_ov006_020fe2e4.c": [
         "return:unsigned char [][]"
       ],
       "src/minigames/d_s_mg_base.cpp": [
@@ -17058,6 +17031,9 @@
       "src/actors/dMgJump3DMario_c.cpp": [
         "return:unsigned char [][]"
       ],
+      "src/actors/dScMgPachinko_c.cpp": [
+        "return:unsigned char [][]"
+      ],
       "src/actors/dScStarSel_c.cpp": [
         "return:unsigned char [][]"
       ],
@@ -17069,12 +17045,6 @@
       ],
       "src/func_ov006_020e26f8.c": [
         "return:TblEnt []"
-      ],
-      "src/func_ov006_020fe2e4.c": [
-        "return:unsigned char [][]"
-      ],
-      "src/func_ov006_020fe394.cpp": [
-        "return:unsigned char [][]"
       ],
       "src/minigames/d_s_mg_card.cpp": [
         "return:unsigned char [][]"
@@ -17093,6 +17063,9 @@
       "src/actors/dMgJump3DMario_c.cpp": [
         "return:unsigned char [][]"
       ],
+      "src/actors/dScMgPachinko_c.cpp": [
+        "return:unsigned char [][]"
+      ],
       "src/actors/dScStarSel_c.cpp": [
         "return:unsigned char [][]"
       ],
@@ -17104,12 +17077,6 @@
       ],
       "src/func_ov006_020e26f8.c": [
         "return:TblEnt []"
-      ],
-      "src/func_ov006_020fe2e4.c": [
-        "return:unsigned char [][]"
-      ],
-      "src/func_ov006_020fe394.cpp": [
-        "return:unsigned char [][]"
       ],
       "src/minigames/d_s_mg_card.cpp": [
         "return:unsigned char [][]"
@@ -25602,9 +25569,6 @@
         "param:#1 void *"
       ],
       "src/func_ov006_020e5450.cpp": [
-        "param:#1 void *"
-      ],
-      "src/func_ov006_020fdaf0.c": [
         "param:#1 void *"
       ]
     },
@@ -34478,11 +34442,6 @@
         "return:void"
       ]
     },
-    "func_ov004_020b0a54": {
-      "src/_ZN15dScMgPachinko_c8BehaviorEv.cpp": [
-        "param:#1 void *"
-      ]
-    },
     "func_ov004_020b0e84": {
       "src/minigames/d_s_mg_base.cpp": [
         "param:#2 unsigned int"
@@ -35089,31 +35048,6 @@
     },
     "func_ov006_020ea3d0": {
       "include/decl_common.h": [
-        "param:#1 char *"
-      ]
-    },
-    "func_ov006_020fad34": {
-      "src/_ZN15dScMgPachinko_c8BehaviorEv.cpp": [
-        "param:#1 char *"
-      ]
-    },
-    "func_ov006_020fae90": {
-      "src/_ZN15dScMgPachinko_c13InitResourcesEv.cpp": [
-        "param:#1 char *"
-      ]
-    },
-    "func_ov006_020fb60c": {
-      "src/_ZN15dScMgPachinko_c8BehaviorEv.cpp": [
-        "param:#1 char *"
-      ]
-    },
-    "func_ov006_020fba28": {
-      "src/_ZN15dScMgPachinko_c6RenderEv.cpp": [
-        "arity:1"
-      ]
-    },
-    "func_ov006_020fc844": {
-      "src/_ZN15dScMgPachinko_c13InitResourcesEv.cpp": [
         "param:#1 char *"
       ]
     },
