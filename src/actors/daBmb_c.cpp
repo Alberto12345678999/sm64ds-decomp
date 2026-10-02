@@ -180,12 +180,12 @@ typedef char BmbSpawnInfo_size_must_be_0x1c[
 extern "C" BmbSpawnInfo g_profile_BOMBHEI = {
     daBmb_c_classInit,
     0x00ce,
-    0x00d5,
-    2,
-    0x00100000,
-    0x00300000,
+    0x002d,
+    0x10008083,
+    0x00032000,
+    0x00046000,
     0x01000000,
-    0
+    0x01000000
 };
 
 /* ==========================================================================

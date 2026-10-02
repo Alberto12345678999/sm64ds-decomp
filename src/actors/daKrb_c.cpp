@@ -2085,34 +2085,34 @@ typedef char KrbSpawnInfo_size_must_be_0x1c[
 extern "C" KrbSpawnInfo g_profile_KURIBO = {
     daKrb_c_classInit_KURIBO,
     0x00c8,
-    0x00d5,
-    2,
-    0x00100000,
-    0x00300000,
+    0x0018,
+    0x10000006,
+    0x00032000,
+    0x00046000,
     0x01000000,
-    0
+    0x01000000
 };
 
 // @symbol g_profile_KURIBO_S
 extern "C" KrbSpawnInfo g_profile_KURIBO_S = {
     daKrb_c_classInit_KURIBO_S,
     0x00c9,
-    0x00d5,
-    2,
-    0x00100000,
-    0x00300000,
-    0x01000000,
-    0
+    0x0019,
+    0x10000006,
+    0x00032000,
+    0x00046000,
+    0x006a4000,
+    0x00800000
 };
 
 // @symbol g_profile_KURIBO_L
 extern "C" KrbSpawnInfo g_profile_KURIBO_L = {
     daKrb_c_classInit_KURIBO_L,
     0x00ca,
-    0x00d5,
-    2,
-    0x00100000,
-    0x00300000,
+    0x001a,
+    0x10000006,
+    0x00064000,
+    0x000c8000,
     0x01000000,
-    0
+    0x01000000
 };
