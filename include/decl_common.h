@@ -2500,7 +2500,6 @@ extern void func_ov063_0211c684(char*);
 extern void func_ov063_0211c82c(char*);
 extern int func_ov064_02117fd4();
 extern int func_ov064_021187ec(char*, void*);
-extern void func_ov064_02118c48(void*);
 extern int func_ov064_021192bc();
 extern int func_ov064_0211982c(void*, void*);
 extern void func_ov064_0211a6ec(char*, int);

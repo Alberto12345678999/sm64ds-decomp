@@ -27,8 +27,8 @@ struct daObjFl_Puzzle_c : dBgActor_c {
     u8  mHadClsn;            /* 0x338 */
     u8  mFreezeState;            /* 0x339 */
     u8  mCanSpawnCoin;            /* 0x33a */
-    /* Inline is load-bearing: the two small forcing translation units emit the
-     * ROM's D1 and D0 while objisolate discards their wrappers and D2. */
+    /* Inline is load-bearing. The forcing calls in src/actors/daObjFl_Coin_c.cpp
+     * emit D1 then D0. An out-of-line body emits D2, D0, D1. */
     virtual ~daObjFl_Puzzle_c() {}
 
     /* Overrides of fBase_c's resource/behavior/render slots. */

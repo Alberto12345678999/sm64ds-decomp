@@ -1,9 +1,9 @@
 {
   "id": "ov064/daObjFl_Coin_c+daObjFl_Puzzle_c",
   "module": "ov064",
-  "source": "src_tu/actors/daObjFl_Coin_c+daObjFl_Puzzle_c.cpp",
+  "source": "src/actors/daObjFl_Coin_c.cpp",
   "promoted_source": "src/actors/daObjFl_Coin_c.cpp",
-  "status": "text-verified",
+  "status": "promoted",
   "boundary_confidence": "medium",
   "boundary_evidence": [
     "contiguous linker run: 0x2118b50..0x211929c, 21 function(s), from build/tu_map.json (tools/tu_map.py)",
