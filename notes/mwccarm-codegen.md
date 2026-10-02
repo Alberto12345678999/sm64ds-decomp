@@ -7770,6 +7770,33 @@ spc/8/1c and sp4), the moving stone's index (+0x108: the ROM shifts once and add
 index), and the contact-angle truncation (the ROM issues its `lsl #16` at +0x160 and defers the first rotation's
 `<<1`, where this draft does both late, around +0x1c0).
 
+**7. The twin MATCHED, and the pointer-local lever carries half-way to 020e5450 (2026-10-02, lane
+mgwiden-curltwins-1002e): func_ov006_020e20bc 53 -> 0, func_ov006_020e5450 70 -> 30.** Same metric. Three
+spellings closed 020e20bc from point 6's 53, and the first two are frame levers, not schedule levers. (i) The
+contact angle is negated right after atan2 and before the velocity reads (`rel = -ang;` as the next statement).
+(j) The three fields written after a call (the hit stone's x and y, the moving stone's x for the sound) are
+reached through pointer locals taken beside each stone's reads: a named pointer ranks in the frame like any
+named local, in declaration order, so their addresses leave the compiler's spill pool and sit in the named
+chain, which is where the ROM keeps them (pool slots sp4/8/c in point 6 are exactly these three addresses).
+(k) The moving stone's new x velocity reuses the outer `dx`, which drops it to the end of the pool. With those
+three the declaration-order climb of point 6 was no longer needed. The file is in src/actors/dScMgCurling_c.cpp
+and the class is widened to its whole 46-function unit.
+The same levers on 020e5450: the hit stone's angle bound as a reference right after atan2 (`u16 &hitAngle =
+self->mStone[i].angle;`, a reference ranks like a pointer local) took it 70 -> 43; computing `xi` before `yi`
+colours the idx.y reload r1 as the ROM has it (43 -> 41); and pointer locals for &i.x, &idx.x and &i.y, assigned
+AFTER the outer dx/dy reads and used only in the wall clamps and the sound call, 41 -> 30. Position matters:
+assigned before the dx/dy reads, the same pointers grow the frame and the body is 0x540, because the compiler
+then addresses dx/dy through them. Open at 30: one contiguous schedule residue +0x1b4..+0x224, where this draft
+hoists the T[E] (sP) load and its `asr #31` above the hit stone's table chain and spills the sign at sp+0x34
+ahead of the hit cosine at 0x38, while the ROM loads T[E]/T[E+1] after the hit cosine and sine, sign-extends
+both after vex, and keeps the cosine at 0x34 with the signs at 0x38/0x3c; plus the +0x3d0 reload of that slot.
+Inert at 30 (about 20 cells): every source position of the sP/cP reads, E unscaled or inlined, s16 or long long
+for sP/cP, explicit wide copies, a cached hit speed, sine before cosine on the hit stone, declaration-order
+swaps. Worse: reusing `k` or `rel` for the E index (0x578, extra spills), a table pointer `tp = &T[E]` (0x51c),
+`Stone &a/&b` references (size change), rereading T[E] for the 0x1b000 products (0x56c). The lever that is
+missing is one that delays a load the scheduler wants early without adding a slot; the twin never needed it
+because its contact table words are read through the shared `k` after the negation.
+
 ## 6da. A scalar stack parameter the loop uses directly is register-homed in PARAMETER ORDER, and that is the only thing that puts its load ahead of the last self-home store: OAM::Render MATCHED (div 2 -> 0, 2026-09-13, run link100 lane W12-5)
 
 `_ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii` (arm9 0x02020994, 0x690) was the game's one
