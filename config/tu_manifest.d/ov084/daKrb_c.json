@@ -468,7 +468,7 @@
     },
     "linkcheck": {
       "round": "tools/tubuild.py linkcheck -- scratch dsd delink+lcf, whole-tree mwccarm, mwldarm link, linked-range and module byte comparison, dsd check symbols --fail, full ROM build",
-      "result": "scratch-link-verified",
+      "result": "scratch-data-verified",
       "scratch": "build/tu/ov084-daKrb_c/link (gitignored)",
       "phases": {
         "delink": true,
@@ -492,19 +492,80 @@
           "end": "0x0212c10c",
           "differingBytes": 0,
           "firstDiff": null
+        },
+        {
+          "section": ".data",
+          "start": "0x021308d4",
+          "end": "0x021309c4",
+          "differingBytes": 0,
+          "firstDiff": null
         }
       ],
       "objectAudit": {
         "counts": {
-          "LICENSED": 35
+          "LICENSED": 41
         },
         "emittedTextOrderIsRomAscending": true,
         "nonLicensedSymbols": [],
         "unlicensedSections": []
       },
       "nontextSectionOrder": {
-        "groups": [],
-        "objisolate": null,
+        "groups": [
+          {
+            "section": ".data",
+            "original": [
+              73,
+              75,
+              77,
+              79,
+              81,
+              82
+            ],
+            "desired": [
+              81,
+              82,
+              73,
+              75,
+              77,
+              79
+            ]
+          }
+        ],
+        "objisolate": {
+          "reordered": [
+            {
+              "section": ".data",
+              "original": [
+                73,
+                75,
+                77,
+                79,
+                81,
+                82
+              ],
+              "desired": [
+                81,
+                82,
+                73,
+                75,
+                77,
+                79
+              ],
+              "slots": [
+                73,
+                75,
+                77,
+                79,
+                81,
+                82
+              ]
+            }
+          ],
+          "symbolIndices": 6,
+          "sectionLinks": 0,
+          "sectionInfos": 5,
+          "error": null
+        },
         "errors": null
       },
       "linkedStorageAliases": null,
