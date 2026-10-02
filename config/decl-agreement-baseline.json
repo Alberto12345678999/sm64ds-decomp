@@ -874,10 +874,6 @@
       "src/func_ov002_020f5fe4.c": [
         "param:#1 int"
       ],
-      "src/func_ov004_020b3278.cpp": [
-        "param:#1 int",
-        "param:#2 int"
-      ],
       "src/func_ov075_02116ad4.c": [
         "param:#2 int"
       ],
@@ -5617,9 +5613,6 @@
       "src/func_ov004_020aeb24.cpp": [
         "return:int"
       ],
-      "src/func_ov004_020b3c58.c": [
-        "return:int"
-      ],
       "src/func_ov004_020b4aa4.c": [
         "return:int"
       ],
@@ -5758,12 +5751,6 @@
         "return:void"
       ],
       "src/func_ov002_020f7780.c": [
-        "return:void"
-      ],
-      "src/func_ov004_020b4a28.c": [
-        "return:void"
-      ],
-      "src/func_ov004_020b4a4c.c": [
         "return:void"
       ],
       "src/func_ov006_020c19d0.cpp": [
@@ -14857,11 +14844,6 @@
         "param:#4 void *",
         "return:int"
       ],
-      "src/func_ov004_020b4a7c.c": [
-        "param:#2 int",
-        "param:#3 int",
-        "param:#4 void *"
-      ],
       "src/func_ov004_020b67bc.c": [
         "param:#2 int",
         "param:#3 int",
@@ -20603,9 +20585,6 @@
       "src/func_ov004_020b1b40.c": [
         "return:void *"
       ],
-      "src/func_ov004_020b3278.cpp": [
-        "return:Obj *"
-      ],
       "src/func_ov004_020b58c4.cpp": [
         "return:Obj *"
       ],
@@ -20623,6 +20602,9 @@
       ],
       "src/actors/dMgState_c.cpp": [
         "return:Base *"
+      ],
+      "src/actors/unit020b2c84.cpp": [
+        "return:Obj *"
       ]
     },
     "data_ov004_020beb6c": {
@@ -20630,9 +20612,6 @@
         "return:int []"
       ],
       "src/func_ov004_020b04d0.c": [
-        "return:int []"
-      ],
-      "src/func_ov004_020b3888.c": [
         "return:int []"
       ]
     },
@@ -20652,11 +20631,9 @@
     "data_ov004_020bf3e8": {
       "src/func_ov004_020b0d30.c": [
         "return:char []"
-      ]
-    },
-    "data_ov004_020bf560": {
-      "src/func_ov004_020b2c84.c": [
-        "return:void * []"
+      ],
+      "src/actors/unit020b2c84.cpp": [
+        "return:unsigned char []"
       ]
     },
     "data_ov004_020bf648": {
@@ -20755,11 +20732,6 @@
     "data_ov004_020bfe9c": {
       "src/__sinit_ov004_020b9b24.c": [
         "return:int"
-      ]
-    },
-    "data_ov006_021346bc": {
-      "src/func_ov004_020b42c0.c": [
-        "return:void *"
       ]
     },
     "data_ov006_02137560": {
@@ -26767,10 +26739,6 @@
         "return:void"
       ],
       "src/func_ov004_020b0e84.cpp": [
-        "param:#1 int",
-        "return:void"
-      ],
-      "src/func_ov004_020b422c.c": [
         "param:#1 int",
         "return:void"
       ],
@@ -35443,13 +35411,10 @@
       ]
     },
     "func_ov004_020adfc4": {
-      "src/func_ov004_020b39a4.c": [
-        "arity:5"
-      ],
-      "src/func_ov004_020b484c.c": [
-        "arity:5"
-      ],
       "src/actors/dScMgCoin_c.cpp": [
+        "arity:5"
+      ],
+      "src/actors/unit020b2c84.cpp": [
         "arity:5"
       ]
     },
@@ -35487,11 +35452,6 @@
     "func_ov004_020af2f8": {
       "include/decl_common.h": [
         "param:#2 int"
-      ]
-    },
-    "func_ov004_020af5e0": {
-      "src/func_ov004_020b3278.cpp": [
-        "arity:4"
       ]
     },
     "func_ov004_020af770": {
@@ -35611,13 +35571,6 @@
         "param:#2 void *"
       ]
     },
-    "func_ov004_020b1cf0": {
-      "src/func_ov004_020b42c0.c": [
-        "param:#1 void *",
-        "param:#2 short",
-        "param:#3 short"
-      ]
-    },
     "func_ov004_020b1d60": {
       "src/func_ov004_020adc80.c": [
         "arity:4",
@@ -35672,11 +35625,6 @@
         "param:#4 int"
       ]
     },
-    "func_ov004_020b39a4": {
-      "src/func_ov004_020b3c58.c": [
-        "return:int"
-      ]
-    },
     "func_ov004_020b40c0": {
       "src/func_ov004_020b0b1c.c": [
         "param:#1 Obj004 *"
@@ -35685,11 +35633,6 @@
     "func_ov004_020b422c": {
       "src/func_ov004_020b0b1c.c": [
         "param:#1 Obj004 *"
-      ]
-    },
-    "func_ov004_020b42c0": {
-      "src/func_ov004_020b31b4.cpp": [
-        "arity:0"
       ]
     },
     "func_ov004_020b4a70": {
@@ -38865,6 +38808,11 @@
     "data_02086b58": {
       "src/actors/dMgState_c.cpp": [
         "return:W2"
+      ]
+    },
+    "func_ov004_020af5e0": {
+      "src/actors/unit020b2c84.cpp": [
+        "arity:4"
       ]
     }
   }
