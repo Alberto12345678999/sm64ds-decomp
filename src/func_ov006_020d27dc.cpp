@@ -1,17 +1,14 @@
 //cpp
 // @symbol func_ov006_020d27dc
 /* recovered: Mario's Slides (dScMgAmida_c block): the large per-frame routine that walks the ladder objects. */
-// NONMATCHING: div 1 of 914 words, size-exact. mwccarm 2004/b56, --module ov006,
-// @ 0x020d27dc size 0xe48. Residue: one bit, the S bit of `mov r1,#1` at +0x57c (the
-// ROM has mov, this source gives movs). Mechanism: b56 if-converts the `< 5` arm of the
-// `*(s32 *)(p + 0x5374) >= 5` test (six instructions, inside its fold budget of seven)
-// unless the `>= 5` arm it jumps over holds a conditional region; the ROM keeps a `blt`
-// there with no conditional in that arm. The two-way return on `(p + 1) - p` at the end
-// of the `>= 5` arm is a probe, not period source: the front end cannot fold it, so the
-// arm still holds a conditional when the if-conversion decision is made and the `blt`
-// survives; the backend then merges the identical arms and folds the leftover compare
-// against the 1 already in r1 into `movs`. Without it the body is four bytes short
-// (notes/mwccarm-codegen.md 6cn). Any real compare costs at least that one word or bit.
+// NONMATCHING: div 17 of 914 words. mwccarm 2004/b56, --module ov006,
+// @ 0x020d27dc size 0xe48. Residue: one branch shape. b56 if-converts the `< 5` arm
+// of the `*(s32 *)(p + 0x5374) >= 5` test, while the ROM keeps a `blt` at +0x564 over
+// an arm with no conditional in it. A two-way bare return on `(p + 1) - p` at the end
+// of the `>= 5` arm keeps that branch and brings this function to one differing bit
+// (`movs` for the ROM's `mov` at +0x57c). That form is a compiler probe, not period
+// source, so this body leaves it out; the probe is kept in nearmiss/db.jsonl and
+// described in notes/mwccarm-codegen.md 6cn.
 // Draft from nearmiss/db.jsonl (stored divergence 17), landed 2026-09-14 under Tango's ruling that the functionally-equivalent C
 // drafts live on main with an honest banner so the port and readers have source. Logic is
 // verified only as far as the residue class implies: register names and instruction order
@@ -257,13 +254,10 @@ extern "C" void func_ov006_020d27dc(void *arg0)
                                 if (*(s32 *)(p + 0x5368) > 0x64) {
                                     *(s32 *)(p + 0x5368) = 0x64;
                                 }
-                                if (*(s32 *)(p + 0x5374) >= 5) {
+                                if (*(s32 *)((int)p + 0x5374) >= 5) {
                                     *(s32 *)(p + 0x53c0) = 0x3c;
                                     *(s32 *)(p + 0x46d0) = 2;
                                     *(u8 *)(p + 0x46d4) = 1;
-                                    if ((p + 1) - p) {
-                                        return;
-                                    }
                                     return;
                                 }
                                 *(s32 *)(p + 0x46d0) = 0;
