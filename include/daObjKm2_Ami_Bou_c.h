@@ -23,7 +23,7 @@ int _ZN10dBgActor_c21IsClsnInRangeOnScreenE5Fix12IiES1_(
     dBgActor_c *self, int rangeX, int rangeY);
 }
 
-/* Bowser in the Fire Sea net pole (profile KM2_AMI_BOU).
+/* daKpa_c in the Fire Sea net pole (profile KM2_AMI_BOU).
  * Direct base dBgActor_c. Factory allocates 0x358.
  * mdCcAc_c is the cylinder at 0x320. mHeightAng at 0x354 is the
  * sine-table phase: Behavior indexes this unsigned halfword, then

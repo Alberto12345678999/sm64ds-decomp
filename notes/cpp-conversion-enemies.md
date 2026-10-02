@@ -37,7 +37,7 @@ written the way the original was.
 | `_ZN11dCapEnemy_cD2Ev` | [ov002](../config/arm9/overlays/ov002/symbols.txt) 0x020aedbc 0x38 | the same body, bound to the other variant |
 | `_ZN7daTrs_cD1Ev` / `D0Ev` | [ov063](../config/arm9/overlays/ov063/symbols.txt) 0x02115ee0 / 0x02115f48 | 6 members, base D2 chain |
 | `_ZN7daKrb_cD1Ev` / `D0Ev` | [ov084](../config/arm9/overlays/ov084/symbols.txt) 0x02129020 / 0x02129070 | 5 members, base D2 chain |
-| `_ZN14UnchainedChompD0Ev` | [ov100](../config/arm9/overlays/ov100/symbols.txt) 0x02143290 0xe0 | 3 `__destroy_arr` + 4 sub-object dtors + chain |
+| `_ZN11daWanwan2_cD0Ev` | [ov100](../config/arm9/overlays/ov100/symbols.txt) 0x02143290 0xe0 | 3 `__destroy_arr` + 4 sub-object dtors + chain |
 | `_ZN11dCapEnemy_cD0Ev` | [ov002](../config/arm9/overlays/ov002/symbols.txt) 0x020aedf4 0x4c | 2 sub-object dtors, base chain |
 | `_ZN15daObjMarioCap_cD0Ev` | [ov002](../config/arm9/overlays/ov002/symbols.txt) 0x020b6f68 0x64 | 5 sub-object dtors, base chain |
 | `_ZN12daKuriKing_c13InitResourcesEv` | [ov074](../config/arm9/overlays/ov074/symbols.txt) 0x02121e98 0x404 | name mangling; header decl added |
@@ -239,6 +239,6 @@ Eight are left untested:
 |---|---|
 | `_ZN16daObjBC_Switch_c13InitResourcesEv`|  `_ZN13daObjNumber_c13InitResourcesEv`|
 |[func_ov002_020f6618](../src/func_ov002_020f6618.cpp) |                   `func_ov006_020e6e78`|
-|`func_ov006_020e7fe8` |                   [func_ov060_02111cc0](../src/func_ov060_02111cc0.cpp)|
+|`func_ov006_020e7fe8` |                   [func_ov060_02111cc0](../src/actors/daKpa_c.cpp)|
 |`func_ov075_021143e4` |                    `func_ov075_02114ddc`|
 

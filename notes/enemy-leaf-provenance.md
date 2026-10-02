@@ -6,7 +6,7 @@ back, the field stays `unk_NNN` and the reason is recorded — a name nobody can
 check is a claim the next reader would trust for nothing.
 
 Classes covered here: daWater_Hakidasi_c, daKuriKing_c, daWanwan_c, BobOmb, daBtn_c,
-RollingIronBall, daShl_c, Klepto, daMip_c, daKing_Donketu_c.
+daIbl_c, daShl_c, Klepto, daMip_c, daKing_Donketu_c.
 
 A recurring source of `unk_` in these headers is the `#else` C twin, which
 restates the whole `fBase_c -> dBase_c -> dActor_c -> dEnemyBase_c` chain flat.
@@ -236,11 +236,10 @@ the offset better than `unk_100` does.
 
 ---
 
-## RollingIronBall (`include/RollingIronBall.h`, ov100)
+## daIbl_c (`include/daIbl_c.h`, ov100)
 
-Bodies read: `src/_ZN15RollingIronBall13InitResourcesEv.cpp`,
-`src/_ZN15RollingIronBall8BehaviorEv.cpp`,
-`src/_ZN15RollingIronBall6RenderEv.cpp`.
+Bodies read (all in `src/actors/daIbl_c.cpp`): `daIbl_c::InitResources`,
+`daIbl_c::Behavior`, `daIbl_c::Render`.
 
 | offset | name | evidence |
 | --- | --- | --- |
@@ -273,7 +272,7 @@ Byte-neutral cleanups: six `((char *)this) + 0xNNN` member addresses in
 `*(unsigned char*)((char*)&unk_3d0)` became `mVariant`.
 
 **Tooling note.** `build_pin.verify` reports `999 word(s) differ` for
-`_ZN15RollingIronBall13InitResourcesEv` — *including on the untouched `HEAD`
+`_ZN7daIbl_c13InitResourcesEv` — *including on the untouched `HEAD`
 version of the file*, checked by restoring both the header and the body from
 `HEAD` and re-running. `match.extract_func` returns a 2-byte body for that
 symbol, so the isolated-compile path cannot see this function at all; it is the

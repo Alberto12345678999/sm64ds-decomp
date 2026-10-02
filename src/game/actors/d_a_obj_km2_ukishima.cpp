@@ -1,6 +1,6 @@
 //cpp
 /**
- * Bowser in the Fire Sea's floating floor.
+ * daKpa_c in the Fire Sea's floating floor.
  *
  * No fields. InitResources / CleanupResources hand this overlay's
  * model and collision files to daObjUkiyuka_c's shared ov002 helpers.

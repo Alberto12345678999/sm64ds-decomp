@@ -707,7 +707,7 @@ wall clock, then decide whether Tier 2 is a campaign or a backlog. Second-best p
 [ov094](../config/arm9/overlays/ov094/symbols.txt)/`HootTheOwl` (22 files, whole-module, corroborated) — but `pcov=0`, so it confounds
 language with admission.
 
-## 6. Deferred-but-recoverable: [ov063](../config/arm9/overlays/ov063/symbols.txt) Boo (94) and [ov060](../config/arm9/overlays/ov060/symbols.txt) Bowser (80)
+## 6. Deferred-but-recoverable: [ov063](../config/arm9/overlays/ov063/symbols.txt) Boo (94) and [ov060](../config/arm9/overlays/ov060/symbols.txt) daKpa_c (80)
 
 Neither is "blocked only by pragmas/incomplete members".
 
@@ -723,14 +723,14 @@ named relatives were the `daTrs_c` and `daTBasket_c` shard directories under
 (`_ZTV3Boo`, `_ZTV7BooCage`, `_ZTV10BigBooIcon`) and 3 destructor pairs. 94 members is
 9.4× the cliff.
 
-**[ov060](../config/arm9/overlays/ov060/symbols.txt) — `Bowser+BowserTail`, `.text 0x2111900..0x2116484`, 80 files.**
+**[ov060](../config/arm9/overlays/ov060/symbols.txt) — `daKpa_c+daKpaTail_c`, `.text 0x2111900..0x2116484`, 80 files.**
 **1 function with no legacy source** ([func_ov060_021140c0](../config/arm9/overlays/ov060/symbols.txt); the census said 0). 2 members
 carry `opt_common_subs` / `opt_lifetimes`. **Swallower: 81 functions, 53% of [ov060](../config/arm9/overlays/ov060/symbols.txt).**
 3,181 lines, 15 includes.
 
 **What actually unblocks them**, in order:
 
-1. **Write the missing sources** (3 for Boo, 1 for Bowser). Without `complete`, dsd
+1. **Write the missing sources** (3 for Boo, 1 for daKpa_c). Without `complete`, dsd
    supplies the range from ROM bytes and your source is never compiled — a merge over
    them proves nothing. Ordinary matching work, not merge work.
 2. **Resolve the swallower.** A 94-function run spanning 69% of a module with 4 class

@@ -59,7 +59,7 @@ struct daKpaFire_c : dEnemyBase_c {
     s32 mSoundID;            /* 0x388 */
 
     /* --- vtable, in ROM order. Do not reorder. --- */
-    virtual ~daKpaFire_c();              /* slots 0 (D1), 1 (D0) */
+    virtual ~daKpaFire_c();              /* slots 16 (D1), 17 (D0) */
 
     /* --- non-virtual --- */
     int InitResources();

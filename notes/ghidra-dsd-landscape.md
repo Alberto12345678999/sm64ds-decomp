@@ -305,7 +305,7 @@ that dsd cannot attribute to [overlay 2](../config/arm9/overlays/ov002/symbols.t
 The next three (`0x020aea30`, `0x020adc74`, `0x020ada40`) account for another 69. Four
 addresses cover 126 of 135.
 
-**G5.4 — The data side is dominated by two tables.** [high] [data_02090864](../config/arm9/symbols.txt) alone
+**G5.4 — The data side is dominated by two tables.** [high] [ACTOR_SPAWN_TABLE](../config/arm9/symbols.txt) alone
 accounts for **244** entries and [data_02092208](../config/arm9/symbols.txt) for 51; the rest of the top-12 are ten
 `data_ov006_*` blocks at 21-23 each. A 244-entry ambiguous run at one address is a
 function-pointer table, not 244 independent problems.
@@ -337,14 +337,14 @@ size 0x24). The rival at that address is [func_ov007_020aed98](../src/func_ov007
 `[[enemy-subclass-census]]`.
 
 **G5.7 — The other 75 ARE the phantom-reference worklist, and this explains its cause.**
-[high] [func_ov006_02115b0c](../src/func_ov006_02115b0c.c):59 declares:
+[high] [func_ov006_02115b0c](../src/actors/dScMgSmartball_c.cpp) declared:
 
 ```c
 extern void *func_020adc74(void *p);
 ```
 
 There is no `func_020adc74` in any `symbols.txt`. The real symbols at that address are
-[func_ov003_020adc74](../src/func_ov003_020adc74.cpp) and [func_ov004_020adc74](../src/func_ov004_020adc74.c). The author could not tell which overlay owned the target, so they wrote a **module-less placeholder** — which resolves to
+[func_ov003_020adc74](../src/func_ov003_020adc74.cpp) and [func_ov004_020adc74](../src/minigames/d_s_mg_base.cpp). The author could not tell which overlay owned the target, so they wrote a **module-less placeholder** — which resolves to
 nothing. Checking the ten ambiguous call targets against
 `config/unresolved-baseline.json`: **nine of ten are present as module-less phantom
 names** (all but `func_020aed98`, which is the one already correctly named).
@@ -505,7 +505,7 @@ of size 0x8 / 0x60 / 0x288. Needs different evidence — a call-shape or runtime
 
 **G8.4 — Ghidra independently corroborates the [ov006](../config/arm9/overlays/ov006/symbols.txt) → [ov004](../config/arm9/overlays/ov004/symbols.txt) verdict.** [high] See §9:
 the SyncDsd'd decompilation of [func_ov006_020dbe9c](../src/actors/dScMgCoin_c.cpp) names its callee
-[func_ov004_020b023c](../src/func_ov004_020b023c.cpp). That is a third, independent line of evidence for [ov006](../config/arm9/overlays/ov006/symbols.txt) co-residing with [ov004](../config/arm9/overlays/ov004/symbols.txt) rather than [ov003](../config/arm9/overlays/ov003/symbols.txt) — arrived at through the imported relocation table rather than through the `relocs.txt` histogram.
+[func_ov004_020b023c](../src/minigames/d_s_mg_base.cpp). That is a third, independent line of evidence for [ov006](../config/arm9/overlays/ov006/symbols.txt) co-residing with [ov004](../config/arm9/overlays/ov004/symbols.txt) rather than [ov003](../config/arm9/overlays/ov003/symbols.txt) — arrived at through the imported relocation table rather than through the `relocs.txt` histogram.
 
 **G8.5 — Applying these is a symbol-rename change, with the usual hazards.** [high]
 Nine resolutions convert module-less phantom externs into real symbols across 6-12 files
@@ -542,7 +542,7 @@ extension links `cpp_demangle`):
 |---|---|
 | [func_ov102_0214b53c](../src/actors/daBmb_c.cpp) | `Matrix4x3_FromRotationY`, `MulMat4x3Mat4x3`, `Vec3_Lsl`, `Vec3_LslInPlace`, `IsFrontSliding`, `LostGrabbedObject`, `UpdateCarry`, [func_ov002_020e496c](../src/func_ov002_020e496c.c) |
 | `OAM::Render` | `GetObjWidth`, `GetObjHeight`, `LoadAffineParams`, `fdiv` — and the function itself comes back as `OAM::Render(...)` with 10 parameters, not `FUN_02020994` |
-| [func_ov006_020dbe9c](../src/actors/dScMgCoin_c.cpp) | [func_ov004_020b023c](../src/func_ov004_020b023c.cpp) — **correctly attributed to [ov004](../config/arm9/overlays/ov004/symbols.txt)** |
+| [func_ov006_020dbe9c](../src/actors/dScMgCoin_c.cpp) | [func_ov004_020b023c](../src/minigames/d_s_mg_base.cpp) — **correctly attributed to [ov004](../config/arm9/overlays/ov004/symbols.txt)** |
 
 This is the whole delta over the old raw-binary path, and it is a real one: a draft that
 says `MulMat4x3Mat4x3(...)` tells the LLM tier what the function *is*, where
