@@ -435,8 +435,8 @@
     "src/_ZN12dBgCh_SphCrrD0Ev.cpp",
     "src/_ZN12dBgCh_SphCrrD1Ev.cpp",
     "src/actors/dMg3DEspAnimSet_c.cpp#_ZN12dScMg3DEsp_c16CleanupResourcesEv",
-    "src/_ZN12dScMgAmida_c5Unk36Ev.cpp",
-    "src/_ZN12dScMgAmida_c9Virtual8CEv.cpp",
+    "src/actors/dScMgAmida_c.cpp#_ZN12dScMgAmida_c5Unk36Ev",
+    "src/actors/dScMgAmida_c.cpp#_ZN12dScMgAmida_c9Virtual8CEv",
     "src/actors/dScMgSlots.cpp#_ZN12dScMgSlot1_cD0Ev",
     "src/actors/dScMgSlots.cpp#_ZN12dScMgSlot1_cD1Ev",
     "src/actors/dScMgSlots.cpp#_ZN12dScMgSlot3_c16OnAimedAtWithEggEv",
@@ -3115,7 +3115,8 @@
     "src/actors/daDsn_c.cpp#daDsn_c_classInit",
     "src/actors/daObjPile_c.cpp#daObjPile_c_classInit",
     "src/actors/daIbl_c.cpp#daIbl_c_classInit",
-    "src/actors/daDoor_c.cpp#daDoor_c_classInit"
+    "src/actors/daDoor_c.cpp#daDoor_c_classInit",
+    "src/actors/dScMgAmida_c.cpp#_ZN12dScMgAmida_cD1Ev"
   ],
-  "count": 3108
+  "count": 3109
 }
