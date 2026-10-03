@@ -16564,6 +16564,12 @@
       ],
       "src/game/actors/d_a_ch_scene.cpp": [
         "return:FaderColor"
+      ],
+      "src/_ZN12dScStarSel_c8BehaviorEv.cpp": [
+        "return:unsigned short []"
+      ],
+      "src/actors/dScTitle_c.cpp": [
+        "return:unsigned short []"
       ]
     },
     "data_0209f5fc": {
@@ -37234,6 +37240,16 @@
       "src/minigames/d_s_mg_base.cpp": [
         "return:int",
         "param:#3 void *"
+      ]
+    },
+    "data_ov002_02111154": {
+      "src/func_ov001_020aa6b0.c": [
+        "return:int"
+      ]
+    },
+    "data_ov060_0211b1ac": {
+      "src/__sinit_ov060_0211a000.c": [
+        "return:Pair []"
       ]
     }
   }
