@@ -36553,87 +36553,87 @@ matched: yes</title></rect><rect x="1123.70" y="438.31" width="8.20" height="3.6
 module: ov064
 addr: 0x02118b10
 size: 64 bytes
-matched: yes</title></rect><rect x="1131.90" y="438.31" width="8.71" height="3.69" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN17BowserPuzzlePieceD1Ev
+matched: yes</title></rect><rect x="1131.90" y="438.31" width="8.71" height="3.69" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN16daObjFl_Puzzle_cD1Ev
 module: ov064
 addr: 0x02118b50
 size: 68 bytes
-matched: yes</title></rect><rect x="1140.61" y="438.31" width="11.27" height="3.69" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN17BowserPuzzlePieceD0Ev
+matched: yes</title></rect><rect x="1140.61" y="438.31" width="11.27" height="3.69" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN16daObjFl_Puzzle_cD0Ev
 module: ov064
 addr: 0x02118b94
 size: 88 bytes
-matched: yes</title></rect><rect x="1151.88" y="438.31" width="4.61" height="3.69" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN19BowserPuzzleManagerD1Ev
+matched: yes</title></rect><rect x="1151.88" y="438.31" width="4.61" height="3.69" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14daObjFl_Coin_cD1Ev
 module: ov064
 addr: 0x02118bec
 size: 36 bytes
-matched: yes</title></rect><rect x="1156.48" y="438.31" width="7.17" height="3.69" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN19BowserPuzzleManagerD0Ev
+matched: yes</title></rect><rect x="1156.48" y="438.31" width="7.17" height="3.69" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14daObjFl_Coin_cD0Ev
 module: ov064
 addr: 0x02118c10
 size: 56 bytes
-matched: yes</title></rect><rect x="1163.66" y="438.31" width="17.93" height="3.69" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov064_02118c48
+matched: yes</title></rect><rect x="1163.66" y="438.31" width="17.93" height="3.69" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN16daObjFl_Puzzle_c19func_ov064_02118c48Ev
 module: ov064
 addr: 0x02118c48
 size: 140 bytes
-matched: yes</title></rect><rect x="1181.58" y="438.31" width="3.07" height="3.69" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov064_02118cd4
+matched: yes</title></rect><rect x="1181.58" y="438.31" width="3.07" height="3.69" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN16daObjFl_Puzzle_c19func_ov064_02118cd4Ev
 module: ov064
 addr: 0x02118cd4
 size: 24 bytes
-matched: yes</title></rect><rect x="1184.66" y="438.31" width="3.59" height="3.69" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov064_02118cec
+matched: yes</title></rect><rect x="1184.66" y="438.31" width="3.59" height="3.69" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN16daObjFl_Puzzle_c19func_ov064_02118cecEv
 module: ov064
 addr: 0x02118cec
 size: 28 bytes
-matched: yes</title></rect><rect x="1188.24" y="438.31" width="3.07" height="3.69" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov064_02118d08
+matched: yes</title></rect><rect x="1188.24" y="438.31" width="3.07" height="3.69" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN16daObjFl_Puzzle_c19func_ov064_02118d08Ev
 module: ov064
 addr: 0x02118d08
 size: 24 bytes
-matched: yes</title></rect><rect x="1191.31" y="438.31" width="3.59" height="3.69" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov064_02118d20
+matched: yes</title></rect><rect x="1191.31" y="438.31" width="3.59" height="3.69" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN16daObjFl_Puzzle_c19func_ov064_02118d20Ev
 module: ov064
 addr: 0x02118d20
 size: 28 bytes
-matched: yes</title></rect><rect x="1122.68" y="442.00" width="5.99" height="7.88" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov064_02118d3c
+matched: yes</title></rect><rect x="1122.68" y="442.00" width="5.99" height="7.88" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN16daObjFl_Puzzle_c19func_ov064_02118d3cEv
 module: ov064
 addr: 0x02118d3c
 size: 100 bytes
-matched: yes</title></rect><rect x="1122.68" y="449.88" width="5.99" height="10.40" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov064_02118da0
+matched: yes</title></rect><rect x="1122.68" y="449.88" width="5.99" height="10.40" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN16daObjFl_Puzzle_c19func_ov064_02118da0Ev
 module: ov064
 addr: 0x02118da0
 size: 132 bytes
-matched: yes</title></rect><rect x="1122.68" y="460.28" width="5.99" height="15.13" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov064_02118e24
+matched: yes</title></rect><rect x="1122.68" y="460.28" width="5.99" height="15.13" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN16daObjFl_Puzzle_c19func_ov064_02118e24Eiii
 module: ov064
 addr: 0x02118e24
 size: 192 bytes
-matched: yes</title></rect><rect x="1122.68" y="475.41" width="5.99" height="15.13" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov064_02118ee4
+matched: yes</title></rect><rect x="1122.68" y="475.41" width="5.99" height="15.13" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN16daObjFl_Puzzle_c19func_ov064_02118ee4Ev
 module: ov064
 addr: 0x02118ee4
 size: 192 bytes
-matched: yes</title></rect><rect x="1122.68" y="490.54" width="5.99" height="8.51" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov064_02118fa4
+matched: yes</title></rect><rect x="1122.68" y="490.54" width="5.99" height="8.51" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN16daObjFl_Puzzle_c19func_ov064_02118fa4Ev
 module: ov064
 addr: 0x02118fa4
 size: 108 bytes
-matched: yes</title></rect><rect x="1122.68" y="499.05" width="5.99" height="4.73" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov064_02119010
+matched: yes</title></rect><rect x="1122.68" y="499.05" width="5.99" height="4.73" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN16daObjFl_Puzzle_c19func_ov064_02119010Ev
 module: ov064
 addr: 0x02119010
 size: 60 bytes
-matched: yes</title></rect><rect x="1122.68" y="503.78" width="5.99" height="4.73" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN17BowserPuzzlePiece16CleanupResourcesEv
+matched: yes</title></rect><rect x="1122.68" y="503.78" width="5.99" height="4.73" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN16daObjFl_Puzzle_c16CleanupResourcesEv
 module: ov064
 addr: 0x0211904c
 size: 60 bytes
-matched: yes</title></rect><rect x="1122.68" y="508.51" width="5.99" height="3.15" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN17BowserPuzzlePiece6RenderEv
+matched: yes</title></rect><rect x="1122.68" y="508.51" width="5.99" height="3.15" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN16daObjFl_Puzzle_c6RenderEv
 module: ov064
 addr: 0x02119088
 size: 40 bytes
-matched: yes</title></rect><rect x="1128.67" y="442.00" width="14.76" height="5.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN17BowserPuzzlePiece8BehaviorEv
+matched: yes</title></rect><rect x="1128.67" y="442.00" width="14.76" height="5.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN16daObjFl_Puzzle_c8BehaviorEv
 module: ov064
 addr: 0x021190b0
 size: 172 bytes
-matched: yes</title></rect><rect x="1143.43" y="442.00" width="6.52" height="5.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN19BowserPuzzleManager8BehaviorEv
+matched: yes</title></rect><rect x="1143.43" y="442.00" width="6.52" height="5.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14daObjFl_Coin_c8BehaviorEv
 module: ov064
 addr: 0x0211915c
 size: 76 bytes
-matched: yes</title></rect><rect x="1149.95" y="442.00" width="18.87" height="5.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN17BowserPuzzlePiece13InitResourcesEv
+matched: yes</title></rect><rect x="1149.95" y="442.00" width="18.87" height="5.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN16daObjFl_Puzzle_c13InitResourcesEv
 module: ov064
 addr: 0x021191a8
 size: 220 bytes
-matched: yes</title></rect><rect x="1168.82" y="442.00" width="2.06" height="5.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN19BowserPuzzleManager13InitResourcesEv
+matched: yes</title></rect><rect x="1168.82" y="442.00" width="2.06" height="5.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14daObjFl_Coin_c13InitResourcesEv
 module: ov064
 addr: 0x02119284
 size: 24 bytes
