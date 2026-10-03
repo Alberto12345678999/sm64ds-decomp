@@ -2515,6 +2515,16 @@ ov080	0x02123740	func_ov080_02123740	_ZN11daChoropu_cD1Ev	vtable slot 16
 ov080	0x02123778	func_ov080_02123778	_ZN11daChoropu_cD0Ev	vtable slot 17
 ov080	0x021237c4	func_ov080_021237c4	_ZN14daChoro_Rock_cD1Ev	vtable slot 16
 ov080	0x02123804	func_ov080_02123804	_ZN14daChoro_Rock_cD0Ev	vtable slot 17
+ov080	0x02123860	func_ov080_02123860	_ZN11daChoropu_c19func_ov080_02123860Ev	daChoropu_c method. The first argument is the mole, so the function is a member and the parameter is this. The address is kept as the method name.
+ov080	0x02123924	func_ov080_02123924	_ZN11daChoropu_c19func_ov080_02123924Ev	daChoropu_c method. The first argument is the mole, so the function is a member and the parameter is this. The address is kept as the method name.
+ov080	0x02123a34	func_ov080_02123a34	_ZN11daChoropu_c19func_ov080_02123a34Ev	daChoropu_c method. The first argument is the mole, so the function is a member and the parameter is this. The address is kept as the method name.
+ov080	0x02123c24	func_ov080_02123c24	_ZN11daChoropu_c19func_ov080_02123c24Ev	daChoropu_c method. The first argument is the mole, so the function is a member and the parameter is this. The address is kept as the method name.
+ov080	0x02123ecc	func_ov080_02123ecc	_ZN11daChoropu_c19func_ov080_02123eccEv	daChoropu_c method. The first argument is the mole, so the function is a member and the parameter is this. The address is kept as the method name.
+ov080	0x02123fcc	func_ov080_02123fcc	_ZN11daChoropu_c19func_ov080_02123fccEv	daChoropu_c method. The first argument is the mole, so the function is a member and the parameter is this. The address is kept as the method name.
+ov080	0x02124088	func_ov080_02124088	_ZN11daChoropu_c19func_ov080_02124088Ev	daChoropu_c method. The first argument is the mole, so the function is a member and the parameter is this. The address is kept as the method name.
+ov080	0x02124208	func_ov080_02124208	_ZN11daChoropu_c19func_ov080_02124208Ev	daChoropu_c method. The first argument is the mole, so the function is a member and the parameter is this. The address is kept as the method name.
+ov080	0x02124360	func_ov080_02124360	_ZN11daChoropu_c19func_ov080_02124360Ev	daChoropu_c method. The first argument is the mole, so the function is a member and the parameter is this. The address is kept as the method name.
+ov080	0x021243d8	func_ov080_021243d8	_ZN11daChoropu_c19func_ov080_021243d8Ev	daChoropu_c method. The first argument is the mole, so the function is a member and the parameter is this. The address is kept as the method name.
 ov080	0x02124458	func_ov080_02124458	_ZN11daChoropu_c16CleanupResourcesEv	vtable slot 3
 ov080	0x021244b4	func_ov080_021244b4	_ZN14daChoro_Rock_c16CleanupResourcesEv	vtable slot 3
 ov080	0x021244d8	func_ov080_021244d8	_ZN11daChoropu_c6RenderEv	vtable slot 9
