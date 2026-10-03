@@ -1,13 +1,15 @@
 //cpp
-/* Eyerok, the two-handed pyramid boss (.text 0x0211603c..0x0211a2e4,
- * 59 functions). ROM RTTI daIwante_c (_ZTS10daIwante_c ov066:0x0211ad30);
+/* Eyerok, the two-handed pyramid boss (.text 0x0211603c..0x0211a418,
+ * 62 functions). ROM RTTI daIwante_c (_ZTS10daIwante_c ov066:0x0211ad30);
  * this tree keeps the coined name.
  *
  * The unit's two destructors (D1 0x02115ee0, D0 0x02115f84) stay in their
  * own files: ~Eyerok is the key function, and defining it here would emit
  * the vtable and RTTI as _ZTS6Eyerok, a name the ROM does not have. The
- * registry factory daIwante_c_classInit (0x0211a370, src/d_a_iwante.cpp)
- * is not folded: two free functions sit between it and this unit.
+ * tail folds the three zero-gap neighbours up to the sinit at 0x0211a418:
+ * the free helper func_ov066_0211a2e4, its tail-call veneer
+ * func_ov066_0211a35c (this unit's dBgW callback), and the registry
+ * factory daIwante_c_classInit, which installs this unit's vtable.
  *
  * Source is ROM-ascending under defer_codegen off. Do not reorder.
  *
@@ -339,7 +341,7 @@ extern int _ZNK9Animation13GetFrameCountEv(void *self);
 
 /* ---- the dBgW callback veneer just past this unit (0x0211a35c, its own
  *      src/ file) ---- */
-extern int func_ov066_0211a35c(void *a, void *b, void *c);
+extern void func_ov066_0211a35c(void *a, void *b, void *c);
 
 /* ---- this TU's own members, forward-declared: the file is written
  *      ROM-ascending, so a member that calls one defined further down
@@ -2825,4 +2827,84 @@ int Eyerok::InitResources()
 int Eyerok::OnAimedAtWithEgg()
 {
     return 163840;
+}
+
+/* -------------------------------------------------------------------------- */
+/* FOLDED ZERO-GAP NEIGHBOURS. These three sit between this unit and the
+   module's sinit at 0x0211a418, and they belong to this class: the factory
+   installs _ZTV6Eyerok, which is this unit's vtable. */
+/* -------------------------------------------------------------------------- */
+extern unsigned char data_ov066_0211ae04;
+extern unsigned char data_ov066_0211ae08;
+
+// @symbol func_ov066_0211a2e4
+extern "C" void func_ov066_0211a2e4(void *a, int b)
+{
+    volatile int dummy[3];
+    (void)dummy;
+    void *p;
+    if (data_ov066_0211ae04 != 1) return;
+    if (b == 0) return;
+    p = _ZN8dActor_c13ClosestPlayerEv(a);
+    if (p == 0) return;
+    if (*(int *)((char *)p + 0x64) < (int)0xff387000) {
+        data_ov066_0211ae08++;
+    }
+}
+
+/* Arg-shifting tail-call veneer. Drops the first argument and forwards the next
+   two. long_calls is scoped to this one function: the pooled
+   `ldr ip,[pc,#8]; bx ip` absolute tail-call it needs is a file-global
+   pragma, and leaving it on for the 59 functions above would change their
+   call emission.
+
+   The forwarder's second argument is an int, not a pointer, and the
+   forwarder itself is void. Its old one-function sources declared it
+   `extern int func_ov066_0211a2e4(void*, void*)` and gave the veneer an
+   `int` return it never produced; in C both mismatches were invisible and
+   every spelling passed the same register. With the real prototypes in
+   scope the body is spelled against them. The emitted code is unchanged:
+   the veneer is a `ldr ip,[pc,#8]; bx ip` tail-call, which never writes r0
+   itself. */
+// @symbol func_ov066_0211a35c
+#pragma long_calls on
+extern "C" void func_ov066_0211a35c(void *a, void *b, void *c)
+{
+    func_ov066_0211a2e4(b, (int)c);
+}
+#pragma long_calls off
+
+extern "C" void *_ZN10dBgActor_cC2Ev(void *thiz);
+extern int _ZTV6Eyerok[];
+extern "C" void *_ZN14BlendModelAnimC1Ev(void *thiz);
+extern "C" void *_ZN5ModelC1Ev(void *thiz);
+extern "C" void *_ZN10dCcAcPos_cC1Ev(void *thiz);
+extern "C" void *_ZN10dBgW_KcMbgC1Ev(void *thiz);
+extern "C" void *_ZN11ShadowModelC1Ev(void *thiz);
+extern "C" void *_ZN15TextureSequenceC1Ev(void *thiz);
+extern "C" void __cxa_vec_ctor(void *p, int a, int b, void *f1, void *f2);
+extern "C" Vector3 *_ZN7Vector3D1Ev(Vector3 *object);
+extern "C" void func_0203d384(void);
+
+// @symbol daIwante_c_classInit
+/* Reconstructed source-style name: SM64DS proves daIwante_c through RTTI,
+ * allocation size, vtable identity, and the IWANTE registry profile;
+ * later EAD lineage supplies classInit. Exact original spelling is not
+ * preserved. Historical alias: Eyerok_Spawn. */
+extern "C" void *daIwante_c_classInit(void)
+{
+    unsigned char *c = (unsigned char *)_ZN7fBase_cnwEj(0x874);
+    if (c) {
+        _ZN10dBgActor_cC2Ev(c);
+        *(void **)c = _ZTV6Eyerok;
+        _ZN10dCcAcPos_cC1Ev(c + 0x320);
+        _ZN14BlendModelAnimC1Ev(c + 0x360);
+        _ZN5ModelC1Ev(c + 0x3d0);
+        _ZN11ShadowModelC1Ev(c + 0x420);
+        _ZN15TextureSequenceC1Ev(c + 0x448);
+        __cxa_vec_ctor(c + 0x4dc, 0x14, 0xc, (void *)func_0203d384,
+                       (void *)_ZN7Vector3D1Ev);
+        _ZN10dBgW_KcMbgC1Ev(c + 0x674);
+    }
+    return c;
 }

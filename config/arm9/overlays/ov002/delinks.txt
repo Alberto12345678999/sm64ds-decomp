@@ -1521,19 +1521,19 @@ src/d_a_ply.cpp:
     complete
     .text start:0x020e6c0c end:0x020e6c40
 
-src/_ZN9PowerStarD1Ev.cpp:
+src/_ZN8daStar_cD1Ev.cpp:
     complete
     .text start:0x020e6c40 end:0x020e6c90
 
-src/_ZN9PowerStarD0Ev.cpp:
+src/_ZN8daStar_cD0Ev.cpp:
     complete
     .text start:0x020e6c90 end:0x020e6cf4
 
-src/_ZN10StarMarkerD1Ev.cpp:
+src/_ZN12daStarBase_cD1Ev.cpp:
     complete
     .text start:0x020e6cf4 end:0x020e6d34
 
-src/_ZN10StarMarkerD0Ev.cpp:
+src/_ZN12daStarBase_cD0Ev.cpp:
     complete
     .text start:0x020e6d34 end:0x020e6d88
 
@@ -1580,7 +1580,7 @@ src/func_ov002_020e7218.c:
     complete
     .text start:0x020e7218 end:0x020e72d8
 
-src/_ZN10StarMarker27SpawnRedCoinStarIfNecessaryEv.cpp:
+src/_ZN12daStarBase_c27SpawnRedCoinStarIfNecessaryEv.cpp:
     complete
     .text start:0x020e72d8 end:0x020e73ac
 
@@ -1612,7 +1612,7 @@ src/func_ov002_020e7d08.cpp:
     complete
     .text start:0x020e7d08 end:0x020e7d84
 
-src/_ZN10StarMarker7CollectEv.cpp:
+src/_ZN12daStarBase_c7CollectEv.cpp:
     complete
     .text start:0x020e7d84 end:0x020e7e14
 
@@ -1684,7 +1684,7 @@ src/func_ov002_020e8c34.c:
     complete
     .text start:0x020e8c34 end:0x020e8ca0
 
-src/_ZN9PowerStar13AddStarMarkerEv.cpp:
+src/_ZN8daStar_c13AddStarMarkerEv.cpp:
     complete
     .text start:0x020e8ca0 end:0x020e8dd8
 
@@ -1696,11 +1696,11 @@ src/func_ov002_020e8e80.c:
     complete
     .text start:0x020e8e80 end:0x020e8edc
 
-src/_ZN9PowerStar13OnTurnIntoEggER6Player.cpp:
+src/_ZN8daStar_c13OnTurnIntoEggER6Player.cpp:
     complete
     .text start:0x020e8edc end:0x020e8ee8
 
-src/_ZN9PowerStar13OnYoshiTryEatEv.cpp:
+src/_ZN8daStar_c13OnYoshiTryEatEv.cpp:
     complete
     .text start:0x020e8ee8 end:0x020e8ef0
 
@@ -1791,39 +1791,39 @@ src/func_ov002_020ea9d0.c:
     complete
     .text start:0x020ea9d0 end:0x020eab8c
 
-src/_ZN10StarMarker16OnPendingDestroyEv.cpp:
+src/_ZN12daStarBase_c16OnPendingDestroyEv.cpp:
     complete
     .text start:0x020eab8c end:0x020eabcc
 
-src/_ZN10StarMarker16CleanupResourcesEv.cpp:
+src/_ZN12daStarBase_c16CleanupResourcesEv.cpp:
     complete
     .text start:0x020eabcc end:0x020eac18
 
-src/_ZN9PowerStar16CleanupResourcesEv.cpp:
+src/_ZN8daStar_c16CleanupResourcesEv.cpp:
     complete
     .text start:0x020eac18 end:0x020eacb8
 
-src/_ZN10StarMarker6RenderEv.cpp:
+src/_ZN12daStarBase_c6RenderEv.cpp:
     complete
     .text start:0x020eacb8 end:0x020eacf4
 
-src/_ZN9PowerStar6RenderEv.cpp:
+src/_ZN8daStar_c6RenderEv.cpp:
     complete
     .text start:0x020eacf4 end:0x020ead90
 
-src/_ZN10StarMarker8BehaviorEv.cpp:
+src/_ZN12daStarBase_c8BehaviorEv.cpp:
     complete
     .text start:0x020ead90 end:0x020eb05c
 
-src/_ZN9PowerStar8BehaviorEv.cpp:
+src/_ZN8daStar_c8BehaviorEv.cpp:
     complete
     .text start:0x020eb05c end:0x020eb204
 
-src/_ZN10StarMarker13InitResourcesEv.cpp:
+src/_ZN12daStarBase_c13InitResourcesEv.cpp:
     complete
     .text start:0x020eb204 end:0x020eb63c
 
-src/_ZN9PowerStar13InitResourcesEv.cpp:
+src/_ZN8daStar_c13InitResourcesEv.cpp:
     complete
     .text start:0x020eb63c end:0x020ebe5c
 
