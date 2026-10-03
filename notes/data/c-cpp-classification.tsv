@@ -584,7 +584,7 @@ src/_ZN10SphereClsn14SetFloorResultERK10ClsnResult.c	P3-mangled-method-only	arm9
 src/_ZN10SphereClsn15SetObjAndSphereERK7Vector35Fix12IiEP8dActor_c.c	P3-mangled-method-only	arm9		SphereClsn	_ZN10SphereClsn15SetObjAndSphereERK7Vector35Fix12IiEP8dActor_c	1		True		by-value-class-param
 src/_ZN10SphereClsnC1Ev.c	P3-mangled-method-only	arm9		SphereClsn	_ZN10SphereClsnC1Ev	1		True		-
 src/_ZN10SphereClsnD1Ev.c	DTOR-ONLY	arm9	dBgCh_SphCrr	SphereClsn/dBgCh_SphCrr	_ZN10SphereClsnD1Ev	1		True	_ZTV10SphereClsn	-
-src/_ZN10StarMarkerD0Ev.c	DTOR-ONLY	ov002	daStarBase_c	StarMarker/daStarBase_c	_ZN10StarMarkerD0Ev	1		True		-
+src/_ZN12daStarBase_cD0Ev.c	DTOR-ONLY	ov002	daStarBase_c	daStarBase_c/daStarBase_c	_ZN12daStarBase_cD0Ev	1		True		-
 src/_ZN10dBgActor_c14KillByMegaCharER6Player.c	P3-mangled-method-only	ov002		dBgActor_c	_ZN10dBgActor_c14KillByMegaCharER6Player	1		True		-
 src/_ZN10dBgActor_cC2Ev.c	P3-mangled-method-only	ov002		dBgActor_c	_ZN10dBgActor_cC2Ev	1		True	_ZTV10dBgActor_c	-
 src/_ZN10dFdDummy_c11AdvanceFadeEv.c	P1-vtable+mangled	arm9	dFdDummy_c	dFdDummy_c	vtable dFdDummy_c slot 2 @0x201721c | _ZN10dFdDummy_c11AdvanceFadeEv	1		True		-

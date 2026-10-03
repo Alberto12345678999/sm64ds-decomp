@@ -1,7 +1,7 @@
 //cpp
-// @symbol _ZN10StarMarker6RenderEv
+// @symbol _ZN12daStarBase_c6RenderEv
 /* recovered: named members + shared header, real C++ method */
-#include "StarMarker.h"
+#include "daStarBase_c.h"
 extern "C" {
 
 struct Sub {
@@ -14,7 +14,7 @@ struct Sub {
 };
 }
 
-int StarMarker::Render()
+int daStarBase_c::Render()
 {
     unsigned int b = mFlags;
     if ((b << 30) >> 31) {

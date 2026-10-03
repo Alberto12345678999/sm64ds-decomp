@@ -84,7 +84,7 @@
 #include "PathPtr.h"
 #include "dBgCh_Lin.h"
 #include "Player.h"
-#include "PowerStar.h"
+#include "daStar_c.h"
 
 /* Actor IDs from symbols/actor_debug_names.tsv. */
 enum {
@@ -336,7 +336,7 @@ extern "C" void func_ov100_0214344c(daWanwan2_c *self)
    when data_0209f2d8[0] is 1 a STAR (0xb2, param mSpawnParam | 0x30) plus a
    STARBASE (0xb4) whose ID is not kept. Its uniqueID goes into
    mChainEndActorID, and afterwards the actor is pinned to the link every
-   frame until it is gone or its +0x440 word (PowerStar's unk_440) reads 5;
+   frame until it is gone or its +0x440 word (daStar_c's unk_440) reads 5;
    either latches mChainEndDone, clears mChainEndActorID and stops the
    updates. */
 extern "C" void func_ov100_021435e8(daWanwan2_c *c)
@@ -352,7 +352,7 @@ extern "C" void func_ov100_021435e8(daWanwan2_c *c)
         } else {
             dActor_c *a = (dActor_c *)_ZN8dActor_c10FindWithIDEj(c->mChainEndActorID);
             if (a != 0) {
-                if (((PowerStar *)a)->unk_440 == 5) {
+                if (((daStar_c *)a)->unk_440 == 5) {
                     c->mChainEndDone = 1;
                     c->mChainEndActorID = 0;
                     return;
@@ -375,7 +375,7 @@ extern "C" void func_ov100_021435e8(daWanwan2_c *c)
         } else {
             dActor_c *a = (dActor_c *)_ZN8dActor_c10FindWithIDEj(c->mChainEndActorID);
             if (a != 0) {
-                if (((PowerStar *)a)->unk_440 == 5) {
+                if (((daStar_c *)a)->unk_440 == 5) {
                     c->mChainEndDone = 1;
                     c->mChainEndActorID = 0;
                     return;

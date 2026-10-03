@@ -1,5 +1,5 @@
-#ifndef POWERSTAR_H
-#define POWERSTAR_H
+#ifndef DASTAR_C_H
+#define DASTAR_C_H
 
 /* RECONSTRUCTED NAMES USED IN THIS HEADER. SM64DS RTTI names the
  * implementation(s) below; the registry profile object and the factory
@@ -12,9 +12,9 @@
 #include "types.h"
 
 /* Derives from dEnemyBase_c, and TWO INDEPENDENT WITNESSES agree on the layout:
- * the class's own destructor `_ZN9PowerStarD1Ev` destroys each member, and
+ * the class's own destructor `_ZN8daStar_cD1Ev` destroys each member, and
  * `daStar_c_classInit_STAR` constructs the same types at the same offsets before
- * storing `_ZTV9PowerStar`. Everything this header used to restate below
+ * storing `_ZTV8daStar_c`. Everything this header used to restate below
  * 0x110 belongs to dEnemyBase_c and dActor_c and is inherited now.
  *
  * The members close on each other, which is what makes the layout a
@@ -37,7 +37,7 @@
 #include "ShadowModel.h"
 #include "dBgCh_Actr.h"
 
-struct PowerStar : dEnemyBase_c {
+struct daStar_c : dEnemyBase_c {
     dCcAcPos_c    mdCc_c;         /* 0x110 */
     dBgCh_Actr                 mWithMeshClsn;         /* 0x150 */
     ModelAnim                    mModelAnim1;           /* 0x30c */
@@ -63,7 +63,7 @@ struct PowerStar : dEnemyBase_c {
     u8  pad_4b4[0x10];
 
     /* --- vtable --- */
-    virtual ~PowerStar();
+    virtual ~daStar_c();
 
     virtual s32   OnYoshiTryEat();         /* slot 18 */
     virtual void  OnTurnIntoEgg(Player &player); /* slot 19 */
@@ -77,7 +77,7 @@ struct PowerStar : dEnemyBase_c {
 
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
-typedef char PowerStar_size_must_be_0x4c4[sizeof(PowerStar) == 0x4c4 ? 1 : -1];
+typedef char PowerStar_size_must_be_0x4c4[sizeof(daStar_c) == 0x4c4 ? 1 : -1];
 #endif
 
-#endif /* POWERSTAR_H */
+#endif /* DASTAR_C_H */
