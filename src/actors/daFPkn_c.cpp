@@ -1,44 +1,38 @@
 //cpp
-/* daFPkn_c -- the fire piranha plant (PAKUN2 / FIREPAKUN / FIREPAKUN_S).
- * ov084 .text 0x0212d248..0x0212eaf0, twenty-one functions: D1, D0, nine
+/* daFPkn_c -- the fire piranha plant (PAKUN2 / FIREPAKUN_S / FIREPAKUN),
+ * ov084.
+ *
+ * This TU is .text 0x0212d248..0x0212eaf0: the destructor pair, nine
  * helpers and states, the seven vtable methods, then the three classInit
- * registry factories.
+ * registry factories. The base is dEnemyBase_c; the daPkn_c run begins
+ * immediately after, at 0x0212eaf0.
  *
- * NAME: daFPkn_c is the cartridge's RTTI spelling. The word before the
- * vtable address point 0x02130b28 (0x02130b24) relocates to _ZTI8daFPkn_c
- * at 0x02130ac0, which reads [__si_class_type_info, _ZTS8daFPkn_c
- * (0x02130ab4, "8daFPkn_c"), _ZTI12dEnemyBase_c (ov002 0x021081c0)].
+ * Behavior dispatches mState: STATE_INIT picks the group leader,
+ * STATE_WAIT emerges and idles, STATE_SPIT lobs a fireball, STATE_GROW is
+ * the grow-in lunge (PAKUN2 only) and STATE_DEFEATED does nothing.
+ * CheckClsnHits runs the body and mouth colliders; a hit spins the plant
+ * down in place, and the group leader spawns the star once five members
+ * are defeated.
  *
- * THE DESTRUCTOR IS THE KEY FUNCTION. It is defined first under
- * `#pragma defer_codegen off`, so mwccarm emits each function as it is
- * parsed and the file is written in ROM order: D1 (0x0212d248) and D0
- * (0x0212d288) first, then a D2 the cartridge has no home for (licensed
- * as deadstrip), and this object carries _ZTV8daFPkn_c and the RTTI chain
- * as vague linkage. The ROM keeps the table; the promotion is text-only.
+ * `#pragma defer_codegen off` is load-bearing: the destructor defined
+ * first emits D1 then D0 in parse order, as the cartridge has them
+ * (deferred codegen reorders the pair). The out-of-line destructor is
+ * also the key function, so this object owns _ZTV8daFPkn_c and the RTTI
+ * chain.
  *
- * The run's left neighbour is daRedBombhei_c_classInit (0x0212d200), another
- * class's factory. daFPkn_c_classInit_PAKUN2/_FIREPAKUN_S/_FIREPAKUN are
- * reconstructed names (RTTI daFPkn_c, the three registry profiles); retail
- * does not store them. Historical aliases: FirePiranhaPlant_Spawn,
- * FirePiranhaPlantSmall_Spawn and FirePiranhaPlantBig_Spawn. The daPkn_c
- * run begins immediately after, at 0x0212eaf0.
- *
- * Known limits:
+ * Leftover, remeasured on this TU:
  * - ModelAnim::SetAnim, dCcAc_c::Init, dCcAcPos_c::Init,
- *   Particle::System::New, dActor_c::SpawnFireball and SpawnCoins,
- *   Player::Hurt and Player::Bounce are called by their mangled names. Each
- *   symbol carries a Fix12<int> by value; a Fix12<int> local for SetAnim's
- *   speed changes InitResources.
- * - The shared files and tables keep their address names; the static
- *   initializer and the classInit sources name them too.
- * - The int flags (cmp, isFirepakun, inYoshiMouth and the like) and the gotos
- *   in CheckClsnHits, StateGrow and StateSpit are kept from the byte-matching
- *   recovery; the comment at each site names the direct spelling that DIFFs.
- * - The hit-flag mask 0x66ff0, the mFlags bit 0x10000000 and the Sound and
- *   particle ids stay numeric; nothing in the repo names them.
+ *   Particle::System::New, dActor_c::SpawnFireball / SpawnCoins and
+ *   Player::Hurt / Bounce are called by their mangled names. Each carries
+ *   a Fix12<int> by value and the member spelling DIFFs.
+ * - The int cmp / isFirepakun / inYoshiMouth locals and the gotos in
+ *   CheckClsnHits, StateGrow and StateSpit are kept; each site names the
+ *   direct spelling that DIFFs.
+ * - The mFlags bit 0x10000000 and the sound ids stay numeric, named only
+ *   by where they are used.
  */
 
-#include "decl_common.h"
+#include "common.h"
 #include "daFPkn_c.h"
 #include "SharedFilePtr.h"
 #include "Player.h"
@@ -47,16 +41,20 @@
 
 #pragma defer_codegen off
 
-/* Second word is the loaded BCA. Same two words as daPkn_c's PknSharedFile. */
+/* SharedFilePtr declares no fields; the loaded BCA is the second word.
+   Same two-word view as daPkn_c's PknSharedFile. */
 struct PknSharedFile {
     int id;
     void *file;
 };
 typedef char PknSharedFile_size_must_be_0x8[sizeof(PknSharedFile) == 0x8 ? 1 : -1];
 
+/* The tag SubVec3.c / Vec3_Asr.c define their parameters by. */
+struct Vec3 { int x, y, z; };
+
 /* UpdateClsnOffset's stack locals: three bone-angle sums, then the
    position shifted down by 3. */
-struct Locals {
+struct ClsnOffsetLocals {
     s16 acc[3];
     int tmp[3];
 };
@@ -81,53 +79,81 @@ enum {
     STATE_DEFEATED = 4
 };
 
-/* dActor_c::mFlags bits written by actor code (see dActor_c.h). */
+/* dActor_c::mFlags bits written by actor code (see the bit table in
+   dActor_c.h). */
 enum {
     MFLAG_YOSHI_MOUTH_A = 0x20000,
     MFLAG_YOSHI_MOUTH_B = 0x40000
 };
 
-/* dCc_c::hitFlags bit, per the table in dCc_c.h. */
+/* dCc_c::hitFlags bits, with the names include/dCc_c.h gives its table. */
 enum {
-    HIT_MEGA_CHARACTER = 0x10
+    HIT_MEGA_CHARACTER = 0x10,
+    HIT_DAMAGE = 0x66ff0          /* every hit kind that defeats the plant */
+};
+
+/* Sound ids for func_0201267c / func_02012694 (bank-3 veneers that play an
+   id at the actor's camera-space position) and Sound::PlayBank0. Named by
+   where they are played; the sounds themselves are not identified. */
+enum {
+    SND_HIT_S = 0xa,             /* bank 0: FIREPAKUN_S hit / squashed */
+    SND_JUMPED_ON = 0xb6,        /* bank 0: FIREPAKUN_S jumped on */
+    SND_GROW_BITE = 0xc0,        /* the attack frames of the grow-in lunge */
+    SND_SPIT_END_S = 0xe3,       /* FIREPAKUN_S finishes its spit */
+    SND_EMERGE_S = 0x104,        /* FIREPAKUN_S emerges */
+    SND_FIREBALL_S = 0x105,      /* FIREPAKUN_S lobs the fireball */
+    SND_SPUN_DOWN = 0x11f,       /* the spin-down ends */
+    SND_SPIT_END = 0x120,
+    SND_EMERGE = 0x121,
+    SND_FIREBALL = 0x122,
+    SND_MEGA_KILL = 0x1d,        /* a mega player lands the kill */
+    SND_HIT = 0x1e               /* FIREPAKUN is hit */
 };
 
 int ApproachLinear(int &value, int target, int step);
 bool ApproachLinear(short &value, short target, short step);
 
+struct daPkn_c;
+/* daPkn_c's own helper, defined in src/actors/daPkn_c.cpp: hands the
+   spawned PAKUN the grow-in frame. */
+extern "C" void func_ov084_0212ec04(daPkn_c *c, int frame);
+
 extern "C" {
-void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *self, void *f, int a, int b, unsigned short cc);
-void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, void *a, int r, int h, unsigned int e, unsigned int g);
-void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(void *self, void *a, const Vector3 *v, int r, int h, unsigned int e, unsigned int g);
+void func_02012694(u32 id, const Vector3 *pos);
+void func_0201267c(u32 id, const Vector3 *pos);
+short Vec3_HorzAngle(const Vector3 *a, const Vector3 *b);
+int IsStarCollectedInCurLevel(u32 flag);
+void SetStarMarker(int i, void *self, int v);
+void Matrix4x3_FromRotationY(void *m, int angle);
+void Vec3_Asr(Vec3 *d, Vec3 *s, int sh);
+void Matrix4x3_FromTranslation(void *m, int x, int y, int z);
+void MulMat4x3Mat4x3(const int *a, const int *b, int *d);
+void Vec3_LslInPlace(void *v, int sh);
+void SubVec3(Vec3 *a, Vec3 *b, Vec3 *c);
+void LoadBlueCoinModel(void *c);
+void UnloadBlueCoinModel(void *);
+
+/* Called by their mangled names: each carries a Fix12<int> by value and
+   the member spelling DIFFs. */
+void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *self, void *f, int flags, int speed, unsigned short startFrame);
+void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, void *a, int r, int h, u32 e, u32 g);
+void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(void *self, void *a, const Vector3 *v, int r, int h, u32 e, u32 g);
 u32 _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
     u32 a, u32 b, Fix12i c, Fix12i d, Fix12i e, const void *f, void *g);
 void _ZN6Player6BounceE5Fix12IiE(void *p, int fix);
 int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *self, const void *pos, u32 a, int fix, u32 b, u32 c, u32 d);
 void _ZN8dActor_c13SpawnFireballERK7Vector3PK10Vector3_165Fix12IiES7_j(
     void *self, const void *pos, const void *v16, int a, int b, u32 g);
-void _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(void *self, const void *pos, unsigned int a, int b, short c);
-
-void LoadBlueCoinModel(void *c);
-void UnloadBlueCoinModel(void *);
-void func_02012694(u32 id, void *pos);
-void func_0201267c(unsigned int id, const void *pos);
-short Vec3_HorzAngle(const void *a, const void *b);
-int IsStarCollectedInCurLevel(unsigned int flag);
-void SetStarMarker(int i, void *self, int v);
-void Matrix4x3_FromRotationY(void *m, int angle);
-void Vec3_Asr(void *d, void *s, int sh);
-void Matrix4x3_FromTranslation(void *m, int x, int y, int z);
-void MulMat4x3Mat4x3(void *d, void *a, void *b);
-void Vec3_LslInPlace(void *v, int sh);
-void SubVec3(void *a, void *b, void *c);
+void _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(void *self, const void *pos, u32 a, int b, short c);
 
 extern SharedFilePtr data_ov084_02130dfc;   /* the plant's model */
-extern SharedFilePtr *data_ov084_021302f4[];
-extern SharedFilePtr data_ov002_0210da38;
+extern SharedFilePtr *data_ov084_021302f4[];/* the six shared animation handles */
+extern SharedFilePtr data_ov002_0210da38;   /* the blue-coin model, out of ov002 */
 extern PknSharedFile data_ov084_02130df4;   /* idle animation */
-extern PknSharedFile data_ov084_02130e24;   /* death animation */
-extern PknSharedFile data_ov084_02130e14;   /* lunge animation */
 extern PknSharedFile data_ov084_02130e04;   /* spit animation */
+extern PknSharedFile data_ov084_02130e14;   /* grow-in lunge animation */
+extern void *data_ov084_02130e1c[];         /* post-spit animation, a PknSharedFile pair */
+extern PknSharedFile data_ov084_02130e24;   /* death animation */
 extern int data_ov084_0213029c[];           /* SpawnDeathBurst reach per frame */
 extern int data_ov084_021302c4[];           /* SpawnDeathBurst height per frame */
 extern u8 data_ov084_02130294[];            /* UpdateClsnOffset's five bone indices */
@@ -181,7 +207,7 @@ void daFPkn_c::SpawnDeathBurst()
 
     if (mModelAnim.file != data_ov084_02130e24.file)
         return;
-    frame = (int)((unsigned)(mModelAnim.currFrame << 4) >> 16);
+    frame = (int)((unsigned)(mModelAnim.currFrame << 4) >> 16);  /* whole frames */
     if (frame >= 0xa)
         return;
 
@@ -207,7 +233,7 @@ void daFPkn_c::OnGroupMemberDefeated()
 // @symbol _ZN8daFPkn_c16UpdateClsnOffsetEv
 void daFPkn_c::UpdateClsnOffset()
 {
-    struct Locals locals;
+    struct ClsnOffsetLocals locals;
     int scaledSinAcc0, sinAcc1, cosAcc1, scaledCosAcc0, isFirepakun;
 
     Matrix4x3_FromRotationY(&mModelAnim.mat4x3, mAngleY);
@@ -236,19 +262,19 @@ void daFPkn_c::UpdateClsnOffset()
     mClsnOffset.y = 0;
     mClsnOffset.z = 0;
 
-    Vec3_Asr(locals.tmp, &mPosX, 3);
+    Vec3_Asr((Vec3 *)locals.tmp, (Vec3 *)&mPosX, 3);
     Matrix4x3_FromTranslation(
         data_020a0e68,
         locals.tmp[0],
         locals.tmp[1],
         locals.tmp[2]
     );
-    MulMat4x3Mat4x3(&mModelAnim.data.transforms[6], data_020a0e68, data_020a0e68);
-    mClsnOffset.x = data_020a0e68[0x24 / 4];
-    mClsnOffset.y = data_020a0e68[0x28 / 4];
-    mClsnOffset.z = data_020a0e68[0x2c / 4];
+    MulMat4x3Mat4x3(mModelAnim.data.transforms[6].m, data_020a0e68, data_020a0e68);
+    mClsnOffset.x = ((Matrix4x3 *)data_020a0e68)->m[9];
+    mClsnOffset.y = ((Matrix4x3 *)data_020a0e68)->m[10];
+    mClsnOffset.z = ((Matrix4x3 *)data_020a0e68)->m[11];
     Vec3_LslInPlace(&mClsnOffset, 3);
-    SubVec3(&mClsnOffset, &mPosX, &mClsnOffset);
+    SubVec3((Vec3 *)&mClsnOffset, (Vec3 *)&mPosX, (Vec3 *)&mClsnOffset);
 
     scaledSinAcc0 = data_02082214[((u16)locals.acc[0] >> 4) * 2] * 0x32;
     sinAcc1 = data_02082214[((u16)locals.acc[1] >> 4) * 2];
@@ -288,20 +314,20 @@ void daFPkn_c::CheckClsnHits()
     if (otherId == 0)
         goto second;
 
-    hitBits = mdCcAc_c.hitFlags & 0x66ff0;
+    hitBits = mdCcAc_c.hitFlags & HIT_DAMAGE;
     if (hitBits != 0) {
         cmp = (int)(actorID == ACTOR_FIREPAKUN);
         if (cmp != 0)
-            func_02012694(0x1e, &mCamSpacePosX);
+            func_02012694(SND_HIT, (const Vector3 *)&mCamSpacePosX);
         else
-            Sound::PlayBank0(0xa, (Vector3 &)mCamSpacePosX);
+            Sound::PlayBank0(SND_HIT_S, (Vector3 &)mCamSpacePosX);
     activate_path:
         cmp = (int)(actorID == ACTOR_FIREPAKUN_S);
         if (cmp != 0) {
-            unk_108 = 1;
+            unk_108 = 1;            /* the coin kind SpawnCoin drops */
             SpawnCoin();
             KillAndTrackInDeathTable();
-            Sound::PlayBank0(0xa, (Vector3 &)mCamSpacePosX);
+            Sound::PlayBank0(SND_HIT_S, (Vector3 &)mCamSpacePosX);
         } else {
             mState = STATE_WAIT;
             mSpinCount = 0xa;
@@ -314,12 +340,12 @@ void daFPkn_c::CheckClsnHits()
         }
         if ((mdCcAc_c.hitFlags & HIT_MEGA_CHARACTER) == 0)
             goto second;
-        Sound::PlayBank0(0xa, (Vector3 &)mCamSpacePosX);
+        Sound::PlayBank0(SND_HIT_S, (Vector3 &)mCamSpacePosX);
         hitter = dActor_c::FindWithID(mdCcAc_c.otherOwner);
         if (hitter == 0)
             goto second;
         ((Player *)hitter)->IncMegaKillCount();
-        func_02012694(0x1d, &mCamSpacePosX);
+        func_02012694(SND_MEGA_KILL, (const Vector3 *)&mCamSpacePosX);
         goto second;
     }
 
@@ -330,13 +356,13 @@ void daFPkn_c::CheckClsnHits()
     if (cmp == 0)
         goto second;
     if (((Player *)hitter)->mIsMetal != 0) {
-        Sound::PlayBank0(0xa, (Vector3 &)mCamSpacePosX);
+        Sound::PlayBank0(SND_HIT_S, (Vector3 &)mCamSpacePosX);
         goto activate_path;
     }
     cmp = (int)(actorID == ACTOR_FIREPAKUN_S);
     if (cmp != 0) {
         if (JumpedOnByPlayer(mdCcAc_c, *(Player *)hitter) != 0) {
-            Sound::PlayBank0(0xb6, (Vector3 &)mCamSpacePosX);
+            Sound::PlayBank0(SND_JUMPED_ON, (Vector3 &)mCamSpacePosX);
             _ZN6Player6BounceE5Fix12IiE(hitter, 0x28000);
             goto activate_path;
         }
@@ -362,17 +388,17 @@ second:
     if (cmp == 0)
         return;
 
-    hitBits = mdCcAcPos_c.hitFlags & 0x66ff0;
+    hitBits = mdCcAcPos_c.hitFlags & HIT_DAMAGE;
     if (hitBits != 0) {
         if ((hitBits & HIT_MEGA_CHARACTER) != 0) {
             ((Player *)hitter)->IncMegaKillCount();
-            func_02012694(0x1d, &mCamSpacePosX);
+            func_02012694(SND_MEGA_KILL, (const Vector3 *)&mCamSpacePosX);
         } else {
             cmp = (int)(actorID == ACTOR_FIREPAKUN);
             if (cmp != 0)
-                func_02012694(0x1e, &mCamSpacePosX);
+                func_02012694(SND_HIT, (const Vector3 *)&mCamSpacePosX);
             else
-                Sound::PlayBank0(0xa, (Vector3 &)mCamSpacePosX);
+                Sound::PlayBank0(SND_HIT_S, (Vector3 &)mCamSpacePosX);
         }
         mState = STATE_WAIT;
         mSpinCount = 0xa;
@@ -412,7 +438,7 @@ void daFPkn_c::StateGrow()
         mModelAnim.WillHitFrame(0x20) ||
         mModelAnim.WillHitFrame(0x34) ||
         mModelAnim.WillHitFrame(0x4b)) {
-        func_0201267c(0xc0, &mCamSpacePosX);
+        func_0201267c(SND_GROW_BITE, (const Vector3 *)&mCamSpacePosX);
     }
 
     targetAngle = mAngleY;
@@ -423,7 +449,7 @@ void daFPkn_c::StateGrow()
     playerPos.y = src[1];
     playerPos.z = src[2];
     if (player != 0) {
-        targetAngle = Vec3_HorzAngle(&mPosX, &playerPos);
+        targetAngle = Vec3_HorzAngle((const Vector3 *)&mPosX, &playerPos);
     }
     ApproachLinear(mAngleY, targetAngle, 0x400);
 
@@ -432,7 +458,7 @@ void daFPkn_c::StateGrow()
         if (spawned == 0) return;
 
         mSuppressDeathReward = 2;
-        func_ov084_0212ec04((char*)spawned, (short)((unsigned int)(mModelAnim.currFrame << 4) >> 16));
+        func_ov084_0212ec04((daPkn_c *)spawned, (short)((unsigned int)(mModelAnim.currFrame << 4) >> 16));
         mdCcAc_c.flags |= 1;
         mdCcAcPos_c.flags |= 1;
         return;
@@ -460,17 +486,17 @@ void daFPkn_c::StateSpit()
     if (mModelAnim.Finished() != 0) {
         cmp = (int)(actorID == ACTOR_FIREPAKUN_S);
         if (cmp != 0)
-            func_0201267c(0xe3, &mCamSpacePosX);
+            func_0201267c(SND_SPIT_END_S, (const Vector3 *)&mCamSpacePosX);
         else
-            func_0201267c(0x120, &mCamSpacePosX);
+            func_0201267c(SND_SPIT_END, (const Vector3 *)&mCamSpacePosX);
         mState = STATE_WAIT;
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, data_ov084_02130e1c[1], 0, 0x1000, 0);
+        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, ((PknSharedFile *)data_ov084_02130e1c)->file, 0, 0x1000, 0);
     } else {
         if ((u16)mStateTimer < 0x3a) {
             targetAngle = mAngleY;
             player = ClosestPlayer();
             if (player != 0)
-                targetAngle = Vec3_HorzAngle(&mPosX, &player->mPosX);
+                targetAngle = Vec3_HorzAngle((const Vector3 *)&mPosX, (const Vector3 *)&player->mPosX);
             ApproachLinear(mAngleY, targetAngle, 0x400);
         }
     }
@@ -480,9 +506,9 @@ void daFPkn_c::StateSpit()
 
     cmp = (int)(actorID == ACTOR_FIREPAKUN_S);
     if (cmp != 0)
-        func_0201267c(0x105, &mCamSpacePosX);
+        func_0201267c(SND_FIREBALL_S, (const Vector3 *)&mCamSpacePosX);
     else
-        func_0201267c(0x122, &mCamSpacePosX);
+        func_0201267c(SND_FIREBALL, (const Vector3 *)&mCamSpacePosX);
 
     pos.x = mPosX;
     pos.y = mPosY;
@@ -522,7 +548,7 @@ void daFPkn_c::StateWait()
         mSpinCount--;
         if (mSpinCount != 0)
             return;
-        func_02012694(0x11f, &mCamSpacePosX);
+        func_02012694(SND_SPUN_DOWN, (const Vector3 *)&mCamSpacePosX);
         mParticleHandle2 = 0;
         mParticleHandle1 = mParticleHandle2;
         return;
@@ -602,9 +628,9 @@ void daFPkn_c::StateWait()
     }
     cmp = actorID == ACTOR_FIREPAKUN_S;
     if (cmp != false)
-        func_0201267c(0x104, &mCamSpacePosX);
+        func_0201267c(SND_EMERGE_S, (const Vector3 *)&mCamSpacePosX);
     else
-        func_0201267c(0x121, &mCamSpacePosX);
+        func_0201267c(SND_EMERGE, (const Vector3 *)&mCamSpacePosX);
     cmp = 1;
     mEmerged = 1;
     if (actorID != ACTOR_FIREPAKUN)
@@ -635,7 +661,7 @@ void daFPkn_c::StateWait()
     player = ClosestPlayer();
     if (player == 0)
         return;
-    mAngleY = Vec3_HorzAngle(&mPosX, &player->mPosX);
+    mAngleY = Vec3_HorzAngle((const Vector3 *)&mPosX, (const Vector3 *)&player->mPosX);
 }
 
 // @symbol _ZN8daFPkn_c9StateInitEv
@@ -762,13 +788,13 @@ int daFPkn_c::InitResources()
         &mModelAnim, data_ov084_02130df4.file, 0x40000000, 0x1000, 0);
 
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
-        &mdCcAc_c, this, 0, 0, 0x200001, 0x66fe0);
+        &mdCcAc_c, this, 0, 0, 0x200001, HIT_DAMAGE & ~HIT_MEGA_CHARACTER);
 
     clsnPos.x = 0;
     clsnPos.y = 0;
     clsnPos.z = 0;
     _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
-        &mdCcAcPos_c, this, &clsnPos, 0x4b000, 0x64000, 0x200002, 0x66fe0);
+        &mdCcAcPos_c, this, &clsnPos, 0x4b000, 0x64000, 0x200002, HIT_DAMAGE & ~HIT_MEGA_CHARACTER);
 
     mScale = 0;
     mRespawnMode = 0;
