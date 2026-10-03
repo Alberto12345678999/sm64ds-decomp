@@ -55,7 +55,7 @@ struct dScene_c : dBase_c {
 
     /* --- non-virtual, and takes `this`: BeforeInitResources `bl`s here
            with r0 untouched. --- */
-    int ResetFadersAndSound();
+    bool ResetFadersAndSound();
 
     /* --- static: every call site in the ROM puts the first declared argument in
            r0, so none of these receives a `this`. --- */
