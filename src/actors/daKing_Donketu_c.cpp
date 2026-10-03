@@ -121,11 +121,11 @@
  *       MulMat4x3Mat4x3) has no shared header this TU can take without a
  *       campaign across its other consumers.
  *
- * NOT OWNED BY THIS TU. The func_ov073_* helpers keep linker names -- offset
- * soup, dispatched as PMFs through data_ov073_021233*. Of the
- * function and data symbols only ChiefChilly_ChangeState is coined (an English
- * gloss for the dispatcher); the member names, the enums and the state labels
- * in the table are descriptions, not recovered names.
+ * NOT OWNED BY THIS TU. State records are still dispatched as PMFs through
+ * the struct C shadow and data_ov073_021233*. Of the function and data
+ * symbols only ChiefChilly_ChangeState is coined (an English gloss for the
+ * dispatcher); the member names, the enums and the state labels in the
+ * table are descriptions, not recovered names.
  * data_ov073_02123280..b8 stay BCA_File*[2] so that [1] is the BCA SetAnim
  * reads, and CleanupResources puns each to SharedFilePtr for Release; ov073's
  * sinit constructs them and this TU owns no .bss. data_ov073_02123330 / 350 /
@@ -151,7 +151,16 @@
  *
  * Function order is ROM-ascending, not reversed.
  *
- * LEFTOVER (what is still not recovered, or still spelled by the bytes):
+ * Leftover: 47/47 MATCH after the method batch. No spelling DIFFed, so
+ * nothing was reverted.
+ *   - func_ov073_0211fbec, func_ov073_0211fc70 and func_ov073_0211fe84 take
+ *     void. The first parameter is not the actor, so they stay free functions.
+ *   - ChiefChilly_ChangeState's first parameter is C* (the PMF shadow), not
+ *     char* or void* cast to daKing_Donketu_c. It stays the coined dispatcher.
+ *   - Actor fields the header already names are member reads. Left raw, and
+ *     not a class field this header names: Camera +0x114 (pad_114),
+ *     Particle::System +0x44, and the data_020a0e68 translation words
+ *     (`.m[9..11]` moves bytes).
  *   - The cartridge's names for the sixteen states and for the func_ov073_*
  *     handlers; the labels in the table are descriptions. The state records
  *     are dispatched through the `struct C` shadow, not a real PMF member.
@@ -276,7 +285,6 @@ extern Fix12i Vec3_HorzLen(Vec3 *v);
 extern short data_02082214[];
 extern u16 data_0209e650;
 extern u16 DecIfAbove0_Short(void* p);
-extern void func_ov073_0211f494(void *pa, void *pb);
 extern void func_02012694(int a, void* b);
 extern int RandomIntInternal(u16* seed);
 extern int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void* p, const Vector3* v, u32 a, Fix12i f, u32 b, u32 c, u32 d);
@@ -286,16 +294,13 @@ extern void _Z14ApproachLinearRiii(int* p, int t, int s);
 extern void _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(unsigned int a, int b);
 extern unsigned int _ZN5Sound8PlayLongEjjjRK7Vector3s(unsigned int a, unsigned int b, unsigned int c, struct Vector3* v, unsigned int d);
 extern s16 Vec3_VertAngle(const void* a, const void* b);
-extern void func_ov073_0211f2c0(void *self, int strength);
 extern void Matrix4x3_ApplyInPlaceToRotationX(void *m, int angX);
-extern int func_ov073_0211f61c(void *c);
 extern void _ZN8Particle20RunningSlidingDustAtE5Fix12IiES1_S1_(int a, int b, int c);
 extern void Vec3_Asr(Vec3* d, Vec3* s, int sh);
 extern void Matrix4x3_FromTranslation(struct Matrix4x3 *m, int x, int y, int z);
 extern void Matrix4x3_ApplyInPlaceToRotationXYZExt(void* m, int x, int y, int z);
 extern void _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(void* thiz, void* sm, void* m, int rad, int h, unsigned int u);
 extern void UnloadKeyModels(int i);
-extern void func_ov073_021215cc(void *self);
 extern void _ZN8dActor_c9UpdatePosEP5dCc_c(void *self, void *clsn);
 extern void _ZN8dActor_c22UpdatePosWithOnlySpeedEP5dCc_c(void *self, void *clsn);
 extern void _ZN12dEnemyBase_c12UpdateWMClsnER10dBgCh_Actrj(void *self, void *wmc, unsigned int flags);
@@ -332,10 +337,9 @@ daKing_Donketu_c::~daKing_Donketu_c()
    mPrevAngleY. Particle systems 0x77 and 0x78 are renewed there (ids kept in
    mParticleId0/1), and word +0x44 of each is set to 20.0 * the scale. The
    Vec3_HorzAngle result is not used. */
-// @symbol func_ov073_0211f144
-extern "C" {
-void func_ov073_0211f144(void* self) {
-    daKing_Donketu_c *c = (daKing_Donketu_c *)self;
+// @symbol _ZN16daKing_Donketu_c19func_ov073_0211f144Ev
+void daKing_Donketu_c::func_ov073_0211f144() {
+    daKing_Donketu_c *c = this;
 
     Vector3 pos, in, out;
     int y;
@@ -364,7 +368,6 @@ void func_ov073_0211f144(void* self) {
         if (sys != 0) *(int*)((char*)sys + 0x44) = c->mScaleX * 0x14;
     }
 }
-}
 
 /* Called where the boss lands or steps (a reading from the callers). Shakes the camera by `strength` (func_0200d8c8; callers pass
    0x3e8000 to 0x1388000), then takes the translation of bone mStepBoneIdx
@@ -374,11 +377,10 @@ void func_ov073_0211f144(void* self) {
    state the bone position is computed but not used: particles 0x88 and 0x89
    go off at mPos instead, moved 230.0 back (z = -0xe6000, rotated by mAngleY)
    when the state is ..33c0 or ..33f0. */
-// @symbol func_ov073_0211f2c0
-extern "C" {
-void func_ov073_0211f2c0(void *self, int strength)
+// @symbol _ZN16daKing_Donketu_c19func_ov073_0211f2c0Ei
+void daKing_Donketu_c::func_ov073_0211f2c0(int strength)
 {
-  daKing_Donketu_c *c = (daKing_Donketu_c *)self;
+  daKing_Donketu_c *c = this;
   struct V3 src;
   volatile struct V3 pv;
   struct V3 *new_var;
@@ -464,7 +466,6 @@ void func_ov073_0211f2c0(void *self, int strength)
 
   _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x89, pv.x, pv.y, pv.z);
 }
-}
 
 /* Particles 0x84 and 0x85 on the surface of a's collision sphere,
    in the direction of b. The sphere's centre is a's mPos raised by its
@@ -473,11 +474,10 @@ void func_ov073_0211f2c0(void *self, int strength)
    index data_02082214, which holds a sine at [2i] and a cosine at [2i+1]
    (Fix12), and the radius times those gives the offset from the centre. Within
    this file both arguments are always the boss. */
-// @symbol func_ov073_0211f494
-extern "C" {
-void func_ov073_0211f494(void *pa, void *pb)
+// @symbol _ZN16daKing_Donketu_c19func_ov073_0211f494EPv
+void daKing_Donketu_c::func_ov073_0211f494(void *pb)
 {
-    daKing_Donketu_c *a = (daKing_Donketu_c *)pa;
+    daKing_Donketu_c *a = this;
     dActor_c *b = (dActor_c *)pb;
     Vec3 t, p, q, d;
     int ay, ax, vx, tmp, sin_ax, cos_ax, sin_ay, cos_ay, rx, ry, rz;
@@ -521,7 +521,6 @@ void func_ov073_0211f494(void *pa, void *pb)
     _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x84, p.x, p.y, p.z);
     _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x85, p.x, p.y, p.z);
 }
-}
 
 /* Collision step, called from Behavior in the chase states (..3360, ..3390)
    and from the ..33d0 update. Returns 1 when the boss took a hit, or, in
@@ -554,10 +553,10 @@ void func_ov073_0211f494(void *pa, void *pb)
        SND_HIT_REGISTERED plays and the function returns 1. Elsewhere the boss turns mPrevAngleY by half a turn
        (0x8000), plays SND_REVERSE_AFTER_HURT, goes to ..3360 with mPhase 2,
        unk_4d0 0x2000 and mStateTimer 0x1e, and the function still returns 0. */
-// @symbol func_ov073_0211f61c
-extern "C" s32 func_ov073_0211f61c(void* self)
+// @symbol _ZN16daKing_Donketu_c19func_ov073_0211f61cEv
+s32 daKing_Donketu_c::func_ov073_0211f61c()
 {
-    daKing_Donketu_c *c = (daKing_Donketu_c *)self;
+    daKing_Donketu_c *c = this;
     dActor_c* target;
     s32 hit;
     u32 id;
@@ -573,7 +572,7 @@ extern "C" s32 func_ov073_0211f61c(void* self)
 
     hit = 0;
     if (c->mdCcAcPos_c.hitFlags & 0x6000) {
-        func_ov073_0211f494(c, c);
+        c->func_ov073_0211f494(c);
         c->mHorzSpeed = 0x20000;
         hit = 1;
     }
@@ -591,7 +590,7 @@ extern "C" s32 func_ov073_0211f61c(void* self)
             if (hit == 0) {
                 s32 flags = c->mdCcAcPos_c.hitFlags & 0x50380;
                 if (flags) {
-                    func_ov073_0211f494(c, c);
+                    c->func_ov073_0211f494(c);
                     c->mHorzSpeed = 0x2d000;
                     hit = 1;
                 }
@@ -599,7 +598,7 @@ extern "C" s32 func_ov073_0211f61c(void* self)
             if (hit == 0) {
                 if ((c->mdCcAcPos_c.hitFlags & 0x70) || (((Player *)target)->mIsMetal != 0)
                     || (c->JumpedOnByPlayer(c->mdCcAcPos_c, *(Player *)target) != 0)) {
-                    func_ov073_0211f494(c, c);
+                    c->func_ov073_0211f494(c);
                     c->mHorzSpeed = 0x20000;
                     hit = 1;
                 }
@@ -609,7 +608,7 @@ extern "C" s32 func_ov073_0211f61c(void* self)
 
     if (hit == 0) {
         if (c->mdCcAcPos_c.hitFlags & 0x400) {
-            func_ov073_0211f494(c, c);
+            c->func_ov073_0211f494(c);
             c->mHorzSpeed = 0x3d000;
             hit = 1;
         }
@@ -702,6 +701,7 @@ done0:
     return 0;
 }
 
+
 /* ..3370 update, the defeat. mScaleX is approached toward 0 by 0x80 a frame
    and copied to Y and Z, with those effects kept alive. Once mScaleX is below 0x100
    (1/16) the boss ends the talk, stops the layer-3 music, restores the music
@@ -709,9 +709,9 @@ done0:
    and if an OBJ_BLUE_FIRE actor exists puts a puff of dust at it and marks it
    for destruction. If the key spawned, camera flag 0x8 is cleared and the
    boss marks itself for destruction. */
-// @symbol func_ov073_0211fa74
-extern "C" {
-int func_ov073_0211fa74(daKing_Donketu_c *c) {
+// @symbol _ZN16daKing_Donketu_c19func_ov073_0211fa74Ev
+int daKing_Donketu_c::func_ov073_0211fa74() {
+    daKing_Donketu_c *c = this;
     void* cam;
     dActor_c* spawned;
     dActor_c* found;
@@ -722,7 +722,7 @@ int func_ov073_0211fa74(daKing_Donketu_c *c) {
     _Z14ApproachLinearRiii((int*)&c->mScaleX, 0, 0x80);
     c->mScaleZ = c->mScaleX;
     c->mScaleY = c->mScaleZ;
-    func_ov073_0211f144(c);
+    c->func_ov073_0211f144();
     if (c->mScaleX >= 0x100) goto end;
     pos.x = c->mSpawnPosX;
     pos.y = c->mSpawnPosY;
@@ -762,7 +762,6 @@ int func_ov073_0211fa74(daKing_Donketu_c *c) {
 end:
     return 1;
 }
-}
 
 /* ..3370 enter: nothing to do. */
 // @symbol func_ov073_0211fbec
@@ -775,19 +774,17 @@ int func_ov073_0211fbec(void)
 
 /* ..3410 update, cut scene part 3: keeps the looped sound, the camera and the
    effects going until mTalkPlayer's talk state reads -1, then goes to ..3370. */
-// @symbol func_ov073_0211fbf4
-extern "C" {
-extern void func_ov073_0211f144(void*);
-int func_ov073_0211fbf4(daKing_Donketu_c *c){
+// @symbol _ZN16daKing_Donketu_c19func_ov073_0211fbf4Ev
+int daKing_Donketu_c::func_ov073_0211fbf4() {
+    daKing_Donketu_c *c = this;
   Player* pl = c->mTalkPlayer;
   c->mSoundHandle = _ZN5Sound8PlayLongEjjjRK7Vector3s(c->mSoundHandle, 3, 0x170, (struct Vector3 *)&c->mCamSpacePosX, 0);
   _ZN6Camera9SetFlag_3Ev(data_0209f318);
-  func_ov073_0211f144(c);
+  c->func_ov073_0211f144();
   if(pl->GetTalkState() == -1){
     ChiefChilly_ChangeState((C *)(c), (PMF *)(data_ov073_02123370));
   }
   return 1;
-}
 }
 
 /* ..3410 enter: nothing to do. */
@@ -805,9 +802,9 @@ int func_ov073_0211fc70(void)
    The player is stored in mTalkPlayer; the music volume is set down and once
    StartTalk accepts, ShowMessage shows message (player's param1 + 0xe7)
    at mPos. When it finishes SND_TALK_DONE plays and the state becomes ..3410. */
-// @symbol func_ov073_0211fc78
-extern "C" {
-int func_ov073_0211fc78(daKing_Donketu_c *c) {
+// @symbol _ZN16daKing_Donketu_c19func_ov073_0211fc78Ev
+int daKing_Donketu_c::func_ov073_0211fc78() {
+    daKing_Donketu_c *c = this;
     struct Vector3 msgpos[2];
     struct Vector3 la, ps, in, out;
     Player* player;
@@ -817,7 +814,7 @@ int func_ov073_0211fc78(daKing_Donketu_c *c) {
     c->mSoundHandle = _ZN5Sound8PlayLongEjjjRK7Vector3s(c->mSoundHandle, 3, 0x170, (struct Vector3*)&c->mCamSpacePosX, 0);
     if (player == 0) return 1;
 
-    func_ov073_0211f144(c);
+    c->func_ov073_0211f144();
 
     {
         const s32* pv = &player->mPosX;
@@ -871,7 +868,6 @@ int func_ov073_0211fc78(daKing_Donketu_c *c) {
     }
     return 1;
 }
-}
 
 /* ..33e0 enter: nothing to do. */
 // @symbol func_ov073_0211fe84
@@ -888,9 +884,9 @@ int func_ov073_0211fe84(void)
    a point 256.0 (0x100000) above the boss from 256.0 below mSpawnPos, moved
    1436.0 (0x59c000) back along z rotated by mAngleY. When mStateTimer reaches
    0 the state becomes ..33e0. */
-// @symbol func_ov073_0211fe8c
-extern "C" {
-int func_ov073_0211fe8c(daKing_Donketu_c *c) {
+// @symbol _ZN16daKing_Donketu_c19func_ov073_0211fe8cEv
+int daKing_Donketu_c::func_ov073_0211fe8c() {
+    daKing_Donketu_c *c = this;
     struct Vector3 look, pos, in, out;
     Player* player;
     Camera* cam;
@@ -907,7 +903,7 @@ int func_ov073_0211fe8c(daKing_Donketu_c *c) {
         player->mAngleZ = 0;
     }
 
-    func_ov073_0211f144(c);
+    c->func_ov073_0211f144();
 
     cam = (Camera *)data_0209f318;
     _ZN6Camera9SetFlag_3Ev(cam);
@@ -940,21 +936,23 @@ int func_ov073_0211fe8c(daKing_Donketu_c *c) {
     }
     return 1;
 }
-}
 
 /* ..33b0 enter: start the animation in data_ov073_02123280[1];
    mStateTimer = 0x32 (50 frames). */
-// @symbol func_ov073_0212000c
-extern "C" short func_ov073_0212000c(daKing_Donketu_c *c){
+// @symbol _ZN16daKing_Donketu_c19func_ov073_0212000cEv
+short daKing_Donketu_c::func_ov073_0212000c() {
+    daKing_Donketu_c *c = this;
     _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&c->mBlendModelAnim, data_ov073_02123280[1], 4, 0, 0x1000, 0);
     c->mStateTimer=0x32;
     return 1;
 }
 
+
 /* ..3380 update: when the animation finishes, unk_4c5 = 0xff and back to the
    chase (..3360). */
-// @symbol func_ov073_0212005c
-extern "C" int func_ov073_0212005c(daKing_Donketu_c *c){
+// @symbol _ZN16daKing_Donketu_c19func_ov073_0212005cEv
+int daKing_Donketu_c::func_ov073_0212005c() {
+    daKing_Donketu_c *c = this;
   if(c->mBlendModelAnim.Finished()){
     c->unk_4c5=0xff;
     ChiefChilly_ChangeState((C *)(c), (PMF *)(data_ov073_02123360));
@@ -962,16 +960,16 @@ extern "C" int func_ov073_0212005c(daKing_Donketu_c *c){
   return 1;
 }
 
+
 /* ..3380 enter: clear unk_4ca and start the animation in
    data_ov073_02123290[1]. */
-// @symbol func_ov073_02120098
+// @symbol _ZN16daKing_Donketu_c19func_ov073_02120098Ev
 struct BCA_File;
-extern "C" {
-int func_ov073_02120098(daKing_Donketu_c *c){
+int daKing_Donketu_c::func_ov073_02120098() {
+    daKing_Donketu_c *c = this;
   c->unk_4ca = 0;
   _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&c->mBlendModelAnim, data_ov073_02123290[1], 4, 0x40000000, 0x1000, 0);
   return 1;
-}
 }
 
 /* ..3340 update, a leap toward mSpawnPos. mStateTimer counts down from 10
@@ -987,10 +985,10 @@ int func_ov073_02120098(daKing_Donketu_c *c){
    while mStateScratch is 0). With mHitsRemaining 1 and unk_4ca clear the boss
    then waits 0x82 frames (counted in mStateScratch) before ..3380; otherwise
    it goes to ..3380 at once. */
-// @symbol func_ov073_021200e0
-extern "C" {
-int func_ov073_021200e0(daKing_Donketu_c *thiz)
+// @symbol _ZN16daKing_Donketu_c19func_ov073_021200e0Ev
+int daKing_Donketu_c::func_ov073_021200e0()
 {
+    daKing_Donketu_c *thiz = this;
     u16 state = thiz->mStateTimer;
     if (state != 0) {
         if (state == 1) {
@@ -1051,7 +1049,7 @@ int func_ov073_021200e0(daKing_Donketu_c *thiz)
             thiz->unk_0a4 = 0;
             thiz->mVertSpeed = 0;
             thiz->unk_0ac = 0;
-            func_ov073_0211f2c0(thiz, 0x1388000);
+            thiz->func_ov073_0211f2c0(0x1388000);
             func_02012694(SND_HOP_LANDING, &thiz->mCamSpacePosX);
         }
         if (thiz->mHitsRemaining == 1 && thiz->unk_4ca == 0) {
@@ -1069,17 +1067,15 @@ int func_ov073_021200e0(daKing_Donketu_c *thiz)
     thiz->mAngleY = thiz->mPrevAngleY;
     return 1;
 }
-}
 
 /* ..3340 enter: mStateScratch = 0; mStateTimer = 10. */
-// @symbol func_ov073_02120390
-extern "C" {
-int func_ov073_02120390(daKing_Donketu_c *p)
+// @symbol _ZN16daKing_Donketu_c19func_ov073_02120390Ev
+int daKing_Donketu_c::func_ov073_02120390()
 {
+    daKing_Donketu_c *p = this;
     p->mStateScratch = 0;
     p->mStateTimer = 10;
     return 1;
-}
 }
 
 /* ..3320 update, a waypoint hop. mStateTimer starts at 2. At 1 the hop
@@ -1091,11 +1087,10 @@ int func_ov073_02120390(daKing_Donketu_c *p)
    pitch. On landing it copies the cursor to unk_4c5, stops, shakes the camera
    (0x7d0000), plays SND_HOP_LANDING and counts the landing in mJumpCount: past
    7 the state becomes ..3340, otherwise it re-enters ..3320. */
-// @symbol func_ov073_021203ac
-extern "C" {
-int func_ov073_021203ac(void *thiz)
+// @symbol _ZN16daKing_Donketu_c19func_ov073_021203acEv
+int daKing_Donketu_c::func_ov073_021203ac()
 {
-    daKing_Donketu_c *c = (daKing_Donketu_c *)thiz;
+    daKing_Donketu_c *c = this;
     int *src;
     int v[3];
 
@@ -1151,7 +1146,7 @@ mainblock:
         c->unk_0a4 = 0;
         c->mVertSpeed = 0;
         c->unk_0ac = 0;
-        func_ov073_0211f2c0(c, 0x7d0000);
+        c->func_ov073_0211f2c0(0x7d0000);
         func_02012694(SND_HOP_LANDING, &c->mCamSpacePosX);
         {
             int *cnt = (int *)&c->mJumpCount;
@@ -1166,18 +1161,16 @@ mainblock:
     c->mAngleY = c->mPrevAngleY;
     return 1;
 }
-}
 
 /* ..3320 enter: animation speed 0; mStateScratch = 0; mStateTimer = 2. */
-// @symbol func_ov073_021205f0
-extern "C" {
-int func_ov073_021205f0(daKing_Donketu_c *p)
+// @symbol _ZN16daKing_Donketu_c19func_ov073_021205f0Ev
+int daKing_Donketu_c::func_ov073_021205f0()
 {
+    daKing_Donketu_c *p = this;
     p->mBlendModelAnim.speed = 0;
     p->mStateScratch = 0;
     p->mStateTimer = 2;
     return 1;
-}
 }
 
 /* ..3400 update: a waypoint hop like ..3320, but it also straightens mAngleX
@@ -1187,11 +1180,10 @@ int func_ov073_021205f0(daKing_Donketu_c *p)
    advance), and at timer 0 the aim speed is 40.0 (0x28000). Once mStateScratch
    is set or the boss is falling, mVertSpeed also follows the aim. The landing
    sets mJumpCount to 1 and goes to ..3320. */
-// @symbol func_ov073_02120610
-extern "C" {
-    int func_ov073_02120610(void *thiz)
-    {
-        daKing_Donketu_c *c = (daKing_Donketu_c *)thiz;
+// @symbol _ZN16daKing_Donketu_c19func_ov073_02120610Ev
+int daKing_Donketu_c::func_ov073_02120610()
+{
+        daKing_Donketu_c *c = this;
         int *src;
         int v[3];
 
@@ -1242,7 +1234,7 @@ extern "C" {
             c->unk_0a4 = 0;
             c->mVertSpeed = 0;
             c->unk_0ac = 0;
-            func_ov073_0211f2c0(c, 0x7d0000);
+            c->func_ov073_0211f2c0(0x7d0000);
             func_02012694(SND_HOP_LANDING, &c->mCamSpacePosX);
             c->mJumpCount = 1;
             ChiefChilly_ChangeState((C *)(c), (PMF *)(data_ov073_02123320));
@@ -1250,53 +1242,49 @@ extern "C" {
         c->mAngleY = c->mPrevAngleY;
         return 1;
     }
-}
 
 /* ..3400 enter: mStateTimer = 10, mStateScratch = 0, mJumpCount = 0,
    unk_4c5 = 0xff. */
-// @symbol func_ov073_0212081c
-extern "C" {
-int func_ov073_0212081c(daKing_Donketu_c *self)
+// @symbol _ZN16daKing_Donketu_c19func_ov073_0212081cEv
+int daKing_Donketu_c::func_ov073_0212081c()
 {
+    daKing_Donketu_c *self = this;
     self->mStateTimer = 0xa;
     self->mStateScratch = 0;
     self->mJumpCount = 0;
     self->unk_4c5 = 0xff;
     return 1;
 }
-}
 
 /* ..33f0 update: mAngleX approaches -0x4000 (a quarter turn) by 0x400 a frame
    with the looped sound playing. Once the boss is below mSpawnPosY and on the
    ground it shakes the camera (0x7d0000), plays SND_BIG_LANDING, zeroes
    mHorzSpeed and goes to ..33b0. */
-// @symbol func_ov073_02120844
-extern "C" {
-int func_ov073_02120844(daKing_Donketu_c *t)
+// @symbol _ZN16daKing_Donketu_c19func_ov073_02120844Ev
+int daKing_Donketu_c::func_ov073_02120844()
 {
+    daKing_Donketu_c *t = this;
     ApproachLinear(t->mAngleX, -0x4000, 0x400);
     t->mSoundHandle = _ZN5Sound8PlayLongEjjjRK7Vector3s(t->mSoundHandle, 3, 0x170, (struct Vector3 *)&t->mCamSpacePosX, 0);
     if (t->mSpawnPosY > t->mPosY && t->mWithMeshClsn.IsOnGround()) {
-        func_ov073_0211f2c0(t, 0x7d0000);
+        t->func_ov073_0211f2c0(0x7d0000);
         func_02012694(SND_BIG_LANDING, &t->mCamSpacePosX);
         t->mHorzSpeed = 0;
         ChiefChilly_ChangeState((C *)(t), (PMF *)(data_ov073_021233b0));
     }
     return 1;
 }
-}
 
 /* ..33f0 enter: mHorzSpeed 0x14000 (20.0), mVertSpeed 0x1e000 (30.0),
    mVertAccel -0x3000 (-3.0); clears the sound handle. */
-// @symbol func_ov073_021208e4
-extern "C" {
-int func_ov073_021208e4(daKing_Donketu_c *self) {
+// @symbol _ZN16daKing_Donketu_c19func_ov073_021208e4Ev
+int daKing_Donketu_c::func_ov073_021208e4() {
+    daKing_Donketu_c *self = this;
     self->mHorzSpeed = 0x14000;
     self->mVertSpeed = 0x1e000;
     self->mVertAccel = -0x3000;
     self->mSoundHandle = 0;
     return 1;
-}
 }
 
 /* ..33d0 update. Gravity, mHorzSpeed and the velocity words are zeroed. When
@@ -1309,10 +1297,10 @@ int func_ov073_021208e4(daKing_Donketu_c *self) {
    the sine of it (data_02082214, Fix12) by 0x400. Then,
    when func_ov073_0211f61c returns nonzero (the boss took a hit or, in this
    state, hurt the player) the state becomes ..33f0. */
-// @symbol func_ov073_02120910
-extern "C" {
-int func_ov073_02120910(daKing_Donketu_c *c)
+// @symbol _ZN16daKing_Donketu_c19func_ov073_02120910Ev
+int daKing_Donketu_c::func_ov073_02120910()
 {
+    daKing_Donketu_c *c = this;
     Vector3 in;
     Vector3 out;
 
@@ -1351,21 +1339,20 @@ int func_ov073_02120910(daKing_Donketu_c *c)
     ApproachLinear(c->mAngleX,
         ((s64)c->unk_4d0 * data_02082214[((unsigned short)(short)c->mStateScratch >> 4) * 2] + 0x800) >> 12,
         0x400);
-    if (func_ov073_0211f61c(c)) {
+    if (c->func_ov073_0211f61c()) {
         ChiefChilly_ChangeState((C *)(c), (PMF *)(data_ov073_021233f0));
     }
     return 1;
-}
 }
 
 /* ..33d0 enter: animation data_ov073_02123288[1] at speed 0x4000; mAngleX,
    mStateScratch and all the motion words cleared; unk_4d0 = -0x1000;
    mGroundMissPos copied into unk_4a8..4b0; sound handle cleared;
    mStateTimer = 0x5a (90 frames). */
-// @symbol func_ov073_02120ad8
-extern "C" {
-int func_ov073_02120ad8(daKing_Donketu_c *t)
+// @symbol _ZN16daKing_Donketu_c19func_ov073_02120ad8Ev
+int daKing_Donketu_c::func_ov073_02120ad8()
 {
+    daKing_Donketu_c *t = this;
     _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&t->mBlendModelAnim, data_ov073_02123288[1], 4, 0, 0x1000, 0);
     t->mBlendModelAnim.speed = 0x4000;
     t->mAngleX = 0;
@@ -1383,19 +1370,18 @@ int func_ov073_02120ad8(daKing_Donketu_c *t)
     t->mStateTimer = 0x5a;
     return 1;
 }
-}
 
 /* ..33c0 update: mAngleX approaches -0x4000 by 0x400 a frame. Once the boss is
    below mSpawnPosY and on the ground it shakes the camera (0xfa0000), stops,
    turns to face mSpawnPos (both angles), plays SND_BIG_LANDING and goes to
    ..3400. */
-// @symbol func_ov073_02120b78
-extern "C" {
-int func_ov073_02120b78(daKing_Donketu_c *c){
+// @symbol _ZN16daKing_Donketu_c19func_ov073_02120b78Ev
+int daKing_Donketu_c::func_ov073_02120b78() {
+    daKing_Donketu_c *c = this;
     ApproachLinear(c->mAngleX, -0x4000, 0x400);
     if(c->mSpawnPosY > c->mPosY){
         if(c->mWithMeshClsn.IsOnGround()){
-            func_ov073_0211f2c0(c, 0xfa0000);
+            c->func_ov073_0211f2c0(0xfa0000);
             c->mHorzSpeed = 0;
             c->mPrevAngleY = Vec3_HorzAngle((const Vector3 *)&c->mPosX, (const Vector3 *)&c->mSpawnPosX);
             c->mAngleY = c->mPrevAngleY;
@@ -1405,15 +1391,14 @@ int func_ov073_02120b78(daKing_Donketu_c *c){
     }
     return 1;
 }
-}
 
 /* ..33c0 enter: animation data_ov073_02123288[1] at speed 0x4000;
    mHorzSpeed 0x14000 (20.0), mVertSpeed 0x1e000 (30.0), mVertAccel -0x3000
    (-3.0); mAngleX and mStateScratch cleared. */
-// @symbol func_ov073_02120c08
-extern "C" {
-int func_ov073_02120c08(daKing_Donketu_c *t)
+// @symbol _ZN16daKing_Donketu_c19func_ov073_02120c08Ev
+int daKing_Donketu_c::func_ov073_02120c08()
 {
+    daKing_Donketu_c *t = this;
     _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&t->mBlendModelAnim, data_ov073_02123288[1], 4, 0, 0x1000, 0);
     t->mBlendModelAnim.speed = 0x4000;
     t->mHorzSpeed = 0x14000;
@@ -1423,7 +1408,6 @@ int func_ov073_02120c08(daKing_Donketu_c *t)
     t->mStateScratch = 0;
     return 1;
 }
-}
 
 /* ..33a0 update, the hit reaction. While |mHorzSpeed| > 0xa the dust follows
    unk_4d4[0..1]. If mNoGroundAhead is 1 mHitsRemaining drops by one and the
@@ -1431,9 +1415,10 @@ int func_ov073_02120c08(daKing_Donketu_c *t)
    Otherwise mHorzSpeed is braked to 0 by 0x1000 a frame, and once the
    animation has finished with |mHorzSpeed| < 0xa the boss stops, takes mAngleY
    back into mPrevAngleY and returns to the chase (..3360). */
-// @symbol func_ov073_02120c7c
-extern "C" int func_ov073_02120c7c(daKing_Donketu_c* c)
+// @symbol _ZN16daKing_Donketu_c19func_ov073_02120c7cEv
+int daKing_Donketu_c::func_ov073_02120c7c()
 {
+    daKing_Donketu_c *c = this;
     int a = c->mHorzSpeed; if (a < 0) a = -a;
     if (a > 0xa) {
         int i = 0;
@@ -1462,13 +1447,13 @@ extern "C" int func_ov073_02120c7c(daKing_Donketu_c* c)
     return 1;
 }
 
+
 /* ..33a0 enter: animation data_ov073_021232a8[1] at speed 0x1000; mPrevAngleY
    = the angle to the player + 0x8000. */
-// @symbol func_ov073_02120d80
-extern "C" {
-
-int func_ov073_02120d80(daKing_Donketu_c *c)
+// @symbol _ZN16daKing_Donketu_c19func_ov073_02120d80Ev
+int daKing_Donketu_c::func_ov073_02120d80()
 {
+    daKing_Donketu_c *c = this;
     int fix;
     unsigned short t;
     short ang;
@@ -1484,14 +1469,13 @@ int func_ov073_02120d80(daKing_Donketu_c *c)
         (short)((int)*py + 0x8000);
     return 1;
 }
-}
 
 /* ..3390 update: mPrevAngleY turns toward mTargetAngle by 0x500 a frame. When
    mTargetAngle is within 0x100 of mAngleY the state becomes ..3360 with
    mStateTimer 0x1e (30 frames). The Prev angles are copied into the angles. */
-// @symbol func_ov073_02120dec
-extern "C" {
-int func_ov073_02120dec(daKing_Donketu_c *c) {
+// @symbol _ZN16daKing_Donketu_c19func_ov073_02120decEv
+int daKing_Donketu_c::func_ov073_02120dec() {
+    daKing_Donketu_c *c = this;
     ApproachLinear(c->mPrevAngleY, c->mTargetAngle, 0x500);
     if (AngleDiff(c->mTargetAngle, c->mAngleY) < 0x100) {
         ChiefChilly_ChangeState((C *)(c), (PMF *)(data_ov073_02123360));
@@ -1502,21 +1486,19 @@ int func_ov073_02120dec(daKing_Donketu_c *c) {
     c->mAngleZ = c->mPrevAngleZ;
     return 1;
 }
-}
 
 /* ..3390 enter: animation data_ov073_02123288[1] at speed 0x2000;
    mTargetAngle = the angle to mSpawnPos; mStateScratch = 0;
    mPrevAngleY = mAngleY. */
-// @symbol func_ov073_02120e60
-extern "C" {
-int func_ov073_02120e60(daKing_Donketu_c *c){
+// @symbol _ZN16daKing_Donketu_c19func_ov073_02120e60Ev
+int daKing_Donketu_c::func_ov073_02120e60() {
+    daKing_Donketu_c *c = this;
   _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&c->mBlendModelAnim, data_ov073_02123288[1], 4, 0, 0x1000, 0);
   c->mBlendModelAnim.speed = 0x2000;
   c->mTargetAngle = Vec3_HorzAngle((const Vector3 *)&c->mPosX, (const Vector3 *)&c->mSpawnPosX);
   c->mStateScratch = 0;
   c->mPrevAngleY = c->mAngleY;
   return 1;
-}
 }
 
 /* ..3360 update, the chase, in legs selected by mPhase. mNoGroundAhead being
@@ -1538,11 +1520,10 @@ int func_ov073_02120e60(daKing_Donketu_c *c){
             restarts the animation and returns to leg 0 with mStateTimer 0x1e.
    In leg 0 the model hitting animation frame 0 or 0xe shakes the camera
    (0x3e8000) and plays SND_CHASE_STEP. */
-// @symbol func_ov073_02120ed0
-extern "C" {
-int func_ov073_02120ed0(void *self)
+// @symbol _ZN16daKing_Donketu_c19func_ov073_02120ed0Ev
+int daKing_Donketu_c::func_ov073_02120ed0()
 {
-    daKing_Donketu_c *c = (daKing_Donketu_c *)self;
+    daKing_Donketu_c *c = this;
 
     if (c->mNoGroundAhead == 1) {
         ChiefChilly_ChangeState((C *)(c), (PMF *)(data_ov073_02123390));
@@ -1645,27 +1626,25 @@ hz:
     if (c->mPhase == 0) {
         if (c->mBlendModelAnim.WillHitFrame(0) != 0 ||
             c->mBlendModelAnim.WillHitFrame(0xe) != 0) {
-            func_ov073_0211f2c0(c, 0x3e8000);
+            c->func_ov073_0211f2c0(0x3e8000);
             func_02012694(SND_CHASE_STEP, &c->mCamSpacePosX);
         }
     }
     return 1;
 }
-}
 
 /* ..3360 enter: mStateTimer = 0, mPhase = 0, unk_4d0 = 0x2000; animation
    data_ov073_02123288[1] at speed 0x2000. */
-// @symbol func_ov073_0212122c
-extern "C" {
-int func_ov073_0212122c(daKing_Donketu_c *t)
+// @symbol _ZN16daKing_Donketu_c19func_ov073_0212122cEv
+int daKing_Donketu_c::func_ov073_0212122c()
 {
+    daKing_Donketu_c *t = this;
     t->mStateTimer = 0;
     t->mPhase = 0;
     t->unk_4d0 = 0x2000;
     _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&t->mBlendModelAnim, data_ov073_02123288[1], 4, 0, 0x1000, 0);
     t->mBlendModelAnim.speed = 0x2000;
     return 1;
-}
 }
 
 /* ..3350 update. The camera looks at mPos raised 112.0 (0x70000) and moved
@@ -1674,10 +1653,10 @@ int func_ov073_0212122c(daKing_Donketu_c *t)
    (-1484.0). When mTalkPlayer's talk state reads -1 camera flag 0x8 is
    cleared, layer-3 music 0x2d is loaded and set, func_02011d08 is called and
    the state becomes ..3360. */
-// @symbol func_ov073_0212128c
-extern "C" {
-int func_ov073_0212128c(daKing_Donketu_c *c)
+// @symbol _ZN16daKing_Donketu_c19func_ov073_0212128cEv
+int daKing_Donketu_c::func_ov073_0212128c()
 {
+    daKing_Donketu_c *c = this;
     struct Vector3 la;
     struct Vector3 ps;
     void* cam;
@@ -1710,15 +1689,13 @@ int func_ov073_0212128c(daKing_Donketu_c *c)
     }
     return 1;
 }
-}
 
 /* ..3350 enter: mPhase = 0. */
-// @symbol func_ov073_02121378
-extern "C" {
-int func_ov073_02121378(daKing_Donketu_c *p)
+// @symbol _ZN16daKing_Donketu_c19func_ov073_02121378Ev
+int daKing_Donketu_c::func_ov073_02121378()
 {
+    daKing_Donketu_c *p = this;
     p->mPhase = 0; return 1;
-}
 }
 
 /* ..3330 update, the opening talk. Returns at once without a player. The
@@ -1728,9 +1705,9 @@ int func_ov073_02121378(daKing_Donketu_c *p)
    state runs, so the test always passes) and ShowMessage runs for message (player's param1 + 0xe3) at mPos
    raised 100.0 (0x64000). When it finishes SND_TALK_DONE plays and the state
    becomes ..3350. */
-// @symbol func_ov073_02121388
-extern "C" {
-int func_ov073_02121388(daKing_Donketu_c *c) {
+// @symbol _ZN16daKing_Donketu_c19func_ov073_02121388Ev
+int daKing_Donketu_c::func_ov073_02121388() {
+    daKing_Donketu_c *c = this;
     struct Vector3 vplayer;
     struct Vector3 vmsg;
     struct Vector3 la;
@@ -1790,16 +1767,14 @@ int func_ov073_02121388(daKing_Donketu_c *c) {
     }
     return 1;
 }
-}
 
 /* ..3330 enter: mPhase = 0; animation data_ov073_021232b8[1]. */
-// @symbol func_ov073_02121538
-extern "C" {
-int func_ov073_02121538(daKing_Donketu_c *c){
+// @symbol _ZN16daKing_Donketu_c19func_ov073_02121538Ev
+int daKing_Donketu_c::func_ov073_02121538() {
+    daKing_Donketu_c *c = this;
   c->mPhase=0;
   _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(&c->mBlendModelAnim, data_ov073_021232b8[1], 4, 0, 0x1000, 0);
   return 1;
-}
 }
 
 /* Stores the state record in mState (the shadow struct's pp, at +0x37c) and
@@ -1815,11 +1790,10 @@ extern "C" int ChiefChilly_ChangeState(C *c, PMF *p) { c->pp = p; PMF *q = c->pp
    ..33f0 and ..3370 it stops there; in every other state it also draws the
    drop shadow from mShadowMtx (mPos >> 3 with y lowered 10.0 (0xa000)),
    radius 300.0 (0x12c000), height 1000.0 (0x3e8000). */
-// @symbol func_ov073_021215cc
-extern "C" {
-void func_ov073_021215cc(void* self)
+// @symbol _ZN16daKing_Donketu_c19func_ov073_021215ccEv
+void daKing_Donketu_c::func_ov073_021215cc()
 {
-    daKing_Donketu_c *c = (daKing_Donketu_c *)self;
+    daKing_Donketu_c *c = this;
     int sh;
     Vec3 v;
     Vec3 out;
@@ -1861,7 +1835,6 @@ void func_ov073_021215cc(void* self)
     c->mShadowMtx = data_020a0e68;
     _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
         c, &c->mShadowModel, &c->mShadowMtx, 0x12c000, 0x3e8000, 0xf);
-}
 }
 
 // @symbol _ZN16daKing_Donketu_c16CleanupResourcesEv
@@ -2049,11 +2022,11 @@ int daKing_Donketu_c::Behavior()
 
     if ((char *)c->pp == data_ov073_02123360
         || (char *)c->pp == data_ov073_02123390) {
-        func_ov073_0211f61c(self);
+        ((daKing_Donketu_c *)self)->func_ov073_0211f61c();
     }
     _ZN5dCc_c5ClearEv(&mdCcAcPos_c);
     _ZN5dCc_c6UpdateEv(&mdCcAcPos_c);
-    func_ov073_021215cc(self);
+    ((daKing_Donketu_c *)self)->func_ov073_021215cc();
     _ZN14BlendModelAnim7AdvanceEv(&mBlendModelAnim);
     return 1;
 }
