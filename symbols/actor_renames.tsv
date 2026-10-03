@@ -2484,6 +2484,17 @@ ov080	0x021249e0	func_ov080_021249e0	MontyMole_Spawn	spawnfunc
 ov080	0x021249e0	MontyMole_Spawn	daChoropu_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov080	0x02124a20	func_ov080_02124a20	_ZN9daBttBk_cD1Ev	vtable slot 16
 ov080	0x02124a68	func_ov080_02124a68	_ZN9daBttBk_cD0Ev	vtable slot 17
+ov080	0x02124acc	func_ov080_02124acc	_ZN9daBttBk_c19func_ov080_02124accEv	daBttBk_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov080	0x02124c3c	func_ov080_02124c3c	_ZN9daBttBk_c19func_ov080_02124c3cEv	daBttBk_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov080	0x02124e60	func_ov080_02124e60	_ZN9daBttBk_c19func_ov080_02124e60Ev	daBttBk_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov080	0x02124eb0	func_ov080_02124eb0	_ZN9daBttBk_c19func_ov080_02124eb0Ev	daBttBk_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov080	0x02124edc	func_ov080_02124edc	_ZN9daBttBk_c19func_ov080_02124edcEv	daBttBk_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov080	0x02124fec	func_ov080_02124fec	_ZN9daBttBk_c19func_ov080_02124fecEv	daBttBk_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov080	0x0212500c	func_ov080_0212500c	_ZN9daBttBk_c19func_ov080_0212500cEv	daBttBk_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov080	0x0212509c	func_ov080_0212509c	_ZN9daBttBk_c19func_ov080_0212509cEv	daBttBk_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov080	0x021250c8	func_ov080_021250c8	_ZN9daBttBk_c19func_ov080_021250c8Ev	daBttBk_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov080	0x02125104	func_ov080_02125104	_ZN9daBttBk_c19func_ov080_02125104Ev	daBttBk_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov080	0x0212513c	func_ov080_0212513c	_ZN9daBttBk_c19func_ov080_0212513cEi	daBttBk_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name. The state index stays the second parameter.
 ov080	0x02125158	func_ov080_02125158	_ZN9daBttBk_c16CleanupResourcesEv	vtable slot 3
 ov080	0x0212517c	func_ov080_0212517c	_ZN9daBttBk_c16OnPendingDestroyEv	vtable slot 12
 ov080	0x02125180	func_ov080_02125180	_ZN9daBttBk_c6RenderEv	vtable slot 9
