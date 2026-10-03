@@ -40929,47 +40929,47 @@ matched: yes</title></rect><rect x="1180.74" y="731.24" width="3.86" height="0.9
 module: ov080
 addr: 0x02124ac4
 size: 8 bytes
-matched: yes</title></rect><rect x="1184.60" y="672.02" width="7.49" height="21.27" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov080_02124acc
+matched: yes</title></rect><rect x="1184.60" y="672.02" width="7.49" height="21.27" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9daBttBk_c19func_ov080_02124accEv
 module: ov080
 addr: 0x02124acc
 size: 368 bytes
-matched: yes</title></rect><rect x="1184.60" y="693.30" width="7.49" height="31.68" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov080_02124c3c
+matched: yes</title></rect><rect x="1184.60" y="693.30" width="7.49" height="31.68" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9daBttBk_c19func_ov080_02124c3cEv
 module: ov080
 addr: 0x02124c3c
 size: 548 bytes
-matched: yes</title></rect><rect x="1184.60" y="724.97" width="7.49" height="4.62" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov080_02124e60
+matched: yes</title></rect><rect x="1184.60" y="724.97" width="7.49" height="4.62" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9daBttBk_c19func_ov080_02124e60Ev
 module: ov080
 addr: 0x02124e60
 size: 80 bytes
-matched: yes</title></rect><rect x="1184.60" y="729.60" width="7.49" height="2.54" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov080_02124eb0
+matched: yes</title></rect><rect x="1184.60" y="729.60" width="7.49" height="2.54" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9daBttBk_c19func_ov080_02124eb0Ev
 module: ov080
 addr: 0x02124eb0
 size: 44 bytes
-matched: yes</title></rect><rect x="1192.09" y="672.02" width="4.84" height="24.33" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov080_02124edc
+matched: yes</title></rect><rect x="1192.09" y="672.02" width="4.84" height="24.33" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9daBttBk_c19func_ov080_02124edcEv
 module: ov080
 addr: 0x02124edc
 size: 272 bytes
-matched: yes</title></rect><rect x="1192.09" y="696.36" width="4.84" height="2.86" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov080_02124fec
+matched: yes</title></rect><rect x="1192.09" y="696.36" width="4.84" height="2.86" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9daBttBk_c19func_ov080_02124fecEv
 module: ov080
 addr: 0x02124fec
 size: 32 bytes
-matched: yes</title></rect><rect x="1192.09" y="699.22" width="4.84" height="12.88" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov080_0212500c
+matched: yes</title></rect><rect x="1192.09" y="699.22" width="4.84" height="12.88" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9daBttBk_c19func_ov080_0212500cEv
 module: ov080
 addr: 0x0212500c
 size: 144 bytes
-matched: yes</title></rect><rect x="1192.09" y="712.10" width="4.84" height="3.94" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov080_0212509c
+matched: yes</title></rect><rect x="1192.09" y="712.10" width="4.84" height="3.94" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9daBttBk_c19func_ov080_0212509cEv
 module: ov080
 addr: 0x0212509c
 size: 44 bytes
-matched: yes</title></rect><rect x="1192.09" y="716.04" width="4.84" height="5.37" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov080_021250c8
+matched: yes</title></rect><rect x="1192.09" y="716.04" width="4.84" height="5.37" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9daBttBk_c19func_ov080_021250c8Ev
 module: ov080
 addr: 0x021250c8
 size: 60 bytes
-matched: yes</title></rect><rect x="1192.09" y="721.40" width="4.84" height="5.01" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov080_02125104
+matched: yes</title></rect><rect x="1192.09" y="721.40" width="4.84" height="5.01" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9daBttBk_c19func_ov080_02125104Ev
 module: ov080
 addr: 0x02125104
 size: 56 bytes
-matched: yes</title></rect><rect x="1192.09" y="726.41" width="4.84" height="2.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov080_0212513c
+matched: yes</title></rect><rect x="1192.09" y="726.41" width="4.84" height="2.50" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN9daBttBk_c19func_ov080_0212513cEi
 module: ov080
 addr: 0x0212513c
 size: 28 bytes
