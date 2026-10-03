@@ -7,16 +7,19 @@
  *
  * daBar_c_classInit / g_profile_BAR are reconstructed (RTTI daBar_c, BAR
  * registry). Retail does not store those spellings.
- *
- * deslop
- * Leftover: SetRanges / InitClsn are TU-local wrappers over the
- *   mangled dActor_c::SetRanges / dCcAc_c::Init symbols. A real
- *   Fix12<int> method form on those headers changed this TU's
- *   InitResources size. Wrappers stay here; typed extern "C" of
- *   those mangled names must not land on the shared headers.
  */
 
 #include "daBar_c.h"
+
+extern "C" {
+/* local extern: dActor_c::SetRanges and dCcAc_c::Init take Fix12<int> by
+   value; spelled as real member calls they change this TU's InitResources
+   size, so the scalar-ABI seam stays TU-local (S13). */
+extern void _ZN8dActor_c9SetRangesE5Fix12IiES1_S1_S1_(
+    dActor_c *self, int offsetY, int radius, int clipDistance, int farDistance);
+extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
+    dCcAc_c *self, dActor_c *actor, int radius, int height, u32 flags, u32 vulnFlags);
+}
 
 enum {
     kHeightParamBias = 10,        /* subtracted from the param byte first */
@@ -36,6 +39,21 @@ extern "C" daBar_c *daBar_c_classInit()
     return new daBar_c();
 }
 
+struct DaBarSpawnInfo {
+    daBar_c *(*classInit)();
+    s16 executePriority;   /* +4 */
+    s16 renderPriority;    /* +6 */
+    u32 actorFlags;
+    Fix12i clipOffsetY;
+    Fix12i clipRadius;
+    Fix12i clipDistance;
+    Fix12i farDistance;
+};
+
+typedef char DaBarSpawnInfo_size_must_be_0x1c[
+    sizeof(DaBarSpawnInfo) == 0x1c ? 1 : -1];
+
+// @symbol g_profile_BAR
 extern "C" DaBarSpawnInfo g_profile_BAR = {
     daBar_c_classInit,
     0x011f,       /* behavior/execute priority */
@@ -55,8 +73,10 @@ s32 daBar_c::InitResources()
         height = kMinHeightFix12;
     s32 halfHeight = height >> 1;
 
-    SetRanges(halfHeight, halfHeight, halfHeight + kClipPadFix12, 0);
-    InitClsn(kCylinderRadiusFix12, height,
+    _ZN8dActor_c9SetRangesE5Fix12IiES1_S1_S1_(
+        this, halfHeight, halfHeight, halfHeight + kClipPadFix12, 0);
+    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
+        &mClsn, this, kCylinderRadiusFix12, height,
         (param1 & kParamHurtBit) ? kClsnFlagsHurt : kClsnFlags, 0);
     return 1;
 }
