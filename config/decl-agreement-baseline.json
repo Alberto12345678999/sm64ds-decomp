@@ -366,7 +366,7 @@
       "include/decl_common.h": [
         "return:void"
       ],
-      "src/_ZN17BowserSkyPlatform13InitResourcesEv.cpp": [
+      "src/actors/daKpa3Bg_c.cpp": [
         "return:void"
       ]
     },
@@ -2080,7 +2080,7 @@
       "src/actors/daKpa_c.cpp": [
         "param:#1 Vec3 *"
       ],
-      "src/func_ov060_02117db8.c": [
+      "src/actors/daKpa3Bg_c.cpp": [
         "param:#1 Vec3 *"
       ]
     },
@@ -4182,7 +4182,7 @@
         "param:#1 Vec3 *",
         "return:void"
       ],
-      "src/func_ov060_02117db8.c": [
+      "src/actors/daKpa3Bg_c.cpp": [
         "param:#1 Vec3 *",
         "return:void"
       ]
@@ -5966,10 +5966,6 @@
         "param:#3 const Matrix4x3 &",
         "param:#6 CLPS_Block &"
       ],
-      "src/_ZN17BowserSkyPlatform13InitResourcesEv.cpp": [
-        "param:#3 const Matrix4x3 &",
-        "param:#6 CLPS_Block &"
-      ],
       "src/actors/daObjBlockS_c.cpp": [
         "param:#2 int",
         "param:#3 char *",
@@ -6083,6 +6079,10 @@
         "param:#3 Matrix4x3 *"
       ],
       "src/actors/daObjTatefuda_c.cpp": [
+        "param:#3 const Matrix4x3 &",
+        "param:#6 CLPS_Block &"
+      ],
+      "src/actors/daKpa3Bg_c.cpp": [
         "param:#3 const Matrix4x3 &",
         "param:#6 CLPS_Block &"
       ]
@@ -8767,11 +8767,11 @@
         "arity:0",
         "mangled:0 parameter(s)"
       ],
-      "src/_ZN17BowserSkyPlatform13InitResourcesEv.cpp": [
+      "src/actors/daObjFl_Amilift_c.cpp": [
         "arity:0",
         "mangled:0 parameter(s)"
       ],
-      "src/actors/daObjFl_Amilift_c.cpp": [
+      "src/actors/daKpa3Bg_c.cpp": [
         "arity:0",
         "mangled:0 parameter(s)"
       ]
@@ -11959,7 +11959,7 @@
       "src/actors/daKpa_c.cpp": [
         "arity:3"
       ],
-      "src/func_ov060_02117db8.c": [
+      "src/actors/daKpa3Bg_c.cpp": [
         "arity:3"
       ]
     },
@@ -12118,7 +12118,7 @@
         "return:char *",
         "return:void *"
       ],
-      "src/func_ov060_021180e0.cpp": [
+      "src/actors/daKpa3Bg_c.cpp": [
         "return:void *"
       ]
     },
@@ -12364,9 +12364,6 @@
         "return:void *"
       ],
       "src/actors/daKpa_c.cpp": [
-        "return:void *"
-      ],
-      "src/func_ov060_021181b4.c": [
         "return:void *"
       ]
     },
@@ -14805,7 +14802,7 @@
       "src/actors/daKpa_c.cpp": [
         "return:int"
       ],
-      "src/func_ov060_02117db8.c": [
+      "src/actors/daKpa3Bg_c.cpp": [
         "return:int"
       ]
     },
@@ -22244,16 +22241,6 @@
         "return:int * []"
       ]
     },
-    "data_ov060_02119514": {
-      "src/_ZN17BowserSkyPlatform16CleanupResourcesEv.cpp": [
-        "return:void * []"
-      ]
-    },
-    "data_ov060_0211953c": {
-      "src/_ZN17BowserSkyPlatform16CleanupResourcesEv.cpp": [
-        "return:void * []"
-      ]
-    },
     "data_ov060_0211abe0": {
       "src/__sinit_ov060_021195dc.c": [
         "return:void *"
@@ -22370,11 +22357,6 @@
     "data_ov060_0211affc": {
       "src/__sinit_ov060_02119f94.c": [
         "return:int []"
-      ]
-    },
-    "data_ov060_0211b1ac": {
-      "src/_ZN17BowserSkyPlatform8BehaviorEv.cpp": [
-        "return:Entry []"
       ]
     },
     "data_ov060_0211b1c4": {
@@ -25334,9 +25316,6 @@
       "src/func_ov002_020e88a8.c": [
         "param:#1 int"
       ],
-      "src/func_ov060_02117db8.c": [
-        "param:#1 int"
-      ],
       "src/actors/daKirai_c.cpp": [
         "param:#1 int"
       ],
@@ -25431,6 +25410,9 @@
         "param:#1 int",
         "param:#2 int *",
         "return:int"
+      ],
+      "src/actors/daKpa3Bg_c.cpp": [
+        "param:#1 int"
       ]
     },
     "func_02012718": {
@@ -28913,9 +28895,6 @@
       "src/_ZN17daObjFl_Amilift_c13InitResourcesEv.cpp": [
         "param:#2 void *"
       ],
-      "src/_ZN17BowserSkyPlatform13InitResourcesEv.cpp": [
-        "param:#2 void *"
-      ],
       "src/actors/daObjFl_Block_c.cpp": [
         "param:#2 void *"
       ],
@@ -28971,6 +28950,9 @@
       ],
       "src/actors/Eyerok.cpp": [
         "param:#2 void *"
+      ],
+      "src/actors/daKpa3Bg_c.cpp": [
+        "param:#2 void *"
       ]
     },
     "func_020393d4": {
@@ -28990,9 +28972,6 @@
         "param:#2 void *"
       ],
       "src/_ZN17daObjFl_Amilift_c13InitResourcesEv.cpp": [
-        "param:#2 void *"
-      ],
-      "src/_ZN17BowserSkyPlatform13InitResourcesEv.cpp": [
         "param:#2 void *"
       ],
       "src/actors/daObjSimpleLift_c.cpp": [
@@ -29113,6 +29092,9 @@
         "param:#2 void *"
       ],
       "src/actors/Eyerok.cpp": [
+        "param:#2 void *"
+      ],
+      "src/actors/daKpa3Bg_c.cpp": [
         "param:#2 void *"
       ]
     },
@@ -36823,7 +36805,7 @@
       ]
     },
     "func_ov060_021183f4": {
-      "src/_ZN17BowserSkyPlatform13InitResourcesEv.cpp": [
+      "src/actors/daKpa3Bg_c.cpp": [
         "arity:0"
       ]
     },

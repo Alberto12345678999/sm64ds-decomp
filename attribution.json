@@ -7781,6 +7781,15 @@
     "src/actors/daObjFl_Coin_c.cpp#_ZN16daObjFl_Puzzle_c8BehaviorEv": "tangosdev",
     "src/actors/daObjFl_Coin_c.cpp#_ZN14daObjFl_Coin_c8BehaviorEv": "ruspecial",
     "src/actors/daObjFl_Coin_c.cpp#_ZN16daObjFl_Puzzle_c13InitResourcesEv": "tangosdev",
-    "src/actors/daObjFl_Coin_c.cpp#_ZN14daObjFl_Coin_c13InitResourcesEv": "tangosdev"
+    "src/actors/daObjFl_Coin_c.cpp#_ZN14daObjFl_Coin_c13InitResourcesEv": "tangosdev",
+    "src/actors/daKpa3Bg_c.cpp#_ZN10daKpa3Bg_cD1Ev": "andrewboudreau",
+    "src/actors/daKpa3Bg_c.cpp#_ZN10daKpa3Bg_cD0Ev": "andrewboudreau",
+    "src/actors/daKpa3Bg_c.cpp#_ZN10daKpa3Bg_c16CleanupResourcesEv": "tangosdev",
+    "src/actors/daKpa3Bg_c.cpp#_ZN10daKpa3Bg_c6RenderEv": "tangosdev",
+    "src/actors/daKpa3Bg_c.cpp#_ZN10daKpa3Bg_c8BehaviorEv": "tangosdev",
+    "src/actors/daKpa3Bg_c.cpp#_ZN10daKpa3Bg_c13InitResourcesEv": "tangosdev",
+    "src/actors/daKpa3Bg_c.cpp#func_ov060_02117db8": "andrewboudreau",
+    "src/actors/daKpa3Bg_c.cpp#func_ov060_021180e0": "tangosdev",
+    "src/actors/daKpa3Bg_c.cpp#func_ov060_021181b4": "tangosdev"
   }
 }
