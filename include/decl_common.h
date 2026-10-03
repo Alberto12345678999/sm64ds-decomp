@@ -2612,7 +2612,6 @@ extern void func_ov091_02132f04(char*);
 extern void func_ov091_02132ff4(char*);
 extern void func_ov091_02133020(char*);
 extern void func_ov091_02133098(char*);
-extern void func_ov091_02133498(char*);
 extern void func_ov092_021313b0(void*);
 extern void func_ov092_02131578(char*);
 extern void func_ov092_02131a88(char*);
