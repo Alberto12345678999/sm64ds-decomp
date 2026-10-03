@@ -13,24 +13,24 @@
  * LAYOUT, not this class's, and are named from include/dActor_c.h by offset.
  *
  * Field provenance: notes/butterfly-tornado-provenance.md. The ROM TU boundary
- * is shared with PowerStar and StarCamera; this class header does not claim a
+ * is shared with daStar_c and StarCamera; this class header does not claim a
  * standalone original source file. */
-#ifndef STARMARKER_H
-#define STARMARKER_H
+#ifndef DASTARBASE_C_H
+#define DASTARBASE_C_H
 #include "dActor_c.h"
 #include "Model.h"
 #include "ShadowModel.h"
 #include "dCcAcPos_c.h"
 #include "math/Matrix.h"
 
-/* RTTI calls this class daStarBase_c. StarMarker is the readable compatibility
+/* RTTI calls this class daStarBase_c. daStarBase_c is the readable compatibility
  * spelling already fixed by the matched function names. The ROM's
  * __si_class_type_info record gives it one dActor_c base at offset zero, and
  * its 31-slot vtable has the same extent as dActor_c's. Only resource,
  * behavior, render, pending-destroy, and destructor slots are overridden. */
-struct StarMarker : dActor_c {
+struct daStarBase_c : dActor_c {
     u8 pad_0d0[0x4];
-    /* dCcAcPos_c member. The cartridge's own ~StarMarker calls _ZN10dCcAcPos_cD1Ev at
+    /* dCcAcPos_c member. The cartridge's own ~daStarBase_c calls _ZN10dCcAcPos_cD1Ev at
        +0x0d4 (D0/D1), a relocation the ROM build checks; recovered by
        tools/dtor_members.py. D1 and not D2, so it is this type and not an inlined base. */
     dCcAcPos_c mdCcAcPos_c;            /* 0x0d4 */
@@ -42,7 +42,7 @@ struct StarMarker : dActor_c {
     Model mModel;            /* 0x114 */
     /* ShadowModel member, named by the class's own destructor calling
        ShadowModel's D1 at +0x164 -- a relocation the ROM build
-       checks. Was a u8 marker. [_ZN10StarMarkerD0Ev.c] */
+       checks. Was a u8 marker. [_ZN12daStarBase_cD0Ev.c] */
     ShadowModel mShadowModel;            /* 0x164 */
     Matrix4x3 mShadowMtx;        /* 0x18c -- shadow transform */
     Vector3 mSpawnPos;           /* 0x1bc -- mPos as InitResources found it.
@@ -77,7 +77,7 @@ struct StarMarker : dActor_c {
     u8  mStarID;            /* 0x1d9 */
     u8  pad_1da[0x1];
     u8  mFlags;            /* 0x1db */
-    virtual ~StarMarker();
+    virtual ~daStarBase_c();
     virtual s32 InitResources();
     virtual s32 CleanupResources();
     virtual s32 Behavior();
@@ -92,7 +92,7 @@ struct StarMarker : dActor_c {
 
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
-typedef char StarMarker_size_must_be_0x1dc[sizeof(struct StarMarker) == 0x1dc ? 1 : -1];
+typedef char StarMarker_size_must_be_0x1dc[sizeof(struct daStarBase_c) == 0x1dc ? 1 : -1];
 #endif
 
 #endif

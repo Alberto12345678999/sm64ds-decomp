@@ -200,20 +200,20 @@ ov002	0x020bcc20	func_ov002_020bcc20	_ZN20daObjCannonShutter_c13InitResourcesEv	
 ov002	0x020bcccc	func_ov002_020bcccc	daObjCannonShutter_c_Spawn	spawnfunc
 ov002	0x020bcccc	daObjCannonShutter_c_Spawn	daObjCannonShutter_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov002	0x020e6c0c	Player_Spawn	daPly_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
-ov002	0x020e6c40	func_ov002_020e6c40	_ZN9PowerStarD1Ev	vtable slot 16
-ov002	0x020e6c90	func_ov002_020e6c90	_ZN9PowerStarD0Ev	vtable slot 17
-ov002	0x020e6cf4	func_ov002_020e6cf4	_ZN10StarMarkerD1Ev	vtable slot 16
-ov002	0x020e6d34	func_ov002_020e6d34	_ZN10StarMarkerD0Ev	vtable slot 17
-ov002	0x020e7d84	func_ov002_020e7d84	_ZN10StarMarker7CollectEv	inferred semantic name; Behavior passes this and PowerStar path passes resolved StarMarker in r0
-ov002	0x020eab8c	func_ov002_020eab8c	_ZN10StarMarker16OnPendingDestroyEv	vtable slot 12
-ov002	0x020eabcc	func_ov002_020eabcc	_ZN10StarMarker16CleanupResourcesEv	vtable slot 3
-ov002	0x020eac18	func_ov002_020eac18	_ZN9PowerStar16CleanupResourcesEv	vtable slot 3
-ov002	0x020eacb8	func_ov002_020eacb8	_ZN10StarMarker6RenderEv	vtable slot 9
-ov002	0x020eacf4	func_ov002_020eacf4	_ZN9PowerStar6RenderEv	vtable slot 9
-ov002	0x020ead90	func_ov002_020ead90	_ZN10StarMarker8BehaviorEv	vtable slot 6
-ov002	0x020eb05c	func_ov002_020eb05c	_ZN9PowerStar8BehaviorEv	vtable slot 6
-ov002	0x020eb204	func_ov002_020eb204	_ZN10StarMarker13InitResourcesEv	vtable slot 0
-ov002	0x020eb63c	func_ov002_020eb63c	_ZN9PowerStar13InitResourcesEv	vtable slot 0
+ov002	0x020e6c40	func_ov002_020e6c40	_ZN8daStar_cD1Ev	vtable slot 16
+ov002	0x020e6c90	func_ov002_020e6c90	_ZN8daStar_cD0Ev	vtable slot 17
+ov002	0x020e6cf4	func_ov002_020e6cf4	_ZN12daStarBase_cD1Ev	vtable slot 16
+ov002	0x020e6d34	func_ov002_020e6d34	_ZN12daStarBase_cD0Ev	vtable slot 17
+ov002	0x020e7d84	func_ov002_020e7d84	_ZN12daStarBase_c7CollectEv	inferred semantic name; Behavior passes this and daStar_c path passes resolved daStarBase_c in r0
+ov002	0x020eab8c	func_ov002_020eab8c	_ZN12daStarBase_c16OnPendingDestroyEv	vtable slot 12
+ov002	0x020eabcc	func_ov002_020eabcc	_ZN12daStarBase_c16CleanupResourcesEv	vtable slot 3
+ov002	0x020eac18	func_ov002_020eac18	_ZN8daStar_c16CleanupResourcesEv	vtable slot 3
+ov002	0x020eacb8	func_ov002_020eacb8	_ZN12daStarBase_c6RenderEv	vtable slot 9
+ov002	0x020eacf4	func_ov002_020eacf4	_ZN8daStar_c6RenderEv	vtable slot 9
+ov002	0x020ead90	func_ov002_020ead90	_ZN12daStarBase_c8BehaviorEv	vtable slot 6
+ov002	0x020eb05c	func_ov002_020eb05c	_ZN8daStar_c8BehaviorEv	vtable slot 6
+ov002	0x020eb204	func_ov002_020eb204	_ZN12daStarBase_c13InitResourcesEv	vtable slot 0
+ov002	0x020eb63c	func_ov002_020eb63c	_ZN8daStar_c13InitResourcesEv	vtable slot 0
 ov002	0x020ebe5c	func_ov002_020ebe5c	StarCamera_Spawn	spawnfunc
 ov002	0x020ebe8c	func_ov002_020ebe8c	StarMarker_Spawn	spawnfunc
 ov002	0x020ebe8c	StarMarker_Spawn	daStarBase_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
@@ -422,8 +422,8 @@ ov002	0x0210aa78	data_ov002_0210aa78	StarMarker_SpawnInfo	spawninfo
 ov002	0x0210aa78	StarMarker_SpawnInfo	g_profile_STARBASE	reconstructed profile global; literal ROM ID STARBASE+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov002	0x0210aa94	data_ov002_0210aa94	StarCamera_SpawnInfo	spawninfo
 ov002	0x0210aa94	StarCamera_SpawnInfo	g_profile_STAR_CAMERA	reconstructed profile global; literal ROM ID STAR_CAMERA+registry role+later EAD lineage; exact SM64DS spelling not preserved
-ov002	0x0210aab8	data_ov002_0210aab8	_ZTV10StarMarker	vtable alloc=0x1dc
-ov002	0x0210ab3c	data_ov002_0210ab3c	_ZTV9PowerStar	vtable alloc=?
+ov002	0x0210aab8	data_ov002_0210aab8	_ZTV12daStarBase_c	vtable alloc=0x1dc
+ov002	0x0210ab3c	data_ov002_0210ab3c	_ZTV8daStar_c	vtable alloc=?
 ov002	0x0210abdc	data_ov002_0210abdc	Tree_SpawnInfo	spawninfo
 ov002	0x0210abdc	Tree_SpawnInfo	g_profile_TREE	reconstructed profile global; literal ROM ID TREE+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov002	0x0210ac00	data_ov002_0210ac00	_ZTV8daTree_c	vtable alloc=0x264

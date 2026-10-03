@@ -1,9 +1,9 @@
 //cpp
-// @symbol _ZN9PowerStar16CleanupResourcesEv
+// @symbol _ZN8daStar_c16CleanupResourcesEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 #include "decl_common.h"
 /* recovered: named members + shared header, real C++ method */
-#include "PowerStar.h"
+#include "daStar_c.h"
 #include "SharedFilePtr.h"
 extern "C" void _ZN8dActor_c11UntrackStarERa(void* self, signed char* star);
 
@@ -12,7 +12,7 @@ extern char data_ov002_02110924;
 extern char data_ov002_02110964;
 extern char data_ov002_02110934;
 
-int PowerStar::CleanupResources()
+int daStar_c::CleanupResources()
 {
     int b = (actorID == 0xb2);
     if (b) {

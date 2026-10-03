@@ -1,10 +1,10 @@
 //cpp
 #include "types.h"
-// @symbol _ZN9PowerStar13AddStarMarkerEv
+// @symbol _ZN8daStar_c13AddStarMarkerEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 #include "decl_common.h"
 /* recovered: named members + shared header, real C++ method */
-#include "PowerStar.h"
+#include "daStar_c.h"
 extern "C" {
 extern void SetStarMarker(int i, int v1, int v2);
 extern int IsStarCollectedInCurLevel(int starID);
@@ -18,7 +18,7 @@ struct Bits {
     u16 b2 : 1;
 };
 
-void PowerStar::AddStarMarker()
+void daStar_c::AddStarMarker()
 {
     s8 i;
     if (unk_498 >= 0) return;

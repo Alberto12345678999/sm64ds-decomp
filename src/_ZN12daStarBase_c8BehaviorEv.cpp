@@ -1,11 +1,11 @@
 //cpp
-// @symbol _ZN10StarMarker8BehaviorEv
+// @symbol _ZN12daStarBase_c8BehaviorEv
 /* recovered: named members + shared header, real C++ method */
 /* The class header comes FIRST on purpose: it reaches math/Matrix.h, whose
    Matrix4x3 is the structured one, and include/common.h's flat spelling stands
    down behind the guard. mat4x3.t is only nameable this way round, and the two
    spellings are the same 0x30 bytes. */
-#include "StarMarker.h"
+#include "daStarBase_c.h"
 /* recovered: declarations from a shared header */
 #include "decl_common.h"
 typedef struct Mtx { int m[12]; } Mtx;
@@ -23,7 +23,7 @@ extern unsigned char *data_0209f344;
 extern Mtx IDENTITY_MATRIX4X3;
 }
 
-int StarMarker::Behavior()
+int daStarBase_c::Behavior()
 {
     if ((unsigned int)(mFlags << 0x1c) >> 0x1f) {
         if (mStarID == data_0209f344[data_0209f208]) {
@@ -77,7 +77,7 @@ int StarMarker::Behavior()
     if (mState != 0) {
         if ((unsigned int)(mFlags << 0x1e) >> 0x1f) {
             /* Both are fields of the dCcAcPos_c at 0x0d4, which the cartridge's own
-               ~StarMarker names (tools/dtor_members.py): 0x0f8 is +0x24,
+               ~daStarBase_c names (tools/dtor_members.py): 0x0f8 is +0x24,
                dCc_c::otherOwner, and 0x0f4 is +0x20, dCc_c::hitFlags. */
             if (mState != 2 && mdCcAcPos_c.otherOwner != 0) {
                 char *a = _ZN8dActor_c10FindWithIDEj(mdCcAcPos_c.otherOwner);

@@ -63,7 +63,7 @@ namespace Sound {
 void LoadAndSetMusic_Layer3(unsigned int musicId);
 }
 
-/* {file id, loaded file}. Same two words PowerStar reads as id/ptr, and the
+/* {file id, loaded file}. Same two words daStar_c reads as id/ptr, and the
  * words this TU passes to SetAnim / SetFile / compares with mModelAnim.file.
  * SharedFilePtr itself has no fields; Release and LoadFile go through it. */
 struct ObjKeyFile {

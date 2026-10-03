@@ -1,9 +1,9 @@
 //cpp
-// @symbol _ZN9PowerStar8BehaviorEv
+// @symbol _ZN8daStar_c8BehaviorEv
 /* recovered: named members + shared header, real C++ method, declarations from a shared header */
 #include "decl_common.h"
 /* recovered: named members + shared header, real C++ method */
-#include "PowerStar.h"
+#include "daStar_c.h"
 struct C;
 typedef void (C::*PMF)();
 
@@ -24,7 +24,7 @@ extern PMF data_ov002_021109d8[];
 
 struct C { char pad[0x800]; };
 
-int PowerStar::Behavior()
+int daStar_c::Behavior()
 {
     func_ov002_020e700c(((char *)this));
     unk_4a8 = 0;

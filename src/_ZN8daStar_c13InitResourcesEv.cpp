@@ -1,8 +1,8 @@
 //cpp
 #include "types.h"
-// @symbol _ZN9PowerStar13InitResourcesEv
+// @symbol _ZN8daStar_c13InitResourcesEv
 /* recovered: named members + shared header, real C++ method */
-#include "PowerStar.h"
+#include "daStar_c.h"
 struct Vec3 { s32 x, y, z; };
 struct SharedFilePtr { u32 id; void *ptr; };
 
@@ -49,8 +49,6 @@ extern void LinkSilverStarAndStarMarker(void *a, void *b);
 extern s32 IsStarCollected(s32 level, s32 idx);
 extern s32 _ZN8dActor_c18GetBitInDeathTableEv(void *self);
 extern void _ZN8dActor_c24KillAndTrackInDeathTableEv(void *self);
-
-extern s32 _ZN9PowerStar13InitResourcesEv(void *arg0);
 }
 
 #define U8(o) (*(u8 *)(t + (o)))
@@ -60,7 +58,7 @@ extern s32 _ZN9PowerStar13InitResourcesEv(void *arg0);
 #define LU32(o) (*(u32 *)((int)(t + (o))))
 #define LU16(o) (*(u16 *)((int)(t + (o))))
 
-s32 PowerStar::InitResources()
+s32 daStar_c::InitResources()
 {
     char *t = (char *)((void *)this);
     s32 ret;

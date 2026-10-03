@@ -1,9 +1,9 @@
 //cpp
-// @symbol _ZN9PowerStarD1Ev
+// @symbol _ZN8daStar_cD1Ev
 /* recovered: real C++ destructor -- the compiler emits the whole body
  *
  * One vtable store and 6 destructor calls, every one a consequence of
- * `struct PowerStar : dEnemyBase_c` and the members that declaration now types:
+ * `struct daStar_c : dEnemyBase_c` and the members that declaration now types:
  * its own vptr, then ShadowModel (0x3d4), ModelAnim (0x370), ModelAnim (0x30c), 
  * dBgCh_Actr (0x150), 
  * dCcAcPos_c (0x110)
@@ -13,8 +13,8 @@
  * named those offsets in the first place, and `daStar_c_classInit_STAR` constructs the
  * same types at the same offsets.
  */
-#include "PowerStar.h"
+#include "daStar_c.h"
 
-PowerStar::~PowerStar()
+daStar_c::~daStar_c()
 {
 }

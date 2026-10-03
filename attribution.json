@@ -1170,6 +1170,7 @@
     "src/_ZN8dM3dGSphD0Ev.c": "tangosdev",
     "src/_ZN8dM3dGSphD0Ev.cpp": "tangosdev",
     "src/_ZN8dM3dGSphD1Ev.cpp": "tangosdev",
+    "src/_ZN8daStar_c13OnTurnIntoEggER6Player.cpp": "ruspecial",
     "src/_ZN9BlueFlame13OnTurnIntoEggER6Player.c": "tangosdev",
     "src/_ZN9BlueFlame13OnTurnIntoEggER6Player.cpp": "tangosdev",
     "src/_ZN9BlueFlameD0Ev.cpp": "tangosdev",
