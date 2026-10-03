@@ -2722,6 +2722,11 @@ ov090	0x02132654	func_ov090_02132654	Skeeter_Spawn	spawnfunc
 ov090	0x02132654	Skeeter_Spawn	daMenbo_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov090	0x0213269c	func_ov090_0213269c	_ZN9daManta_cD1Ev	vtable slot 16
 ov090	0x021326dc	func_ov090_021326dc	_ZN9daManta_cD0Ev	vtable slot 17
+ov090	0x02132730	func_ov090_02132730	_ZN9daManta_c19func_ov090_02132730Ev	daManta_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov090	0x021327e4	func_ov090_021327e4	_ZN9daManta_c19func_ov090_021327e4Ev	daManta_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov090	0x02132a58	func_ov090_02132a58	_ZN9daManta_c19func_ov090_02132a58Ev	daManta_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov090	0x02132ac4	func_ov090_02132ac4	_ZN9daManta_c19func_ov090_02132ac4EP10MantaState	daManta_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov090	0x02132b14	func_ov090_02132b14	_ZN9daManta_c19func_ov090_02132b14Ev	daManta_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
 ov090	0x02132c1c	func_ov090_02132c1c	_ZN9daManta_c16CleanupResourcesEv	vtable slot 3
 ov090	0x02132c64	func_ov090_02132c64	_ZN9daManta_c16OnPendingDestroyEv	vtable slot 12
 ov090	0x02132c68	func_ov090_02132c68	_ZN9daManta_c6RenderEv	vtable slot 9
