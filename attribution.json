@@ -4558,7 +4558,7 @@
     "src/stage/LevelObjects.cpp#_Z19LoadEntranceObjectsRN11LVL_Overlay11ObjSubTableEij": "tangosdev",
     "src/stage/LevelObjects.cpp#_Z19LoadStandardObjectsRN11LVL_Overlay11ObjSubTableEij": "ruspecial",
     "src/stage/LevelObjects.cpp#_Z17LoadSimpleObjectsRN11LVL_Overlay11ObjSubTableEij": "tangosdev",
-    "src/actors/daObjYajirusi_c.cpp#func_ov098_02137c8c": "tangosdev",
+    "src/actors/daObjYajirusi_c.cpp#_ZN15daObjYajirusi_c19func_ov098_02137c8cEv": "tangosdev",
     "src/actors/daObjYajirusi_c.cpp#daObjYajirusi_c_classInit_YAJIRUSI_R": "tangosdev",
     "src/actors/daObjYajirusi_c.cpp#daObjYajirusi_c_classInit_YAJIRUSI_L": "tangosdev",
     "src/actors/daObjYajirusi_c.cpp#_ZN15daObjYajirusi_cD1Ev": "tangosdev",
