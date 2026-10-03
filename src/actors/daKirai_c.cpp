@@ -1,14 +1,14 @@
 //cpp
-/* daKirai_c: the spike bomb (ov060, .text 0x02118438..0x02118cbc;
- * daKirai_c_classInit stays out).
- * Every live bomb registers with the spike-bomb slot table
- * (AddSpikeBomb) and keeps the uniqueIDs of its siblings (actor 0x11c) so that,
- * once they have all gone off, the one nearest the player can re-arm.
+/* daKirai_c: the spike bomb (ov060). Every live bomb registers with the
+ * spike-bomb slot table (AddSpikeBomb) and remembers the uniqueIDs of its
+ * siblings (actor 0x11c) so that, once they have all gone off, the one
+ * nearest the player can re-arm.
  *
- * The nine func_ov060_* helpers are daKirai_c members in the original source;
- * the ROM gives them no name, so they keep their unnamed C symbols here and
- * take the bomb as an explicit `self`. data_ov060_0211b1d8 is the state table
- * Behavior dispatches through, filled at static-init time with helpers below.
+ * Behavior dispatches mStateIndex through a table of member pointers at
+ * data_ov060_0211b1d8, filled at static-init time from {fn, 0} records in
+ * .data: armed (func_ov060_02118970), exploding (func_ov060_02118834), a
+ * second swell (func_ov060_021188e8), spent (func_ov060_02118728).
+ * daKirai_c_classInit stays out of this TU.
  */
 
 #include "daKirai_c.h"
@@ -56,31 +56,30 @@ daKirai_c::~daKirai_c()
 {
 }
 
-extern "C" {
 /* Disarm: give up the spike-bomb slot, stop colliding, and remember every
    other bomb still in the level. */
-// @symbol func_ov060_021184bc
-void func_ov060_021184bc(daKirai_c *self)
+// @symbol _ZN9daKirai_c19func_ov060_021184bcEv
+void daKirai_c::func_ov060_021184bc()
 {
     int i;
     int j;
     unsigned int id;
     dActor_c *a;
 
-    ClearSpikeBomb(self->mSlotIndex);
-    self->mdCcAcPos_c.flags |= 1;
-    self->mStateIndex = 3;
+    ClearSpikeBomb(mSlotIndex);
+    mdCcAcPos_c.flags |= 1;
+    mStateIndex = 3;
     a = 0;
     for (i = 0; i < 8; i++)
-        self->mOtherBombIDs[i] = 0;
+        mOtherBombIDs[i] = 0;
     j = 0;
     id = 0x11c;
     while (1) {
         a = dActor_c::FindWithActorID(id, a);
         if (a == 0)
             break;
-        if (a != self) {
-            self->mOtherBombIDs[j] = a->uniqueID;
+        if (a != this) {
+            mOtherBombIDs[j] = a->uniqueID;
             j++;
             if (j == 8)
                 break;
@@ -89,67 +88,67 @@ void func_ov060_021184bc(daKirai_c *self)
 }
 
 /* Is `pos` close enough to set this bomb off? */
-// @symbol func_ov060_02118544
-int func_ov060_02118544(daKirai_c *self, Vector3 *pos)
+// @symbol _ZN9daKirai_c19func_ov060_02118544EP7Vector3
+int daKirai_c::func_ov060_02118544(Vector3 *pos)
 {
     int horz, homeHorz;
-    if (self->mStateIndex != 0) return 0;
+    if (mStateIndex != 0) return 0;
     horz = Vec3_HorzLen(pos);
-    homeHorz = self->mHomeHorzDist;
+    homeHorz = mHomeHorzDist;
     if (horz >= homeHorz - 0x12c000 && horz <= homeHorz + 0x12c000) {
-        if (Vec3_Dist((Vector3 *)&self->mHomePosX, pos) < self->mHomeYOffset) return 1;
+        if (Vec3_Dist((Vector3 *)&mHomePosX, pos) < mHomeYOffset) return 1;
     }
     return 0;
 }
 
 /* Explode. */
-// @symbol func_ov060_021185c4
-void func_ov060_021185c4(daKirai_c *self)
+// @symbol _ZN9daKirai_c19func_ov060_021185c4Ev
+void daKirai_c::func_ov060_021185c4()
 {
     Vector3 v;
-    self->mStateIndex = 1;
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xa8, self->mPosX, self->mPosY, self->mPosZ);
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xa9, self->mPosX, self->mPosY, self->mPosZ);
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xaa, self->mPosX, self->mPosY, self->mPosZ);
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xab, self->mPosX, self->mPosY, self->mPosZ);
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xac, self->mPosX, self->mPosY, self->mPosZ);
-    func_02012694(0x2f, &self->mCamSpacePosX);
-    v.x = self->mPosX;
-    v.y = self->mPosY;
-    v.z = self->mPosZ;
-    _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(self, &v, 0x7d0000);
-    self->mTimer = 0;
-    func_ov060_021184bc(self);
+    mStateIndex = 1;
+    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xa8, mPosX, mPosY, mPosZ);
+    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xa9, mPosX, mPosY, mPosZ);
+    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xaa, mPosX, mPosY, mPosZ);
+    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xab, mPosX, mPosY, mPosZ);
+    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xac, mPosX, mPosY, mPosZ);
+    func_02012694(0x2f, &mCamSpacePosX);
+    v.x = mPosX;
+    v.y = mPosY;
+    v.z = mPosZ;
+    _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(this, &v, 0x7d0000);
+    mTimer = 0;
+    func_ov060_021184bc();
 }
 
 /* Place the model and fade it. */
-// @symbol func_ov060_02118690
-void func_ov060_02118690(daKirai_c *self)
+// @symbol _ZN9daKirai_c19func_ov060_02118690Ev
+void daKirai_c::func_ov060_02118690()
 {
-    Matrix4x3_FromTranslation(&self->mModel.mat4x3, self->mPosX >> 3, self->mPosY >> 3, self->mPosZ >> 3);
-    self->mModel.ApplyOpacity((u8)(self->mOpacity >> 3), 1);
+    Matrix4x3_FromTranslation(&mModel.mat4x3, mPosX >> 3, mPosY >> 3, mPosZ >> 3);
+    mModel.ApplyOpacity((u8)(mOpacity >> 3), 1);
 }
 
 /* Re-arm. */
-// @symbol func_ov060_021186d8
-void func_ov060_021186d8(daKirai_c *self)
+// @symbol _ZN9daKirai_c19func_ov060_021186d8Ev
+void daKirai_c::func_ov060_021186d8()
 {
-    self->mScaleX = 0x1000;
-    self->mScaleY = 0x1000;
-    self->mScaleZ = 0x1000;
-    self->mOpacity = 0xff;
-    self->mStateIndex = 0;
-    self->mdCcAcPos_c.flags &= ~1;
-    self->mTimer = 0;
-    self->mSlotIndex = AddSpikeBomb(self);
+    mScaleX = 0x1000;
+    mScaleY = 0x1000;
+    mScaleZ = 0x1000;
+    mOpacity = 0xff;
+    mStateIndex = 0;
+    mdCcAcPos_c.flags &= ~1;
+    mTimer = 0;
+    mSlotIndex = AddSpikeBomb(this);
 }
 
 /* Spent: wait until every sibling has gone off, then re-arm whichever bomb
    (this one or a sibling) is nearest the player. */
 #pragma opt_strength_reduction off
 #pragma opt_common_subs off
-// @symbol func_ov060_02118728
-void func_ov060_02118728(daKirai_c *self)
+// @symbol _ZN9daKirai_c19func_ov060_02118728Ev
+void daKirai_c::func_ov060_02118728()
 {
     Vector3 v;
     Player *player;
@@ -158,8 +157,8 @@ void func_ov060_02118728(daKirai_c *self)
     int best;
     int i;
 
-    player = self->ClosestPlayer();
-    if (((self->mFlags & 8) ? 1 : 0) == 0) return;
+    player = ClosestPlayer();
+    if (((mFlags & 8) ? 1 : 0) == 0) return;
     if (player == 0) return;
 
     {
@@ -168,11 +167,11 @@ void func_ov060_02118728(daKirai_c *self)
         v.y = pp->y;
         v.z = pp->z;
     }
-    best = Vec3_Dist((Vector3 *)&self->mPosX, &v);
-    bestActor = self;
+    best = Vec3_Dist((Vector3 *)&mPosX, &v);
+    bestActor = this;
 
     for (i = 0; i < 8; i++) {
-        int id = self->mOtherBombIDs[i];
+        int id = mOtherBombIDs[i];
         if (id == 0) continue;
         actor = (daKirai_c *)dActor_c::FindWithID(id);
         if (actor != 0) {
@@ -186,75 +185,74 @@ void func_ov060_02118728(daKirai_c *self)
                 }
             }
         } else {
-            self->mOtherBombIDs[i] = 0;
+            mOtherBombIDs[i] = 0;
         }
     }
-    func_ov060_021186d8(bestActor);
+    bestActor->func_ov060_021186d8();
 }
 #pragma opt_common_subs on
 #pragma opt_strength_reduction on
 
 /* Exploding: swell, fade and rise for 0x1c frames, then disarm. */
-// @symbol func_ov060_02118834
-void func_ov060_02118834(daKirai_c *self)
+// @symbol _ZN9daKirai_c19func_ov060_02118834Ev
+void daKirai_c::func_ov060_02118834()
 {
-    int scale = (self->mTimer * 9 << 12) / 14 + 0x1000;
-    self->mScaleX = scale;
-    self->mScaleY = scale;
-    self->mScaleZ = scale;
-    self->mOpacity -= 0xa;
-    if (self->mOpacity < 0xa) self->mOpacity = 0;
-    self->mPosY += self->mVertSpeed;
-    if (self->mTimer == 0x1c) func_ov060_021184bc(self);
-    self->mTimer++;
+    int scale = (mTimer * 9 << 12) / 14 + 0x1000;
+    mScaleX = scale;
+    mScaleY = scale;
+    mScaleZ = scale;
+    mOpacity -= 0xa;
+    if (mOpacity < 0xa) mOpacity = 0;
+    mPosY += mVertSpeed;
+    if (mTimer == 0x1c) func_ov060_021184bc();
+    mTimer++;
 }
 
 /* Swell for 0x1c frames without colliding, then disarm. */
-// @symbol func_ov060_021188e8
-void func_ov060_021188e8(daKirai_c *self)
+// @symbol _ZN9daKirai_c19func_ov060_021188e8Ev
+void daKirai_c::func_ov060_021188e8()
 {
     int scale;
-    self->mdCcAcPos_c.flags |= 1;
-    scale = (self->mTimer * 9 << 12) / 14 + 0x1000;
-    self->mScaleX = scale;
-    self->mScaleY = scale;
-    self->mScaleZ = scale;
-    if (self->mTimer == 0x1c)
-        func_ov060_021184bc(self);
-    self->mTimer++;
+    mdCcAcPos_c.flags |= 1;
+    scale = (mTimer * 9 << 12) / 14 + 0x1000;
+    mScaleX = scale;
+    mScaleY = scale;
+    mScaleZ = scale;
+    if (mTimer == 0x1c)
+        func_ov060_021184bc();
+    mTimer++;
 }
 
 /* Armed: if the thing that touched us is a player (actor 0xbf), blow up in
    its face. */
-// @symbol func_ov060_02118970
-void func_ov060_02118970(daKirai_c *self)
+// @symbol _ZN9daKirai_c19func_ov060_02118970Ev
+void daKirai_c::func_ov060_02118970()
 {
     dActor_c *a;
     Vector3 quakePos, hurtPos;
     int isPlayer; /* int, not bool: measured, a bool local misses */
     unsigned int id;
-    id = self->mdCcAcPos_c.otherOwner;
+    id = mdCcAcPos_c.otherOwner;
     if (id == 0) return;
     a = dActor_c::FindWithID(id);
     if (a == 0) return;
     isPlayer = (a->actorID == 0xbf);
     if (!isPlayer) return;
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xa8, self->mPosX, self->mPosY, self->mPosZ);
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xa9, self->mPosX, self->mPosY, self->mPosZ);
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xaa, self->mPosX, self->mPosY, self->mPosZ);
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xab, self->mPosX, self->mPosY, self->mPosZ);
-    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xac, self->mPosX, self->mPosY, self->mPosZ);
-    func_02012694(0x2f, &self->mCamSpacePosX);
-    quakePos.x = self->mPosX;
-    quakePos.y = self->mPosY;
-    quakePos.z = self->mPosZ;
-    _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(self, &quakePos, 0x7d0000);
-    hurtPos.x = self->mPosX;
-    hurtPos.y = self->mPosY;
-    hurtPos.z = self->mPosZ;
+    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xa8, mPosX, mPosY, mPosZ);
+    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xa9, mPosX, mPosY, mPosZ);
+    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xaa, mPosX, mPosY, mPosZ);
+    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xab, mPosX, mPosY, mPosZ);
+    _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xac, mPosX, mPosY, mPosZ);
+    func_02012694(0x2f, &mCamSpacePosX);
+    quakePos.x = mPosX;
+    quakePos.y = mPosY;
+    quakePos.z = mPosZ;
+    _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(this, &quakePos, 0x7d0000);
+    hurtPos.x = mPosX;
+    hurtPos.y = mPosY;
+    hurtPos.z = mPosZ;
     _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(a, &hurtPos, 2, 0xc000, 1, 0, 1);
-    func_ov060_021184bc(self);
-}
+    func_ov060_021184bc();
 }
 
 // @symbol _ZN9daKirai_c16CleanupResourcesEv
@@ -277,7 +275,7 @@ int daKirai_c::Render()
 int daKirai_c::Behavior()
 {
     (this->*((KiraiState *)data_ov060_0211b1d8)[mStateIndex])();
-    func_ov060_02118690(this);
+    func_ov060_02118690();
     mdCcAcPos_c.Clear();
     Vector3 v;
     v.x = 0;
