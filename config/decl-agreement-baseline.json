@@ -9350,8 +9350,7 @@
       ],
       "src/actors/daObjCtMecha04_c.cpp": [
         "param:#4 void *",
-        "param:#5 unsigned int",
-        "return:void *"
+        "param:#5 unsigned int"
       ],
       "src/actors/daObjSlIceBlock_c.cpp": [
         "param:#4 void *",
@@ -22600,6 +22599,11 @@
         "return:short []"
       ]
     },
+    "data_ov065_0211d16c": {
+      "src/actors/daObjCtMecha04_c.cpp": [
+        "return:BTA_File * []"
+      ]
+    },
     "data_ov065_0211d35c": {
       "src/actors/daObjCtKaitendai_c.cpp": [
         "return:KaitendaiResources []"
@@ -28860,6 +28864,9 @@
       "src/func_02038234.c": [
         "param:#1 int",
         "return:void (*)(int, int, int)"
+      ],
+      "src/actors/daObjCtMecha04_c.cpp": [
+        "param:#1 dBgW *"
       ]
     },
     "func_020393c4": {
@@ -28884,6 +28891,7 @@
         "param:#2 void *"
       ],
       "src/actors/daObjCtMecha04_c.cpp": [
+        "param:#1 dBgW *",
         "param:#2 void *"
       ],
       "src/actors/daObjGuragura_c.cpp": [
@@ -36742,11 +36750,6 @@
     "func_ov064_02117fb4": {
       "src/func_ov064_02117fd4.c": [
         "return:int"
-      ]
-    },
-    "func_ov064_021187ec": {
-      "include/decl_common.h": [
-        "param:#1 char *"
       ]
     },
     "func_ov064_0211929c": {
