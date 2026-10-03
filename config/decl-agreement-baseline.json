@@ -5970,7 +5970,7 @@
       "src/_ZN17daObjFl_Amilift_c13InitResourcesEv.cpp": [
         "param:#3 Matrix4x3 *"
       ],
-      "src/_ZN17BowserPuzzlePiece13InitResourcesEv.cpp": [
+      "src/actors/daObjFl_Coin_c.cpp": [
         "param:#3 const Matrix4x3 &",
         "param:#6 CLPS_Block &"
       ],
@@ -6099,9 +6099,6 @@
       "src/actors/daObjBlockS_c.cpp": [
         "param:#2 Matrix4x3 &",
         "return:int"
-      ],
-      "src/func_ov064_02118fa4.cpp": [
-        "param:#2 const Matrix4x3 &"
       ],
       "src/func_ov065_02118838.cpp": [
         "param:#2 const Matrix4x3 *"
@@ -8900,7 +8897,7 @@
       "src/_ZN12daKuriKing_c13InitResourcesEv.cpp": [
         "param:#1 void *"
       ],
-      "src/_ZN17BowserPuzzlePiece13InitResourcesEv.cpp": [
+      "src/actors/daObjFl_Coin_c.cpp": [
         "return:BMD_File *"
       ],
       "src/_ZN5Stage13InitResourcesEv.cpp": [
@@ -9620,7 +9617,7 @@
       "src/actors/daObjSwdoor_c.cpp": [
         "param:#2 const Vector3 *"
       ],
-      "src/func_ov064_02118e24.cpp": [
+      "src/actors/daObjFl_Coin_c.cpp": [
         "param:#2 const Vector3 *"
       ],
       "src/actors/daCoin_c.cpp": [
@@ -11234,7 +11231,7 @@
       "src/_ZN17daObjFl_Amilift_c13InitResourcesEv.cpp": [
         "return:KCL_File *"
       ],
-      "src/_ZN17BowserPuzzlePiece13InitResourcesEv.cpp": [
+      "src/actors/daObjFl_Coin_c.cpp": [
         "return:KCL_File *"
       ],
       "src/func_ov002_020b5e58.cpp": [
@@ -12017,7 +12014,7 @@
       "src/_ZN12daStarBase_c8BehaviorEv.cpp": [
         "return:char *"
       ],
-      "src/_ZN17BowserPuzzlePiece8BehaviorEv.cpp": [
+      "src/actors/daObjFl_Coin_c.cpp": [
         "return:char *"
       ],
       "src/_ZN8daStar_c13InitResourcesEv.cpp": [
@@ -12123,12 +12120,6 @@
         "return:void *"
       ],
       "src/actors/daKirai_c.cpp": [
-        "return:char *"
-      ],
-      "src/func_ov064_02118c48.c": [
-        "return:char *"
-      ],
-      "src/func_ov064_02118d3c.c": [
         "return:char *"
       ],
       "src/actors/daSnowman_c.cpp": [
@@ -12404,7 +12395,7 @@
         "param:#2 char *",
         "return:char *"
       ],
-      "src/func_ov064_02118da0.cpp": [
+      "src/actors/daObjFl_Coin_c.cpp": [
         "return:char *"
       ],
       "src/actors/daFPknBall_c.cpp": [
@@ -12817,7 +12808,7 @@
         "param:#6 int",
         "return:char *"
       ],
-      "src/func_ov064_02118c48.c": [
+      "src/actors/daObjFl_Coin_c.cpp": [
         "param:#3 const Vector3 *",
         "param:#5 int",
         "param:#6 int",
@@ -13365,7 +13356,7 @@
       "src/actors/daKing_Donketu_c.cpp": [
         "return:void"
       ],
-      "src/_ZN17BowserPuzzlePiece13InitResourcesEv.cpp": [
+      "src/actors/daObjFl_Coin_c.cpp": [
         "return:void"
       ],
       "src/_ZN17dMg3DEspAnimSet_c13InitResourcesEv.cpp": [
@@ -22624,11 +22615,6 @@
         "return:ResourceDescriptor"
       ]
     },
-    "data_ov064_0211adc8": {
-      "src/_ZN17BowserPuzzlePiece16CleanupResourcesEv.cpp": [
-        "return:void * []"
-      ]
-    },
     "data_ov064_0211ba4c": {
       "src/game/actors/d_a_obj_fm_battan.cpp": [
         "return:char []"
@@ -22662,15 +22648,12 @@
       ]
     },
     "data_ov064_0211c800": {
-      "src/_ZN17BowserPuzzlePiece13InitResourcesEv.cpp": [
+      "src/actors/daObjFl_Coin_c.cpp": [
         "return:SharedFilePtr"
-      ],
-      "src/_ZN17BowserPuzzlePiece16CleanupResourcesEv.cpp": [
-        "return:void *"
       ]
     },
     "data_ov064_0211c904": {
-      "src/_ZN17BowserPuzzlePiece8BehaviorEv.cpp": [
+      "src/actors/daObjFl_Coin_c.cpp": [
         "return:Entry []"
       ]
     },

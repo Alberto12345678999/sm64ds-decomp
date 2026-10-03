@@ -7719,6 +7719,27 @@
     "src/actors/unit020cd744.cpp#func_ov006_020d0c38": "tangosdev",
     "src/actors/unit020cd744.cpp#func_ov006_020d0fe4": "ruspecial",
     "src/actors/unit020cd744.cpp#func_ov006_020d1008": "tangosdev",
-    "src/actors/unit020cd744.cpp#func_ov006_020d100c": "tangosdev"
+    "src/actors/unit020cd744.cpp#func_ov006_020d100c": "tangosdev",
+    "src/actors/daObjFl_Coin_c.cpp#_ZN16daObjFl_Puzzle_cD1Ev": "tangosdev",
+    "src/actors/daObjFl_Coin_c.cpp#_ZN16daObjFl_Puzzle_cD0Ev": "tangosdev",
+    "src/actors/daObjFl_Coin_c.cpp#_ZN14daObjFl_Coin_cD1Ev": "andrewboudreau",
+    "src/actors/daObjFl_Coin_c.cpp#_ZN14daObjFl_Coin_cD0Ev": "tangosdev",
+    "src/actors/daObjFl_Coin_c.cpp#_ZN16daObjFl_Puzzle_c19func_ov064_02118c48Ev": "ruspecial",
+    "src/actors/daObjFl_Coin_c.cpp#_ZN16daObjFl_Puzzle_c19func_ov064_02118cd4Ev": "ruspecial",
+    "src/actors/daObjFl_Coin_c.cpp#_ZN16daObjFl_Puzzle_c19func_ov064_02118cecEv": "ruspecial",
+    "src/actors/daObjFl_Coin_c.cpp#_ZN16daObjFl_Puzzle_c19func_ov064_02118d08Ev": "ruspecial",
+    "src/actors/daObjFl_Coin_c.cpp#_ZN16daObjFl_Puzzle_c19func_ov064_02118d20Ev": "ruspecial",
+    "src/actors/daObjFl_Coin_c.cpp#_ZN16daObjFl_Puzzle_c19func_ov064_02118d3cEv": "tangosdev",
+    "src/actors/daObjFl_Coin_c.cpp#_ZN16daObjFl_Puzzle_c19func_ov064_02118da0Ev": "tangosdev",
+    "src/actors/daObjFl_Coin_c.cpp#_ZN16daObjFl_Puzzle_c19func_ov064_02118e24Eiii": "tangosdev",
+    "src/actors/daObjFl_Coin_c.cpp#_ZN16daObjFl_Puzzle_c19func_ov064_02118ee4Ev": "lunavyqo",
+    "src/actors/daObjFl_Coin_c.cpp#_ZN16daObjFl_Puzzle_c19func_ov064_02118fa4Ev": "tangosdev",
+    "src/actors/daObjFl_Coin_c.cpp#_ZN16daObjFl_Puzzle_c19func_ov064_02119010Ev": "tangosdev",
+    "src/actors/daObjFl_Coin_c.cpp#_ZN16daObjFl_Puzzle_c16CleanupResourcesEv": "tangosdev",
+    "src/actors/daObjFl_Coin_c.cpp#_ZN16daObjFl_Puzzle_c6RenderEv": "tangosdev",
+    "src/actors/daObjFl_Coin_c.cpp#_ZN16daObjFl_Puzzle_c8BehaviorEv": "tangosdev",
+    "src/actors/daObjFl_Coin_c.cpp#_ZN14daObjFl_Coin_c8BehaviorEv": "ruspecial",
+    "src/actors/daObjFl_Coin_c.cpp#_ZN16daObjFl_Puzzle_c13InitResourcesEv": "tangosdev",
+    "src/actors/daObjFl_Coin_c.cpp#_ZN14daObjFl_Coin_c13InitResourcesEv": "tangosdev"
   }
 }
