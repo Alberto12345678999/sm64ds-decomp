@@ -16,6 +16,11 @@
       "name": ".text",
       "start": "0x020b0f54",
       "end": "0x020b2ba0"
+    },
+    {
+      "name": ".data",
+      "start": "0x02108778",
+      "end": "0x02108868"
     }
   ],
   "functions": [
@@ -34,77 +39,77 @@
       "ordinal": 1
     },
     {
-      "symbol": "func_ov002_020b1008",
+      "symbol": "_ZN8daCoin_c19func_ov002_020b1008Ev",
       "address": "0x020b1008",
       "size": "0x00000098",
       "legacy_source": "src/func_ov002_020b1008.c",
       "ordinal": 2
     },
     {
-      "symbol": "func_ov002_020b10a0",
+      "symbol": "_ZN8daCoin_c19func_ov002_020b10a0Ev",
       "address": "0x020b10a0",
       "size": "0x00000044",
       "legacy_source": "src/func_ov002_020b10a0.c",
       "ordinal": 3
     },
     {
-      "symbol": "func_ov002_020b10e4",
+      "symbol": "_ZN8daCoin_c19func_ov002_020b10e4Ev",
       "address": "0x020b10e4",
       "size": "0x00000208",
       "legacy_source": "src/func_ov002_020b10e4.c",
       "ordinal": 4
     },
     {
-      "symbol": "func_ov002_020b12ec",
+      "symbol": "_ZN8daCoin_c19func_ov002_020b12ecEv",
       "address": "0x020b12ec",
       "size": "0x0000003c",
       "legacy_source": "src/func_ov002_020b12ec.c",
       "ordinal": 5
     },
     {
-      "symbol": "func_ov002_020b1328",
+      "symbol": "_ZN8daCoin_c19func_ov002_020b1328Ev",
       "address": "0x020b1328",
       "size": "0x0000005c",
       "legacy_source": "src/func_ov002_020b1328.c",
       "ordinal": 6
     },
     {
-      "symbol": "func_ov002_020b1384",
+      "symbol": "_ZN8daCoin_c19func_ov002_020b1384Ev",
       "address": "0x020b1384",
       "size": "0x0000005c",
       "legacy_source": "src/func_ov002_020b1384.cpp",
       "ordinal": 7
     },
     {
-      "symbol": "func_ov002_020b13e0",
+      "symbol": "_ZN8daCoin_c19func_ov002_020b13e0Ev",
       "address": "0x020b13e0",
       "size": "0x000000f8",
       "legacy_source": "src/func_ov002_020b13e0.cpp",
       "ordinal": 8
     },
     {
-      "symbol": "func_ov002_020b14d8",
+      "symbol": "_ZN8daCoin_c19func_ov002_020b14d8Ev",
       "address": "0x020b14d8",
       "size": "0x0000019c",
       "legacy_source": "src/func_ov002_020b14d8.c",
       "ordinal": 9
     },
     {
-      "symbol": "func_ov002_020b1674",
+      "symbol": "_ZN8daCoin_c19func_ov002_020b1674EP6Player",
       "address": "0x020b1674",
       "size": "0x00000050",
       "legacy_source": "src/func_ov002_020b1674.cpp",
       "ordinal": 10
     },
     {
-      "symbol": "func_ov002_020b16c4",
+      "symbol": "_ZN8daCoin_c19func_ov002_020b16c4EP6Player",
       "address": "0x020b16c4",
       "size": "0x000001c0",
       "legacy_source": "src/func_ov002_020b16c4.c",
       "ordinal": 11
     },
     {
-      "symbol": "func_ov002_020b1884",
+      "symbol": "_ZN8daCoin_c19func_ov002_020b1884EP6Player",
       "address": "0x020b1884",
       "size": "0x0000006c",
       "legacy_source": "src/func_ov002_020b1884.c",
@@ -118,56 +123,56 @@
       "ordinal": 13
     },
     {
-      "symbol": "func_ov002_020b19dc",
+      "symbol": "_ZN8daCoin_c19func_ov002_020b19dcEv",
       "address": "0x020b19dc",
       "size": "0x00000084",
       "legacy_source": "src/func_ov002_020b19dc.c",
       "ordinal": 14
     },
     {
-      "symbol": "func_ov002_020b1a60",
+      "symbol": "_ZN8daCoin_c19func_ov002_020b1a60Ev",
       "address": "0x020b1a60",
       "size": "0x00000074",
       "legacy_source": "src/func_ov002_020b1a60.c",
       "ordinal": 15
     },
     {
-      "symbol": "func_ov002_020b1ad4",
+      "symbol": "_ZN8daCoin_c19func_ov002_020b1ad4Ev",
       "address": "0x020b1ad4",
       "size": "0x00000128",
       "legacy_source": "src/func_ov002_020b1ad4.c",
       "ordinal": 16
     },
     {
-      "symbol": "func_ov002_020b1bfc",
+      "symbol": "_ZN8daCoin_c19func_ov002_020b1bfcEv",
       "address": "0x020b1bfc",
       "size": "0x000000c4",
       "legacy_source": "src/func_ov002_020b1bfc.cpp",
       "ordinal": 17
     },
     {
-      "symbol": "func_ov002_020b1cc0",
+      "symbol": "_ZN8daCoin_c19func_ov002_020b1cc0Ev",
       "address": "0x020b1cc0",
       "size": "0x000003b0",
       "legacy_source": "src/func_ov002_020b1cc0.c",
       "ordinal": 18
     },
     {
-      "symbol": "func_ov002_020b2070",
+      "symbol": "_ZN8daCoin_c19func_ov002_020b2070Ev",
       "address": "0x020b2070",
       "size": "0x00000044",
       "legacy_source": "src/func_ov002_020b2070.cpp",
       "ordinal": 19
     },
     {
-      "symbol": "func_ov002_020b20b4",
+      "symbol": "_ZN8daCoin_c19func_ov002_020b20b4Ev",
       "address": "0x020b20b4",
       "size": "0x0000009c",
       "legacy_source": "src/func_ov002_020b20b4.cpp",
       "ordinal": 20
     },
     {
-      "symbol": "func_ov002_020b2150",
+      "symbol": "_ZN8daCoin_c19func_ov002_020b2150Ev",
       "address": "0x020b2150",
       "size": "0x00000048",
       "legacy_source": "src/func_ov002_020b2150.cpp",
@@ -237,7 +242,46 @@
       "ordinal": 30
     }
   ],
-  "data": [],
+  "data": [
+    {
+      "symbol": "_ZTS8daCoin_c",
+      "address": "0x02108778",
+      "size": "0x0000000a",
+      "evidence": ""
+    },
+    {
+      "symbol": "_ZTI8daCoin_c",
+      "address": "0x02108784",
+      "size": "0x0000000c",
+      "evidence": ""
+    },
+    {
+      "symbol": "g_profile_COIN",
+      "address": "0x02108790",
+      "size": "0x0000001c",
+      "evidence": ""
+    },
+    {
+      "symbol": "g_profile_RED_COIN",
+      "address": "0x021087ac",
+      "size": "0x0000001c",
+      "evidence": ""
+    },
+    {
+      "symbol": "g_profile_BLUE_COIN",
+      "address": "0x021087c8",
+      "size": "0x0000001c",
+      "evidence": ""
+    },
+    {
+      "symbol": "_ZTV8daCoin_c",
+      "address": "0x021087ec",
+      "size": "0x00000084",
+      "emitted_storage_address": "0x021087e4",
+      "address_point_bias": "0x8",
+      "evidence": ""
+    }
+  ],
   "bss": [],
   "notes": [
     "Generated by tools/tubuild.py create. See the file's own header comment for what was and was not reconciled, and notes/translation-unit-reconstruction-plan.md section 7.3 for what this generator does and does not attempt to resolve automatically.",
@@ -323,29 +367,391 @@
       "canonical_module": "arm9",
       "canonical_address": "0x0208e390",
       "reason": "Typeinfo for dActor_c. ROM home arm9:0x0208e390."
-    },
-    {
-      "symbol": "_ZTS8daCoin_c",
-      "disposition": "deadstrip-data",
-      "canonical_module": "ov002",
-      "canonical_address": "0x02108778",
-      "reason": "This class type-name string. ov002:0x02108778 holds 8daCoin_c."
-    },
-    {
-      "symbol": "_ZTI8daCoin_c",
-      "disposition": "deadstrip-data",
-      "canonical_module": "ov002",
-      "canonical_address": "0x02108784",
-      "reason": "This class typeinfo. ROM home ov002:0x02108784."
-    },
-    {
-      "symbol": "_ZTV8daCoin_c",
-      "disposition": "deadstrip-data",
-      "canonical_module": "ov002",
-      "canonical_address": "0x021087ec",
-      "reason": "Vtable for the key function. ROM home ov002:0x021087ec is the address point; the object also holds the 8-byte RTTI preamble. Production isolation rebinds references and discards this copy."
     }
   ],
+  "relocations": [
+    {
+      "section": ".data",
+      "source": "0x02108784",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZTVN3abi20__si_class_type_infoE",
+      "addend": 8,
+      "target_module": "arm9",
+      "target_address": "0x0209a764"
+    },
+    {
+      "section": ".data",
+      "source": "0x02108788",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZTS8daCoin_c",
+      "addend": 0,
+      "target_module": "ov002",
+      "target_address": "0x02108778"
+    },
+    {
+      "section": ".data",
+      "source": "0x0210878c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZTI8dActor_c",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x0208e390"
+    },
+    {
+      "section": ".data",
+      "source": "0x02108790",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "daCoin_c_classInit_COIN",
+      "addend": 0,
+      "target_module": "ov002",
+      "target_address": "0x020b2b48"
+    },
+    {
+      "section": ".data",
+      "source": "0x021087ac",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "daCoin_c_classInit_RED_COIN",
+      "addend": 0,
+      "target_module": "ov002",
+      "target_address": "0x020b2af0"
+    },
+    {
+      "section": ".data",
+      "source": "0x021087c8",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "daCoin_c_classInit_BLUE_COIN",
+      "addend": 0,
+      "target_module": "ov002",
+      "target_address": "0x020b2a98"
+    },
+    {
+      "section": ".data",
+      "source": "0x021087e8",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZTI8daCoin_c",
+      "addend": 0,
+      "target_module": "ov002",
+      "target_address": "0x02108784"
+    },
+    {
+      "section": ".data",
+      "source": "0x021087ec",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8daCoin_c13InitResourcesEv",
+      "addend": 0,
+      "target_module": "ov002",
+      "target_address": "0x020b2508"
+    },
+    {
+      "section": ".data",
+      "source": "0x021087f0",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dActor_c19BeforeInitResourcesEv",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x02011268"
+    },
+    {
+      "section": ".data",
+      "source": "0x021087f4",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dActor_c18AfterInitResourcesEj",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x02011244"
+    },
+    {
+      "section": ".data",
+      "source": "0x021087f8",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8daCoin_c16CleanupResourcesEv",
+      "addend": 0,
+      "target_module": "ov002",
+      "target_address": "0x020b2198"
+    },
+    {
+      "section": ".data",
+      "source": "0x021087fc",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dActor_c22BeforeCleanupResourcesEv",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x02011220"
+    },
+    {
+      "section": ".data",
+      "source": "0x02108800",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dActor_c21AfterCleanupResourcesEj",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x02011214"
+    },
+    {
+      "section": ".data",
+      "source": "0x02108804",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8daCoin_c8BehaviorEv",
+      "addend": 0,
+      "target_module": "ov002",
+      "target_address": "0x020b2324"
+    },
+    {
+      "section": ".data",
+      "source": "0x02108808",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dActor_c14BeforeBehaviorEv",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x02010fd4"
+    },
+    {
+      "section": ".data",
+      "source": "0x0210880c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dActor_c13AfterBehaviorEj",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x02010fc8"
+    },
+    {
+      "section": ".data",
+      "source": "0x02108810",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8daCoin_c6RenderEv",
+      "addend": 0,
+      "target_module": "ov002",
+      "target_address": "0x020b2284"
+    },
+    {
+      "section": ".data",
+      "source": "0x02108814",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dActor_c12BeforeRenderEv",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x02010f78"
+    },
+    {
+      "section": ".data",
+      "source": "0x02108818",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dActor_c11AfterRenderEj",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x02010f6c"
+    },
+    {
+      "section": ".data",
+      "source": "0x0210881c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN7fBase_c16OnPendingDestroyEv",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x02043ac0"
+    },
+    {
+      "section": ".data",
+      "source": "0x02108820",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN7fBase_c9Virtual34Ejj",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x0204357c"
+    },
+    {
+      "section": ".data",
+      "source": "0x02108824",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN7fBase_c9Virtual38Ejj",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x0204349c"
+    },
+    {
+      "section": ".data",
+      "source": "0x02108828",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN7fBase_c13OnHeapCreatedEv",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x02043494"
+    },
+    {
+      "section": ".data",
+      "source": "0x0210882c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8daCoin_cD1Ev",
+      "addend": 0,
+      "target_module": "ov002",
+      "target_address": "0x020b0f54"
+    },
+    {
+      "section": ".data",
+      "source": "0x02108830",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8daCoin_cD0Ev",
+      "addend": 0,
+      "target_module": "ov002",
+      "target_address": "0x020b0fa4"
+    },
+    {
+      "section": ".data",
+      "source": "0x02108834",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8daCoin_c13OnYoshiTryEatEv",
+      "addend": 0,
+      "target_module": "ov002",
+      "target_address": "0x020b2a90"
+    },
+    {
+      "section": ".data",
+      "source": "0x02108838",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8daCoin_c13OnTurnIntoEggER6Player",
+      "addend": 0,
+      "target_module": "ov002",
+      "target_address": "0x020b2a34"
+    },
+    {
+      "section": ".data",
+      "source": "0x0210883c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dActor_c9Virtual50Ev",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x0201014c"
+    },
+    {
+      "section": ".data",
+      "source": "0x02108840",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dActor_c15OnGroundPoundedERS_",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x02010148"
+    },
+    {
+      "section": ".data",
+      "source": "0x02108844",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dActor_c11OnAttacked1ERS_",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x02010144"
+    },
+    {
+      "section": ".data",
+      "source": "0x02108848",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dActor_c11OnAttacked2ERS_",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x02010140"
+    },
+    {
+      "section": ".data",
+      "source": "0x0210884c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dActor_c8OnKickedERS_",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x0201013c"
+    },
+    {
+      "section": ".data",
+      "source": "0x02108850",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dActor_c8OnPushedERS_",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x02010138"
+    },
+    {
+      "section": ".data",
+      "source": "0x02108854",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dActor_c24OnHitByCannonBlastedCharERS_",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x02010134"
+    },
+    {
+      "section": ".data",
+      "source": "0x02108858",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dActor_c15OnHitByMegaCharER6Player",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x02010130"
+    },
+    {
+      "section": ".data",
+      "source": "0x0210885c",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dActor_c19OnHitFromUnderneathERS_",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x0201012c"
+    },
+    {
+      "section": ".data",
+      "source": "0x02108860",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dActor_c16OnAimedAtWithEggEv",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x02010124"
+    },
+    {
+      "section": ".data",
+      "source": "0x02108864",
+      "type": "R_ARM_ABS32",
+      "kind": "load",
+      "symbol": "_ZN8dActor_c25OnAimedAtWithEggReturnVecEv",
+      "addend": 0,
+      "target_module": "arm9",
+      "target_address": "0x020100dc"
+    }
+  ],
+  "production_mode": "intact-object",
   "verification": {
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
     "toolchain": "tools/mwccarm/2004/b56/mwccarm.exe",
@@ -367,20 +773,15 @@
         9,
         10,
         17,
-        68,
-        69,
-        70,
-        71,
-        72,
-        73,
-        74,
-        75,
-        76,
-        77,
-        78,
         79,
         80,
-        81
+        81,
+        82,
+        83,
+        84,
+        85,
+        86,
+        87
       ],
       "data": [
         "_ZTS7fBase_c",
@@ -388,21 +789,15 @@
         "_ZTS7dBase_c",
         "_ZTI7dBase_c",
         "_ZTS8dActor_c",
-        "_ZTI8dActor_c",
-        "_ZTS8daCoin_c",
-        "_ZTI8daCoin_c",
-        "_ZTV8daCoin_c"
+        "_ZTI8dActor_c"
       ],
       "dataExternalized": [
         "_ZTI7dBase_c",
         "_ZTI7fBase_c",
         "_ZTI8dActor_c",
-        "_ZTI8daCoin_c",
         "_ZTS7dBase_c",
         "_ZTS7fBase_c",
-        "_ZTS8dActor_c",
-        "_ZTS8daCoin_c",
-        "_ZTV8daCoin_c"
+        "_ZTS8dActor_c"
       ]
     },
     "criteria": {
@@ -411,6 +806,140 @@
       "declared_function_set_equals_defined_function_set": "PASS",
       "functions_occur_in_expected_order": "PASS",
       "relocation_destinations_verified": "PASS"
+    },
+    "linkcheck": {
+      "round": "tools/tubuild.py linkcheck -- scratch dsd delink+lcf, whole-tree mwccarm, mwldarm link, linked-range and module byte comparison, dsd check symbols --fail, full ROM build",
+      "result": "scratch-data-verified",
+      "scratch": "build/tu/ov002-daCoin_c/link (gitignored)",
+      "phases": {
+        "delink": true,
+        "lcf": true,
+        "compile": true,
+        "link": true,
+        "checkModules": true,
+        "checkSymbols": false,
+        "rom": true
+      },
+      "tuRange": {
+        "start": "0x020b0f54",
+        "end": "0x020b2ba0",
+        "differingBytes": 0,
+        "firstDiff": null
+      },
+      "tuRanges": [
+        {
+          "section": ".text",
+          "start": "0x020b0f54",
+          "end": "0x020b2ba0",
+          "differingBytes": 0,
+          "firstDiff": null
+        },
+        {
+          "section": ".data",
+          "start": "0x02108778",
+          "end": "0x02108868",
+          "differingBytes": 0,
+          "firstDiff": null
+        }
+      ],
+      "objectAudit": {
+        "counts": {
+          "LICENSED": 37
+        },
+        "emittedTextOrderIsRomAscending": true,
+        "nonLicensedSymbols": [],
+        "unlicensedSections": []
+      },
+      "nontextSectionOrder": {
+        "groups": [
+          {
+            "section": ".data",
+            "original": [
+              68,
+              70,
+              72,
+              74,
+              76,
+              77
+            ],
+            "desired": [
+              76,
+              77,
+              68,
+              70,
+              72,
+              74
+            ]
+          }
+        ],
+        "objisolate": {
+          "reordered": [
+            {
+              "section": ".data",
+              "original": [
+                68,
+                70,
+                72,
+                74,
+                76,
+                77
+              ],
+              "desired": [
+                76,
+                77,
+                68,
+                70,
+                72,
+                74
+              ],
+              "slots": [
+                68,
+                70,
+                72,
+                74,
+                76,
+                77
+              ]
+            }
+          ],
+          "symbolIndices": 6,
+          "sectionLinks": 0,
+          "sectionInfos": 5,
+          "error": null
+        },
+        "errors": null
+      },
+      "linkedStorageAliases": null,
+      "symbolCheckNewVsBaseline": [],
+      "symbolCheckErrors": [
+        "[ERROR] Symbol '_deq' in ITCM at 0x01ff9d40 not found in linked binary",
+        "[ERROR] Symbol 'data_020ad524' in ARM9 main at 0x020ad524 not found in linked binary",
+        "[ERROR] Symbol 'data_020ad560' in ARM9 main at 0x020ad560 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff98f4' in ITCM at 0x01ff98f4 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff99a4' in ITCM at 0x01ff99a4 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff9d40' in ITCM at 0x01ff9d40 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff9e2c' in ITCM at 0x01ff9e2c not found in linked binary",
+        "[ERROR] Symbol 'overlay_100' in ARM9 main at 0x00000064 not found in linked binary",
+        "[ERROR] Symbol 'overlay_102' in ARM9 main at 0x00000066 not found in linked binary"
+      ],
+      "symbolCheckBaselineErrors": [
+        "[ERROR] Symbol '_deq' in ITCM at 0x01ff9d40 not found in linked binary",
+        "[ERROR] Symbol 'data_020ad524' in ARM9 main at 0x020ad524 not found in linked binary",
+        "[ERROR] Symbol 'data_020ad560' in ARM9 main at 0x020ad560 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff98f4' in ITCM at 0x01ff98f4 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff99a4' in ITCM at 0x01ff99a4 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff9d40' in ITCM at 0x01ff9d40 not found in linked binary",
+        "[ERROR] Symbol 'func_01ff9e2c' in ITCM at 0x01ff9e2c not found in linked binary",
+        "[ERROR] Symbol 'overlay_100' in ARM9 main at 0x00000064 not found in linked binary",
+        "[ERROR] Symbol 'overlay_102' in ARM9 main at 0x00000066 not found in linked binary"
+      ],
+      "moduleSetSha256": "f9852ffaf80ef19662ab5535df4b13b935188ac3087b5b1d4561c089e4dd802b",
+      "rom": {
+        "bytes": 16777216,
+        "sha256": "ddab9300b24aeae254192c2a30d812b07ece3adff83230e75c865ed915c9de40",
+        "matchesStockRom": true
+      },
+      "linkerOutput": null
     }
   }
 }
