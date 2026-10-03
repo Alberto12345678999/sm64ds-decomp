@@ -43173,11 +43173,11 @@ matched: yes</title></rect><rect x="1324.72" y="843.82" width="5.39" height="7.9
 module: ov091
 addr: 0x02133440
 size: 88 bytes
-matched: yes</title></rect><rect x="1330.11" y="843.82" width="1.96" height="7.94" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov091_02133498
+matched: yes</title></rect><rect x="1330.11" y="843.82" width="1.96" height="7.94" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11daObjPile_c19func_ov091_02133498Ev
 module: ov091
 addr: 0x02133498
 size: 32 bytes
-matched: yes</title></rect><rect x="1332.08" y="843.82" width="17.41" height="7.94" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov091_021334b8
+matched: yes</title></rect><rect x="1332.08" y="843.82" width="17.41" height="7.94" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11daObjPile_c19func_ov091_021334b8Ei
 module: ov091
 addr: 0x021334b8
 size: 284 bytes
