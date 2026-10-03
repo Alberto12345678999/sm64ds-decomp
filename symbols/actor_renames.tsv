@@ -2732,6 +2732,10 @@ ov085	0x021303dc	WallSign_SpawnInfo	g_profile_KANBAN	reconstructed profile globa
 ov085	0x02130400	data_ov085_02130400	_ZTV13daObjKanban_c	vtable alloc=0x368 (was _ZTV8WallSign)
 ov089	0x02130f00	func_ov089_02130f00	_ZN10daObjKey_cD1Ev	vtable slot 16
 ov089	0x02130f50	func_ov089_02130f50	_ZN10daObjKey_cD0Ev	vtable slot 17
+ov089	0x02130fb4	func_ov089_02130fb4	_ZN10daObjKey_c19func_ov089_02130fb4EPii	daObjKey_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov089	0x0213115c	func_ov089_0213115c	_ZN10daObjKey_c19func_ov089_0213115cEi	daObjKey_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov089	0x02131dcc	func_ov089_02131dcc	_ZN10daObjKey_c19func_ov089_02131dccEPc	daObjKey_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov089	0x02131df4	func_ov089_02131df4	_ZN10daObjKey_c19func_ov089_02131df4EPc	daObjKey_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
 ov089	0x02132084	func_ov089_02132084	_ZN10daObjKey_c16CleanupResourcesEv	vtable slot 3
 ov089	0x021320f0	func_ov089_021320f0	_ZN10daObjKey_c6RenderEv	vtable slot 9
 ov089	0x02132194	func_ov089_02132194	_ZN10daObjKey_c8BehaviorEv	vtable slot 6
