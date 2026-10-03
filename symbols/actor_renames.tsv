@@ -1681,6 +1681,12 @@ ov060	0x02117b9c	func_ov060_02117b9c	_ZN10daKpa2Bg_c6RenderEv	vtable slot 9
 ov060	0x02117bc8	func_ov060_02117bc8	_ZN10daKpa2Bg_c8BehaviorEv	vtable slot 6
 ov060	0x02117c30	func_ov060_02117c30	_ZN10daKpa2Bg_c13InitResourcesEv	vtable slot 0
 ov060	0x02117cdc	func_ov060_02117cdc	daKpa2Bg_c_classInit	spawnfunc
+ov060	0x02117d1c	func_ov060_02117d1c	_ZN10daKpa3Bg_cD1Ev	vtable slot 16 (was _ZN17BowserSkyPlatformD1Ev)
+ov060	0x02117d60	func_ov060_02117d60	_ZN10daKpa3Bg_cD0Ev	vtable slot 17 (was _ZN17BowserSkyPlatformD0Ev)
+ov060	0x021181e8	func_ov060_021181e8	_ZN10daKpa3Bg_c16CleanupResourcesEv	vtable slot 3 (was _ZN17BowserSkyPlatform16CleanupResourcesEv)
+ov060	0x0211822c	func_ov060_0211822c	_ZN10daKpa3Bg_c6RenderEv	vtable slot 9 (was _ZN17BowserSkyPlatform6RenderEv)
+ov060	0x02118254	func_ov060_02118254	_ZN10daKpa3Bg_c8BehaviorEv	vtable slot 6 (was _ZN17BowserSkyPlatform8BehaviorEv)
+ov060	0x021182b0	func_ov060_021182b0	_ZN10daKpa3Bg_c13InitResourcesEv	vtable slot 0 (was _ZN17BowserSkyPlatform13InitResourcesEv)
 ov060	0x02118408	func_ov060_02118408	BowserSkyPlatform_Spawn	spawnfunc
 ov060	0x02118408	BowserSkyPlatform_Spawn	daKpa3Bg_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov060	0x02118438	func_ov060_02118438	_ZN9daKirai_cD1Ev	vtable slot 16 (was _ZN17BowserSkyPlatformD1Ev)
@@ -1713,6 +1719,7 @@ ov060	0x0211a88c	daKpa2Bg_c_SpawnInfo	g_profile_KOOPA2BG	reconstructed profile g
 ov060	0x0211a8b0	data_ov060_0211a8b0	_ZTV10daKpa2Bg_c	vtable alloc=0x570
 ov060	0x0211a964	data_ov060_0211a964	BowserSkyPlatform_SpawnInfo	spawninfo
 ov060	0x0211a964	BowserSkyPlatform_SpawnInfo	g_profile_KOOPA3BG	reconstructed profile global; literal ROM ID KOOPA3BG+registry role+later EAD lineage; exact SM64DS spelling not preserved
+ov060	0x0211a9b0	data_ov060_0211a9b0	_ZTV10daKpa3Bg_c	vtable alloc=0x32c (was _ZTV17BowserSkyPlatform)
 ov060	0x0211aa68	data_ov060_0211aa68	SpikeBomb_SpawnInfo	spawninfo
 ov060	0x0211aa68	SpikeBomb_SpawnInfo	g_profile_KIRAI	reconstructed profile global; literal ROM ID KIRAI+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov060	0x0211aa8c	data_ov060_0211aa8c	_ZTV9daKirai_c	vtable alloc=? (was _ZTV17BowserSkyPlatform)
@@ -2004,6 +2011,8 @@ ov065	0x02116f48	func_ov065_02116f48	Snufit_Spawn	spawnfunc
 ov065	0x02116f48	Snufit_Spawn	daYurei_Mucho_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov065	0x02116f98	func_ov065_02116f98	_ZN12daBasabasa_cD1Ev	vtable slot 16
 ov065	0x02116fe8	func_ov065_02116fe8	_ZN12daBasabasa_cD0Ev	vtable slot 17
+ov065	0x0211704c	func_ov065_0211704c	_ZN12daBasabasa_c19func_ov065_0211704cEv	daBasabasa_c method. The first argument is the swoop, so the function is a member and the parameter is this. The address is kept as the method name.
+ov065	0x02117994	func_ov065_02117994	_ZN12daBasabasa_c19func_ov065_02117994Ev	daBasabasa_c method. The first argument is the swoop, so the function is a member and the parameter is this. The address is kept as the method name.
 ov065	0x02117aa4	func_ov065_02117aa4	_ZN12daBasabasa_c16CleanupResourcesEv	vtable slot 3
 ov065	0x02117aec	func_ov065_02117aec	_ZN12daBasabasa_c16OnPendingDestroyEv	vtable slot 12
 ov065	0x02117af0	func_ov065_02117af0	_ZN12daBasabasa_c6RenderEv	vtable slot 9

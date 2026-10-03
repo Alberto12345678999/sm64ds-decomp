@@ -26168,20 +26168,20 @@
    "start": "0x2117d1c",
    "end": "0x2118438",
    "classes": [
-    "BowserSkyPlatform"
+    "daKpa3Bg_c"
    ],
    "n_functions_map": 12,
    "n_files": 12,
    "files": [
-    "src/_ZN17BowserSkyPlatformD1Ev.cpp",
-    "src/_ZN17BowserSkyPlatformD0Ev.c",
+    "src/_ZN10daKpa3Bg_cD1Ev.cpp",
+    "src/_ZN10daKpa3Bg_cD0Ev.c",
     "src/func_ov060_02117db8.c",
     "src/func_ov060_021180e0.cpp",
     "src/func_ov060_021181b4.c",
-    "src/_ZN17BowserSkyPlatform16CleanupResourcesEv.cpp",
-    "src/_ZN17BowserSkyPlatform6RenderEv.cpp",
-    "src/_ZN17BowserSkyPlatform8BehaviorEv.cpp",
-    "src/_ZN17BowserSkyPlatform13InitResourcesEv.cpp",
+    "src/_ZN10daKpa3Bg_c16CleanupResourcesEv.cpp",
+    "src/_ZN10daKpa3Bg_c6RenderEv.cpp",
+    "src/_ZN10daKpa3Bg_c8BehaviorEv.cpp",
+    "src/_ZN10daKpa3Bg_c13InitResourcesEv.cpp",
     "src/func_ov060_021183cc.c",
     "src/func_ov060_021183f4.c",
     "src/d_a_kpa3_bg.c"
