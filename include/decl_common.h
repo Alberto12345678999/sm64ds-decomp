@@ -2626,7 +2626,6 @@ extern void func_ov096_02136e54(void*, int);
 extern void func_ov096_02136fd4(void);
 extern void func_ov096_02137088(void);
 extern void func_ov096_021372c0(void);
-extern void func_ov098_02137c8c(char*);
 extern int daObjFallBlock_c_OnStoodOn();
 extern void func_ov098_0213b15c(void*);
 extern void func_ov098_0213b584(char*);

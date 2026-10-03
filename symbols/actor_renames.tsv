@@ -3043,6 +3043,7 @@ ov096	0x02137a6c	Tornado_SpawnInfo	g_profile_TORNADO	reconstructed profile globa
 ov096	0x02137a90	data_ov096_02137a90	_ZTV7daTor_c	vtable alloc=0x370
 ov098	0x02137be0	func_ov098_02137be0	_ZN15daObjYajirusi_cD1Ev	vtable slot 16
 ov098	0x02137c2c	func_ov098_02137c2c	_ZN15daObjYajirusi_cD0Ev	vtable slot 17
+ov098	0x02137c8c	func_ov098_02137c8c	_ZN15daObjYajirusi_c19func_ov098_02137c8cEv	daObjYajirusi_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
 ov098	0x02137ccc	_ZN14ArrowSignRight4KillEv	_ZN15daObjYajirusi_c4KillEv	class renamed to its ROM RTTI name 15daObjYajirusi_c (_ZTS15daObjYajirusi_c at ov098 0x0213c36c, _ZTI at 0x0213c360, _ZTV at 0x0213c3d8); method name vtable-slot recovered (slot 31)
 ov098	0x02137d40	_ZN14ArrowSignRight11OnAttacked1ER8dActor_c	_ZN15daObjYajirusi_c11OnAttacked1ER8dActor_c	class renamed to its ROM RTTI name 15daObjYajirusi_c (_ZTS15daObjYajirusi_c at ov098 0x0213c36c, _ZTI at 0x0213c360, _ZTV at 0x0213c3d8); method name vtable-slot recovered (slot 22); the R8dActor_c reference spelling is a coined guess the bytes cannot distinguish from a pointer
 ov098	0x02137d80	_ZN14ArrowSignRight15OnHitByMegaCharER6Player	_ZN15daObjYajirusi_c15OnHitByMegaCharER6Player	class renamed to its ROM RTTI name 15daObjYajirusi_c (_ZTS15daObjYajirusi_c at ov098 0x0213c36c, _ZTI at 0x0213c360, _ZTV at 0x0213c3d8); method name vtable-slot recovered (slot 27); the R6Player reference spelling is a coined guess the bytes cannot distinguish from a pointer
