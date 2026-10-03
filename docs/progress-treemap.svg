@@ -17529,43 +17529,43 @@ matched: yes</title></rect><rect x="500.10" y="750.66" width="4.82" height="6.63
 module: ov002
 addr: 0x020f15cc
 size: 48 bytes
-matched: yes</title></rect><rect x="504.92" y="750.66" width="4.82" height="6.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14EnemySwitchTagD1Ev
+matched: yes</title></rect><rect x="504.92" y="750.66" width="4.82" height="6.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11daESwitch_cD1Ev
 module: ov002
 addr: 0x020f15fc
 size: 48 bytes
-matched: yes</title></rect><rect x="509.74" y="750.66" width="6.82" height="6.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14EnemySwitchTagD0Ev
+matched: yes</title></rect><rect x="509.74" y="750.66" width="6.82" height="6.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11daESwitch_cD0Ev
 module: ov002
 addr: 0x020f162c
 size: 68 bytes
-matched: yes</title></rect><rect x="516.56" y="750.66" width="3.61" height="6.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12EnemySpawnerD1Ev
+matched: yes</title></rect><rect x="516.56" y="750.66" width="3.61" height="6.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11daECreate_cD1Ev
 module: ov002
 addr: 0x020f1670
 size: 36 bytes
-matched: yes</title></rect><rect x="520.17" y="750.66" width="5.62" height="6.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12EnemySpawnerD0Ev
+matched: yes</title></rect><rect x="520.17" y="750.66" width="5.62" height="6.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11daECreate_cD0Ev
 module: ov002
 addr: 0x020f1694
 size: 56 bytes
-matched: yes</title></rect><rect x="525.79" y="750.66" width="3.21" height="6.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14EnemySwitchTag16CleanupResourcesEv
+matched: yes</title></rect><rect x="525.79" y="750.66" width="3.21" height="6.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11daESwitch_c16CleanupResourcesEv
 module: ov002
 addr: 0x020f16cc
 size: 32 bytes
-matched: yes</title></rect><rect x="529.00" y="750.66" width="11.64" height="6.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12EnemySpawner8BehaviorEv
+matched: yes</title></rect><rect x="529.00" y="750.66" width="11.64" height="6.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11daECreate_c8BehaviorEv
 module: ov002
 addr: 0x020f16ec
 size: 116 bytes
-matched: yes</title></rect><rect x="540.64" y="750.66" width="18.06" height="6.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14EnemySwitchTag8BehaviorEv
+matched: yes</title></rect><rect x="540.64" y="750.66" width="18.06" height="6.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11daESwitch_c8BehaviorEv
 module: ov002
 addr: 0x020f1760
 size: 180 bytes
-matched: yes</title></rect><rect x="558.70" y="750.66" width="3.61" height="6.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12EnemySpawner16CleanupResourcesEv
+matched: yes</title></rect><rect x="558.70" y="750.66" width="3.61" height="6.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11daECreate_c16CleanupResourcesEv
 module: ov002
 addr: 0x020f1814
 size: 36 bytes
-matched: yes</title></rect><rect x="562.31" y="750.66" width="6.42" height="6.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12EnemySpawner13InitResourcesEv
+matched: yes</title></rect><rect x="562.31" y="750.66" width="6.42" height="6.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11daECreate_c13InitResourcesEv
 module: ov002
 addr: 0x020f1838
 size: 64 bytes
-matched: yes</title></rect><rect x="568.73" y="750.66" width="17.26" height="6.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN14EnemySwitchTag13InitResourcesEv
+matched: yes</title></rect><rect x="568.73" y="750.66" width="17.26" height="6.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11daESwitch_c13InitResourcesEv
 module: ov002
 addr: 0x020f1878
 size: 172 bytes
