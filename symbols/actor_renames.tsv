@@ -261,16 +261,16 @@ ov002	0x020f1170	func_ov002_020f1170	OneUpLogo_Spawn	spawnfunc
 ov002	0x020f1170	OneUpLogo_Spawn	daObj1UpLogo_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov002	0x020f15cc	func_ov002_020f15cc	daObjBC_Switch_c_Spawn	spawnfunc
 ov002	0x020f15cc	daObjBC_Switch_c_Spawn	daObjBC_Switch_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
-ov002	0x020f15fc	func_ov002_020f15fc	_ZN11daESwitch_cD1Ev	vtable slot 16 (was _ZN14EnemySwitchTagD1Ev)
-ov002	0x020f162c	func_ov002_020f162c	_ZN11daESwitch_cD0Ev	vtable slot 17 (was _ZN14EnemySwitchTagD0Ev)
+ov002	0x020f15fc	func_ov002_020f15fc	_ZN11daESwitch_cD1Ev	vtable slot 16 (was _ZN14EnemySwitchTagD1Ev; earlier _ZN14BlueCoinSwitchD1Ev)
+ov002	0x020f162c	func_ov002_020f162c	_ZN11daESwitch_cD0Ev	vtable slot 17 (was _ZN14EnemySwitchTagD0Ev; earlier _ZN14BlueCoinSwitchD0Ev)
 ov002	0x020f1670	func_ov002_020f1670	_ZN11daECreate_cD1Ev	vtable slot 16 (was _ZN12EnemySpawnerD1Ev)
 ov002	0x020f1694	func_ov002_020f1694	_ZN11daECreate_cD0Ev	vtable slot 17 (was _ZN12EnemySpawnerD0Ev)
-ov002	0x020f16cc	func_ov002_020f16cc	_ZN11daESwitch_c16CleanupResourcesEv	vtable slot 3 (was _ZN14EnemySwitchTag16CleanupResourcesEv)
+ov002	0x020f16cc	func_ov002_020f16cc	_ZN11daESwitch_c16CleanupResourcesEv	vtable slot 3 (was _ZN14EnemySwitchTag16CleanupResourcesEv; earlier _ZN14BlueCoinSwitch16CleanupResourcesEv)
 ov002	0x020f16ec	func_ov002_020f16ec	_ZN11daECreate_c8BehaviorEv	vtable slot 6 (was _ZN12EnemySpawner8BehaviorEv)
-ov002	0x020f1760	func_ov002_020f1760	_ZN11daESwitch_c8BehaviorEv	vtable slot 6 (was _ZN14EnemySwitchTag8BehaviorEv)
+ov002	0x020f1760	func_ov002_020f1760	_ZN11daESwitch_c8BehaviorEv	vtable slot 6 (was _ZN14EnemySwitchTag8BehaviorEv; earlier _ZN14BlueCoinSwitch8BehaviorEv)
 ov002	0x020f1814	func_ov002_020f1814	_ZN11daECreate_c16CleanupResourcesEv	vtable slot 3 (was _ZN12EnemySpawner16CleanupResourcesEv)
 ov002	0x020f1838	func_ov002_020f1838	_ZN11daECreate_c13InitResourcesEv	vtable slot 0 (was _ZN12EnemySpawner13InitResourcesEv)
-ov002	0x020f1878	func_ov002_020f1878	_ZN11daESwitch_c13InitResourcesEv	vtable slot 0 (was _ZN14EnemySwitchTag13InitResourcesEv)
+ov002	0x020f1878	func_ov002_020f1878	_ZN11daESwitch_c13InitResourcesEv	vtable slot 0 (was _ZN14EnemySwitchTag13InitResourcesEv; earlier _ZN14BlueCoinSwitch13InitResourcesEv)
 ov002	0x020f1924	func_ov002_020f1924	EnemySpawner_Spawn	spawnfunc
 ov002	0x020f1924	EnemySpawner_Spawn	daECreate_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov002	0x020f1954	func_ov002_020f1954	EnemySwitchTag_Spawn	spawnfunc
