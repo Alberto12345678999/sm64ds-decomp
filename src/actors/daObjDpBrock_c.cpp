@@ -21,15 +21,38 @@
  * section per function in the reverse of source order, so the highest-address
  * ROM function is written first. Do not reorder.
  *
- * Known limits:
- * - dBgW_KcMbg::SetFile and dBgActor_c::IsClsnInRange stay mangled. Each takes
- *   Fix12<int> by value (wall 6az). Spelled as a member call with a Fix12<int>
- *   local, SetFile grows InitResources from 0x10c to 0x118 bytes.
- *   include/dBgActor_c.h declares no IsClsnInRange.
- * - func_020393d4 is a 4-byte store into a dBgW callback slot; naming it
- *   belongs with dBgW in arm9.
- * - The model and collision files and the CLPS block are unnamed ov025 rows.
- *   __sinit_ov025_02112a44 also names the two files.
+ * Leftover:
+ * - SetFile as a method, Fix12<int> scale with scale.val = 0x1000:
+ *   InitResources size-DIFF 0x10c->0x118. Fix12<int> scale = {0x1000}
+ *   size-DIFF 0x10c->0x114 and adds a 4-byte local .data.
+ *   Fix12<int>{0x1000} does not compile ("( expected"). The free call
+ *   with int 0x1000 matches.
+ * - IsClsnInRange as a Fix12<int> method, locals with .val = 0:
+ *   Behavior size-DIFF 0xcc->0xe0. Fix12<int>{0} does not compile
+ *   ("( expected"). The free call with two ints matches. Spelling those
+ *   two prototypes Fix12i also matches; they stay int.
+ * - mMeshCollider.beforeClsnCallback = &dBgW::UpdatePosWithTransform
+ *   does not compile (illegal implicit conversion from a
+ *   reference-parameter function to the pointer-parameter field). The
+ *   same store through a C cast size-DIFF InitResources 0x10c->0x108.
+ *   func_020393d4 stays the call.
+ * - .t on the real Matrix4x3 does not compile (undefined identifier
+ *   't'): the type in this TU is the flat s32 m[12]. A shadow
+ *   { s32 r[9]; Vector3 t; } over the matrix: UpdateStepClsnPosAndRot
+ *   stays 0x44 and DIFFs 6 words; UpdateStepModelPosAndRotY
+ *   size-DIFF 0x40->0x44. s32 *t = &mat.m[9] size-DIFF
+ *   UpdateStepClsnPosAndRot 0x44->0x48 and UpdateStepModelPosAndRotY
+ *   0x40->0x44. offsetof(daObjDpBrock_c, mClsnMat2) does not compile
+ *   ("( expected").
+ * - Vector3 &pos = *(Vector3 *)&mPosX in InitResources, Behavior and
+ *   both updates: size-DIFF InitResources 0x10c->0x110, Behavior
+ *   0xcc->0xd0, UpdateStepModelPosAndRotY 0x40->0x4c,
+ *   UpdateStepClsnPosAndRot 0x44->0x50.
+ * - mStateTimer = mStateTimer + 1 stays 0xcc and DIFFs 4 words.
+ *   mStateTimer = mStateTimer + 50 size-DIFF InitResources
+ *   0x10c->0x108. mStateTimer += 1, ++mStateTimer and
+ *   kFramesPerState == mStateTimer each match. The source keeps
+ *   mStateTimer++ and mStateTimer == kFramesPerState.
  */
 
 #include "daObjDpBrock_c.h"
@@ -50,11 +73,16 @@ int _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(void *self, int a, int b);
 void func_020393d4(int *p, int v);
 }
 
-/* mState values, and how long each lasts. */
+/* mState values, how long each lasts, and the 20.12 step.
+ * kVertStep is 5.0 per frame. A full drop is that times
+ * kFramesPerState; phase 1 starts at half of it. */
 enum {
     kSinking = 0,
     kRising = 1,
-    kFramesPerState = 100
+    kFramesPerState = 100,
+    kVertStep = 0x5000,
+    kHalfDrop = 0xfa000,
+    kFullDrop = 0x1f4000
 };
 
 // @symbol daObjDpBrock_c_classInit
@@ -84,7 +112,7 @@ int daObjDpBrock_c::InitResources()
     func_020393d4((int *)&mMeshCollider, (int)&dBgW::UpdatePosWithTransform);
 
     int phase = param1 & 3;
-    mVertSpeed = -0x5000;
+    mVertSpeed = -kVertStep;
     mState = kSinking;
     mStateTimer = 0;
     switch (phase) {
@@ -92,14 +120,14 @@ int daObjDpBrock_c::InitResources()
         break;
     case 1:
         /* Halfway down, halfway through the sink. */
-        mPosY -= 0xfa000;
-        mStateTimer += 50;
+        mPosY -= kHalfDrop;
+        mStateTimer += kFramesPerState / 2;
         break;
     case 2:
         /* At the bottom, about to rise. */
-        mPosY -= 0x1f4000;
+        mPosY -= kFullDrop;
         mState = kRising;
-        mVertSpeed = 0x5000;
+        mVertSpeed = kVertStep;
         break;
     }
     return 1;
@@ -112,14 +140,14 @@ int daObjDpBrock_c::Behavior()
     case kSinking:
         if (mStateTimer == kFramesPerState) {
             mState = kRising;
-            mVertSpeed = 0x5000;
+            mVertSpeed = kVertStep;
             mStateTimer = 0;
         }
         break;
     case kRising:
         if (mStateTimer == kFramesPerState) {
             mState = kSinking;
-            mVertSpeed = -0x5000;
+            mVertSpeed = -kVertStep;
             mStateTimer = 0;
         }
         break;
@@ -127,7 +155,7 @@ int daObjDpBrock_c::Behavior()
     mStateTimer++;
     mPosY += mVertSpeed;
     UpdateStepModelPosAndRotY();
-    if (_ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(this, 0, 0) != 0)
+    if (_ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(this, 0, 0))
         UpdateStepClsnPosAndRot();
     return 1;
 }
