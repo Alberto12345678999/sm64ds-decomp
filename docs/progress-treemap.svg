@@ -37001,7 +37001,7 @@ matched: yes</title></rect><rect x="1230.65" y="444.51" width="7.49" height="6.3
 module: ov065
 addr: 0x02116fe8
 size: 100 bytes
-matched: yes</title></rect><rect x="1230.65" y="450.89" width="7.49" height="60.77" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov065_0211704c
+matched: yes</title></rect><rect x="1230.65" y="450.89" width="7.49" height="60.77" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12daBasabasa_c19func_ov065_0211704cEv
 module: ov065
 addr: 0x0211704c
 size: 952 bytes
@@ -37041,7 +37041,7 @@ matched: yes</title></rect><rect x="1238.14" y="507.28" width="8.75" height="4.3
 module: ov065
 addr: 0x02117944
 size: 80 bytes
-matched: yes</title></rect><rect x="1246.89" y="433.79" width="2.85" height="45.65" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov065_02117994
+matched: yes</title></rect><rect x="1246.89" y="433.79" width="2.85" height="45.65" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12daBasabasa_c19func_ov065_02117994Ev
 module: ov065
 addr: 0x02117994
 size: 272 bytes
