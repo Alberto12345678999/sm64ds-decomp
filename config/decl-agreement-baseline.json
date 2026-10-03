@@ -36744,11 +36744,6 @@
         "return:int"
       ]
     },
-    "func_ov064_021187ec": {
-      "include/decl_common.h": [
-        "param:#1 char *"
-      ]
-    },
     "func_ov064_0211929c": {
       "src/func_ov064_021192bc.c": [
         "param:#1 int",
