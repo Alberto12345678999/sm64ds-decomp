@@ -877,10 +877,6 @@
         "param:#1 Vec3 *",
         "param:#2 Vec3 *"
       ],
-      "src/func_ov006_020cfc74.c": [
-        "param:#1 Vector3 *",
-        "param:#2 Vector3 *"
-      ],
       "src/func_ov007_020c7d60.c": [
         "param:#1 const Vec3 *",
         "param:#2 const Vec3 *"
@@ -3819,16 +3815,6 @@
         "param:#2 V3 *",
         "param:#3 V3 *"
       ],
-      "src/func_ov006_020cfc74.c": [
-        "param:#1 Vector3 *",
-        "param:#2 Vector3 *",
-        "param:#3 Vector3 *"
-      ],
-      "src/func_ov006_020d01e0.cpp": [
-        "param:#1 Vector3 *",
-        "param:#2 Vector3 *",
-        "param:#3 Vector3 *"
-      ],
       "src/func_ov007_020c2390.c": [
         "param:#1 Vector3 *",
         "param:#2 Vector3 *",
@@ -3937,7 +3923,7 @@
       "src/func_0203d480.c": [
         "param:#1 int *"
       ],
-      "src/func_ov006_020d0c38.c": [
+      "src/actors/unit020cd744.cpp": [
         "param:#1 int *"
       ],
       "src/actors/dScMgSmartball_c.cpp": [
@@ -4022,12 +4008,7 @@
         "param:#2 Vector3 *",
         "param:#3 Vector3 *"
       ],
-      "src/func_ov006_020cfc74.c": [
-        "param:#1 Vector3 *",
-        "param:#2 Vector3 *",
-        "param:#3 Vector3 *"
-      ],
-      "src/func_ov006_020d01e0.cpp": [
+      "src/actors/unit020cd744.cpp": [
         "param:#1 Vector3 *",
         "param:#2 Vector3 *",
         "param:#3 Vector3 *"
@@ -4757,7 +4738,8 @@
       ],
       "src/actors/unit020cd744.cpp": [
         "param:#1 Vector3 *",
-        "param:#2 const Vector3 *"
+        "param:#2 const Vector3 *",
+        "param:#2 Vector3 *"
       ],
       "src/func_0200b0fc.c": [
         "param:#1 Vector3 *",
@@ -4770,14 +4752,6 @@
       "src/func_ov002_020f7538.c": [
         "param:#1 Vec3 *",
         "param:#2 const Vec3 *"
-      ],
-      "src/func_ov006_020cfc74.c": [
-        "param:#1 Vector3 *",
-        "param:#2 Vector3 *"
-      ],
-      "src/func_ov006_020d01e0.cpp": [
-        "param:#1 Vector3 *",
-        "param:#2 Vector3 *"
       ],
       "src/game/actors/d_a_obj_wl_polelift.cpp": [
         "param:#1 Vector3 *",
@@ -5014,16 +4988,6 @@
       "src/func_0200bec4.c": [
         "param:#1 Vector3 *",
         "param:#2 Vector3 *"
-      ],
-      "src/func_ov006_020cfc74.c": [
-        "param:#1 Vector3 *",
-        "param:#2 Vector3 *",
-        "param:#3 Vector3 *"
-      ],
-      "src/func_ov006_020d01e0.cpp": [
-        "param:#1 Vector3 *",
-        "param:#2 Vector3 *",
-        "param:#3 Vector3 *"
       ],
       "src/func_ov009_0211145c.c": [
         "param:#1 Vector3 *",
@@ -5455,12 +5419,6 @@
         "return:int"
       ],
       "src/func_ov002_020f7538.c": [
-        "return:int"
-      ],
-      "src/func_ov006_020cf820.c": [
-        "return:int"
-      ],
-      "src/func_ov006_020cfa44.c": [
         "return:int"
       ],
       "src/game/actors/d_a_nknk.cpp": [
@@ -14108,7 +14066,7 @@
         "param:#3 int",
         "param:#4 void *"
       ],
-      "src/func_ov006_020d0fe4.c": [
+      "src/actors/unit020cd744.cpp": [
         "param:#2 int",
         "param:#3 int",
         "param:#4 void (*)(void)",
@@ -14888,7 +14846,7 @@
       "src/actors/daBgSnmBdy_c.cpp": [
         "return:int []"
       ],
-      "src/func_ov006_020d09e0.c": [
+      "src/actors/unit020cd744.cpp": [
         "return:char []"
       ],
       "src/func_ov075_0211afb0.c": [
@@ -20280,7 +20238,7 @@
         "return:unsigned char * []",
         "return:int []"
       ],
-      "src/func_ov006_020d01e0.cpp": [
+      "src/actors/unit020cd744.cpp": [
         "return:void * []"
       ]
     },
@@ -20288,10 +20246,8 @@
       "src/__sinit_ov006_0212fc7c.c": [
         "return:int []"
       ],
-      "src/func_ov006_020d0b04.c": [
-        "return:unsigned char []"
-      ],
-      "src/func_ov006_020d0fe4.c": [
+      "src/actors/unit020cd744.cpp": [
+        "return:unsigned char []",
         "return:char"
       ]
     },
@@ -29404,7 +29360,7 @@
         "param:#1 Vec3 *",
         "param:#2 int"
       ],
-      "src/func_ov006_020d09e0.c": [
+      "src/actors/unit020cd744.cpp": [
         "arity:3"
       ],
       "src/minigames/d_s_mg_jump2.cpp": [
@@ -29476,7 +29432,7 @@
       ]
     },
     "func_0203d524": {
-      "src/func_ov006_020cfc74.c": [
+      "src/actors/unit020cd744.cpp": [
         "param:#1 int *",
         "param:#2 int *"
       ]
@@ -34840,18 +34796,12 @@
       ]
     },
     "func_ov006_020cf040": {
-      "src/func_ov006_020cfc74.c": [
+      "src/actors/unit020cd744.cpp": [
         "param:#3 Vector3 *"
       ]
     },
     "func_ov006_020d01e0": {
-      "src/func_ov006_020d0b78.c": [
-        "param:#1 short *"
-      ],
-      "src/func_ov006_020d0bd8.c": [
-        "param:#1 short *"
-      ],
-      "src/func_ov006_020d0c38.c": [
+      "src/actors/unit020cd744.cpp": [
         "param:#1 short *"
       ]
     },

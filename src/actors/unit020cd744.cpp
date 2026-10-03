@@ -1,39 +1,52 @@
 //cpp
 /*
- * ov006 .text 0x020cd744..0x020cf2fc, 39 functions: the lower part of the
- * linker unit that runs 0x020cd744..0x020d1018. It starts where the promoted
- * dMgTrmpln2Mario_c TU ends. The ROM carries no RTTI, vtable or static
- * initialiser that names a type in this run, and no source or note names it,
- * so it keeps the unit<addr> name and the functions keep their address names.
+ * ov006 .text 0x020cd744..0x020d1018, 59 functions: the whole linker unit
+ * between the promoted dMgTrmpln2Mario_c TU, whose .text ends at 0x020cd744,
+ * and the promoted dScMgAmida_c TU, whose first member _ZN12dScMgAmida_cD1Ev
+ * starts at 0x020d1018. The ROM carries no RTTI, vtable or static initialiser
+ * that names a type in this run, and no source or note names it, so it keeps
+ * the unit<addr> name and the functions keep their address names.
  *
- * Where the claim stops: the unit continues past 0x020cf2fc, but
- * func_ov006_020cf2fc (0x45c) does not match yet, so it stays cartridge bytes
- * and this file stops below it. The 19 functions above it (0x020cf758 to
- * 0x020d1018, func_ov006_020d01e0 among them) stay one-function sources until
- * it matches.
+ * What the run does: object code for the trampoline minigame's stylus-drawn
+ * trampolines (the globals it shares are dMgTrmpln2Mario_c's and
+ * d_s_mg_trampoline2's). The upper part, func_ov006_020cf2fc to
+ * func_ov006_020d100c, is the drawn-line side: a 4x4 vertex patch per line slot
+ * (positions at +0x5c, normals at +0x1dc, packed normals at +0x2dc), the
+ * gate-crossing test over the five tracked objects at data_ov006_0214097c,
+ * slot placement (func_ov006_020d0c38), slot setup (func_ov006_020d01e0),
+ * drawing (func_ov006_020cf2fc, called per live slot by func_ov006_020d09e0),
+ * texture loading (func_ov006_020d0b2c) and the __cxa_vec_cleanup pair for
+ * the four 0x32c-byte slots at data_ov006_02140990.
  *
  * Data the run touches: globals the dMgTrmpln2Mario_c TU also uses
  * (0x021405a8..0x021405b4), the score words d_s_mg_trampoline2 also uses
  * (0x02140818, 0x02140828, 0x02140830), its own bss 0x02140808..0x0214095c
- * (function-local statics with guard words), and words in 0x0212e070..0x0212e0f0
- * and 0x0213b31c..0x0213b3a4.
+ * (function-local statics with guard words), the slot array 0x02140990 and the
+ * texture handles 0x02140814/0x02140844, and words in 0x0212e060..0x0212e0f0
+ * and 0x0213b2f4..0x0213b414.
  *
- * Folded from 39 one-function shards, func_ov006_020cd744 through
- * func_ov006_020cf124. Their provenance is the same as any other loose shard
- * here: each was matched on its own against the pinned compiler. The
- * boundaries inside the run could not be proven, so it is folded as the part
- * of the tu_map unit below the unmatched function.
+ * Folded from 59 one-function shards, func_ov006_020cd744 through
+ * func_ov006_020d100c. Each was matched on its own against the pinned
+ * compiler; func_ov006_020cf2fc, the last of them, matched on 2026-10-02 after
+ * a run as a decompiled-not-matched draft (see its own comment). The 39
+ * functions below it were folded first, while it still split the unit; the 20
+ * from 0x020cf2fc up were folded once it matched. The boundaries inside the
+ * run could not be proven, so it is folded as the tu_map unit, text only.
  *
  * Layout of this file: each former one-function source keeps its own
  * namespace block, because their local struct views and extern declarations
  * disagree with each other and unifying them changes code generation. The
  * functions and the externs they use are extern "C", so the namespaces change
  * no symbol. Definitions are in ROM order, lowest address first, under
- * defer_codegen off. func_ov006_020cdc8c keeps its opt_propagation off and
- * func_ov006_020cf124 its opt_strength_reduction off as push/pop brackets.
+ * defer_codegen off. func_ov006_020cdc8c keeps its opt_propagation off,
+ * func_ov006_020cf124 its opt_strength_reduction off and func_ov006_020cfc74
+ * its opt_common_subs off plus opt_propagation off as push/pop brackets.
  *
  * The empty Vector3 destructor from include/types.h is emitted here for the
  * Vector3 locals; it is licensed as a deadstrip duplicate of the arm9 copy.
+ * func_ov006_020d01e0's Spare4 (a four-byte type whose declared destructor
+ * reserves a stack slot the ROM frame has) emits a second empty destructor,
+ * deadstripped as compiler-only output.
  */
 #include "types.h"
 #include "decl_common.h"
@@ -44,7 +57,7 @@
 extern int ApproachLinear(int &, int, int);
 struct BMD_File; struct BTA_File;
 struct ModelBase { void SetFile(BMD_File*, int, int); };
-struct Model : ModelBase { void SetPolygonID(int); };
+struct Model : ModelBase { void SetPolygonID(int); static unsigned int LoadTextureToVram(char *, unsigned int); };
 struct TextureTransformer { static void Prepare(BMD_File&, BTA_File&); void SetFile(BTA_File&, int, int, unsigned int); };
 
 // ---- func_ov006_020cd744.c ----
@@ -1204,4 +1217,1204 @@ extern "C" void func_ov006_020cf124(char* self)
     }
 }
 #pragma pop
+}
+
+// ---- func_ov006_020cf2fc.c ----
+namespace s020cf2fc {
+typedef volatile unsigned int vu32;
+
+typedef struct
+{
+  s32 x;
+  s32 y;
+  s32 z;
+} Vec3;
+
+struct Matrix4x3;
+extern "C" extern struct Matrix4x3 data_020a0e68;
+extern "C" extern struct Matrix4x3 data_0209b3ec;
+extern "C" extern unsigned short data_ov006_0212e060[];
+extern "C" extern unsigned short data_ov006_0212e068[];
+extern "C" extern int data_ov006_0212e0b0[];
+extern "C" extern void *data_ov006_02140844;
+extern "C" extern void *data_ov006_02140814;
+extern "C" extern void Matrix4x3_FromTranslation(struct Matrix4x3 *m, int x, int y, int z);
+extern "C" extern void MulMat4x3Mat4x3(const int *a, const int *b, int *dst);
+extern "C" extern void Matrix4x3_ApplyInPlaceToScale(struct Matrix4x3 *m, int x, int y, int z);
+extern "C" extern void func_020553a4(int *m);
+
+#define REG_MTX_MODE       (*(vu32 *)0x4000440)
+#define REG_MTX_IDENTITY   (*(vu32 *)0x4000454)
+#define REG_MTX_SCALE      (*(vu32 *)0x400046c)
+#define REG_NORMAL         (*(vu32 *)0x4000484)
+#define REG_TEXCOORD       (*(vu32 *)0x4000488)
+#define REG_VTX_16         (*(vu32 *)0x400048c)
+#define REG_POLYGON_ATTR   (*(vu32 *)0x40004a4)
+#define REG_TEXIMAGE_PARAM (*(vu32 *)0x40004a8)
+#define REG_TEXPLTT_BASE   (*(vu32 *)0x40004ac)
+#define REG_DIF_AMB        (*(vu32 *)0x40004c0)
+#define REG_SPE_EMI        (*(vu32 *)0x40004c4)
+#define REG_BEGIN_VTXS     (*(vu32 *)0x4000500)
+#define REG_END_VTXS       (*(vu32 *)0x4000504)
+
+#define PATCH_VTX(obj) ((Vec3 *)((obj) + 0x5c))
+#define PATCH_NRM(obj) ((int *)((obj) + 0x2dc))
+
+static inline void G3_Vtx(s16 x, s16 y, s16 z)
+{
+  REG_VTX_16 = (u16)x | ((u16)y << 16);
+  REG_VTX_16 = (u16)z;
+}
+
+#define SEND_VTX(p) G3_Vtx((s16)((p)->x >> 8), (s16)((p)->y >> 8), (s16)((p)->z >> 8))
+
+// @symbol func_ov006_020cf2fc
+/* Loads the object's placement and scale matrices, then draws its 4x4 vertex
+ * patch (positions at +0x5c, packed normals at +0x2dc) as three triangle
+ * strips per face, the back face first with negated normals. Each normal
+ * pointer steps in its own statement after the REG_NORMAL write; stepping it
+ * inside the write reorders the vertex loads. */
+extern "C" void func_ov006_020cf2fc(char *obj)
+{
+  int i;
+  int m2[12];
+  int m1[12];
+  Matrix4x3_FromTranslation(&data_020a0e68, *((int *) (obj + 8)), *((int *) (obj + 0xc)), *((int *) (obj + 0x10)));
+  MulMat4x3Mat4x3((const int *) &data_020a0e68, (const int *) &data_0209b3ec, m1);
+  Matrix4x3_ApplyInPlaceToScale(&data_020a0e68, *((int *) (obj + 0x2c)), *((int *) (obj + 0x30)), *((int *) (obj + 0x34)));
+  MulMat4x3Mat4x3((const int *) &data_020a0e68, (const int *) &data_0209b3ec, m2);
+  REG_MTX_MODE = 2;
+  func_020553a4(m1);
+  REG_MTX_MODE = 1;
+  func_020553a4(m2);
+  REG_MTX_SCALE = 0x100000;
+  REG_MTX_SCALE = 0x100000;
+  REG_MTX_SCALE = 0x100000;
+  REG_MTX_MODE = 3;
+  REG_MTX_IDENTITY = 0;
+  REG_TEXIMAGE_PARAM = 0x8da70000 | ((u32) data_ov006_02140844 >> 3);
+  REG_TEXPLTT_BASE = (u32) data_ov006_02140814 >> 4;
+  {
+    short *p31e = (short *) (obj + 0x31e);
+    int sh = *p31e;
+    unsigned short *dif = data_ov006_0212e060;
+    volatile unsigned char *alpha = (volatile unsigned char *) (obj + 0x329);
+    int pl = *alpha;
+    REG_POLYGON_ATTR = (((sh + 1) << 24) | 0x82) | (pl << 16);
+    {
+      unsigned short *p326 = (unsigned short *) (obj + 0x326);
+      unsigned idx = *p326;
+      REG_DIF_AMB = dif[idx] | (data_ov006_0212e068[idx] << 16);
+    }
+  }
+  REG_SPE_EMI = 0x8000;
+
+  /* back face: row i then row i+1, normals negated */
+  for (i = 0; i < 3; i++)
+  {
+    Vec3 *v0 = &PATCH_VTX(obj)[i * 4];
+    Vec3 *v1 = &PATCH_VTX(obj)[(i + 1) * 4];
+    int *n0 = &PATCH_NRM(obj)[i * 4];
+    int *n1 = &PATCH_NRM(obj)[(i + 1) * 4];
+    int k;
+    REG_BEGIN_VTXS = 2;
+    for (k = 0; k < 4; k++)
+    {
+      REG_TEXCOORD = data_ov006_0212e0b0[i * 4 + k];
+      REG_NORMAL = -*n0 & 0x3fffffff;
+      n0++;
+      SEND_VTX(v0);
+      v0++;
+      REG_TEXCOORD = data_ov006_0212e0b0[(i + 1) * 4 + k];
+      REG_NORMAL = -*n1 & 0x3fffffff;
+      n1++;
+      SEND_VTX(v1);
+      v1++;
+    }
+    REG_END_VTXS = 0;
+  }
+
+  /* front face: row i+1 then row i */
+  for (i = 0; i < 3; i++)
+  {
+    Vec3 *v0 = &PATCH_VTX(obj)[i * 4];
+    Vec3 *v1 = &PATCH_VTX(obj)[(i + 1) * 4];
+    int *n0 = &PATCH_NRM(obj)[i * 4];
+    int *n1 = &PATCH_NRM(obj)[(i + 1) * 4];
+    int k;
+    REG_BEGIN_VTXS = 2;
+    for (k = 0; k < 4; k++)
+    {
+      REG_TEXCOORD = data_ov006_0212e0b0[(i + 1) * 4 + k];
+      REG_NORMAL = *n1;
+      n1++;
+      SEND_VTX(v1);
+      v1++;
+      REG_TEXCOORD = data_ov006_0212e0b0[i * 4 + k];
+      REG_NORMAL = *n0;
+      n0++;
+      SEND_VTX(v0);
+      v0++;
+    }
+    REG_END_VTXS = 0;
+  }
+}
+}
+
+// ---- func_ov006_020cf758.cpp ----
+namespace s020cf758 {
+struct C;
+typedef void (C::*PMF)();
+struct C { PMF pmf; };
+// @symbol func_ov006_020cf758
+extern "C" void func_ov006_020cf758(C *c) {
+  (c->*(c->pmf))();
+}
+}
+
+// ---- func_ov006_020cf790.c ----
+namespace s020cf790 {
+extern "C" extern int _Z15ApproachLinear2Riii(int* a, int b, int c);
+extern "C" extern void func_ov006_020cf124(char* c);
+
+// @symbol func_ov006_020cf790
+extern "C" void func_ov006_020cf790(char* c) {
+    if (_Z15ApproachLinear2Riii((int*)(c + 0x329), 0, 1) != 0) {
+        *(unsigned char*)(c + 0x328) = 0;
+        return;
+    }
+    *(int*)(((int)c + 0x2C)) += 0x80;
+    *(int*)(((int)c + 0x30)) += 0x80;
+    *(int*)(((int)c + 0x34)) += 0x80;
+    func_ov006_020cf124(c);
+}
+}
+
+// ---- func_ov006_020cf804.c ----
+namespace s020cf804 {
+struct S { int w[2]; };
+extern "C" {extern struct S data_ov006_0213b37c;}
+// @symbol func_ov006_020cf804
+extern "C" void func_ov006_020cf804(char *p) { *(struct S *)(p + 0x0) = data_ov006_0213b37c; }
+}
+
+// ---- func_ov006_020cf820.c ----
+namespace s020cf820 {
+extern "C" extern int _Z15ApproachLinear2Riii(int *p, int a, int b);
+extern "C" extern int _Z14ApproachLinearRiii(int *p, int a, int b);
+extern "C" extern void func_ov006_020cf124(char *c);
+extern "C" {extern int data_020a0db0;}
+extern "C" {extern s16 data_02082214[];}
+
+#define LA(p) ((int)(p))
+
+// @symbol func_ov006_020cf820
+extern "C" void func_ov006_020cf820(char *c)
+{
+    int vx, vz;
+    int negS;
+    int dx, dz;
+    u16 ang;
+    int j, i;
+    int target, step;
+    int *src, *dst, *val;
+
+    if ((data_020a0db0 & 1) != 0) {
+        if (_Z15ApproachLinear2Riii((int *)(c + 0x329), 0, 1) != 0) {
+            *(u8 *)(c + 0x328) = 0;
+        }
+    }
+
+    {
+        u16 *fieldPtr = (u16 *)LA(c + 0x320);
+        *fieldPtr = *fieldPtr + *(u16 *)(c + 0x322);
+        ang = *(u16 *)(c + 0x320);
+    }
+
+    vx = *(int *)(c + 0x14);
+    vz = *(int *)(c + 0x18);
+
+    negS = -(int)data_02082214[(ang >> 4) * 2];
+
+    dx = (int)(((s64)vx * negS + 0x800) >> 12);
+    dz = (int)(((s64)vz * negS + 0x800) >> 12);
+
+    src = (int *)(c + 0x11c);
+    dst = (int *)(c + 0x5c);
+    val = (int *)(c + 0x29c);
+
+    target = 0;
+    step = 0x100;
+
+    for (j = 0; j < 4; j++) {
+        for (i = 0; i < 4; i++) {
+            dst[0] = src[0];
+            dst[1] = src[1];
+            dst[2] = src[2];
+            dst[0] = dst[0] + (int)(((s64)*val * dx + 0x800) >> 12);
+            dst[1] = dst[1] + (int)(((s64)*val * dz + 0x800) >> 12);
+            _Z14ApproachLinearRiii(val, target, step);
+            src += 3;
+            dst += 3;
+            val += 1;
+        }
+    }
+
+    func_ov006_020cf124(c);
+}
+}
+
+// ---- func_ov006_020cfa28.c ----
+namespace s020cfa28 {
+struct S { int w[2]; };
+extern "C" {extern struct S data_ov006_0213b374;}
+// @symbol func_ov006_020cfa28
+extern "C" void func_ov006_020cfa28(char *p) { *(struct S *)(p + 0x0) = data_ov006_0213b374; }
+}
+
+// ---- func_ov006_020cfa44.c ----
+namespace s020cfa44 {
+typedef struct { int x, y, z; } Vec3;
+
+extern "C" {extern s16 data_02082214[];}
+extern "C" extern int func_ov006_020cfc74(char *o);
+extern "C" extern int _Z14ApproachLinearRiii(int *cur, int target, int step);
+extern "C" extern int _Z15ApproachLinear2Rsss(short *cur, short target, short step);
+extern "C" extern void func_ov006_020cf124(char *o);
+extern "C" extern void func_ov006_020cf804(char *o);
+
+// @symbol func_ov006_020cfa44
+extern "C" void func_ov006_020cfa44(char *o)
+{
+    int j, i;
+    int a14, a18;
+    int k;
+    s16 s;
+    int ns;
+    int mulX, mulY;
+    int zeroArg;
+    int izero;
+    int stepArg;
+    Vec3 *src;
+    Vec3 *dst;
+    int *ratep;
+    u16 *p320;
+
+    func_ov006_020cfc74(o);
+
+    p320 = (u16 *)LA(o + 0x320);
+    *p320 = *p320 + *(u16 *)(o + 0x322);
+
+    a14 = *(int *)(o + 0x14);
+    a18 = *(int *)(o + 0x18);
+
+    k = *(u16 *)(o + 0x320) >> 4;
+    s = data_02082214[k * 2];
+    ns = -(int)s;
+
+    src = (Vec3 *)(o + 0x11c);
+    dst = (Vec3 *)(o + 0x5c);
+
+    mulX = (int)(((s64)a14 * ns + 0x800) >> 12);
+    mulY = (int)(((s64)a18 * ns + 0x800) >> 12);
+
+    ratep = (int *)(o + 0x29c);
+
+    zeroArg = 0;
+    izero = 0;
+    stepArg = 0x100;
+
+    for (j = 0; j < 4; j++) {
+        for (i = izero; i < 4; i++) {
+            dst->x = src->x;
+            dst->y = src->y;
+            dst->z = src->z;
+            dst->x += (int)(((s64)(*ratep) * mulX + 0x800) >> 12);
+            dst->y += (int)(((s64)(*ratep) * mulY + 0x800) >> 12);
+
+            _Z14ApproachLinearRiii(ratep, zeroArg, stepArg);
+            src++;
+            dst++;
+            ratep++;
+        }
+    }
+
+    func_ov006_020cf124(o);
+
+    if (*(s16 *)(o + 0x31e) == 3)
+        return;
+
+    if (_Z15ApproachLinear2Rsss((short *)(o + 0x31c), 0, 1) == 0)
+        return;
+
+    func_ov006_020cf804(o);
+}
+}
+
+// ---- func_ov006_020cfc58.c ----
+namespace s020cfc58 {
+struct S { int w[2]; };
+extern "C" {extern struct S data_ov006_0213b364;}
+// @symbol func_ov006_020cfc58
+extern "C" void func_ov006_020cfc58(char *p) { *(struct S *)(p + 0x0) = data_ov006_0213b364; }
+}
+
+// ---- func_ov006_020cfc74.c ----
+namespace s020cfc74 {
+/*
+ * Per-frame gate-crossing check over the five tracked objects
+ * (data_ov006_0214097c). For each live object, project its position and
+ * target onto the gate frame (c+0x14 / c+0x20 basis, c+0x58 half-width). A
+ * segment that crosses the gate records the hit (c+0x38 position, c+0x44
+ * direction, state 1 or 2 with a sound whose pitch is lerped from the
+ * crossing point), decrements the remaining count at c+0x324 and returns 1
+ * when it reaches zero. Segments that miss just outside the gate edges are
+ * marked state 3.
+ *
+ * Shape notes: the +-1 clamps are a ternary macro so the constants rank
+ * above a/i in the callee-saved band and still hoist in the compiler's
+ * own order; arr is assigned after the null/active checks so its pool
+ * load sits in the hoisted-constant sequence; the +0x320/+0x324 halfword
+ * accesses go through c directly, which yields the ROM's shared
+ * c+0x300 base and the copied read.
+ */
+#define CLAMP(v, lo, hi) ((v) < (lo) ? (lo) : (v) > (hi) ? (hi) : (v))
+
+struct V2 { int x, y; };
+
+struct VT {
+    Vector3 *(*GetPos)(void *);
+    Vector3 *(*GetTargetPos)(void *);
+    void (*Pad08)(void *);
+    int (*IsActive)(void *);
+};
+struct Cannon {
+    struct VT *vt;
+    Vector3 v4;
+    int f10;
+    int f14;
+    u16 f18;
+};
+
+extern "C" extern void Vec3_Sub(Vector3 *out, Vector3 *a, Vector3 *b);
+extern "C" extern void SubVec3(Vector3 *a, Vector3 *b, Vector3 *c);
+extern "C" extern int DotVec3(Vector3 *a, Vector3 *b);
+extern "C" extern void Vec2_Sub(int *o, int *a, int *b);
+extern "C" extern int func_0203d524(int *a, int *b);
+extern "C" extern int _ZN4cstd4fdivEii(int a, int b);
+extern "C" extern void func_ov006_020e6db4(int a0, int a1, int a2);
+extern "C" extern void func_ov006_020cf040(char *sl, void *arg1, Vector3 *r2);
+extern "C" extern void func_ov006_020cfa28(char *p);
+extern "C" extern void Vec3_MulScalar(Vector3 *out, Vector3 *in, int scale);
+extern "C" extern void Vec3_Add(Vector3 *out, Vector3 *a, Vector3 *b);
+
+extern "C" {extern struct Cannon *data_ov006_0214097c[];}
+extern "C" {extern int data_ov006_0213b30c;}
+extern "C" {extern int data_ov006_0213b310;}
+extern "C" {extern int data_ov006_0213b2f4;}
+extern "C" {extern int data_ov006_0213b308;}
+
+#pragma push
+#pragma opt_common_subs off
+#pragma opt_propagation off
+// @symbol func_ov006_020cfc74
+extern "C" int func_ov006_020cfc74(char *c)
+{
+    int i;
+    int a;
+    struct Cannon **arr;
+
+    i = 0;
+    do {
+        int b, cc, dd;
+        Vector3 pos0, pos1, diff;
+        struct V2 p1proj, p0proj;
+        struct V2 negW, posW;
+        struct V2 gateDir, aTest, bTest;
+        int flag, s1, s2;
+        Vector3 sumPt, diffPt, farFwd, farBack;
+        Vector3 *p0;
+        Vector3 *p1;
+
+        if (data_ov006_0214097c[i] == 0)
+            continue;
+        if (data_ov006_0214097c[i]->vt->IsActive(data_ov006_0214097c[i]) == 0)
+            continue;
+        arr = data_ov006_0214097c;
+
+        p0 = arr[i]->vt->GetPos(arr[i]);
+        pos0.x = p0->x;
+        pos0.y = p0->y;
+        pos0.z = p0->z;
+
+        p1 = arr[i]->vt->GetTargetPos(arr[i]);
+        pos1.x = p1->x;
+        pos1.y = p1->y;
+        pos1.z = p1->z;
+
+        Vec3_Sub(&diff, &pos0, &pos1);
+        SubVec3(&pos0, (Vector3 *)(c + 8), &pos0);
+        SubVec3(&pos1, (Vector3 *)(c + 8), &pos1);
+
+        a = DotVec3((Vector3 *)(c + 0x20), &pos0);
+        b = DotVec3((Vector3 *)(c + 0x14), &pos0);
+        cc = DotVec3((Vector3 *)(c + 0x20), &pos1);
+        dd = DotVec3((Vector3 *)(c + 0x14), &pos1);
+        DotVec3((Vector3 *)(c + 0x14), &diff);
+        DotVec3((Vector3 *)(c + 0x20), &diff);
+
+        p0proj.y = b;
+        p1proj.x = cc;
+        p0proj.x = a;
+        p1proj.y = dd;
+
+        negW.x = -(*(int *)(c + 0x58));
+        negW.y = 0;
+        posW.x = *(int *)(c + 0x58);
+        posW.y = 0;
+
+        Vec2_Sub((int *)&gateDir, (int *)&negW, (int *)&posW);
+        Vec2_Sub((int *)&aTest, (int *)&negW, (int *)&p1proj);
+        Vec2_Sub((int *)&bTest, (int *)&negW, (int *)&p0proj);
+
+        flag = 0;
+        s1 = func_0203d524((int *)&gateDir, (int *)&aTest);
+        s2 = func_0203d524((int *)&gateDir, (int *)&bTest);
+        s1 = CLAMP(s1, -1, 1);
+        s2 = CLAMP(s2, -1, 1);
+
+        if (s1 * s2 <= 0 && s1 > s2) {
+            struct V2 edge, e1, e2;
+            int t1, t2;
+            Vec2_Sub((int *)&edge, (int *)&p1proj, (int *)&p0proj);
+            gateDir = edge;
+            Vec2_Sub((int *)&e1, (int *)&p1proj, (int *)&negW);
+            aTest = e1;
+            Vec2_Sub((int *)&e2, (int *)&p1proj, (int *)&posW);
+            bTest = e2;
+
+            t1 = func_0203d524((int *)&gateDir, (int *)&aTest);
+            t2 = func_0203d524((int *)&gateDir, (int *)&bTest);
+            t1 = CLAMP(t1, -1, 1);
+            t2 = CLAMP(t2, -1, 1);
+            if (t1 * t2 <= 0) flag = 1;
+        }
+
+        if (flag != 0) {
+            int mag, t;
+            *(int *)(c + 0x38) = pos0.x;
+            *(int *)(c + 0x3c) = pos0.y;
+            *(int *)(c + 0x40) = pos0.z;
+            *(int *)(c + 0x44) = diff.x;
+            *(int *)(c + 0x48) = diff.y;
+            *(int *)(c + 0x4c) = diff.z;
+
+            t = _ZN4cstd4fdivEii((a < 0) ? -a : a, *(int *)(c + 0x58));
+            {
+                int w = *(int *)(c + 0x58);
+                int av = (a < 0) ? -a : a;
+                mag = (int)(((long long)av * w + 0x800) >> 12);
+            }
+
+            if (mag < 0x400000) {
+                arr[i]->f18 = 2;
+                func_ov006_020e6db4(0x1b1, *(int *)(c + 8),
+                    (data_ov006_0213b310 * t + data_ov006_0213b30c * (0x1000 - t)) >> 12);
+            } else {
+                arr[i]->f18 = 1;
+                func_ov006_020e6db4(0x1ae, *(int *)(c + 8),
+                    (data_ov006_0213b308 * t + data_ov006_0213b2f4 * (0x1000 - t)) >> 12);
+            }
+
+            {
+                int *dst = (int *)((char *)arr[i] + 4);
+                dst[0] = *(int *)(c + 0x14);
+                dst[1] = *(int *)(c + 0x18);
+                dst[2] = *(int *)(c + 0x1c);
+                arr[i]->f10 = a;
+                arr[i]->f14 = *(int *)(c + 0x58);
+                *(u16 *)(c + 0x320) = 0;
+                func_ov006_020cf040(c, (void *)(c + 0x38), (Vector3 *)(c + 0x44));
+
+                *(u16 *)(c + 0x324) -= 1;
+                if (*(u16 *)(c + 0x324) == 0) {
+                    *(u8 *)(c + 0x328) = 3;
+                    func_ov006_020cfa28(c);
+                    return 1;
+                }
+                *(u16 *)(c + 0x326) += 1;
+            }
+        } else {
+            Vec3_MulScalar(&farFwd, (Vector3 *)(c + 0x20), *(int *)(c + 0x58));
+            Vec3_Add(&sumPt, &pos0, &farFwd);
+            Vec3_MulScalar(&farBack, (Vector3 *)(c + 0x20), *(int *)(c + 0x58));
+            Vec3_Sub(&diffPt, &pos0, &farBack);
+
+            if (sumPt.y < 0 && sumPt.y > -0x30000) {
+                if (sumPt.x > -0x8000 && sumPt.x < 0) {
+                    if (diff.x > 0) {
+                        arr[i]->f18 = 3;
+                    }
+                }
+            } else {
+                if (diffPt.y < 0 && diffPt.y > -0x30000 && diffPt.x > 0 && diffPt.x < 0x8000 && diff.x < 0) {
+                    arr[i]->f18 = 3;
+                }
+            }
+        }
+    } while (++i < 5);
+    return 0;
+}
+#pragma pop
+}
+
+// ---- func_ov006_020d01e0.cpp ----
+namespace s020d01e0 {
+/* The minigame's touch-drawn line becomes a strip of grid points, and the
+ * routine then picks the object that line cuts closest.
+ *
+ *   THE FRAME. The ROM opens with `sub sp, sp, #0xd4`: fourteen scratch words
+ *   of which thirteen are ever written, then thirteen twelve-byte objects of
+ *   which twelve are ever written. sp+0x34 and sp+0xc8 are reserved and never
+ *   touched. In C that frame is unreachable, because an unused local emits
+ *   nothing and is given no home (six shapes were measured, among them a dead
+ *   struct copy, a guarded dead store and an aliasing pointer). A type with a
+ *   DECLARED destructor behaves differently: the frontend still reserves its
+ *   stack slot even when the optimiser empties it. Vector3 declares one already,
+ *   for the arrays the ROM destroys through __cxa_vec_cleanup. `spareVec` and
+ *   `spare4` are those two reservations written down. Their original spelling is
+ *   not recoverable from the bytes; an elided copy of a by-value return is the
+ *   likely source.
+ *
+ *   THE SWAP TEST. Its two reads go through a per-site const cast (see
+ *   notes/mwccarm-codegen.md 6bk). The ROM re-reads both halfwords from memory
+ *   after writing them, and the cast is its own CSE class, so the stores above
+ *   do not forward into it.
+ *
+ * `colWeight += 0x555` sits at the tail of the inner loop with the other two
+ * induction steps. Placed between the two `cell->x` statements instead, which is
+ * where the earlier drafts had it, the whole 0x340..0x3e4 window schedules one
+ * slot early and 35 words differ. Nothing else moves that residue: 246 pragma
+ * names at on and off, every declaration order and type name, the loop form, the
+ * pointer form and the multiply operand order are all inert on it.
+ */
+extern "C" {
+extern void Vec3_Add(Vector3* out, Vector3* a, Vector3* b);
+extern void Vec3_MulScalar(Vector3* out, Vector3* in, int s);
+extern void Vec3_Sub(Vector3* out, Vector3* a, Vector3* b);
+extern void Vec3_MulScalarInPlace(int *v, int s);
+extern void SubVec3(Vector3 *a, Vector3 *b, Vector3 *c);
+extern Fix12i Vec3_Dist(const Vector3* a, const Vector3* b);
+extern Fix12i DotVec3(const Vector3 *a, const Vector3 *b);
+extern int _ZN4cstd4fdivEii(int a, int b);
+extern void func_ov006_020cf040(void *a, void *b, void *c);
+extern void func_ov006_020cf124(void *a);
+extern void func_ov006_020e6db4(int a0, int a1, int a2);
+extern void func_ov006_020cfa28(char *p);
+extern void func_ov006_020cfc58(char *p);
+
+extern void *data_ov006_0214097c[];
+extern s32 data_ov006_0213b2fc;
+extern s32 data_ov006_0213b300;
+extern s32 data_ov006_0213b2f8;
+extern s32 data_ov006_0213b304;
+}
+
+struct Spare4 { s32 v; ~Spare4() {} };
+typedef s32 (*IsActiveFn)(void *);
+typedef Vector3 *(*GetVecFn)(void *);
+
+// @symbol func_ov006_020d01e0
+extern "C" void func_ov006_020d01e0(char *c, short *p1, short *p2)
+{
+    Spare4 spare4;
+    Vector3 va, vb;
+    Vector3 bestRel, bestDir;
+    Vector3 relPos, rawDir;
+    Vector3 sumVec, scaledVec, diffVec, tmpVec, zAxis, crossVec;
+    Vector3 spareVec;
+    short swapX, swapZ;
+    Fix12i dist, rowStep;
+    s32 j;
+    s32 flag;
+    Vector3 *cell, *mirror;
+    void *bestObj;
+    void *obj;
+    Vector3 *pos, *dir;
+    s32 bestVal, bestD1;
+    s32 k;
+    s32 alongDot, crossDot, sideDot;
+    s32 halfLen;
+    s32 absOff, blendVal, ratio;
+
+    *(s16 *)(c + 0x50) = p1[0];
+    *(s16 *)(c + 0x52) = p1[1];
+    *(s16 *)(c + 0x54) = p2[0];
+    *(s16 *)(c + 0x56) = p2[1];
+
+    p1[0] = (s16)(p1[0] - 0x80);
+    p1[1] = (s16)(0 - p1[1]);
+    p2[0] = (s16)(p2[0] - 0x80);
+    p2[1] = (s16)(0 - p2[1]);
+
+    if (*(const s16 *)p1 > *(const s16 *)p2) {
+        swapX = p1[0];
+        swapZ = p1[1];
+        p1[0] = p2[0];
+        p1[1] = p2[1];
+        p2[0] = swapX;
+        p2[1] = swapZ;
+    }
+
+    {
+        s32 ax = ((s32)p1[0]) << 12;
+        s32 ay = ((s32)p1[1]) << 12;
+        va.x = ax; va.y = ay; va.z = 0;
+    }
+    {
+        s32 bx = ((s32)p2[0]) << 12;
+        s32 by = ((s32)p2[1]) << 12;
+        vb.x = bx; vb.y = by; vb.z = 0;
+    }
+
+    Vec3_Add(&sumVec, &va, &vb);
+    Vec3_MulScalar(&scaledVec, &sumVec, 0x800);
+    *(s32 *)(c + 0x8) = scaledVec.x;
+    *(s32 *)(c + 0xC) = scaledVec.y;
+    *(s32 *)(c + 0x10) = scaledVec.z;
+
+    Vec3_Sub(&diffVec, &vb, &va);
+    *(s32 *)(c + 0x20) = diffVec.x;
+    *(s32 *)(c + 0x24) = diffVec.y;
+    *(s32 *)(c + 0x28) = diffVec.z;
+
+    func_0203ce80(&tmpVec, (Vector3 *)(c + 0x20));
+
+    zAxis.x = 0;
+    zAxis.y = 0;
+    zAxis.z = 0x1000;
+    func_0203cf00(&crossVec, (Vector3 *)(c + 0x20), &zAxis);
+    *(s32 *)(c + 0x14) = crossVec.x;
+    *(s32 *)(c + 0x18) = crossVec.y;
+    *(s32 *)(c + 0x1C) = crossVec.z;
+
+    if (*(s32 *)(c + 0x18) < 0) {
+        *(s32 *)(c + 0x14) = 0 - *(s32 *)(c + 0x14);
+        *(s32 *)(c + 0x18) = 0 - *(s32 *)(c + 0x18);
+    }
+
+    *(s32 *)(c + 0x38) = 0;
+    *(s32 *)(c + 0x3C) = 0;
+    *(s32 *)(c + 0x40) = 0;
+    *(s32 *)(c + 0x44) = 0 - *(s32 *)(c + 0x14);
+    *(s32 *)(c + 0x48) = 0 - *(s32 *)(c + 0x18);
+    *(s32 *)(c + 0x4C) = 0 - *(s32 *)(c + 0x1C);
+    Vec3_MulScalarInPlace((s32 *)(c + 0x44), 0x800);
+
+    SubVec3(&va, (Vector3 *)(c + 8), &va);
+    SubVec3(&vb, (Vector3 *)(c + 8), &vb);
+    dist = Vec3_Dist(&va, &vb);
+    *(s32 *)(c + 0x58) = dist >> 1;
+    rowStep = dist / 3;
+
+    {
+        s32 i;
+        s32 rowFrac, colWeight, colFrac;
+        s32 accum;
+        s32 negRowFrac;
+        s32 rowAbs, colAbs;
+        s32 colW, invColWeight, rowW, cornerW, weightA, weightB, weightSq;
+
+        j = 0;
+        accum = 0;
+        rowFrac = -0x180;
+        cell = (Vector3 *)(c + 0x5C);
+        mirror = (Vector3 *)(c + 0x11C);
+        do {
+            i = 0;
+            negRowFrac = 0 - rowFrac;
+            colFrac = -0x180;
+            colWeight = 0;
+            do {
+                colAbs = (colFrac < 0) ? (0 - colFrac) : colFrac;
+                colW = 0x1000 - (0x180 - colAbs);
+                invColWeight = 0x1000 - colWeight;
+                rowAbs = (rowFrac < 0) ? negRowFrac : rowFrac;
+                rowW = 0x1000 - (0x180 - rowAbs);
+                cornerW = (s32)(((s64)colW * rowW + 0x800) >> 12);
+                flag = 0;
+                weightA = (s32)(((s64)invColWeight * cornerW + 0x800) >> 12);
+                weightSq = (s32)(((s64)cornerW * cornerW + 0x800) >> 12);
+                weightB = (s32)(((s64)colWeight * cornerW + 0x800) >> 12);
+
+                cell->x = (s32)(((s64)vb.x * weightB + 0x800) >> 12);
+                cell->x += (s32)(((s64)va.x * weightA + 0x800) >> 12);
+                cell->y = (s32)(((s64)vb.y * weightB + 0x800) >> 12);
+                cell->y += (s32)(((s64)va.y * weightA + 0x800) >> 12);
+
+                cell->z = accum - *(s32 *)(c + 0x58);
+                cell->z = (s32)(((s64)cell->z * weightSq + 0x800) >> 12);
+
+                mirror->x = cell->x;
+                mirror->y = cell->y;
+                mirror->z = cell->z;
+
+                i++;
+                colFrac += 0x100;
+                colWeight += 0x555;
+                cell++;
+                mirror++;
+            } while (i < 4);
+            j++;
+            accum += rowStep;
+            rowFrac += 0x100;
+        } while (j < 4);
+    }
+
+    *(s16 *)(c + 0x320) = (s16)flag;
+    *(s16 *)(c + 0x322) = 0x1400;
+    *(u8 *)(c + 0x329) = 0x1F;
+    func_ov006_020cf040(c, c + 0x38, c + 0x44);
+    func_ov006_020cf124(c);
+
+    *(s32 *)(c + 0x2C) = 0x1000;
+    *(s32 *)(c + 0x30) = 0x1000;
+    *(s32 *)(c + 0x34) = 0x1000;
+
+    bestObj = 0;
+    bestVal = 0;
+    bestD1 = 0;
+    bestRel.x = 0;
+    bestRel.y = 0;
+    bestRel.z = 0;
+    bestDir.x = 0;
+    bestDir.y = 0;
+    bestDir.z = 0;
+
+    k = 0;
+    do {
+        obj = data_ov006_0214097c[k];
+        if (obj != 0) {
+            if (((IsActiveFn)((*(void ***)obj))[3])(obj) != 0) {
+                obj = data_ov006_0214097c[k];
+                pos = ((GetVecFn)((*(void ***)obj))[0])(obj);
+                relPos.x = pos->x;
+                relPos.y = pos->y;
+                relPos.z = pos->z;
+                obj = data_ov006_0214097c[k];
+                dir = ((GetVecFn)((*(void ***)obj))[2])(obj);
+                rawDir.x = dir->x;
+                rawDir.y = dir->y;
+                rawDir.z = dir->z;
+
+                SubVec3(&relPos, (Vector3 *)(c + 8), &relPos);
+                alongDot = DotVec3((Vector3 *)(c + 0x20), &relPos);
+                crossDot = DotVec3((Vector3 *)(c + 0x14), &relPos);
+                sideDot = DotVec3((Vector3 *)(c + 0x14), &rawDir);
+                DotVec3((Vector3 *)(c + 0x20), &rawDir);
+
+                if (sideDot < 0x100 && crossDot <= bestVal && crossDot > -0x24000) {
+                    s32 h = *(s32 *)(c + 0x58);
+                    if (alongDot > -h && alongDot < h) {
+                        bestRel = relPos;
+                        bestDir = rawDir;
+                        bestObj = data_ov006_0214097c[k];
+                        bestVal = crossDot;
+                        bestD1 = alongDot;
+                    }
+                }
+            }
+        }
+        k++;
+    } while (k < 5);
+
+    if (bestObj != 0) {
+        *(s32 *)(c + 0x38) = bestRel.x;
+        *(s32 *)(c + 0x3C) = bestRel.y;
+        *(s32 *)(c + 0x40) = bestRel.z;
+        *(s32 *)(c + 0x44) = bestDir.x;
+        *(s32 *)(c + 0x48) = bestDir.y;
+        *(s32 *)(c + 0x4C) = bestDir.z;
+
+        absOff = (bestD1 < 0) ? (0 - bestD1) : bestD1;
+        ratio = _ZN4cstd4fdivEii(absOff, *(s32 *)(c + 0x58));
+        halfLen = *(s32 *)(c + 0x58);
+        absOff = (bestD1 < 0) ? (0 - bestD1) : bestD1;
+        blendVal = (s32)(((s64)absOff * halfLen + 0x800) >> 12);
+        if (blendVal < 0x400000) {
+            *(s16 *)((char *)bestObj + 0x18) = 2;
+            func_ov006_020e6db4(0x1B1, *(s32 *)(c + 8),
+                (s32)(data_ov006_0213b2fc * ratio + data_ov006_0213b300 * (0x1000 - ratio)) >> 0xC);
+        } else {
+            *(s16 *)((char *)bestObj + 0x18) = 1;
+            func_ov006_020e6db4(0x1AE, *(s32 *)(c + 8),
+                (s32)(data_ov006_0213b2f8 * ratio + data_ov006_0213b304 * (0x1000 - ratio)) >> 0xC);
+        }
+        *(s32 *)((char *)bestObj + 0x4) = *(s32 *)(c + 0x14);
+        *(s32 *)((char *)bestObj + 0x8) = *(s32 *)(c + 0x18);
+        *(s32 *)((char *)bestObj + 0xC) = *(s32 *)(c + 0x1C);
+        *(s32 *)((char *)bestObj + 0x10) = bestD1;
+        *(s32 *)((char *)bestObj + 0x14) = *(s32 *)(c + 0x58);
+        *(u8 *)(c + 0x328) = 3;
+        func_ov006_020cf040(c, c + 0x38, c + 0x44);
+        func_ov006_020cfa28(c);
+        return;
+    }
+
+    *(s16 *)(c + 0x31C) = 0x258;
+    *(u8 *)(c + 0x328) = 1;
+    func_ov006_020cfc58(c);
+}
+}
+
+// ---- func_ov006_020d09e0.c ----
+namespace s020d09e0 {
+struct V3 { int z, y, x; };
+extern "C" extern void func_020553a4(void* p);
+extern "C" extern void func_0203cd80(struct V3* out, int a, int b);
+extern "C" extern void func_ov006_020cf2fc(char* p);
+extern "C" {extern char data_0209b3ec[];}
+extern "C" {extern char data_ov006_02140990[];}
+// @symbol func_ov006_020d09e0
+extern "C" void func_ov006_020d09e0(void) {
+    struct V3 s;
+    *(volatile int*)0x4000440 = 2;
+    func_020553a4(data_0209b3ec);
+    s.z = 0;
+    s.y = 0;
+    s.x = 0xfffff008;
+    func_0203cd80(&s, -0x2000, 0xfffff008);
+    *(volatile int*)0x40004c8 = (((short)s.z >> 3) & 0x3ff)
+        | ((((short)s.y >> 3) & 0x3ff) << 10)
+        | ((((short)s.x >> 3) & 0x3ff) << 20)
+        | 0x40000000;
+    *(volatile int*)0x40004cc = 0x40007fff;
+    int i;
+    char* p = data_ov006_02140990;
+    for (i = 0; i < 4; i++) {
+        if (*(unsigned char*)(p + 0x328) != 0) {
+            func_ov006_020cf2fc(p);
+        }
+        p += 0x32c;
+    }
+}
+}
+
+// ---- func_ov006_020d0ac0.c ----
+namespace s020d0ac0 {
+extern "C" {extern char data_ov006_02140990[];}
+extern "C" extern void func_ov006_020cf758(void *c);
+// @symbol func_ov006_020d0ac0
+extern "C" void func_ov006_020d0ac0(void) {
+    int i = 0;
+    char *p = data_ov006_02140990;
+    do {
+        if (*(unsigned char*)(p + 0x328) != 0)
+            func_ov006_020cf758(p);
+        i++;
+        p += 0x32c;
+    } while (i < 4);
+}
+}
+
+// ---- func_ov006_020d0b04.c ----
+namespace s020d0b04 {
+extern "C" {extern unsigned char data_ov006_02140990[];}
+
+// @symbol func_ov006_020d0b04
+extern "C" void func_ov006_020d0b04(void) {
+    int i = 0;
+    unsigned char *p = data_ov006_02140990;
+    int r0 = i;
+    do {
+        i++;
+        *(p + 0x328) = r0;
+        p += 0x32c;
+    } while (i < 3);
+}
+}
+
+// ---- func_ov006_020d0b2c.cpp ----
+namespace s020d0b2c {
+extern "C" {
+extern unsigned int func_02045a50(const void *src, unsigned int size);
+extern char data_ov006_0213b414[];
+extern void *data_ov006_02140844;
+extern char data_ov006_0213b3f4[];
+extern void *data_ov006_02140814;
+}
+// @symbol func_ov006_020d0b2c
+extern "C" void func_ov006_020d0b2c(void) {
+  data_ov006_02140844 = (void *)Model::LoadTextureToVram(data_ov006_0213b414, 0x400);
+  data_ov006_02140814 = (void *)func_02045a50(data_ov006_0213b3f4, 0x20);
+}
+}
+
+// ---- func_ov006_020d0b78.c ----
+namespace s020d0b78 {
+extern "C" {extern short data_ov006_02141314[];}
+extern "C" {extern short data_ov006_02141590[];}
+extern "C" extern void func_ov006_020d01e0(short* g, short* a, short* b);
+// @symbol func_ov006_020d0b78
+extern "C" void func_ov006_020d0b78(void) {
+    short a[2];
+    short b[2];
+    a[0] = 0x10;
+    a[1] = 0xb0;
+    b[0] = 0xf0;
+    b[1] = 0xb0;
+    func_ov006_020d01e0(data_ov006_02141314, a, b);
+    data_ov006_02141590[0x54] = 3;
+    data_ov006_02141590[0x55] = 0;
+    data_ov006_02141590[0x51] = 3;
+}
+}
+
+// ---- func_ov006_020d0bd8.c ----
+namespace s020d0bd8 {
+extern "C" {extern short data_ov006_02141314[];}
+extern "C" {extern short data_ov006_02141590[];}
+extern "C" extern void func_ov006_020d01e0(short* g, short* a, short* b);
+// @symbol func_ov006_020d0bd8
+extern "C" void func_ov006_020d0bd8(void) {
+    short a[2];
+    short b[2];
+    a[0] = 0x18;
+    a[1] = 0xb0;
+    b[0] = 0xe8;
+    b[1] = 0xb0;
+    func_ov006_020d01e0(data_ov006_02141314, a, b);
+    data_ov006_02141590[0x54] = 3;
+    data_ov006_02141590[0x55] = 0;
+    data_ov006_02141590[0x51] = 3;
+}
+}
+
+// ---- func_ov006_020d0c38.c ----
+namespace s020d0c38 {
+/*
+ * Try to place a new line segment between two 16-bit points (sl, sb).
+ * Rejects segments shorter than 8 in x, with no direction, or under the
+ * minimum half-length; when the full vector is short of 0x30000 it
+ * re-scales the half vector (y stretched by 0xc00) to a fixed length and
+ * rewrites both endpoints around the midpoint. Then finds the first free
+ * slot (state byte +0x328 == 0) among the three, rejecting it if the
+ * segment crosses any active (state 1) slot's own segment (+0x50/+0x54),
+ * and initialises the slot through func_ov006_020d01e0, returning its
+ * address (0 when none is free).
+ *
+ * Shape notes: the midpoint pair needs named x<<12 / y<<12 temps so the
+ * y shift lands in place; the re-scale block reads half[1] inline at
+ * both the multiply and the two-word copy into tmp (a named copy of it
+ * takes r4 ahead of the umull low word).
+ */
+extern "C" extern void func_0203b958(s16* o, s16* a, s16* b);
+extern "C" extern int func_0203d434(int* in);
+extern "C" extern int Vec2_Len(int* v);
+extern "C" extern int _ZN4cstd4fdivEii(int, int);
+extern "C" extern void func_0203d630(int* p, int m);
+extern "C" extern void func_0203d704(int* o, int* a, int* b);
+extern "C" extern void Vec2_Sub(int* o, int* a, int* b);
+extern "C" extern void func_ov006_020d01e0(s16* slot, s16* a, s16* b);
+
+extern "C" {extern char data_ov006_02140990[];}
+extern "C" {extern s16 data_ov006_02140cb4[];}
+extern "C" {extern s16 data_ov006_02140cb6[];}
+extern "C" {extern s16 data_ov006_02140cae[];}
+
+// @symbol func_ov006_020d0c38
+extern "C" int func_ov006_020d0c38(s16* sl, s16* sb) {
+    s16 d[2];
+    int fx[2];
+    int half[2];
+    int mid[2];
+    int tmp[2];
+    int p1[2];
+    int p2[2];
+    s16 v0[2];
+    s16 v1[2];
+    s16 v2[2];
+    s16 v3[2];
+    s16 v4[2];
+    s16 v5[2];
+    s16 a[2];
+    s16 b[2];
+    s16 s0;
+    s16 s1;
+    int abs0;
+    int i;
+    int j;
+    char* base;
+    char* p;
+    int cross1;
+    int cross2;
+    long long m;
+    int scaled;
+    int len;
+    int off;
+    s16* slot;
+
+    func_0203b958(d, sl, sb);
+
+    s0 = d[0];
+    if (s0 < 0)
+        abs0 = (s16)(-s0);
+    else
+        abs0 = s0;
+    if (abs0 < 8)
+        return 0;
+
+    s1 = d[1];
+    fx[0] = (int)s0 << 12;
+    fx[1] = (int)s1 << 12;
+    half[0] = ((int)s0 >> 1) << 12;
+    half[1] = ((int)s1 >> 1) << 12;
+
+    {
+        int ay = (s16)sl[1];
+        int by = (s16)sb[1];
+        int ax = (s16)sl[0];
+        int bx = (s16)sb[0];
+        int y = (ay + by) >> 1;
+        int x = (ax + bx) >> 1;
+        int x12 = x << 12;
+        int y12 = y << 12;
+        mid[0] = x12;
+        mid[1] = y12;
+    }
+
+    if (func_0203d434(half) == 0)
+        return 0;
+
+    {
+        int ah = half[0];
+        if (ah < 0)
+            ah = -ah;
+        if (ah < 1401)
+            return 0;
+    }
+
+    if (Vec2_Len(fx) < 0x30000) {
+        m = (long long)half[1] * 0xc00 + 0x800;
+        scaled = (int)(m >> 12);
+        tmp[0] = half[0];
+        tmp[1] = half[1];
+        tmp[1] = scaled;
+        len = Vec2_Len(tmp);
+        func_0203d630(half, _ZN4cstd4fdivEii(0x18000, len));
+
+        func_0203d704(p1, mid, half);
+        Vec2_Sub(p2, mid, half);
+
+        sl[0] = (s16)(p1[0] >> 12);
+        sl[1] = (s16)(p1[1] >> 12);
+        sb[0] = (s16)(p2[0] >> 12);
+        sb[1] = (s16)(p2[1] >> 12);
+    }
+
+    base = data_ov006_02140990;
+    i = 0;
+    do {
+        if ((unsigned char)base[0x328] == 0) {
+            p = data_ov006_02140990;
+            j = 0;
+            do {
+                if (i != j) {
+                    if ((unsigned char)p[0x328] == 1) {
+                        func_0203b958(v0, sb, sl);
+                        func_0203b958(v1, (s16*)(p + 0x50), sl);
+                        func_0203b958(v2, (s16*)(p + 0x54), sl);
+
+                        {
+                            s16 ax = v0[0];
+                            s16 ay = v0[1];
+                            s16 bx = v1[0];
+                            s16 by = v1[1];
+                            s16 cy = v2[1];
+                            cross1 = (int)ax * (int)by - (int)ay * (int)bx;
+                            {
+                                s16 cx = v2[0];
+                                cross2 = (int)ax * (int)cy - (int)ay * (int)cx;
+                            }
+                        }
+                        if (cross1 * cross2 <= 0) {
+                            func_0203b958(v3, (s16*)(p + 0x54), (s16*)(p + 0x50));
+                            v0[0] = v3[0];
+                            v0[1] = v3[1];
+                            func_0203b958(v4, sl, (s16*)(p + 0x50));
+                            v1[0] = v4[0];
+                            v1[1] = v4[1];
+                            func_0203b958(v5, sb, (s16*)(p + 0x50));
+                            v2[0] = v5[0];
+                            v2[1] = v5[1];
+
+                            {
+                                s16 ax = v0[0];
+                                s16 ay = v0[1];
+                                s16 bx = v1[0];
+                                s16 by = v1[1];
+                                s16 cy = v2[1];
+                                cross1 = (int)ax * (int)by - (int)ay * (int)bx;
+                                {
+                                    s16 cx = v2[0];
+                                    cross2 = (int)ax * (int)cy - (int)ay * (int)cx;
+                                }
+                            }
+                            if (cross1 * cross2 <= 0)
+                                return 0;
+                        }
+                    }
+                }
+                j++;
+                p += 0x32c;
+            } while (j < 4);
+
+            a[0] = sl[0];
+            a[1] = sl[1];
+            b[0] = sb[0];
+            b[1] = sb[1];
+            off = i * 0x32c;
+            slot = (s16*)((int)data_ov006_02140990 + off);
+            func_ov006_020d01e0(slot, a, b);
+            *(s16*)((int)data_ov006_02140cb4 + off) = 1;
+            *(s16*)((int)data_ov006_02140cb6 + off) = 0;
+            *(s16*)((int)data_ov006_02140cae + off) = (s16)i;
+            return (int)slot;
+        }
+        i++;
+        base += 0x32c;
+    } while (i < 3);
+
+    return 0;
+}
+}
+
+// ---- func_ov006_020d0fe4.c ----
+namespace s020d0fe4 {
+extern "C" extern int __cxa_vec_cleanup(void *dest, int a, int size, void (*func)(void));
+extern "C" {extern char data_ov006_02140990;}
+extern "C" extern void func_ov006_020d1008(void);
+
+// @symbol func_ov006_020d0fe4
+extern "C" void func_ov006_020d0fe4(void)
+{
+    __cxa_vec_cleanup(&data_ov006_02140990, 4, 0x32c, func_ov006_020d1008);
+}
+}
+
+// ---- func_ov006_020d1008.c ----
+namespace s020d1008 {
+// @symbol func_ov006_020d1008
+extern "C" void func_ov006_020d1008(void)
+{
+}
+}
+
+// ---- func_ov006_020d100c.c ----
+namespace s020d100c {
+// @symbol func_ov006_020d100c
+extern "C" void func_ov006_020d100c(char *p)
+{
+    p[808] = 0;
+}
 }

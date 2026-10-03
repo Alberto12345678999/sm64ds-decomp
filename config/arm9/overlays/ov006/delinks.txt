@@ -26,87 +26,27 @@ src/actors/dMgTrmpln2Mario_c.cpp:
 
 src/actors/unit020cd744.cpp:
     complete
-    .text start:0x020cd744 end:0x020cf2fc
+    .text start:0x020cd744 end:0x020d1018
 
-src/func_ov006_020cf2fc.c:
-    complete
-    .text start:0x020cf2fc end:0x020cf758
 
-src/func_ov006_020cf758.cpp:
-    complete
-    .text start:0x020cf758 end:0x020cf790
 
-src/func_ov006_020cf790.c:
-    complete
-    .text start:0x020cf790 end:0x020cf804
 
-src/func_ov006_020cf804.c:
-    complete
-    .text start:0x020cf804 end:0x020cf820
 
-src/func_ov006_020cf820.c:
-    complete
-    .text start:0x020cf820 end:0x020cfa28
 
-src/func_ov006_020cfa28.c:
-    complete
-    .text start:0x020cfa28 end:0x020cfa44
 
-src/func_ov006_020cfa44.c:
-    complete
-    .text start:0x020cfa44 end:0x020cfc58
 
-src/func_ov006_020cfc58.c:
-    complete
-    .text start:0x020cfc58 end:0x020cfc74
 
-src/func_ov006_020cfc74.c:
-    complete
-    .text start:0x020cfc74 end:0x020d01e0
 
-src/func_ov006_020d01e0.cpp:
-    complete
-    .text start:0x020d01e0 end:0x020d09e0
 
-src/func_ov006_020d09e0.c:
-    complete
-    .text start:0x020d09e0 end:0x020d0ac0
 
-src/func_ov006_020d0ac0.c:
-    complete
-    .text start:0x020d0ac0 end:0x020d0b04
 
-src/func_ov006_020d0b04.c:
-    complete
-    .text start:0x020d0b04 end:0x020d0b2c
 
-src/func_ov006_020d0b2c.cpp:
-    complete
-    .text start:0x020d0b2c end:0x020d0b78
 
-src/func_ov006_020d0b78.c:
-    complete
-    .text start:0x020d0b78 end:0x020d0bd8
 
-src/func_ov006_020d0bd8.c:
-    complete
-    .text start:0x020d0bd8 end:0x020d0c38
 
-src/func_ov006_020d0c38.c:
-    complete
-    .text start:0x020d0c38 end:0x020d0fe4
 
-src/func_ov006_020d0fe4.c:
-    complete
-    .text start:0x020d0fe4 end:0x020d1008
 
-src/func_ov006_020d1008.c:
-    complete
-    .text start:0x020d1008 end:0x020d100c
 
-src/func_ov006_020d100c.c:
-    complete
-    .text start:0x020d100c end:0x020d1018
 
 src/actors/dScMgAmida_c.cpp:
     complete
