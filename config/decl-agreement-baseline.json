@@ -7765,11 +7765,6 @@
         "return:int"
       ]
     },
-    "_ZN3G2x12SetBGyAffineEPVtP9Matrix2x2iiii": {
-      "src/_ZN8dScene_c22ResetHardwareRegistersEv.cpp": [
-        "param:#1 volatile void *"
-      ]
-    },
     "_ZN3G2x13SetBlendAlphaEPVttttj": {
       "src/_ZN12dScMgSlot1_c13InitResourcesEv.cpp": [
         "param:#5 unsigned short"
@@ -15022,9 +15017,6 @@
       "src/_ZN5Sound8PlayLongEjjjRK7Vector3s.cpp": [
         "return:int []"
       ],
-      "src/_ZN8dScene_c22BeforeCleanupResourcesEv.cpp": [
-        "return:void *"
-      ],
       "src/func_02012468.c": [
         "return:char"
       ],
@@ -15371,11 +15363,11 @@
       ]
     },
     "data_0209d4ac": {
-      "src/_ZN8dScene_c9SetFadersEP15FaderBrightness.cpp": [
-        "return:FaderBrightness *"
-      ],
       "src/func_02019440.c": [
         "return:int"
+      ],
+      "src/actors/dScene_c.cpp": [
+        "return:FaderBrightness *"
       ]
     },
     "data_0209d4b0": {
@@ -15716,11 +15708,6 @@
       ],
       "src/func_020197b8.c": [
         "return:unsigned char []"
-      ]
-    },
-    "data_0209f1e4": {
-      "src/_ZN8dScene_c19ResetFadersAndSoundEv.cpp": [
-        "return:unsigned int"
       ]
     },
     "data_0209f1f8": {
@@ -16509,12 +16496,6 @@
       "src/actors/dMap_c.cpp": [
         "return:VtblOwner *"
       ],
-      "src/_ZN8dScene_c14BeforeBehaviorEv.cpp": [
-        "return:FaderObject *"
-      ],
-      "src/_ZN8dScene_c9SetFadersEP15FaderBrightness.cpp": [
-        "return:FaderBrightness *"
-      ],
       "src/_ZN9BootScene8BehaviorEv.cpp": [
         "return:unsigned char []"
       ],
@@ -16550,6 +16531,9 @@
       ],
       "src/FUN_02029934.cpp": [
         "return:Obj *"
+      ],
+      "src/actors/dScene_c.cpp": [
+        "return:FaderBrightness *"
       ]
     },
     "data_0209f5c0": {
@@ -16564,25 +16548,13 @@
       ]
     },
     "data_0209f5d0": {
-      "src/_ZN8dScene_c14BeforeBehaviorEv.cpp": [
+      "src/actors/dScene_c.cpp": [
         "return:FaderBrightness"
       ]
     },
     "data_0209f5e8": {
       "src/LoadLevel.c": [
         "return:unsigned short"
-      ],
-      "src/_ZN8dScene_c14BeforeBehaviorEv.cpp": [
-        "return:FaderObject"
-      ],
-      "src/_ZN8dScene_c14StartSceneFadeEjjt.cpp": [
-        "return:FaderColor"
-      ],
-      "src/_ZN8dScene_c19ResetFadersAndSoundEv.cpp": [
-        "return:FaderBrightness"
-      ],
-      "src/_ZN8dScene_c20SetAndStopColorFaderEv.cpp": [
-        "return:FaderBrightness"
       ],
       "src/_ZN9BootScene13InitResourcesEv.cpp": [
         "return:char"
@@ -25763,7 +25735,7 @@
       ]
     },
     "func_02013edc": {
-      "src/_ZN8dScene_c16SpawnIfNecessaryEv.cpp": [
+      "src/actors/dScene_c.cpp": [
         "param:#1 unsigned int",
         "param:#2 unsigned int",
         "return:int"
@@ -30811,74 +30783,11 @@
         "return:unsigned short"
       ]
     },
-    "func_02053ee0": {
-      "src/_ZN2GX15DisableAllBanksEv.cpp": [
-        "return:void"
-      ]
-    },
-    "func_02053f08": {
-      "src/_ZN2GX15DisableAllBanksEv.cpp": [
-        "return:void"
-      ]
-    },
-    "func_02053f30": {
-      "src/_ZN2GX15DisableAllBanksEv.cpp": [
-        "return:void"
-      ]
-    },
-    "func_02053f44": {
-      "src/_ZN2GX15DisableAllBanksEv.cpp": [
-        "return:void"
-      ]
-    },
     "func_02053f58": {
-      "src/_ZN2GX15DisableAllBanksEv.cpp": [
-        "return:void"
-      ],
       "src/func_02019440.c": [
         "return:void"
       ],
       "src/func_ov007_020bd960.c": [
-        "return:void"
-      ]
-    },
-    "func_02053f6c": {
-      "src/_ZN2GX15DisableAllBanksEv.cpp": [
-        "return:void"
-      ]
-    },
-    "func_02053f80": {
-      "src/_ZN2GX15DisableAllBanksEv.cpp": [
-        "return:void"
-      ]
-    },
-    "func_02053f94": {
-      "src/_ZN2GX15DisableAllBanksEv.cpp": [
-        "return:void"
-      ]
-    },
-    "func_02053fa8": {
-      "src/_ZN2GX15DisableAllBanksEv.cpp": [
-        "return:void"
-      ]
-    },
-    "func_02053fbc": {
-      "src/_ZN2GX15DisableAllBanksEv.cpp": [
-        "return:void"
-      ]
-    },
-    "func_02053fe0": {
-      "src/_ZN2GX15DisableAllBanksEv.cpp": [
-        "return:void"
-      ]
-    },
-    "func_02054004": {
-      "src/_ZN2GX15DisableAllBanksEv.cpp": [
-        "return:void"
-      ]
-    },
-    "func_02054018": {
-      "src/_ZN2GX15DisableAllBanksEv.cpp": [
         "return:void"
       ]
     },
