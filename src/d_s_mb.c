@@ -6,9 +6,9 @@ extern void *_ZN7fBase_cC2Ev(void *);
 extern int data_0208e4b8[];
 extern int _ZTV8dScene_c[];
 extern int data_020943c4[];
-extern int data_0208eafc[];
-extern int data_0208eacc[];
-extern int data_0208eb2c[];
+extern int _ZTV8dFader_c[];
+extern int _ZTV15dFdBrightness_c[];
+extern int _ZTV10dFdColor_c[];
 /* Reconstructed source-style name: SM64DS proves dScMB_c through RTTI,
  * allocation size, vtable identity, and the MULTIBOOT registry profile;
  * later EAD lineage supplies classInit. Exact original spelling is not
@@ -28,11 +28,11 @@ void *dScMB_c_classInit(void)
         *(int **)p = data_020943c4;
         {
             int *fp = (int *)((int)p + 0x50);
-            fp[0] = (int)data_0208eafc;
-            fp[0] = (int)data_0208eacc;
+            fp[0] = (int)_ZTV8dFader_c;
+            fp[0] = (int)_ZTV15dFdBrightness_c;
             fp[1] = 0x1000;
             fp[2] = 0;
-            fp[0] = (int)data_0208eb2c;
+            fp[0] = (int)_ZTV10dFdColor_c;
             *(short *)(fp + 3) = 0;
         }
     }

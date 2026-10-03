@@ -1,19 +1,19 @@
-#ifndef FADERBRIGHTNESS_H
-#define FADERBRIGHTNESS_H
+#ifndef DFDBRIGHTNESS_C_H
+#define DFDBRIGHTNESS_C_H
 
-#include "Fader.h"
+#include "dFader_c.h"
 
-/* Brightness fade: drives MASTER_BRIGHT on both engines from Fader's
- * interpolator. It adds no members of its own -- FaderBrightness::~FaderBrightness
- * writes the vptr and immediately tail-calls the Fader subobject destructor, so
- * the object is exactly a Fader with a different vtable.
+/* Brightness fade: drives MASTER_BRIGHT on both engines from dFader_c's
+ * interpolator. It adds no members of its own -- dFdBrightness_c::~dFdBrightness_c
+ * writes the vptr and immediately tail-calls the dFader_c subobject destructor, so
+ * the object is exactly a dFader_c with a different vtable.
  *
  * It is the only concrete implementation in the family: its vtable at
- * data_0208eacc fills all eight of the slots Fader leaves null, and both
- * data_0208eb2c (FaderColor's) and _ZTV9FaderWipe still point at these functions
+ * data_0208eacc fills all eight of the slots dFader_c leaves null, and both
+ * data_0208eb2c (dFdColor_c's) and _ZTV9dFdWipe_c still point at these functions
  * for everything except AdvanceFade. `data_0208eacc` is the ROM-proven address
- * point; `_ZTV15FaderBrightness` is its compiler-facing compatibility alias.
- * The ROM RTTI name is dFdBrightness_c; see include/Fader.h.
+ * point; `_ZTV15dFdBrightness_c` is its compiler-facing compatibility alias.
+ * The ROM RTTI name is dFdBrightness_c; see include/dFader_c.h.
  *
  * THREE OF THESE USED TO BE DECLARED NON-VIRTUAL -- IsBetweenStartAndEnd,
  * SetToEnd and SetToStart. They occupy slots 7, 8 and 9 of every concrete table
@@ -22,22 +22,22 @@
  * as a base pointer, which a non-virtual member makes impossible to express.
  */
 #ifdef __cplusplus
-struct FaderBrightness : Fader {
+struct dFdBrightness_c : dFader_c {
     /* Inline, and this is where the interpolator's initial state is set. The
-       ROM's evidence is the order inside _ZN9FaderWipeC1Ev (0x02017480), the
-       chain's only surviving constructor: Fader's vtable, then THIS class's
+       ROM's evidence is the order inside _ZN9dFdWipe_cC1Ev (0x02017480), the
+       chain's only surviving constructor: dFader_c's vtable, then THIS class's
        vtable, and only THEN `currInterp = 0x1000; speed = 0`. A field write
        that follows a sub-object's own vptr store belongs to that sub-object's
-       constructor, so those two are FaderBrightness's, not Fader's. A fade
+       constructor, so those two are dFdBrightness_c's, not dFader_c's. A fade
        therefore starts fully opaque and stationary. Inline because the ROM has
        no out-of-line constructor for this class: it is emitted into
-       FaderWipe's. */
-    FaderBrightness();
+       dFdWipe_c's. */
+    dFdBrightness_c();
 
     /* Declared first among the virtuals -- key function. The D0/D1/D2 sources
        now define the real destructor and isolate the requested variant from
        mwcc's emitted group. */
-    virtual ~FaderBrightness();
+    virtual ~dFdBrightness_c();
 
     virtual void AdvanceFade();                 /* slot 2 */
     virtual int  SetBackwardTime(u32 frames);   /* slot 3 */
@@ -54,18 +54,18 @@ struct FaderBrightness : Fader {
    inline body and reports the whole header UNPARSED. `inline` keeps the
    emission identical: the body still goes wherever it is used, and the ROM
    has no out-of-line constructor for this class. */
-inline FaderBrightness::FaderBrightness() { currInterp = 0x1000; speed = 0; }
+inline dFdBrightness_c::dFdBrightness_c() { currInterp = 0x1000; speed = 0; }
 
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
-typedef char FaderBrightness_size_must_be_0xc[sizeof(FaderBrightness) == 0xc ? 1 : -1];
+typedef char FaderBrightness_size_must_be_0xc[sizeof(dFdBrightness_c) == 0xc ? 1 : -1];
 #endif
 #else
-struct FaderBrightness {
+struct dFdBrightness_c {
     void*  vtable;      /* 0x00 */
-    Fix12i currInterp;  /* 0x04 (from Fader) */
-    Fix12i speed;       /* 0x08 (from Fader) */
+    Fix12i currInterp;  /* 0x04 (from dFader_c) */
+    Fix12i speed;       /* 0x08 (from dFader_c) */
 };
 #endif
 
-#endif /* FADERBRIGHTNESS_H */
+#endif /* DFDBRIGHTNESS_C_H */

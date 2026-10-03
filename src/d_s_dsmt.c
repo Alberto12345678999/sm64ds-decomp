@@ -2,10 +2,10 @@
 // dScDSMT_c factory: new fBase_c(0x64), base ctor, installs the vtable chain
 // (two base vtables then the ov007 one), ORs flag bits 1 and 4 at +0x13 via a
 // materialized byte pointer, sets the +0x50 sub-object vtables, and constructs
-// the member at +0x54 via func_02017278.
+// the member at +0x54 via _ZN10dFdDummy_cC1Ev.
 extern void *_ZN7fBase_cnwEj(unsigned int size);
 extern void *_ZN7fBase_cC2Ev(void *p);
-extern void func_02017278(int *p);
+extern struct dFdDummy_c *_ZN10dFdDummy_cC1Ev(struct dFdDummy_c *p);
 
 extern int data_0208e4b8[];
 extern int _ZTV8dScene_c[];
@@ -31,7 +31,7 @@ int *dScDSMT_c_classInit(void)
         p[0] = (int)data_ov007_021032e8;
         p[0x50 / 4] = (int)data_0208ee14;
         p[0x50 / 4] = (int)data_ov007_021032b0;
-        func_02017278(p + 0x54 / 4);
+        _ZN10dFdDummy_cC1Ev((struct dFdDummy_c *)((char *)p + 0x54));
     }
     return p;
 }

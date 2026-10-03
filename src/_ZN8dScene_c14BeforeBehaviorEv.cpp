@@ -7,7 +7,7 @@
  *
  * ONE DELIBERATE SHADOW REMAINS, AND IT IS EVIDENCE, NOT LAZINESS. The current
  * fader at 0x0209f5bc is reached through the file-local `FaderVTable` below rather
- * than through include/FaderBrightness.h, because the ROM disagrees with the fader's
+ * than through include/dFdBrightness_c.h, because the ROM disagrees with the fader's
  * own mangled names about how many arguments slots 3 and 4 take:
  *
  *     0202e4d8  ldr r0,[pc,#0xec]      ; &current fader
@@ -17,7 +17,7 @@
  *     0202e4f0  blx r3
  *
  * and the same shape at 0x0202e58c for slot 3. But the functions those slots hold
- * are _ZN15FaderBrightness14SetForwardTimeEj and ...15SetBackwardTimeEj, and `Ej`
+ * are _ZN15dFdBrightness_c14SetForwardTimeEj and ...15SetBackwardTimeEj, and `Ej`
  * is one parameter. Calling them through the real class would drop the `mov r2,#0`
  * and stop matching, so the ROM's own dScene_c translation unit must have been built
  * against a two-argument prototype. The names below are the ROM's -- read out of
@@ -27,7 +27,7 @@
  * known to be wrong in the other direction too (they declare seven vtable slots
  * where the ROM has ten), and that is a separate, larger correction. */
 #include "dScene_c.h"
-#include "FaderBrightness.h"
+#include "dFdBrightness_c.h"
 
 /* The ROM's fader vtable at data_0208eb2c, with the arity the call sites above
    prove this TU was compiled against. Slots 0/1 are D1/D0. The slot names come
@@ -49,8 +49,8 @@ extern u8   data_0209f1e0;
 extern void *data_0209f1e4;
 extern fBase_c   *data_0209f5c0;
 extern FaderObject *data_0209f5bc;   /* the currently installed fader */
-extern FaderBrightness data_0209f5d0;
-extern FaderObject  data_0209f5e8;   /* really a FaderColor */
+extern dFdBrightness_c data_0209f5d0;
+extern FaderObject  data_0209f5e8;   /* really a dFdColor_c */
 extern u16  data_02092664;           /* pending scene ID; 0x187 means none */
 
 extern void func_02023544(void);
@@ -69,9 +69,9 @@ int dScene_c::BeforeBehavior()
         } else {
             if (data_0209f1e4 == 0) {
                 data_0209f5d0.currInterp = 0;   /* 0x4, not speed at 0x8 */
-                ((FaderBrightness *)&data_0209f5d0)->FaderBrightness::SetForwardTime(0x10);
+                ((dFdBrightness_c *)&data_0209f5d0)->dFdBrightness_c::SetForwardTime(0x10);
                 data_0209f1e4 = &data_0209f5d0;
-            } else if (((FaderBrightness *)&data_0209f5d0)->FaderBrightness::IsAtEnd()) {
+            } else if (((dFdBrightness_c *)&data_0209f5d0)->dFdBrightness_c::IsAtEnd()) {
                 StartSceneFade(1, 0, 0);
                 data_0209f5e8.vt->SetForwardTime(&data_0209f5e8, 0, 0);
                 MarkForDestruction();

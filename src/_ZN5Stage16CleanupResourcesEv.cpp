@@ -33,7 +33,7 @@ extern void EndKuppaScript(void);
 extern void _ZN6Memory16operator_delete2EPv(void *);
 extern void _ZN8dScene_c20SetAndStopColorFaderEv(void);
 extern void func_02073244(void *, int, int, void (*)(void *));
-extern void _ZN9FaderWipeD1Ev(void *);
+extern void _ZN9dFdWipe_cD1Ev(void *);
 extern void CleanCommonModelDataArr(void);
 extern void _ZN5Stage18ResetMeshCollidersEv(void);
 extern void func_01ffb0c8(void *);
@@ -96,7 +96,7 @@ int Stage::CleanupResources()
     data_0209f314 = 0;
     _ZN8dScene_c20SetAndStopColorFaderEv();
     data_0209d4b0 = 0;
-    func_02073244(data_0209f324, 0x60, 8, _ZN9FaderWipeD1Ev);
+    func_02073244(data_0209f324, 0x60, 8, _ZN9dFdWipe_cD1Ev);
     data_0209f324 = 0;
     CleanCommonModelDataArr();
     ((dBgW *)((char *)&mMeshCollider))->Disable();

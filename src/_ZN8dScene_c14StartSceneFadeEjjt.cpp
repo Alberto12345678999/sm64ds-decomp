@@ -5,12 +5,12 @@
  * only if that changed anything, sets the colour the fader will fade through.
  *
  * The `t` in the mangled name is `unsigned short`, and it is load-bearing: the
- * store is `strh`, so the field at FaderColor+0xc is two bytes wide. */
+ * store is `strh`, so the field at dFdColor_c+0xc is two bytes wide. */
 #include "dScene_c.h"
-#include "FaderColor.h"
+#include "dFdColor_c.h"
 
 extern "C" {
-extern FaderColor data_0209f5e8;
+extern dFdColor_c data_0209f5e8;
 }
 
 void dScene_c::StartSceneFade(u32 sceneID, u32 param, u16 fadeColor)

@@ -251,7 +251,7 @@
   },
   {
    "file": "notes/archive/plan-scalar-markers.md",
-   "ref": "src/_ZN9FaderWipeC1Ev.c"
+   "ref": "src/_ZN9dFdWipe_cC1Ev.c"
   },
   {
    "file": "notes/bgobject-provenance.md",

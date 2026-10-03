@@ -1,5 +1,5 @@
 //cpp
-/* dScene_c::SetFaders(FaderBrightness*) at 0x0202e1e0, 0x8c bytes.
+/* dScene_c::SetFaders(dFdBrightness_c*) at 0x0202e1e0, 0x8c bytes.
  *
  * Installs a fader, carrying the outgoing one's end state across so the screen
  * does not jump: if the fader being replaced was sitting at the start, snap the
@@ -11,14 +11,14 @@
  * called `thiz->v24()` and `thiz->v20()`. Every part of that was wrong in a way
  * the bytes could not see:
  *
- *   - the argument is a FaderBrightness, which the mangled name has said all
- *     along, and dScene_c::SetAndStopColorFader confirms by loading a FaderColor
+ *   - the argument is a dFdBrightness_c, which the mangled name has said all
+ *     along, and dScene_c::SetAndStopColorFader confirms by loading a dFdColor_c
  *     into r0 and branching straight here;
  *   - so this is a STATIC member -- r0 is the parameter, not a `this`;
  *   - and v20/v24 are vtable slots 8 and 9, which are SetToEnd and SetToStart.
  *
  * Slots 8 and 9 are why this file could not be migrated with the rest of the
- * class: include/Fader.h declared seven slots and the ROM has ten, so there was
+ * class: include/dFader_c.h declared seven slots and the ROM has ten, so there was
  * no way to spell these calls through the real type. Fixed in #1259, which is
  * what this file is the proof of.
  *
@@ -27,18 +27,18 @@
  * this argument. Slots 5 and 6 on it are IsAtStart and IsAtEnd.
  */
 #include "dScene_c.h"
-#include "FaderBrightness.h"
+#include "dFdBrightness_c.h"
 
 extern "C" {
 /* Two globals holding the same pointer. 0x0209f5bc is the one this function
    reads back; 0x0209d4ac is read by 0x02018efc, which calls AdvanceFade (slot 2)
    on it -- which is the evidence that it holds a fader and not, as this file
    used to have it, a dScene_c. */
-extern FaderBrightness *data_0209f5bc;
-extern FaderBrightness *data_0209d4ac;
+extern dFdBrightness_c *data_0209f5bc;
+extern dFdBrightness_c *data_0209d4ac;
 }
 
-void dScene_c::SetFaders(FaderBrightness *fader)
+void dScene_c::SetFaders(dFdBrightness_c *fader)
 {
     if (data_0209f5bc) {
         if (data_0209f5bc->IsAtStart()) {

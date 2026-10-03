@@ -1,36 +1,36 @@
-#ifndef FADERCOLOR_H
-#define FADERCOLOR_H
+#ifndef DFDCOLOR_C_H
+#define DFDCOLOR_C_H
 
-#include "FaderBrightness.h"
+#include "dFdBrightness_c.h"
 
 /* Colour fade: same interpolator, driven into BLDY on both engines instead of
  * MASTER_BRIGHT, with one extra field selecting which direction to blend.
  *
  * This header used to be a flat generated struct with no base class, four
- * fields, and one non-virtual method. Three of those four fields were Fader's:
+ * fields, and one non-virtual method. Three of those four fields were dFader_c's:
  * `unk_004` is currInterp and `pad_008` covered speed. Only the u16 at 0xc is
- * FaderColor's own.
+ * dFdColor_c's own.
  *
- * DERIVATION. _ZN9FaderWipeC1Ev (0x02017480) writes data_0208eafc, then
- * data_0208eacc, then data_0208eb2c, then _ZTV9FaderWipe, in that
- * order -- so FaderColor sits between FaderBrightness and FaderWipe. The ROM's
+ * DERIVATION. _ZN9dFdWipe_cC1Ev (0x02017480) writes data_0208eafc, then
+ * data_0208eacc, then data_0208eb2c, then _ZTV9dFdWipe_c, in that
+ * order -- so dFdColor_c sits between dFdBrightness_c and dFdWipe_c. The ROM's
  * own __si_class_type_info records agree: dFdColor_c's single base is
  * dFdBrightness_c.
  *
- * SIZE 0x10, and the constructor is what fixes it: after the FaderColor part is
- * initialised (`strh r2,[r4,#0xc]`), FaderWipe's own sub-object constructor is
- * handed `add r0, r4, #0x10`. The first byte past FaderColor is 0x10.
+ * SIZE 0x10, and the constructor is what fixes it: after the dFdColor_c part is
+ * initialised (`strh r2,[r4,#0xc]`), dFdWipe_c's own sub-object constructor is
+ * handed `add r0, r4, #0x10`. The first byte past dFdColor_c is 0x10.
  *
  * VTABLE. data_0208eb2c is ten slots and overrides exactly one,
- * slot 2 -- AdvanceFade. Slots 3..9 still point at FaderBrightness's functions.
- * AdvanceFade is NOT declared first here: the destructor is, so that ~FaderColor
+ * slot 2 -- AdvanceFade. Slots 3..9 still point at dFdBrightness_c's functions.
+ * AdvanceFade is NOT declared first here: the destructor is, so that ~dFdColor_c
  * is the key function. Its D0/D1/D2 sources now define the real destructor;
- * mwcc's `_ZTV10FaderColor` relocation binds to the same ROM-proven address
+ * mwcc's `_ZTV10dFdColor_c` relocation binds to the same ROM-proven address
  * point as data_0208eb2c. The ROM RTTI name remains dFdColor_c. An override
  * takes its base's slot whatever order it is declared in, so this costs nothing.
  */
 #ifdef __cplusplus
-struct FaderColor : FaderBrightness {
+struct dFdColor_c : dFdBrightness_c {
     /* 0x0c. Only its zero/non-zero-ness is observed here: AdvanceFade picks a
        blend step of +0x10 when it is set and -0x10 when it is clear. What
        writes it is src/_ZN8dScene_c14StartSceneFadeEjjt.*, whose parameter is
@@ -38,15 +38,15 @@ struct FaderColor : FaderBrightness {
        gives this field, so it is named for that now. */
     u16 color;
 
-    /* Inline, and it owns exactly one store. In _ZN9FaderWipeC1Ev the
+    /* Inline, and it owns exactly one store. In _ZN9dFdWipe_cC1Ev the
        `strh r2, [r4,#0xc]` that zeroes this field comes after this class's own
-       vtable store and before FaderWipe's, which is what places it in
-       FaderColor's constructor rather than a neighbour's. Inline for the same
-       reason as FaderBrightness's: the ROM has no out-of-line constructor for
+       vtable store and before dFdWipe_c's, which is what places it in
+       dFdColor_c's constructor rather than a neighbour's. Inline for the same
+       reason as dFdBrightness_c's: the ROM has no out-of-line constructor for
        this class either. */
-    FaderColor();
+    dFdColor_c();
 
-    virtual ~FaderColor();          /* key function; see above */
+    virtual ~dFdColor_c();          /* key function; see above */
     virtual void AdvanceFade();     /* slot 2 -- the only override */
 };
 
@@ -55,21 +55,21 @@ struct FaderColor : FaderBrightness {
    inline body and reports the whole header UNPARSED. `inline` keeps the
    emission identical: the body still goes wherever it is used, and the ROM
    has no out-of-line constructor for this class. */
-inline FaderColor::FaderColor() { color = 0; }
+inline dFdColor_c::dFdColor_c() { color = 0; }
 
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
-typedef char FaderColor_size_must_be_0x10[sizeof(FaderColor) == 0x10 ? 1 : -1];
+typedef char FaderColor_size_must_be_0x10[sizeof(dFdColor_c) == 0x10 ? 1 : -1];
 #endif
 #else
 /* Spelled for remaining C consumers, which cannot express the virtuals and so
    write out the vptr the compiler would place. */
-struct FaderColor {
+struct dFdColor_c {
     void*  vtable;      /* 0x00 */
-    Fix12i currInterp;  /* 0x04 (from Fader) */
-    Fix12i speed;       /* 0x08 (from Fader) */
+    Fix12i currInterp;  /* 0x04 (from dFader_c) */
+    Fix12i speed;       /* 0x08 (from dFader_c) */
     u16    color;     /* 0x0c */
 };
 #endif
 
-#endif /* FADERCOLOR_H */
+#endif /* DFDCOLOR_C_H */

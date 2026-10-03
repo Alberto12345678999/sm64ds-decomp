@@ -9,17 +9,17 @@
  * vtable and land straight back in the caller -- infinite recursion. The ROM does
  * `bl 0x02043c78`, a direct call to the base implementation. */
 #include "dScene_c.h"
-#include "FaderBrightness.h"
+#include "dFdBrightness_c.h"
 
 /* `extern` on every one of these -- a braced `extern "C" { }` is a linkage
    specification wrapped around a DEFINITION, not a declaration. */
 extern "C" {
 extern fBase_c *data_0209f5c0;
-/* Really a FaderColor: __sinit_02074edc constructs it up the chain and leaves
-   the FaderColor vtable (data_0208eb2c) in its vptr. Spelled as the base because
-   include/FaderColor.h is still a flat generated struct that does not name a base,
+/* Really a dFdColor_c: __sinit_02074edc constructs it up the chain and leaves
+   the dFdColor_c vtable (data_0208eb2c) in its vptr. Spelled as the base because
+   include/dFdColor_c.h is still a flat generated struct that does not name a base,
    so the upcast this line needs cannot be written yet. */
-extern FaderBrightness data_0209f5e8;
+extern dFdBrightness_c data_0209f5e8;
 extern u32 data_0209f1e4;
 extern void func_02011b7c(void);
 }

@@ -5,7 +5,7 @@
  * dWipe_c::IsBetweenStartAndEnd, vtable slot 7. `type == 1` is this class's
  * escape hatch: the hardware capture path is not in use, so the question goes
  * straight back to the base implementation through a QUALIFIED call --
- * FaderBrightness::IsBetweenStartAndEnd() -- which mwcc turns into a direct
+ * dFdBrightness_c::IsBetweenStartAndEnd() -- which mwcc turns into a direct
  * `bl`, which is exactly what the ROM does. An unqualified call would dispatch
  * through this object's own vptr and land back here.
  *
@@ -17,7 +17,7 @@
 int dWipe_c::IsBetweenStartAndEnd()
 {
     if (type == 1)
-        return FaderBrightness::IsBetweenStartAndEnd();
+        return dFdBrightness_c::IsBetweenStartAndEnd();
 
     if (!IsAtStart()) {
         if (IsAtEnd() == 0)

@@ -7,14 +7,14 @@
  * dScene_c*.
  *
  * The `speed = 0` afterwards stops the fade where SetFaders left it. Offset 0x8 is
- * Fader::speed, pinned by Fader::AdvanceInterp picking its target from that word's
+ * dFader_c::speed, pinned by dFader_c::AdvanceInterp picking its target from that word's
  * sign. */
 #include "dScene_c.h"
-#include "FaderBrightness.h"
+#include "dFdBrightness_c.h"
 
 extern "C" {
-/* Really a FaderColor -- see src/_ZN8dScene_c19ResetFadersAndSoundEv.cpp. */
-extern FaderBrightness data_0209f5e8;
+/* Really a dFdColor_c -- see src/_ZN8dScene_c19ResetFadersAndSoundEv.cpp. */
+extern dFdBrightness_c data_0209f5e8;
 }
 
 void dScene_c::SetAndStopColorFader()

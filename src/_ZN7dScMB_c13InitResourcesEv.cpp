@@ -4,7 +4,7 @@
 /* dScMB_c::InitResources() -- vtable slot 0. Brings both engines up for the
  * Multi-Boot download screen, registers the GLOBAL graphCallback_c object at
  * data_020a0c68 with `this` as its context, then zeroes the state machine
- * Behavior() drives and hands its own FaderColor member to dScene_c. */
+ * Behavior() drives and hands its own dFdColor_c member to dScene_c. */
 #include "dScMB_c.h"
 #include "decl_common.h"
 

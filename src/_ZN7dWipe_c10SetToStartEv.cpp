@@ -8,5 +8,5 @@
 
 void dWipe_c::SetToStart()
 {
-    FaderBrightness::SetToStart();
+    dFdBrightness_c::SetToStart();
 }

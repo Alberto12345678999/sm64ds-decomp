@@ -156,7 +156,7 @@
  */
 #include "Stage.h"        /* -> dScene_c.h -> dBase_c.h -> fBase_c.h, and the
                              Stage class SetVramBanks below is a member of */
-#include "FaderColor.h"   /* -> FaderBrightness.h -> Fader.h */
+#include "dFdColor_c.h"   /* -> dFdBrightness_c.h -> dFader_c.h */
 
 /* ------------------------------------------------------------------------- */
 /* ROM ordinal 20 -- dScene_c::ResetHardwareRegisters, 0x0202e7d4, size 0x4c8    */
@@ -406,19 +406,19 @@ void dScene_c::Initialise3dGraphics()
 extern "C" {
 extern fBase_c *data_0209f5c0;
 /* RECONCILED. Three of this TU's legacy files declared 0x0209f5e8 three
-   different ways -- `FaderBrightness` (SetAndStopColorFader, which uses
-   ::speed, and ResetFadersAndSound, which takes its address), `FaderColor`
+   different ways -- `dFdBrightness_c` (SetAndStopColorFader, which uses
+   ::speed, and ResetFadersAndSound, which takes its address), `dFdColor_c`
    (StartSceneFade, which uses ::color) and a local one-field shadow
    (BeforeBehavior, which dispatches through its vptr with the wrong arity;
-   see there). FaderColor is the most complete of the three and is what the
+   see there). dFdColor_c is the most complete of the three and is what the
    object really is -- __sinit_02074edc constructs it up the chain and leaves
-   the FaderColor vtable, data_0208eb2c, in its vptr -- so it is declared once,
+   the dFdColor_c vtable, data_0208eb2c, in its vptr -- so it is declared once,
    here at its first use, as that. ResetFadersAndSound's note that
-   include/FaderColor.h "does not name a base" was true when it was written and
-   is now stale: FaderColor.h's C++ half is `struct FaderColor : FaderBrightness`
+   include/dFdColor_c.h "does not name a base" was true when it was written and
+   is now stale: dFdColor_c.h's C++ half is `struct dFdColor_c : dFdBrightness_c`
    since the fader-hierarchy fix, so the upcast SetFaders needs is implicit,
    single-inheritance and offset-free. */
-extern FaderColor data_0209f5e8;
+extern dFdColor_c data_0209f5e8;
 /* `void*`, not ResetFadersAndSound's `u32`: BeforeBehavior both compares it
    against 0 and stores &data_0209f5d0 into it, which is the more complete of
    the two observations. Assigning 0 costs the same store either way. */
@@ -530,7 +530,7 @@ void dScene_c::AfterCleanupResources(u32 vfSuccess)
  *
  * ONE DELIBERATE SHADOW REMAINS, AND IT IS EVIDENCE, NOT LAZINESS. The current
  * fader at 0x0209f5bc is reached through the file-local `FaderVTable` below
- * rather than through include/FaderBrightness.h, because the ROM disagrees with
+ * rather than through include/dFdBrightness_c.h, because the ROM disagrees with
  * the fader's own mangled names about how many arguments slots 3 and 4 take:
  *
  *     0202e4d8  ldr r0,[pc,#0xec]      ; &current fader
@@ -540,7 +540,7 @@ void dScene_c::AfterCleanupResources(u32 vfSuccess)
  *     0202e4f0  blx r3
  *
  * and the same shape at 0x0202e58c for slot 3. But the functions those slots
- * hold are _ZN15FaderBrightness14SetForwardTimeEj and ...15SetBackwardTimeEj,
+ * hold are _ZN15dFdBrightness_c14SetForwardTimeEj and ...15SetBackwardTimeEj,
  * and `Ej` is one parameter. Calling them through the real class would drop the
  * `mov r2,#0` and stop matching, so the ROM's own dScene_c translation unit must
  * have been built against a two-argument prototype. The names below are the
@@ -548,8 +548,8 @@ void dScene_c::AfterCleanupResources(u32 vfSuccess)
  *
  * WHAT CONSOLIDATION CHANGED HERE, and nothing else: the legacy file declared
  * data_0209f5e8 and data_0209f5bc as its own one-field `FaderObject`. Both are
- * now declared once, at their first use, as the real classes (FaderColor and
- * FaderBrightness *), and the two sites that need the wrong-arity dispatch cast
+ * now declared once, at their first use, as the real classes (dFdColor_c and
+ * dFdBrightness_c *), and the two sites that need the wrong-arity dispatch cast
  * to FaderObject * at the point of use. The cast is address-preserving --
  * FaderObject's single member is the vptr the C++ classes place at offset 0 --
  * so the emitted loads are the same two the legacy file emitted.
@@ -572,16 +572,16 @@ struct FaderObject { FaderVTable *vt; };
 
 extern "C" {
 extern u8   data_0209f1e0;
-/* `FaderBrightness *`, not the legacy `FaderObject *`: SetFaders below
+/* `dFdBrightness_c *`, not the legacy `FaderObject *`: SetFaders below
    dispatches slots 8 and 9 on it through the real class, which is the more
    complete observation of the two. */
-extern FaderBrightness *data_0209f5bc;   /* the currently installed fader */
-extern FaderBrightness data_0209f5d0;
+extern dFdBrightness_c *data_0209f5bc;   /* the currently installed fader */
+extern dFdBrightness_c data_0209f5d0;
 extern u16  data_02092664;               /* pending scene ID; 0x187 means none */
 
 extern void func_02023544(void);
-extern void _ZN15FaderBrightness14SetForwardTimeEj(FaderBrightness *self, u32 frames);
-extern int  _ZN15FaderBrightness7IsAtEndEv(FaderBrightness *self);
+extern void _ZN15dFdBrightness_c14SetForwardTimeEj(dFdBrightness_c *self, u32 frames);
+extern int  _ZN15dFdBrightness_c7IsAtEndEv(dFdBrightness_c *self);
 extern int  func_020431c4(fBase_c *self);
 }
 
@@ -597,9 +597,9 @@ int dScene_c::BeforeBehavior()
         } else {
             if (data_0209f1e4 == 0) {
                 data_0209f5d0.currInterp = 0;   /* 0x4, not speed at 0x8 */
-                _ZN15FaderBrightness14SetForwardTimeEj(&data_0209f5d0, 0x10);
+                _ZN15dFdBrightness_c14SetForwardTimeEj(&data_0209f5d0, 0x10);
                 data_0209f1e4 = &data_0209f5d0;
-            } else if (_ZN15FaderBrightness7IsAtEndEv(&data_0209f5d0)) {
+            } else if (_ZN15dFdBrightness_c7IsAtEndEv(&data_0209f5d0)) {
                 StartSceneFade(1, 0, 0);
                 ((FaderObject *)&data_0209f5e8)->vt->SetForwardTime((FaderObject *)&data_0209f5e8, 0, 0);
                 MarkForDestruction();
@@ -717,7 +717,7 @@ int dScene_c::SetSceneToSpawn(u32 sceneID, u32 param)
  * through.
  *
  * The `t` in the mangled name is `unsigned short`, and it is load-bearing: the
- * store is `strh`, so the field at FaderColor+0xc is two bytes wide.
+ * store is `strh`, so the field at dFdColor_c+0xc is two bytes wide.
  */
 void dScene_c::StartSceneFade(u32 sceneID, u32 param, u16 fadeColor)
 {
@@ -787,10 +787,10 @@ int dScene_c::SpawnIfNecessary()
  * mid-fade, leave the new one alone.
  *
  * This is a STATIC member -- r0 is the parameter, not a `this` -- and the
- * argument is a FaderBrightness, which the mangled name has said all along and
- * which dScene_c::SetAndStopColorFader confirms by loading a FaderColor into r0
+ * argument is a dFdBrightness_c, which the mangled name has said all along and
+ * which dScene_c::SetAndStopColorFader confirms by loading a dFdColor_c into r0
  * and branching straight here. The IsAtStart/IsAtEnd/SetToStart/SetToEnd calls
- * are vtable slots 5/6/9/8; include/Fader.h declared seven slots and the ROM
+ * are vtable slots 5/6/9/8; include/dFader_c.h declared seven slots and the ROM
  * has ten, which is why this function could not be migrated with the rest of
  * the class until #1259.
  */
@@ -798,10 +798,10 @@ extern "C" {
 /* Two globals holding the same pointer. 0x0209f5bc is the one this function
    reads back; 0x0209d4ac is read by 0x02018efc, which calls AdvanceFade (slot 2)
    on it -- which is the evidence that it holds a fader and not a dScene_c. */
-extern FaderBrightness *data_0209d4ac;
+extern dFdBrightness_c *data_0209d4ac;
 }
 
-void dScene_c::SetFaders(FaderBrightness *fader)
+void dScene_c::SetFaders(dFdBrightness_c *fader)
 {
     if (data_0209f5bc) {
         if (data_0209f5bc->IsAtStart()) {
@@ -825,7 +825,7 @@ void dScene_c::SetFaders(FaderBrightness *fader)
  * fader to a dScene_c*.
  *
  * The `speed = 0` afterwards stops the fade where SetFaders left it. Offset 0x8
- * is Fader::speed, pinned by Fader::AdvanceInterp picking its target from that
+ * is dFader_c::speed, pinned by dFader_c::AdvanceInterp picking its target from that
  * word's sign.
  */
 void dScene_c::SetAndStopColorFader()
