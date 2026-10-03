@@ -284,6 +284,10 @@ src/actors/dScMgTeresa_c.cpp:
     complete
     .text start:0x0211cbd0 end:0x0211e72c
 
+src/func_ov006_0211e72c.c:
+    complete
+    .text start:0x0211e72c end:0x0211e7d8
+
 src/func_ov006_0211e7d8.c:
     complete
     .text start:0x0211e7d8 end:0x0211e8a8
