@@ -165,6 +165,41 @@ struct daKing_Donketu_c : dEnemyBase_c {
     virtual s32 Behavior();
     virtual s32 Render();
     virtual void OnPendingDestroy();
+
+    void func_ov073_0211f144();
+    int func_ov073_0212081c();
+    void func_ov073_0211f2c0(int strength);
+    void func_ov073_0211f494(void *pb);
+    s32 func_ov073_0211f61c();
+    int func_ov073_0211fa74();
+    int func_ov073_0211fbf4();
+    int func_ov073_0211fc78();
+    int func_ov073_0211fe8c();
+    short func_ov073_0212000c();
+    int func_ov073_0212005c();
+    int func_ov073_02120098();
+    int func_ov073_021200e0();
+    int func_ov073_02120390();
+    int func_ov073_021203ac();
+    int func_ov073_021205f0();
+    int func_ov073_02120610();
+    int func_ov073_02120844();
+    int func_ov073_021208e4();
+    int func_ov073_02120910();
+    int func_ov073_02120ad8();
+    int func_ov073_02120b78();
+    int func_ov073_02120c08();
+    int func_ov073_02120c7c();
+    int func_ov073_02120d80();
+    int func_ov073_02120dec();
+    int func_ov073_02120e60();
+    int func_ov073_02120ed0();
+    int func_ov073_0212122c();
+    int func_ov073_0212128c();
+    int func_ov073_02121378();
+    int func_ov073_02121388();
+    int func_ov073_02121538();
+    void func_ov073_021215cc();
 };
 
 #ifndef SM64DS_PLATFORM_PC
