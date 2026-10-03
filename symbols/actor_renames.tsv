@@ -2011,6 +2011,8 @@ ov065	0x02116f48	func_ov065_02116f48	Snufit_Spawn	spawnfunc
 ov065	0x02116f48	Snufit_Spawn	daYurei_Mucho_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov065	0x02116f98	func_ov065_02116f98	_ZN12daBasabasa_cD1Ev	vtable slot 16
 ov065	0x02116fe8	func_ov065_02116fe8	_ZN12daBasabasa_cD0Ev	vtable slot 17
+ov065	0x0211704c	func_ov065_0211704c	_ZN12daBasabasa_c19func_ov065_0211704cEv	daBasabasa_c method. The first argument is the swoop, so the function is a member and the parameter is this. The address is kept as the method name.
+ov065	0x02117994	func_ov065_02117994	_ZN12daBasabasa_c19func_ov065_02117994Ev	daBasabasa_c method. The first argument is the swoop, so the function is a member and the parameter is this. The address is kept as the method name.
 ov065	0x02117aa4	func_ov065_02117aa4	_ZN12daBasabasa_c16CleanupResourcesEv	vtable slot 3
 ov065	0x02117aec	func_ov065_02117aec	_ZN12daBasabasa_c16OnPendingDestroyEv	vtable slot 12
 ov065	0x02117af0	func_ov065_02117af0	_ZN12daBasabasa_c6RenderEv	vtable slot 9
