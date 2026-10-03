@@ -7740,6 +7740,27 @@
     "src/actors/daObjFl_Coin_c.cpp#_ZN16daObjFl_Puzzle_c8BehaviorEv": "tangosdev",
     "src/actors/daObjFl_Coin_c.cpp#_ZN14daObjFl_Coin_c8BehaviorEv": "ruspecial",
     "src/actors/daObjFl_Coin_c.cpp#_ZN16daObjFl_Puzzle_c13InitResourcesEv": "tangosdev",
-    "src/actors/daObjFl_Coin_c.cpp#_ZN14daObjFl_Coin_c13InitResourcesEv": "tangosdev"
+    "src/actors/daObjFl_Coin_c.cpp#_ZN14daObjFl_Coin_c13InitResourcesEv": "tangosdev",
+    "src/actors/dScene_c.cpp#_ZN8dScene_cD1Ev": "tangosdev",
+    "src/actors/dScene_c.cpp#_ZN8dScene_cD0Ev": "andrewboudreau",
+    "src/actors/dScene_c.cpp#_ZN8dScene_c20SetAndStopColorFaderEv": "tangosdev",
+    "src/actors/dScene_c.cpp#_ZN8dScene_c9SetFadersEP15FaderBrightness": "tangosdev",
+    "src/actors/dScene_c.cpp#_ZN8dScene_c16SpawnIfNecessaryEv": "tangosdev",
+    "src/actors/dScene_c.cpp#_ZN8dScene_c18PrepareToSpawnBootEv": "tangosdev",
+    "src/actors/dScene_c.cpp#_ZN8dScene_c14StartSceneFadeEjjt": "tangosdev",
+    "src/actors/dScene_c.cpp#_ZN8dScene_c15SetSceneToSpawnEjj": "tangosdev",
+    "src/actors/dScene_c.cpp#_ZN8dScene_c11AfterRenderEj": "ruspecial",
+    "src/actors/dScene_c.cpp#_ZN8dScene_c12BeforeRenderEv": "tangosdev",
+    "src/actors/dScene_c.cpp#_ZN8dScene_c13AfterBehaviorEj": "andrewboudreau",
+    "src/actors/dScene_c.cpp#_ZN8dScene_c14BeforeBehaviorEv": "tangosdev",
+    "src/actors/dScene_c.cpp#_ZN8dScene_c21AfterCleanupResourcesEj": "ruspecial",
+    "src/actors/dScene_c.cpp#_ZN8dScene_c22BeforeCleanupResourcesEv": "tangosdev",
+    "src/actors/dScene_c.cpp#_ZN8dScene_c18AfterInitResourcesEj": "ruspecial",
+    "src/actors/dScene_c.cpp#_ZN8dScene_c19BeforeInitResourcesEv": "tangosdev",
+    "src/actors/dScene_c.cpp#_ZN8dScene_c19ResetFadersAndSoundEv": "tangosdev",
+    "src/actors/dScene_c.cpp#_ZN8dScene_c20Initialise3dGraphicsEv": "andrewboudreau",
+    "src/actors/dScene_c.cpp#_ZN5Stage12SetVramBanksEv": "tangosdev",
+    "src/actors/dScene_c.cpp#_ZN2GX15DisableAllBanksEv": "tangosdev",
+    "src/actors/dScene_c.cpp#_ZN8dScene_c22ResetHardwareRegistersEv": "tangosdev"
   }
 }
