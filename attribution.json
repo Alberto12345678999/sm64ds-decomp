@@ -7761,6 +7761,18 @@
     "src/actors/dScene_c.cpp#_ZN8dScene_c20Initialise3dGraphicsEv": "andrewboudreau",
     "src/actors/dScene_c.cpp#_ZN5Stage12SetVramBanksEv": "tangosdev",
     "src/actors/dScene_c.cpp#_ZN2GX15DisableAllBanksEv": "tangosdev",
-    "src/actors/dScene_c.cpp#_ZN8dScene_c22ResetHardwareRegistersEv": "tangosdev"
+    "src/actors/dScene_c.cpp#_ZN8dScene_c22ResetHardwareRegistersEv": "tangosdev",
+    "src/game/actors/d_a_e_switch.cpp#_ZN11daESwitch_cD1Ev": "tangosdev",
+    "src/game/actors/d_a_e_switch.cpp#_ZN11daESwitch_cD0Ev": "tangosdev",
+    "src/game/actors/d_a_e_switch.cpp#_ZN11daECreate_cD1Ev": "tangosdev",
+    "src/game/actors/d_a_e_switch.cpp#_ZN11daECreate_cD0Ev": "tangosdev",
+    "src/game/actors/d_a_e_switch.cpp#_ZN11daESwitch_c16CleanupResourcesEv": "tangosdev",
+    "src/game/actors/d_a_e_switch.cpp#_ZN11daECreate_c8BehaviorEv": "tangosdev",
+    "src/game/actors/d_a_e_switch.cpp#_ZN11daESwitch_c8BehaviorEv": "tangosdev",
+    "src/game/actors/d_a_e_switch.cpp#_ZN11daECreate_c16CleanupResourcesEv": "tangosdev",
+    "src/game/actors/d_a_e_switch.cpp#_ZN11daECreate_c13InitResourcesEv": "tangosdev",
+    "src/game/actors/d_a_e_switch.cpp#_ZN11daESwitch_c13InitResourcesEv": "tangosdev",
+    "src/game/actors/d_a_e_switch.cpp#daECreate_c_classInit": "tangosdev",
+    "src/game/actors/d_a_e_switch.cpp#daESwitch_c_classInit": "tangosdev"
   }
 }

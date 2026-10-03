@@ -1,6 +1,7 @@
 # Handoff: enemy-switch-tu-1003
 
-This document describes this commit. Local-only WIP; bookkeeping is not yet accepted.
+This document describes this commit. The user authorized committing and pushing
+the combined branch on 2026-10-03, including the prepared bookkeeping updates.
 
 ## Identity and resumption
 
@@ -9,7 +10,7 @@ This document describes this commit. Local-only WIP; bookkeeping is not yet acce
 - Source and workflow input: ef4a02ce0f5d0e0447e992eeb89f706f11a0c7af.
 - Independent source reviewer: scene_review; final immutable review pending.
 - Worktree: C:/tmp/sm64ds-enemy-switch-tu-1003; private evidence under build/.
-- No PR, push, merge, issue message or queue source publication is authorized.
+- Branch push is authorized; no PR, merge or issue message is requested.
 
 ## Production change and evidence
 
@@ -55,23 +56,40 @@ func_ov102_0214ad14 remains unresolved. Reconstruction is therefore partial.
   Executable check and evidence: build/check_enemy_switch.py and enemy-switch-proof.json.
 - Port references: 408 resolve. Changed-scope declaration agreement passes with
   no new disagreements. No new Enemy declaration-baseline exception is needed.
-- Committed-range relocation, attribution and final independent review pending.
+- Enemy committed-range relocation: 12/12 VERIFIED, zero warnings/blockers.
+- Scene affected-source sweep: 1824 VERIFIED, one BLIND-2 warning independently
+  reproduced on unchanged base, zero blocking failures.
+- Combined independent source review accepted partial reconstruction on
+  cb629b96be16ee228e8d555801ee29792943b31c against original base
+  5fa32e37cbe517c15b01cd902cb15fb5d0ab8950.
+- Final bookkeeping-only commit receives fresh tracked gates and delta review.
 - ES-SR-01: fixed stale paths/class identity in notes/actor-leaf-provenance.md.
 
-## Remaining integration work
+## Bookkeeping integration and publication
 
-The canonical promotion helper's APIs applied the reserved source, manifest and
-ov002 delinks changes. Its attribution and CONVERTED outputs were saved only as
-unapplied proposals: build/enemy-switch-attribution-proposal.json (12 credits)
-and build/enemy-switch-converted-baseline-proposal.json (5 existing identities).
-The ten renamed method ledger rows are prepared in
-build/enemy-switch-rename-ledger-proposal.tsv. Their original historical names
-are preserved in the why column. These three tracked files are reserved by other
-tasks; request scoped isolated bookkeeping authorization before applying them.
-The actual ledger gate currently fails on those ten unapplied rows; proposal
-validation passes. No attribution or converted acceptance is claimed yet.
+The user instruction "commit and push lets continue" authorized applying the
+prepared isolated bookkeeping changes and publishing this branch. Other tasks'
+claims and worktrees are untouched.
 
-Scene's separate declaration-baseline migration remains pending user approval.
-Do not infer permission for either task from automatic goal continuation.
-After approval, apply only reviewed scoped proposals, run the tracked gates,
-commit, and obtain independent exact-candidate acceptance. Keep local.
+- attribution.json: add twelve exact path#symbol credit overrides. Together with
+  the Scene input, all thirty-three consolidated functions retain their credit.
+- config/converted-baseline.json: migrate five existing enemy member identities;
+  preserve all eighteen previously migrated Scene identities.
+- symbols/actor_renames.tsv: correct ten method rows to the cartridge class names,
+  preserving each former name in the why column.
+- config/decl-agreement-baseline.json: move six already-banked Scene disagreements
+  to the promoted path and remove twenty-one repaired/retired old entries. No
+  new disagreement exception is added. The enemy change needs no new exception.
+
+Original-base proposal checks passed: thirty-three credits intact, zero lost or
+changed; converted ratchet baseline 3109/current 3464; all ledger rows consistent;
+declaration scope 185 files has no new disagreements. These proposals are now
+applied to the tracked files. The final exact-commit tracked results and review
+are recorded separately under build/ before branch publication. The earlier
+Scene handoff's pending permission language describes its historical checkpoint
+and is superseded by this authorization and applied migration.
+
+Default production enrollment and both TU sources are unchanged from the full
+106/106 build and independent combined source review. Next action: run the final
+tracked checks, obtain independent bookkeeping delta review, and push this branch.
+No merge or current-main integration acceptance is claimed.
