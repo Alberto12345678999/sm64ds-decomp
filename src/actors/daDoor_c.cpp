@@ -87,6 +87,7 @@
 #include "common.h"
 #include "SharedFilePtr.h"
 #include "Camera.h"
+#include "daObjKey_c.h"
 
 /* Three plain words: the stack and static vectors of the helpers that were
    C, which carry none of Vector3's empty destructor. */
@@ -218,7 +219,6 @@ int func_02012694(int a, void *b);
 unsigned char DecIfAbove0_Byte(void *p);
 int DecIfAbove0_Short(void *p);
 int func_ov002_020ca78c(void *p);
-void func_ov089_0213115c(char *actor, int a);
 void func_020731dc(void *object, void *destructor, void *node);
 void Vec3_RotateYAndTranslate(void *res, void *translation, short angY, void *v);
 void Vec3_Sub(void *out, void *a, void *b);
@@ -626,7 +626,7 @@ extern "C" int func_ov100_02144a38(daDoor_c *c, Player *p)
             ACTOR_OBJ_KEY, (u32)e->keyIndex, (Vector3 *)&pos,
             (Vector3_16 *)&p->mAngleX, p->mAreaId, -1);
         if (actor != 0) {
-            func_ov089_0213115c((char *)actor, 2);
+            ((daObjKey_c *)actor)->func_ov089_0213115c(2);
         }
     }
 
