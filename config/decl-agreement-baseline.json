@@ -793,11 +793,6 @@
       "src/_ZN12dScStarSel_c13InitResourcesEv.cpp": [
         "param:#2 unsigned int"
       ],
-      "src/_ZN13dScMgTeresa_c13OnYoshiTryEatEi.cpp": [
-        "param:#1 int",
-        "param:#2 int",
-        "return:int"
-      ],
       "src/actors/dMap_c.cpp": [
         "param:#1 int"
       ],
@@ -1422,9 +1417,6 @@
         "return:void *"
       ],
       "src/_ZN12dScStarSel_c13InitResourcesEv.cpp": [
-        "return:void *"
-      ],
-      "src/_ZN13dScMgTeresa_c13InitResourcesEv.cpp": [
         "return:void *"
       ],
       "src/_ZN15dScMgCurling2_c13InitResourcesEv.cpp": [
@@ -7465,9 +7457,6 @@
       "src/_ZN12dScMgSlot1_c13InitResourcesEv.cpp": [
         "return:char *"
       ],
-      "src/_ZN13dScMgTeresa_c13InitResourcesEv.cpp": [
-        "return:void *"
-      ],
       "src/_ZN5Stage14LoadGraphics2DEbi.cpp": [
         "return:char *"
       ],
@@ -7681,12 +7670,6 @@
       "src/_ZN12dScMgSlot1_c13InitResourcesEv.cpp": [
         "return:char *"
       ],
-      "src/_ZN13dScMgTeresa_c13InitResourcesEv.cpp": [
-        "return:void *"
-      ],
-      "src/_ZN13dScMgTeresa_c9Virtual88Eiiii.cpp": [
-        "return:int"
-      ],
       "src/_ZN3GXS11LoadBG0CharEPKvjj.cpp": [
         "return:void *"
       ],
@@ -7764,12 +7747,6 @@
       ],
       "src/func_02034414.cpp": [
         "return:int"
-      ],
-      "src/func_ov006_0211e8a8.c": [
-        "return:int *"
-      ],
-      "src/func_ov006_0211ea70.c": [
-        "return:int *"
       ],
       "src/actors/dScMgSmartball_c.cpp": [
         "return:void *"
@@ -7874,20 +7851,11 @@
         "param:#4 int",
         "param:#5 int"
       ],
-      "src/func_ov006_0211ebdc.c": [
+      "src/actors/dScMgTeresa_c.cpp": [
         "param:#2 int",
         "param:#3 int",
         "param:#4 int",
         "param:#5 int"
-      ],
-      "src/func_ov006_0211ee34.c": [
-        "param:#1 volatile void *",
-        "param:#5 unsigned short"
-      ],
-      "src/func_ov006_0211f224.c": [
-        "param:#1 volatile void *",
-        "param:#4 int",
-        "param:#5 unsigned short"
       ],
       "src/func_ov007_020bd648.c": [
         "param:#5 unsigned short"
@@ -9054,18 +9022,6 @@
         "return:void"
       ],
       "src/func_ov006_020e628c.c": [
-        "return:void"
-      ],
-      "src/func_ov006_0211ebdc.c": [
-        "return:void"
-      ],
-      "src/func_ov006_0211ee34.c": [
-        "return:void"
-      ],
-      "src/func_ov006_0211f040.cpp": [
-        "return:void"
-      ],
-      "src/func_ov006_0211fe78.c": [
         "return:void"
       ],
       "src/actors/dScMgSlots.cpp": [
@@ -15302,9 +15258,6 @@
         "return:unsigned char []"
       ],
       "src/_ZN7dScMB_c13InitResourcesEv.cpp": [
-        "return:unsigned char []"
-      ],
-      "src/func_ov006_0211fe78.c": [
         "return:unsigned char []"
       ],
       "src/func_ov075_02117918.c": [
@@ -34322,7 +34275,7 @@
       "src/actors/dScMgAmida_c.cpp": [
         "return:int"
       ],
-      "src/func_ov006_0211f9fc.c": [
+      "src/actors/dScMgTeresa_c.cpp": [
         "return:int"
       ],
       "src/minigames/d_s_mg_trampoline2.cpp": [
@@ -34983,68 +34936,6 @@
     },
     "func_ov006_02115598": {
       "include/decl_common.h": [
-        "param:#1 char *"
-      ]
-    },
-    "func_ov006_0211d5a8": {
-      "src/func_ov006_0211fd44.c": [
-        "param:#1 char *"
-      ],
-      "src/func_ov006_0211fe78.c": [
-        "param:#1 char *"
-      ]
-    },
-    "func_ov006_0211d7b0": {
-      "src/func_ov006_021200a8.c": [
-        "arity:1"
-      ]
-    },
-    "func_ov006_0211e0c8": {
-      "src/func_ov006_0211fe78.c": [
-        "param:#1 char *"
-      ]
-    },
-    "func_ov006_0211e220": {
-      "src/func_ov006_0211f040.cpp": [
-        "param:#1 char *"
-      ]
-    },
-    "func_ov006_0211e4e0": {
-      "src/_ZN13dScMgTeresa_c8BehaviorEv.cpp": [
-        "param:#1 C *",
-        "return:int"
-      ]
-    },
-    "func_ov006_0211e8a8": {
-      "src/func_ov006_0211f0d0.c": [
-        "param:#1 unsigned char *"
-      ]
-    },
-    "func_ov006_0211f34c": {
-      "src/func_ov006_0211f0d0.c": [
-        "param:#1 unsigned char *"
-      ]
-    },
-    "func_ov006_0211f454": {
-      "src/func_ov006_0211f0d0.c": [
-        "param:#1 unsigned char *"
-      ]
-    },
-    "func_ov006_0211f664": {
-      "src/func_ov006_0211f6fc.cpp": [
-        "param:#1 C *"
-      ]
-    },
-    "func_ov006_0211f6fc": {
-      "src/func_ov006_0211fd44.c": [
-        "param:#1 char *"
-      ],
-      "src/func_ov006_0211fe78.c": [
-        "param:#1 char *"
-      ]
-    },
-    "func_ov006_0211f9fc": {
-      "src/func_ov006_0211fe78.c": [
         "param:#1 char *"
       ]
     },
