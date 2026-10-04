@@ -1382,7 +1382,7 @@
     "src/_ZN9dBgCh_LinD1Ev.cpp",
     "src/actors/dScDSMT_c.cpp#_ZN9dScDSMT_c15graphCallback_c14GraphCallback0Ev",
     "src/actors/dScDSMT_c.cpp#_ZN9dScDSMT_c15graphCallback_c14GraphCallback2Ev",
-    "src/_ZN9dScDSMT_c16CleanupResourcesEv.cpp",
+    "src/actors/dScDSMT_c.cpp#_ZN9dScDSMT_c16CleanupResourcesEv",
     "src/actors/dScDSMT_c.cpp#_ZN9dScDSMT_c16OnPendingDestroyEv",
     "src/actors/dScDSMT_c.cpp#_ZN9dScDSMT_c6RenderEv",
     "src/actors/dScDSMT_c.cpp#_ZN9dScDSMT_cD0Ev",
