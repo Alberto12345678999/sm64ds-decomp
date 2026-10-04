@@ -38713,7 +38713,7 @@ matched: yes</title></rect><rect x="1078.05" y="695.49" width="3.16" height="14.
 module: ov072
 addr: 0x02120874
 size: 100 bytes
-matched: yes</title></rect><rect x="1078.05" y="709.81" width="3.16" height="24.06" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov072_021208d8
+matched: yes</title></rect><rect x="1078.05" y="709.81" width="3.16" height="24.06" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11daBgSnwmn_c19func_ov072_021208d8Ev
 module: ov072
 addr: 0x021208d8
 size: 168 bytes
