@@ -707,48 +707,6 @@
       "canonical_module": "arm9",
       "canonical_address": "0x020072c0",
       "reason": "return new daBrq_c() odr-uses inline ~Vector3 from include/types.h for mOrbitCenter and mCylinderOffset. The cartridge's copy lives at arm9:0x020072c0, owned by src/_ZN7Vector3D1Ev.cpp; rombuild compares this object copy against those cartridge bytes before dropping it."
-    },
-    {
-      "symbol": "_ZTI7fBase_c",
-      "disposition": "deadstrip-data",
-      "canonical_module": "arm9",
-      "canonical_address": "0x02086d70",
-      "reason": "This TU defines every out-of-line virtual daBrq_c declares, so it is the class's key-function TU and emits the inherited fBase_c typeinfo record as vague linkage. Its canonical arm9 home (0x02086d70) lies outside this entry's claimed .data range and the linker discards this copy."
-    },
-    {
-      "symbol": "_ZTS7fBase_c",
-      "disposition": "deadstrip-data",
-      "canonical_module": "arm9",
-      "canonical_address": "0x02086e60",
-      "reason": "This TU defines every out-of-line virtual daBrq_c declares, so it is the class's key-function TU and emits the inherited fBase_c type-name string as vague linkage. Its canonical arm9 home (0x02086e60) lies outside this entry's claimed .data range and the linker discards this copy."
-    },
-    {
-      "symbol": "_ZTI7dBase_c",
-      "disposition": "deadstrip-data",
-      "canonical_module": "arm9",
-      "canonical_address": "0x02086e78",
-      "reason": "This TU defines every out-of-line virtual daBrq_c declares, so it is the class's key-function TU and emits the inherited dBase_c typeinfo record as vague linkage. Its canonical arm9 home (0x02086e78) lies outside this entry's claimed .data range and the linker discards this copy."
-    },
-    {
-      "symbol": "_ZTS7dBase_c",
-      "disposition": "deadstrip-data",
-      "canonical_module": "arm9",
-      "canonical_address": "0x02086e54",
-      "reason": "This TU defines every out-of-line virtual daBrq_c declares, so it is the class's key-function TU and emits the inherited dBase_c type-name string as vague linkage. Its canonical arm9 home (0x02086e54) lies outside this entry's claimed .data range and the linker discards this copy."
-    },
-    {
-      "symbol": "_ZTI8dActor_c",
-      "disposition": "deadstrip-data",
-      "canonical_module": "arm9",
-      "canonical_address": "0x0208e390",
-      "reason": "This TU defines every out-of-line virtual daBrq_c declares, so it is the class's key-function TU and emits the inherited dActor_c typeinfo record as vague linkage. Its canonical arm9 home (0x0208e390) lies outside this entry's claimed .data range and the linker discards this copy."
-    },
-    {
-      "symbol": "_ZTS8dActor_c",
-      "disposition": "deadstrip-data",
-      "canonical_module": "arm9",
-      "canonical_address": "0x0208e384",
-      "reason": "This TU defines every out-of-line virtual daBrq_c declares, so it is the class's key-function TU and emits the inherited dActor_c type-name string as vague linkage. Its canonical arm9 home (0x0208e384) lies outside this entry's claimed .data range and the linker discards this copy."
     }
   ],
   "verification": {
@@ -839,12 +797,34 @@
       ],
       "objectAudit": {
         "counts": {
-          "LICENSED": 22
+          "LICENSED": 23
         },
         "emittedTextOrderIsRomAscending": true,
         "nonLicensedSymbols": [],
         "unlicensedSections": []
       },
+      "nontextSectionOrder": {
+        "groups": [
+          {
+            "section": ".data",
+            "original": [
+              7,
+              11,
+              17,
+              19
+            ],
+            "desired": [
+              7,
+              11,
+              17,
+              19
+            ]
+          }
+        ],
+        "objisolate": null,
+        "errors": null
+      },
+      "linkedStorageAliases": null,
       "symbolCheckNewVsBaseline": [],
       "symbolCheckErrors": [
         "[ERROR] Symbol '_deq' in ITCM at 0x01ff9d40 not found in linked binary",
