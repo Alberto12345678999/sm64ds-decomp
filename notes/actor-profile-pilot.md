@@ -51,7 +51,7 @@ name correspondence and stays at confidence `B` for that reason (see
 
 ### Naming a class that several profiles reach
 
-The NSMBW `className##_classInit` spelling assumes one factory per class.  SM64DS
+The [NSMBW](https://github.com/NSMBW-Community/NSMBW-Decomp) `className##_classInit` spelling assumes one factory per class.  SM64DS
 breaks that assumption 118 times: `daObjSeesaw_c` is reached from seven registry
 entries, each with its own factory function at its own address, and one class
 cannot supply seven distinct symbol names -- nor seven distinct source filenames.
@@ -78,7 +78,7 @@ settled.
 
 ### The `factory_filename` column
 
-`class_filename_candidate` is the NSMBW-convention stem `tools/tu_names.py` derives
+`class_filename_candidate` is the [NSMBW](https://github.com/NSMBW-Community/NSMBW-Decomp)-convention stem `tools/tu_names.py` derives
 from the ROM's own RTTI class name (`daObjKm2_Ami_Bou_c` -> `d_a_obj_km2_ami_bou`).
 That stem belongs to the CLASS, so the 42 shared classes above would have several
 factories claiming one file.  `factory_filename` is the per-factory target, built by
@@ -98,7 +98,7 @@ the same rule as the symbol:
 assert that.  Like the symbol, the stem is Tier B and the profile-id suffix is a
 decomp-local convention.
 
-The lineage reference was pinned at NSMBW-Decomp revision
+The lineage reference was pinned at [NSMBW-Decomp](https://github.com/NSMBW-Community/NSMBW-Decomp) revision
 [`2e010f8708d8232c736b1ece507400dfd76aaa9c`](https://github.com/NSMBW-Community/NSMBW-Decomp/commit/2e010f8708d8232c736b1ece507400dfd76aaa9c).
 Its profile header defines a base-profile and actor-profile split, generates
 `className##_classInit`, and generates `g_profile_##profName` in

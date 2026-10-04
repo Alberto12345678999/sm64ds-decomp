@@ -44,6 +44,7 @@
 #include "common.h"
 #include "daKpa_c.h"
 #include "daKpaTail_c.h"
+#include "daKirai_c.h"
 #include "types.h"
 #include "decl_common.h"
 #include "dBgCh_Gnd.h"
@@ -2223,8 +2224,8 @@ extern "C" int func_ov060_02113d20(dActor_c *self)
         v.x = *(int *)((char *)self + 0x5c);
         v.y = *(int *)((char *)self + 0x60);
         v.z = *(int *)((char *)self + 0x64);
-        if (func_ov060_02118544(closest, &v)) {
-            func_ov060_021185c4(closest);
+        if (((daKirai_c *)closest)->func_ov060_02118544(&v)) {
+            ((daKirai_c *)closest)->func_ov060_021185c4();
             return 1;
         }
     }

@@ -13474,6 +13474,9 @@
         "mangled:2 parameter(s)",
         "param:#1 Vec3 *"
       ],
+      "src/actors/daCoin_c.cpp": [
+        "mangled:2 parameter(s)"
+      ],
       "src/func_02008cb4.c": [
         "mangled:2 parameter(s)",
         "param:#1 Vec3 *"
@@ -14298,6 +14301,9 @@
         "arity:1"
       ],
       "src/actors/daKpaFire_c.cpp": [
+        "arity:1"
+      ],
+      "src/actors/daCoin_c.cpp": [
         "arity:1"
       ]
     },
@@ -36750,11 +36756,6 @@
     "func_ov064_02117fb4": {
       "src/func_ov064_02117fd4.c": [
         "return:int"
-      ]
-    },
-    "func_ov064_021187ec": {
-      "include/decl_common.h": [
-        "param:#1 char *"
       ]
     },
     "func_ov064_0211929c": {
