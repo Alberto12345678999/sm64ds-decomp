@@ -393,7 +393,6 @@ extern s32 IsStarCollected(s32 level, s32 idx);
 /* TUBUILD CONFLICT -- alternate declaration of func_02035860, from the legacy file for func_ov002_020e8abc, NOT applied: extern void func_02035860(char *o, void *src); */
 /* TUBUILD CONFLICT -- alternate declaration of func_ov002_020e9464, from the legacy file for func_ov002_020e8abc, NOT applied: extern void func_ov002_020e9464(char *p); */
 /* TUBUILD CONFLICT -- alternate declaration of func_ov002_020e9448, from the legacy file for func_ov002_020e8abc, NOT applied: extern void func_ov002_020e9448(unsigned char *p); */
-/* TUBUILD CONFLICT -- alternate declaration of _ZN8daStar_c13AddStarMarkerEv, from the legacy file for func_ov002_020e8dd8, NOT applied: extern void _ZN8daStar_c13AddStarMarkerEv(void *thiz); */
 /* TUBUILD CONFLICT -- alternate declaration of func_ov002_020e9464, from the legacy file for func_ov002_020e8e80, NOT applied: extern void func_ov002_020e9464(char* c); */
 /* TUBUILD CONFLICT -- alternate declaration of _ZN8dActor_c10FindWithIDEj, from the legacy file for func_ov002_020e8ef0, NOT applied: void* _ZN8dActor_c10FindWithIDEj(u32 id); */
 /* TUBUILD CONFLICT -- alternate declaration of LinkSilverStarAndStarMarker, from the legacy file for func_ov002_020e8ef0, NOT applied: void LinkSilverStarAndStarMarker(void* a, void* b); */
@@ -432,7 +431,6 @@ extern s32 IsStarCollected(s32 level, s32 idx);
 /* TUBUILD CONFLICT -- alternate declaration of data_0209f2d8, from the legacy file for func_ov002_020e9d18, NOT applied: extern u8 data_0209f2d8; */
 /* TUBUILD CONFLICT -- alternate declaration of data_0209f2d8, from the legacy file for func_ov002_020ea3a4, NOT applied: extern "C" unsigned char data_0209f2d8; */
 /* TUBUILD CONFLICT -- alternate declaration of func_ov002_020e8ef0, from the legacy file for func_ov002_020ea410, NOT applied: extern void func_ov002_020e8ef0(void*, u32); */
-/* TUBUILD CONFLICT -- alternate declaration of _ZN8daStar_c13AddStarMarkerEv, from the legacy file for func_ov002_020ea420, NOT applied: extern void _ZN8daStar_c13AddStarMarkerEv(char *self); */
 /* TUBUILD CONFLICT -- alternate declaration of func_02012790, from the legacy file for func_ov002_020ea420, NOT applied: extern void func_02012790(int id); */
 /* TUBUILD CONFLICT -- alternate declaration of _ZN8dActor_c11UntrackStarERa, from the legacy file for func_ov002_020ea420, NOT applied: extern void _ZN8dActor_c11UntrackStarERa(char *self, char *p); */
 /* TUBUILD CONFLICT -- alternate declaration of func_ov002_020e930c, from the legacy file for func_ov002_020ea420, NOT applied: extern void func_ov002_020e930c(char *self); */
