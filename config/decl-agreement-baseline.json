@@ -1731,7 +1731,7 @@
       "src/actors/daWater_Hakidasi_c.cpp": [
         "param:#2 short"
       ],
-      "src/game/actors/d_a_bakubaku.cpp": [
+      "src/actors/daBakubaku_c.cpp": [
         "param:#2 short"
       ],
       "src/actors/daBgSnwmn_c.cpp": [
@@ -5769,7 +5769,7 @@
         "param:#2 dActor_c *",
         "param:#5 Vector3_16 *"
       ],
-      "src/game/actors/d_a_bakubaku.cpp": [
+      "src/actors/daBakubaku_c.cpp": [
         "param:#2 dActor_c *",
         "param:#5 void *",
         "param:#6 void *"
@@ -6175,7 +6175,7 @@
         "param:#1 char *",
         "param:#5 unsigned int"
       ],
-      "src/game/actors/d_a_bakubaku.cpp": [
+      "src/actors/daBakubaku_c.cpp": [
         "param:#3 const Vector3 &"
       ],
       "src/actors/daBgSnwmn_c.cpp": [
@@ -10412,7 +10412,7 @@
         "param:#6 unsigned int",
         "param:#7 unsigned int"
       ],
-      "src/game/actors/d_a_bakubaku.cpp": [
+      "src/actors/daBakubaku_c.cpp": [
         "param:#5 unsigned int",
         "param:#6 unsigned int",
         "param:#7 unsigned int",
@@ -12527,7 +12527,7 @@
       "src/func_ov074_021223bc.cpp": [
         "param:#6 unsigned int"
       ],
-      "src/game/actors/d_a_bakubaku.cpp": [
+      "src/actors/daBakubaku_c.cpp": [
         "param:#6 unsigned int"
       ],
       "src/actors/daBgSnwmn_c.cpp": [
@@ -13161,7 +13161,7 @@
         "param:#1 char *",
         "param:#5 unsigned int"
       ],
-      "src/game/actors/d_a_bakubaku.cpp": [
+      "src/actors/daBakubaku_c.cpp": [
         "param:#5 unsigned int"
       ],
       "src/game/actors/d_a_c_jugem.cpp": [
@@ -13473,6 +13473,9 @@
       "src/_ZN10dBgCh_Actr22UpdateContinuousNoLavaEv.cpp": [
         "mangled:2 parameter(s)",
         "param:#1 Vec3 *"
+      ],
+      "src/actors/daCoin_c.cpp": [
+        "mangled:2 parameter(s)"
       ],
       "src/func_02008cb4.c": [
         "mangled:2 parameter(s)",
@@ -14298,6 +14301,9 @@
         "arity:1"
       ],
       "src/actors/daKpaFire_c.cpp": [
+        "arity:1"
+      ],
+      "src/actors/daCoin_c.cpp": [
         "arity:1"
       ]
     },
@@ -15568,7 +15574,7 @@
       "src/actors/daYurei_Mucho_c.cpp": [
         "return:int []"
       ],
-      "src/game/actors/d_a_bakubaku.cpp": [
+      "src/actors/daBakubaku_c.cpp": [
         "return:int []"
       ],
       "src/game/actors/d_a_book.cpp": [
@@ -16126,7 +16132,7 @@
       ]
     },
     "data_0209f32c": {
-      "src/game/actors/d_a_bakubaku.cpp": [
+      "src/actors/daBakubaku_c.cpp": [
         "return:int []"
       ]
     },
@@ -17125,7 +17131,7 @@
       "src/actors/daFPkn_c.cpp": [
         "return:int []"
       ],
-      "src/game/actors/d_a_bakubaku.cpp": [
+      "src/actors/daBakubaku_c.cpp": [
         "return:int []"
       ],
       "src/game/actors/d_a_propeller_heyho.cpp": [
@@ -25314,7 +25320,7 @@
         "return:int",
         "param:#1 int"
       ],
-      "src/game/actors/d_a_bakubaku.cpp": [
+      "src/actors/daBakubaku_c.cpp": [
         "param:#1 int"
       ],
       "src/game/actors/d_a_holhei.cpp": [
@@ -33522,7 +33528,7 @@
       ]
     },
     "func_ov002_020c5cd8": {
-      "src/game/actors/d_a_bakubaku.cpp": [
+      "src/actors/daBakubaku_c.cpp": [
         "param:#2 void *"
       ]
     },
