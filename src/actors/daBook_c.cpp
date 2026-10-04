@@ -4,16 +4,7 @@
  * .text 0x021111a0..0x02112938: the first function of ov020 .text up to
  * daChair_c (src/actors/daChair_c.cpp), which begins at 0x02112938.
  *
- * Class identity comes from the ROM RTTI:
- *   daBook_c     _ZTS 0x0211482c, _ZTI 0x02114844, _ZTV 0x0211495c
- *                (__si_class_type_info, parent dEnemyBase_c)
- *   daBookGen_c  _ZTI 0x02114838, _ZTS 0x02114850, _ZTV 0x021148d8
- *                (__si_class_type_info, parent dActor_c)
- * The coined names BookShot and BookShotSpawner survive only as symbols.txt
- * aliases of the two vtables.
- *
- * WHAT THE BOOKS DO. One class, three registry profiles, told apart by
- * actorID:
+ * One class, three registry profiles, told apart by actorID:
  *   SHOOT_BOOK  (0x145)  a projectile. daBookGen_c spawns it when the player
  *                        comes within range; it flies straight and hurts.
  *   KILLER_BOOK (0x147)  waits on its own until the player is close and in
@@ -33,34 +24,17 @@
  * function as it is parsed. Each empty out-of-line destructor emits D1 then
  * D0; its D2 has no ROM home and is deadstripped (policy rows in the TU
  * manifest). Defining the destructors here makes this file the key-function
- * home of both vtables and their RTTI.
- *
- * The four registry factories come last, in ROM order, and abut each other
- * with no gap: daBook_c_classInit_BOOK_SWITCH (0x021127f4),
- * daBookGen_c_classInit (0x02112850), daBook_c_classInit_KILLER_BOOK
- * (0x02112880) and daBook_c_classInit_SHOOT_BOOK (0x021128dc). Three
- * profiles (BOOK_SWITCH, KILLER_BOOK, SHOOT_BOOK) build the same daBook_c and
- * InitResources tells them apart by actorID; BOOK_GENERATOR builds
- * daBookGen_c. Neither class declares a constructor, so each factory is a
- * plain `return new`. The classInit spellings are reconstructed from later
- * EAD lineage; the historical aliases were func_ov020_021127f4,
- * BookShotSpawner_Spawn, Bookend_Spawn and BookShot_Spawn.
+ * home of both vtables and their RTTI. The four registry factories come last,
+ * in ROM order, and abut each other with no gap.
  *
  * common.h comes first, and that is load-bearing: it and math/Matrix.h
  * define Matrix4x3 under one guard, and only common.h's flat s32 m[12]
  * spelling makes InitResources' mShadowMat = IDENTITY_MATRIX4X3 the ROM's
  * twelve-word block copy.
  *
- * Leftover (still to deslop; each change needs a rematch):
- *  - the fourteen func_ov020_* helpers are state and member bodies of
- *    daBook_c. They take the object as a `daBook_c *` now, but they are still
- *    free functions under their address names: the ROM symbols are not
- *    mangled member names and nothing recovers what EAD called them. The
- *    animation calls go through the Animation base at +0x160: calling
- *    through ModelAnim (+0x110) adds a base adjustment and does not match;
- *  - the partner of BOOK_SWITCH is the daTrsTrap_c bookshelf (the actor whose
- *    ID is in mLinkedActorID); its mBookFlags (+0x157) and mState (+0x150)
- *    are read here at raw offsets;
+ * The state and helper methods keep their ROM-address names
+ * (func_ov020_0211xxxx): nothing recovers what EAD called them, and the
+ * name is the address. Leftover:
  *  - calls that pass Fix12<int> by value (ModelAnim::SetAnim,
  *    dBgCh_Actr::Init, dCcAcPos_c::Init, Player::Hurt, Player::Bounce,
  *    DropShadowRadHeight, cstd::atan2) stay mangled extern "C" calls: the
@@ -76,6 +50,7 @@
 #include "common.h"
 #include "daBook_c.h"
 #include "daBookGen_c.h"
+#include "daTrsTrap_c.h"
 #include "Player.h"
 #include "SharedFilePtr.h"
 #include "SurfaceInfo.h"
@@ -118,11 +93,9 @@ enum { kFlightSpeed = 0x32000 };
 typedef struct { int x, y, z; } Vec3;
 
 /* dEnemyBase_c declares mStateTimer as an s16, but every use here reads it as
- * an unsigned halfword (ldrh); a signed read is ldrsh and misses by a word. */
-#define STATE_TIMER(book) (*(u16 *)&(book)->mStateTimer)
-
-/* The Animation base of mModelAnim, at +0x160. See the Leftover note. */
-#define BOOK_ANIM(book) ((Animation *)((char *)(book) + 0x160))
+ * an unsigned halfword (ldrh); a signed read is ldrsh and misses by a word.
+ * Member-context pun, valid inside the daBook_c methods only. */
+#define STATE_TIMER (*(u16 *)&mStateTimer)
 
 /* Index of an unsigned 16-bit angle into data_02082214, the sin/cos table:
  * one s16 sin, s16 cos pair per 16 angle units. */
@@ -131,31 +104,7 @@ typedef struct { int x, y, z; } Vec3;
 /* A fix12 multiply, rounded to nearest. */
 #define FIX12_MUL(a, b) ((s32)(((s64)(a) * (b) + 0x800) >> 12))
 
-/* The BOOK_SWITCH partner is a daTrsTrap_c bookshelf. Its two bytes, read at
- * raw offsets:
- *   +0x157 mBookFlags  low three bits: which books have been pushed so far
- *                      (bit n is book n); bit 3: the bookshelf has armed the
- *                      puzzle
- *   +0x150 mState      the bookshelf's state; 2 slides it away, 3 removes it */
-#define PARTNER_BOOKS(partner) (*((u8 *)(partner) + 0x157))
-#define PARTNER_PHASE(partner) (*((u8 *)(partner) + 0x150))
-
 extern "C" {
-void func_ov020_021112b0(daBook_c *book);
-void func_ov020_02111340(daBook_c *book);
-int  func_ov020_02111418(daBook_c *book);
-int  func_ov020_021115ac(daBook_c *book);
-void func_ov020_0211174c(daBook_c *book);
-void func_ov020_021119dc(daBook_c *book);
-void func_ov020_02111aa8(daBook_c *book);
-void func_ov020_02111b28(daBook_c *book);
-void func_ov020_02111c30(daBook_c *book);
-void func_ov020_02111ee0(daBook_c *book);
-void func_ov020_02111fc4(daBook_c *book);
-void func_ov020_02112080(daBook_c *book);
-void func_ov020_02112110(daBook_c *book);
-void func_ov020_0211216c(daBook_c *book);
-
 short _ZN4cstd5atan2E5Fix12IiES1_(int, int);
 void Vec3_Sub(Vector3 *d, Vector3 *a, Vector3 *b);
 int  Vec3_HorzLen(const Vector3 *);
@@ -243,12 +192,12 @@ extern "C" daBookGen_c *_ZN11daBookGen_cD0Ev(daBookGen_c *thiz)
 }
 #endif
 
-// @symbol func_ov020_021112b0
+// @symbol _ZN8daBook_c19func_ov020_021112b0Ev
 /* Points the book at the closest player: mAimYaw and mAimPitch are the angles
  * from the book to the player, mAimRoll a constant quarter turn. */
-extern "C" void func_ov020_021112b0(daBook_c *book)
+void daBook_c::func_ov020_021112b0()
 {
-    Player *player = book->ClosestPlayer();
+    Player *player = ClosestPlayer();
     if (!player)
         return;
     Vector3 *playerPos = (Vector3 *)&player->mPosX;
@@ -257,23 +206,23 @@ extern "C" void func_ov020_021112b0(daBook_c *book)
     tmp.y = playerPos->y;
     tmp.z = playerPos->z;
     Vector3 toPlayer;
-    Vec3_Sub(&toPlayer, &tmp, (Vector3 *)&book->mPosX);
-    book->mAimYaw = _ZN4cstd5atan2E5Fix12IiES1_(toPlayer.x, toPlayer.z);
-    book->mAimPitch = _ZN4cstd5atan2E5Fix12IiES1_(toPlayer.y, Vec3_HorzLen(&toPlayer));
-    book->mAimRoll = 0x4000;
+    Vec3_Sub(&toPlayer, &tmp, (Vector3 *)&mPosX);
+    mAimYaw = _ZN4cstd5atan2E5Fix12IiES1_(toPlayer.x, toPlayer.z);
+    mAimPitch = _ZN4cstd5atan2E5Fix12IiES1_(toPlayer.y, Vec3_HorzLen(&toPlayer));
+    mAimRoll = 0x4000;
 }
 
-// @symbol func_ov020_02111340
+// @symbol _ZN8daBook_c19func_ov020_02111340Ev
 /* BOOK_SWITCH, wrong book pushed: fires a SHOOT_BOOK from beside the partner,
  * 250 units to its -x or +x side (one random bit picks it), 65 units up,
  * at the touching player's depth and turned a quarter turn to cross it. */
-extern "C" void func_ov020_02111340(daBook_c *book)
+void daBook_c::func_ov020_02111340()
 {
     int bit = ((unsigned int)RandomIntInternal(data_0209e650) >> 16) & 1;
-    if (book->mTouchedPlayer == 0)
+    if (mTouchedPlayer == 0)
         return;
     {
-        dActor_c *partner = dActor_c::FindWithID(book->mLinkedActorID);
+        dActor_c *partner = dActor_c::FindWithID(mLinkedActorID);
         if (partner == 0)
             return;
         {
@@ -296,60 +245,60 @@ extern "C" void func_ov020_02111340(daBook_c *book)
                     pos.y = ny;
                 }
             }
-            pos.z = book->mTouchedPlayer->mPosZ;
+            pos.z = mTouchedPlayer->mPosZ;
             rot.y = (short)((bit << 15) + 0x4000);
             rot.x = 0;
             rot.z = 0;
-            dActor_c::Spawn(kShootBookActorId, 0, pos, &rot, book->mAreaId, -1);
+            dActor_c::Spawn(kShootBookActorId, 0, pos, &rot, mAreaId, -1);
         }
     }
 }
 
-// @symbol func_ov020_02111418
+// @symbol _ZN8daBook_c19func_ov020_02111418Ev
 /* What a flying book does about whatever func_ov020_021115ac found. Returns 1
  * when the book is gone. The first count handed to Player::Hurt is 0 for a
  * metal player, 2 for KILLER_BOOK and 1 otherwise; touching the player also
  * clears unk_108, so no blue coin drops. */
-extern "C" int func_ov020_02111418(daBook_c *book)
+int daBook_c::func_ov020_02111418()
 {
-    int r = func_ov020_021115ac(book);
-    if (r == HIT_ATTACKED) { func_ov020_02112110(book); return 1; }
+    int r = func_ov020_021115ac();
+    if (r == HIT_ATTACKED) { func_ov020_02112110(); return 1; }
     if (r == HIT_METAL_PLAYER) {
         Vector3 v;
-        v.x = book->mPosX; v.y = book->mPosY; v.z = book->mPosZ;
-        _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(book->mTouchedPlayer, &v, 0, 0xc000, 1, 0, 1);
-        func_ov020_02112110(book);
+        v.x = mPosX; v.y = mPosY; v.z = mPosZ;
+        _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(mTouchedPlayer, &v, 0, 0xc000, 1, 0, 1);
+        func_ov020_02112110();
         return 1;
     }
     if (r == HIT_TOUCHED_PLAYER) {
-        int eq = (book->actorID == kKillerBookActorId);
+        int eq = (actorID == kKillerBookActorId);
         if (eq) {
             Vector3 v;
-            v.x = book->mPosX; v.y = book->mPosY; v.z = book->mPosZ;
-            _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(book->mTouchedPlayer, &v, 2, 0xc000, 1, 0, 1);
+            v.x = mPosX; v.y = mPosY; v.z = mPosZ;
+            _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(mTouchedPlayer, &v, 2, 0xc000, 1, 0, 1);
         } else {
             Vector3 v;
-            v.x = book->mPosX; v.y = book->mPosY; v.z = book->mPosZ;
-            _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(book->mTouchedPlayer, &v, 1, 0xc000, 1, 0, 1);
+            v.x = mPosX; v.y = mPosY; v.z = mPosZ;
+            _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(mTouchedPlayer, &v, 1, 0xc000, 1, 0, 1);
         }
-        book->unk_108 = 0;
-        func_ov020_02112110(book);
+        unk_108 = 0;
+        func_ov020_02112110();
         return 1;
     }
     if (r != HIT_STOMPED) return 0;
-    _ZN6Player6BounceE5Fix12IiE(book->mTouchedPlayer, 0x28000);
-    func_ov020_02112110(book);
+    _ZN6Player6BounceE5Fix12IiE(mTouchedPlayer, 0x28000);
+    func_ov020_02112110();
     return 1;
 }
 
-// @symbol func_ov020_021115ac
+// @symbol _ZN8daBook_c19func_ov020_021115acEv
 /* Reads the collider: who touched the book (dCc_c otherOwner) and how
  * (hitFlags), and returns one of the HIT_ results. Only a player counts, and
  * a vanished player is ignored by SHOOT_BOOK straight away, and by KILLER_BOOK
  * only when nothing else applied. mTouchedPlayer is set as soon as a player is known to be
  * involved. The ROM reserves a 12-byte frame it never touches; two
  * address-taken volatile locals reserve it with no emitted code. */
-extern "C" int func_ov020_021115ac(daBook_c *book)
+int daBook_c::func_ov020_021115ac()
 {
     u32 id;
     dActor_c *found;
@@ -357,7 +306,7 @@ extern "C" int func_ov020_021115ac(daBook_c *book)
     volatile int t1, t2;
     (void)&t1; (void)&t2;
 
-    id = book->mdCcAcPos_c.otherOwner;
+    id = mdCcAcPos_c.otherOwner;
     if (id == 0)
         return HIT_NONE;
     found = dActor_c::FindWithID(id);
@@ -369,22 +318,22 @@ extern "C" int func_ov020_021115ac(daBook_c *book)
         return HIT_NONE;
 
     /* 0x8000 is the Yoshi-tongue hit bit */
-    if ((book->mdCcAcPos_c.hitFlags & 0x8000) != 0)
+    if ((mdCcAcPos_c.hitFlags & 0x8000) != 0)
         return HIT_NONE;
 
     if (((Player *)found)->mIsVanish != 0) {
-        t = (int)(book->actorID == kShootBookActorId);
+        t = (int)(actorID == kShootBookActorId);
         if (t != 0)
             return HIT_NONE;
     }
 
-    book->mTouchedPlayer = (Player *)found;
+    mTouchedPlayer = (Player *)found;
 
     /* the attack bits the profile made the collider vulnerable to */
-    if ((book->mdCcAcPos_c.hitFlags & 0x26fe0) != 0)
+    if ((mdCcAcPos_c.hitFlags & 0x26fe0) != 0)
         return HIT_ATTACKED;
 
-    if (book->BumpedUnderneathByPlayer(*(Player *)found) != 0) {
+    if (BumpedUnderneathByPlayer(*(Player *)found) != 0) {
         /* the bump also cancels the player's vertical speed */
         Vec3 *p = (Vec3 *)&found->unk_0a4;
         Vec3 v;
@@ -394,12 +343,12 @@ extern "C" int func_ov020_021115ac(daBook_c *book)
         found->unk_0a4 = v.x;
         found->mVertSpeed = v.y;
         found->unk_0ac = v.z;
-        book->mTouchedPlayer = (Player *)found;
+        mTouchedPlayer = (Player *)found;
         return HIT_ATTACKED;
     }
 
-    if (book->JumpedOnByPlayer(book->mdCcAcPos_c, *(Player *)found) != 0) {
-        book->mTouchedPlayer = (Player *)found;
+    if (JumpedOnByPlayer(mdCcAcPos_c, *(Player *)found) != 0) {
+        mTouchedPlayer = (Player *)found;
         return HIT_STOMPED;
     }
 
@@ -407,109 +356,112 @@ extern "C" int func_ov020_021115ac(daBook_c *book)
         return HIT_METAL_PLAYER;
 
     if (((Player *)found)->mIsVanish != 0) {
-        t = (int)(book->actorID == kKillerBookActorId);
+        t = (int)(actorID == kKillerBookActorId);
         if (t != 0)
             return HIT_NONE;
     }
     return HIT_TOUCHED_PLAYER;
 }
 
-// @symbol func_ov020_0211174c
+// @symbol _ZN8daBook_c19func_ov020_0211174cEv
 /* The BOOK_SWITCH state machine (mState 6..10): the partner arms the puzzle,
  * the book slides into the shelf, waits to be hit, slides out, reports itself
- * to the partner, then follows the partner's verdict. */
-extern "C" void func_ov020_0211174c(daBook_c *book)
+ * to the partner, then follows the partner's verdict. The partner is the
+ * daTrsTrap_c bookshelf: the low three bits of its mBookFlags record which
+ * books have been pushed, bit 3 is the puzzle armed, and its mState is the
+ * verdict (2 slides the shelf away, 3 removes it). */
+void daBook_c::func_ov020_0211174c()
 {
-    dActor_c *partner;
+    daTrsTrap_c *partner;
 
     /* looked up twice; the first result is unused */
-    dActor_c::FindWithID(book->mLinkedActorID);
-    partner = dActor_c::FindWithID(book->mLinkedActorID);
+    dActor_c::FindWithID(mLinkedActorID);
+    partner = (daTrsTrap_c *)dActor_c::FindWithID(mLinkedActorID);
     if (partner == 0)
         return;
 
-    switch (book->mState) {
-    case daBook_c::STATE_SWITCH_WAIT:
-        if ((PARTNER_BOOKS(partner) & 8) == 0)
+    switch (mState) {
+    case STATE_SWITCH_WAIT:
+        if ((partner->mBookFlags & 8) == 0)
             return;
-        book->mState = daBook_c::STATE_SWITCH_RETRACT;
-        book->mStateTimer = 0;
+        mState = STATE_SWITCH_RETRACT;
+        mStateTimer = 0;
         return;
-    case daBook_c::STATE_SWITCH_RETRACT:
+    case STATE_SWITCH_RETRACT:
     {
         /* waits out mStateTimer, then slides back 4 units a frame until it
          * is 40 units behind its home position */
-        u16 *ctr = &STATE_TIMER(book);
+        u16 *ctr = &STATE_TIMER;
         s32 *z;
         u32 *fl;
         if (*ctr != 0) {
             *ctr -= 1;
             return;
         }
-        z = &book->mPosZ;
+        z = &mPosZ;
         *z -= 0x4000;
-        if (book->mHomePosZ - book->mPosZ < 0x28000)
+        if (mHomePosZ - mPosZ < 0x28000)
             return;
-        book->mPosZ = book->mHomePosZ - 0x28000;
-        fl = &book->mdCcAcPos_c.flags;
-        book->mState = daBook_c::STATE_SWITCH_READY;
+        mPosZ = mHomePosZ - 0x28000;
+        fl = &mdCcAcPos_c.flags;
+        mState = STATE_SWITCH_READY;
         *fl &= ~1;
         return;
     }
-    case daBook_c::STATE_SWITCH_READY:
+    case STATE_SWITCH_READY:
     {
         /* an attack or a metal-player touch turns the collider on (clears
          * flags bit 0) and starts the push */
         u32 *fl;
-        if (func_ov020_021115ac(book) <= 0)
+        if (func_ov020_021115ac() <= 0)
             return;
-        fl = &book->mdCcAcPos_c.flags;
-        book->mState = daBook_c::STATE_SWITCH_PUSH;
+        fl = &mdCcAcPos_c.flags;
+        mState = STATE_SWITCH_PUSH;
         *fl |= 1;
-        Sound::PlayBank0(kSfxSwitchPush, *(Vector3 *)&book->mCamSpacePosX);
+        Sound::PlayBank0(kSfxSwitchPush, *(Vector3 *)&mCamSpacePosX);
         return;
     }
-    case daBook_c::STATE_SWITCH_PUSH:
+    case STATE_SWITCH_PUSH:
     {
         /* slides forward 10 units a frame; once home, checks the push order
          * and tells the partner this book was pushed */
-        s32 *z = &book->mPosZ;
+        s32 *z = &mPosZ;
         *z += 0xa000;
-        if (book->mPosZ < book->mHomePosZ)
+        if (mPosZ < mHomePosZ)
             return;
         {
-            int idx = book->param1;
-            if ((PARTNER_BOOKS(partner) & 7) != data_ov020_02114828[idx])
-                func_ov020_02111340(book);
+            int idx = param1;
+            if ((partner->mBookFlags & 7) != data_ov020_02114828[idx])
+                func_ov020_02111340();
         }
-        book->mTouchedPlayer = 0;
-        func_ov063_0211cae8(partner, (1u << book->param1) & 0xff);
-        book->mPosZ = book->mHomePosZ;
-        book->mState = daBook_c::STATE_SWITCH_DONE;
+        mTouchedPlayer = 0;
+        func_ov063_0211cae8(partner, (1u << param1) & 0xff);
+        mPosZ = mHomePosZ;
+        mState = STATE_SWITCH_DONE;
         return;
     }
-    case daBook_c::STATE_SWITCH_DONE:
+    case STATE_SWITCH_DONE:
     {
         /* if the partner cleared this book's bit, retract and try again;
          * phase 2 sends the book off along +x until x reaches -1500 units,
          * phase 3 removes it at once */
         s32 *x;
-        if ((PARTNER_BOOKS(partner) & (1 << book->param1)) == 0) {
-            book->mState = daBook_c::STATE_SWITCH_RETRACT;
-            book->mStateTimer = 0xa;
+        if ((partner->mBookFlags & (1 << param1)) == 0) {
+            mState = STATE_SWITCH_RETRACT;
+            mStateTimer = 0xa;
             return;
         }
-        if (PARTNER_PHASE(partner) == 2) {
-            x = &book->mPosX;
+        if (partner->mState == 2) {
+            x = &mPosX;
             *x += 0x5000;
-            if (book->mPosX < -0x5dc000)
+            if (mPosX < -0x5dc000)
                 return;
-            book->MarkForDestruction();
+            MarkForDestruction();
             return;
         }
-        if (PARTNER_PHASE(partner) != 3)
+        if (partner->mState != 3)
             return;
-        book->MarkForDestruction();
+        MarkForDestruction();
         return;
     }
     default:
@@ -517,262 +469,262 @@ extern "C" void func_ov020_0211174c(daBook_c *book)
     }
 }
 
-// @symbol func_ov020_021119dc
+// @symbol _ZN8daBook_c19func_ov020_021119dcEv
 /* STATE_YOSHI_SKID: brakes the book to a standstill at 0x800 a frame, with
  * its collider off while unk_104 counts down, then resumes mSavedState (a
  * book that was in flight goes back to winding up). func_0203568c stores its
  * second argument in word 6 of mWithMeshClsn (the radius, as daBgSnmBdy_c
  * reads it): 100 units on every skid frame, back to Init's 50 when the skid
  * ends. */
-extern "C" void func_ov020_021119dc(daBook_c *book)
+void daBook_c::func_ov020_021119dc()
 {
-    func_0203568c((int *)&book->mWithMeshClsn, 0x64000);
-    if (book->unk_104 != 0) {
-        unsigned short *p = &book->unk_104;
+    func_0203568c((int *)&mWithMeshClsn, 0x64000);
+    if (unk_104 != 0) {
+        unsigned short *p = &unk_104;
         *p = (unsigned short)(*p - 1);
-        if (book->unk_104 != 0) {
-            u32 *q = &book->mdCcAcPos_c.flags;
+        if (unk_104 != 0) {
+            u32 *q = &mdCcAcPos_c.flags;
             *q = *q | 1;
         } else {
-            u32 *q = &book->mdCcAcPos_c.flags;
+            u32 *q = &mdCcAcPos_c.flags;
             *q = *q & ~1;
         }
     }
-    ApproachLinear(book->mVertSpeed, 0, 0x800);
-    ApproachLinear(book->mHorzSpeed, 0, 0x800);
-    if (book->mVertSpeed == 0 && book->mHorzSpeed == 0) {
-        func_0203568c((int *)&book->mWithMeshClsn, 0x32000);
-        book->mState = book->mSavedState;
-        if (book->mState == daBook_c::STATE_FLY)
-            book->mState = daBook_c::STATE_WIND_UP;
+    ApproachLinear(mVertSpeed, 0, 0x800);
+    ApproachLinear(mHorzSpeed, 0, 0x800);
+    if (mVertSpeed == 0 && mHorzSpeed == 0) {
+        func_0203568c((int *)&mWithMeshClsn, 0x32000);
+        mState = mSavedState;
+        if (mState == STATE_FLY)
+            mState = STATE_WIND_UP;
     }
-    book->UpdatePos(0);
+    UpdatePos(0);
 }
 
-// @symbol func_ov020_02111aa8
+// @symbol _ZN8daBook_c19func_ov020_02111aa8Ev
 /* STATE_SPAWNED: a SHOOT_BOOK's first three frames. It never drops a coin;
  * on the third frame it becomes STATE_FLY at full speed with the collider on. */
-extern "C" void func_ov020_02111aa8(daBook_c *book)
+void daBook_c::func_ov020_02111aa8()
 {
-    book->unk_108 = 0;
-    STATE_TIMER(book)++;
-    if (STATE_TIMER(book) >= 3) {
+    unk_108 = 0;
+    STATE_TIMER++;
+    if (STATE_TIMER >= 3) {
         int *bf;
         int t;
         int sid;
-        book->mState = daBook_c::STATE_FLY;
-        book->mHorzSpeed = kFlightSpeed;
-        bf = (int *)&book->mdCcAcPos_c.flags;
+        mState = STATE_FLY;
+        mHorzSpeed = kFlightSpeed;
+        bf = (int *)&mdCcAcPos_c.flags;
         t = *bf;
         sid = kSfxTakeOff;
         *bf = t & ~1;
-        func_0201267c(sid, (const Vector3 *)&book->mCamSpacePosX);
+        func_0201267c(sid, (const Vector3 *)&mCamSpacePosX);
     }
-    ApproachLinear(book->mHorzSpeed, kFlightSpeed, 0x1000);
-    book->UpdatePos(0);
+    ApproachLinear(mHorzSpeed, kFlightSpeed, 0x1000);
+    UpdatePos(0);
 }
 
-// @symbol func_ov020_02111b28
+// @symbol _ZN8daBook_c19func_ov020_02111b28Ev
 /* STATE_FLY: moves by the velocity in unk_0a4/mVertSpeed/unk_0ac and is gone
  * when it hits the player, the ground, or a wall that faces it (the wall's
  * normal more than a quarter turn from the book's heading). */
-extern "C" void func_ov020_02111b28(daBook_c *book)
+void daBook_c::func_ov020_02111b28()
 {
-  if (book->mUsesModelAnim != 0) {
-    BOOK_ANIM(book)->Advance();
+  if (mUsesModelAnim != 0) {
+    mModelAnim.Advance();
   }
-  AddVec3(&book->mPosX, &book->unk_0a4, &book->mPosX);
-  if (func_ov020_02111418(book) != 0) return;
-  dBgCh_Actr_UpdateContinuous_Veneer(&book->mWithMeshClsn);
-  if (book->mWithMeshClsn.IsOnGround() != 0) {
-    book->unk_108 = 0;
-    func_ov020_02112110(book);
-    func_0201267c(kSfxImpact, (const Vector3 *)&book->mCamSpacePosX);
+  AddVec3(&mPosX, &unk_0a4, &mPosX);
+  if (func_ov020_02111418() != 0) return;
+  dBgCh_Actr_UpdateContinuous_Veneer(&mWithMeshClsn);
+  if (mWithMeshClsn.IsOnGround() != 0) {
+    unk_108 = 0;
+    func_ov020_02112110();
+    func_0201267c(kSfxImpact, (const Vector3 *)&mCamSpacePosX);
     return;
   }
-  if (book->mWithMeshClsn.IsOnWall() == 0) return;
+  if (mWithMeshClsn.IsOnWall() == 0) return;
   {
     Vector3 normal;
-    void* w = _ZNK10dBgCh_Actr13GetWallResultEv(&book->mWithMeshClsn);
+    void* w = _ZNK10dBgCh_Actr13GetWallResultEv(&mWithMeshClsn);
     ((SurfaceInfo *)((char *)w + 4))->CopyNormalTo(normal);
     short angle = _ZN4cstd5atan2E5Fix12IiES1_(normal.x, normal.z);
-    if (book->GetSubtraction(book->mPrevAngleY, angle) <= 0x4000) return;
+    if (GetSubtraction(mPrevAngleY, angle) <= 0x4000) return;
   }
-  book->unk_108 = 0;
-  func_ov020_02112110(book);
-  func_0201267c(kSfxImpact, (const Vector3 *)&book->mCamSpacePosX);
+  unk_108 = 0;
+  func_ov020_02112110();
+  func_0201267c(kSfxImpact, (const Vector3 *)&mCamSpacePosX);
 }
 
-// @symbol func_ov020_02111c30
+// @symbol _ZN8daBook_c19func_ov020_02111c30Ev
 /* STATE_WIND_UP, by frames of mStateTimer after the speed has ramped to 10
  * units: from 5 it re-aims every frame and turns to face the player, from 9
  * it rolls, from 0x13 it swells toward 1.5 times size, growing the collider
  * with it. When the animation finishes it switches to the flight animation,
  * aims one last time and launches along that direction at kFlightSpeed. */
-extern "C" void func_ov020_02111c30(daBook_c *book)
+void daBook_c::func_ov020_02111c30()
 {
-    if (func_ov020_02111418(book))
+    if (func_ov020_02111418())
         return;
 
-    BOOK_ANIM(book)->Advance();
+    mModelAnim.Advance();
 
     {
-        if (ApproachLinear(book->mHorzSpeed, 0xa000, 0xa00) == 0)
+        if (ApproachLinear(mHorzSpeed, 0xa000, 0xa00) == 0)
             return;
     }
 
-    if (BOOK_ANIM(book)->Finished()) {
-        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&book->mModelAnim, (BCA_File*)data_ov020_02114ab0[1], 0, 0x1000, 0);
-        book->mState = daBook_c::STATE_FLY;
-        book->mHorzSpeed = 0;
-        func_ov020_021112b0(book);
+    if (mModelAnim.Finished()) {
+        _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (BCA_File*)data_ov020_02114ab0[1], 0, 0x1000, 0);
+        mState = STATE_FLY;
+        mHorzSpeed = 0;
+        func_ov020_021112b0();
 
-        book->mPrevAngleX = -book->mAimPitch;
-        book->mAngleX = book->mPrevAngleX;
-        book->mPrevAngleY = book->mAimYaw;
-        book->mAngleY = book->mPrevAngleY;
+        mPrevAngleX = -mAimPitch;
+        mAngleX = mPrevAngleX;
+        mPrevAngleY = mAimYaw;
+        mAngleY = mPrevAngleY;
 
         {
             /* velocity = kFlightSpeed along (yaw, pitch) */
-            s32 r = FIX12_MUL(data_02082214[SINCOS_INDEX(book->mAngleX) + 1], 0x32000);
-            book->unk_0a4 = FIX12_MUL(r, data_02082214[SINCOS_INDEX(book->mAngleY)]);
-            book->mVertSpeed = FIX12_MUL(data_02082214[SINCOS_INDEX(book->mAngleX)], -0x32000);
-            book->unk_0ac = FIX12_MUL(r, data_02082214[SINCOS_INDEX(book->mAngleY) + 1]);
+            s32 r = FIX12_MUL(data_02082214[SINCOS_INDEX(mAngleX) + 1], 0x32000);
+            unk_0a4 = FIX12_MUL(r, data_02082214[SINCOS_INDEX(mAngleY)]);
+            mVertSpeed = FIX12_MUL(data_02082214[SINCOS_INDEX(mAngleX)], -0x32000);
+            unk_0ac = FIX12_MUL(r, data_02082214[SINCOS_INDEX(mAngleY) + 1]);
         }
         return;
     }
 
-    STATE_TIMER(book)++;
-    if (STATE_TIMER(book) < 5)
+    STATE_TIMER++;
+    if (STATE_TIMER < 5)
         return;
 
-    func_ov020_021112b0(book);
-    ApproachLinear(book->mAngleY, book->mAimYaw, 0x7d0);
-    ApproachLinear(book->mAngleX, -book->mAimPitch, 0x7d0);
+    func_ov020_021112b0();
+    ApproachLinear(mAngleY, mAimYaw, 0x7d0);
+    ApproachLinear(mAngleX, -mAimPitch, 0x7d0);
 
-    if (STATE_TIMER(book) < 9)
+    if (STATE_TIMER < 9)
         return;
 
-    ApproachLinear(book->mAngleZ, book->mAimRoll, 0x7d0);
+    ApproachLinear(mAngleZ, mAimRoll, 0x7d0);
 
-    if (STATE_TIMER(book) < 0x13)
+    if (STATE_TIMER < 0x13)
         return;
 
     /* collider radius is 50 units and height 100 units at scale 1.0 */
-    ApproachLinear(book->mUniformScale, 0x1800, 0x19a);
-    book->mdCcAcPos_c.radius = book->mUniformScale * 0x32;
-    book->mdCcAcPos_c.height = book->mUniformScale * 0x64;
-    book->mClsnOffset.y = book->mUniformScale * -0x32;
+    ApproachLinear(mUniformScale, 0x1800, 0x19a);
+    mdCcAcPos_c.radius = mUniformScale * 0x32;
+    mdCcAcPos_c.height = mUniformScale * 0x64;
+    mClsnOffset.y = mUniformScale * -0x32;
     {
-        s32 v = book->mUniformScale;
-        book->mScaleX = v;
-        book->mScaleY = v;
-        book->mScaleZ = v;
+        s32 v = mUniformScale;
+        mScaleX = v;
+        mScaleY = v;
+        mScaleZ = v;
     }
 }
 
-// @symbol func_ov020_02111ee0
+// @symbol _ZN8daBook_c19func_ov020_02111ee0Ev
 /* STATE_TILT_BACK: tips the book back by 45 degrees, then switches mModelAnim
  * to the animated model, starts its animation, lifts the book 50 units and
  * moves the collider down 25. */
-extern "C" void func_ov020_02111ee0(daBook_c *book)
+void daBook_c::func_ov020_02111ee0()
 {
-  int r = func_ov020_02111418(book);
+  int r = func_ov020_02111418();
   if(r) return;
-  if(ApproachLinear(book->mAngleX, -0x2000, 0x200)){
+  if(ApproachLinear(mAngleX, -0x2000, 0x200)){
     int s;
-    book->mHorzSpeed = 0;
-    s = book->mModelAnim.SetFile((BMD_File*)data_ov020_02114aa0[1], 1, -1);
+    mHorzSpeed = 0;
+    s = mModelAnim.SetFile((BMD_File*)data_ov020_02114aa0[1], 1, -1);
     if(s == 0) return;
-    book->mState = daBook_c::STATE_WIND_UP;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&book->mModelAnim, (BCA_File*)data_ov020_02114aa8[1], 0x40000000, 0x1000, 0);
-    book->mUsesModelAnim = 1;
-    book->mStateTimer = 0;
+    mState = STATE_WIND_UP;
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (BCA_File*)data_ov020_02114aa8[1], 0x40000000, 0x1000, 0);
+    mUsesModelAnim = 1;
+    mStateTimer = 0;
     {
-      int* p60 = &book->mPosY;
+      int* p60 = &mPosY;
       *p60 = *p60 + 0x32000;
     }
-    book->mClsnOffset.y = -0x19000;
+    mClsnOffset.y = -0x19000;
   }
-  book->UpdatePos(0);
+  UpdatePos(0);
 }
 
-// @symbol func_ov020_02111fc4
+// @symbol _ZN8daBook_c19func_ov020_02111fc4Ev
 /* STATE_WAIT (KILLER_BOOK): when the closest player is within 400 units and
  * within 0x3000 (67.5 degrees) of the book's heading, starts tilting back and
  * switches its collider on. */
-extern "C" void func_ov020_02111fc4(daBook_c *book)
+void daBook_c::func_ov020_02111fc4()
 {
     Vector3 v;
-    Player *p = book->ClosestPlayer();
+    Player *p = ClosestPlayer();
     {
         int* s = &p->mPosX;
         v.x = s[0];
         v.y = s[1];
         v.z = s[2];
     }
-    if (Vec3_Dist((Vector3*)&book->mPosX, &v) >= 0x190000) return;
+    if (Vec3_Dist((Vector3*)&mPosX, &v) >= 0x190000) return;
     {
-        short ang = Vec3_HorzAngle((Vector3*)&book->mPosX, &v);
-        if (book->GetSubtraction(book->mPrevAngleY, ang) >= 0x3000) return;
+        short ang = Vec3_HorzAngle((Vector3*)&mPosX, &v);
+        if (GetSubtraction(mPrevAngleY, ang) >= 0x3000) return;
     }
-    book->mState = daBook_c::STATE_TILT_BACK;
-    book->mHorzSpeed = 0x5000;
-    book->mStateTimer = 0;
+    mState = STATE_TILT_BACK;
+    mHorzSpeed = 0x5000;
+    mStateTimer = 0;
     {
-        u32* p234 = &book->mdCcAcPos_c.flags;
+        u32* p234 = &mdCcAcPos_c.flags;
         *p234 = *p234 & ~1;
     }
-    func_0201267c(kSfxTakeOff, (const Vector3*)&book->mCamSpacePosX);
+    func_0201267c(kSfxTakeOff, (const Vector3*)&mCamSpacePosX);
 }
 
-// @symbol func_ov020_02112080
+// @symbol _ZN8daBook_c19func_ov020_02112080Ev
 /* The flying books' state machine; mState 6..10 belong to
  * func_ov020_0211174c. */
-extern "C" void func_ov020_02112080(daBook_c *book)
+void daBook_c::func_ov020_02112080()
 {
-    switch (book->mState) {
-    case daBook_c::STATE_WAIT: func_ov020_02111fc4(book); break;
-    case daBook_c::STATE_TILT_BACK: func_ov020_02111ee0(book); break;
-    case daBook_c::STATE_WIND_UP: func_ov020_02111c30(book); break;
-    case daBook_c::STATE_FLY: func_ov020_02111b28(book); break;
-    case daBook_c::STATE_SPAWNED: func_ov020_02111aa8(book); break;
-    case daBook_c::STATE_YOSHI_SKID: func_ov020_021119dc(book); break;
+    switch (mState) {
+    case STATE_WAIT: func_ov020_02111fc4(); break;
+    case STATE_TILT_BACK: func_ov020_02111ee0(); break;
+    case STATE_WIND_UP: func_ov020_02111c30(); break;
+    case STATE_FLY: func_ov020_02111b28(); break;
+    case STATE_SPAWNED: func_ov020_02111aa8(); break;
+    case STATE_YOSHI_SKID: func_ov020_021119dc(); break;
     }
 }
 
-// @symbol func_ov020_02112110
+// @symbol _ZN8daBook_c19func_ov020_02112110Ev
 /* The end of a book: drops a blue coin if unk_108 is set, puffs smoke and
  * removes the actor. */
-extern "C" void func_ov020_02112110(daBook_c *book)
+void daBook_c::func_ov020_02112110()
 {
-  if (book->unk_108) {
-    int param = book->mAreaId;
-    dActor_c::Spawn(kBlueCoinActorId, 2, *(const Vector3*)&book->mPosX, 0, param, -1);
+  if (unk_108) {
+    int param = mAreaId;
+    dActor_c::Spawn(kBlueCoinActorId, 2, *(const Vector3*)&mPosX, 0, param, -1);
   }
-  book->PoofDust();
-  book->MarkForDestruction();
+  PoofDust();
+  MarkForDestruction();
 }
 
-// @symbol func_ov020_0211216c
+// @symbol _ZN8daBook_c19func_ov020_0211216cEv
 /* Rebuilds the model matrix from the book's rotation and position (model
  * matrices are in eighths of a unit, so position >> 3), in the animated model
  * once it is in use. KILLER_BOOK also places its drop shadow, which sits at
  * the home height. */
-extern "C" void func_ov020_0211216c(daBook_c *book)
+void daBook_c::func_ov020_0211216c()
 {
-    Matrix4x3 *m = (book->mUsesModelAnim != 0) ? &book->mModelAnim.mat4x3 : &book->mModel.mat4x3;
-    Matrix4x3_FromRotationZXYExt(m, book->mAngleX, book->mAngleY, book->mAngleZ);
-    m->m[9] = book->mPosX >> 3;
-    m->m[10] = book->mPosY >> 3;
-    m->m[11] = book->mPosZ >> 3;
-    int b = (book->actorID == kKillerBookActorId);
+    Matrix4x3 *m = (mUsesModelAnim != 0) ? &mModelAnim.mat4x3 : &mModel.mat4x3;
+    Matrix4x3_FromRotationZXYExt(m, mAngleX, mAngleY, mAngleZ);
+    m->m[9] = mPosX >> 3;
+    m->m[10] = mPosY >> 3;
+    m->m[11] = mPosZ >> 3;
+    int b = (actorID == kKillerBookActorId);
     if (b == 0) return;
-    book->mShadowMat.m[9] = book->mPosX >> 3;
-    book->mShadowMat.m[10] = book->mHomePosY >> 3;
-    book->mShadowMat.m[11] = book->mPosZ >> 3;
+    mShadowMat.m[9] = mPosX >> 3;
+    mShadowMat.m[10] = mHomePosY >> 3;
+    mShadowMat.m[11] = mPosZ >> 3;
     _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
-        book, &book->mShadowModel, &book->mShadowMat, book->mScaleX * 0x64, 0x12c000, 0xf);
+        this, &mShadowModel, &mShadowMat, mScaleX * 0x64, 0x12c000, 0xf);
 }
 
 // @symbol _ZN8daBook_c16CleanupResourcesEv
@@ -826,18 +778,18 @@ int daBook_c::Behavior()
             mVertSpeed = 0;
             mHorzSpeed = 0x8000;
         }
-        func_ov020_0211216c(this);
+        func_ov020_0211216c();
         return 1;
     }
     switch (mKind) {
     case KIND_FLYING_BOOK:
-        func_ov020_02112080(this);
+        func_ov020_02112080();
         break;
     case KIND_SWITCH_BOOK:
-        func_ov020_0211174c(this);
+        func_ov020_0211174c();
         break;
     }
-    func_ov020_0211216c(this);
+    func_ov020_0211216c();
     mdCcAcPos_c.Clear();
     mdCcAcPos_c.SetPosRelativeToActor(mClsnOffset);
     mdCcAcPos_c.Update();

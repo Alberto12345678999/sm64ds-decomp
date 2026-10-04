@@ -93,6 +93,23 @@ struct daBook_c : dEnemyBase_c {
     int InitResources();
     int Render();
 
+    /* State handlers and helpers, in ROM order. They keep their ROM-address
+       names: no EAD name survives for any of them. */
+    void func_ov020_021112b0();   /* aims the book at the closest player */
+    void func_ov020_02111340();   /* wrong push: fires a SHOOT_BOOK beside the shelf */
+    int  func_ov020_02111418();   /* acts on the func_ov020_021115ac result; 1 = book gone */
+    int  func_ov020_021115ac();   /* reads the collider, returns a HIT_ result */
+    void func_ov020_0211174c();   /* KIND_SWITCH_BOOK state machine */
+    void func_ov020_021119dc();   /* STATE_YOSHI_SKID */
+    void func_ov020_02111aa8();   /* STATE_SPAWNED */
+    void func_ov020_02111b28();   /* STATE_FLY */
+    void func_ov020_02111c30();   /* STATE_WIND_UP */
+    void func_ov020_02111ee0();   /* STATE_TILT_BACK */
+    void func_ov020_02111fc4();   /* STATE_WAIT */
+    void func_ov020_02112080();   /* KIND_FLYING_BOOK state machine */
+    void func_ov020_02112110();   /* drops the coin, puffs, removes the actor */
+    void func_ov020_0211216c();   /* rebuilds the model matrix and the drop shadow */
+
     /* Which of the two behaviours the profile selected; InitResources sets it
        from actorID and Behavior switches on it. */
     enum Kind {

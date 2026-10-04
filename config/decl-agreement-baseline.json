@@ -4990,7 +4990,7 @@
         "param:#2 Vector3 *",
         "param:#3 Vector3 *"
       ],
-      "src/game/actors/d_a_book.cpp": [
+      "src/actors/daBook_c.cpp": [
         "param:#1 Vector3 *",
         "param:#2 Vector3 *",
         "param:#3 Vector3 *"
@@ -5941,7 +5941,7 @@
         "param:#5 void *",
         "param:#6 void *"
       ],
-      "src/game/actors/d_a_book.cpp": [
+      "src/actors/daBook_c.cpp": [
         "param:#2 dActor_c *",
         "param:#5 Vector3_16 *",
         "param:#6 Vector3_16 *"
@@ -15577,7 +15577,7 @@
       "src/actors/daBakubaku_c.cpp": [
         "return:int []"
       ],
-      "src/game/actors/d_a_book.cpp": [
+      "src/actors/daBook_c.cpp": [
         "return:int []"
       ],
       "src/game/actors/d_a_holhei.cpp": [
@@ -21486,7 +21486,7 @@
       "src/__sinit_ov020_02113674.c": [
         "return:char []"
       ],
-      "src/game/actors/d_a_book.cpp": [
+      "src/actors/daBook_c.cpp": [
         "return:int []"
       ]
     },
@@ -21494,7 +21494,7 @@
       "src/__sinit_ov020_02113674.c": [
         "return:char []"
       ],
-      "src/game/actors/d_a_book.cpp": [
+      "src/actors/daBook_c.cpp": [
         "return:int []"
       ]
     },
@@ -21502,7 +21502,7 @@
       "src/__sinit_ov020_02113674.c": [
         "return:char []"
       ],
-      "src/game/actors/d_a_book.cpp": [
+      "src/actors/daBook_c.cpp": [
         "return:int []"
       ]
     },
@@ -21510,7 +21510,7 @@
       "src/__sinit_ov020_02113674.c": [
         "return:char []"
       ],
-      "src/game/actors/d_a_book.cpp": [
+      "src/actors/daBook_c.cpp": [
         "return:int []"
       ]
     },
@@ -36744,7 +36744,7 @@
       ]
     },
     "func_ov063_0211cae8": {
-      "src/game/actors/d_a_book.cpp": [
+      "src/actors/daBook_c.cpp": [
         "param:#2 unsigned int"
       ]
     },
