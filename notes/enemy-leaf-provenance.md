@@ -59,7 +59,7 @@ Byte-neutral cleanups made in the same pass (each re-verified with
 
 | offset | name | evidence |
 | --- | --- | --- |
-| 0x5d0 | `mSpawnPosX` | `src/_ZN12daKuriKing_c13InitResourcesEv.cpp` copies `self+0x5c` (mPosX) into `self+0x5d0` once, immediately after the collision cylinders are sized, and nothing writes it again. |
+| 0x5d0 | `mSpawnPosX` | `InitResources` ([src/actors/daKuriKing_c.cpp](../src/actors/daKuriKing_c.cpp)) copies `self+0x5c` (mPosX) into `self+0x5d0` once, immediately after the collision cylinders are sized, and nothing writes it again. |
 | 0x5d4 | `mSpawnPosY` | same, from `self+0x60` (mPosY). |
 | 0x5d8 | `mSpawnPosZ` | same, from `self+0x64` (mPosZ). |
 
@@ -82,9 +82,11 @@ Byte-neutral cleanups (each re-verified, `2004/b56`):
 * `Behavior` — `((char*)this)+0x40c` became `&mWithMeshClsn`, `+0x110` became
   `(char *)mdCc_cs`, `+0x74` became `&mCamSpacePosX`.
 
-`src/_ZN12daKuriKing_c13InitResourcesEv.cpp` is left alone: it is an `extern "C"`
-function over a bare `char *self` that never includes the header at all, so its
-offsets are not member accesses to collapse.
+`InitResources` was left alone in this pass: at the time it was the standalone
+shard `_ZN12daKuriKing_c13InitResourcesEv.cpp`, an `extern "C"` function over a
+bare `char *self` that never included the header, so its offsets were not member
+accesses to collapse. It has since been folded into
+[src/actors/daKuriKing_c.cpp](../src/actors/daKuriKing_c.cpp) as a real method.
 
 ---
 
