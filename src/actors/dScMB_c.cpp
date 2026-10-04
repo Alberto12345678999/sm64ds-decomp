@@ -50,7 +50,7 @@ void _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(int sub, void *attr, int x, int
 void _ZN3OAM9RenderSubEP7OamAttrii(void *attr, int a, int b);
 void _ZN3OAM5FlushEv(void);
 void _ZN3OAM4LoadEv(void);
-extern void *data_0208a0f8[];
+extern struct OamAttr *data_0208a0f8[];
 extern s16 data_02082214[];
 
 extern u8 data_0209d45c;

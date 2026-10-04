@@ -215,11 +215,9 @@ struct Vec3 { s32 x, y, z; };
 #define LU32(o) (*(u32 *)((int)(t + (o))))
 #define LU16(o) (*(u16 *)((int)(t + (o))))
 
-/* Outside extern "C": a C-linkage declaration of this name collides with
- * ModelAnim::SetAnim. The scalar parameters are the calling convention. */
-void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *self, void *f, int a, int b, unsigned int d);
-
 extern "C" {
+/* ModelAnim::SetAnim, called with a scalar speed. */
+void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *self, void *f, int a, int b, unsigned short d);
 extern char data_02082714[];
 extern int func_0203d024(struct Vector3*, struct Vector3*);
 extern void DeathTable_ClearBit(int);
