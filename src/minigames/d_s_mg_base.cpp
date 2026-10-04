@@ -28,6 +28,7 @@
  */
 
 #include "dScMgBase_c.h"
+#include "dWipe_c.h"
 #include "decl_common.h"
 #include "Sound.h"
 #include "types.h"
@@ -70,7 +71,7 @@ extern void func_02012e1c(void);
 void func_ov004_020ae330();
 extern void Enable3dEngines(void);
 extern char data_0209b308[];
-extern char data_0209f61c[];
+extern dWipe_c data_0209f61c;
 extern unsigned char data_0209d460[];
 extern unsigned char data_0209d458[];
 }
@@ -1420,7 +1421,6 @@ extern int func_ov004_020b8f78(char* p);
 extern int _Z15ApproachLinear2Rsss(short* v, short a, short b);
 extern void func_0203b958(short* o, short* a, short* b);
 extern int _Z14ApproachLinearRiii(int* v, int a, int b);
-extern void func_0202ec9c(void* f, int a);
 extern void func_02012dd0(int a);
 extern void func_ov004_020b9220(char* p);
 
@@ -1430,7 +1430,7 @@ extern unsigned char data_020a0de8[];
 extern unsigned char data_020a0de9[];
 extern unsigned char data_020a0dea[];
 extern unsigned char data_020a0deb[];
-extern char data_0209f61c[];
+extern dWipe_c data_0209f61c;
 
 void func_ov004_020aeb24(char* c)
 {
@@ -1504,8 +1504,8 @@ after:
         ((Obj*)c)->v28();
         return;
     case 1:
-        dScene_c::SetFaders((dFdBrightness_c *)data_0209f61c);
-        func_0202ec9c(data_0209f61c, 1);
+        dScene_c::SetFaders(&data_0209f61c);
+        data_0209f61c.func_0202ec9c(1);
         dScene_c::StartSceneFade(5, 0, 0);
         if (*(int*)(c + 0x4648) != 0) return;
         func_02012dd0(0x3c);
@@ -2601,8 +2601,8 @@ bool dScMgBase_c::BeforeInitResources()
     func_ov004_020b8a8c((char *)this + 0x4000);
     Virtual84();
     func_ov004_020b2cb8();
-    dScene_c::SetFaders((dFdBrightness_c *)data_0209f61c);
-    func_0202ec9c(data_0209f61c, 0);
+    dScene_c::SetFaders(&data_0209f61c);
+    data_0209f61c.func_0202ec9c(0);
     data_0209d460[0] = 0;
     data_0209d458[0] = 0;
     Virtual7C();

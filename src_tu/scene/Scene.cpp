@@ -32,7 +32,7 @@
  * 1. THE RUN IS CONTIGUOUS AND ITS EDGES ARE FOREIGN. 0x0202e140..0x0202ec9c is
  *    a gapless sequence of twenty-one functions in config/arm9/delinks.txt.
  *    Immediately below it is func_0202e118 (0x0202e118..0x0202e140), and below
- *    that _ZN5StageC3Ev; immediately above it is func_0202ec9c. Neither edge
+ *    that _ZN5StageC3Ev; immediately above it is _ZN7dWipe_c13func_0202ec9cEi. Neither edge
  *    function is a dScene_c member and neither is reached from one.
  *
  * 2. TWO FUNCTIONS INSIDE THE SPAN CARRY OTHER CLASSES' NAMES, AND THEY BELONG

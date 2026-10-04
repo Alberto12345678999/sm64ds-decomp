@@ -33,7 +33,7 @@
 struct dFdColor_c : dFdBrightness_c {
     /* 0x0c. Only its zero/non-zero-ness is observed here: AdvanceFade picks a
        blend step of +0x10 when it is set and -0x10 when it is clear. What
-       writes it is src/_ZN8dScene_c14StartSceneFadeEjjt.*, whose parameter is
+       writes it is src/_ZN8dScene_c14StartSceneFadeEjjt.cpp, whose parameter is
        the fade colour -- which is also the name the upstream reference header
        gives this field, so it is named for that now. */
     u16 color;
@@ -43,8 +43,9 @@ struct dFdColor_c : dFdBrightness_c {
        vtable store and before dFdWipe_c's, which is what places it in
        dFdColor_c's constructor rather than a neighbour's. Inline for the same
        reason as dFdBrightness_c's: the ROM has no out-of-line constructor for
-       this class either. */
-    dFdColor_c();
+       this class either. The initial interpolator value is forwarded to
+       dFdBrightness_c unchanged; dWipe_c passes 0 (see that header). */
+    dFdColor_c(Fix12i initial = 0x1000);
 
     virtual ~dFdColor_c();          /* key function; see above */
     virtual void AdvanceFade();     /* slot 2 -- the only override */
@@ -55,7 +56,7 @@ struct dFdColor_c : dFdBrightness_c {
    inline body and reports the whole header UNPARSED. `inline` keeps the
    emission identical: the body still goes wherever it is used, and the ROM
    has no out-of-line constructor for this class. */
-inline dFdColor_c::dFdColor_c() { color = 0; }
+inline dFdColor_c::dFdColor_c(Fix12i initial) : dFdBrightness_c(initial) { color = 0; }
 
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */

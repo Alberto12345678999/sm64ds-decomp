@@ -36,11 +36,15 @@ struct Matrix4x3;
 extern Matrix4x3 data_020a0e68;
 
 #ifndef _MSC_VER
+// @symbol _ZN8dFader_cD0Ev
+// @symbol _ZN8dFader_cD1Ev
 // @symbol _ZN8dFader_cD2Ev
 dFader_c::~dFader_c()
 {
 }
 
+// @symbol _ZN15dFdBrightness_cD0Ev
+// @symbol _ZN15dFdBrightness_cD1Ev
 // @symbol _ZN15dFdBrightness_cD2Ev
 dFdBrightness_c::~dFdBrightness_c()
 {
@@ -147,6 +151,8 @@ void dFader_c::AdvanceInterp()
 }
 
 #ifndef _MSC_VER
+// @symbol _ZN10dFdColor_cD0Ev
+// @symbol _ZN10dFdColor_cD1Ev
 // @symbol _ZN10dFdColor_cD2Ev
 dFdColor_c::~dFdColor_c()
 {
@@ -185,6 +191,7 @@ dFdWipe_c::dFdWipe_c()
 /* ~dFdWipe_c: store this class's vptr, destroy the Model member (out of
    line), run the dFdColor_c sub-object destructor, and -- for D0 -- dFader_c's
    class operator delete inlined to Memory::operator_delete2. */
+// @symbol _ZN9dFdWipe_cD0Ev
 // @symbol _ZN9dFdWipe_cD1Ev
 dFdWipe_c::~dFdWipe_c()
 {
@@ -243,6 +250,7 @@ dFdDummy_c::dFdDummy_c()
 {
 }
 
+// @symbol _ZN10dFdDummy_cD0Ev
 // @symbol _ZN10dFdDummy_cD1Ev
 dFdDummy_c::~dFdDummy_c()
 {
