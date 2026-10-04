@@ -36326,11 +36326,6 @@
         "arity:0"
       ]
     },
-    "func_ov063_0211a964": {
-      "include/decl_common.h": [
-        "return:char *"
-      ]
-    },
     "func_ov063_0211cae8": {
       "src/actors/daBook_c.cpp": [
         "param:#2 unsigned int"
