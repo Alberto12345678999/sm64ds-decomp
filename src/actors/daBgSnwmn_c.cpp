@@ -17,6 +17,8 @@
  *   .bss owns them.
  * - InitResources ground probe stays a POD Position: a local Vector3
  *   emits unlicensed _ZN7Vector3D1Ev (empty dtor, size 0x4).
+ * - func_ov072_021208d8 keeps its address label -- the ROM has no English
+ *   name for it.
  */
 
 #include "daBgSnwmn_c.h"
@@ -34,7 +36,6 @@ void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
 void _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
     void *self, ShadowModel *shadow, Matrix4x3 *matrix, int radius,
     int height, u32 flags);
-void func_ov072_021208d8(daBgSnwmn_c *self);
 
 extern SharedFilePtr data_ov072_02122c40;
 extern SharedFilePtr data_ov072_02122c48;
@@ -131,7 +132,7 @@ s32 daBgSnwmn_c::InitResources()
     mScaleX = 0x1800;
     mScaleY = 0x1800;
     mScaleZ = 0x1800;
-    func_ov072_021208d8(this);
+    func_ov072_021208d8();
     return 1;
 }
 
@@ -168,19 +169,19 @@ s32 daBgSnwmn_c::CleanupResources()
     return 1;
 }
 
-// @symbol func_ov072_021208d8
-extern "C" void func_ov072_021208d8(daBgSnwmn_c *self)
+// @symbol _ZN11daBgSnwmn_c19func_ov072_021208d8Ev
+void daBgSnwmn_c::func_ov072_021208d8()
 {
-    Matrix4x3_FromRotationY(&self->mModel1.mat4x3, self->mAngleY);
-    self->mModel1.mat4x3.t.x = self->mPosX >> 3;
-    self->mModel1.mat4x3.t.y = (self->mPosY + 0x13b000) >> 3;
-    self->mModel1.mat4x3.t.z = self->mPosZ >> 3;
+    Matrix4x3_FromRotationY(&mModel1.mat4x3, mAngleY);
+    mModel1.mat4x3.t.x = mPosX >> 3;
+    mModel1.mat4x3.t.y = (mPosY + 0x13b000) >> 3;
+    mModel1.mat4x3.t.z = mPosZ >> 3;
 
-    Matrix4x3_FromRotationY(&self->mModel2.mat4x3, self->mAngleY);
-    self->mModel2.mat4x3.t.x = self->mPosX >> 3;
-    self->mModel2.mat4x3.t.y = self->mPosY >> 3;
-    self->mModel2.mat4x3.t.z = self->mPosZ >> 3;
+    Matrix4x3_FromRotationY(&mModel2.mat4x3, mAngleY);
+    mModel2.mat4x3.t.x = mPosX >> 3;
+    mModel2.mat4x3.t.y = mPosY >> 3;
+    mModel2.mat4x3.t.z = mPosZ >> 3;
 
     _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
-        self, &self->mShadow, &self->mModel2.mat4x3, 0xe6000, 0x12c000, 0xf);
+        this, &mShadow, &mModel2.mat4x3, 0xe6000, 0x12c000, 0xf);
 }

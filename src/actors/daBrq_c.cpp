@@ -10,36 +10,28 @@
  * landing or after 45 frames (state 2).
  *
  * daBrq_c_classInit and g_profile_BIRIKYU are reconstructed source-style
- * names: SM64DS proves the RTTI identity, registry ID, descriptor/factory
- * relationship and object shape, and later EAD lineage supplies the
- * spelling. Historical project aliases: Amp_Spawn and Amp_SpawnInfo. The
- * private state-machine spellings are inferred; their class ownership,
- * bodies, calls, PMF layout and ordering are proven.
+ * names (historical aliases Amp_Spawn and Amp_SpawnInfo); the private
+ * state-machine spellings are inferred.
  *
- * DO NOT "TIDY" THESE -- each one is load-bearing:
- *   Source is reverse ROM order: keep the ROM-high factory first and the
- *   destructor group last. InitResources is the key function; with the
- *   inline destructor in the real header it emits retail D1 then D0 and the
- *   complete class data group.
- *   common.h first: BrqMatrixWords is the ROM's twelve-word copy of the
- *   identity Matrix4x3.
- *   Vector3 overlays on mCamSpacePosX / mScaleX / mPosX: there is no
- *   Vector3 member at those addresses.
+ * Source is reverse ROM order: the factory first, the destructor group
+ * last. InitResources is the key function; the inline destructor in the
+ * header emits retail D1 then D0 plus the complete class data group.
+ * common.h comes first so Matrix4x3 is the flat 12-word spelling.
  *
- * WHY SOME CALLS ARE SPELLED AS MANGLED SYMBOLS:
- *   SetRanges, dCcAcPos_c::Init, dBgCh_Actr::Init, ModelAnim::SetAnim,
- *   TextureSequence::SetFile, TextureTransformer::SetFile,
- *   DropShadowRadHeight and Particle::System::NewSimple pass Fix12<int> by
- *   value (notes/mwccarm-codegen.md 6az). dBgCh_Actr::Init's header Fix12i
- *   also mangles as int. UpdateDefeatedState calls
- *   dBgCh_Actr_UpdateDiscreteNoLava_veneer
- *   (0x02038420), not the method body at 0x02037024.
- *
- * Known limits:
- *   SharedFilePtr +4 is read as the BMD/BTP pointer (Prepare/SetFile); the
- *   header has no field for it.
- *   The data_ov070_* resource handles and the PMF state table keep linker
- *   names; the deferred initializer at 0x02122d80 is enrolled separately.
+ * Leftover: BrqMatrixWords block-copies IDENTITY_MATRIX4X3 through
+ *   int[12] -- a Matrix4x3 assignment scalarizes. Vector3 overlays on
+ *   mCamSpacePosX / mScaleX / mPosX stand in where no member exists at
+ *   those addresses. SetRanges, dCcAcPos_c::Init, dBgCh_Actr::Init,
+ *   ModelAnim::SetAnim, TextureSequence::SetFile,
+ *   TextureTransformer::SetFile, DropShadowRadHeight and
+ *   Particle::System::NewSimple stay mangled extern "C" spellings -- they
+ *   take Fix12<int> by value (notes/mwccarm-codegen.md 6az).
+ *   UpdateDefeatedState calls the interworking veneer
+ *   dBgCh_Actr_UpdateDiscreteNoLava_veneer (0x02038420), not the method
+ *   body at 0x02037024. The data_ov070_* resource handles and the PMF
+ *   state table keep linker names; the deferred initializer at
+ *   0x02122d80 is enrolled separately. SharedFilePtr+4 is read as the
+ *   BMD/BTP pointer (Prepare/SetFile) -- the header has no field for it.
  *   The factory's `new` odr-uses inline ~Vector3; its vague D1 is a
  *   deadstrip duplicate of arm9:0x020072c0.
  */
@@ -80,7 +72,6 @@ extern "C" BrqSpawnInfo g_profile_BIRIKYU = {
 
 /* SetRanges / dCcAcPos_c::Init / dBgCh_Actr::Init stay mangled (Fix12 by
  * value, notes/mwccarm-codegen.md 6az). */
-#include "TextureSequence.h"
 struct SharedFilePtr;
 struct BMD_File;
 struct BTA_File;
@@ -150,7 +141,7 @@ int daBrq_c::InitResources()
 int daBrq_c::Behavior()
 {
     UpdateState();
-    mCylinderOffset.y += data_ov070_0212365c.y;  /* was int[] view's [1]; same word */
+    mCylinderOffset.y += data_ov070_0212365c.y;
     mdCcAcPos_c.SetPosRelativeToActor(mCylinderOffset);
     mdCcAcPos_c.Clear();
     mdCcAcPos_c.Update();
@@ -200,7 +191,7 @@ int daBrq_c::CleanupResources()
     return 1;
 }
 
-extern BrqStateHandlers data_ov070_02123668[];
+extern daBrq_c::State data_ov070_02123668[];
 // @symbol _ZN7daBrq_c8SetStateEi
 void daBrq_c::SetState(s32 state)
 {
@@ -211,14 +202,14 @@ void daBrq_c::SetState(s32 state)
 // @symbol _ZN7daBrq_c10EnterStateEv
 void daBrq_c::EnterState()
 {
-    BrqStateHandler *handler = &mStateHandlers->enter;
+    StateFn *handler = &mStateHandlers->enter;
     (this->**handler)();
 }
 
 // @symbol _ZN7daBrq_c11UpdateStateEv
 void daBrq_c::UpdateState()
 {
-    BrqStateHandler *handler = &mStateHandlers->update;
+    StateFn *handler = &mStateHandlers->update;
     (this->**handler)();
 }
 
@@ -235,8 +226,6 @@ s32 daBrq_c::EnterCooldownState()
     mState = 0;
     return 1;
 }
-
-/* (Animation: real header type in scope) */
 
 extern "C" unsigned char DecIfAbove0_Byte(unsigned char *p);
 
@@ -295,7 +284,6 @@ namespace Sound {
 u32 PlayLong(u32 handle, u32 bank, u32 soundId,
              const Vector3 &pos, s16 pitch);
 }
-extern "C" unsigned char DecIfAbove0_Byte(unsigned char *p);
 extern short data_02082214[];
 
 // @symbol _ZN7daBrq_c17UpdateActiveStateEv

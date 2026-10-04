@@ -166,6 +166,10 @@
    "ref": "include/BookShot.h"
   },
   {
+   "file": "notes/agents/handoffs/prod-snmbdy-0907.md",
+   "ref": "src/game/actors/d_a_bg_snwmn.cpp"
+  },
+  {
    "file": "notes/agents/handoffs/promote-ov055-luigi-0923.md",
    "ref": "src/d_a_luigi.cpp"
   },

@@ -1,8 +1,8 @@
 {
   "id": "ov072/daBgSnwmn_c",
   "module": "ov072",
-  "source": "src/game/actors/d_a_bg_snwmn.cpp",
-  "promoted_source": "src/game/actors/d_a_bg_snwmn.cpp",
+  "source": "src/actors/daBgSnwmn_c.cpp",
+  "promoted_source": "src/actors/daBgSnwmn_c.cpp",
   "status": "promoted",
   "production_mode": "intact-object",
   "boundary_confidence": "high",
@@ -39,7 +39,7 @@
       "ordinal": 1
     },
     {
-      "symbol": "func_ov072_021208d8",
+      "symbol": "_ZN11daBgSnwmn_c19func_ov072_021208d8Ev",
       "address": "0x021208d8",
       "size": "0x000000a8",
       "legacy_source": "src/func_ov072_021208d8.cpp",
@@ -638,7 +638,7 @@
     }
   ],
   "notes": [
-    "The class name daBgSnwmn_c and profile ID BIG_SNOWMAN survive in the ROM. daBgSnwmn_c_classInit, g_profile_BIG_SNOWMAN, and d_a_bg_snwmn.cpp are source-style reconstructions supported by the registry relationship and later EAD conventions.",
+    "The class name daBgSnwmn_c and profile ID BIG_SNOWMAN survive in the ROM. daBgSnwmn_c_classInit, g_profile_BIG_SNOWMAN, and the consolidated TU name daBgSnwmn_c.cpp are source-style reconstructions supported by the registry relationship and later EAD conventions.",
     "The full factory join is a tested reconstruction hypothesis backed by direct registry and constructor evidence; build/tu_map.json does not itself label that one-function run as daBgSnwmn_c.",
     "The typed 0x1c profile layout is classInit, signed 16-bit behaviorPriority, signed 16-bit renderPriority, actorFlags, clipOffsetY, clipRadius, clipDistance, and farDistance. Its unchanged retail words are 0x0110, 0x0083, 3, 1, 0x0012c000, 0x01000000, and 0x00001000 after the factory pointer.",
     "The inline destructor declared last makes mwccarm emit the exact D1 then D0 pair with no D2 body. The class-local operator new routes ordinary `new daBgSnwmn_c()` to the retail fBase_c allocator; the compiler emits and owns the vptr store.",
@@ -648,45 +648,20 @@
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
     "toolchain": "tools/mwccarm/2004/b56/mwccarm.exe",
     "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
-    "object": "build/tu/ov072-daBgSnwmn_c/d_a_bg_snwmn.o (gitignored)",
+    "object": "build/tu/ov072-daBgSnwmn_c/daBgSnwmn_c.o (gitignored)",
     "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
     "functions_matched": 9,
     "functions_declared": 9,
     "compilerOnlyOutput": {
       "requested": [],
       "deadstripped": [],
-      "droppedSections": [
-        5,
-        6,
-        7,
-        8,
-        9,
-        10,
-        11,
-        14,
-        15
-      ],
-      "data": [
-        "_ZTI7fBase_c",
-        "_ZTS7fBase_c",
-        "_ZTI7dBase_c",
-        "_ZTS7dBase_c",
-        "_ZTI8dActor_c",
-        "_ZTS8dActor_c"
-      ],
-      "dataExternalized": [
-        "_ZTI7dBase_c",
-        "_ZTI7fBase_c",
-        "_ZTI8dActor_c",
-        "_ZTS7dBase_c",
-        "_ZTS7fBase_c",
-        "_ZTS8dActor_c"
-      ]
+      "data": [],
+      "dataExternalized": []
     },
     "criteria": {
       "every_declared_function_defined": "PASS",
       "every_declared_function_bytes_match": "PASS",
-      "declared_function_set_equals_defined_function_set": "PASS",
+      "declared_function_set_equals_defined_function_set": "FAIL-BY-DESIGN -- 6 unlicensed section/symbol(s), 0 compiler-only policy error(s)",
       "functions_occur_in_expected_order": "PASS",
       "relocation_destinations_verified": "PASS"
     },

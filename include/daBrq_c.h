@@ -10,23 +10,6 @@
 #include "dBgCh_Actr.h"
 #include "dActor_c.h"
 
-extern "C" void *_ZN7fBase_cnwEj(unsigned size);
-
-struct daBrq_c;
-
-typedef s32 (daBrq_c::*BrqStateHandler)();
-
-struct BrqStateHandlers {
-    BrqStateHandler enter;
-    BrqStateHandler update;
-};
-
-#ifndef SM64DS_PLATFORM_PC
-/* ROM layout under mwccarm; host ABI divergence is tracked separately. */
-typedef char BrqStateHandlers_size_must_be_0x10[
-    sizeof(BrqStateHandlers) == 0x10 ? 1 : -1];
-#endif
-
 /* daBrq_c is the ROM-proven class identity: ov070 owns _ZTS7daBrq_c at
  * 0x0212323c, _ZTI7daBrq_c at 0x02123248, and the public vtable address point
  * at 0x02123278. daBrq_c_classInit (historical alias Amp_Spawn) allocates
@@ -37,6 +20,14 @@ typedef char BrqStateHandlers_size_must_be_0x10[
  * offset.
  */
 struct daBrq_c : dActor_c {
+    /* The { enter, update } record the state machine runs; the tables live
+     * in ov070 .data at 0x02123668, filled by __sinit_ov070_02122d80. */
+    typedef s32 (daBrq_c::*StateFn)();
+    struct State {
+        StateFn enter;
+        StateFn update;
+    };
+
     u8                        pad_0d0[0x4];
     ModelAnim                 mModelAnim;                    /* 0x0d4 */
     Model                     mModel;                        /* 0x138 */
@@ -53,7 +44,7 @@ struct daBrq_c : dActor_c {
     Matrix4x3                 mMat4x3;                       /* 0x3d4 */
     Vector3                   mOrbitCenter;                  /* 0x404 */
     Vector3                   mCylinderOffset;               /* 0x410 */
-    BrqStateHandlers         *mStateHandlers;                /* 0x41c */
+    State                    *mStateHandlers;                /* 0x41c */
     s32                       mState;                        /* 0x420 */
     s32                       mTurnSpeed;                    /* 0x424 */
     u32                       mSoundHandle;                  /* 0x428 */
@@ -70,9 +61,8 @@ struct daBrq_c : dActor_c {
     virtual s32 Render();
     virtual void OnPendingDestroy();
 
-    static void *operator new(size_t size) {
-        return _ZN7fBase_cnwEj((unsigned)size);
-    }
+    /* fBase_c::operator new(size_t). No leaf copy: the factory is
+       `return new daBrq_c()`. */
 
 private:
     /* These state-machine spellings are inferred aliases. Class ownership,
@@ -93,6 +83,8 @@ private:
 
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
+typedef char daBrq_c_State_size_must_be_0x10[
+    sizeof(daBrq_c::State) == 0x10 ? 1 : -1];
 typedef char daBrq_c_size_must_be_0x434[
     sizeof(daBrq_c) == 0x434 ? 1 : -1];
 #endif
