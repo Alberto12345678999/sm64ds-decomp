@@ -33,7 +33,7 @@ ROM's type graph (`tools/rtti_extract.py`), every record whose single base is
 
 Four already have headers under the ROM's own names (`dScBoot_c.h`, `dScMgBase_c.h`,
 `dScMiniGm_c.h`, `dScEntry_c.h`). One more has one under a coinage, `dScStage_c` as
-`include/Stage.h` — and `dScBoot_c` is also known by the coinage `BootScene`, from its
+`include/Stage.h` — and `dScBoot_c` is also known by the coinage `dScBoot_c`, from its
 destructor symbols. The remaining five — `dScMB_c`, `dScTitle_c`, `dScStarSel_c`,
 `dScGameOver_c`, `dScDSMT_c` — the tree does not describe at all. 4 + 1 + 5 = 10.
 Naming a subset is fine; naming a subset as though it were the set is the mistake this
@@ -217,31 +217,31 @@ header is a separate, low-risk change.
 
 ---
 
-## BootScene / dScBoot_c (`include/BootScene.h`)
+## dScBoot_c (`include/dScBoot_c.h`)
 
-The boot/intro scene: `fBase_c -> dBase_c -> dScene_c -> BootScene`.
+The boot/intro scene: `fBase_c -> dBase_c -> dScene_c -> dScBoot_c`.
 
-The generated header this replaced, `include/dScBoot_c.h`, named no base and
-re-declared a 0x50-byte pad in place of the inherited chain. The class's *functions* are
-attributed under the English coinage `BootScene`, because that is what its destructor
-symbols (`_ZN9BootSceneD1Ev` / `_ZN9BootSceneD0Ev`) mangle to; this header follows
-`include/Stage.h`'s precedent of naming after the coinage. `include/dScBoot_c.h` is left
-in place for other includers; neither `BootScene` source needs it any more.
+This class was coined `BootScene` before the ROM's RTTI name won out: the
+generated `include/dScBoot_c.h` named no base and re-declared a 0x50-byte pad
+in place of the inherited chain, and a hand-built `BootScene.h` carried
+the real layout under the coinage. The promotion fold moved the class onto the
+cartridge's own spelling — `_ZTS9dScBoot_c` at 0x020914bc — so the real header
+now lives at `include/dScBoot_c.h` and the generated stub is gone.
 
 **Derivation.** `dScBoot_c` at 0x020914c8, vtable 0x02091528, single base `dScene_c`. A
 leaf.
 
-**Vtable.** `data_02091528` is 18 slots and `BootScene` overrides two functionally —
+**Vtable.** `data_02091528` is 18 slots and `dScBoot_c` overrides two functionally —
 slot 0 `InitResources` ([arm9](../config/arm9/symbols.txt) 0x02005a58) and slot 6 `Behavior` ([arm9](../config/arm9/symbols.txt) 0x02005418) — plus
 the destructor pair at 16/17. Confirmed against [config/arm9/relocs.txt](../config/arm9/relocs.txt)'s vtable words
 at 0x02091528 and 0x02091540.
 
-**Converted 2026-08-22.** Both overrides are now real `BootScene::` methods
-(`src/_ZN9BootScene13InitResourcesEv.cpp`, `src/_ZN9BootScene8BehaviorEv.cpp`), both
-byte-exact, and neither includes `include/dScBoot_c.h` any more. A previous revision of
+**Converted 2026-08-22.** Both overrides are now real `dScBoot_c::` methods
+(`src/actors/dScBoot_c.cpp`), both
+byte-exact. A previous revision of
 the header said they were "NOT CONVERTED BY THIS PASS", which was later read as saying
 they *could not* be. The key function is the first non-inline virtual *declared*, which
-is `~BootScene`, defined out of line in `_ZN9BootSceneD1Ev.cpp`; where `InitResources`
+is `~dScBoot_c`, defined out of line in `src/d_s_boot.cpp`; where `InitResources`
 is defined cannot move that. Bracketing `eligible.py` across the conversion returned a
 byte-identical name list, which is the gate that would show a `_ZTV` appearing.
 

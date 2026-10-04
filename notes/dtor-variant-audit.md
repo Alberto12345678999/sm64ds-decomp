@@ -63,7 +63,7 @@ the vtable that references it, which also names what it should have been:
 
 | symbol | occupies | is really | class named right? |
 |---|---|---|---|
-| `_ZN5SceneD2Ev` | `dScBoot_c` slot 16 | `_ZN9BootSceneD1Ev` | **no — wrong class** |
+| `_ZN5SceneD2Ev` | `dScBoot_c` slot 16 | `_ZN9dScBoot_cD1Ev` | **no — wrong class** |
 | `_ZN5StageD2Ev` | `dScStage_c` slot 16 | `_ZN5StageD1Ev` | yes |
 | `_ZN5EnemyD2Ev` | `dEnemyBase_c` slot 16 | `_ZN5EnemyD1Ev` | yes |
 | `_ZN6PlayerD2Ev` | `daPly_c` slot 16 | `_ZN6PlayerD1Ev` | yes |

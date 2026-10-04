@@ -30,9 +30,9 @@ func_02005098 kind:function(arm,size=0x44) addr:0x02005098
 func_020050dc kind:function(arm,size=0x34) addr:0x020050dc
 func_02005110 kind:function(arm,size=0x214) addr:0x02005110
 func_02005324 kind:function(arm,size=0x24) addr:0x02005324
-func_02005348 kind:function(arm,size=0xd0) addr:0x02005348
-_ZN9BootScene8BehaviorEv kind:function(arm,size=0x640) addr:0x02005418
-_ZN9BootScene13InitResourcesEv kind:function(arm,size=0x33c) addr:0x02005a58
+_ZN9dScBoot_c13func_02005348Ev kind:function(arm,size=0xd0) addr:0x02005348
+_ZN9dScBoot_c8BehaviorEv kind:function(arm,size=0x640) addr:0x02005418
+_ZN9dScBoot_c13InitResourcesEv kind:function(arm,size=0x33c) addr:0x02005a58
 _ZN11dCapEnemy_c12Unk_02005d94Ev kind:function(arm,size=0x94) addr:0x02005d94
 func_02005e28 kind:function(arm,size=0xb0) addr:0x02005e28
 func_02005ed8 kind:function(arm,size=0x34) addr:0x02005ed8
@@ -969,8 +969,8 @@ LoadDebugFont kind:function(arm,size=0x40) addr:0x0202341c
 func_0202345c kind:function(arm,size=0x3c) addr:0x0202345c
 func_02023498 kind:function(arm,size=0xac) addr:0x02023498
 func_02023544 kind:function(arm,size=0x54) addr:0x02023544
-_ZN9BootSceneD1Ev kind:function(arm,size=0x3c) addr:0x02023598
-_ZN9BootSceneD0Ev kind:function(arm,size=0x50) addr:0x020235d4
+_ZN9dScBoot_cD1Ev kind:function(arm,size=0x3c) addr:0x02023598
+_ZN9dScBoot_cD0Ev kind:function(arm,size=0x50) addr:0x020235d4
 dScBoot_c_classInit kind:function(arm,size=0x64) addr:0x02023624
 _ZN5StageD1Ev kind:function(arm,size=0x68) addr:0x02023688
 _ZN5StageD0Ev kind:function(arm,size=0x7c) addr:0x020236f0
@@ -4151,7 +4151,7 @@ _ZTI9dScBoot_c kind:data(any) addr:0x020914c8
 _ZTI8dScene_c kind:data(any) addr:0x020914d4
 data_020914e0 kind:data(any) addr:0x020914e0
 data_02091528 kind:data(any) addr:0x02091528
-_ZTV9BootScene kind:data(any) addr:0x02091528
+_ZTV9dScBoot_c kind:data(any) addr:0x02091528
 data_02091570 kind:data(any) addr:0x02091570
 data_020916d8 kind:data(any) addr:0x020916d8
 data_020918c4 kind:data(any) addr:0x020918c4

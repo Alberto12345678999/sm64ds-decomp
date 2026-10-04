@@ -81,7 +81,7 @@ optimization level). `--list excluded` names them.
 > **The `D2` row does not mean what it says.** `tools/dtor_variant_audit.py` shows **7 of
 > the 17** named D2 symbols occupy a vtable slot, which a base-object destructor never
 > does — they are D1s, and one of them (`_ZN5SceneD2Ev`) belongs to a different class
-> (`BootScene`). Two symbols named `D1` are conversely D2s, and the Fader family holds
+> (`dScBoot_c`). Two symbols named `D1` are conversely D2s, and the Fader family holds
 > three genuine D2s carrying no D2 name at all. Read `notes/dtor-variant-audit.md` before
 > scheduling any D2 work, and before trusting the per-class `D2:1` entries below — five of
 > the six pilot classes carry an impostor.
@@ -316,7 +316,7 @@ a constructor.~~
 (`u8 unk_013` behind `0x13` of padding) under the fabricated `gen_header.py` banner — it is
 a rung-0 skeleton, not a named header — and all three Scene destructors are shadow-struct
 files that do not include it. Nor does Scene carry one of each variant: `_ZN5SceneD2Ev` is
-`BootScene`'s D1 (`notes/dtor-variant-audit.md`). Pick the pilot from `--by-class` output
+`dScBoot_c`'s D1 (`notes/dtor-variant-audit.md`). Pick the pilot from `--by-class` output
 that has been through that audit. `Actor` is the prize (65 files, base of the actor hierarchy) and also the
 widest blast radius in the tree: take it third or fourth, once the procedure is boring.
 Note that `Actor`, `Player`, `Stage` and `Heap` each carry a ctor variant, which is Phase 5
