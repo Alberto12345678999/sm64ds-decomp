@@ -16932,7 +16932,7 @@
       "factory_module": "arm9",
       "factory_address": "0x020352b4",
       "current_factory_name": "dScMB_c_classInit",
-      "current_factory_file": "src/d_s_mb.c",
+      "current_factory_file": "src/actors/dScMB_c.cpp",
       "proposed_factory_name": "dScMB_c_classInit",
       "factory_shape": "new_plus_inlined_ctor",
       "alloc_size": "0x00000068",
