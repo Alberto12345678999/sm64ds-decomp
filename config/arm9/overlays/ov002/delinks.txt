@@ -20,7 +20,7 @@ src/actors/da1up_c.cpp:
     complete
     .text start:0x020aee40 end:0x020b05d0
 
-src/game/actors/d_a_bar.cpp:
+src/actors/daBar_c.cpp:
     complete
     .text start:0x020b05d0 end:0x020b0748
 

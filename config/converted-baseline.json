@@ -2182,14 +2182,13 @@
     "src/game/actors/d_a_bakubaku.cpp#_ZN12daBakubaku_cD0Ev",
     "src/game/actors/d_a_bakubaku.cpp#_ZN12daBakubaku_cD1Ev",
     "src/game/actors/d_a_bakubaku.cpp#daBakubaku_c_classInit",
-    "src/game/actors/d_a_bar.cpp#_ZN7daBar_c13InitResourcesEv",
-    "src/game/actors/d_a_bar.cpp#_ZN7daBar_c16CleanupResourcesEv",
-    "src/game/actors/d_a_bar.cpp#_ZN7daBar_c16OnPendingDestroyEv",
-    "src/game/actors/d_a_bar.cpp#_ZN7daBar_c6RenderEv",
-    "src/game/actors/d_a_bar.cpp#_ZN7daBar_c8BehaviorEv",
-    "src/game/actors/d_a_bar.cpp#_ZN7daBar_cD0Ev",
-    "src/game/actors/d_a_bar.cpp#_ZN7daBar_cD1Ev",
-    "src/game/actors/d_a_bar.cpp#daBar_c_classInit",
+    "src/actors/daBar_c.cpp#_ZN7daBar_c16CleanupResourcesEv",
+    "src/actors/daBar_c.cpp#_ZN7daBar_c16OnPendingDestroyEv",
+    "src/actors/daBar_c.cpp#_ZN7daBar_c6RenderEv",
+    "src/actors/daBar_c.cpp#_ZN7daBar_c8BehaviorEv",
+    "src/actors/daBar_c.cpp#_ZN7daBar_cD0Ev",
+    "src/actors/daBar_c.cpp#_ZN7daBar_cD1Ev",
+    "src/actors/daBar_c.cpp#daBar_c_classInit",
     "src/game/actors/d_a_bg_snwmn.cpp#_ZN11daBgSnwmn_c16CleanupResourcesEv",
     "src/game/actors/d_a_bg_snwmn.cpp#_ZN11daBgSnwmn_c16OnPendingDestroyEv",
     "src/game/actors/d_a_bg_snwmn.cpp#_ZN11daBgSnwmn_c6RenderEv",
@@ -3118,5 +3117,5 @@
     "src/actors/daDoor_c.cpp#daDoor_c_classInit",
     "src/actors/dScMgAmida_c.cpp#_ZN12dScMgAmida_cD1Ev"
   ],
-  "count": 3109
+  "count": 3108
 }
