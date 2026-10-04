@@ -7956,6 +7956,14 @@
     "src/actors/daStar_c.cpp#_ZN12daStarBase_c8BehaviorEv": "ruspecial",
     "src/actors/daStar_c.cpp#_ZN8daStar_c8BehaviorEv": "ruspecial",
     "src/actors/daStar_c.cpp#_ZN12daStarBase_c13InitResourcesEv": "tangosdev",
-    "src/actors/daStar_c.cpp#_ZN8daStar_c13InitResourcesEv": "ruspecial"
+    "src/actors/daStar_c.cpp#_ZN8daStar_c13InitResourcesEv": "ruspecial",
+    "src/engine/animation/Animation.cpp#_ZN9Animation4CopyERKS_": "tangosdev",
+    "src/engine/animation/Animation.cpp#_ZNK9Animation12WillHitFrameEi": "aitddlabs",
+    "src/engine/animation/Animation.cpp#_ZN9Animation8FinishedEv": "tangosdev",
+    "src/engine/animation/Animation.cpp#_ZN9Animation8GetFlagsEv": "tangosdev",
+    "src/engine/animation/Animation.cpp#_ZN9Animation8SetFlagsEi": "tangosdev",
+    "src/engine/animation/Animation.cpp#_ZNK9Animation13GetFrameCountEv": "tangosdev",
+    "src/engine/animation/Animation.cpp#_ZN9Animation12SetAnimationEti5Fix12IiEt": "tangosdev",
+    "src/engine/animation/Animation.cpp#_ZN9Animation7AdvanceEv": "tangosdev"
   }
 }
