@@ -378,11 +378,8 @@
     "src/actors/daObjFl_Ring_c.cpp#_ZN14daObjFl_Ring_c6RenderEv",
     "src/actors/daObjFl_Ring_c.cpp#_ZN14daObjFl_Ring_cD0Ev",
     "src/actors/daObjFl_Ring_c.cpp#_ZN14daObjFl_Ring_cD1Ev",
-    "src/_ZN11dCapEnemy_c10ReleaseCapERK7Vector3.cpp",
-    "src/_ZN11dCapEnemy_c14RenderCapModelEPK7Vector3.cpp",
-    "src/_ZN11dCapEnemy_c14UnloadCapModelEv.cpp",
-    "src/_ZN11dCapEnemy_cC2Ev.cpp",
-    "src/_ZN11dCapEnemy_cD1Ev.cpp",
+    "src/actors/dCapEnemy_c_arm9.cpp#_ZN11dCapEnemy_c10ReleaseCapERK7Vector3",
+    "src/actors/dCapEnemy_c_arm9.cpp#_ZN11dCapEnemy_c14RenderCapModelEPK7Vector3",
     "src/minigames/d_s_mg_base.cpp#_ZN11dScMgBase_c11OnAttacked1Ev",
     "src/minigames/d_s_mg_base.cpp#_ZN11dScMgBase_c11OnAttacked2Ev",
     "src/minigames/d_s_mg_base.cpp#_ZN11dScMgBase_c13OnTurnIntoEggEi",
@@ -3117,5 +3114,5 @@
     "src/actors/daDoor_c.cpp#daDoor_c_classInit",
     "src/actors/dScMgAmida_c.cpp#_ZN12dScMgAmida_cD1Ev"
   ],
-  "count": 3108
+  "count": 3105
 }
