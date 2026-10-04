@@ -13474,6 +13474,9 @@
         "mangled:2 parameter(s)",
         "param:#1 Vec3 *"
       ],
+      "src/actors/daCoin_c.cpp": [
+        "mangled:2 parameter(s)"
+      ],
       "src/func_02008cb4.c": [
         "mangled:2 parameter(s)",
         "param:#1 Vec3 *"
@@ -14298,6 +14301,9 @@
         "arity:1"
       ],
       "src/actors/daKpaFire_c.cpp": [
+        "arity:1"
+      ],
+      "src/actors/daCoin_c.cpp": [
         "arity:1"
       ]
     },
