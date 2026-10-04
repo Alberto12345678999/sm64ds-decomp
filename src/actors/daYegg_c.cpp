@@ -194,7 +194,8 @@ extern M48 data_020a0e68;
 
 extern int func_0203567c(int p);
 extern int func_02035638(u8 *p);
-extern void func_ov002_020e7218(char *a, char *b, int c);
+/* local extern: daStar_c::func_ov002_020e7218. This TU does not include daStar_c.h. */
+extern void _ZN8daStar_c19func_ov002_020e7218EPci(char *a, char *b, int c);
 extern char *data_ov002_021000a0[];
 extern void Matrix4x3_FromRotationZXYExt(void *m, int x, int y, int z);
 extern int _ZNK5dBgPi9GetClsnIDEv(struct dBgPi *thiz);
@@ -1355,7 +1356,7 @@ void func_ov002_020edca4(daYegg_c* self)
         spawned = _ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(ACTOR_SILVER_STAR, 0x10,
             &pos, 0, self->mPlayer->mAreaId, -1);
         if (spawned != 0) {
-            func_ov002_020e7218((char*)spawned, (char*)self->mPlayer, 1);
+            _ZN8daStar_c19func_ov002_020e7218EPci((char*)spawned, (char*)self->mPlayer, 1);
         }
     }
 

@@ -35,8 +35,6 @@ extern "C" {
     void func_020393c4(int *self, int callback);
     void func_ov002_020baa98(void *, void *, void *);
     int func_02012310(int handle, int sound, int arg);
-    void func_ov002_020e6d88(void *star);
-    void func_ov002_020e7104(void *star, int active);
     unsigned char IsAreaShowing(int area);
     unsigned char DecIfAbove0_Byte(unsigned char *value);
     void LoadSilverStarAndNumber();
@@ -126,7 +124,7 @@ int daObjSwitch_c::Behavior()
         func_ov002_020ba4d8(reinterpret_cast<char *>(this), 0);
         a = dActor_c::FindWithID(mTargetActorID);
         if (a != 0) {
-            func_ov002_020e6d88(a);
+            static_cast<daStar_c *>(a)->func_ov002_020e6d88();
         }
     }
 
@@ -285,7 +283,7 @@ extern "C" void func_ov002_020ba2d0(char *c)
     if ((int)(actor->actorID == 0xc) != 0) {
         dActor_c *p = actor->mTargetActor;
         if (p != 0) {
-            func_ov002_020e7104(p, 1);
+            static_cast<daStar_c *>(p)->func_ov002_020e7104(1);
             actor->mAreaId = -1;
         }
     } else {
@@ -351,7 +349,7 @@ extern "C" void func_ov002_020ba0f8(char *c)
             dActor_c *p = actor->mTargetActor;
             // This foreign star field is still unnamed in daStar_c.h.
             if (p != 0 && *reinterpret_cast<int *>(reinterpret_cast<char *>(p) + 0x438) == 0) {
-                func_ov002_020e7104(p, 0);
+                static_cast<daStar_c *>(p)->func_ov002_020e7104(0);
             }
             actor->mAreaId = actor->mHomeAreaId;
         } else {
