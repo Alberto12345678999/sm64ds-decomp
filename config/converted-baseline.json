@@ -1293,12 +1293,7 @@
     "src/actors/dScene_c.cpp#_ZN8dScene_c9SetFadersEP15FaderBrightness",
     "src/actors/dScene_c.cpp#_ZN8dScene_cD0Ev",
     "src/actors/dScene_c.cpp#_ZN8dScene_cD1Ev",
-    "src/_ZN9Animation4CopyERKS_.cpp",
-    "src/_ZN9Animation7AdvanceEv.cpp",
-    "src/_ZN9Animation8FinishedEv.cpp",
-    "src/_ZN9Animation8GetFlagsEv.cpp",
     "src/_ZN9Animation8LoadFileER13SharedFilePtr.cpp",
-    "src/_ZN9Animation8SetFlagsEi.cpp",
     "src/_ZN9AnimationC1Ev.cpp",
     "src/_ZN9AnimationC2Ev.cpp",
     "src/_ZN9AnimationD0Ev.cpp",
@@ -1434,8 +1429,6 @@
     "src/_ZNK7dBgW_Kc13GetUnkOctreeYEv.cpp",
     "src/_ZNK7dBgW_Kc16GetOctreeOriginYEv.cpp",
     "src/_ZNK8Particle10SysTracker8Contents8FindDataEj.cpp",
-    "src/_ZNK9Animation12WillHitFrameEi.cpp",
-    "src/_ZNK9Animation13GetFrameCountEv.cpp",
     "src/_ZNSt9type_infoD0Ev.cpp",
     "src/_ZNSt9type_infoD1Ev.cpp",
     "src/_ZNSt9type_infoD2Ev.cpp",
@@ -3117,5 +3110,5 @@
     "src/actors/daDoor_c.cpp#daDoor_c_classInit",
     "src/actors/dScMgAmida_c.cpp#_ZN12dScMgAmida_cD1Ev"
   ],
-  "count": 3108
+  "count": 3101
 }
