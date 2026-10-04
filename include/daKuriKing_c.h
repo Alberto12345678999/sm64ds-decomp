@@ -81,9 +81,10 @@ struct daKuriKing_c : dEnemyBase_c {
     u16 mTimer;                               /* 0x5fc */
     u8  mLeftFootSteppedOnGround;            /* 0x5fe */
     u8  mRightFootSteppedOnGround;            /* 0x5ff */
-    /* 0x600/0x601 are the foot-edge latches, written in func_ov074_02121380
-       (the unmatched draft above this TU), not here. */
-    u8  pad_600[0x2];
+    /* Foot-edge latches, set in func_ov074_02121380 while a foot cylinder's
+       ground test reads below the body. */
+    u8  mFoot2Latch;                          /* 0x600 */
+    u8  mFoot1Latch;                          /* 0x601 */
     u8  mSpawnedCount;                        /* 0x602 */
     u8  mSubState;                            /* 0x603 */
     u8  mSizeIndex;            /* 0x604 */
