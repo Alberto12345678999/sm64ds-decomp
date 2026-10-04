@@ -804,62 +804,6 @@
       "canonical_module": "arm9",
       "canonical_address": "0x020072c0",
       "reason": "include/types.h gives Vector3 a deliberately empty inline destructor, so every TU that destroys a Vector3 re-emits it as vague linkage -- here the Vector3 locals in InitResources (bodyOffset/headOffset), func_ov032_02112044 (v) and func_ov032_021113fc (v1, v2, hv). The cartridge keeps one copy at arm9:0x020072c0, kind:function(arm,size=0x4), and an enrolled source already owns it; rombuild compares this object's body against those cartridge bytes and refuses anything but byte-identical vague-linkage output before discarding the duplicate."
-    },
-    {
-      "symbol": "_ZTI7fBase_c",
-      "disposition": "deadstrip-data",
-      "canonical_module": "arm9",
-      "canonical_address": "0x02086d70",
-      "reason": "This TU defines every out-of-line virtual daBakubaku_c declares, so it is the class's key-function TU and emits the inherited fBase_c typeinfo record as vague linkage. Its canonical arm9 home (0x02086d70) lies outside this entry's claimed .data range and the linker discards this copy."
-    },
-    {
-      "symbol": "_ZTS7fBase_c",
-      "disposition": "deadstrip-data",
-      "canonical_module": "arm9",
-      "canonical_address": "0x02086e60",
-      "reason": "This TU defines every out-of-line virtual daBakubaku_c declares, so it is the class's key-function TU and emits the inherited fBase_c type-name string as vague linkage. Its canonical arm9 home (0x02086e60) lies outside this entry's claimed .data range and the linker discards this copy."
-    },
-    {
-      "symbol": "_ZTI7dBase_c",
-      "disposition": "deadstrip-data",
-      "canonical_module": "arm9",
-      "canonical_address": "0x02086e78",
-      "reason": "This TU defines every out-of-line virtual daBakubaku_c declares, so it is the class's key-function TU and emits the inherited dBase_c typeinfo record as vague linkage. Its canonical arm9 home (0x02086e78) lies outside this entry's claimed .data range and the linker discards this copy."
-    },
-    {
-      "symbol": "_ZTS7dBase_c",
-      "disposition": "deadstrip-data",
-      "canonical_module": "arm9",
-      "canonical_address": "0x02086e54",
-      "reason": "This TU defines every out-of-line virtual daBakubaku_c declares, so it is the class's key-function TU and emits the inherited dBase_c type-name string as vague linkage. Its canonical arm9 home (0x02086e54) lies outside this entry's claimed .data range and the linker discards this copy."
-    },
-    {
-      "symbol": "_ZTI8dActor_c",
-      "disposition": "deadstrip-data",
-      "canonical_module": "arm9",
-      "canonical_address": "0x0208e390",
-      "reason": "This TU defines every out-of-line virtual daBakubaku_c declares, so it is the class's key-function TU and emits the inherited dActor_c typeinfo record as vague linkage. Its canonical arm9 home (0x0208e390) lies outside this entry's claimed .data range and the linker discards this copy."
-    },
-    {
-      "symbol": "_ZTS8dActor_c",
-      "disposition": "deadstrip-data",
-      "canonical_module": "arm9",
-      "canonical_address": "0x0208e384",
-      "reason": "This TU defines every out-of-line virtual daBakubaku_c declares, so it is the class's key-function TU and emits the inherited dActor_c type-name string as vague linkage. Its canonical arm9 home (0x0208e384) lies outside this entry's claimed .data range and the linker discards this copy."
-    },
-    {
-      "symbol": "_ZTI12dEnemyBase_c",
-      "disposition": "deadstrip-data",
-      "canonical_module": "ov002",
-      "canonical_address": "0x021081c0",
-      "reason": "This TU defines every out-of-line virtual daBakubaku_c declares, so it is the class's key-function TU and emits the direct base dEnemyBase_c's typeinfo record -- the word _ZTI12daBakubaku_c's __si_class_type_info record points at as vague linkage. Its canonical ov002 home (0x021081c0) lies outside this entry's claimed .data range and the linker discards this copy."
-    },
-    {
-      "symbol": "_ZTS12dEnemyBase_c",
-      "disposition": "deadstrip-data",
-      "canonical_module": "ov002",
-      "canonical_address": "0x021081cc",
-      "reason": "This TU defines every out-of-line virtual daBakubaku_c declares, so it is the class's key-function TU and emits the direct base dEnemyBase_c's type-name string as vague linkage. Its canonical ov002 home (0x021081cc) lies outside this entry's claimed .data range and the linker discards this copy."
     }
   ],
   "externalized_output": [
