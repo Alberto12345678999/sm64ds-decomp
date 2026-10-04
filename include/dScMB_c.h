@@ -64,10 +64,8 @@ struct dScMB_c : dScene_c {
     s32 unk_060;            /* 0x60 -- Behavior state-machine step */
     s32 unk_064;            /* 0x064 -- Behavior frame-timeout counter */
 
-    /* Declared first -- key function; see the family convention discussed in
-       dBase_c.h/dScene_c.h. Never defined as a real method in any TU: both
-       D1 and D0 are plain functions carrying their literal mangled name
-       (src/_ZN7dScMB_cD1Ev.c, src/_ZN7dScMB_cD0Ev.c). */
+    /* Declared first -- key function. Defined out of line; that definition
+       emits D1 then D0. */
     virtual ~dScMB_c();                                 /* slots 16 (D1), 17 (D0) */
 
     /* --- overrides, in _ZTV8dScene_c/_ZTV7fBase_c order. --- */
@@ -75,6 +73,10 @@ struct dScMB_c : dScene_c {
     virtual s32 CleanupResources();                      /* slot  3 */
     virtual s32 Behavior();                               /* slot  6 */
     virtual s32 Render();                                 /* slot  9 */
+
+    /* Not virtual. The global graph callback calls this on mOwner.
+       The address stays the name. */
+    int func_02034d34();
 };
 
 /* The GLOBAL callback object InitResources registers (data_020a0c68), not a
