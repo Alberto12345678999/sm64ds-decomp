@@ -3,8 +3,6 @@
 
 #include "dActor_c.h"
 
-extern "C" void *_ZN7fBase_cnwEj(unsigned size);
-
 /* An area-transition trigger box -- ov002/daChRoom_c.
  *
  * ROM RTTI at ov002 0x021085b8 names `10daChRoom_c`; its one base is
@@ -34,13 +32,6 @@ struct daChRoom_c : dActor_c {
     virtual s32 Behavior();             /* slot 6  -- 0x020b0868 */
     virtual s32 Render();               /* slot 9  -- 0x020b0860 */
     virtual void OnPendingDestroy();    /* slot 12 -- 0x020b085c */
-
-    /* Leaf operator new until #2570 puts the same allocator on fBase_c.
-       Parameter is size_t (unsigned long on this compiler). `return new`
-       relocates to `_Znwm` without this. */
-    static void *operator new(size_t size) {
-        return _ZN7fBase_cnwEj((unsigned)size);
-    }
 };
 
 #ifndef SM64DS_PLATFORM_PC

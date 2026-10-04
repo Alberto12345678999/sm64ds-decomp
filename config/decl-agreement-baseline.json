@@ -4845,7 +4845,7 @@
         "param:#2 const Vector3 *",
         "param:#4 const Vector3 *"
       ],
-      "src/game/actors/d_a_ch_room.cpp": [
+      "src/actors/daChRoom_c.cpp": [
         "param:#1 Vector3 *",
         "param:#4 Vector3 *"
       ],
@@ -4999,7 +4999,7 @@
         "param:#2 const void *",
         "param:#3 const void *"
       ],
-      "src/game/actors/d_a_ch_room.cpp": [
+      "src/actors/daChRoom_c.cpp": [
         "param:#1 Vector3 *",
         "param:#2 Vector3 *",
         "param:#3 Vector3 *"
@@ -16238,7 +16238,7 @@
       "src/func_ov002_020dd908.c": [
         "return:char * []"
       ],
-      "src/game/actors/d_a_ch_room.cpp": [
+      "src/actors/daChRoom_c.cpp": [
         "return:dActor_c * []"
       ],
       "src/game/actors/d_a_ch_scene.cpp": [
@@ -17206,7 +17206,7 @@
       "src/actors/unit020cd744.cpp": [
         "return:Vector3"
       ],
-      "src/game/actors/d_a_ch_room.cpp": [
+      "src/actors/daChRoom_c.cpp": [
         "return:char"
       ],
       "src/game/actors/d_a_star_gate.cpp": [
