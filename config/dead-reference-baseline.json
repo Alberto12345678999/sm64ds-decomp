@@ -98,10 +98,6 @@
    "ref": "src/_ZN12dScMg3DEsp_cD1Ev.cpp"
   },
   {
-   "file": "notes/agents/handoffs/prod-snmbdy-0907.md",
-   "ref": "src/game/actors/d_a_bg_snwmn.cpp"
-  },
-  {
    "file": "notes/agents/handoffs/mg-p1-factories-0926.md",
    "ref": "src/d_s_mg_bomroom.c"
   },
@@ -168,6 +164,10 @@
   {
    "file": "notes/agents/handoffs/pr2868-source-repair-0920.md",
    "ref": "include/BookShot.h"
+  },
+  {
+   "file": "notes/agents/handoffs/prod-snmbdy-0907.md",
+   "ref": "src/game/actors/d_a_bg_snwmn.cpp"
   },
   {
    "file": "notes/agents/handoffs/promote-ov055-luigi-0923.md",
