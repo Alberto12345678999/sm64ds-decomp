@@ -12927,7 +12927,7 @@
       "factory_module": "ov072",
       "factory_address": "0x02120c00",
       "current_factory_name": "daBgSnwmn_c_classInit",
-      "current_factory_file": "src/game/actors/d_a_bg_snwmn.cpp",
+      "current_factory_file": "src/actors/daBgSnwmn_c.cpp",
       "proposed_factory_name": "daBgSnwmn_c_classInit",
       "factory_shape": "new_plus_inlined_ctor",
       "alloc_size": "0x000001f0",
