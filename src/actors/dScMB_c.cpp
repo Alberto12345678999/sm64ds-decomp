@@ -40,8 +40,9 @@ void func_0201a5f8(int t);
 void *func_0201a3e4(void);
 extern u32 data_020a0c60;
 extern void *data_020a0c5c;
-extern int overlay_100;
-extern int overlay_102;
+/* Linker-defined overlay IDs: the address is the overlay number. */
+extern int OVERLAY_100_ID;
+extern int OVERLAY_102_ID;
 
 void _ZN3OAM5ResetEv(void);
 void _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi(int sub, void *attr, int x, int y, int a, int cc, int fx, int mode);
@@ -269,8 +270,8 @@ void func_02034fbc(void)
     LoadArchive(1);
     _ZN4Heap10SetDefaultEv(data_020a0c5c);
     func_0201a5f8(6);
-    LoadOverlay((int)&overlay_100);
-    LoadOverlay((int)&overlay_102);
+    LoadOverlay((int)&OVERLAY_100_ID);
+    LoadOverlay((int)&OVERLAY_102_ID);
     data_020a0c5c = _ZN4Heap10SetDefaultEv(func_0201a3e4());
     LoadArchive(7);
     _ZN4Heap10SetDefaultEv(data_020a0c5c);
