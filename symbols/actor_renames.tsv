@@ -3,11 +3,11 @@ arm9	0x0200e444	Camera_Spawn	dCamera_c_classInit	reconstructed classInit; ROM RT
 arm9	0x020352b4	func_020352b4	dScMB_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 arm9	0x02086d78	data_02086d78	Camera_SpawnInfo	spawninfo
 arm9	0x02086d78	Camera_SpawnInfo	g_profile_CAMERA	reconstructed profile global; literal ROM ID CAMERA+registry role+later EAD lineage; exact SM64DS spelling not preserved
-arm9	0x02092680	data_02092680	_ZTV8dScene_c	vtable alloc=? (was _ZTV5Stage)
+arm9	0x02092680	data_02092680	_ZTV8dScene_c	vtable alloc=? (was _ZTV10dScStage_c)
 arm9	0x02023624	func_02023624	dScBoot_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 arm9	0x020914a8	data_020914a8	g_profile_BOOT	reconstructed profile global; literal ROM ID BOOT+registry role+later EAD lineage; exact SM64DS spelling not preserved
 arm9	0x0202e088	Stage_Spawn	dScStage_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
-arm9	0x0209213c	_ZN5Stage9spawnDataE	g_profile_STAGE	reconstructed profile global; literal ROM ID STAGE+registry role+later EAD lineage; exact SM64DS spelling not preserved
+arm9	0x0209213c	_ZN10dScStage_c9spawnDataE	g_profile_STAGE	reconstructed profile global; literal ROM ID STAGE+registry role+later EAD lineage; exact SM64DS spelling not preserved
 arm9	0x0209435c	data_0209435c	g_profile_MULTIBOOT	reconstructed profile global; literal ROM ID MULTIBOOT+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov002	0x020aee40	func_ov002_020aee40	_ZN7da1up_cD1Ev	vtable slot 16 (was _ZN13OneUpMushroomD1Ev)
 ov002	0x020aee88	func_ov002_020aee88	_ZN7da1up_cD0Ev	vtable slot 17 (was _ZN13OneUpMushroomD0Ev)

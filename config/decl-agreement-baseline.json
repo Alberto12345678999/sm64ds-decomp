@@ -358,7 +358,7 @@
       ]
     },
     "CountStarsCollectedInLevelToDisplay": {
-      "src/_ZN5Stage9PS_UpdateEv.cpp": [
+      "src/_ZN10dScStage_c9PS_UpdateEv.cpp": [
         "return:int"
       ]
     },
@@ -707,7 +707,7 @@
       ]
     },
     "Deallocate": {
-      "src/_ZN5Stage16CleanupResourcesEv.cpp": [
+      "src/_ZN10dScStage_c16CleanupResourcesEv.cpp": [
         "arity:0"
       ],
       "src/func_ov007_020cca68.c": [
@@ -1216,7 +1216,7 @@
       "src/_ZN12dScStarSel_c13InitResourcesEv.cpp": [
         "param:#1 int"
       ],
-      "src/_ZN5Stage9PS_RenderEv.cpp": [
+      "src/_ZN10dScStage_c9PS_RenderEv.cpp": [
         "param:#1 int"
       ],
       "src/actors/dMap_c.cpp": [
@@ -1348,7 +1348,7 @@
       "src/_ZN12dScMgSlot1_c13InitResourcesEv.cpp": [
         "param:#1 int"
       ],
-      "src/_ZN5Stage9PS_UpdateEv.cpp": [
+      "src/_ZN10dScStage_c9PS_UpdateEv.cpp": [
         "param:#1 int",
         "return:void"
       ],
@@ -1491,7 +1491,7 @@
         "param:#3 signed char",
         "param:#4 unsigned char"
       ],
-      "src/_ZN5Stage9PS_UpdateEv.cpp": [
+      "src/_ZN10dScStage_c9PS_UpdateEv.cpp": [
         "param:#1 int",
         "param:#2 int",
         "param:#3 int",
@@ -2757,7 +2757,7 @@
       ]
     },
     "SetControllerMode": {
-      "src/_ZN5Stage9PS_UpdateEv.cpp": [
+      "src/_ZN10dScStage_c9PS_UpdateEv.cpp": [
         "param:#1 int"
       ]
     },
@@ -7050,7 +7050,7 @@
       ]
     },
     "_ZN18TextureTransformer7PrepareER8BMD_FileR8BTA_File": {
-      "src/_ZN5Stage23LoadTextureTransformersEv.cpp": [
+      "src/_ZN10dScStage_c23LoadTextureTransformersEv.cpp": [
         "param:#1 void *",
         "param:#2 void *"
       ],
@@ -7068,7 +7068,7 @@
       ]
     },
     "_ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj": {
-      "src/_ZN5Stage23LoadTextureTransformersEv.cpp": [
+      "src/_ZN10dScStage_c23LoadTextureTransformersEv.cpp": [
         "param:#5 unsigned int"
       ],
       "src/actors/daFRing_c.cpp": [
@@ -7192,7 +7192,7 @@
       "src/_ZN15dScMgCurling2_c13InitResourcesEv.cpp": [
         "return:char *"
       ],
-      "src/_ZN5Stage14LoadGraphics2DEbi.cpp": [
+      "src/_ZN10dScStage_c14LoadGraphics2DEbi.cpp": [
         "return:char *"
       ],
       "src/actors/dScMgFlower_c.cpp": [
@@ -7256,7 +7256,7 @@
       "src/_ZN12dScMgSlot1_c13InitResourcesEv.cpp": [
         "return:char *"
       ],
-      "src/_ZN5Stage14LoadGraphics2DEbi.cpp": [
+      "src/_ZN10dScStage_c14LoadGraphics2DEbi.cpp": [
         "return:char *"
       ],
       "src/actors/dScMgFlower_c.cpp": [
@@ -7329,7 +7329,7 @@
       "src/_ZN12dScMgSlot1_c13InitResourcesEv.cpp": [
         "return:char *"
       ],
-      "src/_ZN5Stage14LoadGraphics2DEbi.cpp": [
+      "src/_ZN10dScStage_c14LoadGraphics2DEbi.cpp": [
         "return:char *"
       ],
       "src/_ZN7Message16DisplayPauseTextEth.cpp": [
@@ -7421,16 +7421,16 @@
       "src/_ZN12dScMgSlot1_c13InitResourcesEv.cpp": [
         "return:char *"
       ],
-      "src/_ZN5Stage14LoadGraphics2DEbi.cpp": [
+      "src/_ZN10dScStage_c14LoadGraphics2DEbi.cpp": [
         "return:char *"
       ],
-      "src/_ZN5Stage17PS_UpdateSaveMenuEb.cpp": [
+      "src/_ZN10dScStage_c17PS_UpdateSaveMenuEb.cpp": [
         "return:unsigned short *"
       ],
-      "src/_ZN5Stage17UpdateMenuButtonsEb.cpp": [
+      "src/_ZN10dScStage_c17UpdateMenuButtonsEb.cpp": [
         "return:unsigned short *"
       ],
-      "src/_ZN5Stage9PS_UpdateEv.cpp": [
+      "src/_ZN10dScStage_c9PS_UpdateEv.cpp": [
         "return:unsigned short *"
       ],
       "src/_ZN9BootScene8BehaviorEv.cpp": [
@@ -7463,7 +7463,7 @@
       "src/_ZN12dScMgSlot1_c13InitResourcesEv.cpp": [
         "return:char *"
       ],
-      "src/_ZN5Stage14LoadGraphics2DEbi.cpp": [
+      "src/_ZN10dScStage_c14LoadGraphics2DEbi.cpp": [
         "return:char *"
       ],
       "src/_ZN9BootScene13InitResourcesEv.cpp": [
@@ -7545,7 +7545,7 @@
       "src/_ZN3GXS11LoadBG0CharEPKvjj.cpp": [
         "return:void *"
       ],
-      "src/_ZN5Stage14LoadGraphics2DEbi.cpp": [
+      "src/_ZN10dScStage_c14LoadGraphics2DEbi.cpp": [
         "return:char *"
       ],
       "src/_ZN7Message16DisplayPauseTextEth.cpp": [
@@ -7760,14 +7760,14 @@
       ]
     },
     "_ZN3G2x18SetBlendBrightnessEPVtts": {
-      "src/_ZN5Stage7PS_InitEv.cpp": [
+      "src/_ZN10dScStage_c7PS_InitEv.cpp": [
         "param:#2 int",
         "param:#3 int"
       ],
-      "src/_ZN5Stage7VE_InitEv.cpp": [
+      "src/_ZN10dScStage_c7VE_InitEv.cpp": [
         "param:#2 int"
       ],
-      "src/_ZN5Stage9LC_UpdateEv.cpp": [
+      "src/_ZN10dScStage_c9LC_UpdateEv.cpp": [
         "param:#2 int",
         "param:#3 int"
       ],
@@ -8296,12 +8296,12 @@
       ]
     },
     "_ZN3OAM14BOUNCING_ARROWE": {
-      "src/_ZN5Stage20RenderBouncingArrowsEv.cpp": [
+      "src/_ZN10dScStage_c20RenderBouncingArrowsEv.cpp": [
         "kind:function"
       ]
     },
     "_ZN3OAM4COINE": {
-      "src/_ZN5Stage9PS_RenderEv.cpp": [
+      "src/_ZN10dScStage_c9PS_RenderEv.cpp": [
         "return:char"
       ],
       "src/actors/dScStarSel_c.cpp": [
@@ -8309,7 +8309,7 @@
       ]
     },
     "_ZN3OAM5TIMESE": {
-      "src/_ZN5Stage9PS_RenderEv.cpp": [
+      "src/_ZN10dScStage_c9PS_RenderEv.cpp": [
         "return:char"
       ],
       "src/actors/dScStarSel_c.cpp": [
@@ -8317,13 +8317,13 @@
       ]
     },
     "_ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii": {
-      "src/_ZN5Stage20RenderBouncingArrowsEv.cpp": [
+      "src/_ZN10dScStage_c20RenderBouncingArrowsEv.cpp": [
         "return:int"
       ],
-      "src/_ZN5Stage21RenderVsModeCountdownEv.cpp": [
+      "src/_ZN10dScStage_c21RenderVsModeCountdownEv.cpp": [
         "return:int"
       ],
-      "src/_ZN5Stage9LC_RenderEv.cpp": [
+      "src/_ZN10dScStage_c9LC_RenderEv.cpp": [
         "return:int"
       ],
       "src/_ZN6Camera6RenderEv.cpp": [
@@ -8402,7 +8402,7 @@
       ]
     },
     "_ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2": {
-      "src/_ZN5Stage9PS_RenderEv.cpp": [
+      "src/_ZN10dScStage_c9PS_RenderEv.cpp": [
         "param:#1 int"
       ],
       "src/actors/dMap_c.cpp": [
@@ -8421,7 +8421,7 @@
       ]
     },
     "_ZN3OAM7NUMBERSE": {
-      "src/_ZN5Stage12RenderNumberEhiibi.cpp": [
+      "src/_ZN10dScStage_c12RenderNumberEhiibi.cpp": [
         "return:OamAttr * []"
       ]
     },
@@ -8480,7 +8480,7 @@
       ]
     },
     "_ZN4Heap10SetDefaultEv": {
-      "src/_ZN5Stage13InitResourcesEv.cpp": [
+      "src/_ZN10dScStage_c13InitResourcesEv.cpp": [
         "return:void *"
       ],
       "src/_ZN9dScDSMT_c8BehaviorEv.cpp": [
@@ -8768,7 +8768,7 @@
       "src/actors/daObjFl_Coin_c.cpp": [
         "return:BMD_File *"
       ],
-      "src/_ZN5Stage13InitResourcesEv.cpp": [
+      "src/_ZN10dScStage_c13InitResourcesEv.cpp": [
         "param:#1 void *"
       ],
       "src/actors/Eyerok.cpp": [
@@ -8899,7 +8899,7 @@
       ]
     },
     "_ZN5Sound12PlayBank3_2DEj": {
-      "src/_ZN5Stage9LC_UpdateEv.cpp": [
+      "src/_ZN10dScStage_c9LC_UpdateEv.cpp": [
         "return:void"
       ]
     },
@@ -9141,10 +9141,10 @@
       "src/DisableSoundPlayersForCredits.c": [
         "return:void"
       ],
-      "src/_ZN5Stage13InitResourcesEv.cpp": [
+      "src/_ZN10dScStage_c13InitResourcesEv.cpp": [
         "return:void"
       ],
-      "src/_ZN5Stage16CleanupResourcesEv.cpp": [
+      "src/_ZN10dScStage_c16CleanupResourcesEv.cpp": [
         "return:void"
       ],
       "src/func_02011c8c.c": [
@@ -9167,7 +9167,7 @@
       "src/_ZN5Sound20PlaySmallSecretSoundEP8dActor_cPt.cpp": [
         "return:int"
       ],
-      "src/_ZN5Stage9LC_UpdateEv.cpp": [
+      "src/_ZN10dScStage_c9LC_UpdateEv.cpp": [
         "return:void"
       ],
       "src/actors/daPkn_c.cpp": [
@@ -9362,7 +9362,7 @@
       ]
     },
     "_ZN5Sound8SetMusicEjj": {
-      "src/_ZN5Stage13InitResourcesEv.cpp": [
+      "src/_ZN10dScStage_c13InitResourcesEv.cpp": [
         "return:int"
       ]
     },
@@ -9479,27 +9479,27 @@
         "param:#2 const Vector3 *"
       ]
     },
-    "_ZN5Stage17PS_UpdateSaveMenuEb": {
-      "src/_ZN5Stage9PS_UpdateEv.cpp": [
+    "_ZN10dScStage_c17PS_UpdateSaveMenuEb": {
+      "src/_ZN10dScStage_c9PS_UpdateEv.cpp": [
         "param:#1 int"
       ]
     },
-    "_ZN5Stage17UpdateMenuButtonsEb": {
-      "src/_ZN5Stage9LC_UpdateEv.cpp": [
+    "_ZN10dScStage_c17UpdateMenuButtonsEb": {
+      "src/_ZN10dScStage_c9LC_UpdateEv.cpp": [
         "param:#1 int"
       ],
-      "src/_ZN5Stage9PS_UpdateEv.cpp": [
+      "src/_ZN10dScStage_c9PS_UpdateEv.cpp": [
         "param:#1 int"
       ]
     },
-    "_ZN5Stage18LoadClsnAndObjectsER11LVL_OverlayjR7dBgW_Kc": {
-      "src/_ZN5Stage13InitResourcesEv.cpp": [
+    "_ZN10dScStage_c18LoadClsnAndObjectsER11LVL_OverlayjR7dBgW_Kc": {
+      "src/_ZN10dScStage_c13InitResourcesEv.cpp": [
         "param:#1 void *",
         "param:#3 void *"
       ]
     },
     "_ZN5Timer10StartTimerEv": {
-      "src/_ZN5Stage10PS_CleanupEv.cpp": [
+      "src/_ZN10dScStage_c10PS_CleanupEv.cpp": [
         "return:int"
       ]
     },
@@ -10960,7 +10960,7 @@
       ]
     },
     "_ZN7Message11DisplayTextEt": {
-      "src/_ZN5Stage9PS_UpdateEv.cpp": [
+      "src/_ZN10dScStage_c9PS_UpdateEv.cpp": [
         "param:#1 int"
       ],
       "src/_ZN7Message7DisplayEj.cpp": [
@@ -10968,51 +10968,51 @@
       ]
     },
     "_ZN7Message16DisplayPauseTextEth": {
-      "src/_ZN5Stage9PS_UpdateEv.cpp": [
+      "src/_ZN10dScStage_c9PS_UpdateEv.cpp": [
         "param:#1 int"
       ]
     },
     "_ZN7Message18DisplayPauseTextVSEt": {
-      "src/_ZN5Stage9PS_UpdateEv.cpp": [
+      "src/_ZN10dScStage_c9PS_UpdateEv.cpp": [
         "param:#1 int"
       ]
     },
     "_ZN7Message19DisplayDontSaveTextEt": {
-      "src/_ZN5Stage9PS_UpdateEv.cpp": [
+      "src/_ZN10dScStage_c9PS_UpdateEv.cpp": [
         "param:#1 int"
       ]
     },
     "_ZN7Message19DisplaySaveMenuTextEt": {
-      "src/_ZN5Stage9PS_UpdateEv.cpp": [
+      "src/_ZN10dScStage_c9PS_UpdateEv.cpp": [
         "param:#1 int"
       ]
     },
     "_ZN7Message21DisplayLevelClearTextEta": {
-      "src/_ZN5Stage9LC_UpdateEv.cpp": [
+      "src/_ZN10dScStage_c9LC_UpdateEv.cpp": [
         "param:#1 int",
         "param:#2 unsigned char"
       ]
     },
     "_ZN7Message21DisplaySaveStatusTextEt": {
-      "src/_ZN5Stage9LC_UpdateEv.cpp": [
+      "src/_ZN10dScStage_c9LC_UpdateEv.cpp": [
         "param:#1 int"
       ],
-      "src/_ZN5Stage9PS_UpdateEv.cpp": [
+      "src/_ZN10dScStage_c9PS_UpdateEv.cpp": [
         "param:#1 int"
       ]
     },
     "_ZN7Message22DisplayOptionsMenuTextEt": {
-      "src/_ZN5Stage9PS_UpdateEv.cpp": [
+      "src/_ZN10dScStage_c9PS_UpdateEv.cpp": [
         "param:#1 int"
       ]
     },
     "_ZN7Message25DisplayControllerModeTextEt": {
-      "src/_ZN5Stage9PS_UpdateEv.cpp": [
+      "src/_ZN10dScStage_c9PS_UpdateEv.cpp": [
         "param:#1 int"
       ]
     },
     "_ZN7Message7DisplayEj": {
-      "src/_ZN5Stage9PS_UpdateEv.cpp": [
+      "src/_ZN10dScStage_c9PS_UpdateEv.cpp": [
         "arity:1"
       ]
     },
@@ -11720,7 +11720,7 @@
       ]
     },
     "_ZN8SaveData13GetCoinRecordEj": {
-      "src/_ZN5Stage9LC_UpdateEv.cpp": [
+      "src/_ZN10dScStage_c9LC_UpdateEv.cpp": [
         "param:#1 int",
         "return:unsigned int"
       ],
@@ -11734,10 +11734,10 @@
       ]
     },
     "_ZN8SaveData15SaveCurrentFileEv": {
-      "src/_ZN5Stage9LC_UpdateEv.cpp": [
+      "src/_ZN10dScStage_c9LC_UpdateEv.cpp": [
         "return:void"
       ],
-      "src/_ZN5Stage9PS_UpdateEv.cpp": [
+      "src/_ZN10dScStage_c9PS_UpdateEv.cpp": [
         "return:void"
       ]
     },
@@ -11747,7 +11747,7 @@
       ]
     },
     "_ZN8SaveData21SetCoinRecordIfHigherEah": {
-      "src/_ZN5Stage9LC_UpdateEv.cpp": [
+      "src/_ZN10dScStage_c9LC_UpdateEv.cpp": [
         "param:#1 int",
         "param:#2 int"
       ],
@@ -12669,10 +12669,10 @@
       ]
     },
     "_ZN8dScene_c14StartSceneFadeEjjt": {
-      "src/_ZN5Stage9LC_UpdateEv.cpp": [
+      "src/_ZN10dScStage_c9LC_UpdateEv.cpp": [
         "param:#3 int"
       ],
-      "src/_ZN5Stage9PS_UpdateEv.cpp": [
+      "src/_ZN10dScStage_c9PS_UpdateEv.cpp": [
         "param:#3 int"
       ]
     },
@@ -12776,15 +12776,15 @@
       ]
     },
     "_ZN9FaderWipe14LoadAndSetFileEt": {
-      "src/_ZN5Stage13InitResourcesEv.cpp": [
+      "src/_ZN10dScStage_c13InitResourcesEv.cpp": [
         "param:#1 int"
       ]
     },
     "_ZN9FaderWipeD1Ev": {
-      "src/_ZN5Stage13InitResourcesEv.cpp": [
+      "src/_ZN10dScStage_c13InitResourcesEv.cpp": [
         "return:void"
       ],
-      "src/_ZN5Stage16CleanupResourcesEv.cpp": [
+      "src/_ZN10dScStage_c16CleanupResourcesEv.cpp": [
         "return:void"
       ]
     },
@@ -14313,7 +14313,7 @@
       "src/StartFile.c": [
         "return:unsigned char []"
       ],
-      "src/_ZN5Stage9LC_RenderEv.cpp": [
+      "src/_ZN10dScStage_c9LC_RenderEv.cpp": [
         "return:char"
       ]
     },
@@ -14583,13 +14583,13 @@
       "src/RunKuppaScript.c": [
         "return:unsigned int"
       ],
-      "src/_ZN5Stage13InitResourcesEv.cpp": [
+      "src/_ZN10dScStage_c13InitResourcesEv.cpp": [
         "return:int"
       ],
-      "src/_ZN5Stage9LC_UpdateEv.cpp": [
+      "src/_ZN10dScStage_c9LC_UpdateEv.cpp": [
         "return:int"
       ],
-      "src/_ZN5Stage9PS_UpdateEv.cpp": [
+      "src/_ZN10dScStage_c9PS_UpdateEv.cpp": [
         "return:int"
       ],
       "src/_ZN6Camera8BehaviorEv.cpp": [
@@ -14598,10 +14598,10 @@
       "src/actors/daObjBlockS_c.cpp": [
         "return:unsigned int"
       ],
-      "src/_ZN5Stage7VE_InitEv.cpp": [
+      "src/_ZN10dScStage_c7VE_InitEv.cpp": [
         "return:unsigned int []"
       ],
-      "src/_ZN5Stage8BehaviorEv.cpp": [
+      "src/_ZN10dScStage_c8BehaviorEv.cpp": [
         "return:unsigned int"
       ],
       "src/actors/dMap_c.cpp": [
@@ -14669,13 +14669,13 @@
       ]
     },
     "data_0209b464": {
-      "src/_ZN5Stage7VE_InitEv.cpp": [
+      "src/_ZN10dScStage_c7VE_InitEv.cpp": [
         "return:unsigned int []"
       ],
-      "src/_ZN5Stage9LC_UpdateEv.cpp": [
+      "src/_ZN10dScStage_c9LC_UpdateEv.cpp": [
         "return:int"
       ],
-      "src/_ZN5Stage9PS_UpdateEv.cpp": [
+      "src/_ZN10dScStage_c9PS_UpdateEv.cpp": [
         "return:int"
       ]
     },
@@ -14914,7 +14914,7 @@
       "include/decl_common.h": [
         "return:void *"
       ],
-      "src/_ZN5Stage13InitResourcesEv.cpp": [
+      "src/_ZN10dScStage_c13InitResourcesEv.cpp": [
         "return:int"
       ]
     },
@@ -14952,10 +14952,10 @@
       ]
     },
     "data_0209d454": {
-      "src/_ZN5Stage10PS_CleanupEv.cpp": [
+      "src/_ZN10dScStage_c10PS_CleanupEv.cpp": [
         "return:unsigned char []"
       ],
-      "src/_ZN5Stage7VE_InitEv.cpp": [
+      "src/_ZN10dScStage_c7VE_InitEv.cpp": [
         "return:unsigned char []"
       ],
       "src/func_ov075_02117918.c": [
@@ -14980,10 +14980,10 @@
       "src/ProcessKuppaScript.cpp": [
         "return:signed char"
       ],
-      "src/_ZN5Stage10PS_CleanupEv.cpp": [
+      "src/_ZN10dScStage_c10PS_CleanupEv.cpp": [
         "return:unsigned char []"
       ],
-      "src/_ZN5Stage7VE_InitEv.cpp": [
+      "src/_ZN10dScStage_c7VE_InitEv.cpp": [
         "return:unsigned char []"
       ],
       "src/actors/dScTitle_c.cpp": [
@@ -15091,7 +15091,7 @@
       ]
     },
     "data_0209d4a8": {
-      "src/_ZN5Stage16CleanupResourcesEv.cpp": [
+      "src/_ZN10dScStage_c16CleanupResourcesEv.cpp": [
         "return:int"
       ],
       "src/_ZN9dScDSMT_c13InitResourcesEv.cpp": [
@@ -15152,7 +15152,7 @@
       ]
     },
     "data_0209d4c8": {
-      "src/_ZN5Stage10PS_CleanupEv.cpp": [
+      "src/_ZN10dScStage_c10PS_CleanupEv.cpp": [
         "return:int []"
       ]
     },
@@ -15558,12 +15558,12 @@
       ]
     },
     "data_0209f274": {
-      "src/_ZN5Stage13InitResourcesEv.cpp": [
+      "src/_ZN10dScStage_c13InitResourcesEv.cpp": [
         "return:signed char"
       ]
     },
     "data_0209f280": {
-      "src/_ZN5Stage10PS_CleanupEv.cpp": [
+      "src/_ZN10dScStage_c10PS_CleanupEv.cpp": [
         "return:unsigned char []"
       ]
     },
@@ -15573,27 +15573,27 @@
       ]
     },
     "data_0209f290": {
-      "src/_ZN5Stage7VE_InitEv.cpp": [
+      "src/_ZN10dScStage_c7VE_InitEv.cpp": [
         "return:unsigned char []"
       ]
     },
     "data_0209f294": {
-      "src/_ZN5Stage7VE_InitEv.cpp": [
+      "src/_ZN10dScStage_c7VE_InitEv.cpp": [
         "return:unsigned char []"
       ]
     },
     "data_0209f2a0": {
-      "src/_ZN5Stage10PS_CleanupEv.cpp": [
+      "src/_ZN10dScStage_c10PS_CleanupEv.cpp": [
         "return:unsigned char []"
       ]
     },
     "data_0209f2b4": {
-      "src/_ZN5Stage7VE_InitEv.cpp": [
+      "src/_ZN10dScStage_c7VE_InitEv.cpp": [
         "return:unsigned char []"
       ]
     },
     "data_0209f2bc": {
-      "src/_ZN5Stage13InitResourcesEv.cpp": [
+      "src/_ZN10dScStage_c13InitResourcesEv.cpp": [
         "return:signed char"
       ]
     },
@@ -15618,15 +15618,15 @@
       ]
     },
     "data_0209f2c4": {
-      "src/_ZN5Stage10PS_CleanupEv.cpp": [
+      "src/_ZN10dScStage_c10PS_CleanupEv.cpp": [
         "return:unsigned char []"
       ],
-      "src/_ZN5Stage13InitResourcesEv.cpp": [
+      "src/_ZN10dScStage_c13InitResourcesEv.cpp": [
         "return:signed char"
       ]
     },
     "data_0209f2d0": {
-      "src/_ZN5Stage13InitResourcesEv.cpp": [
+      "src/_ZN10dScStage_c13InitResourcesEv.cpp": [
         "return:unsigned char"
       ]
     },
@@ -15666,7 +15666,7 @@
       ]
     },
     "data_0209f2e0": {
-      "src/_ZN5Stage7VE_InitEv.cpp": [
+      "src/_ZN10dScStage_c7VE_InitEv.cpp": [
         "return:unsigned char []"
       ]
     },
@@ -15704,20 +15704,20 @@
       ]
     },
     "data_0209f300": {
-      "src/_ZN5Stage10PS_CleanupEv.cpp": [
+      "src/_ZN10dScStage_c10PS_CleanupEv.cpp": [
         "return:unsigned short []"
       ],
-      "src/_ZN5Stage13InitResourcesEv.cpp": [
+      "src/_ZN10dScStage_c13InitResourcesEv.cpp": [
         "return:short"
       ]
     },
     "data_0209f304": {
-      "src/_ZN5Stage13InitResourcesEv.cpp": [
+      "src/_ZN10dScStage_c13InitResourcesEv.cpp": [
         "return:short"
       ]
     },
     "data_0209f308": {
-      "src/_ZN5Stage19RenderVsModeNewStarEv.cpp": [
+      "src/_ZN10dScStage_c19RenderVsModeNewStarEv.cpp": [
         "return:unsigned short"
       ]
     },
@@ -15725,7 +15725,7 @@
       "src/NumRedCoins.c": [
         "return:signed char"
       ],
-      "src/_ZN5Stage13InitResourcesEv.cpp": [
+      "src/_ZN10dScStage_c13InitResourcesEv.cpp": [
         "return:unsigned char []"
       ]
     },
@@ -15733,7 +15733,7 @@
       "src/NumVsStarsObtained.c": [
         "return:signed char"
       ],
-      "src/_ZN5Stage13InitResourcesEv.cpp": [
+      "src/_ZN10dScStage_c13InitResourcesEv.cpp": [
         "return:unsigned char []"
       ],
       "src/func_ov002_020d94cc.cpp": [
@@ -15744,10 +15744,10 @@
       "include/decl_common.h": [
         "return:int"
       ],
-      "src/_ZN5Stage13InitResourcesEv.cpp": [
+      "src/_ZN10dScStage_c13InitResourcesEv.cpp": [
         "return:void *"
       ],
-      "src/_ZN5Stage16CleanupResourcesEv.cpp": [
+      "src/_ZN10dScStage_c16CleanupResourcesEv.cpp": [
         "return:int"
       ]
     },
@@ -15758,16 +15758,16 @@
       "src/game/actors/d_a_red_bombhei.cpp": [
         "return:Camera *"
       ],
-      "src/_ZN5Stage16CheckCameraInputEv.cpp": [
+      "src/_ZN10dScStage_c16CheckCameraInputEv.cpp": [
         "return:unsigned char *"
       ],
-      "src/_ZN5Stage16CleanupResourcesEv.cpp": [
+      "src/_ZN10dScStage_c16CleanupResourcesEv.cpp": [
         "return:int"
       ],
-      "src/_ZN5Stage6RenderEv.cpp": [
+      "src/_ZN10dScStage_c6RenderEv.cpp": [
         "return:char *"
       ],
-      "src/_ZN5Stage9RenderFogEv.cpp": [
+      "src/_ZN10dScStage_c9RenderFogEv.cpp": [
         "return:int []"
       ],
       "src/_ZN6Player11St_Fly_InitEv.cpp": [
@@ -15867,7 +15867,7 @@
       "src/FUN_02029ab0.c": [
         "return:WipeTable *"
       ],
-      "src/_ZN5Stage16CleanupResourcesEv.cpp": [
+      "src/_ZN10dScStage_c16CleanupResourcesEv.cpp": [
         "return:void *"
       ],
       "src/engine/fader/StartEntranceFaderWipe.cpp": [
@@ -15888,7 +15888,7 @@
       ]
     },
     "data_0209f338": {
-      "src/_ZN5Stage13InitResourcesEv.cpp": [
+      "src/_ZN10dScStage_c13InitResourcesEv.cpp": [
         "return:int"
       ]
     },
@@ -15896,19 +15896,19 @@
       "src/StartWithFarCamera.c": [
         "return:unsigned char *"
       ],
-      "src/_ZN5Stage11GetSkyboxIDEv.cpp": [
+      "src/_ZN10dScStage_c11GetSkyboxIDEv.cpp": [
         "return:int []"
       ],
-      "src/_ZN5Stage11RenderModelEv.cpp": [
+      "src/_ZN10dScStage_c11RenderModelEv.cpp": [
         "return:Info *"
       ],
-      "src/_ZN5Stage13InitResourcesEv.cpp": [
+      "src/_ZN10dScStage_c13InitResourcesEv.cpp": [
         "return:int"
       ],
-      "src/_ZN5Stage6RenderEv.cpp": [
+      "src/_ZN10dScStage_c6RenderEv.cpp": [
         "return:AnimMgr *"
       ],
-      "src/_ZN5Stage9LoadModelEv.cpp": [
+      "src/_ZN10dScStage_c9LoadModelEv.cpp": [
         "return:char []"
       ],
       "src/func_0202a958.c": [
@@ -15922,7 +15922,7 @@
       ]
     },
     "data_0209f344": {
-      "src/_ZN5Stage13InitResourcesEv.cpp": [
+      "src/_ZN10dScStage_c13InitResourcesEv.cpp": [
         "return:int"
       ]
     },
@@ -15937,7 +15937,7 @@
       ]
     },
     "data_0209f358": {
-      "src/_ZN5Stage9LC_UpdateEv.cpp": [
+      "src/_ZN10dScStage_c9LC_UpdateEv.cpp": [
         "return:short"
       ]
     },
@@ -15945,19 +15945,19 @@
       "src/GiveCoins.c": [
         "return:int []"
       ],
-      "src/_ZN5Stage15IsPauseDisabledEv.cpp": [
+      "src/_ZN10dScStage_c15IsPauseDisabledEv.cpp": [
         "return:int []"
       ],
-      "src/_ZN5Stage16CleanupResourcesEv.cpp": [
+      "src/_ZN10dScStage_c16CleanupResourcesEv.cpp": [
         "return:int []"
       ],
-      "src/_ZN5Stage21RenderVsModeCountdownEv.cpp": [
+      "src/_ZN10dScStage_c21RenderVsModeCountdownEv.cpp": [
         "return:unsigned char * []"
       ],
-      "src/_ZN5Stage6RenderEv.cpp": [
+      "src/_ZN10dScStage_c6RenderEv.cpp": [
         "return:char * []"
       ],
-      "src/_ZN5Stage8BehaviorEv.cpp": [
+      "src/_ZN10dScStage_c8BehaviorEv.cpp": [
         "return:char * []"
       ],
       "src/actors/dMap_c.cpp": [
@@ -16015,7 +16015,7 @@
       ]
     },
     "data_0209f3c4": {
-      "src/_ZN5Stage13InitResourcesEv.cpp": [
+      "src/_ZN10dScStage_c13InitResourcesEv.cpp": [
         "return:int"
       ],
       "src/__sinit_02074e84.cpp": [
@@ -16056,7 +16056,7 @@
       ]
     },
     "data_0209f498": {
-      "src/_ZN5Stage16CheckCameraInputEv.cpp": [
+      "src/_ZN10dScStage_c16CheckCameraInputEv.cpp": [
         "return:CamInput []"
       ]
     },
@@ -16218,7 +16218,7 @@
       ]
     },
     "data_0209f4f8": {
-      "src/_ZN5Stage13InitResourcesEv.cpp": [
+      "src/_ZN10dScStage_c13InitResourcesEv.cpp": [
         "return:int [][]"
       ]
     },
@@ -16238,10 +16238,10 @@
       "src/_ZN12dScStarSel_c8BehaviorEv.cpp": [
         "return:VObj *"
       ],
-      "src/_ZN5Stage21RenderVsModeCountdownEv.cpp": [
+      "src/_ZN10dScStage_c21RenderVsModeCountdownEv.cpp": [
         "return:Base *"
       ],
-      "src/_ZN5Stage8BehaviorEv.cpp": [
+      "src/_ZN10dScStage_c8BehaviorEv.cpp": [
         "return:UnkVis *"
       ],
       "src/actors/dMap_c.cpp": [
@@ -16516,7 +16516,7 @@
       "src/_ZN4dBgW7DisableEv.cpp": [
         "return:dBgW * []"
       ],
-      "src/_ZN5Stage18ResetMeshCollidersEv.cpp": [
+      "src/_ZN10dScStage_c18ResetMeshCollidersEv.cpp": [
         "return:int []"
       ],
       "src/_ZN9dBgCh_Gnd10DetectClsnEv.cpp": [
@@ -16588,7 +16588,7 @@
       "src/_ZN12dScStarSel_c8BehaviorEv.cpp": [
         "return:unsigned char [][]"
       ],
-      "src/_ZN5Stage16CheckCameraInputEv.cpp": [
+      "src/_ZN10dScStage_c16CheckCameraInputEv.cpp": [
         "return:TouchInfo []"
       ],
       "src/actors/dMgJump3DMario_c.cpp": [
@@ -16634,10 +16634,10 @@
       ]
     },
     "data_020a0dea": {
-      "src/_ZN5Stage9LC_UpdateEv.cpp": [
+      "src/_ZN10dScStage_c9LC_UpdateEv.cpp": [
         "return:volatile unsigned char []"
       ],
-      "src/_ZN5Stage9PS_UpdateEv.cpp": [
+      "src/_ZN10dScStage_c9PS_UpdateEv.cpp": [
         "return:volatile unsigned char []"
       ],
       "src/actors/dMgJump3DMario_c.cpp": [
@@ -16663,10 +16663,10 @@
       ]
     },
     "data_020a0deb": {
-      "src/_ZN5Stage9LC_UpdateEv.cpp": [
+      "src/_ZN10dScStage_c9LC_UpdateEv.cpp": [
         "return:volatile unsigned char []"
       ],
-      "src/_ZN5Stage9PS_UpdateEv.cpp": [
+      "src/_ZN10dScStage_c9PS_UpdateEv.cpp": [
         "return:volatile unsigned char []"
       ],
       "src/actors/dMgJump3DMario_c.cpp": [
@@ -16697,13 +16697,13 @@
       ]
     },
     "data_020a0e40": {
-      "src/_ZN5Stage9LC_UpdateEv.cpp": [
+      "src/_ZN10dScStage_c9LC_UpdateEv.cpp": [
         "return:volatile unsigned char"
       ],
-      "src/_ZN5Stage9PS_UpdateEv.cpp": [
+      "src/_ZN10dScStage_c9PS_UpdateEv.cpp": [
         "return:volatile unsigned char"
       ],
-      "src/_ZN5Stage9VE_UpdateEv.cpp": [
+      "src/_ZN10dScStage_c9VE_UpdateEv.cpp": [
         "return:unsigned char []"
       ],
       "src/_ZN6Player12St_Land_InitEv.cpp": [
@@ -24379,7 +24379,7 @@
       "include/decl_common.h": [
         "return:void"
       ],
-      "src/_ZN5Stage16CleanupResourcesEv.cpp": [
+      "src/_ZN10dScStage_c16CleanupResourcesEv.cpp": [
         "return:void"
       ]
     },
@@ -25148,19 +25148,19 @@
         "param:#1 int",
         "return:void"
       ],
-      "src/_ZN5Stage8BehaviorEv.cpp": [
+      "src/_ZN10dScStage_c8BehaviorEv.cpp": [
         "param:#1 int",
         "return:void"
       ],
-      "src/_ZN5Stage9LC_UpdateEv.cpp": [
+      "src/_ZN10dScStage_c9LC_UpdateEv.cpp": [
         "param:#1 int",
         "return:void"
       ],
-      "src/_ZN5Stage9PS_UpdateEv.cpp": [
+      "src/_ZN10dScStage_c9PS_UpdateEv.cpp": [
         "param:#1 int",
         "return:void"
       ],
-      "src/_ZN5Stage9VE_UpdateEv.cpp": [
+      "src/_ZN10dScStage_c9VE_UpdateEv.cpp": [
         "return:void"
       ],
       "src/_ZN7Message13DisplaySavingEt.cpp": [
@@ -27930,7 +27930,7 @@
       "include/decl_common.h": [
         "return:int"
       ],
-      "src/_ZN5Stage13InitResourcesEv.cpp": [
+      "src/_ZN10dScStage_c13InitResourcesEv.cpp": [
         "return:int"
       ],
       "src/func_ov075_021192bc.c": [
@@ -29123,7 +29123,7 @@
       ]
     },
     "func_0203dad4": {
-      "src/_ZN5Stage13InitResourcesEv.cpp": [
+      "src/_ZN10dScStage_c13InitResourcesEv.cpp": [
         "return:unsigned int"
       ]
     },
@@ -32939,7 +32939,7 @@
         "param:#1 void *",
         "param:#4 void (*)(void *)"
       ],
-      "src/_ZN5Stage16CleanupResourcesEv.cpp": [
+      "src/_ZN10dScStage_c16CleanupResourcesEv.cpp": [
         "param:#1 void *",
         "param:#4 void (*)(void *)"
       ]
@@ -32953,7 +32953,7 @@
       ]
     },
     "func_02073470": {
-      "src/_ZN5Stage13InitResourcesEv.cpp": [
+      "src/_ZN10dScStage_c13InitResourcesEv.cpp": [
         "param:#1 int",
         "param:#2 int",
         "param:#3 int",
@@ -33545,7 +33545,7 @@
       ]
     },
     "func_ov002_020f1c20": {
-      "src/_ZN5Stage9RenderFogEv.cpp": [
+      "src/_ZN10dScStage_c9RenderFogEv.cpp": [
         "return:void *"
       ]
     },
