@@ -98,6 +98,10 @@
    "ref": "src/_ZN12dScMg3DEsp_cD1Ev.cpp"
   },
   {
+   "file": "notes/agents/handoffs/prod-snmbdy-0907.md",
+   "ref": "src/game/actors/d_a_bg_snwmn.cpp"
+  },
+  {
    "file": "notes/agents/handoffs/mg-p1-factories-0926.md",
    "ref": "src/d_s_mg_bomroom.c"
   },
