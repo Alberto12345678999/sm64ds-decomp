@@ -7454,7 +7454,7 @@ int Player::func_ov002_020c8714()
     extern int _ZN6Player12FinishedAnimEv(void*);
     extern int _ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(int, int, void*, int, int, int);
     extern void _ZN5Sound9PlayBank0EjRK7Vector3(int, void*);
-    extern void func_ov002_020e7090(int, void*);
+    extern void _ZN8daStar_c19func_ov002_020e7090Ei(int, void*);
     volatile int v[3];
 
     if (mStateArg == 0) {
@@ -7508,7 +7508,7 @@ int Player::func_ov002_020c8714()
             func_ov002_020c7ff8();
             st = _ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(0xb2, 0x6f, (char *)this + 0x5c, (int)((char *)this + 0x8c), *(s8 *)((char *)this + 0xcc), -1);
             if (st != 0)
-                func_ov002_020e7090(st, this);
+                _ZN8daStar_c19func_ov002_020e7090Ei(st, this);
         }
         mStateArg = 0;
     }

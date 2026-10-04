@@ -230,7 +230,7 @@ structure problem, not a lookup.
 
 ## 10. A misnaming found on the way
 
-`overlay_64` and `overlay_66` in `src/func_02034fbc.c`, [src/func_ov007_020cc2cc.c](../config/arm9/overlays/ov007/symbols.txt) and [src/func_ov075_02117bc4.c](../config/arm9/overlays/ov075/symbols.txt) are **overlay ids 100 and 102**: the literals in the ROM are `0x64` and `0x66` and whoever named them wrote the hex digits as decimal.
+`overlay_64` and `overlay_66` in [src/func_ov007_020cc2cc.c](../config/arm9/overlays/ov007/symbols.txt) and [src/func_ov075_02117bc4.c](../config/arm9/overlays/ov075/symbols.txt) are **overlay ids 100 and 102**: the literals in the ROM are `0x64` and `0x66` and whoever named them wrote the hex digits as decimal. `func_02034fbc` in [src/actors/dScMB_c.cpp](../src/actors/dScMB_c.cpp) now names `overlay_100` and `overlay_102`.
 `overlay_75` next to them is genuine decimal 75 (`0x4b`), so the convention is not
 even consistent. Taken literally, [ov064](../config/arm9/overlays/ov064/symbols.txt) and [ov066](../config/arm9/overlays/ov066/symbols.txt) overlap and `LoadOverlay` would `Crash()`; [ov100](../config/arm9/overlays/ov100/symbols.txt) and [ov102](../config/arm9/overlays/ov102/symbols.txt) do not. Renaming them is a separate, easy change.
 

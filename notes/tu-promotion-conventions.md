@@ -149,7 +149,7 @@ The initial corpus was seven classes across six PRs:
 | --- | --- | --- |
 | #2000 | daKpFr_c | [src/game/actors/d_a_kp_fr.cpp](../src/game/actors/d_a_kp_fr.cpp) |
 | #2043 | daObjFm_Battan_c | [src/game/actors/d_a_obj_fm_battan.cpp](../src/game/actors/d_a_obj_fm_battan.cpp) |
-| #2045 | daBar_c | [src/game/actors/d_a_bar.cpp](../src/game/actors/d_a_bar.cpp) |
+| #2045 | daBar_c | [src/actors/daBar_c.cpp](../src/actors/daBar_c.cpp) |
 | #2047 | daObjCannonShutter_c | [src/game/actors/d_a_obj_cannon_shutter.cpp](../src/game/actors/d_a_obj_cannon_shutter.cpp) |
 | #2047 | daObjFl_Fall_Block_c | [src/game/actors/daObjFl_Fall_Block_c.cpp](../src/game/actors/daObjFl_Fall_Block_c.cpp) |
 | #2051 | daObjKinokoTag_c | [src/game/actors/d_a_obj_kinoko_tag.cpp](../src/game/actors/d_a_obj_kinoko_tag.cpp) |

@@ -9,11 +9,6 @@
 #include "ShadowModel.h"
 #include "dBgCh_Actr.h"
 
-/* Forward: the { enter, main } record in ov032 BSS. The TU completes it.
-   The record holds a pointer-to-member of this class, so it is not a
-   member; nesting that type here is the old compiler ICE. */
-struct BakubakuState;
-
 /**
  * Jolly Roger Bay Bubba (`BAKUBAKU` 228).
  *
@@ -22,11 +17,21 @@ struct BakubakuState;
  * destructor would then run from this class's inline D1.
  */
 struct daBakubaku_c : dEnemyBase_c {
+    /* The { enter, main } record the state machine runs; the five tables
+     * live in ov032 .bss, filled by __sinit_ov032_02112c10 from the PMF
+     * constants at 0x0211377c..0x021137c4. Both slots take the address
+     * of int-returning members. */
+    typedef int (daBakubaku_c::*StateFn)();
+    struct State {
+        StateFn enter;
+        StateFn main;
+    };
+
     dCcAcPos_c  mBodyClsn;       /* 0x110 */
     dCcAcPos_c  mHeadClsn;       /* 0x150 */
     dBgCh_Actr  mWithMeshClsn;   /* 0x190 */
     ModelAnim   mModelAnim;      /* 0x34c */
-    BakubakuState *mState;       /* 0x3b0 */
+    State      *mState;          /* 0x3b0 -- the table this fish is running */
     ShadowModel mShadowModel;    /* 0x3b4 */
     Matrix4x3   mShadowMat;      /* 0x3dc -- DropShadowRadHeight source */
     s32         mSpawnPosX;      /* 0x40c */
@@ -58,6 +63,24 @@ struct daBakubaku_c : dEnemyBase_c {
     virtual ~daBakubaku_c() {}
 
     int func_ov032_02111ff4(void *state);
+
+    /* The state hooks and helpers. The ROM records no English names; the
+     * pointer-to-member constants at 0x0211377c..0x021137c4 prove ten of
+     * them are members, so they keep their address labels as method names. */
+    int  func_ov032_02111f9c(); /* wander enter */
+    int  func_ov032_02111e24(); /* wander main */
+    int  func_ov032_02111dd8(); /* pause enter */
+    int  func_ov032_02111d7c(); /* pause main */
+    int  func_ov032_02111d58(); /* chase enter */
+    int  func_ov032_02111b9c(); /* chase main */
+    int  func_ov032_02111814(); /* surface enter */
+    int  func_ov032_02111620(); /* surface main */
+    int  func_ov032_02111b50(); /* dive enter */
+    int  func_ov032_02111830(); /* dive main */
+    int  func_ov032_02111350(); /* abort test: player gone, wall, too far */
+    int  func_ov032_02111254(); /* chase-target test: stores player pos */
+    void func_ov032_021113fc(); /* cylinder collision: bite / mega-kill */
+    void func_ov032_02112044(); /* model + shadow matrices */
 };
 
 #ifndef SM64DS_PLATFORM_PC

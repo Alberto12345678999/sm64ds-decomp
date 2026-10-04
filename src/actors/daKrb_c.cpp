@@ -170,7 +170,8 @@ extern int func_02037e38(unsigned int* p);
 extern int func_02037e84(int* p);
 extern void _ZN5dBgPiD1Ev(void*);
 extern int data_02099368[];
-extern void LinkSilverStarAndStarMarker(char *a, char *b);
+/* local extern: daStarBase_c::LinkSilverStarAndStarMarker. This TU does not include daStarBase_c.h. */
+extern void _ZN12daStarBase_c27LinkSilverStarAndStarMarkerEPc(char *a, char *b);
 extern u8 data_0209f208[];
 extern u8 *data_0209f344;
 extern void func_ov084_02129168(daKrb_c *goomba, dActor_c *actor);
@@ -569,7 +570,7 @@ void func_ov084_021296cc(daKrb_c *goomba)
         if (starMarker != 0 && silverStar != 0) {
             /* the silver star's +0x434 holds the marker's uniqueID (+4) */
             *(int *)(silverStar + 0x434) = *(int *)(starMarker + 4);
-            LinkSilverStarAndStarMarker(starMarker, silverStar);
+            _ZN12daStarBase_c27LinkSilverStarAndStarMarkerEPc(starMarker, silverStar);
             goomba->SpawnSoundObj(1);
         }
         /* Load side stays a raw word: spelling both sides as param1 CSEs +8. */

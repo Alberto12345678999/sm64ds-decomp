@@ -1,10 +1,10 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1092" width="100%" font-family="Segoe UI, system-ui, sans-serif" shape-rendering="crispEdges">
   <rect x="0" y="0" width="1600" height="1092" fill="#141517" />
   <text x="6" y="30" font-size="24" font-weight="600" fill="#e6e7e9">SM64DS decompilation progress</text>
-  <text x="6" y="58" font-size="15" fill="#e6e7e9">Functions matched: 11,374 / 11,389 (99.87%)   |   Code bytes matched: 2,220,044 / 2,238,108 (99.19%)   |   Modules: 74</text>
+  <text x="6" y="58" font-size="15" fill="#e6e7e9">Functions matched: 11,375 / 11,389 (99.88%)   |   Code bytes matched: 2,220,928 / 2,238,108 (99.23%)   |   Modules: 74</text>
   <text x="6" y="80" font-size="13" fill="#a8abb0">Each rectangle is one function, sized by byte count. Green = matched, gray = unmatched.</text>
   <g transform="translate(0,92)">
-    <rect x="2.00" y="2.00" width="322.42" height="996.00" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="7.00" y="17.00" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">arm9  98.9%</text><rect x="328.42" y="2.00" width="18.68" height="846.69" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><rect x="328.42" y="852.69" width="18.68" height="1.30" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><rect x="328.42" y="857.99" width="18.68" height="140.01" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><rect x="351.10" y="2.00" width="257.55" height="996.00" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="356.10" y="17.00" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov002  99.1%</text><rect x="612.65" y="2.00" width="194.95" height="50.37" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="617.65" y="17.00" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov003  86.1%</text><rect x="811.60" y="2.00" width="666.70" height="50.37" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="816.60" y="17.00" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov004  100.0%</text><rect x="1482.30" y="2.00" width="115.70" height="50.37" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1487.30" y="17.00" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov005  100.0%</text><rect x="612.65" y="56.37" width="438.70" height="734.53" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="617.65" y="71.37" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov006  99.2%</text><rect x="612.65" y="794.90" width="438.70" height="203.10" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="617.65" y="809.90" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov007  100.0%</text><rect x="1055.35" y="56.37" width="77.01" height="48.84" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1060.35" y="71.37" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov009  93.7%</text><rect x="1136.35" y="56.37" width="51.36" height="48.84" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1141.35" y="71.37" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov010  100.0%</text><rect x="1191.71" y="56.37" width="18.94" height="48.84" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><rect x="1214.66" y="56.37" width="15.75" height="48.84" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><rect x="1234.41" y="56.37" width="112.99" height="48.84" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1239.41" y="71.37" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov014  100.0%</text><rect x="1351.40" y="56.37" width="109.85" height="48.84" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1356.40" y="71.37" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov015  100.0%</text><rect x="1465.26" y="56.37" width="132.74" height="48.84" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1470.26" y="71.37" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov016  100.0%</text><rect x="1055.35" y="109.22" width="11.48" height="37.57" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><rect x="1070.82" y="109.22" width="115.64" height="37.57" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1075.82" y="124.22" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov018  100.0%</text><rect x="1190.46" y="109.22" width="108.76" height="37.57" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1195.46" y="124.22" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov019  100.0%</text><rect x="1303.22" y="109.22" width="155.47" height="37.57" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1308.22" y="124.22" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov020  100.0%</text><rect x="1462.69" y="109.22" width="135.31" height="37.57" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1467.69" y="124.22" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov021  100.0%</text><rect x="1055.35" y="150.78" width="104.71" height="43.14" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1060.35" y="165.78" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov022  100.0%</text><rect x="1164.06" y="150.78" width="19.96" height="43.14" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><rect x="1188.02" y="150.78" width="25.00" height="43.14" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><rect x="1217.02" y="150.78" width="82.81" height="43.14" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1222.02" y="165.78" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov025  100.0%</text><rect x="1303.83" y="150.78" width="77.90" height="43.14" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1308.83" y="165.78" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov026  100.0%</text><rect x="1385.73" y="150.78" width="106.77" height="43.14" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1390.73" y="165.78" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov027  100.0%</text><rect x="1496.50" y="150.78" width="101.50" height="43.14" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1501.50" y="165.78" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov029  100.0%</text><rect x="1055.35" y="197.92" width="207.77" height="46.52" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1060.35" y="212.92" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov030  100.0%</text><rect x="1267.11" y="197.92" width="7.72" height="46.52" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><rect x="1278.83" y="197.92" width="89.57" height="46.52" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1283.83" y="212.92" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov032  100.0%</text><rect x="1372.40" y="197.92" width="17.74" height="46.52" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><rect x="1394.14" y="197.92" width="162.82" height="46.52" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1399.14" y="212.92" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov034  100.0%</text><rect x="1560.96" y="197.92" width="37.04" height="46.52" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1565.96" y="212.92" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov035  100.0%</text><rect x="1055.35" y="248.44" width="150.27" height="24.75" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><rect x="1209.61" y="248.44" width="10.82" height="24.75" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><rect x="1224.43" y="248.44" width="55.08" height="24.75" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><rect x="1283.52" y="248.44" width="6.84" height="24.75" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><rect x="1294.36" y="248.44" width="93.18" height="24.75" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><rect x="1391.53" y="248.44" width="47.82" height="24.75" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><rect x="1443.35" y="248.44" width="44.54" height="24.75" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><rect x="1491.89" y="248.44" width="43.34" height="24.75" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><rect x="1539.24" y="248.44" width="25.24" height="24.75" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><rect x="1568.48" y="248.44" width="29.52" height="24.75" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><rect x="1055.35" y="277.18" width="185.50" height="127.60" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1060.35" y="292.18" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov060  100.0%</text><rect x="1244.84" y="277.18" width="165.07" height="127.60" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1249.84" y="292.18" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov062  100.0%</text><rect x="1413.92" y="277.18" width="184.08" height="127.60" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1418.92" y="292.18" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov063  100.0%</text><rect x="1055.35" y="408.79" width="142.55" height="105.87" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1060.35" y="423.79" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov064  100.0%</text><rect x="1201.90" y="408.79" width="174.90" height="105.87" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1206.90" y="423.79" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov065  100.0%</text><rect x="1380.80" y="408.79" width="124.05" height="105.87" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1385.80" y="423.79" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov066  100.0%</text><rect x="1508.85" y="408.79" width="89.15" height="105.87" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1513.85" y="423.79" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov070  100.0%</text><rect x="1055.35" y="518.66" width="86.22" height="115.96" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1060.35" y="533.66" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov071  100.0%</text><rect x="1055.35" y="638.62" width="86.22" height="107.41" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1060.35" y="653.62" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov072  100.0%</text><rect x="1055.35" y="750.03" width="86.22" height="124.20" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1060.35" y="765.03" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov073  100.0%</text><rect x="1055.35" y="878.23" width="86.22" height="119.77" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1060.35" y="893.23" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov074  94.3%</text><rect x="1145.57" y="518.66" width="187.09" height="124.36" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1150.57" y="533.66" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov075  99.3%</text><rect x="1336.66" y="518.66" width="87.94" height="124.36" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1341.66" y="533.66" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov077  100.0%</text><rect x="1428.60" y="518.66" width="72.39" height="124.36" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1433.60" y="533.66" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov078  100.0%</text><rect x="1504.98" y="518.66" width="93.02" height="124.36" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1509.98" y="533.66" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov079  100.0%</text><rect x="1145.57" y="647.02" width="134.67" height="88.12" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1150.57" y="662.02" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov080  95.7%</text><rect x="1145.57" y="739.14" width="134.67" height="102.67" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1150.57" y="754.14" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov081  100.0%</text><rect x="1145.57" y="845.81" width="134.67" height="152.19" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1150.57" y="860.81" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov084  100.0%</text><rect x="1284.24" y="647.02" width="182.28" height="103.72" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1289.24" y="662.02" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov085  100.0%</text><rect x="1470.51" y="647.02" width="42.93" height="103.72" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1475.51" y="662.02" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov089  100.0%</text><rect x="1517.45" y="647.02" width="80.55" height="103.72" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1522.45" y="662.02" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov090  100.0%</text><rect x="1284.24" y="754.74" width="68.25" height="148.42" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1289.24" y="769.74" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov091  100.0%</text><rect x="1284.24" y="907.17" width="68.25" height="43.42" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1289.24" y="922.17" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov092  100.0%</text><rect x="1284.24" y="954.58" width="68.25" height="43.42" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1289.24" y="969.58" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov094  100.0%</text><rect x="1356.48" y="754.74" width="47.89" height="95.36" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1361.48" y="769.74" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov095  100.0%</text><rect x="1408.37" y="754.74" width="58.62" height="95.36" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1413.37" y="769.74" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov096  100.0%</text><rect x="1471.00" y="754.74" width="127.00" height="95.36" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1476.00" y="769.74" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov098  100.0%</text><rect x="1356.48" y="854.10" width="134.98" height="143.90" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1361.48" y="869.10" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov100  100.0%</text><rect x="1495.46" y="854.10" width="102.54" height="143.90" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1500.46" y="869.10" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov102  100.0%</text>
+    <rect x="2.00" y="2.00" width="322.42" height="996.00" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="7.00" y="17.00" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">arm9  98.9%</text><rect x="328.42" y="2.00" width="18.68" height="846.69" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><rect x="328.42" y="852.69" width="18.68" height="1.30" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><rect x="328.42" y="857.99" width="18.68" height="140.01" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><rect x="351.10" y="2.00" width="257.55" height="996.00" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="356.10" y="17.00" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov002  99.1%</text><rect x="612.65" y="2.00" width="194.95" height="50.37" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="617.65" y="17.00" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov003  86.1%</text><rect x="811.60" y="2.00" width="666.70" height="50.37" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="816.60" y="17.00" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov004  100.0%</text><rect x="1482.30" y="2.00" width="115.70" height="50.37" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1487.30" y="17.00" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov005  100.0%</text><rect x="612.65" y="56.37" width="438.70" height="734.53" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="617.65" y="71.37" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov006  99.2%</text><rect x="612.65" y="794.90" width="438.70" height="203.10" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="617.65" y="809.90" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov007  100.0%</text><rect x="1055.35" y="56.37" width="77.01" height="48.84" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1060.35" y="71.37" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov009  93.7%</text><rect x="1136.35" y="56.37" width="51.36" height="48.84" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1141.35" y="71.37" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov010  100.0%</text><rect x="1191.71" y="56.37" width="18.94" height="48.84" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><rect x="1214.66" y="56.37" width="15.75" height="48.84" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><rect x="1234.41" y="56.37" width="112.99" height="48.84" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1239.41" y="71.37" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov014  100.0%</text><rect x="1351.40" y="56.37" width="109.85" height="48.84" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1356.40" y="71.37" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov015  100.0%</text><rect x="1465.26" y="56.37" width="132.74" height="48.84" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1470.26" y="71.37" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov016  100.0%</text><rect x="1055.35" y="109.22" width="11.48" height="37.57" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><rect x="1070.82" y="109.22" width="115.64" height="37.57" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1075.82" y="124.22" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov018  100.0%</text><rect x="1190.46" y="109.22" width="108.76" height="37.57" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1195.46" y="124.22" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov019  100.0%</text><rect x="1303.22" y="109.22" width="155.47" height="37.57" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1308.22" y="124.22" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov020  100.0%</text><rect x="1462.69" y="109.22" width="135.31" height="37.57" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1467.69" y="124.22" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov021  100.0%</text><rect x="1055.35" y="150.78" width="104.71" height="43.14" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1060.35" y="165.78" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov022  100.0%</text><rect x="1164.06" y="150.78" width="19.96" height="43.14" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><rect x="1188.02" y="150.78" width="25.00" height="43.14" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><rect x="1217.02" y="150.78" width="82.81" height="43.14" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1222.02" y="165.78" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov025  100.0%</text><rect x="1303.83" y="150.78" width="77.90" height="43.14" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1308.83" y="165.78" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov026  100.0%</text><rect x="1385.73" y="150.78" width="106.77" height="43.14" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1390.73" y="165.78" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov027  100.0%</text><rect x="1496.50" y="150.78" width="101.50" height="43.14" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1501.50" y="165.78" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov029  100.0%</text><rect x="1055.35" y="197.92" width="207.77" height="46.52" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1060.35" y="212.92" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov030  100.0%</text><rect x="1267.11" y="197.92" width="7.72" height="46.52" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><rect x="1278.83" y="197.92" width="89.57" height="46.52" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1283.83" y="212.92" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov032  100.0%</text><rect x="1372.40" y="197.92" width="17.74" height="46.52" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><rect x="1394.14" y="197.92" width="162.82" height="46.52" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1399.14" y="212.92" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov034  100.0%</text><rect x="1560.96" y="197.92" width="37.04" height="46.52" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1565.96" y="212.92" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov035  100.0%</text><rect x="1055.35" y="248.44" width="150.27" height="24.75" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><rect x="1209.61" y="248.44" width="10.82" height="24.75" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><rect x="1224.43" y="248.44" width="55.08" height="24.75" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><rect x="1283.52" y="248.44" width="6.84" height="24.75" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><rect x="1294.36" y="248.44" width="93.18" height="24.75" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><rect x="1391.53" y="248.44" width="47.82" height="24.75" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><rect x="1443.35" y="248.44" width="44.54" height="24.75" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><rect x="1491.89" y="248.44" width="43.34" height="24.75" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><rect x="1539.24" y="248.44" width="25.24" height="24.75" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><rect x="1568.48" y="248.44" width="29.52" height="24.75" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><rect x="1055.35" y="277.18" width="185.50" height="127.60" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1060.35" y="292.18" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov060  100.0%</text><rect x="1244.84" y="277.18" width="165.07" height="127.60" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1249.84" y="292.18" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov062  100.0%</text><rect x="1413.92" y="277.18" width="184.08" height="127.60" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1418.92" y="292.18" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov063  100.0%</text><rect x="1055.35" y="408.79" width="142.55" height="105.87" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1060.35" y="423.79" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov064  100.0%</text><rect x="1201.90" y="408.79" width="174.90" height="105.87" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1206.90" y="423.79" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov065  100.0%</text><rect x="1380.80" y="408.79" width="124.05" height="105.87" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1385.80" y="423.79" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov066  100.0%</text><rect x="1508.85" y="408.79" width="89.15" height="105.87" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1513.85" y="423.79" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov070  100.0%</text><rect x="1055.35" y="518.66" width="86.22" height="115.96" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1060.35" y="533.66" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov071  100.0%</text><rect x="1055.35" y="638.62" width="86.22" height="107.41" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1060.35" y="653.62" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov072  100.0%</text><rect x="1055.35" y="750.03" width="86.22" height="124.20" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1060.35" y="765.03" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov073  100.0%</text><rect x="1055.35" y="878.23" width="86.22" height="119.77" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1060.35" y="893.23" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov074  100.0%</text><rect x="1145.57" y="518.66" width="187.09" height="124.36" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1150.57" y="533.66" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov075  99.3%</text><rect x="1336.66" y="518.66" width="87.94" height="124.36" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1341.66" y="533.66" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov077  100.0%</text><rect x="1428.60" y="518.66" width="72.39" height="124.36" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1433.60" y="533.66" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov078  100.0%</text><rect x="1504.98" y="518.66" width="93.02" height="124.36" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1509.98" y="533.66" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov079  100.0%</text><rect x="1145.57" y="647.02" width="134.67" height="88.12" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1150.57" y="662.02" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov080  95.7%</text><rect x="1145.57" y="739.14" width="134.67" height="102.67" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1150.57" y="754.14" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov081  100.0%</text><rect x="1145.57" y="845.81" width="134.67" height="152.19" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1150.57" y="860.81" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov084  100.0%</text><rect x="1284.24" y="647.02" width="182.28" height="103.72" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1289.24" y="662.02" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov085  100.0%</text><rect x="1470.51" y="647.02" width="42.93" height="103.72" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1475.51" y="662.02" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov089  100.0%</text><rect x="1517.45" y="647.02" width="80.55" height="103.72" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1522.45" y="662.02" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov090  100.0%</text><rect x="1284.24" y="754.74" width="68.25" height="148.42" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1289.24" y="769.74" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov091  100.0%</text><rect x="1284.24" y="907.17" width="68.25" height="43.42" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1289.24" y="922.17" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov092  100.0%</text><rect x="1284.24" y="954.58" width="68.25" height="43.42" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1289.24" y="969.58" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov094  100.0%</text><rect x="1356.48" y="754.74" width="47.89" height="95.36" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1361.48" y="769.74" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov095  100.0%</text><rect x="1408.37" y="754.74" width="58.62" height="95.36" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1413.37" y="769.74" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov096  100.0%</text><rect x="1471.00" y="754.74" width="127.00" height="95.36" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1476.00" y="769.74" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov098  100.0%</text><rect x="1356.48" y="854.10" width="134.98" height="143.90" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1361.48" y="869.10" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov100  100.0%</text><rect x="1495.46" y="854.10" width="102.54" height="143.90" fill="#1d1f22" stroke="#888c92" stroke-width="1" /><text x="1500.46" y="869.10" font-size="12" font-family="Segoe UI, system-ui, sans-serif" fill="#e6e7e9" font-weight="600">ov102  100.0%</text>
     <rect x="5.00" y="27.13" width="0.56" height="7.19" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>VBlankIntrWait
 module: arm9
 addr: 0x020046c2
@@ -4753,7 +4753,7 @@ matched: yes</title></rect><rect x="185.32" y="433.87" width="0.69" height="7.77
 module: arm9
 addr: 0x02034d2c
 size: 8 bytes
-matched: yes</title></rect><rect x="186.01" y="433.87" width="5.18" height="7.77" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02034d34
+matched: yes</title></rect><rect x="186.01" y="433.87" width="5.18" height="7.77" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN7dScMB_c13func_02034d34Ev
 module: arm9
 addr: 0x02034d34
 size: 60 bytes
@@ -12957,47 +12957,47 @@ matched: yes</title></rect><rect x="516.27" y="61.76" width="10.64" height="6.25
 module: ov002
 addr: 0x020b0fa4
 size: 100 bytes
-matched: yes</title></rect><rect x="526.91" y="61.76" width="16.17" height="6.25" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020b1008
+matched: yes</title></rect><rect x="526.91" y="61.76" width="16.17" height="6.25" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daCoin_c19func_ov002_020b1008Ev
 module: ov002
 addr: 0x020b1008
 size: 152 bytes
-matched: yes</title></rect><rect x="543.08" y="61.76" width="7.24" height="6.25" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020b10a0
+matched: yes</title></rect><rect x="543.08" y="61.76" width="7.24" height="6.25" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daCoin_c19func_ov002_020b10a0Ev
 module: ov002
 addr: 0x020b10a0
 size: 68 bytes
-matched: yes</title></rect><rect x="550.32" y="61.76" width="55.33" height="6.25" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020b10e4
+matched: yes</title></rect><rect x="550.32" y="61.76" width="55.33" height="6.25" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daCoin_c19func_ov002_020b10e4Ev
 module: ov002
 addr: 0x020b10e4
 size: 520 bytes
-matched: yes</title></rect><rect x="354.10" y="68.01" width="6.00" height="6.66" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020b12ec
+matched: yes</title></rect><rect x="354.10" y="68.01" width="6.00" height="6.66" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daCoin_c19func_ov002_020b12ecEv
 module: ov002
 addr: 0x020b12ec
 size: 60 bytes
-matched: yes</title></rect><rect x="360.10" y="68.01" width="9.20" height="6.66" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020b1328
+matched: yes</title></rect><rect x="360.10" y="68.01" width="9.20" height="6.66" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daCoin_c19func_ov002_020b1328Ev
 module: ov002
 addr: 0x020b1328
 size: 92 bytes
-matched: yes</title></rect><rect x="369.30" y="68.01" width="9.20" height="6.66" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020b1384
+matched: yes</title></rect><rect x="369.30" y="68.01" width="9.20" height="6.66" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daCoin_c19func_ov002_020b1384Ev
 module: ov002
 addr: 0x020b1384
 size: 92 bytes
-matched: yes</title></rect><rect x="378.50" y="68.01" width="24.80" height="6.66" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020b13e0
+matched: yes</title></rect><rect x="378.50" y="68.01" width="24.80" height="6.66" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daCoin_c19func_ov002_020b13e0Ev
 module: ov002
 addr: 0x020b13e0
 size: 248 bytes
-matched: yes</title></rect><rect x="403.29" y="68.01" width="41.19" height="6.66" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020b14d8
+matched: yes</title></rect><rect x="403.29" y="68.01" width="41.19" height="6.66" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daCoin_c19func_ov002_020b14d8Ev
 module: ov002
 addr: 0x020b14d8
 size: 412 bytes
-matched: yes</title></rect><rect x="444.48" y="68.01" width="8.00" height="6.66" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020b1674
+matched: yes</title></rect><rect x="444.48" y="68.01" width="8.00" height="6.66" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daCoin_c19func_ov002_020b1674EP6Player
 module: ov002
 addr: 0x020b1674
 size: 80 bytes
-matched: yes</title></rect><rect x="452.48" y="68.01" width="44.79" height="6.66" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020b16c4
+matched: yes</title></rect><rect x="452.48" y="68.01" width="44.79" height="6.66" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daCoin_c19func_ov002_020b16c4EP6Player
 module: ov002
 addr: 0x020b16c4
 size: 448 bytes
-matched: yes</title></rect><rect x="497.27" y="68.01" width="10.80" height="6.66" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020b1884
+matched: yes</title></rect><rect x="497.27" y="68.01" width="10.80" height="6.66" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daCoin_c19func_ov002_020b1884EP6Player
 module: ov002
 addr: 0x020b1884
 size: 108 bytes
@@ -13005,35 +13005,35 @@ matched: yes</title></rect><rect x="508.07" y="68.01" width="23.60" height="6.66
 module: ov002
 addr: 0x020b18f0
 size: 236 bytes
-matched: yes</title></rect><rect x="531.66" y="68.01" width="13.20" height="6.66" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020b19dc
+matched: yes</title></rect><rect x="531.66" y="68.01" width="13.20" height="6.66" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daCoin_c19func_ov002_020b19dcEv
 module: ov002
 addr: 0x020b19dc
 size: 132 bytes
-matched: yes</title></rect><rect x="544.86" y="68.01" width="11.60" height="6.66" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020b1a60
+matched: yes</title></rect><rect x="544.86" y="68.01" width="11.60" height="6.66" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daCoin_c19func_ov002_020b1a60Ev
 module: ov002
 addr: 0x020b1a60
 size: 116 bytes
-matched: yes</title></rect><rect x="556.46" y="68.01" width="29.59" height="6.66" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020b1ad4
+matched: yes</title></rect><rect x="556.46" y="68.01" width="29.59" height="6.66" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daCoin_c19func_ov002_020b1ad4Ev
 module: ov002
 addr: 0x020b1ad4
 size: 296 bytes
-matched: yes</title></rect><rect x="586.05" y="68.01" width="19.60" height="6.66" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020b1bfc
+matched: yes</title></rect><rect x="586.05" y="68.01" width="19.60" height="6.66" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daCoin_c19func_ov002_020b1bfcEv
 module: ov002
 addr: 0x020b1bfc
 size: 196 bytes
-matched: yes</title></rect><rect x="354.10" y="74.67" width="67.16" height="9.36" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020b1cc0
+matched: yes</title></rect><rect x="354.10" y="74.67" width="67.16" height="9.36" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daCoin_c19func_ov002_020b1cc0Ev
 module: ov002
 addr: 0x020b1cc0
 size: 944 bytes
-matched: yes</title></rect><rect x="421.26" y="74.67" width="4.84" height="9.36" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020b2070
+matched: yes</title></rect><rect x="421.26" y="74.67" width="4.84" height="9.36" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daCoin_c19func_ov002_020b2070Ev
 module: ov002
 addr: 0x020b2070
 size: 68 bytes
-matched: yes</title></rect><rect x="426.09" y="74.67" width="11.10" height="9.36" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020b20b4
+matched: yes</title></rect><rect x="426.09" y="74.67" width="11.10" height="9.36" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daCoin_c19func_ov002_020b20b4Ev
 module: ov002
 addr: 0x020b20b4
 size: 156 bytes
-matched: yes</title></rect><rect x="437.19" y="74.67" width="5.12" height="9.36" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020b2150
+matched: yes</title></rect><rect x="437.19" y="74.67" width="5.12" height="9.36" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daCoin_c19func_ov002_020b2150Ev
 module: ov002
 addr: 0x020b2150
 size: 72 bytes
@@ -16705,31 +16705,31 @@ matched: yes</title></rect><rect x="587.79" y="642.57" width="7.66" height="7.30
 module: ov002
 addr: 0x020e6d34
 size: 84 bytes
-matched: yes</title></rect><rect x="595.44" y="642.57" width="10.21" height="7.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020e6d88
+matched: yes</title></rect><rect x="595.44" y="642.57" width="10.21" height="7.30" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daStar_c19func_ov002_020e6d88Ev
 module: ov002
 addr: 0x020e6d88
 size: 112 bytes
-matched: yes</title></rect><rect x="354.10" y="649.87" width="27.10" height="5.60" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020e6df8
+matched: yes</title></rect><rect x="354.10" y="649.87" width="27.10" height="5.60" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daStar_c19func_ov002_020e6df8Ev
 module: ov002
 addr: 0x020e6df8
 size: 228 bytes
-matched: yes</title></rect><rect x="381.21" y="649.87" width="26.63" height="5.60" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020e6edc
+matched: yes</title></rect><rect x="381.21" y="649.87" width="26.63" height="5.60" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daStar_c19func_ov002_020e6edcEv
 module: ov002
 addr: 0x020e6edc
 size: 224 bytes
-matched: yes</title></rect><rect x="407.83" y="649.87" width="9.51" height="5.60" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020e6fbc
+matched: yes</title></rect><rect x="407.83" y="649.87" width="9.51" height="5.60" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daStar_c19func_ov002_020e6fbcEi
 module: ov002
 addr: 0x020e6fbc
 size: 80 bytes
-matched: yes</title></rect><rect x="417.34" y="649.87" width="15.69" height="5.60" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020e700c
+matched: yes</title></rect><rect x="417.34" y="649.87" width="15.69" height="5.60" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daStar_c19func_ov002_020e700cEv
 module: ov002
 addr: 0x020e700c
 size: 132 bytes
-matched: yes</title></rect><rect x="433.04" y="649.87" width="13.79" height="5.60" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020e7090
+matched: yes</title></rect><rect x="433.04" y="649.87" width="13.79" height="5.60" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daStar_c19func_ov002_020e7090Ei
 module: ov002
 addr: 0x020e7090
 size: 116 bytes
-matched: yes</title></rect><rect x="446.83" y="649.87" width="14.27" height="5.60" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020e7104
+matched: yes</title></rect><rect x="446.83" y="649.87" width="14.27" height="5.60" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daStar_c19func_ov002_020e7104Ei
 module: ov002
 addr: 0x020e7104
 size: 120 bytes
@@ -16741,11 +16741,11 @@ matched: yes</title></rect><rect x="466.32" y="649.87" width="5.23" height="5.60
 module: ov002
 addr: 0x020e71a8
 size: 44 bytes
-matched: yes</title></rect><rect x="471.55" y="649.87" width="8.08" height="5.60" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>LinkSilverStarAndStarMarker
+matched: yes</title></rect><rect x="471.55" y="649.87" width="8.08" height="5.60" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12daStarBase_c27LinkSilverStarAndStarMarkerEPc
 module: ov002
 addr: 0x020e71d4
 size: 68 bytes
-matched: yes</title></rect><rect x="479.64" y="649.87" width="22.82" height="5.60" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020e7218
+matched: yes</title></rect><rect x="479.64" y="649.87" width="22.82" height="5.60" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daStar_c19func_ov002_020e7218EPci
 module: ov002
 addr: 0x020e7218
 size: 192 bytes
@@ -16753,31 +16753,31 @@ matched: yes</title></rect><rect x="502.46" y="649.87" width="25.20" height="5.6
 module: ov002
 addr: 0x020e72d8
 size: 212 bytes
-matched: yes</title></rect><rect x="527.66" y="649.87" width="19.97" height="5.60" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020e73ac
+matched: yes</title></rect><rect x="527.66" y="649.87" width="19.97" height="5.60" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daStar_c19func_ov002_020e73acEv
 module: ov002
 addr: 0x020e73ac
 size: 168 bytes
-matched: yes</title></rect><rect x="547.64" y="649.87" width="30.43" height="5.60" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020e7454
+matched: yes</title></rect><rect x="547.64" y="649.87" width="30.43" height="5.60" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daStar_c19func_ov002_020e7454Ev
 module: ov002
 addr: 0x020e7454
 size: 256 bytes
-matched: yes</title></rect><rect x="578.07" y="649.87" width="27.58" height="5.60" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020e7554
+matched: yes</title></rect><rect x="578.07" y="649.87" width="27.58" height="5.60" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daStar_c19func_ov002_020e7554Ev
 module: ov002
 addr: 0x020e7554
 size: 232 bytes
-matched: yes</title></rect><rect x="354.10" y="655.47" width="83.56" height="6.05" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020e763c
+matched: yes</title></rect><rect x="354.10" y="655.47" width="83.56" height="6.05" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daStar_c19func_ov002_020e763cEv
 module: ov002
 addr: 0x020e763c
 size: 760 bytes
-matched: yes</title></rect><rect x="437.66" y="655.47" width="94.55" height="6.05" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020e7934
+matched: yes</title></rect><rect x="437.66" y="655.47" width="94.55" height="6.05" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daStar_c19func_ov002_020e7934EPv
 module: ov002
 addr: 0x020e7934
 size: 860 bytes
-matched: yes</title></rect><rect x="532.21" y="655.47" width="13.19" height="6.05" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020e7c90
+matched: yes</title></rect><rect x="532.21" y="655.47" width="13.19" height="6.05" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daStar_c19func_ov002_020e7c90EPv
 module: ov002
 addr: 0x020e7c90
 size: 120 bytes
-matched: yes</title></rect><rect x="545.40" y="655.47" width="13.63" height="6.05" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020e7d08
+matched: yes</title></rect><rect x="545.40" y="655.47" width="13.63" height="6.05" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daStar_c19func_ov002_020e7d08Ev
 module: ov002
 addr: 0x020e7d08
 size: 124 bytes
@@ -16785,39 +16785,39 @@ matched: yes</title></rect><rect x="559.03" y="655.47" width="15.83" height="6.0
 module: ov002
 addr: 0x020e7d84
 size: 144 bytes
-matched: yes</title></rect><rect x="574.87" y="655.47" width="1.76" height="6.05" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020e7e14
+matched: yes</title></rect><rect x="574.87" y="655.47" width="1.76" height="6.05" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daStar_c19func_ov002_020e7e14Ev
 module: ov002
 addr: 0x020e7e14
 size: 16 bytes
-matched: yes</title></rect><rect x="576.63" y="655.47" width="5.72" height="6.05" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020e7e24
+matched: yes</title></rect><rect x="576.63" y="655.47" width="5.72" height="6.05" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daStar_c19func_ov002_020e7e24Ev
 module: ov002
 addr: 0x020e7e24
 size: 52 bytes
-matched: yes</title></rect><rect x="582.34" y="655.47" width="10.11" height="6.05" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020e7e58
+matched: yes</title></rect><rect x="582.34" y="655.47" width="10.11" height="6.05" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daStar_c19func_ov002_020e7e58Ev
 module: ov002
 addr: 0x020e7e58
 size: 92 bytes
-matched: yes</title></rect><rect x="592.46" y="655.47" width="0.44" height="6.05" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020e7eb4
+matched: yes</title></rect><rect x="592.46" y="655.47" width="0.44" height="6.05" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daStar_c19func_ov002_020e7eb4Ev
 module: ov002
 addr: 0x020e7eb4
 size: 4 bytes
-matched: yes</title></rect><rect x="592.90" y="655.47" width="12.75" height="6.05" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020e7eb8
+matched: yes</title></rect><rect x="592.90" y="655.47" width="12.75" height="6.05" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daStar_c19func_ov002_020e7eb8Ev
 module: ov002
 addr: 0x020e7eb8
 size: 116 bytes
-matched: yes</title></rect><rect x="354.10" y="661.52" width="10.02" height="10.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020e7f2c
+matched: yes</title></rect><rect x="354.10" y="661.52" width="10.02" height="10.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daStar_c19func_ov002_020e7f2cEv
 module: ov002
 addr: 0x020e7f2c
 size: 160 bytes
-matched: yes</title></rect><rect x="364.12" y="661.52" width="12.78" height="10.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020e7fcc
+matched: yes</title></rect><rect x="364.12" y="661.52" width="12.78" height="10.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daStar_c19func_ov002_020e7fccEv
 module: ov002
 addr: 0x020e7fcc
 size: 204 bytes
-matched: yes</title></rect><rect x="376.90" y="661.52" width="20.54" height="10.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020e8098
+matched: yes</title></rect><rect x="376.90" y="661.52" width="20.54" height="10.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daStar_c19func_ov002_020e8098Ev
 module: ov002
 addr: 0x020e8098
 size: 328 bytes
-matched: yes</title></rect><rect x="397.45" y="661.52" width="6.26" height="10.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020e81e0
+matched: yes</title></rect><rect x="397.45" y="661.52" width="6.26" height="10.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daStar_c19func_ov002_020e81e0Ev
 module: ov002
 addr: 0x020e81e0
 size: 100 bytes
@@ -16825,31 +16825,31 @@ matched: yes</title></rect><rect x="403.71" y="661.52" width="21.30" height="10.
 module: ov002
 addr: 0x020e8244
 size: 340 bytes
-matched: yes</title></rect><rect x="425.01" y="661.52" width="21.30" height="10.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020e8398
+matched: yes</title></rect><rect x="425.01" y="661.52" width="21.30" height="10.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daStar_c19func_ov002_020e8398Ev
 module: ov002
 addr: 0x020e8398
 size: 340 bytes
-matched: yes</title></rect><rect x="446.30" y="661.52" width="18.79" height="10.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020e84ec
+matched: yes</title></rect><rect x="446.30" y="661.52" width="18.79" height="10.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daStar_c19func_ov002_020e84ecEv
 module: ov002
 addr: 0x020e84ec
 size: 300 bytes
-matched: yes</title></rect><rect x="465.09" y="661.52" width="13.28" height="10.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020e8618
+matched: yes</title></rect><rect x="465.09" y="661.52" width="13.28" height="10.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daStar_c19func_ov002_020e8618Ev
 module: ov002
 addr: 0x020e8618
 size: 212 bytes
-matched: yes</title></rect><rect x="478.37" y="661.52" width="27.81" height="10.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020e86ec
+matched: yes</title></rect><rect x="478.37" y="661.52" width="27.81" height="10.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daStar_c19func_ov002_020e86ecEv
 module: ov002
 addr: 0x020e86ec
 size: 444 bytes
-matched: yes</title></rect><rect x="506.18" y="661.52" width="33.32" height="10.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020e88a8
+matched: yes</title></rect><rect x="506.18" y="661.52" width="33.32" height="10.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daStar_c19func_ov002_020e88a8Ev
 module: ov002
 addr: 0x020e88a8
 size: 532 bytes
-matched: yes</title></rect><rect x="539.51" y="661.52" width="23.55" height="10.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020e8abc
+matched: yes</title></rect><rect x="539.51" y="661.52" width="23.55" height="10.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daStar_c19func_ov002_020e8abcEv
 module: ov002
 addr: 0x020e8abc
 size: 376 bytes
-matched: yes</title></rect><rect x="563.06" y="661.52" width="6.76" height="10.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020e8c34
+matched: yes</title></rect><rect x="563.06" y="661.52" width="6.76" height="10.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daStar_c19func_ov002_020e8c34Ev
 module: ov002
 addr: 0x020e8c34
 size: 108 bytes
@@ -16857,11 +16857,11 @@ matched: yes</title></rect><rect x="569.82" y="661.52" width="19.54" height="10.
 module: ov002
 addr: 0x020e8ca0
 size: 312 bytes
-matched: yes</title></rect><rect x="589.36" y="661.52" width="10.52" height="10.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020e8dd8
+matched: yes</title></rect><rect x="589.36" y="661.52" width="10.52" height="10.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daStar_c19func_ov002_020e8dd8Ev
 module: ov002
 addr: 0x020e8dd8
 size: 168 bytes
-matched: yes</title></rect><rect x="599.89" y="661.52" width="5.76" height="10.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020e8e80
+matched: yes</title></rect><rect x="599.89" y="661.52" width="5.76" height="10.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daStar_c19func_ov002_020e8e80Ei
 module: ov002
 addr: 0x020e8e80
 size: 92 bytes
@@ -16873,91 +16873,91 @@ matched: yes</title></rect><rect x="355.17" y="672.15" width="0.71" height="7.48
 module: ov002
 addr: 0x020e8ee8
 size: 8 bytes
-matched: yes</title></rect><rect x="355.88" y="672.15" width="93.57" height="7.48" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020e8ef0
+matched: yes</title></rect><rect x="355.88" y="672.15" width="93.57" height="7.48" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daStar_c19func_ov002_020e8ef0EPv
 module: ov002
 addr: 0x020e8ef0
 size: 1052 bytes
-matched: yes</title></rect><rect x="449.45" y="672.15" width="28.11" height="7.48" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020e930c
+matched: yes</title></rect><rect x="449.45" y="672.15" width="28.11" height="7.48" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daStar_c19func_ov002_020e930cEv
 module: ov002
 addr: 0x020e930c
 size: 316 bytes
-matched: yes</title></rect><rect x="477.56" y="672.15" width="2.49" height="7.48" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020e9448
+matched: yes</title></rect><rect x="477.56" y="672.15" width="2.49" height="7.48" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daStar_c19func_ov002_020e9448Ev
 module: ov002
 addr: 0x020e9448
 size: 28 bytes
-matched: yes</title></rect><rect x="480.05" y="672.15" width="2.13" height="7.48" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020e9464
+matched: yes</title></rect><rect x="480.05" y="672.15" width="2.13" height="7.48" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daStar_c19func_ov002_020e9464Ev
 module: ov002
 addr: 0x020e9464
 size: 24 bytes
-matched: yes</title></rect><rect x="482.19" y="672.15" width="24.55" height="7.48" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020e947c
+matched: yes</title></rect><rect x="482.19" y="672.15" width="24.55" height="7.48" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daStar_c19func_ov002_020e947cEP7Vector3i
 module: ov002
 addr: 0x020e947c
 size: 276 bytes
-matched: yes</title></rect><rect x="506.74" y="672.15" width="14.23" height="7.48" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020e9590
+matched: yes</title></rect><rect x="506.74" y="672.15" width="14.23" height="7.48" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daStar_c19func_ov002_020e9590Ev
 module: ov002
 addr: 0x020e9590
 size: 160 bytes
-matched: yes</title></rect><rect x="520.97" y="672.15" width="9.96" height="7.48" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020e9630
+matched: yes</title></rect><rect x="520.97" y="672.15" width="9.96" height="7.48" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daStar_c19func_ov002_020e9630Ev
 module: ov002
 addr: 0x020e9630
 size: 112 bytes
-matched: yes</title></rect><rect x="530.93" y="672.15" width="31.67" height="7.48" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020e96a0
+matched: yes</title></rect><rect x="530.93" y="672.15" width="31.67" height="7.48" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daStar_c19func_ov002_020e96a0Ev
 module: ov002
 addr: 0x020e96a0
 size: 356 bytes
-matched: yes</title></rect><rect x="562.60" y="672.15" width="5.34" height="7.48" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020e9804
+matched: yes</title></rect><rect x="562.60" y="672.15" width="5.34" height="7.48" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daStar_c19func_ov002_020e9804Ev
 module: ov002
 addr: 0x020e9804
 size: 60 bytes
-matched: yes</title></rect><rect x="567.94" y="672.15" width="37.71" height="7.48" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020e9840
+matched: yes</title></rect><rect x="567.94" y="672.15" width="37.71" height="7.48" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daStar_c19func_ov002_020e9840Ev
 module: ov002
 addr: 0x020e9840
 size: 424 bytes
-matched: yes</title></rect><rect x="354.10" y="679.63" width="19.13" height="9.32" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020e99e8
+matched: yes</title></rect><rect x="354.10" y="679.63" width="19.13" height="9.32" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daStar_c19func_ov002_020e99e8Ev
 module: ov002
 addr: 0x020e99e8
 size: 268 bytes
-matched: yes</title></rect><rect x="373.23" y="679.63" width="39.12" height="9.32" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020e9af4
+matched: yes</title></rect><rect x="373.23" y="679.63" width="39.12" height="9.32" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daStar_c19func_ov002_020e9af4Ev
 module: ov002
 addr: 0x020e9af4
 size: 548 bytes
-matched: yes</title></rect><rect x="412.35" y="679.63" width="60.82" height="9.32" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020e9d18
+matched: yes</title></rect><rect x="412.35" y="679.63" width="60.82" height="9.32" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daStar_c19func_ov002_020e9d18Ev
 module: ov002
 addr: 0x020e9d18
 size: 852 bytes
-matched: yes</title></rect><rect x="473.17" y="679.63" width="10.56" height="9.32" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020ea06c
+matched: yes</title></rect><rect x="473.17" y="679.63" width="10.56" height="9.32" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daStar_c19func_ov002_020ea06cEv
 module: ov002
 addr: 0x020ea06c
 size: 148 bytes
-matched: yes</title></rect><rect x="483.73" y="679.63" width="48.25" height="9.32" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020ea100
+matched: yes</title></rect><rect x="483.73" y="679.63" width="48.25" height="9.32" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daStar_c19func_ov002_020ea100Ev
 module: ov002
 addr: 0x020ea100
 size: 676 bytes
-matched: yes</title></rect><rect x="531.98" y="679.63" width="7.71" height="9.32" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020ea3a4
+matched: yes</title></rect><rect x="531.98" y="679.63" width="7.71" height="9.32" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daStar_c19func_ov002_020ea3a4Ev
 module: ov002
 addr: 0x020ea3a4
 size: 108 bytes
-matched: yes</title></rect><rect x="539.69" y="679.63" width="1.14" height="9.32" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020ea410
+matched: yes</title></rect><rect x="539.69" y="679.63" width="1.14" height="9.32" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daStar_c19func_ov002_020ea410Ev
 module: ov002
 addr: 0x020ea410
 size: 16 bytes
-matched: yes</title></rect><rect x="540.84" y="679.63" width="64.81" height="9.32" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020ea420
+matched: yes</title></rect><rect x="540.84" y="679.63" width="64.81" height="9.32" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daStar_c19func_ov002_020ea420Ev
 module: ov002
 addr: 0x020ea420
 size: 908 bytes
-matched: yes</title></rect><rect x="354.10" y="688.95" width="5.20" height="15.37" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020ea7ac
+matched: yes</title></rect><rect x="354.10" y="688.95" width="5.20" height="15.37" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daStar_c19func_ov002_020ea7acEv
 module: ov002
 addr: 0x020ea7ac
 size: 120 bytes
-matched: yes</title></rect><rect x="359.30" y="688.95" width="10.05" height="15.37" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020ea824
+matched: yes</title></rect><rect x="359.30" y="688.95" width="10.05" height="15.37" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daStar_c19func_ov002_020ea824Ev
 module: ov002
 addr: 0x020ea824
 size: 232 bytes
-matched: yes</title></rect><rect x="369.35" y="688.95" width="8.49" height="15.37" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020ea90c
+matched: yes</title></rect><rect x="369.35" y="688.95" width="8.49" height="15.37" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daStar_c19func_ov002_020ea90cEv
 module: ov002
 addr: 0x020ea90c
 size: 196 bytes
-matched: yes</title></rect><rect x="377.83" y="688.95" width="19.23" height="15.37" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov002_020ea9d0
+matched: yes</title></rect><rect x="377.83" y="688.95" width="19.23" height="15.37" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daStar_c19func_ov002_020ea9d0Ev
 module: ov002
 addr: 0x020ea9d0
 size: 444 bytes
@@ -31289,59 +31289,59 @@ matched: yes</title></rect><rect x="1309.12" y="135.68" width="3.80" height="2.2
 module: ov020
 addr: 0x02111278
 size: 56 bytes
-matched: yes</title></rect><rect x="1309.12" y="137.95" width="3.80" height="5.84" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov020_021112b0
+matched: yes</title></rect><rect x="1309.12" y="137.95" width="3.80" height="5.84" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daBook_c19func_ov020_021112b0Ev
 module: ov020
 addr: 0x021112b0
 size: 144 bytes
-matched: yes</title></rect><rect x="1312.92" y="134.22" width="3.48" height="9.57" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov020_02111340
+matched: yes</title></rect><rect x="1312.92" y="134.22" width="3.48" height="9.57" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daBook_c19func_ov020_02111340Ev
 module: ov020
 addr: 0x02111340
 size: 216 bytes
-matched: yes</title></rect><rect x="1316.41" y="134.22" width="6.51" height="9.57" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov020_02111418
+matched: yes</title></rect><rect x="1316.41" y="134.22" width="6.51" height="9.57" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daBook_c19func_ov020_02111418Ev
 module: ov020
 addr: 0x02111418
 size: 404 bytes
-matched: yes</title></rect><rect x="1322.92" y="134.22" width="6.71" height="9.57" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov020_021115ac
+matched: yes</title></rect><rect x="1322.92" y="134.22" width="6.71" height="9.57" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daBook_c19func_ov020_021115acEv
 module: ov020
 addr: 0x021115ac
 size: 416 bytes
-matched: yes</title></rect><rect x="1329.63" y="134.22" width="10.58" height="9.57" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov020_0211174c
+matched: yes</title></rect><rect x="1329.63" y="134.22" width="10.58" height="9.57" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daBook_c19func_ov020_0211174cEv
 module: ov020
 addr: 0x0211174c
 size: 656 bytes
-matched: yes</title></rect><rect x="1340.20" y="134.22" width="5.35" height="5.88" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov020_021119dc
+matched: yes</title></rect><rect x="1340.20" y="134.22" width="5.35" height="5.88" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daBook_c19func_ov020_021119dcEv
 module: ov020
 addr: 0x021119dc
 size: 204 bytes
-matched: yes</title></rect><rect x="1340.20" y="140.09" width="5.35" height="3.69" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov020_02111aa8
+matched: yes</title></rect><rect x="1340.20" y="140.09" width="5.35" height="3.69" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daBook_c19func_ov020_02111aa8Ev
 module: ov020
 addr: 0x02111aa8
 size: 128 bytes
-matched: yes</title></rect><rect x="1345.55" y="134.22" width="4.26" height="9.57" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov020_02111b28
+matched: yes</title></rect><rect x="1345.55" y="134.22" width="4.26" height="9.57" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daBook_c19func_ov020_02111b28Ev
 module: ov020
 addr: 0x02111b28
 size: 264 bytes
-matched: yes</title></rect><rect x="1349.81" y="134.22" width="11.09" height="9.57" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov020_02111c30
+matched: yes</title></rect><rect x="1349.81" y="134.22" width="11.09" height="9.57" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daBook_c19func_ov020_02111c30Ev
 module: ov020
 addr: 0x02111c30
 size: 688 bytes
-matched: yes</title></rect><rect x="1360.90" y="134.22" width="6.71" height="5.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov020_02111ee0
+matched: yes</title></rect><rect x="1360.90" y="134.22" width="6.71" height="5.24" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daBook_c19func_ov020_02111ee0Ev
 module: ov020
 addr: 0x02111ee0
 size: 228 bytes
-matched: yes</title></rect><rect x="1360.90" y="139.46" width="6.71" height="4.32" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov020_02111fc4
+matched: yes</title></rect><rect x="1360.90" y="139.46" width="6.71" height="4.32" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daBook_c19func_ov020_02111fc4Ev
 module: ov020
 addr: 0x02111fc4
 size: 188 bytes
-matched: yes</title></rect><rect x="1367.61" y="134.22" width="3.80" height="5.84" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov020_02112080
+matched: yes</title></rect><rect x="1367.61" y="134.22" width="3.80" height="5.84" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daBook_c19func_ov020_02112080Ev
 module: ov020
 addr: 0x02112080
 size: 144 bytes
-matched: yes</title></rect><rect x="1367.61" y="140.05" width="3.80" height="3.73" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov020_02112110
+matched: yes</title></rect><rect x="1367.61" y="140.05" width="3.80" height="3.73" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daBook_c19func_ov020_02112110Ev
 module: ov020
 addr: 0x02112110
 size: 92 bytes
-matched: yes</title></rect><rect x="1371.41" y="134.22" width="4.71" height="7.08" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov020_0211216c
+matched: yes</title></rect><rect x="1371.41" y="134.22" width="4.71" height="7.08" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN8daBook_c19func_ov020_0211216cEv
 module: ov020
 addr: 0x0211216c
 size: 216 bytes
@@ -33217,55 +33217,55 @@ matched: yes</title></rect><rect x="1281.83" y="226.35" width="5.46" height="4.2
 module: ov032
 addr: 0x021111f0
 size: 100 bytes
-matched: yes</title></rect><rect x="1281.83" y="230.63" width="5.46" height="10.80" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov032_02111254
+matched: yes</title></rect><rect x="1281.83" y="230.63" width="5.46" height="10.80" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12daBakubaku_c19func_ov032_02111254Ev
 module: ov032
 addr: 0x02111254
 size: 252 bytes
-matched: yes</title></rect><rect x="1287.29" y="222.92" width="9.10" height="4.42" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov032_02111350
+matched: yes</title></rect><rect x="1287.29" y="222.92" width="9.10" height="4.42" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12daBakubaku_c19func_ov032_02111350Ev
 module: ov032
 addr: 0x02111350
 size: 172 bytes
-matched: yes</title></rect><rect x="1287.29" y="227.34" width="9.10" height="14.09" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov032_021113fc
+matched: yes</title></rect><rect x="1287.29" y="227.34" width="9.10" height="14.09" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12daBakubaku_c19func_ov032_021113fcEv
 module: ov032
 addr: 0x021113fc
 size: 548 bytes
-matched: yes</title></rect><rect x="1296.39" y="222.92" width="6.32" height="18.52" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov032_02111620
+matched: yes</title></rect><rect x="1296.39" y="222.92" width="6.32" height="18.52" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12daBakubaku_c19func_ov032_02111620Ev
 module: ov032
 addr: 0x02111620
 size: 500 bytes
-matched: yes</title></rect><rect x="1302.71" y="222.92" width="10.47" height="0.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov032_02111814
+matched: yes</title></rect><rect x="1302.71" y="222.92" width="10.47" height="0.63" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12daBakubaku_c19func_ov032_02111814Ev
 module: ov032
 addr: 0x02111814
 size: 28 bytes
-matched: yes</title></rect><rect x="1302.71" y="223.55" width="10.47" height="17.89" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov032_02111830
+matched: yes</title></rect><rect x="1302.71" y="223.55" width="10.47" height="17.89" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12daBakubaku_c19func_ov032_02111830Ev
 module: ov032
 addr: 0x02111830
 size: 800 bytes
-matched: yes</title></rect><rect x="1313.18" y="222.92" width="6.57" height="2.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov032_02111b50
+matched: yes</title></rect><rect x="1313.18" y="222.92" width="6.57" height="2.71" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12daBakubaku_c19func_ov032_02111b50Ev
 module: ov032
 addr: 0x02111b50
 size: 76 bytes
-matched: yes</title></rect><rect x="1313.18" y="225.63" width="6.57" height="15.81" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov032_02111b9c
+matched: yes</title></rect><rect x="1313.18" y="225.63" width="6.57" height="15.81" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12daBakubaku_c19func_ov032_02111b9cEv
 module: ov032
 addr: 0x02111b9c
 size: 444 bytes
-matched: yes</title></rect><rect x="1319.75" y="222.92" width="2.58" height="3.27" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov032_02111d58
+matched: yes</title></rect><rect x="1319.75" y="222.92" width="2.58" height="3.27" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12daBakubaku_c19func_ov032_02111d58Ev
 module: ov032
 addr: 0x02111d58
 size: 36 bytes
-matched: yes</title></rect><rect x="1319.75" y="226.19" width="2.58" height="8.35" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov032_02111d7c
+matched: yes</title></rect><rect x="1319.75" y="226.19" width="2.58" height="8.35" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12daBakubaku_c19func_ov032_02111d7cEv
 module: ov032
 addr: 0x02111d7c
 size: 92 bytes
-matched: yes</title></rect><rect x="1319.75" y="234.54" width="2.58" height="6.90" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov032_02111dd8
+matched: yes</title></rect><rect x="1319.75" y="234.54" width="2.58" height="6.90" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12daBakubaku_c19func_ov032_02111dd8Ev
 module: ov032
 addr: 0x02111dd8
 size: 76 bytes
-matched: yes</title></rect><rect x="1322.33" y="222.92" width="6.88" height="12.80" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov032_02111e24
+matched: yes</title></rect><rect x="1322.33" y="222.92" width="6.88" height="12.80" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12daBakubaku_c19func_ov032_02111e24Ev
 module: ov032
 addr: 0x02111e24
 size: 376 bytes
-matched: yes</title></rect><rect x="1322.33" y="235.72" width="6.88" height="3.00" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov032_02111f9c
+matched: yes</title></rect><rect x="1322.33" y="235.72" width="6.88" height="3.00" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12daBakubaku_c19func_ov032_02111f9cEv
 module: ov032
 addr: 0x02111f9c
 size: 88 bytes
@@ -33273,7 +33273,7 @@ matched: yes</title></rect><rect x="1322.33" y="238.71" width="6.88" height="2.7
 module: ov032
 addr: 0x02111ff4
 size: 80 bytes
-matched: yes</title></rect><rect x="1329.20" y="222.92" width="3.59" height="14.60" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov032_02112044
+matched: yes</title></rect><rect x="1329.20" y="222.92" width="3.59" height="14.60" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN12daBakubaku_c19func_ov032_02112044Ev
 module: ov032
 addr: 0x02112044
 size: 224 bytes
@@ -38713,7 +38713,7 @@ matched: yes</title></rect><rect x="1078.05" y="695.49" width="3.16" height="14.
 module: ov072
 addr: 0x02120874
 size: 100 bytes
-matched: yes</title></rect><rect x="1078.05" y="709.81" width="3.16" height="24.06" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov072_021208d8
+matched: yes</title></rect><rect x="1078.05" y="709.81" width="3.16" height="24.06" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11daBgSnwmn_c19func_ov072_021208d8Ev
 module: ov072
 addr: 0x021208d8
 size: 168 bytes
@@ -39305,11 +39305,11 @@ matched: yes</title></rect><rect x="1133.64" y="931.06" width="4.93" height="12.
 module: ov074
 addr: 0x02121300
 size: 128 bytes
-matched: yes</title></rect><rect x="1079.01" y="943.31" width="13.68" height="30.46" fill="#4a4d52" stroke="#393b3f" stroke-width="0.4"><title>func_ov074_02121380
+matched: yes</title></rect><rect x="1079.01" y="943.31" width="13.68" height="30.46" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov074_02121380
 module: ov074
 addr: 0x02121380
 size: 884 bytes
-matched: no</title></rect><rect x="1079.01" y="973.77" width="13.68" height="9.23" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov074_021216f4
+matched: yes</title></rect><rect x="1079.01" y="973.77" width="13.68" height="9.23" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_ov074_021216f4
 module: ov074
 addr: 0x021216f4
 size: 268 bytes

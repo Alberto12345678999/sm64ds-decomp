@@ -7,7 +7,8 @@ extern "C" {
 int func_ov002_020d94cc(char *self);
 short GetAngleToCamera(int i);
 void GiveVsStars(int idx, int delta);
-void func_ov002_020e7218(char *a, char *b, int gate);
+/* local extern: daStar_c::func_ov002_020e7218. This TU does not include daStar_c.h. */
+void _ZN8daStar_c19func_ov002_020e7218EPci(char *a, char *b, int gate);
 }
 
 extern u8 data_0209f2d8;
@@ -53,7 +54,7 @@ extern "C" int func_ov002_020d94cc(char *self)
 
     if (spawned == 0) goto fail;
 
-    func_ov002_020e7218(spawned, self, 0);
+    _ZN8daStar_c19func_ov002_020e7218EPci(spawned, self, 0);
 
     b = (data_0209f2d8 == 1);
     if (!b) {

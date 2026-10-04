@@ -69,10 +69,67 @@ struct daStar_c : dEnemyBase_c {
     virtual void  OnTurnIntoEgg(Player &player); /* slot 19 */
 
     void AddStarMarker();
+    void func_ov002_020e7104(int r1);
     int Behavior();
     int CleanupResources();
     s32 InitResources();
     int Render();
+
+    /* Receivers. The address is the method name. */
+    void func_ov002_020e6d88();
+    void func_ov002_020e6df8();
+    void func_ov002_020e6edc();
+    void func_ov002_020e6fbc(int arg);
+    void func_ov002_020e700c();
+    void func_ov002_020e7090(int arg);
+    void func_ov002_020e7218(char* a, int gate);
+    int func_ov002_020e73ac();
+    void func_ov002_020e7454();
+    void func_ov002_020e7554();
+    void func_ov002_020e763c();
+    void func_ov002_020e7934(void* cam);
+    int func_ov002_020e7c90(void* cam);
+    void func_ov002_020e7d08();
+    int func_ov002_020e7e14();
+    void func_ov002_020e7e24();
+    void func_ov002_020e7e58();
+    void func_ov002_020e7eb4();
+    void func_ov002_020e7eb8();
+    void func_ov002_020e7f2c();
+    void func_ov002_020e7fcc();
+    void func_ov002_020e8098();
+    void func_ov002_020e81e0();
+    void func_ov002_020e8398();
+    void func_ov002_020e84ec();
+    void func_ov002_020e8618();
+    void func_ov002_020e86ec();
+    void func_ov002_020e88a8();
+    void func_ov002_020e8abc();
+    volatile unsigned int func_ov002_020e8c34();
+    int func_ov002_020e8dd8();
+    void func_ov002_020e8e80(int a);
+    int func_ov002_020e8ef0(void* p);
+    void func_ov002_020e930c();
+    void func_ov002_020e9448();
+    void func_ov002_020e9464();
+    void func_ov002_020e947c(Vector3 *p, int n);
+    void func_ov002_020e9590();
+    int func_ov002_020e9630();
+    void func_ov002_020e96a0();
+    void func_ov002_020e9804();
+    void func_ov002_020e9840();
+    void func_ov002_020e99e8();
+    void func_ov002_020e9af4();
+    void func_ov002_020e9d18();
+    void func_ov002_020ea06c();
+    void func_ov002_020ea100();
+    int func_ov002_020ea3a4();
+    void func_ov002_020ea410();
+    void func_ov002_020ea420();
+    void func_ov002_020ea7ac();
+    void func_ov002_020ea824();
+    void func_ov002_020ea90c();
+    void func_ov002_020ea9d0();
 };
 
 #ifndef SM64DS_PLATFORM_PC
