@@ -826,7 +826,31 @@ src/Initialise3dGraphics.cpp:
 
 src/actors/dActor_c.cpp:
     complete
-    .text start:0x0200f658 end:0x02011654
+    .text start:0x0200f658 end:0x020112c8
+
+src/_ZN8dActor_cD2Ev.cpp:
+    complete
+    .text start:0x020112c8 end:0x02011314
+
+src/_ZN8dActor_cD0Ev.cpp:
+    complete
+    .text start:0x02011314 end:0x02011374
+
+src/_ZN8dActor_cD1Ev.cpp:
+    complete
+    .text start:0x02011374 end:0x020113c0
+
+src/_ZN8dActor_cC1Ev.cpp:
+    complete
+    .text start:0x020113c0 end:0x02011508
+
+src/_ZN8Vector3sD1Ev.cpp:
+    complete
+    .text start:0x02011508 end:0x0201150c
+
+src/_ZN8dActor_cC2Ev.cpp:
+    complete
+    .text start:0x0201150c end:0x02011654
 
 src/func_02011654.c:
     complete

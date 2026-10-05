@@ -2527,11 +2527,11 @@ class NativeConstructorAndWrapperTests(unittest.TestCase):
                 found = [d for d in defs if d.symbol == symbol]
                 self.assertEqual(len(found), 1)
                 self.assertEqual(CDA._native_constructor_abi(found[0]), (owner, owner + " *"))
-        for owner, rel, defined in (("Vector3", "src/_ZN7Vector3D1Ev.cpp", False),
-                                    ("Vector3s", "src/actors/dActor_c.cpp", True)):
+        for owner in ("Vector3", "Vector3s"):
             symbol = "_ZN%d%sD1Ev" % (len(owner), owner)
+            rel = "src/" + symbol + ".cpp"
             _, defs, _ = CDA.parse_file(rel, (REPO / rel).read_text(encoding="utf-8"), {})
-            self.assertEqual(any(d.symbol == symbol for d in defs), defined)
+            self.assertFalse(any(d.symbol == symbol for d in defs))
 
 
 class IncludedInlineDestructorTests(unittest.TestCase):
@@ -2809,15 +2809,14 @@ class IncludedInlineDestructorTests(unittest.TestCase):
         self.assertEqual(self.inspect(header)[2], [])
 
     def test_real_vector_carriers_reference_inline_header_bodies(self):
-        targets=['src/_ZN7Vector3D1Ev.cpp', 'src/actors/dActor_c.cpp']
+        targets=['src/_ZN7Vector3D1Ev.cpp', 'src/_ZN8Vector3sD1Ev.cpp']
         _, _, defs, _=CDA.collect(REPO, targets)
-        for owner, file, line, abi in (('Vector3', 'include/types.h', 61, ('Vector3', 'Vector3 *')),
-                                       ('Vector3s', 'src/actors/dActor_c.cpp', 165, None)):
+        for owner, line in (('Vector3', 61), ('Vector3s', 81)):
             symbol='_ZN%d%sD1Ev' % (len(owner), owner)
             found=[d for d in defs if d.symbol == symbol]
             self.assertEqual(len(found), 1)
-            self.assertEqual((found[0].file, found[0].line), (file, line))
-            self.assertEqual(CDA._native_destructor_abi(found[0]), abi)
+            self.assertEqual((found[0].file, found[0].line), ('include/types.h', line))
+            self.assertEqual(CDA._native_destructor_abi(found[0]), (owner, owner + ' *'))
 
 
 if __name__ == "__main__":

@@ -8047,12 +8047,6 @@
     "src/actors/dActor_c.cpp#_ZN8dActor_c21AfterCleanupResourcesEj": "tangosdev",
     "src/actors/dActor_c.cpp#_ZN8dActor_c22BeforeCleanupResourcesEv": "tangosdev",
     "src/actors/dActor_c.cpp#_ZN8dActor_c18AfterInitResourcesEj": "tangosdev",
-    "src/actors/dActor_c.cpp#_ZN8dActor_c19BeforeInitResourcesEv": "tangosdev",
-    "src/actors/dActor_c.cpp#_ZN8dActor_cD2Ev": "tangosdev",
-    "src/actors/dActor_c.cpp#_ZN8dActor_cD0Ev": "tangosdev",
-    "src/actors/dActor_c.cpp#_ZN8dActor_cD1Ev": "tangosdev",
-    "src/actors/dActor_c.cpp#_ZN8dActor_cC1Ev": "tangosdev",
-    "src/actors/dActor_c.cpp#_ZN8Vector3sD1Ev": "tangosdev",
-    "src/actors/dActor_c.cpp#_ZN8dActor_cC2Ev": "tangosdev"
+    "src/actors/dActor_c.cpp#_ZN8dActor_c19BeforeInitResourcesEv": "tangosdev"
   }
 }

@@ -1,37 +1,41 @@
 //cpp
 /* dActor_c translation unit -- arm9.  Nintendo's dActor_c.
  *
- * This file owns 0x0200f658..0x02011654 (97 functions); see the worked
+ * This file owns 0x0200f658..0x020112c8 (91 functions); see the worked
  * example in notes/tu-reconstruction-pilot-report.md and the boundary
  * evidence in config/tu_manifest.d/arm9/Actor.json.
  *
  * FUNCTION ORDER IS DELIBERATELY THE REVERSE OF THE ROM'S. mwccarm 2004/b56
  * emits one .text section per function, in the REVERSE of source order, so the
- * highest-address ROM function is written FIRST. That is what puts the
- * constructor and destructor at the top of the file and the leaf helpers at the
- * bottom -- the natural shape of a hand-written .cpp, and the strongest single
- * piece of evidence that this span is one translation unit.
+ * highest-address ROM function is written FIRST -- BeforeInitResources tops
+ * the file and the leaf helpers sit at the bottom, the natural shape of a
+ * hand-written .cpp.
  *
- * dActor_c::~dActor_c IS NOT DEFINED AS A METHOD HERE, deliberately. include/dActor_c.h
- * declares the destructor first precisely so that it is the key function, and
- * the header's own comment states the invariant: the key function must never be
- * defined as a real method in any TU, or the compiler emits _ZTV8dActor_c and it
- * collides with the copy the module's gap object supplies from ROM data. D0, D1
- * and D2 therefore keep their extern "C" free-function form, exactly as the
- * legacy sources have them.
+ * THE DESTRUCTOR TRIPLE IS NOT HERE, deliberately. include/dActor_c.h declares
+ * ~dActor_c() first precisely so that it is the key function, and a single TU
+ * that defines it out-of-line emits D0, D1 and D2 together in emission order --
+ * but the ROM runs D2, then D0, then D1, which no source form produces. The
+ * three destructor variants therefore keep their own files
+ * (src/_ZN8dActor_cD2Ev.cpp, _ZN8dActor_cD0Ev.cpp, _ZN8dActor_cD1Ev.cpp); each
+ * carries the one member definition, and their objects are what emit
+ * _ZTV8dActor_c, _ZTI8dActor_c and _ZTS8dActor_c. The functions ABOVE the dtor
+ * span are likewise their own sources: _ZN8dActor_cC1Ev.cpp, _ZN8Vector3sD1Ev.cpp
+ * and _ZN8dActor_cC2Ev.cpp hold 0x020113c0..0x02011654, because a member
+ * constructor emits C1 and C2 adjacently and cannot sandwich Vector3sD1
+ * between them.
  *
  * Declarations are reconciled IN PLACE: each member carries whatever it needs
  * that no earlier member already supplied. Nothing is hoisted but the includes.
  */
 
-/* RECONCILIATION -- what merging 97 files into one TU forced, and nothing else.
+/* RECONCILIATION -- what merging 91 files into one TU forced, and nothing else.
  *
  * Every item below exists only BECAUSE these are now one translation unit: two
  * files describing the same global with different types, a local shadow struct
  * standing in for a type the merged TU really has, or a declaration whose
  * parameter list disagrees with the definition that used to live in another
  * file. Not one of them changes what a function does, and every one was held to
- * the byte gate: 97/97 members reproduce the cartridge.
+ * the byte gate: 91/91 members reproduce the cartridge.
  *
  *  - Shadow types dropped for the real header's: dActor_c, Vector3, Vector3_16,
  *    Matrix4x3, dCc_c, Player, Sound, Heap, and `typedef int Fix12`
@@ -39,10 +43,9 @@
  *    Field names follow: deathTableId -> mDeathTableID, flags -> mFlags, camSpacePos
  *    -> mCamSpacePosX, pos -> mPosX, speed -> unk_0a4, areaID -> mAreaId.
  *  - One spelling per global, chosen for what the ROM's use of it supports:
- *    data_0209b468 is an ADDRESS (`extern int []`), not a value -- declared as a
- *    scalar the three destructors come out four bytes long, an extra ldr to
- *    fetch it. decl_common.h's void* wins for data_0209b450/data_0209b458 and
- *    the three readers cast at the point of use.
+ *    data_0209b468 is an ADDRESS, not a value -- the ROM readers pass
+ *    `&data_0209b468` as the list head's address, matching the plurality
+ *    `extern void*` spelling the ctor/dtor shards already carry.
  *  - One prototype per function, taken from whichever file had recovered the
  *    most: func_02010e78's caller knew (const Vector3*, const Vector3_16*, s8,
  *    s16) where its own file only knew (int, int, uchar, short);
@@ -57,17 +60,6 @@
  *    the rename cannot reach the linker. Ordinal 0 takes the real dBgCh_Lin
  *    instead: its ctor/dtor are out-of-line declarations, so the member
  *    spelling emits the same calls the retired shard proved.
- *  - _ZN8Vector3sD1Ev (ordinal 95) spells its mangled ROM symbol directly instead
- *    of going through the legacy file's Vector3s_ForceDestructor scaffold. The
- *    scaffold is the only way to force an out-of-line copy of an inline empty
- *    destructor -- but it is 0x50 of STB_GLOBAL .text with no address in this
- *    ROM, and per-function objisolate strips it. In a merged TU it lands INSIDE
- *    the span and shifts every later function, which is the one thing that
- *    stood between this file and a whole-range link. Same four bytes either way.
- *  - D0's two `thiz + 0x50` arguments are spelled differently (`((int)thiz)+0x50`
- *    and `&thiz->mActorListNode`), exactly as D1 and D2 spell them. Written identically
- *    under decl_common.h's (int) prototypes, mwcc commons them into a fourth
- *    register and D0 comes out 0xc long.
  *
  * include/dActor_c.h gained three declarations for this file: a `struct Matrix4x3;`
  * forward declaration, `void UntrackInDeathTable();` and
@@ -86,184 +78,6 @@
 #include "dCc_c.h"
 #include "dBgCh_Lin.h"
 #include "Sound.h"
-
-/* -------------------------------------------------------------------------- */
-// @symbol _ZN8dActor_cC2Ev
-/* ROM ordinal 96 -- _ZN8dActor_cC2Ev
- * 0x0201150c  size 0x148 */
-extern "C" {
-extern int data_0208e4b8;
-extern int data_0208e3a4;
-extern int data_0209b468[];
-extern s16* data_0209b460;
-extern s16* data_0209b45c;
-extern s16 data_0208e378;
-extern int* data_020a4bb8;
-extern unsigned char data_0209f2d8;
-void _ZN7fBase_cC2Ev(void* self);
-int func_0203b244(void* l, void* n);
-void _ZN8dActor_c9SetRangesE5Fix12IiES1_S1_S1_(struct dActor_c *self, int a, int b, int c, int d);
-}
-extern "C" void* _ZN8dActor_cC2Ev(struct dActor_c *self) {
-    int* entry;
-    int b;
-    int r3;
-    _ZN7fBase_cC2Ev(((char*)self));
-    *(void**)((char*)self) = &data_0208e4b8;
-    *(void**)((char*)self) = &data_0208e3a4;
-    self->mActorListNode.prev = 0;
-    self->mActorListNode.next = 0;
-    self->mActorListNode.owner = self;
-    func_0203b244((void*)&data_0209b468, &self->mActorListNode);
-    {
-        s16* p = data_0209b460;
-        if (p != 0) {
-            self->mPosX = ((int*)p)[0];
-            self->mPosY = ((int*)p)[1];
-            self->mPosZ = ((int*)p)[2];
-        }
-    }
-    {
-        s16* q = data_0209b45c;
-        if (q != 0) {
-            self->mAngleX = q[0];
-            self->mAngleY = q[1];
-            self->mAngleZ = q[2];
-            {
-                s16* q2 = data_0209b45c;
-                self->mPrevAngleX = q2[0];
-                self->mPrevAngleY = q2[1];
-                self->mPrevAngleZ = q2[2];
-            }
-        }
-    }
-    self->mAreaId = data_0209b44c;
-    self->mDeathTableID = data_0208e378;
-    entry = (int*)(((int**)data_020a4bb8)[self->actorID]);
-    self->mFlags = entry[2];
-    b = (data_0209f2d8 == 2);
-    if (b != 0)
-        r3 = entry[5] + 0x7d0000;
-    else
-        r3 = entry[5];
-    _ZN8dActor_c9SetRangesE5Fix12IiES1_S1_S1_((self), entry[3], entry[4], r3, entry[6]);
-    return ((char*)self);
-}
-
-/* -------------------------------------------------------------------------- */
-// @symbol _ZN8Vector3sD1Ev
-/* ROM ordinal 95 -- _ZN8Vector3sD1Ev
- * 0x02011508  size 0x4 */
-/* No forcing scaffold. The legacy file reaches this four-byte `bx lr` through a
- * `struct Vector3s_ForceDestructor { Vector3s v[2]; ~Vector3s_ForceDestructor(); }`,
- * because an explicit `p->~Vector3s()` on an empty inline destructor is inlined away
- * while an ARRAY cleanup has to pass the destructor's address along -- but that
- * scaffold is 0x50 of STB_GLOBAL .text with no address in this ROM, and objisolate
- * strips it per function. In a merged TU it lands INSIDE the span and shifts
- * everything after it, which is the one thing between this file and a whole-range
- * link. Spelling the ROM symbol directly emits the same four bytes and nothing else. */
-extern "C" void _ZN8Vector3sD1Ev(void *self) {}
-
-/* -------------------------------------------------------------------------- */
-// @symbol _ZN8dActor_cC1Ev
-/* ROM ordinal 94 -- _ZN8dActor_cC1Ev
- * 0x020113c0  size 0x148 */
-extern "C" void* _ZN8dActor_cC1Ev(struct dActor_c *self) {
-  _ZN7fBase_cC2Ev(((char*)self));
-  *(void**)((char*)self) = &data_0208e4b8;
-  *(void**)((char*)self) = &data_0208e3a4;
-  self->mActorListNode.prev = 0;
-  self->mActorListNode.next = 0;
-  self->mActorListNode.owner = self;
-  func_0203b244(&data_0209b468, &self->mActorListNode);
-  {
-    int* p = (int*)data_0209b460;
-    if (p) {
-      self->mPosX = p[0];
-      self->mPosY = p[1];
-      self->mPosZ = p[2];
-    }
-  }
-  {
-    short* q = (short*)data_0209b45c;
-    if (q) {
-      self->mAngleX = q[0];
-      self->mAngleY = q[1];
-      self->mAngleZ = q[2];
-      q = (short*)data_0209b45c;
-      self->mPrevAngleX = q[0];
-      self->mPrevAngleY = q[1];
-      self->mPrevAngleZ = q[2];
-    }
-  }
-  self->mAreaId = data_0209b44c;
-  self->mDeathTableID = data_0208e378;
-  {
-    void** base = *(void***)&data_020a4bb8;
-    int idx = self->actorID;
-    char* s = (char*)base[idx];
-    self->mFlags = *(int*)(s+8);
-    {
-      int b = (data_0209f2d8 == 2);
-      int r3;
-      int d = *(int*)(s+0x18);
-      if (b) r3 = *(int*)(s+0x14) + 0x7d0000;
-      else r3 = *(int*)(s+0x14);
-      _ZN8dActor_c9SetRangesE5Fix12IiES1_S1_S1_((self), *(int*)(s+0xc), *(int*)(s+0x10), r3, d);
-    }
-  }
-  return ((char*)self);
-}
-
-/* -------------------------------------------------------------------------- */
-// @symbol _ZN8dActor_cD1Ev
-/* ROM ordinal 93 -- _ZN8dActor_cD1Ev
- * 0x02011374  size 0x4c */
-extern "C" {
-extern int _ZTV8dActor_c[];
-extern int _ZTV7dBase_c[];
-extern void _ZN7fBase_cD2Ev(int c);
-}
-extern "C" {
-int _ZN8dActor_cD1Ev(struct dActor_c *self) {
-  *(int*)((int)self) = (int)_ZTV8dActor_c;
-  func_0203b27c((int)data_0209b468, ((int)self)+0x50);
-  self->mActorListNode.~fLiNdBa_c();
-  *(int*)((int)self) = (int)_ZTV7dBase_c;
-  _ZN7fBase_cD2Ev(((int)self));
-  return ((int)self);
-}
-}
-
-/* -------------------------------------------------------------------------- */
-// @symbol _ZN8dActor_cD0Ev
-/* ROM ordinal 92 -- _ZN8dActor_cD0Ev
- * 0x02011314  size 0x60 */
-extern "C" struct dActor_c *_ZN8dActor_cD0Ev(struct dActor_c *thiz)
-{
-    *(void **)thiz = (void *)_ZTV8dActor_c;
-    func_0203b27c((int)data_0209b468, ((int)thiz) + 0x50);
-    thiz->mActorListNode.~fLiNdBa_c();
-    *(void **)thiz = (void *)_ZTV7dBase_c;
-    _ZN7fBase_cD2Ev((int)thiz);
-    _ZN6Memory10DeallocateEPvP4Heap(thiz, data_020a0eac);
-    return thiz;
-}
-
-/* -------------------------------------------------------------------------- */
-// @symbol _ZN8dActor_cD2Ev
-/* ROM ordinal 91 -- _ZN8dActor_cD2Ev
- * 0x020112c8  size 0x4c */
-extern "C" {
-int _ZN8dActor_cD2Ev(struct dActor_c *self) {
-  *(int*)((int)self) = (int)_ZTV8dActor_c;
-  func_0203b27c((int)data_0209b468, ((int)self)+0x50);
-  self->mActorListNode.~fLiNdBa_c();
-  *(int*)((int)self) = (int)_ZTV7dBase_c;
-  _ZN7fBase_cD2Ev(((int)self));
-  return ((int)self);
-}
-}
 
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN8dActor_c19BeforeInitResourcesEv
@@ -452,10 +266,11 @@ void dActor_c::AfterRender(u32 vfSuccess)
  * 0x02010f3c  size 0x30 */
 extern "C" {
 extern dActor_c *func_02043f98(dActor_c **head, unsigned int id);
+extern void *data_0209b468;         /* the global actor list -- callers use &name */
 }
 dActor_c *dActor_c::FindWithID(u32 id)
 {
-    dActor_c *node = func_02043f98((dActor_c **)data_0209b468, id);
+    dActor_c *node = func_02043f98((dActor_c **)&data_0209b468, id);
     if (node)
         return *(dActor_c **)((char *)node + 8);
     return 0;
@@ -468,8 +283,8 @@ dActor_c *dActor_c::FindWithID(u32 id)
 dActor_c *dActor_c::FindWithActorID(u32 j, dActor_c *after) {
   int p = (int)after;
   int *r;
-  if (p) r = func_02043f4c(data_0209b468, j, p+0x50);
-  else r = func_02043f4c(data_0209b468, j, 0);
+  if (p) r = func_02043f4c((int *)&data_0209b468, j, p+0x50);
+  else r = func_02043f4c((int *)&data_0209b468, j, 0);
   if (r) return (dActor_c *)r[2];
   return 0;
 }
@@ -491,6 +306,11 @@ dActor_c *dActor_c::Next(const dActor_c *after)
 // @symbol func_02010e78
 /* ROM ordinal 79 -- func_02010e78
  * 0x02010e78  size 0x54 */
+extern "C" {
+extern s16 *data_0209b460;          /* spawn position, or null to leave it at 0 */
+extern s16 *data_0209b45c;          /* spawn rotation, or null */
+extern s16 data_0208e378;           /* spawn death-table id */
+}
 extern "C" void func_02010e78(const Vector3 *a, const Vector3_16 *b, s8 c, s16 d)
 {
     data_0209b460 = (s16 *)a;
