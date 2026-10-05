@@ -7968,6 +7968,15 @@
     "src/actors/dCapEnemy_c_arm9.cpp#_ZN11dCapEnemy_c14RenderCapModelEPK7Vector3": "tangosdev",
     "src/actors/dCapEnemy_c_arm9.cpp#_ZN11dCapEnemy_c12UpdateCapPosERK7Vector3RK10Vector3_16": "ruspecial",
     "src/actors/dCapEnemy_c_arm9.cpp#_ZN11dCapEnemy_c6AddCapEj": "andrewboudreau",
-    "src/actors/dCapEnemy_c_arm9.cpp#_ZN11dCapEnemy_c14UnloadCapModelEv": "tangosdev"
+    "src/actors/dCapEnemy_c_arm9.cpp#_ZN11dCapEnemy_c14UnloadCapModelEv": "tangosdev",
+    "src/engine/heap/Heap.cpp#_ZN4Heap18InitializeGameHeapEjPS_": "tangosdev",
+    "src/engine/heap/Heap.cpp#_ZN4Heap7_SizeofEPv": "ruspecial",
+    "src/engine/heap/Heap.cpp#_ZN4Heap11_DeallocateEPv": "ruspecial",
+    "src/engine/heap/Heap.cpp#_ZN4Heap8AllocateEj": "ruspecial",
+    "src/engine/heap/Heap.cpp#_ZN4Heap9_AllocateEji": "ruspecial",
+    "src/engine/heap/Heap.cpp#_ZN4Heap20RestoreFromTemporaryEv": "tangosdev",
+    "src/engine/heap/Heap.cpp#_ZN4Heap28InitializeSolidHeapAsDefaultEjPS_i": "ruspecial",
+    "src/engine/heap/Heap.cpp#_ZN4Heap23SetupSolidHeapAsDefaultEjPS_i": "tangosdev",
+    "src/engine/heap/Heap.cpp#_ZN4Heap10SetDefaultEv": "tangosdev"
   }
 }
