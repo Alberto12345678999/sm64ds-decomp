@@ -522,11 +522,6 @@
         "param:#2 const Vector3 *",
         "param:#3 Vector3 *"
       ],
-      "src/_ZN7Clipper13Func_0201559CEv.cpp": [
-        "param:#1 Vector3 *",
-        "param:#2 Vector3 *",
-        "param:#3 Vector3 *"
-      ],
       "src/actors/unit020cd744.cpp": [
         "param:#1 const Vec3 *",
         "param:#2 const Vec3 *",
@@ -561,6 +556,11 @@
         "param:#1 Vec3 *",
         "param:#2 Vec3 *",
         "param:#3 Vec3 *"
+      ],
+      "src/engine/collision/Clipper.cpp": [
+        "param:#1 Vector3 *",
+        "param:#2 Vector3 *",
+        "param:#3 Vector3 *"
       ]
     },
     "DMAStartTransfer": {
@@ -1923,10 +1923,6 @@
         "param:#1 const Vector3 *",
         "param:#2 const Matrix4x3 *"
       ],
-      "src/_ZN7Clipper13Func_02015560ER9Matrix4x3R7Vector35Fix12IiES3_.cpp": [
-        "param:#1 const Vector3 *",
-        "param:#2 const Matrix4x3 *"
-      ],
       "src/actors/daJango_c.cpp": [
         "param:#1 const Vector3 *",
         "param:#2 const void *"
@@ -2060,6 +2056,10 @@
       ],
       "src/actors/daKpa3Bg_c.cpp": [
         "param:#1 Vec3 *"
+      ],
+      "src/engine/collision/Clipper.cpp": [
+        "param:#1 const Vector3 *",
+        "param:#2 const Matrix4x3 *"
       ]
     },
     "MultiCopyHalf": {
@@ -2406,10 +2406,6 @@
         "param:#1 Vector3 *",
         "param:#2 Vector3 *"
       ],
-      "src/_ZN7Clipper13Func_0201559CEv.cpp": [
-        "param:#1 Vector3 *",
-        "param:#2 Vector3 *"
-      ],
       "src/func_0203ce80.c": [
         "param:#1 const Vector3 *",
         "param:#2 Vector3 *"
@@ -2461,6 +2457,10 @@
       "src/func_ov080_02125940.c": [
         "param:#1 Vec3 *",
         "param:#2 Vec3 *"
+      ],
+      "src/engine/collision/Clipper.cpp": [
+        "param:#1 Vector3 *",
+        "param:#2 Vector3 *"
       ]
     },
     "NormalizeVec3IfNonZero": {
