@@ -46,27 +46,7 @@ src/d_a_obj_seesaw_seesaw.c:
 
 src/actors/daUdlift_c.cpp:
     complete
-    .text start:0x02135ff4 end:0x02136764
-
-src/func_ov095_02136764.cpp:
-    complete
-    .text start:0x02136764 end:0x02136788
-
-src/func_ov095_02136788.c:
-    complete
-    .text start:0x02136788 end:0x0213679c
-
-src/d_a_udlift_rc_rift02.c:
-    complete
-    .text start:0x0213679c end:0x021367cc
-
-src/d_a_udlift_udlift.c:
-    complete
-    .text start:0x021367cc end:0x021367fc
-
-src/d_a_udlift_udlift_teresa.c:
-    complete
-    .text start:0x021367fc end:0x0213682c
+    .text start:0x02135ff4 end:0x0213682c
 
 src/actors/daObjFlamethrower_c.cpp:
     complete
