@@ -2465,7 +2465,7 @@ def test_bare_brace_where_a_signature_belongs_is_refused_not_emitted():
 
 
 def test_elaborated_return_type_is_not_a_shadow_declaration():
-    """Real inputs: src/_ZN11dCapEnemy_c15RespawnIfHasCapEv.cpp and
+    """Real inputs: dCapEnemy_c::RespawnIfHasCap and
     src/func_02041b60.c. Both open on the word `struct`, but as an elaborated
     type specifier on the RETURN type -- the flat-C sources spell it that way
     constantly. Filing the line as a declaration put the function's own
