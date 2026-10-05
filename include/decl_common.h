@@ -2788,7 +2788,7 @@ extern void*func_ov002_020edb3c(void*, int, int);
 extern void func_ov006_020dac34(unsigned char*);
 extern void*func_ov007_020aebac(void);
 extern void*vtbl_Animation[];
-extern void*vtbl_Clipper[];
+extern void*vtbl_dClipper[];
 extern void*vtbl_dCcPos_c[];
 extern void*vtbl_Fader[];
 extern void*vtbl_MaterialChanger[];

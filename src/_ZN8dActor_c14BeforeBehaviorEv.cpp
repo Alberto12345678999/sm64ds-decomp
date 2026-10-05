@@ -48,7 +48,7 @@
  * bytes. The casts bought nothing here, so they are gone rather than carried
  * across on the assumption that they must have been there for a reason.
  *
- * Clipper::Func_020150E8's mangled name carries a by-value Fix12<int>, so it
+ * dClipper::Func_020150E8's mangled name carries a by-value Fix12<int>, so it
  * stays spelled out with scalar arguments -- see notes/mwccarm-codegen.md 6az.
  */
 #include "dActor_c.h"
@@ -59,7 +59,7 @@ extern "C" {
 
 u8   IsAreaShowing(int areaId);
 void MulVec3Mat4x3(Vector3 *v, Matrix4x3 *m, Vector3 *dst);
-int  _ZN7Clipper13Func_020150E8ER7Vector35Fix12IiEPh(char *thisp, Vector3 *v,
+int  _ZN8dClipper13Func_020150E8ER7Vector35Fix12IiEPh(char *thisp, Vector3 *v,
                                                     int radius, u8 *out);
 
 /* `extern` on every one of these, and it is load-bearing. Inside
@@ -74,7 +74,7 @@ int  _ZN7Clipper13Func_020150E8ER7Vector35Fix12IiEPh(char *thisp, Vector3 *v,
 extern u32       data_0209b458;   /* nearest-player cache, cleared each frame */
 extern int       data_0209fc68;   /* nonzero forces the actor to think anyway */
 extern Matrix4x3 data_0209b3ec;   /* world -> camera */
-extern char      data_0209f43c;   /* the Clipper instance */
+extern char      data_0209f43c;   /* the dClipper instance */
 extern u8        data_0209f274;   /* doubles the far-away threshold when set */
 extern u8        data_0209f2c4;
 extern u8        data_0209f20c;
@@ -107,7 +107,7 @@ int dActor_c::BeforeBehavior()
             MulVec3Mat4x3(&tmp, &data_0209b3ec, (Vector3 *)&mCamSpacePosX);
         }
         if (mFlags & 0x10003) {
-            int r = _ZN7Clipper13Func_020150E8ER7Vector35Fix12IiEPh(
+            int r = _ZN8dClipper13Func_020150E8ER7Vector35Fix12IiEPh(
                         &data_0209f43c,
                         (Vector3 *)&mCamSpacePosX,
                         mClipRadius,

@@ -557,7 +557,7 @@
         "param:#2 Vec3 *",
         "param:#3 Vec3 *"
       ],
-      "src/engine/collision/Clipper.cpp": [
+      "src/engine/collision/dClipper.cpp": [
         "param:#1 Vector3 *",
         "param:#2 Vector3 *",
         "param:#3 Vector3 *"
@@ -2057,7 +2057,7 @@
       "src/actors/daKpa3Bg_c.cpp": [
         "param:#1 Vec3 *"
       ],
-      "src/engine/collision/Clipper.cpp": [
+      "src/engine/collision/dClipper.cpp": [
         "param:#1 const Vector3 *",
         "param:#2 const Matrix4x3 *"
       ]
@@ -2458,7 +2458,7 @@
         "param:#1 Vec3 *",
         "param:#2 Vec3 *"
       ],
-      "src/engine/collision/Clipper.cpp": [
+      "src/engine/collision/dClipper.cpp": [
         "param:#1 Vector3 *",
         "param:#2 Vector3 *"
       ]
@@ -10943,12 +10943,12 @@
         "return:Player *"
       ]
     },
-    "_ZN7Clipper13Func_020150E8ER7Vector35Fix12IiEPh": {
+    "_ZN8dClipper13Func_020150E8ER7Vector35Fix12IiEPh": {
       "src/_ZN8dActor_c14BeforeBehaviorEv.cpp": [
         "param:#1 char *"
       ]
     },
-    "_ZN7Clipper13Func_020156DCEitii": {
+    "_ZN8dClipper13Func_020156DCEitii": {
       "src/actors/unit020bfec0.cpp": [
         "param:#3 int"
       ],
@@ -16034,7 +16034,7 @@
     },
     "data_0209f43c": {
       "src/_ZN5dPa_c7level_c14clipCallback_c8OnUpdateERN8Particle6SystemEb.cpp": [
-        "return:Clipper"
+        "return:dClipper"
       ],
       "src/_ZN8dActor_c14BeforeBehaviorEv.cpp": [
         "return:char"
@@ -16043,7 +16043,7 @@
         "return:char"
       ],
       "src/actors/dEntObj_c.cpp": [
-        "return:Clipper"
+        "return:dClipper"
       ],
       "src/actors/unit020bfec0.cpp": [
         "return:char []"

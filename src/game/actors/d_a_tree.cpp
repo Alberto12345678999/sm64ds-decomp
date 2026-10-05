@@ -17,7 +17,7 @@
  * - dCcPos_c::Init 6az: two by-value Fix12<int> params; the header member
  *   form homes them to the stack and size-DIFFs, so the TU-local wrapper
  *   keeps scalar ints.
- * - Clipper::Func_02015560 6az: the same wall on its Fix12<int> scale.
+ * - dClipper::Func_02015560 6az: the same wall on its Fix12<int> scale.
  * - dCcPos_c::C1 stays a mangled extern: a language limit, not a codegen
  *   one. C++ has no syntax for a qualified constructor call on storage that
  *   already exists, and the alternative -- placement new -- needs a leaf
@@ -29,7 +29,7 @@
  *   with no Pos() accessor, so the Init call puns them TU-locally.
  * - data_ov002_02110a48 / data_ov002_0210abb8 / g_profile_TREE: overlay
  *   bss/data owns them (S14); this TU's delinks span is .text-only.
- * - data_0209f43c / data_0209b3ec: arm9 bss, the Clipper singleton and the
+ * - data_0209f43c / data_0209b3ec: arm9 bss, the dClipper singleton and the
  *   live view matrix it clips against (CopyToViewMat's object); read here,
  *   owned elsewhere.
  */
@@ -77,7 +77,7 @@ void *_ZN8dCcPos_cC1Ev(void *clsn);
 void _ZN8dCcPos_c4InitERK7Vector35Fix12IiES4_jj(
     dCcPos_c *self, const Vector3 &pos, int radius, int height, u32 flags,
     u32 vuln);
-int _ZN7Clipper13Func_02015560ER9Matrix4x3R7Vector35Fix12IiES3_(
+int _ZN8dClipper13Func_02015560ER9Matrix4x3R7Vector35Fix12IiES3_(
     void *clipper, void *matrix, void *pos, int scale, void *result);
 void Matrix4x3_FromRotationY(Matrix4x3 *m, short ang);
 /* Spelled Vector3 * for the object actually passed. The definition in
@@ -192,7 +192,7 @@ int daTree_c::Render()
              * Deferred with completion: partial; see issue #2748. */
             int out[3];
             int dist =
-                _ZN7Clipper13Func_02015560ER9Matrix4x3R7Vector35Fix12IiES3_(
+                _ZN8dClipper13Func_02015560ER9Matrix4x3R7Vector35Fix12IiES3_(
                     data_0209f43c, &data_0209b3ec, &node->pos, kCanopyLift,
                     (Vector3 *)out);
             if (dist > kClipNear && dist < kClipFar) {

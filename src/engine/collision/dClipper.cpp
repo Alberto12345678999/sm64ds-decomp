@@ -1,19 +1,19 @@
 //cpp
-/* The view clipper (arm9 .text 0x020150e8..0x020156fc): Clipper culls actor
+/* The view clipper (arm9 .text 0x020150e8..0x020156fc): dClipper culls actor
  * positions against the camera frustum. The lone instance, data_0209f43c in
  * bss, is constructed by __sinit_02074e84; the camera setup path feeds it the
  * projection parameters through Func_020156DC, and dActor_c::BeforeBehavior
  * queries it per actor.
  *
  * mwccarm emits .text in reverse source order, so the definitions below run
- * ROM-descending. ~Clipper is the only virtual (vtable _ZTV7Clipper at
+ * ROM-descending. ~dClipper is the only virtual (vtable _ZTV8dClipper at
  * 0x0208e730, slots D1/D0): the cartridge stores D0 (0x020156fc) below D1
  * (0x02015720) with C1 (0x02015730) behind them, an order no single
  * destructor body can emit, so that trio keeps per-function shards and this
  * TU claims only the four methods above them.
  */
 #include "types.h"
-#include "Clipper.h"
+#include "dClipper.h"
 #include "math/Matrix.h"
 
 extern "C" {
@@ -23,16 +23,16 @@ void NormalizeVec3(Vector3 *src, Vector3 *dst);
 int _ZN4cstd4fdivEii(int a, int b);
 /* Stays a mangled call: the real signature carries Fix12<int> and wall 6az
    (notes/mwccarm-codegen.md) homes class-typed by-value parameters. The
-   declaration in Clipper.h is the real one and non-6az callers may use it. */
-int _ZN7Clipper13Func_020150E8ER7Vector35Fix12IiEPh(Clipper *thiz, Vector3 *v, int clip, u8 *hint);
+   declaration in dClipper.h is the real one and non-6az callers may use it. */
+int _ZN8dClipper13Func_020150E8ER7Vector35Fix12IiEPh(dClipper *thiz, Vector3 *v, int clip, u8 *hint);
 }
 extern short data_02082214[];
 
-// @symbol _ZN7Clipper13Func_020156DCEitii
+// @symbol _ZN8dClipper13Func_020156DCEitii
 /* The former `Ev` spelling claimed this method took no arguments, contradicting
    every call site and the register/stack reads in the ROM. Scalar parameter
    types reproduce both the observed ABI and the complete function bytes. */
-void Clipper::Func_020156DC(Fix12i aspectRatio, u16 fovAngle,
+void dClipper::Func_020156DC(Fix12i aspectRatio, u16 fovAngle,
                             Fix12i nearZ, Fix12i farZ)
 {
     mAspectRatio = aspectRatio;
@@ -42,7 +42,7 @@ void Clipper::Func_020156DC(Fix12i aspectRatio, u16 fovAngle,
     Func_0201559C();
 }
 
-// @symbol _ZN7Clipper13Func_0201559CEv
+// @symbol _ZN8dClipper13Func_0201559CEv
 /* Rebuild the four view-frustum side planes from the current field of view
  * and near-plane distance.
  *
@@ -53,7 +53,7 @@ void Clipper::Func_020156DC(Fix12i aspectRatio, u16 fovAngle,
  * follow, and each adjacent pair crossed and normalised is one side plane's
  * normal.
  */
-void Clipper::Func_0201559C()
+void dClipper::Func_0201559C()
 {
     int idx = (int)mFovAngle >> 4;
     int q = _ZN4cstd4fdivEii(data_02082214[2 * idx], data_02082214[2 * idx + 1]);
@@ -74,24 +74,24 @@ void Clipper::Func_0201559C()
     NormalizeVec3((Vector3 *)&mPlaneNormals[3], (Vector3 *)&mPlaneNormals[3]);
 }
 
-// @symbol _ZN7Clipper13Func_02015560ER9Matrix4x3R7Vector35Fix12IiES3_
+// @symbol _ZN8dClipper13Func_02015560ER9Matrix4x3R7Vector35Fix12IiES3_
 /* Stays a mangled free definition: the real signature carries Fix12<int> and
    wall 6az (notes/mwccarm-codegen.md) homes class-typed by-value parameters.
-   The declaration in Clipper.h is the real one and callers may use it. */
-extern "C" int _ZN7Clipper13Func_02015560ER9Matrix4x3R7Vector35Fix12IiES3_(
-    Clipper *thiz, Matrix4x3 *mat, Vector3 *srcVec, int scale, Vector3 *dstVec)
+   The declaration in dClipper.h is the real one and callers may use it. */
+extern "C" int _ZN8dClipper13Func_02015560ER9Matrix4x3R7Vector35Fix12IiES3_(
+    dClipper *thiz, Matrix4x3 *mat, Vector3 *srcVec, int scale, Vector3 *dstVec)
 {
     MulVec3Mat4x3(srcVec, mat, dstVec);
-    return _ZN7Clipper13Func_020150E8ER7Vector35Fix12IiEPh(
+    return _ZN8dClipper13Func_020150E8ER7Vector35Fix12IiEPh(
         thiz, dstVec, scale, (u8 *)0);
 }
 
 #pragma opt_propagation off
-// @symbol _ZN7Clipper13Func_020150E8ER7Vector35Fix12IiEPh
+// @symbol _ZN8dClipper13Func_020150E8ER7Vector35Fix12IiEPh
 /* Stays a mangled free definition: the real signature carries Fix12<int> and
    wall 6az (notes/mwccarm-codegen.md) homes class-typed by-value parameters.
-   The declaration in Clipper.h is the real one and callers may use it. */
-extern "C" int _ZN7Clipper13Func_020150E8ER7Vector35Fix12IiEPh(Clipper *thiz, Vector3 *v, int clip, u8 *hint)
+   The declaration in dClipper.h is the real one and callers may use it. */
+extern "C" int _ZN8dClipper13Func_020150E8ER7Vector35Fix12IiEPh(dClipper *thiz, Vector3 *v, int clip, u8 *hint)
 {
     if (hint != 0)
     {
