@@ -3851,9 +3851,6 @@
       ]
     },
     "SurfaceInfo_TestFlag0x20": {
-      "src/_ZNK10dBgCh_Actr12TouchesWaterEv.cpp": [
-        "param:#1 const void *"
-      ],
       "src/actors/daMenbo_c.cpp": [
         "param:#1 const SurfaceInfo *"
       ]
@@ -6256,37 +6253,6 @@
     "_ZN11fLiNdBaPr_cD1Ev": {
       "src/actors/ActorBase.cpp": [
         "return:void"
-      ]
-    },
-    "_ZN12dBgCh_SphCrr14SetFloorResultERK5dBgPi": {
-      "src/_ZN10dBgCh_Actr16UpdateContinuousEv.cpp": [
-        "param:#2 dBgPiLoc *"
-      ],
-      "src/_ZN10dBgCh_Actr20UpdateExtraContinousEv.cpp": [
-        "param:#2 const dBgPiLoc *"
-      ],
-      "src/_ZN10dBgCh_Actr22UpdateContinuousNoLavaEv.cpp": [
-        "param:#2 dBgPiLoc *"
-      ],
-      "src/func_02036acc.c": [
-        "param:#2 dBgPi *"
-      ]
-    },
-    "_ZN12dBgCh_SphCrr15SetObjAndSphereERK7Vector35Fix12IiEP8dActor_c": {
-      "src/_ZN10dBgCh_Actr16UpdateContinuousEv.cpp": [
-        "param:#2 Vec3 *"
-      ],
-      "src/_ZN10dBgCh_Actr20UpdateDiscreteNoLavaEv.cpp": [
-        "param:#2 Vector3 *"
-      ],
-      "src/_ZN10dBgCh_Actr22UpdateContinuousNoLavaEv.cpp": [
-        "param:#2 Vec3 *"
-      ],
-      "src/_ZN10dBgCh_Actr22UpdateDiscreteNoLava_2Ev.cpp": [
-        "param:#2 Vector3 *"
-      ],
-      "src/func_02036acc.c": [
-        "param:#2 Vec3 *"
       ]
     },
     "_ZN12dBgCh_SphCrrD1Ev": {
@@ -9542,19 +9508,7 @@
       ]
     },
     "_ZN5dBgPiD1Ev": {
-      "src/_ZN10dBgCh_Actr16UpdateContinuousEv.cpp": [
-        "return:void"
-      ],
-      "src/_ZN10dBgCh_Actr20UpdateExtraContinousEv.cpp": [
-        "return:void"
-      ],
-      "src/_ZN10dBgCh_Actr22UpdateContinuousNoLavaEv.cpp": [
-        "return:void"
-      ],
       "src/actors/daKrb_c.cpp": [
-        "return:void"
-      ],
-      "src/func_02036acc.c": [
         "return:void"
       ],
       "src/func_ov002_020d6dac.c": [
@@ -9576,17 +9530,6 @@
     "_ZN5dBgPiD2Ev": {
       "include/decl_common.h": [
         "return:void"
-      ]
-    },
-    "_ZN5dBgPiaSERKS_": {
-      "src/_ZN10dBgCh_Actr20UpdateExtraContinousEv.cpp": [
-        "param:#2 const dBgPiLoc *"
-      ],
-      "src/func_02036acc.c": [
-        "param:#2 dBgPi *"
-      ],
-      "src/func_020371fc.cpp": [
-        "param:#2 const dBgPi *"
       ]
     },
     "_ZN5dCc_c5ClearEv": {
@@ -10401,11 +10344,6 @@
         "param:#6 unsigned int",
         "param:#7 unsigned int",
         "return:void"
-      ]
-    },
-    "_ZN6Player7IsInAirEv": {
-      "src/func_020371fc.cpp": [
-        "return:bool"
       ]
     },
     "_ZN6Player7IsStateERNS_5StateE": {
@@ -13211,17 +13149,6 @@
       ]
     },
     "_ZN9dBgCh_Lin10GetClsnPosEv": {
-      "src/_ZN10dBgCh_Actr16UpdateContinuousEv.cpp": [
-        "mangled:2 parameter(s)",
-        "param:#1 Vec3 *"
-      ],
-      "src/_ZN10dBgCh_Actr20UpdateExtraContinousEv.cpp": [
-        "mangled:2 parameter(s)"
-      ],
-      "src/_ZN10dBgCh_Actr22UpdateContinuousNoLavaEv.cpp": [
-        "mangled:2 parameter(s)",
-        "param:#1 Vec3 *"
-      ],
       "src/actors/daCoin_c.cpp": [
         "mangled:2 parameter(s)"
       ],
@@ -13241,10 +13168,6 @@
       "src/func_0200cce4.c": [
         "mangled:2 parameter(s)"
       ],
-      "src/func_02036acc.c": [
-        "mangled:2 parameter(s)",
-        "param:#1 Vec3 *"
-      ],
       "src/func_ov002_020d0178.c": [
         "mangled:2 parameter(s)",
         "param:#1 Vec3 *"
@@ -13260,13 +13183,12 @@
       ],
       "src/game/actors/d_a_obj_wc_obj06.cpp": [
         "mangled:2 parameter(s)"
+      ],
+      "src/engine/collision/dBgCh_Actr.cpp": [
+        "mangled:2 parameter(s)"
       ]
     },
     "_ZN9dBgCh_Lin13SetObjAndLineERK7Vector3S2_P8dActor_c": {
-      "src/_ZN10dBgCh_Actr20UpdateExtraContinousEv.cpp": [
-        "param:#2 const Vector3 *",
-        "param:#3 const Vector3 *"
-      ],
       "src/func_0200b990.c": [
         "param:#2 V3 *",
         "param:#3 V3 *"
@@ -13286,6 +13208,14 @@
       "src/func_ov002_020d8a50.c": [
         "param:#2 Vector3 *",
         "param:#3 Vector3 *"
+      ],
+      "src/func_02008cb4.c": [
+        "param:#2 Vec3 *",
+        "param:#3 Vec3 *"
+      ],
+      "src/func_ov002_020d0178.c": [
+        "param:#2 Vec3 *",
+        "param:#3 Vec3 *"
       ]
     },
     "_ZN9dBgCh_LinD1Ev": {
@@ -13320,11 +13250,6 @@
         "return:void"
       ]
     },
-    "_ZNK10dBgCh_Actr13GetLimMovFlagEv": {
-      "src/func_020371b0.c": [
-        "return:unsigned int"
-      ]
-    },
     "_ZNK10dBgCh_Actr13GetWallResultEv": {
       "src/actors/dEnemyBase_c.cpp": [
         "return:SurfaceInfo *"
@@ -13355,9 +13280,6 @@
       "src/actors/daStar_c.cpp": [
         "return:char *"
       ],
-      "src/func_020371b0.c": [
-        "return:dBgPi *"
-      ],
       "src/func_ov002_020e2ea0.cpp": [
         "return:dBgPi *"
       ],
@@ -13375,15 +13297,6 @@
       ]
     },
     "_ZNK11SurfaceInfo12CopyNormalToER7Vector3": {
-      "src/_ZN10dBgCh_Actr16UpdateContinuousEv.cpp": [
-        "param:#2 Vec3 *"
-      ],
-      "src/_ZN10dBgCh_Actr20UpdateExtraContinousEv.cpp": [
-        "param:#2 Vector3 *"
-      ],
-      "src/_ZN10dBgCh_Actr22UpdateContinuousNoLavaEv.cpp": [
-        "param:#2 Vec3 *"
-      ],
       "src/actors/daObjBlockS_c.cpp": [
         "param:#2 Vector3 *"
       ],
@@ -13395,9 +13308,6 @@
       ],
       "src/func_0200b990.c": [
         "param:#2 V3 *"
-      ],
-      "src/func_02036acc.c": [
-        "param:#2 Vec3 *"
       ],
       "src/func_ov002_020d0178.c": [
         "param:#2 Vec3 *"
@@ -13416,20 +13326,6 @@
       ],
       "src/actors/daKpa_c.cpp": [
         "param:#2 Vector3 *"
-      ]
-    },
-    "_ZNK5dBgPi6CopyToERS_": {
-      "src/_ZN10dBgCh_Actr16UpdateContinuousEv.cpp": [
-        "param:#2 dBgPiLoc *"
-      ],
-      "src/_ZN10dBgCh_Actr20UpdateExtraContinousEv.cpp": [
-        "param:#2 dBgPiLoc *"
-      ],
-      "src/_ZN10dBgCh_Actr22UpdateContinuousNoLavaEv.cpp": [
-        "param:#2 dBgPiLoc *"
-      ],
-      "src/func_02036acc.c": [
-        "param:#2 dBgPi *"
       ]
     },
     "_ZNK5dBgPi9GetClsnIDEv": {
@@ -14354,9 +14250,6 @@
       ]
     },
     "data_02099368": {
-      "src/_ZN10dBgCh_Actr20UpdateExtraContinousEv.cpp": [
-        "return:unsigned int []"
-      ],
       "src/func_ov002_020d6dac.c": [
         "return:void * []"
       ],
@@ -28085,26 +27978,6 @@
         "param:#2 dActor_c *"
       ]
     },
-    "func_020353e0": {
-      "src/func_020357a0.c": [
-        "param:#1 dBgCh *"
-      ]
-    },
-    "func_020353f4": {
-      "src/func_020357c0.c": [
-        "param:#1 dBgCh *"
-      ]
-    },
-    "func_02035414": {
-      "src/func_020357e0.c": [
-        "param:#1 dBgCh *"
-      ]
-    },
-    "func_02035428": {
-      "src/func_02035800.c": [
-        "param:#1 dBgCh *"
-      ]
-    },
     "func_02035638": {
       "src/func_ov002_020eea84.c": [
         "param:#1 char *"
@@ -28124,11 +27997,6 @@
       "src/func_ov002_020eed24.cpp": [
         "param:#1 void *",
         "return:void *"
-      ]
-    },
-    "func_0203573c": {
-      "src/func_020371b0.c": [
-        "param:#1 dBgCh_Actr *"
       ]
     },
     "func_02036acc": {
@@ -28158,9 +28026,6 @@
       ]
     },
     "func_0203782c": {
-      "src/_ZN10dBgCh_Actr20UpdateExtraContinousEv.cpp": [
-        "param:#2 const dBgPiLoc *"
-      ],
       "src/_ZN10dBgW_KcMbg10DetectClsnER12dBgCh_SphCrr.cpp": [
         "param:#1 dBgCh_SphCrr *",
         "param:#2 dBgPi *"
@@ -28177,15 +28042,6 @@
       ]
     },
     "func_02037888": {
-      "src/_ZN10dBgCh_Actr16UpdateContinuousEv.cpp": [
-        "param:#2 dBgPiLoc *"
-      ],
-      "src/_ZN10dBgCh_Actr20UpdateExtraContinousEv.cpp": [
-        "param:#2 const dBgPiLoc *"
-      ],
-      "src/_ZN10dBgCh_Actr22UpdateContinuousNoLavaEv.cpp": [
-        "param:#2 dBgPiLoc *"
-      ],
       "src/_ZN10dBgW_KcMbg10DetectClsnER12dBgCh_SphCrr.cpp": [
         "param:#1 dBgCh_SphCrr *",
         "param:#2 dBgPi *"
@@ -28193,41 +28049,18 @@
       "src/_ZN14dBgW_KcMbgSclY10DetectClsnER12dBgCh_SphCrr.cpp": [
         "param:#1 dBgCh_SphCrr *",
         "param:#2 dBgPi *"
-      ],
-      "src/func_02036acc.c": [
-        "param:#2 dBgPi *"
       ]
     },
     "func_020378dc": {
-      "src/_ZN10dBgCh_Actr20UpdateExtraContinousEv.cpp": [
-        "param:#1 void *",
-        "return:dBgPiLoc *"
-      ],
       "src/_ZN14dBgW_KcMbgSclY10DetectClsnER12dBgCh_SphCrr.cpp": [
         "param:#1 dBgCh_SphCrr *",
         "return:dBgPi *"
-      ],
-      "src/_ZNK10dBgCh_Actr13GetWallResultEv.cpp": [
-        "param:#1 const void *"
       ]
     },
     "func_02037938": {
-      "src/_ZN10dBgCh_Actr16UpdateContinuousEv.cpp": [
-        "param:#1 void *"
-      ],
-      "src/_ZN10dBgCh_Actr20UpdateExtraContinousEv.cpp": [
-        "param:#1 void *",
-        "return:void *"
-      ],
       "src/_ZN14dBgW_KcMbgSclY10DetectClsnER12dBgCh_SphCrr.cpp": [
         "param:#1 dBgCh_SphCrr *",
         "return:dBgPi *"
-      ],
-      "src/_ZNK10dBgCh_Actr14GetFloorResultEv.cpp": [
-        "param:#1 const void *"
-      ],
-      "src/func_02036acc.c": [
-        "param:#1 void *"
       ]
     },
     "func_02037940": {
@@ -28338,10 +28171,6 @@
       ]
     },
     "func_02037dc4": {
-      "src/_ZN10dBgCh_Actr20UpdateExtraContinousEv.cpp": [
-        "param:#1 SurfaceInfo *",
-        "return:Vector3 *"
-      ],
       "src/_ZN8dActor_c17DetectRaycastClsnER7Vector3S1_b.cpp": [
         "param:#1 SurfaceInfo *",
         "return:Vector3 *"
@@ -28426,30 +28255,9 @@
         "param:#3 CLPS_Entry * *"
       ]
     },
-    "func_02038234": {
-      "src/func_020371b0.c": [
-        "param:#1 dBgPi *",
-        "param:#2 dActor_c *"
-      ]
-    },
     "func_02038298": {
       "src/func_02038234.c": [
         "arity:2"
-      ]
-    },
-    "func_02038324": {
-      "src/_ZN10dBgCh_Actr16UpdateContinuousEv.cpp": [
-        "param:#1 int",
-        "param:#2 int *"
-      ],
-      "src/_ZN10dBgCh_Actr20UpdateExtraContinousEv.cpp": [
-        "param:#2 Vector3 *",
-        "param:#3 void *",
-        "param:#4 void *"
-      ],
-      "src/func_02036acc.c": [
-        "param:#1 int",
-        "param:#2 int *"
       ]
     },
     "func_020383f0": {
