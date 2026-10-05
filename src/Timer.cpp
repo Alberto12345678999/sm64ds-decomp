@@ -13,6 +13,7 @@
 
 #pragma defer_codegen off
 
+// @symbol _ZN5Timer7GetTimeEv
 s64 Timer::GetTime()
 {
     if (!mIsRunning)
@@ -20,6 +21,7 @@ s64 Timer::GetTime()
     return func_02059650() - mTime;
 }
 
+// @symbol _ZN5Timer9StopTimerEv
 void Timer::StopTimer()
 {
     if (!mIsRunning)
@@ -28,12 +30,14 @@ void Timer::StopTimer()
     mTime = func_02059650() - mTime;
 }
 
+// @symbol _ZN5Timer10StartTimerEv
 void Timer::StartTimer()
 {
     mIsRunning = 1;
     mTime = func_02059650() - mTime;
 }
 
+// @symbol _ZN5Timer10ResetTimerEv
 void Timer::ResetTimer()
 {
     mIsRunning = 0;
