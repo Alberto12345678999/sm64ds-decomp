@@ -7956,6 +7956,17 @@
     "src/actors/daStar_c.cpp#_ZN12daStarBase_c8BehaviorEv": "ruspecial",
     "src/actors/daStar_c.cpp#_ZN8daStar_c8BehaviorEv": "ruspecial",
     "src/actors/daStar_c.cpp#_ZN12daStarBase_c13InitResourcesEv": "tangosdev",
-    "src/actors/daStar_c.cpp#_ZN8daStar_c13InitResourcesEv": "ruspecial"
+    "src/actors/daStar_c.cpp#_ZN8daStar_c13InitResourcesEv": "ruspecial",
+    "src/engine/collision/dCc_c.cpp#_ZN5dCc_c7ProcessEv": "tangosdev",
+    "src/engine/collision/dCc_c.cpp#func_02014f44": "tangosdev",
+    "src/engine/collision/dCc_c.cpp#func_02014f5c": "tangosdev",
+    "src/engine/collision/dCc_c.cpp#_ZN5dCc_c6UnlinkEv": "tangosdev",
+    "src/engine/collision/dCc_c.cpp#_ZN5dCc_c6UpdateEv": "tangosdev",
+    "src/engine/collision/dCc_c.cpp#_ZN5dCc_c5ClearEv": "tangosdev",
+    "src/engine/collision/dCc_c.cpp#_ZN5dCc_c4InitE5Fix12IiES1_jj": "tangosdev",
+    "src/engine/collision/dCc_c.cpp#_ZN5dCc_cD2Ev": "tangosdev",
+    "src/engine/collision/dCc_c.cpp#_ZN5dCc_cD0Ev": "tangosdev",
+    "src/engine/collision/dCc_c.cpp#_ZN5dCc_cD1Ev": "tangosdev",
+    "src/engine/collision/dCc_c.cpp#_ZN5dCc_cC2Ev": "tangosdev"
   }
 }

@@ -1880,49 +1880,9 @@ src/_ZN10dCcAcPos_cC1Ev.cpp:
     complete
     .text start:0x02014a84 end:0x02014aa8
 
-src/_ZN5dCc_c7ProcessEv.cpp:
+src/engine/collision/dCc_c.cpp:
     complete
-    .text start:0x02014aa8 end:0x02014f44
-
-src/func_02014f44.c:
-    complete
-    .text start:0x02014f44 end:0x02014f5c
-
-src/func_02014f5c.c:
-    complete
-    .text start:0x02014f5c end:0x02014fa4
-
-src/_ZN5dCc_c6UnlinkEv.cpp:
-    complete
-    .text start:0x02014fa4 end:0x02014ff0
-
-src/_ZN5dCc_c6UpdateEv.cpp:
-    complete
-    .text start:0x02014ff0 end:0x02015024
-
-src/_ZN5dCc_c5ClearEv.cpp:
-    complete
-    .text start:0x02015024 end:0x02015040
-
-src/_ZN5dCc_c4InitE5Fix12IiES1_jj.cpp:
-    complete
-    .text start:0x02015040 end:0x02015058
-
-src/_ZN5dCc_cD2Ev.cpp:
-    complete
-    .text start:0x02015058 end:0x0201507c
-
-src/_ZN5dCc_cD0Ev.cpp:
-    complete
-    .text start:0x0201507c end:0x020150a8
-
-src/_ZN5dCc_cD1Ev.cpp:
-    complete
-    .text start:0x020150a8 end:0x020150cc
-
-src/_ZN5dCc_cC2Ev.cpp:
-    complete
-    .text start:0x020150cc end:0x020150e8
+    .text start:0x02014aa8 end:0x020150e8
 
 src/_ZN7Clipper13Func_020150E8ER7Vector35Fix12IiEPh.cpp:
     complete
