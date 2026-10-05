@@ -7956,6 +7956,17 @@
     "src/actors/daStar_c.cpp#_ZN12daStarBase_c8BehaviorEv": "ruspecial",
     "src/actors/daStar_c.cpp#_ZN8daStar_c8BehaviorEv": "ruspecial",
     "src/actors/daStar_c.cpp#_ZN12daStarBase_c13InitResourcesEv": "tangosdev",
-    "src/actors/daStar_c.cpp#_ZN8daStar_c13InitResourcesEv": "ruspecial"
+    "src/actors/daStar_c.cpp#_ZN8daStar_c13InitResourcesEv": "ruspecial",
+    "src/actors/CapIconMgr.cpp#func_ov001_020aa420": "tangosdev",
+    "src/actors/CapIconMgr.cpp#func_ov001_020aa6b0": "tangosdev",
+    "src/actors/CapIconMgr.cpp#func_ov001_020aa6cc": "tangosdev",
+    "src/actors/CapIconMgr.cpp#func_ov001_020aa6e4": "tangosdev",
+    "src/actors/CapIconMgr.cpp#func_ov001_020aa79c": "tangosdev",
+    "src/actors/CapIconMgr.cpp#func_ov001_020aa7b8": "tangosdev",
+    "src/actors/CapIconMgr.cpp#func_ov001_020aa858": "tangosdev",
+    "src/actors/CapIconMgr.cpp#func_ov001_020aa960": "tangosdev",
+    "src/actors/CapIconMgr.cpp#func_ov001_020aaa54": "tangosdev",
+    "src/actors/CapIconMgr.cpp#func_ov001_020aadac": "tangosdev",
+    "src/actors/CapIconMgr.cpp#func_ov001_020aaf40": "tangosdev"
   }
 }
