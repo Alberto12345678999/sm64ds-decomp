@@ -6176,6 +6176,8 @@
         "src/engine/model/dExtShadowModel_c.cpp#_ZN17dExtShadowModel_cC1Ev": "tangosdev",
         "src/engine/model/dExtShadowModel_c.cpp#_ZN17dExtShadowModel_cD0Ev": "andrewboudreau",
         "src/engine/model/dExtShadowModel_c.cpp#_ZN17dExtShadowModel_cD1Ev": "tangosdev",
+        "src/_ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j.cpp#_ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j": "tangosdev",
+        "src/_ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j.cpp#_ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j": "tangosdev",
         "src/func_020354d0.c": "tangosdev",
         "src/func_020354e0.c": "tangosdev",
         "src/func_02035504.c": "tangosdev",
