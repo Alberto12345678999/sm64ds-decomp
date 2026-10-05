@@ -19,10 +19,12 @@ src/func_0203b438.c
 # separately all live in it.
 src/actors/ActorBase.cpp
 src/_ZN11ShadowModelC1Ev.cpp
-src/_ZN10dBgW_KcMbgC1Ev.cpp
+# dBgW_KcMbg is one production translation unit; the constructor, SetFile,
+# the func_02039e* transform helpers and Transform this slice used to name
+# separately all live in it.
+src/engine/collision/dBgW_KcMbg.cpp
 src/_ZN4dBgW7DisableEv.cpp
 src/_ZN4dBgW9IsEnabledEv.cpp
-src/_ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block.c
 src/_ZN8dActor_c9SetRangesE5Fix12IiES1_S1_S1_.cpp
 src/_ZN9ModelBase7SetFileEP8BMD_Fileii.cpp
 src/func_02039394.c
@@ -30,10 +32,8 @@ src/func_020393a4.c
 src/func_020393f0.c
 src/func_02039404.c
 src/InvMat4x3.c
-src/func_02039e18.c
 src/func_02053200.c
 src/_ZN7dBgW_KcC2Ev.cpp
-src/_ZN10dBgW_KcMbg9TransformERK9Matrix4x3s.cpp
 src/func_0203b244.c
 src/LenVec3.c
 src/func_020396d0.c
