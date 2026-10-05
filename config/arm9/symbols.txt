@@ -1138,9 +1138,9 @@ func_0202fb30 kind:function(arm,size=0x98) addr:0x0202fb30
 _ZN7dWipe_cD0Ev kind:function(arm,size=0x40) addr:0x0202fbc8
 _ZN7dWipe_cD1Ev kind:function(arm,size=0x38) addr:0x0202fc08
 func_0202fc40 kind:function(arm,size=0x58) addr:0x0202fc40
-_ZN4ViewD1Ev kind:function(arm,size=0x30) addr:0x0202fc98
-_ZN4ViewD0Ev kind:function(arm,size=0x44) addr:0x0202fcc8
-_ZN4View6RenderEv kind:function(arm,size=0x20) addr:0x0202fd0c
+_ZN7dView_cD1Ev kind:function(arm,size=0x30) addr:0x0202fc98
+_ZN7dView_cD0Ev kind:function(arm,size=0x44) addr:0x0202fcc8
+_ZN7dView_c6RenderEv kind:function(arm,size=0x20) addr:0x0202fd0c
 func_0202fd2c kind:function(arm,size=0x20) addr:0x0202fd2c
 Quaternion_FromVector3 kind:function(arm,size=0x1ac) addr:0x0202fd4c
 Quaternion_SLerp kind:function(arm,size=0xf4) addr:0x0202fef8
@@ -4240,7 +4240,7 @@ _ZTS7dWipe_c kind:data(any) addr:0x020926d0
 _ZTI7dWipe_c kind:data(any) addr:0x020926dc
 data_020926f0 kind:data(any) addr:0x020926f0
 _ZTV7dWipe_c kind:data(any) addr:0x020926f0
-_ZTV4View kind:data(any) addr:0x02092720
+_ZTV7dView_c kind:data(any) addr:0x02092720
 data_02092768 kind:data(any) addr:0x02092768
 data_02092778 kind:data(any) addr:0x02092778
 data_0209277c kind:data(any) addr:0x0209277c
