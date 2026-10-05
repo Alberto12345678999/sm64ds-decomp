@@ -637,7 +637,7 @@
     "src/_ZN18NestedHeapIterator8AddFirstEP13HeapAllocator.cpp",
     "src/_ZN18NestedHeapIterator8PreviousEP13HeapAllocator.cpp",
     "src/_ZN18NestedHeapIteratorC1Ej.cpp",
-    "src/_ZN18SolidHeapAllocator5ResetEj.cpp",
+    "src/engine/heap/SolidHeapAllocator.cpp#_ZN18SolidHeapAllocator5ResetEj",
     "src/_ZN18TextureTransformer6UpdateER15ModelComponents.cpp",
     "src/_ZN18TextureTransformer7PrepareER8BMD_FileR8BTA_File.cpp",
     "src/_ZN18TextureTransformerC1Ev.cpp",
