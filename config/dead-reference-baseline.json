@@ -6,10 +6,6 @@
    "ref": "mods/Player_ScaleByCharFactor.c"
   },
   {
-   "file": "notes/actor-leaf-provenance.md",
-   "ref": "src_tu/actors/EnemySpawner"
-  },
-  {
    "file": "notes/actor-naming.md",
    "ref": "include/List/ActorList.h"
   },

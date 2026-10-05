@@ -60,7 +60,7 @@ inline dFdColor_c::dFdColor_c(Fix12i initial) : dFdBrightness_c(initial) { color
 
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
-typedef char FaderColor_size_must_be_0x10[sizeof(dFdColor_c) == 0x10 ? 1 : -1];
+typedef char dFdColor_c_size_must_be_0x10[sizeof(dFdColor_c) == 0x10 ? 1 : -1];
 #endif
 #else
 /* Spelled for remaining C consumers, which cannot express the virtuals and so

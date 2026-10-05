@@ -63,7 +63,7 @@ inline dFdBrightness_c::dFdBrightness_c(Fix12i initial) { currInterp = initial; 
 
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
-typedef char FaderBrightness_size_must_be_0xc[sizeof(dFdBrightness_c) == 0xc ? 1 : -1];
+typedef char dFdBrightness_c_size_must_be_0xc[sizeof(dFdBrightness_c) == 0xc ? 1 : -1];
 #endif
 #else
 struct dFdBrightness_c {
