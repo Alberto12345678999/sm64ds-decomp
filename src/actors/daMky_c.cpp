@@ -27,7 +27,8 @@
  *   veneers. The bl targets the veneer, not UpdateContinuousNoLava or
  *   UpdateContinuous.
  * - func_0203567c returns its argument plus 0x30. GetFloorResult is the
- *   previous symbol, 0x0203566c, and dBgCh_Actr.h does not declare it.
+ *   previous symbol, 0x0203566c. dBgCh_Actr.h declares it; this TU still
+ *   calls func_0203567c.
  *   func_02038ea4 is not dBgCh_Gnd::DetectClsn: 02111ea4 calls DetectClsn
  *   and 02111dd0 calls func_02038ea4.
  * - func_02037f44 returns word 8 of the record it is handed. The polygon
@@ -48,8 +49,8 @@
  * (Matrix4x3 is 0x30) and indexing the matrix is not a POD address.
  * Still raw, because nothing names them: carrier and cap +0xc8 (the word
  * inside dActor_c::pad_0c5; daObjMarioCap_c does not name it), and the
- * cap's word at +0xd0, past dActor_c. GetFloorResult / GetWallResult + 4
- * is the SurfaceInfo; dBgCh_Actr.h does not declare those getters.
+ * cap's word at +0xd0, past dActor_c. GetFloorResult and GetWallResult
+ * are declared; this TU still reads the SurfaceInfo at result + 4.
  * PathPtr::GetNode stays the mangled call: the member form costs
  * 02111b20 four words. mPathNode's compare stays a signed word; the
  * field is unsigned. Fix12-by-value calls, the veneers, func_0203567c,

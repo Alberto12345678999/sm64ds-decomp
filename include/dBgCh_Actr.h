@@ -153,6 +153,12 @@ struct dBgCh_Actr : dBgCh {
     s32 JustHitGround() const;     /* mFlags & 0x20 */
     s32 ShouldUpdatePos() const;   /* !(mFlags & 0x2000) */
     s32 ShouldUpdatePosY() const;  /* !(mFlags & 0x1000) */
+    /* ROM _ZNK. TouchesWater tests the surface word at +0x34. The other two
+       return the result record of the sub-object at +0x20; callers read that
+       register as a dBgPi. */
+    s32 TouchesWater() const;
+    s32 GetFloorResult() const;
+    s32 GetWallResult() const;
 };
 
 #ifndef SM64DS_PLATFORM_PC
