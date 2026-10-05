@@ -50,6 +50,10 @@
    "ref": "src/_ZN8PlatformD0Ev.cpp"
   },
   {
+   "file": "notes/agents/handoffs/fold-arm9-actor-1010.md",
+   "ref": "src_tu/actors/Actor.cpp"
+  },
+  {
    "file": "notes/agents/handoffs/issue-2410-humanizer-2.md",
    "ref": "src/func_ov006_020cb030.cpp"
   },
@@ -446,8 +450,16 @@
    "ref": "src/_ZN9ActorBaseC1Ev.cpp"
   },
   {
+   "file": "notes/plan-tu-merge-queue.md",
+   "ref": "src_tu/actors"
+  },
+  {
    "file": "notes/platform-provenance.md",
    "ref": "src/d_a_obj_rotate_updown_lift_hs_updown_lift.c"
+  },
+  {
+   "file": "notes/player-provenance.md",
+   "ref": "src_tu/actors"
   },
   {
    "file": "notes/port-selftest-bmp-gate.md",
@@ -524,6 +536,10 @@
   {
    "file": "notes/tu-reconstruction-pilot-2-report.md",
    "ref": "include/ActorDerived.h"
+  },
+  {
+   "file": "notes/tu-reconstruction-pilot-2-report.md",
+   "ref": "src_tu/actors"
   },
   {
    "file": "notes/tu-reconstruction-pilot-2-report.md",
