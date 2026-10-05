@@ -6,8 +6,8 @@
    "ref": "mods/Player_ScaleByCharFactor.c"
   },
   {
-   "file": "notes/actor-leaf-provenance.md",
-   "ref": "src_tu/actors/EnemySpawner"
+   "file": "notes/actor-core-provenance.md",
+   "ref": "src/_ZN8dActor_cD1Ev.cpp"
   },
   {
    "file": "notes/actor-naming.md",
@@ -56,6 +56,10 @@
   {
    "file": "notes/agents/handoffs/issue-2411-humanizer-2.md",
    "ref": "src/_ZN5Crate13OnTurnIntoEggER6Player.cpp"
+  },
+  {
+   "file": "notes/agents/handoffs/issue-2411-humanizer-2.md",
+   "ref": "src_tu/actors/Actor.cpp"
   },
   {
    "file": "notes/agents/handoffs/issue-2411-humanizer-2.md",
@@ -158,6 +162,10 @@
    "ref": "src/func_ov006_020e7f5c.cpp"
   },
   {
+   "file": "notes/agents/handoffs/pr-2445-source-review-fixes.md",
+   "ref": "src/_ZN8dActor_cC2Ev.cpp"
+  },
+  {
    "file": "notes/agents/handoffs/pr2231-rescue-ov022-ov013-batch2.md",
    "ref": "src_tu/actors/daObj_volcanoCannon_c.cpp"
   },
@@ -176,6 +184,10 @@
   {
    "file": "notes/agents/handoffs/readable-ov055-luigi-0925.md",
    "ref": "src/d_a_luigi.cpp"
+  },
+  {
+   "file": "notes/agents/handoffs/readable-ov092-onms-0925b.md",
+   "ref": "src/_ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE.cpp"
   },
   {
    "file": "notes/agents/handoffs/readable-ov092-onms-0925b.md",
@@ -279,7 +291,7 @@
   },
   {
    "file": "notes/bgobject-provenance.md",
-   "ref": "src/func_ov025_02111898.c"
+   "ref": "src/_ZN8dActor_c19UntrackAndSpawnStarERajRK7Vector3h.cpp"
   },
   {
    "file": "notes/collision-query-classes.md",
@@ -463,10 +475,6 @@
   },
   {
    "file": "notes/rom-build.md",
-   "ref": "src/func_ov013_021112a8.c"
-  },
-  {
-   "file": "notes/rom-build.md",
    "ref": "src/func_ov091_02132a0c.c"
   },
   {
@@ -496,10 +504,6 @@
   {
    "file": "notes/src-domain-buckets.md",
    "ref": "src/ui/messages"
-  },
-  {
-   "file": "notes/translation-unit-reconstruction-plan.md",
-   "ref": "src/game/actors/d_a_holhei.cpp"
   },
   {
    "file": "notes/tu-filename-reconstruction-pilot.md",
@@ -615,14 +619,6 @@
   },
   {
    "file": "tools/check_dead_references.py",
-   "ref": "src/f.c"
-  },
-  {
-   "file": "tools/check_dead_references.py",
-   "ref": "src/game/mario.c"
-  },
-  {
-   "file": "tools/check_dead_references.py",
    "ref": "tools/foo.py"
   },
   {
@@ -643,7 +639,15 @@
   },
   {
    "file": "tools/check_src_tu.py",
+   "ref": "src_tu/actors/Actor.cpp"
+  },
+  {
+   "file": "tools/check_src_tu.py",
    "ref": "src_tu/actors/CastleWater.cpp"
+  },
+  {
+   "file": "tools/check_src_tu_compiles.py",
+   "ref": "src_tu/actors/Actor.cpp"
   },
   {
    "file": "tools/d0_migrate.py",

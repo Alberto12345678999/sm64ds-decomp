@@ -1,9 +1,9 @@
 {
   "id": "arm9/Actor",
   "module": "arm9",
-  "source": "src_tu/actors/Actor.cpp",
+  "source": "src/actors/dActor_c.cpp",
   "promoted_source": "src/actors/dActor_c.cpp",
-  "status": "link-verified",
+  "status": "promoted",
   "boundary_confidence": "high",
   "boundary_evidence": [
     "CONTIGUOUS AND EXHAUSTIVE: 0x0200f658..0x02011654 is covered by exactly 97 config/arm9/symbols.txt function symbols with NO gap and no overlap, and all 97 carry `complete` in config/arm9/delinks.txt with a .text section and nothing else.",
@@ -704,6 +704,15 @@
   ],
   "data": [],
   "bss": [],
+  "compiler_only_output": [
+    {
+      "symbol": "_ZN7Vector3D1Ev",
+      "disposition": "deadstrip-duplicate",
+      "canonical_module": "arm9",
+      "canonical_address": "0x020072c0",
+      "reason": "This TU odr-uses Vector3 (members pass it by reference and build by-value temporaries), so mwccarm re-emits Vector3's trivial vague-linkage D1 alongside the licensed text. The cartridge keeps one copy at arm9:0x020072c0, kind:function(arm,size=0x4), and an enrolled source already owns it; rombuild compares this object's body against those cartridge bytes and refuses anything but byte-identical vague-linkage output before discarding the duplicate."
+    }
+  ],
   "notes": [
     "HAND-ASSEMBLED. tu_map.py has no candidate for this range (see boundary_evidence item 2), so `tubuild.py create` could not be used; the schema still comes from tubuild.build_manifest_entry.",
     "Reconciliation is documented in the source file's own header comment. Summary: 9 shadow type names dropped in favour of real headers, 9 globals/prototypes given one spelling each, one local type renamed, and a handful of casts and field renames that follow from those. Nothing changes what a function does.",
@@ -723,14 +732,14 @@
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
     "toolchain": "tools/mwccarm/2004/b56/mwccarm.exe",
     "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
-    "object": "build/tu/arm9-Actor/Actor.o (gitignored)",
+    "object": "build/tu/arm9-Actor/dActor_c.o (gitignored)",
     "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
     "functions_matched": 97,
     "functions_declared": 97,
     "criteria": {
       "every_declared_function_defined": "PASS",
       "every_declared_function_bytes_match": "PASS",
-      "declared_function_set_equals_defined_function_set": "FAIL-BY-DESIGN -- 1 unlicensed section/symbol(s); see unlicensed_output_observed",
+      "declared_function_set_equals_defined_function_set": "PASS",
       "functions_occur_in_expected_order": "PASS",
       "relocation_destinations_verified": "PASS"
     },
@@ -766,6 +775,19 @@
       },
       "symbolCheckNewVsBaseline": [],
       "linkerOutput": null
+    },
+    "compilerOnlyOutput": {
+      "requested": [
+        "_ZN7Vector3D1Ev"
+      ],
+      "deadstripped": [
+        "_ZN7Vector3D1Ev"
+      ],
+      "droppedSections": [
+        37
+      ],
+      "data": [],
+      "dataExternalized": []
     }
   },
   "partial_isolation": {
