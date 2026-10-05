@@ -2104,33 +2104,9 @@ src/_ZN11ShadowModelC1Ev.cpp:
     complete
     .text start:0x02016068 end:0x0201609c
 
-src/_ZN11CommonModel12SetPolygonIDEj.cpp:
+src/engine/model/CommonModel.cpp:
     complete
-    .text start:0x0201609c end:0x020160ac
-
-src/_ZN11CommonModel13Func_020160ACEj.cpp:
-    complete
-    .text start:0x020160ac end:0x02016104
-
-src/_ZN11CommonModel6RenderEPK7Vector3.cpp:
-    complete
-    .text start:0x02016104 end:0x02016144
-
-src/_ZN11CommonModel9DoSetFileEPcii.cpp:
-    complete
-    .text start:0x02016144 end:0x020161b4
-
-src/_ZN11CommonModelD0Ev.cpp:
-    complete
-    .text start:0x020161b4 end:0x020161e0
-
-src/_ZN11CommonModelD1Ev.cpp:
-    complete
-    .text start:0x020161e0 end:0x02016204
-
-src/_ZN11CommonModelC1Ev.cpp:
-    complete
-    .text start:0x02016204 end:0x02016254
+    .text start:0x0201609c end:0x02016254
 
 src/_ZN10ModelAnim24CopyERKS_Pcj.cpp:
     complete
