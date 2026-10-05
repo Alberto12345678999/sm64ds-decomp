@@ -1099,12 +1099,6 @@
     "src/_ZN7dBgW_KcD0Ev.cpp",
     "src/_ZN7dBgW_KcD1Ev.cpp",
     "src/_ZN7dBgW_KcD2Ev.cpp",
-    "src/_ZN7dCcAc_c10GetOwnerIDEv.cpp",
-    "src/_ZN7dCcAc_cC1Ev.cpp",
-    "src/_ZN7dCcAc_cC2Ev.cpp",
-    "src/_ZN7dCcAc_cD0Ev.cpp",
-    "src/_ZN7dCcAc_cD1Ev.cpp",
-    "src/_ZN7dCcAc_cD2Ev.cpp",
     "src/actors/dScMB_c.cpp#_ZN7dScMB_c15graphCallback_c14GraphCallback0Ev",
     "src/actors/dScMB_c.cpp#_ZN7dScMB_c15graphCallback_c14GraphCallback2Ev",
     "src/actors/dScMB_c.cpp#_ZN7dScMB_c16CleanupResourcesEv",
@@ -3117,5 +3111,5 @@
     "src/actors/daDoor_c.cpp#daDoor_c_classInit",
     "src/actors/dScMgAmida_c.cpp#_ZN12dScMgAmida_cD1Ev"
   ],
-  "count": 3108
+  "count": 3102
 }
