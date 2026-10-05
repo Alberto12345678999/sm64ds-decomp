@@ -543,7 +543,12 @@ def _module_checksum_failures(config_yaml):
             name = obj = None
             continue
         p = config_yaml.parent / obj
-        code = p.read_bytes() if p.is_file() else b""
+        try:
+            code = p.read_bytes() if p.is_file() else b""
+        except OSError as exc:
+            out.append(f"module {name}: cannot read {obj}: {exc}")
+            name = obj = None
+            continue
         actual = _fxhash64(code)
         if actual != expected:
             out.append(f"module {name}: checksum failed "
@@ -560,8 +565,10 @@ def verify_link(config_yaml, linked_elf, prepared):
     ok_modules, modules_out, _seconds = TB._run_dsd(
         [str(TB.RB.DSD), "check", "modules", "-c", str(config_yaml), "-f"],
         "dsd check modules")
+    checksum_replay = []
     if not ok_modules:
-        detail_lines = _module_checksum_failures(config_yaml)
+        checksum_replay = _module_checksum_failures(config_yaml)
+        detail_lines = list(checksum_replay)
         if not detail_lines:
             try:
                 import rombuild_check as RBC
@@ -600,6 +607,7 @@ def verify_link(config_yaml, linked_elf, prepared):
         "ok": bool(ok_modules and ok_symbols and not new_errors and not alias_errors),
         "modulesOk": bool(ok_modules),
         "modulesOutput": modules_out[-4000:],
+        "moduleChecksumReplay": checksum_replay[:12],
         "symbolsCommandOk": bool(ok_symbols),
         "symbolErrors": symbol_errors,
         "baselineSymbolErrors": sorted(baseline_errors),

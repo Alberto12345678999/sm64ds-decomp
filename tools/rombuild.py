@@ -1309,7 +1309,10 @@ def main():
             if not verification["ok"]:
                 detail = []
                 if not verification["modulesOk"]:
-                    detail.append("dsd check modules --fail did not pass")
+                    replay = verification.get("moduleChecksumReplay") or []
+                    detail.append(
+                        "dsd check modules --fail did not pass "
+                        f"[replay-diag-1: {', '.join(replay) if replay else 'all module hashes replay-match the committed config'}]")
                     detail.extend(_bad_module_lines(verification))
                 detail.extend(f"new symbol error: {line}"
                               for line in verification["newSymbolErrors"])
