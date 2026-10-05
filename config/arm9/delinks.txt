@@ -1696,61 +1696,9 @@ src/func_02013a88.c:
     complete
     .text start:0x02013a88 end:0x02013ad4
 
-src/_ZN8SaveData13PlayerLoseCapEv.cpp:
+src/engine/save/SaveData.cpp:
     complete
-    .text start:0x02013ad4 end:0x02013b18
-
-src/_ZN8SaveData16HasPlayerLostCapEv.cpp:
-    complete
-    .text start:0x02013b18 end:0x02013b5c
-
-src/_ZN8SaveData16CanPlayerHaveCapEv.cpp:
-    complete
-    .text start:0x02013b5c end:0x02013b9c
-
-src/_ZN8SaveData15SaveCurrentFileEv.cpp:
-    complete
-    .text start:0x02013b9c end:0x02013be0
-
-src/_ZN8SaveData13SaveMinigamesEP16MinigameSaveData.cpp:
-    complete
-    .text start:0x02013be0 end:0x02013c0c
-
-src/_ZN8SaveData16ReadMinigameDataEP16MinigameSaveData.cpp:
-    complete
-    .text start:0x02013c0c end:0x02013c5c
-
-src/_ZN8SaveData18SetDefaultValuesMgEP16MinigameSaveData.cpp:
-    complete
-    .text start:0x02013c5c end:0x02013c84
-
-src/func_02013c84.c:
-    complete
-    .text start:0x02013c84 end:0x02013cd4
-
-src/_ZN8SaveData13EraseSaveFileEjPc.cpp:
-    complete
-    .text start:0x02013cd4 end:0x02013d14
-
-src/_ZN8SaveData8SaveFileEjP12FileSaveData.cpp:
-    complete
-    .text start:0x02013d14 end:0x02013d54
-
-src/_ZN8SaveData12ReadFileDataEjP12FileSaveData.cpp:
-    complete
-    .text start:0x02013d54 end:0x02013dc4
-
-src/_ZN8SaveData16SetDefaultValuesEP12FileSaveData.cpp:
-    complete
-    .text start:0x02013dc4 end:0x02013e0c
-
-src/_ZN8SaveData16EraseAllSaveDataEv.cpp:
-    complete
-    .text start:0x02013e0c end:0x02013e64
-
-src/func_02013e64.c:
-    complete
-    .text start:0x02013e64 end:0x02013e80
+    .text start:0x02013ad4 end:0x02013e80
 
 src/actors/ActorDerived.cpp:
     complete
