@@ -7956,6 +7956,11 @@
     "src/actors/daStar_c.cpp#_ZN12daStarBase_c8BehaviorEv": "ruspecial",
     "src/actors/daStar_c.cpp#_ZN8daStar_c8BehaviorEv": "ruspecial",
     "src/actors/daStar_c.cpp#_ZN12daStarBase_c13InitResourcesEv": "tangosdev",
-    "src/actors/daStar_c.cpp#_ZN8daStar_c13InitResourcesEv": "ruspecial"
+    "src/actors/daStar_c.cpp#_ZN8daStar_c13InitResourcesEv": "ruspecial",
+    "src/actors/CutsceneObject.cpp#_ZN14CutsceneObject16CleanupResourcesEv": "tangosdev",
+    "src/actors/CutsceneObject.cpp#_ZN14CutsceneObject16OnPendingDestroyEv": "tangosdev",
+    "src/actors/CutsceneObject.cpp#_ZN14CutsceneObject6RenderEv": "tangosdev",
+    "src/actors/CutsceneObject.cpp#_ZN14CutsceneObject8BehaviorEv": "tangosdev",
+    "src/actors/CutsceneObject.cpp#_ZN14CutsceneObject13InitResourcesEv": "tangosdev"
   }
 }
