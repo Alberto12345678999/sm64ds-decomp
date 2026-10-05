@@ -1976,29 +1976,9 @@ src/_ZN15MaterialChangerC1Ev.cpp:
     complete
     .text start:0x02015850 end:0x0201587c
 
-src/_ZN18TextureTransformer7PrepareER8BMD_FileR8BTA_File.cpp:
+src/engine/model/TextureTransformer.cpp:
     complete
-    .text start:0x0201587c end:0x02015888
-
-src/_ZN18TextureTransformer6UpdateER15ModelComponents.cpp:
-    complete
-    .text start:0x02015888 end:0x020158ac
-
-src/_ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj.c:
-    complete
-    .text start:0x020158ac end:0x02015900
-
-src/_ZN18TextureTransformerD0Ev.cpp:
-    complete
-    .text start:0x02015900 end:0x0201592c
-
-src/_ZN18TextureTransformerD1Ev.cpp:
-    complete
-    .text start:0x0201592c end:0x02015950
-
-src/_ZN18TextureTransformerC1Ev.cpp:
-    complete
-    .text start:0x02015950 end:0x0201597c
+    .text start:0x0201587c end:0x0201597c
 
 src/_ZN15TextureSequence7PrepareER8BMD_FileR8BTP_File.cpp:
     complete

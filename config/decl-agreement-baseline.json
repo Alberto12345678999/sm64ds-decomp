@@ -12682,9 +12682,6 @@
       ],
       "src/_ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj.c": [
         "param:#1 TextureSequence *"
-      ],
-      "src/_ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj.c": [
-        "param:#1 TextureTransformer *"
       ]
     },
     "_ZN9Animation17UpdateFileOffsetsER8BCA_File": {
@@ -29561,13 +29558,13 @@
       ]
     },
     "func_020469e8": {
-      "src/_ZN18TextureTransformer6UpdateER15ModelComponents.cpp": [
+      "src/engine/model/TextureTransformer.cpp": [
         "param:#1 ModelComponents *",
         "param:#2 BTA_File *"
       ]
     },
     "func_02046b64": {
-      "src/_ZN18TextureTransformer7PrepareER8BMD_FileR8BTA_File.cpp": [
+      "src/engine/model/TextureTransformer.cpp": [
         "param:#1 BMD_File *",
         "param:#2 BTA_File *"
       ],
@@ -36851,4 +36848,4 @@
     }
   },
   "_comment": "Declaration/definition disagreements present when this gate was built. tools/check_decl_agreement.py fails on any disagreement NOT listed here. Keyed symbol -> declaring file -> \"<kind>:<what differs>\". These are NOT text edits: changing a declaration can change instruction selection at every call site, so each one is matching work that needs a rebuild and byte proof (tools/match.py) before it moves. Regenerate with --update only from a clean checkout, and read the diff: a new entry is usually an extern copied from the wrong sibling."
-}
+}

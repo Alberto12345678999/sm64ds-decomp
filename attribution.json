@@ -7956,6 +7956,12 @@
     "src/actors/daStar_c.cpp#_ZN12daStarBase_c8BehaviorEv": "ruspecial",
     "src/actors/daStar_c.cpp#_ZN8daStar_c8BehaviorEv": "ruspecial",
     "src/actors/daStar_c.cpp#_ZN12daStarBase_c13InitResourcesEv": "tangosdev",
-    "src/actors/daStar_c.cpp#_ZN8daStar_c13InitResourcesEv": "ruspecial"
+    "src/actors/daStar_c.cpp#_ZN8daStar_c13InitResourcesEv": "ruspecial",
+    "src/engine/model/TextureTransformer.cpp#_ZN18TextureTransformer7PrepareER8BMD_FileR8BTA_File": "ruspecial",
+    "src/engine/model/TextureTransformer.cpp#_ZN18TextureTransformer6UpdateER15ModelComponents": "ruspecial",
+    "src/engine/model/TextureTransformer.cpp#_ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj": "tangosdev",
+    "src/engine/model/TextureTransformer.cpp#_ZN18TextureTransformerD0Ev": "tangosdev",
+    "src/engine/model/TextureTransformer.cpp#_ZN18TextureTransformerD1Ev": "tangosdev",
+    "src/engine/model/TextureTransformer.cpp#_ZN18TextureTransformerC1Ev": "tangosdev"
   }
 }
