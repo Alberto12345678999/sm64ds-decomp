@@ -7,20 +7,8 @@
 # an allocator that survives a fill-pattern torture test on the host is the
 # strongest layout evidence a port can buy per line of test code.
 
-src/_ZN4Heap28CreateExpandingHeapAllocatorEPvjj.cpp
-src/_ZN22ExpandingHeapAllocatorC1EPvj.cpp
+src/engine/heap/ExpandingHeapAllocator.cpp
 src/func_0204df54.cpp
-src/_ZN22ExpandingHeapAllocator8AllocateEji.cpp
-src/_ZN22ExpandingHeapAllocator16AllocateForwardsEjj.cpp
-src/_ZN22ExpandingHeapAllocator17AllocateBackwardsEjj.cpp
-src/_ZN22ExpandingHeapAllocator10DeallocateEPv.cpp
-src/_ZN22ExpandingHeapAllocator14SizeofInternalEPv.cpp
-src/_ZN22ExpandingHeapAllocator10CreateNodeEPN10MemoryNode6TargetEt.cpp
-src/_ZN22ExpandingHeapAllocator12AllocateNodeEP10MemoryNodeS1_Pvjt.cpp
-src/_ZN22ExpandingHeapAllocator8FreeNodeEP10MemoryNodePNS0_6TargetE.cpp
-src/_ZN22ExpandingHeapAllocator8LinkNodeEP10MemoryNodeS1_S1_.cpp
-src/_ZN22ExpandingHeapAllocator10UnlinkNodeEP10MemoryNodeS1_.cpp
-src/_ZN10MemoryNode6TargetC1EPS_.cpp
 
 # NestedHeapIterator: the shared HeapAllocator initializer registers every allocator
 # in the global nesting registry, so the iterator family rides along.
@@ -41,13 +29,7 @@ src/_ZN18NestedHeapIterator6RemoveEP13HeapAllocator.cpp
 # override and not its target has half of a pair. They stay HERE because this is
 # the allocator layer's manifest and smoke_heap links it, which is the gate that
 # would catch a break in them first.
-src/_ZN13HeapAllocator7DestroyEv.cpp
 src/_ZN22ExpandingHeapAllocator16InvokeDeallocateEPvPS_j.cpp
-src/_ZN22ExpandingHeapAllocator13DeallocateAllEPFvPvPS_jEj.cpp
-src/_ZN22ExpandingHeapAllocator10ReallocateEPvj.cpp
-src/_ZN22ExpandingHeapAllocator18MaxAllocatableSizeEi.cpp
-src/_ZN22ExpandingHeapAllocator9SetNodeIDEj.cpp
-src/_ZN22ExpandingHeapAllocator9GetNodeIDEv.cpp
 src/_ZN13HeapAllocator6RemoveEv.cpp
 
 # cstd::abs, which ExpandingHeapAllocator::MaxAllocatableSize calls. It was in

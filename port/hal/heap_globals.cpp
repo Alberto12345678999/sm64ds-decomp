@@ -116,7 +116,7 @@ void _ZN18NestedHeapIterator4InitEP13HeapAllocator(
 // cannot be spelled at all. A constructor has no name to declare: `C1' is an
 // Itanium ABI VARIANT tag, and MSVC has no syntax that emits or references one.
 // So a TU that says `extern "C" _ZN22ExpandingHeapAllocatorC1EPvj(...)' and calls
-// it -- which is what src/_ZN4Heap28CreateExpandingHeapAllocatorEPvjj.cpp and
+// it -- which is what src/engine/heap/ExpandingHeapAllocator.cpp's factory and
 // src/func_0204df54.cpp do, because on the NDS that string IS the symbol -- can
 // only be satisfied by a hand-written function of that name. Placement new is
 // the body: it runs the migrated constructor from src/ in place and, like the

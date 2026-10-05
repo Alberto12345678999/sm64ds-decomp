@@ -7655,85 +7655,9 @@ src/_ZN18NestedHeapIterator19RecursiveFindNestedEPv.cpp:
     complete
     .text start:0x0204e014 end:0x0204e084
 
-src/_ZN22ExpandingHeapAllocator14SizeofInternalEPv.cpp:
+src/engine/heap/ExpandingHeapAllocator.cpp:
     complete
-    .text start:0x0204e084 end:0x0204e08c
-
-src/_ZN22ExpandingHeapAllocator13DeallocateAllEPFvPvPS_jEj.cpp:
-    complete
-    .text start:0x0204e08c end:0x0204e0e0
-
-src/_ZN22ExpandingHeapAllocator9GetNodeIDEv.cpp:
-    complete
-    .text start:0x0204e0e0 end:0x0204e0e8
-
-src/_ZN22ExpandingHeapAllocator9SetNodeIDEj.cpp:
-    complete
-    .text start:0x0204e0e8 end:0x0204e0f8
-
-src/_ZN22ExpandingHeapAllocator18MaxAllocatableSizeEi.cpp:
-    complete
-    .text start:0x0204e0f8 end:0x0204e180
-
-src/_ZN22ExpandingHeapAllocator10MemoryLeftEv.cpp:
-    complete
-    .text start:0x0204e180 end:0x0204e1a8
-
-src/_ZN22ExpandingHeapAllocator10DeallocateEPv.cpp:
-    complete
-    .text start:0x0204e1a8 end:0x0204e1e8
-
-src/_ZN22ExpandingHeapAllocator10ReallocateEPvj.cpp:
-    complete
-    .text start:0x0204e1e8 end:0x0204e370
-
-src/_ZN22ExpandingHeapAllocator8AllocateEji.cpp:
-    complete
-    .text start:0x0204e370 end:0x0204e3b4
-
-src/_ZN13HeapAllocator7DestroyEv.cpp:
-    complete
-    .text start:0x0204e3b4 end:0x0204e3c0
-
-src/_ZN4Heap28CreateExpandingHeapAllocatorEPvjj.cpp:
-    complete
-    .text start:0x0204e3c0 end:0x0204e40c
-
-src/_ZN22ExpandingHeapAllocator8FreeNodeEP10MemoryNodePNS0_6TargetE.cpp:
-    complete
-    .text start:0x0204e40c end:0x0204e504
-
-src/_ZN22ExpandingHeapAllocator17AllocateBackwardsEjj.cpp:
-    complete
-    .text start:0x0204e504 end:0x0204e5c8
-
-src/_ZN22ExpandingHeapAllocator16AllocateForwardsEjj.cpp:
-    complete
-    .text start:0x0204e5c8 end:0x0204e690
-
-src/_ZN22ExpandingHeapAllocator12AllocateNodeEP10MemoryNodeS1_Pvjt.cpp:
-    complete
-    .text start:0x0204e690 end:0x0204e828
-
-src/_ZN22ExpandingHeapAllocatorC1EPvj.cpp:
-    complete
-    .text start:0x0204e828 end:0x0204e8b0
-
-src/_ZN22ExpandingHeapAllocator10CreateNodeEPN10MemoryNode6TargetEt.cpp:
-    complete
-    .text start:0x0204e8b0 end:0x0204e8e0
-
-src/_ZN22ExpandingHeapAllocator8LinkNodeEP10MemoryNodeS1_S1_.cpp:
-    complete
-    .text start:0x0204e8e0 end:0x0204e910
-
-src/_ZN22ExpandingHeapAllocator10UnlinkNodeEP10MemoryNodeS1_.cpp:
-    complete
-    .text start:0x0204e910 end:0x0204e938
-
-src/_ZN10MemoryNode6TargetC1EPS_.cpp:
-    complete
-    .text start:0x0204e938 end:0x0204e964
+    .text start:0x0204e084 end:0x0204e964
 
 src/_ZN18SolidHeapAllocator10ReallocateEPvj.cpp:
     complete
