@@ -7956,6 +7956,16 @@
     "src/actors/daStar_c.cpp#_ZN12daStarBase_c8BehaviorEv": "ruspecial",
     "src/actors/daStar_c.cpp#_ZN8daStar_c8BehaviorEv": "ruspecial",
     "src/actors/daStar_c.cpp#_ZN12daStarBase_c13InitResourcesEv": "tangosdev",
-    "src/actors/daStar_c.cpp#_ZN8daStar_c13InitResourcesEv": "ruspecial"
+    "src/actors/daStar_c.cpp#_ZN8daStar_c13InitResourcesEv": "ruspecial",
+    "src/typeinfo.cpp#_ZN3abi21__vmi_class_type_infoD0Ev": "tangosdev",
+    "src/typeinfo.cpp#_ZN3abi21__vmi_class_type_infoD1Ev": "tangosdev",
+    "src/typeinfo.cpp#_ZN3abi20__si_class_type_infoD0Ev": "tangosdev",
+    "src/typeinfo.cpp#_ZN3abi20__si_class_type_infoD1Ev": "tangosdev",
+    "src/typeinfo.cpp#_ZN3abi17__class_type_infoD2Ev": "tangosdev",
+    "src/typeinfo.cpp#_ZN3abi17__class_type_infoD0Ev": "tangosdev",
+    "src/typeinfo.cpp#_ZN3abi17__class_type_infoD1Ev": "tangosdev",
+    "src/typeinfo.cpp#_ZNSt9type_infoD2Ev": "tangosdev",
+    "src/typeinfo.cpp#_ZNSt9type_infoD0Ev": "tangosdev",
+    "src/typeinfo.cpp#_ZNSt9type_infoD1Ev": "tangosdev"
   }
 }
