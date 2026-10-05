@@ -8,6 +8,12 @@
     "mitch.cairns": "mitchellcairns"
   },
   "overrides": {
+    "src/engine/model/TextureSequence.cpp#_ZN15TextureSequence7PrepareER8BMD_FileR8BTP_File": "ruspecial",
+    "src/engine/model/TextureSequence.cpp#_ZN15TextureSequence6UpdateER15ModelComponents": "ruspecial",
+    "src/engine/model/TextureSequence.cpp#_ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj": "tangosdev",
+    "src/engine/model/TextureSequence.cpp#_ZN15TextureSequenceD0Ev": "tangosdev",
+    "src/engine/model/TextureSequence.cpp#_ZN15TextureSequenceD1Ev": "tangosdev",
+    "src/engine/model/TextureSequence.cpp#_ZN15TextureSequenceC1Ev": "tangosdev",
     "src/_ZN9ModelBase12ApplyOpacityEjj.cpp": "ruspecial",
     "src/START_INTRO_MINIMAP_ZOOM.c": "tangosdev",
     "src/_ZN10LavaBridge13InitResourcesEv.c": "tangosdev",

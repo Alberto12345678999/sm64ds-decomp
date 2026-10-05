@@ -12680,9 +12680,6 @@
       "src/_ZN15MaterialChanger7SetFileER8BMA_Filei5Fix12IiEj.c": [
         "param:#1 MaterialChanger *"
       ],
-      "src/_ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj.c": [
-        "param:#1 TextureSequence *"
-      ],
       "src/_ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj.c": [
         "param:#1 TextureTransformer *"
       ]
@@ -29577,7 +29574,7 @@
       ]
     },
     "func_02046bbc": {
-      "src/_ZN15TextureSequence6UpdateER15ModelComponents.cpp": [
+      "src/engine/model/TextureSequence.cpp": [
         "param:#1 ModelComponents *",
         "param:#2 BTP_File *",
         "param:#3 int"
@@ -29587,7 +29584,7 @@
       ]
     },
     "func_02046d50": {
-      "src/_ZN15TextureSequence7PrepareER8BMD_FileR8BTP_File.cpp": [
+      "src/engine/model/TextureSequence.cpp": [
         "param:#2 BTP_File *"
       ],
       "src/func_ov007_020bc5fc.c": [
