@@ -7956,6 +7956,10 @@
     "src/actors/daStar_c.cpp#_ZN12daStarBase_c8BehaviorEv": "ruspecial",
     "src/actors/daStar_c.cpp#_ZN8daStar_c8BehaviorEv": "ruspecial",
     "src/actors/daStar_c.cpp#_ZN12daStarBase_c13InitResourcesEv": "tangosdev",
-    "src/actors/daStar_c.cpp#_ZN8daStar_c13InitResourcesEv": "ruspecial"
+    "src/actors/daStar_c.cpp#_ZN8daStar_c13InitResourcesEv": "ruspecial",
+    "src/Timer.cpp#_ZN5Timer7GetTimeEv": "tangosdev",
+    "src/Timer.cpp#_ZN5Timer9StopTimerEv": "tangosdev",
+    "src/Timer.cpp#_ZN5Timer10StartTimerEv": "tangosdev",
+    "src/Timer.cpp#_ZN5Timer10ResetTimerEv": "tangosdev"
   }
 }

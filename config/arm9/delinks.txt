@@ -2907,21 +2907,9 @@ src/GetSoundMode.c:
     complete
     .text start:0x02019574 end:0x02019584
 
-src/_ZN5Timer7GetTimeEv.cpp:
+src/Timer.cpp:
     complete
-    .text start:0x02019584 end:0x020195c0
-
-src/_ZN5Timer9StopTimerEv.cpp:
-    complete
-    .text start:0x020195c0 end:0x02019604
-
-src/_ZN5Timer10StartTimerEv.cpp:
-    complete
-    .text start:0x02019604 end:0x02019638
-
-src/_ZN5Timer10ResetTimerEv.cpp:
-    complete
-    .text start:0x02019638 end:0x0201964c
+    .text start:0x02019584 end:0x0201964c
 
 src/func_0201964c.c:
     complete
