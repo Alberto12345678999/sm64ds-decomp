@@ -2407,6 +2407,7 @@ data_ov002_0210bc58 kind:data(any) addr:0x0210bc58
 data_ov002_0210bc88 kind:data(any) addr:0x0210bc88
 data_ov002_0210bcc4 kind:data(any) addr:0x0210bcc4
 _ZTVN8daDemo_c10anmModel_cE kind:data(any) addr:0x0210bcc4
+daDemo_anmModel_vtbl kind:data(any) addr:0x0210bcc4
 data_ov002_0210bce8 kind:data(any) addr:0x0210bce8
 data_ov002_0210bcf0 kind:data(any) addr:0x0210bcf0
 data_ov002_0210bd24 kind:data(any) addr:0x0210bd24

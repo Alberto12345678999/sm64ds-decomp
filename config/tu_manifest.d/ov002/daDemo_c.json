@@ -1753,6 +1753,13 @@
   ],
   "undefined_symbol_aliases": [
     {
+      "symbol": "_ZTVN8daDemo_c10anmModel_cE",
+      "canonical_symbol": "daDemo_anmModel_vtbl",
+      "canonical_module": "ov002",
+      "canonical_address": "0x0210bcc4",
+      "evidence": "anmModel_c vtable import; secondary vptr references carry nonzero addends, so the import must resolve through a non-_ZTV configured name to stay addend-exact under the preamble-normalizing intact path; daDemo_anmModel_vtbl names the same address and preserves every linked byte."
+    },
+    {
       "symbol": "_ZN14dExtAnmModel_cD2Ev",
       "canonical_symbol": "_ZN9ModelAnimD2Ev",
       "canonical_module": "arm9",
