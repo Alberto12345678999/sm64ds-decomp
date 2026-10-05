@@ -27,7 +27,7 @@ char data_ov098_0213c388[0x18];
 
 // ---- gate-9 method bridges (C name -> MSVC method), the gx_upload pattern -
 #include "dBgActor_c.h"
-#include "ShadowModel.h"
+#include "dExtShadowModel_c.h"
 #include "Model.h"
 extern "C" {
 void _ZN10dBgActor_c19UpdateClsnPosAndRotEv(void *self)
@@ -38,13 +38,13 @@ void _ZN10dBgActor_c21UpdateModelPosAndRotYEv(void *self)
    data_020ad524 is BUILT AT RUNTIME by boot code not yet hosted (the ov000
    static image holds path strings there). InitCuboid and the per-frame
    drop-shadow install are no-ops until that boot path lands. */
-void _ZN8dActor_c18DropShadowScaleXYZER11ShadowModelR9Matrix4x35Fix12IiES5_S5_j(
+void _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
     void *, void *, void *, int, int, int, unsigned) {}
 void *_ZN5Model8LoadFileER13SharedFilePtr(void *fp)
 { return Model::LoadFile(*(SharedFilePtr *)fp); }
 
 // BSS the shadow/collider systems use
-char data_020ad524[0x40];       /* ShadowModel's template BMD stub */
+char data_020ad524[0x40];       /* dExtShadowModel_c's template BMD stub */
 void *data_020a0c80[24];        /* the collision actor registry (gate 8) */
 }
 
@@ -130,10 +130,10 @@ void hal_fill_model_vtable(void)
 }
 }
 
-#include "ShadowModel.h"
-int ShadowModel::InitCuboid() { return 1; }
-extern "C" int _ZN11ShadowModel10InitCuboidEv(ShadowModel *self)
-{ return self->ShadowModel::InitCuboid(); }
+#include "dExtShadowModel_c.h"
+int dExtShadowModel_c::InitCuboid() { return 1; }
+extern "C" int _ZN17dExtShadowModel_c10InitCuboidEv(dExtShadowModel_c *self)
+{ return self->dExtShadowModel_c::InitCuboid(); }
 extern "C" {
 void hal_fill_shadow_vtable(void) {}   /* shadow system deferred */
 }

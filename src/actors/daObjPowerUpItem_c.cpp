@@ -113,13 +113,13 @@ extern void _ZN6Player16InitBalloonMarioEv(void* p);
 extern void _ZN6Player14InitMetalWarioEv(void* p);
 extern void _ZN6Player15InitVanishLuigiEv(void* p);
 extern void _ZN6Player13InitFireYoshiEv(void* p);
-extern int _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
-    char* self, ShadowModel* sm, struct Matrix4x3* m, int fix, int t, u32 f);
+extern int _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
+    char* self, dExtShadowModel_c* sm, struct Matrix4x3* m, int fix, int t, u32 f);
 extern void Matrix4x3_FromRotationY(void* m, int angle);
 extern void *gPFlowerCloseModelFile[];
 extern void *gPFlowerOpenModelFile[];
 extern int _ZN9ModelBase7SetFileEP8BMD_Fileii(void *self, void *f, int a, int b);
-extern int _ZN11ShadowModel12InitCylinderEv(void *self);
+extern int _ZN17dExtShadowModel_c12InitCylinderEv(void *self);
 extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
     void *self, void *act, Fix12i a, Fix12i b, unsigned int c2, unsigned int d);
 extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
@@ -428,7 +428,7 @@ extern "C" int func_ov002_020b993c(char* self)
         r3 = 0x64000 - (int)(((s64)d * 0x180 + 0x800) >> 12);
         if (r3 < 0x3c000) r3 = 0x3c000;
     }
-    return _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(self, &item->mShadowModel, &item->mShadowMat, r3, 0x3c000, 0xf);
+    return _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(self, &item->mShadowModel, &item->mShadowMat, r3, 0x3c000, 0xf);
 }
 
 /* Model matrices: rotates mOpenModel's matrix by mAngleY, sets its translation
@@ -500,7 +500,7 @@ int daObjPowerUpItem_c::InitResources()
         return 0;
     if (_ZN9ModelBase7SetFileEP8BMD_Fileii(((char *)this) + 0xd4, gPFlowerCloseModelFile[1], 1, -1) == 0)
         return 0;
-    if (_ZN11ShadowModel12InitCylinderEv((char *)&mShadowModel) == 0)
+    if (_ZN17dExtShadowModel_c12InitCylinderEv((char *)&mShadowModel) == 0)
         return 0;
 
     mVertAccel = -0x668;

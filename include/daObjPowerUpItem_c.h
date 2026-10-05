@@ -11,7 +11,7 @@
 #include "types.h"
 #include "dActor_c.h"
 #include "Model.h"
-#include "ShadowModel.h"
+#include "dExtShadowModel_c.h"
 #include "dCcAc_c.h"
 #include "dBgCh_Actr.h"
 
@@ -33,7 +33,7 @@
  * mFlags (mPosX/Y/Z and mScaleX/Y/Z already shared dActor_c's names).
  *
  * mShadowModel was mistyped `u8` at 0x174 in the generated header --
- * daObjPowerUpItem_c_classInit calls _ZN11ShadowModelC1Ev at that offset, so it is the
+ * daObjPowerUpItem_c_classInit calls _ZN17dExtShadowModel_cC1Ev at that offset, so it is the
  * real 0x28-byte member (0x174..0x19c). The 0x30 bytes at 0x19c..0x1cc are
  * the shadow matrix: func_ov002_020b993c copies mOpenModel's matrix there and
  * overwrites its Y translation with mGroundY >> 3.
@@ -52,10 +52,10 @@ struct daObjPowerUpItem_c : dActor_c {
     /* Model member, named by the class's own destructor calling
        Model's D1 at +0x124. [_ZN18daObjPowerUpItem_cD0Ev.c] */
     Model mOpenModel;            /* 0x124 -- SetFile'd from gPFlowerOpenModelFile */
-    /* ShadowModel member, named by daObjPowerUpItem_c_classInit's own C1 call and the
+    /* dExtShadowModel_c member, named by daObjPowerUpItem_c_classInit's own C1 call and the
        class's own destructor's D1 call at +0x174.
        [d_a_obj_power_up_item.c, _ZN18daObjPowerUpItem_cD0Ev.c] */
-    ShadowModel mShadowModel;            /* 0x174 */
+    dExtShadowModel_c mShadowModel;            /* 0x174 */
     Matrix4x3 mShadowMat;            /* 0x19c -- the open model's matrix, with Y set from mGroundY */
     /* dCcAc_c member, named by the class's own destructor calling
        dCcAc_c's D1 at +0x1cc. [_ZN18daObjPowerUpItem_cD0Ev.c] */

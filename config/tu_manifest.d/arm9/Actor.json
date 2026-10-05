@@ -520,17 +520,17 @@
       "ordinal": 70
     },
     {
-      "symbol": "_ZN8dActor_c18DropShadowScaleXYZER11ShadowModelR9Matrix4x35Fix12IiES5_S5_j",
+      "symbol": "_ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j",
       "address": "0x02010b9c",
       "size": "0x0000004c",
-      "legacy_source": "src/_ZN8dActor_c18DropShadowScaleXYZER11ShadowModelR9Matrix4x35Fix12IiES5_S5_j.cpp",
+      "legacy_source": "src/_ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j.cpp",
       "ordinal": 71
     },
     {
-      "symbol": "_ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j",
+      "symbol": "_ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j",
       "address": "0x02010be8",
       "size": "0x00000048",
-      "legacy_source": "src/_ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j.cpp",
+      "legacy_source": "src/_ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j.cpp",
       "ordinal": 72
     },
     {
@@ -861,8 +861,8 @@
       "src/_ZN8dActor_c13DistToCPlayerEv.cpp",
       "src/_ZN8dActor_c22ClosestNonVanishPlayerEv.cpp",
       "src/_ZN8dActor_c13ClosestPlayerEv.cpp",
-      "src/_ZN8dActor_c18DropShadowScaleXYZER11ShadowModelR9Matrix4x35Fix12IiES5_S5_j.c",
-      "src/_ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j.c",
+      "src/_ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j.c",
+      "src/_ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j.c",
       "src/_ZN8dActor_c9UpdatePosEP5dCc_c.cpp",
       "src/_ZN8dActor_c28UpdatePosWithHorzSpeedAndAngEv.cpp",
       "src/_ZN8dActor_c22UpdatePosWithOnlySpeedEP5dCc_c.cpp",

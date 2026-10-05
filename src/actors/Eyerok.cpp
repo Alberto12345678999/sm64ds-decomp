@@ -312,7 +312,7 @@ extern void _Z14ApproachLinearR7Vector3RKS_5Fix12IiE(void *out, void *tgt, int s
 extern void _Z14ApproachLinearRiii(int *r, int target, int step);
 extern void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(void *self, void *kcl, void *mtx, int fix, short s, void *clps);
 extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(void *self, void *actor, Vector3 *v, s32 f1, s32 f2, u32 a, u32 b);
-extern void _ZN11ShadowModel12InitCylinderEv(void *self);
+extern void _ZN17dExtShadowModel_c12InitCylinderEv(void *self);
 extern void _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(void *self, void *bca, int a, int b, int fix, unsigned short t);
 extern void _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(void *self, void *btp, int a, int fix, unsigned int b);
 extern void _ZN15TextureSequence8LoadFileER13SharedFilePtr(void *sfp);
@@ -333,7 +333,7 @@ extern void _ZN8dActor_c16TriplePoofDustAtERK7Vector3(void *self, const void *v)
 extern int _ZN8dActor_c18HorzAngleToCPlayerEv(void *self);
 extern void *_ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(u32 id, u32 b, Vector3 *pos, void *p, int e, int f);
 extern u8 _ZN8dActor_c9TrackStarEjj(void *actor, u32 a, u32 b);
-extern void _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(void *self, void *sm, void *m, int rad, int h, unsigned int u);
+extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void *self, void *sm, void *m, int rad, int h, unsigned int u);
 extern int _ZN9Animation8FinishedEv(void *self);
 extern void _ZN9Animation8LoadFileER13SharedFilePtr(void *sfp);
 extern int _ZN9ModelBase7SetFileEP8BMD_Fileii(void *self, void *bmd, int a, int b);
@@ -2416,7 +2416,7 @@ void func_ov066_021194fc(char* c)
             (self->mPosZ + 0xa0000) >> 3);
     }
     *(M48 *)self->mShadowMtx = *(M48*)data_020a0e68;
-    _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
+    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
         c, &self->mShadowModel, self->mShadowMtx, 0x140000, 0x258000, 0xf);
 }
 }
@@ -2739,7 +2739,7 @@ int Eyerok::InitResources()
     }
 
     if (mPartIdx != PART_MAIN) {
-        _ZN11ShadowModel12InitCylinderEv(&mShadowModel);
+        _ZN17dExtShadowModel_c12InitCylinderEv(&mShadowModel);
         w.x = data_ov066_0211ad18[0];
         w.y = data_ov066_0211ad18[1];
         w.z = data_ov066_0211ad18[2];
@@ -2880,7 +2880,7 @@ extern "C" void *_ZN14BlendModelAnimC1Ev(void *thiz);
 extern "C" void *_ZN5ModelC1Ev(void *thiz);
 extern "C" void *_ZN10dCcAcPos_cC1Ev(void *thiz);
 extern "C" void *_ZN10dBgW_KcMbgC1Ev(void *thiz);
-extern "C" void *_ZN11ShadowModelC1Ev(void *thiz);
+extern "C" void *_ZN17dExtShadowModel_cC1Ev(void *thiz);
 extern "C" void *_ZN15TextureSequenceC1Ev(void *thiz);
 extern "C" void __cxa_vec_ctor(void *p, int a, int b, void *f1, void *f2);
 extern "C" Vector3 *_ZN7Vector3D1Ev(Vector3 *object);
@@ -2900,7 +2900,7 @@ extern "C" void *daIwante_c_classInit(void)
         _ZN10dCcAcPos_cC1Ev(c + 0x320);
         _ZN14BlendModelAnimC1Ev(c + 0x360);
         _ZN5ModelC1Ev(c + 0x3d0);
-        _ZN11ShadowModelC1Ev(c + 0x420);
+        _ZN17dExtShadowModel_cC1Ev(c + 0x420);
         _ZN15TextureSequenceC1Ev(c + 0x448);
         __cxa_vec_ctor(c + 0x4dc, 0x14, 0xc, (void *)func_0203d384,
                        (void *)_ZN7Vector3D1Ev);

@@ -11,7 +11,7 @@
  *
  *     0x114 ModelAnim     0x64    -> 0x178
  *     0x178 Model         0x50    -> 0x1c8
- *     0x1c8 ShadowModel   0x28    -> 0x1f0
+ *     0x1c8 dExtShadowModel_c   0x28    -> 0x1f0
  *     0x220 dCcAcPos_c    0x40    -> 0x260
  *     0x260 dBgCh_Actr    0x1bc   -> 0x41c
  *
@@ -26,7 +26,7 @@
 #include "Model.h"
 #include "ModelAnim.h"
 #include "dCcAcPos_c.h"
-#include "ShadowModel.h"
+#include "dExtShadowModel_c.h"
 #include "dBgCh_Actr.h"
 
 struct daObjKey_c : dEnemyBase_c {
@@ -35,7 +35,7 @@ struct daObjKey_c : dEnemyBase_c {
     Player      *mPlayer;           /* 0x110 coined: the Player collecting the key */
     ModelAnim   mModelAnim;         /* 0x114 */
     Model       mModel;             /* 0x178 */
-    ShadowModel mShadowModel;       /* 0x1c8 */
+    dExtShadowModel_c mShadowModel;       /* 0x1c8 */
     Matrix4x3   mShadowMatrix;      /* 0x1f0 coined: DropShadowRadHeight matrix */
     dCcAcPos_c  mdCcAcPos_c;        /* 0x220 */
     dBgCh_Actr  mWithMeshClsn;      /* 0x260 */

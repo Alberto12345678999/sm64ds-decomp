@@ -11,7 +11,7 @@
  * The members close exactly on one another:
  *
  *     0x110 Model                      0x50   -> 0x160
- *     0x160 ShadowModel                0x28   -> 0x188
+ *     0x160 dExtShadowModel_c                0x28   -> 0x188
  *     0x1b8 dCcAcPos_c  0x40   -> 0x1f8
  *     0x1f8 dBgCh_Actr               0x1bc  -> 0x3b4
  *
@@ -34,13 +34,13 @@
 #include "ModelAnim.h"
 #include "dCcAc_c.h"
 #include "dCcAcPos_c.h"
-#include "ShadowModel.h"
+#include "dExtShadowModel_c.h"
 #include "TextureTransformer.h"
 #include "dBgCh_Actr.h"
 
 struct daGrock_c : dEnemyBase_c {
     Model                        mModel;                /* 0x110 */
-    ShadowModel                  mShadowModel;          /* 0x160 */
+    dExtShadowModel_c                  mShadowModel;          /* 0x160 */
     u8  pad_188[0x30];
     dCcAcPos_c    mdCcAcPos_c; /* 0x1b8 */
     dBgCh_Actr                 mWithMeshClsn;         /* 0x1f8 */

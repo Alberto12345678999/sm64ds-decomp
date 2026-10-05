@@ -12,7 +12,7 @@ struct AnimSlot {
 
 #include "Particle__SysTracker.h"
 
-struct ShadowModel {
+struct dExtShadowModel_c {
     static void RenderAll();
 };
 
@@ -103,7 +103,7 @@ int Stage::Render() {
         }
     }
     RenderModel();
-    ShadowModel::RenderAll();
+    dExtShadowModel_c::RenderAll();
     RenderModelTransparent();
     {
         int b = (data_0209f2d8 == 1);

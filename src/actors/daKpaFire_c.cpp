@@ -171,7 +171,7 @@ extern u32 _ZN5Sound8PlayLongEjjjRK7Vector3s(u32 a, u32 b, u32 c, void *pos, u32
 extern u16 data_ov060_02119364[];
 extern "C" Entry data_ov060_0211afb4[];
 extern "C" void dBgCh_Actr_UpdateDiscreteNoLava_veneer(void *p);
-extern int _ZN11ShadowModel12InitCylinderEv(void *self);
+extern int _ZN17dExtShadowModel_c12InitCylinderEv(void *self);
 extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, void *actor, int a, int b, unsigned int c, unsigned int d);
 extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void *self, void *actor, int a, int b, void *v, int c);
 extern int _ZN9dBgCh_Gnd10DetectClsnEv(dBgCh_Gnd *self);
@@ -219,7 +219,7 @@ int daKpaFire_c::InitResources()
 {
     Vector3 pos;
 
-    if (_ZN11ShadowModel12InitCylinderEv(&this->mShadowModel) == 0)
+    if (_ZN17dExtShadowModel_c12InitCylinderEv(&this->mShadowModel) == 0)
         return 0;
 
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
@@ -346,7 +346,7 @@ int daKpaFire_c::CleanupResources()
 /* Per-frame drop shadow. Does nothing when mDropsShadow is 0. Otherwise it
  * builds a translation matrix in the shared scratch matrix data_020a0e68 at
  * the fire's x, its mGroundY and its z (each >> 3), copies it into the
- * Matrix4x3 at 0x32c of the actor, and draws the ShadowModel at 0x304 with
+ * Matrix4x3 at 0x32c of the actor, and draws the dExtShadowModel_c at 0x304 with
  * radius mShadowRadiusMul * mFireScale, the second Fix12 argument (dActor_c.h
  * calls it `depth`) 30 units (0x1e000), and the `opacity` argument 0xf (what
  * that value means is not decoded; every caller passes 0xf).
@@ -357,7 +357,7 @@ int daKpaFire_c::CleanupResources()
 extern "C" {
 
 void Matrix4x3_FromTranslation(void *m, int x, int y, int z);
-void _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(void *thisp, void *sm, void *mtx, int rad, int t, unsigned int j);
+void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void *thisp, void *sm, void *mtx, int rad, int t, unsigned int j);
 extern Matrix4x3 data_020a0e68;
 }
 #pragma cplusplus off
@@ -366,7 +366,7 @@ void func_ov060_02117624(char *c) {
     if (self->mDropsShadow == 0) return;
     Matrix4x3_FromTranslation(&data_020a0e68, self->mPosX>>3, self->mGroundY>>3, self->mPosZ>>3);
     *(Matrix4x3*)self->pad_32c = data_020a0e68;
-    _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(self, &self->mShadowModel, self->pad_32c, self->mShadowRadiusMul * self->mFireScale, 0x1e000, 0xf);
+    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(self, &self->mShadowModel, self->pad_32c, self->mShadowRadiusMul * self->mFireScale, 0x1e000, 0xf);
 }
 #pragma cplusplus on
 

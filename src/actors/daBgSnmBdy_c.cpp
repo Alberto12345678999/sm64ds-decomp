@@ -109,7 +109,7 @@ void      _ZN8dActor_c9SetRangesE5Fix12IiES1_S1_S1_(void *self, int offsetY,
 void      _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(void *self,
                                                        const Vector3 *pos,
                                                        int strength);
-void      _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
+void      _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
               void *self, void *shadow, void *matrix, int radius, int height,
               u32 flags);
 
@@ -536,7 +536,7 @@ void daBgSnmBdy_c::UpdateModel()
     mShadowMat.m[9] = mPosX >> 3;
     mShadowMat.m[10] = (mPosY + mRadius) >> 3;
     mShadowMat.m[11] = mPosZ >> 3;
-    _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
+    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
         this, &mShadowModel, &mShadowMat, mRadius << 1, mRadius << 1, 0xf);
 }
 

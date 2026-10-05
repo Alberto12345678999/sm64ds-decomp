@@ -1,5 +1,5 @@
 //cpp
-/* Drop-shadow models (arm9 .text 0x02015d38..0x0201609c): ShadowModel, the
+/* Drop-shadow models (arm9 .text 0x02015d38..0x0201609c): dExtShadowModel_c, the
  * ModelBase sibling that draws an actor's ground shadow from a shared
  * cylinder or cuboid BMD_File. Every live instance sits on a global
  * intrusive doubly-linked list (head data_0209cef4, freeze flag
@@ -8,22 +8,22 @@
  * mwccarm emits .text in reverse source order, so the definitions below run
  * ROM-descending.
  *
- * Vtable _ZTV11ShadowModel at 0x0208e868: [0] D1 0x02015ff8, [1] D0
+ * Vtable _ZTV17dExtShadowModel_c at 0x0208e868: [0] D1 0x02015ff8, [1] D0
  * 0x02015f80, [2] DoSetFile 0x02015ef4. The cartridge carries no
- * _ZTS11ShadowModel/_ZTI11ShadowModel records at all, so this TU compiles
+ * _ZTS17dExtShadowModel_c/_ZTI17dExtShadowModel_c records at all, so this TU compiles
  * with RTTI off, and no enrolled D2 or C2; those variants are licensed
  * compiler-only in the manifest.
  */
 
-#include "ShadowModel.h"
+#include "dExtShadowModel_c.h"
 
-/* No _ZTS/_ZTI for ShadowModel or ModelBase anywhere in the cartridge: the
+/* No _ZTS/_ZTI for dExtShadowModel_c or ModelBase anywhere in the cartridge: the
  * class was compiled without RTTI, so the vtable preamble's typeinfo word
  * is 0. */
 #pragma RTTI off
 
 extern "C" {
-extern ShadowModel *data_0209cef4;
+extern dExtShadowModel_c *data_0209cef4;
 extern u8 data_0209ceec;
 extern Matrix4x3 data_020a0e68;      /* shared render matrix scratch */
 extern Matrix4x3 data_0209b3ec;      /* the camera-space matrix Model::Render uses */
@@ -39,18 +39,18 @@ void func_02046120(ModelComponents *data, u32 opacity);
 void func_02046088(ModelComponents *data, u32 opacity, int f);
 }
 
-// @symbol _ZN11ShadowModelC1Ev
+// @symbol _ZN17dExtShadowModel_cC1Ev
 /* An empty body; the three null stores after the vptr are exactly the member
  * init list -- mat at +0xc and the live-list links prev/next at +0x20/+0x24,
- * the same links ~ShadowModel unlinks. The base call and vptr store are what
- * `ShadowModel : ModelBase` with a declared-not-defined base constructor
+ * the same links ~dExtShadowModel_c unlinks. The base call and vptr store are what
+ * `dExtShadowModel_c : ModelBase` with a declared-not-defined base constructor
  * already means. */
-ShadowModel::ShadowModel() : mat(0), prev(0), next(0) {}
+dExtShadowModel_c::dExtShadowModel_c() : mat(0), prev(0), next(0) {}
 
-// @symbol _ZN11ShadowModelD1Ev
+// @symbol _ZN17dExtShadowModel_cD1Ev
 /* Only the unlink is written by hand: the vtable store at the top and the
- * ModelBase subobject call at the bottom are what `struct ShadowModel :
- * ModelBase` and `virtual ~ShadowModel()` already mean, and the compiler
+ * ModelBase subobject call at the bottom are what `struct dExtShadowModel_c :
+ * ModelBase` and `virtual ~dExtShadowModel_c()` already mean, and the compiler
  * emits them around the body. The list is singly-headed, so removing the
  * first node is the case that needs the head compared against `this`; every
  * other node is reached through its predecessor. The unlink is also the
@@ -58,7 +58,7 @@ ShadowModel::ShadowModel() : mat(0), prev(0), next(0) {}
  * next at 0x24. D0 is generated from the same body plus the class
  * operator delete -- the model family deallocates through
  * Memory::operator_delete2, which is why ModelBase carries that member. */
-ShadowModel::~ShadowModel()
+dExtShadowModel_c::~dExtShadowModel_c()
 {
     if (prev)
         prev->next = next;
@@ -72,11 +72,11 @@ ShadowModel::~ShadowModel()
     next = 0;
 }
 
-// @symbol _ZN11ShadowModel9DoSetFileEPcii
+// @symbol _ZN17dExtShadowModel_c9DoSetFileEPcii
 /* Overrides the base slot, so it takes (char *, int, int) like its
    siblings; the polygon-ID argument is simply never used -- a shadow has
    no polygon ID to set. */
-int ShadowModel::DoSetFile(char *file, int a, int b)
+int dExtShadowModel_c::DoSetFile(char *file, int a, int b)
 {
     data = func_02016e70((BMD_File *)file);
     if (data == 0)
@@ -97,28 +97,28 @@ int ShadowModel::DoSetFile(char *file, int a, int b)
     return 1;
 }
 
-// @symbol _ZN11ShadowModel10InitCuboidEv
-int ShadowModel::InitCuboid()
+// @symbol _ZN17dExtShadowModel_c10InitCuboidEv
+int dExtShadowModel_c::InitCuboid()
 {
     return SetFile(&data_ov000_020ad524, 1, -1);
 }
 
-// @symbol _ZN11ShadowModel12InitCylinderEv
-int ShadowModel::InitCylinder()
+// @symbol _ZN17dExtShadowModel_c12InitCylinderEv
+int dExtShadowModel_c::InitCylinder()
 {
     return SetFile(&data_ov000_020ad560, 1, -1);
 }
 
 #pragma cplusplus off
-/* The mangled name is ShadowModel::InitModel(Matrix4x3 *, Fix12<int>,
- * Fix12<int>, Fix12<int>, u32) and include/ShadowModel.h declares exactly
+/* The mangled name is dExtShadowModel_c::InitModel(Matrix4x3 *, Fix12<int>,
+ * Fix12<int>, Fix12<int>, u32) and include/dExtShadowModel_c.h declares exactly
  * that. The DEFINITION stays in the C front end because of wall 6az in
  * notes/mwccarm-codegen.md: CW homes class-typed by-value parameters to the
  * stack, so a real method body with the true Fix12<int> signature comes out
  * 0x14 bytes bigger than the ROM. Scalar args here keep the bytes.
  */
-// @symbol _ZN11ShadowModel9InitModelEP9Matrix4x35Fix12IiES3_S3_j
-void _ZN11ShadowModel9InitModelEP9Matrix4x35Fix12IiES3_S3_j(struct ShadowModel *self, int a1, int a2, int a3, int a4, unsigned char a5) {
+// @symbol _ZN17dExtShadowModel_c9InitModelEP9Matrix4x35Fix12IiES3_S3_j
+void _ZN17dExtShadowModel_c9InitModelEP9Matrix4x35Fix12IiES3_S3_j(struct dExtShadowModel_c *self, int a1, int a2, int a3, int a4, unsigned char a5) {
   *(int*)((char*)&self->mat) = a1;
   *(int*)((char*)&self->scale.x) = a2;
   *(int*)((char*)&self->scale.y) = a3;
@@ -134,12 +134,12 @@ void _ZN11ShadowModel9InitModelEP9Matrix4x35Fix12IiES3_S3_j(struct ShadowModel *
 }
 #pragma cplusplus on
 
-// @symbol _ZN11ShadowModel8CleanAllEv
-void ShadowModel::CleanAll()
+// @symbol _ZN17dExtShadowModel_c8CleanAllEv
+void dExtShadowModel_c::CleanAll()
 {
     if (data_0209cef4) {
         do {
-            ShadowModel *nx = data_0209cef4->next;
+            dExtShadowModel_c *nx = data_0209cef4->next;
             if (nx)
                 nx->prev = 0;
             /* the ROM re-reads the head for this store instead of keeping
@@ -151,10 +151,10 @@ void ShadowModel::CleanAll()
     data_0209ceec = 0;
 }
 
-// @symbol _ZN11ShadowModel9RenderAllEv
-void ShadowModel::RenderAll()
+// @symbol _ZN17dExtShadowModel_c9RenderAllEv
+void dExtShadowModel_c::RenderAll()
 {
-    ShadowModel *node = data_0209cef4;
+    dExtShadowModel_c *node = data_0209cef4;
     if (node) {
         do {
             ModelComponents *model = node->data;

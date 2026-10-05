@@ -6,7 +6,7 @@
 #include "dEnemyBase_c.h"
 #include "ModelAnim.h"
 #include "dCcAcPos_c.h"
-#include "ShadowModel.h"
+#include "dExtShadowModel_c.h"
 #include "dBgCh_Actr.h"
 
 /**
@@ -32,7 +32,7 @@ struct daBakubaku_c : dEnemyBase_c {
     dBgCh_Actr  mWithMeshClsn;   /* 0x190 */
     ModelAnim   mModelAnim;      /* 0x34c */
     State      *mState;          /* 0x3b0 -- the table this fish is running */
-    ShadowModel mShadowModel;    /* 0x3b4 */
+    dExtShadowModel_c mShadowModel;    /* 0x3b4 */
     Matrix4x3   mShadowMat;      /* 0x3dc -- DropShadowRadHeight source */
     s32         mSpawnPosX;      /* 0x40c */
     s32         mSpawnPosY;      /* 0x410 */

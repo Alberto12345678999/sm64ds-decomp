@@ -115,8 +115,8 @@ void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, dActor_c *owner,
 void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
          void *self, dActor_c *owner, Fix12i radius, Fix12i height,
          Vector3_16 *d, int e);
-void _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
-         void *self, ShadowModel *sm, Matrix4x3 *m, Fix12i radius,
+void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
+         void *self, dExtShadowModel_c *sm, Matrix4x3 *m, Fix12i radius,
          int height, u8 flags);
 
 }
@@ -443,7 +443,7 @@ void func_ov102_0214ce60(daShl_c *self)
     int hidden = (self->mFlags & 0x40000) != 0;
     if (hidden)
         return;
-    _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(self, &self->mShadowModel, &self->mModel.mat4x3, 0x50000, 0x50000, 0xf);
+    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(self, &self->mShadowModel, &self->mModel.mat4x3, 0x50000, 0x50000, 0xf);
 }
 
 // @symbol func_ov102_0214cbec

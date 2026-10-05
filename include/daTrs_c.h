@@ -14,8 +14,8 @@
  *     0x1c4 dBgCh_Actr                0x1bc -> 0x380
  *     0x380 ModelAnim                   0x64  -> 0x3e4
  *     0x3e4 Model                       0x50  -> 0x434
- *     0x434 ShadowModel (1st)           0x28  -> 0x45c
- *     0x45c ShadowModel (2nd)           0x28  -> 0x484
+ *     0x434 dExtShadowModel_c (1st)           0x28  -> 0x45c
+ *     0x45c dExtShadowModel_c (2nd)           0x28  -> 0x484
  *
  * Slots 18 (OnYoshiTryEat) and 29 (OnAimedAtWithEgg) are this class's own
  * overrides -- see include/dActor_c.h for the slot table.
@@ -43,7 +43,7 @@
 #include "Model.h"
 #include "ModelAnim.h"
 #include "dCcAcPos_c.h"
-#include "ShadowModel.h"
+#include "dExtShadowModel_c.h"
 #include "dBgCh_Actr.h"
 
 extern "C" void *_ZN7fBase_cnwEj(unsigned size);
@@ -75,8 +75,8 @@ struct daTrs_c : dCapEnemy_c {
        this one mModel shadows it. This is the Boo's own body model: Render
        draws it at mBodyScaleX and both destructors run Model::D1 over it. */
     Model                      mBodyModel;                  /* 0x3e4 */
-    ShadowModel                mShadowModel1;               /* 0x434 */
-    ShadowModel                mShadowModel2;               /* 0x45c */
+    dExtShadowModel_c                mShadowModel1;               /* 0x434 */
+    dExtShadowModel_c                mShadowModel2;               /* 0x45c */
     /* Refreshed from ClosestPlayer every Behavior; the angle/distance below
        are measured against it. */
     Player *mClosestPlayer;    /* 0x484 */

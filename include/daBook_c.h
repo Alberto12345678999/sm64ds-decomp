@@ -14,7 +14,7 @@
  *
  *     0x110 ModelAnim                  0x64    -> 0x174
  *     0x174 Model                      0x50    -> 0x1c4
- *     0x1c4 ShadowModel                0x28    -> 0x1ec
+ *     0x1c4 dExtShadowModel_c                0x28    -> 0x1ec
  *     0x1ec Matrix4x3                  0x30    -> 0x21c
  *     0x21c dCcAcPos_c  0x40    -> 0x25c
  *     0x25c dBgCh_Actr               0x1bc   -> 0x418
@@ -35,13 +35,13 @@
 #include "Model.h"
 #include "ModelAnim.h"
 #include "dCcAcPos_c.h"
-#include "ShadowModel.h"
+#include "dExtShadowModel_c.h"
 #include "dBgCh_Actr.h"
 
 struct daBook_c : dEnemyBase_c {
     ModelAnim                    mModelAnim;            /* 0x110 */
     Model                        mModel;                /* 0x174 */
-    ShadowModel                  mShadowModel;          /* 0x1c4 */
+    dExtShadowModel_c                  mShadowModel;          /* 0x1c4 */
     /* Drop-shadow matrix: InitResources copies IDENTITY_MATRIX4X3 here and
        func_ov020_0211216c writes the position, divided by 8, into its
        translation row before handing it to DropShadowRadHeight. */

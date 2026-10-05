@@ -75,7 +75,7 @@ public:
     u8 started;
 };
 extern Timer data_0209d4c8;
-class ShadowModel {
+class dExtShadowModel_c {
 public:
     static void CleanAll();
 };
@@ -111,7 +111,7 @@ int Stage::Behavior()
         PS_Cleanup();
     ProcessKuppaScript();
     if (data_0209f5bc->v5() == 0) {
-        ShadowModel::CleanAll();
+        dExtShadowModel_c::CleanAll();
         return 1;
     }
     {
@@ -249,7 +249,7 @@ int Stage::Behavior()
     }
     if ((u8)(data_0209f294 | (data_0209f2c4 | data_0209f20c)) == 0) {
         if ((data_0209b454 & ~0x20000000) == 0)
-            ShadowModel::CleanAll();
+            dExtShadowModel_c::CleanAll();
     }
     return 1;
 }

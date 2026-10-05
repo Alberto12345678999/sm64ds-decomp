@@ -33,7 +33,7 @@
 #include "ModelAnim.h"
 #include "dCcAc_c.h"
 #include "dCcAcPos_c.h"
-#include "ShadowModel.h"
+#include "dExtShadowModel_c.h"
 #include "TextureTransformer.h"
 #include "dBgCh_Actr.h"
 

@@ -599,15 +599,15 @@ void dActor_c::UpdatePos(dCc_c *clsn)
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 72 -- _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j
- * 0x02010be8  size 0x48   legacy src/_ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j.c */
-struct ShadowModel;
+/* ROM ordinal 72 -- _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j
+ * 0x02010be8  size 0x48   legacy src/_ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j.c */
+struct dExtShadowModel_c;
 extern "C" {
-extern void _ZN11ShadowModel9InitModelEP9Matrix4x35Fix12IiES3_S3_j( struct ShadowModel* shadow, struct Matrix4x3* matrix, Fix12i scaleX, Fix12i scaleY, Fix12i scaleZ, u8 opacity);
+extern void _ZN17dExtShadowModel_c9InitModelEP9Matrix4x35Fix12IiES3_S3_j( struct dExtShadowModel_c* shadow, struct Matrix4x3* matrix, Fix12i scaleX, Fix12i scaleY, Fix12i scaleZ, u8 opacity);
 }
-extern "C" void _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
+extern "C" void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
     struct dActor_c* this_,
-    struct ShadowModel* shadow,
+    struct dExtShadowModel_c* shadow,
     struct Matrix4x3* matrix,
     Fix12i radius,
     Fix12i depth,
@@ -615,15 +615,15 @@ extern "C" void _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix1
 {
     if (this_->mFlags & 0x10)
         return;
-    _ZN11ShadowModel9InitModelEP9Matrix4x35Fix12IiES3_S3_j(shadow, matrix, radius, depth, radius, opacity);
+    _ZN17dExtShadowModel_c9InitModelEP9Matrix4x35Fix12IiES3_S3_j(shadow, matrix, radius, depth, radius, opacity);
 }
 
 /* -------------------------------------------------------------------------- */
-/* ROM ordinal 71 -- _ZN8dActor_c18DropShadowScaleXYZER11ShadowModelR9Matrix4x35Fix12IiES5_S5_j
- * 0x02010b9c  size 0x4c   legacy src/_ZN8dActor_c18DropShadowScaleXYZER11ShadowModelR9Matrix4x35Fix12IiES5_S5_j.c */
-extern "C" void _ZN8dActor_c18DropShadowScaleXYZER11ShadowModelR9Matrix4x35Fix12IiES5_S5_j(
+/* ROM ordinal 71 -- _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j
+ * 0x02010b9c  size 0x4c   legacy src/_ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j.c */
+extern "C" void _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
     struct dActor_c* this_,
-    struct ShadowModel* shadow,
+    struct dExtShadowModel_c* shadow,
     struct Matrix4x3* matrix,
     Fix12i scaleX,
     Fix12i scaleY,
@@ -632,7 +632,7 @@ extern "C" void _ZN8dActor_c18DropShadowScaleXYZER11ShadowModelR9Matrix4x35Fix12
 {
     if (this_->mFlags & 0x10)
         return;
-    _ZN11ShadowModel9InitModelEP9Matrix4x35Fix12IiES3_S3_j(shadow, matrix, scaleX, scaleY, scaleZ, opacity);
+    _ZN17dExtShadowModel_c9InitModelEP9Matrix4x35Fix12IiES3_S3_j(shadow, matrix, scaleX, scaleY, scaleZ, opacity);
 }
 
 /* -------------------------------------------------------------------------- */

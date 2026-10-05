@@ -5,7 +5,7 @@
 #include "dActor_c.h"
 #include "ModelAnim.h"
 #include "Model.h"
-#include "ShadowModel.h"
+#include "dExtShadowModel_c.h"
 #include "dCcAc_c.h"
 #include "dBgCh_Actr.h"
 
@@ -41,7 +41,7 @@ struct daGmch_c : dActor_c {
     dActor_c *mHolder;                       /* 0x0d0 */
     ModelAnim mModelAnim;                    /* 0x0d4 */
     Model mModel;                            /* 0x138 */
-    ShadowModel mShadowModel;                /* 0x188 */
+    dExtShadowModel_c mShadowModel;                /* 0x188 */
     dCcAc_c mdCcAc_c;  /* 0x1b0 */
     dBgCh_Actr mWithMeshClsn;              /* 0x1e4 */
     /* InitResources assigns IDENTITY_MATRIX4X3 into it whole, and

@@ -86,14 +86,14 @@ void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
     void *self, void *file, void *mat, int scale, s16 angle, void *clps);
 void *_ZN9dBgCh_GndC1Ev(dBgCh_Gnd *self);
 dBgCh_Gnd *_ZN9dBgCh_GndD1Ev(dBgCh_Gnd *self);
-void _ZN8dActor_c18DropShadowScaleXYZER11ShadowModelR9Matrix4x35Fix12IiES5_S5_j(
+void _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
     void *self, void *shadow, void *mat, int a, int b, int c, u8 flags);
 }
 
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN17daObjBk_Botaosi_cD1Ev
 // @symbol _ZN17daObjBk_Botaosi_cD0Ev
-/* Empty on purpose. mwccarm destroys the ShadowModel member, then runs
+/* Empty on purpose. mwccarm destroys the dExtShadowModel_c member, then runs
    ~dBgActor_c inline (its Model and dBgW_KcMbg, then ~dActor_c), and emits
    retail D1 followed by D0. D0's deallocation is an inline operator delete,
    which is why nothing here mentions a heap. */
@@ -207,7 +207,7 @@ extern "C" void func_ov015_021114f0(daObjBk_Botaosi_c *plank)
     }
     if (plank->mState >= 2)
         plank->mShadowMat.t.y = plank->mFrontFloorY >> 3;
-    _ZN8dActor_c18DropShadowScaleXYZER11ShadowModelR9Matrix4x35Fix12IiES5_S5_j(
+    _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
         plank, &plank->mShadowModel, &plank->mShadowMat, 0xc8000, 0x12c000, lean, 0xf);
 }
 #pragma pop
@@ -394,9 +394,9 @@ int daObjBk_Botaosi_c::InitResources()
 // @symbol daObjBk_Botaosi_c_classInit
 /* BK_BOTAOSI's registry factory. 0x39c is this class's size, and the calls
    the cartridge inlines here -- fBase_c::operator new, dBgActor_c's base
-   constructor, the vptr store and ShadowModel's constructor on the member at
+   constructor, the vptr store and dExtShadowModel_c's constructor on the member at
    0x320 -- are exactly what the implicit default constructor of
-   `struct daObjBk_Botaosi_c : dBgActor_c` with a ShadowModel member
+   `struct daObjBk_Botaosi_c : dBgActor_c` with a dExtShadowModel_c member
    generates. Same shape as daObjBk_Lift_c_classInit in this overlay. */
 extern "C" daObjBk_Botaosi_c *daObjBk_Botaosi_c_classInit()
 {

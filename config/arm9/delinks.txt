@@ -1108,11 +1108,11 @@ src/_ZN8dActor_c13ClosestPlayerEv.cpp:
     complete
     .text start:0x02010ad8 end:0x02010b9c
 
-src/_ZN8dActor_c18DropShadowScaleXYZER11ShadowModelR9Matrix4x35Fix12IiES5_S5_j.cpp:
+src/_ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j.cpp:
     complete
     .text start:0x02010b9c end:0x02010be8
 
-src/_ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j.cpp:
+src/_ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j.cpp:
     complete
     .text start:0x02010be8 end:0x02010c30
 
@@ -2076,7 +2076,7 @@ src/_ZN9AnimationC2Ev.cpp:
     complete
     .text start:0x02015d18 end:0x02015d38
 
-src/engine/model/ShadowModel.cpp:
+src/engine/model/dExtShadowModel_c.cpp:
     complete
     .text start:0x02015d38 end:0x0201609c
 

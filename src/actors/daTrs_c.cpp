@@ -105,7 +105,7 @@ int _ZN6Player9StartTalkER7fBase_cb(void *pl, void *a, int b);
 char *_ZN8dActor_c10FindWithIDEj(unsigned int id);
 void *_ZN8dActor_c13ClosestPlayerEv(void *self);
 char *_ZN8dActor_c15FindWithActorIDEjPS_(unsigned int id, void *p);
-void _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(void *self, void *sm, void *m, int rad, int h, u32 a);
+void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void *self, void *sm, void *m, int rad, int h, u32 a);
 void _ZN8dActor_c24KillAndTrackInDeathTableEv(void *self);
 char *_ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(unsigned int a, unsigned int b, const void *pos, const void *rot, int e, int f);
 int func_020092c4(void *cam, void *out, void *target);
@@ -414,7 +414,7 @@ extern "C" void func_ov063_0211640c(char *c)
         Matrix4x3_FromTranslation(&data_020a0e68,
             pos.x >> 3, pos.y >> 3, pos.z >> 3);
         *(struct Matrix4x3 *)(c + 0x4a4) = data_020a0e68;
-        _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
+        _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
             c, c + 0x434, c + 0x4a4, 0x12c000, 0xc8000, 0xf);
 
         if ((u32)(*(u16 *)(c + 0x5d4) << 0x17) >> 0x1f) {
@@ -424,7 +424,7 @@ extern "C" void func_ov063_0211640c(char *c)
             Matrix4x3_FromTranslation(&data_020a0e68,
                 pos.x >> 3, pos.y >> 3, pos.z >> 3);
             *(struct Matrix4x3 *)(c + 0x4d4) = data_020a0e68;
-            _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
+            _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
                 c, c + 0x45c, c + 0x4d4, 0x12c000, 0xc8000, 0xf);
         }
     }
@@ -485,9 +485,9 @@ extern "C" void func_ov063_021166ac(char *c)
     {
         int big = (*(u16 *)(c + 0xc) == 0xd2);
         if (big)
-            _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(c, c + 0x434, c + 0x4a4, 0x12c000, 0xc8000, 0xf);
+            _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(c, c + 0x434, c + 0x4a4, 0x12c000, 0xc8000, 0xf);
         else
-            _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(c, c + 0x434, c + 0x4a4, 0x64000, 0xc8000, 0xf);
+            _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(c, c + 0x434, c + 0x4a4, 0x64000, 0xc8000, 0xf);
     }
     *(s32 *)(c + 0x568) = *(s32 *)(c + 0x538) + (int)(((s64)*(s32 *)(c + 0x80) * 0x60000 + 0x800) >> 12);
     pos.x = *(s32 *)(c + 0x564);
@@ -513,7 +513,7 @@ extern "C" void func_ov063_021166ac(char *c)
 // @symbol func_ov063_021169c4
 extern "C" void func_ov063_021169c4(char *c) {
     Matrix4x3_FromTranslation(c+0x31c, *(int*)(c+0x5c)>>3, *(int*)(c+0x60)>>3, *(int*)(c+0x64)>>3);
-    _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(c, c+0x350, c+0x31c, 0x64000, 0x64000, 0xf);
+    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(c, c+0x350, c+0x31c, 0x64000, 0x64000, 0xf);
 }
 
 // @symbol func_ov063_02116a1c

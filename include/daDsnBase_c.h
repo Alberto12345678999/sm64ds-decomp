@@ -27,7 +27,7 @@
  * ov091 and daDkk_c_classInit in ov025 both store 0x021351fc.
  *
  * AND IT IS THE ONLY ONE OF THE ELEVEN WITH SUB-OBJECTS OF ITS OWN. The other ten
- * add scalars or nothing; this one adds a TextureSequence and a ShadowModel, both
+ * add scalars or nothing; this one adds a TextureSequence and a dExtShadowModel_c, both
  * with destructors, which is why every leaf's destructor is 0x60 rather than 0x50
  * and why the empty body has to reproduce five calls rather than three.
  *
@@ -59,10 +59,10 @@
  *          _ZN15TextureSequenceC1Ev at +0x324 while the vptr is this class's, and
  *          both destructors call its D1 there. sizeof is 0x14, so it closes on
  *          0x338.
- *   0x338  ShadowModel, same two-sided evidence, _ZN11ShadowModelC1Ev at +0x338.
+ *   0x338  dExtShadowModel_c, same two-sided evidence, _ZN17dExtShadowModel_cC1Ev at +0x338.
  *          sizeof is 0x28, so it closes on 0x360.
  *
- * SIZE 0x360, WHICH IS THE MINIMAL READING AND SAID AS SUCH. The ShadowModel
+ * SIZE 0x360, WHICH IS THE MINIMAL READING AND SAID AS SUCH. The dExtShadowModel_c
  * closes there and nothing this class owns reaches higher. The leaves allocate
  * more -- daDkk_c_classInit passes 928 = 0x3a0 and Thwomp_Spawn 932 = 0x3a4 -- and
  * because the two disagree, no literal fixes this class's end the way
@@ -77,13 +77,13 @@
 
 #include "dBgActor_c.h"
 #include "TextureSequence.h"
-#include "ShadowModel.h"
+#include "dExtShadowModel_c.h"
 
 struct daDsnBase_c : dBgActor_c {
     /* Field NAMES are placeholders. Offsets, widths and types are observed. */
     s32 mFileTable;                     /* 0x320 - a void** in practice */
     TextureSequence mTextureSequence;   /* 0x324 */
-    ShadowModel mShadowModel;           /* 0x338 */
+    dExtShadowModel_c mShadowModel;           /* 0x338 */
 
     /* --- vtable --- */
     /* INLINE ON PURPOSE, for the reason include/dBgActor_c.h gives for its own:
@@ -93,7 +93,7 @@ struct daDsnBase_c : dBgActor_c {
        make each descendant emit a `bl` the ROM does not have.
 
        EMPTY, BUT NOT INERT. The two members above have destructors, so this body
-       emits _ZN11ShadowModelD1Ev at +0x338 and _ZN15TextureSequenceD1Ev at +0x324
+       emits _ZN17dExtShadowModel_cD1Ev at +0x338 and _ZN15TextureSequenceD1Ev at +0x324
        in reverse declaration order -- which is the order the ROM uses. */
     virtual ~daDsnBase_c() {}
 

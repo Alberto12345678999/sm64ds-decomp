@@ -132,7 +132,7 @@ void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
     void *self, void *actor, int a, int b, void *c, void *d);
 void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
     void *mc, void *kcl, void *mtx, int fix, s16 s, void *clps);
-int _ZN11ShadowModel10InitCuboidEv(void *self);
+int _ZN17dExtShadowModel_c10InitCuboidEv(void *self);
 void _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(void *self, void *btp, int a, int fix, unsigned int b);
 void *_ZN15TextureSequence8LoadFileER13SharedFilePtr(void *shared);
 void _ZN4dBgW16UpdatePosAndAngsERS_P8dActor_cR5dBgPiR7Vector3P10Vector3_16S8_();
@@ -154,7 +154,7 @@ void _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(void *self, const void *v, int
 void _ZN8dActor_c10PoofDustAtERK7Vector3(void *actor, const void *p);
 void _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(void *self, const void *pos, u32 n, int fix, s16 s);
 void _ZN8dActor_c16TriplePoofDustAtERK7Vector3(void *actor, const void *p);
-void _ZN8dActor_c18DropShadowScaleXYZER11ShadowModelR9Matrix4x35Fix12IiES5_S5_j(
+void _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
     void *self, void *sm, void *mtx, int a, int b, int c, unsigned int g);
 void _ZN8dActor_c19UntrackAndSpawnStarERajRK7Vector3h(
     void *actor, signed char *flag, unsigned int id, const void *pos, unsigned int j);
@@ -257,7 +257,7 @@ int daBtn_c::InitResources()
     kcl = _ZN7dBgW_Kc8LoadFileER13SharedFilePtr(data_ov079_02127bf0[idx]);
     (void)kcl;
 
-    if (_ZN11ShadowModel10InitCuboidEv(&mShadowModel) == 0) {
+    if (_ZN17dExtShadowModel_c10InitCuboidEv(&mShadowModel) == 0) {
         return 0;
     }
 
@@ -1513,10 +1513,10 @@ extern "C" void func_ov079_02124188(daBtn_c *self)
         return;
 
     if (self->mIsKing != 0) {
-        _ZN8dActor_c18DropShadowScaleXYZER11ShadowModelR9Matrix4x35Fix12IiES5_S5_j(
+        _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
             self, &self->mShadowModel, self->mShadowMatrix, 0x1cc000, 0x190000, shadowRad, 0xf);
     } else {
-        _ZN8dActor_c18DropShadowScaleXYZER11ShadowModelR9Matrix4x35Fix12IiES5_S5_j(
+        _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
             self, &self->mShadowModel, self->mShadowMatrix, 0xf0000, 0x190000, shadowRad, 0xf);
     }
     return;

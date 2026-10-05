@@ -4,7 +4,7 @@
 #include "types.h"
 #include "ModelAnim.h"
 #include "TextureSequence.h"
-#include "ShadowModel.h"
+#include "dExtShadowModel_c.h"
 #include "dCcAc_c.h"
 #include "dBgCh_Actr.h"
 #include "PathPtr.h"
@@ -43,7 +43,7 @@ struct daPgRcer_c : dActor_c {
     u8 pad_0d0[0x4];
     ModelAnim mModelAnim;             /* 0x0d4 */
     TextureSequence mTextureSequence; /* 0x138 */
-    ShadowModel mShadowModel;         /* 0x14c */
+    dExtShadowModel_c mShadowModel;         /* 0x14c */
     dCcAc_c mdCcAc_c;                 /* 0x174 */
     dBgCh_Actr mWithMeshClsn;         /* 0x1a8 */
     PathPtr mPath;                    /* 0x364 */
