@@ -19,6 +19,7 @@ from __future__ import annotations
 import hashlib
 import json
 import pathlib
+import re
 import subprocess
 import sys
 
@@ -481,6 +482,77 @@ def prepare(tu_ids, config_root, work_root, jobs=1):
     }
 
 
+_FXHASH_SEED = 0x517cc1B727220A95
+
+
+def _fxhash64(data):
+    """rustc-hash fxhash64 over a ``Vec<u8>`` (length add, then 8/4/2/1-byte chunks)."""
+    h = 0
+
+    def add(v):
+        nonlocal h
+        rot = ((h << 5) | (h >> 59)) & 0xFFFFFFFFFFFFFFFF
+        h = (rot ^ v) * _FXHASH_SEED & 0xFFFFFFFFFFFFFFFF
+
+    add(len(data))
+    i, n = 0, len(data)
+    while i + 8 <= n:
+        add(int.from_bytes(data[i:i + 8], "little"))
+        i += 8
+    if i + 4 <= n:
+        add(int.from_bytes(data[i:i + 4], "little"))
+        i += 4
+    if i + 2 <= n:
+        add(int.from_bytes(data[i:i + 2], "little"))
+        i += 2
+    if i < n:
+        add(data[i])
+    return h
+
+
+def _module_checksum_failures(config_yaml):
+    """Replicate `dsd check modules` module-by-module so a failing gate names bytes.
+
+    dsd's per-module verdicts go through `log::info!`, which the captured output
+    suppresses, so a remote-only failure reports nothing. This resolves each
+    module's `object:` the same way dsd does -- relative to the config file's
+    directory -- and hashes exactly as `check_module` does, including the
+    missing-file-means-empty-bytes rule."""
+    out = []
+    try:
+        text = config_yaml.read_text(encoding="utf-8")
+    except OSError as exc:
+        return [f"checksum replay unavailable: {exc}"]
+    name = obj = None
+    for line in text.splitlines():
+        m = re.match(r"\s*(?:- )?name:\s*(\S+)", line)
+        if m:
+            name = m.group(1)
+            continue
+        m = re.match(r"\s*object:\s*(\S+)", line)
+        if m:
+            obj = m.group(1)
+            continue
+        m = re.match(r"\s*hash:\s*(\S+)", line)
+        if not m or obj is None:
+            continue
+        try:
+            expected = int(m.group(1), 16)
+        except ValueError:
+            out.append(f"module {name}: invalid hash {m.group(1)!r}")
+            name = obj = None
+            continue
+        p = config_yaml.parent / obj
+        code = p.read_bytes() if p.is_file() else b""
+        actual = _fxhash64(code)
+        if actual != expected:
+            out.append(f"module {name}: checksum failed "
+                       f"(file {obj}: {'absent' if not p.is_file() else f'{len(code)} bytes'}, "
+                       f"actual {actual:016x}, expected {expected:016x})")
+        name = obj = None
+    return out
+
+
 def verify_link(config_yaml, linked_elf, prepared):
     """Run the production-only module, symbol-delta, and storage-alias gates."""
     config_yaml = pathlib.Path(config_yaml)
@@ -489,22 +561,25 @@ def verify_link(config_yaml, linked_elf, prepared):
         [str(TB.RB.DSD), "check", "modules", "-c", str(config_yaml), "-f"],
         "dsd check modules")
     if not ok_modules:
-        detail_lines = []
-        try:
-            import rombuild_check as RBC
-            analysis = RBC.analyze(config_yaml.parent, "stock")
-            for m in (analysis.get("moduleFidelity") or {}).get("results", []):
-                if not m.get("exact"):
+        detail_lines = _module_checksum_failures(config_yaml)
+        if not detail_lines:
+            try:
+                import rombuild_check as RBC
+                analysis = RBC.analyze(config_yaml.parent, "stock")
+                for m in (analysis.get("moduleFidelity") or {}).get("results", []):
+                    if not m.get("exact"):
+                        detail_lines.append(
+                            f"module {m.get('module')}: {m.get('differingBytes')} "
+                            f"byte(s) differ from retail")
+                for f in (analysis.get("failures") or [])[:12]:
                     detail_lines.append(
-                        f"module {m.get('module')}: {m.get('differingBytes')} "
-                        f"byte(s) differ from retail")
-            for f in (analysis.get("failures") or [])[:12]:
-                detail_lines.append(
-                    f"  {f.get('module')} {f.get('name')} "
-                    f"0x{f.get('addr', 0):08x} +0x{f.get('size', 0):x}: "
-                    f"{f.get('differingBytes', f.get('reason', '?'))}")
-        except Exception as exc:  # diagnostic only; never mask the gate failure
-            detail_lines.append(f"module analysis unavailable: {exc}")
+                        f"  {f.get('module')} {f.get('name')} "
+                        f"0x{f.get('addr', 0):08x} +0x{f.get('size', 0):x}: "
+                        f"{f.get('differingBytes', f.get('reason', '?'))}")
+                for label in (analysis.get("missingModuleBinaries") or [])[:12]:
+                    detail_lines.append(f"module {label}: binary missing")
+            except Exception as exc:  # diagnostic only; never mask the gate failure
+                detail_lines.append(f"module analysis unavailable: {exc}")
         if detail_lines:
             modules_out = (modules_out + "\n" if modules_out else "") \
                 + "\n".join(detail_lines)
