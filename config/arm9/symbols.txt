@@ -1483,10 +1483,10 @@ _ZN14dBgW_KcMbgSclY7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block kind:f
 _ZN14dBgW_KcMbgSclYD0Ev kind:function(arm,size=0x2c) addr:0x0203ab3c
 _ZN14dBgW_KcMbgSclYD1Ev kind:function(arm,size=0x24) addr:0x0203ab68
 _ZN14dBgW_KcMbgSclYC1Ev kind:function(arm,size=0x24) addr:0x0203ab8c
-func_0203abb0 kind:function(arm,size=0x1c) addr:0x0203abb0
-func_0203abcc kind:function(arm,size=0x8) addr:0x0203abcc
-func_0203abd4 kind:function(arm,size=0x2c) addr:0x0203abd4
-func_0203ac00 kind:function(arm,size=0x1c) addr:0x0203ac00
+_ZNK8dM3dGSph9GetCentreER7Vector3 kind:function(arm,size=0x1c) addr:0x0203abb0
+_ZN8dM3dGSph9SetRadiusEi kind:function(arm,size=0x8) addr:0x0203abcc
+_ZN8dM3dGSph3SetERK7Vector3i kind:function(arm,size=0x2c) addr:0x0203abd4
+_ZN8dM3dGSph9SetCentreERK7Vector3 kind:function(arm,size=0x1c) addr:0x0203ac00
 _ZN8dM3dGSphD2Ev kind:function(arm,size=0x10) addr:0x0203ac1c
 _ZN8dM3dGSphD0Ev kind:function(arm,size=0x24) addr:0x0203ac2c
 _ZN8dM3dGSphD1Ev kind:function(arm,size=0x10) addr:0x0203ac50

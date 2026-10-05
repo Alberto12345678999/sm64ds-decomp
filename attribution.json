@@ -7956,6 +7956,15 @@
     "src/actors/daStar_c.cpp#_ZN12daStarBase_c8BehaviorEv": "ruspecial",
     "src/actors/daStar_c.cpp#_ZN8daStar_c8BehaviorEv": "ruspecial",
     "src/actors/daStar_c.cpp#_ZN12daStarBase_c13InitResourcesEv": "tangosdev",
-    "src/actors/daStar_c.cpp#_ZN8daStar_c13InitResourcesEv": "ruspecial"
+    "src/actors/daStar_c.cpp#_ZN8daStar_c13InitResourcesEv": "ruspecial",
+    "src/engine/collision/dM3dGSph.cpp#_ZNK8dM3dGSph9GetCentreER7Vector3": "tangosdev",
+    "src/engine/collision/dM3dGSph.cpp#_ZN8dM3dGSph9SetRadiusEi": "tangosdev",
+    "src/engine/collision/dM3dGSph.cpp#_ZN8dM3dGSph3SetERK7Vector3i": "tangosdev",
+    "src/engine/collision/dM3dGSph.cpp#_ZN8dM3dGSph9SetCentreERK7Vector3": "tangosdev",
+    "src/engine/collision/dM3dGSph.cpp#_ZN8dM3dGSphD2Ev": "tangosdev",
+    "src/engine/collision/dM3dGSph.cpp#_ZN8dM3dGSphD0Ev": "tangosdev",
+    "src/engine/collision/dM3dGSph.cpp#_ZN8dM3dGSphD1Ev": "tangosdev",
+    "src/engine/collision/dM3dGSph.cpp#_ZN8dM3dGSphC1Ev": "tangosdev",
+    "src/engine/collision/dM3dGSph.cpp#_ZN8dM3dGSphC2Ev": "tangosdev"
   }
 }

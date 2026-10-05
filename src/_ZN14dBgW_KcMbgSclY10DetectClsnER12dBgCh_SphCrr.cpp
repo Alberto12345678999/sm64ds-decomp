@@ -9,7 +9,6 @@
 #include "dBgPi.h"
 
 extern "C" {
-void func_0203abb0(dM3dGSph* sphere, Vector3* centre);
 void func_0203aa74(dBgW_KcMbgSclY* self, Vector3* v, Vector3* res);
 void _ZN12dBgCh_SphCrr15SetObjAndSphereERK7Vector35Fix12IiEP8dActor_c(
     dBgCh_SphCrr *sphere, const Vector3 *pos, Fix12i radius, dActor_c *actor);
@@ -40,7 +39,7 @@ int dBgW_KcMbgSclY::DetectClsn(dBgCh_SphCrr &sphere)
     int radius2;
     int r;
 
-    func_0203abb0(&(dM3dGSph &)sphere, &centre);
+    sphere.GetCentre(centre);
     func_0203aa74(this, &centre, &localCentre);
 
     inverseScale = invScale;
