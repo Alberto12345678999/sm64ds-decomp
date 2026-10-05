@@ -6,7 +6,7 @@ addr	state	modules	config_names	config_kinds	verified_name	verified_kind	verdict
 0x02006590	NO-SLOT	-	-	-	ACTOR_SPAWN_TABLE	data	no-slot		
 0x02008c34	NO-SLOT	-	-	-	_ZN4cstd4finvEi	data	no-slot		
 0x0200e444	DIVERGED	arm9	Camera_Spawn	function	_ZN6CameraC1Ev	function	plain		
-0x0201609c	DIVERGED	arm9	_ZN11CommonModel12SetPolygonIDEj	function	_ZN11CommonModel13Func_0201609CEj	function	identity		
+0x0201609c	DIVERGED	arm9	_ZN17dExtCommonModel_c12SetPolygonIDEj	function	_ZN17dExtCommonModel_c13Func_0201609CEj	function	identity
 0x02017168	DIVERGED	arm9	_ZThn80_N9ModelAnimD0Ev	function	_ZThn80_N9AnimationD0Ev	function	identity		
 0x02017178	DIVERGED	arm9	_ZThn80_N9ModelAnimD1Ev	function	_ZThn80_N9AnimationD1Ev	function	identity		
 0x02017188	DIVERGED	arm9	_ZThn80_N14BlendModelAnimD0Ev	function	_ZThn80_N9AnimationD0Ev	function	identity		

@@ -120,8 +120,8 @@
         "src/_ZN11BabyPenguin13OnYoshiTryEatEv.cpp": "tangosdev",
         "src/_ZN11BillBlaster15OnHitByMegaCharER6Player.c": "tangosdev",
         "src/_ZN11BillBlaster15OnHitByMegaCharER6Player.cpp": "tangosdev",
-        "src/_ZN11CommonModelC1Ev.c": "tangosdev",
-        "src/_ZN11CommonModelC1Ev.cpp": "tangosdev",
+        "src/_ZN17dExtCommonModel_cC1Ev.c": "tangosdev",
+        "src/_ZN17dExtCommonModel_cC1Ev.cpp": "tangosdev",
         "src/_ZN11CrazedCrate13OnYoshiTryEatEv.c": "tangosdev",
         "src/_ZN11CrazedCrate13OnYoshiTryEatEv.cpp": "tangosdev",
         "src/_ZN11FallBlockWfD0Ev.cpp": "tangosdev",
@@ -7957,12 +7957,12 @@
         "src/actors/daStar_c.cpp#_ZN8daStar_c8BehaviorEv": "ruspecial",
         "src/actors/daStar_c.cpp#_ZN12daStarBase_c13InitResourcesEv": "tangosdev",
         "src/actors/daStar_c.cpp#_ZN8daStar_c13InitResourcesEv": "ruspecial",
-        "src/engine/model/CommonModel.cpp#_ZN11CommonModel12SetPolygonIDEj": "tangosdev",
-        "src/engine/model/CommonModel.cpp#_ZN11CommonModel13Func_020160ACEj": "tangosdev",
-        "src/engine/model/CommonModel.cpp#_ZN11CommonModel6RenderEPK7Vector3": "tangosdev",
-        "src/engine/model/CommonModel.cpp#_ZN11CommonModel9DoSetFileEPcii": "tangosdev",
-        "src/engine/model/CommonModel.cpp#_ZN11CommonModelD0Ev": "tangosdev",
-        "src/engine/model/CommonModel.cpp#_ZN11CommonModelD1Ev": "tangosdev",
-        "src/engine/model/CommonModel.cpp#_ZN11CommonModelC1Ev": "tangosdev"
+        "src/engine/model/dExtCommonModel_c.cpp#_ZN17dExtCommonModel_c12SetPolygonIDEj": "tangosdev",
+        "src/engine/model/dExtCommonModel_c.cpp#_ZN17dExtCommonModel_c13Func_020160ACEj": "tangosdev",
+        "src/engine/model/dExtCommonModel_c.cpp#_ZN17dExtCommonModel_c6RenderEPK7Vector3": "tangosdev",
+        "src/engine/model/dExtCommonModel_c.cpp#_ZN17dExtCommonModel_c9DoSetFileEPcii": "tangosdev",
+        "src/engine/model/dExtCommonModel_c.cpp#_ZN17dExtCommonModel_cD0Ev": "tangosdev",
+        "src/engine/model/dExtCommonModel_c.cpp#_ZN17dExtCommonModel_cD1Ev": "tangosdev",
+        "src/engine/model/dExtCommonModel_c.cpp#_ZN17dExtCommonModel_cC1Ev": "tangosdev"
     }
 }
