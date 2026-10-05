@@ -80,7 +80,7 @@ int func_020397dc(int denom);
 s16 func_020396dc(dBgW_Kc *self, KCL_Tri *tri);
 
 /* 0x02037fd4: record a hit -- triangle index and surface into the dBgPi. */
-void func_02037fd4(void *res, s16 triID, SurfaceInfo *info);
+
 
 }
 
@@ -189,7 +189,7 @@ int dBgW_Kc::DetectClsn(dBgCh_Gnd &ray)
             /* through the REFERENCE: a pointer-level upcast makes mwcc emit
                the null-checked MI adjustment (movs/addne), the ROM's is
                unconditional */
-            func_02037fd4(&(dBgPi &)ray, func_020396dc(this, tri), &data_020a0cec);
+            ((dBgPi &)ray).RecordHit(func_020396dc(this, tri), &data_020a0cec);
         }
 
         /* Snap to the bottom of the node just tested and drop one cell. */

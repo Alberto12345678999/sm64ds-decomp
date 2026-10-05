@@ -59,7 +59,7 @@ extern "C" s16 func_020396dc(dBgW_Kc *self, KCL_Tri *tri);
 /* SurfaceInfo::CopyNormalTo is declared in include/SurfaceInfo.h. */
 extern "C" s32 func_02039794(s32 normalY);
 extern SurfaceInfo data_020a0cec;
-extern "C" void func_02037fd4(dBgPi *res, s16 triID, SurfaceInfo *info);
+
 extern "C" void func_020379f4(dBgCh_SphCrr *self, s16 triID, SurfaceInfo *info);
 extern "C" void func_020379c0(dBgCh_SphCrr *self, s16 triID, SurfaceInfo *info);
 extern "C" void func_0203798c(dBgCh_SphCrr *self, s16 triID, SurfaceInfo *info);
@@ -763,7 +763,7 @@ s32 dBgW_Kc::DetectClsn(dBgCh_SphCrr &sphere)
                         }
                         if (!contactKind) contactKind = k1;
 
-                        func_02037fd4(&(dBgPi &)sphere, triID, &data_020a0cec);
+                        ((dBgPi &)sphere).RecordHit(triID, &data_020a0cec);
                         sphere.flags |= 1;
 
                         if (cls == 0) {

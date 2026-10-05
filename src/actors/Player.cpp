@@ -12358,7 +12358,6 @@ int func_ov002_020cfbdc(char *self)
 // Matched byte-for-byte with mwccarm 1.2/sp2p3 (ov002).
 extern "C" {
 int func_ov002_020cfd84(void* actor, void* a, void* b) {
-    extern int _ZNK5dBgPi9GetClsnIDEv(void*);
     extern void* _ZN8dActor_c10FindWithIDEj(unsigned int id);
     dBgCh_Lin line;
     dBgPi result;
@@ -12366,12 +12365,12 @@ int func_ov002_020cfd84(void* actor, void* a, void* b) {
     if (line.DetectClsn()) {
         result.surface = line.surface;
         result.triangleID = line.triangleID;
-        result.flags = line.flags;
+        result.colliderIdx = line.colliderIdx;
         result.clsnID = line.clsnID;
-        result.unk_020 = line.unk_020;
-        result.unk_024 = line.unk_024;
-        if (_ZNK5dBgPi9GetClsnIDEv(&result) != -1) {
-            void* act = _ZN8dActor_c10FindWithIDEj((unsigned int)_ZNK5dBgPi9GetClsnIDEv(&result));
+        result.owner = line.owner;
+        result.collider = line.collider;
+        if (result.GetClsnID() != -1) {
+            void* act = _ZN8dActor_c10FindWithIDEj((unsigned int)result.GetClsnID());
             if (act != 0) {
                 int t = (*(unsigned short*)((char*)act + 0xc) == 0x12a);
                 if (t == 0) {

@@ -33,7 +33,7 @@ int  func_020397dc(s32 x);
 int  func_020397b8(s32 x);
 void *_ZN5dBgPcC1Ev(dBgPc *info);
 void _ZN5dBgPcD1Ev(dBgPc *info);
-void func_02037fd4(int *res, short triIdx, int *info);
+void _ZN5dBgPi9RecordHitEsP11SurfaceInfo(void *res, short triIdx, void *info); /* local extern: the file-local 0x1c-byte dBgPi filler above collides with include/dBgPi.h; this decl keeps the matched call shape until the shadow is retired. */
 void func_020375ec(int *ray, int *pos);
 short func_020396dc(int **self, unsigned int prism);
 int  _ZN5dBgCh21ShouldPassThroughImplEPvRK4CLPSRKS_b(void *self, SurfaceInfo *surf,
@@ -231,7 +231,7 @@ s32 dBgW_Kc::DetectClsn(dBgCh_Lin &ray)
                         best.y = hit.y;
                         best.z = hit.z;
                         bestDist = dist;
-                        func_02037fd4((int *) &ray.result, triIdx, (int *) &pc.surface);
+                        _ZN5dBgPi9RecordHitEsP11SurfaceInfo((int *) &ray.result, triIdx, (int *) &pc.surface);
                         found = 1;
                     }
                     }

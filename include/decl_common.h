@@ -1890,7 +1890,7 @@ extern void func_02037a6c(void*, int, int, int, int, int, int);
 extern void func_02037b5c(void*);
 extern void _ZN5dBgPcD2Ev(void*);
 extern void *_ZN5dBgPcC2Ev(void*);
-extern void func_020380c0(void*);
+extern void _ZN5dBgPi5ResetEv(void*);
 extern void _ZN5dBgPiD2Ev(void*);
 extern void func_0203821c(int*, int);
 extern void func_02038224(void*);

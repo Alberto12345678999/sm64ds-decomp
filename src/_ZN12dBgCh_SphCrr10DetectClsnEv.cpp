@@ -1,4 +1,5 @@
 //cpp
+#include "dBgPi.h"
 
 extern "C" {
 int func_020393b4(void *p);
@@ -6,7 +7,7 @@ int func_020393ac(void *p);
 int func_0203939c(void *p);
 int func_0203938c(void *p);
 int func_02035354(void *a, void *b);
-void func_02037fec(void *c, int p1, int p2, int p3, void *e);
+
 void func_020379d0(void *c, int p1, int p2, int p3, void *e);
 void func_0203799c(void *c, int p1, int p2, int p3, void *e);
 void func_02037968(void *c, int p1, int p2, int p3, void *e);
@@ -54,7 +55,7 @@ int dBgCh_SphCrr::DetectClsn()
         if (func_02035354(this, (void *)func_020393b4(e)) == 0) {
             mask = ((C *)e)->v8(this);
             if (mask != 0) {
-                func_02037fec((char *)this + 0x10, 0, func_020393ac(e), func_020393b4(e), e);
+                ((dBgPi *)((char *)this + 0x10))->SetCollider(0, func_020393ac(e), (dActor_c *)func_020393b4(e), (dBgW *)e);
                 if (mask & 1)
                     func_020379d0(this, 0, func_020393ac(e), func_020393b4(e), e);
                 if (mask & 2)
@@ -97,7 +98,7 @@ int dBgCh_SphCrr::DetectClsn()
         {
             { int t = o->v8(this); mask = t; }
             if (mask != 0) {
-                func_02037fec((char *)this + 0x10, i, func_020393ac(o), func_020393b4(o), o);
+                ((dBgPi *)((char *)this + 0x10))->SetCollider(i, func_020393ac(o), (dActor_c *)func_020393b4(o), (dBgW *)o);
                 if (mask & 1)
                     func_020379d0(this, i, func_020393ac(o), func_020393b4(o), o);
                 if (mask & 2)
