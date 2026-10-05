@@ -244,7 +244,8 @@ def _bad_module_lines(verification):
     captured output; surfacing it makes a remote-only mismatch actionable from
     the failure detail alone."""
     out = (verification.get("modulesOutput") or "").strip()
-    bad = [line for line in out.splitlines() if "checksum failed" in line]
+    bad = [line for line in out.splitlines()
+           if "checksum failed" in line or "byte(s) differ" in line]
     if bad:
         return bad
     return [out[-1200:]] if out else []

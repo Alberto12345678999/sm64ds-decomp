@@ -488,6 +488,26 @@ def verify_link(config_yaml, linked_elf, prepared):
     ok_modules, modules_out, _seconds = TB._run_dsd(
         [str(TB.RB.DSD), "check", "modules", "-c", str(config_yaml), "-f"],
         "dsd check modules")
+    if not ok_modules:
+        detail_lines = []
+        try:
+            import rombuild_check as RBC
+            analysis = RBC.analyze(config_yaml.parent, "stock")
+            for m in (analysis.get("moduleFidelity") or {}).get("results", []):
+                if not m.get("exact"):
+                    detail_lines.append(
+                        f"module {m.get('module')}: {m.get('differingBytes')} "
+                        f"byte(s) differ from retail")
+            for f in (analysis.get("failures") or [])[:12]:
+                detail_lines.append(
+                    f"  {f.get('module')} {f.get('name')} "
+                    f"0x{f.get('addr', 0):08x} +0x{f.get('size', 0):x}: "
+                    f"{f.get('differingBytes', f.get('reason', '?'))}")
+        except Exception as exc:  # diagnostic only; never mask the gate failure
+            detail_lines.append(f"module analysis unavailable: {exc}")
+        if detail_lines:
+            modules_out = (modules_out + "\n" if modules_out else "") \
+                + "\n".join(detail_lines)
     ok_symbols, symbols_out, _seconds = TB._run_dsd(
         [str(TB.RB.DSD), "check", "symbols", "-c", str(config_yaml),
          "-e", str(linked_elf), "-m", "12"],
