@@ -62,9 +62,9 @@ extern u8 func_0201a2f8[];
 void *_ZN7fBase_cC2Ev(void *);
 extern int data_0208e4b8[];
 extern int data_020943c4[];
-extern int data_0208eafc[];
-extern int data_0208eacc[];
-extern int data_0208eb2c[];
+extern int _ZTV8dFader_c[];
+extern int _ZTV15dFdBrightness_c[];
+extern int _ZTV10dFdColor_c[];
 }
 
 /* Fader at dScMB_c+0x50. Slots 5 and 2 are what this TU calls; the header's
@@ -351,11 +351,11 @@ extern "C" void *dScMB_c_classInit(void)
         *(int **)p = data_020943c4;
         {
             int *fp = (int *)((int)p + 0x50);
-            fp[0] = (int)data_0208eafc;
-            fp[0] = (int)data_0208eacc;
+            fp[0] = (int)_ZTV8dFader_c;
+            fp[0] = (int)_ZTV15dFdBrightness_c;
             fp[1] = 0x1000;
             fp[2] = 0;
-            fp[0] = (int)data_0208eb2c;
+            fp[0] = (int)_ZTV10dFdColor_c;
             *(short *)(fp + 3) = 0;
         }
     }
