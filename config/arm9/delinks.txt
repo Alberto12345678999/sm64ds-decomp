@@ -2396,25 +2396,9 @@ src/_ZThn80_N10ModelAnim2D1Ev.cpp:
     complete
     .text start:0x020171b8 end:0x020171c8
 
-src/_ZN10dFdDummy_c14SetForwardTimeEj.cpp:
+src/engine/fader/dFdDummy_c.cpp:
     complete
-    .text start:0x020171c8 end:0x020171f0
-
-src/_ZN10dFdDummy_c15SetBackwardTimeEj.cpp:
-    complete
-    .text start:0x020171f0 end:0x0201721c
-
-src/_ZN10dFdDummy_c11AdvanceFadeEv.cpp:
-    complete
-    .text start:0x0201721c end:0x02017228
-
-src/_ZN10dFdDummy_cD0Ev.cpp:
-    complete
-    .text start:0x02017228 end:0x02017254
-
-src/_ZN10dFdDummy_cD1Ev.cpp:
-    complete
-    .text start:0x02017254 end:0x02017278
+    .text start:0x020171c8 end:0x02017278
 
 src/func_02017278.c:
     complete

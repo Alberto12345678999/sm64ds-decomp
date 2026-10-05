@@ -7956,6 +7956,11 @@
     "src/actors/daStar_c.cpp#_ZN12daStarBase_c8BehaviorEv": "ruspecial",
     "src/actors/daStar_c.cpp#_ZN8daStar_c8BehaviorEv": "ruspecial",
     "src/actors/daStar_c.cpp#_ZN12daStarBase_c13InitResourcesEv": "tangosdev",
-    "src/actors/daStar_c.cpp#_ZN8daStar_c13InitResourcesEv": "ruspecial"
+    "src/actors/daStar_c.cpp#_ZN8daStar_c13InitResourcesEv": "ruspecial",
+    "src/engine/fader/dFdDummy_c.cpp#_ZN10dFdDummy_c14SetForwardTimeEj": "andrewboudreau",
+    "src/engine/fader/dFdDummy_c.cpp#_ZN10dFdDummy_c15SetBackwardTimeEj": "andrewboudreau",
+    "src/engine/fader/dFdDummy_c.cpp#_ZN10dFdDummy_c11AdvanceFadeEv": "andrewboudreau",
+    "src/engine/fader/dFdDummy_c.cpp#_ZN10dFdDummy_cD0Ev": "tangosdev",
+    "src/engine/fader/dFdDummy_c.cpp#_ZN10dFdDummy_cD1Ev": "tangosdev"
   }
 }
