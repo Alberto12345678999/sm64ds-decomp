@@ -1,5 +1,5 @@
 //cpp
-/* CutsceneObject -- the cutscene-only actor family (_ZTV14CutsceneObject).
+/* daDemo_c -- the cutscene-only actor family (_ZTV8daDemo_c).
  * One class services every scripted-scene prop: param1 selects the object
  * (0x12..0x2d plus the 0x2e/0x2f slots dispatched out to other TUs).
  * Animated variants own a ModelAnim at mModelAnim, static variants a Model
@@ -28,7 +28,7 @@
 #include "decl_common.h"
 #include "decl_Model.h"
 #include "decl_ModelAnim.h"
-#include "CutsceneObject.h"
+#include "daDemo_c.h"
 #include "Model.h"
 #include "ModelAnim.h"
 #include "dBgCh_Gnd.h"
@@ -65,8 +65,8 @@ extern void Matrix4x3_ApplyInPlaceToRotationXYZExt(void *m, s32 x, s32 y, s32 z)
 
 struct Vec3 { s32 x, y, z; };
 
-// @symbol _ZN14CutsceneObject16CleanupResourcesEv
-int CutsceneObject::CleanupResources()
+// @symbol _ZN8daDemo_c16CleanupResourcesEv
+int daDemo_c::CleanupResources()
 {
     int r1 = param1;
     if (r1 == 0x2e) return func_ov002_020f63a0(this);
@@ -76,13 +76,13 @@ int CutsceneObject::CleanupResources()
     return 1;
 }
 
-// @symbol _ZN14CutsceneObject16OnPendingDestroyEv
-void CutsceneObject::OnPendingDestroy()
+// @symbol _ZN8daDemo_c16OnPendingDestroyEv
+void daDemo_c::OnPendingDestroy()
 {
 }
 
-// @symbol _ZN14CutsceneObject6RenderEv
-int CutsceneObject::Render()
+// @symbol _ZN8daDemo_c6RenderEv
+int daDemo_c::Render()
 {
     if (param1 == 0x19) {
         struct { char* p; char* cur; Matrix4x3* src; } s;
@@ -117,8 +117,8 @@ int CutsceneObject::Render()
     return 1;
 }
 
-// @symbol _ZN14CutsceneObject8BehaviorEv
-int CutsceneObject::Behavior()
+// @symbol _ZN8daDemo_c8BehaviorEv
+int daDemo_c::Behavior()
 {
     Vector3 v;
     Vec3 asr;
@@ -176,8 +176,8 @@ int CutsceneObject::Behavior()
     return 1;
 }
 
-// @symbol _ZN14CutsceneObject13InitResourcesEv
-int CutsceneObject::InitResources()
+// @symbol _ZN8daDemo_c13InitResourcesEv
+int daDemo_c::InitResources()
 {
     void *p;
     int t;

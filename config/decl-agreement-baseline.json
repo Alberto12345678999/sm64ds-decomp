@@ -13670,7 +13670,7 @@
       ]
     },
     "_Znwj": {
-      "src/_ZN14CutsceneObject13InitResourcesEv.cpp": [
+      "src/_ZN8daDemo_c13InitResourcesEv.cpp": [
         "param:#1 int"
       ]
     },
@@ -14547,7 +14547,7 @@
       ]
     },
     "data_0209b41c": {
-      "src/_ZN14CutsceneObject6RenderEv.cpp": [
+      "src/_ZN8daDemo_c6RenderEv.cpp": [
         "return:M48"
       ],
       "src/_ZN6Camera8BehaviorEv.cpp": [
@@ -23843,7 +23843,7 @@
       ]
     },
     "data_ov085_0213074c": {
-      "src/_ZN14CutsceneObject13InitResourcesEv.cpp": [
+      "src/_ZN8daDemo_c13InitResourcesEv.cpp": [
         "return:char"
       ],
       "src/game/actors/d_a_c_jugem.cpp": [

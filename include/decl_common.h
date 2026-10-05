@@ -660,7 +660,7 @@ extern int _ZTV8BookShot[];
 extern int _ZTV13daObjEwbIce_c[];
 extern int _ZTV9daManta_c[];
 extern int _ZTV8daGmch_c[];
-extern int _ZTV14CutsceneObject[];
+extern int _ZTV8daDemo_c[];
 extern int _ZTV16daObjFm_Battan_c[];
 extern int _ZTV8YoshiEgg[];
 extern int _ZTV8dScene_c[];

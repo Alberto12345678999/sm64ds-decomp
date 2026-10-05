@@ -1652,11 +1652,11 @@ src/actors/daMugenBGM_c.cpp:
     complete
     .text start:0x020f1bc4 end:0x020f1f70
 
-src/_ZN14CutsceneObjectD1Ev.cpp:
+src/_ZN8daDemo_cD1Ev.cpp:
     complete
     .text start:0x020f1f70 end:0x020f1f94
 
-src/_ZN14CutsceneObjectD0Ev.cpp:
+src/_ZN8daDemo_cD0Ev.cpp:
     complete
     .text start:0x020f1f94 end:0x020f1fcc
 
@@ -2207,7 +2207,7 @@ src/func_ov002_020f7bb8.c:
 src/func_ov002_020f7d74.cpp:
     .text start:0x020f7d74 end:0x020f8028
 
-src/actors/CutsceneObject.cpp:
+src/actors/daDemo_c.cpp:
     complete
     .text start:0x020f8028 end:0x020f8808
 
