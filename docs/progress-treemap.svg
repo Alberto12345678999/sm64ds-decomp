@@ -69,11 +69,11 @@ matched: yes</title></rect><rect x="78.43" y="34.32" width="13.13" height="7.56"
 module: arm9
 addr: 0x02005d94
 size: 148 bytes
-matched: yes</title></rect><rect x="91.56" y="34.32" width="15.61" height="7.56" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02005e28
+matched: yes</title></rect><rect x="91.56" y="34.32" width="15.61" height="7.56" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11dCapEnemy_c13func_02005e28Ev
 module: arm9
 addr: 0x02005e28
 size: 176 bytes
-matched: yes</title></rect><rect x="107.16" y="34.32" width="4.61" height="7.56" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>func_02005ed8
+matched: yes</title></rect><rect x="107.16" y="34.32" width="4.61" height="7.56" fill="#3fa75a" stroke="#2c7a41" stroke-width="0.4"><title>_ZN11dCapEnemy_c13func_02005ed8Ev
 module: arm9
 addr: 0x02005ed8
 size: 52 bytes
