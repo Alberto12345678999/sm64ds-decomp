@@ -6,10 +6,6 @@
    "ref": "mods/Player_ScaleByCharFactor.c"
   },
   {
-   "file": "notes/actor-leaf-provenance.md",
-   "ref": "src_tu/actors/EnemySpawner"
-  },
-  {
    "file": "notes/actor-naming.md",
    "ref": "include/List/ActorList.h"
   },
@@ -278,10 +274,6 @@
    "ref": "src/_ZN6Eyerok16OnAimedAtWithEggEv.cpp"
   },
   {
-   "file": "notes/bgobject-provenance.md",
-   "ref": "src/func_ov025_02111898.c"
-  },
-  {
    "file": "notes/collision-query-classes.md",
    "ref": "notes/drafts-sphereclsn-detectclsn.cpp"
   },
@@ -463,10 +455,6 @@
   },
   {
    "file": "notes/rom-build.md",
-   "ref": "src/func_ov013_021112a8.c"
-  },
-  {
-   "file": "notes/rom-build.md",
    "ref": "src/func_ov091_02132a0c.c"
   },
   {
@@ -476,6 +464,10 @@
   {
    "file": "notes/runbook-type-reconstruction.md",
    "ref": "src/_ZN5Scene19BeforeInitResourcesEv.c"
+  },
+  {
+   "file": "notes/runbook-type-reconstruction.md",
+   "ref": "src/engine/fader/_ZN8dFader_c13AdvanceInterpEv.cpp"
   },
   {
    "file": "notes/runbook-type-reconstruction.md",
@@ -496,10 +488,6 @@
   {
    "file": "notes/src-domain-buckets.md",
    "ref": "src/ui/messages"
-  },
-  {
-   "file": "notes/translation-unit-reconstruction-plan.md",
-   "ref": "src/game/actors/d_a_holhei.cpp"
   },
   {
    "file": "notes/tu-filename-reconstruction-pilot.md",
@@ -612,14 +600,6 @@
   {
    "file": "tools/chaos_db_ci.py",
    "ref": "src/x.c"
-  },
-  {
-   "file": "tools/check_dead_references.py",
-   "ref": "src/f.c"
-  },
-  {
-   "file": "tools/check_dead_references.py",
-   "ref": "src/game/mario.c"
   },
   {
    "file": "tools/check_dead_references.py",

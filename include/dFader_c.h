@@ -100,7 +100,7 @@ struct dFader_c {
 
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
-typedef char Fader_size_must_be_0xc[sizeof(dFader_c) == 0xc ? 1 : -1];
+typedef char dFader_c_size_must_be_0xc[sizeof(dFader_c) == 0xc ? 1 : -1];
 #endif
 #else
 /* Same object, spelled for remaining C consumers: C cannot express the virtual
