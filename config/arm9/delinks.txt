@@ -5967,25 +5967,9 @@ src/Matrix4x3_ApplyInPlaceToTranslation.c:
     complete
     .text start:0x0203c184 end:0x0203c1b4
 
-src/_ZN6Memory10DeallocateEPv.cpp:
+src/Memory.cpp:
     complete
-    .text start:0x0203c1b4 end:0x0203c1c4
-
-src/_ZN6Memory8AllocateEj.cpp:
-    complete
-    .text start:0x0203c1c4 end:0x0203c1d8
-
-src/_ZN6Memory8AllocateEji.cpp:
-    complete
-    .text start:0x0203c1d8 end:0x0203c1e8
-
-src/_ZN6Memory10DeallocateEPvP4Heap.cpp:
-    complete
-    .text start:0x0203c1e8 end:0x0203c210
-
-src/_ZN6Memory8AllocateEjiP4Heap.cpp:
-    complete
-    .text start:0x0203c210 end:0x0203c24c
+    .text start:0x0203c1b4 end:0x0203c24c
 
 src/_ZN4Heap18InitializeGameHeapEjPS_.cpp:
     complete
