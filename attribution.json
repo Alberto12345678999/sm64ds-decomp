@@ -8,6 +8,18 @@
     "mitch.cairns": "mitchellcairns"
   },
   "overrides": {
+    "src/engine/heap/NestedHeapIterator.cpp#_ZN18NestedHeapIterator10FindNestedEPv": "tangosdev",
+    "src/engine/heap/NestedHeapIterator.cpp#_ZN18NestedHeapIterator19RecursiveFindNestedEPv": "tangosdev",
+    "src/engine/heap/NestedHeapIterator.cpp#_ZN18NestedHeapIterator4InitEP13HeapAllocator": "ruspecial",
+    "src/engine/heap/NestedHeapIterator.cpp#_ZN18NestedHeapIterator4NextEP13HeapAllocator": "tangosdev",
+    "src/engine/heap/NestedHeapIterator.cpp#_ZN18NestedHeapIterator5AddAtEP13HeapAllocatorS1_": "lunavyqo",
+    "src/engine/heap/NestedHeapIterator.cpp#_ZN18NestedHeapIterator6RemoveEP13HeapAllocator": "tangosdev",
+    "src/engine/heap/NestedHeapIterator.cpp#_ZN18NestedHeapIterator7AddLastEP13HeapAllocator": "andrewboudreau",
+    "src/engine/heap/NestedHeapIterator.cpp#_ZN18NestedHeapIterator8AddFirstEP13HeapAllocator": "ruspecial",
+    "src/engine/heap/NestedHeapIterator.cpp#_ZN18NestedHeapIterator8PreviousEP13HeapAllocator": "tangosdev",
+    "src/engine/heap/NestedHeapIterator.cpp#_ZN18NestedHeapIteratorC1Ej": "tangosdev",
+    "src/engine/heap/NestedHeapIterator.cpp#_ZN13HeapAllocator6RemoveEv": "tangosdev",
+    "src/engine/heap/NestedHeapIterator.cpp#func_0204df54": "ruspecial",
     "src/_ZN9ModelBase12ApplyOpacityEjj.cpp": "ruspecial",
     "src/START_INTRO_MINIMAP_ZOOM.c": "tangosdev",
     "src/_ZN10LavaBridge13InitResourcesEv.c": "tangosdev",

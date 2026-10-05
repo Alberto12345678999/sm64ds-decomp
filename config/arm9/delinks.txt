@@ -7607,53 +7607,9 @@ src/func_0204dcc0.c:
     complete
     .text start:0x0204dcc0 end:0x0204dcfc
 
-src/_ZN18NestedHeapIterator8PreviousEP13HeapAllocator.cpp:
+src/engine/heap/NestedHeapIterator.cpp:
     complete
-    .text start:0x0204dcfc end:0x0204dd10
-
-src/_ZN18NestedHeapIterator4NextEP13HeapAllocator.cpp:
-    complete
-    .text start:0x0204dd10 end:0x0204dd28
-
-src/_ZN18NestedHeapIterator6RemoveEP13HeapAllocator.cpp:
-    complete
-    .text start:0x0204dd28 end:0x0204dd98
-
-src/_ZN18NestedHeapIterator5AddAtEP13HeapAllocatorS1_.cpp:
-    complete
-    .text start:0x0204dd98 end:0x0204de0c
-
-src/_ZN18NestedHeapIterator8AddFirstEP13HeapAllocator.cpp:
-    complete
-    .text start:0x0204de0c end:0x0204de74
-
-src/_ZN18NestedHeapIterator7AddLastEP13HeapAllocator.cpp:
-    complete
-    .text start:0x0204de74 end:0x0204dee0
-
-src/_ZN18NestedHeapIterator4InitEP13HeapAllocator.cpp:
-    complete
-    .text start:0x0204dee0 end:0x0204df20
-
-src/_ZN18NestedHeapIteratorC1Ej.cpp:
-    complete
-    .text start:0x0204df20 end:0x0204df38
-
-src/_ZN13HeapAllocator6RemoveEv.cpp:
-    complete
-    .text start:0x0204df38 end:0x0204df54
-
-src/func_0204df54.cpp:
-    complete
-    .text start:0x0204df54 end:0x0204dfe8
-
-src/_ZN18NestedHeapIterator10FindNestedEPv.cpp:
-    complete
-    .text start:0x0204dfe8 end:0x0204e014
-
-src/_ZN18NestedHeapIterator19RecursiveFindNestedEPv.cpp:
-    complete
-    .text start:0x0204e014 end:0x0204e084
+    .text start:0x0204dcfc end:0x0204e084
 
 src/_ZN22ExpandingHeapAllocator14SizeofInternalEPv.cpp:
     complete
