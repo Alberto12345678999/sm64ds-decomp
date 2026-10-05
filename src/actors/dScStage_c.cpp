@@ -1,5 +1,1119 @@
 //cpp
+/* dScStage_c -- the playable level scene: pause screen, level-clear and VS
+ * exit groups, arm9.
+ *
+ * .text 0x02023688..0x02029408. The destructor pair plus the VE_ (VS exit),
+ * LC_ (level clear) and PS_ (pause screen) groups, in ROM order. The rest of
+ * the class -- InitResources, Behavior, Render, UpdateMessage, the graph
+ * callbacks, the factory dScStage_c_classInit -- sits in later ranges
+ * interleaved with the message and camera systems; folding those needs
+ * multi-range claims.
+ *
+ * _ZTS10dScStage_c 0x02092170. _ZTI10dScStage_c 0x02092158, base word
+ * _ZTI8dScene_c. _ZTV10dScStage_c 0x020921c0. The out-of-line destructor is
+ * the key function. Under `#pragma defer_codegen off` it emits D1
+ * (0x02023688), D0 (0x020236f0), then a base-object D2 the cartridge does
+ * not carry.
+ *
+ * Leftover: OAM::Render, OAM::RenderSub, Sound::PlaySub and the dScene_c
+ * fade stay mangled (Fix12 by value). RenderNumber keeps a local extern
+ * spelled over the member's mask-emitting parameter conversions.
+ * CheckCameraInput keeps `#pragma opt_strength_reduction off` and a local
+ * CamInput overlay of the camera input array; PS_Update keeps
+ * `#pragma opt_common_subs off`, the stale-tmpv levers in its case 0xa and
+ * the address-rematerialization pokes in its case-1 star scroll. The touch
+ * and controller globals (data_020a0de8..deb, data_020a0e40, data_0209f498)
+ * have no header; data_ov001_ and data_ov002_ handles keep linker names.
+ */
 #include "types.h"
+#include "dScStage_c.h"
+#include "Timer.h"
+#include "decl_common.h"
+#include "Sound.h"
+
+struct OamAttr;
+struct Matrix2x2;
+
+/* TU-local overlay of the camera input records at data_0209f498, one per
+ * controller: the pause screen polls the camera-state byte at +0x16. */
+struct CamInput {
+    u8 pad0[4];
+    u16 held;      /* 0x4 */
+    u16 pressed;   /* 0x6 */
+    u8 pad8[0xc];
+    u8 f14;        /* 0x14 */
+    u8 f15;
+    u8 f16;        /* 0x16 */
+    u8 f17;
+};
+
+/* TU-local overlay of the touch records the ROM keeps at data_020a0de8. */
+struct TouchInfo {
+    u8 touched;
+    u8 held;
+    u8 x;
+    u8 y;
+};
+
+extern "C" {
+int IsButtonInputValid(void);
+int SublevelToLevel(int lv);
+int GetOwnerLanguage(void);
+void GiveLives(int n);
+void Deallocate(void *ptr);
+void SetBg2Offset(int x, int y);
+void SetBg3Offset(int x, int y);
+void SetBg1Offset(int x, int y);
+void SetSubBg0Offset(int x, int y);
+void SetSubBg1Offset(int x, int y);
+unsigned int func_02012790(unsigned int snd);
+int func_02029408(void);
+int LoadFile(int handle);
+void SetControllerMode(unsigned char m);
+unsigned int LoadCompressedFileAt(unsigned short id, void *dst);
+int GetSoundMode(void);
+void SetSoundMode(int m);
+void TurnBacklightOn(void);
+void TurnBacklightOff(void);
+int IsStarCollected(int lv, int star);
+
+void _ZN7Message17DisplayVsExitTextEt(unsigned short n);
+void _ZN7Message21DisplayLevelClearTextEta(int m, unsigned char lvl);
+void _ZN7Message21DisplaySaveStatusTextEt(int m);
+void _ZN7Message7DisplayEj(int m);
+void _ZN7Message11DisplayTextEt(int m);
+void _ZN7Message16DisplayPauseTextEth(int m, unsigned char a);
+void _ZN7Message18DisplayPauseTextVSEt(int m);
+void _ZN7Message22DisplayOptionsMenuTextEt(int m);
+void _ZN7Message19DisplaySaveMenuTextEt(int m);
+void _ZN7Message19DisplayDontSaveTextEt(int m);
+void _ZN7Message25DisplayControllerModeTextEt(int m);
+void _ZN8dScene_c14StartSceneFadeEjjt(unsigned int a, unsigned int b, unsigned short c);
+bool _ZN5Sound7PlaySubEjjj5Fix12IiEb(unsigned int a, unsigned int b, unsigned int c, int fix, int e);
+unsigned int _ZN5Sound12PlayBank3_2DEj(unsigned int a);
+void _ZN5Sound22StopLoadedMusic_Layer1Ej(unsigned int a);
+int _ZN8SaveData15SaveCurrentFileEv(void);
+unsigned char _ZN8SaveData13GetCoinRecordEj(unsigned int lv);
+void _ZN8SaveData21SetCoinRecordIfHigherEah(int a, int b);
+void _ZN3G2x18SetBlendBrightnessEPVtts(volatile unsigned short *p, int val, short amt);
+void _ZN2GX11LoadOBJPlttEPKvjj(const void *p, unsigned int a, unsigned int b);
+void _ZN3OAM14BOUNCING_ARROWE(void);
+void _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(int sub, void *attr, int x, int y, int a, int cc, int fx, int fy, int rot, int mode);
+void _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2(bool sub, OamAttr *attr, int x, int y, int a, int cc, Matrix2x2 *mtx);
+void _ZN3OAM9RenderSubEP7OamAttrii(void *attr, int x, int y);
+namespace G2S { u16 *GetBG1ScrPtr(); }
+int __aeabi_idiv(int a, int b);
+
+extern int data_0208ee44;
+extern u8 data_0208ee3c;
+extern u8 data_0208ee40;
+extern s8 data_02092124;
+extern s16 data_02092144[];
+extern unsigned int data_0209b454;
+extern unsigned int data_0209b464;
+extern u8 data_020755b8[];
+extern volatile int data_02075610[];
+extern u16 data_020755cc[];
+extern u16 data_020755c0[];
+extern u16 data_020755c4[];
+extern s16 data_020756d0[];
+extern u8 data_0209d660;
+extern u8 data_0209d45c;
+extern u8 data_0209d454;
+extern Timer data_0209d4c8;
+extern int data_0209fc68;
+extern u8 data_0209f1ec;
+extern u8 data_0209f1fc;
+extern u8 data_0209f210;
+extern u8 data_0209f218;
+extern u8 data_0209f20c;
+extern u8 data_0209f21c;
+extern u8 data_0209f22c;
+extern u8 data_0209f234;
+extern u8 data_0209f238;
+extern u8 data_0209f23c;
+extern u8 data_0209f240;
+extern u8 data_0209f244;
+extern u8 data_0209f248;
+extern u8 data_0209f250;
+extern u8 data_0209f260;
+extern u8 data_0209f280;
+extern u8 data_0209f284;
+extern u8 data_0209f290;
+extern u8 data_0209f294;
+extern u8 data_0209f29c;
+extern u8 data_0209f2a0[];
+extern u8 data_0209f2a4;
+extern u8 data_0209f2a8;
+extern u8 data_0209f2ac;
+extern u8 data_0209f2b0;
+extern u8 data_0209f2b4;
+extern u8 data_0209f2b8;
+extern u8 data_0209f2c4;
+extern u8 data_0209f2c8;
+extern u8 data_0209f2cc;
+extern u8 data_0209f2d4;
+extern u8 data_0209f2d8;
+extern u8 data_0209f2dc;
+extern u8 data_0209f2e0;
+extern u8 data_0209f2e4;
+extern u8 data_0209f2ec;
+extern u8 data_0209f2f0;
+extern s8 data_0209f2f8;
+extern u16 data_0209f300;
+extern u16 data_0209f360[];
+extern u16 data_0209f368[];
+extern u8 data_0209f350[];
+extern void *data_0209f318;
+extern unsigned char data_0209f498[];
+extern u8 data_0209f4ae[];
+extern volatile u8 data_020a0e40;
+extern int data_020a0db0;
+extern u8 data_020a0de8[];
+extern u8 data_020a0de9[];
+extern volatile u8 data_020a0dea[];
+extern volatile u8 data_020a0deb[];
+extern u8 data_ov002_02111150;
+extern u8 data_ov002_02111178;
+extern u8 data_ov002_02111180;
+extern int data_ov002_0210cea8;
+extern int data_ov002_0210cee8;
+extern int data_ov002_0210cf28;
+extern int data_ov002_0210cf78;
+extern int data_ov002_0210cb14;
+extern int data_ov002_0210ce90;
+extern int data_ov002_0210ced0;
+extern int data_ov002_0210cf08;
+extern int data_ov002_0210cfa0;
+extern int data_ov002_0210caf4;
+extern void *data_ov001_020abd98[];
+extern void *data_ov001_020ac218[];
+extern void *data_ov001_020ac64c[];
+extern void *data_ov001_020acb68[];
+extern void *_ZN3OAM21CONTROLLER_MODE_TEXTSE[];
+extern OamAttr *_ZN3OAM7NUMBERSE[];
+extern char _ZN3OAM8VS_PAUSEE;
+extern char _ZN3OAM19ARROW_POINTING_LEFTE;
+extern char _ZN3OAM20ARROW_POINTING_RIGHTE;
+extern char _ZN3OAM13MM_SMALL_STARE;
+extern char _ZN3OAM5PAUSEE;
+extern char _ZN3OAM9TINY_STARE;
+extern char _ZN3OAM25SMALL_ARROW_POINTING_LEFTE;
+extern char _ZN3OAM26SMALL_ARROW_POINTING_RIGHTE;
+extern char _ZN3OAM16SMALL_STAR_EMPTYE;
+extern OamAttr _ZN3OAM4COINE;
+extern OamAttr _ZN3OAM5TIMESE;
+}
+
+#define REG16(a) (*(volatile u16 *)(a))
+#define REG32(a) (*(volatile u32 *)(a))
+#define DE8P(off) ((u8 *)(data_020a0de8 + (off)))
+
+#pragma defer_codegen off
+
+// @symbol _ZN10dScStage_cD1Ev, _ZN10dScStage_cD0Ev
+/* recovered: real C++ destructor -- the compiler emits the whole body
+ *
+ * Destroy through dScStage_c's own three fields -- dBgW_Kc at 0x91c, Model at
+ * 0x86c, Particle::SysTracker at 0x50 -- in reverse declaration order, then
+ * dScene_c (now inline-defined in dScene_c.h, so its vptr store and dBase_c's
+ * inline in turn), then fBase_c's subobject destructor, called rather than
+ * inlined because fBase_c's is not. The deleting variant destroys the same
+ * chain and then hands the object back through dScene_c's inline operator
+ * delete -- declared there rather than on dBase_c, because mwcc only inlines
+ * it when found on the class itself or its IMMEDIATE base, which for
+ * dScStage_c is dScene_c. One definition emits both; the per-function shards
+ * carried the pair as two empty definitions. */
+dScStage_c::~dScStage_c()
+{
+}
+
+// @symbol _ZN10dScStage_c9VE_UpdateEv
+void dScStage_c::VE_Update()
+{
+    u8 t = data_0209f244;
+    u8 t2;
+    u8 s;
+    if (t != 0) {
+        data_0209f244 = t - data_0208ee44;
+        if (data_0209f244 == 0) {
+            dScStage_c::UpdateMenuButtons(0);
+        }
+    }
+    t2 = data_0209f22c;
+    if (t2 != 0) {
+        data_0209f22c = t2 - data_0208ee44;
+        return;
+    }
+    s = data_0209f290;
+    switch (s) {
+    case 0: {
+        u8 idx = data_020a0e40;
+        int ok = 0;
+        int off = idx * 4;
+        u8 idx2;
+        int off2;
+        u8 a;
+        if (data_020a0de8[idx * 4]) {
+            if (data_020a0de9[off]) ok = 1;
+        }
+        if (ok == 0) {
+            if (IsButtonInputValid() == 0) return;
+        }
+        idx2 = data_020a0e40;
+        a = data_020a0dea[idx2 * 4];
+        off2 = idx2 * 4;
+        if (((u8)(a - 8) < 0xf0 && (u8)(data_020a0deb[off2] - 0x38) < 0x20)
+            || IsButtonInputValid() != 0) {
+            if (data_0209f2e0 == 0) {
+                data_0209f244 = data_0208ee44 << 2;
+            }
+            data_0209f2e0 = 0;
+            data_0209f22c = data_0208ee44 << 3;
+            dScStage_c::UpdateMenuButtons(0);
+            data_0209f290 = 1;
+            data_ov002_02111150 = 1;
+            func_02012790(0x9a);
+            if ((u8)(data_020a0dea[data_020a0e40 * 4] - 0x28) < 0xb0) return;
+            return;
+        } else {
+            u8 idx3 = data_020a0e40;
+            int off3 = idx3 * 4;
+            if ((u8)(data_020a0dea[idx3 * 4] - 8) >= 0xf0) return;
+            if ((u8)(data_020a0deb[off3] - 0x68) >= 0x20) return;
+            if (data_0209f2e0 == 1) {
+                data_0209f244 = data_0208ee44 << 2;
+            }
+            data_0209f2e0 = 1;
+            dScStage_c::UpdateMenuButtons(0);
+            data_0209f22c = data_0208ee44 << 3;
+            data_0209f290 = 1;
+            data_ov002_02111150 = 1;
+            func_02012790(0x9b);
+            if ((u8)(data_020a0dea[data_020a0e40 * 4] - 8) < 0xf0) return;
+            return;
+        }
+    }
+    case 1: {
+        if (data_0209f2e0 == 0) {
+            dScene_c::StartSceneFade(6, 1, 0);
+        } else {
+            dScene_c::StartSceneFade(1, 0, 0);
+        }
+        data_0209f290 = 2;
+        data_0209d45c &= ~4;
+        data_0209d454 &= ~3;
+        *(u16 *)0x04000050 = 0;
+        *(u16 *)0x04001050 = 0;
+        break;
+    }
+    }
+}
+// @symbol _ZN10dScStage_c7VE_InitEv
+void dScStage_c::VE_Init()
+{
+    unsigned int a;
+    unsigned int b;
+
+    a = data_0209d45c ^ 0x10;
+    b = data_0209d454 ^ 0x10;
+    *(volatile unsigned short *)0x400100a = (*(volatile unsigned short *)0x400100a & 0x43) | 0x1100;
+    *(volatile unsigned short *)0x400000c = (*(volatile unsigned short *)0x400000c & 0x43) | 0x1010;
+    _ZN7Message17DisplayVsExitTextEt(0x1f);
+    data_0209f360[0] = 0xe0;
+    data_0209f360[1] = 0x1a0;
+    data_0209f2b4 = 2;
+    data_0209f2e0 = 0;
+    dScStage_c::UpdateMenuButtons(true);
+    SetBg2Offset(0, 0);
+    SetSubBg0Offset(0, 0);
+    SetSubBg1Offset(0, 0);
+    data_0209d45c |= 4;
+    data_0209d454 |= 3;
+    data_0209b454 |= 0x40000000;
+    data_0209b464 = data_0209b454;
+    data_0209f294 = 1;
+    data_0209f290 = 0;
+    _ZN3G2x18SetBlendBrightnessEPVtts((volatile unsigned short *)0x4000050, a | 0x20, -7);
+    _ZN3G2x18SetBlendBrightnessEPVtts((volatile unsigned short *)0x4001050, b | 0x20, -7);
+}
+// @symbol _ZN10dScStage_c20RenderBouncingArrowsEv
+void dScStage_c::RenderBouncingArrows() {
+    int r4;
+    unsigned char A;
+    if (data_0208ee44 == 1) {
+        r4 = (data_020a0db0 & 0x10) ? 0xae : 0xb0;
+    } else {
+        r4 = (data_020a0db0 & 8) ? 0xae : 0xb0;
+    }
+    A = data_0209f2c4;
+    if (A == 0 && data_0209f284 != 0) {
+        int t = (data_0209f2d8 == 1);
+        if (t == 0) goto draw1;
+    }
+    if (A == 0) goto draw2;
+    {
+        unsigned char d = data_0209f248;
+        if ((unsigned char)(d + 0xf7) > 2u) goto draw2;
+    }
+draw1:
+    _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, (void*)_ZN3OAM14BOUNCING_ARROWE, 0x40, r4, -1, -1, 0x1000, 0x1000, 0, -1);
+    _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, (void*)_ZN3OAM14BOUNCING_ARROWE, 0x80, r4, -1, -1, 0x1000, 0x1000, 0, -1);
+    _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, (void*)_ZN3OAM14BOUNCING_ARROWE, 0xc0, r4, -1, -1, 0x1000, 0x1000, 0, -1);
+    return;
+draw2:
+    _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, (void*)_ZN3OAM14BOUNCING_ARROWE, 0xc, r4, -1, -1, 0x1000, 0x1000, 0, -1);
+    _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, (void*)_ZN3OAM14BOUNCING_ARROWE, 0xf4, r4, -1, -1, 0x1000, 0x1000, 0, -1);
+    return;
+}
+// @symbol _ZN10dScStage_c9LC_RenderEv
+void dScStage_c::LC_Render() {
+    data_0209f2a8 = data_0209f2a8 + data_0208ee44;
+    if (data_0209f2a8 >= 0xc)
+        data_0209f2a8 = 0;
+
+    if (data_0209f20c == 0)
+        return;
+
+    {
+        void* p = (void*)LoadFile(0x25a);
+        _ZN2GX11LoadOBJPlttEPKvjj((void*)((char*)p + (((unsigned int)data_0209f2a8 >> 2) << 5)), 0x1c0, 0x10);
+        Deallocate(p);
+    }
+
+    if (SublevelToLevel(data_02092124) >= 0xf && SublevelToLevel(data_02092124) < 0x15) {
+        if (GetOwnerLanguage() == 5)
+            _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, (void*)&data_ov002_0210cea8, 0x80, 0x38, -1, -1, 0x1000, 0x1000, 0, -1);
+        else if (GetOwnerLanguage() == 4)
+            _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, (void*)&data_ov002_0210cee8, 0x80, 0x38, -1, -1, 0x1000, 0x1000, 0, -1);
+        else if (GetOwnerLanguage() == 3)
+            _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, (void*)&data_ov002_0210cf28, 0x80, 0x38, -1, -1, 0x1000, 0x1000, 0, -1);
+        else if (GetOwnerLanguage() == 2)
+            _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, (void*)&data_ov002_0210cf78, 0x80, 0x38, -1, -1, 0x1000, 0x1000, 0, -1);
+        else
+            _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, (void*)&data_ov002_0210cb14, 0x80, 0x38, -1, -1, 0x1000, 0x1000, 0, -1);
+    }
+
+    if (data_0209f2b0 != 0) {
+        if (data_0209f20c != 0 && SublevelToLevel(data_02092124) >= 0xf) {
+            if (GetOwnerLanguage() == 5)
+                _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, (void*)&data_ov002_0210ce90, 0x80, 0x70, -1, -1, 0x1000, 0x1000, 0, -1);
+            else if (GetOwnerLanguage() == 4)
+                _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, (void*)&data_ov002_0210ced0, 0x80, 0x70, -1, -1, 0x1000, 0x1000, 0, -1);
+            else if (GetOwnerLanguage() == 3)
+                _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, (void*)&data_ov002_0210cf08, 0x80, 0x70, -1, -1, 0x1000, 0x1000, 0, -1);
+            else if (GetOwnerLanguage() == 2)
+                _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, (void*)&data_ov002_0210cfa0, 0x80, 0x70, -1, -1, 0x1000, 0x1000, 0, -1);
+            else
+                _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, (void*)&data_ov002_0210caf4, 0x80, 0x70, -1, -1, 0x1000, 0x1000, 0, -1);
+        } else {
+            if (GetOwnerLanguage() == 5)
+                _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, (void*)&data_ov002_0210ce90, 0x80, 0x80, -1, -1, 0x1000, 0x1000, 0, -1);
+            else if (GetOwnerLanguage() == 4)
+                _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, (void*)&data_ov002_0210ced0, 0x80, 0x80, -1, -1, 0x1000, 0x1000, 0, -1);
+            else if (GetOwnerLanguage() == 3)
+                _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, (void*)&data_ov002_0210cf08, 0x80, 0x80, -1, -1, 0x1000, 0x1000, 0, -1);
+            else if (GetOwnerLanguage() == 2)
+                _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, (void*)&data_ov002_0210cfa0, 0x80, 0x80, -1, -1, 0x1000, 0x1000, 0, -1);
+            else
+                _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, (void*)&data_ov002_0210caf4, 0x80, 0x80, -1, -1, 0x1000, 0x1000, 0, -1);
+        }
+    }
+
+    if (data_0209f2d4 == 3)
+        RenderBouncingArrows();
+}
+// @symbol _ZN10dScStage_c9LC_UpdateEv
+void dScStage_c::LC_Update()
+{
+    if (data_0209f244 != 0) {
+        data_0209f244 = data_0209f244 - data_0208ee44;
+        if (data_0209f244 == 0)
+            dScStage_c::UpdateMenuButtons(0);
+    }
+    if (data_0209f22c != 0) {
+        data_0209f22c = data_0209f22c - data_0208ee44;
+        return;
+    }
+
+    switch (data_0209f2d4) {
+    case 0:
+        REG16(0x400100a) = (REG16(0x400100a) & 0x43) | 0xd00;
+        _ZN7Message21DisplayLevelClearTextEta(0x27a, SublevelToLevel(data_02092124));
+        data_0209f360[0] = 0xa0;
+        data_0209f360[1] = 0x140;
+        data_0209f360[2] = 0x1e0;
+        data_0209f2b4 = 3;
+        data_0209f2b0 = 0;
+        data_0209f2e0 = 0;
+        dScStage_c::UpdateMenuButtons(1);
+        SetBg3Offset(0, 0);
+        data_0209d45c |= 8;
+        data_0209f260 = 0;
+        data_0209f2d4 = 1;
+        data_0209f280 = 0;
+        if (data_0209f358[0] != 0)
+            return;
+        if (data_0209f2ac != 0) {
+            _ZN5Sound7PlaySubEjjj5Fix12IiEb(0x23, 0x14, 0x7f, 0x15666, 0);
+            data_0209f280 = 1;
+        }
+        data_0209f22c = 0x1e;
+        return;
+    case 1: {
+        int level = SublevelToLevel(data_02092124);
+        if (data_0209f358[0] > data_0209f260) {
+            data_0209f260 += 1;
+            if (data_0209f260 % 50 == 0) {
+                GiveLives(1);
+                _ZN5Sound12PlayBank3_2DEj(0x6e);
+            }
+            if (data_0209f358[0] == data_0209f260) {
+                if (data_0209f2ac != 0) {
+                    _ZN5Sound7PlaySubEjjj5Fix12IiEb(0x23, 0x14, 0x7f, 0x15666, 0);
+                    data_0209f280 = 1;
+                }
+                data_0209f22c = 0x1e;
+                if (level < 0xf) {
+                    u8 coins = data_0209f260;
+                    if (_ZN8SaveData13GetCoinRecordEj(level) >= coins)
+                        return;
+                    _ZN8SaveData21SetCoinRecordIfHigherEah(level, coins);
+                    data_0209f2b0 = 1;
+                    func_02012790(0x22);
+                    return;
+                }
+                if (level < 0xf)
+                    return;
+                if (level >= 0x15)
+                    return;
+                func_02012790(0x22);
+                _ZN5Sound7PlaySubEjjj5Fix12IiEb(0x23, 0x14, 0x7f, 0x15666, 0);
+                data_0209f280 = 1;
+                return;
+            }
+            func_02012790(0x15);
+            return;
+        }
+        if (data_0209f260 == 0 && level >= 0xf && level < 0x15) {
+            _ZN5Sound7PlaySubEjjj5Fix12IiEb(0x23, 0x14, 0x7f, 0x15666, 0);
+            data_0209f280 = 1;
+        }
+        data_0209f22c = 0x3c;
+        data_0209f358[0] = 0;
+        data_0209f2d4 = 2;
+        return;
+    }
+    case 2: {
+        int t6;
+        int t5;
+        if (SublevelToLevel(data_0209f2f8) == 0x1d) {
+            REG16(0x400000c) = (REG16(0x400000c) & 0x43) | 0x1210;
+        } else {
+            REG16(0x400000c) = (REG16(0x400000c) & 0x43) | 0x1010;
+        }
+        data_0209f358[0] = 0;
+        t6 = data_0209d45c ^ 0x18;
+        t5 = data_0209d454 ^ 0x10;
+        SetBg2Offset(0, 0);
+        SetSubBg0Offset(0, 0);
+        SetSubBg1Offset(0, 0);
+        data_0209d45c |= 4;
+        data_0209d454 |= 3;
+        _ZN3G2x18SetBlendBrightnessEPVtts((volatile u16 *)0x4000050, t6 | 0x20, -7);
+        _ZN3G2x18SetBlendBrightnessEPVtts((volatile u16 *)0x4001050, t5 | 0x20, -7);
+        data_0209f2d4 = 3;
+        return;
+    }
+    case 3: {
+        {
+            int touched = 0;
+            u8 slot = data_020a0e40;
+            if (data_020a0de8[slot * 4] != 0) {
+                if (data_020a0de9[slot * 4] != 0)
+                    touched = 1;
+            }
+            if (!touched) {
+                if (IsButtonInputValid() == 0)
+                    return;
+            }
+        }
+        {
+            u8 slot = data_020a0e40;
+            if ((u8)(data_020a0dea[slot * 4] - 8) < 0xf0 &&
+                (u8)(data_020a0deb[slot * 4] - 0x28) < 0x20)
+                goto sel3_0;
+            if (data_0209f2e0 == 0 && IsButtonInputValid() != 0)
+                goto sel3_0;
+            goto chk3_1;
+        sel3_0:
+            if (data_0209f2e0 == 0)
+                data_0209f244 = data_0208ee44 << 2;
+            data_0209f2e0 = 0;
+            dScStage_c::UpdateMenuButtons(0);
+            data_0209f22c = data_0208ee44 << 3;
+            func_02012790(0x57);
+            data_0209f2d4 = 4;
+            if ((u8)(data_020a0dea[data_020a0e40 * 4] - 8) < 0xf0)
+                return;
+            return;
+        }
+    chk3_1:
+        {
+            u8 slot = data_020a0e40;
+            if ((u8)(data_020a0dea[slot * 4] - 8) < 0xf0 &&
+                (u8)(data_020a0deb[slot * 4] - 0x50) < 0x20)
+                goto sel3_1;
+            if (data_0209f2e0 == 1 && IsButtonInputValid() != 0)
+                goto sel3_1;
+            goto chk3_2;
+        sel3_1:
+            if (data_0209f2e0 == 1)
+                data_0209f244 = data_0208ee44 << 2;
+            data_0209f2e0 = 1;
+            dScStage_c::UpdateMenuButtons(0);
+            data_0209f22c = data_0208ee44 << 3;
+            func_02012790(0x58);
+            data_0209f2d4 = 4;
+            if ((u8)(data_020a0dea[data_020a0e40 * 4] - 8) < 0xf0)
+                return;
+            return;
+        }
+    chk3_2:
+        {
+            u8 slot = data_020a0e40;
+            if ((u8)(data_020a0dea[slot * 4] - 8) < 0xf0 &&
+                (u8)(data_020a0deb[slot * 4] - 0x78) < 0x20)
+                goto sel3_2;
+            if (data_0209f2e0 != 2)
+                return;
+            if (IsButtonInputValid() == 0)
+                return;
+        sel3_2:
+            if (data_0209f2e0 == 2)
+                data_0209f244 = data_0208ee44 << 2;
+            data_0209f2e0 = 2;
+            dScStage_c::UpdateMenuButtons(0);
+            data_0209f22c = data_0208ee44 << 3;
+            func_02012790(0x59);
+            data_0209f2d4 = 6;
+            if ((u8)(data_020a0dea[data_020a0e40 * 4] - 8) < 0xf0)
+                return;
+            return;
+        }
+    }
+    case 4:
+        REG16(0x400100a) = (REG16(0x400100a) & 0x43) | 0xe00;
+        data_0209f2d4 = 5;
+        data_0209d45c &= ~4;
+        _ZN7Message21DisplaySaveStatusTextEt(0x295);
+        data_0209f2b8 = 0x78;
+        return;
+    case 5:
+        if (data_0209f2b8 == 0)
+            return;
+        if (data_0209f2b8 == 0x78) {
+            _ZN8SaveData15SaveCurrentFileEv();
+        } else if (data_0209f2b8 == 0x3c) {
+            _ZN7Message21DisplaySaveStatusTextEt(0x296);
+        }
+        data_0209f2b8 = data_0209f2b8 - data_0208ee44;
+        if (data_0209f2b8 == 0)
+            data_0209f2d4 = 6;
+        return;
+    case 6:
+        if (data_0209f280 != 0) {
+            _ZN5Sound7PlaySubEjjj5Fix12IiEb(0x23, 0x7f, 0, 0x15666, 0);
+            data_0209f280 = 0;
+        }
+        data_0209d45c &= ~0xc;
+        data_0209d454 &= ~3;
+        REG16(0x4000050) = 0;
+        if (data_0209f2e0 != 1) {
+            data_ov002_02111178 = 5;
+        } else {
+            _ZN8dScene_c14StartSceneFadeEjjt(1, 0, 0);
+            data_ov002_02111178 = 0;
+            _ZN5Sound22StopLoadedMusic_Layer1Ej(0xa);
+            {
+                int t = data_0209b454 | 0x40000000;
+                data_0209b454 = t;
+                data_0209b464 = t;
+            }
+        }
+        data_0209f2e0 = 0;
+        data_0209f2d4 = 0;
+        data_0209f2b0 = 0;
+        data_0209f20c = 0;
+        return;
+    default:
+        return;
+    }
+}
+// @symbol _ZN10dScStage_c16CheckCameraInputEv
+#pragma opt_strength_reduction off
+void dScStage_c::CheckCameraInput()
+{
+    CamInput* cam = (CamInput *)data_0209f498;
+    if ((u8)(data_0209f294 | (data_0209f2c4 | data_0209f20c)) == 0 && data_0209d660 == 0) {
+        int i = 0;
+        int n1 = data_0209f21c;
+        if (n1 > 0) {
+        u8* st = data_0209f350;
+        do {
+            cam->pressed = 0;
+            cam->held = 0;
+            if (((TouchInfo *)data_020a0de8)[i].touched != 0) {
+                if (*(int *)((u8 *)data_0209f318 + 0x154) & 0x1000) {
+                    u8 state = *((u8*)data_0209f498 + i * 0x18 + 0x16);
+                    if ((state == 0 && ((((TouchInfo *)data_020a0de8)[i].x <= 0x58 && ((TouchInfo *)data_020a0de8)[i].y >= 0x8a) || (((TouchInfo *)data_020a0de8)[i].x >= 0xa7 && ((TouchInfo *)data_020a0de8)[i].y >= 0x8a)))
+                        || (state == 2 && ((TouchInfo *)data_020a0de8)[i].x >= 0xa7 && ((TouchInfo *)data_020a0de8)[i].y >= 0x9a)) {
+                        if (((((TouchInfo *)data_020a0de8)[i].touched && ((TouchInfo *)data_020a0de8)[i].held) ? 1 : 0) || *st == 1) {
+                            u16 mask;
+                            if ((state == 0 && ((TouchInfo *)data_020a0de8)[i].x < 0x2b) || (((TouchInfo *)data_020a0de8)[i].x >= 0xa7 && ((TouchInfo *)data_020a0de8)[i].x < 0xd1))
+                                mask = 0x200;
+                            else if ((state == 0 && ((TouchInfo *)data_020a0de8)[i].x >= 0x30 && ((TouchInfo *)data_020a0de8)[i].x <= 0x58) || ((TouchInfo *)data_020a0de8)[i].x >= 0xd6)
+                                mask = 0x100;
+                            else {
+                                mask = data_0209f368[i];
+                                if (mask == 0) mask = 0x200;
+                            }
+                            if ((((TouchInfo *)data_020a0de8)[i].touched && ((TouchInfo *)data_020a0de8)[i].held) ? 1 : 0)
+                                *(u16*)(((int)cam + 6)) |= mask;
+                            else
+                                *(u16*)(((int)cam + 6)) |= mask & (mask ^ data_0209f368[i]);
+                            data_0209f368[i] = mask;
+                            *(u16*)(((int)cam + 4)) |= mask;
+                            *st = 1;
+                        }
+                    } else if (*st == 1) {
+                        *st = 0;
+                        data_0209f368[i] = 0;
+                    }
+                }
+            } else {
+                if (*st == 1) *st = 0;
+                data_0209f368[i] = 0;
+            }
+            {
+                u8 state2 = *((u8*)data_0209f498 + i * 0x18 + 0x16);
+                if (state2 != 0) {
+                    if (((*((u8*)data_020a0de8 + i * 4) && ((TouchInfo *)data_020a0de8)[i].held) ? 1 : 0)
+                        && ((state2 == 1 && ((TouchInfo *)data_020a0de8)[i].x >= 0xd7 && ((TouchInfo *)data_020a0de8)[i].y >= 0x8d)
+                            || (state2 == 2 && ((TouchInfo *)data_020a0de8)[i].x >= 0xd7 && ((TouchInfo *)data_020a0de8)[i].y >= 0x73 && ((TouchInfo *)data_020a0de8)[i].y < 0x97))) {
+                        data_ov002_02111180 = 0x10;
+                        *(u16*)(((int)cam + 6)) |= 0x8000;
+                        *st = 2;
+                        cam->f14 = 0;
+                    } else if (*st == 2) {
+                        if ((state2 == 1 && ((TouchInfo *)data_020a0de8)[i].x >= 0xd5 && ((TouchInfo *)data_020a0de8)[i].y >= 0x8d)
+                            || (state2 == 2 && ((TouchInfo *)data_020a0de8)[i].x >= 0xd5 && ((TouchInfo *)data_020a0de8)[i].y >= 0x73 && ((TouchInfo *)data_020a0de8)[i].y < 0x97)) {
+                            cam->f14 = 0;
+                        } else {
+                            *st = 0;
+                        }
+                    }
+                }
+            }
+            i++; cam++; st++;
+        } while (i < data_0209f21c);
+        }
+    } else {
+        int i = 0;
+        u8* st;
+        int n = data_0209f21c;
+        if (n > 0) {
+        st = data_0209f350;
+        do {
+            cam->pressed = 0;
+            cam->held = 0;
+            *st = 0;
+            i++; cam++; st++;
+        } while (i < n);
+        }
+    }
+}
+#pragma opt_strength_reduction on
+// @symbol _ZN10dScStage_c12RenderNumberEhiibi
+void dScStage_c::RenderNumber(unsigned char num, int x, int y, bool b, int p5)
+{
+    int leading = 0;
+    Matrix2x2 *mtx = 0;
+    int i;
+
+    for (i = 0; i < 3; i++)
+    {
+        int digit = __aeabi_idiv(num, data_020755b8[i]);
+        if (digit != 0 || leading != 0 || i == 2)
+        {
+            if (b == 0)
+            {
+                _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2(true, _ZN3OAM7NUMBERSE[digit], x, y, p5, -1, mtx);
+            }
+            else
+            {
+                _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2(false, _ZN3OAM7NUMBERSE[digit], x, y, p5, -1, 0);
+            }
+            leading = 1;
+            x += 9;
+        }
+        num = num % data_020755b8[i];
+    }
+}
+// @symbol _ZN10dScStage_c9PS_RenderEv
+void dScStage_c::PS_Render()
+{
+    if (func_02029408() != 0 && data_02092144[data_0209f250] != 0 &&
+        data_0209f248 != 0xb && data_0209f248 != 0xe && data_0209f248 != 0xf &&
+        ((unsigned int)data_0209f248 < 7U || (unsigned int)data_0209f248 > 8U)) {
+        dScStage_c::RenderBouncingArrows();
+    }
+
+    int r0v = (data_0209f2d8 == 1);
+    if (r0v != 0 && data_0209fc68 == 0) {
+        _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, &_ZN3OAM8VS_PAUSEE, 0x80, 0x60, -1, -1, 0x1000, 0x1000, 0, -1);
+    } else if (data_0209f248 == 1 ||
+               (SublevelToLevel(data_0209f2f8) == 0x1d &&
+                ((unsigned int)data_0209f248 < 7U || (unsigned int)data_0209f248 > 8U))) {
+        int var_sl;
+        unsigned char var_sb;
+        unsigned char var_r8;
+        int var_r7;
+        int sp18;
+        var_r7 = 0;
+        sp18 = 0;
+        var_r8 = CountStarsCollectedInLevelToDisplay(data_0209f2c8);
+        if (IsStarCollected(data_0209f2c8, 0) != 0) {
+            var_r8 -= 1;
+        }
+        if (data_0209f248 == 1 && data_0209f2f0 == 0) {
+            if (data_0209f238 == 1) {
+                _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, &_ZN3OAM19ARROW_POINTING_LEFTE, 0x12, 0x60, -1, -1, 0x1000, 0x1000, 0, -1);
+                _ZN3OAM9RenderSubEP7OamAttrii(&_ZN3OAM19ARROW_POINTING_LEFTE, 0x12, 0x10);
+            } else {
+                _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, &_ZN3OAM19ARROW_POINTING_LEFTE, 0x14, 0x60, -1, -1, 0x1000, 0x1000, 0, -1);
+                _ZN3OAM9RenderSubEP7OamAttrii(&_ZN3OAM19ARROW_POINTING_LEFTE, 0x14, 0x10);
+            }
+            if (data_0209f238 == 2) {
+                _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, &_ZN3OAM20ARROW_POINTING_RIGHTE, 0xee, 0x60, -1, -1, 0x1000, 0x1000, 0, -1);
+                _ZN3OAM9RenderSubEP7OamAttrii(&_ZN3OAM20ARROW_POINTING_RIGHTE, 0xee, 0x10);
+            } else {
+                _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, &_ZN3OAM20ARROW_POINTING_RIGHTE, 0xec, 0x60, -1, -1, 0x1000, 0x1000, 0, -1);
+                _ZN3OAM9RenderSubEP7OamAttrii(&_ZN3OAM20ARROW_POINTING_RIGHTE, 0xec, 0x10);
+            }
+        }
+        if (data_0209f2c8 != 0xf) {
+            var_sb = 0x50;
+            var_sl = 1;
+            if (var_r8 != 0) {
+                do {
+                    if (IsStarCollected(data_0209f2c8, var_sl) != 0) {
+                        _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2(0, (OamAttr *)&_ZN3OAM13MM_SMALL_STARE, var_sb, 0x60, -1, -1, 0);
+                        var_r7 = (var_r7 + 1) & 0xff;
+                    } else {
+                        _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2(0, (OamAttr *)&_ZN3OAM16SMALL_STAR_EMPTYE, var_sb, 0x60, -1, -1, 0);
+                        sp18 = 1;
+                    }
+                    var_sb += 0x10;
+                    var_sl += 1;
+                } while (var_r7 != var_r8);
+            }
+            if (sp18 == 0 && var_r8 != 7) {
+                _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2(0, (OamAttr *)&_ZN3OAM16SMALL_STAR_EMPTYE, var_sb, 0x60, -1, -1, 0);
+            }
+            unsigned char r5v = _ZN8SaveData13GetCoinRecordEj(data_0209f2c8);
+            _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2(0, &_ZN3OAM4COINE, 0x70, 0x70, -1, -1, 0);
+            _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2(0, &_ZN3OAM5TIMESE, 0x80, 0x78, -1, -1, 0);
+            RenderNumber(r5v, 0x88, 0x70, 1, 8);
+            if (IsStarCollected(data_0209f2c8, 0) != 0) {
+                _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2(0, (OamAttr *)&_ZN3OAM13MM_SMALL_STARE, 0xb0, 0x78, -1, -1, 0);
+            }
+        } else {
+            _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2(0, (OamAttr *)&_ZN3OAM13MM_SMALL_STARE, 0x70, 0x60, -1, -1, 0);
+            _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2(0, &_ZN3OAM5TIMESE, 0x80, 0x60, -1, -1, 0);
+            RenderNumber(CountStarsCollectedInLevelToDisplay(0x1d), 0x88, 0x58, 1, 8);
+        }
+    } else if (data_0209d45c & 8) {
+        if ((unsigned int)data_0209f2c8 < 0xfU) {
+            unsigned char r4v = CountStarsCollectedInLevelToDisplay(data_0209f2c8);
+            _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2(0, (OamAttr *)&_ZN3OAM13MM_SMALL_STARE, 0x58, 0x8c, -1, -1, 0);
+            _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2(0, &_ZN3OAM5TIMESE, 0x68, 0x8c, -1, -1, 0);
+            RenderNumber(r4v, 0x70, 0x84, 1, 1);
+            unsigned char r4v2 = _ZN8SaveData13GetCoinRecordEj(data_0209f2c8);
+            _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2(0, &_ZN3OAM4COINE, 0x88, 0x84, -1, -1, 0);
+            _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2(0, &_ZN3OAM5TIMESE, 0x98, 0x8c, -1, -1, 0);
+            RenderNumber(r4v2, 0xa0, 0x84, 1, 1);
+        }
+        if (data_0209f248 == 0xb) {
+            _ZN3OAM9RenderSubEP7OamAttrii(&_ZN3OAM5PAUSEE, 0x80, 0x60);
+        }
+    }
+
+    unsigned char f248b = data_0209f248;
+    if ((unsigned char)(f248b + 0xf9) <= 1) {
+        if (data_0209f2e0 == 3) {
+            if (data_0209f29c == 0) {
+                if (GetOwnerLanguage() == 5) {
+                    _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2(1, (OamAttr *)&_ZN3OAM9TINY_STARE, 0x46, ((data_0209f2e0 * 5) + 6) * 8, -1, -1, 0);
+                } else if (GetOwnerLanguage() == 3) {
+                    _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2(1, (OamAttr *)&_ZN3OAM9TINY_STARE, 0x4e, ((data_0209f2e0 * 5) + 6) * 8, -1, -1, 0);
+                } else {
+                    _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2(1, (OamAttr *)&_ZN3OAM9TINY_STARE, 0x56, ((data_0209f2e0 * 5) + 6) * 8, -1, -1, 0);
+                }
+            } else {
+                _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2(1, (OamAttr *)&_ZN3OAM9TINY_STARE, 0xce, ((data_0209f2e0 * 5) + 6) * 8, -1, -1, 0);
+            }
+        } else {
+            _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2(1, (OamAttr *)&_ZN3OAM9TINY_STARE, 0x26, ((data_0209f2e0 * 5) + 6) * 8, -1, -1, 0);
+        }
+        if (GetOwnerLanguage() == 5) {
+            _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, data_ov001_020abd98[data_0209f2dc], 0x80, 0x60, -1, -1, 0x1000, 0x1000, 0, -1);
+            return;
+        }
+        if (GetOwnerLanguage() == 4) {
+            _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, data_ov001_020ac218[data_0209f2dc], 0x80, 0x60, -1, -1, 0x1000, 0x1000, 0, -1);
+            return;
+        }
+        if (GetOwnerLanguage() == 3) {
+            _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, data_ov001_020ac64c[data_0209f2dc], 0x80, 0x60, -1, -1, 0x1000, 0x1000, 0, -1);
+            return;
+        }
+        if (GetOwnerLanguage() == 2) {
+            _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, data_ov001_020acb68[data_0209f2dc], 0x80, 0x60, -1, -1, 0x1000, 0x1000, 0, -1);
+            return;
+        }
+        _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(0, _ZN3OAM21CONTROLLER_MODE_TEXTSE[data_0209f2dc], 0x80, 0x60, -1, -1, 0x1000, 0x1000, 0, -1);
+        return;
+    }
+
+    if (f248b != 0xa) {
+        return;
+    }
+
+    if (data_0209f2e0 == 2) {
+        if (data_0209f29c == 0) {
+            if (GetOwnerLanguage() == 5) {
+                _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2(1, (OamAttr *)&_ZN3OAM9TINY_STARE, 0x46, 0xa8, -1, -1, 0);
+            } else if (GetOwnerLanguage() == 3) {
+                _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2(1, (OamAttr *)&_ZN3OAM9TINY_STARE, 0x4e, 0xa8, -1, -1, 0);
+            } else {
+                _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2(1, (OamAttr *)&_ZN3OAM9TINY_STARE, 0x56, 0xa8, -1, -1, 0);
+            }
+        } else {
+            _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2(1, (OamAttr *)&_ZN3OAM9TINY_STARE, 0xce, 0xa8, -1, -1, 0);
+        }
+    } else {
+        _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2(1, (OamAttr *)&_ZN3OAM9TINY_STARE, 0xe, ((data_0209f2e0 * 6) + 7) * 8, -1, -1, 0);
+    }
+
+    if (data_0209f238 == 2) {
+        _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2(1, (OamAttr *)&_ZN3OAM25SMALL_ARROW_POINTING_LEFTE, 0x62, 0x38, -1, -1, 0);
+    } else {
+        _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2(1, (OamAttr *)&_ZN3OAM25SMALL_ARROW_POINTING_LEFTE, 0x64, 0x38, -1, -1, 0);
+    }
+
+    if (data_0209f238 == 1) {
+        _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2(1, (OamAttr *)&_ZN3OAM26SMALL_ARROW_POINTING_RIGHTE, 0xf6, 0x38, -1, -1, 0);
+        return;
+    }
+    _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2(1, (OamAttr *)&_ZN3OAM26SMALL_ARROW_POINTING_RIGHTE, 0xf4, 0x38, -1, -1, 0);
+}
+// @symbol _ZN10dScStage_c25PS_UpdateOkAndBackButtonsEb
+/* Lever (notes 6au): TWO coupled changes that only work together.
+ *   1. the array object is declared `extern volatile int data_02075610[];`
+ *   2. there is NO named pointer local -- the array is indexed INLINE in the loop bound.
+ * A named pointer local puts the base in mwcc's address-constant class, which is colored
+ * after every normal web and lands it in r7; that alone was the whole 9-word miss, and it
+ * dominates even if the pointer is itself volatile. A plain inline access rematerializes
+ * the base in normal birth order but into a scratch register and caches the bound, which
+ * drops the tail reload and comes out three words SHORT. The volatile forces the bound to
+ * be re-read every iteration (the ROM reloads at +0xc0 and +0x114), which keeps the base
+ * live across the inner loop so it must take a callee-saved register -- but via the
+ * normal-birth path, not the address-constant class. Result ptr r5 / 0x1000 r6 / idx r7,
+ * exactly the ROM. Do NOT reintroduce a named pointer and do NOT drop the volatile;
+ * either one alone regresses. Link-verified: VERIFIED, 0 diffs, 0 blind.
+ */
+void dScStage_c::PS_UpdateOkAndBackButtons(bool b)
+{
+    int sl;
+    int i;
+    int base;
+    int data_0x1000;
+    int idx;
+    int data_0x2000;
+    int j;
+
+    if (GetOwnerLanguage() == 5 || GetOwnerLanguage() == 3)
+        base = 2;
+    else
+        base = 0;
+
+    for (i = 0; i < 2; i++) {
+        data_0x2000 = 0x2000;
+        data_0x1000 = 0x1000;
+
+        if (b) {
+            sl = data_0x1000;
+        } else {
+            int v;
+            if (data_0209f2b4 == data_0209f2e0 && data_0209f29c == i && data_0209f244 == 0)
+                v = data_0x2000;
+            else
+                v = data_0x1000;
+            sl = (u16)v;
+        }
+
+        idx = i + base;
+        u16 *scr = G2S::GetBG1ScrPtr() + data_020755cc[idx];
+        for (j = 0; j < data_02075610[idx]; j++) {
+            scr[0] = (scr[0] & 0x3ff) | sl;
+            scr[0x20] = (scr[0x20] & 0x3ff) | sl;
+            scr[0x40] = (scr[0x40] & 0x3ff) | sl;
+            scr[0x60] = (scr[0x60] & 0x3ff) | sl;
+            scr++;
+        }
+    }
+}
+// @symbol _ZN10dScStage_c17PS_UpdateSaveMenuEb
+void dScStage_c::PS_UpdateSaveMenu(bool b)
+{
+  u16 v;
+  int i;
+  for (i = 0; i < 2; i++)
+  {
+    int j;
+    u16 *p;
+    if (b != 0)
+    {
+      v = 0x1000;
+    }
+    else
+    {
+      unsigned int t;
+      if (data_0209f2e0 == i && data_0209f244 == 0) t = 0x2000;
+      else t = 0x1000;
+      v = (u16) t;
+    }
+    p = G2S::GetBG1ScrPtr() + data_020755c8[i];
+    for (j = 0; j < 10; j++)
+    {
+      p[0] = (p[0] & 0x3ff) | v;
+      p[0x20] = (p[0x20] & 0x3ff) | v;
+      p[0x40] = (p[0x40] & 0x3ff) | v;
+      p[0x60] = (p[0x60] & 0x3ff) | v;
+      p++;
+    }
+  }
+}
+// @symbol _ZN10dScStage_c20PS_UpdateOptionsMenuEv
+void dScStage_c::PS_UpdateOptionsMenu()
+{
+    int i;
+    int j;
+    int counter;
+    u16 sel;
+    u16 *scr;
+    u16 v;
+
+    sel = (data_0209f2e4 != 0) ? 0x5000 : 0x6000;
+    scr = G2S::GetBG1ScrPtr() + 0xae;
+    for (j = 0; j < 0xf; j++) {
+        scr[0]    = (scr[0]    & 0x3ff) | sel;
+        scr[0x20] = (scr[0x20] & 0x3ff) | sel;
+        scr[0x40] = (scr[0x40] & 0x3ff) | sel;
+        scr[0x60] = (scr[0x60] & 0x3ff) | sel;
+        scr++;
+    }
+
+    for (j = 0; j < 2; j++) {
+        scr = G2S::GetBG1ScrPtr() + data_020755c0[j];
+        v = (data_0209f2e0 == j) ? 0x4000 : 0x3000;
+        counter = 0;
+        for (; counter < 0xa; counter++) {
+            scr[0]    = (scr[0]    & 0x3ff) | v;
+            scr[0x20] = (scr[0x20] & 0x3ff) | v;
+            scr++;
+        }
+    }
+
+    for (i = 0; i < 2; i++) {
+        scr = G2S::GetBG1ScrPtr() + data_020755c4[i];
+        v = (data_0209f2ec == i && data_0209f2cc == 0) ? 0x6000 : 0x5000;
+        counter = 0;
+        for (; counter < 7; counter++) {
+            scr[0]    = (scr[0]    & 0x3ff) | v;
+            scr[0x20] = (scr[0x20] & 0x3ff) | v;
+            scr[0x40] = (scr[0x40] & 0x3ff) | v;
+            scr[0x60] = (scr[0x60] & 0x3ff) | v;
+            scr++;
+        }
+    }
+}
+// @symbol _ZN10dScStage_c17UpdateMenuButtonsEb
+    void dScStage_c::UpdateMenuButtons(bool b)
+    {
+      int i;
+      for (i = 0; i < data_0209f2b4; i++)
+      {
+        unsigned int v;
+        int j;
+        u16 *p;
+        p = G2S::GetBG1ScrPtr() + data_0209f360[i];
+        if (b == 0)
+        {
+          if (data_0209f2e0 == i && data_0209f244 == 0)
+          {
+            v = 0x2000;
+          }
+          else
+          {
+            v = 0x1000;
+          }
+          v = (u16) v;
+        }
+        else
+        {
+          v = 0x1000;
+        }
+        if (data_0209f2c4 != 0)
+        {
+          u8 t = (u8) (data_0209f248 + 0xf9);
+          if (t <= 1)
+          {
+            v = (u16) (v + 0x4000);
+          }
+        }
+        for (j = 0; j < 0x20; j++)
+        {
+          p[0] = (p[0] & 0x3ff) | v;
+          p[0x20] = (p[0x20] & 0x3ff) | v;
+          p[0x40] = (p[0x40] & 0x3ff) | v;
+          p[0x60] = (p[0x60] & 0x3ff) | v;
+          p++;
+        }
+
+      }
+
+    }
+// @symbol _ZN10dScStage_c10PS_CleanupEv
+/* Static, like the rest of the PS_ group: restarts the timer, unpauses or
+ * stops the music and clears the blend registers, all through globals. */
+void dScStage_c::PS_Cleanup(){
+  if(data_0209f2a0[0]){
+    data_0209d4c8.StartTimer();
+    data_0209f2a0[0]=0;
+  }
+  data_0209d45c &= ~0xe;
+  data_0209d454 &= ~3;
+  if(data_0209f280==0) Sound::UnpauseMusic();
+  else Sound::StopLoadedMusic_Layer1(0x3c);
+  data_0209f300=0xf;
+  *(short*)0x4000050=0;
+  *(short*)0x4001050=0;
+  data_0209f280=0;
+  data_0209f2c4=0;
+}
+// @symbol _ZN10dScStage_c9PS_UpdateEv
 // Cases 0/2/3/8/0xa..0x13 BYTE-EXACT.
 /*
  * dScStage_c::PS_Update @ 0x0202635c size 0x30ac, mwccarm 1.2/sp2p3 -O4,p -lang c++
@@ -22,100 +1136,6 @@
  *   after the displayed-level normalization, makes MWCC schedule the case-1
  *   literal loads in ROM order without changing behavior.
  */
-extern "C" {
-int IsButtonInputValid(void);
-int func_02029408(void);
-void _ZN7Message7DisplayEj(int m);
-void _ZN7Message11DisplayTextEt(int m);
-void _ZN7Message16DisplayPauseTextEth(int m, u8 a);
-void _ZN7Message18DisplayPauseTextVSEt(int m);
-void _ZN7Message22DisplayOptionsMenuTextEt(int m);
-void _ZN7Message19DisplaySaveMenuTextEt(int m);
-void _ZN7Message21DisplaySaveStatusTextEt(int m);
-void _ZN7Message19DisplayDontSaveTextEt(int m);
-void _ZN7Message25DisplayControllerModeTextEt(int m);
-void _ZN8dScene_c14StartSceneFadeEjjt(u32 a, u32 b, int c);
-int GetOwnerLanguage(void);
-u16 *_ZN3G2S12GetBG1ScrPtrEv(void);
-void SetControllerMode(int m);
-void LoadLevelNoReturn(int a, int b, int c, int d);
-int SublevelToLevel(int lv);
-int CountStarsCollectedInLevelToDisplay(int lv);
-void SetBg1Offset(int x, int y);
-void SetBg2Offset(int x, int y);
-void SetBg3Offset(int x, int y);
-void SetSubBg0Offset(int x, int y);
-void SetSubBg1Offset(int x, int y);
-void func_02012790(int snd);
-void LoadCompressedFileAt(int id, void *dst);
-int GetSoundMode(void);
-void SetSoundMode(int m);
-void TurnBacklightOn(void);
-void TurnBacklightOff(void);
-void _ZN8SaveData15SaveCurrentFileEv(void);
-void _ZN5Sound22StopLoadedMusic_Layer1Ej(u32 a);
-
-extern int data_0208ee44;          /* frame tick */
-extern u8 data_0208ee3c;
-extern u8 data_0208ee40;
-extern s8 data_02092124;
-extern u8 data_0209d454;
-extern u8 data_0209d45c;
-extern u8 data_0209f1ec;           /* next pause state */
-extern u8 data_0209f1fc;
-extern u8 data_0209f210;           /* timer: star scroll */
-extern u8 data_0209f218;
-extern u8 data_0209f22c;           /* timer: whole update pause */
-extern u8 data_0209f234;           /* sound mode selection */
-extern u8 data_0209f238;
-extern u8 data_0209f23c;           /* timer -> options */
-extern u8 data_0209f240;
-extern u8 data_0209f244;           /* timer: button flash */
-extern u8 data_0209f248;           /* current pause state */
-extern u8 data_0209f250;
-extern s16 data_02092144[];
-extern u8 data_0209f280;
-extern u8 data_0209f29c;
-extern u8 data_0209f2a4;
-extern u8 data_0209f2b4;
-extern u8 data_0209f2b8;           /* save countdown */
-extern u8 data_0209f2c4;
-extern u8 data_0209f2c8;           /* displayed level */
-extern u8 data_0209f2cc;           /* timer -> options */
-extern u8 data_0209f2d8;
-extern u8 data_0209f2dc;
-extern u8 data_0209f2e0;           /* selected button */
-extern u8 data_0209f2e4;           /* timer -> options */
-extern u8 data_0209f2ec;
-extern u8 data_0209f2f0;
-extern s8 data_0209f2f8;
-extern u16 data_0209f300;
-extern u16 data_0209f360[];
-extern u8 data_0209f4ae[];
-extern int data_0209fc68;
-extern int data_0209b454;
-extern int data_0209b464;
-extern s16 data_020756d0[];
-extern u8 data_ov002_02111150;
-extern volatile u8 data_020a0e40;  /* active input slot */
-extern u8 data_020a0de8[]; /* touch: active   [slot*4]   */
-extern u8 data_020a0de9[]; /* touch: pressed  [slot*4]   */
-extern volatile u8 data_020a0dea[]; /* touch: x        [slot*4]   */
-extern volatile u8 data_020a0deb[]; /* touch: y        [slot*4]   */
-
-#define DE8P(off) ((u8 *)(data_020a0de8 + (off)))
-#define REG16(a) (*(volatile u16 *)(a))
-#define REG32(a) (*(volatile u32 *)(a))
-
-struct dScStage_c {
-    static void PS_Update();
-    static void UpdateMenuButtons(bool held);
-    static void PS_UpdateSaveMenu(bool held);
-    static void PS_Cleanup();
-    static void PS_UpdateOptionsMenu();
-    static void PS_UpdateOkAndBackButtons(bool held);
-};
-
 #pragma opt_common_subs off
 void dScStage_c::PS_Update()
 {
@@ -638,27 +1658,27 @@ void dScStage_c::PS_Update()
         REG16(0x400100a) = (REG16(0x400100a) & 0x43) | 0xf00;
         if (data_0209f218 != 0) {
             if (GetOwnerLanguage() == 5) {
-                LoadCompressedFileAt(0xb001, _ZN3G2S12GetBG1ScrPtrEv());
+                LoadCompressedFileAt(0xb001, G2S::GetBG1ScrPtr());
             } else if (GetOwnerLanguage() == 4) {
-                LoadCompressedFileAt(0xac01, _ZN3G2S12GetBG1ScrPtrEv());
+                LoadCompressedFileAt(0xac01, G2S::GetBG1ScrPtr());
             } else if (GetOwnerLanguage() == 3) {
-                LoadCompressedFileAt(0xa801, _ZN3G2S12GetBG1ScrPtrEv());
+                LoadCompressedFileAt(0xa801, G2S::GetBG1ScrPtr());
             } else if (GetOwnerLanguage() == 2) {
-                LoadCompressedFileAt(0xa401, _ZN3G2S12GetBG1ScrPtrEv());
+                LoadCompressedFileAt(0xa401, G2S::GetBG1ScrPtr());
             } else {
-                LoadCompressedFileAt(0xa001, _ZN3G2S12GetBG1ScrPtrEv());
+                LoadCompressedFileAt(0xa001, G2S::GetBG1ScrPtr());
             }
         } else {
             if (GetOwnerLanguage() == 5) {
-                LoadCompressedFileAt(0xb009, _ZN3G2S12GetBG1ScrPtrEv());
+                LoadCompressedFileAt(0xb009, G2S::GetBG1ScrPtr());
             } else if (GetOwnerLanguage() == 4) {
-                LoadCompressedFileAt(0xac09, _ZN3G2S12GetBG1ScrPtrEv());
+                LoadCompressedFileAt(0xac09, G2S::GetBG1ScrPtr());
             } else if (GetOwnerLanguage() == 3) {
-                LoadCompressedFileAt(0xa809, _ZN3G2S12GetBG1ScrPtrEv());
+                LoadCompressedFileAt(0xa809, G2S::GetBG1ScrPtr());
             } else if (GetOwnerLanguage() == 2) {
-                LoadCompressedFileAt(0xa409, _ZN3G2S12GetBG1ScrPtrEv());
+                LoadCompressedFileAt(0xa409, G2S::GetBG1ScrPtr());
             } else {
-                LoadCompressedFileAt(0xa009, _ZN3G2S12GetBG1ScrPtrEv());
+                LoadCompressedFileAt(0xa009, G2S::GetBG1ScrPtr());
             }
         }
         data_0209f360[0] = 0x80;
@@ -1470,4 +2490,4 @@ void dScStage_c::PS_Update()
         return;
     }
 }
-}
+#pragma opt_common_subs on

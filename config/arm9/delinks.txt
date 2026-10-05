@@ -3766,69 +3766,9 @@ src/d_s_boot.c:
     complete
     .text start:0x02023624 end:0x02023688
 
-src/_ZN10dScStage_cD1Ev.cpp:
+src/actors/dScStage_c.cpp:
     complete
-    .text start:0x02023688 end:0x020236f0
-
-src/_ZN10dScStage_cD0Ev.cpp:
-    complete
-    .text start:0x020236f0 end:0x0202376c
-
-src/_ZN10dScStage_c9VE_UpdateEv.cpp:
-    complete
-    .text start:0x0202376c end:0x02023a80
-
-src/_ZN10dScStage_c7VE_InitEv.cpp:
-    complete
-    .text start:0x02023a80 end:0x02023be0
-
-src/_ZN10dScStage_c20RenderBouncingArrowsEv.cpp:
-    complete
-    .text start:0x02023be0 end:0x02023db8
-
-src/_ZN10dScStage_c9LC_RenderEv.cpp:
-    complete
-    .text start:0x02023db8 end:0x020242c8
-
-src/_ZN10dScStage_c9LC_UpdateEv.cpp:
-    complete
-    .text start:0x020242c8 end:0x02024c70
-
-src/_ZN10dScStage_c16CheckCameraInputEv.cpp:
-    complete
-    .text start:0x02024c70 end:0x020250d0
-
-src/_ZN10dScStage_c12RenderNumberEhiibi.cpp:
-    complete
-    .text start:0x020250d0 end:0x020251d0
-
-src/_ZN10dScStage_c9PS_RenderEv.cpp:
-    complete
-    .text start:0x020251d0 end:0x02025d20
-
-src/_ZN10dScStage_c25PS_UpdateOkAndBackButtonsEb.cpp:
-    complete
-    .text start:0x02025d20 end:0x02025e74
-
-src/_ZN10dScStage_c17PS_UpdateSaveMenuEb.cpp:
-    complete
-    .text start:0x02025e74 end:0x02025f60
-
-src/_ZN10dScStage_c20PS_UpdateOptionsMenuEv.cpp:
-    complete
-    .text start:0x02025f60 end:0x02026148
-
-src/_ZN10dScStage_c17UpdateMenuButtonsEb.cpp:
-    complete
-    .text start:0x02026148 end:0x02026290
-
-src/_ZN10dScStage_c10PS_CleanupEv.cpp:
-    complete
-    .text start:0x02026290 end:0x0202635c
-
-src/_ZN10dScStage_c9PS_UpdateEv.cpp:
-    complete
-    .text start:0x0202635c end:0x02029408
+    .text start:0x02023688 end:0x02029408
 
 src/func_02029408.c:
     .text start:0x02029408 end:0x0202942c

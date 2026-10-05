@@ -1240,6 +1240,9 @@
       ],
       "src/actors/daMoray_c.cpp": [
         "param:#1 int"
+      ],
+      "src/actors/dScStage_c.cpp": [
+        "param:#1 int"
       ]
     },
     "IsStarCollectedInCurLevel": {
@@ -7457,6 +7460,9 @@
       "src/minigames/d_s_mg_base.cpp": [
         "return:int",
         "return:void *"
+      ],
+      "src/actors/dScStage_c.cpp": [
+        "return:unsigned short *"
       ]
     },
     "_ZN3G2S12GetBG2ScrPtrEv": {
@@ -7805,6 +7811,9 @@
       ],
       "src/func_ov075_02119d3c.c": [
         "arity:4"
+      ],
+      "src/actors/dScStage_c.cpp": [
+        "param:#2 int"
       ]
     },
     "_ZN3G3X13SetClearColorEtiiib": {
@@ -8298,6 +8307,9 @@
     "_ZN3OAM14BOUNCING_ARROWE": {
       "src/_ZN10dScStage_c20RenderBouncingArrowsEv.cpp": [
         "kind:function"
+      ],
+      "src/func_ov075_02116f40.cpp": [
+        "kind:data"
       ]
     },
     "_ZN3OAM4COINE": {
@@ -8423,6 +8435,9 @@
     "_ZN3OAM7NUMBERSE": {
       "src/_ZN10dScStage_c12RenderNumberEhiibi.cpp": [
         "return:OamAttr * []"
+      ],
+      "src/actors/dScStarSel_c.cpp": [
+        "return:void * []"
       ]
     },
     "_ZN3OAM9RenderSubEP7OamAttriiii": {
@@ -10965,30 +10980,49 @@
       ],
       "src/_ZN7Message7DisplayEj.cpp": [
         "param:#1 void *"
+      ],
+      "src/actors/dScStage_c.cpp": [
+        "param:#1 int"
       ]
     },
     "_ZN7Message16DisplayPauseTextEth": {
       "src/_ZN10dScStage_c9PS_UpdateEv.cpp": [
+        "param:#1 int"
+      ],
+      "src/actors/dScStage_c.cpp": [
         "param:#1 int"
       ]
     },
     "_ZN7Message18DisplayPauseTextVSEt": {
       "src/_ZN10dScStage_c9PS_UpdateEv.cpp": [
         "param:#1 int"
+      ],
+      "src/actors/dScStage_c.cpp": [
+        "param:#1 int"
       ]
     },
     "_ZN7Message19DisplayDontSaveTextEt": {
       "src/_ZN10dScStage_c9PS_UpdateEv.cpp": [
+        "param:#1 int"
+      ],
+      "src/actors/dScStage_c.cpp": [
         "param:#1 int"
       ]
     },
     "_ZN7Message19DisplaySaveMenuTextEt": {
       "src/_ZN10dScStage_c9PS_UpdateEv.cpp": [
         "param:#1 int"
+      ],
+      "src/actors/dScStage_c.cpp": [
+        "param:#1 int"
       ]
     },
     "_ZN7Message21DisplayLevelClearTextEta": {
       "src/_ZN10dScStage_c9LC_UpdateEv.cpp": [
+        "param:#1 int",
+        "param:#2 unsigned char"
+      ],
+      "src/actors/dScStage_c.cpp": [
         "param:#1 int",
         "param:#2 unsigned char"
       ]
@@ -10999,20 +11033,32 @@
       ],
       "src/_ZN10dScStage_c9PS_UpdateEv.cpp": [
         "param:#1 int"
+      ],
+      "src/actors/dScStage_c.cpp": [
+        "param:#1 int"
       ]
     },
     "_ZN7Message22DisplayOptionsMenuTextEt": {
       "src/_ZN10dScStage_c9PS_UpdateEv.cpp": [
+        "param:#1 int"
+      ],
+      "src/actors/dScStage_c.cpp": [
         "param:#1 int"
       ]
     },
     "_ZN7Message25DisplayControllerModeTextEt": {
       "src/_ZN10dScStage_c9PS_UpdateEv.cpp": [
         "param:#1 int"
+      ],
+      "src/actors/dScStage_c.cpp": [
+        "param:#1 int"
       ]
     },
     "_ZN7Message7DisplayEj": {
       "src/_ZN10dScStage_c9PS_UpdateEv.cpp": [
+        "arity:1"
+      ],
+      "src/actors/dScStage_c.cpp": [
         "arity:1"
       ]
     },
@@ -11753,6 +11799,10 @@
       ],
       "src/actors/daStar_c.cpp": [
         "param:#1 int"
+      ],
+      "src/actors/dScStage_c.cpp": [
+        "param:#1 int",
+        "param:#2 int"
       ]
     },
     "_ZN8SaveData22NumGlowingRabbitsFoundEv": {
@@ -15585,6 +15635,9 @@
     "data_0209f2a0": {
       "src/_ZN10dScStage_c10PS_CleanupEv.cpp": [
         "return:unsigned char []"
+      ],
+      "src/_ZN10dScStage_c8BehaviorEv.cpp": [
+        "return:unsigned char"
       ]
     },
     "data_0209f2b4": {
@@ -16660,6 +16713,9 @@
       ],
       "src/actors/dScMgPachinko_c.cpp": [
         "return:unsigned char [][]"
+      ],
+      "src/actors/dScStage_c.cpp": [
+        "return:volatile unsigned char []"
       ]
     },
     "data_020a0deb": {
@@ -16689,6 +16745,9 @@
       ],
       "src/actors/dScMgPachinko_c.cpp": [
         "return:unsigned char [][]"
+      ],
+      "src/actors/dScStage_c.cpp": [
+        "return:volatile unsigned char []"
       ]
     },
     "data_020a0df8": {
@@ -16783,6 +16842,9 @@
       ],
       "src/minigames/d_s_mg_base.cpp": [
         "return:unsigned char []"
+      ],
+      "src/actors/dScStage_c.cpp": [
+        "return:volatile unsigned char"
       ]
     },
     "data_020a0e58": {

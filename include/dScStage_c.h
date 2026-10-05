@@ -90,8 +90,11 @@ struct dScStage_c : dScene_c {
     static void VE_Init();
     static void VE_Update();
     static void LC_Render();
+    static void LC_Update();
+    static void CheckCameraInput();
     /* PS_Init is deliberately NOT declared here; it uses its own local shadow
        of dScStage_c instead. See notes/scene-provenance.md before wiring it up. */
+    static void PS_Render();
     static void PS_Cleanup();
     static void PS_UpdateSaveMenu(bool held);
     static void PS_UpdateOptionsMenu();
@@ -99,8 +102,9 @@ struct dScStage_c : dScene_c {
     static void UpdateMenuButtons(bool held);
     static void SetVramBanks();
     static void ResetMeshColliders();
-    static void RenderNumber(u8 h, int i, int i2, int i3, bool b);
+    static void RenderNumber(u8 h, int i, int i2, bool b, int i3);
     static void LoadGraphics2D(bool e3d, int level);
+    static void PS_Update();
     static int  IsPauseDisabled();
     static int  CanPause();
     /* Trailing extent the ROM's `new dScStage_c` size literal proves; see
