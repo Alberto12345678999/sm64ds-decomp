@@ -1901,8 +1901,6 @@ extern void func_020396c0(void*, int);
 extern void func_020396d0(int*, int);
 extern void func_020398fc(void*);
 extern void func_02039db8(void*, struct Vector3*, struct Vector3*);
-extern void func_0203aa10(void*, const Vector3*, Vector3*);
-extern void func_0203aa74(void*, Vector3*, Vector3*);
 extern void func_0203abd4(int*, int*, int);
 extern void _ZN8dM3dGSphD2Ev(void*);
 extern void _ZN8dM3dGSphD1Ev(void*);
