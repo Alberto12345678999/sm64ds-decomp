@@ -116,6 +116,33 @@ struct daObjBlockS_c : dBgActor_c {
     virtual void OnGroundPounded(dActor_c &other);      /* slot 21 */
     virtual void Kill();                                /* slot 31 */
 
+    /* The address is the name. The first argument is this crate. */
+    void func_ov098_0213814c();
+    void func_ov098_021381e8();
+    void func_ov098_02138238();
+    void func_ov098_02138318();
+    void func_ov098_02138344();
+    void func_ov098_02138484();
+    void func_ov098_021384fc();
+    void func_ov098_021385e0();
+    void func_ov098_02138734();
+    void func_ov098_02138818();
+    void func_ov098_021388bc();
+    void func_ov098_021389cc();
+    void func_ov098_021389f8();
+    void func_ov098_02138b18();
+    void func_ov098_02138b70();
+    int func_ov098_02138bb8();
+    int func_ov098_02138bfc();
+    void func_ov098_02138ce0();
+    void func_ov098_02138e08();
+    void func_ov098_02138e6c();
+    void func_ov098_021390ec();
+    int func_ov098_02139228();
+    void func_ov098_021396a4();
+    void func_ov098_021397c8();
+    void func_ov098_02139850();
+
     /* The values of mState: each indexes one {enter, update} pair in the table
        at data_ov098_0213c878 (see src/actors/daObjBlockS_c.cpp). The names
        describe what the handlers do; the ROM stores none. */

@@ -4146,89 +4146,9 @@ src/func_0202e118.c:
     complete
     .text start:0x0202e118 end:0x0202e140
 
-src/_ZN8dScene_cD1Ev.cpp:
+src/actors/dScene_c.cpp:
     complete
-    .text start:0x0202e140 end:0x0202e170
-
-src/_ZN8dScene_cD0Ev.cpp:
-    complete
-    .text start:0x0202e170 end:0x0202e1b4
-
-src/_ZN8dScene_c20SetAndStopColorFaderEv.cpp:
-    complete
-    .text start:0x0202e1b4 end:0x0202e1e0
-
-src/_ZN8dScene_c9SetFadersEP15dFdBrightness_c.cpp:
-    complete
-    .text start:0x0202e1e0 end:0x0202e26c
-
-src/_ZN8dScene_c16SpawnIfNecessaryEv.cpp:
-    complete
-    .text start:0x0202e26c end:0x0202e300
-
-src/_ZN8dScene_c18PrepareToSpawnBootEv.cpp:
-    complete
-    .text start:0x0202e300 end:0x0202e348
-
-src/_ZN8dScene_c14StartSceneFadeEjjt.cpp:
-    complete
-    .text start:0x0202e348 end:0x0202e36c
-
-src/_ZN8dScene_c15SetSceneToSpawnEjj.cpp:
-    complete
-    .text start:0x0202e36c end:0x0202e398
-
-src/_ZN8dScene_c11AfterRenderEj.cpp:
-    complete
-    .text start:0x0202e398 end:0x0202e3a4
-
-src/_ZN8dScene_c12BeforeRenderEv.cpp:
-    complete
-    .text start:0x0202e3a4 end:0x0202e3c8
-
-src/_ZN8dScene_c13AfterBehaviorEj.cpp:
-    complete
-    .text start:0x0202e3c8 end:0x0202e3d4
-
-src/_ZN8dScene_c14BeforeBehaviorEv.cpp:
-    complete
-    .text start:0x0202e3d4 end:0x0202e5d0
-
-src/_ZN8dScene_c21AfterCleanupResourcesEj.cpp:
-    complete
-    .text start:0x0202e5d0 end:0x0202e5f0
-
-src/_ZN8dScene_c22BeforeCleanupResourcesEv.cpp:
-    complete
-    .text start:0x0202e5f0 end:0x0202e62c
-
-src/_ZN8dScene_c18AfterInitResourcesEj.cpp:
-    complete
-    .text start:0x0202e62c end:0x0202e638
-
-src/_ZN8dScene_c19BeforeInitResourcesEv.cpp:
-    complete
-    .text start:0x0202e638 end:0x0202e66c
-
-src/_ZN8dScene_c19ResetFadersAndSoundEv.cpp:
-    complete
-    .text start:0x0202e66c end:0x0202e6c8
-
-src/_ZN8dScene_c20Initialise3dGraphicsEv.cpp:
-    complete
-    .text start:0x0202e6c8 end:0x0202e73c
-
-src/_ZN5Stage12SetVramBanksEv.cpp:
-    complete
-    .text start:0x0202e73c end:0x0202e78c
-
-src/_ZN2GX15DisableAllBanksEv.cpp:
-    complete
-    .text start:0x0202e78c end:0x0202e7d4
-
-src/_ZN8dScene_c22ResetHardwareRegistersEv.cpp:
-    complete
-    .text start:0x0202e7d4 end:0x0202ec9c
+    .text start:0x0202e140 end:0x0202ec9c
 
 src/engine/fader/dWipe_c.cpp:
     complete
@@ -4479,56 +4399,9 @@ src/_ZN7Message10LoadTextVSEv.cpp:
     complete
     .text start:0x020349e0 end:0x02034a78
 
-src/_ZN7dScMB_cD1Ev.cpp:
+src/actors/dScMB_c.cpp:
     complete
-    .text start:0x02034a78 end:0x02034ac0
-
-src/_ZN7dScMB_cD0Ev.cpp:
-    complete
-    .text start:0x02034ac0 end:0x02034b1c
-
-src/func_02034b1c.c:
-    complete
-    .text start:0x02034b1c end:0x02034b40
-
-src/_ZN7dScMB_c15graphCallback_c14GraphCallback3Ev.cpp:
-    complete
-    .text start:0x02034b40 end:0x02034d24
-
-src/_ZN7dScMB_c15graphCallback_c14GraphCallback2Ev.cpp:
-    complete
-    .text start:0x02034d24 end:0x02034d2c
-
-src/_ZN7dScMB_c15graphCallback_c14GraphCallback0Ev.cpp:
-    complete
-    .text start:0x02034d2c end:0x02034d34
-
-src/func_02034d34.cpp:
-    complete
-    .text start:0x02034d34 end:0x02034d70
-
-src/_ZN7dScMB_c16CleanupResourcesEv.cpp:
-    complete
-    .text start:0x02034d70 end:0x02034d9c
-
-src/_ZN7dScMB_c6RenderEv.cpp:
-    complete
-    .text start:0x02034d9c end:0x02034da4
-
-src/_ZN7dScMB_c8BehaviorEv.cpp:
-    complete
-    .text start:0x02034da4 end:0x02034fbc
-
-src/func_02034fbc.c:
-    .text start:0x02034fbc end:0x0203506c
-
-src/_ZN7dScMB_c13InitResourcesEv.cpp:
-    complete
-    .text start:0x0203506c end:0x020352b4
-
-src/d_s_mb.c:
-    complete
-    .text start:0x020352b4 end:0x02035354
+    .text start:0x02034a78 end:0x02035354
 
 src/func_02035354.c:
     complete

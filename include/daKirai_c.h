@@ -58,6 +58,19 @@ struct daKirai_c : dActor_c {
     int Behavior();
     int InitResources();
     int Render();
+
+    /* The func_ov060_* methods. r0 is this bomb; the address is the method
+       name. The state table Behavior dispatches stores four of them as
+       member pointers. */
+    void func_ov060_021184bc();
+    int  func_ov060_02118544(Vector3 *pos);
+    void func_ov060_021185c4();
+    void func_ov060_02118690();
+    void func_ov060_021186d8();
+    void func_ov060_02118728();
+    void func_ov060_02118834();
+    void func_ov060_021188e8();
+    void func_ov060_02118970();
 };
 
 #ifndef SM64DS_PLATFORM_PC

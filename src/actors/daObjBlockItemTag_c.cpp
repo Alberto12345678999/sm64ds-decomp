@@ -39,7 +39,8 @@ extern s32 data_ov002_020ff090[];
 /* PMF action table, indexed by mActionIndex. */
 typedef void (daObjBlockItemTag_c::*ItemTagAction)();
 extern "C" {
-extern void LinkSilverStarAndStarMarker(void *starMarker, void *silverStar);
+/* local extern: daStarBase_c::LinkSilverStarAndStarMarker. This TU does not include daStarBase_c.h. */
+extern void _ZN12daStarBase_c27LinkSilverStarAndStarMarkerEPc(void *starMarker, void *silverStar);
 extern s32 Vec3_Dist(const void *a, const void *b);
 extern void LoadSilverStarAndNumber();
 extern "C" ItemTagAction data_ov002_0210dd30[];
@@ -115,7 +116,7 @@ void daObjBlockItemTag_c::SpawnSilverStar()
 
     /* Silver Star's marker-owner unique ID is the word at 0x434. */
     *(u32 *)((char *)silverStar + 0x434) = starMarker->uniqueID;
-    LinkSilverStarAndStarMarker(starMarker, silverStar);
+    _ZN12daStarBase_c27LinkSilverStarAndStarMarkerEPc(starMarker, silverStar);
 }
 
 // @symbol _ZN19daObjBlockItemTag_c16CleanupResourcesEv

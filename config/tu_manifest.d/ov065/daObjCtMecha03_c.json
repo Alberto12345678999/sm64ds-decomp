@@ -34,14 +34,14 @@
       "ordinal": 1
     },
     {
-      "symbol": "func_ov065_02119fe8",
+      "symbol": "_ZN16daObjCtMecha03_c19func_ov065_02119fe8Ev",
       "address": "0x02119fe8",
       "size": "0x0000012c",
       "legacy_source": "src/func_ov065_02119fe8.cpp",
       "ordinal": 2
     },
     {
-      "symbol": "func_ov065_0211a114",
+      "symbol": "_ZN16daObjCtMecha03_c19func_ov065_0211a114Ev",
       "address": "0x0211a114",
       "size": "0x00000048",
       "legacy_source": "src/func_ov065_0211a114.c",
@@ -182,7 +182,7 @@
     "tubuild create warning (RESOLVED): CONFLICT: extern declaration '_ZN10dBgActor_c19UpdateClsnPosAndRotEv' differs between the legacy file that used to hold _ZN16daObjCtMecha03_c8BehaviorEv and the one that held _ZN16daObjCtMecha03_c13InitResourcesEv; kept the first, the other is commented out for review; the two declarations differed only in the parameter NAME (self versus thisp), so the consolidated TU keeps the first.",
     "tubuild create warning (RESOLVED): CONFLICT: extern declaration 'data_0209f2c0' differs between the legacy file that used to hold _ZN16daObjCtMecha03_c8BehaviorEv and the one that held _ZN16daObjCtMecha03_c13InitResourcesEv; kept the first, the other is commented out for review; the two declarations were u8 versus unsigned char, the same type through types.h, so the consolidated TU keeps the equivalent u8 declaration.",
     "The inline destructor in the directly included class header, declared last, makes mwccarm emit exactly the retail D1 (0x02119f3c) then D0 (0x02119f88) pair, without a D2.",
-    "func_ov065_02119fe8 and func_ov065_0211a114 keep their address-derived names because config/arm9/overlays/ov065/symbols.txt spells them that way; they stay extern \"C\" free functions rather than being renamed into members.",
+    "func_ov065_02119fe8 and func_ov065_0211a114 keep their address-derived names as daObjCtMecha03_c methods. symbols.txt spells the mangled forms _ZN16daObjCtMecha03_c19func_ov065_02119fe8Ev and _ZN16daObjCtMecha03_c19func_ov065_0211a114Ev. No other TU calls the old free-function names.",
     "compiler_only_output is 13 rows: 2 x (4 ancestors + self) typeinfo/type-string rows + 1 vtable + 1 Vector3 D1 + 1 homeless dBgActor_c D2 from return new. Every canonical_module/canonical_address was read out of the ROM's own symbols.txt, not copied from the sibling oracle daObjCtMecha04_c.",
     "Cleanup folded the adjacent CT_MECHA03 factory as return new daObjCtMecha03_c(). Leaf operator new(unsigned long) forwards _ZN7fBase_cnwEj((unsigned)size)."
   ],

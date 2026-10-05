@@ -1,8 +1,8 @@
 {
   "id": "ov032/daBakubaku_c",
   "module": "ov032",
-  "source": "src/game/actors/d_a_bakubaku.cpp",
-  "promoted_source": "src/game/actors/d_a_bakubaku.cpp",
+  "source": "src/actors/daBakubaku_c.cpp",
+  "promoted_source": "src/actors/daBakubaku_c.cpp",
   "status": "promoted",
   "production_mode": "intact-object",
   "boundary_confidence": "medium",
@@ -40,91 +40,91 @@
       "ordinal": 1
     },
     {
-      "symbol": "func_ov032_02111254",
+      "symbol": "_ZN12daBakubaku_c19func_ov032_02111254Ev",
       "address": "0x02111254",
       "size": "0x000000fc",
       "legacy_source": "src/func_ov032_02111254.c",
       "ordinal": 2
     },
     {
-      "symbol": "func_ov032_02111350",
+      "symbol": "_ZN12daBakubaku_c19func_ov032_02111350Ev",
       "address": "0x02111350",
       "size": "0x000000ac",
       "legacy_source": "src/func_ov032_02111350.c",
       "ordinal": 3
     },
     {
-      "symbol": "func_ov032_021113fc",
+      "symbol": "_ZN12daBakubaku_c19func_ov032_021113fcEv",
       "address": "0x021113fc",
       "size": "0x00000224",
       "legacy_source": "src/func_ov032_021113fc.cpp",
       "ordinal": 4
     },
     {
-      "symbol": "func_ov032_02111620",
+      "symbol": "_ZN12daBakubaku_c19func_ov032_02111620Ev",
       "address": "0x02111620",
       "size": "0x000001f4",
       "legacy_source": "src/func_ov032_02111620.cpp",
       "ordinal": 5
     },
     {
-      "symbol": "func_ov032_02111814",
+      "symbol": "_ZN12daBakubaku_c19func_ov032_02111814Ev",
       "address": "0x02111814",
       "size": "0x0000001c",
       "legacy_source": "src/func_ov032_02111814.c",
       "ordinal": 6
     },
     {
-      "symbol": "func_ov032_02111830",
+      "symbol": "_ZN12daBakubaku_c19func_ov032_02111830Ev",
       "address": "0x02111830",
       "size": "0x00000320",
       "legacy_source": "src/func_ov032_02111830.c",
       "ordinal": 7
     },
     {
-      "symbol": "func_ov032_02111b50",
+      "symbol": "_ZN12daBakubaku_c19func_ov032_02111b50Ev",
       "address": "0x02111b50",
       "size": "0x0000004c",
       "legacy_source": "src/func_ov032_02111b50.c",
       "ordinal": 8
     },
     {
-      "symbol": "func_ov032_02111b9c",
+      "symbol": "_ZN12daBakubaku_c19func_ov032_02111b9cEv",
       "address": "0x02111b9c",
       "size": "0x000001bc",
       "legacy_source": "src/func_ov032_02111b9c.cpp",
       "ordinal": 9
     },
     {
-      "symbol": "func_ov032_02111d58",
+      "symbol": "_ZN12daBakubaku_c19func_ov032_02111d58Ev",
       "address": "0x02111d58",
       "size": "0x00000024",
       "legacy_source": "src/func_ov032_02111d58.c",
       "ordinal": 10
     },
     {
-      "symbol": "func_ov032_02111d7c",
+      "symbol": "_ZN12daBakubaku_c19func_ov032_02111d7cEv",
       "address": "0x02111d7c",
       "size": "0x0000005c",
       "legacy_source": "src/func_ov032_02111d7c.cpp",
       "ordinal": 11
     },
     {
-      "symbol": "func_ov032_02111dd8",
+      "symbol": "_ZN12daBakubaku_c19func_ov032_02111dd8Ev",
       "address": "0x02111dd8",
       "size": "0x0000004c",
       "legacy_source": "src/func_ov032_02111dd8.c",
       "ordinal": 12
     },
     {
-      "symbol": "func_ov032_02111e24",
+      "symbol": "_ZN12daBakubaku_c19func_ov032_02111e24Ev",
       "address": "0x02111e24",
       "size": "0x00000178",
       "legacy_source": "src/func_ov032_02111e24.c",
       "ordinal": 13
     },
     {
-      "symbol": "func_ov032_02111f9c",
+      "symbol": "_ZN12daBakubaku_c19func_ov032_02111f9cEv",
       "address": "0x02111f9c",
       "size": "0x00000058",
       "legacy_source": "src/func_ov032_02111f9c.c",
@@ -138,7 +138,7 @@
       "ordinal": 15
     },
     {
-      "symbol": "func_ov032_02112044",
+      "symbol": "_ZN12daBakubaku_c19func_ov032_02112044Ev",
       "address": "0x02112044",
       "size": "0x000000e0",
       "legacy_source": "src/func_ov032_02112044.cpp",
@@ -646,7 +646,7 @@
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
     "toolchain": "tools/mwccarm/2004/b56/mwccarm.exe",
     "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
-    "object": "build/tu/ov032-daBakubaku_c/d_a_bakubaku.o (gitignored)",
+    "object": "build/tu/ov032-daBakubaku_c/daBakubaku_c.o (gitignored)",
     "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
     "functions_matched": 24,
     "functions_declared": 24,
@@ -658,15 +658,45 @@
         "_ZN7Vector3D1Ev"
       ],
       "droppedSections": [
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        19,
         34
       ],
-      "data": [],
-      "dataExternalized": []
+      "data": [
+        "_ZTI7fBase_c",
+        "_ZTS7fBase_c",
+        "_ZTI7dBase_c",
+        "_ZTS7dBase_c",
+        "_ZTI8dActor_c",
+        "_ZTS8dActor_c",
+        "_ZTI12dEnemyBase_c",
+        "_ZTS12dEnemyBase_c"
+      ],
+      "dataExternalized": [
+        "_ZTI12dEnemyBase_c",
+        "_ZTI7dBase_c",
+        "_ZTI7fBase_c",
+        "_ZTI8dActor_c",
+        "_ZTS12dEnemyBase_c",
+        "_ZTS7dBase_c",
+        "_ZTS7fBase_c",
+        "_ZTS8dActor_c"
+      ]
     },
     "criteria": {
       "every_declared_function_defined": "PASS",
       "every_declared_function_bytes_match": "PASS",
-      "declared_function_set_equals_defined_function_set": "FAIL-BY-DESIGN -- 8 unlicensed section/symbol(s), 0 compiler-only policy error(s)",
+      "declared_function_set_equals_defined_function_set": "PASS",
       "functions_occur_in_expected_order": "PASS",
       "relocation_destinations_verified": "PASS"
     },
@@ -773,7 +803,7 @@
       "disposition": "deadstrip-duplicate",
       "canonical_module": "arm9",
       "canonical_address": "0x020072c0",
-      "reason": "Several members declare Vector3 locals, so this TU re-emits Vector3's vague-linkage D1 alongside its own text. The cartridge keeps one copy at arm9:0x020072c0 and an enrolled source already owns it; rombuild compares this object's body against those cartridge bytes and refuses anything but byte-identical vague-linkage output before discarding the duplicate."
+      "reason": "include/types.h gives Vector3 a deliberately empty inline destructor, so every TU that destroys a Vector3 re-emits it as vague linkage -- here the Vector3 locals in InitResources (bodyOffset/headOffset), func_ov032_02112044 (v) and func_ov032_021113fc (v1, v2, hv). The cartridge keeps one copy at arm9:0x020072c0, kind:function(arm,size=0x4), and an enrolled source already owns it; rombuild compares this object's body against those cartridge bytes and refuses anything but byte-identical vague-linkage output before discarding the duplicate."
     }
   ],
   "externalized_output": [

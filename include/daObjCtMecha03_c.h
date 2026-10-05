@@ -39,6 +39,10 @@ struct daObjCtMecha03_c : dBgActor_c {
     int Behavior();
     int Render();
 
+    /* Helpers taking this. The ROM address is the method name. */
+    void func_ov065_02119fe8();
+    int func_ov065_0211a114();
+
     static void *operator new(size_t size) {
         return _ZN7fBase_cnwEj((unsigned)size);
     }

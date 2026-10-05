@@ -44,7 +44,7 @@ nor a compiler barrier. A migration renames source and config together.
 | id | location | summary | disposition |
 | --- | --- | --- | --- |
 | B2-PROV-01 | `src/game/actors/d_a_pg_mthr.cpp:10` | Rationale corrected earlier; its ownership evidence was still miscounted ("all four" for a 15-helper range, "one extern decl" for three declaration sites). Counts and migration scope corrected. | `fixed` |
-| B2-PROV-02 | `src/game/actors/d_a_bakubaku.cpp:9` | Carried the pre-correction wording verbatim ("the ROM symbols are still the func_ov labels ... would ... miss those labels"). Rewritten; ownership evidence and migration scope recorded. | `fixed` |
+| B2-PROV-02 | `src/actors/daBakubaku_c.cpp:9` | Carried the pre-correction wording verbatim ("the ROM symbols are still the func_ov labels ... would ... miss those labels"). Rewritten; ownership evidence and migration scope recorded. | `fixed` |
 | B2-PROV-03 | `src/game/actors/d_a_wanwan.cpp:11` | Same verbatim wording. Rewritten; the weaker evidence here (untyped `char*`/`void*`/`u8*` receivers) is stated as weaker. | `fixed` |
 | B2-PROV-04 | `src/actors/daMky_c.cpp:12` | "stay those ROM labels" - same conflation, no barrier claim. Retitled to address-derived repository labels; notes that `0211124c` is owned by another TU. | `fixed` |
 | B2-PROV-05 | `src/actors/daMky_c.cpp:1566` | "ROM symbol is Vector3_16" - that spelling is a `config/arm9/symbols.txt` row, not ROM content. Reworded. | `fixed` |
@@ -68,7 +68,7 @@ not present them yet. Each stays as written; none is claimed to be impossible.
 | B2-RF-06 | `src/game/actors/d_a_obj_bk_dossunbar.cpp:19` | `unk_0a4` is `dActor_c` X speed, not this class's field | dActor_c | none filed | none |
 | B2-RF-07 | `src/game/actors/d_a_wanwan.cpp:34` | `(Vector3 *)&mPosX` / `&mScaleX`; `Pos()` not on this branch's `dActor_c` | dActor_c | #2566 | @andrewboudreau |
 | B2-RF-08 | `src/game/actors/d_a_s_cre.cpp:13` | `Pos()` written as a leaf overlay of `mPosX/Y/Z` | dActor_c | #2566 | @andrewboudreau |
-| B2-RF-09 | `src/game/actors/d_a_bakubaku.cpp:37` | `data_0209f32c` read as water height | the owner of that global | none filed | none |
+| B2-RF-09 | `src/actors/daBakubaku_c.cpp:37` | `data_0209f32c` read as water height | the owner of that global | none filed | none |
 
 **B2-RF-05, B2-RF-06 and B2-RF-09 do not yet satisfy `deferred`.** That
 disposition requires a named issue and next owner. Until one exists for the
@@ -86,7 +86,7 @@ cleaner spelling *was* measured and rejected, the row is in section D instead.
 | id | location | dependency | reason retained | issue | next owner |
 | --- | --- | --- | --- | --- | --- |
 | B2-IF-01 | `src/game/actors/d_a_wanwan.cpp:27` | `SharedFilePtr` reached through `decl_common.h`'s `char` view | no recovered layout for `SharedFilePtr` | none filed | none |
-| B2-IF-02 | `src/game/actors/d_a_bakubaku.cpp:32` | `decl_common.h` `extern int` handles punned to `SharedFilePtr` | typing them cleanly is a shared-header change | none filed | none |
+| B2-IF-02 | `src/actors/daBakubaku_c.cpp:32` | `decl_common.h` `extern int` handles punned to `SharedFilePtr` | typing them cleanly is a shared-header change | none filed | none |
 | B2-IF-03 | `src/game/actors/d_a_pg_mthr.cpp:34` | `data_ov018_*` handles + `decl_common` `int[]` spelling of `02112c0c` | same shared-header change, plus S14 packaging | none filed | none |
 | B2-IF-04 | `src/actors/daObjLava_c.cpp:13` | wrapper plants the default callback; direct `New` needs callback wiring | a wiring change, not a spelling | none filed | none |
 | B2-IF-05 | `src/game/actors/d_a_obj_bk_dossunbar.cpp:12` | extern-C state bodies, PMF records filled by sinit | the tables are not this TU's | none filed | none |
@@ -127,7 +127,7 @@ measured" rather than being asserted as fact.
 | id | location | claim | status |
 | --- | --- | --- | --- |
 | B2-NM-01 | `src/game/actors/d_a_pg_mthr.cpp:23` | `dBgCh_Actr::Init` member form "links Undefined" | **not yet measured.** The mechanism that *is* provable is recorded instead: `include/types.h:45` makes `Fix12i` a plain `s32`, so a member-form call mangles that argument `i`, while `config/arm9/symbols.txt:1294` spells the row `5Fix12IiE`. Whether `mwldarm` then reports Undefined is untested. |
-| B2-NM-02 | `src/game/actors/d_a_bakubaku.cpp:24` | the same claim | **not yet measured**, same rewrite. |
+| B2-NM-02 | `src/actors/daBakubaku_c.cpp:24` | the same claim | **not yet measured**, same rewrite. |
 | B2-NM-03 | `src/game/actors/d_a_pg_mthr.cpp:23` | `TextureSequence::SetFile` method-form size cost | **not yet measured** - no size predicted, no artifact. Retained as a wall reference only. |
 | B2-NM-04 | `src/game/actors/d_a_obj_bk_dossunbar.cpp:16` | `IsClsn` / `NewSimple` wall | **not yet measured** - no sizes. `SetFile` in the same block *is* pinned (`-dossunbar-setfile`). |
 | B2-NM-05 | `src/actors/daMky_c.cpp:19`, `daMip_c.cpp:75`, `daSanbo_c.cpp:65`, `daBombking_c.cpp:37`, `d_a_wanwan.cpp:25` | generic "wall 6az" references | **not yet measured per TU.** The wall is pinned for pg_mthr and dossunbar; these five cite it without a per-TU size. Honest status: inherited, not independently measured. |

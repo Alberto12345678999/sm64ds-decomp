@@ -18,6 +18,8 @@
 #include "dBgCh_Actr.h"
 #include "math/Matrix.h"
 
+struct daStarBase_c;
+
 /* THREE WITNESSES:
  *
  *   daCoin_c_classInit_COIN / daCoin_c_classInit_BLUE_COIN / daCoin_c_classInit_RED_COIN
@@ -105,6 +107,29 @@ struct daCoin_c : dActor_c {
     virtual s32  Render();           /* slot  9 */
     virtual s32  OnYoshiTryEat();         /* slot 18 */
     virtual void OnTurnIntoEgg(Player &player); /* slot 19 */
+
+    /* Per-frame helpers and the nine state handlers the behavior table
+     * (data_ov002_0210dc70) dispatches through. The ROM names no symbol for
+     * them; the address stays in the identifier. */
+    void func_ov002_020b1008();
+    int func_ov002_020b10a0();
+    void func_ov002_020b10e4();
+    int func_ov002_020b12ec();
+    daStarBase_c *func_ov002_020b1328();
+    void func_ov002_020b1384();
+    void func_ov002_020b13e0();
+    void func_ov002_020b14d8();
+    void func_ov002_020b1674(Player *player);
+    void func_ov002_020b16c4(Player *player);
+    void func_ov002_020b1884(Player *player);
+    int func_ov002_020b19dc();
+    void func_ov002_020b1a60();
+    void func_ov002_020b1ad4();
+    void func_ov002_020b1bfc();
+    void func_ov002_020b1cc0();
+    void func_ov002_020b2070();
+    void func_ov002_020b20b4();
+    void func_ov002_020b2150();
 };
 
 #ifndef SM64DS_PLATFORM_PC

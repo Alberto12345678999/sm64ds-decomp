@@ -4,43 +4,13 @@
 #include "types.h"
 
 /* The Lava Bubble (Podoboo) of the lava levels, registry profile BUBBLE.
+ * RTTI names the class: _ZTS7daBbl_c at ov064 0x0211beb0, _ZTI7daBbl_c at
+ * 0x0211bebc with dEnemyBase_c the single base. The BUBBLE profile row at
+ * 0x0211bec8 takes daBbl_c_classInit as its factory, which allocates 0x31c.
  *
- * WHAT THE CARTRIDGE PROVES:
- *   _ZTS  ov064 0x0211beb0  the literal "7daBbl_c", nine bytes padded to
- *                           twelve -- exactly the length the mangled spelling
- *                           of this very name takes, so the RTTI name is the
- *                           ROM's own and nothing here is coined
- *   _ZTI  ov064 0x0211bebc  __si_class_type_info: one direct base,
- *                           _ZTI12dEnemyBase_c (ov002 0x021081c0), at offset
- *                           zero
- *   _ZTV  ov064 0x0211beec  the address point (storage 0x0211bee4, typeinfo
- *                           word at 0x0211bee8); 31 slots, the same extent as
- *                           dActor_c, with 0, 3, 6, 9, 12, 16, 17 and 18 the
- *                           only overrides
- *   profile ov064 0x0211bec8  g_profile_BUBBLE, whose factory word is
- *                           daBbl_c_classInit at 0x02118b10
- *   size  0x31c             the literal daBbl_c_classInit hands operator new
- *
- * TWO INDEPENDENT WITNESSES agree on the layout: the class's own destructor
- * `_ZN7daBbl_cD1Ev` destroys each member, and `daBbl_c_classInit` constructs
- * the same types at the same offsets before storing `_ZTV7daBbl_c`. Everything
- * this header used to restate below 0x110 belongs to dEnemyBase_c and dActor_c
- * and is inherited now.
- *
- * The members close on each other, which is what makes the layout a reading
- * rather than a guess:
- *
+ * Members:
  *     0x110 dCcAc_c      0x34   -> 0x144
  *     0x144 dBgCh_Actr   0x1bc  -> 0x300
- *
- * Typing them absorbed markers that were their insides:
- *   - unk_128 = dCcAc_c.flags
- *   - unk_130 = dCcAc_c.hitFlags
- *   - unk_134 = dCcAc_c.otherOwner
- *
- * SM64DS RTTI names the implementation daBbl_c. The reconstructed factory
- * daBbl_c_classInit (historical alias LavaBubble_Spawn) constructs it for the
- * BUBBLE registry profile.
  */
 
 #include "dEnemyBase_c.h"
@@ -55,14 +25,12 @@
 extern "C" void *_ZN7fBase_cnwEj(unsigned size);
 
 struct daBbl_c : dEnemyBase_c {
-    /* The bubble runs a two-entry state table. Each entry is an enter hook the
-     * transition calls once and an execute hook Behavior calls every frame,
-     * both pointer-to-member -- the cartridge stores them as the eight-byte
-     * {ptr, adjustment} pairs at ov064 0x0211be90..0x0211beb0, which is what
-     * fixes one entry's size at eight and mExecute's offset within it at
-     * eight. The two tables themselves live in this overlay's .bss at
-     * 0x0211c7b8 and 0x0211c7c8 and are filled by the module's own static
-     * initializer; this translation unit consumes them and does not own them. */
+    /* The bubble runs a two-entry state table. Each entry is an enter hook
+     * the transition calls once and an execute hook Behavior calls every
+     * frame, both pointer-to-member -- the cartridge stores them as the
+     * eight-byte {ptr, adjustment} pairs at ov064 0x0211be90..0x0211beb0.
+     * The tables themselves live in this overlay's .bss at 0x0211c7b8 and
+     * 0x0211c7c8, filled by the module's static initializer. */
     typedef int (daBbl_c::*StateFn)();
 
     struct State {
@@ -101,6 +69,15 @@ struct daBbl_c : dEnemyBase_c {
     virtual int  Render();           /* slot  9 */
     virtual void OnPendingDestroy(); /* slot 12 */
     virtual s32  OnYoshiTryEat();    /* slot 18 */
+
+    /* The five state hooks. The ROM records no English names; the
+     * pointer-to-member records at 0x0211be90..0x0211beb0 prove they are
+     * members, so they keep their address labels as method names. */
+    int func_ov064_02118644();
+    int func_ov064_0211873c();
+    int func_ov064_02118760();
+    int func_ov064_021187d0();
+    int func_ov064_021187ec(State *state);
 
     static void *operator new(unsigned long size) {
         return _ZN7fBase_cnwEj((unsigned)size);

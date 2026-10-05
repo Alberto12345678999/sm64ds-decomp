@@ -27,9 +27,9 @@ EAD's class names carry a lowercase prefix naming the layer. Measured over the 4
 structs); `_info` closes the 4 ABI records.
 
 In the GameCube Zelda codebases that share this convention the prefix *is* the path:
-`daKrb_c` lives in `d_a_krb.cpp`. Later NSMBW source independently maps
-`dScBoot_c` to `d_s_boot.cpp` and `daObjFruitTree_c` to
-`d_a_obj_fruit_tree.cpp`. `tools/tu_names.py` applies that lineage convention to
+`daKrb_c` lives in `d_a_krb.cpp`. Later [NSMBW source](https://github.com/NSMBW-Community/NSMBW-Decomp) independently maps
+[dScBoot_c](https://github.com/NSMBW-Community/NSMBW-Decomp/blob/2e010f8708d8232c736b1ece507400dfd76aaa9c/include/game/bases/d_s_boot.hpp#L19) to [d_s_boot.cpp](https://github.com/NSMBW-Community/NSMBW-Decomp/blob/2e010f8708d8232c736b1ece507400dfd76aaa9c/source/dol/bases/d_s_boot.cpp) and [daObjFruitTree_c](https://github.com/NSMBW-Community/NSMBW-Decomp/blob/2e010f8708d8232c736b1ece507400dfd76aaa9c/include/game/bases/d_a_obj_fruit_tree.hpp#L13) to
+[d_a_obj_fruit_tree.cpp](https://github.com/NSMBW-Community/NSMBW-Decomp/blob/2e010f8708d8232c736b1ece507400dfd76aaa9c/source/d_basesNP/bases/d_a_obj_fruit_tree.cpp). `tools/tu_names.py` applies that lineage convention to
 every RTTI class.
 
 ### This part is a hypothesis, and the ROM cannot confirm it
