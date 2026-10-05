@@ -11893,9 +11893,6 @@
       "src/func_ov002_020ef2a4.cpp": [
         "return:void *"
       ],
-      "src/func_ov009_02111234.cpp": [
-        "return:void *"
-      ],
       "src/actors/daKirai_c.cpp": [
         "return:char *"
       ],
