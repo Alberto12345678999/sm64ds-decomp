@@ -7956,6 +7956,18 @@
     "src/actors/daStar_c.cpp#_ZN12daStarBase_c8BehaviorEv": "ruspecial",
     "src/actors/daStar_c.cpp#_ZN8daStar_c8BehaviorEv": "ruspecial",
     "src/actors/daStar_c.cpp#_ZN12daStarBase_c13InitResourcesEv": "tangosdev",
-    "src/actors/daStar_c.cpp#_ZN8daStar_c13InitResourcesEv": "ruspecial"
+    "src/actors/daStar_c.cpp#_ZN8daStar_c13InitResourcesEv": "ruspecial",
+    "src/engine/oam/OAM.cpp#_ZN3OAM16LoadAffineParamsEP7OamAttrPiP9Matrix2x2": "lunavyqo",
+    "src/engine/oam/OAM.cpp#_ZN3OAM12GetObjHeightEii": "tangosdev",
+    "src/engine/oam/OAM.cpp#_ZN3OAM11GetObjWidthEii": "tangosdev",
+    "src/engine/oam/OAM.cpp#_ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii": "tangosdev",
+    "src/engine/oam/OAM.cpp#_ZN3OAM6RenderEbP7OamAttriiii5Fix12IiEi": "tangosdev",
+    "src/engine/oam/OAM.cpp#_ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2": "tangosdev",
+    "src/engine/oam/OAM.cpp#_ZN3OAM5ResetEv": "andrewboudreau",
+    "src/engine/oam/OAM.cpp#_ZN3OAM5FlushEv": "tangosdev",
+    "src/engine/oam/OAM.cpp#_ZN3OAM4LoadEv": "tangosdev",
+    "src/engine/oam/OAM.cpp#_ZN3OAM9RenderSubEP7OamAttrii": "tangosdev",
+    "src/engine/oam/OAM.cpp#_ZN3OAM9RenderSubEP7OamAttriiii": "tangosdev",
+    "src/engine/oam/OAM.cpp#_ZN3OAM12EnableSubOAMEv": "tangosdev"
   }
 }
