@@ -836,9 +836,6 @@
         "param:#1 const Vec3 *",
         "param:#2 const Vec3 *"
       ],
-      "src/_ZN7dBgW_Kc10DetectClsnER12dBgCh_SphCrr.cpp": [
-        "param:#1 const signed int *"
-      ],
       "src/actors/dMg3DHeyhoObjAdapter_c.cpp": [
         "param:#1 Vec3 *",
         "param:#1 const Vec3 *",
@@ -851,6 +848,9 @@
         "param:#1 Vector3 *",
         "param:#2 Vec3 *",
         "param:#2 Vector3 *"
+      ],
+      "src/engine/collision/dBgW_Kc_itcm.cpp": [
+        "param:#1 const signed int *"
       ],
       "src/func_02008cb4.c": [
         "param:#1 Vec3 *",
@@ -9510,30 +9510,23 @@
       ]
     },
     "_ZN5dBgCh21ShouldPassThroughImplEPvRK4CLPSRKS_b": {
-      "src/_ZN7dBgW_Kc10DetectClsnER12dBgCh_SphCrr.cpp": [
-        "param:#2 SurfaceInfo *",
-        "param:#3 dBgCh_SphCrr *",
-        "param:#4 int",
-        "return:int"
-      ],
-      "src/_ZN7dBgW_Kc10DetectClsnER9dBgCh_Gnd.cpp": [
-        "param:#2 SurfaceInfo *",
-        "param:#3 dBgCh_Gnd *",
-        "param:#4 int",
-        "return:int"
-      ],
-      "src/_ZN7dBgW_Kc10DetectClsnER9dBgCh_Lin.cpp": [
+      "src/engine/collision/dBgW_Kc_itcm.cpp": [
         "param:#2 SurfaceInfo *",
         "param:#3 void *",
         "param:#4 int",
         "return:int"
       ]
     },
+    "_ZN5dBgPcC1Ev": {
+      "src/engine/collision/dBgW_Kc_itcm.cpp": [
+        "return:void"
+      ]
+    },
     "_ZN5dBgPcD1Ev": {
       "include/dBgPc.h": [
         "return:void"
       ],
-      "src/_ZN7dBgW_Kc10DetectClsnER9dBgCh_Lin.cpp": [
+      "src/engine/collision/dBgW_Kc_itcm.cpp": [
         "return:void"
       ]
     },
@@ -28241,10 +28234,6 @@
       ],
       "src/_ZN14dBgW_KcMbgSclY10DetectClsnER12dBgCh_SphCrr.cpp": [
         "param:#1 dBgCh_SphCrr *"
-      ],
-      "src/_ZN7dBgW_Kc10DetectClsnER12dBgCh_SphCrr.cpp": [
-        "param:#1 dBgCh_SphCrr *",
-        "param:#2 const Vector3 *"
       ]
     },
     "func_02037968": {
@@ -28259,12 +28248,6 @@
         "param:#5 A *"
       ]
     },
-    "func_0203798c": {
-      "src/_ZN7dBgW_Kc10DetectClsnER12dBgCh_SphCrr.cpp": [
-        "param:#1 dBgCh_SphCrr *",
-        "param:#2 short"
-      ]
-    },
     "func_0203799c": {
       "src/_ZN12dBgCh_SphCrr10DetectClsnEv.cpp": [
         "param:#5 void *"
@@ -28277,12 +28260,6 @@
         "param:#5 A *"
       ]
     },
-    "func_020379c0": {
-      "src/_ZN7dBgW_Kc10DetectClsnER12dBgCh_SphCrr.cpp": [
-        "param:#1 dBgCh_SphCrr *",
-        "param:#2 short"
-      ]
-    },
     "func_020379d0": {
       "src/_ZN12dBgCh_SphCrr10DetectClsnEv.cpp": [
         "param:#5 void *"
@@ -28293,12 +28270,6 @@
       ],
       "src/func_02038a38.cpp": [
         "param:#5 A *"
-      ]
-    },
-    "func_020379f4": {
-      "src/_ZN7dBgW_Kc10DetectClsnER12dBgCh_SphCrr.cpp": [
-        "param:#1 dBgCh_SphCrr *",
-        "param:#2 short"
       ]
     },
     "func_02037a04": {
@@ -28327,9 +28298,6 @@
       ],
       "src/_ZN14dBgW_KcMbgSclY10DetectClsnER12dBgCh_SphCrr.cpp": [
         "param:#1 dBgCh_SphCrr *"
-      ],
-      "src/_ZN7dBgW_Kc10DetectClsnER12dBgCh_SphCrr.cpp": [
-        "param:#1 dBgCh_SphCrr *"
       ]
     },
     "func_02037dc4": {
@@ -28348,7 +28316,7 @@
       ]
     },
     "func_02037eb0": {
-      "src/_ZN7dBgW_Kc14GetSurfaceInfoEsR11SurfaceInfo.cpp": [
+      "src/engine/collision/dBgW_Kc_itcm.cpp": [
         "param:#1 SurfaceInfo *",
         "param:#2 CLPS_Entry"
       ]
@@ -28364,13 +28332,6 @@
       ]
     },
     "func_02037fd4": {
-      "src/_ZN7dBgW_Kc10DetectClsnER12dBgCh_SphCrr.cpp": [
-        "param:#1 dBgPi *",
-        "param:#3 SurfaceInfo *"
-      ],
-      "src/_ZN7dBgW_Kc10DetectClsnER9dBgCh_Gnd.cpp": [
-        "param:#3 SurfaceInfo *"
-      ],
       "src/func_0203798c.c": [
         "param:#2 int"
       ],
@@ -28414,11 +28375,6 @@
       ],
       "src/_ZN5dBgPiC2Ev.cpp": [
         "param:#1 dBgPi *"
-      ]
-    },
-    "func_020381cc": {
-      "src/_ZN7dBgW_Kc14GetSurfaceInfoEsR11SurfaceInfo.cpp": [
-        "param:#3 CLPS_Entry * *"
       ]
     },
     "func_02038234": {
@@ -28804,7 +28760,7 @@
       ]
     },
     "func_02039624": {
-      "src/_ZN7dBgW_Kc7SetFileEP8KCL_FileR10CLPS_Block.cpp": [
+      "src/engine/collision/dBgW_Kc.cpp": [
         "param:#1 dBgW *"
       ]
     },
@@ -28819,17 +28775,9 @@
       ]
     },
     "func_020396dc": {
-      "src/_ZN7dBgW_Kc10DetectClsnER12dBgCh_SphCrr.cpp": [
+      "src/engine/collision/dBgW_Kc_itcm.cpp": [
         "param:#1 dBgW_Kc *",
         "param:#2 KCL_Tri *",
-        "return:short"
-      ],
-      "src/_ZN7dBgW_Kc10DetectClsnER9dBgCh_Gnd.cpp": [
-        "param:#1 dBgW_Kc *",
-        "param:#2 KCL_Tri *",
-        "return:short"
-      ],
-      "src/_ZN7dBgW_Kc10DetectClsnER9dBgCh_Lin.cpp": [
         "return:short"
       ]
     },
