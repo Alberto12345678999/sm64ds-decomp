@@ -8,6 +8,15 @@
     "mitch.cairns": "mitchellcairns"
   },
   "overrides": {
+    "src/engine/particle/Particle_SysTracker_Contents.cpp#_ZN8Particle10SysTracker8Contents5Entry10InitialiseEjjR7Vector3PK11Vector3_16fPN5dPa_c7level_c10callback_cE": "andrewboudreau",
+    "src/engine/particle/Particle_SysTracker_Contents.cpp#_ZN8Particle10SysTracker8Contents5Entry5ResetEv": "andrewboudreau",
+    "src/engine/particle/Particle_SysTracker_Contents.cpp#_ZN8Particle10SysTracker8ContentsC1Ev": "andrewboudreau",
+    "src/engine/particle/Particle_SysTracker_Contents.cpp#_ZN8Particle10SysTracker8Contents6UpdateEv": "andrewboudreau",
+    "src/engine/particle/Particle_SysTracker_Contents.cpp#_ZN8Particle10SysTracker8Contents5ClearEv": "andrewboudreau",
+    "src/engine/particle/Particle_SysTracker_Contents.cpp#_ZNK8Particle10SysTracker8Contents8FindDataEj": "tangosdev",
+    "src/engine/particle/Particle_SysTracker_Contents.cpp#_ZN8Particle10SysTracker8Contents6CreateEjR7Vector3PK11Vector3_16fPN5dPa_c7level_c10callback_cE": "andrewboudreau",
+    "src/engine/particle/Particle_SysTracker_Contents.cpp#_ZN8Particle10SysTracker8Contents4LinkERNS1_5EntryE": "andrewboudreau",
+    "src/engine/particle/Particle_SysTracker_Contents.cpp#_ZN8Particle10SysTracker8Contents6UnlinkERNS1_5EntryE": "andrewboudreau",
     "src/_ZN9ModelBase12ApplyOpacityEjj.cpp": "ruspecial",
     "src/START_INTRO_MINIMAP_ZOOM.c": "tangosdev",
     "src/_ZN10LavaBridge13InitResourcesEv.c": "tangosdev",

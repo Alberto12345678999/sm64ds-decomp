@@ -13519,6 +13519,13 @@
         "return:int"
       ]
     },
+    "_ZN8Particle10SysTracker8Contents6CreateEjR7Vector3PK11Vector3_16fPN5dPa_c7level_c10callback_cE": {
+      "src/_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE.c": [
+        "param:#3 void *",
+        "param:#4 const void *",
+        "return:void *"
+      ]
+    },
     "_ZNK8Particle10SysTracker8Contents8FindDataEj": {
       "src/_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE.c": [
         "return:System *"

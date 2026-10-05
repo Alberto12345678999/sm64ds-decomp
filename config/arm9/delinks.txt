@@ -3470,41 +3470,9 @@ src/_ZN3OAM12EnableSubOAMEv.cpp:
     complete
     .text start:0x020219f0 end:0x02021a04
 
-src/_ZN8Particle10SysTracker8Contents6UnlinkERNS1_5EntryE.cpp:
+src/engine/particle/Particle_SysTracker_Contents.cpp:
     complete
-    .text start:0x02021a04 end:0x02021a48
-
-src/_ZN8Particle10SysTracker8Contents4LinkERNS1_5EntryE.cpp:
-    complete
-    .text start:0x02021a48 end:0x02021a74
-
-src/_ZN8Particle10SysTracker8Contents6CreateEjR7Vector3PK11Vector3_16fPN5dPa_c7level_c10callback_cE.cpp:
-    complete
-    .text start:0x02021a74 end:0x02021b58
-
-src/_ZNK8Particle10SysTracker8Contents8FindDataEj.cpp:
-    complete
-    .text start:0x02021b58 end:0x02021b98
-
-src/_ZN8Particle10SysTracker8Contents5ClearEv.cpp:
-    complete
-    .text start:0x02021b98 end:0x02021bec
-
-src/_ZN8Particle10SysTracker8Contents6UpdateEv.cpp:
-    complete
-    .text start:0x02021bec end:0x02021c90
-
-src/_ZN8Particle10SysTracker8ContentsC1Ev.cpp:
-    complete
-    .text start:0x02021c90 end:0x02021cd4
-
-src/_ZN8Particle10SysTracker8Contents5Entry5ResetEv.cpp:
-    complete
-    .text start:0x02021cd4 end:0x02021d1c
-
-src/_ZN8Particle10SysTracker8Contents5Entry10InitialiseEjjR7Vector3PK11Vector3_16fPN5dPa_c7level_c10callback_cE.cpp:
-    complete
-    .text start:0x02021d1c end:0x02021e40
+    .text start:0x02021a04 end:0x02021e40
 
 src/_ZN5dPa_c7level_c23cleanParticleCallback_c8OnUpdateERN8Particle6SystemEb.cpp:
     complete
