@@ -59,6 +59,98 @@ unsigned short DecIfAbove0_Short(unsigned short *p);
 
 short _ZN4cstd5atan2E5Fix12IiES1_(int y, int x);
 int   _ZN10dBgActor_c21IsClsnInRangeOnScreenE5Fix12IiES1_(dBgActor_c *self, int x, int z);
+
+/* Same Fix12<int>-by-value wall as the two above: spelled as the real
+ * mMeshCollider.SetFile member it DIFFs (measured at daObjFl_London_c),
+ * so it stays a mangled free call. */
+void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
+    dBgW_KcMbg *self, KCL_File *kcl, const Matrix4x3 &mat, Fix12i scale,
+    short angY, CLPS_Block &clps);
+
+/* Stores into the mesh collider's two callback slots (+0x1c / +0x18 of the
+   embedded dBgW; the +0x0c store is func_020393a4). */
+void func_020393c4(int *collider, int callback);
+void func_020393d4(int *collider, int callback);
+}
+
+/* ROM ordinal 7 -- ov002 0x020b5fc4. The registration thunk the Init helper
+ * stores on the mesh collider: the callback ABI hands it an extra leading
+ * argument, which the real callback does not take. STAYS a free extern "C"
+ * function -- its address is stored as a raw callback word, so it cannot be
+ * a member pointer. */
+// @symbol func_ov002_020b5fc4
+extern "C" void func_ov002_020b5fc4(void *collider, void *board, void *other)
+{
+    ((daObjFloatBoard_c *)board)->func_ov002_020b5f9c((dActor_c *)other);
+}
+
+/* ROM ordinal 6 -- ov002 0x020b5f9c. The mesh callback's real body: when the
+ * touching actor is the Player (actorID 0xbf) it becomes mRider and the
+ * timeout reloads to 5. The `eq` staging is load-bearing: `if (actorID ==
+ * 0xbf)` folds to a 0x1c body; the ROM's 0x28 keeps the widened bool. */
+// @symbol _ZN17daObjFloatBoard_c19func_ov002_020b5f9cEP8dActor_c
+void daObjFloatBoard_c::func_ov002_020b5f9c(dActor_c *rider)
+{
+    enum Bool { FALSE, TRUE };
+    unsigned short t = rider->actorID;
+    enum Bool eq = (enum Bool)(t == 0xbf);
+    if (eq) {
+        mRider = rider;
+        mRiderTimeout = 5;
+    }
+}
+
+/* ROM ordinal 5 -- ov002 0x020b5e58. The shared Init helper: every leaf's
+ * InitResources calls it with that overlay's model/collision/CLPS table.
+ * Loads the model, wires the mesh collider (callback thunk above plus the
+ * stock dBgW position updater), and seeds the rest pose, water level and
+ * rider state. */
+// @symbol _ZN17daObjFloatBoard_c19func_ov002_020b5e58EP27daObjFloatBoard_c_Resources
+int daObjFloatBoard_c::func_ov002_020b5e58(daObjFloatBoard_c_Resources *fp)
+{
+    Vector3 v;
+    BMD_File *bmd;
+    KCL_File *kcl;
+    int vy, vz, vx;
+
+    bmd = (BMD_File *)Model::LoadFile(*fp->model);
+    mModel.SetFile(bmd, 1, -1);
+    mFileTable = fp;
+    func_ov002_020b5b98();
+    UpdateClsnPosAndRot();
+    kcl = (KCL_File *)dBgW_Kc::LoadFile(*fp->collision);
+    _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
+        &mMeshCollider, kcl, mClsnMat, 0x199, mAngleY, *fp->clps);
+    func_020393c4((int *)&mMeshCollider, (int)&func_ov002_020b5fc4);
+    func_020393d4((int *)&mMeshCollider, (int)&dBgW::UpdatePosAndAngs);
+
+    mSinkOffset = 0;
+    mBobOffset = 0;
+    mBobPhase = 0;
+    mRestPosX = mPosX;
+    mWaterY = mPosY;
+    mRestPosZ = mPosZ;
+    mRider = 0;
+    pad_340[0] = 0;
+    mFallbackWaterY = mPosY;
+
+    if (data_0209f2f8 == 0x15) {
+        dBgCh_Gnd rg;
+        vy = mPosY;
+        vz = mPosZ;
+        vx = mPosX;
+        {
+            int t = vy + 0x50000;
+            v.x = vx;
+            v.y = t;
+            v.z = vz;
+        }
+        rg.SetObjAndPos(v, this);
+        if (rg.DetectClsn()) {
+            mFallbackWaterY = rg.clsnY + 0x3e000;
+        }
+    }
+    return 1;
 }
 
 /* ROM ordinal 4 -- vtable slot 6, ov002 0x020b5c4c.

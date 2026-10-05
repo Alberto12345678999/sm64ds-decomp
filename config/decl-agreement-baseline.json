@@ -5937,6 +5937,10 @@
       "src/actors/daObjFl_London_c.cpp": [
         "param:#3 Matrix4x3 *"
       ],
+      "src/actors/daObjFloatBoard_c.cpp": [
+        "param:#3 const Matrix4x3 &",
+        "param:#6 CLPS_Block &"
+      ],
       "src/actors/daObjSlIceBlock_c.cpp": [
         "param:#2 int",
         "param:#5 int"
