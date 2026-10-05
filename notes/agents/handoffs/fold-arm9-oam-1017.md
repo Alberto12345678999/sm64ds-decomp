@@ -7,7 +7,7 @@
 - Range: `0x02020884..0x02021a04` (arm9), contiguous and exhaustive: 12 `OAM::`
   members, bounded below by `func_02020820` and above by
   `Particle::SysTracker::Contents::Unlink`.
-- Staged at `src_tu/engine/oam/OAM.cpp`, promoted to `src/engine/oam/OAM.cpp`
+- Staged under `src_tu/`, promoted to `src/engine/oam/OAM.cpp`
   via `tools/tu_promote.py` (12 attribution overrides, 6 CONVERTED identities).
 - 12 legacy shards `git rm`'d.
 
@@ -72,7 +72,7 @@ the 10-arg Render — it matches and is enrolled.
   defer_codegen + cplusplus architecture.
 - `port/slice_gate6.txt`: six shard paths → `src/engine/oam/OAM.cpp`
   (port_refcheck 403 clean).
-- `config/converted-baseline.json`: six `src/_ZN3OAM*` rows re-keyed to
+- `config/converted-baseline.json`: six legacy shard rows re-keyed to
   `OAM.cpp#symbol`.
 - `attribution.json`: twelve `OAM.cpp#symbol` overrides preserve each shard's
   author (lunavyqo / andrewboudreau / tangosdev).
