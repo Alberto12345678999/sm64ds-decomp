@@ -7959,8 +7959,9 @@
     "src/actors/daStar_c.cpp#_ZN8daStar_c13InitResourcesEv": "ruspecial",
     "src/actors/daDemo_c.cpp#_ZN8daDemo_c16CleanupResourcesEv": "tangosdev",
     "src/actors/daDemo_c.cpp#_ZN8daDemo_c16OnPendingDestroyEv": "tangosdev",
-    "src/actors/daDemo_c.cpp#_ZN8daDemo_c6RenderEv": "tangosdev",
+    "src/actors/daDemo_c.cpp#_ZN8daDemo_c6RenderEv": "lunavyqo",
     "src/actors/daDemo_c.cpp#_ZN8daDemo_c8BehaviorEv": "tangosdev",
-    "src/actors/daDemo_c.cpp#_ZN8daDemo_c13InitResourcesEv": "tangosdev"
+    "src/actors/daDemo_c.cpp#_ZN8daDemo_c13InitResourcesEv": "tangosdev",
+    "src/_ZN8daDemo_cD1Ev.cpp#_ZN8daDemo_cD1Ev": "tangosdev"
   }
 }
