@@ -77,7 +77,7 @@ struct daStarBase_c : dActor_c {
     u8  mStarID;            /* 0x1d9 */
     u8  pad_1da[0x1];
     u8  mFlags;            /* 0x1db */
-    virtual ~daStarBase_c();
+    virtual ~daStarBase_c() {}
     virtual s32 InitResources();
     virtual s32 CleanupResources();
     virtual s32 Behavior();
@@ -88,6 +88,9 @@ struct daStarBase_c : dActor_c {
     /* Readable inferred name, not a ROM-authenticated original spelling.
      * Address/ownership evidence is recorded in symbols/actor_renames.tsv. */
     void Collect();
+
+    /* Receivers. The address is the method name. */
+    void LinkSilverStarAndStarMarker(char* b);
 };
 
 #ifndef SM64DS_PLATFORM_PC

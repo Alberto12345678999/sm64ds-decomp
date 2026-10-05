@@ -1,8 +1,8 @@
 {
   "id": "ov020/daBook_c+daBookGen_c",
   "module": "ov020",
-  "source": "src/game/actors/d_a_book.cpp",
-  "promoted_source": "src/game/actors/d_a_book.cpp",
+  "source": "src/actors/daBook_c.cpp",
+  "promoted_source": "src/actors/daBook_c.cpp",
   "status": "promoted",
   "boundary_confidence": "high",
   "boundary_evidence": [
@@ -48,98 +48,98 @@
       "ordinal": 3
     },
     {
-      "symbol": "func_ov020_021112b0",
+      "symbol": "_ZN8daBook_c19func_ov020_021112b0Ev",
       "address": "0x021112b0",
       "size": "0x00000090",
       "legacy_source": "src/func_ov020_021112b0.c",
       "ordinal": 4
     },
     {
-      "symbol": "func_ov020_02111340",
+      "symbol": "_ZN8daBook_c19func_ov020_02111340Ev",
       "address": "0x02111340",
       "size": "0x000000d8",
       "legacy_source": "src/func_ov020_02111340.c",
       "ordinal": 5
     },
     {
-      "symbol": "func_ov020_02111418",
+      "symbol": "_ZN8daBook_c19func_ov020_02111418Ev",
       "address": "0x02111418",
       "size": "0x00000194",
       "legacy_source": "src/func_ov020_02111418.cpp",
       "ordinal": 6
     },
     {
-      "symbol": "func_ov020_021115ac",
+      "symbol": "_ZN8daBook_c19func_ov020_021115acEv",
       "address": "0x021115ac",
       "size": "0x000001a0",
       "legacy_source": "src/func_ov020_021115ac.c",
       "ordinal": 7
     },
     {
-      "symbol": "func_ov020_0211174c",
+      "symbol": "_ZN8daBook_c19func_ov020_0211174cEv",
       "address": "0x0211174c",
       "size": "0x00000290",
       "legacy_source": "src/func_ov020_0211174c.c",
       "ordinal": 8
     },
     {
-      "symbol": "func_ov020_021119dc",
+      "symbol": "_ZN8daBook_c19func_ov020_021119dcEv",
       "address": "0x021119dc",
       "size": "0x000000cc",
       "legacy_source": "src/func_ov020_021119dc.c",
       "ordinal": 9
     },
     {
-      "symbol": "func_ov020_02111aa8",
+      "symbol": "_ZN8daBook_c19func_ov020_02111aa8Ev",
       "address": "0x02111aa8",
       "size": "0x00000080",
       "legacy_source": "src/func_ov020_02111aa8.c",
       "ordinal": 10
     },
     {
-      "symbol": "func_ov020_02111b28",
+      "symbol": "_ZN8daBook_c19func_ov020_02111b28Ev",
       "address": "0x02111b28",
       "size": "0x00000108",
       "legacy_source": "src/func_ov020_02111b28.cpp",
       "ordinal": 11
     },
     {
-      "symbol": "func_ov020_02111c30",
+      "symbol": "_ZN8daBook_c19func_ov020_02111c30Ev",
       "address": "0x02111c30",
       "size": "0x000002b0",
       "legacy_source": "src/func_ov020_02111c30.c",
       "ordinal": 12
     },
     {
-      "symbol": "func_ov020_02111ee0",
+      "symbol": "_ZN8daBook_c19func_ov020_02111ee0Ev",
       "address": "0x02111ee0",
       "size": "0x000000e4",
       "legacy_source": "src/func_ov020_02111ee0.cpp",
       "ordinal": 13
     },
     {
-      "symbol": "func_ov020_02111fc4",
+      "symbol": "_ZN8daBook_c19func_ov020_02111fc4Ev",
       "address": "0x02111fc4",
       "size": "0x000000bc",
       "legacy_source": "src/func_ov020_02111fc4.cpp",
       "ordinal": 14
     },
     {
-      "symbol": "func_ov020_02112080",
+      "symbol": "_ZN8daBook_c19func_ov020_02112080Ev",
       "address": "0x02112080",
       "size": "0x00000090",
       "legacy_source": "src/func_ov020_02112080.cpp",
       "ordinal": 15
     },
     {
-      "symbol": "func_ov020_02112110",
+      "symbol": "_ZN8daBook_c19func_ov020_02112110Ev",
       "address": "0x02112110",
       "size": "0x0000005c",
       "legacy_source": "src/func_ov020_02112110.cpp",
       "ordinal": 16
     },
     {
-      "symbol": "func_ov020_0211216c",
+      "symbol": "_ZN8daBook_c19func_ov020_0211216cEv",
       "address": "0x0211216c",
       "size": "0x000000d8",
       "legacy_source": "src/func_ov020_0211216c.cpp",
@@ -266,9 +266,10 @@
     "tubuild create warning (RESOLVED): CONFLICT: extern declaration '_ZN5Model8LoadFileER13SharedFilePtr' differs between the legacy file that used to hold _ZN8daBook_c13InitResourcesEv and the one that held _ZN11daBookGen_c13InitResourcesEv; kept the first, the other is commented out for review -- RESOLVED: no extern survives; both InitResources call the static member Model::LoadFile from Model.h. Verified: 31/31 MATCH.",
     "tubuild create warning (RESOLVED): CONFLICT: extern declaration 'LoadBlueCoinModel' differs between the legacy file that used to hold _ZN8daBook_c13InitResourcesEv and the one that held _ZN11daBookGen_c13InitResourcesEv; kept the first, the other is commented out for review -- RESOLVED: one file-scope extern \"C\" void LoadBlueCoinModel(void *) survives and both InitResources pass this. Verified: 31/31 MATCH.",
     "tubuild create warning (RESOLVED): CONFLICT: local declaration ('struct', 'dActor_c') differs between the legacy file that used to hold func_ov020_02111fc4 and the one that held _ZN8daBook_c13InitResourcesEv; kept the first, the other is commented out for review -- RESOLVED: no local dActor_c declaration survives; the real class comes from dActor_c.h through daBook_c.h. Verified: 31/31 MATCH.",
-    "Promotion: src/game/actors/d_a_book.cpp is the whole unit, 31 functions in ROM order under #pragma defer_codegen off; the out-of-line empty destructors emit D1 then D0 for both classes and make this TU the key-function home of _ZTV/_ZTI/_ZTS8daBook_c and _ZTV/_ZTI/_ZTS11daBookGen_c (deadstrip-data rows at their ov020 homes, with the inherited dEnemyBase_c/dActor_c/dBase_c/fBase_c RTTI chain); the D2s and the inline Vector3 destructor are compiler_only_output rows. The id dropped '+Bookend': Bookend was only the historical alias of the KILLER_BOOK factory, not a class. The raw matrix and vector overlays at 0x1ec and 0x438 are typed members (Matrix4x3 mShadowMat, Vector3 mClsnOffset); common.h must precede daBook_c.h so mShadowMat takes the flat Matrix4x3 and the identity copy stays a twelve-word block move. Verified: 31/31 MATCH.",
+    "Promotion: src/actors/daBook_c.cpp is the whole unit, 31 functions in ROM order under #pragma defer_codegen off; the out-of-line empty destructors emit D1 then D0 for both classes and make this TU the key-function home of _ZTV/_ZTI/_ZTS8daBook_c and _ZTV/_ZTI/_ZTS11daBookGen_c (deadstrip-data rows at their ov020 homes, with the inherited dEnemyBase_c/dActor_c/dBase_c/fBase_c RTTI chain); the D2s and the inline Vector3 destructor are compiler_only_output rows. The id dropped '+Bookend': Bookend was only the historical alias of the KILLER_BOOK factory, not a class. The raw matrix and vector overlays at 0x1ec and 0x438 are typed members (Matrix4x3 mShadowMat, Vector3 mClsnOffset); common.h must precede daBook_c.h so mShadowMat takes the flat Matrix4x3 and the identity copy stays a twelve-word block move. Verified: 31/31 MATCH.",
     "Reconstructed source-style factory symbol daBookGen_c_classInit: class identity is ROM-proven by RTTI/allocation/vtable and profile identity by literal ROM ID BOOK_GENERATOR; classInit spelling is later-EAD lineage reconstruction. Historical alias: BookShotSpawner_Spawn.",
-    "classInit fold: the four registry factories daBook_c_classInit_BOOK_SWITCH (0x021127f4, 0x5c), daBookGen_c_classInit (0x02112850, 0x30), daBook_c_classInit_KILLER_BOOK (0x02112880, 0x5c) and daBook_c_classInit_SHOOT_BOOK (0x021128dc, 0x5c) abut each other with no gap at the unit's high end, ending where daChair_c (src/actors/daChair_c.cpp) begins at 0x02112938. Neither class declares a constructor, so each factory is a plain `return new`."
+    "classInit fold: the four registry factories daBook_c_classInit_BOOK_SWITCH (0x021127f4, 0x5c), daBookGen_c_classInit (0x02112850, 0x30), daBook_c_classInit_KILLER_BOOK (0x02112880, 0x5c) and daBook_c_classInit_SHOOT_BOOK (0x021128dc, 0x5c) abut each other with no gap at the unit's high end, ending where daChair_c (src/actors/daChair_c.cpp) begins at 0x02112938. Neither class declares a constructor, so each factory is a plain `return new`.",
+    "Deslop+re-home (src/game/actors/d_a_book.cpp -> src/actors/daBook_c.cpp): the fourteen func_ov020_0211* helpers are daBook_c methods now (_ZN8daBook_c19func_ov020_0211xxxxEv in symbols.txt; address kept as the method name, no EAD name survives). The BOOK_SWITCH partner is typed daTrsTrap_c: PARTNER_BOOKS/PARTNER_PHASE offset reads became mBookFlags/mState member accesses, and the Animation-base macro gave way to mModelAnim.Advance()/Finished() through the real Animation subobject at +0x160. Verified: 31/31 MATCH."
   ],
   "compiler_only_output": [
     {
@@ -391,7 +392,7 @@
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
     "toolchain": "tools/mwccarm/2004/b56/mwccarm.exe",
     "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
-    "object": "build/tu/ov020-daBook_c+daBookGen_c/d_a_book.o (gitignored)",
+    "object": "build/tu/ov020-daBook_c+daBookGen_c/daBook_c.o (gitignored)",
     "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
     "functions_matched": 31,
     "functions_declared": 31,

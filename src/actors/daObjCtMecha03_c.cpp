@@ -6,33 +6,41 @@
  * rolls a new push strength and an occasional pause. Its shadow follows the
  * bob, not the pivot (func_ov065_02119fe8).
  *
- * DO NOT "TIDY" THESE -- each one is load-bearing:
+ * mwccarm emits ordinary functions in reverse source order, so the factory
+ * stays first and the inline destructor stays last in the header. `return new`
+ * emits a homeless _ZN10dBgActor_cD2Ev; the compiler-only policy deadstrips it.
  *
- *   mwccarm emits ordinary functions in reverse source order, so the nine
- *   definitions below run from the highest retail address back toward the
- *   compiler-owned destructor group. Keep the factory first. The factory is
- *   `return new` here; it emits a homeless _ZN10dBgActor_cD2Ev that the
- *   compiler-only policy deadstrips.
+ * common.h stays first. Shadow and model matrices are the flat 12-word
+ * Matrix4x3; translation is m[9], m[10], m[11].
  *
- *   common.h first: the shadow and model matrices need the flat 12-word
- *   spelling.
+ * func_ov065_02119fe8 and func_ov065_0211a114 are methods. The ROM address is
+ * the method name. No other TU calls the old free-function spelling.
  *
- *   Behavior's I16(0x322), the accelP mask and the 0x300+0x22 load. The named
- *   mSwingAngle / mSwingSpeed CSE to the r4+0x300 base and do not match.
- *
- *   dBgW_KcMbg::SetFile / DropShadowScaleXYZ / dBgActor_c::IsClsnInRange stay
- *   mangled: Fix12<int> by value (notes/mwccarm-codegen.md 6az).
- *
- * Known limits:
- *   func_ov065_02119fe8 and func_ov065_0211a114 keep their address-derived
- *   names: ov065's symbols.txt spells them that way, so they are C-linkage
- *   free functions here rather than members.
- *   func_020393a4 / func_02039394 / func_020393d4 store the dBgW range and
- *   callback; there is no setter.
- *
- * NOT OWNED BY THIS TU (it is text-only): the data_ov065_* handles; no
- * g_profile_CT_MECHA03; data_ov035_02112198, the CLPS_Block, whose
- * name is an overlay_residency settlement rather than a ROM name.
+ * Leftover:
+ * - dBgW_KcMbg::SetFile with a Fix12<int> local sizes InitResources
+ *   0x104->0x110. dActor_c::DropShadowScaleXYZ with Fix12<int> locals sizes
+ *   func_ov065_02119fe8 0x12c->0x144. Fix12<int>{...} does not compile
+ *   ("( expected"). Declaring dBgActor_c::IsClsnInRange and calling it with
+ *   Fix12<int> locals sizes Behavior 0x190->0x1b0. The scalar externs match.
+ * - Assigning mMeshCollider.beforeClsnCallback does not compile: the static
+ *   takes references and the field takes pointers. Casting
+ *   &dBgW::UpdatePosWithTransform onto the field type sizes InitResources
+ *   0x104->0xfc. func_020393d4 is the store that matches. func_020393a4 and
+ *   func_02039394 store the mesh range the same way.
+ * - func_ov065_02119fe8 keeps the dead stores. Dropping armOffset.y = 0, the
+ *   first pos.y = bobY, or writing armOffset once, sizes it 0x12c->0x128.
+ *   Dropping the bobPos zeros sizes it 0x12c->0x120.
+ * - func_ov065_0211a114 returns the local z. Returning m[11] after the shift
+ *   store sizes it 0x48->0x4c.
+ * - Behavior's angle store is I16(0x322). mSwingAngle = mSwingAngle +
+ *   mSwingSpeed sizes Behavior 0x190->0x184. *accelP += (short)(spd * pos)
+ *   sizes it 0x190->0x198. if (vx * vy > 0) stays 0x190 and differs by 4
+ *   words. if (mSoundTimer != 0) stays 0x190 and differs by 1 word. Reading
+ *   the angle through I16(0x322) sizes it 0x190->0x194.
+ *   offsetof(daObjCtMecha03_c, mSwingAngle) does not compile ("( expected").
+ * - Matrix4x3.t is not a member of the flat spelling.
+ * - The data_ov065_* handles, g_profile_CT_MECHA03, and data_ov035_02112198
+ *   are not this TU's data.
  */
 
 #include "common.h"
@@ -44,12 +52,8 @@
 
 struct CLPS_Block;
 
-/* Behavior reads and writes 0x322 through a RAW combined offset -- not the
-   (c+0x300)+0x22 decomposition used everywhere else in that function. The mask
-   is a no-op on a 32-bit int; its only purpose is to stop the compiler from
-   recognizing 0x322 as 0x300+0x22 and reusing the r4+0x300 base already live in
-   a register nearby. The ROM computes this one address via a literal-pool add
-   instead. */
+/* Angle accumulation only. Naming that store mSwingAngle shifts Behavior
+   from 0x190 to 0x184. The masked absolute address is the store that matches. */
 #define I16(off) (*(short *)(((int)this + (off)) & 0xFFFFFFFF))
 
 /* Fix12-by-value calls retain their measured raw ABI declarations. Natural
@@ -71,8 +75,6 @@ extern void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Bloc
 extern void func_02039394(void *p, int v);
 extern void func_020393a4(void *p, int v);
 extern void func_020393d4(void *p, void *v);
-extern int func_ov065_0211a114(daObjCtMecha03_c *self);
-extern void func_ov065_02119fe8(daObjCtMecha03_c *self);
 extern Matrix4x3 data_020a0e68;
 extern u8 data_0209f2c0;
 extern int data_0209e650;
@@ -103,7 +105,7 @@ int daObjCtMecha03_c::InitResources()
     mSwingAngle = 0x1964;
     mAngleZ = mSwingAngle;
 
-    func_ov065_0211a114(this);
+    func_ov065_0211a114();
     UpdateClsnPosAndRot();
 
     kcl = dBgW_Kc::LoadFile(data_ov065_0211d894);
@@ -115,8 +117,7 @@ int daObjCtMecha03_c::InitResources()
     func_02039394(&mMeshCollider, -0x200000);
 
     if (data_0209f2c0 != 3) {
-        func_020393d4(&mMeshCollider,
-            (void *)&dBgW::UpdatePosWithTransform);
+        func_020393d4(&mMeshCollider, &dBgW::UpdatePosWithTransform);
     }
     return 1;
 }
@@ -125,7 +126,7 @@ int daObjCtMecha03_c::InitResources()
 int daObjCtMecha03_c::Behavior()
 {
     if (data_0209f2c0 != 3) {
-        if (*(unsigned short *)&mSoundTimer != 0) {
+        if ((u16)mSoundTimer != 0) {
             if (DecIfAbove0_Short((u16 *)&mSoundTimer) == 0) {
                 Sound::PlayBank3(0x38, *(Vector3 *)&mCamSpacePosX);
             }
@@ -133,8 +134,8 @@ int daObjCtMecha03_c::Behavior()
         if (DecIfAbove0_Short((u16 *)&mPauseTimer) == 0) {
             {
                 short vx = mSwingDir;
-                short vy = *(short *)((char *)this + 0x300 + 0x22);
-                short *accelP = (short *)(((int)this + 0x324) & 0xFFFFFFFF);
+                short vy = mSwingAngle;
+                short *accelP = &mSwingSpeed;
                 if (vy * vx > 0) {
                     vx = -vx;
                     mSwingDir = vx;
@@ -157,15 +158,15 @@ int daObjCtMecha03_c::Behavior()
                 }
             }
             if (mSwingSpeed == 0) {
-                mSoundTimer = *(unsigned short *)&mPauseTimer + 0xf;
+                mSoundTimer = (u16)mPauseTimer + 0xf;
             }
-            I16(0x322) = I16(0x322) + mSwingSpeed;
+            I16(0x322) += mSwingSpeed;
         }
         mAngleZ = mSwingAngle;
     }
 
-    func_ov065_0211a114(this);
-    func_ov065_02119fe8(this);
+    func_ov065_0211a114();
+    func_ov065_02119fe8();
     if (_ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(this, 0x300000, -0x200000) != 0)
         UpdateClsnPosAndRot();
     return 1;
@@ -188,24 +189,24 @@ int daObjCtMecha03_c::CleanupResources()
     return 1;
 }
 
-// @symbol func_ov065_0211a114
+// @symbol _ZN16daObjCtMecha03_c19func_ov065_0211a114Ev
 /* Writes mModel.mat4x3 from the actor's Y/Z angles and copies the
    actor position into its translation row. */
-extern "C" int func_ov065_0211a114(daObjCtMecha03_c *c)
+int daObjCtMecha03_c::func_ov065_0211a114()
 {
-    Matrix4x3_FromRotationZXYExt(&c->mModel.mat4x3, 0, c->mAngleY, c->mAngleZ);
-    c->mModel.mat4x3.m[9] = c->mPosX >> 3;
-    c->mModel.mat4x3.m[10] = c->mPosY >> 3;
-    int z = c->mPosZ >> 3;
-    c->mModel.mat4x3.m[11] = z;
+    Matrix4x3_FromRotationZXYExt(&mModel.mat4x3, 0, mAngleY, mAngleZ);
+    mModel.mat4x3.m[9] = mPosX >> 3;
+    mModel.mat4x3.m[10] = mPosY >> 3;
+    int z = mPosZ >> 3;
+    mModel.mat4x3.m[11] = z;
     return z;
 }
 
-// @symbol func_ov065_02119fe8
+// @symbol _ZN16daObjCtMecha03_c19func_ov065_02119fe8Ev
 /* Drops the pendulum's shadow: swings a fixed offset through the actor's
    orientation, raycasts the ground under the result, then hands the shadow
    matrix to dActor_c::DropShadowScaleXYZ. */
-extern "C" void func_ov065_02119fe8(daObjCtMecha03_c *self)
+void daObjCtMecha03_c::func_ov065_02119fe8()
 {
     Vector3 armOffset;
     Vector3 bobPos;
@@ -217,9 +218,9 @@ extern "C" void func_ov065_02119fe8(daObjCtMecha03_c *self)
     bobPos.z = 0;
     armOffset.x = 0;
     armOffset.z = 0;
-    Matrix4x3_FromRotationZXYExt(&data_020a0e68, self->mAngleX, self->mAngleY, self->mAngleZ);
+    Matrix4x3_FromRotationZXYExt(&data_020a0e68, mAngleX, mAngleY, mAngleZ);
     MulVec3Mat4x3(&armOffset, &data_020a0e68, &bobPos);
-    AddVec3(&bobPos, (Vector3 *)&self->mPosX, &bobPos);
+    AddVec3(&bobPos, (Vector3 *)&mPosX, &bobPos);
     {
         int bobY = bobPos.y;
         pos.x = bobPos.x;
@@ -229,15 +230,15 @@ extern "C" void func_ov065_02119fe8(daObjCtMecha03_c *self)
     }
     dBgCh_Gnd rc;
     rc.SetObjAndPos(pos, 0);
-    self->mGroundY = pos.y;
+    mGroundY = pos.y;
     if (rc.DetectClsn())
-        self->mGroundY = rc.clsnY;
-    Matrix4x3_FromRotationY(&self->mShadowMat, self->mAngleY);
-    self->mShadowMat.m[9] = bobPos.x >> 3;
-    self->mShadowMat.m[10] = self->mGroundY >> 3;
-    self->mShadowMat.m[11] = bobPos.z >> 3;
+        mGroundY = rc.clsnY;
+    Matrix4x3_FromRotationY(&mShadowMat, mAngleY);
+    mShadowMat.m[9] = bobPos.x >> 3;
+    mShadowMat.m[10] = mGroundY >> 3;
+    mShadowMat.m[11] = bobPos.z >> 3;
     _ZN8dActor_c18DropShadowScaleXYZER11ShadowModelR9Matrix4x35Fix12IiES5_S5_j(
-        self, &self->mShadowModel, &self->mShadowMat, 0x12c000, 0x12c000, 0x78000, 0xf);
+        this, &mShadowModel, &mShadowMat, 0x12c000, 0x12c000, 0x78000, 0xf);
 }
 // @symbol _ZN16daObjCtMecha03_cD1Ev
 // @symbol _ZN16daObjCtMecha03_cD0Ev
