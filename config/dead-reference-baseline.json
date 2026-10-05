@@ -6,10 +6,6 @@
    "ref": "mods/Player_ScaleByCharFactor.c"
   },
   {
-   "file": "notes/actor-leaf-provenance.md",
-   "ref": "src_tu/actors/EnemySpawner"
-  },
-  {
    "file": "notes/actor-naming.md",
    "ref": "include/List/ActorList.h"
   },
@@ -59,7 +55,7 @@
   },
   {
    "file": "notes/agents/handoffs/issue-2411-humanizer-2.md",
-   "ref": "src_tu/actors/Koopa"
+   "ref": "src_tu/actors/Koopa+KoopaSmall.cpp"
   },
   {
    "file": "notes/agents/handoffs/issue-2412-humanizer-2.md",
