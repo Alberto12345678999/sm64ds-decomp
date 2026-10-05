@@ -11842,15 +11842,6 @@
       "src/func_02010304.cpp": [
         "return:void *"
       ],
-      "src/func_ov001_020aa420.c": [
-        "return:void *"
-      ],
-      "src/func_ov001_020aaa54.cpp": [
-        "return:void *"
-      ],
-      "src/func_ov001_020aadac.c": [
-        "return:void *"
-      ],
       "src/func_ov002_020cfea4.cpp": [
         "return:void *"
       ],
@@ -14153,9 +14144,6 @@
       ]
     },
     "data_0208a0e0": {
-      "src/func_ov001_020aa7b8.cpp": [
-        "return:unsigned char []"
-      ],
       "src/func_ov075_02118c80.cpp": [
         "return:char []"
       ]
@@ -14299,9 +14287,6 @@
     "data_02092114": {
       "include/decl_common.h": [
         "return:unsigned char"
-      ],
-      "src/func_ov001_020aa858.cpp": [
-        "return:signed char []"
       ]
     },
     "data_0209211c": {
@@ -15968,18 +15953,6 @@
       ],
       "src/actors/daJango_c.cpp": [
         "return:void *"
-      ],
-      "src/func_ov001_020aa420.c": [
-        "return:CapRequest * []"
-      ],
-      "src/func_ov001_020aaa54.cpp": [
-        "return:void *"
-      ],
-      "src/func_ov001_020aadac.c": [
-        "return:char *"
-      ],
-      "src/func_ov001_020aaf40.c": [
-        "return:char *"
       ],
       "src/func_ov002_020dd908.c": [
         "return:char * []"
@@ -17893,25 +17866,6 @@
       ],
       "src/func_02059834.c": [
         "return:int"
-      ]
-    },
-    "data_ov001_020ad62c": {
-      "src/func_ov001_020aa6cc.c": [
-        "return:int"
-      ],
-      "src/func_ov001_020aa79c.c": [
-        "return:int"
-      ]
-    },
-    "data_ov001_020ad634": {
-      "src/func_ov001_020aa420.c": [
-        "return:CapNode * []"
-      ],
-      "src/func_ov001_020aadac.c": [
-        "return:int * []"
-      ],
-      "src/func_ov001_020aaf40.c": [
-        "return:char * []"
       ]
     },
     "data_ov002_020ff480": {
@@ -25262,10 +25216,6 @@
         "param:#1 int",
         "return:void"
       ],
-      "src/func_ov001_020aa6e4.cpp": [
-        "param:#1 int",
-        "return:void"
-      ],
       "src/func_ov002_020f7384.c": [
         "param:#1 int",
         "return:void"
@@ -27859,11 +27809,6 @@
     "func_02023178": {
       "include/decl_common.h": [
         "return:char *"
-      ]
-    },
-    "func_0202a8e0": {
-      "src/func_ov001_020aaa54.cpp": [
-        "param:#1 void *"
       ]
     },
     "func_0202af80": {
@@ -32978,16 +32923,6 @@
         "return:char"
       ]
     },
-    "func_ov001_020aa7b8": {
-      "src/func_ov001_020aa420.c": [
-        "param:#1 int"
-      ]
-    },
-    "func_ov001_020aa858": {
-      "src/func_ov001_020aaa54.cpp": [
-        "arity:5"
-      ]
-    },
     "func_ov001_020ab228": {
       "src/_ZN11dCapEnemy_c16GetCapEatenOffItERK7Vector3.cpp": [
         "param:#1 unsigned char *",
@@ -36837,11 +36772,6 @@
       "src/minigames/d_s_mg_base.cpp": [
         "return:int",
         "param:#3 void *"
-      ]
-    },
-    "data_ov002_02111154": {
-      "src/func_ov001_020aa6b0.c": [
-        "return:int"
       ]
     },
     "data_ov060_0211b1ac": {
