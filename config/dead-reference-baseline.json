@@ -294,6 +294,10 @@
    "ref": "port/unmatched/MeshCollider_DetectClsn_Sphere.cpp"
   },
   {
+   "file": "notes/ctor-migration.md",
+   "ref": "src/_ZN5ModelC1Ev.cpp"
+  },
+  {
    "file": "notes/declaration-centralization.md",
    "ref": "include/decl_"
   },
@@ -304,6 +308,10 @@
   {
    "file": "notes/dtor-migration.md",
    "ref": "src/_ZN5EnemyD0Ev.c"
+  },
+  {
+   "file": "notes/dtor-migration.md",
+   "ref": "src/_ZN5ModelD1Ev.cpp"
   },
   {
    "file": "notes/emu-trace-build.md",
