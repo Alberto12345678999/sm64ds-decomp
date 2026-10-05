@@ -39,8 +39,8 @@ Deliberate survivals:
 
 ## One header touched
 
-`include/TextureTransformer.h`: retired the stale "src/_ZN… shard owns C1"
-and "D0 stays a C file" notes — the TU now owns all six.
+`include/TextureTransformer.h`: retired the stale "shard owns C1" and
+"D0 stays a C file" notes — the TU now owns all six.
 
 ## Bookkeeping
 
