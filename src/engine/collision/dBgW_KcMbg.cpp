@@ -1,25 +1,4 @@
 //cpp
-// @symbol func_020398fc
-// @symbol _ZN10dBgW_KcMbg11GetVelocityER7Vector3
-// @symbol _ZN10dBgW_KcMbg14GetAngularVelYEv
-// @symbol _ZN10dBgW_KcMbg12TransformPosERK7Vector3RS0_
-// @symbol _ZN10dBgW_KcMbg10DetectClsnER9dBgCh_Lin
-// @symbol _ZN10dBgW_KcMbg10DetectClsnER12dBgCh_SphCrr
-// @symbol _ZN10dBgW_KcMbg10DetectClsnER9dBgCh_Gnd
-// @symbol func_02039db8
-// @symbol func_02039e18
-// @symbol func_02039e30
-// @symbol func_02039e48
-// @symbol _ZN10dBgW_KcMbg17GetTriangleOriginEsR7Vector3
-// @symbol _ZN10dBgW_KcMbg9GetNormalEsR7Vector3
-// @symbol _ZN10dBgW_KcMbg9TransformERK9Matrix4x3s
-// @symbol _ZN10dBgW_KcMbg9Virtual08Ev
-// @symbol _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block
-// @symbol _ZN10dBgW_KcMbgD2Ev
-// @symbol _ZN10dBgW_KcMbgD0Ev
-// @symbol _ZN10dBgW_KcMbgD1Ev
-// @symbol _ZN10dBgW_KcMbgC1Ev
-// @symbol _ZN10dBgW_KcMbgC2Ev
 /* dBgW_KcMbg -- the KCL mesh collider under a Matrix4x3 transform: the moving
  * counterpart of dBgW_Kc's static mesh, carrying a uniform Fix12 scale. ROM's
  * own RTTI names it (_ZTS10dBgW_KcMbg @ 0x0209941c, _ZTI @ 0x02099410, vtable
@@ -97,14 +76,20 @@ struct RawVector3 {
     s32 x, y, z;
 };
 
+// @symbol _ZN10dBgW_KcMbgC1Ev
+// @symbol _ZN10dBgW_KcMbgC2Ev
 dBgW_KcMbg::dBgW_KcMbg()
 {
 }
 
+// @symbol _ZN10dBgW_KcMbgD2Ev
+// @symbol _ZN10dBgW_KcMbgD0Ev
+// @symbol _ZN10dBgW_KcMbgD1Ev
 dBgW_KcMbg::~dBgW_KcMbg()
 {
 }
 
+// @symbol _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block
 #pragma cplusplus off
 /* The Fix12-by-value signature and its block-move copies keep this on the C
  * front end, exactly as the separate .c shard did. `struct dBgW_KcMbg` in a C
@@ -154,10 +139,12 @@ void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(void 
 }
 #pragma cplusplus on
 
+// @symbol _ZN10dBgW_KcMbg9Virtual08Ev
 void dBgW_KcMbg::Virtual08()
 {
 }
 
+// @symbol _ZN10dBgW_KcMbg9TransformERK9Matrix4x3s
 void dBgW_KcMbg::Transform(const Matrix4x3 &mtx, s16 angle)
 {
     *(RawMatrix4x3 *)&invMat = *(RawMatrix4x3 *)&mat;
@@ -218,6 +205,7 @@ void dBgW_KcMbg::Transform(const Matrix4x3 &mtx, s16 angle)
     }
 }
 
+// @symbol _ZN10dBgW_KcMbg9GetNormalEsR7Vector3
 void dBgW_KcMbg::GetNormal(s16 triID, Vector3 &res)
 {
     KCL_File *p = kclFile;
@@ -230,6 +218,7 @@ void dBgW_KcMbg::GetNormal(s16 triID, Vector3 &res)
     func_02039db8(this, &tmp, &res);
 }
 
+// @symbol _ZN10dBgW_KcMbg17GetTriangleOriginEsR7Vector3
 void dBgW_KcMbg::GetTriangleOrigin(s16 triID, Vector3 &res)
 {
     KCL_File *p = kclFile;
@@ -242,21 +231,25 @@ void dBgW_KcMbg::GetTriangleOrigin(s16 triID, Vector3 &res)
     func_02039e30(this, &tmp, &res);
 }
 
+// @symbol func_02039e48
 extern "C" void func_02039e48(dBgW_KcMbg *self, Vector3 *v, Vector3 *res)
 {
     MulVec3Mat4x3(v, &self->invScaledMat, res);
 }
 
+// @symbol func_02039e30
 extern "C" void func_02039e30(dBgW_KcMbg *self, Vector3 *v, Vector3 *res)
 {
     MulVec3Mat4x3(v, &self->newScaledMat, res);
 }
 
+// @symbol func_02039e18
 extern "C" void func_02039e18(dBgW_KcMbg *self, Vector3 *v, Vector3 *res)
 {
     MulVec3Mat4x3(v, &self->invRotMat, res);
 }
 
+// @symbol func_02039db8
 #pragma cplusplus off
 /* World-to-local transform by `mat` with the translation dropped -- the same
  * block-move copy constraint as SetFile keeps it on the C front end. */
@@ -271,6 +264,7 @@ void func_02039db8(struct dBgW_KcMbg *thiz, Vector3 *v, Vector3 *res)
 }
 #pragma cplusplus on
 
+// @symbol _ZN10dBgW_KcMbg10DetectClsnER9dBgCh_Gnd
 int dBgW_KcMbg::DetectClsn(dBgCh_Gnd &ray)
 {
     Vector3 localStart;
@@ -305,6 +299,7 @@ int dBgW_KcMbg::DetectClsn(dBgCh_Gnd &ray)
     return hit;
 }
 
+// @symbol _ZN10dBgW_KcMbg10DetectClsnER12dBgCh_SphCrr
 #pragma opt_common_subs off
 
 #define FMUL(a, b) ((int)(((s64)(a) * (b) + 0x800) >> 12))
@@ -359,6 +354,7 @@ int dBgW_KcMbg::DetectClsn(dBgCh_SphCrr &sphere)
 
 #pragma opt_common_subs on
 
+// @symbol _ZN10dBgW_KcMbg10DetectClsnER9dBgCh_Lin
 int dBgW_KcMbg::DetectClsn(dBgCh_Lin &ray)
 {
     Vector3 start;
@@ -386,6 +382,7 @@ int dBgW_KcMbg::DetectClsn(dBgCh_Lin &ray)
     return hit;
 }
 
+// @symbol _ZN10dBgW_KcMbg12TransformPosERK7Vector3RS0_
 /* Out of the previous frame's space, into the current one. */
 int dBgW_KcMbg::TransformPos(const Vector3 &pos, Vector3 &res)
 {
@@ -395,11 +392,13 @@ int dBgW_KcMbg::TransformPos(const Vector3 &pos, Vector3 &res)
     return 1;
 }
 
+// @symbol _ZN10dBgW_KcMbg14GetAngularVelYEv
 s16 dBgW_KcMbg::GetAngularVelY()
 {
     return angVelY;
 }
 
+// @symbol _ZN10dBgW_KcMbg11GetVelocityER7Vector3
 void dBgW_KcMbg::GetVelocity(Vector3 &res)
 {
     res.x = velocity.x;
@@ -407,6 +406,7 @@ void dBgW_KcMbg::GetVelocity(Vector3 &res)
     res.z = velocity.z;
 }
 
+// @symbol func_020398fc
 /* Sets the byte at 0x130 -- the enable flag Transform checks before applying
  * velocity feedback. Called by actor code (Eyerok) once the collider starts
  * moving; it is a free worker, not a method, hence the func_ name. */
