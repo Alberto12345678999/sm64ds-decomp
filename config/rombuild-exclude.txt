@@ -29,11 +29,13 @@ func_0206d9cc
 func_0206da18
 
 # --- rejected by mwldarm despite passing eligibility ---
-# Rule 5 accepts a reference whose name is in config/**/symbols.txt. These name
-# kind:data symbols no object in the link defines: resolvable in config, and
-# still an undefined symbol at link time.
-_ZN11ShadowModel10InitCuboidEv
-_ZN11ShadowModel12InitCylinderEv
+# _ZN11ShadowModel10InitCuboidEv / _ZN11ShadowModel12InitCylinderEv CAME OFF
+# THIS LIST. Their SetFile calls name the model-file globals at
+# 0x020ad524/0x020ad560 -- addresses past arm9's .bss that only the ov000/ov001
+# symbols.txt rows define (data_ov000_*). Spelling the references by their
+# overlay names lets the link resolve them; both now live folded in
+# src/engine/model/ShadowModel.cpp, which also keeps their old arm9
+# data_020ad524/data_020ad560 spellings out of the source.
 
 # --- linked cleanly but produced the wrong bytes (dsd check modules) ---
 # Eligibility proves an object is the right shape to drop in, never that it is
