@@ -319,34 +319,34 @@ int daObjMarioCap_c::InitResources()
             mIconKind = 0;
     }
 
-    /* Animation files this type will use; CleanupResources releases the same
+    /* dExtFrameCtrl_c files this type will use; CleanupResources releases the same
        set. Type 15 and types 20..22 load their own sets, every other type the
        pair at the bottom. */
     switch (mType) {
     case 0xf:
-        Animation::LoadFile(*(SharedFilePtr *)&data_ov002_0210de50);
-        Animation::LoadFile(*(SharedFilePtr *)&data_ov002_0210de60);
-        Animation::LoadFile(*(SharedFilePtr *)&data_ov002_0210de48);
+        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov002_0210de50);
+        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov002_0210de60);
+        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov002_0210de48);
         break;
     case 0x14:
     case 0x15:
     case 0x16:
-        Animation::LoadFile(*(SharedFilePtr *)&data_ov002_0210de28);
-        Animation::LoadFile(*(SharedFilePtr *)&data_ov002_0210de08);
-        Animation::LoadFile(*(SharedFilePtr *)&data_ov002_0210de20);
-        Animation::LoadFile(*(SharedFilePtr *)&data_ov002_0210de40);
-        Animation::LoadFile(*(SharedFilePtr *)&data_ov002_0210de10);
-        Animation::LoadFile(*(SharedFilePtr *)&data_ov002_0210de00);
-        Animation::LoadFile(*(SharedFilePtr *)&data_ov002_0210de58);
-        Animation::LoadFile(*(SharedFilePtr *)&data_ov002_0210de18);
+        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov002_0210de28);
+        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov002_0210de08);
+        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov002_0210de20);
+        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov002_0210de40);
+        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov002_0210de10);
+        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov002_0210de00);
+        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov002_0210de58);
+        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov002_0210de18);
         break;
     case 0x10:
     case 0x11:
     case 0x12:
     case 0x13:
     default:
-        Animation::LoadFile(*(SharedFilePtr *)&data_ov002_0210de30);
-        Animation::LoadFile(*(SharedFilePtr *)&data_ov002_0210de38);
+        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov002_0210de30);
+        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov002_0210de38);
         break;
     }
 

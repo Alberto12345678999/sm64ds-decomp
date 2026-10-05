@@ -842,8 +842,8 @@ int daBook_c::InitResources()
 {
     Model::LoadFile(*(SharedFilePtr *)&data_ov020_02114aa0);
     Model::LoadFile(*(SharedFilePtr *)&data_ov020_02114ab8);
-    Animation::LoadFile(*(SharedFilePtr *)&data_ov020_02114aa8);
-    Animation::LoadFile(*(SharedFilePtr *)&data_ov020_02114ab0);
+    dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov020_02114aa8);
+    dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov020_02114ab0);
     LoadBlueCoinModel(this);
 
     if (mShadowModel.InitCylinder() == 0)

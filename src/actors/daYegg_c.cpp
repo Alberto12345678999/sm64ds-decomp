@@ -1593,8 +1593,8 @@ int daYegg_c::InitResources()
     if (func_ov002_020ec654(this) != 0)
         idx = 1;
 
-    Animation::LoadFile(*(SharedFilePtr *)data_ov002_0210e6b0);
-    Animation::LoadFile(*(SharedFilePtr *)data_ov002_0210eb78);
+    dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)data_ov002_0210e6b0);
+    dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)data_ov002_0210eb78);
     if (mModelAnim.SetFile(*(BMD_File **)(data_ov002_021000a0[idx] + 4), 1, -1) == 0)
         return 0;
 

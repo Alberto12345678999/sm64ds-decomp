@@ -176,7 +176,7 @@ s32 daRedBombhei_c::InitResources()
     BMD_File *modelFile = (BMD_File *)Model::LoadFile(data_ov084_02130da4);
     mModelAnim.SetFile(modelFile, 1, -1);
     mShadowModel.InitCylinder();
-    Animation::LoadFile(data_ov084_02130d9c);
+    dExtFrameCtrl_c::LoadFile(data_ov084_02130d9c);
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x8c000, 0x8c000, 0x4200004, 0);
     func_ov084_0212c960(this, 0);
     mShutterID = 0;

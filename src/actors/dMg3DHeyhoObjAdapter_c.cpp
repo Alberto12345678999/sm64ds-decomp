@@ -61,7 +61,7 @@ extern "C" void func_ov006_020c4d20(char *p);
 
 extern "C" int func_ov006_020c6e4c(char *c) {
     BMD_File *m = (BMD_File *)Model::LoadFile(data_ov006_02140330);
-    BCA_File *a = (BCA_File *)Animation::LoadFile(data_ov006_02140338);
+    BCA_File *a = (BCA_File *)dExtFrameCtrl_c::LoadFile(data_ov006_02140338);
     if (((ModelBase *)(c + 0x38))->SetFile(m, 1, -1) == 0) {
         return 0;
     }
@@ -1518,7 +1518,7 @@ void func_ov006_020c4d1c(void)
 namespace n020c4cd8 {
 extern "C" {
 /* local extern: byte-proved alias spelling for a call by mangled name on a member subobject, as in the original one-function source */
-void _ZN9Animation7AdvanceEv(void *);
+void _ZN15dExtFrameCtrl_c7AdvanceEv(void *);
 void func_ov006_020c4c00(void *c);
 }
 struct Foo {
@@ -1527,7 +1527,7 @@ struct Foo {
 };
 extern "C" void func_ov006_020c4cd8(struct Foo *c){
   (c->*(c->pmf))();
-  _ZN9Animation7AdvanceEv((char*)c+0x88);
+  _ZN15dExtFrameCtrl_c7AdvanceEv((char*)c+0x88);
   func_ov006_020c4c00(c);
 }
 

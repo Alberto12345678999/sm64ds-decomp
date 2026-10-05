@@ -1,15 +1,15 @@
 //cpp
-/* dExtFrameCtrl_c ("Animation" in the tree), the animation-playback root and
+/* dExtFrameCtrl_c ("dExtFrameCtrl_c" in the tree), the animation-playback root and
  * arm9 .text 0x02015a7c..0x02015cb4: a frame cursor the model and animation
  * classes drive. Layout is 0x10 bytes -- vptr, frame count in the low 30 bits
  * of +0x4 with the loop flags in the top two, current frame at +0x8 as 20.12,
  * playback speed at +0xc -- pinned by C2 and read the same way by
- * Copy/Advance/Finished. The two-slot vtable at _ZTV9Animation (0x0208e7e4)
+ * Copy/Advance/Finished. The two-slot vtable at _ZTV15dExtFrameCtrl_c (0x0208e7e4)
  * is the destructor pair alone; notes/model-rtti-names.md recovers the
  * family from the ROM's own typeinfo records.
  *
  * The destructor/constructor ABI cluster at 0x02015cb4..0x02015d38 keeps its
- * per-function shards: ~Animation() is the key function, so a TU that defines
+ * per-function shards: ~dExtFrameCtrl_c() is the key function, so a TU that defines
  * it also emits _ZTV/_ZTI/_ZTS. Those records spell the coined "9Animation"
  * where the cartridge's records spell "15dExtFrameCtrl_c", and a manifest
  * cannot license data whose emitted name has no configured ROM home. The
@@ -22,7 +22,7 @@
  * this class too, but they link in other translation units and keep their
  * own files.
  */
-#include "Animation.h"
+#include "dExtFrameCtrl_c.h"
 
 extern "C" {
 int __aeabi_idivmod(int n, int d);
@@ -30,10 +30,10 @@ int __aeabi_idivmod(int n, int d);
    homes class-typed by-value parameters, so the definition stays a mangled
    free function; scalar args keep the bytes.
    local extern: byte-required, notes/mwccarm-codegen.md 6az */
-void _ZN9Animation12SetAnimationEti5Fix12IiEt(Animation *self, unsigned short numFrames, int flags, int speed, unsigned short startFrame);
+void _ZN15dExtFrameCtrl_c12SetAnimationEti5Fix12IiEt(dExtFrameCtrl_c *self, unsigned short numFrames, int flags, int speed, unsigned short startFrame);
 }
 
-void Animation::Advance()
+void dExtFrameCtrl_c::Advance()
 {
     u32 f = numFramesAndFlags;
     u32 len = f & ~0xc0000000;
@@ -55,36 +55,36 @@ void Animation::Advance()
 }
 
 extern "C"
-void _ZN9Animation12SetAnimationEti5Fix12IiEt(Animation *self, unsigned short numFrames, int flags, int speed, unsigned short startFrame) {
+void _ZN15dExtFrameCtrl_c12SetAnimationEti5Fix12IiEt(dExtFrameCtrl_c *self, unsigned short numFrames, int flags, int speed, unsigned short startFrame) {
   *(int*)((char*)&self->numFramesAndFlags) = flags | (numFrames << 12);
   *(int*)((char*)&self->currFrame) = startFrame << 12;
   *(int*)((char*)&self->speed) = speed;
 }
 
-u32 Animation::GetFrameCount() const
+u32 dExtFrameCtrl_c::GetFrameCount() const
 {
     u32 v = numFramesAndFlags;
     return ((v & 0x3fffffff) << 4) >> 16;
 }
 
-void Animation::SetFlags(int flags)
+void dExtFrameCtrl_c::SetFlags(int flags)
 {
     numFramesAndFlags = (numFramesAndFlags & 0x3fffffff) | flags;
 }
 
-int Animation::GetFlags()
+int dExtFrameCtrl_c::GetFlags()
 {
     return numFramesAndFlags & 0xC0000000;
 }
 
-int Animation::Finished()
+int dExtFrameCtrl_c::Finished()
 {
     u32 f = numFramesAndFlags;
     int cur = currFrame;
     return cur >= (int)((f & 0x3fffffff) - 1);
 }
 
-bool Animation::WillHitFrame(int frame) const
+bool dExtFrameCtrl_c::WillHitFrame(int frame) const
 {
     s32 f = frame << 12;
     s32 next = currFrame + speed;
@@ -135,7 +135,7 @@ bool Animation::WillHitFrame(int frame) const
 }
 
 /* Copies the three members and leaves the vptr alone. */
-void Animation::Copy(const Animation &anim)
+void dExtFrameCtrl_c::Copy(const dExtFrameCtrl_c &anim)
 {
     numFramesAndFlags = anim.numFramesAndFlags;
     currFrame         = anim.currFrame;

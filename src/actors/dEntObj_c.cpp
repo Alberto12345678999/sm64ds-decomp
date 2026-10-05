@@ -183,7 +183,7 @@ UnknownVsPlayer::~UnknownVsPlayer()
 {
 }
 
-/* Animation state 5, the fast gait. Below half speed it drops back to the
+/* dExtFrameCtrl_c state 5, the fast gait. Below half speed it drops back to the
  * state-4 gait; the playback rate follows the speed, and frames 4 and 0x22
  * (the footfalls) play a step sound at the figure's screen position. */
 // @symbol func_ov075_02114010
@@ -204,7 +204,7 @@ extern "C" void func_ov075_02114010(UnknownVsPlayer *p)
     func_0201251c(0, 0x20, &screenPos, p->mSpeed);
 }
 
-/* Animation state 4, the slow gait: the mirror of state 5, switching up to
+/* dExtFrameCtrl_c state 4, the slow gait: the mirror of state 5, switching up to
  * it at half speed. */
 // @symbol func_ov075_021140e4
 extern "C" void func_ov075_021140e4(UnknownVsPlayer *p)
@@ -224,7 +224,7 @@ extern "C" void func_ov075_021140e4(UnknownVsPlayer *p)
     func_0201251c(0, 0x20, &screenPos, p->mSpeed);
 }
 
-/* Animation state 3: once the current animation finishes, switch to the
+/* dExtFrameCtrl_c state 3: once the current animation finishes, switch to the
  * one in data_ov075_0211d3ec and drop to state 0. */
 // @symbol func_ov075_021141b8
 extern "C" int func_ov075_021141b8(UnknownVsPlayer *p)
@@ -237,7 +237,7 @@ extern "C" int func_ov075_021141b8(UnknownVsPlayer *p)
     return 0;
 }
 
-/* Animation state 2: once the current one-shot finishes, start the next one
+/* dExtFrameCtrl_c state 2: once the current one-shot finishes, start the next one
  * and hand over to state 3. */
 // @symbol func_ov075_02114218
 extern "C" int func_ov075_02114218(UnknownVsPlayer *p)
@@ -250,7 +250,7 @@ extern "C" int func_ov075_02114218(UnknownVsPlayer *p)
     return 3;
 }
 
-/* Animation state 1: step sounds on frames 4 and 0x22 while walking. */
+/* dExtFrameCtrl_c state 1: step sounds on frames 4 and 0x22 while walking. */
 // @symbol func_ov075_0211427c
 extern "C" int func_ov075_0211427c(UnknownVsPlayer *p)
 {
@@ -992,28 +992,28 @@ int dEntObj_c::InitResources()
     Model::LoadFile(*(SharedFilePtr*)data_ov075_0211d3fc);
     if (param1 != 1) {
         Model::LoadFile(*(SharedFilePtr*)data_ov075_0211d3bc);
-        Animation::LoadFile(*(SharedFilePtr*)data_ov075_0211d3e4);
+        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr*)data_ov075_0211d3e4);
     }
     Model::LoadFile(*(SharedFilePtr*)data_ov075_0211d404);
     Model::LoadFile(*(SharedFilePtr*)data_ov075_0211d3c4);
-    Animation::LoadFile(*(SharedFilePtr*)data_ov075_0211d414);
+    dExtFrameCtrl_c::LoadFile(*(SharedFilePtr*)data_ov075_0211d414);
 
     if (param1 != 1) {
-        Animation::LoadFile(*(SharedFilePtr*)data_ov075_0211d394);
-        Animation::LoadFile(*(SharedFilePtr*)data_ov075_0211d3cc);
-        Animation::LoadFile(*(SharedFilePtr*)data_ov075_0211d39c);
-        Animation::LoadFile(*(SharedFilePtr*)data_ov075_0211d3d4);
-        Animation::LoadFile(*(SharedFilePtr*)data_ov075_0211d3a4);
-        Animation::LoadFile(*(SharedFilePtr*)data_ov075_0211d3ec);
-        Animation::LoadFile(*(SharedFilePtr*)data_ov075_0211d384);
-        Animation::LoadFile(*(SharedFilePtr*)data_ov075_0211d424);
-        Animation::LoadFile(*(SharedFilePtr*)data_ov075_0211d42c);
-        Animation::LoadFile(*(SharedFilePtr*)data_ov075_0211d41c);
+        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr*)data_ov075_0211d394);
+        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr*)data_ov075_0211d3cc);
+        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr*)data_ov075_0211d39c);
+        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr*)data_ov075_0211d3d4);
+        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr*)data_ov075_0211d3a4);
+        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr*)data_ov075_0211d3ec);
+        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr*)data_ov075_0211d384);
+        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr*)data_ov075_0211d424);
+        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr*)data_ov075_0211d42c);
+        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr*)data_ov075_0211d41c);
     } else {
-        Animation::LoadFile(*(SharedFilePtr*)data_ov075_0211d3ac);
-        Animation::LoadFile(*(SharedFilePtr*)data_ov075_0211d3b4);
-        Animation::LoadFile(*(SharedFilePtr*)data_ov075_0211d3f4);
-        Animation::LoadFile(*(SharedFilePtr*)data_ov075_0211d38c);
+        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr*)data_ov075_0211d3ac);
+        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr*)data_ov075_0211d3b4);
+        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr*)data_ov075_0211d3f4);
+        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr*)data_ov075_0211d38c);
         TextureSequence::LoadFile(*(SharedFilePtr*)data_ov075_0211d3dc);
     }
 

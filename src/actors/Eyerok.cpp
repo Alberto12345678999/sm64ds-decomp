@@ -334,10 +334,10 @@ extern int _ZN8dActor_c18HorzAngleToCPlayerEv(void *self);
 extern void *_ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(u32 id, u32 b, Vector3 *pos, void *p, int e, int f);
 extern u8 _ZN8dActor_c9TrackStarEjj(void *actor, u32 a, u32 b);
 extern void _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(void *self, void *sm, void *m, int rad, int h, unsigned int u);
-extern int _ZN9Animation8FinishedEv(void *self);
-extern void _ZN9Animation8LoadFileER13SharedFilePtr(void *sfp);
+extern int _ZN15dExtFrameCtrl_c8FinishedEv(void *self);
+extern void _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(void *sfp);
 extern int _ZN9ModelBase7SetFileEP8BMD_Fileii(void *self, void *bmd, int a, int b);
-extern int _ZNK9Animation13GetFrameCountEv(void *self);
+extern int _ZNK15dExtFrameCtrl_c13GetFrameCountEv(void *self);
 
 /* ---- the dBgW callback veneer just past this unit (0x0211a35c, its own
  *      src/ file) ---- */
@@ -2657,7 +2657,7 @@ int Eyerok::Behavior()
         ((dCc_c *)&mdCcAcPos_c)->Clear();
         ((dCc_c *)&mdCcAcPos_c)->dCc_c::Update();
         ((BlendModelAnim *)&mBlendModelAnim)->Advance();
-        ((Animation *)&mTextureSequence)->Advance();
+        ((dExtFrameCtrl_c *)&mTextureSequence)->Advance();
     }
     return 1;
 }
@@ -2708,16 +2708,16 @@ int Eyerok::InitResources()
         _ZN15TextureSequence8LoadFileER13SharedFilePtr(data_ov066_0211ae9c);
         _ZN15TextureSequence8LoadFileER13SharedFilePtr(data_ov066_0211ae3c);
         _ZN15TextureSequence8LoadFileER13SharedFilePtr(data_ov066_0211ae2c);
-        _ZN9Animation8LoadFileER13SharedFilePtr(data_ov066_0211ae5c);
-        _ZN9Animation8LoadFileER13SharedFilePtr(data_ov066_0211ae84);
-        _ZN9Animation8LoadFileER13SharedFilePtr(data_ov066_0211aea4);
-        _ZN9Animation8LoadFileER13SharedFilePtr(data_ov066_0211ae8c);
-        _ZN9Animation8LoadFileER13SharedFilePtr(data_ov066_0211ae54);
-        _ZN9Animation8LoadFileER13SharedFilePtr(data_ov066_0211ae94);
-        _ZN9Animation8LoadFileER13SharedFilePtr(data_ov066_0211ae64);
-        _ZN9Animation8LoadFileER13SharedFilePtr(data_ov066_0211ae44);
-        _ZN9Animation8LoadFileER13SharedFilePtr(data_ov066_0211ae74);
-        _ZN9Animation8LoadFileER13SharedFilePtr(data_ov066_0211ae7c);
+        _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(data_ov066_0211ae5c);
+        _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(data_ov066_0211ae84);
+        _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(data_ov066_0211aea4);
+        _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(data_ov066_0211ae8c);
+        _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(data_ov066_0211ae54);
+        _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(data_ov066_0211ae94);
+        _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(data_ov066_0211ae64);
+        _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(data_ov066_0211ae44);
+        _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(data_ov066_0211ae74);
+        _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(data_ov066_0211ae7c);
         _ZN7dBgW_Kc8LoadFileER13SharedFilePtr(data_ov066_0211ae24);
         _ZN7dBgW_Kc8LoadFileER13SharedFilePtr(data_ov066_0211aeac);
         _ZN7dBgW_Kc8LoadFileER13SharedFilePtr(data_ov066_0211ae14);

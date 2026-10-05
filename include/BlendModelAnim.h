@@ -62,9 +62,9 @@ struct BlendModelAnim : ModelAnim {
                  Fix12<int> speed, u16 startFrame);  /* free function, wall 6az */
 
     /* ITS OWN, TO RESOLVE AN AMBIGUITY MULTIPLE INHERITANCE CREATES. ModelAnim
-       derives from Model (so ModelBase) and from Animation, and both bases
+       derives from Model (so ModelBase) and from dExtFrameCtrl_c, and both bases
        declare operator delete, so an inherited one is "ambiguous access to
-       name found: ModelBase::operator delete and Animation::operator delete".
+       name found: ModelBase::operator delete and dExtFrameCtrl_c::operator delete".
        Declaring it here picks the same deallocator both bases name, and also
        satisfies the rule in include/dActor_c.h that mwcc only inlines the member
        when it is in the class or its immediate base. */

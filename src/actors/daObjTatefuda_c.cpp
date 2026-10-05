@@ -1136,7 +1136,7 @@ int daObjTatefuda_c::OnAttacked1(dActor_c &other)
  * func_ov002_020e496c; m2 is the pointer stored at +0x14 of it, and the
  * Matrix4x3 at m2 + 0x2a0 is multiplied in. r4 picks a pose, 0 or 1: 1 when
  * the holder is front-sliding, or has lost its grabbed object while the body
- * model's word at +0x58 (the Animation base's current frame, per Player.h)
+ * model's word at +0x58 (the dExtFrameCtrl_c base's current frame, per Player.h)
  * satisfies (word << 4) >> 16 < 0xe. The X angle approaches data_ov002_020ff0d0[r4] by 0x1000 per call;
  * the sign copies the holder's Y angle (into mAngleY and mPrevAngleY); the
  * matrix is built from a translation, a pivot offset of 0x8c00 up and back, the

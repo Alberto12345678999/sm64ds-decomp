@@ -250,7 +250,7 @@ extern short data_02082214[];
 extern void func_02012694(int a, void* p);
 extern void _ZN5dCc_c5ClearEv(char* t);
 extern void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int id, int a, int b, int d);
-extern int _ZN9Animation8FinishedEv(void* anim);
+extern int _ZN15dExtFrameCtrl_c8FinishedEv(void* anim);
 extern void func_ov002_020e8244(void *out, char *b);
 extern "C" void SubVec3(Vector3* a, Vector3* b, Vector3* c);
 extern "C" void AddVec3(Vector3* a, Vector3* b, Vector3* c);
@@ -363,7 +363,7 @@ extern s32 data_02092138;
 extern SharedFilePtrRaw data_ov002_0211094c;
 extern SharedFilePtrRaw data_ov002_02110954;
 extern SharedFilePtrRaw data_ov002_0211095c;
-extern void _ZN9Animation8LoadFileER13SharedFilePtr(void *f);
+extern void _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(void *f);
 extern void LoadSilverStarAndNumber(void);
 extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
 void *self, void *actor, s32 a, s32 b, void *p1, void *p2);
@@ -377,13 +377,13 @@ extern s32 IsStarCollected(s32 level, s32 idx);
 /* TUBUILD CONFLICT -- alternate declaration of Vec3_Dist, from the legacy file for func_ov002_020e7934, NOT applied: extern int Vec3_Dist(const Vector3* a, const Vector3* b); */
 /* TUBUILD CONFLICT -- alternate declaration of _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE, from the legacy file for func_ov002_020e7fcc, NOT applied: extern u32 _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE( u32 slot, u32 effect, Fix12i x, Fix12i y, Fix12i z, const void* rot, struct Callback* cb); */
 /* TUBUILD CONFLICT -- alternate declaration of _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_, from the legacy file for func_ov002_020e7fcc, NOT applied: extern void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(u32 effect, Fix12i x, Fix12i y, Fix12i z); */
-/* TUBUILD CONFLICT -- alternate declaration of _ZN9Animation8FinishedEv, from the legacy file for func_ov002_020e8098, NOT applied: extern "C" int _ZN9Animation8FinishedEv(void* anim); */
+/* TUBUILD CONFLICT -- alternate declaration of _ZN15dExtFrameCtrl_c8FinishedEv, from the legacy file for func_ov002_020e8098, NOT applied: extern "C" int _ZN15dExtFrameCtrl_c8FinishedEv(void* anim); */
 /* TUBUILD CONFLICT -- alternate declaration of func_ov002_020e8244, from the legacy file for func_ov002_020e8098, NOT applied: extern "C" void func_ov002_020e8244(Vector3* out, char* self); */
 /* TUBUILD CONFLICT -- alternate declaration of _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE, from the legacy file for func_ov002_020e8098, NOT applied: extern "C" void* _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE( unsigned int a, unsigned int b, int c, int d, int e, const void* f, void* g); */
 /* TUBUILD CONFLICT -- alternate declaration of SubVec3, from the legacy file for func_ov002_020e8244, NOT applied: extern void SubVec3(struct V3* a, struct V3* b, struct V3* c); */
 /* TUBUILD CONFLICT -- alternate declaration of AddVec3, from the legacy file for func_ov002_020e8244, NOT applied: extern void AddVec3(struct V3* a, struct V3* b, struct V3* c); */
 /* TUBUILD CONFLICT -- alternate declaration of data_0209b454, from the legacy file for func_ov002_020e8618, NOT applied: extern int data_0209b454; */
-/* TUBUILD CONFLICT -- alternate declaration of _ZN9Animation8FinishedEv, from the legacy file for func_ov002_020e8618, NOT applied: extern int _ZN9Animation8FinishedEv(char* a); */
+/* TUBUILD CONFLICT -- alternate declaration of _ZN15dExtFrameCtrl_c8FinishedEv, from the legacy file for func_ov002_020e8618, NOT applied: extern int _ZN15dExtFrameCtrl_c8FinishedEv(char* a); */
 /* TUBUILD CONFLICT -- alternate declaration of _ZN8dActor_c11UntrackStarERa, from the legacy file for func_ov002_020e8618, NOT applied: extern void _ZN8dActor_c11UntrackStarERa(char* c, signed char* p); */
 /* TUBUILD CONFLICT -- alternate declaration of func_ov002_020e9448, from the legacy file for func_ov002_020e88a8, NOT applied: extern void func_ov002_020e9448(void* self); */
 /* TUBUILD CONFLICT -- alternate declaration of Vec3_Dist, from the legacy file for func_ov002_020e88a8, NOT applied: extern int Vec3_Dist(struct Vector3* a, struct Vector3* b); */
@@ -421,7 +421,7 @@ extern s32 IsStarCollected(s32 level, s32 idx);
 /* TUBUILD CONFLICT -- alternate declaration of func_ov002_020e9448, from the legacy file for func_ov002_020e9840, NOT applied: extern void func_ov002_020e9448(unsigned char *p); */
 /* TUBUILD CONFLICT -- alternate declaration of data_0209f2d8, from the legacy file for func_ov002_020e9840, NOT applied: extern u8 data_0209f2d8; */
 /* TUBUILD CONFLICT -- alternate declaration of _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE, from the legacy file for func_ov002_020e9d18, NOT applied: extern void _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(u32 a, int vol); */
-/* TUBUILD CONFLICT -- alternate declaration of _ZN9Animation8FinishedEv, from the legacy file for func_ov002_020e9d18, NOT applied: extern int _ZN9Animation8FinishedEv(char *anim); */
+/* TUBUILD CONFLICT -- alternate declaration of _ZN15dExtFrameCtrl_c8FinishedEv, from the legacy file for func_ov002_020e9d18, NOT applied: extern int _ZN15dExtFrameCtrl_c8FinishedEv(char *anim); */
 /* TUBUILD CONFLICT -- alternate declaration of GiveVsStars, from the legacy file for func_ov002_020e9d18, NOT applied: extern void GiveVsStars(int idx, int n); */
 /* TUBUILD CONFLICT -- alternate declaration of func_ov002_020e8244, from the legacy file for func_ov002_020e9d18, NOT applied: extern void func_ov002_020e8244(Vec3 *t, char *c); */
 /* TUBUILD CONFLICT -- alternate declaration of _ZN8dActor_c11SpawnNumberERK7Vector3jbtPS_, from the legacy file for func_ov002_020e9d18, NOT applied: extern void _ZN8dActor_c11SpawnNumberERK7Vector3jbtPS_(char *self, Vec3 *vec, int n, u32 b, int t, int actor); */
@@ -604,10 +604,10 @@ s32 daStar_c::InitResources()
     S32(0x47c) = S32(0x60);
     S32(0x480) = S32(0x64);
     U8(0x4a1) = 0;
-    _ZN9Animation8LoadFileER13SharedFilePtr(&data_ov002_02110944);
-    _ZN9Animation8LoadFileER13SharedFilePtr(&data_ov002_02110924);
-    _ZN9Animation8LoadFileER13SharedFilePtr(&data_ov002_02110964);
-    _ZN9Animation8LoadFileER13SharedFilePtr(&data_ov002_02110934);
+    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&data_ov002_02110944);
+    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&data_ov002_02110924);
+    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&data_ov002_02110964);
+    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&data_ov002_02110934);
 
     b = (s32)(*(u16 *)(t + 0xc) == 0xb2);
     if (b != 0) {
@@ -1583,7 +1583,7 @@ void daStar_c::func_ov002_020ea100() {
 // @symbol _ZN8daStar_c19func_ov002_020ea06cEv
 extern "C" {
 typedef int Fix12i;
-extern void _ZN9Animation7AdvanceEv(void* a);
+extern void _ZN15dExtFrameCtrl_c7AdvanceEv(void* a);
 extern void _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(unsigned int a, Fix12i v);
 }
 
@@ -1597,7 +1597,7 @@ void daStar_c::func_ov002_020ea06c() {
   *(int*)(c+0x440) = 7;
   *(short*)(c+0x490) = 0;
   *(unsigned char*)(c+0x49b) = 0;
-  _ZN9Animation7AdvanceEv(c+0x35c);
+  _ZN15dExtFrameCtrl_c7AdvanceEv(c+0x35c);
   ((daStar_c *)(c))->func_ov002_020e8098();
   if (*(int*)(c+0x43c) == 9) {
     _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(0, 0x7f000);
@@ -1636,7 +1636,7 @@ void daStar_c::func_ov002_020e9d18() {
             _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(0x40, 0xcb33);
         }
     }
-    if (_ZN9Animation8FinishedEv(c + 0x35c) != 0) {
+    if (_ZN15dExtFrameCtrl_c8FinishedEv(c + 0x35c) != 0) {
         (*(u16 *)(((int)c + 0x490) & 0xFFFFFFFFFFFFFFFF))++;
     } else {
         ((daStar_c *)(c))->func_ov002_020e7eb4();
@@ -1710,7 +1710,7 @@ LA:
             *(int *)(((int)*(int *)(c + 0x438) + 0xb0) & 0xFFFFFFFFFFFFFFFF) &= ~0x4000000;
             EndKuppaScript();
         }
-        _ZN9Animation7AdvanceEv(c + 0x35c);
+        _ZN15dExtFrameCtrl_c7AdvanceEv(c + 0x35c);
         ((daStar_c *)(c))->func_ov002_020e8098();
         return;
         }
@@ -1722,7 +1722,7 @@ LA:
             ((daStar_c *)(c))->func_ov002_020e8618();
     }
 end:
-    _ZN9Animation7AdvanceEv(c + 0x35c);
+    _ZN15dExtFrameCtrl_c7AdvanceEv(c + 0x35c);
     ((daStar_c *)(c))->func_ov002_020e8098();
 }
 
@@ -1896,9 +1896,9 @@ extern "C" {
 
 void daStar_c::func_ov002_020e9804() {
     char * thiz = (char *)this;
-    ((Animation *)(thiz + 0x35c))->Advance();
+    ((dExtFrameCtrl_c *)(thiz + 0x35c))->Advance();
     ((daStar_c *)(thiz))->func_ov002_020e7fcc();
-    if (!((Animation *)(thiz + 0x35c))->Finished()) return;
+    if (!((dExtFrameCtrl_c *)(thiz + 0x35c))->Finished()) return;
     ((fBase_c *)thiz)->MarkForDestruction();
 }
 
@@ -2572,7 +2572,7 @@ void daStar_c::func_ov002_020e86ec() {
 // @symbol _ZN8daStar_c19func_ov002_020e8618Ev
 void daStar_c::func_ov002_020e8618() {
     char* c = (char*)this;
-  if(_ZN9Animation8FinishedEv(c+0x35c) == 0) return;
+  if(_ZN15dExtFrameCtrl_c8FinishedEv(c+0x35c) == 0) return;
   ((daStar_c *)(c))->func_ov002_020e7e58();
   *(unsigned short*)(((int)c + 0x4a2)) &= ~2;
   _ZN8dActor_c11UntrackStarERa(c, (signed char*)(c+0x498));
@@ -2754,7 +2754,7 @@ void daStar_c::func_ov002_020e8098() {
     char* self = (char*)this;
     Vector3 vc;
     Vector3 v;
-    if (_ZN9Animation8FinishedEv(self + 0x35c)) return;
+    if (_ZN15dExtFrameCtrl_c8FinishedEv(self + 0x35c)) return;
     func_ov002_020e8244(&v, self);
     vc.x = v.x;
     vc.y = v.y;
@@ -2786,7 +2786,7 @@ void daStar_c::func_ov002_020e7fcc() {
 
     obj = *(void**)(c + 0x31c);
 
-    if (!_ZN9Animation8FinishedEv(c + 0x35c)
+    if (!_ZN15dExtFrameCtrl_c8FinishedEv(c + 0x35c)
         && (u32)((*(u32*)(c + 0x364) << 4) >> 0x10) >= 2
         && *(int*)((char*)obj + 0xc) != 0) {
         func_ov002_020e8244(&v1, c);
@@ -2795,7 +2795,7 @@ void daStar_c::func_ov002_020e7fcc() {
         return;
     }
 
-    if (!_ZNK9Animation12WillHitFrameEi(c + 0x35c, 0x75)) return;
+    if (!_ZNK15dExtFrameCtrl_c12WillHitFrameEi(c + 0x35c, 0x75)) return;
     func_ov002_020e8244(&v2, c);
     _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0x30, v2.x, v2.y, v2.z);
 }

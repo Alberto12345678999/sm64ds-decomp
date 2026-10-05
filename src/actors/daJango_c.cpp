@@ -63,7 +63,7 @@ extern "C" int AngleDiff(int a, int b);
 #include "SaveData.h"
 #include "Player.h"
 #include "BlendModelAnim.h"
-#include "Animation.h"
+#include "dExtFrameCtrl_c.h"
 
 bool ApproachLinear(short &value, short target, short step);
 
@@ -292,9 +292,9 @@ int daJango_c::InitResources()
     bmd = Model::LoadFile(data_ov062_0211e0fc);                 /* jango.bmd */
     mBlendModelAnim.SetFile((BMD_File *)bmd, 1, -1);
     mShadowModel.InitCylinder();
-    Animation::LoadFile(data_ov062_0211e114);                   /* jango_attack.bca */
-    Animation::LoadFile(data_ov062_0211e10c);                   /* jango_damage.bca */
-    Animation::LoadFile(data_ov062_0211e104);                   /* jango_fly.bca */
+    dExtFrameCtrl_c::LoadFile(data_ov062_0211e114);                   /* jango_attack.bca */
+    dExtFrameCtrl_c::LoadFile(data_ov062_0211e10c);                   /* jango_damage.bca */
+    dExtFrameCtrl_c::LoadFile(data_ov062_0211e104);                   /* jango_fly.bca */
     Model::LoadFile(data_ov002_0210da40);
     Model::LoadFile(data_ov002_0210d9a0);
     Model::LoadFile(data_ov002_0210d9c0);

@@ -101,7 +101,7 @@ extern "C" void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
     void *self, void *actor, void *pos, s32 fx, s32 fy, u32 a, u32 b);
 extern "C" void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
     void *self, void *actor, s32 fa, s32 fb, void *v0, void *v1);
-extern "C" void _ZN9Animation7AdvanceEv(void *anim);
+extern "C" void _ZN15dExtFrameCtrl_c7AdvanceEv(void *anim);
 extern "C" void _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(void *thiz, void *v, int f);
 extern "C" void _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
     void *self, void *shadow, void *mat, int rad, int hgt, u32 flags);
@@ -1446,8 +1446,8 @@ extern "C" void func_ov074_0212199c(daKuriKing_c *c)
     } else {
         *(int *)((char *)c + 0x26c) = 0x1000;
     }
-    _ZN9Animation7AdvanceEv((char *)c + 0x260);
-    _ZN9Animation7AdvanceEv((char *)c + 0x3f8);
+    _ZN15dExtFrameCtrl_c7AdvanceEv((char *)c + 0x260);
+    _ZN15dExtFrameCtrl_c7AdvanceEv((char *)c + 0x3f8);
 }
 
 /* The animation table behind data_ov074_02122f34: one record per clip --
@@ -1622,13 +1622,13 @@ int daKuriKing_c::InitResources()
 
     i = 0;
     do {
-        Animation::LoadFile(*data_ov074_0212292c[i]);
+        dExtFrameCtrl_c::LoadFile(*data_ov074_0212292c[i]);
         i++;
     } while (i < 7);
 
     i = 0;
     do {
-        Animation::LoadFile(*data_ov074_02122948[i]);
+        dExtFrameCtrl_c::LoadFile(*data_ov074_02122948[i]);
         i++;
     } while (i < 0xc);
 
@@ -1845,7 +1845,7 @@ extern "C" int func_ov074_02122634(daKuriKing_c *c)
 
     Model::LoadFile(data_ov084_02130cf8);
     for (i = 0; i < 7; i++)
-        Animation::LoadFile(*data_ov074_0212292c[i]);
+        dExtFrameCtrl_c::LoadFile(*data_ov074_0212292c[i]);
 
     if (c->mModelAnim.SetFile((BMD_File *)FileOf(data_ov084_02130cf8), 1, 1) == 0)
         return 0;

@@ -542,7 +542,7 @@ int daBtfly_c::Behavior()
 int daBtfly_c::InitResources()
 {
     Model::LoadFile(data_ov002_0210d9d8);
-    Animation::LoadFile(data_ov100_02148600);
+    dExtFrameCtrl_c::LoadFile(data_ov100_02148600);
     Model::LoadFile(data_ov100_02148668);
     void *bmd = Model::LoadFile(data_ov100_02148608);
 

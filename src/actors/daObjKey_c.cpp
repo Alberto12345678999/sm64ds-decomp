@@ -850,7 +850,7 @@ int daObjKey_c::InitResources()
     int kind = param1 & 7;
     mState = kind;
     LoadKeyModels(mState);
-    Animation::LoadFile(*(SharedFilePtr *)&data_ov002_02110964);
+    dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov002_02110964);
 
     if (mState == KEY_KIND_STAR) {
         if (mModelAnim.SetFile((BMD_File *)((ObjKeyFile *)&data_ov002_0211094c)->ptr, 1, 1) == 0)
@@ -868,10 +868,10 @@ int daObjKey_c::InitResources()
         mVertAccel = 0;
         Sound::PlayBank3(SND_APPEAR, *(Vector3 *)&mCamSpacePosX);
     } else {
-        Animation::LoadFile(*(SharedFilePtr *)&data_ov089_02132c60);
-        Animation::LoadFile(*(SharedFilePtr *)&data_ov089_02132c40);
-        Animation::LoadFile(*(SharedFilePtr *)&data_ov089_02132c70);
-        Animation::LoadFile(*(SharedFilePtr *)&data_ov089_02132c48);
+        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov089_02132c60);
+        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov089_02132c40);
+        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov089_02132c70);
+        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov089_02132c48);
         if (mModelAnim.SetFile((BMD_File *)((ObjKeyFile *)data_ov089_02132894[mState])->ptr, 1, 1) == 0)
             return 0;
         {

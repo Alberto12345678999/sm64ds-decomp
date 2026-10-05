@@ -14,19 +14,19 @@ struct TextureSequence {
     struct BTP_File* file;
 };
 
-extern void _ZN9Animation8SetFlagsEi(struct TextureSequence* anim, s32 flags);
-extern void _ZN9Animation12SetAnimationEti5Fix12IiEt(struct TextureSequence* anim, u16 frames, s32 flags, s32 speed, u16 startFrame);
+extern void _ZN15dExtFrameCtrl_c8SetFlagsEi(struct TextureSequence* anim, s32 flags);
+extern void _ZN15dExtFrameCtrl_c12SetAnimationEti5Fix12IiEt(struct TextureSequence* anim, u16 frames, s32 flags, s32 speed, u16 startFrame);
 
 void _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(struct TextureSequence* thiz, struct BTP_File* file, s32 flags, s32 speed, u16 startFrame)
 {
     if (file == thiz->file)
     {
-        _ZN9Animation8SetFlagsEi(thiz, flags);
+        _ZN15dExtFrameCtrl_c8SetFlagsEi(thiz, flags);
         thiz->speed = speed;
     }
     else
     {
         thiz->file = file;
-        _ZN9Animation12SetAnimationEti5Fix12IiEt(thiz, file->numFrames, flags, speed, startFrame);
+        _ZN15dExtFrameCtrl_c12SetAnimationEti5Fix12IiEt(thiz, file->numFrames, flags, speed, startFrame);
     }
 }

@@ -25,7 +25,7 @@
 #include "types.h"
 #include "dActor_c.h"
 #include "dBgCh_Actr.h"
-#include "Animation.h"
+#include "dExtFrameCtrl_c.h"
 #include "decl_dBgCh_Actr.h"
 #include "decl_common.h"
 #include "decl_Model.h"
@@ -173,7 +173,7 @@ int daNknk_c::InitResources()
     mModelIndex = kind;
 
     for (i = 0; i < 9; i++)
-        Animation::LoadFile(*(SharedFilePtr *)data_ov062_0211cee8[i]);
+        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)data_ov062_0211cee8[i]);
 
     f = (BMD_File*)Model::LoadFile(*data_ov062_0211ced8[mModelIndex]);
     if (mModelAnim.SetFile(f, 1, -1) == 0)

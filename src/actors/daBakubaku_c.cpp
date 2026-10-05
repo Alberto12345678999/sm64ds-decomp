@@ -163,8 +163,8 @@ s32 daBakubaku_c::InitResources()
     f = Model::LoadFile(*(SharedFilePtr *)data_ov032_02113a40);
     mModelAnim.SetFile((BMD_File *)f, 1, -1);
     mShadowModel.InitCylinder();
-    Animation::LoadFile(*(SharedFilePtr *)&data_ov032_02113a50);
-    Animation::LoadFile(*(SharedFilePtr *)&data_ov032_02113a48);
+    dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov032_02113a50);
+    dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov032_02113a48);
 
     bodyOffset.x = data_ov032_021137cc.x;
     bodyOffset.y = data_ov032_021137cc.y;

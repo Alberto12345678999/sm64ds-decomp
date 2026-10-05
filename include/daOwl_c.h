@@ -24,10 +24,10 @@
  *
  * Typing them absorbed four markers that were their insides:
  *   - unk_128 = mdCcAcPos_c.flags  (dCc_c +0x18)
- *   - mAnimation = the ModelAnim's Animation base (+0x50)
- *   - unk_364 = that Animation's currFrame (+0x08); Behavior reads it as
+ *   - mAnimation = the ModelAnim's dExtFrameCtrl_c base (+0x50)
+ *   - unk_364 = that dExtFrameCtrl_c's currFrame (+0x08); Behavior reads it as
  *     `>> 12`, the integer frame of a 20.12 fixed-point count
- *   - unk_368 = that Animation's speed (+0x0c); Behavior copies mAnimSpeed
+ *   - unk_368 = that dExtFrameCtrl_c's speed (+0x0c); Behavior copies mAnimSpeed
  *     into it, and InitResources sets mAnimSpeed to 0x1000, which is 1.0
  *
  * Size is the ROM's own, not a rounded-up field span: `daOwl_c_classInit`

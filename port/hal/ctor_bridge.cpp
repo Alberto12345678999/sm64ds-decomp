@@ -4,7 +4,7 @@
 // class -- C1 for a complete object and C2 for a base subobject -- and this
 // decomp enrolls each variant in its own file, objisolate stripping the
 // sibling the file does not own. That is correct for the cartridge and it is
-// why src/_ZN9AnimationC1Ev.cpp and src/_ZN9AnimationC2Ev.cpp both exist with
+// why src/_ZN15dExtFrameCtrl_cC1Ev.cpp and src/_ZN15dExtFrameCtrl_cC2Ev.cpp both exist with
 // the same body.
 //
 // MSVC has ONE constructor symbol. Compile both files for the host and the

@@ -163,7 +163,7 @@ int daPiano_c::InitResources()
     mShadowModel1.InitCuboid();
     mShadowModel2.InitCuboid();
     mShadowModel3.InitCylinder();
-    f = Animation::LoadFile(gPianoAttackAnimationFile);
+    f = dExtFrameCtrl_c::LoadFile(gPianoAttackAnimationFile);
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, (BCA_File *)f, 0, 0x1000, 0);
     mVertAccel = -0x2000;
     mTerminalVelocity = -0x3c000;

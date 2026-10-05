@@ -4,8 +4,8 @@
  *
  * The hand-written version spelled out the two things a complete-object
  * destructor does anyway: store this class's vtable over the one the base
- * constructor left behind, then run the Animation subobject destructor. Both
- * come out of `struct TextureTransformer : Animation` and `virtual ~TextureTransformer()` in the
+ * constructor left behind, then run the dExtFrameCtrl_c subobject destructor. Both
+ * come out of `struct TextureTransformer : dExtFrameCtrl_c` and `virtual ~TextureTransformer()` in the
  * header, so there is nothing left to write.
  *
  * The one member is a BTA_File pointer, which has no destructor, so the ROM's

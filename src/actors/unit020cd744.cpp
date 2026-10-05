@@ -813,7 +813,7 @@ extern "C" void func_ov006_020ce988(char* c){
 namespace s020cea2c {
 extern "C" {
 void AddVec3(void *a, void *b, void *c);
-void _ZN9Animation7AdvanceEv(void *anim);
+void _ZN15dExtFrameCtrl_c7AdvanceEv(void *anim);
 }
 
 struct C;
@@ -824,7 +824,7 @@ extern "C" void func_ov006_020cea2c(char *c)
     PMF *pp = (PMF *)c;
     (((C *)c)->**pp)();
     AddVec3(c + 8, c + 0x2c, c + 8);
-    _ZN9Animation7AdvanceEv(c + 0x194);
+    _ZN15dExtFrameCtrl_c7AdvanceEv(c + 0x194);
     *(int *)(c + 0x14) = *(int *)(c + 8);
     *(int *)(c + 0x18) = *(int *)(c + 0xc);
     *(int *)(c + 0x1c) = *(int *)(c + 0x10);

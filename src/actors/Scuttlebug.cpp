@@ -18,7 +18,7 @@
 #include "dBgCh_Gnd.h"
 #include "Player.h"
 #include "SharedFilePtr.h"
-#include "Animation.h"
+#include "dExtFrameCtrl_c.h"
 #include "SurfaceInfo.h"
 
 bool ApproachLinear(short &value, short target, short step);
@@ -197,7 +197,7 @@ int Scuttlebug::InitResources()
     char *s = (char *)((dActor_c *)this);
     void *mf = Model::LoadFile(*(SharedFilePtr *)data_ov071_02122f80);
     ((ModelBase *)(&((Scuttlebug *)s)->mModelAnim))->SetFile((BMD_File *)mf, 1, -1);
-    Animation::LoadFile(*(SharedFilePtr *)data_ov071_02122f88);
+    dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)data_ov071_02122f88);
     if (((ShadowModel *)(&((Scuttlebug *)s)->mShadowModel))->InitCylinder() == 0)
         return 0;
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(

@@ -67,7 +67,7 @@
 #include "Player.h"
 #include "Sound.h"
 #include "Model.h"
-#include "Animation.h"
+#include "dExtFrameCtrl_c.h"
 #include "SharedFilePtr.h"
 
 bool ApproachLinear(short &value, short target, short step);
@@ -867,7 +867,7 @@ int daGmch_c::InitResources()
     if (mModel.SetFile(data_ov002_0210d9b8.file, 1, 1) == 0)
         return 0;
     for (int i = 0; i < 4; i++)
-        Animation::LoadFile(*(SharedFilePtr *)data_ov081_021280d8[i]);
+        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)data_ov081_021280d8[i]);
     if (mShadowModel.InitCylinder() == 0)
         return 0;
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x4b000, 0x73000, 0x200000, 0x6eff0);

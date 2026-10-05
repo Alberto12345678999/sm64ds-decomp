@@ -1,11 +1,11 @@
 //cpp
 #include "types.h"
-struct Animation {
+struct dExtFrameCtrl_c {
     void Advance();
 };
 
 struct AnimSlot {
-    Animation* anim;
+    dExtFrameCtrl_c* anim;
     u8 flag;
     u8 pad[7];
 };

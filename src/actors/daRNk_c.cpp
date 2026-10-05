@@ -98,8 +98,8 @@ enum {
 /* Turning speed: 0x800 a frame (0x10000 is a full turn). */
 enum { kTurnStep = 0x800 };
 
-/* Animation playback flags for SetAnim, inferred rather than read from the
-   animation files (Animation.h only says "loop flags"; 0x40000000 = play once
+/* dExtFrameCtrl_c playback flags for SetAnim, inferred rather than read from the
+   animation files (dExtFrameCtrl_c.h only says "loop flags"; 0x40000000 = play once
    is a reading of how they are used). Most animations played with kAnimPlayOnce
    are later waited on with Finished/WillHitFrame (RUN_START, LAND, BRAKE);
    ANIM_JUMP is played once and never waited on. The idle, talk and run cycles
@@ -222,13 +222,13 @@ int daRNk_c::InitResources()
     int zero;
 
     Model::LoadFile(*(SharedFilePtr *)data_ov062_0211e00c);
-    Animation::LoadFile(*(SharedFilePtr *)data_ov062_0211e014);
-    Animation::LoadFile(*(SharedFilePtr *)data_ov062_0211e024);
-    Animation::LoadFile(*(SharedFilePtr *)data_ov062_0211e01c);
-    Animation::LoadFile(*(SharedFilePtr *)data_ov062_0211e034);
-    Animation::LoadFile(*(SharedFilePtr *)data_ov062_0211e03c);
-    Animation::LoadFile(*(SharedFilePtr *)data_ov062_0211e02c);
-    Animation::LoadFile(*(SharedFilePtr *)data_ov062_0211e004);
+    dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)data_ov062_0211e014);
+    dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)data_ov062_0211e024);
+    dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)data_ov062_0211e01c);
+    dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)data_ov062_0211e034);
+    dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)data_ov062_0211e03c);
+    dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)data_ov062_0211e02c);
+    dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)data_ov062_0211e004);
     if (mModelAnim.SetFile(*(BMD_File **)(data_ov062_0211e00c + 4), 1, -1) == 0)
         return 0;
     if (mShadowModel.InitCylinder() == 0)

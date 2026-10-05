@@ -58,9 +58,9 @@
  * both factories construct them and both destructors destroy them.
  *
  * AND `s32 unk_32c` WAS INSIDE ONE OF THEM. 0x32c is 0x324 + 8, which is
- * Animation::currFrame reached through the TextureSequence -- Behavior treats it
+ * dExtFrameCtrl_c::currFrame reached through the TextureSequence -- Behavior treats it
  * as a 20.12 countdown, shifting right by 12 to read it and left by 12 to write
- * it, in the same function that calls Animation::Advance on the same sub-object.
+ * it, in the same function that calls dExtFrameCtrl_c::Advance on the same sub-object.
  * It is spelled through the member now, so nothing describes those four bytes
  * twice.
  *

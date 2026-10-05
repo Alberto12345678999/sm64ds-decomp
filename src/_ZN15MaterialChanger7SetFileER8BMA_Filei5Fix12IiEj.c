@@ -5,7 +5,7 @@
  */
 struct BMA_File { u16 numFrames; };
 
-struct Animation {
+struct dExtFrameCtrl_c {
     void* vtable;
     s32 numFramesAndFlags;
     s32 currFrame;
@@ -13,20 +13,20 @@ struct Animation {
 };
 
 struct MaterialChanger {
-    struct Animation anim;
+    struct dExtFrameCtrl_c anim;
     struct BMA_File* file;
 };
 
-extern void _ZN9Animation8SetFlagsEi(struct MaterialChanger* self, s32 flags);
-extern void _ZN9Animation12SetAnimationEti5Fix12IiEt(struct MaterialChanger* self, u16 frames, s32 flags, s32 speed, u16 startFrame);
+extern void _ZN15dExtFrameCtrl_c8SetFlagsEi(struct MaterialChanger* self, s32 flags);
+extern void _ZN15dExtFrameCtrl_c12SetAnimationEti5Fix12IiEt(struct MaterialChanger* self, u16 frames, s32 flags, s32 speed, u16 startFrame);
 
 void _ZN15MaterialChanger7SetFileER8BMA_Filei5Fix12IiEj(struct MaterialChanger* self, struct BMA_File* file, s32 flags, s32 speed, u16 startFrame)
 {
     if (file == self->file) {
-        _ZN9Animation8SetFlagsEi(self, flags);
+        _ZN15dExtFrameCtrl_c8SetFlagsEi(self, flags);
         self->anim.speed = speed;
     } else {
         self->file = file;
-        _ZN9Animation12SetAnimationEti5Fix12IiEt(self, file->numFrames, flags, speed, startFrame);
+        _ZN15dExtFrameCtrl_c12SetAnimationEti5Fix12IiEt(self, file->numFrames, flags, speed, startFrame);
     }
 }

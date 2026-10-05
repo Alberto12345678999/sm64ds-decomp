@@ -769,7 +769,7 @@ s32 daEykn_c::InitResources()
         TextureSequence::Prepare(*bmd2, *btp);
     }
 
-    Animation::LoadFile(*data_ov071_021226a0);
+    dExtFrameCtrl_c::LoadFile(*data_ov071_021226a0);
 
     if (!mShadowModel.InitCylinder())
         return 0;

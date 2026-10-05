@@ -104,7 +104,7 @@ int daBrq_c::InitResources()
 
     int i;
     for (i = 0; i < 2; i++) {
-        Animation::LoadFile(*data_ov070_021222e0[i]);
+        dExtFrameCtrl_c::LoadFile(*data_ov070_021222e0[i]);
     }
 
     BMD_File *bmd2 = *(BMD_File **)((char *)&data_ov070_02123604 + 4);

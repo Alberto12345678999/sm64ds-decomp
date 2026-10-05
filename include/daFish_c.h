@@ -24,7 +24,7 @@
  */
 struct daFish_c : dActor_c {
     u8 pad_0d0[0x4];        /* 0x0d0 */
-    ModelAnim mModelAnim;   /* 0x0d4 -- its Animation base sits at 0x124 */
+    ModelAnim mModelAnim;   /* 0x0d4 -- its dExtFrameCtrl_c base sits at 0x124 */
     s32 mSeed;              /* 0x138 -- set to 1 at construction, never read here */
     u32 mSpawnerID;         /* 0x13c -- a fish's spawner; the spawner's own ID */
     s32 mSurfaceY;          /* 0x140 -- spawner only: fish spawn below this */

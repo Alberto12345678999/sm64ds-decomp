@@ -146,7 +146,7 @@ extern "C" int func_ov090_02133830(daShark_c *self)
     if (frame == 0)
         func_02012694(9, &self->mCamSpacePosX);
     self->mModelAnim.speed = 0x1000;
-    static_cast<Animation &>(self->mModelAnim).Advance();
+    static_cast<dExtFrameCtrl_c &>(self->mModelAnim).Advance();
     func_ov090_02133710(self);
     return 1;
 }
@@ -274,7 +274,7 @@ int daShark_c::InitResources()
     mModelAnim.SetFile(
         (BMD_File *)Model::LoadFile(*(SharedFilePtr *)data_ov090_021345a4),
         1, -1);
-    Animation::LoadFile(*(SharedFilePtr *)data_ov090_021345ac);
+    dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)data_ov090_021345ac);
     mPathID = (*(s32 *)&param1) & 0xff;
     if (mPathID < 0)
         mPathID = 0;

@@ -12676,7 +12676,7 @@
         "param:#3 int"
       ]
     },
-    "_ZN9Animation12SetAnimationEti5Fix12IiEt": {
+    "_ZN15dExtFrameCtrl_c12SetAnimationEti5Fix12IiEt": {
       "src/_ZN15MaterialChanger7SetFileER8BMA_Filei5Fix12IiEj.c": [
         "param:#1 MaterialChanger *"
       ],
@@ -12687,7 +12687,7 @@
         "param:#1 TextureTransformer *"
       ]
     },
-    "_ZN9Animation17UpdateFileOffsetsER8BCA_File": {
+    "_ZN15dExtFrameCtrl_c17UpdateFileOffsetsER8BCA_File": {
       "include/decl_Animation.h": [
         "param:#1 char *"
       ],
@@ -12695,12 +12695,12 @@
         "param:#1 void *"
       ]
     },
-    "_ZN9Animation4CopyERKS_": {
+    "_ZN15dExtFrameCtrl_c4CopyERKS_": {
       "include/decl_Animation.h": [
         "param:#2 const void *"
       ]
     },
-    "_ZN9Animation7AdvanceEv": {
+    "_ZN15dExtFrameCtrl_c7AdvanceEv": {
       "src/actors/unit020bfec0.cpp": [
         "return:int"
       ],
@@ -12711,7 +12711,7 @@
         "return:int"
       ]
     },
-    "_ZN9Animation8LoadFileER13SharedFilePtr": {
+    "_ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr": {
       "src/actors/daKing_Donketu_c.cpp": [
         "param:#1 SharedFilePtr *",
         "return:void *"
@@ -13524,7 +13524,7 @@
         "return:System *"
       ]
     },
-    "_ZNK9Animation12WillHitFrameEi": {
+    "_ZNK15dExtFrameCtrl_c12WillHitFrameEi": {
       "include/decl_Animation.h": [
         "return:int"
       ],
@@ -13568,7 +13568,7 @@
         "return:int"
       ]
     },
-    "_ZNK9Animation13GetFrameCountEv": {
+    "_ZNK15dExtFrameCtrl_c13GetFrameCountEv": {
       "include/decl_Animation.h": [
         "return:int"
       ],

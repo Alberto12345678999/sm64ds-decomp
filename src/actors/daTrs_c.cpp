@@ -209,8 +209,8 @@ extern int data_ov008_02111b6c;
 extern int data_0209caa0[];
 extern s16 data_ov063_0211e1dc[];
 extern s16 data_ov063_0211e1e4[];
-extern int _ZN9Animation8FinishedEv(void* self);
-extern int _ZNK9Animation12WillHitFrameEi(void* self, int f);
+extern int _ZN15dExtFrameCtrl_c8FinishedEv(void* self);
+extern int _ZNK15dExtFrameCtrl_c12WillHitFrameEi(void* self, int f);
 extern char* _ZN8dActor_c13SpawnFireballERK7Vector3PK10Vector3_165Fix12IiES7_j(void* self, const void * v, const void* p, s32 a, s32 b, unsigned int n);
 extern s16 data_ov063_0211e1c0[];
 extern void _ZN8dActor_c19UntrackAndSpawnStarERajRK7Vector3h(void *self, void *a, unsigned int b, void *c, unsigned int d);
@@ -1380,7 +1380,7 @@ extern "C" void func_ov063_02118458(void* self)
     ApproachLinear(*(short *)(c + 0x94), *(s16*)(c + 0x5b0),
         data_ov063_0211e1c0[*(u8*)(c + 0x5ca) - 1]);
 
-    if (_ZN9Animation8FinishedEv(c + 0x3d0)) {
+    if (_ZN15dExtFrameCtrl_c8FinishedEv(c + 0x3d0)) {
         if (func_ov063_0211a8a4(c)) {
             if (*(int*)(c + 0x3e0) == *(int*)((char *)&data_ov063_0211edcc + 4)) {
                 func_02012694(0x158, c + 0x74);
@@ -1410,7 +1410,7 @@ extern "C" void func_ov063_02118458(void* self)
         }
     } else {
         if (*(int*)(c + 0x3e0) == *(int*)((char *)&data_ov063_0211edd4 + 4)
-            && _ZNK9Animation12WillHitFrameEi(c + 0x3d0, 6)) {
+            && _ZNK15dExtFrameCtrl_c12WillHitFrameEi(c + 0x3d0, 6)) {
             Vec3 v;
             s16 m = 0x78;
             v.x = *(int*)(c + 0x5c);
@@ -3290,8 +3290,8 @@ int daTrs_c::InitResources()
         unk_5cf = (param1 & 0xf) + 0xc;
         if (unk_5cf == 0xf) {
             LoadKeyModels(3);
-            Animation::LoadFile(data_ov063_0211edd4);
-            Animation::LoadFile(data_ov063_0211edcc);
+            dExtFrameCtrl_c::LoadFile(data_ov063_0211edd4);
+            dExtFrameCtrl_c::LoadFile(data_ov063_0211edcc);
         } else if (unk_5cf == 0xc) {
             mFoundActor = dActor_c::Spawn(0xd3, param1, *(const Vector3 *)&mPosX, 0, mAreaIdx, -1);
             if (mFoundActor != 0) {
@@ -3299,7 +3299,7 @@ int daTrs_c::InitResources()
             }
             mFoundActor = 0;
         }
-        Animation::LoadFile(data_ov063_0211ede4);
+        dExtFrameCtrl_c::LoadFile(data_ov063_0211ede4);
         mModelAnim.SetFile((BMD_File *)Model::LoadFile(data_ov063_0211edf4), 1, 1);
         _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, *(BCA_File **)((char *)&data_ov063_0211ede4 + 4), 0, 0x1000, 0);
         mDataIdx = 3;
@@ -3318,7 +3318,7 @@ int daTrs_c::InitResources()
         }
     } else {
         unk_5cf = param1 & 0xf;
-        Animation::LoadFile(data_ov063_0211eddc);
+        dExtFrameCtrl_c::LoadFile(data_ov063_0211eddc);
         mModelAnim.SetFile((BMD_File *)Model::LoadFile(data_ov063_0211edc4), 1, 0x16);
         _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, *(BCA_File **)((char *)&data_ov063_0211eddc + 4), 0, 0x1000, 0);
         mDataIdx = 1;

@@ -4,7 +4,7 @@
 
 void BlendModelAnim::Advance()
 {
-    Animation::Advance();
+    dExtFrameCtrl_c::Advance();
     if (blendWeight < 0x1000) {
         /* launder: keep the RMW aliasing the member so the compiler
            re-reads it the way the ROM does */

@@ -2024,27 +2024,27 @@ src/_ZN15TextureSequenceC1Ev.cpp:
     complete
     .text start:0x02015a50 end:0x02015a7c
 
-src/engine/animation/Animation.cpp:
+src/engine/animation/dExtFrameCtrl_c.cpp:
     complete
     .text start:0x02015a7c end:0x02015cb4
 
-src/_ZN9AnimationD2Ev.cpp:
+src/_ZN15dExtFrameCtrl_cD2Ev.cpp:
     complete
     .text start:0x02015cb4 end:0x02015cc4
 
-src/_ZN9AnimationD0Ev.cpp:
+src/_ZN15dExtFrameCtrl_cD0Ev.cpp:
     complete
     .text start:0x02015cc4 end:0x02015ce8
 
-src/_ZN9AnimationD1Ev.cpp:
+src/_ZN15dExtFrameCtrl_cD1Ev.cpp:
     complete
     .text start:0x02015ce8 end:0x02015cf8
 
-src/_ZN9AnimationC1Ev.cpp:
+src/_ZN15dExtFrameCtrl_cC1Ev.cpp:
     complete
     .text start:0x02015cf8 end:0x02015d18
 
-src/_ZN9AnimationC2Ev.cpp:
+src/_ZN15dExtFrameCtrl_cC2Ev.cpp:
     complete
     .text start:0x02015d18 end:0x02015d38
 
@@ -2511,7 +2511,7 @@ src/SharedFilePtr_Construct_TexSeq.c:
     complete
     .text start:0x02017934 end:0x0201794c
 
-src/_ZN9Animation8LoadFileER13SharedFilePtr.cpp:
+src/_ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr.cpp:
     complete
     .text start:0x0201794c end:0x02017984
 
@@ -7204,7 +7204,7 @@ src/_ZN5Model17UpdateFileOffsetsER8BMD_File.cpp:
 src/_ZN15TextureSequence17UpdateFileOffsetsER8BTP_File.cpp:
     .text start:0x020468a0 end:0x020469ac
 
-src/_ZN9Animation17UpdateFileOffsetsER8BCA_File.cpp:
+src/_ZN15dExtFrameCtrl_c17UpdateFileOffsetsER8BCA_File.cpp:
     complete
     .text start:0x020469ac end:0x020469e0
 

@@ -65,7 +65,7 @@ int daObjTtWater_c::Render()
 
 // @symbol _ZN14daObjTtWater_c8BehaviorEv
 /* Sound and Event have no headers in this tree, so those two stay extern-C
- * mangled free functions. dMap_c::UpdateLevelSpecific, Animation::Advance
+ * mangled free functions. dMap_c::UpdateLevelSpecific, dExtFrameCtrl_c::Advance
  * and fBase_c::MarkForDestruction are declared, and are reached as members.
  */
 int daObjTtWater_c::Behavior()

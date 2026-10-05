@@ -6,7 +6,7 @@ extern "C" {
 struct SharedFilePtr { int a, file; };
 void* _ZN5Model8LoadFileER13SharedFilePtr(SharedFilePtr& f);
 int _ZN9ModelBase7SetFileEP8BMD_Fileii(void* self, void* f, int a, int b);
-void* _ZN9Animation8LoadFileER13SharedFilePtr(SharedFilePtr& f);
+void* _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(SharedFilePtr& f);
 void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void* self, void* f, int a, int fx, unsigned int e);
 void* _Znwj(unsigned int sz);
 void* _ZN15TextureSequenceC1Ev(void* self);
@@ -25,7 +25,7 @@ int func_ov002_020f6618(char* self, SharedFilePtr* mdl, int nAnims, SharedFilePt
     self[0x80] = (char)nAnims;
     *(SharedFilePtr***)(self + 0x74) = anims;
     for (i = 0; i < *(unsigned char*)(self + 0x80); i++) {
-        _ZN9Animation8LoadFileER13SharedFilePtr(*(*(SharedFilePtr***)(self + 0x74))[i]);
+        _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(*(*(SharedFilePtr***)(self + 0x74))[i]);
     }
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(self,
         (void*)(*(*(SharedFilePtr***)(self + 0x74))[0]).file, 0, 0x1000, 0);

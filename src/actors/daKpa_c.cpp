@@ -52,14 +52,14 @@
 #include "dBgCh_Actr.h"
 #include "SharedFilePtr.h"
 #include "TextureSequence.h"
-#include "Animation.h"
+#include "dExtFrameCtrl_c.h"
 
 /* The opaque view of the object that Bowser_IsAnimAtLastFrame walks: the
- * Animation lives at 0x124. Animation itself is the real class (include/
- * Animation.h) rather than the local stub this shard carried. */
+ * dExtFrameCtrl_c lives at 0x124. dExtFrameCtrl_c itself is the real class (include/
+ * dExtFrameCtrl_c.h) rather than the local stub this shard carried. */
 struct Obj {
     char pad[0x124];
-    Animation anim;
+    dExtFrameCtrl_c anim;
 };
 
 /* Local shadow declarations carried from the legacy files verbatim.
@@ -168,7 +168,7 @@ extern short Vec3_HorzAngle(const struct Vector3*, const struct Vector3*);
 extern int func_020092c4(void*, void*, void*);
 extern int _ZN6Player7IsInAirEv(void*);
 extern int _Z14ApproachLinearRiii(int*, int, int);
-extern int _ZN9Animation8FinishedEv(void*);
+extern int _ZN15dExtFrameCtrl_c8FinishedEv(void*);
 /* Every call site in this TU passes a third argument that the body never reads
  * (`c` and `idx` are the only parameters it uses). The shards disagreed on the
  * arity -- some declared 2, some 3, and the return type was spelled both int and
@@ -255,7 +255,7 @@ extern int func_ov060_02113d20(dActor_c *self);
 /* Defined below as (char*, unsigned short, int) -- the second parameter is a
  * frame threshold read as an unsigned halfword, not an int. */
 extern int func_ov060_02113ff4(char *c, unsigned short a, int b);
-extern int _ZNK9Animation12WillHitFrameEi(void* anim, int frame);
+extern int _ZNK15dExtFrameCtrl_c12WillHitFrameEi(void* anim, int frame);
 extern void _ZN8dActor_c13SpawnFireballERK7Vector3PK10Vector3_165Fix12IiES7_j( void* self, const void* pos, const void* rot, int speed, int gravity, u32 flags);
 extern int _ZN6Player9GetHealthEv(void* player);
 extern int RandomIntInternal(int* seed);
@@ -317,7 +317,7 @@ extern SharedFilePtr *data_ov060_0211927c[];
 extern SharedFilePtr data_ov089_02132c50;
 extern SharedFilePtr *data_ov060_0211ac78[];
 extern SharedFilePtr *data_ov060_0211ac28[];
-extern void _ZN9Animation7AdvanceEv(void* a);
+extern void _ZN15dExtFrameCtrl_c7AdvanceEv(void* a);
 extern void _ZN15TextureSequence6UpdateER15ModelComponents(void* a, void* b);
 /* Model::LoadFile is declared in include/Model.h as taking SharedFilePtr&.
  * The legacy shard bridged it as `void *`, which only worked while the handles
@@ -326,10 +326,10 @@ extern void _ZN15TextureSequence6UpdateER15ModelComponents(void* a, void* b);
  * handles themselves rather than casting to void*. */
 extern void *_ZN5Model8LoadFileER13SharedFilePtr(SharedFilePtr &f);
 extern void _ZN9ModelBase7SetFileEP8BMD_Fileii(void *self, void *f, int a, int b);
-extern void _ZN9Animation8LoadFileER13SharedFilePtr(void *f);
+extern void _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(void *f);
 extern void _ZN15TextureSequence8LoadFileER13SharedFilePtr(void *f);
 extern void _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(void *self, void *btp, int a, int b, unsigned int d);
-extern void _ZN9Animation8SetFlagsEi(void *self, int flags);
+extern void _ZN15dExtFrameCtrl_c8SetFlagsEi(void *self, int flags);
 extern int _ZN11ShadowModel12InitCylinderEv(void *self);
 extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(void *self, void *act, void *pos, int c3, int d, unsigned int e, unsigned int f);
 extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void *self, void *act, int a, int b, void *d1, void *d2);
@@ -409,7 +409,7 @@ int _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, void *actor, int fix, 
 /* TUBUILD CONFLICT -- alternate declaration of func_02012694, from the legacy file for func_ov060_02114e9c, NOT applied: extern "C" int func_02012694(int a, int* b); */
 /* TUBUILD CONFLICT -- alternate declaration of Bowser_IsAnimAtLastFrame, from the legacy file for func_ov060_02114e9c, NOT applied: extern "C" int Bowser_IsAnimAtLastFrame(void* o); */
 /* TUBUILD CONFLICT -- alternate declaration of func_ov060_02111cc0, from the legacy file for func_ov060_02114e9c, NOT applied: extern "C" void func_ov060_02111cc0(void* o, int a, int b); */
-/* TUBUILD CONFLICT -- alternate declaration of _ZNK9Animation12WillHitFrameEi, from the legacy file for func_ov060_02114e9c, NOT applied: extern "C" int _ZNK9Animation12WillHitFrameEi(void* self, int frame); */
+/* TUBUILD CONFLICT -- alternate declaration of _ZNK15dExtFrameCtrl_c12WillHitFrameEi, from the legacy file for func_ov060_02114e9c, NOT applied: extern "C" int _ZNK15dExtFrameCtrl_c12WillHitFrameEi(void* self, int frame); */
 /* TUBUILD CONFLICT -- alternate declaration of Bowser_IsAnimAtLastFrame, from the legacy file for func_ov060_02114ff8, NOT applied: extern int Bowser_IsAnimAtLastFrame(void *); */
 /* TUBUILD CONFLICT -- alternate declaration of RandomIntInternal, from the legacy file for func_ov060_021151d4, NOT applied: extern int RandomIntInternal(int *seed); */
 /* TUBUILD CONFLICT -- alternate declaration of func_ov060_02115744, from the legacy file for func_ov060_021153f8, NOT applied: extern int func_ov060_02115744(void *c); */
@@ -549,7 +549,7 @@ int daKpa_c::InitResources()
         _ZN5Model8LoadFileER13SharedFilePtr(*(SharedFilePtr *)data_ov060_0211ac78), 1, 0x16);
 
     for (i = 0; i < 0x1c; i++)
-        _ZN9Animation8LoadFileER13SharedFilePtr((void *)data_ov060_021192dc[i]);
+        _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr((void *)data_ov060_021192dc[i]);
 
     for (i = 0; i < 6; i++)
         _ZN15TextureSequence8LoadFileER13SharedFilePtr((void *)data_ov060_0211927c[i]);
@@ -571,7 +571,7 @@ int daKpa_c::InitResources()
     _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
         &this->mTextureSequence, (void *)data_ov060_0211ac28[1], 0, 0x1000, 0);
 
-    _ZN9Animation8SetFlagsEi(&this->mTextureSequence, 0x40000000);
+    _ZN15dExtFrameCtrl_c8SetFlagsEi(&this->mTextureSequence, 0x40000000);
 
     pos.x = 0;
     pos.y = 0;
@@ -681,7 +681,7 @@ int daKpaTail_c::Behavior()
  * global at data_0209f318+0x114, then rebuild the body cylinder 0x50000 in front of
  * the actor.
  *
- * FOUR STAND-IN STRUCTS ARE GONE -- `dActor_c`, `Animation`, `dCc_c` and
+ * FOUR STAND-IN STRUCTS ARE GONE -- `dActor_c`, `dExtFrameCtrl_c`, `dCc_c` and
  * `dCcAcPos_c`, each declared here with just the one or two methods
  * this file called, then "defined" again below with a set of bodyless declarations
  * that existed only to stop the compiler mangling them differently. All four are
@@ -691,7 +691,7 @@ int daKpaTail_c::Behavior()
  * Update() are called directly.
  *
  * The two fields this used to spell as its own were the ModelAnim's: `mAnimation`
- * at 0x124 is the Animation base inside mModelAnim at +0x50, and `unk_130` at 0x130
+ * at 0x124 is the dExtFrameCtrl_c base inside mModelAnim at +0x50, and `unk_130` at 0x130
  * is that base's `speed` at +0x0c. Advancing "the animation" is advancing the model.
  */
 int daKpa_c::Behavior()
@@ -748,7 +748,7 @@ int daKpaTail_c::Render()
 int daKpa_c::Render()
 {
   if(mOpacity < 8) return 1;
-  _ZN9Animation7AdvanceEv((char*)&mTextureSequence);
+  _ZN15dExtFrameCtrl_c7AdvanceEv((char*)&mTextureSequence);
   _ZN15TextureSequence6UpdateER15ModelComponents(((char*)this)+0x138, ((char*)this)+0xdc);
   /* The old shard declared a local `struct Obj` with a method `m` purely so this
    * call would compile; it is ModelAnim's real slot-5 Render(const Vector3*), which
@@ -1500,7 +1500,7 @@ extern "C" void func_ov060_02114e9c(char* c)
 {
     *(int*)(c + 0x98) = 0;
     if (*(int*)(c + 0x134) == data_ov060_0211ac20[1]) {
-        if (_ZNK9Animation12WillHitFrameEi(c + 0x124, 8)) {
+        if (_ZNK15dExtFrameCtrl_c12WillHitFrameEi(c + 0x124, 8)) {
             func_02012694(0xb5, (const Vector3 *)(c + 0x74));
         }
     }
@@ -1835,7 +1835,7 @@ void func_ov060_021146d0(char *c) {
 // @symbol func_ov060_0211469c
 extern "C" int func_ov060_0211469c(void *c) {
     func_ov060_02111cc0(c, 0xb, 0x40000000);
-    int r = ((Animation*)((char*)c + 0x124))->WillHitFrame(0x20);
+    int r = ((dExtFrameCtrl_c*)((char*)c + 0x124))->WillHitFrame(0x20);
     if (r != 0) return 1;
     return 0;
 }
@@ -2020,7 +2020,7 @@ void func_ov060_021140c0(char* c)
         }
     }
     if (*(int*)(c + 0x134) == data_ov060_0211abe0[1]) {
-        if (_ZNK9Animation12WillHitFrameEi(c + 0x124, 5)) {
+        if (_ZNK15dExtFrameCtrl_c12WillHitFrameEi(c + 0x124, 5)) {
             Vector3 pos;
             u16 dir[3];
             u16 ax, ay, az;
@@ -3247,7 +3247,7 @@ void func_ov060_021123a0(void *v, int f) {
 // @symbol func_ov060_02112350
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 void func_ov060_02112350(void* c){
-  int r=_ZN9Animation8FinishedEv((char*)c+0x124);
+  int r=_ZN15dExtFrameCtrl_c8FinishedEv((char*)c+0x124);
   if(!r) return;
   if(*(int*)((char*)c+0x134) != data_ov060_0211acd0[1]) return;
   func_ov060_02111cc0(c,3,0);
@@ -3384,7 +3384,7 @@ extern SharedFilePtr *data_ov060_0211ac30[];
 extern SharedFilePtr *data_ov060_0211ac28[];
 extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *anim, void *file, int a, int d, unsigned e);
 extern void _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(void *ts, void *file, int a, int d, unsigned e);
-extern void _ZN9Animation8SetFlagsEi(void *anim, int flags);
+extern void _ZN15dExtFrameCtrl_c8SetFlagsEi(void *anim, int flags);
 
 void func_ov060_02111cc0(void *v, int idx, int fix)
 {
@@ -3395,34 +3395,34 @@ void func_ov060_02111cc0(void *v, int idx, int fix)
     case 1:
         TextureSequence::Prepare(*(BMD_File *)data_ov060_0211ac78[1], *(BTP_File *)data_ov060_0211ac40[1]);
         _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(c + 0x138, (void *)data_ov060_0211ac40[1], 0, 0x1000, 0);
-        _ZN9Animation8SetFlagsEi(c + 0x138, 0x40000000);
+        _ZN15dExtFrameCtrl_c8SetFlagsEi(c + 0x138, 0x40000000);
         return;
     case 2:
         TextureSequence::Prepare(*(BMD_File *)data_ov060_0211ac78[1], *(BTP_File *)data_ov060_0211acb8[1]);
         _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(c + 0x138, (void *)data_ov060_0211acb8[1], 0, 0x1000, 0);
-        _ZN9Animation8SetFlagsEi(c + 0x138, 0x40000000);
+        _ZN15dExtFrameCtrl_c8SetFlagsEi(c + 0x138, 0x40000000);
         return;
     case 3:
     case 5:
         TextureSequence::Prepare(*(BMD_File *)data_ov060_0211ac78[1], *(BTP_File *)data_ov060_0211ac10[1]);
         _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(c + 0x138, (void *)data_ov060_0211ac10[1], 0, 0x1000, 0);
-        _ZN9Animation8SetFlagsEi(c + 0x138, 0);
+        _ZN15dExtFrameCtrl_c8SetFlagsEi(c + 0x138, 0);
         return;
     case 14:
         TextureSequence::Prepare(*(BMD_File *)data_ov060_0211ac78[1], *(BTP_File *)data_ov060_0211abf0[1]);
         _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(c + 0x138, (void *)data_ov060_0211abf0[1], 0, 0x1000, 0);
-        _ZN9Animation8SetFlagsEi(c + 0x138, 0);
+        _ZN15dExtFrameCtrl_c8SetFlagsEi(c + 0x138, 0);
         return;
     case 10:
         TextureSequence::Prepare(*(BMD_File *)data_ov060_0211ac78[1], *(BTP_File *)data_ov060_0211ac30[1]);
         _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(c + 0x138, (void *)data_ov060_0211ac30[1], 0, 0x1000, 0);
-        _ZN9Animation8SetFlagsEi(c + 0x138, 0x40000000);
+        _ZN15dExtFrameCtrl_c8SetFlagsEi(c + 0x138, 0x40000000);
         return;
     case 0:
     default:
         TextureSequence::Prepare(*(BMD_File *)data_ov060_0211ac78[1], *(BTP_File *)data_ov060_0211ac28[1]);
         _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(c + 0x138, (void *)data_ov060_0211ac28[1], 0, 0x1000, 0);
-        _ZN9Animation8SetFlagsEi(c + 0x138, 0);
+        _ZN15dExtFrameCtrl_c8SetFlagsEi(c + 0x138, 0);
         return;
     }
 }

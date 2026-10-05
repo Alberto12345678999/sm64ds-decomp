@@ -125,7 +125,7 @@ s32 daPgBby_c::InitResources()
     mModelAnim.SetFile(f, 1, -1);
     int i;
     for (i = 0; i < 5; i++) {
-        Animation::LoadFile(*data_ov072_02122004[i]);
+        dExtFrameCtrl_c::LoadFile(*data_ov072_02122004[i]);
     }
     if (mShadowModel.InitCylinder() == 0) return 0;
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mCylClsn, this, 0x28000, 0x50000, 0x800004, 0x9000);

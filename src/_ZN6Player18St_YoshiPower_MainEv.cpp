@@ -3,7 +3,7 @@
 /* recovered: named members + shared header, real C++ method
  *
  * Yoshi swallowing and spitting, per frame. mStateStep walks the sequence, and
- * most transitions are gated on the body model's Animation reaching a specific
+ * most transitions are gated on the body model's dExtFrameCtrl_c reaching a specific
  * frame -- which is why GetBodyModelID is re-fetched at each one rather than
  * hoisted; the original does that too.
  *
@@ -33,7 +33,7 @@ extern void func_ov002_020d71ec(char*, int);
 extern void _Z15ApproachLinear2Rsss(short*, short, short);
 extern void MulVec3Mat4x3(void*, void*, void*);
 extern void Vec3_MulScalarInPlace(void*, int);
-extern int _ZNK9Animation12WillHitFrameEi(void*, int);
+extern int _ZNK15dExtFrameCtrl_c12WillHitFrameEi(void*, int);
 extern int func_ov002_020d5ed0(void*);
 extern void func_ov002_020d718c(char*);
 extern void func_ov002_020d8118(char*);
@@ -50,7 +50,7 @@ extern void _ZN5dCc_c6UpdateEv(void*);
 extern void ApproachAngle(void*, short, int, int, int);
 extern void func_ov002_020daa74(char*);
 extern void Player_AdvanceAnims(char*);
-extern void _ZN9Animation7AdvanceEv(void*);
+extern void _ZN15dExtFrameCtrl_c7AdvanceEv(void*);
 
 extern short data_02082214[];
 extern int data_ov002_0210e3d8[];
@@ -116,7 +116,7 @@ int Player::St_YoshiPower_Main()
                 }
             }
             int id2 = _ZNK6Player14GetBodyModelIDEjb(c, *(unsigned int*)(c+8) & 0xff, 0);
-            if (_ZNK9Animation12WillHitFrameEi((char*)*(void**)(c + (id2<<2) + 0xdc) + 0x50, 0xa) != 0) {
+            if (_ZNK15dExtFrameCtrl_c12WillHitFrameEi((char*)*(void**)(c + (id2<<2) + 0xdc) + 0x50, 0xa) != 0) {
                 Vec3* src = (Vec3*)((int)c + 0x5c);
                 dp = (char*)*(void**)(&mObjInMouth);
                 *(int*)(dp+0x5c) = src->x;
@@ -145,7 +145,7 @@ int Player::St_YoshiPower_Main()
                 }
             } else {
                 int id3 = _ZNK6Player14GetBodyModelIDEjb(c, *(unsigned int*)(c+8) & 0xff, 0);
-                if (_ZNK9Animation12WillHitFrameEi((char*)*(void**)(c + (id3<<2) + 0xdc) + 0x50, 0xc) != 0) {
+                if (_ZNK15dExtFrameCtrl_c12WillHitFrameEi((char*)*(void**)(c + (id3<<2) + 0xdc) + 0x50, 0xc) != 0) {
                     mUseAltBodyModel = 1;
                     if ((*(Obj**)(&mObjInMouth))->v18() == 5) {
                         int cond2 = (*(unsigned short*)((char*)*(void**)(&mObjInMouth)+0xc) == 0x132);
@@ -218,7 +218,7 @@ int Player::St_YoshiPower_Main()
 
     case 4: {
         int id5 = _ZNK6Player14GetBodyModelIDEjb(c, *(unsigned int*)(c+8) & 0xff, 0);
-        if (_ZNK9Animation12WillHitFrameEi((char*)*(void**)(c + (id5<<2) + 0xdc) + 0x50, 3) != 0) {
+        if (_ZNK15dExtFrameCtrl_c12WillHitFrameEi((char*)*(void**)(c + (id5<<2) + 0xdc) + 0x50, 3) != 0) {
             int z = 0;
             mUseAltBodyModel = z;
             if (mUseAltBodyModel == 0) {
@@ -228,7 +228,7 @@ int Player::St_YoshiPower_Main()
             }
         }
         int id7 = _ZNK6Player14GetBodyModelIDEjb(c, *(unsigned int*)(c+8) & 0xff, 0);
-        if (_ZNK9Animation12WillHitFrameEi((char*)*(void**)(c + (id7<<2) + 0xdc) + 0x50, 4) != 0) {
+        if (_ZNK15dExtFrameCtrl_c12WillHitFrameEi((char*)*(void**)(c + (id7<<2) + 0xdc) + 0x50, 4) != 0) {
             obj0 = *(Obj**)(&mObjInMouth);
             if (obj0 != 0) {
                 int cond3 = (*(unsigned short*)((char*)obj0+0xc) == 0xbf);
@@ -294,7 +294,7 @@ int Player::St_YoshiPower_Main()
         }
         mPrevAngleY = mAngleY;
         int id10 = _ZNK6Player14GetBodyModelIDEjb(c, *(unsigned int*)(c+8) & 0xff, 0);
-        if (_ZNK9Animation12WillHitFrameEi((char*)*(void**)(c + (id10<<2) + 0xdc) + 0x50, 6) != 0) {
+        if (_ZNK15dExtFrameCtrl_c12WillHitFrameEi((char*)*(void**)(c + (id10<<2) + 0xdc) + 0x50, 6) != 0) {
             func_ov002_020daa74(c);
             _ZN5Sound13PlayCharVoiceEjjRK7Vector3(0, 0x102, c+0x74);
             goto common_tail;
@@ -310,7 +310,7 @@ int Player::St_YoshiPower_Main()
     common_tail:
         Player_AdvanceAnims(c);
         if (mUseAltBodyModel == 0 && mStateStep != 6) {
-            _ZN9Animation7AdvanceEv((char*)unk_154[3] + 0x50);
+            _ZN15dExtFrameCtrl_c7AdvanceEv((char*)unk_154[3] + 0x50);
         }
         return 1;
     }
