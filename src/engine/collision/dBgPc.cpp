@@ -10,10 +10,9 @@
  */
 #include "dBgPc.h"
 
-dBgPc::~dBgPc()
-{
-}
-
+/* The constructor is defined before the destructor so the deferred
+ * emission order lands the D2,D1 group below the C1,C2 group, matching
+ * the ROM's layout (mwccarm emits .text in reverse source order). */
 dBgPc::dBgPc()
 {
     surface.clps.w0 = 0xfc0;
@@ -21,4 +20,8 @@ dBgPc::dBgPc()
     surface.normal.z = 0;
     surface.normal.y = surface.normal.z;
     surface.normal.x = surface.normal.y;
+}
+
+dBgPc::~dBgPc()
+{
 }

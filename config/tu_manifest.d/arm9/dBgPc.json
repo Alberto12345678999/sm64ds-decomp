@@ -58,7 +58,7 @@
       "every_declared_function_defined": "PASS",
       "every_declared_function_bytes_match": "PASS",
       "declared_function_set_equals_defined_function_set": "PASS",
-      "functions_occur_in_expected_order": "PARTIAL -- ordinal pair(s) not in ROM order: [(1, 2)]",
+      "functions_occur_in_expected_order": "PASS",
       "relocation_destinations_verified": "PASS"
     },
     "object": "build/tu/arm9-dBgPc/dBgPc.o (gitignored)",
@@ -70,7 +70,7 @@
         "_ZN11SurfaceInfoD1Ev"
       ],
       "droppedSections": [
-        6
+        8
       ],
       "data": [],
       "dataExternalized": []
