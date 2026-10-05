@@ -3,29 +3,123 @@
 
 #ifdef __cplusplus
 
+#include "dActor_c.h"
 #include "ModelAnim.h"
 
-/* The model helpers nested in daDemo_c share a virtual scale-bearing base.
-   That virtual base is not speculative: it is the class shape that makes
-   mwccarm destroy Model/ModelAnim before the Vector3 array and emits the
-   retail -0x50 anmModel_c adjustment thunks. The remaining resource pointers
-   trail the virtual base in the containing allocation and are therefore kept
-   as evidenced raw offsets in the destructor bodies. */
-struct ScaleHolder {
-    Vector3 mScale[1];
+/* The nested classes' bases are declared here under the cartridge's RTTI
+ * spellings rather than through the project spellings. daDemo_c's typeinfo
+ * and vtable records are emitted by this translation unit, and an emitted
+ * record is only verifiable when its mangled name is the one symbols.txt
+ * configures: "9ModelAnim" exists nowhere in the ROM, "14dExtAnmModel_c"
+ * is the real record at arm9:0x0208e924. The declarations below copy the
+ * field layout and vtable order of ModelBase.h/Animation.h/Model.h/
+ * ModelAnim.h exactly; notes/model-rtti-names.md maps every spelling. All
+ * method calls and field types in the translation unit continue to use the
+ * project's names (Model, ModelAnim, Animation, ModelBase) -- these four
+ * structs exist so the emitted RTTI names are the cartridge's own. */
+struct dExtModel_c {
+    BMD_File *modelFile;        /* 0x04 */
+
+    dExtModel_c();
+    virtual ~dExtModel_c();                              /* slots 0 (D1), 1 (D0) */
+    virtual int DoSetFile(char *file, int a, int b) = 0; /* slot 2, null here */
+    void operator delete(void *ptr) { _ZN6Memory16operator_delete2EPv(ptr); }
 };
 
-struct daDemo_c {
-    struct anmModel_c : ModelAnim, virtual ScaleHolder {
+struct dExtFrameCtrl_c {
+    u32 numFramesAndFlags;      /* 0x04 */
+    Fix12i currFrame;           /* 0x08 */
+    Fix12i speed;               /* 0x0c */
+
+    dExtFrameCtrl_c();
+    virtual ~dExtFrameCtrl_c();                        /* slots 0 (D1), 1 (D0) */
+    void operator delete(void *ptr) { _ZN6Memory16operator_delete2EPv(ptr); }
+};
+
+struct dExtSimpleModel_c : dExtModel_c {
+    ModelComponents data;      /* 0x08 */
+    Matrix4x3 mat4x3;          /* 0x1c */
+    void *transformsBuf;       /* 0x4c */
+
+    dExtSimpleModel_c();
+    virtual ~dExtSimpleModel_c();                     /* slots 0 (D1), 1 (D0) */
+    virtual int DoSetFile(char *file, int a, int b);  /* slot 2 */
+    virtual void UpdateVerts();                       /* slot 3 */
+    virtual void Virtual10(Matrix4x3 &mat);           /* slot 4 */
+    virtual void Render(const Vector3 *scale);        /* slot 5 */
+    void operator delete(void *ptr) { _ZN6Memory16operator_delete2EPv(ptr); }
+};
+
+struct dExtAnmModel_c : dExtSimpleModel_c, dExtFrameCtrl_c {
+    BCA_File *file;            /* 0x60 */
+
+    virtual ~dExtAnmModel_c();                          /* slots 0 (D1), 1 (D0) */
+    virtual void UpdateVerts();                         /* slot 3 */
+    virtual void Virtual10(Matrix4x3 &mat);             /* slot 4 */
+    virtual void Render(const Vector3 *scale);          /* slot 5 */
+    virtual void Virtual18(u32 mat, const Vector3 *scale); /* slot 6 */
+    dExtAnmModel_c();
+    void operator delete(void *ptr) { _ZN6Memory16operator_delete2EPv(ptr); }
+};
+
+/* The cutscene-only actor family, vtable _ZTV8daDemo_c.
+ *
+ * The factory allocates 0x104 bytes, constructs dActor_c, and installs this
+ * vtable. The destructor performs no class-local teardown: it changes the
+ * vptr, runs dActor_c's destruction, and releases the actor allocation. That
+ * is exactly the code generated for an empty destructor on this inheritance
+ * graph; none of those operations belongs in the source body.
+ *
+ * The two owned render objects are selected by param1. InitResources writes a
+ * Model pointer at 0xdc for the static variants and a ModelAnim pointer at
+ * 0xe0 for the animated variants; CleanupResources destroys whichever exists.
+ */
+struct daDemo_c : dActor_c {
+    /* The model helpers nested in daDemo_c share a scale-bearing base the
+       ROM's RTTI names daDemo_c::param_c. It is declared first so it lands
+       as the non-primary base at the object tail (0x64 in anmModel_c, 0x50
+       in simpleModel_c): bases destroy in reverse declaration order, so the
+       Model/ModelAnim base runs before the Vector3 array, which is the
+       ROM's order and what its vmi typeinfo records encode. The remaining
+       resource pointers live inside the model bases; fields not proven as
+       members are read at raw offsets in the destructor bodies. */
+    struct param_c {
+        Vector3 mScale[1];
+    };
+
+    struct anmModel_c : param_c, dExtAnmModel_c {
         virtual ~anmModel_c();
         void operator delete(void *ptr) { _ZN6Memory16operator_delete2EPv(ptr); }
     };
 
-    struct simpleModel_c : Model, virtual ScaleHolder {
+    struct simpleModel_c : param_c, dExtSimpleModel_c {
         virtual ~simpleModel_c();
         void operator delete(void *ptr) { _ZN6Memory16operator_delete2EPv(ptr); }
     };
+
+    u8 pad_0d0[8];         /* 0x0d0 */
+    void *unk_0d8;          /* 0x0d8 - heap block freed by func_ov002_020f63a0 */
+    Model *mModel;          /* 0x0dc */
+    ModelAnim *mModelAnim;  /* 0x0e0 */
+    u8 pad_0e4[0x1e];      /* 0x0e4 */
+    u8 mOpacity;            /* 0x102 */
+    u8 unk_103;             /* 0x103 */
+
+    /* Keep the destructor first: it is the class's key function and remains
+       the translation-unit owner selected by the ROM's lifecycle symbols. */
+    virtual ~daDemo_c();
+    virtual int InitResources();
+    virtual int CleanupResources();
+    virtual int Behavior();
+    virtual int Render();
+    virtual void OnPendingDestroy();
 };
+
+#ifndef SM64DS_PLATFORM_PC
+/* ROM layout under mwccarm; host ABI divergence is tracked separately. */
+typedef char daDemo_c_size_must_be_0x104[
+    sizeof(daDemo_c) == 0x104 ? 1 : -1];
+#endif
 
 #endif /* __cplusplus */
 

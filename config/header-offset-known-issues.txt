@@ -66,8 +66,8 @@ include/dMg3DEspModel_c.h
 # only, so the body is not consumed and its `public:` falls through as a declaration.
 include/dPa_c.h
 
-# `struct anmModel_c : ModelAnim, virtual ScaleHolder {` nested inside daDemo_c. The
-# nested-type consumer allows exactly one base and no `virtual`, so it does not match.
+# `struct anmModel_c : param_c, dExtAnmModel_c {` nested inside daDemo_c. The
+# nested-type consumer allows exactly one base, so it does not match.
 include/daDemo_c.h
 
 # `CLPS_BlockRef &operator=(CLPS_Block &block);`. The method-declaration pattern's type
