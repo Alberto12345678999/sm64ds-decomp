@@ -7968,6 +7968,10 @@
     "src/actors/dCapEnemy_c_arm9.cpp#_ZN11dCapEnemy_c14RenderCapModelEPK7Vector3": "tangosdev",
     "src/actors/dCapEnemy_c_arm9.cpp#_ZN11dCapEnemy_c12UpdateCapPosERK7Vector3RK10Vector3_16": "ruspecial",
     "src/actors/dCapEnemy_c_arm9.cpp#_ZN11dCapEnemy_c6AddCapEj": "andrewboudreau",
-    "src/actors/dCapEnemy_c_arm9.cpp#_ZN11dCapEnemy_c14UnloadCapModelEv": "tangosdev"
+    "src/actors/dCapEnemy_c_arm9.cpp#_ZN11dCapEnemy_c14UnloadCapModelEv": "tangosdev",
+    "src/engine/collision/dBgPc.cpp#_ZN5dBgPcD2Ev": "tangosdev",
+    "src/engine/collision/dBgPc.cpp#_ZN5dBgPcD1Ev": "tangosdev",
+    "src/engine/collision/dBgPc.cpp#_ZN5dBgPcC1Ev": "tangosdev",
+    "src/engine/collision/dBgPc.cpp#_ZN5dBgPcC2Ev": "andrewboudreau"
   }
 }

@@ -5117,21 +5117,9 @@ src/func_02037eb0.c:
     complete
     .text start:0x02037eb0 end:0x02037ee4
 
-src/_ZN5dBgPcD2Ev.cpp:
+src/engine/collision/dBgPc.cpp:
     complete
-    .text start:0x02037ee4 end:0x02037ee8
-
-src/_ZN5dBgPcD1Ev.cpp:
-    complete
-    .text start:0x02037ee8 end:0x02037eec
-
-src/_ZN5dBgPcC1Ev.cpp:
-    complete
-    .text start:0x02037eec end:0x02037f18
-
-src/_ZN5dBgPcC2Ev.cpp:
-    complete
-    .text start:0x02037f18 end:0x02037f44
+    .text start:0x02037ee4 end:0x02037f44
 
 src/func_02037f44.c:
     complete
