@@ -1796,29 +1796,9 @@ src/func_020147bc.c:
     complete
     .text start:0x020147bc end:0x020147d4
 
-src/_ZN8dCcPos_c4InitERK7Vector35Fix12IiES4_jj.cpp:
+src/engine/collision/dCcPos_c.cpp:
     complete
-    .text start:0x020147d4 end:0x02014818
-
-src/_ZN8dCcPos_c10GetOwnerIDEv.cpp:
-    complete
-    .text start:0x02014818 end:0x02014820
-
-src/_ZN8dCcPos_c6GetPosEv.cpp:
-    complete
-    .text start:0x02014820 end:0x02014828
-
-src/_ZN8dCcPos_cD0Ev.cpp:
-    complete
-    .text start:0x02014828 end:0x02014854
-
-src/_ZN8dCcPos_cD1Ev.cpp:
-    complete
-    .text start:0x02014854 end:0x02014878
-
-src/_ZN8dCcPos_cC1Ev.cpp:
-    complete
-    .text start:0x02014878 end:0x0201489c
+    .text start:0x020147d4 end:0x0201489c
 
 src/_ZN10dCcAcPos_c21SetPosRelativeToActorERK7Vector3.cpp:
     complete
