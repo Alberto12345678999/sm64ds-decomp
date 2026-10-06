@@ -8633,6 +8633,16 @@
     "src/engine/gx/G3X.cpp#_ZN3G3X13SetClearColorEtiiib": "tangosdev",
     "src/engine/gx/G3X.cpp#func_020555a4": "tangosdev",
     "src/engine/gx/G3X.cpp#_ZN3G3X11SetFogTableEPv": "ruspecial",
-    "src/engine/gx/G3X.cpp#_ZN3G3X6SetFogEbiii": "tangosdev"
+    "src/engine/gx/G3X.cpp#_ZN3G3X6SetFogEbiii": "tangosdev",
+    "src/actors/dScDSMT_c.cpp#_ZN9dScDSMT_c8BehaviorEv": "andrewboudreau",
+    "src/actors/dScDSMT_c.cpp#_ZN9dScDSMT_c16CleanupResourcesEv": "andrewboudreau",
+    "src/actors/dScDSMT_c.cpp#_ZN9dScDSMT_c13InitResourcesEv": "andrewboudreau",
+    "src/actors/dScDSMT_c.cpp#func_ov007_020cc600": "tangosdev",
+    "src/actors/dScDSMT_c.cpp#func_ov007_020cca68": "tangosdev",
+    "src/actors/dScDSMT_c.cpp#func_ov007_020cca74": "tangosdev",
+    "src/actors/dScDSMT_c.cpp#func_ov007_020cca80": "tangosdev",
+    "src/actors/dScDSMT_c.cpp#func_ov007_020cca98": "tangosdev",
+    "src/actors/dScDSMT_c.cpp#func_ov007_020ccab4": "tangosdev",
+    "src/actors/dScDSMT_c.cpp#dScDSMT_c_classInit": "andrewboudreau"
   }
 }
