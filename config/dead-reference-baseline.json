@@ -170,6 +170,18 @@
    "ref": "src/d_a_luigi.cpp"
   },
   {
+   "file": "notes/agents/handoffs/promote-ov095-udlift-0923.md",
+   "ref": "src/d_a_udlift_rc_rift02.c"
+  },
+  {
+   "file": "notes/agents/handoffs/promote-ov095-udlift-0923.md",
+   "ref": "src/d_a_udlift_udlift.c"
+  },
+  {
+   "file": "notes/agents/handoffs/promote-ov095-udlift-0923.md",
+   "ref": "src/d_a_udlift_udlift_teresa.c"
+  },
+  {
    "file": "notes/agents/handoffs/readable-ov055-luigi-0925.md",
    "ref": "src/d_a_luigi.cpp"
   },
