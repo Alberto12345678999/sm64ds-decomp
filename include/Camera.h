@@ -1,11 +1,11 @@
-/* Camera's evidenced object layout and real View inheritance.
+/* Camera's evidenced object layout and real dView_c inheritance.
  * Offsets and widths are observed from matched functions; gaps remain explicit.
  * Field names are descriptive and do not affect code generation. */
 #ifndef CAMERA_H
 #define CAMERA_H
-#include "View.h"
+#include "dView_c.h"
 
-struct Camera : View {
+struct Camera : dView_c {
     /* Nested, and only ever needed as a pointer -- Camera::ChangeState is
        mangled `PNS_5StateE`, which IS the nesting, so the declaration is
        evidence rather than convention. Layout not recovered; nothing here
@@ -15,7 +15,7 @@ struct Camera : View {
        every use is through a pointer. */
     struct State;
 
-    /* View occupies 0x00..0x7f; its Matrix4x3 is at 0x50. */
+    /* dView_c occupies 0x00..0x7f; its Matrix4x3 is at 0x50. */
     /* The camera proper: where it looks and where it is. Both are twelve-byte
        Vector3s -- Camera::SetLookAt and Camera::SetPos each write exactly three
        words, at 0x80 and 0x8c. */

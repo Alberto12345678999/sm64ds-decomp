@@ -69,8 +69,8 @@ void Matrix4x3_ApplyInPlaceToRotationY(Matrix4x3 *m, s16 ang);
 void Matrix4x3_ApplyInPlaceToRotationZ(Matrix4x3 *m, s16 ang);
 void Matrix4x3_ApplyInPlaceToRotationX(Matrix4x3 *m, s16 ang);
 void Matrix4x3_FromRotationY(void *m, int angle);
-void _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
-    dActor_c *self, ShadowModel *sm, Matrix4x3 *mtx, Fix12i a, Fix12i b, u8 u);
+void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
+    dActor_c *self, dExtShadowModel_c *sm, Matrix4x3 *mtx, Fix12i a, Fix12i b, u8 u);
 
 }
 
@@ -275,7 +275,7 @@ void func_ov002_020b2c44(daFeather_c *c)
         c->mShadowMtx.m[9] = c->mPosX >> 3;
         c->mShadowMtx.m[10] = c->mPosY >> 3;
         c->mShadowMtx.m[11] = c->mPosZ >> 3;
-        _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
+        _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
             c, &c->mShadowModel, &c->mShadowMtx, 0x96000, 0x320000, 0xf);
         return;
     }
@@ -303,7 +303,7 @@ void func_ov002_020b2c44(daFeather_c *c)
         c->mShadowMtx.m[9] = c->mPosX >> 3;
         c->mShadowMtx.m[10] = c->mPosY >> 3;
         c->mShadowMtx.m[11] = c->mPosZ >> 3;
-        _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
+        _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
             c, &c->mShadowModel, &c->mShadowMtx, r4, r5 + 0x28000, 0xf);
     }
 }

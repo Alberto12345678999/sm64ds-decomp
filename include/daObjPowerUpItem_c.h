@@ -11,7 +11,7 @@
 #include "types.h"
 #include "dActor_c.h"
 #include "Model.h"
-#include "ShadowModel.h"
+#include "dExtShadowModel_c.h"
 #include "dCcAc_c.h"
 #include "dBgCh_Actr.h"
 
@@ -33,7 +33,7 @@
  * mFlags (mPosX/Y/Z and mScaleX/Y/Z already shared dActor_c's names).
  *
  * mShadowModel was mistyped `u8` at 0x174 in the generated header --
- * daObjPowerUpItem_c_classInit calls _ZN11ShadowModelC1Ev at that offset, so it is the
+ * daObjPowerUpItem_c_classInit calls _ZN17dExtShadowModel_cC1Ev at that offset, so it is the
  * real 0x28-byte member (0x174..0x19c). The 0x30 bytes at 0x19c..0x1cc are
  * the shadow matrix: func_ov002_020b993c copies mOpenModel's matrix there and
  * overwrites its Y translation with mGroundY >> 3.
@@ -50,26 +50,26 @@ struct daObjPowerUpItem_c : dActor_c {
     /* Model member, named by _ZN5ModelD1Ev at +0xd4 -- a relocation the ROM build checks. */
     Model mCloseModel;            /* 0x0d4 -- SetFile'd from gPFlowerCloseModelFile */
     /* Model member, named by the class's own destructor calling
-       Model's D1 at +0x124. [_ZN18daObjPowerUpItem_cD0Ev.c] */
+       Model's D1 at +0x124. [_ZN18daObjPowerUpItem_cD0Ev, now in src/actors/daObjPowerUpItem_c.cpp] */
     Model mOpenModel;            /* 0x124 -- SetFile'd from gPFlowerOpenModelFile */
-    /* ShadowModel member, named by daObjPowerUpItem_c_classInit's own C1 call and the
+    /* dExtShadowModel_c member, named by daObjPowerUpItem_c_classInit's own C1 call and the
        class's own destructor's D1 call at +0x174.
-       [d_a_obj_power_up_item.c, _ZN18daObjPowerUpItem_cD0Ev.c] */
-    ShadowModel mShadowModel;            /* 0x174 */
+       [daObjPowerUpItem_c_classInit, _ZN18daObjPowerUpItem_cD0Ev, now in src/actors/daObjPowerUpItem_c.cpp] */
+    dExtShadowModel_c mShadowModel;            /* 0x174 */
     Matrix4x3 mShadowMat;            /* 0x19c -- the open model's matrix, with Y set from mGroundY */
     /* dCcAc_c member, named by the class's own destructor calling
-       dCcAc_c's D1 at +0x1cc. [_ZN18daObjPowerUpItem_cD0Ev.c] */
+       dCcAc_c's D1 at +0x1cc. [_ZN18daObjPowerUpItem_cD0Ev, now in src/actors/daObjPowerUpItem_c.cpp] */
     dCcAc_c mdCcAc_c;            /* 0x1cc */
     /* dBgCh_Actr member, named by the class's own destructor calling
-       dBgCh_Actr's D1 at +0x200. [_ZN18daObjPowerUpItem_cD0Ev.c] */
+       dBgCh_Actr's D1 at +0x200. [_ZN18daObjPowerUpItem_cD0Ev, now in src/actors/daObjPowerUpItem_c.cpp] */
     dBgCh_Actr mWithMeshClsn;            /* 0x200 */
     /* The ground height under the flower: InitResources raycasts a dBgCh_Gnd
        from (mPos with Y + 0x14000) and stores the hit height (+0x44 of the
        ground object), falling back to that probe Y when nothing is hit.
-       [_ZN18daObjPowerUpItem_c13InitResourcesEv.cpp] */
+       [_ZN18daObjPowerUpItem_c13InitResourcesEv, now in src/actors/daObjPowerUpItem_c.cpp] */
     s32 mGroundY;            /* 0x3bc */
     /* Render switches on it to pick which model to draw: 0 -> mCloseModel,
-       1 and 2 -> mOpenModel. [_ZN18daObjPowerUpItem_c6RenderEv.cpp] */
+       1 and 2 -> mOpenModel. [_ZN18daObjPowerUpItem_c6RenderEv, now in src/actors/daObjPowerUpItem_c.cpp] */
     s32 mState;            /* 0x3c0 */
     /* Particle effect handle: passed back into Particle::System::New as its
        first argument each frame, cleared to 0 when a state ends. */
@@ -80,7 +80,7 @@ struct daObjPowerUpItem_c : dActor_c {
     /* Seeded 0xb4 (180 frames, three seconds) in InitResources. Render skips
        drawing on odd values once it is below 0x2d, so the flower blinks through
        its last 45 frames -- the standard "about to disappear" tell.
-       [_ZN18daObjPowerUpItem_c13InitResourcesEv.cpp, _ZN18daObjPowerUpItem_c6RenderEv.cpp] */
+       [_ZN18daObjPowerUpItem_c13InitResourcesEv, _ZN18daObjPowerUpItem_c6RenderEv, now in src/actors/daObjPowerUpItem_c.cpp] */
     u8  mLifeTimer;            /* 0x3ca */
     /* Set to 0x1b when the pop starts; func_ov002_020b92c4 counts it down. */
     u8  mWobbleTimer;            /* 0x3cb */

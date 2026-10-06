@@ -34,7 +34,7 @@
  *     0x110 dCcAc_c         0x34    -> 0x144
  *     0x144 dBgCh_Actr               0x1bc   -> 0x300
  *     0x300 Model                      0x50    -> 0x350
- *     0x350 ShadowModel                0x28    -> 0x378
+ *     0x350 dExtShadowModel_c                0x28    -> 0x378
  *
  * SIZE IS THE ROM'S OWN: `da1up_c_classInit_ONEUPKINOKO` calls `fBase_c::operator new(920)`
  * -- 0x398 -- and stores this class's vtable, so that literal IS this
@@ -44,7 +44,7 @@
 #include "dEnemyBase_c.h"
 #include "Model.h"
 #include "dCcAc_c.h"
-#include "ShadowModel.h"
+#include "dExtShadowModel_c.h"
 #include "dBgCh_Actr.h"
 
 extern "C" void *_ZN7fBase_cnwEj(unsigned size);
@@ -83,7 +83,7 @@ struct da1up_c : dEnemyBase_c {
     dCcAc_c           mdCcAc_c;   /* 0x110 */
     dBgCh_Actr                 mWithMeshClsn;         /* 0x144 */
     Model                        mModel;                /* 0x300 */
-    ShadowModel                  mShadowModel;          /* 0x350 */
+    dExtShadowModel_c                  mShadowModel;          /* 0x350 */
     /* mPos as InitResources found it (the three words are copied from
        mPosX/Y/Z). Type 10 rises to 100 units above mSpawnPosY; type 9 spawns
        its three mushrooms relative to it. */

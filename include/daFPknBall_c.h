@@ -18,7 +18,7 @@
  *
  *     0x110 dCcAc_c         0x34   -> 0x144
  *     0x144 dBgCh_Actr      0x1bc  -> 0x300
- *     0x300 ShadowModel     0x28   -> 0x328
+ *     0x300 dExtShadowModel_c     0x28   -> 0x328
  *     0x328 Matrix4x3       0x30   -> 0x358
  *
  * The 0x12c word the old header carried as unk_12c is mdCcAc_c + 0x1c.
@@ -36,14 +36,14 @@
 #include "ModelAnim.h"
 #include "dCcAc_c.h"
 #include "dCcAcPos_c.h"
-#include "ShadowModel.h"
+#include "dExtShadowModel_c.h"
 #include "TextureTransformer.h"
 #include "dBgCh_Actr.h"
 
 struct daFPknBall_c : dEnemyBase_c {
     dCcAc_c           mdCcAc_c;   /* 0x110 */
     dBgCh_Actr                 mWithMeshClsn;         /* 0x144 */
-    ShadowModel                  mShadowModel;          /* 0x300 */
+    dExtShadowModel_c                  mShadowModel;          /* 0x300 */
     Matrix4x3                    mShadowMat;            /* 0x328 -- translation only; the ball's position >> 3 */
     struct Player *              mTargetPlayer;         /* 0x358 -- ClosestPlayer, refreshed every Behavior */
     s32                          mTargetSpeed;          /* 0x35c -- what mHorzSpeed approaches; dActor_c.h names SpawnFireball's fourth argument unk35c; daFPkn_c passes 0xa000 */

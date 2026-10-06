@@ -8,7 +8,7 @@
  * The 0x20c allocation literal in daLuigi_c_classInit fixes the total size. Its
  * factory constructs the four owned member regions in declaration order and
  * D1/D0 destroy them in reverse order, independently proving the layout below:
- * ModelAnim @ 0x0d4, Model @ 0x138, ShadowModel @ 0x188, and two
+ * ModelAnim @ 0x0d4, Model @ 0x138, dExtShadowModel_c @ 0x188, and two
  * TextureSequence objects @ 0x1b0. The remaining tail is a state descriptor
  * pointer followed by the shadow matrix used by Behavior.
  *
@@ -28,7 +28,7 @@
 #include "dActor_c.h"
 #include "ModelAnim.h"
 #include "Model.h"
-#include "ShadowModel.h"
+#include "dExtShadowModel_c.h"
 #include "TextureSequence.h"
 #include "math/Matrix.h"
 
@@ -39,7 +39,7 @@ struct daLuigi_c : dActor_c {
     u8 pad_0d0[0x4];
     ModelAnim mModelAnim;                     /* 0x0d4 */
     Model mModel;                             /* 0x138 */
-    ShadowModel mShadowModel;                 /* 0x188 */
+    dExtShadowModel_c mShadowModel;                 /* 0x188 */
     TextureSequence mTextureSequences[2];     /* 0x1b0 */
     daLuigiState *mState;                     /* 0x1d8 */
     Matrix4x3 mShadowMatrix;                  /* 0x1dc */

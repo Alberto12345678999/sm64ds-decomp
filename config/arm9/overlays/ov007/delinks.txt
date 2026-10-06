@@ -2113,42 +2113,4 @@ src/func_ov007_020cbf8c.c:
 
 src/actors/dScDSMT_c.cpp:
     complete
-    .text start:0x020cc028 end:0x020cc2cc
-
-src/_ZN9dScDSMT_c8BehaviorEv.cpp:
-    .text start:0x020cc2cc end:0x020cc45c
-
-src/_ZN9dScDSMT_c16CleanupResourcesEv.cpp:
-    complete
-    .text start:0x020cc45c end:0x020cc4c0
-
-src/_ZN9dScDSMT_c13InitResourcesEv.cpp:
-    .text start:0x020cc4c0 end:0x020cc600
-
-src/func_ov007_020cc600.c:
-    complete
-    .text start:0x020cc600 end:0x020cca68
-
-src/func_ov007_020cca68.c:
-    complete
-    .text start:0x020cca68 end:0x020cca74
-
-src/func_ov007_020cca74.c:
-    complete
-    .text start:0x020cca74 end:0x020cca80
-
-src/func_ov007_020cca80.c:
-    complete
-    .text start:0x020cca80 end:0x020cca98
-
-src/func_ov007_020cca98.c:
-    complete
-    .text start:0x020cca98 end:0x020ccab4
-
-src/func_ov007_020ccab4.c:
-    complete
-    .text start:0x020ccab4 end:0x020ccad0
-
-src/d_s_dsmt.c:
-    complete
-    .text start:0x020ccad0 end:0x020ccb54
+    .text start:0x020cc028 end:0x020ccb54

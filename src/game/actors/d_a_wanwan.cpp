@@ -72,8 +72,8 @@ void func_ov102_0214ae1c(void *bomb);
 void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
     dCcAcPos_c *self, dActor_c *actor, const Vector3 *pos, int radius, int height,
     unsigned flags, unsigned vuln);
-void _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
-    dActor_c *self, ShadowModel *shadow, Matrix4x3 *mtx, int radius, int depth,
+void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
+    dActor_c *self, dExtShadowModel_c *shadow, Matrix4x3 *mtx, int radius, int depth,
     unsigned opacity);
 void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
     ModelAnim *self, void *bca, int flags, int speed, unsigned start);
@@ -110,13 +110,13 @@ extern "C" {
 dEnemyBase_c *_ZN12dEnemyBase_cC2Ev(dEnemyBase_c *object);
 dCcAcPos_c *_ZN10dCcAcPos_cC1Ev(dCcAcPos_c *object);
 ModelAnim *_ZN9ModelAnimC1Ev(ModelAnim *object);
-ShadowModel *_ZN11ShadowModelC1Ev(ShadowModel *object);
+dExtShadowModel_c *_ZN17dExtShadowModel_cC1Ev(dExtShadowModel_c *object);
 void __cxa_vec_ctor(void *base, unsigned int count, unsigned int stride,
     void (*ctor)(void *), void (*dtor)(void *));
 extern int _ZTV10daWanwan_c[];
 extern Model *_ZN5ModelD1Ev(Model *object);
 extern Model *_ZN5ModelC1Ev(Model *object);
-extern ShadowModel *_ZN11ShadowModelD1Ev(ShadowModel *object);
+extern dExtShadowModel_c *_ZN17dExtShadowModel_cD1Ev(dExtShadowModel_c *object);
 extern Vector3 *_ZN7Vector3D1Ev(Vector3 *object);
 extern void func_0203d384(void);
 }
@@ -140,7 +140,7 @@ extern "C" int func_0201267c(int id, void *pos, int unused);
 /* Hand-rolled. The two Vector3[7] arrays are constructed by func_0203d384,
  * not by Vector3's implicit default. */
 /* return new daWanwan_c() measured 0xf0->0xa0, and the vec_ctor slot
-   relocates ShadowModelD1 where the ROM still has 0x020733a8. func_0203d384
+   relocates dExtShadowModel_c's D1 where the ROM still has 0x020733a8. func_0203d384
    stays the Vector3[7] constructor. */
 extern "C" daWanwan_c *daWanwan_c_classInit()
 {
@@ -150,12 +150,12 @@ extern "C" daWanwan_c *daWanwan_c_classInit()
         *(int **)c = &_ZTV10daWanwan_c[2];
         _ZN10dCcAcPos_cC1Ev(&c->mdCcAcPos_c);
         _ZN9ModelAnimC1Ev(&c->mModelAnim);
-        _ZN11ShadowModelC1Ev(&c->mShadowModel);
+        _ZN17dExtShadowModel_cC1Ev(&c->mShadowModel);
         __cxa_vec_ctor(c->mLinkModels, 7, 0x50,
             (void (*)(void *))_ZN5ModelC1Ev, (void (*)(void *))_ZN5ModelD1Ev);
         __cxa_vec_ctor(c->mLinkShadows, 7, 0x28,
-            (void (*)(void *))_ZN11ShadowModelC1Ev,
-            (void (*)(void *))_ZN11ShadowModelD1Ev);
+            (void (*)(void *))_ZN17dExtShadowModel_cC1Ev,
+            (void (*)(void *))_ZN17dExtShadowModel_cD1Ev);
         __cxa_vec_ctor(c->mLinkPos, 7, 0xc,
             (void (*)(void *))func_0203d384, (void (*)(void *))_ZN7Vector3D1Ev);
         __cxa_vec_ctor(c->mLinkDelta, 7, 0xc,
@@ -189,7 +189,7 @@ int daWanwan_c::InitResources()
         int si = 0;
         unsigned char *sp = (unsigned char *)mLinkShadows;
         do {
-            ((ShadowModel *)sp)->InitCylinder();
+            ((dExtShadowModel_c *)sp)->InitCylinder();
             si = si + 1;
             sp = sp + 0x28;
         } while (si < 7);
@@ -339,8 +339,8 @@ void func_ov014_02112788(char *c)
     if (t <= 0x1000)
         t = 0x1000;
     /* DropShadowRadHeight(Fix12<int>, Fix12<int>) measured 0x1c4->0x1e4 for both calls. */
-    _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
-        (dActor_c *)c, (ShadowModel *)(c + 0x1b4), (Matrix4x3 *)(c + 0x16c),
+    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
+        (dActor_c *)c, (dExtShadowModel_c *)(c + 0x1b4), (Matrix4x3 *)(c + 0x16c),
         0x15e000 - (int)(((long long)t * 0x180 + 0x800) >> 12),
         t + 0x28000,
         0xf);
@@ -358,8 +358,8 @@ void func_ov014_02112788(char *c)
         t = *(int *)(e + 0x528) - *(int *)(c + 0x5f0);
         if (t <= 0x1000)
             t = 0x1000;
-        _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
-            (dActor_c *)c, (ShadowModel *)sm, (Matrix4x3 *)(m + 0x1c),
+        _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
+            (dActor_c *)c, (dExtShadowModel_c *)sm, (Matrix4x3 *)(m + 0x1c),
             0x78000 - (int)(((long long)t * 0x180 + 0x800) >> 12),
             t + 0x28000,
             0xf);

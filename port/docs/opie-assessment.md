@@ -125,7 +125,7 @@ an earlier "~670" was a regex artifact, see the appendix).
   define *any* named `G3_`/`GX_`/`G2_` inline. Not "overwhelmingly." Three.
 - The norm is a bare store, sometimes not even volatile:
   `*(volatile int *)0x4000440 = 2;` (func_ov006_020d09e0 in `src/actors/unit020cd744.cpp`),
-  `src/func_ov080_02125fd0.c:16`.
+  `src/game/actors/d_a_pic_gate.cpp:541`.
 
 So "the decomp has incidentally done most of the API-recovery a port needs" was the
 opposite of true, and Phase 2 cannot be sized as "swap a header."
@@ -151,8 +151,8 @@ That grep proves nothing in a tree that names unknowns `func_XXXX`. Re-examined:
   is a flat count/offset header, and name lookup is linear `strcmp`
   (`src/func_020471ac.c`) where NNS G3d uses radix dictionaries. Hand-rolled EAD readers.
 - **FND heaps: NNS under EAD names.** The signatures are literal NNS FND tags —
-  `0x46524d48` = `'FRMH'` (`src/_ZN18SolidHeapAllocatorC1EPvj.cpp:10`) and `0x45585048` =
-  `'EXPH'` (`src/_ZN22ExpandingHeapAllocatorC1EPvj.cpp:12`).
+  `0x46524d48` = `'FRMH'` (`src/engine/heap/SolidHeapAllocator.cpp:86`) and `0x45585048` =
+  `'EXPH'` (`src/engine/heap/ExpandingHeapAllocator.cpp`, the `C1`).
 
 Correct statement: *SM64DS does not use NNS G2d/G3d; its heap and sound layers are
 NNS/SDK-shaped under EAD names.* And write "BMD/BTP/BCA," not "BMD0/BTP0/BCA0" — the

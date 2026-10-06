@@ -15,9 +15,9 @@
  *
  * LAYOUT IS READ TWICE, not once. daTBasket_c_classInit (0x0211c4d0) allocates
  * 0x380, chains dEnemyBase_c's constructor, stores this vtable, and constructs
- * dCcAc_c at +0x110, dBgCh_Actr at +0x144, Model at +0x300 and ShadowModel at
+ * dCcAc_c at +0x110, dBgCh_Actr at +0x144, Model at +0x300 and dExtShadowModel_c at
  * +0x350; _ZN11daTBasket_cD1Ev (0x02115fc4) destroys the same four at the same
- * offsets in exactly the reverse order. It closes: 0x350 + sizeof(ShadowModel)
+ * offsets in exactly the reverse order. It closes: 0x350 + sizeof(dExtShadowModel_c)
  * 0x28 = 0x378, and the tail fields reach the 0x380 the ROM allocates.
  *
  * ONE TU WITH THE BOO FAMILY. The ROM interleaves five of this class's seven
@@ -39,8 +39,8 @@
  * - Sound::PlaySecretSound / Particle::System::New stay TU-local mangled: no
  *   shared header declares them yet (d_a_wanwan / da1up precedent).
  * - func_ov063_021169c4 is this class's own shadow helper (writes
- *   mModel.mat4x3, drops mShadowModel; Behavior is its only caller). It is
- *   still a C-linkage helper in the shared TU, so the call stays by ROM label.
+ *   mModel.mat4x3, drops mShadowModel; Render is its only caller). It is a
+ *   real member now; its ROM symbol carries the daTBasket_c mangle.
  * - data_ov063_0211edec is the shared model file both this class and daTrs_c
  *   load and release; the sinit owns it, this TU only externs it.
  * - The factory is `return new daTBasket_c()`: this TU emits the vtable, so
@@ -50,7 +50,7 @@
 #include "dEnemyBase_c.h"
 #include "Model.h"
 #include "dCcAc_c.h"
-#include "ShadowModel.h"
+#include "dExtShadowModel_c.h"
 #include "dBgCh_Actr.h"
 
 extern "C" void *_ZN7fBase_cnwEj(unsigned size);
@@ -59,7 +59,7 @@ struct daTBasket_c : dEnemyBase_c {
     dCcAc_c           mdCcAc_c;   /* 0x110 */
     dBgCh_Actr                 mWithMeshClsn;         /* 0x144 */
     Model                        mModel;                /* 0x300 */
-    ShadowModel                  mShadowModel;          /* 0x350 */
+    dExtShadowModel_c                  mShadowModel;          /* 0x350 */
     s32                          mParticleID;               /* 0x378 */
     s16                          mSoundTimer;               /* 0x37c */
     u8                           mMuteSecretSound;      /* 0x37e -- nonzero skips Sound::PlaySecretSound */
@@ -82,6 +82,10 @@ struct daTBasket_c : dEnemyBase_c {
     static void *operator new(size_t size) {
         return _ZN7fBase_cnwEj((unsigned)size);
     }
+
+    /* The shadow-drop helper: rebuilds mModel.mat4x3 from the position and
+       calls DropShadowRadHeight on mShadowModel. r0 is this basket. */
+    void func_ov063_021169c4();
 };
 
 #ifndef SM64DS_PLATFORM_PC

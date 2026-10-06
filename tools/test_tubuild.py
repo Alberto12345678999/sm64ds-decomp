@@ -1282,6 +1282,136 @@ def test_plain_deadstrip_is_refused_for_an_rtti_record():
                    for r in reasons) for n in data), reasons
 
 
+def test_verify_no_write_leaves_manifest_bytes_unchanged():
+    """`verify --no-write` reports and does not rewrite the manifest.
+
+    The write is the last step of cmd_verify, after compile. Compile and the
+    byte/reloc gates are stubbed, so this does not need mwccarm. The same
+    stubbed run without the flag must change those bytes; otherwise a pass
+    would only mean verify never reached the write.
+    """
+    import contextlib
+    import io
+
+    fd, path = tempfile.mkstemp(suffix=".json", prefix="tu_manifest_nowrite_")
+    os.close(fd)
+    scratch = pathlib.Path(path)
+    entry = {
+        "id": "ov000/ReadOnly",
+        "status": "shadow",
+        "module": "ov000",
+        "source": "src_tu/readonly.cpp",
+        "functions": [{
+            "ordinal": 0,
+            "symbol": "fn",
+            "address": "0x02000000",
+            "size": "0x4",
+            "legacy_source": "src/fn.cpp",
+        }],
+        "sections": [],
+    }
+    tubuild.TUM.save(
+        {"schema_version": 1, "about": "scratch", "entries": [entry]}, scratch)
+    before = scratch.read_bytes()
+    obj_path = tubuild.REPO / "build" / "tu" / "readonly" / "readonly.o"
+    saved = {
+        "MANIFEST": tubuild.MANIFEST,
+        "_compile_tu": tubuild._compile_tu,
+        "elf_inventory": tubuild.elf_inventory,
+        "apply_compiler_only_policy": tubuild.apply_compiler_only_policy,
+        "save_manifest": tubuild.save_manifest,
+        "extract_func": tubuild.M.extract_func,
+        "compare": tubuild.M.compare,
+        "target_bytes": tubuild.BP.target_bytes,
+        "plan": tubuild.OI.plan,
+        "check_destinations": tubuild.RA.check_destinations,
+        "build_name_index": tubuild.RA.build_name_index,
+        "build_config_relocs": tubuild.RA.build_config_relocs,
+        "load_all_syms": tubuild.RL.load_all_syms,
+    }
+    writes = []
+    old_argv = sys.argv
+
+    def _compile(_entry, version_override=None):
+        return b"", "test-version", "-O4,p", obj_path.parent, obj_path
+
+    def _inv(_obj):
+        return {
+            "sections": [{"index": 1, "name": ".text", "type": "SHT_PROGBITS",
+                          "size": 4}],
+            "symbols": [{"name": "fn", "shndx": 1, "value": 0, "size": 4,
+                         "bind": "STB_GLOBAL", "type": "STT_FUNC"}],
+        }
+
+    def _save(data):
+        writes.append(True)
+        saved["save_manifest"](data)
+
+    def _run(*args):
+        buf = io.StringIO()
+        sys.argv = ["tubuild.py", "--manifest", str(scratch), *args]
+        with contextlib.redirect_stdout(buf):
+            code = tubuild.main()
+        return code, buf.getvalue()
+
+    try:
+        tubuild._compile_tu = _compile
+        tubuild.elf_inventory = _inv
+        tubuild.apply_compiler_only_policy = lambda obj, _entry, homes=None: (obj, {}, [])
+        tubuild.save_manifest = _save
+        tubuild.M.extract_func = lambda _obj, _sym: (b"\x00\x00\x00\x00", [])
+        tubuild.M.compare = lambda _tgt, _code, _relocs, verbose=False: (True, 0)
+        tubuild.BP.target_bytes = lambda _mod, _addr, size: b"\x00" * size
+        tubuild.OI.plan = lambda _obj, _sym: {"error": None}
+        tubuild.RA.check_destinations = lambda *_a, **_k: ([], [])
+        tubuild.RA.build_name_index = lambda: {}
+        tubuild.RA.build_config_relocs = lambda: {}
+        tubuild.RL.load_all_syms = lambda: {}
+
+        code, out = _run("verify", "--no-write", "ov000/ReadOnly")
+        assert code == 0, out
+        assert "TEXT-VERIFIED" in out, out
+        assert "--no-write: manifest left unchanged" in out, out
+        assert scratch.read_bytes() == before
+        assert writes == []
+
+        code, out = _run("verify", "ov000/ReadOnly")
+        assert code == 0, out
+        assert "TEXT-VERIFIED" in out, out
+        assert "--no-write" not in out, out
+        assert writes == [True]
+        after = scratch.read_bytes()
+        assert after != before
+        assert b'"status": "text-verified"' in after
+
+        # A banked PASS that this round would downgrade is the sibling-control
+        # case. --no-write must leave those bytes alone too.
+        tubuild.M.compare = lambda _tgt, _code, _relocs, verbose=False: (False, 1)
+        code, out = _run("verify", "--no-write", "ov000/ReadOnly")
+        assert code == 1, out
+        assert "NOT verified" in out, out
+        assert "would downgrade text-verified -> shadow" in out, out
+        assert "left the manifest unchanged" in out, out
+        assert scratch.read_bytes() == after
+        assert writes == [True]
+    finally:
+        sys.argv = old_argv
+        tubuild.MANIFEST = saved["MANIFEST"]
+        tubuild._compile_tu = saved["_compile_tu"]
+        tubuild.elf_inventory = saved["elf_inventory"]
+        tubuild.apply_compiler_only_policy = saved["apply_compiler_only_policy"]
+        tubuild.save_manifest = saved["save_manifest"]
+        tubuild.M.extract_func = saved["extract_func"]
+        tubuild.M.compare = saved["compare"]
+        tubuild.BP.target_bytes = saved["target_bytes"]
+        tubuild.OI.plan = saved["plan"]
+        tubuild.RA.check_destinations = saved["check_destinations"]
+        tubuild.RA.build_name_index = saved["build_name_index"]
+        tubuild.RA.build_config_relocs = saved["build_config_relocs"]
+        tubuild.RL.load_all_syms = saved["load_all_syms"]
+        scratch.unlink(missing_ok=True)
+
+
 def test_unknown_id_fails_closed_with_a_clear_reason():
     code, out = _run("inspect", "ov999/NoSuchClass")
     assert code != 0
@@ -2465,7 +2595,7 @@ def test_bare_brace_where_a_signature_belongs_is_refused_not_emitted():
 
 
 def test_elaborated_return_type_is_not_a_shadow_declaration():
-    """Real inputs: src/_ZN11dCapEnemy_c15RespawnIfHasCapEv.cpp and
+    """Real inputs: dCapEnemy_c::RespawnIfHasCap and
     src/func_02041b60.c. Both open on the word `struct`, but as an elaborated
     type specifier on the RETURN type -- the flat-C sources spell it that way
     constantly. Filing the line as a declaration put the function's own
@@ -2510,7 +2640,7 @@ def test_record_with_a_function_pointer_member_still_reads_as_a_record():
 
 
 def test_definition_inside_a_namespace_or_extern_c_block_names_the_block():
-    """Real inputs: src/_ZN6Memory8AllocateEj.cpp (an Allman `namespace Memory`
+    """Real inputs: src/Memory.cpp (an Allman `namespace Memory`
     whose body IS the member) and func_ov006_021063a0, whose shard put the
     definition inside `extern "C" {` -- that one is now ROM ordinal 50 of
     src/actors/dScMgPanel_c.cpp, absorbed by the ov006/dScMgPanel_c promotion.

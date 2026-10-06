@@ -23,7 +23,7 @@ int *daStar_c_classInit_SILVER_STAR(void)
         _ZN10dBgCh_ActrC1Ev((char *)p + 0x150);
         _ZN9ModelAnimC1Ev((char *)p + 0x30c);
         _ZN9ModelAnimC1Ev((char *)p + 0x370);
-        _ZN11ShadowModelC1Ev((char *)p + 0x3d4);
+        _ZN17dExtShadowModel_cC1Ev((char *)p + 0x3d4);
     }
     return p;
 }

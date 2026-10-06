@@ -2,7 +2,7 @@
 #define DAOBJFM_BATTAN_C_H
 
 #include "dBgActor_c.h"
-#include "ShadowModel.h"
+#include "dExtShadowModel_c.h"
 
 extern "C" void *_ZN7fBase_cnwEj(unsigned size);
 
@@ -15,7 +15,7 @@ struct daObjFm_Battan_c : dBgActor_c {
     s16 mAngVelX;                 /* 0x31e */
     u16 mStateTimer;              /* 0x320 */
     u8 mState;                    /* 0x322 */
-    ShadowModel mShadowModel;     /* 0x324 -- 1-byte alignment pad after mState is implicit */
+    dExtShadowModel_c mShadowModel;     /* 0x324 -- 1-byte alignment pad after mState is implicit */
     Matrix4x3 mShadowMat;         /* 0x34c */
 
     /* InitResources is deliberately the first out-of-line virtual/key

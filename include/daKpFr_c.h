@@ -2,7 +2,7 @@
 #define DAKPFR_C_H
 
 #include "dCcAc_c.h"
-#include "ShadowModel.h"
+#include "dExtShadowModel_c.h"
 #include "dBgCh_Actr.h"
 #include "dActor_c.h"
 
@@ -50,7 +50,7 @@ typedef char daKpFrState_size_must_be_0x10[
 
 struct daKpFr_c : dActor_c {
     u8                 pad_0d0[0x4];
-    ShadowModel        mShadowModel;           /* 0x0d4 */
+    dExtShadowModel_c        mShadowModel;           /* 0x0d4 */
     dCcAc_c mdCcAc_c;    /* 0x0fc */
     dBgCh_Actr       mWithMeshClsn;          /* 0x130 */
     /* InitResources assigns IDENTITY_MATRIX4X3 into this slot.
@@ -61,7 +61,7 @@ struct daKpFr_c : dActor_c {
     s32                mStateResult;           /* 0x320 */
     /* Two particle handles, effects 0x7f and 0x80, both fed back into
        Particle::System::NewUnkCallback818 every Render, at mPosY + 0x4b000.
-       [_ZN8daKpFr_c6RenderEv.cpp] */
+       [_ZN8daKpFr_c6RenderEv, now in src/game/actors/d_a_kp_fr.cpp] */
     u32                mParticle1;             /* 0x324 */
     u32                mParticle2;             /* 0x328 */
     u8                 mStateTimer;            /* 0x32c */

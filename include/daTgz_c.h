@@ -5,14 +5,14 @@
 #include "dActor_c.h"
 #include "Model.h"
 #include "ModelAnim.h"
-#include "ShadowModel.h"
+#include "dExtShadowModel_c.h"
 #include "dCcAc_c.h"
 #include "dBgCh_Actr.h"
 
 /* daTgz_c -- Spiny (TOGEZO). sizeof is the factory literal 1004 (0x3ec).
  *
  * daTgz_c_classInit does fBase_c::operator new(1004), dActor_c::C2, stores
- * _ZTV7daTgz_c, then constructs Model, ModelAnim, ShadowModel, dCcAc_c and
+ * _ZTV7daTgz_c, then constructs Model, ModelAnim, dExtShadowModel_c, dCcAc_c and
  * dBgCh_Actr in that order. ~daTgz_c destroys those five in reverse. The
  * pointer at 0xd0 is not constructed.
  *
@@ -28,7 +28,7 @@ struct daTgz_c : dActor_c {
     dActor_c *mCarrier;                  /* 0x0d0 */
     Model mModel;                        /* 0x0d4 */
     ModelAnim mModelAnim;                /* 0x124 */
-    ShadowModel mShadowModel;            /* 0x188 */
+    dExtShadowModel_c mShadowModel;            /* 0x188 */
     dCcAc_c mdCcAc_c;                    /* 0x1b0 */
     dBgCh_Actr mWithMeshClsn;            /* 0x1e4 */
     /* Drop-shadow matrix. InitResources copies IDENTITY_MATRIX4X3 here and

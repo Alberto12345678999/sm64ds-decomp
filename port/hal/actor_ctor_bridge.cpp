@@ -1,5 +1,5 @@
 // Constructor bridges and vtable fillers for the gate-9 classes: dBgW_KcMbg
-// (the moving-background collider) and ShadowModel.
+// (the moving-background collider) and dExtShadowModel_c.
 //
 // Gate 9 belongs to smoke_actor alone, so these cannot live in the gate-8
 // bridge -- smoke_clsn links that one and never builds these classes.
@@ -16,7 +16,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "ShadowModel.h"
+#include "dExtShadowModel_c.h"
 #include "dBgW_KcMbg.h"
 #include "dBgActor_c.h"
 
@@ -40,12 +40,12 @@ ACTOR_TRAP(int dBgW_KcMbg::DetectClsn(dBgCh_Lin &), "dBgW_KcMbg::DetectClsn(dBgC
 ACTOR_TRAP(int dBgW_KcMbg::DetectClsn(dBgCh_SphCrr &), "dBgW_KcMbg::DetectClsn(dBgCh_SphCrr&)")
 ACTOR_TRAP(dBgW_KcMbg::~dBgW_KcMbg(), "dBgW_KcMbg::~dBgW_KcMbg")
 
-ACTOR_TRAP(int ShadowModel::DoSetFile(char *, int, int), "ShadowModel::DoSetFile")
-ACTOR_TRAP(ShadowModel::~ShadowModel(), "ShadowModel::~ShadowModel")
+ACTOR_TRAP(int dExtShadowModel_c::DoSetFile(char *, int, int), "dExtShadowModel_c::DoSetFile")
+ACTOR_TRAP(dExtShadowModel_c::~dExtShadowModel_c(), "dExtShadowModel_c::~dExtShadowModel_c")
 
 extern "C" {
 void _ZN10dBgW_KcMbgC1Ev(void *self) { ::new (self) dBgW_KcMbg(); }
-void _ZN11ShadowModelC1Ev(void *self) { ::new (self) ShadowModel(); }
+void _ZN17dExtShadowModel_cC1Ev(void *self) { ::new (self) dExtShadowModel_c(); }
 }
 
 // ---------------------------------------------------------------------------

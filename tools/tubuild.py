@@ -13,6 +13,8 @@ Subcommands:
     python tools/tubuild.py create  ov062/Chuckya     # generate a shadow .cpp
     python tools/tubuild.py compile ov045/PoleLift    # compile with the pinned toolchain
     python tools/tubuild.py verify  ov045/PoleLift    # byte + relocation verification
+    python tools/tubuild.py verify  ov045/PoleLift --no-write
+                                                      # same report; manifest bytes stay put
     python tools/tubuild.py partial ov045/PoleLift    # one TU compile -> N derived
                                                       #   per-function objects, each
                                                       #   compared against the object the
@@ -25,7 +27,9 @@ This tool never touches src/, config/**/delinks.txt, or runs real
 `eligible.py` / `rombuild.py`. It only reads production state (the
 committed config/, the extracted ROM, the pinned mwccarm) and writes to
 src_tu/, config/tu_manifest.d/, and build/tu/ (gitignored, see .gitignore's
-bare `build/` entry).
+bare `build/` entry). `verify --no-write` still compiles into build/tu/ but
+leaves the manifest byte-for-byte unchanged; the default verify keeps writing
+the verification block CI and normal callers expect.
 
 Every byte/relocation comparison is delegated to the tree's existing gates --
 tools/match.py (compile + relocation-aware compare), tools/objisolate.py
@@ -1522,14 +1526,27 @@ def cmd_verify(args):
         "relocation_destinations_verified": "PASS" if all_reloc_ok else "FAIL -- see DIFF/objisolate lines above",
     }.items():
         criteria[key] = _keep_richer(key, verdict)
+    downgraded = False
     if text_verified and entry.get("status") == "shadow":
         entry["status"] = "text-verified"
     elif not text_verified and entry.get("status") == "text-verified":
         entry["status"] = "shadow"
-        print("\nNOTE: manifest status downgraded text-verified -> shadow: this round did "
-             "not reproduce it.")
-    upsert_manifest_entry(data, entry)
-    save_manifest(data)
+        downgraded = True
+    # Default still writes: CI and normal verify expect the verification block.
+    # `--no-write` is the sibling-control path, which must not mutate the manifest
+    # it is measuring. The report above is unchanged either way.
+    if args.no_write:
+        if downgraded:
+            print("\nNOTE: this round would downgrade text-verified -> shadow, but "
+                 "--no-write left the manifest unchanged.")
+        else:
+            print("\nNOTE: --no-write: manifest left unchanged.")
+    else:
+        if downgraded:
+            print("\nNOTE: manifest status downgraded text-verified -> shadow: this round did "
+                 "not reproduce it.")
+        upsert_manifest_entry(data, entry)
+        save_manifest(data)
 
     # A PROMOTION REFUSED is a failure of this command even when the bytes
     # reproduced. `text_verified` is deliberately NOT folded into: it drives the
@@ -6272,6 +6289,9 @@ def main():
     p = sub.add_parser("verify", help="byte + relocation verification against the manifest and ROM")
     p.add_argument("id")
     p.add_argument("--version", default=None)
+    p.add_argument("--no-write", action="store_true",
+                   help="do not write the verification block back into the manifest "
+                        "(sibling-control runs; the default still records it)")
     p.set_defaults(func=cmd_verify)
 
     p = sub.add_parser("partial", help="plan sec 9 -- derive one isolated object per "

@@ -23,7 +23,7 @@ int *daKpa_c_classInit(void)
         _ZN9ModelAnimC1Ev((char *)p + 0xd4);
         _ZN15TextureSequenceC1Ev((char *)p + 0x138);
         _ZN10dBgCh_ActrC1Ev((char *)p + 0x14c);
-        _ZN11ShadowModelC1Ev((char *)p + 0x308);
+        _ZN17dExtShadowModel_cC1Ev((char *)p + 0x308);
         _ZN10dCcAcPos_cC1Ev((char *)p + 0x360);
     }
     return p;

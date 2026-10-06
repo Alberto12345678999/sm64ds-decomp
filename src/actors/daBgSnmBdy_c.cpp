@@ -38,9 +38,9 @@
  *   are not methods on dActor_c.h; same by-value Fix12 wall.
  * - Particle::RunningSlidingDustAt (State4): Fix12<int> parameters are
  *   0xa4 -> 0xc8 (9 words). State2 and State3 use the same scalar extern.
- * - Clipper::Func_02015560 (State5): the header takes Fix12<int> by
+ * - dClipper::Func_02015560 (State5): the header takes Fix12<int> by
  *   value. Same caller wall as DropShadowRadHeight. The scalar extern
- *   stays. data_0209f43c is the Clipper, data_0209b3ec the camera matrix.
+ *   stays. data_0209f43c is the dClipper, data_0209b3ec the camera matrix.
  * - Player::Hurt (HurtPlayer): not declared on Player.h. Replacing the
  *   goto with early returns is 0xb0 -> 0xb8 (2 words). The 0/1 from
  *   actorID == 0xbf is what the ROM materializes.
@@ -109,7 +109,7 @@ void      _ZN8dActor_c9SetRangesE5Fix12IiES1_S1_S1_(void *self, int offsetY,
 void      _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(void *self,
                                                        const Vector3 *pos,
                                                        int strength);
-void      _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
+void      _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
               void *self, void *shadow, void *matrix, int radius, int height,
               u32 flags);
 
@@ -125,7 +125,7 @@ void  _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, void *actor,
                                                 u32 flags, u32 vulnFlags);
 
 void _ZN8Particle20RunningSlidingDustAtE5Fix12IiES1_S1_(int x, int y, int z);
-int  _ZN7Clipper13Func_02015560ER9Matrix4x3R7Vector35Fix12IiES3_(
+int  _ZN8dClipper13Func_02015560ER9Matrix4x3R7Vector35Fix12IiES3_(
          void *clipper, void *matrix, void *pos, int radius, void *result);
 
 /* ov072 and arm9 statics this TU reads but does not own. */
@@ -509,7 +509,7 @@ int daBgSnmBdy_c::State5()
     int clipResult[3];
     int homePos[3];
     Vec3_Asr(homePos, &mHomePosX, 3);
-    if (_ZN7Clipper13Func_02015560ER9Matrix4x3R7Vector35Fix12IiES3_(
+    if (_ZN8dClipper13Func_02015560ER9Matrix4x3R7Vector35Fix12IiES3_(
             data_0209f43c, data_0209b3ec, homePos, 0x1f400, clipResult) < 0x1194000)
         return 1;
     mPosX = mHomePosX;
@@ -536,7 +536,7 @@ void daBgSnmBdy_c::UpdateModel()
     mShadowMat.m[9] = mPosX >> 3;
     mShadowMat.m[10] = (mPosY + mRadius) >> 3;
     mShadowMat.m[11] = mPosZ >> 3;
-    _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
+    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
         this, &mShadowModel, &mShadowMat, mRadius << 1, mRadius << 1, 0xf);
 }
 

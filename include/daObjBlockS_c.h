@@ -5,7 +5,7 @@
  * SIZE 0x608, the literal daObjBlockS_c_classInit (src/actors/daObjBlockS_c.cpp) passes to
  * fBase_c::operator new. dBgActor_c ends 0x320; everything from there down is
  * this class's own, confirmed by the destructor (D1) destroying
- * dCcAcPos_c x2, ShadowModel and dBgCh_Actr in reverse before
+ * dCcAcPos_c x2, dExtShadowModel_c and dBgCh_Actr in reverse before
  * storing _ZTV10dBgActor_c (inlined) and chaining to dActor_c.
  *
  * 0x0d0..0x0d4 is dBgActor_c's own generic pad (include/dBgActor_c.h), not a
@@ -40,7 +40,7 @@ typedef struct Player Player;
 
 #include "dBgActor_c.h"
 #include "dBgCh_Actr.h"
-#include "ShadowModel.h"
+#include "dExtShadowModel_c.h"
 #include "dCcAcPos_c.h"
 
 struct daObjBlockS_c : dBgActor_c {
@@ -64,7 +64,7 @@ struct daObjBlockS_c : dBgActor_c {
     s16 mHomeAngleY;            /* 0x502 */
     s16 mHomeAngleZ;            /* 0x504 */
     u8  pad_506[0x2];
-    ShadowModel mShadowModel;   /* 0x508 */
+    dExtShadowModel_c mShadowModel;   /* 0x508 */
     /* Built from the Y rotation alone with its translation row set to the
        crate's position (>> 3) and handed to dActor_c::DropShadowScaleXYZ with
        mShadowModel. */

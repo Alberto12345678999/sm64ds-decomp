@@ -12,13 +12,9 @@ src/_ZN9daSBird_cD0Ev.cpp:
     complete
     .text start:0x021111d8 end:0x02111224
 
-src/func_ov009_02111224.c:
+src/game/actors/d_a_s_bird_head.cpp:
     complete
-    .text start:0x02111224 end:0x02111234
-
-src/func_ov009_02111234.cpp:
-    complete
-    .text start:0x02111234 end:0x0211145c
+    .text start:0x02111224 end:0x0211145c
 
 src/game/actors/d_a_s_bird.cpp:
     complete

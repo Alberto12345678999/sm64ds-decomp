@@ -4,7 +4,7 @@
  * conveyor (mecha04) or moving bar (mecha05).
  *
  * Derives from dBgActor_c directly: _ZTI/_ZTS16daObjCtMecha03_c give the
- * class name, and the factory constructs dBgActor_c then ShadowModel at 0x330.
+ * class name, and the factory constructs dBgActor_c then dExtShadowModel_c at 0x330.
  * The allocation literal is 0x388. */
 #ifndef DAOBJCTMECHA03_C_H
 #define DAOBJCTMECHA03_C_H
@@ -13,7 +13,7 @@
 #ifdef __cplusplus
 extern "C" void *_ZN7fBase_cnwEj(unsigned size);
 #include "dBgActor_c.h"
-#include "ShadowModel.h"
+#include "dExtShadowModel_c.h"
 
 struct daObjCtMecha03_c : dBgActor_c {
     /* A pendulum, in the four fields Behavior integrates: mSwingDir is the sign
@@ -29,7 +29,7 @@ struct daObjCtMecha03_c : dBgActor_c {
     s16 mSoundTimer;                  /* 0x326 -- DecIfAbove0_Short; at 0 plays bank-3 sound 0x38, reloaded as mPauseTimer + 0xf */
     s16 mPauseTimer;                  /* 0x328 -- DecIfAbove0_Short; gates the whole swing update */
     s32 mGroundY;                     /* 0x32c -- probe Y, then dBgCh_Gnd::clsnY on a hit */
-    ShadowModel mShadowModel;         /* 0x330 */
+    dExtShadowModel_c mShadowModel;         /* 0x330 */
     /* func_ov065_02119fe8 builds this from mAngleY, then writes X / ground Y / Z
      * into its translation before passing it to DropShadowScaleXYZ. */
     Matrix4x3 mShadowMat;             /* 0x358 */

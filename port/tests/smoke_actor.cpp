@@ -2,7 +2,7 @@
 //
 // ArrowSignRight_Spawn allocates from the game heap and runs the ctor
 // chain (dBgActor_c -> dActor_c -> fBase_c, Model and dBgW_KcMbg
-// subobjects, ShadowModel); then every lifecycle step dispatches THROUGH
+// subobjects, dExtShadowModel_c); then every lifecycle step dispatches THROUGH
 // THE VTABLE exactly as the game's processing lists do: InitResources
 // loads the sign's model and collider through the full asset pipeline,
 // Behavior ticks, Render walks the model into the GX. This is the vtable
