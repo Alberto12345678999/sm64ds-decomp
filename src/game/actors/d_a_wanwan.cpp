@@ -18,7 +18,7 @@
 #include "daObjWanwanShutter_c.h"
 #include "SharedFilePtr.h"
 #include "Player.h"
-#include "Camera.h"
+#include "dCamera_c.h"
 #include "Sound.h"
 #include "dCc_c.h"
 #include "dExtFrameCtrl_c.h"
@@ -81,7 +81,6 @@ void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(
     Player *player, const Vector3 *pos, unsigned kind, int power, unsigned a,
     unsigned b, unsigned c);
 short _ZN4cstd5atan2E5Fix12IiES1_(int y, int x);
-void _ZN6Camera9SetFlag_3Ev(Camera *cam);
 
 void MulVec3Mat4x3(void *v, void *m, void *dst);
 void Vec3_Add(void *out, void *a, void *b);
@@ -919,7 +918,6 @@ extern "C" void func_ov014_021115ec(u8 *raw)
     void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *self_, void *bca, s32 a, s32 fix, unsigned b);
     s32 Vec3_ApproachHorz(Vector3 *out, Vector3 *target, s32 maxStep);
     void func_ov014_02112ea8(void *actor);
-    void _ZN6Camera9SetFlag_3Ev(void *cam);
     extern s16 data_02082214[];
     extern void *data_0209f318;
 
@@ -928,7 +926,7 @@ extern "C" void func_ov014_021115ec(u8 *raw)
     Vector3 partnerPos;
     s16 angleToPlayer;
     s16 angleToAnchor;
-    Camera *camera;
+    dCamera_c *camera;
 
     Sound::PlaySecretSound(self, &self->mSecretSound);
     fence = (daObjWanwanShutter_c *)dActor_c::FindWithID((unsigned)self->mFenceUniqueID);
@@ -942,7 +940,7 @@ extern "C" void func_ov014_021115ec(u8 *raw)
         partnerPos.z = src[2];
         ApproachAngle(ap, z, 4, 0x200, fifth);
     }
-    camera = (Camera *)data_0209f318;
+    camera = (dCamera_c *)data_0209f318;
     angleToPlayer = self->HorzAngleToCPlayer();
     angleToAnchor = Vec3_HorzAngle((Vector3 *)&self->mPosX, (Vector3 *)&self->mSpawnPosX);
     switch (self->mReleaseStep) {
@@ -1034,7 +1032,7 @@ extern "C" void func_ov014_021115ec(u8 *raw)
                 self->mHorzSpeed = 0x1e000;
                 self->mVertSpeed = kChainSlack;
             }
-            _ZN6Camera9SetFlag_3Ev(camera);
+            camera->SetFlag_3();
             incRelease(self);
         }
         break;

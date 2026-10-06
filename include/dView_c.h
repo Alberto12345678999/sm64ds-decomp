@@ -4,7 +4,7 @@
 #include "dBase_c.h"
 #include "math/Matrix.h"
 
-/* The shared 0x80-byte view base used by Camera.
+/* The shared 0x80-byte view base used by dCamera_c.
  *
  * RTTI names the class: _ZTS7dView_c at 0x02086e48 reads "7dView_c" and
  * _ZTI7dView_c at 0x02086ecc is an __si_class_type_info on dBase_c. The
@@ -15,9 +15,9 @@
  * The implicit default constructor is intentional. It lets derived
  * constructors generate the original fBase_c -> dBase_c -> dView_c vptr
  * sequence while leaving the matrix initialization to the derived class, as
- * Camera's C1 bytes do.
+ * dCamera_c's C1 bytes do.
  *
- * The destructor is inline because Camera's ROM destructor inlines dView_c's
+ * The destructor is inline because dCamera_c's ROM destructor inlines dView_c's
  * own vptr store before the already-inline dBase_c teardown. A declaration
  * alone instead emits a call to ViewD2 and cannot reproduce that derived
  * lifecycle. The TU's emit-forcers pin the out-of-line D1/D0 copies.

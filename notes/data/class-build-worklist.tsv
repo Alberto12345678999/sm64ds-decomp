@@ -199,7 +199,7 @@ dScMiniGm_c	DONE	include\dScMiniGm_c.h	dScene_c	0	ov005	7
 dScStage_c	DONE	include\dScStage_c.h  [alias: header uses pre-rename name]	dScene_c	0	arm9;ov002	43
 dScStarSel_c	DONE	include\dScStarSel_c.h	dScene_c	0	ov003	7
 dScTitle_c	DONE	include\dScTitle_c.h	dScene_c	0	ov003	7
-dCamera_c	DONE	include\Camera.h  [alias: header uses pre-rename name]	dView_c	0	arm9	14
+dCamera_c	DONE	include\dCamera_c.h  [alias: header uses pre-rename name]	dView_c	0	arm9	14
 dFdDummy_c	DONE	include\dFdDummy_c.h	dFdColor_c	0	arm9	5
 dFdWipe_c	DONE	include\FaderWipe.h  [alias: header uses pre-rename name]	dFdColor_c	0	arm9	5
 dWipe_c	DONE	include\dWipe_c.h	dFdColor_c	0	arm9	10

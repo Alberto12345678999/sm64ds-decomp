@@ -1532,7 +1532,7 @@ extern u16*data_0209f334;
 extern u16*func_0203dabc(void);
 extern u32 VRAM_Tex_Size;
 extern u32 _ZTV7dView_c;
-extern u32 _ZTV6Camera;
+extern u32 _ZTV9dCamera_c;
 extern u32 data_02075238[];
 extern u32 data_0208733c;
 extern u32 data_02099fac;

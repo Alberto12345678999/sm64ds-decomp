@@ -10,7 +10,7 @@
 #include "common.h"
 #include "dActor_c.h"
 #include "Player.h"
-#include "Camera.h"
+#include "dCamera_c.h"
 #include "SharedFilePtr.h"
 
 bool ApproachLinear(short &value, short target, short step);
@@ -23,7 +23,6 @@ bool ApproachLinear(short &value, short target, short step);
 extern "C" {
 
 /* camera */
-void  _ZN6Camera9SetFlag_3Ev(void *cam);
 
 /* math / vector helpers */
 void  _Z14ApproachLinearR7Vector3RKS_5Fix12IiE(void *cur, const void *tgt, int step);
@@ -151,7 +150,7 @@ struct Range { int a, b, c, d, e, f; };
 extern "C" int func_ov085_0212d5dc(daC_Jugem_c *c) {
   Range r;
   void* cam = *(void**)&data_0209f318;
-  _ZN6Camera9SetFlag_3Ev(cam);
+  ((dCamera_c *)cam)->SetFlag_3();
   r.a = -0x4b0000;
   r.b = 0x19f000;
   r.c = 0x1a90000;
@@ -159,13 +158,13 @@ extern "C" int func_ov085_0212d5dc(daC_Jugem_c *c) {
   r.e = 0x250000;
   r.f = 0x1d4c000;
   _Z14ApproachLinearR7Vector3RKS_5Fix12IiE(&c->mCamLookX, &r, 0x70000);
-  ((Camera *)cam)->SetLookAt(*(Vector3 *)&c->mCamLookX);
-  ((Camera *)cam)->SetPos(*(Vector3 *)&c->mCamPosX);
+  ((dCamera_c *)cam)->SetLookAt(*(Vector3 *)&c->mCamLookX);
+  ((dCamera_c *)cam)->SetPos(*(Vector3 *)&c->mCamPosX);
   Vec3_Dist(&c->mCamLookX, &r);
   c->mTimer++;
   if (c->mTimer > 0x64) {
     if (_ZN5Sound7PlaySubEjjj5Fix12IiEb(0x4b, 0x7f, 0, 0x7222, false) != 0) {
-      *(int *)&((Camera *)cam)->mFlags &= ~8;
+      *(int *)&((dCamera_c *)cam)->mFlags &= ~8;
       c->mHorzSpeed = 0;
       c->mTimer = 0;
       c->unk_2cc = 0;
@@ -203,7 +202,7 @@ int func_ov085_0212d73c(daC_Jugem_c *c)
     int len;
 
     cam = data_0209f318;
-    _ZN6Camera9SetFlag_3Ev(cam);
+    ((dCamera_c *)cam)->SetFlag_3();
     c->mSfxHandle = _ZN5Sound8PlayLongEjjjRK7Vector3s(c->mSfxHandle, 3, 0x182, &c->mCamSpacePosX, 0);
     ApproachLinear(c->mAngleY, Vec3_HorzAngle(&c->mPosX, &data_ov085_0213084c), 0x200);
     ApproachLinear(c->mAngleX, Vec3_VertAngle(&c->mPosX, &data_ov085_0213084c), 0x200);
@@ -222,8 +221,8 @@ int func_ov085_0212d73c(daC_Jugem_c *c)
     spd = c->mHorzSpeed >> 1;
     _Z14ApproachLinearR7Vector3RKS_5Fix12IiE(&c->mCamLookX, &c->mPosX, spd);
     _Z14ApproachLinearR7Vector3RKS_5Fix12IiE(&c->mCamPosX, &v[1], spd);
-    ((Camera *)cam)->SetLookAt(*(Vector3 *)&c->mCamLookX);
-    ((Camera *)cam)->SetPos(*(Vector3 *)&c->mCamPosX);
+    ((dCamera_c *)cam)->SetLookAt(*(Vector3 *)&c->mCamLookX);
+    ((dCamera_c *)cam)->SetPos(*(Vector3 *)&c->mCamPosX);
     Vec3_Sub(&v[2], &c->mPosX, &data_ov085_0213084c);
     len = LenVec3(&v[2]);
     if (len == 0 || len < 0x7d0000)
@@ -242,15 +241,15 @@ int func_ov085_0212d8ec(daC_Jugem_c *c) {
   c->unk_2cc = 0;
   c->unk_2e0 = 0;
   cam = data_0209f318;
-  _ZN6Camera9SetFlag_3Ev(cam);
+  ((dCamera_c *)cam)->SetFlag_3();
   c->mCamLookX = 0xffc67000;
   c->mCamLookY = 0x6ea000;
   c->mCamLookZ = 0x1212000;
   c->mCamPosX = 0xffb65000;
   c->mCamPosY = 0x1d5000;
   c->mCamPosZ = 0x17fc000;
-  ((Camera *)cam)->SetLookAt(*(Vector3 *)&c->mCamLookX);
-  ((Camera *)cam)->SetPos(*(Vector3 *)&c->mCamPosX);
+  ((dCamera_c *)cam)->SetLookAt(*(Vector3 *)&c->mCamLookX);
+  ((dCamera_c *)cam)->SetPos(*(Vector3 *)&c->mCamPosX);
   c->unk_2cc = 0xa0;
   c->mPosX = data_ov085_02130840[0];
   c->mPosY = data_ov085_02130840[1];
@@ -318,15 +317,15 @@ int func_ov085_0212db04(daC_Jugem_c *c) {
   c->mTargetY = c->mPosY;
   c->mTargetZ = c->mPosZ;
   cam = data_0209f318;
-  _ZN6Camera9SetFlag_3Ev(cam);
+  ((dCamera_c *)cam)->SetFlag_3();
   look.x = -0x304000;
   look.y = 0x3c1000;
   look.z = 0x1c77000;
   pos.x = -0x540000;
   pos.y = 0xe1000;
   pos.z = 0x19e4000;
-  ((Camera *)cam)->SetLookAt(*(Vector3 *)&look);
-  ((Camera *)cam)->SetPos(*(Vector3 *)&pos);
+  ((dCamera_c *)cam)->SetLookAt(*(Vector3 *)&look);
+  ((dCamera_c *)cam)->SetPos(*(Vector3 *)&pos);
   c->mHorzSpeed = 0;
   return 1;
 }
@@ -429,15 +428,15 @@ int func_ov085_0212ddc4(daC_Jugem_c *c) {
   c->mTalkPlayer = 0;
   c->mAngleZ = 0;
   cam = data_0209f318;
-  _ZN6Camera9SetFlag_3Ev(cam);
+  ((dCamera_c *)cam)->SetFlag_3();
   look.x = 0xffadd000;
   look.y = 0x17e000;
   look.z = 0x1a29000;
   pos.x = 0xffa54000;
   pos.y = 0x1f4000;
   pos.z = 0x1ccf000;
-  ((Camera *)cam)->SetLookAt(*(Vector3 *)&look);
-  ((Camera *)cam)->SetPos(*(Vector3 *)&pos);
+  ((dCamera_c *)cam)->SetLookAt(*(Vector3 *)&look);
+  ((dCamera_c *)cam)->SetPos(*(Vector3 *)&pos);
   return 1;
 }
 }
@@ -501,15 +500,15 @@ extern "C" int func_ov085_0212df84(daC_Jugem_c *c)
         func_ov002_020d228c(player);
     }
     cam = data_0209f318;
-    _ZN6Camera9SetFlag_3Ev(cam);
+    ((dCamera_c *)cam)->SetFlag_3();
     look.x = 0xff883000;
     look.y = 0x2ef000;
     look.z = 0x1a36000;
     pos.x = 0xffb18000;
     pos.y = 0x18c000;
     pos.z = 0x1a89000;
-    ((Camera *)cam)->SetLookAt(*(Vector3 *)&look);
-    ((Camera *)cam)->SetPos(*(Vector3 *)&pos);
+    ((dCamera_c *)cam)->SetLookAt(*(Vector3 *)&look);
+    ((dCamera_c *)cam)->SetPos(*(Vector3 *)&pos);
     c->mStateTimer = 0x79;
     c->mPosX = c->mTargetX;
     c->mPosY = c->mTargetY;
@@ -720,11 +719,11 @@ extern "C" {  /* .c-derived member: C linkage for the whole block */
 int func_ov085_0212e5ac(daC_Jugem_c *self)
 {
     Vector3 in, out, plpos;
-    Camera *cam;
+    dCamera_c *cam;
     Vector3* src;
     Player *p;
 
-    cam = (Camera *)data_0209f318;
+    cam = (dCamera_c *)data_0209f318;
     in.x = 0; in.y = 0; in.z = 0;
     out.x = 0; out.y = 0; out.z = 0;
     src = (Vector3 *)(((int)&cam->pos));
@@ -756,7 +755,7 @@ int func_ov085_0212e5ac(daC_Jugem_c *self)
     }
     *(int *)(((int)&self->mPosZ)) += out.z;
     self->mPrevAngleY = 0x8000 - cam->mAngleY;
-    /* The halfword after Camera::mAngleY at 0x17e (Camera.h has no member for
+    /* The halfword after dCamera_c::mAngleY at 0x17e (dCamera_c.h has no member for
        it). Possibly the pitch, but only this one negated use suggests so. */
     self->mPrevAngleX = -*(short *)((char *)&cam->mAngleY + 2);
     return 1;

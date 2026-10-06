@@ -1,9 +1,9 @@
 //cpp
-#include "Camera.h"
+#include "dCamera_c.h"
 
 #ifdef _MSC_VER
 /* THE HOST NEEDS THE ROM'S FLAT D0 NAME, AND MSVC NEVER EMITS IT. MSVC
- * folds the Itanium destructor variants into the one ~Camera() it
+ * folds the Itanium destructor variants into the one ~dCamera_c() it
  * emits, which the class's D1 file already defines, so compiling the
  * definition below as well would define that symbol twice. This arm
  * spells out, in terms of it, what the deleting destructor this file is
@@ -12,14 +12,14 @@
  * class-specific operator delete. Nothing here reaches mwccarm: it builds
  * the `#else` arm and emits the ROM bytes it always emitted, and the
  * object is byte-identical either way. */
-extern "C" Camera *_ZN6CameraD0Ev(Camera *thiz)
+extern "C" dCamera_c *_ZN9dCamera_cD0Ev(dCamera_c *thiz)
 {
-    thiz->Camera::~Camera();        /* the D1 body, through the one host symbol */
-    Camera::operator delete(thiz);  /* the class-specific delete D0 ends with */
+    thiz->dCamera_c::~dCamera_c();        /* the D1 body, through the one host symbol */
+    dCamera_c::operator delete(thiz);  /* the class-specific delete D0 ends with */
     return thiz;
 }
 #else
-Camera::~Camera()
+dCamera_c::~dCamera_c()
 {
 }
 #endif
