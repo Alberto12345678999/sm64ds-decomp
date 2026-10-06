@@ -2430,7 +2430,7 @@ extern int func_ov064_021192bc();
 extern int func_ov064_0211982c(void*, void*);
 extern void func_ov064_0211a6ec(char*, int);
 extern void func_ov064_0211a734(void*);
-extern void func_ov064_0211a9b4(char*);
+
 extern void func_ov065_02115ff0(char*);
 extern void func_ov065_0211696c(char*);
 extern void func_ov065_02118c4c(char*);
