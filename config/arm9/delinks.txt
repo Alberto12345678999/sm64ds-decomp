@@ -7336,17 +7336,9 @@ src/func_020551f0.c:
     complete
     .text start:0x020551f0 end:0x02055238
 
-src/_ZN3G2x18SetBlendBrightnessEPVtts.cpp:
+src/engine/gx/G2x.cpp:
     complete
-    .text start:0x02055238 end:0x0205525c
-
-src/_ZN3G2x13SetBlendAlphaEPVttttj.cpp:
-    complete
-    .text start:0x0205525c end:0x02055278
-
-src/_ZN3G2x12SetBGyAffineEPVtP9Matrix2x2iiii.cpp:
-    complete
-    .text start:0x02055278 end:0x0205532c
+    .text start:0x02055238 end:0x0205532c
 
 src/func_0205532c.c:
     complete

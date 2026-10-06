@@ -8522,6 +8522,9 @@
     "src/engine/heap/Heap.cpp#_ZN4Heap10SetDefaultEv": "tangosdev",
     "src/engine/collision/CLPS_BlockRef.cpp#_ZN13CLPS_BlockRefaSER10CLPS_Block": "tangosdev",
     "src/engine/collision/CLPS_BlockRef.cpp#_ZN13CLPS_BlockRefD1Ev": "tangosdev",
-    "src/engine/collision/CLPS_BlockRef.cpp#_ZN13CLPS_BlockRefC1Ev": "tangosdev"
+    "src/engine/collision/CLPS_BlockRef.cpp#_ZN13CLPS_BlockRefC1Ev": "tangosdev",
+    "src/engine/gx/G2x.cpp#_ZN3G2x18SetBlendBrightnessEPVtts": "tangosdev",
+    "src/engine/gx/G2x.cpp#_ZN3G2x13SetBlendAlphaEPVttttj": "andrewboudreau",
+    "src/engine/gx/G2x.cpp#_ZN3G2x12SetBGyAffineEPVtP9Matrix2x2iiii": "andrewboudreau"
   }
 }
