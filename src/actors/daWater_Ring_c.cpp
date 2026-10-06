@@ -5,11 +5,10 @@
  * One out-of-line destructor emits D1 then D0;
  * `#pragma defer_codegen off` lays .text down in source order.
  *
- * The seven func_ov064_* helpers are the state bodies daWater_Ring_c::State
- * points at, the state installer, and the per-frame matrix update. Their ROM
- * names are unrecovered, so they stay extern "C" free functions taking the
- * ring explicitly; a member spelling would mangle to a symbol that does not
- * exist.
+ * The seven func_ov064_* members are the state bodies daWater_Ring_c::State
+ * points at (the tables are filled with member-function pointers), the state
+ * installer, and the per-frame pose update. Their ROM names are unrecovered,
+ * so they keep their address names.
  */
 
 #pragma defer_codegen off
@@ -21,10 +20,10 @@
 #include "Player.h"
 
 extern "C" {
-/* decl_common.h types both state tables as plain data; they are cast where
-   they are installed. */
-extern int data_ov064_0211c944;
-extern char data_ov064_0211c954[];
+/* The two state tables, ov064 .bss; the overlay's static initializer fills
+   them from .data rows holding these methods' addresses. */
+extern daWater_Ring_c::State data_ov064_0211c944[2];   /* passed */
+extern daWater_Ring_c::State data_ov064_0211c954[2];   /* active */
 extern Vector3 data_ov064_0211c3d0;         /* the collider offset */
 extern s16 data_02082214[];                 /* sine/cosine table */
 extern char data_ov002_0210d6dc[];          /* the ring's BTA */
@@ -42,8 +41,6 @@ void Matrix4x3_ApplyInPlaceToRotationXYZExt(void *m, int x, int y, int z);
    these literals. */
 void _ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj(TextureTransformer *self, BTA_File *animFile, int flags, int speed, unsigned short startFrame);
 void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(dCcAcPos_c *self, dActor_c *actor, const Vector3 *offset, int radius, int height, u32 flags, u32 vulnFlags);
-
-int func_ov064_02119ecc(daWater_Ring_c *self, const daWater_Ring_c::State *state);
 }
 
 extern SharedFilePtr data_ov002_0210da10;   /* the ring's BMD */
@@ -57,8 +54,8 @@ daWater_Ring_c::~daWater_Ring_c()
 }
 
 /* Checks whether the player swam through the ring this frame. */
-// @symbol func_ov064_02119afc
-extern "C" void func_ov064_02119afc(daWater_Ring_c *self)
+// @symbol _ZN14daWater_Ring_c19func_ov064_02119afcEv
+void daWater_Ring_c::func_ov064_02119afc()
 {
     Vector3 otherPos;
     Vector3 offset;
@@ -66,10 +63,10 @@ extern "C" void func_ov064_02119afc(daWater_Ring_c *self)
     int isPlayer;
     u32 id;
 
-    self->mTextureTransformer.speed = 0x1000;
+    mTextureTransformer.speed = 0x1000;
     offset = data_ov064_0211c3d0;
-    self->mdCcAcPos_c.SetPosRelativeToActor(offset);
-    id = self->mdCcAcPos_c.otherOwner;
+    mdCcAcPos_c.SetPosRelativeToActor(offset);
+    id = mdCcAcPos_c.otherOwner;
     if (id == 0) return;
     other = dActor_c::FindWithID(id);
     if (other == 0) return;
@@ -81,49 +78,50 @@ extern "C" void func_ov064_02119afc(daWater_Ring_c *self)
         otherPos.y = pos.y;
         otherPos.z = pos.z;
     }
-    if (AngleDiff(self->mAngleX, Vec3_VertAngle((Vector3 *)&self->mPosX, &otherPos)) >= 0x3000)
+    if (AngleDiff(mAngleX, Vec3_VertAngle((Vector3 *)&mPosX, &otherPos)) >= 0x3000)
         return;
-    if ((self->unk_37c == 1 && ((self->unk_388 >> 16) & 1) != ((self->HorzAngleToCPlayer() >> 16) & 1))
-        || self->unk_37c != 1) {
-        if (self->unk_37c == 1)
+    if ((mRingType == 1 && ((mPrevPlayerAngle >> 16) & 1) != ((HorzAngleToCPlayer() >> 16) & 1))
+        || mRingType != 1) {
+        if (mRingType == 1)
             ((Player *)other)->Heal(0x100);
-        self->mTextureTransformer.speed = 0x4000;
-        func_ov064_02119ecc(self, (const daWater_Ring_c::State *)&data_ov064_0211c944);
+        mTextureTransformer.speed = 0x4000;
+        func_ov064_02119ecc(data_ov064_0211c944);
     } else {
-        self->unk_388 = self->HorzAngleToCPlayer();
+        mPrevPlayerAngle = HorzAngleToCPlayer();
     }
 }
 
 /* Fading out: grows and fades until it is gone. */
-// @symbol func_ov064_02119c60
-extern "C" int func_ov064_02119c60(daWater_Ring_c *self)
+// @symbol _ZN14daWater_Ring_c19func_ov064_02119c60Ev
+int daWater_Ring_c::func_ov064_02119c60()
 {
-    self->unk_380 -= 2;
-    if (self->unk_380 < 2)
-        self->unk_380 = 2;
-    ApproachLinear(self->mScaleX, 0x3000, 0x199);
-    self->mScaleZ = self->mScaleX;
-    self->mScaleY = self->mScaleZ;
-    if ((u16)self->mStateTimer == 0 || self->mScaleX >= 0x2ffd)
-        self->MarkForDestruction();
+    mOpacity -= 2;
+    if (mOpacity < 2)
+        mOpacity = 2;
+    ApproachLinear(mScaleX, 0x3000, 0x199);
+    mScaleZ = mScaleX;
+    mScaleY = mScaleZ;
+    if ((u16)mStateTimer == 0 || mScaleX >= 0x2ffd)
+        MarkForDestruction();
     return 1;
 }
 
 /* Init of the passed state: tells the spawner which ring was hit. */
-// @symbol func_ov064_02119ce4
-extern "C" int func_ov064_02119ce4(daWater_Ring_c *self) {
-    self->unk_380 = 0x1f;
-    self->mStateTimer = 0x64;
-    int type = self->unk_37c;
+// @symbol _ZN14daWater_Ring_c19func_ov064_02119ce4Ev
+int daWater_Ring_c::func_ov064_02119ce4() {
+    mOpacity = 0x1f;
+    mStateTimer = 0x64;
+    int type = mRingType;
     if (type == 1 || type == 2) {
-        char *spawner = self->unk_38c;
+        char *spawner = (char *)mSpawner;
         if (spawner != 0) {
-            /* The spawner's "ring that was passed" slot; the two spawning
-               classes keep it at different offsets. */
+            /* The spawner's passed-ring slot, at a different offset in each
+               spawning class: daManta_c::mHitRing at +0x3a8,
+               daWater_Hakidasi_c::mPassedRing at +0x31c. */
             if (type == 1) {
-                *(daWater_Ring_c **)(spawner + 0x3a8) = self;
+                *(daWater_Ring_c **)(spawner + 0x3a8) = this;
             } else {
-                *(daWater_Ring_c **)(spawner + 0x31c) = self;
+                *(daWater_Ring_c **)(spawner + 0x31c) = this;
             }
         }
     }
@@ -131,66 +129,66 @@ extern "C" int func_ov064_02119ce4(daWater_Ring_c *self) {
 }
 
 /* Main of the active state: wobbles, spins and waits for the player. */
-// @symbol func_ov064_02119d28
-extern "C" int func_ov064_02119d28(daWater_Ring_c *self) {
+// @symbol _ZN14daWater_Ring_c19func_ov064_02119d28Ev
+int daWater_Ring_c::func_ov064_02119d28() {
     int spd;
-    func_ov064_02119afc(self);
-    if ((u16)self->mStateTimer < 0x1e) {
-        if (self->unk_380 >= 2)
-            self->unk_380--;
+    func_ov064_02119afc();
+    if ((u16)mStateTimer < 0x1e) {
+        if (mOpacity >= 2)
+            mOpacity--;
     }
-    spd = (self->unk_37c == 1) ? 0x333 : 0x199;
-    self->unk_374 += 0x1000;
+    spd = (mRingType == 1) ? 0x333 : 0x199;
+    mWobblePhase += 0x1000;
     {
-        s16 phase = self->unk_374;
+        s16 phase = mWobblePhase;
         int idx = ((u16)phase >> 4) * 2;
         int wobble = (int)((((s64)data_02082214[idx] << 10) + 0x800) >> 12);
-        int target = wobble + self->unk_384;
-        ApproachLinear(self->unk_384, 0x2000, spd);
-        ApproachLinear(self->mScaleX, target, spd);
+        int target = wobble + mScaleBase;
+        ApproachLinear(mScaleBase, 0x2000, spd);
+        ApproachLinear(mScaleX, target, spd);
     }
-    self->unk_378 += 0x800;
+    mSpinPhase += 0x800;
     {
-        s16 phase = self->unk_378;
+        s16 phase = mSpinPhase;
         int idx = ((u16)phase >> 4) * 2;
-        self->mPrevAngleX += (int)((((s64)data_02082214[idx] << 8) + 0x800) >> 12);
+        mPrevAngleX += (int)((((s64)data_02082214[idx] << 8) + 0x800) >> 12);
     }
-    self->mScaleZ = self->mScaleX;
-    self->mScaleY = self->mScaleZ;
-    if ((u16)self->mStateTimer == 0 || self->unk_380 <= 1)
-        self->MarkForDestruction();
+    mScaleZ = mScaleX;
+    mScaleY = mScaleZ;
+    if ((u16)mStateTimer == 0 || mOpacity <= 1)
+        MarkForDestruction();
     return 1;
 }
 
 /* Init of the active state. */
-// @symbol func_ov064_02119ea0
-extern "C" s32 func_ov064_02119ea0(daWater_Ring_c *self) {
-    self->mStateTimer = 0xc8;
-    s32 angle = self->HorzAngleToCPlayer();
-    self->unk_388 = (s16)angle;
+// @symbol _ZN14daWater_Ring_c19func_ov064_02119ea0Ev
+s32 daWater_Ring_c::func_ov064_02119ea0() {
+    mStateTimer = 0xc8;
+    s32 angle = HorzAngleToCPlayer();
+    mPrevPlayerAngle = (s16)angle;
     return 1;
 }
 
 /* Installs a state and runs its init. */
-// @symbol func_ov064_02119ecc
-extern "C" int func_ov064_02119ecc(daWater_Ring_c *self, const daWater_Ring_c::State *state)
+// @symbol _ZN14daWater_Ring_c19func_ov064_02119eccEPKNS_5StateE
+int daWater_Ring_c::func_ov064_02119ecc(const State *state)
 {
-    self->mState = state;
-    const daWater_Ring_c::State *installed = self->mState;
+    mState = state;
+    const State *installed = mState;
     if (installed->init == 0)
         return 1;
-    return (self->*installed->init)();
+    return (this->*installed->init)();
 }
 
 /* Poses the model: position, rotation and opacity. */
-// @symbol func_ov064_02119f1c
-extern "C" void func_ov064_02119f1c(daWater_Ring_c *self) {
+// @symbol _ZN14daWater_Ring_c19func_ov064_02119f1cEv
+void daWater_Ring_c::func_ov064_02119f1c() {
     Vector3 v;
-    Vec3_Asr(&v, (Vector3 *)&self->mPosX, 3);
+    Vec3_Asr(&v, (Vector3 *)&mPosX, 3);
     Matrix4x3_FromTranslation(&data_020a0e68, v.x, v.y, v.z);
-    Matrix4x3_ApplyInPlaceToRotationXYZExt(&data_020a0e68, self->mAngleX, self->mAngleY, self->mAngleZ);
-    self->mModel.ApplyOpacity(self->unk_380, 1);
-    self->mModel.mat4x3 = data_020a0e68;
+    Matrix4x3_ApplyInPlaceToRotationXYZExt(&data_020a0e68, mAngleX, mAngleY, mAngleZ);
+    mModel.ApplyOpacity(mOpacity, 1);
+    mModel.mat4x3 = data_020a0e68;
 }
 
 // @symbol _ZN14daWater_Ring_c16CleanupResourcesEv
@@ -223,7 +221,7 @@ int daWater_Ring_c::Behavior()
     mAngleX = mPrevAngleX;
     mAngleY = mPrevAngleY;
     mAngleZ = mPrevAngleZ;
-    func_ov064_02119f1c(this);
+    func_ov064_02119f1c();
     mdCcAcPos_c.Clear();
     mdCcAcPos_c.Update();
     mTextureTransformer.Advance();
@@ -237,10 +235,10 @@ int daWater_Ring_c::InitResources()
     if (mModel.SetFile(f, 1, -1) == 0)
         return 0;
 
-    unk_37c = param1 & 0xff;
-    if (unk_37c > 2 || unk_37c == 0xff)
+    mRingType = param1 & 0xff;
+    if (mRingType > 2 || mRingType == 0xff)
     {
-        unk_37c = 0;
+        mRingType = 0;
     }
 
     TextureTransformer::Prepare(*((BMD_File **)&data_ov002_0210da10)[1], *(BTA_File *)data_ov002_0210d6dc);
@@ -257,8 +255,8 @@ int daWater_Ring_c::InitResources()
     v.z = data_ov064_0211c3d0.z;
     _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(&mdCcAcPos_c, this, &v, 0x88000, 0xe8000, 0x800006, 0);
 
-    unk_380 = 0x1f;
-    func_ov064_02119ecc(this, (const daWater_Ring_c::State *)data_ov064_0211c954);
+    mOpacity = 0x1f;
+    func_ov064_02119ecc(data_ov064_0211c954);
     return 1;
 }
 

@@ -63,8 +63,8 @@ void  DecompressLZ16(void *src, void *dst);
  * 16 bytes. Keep it wide. */
 u32   LoadCompressedFileAt(unsigned int fileID, void *target);
 void  Ov004_Deallocate(void *x);
-struct Camera;
-void  Camera_UpdateMatrices(Camera *camera);
+struct dCamera_c;
+void  Camera_UpdateMatrices(dCamera_c *camera);
 
 /* The same for the saved-bank restores: GX takes u16, and passing the saved
  * s32 through the real declaration adds 16 bytes each to Virtual7C and
@@ -357,7 +357,7 @@ int dScMgD3DBase_c::OnKicked()
             unk_4664 = 0;
         int cameraAddress = (int)(raw + 0x466c + unk_4664 * 0xbc);
         data_ov006_02141a44 = cameraAddress;
-        Camera_UpdateMatrices((Camera *)cameraAddress);
+        Camera_UpdateMatrices((dCamera_c *)cameraAddress);
         if (unk_4664 == 1) {
             func_ov006_020e7508();
         } else {

@@ -60,7 +60,7 @@ not present them yet. Each stays as written; none is claimed to be impossible.
 
 | id | location | field / access | owning surface | issue | next owner |
 | --- | --- | --- | --- | --- | --- |
-| B2-RF-01 | `src/actors/daBombking_c.cpp:37` | `Player+8`, `+0x6ce`, `+0xc8`; `Camera+0x114`/`+0x154` | Player, Camera | #2479 | unassigned |
+| B2-RF-01 | `src/actors/daBombking_c.cpp:37` | `Player+8`, `+0x6ce`, `+0xc8`; `dCamera_c+0x114`/`+0x154` | Player, dCamera_c | #2479 | unassigned |
 | B2-RF-02 | `src/actors/daMip_c.cpp:75` | `Player+8`, `+0x6d9`, `+0x6ce` | Player | #2414 | unassigned |
 | B2-RF-03 | `src/actors/daMky_c.cpp:22` | `Player+8`, cap `+0xc8` | Player, cap class | #2410 | unassigned |
 | B2-RF-04 | `src/actors/daSanbo_c.cpp:65` | `Player+8` | Player | #2477, #2558 | unassigned |

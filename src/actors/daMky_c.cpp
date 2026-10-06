@@ -40,7 +40,7 @@
  * - func_ov030_02112094 copies the model matrix through a 12-word POD:
  *   Matrix4x3 embeds Vector3, and Vector3 has a destructor.
  *
- * Leftover: named daMky_c / dActor_c / Player / Camera fields replaced the
+ * Leftover: named daMky_c / dActor_c / Player / dCamera_c fields replaced the
  * char* recasts of this, and tubuild verify stayed 46/46. Measured DIFF,
  * reverted: func_ov030_02112094 spelled the bone as
  * &mModelAnim.data.transforms[5] and came out 999 words off, with reloc
@@ -68,7 +68,7 @@
 #include "dBgCh_Actr.h"
 #include "SaveData.h"
 #include "Player.h"
-#include "Camera.h"
+#include "dCamera_c.h"
 #include "SurfaceInfo.h"
 #include "dBgCh_Lin.h"
 #include "dBgPi.h"
@@ -1110,7 +1110,7 @@ skip_raycast:
             if (((Player *)this->unk_3a8)->StartTalk(*this, 1) != 0) {
                 Vector3 camPos;
                 {
-                    Vector3 *src = &((Camera *)data_0209f318)->pos;
+                    Vector3 *src = &((dCamera_c *)data_0209f318)->pos;
                     camPos.x = src->x;
                     camPos.y = src->y;
                     camPos.z = src->z;
@@ -1243,7 +1243,7 @@ int daMky_c::func_ov030_021136b0()
         {
             u8 fl = this->mHasSpawnedCap;
             msg = fl ? 0xbe : 0xbf;
-            Camera *camBase = (Camera *)data_0209f318;
+            dCamera_c *camBase = (dCamera_c *)data_0209f318;
             Vector3 *src = &camBase->pos;
             camPos.x = src->x;
             camPos.y = src->y;

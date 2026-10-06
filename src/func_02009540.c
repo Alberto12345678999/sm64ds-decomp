@@ -1,17 +1,17 @@
-struct Camera;
+struct dCamera_c;
 
-extern int func_020091f8(struct Camera *, struct Camera *, int, int);
+extern int func_020091f8(struct dCamera_c *, struct dCamera_c *, int, int);
 extern void Vec3_RotateYAndTranslate(void *out, int src, short angle,
                                     const int *data);
 extern void _Z14ApproachLinearR7Vector3RKS_5Fix12IiE(void *dest, const void *src, int factor);
-extern void func_02009138(struct Camera *, int);
+extern void func_02009138(struct dCamera_c *, int);
 extern const int data_02086ea8[];
 
-int func_02009540(struct Camera *cam)
+int func_02009540(struct dCamera_c *cam)
 {
     /* call func_020091f8(cam, cam+0x120, *(short*)(cam+0x186), 0) */
     func_020091f8(cam,
-                  (struct Camera *)((char *)cam + 0x120),
+                  (struct dCamera_c *)((char *)cam + 0x120),
                   *(short *)((char *)cam + 0x186),
                   0);
 

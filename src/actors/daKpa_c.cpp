@@ -35,8 +35,8 @@
  *    func_ov060_021132a4, func_ov060_02112ee0 and func_ov060_02112bfc; the gotos
  *    in func_ov060_02115c1c; the data_ov060_02119294/6/8 + offset reads; and the
  *    opaque Obj view in Bowser_IsAnimAtLastFrame.
- *  - Behavior stores `this` at +0x114 of the object at data_0209f318 (a Camera);
- *    Camera.h has no member there, so it stays a byte offset.
+ *  - Behavior stores `this` at +0x114 of the object at data_0209f318 (a dCamera_c);
+ *    dCamera_c.h has no member there, so it stays a byte offset.
  *  - Callees known only by address, whose purpose this file does not establish:
  *    func_020092c4, func_0200fa04, func_ov002_020c56f0, func_ov060_02117a3c,
  *    func_02038408, func_02011d50, func_02011cfc. Likewise the trailing arguments
@@ -80,10 +80,10 @@
 #include "daKpa2Bg_c.h"
 #include "daKirai_c.h"
 #include "Player.h"
-#include "Camera.h"
 #include "daObjKey_c.h"
 #include "types.h"
 #include "decl_common.h"
+#include "dCamera_c.h"
 #include "dBgCh_Gnd.h"
 #include "dActor_c.h"
 #include "dBgCh_Actr.h"
@@ -296,14 +296,11 @@ struct Obj { virtual void v0(); virtual void v1(); virtual void v2(); virtual vo
 /* TUBUILD CONFLICT -- alternate #define of LAUND, from the legacy file for func_ov060_021130c0, NOT applied: #define LAUND(p) ((void*)(p)) */
 
 extern "C" {
-/* Camera base pointer; Bowser publishes itself into the target slot at +0x114,
+/* dCamera_c base pointer; Bowser publishes itself into the target slot at +0x114,
  * so the offset is a byte offset from this base, not a field of a known class. */
 extern char *data_0209f318;
 extern short data_02082214[];
 extern void* _ZN8dActor_c13ClosestPlayerEv(void *thiz);
-extern void _ZN6Camera9SetFlag_3Ev(void*);
-extern void _ZN6Camera9SetLookAtERK7Vector3(void*, const struct Vector3*);
-extern void _ZN6Camera6SetPosERK7Vector3(void*, const struct Vector3*);
 extern int Vec3_HorzDist(const struct Vector3*, const struct Vector3*);
 extern short Vec3_HorzAngle(const struct Vector3*, const struct Vector3*);
 extern int func_020092c4(void*, void*, void*);
@@ -3891,7 +3888,7 @@ Camera::mFlags. */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 int func_ov060_02111f08(daKpa_c *kpa)
 {
-    Camera* cam = (Camera *)data_0209f318;
+    dCamera_c* cam = (dCamera_c *)data_0209f318;
     char* player = (char*)_ZN8dActor_c13ClosestPlayerEv(kpa);
     struct Vector3 sp;
     struct Vector3* pv;
@@ -3906,13 +3903,13 @@ int func_ov060_02111f08(daKpa_c *kpa)
 
     switch (kpa->mCutsceneStep) {
     case 0:
-        _ZN6Camera9SetFlag_3Ev(cam);
+        cam->SetFlag_3();
         pv = (struct Vector3*)&((dActor_c *)player)->mPosX;
         sp.x = pv->x;
         sp.y = pv->y;
         sp.z = pv->z;
         sp.y = kpa->mPosY;
-        _ZN6Camera9SetLookAtERK7Vector3(cam, &sp);
+        cam->SetLookAt(sp);
         kpa->mCamLookAtX = sp.x;
         kpa->mCamLookAtY = sp.y;
         kpa->mCamLookAtZ = sp.z;
@@ -3922,7 +3919,7 @@ int func_ov060_02111f08(daKpa_c *kpa)
         kpa->mCamPosX = kpa->mPosX + (int)(((long long)v * data_02082214[k * 2] + 0x800) >> 12);
         kpa->mCamPosY = kpa->mPosY + 0xc8000;
         kpa->mCamPosZ = kpa->mPosZ + (int)(((long long)v * data_02082214[k * 2 + 1] + 0x800) >> 12);
-        _ZN6Camera6SetPosERK7Vector3(cam, (struct Vector3*)(&kpa->mCamPosX));
+        cam->SetPos(*(const Vector3 *)(&kpa->mCamPosX));
         p = (unsigned char*)(&kpa->mCutsceneStep);
         *p = *p + 1;
         break;
