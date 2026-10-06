@@ -26,6 +26,7 @@ sys.path.insert(0, str(TOOLS))
 
 import build_pin as BP     # noqa: E402
 import match as M          # noqa: E402
+import tubuild             # noqa: E402
 
 
 def _toolchain():
@@ -1296,6 +1297,8 @@ if __name__ == "__main__":
             try:
                 fn()
                 print(f"  PASS  {nm}")
+            except unittest.SkipTest as e:
+                print(f"  SKIP  {nm}: {e}")
             except AssertionError as e:
                 fails += 1
                 print(f"  FAIL  {nm}: {e}")
@@ -1304,9 +1307,6 @@ if __name__ == "__main__":
              "themselves rather than failing)")
     print(f"\n{ran} test(s) run, {fails} failure(s)")
     sys.exit(1 if fails else 0)
-
-
-import tubuild
 
 
 def test_manifest_order_handles_rccarpet_owned_subset_after_rtti_externalization():
@@ -2465,7 +2465,7 @@ def test_bare_brace_where_a_signature_belongs_is_refused_not_emitted():
 
 
 def test_elaborated_return_type_is_not_a_shadow_declaration():
-    """Real inputs: src/_ZN11dCapEnemy_c15RespawnIfHasCapEv.cpp and
+    """Real inputs: dCapEnemy_c::RespawnIfHasCap and
     src/func_02041b60.c. Both open on the word `struct`, but as an elaborated
     type specifier on the RETURN type -- the flat-C sources spell it that way
     constantly. Filing the line as a declaration put the function's own

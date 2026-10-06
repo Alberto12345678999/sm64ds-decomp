@@ -351,7 +351,7 @@ RTTI names read straight off the vtables (typeinfo name strings):
 | object | RTTI name | note |
 |---|---|
 | `data_0208e4b8` | `7dBase_c` | the unnamed intermediate base §5b predicted; vtable already carries the class's 18 slots |
-| `_ZTV4View` | `7dView_c` | overrides slot 9 (Render) + D1/D0 only; adds no new virtuals |
+| `_ZTV7dView_c` | `7dView_c` | overrides slot 9 (Render) + D1/D0 only; adds no new virtuals |
 | `_ZTV6Camera` | `9dCamera_c` | the project's `Camera` |
 
 Chain: **`dCamera_c : dView_c : dBase_c : fBase_c`**. The factory's three
@@ -364,9 +364,9 @@ Layout consequence: `dView_c` owns the 48-byte matrix at +0x50 (constructed
 with `Matrix4x3_LoadIdentity(&mat)` mid-fold), making it 0x80 tall — which is
 exactly why auto-generated `Camera.h` shows `pad_000[0x80]` before `lookAt`:
 those bytes are base subobjects, not padding. Reference-graph facts: only
-`Camera` derives from `View` (five `_ZTV4View` references total: two inside
-Camera's D1/D0 teardown, two inside dView_c's own dtor pair, one in the
-factory), and `View` has no out-of-line constructor anywhere — its
+`Camera` derives from `dView_c` (five `_ZTV7dView_c` references total: two
+inside Camera's D1/D0 teardown, two inside dView_c's own dtor pair, one in
+the factory), and `dView_c` has no out-of-line constructor anywhere — its
 construction exists only inside the folded factory, so its ctor must have
 been defined inline in the original header.
 
@@ -396,11 +396,10 @@ no vtable. An ABI probe settles the shape: dBgPi introduces the virtual
 destructor and derives from the non-polymorphic dBgPc. With no dynamic primary
 base, the compiler places dBgPi's own vptr at +0x00 and its dBgPc base at +0x04.
 The generated C2 sequence therefore constructs dBgPc at +0x04 before storing
-dBgPi's vptr. C1 now lives in `src/_ZN5dBgPiC1Ev.cpp` as real C++, and since
-#1833 so does the separately enrolled C2 ABI variant, in
-`src/_ZN5dBgPiC2Ev.cpp`. The two files carry the same definition -- C1 and C2
-are two of the functions mwcc emits from one constructor, and
-`config/arm9/delinks.txt` binds each file to one of them.
+dBgPi's vptr. C1 now lives in `src/engine/collision/dBgPi.cpp` as real C++, and since
+#1833 so does the separately enrolled C2 ABI variant, in the same
+`src/engine/collision/dBgPi.cpp`. The two carry the same definition -- C1 and C2
+are two of the functions mwcc emits from one constructor.
 
 ## 6. The recipe, condensed
 

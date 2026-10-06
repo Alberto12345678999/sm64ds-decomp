@@ -110,7 +110,7 @@ extern void *_ZN9dBgCh_LinC1Ev(dBgCh_Lin* self);
 extern dBgCh_Lin *_ZN9dBgCh_LinD1Ev(void* self);
 extern void _ZN9dBgCh_Lin10GetClsnPosEv(Vector3* res, dBgCh_Lin* self); /* local extern: the real member returns Vector3 by value, which mwcc cannot reproduce (wall 6az); the definition keeps the free (res, self) spelling. */
 extern void *_ZN5dBgPiC1Ev(void* self);
-extern dBgPi *_ZN5dBgPiD1Ev(void* self);
+extern void _ZN5dBgPiD1Ev(void* self);
 extern void* _ZNK10dBgCh_Actr13GetWallResultEv(void*);
 extern void* _ZNK10dBgCh_Actr14GetFloorResultEv(void *w);
 /* local extern: the veneer forwards r0 to UpdateDiscreteNoLava; its own

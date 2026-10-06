@@ -1,9 +1,9 @@
 //cpp
 // func_02038324 at 0x02038324
 // Matched byte-for-byte with mwccarm 1.2/sp2p3 (arm9 main).
+#include "dBgPi.h"
+
 extern "C" {
-int func_02037fc0(void *p);
-int func_02037f54(void *p);
 int func_020393cc(void *p);
 int func_02038298(void *p);
 int func_020393b4(void *p);
@@ -27,8 +27,8 @@ extern "C" void func_02038324(void *arg, int b, int c, int d)
 {
     int idx;
     Obj *obj;
-    if (func_02037fc0(arg) == 0) return;
-    idx = func_02037f54(arg);
+    if (((dBgPi *)arg)->HasCollider() == 0) return;
+    idx = ((dBgPi *)arg)->GetColliderIndex();
     obj = (Obj *)data_020a0c80[idx];
     if (obj == 0) return;
     if (func_020393cc(obj) == 0) return;
