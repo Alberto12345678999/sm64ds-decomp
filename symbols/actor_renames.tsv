@@ -1781,7 +1781,7 @@ ov062	0x0211da74	data_ov062_0211da74	Koopa_SpawnInfo	spawninfo
 ov062	0x0211da74	Koopa_SpawnInfo	g_profile_NOKONOKO	reconstructed profile global; literal ROM ID NOKONOKO+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov062	0x0211da90	data_ov062_0211da90	KoopaSmall_SpawnInfo	spawninfo
 ov062	0x0211da90	KoopaSmall_SpawnInfo	g_profile_NOKONOKO_S	reconstructed profile global; literal ROM ID NOKONOKO_S+registry role+later EAD lineage; exact SM64DS spelling not preserved
-ov062	0x0211dab4	data_ov062_0211dab4	_ZTV5Koopa	vtable alloc=0x3d0
+ov062	0x0211dab4	data_ov062_0211dab4	_ZTV8daNknk_c	vtable alloc=0x3d0
 ov062	0x0211db78	data_ov062_0211db78	KoopaTheQuick_SpawnInfo	spawninfo
 ov062	0x0211db78	KoopaTheQuick_SpawnInfo	g_profile_RACE_NOKO	reconstructed profile global; literal ROM ID RACE_NOKO+registry role+later EAD lineage; exact SM64DS spelling not preserved
 ov062	0x0211db9c	data_ov062_0211db9c	_ZTV7daRNk_c	vtable alloc=0x3e0
