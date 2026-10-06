@@ -136,7 +136,7 @@ struct daObjBlockL_c {
     u8  pad_00e[0xc6];
     /* Model member, named by the class's own destructor calling
        Model's D1 at +0x0d4 -- a relocation the ROM build
-       checks. Was a u8 marker. [_ZN13daObjBlockL_cD1Ev.c] */
+       checks. Was a u8 marker. [_ZN13daObjBlockL_cD1Ev, now in src/actors/daObjBlockL_c.cpp] */
     Model mModel;            /* 0x0d4 */
     /* dBgW_KcMbg member. The cartridge's own ~daObjBlockL_c calls _ZN10dBgW_KcMbgD1Ev
        at +0x124 (D0/D1), a relocation the ROM build checks; recovered by

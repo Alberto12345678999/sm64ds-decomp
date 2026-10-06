@@ -112,19 +112,19 @@ struct daPgMthr_c {
     ModelAnim mModelAnim;            /* 0x0d4 */
     /* TextureSequence member, named by the class's own destructor calling
        TextureSequence's D1 at +0x138 -- a relocation the ROM build
-       checks. Was a u8 marker. [_ZN10daPgMthr_cD0Ev.cpp] */
+       checks. Was a u8 marker. [_ZN10daPgMthr_cD0Ev, now in src/game/actors/d_a_pg_mthr.cpp] */
     TextureSequence mTextureSequence;            /* 0x138 */
     /* dExtShadowModel_c member, named by the class's own destructor calling
        dExtShadowModel_c's D1 at +0x14c -- a relocation the ROM build
-       checks. Was a u8 marker. [_ZN10daPgMthr_cD0Ev.cpp] */
+       checks. Was a u8 marker. [_ZN10daPgMthr_cD0Ev, now in src/game/actors/d_a_pg_mthr.cpp] */
     dExtShadowModel_c mShadowModel;            /* 0x14c */
     /* dCcAc_c member, named by the class's own destructor calling
        dCcAc_c's D1 at +0x174 -- a relocation the ROM build
-       checks. Was a u8 marker. [_ZN10daPgMthr_cD0Ev.cpp] */
+       checks. Was a u8 marker. [_ZN10daPgMthr_cD0Ev, now in src/game/actors/d_a_pg_mthr.cpp] */
     dCcAc_c mdCcAc_c;            /* 0x174 */
     /* dBgCh_Actr member, named by the class's own destructor calling
        dBgCh_Actr's D1 at +0x1a8 -- a relocation the ROM build
-       checks. Was a u8 marker. [_ZN10daPgMthr_cD0Ev.cpp] */
+       checks. Was a u8 marker. [_ZN10daPgMthr_cD0Ev, now in src/game/actors/d_a_pg_mthr.cpp] */
     dBgCh_Actr mWithMeshClsn;            /* 0x1a8 */
     s32 mHomePosX;            /* 0x364 */
     s32 mHomePosY;            /* 0x368 */
