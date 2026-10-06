@@ -101,7 +101,6 @@ void _ZN3OAM14BOUNCING_ARROWE(void);
 void _ZN3OAM6RenderEbP7OamAttriiii5Fix12IiES3_ii(int sub, void *attr, int x, int y, int a, int cc, int fx, int fy, int rot, int mode);
 void _ZN3OAM6RenderEbP7OamAttriiiiP9Matrix2x2(bool sub, OamAttr *attr, int x, int y, int a, int cc, Matrix2x2 *mtx);
 void _ZN3OAM9RenderSubEP7OamAttrii(void *attr, int x, int y);
-namespace G2S { u16 *GetBG1ScrPtr(); }
 int __aeabi_idiv(int a, int b);
 
 extern int data_0208ee44;
@@ -204,6 +203,9 @@ extern char _ZN3OAM16SMALL_STAR_EMPTYE;
 extern OamAttr _ZN3OAM4COINE;
 extern OamAttr _ZN3OAM5TIMESE;
 }
+
+// Outside extern "C" so the namespace mangles to _ZN3G2S12GetBG1ScrPtrEv.
+namespace G2S { u16 *GetBG1ScrPtr(); }
 
 #define REG16(a) (*(volatile u16 *)(a))
 #define REG32(a) (*(volatile u32 *)(a))
