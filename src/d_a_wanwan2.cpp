@@ -8,13 +8,13 @@ dEnemyBase_c *_ZN12dEnemyBase_cC2Ev(dEnemyBase_c *object);
 dCcAcPos_c *_ZN10dCcAcPos_cC1Ev(dCcAcPos_c *object);
 dBgCh_Actr *_ZN10dBgCh_ActrC1Ev(dBgCh_Actr *object);
 ModelAnim *_ZN9ModelAnimC1Ev(ModelAnim *object);
-ShadowModel *_ZN11ShadowModelC1Ev(ShadowModel *object);
+dExtShadowModel_c *_ZN17dExtShadowModel_cC1Ev(dExtShadowModel_c *object);
 void __cxa_vec_ctor(void *base, unsigned int count, unsigned int stride,
     void (*ctor)(void *), void (*dtor)(void *));
 extern void *_ZTV11daWanwan2_c;
 Model *_ZN5ModelC1Ev(Model *object);
 Model *_ZN5ModelD1Ev(Model *object);
-ShadowModel *_ZN11ShadowModelD1Ev(ShadowModel *object);
+dExtShadowModel_c *_ZN17dExtShadowModel_cD1Ev(dExtShadowModel_c *object);
 Vector3 *_ZN7Vector3D1Ev(Vector3 *object);
 void func_0203d384(void);
 Vector3s *_ZN8Vector3sD1Ev(Vector3s *object);
@@ -39,9 +39,9 @@ extern "C" daWanwan2_c *daWanwan2_c_classInit()
         _ZN9ModelAnimC1Ev(&actor->mModelAnim);
         __cxa_vec_ctor(actor->mModels, 6, sizeof(Model),
             (void (*)(void *))_ZN5ModelC1Ev, (void (*)(void *))_ZN5ModelD1Ev);
-        __cxa_vec_ctor(actor->mShadowModels, 6, sizeof(ShadowModel),
-            (void (*)(void *))_ZN11ShadowModelC1Ev, (void (*)(void *))_ZN11ShadowModelD1Ev);
-        _ZN11ShadowModelC1Ev(&actor->mShadowModel);
+        __cxa_vec_ctor(actor->mShadowModels, 6, sizeof(dExtShadowModel_c),
+            (void (*)(void *))_ZN17dExtShadowModel_cC1Ev, (void (*)(void *))_ZN17dExtShadowModel_cD1Ev);
+        _ZN17dExtShadowModel_cC1Ev(&actor->mShadowModel);
         __cxa_vec_ctor(actor->mLinkPos, 6, sizeof(Vector3),
             (void (*)(void *))func_0203d384, (void (*)(void *))_ZN7Vector3D1Ev);
         __cxa_vec_ctor(actor->mLinkVel, 6, sizeof(Vector3),

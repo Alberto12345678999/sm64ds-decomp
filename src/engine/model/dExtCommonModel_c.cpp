@@ -9,10 +9,10 @@
  * ROM-descending.
  *
  * Vtable _ZTV17dExtCommonModel_c at 0x0208e8a4: [0] D1 0x020161e0, [1] D0
- * 0x020161b4, [2] DoSetFile 0x02016144. The cartridge carries no
- * _ZTS17dExtCommonModel_c/_ZTI17dExtCommonModel_c records (nor _ZTS/_ZTI9ModelBase), so
- * this TU compiles with RTTI off, and no enrolled D2 or C2; those variants
- * are licensed compiler-only in the manifest.
+ * 0x020161b4, [2] DoSetFile 0x02016144. The cartridge does carry _ZTI17dExtCommonModel_c/_ZTS17dExtCommonModel_c
+ * (0x0208e7a0/0x0208e8b0), but no data section is enrolled for this TU to
+ * own them, so this TU compiles with RTTI off (see below), and no enrolled D2 or C2;
+ * those variants are licensed compiler-only in the manifest.
  */
 
 /* common.h comes first so this TU sees the flat Matrix4x3 { s32 m[12]; }
@@ -22,9 +22,10 @@
 #include "common.h"
 #include "dExtCommonModel_c.h"
 
-/* No _ZTS/_ZTI for dExtCommonModel_c or ModelBase anywhere in the cartridge: the
- * class was compiled without RTTI, so the vtable preamble's typeinfo word
- * is 0. */
+/* The cartridge's _ZTI/_ZTS records for dExtCommonModel_c (0x0208e7a0/0x0208e8b0)
+ * sit in data this TU does not own, so records emitted here would have no
+ * configured home. Compiling with RTTI off emits none; the vtable preamble's
+ * typeinfo word deadstrips with the rest of the data sections. */
 #pragma RTTI off
 
 extern "C" {

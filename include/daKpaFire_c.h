@@ -9,7 +9,7 @@
  *
  *     dBgCh_Actr        0x110 + 0x1bc = 0x2cc   -> mKpaUniqueID
  *     dCcAc_c  0x2d0 + 0x034 = 0x304   -> mShadowModel
- *     ShadowModel         0x304 + 0x028 = 0x32c   -> padding
+ *     dExtShadowModel_c         0x304 + 0x028 = 0x32c   -> padding
  *
  * There is NO unk_2e8 here any more, and its absence is the point. An earlier
  * revision named 0x2e8 as a daKpaFire_c field on the strength of a single
@@ -61,7 +61,7 @@
 #include "dEnemyBase_c.h"
 #include "dBgCh_Actr.h"
 #include "dCcAc_c.h"
-#include "ShadowModel.h"
+#include "dExtShadowModel_c.h"
 
 /* ROM identity (SM64DS proves daKpaFire_c, not the coined BowserFire):
  * _ZTI11daKpaFire_c at ov060 0x0211a7b4, _ZTS11daKpaFire_c at 0x0211a7c0
@@ -72,7 +72,7 @@ struct daKpaFire_c : dEnemyBase_c {
     dBgCh_Actr mWithMeshClsn;                 /* 0x110 */
     s32 mKpaUniqueID;                                /* 0x2cc */
     dCcAc_c mdCcAc_c;     /* 0x2d0 */
-    ShadowModel mShadowModel;                   /* 0x304 */
+    dExtShadowModel_c mShadowModel;                   /* 0x304 */
     u8  pad_32c[0x30];
     s32 mVariant;            /* 0x35c */
     s32 mFireScale;         /* 0x360 -- Fix12 */

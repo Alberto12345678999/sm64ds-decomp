@@ -10,7 +10,7 @@
  *     ModelAnim                  0x0d4 + 0x064 = 0x138   -> mTextureSequence
  *     TextureSequence            0x138 + 0x014 = 0x14c   -> mWithMeshClsn
  *     dBgCh_Actr               0x14c + 0x1bc = 0x308   -> mShadowModel
- *     ShadowModel                0x308 + 0x028 = 0x330   -> padding
+ *     dExtShadowModel_c                0x308 + 0x028 = 0x330   -> padding
  *     dCcAcPos_c  0x360 + 0x040 = 0x3a0   -> mTargetPlayer
  *
  * TWO OF THE GENERATED HEADER'S FIELDS WERE THE ModelAnim'S OWN INSIDES and are
@@ -30,7 +30,7 @@
 #include "ModelAnim.h"
 #include "TextureSequence.h"
 #include "dBgCh_Actr.h"
-#include "ShadowModel.h"
+#include "dExtShadowModel_c.h"
 #include "dCcAcPos_c.h"
 
 #ifdef __cplusplus
@@ -42,7 +42,7 @@ struct daKpa_c : dActor_c {
     ModelAnim mModelAnim;                                   /* 0x0d4 */
     TextureSequence mTextureSequence;                       /* 0x138 */
     dBgCh_Actr mWithMeshClsn;                             /* 0x14c */
-    ShadowModel mShadowModel;                               /* 0x308 */
+    dExtShadowModel_c mShadowModel;                               /* 0x308 */
     u8  pad_330[0x30];
     dCcAcPos_c mdCcAcPos_c;   /* 0x360 */
     /* A POINTER, not an s32. daKpa_c::Behavior assigns it straight from
@@ -139,7 +139,7 @@ struct daKpa_c {
     ModelAnim mModelAnim;                                   /* 0x0d4 */
     TextureSequence mTextureSequence;                       /* 0x138 */
     dBgCh_Actr mWithMeshClsn;                             /* 0x14c */
-    ShadowModel mShadowModel;                               /* 0x308 */
+    dExtShadowModel_c mShadowModel;                               /* 0x308 */
     u8  pad_330[0x30];
     dCcAcPos_c mdCcAcPos_c;   /* 0x360 */
     /* The C++ half types this dActor_c*; C translation units have no dActor_c

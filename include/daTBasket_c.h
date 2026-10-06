@@ -15,9 +15,9 @@
  *
  * LAYOUT IS READ TWICE, not once. daTBasket_c_classInit (0x0211c4d0) allocates
  * 0x380, chains dEnemyBase_c's constructor, stores this vtable, and constructs
- * dCcAc_c at +0x110, dBgCh_Actr at +0x144, Model at +0x300 and ShadowModel at
+ * dCcAc_c at +0x110, dBgCh_Actr at +0x144, Model at +0x300 and dExtShadowModel_c at
  * +0x350; _ZN11daTBasket_cD1Ev (0x02115fc4) destroys the same four at the same
- * offsets in exactly the reverse order. It closes: 0x350 + sizeof(ShadowModel)
+ * offsets in exactly the reverse order. It closes: 0x350 + sizeof(dExtShadowModel_c)
  * 0x28 = 0x378, and the tail fields reach the 0x380 the ROM allocates.
  *
  * ONE TU WITH THE BOO FAMILY. The ROM interleaves five of this class's seven
@@ -50,7 +50,7 @@
 #include "dEnemyBase_c.h"
 #include "Model.h"
 #include "dCcAc_c.h"
-#include "ShadowModel.h"
+#include "dExtShadowModel_c.h"
 #include "dBgCh_Actr.h"
 
 extern "C" void *_ZN7fBase_cnwEj(unsigned size);
@@ -59,7 +59,7 @@ struct daTBasket_c : dEnemyBase_c {
     dCcAc_c           mdCcAc_c;   /* 0x110 */
     dBgCh_Actr                 mWithMeshClsn;         /* 0x144 */
     Model                        mModel;                /* 0x300 */
-    ShadowModel                  mShadowModel;          /* 0x350 */
+    dExtShadowModel_c                  mShadowModel;          /* 0x350 */
     s32                          mParticleID;               /* 0x378 */
     s16                          mSoundTimer;               /* 0x37c */
     u8                           mMuteSecretSound;      /* 0x37e -- nonzero skips Sound::PlaySecretSound */

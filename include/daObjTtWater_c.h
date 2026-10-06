@@ -49,7 +49,7 @@ typedef char daObjTtWater_c_size_must_be_0x340[sizeof(daObjTtWater_c) == 0x340 ?
 
 /* The C spelling of the same object, flat. Kept because the D0 file is a C
    translation unit that reads these fields, and D0 is compiler-generated so it
-   can never be migrated. Same arrangement as include/ShadowModel.h. */
+   can never be migrated. Same arrangement as include/dExtShadowModel_c.h. */
 struct daObjTtWater_c {
     u8  pad_000[0x60];
     s32 mPosY;            /* 0x060 */

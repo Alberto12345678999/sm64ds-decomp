@@ -19,7 +19,7 @@
 #define DASTARBASE_C_H
 #include "dActor_c.h"
 #include "Model.h"
-#include "ShadowModel.h"
+#include "dExtShadowModel_c.h"
 #include "dCcAcPos_c.h"
 #include "math/Matrix.h"
 
@@ -40,10 +40,10 @@ struct daStarBase_c : dActor_c {
        unk_158 (+0x44 = mat4x3.t.y), unk_15c (+0x48 = mat4x3.t.z), which the header
        declared separately inside it. */
     Model mModel;            /* 0x114 */
-    /* ShadowModel member, named by the class's own destructor calling
-       ShadowModel's D1 at +0x164 -- a relocation the ROM build
+    /* dExtShadowModel_c member, named by the class's own destructor calling
+       dExtShadowModel_c's D1 at +0x164 -- a relocation the ROM build
        checks. Was a u8 marker. [_ZN12daStarBase_cD0Ev.c] */
-    ShadowModel mShadowModel;            /* 0x164 */
+    dExtShadowModel_c mShadowModel;            /* 0x164 */
     Matrix4x3 mShadowMtx;        /* 0x18c -- shadow transform */
     Vector3 mSpawnPos;           /* 0x1bc -- mPos as InitResources found it.
                                      Written there and read nowhere in the

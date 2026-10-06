@@ -9,7 +9,7 @@
     "contiguous linker run: 0x21116ec..0x2111b98, 8 function(s), from build/tu_map.json (tools/tu_map.py)",
     "class label(s): daObjCtMecha11_c",
     "module sinit corroboration: 2 sinit(s) / 2 .ctor entries, sinit_vs_tu=ok, corroborated=False (module-wide, NOT narrowed to this one TU -- see notes/tu-reconstruction-pilot-report.md sec 2 for the by-hand narrowing step)",
-    "classInit fold: the daObjCtMecha11_c_classInit registry factory (profile CT_MECHA11, historical alias SpinningPlatform_Spawn), 0x02111b98..0x02111bd0, abuts this TU's InitResources with no gap; tu_map leaves it unlabelled because it cuts on symbol name. Folded as `return new daObjCtMecha11_c();` at the end of the file (defer_codegen off, source order); the synthesized constructor reproduces the loose file's operator new(0x380) + dBgActor_c C2 + vtable store + ShadowModel C1 sequence. The unit is now 0x021116ec..0x02111bd0, 9 functions, bounded above by the end of ov035 .text at 0x02111bd0."
+    "classInit fold: the daObjCtMecha11_c_classInit registry factory (profile CT_MECHA11, historical alias SpinningPlatform_Spawn), 0x02111b98..0x02111bd0, abuts this TU's InitResources with no gap; tu_map leaves it unlabelled because it cuts on symbol name. Folded as `return new daObjCtMecha11_c();` at the end of the file (defer_codegen off, source order); the synthesized constructor reproduces the loose file's operator new(0x380) + dBgActor_c C2 + vtable store + dExtShadowModel_c C1 sequence. The unit is now 0x021116ec..0x02111bd0, 9 functions, bounded above by the end of ov035 .text at 0x02111bd0."
   ],
   "sections": [
     {

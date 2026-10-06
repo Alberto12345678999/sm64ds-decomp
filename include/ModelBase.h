@@ -8,7 +8,7 @@
 /* The root of the model hierarchy, vtable at 0x0208e87c (_ZTV9ModelBase).
  *
  * The chain is ModelBase -> Model -> (the ModelAnim family), with dExtCommonModel_c
- * and ShadowModel as further ModelBase-derived siblings. Model derives from
+ * and dExtShadowModel_c as further ModelBase-derived siblings. Model derives from
  * ModelBase DIRECTLY: Model::C2 calls ModelBase::C2 and then stores its own
  * vptr, one intermediate store, no more.
  *
@@ -52,7 +52,7 @@
  * the destructors Deallocate +0x4 when set; Model::LoadAndSetFile stores the
  * loaded file at +0x4. The base ENDS at 0x8. Each derived class puts its
  * view of the components at +0x8 -- Model EMBEDS a ModelComponents there,
- * while dExtCommonModel_c and ShadowModel store a ModelComponents POINTER (their
+ * while dExtCommonModel_c and dExtShadowModel_c store a ModelComponents POINTER (their
  * constructors then place their own fields from +0xc, inside what an
  * embedded struct would occupy, which is what rules the embed out of the
  * base). ApplyOpacity still addresses +0x8 blindly; see the note in its
@@ -64,7 +64,7 @@
 struct BCA_File;
 
 /* 0x14 bytes, at +0x8 of a Model (embedded) or behind +0x8 of a dExtCommonModel_c
-   or ShadowModel (pointer to a pool entry from func_02016e70). The runtime
+   or dExtShadowModel_c (pointer to a pool entry from func_02016e70). The runtime
    view of a loaded model: built from the BMD file by func_020462d0,
    rendered by 0x020443c8. */
 struct ModelComponents {
@@ -102,7 +102,7 @@ struct ModelBase {
        the declaration indexes correctly on the ARM and ONE SLOT EARLY on the
        host, for every virtual declared after it and all the way down the
        hierarchy: ModelBase -> Model -> ModelAnim -> {ModelAnim2,
-       BlendModelAnim}, plus the dExtCommonModel_c and ShadowModel siblings.
+       BlendModelAnim}, plus the dExtCommonModel_c and dExtShadowModel_c siblings.
 
        MEASURED, not reasoned: the ROM's _ZTV9ModelAnim at 0x0208e980 reads
        [0] D1, [1] D0, [2] Model::DoSetFile, [3] UpdateVerts, [4] Virtual10,

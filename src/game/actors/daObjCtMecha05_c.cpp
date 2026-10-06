@@ -55,8 +55,8 @@ extern void Matrix4x3_FromRotationY(Matrix4x3 *matrix, int angle);
 extern void MulVec3Mat4x3(const Vector3 *src, const Matrix4x3 *matrix,
                           Vector3 *dst);
 extern void AddVec3(const Vector3 *left, const Vector3 *right, Vector3 *dst);
-extern void _ZN8dActor_c18DropShadowScaleXYZER11ShadowModelR9Matrix4x35Fix12IiES5_S5_j(
-    dActor_c *actor, ShadowModel *shadow, Matrix4x3 *matrix,
+extern void _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
+    dActor_c *actor, dExtShadowModel_c *shadow, Matrix4x3 *matrix,
     int scaleX, int scaleY, int scaleZ, u32 opacity);
 extern int _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(
     dBgActor_c *actor, int radius, int verticalOffset);
@@ -318,7 +318,7 @@ void func_ov065_0211ac0c(daObjCtMecha05_c *actor)
     actor->mShadowMatrix.m[10] = actor->mGroundY >> 3;
     actor->mShadowMatrix.m[11] = shadowPos.z >> 3;
 
-    _ZN8dActor_c18DropShadowScaleXYZER11ShadowModelR9Matrix4x35Fix12IiES5_S5_j(
+    _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
         actor, &actor->mShadowModel, &actor->mShadowMatrix,
         0xdc000, 0x32000, 0x28a000, 0xf);
 }

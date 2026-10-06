@@ -7,7 +7,7 @@
   "boundary_confidence": "medium",
   "boundary_evidence": [
     "contiguous linker run: 0x2119f3c..0x211a45c, 8 function(s), from build/tu_map.json (tools/tu_map.py)",
-    "adjacent CT_MECHA03 factory at 0x0211a45c..0x0211a494 allocates sizeof(daObjCtMecha03_c), constructs dBgActor_c plus ShadowModel, and installs this class vptr; the factory join is registry/factory-backed rather than tu_map-proven",
+    "adjacent CT_MECHA03 factory at 0x0211a45c..0x0211a494 allocates sizeof(daObjCtMecha03_c), constructs dBgActor_c plus dExtShadowModel_c, and installs this class vptr; the factory join is registry/factory-backed rather than tu_map-proven",
     "class label(s): daObjCtMecha03_c",
     "module sinit corroboration: 10 sinit(s) / 10 .ctor entries, sinit_vs_tu=ok, corroborated=False (module-wide, NOT narrowed to this one TU -- see notes/tu-reconstruction-pilot-report.md sec 2 for the by-hand narrowing step)"
   ],
