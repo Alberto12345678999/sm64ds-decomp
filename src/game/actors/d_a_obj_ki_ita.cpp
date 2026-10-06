@@ -10,11 +10,6 @@
  * daObjKi_Ita_c, KI_ITA registry). Retail does not store those spellings.
  *
  * deslop
- * Leftover: func_ov002_020b5e58 is still the linker name of the shared
- *   float-board setup (slot 0 is pure virtual on daObjFloatBoard_c).
- *   Naming belongs in ov002. That helper loads slot 0 with
- *   Model::LoadFile, slot 1 with dBgW_Kc::LoadFile, slot 2 as CLPS
- *   into SetFile.
  * Leftover: data_ov016_02114b8c is still the linker name of this
  *   overlay's three-word file table. Those words sit between this
  *   class's RTTI and type-name; this TU does not own them.
@@ -23,19 +18,8 @@
 #include "daObjKi_Ita_c.h"
 #include "SharedFilePtr.h"
 
-struct CLPS_Block;
-
-struct ResourceDescriptor {
-    SharedFilePtr *model;
-    SharedFilePtr *collision;
-    CLPS_Block *clps;
-};
-typedef char ResourceDescriptor_size_must_be_0x0c[
-    sizeof(ResourceDescriptor) == 0x0c ? 1 : -1];
-
 extern "C" {
-int func_ov002_020b5e58(daObjKi_Ita_c *self, ResourceDescriptor *descriptor);
-extern ResourceDescriptor data_ov016_02114b8c;
+extern daObjFloatBoard_c_Resources data_ov016_02114b8c;
 }
 
 struct KiItaSpawnInfo {
@@ -72,5 +56,5 @@ extern "C" KiItaSpawnInfo g_profile_KI_ITA = {
 // @symbol _ZN13daObjKi_Ita_c13InitResourcesEv
 int daObjKi_Ita_c::InitResources()
 {
-    return func_ov002_020b5e58(this, &data_ov016_02114b8c);
+    return func_ov002_020b5e58(&data_ov016_02114b8c);
 }

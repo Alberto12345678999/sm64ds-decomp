@@ -6,7 +6,7 @@
   "status": "promoted",
   "boundary_confidence": "medium",
   "boundary_evidence": [
-    "contiguous linker run: 0x020b5ab4..0x020b5e58, 5 function(s), from build/tu_map.json (tools/tu_map.py), which segments the run as 0x020b5a18..0x020b5e58 including the destructor pair",
+    "contiguous linker run: 0x020b5ab4..0x020b5fd8, 8 function(s) -- build/tu_map.json (tools/tu_map.py) segmented the head as 0x020b5a18..0x020b5e58 including the destructor pair; the tail 0x020b5e58..0x020b5fd8 is the same class's own methods, proven by the bodies: 020b5e58 writes only this class's fields (mFileTable/mRestPos*/mWaterY/mSinkOffset/mBob*/mRider/mFallbackWaterY), calls member func_ov002_020b5b98, and is invoked as `this->`-shaped helper by all three leaf InitResources; 020b5f9c stores the touching Player into mRider and reloads mRiderTimeout; 020b5fc4 is the registration thunk 020b5e58 installs on mMeshCollider",
     "class label(s): daObjFloatBoard_c",
     "the run's first two functions, _ZN17daObjFloatBoard_cD0Ev (0x020b5a18) and _ZN17daObjFloatBoard_cD1Ev (0x020b5a70), are DELIBERATELY NOT claimed: the cartridge orders them D0-before-D1, and mwccarm 2004/b56 emits the vague-linkage pair of an inline-in-class destructor D1-before-D0. The only source form that emits D0 first is an out-of-line definition, which would stop all three descendants inlining the vptr store the ROM shows them inlining (ov016 0x02112f3c/0x02112f9c/0x02112ff0 and ov029 0x021111e8/0x02111248/0x02111374 all load 0x02108fdc directly, and no instruction anywhere calls 0x020b5a18 or 0x020b5a70). Their two per-function entries stand and this object's copies are licensed as deadstrip-duplicate.",
     "module sinit corroboration: 26 sinit(s) / 26 .ctor entries, sinit_vs_tu=ok, corroborated=False (module-wide, NOT narrowed to this one TU)"
@@ -15,7 +15,7 @@
     {
       "name": ".text",
       "start": "0x020b5ab4",
-      "end": "0x020b5e58"
+      "end": "0x020b5fd8"
     }
   ],
   "functions": [
@@ -53,12 +53,33 @@
       "size": "0x0000020c",
       "legacy_source": "src/_ZN17daObjFloatBoard_c8BehaviorEv.cpp",
       "ordinal": 4
+    },
+    {
+      "symbol": "_ZN17daObjFloatBoard_c19func_ov002_020b5e58EP27daObjFloatBoard_c_Resources",
+      "address": "0x020b5e58",
+      "size": "0x00000144",
+      "legacy_source": "src/func_ov002_020b5e58.cpp",
+      "ordinal": 5
+    },
+    {
+      "symbol": "_ZN17daObjFloatBoard_c19func_ov002_020b5f9cEP8dActor_c",
+      "address": "0x020b5f9c",
+      "size": "0x00000028",
+      "legacy_source": "src/func_ov002_020b5f9c.c",
+      "ordinal": 6
+    },
+    {
+      "symbol": "func_ov002_020b5fc4",
+      "address": "0x020b5fc4",
+      "size": "0x00000014",
+      "legacy_source": "src/func_ov002_020b5fc4.c",
+      "ordinal": 7
     }
   ],
   "data": [],
   "bss": [],
   "notes": [
-    "Promoted by hand from the `tools/tubuild.py promote --dry-run` plan (promote is dry-run only). Five of the run's seven shards are folded in; the source's own header comment carries the reconciliation notes.",
+    "Promoted by hand from the `tools/tubuild.py promote --dry-run` plan (promote is dry-run only), then widened by the tail fold: the three scattered tail shards 0x020b5e58/0x020b5f9c/0x020b5fc4 are now enrolled here, 020b5e58 and 020b5f9c as real daObjFloatBoard_c members and 020b5fc4 as the free extern \"C\" registration thunk (its address is stored as a raw callback word, so it cannot be a member). The source's own header comment carries the reconciliation notes.",
     "THE DESTRUCTOR PAIR IS DELIBERATELY EXCLUDED FROM THE LICENSED RANGE. The cartridge places _ZN17daObjFloatBoard_cD0Ev at 0x020b5a18 BELOW _ZN17daObjFloatBoard_cD1Ev at 0x020b5a70. Measured here with mwccarm 2004/b56: an inline-in-class destructor emits its vague-linkage pair D1-then-D0, and no arrangement of source text changes it (a `delete p` scaffold, a `p->~X()` scaffold and moving the destructor's declaration below the other three overrides were each tried and each produced D1-then-D0). The one form that emits D0 first is an out-of-line definition, which emits D2,D0,D1 -- but the cartridge rules that out: all three descendants inline this destructor's vptr store (ov016 0x02112f3c/0x02112f9c/0x02112ff0 and ov029 0x021111e8/0x02111248/0x02111374 each load _ZTV17daObjFloatBoard_c at 0x02108fdc directly) and no instruction in the image calls 0x020b5a18 or 0x020b5a70 -- only vtable slots 17 and 16 name them. An out-of-line destructor would make those three emit a call instead and break their already-matched TUs. src/_ZN17daObjFloatBoard_cD1Ev.cpp and src/_ZN17daObjFloatBoard_cD0Ev.cpp therefore keep their per-function delinks entries, and this object's copies are licensed as deadstrip-duplicate against those ROM homes.",
     "The class is ABSTRACT: vtable slot 0 (InitResources) is a bare 0 with no relocation and each of the three leaves supplies its own. There is no factory and no g_profile row for this class, which is why the entry claims no data, no ctor and no BSS.",
     "func_ov002_020b5ab4 and func_ov002_020b5b98 keep their address-derived names. Neither occupies a vtable slot in any class in the image; 020b5ab4 has exactly one inbound relocation (0x020b5c68, inside this TU's Behavior) and 020b5b98 has two (0x020b5dfc here and 0x020b5e8c in the next TU, so it is not file-local). Nothing in the ROM names either.",
@@ -70,8 +91,8 @@
     "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
     "object": "build/tu/ov002-daObjFloatBoard_c/daObjFloatBoard_c.o (gitignored)",
     "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
-    "functions_matched": 5,
-    "functions_declared": 5,
+    "functions_matched": 8,
+    "functions_declared": 8,
     "compilerOnlyOutput": {
       "requested": [
         "_ZN17daObjFloatBoard_cD1Ev",
@@ -221,7 +242,7 @@
       "disposition": "deadstrip-duplicate",
       "canonical_module": "ov002",
       "canonical_address": "0x020b5a70",
-      "reason": "Vague-linkage copy of the class's complete-object destructor, emitted here because this TU owns the key function while ~daObjFloatBoard_c is defined inline in include/daObjFloatBoard_c.h. The cartridge owns it at ov002:0x020b5a70 and src/_ZN17daObjFloatBoard_cD1Ev.cpp still holds that delinks entry, so this object's copy is a byte-identical duplicate that production isolation discards. It is outside this entry's licensed range (.text 0x020b5ab4-0x020b5e58)."
+      "reason": "Vague-linkage copy of the class's complete-object destructor, emitted here because this TU owns the key function while ~daObjFloatBoard_c is defined inline in include/daObjFloatBoard_c.h. The cartridge owns it at ov002:0x020b5a70 and src/_ZN17daObjFloatBoard_cD1Ev.cpp still holds that delinks entry, so this object's copy is a byte-identical duplicate that production isolation discards. It is outside this entry's licensed range (.text 0x020b5ab4-0x020b5fd8)."
     },
     {
       "symbol": "_ZN17daObjFloatBoard_cD0Ev",
@@ -242,77 +263,77 @@
       "disposition": "deadstrip-data",
       "canonical_module": "ov002",
       "canonical_address": "0x02108fdc",
-      "reason": "This TU defines CleanupResources (vtable slot 3), the first out-of-line virtual the class declares and therefore its key function -- the destructor is inline in the class body -- so mwcc anchors the complete 0x88-byte vtable storage here. The cartridge keeps it at ov002:0x02108fdc in .data, which no section this entry licenses (.text 0x020b5ab4-0x020b5e58) reaches, so dsd supplies those bytes independently and production isolation discards the emitted duplicate."
+      "reason": "This TU defines CleanupResources (vtable slot 3), the first out-of-line virtual the class declares and therefore its key function -- the destructor is inline in the class body -- so mwcc anchors the complete 0x88-byte vtable storage here. The cartridge keeps it at ov002:0x02108fdc in .data, which no section this entry licenses (.text 0x020b5ab4-0x020b5fd8) reaches, so dsd supplies those bytes independently and production isolation discards the emitted duplicate."
     },
     {
       "symbol": "_ZTI17daObjFloatBoard_c",
       "disposition": "deadstrip-data",
       "canonical_module": "ov002",
       "canonical_address": "0x02108fb4",
-      "reason": "This class's own __si_class_type_info record, emitted alongside the vtable by the key function. Canonical home ov002:0x02108fb4 is outside this entry's licensed range (.text 0x020b5ab4-0x020b5e58)."
+      "reason": "This class's own __si_class_type_info record, emitted alongside the vtable by the key function. Canonical home ov002:0x02108fb4 is outside this entry's licensed range (.text 0x020b5ab4-0x020b5fd8)."
     },
     {
       "symbol": "_ZTS17daObjFloatBoard_c",
       "disposition": "deadstrip-data",
       "canonical_module": "ov002",
       "canonical_address": "0x02108fc0",
-      "reason": "This class's own type-name string \"17daObjFloatBoard_c\", emitted alongside the vtable by the key function. Canonical home ov002:0x02108fc0 is outside this entry's licensed range (.text 0x020b5ab4-0x020b5e58)."
+      "reason": "This class's own type-name string \"17daObjFloatBoard_c\", emitted alongside the vtable by the key function. Canonical home ov002:0x02108fc0 is outside this entry's licensed range (.text 0x020b5ab4-0x020b5fd8)."
     },
     {
       "symbol": "_ZTI10dBgActor_c",
       "disposition": "deadstrip-data",
       "canonical_module": "ov002",
       "canonical_address": "0x021089ec",
-      "reason": "Inherited vague-linkage RTTI: naming daObjFloatBoard_c's typeinfo drags its direct base's record in. Canonical copy ov002:0x021089ec, outside this entry's licensed range (.text 0x020b5ab4-0x020b5e58); it is the ROM word this class's own _ZTI carries at +8."
+      "reason": "Inherited vague-linkage RTTI: naming daObjFloatBoard_c's typeinfo drags its direct base's record in. Canonical copy ov002:0x021089ec, outside this entry's licensed range (.text 0x020b5ab4-0x020b5fd8); it is the ROM word this class's own _ZTI carries at +8."
     },
     {
       "symbol": "_ZTS10dBgActor_c",
       "disposition": "deadstrip-data",
       "canonical_module": "ov002",
       "canonical_address": "0x02108a04",
-      "reason": "Inherited vague-linkage type-name string for the direct base. Canonical copy ov002:0x02108a04, outside this entry's licensed range (.text 0x020b5ab4-0x020b5e58)."
+      "reason": "Inherited vague-linkage type-name string for the direct base. Canonical copy ov002:0x02108a04, outside this entry's licensed range (.text 0x020b5ab4-0x020b5fd8)."
     },
     {
       "symbol": "_ZTI8dActor_c",
       "disposition": "deadstrip-data",
       "canonical_module": "arm9",
       "canonical_address": "0x0208e390",
-      "reason": "Inherited vague-linkage RTTI, one link further up the fBase_c -> dBase_c -> dActor_c -> dBgActor_c chain. Canonical copy arm9:0x0208e390, outside this entry's licensed range (.text 0x020b5ab4-0x020b5e58)."
+      "reason": "Inherited vague-linkage RTTI, one link further up the fBase_c -> dBase_c -> dActor_c -> dBgActor_c chain. Canonical copy arm9:0x0208e390, outside this entry's licensed range (.text 0x020b5ab4-0x020b5fd8)."
     },
     {
       "symbol": "_ZTS8dActor_c",
       "disposition": "deadstrip-data",
       "canonical_module": "arm9",
       "canonical_address": "0x0208e384",
-      "reason": "Inherited vague-linkage type-name string for dActor_c. Canonical copy arm9:0x0208e384, outside this entry's licensed range (.text 0x020b5ab4-0x020b5e58)."
+      "reason": "Inherited vague-linkage type-name string for dActor_c. Canonical copy arm9:0x0208e384, outside this entry's licensed range (.text 0x020b5ab4-0x020b5fd8)."
     },
     {
       "symbol": "_ZTI7dBase_c",
       "disposition": "deadstrip-data",
       "canonical_module": "arm9",
       "canonical_address": "0x02086e78",
-      "reason": "Inherited vague-linkage RTTI for dBase_c. Canonical copy arm9:0x02086e78, outside this entry's licensed range (.text 0x020b5ab4-0x020b5e58)."
+      "reason": "Inherited vague-linkage RTTI for dBase_c. Canonical copy arm9:0x02086e78, outside this entry's licensed range (.text 0x020b5ab4-0x020b5fd8)."
     },
     {
       "symbol": "_ZTS7dBase_c",
       "disposition": "deadstrip-data",
       "canonical_module": "arm9",
       "canonical_address": "0x02086e54",
-      "reason": "Inherited vague-linkage type-name string for dBase_c. Canonical copy arm9:0x02086e54, outside this entry's licensed range (.text 0x020b5ab4-0x020b5e58)."
+      "reason": "Inherited vague-linkage type-name string for dBase_c. Canonical copy arm9:0x02086e54, outside this entry's licensed range (.text 0x020b5ab4-0x020b5fd8)."
     },
     {
       "symbol": "_ZTI7fBase_c",
       "disposition": "deadstrip-data",
       "canonical_module": "arm9",
       "canonical_address": "0x02086d70",
-      "reason": "Inherited vague-linkage RTTI for the root of the chain. Canonical copy arm9:0x02086d70, outside this entry's licensed range (.text 0x020b5ab4-0x020b5e58)."
+      "reason": "Inherited vague-linkage RTTI for the root of the chain. Canonical copy arm9:0x02086d70, outside this entry's licensed range (.text 0x020b5ab4-0x020b5fd8)."
     },
     {
       "symbol": "_ZTS7fBase_c",
       "disposition": "deadstrip-data",
       "canonical_module": "arm9",
       "canonical_address": "0x02086e60",
-      "reason": "Inherited vague-linkage type-name string for fBase_c. Canonical copy arm9:0x02086e60, outside this entry's licensed range (.text 0x020b5ab4-0x020b5e58)."
+      "reason": "Inherited vague-linkage type-name string for fBase_c. Canonical copy arm9:0x02086e60, outside this entry's licensed range (.text 0x020b5ab4-0x020b5fd8)."
     }
   ]
 }

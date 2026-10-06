@@ -23,7 +23,6 @@
 
 extern "C" {
 void func_020353b0(void *ray, void *actor);
-void func_020380c0(char *c);                    /* dBgPi hit-record init */
 void func_0203abd4(void *a, void *b, Fix12i radius);
 void func_ov002_020fea4c(int *a, int *b);       /* dM3dGLin::GetEnd */
 void func_ov002_020fea68(int *a, int *b);       /* dM3dGLin::GetStart */
@@ -72,7 +71,7 @@ void dBgCh_Lin::func_02037608()
     lineEnd = b;
     func_ov002_020fea68((int *)&a, (int *)&(dM3dGLin &)*this);
     clsnDist = Vec3_Dist(&lineEnd, &a);
-    func_020380c0((char *)this + 0x10);
+    dBgPi::Reset();
 }
 
 // @symbol _ZN9dBgCh_Lin10SetClsnPosERK7Vector3

@@ -15,8 +15,8 @@
  * math/Matrix.h, and that nested spelling changes UpdateClsnPosAndRot.
  *
  * #pragma defer_codegen off emits the out-of-line destructor as D1
- * then D0. The cartridge has no D2. The seven classInit factories
- * and the g_profile_* rows stay in their own files.
+ * then D0. The cartridge has no D2. The g_profile_* rows stay in
+ * their own files.
  *
  * deslop leftovers:
  * - OnGroundPounded: `&mPosX` / `&other.mPosX` with no saved hitter
@@ -28,6 +28,10 @@
  * - InitResources: mMeshCollider.SetFile(Fix12<int> by value) grew
  *   the function 0x168 -> 0x174 and shifted the func_020393d4 call.
  *   The extern "C" int/pointer call matches.
+ * - func_ov095_02135cdc / func_ov095_02135e90 keep their placeholder
+ *   names: the veneer is stored into the mesh collider as a raw
+ *   address, so it cannot be a member, and the ROM has no name for
+ *   the tilt body it forwards to.
  */
 
 #pragma defer_codegen off
@@ -78,6 +82,7 @@ void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
     void *thiz, void *file, const Matrix4x3 *mat, int scale, short angY, void *clps);
 void func_020393d4(void *clsn, void *callback);
 void func_020393c4(void *clsn, void *callback);
+void func_ov095_02135e90(void *collider, daObjSeesaw_c *self, dActor_c *other);
 }
 
 /* D1 stores this vtable, then dBgActor_c's (inlined), then destroys
@@ -261,9 +266,97 @@ int daObjSeesaw_c::InitResources()
     }
     /* func_020393d4 stores dBgW+0x18 (beforeClsnCallback). func_020393c4
      * stores dBgW+0x1c, the stood-on callback: func_ov095_02135e90, the
-     * veneer into the tilt helper that follows this TU. Both are calls
-     * in the ROM; the bodies are a single word store. */
+     * veneer into the tilt helper below. Both are calls in the ROM; the
+     * bodies are a single word store. */
     func_020393d4(&mMeshCollider, (int *)&dBgW::UpdatePosWithTransform);
     func_020393c4(&mMeshCollider, func_ov095_02135e90);
     return 1;
+}
+
+/* Stood-on tilt. The mesh collider calls this while another actor rests
+ * on the seesaw: mAngleX keeps integrating mAngleXSpeed, and the stander's
+ * weight (func_ov095_0213579c) and off-centre distance drive mAngleXSpeed
+ * toward a clamp. Unlike OnGroundPounded it does not kick the pitch
+ * directly; it accelerates the tilt speed, hard when pushing into the
+ * current lean, soft when pushing out of it. */
+// @symbol func_ov095_02135cdc
+extern "C" void func_ov095_02135cdc(daObjSeesaw_c *self, dActor_c *other)
+{
+    Vector3 *op = (Vector3 *)&other->mPosX;
+    int dist = Vec3_Dist((Vector3 *)&self->mPosX, op);
+    int ang = Vec3_HorzAngle((Vector3 *)&self->mPosX, op);
+    self->mPoundedThisFrame = 1;
+    int r = func_ov095_0213579c(self, other);
+
+    self->mAngleX += self->mAngleXSpeed;
+    int x = (int)(((s64)dist * r + 0x800) >> 12);
+    s16 d = (s16)AngleDiff(ang, self->mAngleY);
+    int y = (int)(((s64)x * data_02082214[((u16)d >> 4) * 2 + 1] + 0x800) >> 12);
+
+    int acc;
+    if (self->mAngleXSpeed * x < 0)
+        acc = (int)(((s64)y * 0xa3LL + 0x800) >> 12);
+    else
+        acc = (int)(((s64)y * 0x51LL + 0x800) >> 12);
+
+    s16 dv = acc / 4096;
+    self->mAngleXSpeed += dv;
+    s16 lim = (int)(((s64)r * 0x32000LL + 0x800) >> 12) / 4096;
+    if (self->mAngleXSpeed > lim)
+        self->mAngleXSpeed = lim;
+    if (self->mAngleXSpeed < -lim)
+        self->mAngleXSpeed = -lim;
+}
+
+/* The collider callback slot gets three arguments; the tilt helper
+ * wants the last two. long_calls keeps the pooled absolute tail call. */
+#pragma push
+#pragma long_calls on
+// @symbol func_ov095_02135e90
+extern "C" void func_ov095_02135e90(void *collider, daObjSeesaw_c *self, dActor_c *other)
+{
+    func_ov095_02135cdc(self, other);
+}
+#pragma pop
+
+// @symbol daObjSeesaw_c_classInit_RC_SEESAW
+extern "C" daObjSeesaw_c *daObjSeesaw_c_classInit_RC_SEESAW()
+{
+    return new daObjSeesaw_c();
+}
+
+// @symbol daObjSeesaw_c_classInit_KM3_YOKOSEESAW
+extern "C" daObjSeesaw_c *daObjSeesaw_c_classInit_KM3_YOKOSEESAW()
+{
+    return new daObjSeesaw_c();
+}
+
+// @symbol daObjSeesaw_c_classInit_KM3_SEESAW
+extern "C" daObjSeesaw_c *daObjSeesaw_c_classInit_KM3_SEESAW()
+{
+    return new daObjSeesaw_c();
+}
+
+// @symbol daObjSeesaw_c_classInit_KM2_YOKOSEESAW
+extern "C" daObjSeesaw_c *daObjSeesaw_c_classInit_KM2_YOKOSEESAW()
+{
+    return new daObjSeesaw_c();
+}
+
+// @symbol daObjSeesaw_c_classInit_KM1_SEESAW
+extern "C" daObjSeesaw_c *daObjSeesaw_c_classInit_KM1_SEESAW()
+{
+    return new daObjSeesaw_c();
+}
+
+// @symbol daObjSeesaw_c_classInit_BOMB_SEESAW
+extern "C" daObjSeesaw_c *daObjSeesaw_c_classInit_BOMB_SEESAW()
+{
+    return new daObjSeesaw_c();
+}
+
+// @symbol daObjSeesaw_c_classInit_SEESAW
+extern "C" daObjSeesaw_c *daObjSeesaw_c_classInit_SEESAW()
+{
+    return new daObjSeesaw_c();
 }

@@ -70,7 +70,8 @@ def prepare_intact_object(raw, entry):
     if reasons:
         _raise(f"{entry['id']} vtable address-point policy", reasons)
     linked_obj, rebias = TB.OI.rebias_object_symbols(
-        ordered_obj, biases, normalize_undefined=True)
+        ordered_obj, biases, normalize_undefined=True,
+        skip_undefined=TB.policy_dropped_vtable_symbols(entry))
     if linked_obj is None:
         _raise(f"{entry['id']} vtable address-point rewrite", [rebias.get("error")])
     owned_after = TB.verify_owned_sections(
@@ -385,7 +386,8 @@ def _prepare_one(entry, config_root, work_root, jobs):
     if reasons:
         _raise(f"{entry['id']} vtable address-point policy", reasons)
     storage_obj, rebias = TB.OI.rebias_object_symbols(
-        storage_obj, biases, normalize_undefined=True)
+        storage_obj, biases, normalize_undefined=True,
+        skip_undefined=TB.policy_dropped_vtable_symbols(entry))
     if storage_obj is None:
         _raise(f"{entry['id']} vtable address-point rewrite",
                [rebias.get("error")])

@@ -55,6 +55,16 @@ struct daSBird_c : dActor_c {
     virtual s32 Behavior();                    /* slot  6 */
     virtual s32 Render();                      /* slot  9 */
     virtual void OnPendingDestroy();           /* slot 12 */
+
+    /* PMF-table members; data_ov009_02113c48 order is 021116ec, 021115d8,
+       0211145c (hatch), 02111234. 02111224 is the follower-attach the
+       spawn loops call on the child. Names not recovered -- addresses
+       kept (S33). 02111224 / 02111234 live in d_a_s_bird_head.cpp below
+       the func_ov009_0211145c hatch. */
+    void func_ov009_021116ec();              /* state 0 -- leader spawn/setup */
+    void func_ov009_021115d8();              /* state 1 -- proximity check */
+    void func_ov009_02111224(int ownerID);   /* follower attach */
+    void func_ov009_02111234();              /* state 3 -- fly/steer */
 };
 
 #ifndef SM64DS_PLATFORM_PC

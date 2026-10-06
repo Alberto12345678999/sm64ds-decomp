@@ -29,11 +29,11 @@ func_0206d9cc
 func_0206da18
 
 # --- rejected by mwldarm despite passing eligibility ---
-# Rule 5 accepts a reference whose name is in config/**/symbols.txt. These name
-# kind:data symbols no object in the link defines: resolvable in config, and
-# still an undefined symbol at link time.
-_ZN11ShadowModel10InitCuboidEv
-_ZN11ShadowModel12InitCylinderEv
+# _ZN11ShadowModel10InitCuboidEv / _ZN11ShadowModel12InitCylinderEv CAME OFF
+# THIS LIST ahead of the ShadowModel fold (#3493), which respells their SetFile
+# globals as the resolvable overlay rows data_ov000_020ad524/data_ov000_020ad560.
+# Until enrollment claims them the removal is inert: nothing compiles either
+# symbol, and their ranges stay inside the module gap object exactly as before.
 
 # --- linked cleanly but produced the wrong bytes (dsd check modules) ---
 # Eligibility proves an object is the right shape to drop in, never that it is
