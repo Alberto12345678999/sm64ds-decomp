@@ -34,7 +34,6 @@ int func_02053200(int v);
 
 /* Collision-query plumbing shared with the KcMbg checkers. */
 void func_02035394(void *dst, void *src);
-void func_020374b8(int *a, int *b);
 void func_020375ec(int *line, int *position);
 void func_02037940(void *p, int v);
 void func_02037a04(void *o, void *d1, void *d2);
@@ -136,7 +135,7 @@ int dBgW_KcMbgSclY::DetectClsn(dBgCh_Gnd &ground)
     Vector3 localEnd;
     Vector3 lineEnd;
 
-    func_020374b8((int *)&ground, (int *)&probePos);
+    ground.GetClsnPos(probePos);
     lineEnd = probePos;
 
     int probeHeight = ground.mProbeHeight;

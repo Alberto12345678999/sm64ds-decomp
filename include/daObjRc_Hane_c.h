@@ -1,7 +1,7 @@
 #ifndef DAOBJRC_HANE_C_H
 #define DAOBJRC_HANE_C_H
 
-#include "CommonModel.h"
+#include "dExtCommonModel_c.h"
 #include "dActor_c.h"
 
 extern "C" void *_ZN7fBase_cnwEj(unsigned size);
@@ -48,8 +48,8 @@ extern "C" void *_ZN7fBase_cnwEj(unsigned size);
  * gone; the class name now comes from the ROM's type string.
  *
  * LAYOUT. daObjRc_Hane_c_classInit allocates 284 = 0x11c, constructs
- * dActor_c, stores the vptr and constructs a CommonModel at 0xd4; D1 destroys
- * that model before chaining to dActor_c. CommonModel's mat4x3 sits at +0xc,
+ * dActor_c, stores the vptr and constructs a dExtCommonModel_c at 0xd4; D1 destroys
+ * that model before chaining to dActor_c. dExtCommonModel_c's mat4x3 sits at +0xc,
  * which is why func_ov036_02111618 writes the composed matrix to 0xe0.
  * InitResources snapshots the three actor angles into 0x110..0x114 and
  * Behavior advances the frame and the two parameter-derived mode flags at
@@ -65,7 +65,7 @@ struct daObjRc_Hane_c : dActor_c {
        it FIRST is what makes this TU the vtable's home, so _ZTV and the RTTI
        pair land here rather than in whichever other TU happens to name them.
        The body is empty because the chain is short: this class's vptr store,
-       then CommonModel's destructor, then dActor_c's. */
+       then dExtCommonModel_c's destructor, then dActor_c's. */
     virtual ~daObjRc_Hane_c() {}      /* slots 16 (D1), 17 (D0) */
 
     virtual s32 InitResources();      /* slot  0 */
@@ -75,7 +75,7 @@ struct daObjRc_Hane_c : dActor_c {
 
     /* --- fields --- */
     u8          pad_0d0[0x4];    /* 0x0d0 */
-    CommonModel mModel;          /* 0x0d4 */
+    dExtCommonModel_c mModel;          /* 0x0d4 */
     s16         mBaseAngleX;     /* 0x110 */
     s16         mBaseAngleY;     /* 0x112 */
     s16         mBaseAngleZ;     /* 0x114 */

@@ -1,0 +1,100 @@
+{
+  "id": "ov002/daDemo_c",
+  "module": "ov002",
+  "source": "src/actors/daDemo_c.cpp",
+  "promoted_source": "src/actors/daDemo_c.cpp",
+  "status": "promoted",
+  "boundary_confidence": "medium",
+  "boundary_evidence": [
+    "HAND-ASSEMBLED. tu_map has no candidate for this range: the five _ZN8daDemo_c lifecycle overrides at 0x020f8028..0x020f8808 sit between the func_ov002_020f7* param-dispatch helpers below and daDemo_c's classInit (d_a_demo.c) above, and the mapper cannot attribute the helper run. The shard layout itself gives the boundary: five mangled members, contiguous, no gap.",
+    "The class's key function is its out-of-line destructor (_ZN8daDemo_cD1Ev/D0Ev at 0x020f1f70-0x020f1fd0), which stays in its own shards the way the rest of the tree's deliberate D-pairs do; this TU defines no key function and therefore emits no _ZTV/_ZTI/_ZTS for the class."
+  ],
+  "sections": [
+    {
+      "name": ".text",
+      "start": "0x020f8028",
+      "end": "0x020f8808"
+    }
+  ],
+  "functions": [
+    {
+      "symbol": "_ZN8daDemo_c16CleanupResourcesEv",
+      "address": "0x020f8028",
+      "size": "0x00000080",
+      "legacy_source": "src/_ZN8daDemo_c16CleanupResourcesEv.cpp",
+      "ordinal": 0
+    },
+    {
+      "symbol": "_ZN8daDemo_c16OnPendingDestroyEv",
+      "address": "0x020f80a8",
+      "size": "0x00000004",
+      "legacy_source": "src/_ZN8daDemo_c16OnPendingDestroyEv.cpp",
+      "ordinal": 1
+    },
+    {
+      "symbol": "_ZN8daDemo_c6RenderEv",
+      "address": "0x020f80ac",
+      "size": "0x00000118",
+      "legacy_source": "src/_ZN8daDemo_c6RenderEv.cpp",
+      "ordinal": 2
+    },
+    {
+      "symbol": "_ZN8daDemo_c8BehaviorEv",
+      "address": "0x020f81c4",
+      "size": "0x000001e0",
+      "legacy_source": "src/_ZN8daDemo_c8BehaviorEv.cpp",
+      "ordinal": 3
+    },
+    {
+      "symbol": "_ZN8daDemo_c13InitResourcesEv",
+      "address": "0x020f83a4",
+      "size": "0x00000464",
+      "legacy_source": "src/_ZN8daDemo_c13InitResourcesEv.cpp",
+      "ordinal": 4
+    }
+  ],
+  "data": [],
+  "bss": [],
+  "compiler_only_output": [
+    {
+      "symbol": "_ZN7Vector3D1Ev",
+      "disposition": "deadstrip-duplicate",
+      "canonical_module": "arm9",
+      "canonical_address": "0x020072c0",
+      "reason": "Vector3's four-byte inline destructor, emitted as vague linkage because this TU takes a Vector3 local in Behavior. The cartridge owns it at arm9:0x020072c0 and an enrolled source already reaches it, so this object's copy is a duplicate that production isolation discards."
+    }
+  ],
+  "externalized_output": [],
+  "notes": [
+    "daDemo_c is the cutscene-only actor family: one dActor_c subclass services every scripted-scene prop, param1 selecting the object. The shard bodies were folded with their shadow casts flattened onto the real members (param1, mPosX/Y/Z, mScaleX/Y/Z, mAngleX/Y/Z, mModel, mModelAnim, mOpacity, unk_103) and the Obj vtable stub replaced by `delete`. The derived render objects InitResources builds are unnamed and carry a member-0x64 subobject no header types, so the hand-rolled _Znwj + veneer + C2 + vptr-store sequence stays; see the file's own leftover block."
+  ],
+  "verification": {
+    "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
+    "toolchain": "tools/mwccarm/2004/b56/mwccarm.exe",
+    "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
+    "object": "build/tu/ov002-daDemo_c/daDemo_c.o (gitignored)",
+    "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
+    "functions_matched": 5,
+    "functions_declared": 5,
+    "compilerOnlyOutput": {
+      "requested": [
+        "_ZN7Vector3D1Ev"
+      ],
+      "deadstripped": [
+        "_ZN7Vector3D1Ev"
+      ],
+      "droppedSections": [
+        12
+      ],
+      "data": [],
+      "dataExternalized": []
+    },
+    "criteria": {
+      "every_declared_function_defined": "PASS",
+      "every_declared_function_bytes_match": "PASS",
+      "declared_function_set_equals_defined_function_set": "PASS",
+      "functions_occur_in_expected_order": "PASS",
+      "relocation_destinations_verified": "PASS"
+    }
+  }
+}
