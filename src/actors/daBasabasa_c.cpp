@@ -476,8 +476,8 @@ int daBasabasa_c::InitResources()
     mModelAnim1.SetFile((BMD_File *)Model::LoadFile(data_ov065_0211d698), 1, -1);
     mModelAnim2.SetFile((BMD_File *)Model::LoadFile(data_ov065_0211d6a8), 1, -1);
     mShadowModel.InitCylinder();
-    Animation::LoadFile(data_ov065_0211d690);
-    Animation::LoadFile(data_ov065_0211d6a0);
+    dExtFrameCtrl_c::LoadFile(data_ov065_0211d690);
+    dExtFrameCtrl_c::LoadFile(data_ov065_0211d6a0);
     mTerminalVelocity = -0xa000;
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x28000, 0x28000, 0x200000, 0x7eff0);
     mAngleY = mPrevAngleY;

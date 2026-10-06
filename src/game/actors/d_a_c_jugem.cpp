@@ -940,7 +940,7 @@ int daC_Jugem_c::Behavior()
   BehState* st=(BehState *)mState;
   if(st->fn) (((BehC*)this)->*st->fn)();
   UpdatePos(0);
-  static_cast<Animation *>(&mModelAnim1)->Advance();
+  static_cast<dExtFrameCtrl_c *>(&mModelAnim1)->Advance();
   mTextureSequence.Advance();
   if((BehState *)mState==(BehState*)&data_ov085_021307d0){
     mAngleX=mPrevAngleX;
@@ -967,7 +967,7 @@ int daC_Jugem_c::InitResources()
 {
   BMD_File* bmd = (BMD_File*)Model::LoadFile(*(SharedFilePtr*)data_ov085_0213074c);
   mModelAnim1.SetFile(bmd, 1, -1);
-  Animation::LoadFile(*(SharedFilePtr*)data_ov085_02130744);
+  dExtFrameCtrl_c::LoadFile(*(SharedFilePtr*)data_ov085_02130744);
   TextureSequence::LoadFile(*(SharedFilePtr*)data_ov085_0213073c);
   mShadowModel1.InitCylinder();
   mShadowModel2.InitCylinder();

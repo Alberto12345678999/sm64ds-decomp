@@ -46,7 +46,7 @@ s32 daMcFlag_c::InitResources()
 {
     mModelAnim.SetFile((BMD_File *)Model::LoadFile(data_ov009_02113eb8), 1, -1);
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-        &mModelAnim, (BCA_File *)Animation::LoadFile(data_ov009_02113eb0), 0,
+        &mModelAnim, (BCA_File *)dExtFrameCtrl_c::LoadFile(data_ov009_02113eb0), 0,
         0x1000, 0);
     return 1;
 }

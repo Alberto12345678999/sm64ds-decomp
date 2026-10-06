@@ -58,7 +58,7 @@ void func_ov002_020d8a50(char* self, int which)
         _ZN5dCc_c6UpdateEv(self + 0x314);
 
     model = *(char**)(self + _ZNK6Player14GetBodyModelIDEjb(self, *(u32*)(self + 8) & 0xff, 0) * 4 + 0xdc);
-    if (!_ZNK9Animation12WillHitFrameEi(model + 0x50, data_ov002_0210a5cc[i2]))
+    if (!_ZNK15dExtFrameCtrl_c12WillHitFrameEi(model + 0x50, data_ov002_0210a5cc[i2]))
         return;
 
     switch (which) {

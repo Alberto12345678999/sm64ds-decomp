@@ -21,7 +21,7 @@
 #include "dCamera_c.h"
 #include "Sound.h"
 #include "dCc_c.h"
-#include "Animation.h"
+#include "dExtFrameCtrl_c.h"
 
 enum {
     kYoshiEggId = 9,
@@ -38,8 +38,8 @@ enum {
  * has no fields; +4 is the BMD or BCA the load just filled in.
  *   02114968  body BMD   sinit 0x9c02, Model::LoadFile, mModelAnim
  *   02114978  link BMD   sinit 0x9c01, Model::LoadFile, mLinkModels
- *   02114980  idle BCA   sinit 0x9c04, Animation::LoadFile
- *   02114970  lunge BCA  sinit 0x9c03, Animation::LoadFile
+ *   02114980  idle BCA   sinit 0x9c04, dExtFrameCtrl_c::LoadFile
+ *   02114970  lunge BCA  sinit 0x9c03, dExtFrameCtrl_c::LoadFile
  */
 struct Ov014Loaded {
     u32 id;
@@ -169,8 +169,8 @@ int daWanwan_c::InitResources()
     void *f = Model::LoadFile(data_ov014_02114968);
     mModelAnim.SetFile((BMD_File *)f, 1, 1);
     Model::LoadFile(data_ov014_02114978);
-    Animation::LoadFile(data_ov014_02114980);
-    Animation::LoadFile(data_ov014_02114970);
+    dExtFrameCtrl_c::LoadFile(data_ov014_02114980);
+    dExtFrameCtrl_c::LoadFile(data_ov014_02114970);
 
     {
         int i = 0;
@@ -822,7 +822,7 @@ extern "C" void func_ov014_02111ca8(char *raw)
             c->func_ov014_02111ebc(2);
         }
     }
-    static_cast<Animation &>(c->mModelAnim).Advance();
+    static_cast<dExtFrameCtrl_c &>(c->mModelAnim).Advance();
 }
 
 // @symbol func_ov014_02111b70
@@ -880,7 +880,7 @@ extern "C" int func_ov014_02111af0(char *raw)
         goto adv;
     c->func_ov014_02111ebc(1);
 adv:
-    static_cast<Animation &>(c->mModelAnim).Advance();
+    static_cast<dExtFrameCtrl_c &>(c->mModelAnim).Advance();
 }
 
 // @symbol func_ov014_02111a6c
@@ -1052,7 +1052,7 @@ extern "C" void func_ov014_021115ec(u8 *raw)
             self->MarkForDestruction();
         break;
     }
-    static_cast<Animation &>(self->mModelAnim).Advance();
+    static_cast<dExtFrameCtrl_c &>(self->mModelAnim).Advance();
 }
 
 // @symbol func_ov014_021115c0

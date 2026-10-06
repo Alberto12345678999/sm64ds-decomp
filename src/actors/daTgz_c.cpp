@@ -384,7 +384,7 @@ extern "C" void func_ov077_02125304(char *vc)
 extern "C" int func_ov077_021253a4(daTgz_c *self)
 {
     self->mAngleX = self->mAngleX - 0x1000;
-    self->mModelAnim.Animation::Advance();
+    self->mModelAnim.dExtFrameCtrl_c::Advance();
     self->UpdatePos(&self->mdCcAc_c);
 
     if (self->mHorzSpeed >= self->mWithMeshClsn.mRadius || self->mVertSpeed >= self->mWithMeshClsn.mRadius)
@@ -595,7 +595,7 @@ extern "C" int func_ov077_02125908(daTgz_c *self)
         self->MarkForDestruction();
     }
 
-    self->mModelAnim.Animation::Advance();
+    self->mModelAnim.dExtFrameCtrl_c::Advance();
     self->UpdatePos(&self->mdCcAc_c);
     func_ov077_02124eb0(self);
     self->mdCcAc_c.Clear();
@@ -623,7 +623,7 @@ extern "C" int func_ov077_02125a54(daTgz_c *self)
     int d;
     ApproachLinear(self->mAngleY, self->mTurnTarget, 0x64);
     self->mPrevAngleY = self->mAngleY;
-    self->mModelAnim.Animation::Advance();
+    self->mModelAnim.dExtFrameCtrl_c::Advance();
     func_ov077_02124eb0(self);
     if (self->mWaterY)
         d = self->mPosY - self->mWaterY;
@@ -827,7 +827,7 @@ int daTgz_c::InitResources()
     mModel.SetFile(bmd, 1, -1);
     bmd = (BMD_File *)Model::LoadFile(data_ov077_02127b38);
     mModelAnim.SetFile(bmd, 1, -1);
-    Animation::LoadFile(data_ov077_02127c14);
+    dExtFrameCtrl_c::LoadFile(data_ov077_02127c14);
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModelAnim, TGZ_BCA, 0, 0x1000, 0);
     if (!mShadowModel.InitCylinder())
         return 0;

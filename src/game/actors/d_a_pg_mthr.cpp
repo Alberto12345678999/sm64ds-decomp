@@ -49,7 +49,7 @@
 #include "SharedFilePtr.h"
 #include "TextureSequence.h"
 #include "dBgCh_Gnd.h"
-#include "Animation.h"
+#include "dExtFrameCtrl_c.h"
 #include "SurfaceInfo.h"
 #include "dBgPi.h"
 #include "Player.h"
@@ -141,7 +141,7 @@ int daPgMthr_c::InitResources()
     void *m = Model::LoadFile(data_ov018_02113c00);
     mModelAnim.SetFile((BMD_File *)m, 1, 1);
     for (int i = 0; i < 2; i++)
-        Animation::LoadFile(*(SharedFilePtr *)data_ov018_02112c0c[i]);
+        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)data_ov018_02112c0c[i]);
     for (int i = 0; i < 2; i++) {
         SharedFilePtr *t = data_ov018_02112c04[i];
         TextureSequence::LoadFile(*t);
@@ -184,7 +184,7 @@ int daPgMthr_c::InitResources()
 int daPgMthr_c::Behavior()
 {
     func_ov018_0211235c(this);
-    mModelAnim.Animation::Advance();
+    mModelAnim.dExtFrameCtrl_c::Advance();
     mTextureSequence.Advance();
     mdCcAc_c.Clear();
     mdCcAc_c.Update();

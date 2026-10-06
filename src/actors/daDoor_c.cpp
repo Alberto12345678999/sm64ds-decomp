@@ -55,12 +55,12 @@
  * `#pragma defer_codegen off` keeps this file in ROM order.
  *
  * Leftover: the helpers keep their C-ABI cartridge names (nothing here says
- *   what the original called them); their door, Player, Animation and dCamera_c
+ *   what the original called them); their door, Player, dExtFrameCtrl_c and dCamera_c
  *   accesses are real members now, and their Player calls are real member
  *   calls through include/Player.h, except Unk_020ca488 (see its declaration)
  *   and func_ov002_020ca78c, which are free-function calls.
  * Leftover: the callees with Fix12<int> parameters (Sound, ModelAnim::SetAnim),
- *   the SaveData, Sound::PlayCharVoice and Animation::LoadFile calls, and the
+ *   the SaveData, Sound::PlayCharVoice and dExtFrameCtrl_c::LoadFile calls, and the
  *   Model loaders InitResources calls stay spelled as mangled extern-C free
  *   functions.
  * Leftover: dActor_c's mScaleX/Y/Z and mAngleX/Z carry other things for a door
@@ -198,7 +198,8 @@ int _ZN8SaveData22NumGlowingRabbitsFoundEv(void);
 void _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(unsigned int a, int b);
 int _ZN5Sound7PlaySubEjjj5Fix12IiEb(unsigned int, unsigned int, unsigned int, int, int);
 void _ZN5Sound13PlayCharVoiceEjjRK7Vector3(unsigned int a, unsigned int b, void *pos);
-void *_ZN9Animation8LoadFileER13SharedFilePtr(void *fp);
+/* local extern: the call passes an untyped this, so it cannot use the header method. */
+void *_ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(void *fp);
 /* local extern: include/Player.h declares Player::Unk_020ca488 void, and
    func_ov100_021449c8 tests the value it leaves in r0. */
 int _ZN6Player12Unk_020ca488Ev(void *p);
@@ -1183,7 +1184,7 @@ s32 daDoor_c::InitResources()
             _ZN5Model8LoadFileER13SharedFilePtr(mKeyFile);
     }
 
-    an = _ZN9Animation8LoadFileER13SharedFilePtr(&data_ov100_02148744);
+    an = _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&data_ov100_02148744);
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&mModel, an, 0x40000000, 0x1000, 0);
 
     /* The model matrix takes the position >> 3. */

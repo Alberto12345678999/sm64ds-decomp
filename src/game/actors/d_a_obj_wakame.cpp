@@ -83,7 +83,7 @@ s32 daObjWakame_c::InitResources()
 {
     void *m = Model::LoadFile(data_ov002_0210e0dc);
     mModelAnim.SetFile((BMD_File *)m, 1, -1);
-    void *a = Animation::LoadFile(data_ov002_0210e0d4);
+    void *a = dExtFrameCtrl_c::LoadFile(data_ov002_0210e0d4);
     /* MEASURED: by-value Fix12<int> speed is wall 6az. */
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
         &mModelAnim, (BCA_File *)a, 0, 0x1000, 0);
@@ -95,7 +95,7 @@ s32 daObjWakame_c::InitResources()
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN13daObjWakame_c8BehaviorEv
 /* The ROM's `add r0, r0, #0x124` then `bl 0x02015c3c` is this call and the
-   implicit conversion in front of it: Advance is Animation's, Animation sits at
+   implicit conversion in front of it: Advance is dExtFrameCtrl_c's, dExtFrameCtrl_c sits at
    +0x50 inside a ModelAnim, and the member is at +0xd4. Nothing else happens --
    a seaweed's whole per-frame behaviour is to advance its animation. */
 s32 daObjWakame_c::Behavior()

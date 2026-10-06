@@ -144,8 +144,8 @@ int daHyuhyu_c::InitResources()
     Model::LoadFile(data_ov002_0210d9a0);
     Model::LoadFile(data_ov002_0210d9c0);
     mModelAnim.SetFile((BMD_File *)Model::LoadFile(data_ov091_02135674), 1, -1);
-    Animation::LoadFile(data_ov091_0213567c);
-    Animation::LoadFile(data_ov091_02135684);
+    dExtFrameCtrl_c::LoadFile(data_ov091_0213567c);
+    dExtFrameCtrl_c::LoadFile(data_ov091_02135684);
     mModelAnim.speed = 0x1000;
     func_ov091_02134044(this, &data_ov091_021356d0);
     return 1;

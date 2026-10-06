@@ -67,7 +67,7 @@ willhit:
         u32 arg = (u8)param1;
         int modelIdx = _ZNK6Player14GetBodyModelIDEjb(((char*)this), arg, 0);
         char* anim = *(char**)(((char*)this) + modelIdx * 4 + 0xdc) + 0x50;
-        if (_ZNK9Animation12WillHitFrameEi(anim, 0x2e) != 0) {
+        if (_ZNK15dExtFrameCtrl_c12WillHitFrameEi(anim, 0x2e) != 0) {
             mStateWork = 1;
         }
     }

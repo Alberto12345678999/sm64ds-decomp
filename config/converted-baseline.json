@@ -1121,17 +1121,6 @@
     "src/actors/dScene_c.cpp#_ZN8dScene_c9SetFadersEP15FaderBrightness",
     "src/actors/dScene_c.cpp#_ZN8dScene_cD0Ev",
     "src/actors/dScene_c.cpp#_ZN8dScene_cD1Ev",
-    "src/_ZN9Animation4CopyERKS_.cpp",
-    "src/_ZN9Animation7AdvanceEv.cpp",
-    "src/_ZN9Animation8FinishedEv.cpp",
-    "src/_ZN9Animation8GetFlagsEv.cpp",
-    "src/_ZN9Animation8LoadFileER13SharedFilePtr.cpp",
-    "src/_ZN9Animation8SetFlagsEi.cpp",
-    "src/_ZN9AnimationC1Ev.cpp",
-    "src/_ZN9AnimationC2Ev.cpp",
-    "src/_ZN9AnimationD0Ev.cpp",
-    "src/_ZN9AnimationD1Ev.cpp",
-    "src/_ZN9AnimationD2Ev.cpp",
     "src/d_s_boot.cpp#_ZN9dScBoot_cD0Ev",
     "src/d_s_boot.cpp#_ZN9dScBoot_cD1Ev",
     "src/actors/daWater_Hakidasi_c.cpp#_ZN18daWater_Hakidasi_c16CleanupResourcesEv",
@@ -1242,8 +1231,6 @@
     "src/engine/path/PathPtr.cpp#_ZNK7PathPtr7GetNodeER7Vector3j",
     "src/engine/path/PathPtr.cpp#_ZNK7PathPtr8NumNodesEv",
     "src/engine/particle/Particle_SysTracker_Contents.cpp#_ZNK8Particle10SysTracker8Contents8FindDataEj",
-    "src/_ZNK9Animation12WillHitFrameEi.cpp",
-    "src/_ZNK9Animation13GetFrameCountEv.cpp",
     "src/typeinfo.cpp#_ZNSt9type_infoD0Ev",
     "src/typeinfo.cpp#_ZNSt9type_infoD1Ev",
     "src/typeinfo.cpp#_ZNSt9type_infoD2Ev",
@@ -3519,7 +3506,13 @@
     "src/engine/collision/dBgCh_Lin.cpp#_ZN9dBgCh_Lin13SetObjAndLineERK7Vector3S2_P8dActor_c",
     "src/engine/collision/dBgCh_Lin.cpp#_ZN9dBgCh_LinC1Ev",
     "src/engine/collision/dBgCh_Lin.cpp#_ZN9dBgCh_LinD0Ev",
-    "src/engine/collision/dBgCh_Lin.cpp#_ZN9dBgCh_LinD1Ev"
+    "src/engine/collision/dBgCh_Lin.cpp#_ZN9dBgCh_LinD1Ev",
+    "src/_ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr.cpp",
+    "src/_ZN15dExtFrameCtrl_cC1Ev.cpp",
+    "src/_ZN15dExtFrameCtrl_cC2Ev.cpp",
+    "src/_ZN15dExtFrameCtrl_cD0Ev.cpp",
+    "src/_ZN15dExtFrameCtrl_cD1Ev.cpp",
+    "src/_ZN15dExtFrameCtrl_cD2Ev.cpp"
   ],
-  "count": 3512
+  "count": 3505
 }

@@ -7,7 +7,7 @@
  * Leftover: calls that take Fix12 by value stay mangled (ModelAnim::SetAnim,
  *   dCcAc_c::Init, dBgCh_Actr::Init, DropShadowRadHeight, Sound::PlaySub,
  *   Particle::System::New). dBgCh_Actr::Init's header spells Fix12i, which
- *   mangles as int. Animation handles and the eight state records stay
+ *   mangles as int. dExtFrameCtrl_c handles and the eight state records stay
  *   data_ov085_*; their sinit is another file. g_profile_MIP stays outside.
  *   Matrix copies use a local { s32 m[12] }: Matrix4x3 embeds Vector3, and a
  *   typed copy emits ~Vector3. StateFleeMain copies the player position
@@ -1241,7 +1241,7 @@ void daMip_c::RenderMirrorImage()
  * objects rather than dereferenced as a type, so it stays an s32 and those four
  * comparisons are what identify the states.
  *
- * The block before Animation::Advance is the ARM/Itanium pointer-to-member
+ * The block before dExtFrameCtrl_c::Advance is the ARM/Itanium pointer-to-member
  * sequence written out -- adjustment word, virtual bit, vtable index or direct
  * address -- run on whatever mState points at. It is kept verbatim because there
  * is no recovered type for the descriptor to call a member through. `c` is the
@@ -1458,11 +1458,11 @@ int daMip_c::InitResources()
     void* closest;
     int rabbitId;
 
-    Animation::LoadFile(*(SharedFilePtr *)&data_ov085_021305b8);
-    Animation::LoadFile(*(SharedFilePtr *)&data_ov085_021305d0);
-    Animation::LoadFile(*(SharedFilePtr *)&data_ov085_021305b0);
-    Animation::LoadFile(*(SharedFilePtr *)&data_ov085_021305c8);
-    Animation::LoadFile(*(SharedFilePtr *)&data_ov085_021305c0);
+    dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov085_021305b8);
+    dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov085_021305d0);
+    dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov085_021305b0);
+    dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov085_021305c8);
+    dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov085_021305c0);
     Model::LoadFile(*(SharedFilePtr *)&data_ov085_021305d8);
     mModelAnim.SetFile((BMD_File *)Model::LoadFile(*(SharedFilePtr *)&data_ov085_021305e0), 1, -1);
     mShadowModel1.InitCylinder();

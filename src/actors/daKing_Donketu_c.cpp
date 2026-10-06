@@ -105,7 +105,7 @@
  *       ClosestPlayer / HorzAngleToCPlayer / DistToCPlayer / Spawn /
  *       PoofDustAt / HugeLandingDustAt / JumpedOnByPlayer / FindWithActorID;
  *       dCamera_c::SetLookAt / SetPos; fBase_c::MarkForDestruction;
- *       Animation::Finished / WillHitFrame (through mBlendModelAnim);
+ *       dExtFrameCtrl_c::Finished / WillHitFrame (through mBlendModelAnim);
  *       dBgCh_Actr::IsOnGround (mWithMeshClsn); Player::StartTalk /
  *       ShowMessage / GetTalkState / GetHurtState / Unk_020c6a10;
  *       Message::EndTalk; SaveData::IsCharacterUnlocked.
@@ -2034,7 +2034,8 @@ extern "C" {
 extern void LoadKeyModels(int idx);
 extern struct BMD_File* _ZN5Model8LoadFileER13SharedFilePtr(SharedFilePtr* f);
 extern void _ZN9ModelBase7SetFileEP8BMD_Fileii(void* self, struct BMD_File* f, int a, int b);
-extern void* _ZN9Animation8LoadFileER13SharedFilePtr(SharedFilePtr* f);
+/* local extern: the call passes an untyped this, so it cannot use the header method. */
+extern void* _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(SharedFilePtr* f);
 extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(void* self, dActor_c* a, Vector3* v, Fix12i r, Fix12i h, unsigned int e, unsigned int g);
 extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void* self, dActor_c* a, Fix12i r, Fix12i h, Vector3_16* p, Vector3_16* q);
 }
@@ -2048,13 +2049,13 @@ int daKing_Donketu_c::InitResources()
     Vector3 v;
     int i;
     LoadKeyModels(4);
-    _ZN9Animation8LoadFileER13SharedFilePtr((SharedFilePtr *)data_ov073_02123280);
-    _ZN9Animation8LoadFileER13SharedFilePtr((SharedFilePtr *)data_ov073_021232a0);
-    _ZN9Animation8LoadFileER13SharedFilePtr((SharedFilePtr *)data_ov073_02123288);
-    _ZN9Animation8LoadFileER13SharedFilePtr((SharedFilePtr *)data_ov073_021232a8);
-    _ZN9Animation8LoadFileER13SharedFilePtr((SharedFilePtr *)data_ov073_02123290);
-    _ZN9Animation8LoadFileER13SharedFilePtr((SharedFilePtr *)data_ov073_021232b0);
-    _ZN9Animation8LoadFileER13SharedFilePtr((SharedFilePtr *)data_ov073_021232b8);
+    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr((SharedFilePtr *)data_ov073_02123280);
+    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr((SharedFilePtr *)data_ov073_021232a0);
+    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr((SharedFilePtr *)data_ov073_02123288);
+    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr((SharedFilePtr *)data_ov073_021232a8);
+    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr((SharedFilePtr *)data_ov073_02123290);
+    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr((SharedFilePtr *)data_ov073_021232b0);
+    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr((SharedFilePtr *)data_ov073_021232b8);
     _ZN5Model8LoadFileER13SharedFilePtr((SharedFilePtr *)data_ov002_0210da30);
     f = _ZN5Model8LoadFileER13SharedFilePtr((SharedFilePtr *)data_ov073_02123298);
     _ZN9ModelBase7SetFileEP8BMD_Fileii(&mBlendModelAnim, f, 1, -1);

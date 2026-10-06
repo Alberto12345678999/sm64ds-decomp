@@ -55,11 +55,15 @@ extern SharedFilePtr data_ov006_02141e9c;
 extern Matrix4x3 data_020a0e68;
 void Matrix4x3_FromTranslation(void* m, int x, int y, int z);
 int _Z15ApproachLinear2Rsss(short* p, short a, short b);
-void _ZN9Animation7AdvanceEv(void* a);
-int _ZN9Animation8FinishedEv(void* a);
-int _ZNK9Animation12WillHitFrameEi(void* anim, int frame);
+/* local extern: the call passes an untyped this, so it cannot use the header method. */
+void _ZN15dExtFrameCtrl_c7AdvanceEv(void* a);
+/* local extern: the call passes an untyped this, so it cannot use the header method. */
+int _ZN15dExtFrameCtrl_c8FinishedEv(void* a);
+/* local extern: the call passes an untyped this, so it cannot use the header method. */
+int _ZNK15dExtFrameCtrl_c12WillHitFrameEi(void* anim, int frame);
 int _ZN5Model8LoadFileER13SharedFilePtr(void *p);
-int _ZN9Animation8LoadFileER13SharedFilePtr(void *p);
+/* local extern: the call passes an untyped this, so it cannot use the header method. */
+int _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(void *p);
 void _ZN15TextureSequence8LoadFileER13SharedFilePtr(void* r);
 void _ZN15MaterialChanger7PrepareER8BMD_FileR8BMA_File(int bmd, void *bma);
 void _ZN9ModelBase7SetFileEP8BMD_Fileii(char *t, int f, int a, int b);
@@ -199,9 +203,9 @@ void dMg3DEspAnimSet_c::Behavior()
         char* cc = self;
         for (i = 0; i < 3; i++) {
             if (((int*)(self + 0x168))[i] != 0) {
-                _ZN9Animation7AdvanceEv(a + 0x50);
-                _ZN9Animation7AdvanceEv(b);
-                if (_ZN9Animation8FinishedEv(a + 0x50)) {
+                _ZN15dExtFrameCtrl_c7AdvanceEv(a + 0x50);
+                _ZN15dExtFrameCtrl_c7AdvanceEv(b);
+                if (_ZN15dExtFrameCtrl_c8FinishedEv(a + 0x50)) {
                     ((int*)(self + 0x168))[i] = 0;
                 }
             } else {
@@ -262,7 +266,7 @@ void dMg3DEspAnimSet_c::InitResources()
     char *w2;
     *(int *)(o + 0x174) = 0x800;
     bmd = _ZN5Model8LoadFileER13SharedFilePtr(&data_ov006_02141e94);
-    bca = _ZN9Animation8LoadFileER13SharedFilePtr(&data_ov006_02141e6c);
+    bca = _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&data_ov006_02141e6c);
     _ZN15MaterialChanger7PrepareER8BMD_FileR8BMA_File(bmd, &data_ov006_0213c7f4);
     w = o;
     w2 = o + 0x12c;
@@ -352,13 +356,13 @@ extern "C" void func_ov006_020e7f5c(dMg3DEspModel_c* model);
 // @symbol func_ov006_020e7cc0
 extern "C" void func_ov006_020e7cc0(char *thiz)
 {
-    if (((Animation*)(thiz + 0x5c))->Finished() != 0 &&
+    if (((dExtFrameCtrl_c*)(thiz + 0x5c))->Finished() != 0 &&
         *(void**)(thiz + 0x6c) == ((void**)&data_ov006_02141e8c)[1]) {
         _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj((ModelAnim*)(thiz + 0xc), ((BCA_File**)&data_ov006_02141e84)[1], 0, 0x800, 0);
         return;
     }
-    if (((Animation*)(thiz + 0x5c))->WillHitFrame(0x10) == 0 &&
-        ((Animation*)(thiz + 0x5c))->WillHitFrame(0x50) == 0)
+    if (((dExtFrameCtrl_c*)(thiz + 0x5c))->WillHitFrame(0x10) == 0 &&
+        ((dExtFrameCtrl_c*)(thiz + 0x5c))->WillHitFrame(0x50) == 0)
         return;
     if (*(int*)(thiz + 0x20c) != 0)
         return;
@@ -381,13 +385,13 @@ void func_ov006_020e7d7c(char *c)
 // @symbol func_ov006_020e7de8
 void func_ov006_020e7de8(char *c)
 {
-    if (_ZN9Animation8FinishedEv(c + 0x5c)) {
+    if (_ZN15dExtFrameCtrl_c8FinishedEv(c + 0x5c)) {
         if (*(int *)(c + 0x20c) == 0)
             Sound::PlayBank2_2D(0x18f);
         func_ov006_020e7f5c((dMg3DEspModel_c *)c);
         return;
     }
-    if (_ZNK9Animation12WillHitFrameEi(c + 0x5c, 0x1e) == 0)
+    if (_ZNK15dExtFrameCtrl_c12WillHitFrameEi(c + 0x5c, 0x1e) == 0)
         return;
     func_ov006_020e7940((char *)(c + 0x84), 0x1e);
     func_ov006_020e794c((int *)(c + 0x84), 0x800);
@@ -455,10 +459,10 @@ int dMg3DEspModel_c::InitResources()
     if (func_020179b4(&data_ov006_02141e54, c + 0xc, 1) == 0)
         return 0;
     _ZN15TextureSequence8LoadFileER13SharedFilePtr(&data_ov006_02141e64);
-    _ZN9Animation8LoadFileER13SharedFilePtr(&data_ov006_02141e5c);
-    _ZN9Animation8LoadFileER13SharedFilePtr(&data_ov006_02141e7c);
-    _ZN9Animation8LoadFileER13SharedFilePtr(&data_ov006_02141e8c);
-    _ZN9Animation8LoadFileER13SharedFilePtr(&data_ov006_02141e84);
+    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&data_ov006_02141e5c);
+    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&data_ov006_02141e7c);
+    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&data_ov006_02141e8c);
+    _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr(&data_ov006_02141e84);
     TextureSequence::Prepare(**(BMD_File**)((void**)&data_ov006_02141e54 + 1),
                              **(BTP_File**)((void**)&data_ov006_02141e64 + 1));
     _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(c + 0x70, *((void**)&data_ov006_02141e64 + 1), 0, 0x1000, 0);
@@ -526,7 +530,7 @@ void func_ov006_020e8214(char* c)
     }
     if (state != 1)
         return;
-    if (_ZNK9Animation12WillHitFrameEi(c + 0x5034, 0)) {
+    if (_ZNK15dExtFrameCtrl_c12WillHitFrameEi(c + 0x5034, 0)) {
         u8* p = (u8*)(c + 0x5554);
         (*p)++;
     }
