@@ -1891,6 +1891,8 @@ extern void _ZN8dM3dGSphD2Ev(void*);
 extern void _ZN8dM3dGSphD1Ev(void*);
 extern void *_ZN8dM3dGSphC1Ev(void*);
 extern void *_ZN8dM3dGSphC2Ev(void*);
+extern void func_0203aa10(void*, const Vector3*, Vector3*);
+extern void func_0203aa74(void*, Vector3*, Vector3*);
 extern void func_0203aca0(int, int);
 extern void func_0203accc(int);
 extern int func_0203b27c(int, int);

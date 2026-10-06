@@ -1146,11 +1146,6 @@
     "src/engine/graph/dGraph_c_callback_c.cpp#_ZN8dGraph_c10callback_c14GraphCallback1Ev",
     "src/engine/graph/dGraph_c_callback_c.cpp#_ZN8dGraph_c10callback_c14GraphCallback2Ev",
     "src/engine/graph/dGraph_c_callback_c.cpp#_ZN8dGraph_c10callback_c14GraphCallback3Ev",
-    "src/_ZN8dM3dGSphC1Ev.cpp",
-    "src/_ZN8dM3dGSphC2Ev.cpp",
-    "src/_ZN8dM3dGSphD0Ev.cpp",
-    "src/_ZN8dM3dGSphD1Ev.cpp",
-    "src/_ZN8dM3dGSphD2Ev.cpp",
     "src/actors/dMeter_c.cpp#_ZN8dMeter_c13InitResourcesEv",
     "src/actors/dMeter_c.cpp#_ZN8dMeter_c14RenderRedCoinsEv",
     "src/actors/dMeter_c.cpp#_ZN8dMeter_c16CleanupResourcesEv",
@@ -3472,7 +3467,12 @@
     "src/actors/dActor_c.cpp#_ZN8dActor_c8OnPushedERS_",
     "src/actors/dActor_c.cpp#_ZN8dActor_c8PoofDustEv",
     "src/actors/dActor_c.cpp#_ZN8dActor_c9TrackStarEjj",
-    "src/actors/dActor_c.cpp#_ZN8dActor_c9UpdatePosEP5dCc_c"
+    "src/actors/dActor_c.cpp#_ZN8dActor_c9UpdatePosEP5dCc_c",
+    "src/engine/collision/dM3dGSph.cpp#_ZN8dM3dGSphC1Ev",
+    "src/engine/collision/dM3dGSph.cpp#_ZN8dM3dGSphC2Ev",
+    "src/engine/collision/dM3dGSph.cpp#_ZN8dM3dGSphD0Ev",
+    "src/engine/collision/dM3dGSph.cpp#_ZN8dM3dGSphD1Ev",
+    "src/engine/collision/dM3dGSph.cpp#_ZN8dM3dGSphD2Ev"
   ],
   "count": 3465
 }

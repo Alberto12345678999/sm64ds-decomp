@@ -20,27 +20,153 @@
     }
   ],
   "functions": [
-    { "symbol": "func_020398fc", "address": "0x020398fc", "size": "0x0000000c", "legacy_source": "src/func_020398fc.c", "ordinal": 0 },
-    { "symbol": "_ZN10dBgW_KcMbg11GetVelocityER7Vector3", "address": "0x02039908", "size": "0x0000001c", "legacy_source": "src/_ZN10dBgW_KcMbg11GetVelocityER7Vector3.cpp", "ordinal": 1 },
-    { "symbol": "_ZN10dBgW_KcMbg14GetAngularVelYEv", "address": "0x02039924", "size": "0x0000000c", "legacy_source": "src/_ZN10dBgW_KcMbg14GetAngularVelYEv.cpp", "ordinal": 2 },
-    { "symbol": "_ZN10dBgW_KcMbg12TransformPosERK7Vector3RS0_", "address": "0x02039930", "size": "0x00000040", "legacy_source": "src/_ZN10dBgW_KcMbg12TransformPosERK7Vector3RS0_.cpp", "ordinal": 3 },
-    { "symbol": "_ZN10dBgW_KcMbg10DetectClsnER9dBgCh_Lin", "address": "0x02039970", "size": "0x000000cc", "legacy_source": "src/_ZN10dBgW_KcMbg10DetectClsnER9dBgCh_Lin.cpp", "ordinal": 4 },
-    { "symbol": "_ZN10dBgW_KcMbg10DetectClsnER12dBgCh_SphCrr", "address": "0x02039a3c", "size": "0x0000027c", "legacy_source": "src/_ZN10dBgW_KcMbg10DetectClsnER12dBgCh_SphCrr.cpp", "ordinal": 5 },
-    { "symbol": "_ZN10dBgW_KcMbg10DetectClsnER9dBgCh_Gnd", "address": "0x02039cb8", "size": "0x00000100", "legacy_source": "src/_ZN10dBgW_KcMbg10DetectClsnER9dBgCh_Gnd.cpp", "ordinal": 6 },
-    { "symbol": "func_02039db8", "address": "0x02039db8", "size": "0x00000060", "legacy_source": "src/func_02039db8.c", "ordinal": 7 },
-    { "symbol": "func_02039e18", "address": "0x02039e18", "size": "0x00000018", "legacy_source": "src/func_02039e18.c", "ordinal": 8 },
-    { "symbol": "func_02039e30", "address": "0x02039e30", "size": "0x00000018", "legacy_source": "src/func_02039e30.c", "ordinal": 9 },
-    { "symbol": "func_02039e48", "address": "0x02039e48", "size": "0x00000018", "legacy_source": "src/func_02039e48.c", "ordinal": 10 },
-    { "symbol": "_ZN10dBgW_KcMbg17GetTriangleOriginEsR7Vector3", "address": "0x02039e60", "size": "0x00000060", "legacy_source": "src/_ZN10dBgW_KcMbg17GetTriangleOriginEsR7Vector3.cpp", "ordinal": 11 },
-    { "symbol": "_ZN10dBgW_KcMbg9GetNormalEsR7Vector3", "address": "0x02039ec0", "size": "0x00000060", "legacy_source": "src/_ZN10dBgW_KcMbg9GetNormalEsR7Vector3.cpp", "ordinal": 12 },
-    { "symbol": "_ZN10dBgW_KcMbg9TransformERK9Matrix4x3s", "address": "0x02039f20", "size": "0x000002bc", "legacy_source": "src/_ZN10dBgW_KcMbg9TransformERK9Matrix4x3s.cpp", "ordinal": 13 },
-    { "symbol": "_ZN10dBgW_KcMbg9Virtual08Ev", "address": "0x0203a1dc", "size": "0x00000004", "legacy_source": "src/_ZN10dBgW_KcMbg9Virtual08Ev.cpp", "ordinal": 14 },
-    { "symbol": "_ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block", "address": "0x0203a1e0", "size": "0x00000240", "legacy_source": "src/_ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block.c", "ordinal": 15 },
-    { "symbol": "_ZN10dBgW_KcMbgD2Ev", "address": "0x0203a420", "size": "0x00000024", "legacy_source": "src/_ZN10dBgW_KcMbgD2Ev.cpp", "ordinal": 16 },
-    { "symbol": "_ZN10dBgW_KcMbgD0Ev", "address": "0x0203a444", "size": "0x0000002c", "legacy_source": "src/_ZN10dBgW_KcMbgD0Ev.cpp", "ordinal": 17 },
-    { "symbol": "_ZN10dBgW_KcMbgD1Ev", "address": "0x0203a470", "size": "0x00000024", "legacy_source": "src/_ZN10dBgW_KcMbgD1Ev.cpp", "ordinal": 18 },
-    { "symbol": "_ZN10dBgW_KcMbgC1Ev", "address": "0x0203a494", "size": "0x00000024", "legacy_source": "src/_ZN10dBgW_KcMbgC1Ev.cpp", "ordinal": 19 },
-    { "symbol": "_ZN10dBgW_KcMbgC2Ev", "address": "0x0203a4b8", "size": "0x00000024", "legacy_source": "src/_ZN10dBgW_KcMbgC2Ev.cpp", "ordinal": 20 }
+    {
+      "symbol": "func_020398fc",
+      "address": "0x020398fc",
+      "size": "0x0000000c",
+      "legacy_source": "src/func_020398fc.c",
+      "ordinal": 0
+    },
+    {
+      "symbol": "_ZN10dBgW_KcMbg11GetVelocityER7Vector3",
+      "address": "0x02039908",
+      "size": "0x0000001c",
+      "legacy_source": "src/_ZN10dBgW_KcMbg11GetVelocityER7Vector3.cpp",
+      "ordinal": 1
+    },
+    {
+      "symbol": "_ZN10dBgW_KcMbg14GetAngularVelYEv",
+      "address": "0x02039924",
+      "size": "0x0000000c",
+      "legacy_source": "src/_ZN10dBgW_KcMbg14GetAngularVelYEv.cpp",
+      "ordinal": 2
+    },
+    {
+      "symbol": "_ZN10dBgW_KcMbg12TransformPosERK7Vector3RS0_",
+      "address": "0x02039930",
+      "size": "0x00000040",
+      "legacy_source": "src/_ZN10dBgW_KcMbg12TransformPosERK7Vector3RS0_.cpp",
+      "ordinal": 3
+    },
+    {
+      "symbol": "_ZN10dBgW_KcMbg10DetectClsnER9dBgCh_Lin",
+      "address": "0x02039970",
+      "size": "0x000000cc",
+      "legacy_source": "src/_ZN10dBgW_KcMbg10DetectClsnER9dBgCh_Lin.cpp",
+      "ordinal": 4
+    },
+    {
+      "symbol": "_ZN10dBgW_KcMbg10DetectClsnER12dBgCh_SphCrr",
+      "address": "0x02039a3c",
+      "size": "0x0000027c",
+      "legacy_source": "src/_ZN10dBgW_KcMbg10DetectClsnER12dBgCh_SphCrr.cpp",
+      "ordinal": 5
+    },
+    {
+      "symbol": "_ZN10dBgW_KcMbg10DetectClsnER9dBgCh_Gnd",
+      "address": "0x02039cb8",
+      "size": "0x00000100",
+      "legacy_source": "src/_ZN10dBgW_KcMbg10DetectClsnER9dBgCh_Gnd.cpp",
+      "ordinal": 6
+    },
+    {
+      "symbol": "func_02039db8",
+      "address": "0x02039db8",
+      "size": "0x00000060",
+      "legacy_source": "src/func_02039db8.c",
+      "ordinal": 7
+    },
+    {
+      "symbol": "func_02039e18",
+      "address": "0x02039e18",
+      "size": "0x00000018",
+      "legacy_source": "src/func_02039e18.c",
+      "ordinal": 8
+    },
+    {
+      "symbol": "func_02039e30",
+      "address": "0x02039e30",
+      "size": "0x00000018",
+      "legacy_source": "src/func_02039e30.c",
+      "ordinal": 9
+    },
+    {
+      "symbol": "func_02039e48",
+      "address": "0x02039e48",
+      "size": "0x00000018",
+      "legacy_source": "src/func_02039e48.c",
+      "ordinal": 10
+    },
+    {
+      "symbol": "_ZN10dBgW_KcMbg17GetTriangleOriginEsR7Vector3",
+      "address": "0x02039e60",
+      "size": "0x00000060",
+      "legacy_source": "src/_ZN10dBgW_KcMbg17GetTriangleOriginEsR7Vector3.cpp",
+      "ordinal": 11
+    },
+    {
+      "symbol": "_ZN10dBgW_KcMbg9GetNormalEsR7Vector3",
+      "address": "0x02039ec0",
+      "size": "0x00000060",
+      "legacy_source": "src/_ZN10dBgW_KcMbg9GetNormalEsR7Vector3.cpp",
+      "ordinal": 12
+    },
+    {
+      "symbol": "_ZN10dBgW_KcMbg9TransformERK9Matrix4x3s",
+      "address": "0x02039f20",
+      "size": "0x000002bc",
+      "legacy_source": "src/_ZN10dBgW_KcMbg9TransformERK9Matrix4x3s.cpp",
+      "ordinal": 13
+    },
+    {
+      "symbol": "_ZN10dBgW_KcMbg9Virtual08Ev",
+      "address": "0x0203a1dc",
+      "size": "0x00000004",
+      "legacy_source": "src/_ZN10dBgW_KcMbg9Virtual08Ev.cpp",
+      "ordinal": 14
+    },
+    {
+      "symbol": "_ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block",
+      "address": "0x0203a1e0",
+      "size": "0x00000240",
+      "legacy_source": "src/_ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block.c",
+      "ordinal": 15
+    },
+    {
+      "symbol": "_ZN10dBgW_KcMbgD2Ev",
+      "address": "0x0203a420",
+      "size": "0x00000024",
+      "legacy_source": "src/_ZN10dBgW_KcMbgD2Ev.cpp",
+      "ordinal": 16
+    },
+    {
+      "symbol": "_ZN10dBgW_KcMbgD0Ev",
+      "address": "0x0203a444",
+      "size": "0x0000002c",
+      "legacy_source": "src/_ZN10dBgW_KcMbgD0Ev.cpp",
+      "ordinal": 17
+    },
+    {
+      "symbol": "_ZN10dBgW_KcMbgD1Ev",
+      "address": "0x0203a470",
+      "size": "0x00000024",
+      "legacy_source": "src/_ZN10dBgW_KcMbgD1Ev.cpp",
+      "ordinal": 18
+    },
+    {
+      "symbol": "_ZN10dBgW_KcMbgC1Ev",
+      "address": "0x0203a494",
+      "size": "0x00000024",
+      "legacy_source": "src/_ZN10dBgW_KcMbgC1Ev.cpp",
+      "ordinal": 19
+    },
+    {
+      "symbol": "_ZN10dBgW_KcMbgC2Ev",
+      "address": "0x0203a4b8",
+      "size": "0x00000024",
+      "legacy_source": "src/_ZN10dBgW_KcMbgC2Ev.cpp",
+      "ordinal": 20
+    }
   ],
   "data": [],
   "bss": [],

@@ -51,10 +51,6 @@ dBgPi *func_02037938(dBgCh_SphCrr *sphere);
 dBgPi *func_020378dc(dBgCh_SphCrr *sphere);
 dBgPi *func_02037880(dBgCh_SphCrr *sphere);
 
-/* dM3dGSph's centre reader, owned by the dM3dGSph TU on main as func_0203abb0.
- * local extern: the typed spelling documents what it actually takes; the
- * definition writes through int pointers. */
-void func_0203abb0(dM3dGSph *sphere, Vector3 *centre);
 void _ZN12dBgCh_SphCrr15SetObjAndSphereERK7Vector35Fix12IiEP8dActor_c(
     dBgCh_SphCrr *sphere, const Vector3 *pos, Fix12i radius, dActor_c *actor);
 void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
@@ -185,7 +181,7 @@ int dBgW_KcMbgSclY::DetectClsn(dBgCh_SphCrr &sphere)
     int radius2;
     int r;
 
-    func_0203abb0(&(dM3dGSph &)sphere, &centre);
+    sphere.GetCentre(centre);
     func_0203aa74(this, &centre, &localCentre);
 
     inverseScale = invScale;

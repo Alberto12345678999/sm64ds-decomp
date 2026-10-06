@@ -8510,6 +8510,15 @@
     "src/_ZN8dActor_cC2Ev.cpp": "tangosdev",
     "src/_ZN8dActor_cC1Ev.cpp": "tangosdev",
     "src/_ZN8dActor_cD2Ev.cpp": "tangosdev",
-    "src/_ZN8Vector3sD1Ev.cpp": "andrewboudreau"
+    "src/_ZN8Vector3sD1Ev.cpp": "andrewboudreau",
+    "src/engine/collision/dM3dGSph.cpp#_ZNK8dM3dGSph9GetCentreER7Vector3": "tangosdev",
+    "src/engine/collision/dM3dGSph.cpp#_ZN8dM3dGSph9SetRadiusEi": "tangosdev",
+    "src/engine/collision/dM3dGSph.cpp#_ZN8dM3dGSph3SetERK7Vector3i": "tangosdev",
+    "src/engine/collision/dM3dGSph.cpp#_ZN8dM3dGSph9SetCentreERK7Vector3": "tangosdev",
+    "src/engine/collision/dM3dGSph.cpp#_ZN8dM3dGSphD2Ev": "tangosdev",
+    "src/engine/collision/dM3dGSph.cpp#_ZN8dM3dGSphD0Ev": "tangosdev",
+    "src/engine/collision/dM3dGSph.cpp#_ZN8dM3dGSphD1Ev": "tangosdev",
+    "src/engine/collision/dM3dGSph.cpp#_ZN8dM3dGSphC1Ev": "tangosdev",
+    "src/engine/collision/dM3dGSph.cpp#_ZN8dM3dGSphC2Ev": "tangosdev"
   }
 }
