@@ -88,85 +88,9 @@ src/actors/dScMgCurling2_c.cpp:
     complete
     .text start:0x020e3854 end:0x020e5450
 
-src/func_ov006_020e59b0.c:
+src/actors/dScMgCurling2_c_upper.cpp:
     complete
-    .text start:0x020e59b0 end:0x020e5a0c
-
-src/func_ov006_020e5a0c.c:
-    complete
-    .text start:0x020e5a0c end:0x020e5b70
-
-src/func_ov006_020e5b70.c:
-    complete
-    .text start:0x020e5b70 end:0x020e5b7c
-
-src/func_ov006_020e5b7c.c:
-    complete
-    .text start:0x020e5b7c end:0x020e5e3c
-
-src/func_ov006_020e5e3c.c:
-    complete
-    .text start:0x020e5e3c end:0x020e5ffc
-
-src/func_ov006_020e5ffc.c:
-    complete
-    .text start:0x020e5ffc end:0x020e6118
-
-src/func_ov006_020e6118.c:
-    complete
-    .text start:0x020e6118 end:0x020e619c
-
-src/func_ov006_020e619c.c:
-    complete
-    .text start:0x020e619c end:0x020e61c0
-
-src/func_ov006_020e61c0.c:
-    complete
-    .text start:0x020e61c0 end:0x020e61c4
-
-src/func_ov006_020e61c4.c:
-    complete
-    .text start:0x020e61c4 end:0x020e628c
-
-src/func_ov006_020e628c.c:
-    complete
-    .text start:0x020e628c end:0x020e6354
-
-src/func_ov006_020e6354.cpp:
-    complete
-    .text start:0x020e6354 end:0x020e64e4
-
-src/func_ov006_020e64e4.c:
-    complete
-    .text start:0x020e64e4 end:0x020e6528
-
-src/func_ov006_020e6528.c:
-    complete
-    .text start:0x020e6528 end:0x020e667c
-
-src/func_ov006_020e667c.c:
-    complete
-    .text start:0x020e667c end:0x020e668c
-
-src/func_ov006_020e668c.c:
-    complete
-    .text start:0x020e668c end:0x020e6774
-
-src/_ZN15dScMgCurling2_c13OnYoshiTryEatEi.cpp:
-    complete
-    .text start:0x020e6774 end:0x020e67f0
-
-src/_ZN15dScMgCurling2_c6RenderEv.cpp:
-    complete
-    .text start:0x020e67f0 end:0x020e683c
-
-src/_ZN15dScMgCurling2_c8BehaviorEv.cpp:
-    complete
-    .text start:0x020e683c end:0x020e6894
-
-src/_ZN15dScMgCurling2_c13InitResourcesEv.cpp:
-    complete
-    .text start:0x020e6894 end:0x020e6bf4
+    .text start:0x020e59b0 end:0x020e6bf4
 
 src/d_s_mg_curling2.cpp:
     complete

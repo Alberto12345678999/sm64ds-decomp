@@ -8880,12 +8880,6 @@
       "src/func_ov004_020b63a0.c": [
         "return:void"
       ],
-      "src/func_ov006_020e5ffc.c": [
-        "return:void"
-      ],
-      "src/func_ov006_020e628c.c": [
-        "return:void"
-      ],
       "src/actors/dScMgSlots.cpp": [
         "return:void"
       ],
@@ -16750,9 +16744,6 @@
         "return:unsigned char []"
       ],
       "src/func_ov002_020e04a4.c": [
-        "return:unsigned char []"
-      ],
-      "src/func_ov006_020e5a0c.c": [
         "return:unsigned char []"
       ],
       "src/func_ov075_02117918.c": [
@@ -34294,16 +34285,6 @@
     "func_ov006_020e4800": {
       "src/_ZN15dScMgCurling2_c8BehaviorEv.cpp": [
         "return:int"
-      ]
-    },
-    "func_ov006_020e513c": {
-      "src/func_ov006_020e5e3c.c": [
-        "param:#1 char *"
-      ]
-    },
-    "func_ov006_020e6118": {
-      "src/func_ov006_020e5ffc.c": [
-        "param:#1 char *"
       ]
     },
     "func_ov006_020e6e3c": {
