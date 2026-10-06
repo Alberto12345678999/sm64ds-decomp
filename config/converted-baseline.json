@@ -1829,6 +1829,18 @@
     "src/actors/daObjMarioCap_c.cpp#_ZN15daObjMarioCap_c16CleanupResourcesEv",
     "src/actors/daObjMarioCap_c.cpp#_ZN15daObjMarioCap_cD0Ev",
     "src/actors/daObjMarioCap_c.cpp#_ZN15daObjMarioCap_cD1Ev",
+    "src/actors/daObjMarioCap_c.cpp#_ZN15daObjMarioCap_c10EnterStateEPv",
+    "src/actors/daObjMarioCap_c.cpp#_ZN15daObjMarioCap_c10TimedWait2Ev",
+    "src/actors/daObjMarioCap_c.cpp#_ZN15daObjMarioCap_c11InitDormantEv",
+    "src/actors/daObjMarioCap_c.cpp#_ZN15daObjMarioCap_c13InitTimedWaitEv",
+    "src/actors/daObjMarioCap_c.cpp#_ZN15daObjMarioCap_c13InitTouchWaitEv",
+    "src/actors/daObjMarioCap_c.cpp#_ZN15daObjMarioCap_c14InitTimedWait2Ev",
+    "src/actors/daObjMarioCap_c.cpp#_ZN15daObjMarioCap_c7DormantEv",
+    "src/actors/daObjMarioCap_c.cpp#_ZN15daObjMarioCap_c8InitFallEv",
+    "src/actors/daObjMarioCap_c.cpp#_ZN15daObjMarioCap_c8InitWaitEv",
+    "src/actors/daObjMarioCap_c.cpp#_ZN15daObjMarioCap_c9InitSlideEv",
+    "src/actors/daObjMarioCap_c.cpp#_ZN15daObjMarioCap_c9TimedWaitEv",
+    "src/actors/daObjMarioCap_c.cpp#_ZN15daObjMarioCap_c9TouchWaitEv",
     "src/actors/daObjSlIceBlock_c.cpp#_ZN17daObjSlIceBlock_c15OnHitByMegaCharER6Player",
     "src/actors/daObjSlIceBlock_c.cpp#_ZN17daObjSlIceBlock_c16CleanupResourcesEv",
     "src/actors/daObjSlIceBlock_c.cpp#_ZN17daObjSlIceBlock_c6RenderEv",
@@ -3514,5 +3526,5 @@
     "src/_ZN15dExtFrameCtrl_cD1Ev.cpp",
     "src/_ZN15dExtFrameCtrl_cD2Ev.cpp"
   ],
-  "count": 3505
+  "count": 3517
 }
