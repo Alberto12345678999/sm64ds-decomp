@@ -2369,10 +2369,6 @@
       ]
     },
     "NormalizeVec3": {
-      "src/_ZN14dBgW_KcMbgSclY9GetNormalEsR7Vector3.cpp": [
-        "param:#1 Vector3 *",
-        "param:#2 Vector3 *"
-      ],
       "src/_ZN3G3i7LookAt_EPK7Vector3S2_S2_bP9Matrix4x3.cpp": [
         "param:#1 Vector3 *",
         "param:#2 Vector3 *"
@@ -2432,6 +2428,10 @@
       "src/func_ov080_02125940.c": [
         "param:#1 Vec3 *",
         "param:#2 Vec3 *"
+      ],
+      "src/engine/collision/dBgW_KcMbgSclY.cpp": [
+        "param:#1 Vector3 *",
+        "param:#2 Vector3 *"
       ]
     },
     "NormalizeVec3IfNonZero": {
@@ -28000,20 +28000,7 @@
         "param:#2 int"
       ]
     },
-    "func_02035394": {
-      "src/_ZN14dBgW_KcMbgSclY10DetectClsnER12dBgCh_SphCrr.cpp": [
-        "param:#1 dBgCh_SphCrr *",
-        "param:#2 dBgCh_SphCrr *"
-      ],
-      "src/_ZN14dBgW_KcMbgSclY10DetectClsnER9dBgCh_Gnd.cpp": [
-        "param:#1 dBgCh_Lin *",
-        "param:#2 dBgCh_Gnd *"
-      ],
-      "src/_ZN14dBgW_KcMbgSclY10DetectClsnER9dBgCh_Lin.cpp": [
-        "param:#1 dBgCh_Lin *",
-        "param:#2 dBgCh_Lin *"
-      ]
-    },
+    "func_02035394": {},
     "func_020353b0": {
       "src/_ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c.cpp": [
         "param:#2 dActor_c *"
@@ -28082,11 +28069,7 @@
         "param:#2 const Vector3 *"
       ]
     },
-    "func_020375ec": {
-      "src/_ZN14dBgW_KcMbgSclY10DetectClsnER9dBgCh_Lin.cpp": [
-        "param:#2 const int *"
-      ]
-    },
+    "func_020375ec": {},
     "func_02037608": {
       "src/_ZN9dBgCh_Lin13SetObjAndLineERK7Vector3S2_P8dActor_c.cpp": [
         "param:#1 dBgCh_Lin *"
@@ -28096,13 +28079,13 @@
       "src/_ZN10dBgCh_Actr20UpdateExtraContinousEv.cpp": [
         "param:#2 const dBgPiLoc *"
       ],
-      "src/_ZN14dBgW_KcMbgSclY10DetectClsnER12dBgCh_SphCrr.cpp": [
+      "src/engine/collision/dBgW_KcMbgSclY.cpp": [
         "param:#1 dBgCh_SphCrr *",
         "param:#2 dBgPi *"
       ]
     },
     "func_02037880": {
-      "src/_ZN14dBgW_KcMbgSclY10DetectClsnER12dBgCh_SphCrr.cpp": [
+      "src/engine/collision/dBgW_KcMbgSclY.cpp": [
         "param:#1 dBgCh_SphCrr *",
         "return:dBgPi *"
       ]
@@ -28117,11 +28100,11 @@
       "src/_ZN10dBgCh_Actr22UpdateContinuousNoLavaEv.cpp": [
         "param:#2 dBgPiLoc *"
       ],
-      "src/_ZN14dBgW_KcMbgSclY10DetectClsnER12dBgCh_SphCrr.cpp": [
-        "param:#1 dBgCh_SphCrr *",
+      "src/func_02036acc.c": [
         "param:#2 dBgPi *"
       ],
-      "src/func_02036acc.c": [
+      "src/engine/collision/dBgW_KcMbgSclY.cpp": [
+        "param:#1 dBgCh_SphCrr *",
         "param:#2 dBgPi *"
       ]
     },
@@ -28130,12 +28113,12 @@
         "param:#1 void *",
         "return:dBgPiLoc *"
       ],
-      "src/_ZN14dBgW_KcMbgSclY10DetectClsnER12dBgCh_SphCrr.cpp": [
-        "param:#1 dBgCh_SphCrr *",
-        "return:dBgPi *"
-      ],
       "src/_ZNK10dBgCh_Actr13GetWallResultEv.cpp": [
         "param:#1 const void *"
+      ],
+      "src/engine/collision/dBgW_KcMbgSclY.cpp": [
+        "param:#1 dBgCh_SphCrr *",
+        "return:dBgPi *"
       ]
     },
     "func_02037938": {
@@ -28146,27 +28129,19 @@
         "param:#1 void *",
         "return:void *"
       ],
-      "src/_ZN14dBgW_KcMbgSclY10DetectClsnER12dBgCh_SphCrr.cpp": [
-        "param:#1 dBgCh_SphCrr *",
-        "return:dBgPi *"
-      ],
       "src/_ZNK10dBgCh_Actr14GetFloorResultEv.cpp": [
         "param:#1 const void *"
+      ],
+      "src/engine/collision/dBgW_KcMbgSclY.cpp": [
+        "param:#1 dBgCh_SphCrr *",
+        "return:dBgPi *"
       ],
       "src/func_02036acc.c": [
         "param:#1 void *"
       ]
     },
-    "func_02037940": {
-      "src/_ZN14dBgW_KcMbgSclY10DetectClsnER12dBgCh_SphCrr.cpp": [
-        "param:#1 dBgCh_SphCrr *",
-        "param:#2 unsigned char"
-      ]
-    },
+    "func_02037940": {},
     "func_0203794c": {
-      "src/_ZN14dBgW_KcMbgSclY10DetectClsnER12dBgCh_SphCrr.cpp": [
-        "param:#1 dBgCh_SphCrr *"
-      ],
       "src/_ZN7dBgW_Kc10DetectClsnER12dBgCh_SphCrr.cpp": [
         "param:#1 dBgCh_SphCrr *",
         "param:#2 const Vector3 *"
@@ -28226,13 +28201,7 @@
         "param:#2 short"
       ]
     },
-    "func_02037a04": {
-      "src/_ZN14dBgW_KcMbgSclY10DetectClsnER12dBgCh_SphCrr.cpp": [
-        "param:#1 dBgCh_SphCrr *",
-        "param:#2 int *",
-        "param:#3 int *"
-      ]
-    },
+    "func_02037a04": {},
     "func_02037a38": {
       "include/decl_common.h": [
         "param:#1 char *"
@@ -28242,9 +28211,6 @@
       ]
     },
     "func_02037a6c": {
-      "src/_ZN14dBgW_KcMbgSclY10DetectClsnER12dBgCh_SphCrr.cpp": [
-        "param:#1 dBgCh_SphCrr *"
-      ],
       "src/_ZN7dBgW_Kc10DetectClsnER12dBgCh_SphCrr.cpp": [
         "param:#1 dBgCh_SphCrr *"
       ]
@@ -28750,18 +28716,8 @@
         "return:short"
       ]
     },
-    "func_0203aa74": {
-      "src/_ZN14dBgW_KcMbgSclY10DetectClsnER9dBgCh_Lin.cpp": [
-        "param:#2 const Vector3 *"
-      ]
-    },
-    "func_0203aad0": {
-      "src/actors/daObjKm2_Nobiru_c.cpp": [
-        "param:#1 dBgW_KcMbgSclY *"
-      ]
-    },
     "func_0203abb0": {
-      "src/_ZN14dBgW_KcMbgSclY10DetectClsnER12dBgCh_SphCrr.cpp": [
+      "src/engine/collision/dBgW_KcMbgSclY.cpp": [
         "param:#1 dM3dGSph *",
         "param:#2 Vector3 *"
       ]
