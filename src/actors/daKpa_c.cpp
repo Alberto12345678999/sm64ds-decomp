@@ -15,7 +15,39 @@
  *
  * Folded from the 79 legacy one-function sources in ROM order (ordinals
  * 0-78, 0x02111900..0x021163f0), retired at promotion; per-symbol credit
- * survives in attribution.json path#symbol overrides.*/
+ * survives in attribution.json path#symbol overrides.
+ *
+ * READABILITY PASS (byte-neutral). Every function below has a comment saying what
+ * it does and, where this file shows it, where it is called from; the numbers that name a thing are enums
+ * (Bowser_State, Bowser_HoldState, BowserTail_State, Bowser_CondFlag,
+ * Bowser_ActorID, Bowser_Sound, Bowser_CcFlag, Bowser_Anim); and the fields are
+ * reached through the real members of daKpa_c / daKpaTail_c. In the comments a
+ * Fix12 value is read as 0x1000 = 1.0 and an angle as 0x10000 = a full turn.
+ *
+ * LEFTOVER -- what is not converted, and why:
+ *  - Spellings kept because the bytes depend on them (most are noted at the
+ *    function): the daKpaTail_c::Behavior pointer bump to +0x5c and its volatile
+ *    array; the `u16 *h = &mTimer; *h = *h + 1` increments; the mOpacity
+ *    += / -= 0x14 form; the `+ 0x3fe` write-back pointer in func_ov060_02114b60;
+ *    the (unsigned short) and *(u16 *)& angle reads; the new_var / new_var2 temps
+ *    and the `dp != 0 && kpa != 0` barrier in func_ov060_021140c0 and
+ *    func_ov060_02114858; the volatile locals in func_ov060_021135fc,
+ *    func_ov060_021132a4, func_ov060_02112ee0 and func_ov060_02112bfc; the gotos
+ *    in func_ov060_02115c1c; the data_ov060_02119294/6/8 + offset reads; and the
+ *    opaque Obj view in Bowser_IsAnimAtLastFrame.
+ *  - Behavior stores `this` at +0x114 of the object at data_0209f318 (a dCamera_c);
+ *    dCamera_c.h has no member there, so it stays a byte offset.
+ *  - Callees known only by address, whose purpose this file does not establish:
+ *    func_020092c4, func_0200fa04, func_ov002_020c56f0, func_ov060_02117a3c,
+ *    func_02038408, func_02011d50, func_02011cfc. Likewise the trailing arguments
+ *    of Player::Hurt and Sound::ChangeMusicVolume, the KOOPAFIRE spawn-parameter
+ *    bits and bit 0x400 of the tail's mFlags are given as numbers.
+ *  - Animation indices stay numbers (only the idle pose, 0x10, is named);
+ *    Bowser_Anim lists where each one is used.
+ *  - unk_420 and unk_422 of daKpa_c and the dActor_c words at 0xa4 / 0xac are
+ *    unnamed: the first two are written here and never read.
+ *  - The legacy TUBUILD CONFLICT blocks and shard declarations are left as the
+ *    fold wrote them. */
 
 /* TUBUILD NOTE -- codegen is deferred, so .text emits in reverse source
  * order and the function bodies below are ROM-descending. The exception is
@@ -44,7 +76,11 @@
 #include "common.h"
 #include "daKpa_c.h"
 #include "daKpaTail_c.h"
+#include "daKpaFire_c.h"
+#include "daKpa2Bg_c.h"
 #include "daKirai_c.h"
+#include "Player.h"
+#include "daObjKey_c.h"
 #include "types.h"
 #include "decl_common.h"
 #include "dCamera_c.h"
@@ -54,6 +90,111 @@
 #include "SharedFilePtr.h"
 #include "TextureSequence.h"
 #include "Animation.h"
+
+/* -------------------------------------------------------------------------- */
+/* Names for the numbers this file uses. The values are the ROM's; the names are
+ * what each value does at its use sites in this file -- nothing here comes from
+ * a symbol table, so a name that only describes an animation or a call is spelled
+ * that way on purpose. */
+
+/* daKpa_c::mState, the index into the state table at data_ov060_0211aed4. The
+ * handler for each state is named on its own header below. A state with no
+ * writer in this file (0x12) is reached only through the table. */
+enum Bowser_State {
+    BOWSER_STATE_IDLE = 0,            /* stand, then pick the next state (variant decides how) */
+    BOWSER_STATE_THROWN = 1,          /* set when the tail grabs him and again when he is released; handler runs after release */
+    BOWSER_STATE_RECOVER = 2,         /* entered 1000 units below the arena: hidden, then launched back up toward the centre */
+    BOWSER_STATE_PLAY_ANIM_0F = 3,    /* animation 0xf, then idle */
+    BOWSER_STATE_DEFEATED = 4,        /* set when mHealth reaches 0; the multi-step defeat sequence */
+    BOWSER_STATE_INTRO_WAIT = 5,      /* initial state; stands idle until Player::StartTalk succeeds */
+    BOWSER_STATE_INTRO = 6,           /* animations, then the intro message */
+    BOWSER_STATE_CHARGE = 7,          /* run at the target (animations 0x18..0x1a) */
+    BOWSER_STATE_FIRE_BREATH = 8,     /* spawns KOOPAFIRE (actor 0x118) every 5th frame */
+    BOWSER_STATE_FIREBALLS = 9,       /* mFireballShots (1..3) fireballs */
+    BOWSER_STATE_PLAY_ANIM_1B = 0xa,  /* animation 0x1b, then BOWSER_STATE_TURN_IN_PLACE; entered when a charge leaves the floor */
+    BOWSER_STATE_TURN_IN_PLACE = 0xb, /* mAngleY += 0x200 per frame until mTimer reaches 0x3e */
+    BOWSER_STATE_HURT_HOP = 0xc,      /* knocked back; set after a spike bomb hit that leaves mHealth above 0 */
+    BOWSER_STATE_JUMP = 0xd,          /* jump and land; the landing effect func_ov060_02115b0c shakes the ground (variant 2) */
+    BOWSER_STATE_TURN_TO_TARGET = 0xe, /* turn mAngleY toward mAngleToTarget while animations 0x13, 0x11, 0x12 play */
+    BOWSER_STATE_ANIM_CHAIN = 0xf,    /* animations 8, 6, 7 in turn, then idle */
+    BOWSER_STATE_VANISH_DASH = 0x10,  /* fade out, dash invisibly at the target, fade in */
+    BOWSER_STATE_HOP = 0x11,          /* hop forward at mHorzSpeed 25.0; the variant-0 idle pick chooses it when he faces a target 1500 or more units away */
+    BOWSER_STATE_WAIT_ANIM_END = 0x12, /* wait for the current animation to end, then idle */
+    BOWSER_STATE_ARENA_TILT = 0x13    /* tilts the KOOPA2BG arena (actor 0xa6) for a few frames, see func_ov060_02112bfc */
+};
+
+/* daKpa_c::mHoldState, the index into the table at data_ov060_0211aeb4. */
+enum Bowser_HoldState {
+    BOWSER_HOLD_NONE = 0,             /* normal: run the state table */
+    BOWSER_HOLD_HELD = 1,             /* a Player has grabbed the tail and is swinging Bowser by it */
+    BOWSER_HOLD_RELEASE_NOW = 2,      /* the tail's flag bit 0x400 was set: let go at once */
+    BOWSER_HOLD_RELEASE_AFTER_ANIM = 3 /* the Player no longer holds an object or the hold countdown ran out: let go once the animation ends */
+};
+
+/* daKpa_c::mCondFlags. The low byte is recomputed every frame by
+ * func_ov060_02112434; the two high bits are set and cleared by the handlers. */
+enum Bowser_CondFlag {
+    BOWSER_COND_FACING_TARGET = 0x2,  /* |mAngleY - mAngleToTarget| < 0x2000 (45 degrees) */
+    BOWSER_COND_FACING_CENTER = 0x4,  /* |mAngleY - mAngleToCenter| < 0x3800 (about 79 degrees) */
+    BOWSER_COND_TARGET_NEAR = 0x8,    /* mDistToTarget < 0x352000 (850 units) */
+    BOWSER_COND_NEAR_CENTER = 0x10,   /* mDistToCenter < 0x3e8000 (1000 units) */
+    BOWSER_COND_RECOVERING = 0x10000, /* set each frame of BOWSER_STATE_RECOVER; the jump handlers read it for variant 2 */
+    BOWSER_COND_BREATHING = 0x20000   /* set each frame of the fire-breath handler; cleared when it ends, when he is held, or by the turn handler after five loops */
+};
+
+/* daKpaTail_c::mState: the index into the table at data_ov060_0211ae9c. */
+enum BowserTail_State {
+    BOWSER_TAIL_FREE = 0,             /* waiting for a Player to grab it */
+    BOWSER_TAIL_COOLDOWN = 1,         /* after a release: back to FREE once mTimer passes 0x1e (30 frames) */
+    BOWSER_TAIL_HOLDING = 2           /* a Player is holding it (mHeldPlayer) */
+};
+
+/* Actor IDs, from symbols/actor_debug_names.tsv. */
+enum Bowser_ActorID {
+    BOWSER_ACTOR_KOOPA2BG = 0xa6,
+    BOWSER_ACTOR_PLAYER = 0xbf,
+    BOWSER_ACTOR_OBJ_MARIO_CAP = 0x10d,
+    BOWSER_ACTOR_KOOPATAIL = 0x116,
+    BOWSER_ACTOR_KOOPAFIRE = 0x118,
+    BOWSER_ACTOR_FIRERING = 0x119,
+    BOWSER_ACTOR_OBJ_KEY = 0x11a,
+    BOWSER_ACTOR_LAST_STAR = 0x11b,
+    BOWSER_ACTOR_KIRAI = 0x11c          /* the spike bomb (daKirai_c) */
+};
+
+/* Sound IDs, named by where this file plays them. */
+enum Bowser_Sound {
+    BOWSER_SND_FOOTFALL = 0xb0,       /* Sound::Play(3, ..) in the footfall window */
+    BOWSER_SND_LEAP = 0xb1,           /* hop, jump, knockback, rise out of a fall */
+    BOWSER_SND_GRABBED = 0xb2,        /* a Player grabs the tail and starts swinging Bowser */
+    BOWSER_SND_B5 = 0xb5,             /* when the fire breath starts its second animation, and at frame 8 of animation 8 in the animation chain */
+    BOWSER_SND_LAND = 0xb6,           /* touching down after a jump */
+    BOWSER_SND_TALK_START = 0xb7,     /* the intro message appears */
+    BOWSER_SND_VANISH = 0xb9,         /* start of the vanish-and-dash fade */
+    BOWSER_SND_SHRINK_LOOP = 0xba,    /* PlayLong while he shrinks in the defeat sequence */
+    BOWSER_SND_DEFEATED = 0xbb,       /* the key is spawned after the defeat sequence */
+    BOWSER_SND_LAND_SOFT = 0xbd,      /* landing dust in func_ov060_02115a84 */
+    BOWSER_SND_FIREBALL = 0x122,      /* a fireball is spawned (func_ov060_021140c0) */
+    BOWSER_SND_FIRE_LOOP = 0x180      /* PlayLong while he breathes fire */
+};
+
+/* dCc_c::flags bits this file touches (see include/dCc_c.h). */
+enum Bowser_CcFlag {
+    BOWSER_CC_DISABLED = 0x1          /* set: the cylinder is switched off */
+};
+
+/* Animation indices for func_ov060_02111cc0 (a 0x1c-entry table). Only the idle
+ * pose is named; every other index is passed as a number. Where each is used:
+ *   0 defeat launch              1, 2 hurt hop              3 looped after the defeat landing
+ *   4 defeat conversation ends   5 defeat landing           6, 7, 8 animation chain
+ *   9 thrown flight / swing      0xa grabbed                0xb jump wind-up and recover rise
+ *   0xc jump landing             0xd landing after the throw   0xe release
+ *   0xf PLAY_ANIM_0F             0x10 idle                  0x11, 0x12, 0x13 turn / intro sequence
+ *   0x14 fireballs               0x15, 0x16, 0x17 fire breath
+ *   0x18, 0x19, 0x1a charge      0x1b PLAY_ANIM_1B */
+enum Bowser_Anim {
+    BOWSER_ANIM_IDLE = 0x10
+};
 
 /* The opaque view of the object that Bowser_IsAnimAtLastFrame walks: the
  * Animation lives at 0x124. Animation itself is the real class (include/
@@ -152,7 +293,6 @@ struct Obj { virtual void v0(); virtual void v1(); virtual void v2(); virtual vo
 
 #define LAUND(p) ((void *)(p))
 #define M(p) (p)
-#define P423(c) ((u8 *)((c) + 0x423))
 /* TUBUILD CONFLICT -- alternate #define of LAUND, from the legacy file for func_ov060_021130c0, NOT applied: #define LAUND(p) ((void*)(p)) */
 
 extern "C" {
@@ -167,16 +307,14 @@ extern int func_020092c4(void*, void*, void*);
 extern int _ZN6Player7IsInAirEv(void*);
 extern int _Z14ApproachLinearRiii(int*, int, int);
 extern int _ZN9Animation8FinishedEv(void*);
-/* Every call site in this TU passes a third argument that the body never reads
- * (`c` and `idx` are the only parameters it uses). The shards disagreed on the
- * arity -- some declared 2, some 3, and the return type was spelled both int and
- * void -- which C++ rejects as illegal overloading. Unified here to the widest
- * form actually called, so all ~30 call sites agree. */
-/* Both helpers receive this same actor's base pointer. Most shards in this TU
- * hold it as char*, but two hold it as void*, and char* converts to void*
- * implicitly while void* does not convert back. Typed as void* here so every
- * caller compiles unchanged; each definition casts on entry. */
-void func_ov060_02111cc0(void *c, int idx, int unused);
+/* Switch the model to animation `idx`; `animFlags` is forwarded to
+ * ModelAnim::SetAnim (see the definition). The shards disagreed on the arity --
+ * some declared 2, some 3, and the return type was spelled both int and void --
+ * which C++ rejects as illegal overloading, so this is the widest form actually
+ * called, which all ~30 call sites agree with. The helpers below take this same
+ * actor; the shards held it as char* or void*, which C++ will not reconcile, so
+ * they take daKpa_c*. */
+void func_ov060_02111cc0(daKpa_c *kpa, int idx, int animFlags);
 extern int data_ov060_0211acd0[];
 extern unsigned char data_ov060_02119264[];
 extern PmfEnt data_ov060_0211aeb4[];
@@ -197,14 +335,14 @@ void* _ZNK10dBgCh_Actr14GetFloorResultEv(void* self);
 void _ZNK11SurfaceInfo12CopyNormalToER7Vector3(void* self, Vector3* out);
 int _ZNK10dBgCh_Actr13JustHitGroundEv(void* self);
 int _ZN4cstd4fdivEii(int a, int b);
-int func_ov060_02112ba8(char* c);
+int func_ov060_02112ba8(daKpa_c *kpa);
 extern TabEnt data_ov060_0211aed4[];
 extern s16 data_02082214[];
-extern "C" void func_ov060_02113564(char *c);
-extern "C" void func_ov060_021134ac(void* thiz);
-extern "C" int func_ov060_02113404(char* c);
-extern "C" int func_ov060_021130c0(char* c);
-extern "C" int func_ov060_02112ee0(void *c);
+extern "C" void func_ov060_02113564(daKpa_c *kpa);
+extern "C" void func_ov060_021134ac(daKpa_c *kpa);
+extern "C" int func_ov060_02113404(daKpa_c *kpa);
+extern "C" int func_ov060_021130c0(daKpa_c *kpa);
+extern "C" int func_ov060_02112ee0(daKpa_c *kpa);
 extern int _ZN6Player9StartTalkER7fBase_cb(void *pl, void *a, int b);
 extern int _ZN6Player12GetTalkStateEv(void *pl);
 extern unsigned char NumStars(void);
@@ -212,20 +350,20 @@ extern int _ZN6Player11ShowMessageER7fBase_cjPK7Vector3hh(
 void *pl, void *a, unsigned m, void *v, unsigned d, unsigned e);
 extern void _ZN7Message11PrepareTalkEv(void);
 extern void _ZN5Sound22StopLoadedMusic_Layer1Ej(unsigned a);
-extern void func_ov060_021135fc(char *c);
+extern void func_ov060_021135fc(daKpa_c *kpa);
 extern void *_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
 unsigned a, unsigned b, int x, int y, int z, void *v, void *cb);
-extern void func_ov060_02113260(char *c);
+extern void func_ov060_02113260(daKpa_c *kpa);
 extern void _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(unsigned int a, int b);
-extern int func_ov060_021132a4(char *c);
+extern int func_ov060_021132a4(daKpa_c *kpa);
 /* Sound::PlayLong is declared in include/Sound.h as
  * (u32 handle, u32, u32, const Vector3 &pos, s16). The mangled name encodes that
  * order, so the bridge is spelled to match rather than through void*. */
 extern int _ZN5Sound8PlayLongEjjjRK7Vector3s(unsigned int a, unsigned int b, unsigned int c, const Vector3 *v, short d);
-/* Defined below as void(char*, char*) -- every call site passes a char* into
- * this same actor, so the declaration is spelled the same way. */
-extern void func_ov060_02115a84(char* c, char* p);
-extern void func_ov060_02112350(void* c);
+/* Landing-dust helper; the second argument is the counter it bumps (every call
+ * site passes &mStepCounter). */
+extern void func_ov060_02115a84(daKpa_c *kpa, char* p);
+extern void func_ov060_02112350(daKpa_c *kpa);
 extern struct D0211ac88 data_ov060_0211ac88;
 /* The mangled name encodes the real signature: (u32, u32, Vector3*,
  * const Vector3_16*, int, int). Spelled to match so the two call sites that pass
@@ -237,50 +375,44 @@ extern void _ZN9dBgCh_Gnd12SetObjAndPosERK7Vector3P8dActor_c(dBgCh_Gnd *self, Ve
 extern int _ZN9dBgCh_Gnd10DetectClsnEv(dBgCh_Gnd *self);
 extern int _ZNK5dBgPi9GetClsnIDEv(void *self);
 extern void _ZN9dBgCh_GndD1Ev(dBgCh_Gnd *self);
-extern void func_ov060_02113a94(void *c);
-/* Defined below as int(char*) -- every call site passes this actor's base. */
-extern int func_ov060_021145d4(char *c);
-/* Defined below as void(char*) -- every call site hands it this same actor's
- * base pointer, so the declaration is spelled the same way. */
-/* Defined further down as void(char*); called from Behavior above it. */
-extern void func_ov060_02115b84(char *c);
-extern void func_ov060_0211577c(char *c);
-extern void func_ov060_02115b0c(char *c);
+extern void func_ov060_02113a94(daKpa_c *kpa);
+/* Defined below. */
+extern int func_ov060_021145d4(daKpa_c *kpa);
+/* Defined further down; called from daKpaTail_c::Behavior above it. */
+extern void func_ov060_02115b84(daKpaTail_c *c);
+extern void func_ov060_0211577c(daKpa_c *kpa);
+extern void func_ov060_02115b0c(daKpa_c *kpa);
 extern void *_ZN8dActor_c15FindWithActorIDEjPS_(u32 id, void *p);
-extern void func_ov060_02115018(void *c);
+extern void func_ov060_02115018(daKpa_c *kpa);
 extern int Vec3_HorzLen(const Vector3* v);
 extern int func_ov060_02113d20(dActor_c *self);
-/* Defined below as (char*, unsigned short, int) -- the second parameter is a
- * frame threshold read as an unsigned halfword, not an int. */
-extern int func_ov060_02113ff4(char *c, unsigned short a, int b);
+/* Defined below; the second parameter is a frame count, read as an unsigned
+ * halfword (the one caller passes 0x3e). */
+extern int func_ov060_02113ff4(daKpa_c *kpa, unsigned short a, int b);
 extern int _ZNK9Animation12WillHitFrameEi(void* anim, int frame);
 extern void _ZN8dActor_c13SpawnFireballERK7Vector3PK10Vector3_165Fix12IiES7_j( void* self, const void* pos, const void* rot, int speed, int gravity, u32 flags);
 extern int _ZN6Player9GetHealthEv(void* player);
 extern int RandomIntInternal(int* seed);
 extern int data_0209e650;
 extern int data_ov060_0211abe0[];
-extern int func_ov060_0211469c(void *c);
-extern void func_ov060_021145a8(void* c);
+extern int func_ov060_0211469c(daKpa_c *kpa);
+extern void func_ov060_021145a8(daKpa_c *kpa);
 extern void func_0200fa04(void* c, void* v, int a);
 extern struct TabCmp data_ov060_0211acd8;
 extern struct TabCmp data_ov060_0211acf0;
 extern int _Z14ApproachLinearRsss(short *value, short target, short step);
-extern int func_ov060_02115744(void* c);
-extern int func_ov060_02115718(void* c);
-extern int func_ov060_021156ec(void* c);
+extern int func_ov060_02115744(daKpa_c *kpa);
+extern int func_ov060_02115718(daKpa_c *kpa);
+extern int func_ov060_021156ec(daKpa_c *kpa);
 extern int data_ov060_0211ac20[];
 extern int data_ov060_0211ac68[];
 extern int data_ov060_0211ac70[];
-/* Takes this same actor; the shard below declared it dActor_c*, which every
- * caller satisfies from a char* base pointer. */
-extern void func_ov060_021150d0(void *a);
-/* Defined below against a field inside this actor; the caller passes the same
- * base pointer, so the declaration is spelled through void*. */
-extern void func_ov060_021150c4(void *p);
+/* Both take this same actor. */
+extern void func_ov060_021150d0(daKpa_c *kpa);
+extern void func_ov060_021150c4(daKpa_c *kpa);
 extern int _ZN8dActor_c13DistToCPlayerEv(void *self);
-extern int func_ov060_02111f08(void *arg0);
-/* Defined below as void(char*) -- called from Behavior with this actor's base. */
-extern void func_ov060_02115518(char *c);
+extern int func_ov060_02111f08(daKpa_c *kpa);
+extern void func_ov060_02115518(daKpa_c *kpa);
 extern s16 data_ov060_0211a4e0[];
 extern s16 func_02010844(void *unused, void *v, s16 angle);
 extern void Vec3_Asr(Vec3 *d, Vec3 *s, int sh);
@@ -294,8 +426,8 @@ extern void Vec3_LslInPlace(void *v, int sh);
 extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void *c, void *sm, void *mtx, int rad, int h, unsigned int flags);
 extern Matrix4x3 data_020a0e68;
 extern void _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(void* self, struct Vector3* v, int f);
-extern void func_ov060_021123a0(void *a, int b);
-extern void func_ov060_021123c8(char *p);
+extern void func_ov060_021123a0(daKpa_c *kpa, int b);
+extern void func_ov060_021123c8(daKpa_c *kpa);
 extern void _ZN6Player9DropActorEv(void *p);
 extern "C" int _ZN6Player15IsCollectingCapEv(Player *p);
 extern "C" int _ZN6Player7TryGrabER8dActor_c(Player *p, dActor_c &a);
@@ -452,6 +584,9 @@ int _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, void *actor, int fix, 
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN7daKpa_cD1Ev
 // @symbol _ZN7daKpa_cD0Ev
+/*
+Bowser's destructors. The body is empty: the member and base teardown and the
+D1/D0 pair are compiler-generated. */
 #ifdef _MSC_VER
 /* THE HOST NEEDS THE ROM'S FLAT D0 NAME, AND MSVC NEVER EMITS IT. MSVC
  * folds the Itanium destructor variants into the one ~daKpa_c() it emits,
@@ -478,6 +613,8 @@ daKpa_c::~daKpa_c()
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN11daKpaTail_cD1Ev
 // @symbol _ZN11daKpaTail_cD0Ev
+/*
+The tail's destructors. The body is empty, as for Bowser's. */
 #ifdef _MSC_VER
 /* The host needs the ROM's flat D0 name; see the note on _ZN7daKpa_cD0Ev. */
 extern "C" daKpaTail_c *_ZN11daKpaTail_cD0Ev(daKpaTail_c *thiz)
@@ -498,10 +635,15 @@ daKpaTail_c::~daKpaTail_c()
 /* ROM ordinal 78 -- _ZN11daKpaTail_c13InitResourcesEv, 0x021163b4, size 0x3c */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN11daKpaTail_c13InitResourcesEv
+/*
+Tail setup: a single cylinder collider (dCcAc_c::Init) with radius 0x32000 (50
+units), height 0x50000 (80 units), flags 0x800000 and vulnFlags 0x1000, which is
+the grab bit of dCc_c's hit-flag table (that table is a best-effort reading, see
+include/dCc_c.h). Always returns 1. */
 /* recovered: named members + shared header, real C++ method */
 int daKpaTail_c::InitResources()
 {
-    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(((char *)this) + 0xd4, ((char *)this), 0x32000, 0x50000, 0x800000, 0x1000);
+    _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x32000, 0x50000, 0x800000, 0x1000);
     return 1;
 }
 
@@ -509,6 +651,17 @@ int daKpaTail_c::InitResources()
 /* ROM ordinal 77 -- _ZN7daKpa_c13InitResourcesEv, 0x02116130, size 0x284 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN7daKpa_c13InitResourcesEv
+/*
+Bowser's setup, in order: load the model file and hand it to ModelBase::SetFile,
+load the 0x1c Animation files and the six TextureSequence files, then two more
+Model files (CleanupResources releases the same set); shadow cylinder; start the
+idle animation (0x10) and its texture pattern; body collider (cylinder, radius 0x78000 = 120 units, height
+0x118000 = 280, flags 0x200004); remember the spawn position in mHomePos; gravity
+-0x2000 (-2.0) and terminal velocity -0x3c000 (-60.0); floor collider (0x50000 =
+80 for both of its Fix12 arguments); decode param1 (bits 0-1 = variant, bit 2 =
+jump-only); reset the working fields (func_ov060_021123dc finishes that); then
+spawn KOOPAFIRE and KOOPATAIL at his position and give each his uniqueID.
+Returns 0 only if the shadow cylinder fails, otherwise 1. */
 /* recovered: named members + shared header, real C++ method
  *
  * The other half of daKpa_c::CleanupResources. Every handle this loads is one
@@ -539,8 +692,8 @@ int daKpa_c::InitResources()
 {
     int i;
     Vector3 pos;
-    void *a1;
-    void *a2;
+    daKpaFire_c *a1;
+    daKpaTail_c *a2;
 
     _ZN9ModelBase7SetFileEP8BMD_Fileii(&this->mModelAnim,
         _ZN5Model8LoadFileER13SharedFilePtr(*(SharedFilePtr *)data_ov060_0211ac78), 1, 0x16);
@@ -560,7 +713,7 @@ int daKpa_c::InitResources()
     /* Same object as the other ~30 call sites, which hand it the base pointer as
      * char*. Inside a member function `this` is daKpa_c*, so cast it the same way
      * rather than widening the helper's signature for one caller. */
-    func_ov060_02111cc0((char *)this, 0x10, 0);
+    func_ov060_02111cc0(this, BOWSER_ANIM_IDLE, 0);
 
     TextureSequence::Prepare(*(BMD_File *)data_ov060_0211ac78[1],
                              *(BTP_File *)data_ov060_0211ac28[1]);
@@ -586,18 +739,18 @@ int daKpa_c::InitResources()
         &this->mWithMeshClsn, this, 0x50000, 0x50000, 0, 0);
     _ZN10dBgCh_Actr13SetLimMovFlagEv(&this->mWithMeshClsn);
 
-    this->mState = 0;
+    this->mState = BOWSER_STATE_IDLE;
     this->mVariantID = (char)(this->param1 & 3);
-    this->unk_416 = (char)(((unsigned int)this->param1 >> 2) & 1);
+    this->mChooseJumpOnly = (char)(((unsigned int)this->param1 >> 2) & 1);
     this->mTimer = 0;
-    this->unk_423 = 0;
+    this->mStep = 0;
     this->mDropsShadow = 1;
     this->mBounceOnLand = 0;
     this->mScaleX = 0x1000;
     this->mScaleY = 0x1000;
     this->mScaleZ = 0x1000;
     this->mAnimSpeed = 0x1000;
-    this->unk_429 = 1;
+    this->mSkipIdleRoll = 1;
     func_ov060_021123dc(this);
 
     this->mTalkStep = 0;
@@ -607,18 +760,16 @@ int daKpa_c::InitResources()
      * mPosX/Y/Z at 0x5c, so the argument is the vector, not a pointer to the first
      * scalar. (dActor_c::Pos() would say this directly, but that accessor is not on
      * this branch yet.) */
-    a1 = _ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(
-        0x118, 0, (Vector3 *)&this->mPosX, 0, this->mAreaId, -1);
-    *(int *)((char *)a1 + 0x2cc) = this->uniqueID;
+    a1 = (daKpaFire_c *)_ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(BOWSER_ACTOR_KOOPAFIRE, 0, (Vector3 *)&this->mPosX, 0, this->mAreaId, -1);
+    a1->mKpaUniqueID = this->uniqueID;
 
-    a2 = _ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(
-        0x116, 0, (Vector3 *)&this->mPosX, 0, this->mAreaId, -1);
-    this->mUniqueID_3a8 = *(int *)((char *)a2 + 4);
-    *(int *)((char *)a2 + 0x108) = this->uniqueID;
-    this->unk_42a = 5;
+    a2 = (daKpaTail_c *)_ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(BOWSER_ACTOR_KOOPATAIL, 0, (Vector3 *)&this->mPosX, 0, this->mAreaId, -1);
+    this->mTailUniqueID = a2->uniqueID;
+    a2->mBowserUniqueID = this->uniqueID;
+    this->mVanishChance = 5;
     this->mCapActorAlive = 0;
     this->mParticleHandle = 0;
-    this->mStompFxLatch = 0;
+    this->mFootfallLatch = 0;
     this->mSoundHandle = 0;
     this->mSoundID = 0;
     func_02011d50(a2);
@@ -629,10 +780,15 @@ int daKpa_c::InitResources()
 /* ROM ordinal 76 -- _ZN11daKpaTail_c8BehaviorEv, 0x02116078, size 0xb8 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN11daKpaTail_c8BehaviorEv
+/*
+Per frame: find Bowser by mBowserUniqueID (return 1 if he is gone), put the tail
+0x8c (140) units behind him -- his position plus 0x8c times the table entry for
+mPrevAngleY + 0x8000, Y copied as is -- run func_ov060_02115b84, return 1. */
 /* recovered: named members + shared header, real C++ method, declarations from a shared header
  *
  * The tail follows daKpa_c: find him by the uniqueID stashed in mBowserUniqueID, then park
- * this actor 0x8c units out from his position along his facing angle.
+ * this actor 0x8c units from his position in the direction of his previous facing angle
+ * plus 0x8000.
  * data_02082214 is a sin/cos table indexed by angle>>4, two shorts per entry.
  *
  * The one-line `struct dActor_c { static dActor_c* FindWithID(unsigned int); };` stand-in
@@ -663,7 +819,7 @@ int daKpaTail_c::Behavior()
     mPosY = v[1];
     mPosZ = (short)data_02082214[j + 1] * 0x8c + v[2];
 
-    func_ov060_02115b84(((char*)this));
+    func_ov060_02115b84(this);
     return 1;
 }
 
@@ -671,6 +827,16 @@ int daKpaTail_c::Behavior()
 /* ROM ordinal 75 -- _ZN7daKpa_c8BehaviorEv, 0x02115f64, size 0x114 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN7daKpa_c8BehaviorEv
+/*
+One frame of Bowser, in order: advance the random state once (result unused);
+find the closest Player and record the angle and the horizontal distance to him
+(no Player: angle = his own facing, distance 0x7fffffff); func_ov060_02112434
+(condition flags, hold-state handler, opacity fade); func_ov060_02111a28
+(footfall effects); copy mAngleY to mPrevAngleY; advance the model animation at
+mAnimSpeed; func_ov060_0211577c (model matrix, foot points, shadow); store this
+actor at offset 0x114 of the camera object; clear and refresh the body collider,
+offset (0, 0, 0x50000) = 80 units on Z relative to the actor; and drop
+mCapActorAlive once no cap actor exists any more. Always returns 1. */
 /* recovered: named members + shared header, real C++ method, declarations from a shared header
  *
  * One frame of the fight: pick the closest player and record the angle and distance
@@ -696,19 +862,19 @@ int daKpa_c::Behavior()
     RandomIntInternal(&data_0209e650);
     mTargetPlayer = (dActor_c *)ClosestPlayer();
     if (mTargetPlayer != 0) {
-        mAngleToTarget = Vec3_HorzAngle((Vector3*)((char*)&mPosX), (Vector3*)&mTargetPlayer->mPosX);
-        mDistToTarget = Vec3_HorzDist((Vector3*)((char*)&mPosX), (Vector3*)&mTargetPlayer->mPosX);
+        mAngleToTarget = Vec3_HorzAngle((Vector3 *)&mPosX, (Vector3*)&mTargetPlayer->mPosX);
+        mDistToTarget = Vec3_HorzDist((Vector3 *)&mPosX, (Vector3*)&mTargetPlayer->mPosX);
     } else {
         mAngleToTarget = mAngleY;
         mDistToTarget = ~0x80000000;
     }
-    func_ov060_02112434(((char*)this));
-    func_ov060_02111a28(((char*)this));
+    func_ov060_02112434((char *)this);
+    func_ov060_02111a28((char *)this);
     mPrevAngleY = mAngleY;
     mModelAnim.speed = mAnimSpeed;
     mModelAnim.Advance();
-    func_ov060_0211577c(((char*)this));
-    *(char**)(data_0209f318 + 0x114) = ((char*)this);
+    func_ov060_0211577c(this);
+    *(char**)(data_0209f318 + 0x114) = (char *)this;
     mdCcAcPos_c.Clear();
     Vector3 v;
     v.z = 0x50000;
@@ -717,7 +883,7 @@ int daKpa_c::Behavior()
     mdCcAcPos_c.SetPosRelativeToActor(v);
     mdCcAcPos_c.Update();
     if (mCapActorAlive != 0) {
-        dActor_c* f = dActor_c::FindWithActorID(0x10d, 0);
+        dActor_c* f = dActor_c::FindWithActorID(BOWSER_ACTOR_OBJ_MARIO_CAP, 0);
         if (f == 0) mCapActorAlive = 0;
     }
     return 1;
@@ -727,10 +893,11 @@ int daKpa_c::Behavior()
 /* ROM ordinal 74 -- _ZN11daKpaTail_c6RenderEv, 0x02115f5c, size 0x8 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN11daKpaTail_c6RenderEv
+/*
+Draws nothing; returns 1. */
 /* recovered: shared header, real C++ method
  *
- * `return 1` and nothing else. The tail is drawn as part of Bowser's own
- * model rather than separately, so its render slot draws nothing.
+ * `return 1` and nothing else.
  */
 int daKpaTail_c::Render()
 {
@@ -741,12 +908,16 @@ int daKpaTail_c::Render()
 /* ROM ordinal 73 -- _ZN7daKpa_c6RenderEv, 0x02115f0c, size 0x50 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN7daKpa_c6RenderEv
+/*
+Draw Bowser. Skipped while mOpacity < 8, where the opacity handed to the model
+(mOpacity >> 3, see func_ov060_0211577c) would be 0. Otherwise step the texture
+pattern, apply it to the model and render the model with the actor's scale. */
 /* recovered: named members + shared header, real C++ method */
 int daKpa_c::Render()
 {
   if(mOpacity < 8) return 1;
-  _ZN9Animation7AdvanceEv((char*)&mTextureSequence);
-  _ZN15TextureSequence6UpdateER15ModelComponents(((char*)this)+0x138, ((char*)this)+0xdc);
+  _ZN9Animation7AdvanceEv(&mTextureSequence);
+  _ZN15TextureSequence6UpdateER15ModelComponents(&mTextureSequence, &mModelAnim.data);
   /* The old shard declared a local `struct Obj` with a method `m` purely so this
    * call would compile; it is ModelAnim's real slot-5 Render(const Vector3*), which
    * takes the scale vector. daKpa2Bg_c::Render makes the same call as mModel2.Render. */
@@ -758,10 +929,11 @@ int daKpa_c::Render()
 /* ROM ordinal 72 -- _ZN7daKpa_c16OnPendingDestroyEv, 0x02115f08, size 0x4 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN7daKpa_c16OnPendingDestroyEv
+/*
+Empty override: the ROM body is a single `bx lr`. */
 /* recovered: shared header, real C++ method
  *
- * Empty -- the ROM body is a single `bx lr`. The override exists to suppress
- * whatever the base does on pending destroy, not to do anything itself.
+ * Empty -- the ROM body is a single `bx lr`.
  */
 void daKpa_c::OnPendingDestroy()
 {
@@ -771,6 +943,8 @@ void daKpa_c::OnPendingDestroy()
 /* ROM ordinal 71 -- _ZN11daKpaTail_c16CleanupResourcesEv, 0x02115f00, size 0x8 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN11daKpaTail_c16CleanupResourcesEv
+/*
+Releases nothing; returns 1. */
 /* recovered: shared header, real C++ method
  *
  * `return 1`, no releases. The tail shares Bowser's translation unit and his
@@ -787,6 +961,10 @@ int daKpaTail_c::CleanupResources()
 /* ROM ordinal 70 -- _ZN7daKpa_c16CleanupResourcesEv, 0x02115e80, size 0x80 */
 /* -------------------------------------------------------------------------- */
 // @symbol _ZN7daKpa_c16CleanupResourcesEv
+/*
+Release every handle InitResources loaded (the model, the 0x1c animations, the six
+texture patterns, then two more Model files), call func_02011cfc (no arguments;
+its purpose is not established here) and return 1. */
 /* recovered: shared header, real C++ method
  *
  * daKpa_c frees the whole fight. One single, then a 0x1c-entry table and a
@@ -818,45 +996,60 @@ int daKpa_c::CleanupResources()
 /* ROM ordinal 69 -- func_ov060_02115d68, 0x02115d68, size 0x118 */
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov060_02115d68
-extern "C" void func_ov060_02115d68(char *self) {
-    u32 *p = (u32 *)((char *)(((int)self + 0xec)));
-    dActor_c *r5 = _ZN8dActor_c10FindWithIDEj(*(u32 *)(self + 0x108));
-    *p &= ~1u;
-    if (*(s32 *)((char *)r5 + 0x40c) != 0x13) goto skip_13;
-    func_ov060_021123a0(r5, 1);
+/*
+Tail state BOWSER_TAIL_FREE (0), per frame: nobody holds the tail. Switch the
+tail's own collider on (clear its disabled bit). If Bowser is in
+BOWSER_STATE_ARENA_TILT, switch his body collider on and stop; if he is defeated,
+stop. Otherwise switch his body collider on as well (func_ov060_021123a0 with 1)
+and look for a grab: the tail's collider must report an owner and the grab bit
+(hitFlags & 0x1000), that actor must not be collecting a cap, and
+Player::TryGrab(tail) must succeed. On a grab the Player is given Bowser's three
+angles (current and previous), the tail goes to BOWSER_TAIL_HOLDING and records
+the Player, Bowser's body collider is switched off, Bowser goes to
+BOWSER_HOLD_HELD with the Player in mGrabbedPlayer, and the hold countdown starts
+at 0x96 (150 frames). */
+extern "C" void func_ov060_02115d68(daKpaTail_c *self) {
+    u32 *p = &self->mdCcAc_c.flags;
+    daKpa_c *bowser = (daKpa_c *)_ZN8dActor_c10FindWithIDEj(self->mBowserUniqueID);
+    *p &= ~BOWSER_CC_DISABLED;
+    if (bowser->mState != BOWSER_STATE_ARENA_TILT) goto skip_13;
+    func_ov060_021123a0(bowser, 1);
     return;
 skip_13:
-    if (*(s32 *)((char *)r5 + 0x40c) == 4) return;
-    func_ov060_021123a0(r5, 1);
-    if (*(u32 *)(self + 0xf8) == 0) return;
-    if (!(*(u32 *)(self + 0xf4) & 0x1000)) return;
-    dActor_c *r4 = _ZN8dActor_c10FindWithIDEj(*(u32 *)(self + 0xf8));
-    if (!r4) return;
-    if (_ZN6Player15IsCollectingCapEv((Player *)r4)) return;
-    if (!_ZN6Player7TryGrabER8dActor_c((Player *)r4, *(dActor_c *)self)) return;
-    s16 *ip = (s16 *)((char *)r5 + 0x8c);
-    *(s16 *)((char *)r4 + 0x8c) = *(s16 *)((int)ip);
-    *(s16 *)((char *)r4 + 0x8e) = ip[1];
-    *(s16 *)((char *)r4 + 0x90) = ip[2];
-    *(s16 *)((char *)r4 + 0x92) = *(s16 *)((int)ip);
-    *(s16 *)((char *)r4 + 0x94) = ip[1];
-    *(s16 *)((char *)r4 + 0x96) = ip[2];
-    *(s32 *)(self + 0x110) = 2;
-    *(s32 *)(self + 0x10c) = (s32)r4;
-    func_ov060_021123a0(r5, 0);
-    *(s32 *)((char *)r5 + 0x410) = 1;
-    *(s32 *)((char *)r5 + 0x3a4) = (s32)r4;
-    *(s16 *)(self + 0x116) = 0x96;
+    if (bowser->mState == BOWSER_STATE_DEFEATED) return;
+    func_ov060_021123a0(bowser, 1);
+    if (self->mdCcAc_c.otherOwner == 0) return;
+    if (!(self->mdCcAc_c.hitFlags & 0x1000)) return;
+    dActor_c *player = _ZN8dActor_c10FindWithIDEj(self->mdCcAc_c.otherOwner);
+    if (!player) return;
+    if (_ZN6Player15IsCollectingCapEv((Player *)player)) return;
+    if (!_ZN6Player7TryGrabER8dActor_c((Player *)player, *self)) return;
+    s16 *ip = &bowser->mAngleX;
+    player->mAngleX = ip[0];
+    player->mAngleY = ip[1];
+    player->mAngleZ = ip[2];
+    player->mPrevAngleX = ip[0];
+    player->mPrevAngleY = ip[1];
+    player->mPrevAngleZ = ip[2];
+    self->mState = BOWSER_TAIL_HOLDING;
+    self->mHeldPlayer = player;
+    func_ov060_021123a0(bowser, 0);
+    bowser->mHoldState = BOWSER_HOLD_HELD;
+    bowser->mGrabbedPlayer = player;
+    self->mHoldCountdown = 0x96;
 }
 
 /* -------------------------------------------------------------------------- */
 /* ROM ordinal 68 -- func_ov060_02115d50, 0x02115d50, size 0x18 */
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov060_02115d50
+/*
+Tail state BOWSER_TAIL_COOLDOWN (1), per frame: once mTimer is above 0x1e (30)
+the tail goes back to BOWSER_TAIL_FREE. */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov060_02115d50(unsigned char *p){
-  if (*(unsigned short*)(p + 0x114) > 0x1e)
-    *(unsigned*)(p + 0x110) = 0;
+void func_ov060_02115d50(daKpaTail_c *self){
+  if (self->mTimer > 0x1e)
+    self->mState = BOWSER_TAIL_FREE;
 }
 }
 
@@ -864,52 +1057,64 @@ void func_ov060_02115d50(unsigned char *p){
 /* ROM ordinal 67 -- func_ov060_02115c1c, 0x02115c1c, size 0x134 */
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov060_02115c1c
+/*
+Tail state BOWSER_TAIL_HOLDING (2), per frame. If Bowser is in
+BOWSER_STATE_ARENA_TILT, switch his body collider on and go to BOWSER_TAIL_FREE
+(the code then carries on with the checks below). If the tail's own mFlags has
+bit 0x400, go to cooldown, forget the Player and tell Bowser to let go at once
+(BOWSER_HOLD_RELEASE_NOW); that path returns without touching the tail's
+collider. Otherwise, with a Player held: if the Player no longer holds an object
+(Player::mHeldObj == 0) he is dropped; else a non-zero Player::mAngleYSpeed
+refills mHoldCountdown to 0x96 (150) and a zero one counts it down, dropping the
+Player when it reaches 0. A drop (Player::DropActor) puts the tail in cooldown
+and Bowser in BOWSER_HOLD_RELEASE_AFTER_ANIM. Every other path ends by switching
+the tail's collider off. */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov060_02115c1c(char *self)
+void func_ov060_02115c1c(daKpaTail_c *self)
 {
-    char *r4;
-    char *r1;
+    daKpa_c *bowser;
+    dActor_c *held;
     int cond;
 
-    r4 = (char *)_ZN8dActor_c10FindWithIDEj(*(unsigned int *)(self + 0x108));
-    if (*(int *)(r4 + 0x40c) == 0x13) {
-        func_ov060_021123a0(r4, 1);
-        *(int *)(self + 0x110) = 0;
+    bowser = (daKpa_c *)_ZN8dActor_c10FindWithIDEj(self->mBowserUniqueID);
+    if (bowser->mState == BOWSER_STATE_ARENA_TILT) {
+        func_ov060_021123a0(bowser, 1);
+        self->mState = BOWSER_TAIL_FREE;
     }
 
-    cond = (int)((*(int *)(self + 0xb0) & 0x400) != 0);
+    cond = (int)((self->mFlags & 0x400) != 0);
     if (cond != 0) {
-        *(int *)(self + 0x110) = 1;
-        *(void **)(self + 0x10c) = 0;
-        func_ov060_021123c8(r4);
-        *(int *)(r4 + 0x410) = 2;
+        self->mState = BOWSER_TAIL_COOLDOWN;
+        self->mHeldPlayer = 0;
+        func_ov060_021123c8(bowser);
+        bowser->mHoldState = BOWSER_HOLD_RELEASE_NOW;
         return;
     }
 
-    r1 = *(char **)(self + 0x10c);
-    if (r1 == 0) goto tail;
+    held = self->mHeldPlayer;
+    if (held == 0) goto tail;
 
-    cond = (int)(*(int *)(r1 + 0x358) != 0);
+    cond = (int)(((Player *)held)->mHeldObj != 0);
     if (cond == 0) goto do_drop;
 
-    if (*(short *)(r1 + 0x600 + 0x9c) != 0) goto set_default;
-    if (*(u16 *)(self + 0x100 + 0x16) == 0) goto tail;
-    *(u16 *)(self + 0x116) -= 1;
-    if (*(u16 *)(self + 0x100 + 0x16) != 0) goto tail;
+    if (((Player *)held)->mAngleYSpeed != 0) goto set_default;
+    if (self->mHoldCountdown == 0) goto tail;
+    self->mHoldCountdown -= 1;
+    if (self->mHoldCountdown != 0) goto tail;
 
 do_drop:
-    *(int *)(self + 0x110) = 1;
-    _ZN6Player9DropActorEv(*(void **)(self + 0x10c));
-    *(void **)(self + 0x10c) = 0;
-    func_ov060_021123c8(r4);
-    *(int *)(r4 + 0x410) = 3;
+    self->mState = BOWSER_TAIL_COOLDOWN;
+    _ZN6Player9DropActorEv(self->mHeldPlayer);
+    self->mHeldPlayer = 0;
+    func_ov060_021123c8(bowser);
+    bowser->mHoldState = BOWSER_HOLD_RELEASE_AFTER_ANIM;
     goto tail;
 
 set_default:
-    *(u16 *)(self + 0x100 + 0x16) = 0x96;
+    self->mHoldCountdown = 0x96;
 
 tail:
-    *(int *)(self + 0xec) |= 1;
+    self->mdCcAc_c.flags |= BOWSER_CC_DISABLED;
 }
 }
 
@@ -917,6 +1122,14 @@ tail:
 /* ROM ordinal 66 -- func_ov060_02115b84, 0x02115b84, size 0x98 */
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov060_02115b84
+/*
+The tail's per-frame dispatcher (called from daKpaTail_c::Behavior). Find
+Bowser; run the handler for mState through the table at data_ov060_0211ae9c
+(state 0 is func_ov060_02115d68, 1 is func_ov060_02115d50, 2 is
+func_ov060_02115c1c; the call is a member-function-pointer call on the tail
+itself); switch the tail's collider off if Bowser is defeated; count mTimer up
+and reset it to 0 when the handler changed mState; clear and refresh the tail's
+collider (dCc_c::Clear and Update). */
 /* This shard re-declared `struct C; typedef void (C::*PMF)();` against its own
  * forward declaration of C, which collided with the PMF already defined at the
  * top of this TU (on the real C). One typedef serves both; only the opaque
@@ -928,41 +1141,44 @@ extern void _ZN5dCc_c5ClearEv(void* cc);
 extern void _ZN5dCc_c6UpdateEv(void* cc);
 }
 struct C_func15b84 { char pad[0x800]; };
-extern "C" void func_ov060_02115b84(char* c) {
-  char* r5 = (char *)_ZN8dActor_c10FindWithIDEj(*(unsigned int*)(c + 0x108));
-  int idx = *(int*)(c + 0x110);
-  (((daKpa_c *)c)->*data_ov060_0211ae9c[idx])();
-  if (*(int*)(r5 + 0x40c) == 4) {
-    int* f = (int*)(((int)c + 0xec));
-    *f = *f | 1;
+extern "C" void func_ov060_02115b84(daKpaTail_c *self) {
+  daKpa_c *bowser = (daKpa_c *)_ZN8dActor_c10FindWithIDEj(self->mBowserUniqueID);
+  int idx = self->mState;
+  (((daKpa_c *)self)->*data_ov060_0211ae9c[idx])();
+  if (bowser->mState == BOWSER_STATE_DEFEATED) {
+    self->mdCcAc_c.flags |= BOWSER_CC_DISABLED;
   }
   {
-    unsigned short* h = (unsigned short*)(((int)c + 0x114));
+    u16 *h = &self->mTimer;
     *h = *h + 1;
   }
-  if (idx != *(int*)(c + 0x110)) {
-    short* z = (short*)(c + 0x100);
-    z[0xa] = 0;
+  if (idx != self->mState) {
+    self->mTimer = 0;
   }
-  _ZN5dCc_c5ClearEv(c + 0xd4);
-  _ZN5dCc_c6UpdateEv(c + 0xd4);
+  _ZN5dCc_c5ClearEv(&self->mdCcAc_c);
+  _ZN5dCc_c6UpdateEv(&self->mdCcAc_c);
 }
 
 /* -------------------------------------------------------------------------- */
 /* ROM ordinal 65 -- func_ov060_02115b0c, 0x02115b0c, size 0x78 */
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov060_02115b0c
+/*
+Landing effect for the variant-2 fight (nothing happens for the other variants):
+dActor_c::Earthquake at his position with the Fix12 argument 0x7d0000 (2000.0,
+the same value daKirai_c passes when a bomb goes off) and a FIRERING actor
+(0x119) spawned at his position. */
 /* recovered: shared common types */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov060_02115b0c(char* c)
+void func_ov060_02115b0c(daKpa_c *kpa)
 {
     struct Vector3 v;
-    if (*(unsigned char*)(c + 0x414) != 2) return;
-    v.x = *(int*)(c + 0x5c);
-    v.y = *(int*)(c + 0x60);
-    v.z = *(int*)(c + 0x64);
-    _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(c, &v, 0x7d0000);
-    _ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(0x119, 0, (struct Vector3*)(c + 0x5c), 0, *(signed char*)(c + 0xcc), -1);
+    if (kpa->mVariantID != 2) return;
+    v.x = kpa->mPosX;
+    v.y = kpa->mPosY;
+    v.z = kpa->mPosZ;
+    _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(kpa, &v, 0x7d0000);
+    _ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(BOWSER_ACTOR_FIRERING, 0, (struct Vector3*)(&kpa->mPosX), 0, kpa->mAreaId, -1);
 }
 }
 
@@ -971,6 +1187,12 @@ void func_ov060_02115b0c(char* c)
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov060_02115a84
 // @symbol func_ov060_02115a84
+/*
+Landing-dust helper. On a frame where the floor collider reports a fresh ground
+hit (dBgCh_Actr::JustHitGround), add one to the u16 counter passed in (every
+caller passes the address of mStepCounter) and, while that counter is still
+below 4, spawn landing dust at his position and play sound 0xbd at his
+camera-space position. */
 /* recovered: shared common types */
 #include "common.h"
 extern "C" {
@@ -978,16 +1200,16 @@ extern "C" {
 extern int _ZNK10dBgCh_Actr13JustHitGroundEv(void* p);
 extern void _ZN8dActor_c13LandingDustAtER7Vector3b(void* a, struct Vector3* v, int b);
 
-void func_ov060_02115a84(char* c, char* arg){
-  if(_ZNK10dBgCh_Actr13JustHitGroundEv(c+0x14c)==0) return;
+void func_ov060_02115a84(daKpa_c *kpa, char* arg){
+  if(_ZNK10dBgCh_Actr13JustHitGroundEv(&kpa->mWithMeshClsn)==0) return;
   *(unsigned short*)arg = *(unsigned short*)arg + 1;
   if(*(unsigned short*)arg >= 4) return;
   struct Vector3 v;
-  v.x = *(int*)(c+0x5c);
-  v.y = *(int*)(c+0x60);
-  v.z = *(int*)(c+0x64);
-  _ZN8dActor_c13LandingDustAtER7Vector3b(c, &v, 0);
-  func_02012694(0xbd, (const Vector3 *)(c + 0x74));
+  v.x = kpa->mPosX;
+  v.y = kpa->mPosY;
+  v.z = kpa->mPosZ;
+  _ZN8dActor_c13LandingDustAtER7Vector3b(kpa, &v, 0);
+  func_02012694(BOWSER_SND_LAND_SOFT, (const Vector3 *)(&kpa->mCamSpacePosX));
 }
 }
 
@@ -995,6 +1217,10 @@ void func_ov060_02115a84(char* c, char* arg){
 /* ROM ordinal 63 -- Bowser_IsAnimAtLastFrame, 0x02115a30, size 0x54 */
 /* -------------------------------------------------------------------------- */
 // @symbol Bowser_IsAnimAtLastFrame
+/*
+True once the model's animation has reached its last frame or will reach it on
+the coming advance (Animation::Finished, or WillHitFrame(frame count - 1)).
+Takes the actor as the opaque Obj view; the Animation sits at +0x124. */
 // Bowser_IsAnimAtLastFrame at 0x02115a30 -- matched byte-for-byte with mwccarm 1.2/sp2p3 (ov060).
 extern "C" bool Bowser_IsAnimAtLastFrame(void *o) {
     Obj *obj = (Obj *)o;
@@ -1005,8 +1231,23 @@ extern "C" bool Bowser_IsAnimAtLastFrame(void *o) {
 /* ROM ordinal 62 -- func_ov060_0211577c, 0x0211577c, size 0x2b4 */
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov060_0211577c
+/*
+Per-frame model placement, called from Behavior. 1) On the ground and not held,
+set mAngleX from the floor normal mGroundNormal and mAngleY, and mAngleZ from the
+normal and mAngleY - 0x4000 (a quarter turn), both through func_02010844.
+2) Build the model matrix in data_020a0e68: translation = position >> 3
+(Vec3_Asr by 3; the foot points below are shifted left 3 on the way back out),
+then rotations about Y, X and Z; copy it into the model and apply opacity
+mOpacity >> 3 (0..31). 3) For skeleton nodes 3 and 6 (mModelAnim.data.transforms
+[3] and [6]) multiply the node matrix by the model matrix (the product lands
+back in data_020a0e68), read its translation (m[9..11]) and shift it left 3 to
+full scale: node 3 gives mFootPosB, node 6 gives mFootPosA, each with Y replaced
+by his own Y. 4) Unless mDropsShadow is 0, probe the floor with a dBgCh_Gnd from
+0x32000 (50 units) above him (floor height clsnY, or his own Y if there is
+none), build the shadow matrix there and call DropShadowRadHeight with radius
+0x140000 (320) and height 0x64000 (100). */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov060_0211577c(char *c)
+void func_ov060_0211577c(daKpa_c *kpa)
 {
     char pad[8];
     Matrix4x3 saved;
@@ -1015,58 +1256,58 @@ void func_ov060_0211577c(char *c)
     Vec3 v2;
     int zero;
 
-    if (_ZNK10dBgCh_Actr10IsOnGroundEv(c + 0x14c) == 0)
+    if (_ZNK10dBgCh_Actr10IsOnGroundEv(&kpa->mWithMeshClsn) == 0)
         goto skip_angles;
-    if (*(int *)(c + 0x410) != 0)
+    if (kpa->mHoldState != BOWSER_HOLD_NONE)
         goto skip_angles;
-    *(s16 *)(c + 0x8c) = func_02010844(c, c + 0x3bc, *(s16 *)(c + 0x8e));
-    *(s16 *)(c + 0x90) = func_02010844(c, c + 0x3bc, (s16)(*(s16 *)(c + 0x8e) - 0x4000));
+    kpa->mAngleX = func_02010844(kpa, &kpa->mGroundNormalX, kpa->mAngleY);
+    kpa->mAngleZ = func_02010844(kpa, &kpa->mGroundNormalX, (s16)(kpa->mAngleY - 0x4000));
 skip_angles:
-    Vec3_Asr(&v, (Vec3 *)(c + 0x5c), 3);
+    Vec3_Asr(&v, (Vec3 *)(&kpa->mPosX), 3);
     Matrix4x3_FromTranslation(&data_020a0e68, v.x, v.y, v.z);
-    Matrix4x3_ApplyInPlaceToRotationY(&data_020a0e68, *(s16 *)(c + 0x8e));
-    Matrix4x3_ApplyInPlaceToRotationX(&data_020a0e68, *(s16 *)(c + 0x8c));
-    Matrix4x3_ApplyInPlaceToRotationZ(&data_020a0e68, *(s16 *)(c + 0x90));
-    *(Matrix4x3 *)(c + 0xf0) = data_020a0e68;
-    _ZN9ModelBase12ApplyOpacityEjj(c + 0xd4, (unsigned char)((int)*(unsigned char *)(c + 0x41c) >> 3), 1);
+    Matrix4x3_ApplyInPlaceToRotationY(&data_020a0e68, kpa->mAngleY);
+    Matrix4x3_ApplyInPlaceToRotationX(&data_020a0e68, kpa->mAngleX);
+    Matrix4x3_ApplyInPlaceToRotationZ(&data_020a0e68, kpa->mAngleZ);
+    kpa->mModelAnim.mat4x3 = data_020a0e68;
+    _ZN9ModelBase12ApplyOpacityEjj(&kpa->mModelAnim, (unsigned char)((int)kpa->mOpacity >> 3), 1);
     saved = data_020a0e68;
     zero = 0;
-    *(int *)(c + 0x3e0) = zero;
-    *(int *)(c + 0x3e4) = zero;
-    *(int *)(c + 0x3e8) = zero;
-    MulMat4x3Mat4x3(*(char **)(c + 0xe8) + 0x90, &data_020a0e68, &data_020a0e68);
-    *(int *)(c + 0x3e0) = data_020a0e68.m[9];
-    *(int *)(c + 0x3e4) = data_020a0e68.m[10];
-    *(int *)(c + 0x3e8) = data_020a0e68.m[11];
-    Vec3_LslInPlace(c + 0x3e0, 3);
-    *(int *)(c + 0x3e4) = *(int *)(c + 0x60);
-    *(int *)(c + 0x3d4) = zero;
-    *(int *)(c + 0x3d8) = zero;
-    *(int *)(c + 0x3dc) = zero;
+    kpa->mFootPosBX = zero;
+    kpa->mFootPosBY = zero;
+    kpa->mFootPosBZ = zero;
+    MulMat4x3Mat4x3((char *)&kpa->mModelAnim.data.transforms[3], &data_020a0e68, &data_020a0e68);
+    kpa->mFootPosBX = data_020a0e68.m[9];
+    kpa->mFootPosBY = data_020a0e68.m[10];
+    kpa->mFootPosBZ = data_020a0e68.m[11];
+    Vec3_LslInPlace(&kpa->mFootPosBX, 3);
+    kpa->mFootPosBY = kpa->mPosY;
+    kpa->mFootPosAX = zero;
+    kpa->mFootPosAY = zero;
+    kpa->mFootPosAZ = zero;
     data_020a0e68 = saved;
-    MulMat4x3Mat4x3(*(char **)(c + 0xe8) + 0x120, &data_020a0e68, &data_020a0e68);
-    *(int *)(c + 0x3d4) = data_020a0e68.m[9];
-    *(int *)(c + 0x3d8) = data_020a0e68.m[10];
-    *(int *)(c + 0x3dc) = data_020a0e68.m[11];
-    Vec3_LslInPlace(c + 0x3d4, 3);
-    *(int *)(c + 0x3d8) = *(int *)(c + 0x60);
-    if (*(unsigned char *)(c + 0x426) == 0)
+    MulMat4x3Mat4x3((char *)&kpa->mModelAnim.data.transforms[6], &data_020a0e68, &data_020a0e68);
+    kpa->mFootPosAX = data_020a0e68.m[9];
+    kpa->mFootPosAY = data_020a0e68.m[10];
+    kpa->mFootPosAZ = data_020a0e68.m[11];
+    Vec3_LslInPlace(&kpa->mFootPosAX, 3);
+    kpa->mFootPosAY = kpa->mPosY;
+    if (kpa->mDropsShadow == 0)
         return;
     {
         dBgCh_Gnd rc;
-        pos.x = *(int *)(c + 0x5c);
-        pos.y = *(int *)(c + 0x60);
-        pos.z = *(int *)(c + 0x64);
+        pos.x = kpa->mPosX;
+        pos.y = kpa->mPosY;
+        pos.z = kpa->mPosZ;
         pos.y = pos.y + 0x32000;
         rc.SetObjAndPos(*(Vector3 *)&pos, 0);
         if (rc.DetectClsn())
             pos.y = rc.clsnY;
         else
-            pos.y = *(int *)(c + 0x60);
+            pos.y = kpa->mPosY;
         Vec3_Asr(&v2, &pos, 3);
         Matrix4x3_FromTranslation(&data_020a0e68, v2.x, v2.y, v2.z);
-        *(Matrix4x3 *)(c + 0x330) = data_020a0e68;
-        _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(c, c + 0x308, c + 0x330, 0x140000, 0x64000, 0xf);
+        *(Matrix4x3 *)(&kpa->mShadowMtx) = data_020a0e68;
+        _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(kpa, &kpa->mShadowModel, &kpa->mShadowMtx, 0x140000, 0x64000, 0xf);
     }
 }
 }
@@ -1075,16 +1316,21 @@ skip_angles:
 /* ROM ordinal 61 -- func_ov060_02115744, 0x02115744, size 0x38 */
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov060_02115744
+/*
+First animation of the turn / intro sequence: play animation 0x13 once; when it
+reaches its last frame, set mHorzSpeed to 0x3000 (3.0) and return 1, otherwise
+return 0. The sequence continues with 0x11 looping (func_ov060_02115718) and ends
+with 0x12 (func_ov060_021156ec); the intro and turn handlers use it. */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-int func_ov060_02115744(void *c)
+int func_ov060_02115744(daKpa_c *kpa)
 {
     /* Both callees take the actor's base pointer as char* (Obj is the opaque
      * view of it); this shard holds it as void*, so the cast belongs at the call
      * rather than on the declaration. */
-    func_ov060_02111cc0((char *)c, 0x13, 0x40000000);
-    int r = Bowser_IsAnimAtLastFrame((Obj *)c);
+    func_ov060_02111cc0(kpa, 0x13, 0x40000000);
+    int r = Bowser_IsAnimAtLastFrame((Obj *)kpa);
     if (r != 0) {
-        *(int*)((char*)c + 0x98) = 0x3000;
+        kpa->mHorzSpeed = 0x3000;
         return 1;
     }
     return 0;
@@ -1095,12 +1341,15 @@ int func_ov060_02115744(void *c)
 /* ROM ordinal 60 -- func_ov060_02115718, 0x02115718, size 0x2c */
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov060_02115718
+/*
+Play animation 0x11 looping with mHorzSpeed 0x3000 (3.0); return whether it is at
+its last frame. */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-int func_ov060_02115718(void *c)
+int func_ov060_02115718(daKpa_c *kpa)
 {
-    func_ov060_02111cc0(c, 0x11, 0x0);
-    *(int*)((char*)c + 0x98) = 12288;
-    return Bowser_IsAnimAtLastFrame(c);
+    func_ov060_02111cc0(kpa, 0x11, 0x0);
+    kpa->mHorzSpeed = 12288;
+    return Bowser_IsAnimAtLastFrame(kpa);
 }
 }
 
@@ -1108,12 +1357,15 @@ int func_ov060_02115718(void *c)
 /* ROM ordinal 59 -- func_ov060_021156ec, 0x021156ec, size 0x2c */
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov060_021156ec
+/*
+Play animation 0x12 once with mHorzSpeed 0; return whether it is at its last
+frame. */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-int func_ov060_021156ec(void *c)
+int func_ov060_021156ec(daKpa_c *kpa)
 {
-    func_ov060_02111cc0(c, 0x12, 0x40000000);
-    *(int*)((char*)c + 0x98) = 0;
-    return Bowser_IsAnimAtLastFrame(c);
+    func_ov060_02111cc0(kpa, 0x12, 0x40000000);
+    kpa->mHorzSpeed = 0;
+    return Bowser_IsAnimAtLastFrame(kpa);
 }
 }
 
@@ -1121,25 +1373,34 @@ int func_ov060_021156ec(void *c)
 /* ROM ordinal 58 -- func_ov060_02115518, 0x02115518, size 0x1d4 */
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov060_02115518
+/*
+The intro conversation, one step per mTalkStep (nothing happens without a target
+Player). Step 0: Player::StartTalk(this, 1); when it succeeds, mState becomes
+BOWSER_STATE_INTRO and the step advances. Step 1: once Player::GetTalkState() is
+0, show message data_ov060_0211a4e0[mVariantID] (0xcc, 0xce or 0xd0 in the ROM) at
+a point 200 units out along mAngleY and 200 units up (the sin/cos table scaled
+by 0xc8, Y + 0xc8000); when that succeeds, advance and play sound 0xb7. Step 2:
+when GetTalkState() returns -1, go to BOWSER_STATE_JUMP for variant 1 and
+BOWSER_STATE_IDLE otherwise, advance, set mCutsceneStep to 4 and run
+func_ov060_02111f08 once (its step 4 clears bit 0x8 of Camera::mFlags). */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov060_02115518(char *self)
+void func_ov060_02115518(daKpa_c *kpa)
 {
-  void *player = *((void **) (self + 0x3a0));
-  u8 *new_var;
+  void *player = kpa->mTargetPlayer;
   if (player == 0)
   {
     return;
   }
-  switch (*((u8 *) (self + 0x424)))
+  switch (kpa->mTalkStep)
   {
     case 0:
-      if (_ZN6Player9StartTalkER7fBase_cb(player, self, 1) == 0)
+      if (_ZN6Player9StartTalkER7fBase_cb(player, kpa, 1) == 0)
     {
       return;
     }
-      *((int *) (self + 0x40c)) = 6;
+      kpa->mState = BOWSER_STATE_INTRO;
     {
-      u8 *p = (u8 *) ((void *) (((long long) ((int) (self + 0x424)))));
+      u8 *p = &kpa->mTalkStep;
       *p = (*p) + 1;
     }
       return;
@@ -1163,37 +1424,37 @@ void func_ov060_02115518(char *self)
       u16 ang;
       s16 sx;
       s16 sz;
-      x = *((int *) (self + 0x5c));
+      x = kpa->mPosX;
       tbl = data_02082214;
       pos[0] = x;
-      y = *((int *) (self + 0x60));
+      y = kpa->mPosY;
       scale = 0xc8;
       pos[1] = (scale) ? (y) : (y);
-      z = *((int *) (self + 0x64));
+      z = kpa->mPosZ;
       y2 = y + 0xc8000;
       pos[2] = z;
       tbl = (s16 *) ((void *) data_02082214);
-      ang = *((u16 *) (self + 0x8e));
+      ang = kpa->mAngleY;
       zero = 0;
       msgs = data_ov060_0211a4e0;
       sx = (s16) tbl[(ang >> 4) * 2];
       pos[0] = (((s16) sx) * ((s16) scale)) + x;
       tbl = data_02082214;
-      ang = *((u16 *) (self + 0x8e));
+      ang = kpa->mAngleY;
       sz = (s16) tbl[((ang >> 4) * 2) + 1];
       pos[1] = y2;
       pos[2] = (((s16) sz) * ((s16) scale)) + z;
-      msg = (s16) msgs[*((u8 *) (self + 0x414))];
-      if (_ZN6Player11ShowMessageER7fBase_cjPK7Vector3hh(*((void **) (self + 0x3a0)), self, msg, pos, zero, zero) == 0)
+      msg = (s16) msgs[kpa->mVariantID];
+      if (_ZN6Player11ShowMessageER7fBase_cjPK7Vector3hh(kpa->mTargetPlayer, kpa, msg, pos, zero, zero) == 0)
       {
         return;
       }
     }
     {
-      u8 *p = (u8 *) ((void *) (((long long) ((int) (self + 0x424)))));
+      u8 *p = &kpa->mTalkStep;
       *p = (*p) + 1;
     }
-      func_02012694(0xb7, (const Vector3 *)(self + 0x74));
+      func_02012694(BOWSER_SND_TALK_START, (const Vector3 *)(&kpa->mCamSpacePosX));
       return;
 
     case 2:
@@ -1201,21 +1462,20 @@ void func_ov060_02115518(char *self)
     {
       return;
     }
-      if ((*((u8 *) (self + 0x414))) == 1)
+      if ((kpa->mVariantID) == 1)
     {
-      *((int *) (self + 0x40c)) = 0xd;
+      kpa->mState = BOWSER_STATE_JUMP;
     }
     else
     {
-      *((int *) (self + 0x40c)) = 0;
+      kpa->mState = BOWSER_STATE_IDLE;
     }
     {
-      u8 *p = (u8 *) ((void *) (((long long) ((int) (self + 0x424)))));
+      u8 *p = &kpa->mTalkStep;
       *p = (*p) + 1;
     }
-      new_var = (u8 *) (self + 0x444);
-      *new_var = 4;
-      func_ov060_02111f08(self);
+      kpa->mCutsceneStep = 4;
+      func_ov060_02111f08(kpa);
       return;
 
   }
@@ -1227,12 +1487,16 @@ void func_ov060_02115518(char *self)
 /* ROM ordinal 57 -- func_ov060_021154e8, 0x021154e8, size 0x30 */
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov060_021154e8
+/*
+State BOWSER_STATE_INTRO_WAIT (5): run the intro camera (func_ov060_02111f08),
+stand still on the idle animation (0x10) and run the conversation
+(func_ov060_02115518), whose step 0 moves him to BOWSER_STATE_INTRO. */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov060_021154e8(void *c) {
-    func_ov060_02111f08(c);
-    *(int*)((char*)c + 0x98) = 0;
-    func_ov060_02111cc0(c, 0x10, 0);
-    func_ov060_02115518((char *)c);
+void func_ov060_021154e8(daKpa_c *kpa) {
+    func_ov060_02111f08(kpa);
+    kpa->mHorzSpeed = 0;
+    func_ov060_02111cc0(kpa, BOWSER_ANIM_IDLE, 0);
+    func_ov060_02115518(kpa);
 }
 }
 
@@ -1240,41 +1504,48 @@ void func_ov060_021154e8(void *c) {
 /* ROM ordinal 56 -- func_ov060_021153f8, 0x021153f8, size 0xf0 */
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov060_021153f8
+/*
+State BOWSER_STATE_INTRO (6): run the intro camera (func_ov060_02111f08), then by
+mStep. Step 0: func_ov060_02115744 (animation 0x13), advancing when it returns 1.
+Steps 1 and 2: func_ov060_02115718 (animation 0x11 looping); each completed loop
+advances the step, and variant 2 advances it by two (from step 1 it skips step 2). Step 3:
+func_ov060_021156ec (animation 0x12); when it returns 1, switch to the idle
+animation and advance. Later steps: the conversation (func_ov060_02115518). */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov060_021153f8(char *c)
+void func_ov060_021153f8(daKpa_c *kpa)
 {
     u8 state;
-    func_ov060_02111f08(c);
-    state = *(u8 *)(c + 0x423);
+    func_ov060_02111f08(kpa);
+    state = kpa->mStep;
     if (state == 0) {
-        if (func_ov060_02115744(c) == 0) return;
+        if (func_ov060_02115744(kpa) == 0) return;
         {
-            u8 *p = P423(c);
+            u8 *p = &kpa->mStep;
             *p = *p + 1;
         }
         return;
     }
     if (state <= 2) {
-        if (func_ov060_02115718(c) == 0) return;
+        if (func_ov060_02115718(kpa) == 0) return;
         {
-            u8 *p = P423(c);
+            u8 *p = &kpa->mStep;
             *p = *p + 1;
-            if (*(u8 *)(c + 0x414) == 2) {
+            if (kpa->mVariantID == 2) {
                 *p = *p + 1;
             }
         }
         return;
     }
     if (state == 3) {
-        if (func_ov060_021156ec(c) == 0) return;
-        func_ov060_02111cc0(c, 0x10, 0);
+        if (func_ov060_021156ec(kpa) == 0) return;
+        func_ov060_02111cc0(kpa, BOWSER_ANIM_IDLE, 0);
         {
-            u8 *p = P423(c);
+            u8 *p = &kpa->mStep;
             *p = *p + 1;
         }
         return;
     }
-    func_ov060_02115518((char *)c);
+    func_ov060_02115518(kpa);
 }
 }
 
@@ -1282,32 +1553,40 @@ void func_ov060_021153f8(char *c)
 /* ROM ordinal 55 -- func_ov060_02115314, 0x02115314, size 0xe4 */
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov060_02115314
+/*
+Idle pick for variant 0, called from func_ov060_02114f88. With mPickToggle 0: if
+he faces the target (BOWSER_COND_FACING_TARGET), go to BOWSER_STATE_ANIM_CHAIN
+when mDistToTarget < 0x5dc000 (1500 units) and BOWSER_STATE_HOP otherwise; if not,
+BOWSER_STATE_TURN_TO_TARGET; then set the toggle and reset mAnimSpeed to 0x1000
+(1.0). With mPickToggle set: clear it; unless mSkipIdleRoll is set (then clear
+that and turn), one draw in ten (random >> 16, modulo 10, equal to 0) picks
+BOWSER_STATE_PLAY_ANIM_0F, otherwise BOWSER_STATE_TURN_TO_TARGET. */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov060_02115314(char* c)
+void func_ov060_02115314(daKpa_c *kpa)
 {
-    if (*(unsigned char*)(c + 0x415) == 0) {
-        if (*(int*)(c + 0x418) & 2) {
-            if (*(int*)(c + 0x3ec) < 0x5dc000)
-                *(int*)(c + 0x40c) = 0xf;
+    if (kpa->mPickToggle == 0) {
+        if (kpa->mCondFlags & BOWSER_COND_FACING_TARGET) {
+            if (kpa->mDistToTarget < 0x5dc000)
+                kpa->mState = BOWSER_STATE_ANIM_CHAIN;
             else
-                *(int*)(c + 0x40c) = 0x11;
+                kpa->mState = BOWSER_STATE_HOP;
         } else {
-            *(int*)(c + 0x40c) = 0xe;
+            kpa->mState = BOWSER_STATE_TURN_TO_TARGET;
         }
-        unsigned char* q = (unsigned char*)(((int)c + 0x415));
+        unsigned char* q = &kpa->mPickToggle;
         *q = *q + 1;
-        *(int*)(c + 0x3f8) = 0x1000;
+        kpa->mAnimSpeed = 0x1000;
     } else {
-        *(unsigned char*)(c + 0x415) = 0;
-        if (*(unsigned char*)(c + 0x429) == 0) {
+        kpa->mPickToggle = 0;
+        if (kpa->mSkipIdleRoll == 0) {
             unsigned int v = (unsigned int)RandomIntInternal(&data_0209e650) >> 0x10;
             if (v % 10 == 0)
-                *(int*)(c + 0x40c) = 3;
+                kpa->mState = BOWSER_STATE_PLAY_ANIM_0F;
             else
-                *(int*)(c + 0x40c) = 0xe;
+                kpa->mState = BOWSER_STATE_TURN_TO_TARGET;
         } else {
-            *(unsigned char*)(c + 0x429) = 0;
-            *(int*)(c + 0x40c) = 0xe;
+            kpa->mSkipIdleRoll = 0;
+            kpa->mState = BOWSER_STATE_TURN_TO_TARGET;
         }
     }
 }
@@ -1317,52 +1596,63 @@ void func_ov060_02115314(char* c)
 /* ROM ordinal 54 -- func_ov060_021151d4, 0x021151d4, size 0x140 */
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov060_021151d4
+/*
+Idle pick for variant 1, called from func_ov060_02114f88. With mPickToggle set:
+clear it and go to BOWSER_STATE_TURN_TO_TARGET. Otherwise, if he is not facing
+the target, BOWSER_STATE_TURN_TO_TARGET; if he is, and DistToCPlayer() <
+0x514000 (1300 units), a draw modulo 10 below mVanishChance picks
+BOWSER_STATE_VANISH_DASH (mVanishChance then drops to 3 if it was above 3, else
+to 1) and anything else picks BOWSER_STATE_FIREBALLS (mVanishChance back to 5);
+if the Player is farther away, BOWSER_STATE_CHARGE, upgraded to
+BOWSER_STATE_JUMP on a draw below 5 when mDistToCenter is between 0x1f4000 (500
+units) and 0x5dc000 (1500 units). Every path except the cleared-toggle one sets
+the toggle. */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov060_021151d4(char *a)
+void func_ov060_021151d4(daKpa_c *kpa)
 {
     unsigned int m;
 
-    if (*(unsigned char *)(a + 0x415) != 0)
+    if (kpa->mPickToggle != 0)
         goto cold;
 
-    if ((*(int *)(a + 0x418) & 2) == 0)
+    if ((kpa->mCondFlags & BOWSER_COND_FACING_TARGET) == 0)
         goto setE;
 
-    if (_ZN8dActor_c13DistToCPlayerEv(a) < 0x514000) {
+    if (_ZN8dActor_c13DistToCPlayerEv(kpa) < 0x514000) {
         m = ((unsigned int)RandomIntInternal(&data_0209e650) >> 0x10) % 10;
-        if (m < *(unsigned char *)(a + 0x42a)) {
-            *(int *)(a + 0x40c) = 0x10;
-            if (*(unsigned char *)(a + 0x42a) > 3)
-                *(unsigned char *)(a + 0x42a) = 3;
+        if (m < kpa->mVanishChance) {
+            kpa->mState = BOWSER_STATE_VANISH_DASH;
+            if (kpa->mVanishChance > 3)
+                kpa->mVanishChance = 3;
             else
-                *(unsigned char *)(a + 0x42a) = 1;
+                kpa->mVanishChance = 1;
         } else {
-            *(int *)(a + 0x40c) = 9;
-            *(unsigned char *)(a + 0x42a) = 5;
+            kpa->mState = BOWSER_STATE_FIREBALLS;
+            kpa->mVanishChance = 5;
         }
         goto tail;
     }
 
-    *(int *)(a + 0x40c) = 7;
-    if (*(int *)(a + 0x3f4) > 0x1f4000 && *(int *)(a + 0x3f4) < 0x5dc000) {
+    kpa->mState = BOWSER_STATE_CHARGE;
+    if (kpa->mDistToCenter > 0x1f4000 && kpa->mDistToCenter < 0x5dc000) {
         m = ((unsigned int)RandomIntInternal(&data_0209e650) >> 0x10) % 10;
         if (m < 5)
-            *(int *)(a + 0x40c) = 0xd;
+            kpa->mState = BOWSER_STATE_JUMP;
     }
     goto tail;
 
 setE:
-    *(int *)(a + 0x40c) = 0xe;
+    kpa->mState = BOWSER_STATE_TURN_TO_TARGET;
 tail:
     {
-        unsigned char *p = (unsigned char *)(a + 0x415);
+        unsigned char *p = &kpa->mPickToggle;
         *p = *p + 1;
     }
     return;
 
 cold:
-    *(unsigned char *)(a + 0x415) = 0;
-    *(int *)(a + 0x40c) = 0xe;
+    kpa->mPickToggle = 0;
+    kpa->mState = BOWSER_STATE_TURN_TO_TARGET;
 }
 }
 
@@ -1370,32 +1660,39 @@ cold:
 /* ROM ordinal 53 -- func_ov060_021150d0, 0x021150d0, size 0x104 */
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov060_021150d0
+/*
+Choose an attack for variant 2, called from func_ov060_02115060. If he faces the
+target: with DistToCPlayer() < 0x3e8000 (1000 units), a draw modulo 10 below 4
+picks BOWSER_STATE_FIREBALLS, else a second draw below 8 picks
+BOWSER_STATE_FIRE_BREATH, else BOWSER_STATE_ANIM_CHAIN (mFireTimer is cleared and
+mAnimSpeed set to 0x1000 on all three); with the Player farther away a draw below
+5 picks BOWSER_STATE_JUMP, else BOWSER_STATE_CHARGE. If he does not face the
+target, BOWSER_STATE_TURN_TO_TARGET. */
 #include "dActor_c.h"
 extern "C" {
 extern int RandomIntInternal(int* seed);
 extern int data_0209e650;
 
-void func_ov060_021150d0(void *v) {
-    dActor_c *a = (dActor_c *)v;
-    char* c = (char*)a;
-    if (*(int*)(c + 0x418) & 2) {
+void func_ov060_021150d0(daKpa_c *kpa) {
+    dActor_c *a = kpa;
+    if (kpa->mCondFlags & BOWSER_COND_FACING_TARGET) {
         if (a->DistToCPlayer() < 0x3e8000) {
             if (((unsigned)RandomIntInternal(&data_0209e650) >> 0x10) % 10 < 4) {
-                *(int*)(c + 0x40c) = 9;
+                kpa->mState = BOWSER_STATE_FIREBALLS;
             } else if (((unsigned)RandomIntInternal(&data_0209e650) >> 0x10) % 10 < 8) {
-                *(int*)(c + 0x40c) = 8;
+                kpa->mState = BOWSER_STATE_FIRE_BREATH;
             } else {
-                *(int*)(c + 0x40c) = 0xf;
+                kpa->mState = BOWSER_STATE_ANIM_CHAIN;
             }
-            *(short*)(c + 0x400) = 0;
-            *(int*)(c + 0x3f8) = 0x1000;
+            kpa->mFireTimer = 0;
+            kpa->mAnimSpeed = 0x1000;
         } else if (((unsigned)RandomIntInternal(&data_0209e650) >> 0x10) % 10 < 5) {
-            *(int*)(c + 0x40c) = 0xd;
+            kpa->mState = BOWSER_STATE_JUMP;
         } else {
-            *(int*)(c + 0x40c) = 7;
+            kpa->mState = BOWSER_STATE_CHARGE;
         }
     } else {
-        *(int*)(c + 0x40c) = 0xe;
+        kpa->mState = BOWSER_STATE_TURN_TO_TARGET;
     }
 }
 }
@@ -1404,11 +1701,12 @@ void func_ov060_021150d0(void *v) {
 /* ROM ordinal 52 -- func_ov060_021150c4, 0x021150c4, size 0xc */
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov060_021150c4
+/*
+Pick BOWSER_STATE_JUMP (the choice for variants with mChooseJumpOnly set). */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov060_021150c4(void *v)
+void func_ov060_021150c4(daKpa_c *kpa)
 {
-    int *p = (int *)v;
-    p[259] = 13;
+    kpa->mState = BOWSER_STATE_JUMP;
 }
 }
 
@@ -1416,24 +1714,29 @@ void func_ov060_021150c4(void *v)
 /* ROM ordinal 51 -- func_ov060_02115060, 0x02115060, size 0x64 */
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov060_02115060
+/*
+Idle pick for variant 2, called from func_ov060_02114f88. With mPickToggle 0:
+func_ov060_021150d0, or func_ov060_021150c4 when mChooseJumpOnly is set, then set
+the toggle. With the toggle set: clear it and go to
+BOWSER_STATE_TURN_TO_TARGET. */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov060_02115060(char *c)
+void func_ov060_02115060(daKpa_c *kpa)
 {
-  if (*((unsigned char *) (c + 0x415)) == 0)
+  if (kpa->mPickToggle == 0)
   {
-    if (*((unsigned char *) (c + 0x416)) == 0)
+    if (kpa->mChooseJumpOnly == 0)
     {
-      func_ov060_021150d0(c);
+      func_ov060_021150d0(kpa);
     }
     else
     {
-      func_ov060_021150c4(c);
+      func_ov060_021150c4(kpa);
     }
-    (*((unsigned char *) ((((unsigned int) c) + 0x415))))++;
+    (kpa->mPickToggle)++;
     return;
   }
-  *((unsigned char *) (c + 0x415)) = 0;
-  *((int *) (c + 0x40c)) = 0xe;
+  kpa->mPickToggle = 0;
+  kpa->mState = BOWSER_STATE_TURN_TO_TARGET;
 }
 }
 
@@ -1441,18 +1744,23 @@ void func_ov060_02115060(char *c)
 /* ROM ordinal 50 -- func_ov060_02115018, 0x02115018, size 0x48 */
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov060_02115018
+/*
+Fall catch for the variant-2 jumps: if he is moving down (mVertSpeed < 0) and
+mPosY is below mHomePosY - 0x12c000 (300 units below the arena level), put him
+at X = Z = 0, 0x7d0000 (2000 units) above the arena level, with both speeds
+zeroed. */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov060_02115018(void *c) {
-    int r1 = *(int *)((char *)c + 0xa8);
+void func_ov060_02115018(daKpa_c *kpa) {
+    int r1 = kpa->mVertSpeed;
     if (r1 >= 0) return;
-    int thresh = *(int *)((char *)c + 0x3b4) - 0x12c000;
-    int cur = *(int *)((char *)c + 0x60);
+    int thresh = kpa->mHomePosY - 0x12c000;
+    int cur = kpa->mPosY;
     if (cur >= thresh) return;
-    *(int *)((char *)c + 0x64) = 0;
-    *(int *)((char *)c + 0x5c) = *(int *)((char *)c + 0x64);
-    *(int *)((char *)c + 0x60) = *(int *)((char *)c + 0x3b4) + 0x7d0000;
-    *(int *)((char *)c + 0xa8) = 0;
-    *(int *)((char *)c + 0x98) = 0;
+    kpa->mPosZ = 0;
+    kpa->mPosX = kpa->mPosZ;
+    kpa->mPosY = kpa->mHomePosY + 0x7d0000;
+    kpa->mVertSpeed = 0;
+    kpa->mHorzSpeed = 0;
 }
 }
 
@@ -1460,11 +1768,14 @@ void func_ov060_02115018(void *c) {
 /* ROM ordinal 49 -- func_ov060_02114ff8, 0x02114ff8, size 0x20 */
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov060_02114ff8
+/*
+State BOWSER_STATE_WAIT_ANIM_END (0x12): back to BOWSER_STATE_IDLE once the
+animation is at its last frame. */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov060_02114ff8(void *c) {
-    int r = Bowser_IsAnimAtLastFrame(c);
+void func_ov060_02114ff8(daKpa_c *kpa) {
+    int r = Bowser_IsAnimAtLastFrame(kpa);
     if (r) {
-        *(int*)((char*)c + 0x40c) = 0;
+        kpa->mState = BOWSER_STATE_IDLE;
     }
 }
 }
@@ -1473,19 +1784,24 @@ void func_ov060_02114ff8(void *c) {
 /* ROM ordinal 48 -- func_ov060_02114f88, 0x02114f88, size 0x70 */
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov060_02114f88
+/*
+State BOWSER_STATE_IDLE (0): clear unk_422, play the idle animation (0x10), zero
+mSpinSpeed and both speeds, then let the variant pick the next state:
+func_ov060_02115314 (variant 0), func_ov060_021151d4 (variant 1) or
+func_ov060_02115060 (variant 2; variant 3 was folded into 0 at init). */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov060_02115314(char* c);
-void func_ov060_021151d4(char* c);
-void func_ov060_02115060(char* c);
-void func_ov060_02114f88(char* c){
-  c[0x422] = 0;
-  func_ov060_02111cc0(c, 0x10, 0);
-  *(short*)(c+0x402) = 0;
-  *(int*)(c+0x98) = 0;
-  *(int*)(c+0xa8) = 0;
-  if(*(unsigned char*)(c+0x414) == 0) func_ov060_02115314(c);
-  else if(*(unsigned char*)(c+0x414) == 1) func_ov060_021151d4(c);
-  else func_ov060_02115060(c);
+void func_ov060_02115314(daKpa_c *kpa);
+void func_ov060_021151d4(daKpa_c *kpa);
+void func_ov060_02115060(daKpa_c *kpa);
+void func_ov060_02114f88(daKpa_c *kpa){
+  kpa->unk_422 = 0;
+  func_ov060_02111cc0(kpa, BOWSER_ANIM_IDLE, 0);
+  kpa->mSpinSpeed = 0;
+  kpa->mHorzSpeed = 0;
+  kpa->mVertSpeed = 0;
+  if(kpa->mVariantID == 0) func_ov060_02115314(kpa);
+  else if(kpa->mVariantID == 1) func_ov060_021151d4(kpa);
+  else func_ov060_02115060(kpa);
 }
 }
 
@@ -1493,46 +1809,66 @@ void func_ov060_02114f88(char* c){
 /* ROM ordinal 47 -- func_ov060_02114e9c, 0x02114e9c, size 0xec */
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov060_02114e9c
-extern "C" void func_ov060_02114e9c(char* c)
+/*
+State BOWSER_STATE_ANIM_CHAIN (0xf): mHorzSpeed 0. While animation 8 is playing
+(data_ov060_0211ac20 is entry 8 of the animation table), sound 0xb5 plays when
+frame 8 is crossed. At the last frame of an animation: after animation 8
+(data_ov060_0211ac20) start animation 6, after animation 6 (data_ov060_0211ac68)
+start animation 7, after animation 7 (data_ov060_0211ac70) go back to
+BOWSER_STATE_IDLE, and after any other animation (the one playing when the state
+is entered) start animation 8; the three are started with 0x40000000 (play once). */
+extern "C" void func_ov060_02114e9c(daKpa_c *kpa)
 {
-    *(int*)(c + 0x98) = 0;
-    if (*(int*)(c + 0x134) == data_ov060_0211ac20[1]) {
-        if (_ZNK9Animation12WillHitFrameEi(c + 0x124, 8)) {
-            func_02012694(0xb5, (const Vector3 *)(c + 0x74));
+    kpa->mHorzSpeed = 0;
+    if ((int)kpa->mModelAnim.file == data_ov060_0211ac20[1]) {
+        if (kpa->mModelAnim.WillHitFrame(8)) {
+            func_02012694(BOWSER_SND_B5, (const Vector3 *)(&kpa->mCamSpacePosX));
         }
     }
-    if (Bowser_IsAnimAtLastFrame(c) == 0) return;
-    if (*(int*)(c + 0x134) == data_ov060_0211ac20[1]) {
-        func_ov060_02111cc0(c, 6, 0x40000000);
+    if (Bowser_IsAnimAtLastFrame(kpa) == 0) return;
+    if (*(int *)&kpa->mModelAnim.file == data_ov060_0211ac20[1]) {
+        func_ov060_02111cc0(kpa, 6, 0x40000000);
         return;
     }
-    if (*(int*)(c + 0x134) == data_ov060_0211ac68[1]) {
-        func_ov060_02111cc0(c, 7, 0x40000000);
+    if (*(int *)&kpa->mModelAnim.file == data_ov060_0211ac68[1]) {
+        func_ov060_02111cc0(kpa, 7, 0x40000000);
         return;
     }
-    if (*(int*)(c + 0x134) == data_ov060_0211ac70[1]) {
-        *(int*)(c + 0x40c) = 0;
+    if (*(int *)&kpa->mModelAnim.file == data_ov060_0211ac70[1]) {
+        kpa->mState = BOWSER_STATE_IDLE;
         return;
     }
-    func_ov060_02111cc0(c, 8, 0x40000000);
+    func_ov060_02111cc0(kpa, 8, 0x40000000);
 }
 
 /* -------------------------------------------------------------------------- */
 /* ROM ordinal 46 -- func_ov060_02114d08, 0x02114d08, size 0x194 */
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov060_02114d08
+/*
+State BOWSER_STATE_TURN_TO_TARGET (0xe). Each frame turn mAngleY toward
+mAngleToTarget by 0x400 (5.6 degrees) for variant 1 and for mHealth above 2, by
+0x300 (4.2 degrees) at mHealth 2, by 0x200 (2.8 degrees) otherwise
+(ApproachLinear). Then by mStep. Step 0: clear mStepCounter and run
+func_ov060_02115744 (animation 0x13); advance when it returns 1. Steps 1 and 2:
+func_ov060_02115718 (animation 0x11 looping); each finished loop counts in
+mStepCounter, and if BOWSER_COND_BREATHING is set it is cleared after five loops
+and nothing else happens; otherwise, once the angle difference measured before
+this frame's turn is under 0x2000 (45 degrees), restart the animation, advance
+the step and clear the counter. Later: func_ov060_021156ec
+(animation 0x12), then BOWSER_STATE_IDLE when it returns 1. */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov060_02114d08(char* self)
+void func_ov060_02114d08(daKpa_c *kpa)
 {
     int r4;
     short step;
 
-    r4 = _ZN8dActor_c14GetSubtractionEss(self, *(s16*)(self + 0x8e), *(s16*)(self + 0x406));
+    r4 = _ZN8dActor_c14GetSubtractionEss(kpa, kpa->mAngleY, kpa->mAngleToTarget);
 
-    if (*(unsigned char*)(self + 0x414) == 1) {
+    if (kpa->mVariantID == 1) {
         step = 0x400;
     } else {
-        int t = *(signed char*)(self + 0x41e);
+        int t = kpa->mHealth;
         if (t > 2) {
             step = 0x400;
         } else if (t == 2) {
@@ -1541,30 +1877,30 @@ void func_ov060_02114d08(char* self)
             step = 0x200;
         }
     }
-    _Z14ApproachLinearRsss((s16*)(self + 0x8e), *(s16*)(self + 0x406), step);
+    _Z14ApproachLinearRsss((s16*)(&kpa->mAngleY), kpa->mAngleToTarget, step);
 
-    if (*(unsigned char*)(self + 0x423) == 0) {
-        *(short*)(self + 0x3fe) = 0;
-        if (func_ov060_02115744(self) == 0) return;
-        (*(unsigned char*)(((int)self + 0x423)))++;
+    if (kpa->mStep == 0) {
+        kpa->mStepCounter = 0;
+        if (func_ov060_02115744(kpa) == 0) return;
+        (kpa->mStep)++;
         return;
     }
-    if (*(unsigned char*)(self + 0x423) <= 2) {
-        if (func_ov060_02115718(self) == 0) return;
-        (*(u16*)(((int)self + 0x3fe)))++;
-        if (*(int*)(self + 0x418) & 0x20000) {
-            if (*(u16*)(self + 0x3fe) < 5) return;
-            *(int*)(((int)self + 0x418)) &= ~0x20000;
+    if (kpa->mStep <= 2) {
+        if (func_ov060_02115718(kpa) == 0) return;
+        (kpa->mStepCounter)++;
+        if (kpa->mCondFlags & BOWSER_COND_BREATHING) {
+            if (kpa->mStepCounter < 5) return;
+            kpa->mCondFlags &= ~BOWSER_COND_BREATHING;
             return;
         }
         if (r4 >= 0x2000) return;
-        *(int*)(self + 0x12c) = 0;
-        (*(unsigned char*)(((int)self + 0x423)))++;
-        *(short*)(self + 0x3fe) = 0;
+        kpa->mModelAnim.currFrame = 0;
+        (kpa->mStep)++;
+        kpa->mStepCounter = 0;
         return;
     }
-    if (func_ov060_021156ec(self) != 0)
-        *(int*)(self + 0x40c) = 0;
+    if (func_ov060_021156ec(kpa) != 0)
+        kpa->mState = BOWSER_STATE_IDLE;
 }
 }
 
@@ -1572,80 +1908,91 @@ void func_ov060_02114d08(char* self)
 /* ROM ordinal 45 -- func_ov060_02114b60, 0x02114b60, size 0x1a8 */
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov060_02114b60
+/*
+State BOWSER_STATE_VANISH_DASH (0x10). The body collider is switched off every
+frame. Step 0: target opacity 0, mStepCounter = 0x1e; play sound 0xb9 on the first
+frame (mTimer == 0); when mOpacity reaches 0, face the target and advance. Step 1:
+dash at mHorzSpeed 0x64000 (100.0) while the counter (decremented each frame)
+was still non-zero; the dash ends (step 2, facing the target again) when the
+counter runs out, when the angle to the target is over 0x4000 (90 degrees) and
+the target is more than 0x1f4000 (500 units) away, or when the floor collider
+says he is off the ground (position restored to mLastGroundPos, speed 0). Step 2:
+speed 0, target opacity 0xff; when fully visible, return to BOWSER_STATE_IDLE and
+switch the body collider back on. */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov060_02114b60(char *c)
+void func_ov060_02114b60(daKpa_c *kpa)
 {
-  int *pflag = (int *) ((((int) c) + 0x378));
-  *pflag |= 1;
-  switch (*((u8 *) (c + 0x423)))
+  int *pflag = (int *)&kpa->mdCcAcPos_c.flags;
+  *pflag |= BOWSER_CC_DISABLED;
+  switch (kpa->mStep)
   {
     case 0:
-      *((u8 *) (c + 0x41d)) = 0;
-      *((s16 *) (c + 0x3fe)) = 0x1e;
-      if ((*((u16 *) (c + 0x3fc))) == 0)
+      kpa->mTargetOpacity = 0;
+      kpa->mStepCounter = 0x1e;
+      if ((kpa->mTimer) == 0)
     {
-      func_02012694(0xb9, (const Vector3 *)(c + 0x74));
+      func_02012694(BOWSER_SND_VANISH, (const Vector3 *)(&kpa->mCamSpacePosX));
     }
-      if ((*((u8 *) (c + 0x41c))) != 0)
+      if ((kpa->mOpacity) != 0)
     {
       return;
     }
     {
-      u8 *ps = (u8 *) ((((int) c) + 0x423));
+      u8 *ps = &kpa->mStep;
       *ps = (*ps) + 1;
     }
-      *((s16 *) (c + 0x8e)) = *((s16 *) (c + 0x406));
+      kpa->mAngleY = kpa->mAngleToTarget;
       return;
 
     case 1:
     {
       int r4 = 0;
-      u16 *pd = (u16 *) ((((int) c) + 0x3fe));
-      char *base3 = c + 0x300;
+      u16 *pd = (u16 *) ((((int) kpa) + 0x3fe));
+      u16 *base3 = &kpa->mStepCounter;
       int sub;
       u16 h = *pd;
-      u16 h2 = *((u16 *) (base3 + 0xfe));
-      *((u16 *) ((((int) c) + 0x3fe))) = h - 1;
+      u16 h2 = *base3;
+      *((u16 *) ((((int) kpa) + 0x3fe))) = h - 1;
       if (h2 != 0)
       {
-        *((int *) (c + 0x98)) = 0x64000;
+        kpa->mHorzSpeed = 0x64000;
       }
       else
       {
         r4 = 1;
       }
-      sub = _ZN8dActor_c14GetSubtractionEss(c, *((s16 *) (c + 0x8e)), *((s16 *) (c + 0x406)));
+      sub = _ZN8dActor_c14GetSubtractionEss(kpa, kpa->mAngleY, kpa->mAngleToTarget);
       if (sub > 0x4000)
       {
-        if ((*((int *) (c + 0x3ec))) > 0x1f4000)
+        if ((kpa->mDistToTarget) > 0x1f4000)
         {
           r4 = 1;
         }
       }
-      if (_ZNK10dBgCh_Actr10IsOnGroundEv(c + 0x14c) == 0)
+      if (_ZNK10dBgCh_Actr10IsOnGroundEv(&kpa->mWithMeshClsn) == 0)
       {
-        *((int *) (c + 0x5c)) = *((int *) (c + 0x3c8));
-        *((int *) (c + 0x60)) = *((int *) (c + 0x3cc));
-        *((int *) (c + 0x64)) = *((int *) (c + 0x3d0));
+        kpa->mPosX = kpa->mLastGroundPosX;
+        kpa->mPosY = kpa->mLastGroundPosY;
+        kpa->mPosZ = kpa->mLastGroundPosZ;
         r4 = 1;
-        *((int *) (c + 0x98)) = 0;
+        kpa->mHorzSpeed = 0;
       }
       if (r4 == 0)
       {
         return;
       }
-      *((u8 *) (c + 0x423)) = 2;
-      *((s16 *) (c + 0x8e)) = *((s16 *) (c + 0x406));
+      kpa->mStep = 2;
+      kpa->mAngleY = kpa->mAngleToTarget;
       return;
     }
 
     case 2:
-      *((int *) (c + 0x98)) = 0;
-      *((u8 *) (c + 0x41d)) = 0xff;
-      if ((*((u8 *) (c + 0x41c))) == 0xff)
+      kpa->mHorzSpeed = 0;
+      kpa->mTargetOpacity = 0xff;
+      if ((kpa->mOpacity) == 0xff)
     {
-      *((int *) (c + 0x40c)) = 0;
-      *pflag &= ~1;
+      kpa->mState = BOWSER_STATE_IDLE;
+      *pflag &= ~BOWSER_CC_DISABLED;
     }
       return;
 
@@ -1661,41 +2008,50 @@ void func_ov060_02114b60(char *c)
 /* ROM ordinal 44 -- func_ov060_02114858, 0x02114858, size 0x308 */
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov060_02114858
+/*
+State BOWSER_STATE_FIRE_BREATH (8). While animation 0x15 plays, or animation 0x16
+after frame 0x2a (data_ov060_0211acd8 and data_ov060_0211acf0 are entries 0x15
+and 0x16 of the animation table): keep the looping sound 0x180 going, spawn a
+KOOPAFIRE every 5th frame of mFireTimer at his position plus 200 units out along
+mPrevAngleY and 0xb4000 (180 units) up, with the angles mPrevAngleX/Y/Z as
+rotation and spawn parameter (random modulo 10) << 10 | 1, or | 0x11 while the
+frame number is 0xf..0x13; mFireTimer counts the frames in that window.
+BOWSER_COND_BREATHING is set every call. At the last frame of an animation, by
+mStep: 0 starts animation 0x16 (once) with sound 0xb5, 1 starts 0x15 (looping),
+2 starts 0x17 (once), 3 goes to BOWSER_STATE_IDLE and clears the flag. */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov060_02114858(void *self)
+void func_ov060_02114858(daKpa_c *kpa)
 {
-  char *c = (char *) self;
   int new_var;
   int new_var2;
-  s32 v134 = *((s32 *) (c + 0x134));
-  if ((v134 == data_ov060_0211acd8.match) || ((v134 == data_ov060_0211acf0.match) && ((((u32) (((u32) (*((s32 *) (c + 0x12c)))) << 4)) >> 16) > 0x2a)))
+  s32 v134 = (s32)kpa->mModelAnim.file;
+  if ((v134 == data_ov060_0211acd8.match) || ((v134 == data_ov060_0211acf0.match) && ((((u32) (((u32) (kpa->mModelAnim.currFrame)) << 4)) >> 16) > 0x2a)))
   {
-    s32 v12c = *((s32 *) (c + 0x12c));
-    s32 v450 = *((volatile s32 *) (c + 0x450));
+    s32 v12c = kpa->mModelAnim.currFrame;
+    s32 v450 = *(volatile s32 *)&kpa->mSoundID;
     s32 r4 = ((u32) (v12c << 4)) >> 16;
     if (v450 != 0x180)
     {
-      *((s32 *) (c + 0x44c)) = 0;
+      kpa->mSoundHandle = 0;
     }
-    *((s32 *) (c + 0x450)) = 0x180;
-    new_var = 10;
-    *((s32 *) (c + 0x44c)) = _ZN5Sound8PlayLongEjjjRK7Vector3s(*((s32 *) (c + 0x44c)), 3, *((s32 *) (c + 0x450)), (const Vector3 *) (c + 0x74), 0);
-    u16 t = *((u16 *) (c + 0x400));
+    kpa->mSoundID = BOWSER_SND_FIRE_LOOP;
+    kpa->mSoundHandle = _ZN5Sound8PlayLongEjjjRK7Vector3s(kpa->mSoundHandle, 3, kpa->mSoundID, (const Vector3 *) (&kpa->mCamSpacePosX), 0);
+    u16 t = kpa->mFireTimer;
     if ((t % 5) == 0)
     {
       s32 pos[3];
-      pos[0] = *((s32 *) (c + 0x5c));
-      pos[1] = *((s32 *) (c + 0x60));
-      pos[2] = *((s32 *) (c + 0x64));
+      pos[0] = kpa->mPosX;
+      pos[1] = kpa->mPosY;
+      pos[2] = kpa->mPosZ;
       {
         s32 y = pos[1];
-        u16 ang = *((u16 *) (c + 0x94));
+        u16 ang = kpa->mPrevAngleY;
         s16 *tbl = data_02082214;
         s16 sx = tbl[(ang >> 4) * 2];
         new_var2 = (sx * 0xc8) + pos[0];
         pos[1] = y + 0xb4000;
         pos[0] = new_var2;
-        ang = *((u16 *) (c + 0x94));
+        ang = kpa->mPrevAngleY;
         pos[2] = (tbl[((ang >> 4) * 2) + 1] * 0xc8) + pos[2];
       }
       if ((r4 >= 0xf) && (r4 < 0x14))
@@ -1703,62 +2059,61 @@ void func_ov060_02114858(void *self)
         s32 rnd = RandomIntInternal(&data_0209e650);
         u32 hi = ((u32) rnd) >> 16;
         u32 m = hi % 10u;
-        _ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(0x118, (m << new_var) | 0x11, (Vector3 *) pos, (const Vector3_16 *) (c + 0x92), (int)*((s8 *)(c + 0xcc)), -1);
+        _ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(BOWSER_ACTOR_KOOPAFIRE, (m << 10) | 0x11, (Vector3 *) pos, (const Vector3_16 *) (&kpa->mPrevAngleX), (int)kpa->mAreaId, -1);
       }
       else
       {
         s32 rnd = RandomIntInternal(&data_0209e650);
         u32 hi = ((u32) rnd) >> 16;
         u32 m = hi % 10u;
-        _ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(0x118, (m << 10) | 1, (Vector3 *) pos, (const Vector3_16 *) (c + 0x92), (int)*((s8 *)(c + 0xcc)), -1);
+        _ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(BOWSER_ACTOR_KOOPAFIRE, (m << 10) | 1, (Vector3 *) pos, (const Vector3_16 *) (&kpa->mPrevAngleX), (int)kpa->mAreaId, -1);
       }
     }
     {
-      u16 *pt = (u16 *) ((((int) c) + 0x400));
+      u16 *pt = &kpa->mFireTimer;
       *pt = (*pt) + 1;
     }
   }
   {
-    int *p = (int *) ((((int) c) + 0x418));
-    *p |= 0x20000;
+    int *p = (int *)&kpa->mCondFlags;
+    *p |= BOWSER_COND_BREATHING;
   }
-  if (Bowser_IsAnimAtLastFrame(c) == 0)
+  if (Bowser_IsAnimAtLastFrame(kpa) == 0)
   {
     return;
   }
-  new_var = 0x423;
-  switch (*((u8 *) (c + new_var)))
+  switch (kpa->mStep)
   {
     case 0:
-      func_ov060_02111cc0(c, 0x16, 0x40000000);
-      func_02012694(0xb5, (const Vector3 *)(c + 0x74));
+      func_ov060_02111cc0(kpa, 0x16, 0x40000000);
+      func_02012694(BOWSER_SND_B5, (const Vector3 *)(&kpa->mCamSpacePosX));
     {
-      u8 *ps = (u8 *) ((((int) c) + 0x423));
+      u8 *ps = &kpa->mStep;
       *ps = (*ps) + 1;
     }
       return;
 
     case 1:
-      func_ov060_02111cc0(c, 0x15, 0);
+      func_ov060_02111cc0(kpa, 0x15, 0);
     {
-      u8 *ps = (u8 *) ((((int) c) + 0x423));
+      u8 *ps = &kpa->mStep;
       *ps = (*ps) + 1;
     }
       return;
 
     case 2:
-      func_ov060_02111cc0(c, 0x17, 0x40000000);
+      func_ov060_02111cc0(kpa, 0x17, 0x40000000);
     {
-      u8 *ps = (u8 *) ((((int) c) + 0x423));
+      u8 *ps = &kpa->mStep;
       *ps = (*ps) + 1;
     }
       return;
 
     case 3:
-      *((s32 *) (c + 0x40c)) = 0;
+      kpa->mState = BOWSER_STATE_IDLE;
     {
-      int *p = (int *) (((long long) ((int) (c + 0x418))));
-      *p &= ~0x20000;
+      int *p = (int *) (((int)&kpa->mCondFlags));
+      *p &= ~BOWSER_COND_BREATHING;
     }
       return;
 
@@ -1771,57 +2126,69 @@ void func_ov060_02114858(void *self)
 /* ROM ordinal 43 -- func_ov060_021146d0, 0x021146d0, size 0x188 */
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov060_021146d0
+/*
+State BOWSER_STATE_HURT_HOP (0xc), the knock-back after a bomb hit. On the first
+frame: mHorzSpeed -0x1c000 (-28.0), mVertSpeed 0x50000 (80.0), mAngleY = angle to
+the centre + 0x8000 (so the negative speed carries him toward the centre),
+unk_422 = 1, mAngleX = -0xc00 and sound 0xb1. On later frames mAngleX drops by
+0xc00 (16.9 degrees) per frame, from its unsigned value 0xf400 (-0xc00): 20 drops,
+337.5 degrees in all, until that value is 0xc00 or less, then it is set to 0. By mStep: 0 plays animation 1 once
+and clears mStepCounter; 1 runs the landing-dust helper on mStepCounter, plays
+animation 2 once when the counter reaches 1 and, at 3, zeroes both speeds and
+advances; 2 waits for the last frame, then goes to BOWSER_STATE_PLAY_ANIM_0F when
+mHealth is 1 and to BOWSER_STATE_IDLE otherwise; unk_422 is cleared on every
+frame of step 2. */
 /* func_ov060_021146d0 at 0x021146d0 (ov060), size 0x188
  * Matched byte-for-byte with mwccarm 1.2/sp2p3.
  * flags: -O4,p -enum int -lang c99 -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc
  */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov060_021146d0(char *c) {
-    if (*(u16*)(c + 0x300 + 0xfc) == 0) {
-        *(int*)(c + 0x98) = -0x1c000;
-        *(int*)(c + 0xa8) = 0x50000;
-        *(s16*)(c + 0x8e) = *(s16*)(c + 0x400 + 8) + 0x8000;
-        *(u8*)(c + 0x422) = 1;
-        *(s16*)(c + 0x8c) = -0xc00;
-        func_02012694(0xb1, (const Vector3 *)(c + 0x74));
+void func_ov060_021146d0(daKpa_c *kpa) {
+    if (kpa->mTimer == 0) {
+        kpa->mHorzSpeed = -0x1c000;
+        kpa->mVertSpeed = 0x50000;
+        kpa->mAngleY = kpa->mAngleToCenter + 0x8000;
+        kpa->unk_422 = 1;
+        kpa->mAngleX = -0xc00;
+        func_02012694(BOWSER_SND_LEAP, (const Vector3 *)(&kpa->mCamSpacePosX));
     } else {
-        if (*(u16*)(c + 0x8c) > 0xc00) {
-            s16 *p8c = (s16*)((char*)c + 0x8c);
+        if ((u16)kpa->mAngleX > 0xc00) {
+            s16 *p8c = &kpa->mAngleX;
             *p8c = *p8c - 0xc00;
         } else {
-            *(u16*)(c + 0x8c) = 0;
+            kpa->mAngleX = 0;
         }
     }
     {
-        u8 st = *(u8*)(c + 0x423);
+        u8 st = kpa->mStep;
         if (st == 0) {
-            func_ov060_02111cc0(c, 1, 0x40000000);
+            func_ov060_02111cc0(kpa, 1, 0x40000000);
             {
-                u8 *p = (u8*)((char*)c + 0x423);
+                u8 *p = &kpa->mStep;
                 *p = *p + 1;
             }
-            *(u16*)(c + 0x300 + 0xfe) = 0;
+            kpa->mStepCounter = 0;
             return;
         }
         if (st == 1) {
-            func_ov060_02115a84(c, c + 0x3fe);
-            if (*(u16*)(c + 0x300 + 0xfe) == 1)
-                func_ov060_02111cc0(c, 2, 0x40000000);
-            if (*(u16*)(c + 0x300 + 0xfe) < 3) return;
-            *(int*)(c + 0xa8) = 0;
-            *(int*)(c + 0x98) = 0;
+            func_ov060_02115a84(kpa, (char *)&kpa->mStepCounter);
+            if (kpa->mStepCounter == 1)
+                func_ov060_02111cc0(kpa, 2, 0x40000000);
+            if (kpa->mStepCounter < 3) return;
+            kpa->mVertSpeed = 0;
+            kpa->mHorzSpeed = 0;
             {
-                u8 *p = (u8*)((char*)c + 0x423);
+                u8 *p = &kpa->mStep;
                 *p = *p + 1;
             }
             return;
         }
         if (st != 2) return;
-        if (Bowser_IsAnimAtLastFrame(c) != 0) {
-            if (*(s8*)(c + 0x400 + 0x1e) == 1) *(int*)(c + 0x40c) = 3;
-            else *(int*)(c + 0x40c) = 0;
+        if (Bowser_IsAnimAtLastFrame(kpa) != 0) {
+            if (kpa->mHealth == 1) kpa->mState = BOWSER_STATE_PLAY_ANIM_0F;
+            else kpa->mState = BOWSER_STATE_IDLE;
         }
-        *(u8*)(c + 0x422) = 0;
+        kpa->unk_422 = 0;
     }
 }
 }
@@ -1830,9 +2197,12 @@ void func_ov060_021146d0(char *c) {
 /* ROM ordinal 42 -- func_ov060_0211469c, 0x0211469c, size 0x34 */
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov060_0211469c
-extern "C" int func_ov060_0211469c(void *c) {
-    func_ov060_02111cc0(c, 0xb, 0x40000000);
-    int r = ((Animation*)((char*)c + 0x124))->WillHitFrame(0x20);
+/*
+Jump wind-up: play animation 0xb once; return 1 when the animation will cross
+frame 0x20 on this advance, otherwise 0. */
+extern "C" int func_ov060_0211469c(daKpa_c *kpa) {
+    func_ov060_02111cc0(kpa, 0xb, 0x40000000);
+    int r = kpa->mModelAnim.WillHitFrame(0x20);
     if (r != 0) return 1;
     return 0;
 }
@@ -1841,25 +2211,31 @@ extern "C" int func_ov060_0211469c(void *c) {
 /* ROM ordinal 41 -- func_ov060_021145d4, 0x021145d4, size 0xc8 */
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov060_021145d4
+/*
+Jump landing check. If the floor collider says he is on the ground: zero both
+speeds, call func_0200fa04 with his position, play animation 0xc once, play sound
+0xb6; for variant 0 also call func_ov002_020c56f0 with the target Player and
+(mDistToTarget >= 0x352000, 850 units) when that Player is not in the air; return
+1. Otherwise return 0. */
 /* recovered: shared common types, declarations from a shared header */
 /* recovered: shared common types */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-int func_ov060_021145d4(char *c){
+int func_ov060_021145d4(daKpa_c *kpa){
   struct Vector3 v;
   int b;
-  if(_ZNK10dBgCh_Actr10IsOnGroundEv(c + 0x14c)){
-    *(int*)(c + 0x98) = 0;
-    *(int*)(c + 0xa8) = 0;
-    v.x = *(int*)(c + 0x5c);
-    v.y = *(int*)(c + 0x60);
-    v.z = *(int*)(c + 0x64);
-    func_0200fa04(c, &v, 0);
-    func_ov060_02111cc0(c, 0xc, 0x40000000);
-    func_02012694(0xb6, (const Vector3 *)(c + 0x74));
-    if(*(unsigned char*)(c + 0x414) == 0){
-      b = (*(int*)(c + 0x3ec) >= 0x352000);
-      if(!_ZN6Player7IsInAirEv(*(void**)(c + 0x3a0)))
-        func_ov002_020c56f0(*(unsigned char**)(c + 0x3a0), b);
+  if(_ZNK10dBgCh_Actr10IsOnGroundEv(&kpa->mWithMeshClsn)){
+    kpa->mHorzSpeed = 0;
+    kpa->mVertSpeed = 0;
+    v.x = kpa->mPosX;
+    v.y = kpa->mPosY;
+    v.z = kpa->mPosZ;
+    func_0200fa04(kpa, &v, 0);
+    func_ov060_02111cc0(kpa, 0xc, 0x40000000);
+    func_02012694(BOWSER_SND_LAND, (const Vector3 *)(&kpa->mCamSpacePosX));
+    if(kpa->mVariantID == 0){
+      b = (kpa->mDistToTarget >= 0x352000);
+      if(!_ZN6Player7IsInAirEv(kpa->mTargetPlayer))
+        func_ov002_020c56f0((unsigned char *)kpa->mTargetPlayer, b);
     }
     return 1;
   }
@@ -1871,12 +2247,15 @@ int func_ov060_021145d4(char *c){
 /* ROM ordinal 40 -- func_ov060_021145a8, 0x021145a8, size 0x2c */
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov060_021145a8
+/*
+Variant 2 only, and only while BOWSER_COND_RECOVERING is set: when mDistToCenter
+is above 0x3e8000 (1000 units) set mHorzSpeed to 0x1e000 (30.0). */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov060_021145a8(void *c) {
-    if (*(unsigned char*)((char*)c + 0x414) != 2) return;
-    if (!(*(int*)((char*)c + 0x418) & 0x10000)) return;
-    if (*(int*)((char*)c + 0x3f4) > 0x3e8000) {
-        *(int*)((char*)c + 0x98) = 0x1e000;
+void func_ov060_021145a8(daKpa_c *kpa) {
+    if (kpa->mVariantID != 2) return;
+    if (!(kpa->mCondFlags & BOWSER_COND_RECOVERING)) return;
+    if (kpa->mDistToCenter > 0x3e8000) {
+        kpa->mHorzSpeed = 0x1e000;
     }
 }
 }
@@ -1885,63 +2264,76 @@ void func_ov060_021145a8(void *c) {
 /* ROM ordinal 39 -- func_ov060_021143b8, 0x021143b8, size 0x1f0 */
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov060_021143b8
+/*
+State BOWSER_STATE_JUMP (0xd). Step 0: wind-up (func_ov060_0211469c); then
+mVertSpeed = 0x28000 (40.0) for variant 2 while BOWSER_COND_RECOVERING is set,
+0x32000 (50.0) otherwise; sound 0xb1; zero mHorzSpeed and mStepCounter, let
+func_ov060_021145a8 set a horizontal speed, and if it stays 0 snap X and Z to
+mLastGroundPos; advance and reset mAnimSpeed to 0x1000. Step 1: variant 2
+recovering runs func_ov060_02115018 first; he lands when func_ov060_021145d4
+reports it, or when mPosY has dropped below mLastGroundPosY (then, if still
+moving vertically, the landing effects are replayed here); landing clears
+BOWSER_COND_RECOVERING, zeroes both speeds, puts him at mLastGroundPosY, advances,
+runs func_ov060_02115b0c and, for variant 1, goes to BOWSER_STATE_ARENA_TILT and
+records the KOOPA2BG actor's uniqueID in mArenaBgUniqueID. Step 2: at the last
+frame, BOWSER_STATE_IDLE. */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov060_021143b8(char* self)
+void func_ov060_021143b8(daKpa_c *kpa)
 {
-    unsigned char st = *(unsigned char*)(self + 0x423);
+    unsigned char st = kpa->mStep;
     int vec[3];
 
     if (st == 0) {
-        if (func_ov060_0211469c(self) == 0) return;
-        if (*(unsigned char*)(self + 0x414) == 2 && (*(int*)(self + 0x418) & 0x10000)) {
-            *(int*)(self + 0xa8) = 0x28000;
+        if (func_ov060_0211469c(kpa) == 0) return;
+        if (kpa->mVariantID == 2 && (kpa->mCondFlags & BOWSER_COND_RECOVERING)) {
+            kpa->mVertSpeed = 0x28000;
         } else {
-            *(int*)(self + 0xa8) = 0x32000;
+            kpa->mVertSpeed = 0x32000;
         }
-        func_02012694(0xb1, (const Vector3 *)(self + 0x74));
-        *(short*)(self + 0x3fe) = 0;
-        *(int*)(self + 0x98) = 0;
-        func_ov060_021145a8(self);
-        if (*(int*)(self + 0x98) == 0) {
-            *(int*)(self + 0x5c) = *(int*)(self + 0x3c8);
-            *(int*)(self + 0x64) = *(int*)(self + 0x3d0);
+        func_02012694(BOWSER_SND_LEAP, (const Vector3 *)(&kpa->mCamSpacePosX));
+        kpa->mStepCounter = 0;
+        kpa->mHorzSpeed = 0;
+        func_ov060_021145a8(kpa);
+        if (kpa->mHorzSpeed == 0) {
+            kpa->mPosX = kpa->mLastGroundPosX;
+            kpa->mPosZ = kpa->mLastGroundPosZ;
         }
-        (*(unsigned char*)(((int)self + 0x423)))++;
-        *(int*)(self + 0x3f8) = 0x1000;
+        (kpa->mStep)++;
+        kpa->mAnimSpeed = 0x1000;
         return;
     }
     if (st == 1) {
-        if (*(unsigned char*)(self + 0x414) == 2 && (*(int*)(self + 0x418) & 0x10000)) {
-            func_ov060_02115018(self);
+        if (kpa->mVariantID == 2 && (kpa->mCondFlags & BOWSER_COND_RECOVERING)) {
+            func_ov060_02115018(kpa);
         }
-        if (func_ov060_021145d4(self) == 0) {
-            if (*(int*)(self + 0x60) >= *(int*)(self + 0x3cc)) return;
+        if (func_ov060_021145d4(kpa) == 0) {
+            if (kpa->mPosY >= kpa->mLastGroundPosY) return;
         }
-        if (*(int*)(self + 0xa8) != 0) {
-            vec[0] = *(int*)(self + 0x5c);
-            vec[1] = *(int*)(self + 0x60);
-            vec[2] = *(int*)(self + 0x64);
-            func_0200fa04(self, vec, 0);
-            func_ov060_02111cc0(self, 0xc, 0x40000000);
+        if (kpa->mVertSpeed != 0) {
+            vec[0] = kpa->mPosX;
+            vec[1] = kpa->mPosY;
+            vec[2] = kpa->mPosZ;
+            func_0200fa04(kpa, vec, 0);
+            func_ov060_02111cc0(kpa, 0xc, 0x40000000);
         }
-        *(int*)(((int)self + 0x418)) &= ~0x10000;
-        *(int*)(self + 0x98) = 0;
-        *(int*)(self + 0xa8) = 0;
-        *(int*)(self + 0x60) = *(int*)(self + 0x3cc);
-        (*(unsigned char*)(((int)self + 0x423)))++;
-        func_ov060_02115b0c(self);
-        if (*(unsigned char*)(self + 0x414) == 1) {
+        kpa->mCondFlags &= ~BOWSER_COND_RECOVERING;
+        kpa->mHorzSpeed = 0;
+        kpa->mVertSpeed = 0;
+        kpa->mPosY = kpa->mLastGroundPosY;
+        (kpa->mStep)++;
+        func_ov060_02115b0c(kpa);
+        if (kpa->mVariantID == 1) {
             void* a;
-            *(int*)(self + 0x40c) = 0x13;
-            a = _ZN8dActor_c15FindWithActorIDEjPS_(0xa6, 0);
+            kpa->mState = BOWSER_STATE_ARENA_TILT;
+            a = _ZN8dActor_c15FindWithActorIDEjPS_(BOWSER_ACTOR_KOOPA2BG, 0);
             if (a != 0) {
-                *(int*)(self + 0x3ac) = *(int*)((char*)a + 4);
+                kpa->mArenaBgUniqueID = ((dActor_c *)a)->uniqueID;
             }
         }
         return;
     }
-    if (Bowser_IsAnimAtLastFrame(self) != 0) {
-        *(int*)(self + 0x40c) = 0;
+    if (Bowser_IsAnimAtLastFrame(kpa) != 0) {
+        kpa->mState = BOWSER_STATE_IDLE;
     }
 }
 }
@@ -1950,29 +2342,34 @@ void func_ov060_021143b8(char* self)
 /* ROM ordinal 38 -- func_ov060_02114300, 0x02114300, size 0xb8 */
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov060_02114300
+/*
+State BOWSER_STATE_HOP (0x11). Step 0: wind-up (func_ov060_0211469c); then
+mVertSpeed 0x32000 (50.0), mHorzSpeed 0x19000 (25.0), mStepCounter 0, sound 0xb1,
+advance. Step 1: advance once func_ov060_021145d4 reports the landing. Step 2:
+BOWSER_STATE_IDLE at the last frame. */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov060_02114300(char *c)
+void func_ov060_02114300(daKpa_c *kpa)
 {
-    unsigned char k = *(unsigned char*)(c + 0x423);
+    unsigned char k = kpa->mStep;
     if (k == 0) {
-        if (!func_ov060_0211469c(c)) return;
+        if (!func_ov060_0211469c(kpa)) return;
         {
-            int v;
-            *(int*)(c + 0xa8) = 0x32000;
-            *(int*)(c + 0x98) = 0x19000;
-            *(short*)(c + 0x3fe) = 0;
-            v = *(unsigned char*)(((int)c + 0x423)) + 1;
-            *(unsigned char*)(((int)c + 0x423)) = (unsigned char)v;
-            func_02012694(0xb1, (const Vector3 *)(c + 0x74));
+            u8 *p;
+            kpa->mVertSpeed = 0x32000;
+            kpa->mHorzSpeed = 0x19000;
+            kpa->mStepCounter = 0;
+            p = &kpa->mStep;
+            *p = *p + 1;
+            func_02012694(BOWSER_SND_LEAP, (const Vector3 *)(&kpa->mCamSpacePosX));
         }
     } else if (k == 1) {
-        if (!func_ov060_021145d4(c)) return;
+        if (!func_ov060_021145d4(kpa)) return;
         {
-            unsigned char *p = (unsigned char*)(((int)c + 0x423));
+            unsigned char *p = &kpa->mStep;
             *p = *p + 1;
         }
     } else {
-        if (Bowser_IsAnimAtLastFrame(c)) *(int*)(c + 0x40c) = 0;
+        if (Bowser_IsAnimAtLastFrame(kpa)) kpa->mState = BOWSER_STATE_IDLE;
     }
 }
 }
@@ -1981,18 +2378,22 @@ void func_ov060_02114300(char *c)
 /* ROM ordinal 37 -- func_ov060_021142b4, 0x021142b4, size 0x4c */
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov060_021142b4
+/*
+State BOWSER_STATE_PLAY_ANIM_1B (0xa): mHorzSpeed 0, clear mStepCounter on the
+first frame, play animation 0x1b once, then BOWSER_STATE_TURN_IN_PLACE at its last
+frame. */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov060_021142b4(void *c)
+void func_ov060_021142b4(daKpa_c *kpa)
 {
-    *(int*)((char*)c + 0x98) = 0;
-    unsigned short* p = (unsigned short*)((char*)c + 0x3fc);
+    kpa->mHorzSpeed = 0;
+    unsigned short* p = &kpa->mTimer;
     if (*p == 0) {
-        *(unsigned short*)((char*)c + 0x3fe) = 0;
+        kpa->mStepCounter = 0;
     }
-    func_ov060_02111cc0(c, 0x1b, 0x40000000);
-    int r = Bowser_IsAnimAtLastFrame(c);
+    func_ov060_02111cc0(kpa, 0x1b, 0x40000000);
+    int r = Bowser_IsAnimAtLastFrame(kpa);
     if (r != 0) {
-        *(int*)((char*)c + 0x40c) = 0xb;
+        kpa->mState = BOWSER_STATE_TURN_IN_PLACE;
     }
 }
 }
@@ -2001,23 +2402,33 @@ void func_ov060_021142b4(void *c)
 /* ROM ordinal 36 -- func_ov060_021140c0, 0x021140c0, size 0x1f4 */
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov060_021140c0
+/*
+State BOWSER_STATE_FIREBALLS (9). On the first frame choose mFireballShots: 3 if
+the target Player has 4 or fewer health (Player::GetHealth), else a random 1 to 3
+(also when there is no Player). When animation 0x14 (data_ov060_0211abe0 is entry
+0x14 of the animation table) will cross frame 5, spawn a fireball (SpawnFireball,
+horizontal speed 0x1e000 = 30.0, second Fix12 argument 0xa000) at his position
+plus 0xe8 (232) units out along mAngleY and 0x58000 (88 units) up, with sound
+0x122. At the last frame of an animation: if it was animation 0x14, count the
+shot in mStep and go to BOWSER_STATE_IDLE once mStep reaches mFireballShots;
+otherwise start animation 0x14; then restart the animation from frame 0. */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov060_021140c0(char* c)
+void func_ov060_021140c0(daKpa_c *kpa)
 {
     int new_var;
-    if (*(u16*)((c + 0x300) + 0xfc) == 0) {
-        void* player = *(void**)(c + 0x3a0);
+    if (kpa->mTimer == 0) {
+        void* player = kpa->mTargetPlayer;
         if (player == 0 || _ZN6Player9GetHealthEv(player) > 4) {
             s32 rnd = RandomIntInternal(&data_0209e650);
             u32 hi = ((u32)rnd) >> 16;
             u32 m = hi % 10u;
-            c[0x428] = (char)((m % 3u) + 1);
+            kpa->mFireballShots = (char)((m % 3u) + 1);
         } else {
-            c[0x428] = 3;
+            kpa->mFireballShots = 3;
         }
     }
-    if (*(int*)(c + 0x134) == data_ov060_0211abe0[1]) {
-        if (_ZNK9Animation12WillHitFrameEi(c + 0x124, 5)) {
+    if ((int)kpa->mModelAnim.file == data_ov060_0211abe0[1]) {
+        if (kpa->mModelAnim.WillHitFrame(5)) {
             Vector3 pos;
             u16 dir[3];
             u16 ax, ay, az;
@@ -2029,16 +2440,16 @@ void func_ov060_021140c0(char* c)
                r2 across them, which is what pushes pos.x to r3 and `scale` to ip. */
             u16* dp;
 
-            pos.x = *(int*)(c + 0x5c);
+            pos.x = kpa->mPosX;
             tbl = data_02082214;
-            pos.y = *(int*)(c + 0x60);
+            pos.y = kpa->mPosY;
             scale = 0xe8;
-            pos.z = *(int*)(c + 0x64);
-            ax = *(u16*)(c + 0x8c);
-            ay = *(u16*)(c + 0x8e);
+            pos.z = kpa->mPosZ;
+            ax = *(u16 *)&kpa->mAngleX;
+            ay = *(u16 *)&kpa->mAngleY;
             dir[1] = ay;
             dir[0] = ax;
-            az = *(u16*)(c + 0x90);
+            az = *(u16 *)&kpa->mAngleZ;
             dir[2] = az;
             pos.x = (tbl[(dir[1] >> 4) * 2] * scale) + pos.x;
             new_var = pos.y + 0x58000;
@@ -2048,27 +2459,27 @@ void func_ov060_021140c0(char* c)
                so this changes nothing at runtime, but the short-circuit `&&` splits the
                block and stops the scheduler hoisting the 0xa000 constant into the slot
                the ROM gives to `dp`. Without it this function is 11 words off. */
-            if (dp != 0 && c != 0) {
+            if (dp != 0 && kpa != 0) {
             }
             pos.y = new_var;
             dir[0] = 0x1000;
             grav = 0xa000;
             _ZN8dActor_c13SpawnFireballERK7Vector3PK10Vector3_165Fix12IiES7_j(
-                c, &pos, dp, 0x1e000, grav, 0);
-            func_02012694(0x122, (const Vector3 *)(c + 0x74));
+                kpa, &pos, dp, 0x1e000, grav, 0);
+            func_02012694(BOWSER_SND_FIREBALL, (const Vector3 *)(&kpa->mCamSpacePosX));
         }
     }
-    if (Bowser_IsAnimAtLastFrame(c) != 0) {
-        if (*(int*)(c + 0x134) == data_ov060_0211abe0[1]) {
-            unsigned char* p = (unsigned char*)(c + 0x423);
+    if (Bowser_IsAnimAtLastFrame(kpa) != 0) {
+        if ((int)kpa->mModelAnim.file == data_ov060_0211abe0[1]) {
+            unsigned char* p = &kpa->mStep;
             *p = (*p) + 1;
-            if (*(unsigned char*)(c + 0x423) >= *(unsigned char*)(c + 0x428)) {
-                *(int*)(c + 0x40c) = 0;
+            if (kpa->mStep >= kpa->mFireballShots) {
+                kpa->mState = BOWSER_STATE_IDLE;
             }
         } else {
-            func_ov060_02111cc0(c, 0x14, 0);
+            func_ov060_02111cc0(kpa, 0x14, 0);
         }
-        *(int*)(c + 0x12c) = 0;
+        kpa->mModelAnim.currFrame = 0;
     }
 }
 }
@@ -2077,33 +2488,38 @@ void func_ov060_021140c0(char* c)
 /* ROM ordinal 35 -- func_ov060_02113ff4, 0x02113ff4, size 0xcc */
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov060_02113ff4
+/*
+Turn in place for the caller's frame count: by mStep, play animation 0x13 once,
+then 0x12 once (each step ends at the animation's last frame), then the idle
+animation; mHorzSpeed 0 and mAngleY += arg2 every call. Returns 1 once mTimer is
+at least arg1 (an unsigned halfword), else 0. */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-int func_ov060_02113ff4(char *c, unsigned short arg1, int arg2)
+int func_ov060_02113ff4(daKpa_c *kpa, unsigned short arg1, int arg2)
 {
     int r;
-    unsigned char f = *(unsigned char *)(c + 0x423);
+    unsigned char f = kpa->mStep;
     if (f == 0) {
-        func_ov060_02111cc0(c, 0x13, 0x40000000);
-        if (Bowser_IsAnimAtLastFrame(c) != 0) {
-            unsigned char *p = (unsigned char *)(((int)c + 0x423));
+        func_ov060_02111cc0(kpa, 0x13, 0x40000000);
+        if (Bowser_IsAnimAtLastFrame(kpa) != 0) {
+            unsigned char *p = &kpa->mStep;
             *p = *p + 1;
         }
     } else if (f == 1) {
-        func_ov060_02111cc0(c, 0x12, 0x40000000);
-        if (Bowser_IsAnimAtLastFrame(c) != 0) {
-            unsigned char *p = (unsigned char *)(((int)c + 0x423));
+        func_ov060_02111cc0(kpa, 0x12, 0x40000000);
+        if (Bowser_IsAnimAtLastFrame(kpa) != 0) {
+            unsigned char *p = &kpa->mStep;
             *p = *p + 1;
         }
     } else {
-        func_ov060_02111cc0(c, 0x10, 0);
+        func_ov060_02111cc0(kpa, BOWSER_ANIM_IDLE, 0);
     }
     r = 0;
-    *(int *)(c + 0x98) = 0;
+    kpa->mHorzSpeed = 0;
     {
-        short *q = (short *)(((int)c + 0x8e));
+        short *q = &kpa->mAngleY;
         *q += arg2;
     }
-    if (*(unsigned short *)(c + 0x3fc) >= arg1)
+    if (kpa->mTimer >= arg1)
         r = 1;
     return r;
 }
@@ -2113,11 +2529,15 @@ int func_ov060_02113ff4(char *c, unsigned short arg1, int arg2)
 /* ROM ordinal 34 -- func_ov060_02113fcc, 0x02113fcc, size 0x28 */
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov060_02113fcc
+/*
+State BOWSER_STATE_TURN_IN_PLACE (0xb): func_ov060_02113ff4 with 0x3e frames and
+0x200 (2.8 degrees) per frame, about 177 degrees in all (63 calls, mTimer 0 to 0x3e); BOWSER_STATE_IDLE
+when it returns 1. */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov060_02113fcc(char *c) {
-    int r0 = func_ov060_02113ff4(c, 0x3e, 0x200);
+void func_ov060_02113fcc(daKpa_c *kpa) {
+    int r0 = func_ov060_02113ff4(kpa, 0x3e, 0x200);
     if (r0 != 0) {
-        *(int *)(c + 0x40c) = 0;
+        kpa->mState = BOWSER_STATE_IDLE;
     }
 }
 }
@@ -2126,6 +2546,21 @@ void func_ov060_02113fcc(char *c) {
 /* ROM ordinal 33 -- func_ov060_02113d8c, 0x02113d8c, size 0x240 */
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov060_02113d8c
+/*
+State BOWSER_STATE_CHARGE (7). mHorzSpeed is zeroed on the first frame. By mStep:
+0 plays animation 0x18 once, clears mStepCounter and, at its last frame, goes to
+step 1. Step 1 plays animation 0x19 looping at mHorzSpeed 0x2a000 (42.0) and
+steers mAngleY toward the target by 0x200 per frame; each time that animation
+reaches its last frame the counter grows, and the charge ends (step 3) when the
+counter exceeds 0xa or, from the second loop on, when the angle to the target is
+over 0x2000 (45 degrees) (mParticleHandle is cleared in that second case). Step
+3 plays animation 0x1a once, spawns particle 0x101 50 units above him
+(Particle::System::New with mParticleHandle) and slows mHorzSpeed to 0 by 0x1000
+per frame, going to step 2 once it reaches 0. Step 2 waits for the last frame of that
+animation, sets mTimer to 0xa (variant 2) or 0x1e and returns to
+BOWSER_STATE_IDLE once mStepCounter has passed it. If the floor collider says he
+has left the ground, he goes to BOWSER_STATE_PLAY_ANIM_1B at mLastGroundPos with
+speed 0. */
 bool ApproachLinear(short &value, short target, short step);
 
 /* This shard carried a one-method `struct dActor_c { GetSubtraction(...); }`
@@ -2133,61 +2568,61 @@ bool ApproachLinear(short &value, short target, short step);
  * above) and GetSubtraction is declared there, so the local copy is dropped. */
 
 extern "C" {
-void func_ov060_02111cc0(void *v, int idx, int fix);
+void func_ov060_02111cc0(daKpa_c *kpa, int idx, int animFlags);
 
 int _Z14ApproachLinearRiii(int *dst, int target, int step);
 }
 
-extern "C" void func_ov060_02113d8c(char *r4)
+extern "C" void func_ov060_02113d8c(daKpa_c *kpa)
 {
-    if (*(u16 *)(r4 + 0x3fc) == 0)
-        *(int *)(r4 + 0x98) = 0;
+    if (kpa->mTimer == 0)
+        kpa->mHorzSpeed = 0;
 
-    switch (*(u8 *)(r4 + 0x423)) {
+    switch (kpa->mStep) {
     case 0:
-        func_ov060_02111cc0(r4, 0x18, 0x40000000);
-        *(u16 *)(r4 + 0x3fe) = 0;
-        if (Bowser_IsAnimAtLastFrame(r4) != 0)
-            *(u8 *)(r4 + 0x423) = 1;
+        func_ov060_02111cc0(kpa, 0x18, 0x40000000);
+        kpa->mStepCounter = 0;
+        if (Bowser_IsAnimAtLastFrame(kpa) != 0)
+            kpa->mStep = 1;
         break;
     case 1:
-        func_ov060_02111cc0(r4, 0x19, 0);
-        *(int *)(r4 + 0x98) = 0x2a000;
-        if (Bowser_IsAnimAtLastFrame(r4) != 0) {
-            u16 *p = (u16 *)(r4 + 0x3fe);
+        func_ov060_02111cc0(kpa, 0x19, 0);
+        kpa->mHorzSpeed = 0x2a000;
+        if (Bowser_IsAnimAtLastFrame(kpa) != 0) {
+            u16 *p = &kpa->mStepCounter;
             *p = *p + 1;
-            if (*(u16 *)((r4 + 0x300) + 0xfe) > 0xa)
-                *(u8 *)(r4 + 0x423) = 3;
-            if (*(u16 *)((r4 + 0x300) + 0xfe) >= 2) {
-                if (((dActor_c *)r4)->GetSubtraction(*(short *)(r4 + 0x406), *(short *)(r4 + 0x8e)) > 0x2000) {
-                    *(u8 *)(r4 + 0x423) = 3;
-                    *(int *)(r4 + 0x448) = 0;
+            if (kpa->mStepCounter > 0xa)
+                kpa->mStep = 3;
+            if (kpa->mStepCounter >= 2) {
+                if (((dActor_c *)kpa)->GetSubtraction(kpa->mAngleToTarget, kpa->mAngleY) > 0x2000) {
+                    kpa->mStep = 3;
+                    kpa->mParticleHandle = 0;
                 }
             }
         }
-        ApproachLinear(*(short *)(r4 + 0x8e), *(short *)(r4 + 0x406), 0x200);
+        ApproachLinear(kpa->mAngleY, kpa->mAngleToTarget, 0x200);
         break;
     case 3:
-        *(u16 *)(r4 + 0x3fe) = 0;
-        func_ov060_02111cc0(r4, 0x1a, 0x40000000);
-        *(unsigned int *)(r4 + 0x448) = (unsigned int)_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-            *(unsigned int *)(r4 + 0x448), 0x101, *(int *)(r4 + 0x5c), *(int *)(r4 + 0x60) + 0x32000, *(int *)(r4 + 0x64), 0, 0);
-        if (_Z14ApproachLinearRiii((int *)(r4 + 0x98), 0, 0x1000) != 0)
-            *(u8 *)(r4 + 0x423) = 2;
+        kpa->mStepCounter = 0;
+        func_ov060_02111cc0(kpa, 0x1a, 0x40000000);
+        kpa->mParticleHandle = (unsigned int)_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
+            kpa->mParticleHandle, 0x101, kpa->mPosX, kpa->mPosY + 0x32000, kpa->mPosZ, 0, 0);
+        if (_Z14ApproachLinearRiii(&kpa->mHorzSpeed, 0, 0x1000) != 0)
+            kpa->mStep = 2;
         break;
     case 2:
-        *(int *)(r4 + 0x98) = 0;
-        if (Bowser_IsAnimAtLastFrame(r4) != 0) {
-            if (*(u8 *)(r4 + 0x414) == 2)
-                *(u16 *)(r4 + 0x3fc) = 0xa;
+        kpa->mHorzSpeed = 0;
+        if (Bowser_IsAnimAtLastFrame(kpa) != 0) {
+            if (kpa->mVariantID == 2)
+                kpa->mTimer = 0xa;
             else
-                *(u16 *)(r4 + 0x3fc) = 0x1e;
-            if (*(u16 *)((r4 + 0x300) + 0xfe) > *(u16 *)((r4 + 0x300) + 0xfc)) {
-                *(int *)(r4 + 0x40c) = 0;
-                *(int *)(r4 + 0x3f8) = 0x1000;
+                kpa->mTimer = 0x1e;
+            if (kpa->mStepCounter > kpa->mTimer) {
+                kpa->mState = BOWSER_STATE_IDLE;
+                kpa->mAnimSpeed = 0x1000;
             }
             {
-                u16 *p = (u16 *)(r4 + 0x3fe);
+                u16 *p = &kpa->mStepCounter;
                 *p = *p + 1;
             }
         }
@@ -2196,19 +2631,23 @@ extern "C" void func_ov060_02113d8c(char *r4)
         break;
     }
 
-    if (((dBgCh_Actr *)(r4 + 0x14c))->IsOnGround())
+    if (((dBgCh_Actr *)(&kpa->mWithMeshClsn))->IsOnGround())
         return;
-    *(int *)(r4 + 0x40c) = 0xa;
-    *(int *)(r4 + 0x5c) = *(int *)(r4 + 0x3c8);
-    *(int *)(r4 + 0x60) = *(int *)(r4 + 0x3cc);
-    *(int *)(r4 + 0x64) = *(int *)(r4 + 0x3d0);
-    *(int *)(r4 + 0x98) = 0;
+    kpa->mState = BOWSER_STATE_PLAY_ANIM_1B;
+    kpa->mPosX = kpa->mLastGroundPosX;
+    kpa->mPosY = kpa->mLastGroundPosY;
+    kpa->mPosZ = kpa->mLastGroundPosZ;
+    kpa->mHorzSpeed = 0;
 }
 
 /* -------------------------------------------------------------------------- */
 /* ROM ordinal 32 -- func_ov060_02113d20, 0x02113d20, size 0x6c */
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov060_02113d20
+/*
+Bomb hit test: find the closest KIRAI actor (0x11c, daKirai_c); if it reports
+that his position is close enough (func_ov060_02118544), set it off
+(func_ov060_021185c4) and return 1, otherwise return 0. */
 /* recovered: shared common types, declarations from a shared header */
 /* recovered: shared common types */
 // func_ov060_02113d20 at 0x02113d20
@@ -2216,11 +2655,11 @@ extern "C" void func_ov060_02113d8c(char *r4)
 extern "C" int func_ov060_02113d20(dActor_c *self)
 {
     Vector3 v;
-    dActor_c *closest = self->ClosestWithActorID(0x11c);
+    dActor_c *closest = self->ClosestWithActorID(BOWSER_ACTOR_KIRAI);
     if (closest) {
-        v.x = *(int *)((char *)self + 0x5c);
-        v.y = *(int *)((char *)self + 0x60);
-        v.z = *(int *)((char *)self + 0x64);
+        v.x = self->mPosX;
+        v.y = self->mPosY;
+        v.z = self->mPosZ;
         if (((daKirai_c *)closest)->func_ov060_02118544(&v)) {
             ((daKirai_c *)closest)->func_ov060_021185c4();
             return 1;
@@ -2233,65 +2672,78 @@ extern "C" int func_ov060_02113d20(dActor_c *self)
 /* ROM ordinal 31 -- func_ov060_02113b5c, 0x02113b5c, size 0x1c4 */
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov060_02113b5c
+/*
+State BOWSER_STATE_THROWN (1), the handler that runs after the tail lets go.
+mStepCounter is cleared for the first two frames. The ground height under him is
+found with a dBgCh_Gnd probe from 0x96000 (150 units) above mHomePosY when he is
+above mHomePosY (a floor at most 0x64000 = 100 units below mHomePosY counts), else
+his own Y. Step 0: play animation 9; when he is more than 0xc8000 (200 units)
+above that height or mDistToCenter exceeds 0xdac000 (3500 units), pull
+mHorzSpeed down to 0x1e000 by 0x4000 per frame if it is higher; run the
+landing-dust helper; once on the ground without a fresh hit, zero the speed,
+clear mBounceOnLand, advance and play animation 0xd once. Step 1: BOWSER_STATE_IDLE
+at the last frame. Every frame, if func_ov060_02113d20 reports a bomb hit, mHealth
+drops by one: BOWSER_STATE_DEFEATED at 0 or below, BOWSER_STATE_HURT_HOP
+otherwise. */
 /* recovered: shared common types */
-extern "C" void func_ov060_02113b5c(char* c)
+extern "C" void func_ov060_02113b5c(daKpa_c *kpa)
 {
-    if (*(u16*)(c + 0x300 + 0xfc) < 2) {
-        *(u16*)(c + 0x300 + 0xfe) = 0;
+    if (kpa->mTimer < 2) {
+        kpa->mStepCounter = 0;
     }
 
-    int r4 = *(s32*)(c + 0x60);
-    if (*(s32*)(c + 0x60) > *(s32*)(c + 0x3b4)) {
+    int r4 = kpa->mPosY;
+    if (kpa->mPosY > kpa->mHomePosY) {
         Vector3 v;
         dBgCh_Gnd rg;
-        int base = *(s32*)(c + 0x3b4);
-        int zz = *(s32*)(c + 0x64);
-        int xx = *(s32*)(c + 0x5c);
+        int base = kpa->mHomePosY;
+        int zz = kpa->mPosZ;
+        int xx = kpa->mPosX;
         int yy = base + 0x96000;
         v.x = xx;
         v.y = yy;
         v.z = zz;
-        rg.SetObjAndPos(v, (dActor_c*)c);
+        rg.SetObjAndPos(v, (dActor_c*)kpa);
         if (rg.DetectClsn() != 0) {
             int hy = rg.clsnY;
-            if (hy >= *(s32*)(c + 0x3b4) - 0x64000) r4 = hy;
+            if (hy >= kpa->mHomePosY - 0x64000) r4 = hy;
         }
     }
 
-    if (*(u8*)(c + 0x423) == 0) {
-        func_ov060_02111cc0(c, 9, 0);
+    if (kpa->mStep == 0) {
+        func_ov060_02111cc0(kpa, 9, 0);
 
-        int dy = *(s32*)(c + 0x60) - r4;
-        if (dy > 0xc8000 || *(s32*)(c + 0x3f4) > 0xdac000) {
-            if (*(s32*)(c + 0x98) >= 0x1e000) {
-                _Z14ApproachLinearRiii((int*)(c + 0x98), 0x1e000, 0x4000);
+        int dy = kpa->mPosY - r4;
+        if (dy > 0xc8000 || kpa->mDistToCenter > 0xdac000) {
+            if (kpa->mHorzSpeed >= 0x1e000) {
+                _Z14ApproachLinearRiii(&kpa->mHorzSpeed, 0x1e000, 0x4000);
             }
         }
 
-        func_ov060_02115a84(c, c + 0x3fe);
+        func_ov060_02115a84(kpa, (char *)&kpa->mStepCounter);
 
-        if (_ZNK10dBgCh_Actr10IsOnGroundEv(c + 0x14c) != 0) {
-            if (_ZNK10dBgCh_Actr13JustHitGroundEv(c + 0x14c) == 0) {
-                *(s32*)(c + 0x98) = 0;
-                *(u8*)(c + 0x427) = 0;
-                u8* p = (u8*)(((int)c + 0x423));
+        if (_ZNK10dBgCh_Actr10IsOnGroundEv(&kpa->mWithMeshClsn) != 0) {
+            if (_ZNK10dBgCh_Actr13JustHitGroundEv(&kpa->mWithMeshClsn) == 0) {
+                kpa->mHorzSpeed = 0;
+                kpa->mBounceOnLand = 0;
+                u8* p = &kpa->mStep;
                 *p = *p + 1;
-                func_ov060_02111cc0(c, 0xd, 0x40000000);
+                func_ov060_02111cc0(kpa, 0xd, 0x40000000);
             }
         }
     } else {
-        if (Bowser_IsAnimAtLastFrame(c) != 0) {
-            *(s32*)(c + 0x40c) = 0;
+        if (Bowser_IsAnimAtLastFrame(kpa) != 0) {
+            kpa->mState = BOWSER_STATE_IDLE;
         }
     }
 
-    if (func_ov060_02113d20((dActor_c *)c) != 0) {
-        signed char* q = (signed char*)(((int)c + 0x41e));
+    if (func_ov060_02113d20((dActor_c *)kpa) != 0) {
+        signed char* q = &kpa->mHealth;
         *q = *q - 1;
-        if (*(signed char*)(c + 0x400 + 0x1e) <= 0) {
-            *(s32*)(c + 0x40c) = 4;
+        if (kpa->mHealth <= 0) {
+            kpa->mState = BOWSER_STATE_DEFEATED;
         } else {
-            *(s32*)(c + 0x40c) = 0xc;
+            kpa->mState = BOWSER_STATE_HURT_HOP;
         }
     }
 }
@@ -2300,25 +2752,30 @@ extern "C" void func_ov060_02113b5c(char* c)
 /* ROM ordinal 30 -- func_ov060_02113a94, 0x02113a94, size 0xc8 */
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov060_02113a94
+/*
+Keep him out of sight under the arena during BOWSER_STATE_RECOVER: target
+opacity 0; once mOpacity is 0, zero both speeds, put him 0x3e8000 (1000 units)
+below mHomePosY and, if he is 0xed8000 (3800 units) or more from the origin,
+pull X and Z back to the circle of radius 0xed8 (3800) in his direction from the
+origin. */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov060_02113a94(void* thiz)
+void func_ov060_02113a94(daKpa_c *kpa)
 {
-    char* c = (char*)thiz;
-    *(unsigned char*)(c + 0x41d) = 0;
-    if (*(unsigned char*)(c + 0x41c) != 0) return;
-    *(int*)(c + 0x98) = 0;
-    *(int*)(c + 0xa8) = 0;
-    *(int*)(c + 0x60) = *(int*)(c + 0x3b4) - 0x3e8000;
-    if (Vec3_HorzLen((Vector3*)(c + 0x5c)) < 0xed8000) return;
+    kpa->mTargetOpacity = 0;
+    if (kpa->mOpacity != 0) return;
+    kpa->mHorzSpeed = 0;
+    kpa->mVertSpeed = 0;
+    kpa->mPosY = kpa->mHomePosY - 0x3e8000;
+    if (Vec3_HorzLen((Vector3*)(&kpa->mPosX)) < 0xed8000) return;
     {
         Vector3 zero;
         int a;
         zero.x = 0;
         zero.y = 0;
         zero.z = 0;
-        a = (int)(unsigned short)Vec3_HorzAngle(&zero, (Vector3*)(c + 0x5c)) >> 4;
-        *(int*)(c + 0x5c) = (short)data_02082214[a * 2] * (short)0xed8;
-        *(int*)(c + 0x64) = (short)data_02082214[a * 2 + 1] * (short)0xed8;
+        a = (int)(unsigned short)Vec3_HorzAngle(&zero, (Vector3*)(&kpa->mPosX)) >> 4;
+        kpa->mPosX = (short)data_02082214[a * 2] * (short)0xed8;
+        kpa->mPosZ = (short)data_02082214[a * 2 + 1] * (short)0xed8;
     }
 }
 }
@@ -2327,26 +2784,46 @@ void func_ov060_02113a94(void* thiz)
 /* ROM ordinal 29 -- func_ov060_02113740, 0x02113740, size 0x354 */
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov060_02113740
+/*
+State BOWSER_STATE_RECOVER (2), entered when he has fallen 1000 units below the
+arena (func_ov060_02112ba8). Each frame: ground = mHomePosY - 0x7d0000 (2000
+units below), unless he is at or above mHomePosY and a dBgCh_Gnd probe from
+0x96000 (150 units) above mHomePosY finds a floor, whose height then replaces it;
+hit is set if that floor has a collision ID; BOWSER_COND_RECOVERING is set. Step 0 (also hides
+him with func_ov060_02113a94): zero mAngleX/Z on the first frame, then add 0x800
+(11.25 degrees) to both each frame until mAngleX wraps back to 0 (32 frames),
+and advance. Step 1: animation 0xb once; from frame 0x20 face the centre, set
+mVertSpeed 0x28000 (40.0), sound 0xb1, gravity 0, target opacity 0xff, clear
+mStepCounter and advance (before that, keep hiding him). Step 2: while mPosY >= mHomePosY,
+gravity -0x1000 (-1.0) and steer mHorzSpeed (toward 0 by 0x5000 when
+mDistToCenter is under 0x8fc000 / 2300 units for variant 1 or 0x9c4000 / 2500
+units otherwise and the floor is within 0x64000 = 100 units of mHomePosY,
+otherwise toward 0x4b000 = 75.0 by 0x2000); on landing (func_ov060_021145d4)
+advance, run func_ov060_02115b0c if the probe found no floor ID, send variant 2
+into BOWSER_STATE_JUMP with mAnimSpeed 0x4000 (4.0) and normal gravity -0x2000
+when it did, and send variant 1 into BOWSER_STATE_ARENA_TILT (recording the
+KOOPA2BG actor); func_ov060_02115018 runs every frame of the step. Step 3: at the
+last frame, BOWSER_STATE_IDLE, BOWSER_COND_RECOVERING cleared, gravity -0x2000. */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov060_02113740(char *c)
+void func_ov060_02113740(daKpa_c *kpa)
 {
     Vec3 pos;
     int hit;
     int ground;
 
-    ground = *(int*)(c + 0x3b4) - 0x7d0000;
+    ground = kpa->mHomePosY - 0x7d0000;
     hit = 0;
-    if (*(int*)(c + 0x60) >= *(int*)(c + 0x3b4)) {
+    if (kpa->mPosY >= kpa->mHomePosY) {
         dBgCh_Gnd rc;
         {
-            int pz = *(int*)(c + 0x64);
-            int py = *(int*)(c + 0x3b4) + 0x96000;
-            int px = *(int*)(c + 0x5c);
+            int pz = kpa->mPosZ;
+            int py = kpa->mHomePosY + 0x96000;
+            int px = kpa->mPosX;
             pos.x = px;
             pos.y = py;
             pos.z = pz;
         }
-        rc.SetObjAndPos(*(Vector3 *)&pos, (dActor_c *)c);
+        rc.SetObjAndPos(*(Vector3 *)&pos, (dActor_c *)kpa);
         if (rc.DetectClsn()) {
             ground = rc.clsnY;
             /* The original shard read the collision id through a hand-rolled struct whose
@@ -2358,83 +2835,83 @@ void func_ov060_02113740(char *c)
         }
     }
 
-    *(int*)(c + 0x418) |= 0x10000;
+    kpa->mCondFlags |= BOWSER_COND_RECOVERING;
 
-    switch (*(u8*)(c + 0x423)) {
+    switch (kpa->mStep) {
     case 0:
     {
-        s16 *p8c = (s16*)(c + 0x8c);
-        s16 *p90 = (s16*)(c + 0x90);
-        if (*(u16*)(c + 0x3fc) == 0) {
-            *(s16*)(c + 0x90) = 0;
-            *(s16*)(c + 0x8c) = *(s16*)(c + 0x90);
+        s16 *p8c = (s16*)(&kpa->mAngleX);
+        s16 *p90 = (s16*)(&kpa->mAngleZ);
+        if (kpa->mTimer == 0) {
+            kpa->mAngleZ = 0;
+            kpa->mAngleX = kpa->mAngleZ;
         }
         *p8c += 0x800;
         *p90 += 0x800;
-        if ((*(s16*)(c + 0x8c) & 0xffff) == 0)
-            (*(u8*)((int)c + 0x423))++;
-        func_ov060_02113a94(c);
+        if ((kpa->mAngleX & 0xffff) == 0)
+            (kpa->mStep)++;
+        func_ov060_02113a94(kpa);
         return;
     }
     case 1:
-        func_ov060_02111cc0(c, 0xb, 0x40000000);
-        if (((*(u32*)(c + 0x12c) << 4) >> 16) >= 0x20) {
-            *(s16*)(c + 0x8e) = *(s16*)(c + 0x408);
-            *(s16*)(c + 0x94) = *(s16*)(c + 0x8e);
-            *(int*)(c + 0xa8) = 0x28000;
-            func_02012694(0xb1, (const Vector3 *)(c + 0x74));
-            *(int*)(c + 0x9c) = 0;
-            *(u8*)(c + 0x41d) = 0xff;
-            *(s16*)(c + 0x3fe) = 0;
-            (*(u8*)((int)c + 0x423))++;
+        func_ov060_02111cc0(kpa, 0xb, 0x40000000);
+        if ((((u32)kpa->mModelAnim.currFrame << 4) >> 16) >= 0x20) {
+            kpa->mAngleY = kpa->mAngleToCenter;
+            kpa->mPrevAngleY = kpa->mAngleY;
+            kpa->mVertSpeed = 0x28000;
+            func_02012694(BOWSER_SND_LEAP, (const Vector3 *)(&kpa->mCamSpacePosX));
+            kpa->mVertAccel = 0;
+            kpa->mTargetOpacity = 0xff;
+            kpa->mStepCounter = 0;
+            (kpa->mStep)++;
             return;
         }
-        func_ov060_02113a94(c);
+        func_ov060_02113a94(kpa);
         return;
     case 2:
     {
         int thr;
-        if (*(u8*)(c + 0x414) == 1) thr = 0x8fc000; else thr = 0x9c4000;
-        if (*(int*)(c + 0x60) >= *(int*)(c + 0x3b4)) {
-            *(int*)(c + 0x9c) = -0x1000;
-            if (*(int*)(c + 0x3f4) < thr) {
-                int d = ground - *(int*)(c + 0x3b4);
+        if (kpa->mVariantID == 1) thr = 0x8fc000; else thr = 0x9c4000;
+        if (kpa->mPosY >= kpa->mHomePosY) {
+            kpa->mVertAccel = -0x1000;
+            if (kpa->mDistToCenter < thr) {
+                int d = ground - kpa->mHomePosY;
                 if (d < 0) d = -d;
                 if (d < 0x64000)
-                    _Z14ApproachLinearRiii((int*)(c + 0x98), 0, 0x5000);
+                    _Z14ApproachLinearRiii(&kpa->mHorzSpeed, 0, 0x5000);
                 else
-                    _Z14ApproachLinearRiii((int*)(c + 0x98), 0x4b000, 0x2000);
+                    _Z14ApproachLinearRiii(&kpa->mHorzSpeed, 0x4b000, 0x2000);
             } else {
-                _Z14ApproachLinearRiii((int*)(c + 0x98), 0x4b000, 0x2000);
+                _Z14ApproachLinearRiii(&kpa->mHorzSpeed, 0x4b000, 0x2000);
             }
         }
-        if (func_ov060_021145d4(c)) {
-            (*(u8*)((int)c + 0x423))++;
+        if (func_ov060_021145d4(kpa)) {
+            (kpa->mStep)++;
             if (hit == 0) {
-                func_ov060_02115b0c(c);
+                func_ov060_02115b0c(kpa);
             } else {
-                if (*(u8*)(c + 0x414) == 2) {
-                    *(int*)(c + 0x40c) = 0xd;
-                    *(int*)(c + 0x3f8) = 0x4000;
-                    *(int*)(c + 0x9c) = -0x2000;
+                if (kpa->mVariantID == 2) {
+                    kpa->mState = BOWSER_STATE_JUMP;
+                    kpa->mAnimSpeed = 0x4000;
+                    kpa->mVertAccel = -0x2000;
                 }
             }
-            if (*(u8*)(c + 0x414) == 1) {
-                char *r;
-                *(int*)(c + 0x40c) = 0x13;
-                r = (char*)_ZN8dActor_c15FindWithActorIDEjPS_(0xa6, 0);
-                if (r) *(int*)(c + 0x3ac) = *(int*)(r + 4);
-                *(int*)(c + 0x9c) = -0x2000;
+            if (kpa->mVariantID == 1) {
+                dActor_c *r;
+                kpa->mState = BOWSER_STATE_ARENA_TILT;
+                r = (dActor_c *)_ZN8dActor_c15FindWithActorIDEjPS_(BOWSER_ACTOR_KOOPA2BG, 0);
+                if (r) kpa->mArenaBgUniqueID = r->uniqueID;
+                kpa->mVertAccel = -0x2000;
             }
         }
-        func_ov060_02115018(c);
+        func_ov060_02115018(kpa);
         return;
     }
     case 3:
-        if (Bowser_IsAnimAtLastFrame(c) != 0) {
-            *(int*)(c + 0x40c) = 0;
-            *(int*)((int)c + 0x418) &= ~0x10000;
-            *(int*)(c + 0x9c) = -0x2000;
+        if (Bowser_IsAnimAtLastFrame(kpa) != 0) {
+            kpa->mState = BOWSER_STATE_IDLE;
+            kpa->mCondFlags &= ~BOWSER_COND_RECOVERING;
+            kpa->mVertAccel = -0x2000;
         }
         return;
     }
@@ -2445,11 +2922,14 @@ void func_ov060_02113740(char *c)
 /* ROM ordinal 28 -- func_ov060_02113710, 0x02113710, size 0x30 */
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov060_02113710
+/*
+State BOWSER_STATE_PLAY_ANIM_0F (3): play animation 0xf looping until its last
+frame, then BOWSER_STATE_IDLE. */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov060_02113710(void *c) {
-    func_ov060_02111cc0(c, 0xf, 0);
-    if (Bowser_IsAnimAtLastFrame(c) != 0) {
-        *(int *)((char *)c + 0x40c) = 0;
+void func_ov060_02113710(daKpa_c *kpa) {
+    func_ov060_02111cc0(kpa, 0xf, 0);
+    if (Bowser_IsAnimAtLastFrame(kpa) != 0) {
+        kpa->mState = BOWSER_STATE_IDLE;
     }
 }
 }
@@ -2458,35 +2938,41 @@ void func_ov060_02113710(void *c) {
 /* ROM ordinal 27 -- func_ov060_021135fc, 0x021135fc, size 0x114 */
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov060_021135fc
+/*
+The defeat payoff. Switch the body collider off. Variant 2: spawn the LAST_STAR
+actor (0x11b, parameter 7) 0xa0000 (160 units) above him. Other variants:
+particles 0xad and 0xae 50 units above him, an OBJ_KEY actor (0x11a, parameter =
+variant) at his position that receives his mSpinSpeed (daObjKey_c::mSpinSpeed),
+and sound 0xbb. */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov060_021135fc(char *c)
+void func_ov060_021135fc(daKpa_c *kpa)
 {
     volatile Vector3 base;
     int px, py, pz;
-    px = *(int*)(c+0x5c);
+    px = kpa->mPosX;
     base.x = px;
-    py = *(int*)(c+0x60);
+    py = kpa->mPosY;
     base.y = py;
-    pz = *(int*)(c+0x64);
+    pz = kpa->mPosZ;
     base.z = pz;
     py = py + 0x32000;
     base.y = py;
 
-    *(int*)(int)(c+0x378) |= 1;
+    kpa->mdCcAcPos_c.flags |= BOWSER_CC_DISABLED;
 
-    if (*(unsigned char*)(c+0x414) == 2) {
+    if (kpa->mVariantID == 2) {
         Vector3 pos;
-        pos.x = *(int*)(c+0x5c);
-        pos.y = *(int*)(c+0x60);
-        pos.z = *(int*)(c+0x64);
+        pos.x = kpa->mPosX;
+        pos.y = kpa->mPosY;
+        pos.z = kpa->mPosZ;
         pos.y = pos.y + 0xa0000;
-        _ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(0x11b, 7, &pos, 0, *(signed char*)(c+0xcc), -1);
+        _ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(BOWSER_ACTOR_LAST_STAR, 7, &pos, 0, kpa->mAreaId, -1);
     } else {
         _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xad, base.x, base.y, base.z);
         _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(0xae, base.x, base.y, base.z);
-        void *spawned = _ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(0x11a, *(unsigned char*)(c+0x414), (Vector3*)(c+0x5c), 0, *(signed char*)(c+0xcc), -1);
-        *(short*)((char*)spawned + 0x440) = *(short*)(c + 0x402);
-        func_02012694(0xbb, (Vector3*)(c+0x74));
+        void *spawned = _ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(BOWSER_ACTOR_OBJ_KEY, kpa->mVariantID, (Vector3*)(&kpa->mPosX), 0, kpa->mAreaId, -1);
+        ((daObjKey_c *)spawned)->mSpinSpeed = kpa->mSpinSpeed;
+        func_02012694(BOWSER_SND_DEFEATED, (Vector3*)(&kpa->mCamSpacePosX));
     }
 }
 }
@@ -2495,21 +2981,28 @@ void func_ov060_021135fc(char *c)
 /* ROM ordinal 26 -- func_ov060_02113564, 0x02113564, size 0x98 */
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov060_02113564
+/*
+Defeat step 0 (from func_ov060_02112ddc): knock-back launch. Animation 0 once,
+mHorzSpeed -0x1c000 (-28.0) for variant 2 and -0x19000 (-25.0) otherwise,
+mVertSpeed 0x50000 (80.0), gravity -0x2000 (-2.0), mAngleY = angle to the centre
++ 0x8000 (so the negative speed carries him toward the centre), clear
+mStepCounter, advance, widen the body collider's radius to 0xb4000 (180 units)
+and play sound 0xb1. */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov060_02113564(char *c)
+void func_ov060_02113564(daKpa_c *kpa)
 {
-    func_ov060_02111cc0(c, 0, 0x40000000);
-    if (*(unsigned char *)(c + 0x414) == 2)
-        *(int *)(c + 0x98) = -0x1c000;
+    func_ov060_02111cc0(kpa, 0, 0x40000000);
+    if (kpa->mVariantID == 2)
+        kpa->mHorzSpeed = -0x1c000;
     else
-        *(int *)(c + 0x98) = -0x19000;
-    *(int *)(c + 0xa8) = 0x50000;
-    *(int *)(c + 0x9c) = -0x2000;
-    *(short *)(c + 0x8e) = (short)(*(short *)(c + 0x408) + 0x8000);
-    *(short *)(c + 0x3fe) = 0;
-    *(unsigned char *)(((int)c + 0x423)) += 1;
-    *(int *)(c + 0x364) = 0xb4000;
-    func_02012694(0xb1, (const Vector3 *)(c + 0x74));
+        kpa->mHorzSpeed = -0x19000;
+    kpa->mVertSpeed = 0x50000;
+    kpa->mVertAccel = -0x2000;
+    kpa->mAngleY = (short)(kpa->mAngleToCenter + 0x8000);
+    kpa->mStepCounter = 0;
+    kpa->mStep += 1;
+    kpa->mdCcAcPos_c.radius = 0xb4000;
+    func_02012694(BOWSER_SND_LEAP, (const Vector3 *)(&kpa->mCamSpacePosX));
 }
 }
 
@@ -2517,31 +3010,35 @@ void func_ov060_02113564(char *c)
 /* ROM ordinal 25 -- func_ov060_021134ac, 0x021134ac, size 0xb8 */
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov060_021134ac
+/*
+Defeat step 1: airborne after the launch. Sets unk_422, runs the landing-dust
+helper on mStepCounter; on a fresh ground hit it starts animation 5 once when the
+current animation is animation 0 (data_ov060_0211ac88 is entry 0 of the
+animation table) and halves mHorzSpeed; once on the ground without a fresh hit
+it zeroes the speed and advances. func_ov060_02112350 runs every call. */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov060_021134ac(void* thiz)
+void func_ov060_021134ac(daKpa_c *kpa)
 {
-    char* c = (char*)thiz;
-    *(unsigned char*)(c + 0x422) = 1;
-    func_ov060_02115a84(c, c + 0x3fe);
-    if (_ZNK10dBgCh_Actr13JustHitGroundEv(c + 0x14c)) {
-        if (*(int*)(c + 0x134) == data_ov060_0211ac88.b) {
-            func_ov060_02111cc0(c, 5, 0x40000000);
+    kpa->unk_422 = 1;
+    func_ov060_02115a84(kpa, (char *)&kpa->mStepCounter);
+    if (_ZNK10dBgCh_Actr13JustHitGroundEv(&kpa->mWithMeshClsn)) {
+        if ((int)kpa->mModelAnim.file == data_ov060_0211ac88.b) {
+            func_ov060_02111cc0(kpa, 5, 0x40000000);
         }
         {
-            int* p = (int*)(((int)c + 0x98));
-            *p = *p >> 1;
+            kpa->mHorzSpeed = kpa->mHorzSpeed >> 1;
         }
     }
-    if (_ZNK10dBgCh_Actr10IsOnGroundEv(c + 0x14c)) {
-        if (!_ZNK10dBgCh_Actr13JustHitGroundEv(c + 0x14c)) {
-            *(int*)(c + 0x98) = 0;
+    if (_ZNK10dBgCh_Actr10IsOnGroundEv(&kpa->mWithMeshClsn)) {
+        if (!_ZNK10dBgCh_Actr13JustHitGroundEv(&kpa->mWithMeshClsn)) {
+            kpa->mHorzSpeed = 0;
             {
-                unsigned char* p = (unsigned char*)(((int)c + 0x423));
+                unsigned char* p = &kpa->mStep;
                 *p = *p + 1;
             }
         }
     }
-    func_ov060_02112350(c);
+    func_ov060_02112350(kpa);
 }
 }
 
@@ -2549,28 +3046,35 @@ void func_ov060_021134ac(void* thiz)
 /* ROM ordinal 24 -- func_ov060_02113404, 0x02113404, size 0xa8 */
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov060_02113404
+/*
+Defeat step 2: wait for the Player. func_ov060_02112350 runs first. Returns 1
+when the current animation is animation 3 (data_ov060_0211ac60 is entry 3 of the
+animation table), a target Player exists, he is within 0x258000 (600 units)
+horizontally and the Player's facing differs from the angle to the Player by
+more than 0x6000 (135 degrees), that is, he is looking toward Bowser; otherwise
+0. mStepCounter is cleared on every call. */
 /* recovered: shared common types, declarations from a shared header */
 /* recovered: shared common types */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-int func_ov060_02113404(char* c) {
+int func_ov060_02113404(daKpa_c *kpa) {
   int r = 0;
-  func_ov060_02112350(c);
-  if (*(int*)(c+0x134) == *(int*)(data_ov060_0211ac60+4)) {
-    char* base = *(char**)(c+0x3a0);
+  func_ov060_02112350(kpa);
+  if ((int)kpa->mModelAnim.file == *(int*)(data_ov060_0211ac60+4)) {
+    char* base = (char *)kpa->mTargetPlayer;
     if (base != 0) {
-      int* o = (int*)(((int)base + 0x5c));
+      int* o = &kpa->mTargetPlayer->mPosX;
       struct Vector3 v;
       s16 ang;
       v.x = o[0];
       v.y = o[1];
       v.z = o[2];
-      ang = *(s16*)(*(char**)(c+0x3a0) + 0x8e);
-      if (Vec3_HorzDist((struct Vector3*)(c+0x5c), &v) < 0x258000) {
-        if (_ZN8dActor_c14GetSubtractionEss(c, ang, *(s16*)(c+0x406)) > 0x6000) r = 1;
+      ang = kpa->mTargetPlayer->mAngleY;
+      if (Vec3_HorzDist((struct Vector3*)(&kpa->mPosX), &v) < 0x258000) {
+        if (_ZN8dActor_c14GetSubtractionEss(kpa, ang, kpa->mAngleToTarget) > 0x6000) r = 1;
       }
     }
   }
-  *(s16*)(c+0x3fe) = 0;
+  kpa->mStepCounter = 0;
   return r;
 }
 }
@@ -2579,61 +3083,69 @@ int func_ov060_02113404(char* c) {
 /* ROM ordinal 23 -- func_ov060_021132a4, 0x021132a4, size 0x160 */
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov060_021132a4
+/*
+Defeat shrink-and-spin for variants 0 and 1, per frame; returns 1 once done.
+Particle 0x99 is spawned 50 units above him each frame (mParticleHandle).
+Once mScaleX is below 0xccc (about 0.8), mSpinSpeed grows by 0x80 per frame.
+While mScaleX is above 0x334 (about 0.2) mScaleX and mScaleZ shrink by 0x52 per
+frame; after that mScaleY shrinks by 0x29, he rises at 0xa000 (10.0) and gravity
+is 0. The result is 1 once mScaleY is below 0x800 (0.5). mAngleY advances by
+mSpinSpeed, mOpacity drops by 2 while above 2, and until done the looping sound
+0xba plays (mSoundHandle is reset when the sound ID changes). */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-int func_ov060_021132a4(char *c)
+int func_ov060_021132a4(daKpa_c *kpa)
 {
     int r4 = 0;
     volatile Vector3 pos;
     int ytmp;
     int z;
 
-    pos.x = *(int *)(c + 0x5c);
-    ytmp = *(int *)(c + 0x60);
+    pos.x = kpa->mPosX;
+    ytmp = kpa->mPosY;
     pos.y = ytmp;
-    z = *(int *)(c + 0x64);
+    z = kpa->mPosZ;
     pos.z = z;
     pos.y = ytmp + 0x32000;
 
-    *(int *)(c + 0x448) = (int)_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-        *(volatile int *)(c + 0x448), 0x99, pos.x, pos.y, z, 0, 0);
+    kpa->mParticleHandle = (int)_ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
+        *(volatile int *)&kpa->mParticleHandle, 0x99, pos.x, pos.y, z, 0, 0);
 
-    if (*(int *)(c + 0x80) < 0xccc) {
-        short *p402 = (short *)(int)M(c + 0x402);
+    if (kpa->mScaleX < 0xccc) {
+        short *p402 = (short *)(int)M(&kpa->mSpinSpeed);
         *p402 = (short)(*p402 + 0x80);
     }
 
-    if (*(int *)(c + 0x80) > 0x334) {
-        int *p80 = (int *)(int)M(c + 0x80);
-        int *p88 = (int *)(int)M(c + 0x88);
+    if (kpa->mScaleX > 0x334) {
+        int *p80 = (int *)(int)M(&kpa->mScaleX);
+        int *p88 = (int *)(int)M(&kpa->mScaleZ);
         *p80 = *p80 - 0x52;
         *p88 = *p88 - 0x52;
     } else {
-        int *p84 = (int *)(int)M(c + 0x84);
+        int *p84 = (int *)(int)M(&kpa->mScaleY);
         *p84 = *p84 - 0x29;
-        *(int *)(c + 0xa8) = 0xa000;
-        *(int *)(c + 0x9c) = 0;
+        kpa->mVertSpeed = 0xa000;
+        kpa->mVertAccel = 0;
     }
 
-    if (*(int *)(c + 0x84) < 0x800)
+    if (kpa->mScaleY < 0x800)
         r4 = 1;
 
     {
-        short *p8e = (short *)(int)M(c + 0x8e);
-        short *p402b = (short *)(int)M(c + 0x400);
-        *p8e = (short)(*p8e + p402b[1]);
+        short *p8e = (short *)(int)M(&kpa->mAngleY);
+        *p8e = (short)(*p8e + kpa->mSpinSpeed);
     }
 
-    if (*(unsigned char *)(c + 0x41c) > 2) {
-        unsigned char *p41c = (unsigned char *)(int)M(c + 0x41c);
+    if (kpa->mOpacity > 2) {
+        unsigned char *p41c = (unsigned char *)(int)M(&kpa->mOpacity);
         *p41c = (unsigned char)(*p41c - 2);
     }
 
     if (r4 == 0) {
-        if (*(int *)(c + 0x450) != 0xba)
-            *(int *)(c + 0x44c) = 0;
-        *(int *)(c + 0x450) = 0xba;
-        *(int *)(c + 0x44c) = _ZN5Sound8PlayLongEjjjRK7Vector3s(
-            *(int *)(c + 0x44c), 3, *(int *)(c + 0x450), (const Vector3 *)(c + 0x74), 0);
+        if (kpa->mSoundID != BOWSER_SND_SHRINK_LOOP)
+            kpa->mSoundHandle = 0;
+        kpa->mSoundID = BOWSER_SND_SHRINK_LOOP;
+        kpa->mSoundHandle = _ZN5Sound8PlayLongEjjjRK7Vector3s(
+            kpa->mSoundHandle, 3, kpa->mSoundID, (const Vector3 *)(&kpa->mCamSpacePosX), 0);
     }
     return r4;
 }
@@ -2643,22 +3155,25 @@ int func_ov060_021132a4(char *c)
 /* ROM ordinal 22 -- func_ov060_02113260, 0x02113260, size 0x44 */
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov060_02113260
+/*
+Park him after the defeat: X and Z set to 0 (Y kept), scale 0, both speeds and
+gravity 0, no shadow, body collider switched off. */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov060_02113260(char *c)
+void func_ov060_02113260(daKpa_c *kpa)
 {
-    int y = *(int *)(c + 0x60);
+    int y = kpa->mPosY;
 
-    *(int *)(c + 0x5c) = 0;
-    *(int *)(c + 0x60) = y;
-    *(int *)(c + 0x64) = 0;
-    *(int *)(c + 0x80) = 0;
-    *(int *)(c + 0x84) = 0;
-    *(int *)(c + 0x88) = 0;
-    *(int *)(c + 0x98) = 0;
-    *(int *)(c + 0xa8) = 0;
-    *(int *)(c + 0x9c) = 0;
-    *(unsigned char *)(c + 0x426) = 0;
-    *(int *)(((int)c + 0x378)) |= 1;
+    kpa->mPosX = 0;
+    kpa->mPosY = y;
+    kpa->mPosZ = 0;
+    kpa->mScaleX = 0;
+    kpa->mScaleY = 0;
+    kpa->mScaleZ = 0;
+    kpa->mHorzSpeed = 0;
+    kpa->mVertSpeed = 0;
+    kpa->mVertAccel = 0;
+    kpa->mDropsShadow = 0;
+    kpa->mdCcAcPos_c.flags |= BOWSER_CC_DISABLED;
 }
 }
 
@@ -2666,62 +3181,72 @@ void func_ov060_02113260(char *c)
 /* ROM ordinal 21 -- func_ov060_021130c0, 0x021130c0, size 0x1a0 */
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov060_021130c0
+/*
+Defeat conversation and shrink for variants 0 and 1 (defeat step 3). mStepCounter
+is the phase: while it is 0 or 1 the conversation runs by mTalkStep, then
+func_ov060_021132a4 runs each frame and, when it returns 1,
+func_ov060_02113260 and func_ov060_021135fc run and this returns 1. Talk step 0:
+Player::StartTalk(this, 1); on success change the music volume (0x14, 0x15666)
+and advance. Step 1: once GetTalkState() is 0, show message 0xcd (variant 0) or
+0xcf at his position; advance on success. Step 2: when GetTalkState() returns -1,
+move to the next phase, advance, play animation 4 once, stop the loaded music
+layer (0x3c) and set the music volume (0x7f, 0x7222). */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-int func_ov060_021130c0(char* c)
+int func_ov060_021130c0(daKpa_c *kpa)
 {
     int ret = 0;
-    u16 outer = *(u16*)(c + 0x3fe);
+    u16 outer = kpa->mStepCounter;
 
     if (outer <= 1) {
         u8 inner;
 
         if (outer == 0) {
-            u16* op = (u16*)LAUND(c + 0x3fe);
+            u16* op = (u16*)LAUND(&kpa->mStepCounter);
             *op = *op + 1;
-            *(u8*)(c + 0x424) = 0;
+            kpa->mTalkStep = 0;
         }
 
-        inner = *(u8*)(c + 0x424);
+        inner = kpa->mTalkStep;
         switch (inner) {
         case 0:
-            if (_ZN6Player9StartTalkER7fBase_cb(*(void**)(c + 0x3a0), c, 1)) {
+            if (_ZN6Player9StartTalkER7fBase_cb(kpa->mTargetPlayer, kpa, 1)) {
                 _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(0x14, 0x15666);
                 {
-                    u8* p = (u8*)LAUND(c + 0x424);
+                    u8* p = (u8*)LAUND(&kpa->mTalkStep);
                     *p = *p + 1;
                 }
             }
             break;
 
         case 1:
-            if (_ZN6Player12GetTalkStateEv(*(void**)(c + 0x3a0)) == 0) {
-                int msg = (*(u8*)(c + 0x414) == 0) ? 0xcd : 0xcf;
+            if (_ZN6Player12GetTalkStateEv(kpa->mTargetPlayer) == 0) {
+                int msg = (kpa->mVariantID == 0) ? 0xcd : 0xcf;
                 if (_ZN6Player11ShowMessageER7fBase_cjPK7Vector3hh(
-                        *(void**)(c + 0x3a0), c, msg, c + 0x5c, 0, 2)) {
-                    u8* p = (u8*)LAUND(c + 0x424);
+                        kpa->mTargetPlayer, kpa, msg, &kpa->mPosX, 0, 2)) {
+                    u8* p = (u8*)LAUND(&kpa->mTalkStep);
                     *p = *p + 1;
                 }
             }
             break;
 
         case 2:
-            if (_ZN6Player12GetTalkStateEv(*(void**)(c + 0x3a0)) == -1) {
-                u16* op = (u16*)LAUND(c + 0x3fe);
-                u8* ip = (u8*)LAUND(c + 0x424);
+            if (_ZN6Player12GetTalkStateEv(kpa->mTargetPlayer) == -1) {
+                u16* op = (u16*)LAUND(&kpa->mStepCounter);
+                u8* ip = (u8*)LAUND(&kpa->mTalkStep);
                 int v;
                 *op = *op + 1;
                 v = *ip + 1;
                 *ip = v;
-                func_ov060_02111cc0(c, 4, 0x40000000);
+                func_ov060_02111cc0(kpa, 4, 0x40000000);
                 _ZN5Sound22StopLoadedMusic_Layer1Ej(0x3c);
                 _ZN5Sound17ChangeMusicVolumeEj5Fix12IiE(0x7f, 0x7222);
             }
             break;
         }
     } else {
-        if (func_ov060_021132a4(c)) {
-            func_ov060_02113260(c);
-            func_ov060_021135fc(c);
+        if (func_ov060_021132a4(kpa)) {
+            func_ov060_02113260(kpa);
+            func_ov060_021135fc(kpa);
             ret = 1;
         }
     }
@@ -2734,38 +3259,46 @@ int func_ov060_021130c0(char* c)
 /* ROM ordinal 20 -- func_ov060_02112ee0, 0x02112ee0, size 0x1e0 */
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov060_02112ee0
-extern "C" int func_ov060_02112ee0(void *cc)
+/*
+Defeat conversation and fade-out for variant 2 (defeat step 0xa). mStepCounter is
+the phase as in func_ov060_021130c0. Talk step 0: Player::StartTalk(this, 1).
+Step 1: once GetTalkState() is 0, show message 0xd1, or 0xd2 when NumStars()
+is 0x96 (150); when that succeeds also call Message::PrepareTalk. Step 2: when GetTalkState() returns
+-1, stop the loaded music layer (0x3c), run func_ov060_021135fc (the star), move
+to the next phase, advance and play animation 4 once. After the conversation: while
+mOpacity is above 4 it drops by 4 per frame with particle 0x99 50 units above him;
+then func_ov060_02113260 runs and this returns 1. */
+extern "C" int func_ov060_02112ee0(daKpa_c *kpa)
 {
-    char *c = (char *)cc;
     int ret = 0;
     unsigned short mode =
-        *(unsigned short *)((char *)LAUND(c + 0x300) + 0xfe);
+        kpa->mStepCounter;
     volatile int v[4];
 
     if (mode <= 1) {
         if (mode == 0) {
-            unsigned short *op = (unsigned short *)LAUND(c + 0x3fe);
+            unsigned short *op = (unsigned short *)LAUND(&kpa->mStepCounter);
             *op = *op + 1;
-            *(unsigned char *)(c + 0x424) = 0;
+            kpa->mTalkStep = 0;
         }
 
-        switch (*(unsigned char *)(c + 0x424)) {
+        switch (kpa->mTalkStep) {
         case 0:
             if (_ZN6Player9StartTalkER7fBase_cb(
-                    *(void **)(c + 0x3a0), c, 1)) {
+                    kpa->mTargetPlayer, kpa, 1)) {
                 unsigned char *p =
-                    (unsigned char *)LAUND(c + 0x424);
+                    (unsigned char *)LAUND(&kpa->mTalkStep);
                 *p = *p + 1;
             }
             break;
 
         case 1:
-            if (_ZN6Player12GetTalkStateEv(*(void **)(c + 0x3a0)) == 0) {
+            if (_ZN6Player12GetTalkStateEv(kpa->mTargetPlayer) == 0) {
                 unsigned m = (NumStars() != 0x96) ? 0xd1 : 0xd2;
                 if (_ZN6Player11ShowMessageER7fBase_cjPK7Vector3hh(
-                        *(void **)(c + 0x3a0), c, m, c + 0x5c, 0, 2)) {
+                        kpa->mTargetPlayer, kpa, m, &kpa->mPosX, 0, 2)) {
                     unsigned char *p =
-                        (unsigned char *)LAUND(c + 0x424);
+                        (unsigned char *)LAUND(&kpa->mTalkStep);
                     *p = *p + 1;
                     _ZN7Message11PrepareTalkEv();
                 }
@@ -2773,36 +3306,36 @@ extern "C" int func_ov060_02112ee0(void *cc)
             break;
 
         case 2:
-            if (_ZN6Player12GetTalkStateEv(*(void **)(c + 0x3a0)) == -1) {
+            if (_ZN6Player12GetTalkStateEv(kpa->mTargetPlayer) == -1) {
                 _ZN5Sound22StopLoadedMusic_Layer1Ej(0x3c);
-                func_ov060_021135fc(c);
+                func_ov060_021135fc(kpa);
 
                 unsigned short *op =
-                    (unsigned short *)LAUND(c + 0x3fe);
+                    (unsigned short *)LAUND(&kpa->mStepCounter);
                 unsigned char *ip =
-                    (unsigned char *)LAUND(c + 0x424);
+                    (unsigned char *)LAUND(&kpa->mTalkStep);
                 *op = *op + 1;
                 int t = *ip + 1;
                 *ip = t;
-                func_ov060_02111cc0(c, 4, 0x40000000);
+                func_ov060_02111cc0(kpa, 4, 0x40000000);
             }
             break;
         }
     } else {
-        if (*(unsigned char *)(c + 0x41c) > 4) {
-            *(unsigned char *)LAUND(c + 0x41c) -= 4;
+        if (kpa->mOpacity > 4) {
+            *(unsigned char *)LAUND(&kpa->mOpacity) -= 4;
             int y, z;
-            v[0] = *(int *)(c + 0x5c);
-            v[1] = y = *(int *)(c + 0x60);
-            v[2] = z = *(int *)(c + 0x64);
+            v[0] = kpa->mPosX;
+            v[1] = y = kpa->mPosY;
+            v[2] = z = kpa->mPosZ;
             v[1] = y + 0x32000;
 
-            *(void **)(c + 0x448) =
+            *(void **)(&kpa->mParticleHandle) =
                 _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(
-                    *(volatile unsigned *)(c + 0x448), 0x99,
+                    *(volatile unsigned *)&kpa->mParticleHandle, 0x99,
                     v[0], v[1], z, 0, 0);
         } else {
-            func_ov060_02113260(c);
+            func_ov060_02113260(kpa);
             ret = 1;
         }
     }
@@ -2814,26 +3347,32 @@ extern "C" int func_ov060_02112ee0(void *cc)
 /* ROM ordinal 19 -- func_ov060_02112ddc, 0x02112ddc, size 0x104 */
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov060_02112ddc
-extern "C" void func_ov060_02112ddc(char *self)
+/*
+State BOWSER_STATE_DEFEATED (4), by mStep. 0: func_ov060_02113564 (launch). 1:
+func_ov060_021134ac (airborne until landed). 2: func_ov060_02113404; when it
+returns 1, clear mStepCounter and go to step 0xa for variant 2, else step 3. 3:
+func_ov060_021130c0, advancing when it returns 1. 0xa: func_ov060_02112ee0,
+advancing to 0xb when it returns 1. 0xb: nothing. */
+extern "C" void func_ov060_02112ddc(daKpa_c *kpa)
 {
     unsigned char *p;
-    switch (*(unsigned char*)(self + 0x423)) {
-    case 0: func_ov060_02113564(self); break;
-    case 1: func_ov060_021134ac(self); break;
+    switch (kpa->mStep) {
+    case 0: func_ov060_02113564(kpa); break;
+    case 1: func_ov060_021134ac(kpa); break;
     case 2:
-        if (func_ov060_02113404(self) == 0) break;
-        *(short*)(self + 0x3fe) = 0;
-        if (*(unsigned char*)(self + 0x414) == 2) { *(unsigned char*)(self + 0x423) = 0xa; break; }
-        p = (unsigned char*)((long long)((int)self + 0x423));
+        if (func_ov060_02113404(kpa) == 0) break;
+        kpa->mStepCounter = 0;
+        if (kpa->mVariantID == 2) { kpa->mStep = 0xa; break; }
+        p = &kpa->mStep;
         *p += 1;
         break;
     case 3:
-        if (func_ov060_021130c0(self) == 0) break;
-        p = (unsigned char*)((long long)((int)self + 0x423));
+        if (func_ov060_021130c0(kpa) == 0) break;
+        p = &kpa->mStep;
         *p += 1;
         break;
     case 10:
-        if (func_ov060_02112ee0(self) != 0) { p = (unsigned char*)((long long)((int)self + 0x423)); *p += 1; }
+        if (func_ov060_02112ee0(kpa) != 0) { p = &kpa->mStep; *p += 1; }
         break;
     case 11: break;
     }
@@ -2843,17 +3382,22 @@ extern "C" void func_ov060_02112ddc(char *self)
 /* ROM ordinal 18 -- func_ov060_02112d48, 0x02112d48, size 0x94 */
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov060_02112d48
+/*
+Tilt the arena: find the KOOPA2BG actor by mArenaBgUniqueID (nothing if it is
+gone) and set its mAngleXSpeed to arg * cos and its mAngleZSpeed to -(arg * sin)
+of the angle mAngleToCenter + 0x8000 (the opposite of the direction to the
+centre), both Fix12 products shifted back down by 12. */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov060_02112d48(char *c, int arg)
+void func_ov060_02112d48(daKpa_c *kpa, int arg)
 {
-    char *o = (char *)_ZN8dActor_c10FindWithIDEj(*(unsigned int *)(c + 0x3ac));
+    daKpa2Bg_c *o = (daKpa2Bg_c *)_ZN8dActor_c10FindWithIDEj(kpa->mArenaBgUniqueID);
     if (o == 0)
         return;
-    short angle = *(short *)(c + 0x408);
+    short angle = kpa->mAngleToCenter;
     unsigned int idx = (unsigned short)(short)(angle + 0x8000) >> 4;
     int k = idx * 2;
-    *(short *)(o + 0x31e) = (short)((arg * data_02082214[k + 1]) >> 12);
-    *(short *)(o + 0x322) = (short)((arg * -data_02082214[k]) >> 12);
+    o->mAngleXSpeed = (short)((arg * data_02082214[k + 1]) >> 12);
+    o->mAngleZSpeed = (short)((arg * -data_02082214[k]) >> 12);
 }
 }
 
@@ -2861,8 +3405,19 @@ void func_ov060_02112d48(char *c, int arg)
 /* ROM ordinal 17 -- func_ov060_02112bfc, 0x02112bfc, size 0x14c */
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov060_02112bfc
+/*
+State BOWSER_STATE_ARENA_TILT (0x13): the arena rocks for 186 frames. mVertSpeed
+is held at mTerminalVelocity. If the KOOPA2BG actor is gone, back to
+BOWSER_STATE_IDLE. Otherwise the table at data_ov060_02119294 (rows of three
+halfwords: sign, scale, end frame; a row with end frame 0 ends it) is walked for
+the first row whose end frame is above mTimer; the tilt speed v is scale times a
+linear ramp in mTimer (counting down to the row's end for a positive sign, up
+from the previous row's end otherwise) and goes to func_ov060_02112d48; on odd
+frames with v non-zero func_ov060_02117a3c is called on the arena. When no row is
+left, go to BOWSER_STATE_IDLE and zero the arena's three angular speeds and three
+angles, and mVertSpeed. */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov060_02112d48(char* c, int arg);
+void func_ov060_02112d48(daKpa_c *kpa, int arg);
 void func_ov060_02117a3c(char* self);
 extern short data_ov060_02119294[];
 extern short data_ov060_02119296[];
@@ -2870,16 +3425,16 @@ extern short data_ov060_02119298[];
 /* p is volatile so the walk reloads the sentinel for each test -- lifetimes
  * on would keep p[2] in a register and skip the ROM's second load, and the
  * flag and the computed value are split so the flag keeps r6. */
-void func_ov060_02112bfc(char* c){
-    char* found; int i; int flag; volatile short* p;
-    *(int*)(c + 0xa8) = *(int*)(c + 0xa0);
-    found = (char*)_ZN8dActor_c10FindWithIDEj(*(unsigned int*)(c + 0x3ac));
-    if (found == 0) { *(int*)(c + 0x40c) = 0; return; }
+void func_ov060_02112bfc(daKpa_c *kpa){
+    daKpa2Bg_c* found; int i; int flag; volatile short* p;
+    kpa->mVertSpeed = kpa->mTerminalVelocity;
+    found = (daKpa2Bg_c*)_ZN8dActor_c10FindWithIDEj(kpa->mArenaBgUniqueID);
+    if (found == 0) { kpa->mState = BOWSER_STATE_IDLE; return; }
     p = data_ov060_02119294;
     i = 0;
     flag = 1;
     while (p[2] != 0) {
-        int r1 = *(unsigned short*)(c + 0x3fc);
+        int r1 = kpa->mTimer;
         if (r1 < p[2]) {
             int off = i * 6;
             short a = *(short*)((char*)data_ov060_02119294 + off);
@@ -2891,21 +3446,21 @@ void func_ov060_02112bfc(char* c){
                 i -= 1; off = i * 6;
                 v = (short)(b * (r1 - *(short*)((char*)data_ov060_02119298 + off)));
             }
-            func_ov060_02112d48(c, v);
-            if (v != 0 && (*(unsigned short*)(c + 0x3fc) & 1)) { func_ov060_02117a3c(found); }
+            func_ov060_02112d48(kpa, v);
+            if (v != 0 && (kpa->mTimer & 1)) { func_ov060_02117a3c((char *)found); }
             flag = 0; break;
         }
         p += 3;
         i += 1;
     }
     if (flag != 0) {
-        short* q = (short*)(((int)found + 0x8c));
-        *(int*)(c + 0x40c) = 0;
-        *(short*)(found + 0x31e) = 0;
-        *(short*)(found + 0x320) = 0;
-        *(short*)(found + 0x322) = 0;
+        short* q = &found->mAngleX;
+        kpa->mState = BOWSER_STATE_IDLE;
+        found->mAngleXSpeed = 0;
+        found->mAngleYSpeed = 0;
+        found->mAngleZSpeed = 0;
         q[0] = 0; q[1] = 0; q[2] = 0;
-        *(int*)(c + 0xa8) = 0;
+        kpa->mVertSpeed = 0;
     }
 }
 }
@@ -2914,13 +3469,17 @@ void func_ov060_02112bfc(char* c){
 /* ROM ordinal 16 -- func_ov060_02112ba8, 0x02112ba8, size 0x54 */
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov060_02112ba8
+/*
+True when he has fallen 0x3e8000 (1000 units) below mHomePosY while not already
+in BOWSER_STATE_RECOVER or BOWSER_STATE_ARENA_TILT. (The result of the
+IsOnGround call is discarded.) */
 extern "C" {
 extern int _ZNK10dBgCh_Actr10IsOnGroundEv(void*);
-int func_ov060_02112ba8(char* c){
-  int s = *(int*)(c+0x40c);
-  if(s != 2 && s != 0x13){
-    if(*(int*)(c+0x60) < *(int*)(c+0x3b4) - 0x3e8000) return 1;
-    _ZNK10dBgCh_Actr10IsOnGroundEv((char*)c+0x14c);
+int func_ov060_02112ba8(daKpa_c *kpa){
+  int s = kpa->mState;
+  if(s != BOWSER_STATE_RECOVER && s != BOWSER_STATE_ARENA_TILT){
+    if(kpa->mPosY < kpa->mHomePosY - 0x3e8000) return 1;
+    _ZNK10dBgCh_Actr10IsOnGroundEv(&kpa->mWithMeshClsn);
   }
   return 0;
 }
@@ -2930,31 +3489,50 @@ int func_ov060_02112ba8(char* c){
 /* ROM ordinal 15 -- func_ov060_021128c0, 0x021128c0, size 0x2e8 */
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov060_021128c0
+/*
+Hold state BOWSER_HOLD_NONE (0), the normal per-frame handler, called through the
+hold table by func_ov060_02112434. Clears mHoldStep. Unless he is defeated, if the
+body collider names an owner that is a Player (actorID 0xbf), hurt him
+(Player::Hurt at Bowser's position, arguments 2, 0x8000, 1, 0, 1). Then call the
+handler for mState from the table at data_ov060_0211aed4 (each row is a slot and
+a packed target; target bit 0 selects a call through the vtable slot, the rest
+is the this-adjustment), count mTimer, and on a state change reset mStep and
+mTimer. Then: dActor_c::UpdatePos with the body collider; update the floor
+collider (variant 1 uses func_02038408, others the continuous update); on the
+ground, copy the floor normal into mGroundNormal and remember mLastGroundPos;
+with mBounceOnLand set, a fresh ground hit makes mVertSpeed -60 percent of itself,
+at most 0x14000 (20.0); otherwise, when the floor normal's Y is non-zero, mVertSpeed is recomputed from
+the floor normal and the unnamed dActor_c words at 0xa4 and 0xac, minus 0x8000.
+For the states whose byte is 1 in data_ov060_02119268 (0, 3, 7..0xb, 0xe..0x10,
+0x12 and 0x13), if he has left the ground he is put back at mLastGroundPos and
+moved 8 units toward the centre (the sin/cos table entry shifted left 3), else
+mLastGroundPos is refreshed. Finally, func_ov060_02112ba8 sends him to
+BOWSER_STATE_RECOVER. */
 /* recovered: shared common types, declarations from a shared header */
 /* recovered: shared common types */
-extern "C" void func_ov060_021128c0(char* c)
+extern "C" void func_ov060_021128c0(daKpa_c *kpa)
 {
-    *(u8*)(c + 0x425) = 0;
+    kpa->mHoldStep = 0;
     u32 id;
-    if (*(s32*)(c + 0x40c) != 4 && (id = *(u32*)(c + 0x384)) != 0) {
+    if (kpa->mState != BOWSER_STATE_DEFEATED && (id = kpa->mdCcAcPos_c.otherOwner) != 0) {
         void* f = (void *)_ZN8dActor_c10FindWithIDEj(id);
         if (f != 0) {
-            int b = (*(u16*)((char*)f + 0xc) == 0xbf);
+            int b = (((dActor_c *)f)->actorID == BOWSER_ACTOR_PLAYER);
             if (b) {
                 Vector3 v;
-                v.x = *(s32*)(c + 0x5c);
-                v.y = *(s32*)(c + 0x60);
-                v.z = *(s32*)(c + 0x64);
+                v.x = kpa->mPosX;
+                v.y = kpa->mPosY;
+                v.z = kpa->mPosZ;
                 _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(f, v, 2, 0x8000, 1, 0, 1);
             }
         }
     }
 
-    s32 idx = *(s32*)(c + 0x40c);
+    s32 idx = kpa->mState;
     {
         TabEnt* e = &data_ov060_0211aed4[idx];
         int off = e->target;
-        void* base = (void*)(c + (off >> 1));
+        void* base = (void*)((char *)kpa + (off >> 1));
         void (*fn)(void*);
         if (off & 1)
             fn = (void (*)(void*))*(void**)((char*)(*(void***)base) + e->slot);
@@ -2963,75 +3541,86 @@ extern "C" void func_ov060_021128c0(char* c)
         fn(base);
     }
 
-    *(u16*)(((int)c + 0x3fc)) =
-        *(u16*)(((int)c + 0x3fc)) + 1;
-    if (*(s32*)(c + 0x40c) != idx) {
-        *(u8*)(c + 0x423) = 0;
-        *(u16*)((char*)(((int)c + 0x300)) + 0xfc) = 0;
+    {
+        u16 *h = &kpa->mTimer;
+        *h = *h + 1;
+    }
+    if (kpa->mState != idx) {
+        kpa->mStep = 0;
+        kpa->mTimer = 0;
     }
 
-    _ZN8dActor_c9UpdatePosEP5dCc_c(c, c + 0x360);
+    _ZN8dActor_c9UpdatePosEP5dCc_c(kpa, &kpa->mdCcAcPos_c);
 
-    if (*(u8*)(c + 0x414) == 1)
-        func_02038408(c + 0x14c);
+    if (kpa->mVariantID == 1)
+        func_02038408(&kpa->mWithMeshClsn);
     else
-        dBgCh_Actr_UpdateContinuous_Veneer(c + 0x14c);
+        dBgCh_Actr_UpdateContinuous_Veneer(&kpa->mWithMeshClsn);
 
-    if (_ZNK10dBgCh_Actr10IsOnGroundEv(c + 0x14c)) {
-        void* fr = _ZNK10dBgCh_Actr14GetFloorResultEv(c + 0x14c);
-        _ZNK11SurfaceInfo12CopyNormalToER7Vector3((char*)fr + 4, (Vector3*)(c + 0x3bc));
-        *(s32*)(c + 0x3c8) = *(s32*)(c + 0x5c);
-        *(s32*)(c + 0x3cc) = *(s32*)(c + 0x60);
-        *(s32*)(c + 0x3d0) = *(s32*)(c + 0x64);
-        if (*(u8*)(c + 0x427) != 0 && _ZNK10dBgCh_Actr13JustHitGroundEv(c + 0x14c)) {
-            *(s32*)(c + 0xa8) = (*(s32*)(c + 0xa8) * -60) / 100;
-            if (*(s32*)(c + 0xa8) >= 0x14000)
-                *(s32*)(c + 0xa8) = 0x14000;
-        } else if (*(s32*)(c + 0x3c0) != 0) {
-            *(s32*)(c + 0xa8) = -(_ZN4cstd4fdivEii(
-                (int)(((s64)*(s32*)(c + 0x3bc) * *(s32*)(c + 0xa4) + 0x800) >> 12)
-              + (int)(((s64)*(s32*)(c + 0x3c4) * *(s32*)(c + 0xac) + 0x800) >> 12),
-                *(s32*)(c + 0x3c0)) + 0x8000);
+    if (_ZNK10dBgCh_Actr10IsOnGroundEv(&kpa->mWithMeshClsn)) {
+        void* fr = _ZNK10dBgCh_Actr14GetFloorResultEv(&kpa->mWithMeshClsn);
+        _ZNK11SurfaceInfo12CopyNormalToER7Vector3((char*)fr + 4, (Vector3*)(&kpa->mGroundNormalX));
+        kpa->mLastGroundPosX = kpa->mPosX;
+        kpa->mLastGroundPosY = kpa->mPosY;
+        kpa->mLastGroundPosZ = kpa->mPosZ;
+        if (kpa->mBounceOnLand != 0 && _ZNK10dBgCh_Actr13JustHitGroundEv(&kpa->mWithMeshClsn)) {
+            kpa->mVertSpeed = (kpa->mVertSpeed * -60) / 100;
+            if (kpa->mVertSpeed >= 0x14000)
+                kpa->mVertSpeed = 0x14000;
+        } else if (kpa->mGroundNormalY != 0) {
+            kpa->mVertSpeed = -(_ZN4cstd4fdivEii(
+                (int)(((s64)kpa->mGroundNormalX * kpa->unk_0a4 + 0x800) >> 12)
+              + (int)(((s64)kpa->mGroundNormalZ * kpa->unk_0ac + 0x800) >> 12),
+                kpa->mGroundNormalY) + 0x8000);
         }
     }
 
     if (data_ov060_02119268[idx] != 0) {
-        if (!_ZNK10dBgCh_Actr10IsOnGroundEv(c + 0x14c)) {
-            char* p400 = (char*)(((int)c + 0x400));
-            s32* px = (s32*)(((int)c + 0x5c));
-            s32* pz = (s32*)(((int)c + 0x64));
+        if (!_ZNK10dBgCh_Actr10IsOnGroundEv(&kpa->mWithMeshClsn)) {
+            s32* px = &kpa->mPosX;
+            s32* pz = &kpa->mPosZ;
             s16* tab = data_02082214;
-            *(s32*)(c + 0x5c) = *(s32*)(c + 0x3c8);
-            *(s32*)(c + 0x60) = *(s32*)(c + 0x3cc);
-            *(s32*)(c + 0x64) = *(s32*)(c + 0x3d0);
+            kpa->mPosX = kpa->mLastGroundPosX;
+            kpa->mPosY = kpa->mLastGroundPosY;
+            kpa->mPosZ = kpa->mLastGroundPosZ;
             {
-                s32 a = (*(u16*)(p400 + 8) >> 4);
+                s32 a = (*(u16*)&kpa->mAngleToCenter >> 4);
                 *px = *px + ((s32)tab[a * 2] << 3);
             }
             {
-                s32 a = (*(u16*)(p400 + 8) >> 4);
+                s32 a = (*(u16*)&kpa->mAngleToCenter >> 4);
                 *pz = *pz + ((s32)tab[a * 2 + 1] << 3);
             }
         } else {
-            *(s32*)(c + 0x3c8) = *(s32*)(c + 0x5c);
-            *(s32*)(c + 0x3cc) = *(s32*)(c + 0x60);
-            *(s32*)(c + 0x3d0) = *(s32*)(c + 0x64);
+            kpa->mLastGroundPosX = kpa->mPosX;
+            kpa->mLastGroundPosY = kpa->mPosY;
+            kpa->mLastGroundPosZ = kpa->mPosZ;
         }
     }
 
-    if (func_ov060_02112ba8(c) == 0)
+    if (func_ov060_02112ba8(kpa) == 0)
         return;
-    *(s32*)(c + 0x40c) = 2;
-    *(u8*)(c + 0x423) = 0;
-    *(u16*)((char*)(((int)c + 0x300)) + 0xfc) = 0;
+    kpa->mState = BOWSER_STATE_RECOVER;
+    kpa->mStep = 0;
+    kpa->mTimer = 0;
 }
 
 /* -------------------------------------------------------------------------- */
 /* ROM ordinal 14 -- func_ov060_02112724, 0x02112724, size 0x19c */
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov060_02112724
+/*
+Hold state BOWSER_HOLD_HELD (1): a Player has grabbed the tail and swings him
+around. BOWSER_COND_BREATHING is cleared. By mHoldStep: 0 switches the body collider
+off, plays sound 0xb2, sets BOWSER_STATE_THROWN, starts animation 0xa and resets
+mAnimSpeed, advance; 1 starts animation 9 (looping) once animation 0xa
+reaches its last frame, and advances; 2 does nothing. Every frame: mSwingSpeed = the grabbed
+Player's mAngleYSpeed, mAngleX = -|mSwingSpeed| (used directly as an angle),
+mAngleY = the Player's mAngleY, and his position is the Player's plus 0xa0 (160)
+units out along the Player's facing (X and Z) and 0x18000 (24 units) up minus
+160 * sin(mAngleX) (Y). */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov060_02112724(char *c)
+void func_ov060_02112724(daKpa_c *kpa)
 {
     int v;
     short a;
@@ -3039,49 +3628,49 @@ void func_ov060_02112724(char *c)
     int j;
     Vector3 *s;
 
-    *(unsigned int *)(c + 0x418) &= ~0x20000;
+    kpa->mCondFlags &= ~BOWSER_COND_BREATHING;
 
-    switch (*(unsigned char *)(c + 0x425)) {
+    switch (kpa->mHoldStep) {
     case 0:
-        *(unsigned int *)(c + 0x378) |= 1;
-        func_02012694(0xb2, (const Vector3 *)(c + 0x74));
-        *(int *)(c + 0x40c) = 1;
-        func_ov060_02111cc0(c, 0xa, 0);
-        *(int *)(c + 0x3f8) = 0x1000;
-        (*(unsigned char *)(c + 0x425))++;
+        kpa->mdCcAcPos_c.flags |= BOWSER_CC_DISABLED;
+        func_02012694(BOWSER_SND_GRABBED, (const Vector3 *)(&kpa->mCamSpacePosX));
+        kpa->mState = BOWSER_STATE_THROWN;
+        func_ov060_02111cc0(kpa, 0xa, 0);
+        kpa->mAnimSpeed = 0x1000;
+        (kpa->mHoldStep)++;
         break;
     case 1:
-        if (Bowser_IsAnimAtLastFrame(c)) {
-            func_ov060_02111cc0(c, 9, 0);
-            (*(unsigned char *)(c + 0x425))++;
+        if (Bowser_IsAnimAtLastFrame(kpa)) {
+            func_ov060_02111cc0(kpa, 9, 0);
+            (kpa->mHoldStep)++;
         }
         break;
     case 2:
         break;
     }
 
-    *(int *)(c + 0x3f0) = *(short *)(*(char **)(c + 0x3a4) + 0x69c);
-    v = *(int *)(c + 0x3f0);
-    a = *(short *)(*(char **)(c + 0x3a4) + 0x8e);
+    kpa->mSwingSpeed = ((Player *)kpa->mGrabbedPlayer)->mAngleYSpeed;
+    v = kpa->mSwingSpeed;
+    a = kpa->mGrabbedPlayer->mAngleY;
     if (v < 0) {
         v = -v;
     }
-    *(short *)(c + 0x8c) = -v;
-    *(short *)(c + 0x8e) = a;
+    kpa->mAngleX = -v;
+    kpa->mAngleY = a;
 
 
 
-    s = (Vector3 *)(*(char **)(c + 0x3a4) + 0x5c);
-    *(int *)(c + 0x5c) = s->x;
-    *(int *)(c + 0x60) = s->y;
-    *(int *)(c + 0x64) = s->z;
+    s = (Vector3 *)&kpa->mGrabbedPlayer->mPosX;
+    kpa->mPosX = s->x;
+    kpa->mPosY = s->y;
+    kpa->mPosZ = s->z;
 
     i = ((unsigned short)a >> 4) * 2;
 
-    *(int *)(c + 0x5c) += data_02082214[i] * 0xa0;
-    j = (*(unsigned short *)(c + 0x8c) >> 4) * 2;
-    *(int *)(c + 0x60) += 0x18000 - data_02082214[j] * 0xa0;
-    *(int *)(c + 0x64) += data_02082214[i + 1] * 0xa0;
+    kpa->mPosX += data_02082214[i] * 0xa0;
+    j = ((unsigned short)kpa->mAngleX >> 4) * 2;
+    kpa->mPosY += 0x18000 - data_02082214[j] * 0xa0;
+    kpa->mPosZ += data_02082214[i + 1] * 0xa0;
 }
 }
 
@@ -3089,50 +3678,49 @@ void func_ov060_02112724(char *c)
 /* ROM ordinal 13 -- func_ov060_021125f0, 0x021125f0, size 0x134 */
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov060_021125f0
+/*
+Hold states BOWSER_HOLD_RELEASE_NOW (2) and BOWSER_HOLD_RELEASE_AFTER_ANIM (3):
+the release. Plays animation 0xe once; state 3 waits for its last frame. Then: clear
+mHoldStep and mHoldState, switch the body collider back on, set
+BOWSER_STATE_THROWN, and launch him: v = |mSwingSpeed| * 0x46 / 6000, times 2.5
+when v is above 0x2d; mHorzSpeed = v * cos(mAngleX) and mVertSpeed =
+-v * sin(mAngleX) (table entries at mAngleX >> 4). The tail (by mTailUniqueID) goes
+to BOWSER_TAIL_COOLDOWN with mTimer 0; mAngleX, mTimer and mStep are cleared and
+the floor collider's ground flag is cleared. */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov060_021125f0(char *c)
+void func_ov060_021125f0(daKpa_c *kpa)
 {
     int v, nv;
-    char *a;
+    daKpaTail_c *a;
 
-    func_ov060_02111cc0(c, 0xe, 0x40000000);
-    if (*(int *)(c + 0x410) == 3) {
-        if (Bowser_IsAnimAtLastFrame(c) == 0)
+    func_ov060_02111cc0(kpa, 0xe, 0x40000000);
+    if (kpa->mHoldState == BOWSER_HOLD_RELEASE_AFTER_ANIM) {
+        if (Bowser_IsAnimAtLastFrame(kpa) == 0)
             return;
     }
-    *(unsigned char *)(c + 0x425) = 0;
-    *(int *)(c + 0x410) = 0;
-    {
-        int *q = (int *)(c + 0x378);
-        *q &= ~1;
-    }
-    *(int *)(c + 0x40c) = 1;
-    v = *(int *)(c + 0x3f0);
+    kpa->mHoldStep = 0;
+    kpa->mHoldState = BOWSER_HOLD_NONE;
+    kpa->mdCcAcPos_c.flags &= ~BOWSER_CC_DISABLED;
+    kpa->mState = BOWSER_STATE_THROWN;
+    v = kpa->mSwingSpeed;
     if (v < 0)
         v = -v;
     v = v * 0x46 / 6000;
     if (v > 0x2d)
         v = v * 0x19 / 10;
     nv = -v;
-    *(int *)(c + 0x98) = v * data_02082214[(*(unsigned short *)(c + 0x8c) >> 4 << 1) + 1];
-    *(int *)(c + 0xa8) = nv * data_02082214[*(unsigned short *)(c + 0x8c) >> 4 << 1];
-    a = (char *)_ZN8dActor_c10FindWithIDEj(*(unsigned int *)(c + 0x3a8));
+    kpa->mHorzSpeed = v * data_02082214[((unsigned short)kpa->mAngleX >> 4 << 1) + 1];
+    kpa->mVertSpeed = nv * data_02082214[(unsigned short)kpa->mAngleX >> 4 << 1];
+    a = (daKpaTail_c *)_ZN8dActor_c10FindWithIDEj(kpa->mTailUniqueID);
     if (a != 0) {
-        *(int *)(a + 0x110) = 1;
-        {
-            char *p = (char *)(a + 0x100);
-            *(short *)(p + 0x14) = 0;
-        }
+        a->mState = BOWSER_TAIL_COOLDOWN;
+        a->mTimer = 0;
     }
-    *(short *)(c + 0x8c) = 0;
+    kpa->mAngleX = 0;
+    kpa->mTimer = 0;
     {
-        char *p = (char *)(c + 0x300);
-        *(short *)(p + 0xfc) = 0;
-    }
-    {
-        char *mesh = c + 0x14c;
-        *(unsigned char *)(c + 0x423) = 0;
-        _ZN10dBgCh_Actr15ClearGroundFlagEv(mesh);
+        kpa->mStep = 0;
+        _ZN10dBgCh_Actr15ClearGroundFlagEv((char *)&kpa->mWithMeshClsn);
     }
 }
 }
@@ -3141,54 +3729,60 @@ void func_ov060_021125f0(char *c)
 /* ROM ordinal 12 -- func_ov060_02112434, 0x02112434, size 0x1bc */
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov060_02112434
+/*
+Per-frame conditions, hold-state dispatch and opacity fade. Measure the
+horizontal distance and angle to the arena centre (the origin) into
+mDistToCenter and mAngleToCenter and rebuild the low byte of mCondFlags (see
+Bowser_CondFlag) from the four tests. Run the handler for mHoldState through the
+table at data_ov060_0211aeb4 (0: func_ov060_021128c0, 1: func_ov060_02112724, 2
+and 3: func_ov060_021125f0). Unless he is defeated, move mOpacity toward
+mTargetOpacity by 0x14 (20) per frame, clamping at 0xff and 0. */
 /* recovered: shared common types */
 extern "C" void func_ov060_02112434(void *tv)
 {
-    unsigned char *thiz = (unsigned char *)tv;
+    daKpa_c *kpa = (daKpa_c *)tv;
     Vector3 zero;
     zero.x = 0;
     zero.y = 0;
     zero.z = 0;
-    *(int*)(thiz + 0x3f4) = Vec3_HorzDist((Vector3*)(thiz + 0x5c), &zero);
-    *(short*)(thiz + 0x408) = Vec3_HorzAngle((Vector3*)(thiz + 0x5c), &zero);
+    kpa->mDistToCenter = Vec3_HorzDist((Vector3*)&kpa->mPosX, &zero);
+    kpa->mAngleToCenter = Vec3_HorzAngle((Vector3*)&kpa->mPosX, &zero);
 
-    int s0 = _ZN8dActor_c14GetSubtractionEss(thiz, *(short*)(thiz + 0x8e), *(short*)(thiz + 0x406));
-    int s1 = _ZN8dActor_c14GetSubtractionEss(thiz, *(short*)(thiz + 0x8e), *(short*)(thiz + 0x408));
+    int s0 = _ZN8dActor_c14GetSubtractionEss(kpa, kpa->mAngleY, kpa->mAngleToTarget);
+    int s1 = _ZN8dActor_c14GetSubtractionEss(kpa, kpa->mAngleY, kpa->mAngleToCenter);
 
-    *(int*)(int)(thiz + 0x418) &= ~0xff;
+    kpa->mCondFlags &= ~0xff;
     if (s0 < 0x2000)
-        *(int*)(int)(thiz + 0x418) |= 2;
+        kpa->mCondFlags |= BOWSER_COND_FACING_TARGET;
     if (s1 < 0x3800)
-        *(int*)(int)((long long)((int)thiz + 0x418)) |= 4;
-    if (*(int*)(thiz + 0x3f4) < 0x3e8000)
-        *(int*)((int)thiz + 0x418) |= 0x10;
-    if (*(int*)(thiz + 0x3ec) < 0x352000)
-        *(int*)(int)((unsigned long long)((unsigned)thiz + 0x418)) |= 8;
+        kpa->mCondFlags |= BOWSER_COND_FACING_CENTER;
+    if (kpa->mDistToCenter < 0x3e8000)
+        kpa->mCondFlags |= BOWSER_COND_NEAR_CENTER;
+    if (kpa->mDistToTarget < 0x352000)
+        kpa->mCondFlags |= BOWSER_COND_TARGET_NEAR;
 
-    (((daKpa_c *)thiz)->*data_ov060_0211aeb4[*(int*)(thiz + 0x410)].pmf)();
+    (kpa->*data_ov060_0211aeb4[kpa->mHoldState].pmf)();
 
-    if (*(int*)(thiz + 0x40c) == 4) return;
+    if (kpa->mState == BOWSER_STATE_DEFEATED) return;
 
-    unsigned char lo = thiz[0x41c];
-    unsigned char hi = thiz[0x41d];
+    unsigned char lo = kpa->mOpacity;
+    unsigned char hi = kpa->mTargetOpacity;
     if (hi == lo) return;
     if (hi > lo) {
         int v = lo + 0x14;
         if (v >= 0xff) {
-            thiz[0x41c] = 0xff;
+            kpa->mOpacity = 0xff;
             return;
         }
-        *(unsigned char*)(int)(thiz + 0x41c) =
-            *(unsigned char*)(int)(thiz + 0x41c) + 0x14;
+        kpa->mOpacity += 0x14;
         return;
     }
     {
         int v = lo - 0x14;
         if (v <= 0) {
-            thiz[0x41c] = 0;
+            kpa->mOpacity = 0;
         } else {
-            *(unsigned char*)(int)((long long)((int)thiz + 0x41c)) =
-                *(unsigned char*)(int)((long long)((int)thiz + 0x41c)) - 0x14;
+            kpa->mOpacity -= 0x14;
         }
     }
 }
@@ -3197,18 +3791,23 @@ extern "C" void func_ov060_02112434(void *tv)
 /* ROM ordinal 11 -- func_ov060_021123dc, 0x021123dc, size 0x58 */
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov060_021123dc
+/*
+Fight-start values, called from InitResources: mPickToggle 1, fully opaque, variant
+3 treated as 0, mHealth from the byte table at data_ov060_02119264 (1, 1, 3 in the
+ROM, indexed by variant), state BOWSER_STATE_INTRO_WAIT, no hold, and unk_420 and
+unk_422 cleared. */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 void func_ov060_021123dc(void* c){
-  char* p = (char*)c;
-  *(unsigned char*)(p+0x415)=1;
-  *(unsigned char*)(p+0x41c)=0xff;
-  *(unsigned char*)(p+0x41d)=0xff;
-  if(*(unsigned char*)(p+0x414)==3) *(unsigned char*)(p+0x414)=0;
-  *(unsigned char*)(p+0x41e)=data_ov060_02119264[*(unsigned char*)(p+0x414)];
-  *(int*)(p+0x40c)=5;
-  *(int*)(p+0x410)=0;
-  *(unsigned short*)(p+0x420)=0;
-  *(unsigned char*)(p+0x422)=0;
+    daKpa_c *kpa = (daKpa_c *)c;
+  kpa->mPickToggle=1;
+  kpa->mOpacity=0xff;
+  kpa->mTargetOpacity=0xff;
+  if(kpa->mVariantID==3) kpa->mVariantID=0;
+  kpa->mHealth=data_ov060_02119264[kpa->mVariantID];
+  kpa->mState=BOWSER_STATE_INTRO_WAIT;
+  kpa->mHoldState=BOWSER_HOLD_NONE;
+  kpa->unk_420=0;
+  kpa->unk_422=0;
 }
 }
 
@@ -3216,11 +3815,14 @@ void func_ov060_021123dc(void* c){
 /* ROM ordinal 10 -- func_ov060_021123c8, 0x021123c8, size 0x14 */
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov060_021123c8
+/*
+Called when the tail lets go of a Player: set mBounceOnLand (func_ov060_021128c0
+then bounces him when he next hits the ground) and forget the grabbed Player. */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov060_021123c8(char *p)
+void func_ov060_021123c8(daKpa_c *kpa)
 {
-    *(char *)(p + 0x427) = 1;
-    *(int *)(p + 0x3a4) = 0;
+    kpa->mBounceOnLand = 1;
+    kpa->mGrabbedPlayer = 0;
 }
 }
 
@@ -3228,13 +3830,15 @@ void func_ov060_021123c8(char *p)
 /* ROM ordinal 9 -- func_ov060_021123a0, 0x021123a0, size 0x28 */
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov060_021123a0
+/*
+Body collider switch: a non-zero argument clears the disabled bit (dCc_c flags
+bit 0) of mdCcAcPos_c, zero sets it. */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov060_021123a0(void *v, int f) {
-    char *c = (char *)v;
+void func_ov060_021123a0(daKpa_c *kpa, int f) {
     if (f)
-        (*(int *)(((int)c + 0x378))) &= ~1;
+        (kpa->mdCcAcPos_c.flags) &= ~BOWSER_CC_DISABLED;
     else
-        (*(int *)(((int)c + 0x378))) |= 1;
+        (kpa->mdCcAcPos_c.flags) |= BOWSER_CC_DISABLED;
 }
 }
 
@@ -3242,12 +3846,15 @@ void func_ov060_021123a0(void *v, int f) {
 /* ROM ordinal 8 -- func_ov060_02112350, 0x02112350, size 0x50 */
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov060_02112350
+/*
+When the current animation has finished and is animation 5 (data_ov060_0211acd0
+is entry 5 of the animation table), start animation 3 (looping). */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-void func_ov060_02112350(void* c){
-  int r=_ZN9Animation8FinishedEv((char*)c+0x124);
+void func_ov060_02112350(daKpa_c *kpa){
+  int r=kpa->mModelAnim.Finished();
   if(!r) return;
-  if(*(int*)((char*)c+0x134) != data_ov060_0211acd0[1]) return;
-  func_ov060_02111cc0(c,3,0);
+  if((int)kpa->mModelAnim.file != data_ov060_0211acd0[1]) return;
+  func_ov060_02111cc0(kpa,3,0);
 }
 }
 
@@ -3255,13 +3862,29 @@ void func_ov060_02112350(void* c){
 /* ROM ordinal 7 -- func_ov060_02111f08, 0x02111f08, size 0x448 */
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov060_02111f08
+/*
+The intro camera, one step per mCutsceneStep, run each frame by the two intro
+states and once more by the conversation. Returns 1 at once when there is no
+Player, and otherwise only when step 3 completes. Step 0: Camera::SetFlag_3; aim
+the camera at the Player's position with Y replaced by Bowser's own (kept in
+mCamLookAt); place the camera 0.625 times the horizontal distance to that point
+away from Bowser, at the angle toward it minus 0x2000 (45 degrees), and 0xc8000
+(200 units) above him (kept in mCamPos); Camera::SetPos. Step 1: func_020092c4 on the look-at;
+count frames the Player is not in the air (the count resets while he is) and go
+on once it exceeds 0x1e (30). Step 2: ease the camera position toward a spot at 0.375 times
+the horizontal distance to the Player (at least 0x1f4000 = 500 units) at the
+angle minus 0x1000 (22.5 degrees) by 0x4000 (4.0) per frame per axis, and the
+look-at X and Z toward Bowser's by 0x1e000 (30.0); go on when func_020092c4 on
+the look-at returns non-zero. Step 3: ease the look-at, by 0xa000 (10.0) per
+axis, to a point 0xc0 (192) units ahead along mAngleY and 0xfa000 (250 units) up;
+return 1 when func_020092c4 returns non-zero. Step 4: clear bit 0x8 of
+Camera::mFlags. */
 /* recovered: shared common types */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
-int func_ov060_02111f08(void* arg0)
+int func_ov060_02111f08(daKpa_c *kpa)
 {
-    char* self = (char*)arg0;
-    void* cam = data_0209f318;
-    char* player = (char*)_ZN8dActor_c13ClosestPlayerEv(arg0);
+    dCamera_c* cam = (dCamera_c *)data_0209f318;
+    char* player = (char*)_ZN8dActor_c13ClosestPlayerEv(kpa);
     struct Vector3 sp;
     struct Vector3* pv;
     unsigned char* p;
@@ -3273,81 +3896,81 @@ int func_ov060_02111f08(void* arg0)
     if (player == 0)
         return 1;
 
-    switch (*(unsigned char*)(self + 0x444)) {
+    switch (kpa->mCutsceneStep) {
     case 0:
-        ((dCamera_c *)cam)->SetFlag_3();
-        pv = (struct Vector3*)(player + 0x5c);
+        cam->SetFlag_3();
+        pv = (struct Vector3*)&((dActor_c *)player)->mPosX;
         sp.x = pv->x;
         sp.y = pv->y;
         sp.z = pv->z;
-        sp.y = *(int*)(self + 0x60);
-        ((dCamera_c *)cam)->SetLookAt(*(const Vector3 *)&sp);
-        *(int*)(self + 0x42c) = sp.x;
-        *(int*)(self + 0x430) = sp.y;
-        *(int*)(self + 0x434) = sp.z;
-        dist = Vec3_HorzDist((struct Vector3*)(self + 0x5c), &sp);
-        k = (unsigned short)(short)(Vec3_HorzAngle((struct Vector3*)(self + 0x5c), &sp) - 0x2000) >> 4;
+        sp.y = kpa->mPosY;
+        cam->SetLookAt(sp);
+        kpa->mCamLookAtX = sp.x;
+        kpa->mCamLookAtY = sp.y;
+        kpa->mCamLookAtZ = sp.z;
+        dist = Vec3_HorzDist((struct Vector3*)(&kpa->mPosX), &sp);
+        k = (unsigned short)(short)(Vec3_HorzAngle((struct Vector3*)(&kpa->mPosX), &sp) - 0x2000) >> 4;
         v = (int)(((long long)dist * 0xA00 + 0x800) >> 12);
-        *(int*)(self + 0x438) = *(int*)(self + 0x5c) + (int)(((long long)v * data_02082214[k * 2] + 0x800) >> 12);
-        *(int*)(self + 0x43c) = *(int*)(self + 0x60) + 0xc8000;
-        *(int*)(self + 0x440) = *(int*)(self + 0x64) + (int)(((long long)v * data_02082214[k * 2 + 1] + 0x800) >> 12);
-        ((dCamera_c *)cam)->SetPos(*(const Vector3 *)(self + 0x438));
-        p = (unsigned char*)(self + 0x444);
+        kpa->mCamPosX = kpa->mPosX + (int)(((long long)v * data_02082214[k * 2] + 0x800) >> 12);
+        kpa->mCamPosY = kpa->mPosY + 0xc8000;
+        kpa->mCamPosZ = kpa->mPosZ + (int)(((long long)v * data_02082214[k * 2 + 1] + 0x800) >> 12);
+        cam->SetPos(*(const Vector3 *)(&kpa->mCamPosX));
+        p = (unsigned char*)(&kpa->mCutsceneStep);
         *p = *p + 1;
         break;
     case 1:
-        func_020092c4(cam, (char*)cam + 0x80, self + 0x42c);
+        func_020092c4(cam, &cam->lookAt, &kpa->mCamLookAtX);
         if (_ZN6Player7IsInAirEv(player) != 0)
-            *(unsigned char*)(self + 0x445) = 0;
+            kpa->mCutsceneTimer = 0;
         else {
-            p = (unsigned char*)(self + 0x445);
+            p = (unsigned char*)(&kpa->mCutsceneTimer);
             *p = *p + 1;
         }
-        if (*(unsigned char*)(self + 0x445) > 0x1e) {
-            p = (unsigned char*)(self + 0x444);
+        if (kpa->mCutsceneTimer > 0x1e) {
+            p = (unsigned char*)(&kpa->mCutsceneStep);
             *p = *p + 1;
         }
         break;
     case 2:
-        pv = (struct Vector3*)(player + 0x5c);
+        pv = (struct Vector3*)&((dActor_c *)player)->mPosX;
         sp.x = pv->x;
         sp.y = pv->y;
         sp.z = pv->z;
-        dist = Vec3_HorzDist((struct Vector3*)(self + 0x5c), &sp);
+        dist = Vec3_HorzDist((struct Vector3*)(&kpa->mPosX), &sp);
         d = (int)(((long long)dist * 0x600 + 0x800) >> 12);
         if (d < 0x1f4000)
             d = 0x1f4000;
-        k = (unsigned short)(short)(Vec3_HorzAngle((struct Vector3*)(self + 0x5c), &sp) - 0x1000) >> 4;
-        sp.x = *(int*)(self + 0x5c) + (int)(((long long)d * data_02082214[k * 2] + 0x800) >> 12);
-        sp.z = *(int*)(self + 0x64) + (int)(((long long)d * data_02082214[k * 2 + 1] + 0x800) >> 12);
-        _Z14ApproachLinearRiii((int*)(self + 0x438), sp.x, 0x4000);
-        _Z14ApproachLinearRiii((int*)(self + 0x440), sp.z, 0x4000);
-        _Z14ApproachLinearRiii((int*)(self + 0x42c), *(int*)(self + 0x5c), 0x1e000);
-        _Z14ApproachLinearRiii((int*)(self + 0x434), *(int*)(self + 0x64), 0x1e000);
-        func_020092c4(cam, (char*)cam + 0x8c, self + 0x438);
-        if (func_020092c4(cam, (char*)cam + 0x80, self + 0x42c) != 0) {
-            p = (unsigned char*)(self + 0x444);
+        k = (unsigned short)(short)(Vec3_HorzAngle((struct Vector3*)(&kpa->mPosX), &sp) - 0x1000) >> 4;
+        sp.x = kpa->mPosX + (int)(((long long)d * data_02082214[k * 2] + 0x800) >> 12);
+        sp.z = kpa->mPosZ + (int)(((long long)d * data_02082214[k * 2 + 1] + 0x800) >> 12);
+        _Z14ApproachLinearRiii(&kpa->mCamPosX, sp.x, 0x4000);
+        _Z14ApproachLinearRiii(&kpa->mCamPosZ, sp.z, 0x4000);
+        _Z14ApproachLinearRiii(&kpa->mCamLookAtX, kpa->mPosX, 0x1e000);
+        _Z14ApproachLinearRiii(&kpa->mCamLookAtZ, kpa->mPosZ, 0x1e000);
+        func_020092c4(cam, &cam->pos, &kpa->mCamPosX);
+        if (func_020092c4(cam, &cam->lookAt, &kpa->mCamLookAtX) != 0) {
+            p = (unsigned char*)(&kpa->mCutsceneStep);
             *p = *p + 1;
         }
         break;
     case 3: {
         int ty, tz, tx;
-        k = (int)(*(unsigned short*)(self + 0x8e)) >> 4;
-        tz = data_02082214[k * 2 + 1] * 0xc0 + *(int*)(self + 0x64);
-        ty = *(int*)(self + 0x60) + 0xfa000;
-        tx = data_02082214[k * 2] * 0xc0 + *(int*)(self + 0x5c);
+        k = (int)((unsigned short)kpa->mAngleY) >> 4;
+        tz = data_02082214[k * 2 + 1] * 0xc0 + kpa->mPosZ;
+        ty = kpa->mPosY + 0xfa000;
+        tx = data_02082214[k * 2] * 0xc0 + kpa->mPosX;
         sp.x = tx;
         sp.y = ty;
         sp.z = tz;
     }
-        _Z14ApproachLinearRiii((int*)(self + 0x42c), sp.x, 0xa000);
-        _Z14ApproachLinearRiii((int*)(self + 0x430), sp.y, 0xa000);
-        _Z14ApproachLinearRiii((int*)(self + 0x434), sp.z, 0xa000);
-        if (func_020092c4(cam, (char*)cam + 0x80, self + 0x42c) != 0)
+        _Z14ApproachLinearRiii(&kpa->mCamLookAtX, sp.x, 0xa000);
+        _Z14ApproachLinearRiii(&kpa->mCamLookAtY, sp.y, 0xa000);
+        _Z14ApproachLinearRiii(&kpa->mCamLookAtZ, sp.z, 0xa000);
+        if (func_020092c4(cam, &cam->lookAt, &kpa->mCamLookAtX) != 0)
             return 1;
         break;
     case 4:
-        *(int*)((char*)cam + 0x154) &= ~8;
+        cam->mFlags &= ~8;
         break;
     default:
         break;
@@ -3360,6 +3983,17 @@ int func_ov060_02111f08(void* arg0)
 /* ROM ordinal 6 -- func_ov060_02111cc0, 0x02111cc0, size 0x248 */
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov060_02111cc0
+/*
+Switch the model to animation idx (entries 0..0x1b of the table at
+data_ov060_021192dc; entry [1] of each handle is the file) and pick the texture
+pattern that goes with it. The third parameter reaches ModelAnim::SetAnim
+unchanged as its flags word: the local `a` below is never assigned, and the ROM
+passes the caller's third argument (still in r2) straight through. Callers pass 0 or 0x40000000; the top two bits of
+an Animation's flag word choose between wrapping and clamping at the end (see
+Animation::WillHitFrame), so 0x40000000 reads as play-once and 0 as looping.
+Texture pattern by idx: 1 uses data_ov060_0211ac40, 2 acb8 and 0xa ac30 (all
+with texture-sequence flags 0x40000000); 3 and 5 use ac10, 0xe uses abf0, and
+every other idx (0 included) uses ac28 (these three with flags 0). */
 #include "TextureSequence.h"
 struct BMD_File;
 struct BTP_File;
@@ -3383,43 +4017,42 @@ extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *anim, void *file, 
 extern void _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(void *ts, void *file, int a, int d, unsigned e);
 extern void _ZN9Animation8SetFlagsEi(void *anim, int flags);
 
-void func_ov060_02111cc0(void *v, int idx, int fix)
+void func_ov060_02111cc0(daKpa_c *kpa, int idx, int animFlags)
 {
-    char *c = (char *)v;
-    int a;
-    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(c + 0xd4, (void *)((int *)data_ov060_021192dc[idx])[1], a, 0x1000, 0);
+    int a;  /* deliberately never assigned: it is animFlags, still in r2 (see above) */
+    _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&kpa->mModelAnim, (void *)((int *)data_ov060_021192dc[idx])[1], a, 0x1000, 0);
     switch (idx) {
     case 1:
         TextureSequence::Prepare(*(BMD_File *)data_ov060_0211ac78[1], *(BTP_File *)data_ov060_0211ac40[1]);
-        _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(c + 0x138, (void *)data_ov060_0211ac40[1], 0, 0x1000, 0);
-        _ZN9Animation8SetFlagsEi(c + 0x138, 0x40000000);
+        _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(&kpa->mTextureSequence, (void *)data_ov060_0211ac40[1], 0, 0x1000, 0);
+        _ZN9Animation8SetFlagsEi(&kpa->mTextureSequence, 0x40000000);
         return;
     case 2:
         TextureSequence::Prepare(*(BMD_File *)data_ov060_0211ac78[1], *(BTP_File *)data_ov060_0211acb8[1]);
-        _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(c + 0x138, (void *)data_ov060_0211acb8[1], 0, 0x1000, 0);
-        _ZN9Animation8SetFlagsEi(c + 0x138, 0x40000000);
+        _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(&kpa->mTextureSequence, (void *)data_ov060_0211acb8[1], 0, 0x1000, 0);
+        _ZN9Animation8SetFlagsEi(&kpa->mTextureSequence, 0x40000000);
         return;
     case 3:
     case 5:
         TextureSequence::Prepare(*(BMD_File *)data_ov060_0211ac78[1], *(BTP_File *)data_ov060_0211ac10[1]);
-        _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(c + 0x138, (void *)data_ov060_0211ac10[1], 0, 0x1000, 0);
-        _ZN9Animation8SetFlagsEi(c + 0x138, 0);
+        _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(&kpa->mTextureSequence, (void *)data_ov060_0211ac10[1], 0, 0x1000, 0);
+        _ZN9Animation8SetFlagsEi(&kpa->mTextureSequence, 0);
         return;
     case 14:
         TextureSequence::Prepare(*(BMD_File *)data_ov060_0211ac78[1], *(BTP_File *)data_ov060_0211abf0[1]);
-        _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(c + 0x138, (void *)data_ov060_0211abf0[1], 0, 0x1000, 0);
-        _ZN9Animation8SetFlagsEi(c + 0x138, 0);
+        _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(&kpa->mTextureSequence, (void *)data_ov060_0211abf0[1], 0, 0x1000, 0);
+        _ZN9Animation8SetFlagsEi(&kpa->mTextureSequence, 0);
         return;
     case 10:
         TextureSequence::Prepare(*(BMD_File *)data_ov060_0211ac78[1], *(BTP_File *)data_ov060_0211ac30[1]);
-        _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(c + 0x138, (void *)data_ov060_0211ac30[1], 0, 0x1000, 0);
-        _ZN9Animation8SetFlagsEi(c + 0x138, 0x40000000);
+        _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(&kpa->mTextureSequence, (void *)data_ov060_0211ac30[1], 0, 0x1000, 0);
+        _ZN9Animation8SetFlagsEi(&kpa->mTextureSequence, 0x40000000);
         return;
     case 0:
     default:
         TextureSequence::Prepare(*(BMD_File *)data_ov060_0211ac78[1], *(BTP_File *)data_ov060_0211ac28[1]);
-        _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(c + 0x138, (void *)data_ov060_0211ac28[1], 0, 0x1000, 0);
-        _ZN9Animation8SetFlagsEi(c + 0x138, 0);
+        _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(&kpa->mTextureSequence, (void *)data_ov060_0211ac28[1], 0, 0x1000, 0);
+        _ZN9Animation8SetFlagsEi(&kpa->mTextureSequence, 0);
         return;
     }
 }
@@ -3429,15 +4062,21 @@ void func_ov060_02111cc0(void *v, int idx, int fix)
 /* ROM ordinal 5 -- func_ov060_02111c68, 0x02111c68, size 0x58 */
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov060_02111c68
+/*
+Row number for the mouth fire in daKpaFire_c, or -1. While animation 8 plays
+(data_ov060_0211ac20 is entry 8 of the animation table) the row is the whole
+frame number minus 0x31 from frame 0x31 on; while animation 6 plays
+(data_ov060_0211ac68) it is the frame number plus 0xb; otherwise -1. */
 extern "C" {  /* .c-derived member: C linkage for the whole block */
 int func_ov060_02111c68(char *c){
-  int v = *(int*)(c+0x134);
+  daKpa_c *kpa = (daKpa_c *)c;
+  int v = (int)kpa->mModelAnim.file;
   if(v == (int)data_ov060_0211ac20[1]){
-    unsigned int t = (*(unsigned int*)(c+0x12c) << 4) >> 0x10;
+    unsigned int t = ((unsigned int)kpa->mModelAnim.currFrame << 4) >> 0x10;
     if(t >= 0x31) return t - 0x31;
   }
   if(v == (int)data_ov060_0211ac68[1]){
-    return ((*(unsigned int*)(c+0x12c) << 4) >> 0x10) + 0xb;
+    return (((unsigned int)kpa->mModelAnim.currFrame << 4) >> 0x10) + 0xb;
   }
   return -1;
 }
@@ -3448,6 +4087,18 @@ int func_ov060_02111c68(char *c){
 /* -------------------------------------------------------------------------- */
 // @symbol func_ov060_02111a28
 // @symbol func_ov060_02111a28
+/*
+Footfall detection, called from Behavior each frame. For six animations the whole
+frame number n is tested against windows that pick a foot point: 1 means
+mFootPosA, 2 means mFootPosB. Animation 0x11: n 0x14..0x17 is B, n == 0x29 or
+n < 2 is A. 0x12: 0xf..0x12 is B. 0x18: n >= 0x1c is A. 0x19: 6..9 is B, n >= 0xf
+is A. 0xf: 0x10..0x13 is A, 0x1e..0x21 is B, 0x2d..0x30 is A. 0xd: 0xa..0xd is A,
+0x18..0x1b is B. (The six handles data_ov060_0211acb0, ac00, ace0, aca0, abf8 and
+ac90 are entries 0x11, 0x12, 0x18, 0x19, 0xf and 0xd of the animation table.)
+mFootfallLatch remembers that the previous frame was in a window, so the effect
+fires only on entering one: huge landing dust at the chosen foot point, sound
+0xb0 at his camera-space position and dActor_c::Earthquake at his position with
+the Fix12 argument 0x320000 (800.0). */
 /* recovered: shared common types */
 #include "common.h"
 extern "C" {
@@ -3467,13 +4118,14 @@ extern void _ZN5Sound4PlayEjjRK7Vector3(unsigned a, unsigned b, void *v);
 
 void func_ov060_02111a28(char *c)
 {
+    daKpa_c *kpa = (daKpa_c *)c;
     /* (unsigned short)(u32 >> 12) forces ROM prologue load order
        (frame@0x12c into r0, then flag@0x446 into r1) + lsl#4/lsr#16 extract. */
-    int n = (unsigned short)((unsigned)*(int *)(c + 0x12c) >> 12);
-    int r3 = (*(unsigned char *)(c + 0x446) != 0) ? 1 : 0;
-    int v = *(int *)(c + 0x134);
+    int n = (unsigned short)((unsigned)kpa->mModelAnim.currFrame >> 12);
+    int r3 = (kpa->mFootfallLatch != 0) ? 1 : 0;
+    int v = (int)kpa->mModelAnim.file;
     int r1 = 0;
-    *(unsigned char *)(c + 0x446) = 0;
+    kpa->mFootfallLatch = 0;
 
     if (v == data_ov060_0211acb0[1]) {
         if (n >= 0x14 && n <= 0x17)
@@ -3507,30 +4159,30 @@ void func_ov060_02111a28(char *c)
 
     if (r1 == 0)
         return;
-    *(unsigned char *)(c + 0x446) = 1;
+    kpa->mFootfallLatch = 1;
     if (r3 != 0)
         return;
 
     if (r1 == 1) {
         Vector3 dust;
-        dust.x = *(int *)(c + 0x3d4);
-        dust.y = *(int *)(c + 0x3d8);
-        dust.z = *(int *)(c + 0x3dc);
-        _ZN8dActor_c17HugeLandingDustAtER7Vector3b(c, &dust, 0);
+        dust.x = kpa->mFootPosAX;
+        dust.y = kpa->mFootPosAY;
+        dust.z = kpa->mFootPosAZ;
+        _ZN8dActor_c17HugeLandingDustAtER7Vector3b(kpa, &dust, 0);
     } else {
         Vector3 dust;
-        dust.x = *(int *)(c + 0x3e0);
-        dust.y = *(int *)(c + 0x3e4);
-        dust.z = *(int *)(c + 0x3e8);
-        _ZN8dActor_c17HugeLandingDustAtER7Vector3b(c, &dust, 0);
+        dust.x = kpa->mFootPosBX;
+        dust.y = kpa->mFootPosBY;
+        dust.z = kpa->mFootPosBZ;
+        _ZN8dActor_c17HugeLandingDustAtER7Vector3b(kpa, &dust, 0);
     }
-    _ZN5Sound4PlayEjjRK7Vector3(3, 0xb0, c + 0x74);
+    _ZN5Sound4PlayEjjRK7Vector3(3, BOWSER_SND_FOOTFALL, &kpa->mCamSpacePosX);
     {
         Vector3 quake;
-        quake.x = *(int *)(c + 0x5c);
-        quake.y = *(int *)(c + 0x60);
-        quake.z = *(int *)(c + 0x64);
-        _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(c, &quake, 0x320000);
+        quake.x = kpa->mPosX;
+        quake.y = kpa->mPosY;
+        quake.z = kpa->mPosZ;
+        _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(kpa, &quake, 0x320000);
     }
 }
 }

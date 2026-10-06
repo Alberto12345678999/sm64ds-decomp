@@ -5,16 +5,16 @@
  *
  * The on-screen glint that shows where an uncollected star will appear.
  * param1's low nibble is the star id and its next nibble picks the flavour --
- * InitResources turns that into mState (0 spins a plain star model, 1 is the
- * markable one, 2 and 3 are the two collision-driven variants) and into the
- * mFlags bits everything else tests.
+ * InitResources turns that into mState (0 spins its own model; 1, 2 and 3 use
+ * the other model and sit still, with state 1 from the odd kinds, 2 from
+ * kind 4 and 3 from kind 5, which also differ in the touch volume they set
+ * up) and into the mFlags bits everything else tests.
  *
  * 0x004, 0x05c..0x064, 0x08e and 0x0cc ARE fBase_c's and dActor_c's OWN
  * LAYOUT, not this class's, and are named from include/dActor_c.h by offset.
  *
- * Field provenance: notes/butterfly-tornado-provenance.md. The ROM TU boundary
- * is shared with daStar_c and StarCamera; this class header does not claim a
- * standalone original source file. */
+ * The ROM TU boundary is shared with daStar_c and StarCamera; this class
+ * header does not claim a standalone original source file. */
 #ifndef DASTARBASE_C_H
 #define DASTARBASE_C_H
 #include "dActor_c.h"
@@ -42,7 +42,7 @@ struct daStarBase_c : dActor_c {
     Model mModel;            /* 0x114 */
     /* dExtShadowModel_c member, named by the class's own destructor calling
        dExtShadowModel_c's D1 at +0x164 -- a relocation the ROM build
-       checks. Was a u8 marker. [_ZN12daStarBase_cD0Ev.c] */
+       checks. Was a u8 marker. [_ZN12daStarBase_cD0Ev, now in src/actors/daStar_c.cpp] */
     dExtShadowModel_c mShadowModel;            /* 0x164 */
     Matrix4x3 mShadowMtx;        /* 0x18c -- shadow transform */
     Vector3 mSpawnPos;           /* 0x1bc -- mPos as InitResources found it.
@@ -54,29 +54,48 @@ struct daStarBase_c : dActor_c {
                                      stores the result's own +0x44. Behavior
                                      turns mPosY - mGroundY into the shadow's
                                      drop height. */
-    s32 mSpawnedActorID;         /* 0x1cc -- a unique id, not a pointer:
-                                     OnPendingDestroy feeds it to
-                                     dActor_c::FindWithID and, if that actor
-                                     has no death-table slot of its own,
-                                     clears mSpawnedDeathTableID's bit.
-                                     InitResources zeroes it; nothing in the
-                                     tree ever sets it non-zero, so the write
-                                     side is still missing. */
+    u32 mLinkedStarID;           /* 0x1cc -- uniqueID of the star (daStar_c) this
+                                     marker is linked to, 0 for none. Stored by
+                                     LinkSilverStarAndStarMarker; OnPendingDestroy
+                                     feeds it to dActor_c::FindWithID and, if that
+                                     star has no death-table slot of its own,
+                                     clears mLinkedStarDeathTableID's bit. */
     dActor_c *mHitActor;         /* 0x1d0 -- the actor that touched this
                                      marker, resolved from
                                      mdCcAcPos_c.otherOwner by Behavior just
                                      before it calls Collect().
                                      A dActor_c*, stored through an int. */
-    u16 mAppearTimer;            /* 0x1d4 */
-    s16 mSpawnedDeathTableID;    /* 0x1d6 -- the death-table slot
-                                     OnPendingDestroy clears for
-                                     mSpawnedActorID. InitResources sets -1,
+    u16 mAppearTimer;            /* 0x1d4 -- appear delay, in frames: Behavior sets
+                                     it to 0x2a while this marker's star id is not
+                                     the next one in data_0209f344[data_0209f208]
+                                     (VS_STAR_SPAWN_ORDER indexed by
+                                     NUM_VS_STARS_COLLECTED), counts it down once
+                                     it is, and shows the marker at 0 */
+    s16 mLinkedStarDeathTableID; /* 0x1d6 -- the linked star's mDeathTableID, kept
+                                     when it is not negative; -1 when unlinked,
                                      the "no slot" value dActor_c uses for its
                                      own mDeathTableID. */
     u8  mState;            /* 0x1d8 */
     u8  mStarID;            /* 0x1d9 */
-    u8  pad_1da[0x1];
-    u8  mFlags;            /* 0x1db */
+    u8  mLinkedStarState;   /* 0x1da -- the linked star's daStar_c::mState when
+                                LinkSilverStarAndStarMarker ran */
+    /* mFlags bits, all evidenced by Init/Behavior/Collect and the daStar_c
+       code that reaches into them. */
+    struct FlagBits {
+        u8 hold : 1;        /* 0x01 -- while set Behavior's appear logic does not
+                                show the marker (Init sets it when kind & 3 == 3) */
+        u8 visible : 1;     /* 0x02 -- Render, the drop shadow and the touch volume
+                                need it; Collect clears it */
+        u8 spawned : 1;     /* 0x04 -- SpawnRedCoinStarIfNecessary spawns only while
+                                it is clear, then sets it */
+        u8 refresh : 1;     /* 0x08 -- "decide the appear timer again": Behavior
+                                handles it and clears it */
+        u8 pad_4 : 4;
+    };
+    union {
+        u8  mFlags;            /* 0x1db */
+        FlagBits mBits;
+    };
     virtual ~daStarBase_c() {}
     virtual s32 InitResources();
     virtual s32 CleanupResources();

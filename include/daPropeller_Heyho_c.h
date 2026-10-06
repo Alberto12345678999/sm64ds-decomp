@@ -67,8 +67,9 @@ struct daPropeller_Heyho_c : dEnemyBase_c {
     s32                          mHomePosX;             /* 0x3c0 */
     s32                          mHomePosY;             /* 0x3c4 */
     s32                          mHomePosZ;             /* 0x3c8 */
-    /* Attack cooldown. Behavior ticks it with DecIfAbove0_Short; wander
-       early-outs while it is non-zero; fire/dive exits store 0x5a.
+    /* Attack cooldown, in frames. Behavior ticks it with DecIfAbove0_Short;
+       wander skips its chase trigger while it is non-zero; fire/dive/settle exits store
+       0x5a (90 frames).
        [Behavior / func_ov070_0211fd98 / func_ov070_0211f48c /
         func_ov070_0211f62c / func_ov070_0211f6e0,
         in src/game/actors/d_a_propeller_heyho.cpp] */
@@ -79,15 +80,20 @@ struct daPropeller_Heyho_c : dEnemyBase_c {
        [func_ov070_0211f368, in src/game/actors/d_a_propeller_heyho.cpp] */
     u32                          mParticle0;            /* 0x3d0 */
     u32                          mParticle1;            /* 0x3d4 */
-    /* Per-state step/sub-phase word. Dive init (0211fa80), retreat init
-       (0211f694), and return-to-wander (0211f62c) write 0; 0211f100 writes
-       1 when the HURT anim starts.
+    /* Per-state step/sub-phase word. Dive init (0211fa80), settle init
+       (0211f694), and settle main on its way back to wander (0211f62c) write 0;
+       the dive main (0211f6e0) sets it to 1 when it starts its second
+       animation and back to 0 when it returns to wander; 0211f100 writes 1 for a fire hit and for a dive contact that
+       starts the 02123528 animation, and 0 for the attack-mask and metal/shell
+       knock-outs; the mega-character knock-out leaves it unchanged. The knocked-state main (0211f368) spawns its particles only
+       while it is non-zero.
        [func_ov070_0211fa80 / func_ov070_0211f694 / func_ov070_0211f62c /
         func_ov070_0211f100, in src/game/actors/d_a_propeller_heyho.cpp] */
     s32                          mStateStep;            /* 0x3d8 */
-    /* Set 1 when collision starts the hurt anim during the hover-attack
-       state; only the dive init (0211fa80) clears it. 0211f694 only reads
-       it. Dive's finished-anim path only returns to wander while this is 1.
+    /* Set 1 by 0211f100 when a contact that called Player::Hurt starts the
+       02123528 animation during the dive state; only the dive init (0211fa80)
+       clears it. 0211f694 only reads it. Dive's finished-anim path only
+       returns to wander while this is 1.
        [func_ov070_0211f100 / func_ov070_0211fa80 / func_ov070_0211f6e0 /
         func_ov070_0211f694, in src/game/actors/d_a_propeller_heyho.cpp] */
     s32                          mHitDuringAttack;      /* 0x3dc */

@@ -42,6 +42,12 @@ A commit may rewrite a file, or move it. Not both.
 Split them: rewrite in place first, then move with an empty diff. Git records R100 and the
 credit follows. That is the #869-then-#970 sequence, and it is what this check enforces.
 
+A narrow exception is an already-unenrolled duplicate shard. Retiring that file is not a
+credit move when the canonical production function keeps the same unique module, address,
+size and symbol, the same matched owner, and the same explicit member credit. The shard's
+historical path author stays a separate fact from that function author. A configured symbol
+with no proof the deleted file was already unenrolled still fails.
+
 Usage:
   python tools/prepush_attribution.py                          # origin/main..HEAD
   python tools/prepush_attribution.py --base origin/main
@@ -150,9 +156,192 @@ def function_ownership_at(rev):
         # function plus zero-size aliases, but competing bodies do not establish
         # unique ownership. Never let their row order choose whose credit survives.
         ambiguous = {key for key, rows in claims.items() if len(rows) > 1}
-        return matched, ambiguous, symbols
+        return matched, ambiguous, symbols, claims
     finally:
         VM.REPO = old_repo
+
+
+def _configured_rows(claims):
+    rows = []
+    for key, pairs in claims.items():
+        module, addr_text = key.split(":")
+        addr = int(addr_text, 16)
+        for name, size in pairs:
+            rows.append((module, addr, size, name))
+    return rows
+
+
+def _range_covers(ranges, addr, size):
+    end = addr + size
+    return any(name in (".text", ".init") and lo <= addr and end <= hi
+               for name, lo, hi in ranges)
+
+
+def _parse_delink_entries(module, text):
+    """File entries in one delinks blob, including those without ``complete``.
+
+    Same section grammar as ``rombuild_check.ENTRY_SEC``. ``complete`` is recorded
+    separately so an unenrolled duplicate can be proved without treating it as the
+    production owner.
+    """
+    import rombuild_check as RBC
+
+    entries, path, ranges, complete = [], None, [], False
+
+    def flush():
+        nonlocal path, ranges, complete
+        if path is not None:
+            entries.append({"module": module, "path": path, "complete": complete,
+                            "ranges": ranges})
+        path, ranges, complete = None, [], False
+
+    for line in text.splitlines():
+        if not line.strip():
+            continue
+        if not line[0].isspace():
+            flush()
+            path = line.strip().rstrip(":")
+            continue
+        if path is None:
+            continue
+        if line.strip() == "complete":
+            complete = True
+            continue
+        row = RBC.ENTRY_SEC.match(line)
+        if row:
+            ranges.append((row.group(1), int(row.group(2), 16), int(row.group(3), 16)))
+    flush()
+    return entries
+
+
+def delink_entries_at(rev):
+    """Every ``src/`` delinks entry at ``rev``, complete or not."""
+    import validate_merge as VM
+
+    old_repo = VM.REPO
+    VM.REPO = REPO
+    try:
+        rev = VM.resolve_commit(rev)
+        entries = []
+        for path in VM.tree_paths(rev, "config/arm9"):
+            module = VM._module_from_delinks(path)
+            if module is None:
+                continue
+            entries.extend(_parse_delink_entries(module, VM.git_text(rev, path)))
+        return entries
+    finally:
+        VM.REPO = old_repo
+
+
+def _complete_owners(entries, module, addr, size):
+    found = []
+    for entry in entries:
+        path = entry["path"]
+        if (entry["complete"] and entry["module"] == module and path.startswith("src/")
+                and path not in found and _range_covers(entry["ranges"], addr, size)):
+            found.append(path)
+    return found
+
+
+def _shard_identity(shard_path, basename, shard_entries, base_entries, base_rows):
+    """The one configured function this deleted file duplicates, or None.
+
+    Proof it was already unenrolled is positive. A ``complete`` entry is enrolled
+    production, not a duplicate. A non-complete entry must name this path and cover
+    exactly one configured function. A path no delinks entry names is unenrolled
+    only when its basename is that unique symbol and a different path is the sole
+    complete owner. Either proof has to be read off the base revision.
+    """
+    if any(entry["complete"] for entry in shard_entries):
+        return None
+    if shard_entries:
+        if len({entry["module"] for entry in shard_entries}) != 1:
+            return None
+        covered = []
+        for entry in shard_entries:
+            for row in base_rows:
+                if (entry["module"] == row[0] and row not in covered
+                        and _range_covers(entry["ranges"], row[1], row[2])):
+                    covered.append(row)
+        if len(covered) != 1:
+            return None
+        identity = covered[0]
+        # A configured basename is that symbol's shard, not some other function
+        # whose range happens to contain the entry.
+        if any(row[3] == basename for row in base_rows) and basename != identity[3]:
+            return None
+        return identity
+    named = [row for row in base_rows if row[3] == basename]
+    if len(named) != 1:
+        return None
+    module, addr, size, _name = named[0]
+    owners = _complete_owners(base_entries, module, addr, size)
+    if len(owners) != 1 or owners[0] == shard_path:
+        return None
+    return named[0]
+
+
+def _one(rows, pred):
+    matched = [row for row in rows if pred(row)]
+    return matched[0] if len(matched) == 1 else None
+
+
+def classify_shard_retirement(old_stem, path_author, base_paths, base_matched,
+                              head_matched, base_claims, head_claims, ambiguous,
+                              base_entries, head_entries, base_overrides,
+                              head_overrides):
+    """Retirement of one already-unenrolled duplicate, or None if this is not one.
+
+    A hit is ``("retired"|"changed"|"lost", row)``. Retired rows keep the shard's
+    historical path author apart from the canonical function author; those two
+    people are not required to match, and a difference is not a credit change.
+    ``changed`` compares the explicit member credit only. Missing proof returns
+    None so a configured symbol still fails through the ordinary path.
+    """
+    shard_paths = [path for path in base_paths if path.rsplit(".", 1)[0] == old_stem]
+    if len(shard_paths) != 1:
+        return None
+    shard_path = shard_paths[0]
+    basename = old_stem.rsplit("/", 1)[-1]
+    base_rows = _configured_rows(base_claims)
+    head_rows = _configured_rows(head_claims)
+    shard_entries = [entry for entry in base_entries if entry["path"] == shard_path]
+    identity = _shard_identity(shard_path, basename, shard_entries, base_entries, base_rows)
+    if identity is None:
+        return None
+    module, addr, size, symbol = identity
+    key = f"{module}:0x{addr:08x}"
+    lost = ("lost", (basename, old_stem, path_author))
+    if _one(head_rows, lambda row: row == identity) is None:
+        return lost
+    if _one(base_rows, lambda row: row[3] == symbol) is None:
+        return lost
+    if _one(head_rows, lambda row: row[3] == symbol) is None:
+        return lost
+    if _one(base_rows, lambda row: row[0] == module and row[1] == addr) is None:
+        return lost
+    if _one(head_rows, lambda row: row[0] == module and row[1] == addr) is None:
+        return lost
+    if key in ambiguous:
+        return lost
+    base_rec, head_rec = base_matched.get(key), head_matched.get(key)
+    if (not base_rec or not head_rec or base_rec["srcPath"] != head_rec["srcPath"]
+            or base_rec["srcPath"] == shard_path or base_rec["name"] != symbol
+            or head_rec["name"] != symbol or base_rec["size"] != size
+            or head_rec["size"] != size):
+        return lost
+    owner = base_rec["srcPath"]
+    if _complete_owners(base_entries, module, addr, size) != [owner]:
+        return lost
+    if _complete_owners(head_entries, module, addr, size) != [owner]:
+        return lost
+    member = f"{owner}#{symbol}"
+    old_fn, new_fn = base_overrides.get(member), head_overrides.get(member)
+    if not old_fn or not new_fn:
+        return lost
+    if old_fn != new_fn:
+        return ("changed", (symbol, old_stem, owner, old_fn, new_fn))
+    return ("retired", (symbol, old_stem, owner, path_author, old_fn))
 
 
 def lineage(rev):
@@ -299,8 +488,8 @@ def main():
     moved = any(old_stem != after_by_name[name][0]
                 for name, (old_stem, _who) in projected.items() if name in after_by_name)
     if missing or moved:
-        base_functions, base_ambiguous, base_symbols = function_ownership_at(args.base)
-        head_functions, head_ambiguous, _head_symbols = function_ownership_at(args.head)
+        base_functions, base_ambiguous, base_symbols, base_claims = function_ownership_at(args.base)
+        head_functions, head_ambiguous, _head_symbols, head_claims = function_ownership_at(args.head)
         ambiguous = base_ambiguous | head_ambiguous
         by_stem, head_by_stem = {}, {}
         for key, rec in base_functions.items():
@@ -325,7 +514,7 @@ def main():
                                   != {key for key, _rec in dests}):
                 missing[name] = (old_stem, old_who)
 
-    changed, lost, moved_ok, renamed_ok, consolidated_ok = [], [], [], [], []
+    changed, lost, moved_ok, renamed_ok, consolidated_ok, retired_ok = [], [], [], [], [], []
     for name, (new_stem, new_who) in after_by_name.items():
         if name not in projected or name in missing:
             continue                                   # new work or function-level check
@@ -342,6 +531,9 @@ def main():
         head_overrides = credit_overrides_at(args.head)
         members = member_overrides_at(args.head)
         head_paths = source_paths_at(args.head)
+        base_paths = source_paths_at(args.base)
+        base_entries = delink_entries_at(args.base)
+        head_entries = delink_entries_at(args.head)
         for name, (old_stem, old_who) in missing.items():
             owned = by_stem.get(old_stem)
             if owned:
@@ -361,6 +553,19 @@ def main():
                     else:
                         consolidated_ok.append((rec["name"], old_stem, dest["srcPath"],
                                                 old_author))
+                continue
+
+            # Not the matched owner. A duplicate shard can still carry its own path
+            # author. Retire it only with proof it was already unenrolled; the path
+            # author is not the canonical function author and must not be collapsed
+            # into that credit. Anything short of that proof keeps failing below.
+            verdict = classify_shard_retirement(
+                old_stem, old_who, base_paths, base_functions, head_functions,
+                base_claims, head_claims, ambiguous, base_entries, head_entries,
+                base_overrides, head_overrides)
+            if verdict is not None:
+                kind, row = verdict
+                {"retired": retired_ok, "changed": changed, "lost": lost}[kind].append(row)
                 continue
 
             # An unresolved configured symbol has no ownership proof. Only genuinely
@@ -388,16 +593,21 @@ def main():
         print(f"  renamed, credit intact: {name} -> {target}  [{who}]")
     for name, old_stem, new_path, who in consolidated_ok:
         print(f"  consolidated, credit intact: {name}  {old_stem} -> {new_path}  [{who}]")
+    for symbol, old_stem, owner, path_author, function_author in retired_ok:
+        print(f"  retired duplicate, credit intact: {symbol}  {old_stem} [{path_author}]"
+              f"  canonical {owner} [{function_author}]")
 
     print(f"\n{len(after_by_name)} tracked, {len(moved_ok)} moved with credit intact, "
           f"{len(renamed_ok)} renamed with credit intact, "
           f"{len(consolidated_ok)} consolidated with credit intact, "
+          f"{len(retired_ok)} retired with credit intact, "
           f"{len(changed)} changed, {len(lost)} lost")
 
     if args.json:
         pathlib.Path(args.json).write_text(json.dumps(
             {"changed": changed, "lost": lost, "moved_ok": moved_ok,
-             "renamed_ok": renamed_ok, "consolidated_ok": consolidated_ok}, indent=2),
+             "renamed_ok": renamed_ok, "consolidated_ok": consolidated_ok,
+             "retired_ok": retired_ok}, indent=2),
             encoding="utf-8")
 
     if changed or lost:
