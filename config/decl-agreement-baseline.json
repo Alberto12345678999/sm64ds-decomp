@@ -12576,9 +12576,6 @@
       ]
     },
     "_ZN9Animation12SetAnimationEti5Fix12IiEt": {
-      "src/_ZN15MaterialChanger7SetFileER8BMA_Filei5Fix12IiEj.c": [
-        "param:#1 MaterialChanger *"
-      ],
       "src/_ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj.c": [
         "param:#1 TextureSequence *"
       ],
@@ -29251,14 +29248,14 @@
       ]
     },
     "func_02046e28": {
-      "src/_ZN15MaterialChanger6UpdateER15ModelComponents.cpp": [
+      "src/engine/model/MaterialChanger.cpp": [
         "param:#1 ModelComponents *",
         "param:#2 BMA_File *",
         "param:#3 int"
       ]
     },
     "func_020470e8": {
-      "src/_ZN15MaterialChanger7PrepareER8BMD_FileR8BMA_File.cpp": [
+      "src/engine/model/MaterialChanger.cpp": [
         "param:#1 BMD_File *",
         "param:#2 BMA_File *"
       ]
