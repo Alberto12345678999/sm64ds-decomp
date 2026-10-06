@@ -72,7 +72,7 @@ void _Z13CopyToViewMatPK9Matrix4x3(void *);
 void SharedFilePtr_Construct_TexSeq(void *, unsigned int);
 void SharedFilePtr_Destruct_Anim(void *);
 void SharedFilePtr_Destruct_TexSeq(void *);
-void _ZN17dExtShadowModel_c12InitCylinderEv(void *);
+void _ZN17dExtShadowModel_c12InitCylinderEv(void *); // local extern: receiver is a char* cursor over actor memory (c + 0x88), not the class object
 void _ZN17dExtShadowModel_c9InitModelEP9Matrix4x35Fix12IiES3_S3_j(void *, void *, int, int, int, unsigned int);
 void *_ZN17dExtShadowModel_cC1Ev(void *);
 void _ZN17dExtShadowModel_cD1Ev(void *);

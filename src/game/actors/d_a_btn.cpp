@@ -132,7 +132,6 @@ void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
     void *self, void *actor, int a, int b, void *c, void *d);
 void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
     void *mc, void *kcl, void *mtx, int fix, s16 s, void *clps);
-int _ZN17dExtShadowModel_c10InitCuboidEv(void *self);
 void _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(void *self, void *btp, int a, int fix, unsigned int b);
 void *_ZN15TextureSequence8LoadFileER13SharedFilePtr(void *shared);
 void _ZN4dBgW16UpdatePosAndAngsERS_P8dActor_cR5dBgPiR7Vector3P10Vector3_16S8_();
@@ -257,7 +256,7 @@ int daBtn_c::InitResources()
     kcl = _ZN7dBgW_Kc8LoadFileER13SharedFilePtr(data_ov079_02127bf0[idx]);
     (void)kcl;
 
-    if (_ZN17dExtShadowModel_c10InitCuboidEv(&mShadowModel) == 0) {
+    if (mShadowModel.InitCuboid() == 0) {
         return 0;
     }
 

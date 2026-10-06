@@ -14768,6 +14768,9 @@
       ]
     },
     "data_0209ceec": {
+      "src/engine/model/dExtShadowModel_c.cpp": [
+        "return:unsigned char"
+      ],
       "include/decl_common.h": [
         "return:unsigned char []"
       ]
@@ -14778,6 +14781,9 @@
       ]
     },
     "data_0209cef4": {
+      "src/engine/model/dExtShadowModel_c.cpp": [
+        "return:dExtShadowModel_c *"
+      ],
       "include/decl_common.h": [
         "return:void * []"
       ]
@@ -19038,6 +19044,11 @@
         "return:void *"
       ]
     },
+    "data_ov002_0211095c": {
+      "src/__sinit_ov002_02106e40.c": [
+        "return:void *"
+      ]
+    },
     "data_ov002_02110964": {
       "src/__sinit_ov002_02106e40.c": [
         "return:void *"
@@ -22899,11 +22910,17 @@
       ]
     },
     "data_ov074_02123000": {
+      "src/__sinit_ov074_02122978.c": [
+        "return:void *"
+      ],
       "src/actors/daKuriKing_c.cpp": [
         "return:char"
       ]
     },
     "data_ov074_02123040": {
+      "src/__sinit_ov074_02122978.c": [
+        "return:void *"
+      ],
       "src/actors/daKuriKing_c.cpp": [
         "return:char"
       ]

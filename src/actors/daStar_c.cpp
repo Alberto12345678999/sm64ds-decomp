@@ -355,7 +355,6 @@ extern void _ZN10dCcAcPos_c21SetPosRelativeToActorERK7Vector3(char *c, const voi
 extern int data_ov002_0210aa0c[3];
 extern PMF data_ov002_021109d8[];
 extern int _ZN9ModelBase7SetFileEP8BMD_Fileii(void *self, void *f, int a, int b);
-extern int _ZN17dExtShadowModel_c12InitCylinderEv(void *self);
 extern int _ZN8dActor_c18GetBitInDeathTableEv(void *self);
 extern u8 data_0209f220;
 extern s32 data_0209cef0;
@@ -649,7 +648,7 @@ s32 daStar_c::InitResources()
 
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(t + 0x30c, data_ov002_02110964.ptr, 0x40000000, 0x1000, 0);
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(t + 0x370, data_ov002_02110964.ptr, 0x40000000, 0x1000, 0);
-    if (_ZN17dExtShadowModel_c12InitCylinderEv(t + 0x3d4) == 0)
+    if (this->mShadowModel.InitCylinder() == 0)
         return 0;
 
     v2.x = data_ov002_0210aa0c[0];
@@ -874,7 +873,7 @@ int daStarBase_c::InitResources()
         }
     }
 
-    if (_ZN17dExtShadowModel_c12InitCylinderEv((char *)&mShadowModel) == 0) {
+    if (mShadowModel.InitCylinder() == 0) {
         return 0;
     }
 

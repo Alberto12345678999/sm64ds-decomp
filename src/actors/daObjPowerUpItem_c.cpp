@@ -119,7 +119,6 @@ extern void Matrix4x3_FromRotationY(void* m, int angle);
 extern void *gPFlowerCloseModelFile[];
 extern void *gPFlowerOpenModelFile[];
 extern int _ZN9ModelBase7SetFileEP8BMD_Fileii(void *self, void *f, int a, int b);
-extern int _ZN17dExtShadowModel_c12InitCylinderEv(void *self);
 extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
     void *self, void *act, Fix12i a, Fix12i b, unsigned int c2, unsigned int d);
 extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(
@@ -500,7 +499,7 @@ int daObjPowerUpItem_c::InitResources()
         return 0;
     if (_ZN9ModelBase7SetFileEP8BMD_Fileii(((char *)this) + 0xd4, gPFlowerCloseModelFile[1], 1, -1) == 0)
         return 0;
-    if (_ZN17dExtShadowModel_c12InitCylinderEv((char *)&mShadowModel) == 0)
+    if (mShadowModel.InitCylinder() == 0)
         return 0;
 
     mVertAccel = -0x668;

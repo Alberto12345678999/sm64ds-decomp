@@ -330,7 +330,6 @@ extern void _ZN9Animation8LoadFileER13SharedFilePtr(void *f);
 extern void _ZN15TextureSequence8LoadFileER13SharedFilePtr(void *f);
 extern void _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(void *self, void *btp, int a, int b, unsigned int d);
 extern void _ZN9Animation8SetFlagsEi(void *self, int flags);
-extern int _ZN17dExtShadowModel_c12InitCylinderEv(void *self);
 extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(void *self, void *act, void *pos, int c3, int d, unsigned int e, unsigned int f);
 extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void *self, void *act, int a, int b, void *d1, void *d2);
 extern void _ZN10dBgCh_Actr13SetLimMovFlagEv(void *self);
@@ -557,7 +556,7 @@ int daKpa_c::InitResources()
     _ZN5Model8LoadFileER13SharedFilePtr(*(SharedFilePtr *)data_ov060_0211b208);
     _ZN5Model8LoadFileER13SharedFilePtr(data_ov089_02132c50);
 
-    if (_ZN17dExtShadowModel_c12InitCylinderEv(&this->mShadowModel) == 0)
+    if (this->mShadowModel.InitCylinder() == 0)
         return 0;
 
     /* Same object as the other ~30 call sites, which hand it the base pointer as

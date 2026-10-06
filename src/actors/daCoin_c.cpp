@@ -896,7 +896,6 @@ extern "C" {
 extern int SublevelToLevel(int i);
 extern void SetStarMarker(int i, void* actor, int v2);
 extern int _ZN9ModelBase7SetFileEP8BMD_Fileii(void* thiz, void* bmd, int a, int b);
-extern int _ZN17dExtShadowModel_c12InitCylinderEv(void* thiz);
 extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void* thiz, void* actor, s32 f1, s32 f2, u32 a, u32 b);
 extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void* thiz, void* actor, s32 f1, s32 f2, void* v, s32 f3);
 extern void _ZN10dBgCh_Actr13SetLimMovFlagEv(void* thiz);
@@ -1051,7 +1050,7 @@ common:;
         }
     }
 
-    if (_ZN17dExtShadowModel_c12InitCylinderEv(&mShadowModel) == 0) {
+    if (mShadowModel.InitCylinder() == 0) {
         return 0;
     }
 

@@ -152,7 +152,7 @@ void _ZN5Stage7LoadFogEv(void *thiz);
 void _ZN5Stage23LoadTextureTransformersEv(void *thiz);
 void _ZN5Stage10LoadSkyboxEv(void *thiz);
 void _ZN8Particle10SysTracker10InitialiseEv(void *thiz);
-void _ZN17dExtShadowModel_c8CleanAllEv(void);
+void _ZN17dExtShadowModel_c8CleanAllEv(void); // local extern: include-free shard; every callee is declared locally by design
 }
 
 int Stage::InitResources()

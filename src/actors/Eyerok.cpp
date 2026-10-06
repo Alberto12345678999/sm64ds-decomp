@@ -312,7 +312,6 @@ extern void _Z14ApproachLinearR7Vector3RKS_5Fix12IiE(void *out, void *tgt, int s
 extern void _Z14ApproachLinearRiii(int *r, int target, int step);
 extern void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(void *self, void *kcl, void *mtx, int fix, short s, void *clps);
 extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(void *self, void *actor, Vector3 *v, s32 f1, s32 f2, u32 a, u32 b);
-extern void _ZN17dExtShadowModel_c12InitCylinderEv(void *self);
 extern void _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(void *self, void *bca, int a, int b, int fix, unsigned short t);
 extern void _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(void *self, void *btp, int a, int fix, unsigned int b);
 extern void _ZN15TextureSequence8LoadFileER13SharedFilePtr(void *sfp);
@@ -2739,7 +2738,7 @@ int Eyerok::InitResources()
     }
 
     if (mPartIdx != PART_MAIN) {
-        _ZN17dExtShadowModel_c12InitCylinderEv(&mShadowModel);
+        mShadowModel.InitCylinder();
         w.x = data_ov066_0211ad18[0];
         w.y = data_ov066_0211ad18[1];
         w.z = data_ov066_0211ad18[2];

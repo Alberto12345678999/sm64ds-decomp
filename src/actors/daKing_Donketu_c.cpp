@@ -2035,7 +2035,6 @@ extern "C" {
 extern void LoadKeyModels(int idx);
 extern struct BMD_File* _ZN5Model8LoadFileER13SharedFilePtr(SharedFilePtr* f);
 extern void _ZN9ModelBase7SetFileEP8BMD_Fileii(void* self, struct BMD_File* f, int a, int b);
-extern void _ZN17dExtShadowModel_c12InitCylinderEv(void* self);
 extern void* _ZN9Animation8LoadFileER13SharedFilePtr(SharedFilePtr* f);
 extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(void* self, dActor_c* a, Vector3* v, Fix12i r, Fix12i h, unsigned int e, unsigned int g);
 extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void* self, dActor_c* a, Fix12i r, Fix12i h, Vector3_16* p, Vector3_16* q);
@@ -2060,7 +2059,7 @@ int daKing_Donketu_c::InitResources()
     _ZN5Model8LoadFileER13SharedFilePtr((SharedFilePtr *)data_ov002_0210da30);
     f = _ZN5Model8LoadFileER13SharedFilePtr((SharedFilePtr *)data_ov073_02123298);
     _ZN9ModelBase7SetFileEP8BMD_Fileii(&mBlendModelAnim, f, 1, -1);
-    _ZN17dExtShadowModel_c12InitCylinderEv(&mShadowModel);
+    mShadowModel.InitCylinder();
     mVertAccel = -0x3000;
     mTerminalVelocity = -0x3c000;
     v.x = data_ov073_02123040.x;

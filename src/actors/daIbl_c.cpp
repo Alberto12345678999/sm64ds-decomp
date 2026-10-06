@@ -180,7 +180,6 @@ void _ZN7PathPtr6FromIDEj(void *self, unsigned int id);
 void _ZNK7PathPtr7GetNodeER7Vector3j(void *self, void *v, unsigned int idx);
 void *_ZN5Model8LoadFileER13SharedFilePtr(void *fp);
 int _ZN9ModelBase7SetFileEP8BMD_Fileii(void *self, void *file, int a, int b);
-int _ZN17dExtShadowModel_c12InitCylinderEv(void *self);
 void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, void *actor, int a, int b, unsigned int c, unsigned int d);
 void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void *self, void *actor, int a, int b, void *v0, int v1);
 
@@ -921,7 +920,7 @@ int daIbl_c::InitResources()
 
     _ZN9ModelBase7SetFileEP8BMD_Fileii(&mModel,
         _ZN5Model8LoadFileER13SharedFilePtr(&data_ov100_02148668), 1, -1);
-    if (_ZN17dExtShadowModel_c12InitCylinderEv((char *)&mShadowModel) == 0)
+    if (mShadowModel.InitCylinder() == 0)
         return 0;
     mVertAccel = -0x4000;
     mTerminalVelocity = -0x46000;

@@ -115,7 +115,6 @@ int _ZNK10dBgCh_Actr12TouchesWaterEv(void* self);
 void func_ov002_020f897c(void* self);
 void func_ov002_020f88ec(char* self);
 extern s16 data_02082214[];
-extern int _ZN17dExtShadowModel_c12InitCylinderEv(void* thiz);
 extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void* thiz, void* actor, int fix12, int t, unsigned int a, unsigned int b);
 extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void* thiz, void* actor, int fix12, int t, void* vec, int last);
 }
@@ -435,7 +434,7 @@ int daFPknBall_c::Behavior() {
 // @symbol _ZN12daFPknBall_c13InitResourcesEv
 int daFPknBall_c::InitResources()
 {
-    if (_ZN17dExtShadowModel_c12InitCylinderEv((char*)&mShadowModel) == 0)
+    if (mShadowModel.InitCylinder() == 0)
         return 0;
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x28000, 0x50000, 0x200002, 0);
     _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(&mWithMeshClsn, this, 0x32000, 0x32000, 0, 0);

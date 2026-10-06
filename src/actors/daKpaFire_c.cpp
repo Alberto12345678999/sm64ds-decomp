@@ -171,7 +171,6 @@ extern u32 _ZN5Sound8PlayLongEjjjRK7Vector3s(u32 a, u32 b, u32 c, void *pos, u32
 extern u16 data_ov060_02119364[];
 extern "C" Entry data_ov060_0211afb4[];
 extern "C" void dBgCh_Actr_UpdateDiscreteNoLava_veneer(void *p);
-extern int _ZN17dExtShadowModel_c12InitCylinderEv(void *self);
 extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, void *actor, int a, int b, unsigned int c, unsigned int d);
 extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void *self, void *actor, int a, int b, void *v, int c);
 extern int _ZN9dBgCh_Gnd10DetectClsnEv(dBgCh_Gnd *self);
@@ -219,7 +218,7 @@ int daKpaFire_c::InitResources()
 {
     Vector3 pos;
 
-    if (_ZN17dExtShadowModel_c12InitCylinderEv(&this->mShadowModel) == 0)
+    if (this->mShadowModel.InitCylinder() == 0)
         return 0;
 
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
