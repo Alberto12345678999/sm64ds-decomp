@@ -20,7 +20,7 @@
 #include "dEntObj_c.h"
 #include "decl_common.h"
 #include "common.h"
-#include "Clipper.h"
+#include "dClipper.h"
 #include "SharedFilePtr.h"
 
 struct BMD_File;
@@ -44,7 +44,7 @@ void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
     void *anim, void *file, int flags, int speed, unsigned short startFrame);
 void _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
     void *seq, void *file, int flags, int speed, unsigned short startFrame);
-int _ZN7Clipper13Func_02015560ER9Matrix4x3R7Vector35Fix12IiES3_(
+int _ZN8dClipper13Func_02015560ER9Matrix4x3R7Vector35Fix12IiES3_(
     void *clipper, void *mat, void *src, int scale, void *dst);
 void _ZN11ShadowModel9InitModelEP9Matrix4x35Fix12IiES3_S3_j(
     void *shadow, Matrix4x3 *mat, int radius, int height, int depth, unsigned char flags);
@@ -71,7 +71,7 @@ int func_ov075_0211b3d8(void *p);
 long long __aeabi_uidiv(unsigned int n, int d);
 
 extern Matrix4x3 data_020a0e68;
-extern Clipper data_0209f43c;
+extern dClipper data_0209f43c;
 extern int data_0209b3ec[];
 extern int data_0209e650;
 extern short data_02082214[];     /* sine/cosine table, interleaved */
@@ -199,7 +199,7 @@ extern "C" void func_ov075_02114010(UnknownVsPlayer *p)
         if (p->mModel.WillHitFrame(0x22) == 0) return;
     }
     Vector3 screenPos;
-    _ZN7Clipper13Func_02015560ER9Matrix4x3R7Vector35Fix12IiES3_(
+    _ZN8dClipper13Func_02015560ER9Matrix4x3R7Vector35Fix12IiES3_(
         &data_0209f43c, data_0209b3ec, &p->mPosition, 0, &screenPos);
     func_0201251c(0, 0x20, &screenPos, p->mSpeed);
 }
@@ -219,7 +219,7 @@ extern "C" void func_ov075_021140e4(UnknownVsPlayer *p)
         if (p->mModel.WillHitFrame(0x22) == 0) return;
     }
     Vector3 screenPos;
-    _ZN7Clipper13Func_02015560ER9Matrix4x3R7Vector35Fix12IiES3_(
+    _ZN8dClipper13Func_02015560ER9Matrix4x3R7Vector35Fix12IiES3_(
         &data_0209f43c, data_0209b3ec, &p->mPosition, 0, &screenPos);
     func_0201251c(0, 0x20, &screenPos, p->mSpeed);
 }
@@ -259,7 +259,7 @@ extern "C" int func_ov075_0211427c(UnknownVsPlayer *p)
         int hit = p->mModel.WillHitFrame(0x22);
         if (hit == 0) return hit;
     }
-    _ZN7Clipper13Func_02015560ER9Matrix4x3R7Vector35Fix12IiES3_(
+    _ZN8dClipper13Func_02015560ER9Matrix4x3R7Vector35Fix12IiES3_(
         &data_0209f43c, data_0209b3ec, &p->mPosition, 0, screenPos);
     return func_0201251c(0, 0x20, screenPos, p->mSpeed);
 }

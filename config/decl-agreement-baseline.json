@@ -511,11 +511,6 @@
         "param:#2 const Vector3 *",
         "param:#3 Vector3 *"
       ],
-      "src/_ZN7Clipper13Func_0201559CEv.cpp": [
-        "param:#1 Vector3 *",
-        "param:#2 Vector3 *",
-        "param:#3 Vector3 *"
-      ],
       "src/actors/unit020cd744.cpp": [
         "param:#1 const Vec3 *",
         "param:#2 const Vec3 *",
@@ -550,6 +545,11 @@
         "param:#1 Vec3 *",
         "param:#2 Vec3 *",
         "param:#3 Vec3 *"
+      ],
+      "src/engine/collision/dClipper.cpp": [
+        "param:#1 Vector3 *",
+        "param:#2 Vector3 *",
+        "param:#3 Vector3 *"
       ]
     },
     "DMAStartTransfer": {
@@ -1895,10 +1895,6 @@
         "param:#1 const Vector3 *",
         "param:#2 const Matrix4x3 *"
       ],
-      "src/_ZN7Clipper13Func_02015560ER9Matrix4x3R7Vector35Fix12IiES3_.cpp": [
-        "param:#1 const Vector3 *",
-        "param:#2 const Matrix4x3 *"
-      ],
       "src/actors/daJango_c.cpp": [
         "param:#1 const Vector3 *",
         "param:#2 const void *"
@@ -2008,6 +2004,10 @@
       ],
       "src/actors/daKpa3Bg_c.cpp": [
         "param:#1 Vec3 *"
+      ],
+      "src/engine/collision/dClipper.cpp": [
+        "param:#1 const Vector3 *",
+        "param:#2 const Matrix4x3 *"
       ]
     },
     "MultiCopyHalf": {
@@ -2346,10 +2346,6 @@
         "param:#1 Vector3 *",
         "param:#2 Vector3 *"
       ],
-      "src/_ZN7Clipper13Func_0201559CEv.cpp": [
-        "param:#1 Vector3 *",
-        "param:#2 Vector3 *"
-      ],
       "src/func_0203ce80.c": [
         "param:#1 const Vector3 *",
         "param:#2 Vector3 *"
@@ -2403,6 +2399,10 @@
         "param:#2 Vec3 *"
       ],
       "src/engine/collision/dBgW_KcMbgSclY.cpp": [
+        "param:#1 Vector3 *",
+        "param:#2 Vector3 *"
+      ],
+      "src/engine/collision/dClipper.cpp": [
         "param:#1 Vector3 *",
         "param:#2 Vector3 *"
       ]
@@ -10591,17 +10591,6 @@
         "param:#1 char *"
       ]
     },
-    "_ZN7Clipper13Func_020156DCEitii": {
-      "src/actors/unit020bfec0.cpp": [
-        "param:#3 int"
-      ],
-      "src/func_0200af20.c": [
-        "param:#3 int"
-      ],
-      "src/func_0200d954.c": [
-        "param:#3 int"
-      ]
-    },
     "_ZN7Message11DisplayTextEt": {
       "src/_ZN5Stage9PS_UpdateEv.cpp": [
         "param:#1 int"
@@ -15285,7 +15274,7 @@
     },
     "data_0209f43c": {
       "src/_ZN5dPa_c7level_c14clipCallback_c8OnUpdateERN8Particle6SystemEb.cpp": [
-        "return:Clipper"
+        "return:dClipper"
       ],
       "src/_ZN8dActor_c14BeforeBehaviorEv.cpp": [
         "return:char"
@@ -15297,7 +15286,7 @@
         "return:char"
       ],
       "src/actors/dEntObj_c.cpp": [
-        "return:Clipper"
+        "return:dClipper"
       ],
       "src/actors/unit020bfec0.cpp": [
         "return:char []"
@@ -35327,6 +35316,22 @@
     "_ZN17dExtCommonModel_cD1Ev": {
       "include/decl_common.h": [
         "return:void"
+      ]
+    },
+    "_ZN8dClipper13Func_020150E8ER7Vector35Fix12IiEPh": {
+      "src/_ZN8dActor_c14BeforeBehaviorEv.cpp": [
+        "param:#1 char *"
+      ]
+    },
+    "_ZN8dClipper13Func_020156DCEitii": {
+      "src/actors/unit020bfec0.cpp": [
+        "param:#3 int"
+      ],
+      "src/func_0200af20.c": [
+        "param:#3 int"
+      ],
+      "src/func_0200d954.c": [
+        "param:#3 int"
       ]
     }
   },

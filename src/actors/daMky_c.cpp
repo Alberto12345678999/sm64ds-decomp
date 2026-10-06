@@ -17,7 +17,7 @@
  *   eleven are the ticks, also methods. Helpers those ticks call take
  *   the same Ukiki in r0, so they are methods too.
  * - ModelAnim::SetAnim, dCcAc_c::Init, dBgCh_Actr::Init,
- *   DropShadowRadHeight, IsTooFarAwayFromPlayer, Clipper::Func_02015560
+ *   DropShadowRadHeight, IsTooFarAwayFromPlayer, dClipper::Func_02015560
  *   and Sound::PlaySub pass Fix12<int> by value. The method form changes
  *   the call. dBgCh_Actr::Init's header is Fix12i, which mangles as i;
  *   the ROM symbol is Fix12<int>.
@@ -94,7 +94,7 @@ unsigned char DecIfAbove0_Byte(unsigned char *p);
 void *_ZN9dBgCh_LinC1Ev(void *self);
 dBgCh_Lin *_ZN9dBgCh_LinD1Ev(void *self);
 void  Vec3_Asr(void *d, void *s, int sh);
-int   _ZN7Clipper13Func_02015560ER9Matrix4x3R7Vector35Fix12IiES3_(void *m, void *v, void *w, int fix, void *out);
+int   _ZN8dClipper13Func_02015560ER9Matrix4x3R7Vector35Fix12IiES3_(void *m, void *v, void *w, int fix, void *out);
 void  _ZNK7PathPtr7GetNodeER7Vector3j(const void *self, Vector3 &node, unsigned int idx); /* local extern: the member form costs 02111b20 four words */
 int   Vec3_HorzDist(const Vector3 *a, const Vector3 *b);
 void  _Z11UpdateAngleRssis(short *p, short a, int b, short c);
@@ -175,7 +175,7 @@ void daMky_c::func_ov030_02111734()
 
     Vec3_Asr(&asr, (Vector3 *)&this->mPerchPosX, 3);
 
-    if (_ZN7Clipper13Func_02015560ER9Matrix4x3R7Vector35Fix12IiES3_(&data_0209f43c, &data_0209b3ec, &asr, 0x1f400, &out) <= 0xc350000)
+    if (_ZN8dClipper13Func_02015560ER9Matrix4x3R7Vector35Fix12IiES3_(&data_0209f43c, &data_0209b3ec, &asr, 0x1f400, &out) <= 0xc350000)
         goto done;
 
     this->mPosX = this->mPerchPosX;

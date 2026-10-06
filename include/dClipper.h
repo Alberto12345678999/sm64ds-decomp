@@ -1,9 +1,9 @@
 /* AUTO-GENERATED from matched-function evidence by tools/gen_header.py
- * class Clipper: 7 matched functions, 4 evidenced fields.
+ * class dClipper: 7 matched functions, 4 evidenced fields.
  * Offsets/widths are observed, not guessed. Gaps are explicit padding.
  * Field NAMES are placeholders - renaming cannot change codegen. */
-#ifndef CLIPPER_H
-#define CLIPPER_H
+#ifndef DCLIPPER_H
+#define DCLIPPER_H
 #include "types.h"
 
 #ifdef __cplusplus
@@ -13,16 +13,16 @@ extern "C" void _ZN6Memory16operator_delete2EPv(void *);
 #endif
 
 /* Same 0xc coordinate layout as Vector3, but deliberately POD. A Vector3[4]
- * member makes mwccarm emit __cxa_vec_cleanup in Clipper's D1/D0; the cartridge's
+ * member makes mwccarm emit __cxa_vec_cleanup in dClipper's D1/D0; the cartridge's
  * trivial destructors prove these plane records have no element destructor. */
 struct ClipperPlane {
     Fix12i x, y, z;
 };
 
-struct Clipper {
+struct dClipper {
 #ifdef __cplusplus
     /* 0x00 is the vptr, placed implicitly by the first virtual declaration.
-       Vtable _ZTV7Clipper lives at 0x0208e730 (named in symbols.txt). The lone
+       Vtable _ZTV8dClipper lives at 0x0208e730 (named in symbols.txt). The lone
        instance, data_0209f43c in bss, is constructed explicitly by
        __sinit_02074e84 -- which carries its own extern declaration of the
        constructor and never includes this header, so promoting the class does
@@ -49,12 +49,12 @@ struct Clipper {
     /* Declared first so the compiler emits the two ROM-retained lifecycle
        variants from the empty out-of-line body: D1 restores this vptr, while
        D0 also takes the class-specific delete path below. There is no D2 in
-       the image because nothing derives from Clipper. */
-    virtual ~Clipper();     /* slots 0 (D1), 1 (D0) */
+       the image because nothing derives from dClipper. */
+    virtual ~dClipper();     /* slots 0 (D1), 1 (D0) */
 
-    /* DECLARED, never defined as a method here -- src/_ZN7ClipperC1Ev.cpp owns
+    /* DECLARED, never defined as a method here -- src/_ZN8dClipperC1Ev.cpp owns
        C1 (notes/ctor-migration.md section 2). */
-    Clipper();
+    dClipper();
 
     void Func_0201559C();
     /* All five callers pass these four scalar arguments, and the body reads
