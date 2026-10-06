@@ -627,6 +627,8 @@ def main(argv, repo=None):
         off, bad, n, skipped, pending = 0, 0, 0, [], []
         trusted = True
         started = in_comment = unmodelled = nested = skip_other = False
+        in_union = False
+        u_start = u_end = u_members = 0
         skip_body = 0
         await_body = body_comment = False
         await_body_line = None
@@ -775,10 +777,34 @@ def main(argv, repo=None):
             # suppresses the mismatch check for the whole header. That is the same
             # silent-no-op shape this gate has already been bitten by twice, arriving a
             # third way; here it at least exits non-zero rather than reporting a pass.
+            # An ANONYMOUS UNION -- `union { s32 mState; s32 unk_440; };` -- overlays its
+            # members at one offset and takes the size of the largest. Without this the
+            # opening `union {` fell through to UNPARSED and, worse, its `};` matched the
+            # outer-struct terminator below, ending the walk with every later field
+            # unchecked. Each member is compared at the union's start; a member whose
+            # type is not sized here (a nested bit-field struct overlaying the same
+            # word) is skipped rather than reported, since it can only restate the
+            # first member and the header's own size assertion still holds the total.
+            if in_union:
+                if re.match(r"^\s*\};", line):
+                    in_union = False
+                    off = max(u_end, u_start)
+                    continue
+                off = u_start
+            elif re.match(r"^\s*union\s*\{", line):
+                in_union, u_start, u_end, u_members = True, off, off, 0
+                continue
             if re.match(r"^\s*(?:struct|union|class)\s+\w+\s*;\s*$", line):
                 continue
             if re.match(r"^\s*struct \w+\s*(?::\s*(?:public\s+)?\w+\s*)?\{", line):
                 nested = True
+                continue
+            # A nested ENUM is a type too -- it names constants and occupies nothing --
+            # and a class that puts its State/Kind enums ahead of its fields (so the
+            # field comments read against them) stopped the walk at the first
+            # enumerator. One written on a single line closes itself.
+            if re.match(r"^\s*enum\s+(?:class\s+)?(?:\w+\s*)?\{", line):
+                nested = "};" not in line
                 continue
             if re.match(r"^\s*(#|\}|/\* methods)", line):
                 break
@@ -865,6 +891,8 @@ def main(argv, repo=None):
                 # An unrecognised declaration is NOT harmless: skipping it leaves the
                 # running offset short, so every later field silently "matches" at the
                 # wrong place. Say so rather than quietly carrying on.
+                if in_union and u_members:
+                    continue
                 skipped.append(f"{lineno}: {line.strip()}")
                 # ...and stop claiming MISMATCH from here on. The running offset is now
                 # known-wrong, so every later comparison is against a meaningless number:
@@ -901,6 +929,9 @@ def main(argv, repo=None):
             for d in ARR_DIMS.findall(arr):
                 arr_n *= int(d, 0)
             off += w * arr_n
+            if in_union:
+                u_members += 1
+                u_end = max(u_end, off)
         if await_body and await_body_line:
             # EOF before either `{` or a terminating `;` is malformed input.  It
             # must not collapse back to the same zero-field pass this state fixes.
