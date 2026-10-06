@@ -142,7 +142,7 @@ enum {
     kAnimWalk = 4
 };
 
-/* Animation playback speeds, 20.12 fixed point. */
+/* dExtFrameCtrl_c playback speeds, 20.12 fixed point. */
 enum { kAnimSpeedNormal = 0x1000, kAnimSpeedDouble = 0x2000 };
 
 /* dCc_c hitFlags / vulnFlags bits this class tests (the bit table in dCc_c.h,
@@ -258,10 +258,10 @@ int daOts_c::InitResourcesCommon()
 {
     BMD_File *bmd;
 
-    Animation::LoadFile(*CONFIG(this)->files[kAnimDeath]);
-    Animation::LoadFile(*CONFIG(this)->files[kAnimHit]);
-    Animation::LoadFile(*CONFIG(this)->files[kAnimLedgeTurn]);
-    Animation::LoadFile(*CONFIG(this)->files[kAnimWalk]);
+    dExtFrameCtrl_c::LoadFile(*CONFIG(this)->files[kAnimDeath]);
+    dExtFrameCtrl_c::LoadFile(*CONFIG(this)->files[kAnimHit]);
+    dExtFrameCtrl_c::LoadFile(*CONFIG(this)->files[kAnimLedgeTurn]);
+    dExtFrameCtrl_c::LoadFile(*CONFIG(this)->files[kAnimWalk]);
     bmd = (BMD_File *)Model::LoadFile(*CONFIG(this)->files[kFileModel]);
     if (mModelAnim.SetFile(bmd, 1, 1) == 0)
         return 0;

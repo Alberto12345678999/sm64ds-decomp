@@ -154,7 +154,7 @@ s32 daChoropu_c::OnAimedAtWithEgg()
 // @symbol _ZN11daChoropu_c19func_ov080_02123860Ev
 /* State 5 (Leap) update handler (table row 5, data_ov080_02127f90).
  *
- * Animation file 0x2d2 (data_ov080_021283e8). The collision cylinder's height follows
+ * dExtFrameCtrl_c file 0x2d2 (data_ov080_021283e8). The collision cylinder's height follows
  * a table of whole units indexed by frame (data_ov080_0212767c, 18 words: 90, 78,
  * 62, 116, 176, 228, 252, 264, 288, 288, 288, 248, 208, 128, 32, 0, 0, 0; frames 15 to 17
  * read 0, and the handler does not bound the index). From
@@ -191,7 +191,7 @@ void daChoropu_c::func_ov080_02123860()
 // @symbol _ZN11daChoropu_c19func_ov080_02123924Ev
 /* State 4 (Wait) update handler (table row 4, data_ov080_02127f98).
  *
- * Animation file 0x2d3 (data_ov080_021283d0). Plays the animation out and then
+ * dExtFrameCtrl_c file 0x2d3 (data_ov080_021283d0). Plays the animation out and then
  * goes to state 5 (Leap); it goes there early when the nearest Player is within a
  * quarter turn (< 0x4000 = 90 degrees) of the way the mole faces (mAngleY) and
  * less than 500 units (0x1f4000) away horizontally. With no Player it just waits for the
@@ -223,7 +223,7 @@ void daChoropu_c::func_ov080_02123924()
 // @symbol _ZN11daChoropu_c19func_ov080_02123a34Ev
 /* State 3 (ThrowRock) update handler (table row 3, data_ov080_02127f80).
  *
- * Animation file 0x2d5 (data_ov080_021283e0). When the animation steps across
+ * dExtFrameCtrl_c file 0x2d5 (data_ov080_021283e0). When the animation steps across
  * frame 10 it spawns a daChoro_Rock_c (actor 0x137, spawn parameter 0 = the big
  * rock) 80 units out from the mole along (mAngleY - 0x4000), a quarter turn off the way it
  * faces, looked up in the
@@ -303,7 +303,7 @@ void daChoropu_c::func_ov080_02123a34()
 // @symbol _ZN11daChoropu_c19func_ov080_02123c24Ev
 /* State 2 (Emerge) update handler (table row 2, data_ov080_02127fa8).
  *
- * Animation file 0x2d4 (data_ov080_021283d8). The collision cylinder's height is 0
+ * dExtFrameCtrl_c file 0x2d4 (data_ov080_021283d8). The collision cylinder's height is 0
  * for frames 0..5; the cylinder is already enabled and the mFlags bit already set from
  * the start of Emerge (func_ov080_02123ecc does both), and frame 6 does both again. From
  * frame 6 through 25 the height follows data_ov080_021276c4 (24, 32, 40, 48, 56, 68,
@@ -815,7 +815,7 @@ s32 daChoro_Rock_c::Behavior()
 s32 daChoropu_c::InitResources()
 {
     int i;
-    for (i = 0; i < 4; i++) Animation::LoadFile(*data_ov080_0212766c[i]);
+    for (i = 0; i < 4; i++) dExtFrameCtrl_c::LoadFile(*data_ov080_0212766c[i]);
     Model::LoadFile(data_ov002_0210d9d8);
     Model::LoadFile(data_ov080_021283c8);
     mModelAnim.SetFile((BMD_File *)Model::LoadFile(data_ov080_021283c0), 1, -1);

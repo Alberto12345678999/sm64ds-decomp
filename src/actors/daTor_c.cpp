@@ -271,7 +271,7 @@ int daTor_c::Behavior()
     mdCcAc_c.Clear();
     mdCcAc_c.Update();
     Matrix4x3_FromTranslation(&mModelAnim.mat4x3, mPosX >> 3, mPosY >> 3, mPosZ >> 3);
-    mModelAnim.Animation::Advance();
+    mModelAnim.dExtFrameCtrl_c::Advance();
     mTextureTransformer.Advance();
     return 1;
 }
@@ -284,7 +284,7 @@ int daTor_c::InitResources()
        the arguments and the function grows from 0x158 to 0x18c. */
     mModelAnim.SetFile((BMD_File *)Model::LoadFile(*(SharedFilePtr *)data_ov096_02137ba8),
                        1, 0x15);
-    Animation::LoadFile(*(SharedFilePtr *)data_ov096_02137bb0);
+    dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)data_ov096_02137bb0);
     func_02016aac(&mModelAnim, 0x16, 1);
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
         &mModelAnim, (void *)data_ov096_02137bb0[1], 0, 0x1000, 0);

@@ -134,7 +134,7 @@ int daPgRcer_c::InitResources()
     mModelAnim.SetFile((BMD_File *)Model::LoadFile(data_ov019_02113498), 1, 1);
 
     for (i = 0; i < 7; i++)
-        Animation::LoadFile(*data_ov019_02112788[i]);
+        dExtFrameCtrl_c::LoadFile(*data_ov019_02112788[i]);
 
     for (int j = 0; j < 3; j++) {
         SharedFilePtr *t = data_ov019_0211277c[j];
@@ -176,7 +176,7 @@ int daPgRcer_c::InitResources()
 int daPgRcer_c::Behavior()
 {
     func_ov019_02112268();
-    mModelAnim.Animation::Advance();
+    mModelAnim.dExtFrameCtrl_c::Advance();
     mTextureSequence.Advance();
     mdCcAc_c.Clear();
     mdCcAc_c.Update();
@@ -358,7 +358,7 @@ int func_ov019_02111dec(daPgRcer_c *self)
         }
         break;
     case 2:
-        if (self->mModelAnim.Animation::Finished() != 0) {
+        if (self->mModelAnim.dExtFrameCtrl_c::Finished() != 0) {
             _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&self->mModelAnim, LOADED(data_ov019_02113470), 0, 0x1000, 0);
         }
         if (self->mTalkPlayer->GetTalkState() == -1) {
@@ -394,7 +394,7 @@ int func_ov019_0211197c(daPgRcer_c *self)
         if (self->func_ov019_0211131c()) {
             self->func_ov019_021113b0();
         }
-        if (self->mModelAnim.Animation::Finished()) {
+        if (self->mModelAnim.dExtFrameCtrl_c::Finished()) {
             _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(&self->mModelAnim, LOADED(data_ov019_02113488), 0, 0x1000, 0);
             self->mModelAnim.speed = 0x1000;
             self->mActionStep++;
@@ -480,7 +480,7 @@ int func_ov019_0211197c(daPgRcer_c *self)
         break;
 
     case 2:
-        if (self->mModelAnim.Animation::Finished()) {
+        if (self->mModelAnim.dExtFrameCtrl_c::Finished()) {
             self->func_ov019_021122dc(4);
         }
         break;

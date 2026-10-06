@@ -293,7 +293,7 @@ int daObjHatenaBlock_c::InitResources()
         modelFile = Model::LoadFile(data_ov102_0214e7e8);
         mModelAnim.SetFile((BMD_File *)Model::LoadFile(data_ov102_0214e808), 1, 0x19);
         _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-            &mModelAnim, Animation::LoadFile(data_ov102_0214e7f8), 0, 0x1000, 0);
+            &mModelAnim, dExtFrameCtrl_c::LoadFile(data_ov102_0214e7f8), 0, 0x1000, 0);
         Model::LoadFile(data_ov002_0210d9e0);
         break;
     case 1:   /* ITEM_BLOCK */

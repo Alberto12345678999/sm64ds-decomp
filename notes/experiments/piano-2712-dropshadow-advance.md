@@ -86,7 +86,7 @@ MATCHING VERSIONS: none
 ## Half 2 -- Animation::Advance: CLAIM REFUTED, FIXED IN THIS CANDIDATE
 
 Carrier function `func_ov063_0211d8cc` (`0x0211d8cc`, size `0x2d8`). The
-member form is `include/Animation.h:69`, and `ModelAnim` derives from
+member form is `include/dExtFrameCtrl_c.h:69`, and `ModelAnim` derives from
 `Animation` as a non-leading base (`include/ModelAnim.h:69`), which is the
 upcast the old spelling performed by hand.
 

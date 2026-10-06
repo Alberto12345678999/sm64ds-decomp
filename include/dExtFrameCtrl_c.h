@@ -1,13 +1,13 @@
-#ifndef ANIMATION_H
-#define ANIMATION_H
+#ifndef DEXTFRAMECTRL_C_H
+#define DEXTFRAMECTRL_C_H
 
 #include "types.h"
 #include "math/Fix12.h"
 
-/* The animation-playback root, vtable _ZTV9Animation:
+/* The animation-playback root, vtable _ZTV15dExtFrameCtrl_c:
  *
- *   slot 0  0x02015ce8  ~Animation (D1)
- *   slot 1  0x02015cc4  ~Animation (D0)
+ *   slot 0  0x02015ce8  ~dExtFrameCtrl_c (D1)
+ *   slot 1  0x02015cc4  ~dExtFrameCtrl_c (D0)
  *
  * TWO slots, nothing else. The zero word after them is adjacent data,
  * not a pure-virtual slot -- it is the offset-to-top word of the vtable
@@ -21,7 +21,7 @@
  *
  * The destructor is declared first, which makes it the key virtual function.
  * Each enrolled destructor-variant translation unit defines the same real
- * `Animation::~Animation()`; mwcc emits D2/D0/D1 together and objisolate keeps
+ * `dExtFrameCtrl_c::~dExtFrameCtrl_c()`; mwcc emits D2/D0/D1 together and objisolate keeps
  * the variant named by that file's enrollment.
  *
  * LAYOUT is 0x10 bytes, pinned by C2 (vptr store, +0x8 zeroed, +0xc set
@@ -34,7 +34,7 @@
  * homes class-typed by-value parameters. The declaration below is the
  * real one and callers may use it.
  *
- * ModelAnim and its children carry an Animation as a SECOND base at
+ * ModelAnim and its children carry an dExtFrameCtrl_c as a SECOND base at
  * +0x50, reached through the ROM's _ZThn80_ thunks; that is the next
  * phase, not this header's problem.
  */
@@ -46,26 +46,26 @@ struct SharedFilePtr;
 
 extern "C" void _ZN6Memory16operator_delete2EPv(void *);
 
-struct Animation {
+struct dExtFrameCtrl_c {
     /* 0x00 is the vptr, placed implicitly by the first virtual declaration. */
     u32 numFramesAndFlags;   /* 0x04 - count in bits 0..29, loop flags in 30..31 */
     Fix12i currFrame;        /* 0x08 - 20.12 */
     Fix12i speed;            /* 0x0c - 0x1000 is 1.0 */
 
     /* --- vtable, in ROM order: the destructor pair and nothing else. --- */
-    virtual ~Animation();                /* slots 0 (D1), 1 (D0) */
+    virtual ~dExtFrameCtrl_c();                /* slots 0 (D1), 1 (D0) */
 
-    /* DECLARED, never defined as a method here -- src/_ZN9AnimationC1Ev.cpp
-       owns C1 and src/_ZN9AnimationC2Ev.cpp the base-subobject variant
+    /* DECLARED, never defined as a method here -- src/_ZN15dExtFrameCtrl_cC1Ev.cpp
+       owns C1 and src/_ZN15dExtFrameCtrl_cC2Ev.cpp the base-subobject variant
        (notes/ctor-migration.md section 2). Declaring it is what makes
        MaterialChanger/TextureTransformer/TextureSequence (and ModelAnim's
-       base step) emit `bl _ZN9AnimationC2Ev' instead of synthesising inline. */
-    Animation();
+       base step) emit `bl _ZN15dExtFrameCtrl_cC2Ev' instead of synthesising inline. */
+    dExtFrameCtrl_c();
 
     /* --- non-virtual --- */
     void SetAnimation(u16 numFrames, int flags, Fix12<int> speed,
                       u16 startFrame);   /* defined as a free function, wall 6az */
-    void Copy(const Animation &anim);
+    void Copy(const dExtFrameCtrl_c &anim);
     void Advance();
     int Finished();
     int GetFlags();
@@ -97,13 +97,13 @@ struct Animation {
 
 #ifndef SM64DS_PLATFORM_PC
 /* ROM layout under mwccarm; host ABI divergence is tracked separately. */
-typedef char Animation_size_must_be_0x10[sizeof(Animation) == 0x10 ? 1 : -1];
+typedef char dExtFrameCtrl_c_size_must_be_0x10[sizeof(dExtFrameCtrl_c) == 0x10 ? 1 : -1];
 #endif
 
 #else
 
 /* The same object for C translation units, vptr written out explicitly. */
-struct Animation {
+struct dExtFrameCtrl_c {
     void **vtable;             /* 0x00 */
     u32 numFramesAndFlags;     /* 0x04 */
     s32 currFrame;             /* 0x08 */
@@ -112,4 +112,4 @@ struct Animation {
 
 #endif /* __cplusplus */
 
-#endif /* ANIMATION_H */
+#endif /* DEXTFRAMECTRL_C_H */

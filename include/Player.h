@@ -115,7 +115,7 @@ struct Player : dActor_c {
        GetBodyModelID(mBodyModelId, 1) and TurnOffToonShading with
        GetBodyModelID(j, 0). The element type is ModelAnim, and the matched
        bodies pin every part of it: they reach +0x08 (Model's ModelComponents),
-       +0x14 (Model::mat4x3), +0x50 (the Animation base) and +0x58 (its
+       +0x14 (Model::mat4x3), +0x50 (the dExtFrameCtrl_c base) and +0x58 (its
        currFrame), and they call vtable slots 5 (Render) and 6 (Virtual18). */
     ModelAnim *mBodyModels[4];            /* 0x0dc */
     u8  unk_0ec;            /* 0x0ec */
@@ -123,7 +123,7 @@ struct Player : dActor_c {
     /* ~Player calls _ZN9ModelAnimD1Ev on this LAST of the two, and ModelAnim
        asserts 0x64 -- 0x0f0..0x154, closing exactly at unk_154. The markers
        this replaces are its own sub-objects: mAnimation1 at 0x140 was the
-       Animation base (+0x50) and unk_148 at 0x148 was that base's currFrame
+       dExtFrameCtrl_c base (+0x50) and unk_148 at 0x148 was that base's currFrame
        (+0x58). Both are reachable through the member now. */
     ModelAnim mModelAnim3;            /* 0x0f0 */
     /* EIGHT more models, same element type and the same evidence: CleanupResources
@@ -136,7 +136,7 @@ struct Player : dActor_c {
        its result is discarded. */
     ModelAnim *unk_154[8];            /* 0x154 */
     /* The other ModelAnim, destroyed FIRST of the two. 0x174..0x1d8, closing
-       exactly at unk_1d8; mAnimation2 at 0x1c4 was its Animation base. */
+       exactly at unk_1d8; mAnimation2 at 0x1c4 was its dExtFrameCtrl_c base. */
     ModelAnim mModelAnim4;            /* 0x174 */
     u8  unk_1d8;            /* 0x1d8 */
     u8  pad_1d9[0x3];
