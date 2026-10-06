@@ -625,9 +625,9 @@
 0x0202e73c	_ZN5Stage12SetVramBanksEv	function
 0x0202e78c	_ZN2GX15DisableAllBanksEv	function
 0x0202e7d4	_ZN8dScene_c22ResetHardwareRegistersEv	function
-0x0202fc98	_ZN4ViewD1Ev	function
-0x0202fcc8	_ZN4ViewD0Ev	function
-0x0202fd0c	_ZN4View6RenderEv	function
+0x0202fc98	_ZN7dView_cD1Ev	function
+0x0202fcc8	_ZN7dView_cD0Ev	function
+0x0202fd0c	_ZN7dView_c6RenderEv	function
 0x0202fd4c	Quaternion_FromVector3	function
 0x0202fef8	Quaternion_SLerp	function
 0x020301c4	Matrix4x3_FromQuaternion	function
@@ -1202,7 +1202,7 @@
 0x020921c0	_ZTV5Stage	data
 0x020922a4	ACTOR_BANK_SETTINGS	data
 0x02092680	_ZTV8dScene_c	data
-0x02092720	_ZTV4View	data
+0x02092720	_ZTV7dView_c	data
 0x02092778	DAT_02092778	data
 0x020943c4	_ZTV14MultiBootScene	data
 0x02099388	_ZTV4dBgW	data

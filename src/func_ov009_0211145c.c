@@ -62,7 +62,7 @@ extern char* _ZN8dActor_c13ClosestPlayerEv(void* self);
 extern int Vec3_Sub(struct Vector3* dst, void* a, void* b);
 extern int Vec3_HorzLen(struct Vector3* v);
 extern char* _ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(unsigned int id, unsigned int p1, void* pos, void* rot, int a, int b);
-extern void func_ov009_02111224(char* c, int r1);
+extern void _ZN9daSBird_c19func_ov009_02111224Ei(void* c, int r1);
 extern int func_0201267c(unsigned int a, void* b);
 extern int RandomIntInternal(void* rng);
 extern int data_0209e650;
@@ -92,7 +92,7 @@ void func_ov009_0211145c(char* c) {
                 do {
                     char* a = _ZN8dActor_c5SpawnEjjRK7Vector3PK10Vector3_16as(0x157, 0x10, c + 0x5c, 0, *(signed char*)(c + 0xcc), -1);
                     if (a != 0) {
-                        func_ov009_02111224(a, *(int*)(c + 4));
+                        _ZN9daSBird_c19func_ov009_02111224Ei(a, *(int*)(c + 4));
                     }
                     i++;
                 } while (i < lim);

@@ -181,20 +181,11 @@ int daTree_c::Render()
         Matrix4x3_FromRotationY(mat, cam->mAngleY);
         node = *slot;
         while (node != 0) {
-            /* Leftover: out is int[3], not Vector3. This is an ownership
-             * dependency, not a codegen wall -- Render reproduces
-             * byte-for-byte either way. A stack Vector3 odr-uses the type, so
-             * mwccarm re-emits its trivial vague-linkage Vector3D1 (4 bytes)
-             * beside the licensed text, and production _isolate refuses it.
-             * This TU's manifest already carries compiler_only_output rows
-             * (the RTTI group); what it lacks is a deadstrip-duplicate row for
-             * that one symbol, exactly as ov002/da1up_c already licenses it.
-             * Deferred with completion: partial; see issue #2748. */
-            int out[3];
+            Vector3 out;
             int dist =
                 _ZN7Clipper13Func_02015560ER9Matrix4x3R7Vector35Fix12IiES3_(
                     data_0209f43c, &data_0209b3ec, &node->pos, kCanopyLift,
-                    (Vector3 *)out);
+                    &out);
             if (dist > kClipNear && dist < kClipFar) {
                 int opacity = kOpacityFull;
                 if (dist < kFadeDist)

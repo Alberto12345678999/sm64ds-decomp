@@ -2,6 +2,7 @@
 // @symbol func_0203842c
 /* recovered: shared common types */
 #include "common.h"
+#include "dBgPi.h"
 
 extern "C" {
 int func_020393b4(void *p);
@@ -9,7 +10,7 @@ int func_020393ac(void *p);
 int func_0203939c(void *p);
 int func_0203938c(void *p);
 int func_02035354(void *a, void *b);
-void func_02037fec(void *c, int p1, int p2, int p3, void *e);
+
 int Vec3_Dist(const void *a, const void *b);
 }
 
@@ -80,7 +81,7 @@ extern "C" int func_0203842c(char *self)
         {
             int mask = o->v7(self);
             if (mask != 0) {
-                func_02037fec(self + 0x10, i, func_020393ac(o), func_020393b4(o), o);
+                ((dBgPi *)(self + 0x10))->SetCollider(i, func_020393ac(o), (dActor_c *)func_020393b4(o), (dBgW *)o);
                 result = 1;
             }
         }
