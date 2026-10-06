@@ -257,8 +257,8 @@ extern void Matrix4x3_ApplyInPlaceToRotationZXYExt(M48 *m, int x, int y, int z);
 extern void Matrix4x3_ApplyInPlaceToRotationXYZExt(M48 *m, int x, int y, int z);
 extern int func_ov002_020cf700(void *g);
 extern int func_ov002_020d0d2c(void *g);
-extern void _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(void *self, void *shadow, void *mtx, int fix, int t, unsigned int n);
-extern void _ZN8dActor_c18DropShadowScaleXYZER11ShadowModelR9Matrix4x35Fix12IiES5_S5_j(void *self, void *shadow, void *mtx, int fix, int t1, int t2, unsigned int n);
+extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void *self, void *shadow, void *mtx, int fix, int t, unsigned int n);
+extern void _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(void *self, void *shadow, void *mtx, int fix, int t1, int t2, unsigned int n);
 extern void _ZN8dActor_c11UntrackStarERa(void *self, signed char *r);
 extern unsigned char _ZN8dActor_c9TrackStarEjj(void *self, u32 star, u32 kind);
 extern void _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void *self, const void *pos, u32 a, int fix, u32 b, u32 c, u32 d);
@@ -1183,10 +1183,10 @@ void func_ov002_020ed7f8(void *self)
         && !func_ov002_020d0d2c(c->mPlayer))
     {
         if (func_ov002_020ec654(c) == 0) {
-            _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
+            _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
                 c, &c->mShadowModel, c->mShadowMtx, r4, r5 + 0x28000, 0xf);
         } else {
-            _ZN8dActor_c18DropShadowScaleXYZER11ShadowModelR9Matrix4x35Fix12IiES5_S5_j(
+            _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
                 c, &c->mShadowModel, c->mShadowMtx, r4, r5 + 0x28000, r4, 0xf);
         }
     }

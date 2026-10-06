@@ -1003,7 +1003,7 @@ extern "C" {
 // @symbol func_ov102_0214b444
 void func_ov102_0214b444(void *cv)
 {
-    extern void _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
+    extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
         int self, int sm, int mat, int fix, int t, unsigned int j);
 
     daBmb_c *self = (daBmb_c *)cv;
@@ -1036,7 +1036,7 @@ void func_ov102_0214b444(void *cv)
     self->mMatrix[10] = v >> 3;
     self->mMatrix[11] = self->mPosZ >> 3;
 
-    _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
+    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
         c, (int)&self->mShadowModel, (int)self->mMatrix, self->mScaleX * 0x50, 0x1e000, 0xf);
 }
 

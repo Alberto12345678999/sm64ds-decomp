@@ -18,7 +18,7 @@
  *     0x110 dCcAcPos_c  0x40   -> 0x150
  *     0x150 dBgCh_Actr  0x1bc  -> 0x30c
  *     0x30c ModelAnim   0x64   -> 0x370
- *     0x370 ShadowModel 0x28   -> 0x398
+ *     0x370 dExtShadowModel_c 0x28   -> 0x398
  *
  * and dEnemyBase_c's own 0x110 closes exactly on the first of them.
  *
@@ -43,7 +43,7 @@
 #include "dEnemyBase_c.h"
 #include "ModelAnim.h"
 #include "dCcAcPos_c.h"
-#include "ShadowModel.h"
+#include "dExtShadowModel_c.h"
 #include "dBgCh_Actr.h"
 
 struct daOwl_c : dEnemyBase_c {
@@ -59,7 +59,7 @@ struct daOwl_c : dEnemyBase_c {
     dCcAcPos_c mdCcAcPos_c;           /* 0x110 */
     dBgCh_Actr mWithMeshClsn;         /* 0x150 */
     ModelAnim mModelAnim;             /* 0x30c */
-    ShadowModel mShadowModel;         /* 0x370 */
+    dExtShadowModel_c mShadowModel;         /* 0x370 */
     Matrix4x3 mShadowMat;             /* 0x398 -- fed to DropShadowRadHeight */
     State *mCurrentState;             /* 0x3c8 */
     struct Player *mRider;            /* 0x3cc -- the player being carried, else 0 */

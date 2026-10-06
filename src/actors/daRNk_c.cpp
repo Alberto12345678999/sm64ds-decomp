@@ -187,7 +187,7 @@ extern Timer data_0209d4c8;         /* TIME_TIMER: the course timer */
 extern void Vec3_Asr(void *destination, void *source, int shift);
 extern void Matrix4x3_FromTranslation(void* m, int x, int y, int z);
 extern void Matrix4x3_ApplyInPlaceToRotationY(void* m, short angY);
-extern void _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(void* self, void* sm, void* mtx, int a, int b, unsigned char g);
+extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void* self, void* sm, void* mtx, int a, int b, unsigned char g);
 extern struct Matrix4x3 data_020a0e68;  /* MATRIX_SCRATCH_PAPER */
 extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, void *actor, int r, int h, unsigned int d, unsigned int e);
 /* The existing C initializer erases pointer slots to integers. Keep the
@@ -333,7 +333,7 @@ void func_ov062_0211aac0(daRNk_c* self){
   Matrix4x3_ApplyInPlaceToRotationY(&data_020a0e68, self->mAngleY);
   { struct M43w { int w[12]; };  /* array-wrapper copy: keeps C's block copy under -lang c++ */
     *(M43w*)&self->mModelAnim.mat4x3 = *(M43w*)&data_020a0e68; }
-  _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(self, &self->mShadowModel, &self->mModelAnim.mat4x3, 0xa0000, 0xa0000, 0xf);
+  _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(self, &self->mShadowModel, &self->mModelAnim.mat4x3, 0xa0000, 0xa0000, 0xf);
 }
 }
 

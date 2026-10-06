@@ -108,7 +108,7 @@ u8 NumStars(void);
    Fix12<int> BY VALUE, because mwccarm passes those differently at
    the call site than a loose spelling would. */
 int _ZN5Sound7PlaySubEjjj5Fix12IiEb(u32 a, u32 b, u32 c, int d, int e);
-void _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
+void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
     void *thiz, void *sm, void *mtx, int rad, int height, u32 flags);
 
 /* model / collision / shadow */
@@ -136,7 +136,7 @@ void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(
  * The body is empty because there is nothing to write: one vptr store and three
  * member destructor calls, every one a consequence of
  * `struct daKinopio_c : dActor_c` and the members that declaration types --
- * ShadowModel (0x16c), ModelAnim (0x108) and dCcAc_c (0x0d4) in reverse
+ * dExtShadowModel_c (0x16c), ModelAnim (0x108) and dCcAc_c (0x0d4) in reverse
  * declaration order, then dActor_c's own. D0's deallocation is an inline
  * operator delete reached through dActor_c, this class's immediate base, which
  * is why nothing here mentions a heap. */
@@ -393,7 +393,7 @@ void daKinopio_c::UpdateModelPose()
     *(s32 *)(c + 0x1e8) = mPosX >> 3;
     *(s32 *)(c + 0x1ec) = (mPosY - 0x8000) >> 3;
     *(s32 *)(c + 0x1f0) = mPosZ >> 3;
-    _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
+    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
         c, c + 0x16c, c + 0x1c4, 0x50000, 0x64000, 0xf);
 }
 
@@ -633,7 +633,7 @@ int daKinopio_c::InitResources()
  * Historical alias: Toad_Spawn.
  *
  * `return new daKinopio_c()` is the whole body: the synthesized constructor is
- * what stores the vptr and runs the dCcAc_c, ModelAnim and ShadowModel
+ * what stores the vptr and runs the dCcAc_c, ModelAnim and dExtShadowModel_c
  * constructors the ROM calls, in that order, and `operator new` is fBase_c's.
  * Spelling the vptr store by hand instead would be wrong here as well as longer
  * -- this TU emits the vtable itself, so the store has to be the compiler's

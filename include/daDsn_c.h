@@ -17,7 +17,7 @@
  * IT DOES NOT DERIVE FROM dBgActor_c. It derives from daDsnBase_c, which derives
  * from dBgActor_c, and the difference is in the bytes rather than only in the RTTI:
  * its destructor stores THREE vptrs -- its own, daDsnBase_c's, then dBgActor_c's --
- * and destroys daDsnBase_c's ShadowModel at 0x338 and TextureSequence at 0x324
+ * and destroys daDsnBase_c's dExtShadowModel_c at 0x338 and TextureSequence at 0x324
  * between the second and the third. A one-level chain emits two vptr stores and
  * neither member call.
  *
@@ -96,7 +96,7 @@ struct daDsn_c : daDsnBase_c {
     /* Slots 16 (D1) and 17 (D0), defined in the class body, the way the sibling
        leaf daDkk_c.h does it. EMPTY, BUT NOT INERT: the 0x60-byte D1 stores this
        class's vptr, then daDsnBase_c's (inlined -- its destructor is in its
-       class body too), destroying ShadowModel@0x338 and TextureSequence@0x324,
+       class body too), destroying dExtShadowModel_c@0x338 and TextureSequence@0x324,
        then dBgActor_c's, destroying dBgW_KcMbg@0x124 and Model@0xd4, before
        chaining to dActor_c::~dActor_c.
 

@@ -2,7 +2,7 @@
 #define DAKPFR_C_H
 
 #include "dCcAc_c.h"
-#include "ShadowModel.h"
+#include "dExtShadowModel_c.h"
 #include "dBgCh_Actr.h"
 #include "dActor_c.h"
 
@@ -50,7 +50,7 @@ typedef char daKpFrState_size_must_be_0x10[
 
 struct daKpFr_c : dActor_c {
     u8                 pad_0d0[0x4];
-    ShadowModel        mShadowModel;           /* 0x0d4 */
+    dExtShadowModel_c        mShadowModel;           /* 0x0d4 */
     dCcAc_c mdCcAc_c;    /* 0x0fc */
     dBgCh_Actr       mWithMeshClsn;          /* 0x130 */
     /* InitResources assigns IDENTITY_MATRIX4X3 into this slot.

@@ -15,11 +15,11 @@
  */
 
 #include "dBgActor_c.h"
-#include "ShadowModel.h"
+#include "dExtShadowModel_c.h"
 
 struct daObjBk_Botaosi_c : dBgActor_c {
     u8  pad_31e[0x2];
-    ShadowModel mShadowModel;         /* 0x320 */
+    dExtShadowModel_c mShadowModel;         /* 0x320 */
     /* The shadow's transform: func_ov015_021114f0 builds it with
        Matrix4x3_FromRotationY and writes its translation row (0x36c..0x374)
        before handing it to dActor_c::DropShadowScaleXYZ with mShadowModel. */

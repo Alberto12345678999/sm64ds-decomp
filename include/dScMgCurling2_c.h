@@ -12,13 +12,22 @@ struct dScMgCurling2_stone {
     s32 x;              /* 0x00 */
     s32 y;              /* 0x04 */
     s32 speed;          /* 0x08 */
-    u8  unk0c[0x1a];    /* 0x0c */
-    u16 angle;          /* 0x26 */
+    s32 prevX;          /* 0x0c, snapshot of x before this frame's step */
+    s32 prevY;          /* 0x10 */
+    s32 velX;           /* 0x14, per-frame step while the stylus steers */
+    s32 velY;           /* 0x18 */
+    s32 snd;            /* 0x1c, rolling-sound slot for func_02012468 */
+    u16 timer;          /* 0x20, counts down while the stone is active */
+    u16 spinVel;        /* 0x22, sprite spin rate, written from speed and angle */
+    u16 spinAngle;      /* 0x24, accumulates spinVel */
+    u16 angle;          /* 0x26, travel heading */
     u8  state;          /* 0x28 */
     u8  active;         /* 0x29 */
-    u8  unk2a;          /* 0x2a */
+    u8  visible;        /* 0x2a, draw gate */
     u8  fast;           /* 0x2b, speed >= 0x3800 after a hit */
-    u8  unk2c[0x4];     /* 0x2c */
+    u8  unk2c;          /* 0x2c */
+    u8  target;         /* 0x2d, a house stone: alt sprite, x100 score */
+    u8  unk2e[0x2];     /* 0x2e */
 };
 
 #ifndef SM64DS_PLATFORM_PC
@@ -68,6 +77,22 @@ struct dScMgCurling2_value {
 
 #ifndef SM64DS_PLATFORM_PC
 typedef char dScMgCurling2_value_size_must_be_0x18[sizeof(struct dScMgCurling2_value) == 0x18 ? 1 : -1];
+#endif
+
+/* Per-throw score marker, 0x10 bytes, five of them at 0x4870 -- one per
+ * thrown stone. The caption is drawn once the countdown expires. */
+struct dScMgCurling2_mark {
+    s32 x;              /* 0x00, 20.12 */
+    s32 y;              /* 0x04 */
+    u16 value;          /* 0x08, the caption */
+    u16 countdown;      /* 0x0a, frames until the caption shows */
+    u8  enable;         /* 0x0c, the countdown runs while set */
+    u8  drawn;          /* 0x0d, set on expiry; DrawMarks gates on it */
+    u8  unk0e[0x2];     /* 0x0e */
+};
+
+#ifndef SM64DS_PLATFORM_PC
+typedef char dScMgCurling2_mark_size_must_be_0x10[sizeof(struct dScMgCurling2_mark) == 0x10 ? 1 : -1];
 #endif
 
 struct dScMgCurling2_c : dScMgBase_c {
@@ -135,33 +160,80 @@ struct dScMgCurling2_c : dScMgBase_c {
 
     void SpawnValue(int stone, int other);
 
+    /* The rest of the class's members, proven the same way: the five
+     * Behavior-state handlers ride data_ov006_02141a18 on mState, the four
+     * stone-state handlers ride data_ov006_021419d8 on mStone[i].state, and
+     * the remaining helpers take the object as their first argument. These
+     * names are coined too; the ROM does not carry them. */
+    void BeginRound();                 /* Behavior state 0 */
+    void Play();                       /* Behavior state 1 */
+    void NextThrow();                  /* Behavior state 2 */
+    void EndRound();                   /* Behavior state 3 */
+    void Idle();                       /* Behavior state 4 */
+
+    void StoneWait(int i);             /* stone state 0 */
+    void StoneSlide(int i);            /* stone state 1 */
+    void StoneRest(int i);             /* stone state 2 */
+    void StoneSteer(int i);            /* stone state 3 */
+
+    void StoneSpin(int i);
+    void NextStone();
+    void SeedStones();
+    void ClearStoneFlags();
+    void Scroll();
+    void ResetScroll();
+    void ResetGame();
+
+    void DrawValues();
+    void AgeValues();
+    void ClearValues();
+    void DrawPieces();
+    void StepPieces();
+    void SeedPieces();
+    void DrawMarks();
+    void AgeMarks();
+    void DrawCursor();
+    void DrawCounter();
+    void DrawStones();
+    void SeparateStones(int idx);
+
     dScMgCurling2_stone mStone[11]; /* 0x4660, stride 0x30 */
-    u8  pad_4870[0x50];                 /* 0x4870, five 0x10-byte records */
+    dScMgCurling2_mark  mMark[5];      /* 0x4870 */
     dScMgCurling2_piece mPiece[0x32];   /* 0x48c0 */
-    u8  pad_4fc8[0x18];                 /* 0x4fc8 */
+    s32 bg2x;                /* 0x4fc8, BG2 scroll, 20.12 */
+    s32 bg2y;                /* 0x4fcc */
+    s32 scrollIdx;           /* 0x4fd0, scroll mode 0..3; 0xff repicks */
+    s32 bg0x;                /* 0x4fd4, BG0 scroll */
+    s32 bg0y;                /* 0x4fd8 */
+    u8  pad_4fdc[0x4];
     dScMgCurling2_value mValue[0x3c];   /* 0x4fe0 */
-    s32 unk_5580;            /* 0x5580 */
+    s32 mState;              /* 0x5580, Behavior state, indexes data_ov006_02141a18 */
     s32 unk_5584;            /* 0x5584, drag x (fx32) */
     s32 unk_5588;            /* 0x5588, drag y */
-    u8  pad_558c[0x4];
+    s32 unk_558c;            /* 0x558c, drag x + grab x latch */
     s32 unk_5590;            /* 0x5590, drag y at the last direction change */
     s32 unk_5594;            /* 0x5594, drag x offset from the stylus */
     s32 unk_5598;            /* 0x5598, drag y offset */
     s32 unk_559c;            /* 0x559c, throw power */
-    u8  pad_55a0[0x8];
+    s32 unk_55a0;            /* 0x55a0 */
+    s32 unk_55a4;            /* 0x55a4 */
     s32 unk_55a8;            /* 0x55a8, last drag dy */
     s32 unk_55ac;            /* 0x55ac */
-    u8  pad_55b0[0x2];
+    u16 unk_55b0;            /* 0x55b0 */
     u16 unk_55b2;            /* 0x55b2, throw angle */
-    u16 unk_55b4;            /* 0x55b4 */
-    u16 unk_55b6;            /* 0x55b6 */
-    u8  unk_55b8;            /* 0x55b8 */
+    u16 mSpawnTimer;         /* 0x55b4, counts down to the next stone */
+    u16 mStateTimer;         /* 0x55b6, state-entry countdown */
+    u8  unk_55b8;            /* 0x55b8, drag-state index into data_ov006_02141978 */
     u8  unk_55b9;            /* 0x55b9 */
-    u8  pad_55ba[0x1];
-    u8  unk_55bb;            /* 0x55bb */
-    u8  pad_55bc[0x2];
+    u8  thrown;              /* 0x55ba, stones thrown this round (0..5) */
+    u8  spawning;            /* 0x55bb, a stone is queued to spawn */
+    u8  gameOver;            /* 0x55bc, set once the last stone is thrown */
+    u8  sndCooldown;         /* 0x55bd, scrape-sound throttle */
     u8  unk_55be;            /* 0x55be, drag phase */
-    u8  pad_55bf[0x4];
+    u8  combo;               /* 0x55bf, collision-streak counter for SpawnValue */
+    u8  unk_55c0;            /* 0x55c0 */
+    u8  unk_55c1;            /* 0x55c1 */
+    u8  unk_55c2;            /* 0x55c2 */
     u8  unk_55c3;            /* 0x55c3 */
 };
 

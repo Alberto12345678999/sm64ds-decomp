@@ -11,7 +11,8 @@
  *
  * THE DESTRUCTOR IS DECLARED FIRST AND D1 IS A REAL METHOD -- see
  * include/ModelBase.h for the key-function rule and the objisolate exemption
- * to it. D0 stays a C file.
+ * to it. One ~MaterialChanger() emits D0 and D1 together; the whole class
+ * folds into src/engine/model/MaterialChanger.cpp.
  *
  * PREPARE IS STATIC, on exactly the evidence set out in TextureSequence.h for
  * the sibling veneer. Its ROM body is a 0xc long-call veneer (ldr ip, [pc];
@@ -40,8 +41,8 @@ struct MaterialChanger : dExtFrameCtrl_c {
     /* --- vtable: the destructor pair only. --- */
     virtual ~MaterialChanger();                       /* slots 0 (D1), 1 (D0) */
 
-    /* DECLARED, never defined as a method here -- src/_ZN15MaterialChangerC1Ev.cpp
-       owns C1 (notes/ctor-migration.md section 2). */
+    /* DEFINED in the promoted TU -- one MaterialChanger() emits C1 (and a
+       deadstripped C2 sibling); see notes/ctor-migration.md section 2. */
     MaterialChanger();
 
     /* --- non-virtual --- */

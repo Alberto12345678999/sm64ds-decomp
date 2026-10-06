@@ -6,7 +6,7 @@
 #ifdef __cplusplus
 
 #include "dEnemyBase_c.h"
-#include "ShadowModel.h"
+#include "dExtShadowModel_c.h"
 #include "BlendModelAnim.h"
 #include "dBgCh_Actr.h"
 #include "dCcAcPos_c.h"
@@ -38,7 +38,7 @@ struct daKing_Donketu_c : dEnemyBase_c {
        every frame and compares this against the records by ADDRESS to decide
        what else the frame does. */
     void *mState;                                          /* 0x37c */
-    ShadowModel mShadowModel;                              /* 0x380 */
+    dExtShadowModel_c mShadowModel;                              /* 0x380 */
     /* The matrix func_ov073_021215cc hands DropShadowRadHeight: a pure
        translation to the boss's position >> 3, with y taken 0xa000 (10
        units) lower first. */

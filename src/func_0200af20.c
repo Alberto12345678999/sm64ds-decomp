@@ -11,7 +11,8 @@ extern short data_02082214[];
 extern char data_0209f43c[];
 
 extern short Vec3_HorzAngle(struct Vector3 *v0, struct Vector3 *v1);
-extern void _ZN7Clipper13Func_020156DCEitii(void *self, int a, int b, int c, int d);
+/* local extern: dClipper::Func_020156DC takes a by-value Fix12<int> (the Fix12 wall), so it stays spelled out with scalar arguments. */
+extern void _ZN8dClipper13Func_020156DCEitii(void *self, int a, int b, int c, int d);
 
 void func_0200af20(char *c, struct Vector3 *v1, struct Vector3 *v2, short *out)
 {
@@ -76,6 +77,6 @@ void func_0200af20(char *c, struct Vector3 *v1, struct Vector3 *v2, short *out)
     }
 
     *out = 0xe38;
-    _ZN7Clipper13Func_020156DCEitii(data_0209f43c, *(int *)(c + 0xf8), *out, *(int *)(c + 0xfc), *(int *)(c + 0x100));
+    _ZN8dClipper13Func_020156DCEitii(data_0209f43c, *(int *)(c + 0xf8), *out, *(int *)(c + 0xfc), *(int *)(c + 0x100));
     *(int *)(int)(c + 0x154) &= ~1;
 }

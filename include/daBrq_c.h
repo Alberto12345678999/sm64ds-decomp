@@ -4,7 +4,7 @@
 #include "Model.h"
 #include "ModelAnim.h"
 #include "dCcAcPos_c.h"
-#include "ShadowModel.h"
+#include "dExtShadowModel_c.h"
 #include "TextureSequence.h"
 #include "TextureTransformer.h"
 #include "dBgCh_Actr.h"
@@ -33,7 +33,7 @@ struct daBrq_c : dActor_c {
     Model                     mModel;                        /* 0x138 */
     TextureSequence           mTextureSequence;              /* 0x188 */
     TextureTransformer        mTextureTransformer;           /* 0x19c */
-    ShadowModel               mShadowModel;                  /* 0x1b0 */
+    dExtShadowModel_c               mShadowModel;                  /* 0x1b0 */
     dCcAcPos_c                mdCcAcPos_c;                  /* 0x1d8 */
     dBgCh_Actr                mWithMeshClsn;                /* 0x218 */
     /* Matrix4x3, on three witnesses: InitResources block-copies the identity

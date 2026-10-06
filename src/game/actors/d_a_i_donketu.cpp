@@ -184,7 +184,7 @@ int daIDonketu_c::UpdateRunState()
 /*                                                                            */
 /* TWO vptr stores and four member destructor calls come out of that one empty */
 /* body: its own vptr, then daOts_c's -- inlined, because that destructor is   */
-/* defined in its class body -- then ShadowModel 0x370, dCcAc_c 0x33c,         */
+/* defined in its class body -- then dExtShadowModel_c 0x370, dCcAc_c 0x33c,         */
 /* dBgCh_Actr 0x174 and ModelAnim 0x110 in reverse declaration order, then     */
 /* dEnemyBase_c. daIDonketu_c adds no member with a destructor of its own,     */
 /* only two bytes. D0 is that plus the inherited inline `operator delete`;     */

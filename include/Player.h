@@ -25,7 +25,7 @@
 #define PLAYER_H
 #include "types.h"
 #include "dActor_c.h"
-#include "ShadowModel.h"
+#include "dExtShadowModel_c.h"
 #include "dCcAcPos_c.h"
 #include "dBgCh_Actr.h"
 #include "ModelAnim.h"
@@ -160,9 +160,9 @@ struct Player : dActor_c {
        the pairing is expressed and the name is not. */
     s32 unk_27c[4];            /* 0x27c */
     s32 unk_28c[8];            /* 0x28c */
-    /* ~Player calls _ZN11ShadowModelD1Ev on this, and ShadowModel asserts
+    /* ~Player calls _ZN17dExtShadowModel_cD1Ev on this, and dExtShadowModel_c asserts
        0x28 -- which closes exactly at mdCcAcPos_c. */
-    ShadowModel mShadowModel;            /* 0x2ac */
+    dExtShadowModel_c mShadowModel;            /* 0x2ac */
     /* ~Player calls _ZN10dCcAcPos_cD1Ev on this too, and the
        0x40 it asserts closes exactly at mAttackClsn. The four markers it
        absorbs are all dCc_c's own, reached through the base:

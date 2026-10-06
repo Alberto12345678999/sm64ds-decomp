@@ -98,7 +98,7 @@ extern void Matrix4x3_FromTranslation(void *m, int x, int y, int z);
 extern void Matrix4x3_ApplyInPlaceToRotationXYZExt(void *m, int x, int y, int z);
 extern void MulMat4x3Mat4x3(void *dst, void *a, void *b);
 extern void Matrix4x3_ApplyInPlaceToTranslation(void *m, int x, int y, int z);
-extern void _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
+extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
     void *self, void *sm, void *mtx, int a, int b, unsigned int g);
 extern struct Matrix4x3 data_020a0e68;
 extern void _ZN8dActor_c9SetRangesE5Fix12IiES1_S1_S1_(void *self, int a, int b, int c, int d);
@@ -899,7 +899,7 @@ extern "C" void func_ov081_021254d8(daSnowman_c *self)
         (self->mPosY - 0xe000) >> 3,
         self->mPosZ >> 3);
     self->mShadowMatrix = data_020a0e68;
-    _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
+    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
         self, &self->mShadowModel, &self->mShadowMatrix, 0x78000, 0xc8000, 0xf);
 }
 

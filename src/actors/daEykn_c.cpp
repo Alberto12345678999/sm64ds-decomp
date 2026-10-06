@@ -56,7 +56,7 @@
  * profiles); retail does not store them. Historical aliases: BigMrI_Spawn
  * and MrI_Spawn. Each hand-called fBase_c::operator new(536) + the inherited
  * dActor_c ctor + this class's vtable store + the four member subobjects in
- * field order (ModelAnim, TextureSequence, ShadowModel, dCcAcPos_c).
+ * field order (ModelAnim, TextureSequence, dExtShadowModel_c, dCcAcPos_c).
  * daEykn_c has no user-declared constructor, so both factories are now
  * `new daEykn_c()`. This TU keeps `#pragma defer_codegen off`, so emission
  * follows source order (ROM-ascending); the two factories append after
@@ -117,8 +117,8 @@ void _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(
     TextureSequence *seq, void *file, int flags, int speed, u32 startFrame);
 void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(
     dCcAcPos_c *clsn, dActor_c *actor, const Vector3 *offset, int radius, int height, u32 flags, u32 vulnFlags);
-void _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
-    dActor_c *actor, ShadowModel *shadow, Matrix4x3 *matrix, int radius, int depth, u32 opacity);
+void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
+    dActor_c *actor, dExtShadowModel_c *shadow, Matrix4x3 *matrix, int radius, int depth, u32 opacity);
 
 /* Sine and cosine pairs indexed by (angle >> 4) * 2. */
 extern s16 data_02082214[];
@@ -360,7 +360,7 @@ void daEykn_c::UpdateModelTransform()
     mShadowMat[9] = mPosX >> 3;
     mShadowMat[10] = mPosY >> 3;
     mShadowMat[11] = mPosZ >> 3;
-    _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(this, &mShadowModel, (Matrix4x3 *)mShadowMat, mScale * 0xb4, mShadowHeight, 0xf);
+    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(this, &mShadowModel, (Matrix4x3 *)mShadowMat, mScale * 0xb4, mShadowHeight, 0xf);
 }
 
 

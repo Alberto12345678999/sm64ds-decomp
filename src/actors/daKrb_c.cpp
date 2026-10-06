@@ -190,7 +190,7 @@ extern int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(void* p, const Vector3* v, u3
 extern void* data_ov084_02130cd0[];
 extern u8 data_ov084_02130204[];
 extern void Matrix4x3_FromRotationY(void* m, int angle);
-extern void _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(void* self, void* sm, void* mtx, int fix, int t, unsigned int j);
+extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void* self, void* sm, void* mtx, int fix, int t, unsigned int j);
 extern short data_02082214[];
 extern "C" void _ZN11dCapEnemy_c12UpdateCapPosERK7Vector3RK10Vector3_16(void *, const Vector3&, const Vector3_16_local&);
 extern char data_ov084_0213089c;
@@ -1116,9 +1116,9 @@ void daKrb_c::func_ov084_0212a580(){
     rotation.z = mAngleZ;
     if ((mFlags & 0x40000 ? 1 : 0) == 0) {
         if (mWithMeshClsn.IsOnGround()) {
-            _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j((char *)this, &mShadowModel, &mModelAnim.mat4x3, mScaleX * 0x50, 0x1e000, 0xf);
+            _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j((char *)this, &mShadowModel, &mModelAnim.mat4x3, mScaleX * 0x50, 0x1e000, 0xf);
         } else {
-            _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j((char *)this, &mShadowModel, &mModelAnim.mat4x3, mScaleX * 0x50, 0x96000, 0xf);
+            _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j((char *)this, &mShadowModel, &mModelAnim.mat4x3, mScaleX * 0x50, 0x96000, 0xf);
         }
     }
     pos.x = 0;

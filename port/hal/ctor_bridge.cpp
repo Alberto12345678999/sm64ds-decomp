@@ -26,8 +26,8 @@
 // `Matrix3x3 r; Vector3 t;`), and whichever a TU sees first stands. Model
 // embeds one, so a TU that saw the other spelling could disagree about
 // sizeof(Model) -- and placement new here would construct against the wrong
-// layout. src/_ZN5ModelC1Ev.cpp orders its includes the same way, for the
-// same reason.
+// layout. src/engine/model/Model.cpp orders its includes the same way, for
+// the same reason.
 #include "common.h"
 
 #include <new>
@@ -69,8 +69,9 @@ extern "C" {
 // smoke_actor's `vcall0(actor, 9)` -- Itanium numbering for Render -- then
 // reads off the end of it and calls null. So the constructor runs for its
 // member initialization and the vptr is put back to the table the port
-// dispatches through, which is exactly what src/_ZN5ModelC2Ev.cpp does on the
-// line after its own base-constructor call.
+// dispatches through, which is exactly what Model::Model() in
+// src/engine/model/Model.cpp does on the line after its own base-constructor
+// call.
 extern "C" void *_ZTV5Model[8];
 void _ZN5ModelC1Ev(void *self)
 {
@@ -89,10 +90,10 @@ void _ZN6Memory16operator_delete2EPv(void *p) { _ZN6Memory10DeallocateEPv(p); }
 
 }
 
-// Model::~Model() is NOT bridged here: this branch promotes
-// src/_ZN5ModelD1Ev.cpp is a real C++ destructor and the gate-4b slice
-// compiles it, so MSVC takes slot 0 from src/ directly. Defining it here as
-// well would be a duplicate definition.
+// Model::~Model() is NOT bridged here: src/engine/model/Model.cpp defines a
+// real C++ destructor and the gate-4b slice compiles it, so MSVC takes
+// slot 0 from src/ directly. Defining it here as well would be a duplicate
+// definition.
 
 // ModelBase's destructor is not sliced for the host: the ROM body releases
 // resources through the collision layer, and slicing it pulls that whole tree

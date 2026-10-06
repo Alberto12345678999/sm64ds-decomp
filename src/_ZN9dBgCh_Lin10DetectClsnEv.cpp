@@ -7,7 +7,7 @@ int func_020393ac(void *p);
 int func_0203939c(void *p);
 int func_0203938c(void *p);
 int func_02035354(void *a, void *b);
-void func_02037fec(void *c, int p1, int p2, int p3, void *e);
+
 int Vec3_Dist(const void *a, const void *b);
 }
 
@@ -51,7 +51,7 @@ bool dBgCh_Lin::DetectClsn()
         if (func_02035354(this, (void *)func_020393b4(e)) == 0) {
             int mask = ((C *)e)->v7(this);
             if (mask != 0) {
-                func_02037fec((char *)this + 0x10, 0, func_020393ac(e), func_020393b4(e), e);
+                ((dBgPi *)((char *)this + 0x10))->SetCollider(0, func_020393ac(e), (dActor_c *)func_020393b4(e), (dBgW *)e);
                 result = true;
             }
         }
@@ -89,7 +89,7 @@ bool dBgCh_Lin::DetectClsn()
         {
             int mask = o->v7(this);
             if (mask != 0) {
-                func_02037fec((char *)this + 0x10, i, func_020393ac(o), func_020393b4(o), o);
+                ((dBgPi *)((char *)this + 0x10))->SetCollider(i, func_020393ac(o), (dActor_c *)func_020393b4(o), (dBgW *)o);
                 result = true;
             }
         }

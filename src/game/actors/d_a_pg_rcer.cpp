@@ -102,7 +102,7 @@ extern void Matrix4x3_FromRotationY(Matrix4x3 *m, short angle);
 extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *clsn, void *actor, int radius, int height, unsigned int flags, unsigned int vuln);
 extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void *clsn, void *actor, int radius, int height, void *a, int b);
 extern void _ZN8dActor_c9SetRangesE5Fix12IiES1_S1_S1_(void *self, int offsetY, int radius, int clip, int far);
-extern void _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(void *self, void *shadow, void *mtx, int rad, int height, unsigned int opacity);
+extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void *self, void *shadow, void *mtx, int rad, int height, unsigned int opacity);
 extern int _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *model, void *bca, int flags, int speed, unsigned int start);
 extern void _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(void *seq, void *btp, int flags, int speed, unsigned int start);
 extern void *_ZNK10dBgCh_Actr14GetFloorResultEv(void *clsn);
@@ -629,7 +629,7 @@ void func_ov019_021114ec(daPgRcer_c *self)
     self->mModelAnim.mat4x3.t.x = self->mPosX >> 3;
     self->mModelAnim.mat4x3.t.y = self->mPosY >> 3;
     self->mModelAnim.mat4x3.t.z = self->mPosZ >> 3;
-    _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
+    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
         self, &self->mShadowModel, &self->mModelAnim.mat4x3, 0x140000, 0x50000, 0xf);
 }
 

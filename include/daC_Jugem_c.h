@@ -17,8 +17,8 @@
  *     0x174 ModelAnim                  0x64    -> 0x1d8
  *     0x1d8 TextureSequence            0x14    -> 0x1ec
  *     0x1ec state pointer               0x4    -> 0x1f0
- *     0x1f0 ShadowModel                0x28    -> 0x218
- *     0x218 ShadowModel                0x28    -> 0x240
+ *     0x1f0 dExtShadowModel_c                0x28    -> 0x218
+ *     0x218 dExtShadowModel_c                0x28    -> 0x240
  *     0x240 shadow matrix              0x30    -> 0x270
  *     0x270 shadow matrix              0x30    -> 0x2a0
  *     0x2a0 Player* (who he talks to)   0x4    -> 0x2a4
@@ -48,7 +48,7 @@
 
 #include "dEnemyBase_c.h"
 #include "ModelAnim.h"
-#include "ShadowModel.h"
+#include "dExtShadowModel_c.h"
 #include "TextureSequence.h"
 
 struct daC_Jugem_c : dEnemyBase_c {
@@ -60,8 +60,8 @@ struct daC_Jugem_c : dEnemyBase_c {
     ModelAnim                    mModelAnim2;           /* 0x174 */
     TextureSequence              mTextureSequence;      /* 0x1d8 */
     void                        *mState;                /* 0x1ec */
-    ShadowModel                  mShadowModel1;         /* 0x1f0 */
-    ShadowModel                  mShadowModel2;         /* 0x218 */
+    dExtShadowModel_c                  mShadowModel1;         /* 0x1f0 */
+    dExtShadowModel_c                  mShadowModel2;         /* 0x218 */
     ShadowMat                    mShadowMat1;           /* 0x240 */
     ShadowMat                    mShadowMat2;           /* 0x270 */
     Player                      *mTalkPlayer;           /* 0x2a0 */

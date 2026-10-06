@@ -48,7 +48,7 @@ void  MulVec3Mat4x3(const void *v, const void *m, void *out);
    The mangled spellings are kept wherever the real declaration takes a
    Fix12<int> or an s8/s16 BY VALUE, because mwccarm passes those differently
    at the call site than the loose spelling would. */
-int   _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
+int   _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
           void *thiz, void *sm, void *mtx, int rad, int height, u32 flags);
 void *_ZN12dEnemyBase_cC2Ev(void *thiz);
 
@@ -66,7 +66,7 @@ void  _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *thiz, void *f, int a, Fi
 void  _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(void *thiz, BTP_File &f, int a, Fix12i b, u32 c);
 void *_ZN9ModelAnimC1Ev(void *thiz);
 void *_ZN15TextureSequenceC1Ev(void *thiz);
-void *_ZN11ShadowModelC1Ev(void *thiz);
+void *_ZN17dExtShadowModel_cC1Ev(void *thiz);
 
 /* other overlays / arm9 */
 void  func_ov002_020c3e8c(void *player);
@@ -134,7 +134,7 @@ extern JugemInitPMF data_ov085_02130830;
  * The body is empty because there is nothing to write: one vtable store
  * and six destructor calls, every one a consequence of
  * `struct daC_Jugem_c : dEnemyBase_c` and the members that declaration
- * types -- its own vptr, then ShadowModel (0x218), ShadowModel (0x1f0),
+ * types -- its own vptr, then dExtShadowModel_c (0x218), dExtShadowModel_c (0x1f0),
  * TextureSequence (0x1d8), ModelAnim (0x174), ModelAnim (0x110) in
  * reverse declaration order, then dEnemyBase_c::~dEnemyBase_c. D0's
  * deallocation is an inline operator delete reached through
@@ -790,7 +790,7 @@ void func_ov085_0212e778(daC_Jugem_c *c)
     *(M48 *)&c->mModelAnim1.mat4x3 = *(M48 *)&data_020a0e68;
     Matrix4x3_FromTranslation(&data_020a0e68, c->mPosX >> 3, (c->mPosY - 0x38000) >> 3, c->mPosZ >> 3);
     *(M48 *)&c->mShadowMat1 = *(M48 *)&data_020a0e68;
-    _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
+    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
         c, &c->mShadowModel1, &c->mShadowMat1, 0x46000, 0x258000, 0xf);
 }
 }
@@ -840,7 +840,7 @@ void func_ov085_0212e858(daC_Jugem_c *c)
         c->mPosZ >> 3);
     *(M48e858 *)&c->mShadowMat1 = *(M48e858 *)&data_020a0e68;
 
-    _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
+    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
         c, &c->mShadowModel1, &c->mShadowMat1, 0x46000, 0x258000, 0xf);
 
     pl = c->ClosestPlayer();
@@ -884,7 +884,7 @@ void func_ov085_0212e858(daC_Jugem_c *c)
     func_ov002_020e4374(pl, &p1, &p2);
 
     *(M48e858 *)&c->mShadowMat2 = *(M48e858 *)&data_020a0e68;
-    _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
+    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
         c, &c->mShadowModel2, &c->mShadowMat2, p2, p1, 0xf);
 }
 }
@@ -1016,7 +1016,7 @@ int daC_Jugem_c::InitResources()
  *
  * `return new daC_Jugem_c()` is the whole body: the synthesized constructor is
  * what stores the vptr and runs the two ModelAnim, one TextureSequence and two
- * ShadowModel constructors the ROM calls, in that order, and `operator new`
+ * dExtShadowModel_c constructors the ROM calls, in that order, and `operator new`
  * is fBase_c's. Spelling the vptr store by hand instead would be wrong here
  * as well as longer -- this TU emits _ZTV11daC_Jugem_c itself, so the store
  * has to be the compiler's own. */

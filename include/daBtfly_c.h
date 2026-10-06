@@ -30,7 +30,7 @@
 #include "types.h"
 #include "ModelAnim.h"
 #include "Model.h"
-#include "ShadowModel.h"
+#include "dExtShadowModel_c.h"
 #include "dBgCh_Actr.h"
 #include "dCcAcPos_c.h"
 #include "dActor_c.h"
@@ -50,14 +50,14 @@ struct daBtfly_c : dActor_c {
        short of the object, so the member also takes over unk_154 (+0x1c = mat4x3), which
        the header declared separately inside it. */
     Model mModel;            /* 0x138 */
-    /* ShadowModel member, named by the class's own destructor calling
-       ShadowModel's D1 at +0x188 -- a relocation the ROM build
+    /* dExtShadowModel_c member, named by the class's own destructor calling
+       dExtShadowModel_c's D1 at +0x188 -- a relocation the ROM build
        checks. Was a u8 marker. [_ZN9daBtfly_cD0Ev, now in src/actors/daBtfly_c.cpp] */
-    ShadowModel mShadowModel1;            /* 0x188 */
-    /* ShadowModel member, named by the class's own destructor calling
-       ShadowModel's D1 at +0x1b0 -- a relocation the ROM build
+    dExtShadowModel_c mShadowModel1;            /* 0x188 */
+    /* dExtShadowModel_c member, named by the class's own destructor calling
+       dExtShadowModel_c's D1 at +0x1b0 -- a relocation the ROM build
        checks. Was a u8 marker. [_ZN9daBtfly_cD0Ev, now in src/actors/daBtfly_c.cpp] */
-    ShadowModel mShadowModel2;            /* 0x1b0 */
+    dExtShadowModel_c mShadowModel2;            /* 0x1b0 */
     /* dBgCh_Actr member, named by the class's own destructor calling
        dBgCh_Actr's D1 at +0x1d8 -- a relocation the ROM build
        checks. Was a u8 marker. [_ZN9daBtfly_cD0Ev, now in src/actors/daBtfly_c.cpp] */

@@ -68,7 +68,7 @@ extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void* se
 /* local extern: Fix12<int> by value, wall 6az. Header method homes the arg. */
 extern int _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *m, void *f, int a, int b, unsigned int e);
 /* local extern: Fix12<int> by value, wall 6az. Header method homes the arg. */
-extern void _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(void *, ShadowModel &sm, Matrix4x3 &mtx, int a, int b, unsigned int c);
+extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void *, dExtShadowModel_c &sm, Matrix4x3 &mtx, int a, int b, unsigned int c);
 /* local extern: Fix12<int> by value, wall 6az. Header method homes the arg. */
 extern int _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(void* a, Vector3* v, unsigned n, int f, short s);
 /* local extern: Fix12<int> by value, wall 6az. Header method homes the arg. */
@@ -334,10 +334,10 @@ extern "C" void func_ov062_02116dbc(char* thiz)
     self->mShadowMtx.m[10] = self->mPosY >> 3;
     self->mShadowMtx.m[11] = self->mPosZ >> 3;
     if (self->mMeshClsn.IsOnGround() != 0) {
-        _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
+        _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
             self, self->mShadowModel, self->mShadowMtx, 0x12c000, 0x32000, 0xf);
     } else {
-        _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
+        _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
             self, self->mShadowModel, self->mShadowMtx, 0x12c000, 0x3e8000, 0xf);
     }
 }
@@ -354,7 +354,7 @@ void daHolhei_c::func_ov062_02116d28()
     mShadowMtx.m[10] = *(int *)(o + 0x60) >> 3;
     o = *(char **)((char *)this + 0x3f8);
     mShadowMtx.m[11] = *(int *)(o + 0x64) >> 3;
-    _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
+    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
         this, mShadowModel, mShadowMtx, 0x12c000, 0x32000, 0xf);
 }
 

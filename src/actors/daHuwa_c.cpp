@@ -69,8 +69,8 @@ short Vec3_HorzAngle(const Vector3 *a, const Vector3 *b);
  * mangle to these same symbols and home the argument. */
 int _ZN8dActor_c10SpawnCoinsERK7Vector3j5Fix12IiEs(void *self, Vector3 *pos, unsigned int count, int spread, short angle);
 void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int id, int x, int y, int z);
-void _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
-    void *self, ShadowModel &shadow, Matrix4x3 &mtx, int radius, int height, unsigned int opacity);
+void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
+    void *self, dExtShadowModel_c &shadow, Matrix4x3 &mtx, int radius, int height, unsigned int opacity);
 void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void *self, BCA_File *file, int flags, int speed, unsigned int startFrame);
 void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void *self, dActor_c *actor, int radius, int height, unsigned int flags, unsigned int vulnFlags);
 void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void *self, dActor_c *actor, int radius, int height, void *a, void *b);
@@ -254,10 +254,10 @@ extern "C" void func_ov081_02123b20(daHuwa_c *self)
             return;
     }
     if (self->mWithMeshClsn.IsOnGround() != 0) {
-        _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
+        _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
             self, self->mShadowModel, self->mModelAnim.mat4x3, 0x50000, 0x1e000, 0xf);
     } else {
-        _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
+        _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
             self, self->mShadowModel, self->mModelAnim.mat4x3, 0x50000, 0x96000, 0xf);
     }
 }

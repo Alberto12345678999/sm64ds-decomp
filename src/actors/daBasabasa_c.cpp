@@ -61,7 +61,7 @@ extern void Matrix4x3_ApplyInPlaceToRotationX(void* m, short ang);
 extern void Vec3_Asr(Vector3* d, Vector3* s, int sh);
 extern void Matrix4x3_FromTranslation(Matrix4x3* m, int x, int y, int z);
 extern void Matrix4x3_ApplyInPlaceToRotationXYZExt(void* m, int x, int y, int z);
-extern void _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(void* self, void* sm, Matrix4x3* m, int fx, int t, unsigned int u);
+extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void* self, void* sm, Matrix4x3* m, int fx, int t, unsigned int u);
 extern unsigned short DecIfAbove0_Short(unsigned short *p);
 extern SharedFilePtr data_ov065_0211d698;   /* flying model */
 extern SharedFilePtr data_ov065_0211d6a8;   /* hanging model */
@@ -84,7 +84,7 @@ extern daBasabasa_c::State data_ov065_0211d710;   /* drop */
 
 // @symbol _ZN12daBasabasa_cD1Ev
 // @symbol _ZN12daBasabasa_cD0Ev
-/* The compiler writes the whole body: the vtable store, the ShadowModel, both
+/* The compiler writes the whole body: the vtable store, the dExtShadowModel_c, both
  * ModelAnims, the dBgCh_Actr and the dCcAc_c in reverse declaration order,
  * then dEnemyBase_c::~dEnemyBase_c. */
 daBasabasa_c::~daBasabasa_c()
@@ -367,7 +367,7 @@ void daBasabasa_c::func_ov065_02117994()
         (mPosY - 0x18000) >> 3,
         mPosZ >> 3);
     mShadowMatrix = data_020a0e68;
-    _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
+    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
         this, &mShadowModel, &mShadowMatrix, 0x32000, 0x258000, 0xf);
 }
 

@@ -2,7 +2,7 @@
 #define DAOBJCTMECHA11_C_H
 
 #include "dBgActor_c.h"
-#include "ShadowModel.h"
+#include "dExtShadowModel_c.h"
 
 /* daObjCtMecha11_c -- Tick Tock Clock's spinning platform (profile
  * CT_MECHA11). It rolls on X at a step taken from the clock-setting table;
@@ -19,8 +19,8 @@
  * BASE: dBgActor_c, direct, at offset zero -- the record's third word is
  * _ZTI10dBgActor_c at ov002 0x021089ec.
  *
- * MEMBERS: the ShadowModel at 0x328 is named twice -- the factory calls
- * _ZN11ShadowModelC1Ev at +0x328, and D1/D0 call _ZN11ShadowModelD1Ev there
+ * MEMBERS: the dExtShadowModel_c at 0x328 is named twice -- the factory calls
+ * _ZN17dExtShadowModel_cC1Ev at +0x328, and D1/D0 call _ZN17dExtShadowModel_cD1Ev there
  * before dBgActor_c's inlined destructor takes down its dBgW_KcMbg (0x124)
  * and Model (0xd4). dBgActor_c's non-POD data ends at 0x31e, so the Itanium
  * layout reuses its two bytes of tail padding for the first derived member.
@@ -39,7 +39,7 @@ struct daObjCtMecha11_c : dBgActor_c {
     u16 mRandTimer;           /* 0x320 frames left in this burst */
     u16 mRandFrames;          /* 0x322 the burst length just rolled */
     s32 mFloorPosY;           /* 0x324 floor the spawn probe hit, else the probe Y */
-    ShadowModel mShadowModel; /* 0x328 */
+    dExtShadowModel_c mShadowModel; /* 0x328 */
     Matrix4x3 mShadowMat;     /* 0x350 shadow on the floor, yaw only */
 
     /* OUT OF LINE, DECLARED FIRST: the key function. The TU defines it first

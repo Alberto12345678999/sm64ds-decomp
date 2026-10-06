@@ -50,6 +50,8 @@ typedef int Fix12i;
 /* shadow typedef 'Vec3' */
 typedef struct { s32 x, y, z; } Vec3;
 
+struct V3 { int x, y, z; };
+
 extern "C" {
 extern int _ZN8Particle6System3NewEjj5Fix12IiES2_S2_PK11Vector3_16fPNS_8CallbackE(u32 uniqueID, u32 effectID, s32 x, s32 y, s32 z, const void *dir, void *callback);
 extern void _ZN8Particle19SetSelfDestructFlagEj(u32 id);
@@ -60,44 +62,18 @@ extern int data_ov062_0211cf0c[];
 /* The called scalar definition takes u16 startFrame. The unused ModelAnim
  * member declaration takes Fix12<int>/u32; its measured form grew this helper. */
 extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(ModelAnim *anim, BCA_File *file, int flags, int speed, u16 startFrame);
-extern "C" void func_ov062_02118a00(char *c);
-extern "C" void func_ov062_02118718(char *c);
-extern "C" void func_ov062_02118588(char *c);
-extern "C" void func_ov062_02118de8(char *c);
-extern "C" void func_ov062_021183e0(char *c);
-extern void func_ov062_02118cdc(void *c);
-extern void func_ov062_02118b4c(void *c);
-extern void func_ov062_02118a50(void *c);
 extern int Vec3_Dist(void* a, void* b);
-
-void func_ov062_02117994(char* c, int idx);
-
-extern void func_ov062_02117bf4(void* self);
 /* Reconstructed receiver/attacker/nullable collision interface; the original
  * source prototype is not uniquely recoverable from the register traffic. */
 extern void func_ov002_020aea30(void* self, void* attacker, dBgCh_Actr* collision);
 extern void _ZN6Player6BounceE5Fix12IiE(void* p, int f);
 extern int _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(Player* p, void* v, u32 a, int f, u8 b, u8 c, u8 d);
-extern void func_ov062_02117b48(void* p);
-extern void func_ov062_021179e4(void* c);
 extern "C" int _Z14ApproachLinearRiii(int *r, int target, int speed);
 extern "C" void _ZN8Particle20RunningSlidingDustAtE5Fix12IiES1_S1_(int a, int b, int c);
 extern int RandomIntInternal(int *seed);
 extern int data_0209e650;
 extern short Vec3_HorzAngle(const Vector3* a, const Vector3* b);
-extern void *func_ov062_02117b9c(void *c);
-extern void func_ov062_02118058(char *c);
-extern void func_ov062_02118004(void *c, int a1);
-extern void func_ov062_021175c0(void *c);
-extern void func_ov062_02117724(void *c, unsigned int a, unsigned int b, unsigned int d, unsigned short e);
-
 extern s16 _ZN8dActor_c12ReflectAngleE5Fix12IiES1_s(void *self, int a, int b, s16 ang);
-extern int func_ov062_02117b60(void *c);
-extern void func_ov062_021181a0(void *c);
-extern void func_ov062_0211811c(void *c);
-extern void func_ov062_021180d4(void *c);
-struct V3 { int x, y, z; };
-
 extern int _ZN8dActor_c22IsTooFarAwayFromPlayerE5Fix12IiE(void *self, int d);
 
 extern SharedFilePtr* data_ov062_0211ced8[2];
@@ -106,6 +82,20 @@ extern SharedFilePtr* data_ov062_0211cee0[2];
 extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void* self, dActor_c* a, int r, int h, unsigned int e, unsigned int g);
 extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void* self, dActor_c* a, int r, int h, Vector3_16* p, int q);
 extern void LoadBlueCoinModel(void* c);
+extern void UnloadBlueCoinModel(void *c);
+
+extern void Vec3_Asr(struct Vec3 *d, struct Vec3 *s, int sh);
+extern void Matrix4x3_FromTranslation(struct Matrix4x3 *m, int x, int y, int z);
+extern void Matrix4x3_ApplyInPlaceToRotationY(struct Matrix4x3 *m, short angY);
+extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void *thiz, void *sm, struct Matrix4x3 *m, int radHeight, int a, u8 b);
+extern struct Matrix4x3 data_020a0e68;
+inline struct Matrix4x3 *inline_fn()
+{
+  return &data_020a0e68;
+}
+
+extern struct dBgCh_Actr *_ZNK10dBgCh_Actr14GetFloorResultEv(struct dBgCh_Actr *self);
+extern int SurfaceInfo_TestFlag0x20(int *p);
 }
 
 // @symbol daNknk_c_classInit_NOKONOKO
@@ -131,9 +121,8 @@ s32 daNknk_c::OnYoshiTryEat() {
 }
 
 // @symbol _ZN8daNknk_c13OnTurnIntoEggER6Player
-// Community name: Koopa_OnTurnIntoEgg
 /* daNknk_c::OnTurnIntoEgg -- vtable slot 19, verified against ov062 relocs.txt:
- * _ZTV5Koopa (0x0211dab4) + 0x4c -> 0x02119628, exactly this placeholder's
+ * _ZTV8daNknk_c (0x0211dab4) + 0x4c -> 0x02119628, exactly this placeholder's
  * former address (former name func_ov062_02119628).
  * Matched byte-for-byte with mwccarm 2004/b56 (ov062).
  */
@@ -150,7 +139,6 @@ void daNknk_c::OnTurnIntoEgg(Player &player)
 }
 
 // @symbol _ZN8daNknk_c16OnAimedAtWithEggEv
-// Community name: Koopa_OnAimedAtWithEgg
 /* daNknk_c::OnAimedAtWithEgg - recovered from vtable slot identity */
 s32 daNknk_c::OnAimedAtWithEgg() {
     unsigned short v = actorID;
@@ -210,7 +198,7 @@ int daNknk_c::InitResources()
     mStateTimer = 0;
     mWalkState = 0;
     mState = 1;
-    func_ov062_02117994(((char*)this), 0);
+    func_ov062_02117994(0);
 
     mCliffState = 0;
     mInvincibleTimer = 0;
@@ -224,7 +212,7 @@ int daNknk_c::InitResources()
     mWithMeshClsn.StartDetectingWater();
 
     unk_108 = 3;
-    LoadBlueCoinModel(((char*)this));
+    LoadBlueCoinModel(this);
 
     return 1;
 }
@@ -245,12 +233,12 @@ int daNknk_c::Behavior()
         *pb0 = *pb0 & ~0x10000000;
         if (SpawnParticlesIfHitOtherObj(mdCc_c) != 0) {
             PoofDust();
-            func_ov062_021179e4(((char *)this));
+            func_ov062_021179e4();
             KillAndTrackInDeathTable();
         }
         if (mEatenByYoshi != 0)
-            func_ov062_02117570(((char *)this));
-        func_ov062_02118334(((char *)this));
+            func_ov062_02117570();
+        func_ov062_02118334();
         mdCc_c.Clear();
         if (mEatenByYoshi != 0 && unk_104 == 0)
             mdCc_c.Update();
@@ -276,7 +264,7 @@ int daNknk_c::Behavior()
                 *(u8 *)((char *)&mLandingDustTimer) -= 1;
             *pb0 = *pb0 | 0x10000000;
         }
-        func_ov062_02118258(((char *)this), 0x3e8000);
+        func_ov062_02118258(0x3e8000);
 
         if (mState != 0)
             mModelAnim.Advance();
@@ -286,10 +274,10 @@ int daNknk_c::Behavior()
         switch (kind) {
         case 0:
         case 2:
-            func_ov062_02117acc(((char *)this));
+            func_ov062_02117acc();
             break;
         case 1:
-            func_ov062_02117a3c(((char *)this));
+            func_ov062_02117a3c();
             break;
         }
 
@@ -305,7 +293,7 @@ int daNknk_c::Behavior()
             mStateTimer = 0;
             mWalkState = 0;
         }
-        func_ov062_02117c98(((char *)this));
+        func_ov062_02117c98();
         UpdatePos(&mdCc_c);
 
         if (mDeathState == 0 && mState != 0) {
@@ -321,7 +309,7 @@ int daNknk_c::Behavior()
         }
 
         UpdateWMClsn(mWithMeshClsn, 0);
-        func_ov062_02117570(((char *)this));
+        func_ov062_02117570();
         mdCc_c.Clear();
         if (mDeathState == 0) {
             if (mInvincibleTimer == 0) {
@@ -334,7 +322,7 @@ int daNknk_c::Behavior()
         UpdateDeath(mWithMeshClsn);
     }
 
-    func_ov062_02118334(((char *)this));
+    func_ov062_02118334();
     return 1;
 }
 
@@ -376,9 +364,6 @@ void daNknk_c::OnPendingDestroy()
 }
 
 // @symbol _ZN8daNknk_c16CleanupResourcesEv
-extern "C" {
-extern void UnloadBlueCoinModel(void *c);
-}
 extern struct SharedFilePtr *data_ov062_0211cee0[];
 extern struct SharedFilePtr *data_ov062_0211ced8[];
 
@@ -398,242 +383,218 @@ int daNknk_c::CleanupResources()
   return 1;
 }
 
-// @symbol func_ov062_02118de8
-extern "C" void func_ov062_02118de8(char *c)
+// @symbol _ZN8daNknk_c19func_ov062_02118de8Ev
+void daNknk_c::func_ov062_02118de8()
 {
-    daNknk_c *self = (daNknk_c *)c;
-    self->mHorzSpeed = 0;
-    if (self->mAnimIndex == 2) {
-        if (self->mModelAnim.Finished() == 0) return;
-        func_ov062_02117994(c, 4);
+    mHorzSpeed = 0;
+    if (mAnimIndex == 2) {
+        if (mModelAnim.Finished() == 0) return;
+        func_ov062_02117994(4);
         return;
     }
-    if (self->mModelAnim.WillHitFrame((unsigned short)(self->mModelAnim.GetFrameCount() - 1)) != 0) {
-        u16 *hp = &self->mWalkState;
+    if (mModelAnim.WillHitFrame((unsigned short)(mModelAnim.GetFrameCount() - 1)) != 0) {
+        u16 *hp = &mWalkState;
         *hp = (u16)(*hp + 1);
     } else {
-        func_ov062_02118058(c);
+        func_ov062_02118058();
         return;
     }
-    func_ov062_02117994(c, 0);
-    if (self->mKoopaVariant == 1)
-        self->mState = 5;
+    func_ov062_02117994(0);
+    if (mKoopaVariant == 1)
+        mState = 5;
     else
-        self->mState = 2;
+        mState = 2;
     if (((unsigned int)RandomIntInternal(&data_0209e650) >> 16) & 0x8000) {
         int r = ((unsigned int)RandomIntInternal(&data_0209e650) >> 16) & 0x1fff;
-        self->mTargetAngle = (s16)(self->mPrevAngleY - r);
+        mTargetAngle = (s16)(mPrevAngleY - r);
     } else {
         int r = ((unsigned int)RandomIntInternal(&data_0209e650) >> 16) & 0x1fff;
-        self->mTargetAngle = (s16)(self->mPrevAngleY + r);
+        mTargetAngle = (s16)(mPrevAngleY + r);
     }
-    func_ov062_02118058(c);
+    func_ov062_02118058();
 }
 
-// @symbol func_ov062_02118cdc
-extern "C" {
-namespace tu {  /* namespaced: the file-scope view is (void*) */
-void func_ov062_02118cdc(char *c)
+// @symbol _ZN8daNknk_c19func_ov062_02118cdcEv
+void daNknk_c::func_ov062_02118cdc()
 {
-    daNknk_c *self = (daNknk_c *)c;
-    if (self->mTurning) {
-        self->mTurning = (ApproachLinear(self->mPrevAngleY, self->mTargetAngle, 0x200) ^ 1) != 0;
+    if (mTurning) {
+        mTurning = (ApproachLinear(mPrevAngleY, mTargetAngle, 0x200) ^ 1) != 0;
     } else {
-        if (self->mPlayerDist >= 0x61a8000) {
-            self->mTargetAngle = self->mAimAngle;
+        if (mPlayerDist >= 0x61a8000) {
+            mTargetAngle = mAimAngle;
         }
-        self->mTurning = self->AngleAwayFromWallOrCliff(self->mWithMeshClsn, self->mTargetAngle);
-        ApproachLinear(self->mPrevAngleY, self->mTargetAngle, 0x200);
+        mTurning = AngleAwayFromWallOrCliff(mWithMeshClsn, mTargetAngle);
+        ApproachLinear(mPrevAngleY, mTargetAngle, 0x200);
     }
-    if (self->mAnimIndex == 1) {
-        func_ov062_02117724(c, 2, 8, 0x13, 0x19);
+    if (mAnimIndex == 1) {
+        func_ov062_02117724(2, 8, 0x13, 0x19);
     }
-    switch (self->mWalkState) {
-    case 0: func_ov062_021181a0(c); break;
-    case 1: func_ov062_0211811c(c); break;
-    case 2: func_ov062_021180d4(c); break;
+    switch (mWalkState) {
+    case 0: func_ov062_021181a0(); break;
+    case 1: func_ov062_0211811c(); break;
+    case 2: func_ov062_021180d4(); break;
     }
-    func_ov062_02118058(c);
+    func_ov062_02118058();
 }
-}
-}  /* namespace tu */
 
-// @symbol func_ov062_02118b4c
-extern "C" {
-namespace tu {  /* namespaced: the file-scope view is (void*) */
-void func_ov062_02118b4c(char *self) {
-    daNknk_c *obj = (daNknk_c *)self;
-    if (obj->mAnimIndex == 3)
-        func_ov062_02117724(self, 2, 5, 8, 0xb);
+// @symbol _ZN8daNknk_c19func_ov062_02118b4cEv
+void daNknk_c::func_ov062_02118b4c() {
+    if (mAnimIndex == 3)
+        func_ov062_02117724(2, 5, 8, 0xb);
 
-    if (obj->mModelIndex != 0) {
-        if ((u16)obj->mStateTimer > 0x1e && func_ov062_02117b60(self) > 0x320000) {
-            if (_Z14ApproachLinearRiii(&obj->mHorzSpeed, 0, 0x1000) == 0)
+    if (mModelIndex != 0) {
+        if ((u16)mStateTimer > 0x1e && func_ov062_02117b60() > 0x320000) {
+            if (_Z14ApproachLinearRiii(&mHorzSpeed, 0, 0x1000) == 0)
                 return;
-            obj->mState = 1;
-            func_ov062_02117994(self, 2);
+            mState = 1;
+            func_ov062_02117994(2);
             return;
         }
-        ApproachLinear(obj->mPrevAngleY, obj->mAimAngle, 0x400);
-        _Z14ApproachLinearRiii(&obj->mHorzSpeed, 0x11000, 0x1000);
+        ApproachLinear(mPrevAngleY, mAimAngle, 0x400);
+        _Z14ApproachLinearRiii(&mHorzSpeed, 0x11000, 0x1000);
         return;
     }
 
-    if (obj->mPlayerDist >= 0x61a8000) {
-        s16 *aim = &obj->mAimAngle;
+    if (mPlayerDist >= 0x61a8000) {
+        s16 *aim = &mAimAngle;
         *aim = (s16)(*aim + 0x8000);
-        obj->mPlayerDist = 0;
+        mPlayerDist = 0;
     }
-    if ((u16)obj->mStateTimer > 0x1e && obj->mPlayerDist > 0x320000) {
-        if (_Z14ApproachLinearRiii(&obj->mHorzSpeed, 0, 0x1000) == 0)
+    if ((u16)mStateTimer > 0x1e && mPlayerDist > 0x320000) {
+        if (_Z14ApproachLinearRiii(&mHorzSpeed, 0, 0x1000) == 0)
             return;
-        obj->mState = 1;
-        func_ov062_02117994(self, 2);
+        mState = 1;
+        func_ov062_02117994(2);
         return;
     }
-    ApproachLinear(obj->mPrevAngleY, (s16)(obj->mAimAngle + 0x8000), 0x400);
-    _Z14ApproachLinearRiii(&obj->mHorzSpeed, 0x11000, 0x1000);
+    ApproachLinear(mPrevAngleY, (s16)(mAimAngle + 0x8000), 0x400);
+    _Z14ApproachLinearRiii(&mHorzSpeed, 0x11000, 0x1000);
 }
-}
-}  /* namespace tu */
 
-// @symbol func_ov062_02118a50
+// @symbol _ZN8daNknk_c19func_ov062_02118a50Ev
 /* ldrh cannot encode 0x3c6, so the state helpers test mTimer and mTurnTimer
  * from mModelAnim (byte offsets 0xc6 and 0xc8) and decrement through &mTimer /
  * &mTurnTimer. A single member expression folds that reload. */
-extern "C" {
-namespace tu {  /* namespaced: a conflicting file-scope view exists */
-void func_ov062_02118a50(char *c)
+void daNknk_c::func_ov062_02118a50()
 {
-    daNknk_c *self = (daNknk_c *)c;
-    if (self->mHorzSpeed != 0) {
-        if (self->mWithMeshClsn.IsOnWall() != 0) {
-            void *sr = _ZNK10dBgCh_Actr13GetWallResultEv(&self->mWithMeshClsn);
-            ((SurfaceInfo*)((char*)sr + 4))->CopyNormalTo(*(Vector3*)&self->mWallNormalX);
-            self->mPrevAngleY = _ZN8dActor_c12ReflectAngleE5Fix12IiES1_s(
-                c, self->mWallNormalX, self->mWallNormalZ, self->mPrevAngleY);
+    if (mHorzSpeed != 0) {
+        if (mWithMeshClsn.IsOnWall() != 0) {
+            void *sr = _ZNK10dBgCh_Actr13GetWallResultEv(&mWithMeshClsn);
+            ((SurfaceInfo*)((char*)sr + 4))->CopyNormalTo(*(Vector3*)&mWallNormalX);
+            mPrevAngleY = _ZN8dActor_c12ReflectAngleE5Fix12IiES1_s(
+                this, mWallNormalX, mWallNormalZ, mPrevAngleY);
         }
-        func_ov062_02118004(c, 0x4cc);
+        func_ov062_02118004(0x4cc);
         return;
     }
 
     {
-        if (*(u16 *)((char *)&self->mModelAnim + 0xc6) != 0) {
-            u16 *p = &self->mTimer;
+        if (*(u16 *)((char *)&mModelAnim + 0xc6) != 0) {
+            u16 *p = &mTimer;
             *p = (u16)(*p - 1);
-            if (*(u16 *)((char *)&self->mModelAnim + 0xc6) != 0) return;
-            func_ov062_02117994(c, 8); return;
+            if (*(u16 *)((char *)&mModelAnim + 0xc6) != 0) return;
+            func_ov062_02117994(8); return;
         }
     }
 
-    if (self->mModelAnim.WillHitFrame(0x1e) != 0)
-        func_ov062_021175c0(c);
-    if (self->mModelAnim.Finished() == 0)
+    if (mModelAnim.WillHitFrame(0x1e) != 0)
+        func_ov062_021175c0();
+    if (mModelAnim.Finished() == 0)
         return;
-    self->mState = 1;
-    func_ov062_02117994(c, 2);
+    mState = 1;
+    func_ov062_02117994(2);
 }
-}
-}  /* namespace tu */
 
-// @symbol func_ov062_02118a00
-namespace tu {  /* namespaced: a conflicting file-scope view exists */
-extern "C" void func_ov062_02118a00(void *c) {
-    daNknk_c *self = (daNknk_c *)c;
-    int gr = self->mWithMeshClsn.IsOnGround();
+// @symbol _ZN8daNknk_c19func_ov062_02118a00Ev
+void daNknk_c::func_ov062_02118a00() {
+    int gr = mWithMeshClsn.IsOnGround();
     if (gr == 0) return;
-    int v = self->mKoopaVariant;
+    int v = mKoopaVariant;
     if (v == 1) {
-        self->mState = 5;
+        mState = 5;
     } else {
-        self->mState = 2;
+        mState = 2;
     }
-    func_ov062_02117994((char *)c, 0);
-    func_ov062_021175c0(c);
+    func_ov062_02117994(0);
+    func_ov062_021175c0();
 }
-}  /* namespace tu */
 
-// @symbol func_ov062_02118718
+// @symbol _ZN8daNknk_c19func_ov062_02118718Ev
 /* See the ldrh note at func_ov062_02118a50 for the mModelAnim + 0xc6/0xc8 reads. */
-extern "C" {
-void func_ov062_02118718(char *c)
+void daNknk_c::func_ov062_02118718()
 {
-    daNknk_c *self = (daNknk_c *)c;
     int dist = 0x7fffffff;
     char *other;
 
-    if (self->mAnimIndex == 3)
-        func_ov062_02117724(c, 2, 5, 8, 0xb);
+    if (mAnimIndex == 3)
+        func_ov062_02117724(2, 5, 8, 0xb);
 
-    if (self->mTurning) {
-        self->mTurning =
-            (ApproachLinear(self->mPrevAngleY, self->mTargetAngle, 0x200) ^ 1) != 0;
+    if (mTurning) {
+        mTurning =
+            (ApproachLinear(mPrevAngleY, mTargetAngle, 0x200) ^ 1) != 0;
     } else {
-        if (self->mPlayerDist >= 0x61a8000)
-            self->mTargetAngle = self->mAimAngle;
+        if (mPlayerDist >= 0x61a8000)
+            mTargetAngle = mAimAngle;
 
-        other = (char *)func_ov062_02117b9c(c);
+        other = (char *)func_ov062_02117b9c();
         if (other) {
-            dist = Vec3_Dist(&self->mPosX, &((dActor_c *)other)->mPosX);
-            self->mTargetAngle = Vec3_HorzAngle((const Vector3 *)&self->mPosX, (const Vector3 *)&((dActor_c *)other)->mPosX);
+            dist = Vec3_Dist(&mPosX, &((dActor_c *)other)->mPosX);
+            mTargetAngle = Vec3_HorzAngle((const Vector3 *)&mPosX, (const Vector3 *)&((dActor_c *)other)->mPosX);
         } else {
-            self->mTurning =
-                self->AngleAwayFromWallOrCliff(self->mWithMeshClsn, self->mTargetAngle);
-            if (!self->mTurning) {
-                if (*(u16 *)((char *)&self->mModelAnim + 0xc8) != 0) {
-                    u16 *turn = &self->mTurnTimer;
+            mTurning =
+                AngleAwayFromWallOrCliff(mWithMeshClsn, mTargetAngle);
+            if (!mTurning) {
+                if (*(u16 *)((char *)&mModelAnim + 0xc8) != 0) {
+                    u16 *turn = &mTurnTimer;
                     *turn = (u16)(*turn - 1);
                 } else {
                     /* (int)& forces the pool add. mTargetAngle -= folds to mModelAnim+0xc2. */
                     if (((unsigned)RandomIntInternal(&data_0209e650) >> 16) & 0x8000)
-                        *(s16 *)((int)&self->mTargetAngle) -= ((unsigned)RandomIntInternal(&data_0209e650) >> 16) & 0x1fff;
+                        *(s16 *)((int)&mTargetAngle) -= ((unsigned)RandomIntInternal(&data_0209e650) >> 16) & 0x1fff;
                     else
-                        *(s16 *)((int)&self->mTargetAngle) += ((unsigned)RandomIntInternal(&data_0209e650) >> 16) & 0x1fff;
-                    self->mTurnTimer = 0x14;
+                        *(s16 *)((int)&mTargetAngle) += ((unsigned)RandomIntInternal(&data_0209e650) >> 16) & 0x1fff;
+                    mTurnTimer = 0x14;
                 }
             }
         }
 
-        if (self->mPlayerDist > 0x320000 ||
+        if (mPlayerDist > 0x320000 ||
             (other != 0 &&
-             self->GetSubtraction(self->mTargetAngle,
-                 (short)(self->mPrevAngleY + 0x8000)) < 0x2000)) {
-            ApproachLinear(self->mPrevAngleY, self->mTargetAngle, 0x600);
+             GetSubtraction(mTargetAngle,
+                 (short)(mPrevAngleY + 0x8000)) < 0x2000)) {
+            ApproachLinear(mPrevAngleY, mTargetAngle, 0x600);
         } else {
-            if (self->mModelIndex != 0)
-                ApproachLinear(self->mPrevAngleY, self->mAimAngle, 0x600);
+            if (mModelIndex != 0)
+                ApproachLinear(mPrevAngleY, mAimAngle, 0x600);
             else
-                ApproachLinear(self->mPrevAngleY, (short)(self->mAimAngle + 0x8000), 0x600);
+                ApproachLinear(mPrevAngleY, (short)(mAimAngle + 0x8000), 0x600);
         }
     }
 
-    if (_Z14ApproachLinearRiii(&self->mHorzSpeed, 0x14000, 0x1000) == 0)
+    if (_Z14ApproachLinearRiii(&mHorzSpeed, 0x14000, 0x1000) == 0)
         return;
     if (dist >= 0xc8000)
         return;
-    if (self->GetSubtraction(self->mTargetAngle, self->mPrevAngleY) >= 0xc00)
+    if (GetSubtraction(mTargetAngle, mPrevAngleY) >= 0xc00)
         return;
 
-    self->mPrevAngleY = self->mTargetAngle;
-    self->mState = 2;
-    self->mHorzSpeed += self->mHorzSpeed / 5;
-    self->mVertSpeed = dist / 30;
-    func_ov062_02117994(c, 6);
-    self->mTimer = 0x14;
-}
+    mPrevAngleY = mTargetAngle;
+    mState = 2;
+    mHorzSpeed += mHorzSpeed / 5;
+    mVertSpeed = dist / 30;
+    func_ov062_02117994(6);
+    mTimer = 0x14;
 }
 
-// @symbol func_ov062_02118588
+// @symbol _ZN8daNknk_c19func_ov062_02118588Ev
 /* See the ldrh note at func_ov062_02118a50 for the mModelAnim + 0xc6/0xc8 reads. */
-extern "C" {
-void func_ov062_02118588(char *c)
+void daNknk_c::func_ov062_02118588()
 {
-    daNknk_c *self = (daNknk_c *)c;
     dActor_c *found = 0;
     int match = 0;
-    if (self->mState == 2) {
-        if (self->mdCc_c.otherOwner != 0) {
-            found = dActor_c::FindWithID(self->mdCc_c.otherOwner);
+    if (mState == 2) {
+        if (mdCc_c.otherOwner != 0) {
+            found = dActor_c::FindWithID(mdCc_c.otherOwner);
             if (found != 0) {
                 int t = found->actorID;
                 t = (t == 0x11d);
@@ -643,261 +604,218 @@ void func_ov062_02118588(char *c)
         }
     }
     if (match != 0) {
-        self->mKoopaVariant = 0;
-        self->mState = 4;
-        self->mHorzSpeed = self->mHorzSpeed / 2;
+        mKoopaVariant = 0;
+        mState = 4;
+        mHorzSpeed = mHorzSpeed / 2;
         found->MarkForDestruction();
         return;
     }
-    if (self->mHorzSpeed != 0) {
-        func_ov062_02118004(c, 0x800);
+    if (mHorzSpeed != 0) {
+        func_ov062_02118004(0x800);
         return;
     }
 
     {
-        if (*(u16 *)((char *)&self->mModelAnim + 0xc6) != 0) {
-            u16 *q = &self->mTimer;
+        if (*(u16 *)((char *)&mModelAnim + 0xc6) != 0) {
+            u16 *q = &mTimer;
             *q = (u16)(*q - 1);
-            if (*(u16 *)((char *)&self->mModelAnim + 0xc6) != 0)
+            if (*(u16 *)((char *)&mModelAnim + 0xc6) != 0)
                 return;
-            func_ov062_02117994(c, 8);
+            func_ov062_02117994(8);
             return;
         }
     }
 
-    if (self->mModelAnim.WillHitFrame(0x1e) != 0)
-        func_ov062_021175c0(c);
-    if (self->mModelAnim.Finished() == 0)
+    if (mModelAnim.WillHitFrame(0x1e) != 0)
+        func_ov062_021175c0();
+    if (mModelAnim.Finished() == 0)
         return;
-    if (self->mModelIndex != 0) {
-        self->mState = 5;
-        func_ov062_02117994(c, 0);
+    if (mModelIndex != 0) {
+        mState = 5;
+        func_ov062_02117994(0);
         return;
     }
-    self->mState = 1;
-    func_ov062_02117994(c, 3);
-}
+    mState = 1;
+    func_ov062_02117994(3);
 }
 
-// @symbol func_ov062_021183e0
-extern "C" {
-void func_ov062_021183e0(char *c)
+// @symbol _ZN8daNknk_c19func_ov062_021183e0Ev
+void daNknk_c::func_ov062_021183e0()
 {
-    daNknk_c *self = (daNknk_c *)c;
     int dist = 0x7fffffff;
     char *other;
 
-    if (self->mModelAnim.Finished())
-        func_ov062_02117994(c, 1);
+    if (mModelAnim.Finished())
+        func_ov062_02117994(1);
 
-    if (self->mTurning) {
-        self->mTurning = (ApproachLinear(self->mPrevAngleY, self->mTargetAngle, 0x200) ^ 1) != 0;
+    if (mTurning) {
+        mTurning = (ApproachLinear(mPrevAngleY, mTargetAngle, 0x200) ^ 1) != 0;
     } else {
-        if (self->mPlayerDist >= 0x61a8000)
-            self->mTargetAngle = self->mAimAngle;
-        other = (char *)func_ov062_02117b9c(c);
+        if (mPlayerDist >= 0x61a8000)
+            mTargetAngle = mAimAngle;
+        other = (char *)func_ov062_02117b9c();
         if (other) {
-            dist = Vec3_Dist(&self->mPosX, &((dActor_c *)other)->mPosX);
+            dist = Vec3_Dist(&mPosX, &((dActor_c *)other)->mPosX);
             if (dist < 0xc8000)
-                self->mTargetAngle = Vec3_HorzAngle((const Vector3 *)&self->mPosX, (const Vector3 *)&((dActor_c *)other)->mPosX);
+                mTargetAngle = Vec3_HorzAngle((const Vector3 *)&mPosX, (const Vector3 *)&((dActor_c *)other)->mPosX);
         }
-        self->mTurning = self->AngleAwayFromWallOrCliff(self->mWithMeshClsn, self->mTargetAngle);
-        ApproachLinear(self->mPrevAngleY, self->mTargetAngle, 0x200);
+        mTurning = AngleAwayFromWallOrCliff(mWithMeshClsn, mTargetAngle);
+        ApproachLinear(mPrevAngleY, mTargetAngle, 0x200);
     }
 
-    if (dist < 0xc8000 && self->GetSubtraction(self->mTargetAngle, self->mPrevAngleY) < 0xc00) {
-        self->mPrevAngleY = self->mTargetAngle;
-        self->mState = 2;
-        self->mHorzSpeed = 0x18000;
-        self->mVertSpeed = dist / 30;
-        func_ov062_02117994(c, 6);
-        self->mTimer = 0x14;
+    if (dist < 0xc8000 && GetSubtraction(mTargetAngle, mPrevAngleY) < 0xc00) {
+        mPrevAngleY = mTargetAngle;
+        mState = 2;
+        mHorzSpeed = 0x18000;
+        mVertSpeed = dist / 30;
+        func_ov062_02117994(6);
+        mTimer = 0x14;
         return;
     }
 
-    if (self->mKoopaVariant == 2)
-        _Z14ApproachLinearRiii(&self->mHorzSpeed, 0x2000, 0x4cc);
+    if (mKoopaVariant == 2)
+        _Z14ApproachLinearRiii(&mHorzSpeed, 0x2000, 0x4cc);
     else
-        _Z14ApproachLinearRiii(&self->mHorzSpeed, 0x3000, 0x4cc);
+        _Z14ApproachLinearRiii(&mHorzSpeed, 0x3000, 0x4cc);
 
-    func_ov062_02118058(c);
+    func_ov062_02118058();
 }
-}
 
-// @symbol func_ov062_02118334
-extern "C" {
-
-void Vec3_Asr(struct Vec3 *d, struct Vec3 *s, int sh);
-void Matrix4x3_FromTranslation(struct Matrix4x3 *m, int x, int y, int z);
-void Matrix4x3_ApplyInPlaceToRotationY(struct Matrix4x3 *m, short angY);
-void _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(void *thiz, void *sm, struct Matrix4x3 *m, int radHeight, int a, u8 b);
-extern struct Matrix4x3 data_020a0e68;
-inline struct Matrix4x3 *inline_fn()
+// @symbol _ZN8daNknk_c19func_ov062_02118334Ev
+void daNknk_c::func_ov062_02118334()
 {
-  return &data_020a0e68;
-}
-
-void func_ov062_02118334(char *c)
-{
-  daNknk_c *self = (daNknk_c *)c;
   short *new_var;
   struct Vec3 v;
-  Vec3_Asr(&v, (struct Vec3 *)&self->mPosX, 3);
+  Vec3_Asr(&v, (struct Vec3 *)&mPosX, 3);
   if (1)
   {
     Matrix4x3_FromTranslation(&data_020a0e68, v.x, v.y, v.z);
-    new_var = &self->mAngleY;
+    new_var = &mAngleY;
     Matrix4x3_ApplyInPlaceToRotationY(inline_fn(), *new_var);
     { struct M12w { int w[12]; };  /* array-wrapper copy: keeps C's block copy under -lang c++ */
-      *(M12w *)&self->mModelAnim.mat4x3 = *(M12w *)&data_020a0e68; }
+      *(M12w *)&mModelAnim.mat4x3 = *(M12w *)&data_020a0e68; }
     {
-      int b = (int) ((self->mFlags & 0x40000) != 0);
+      int b = (int) ((mFlags & 0x40000) != 0);
       if (b != 0)
       {
         return;
       }
     }
   }
-  _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(c, &self->mShadowModel, &self->mModelAnim.mat4x3, 0x50000, 0x50000, 0xf);
-}
+  _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(this, &mShadowModel, &mModelAnim.mat4x3, 0x50000, 0x50000, 0xf);
 }
 
-// @symbol func_ov062_02118258
-extern "C" {
-namespace tu {  /* namespaced: a (void*) view of this symbol is in scope */
-void func_ov062_02118258(char* c, int lim)
+// @symbol _ZN8daNknk_c19func_ov062_02118258Ei
+void daNknk_c::func_ov062_02118258(int lim)
 {
-    daNknk_c *self = (daNknk_c *)c;
-    self->mClosestPlayer = self->ClosestPlayer();
+    mClosestPlayer = ClosestPlayer();
 
-    if (self->mClosestPlayer == 0 || Vec3_Dist((Vector3*)&self->mPosX, (Vector3*)&self->mHomePosX) > lim) {
-        self->mAimAngle = Vec3_HorzAngle((Vector3*)&self->mPosX, (Vector3*)&self->mHomePosX);
-        self->mPlayerDist = 0x61a8000;
+    if (mClosestPlayer == 0 || Vec3_Dist((Vector3*)&mPosX, (Vector3*)&mHomePosX) > lim) {
+        mAimAngle = Vec3_HorzAngle((Vector3*)&mPosX, (Vector3*)&mHomePosX);
+        mPlayerDist = 0x61a8000;
     } else {
         Vector3 v;
-        int* src = &self->mClosestPlayer->mPosX;
+        int* src = &mClosestPlayer->mPosX;
         v.x = src[0];
         v.y = src[1];
         v.z = src[2];
-        if (Vec3_Dist((Vector3*)&self->mHomePosX, &v) > lim) {
-            self->mPlayerDist = 0x4e20000;
+        if (Vec3_Dist((Vector3*)&mHomePosX, &v) > lim) {
+            mPlayerDist = 0x4e20000;
             return;
         }
-        self->mPlayerDist = Vec3_Dist((Vector3*)&self->mPosX, &v);
-        self->mAimAngle = Vec3_HorzAngle((Vector3*)&self->mPosX, &v);
+        mPlayerDist = Vec3_Dist((Vector3*)&mPosX, &v);
+        mAimAngle = Vec3_HorzAngle((Vector3*)&mPosX, &v);
     }
 }
-}
-}  /* namespace tu */
 
-// @symbol func_ov062_021181a0
-extern "C" {
-namespace tu {  /* namespaced: a (void*) view of this symbol is in scope */
-void func_ov062_021181a0(char *c) {
-    daNknk_c *self = (daNknk_c *)c;
-    if (self->mKoopaVariant == 2) {
-        _Z14ApproachLinearRiii(&self->mHorzSpeed, 0x2000, 0x4cc);
+// @symbol _ZN8daNknk_c19func_ov062_021181a0Ev
+void daNknk_c::func_ov062_021181a0() {
+    if (mKoopaVariant == 2) {
+        _Z14ApproachLinearRiii(&mHorzSpeed, 0x2000, 0x4cc);
     } else {
-        _Z14ApproachLinearRiii(&self->mHorzSpeed, 0x3000, 0x4cc);
+        _Z14ApproachLinearRiii(&mHorzSpeed, 0x3000, 0x4cc);
     }
-    if (self->mModelAnim.Finished() == 0) return;
+    if (mModelAnim.Finished() == 0) return;
     {
-        u16 *p = &self->mWalkState;
+        u16 *p = &mWalkState;
         *p = (u16)(*p + 1);
     }
-    self->mTimer =
+    mTimer =
         (u16)(((unsigned int)RandomIntInternal(&data_0209e650) >> 0x10) % 70 + 30);
-    func_ov062_02117994(c, 1);
+    func_ov062_02117994(1);
 }
-}
-}  /* namespace tu */
 
-// @symbol func_ov062_0211811c
+// @symbol _ZN8daNknk_c19func_ov062_0211811cEv
 /* See the ldrh note at func_ov062_02118a50 for the mModelAnim + 0xc6/0xc8 reads. */
-extern "C" {
-namespace tu {  /* namespaced: a (void*) view of this symbol is in scope */
-void func_ov062_0211811c(char *c) {
-    daNknk_c *self = (daNknk_c *)c;
-    if (*(u16 *)((char *)&self->mModelAnim + 0xc6) != 0) {
-        u16 *p = &self->mTimer;
+void daNknk_c::func_ov062_0211811c() {
+    if (*(u16 *)((char *)&mModelAnim + 0xc6) != 0) {
+        u16 *p = &mTimer;
         *p = (u16)(*p - 1);
         return;
     }
-    if (self->mModelAnim.WillHitFrame((unsigned short)(self->mModelAnim.GetFrameCount() - 1)) == 0)
+    if (mModelAnim.WillHitFrame((unsigned short)(mModelAnim.GetFrameCount() - 1)) == 0)
         return;
     {
-        u16 *q = &self->mWalkState;
+        u16 *q = &mWalkState;
         *q = (u16)(*q + 1);
     }
-    func_ov062_02117994(c, 2);
+    func_ov062_02117994(2);
 }
-}
-}  /* namespace tu */
 
-// @symbol func_ov062_021180d4
-extern "C" {
-void func_ov062_021180d4(void *c) {
-    daNknk_c *self = (daNknk_c *)c;
-    _Z14ApproachLinearRiii(&self->mHorzSpeed, 0, 0x1000);
-    int done = self->mModelAnim.Finished();
+// @symbol _ZN8daNknk_c19func_ov062_021180d4Ev
+void daNknk_c::func_ov062_021180d4() {
+    _Z14ApproachLinearRiii(&mHorzSpeed, 0, 0x1000);
+    int done = mModelAnim.Finished();
     if (!done) return;
-    self->mState = 1;
-    func_ov062_02117994((char*)c, 4);
-}
+    mState = 1;
+    func_ov062_02117994(4);
 }
 
-// @symbol func_ov062_02118058
-extern "C" {
-void func_ov062_02118058(char *c){
-    daNknk_c *self = (daNknk_c *)c;
-  Player *o = self->mClosestPlayer;
-  int d = self->mPlayerDist;
-  if(o!=0) d=Vec3_Dist(&self->mPosX, &o->mPosX);
+// @symbol _ZN8daNknk_c19func_ov062_02118058Ev
+void daNknk_c::func_ov062_02118058() {
+  Player *o = mClosestPlayer;
+  int d = mPlayerDist;
+  if(o!=0) d=Vec3_Dist(&mPosX, &o->mPosX);
   if(d>=0x12c000) return;
-  int s=self->GetSubtraction(self->mAimAngle, self->mPrevAngleY);
+  int s=GetSubtraction(mAimAngle, mPrevAngleY);
   if(s>=0x3000) return;
-  if(self->mKoopaVariant==1) self->mState=1;
-  else self->mState=3;
-  func_ov062_02117994(c, 3);
-}
+  if(mKoopaVariant==1) mState=1;
+  else mState=3;
+  func_ov062_02117994(3);
 }
 
-// @symbol func_ov062_02118004
+// @symbol _ZN8daNknk_c19func_ov062_02118004Ei
 /* Signature deliberately copied from the local declaration above: the
    ROM name carries by-value class parameters (e.g. Fix12<int>), which
    mwccarm passes differently at the call site, so declaring the true
    types breaks the byte match. See notes/mwccarm-codegen.md 6az. */
-extern "C" void func_ov062_02118004(void *c, int a1) {
-    daNknk_c *self = (daNknk_c *)c;
-    int r = self->mWithMeshClsn.IsOnGround();
+void daNknk_c::func_ov062_02118004(int a1) {
+    int r = mWithMeshClsn.IsOnGround();
     if (r == 0) return;
-    _Z14ApproachLinearRiii(&self->mHorzSpeed, 0, a1);
-    int x = self->mPosX;
-    int y = self->mPosY;
-    int z = self->mPosZ;
+    _Z14ApproachLinearRiii(&mHorzSpeed, 0, a1);
+    int x = mPosX;
+    int y = mPosY;
+    int z = mPosZ;
     _ZN8Particle20RunningSlidingDustAtE5Fix12IiES1_S1_(x, y, z);
 }
 
-// @symbol func_ov062_02117c98
-extern "C" {
-namespace tu {  /* namespaced: a conflicting file-scope view exists */
-void func_ov062_02117c98(void* self)
+// @symbol _ZN8daNknk_c19func_ov062_02117c98Ev
+void daNknk_c::func_ov062_02117c98()
 {
-    daNknk_c *koopa = (daNknk_c *)self;
     void* found;
     int turnAround;
     s32 flags;
     u32 id;
 
-    id = koopa->mdCc_c.otherOwner;
+    id = mdCc_c.otherOwner;
     if (id == 0)
         return;
     found = dActor_c::FindWithID(id);
     if (found == 0)
         return;
 
-    flags = koopa->mdCc_c.hitFlags;
-    turnAround = (int)(((long long)(int)0));
+    flags = mdCc_c.hitFlags;
+    turnAround = 0;
 
     if (flags & 0x10) {
         Vector3_16 v;
@@ -907,43 +825,43 @@ void func_ov062_02117c98(void* self)
         // The member's unused Fix12<int> argument is one raw register word.
         // Native aggregate passing adds a load/copy here under 2004/b56;
         // retain decl_Enemy.h's scalar ABI bridge to the actual member symbol.
-        _ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Player5Fix12IiE(self, &v, found, 0x46000);
+        _ZN12dEnemyBase_c20KillByInvincibleCharERK10Vector3_16R6Player5Fix12IiE(this, &v, found, 0x46000);
         return;
     }
     if (flags & 0x22400) {
-        if (koopa->mKoopaVariant == 0) {
-            func_ov062_02117bf4(self);
+        if (mKoopaVariant == 0) {
+            func_ov062_02117bf4();
             return;
         }
-        koopa->mDeathState = 5;
-        func_ov002_020aea30(self, found, (dBgCh_Actr*)turnAround);
+        mDeathState = 5;
+        func_ov002_020aea30(this, found, (dBgCh_Actr*)turnAround);
         return;
     }
     if (flags & 0x4000) {
-        koopa->mDeathState = 6;
+        mDeathState = 6;
         turnAround = 1;
     } else if (flags & 0x447e0) {
-        if (koopa->mKoopaVariant == 0) {
-            func_ov062_02117bf4(self);
+        if (mKoopaVariant == 0) {
+            func_ov062_02117bf4();
             if (flags & 0x3c0)
-                koopa->mPrevAngleY = ((dActor_c *)found)->mAngleY;
+                mPrevAngleY = ((dActor_c *)found)->mAngleY;
         } else {
             if (flags & 0x40040)
-                koopa->mDeathState = 2;
+                mDeathState = 2;
             else if (flags & 0x20400)
-                koopa->mDeathState = 5;
+                mDeathState = 5;
             else if (flags & 0x380)
-                koopa->mDeathState = 3;
+                mDeathState = 3;
             else if (flags & 0x4000)
-                koopa->mDeathState = 6;
+                mDeathState = 6;
             else {
-                koopa->mDeathState = 1;
-                func_0201267c(0x113, (const Vector3*)&koopa->mCamSpacePosX);
-                koopa->mScaleX = 0x1000;
-                koopa->mScaleY = 0x1000;
-                koopa->mScaleZ = 0x1000;
+                mDeathState = 1;
+                func_0201267c(0x113, (const Vector3*)&mCamSpacePosX);
+                mScaleX = 0x1000;
+                mScaleY = 0x1000;
+                mScaleZ = 0x1000;
             }
-            func_ov002_020aea30(self, found, 0);
+            func_ov002_020aea30(this, found, 0);
             return;
         }
     } else {
@@ -951,15 +869,15 @@ void func_ov062_02117c98(void* self)
         struct { Vec3 sv; Vec3 hv; } L;
         int isPlayer;
         isPlayer = (player->actorID == 0xbf) ? 1 : turnAround;
-        if ((int)(((long long)isPlayer)) == 0)
+        if (isPlayer == 0)
             goto tail;
         if (player->mIsMetal != 0) {
-            if (koopa->mKoopaVariant == 0) {
-                func_ov062_02117bf4(self);
+            if (mKoopaVariant == 0) {
+                func_ov062_02117bf4();
                 goto tail;
             }
-            koopa->mDeathState = 6;
-            func_ov002_020aea30(self, found, 0);
+            mDeathState = 6;
+            func_ov002_020aea30(this, found, 0);
             return;
         }
         {
@@ -969,90 +887,83 @@ void func_ov062_02117c98(void* self)
             L.sv.z = s[2];
         }
         if (player->IsOnShell()) {
-            koopa->mDeathState = 5;
+            mDeathState = 5;
             turnAround = 1;
             goto tail;
         }
-        if (koopa->JumpedOnByPlayer(koopa->mdCc_c, *player)) {
-            if (koopa->mKoopaVariant == 0) {
-                func_ov062_02117bf4(self);
+        if (JumpedOnByPlayer(mdCc_c, *player)) {
+            if (mKoopaVariant == 0) {
+                func_ov062_02117bf4();
             } else {
-                koopa->mDeathState = 1;
-                func_ov002_020aea30(self, found, 0);
-                koopa->mScaleX = 0x1000;
-                koopa->mScaleY = 0x1000;
-                koopa->mScaleZ = 0x1000;
-                func_0201267c(0x113, (const Vector3*)&koopa->mCamSpacePosX);
+                mDeathState = 1;
+                func_ov002_020aea30(this, found, 0);
+                mScaleX = 0x1000;
+                mScaleY = 0x1000;
+                mScaleZ = 0x1000;
+                func_0201267c(0x113, (const Vector3*)&mCamSpacePosX);
             }
             _ZN6Player6BounceE5Fix12IiE(found, 0x28000);
             return;
         }
         if (player->mIsVanish != 0)
             goto tail;
-        if ((koopa->mdCc_c.hitFlags & 0x400000) == 0)
+        if ((mdCc_c.hitFlags & 0x400000) == 0)
             goto tail;
-        if (koopa->mState == 0)
+        if (mState == 0)
             goto tail;
         {
             s32 pw;
-            L.hv.x = koopa->mPosX;
-            L.hv.y = koopa->mPosY;
-            L.hv.z = koopa->mPosZ;
-            pw = koopa->mHorzSpeed;
+            L.hv.x = mPosX;
+            L.hv.y = mPosY;
+            L.hv.z = mPosZ;
+            pw = mHorzSpeed;
             if (pw < 0xf000)
                 pw = 0xf000;
             _ZN6Player4HurtERK7Vector3j5Fix12IiEjjj(player, &L.hv, 0, pw, 1, 0, 1);
-            func_ov062_02117b48(self);
-            if (koopa->mKoopaVariant == 2) {
-                koopa->PoofDust();
-                func_ov062_021179e4(self);
-                koopa->KillAndTrackInDeathTable();
+            func_ov062_02117b48();
+            if (mKoopaVariant == 2) {
+                PoofDust();
+                func_ov062_021179e4();
+                KillAndTrackInDeathTable();
             }
         }
     }
 
 tail:
-    func_ov002_020aea30(self, found, &koopa->mWithMeshClsn);
+    func_ov002_020aea30(this, found, &mWithMeshClsn);
     if (turnAround)
-        koopa->mAngleY = (u16)(koopa->mPrevAngleY + 0x8000);
+        mAngleY = (u16)(mPrevAngleY + 0x8000);
 }
-}
-}  /* namespace tu */
 
-// @symbol func_ov062_02117bf4
-namespace tu {  /* namespaced: a conflicting file-scope view exists */
-extern "C" void func_ov062_02117bf4(char* c){
-    daNknk_c *self = (daNknk_c *)c;
-    func_0201267c(0xed, (const Vector3*)&self->mCamSpacePosX);
-    self->mKoopaVariant = 1;
-    self->mState = 3;
-    self->mHorzSpeed = 0x14000;
-    func_ov062_02117994(c, 7);
+// @symbol _ZN8daNknk_c19func_ov062_02117bf4Ev
+void daNknk_c::func_ov062_02117bf4(){
+    func_0201267c(0xed, (const Vector3*)&mCamSpacePosX);
+    mKoopaVariant = 1;
+    mState = 3;
+    mHorzSpeed = 0x14000;
+    func_ov062_02117994(7);
     {
         Vector3 v;
-        int yy = self->mPosZ;
-        int zz = self->mPosY + 0x3c000;
-        v.x = self->mPosX;
+        int yy = mPosZ;
+        int zz = mPosY + 0x3c000;
+        v.x = mPosX;
         v.y = zz;
         v.z = yy;
-        dActor_c::Spawn(0x11d, self->mModelIndex, v, 0, self->mAreaId, -1);
+        dActor_c::Spawn(0x11d, mModelIndex, v, 0, mAreaId, -1);
     }
-    self->mInvincibleTimer = 0xa;
-    func_0201267c(1, (const Vector3*)&self->mCamSpacePosX);
+    mInvincibleTimer = 0xa;
+    func_0201267c(1, (const Vector3*)&mCamSpacePosX);
 }
-}  /* namespace tu */
 
-// @symbol func_ov062_02117b9c
-extern "C" {
-void *func_ov062_02117b9c(void *c) {
-    daNknk_c *self = (daNknk_c *)c;
+// @symbol _ZN8daNknk_c19func_ov062_02117b9cEv
+void *daNknk_c::func_ov062_02117b9c() {
     dActor_c *found = 0;
     dActor_c *best = 0;
     Fix12i bestDist = 0x7FFFFFFF;
     while (1) {
         found = dActor_c::FindWithActorID(0x11d, found);
         if (!found) break;
-        Fix12i d = Vec3_Dist((Vector3*)&self->mPosX, (Vector3*)&found->mPosX);
+        Fix12i d = Vec3_Dist((Vector3*)&mPosX, (Vector3*)&found->mPosX);
         if (d < bestDist) {
             bestDist = d;
             best = found;
@@ -1060,111 +971,90 @@ void *func_ov062_02117b9c(void *c) {
     }
     return best;
 }
-}
 
-// @symbol func_ov062_02117b60
-extern "C" {
-int func_ov062_02117b60(void* c)
+// @symbol _ZN8daNknk_c19func_ov062_02117b60Ev
+int daNknk_c::func_ov062_02117b60()
 {
-    daNknk_c *self = (daNknk_c *)c;
-    Player *target = self->mClosestPlayer;
+    Player *target = mClosestPlayer;
     if (!target) return 0x61a8000;
-    return Vec3_Dist(&self->mPosX, &target->mPosX);
-}
+    return Vec3_Dist(&mPosX, &target->mPosX);
 }
 
-// @symbol func_ov062_02117b48
-extern "C" {
-namespace tu {  /* namespaced: a conflicting file-scope view exists */
-void func_ov062_02117b48(char *p)
+// @symbol _ZN8daNknk_c19func_ov062_02117b48Ev
+void daNknk_c::func_ov062_02117b48()
 {
-    daNknk_c *self = (daNknk_c *)p;
-    self->mState = 0;
-    self->mVertSpeed = 81920;
-    self->mHorzSpeed = 0;
+    mState = 0;
+    mVertSpeed = 81920;
+    mHorzSpeed = 0;
 }
-}
-}  /* namespace tu */
 
-// @symbol func_ov062_02117acc
-extern "C" {
-void func_ov062_02117acc(char *c){
-    daNknk_c *self = (daNknk_c *)c;
-  switch(self->mState){
-  case 0: func_ov062_02118a00(c); break;
-  case 1: func_ov062_02118de8(c); break;
-  case 2: func_ov062_02118cdc(c); break;
-  case 3: func_ov062_02118b4c(c); break;
-  case 4: func_ov062_02118a50(c); break;
+// @symbol _ZN8daNknk_c19func_ov062_02117accEv
+void daNknk_c::func_ov062_02117acc(){
+  switch(mState){
+  case 0: func_ov062_02118a00(); break;
+  case 1: func_ov062_02118de8(); break;
+  case 2: func_ov062_02118cdc(); break;
+  case 3: func_ov062_02118b4c(); break;
+  case 4: func_ov062_02118a50(); break;
   }
 }
-}
 
-// @symbol func_ov062_02117a3c
-extern "C" void func_ov062_02117a3c(char *c)
+// @symbol _ZN8daNknk_c19func_ov062_02117a3cEv
+void daNknk_c::func_ov062_02117a3c()
 {
-    daNknk_c *self = (daNknk_c *)c;
-    switch (self->mState) {
-    case 0: func_ov062_02118a00(c); break;
-    case 1: func_ov062_02118718(c); break;
-    case 2: func_ov062_02118588(c); break;
-    case 3: func_ov062_02118588(c); break;
-    case 4: func_ov062_02118de8(c); break;
-    case 5: func_ov062_021183e0(c); break;
+    switch (mState) {
+    case 0: func_ov062_02118a00(); break;
+    case 1: func_ov062_02118718(); break;
+    case 2: func_ov062_02118588(); break;
+    case 3: func_ov062_02118588(); break;
+    case 4: func_ov062_02118de8(); break;
+    case 5: func_ov062_021183e0(); break;
     }
 }
 
-// @symbol func_ov062_021179e4
-namespace tu {
-extern "C" void func_ov062_021179e4(daNknk_c* c) {
-    int x = c->mPosX;
-    int z = c->mPosZ;
-    int y = c->mPosY + 0x78000;
+// @symbol _ZN8daNknk_c19func_ov062_021179e4Ev
+void daNknk_c::func_ov062_021179e4() {
+    int x = mPosX;
+    int z = mPosZ;
+    int y = mPosY + 0x78000;
     Vector3 pos;
     pos.x = x;
     pos.y = y;
     pos.z = z;
-    dActor_c::Spawn(0x122, 2, pos, 0, c->mAreaId, -1);
-}
+    dActor_c::Spawn(0x122, 2, pos, 0, mAreaId, -1);
 }
 
-// @symbol func_ov062_02117994
-extern "C" {
-void func_ov062_02117994(char *c, int idx) {
-    daNknk_c *self = (daNknk_c *)c;
+// @symbol _ZN8daNknk_c19func_ov062_02117994Ei
+void daNknk_c::func_ov062_02117994(int idx) {
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
-        &self->mModelAnim,
+        &mModelAnim,
         (BCA_File*)data_ov062_0211cee8[idx]->file,
         data_ov062_0211cf0c[idx],
-        self->mAnimSpeed,
+        mAnimSpeed,
         0
     );
-    self->mAnimIndex = (u8)idx;
-}
+    mAnimIndex = (u8)idx;
 }
 
-// @symbol func_ov062_02117724
+// @symbol _ZN8daNknk_c19func_ov062_02117724Ejjjt
 // 6f: keep constant live / flip coloring
-extern "C" {
-namespace tu {  /* namespaced: conflicting file-scope views exist */
-void func_ov062_02117724(char *t, unsigned int a1, unsigned int a2, unsigned int a3, unsigned short a4) /* uxth vs a1-a3: ROM compares h<=a4 after a halfword arg */
+void daNknk_c::func_ov062_02117724(unsigned int a1, unsigned int a2, unsigned int a3, unsigned short a4) /* uxth vs a1-a3: ROM compares h<=a4 after a halfword arg */
 {
-    daNknk_c *self = (daNknk_c *)t;
-    unsigned int h = (unsigned int)(self->mModelAnim.currFrame << 4) >> 16;
+    unsigned int h = (unsigned int)(mModelAnim.currFrame << 4) >> 16;
     if ((h >= a1 && h <= a2) || (h >= a3 && h <= a4)) {
         Vector3 pos;
         int k, iscb, idx, uid, iscb2;
         short ang;
         char *ps;
-        if (self->mFootstep != 0) return;
-        self->mFootstep = 1;
-        func_0201267c(0xe4, (const Vector3*)&self->mCamSpacePosX);
-        if (self->mAnimIndex == 1) return;
-        ang = (short)(self->mAngleY + 0x4000);
-        pos.x = self->mPosX;
-        pos.y = self->mPosY;
-        pos.z = self->mPosZ;
-        iscb = self->actorID == 0xcb;
+        if (mFootstep != 0) return;
+        mFootstep = 1;
+        func_0201267c(0xe4, (const Vector3*)&mCamSpacePosX);
+        if (mAnimIndex == 1) return;
+        ang = (short)(mAngleY + 0x4000);
+        pos.x = mPosX;
+        pos.y = mPosY;
+        pos.z = mPosZ;
+        iscb = actorID == 0xcb;
         k = iscb ? 0xf : 0xa;
         *(volatile int *)&pos.y = pos.y + (k << 12); /* pin y add dest */
         if (h <= a2) {
@@ -1195,36 +1085,31 @@ void func_ov062_02117724(char *t, unsigned int a1, unsigned int a2, unsigned int
         if (uid == 0) return;
         ps = (char *)Particle::System::FromUniqueID(uid);
         if (ps == 0) return;
-        iscb2 = self->actorID == 0xcb;
+        iscb2 = actorID == 0xcb;
         if (iscb2)
             *(int *)(ps + 0x50) = (short)(((long long)*(int *)(ps + 0x50) * 0x800 + 0x800) >> 12);
         else
             *(int *)(ps + 0x50) = (short)(((long long)*(int *)(ps + 0x50) * 0x500 + 0x800) >> 12);
     } else {
-        self->mFootstep = 0;
+        mFootstep = 0;
     }
 }
-}
-}  /* namespace tu */
 
-// @symbol func_ov062_021175c0
-extern "C" {
-namespace tu {  /* namespaced: conflicting file-scope views exist */
-void func_ov062_021175c0(char *c)
+// @symbol _ZN8daNknk_c19func_ov062_021175c0Ev
+void daNknk_c::func_ov062_021175c0()
 {
-    daNknk_c *self = (daNknk_c *)c;
     volatile Vector3 pos;
     int t;
     u32 spawned;
     void *particle;
 
-    if (self->mLandingDustTimer != 0) return;
+    if (mLandingDustTimer != 0) return;
 
-    pos.x = self->mPosX;
-    pos.y = self->mPosY;
-    pos.z = self->mPosZ;
+    pos.x = mPosX;
+    pos.y = mPosY;
+    pos.z = mPosZ;
 
-    t = self->actorID;
+    t = actorID;
     t = t == 0xcb;
     {
         int zArg = pos.z;
@@ -1240,14 +1125,14 @@ void func_ov062_021175c0(char *c)
 
     _ZN8Particle19SetSelfDestructFlagEj(0xb2);
 
-    self->mLandingDustTimer = 0xa;
+    mLandingDustTimer = 0xa;
     if (spawned == 0) return;
 
     particle = Particle::System::FromUniqueID(spawned);
     if (particle == 0) return;
 
     {
-        int t2 = self->actorID;
+        int t2 = actorID;
         t2 = t2 == 0xcb;
         if (t2 != 0) {
             int v = *(int *)((char *)particle + 0x50);
@@ -1260,23 +1145,12 @@ void func_ov062_021175c0(char *c)
         }
     }
 }
-}
-}  /* namespace tu */
 
-// @symbol func_ov062_02117570
-namespace tu {  /* namespaced: conflicting file-scope views exist */
-extern "C" {
-struct dActor_c;
-struct dBgCh_Actr;
-struct dBgCh_Actr *_ZNK10dBgCh_Actr14GetFloorResultEv(struct dBgCh_Actr *self);
-int SurfaceInfo_TestFlag0x20(int *p);
-void func_ov062_02117570(struct dActor_c *self) {
-    daNknk_c *koopa = (daNknk_c *)self;
-    if (!koopa->mWithMeshClsn.IsOnGround()) return;
-    struct dBgCh_Actr *floor = _ZNK10dBgCh_Actr14GetFloorResultEv((struct dBgCh_Actr *)&koopa->mWithMeshClsn);
+// @symbol _ZN8daNknk_c19func_ov062_02117570Ev
+void daNknk_c::func_ov062_02117570() {
+    if (!mWithMeshClsn.IsOnGround()) return;
+    struct dBgCh_Actr *floor = _ZNK10dBgCh_Actr14GetFloorResultEv(&mWithMeshClsn);
     if (!SurfaceInfo_TestFlag0x20((int*)((char*)floor + 4))) return;
-    koopa->SpawnCoin();
-    koopa->KillAndTrackInDeathTable();
+    SpawnCoin();
+    KillAndTrackInDeathTable();
 }
-}
-}  /* namespace tu */

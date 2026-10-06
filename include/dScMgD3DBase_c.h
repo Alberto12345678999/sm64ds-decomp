@@ -73,7 +73,7 @@
 #ifndef DSCMGD3DBASE_C_H
 #define DSCMGD3DBASE_C_H
 #include "dScMgBase_c.h"
-#include "Stage.h"
+#include "dScStage_c.h"
 
 struct dScMgD3DBase_c : dScMgBase_c {
     /* Declared first -- see include/dScene_c.h's KEY FUNCTION note. Overrides
