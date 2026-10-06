@@ -8391,6 +8391,11 @@
     "src/engine/model/TextureTransformer.cpp#_ZN18TextureTransformer7SetFileER8BTA_Filei5Fix12IiEj": "tangosdev",
     "src/engine/model/TextureTransformer.cpp#_ZN18TextureTransformerD0Ev": "tangosdev",
     "src/engine/model/TextureTransformer.cpp#_ZN18TextureTransformerD1Ev": "tangosdev",
-    "src/engine/model/TextureTransformer.cpp#_ZN18TextureTransformerC1Ev": "tangosdev"
+    "src/engine/model/TextureTransformer.cpp#_ZN18TextureTransformerC1Ev": "tangosdev",
+    "src/Memory.cpp#_ZN6Memory10DeallocateEPv": "tangosdev",
+    "src/Memory.cpp#_ZN6Memory8AllocateEj": "tangosdev",
+    "src/Memory.cpp#_ZN6Memory8AllocateEji": "tangosdev",
+    "src/Memory.cpp#_ZN6Memory10DeallocateEPvP4Heap": "tangosdev",
+    "src/Memory.cpp#_ZN6Memory8AllocateEjiP4Heap": "tangosdev"
   }
 }
