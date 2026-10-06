@@ -3675,6 +3675,23 @@ def _baseline_partition_symbols(names):
     return rows, baseline_sha256, None
 
 
+def policy_dropped_vtable_symbols(entry):
+    """``_ZTV`` names a manifest policy removes from the emitted object.
+
+    ``apply_compiler_only_policy`` and ``apply_externalized_output_policy`` convert
+    such definitions into undefined imports and re-addend surviving references to
+    the repository's public address-point convention.  ``rebias_object_symbols``
+    must not apply its raw-import preamble correction to those references a second
+    time.
+    """
+    out = set()
+    for field in ("compiler_only_output", "externalized_output"):
+        for row in entry.get(field, []):
+            if isinstance(row, dict) and str(row.get("symbol", "")).startswith("_ZTV"):
+                out.add(row["symbol"])
+    return out
+
+
 def partition_vtable_rebiases(entry, claims, baseline_symbols=None,
                                baseline_sha256=None):
     """Exact public-address-point biases required by retained vtable definitions."""
@@ -3925,7 +3942,8 @@ def partition_vtable_rebiases(entry, claims, baseline_symbols=None,
 def prepare_partitioned_nontext_vtables(data_tu, entry, claims, biases):
     """Normalize retained and imported vtables for the partitioned link object."""
     data_tu, bias_report = OI.rebias_object_symbols(
-        data_tu, biases, normalize_undefined=True)
+        data_tu, biases, normalize_undefined=True,
+        skip_undefined=policy_dropped_vtable_symbols(entry))
     if data_tu is None:
         return None, bias_report, None
     owned = verify_owned_sections(
@@ -5361,7 +5379,8 @@ def cmd_linkcheck(args):
             _record_linkcheck(data, entry, report, baseline)
             return 1
         rebased_tu, bias_report = OI.rebias_object_symbols(
-            linked_tu, biases, normalize_undefined=True)
+            linked_tu, biases, normalize_undefined=True,
+            skip_undefined=policy_dropped_vtable_symbols(entry))
         report["vtableRebias"] = bias_report
         if rebased_tu is None:
             print(f"      REFUSED -- vtable symbol rebias: {bias_report.get('error')}")

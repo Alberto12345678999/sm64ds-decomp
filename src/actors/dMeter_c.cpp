@@ -59,7 +59,7 @@
 #include "types.h"
 #include "decl_Player.h"
 #include "Player.h"
-#include "Stage.h"
+#include "dScStage_c.h"
 
 /* The declarations below are the union of what the nineteen shards declared
  * locally, minus everything a shared header already supplies. What is left is
@@ -518,7 +518,7 @@ int dMeter_c::Render()
                 RenderTimeTimer();
             }
             if (data_0209f284 != 0) {
-                Stage::RenderBouncingArrows();
+                dScStage_c::RenderBouncingArrows();
             }
         } else {
             if (v != 0) {

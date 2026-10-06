@@ -104,7 +104,8 @@ struct daTrs_c : dCapEnemy_c {
        not pull common.h (see daBmb_c.h's mMatrix). The shadow-drop matrix,
        rebuilt by 021166ac and handed to DropShadowRadHeight. */
     s32 mShadowMtx[12];        /* 0x4a4 */
-    u8  pad_4d4[0x30];
+    /* mShadowModel2's drop matrix, same 021166ac/DropShadowRadHeight pair. */
+    Matrix4x3 mShadowMtx2;     /* 0x4d4 */
     /* Body-model placement: 021166ac rebuilds the 0x400 rotation matrix from
        mBodyAngleY and anchors it here. */
     s32 mBodyPosX;             /* 0x504 */
@@ -134,7 +135,15 @@ struct daTrs_c : dCapEnemy_c {
     s32 mClsnBaseX;            /* 0x540 */
     s32 mClsnBaseY;            /* 0x544 */
     s32 mClsnBaseZ;            /* 0x548 */
-    u8  pad_54c[0x18];
+    /* Two Vector3s built from the player's position at talk start (02117b0c
+       case 2) and re-tested against camera planes (func_020092c4) in cases
+       3/7 while the Boo reveals itself. */
+    s32 mScreenPtAX;             /* 0x54c */
+    s32 mScreenPtAY;             /* 0x550 */
+    s32 mScreenPtAZ;             /* 0x554 */
+    s32 mScreenPtBX;             /* 0x558 */
+    s32 mScreenPtBY;             /* 0x55c */
+    s32 mScreenPtBZ;             /* 0x560 */
     /* Cap anchor: 021166ac repositions the cap from here and the actor
        angles (y rebuilt from mClsnOffY plus scale height). */
     s32 mCapPosX;              /* 0x564 */
@@ -143,12 +152,14 @@ struct daTrs_c : dCapEnemy_c {
     s16 mHomeAngleX;           /* 0x570 */
     s16 mHomeAngleY;           /* 0x572 */
     s16 mHomeAngleZ;           /* 0x574 */
-    u8  pad_576[0xa];
+    u8  pad_576[0x6];
+    s32 unk_57c;                 /* 0x57c -- data_0209b490[0] snapshot, fed >> 0xc to Sound::PlaySub */
     s32 mDistToPlayer;         /* 0x580 -- Vec3_HorzDist each Behavior */
     /* Live scale factor for the collision volume: 02116a1c multiplies
        mClsnRadius/mClsnHeight by this into mdCcAcPos_c's words. */
     s32 mClsnScale;            /* 0x584 */
-    u8  pad_588[0x8];
+    s32 unk_588;                 /* 0x588 -- random Fix12 ((rnd>>16)&0xfff)*5 */
+    s32 unk_58c;                 /* 0x58c -- Fix12 product, +0x180 feeds a clsn call */
     s32 mClsnRadius;           /* 0x590 -- int units, shifted << 0xc for Init */
     s32 mClsnHeight;           /* 0x594 */
     /* Z bias added to mClsnOffZ (Init seeds the offset with it; 021160d4 adds
@@ -167,13 +178,14 @@ struct daTrs_c : dCapEnemy_c {
     u32 mHurtDamage;           /* 0x5ac */
     s16 mAngleToPlayer;        /* 0x5b0 -- Vec3_HorzAngle each Behavior */
     s16 unk_5b2;               /* 0x5b2 -- yaw snapshot, no reader recovered */
-    u8  pad_5b4[0x4];
+    s16 unk_5b4;               /* 0x5b4 -- mPrevAngleY snapshot */
+    s16 unk_5b6;               /* 0x5b6 -- angle scratch (player yaw ±0x8000) */
     u16 unk_5b8;               /* 0x5b8 -- read >> 4, no nonzero writer found */
     /* Body-model yaw: spins by 0xc00 (021166ac) unless mCarriedID is 0xd4. */
     s16 mBodyAngleY;           /* 0x5ba */
     /* Desired yaw: 02116fac steers mAngleY toward this. */
     s16 mTargetAngleY;         /* 0x5bc */
-    u8  pad_5be[0x2];
+    u16 unk_5be;               /* 0x5be -- random-reload countdown (rnd + 0xb4) */
     u16 mTimer5c0;             /* 0x5c0 -- DecIfAbove0_Short'ed by Behavior */
     u16 mTimer5c2;             /* 0x5c2 -- variant 0xf timers (021172a8 etc.) */
     u16 mTimer5c4;             /* 0x5c4 */
@@ -182,7 +194,7 @@ struct daTrs_c : dCapEnemy_c {
     /* Fade/opacity: 0xff at Init; Render skips below 8, 021166ac feeds >> 3
        to ApplyOpacity. */
     u8  mOpacity;              /* 0x5c8 */
-    u8  pad_5c9;
+    u8  unk_5c9;                 /* 0x5c9 -- reveal counter (0xff/8/0x28 writes) */
     /* 1-based row into data_ov063_0211e1c0 (02118458): 3 for the boss, 1. */
     u8  mDataIdx;              /* 0x5ca */
     /* Children spawned (variant 3); gated against mChildDeaths. */
@@ -199,7 +211,7 @@ struct daTrs_c : dCapEnemy_c {
     s8  mAreaIdx;              /* 0x5d0 */
     /* Talk-message step (0 idle, 1 shown, 2 dropped). */
     u8  mTalkStep;             /* 0x5d1 */
-    u8  pad_5d2;
+    u8  unk_5d2;                 /* 0x5d2 -- countdown ((rnd>>0x10)%3 reload) */
     u8  unk_5d3;               /* 0x5d3 -- zeroed, no reader recovered */
     /* 0x5d4 -- the flags halfword. Typed (not a u8 placeholder) so member
        access compiles to the ROM's add+ldrh instead of a literal-pool
@@ -227,6 +239,83 @@ struct daTrs_c : dCapEnemy_c {
     static void *operator new(unsigned long size) {
         return _ZN7fBase_cnwEj((unsigned)size);
     }
+
+    /* The func_ov063_* methods. r0 is this Boo. The address is the name:
+       the cartridge does not spell these. func_ov063_021169c4 lives on
+       daTBasket_c; func_ov063_02118f24 and func_ov063_0211a0a8 stay free
+       (their first parameter is not a daTrs_c). */
+    void          func_ov063_021160d4();
+    int           func_ov063_02116190();
+    void          func_ov063_02116244();
+    void          func_ov063_021162c8();
+    unsigned char func_ov063_021163d0();
+    void          func_ov063_0211640c();
+    void          func_ov063_021166ac();
+    void          func_ov063_02116a1c();
+    void          func_ov063_02116bf0();
+    void          func_ov063_02116bf4();
+    void          func_ov063_02116d38();
+    void          func_ov063_02116d98();
+    void          func_ov063_02116dbc();
+    void          func_ov063_02116df0();
+    void          func_ov063_02116e14();
+    int           func_ov063_02116f48();
+    void          func_ov063_02116fac();
+    void          func_ov063_021172a8();
+    void          func_ov063_02117364();
+    void          func_ov063_02117650();
+    void          func_ov063_0211776c();
+    void          func_ov063_021177b0();
+    void          func_ov063_02117b0c();
+    void          func_ov063_02117cdc();
+    void          func_ov063_02118458();
+    void          func_ov063_0211873c();
+    void          func_ov063_02118914();
+    void          func_ov063_021189f4();
+    int           func_ov063_02118b2c();
+    void          func_ov063_02118b98();
+    void          func_ov063_02118cd8();
+    void          func_ov063_02118ddc();
+    void          func_ov063_02118e5c();
+    void          func_ov063_02118ea0();
+    void          func_ov063_02118eac();
+    void          func_ov063_02118f50();
+    void          func_ov063_02118f74();
+    void          func_ov063_02119074();
+    void          func_ov063_02119274();
+    void          func_ov063_021192d4();
+    void          func_ov063_0211934c();
+    void          func_ov063_0211975c();
+    void          func_ov063_02119870();
+    void          func_ov063_02119894();
+    void          func_ov063_02119960();
+    void          func_ov063_02119a2c();
+    void          func_ov063_02119a50();
+    void          func_ov063_02119ab0();
+    void          func_ov063_02119b1c();
+    void          func_ov063_02119b84();
+    void          func_ov063_02119bb0();
+    void          func_ov063_02119c18(unsigned int id);
+    void          func_ov063_02119c58();
+    void          func_ov063_02119cc0(int unused, s16 a2, int a3);
+    void          func_ov063_02119e38(int a1, short a2, int a3);
+    void          func_ov063_0211a030(int a, int b);
+    int           func_ov063_0211a0dc();
+    int           func_ov063_0211a3d0();
+    int           func_ov063_0211a564(int arg1);
+    int           func_ov063_0211a634(int arg);
+    void          func_ov063_0211a6f0();
+    void          func_ov063_0211a718();
+    void          func_ov063_0211a76c(int cond, int val);
+    void          func_ov063_0211a810(int cond);
+    int           func_ov063_0211a8a4();
+    void          func_ov063_0211a960();
+    void          func_ov063_0211a964(int arg1);
+    void          func_ov063_0211aa34();
+    void          func_ov063_0211ab68();
+    int           func_ov063_0211ad00();
+    int           func_ov063_0211adb4();
+    void          func_ov063_0211adfc();
 };
 
 #ifndef SM64DS_PLATFORM_PC

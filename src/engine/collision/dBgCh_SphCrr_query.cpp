@@ -21,7 +21,6 @@ int  func_020393ac(void *o);                /* collider -> ownerUniqueID */
 int  func_020393b4(void *o);                /* collider -> owner (dActor_c*) */
 int  func_0203938c(void *o);                /* collider -> +0x10 */
 int  func_0203939c(void *o);                /* collider -> +0x0c */
-void func_02037fec(char *c, int p1, int p2, int p3, int p4); /* dBgPi hit-record fill */
 int  Vec3_Dist(const Vector3 *a, const Vector3 *b);
 dBgW *data_020a0c80[];                      /* enabled-collider table, 0x18 slots */
 }
@@ -36,8 +35,8 @@ int dBgCh_SphCrr::DetectClsn()
         if (func_02035354(this, (void *)func_020393b4(e)) == 0) {
             mask = ((dBgW *)e)->DetectClsn(*this);
             if (mask != 0) {
-                func_02037fec((char *)this + 0x10, 0, func_020393ac(e),
-                              func_020393b4(e), (int)e);
+                ((dBgPi *)((char *)this + 0x10))->SetCollider(0, func_020393ac(e),
+                    (dActor_c *)func_020393b4(e), (dBgW *)e);
                 if (mask & 1)
                     func_020379d0(0, func_020393ac(e), func_020393b4(e), (int)e);
                 if (mask & 2)
@@ -80,8 +79,8 @@ int dBgCh_SphCrr::DetectClsn()
         {
             { int t = ((dBgW *)o)->DetectClsn(*this); mask = t; }
             if (mask != 0) {
-                func_02037fec((char *)this + 0x10, i, func_020393ac(o),
-                              func_020393b4(o), (int)o);
+                ((dBgPi *)((char *)this + 0x10))->SetCollider(i, func_020393ac(o),
+                    (dActor_c *)func_020393b4(o), (dBgW *)o);
                 if (mask & 1)
                     func_020379d0(i, func_020393ac(o), func_020393b4(o), (int)o);
                 if (mask & 2)
@@ -104,7 +103,8 @@ int dBgCh_SphCrr::func_02038a38()
     int flags;
     if (o != 0 && func_02035354(this, (void *)func_020393b4(o)) == 0
         && (flags = o->DetectClsn(*this)) != 0) {
-        func_02037fec((char *)this + 0x10, 0, func_020393ac(o), func_020393b4(o), (int)o);
+        ((dBgPi *)((char *)this + 0x10))->SetCollider(0, func_020393ac(o),
+            (dActor_c *)func_020393b4(o), (dBgW *)o);
         if (flags & 1)
             func_020379d0(0, func_020393ac(o), func_020393b4(o), (int)o);
         if (flags & 2)
@@ -154,7 +154,8 @@ int dBgCh_SphCrr::func_02038824()
         }
         int flags = o->DetectClsn(*this);
         if (flags == 0) continue;
-        func_02037fec((char *)this + 0x10, i, func_020393ac(o), func_020393b4(o), (int)o);
+        ((dBgPi *)((char *)this + 0x10))->SetCollider(i, func_020393ac(o),
+            (dActor_c *)func_020393b4(o), (dBgW *)o);
         if (flags & 1) func_020379d0(i, func_020393ac(o), func_020393b4(o), (int)o);
         if (flags & 2) func_0203799c(i, func_020393ac(o), func_020393b4(o), (int)o);
         if (flags & 4) func_02037968(i, func_020393ac(o), func_020393b4(o), (int)o);

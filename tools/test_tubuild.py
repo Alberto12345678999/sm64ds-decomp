@@ -26,6 +26,7 @@ sys.path.insert(0, str(TOOLS))
 
 import build_pin as BP     # noqa: E402
 import match as M          # noqa: E402
+import tubuild             # noqa: E402
 
 
 def _toolchain():
@@ -1296,6 +1297,8 @@ if __name__ == "__main__":
             try:
                 fn()
                 print(f"  PASS  {nm}")
+            except unittest.SkipTest as e:
+                print(f"  SKIP  {nm}: {e}")
             except AssertionError as e:
                 fails += 1
                 print(f"  FAIL  {nm}: {e}")
@@ -1304,9 +1307,6 @@ if __name__ == "__main__":
              "themselves rather than failing)")
     print(f"\n{ran} test(s) run, {fails} failure(s)")
     sys.exit(1 if fails else 0)
-
-
-import tubuild
 
 
 def test_manifest_order_handles_rccarpet_owned_subset_after_rtti_externalization():
@@ -2510,7 +2510,7 @@ def test_record_with_a_function_pointer_member_still_reads_as_a_record():
 
 
 def test_definition_inside_a_namespace_or_extern_c_block_names_the_block():
-    """Real inputs: src/_ZN6Memory8AllocateEj.cpp (an Allman `namespace Memory`
+    """Real inputs: src/Memory.cpp (an Allman `namespace Memory`
     whose body IS the member) and func_ov006_021063a0, whose shard put the
     definition inside `extern "C" {` -- that one is now ROM ordinal 50 of
     src/actors/dScMgPanel_c.cpp, absorbed by the ov006/dScMgPanel_c promotion.

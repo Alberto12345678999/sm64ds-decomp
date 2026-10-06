@@ -142,7 +142,7 @@ columns 3 and 5 remain Tier B.
 | ROM profile ID | current descriptor | proposed profile | RTTI class | current factory | direct SM64DS evidence | profile/factory confidence |
 |---|---|---|---|---|---|---|
 | `BOOT` | `data_020914a8` | `g_profile_BOOT` | `dScBoot_c` | `func_02023624` | debug `BOOT` @ `0x0208f698`; descriptor `arm9:0x020914a8` -> factory `0x02023624` -> RTTI `0x020914c8` | `B+ / B+` |
-| `STAGE` | `_ZN5Stage9spawnDataE` | `g_profile_STAGE` | `dScStage_c` | `Stage_Spawn` | debug `STAGE` @ `0x0208f708`; descriptor `arm9:0x0209213c` -> factory `0x0202e088` -> RTTI `0x02092158` | `B+ / B+` |
+| `STAGE` | `_ZN10dScStage_c9spawnDataE` | `g_profile_STAGE` | `dScStage_c` | `Stage_Spawn` | debug `STAGE` @ `0x0208f708`; descriptor `arm9:0x0209213c` -> factory `0x0202e088` -> RTTI `0x02092158` | `B+ / B+` |
 | `MINIGAME` | `data_ov005_020c2440` | `g_profile_MINIGAME` | `dScMiniGm_c` | `func_ov005_020c21ec` | debug `MINIGAME` @ `0x0208fabc`; descriptor `ov005:0x020c2440` -> factory `0x020c21ec` -> RTTI `0x020c2448` | `B+ / B+` |
 | `CANNON_SHUTTER` | `daObjCannonShutter_c_SpawnInfo` | `g_profile_CANNON_SHUTTER` | `daObjCannonShutter_c` | `daObjCannonShutter_c_Spawn` | debug @ `0x02090678`; descriptor `ov002:0x02109d14` -> factory `0x020bcccc` -> RTTI `0x02109cf0` | `B+ / B+` |
 | `C1_TRAP` | `Trap_SpawnInfo` | `g_profile_C1_TRAP` | `daObjC1_Trap_c` | `Trap_Spawn` | debug @ `0x0208f958`; `ov010:0x02112ac0` -> `0x02111998` -> RTTI `0x02112aa0`; the same numeric pointer has a second valid ov035 interpretation | `B / B+` |

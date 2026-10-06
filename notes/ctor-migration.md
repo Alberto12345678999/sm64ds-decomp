@@ -15,13 +15,13 @@ typed-subobject constructor (dBgCh_Actr).
 |---|---|---|
 | `src/_ZN9ModelBaseC2Ev.cpp` | `ModelBase::ModelBase()` | 0x02017150, 0x18 |
 | `src/_ZN5ModelC1Ev.cpp` | `Model::Model()` | 0x02016d58, 0x50 |
-| `src/_ZN11CommonModelC1Ev.cpp` | `CommonModel::CommonModel()` | 0x02016204, 0x50 |
+| `src/engine/model/CommonModel.cpp` | `CommonModel::CommonModel()` | 0x02016204, 0x50 |
 | `src/_ZN11ShadowModelC1Ev.cpp` | `ShadowModel::ShadowModel()` | 0x02016068, 0x34 |
-| `src/_ZN7PathPtrC1Ev.cpp` | `PathPtr::PathPtr()` | 0x0203ad74, 0x10 |
-| `src/_ZN8dM3dGSphC1Ev.cpp` | `dM3dGSph::dM3dGSph()` | 0x0203ac60, 0x10 |
-| `src/_ZN9dBgCh_LinC1Ev.cpp` | `dBgCh_Lin::dBgCh_Lin()` | 0x020377b0, 0x5c |
-| `src/_ZN12dBgCh_SphCrrC1Ev.cpp` | `dBgCh_SphCrr::dBgCh_SphCrr()` | 0x02037d18, 0x6c |
-| `src/_ZN9dBgCh_GndC1Ev.cpp` | `dBgCh_Gnd::dBgCh_Gnd()` | 0x02037570, 0x40 |
+| `src/engine/path/PathPtr.cpp` | `PathPtr::PathPtr()` | 0x0203ad74, 0x10 |
+| `src/engine/collision/dM3dGSph.cpp` | `dM3dGSph::dM3dGSph()` | 0x0203ac60, 0x10 |
+| `src/engine/collision/dBgCh_Lin.cpp` | `dBgCh_Lin::dBgCh_Lin()` | 0x020377b0, 0x5c |
+| `src/engine/collision/dBgCh_SphCrr.cpp` | `dBgCh_SphCrr::dBgCh_SphCrr()` | 0x02037d18, 0x6c |
+| `src/engine/collision/dBgCh_Gnd.cpp` | `dBgCh_Gnd::dBgCh_Gnd()` | 0x02037570, 0x40 |
 
 The seventh is the tree's **first multiple-inheritance constructor**: its
 header declares `dBgCh_Lin : dBgCh, dBgPi, dM3dGLin` straight out of the
@@ -224,7 +224,7 @@ a **base subobject** of a derived class:
 |---|---|
 | `_ZN6CameraC1Ev`, `_ZN8dActor_cC1Ev`, `_ZN8dActor_cC2Ev` | derived ctors, base-subobject step |
 | `_ZN8dMeter_cC1Ev`, `_ZN6dMap_cC1Ev` | derived ctors, base-subobject step |
-| `_ZN5StageC3Ev` | allocating ctor folding a base-subobject step (§5c) |
+| `_ZN10dScStage_cC3Ev` | allocating ctor folding a base-subobject step (§5c) |
 | `dScStarSel_c_classInit`, `UnknownVsEntry_Spawn`, `dScBoot_c_classInit`, `func_020352b4` | unnamed C3s: `operator new` → null check → base step → double vptr store |
 | 7 overlay `func_*` placeholders | same Spawn shape in ov003/004/005/007/075 |
 
@@ -300,7 +300,7 @@ Disassembled, all three allocating-labelled functions share one shape:
 
 | label | prologue |
 |---|---|
-| `_ZN5StageC3Ev` 0x0202e088 | `ldr r0, [pc]` → `bl fBase_c::op new` → `movs r4,r0; beq ret` → construct |
+| `_ZN10dScStage_cC3Ev` 0x0202e088 | `ldr r0, [pc]` → `bl fBase_c::op new` → `movs r4,r0; beq ret` → construct |
 | `_ZN6PlayerC3Ev` 0x020e6c0c | same, then `bl` Player's own ctor |
 | `_ZN6CameraC1Ev` 0x0200e444 | same, construction fully inline |
 
@@ -339,7 +339,7 @@ p->T::T();                        -> illegal use of type-name
 ```
 
 So a folded factory is **not writable as real C++ under this toolchain**,
-period. `Camera_Spawn`, `Stage`'s and `Player`'s factories stay hand-written
+period. `Camera_Spawn`, `dScStage_c`'s and `Player`'s factories stay hand-written
 `.c` files — like fBase_c's constructor, a permanent asm-or-C transcription,
 with the reason recorded here so nobody retries the recipe hoping for a
 different answer. What IS recoverable from them is knowledge, not code:
@@ -351,7 +351,7 @@ RTTI names read straight off the vtables (typeinfo name strings):
 | object | RTTI name | note |
 |---|---|
 | `data_0208e4b8` | `7dBase_c` | the unnamed intermediate base §5b predicted; vtable already carries the class's 18 slots |
-| `_ZTV4View` | `7dView_c` | overrides slot 9 (Render) + D1/D0 only; adds no new virtuals |
+| `_ZTV7dView_c` | `7dView_c` | overrides slot 9 (Render) + D1/D0 only; adds no new virtuals |
 | `_ZTV6Camera` | `9dCamera_c` | the project's `Camera` |
 
 Chain: **`dCamera_c : dView_c : dBase_c : fBase_c`**. The factory's three
@@ -364,9 +364,9 @@ Layout consequence: `dView_c` owns the 48-byte matrix at +0x50 (constructed
 with `Matrix4x3_LoadIdentity(&mat)` mid-fold), making it 0x80 tall — which is
 exactly why auto-generated `Camera.h` shows `pad_000[0x80]` before `lookAt`:
 those bytes are base subobjects, not padding. Reference-graph facts: only
-`Camera` derives from `View` (five `_ZTV4View` references total: two inside
-Camera's D1/D0 teardown, two inside dView_c's own dtor pair, one in the
-factory), and `View` has no out-of-line constructor anywhere — its
+`Camera` derives from `dView_c` (five `_ZTV7dView_c` references total: two
+inside Camera's D1/D0 teardown, two inside dView_c's own dtor pair, one in
+the factory), and `dView_c` has no out-of-line constructor anywhere — its
 construction exists only inside the folded factory, so its ctor must have
 been defined inline in the original header.
 
@@ -396,11 +396,10 @@ no vtable. An ABI probe settles the shape: dBgPi introduces the virtual
 destructor and derives from the non-polymorphic dBgPc. With no dynamic primary
 base, the compiler places dBgPi's own vptr at +0x00 and its dBgPc base at +0x04.
 The generated C2 sequence therefore constructs dBgPc at +0x04 before storing
-dBgPi's vptr. C1 now lives in `src/_ZN5dBgPiC1Ev.cpp` as real C++, and since
-#1833 so does the separately enrolled C2 ABI variant, in
-`src/_ZN5dBgPiC2Ev.cpp`. The two files carry the same definition -- C1 and C2
-are two of the functions mwcc emits from one constructor, and
-`config/arm9/delinks.txt` binds each file to one of them.
+dBgPi's vptr. C1 now lives in `src/engine/collision/dBgPi.cpp` as real C++, and since
+#1833 so does the separately enrolled C2 ABI variant, in the same
+`src/engine/collision/dBgPi.cpp`. The two carry the same definition -- C1 and C2
+are two of the functions mwcc emits from one constructor.
 
 ## 6. The recipe, condensed
 

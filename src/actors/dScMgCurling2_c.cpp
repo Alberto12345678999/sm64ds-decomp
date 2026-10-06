@@ -6,15 +6,13 @@
  * Leftover: SpawnValue still reads the other stone as
  *   raw + 0x4000 + other * 0x30 + 0x660. mStone[other] folds that into one
  *   constant and loses the raw + 0x4000 base the ROM shares.
- * Leftover: DragUpdate and func_ov006_020e513c call
+ * Leftover: DragUpdate and SeparateStones call
  *   _ZN4cstd5atan2E5Fix12IiES1_. cstd::atan2 takes Fix12 by value.
- * Leftover: func_ov006_020e4a84 and func_ov006_020e4b00 still walk the
- *   five records at 0x4870 by offset. This file does not name them.
- * Leftover: func_ov006_020e513c stays a free function. SpawnValue is the
- *   call it makes here, and func_ov006_020e5e3c.c calls the C spelling.
+ * The state machine and the rest of the class live above the sourceless
+ * hole in src/actors/dScMgCurling2_c_upper.cpp.
  */
 
-/* Required: ROM order, and the brackets on func_ov006_020e4b00 and DragUpdate. */
+/* Required: ROM order, and the brackets on AgeMarks and DragUpdate. */
 #pragma defer_codegen off
 
 #include "types.h"
@@ -85,17 +83,17 @@ dScMgCurling2_c::~dScMgCurling2_c()
 }
 
 
-// @symbol func_ov006_020e38b0
+// @symbol _ZN15dScMgCurling2_c10DrawValuesEv
 /* Draw every live mValue. mode 1 and mode 2 pick the last argument. */
-extern "C" void func_ov006_020e38b0(dScMgCurling2_c *self)
+void dScMgCurling2_c::DrawValues()
 {
     int i;
     for (i = 0; i < 0x3c; i++) {
-        unsigned char mode = self->mValue[i].mode;
+        unsigned char mode = mValue[i].mode;
         if (mode != 0) {
-            int x = self->mValue[i].x >> 0xc;
-            int y = self->mValue[i].y >> 0xc;
-            int value = self->mValue[i].value;
+            int x = mValue[i].x >> 0xc;
+            int y = mValue[i].y >> 0xc;
+            int value = mValue[i].value;
             if (mode == 1) {
                 func_ov004_020b1ea4(x, y, value, -1, -1, 0, 0);
             } else {
@@ -106,26 +104,26 @@ extern "C" void func_ov006_020e38b0(dScMgCurling2_c *self)
 }
 
 
-// @symbol func_ov006_020e3948
+// @symbol _ZN15dScMgCurling2_c9AgeValuesEv
 /* Age mValue one frame: count lifetime down, apply yInc and decay it
  * by 0x40, and clear the entry when the lifetime expires. */
-extern "C" void func_ov006_020e3948(dScMgCurling2_c *self)
+void dScMgCurling2_c::AgeValues()
 {
     int i;
     for (i = 0; i < 0x3c; i++)
     {
-        if (self->mValue[i].live != 0)
+        if (mValue[i].live != 0)
         {
-            if (self->mValue[i].lifetime != 0)
+            if (mValue[i].lifetime != 0)
             {
-                self->mValue[i].lifetime -= 1;
-                self->mValue[i].y += self->mValue[i].yInc;
-                self->mValue[i].yInc -= 0x40;
+                mValue[i].lifetime -= 1;
+                mValue[i].y += mValue[i].yInc;
+                mValue[i].yInc -= 0x40;
             }
             else
             {
-                self->mValue[i].live = 0;
-                self->mValue[i].mode = 0;
+                mValue[i].live = 0;
+                mValue[i].mode = 0;
             }
         }
     }
@@ -184,30 +182,30 @@ void dScMgCurling2_c::SpawnValue(int stone, int other)
 }
 
 
-// @symbol func_ov006_020e3b9c
+// @symbol _ZN15dScMgCurling2_c11ClearValuesEv
 /* Clear every collision value. */
-extern "C" void func_ov006_020e3b9c(dScMgCurling2_c *self)
+void dScMgCurling2_c::ClearValues()
 {
     int i;
     for (i = 0; i < 0x3c; i++) {
-        self->mValue[i].live = 0;
-        self->mValue[i].mode = 0;
+        mValue[i].live = 0;
+        mValue[i].mode = 0;
     }
 }
 
 
-// @symbol func_ov006_020e3bc4
+// @symbol _ZN15dScMgCurling2_c10DrawPiecesEv
 /* Draw every piece whose drawEnable is set, as two stacked sprites
  * from data_ov006_0213a5e0. */
-extern "C" void func_ov006_020e3bc4(dScMgCurling2_c *self)
+void dScMgCurling2_c::DrawPieces()
 {
     int i;
     for (i = 0; i < 0x32; i++) {
-        if (self->mPiece[i].drawEnable) {
-            int x = self->mPiece[i].x >> 0xc;
-            int y = self->mPiece[i].y >> 0xc;
-            func_ov004_020af948(data_ov006_0213a5e0[self->mPiece[i].sprite0], x, y, 0);
-            DrawOamSprite(data_ov006_0213a5e0[self->mPiece[i].sprite1], x, y, 0);
+        if (mPiece[i].drawEnable) {
+            int x = mPiece[i].x >> 0xc;
+            int y = mPiece[i].y >> 0xc;
+            func_ov004_020af948(data_ov006_0213a5e0[mPiece[i].sprite0], x, y, 0);
+            DrawOamSprite(data_ov006_0213a5e0[mPiece[i].sprite1], x, y, 0);
         }
     }
 }
@@ -542,35 +540,35 @@ void dScMgCurling2_c::PickStepMode(int entry)
 }
 
 
-// @symbol func_ov006_020e4800
+// @symbol _ZN15dScMgCurling2_c10StepPiecesEv
 /* Step every piece whose updateEnable is set, and wrap the ones whose
  * y has passed 0xc8 back to a random x at y = -0x8000. */
-extern "C" void func_ov006_020e4800(dScMgCurling2_c *self)
+void dScMgCurling2_c::StepPieces()
 {
     int i;
     for (i = 0; i < 0x32; i++) {
-        if (self->mPiece[i].updateEnable != 0) {
-            unsigned char idx = self->mPiece[i].modeIndex;
-            (((C *)self)->*data_ov006_02141988[idx])(i);
-            if ((self->mPiece[i].y >> 0xc) >= 0xc8) {
-                self->mPiece[i].x = (((unsigned int)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) << 5 >> 0xf << 0xf;
-                self->mPiece[i].y = -0x8000;
-                self->mPiece[i].xIndex = 0;
-                self->mPiece[i].modeIndex = 0;
-                self->mPiece[i].yIndex = 0;
+        if (mPiece[i].updateEnable != 0) {
+            unsigned char idx = mPiece[i].modeIndex;
+            (((C *)this)->*data_ov006_02141988[idx])(i);
+            if ((mPiece[i].y >> 0xc) >= 0xc8) {
+                mPiece[i].x = (((unsigned int)RandomIntInternal(&data_0209d4b8) >> 16) & 0x7fff) << 5 >> 0xf << 0xf;
+                mPiece[i].y = -0x8000;
+                mPiece[i].xIndex = 0;
+                mPiece[i].modeIndex = 0;
+                mPiece[i].yIndex = 0;
             }
         }
     }
 }
 
 
-// @symbol func_ov006_020e48d4
+// @symbol _ZN15dScMgCurling2_c10SeedPiecesEv
 /* Clear every piece, then seed it: enabled, a random x, two sprite
  * indices (the second is the first plus one to four, modulo five) and a
  * y spread over the screen. The first x, the y at -0x8000 and the first
  * countdown store are overwritten a few lines later; those dead stores
  * are the ROM's. */
-extern "C" void func_ov006_020e48d4(dScMgCurling2_c *self)
+void dScMgCurling2_c::SeedPieces()
 {
     int i;
     unsigned int rnd;
@@ -581,20 +579,20 @@ extern "C" void func_ov006_020e48d4(dScMgCurling2_c *self)
     i = 0;
     for (; i < 0x32; i++)
     {
-        self->mPiece[i].x = 0;
-        self->mPiece[i].y = 0;
-        self->mPiece[i].xInc = 0;
-        self->mPiece[i].yInc = 0;
-        self->mPiece[i].countdown = 0;
-        self->mPiece[i].countdown2 = 0;
-        self->mPiece[i].countdown3 = 0;
-        self->mPiece[i].updateEnable = 0;
-        self->mPiece[i].modeIndex = 0;
-        self->mPiece[i].xIndex = 0;
-        self->mPiece[i].yIndex = 0;
-        self->mPiece[i].drawEnable = 0;
-        self->mPiece[i].sprite0 = 0;
-        self->mPiece[i].sprite1 = 1;
+        mPiece[i].x = 0;
+        mPiece[i].y = 0;
+        mPiece[i].xInc = 0;
+        mPiece[i].yInc = 0;
+        mPiece[i].countdown = 0;
+        mPiece[i].countdown2 = 0;
+        mPiece[i].countdown3 = 0;
+        mPiece[i].updateEnable = 0;
+        mPiece[i].modeIndex = 0;
+        mPiece[i].xIndex = 0;
+        mPiece[i].yIndex = 0;
+        mPiece[i].drawEnable = 0;
+        mPiece[i].sprite0 = 0;
+        mPiece[i].sprite1 = 1;
     }
 
     i = 0;
@@ -602,50 +600,52 @@ extern "C" void func_ov006_020e48d4(dScMgCurling2_c *self)
     {
         rnd = (unsigned int)RandomIntInternal(&data_0209d4b8);
         m = ((rnd >> 16) & 0x7fff) << 5;
-        self->mPiece[i].x = (int)((m >> 0xf)) << 0xf;
-        self->mPiece[i].y = -0x8000;
-        self->mPiece[i].updateEnable = 1;
-        self->mPiece[i].drawEnable = 1;
-        self->mPiece[i].modeIndex = 0;
-        self->mPiece[i].xIndex = 0;
+        mPiece[i].x = (int)((m >> 0xf)) << 0xf;
+        mPiece[i].y = -0x8000;
+        mPiece[i].updateEnable = 1;
+        mPiece[i].drawEnable = 1;
+        mPiece[i].modeIndex = 0;
+        mPiece[i].xIndex = 0;
 
         rnd = (unsigned int)RandomIntInternal(&data_0209d4b8);
-        self->mPiece[i].sprite0 = (char)(((rnd >> 16) & 0x7fff) * 5 >> 0xf);
+        mPiece[i].sprite0 = (char)(((rnd >> 16) & 0x7fff) * 5 >> 0xf);
 
         rnd = (unsigned int)RandomIntInternal(&data_0209d4b8);
         /* Own local: `mPiece[i].sprite0 + shift` puts the byte in r0. */
-        unsigned char spr = self->mPiece[i].sprite0;
+        unsigned char spr = mPiece[i].sprite0;
         v = spr + ((((rnd >> 16) & 0x7fff) << 2) >> 0xf) + 1;
         v = v & 0xff;
         if (v >= 5)
             v = (v - 5) & 0xff;
-        self->mPiece[i].sprite1 = (char)v;
+        mPiece[i].sprite1 = (char)v;
 
         rnd = (unsigned int)RandomIntInternal(&data_0209d4b8);
-        self->mPiece[i].countdown = (short)(((i & 7) << 6) + (((rnd >> 16) & 0x7fff) * 0x30 >> 0xf));
+        mPiece[i].countdown = (short)(((i & 7) << 6) + (((rnd >> 16) & 0x7fff) * 0x30 >> 0xf));
 
         rnd = (unsigned int)RandomIntInternal(&data_0209d4b8);
         m = ((rnd >> 16) & 0x7fff) << 5;
-        self->mPiece[i].x = (int)((m >> 0xf)) << 0xf;
+        mPiece[i].x = (int)((m >> 0xf)) << 0xf;
 
         rnd = (unsigned int)RandomIntInternal(&data_0209d4b8);
         q = (((rnd >> 16) & 0x7fff) * 0x1a) >> 0xf;
-        self->mPiece[i].y = (((q << 3) - 8)) << 0xc;
-        self->mPiece[i].countdown = 0;
+        mPiece[i].y = (((q << 3) - 8)) << 0xc;
+        mPiece[i].countdown = 0;
     }
 }
 
 
-// @symbol func_ov006_020e4a84
-/* Draw the five 0x10-byte records at 0x4870 whose +0x0d
- * flag is set, each with its +0x08 value as the caption.
+// @symbol _ZN15dScMgCurling2_c9DrawMarksEv
+/* Draw the five score marks whose drawn flag is set, each with its
+ * value as the caption.
  *
  * `(i & 0xFFFFFFFF)` stays: 0xFFFFFFFF is unsigned, so the mask makes this
- * subscript unsigned, and deleting it changes the code. */
-extern "C" void func_ov006_020e4a84(unsigned char *raw)
+ * subscript unsigned, and deleting it changes the code. The records stay
+ * at raw offsets -- &mMark[i] folds the base differently. */
+void dScMgCurling2_c::DrawMarks()
 {
     int x;
     int i;
+    unsigned char *raw = (unsigned char *)this;
 
     func_ov004_020b1a5c(func_ov004_020adbc0(), 6);
     for (i = 0; i < 5; i++) {
@@ -659,15 +659,17 @@ extern "C" void func_ov006_020e4a84(unsigned char *raw)
 }
 
 
-/* Age the five 0x4870 records: run the +0x0a countdown down
- * and, on the frame it reaches zero, set the +0x0d flag that func_ov006_020e4a84 draws on and
+/* Age the five score marks: run the countdown down
+ * and, on the frame it reaches zero, set the flag that DrawMarks draws on and
  * play sound 0x1bc. The `opt_strength_reduction off` bracket is needed
- * (see the banner). */
+ * (see the banner). The records stay at raw offsets -- &mMark[i] folds
+ * the base differently. */
 #pragma push
 #pragma opt_strength_reduction off
-// @symbol func_ov006_020e4b00
-extern "C" void func_ov006_020e4b00(char *raw)
+// @symbol _ZN15dScMgCurling2_c8AgeMarksEv
+void dScMgCurling2_c::AgeMarks()
 {
+    char *raw = (char *)this;
     int i;
 
     for (i = 0; i < 5; i++) {
@@ -685,16 +687,15 @@ extern "C" void func_ov006_020e4b00(char *raw)
 #pragma pop
 
 
-// @symbol func_ov006_020e4b78
-/* Draw the drag cursor at the 0x5584/0x5588 drag point,
- * offset up and left, while the 0x55b9 flag is set. */
-extern "C" void func_ov006_020e4b78(char *raw)
+// @symbol _ZN15dScMgCurling2_c10DrawCursorEv
+/* Draw the drag cursor at the unk_5584/unk_5588 drag point,
+ * offset up and left, while the unk_55b9 flag is set. */
+void dScMgCurling2_c::DrawCursor()
 {
-    dScMgCurling2_c *self = (dScMgCurling2_c *)raw;
-    if (self->unk_55b9 == 0) return;
+    if (unk_55b9 == 0) return;
 
-    int x = self->unk_5584;
-    int y = self->unk_5588;
+    int x = unk_5584;
+    int y = unk_5588;
     func_ov004_020afdd0((int)data_ov006_0213c4f0, (x >> 12) - 0x20, (y >> 12) - 8, -1, 0);
 }
 
@@ -861,16 +862,16 @@ void dScMgCurling2_c::DragBegin()
 }
 
 
-// @symbol func_ov006_020e4fe8
+// @symbol _ZN15dScMgCurling2_c11DrawCounterEv
 /* Draw the counter at the bottom of the screen: a fixed
  * sprite, a language-dependent label out of data_ov006_0213c4dc, and 5 minus
- * the 0x55ba count, floored at zero. */
-extern "C" void func_ov006_020e4fe8(char *raw)
+ * the thrown count, floored at zero. */
+void dScMgCurling2_c::DrawCounter()
 {
     int left;
-    if (((dScMgCurling2_c *)raw)->unk_55c3 == 0)
+    if (unk_55c3 == 0)
         return;
-    left = 5 - *(unsigned char *)(raw + 0x55ba);
+    left = 5 - thrown;
     if (left < 0)
         left = 0;
     func_ov004_020af948((int)&data_ov006_0213c3fc, 0xd0, 0xb4, 0);
@@ -879,21 +880,21 @@ extern "C" void func_ov006_020e4fe8(char *raw)
 }
 
 
-// @symbol func_ov006_020e507c
+// @symbol _ZN15dScMgCurling2_c10DrawStonesEv
 /* Draw each live, visible stone on both screens: the body
- * sprite, picked by the stone's 0x468d flag, and a shadow eight pixels down. */
-extern "C" void func_ov006_020e507c(char *p)
+ * sprite, picked by the stone's target flag, and a shadow eight pixels down. */
+void dScMgCurling2_c::DrawStones()
 {
     int x, y;
     int i;
 
-    for (i = 0; i < 0xb; i++, p += 0x30) {
+    for (i = 0; i < 0xb; i++) {
         void *tex;
-        if (*(unsigned char *)(p + 0x4689) == 0) continue;
-        if (*(unsigned char *)(p + 0x468a) == 0) continue;
-        x = *(int *)(p + 0x4660) >> 12;
-        y = *(int *)(p + 0x4664) >> 12;
-        if (*(unsigned char *)(p + 0x468d) != 0) tex = &data_ov006_0213c44c;
+        if (mStone[i].active == 0) continue;
+        if (mStone[i].visible == 0) continue;
+        x = mStone[i].x >> 12;
+        y = mStone[i].y >> 12;
+        if (mStone[i].target != 0) tex = &data_ov006_0213c44c;
         else tex = &data_ov006_0213c3fc;
         RenderOamBothScreens(tex, x, y, -1, 1, 0);
         RenderOamBothScreens(&data_ov006_0213c454, x, y + 8, -1, 2, 0);
@@ -901,16 +902,13 @@ extern "C" void func_ov006_020e507c(char *p)
 }
 
 
-// @symbol func_ov006_020e513c
+// @symbol _ZN15dScMgCurling2_c14SeparateStonesEi
 /* Stone separation. The two-player rink's twin of func_ov006_020e1dc8 in
  * dScMgCurling_c: eleven stones at a 0x30 stride instead of five at 0x2c,
  * and after the bump sound the pushed pair gets a SpawnValue. Keep vx and
  * vy named and the inner scan's locals declared in the loop body; both
- * shapes are needed, as in the Curling version.
- *
- * This one stays a free function because src/func_ov006_020e5e3c.c still
- * calls it by its C name. */
-extern "C" void func_ov006_020e513c(dScMgCurling2_c *self, int idx)
+ * shapes are needed, as in the Curling version. */
+void dScMgCurling2_c::SeparateStones(int idx)
 {
     int i;
     int j;
@@ -921,10 +919,10 @@ extern "C" void func_ov006_020e513c(dScMgCurling2_c *self, int idx)
     int k;
 
     for (i = 0; i < 11; i++) {
-        if (self->mStone[i].active == 0) continue;
+        if (mStone[i].active == 0) continue;
         if (idx == i) continue;
-        dx = (self->mStone[i].x - self->mStone[idx].x) >> 12;
-        dy = (self->mStone[i].y - self->mStone[idx].y) >> 12;
+        dx = (mStone[i].x - mStone[idx].x) >> 12;
+        dy = (mStone[i].y - mStone[idx].y) >> 12;
         dist = cstd::sqrt((u64)(dx * dx + dy * dy));
         ang = _ZN4cstd5atan2E5Fix12IiES1_(dy, dx);
         if (dist > 0x18) continue;
@@ -937,20 +935,20 @@ extern "C" void func_ov006_020e513c(dScMgCurling2_c *self, int idx)
             k = (ang >> 4) * 2;
             cs = data_02082214[k + 1];
             vx = (int)(((long long)cs * 0x1a + 0x800) >> 12);
-            self->mStone[i].x = self->mStone[idx].x + (vx << 12);
+            mStone[i].x = mStone[idx].x + (vx << 12);
             sn = data_02082214[k];
             vy = (int)(((long long)sn * 0x1a + 0x800) >> 12);
-            self->mStone[i].y = self->mStone[idx].y + (vy << 12);
+            mStone[i].y = mStone[idx].y + (vy << 12);
             for (j = 0; j < 11; j++) {
                 int dx2;
                 int dy2;
                 int dist2;
                 u16 ang2;
 
-                if (self->mStone[j].active == 0) continue;
+                if (mStone[j].active == 0) continue;
                 if (i == j) continue;
-                dx2 = (self->mStone[j].x - self->mStone[i].x) >> 12;
-                dy2 = (self->mStone[j].y - self->mStone[i].y) >> 12;
+                dx2 = (mStone[j].x - mStone[i].x) >> 12;
+                dy2 = (mStone[j].y - mStone[i].y) >> 12;
                 dist2 = cstd::sqrt((u64)(dx2 * dx2 + dy2 * dy2));
                 ang2 = _ZN4cstd5atan2E5Fix12IiES1_(dy2, dx2);
                 if (dist2 > 0x18) continue;
@@ -963,12 +961,12 @@ extern "C" void func_ov006_020e513c(dScMgCurling2_c *self, int idx)
                     k = (ang2 >> 4) * 2;
                     cs2 = data_02082214[k + 1];
                     vx2 = (int)(((long long)cs2 * 0x1a + 0x800) >> 12);
-                    self->mStone[j].x = self->mStone[i].x + (vx2 << 12);
+                    mStone[j].x = mStone[i].x + (vx2 << 12);
                     sn2 = data_02082214[k];
                     vy2 = (int)(((long long)sn2 * 0x1a + 0x800) >> 12);
-                    self->mStone[j].y = self->mStone[i].y + (vy2 << 12);
-                    func_02012718(0xe8, self->mStone[idx].x);
-                    self->SpawnValue(idx, i);
+                    mStone[j].y = mStone[i].y + (vy2 << 12);
+                    func_02012718(0xe8, mStone[idx].x);
+                    SpawnValue(idx, i);
                     return;
                 }
             }

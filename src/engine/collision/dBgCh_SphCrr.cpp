@@ -22,10 +22,9 @@
 
 extern "C" {
 void func_020353b0(char *c, int *p);    /* dBgCh-side: bind query to its actor */
-void func_02037fd4(int *dst, int h, int *src);      /* dBgPi: set tri + copy surface */
-void func_02037fec(char *c, int p1, int p2, int p3, int p4); /* dBgPi hit-record fill */
-void func_020380c0(char *c);            /* dBgPi hit-record init */
-void func_0203abd4(int *a, int *b, int c);        /* dM3dGSph::Set(pos, radius) */
+/* local extern: dBgPi::RecordHit by its mangled name -- the forwarders take
+   int triID byte-required; the member's s16 parameter emits sxth here. */
+void _ZN5dBgPi9RecordHitEsP11SurfaceInfo(void *res, int triID, void *info);
 }
 
 // @symbol _ZN12dBgCh_SphCrrC1Ev
@@ -49,7 +48,7 @@ extern "C" void _ZN12dBgCh_SphCrr15SetObjAndSphereERK7Vector35Fix12IiEP8dActor_c
 {
     /* through the REFERENCE: a pointer-level upcast makes mwcc emit the
        null-checked MI adjustment (movs/addne), the ROM's is unconditional */
-    func_0203abd4((int *)&(dM3dGSph &)*self, (int *)pos, radius);
+    ((dM3dGSph &)*self).Set(*pos, radius);
     func_020353b0((char *)self, (int *)actor);
     self->func_02037b5c();
     self->mScale = 0x1000;
@@ -66,10 +65,10 @@ void dBgCh_SphCrr::func_02037b5c()
     flags &= ~2;
     flags &= ~0x20;
     flags &= ~0x40;
-    func_020380c0((char *)this + 0x10);  /* the dBgPi secondary base */
-    func_020380c0((char *)&mClsnResult1);
-    func_020380c0((char *)&mClsnResult2);
-    func_020380c0((char *)&mClsnResult3);
+    ((dBgPi *)((char *)this + 0x10))->Reset();   /* the dBgPi secondary base */
+    mClsnResult1.Reset();
+    mClsnResult2.Reset();
+    mClsnResult3.Reset();
     unk_0fc = 0;
     unk_100 = -0x1000;
     unk_104 = 0;
@@ -123,37 +122,37 @@ void dBgCh_SphCrr::func_02037a04(Vector3 *outMin, Vector3 *outMax)
 // @symbol _ZN12dBgCh_SphCrr13func_020379f4EiPv
 void dBgCh_SphCrr::func_020379f4(int triID, void *src)
 {
-    func_02037fd4((int *)&mClsnResult1, triID, (int *)src);
+    _ZN5dBgPi9RecordHitEsP11SurfaceInfo(&mClsnResult1, triID, src);
 }
 
 // @symbol _ZN12dBgCh_SphCrr13func_020379d0Eiiii
 void dBgCh_SphCrr::func_020379d0(int i, int clsnID, int owner, int collider)
 {
-    func_02037fec((char *)&mClsnResult1, i, clsnID, owner, collider);
+    mClsnResult1.SetCollider(i, clsnID, (dActor_c *)owner, (dBgW *)collider);
 }
 
 // @symbol _ZN12dBgCh_SphCrr13func_020379c0EiPv
 void dBgCh_SphCrr::func_020379c0(int triID, void *src)
 {
-    func_02037fd4((int *)&mClsnResult2, triID, (int *)src);
+    _ZN5dBgPi9RecordHitEsP11SurfaceInfo(&mClsnResult2, triID, src);
 }
 
 // @symbol _ZN12dBgCh_SphCrr13func_0203799cEiiii
 void dBgCh_SphCrr::func_0203799c(int i, int clsnID, int owner, int collider)
 {
-    func_02037fec((char *)&mClsnResult2, i, clsnID, owner, collider);
+    mClsnResult2.SetCollider(i, clsnID, (dActor_c *)owner, (dBgW *)collider);
 }
 
 // @symbol _ZN12dBgCh_SphCrr13func_0203798cEiPv
 void dBgCh_SphCrr::func_0203798c(int triID, void *src)
 {
-    func_02037fd4((int *)&mClsnResult3, triID, (int *)src);
+    _ZN5dBgPi9RecordHitEsP11SurfaceInfo(&mClsnResult3, triID, src);
 }
 
 // @symbol _ZN12dBgCh_SphCrr13func_02037968Eiiii
 void dBgCh_SphCrr::func_02037968(int i, int clsnID, int owner, int collider)
 {
-    func_02037fec((char *)&mClsnResult3, i, clsnID, owner, collider);
+    mClsnResult3.SetCollider(i, clsnID, (dActor_c *)owner, (dBgW *)collider);
 }
 
 // @symbol _ZN12dBgCh_SphCrr13func_0203794cEPKi
@@ -185,10 +184,10 @@ void dBgCh_SphCrr::SetFloorResult(const dBgPi &src_)
     mClsnResult1.surface.normal.y = src_.surface.normal.y;
     mClsnResult1.surface.normal.z = src_.surface.normal.z;
     mClsnResult1.triangleID = src_.triangleID;
-    mClsnResult1.flags = src_.flags;
+    mClsnResult1.colliderIdx = src_.colliderIdx;
     mClsnResult1.clsnID = src_.clsnID;
-    mClsnResult1.unk_020 = src_.unk_020;
-    mClsnResult1.unk_024 = src_.unk_024;
+    mClsnResult1.owner = src_.owner;
+    mClsnResult1.collider = src_.collider;
 }
 
 // @symbol _ZN12dBgCh_SphCrr13GetWallResultEv
@@ -206,10 +205,10 @@ void dBgCh_SphCrr::SetWallResult(const dBgPi &src_)
     mClsnResult2.surface.normal.y = src_.surface.normal.y;
     mClsnResult2.surface.normal.z = src_.surface.normal.z;
     mClsnResult2.triangleID = src_.triangleID;
-    mClsnResult2.flags = src_.flags;
+    mClsnResult2.colliderIdx = src_.colliderIdx;
     mClsnResult2.clsnID = src_.clsnID;
-    mClsnResult2.unk_020 = src_.unk_020;
-    mClsnResult2.unk_024 = src_.unk_024;
+    mClsnResult2.owner = src_.owner;
+    mClsnResult2.collider = src_.collider;
 }
 
 // @symbol _ZN12dBgCh_SphCrr14GetUnderResultEv
@@ -227,8 +226,8 @@ void dBgCh_SphCrr::SetUnderResult(const dBgPi &src_)
     mClsnResult3.surface.normal.y = src_.surface.normal.y;
     mClsnResult3.surface.normal.z = src_.surface.normal.z;
     mClsnResult3.triangleID = src_.triangleID;
-    mClsnResult3.flags = src_.flags;
+    mClsnResult3.colliderIdx = src_.colliderIdx;
     mClsnResult3.clsnID = src_.clsnID;
-    mClsnResult3.unk_020 = src_.unk_020;
-    mClsnResult3.unk_024 = src_.unk_024;
+    mClsnResult3.owner = src_.owner;
+    mClsnResult3.collider = src_.collider;
 }

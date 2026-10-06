@@ -1,18 +1,18 @@
 //cpp
 // @symbol _ZN5dPa_c7level_c14clipCallback_c8OnUpdateERN8Particle6SystemEb
-#include "Clipper.h"
+#include "dClipper.h"
 #include "dPa_c.h"
 #include "math/Matrix.h"
 #include "Particle__System.h"
 
-extern "C" Clipper data_0209f43c;
+extern "C" dClipper data_0209f43c;
 extern "C" Matrix4x3 data_0209b3ec;
 extern "C" Matrix4x3 data_0209b41c;
 extern "C" void MulVec3Mat4x3(
     const Vector3 *vector, const Matrix4x3 *matrix, Vector3 *result);
 /* Fix12<int> by value is the measured 2004/b56 caller-side ABI wall. */
-extern "C" int _ZN7Clipper13Func_02015560ER9Matrix4x3R7Vector35Fix12IiES3_(
-    Clipper *clipper, Matrix4x3 *matrix, Vector3 *source,
+extern "C" int _ZN8dClipper13Func_02015560ER9Matrix4x3R7Vector35Fix12IiES3_(
+    dClipper *clipper, Matrix4x3 *matrix, Vector3 *source,
     int scale, Vector3 *result);
 
 int dPa_c::level_c::clipCallback_c::OnUpdate(
@@ -41,7 +41,7 @@ int dPa_c::level_c::clipCallback_c::OnUpdate(
         worldPos.y = particle->offsetAsr3.y + particle->positionAsr3.y;
         worldPos.z = particle->offsetAsr3.z + particle->positionAsr3.z;
 
-        result = _ZN7Clipper13Func_02015560ER9Matrix4x3R7Vector35Fix12IiES3_(
+        result = _ZN8dClipper13Func_02015560ER9Matrix4x3R7Vector35Fix12IiES3_(
             &data_0209f43c, &data_0209b3ec, &worldPos, 0x8000, &clipPos);
         if (result > 0x100000) {
             if (clipPos.y < -0x40000) {

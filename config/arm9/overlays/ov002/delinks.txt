@@ -86,19 +86,7 @@ src/_ZN17daObjFloatBoard_cD1Ev.cpp:
 
 src/actors/daObjFloatBoard_c.cpp:
     complete
-    .text start:0x020b5ab4 end:0x020b5e58
-
-src/func_ov002_020b5e58.cpp:
-    complete
-    .text start:0x020b5e58 end:0x020b5f9c
-
-src/func_ov002_020b5f9c.c:
-    complete
-    .text start:0x020b5f9c end:0x020b5fc4
-
-src/func_ov002_020b5fc4.c:
-    complete
-    .text start:0x020b5fc4 end:0x020b5fd8
+    .text start:0x020b5ab4 end:0x020b5fd8
 
 src/_ZN15daObjGuragura_cD0Ev.cpp:
     complete
@@ -1652,11 +1640,11 @@ src/actors/daMugenBGM_c.cpp:
     complete
     .text start:0x020f1bc4 end:0x020f1f70
 
-src/_ZN14CutsceneObjectD1Ev.cpp:
+src/_ZN8daDemo_cD1Ev.cpp:
     complete
     .text start:0x020f1f70 end:0x020f1f94
 
-src/_ZN14CutsceneObjectD0Ev.cpp:
+src/_ZN8daDemo_cD0Ev.cpp:
     complete
     .text start:0x020f1f94 end:0x020f1fcc
 
@@ -2207,24 +2195,9 @@ src/func_ov002_020f7bb8.c:
 src/func_ov002_020f7d74.cpp:
     .text start:0x020f7d74 end:0x020f8028
 
-src/_ZN14CutsceneObject16CleanupResourcesEv.cpp:
+src/actors/daDemo_c.cpp:
     complete
-    .text start:0x020f8028 end:0x020f80a8
-
-src/_ZN14CutsceneObject16OnPendingDestroyEv.cpp:
-    complete
-    .text start:0x020f80a8 end:0x020f80ac
-
-src/_ZN14CutsceneObject6RenderEv.cpp:
-    complete
-    .text start:0x020f80ac end:0x020f81c4
-
-src/_ZN14CutsceneObject8BehaviorEv.cpp:
-    complete
-    .text start:0x020f81c4 end:0x020f83a4
-
-src/_ZN14CutsceneObject13InitResourcesEv.cpp:
-    .text start:0x020f83a4 end:0x020f8808
+    .text start:0x020f8028 end:0x020f8808
 
 src/d_a_demo.c:
     complete

@@ -39,8 +39,8 @@
  * - Sound::PlaySecretSound / Particle::System::New stay TU-local mangled: no
  *   shared header declares them yet (d_a_wanwan / da1up precedent).
  * - func_ov063_021169c4 is this class's own shadow helper (writes
- *   mModel.mat4x3, drops mShadowModel; Behavior is its only caller). It is
- *   still a C-linkage helper in the shared TU, so the call stays by ROM label.
+ *   mModel.mat4x3, drops mShadowModel; Render is its only caller). It is a
+ *   real member now; its ROM symbol carries the daTBasket_c mangle.
  * - data_ov063_0211edec is the shared model file both this class and daTrs_c
  *   load and release; the sinit owns it, this TU only externs it.
  * - The factory is `return new daTBasket_c()`: this TU emits the vtable, so
@@ -82,6 +82,10 @@ struct daTBasket_c : dEnemyBase_c {
     static void *operator new(size_t size) {
         return _ZN7fBase_cnwEj((unsigned)size);
     }
+
+    /* The shadow-drop helper: rebuilds mModel.mat4x3 from the position and
+       calls DropShadowRadHeight on mShadowModel. r0 is this basket. */
+    void func_ov063_021169c4();
 };
 
 #ifndef SM64DS_PLATFORM_PC
