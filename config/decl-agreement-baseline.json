@@ -13493,7 +13493,7 @@
         "return:void * []"
       ]
     },
-    "_ZTV4View": {
+    "_ZTV7dView_c": {
       "include/decl_common.h": [
         "return:unsigned int"
       ]
