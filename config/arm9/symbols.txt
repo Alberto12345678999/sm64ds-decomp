@@ -3607,7 +3607,7 @@ _ZTS15dExtAnmTexSRT_c kind:data(any) addr:0x0208e810
 _ZTS15dExtAnmTexPat_c kind:data(any) addr:0x0208e824
 _ZTS15dExtAnm2Model_c kind:data(any) addr:0x0208e838
 _ZTS15dExtFrameCtrl_c kind:data(any) addr:0x0208e84c
-_ZTV11ShadowModel kind:data(any) addr:0x0208e868
+_ZTV17dExtShadowModel_c kind:data(any) addr:0x0208e868
 _ZTV9ModelBase kind:data(any) addr:0x0208e87c
 _ZTS17dExtShadowModel_c kind:data(any) addr:0x0208e888
 _ZTV17dExtCommonModel_c kind:data(any) addr:0x0208e8a4

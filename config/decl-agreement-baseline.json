@@ -14183,6 +14183,9 @@
     "data_0209ceec": {
       "include/decl_common.h": [
         "return:unsigned char []"
+      ],
+      "src/engine/model/dExtShadowModel_c.cpp": [
+        "return:unsigned char"
       ]
     },
     "data_0209cef0": {
@@ -14193,6 +14196,9 @@
     "data_0209cef4": {
       "include/decl_common.h": [
         "return:void * []"
+      ],
+      "src/engine/model/dExtShadowModel_c.cpp": [
+        "return:dExtShadowModel_c *"
       ]
     },
     "data_0209cef8": {

@@ -1141,7 +1141,7 @@
 0x0208e7d4	_ZTV15TextureSequence	data
 0x0208e7e4	_ZTV9Animation	data
 0x0208e7f4	_ZTV15MaterialChanger	data
-0x0208e868	_ZTV11ShadowModel	data
+0x0208e868	_ZTV17dExtShadowModel_c	data
 0x0208e87c	_ZTV9ModelBase	data
 0x0208e8a4	_ZTV17dExtCommonModel_c	data
 0x0208e90c	_ZTV5Model	data
