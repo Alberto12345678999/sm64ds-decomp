@@ -13364,6 +13364,12 @@
       "src/actors/dEntObj_c.cpp": [
         "return:void *"
       ],
+      "src/actors/dScDSMT_c.cpp": [
+        "return:int []"
+      ],
+      "src/actors/dScMB_c.cpp": [
+        "return:int []"
+      ],
       "src/d_s_entry_entry.cpp": [
         "return:char []"
       ],
