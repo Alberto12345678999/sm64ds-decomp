@@ -2,9 +2,10 @@
 /* BlendModelAnim -- ModelAnim child that cross-fades from the old pose into
    the new animation. Cartridge class: _ZTV14BlendModelAnim at 0x0208e94c
    plus its Animation-side thunk vtable at 0x0208e970; the cartridge RTTI
-   names it dExtBlendAnmModel_c. TU claims 0x020163e0..0x02016604 -- the
-   class's method run including func_020165c4, the file-local helper
-   DoSetFile calls. The lifecycle pair (D0, the D1 shard, C1) and the two
+   names it dExtBlendAnmModel_c. TU claims 0x020163e0..0x02016644 -- the
+   class's method run including func_020165c4 (0x020165c4..0x02016604),
+   the helper DoSetFile tail-calls; DoSetFile is its only caller in the
+   tree. The lifecycle pair (D0, the D1 shard, C1) and the two
    _ZThn80_ destructor thunks stay enrolled shards: defining the key
    function ~BlendModelAnim() would emit the whole MI vtable group into
    this object, and the secondary table's preamble lands inside the
@@ -23,8 +24,8 @@ u32 func_020462bc(int *file);
 /* local extern: no header declares it; initializes ModelComponents' side of
    the blend buffer. Spelled (int *, int) the way func_020462b4.c defines it */
 void func_020462b4(int *data, int buf);
-/* defined below -- DoSetFile's tail; the cartridge keeps it file-local
-   between UpdateVerts and DoSetFile */
+/* defined below -- DoSetFile's tail; it sits between UpdateVerts and
+   DoSetFile in the ROM and DoSetFile is its only caller here */
 int func_020165c4(BlendModelAnim *self, char *file);
 /* local extern: decl_common.h's copy is the same mangled spelling; no
    namespace-Memory header declares operator_new2 */
@@ -58,8 +59,8 @@ int BlendModelAnim::DoSetFile(char *file, int a, int b)
 }
 
 /* DoSetFile's tail: allocates the unk_6c blend buffer sized off the file and
-   hands it plus the ModelComponents member to func_020462b4. The cartridge
-   keeps it as a file-local function between UpdateVerts and DoSetFile. */
+   hands it plus the ModelComponents member to func_020462b4. It sits between
+   UpdateVerts and DoSetFile in the ROM. */
 // @symbol func_020165c4
 extern "C" int func_020165c4(BlendModelAnim *self, char *file)
 {
