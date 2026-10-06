@@ -32,7 +32,7 @@
 #include "Sound.h"
 #include "Message.h"
 #include "SaveData.h"
-#include "FaderColor.h"
+#include "dFdColor_c.h"
 #include "decl_common.h"
 #include "MessageBank.h"
 
@@ -51,7 +51,7 @@ extern u8 data_020a0dea[];
 extern u8 data_020a0deb[];
 extern u8 data_0209d454;
 extern u8 data_0209d45c;
-extern FaderColor data_0209f5e8;
+extern dFdColor_c data_0209f5e8;
 
 u32 _ZN3G2S13GetBG1CharPtrEv(void);
 u32 LoadCompressedFileAt(u16 fileID, void *target);

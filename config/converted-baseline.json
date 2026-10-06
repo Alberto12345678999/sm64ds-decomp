@@ -290,10 +290,6 @@
     "src/_ZN10dCcAcPos_cC1Ev.cpp",
     "src/_ZN10dCcAcPos_cD0Ev.cpp",
     "src/_ZN10dCcAcPos_cD1Ev.cpp",
-    "src/engine/fader/dFdDummy_c.cpp#_ZN10dFdDummy_c14SetForwardTimeEj",
-    "src/engine/fader/dFdDummy_c.cpp#_ZN10dFdDummy_c15SetBackwardTimeEj",
-    "src/engine/fader/dFdDummy_c.cpp#_ZN10dFdDummy_cD0Ev",
-    "src/engine/fader/dFdDummy_c.cpp#_ZN10dFdDummy_cD1Ev",
     "src/actors/dMgPsOpt_c.cpp#_ZN10dMgPsOpt_c11TouchIcon_cC1Ev",
     "src/actors/dMgPsOpt_c.cpp#_ZN10dMgPsOpt_c11TouchIcon_cD1Ev",
     "src/actors/dMgPsOpt_c.cpp#_ZN10dMgPsOpt_cC1Ev",
@@ -3496,9 +3492,6 @@
     "src/_ZN15dExtFrameCtrl_cD0Ev.cpp",
     "src/_ZN15dExtFrameCtrl_cD1Ev.cpp",
     "src/_ZN15dExtFrameCtrl_cD2Ev.cpp",
-    "src/_ZN11CommonModelD0Ev.cpp",
-    "src/_ZN5ModelD0Ev.cpp",
-    "src/_ZN5ModelD2Ev.cpp",
     "src/actors/dScene_c.cpp#_ZN8dScene_c9SetFadersEP15dFdBrightness_c",
     "src/engine/fader/dFader_c.cpp#_ZN10dFdColor_cD0Ev",
     "src/engine/fader/dFader_c.cpp#_ZN10dFdColor_cD1Ev",
@@ -3523,8 +3516,7 @@
     "src/engine/fader/dFader_c.cpp#_ZN9dFdWipe_c14LoadAndSetFileEt",
     "src/engine/fader/dFader_c.cpp#_ZN9dFdWipe_cC1Ev",
     "src/engine/fader/dFader_c.cpp#_ZN9dFdWipe_cD0Ev",
-    "src/engine/fader/dFader_c.cpp#_ZN9dFdWipe_cD1Ev",
-    "src/stage/LevelObjects.cpp#_ZN5Stage18LoadClsnAndObjectsER11LVL_OverlayjR7dBgW_Kc"
+    "src/engine/fader/dFader_c.cpp#_ZN9dFdWipe_cD1Ev"
   ],
-  "count": 3517
+  "count": 3509
 }
