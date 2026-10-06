@@ -7508,29 +7508,9 @@ src/func_0204d440.c:
     complete
     .text start:0x0204d440 end:0x0204d4d0
 
-src/_ZN8Particle14RadiusConverge4FuncERNS_10EffectDataEPcR7Vector3.cpp:
+src/engine/particle/Particle_Behavior.cpp:
     complete
-    .text start:0x0204d4d0 end:0x0204d57c
-
-src/_ZN8Particle10LimitPlane4FuncERNS_10EffectDataEPcR7Vector3.cpp:
-    complete
-    .text start:0x0204d57c end:0x0204d680
-
-src/_ZN8Particle4Turn4FuncERNS_10EffectDataEPcR7Vector3.cpp:
-    complete
-    .text start:0x0204d680 end:0x0204d758
-
-src/_ZN8Particle8Converge4FuncERNS_10EffectDataEPcR7Vector3.cpp:
-    complete
-    .text start:0x0204d758 end:0x0204d7ec
-
-src/_ZN8Particle6Jitter4FuncERNS_10EffectDataEPcR7Vector3.cpp:
-    complete
-    .text start:0x0204d7ec end:0x0204d8b0
-
-src/_ZN8Particle12Acceleration4FuncERNS_10EffectDataEPcR7Vector3.cpp:
-    complete
-    .text start:0x0204d8b0 end:0x0204d8e8
+    .text start:0x0204d4d0 end:0x0204d8e8
 
 src/func_0204d8e8.c:
     complete
