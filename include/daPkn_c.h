@@ -101,6 +101,17 @@ struct daPkn_c : dEnemyBase_c {
     void StateShrink();     /* 6 */
     void StateGone();       /* 7: hidden until the player leaves */
     void StateRegrow();     /* 8 */
+
+    /* Nonvirtual helpers of the same TU, recovered as members: each takes
+       the object as its first parameter in the ROM and only touches this
+       class's own state. Formerly free func_ov084_* names (see
+       symbols/actor_renames.tsv). */
+    void Die();                    /* kills the plant: death anim, state 5 */
+    void EnterLunge(int frame);    /* state 2, lunge animation at `frame` */
+    void UpdatePose();             /* poses both models, head cyl, bubble */
+    int  CheckHits();              /* shared idle hit check; 1 = a hit killed */
+    int  PlayerMovingFast();       /* closest player fast enough to wake it? */
+    void TrackClosestPlayer();     /* mClosestPlayer/Dist/AngleY/Airborne */
 };
 
 #ifndef SM64DS_PLATFORM_PC
