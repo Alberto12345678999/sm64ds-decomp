@@ -7156,9 +7156,6 @@
       "src/minigames/d_s_mg_slot1.cpp": [
         "return:char *"
       ],
-      "src/_ZN9BootScene8BehaviorEv.cpp": [
-        "return:void *"
-      ],
       "src/actors/dScGameOver_c.cpp": [
         "return:unsigned short *"
       ],
@@ -7200,9 +7197,6 @@
     "_ZN3G2S12GetBG2ScrPtrEv": {
       "src/minigames/d_s_mg_slot1.cpp": [
         "return:char *"
-      ],
-      "src/_ZN9BootScene13InitResourcesEv.cpp": [
-        "return:void *"
       ],
       "src/actors/dScGameOver_c.cpp": [
         "return:void *"
@@ -13553,9 +13547,6 @@
       ]
     },
     "data_0208ee44": {
-      "src/_ZN9BootScene13InitResourcesEv.cpp": [
-        "return:char"
-      ],
       "src/actors/dScTitle_c.cpp": [
         "return:unsigned char []"
       ],
@@ -15456,9 +15447,6 @@
       "src/ProcessKuppaScript.cpp": [
         "return:UnkVis *"
       ],
-      "src/_ZN9BootScene8BehaviorEv.cpp": [
-        "return:unsigned char []"
-      ],
       "src/actors/dMap_c.cpp": [
         "return:VtblOwner *"
       ],
@@ -15494,6 +15482,9 @@
       ],
       "src/_ZN10dScStage_c8BehaviorEv.cpp": [
         "return:UnkVis *"
+      ],
+      "src/actors/dScBoot_c.cpp": [
+        "return:FaderBrightness *"
       ]
     },
     "data_0209f5c0": {
@@ -15518,9 +15509,6 @@
       ],
       "src/_ZN12dScStarSel_c8BehaviorEv.cpp": [
         "return:unsigned short []"
-      ],
-      "src/_ZN9BootScene13InitResourcesEv.cpp": [
-        "return:char"
       ],
       "src/__sinit_02074edc.c": [
         "return:FaderNode"
@@ -23895,10 +23883,6 @@
         "param:#1 int",
         "return:void"
       ],
-      "src/_ZN9BootScene8BehaviorEv.cpp": [
-        "param:#1 int",
-        "return:void"
-      ],
       "src/actors/dMeter_c.cpp": [
         "param:#1 int",
         "return:void"
@@ -26310,9 +26294,6 @@
       ]
     },
     "func_0201a244": {
-      "src/_ZN9BootScene13InitResourcesEv.cpp": [
-        "param:#1 void *"
-      ],
       "src/func_ov075_02118a84.c": [
         "param:#1 void *",
         "return:void"

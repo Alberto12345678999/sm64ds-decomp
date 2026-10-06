@@ -15,8 +15,8 @@ addr	state	modules	config_names	config_kinds	verified_name	verified_kind	verdict
 0x020171b8	DIVERGED	arm9	_ZThn80_N10ModelAnim2D1Ev	function	_ZThn80_N15dExtFrameCtrl_cD1Ev	function	identity
 0x02017574	DIVERGED	arm9	_ZN10FaderColorD2Ev	function	_ZN5ColorD1Ev	function	identity		
 0x020230d8	NO-SLOT	-	-	-	PARTICLE_SPA_FILE	data	no-slot		
-0x02023598	DIVERGED	arm9	_ZN9BootSceneD1Ev	function	_ZN5SceneD2Ev	function	identity		
-0x020235d4	DIVERGED	arm9	_ZN9BootSceneD0Ev	function	_ZN5SceneD0Ev	function	identity		
+0x02023598	DIVERGED	arm9	_ZN9dScBoot_cD1Ev	function	_ZN5SceneD2Ev	function	identity		
+0x020235d4	DIVERGED	arm9	_ZN9dScBoot_cD0Ev	function	_ZN5SceneD0Ev	function	identity		
 0x0202b6f0	NO-SLOT	-	-	-	Geometry_WriteFogTable	data	no-slot		
 0x0202e088	DIVERGED	arm9	Stage_Spawn	function	_ZN10dScStage_cC1Ev	function	plain		
 0x02038018	DIVERGED	arm9	_ZN5dBgPiaSERKS_	function	_ZN10ClsnResultaSERKS_	function	plain		
