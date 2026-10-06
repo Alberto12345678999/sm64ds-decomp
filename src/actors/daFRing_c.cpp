@@ -100,11 +100,11 @@ s32 daFRing_c::Behavior()
     mMaterialChanger2.Advance();
     mTextureTransformer1.Advance();
     mTextureTransformer2.Advance();
-    static_cast<Animation &>(mModelAnim1).Advance();
-    static_cast<Animation &>(mModelAnim2).Advance();
+    static_cast<dExtFrameCtrl_c &>(mModelAnim1).Advance();
+    static_cast<dExtFrameCtrl_c &>(mModelAnim2).Advance();
     Matrix4x3_FromTranslation(&mModelAnim1.mat4x3, mPosX >> 3, mPosY >> 3, mPosZ >> 3);
     Matrix4x3_FromTranslation(&mModelAnim2.mat4x3, mPosX >> 3, mPosY >> 3, mPosZ >> 3);
-    if (static_cast<Animation &>(mModelAnim1).Finished())
+    if (static_cast<dExtFrameCtrl_c &>(mModelAnim1).Finished())
         MarkForDestruction();
     return 1;
 }
@@ -115,7 +115,7 @@ s32 daFRing_c::InitResources()
     mModelAnim1.SetFile((BMD_File *)Model::LoadFile(*(SharedFilePtr *)&data_ov060_0211b208), 1, 0x13);
     mModelAnim2.SetFile((BMD_File *)data_ov060_0211b208[1], 1, 0x13);
 
-    Animation::LoadFile(*(SharedFilePtr *)&data_ov060_0211b1f8);
+    dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)&data_ov060_0211b1f8);
     TextureSequence::LoadFile(*(SharedFilePtr *)&data_ov060_0211b200);
 
     func_02016b24(&mModelAnim1, 0x4000);

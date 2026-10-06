@@ -173,8 +173,8 @@ int daYurei_Mucho_c::InitResources()
     mModelAnim.SetFile((BMD_File *)Model::LoadFile(data_ov065_0211d618), 1, -1);
     Model::LoadFile(data_ov065_0211d610);
     mShadowModel.InitCylinder();
-    Animation::LoadFile(data_ov065_0211d600);
-    Animation::LoadFile(data_ov065_0211d608);
+    dExtFrameCtrl_c::LoadFile(data_ov065_0211d600);
+    dExtFrameCtrl_c::LoadFile(data_ov065_0211d608);
     mTerminalVelocity = -0x1e000;
     _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(&mdCcAc_c, this, 0x38000, 0x7e000, 0x200000, 0x7eff0);
     mAngleY = mPrevAngleY;
@@ -550,7 +550,7 @@ int daYurei_Mucho_c::func_ov065_02116364()
         }
     }
 
-    if (((Animation *)((void *)((char *)this + 0x350)))->Finished() != 0) {
+    if (((dExtFrameCtrl_c *)((void *)((char *)this + 0x350)))->Finished() != 0) {
         if (pl != 0) {
             s32 *dsrc = (s32 *)(int)(&pl->mPosX);
             L.d.x = dsrc[0];

@@ -7156,9 +7156,6 @@
       "src/minigames/d_s_mg_slot1.cpp": [
         "return:char *"
       ],
-      "src/_ZN9BootScene8BehaviorEv.cpp": [
-        "return:void *"
-      ],
       "src/actors/dScGameOver_c.cpp": [
         "return:unsigned short *"
       ],
@@ -7200,9 +7197,6 @@
     "_ZN3G2S12GetBG2ScrPtrEv": {
       "src/minigames/d_s_mg_slot1.cpp": [
         "return:char *"
-      ],
-      "src/_ZN9BootScene13InitResourcesEv.cpp": [
-        "return:void *"
       ],
       "src/actors/dScGameOver_c.cpp": [
         "return:void *"
@@ -12175,7 +12169,7 @@
         "param:#3 int"
       ]
     },
-    "_ZN9Animation17UpdateFileOffsetsER8BCA_File": {
+    "_ZN15dExtFrameCtrl_c17UpdateFileOffsetsER8BCA_File": {
       "include/decl_Animation.h": [
         "param:#1 char *"
       ],
@@ -12183,12 +12177,12 @@
         "param:#1 void *"
       ]
     },
-    "_ZN9Animation4CopyERKS_": {
+    "_ZN15dExtFrameCtrl_c4CopyERKS_": {
       "include/decl_Animation.h": [
         "param:#2 const void *"
       ]
     },
-    "_ZN9Animation7AdvanceEv": {
+    "_ZN15dExtFrameCtrl_c7AdvanceEv": {
       "src/actors/unit020bfec0.cpp": [
         "return:int"
       ],
@@ -12199,7 +12193,7 @@
         "return:int"
       ]
     },
-    "_ZN9Animation8LoadFileER13SharedFilePtr": {
+    "_ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr": {
       "src/actors/Eyerok.cpp": [
         "param:#1 void *",
         "return:void"
@@ -12927,7 +12921,7 @@
         "return:System *"
       ]
     },
-    "_ZNK9Animation12WillHitFrameEi": {
+    "_ZNK15dExtFrameCtrl_c12WillHitFrameEi": {
       "include/decl_Animation.h": [
         "return:int"
       ],
@@ -12965,7 +12959,7 @@
         "return:int"
       ]
     },
-    "_ZNK9Animation13GetFrameCountEv": {
+    "_ZNK15dExtFrameCtrl_c13GetFrameCountEv": {
       "include/decl_Animation.h": [
         "return:int"
       ],
@@ -13489,6 +13483,12 @@
       "src/actors/dEntObj_c.cpp": [
         "return:void *"
       ],
+      "src/actors/dScDSMT_c.cpp": [
+        "return:int []"
+      ],
+      "src/actors/dScMB_c.cpp": [
+        "return:int []"
+      ],
       "src/d_s_entry_entry.cpp": [
         "return:char []"
       ],
@@ -13553,9 +13553,6 @@
       ]
     },
     "data_0208ee44": {
-      "src/_ZN9BootScene13InitResourcesEv.cpp": [
-        "return:char"
-      ],
       "src/actors/dScTitle_c.cpp": [
         "return:unsigned char []"
       ],
@@ -15456,9 +15453,6 @@
       "src/ProcessKuppaScript.cpp": [
         "return:UnkVis *"
       ],
-      "src/_ZN9BootScene8BehaviorEv.cpp": [
-        "return:unsigned char []"
-      ],
       "src/actors/dMap_c.cpp": [
         "return:VtblOwner *"
       ],
@@ -15494,6 +15488,9 @@
       ],
       "src/_ZN10dScStage_c8BehaviorEv.cpp": [
         "return:UnkVis *"
+      ],
+      "src/actors/dScBoot_c.cpp": [
+        "return:FaderBrightness *"
       ]
     },
     "data_0209f5c0": {
@@ -15518,9 +15515,6 @@
       ],
       "src/_ZN12dScStarSel_c8BehaviorEv.cpp": [
         "return:unsigned short []"
-      ],
-      "src/_ZN9BootScene13InitResourcesEv.cpp": [
-        "return:char"
       ],
       "src/__sinit_02074edc.c": [
         "return:FaderNode"
@@ -23895,10 +23889,6 @@
         "param:#1 int",
         "return:void"
       ],
-      "src/_ZN9BootScene8BehaviorEv.cpp": [
-        "param:#1 int",
-        "return:void"
-      ],
       "src/actors/dMeter_c.cpp": [
         "param:#1 int",
         "return:void"
@@ -26310,9 +26300,6 @@
       ]
     },
     "func_0201a244": {
-      "src/_ZN9BootScene13InitResourcesEv.cpp": [
-        "param:#1 void *"
-      ],
       "src/func_ov075_02118a84.c": [
         "param:#1 void *",
         "return:void"

@@ -640,9 +640,9 @@ int daOwl_c::InitResources()
     f = Model::LoadFile(*(SharedFilePtr *)data_ov094_02136ae0);
     mModelAnim.SetFile((BMD_File *)f, 1, -1);
     mShadowModel.InitCylinder();
-    Animation::LoadFile(*(SharedFilePtr *)data_ov094_02136af8);
-    Animation::LoadFile(*(SharedFilePtr *)data_ov094_02136ae8);
-    Animation::LoadFile(*(SharedFilePtr *)data_ov094_02136af0);
+    dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)data_ov094_02136af8);
+    dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)data_ov094_02136ae8);
+    dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)data_ov094_02136af0);
     v0[0] = data_ov094_02136a1c[0];
     v0[1] = data_ov094_02136a1c[1];
     v0[2] = data_ov094_02136a1c[2];

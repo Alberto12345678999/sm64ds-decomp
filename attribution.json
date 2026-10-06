@@ -8684,6 +8684,21 @@
     "src/engine/gx/GXS.cpp#_ZN3GXS19BeginLoadOBJExtPlttEv": "tangosdev",
     "src/engine/gx/GXS.cpp#_ZN3GXS16EndLoadBGExtPlttEv": "tangosdev",
     "src/engine/gx/GXS.cpp#_ZN3GXS13LoadBGExtPlttEPKvjj": "tangosdev",
-    "src/engine/gx/GXS.cpp#_ZN3GXS18BeginLoadBGExtPlttEv": "tangosdev"
+    "src/engine/gx/GXS.cpp#_ZN3GXS18BeginLoadBGExtPlttEv": "tangosdev",
+    "src/actors/dScBoot_c.cpp#_ZN9dScBoot_c13InitResourcesEv": "tangosdev",
+    "src/actors/dScBoot_c.cpp#_ZN9dScBoot_c13func_02005348Ev": "tangosdev",
+    "src/actors/dScBoot_c.cpp#_ZN9dScBoot_c8BehaviorEv": "tangosdev",
+    "src/d_s_boot.cpp#_ZN9dScBoot_cD0Ev": "tangosdev",
+    "src/d_s_boot.cpp#_ZN9dScBoot_cD1Ev": "tangosdev",
+    "src/d_s_boot.cpp#dScBoot_c_classInit": "tangosdev",
+    "src/_ZN15dExtFrameCtrl_cD1Ev.cpp#_ZN15dExtFrameCtrl_cD1Ev": "andrewboudreau",
+    "src/engine/animation/dExtFrameCtrl_c.cpp#_ZN15dExtFrameCtrl_c12SetAnimationEti5Fix12IiEt": "tangosdev",
+    "src/engine/animation/dExtFrameCtrl_c.cpp#_ZN15dExtFrameCtrl_c4CopyERKS_": "tangosdev",
+    "src/engine/animation/dExtFrameCtrl_c.cpp#_ZN15dExtFrameCtrl_c7AdvanceEv": "tangosdev",
+    "src/engine/animation/dExtFrameCtrl_c.cpp#_ZN15dExtFrameCtrl_c8FinishedEv": "tangosdev",
+    "src/engine/animation/dExtFrameCtrl_c.cpp#_ZN15dExtFrameCtrl_c8GetFlagsEv": "tangosdev",
+    "src/engine/animation/dExtFrameCtrl_c.cpp#_ZN15dExtFrameCtrl_c8SetFlagsEi": "tangosdev",
+    "src/engine/animation/dExtFrameCtrl_c.cpp#_ZNK15dExtFrameCtrl_c12WillHitFrameEi": "aitddlabs",
+    "src/engine/animation/dExtFrameCtrl_c.cpp#_ZNK15dExtFrameCtrl_c13GetFrameCountEv": "tangosdev"
   }
 }

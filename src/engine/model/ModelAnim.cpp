@@ -19,8 +19,9 @@ extern "C" {
 /* SetAnim keeps its mangled spelling: wall 6az (notes/mwccarm-codegen.md)
    homes class-typed by-value parameters that a body reads, and the real
    signature carries Fix12<int> -- the same wall its BlendModelAnim
-   sibling records. The declaration in ModelAnim.h is the real one. */
-void _ZN9Animation12SetAnimationEti5Fix12IiEt(Animation *self, u16 numFrames, s32 flags, s32 speed, u16 startFrame);
+   sibling records. The declaration in ModelAnim.h is the real one.
+   local extern: Fix12 by-value speed. */
+void _ZN15dExtFrameCtrl_c12SetAnimationEti5Fix12IiEt(dExtFrameCtrl_c *self, u16 numFrames, s32 flags, s32 speed, u16 startFrame);
 }
 
 /* Only the header word SetAnim reads; Animation::UpdateFileOffsets' shard
@@ -81,8 +82,8 @@ extern "C" void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
     else
     {
         thiz->file = animFile;
-        _ZN9Animation12SetAnimationEti5Fix12IiEt(
-            &static_cast<Animation &>(*thiz), animFile->numFrames, flags,
+        _ZN15dExtFrameCtrl_c12SetAnimationEti5Fix12IiEt(
+            &static_cast<dExtFrameCtrl_c &>(*thiz), animFile->numFrames, flags,
             speed, startFrame);
     }
 }
@@ -92,7 +93,7 @@ extern "C" void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
 // @symbol _ZN9ModelAnim4CopyERKS_Pc
 void ModelAnim::Copy(const ModelAnim &src, char *newFile)
 {
-    Animation::Copy(src);
+    dExtFrameCtrl_c::Copy(src);
     if (newFile != 0)
         file = (BCA_File *)newFile;
     else

@@ -119,7 +119,7 @@ s32 daPgDfdr_c::InitResources()
     mModelAnim.SetFile((BMD_File *)file, 1, -1);
 
     for (i = 0; i < 3; i++)
-        Animation::LoadFile(*(SharedFilePtr *)data_ov027_02112ca4[i]);
+        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)data_ov027_02112ca4[i]);
 
     TextureSequence::LoadFile(*(SharedFilePtr *)&data_ov027_02113c94);
     TextureSequence::Prepare(*(BMD_File *)data_ov027_02113c7c.file,

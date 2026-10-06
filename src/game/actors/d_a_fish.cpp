@@ -117,7 +117,7 @@ extern "C" daFish_c *daFish_c_classInit()
 s32 daFish_c::InitResources()
 {
     u8 modelIndex;
-    Animation::LoadFile(data_ov100_021489cc);
+    dExtFrameCtrl_c::LoadFile(data_ov100_021489cc);
     mModelIndex = (param1 >> 4) & 7;
     modelIndex = mModelIndex;
     if (modelIndex > 2) {
@@ -129,7 +129,7 @@ s32 daFish_c::InitResources()
         (BMD_File *)Model::LoadFile(*data_ov100_021473a4[mModelIndex]), 1, -1);
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
         &mModelAnim,
-        (BCA_File *)Animation::LoadFile(*data_ov100_021473b0[mModelIndex]),
+        (BCA_File *)dExtFrameCtrl_c::LoadFile(*data_ov100_021473b0[mModelIndex]),
         0, 0x1000, 0);
     mIsSpawner = 1;
     mSpawnerID = uniqueID;

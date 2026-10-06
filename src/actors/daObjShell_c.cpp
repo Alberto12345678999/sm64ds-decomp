@@ -147,8 +147,8 @@ extern "C" daObjShell_c *daObjShell_c_classInit()
  */
 int daObjShell_c::InitResources()
 {
-    Animation::LoadFile(data_ov064_0211c9cc);
-    Animation::LoadFile(data_ov064_0211c9bc);
+    dExtFrameCtrl_c::LoadFile(data_ov064_0211c9cc);
+    dExtFrameCtrl_c::LoadFile(data_ov064_0211c9bc);
     BMD_File *modelFile = (BMD_File *)Model::LoadFile(data_ov064_0211c9c4);
     mModelAnim.SetFile(modelFile, 1, -1);
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
@@ -175,7 +175,7 @@ int daObjShell_c::InitResources()
  * Whatever the state, a touched actor whose actor ID is ACTOR_PLAYER is hurt
  * for 2 with 0xc000 of knockback, every frame the contact persists.
  *
- * mModelAnim carries the Animation base at +0x50, so the ROM's calls on
+ * mModelAnim carries the dExtFrameCtrl_c base at +0x50, so the ROM's calls on
  * `this + 0x124` are member calls on `this + 0xd4`: the compiler applies
  * the same adjustment the hand-spelt offsets did.
  *

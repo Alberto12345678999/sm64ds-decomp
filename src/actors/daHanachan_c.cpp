@@ -1116,11 +1116,11 @@ int daHanachan_c::InitResources()
         texFile = data_ov034_0211384c[i];
         TextureSequence::LoadFile(*texFile);
         animFile = data_ov034_02113860[i];
-        Animation::LoadFile(*(SharedFilePtr *)animFile);
-        Animation::LoadFile(*(SharedFilePtr *)data_ov034_02113874[i]);
-        Animation::LoadFile(*(SharedFilePtr *)data_ov034_02113888[i]);
-        Animation::LoadFile(*(SharedFilePtr *)data_ov034_0211389c[i]);
-        Animation::LoadFile(*(SharedFilePtr *)data_ov034_021138b0[i]);
+        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)animFile);
+        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)data_ov034_02113874[i]);
+        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)data_ov034_02113888[i]);
+        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)data_ov034_0211389c[i]);
+        dExtFrameCtrl_c::LoadFile(*(SharedFilePtr *)data_ov034_021138b0[i]);
         animRow->SetFile(*(BMD_File **)((char *)modelFile + 4), one, minusOne);
         _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(animRow, *(void **)((char *)animFile + 4), zeroA, 0x1000, zeroA);
         TextureSequence::Prepare(**(BMD_File **)((char *)modelFile + 4), **(BTP_File **)((char *)texFile + 4));
