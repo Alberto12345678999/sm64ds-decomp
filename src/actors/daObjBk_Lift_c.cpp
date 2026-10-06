@@ -6,7 +6,7 @@
  * kind 1 flips yaw by a half turn every 0x87 frames, kind 2 rides between
  * mMinPosY and mMaxPosY and keeps a looping sound alive while it moves,
  * and anything else only refreshes the collider. The class carries its
- * own cuboid ShadowModel, and func_ov015_021123c8 is the helper that
+ * own cuboid dExtShadowModel_c, and func_ov015_021123c8 is the helper that
  * re-aims it every frame.
  *
  * This TU owns text only: ov015 delinks no .data here, so the _ZTV / _ZTI /
@@ -88,16 +88,16 @@ void _ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(u32 id, Fix12i x, Fix12i y,
 void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
     dBgW_KcMbg *self, KCL_File *file, const Matrix4x3 *mat,
     Fix12i scale, s16 angle, CLPS_Block *clps);
-void _ZN8dActor_c18DropShadowScaleXYZER11ShadowModelR9Matrix4x35Fix12IiES5_S5_j(
+void _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
     void *self, void *shadow, void *mat, int a, int b, int c, unsigned flags);
 }
 
 // @symbol daObjBk_Lift_c_classInit
 /* BK_LIFT01's registry factory. 0x394 is this class's size, and the calls the
    cartridge inlines here -- fBase_c::operator new, dBgActor_c's base
-   constructor, the vptr store and ShadowModel's constructor on the member at
+   constructor, the vptr store and dExtShadowModel_c's constructor on the member at
    0x320 -- are exactly what the implicit default constructor of
-   `struct daObjBk_Lift_c : dBgActor_c` with a ShadowModel member generates.
+   `struct daObjBk_Lift_c : dBgActor_c` with a dExtShadowModel_c member generates.
    Same shape as daObjBk_Rotebar_c_classInit in this overlay. */
 extern "C" daObjBk_Lift_c *daObjBk_Lift_c_classInit()
 {
@@ -279,7 +279,7 @@ void daObjBk_Lift_c::func_ov015_021123c8()
     mShadowMat.m[9] = (mPosX - mShadowOffsetX) >> 3;
     mShadowMat.m[10] = mFloorPosY >> 3;
     mShadowMat.m[11] = (mPosZ - mShadowOffsetY) >> 3;
-    _ZN8dActor_c18DropShadowScaleXYZER11ShadowModelR9Matrix4x35Fix12IiES5_S5_j(
+    _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
         this, &mShadowModel, &mShadowMat, 0x190000, 0x28000, 0x258000, 0xf);
 }
 

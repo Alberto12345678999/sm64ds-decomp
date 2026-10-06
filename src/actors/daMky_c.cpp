@@ -17,7 +17,7 @@
  *   eleven are the ticks, also methods. Helpers those ticks call take
  *   the same Ukiki in r0, so they are methods too.
  * - ModelAnim::SetAnim, dCcAc_c::Init, dBgCh_Actr::Init,
- *   DropShadowRadHeight, IsTooFarAwayFromPlayer, Clipper::Func_02015560
+ *   DropShadowRadHeight, IsTooFarAwayFromPlayer, dClipper::Func_02015560
  *   and Sound::PlaySub pass Fix12<int> by value. The method form changes
  *   the call. dBgCh_Actr::Init's header is Fix12i, which mangles as i;
  *   the ROM symbol is Fix12<int>.
@@ -27,7 +27,8 @@
  *   veneers. The bl targets the veneer, not UpdateContinuousNoLava or
  *   UpdateContinuous.
  * - func_0203567c returns its argument plus 0x30. GetFloorResult is the
- *   previous symbol, 0x0203566c, and dBgCh_Actr.h does not declare it.
+ *   previous symbol, 0x0203566c. dBgCh_Actr.h declares it; this TU still
+ *   calls func_0203567c.
  *   func_02038ea4 is not dBgCh_Gnd::DetectClsn: 02111ea4 calls DetectClsn
  *   and 02111dd0 calls func_02038ea4.
  * - func_02037f44 returns word 8 of the record it is handed. The polygon
@@ -48,8 +49,8 @@
  * (Matrix4x3 is 0x30) and indexing the matrix is not a POD address.
  * Still raw, because nothing names them: carrier and cap +0xc8 (the word
  * inside dActor_c::pad_0c5; daObjMarioCap_c does not name it), and the
- * cap's word at +0xd0, past dActor_c. GetFloorResult / GetWallResult + 4
- * is the SurfaceInfo; dBgCh_Actr.h does not declare those getters.
+ * cap's word at +0xd0, past dActor_c. GetFloorResult and GetWallResult
+ * are declared; this TU still reads the SurfaceInfo at result + 4.
  * PathPtr::GetNode stays the mangled call: the member form costs
  * 02111b20 four words. mPathNode's compare stays a signed word; the
  * field is unsigned. Fix12-by-value calls, the veneers, func_0203567c,
@@ -94,16 +95,16 @@ unsigned char DecIfAbove0_Byte(unsigned char *p);
 void *_ZN9dBgCh_LinC1Ev(void *self);
 dBgCh_Lin *_ZN9dBgCh_LinD1Ev(void *self);
 void  Vec3_Asr(void *d, void *s, int sh);
-int   _ZN7Clipper13Func_02015560ER9Matrix4x3R7Vector35Fix12IiES3_(void *m, void *v, void *w, int fix, void *out);
+int   _ZN8dClipper13Func_02015560ER9Matrix4x3R7Vector35Fix12IiES3_(void *m, void *v, void *w, int fix, void *out);
 void  _ZNK7PathPtr7GetNodeER7Vector3j(const void *self, Vector3 &node, unsigned int idx); /* local extern: the member form costs 02111b20 four words */
 int   Vec3_HorzDist(const Vector3 *a, const Vector3 *b);
 void  _Z11UpdateAngleRssis(short *p, short a, int b, short c);
-void  _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(void *self, void *shadow, void *mtx, int rad, int height, unsigned char flags);
+void  _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void *self, void *shadow, void *mtx, int rad, int height, unsigned char flags);
 void  dBgCh_Actr_UpdateContinuous_Veneer(void *self);
 int   func_02038ea4(void *self);
 int   func_0203567c(int self);
 int   func_02037f44(void *result);
-dBgPi *_ZN5dBgPiD1Ev(void *result);
+void _ZN5dBgPiD1Ev(void *result);
 void  Matrix4x3_FromRotationY(void *m, int angle);
 void  Matrix4x3_FromTranslation(void *m, int x, int y, int z);
 void  Matrix4x3_ApplyInPlaceToRotationY(void *m, short angY);
@@ -128,7 +129,7 @@ bool ApproachLinear(short &value, short target, short step);
  *
  * The body is empty on purpose.  The compiler writes the whole of both
  * variants from the class definition: the vptr store, then ModelAnim,
- * ShadowModel, dCcAc_c and dBgCh_Actr destroyed in reverse declaration order
+ * dExtShadowModel_c, dCcAc_c and dBgCh_Actr destroyed in reverse declaration order
  * (PathPtr is trivial and skipped), then ~dActor_c; D0 additionally inlines
  * all of that and tail-calls Memory::Deallocate. */
 // @symbol _ZN7daMky_cD1Ev
@@ -175,7 +176,7 @@ void daMky_c::func_ov030_02111734()
 
     Vec3_Asr(&asr, (Vector3 *)&this->mPerchPosX, 3);
 
-    if (_ZN7Clipper13Func_02015560ER9Matrix4x3R7Vector35Fix12IiES3_(&data_0209f43c, &data_0209b3ec, &asr, 0x1f400, &out) <= 0xc350000)
+    if (_ZN8dClipper13Func_02015560ER9Matrix4x3R7Vector35Fix12IiES3_(&data_0209f43c, &data_0209b3ec, &asr, 0x1f400, &out) <= 0xc350000)
         goto done;
 
     this->mPosX = this->mPerchPosX;
@@ -475,7 +476,7 @@ void daMky_c::func_ov030_02112094()
 
     int b = (int)((this->mFlags & 0x40000) != 0);
     if (!b) {
-        _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
+        _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
             this, &this->mShadowModel, &this->mModelAnim.mat4x3, 0x5a000, 0x190000, 0xf);
     }
 

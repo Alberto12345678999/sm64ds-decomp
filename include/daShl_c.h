@@ -4,7 +4,7 @@
 #include "types.h"
 #include "dEnemyBase_c.h"
 #include "Model.h"
-#include "ShadowModel.h"
+#include "dExtShadowModel_c.h"
 #include "dBgCh_Actr.h"
 #include "dCcAc_c.h"
 
@@ -17,8 +17,8 @@
  *     dEnemyBase_c               ends 0x110
  *     dCcAc_c     0x110 + 0x034 = 0x144  -> dBgCh_Actr
  *     dBgCh_Actr  0x144 + 0x1bc = 0x300  -> Model
- *     Model       0x300 + 0x050 = 0x350  -> ShadowModel
- *     ShadowModel 0x350 + 0x028 = 0x378  -> the second cylinder
+ *     Model       0x300 + 0x050 = 0x350  -> dExtShadowModel_c
+ *     dExtShadowModel_c 0x350 + 0x028 = 0x378  -> the second cylinder
  *     dCcAc_c     0x378 + 0x034 = 0x3ac  -> mState
  *
  * Two cylinder collisions: mdCc_c is set up in InitResources, mdCc_c2 only
@@ -35,7 +35,7 @@ struct daShl_c : dEnemyBase_c {
     dCcAc_c mdCc_c;            /* 0x110 */
     dBgCh_Actr mMeshClsn;      /* 0x144 */
     Model mModel;              /* 0x300 */
-    ShadowModel mShadowModel;  /* 0x350 */
+    dExtShadowModel_c mShadowModel;  /* 0x350 */
     dCcAc_c mdCc_c2;           /* 0x378 */
     /* Current state record: {enter, tick}, two pointers-to-member. Behavior
        compares it against the four file-scope records by ADDRESS. */

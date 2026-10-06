@@ -10,7 +10,7 @@
  * 0x020f5564 then D0 0x020f55b8.
  *
  * mShared is what func_ov006_020c1d80 builds and func_ov006_020c1c64 tears
- * down. The real BlendModelAnim / Model / ShadowModel stay byte arrays:
+ * down. The real BlendModelAnim / Model / dExtShadowModel_c stay byte arrays:
  * a member with a destructor would run twice.
  */
 #ifndef DSCMGMEMORY2_C_H
@@ -30,7 +30,7 @@ struct dMgMemory2SharedState_c {
     u8  blendModelAnim[0x70]; /* 0x01c -- BlendModelAnim */
     u8  model[0x50];          /* 0x08c -- Model */
     /* func_ov006_020c0a48: file handles, a second BlendModelAnim at +0x18,
-       ShadowModel at +0x88. */
+       dExtShadowModel_c at +0x88. */
     u8  at_0dc[0xf8];         /* 0x0dc */
     u8  pad_1d4[0x8];         /* 0x1d4 */
     s16 unk_1dc;              /* 0x1dc -- func_ov006_020c1d80 stores 0 */

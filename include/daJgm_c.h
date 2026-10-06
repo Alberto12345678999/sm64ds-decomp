@@ -4,7 +4,7 @@
 #include "dActor_c.h"
 #include "ModelAnim.h"
 #include "Model.h"
-#include "ShadowModel.h"
+#include "dExtShadowModel_c.h"
 #include "TextureSequence.h"
 #include "dCcAcPos_c.h"
 #include "dBgCh_Actr.h"
@@ -52,7 +52,7 @@ struct daJgm_c : dActor_c {
     dActor_c                 *mCarryActor;          /* 0x0d0 */
     ModelAnim                 mModelAnim;            /* 0x0d4 */
     Model                     mModel;                /* 0x138 */
-    ShadowModel               mShadowModel;          /* 0x188 */
+    dExtShadowModel_c               mShadowModel;          /* 0x188 */
     TextureSequence           mTextureSequence;      /* 0x1b0 */
     dCcAcPos_c                mdCcAcPos_c;           /* 0x1c4 */
     dBgCh_Actr                mWithMeshClsn;         /* 0x204 */

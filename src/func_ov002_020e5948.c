@@ -17,7 +17,7 @@ extern void func_ov002_020e6780(void* p);
 extern void* _ZN9ModelAnimC1Ev(void* thiz);
 extern void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(void* thiz, void* f, s32 i, Fix12i fx, u32 j);
 extern void* _ZN5ModelC1Ev(void* thiz);
-extern void _ZN11ShadowModel12InitCylinderEv(void* thiz);
+extern void _ZN17dExtShadowModel_c12InitCylinderEv(void* thiz);
 extern s32 _ZNK6Player14GetBodyModelIDEjb(void* thiz, u32 a, s32 b);
 extern void _ZN15TextureSequence7PrepareER8BMD_FileR8BTP_File(void* bmd, void* btp);
 extern void _ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj(void* thiz, void* f, s32 i, Fix12i fx, u32 j);
@@ -355,7 +355,7 @@ void func_ov002_020e5948(void* arg0)
         }
     }
 
-    _ZN11ShadowModel12InitCylinderEv(c + 0x2AC);
+    _ZN17dExtShadowModel_c12InitCylinderEv(c + 0x2AC);
 
     bodyId = _ZNK6Player14GetBodyModelIDEjb(c, 3, 0);
     ma = *(void**)(c + 0xDC + bodyId * 4);

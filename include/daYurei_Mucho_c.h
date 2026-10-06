@@ -12,7 +12,7 @@
 #include "dEnemyBase_c.h"
 #include "ModelAnim.h"
 #include "dCcAc_c.h"
-#include "ShadowModel.h"
+#include "dExtShadowModel_c.h"
 #include "dBgCh_Actr.h"
 
 extern "C" void *_ZN7fBase_cnwEj(unsigned size);
@@ -29,7 +29,7 @@ struct daYurei_Mucho_c : dEnemyBase_c {
     dCcAc_c mdCcAc_c;                 /* 0x110 */
     dBgCh_Actr mWithMeshClsn;         /* 0x144 */
     ModelAnim mModelAnim;             /* 0x300 */
-    ShadowModel mShadowModel;         /* 0x364 */
+    dExtShadowModel_c mShadowModel;         /* 0x364 */
     /* DropShadowRadHeight matrix. func_ov065_0211696c writes a translation of
        (mPosX, mPosY - 0x18000, mPosZ) >> 3. s32[12] rather than Matrix4x3:
        the latter embeds a Vector3 whose destructor would run in D1/D0. */

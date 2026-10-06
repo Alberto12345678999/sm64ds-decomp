@@ -22,7 +22,7 @@ This document describes this commit. The queue records its immutable output SHA.
   integration-lane state this task does not own.
 - Separate evidence commits and required artifacts in this commit: no separate
   evidence commit. Facts: `notes/data/class-facts/daGmch_c.json` (unchanged from
-  the input). Stage artifacts present: `src/actors/daGmch_c.cpp`,
+  the input). dScStage_c artifacts present: `src/actors/daGmch_c.cpp`,
   [config/tu_manifest.d/ov081/daGmch_c.json](../../../config/tu_manifest.d/ov081/daGmch_c.json).
 - Next action, responsible role and blockers: independent verification of this
   commit (verifier). Blocker for integration only, not for verification:

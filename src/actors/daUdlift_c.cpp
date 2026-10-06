@@ -56,6 +56,10 @@
  * - data_ov095_02136f68, data_ov095_02136f74, data_ov095_021375a4 and
  *   data_ov095_02137910 keep the address names. The profiles are not in
  *   this TU.
+ * - func_ov095_02136764 / func_ov095_02136788 keep their placeholder
+ *   names: the veneer is stored into the mesh collider as a raw address,
+ *   so it cannot be a member, and the ROM has no name for the body it
+ *   forwards to.
  */
 
 #include "daUdlift_c.h"
@@ -92,8 +96,48 @@ void _ZN8dActor_c10EarthquakeERK7Vector35Fix12IiE(void *self, Vector3 *pos, int 
 /* dBgW+0x18 and dBgW+0x1c. A direct store shrinks InitResources. */
 void func_020393d4(void *collider, void *callback);
 void func_020393c4(void *collider, void *callback);
-/* The rider-collision callback. It and the factories are their own sources. */
-void func_ov095_02136788(void *a, void *b, void *c);
+/* The rider-collision pair defined below. */
+void func_ov095_02136764(daUdlift_c *self, Player *player);
+void func_ov095_02136788(void *collider, daUdlift_c *self, Player *player);
+}
+
+// @symbol daUdlift_c_classInit_UDLIFT_TERESA
+extern "C" daUdlift_c *daUdlift_c_classInit_UDLIFT_TERESA()
+{
+    return new daUdlift_c();
+}
+
+// @symbol daUdlift_c_classInit_UDLIFT
+extern "C" daUdlift_c *daUdlift_c_classInit_UDLIFT()
+{
+    return new daUdlift_c();
+}
+
+// @symbol daUdlift_c_classInit_RC_RIFT02
+extern "C" daUdlift_c *daUdlift_c_classInit_RC_RIFT02()
+{
+    return new daUdlift_c();
+}
+
+// @symbol func_ov095_02136788
+/* The mesh collider's touch callback is (collider, owner, other); the lift
+ * only needs the back two, so this veneer drops the first argument. Its
+ * address is stored at dBgW+0x1c, so it stays a free function. */
+void func_ov095_02136788(void *collider, daUdlift_c *self, Player *player)
+{
+    func_ov095_02136764(self, player);
+}
+
+// @symbol func_ov095_02136764
+/* Rider callback: if the touching actor is the player (0xbf), hold it as
+ * mRider and mark the lift ridden this frame. */
+void func_ov095_02136764(daUdlift_c *self, Player *player)
+{
+    int isPlayer = (int)(player->actorID == 0xbf);
+    if (isPlayer) {
+        self->mRider = player;
+        self->mIsRidden = 1;
+    }
 }
 
 // @symbol _ZN10daUdlift_c13InitResourcesEv

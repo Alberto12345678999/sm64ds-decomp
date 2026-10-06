@@ -19,7 +19,7 @@ int *daObjTatefuda_c_classInit(void)
         _ZN10dBgActor_cC2Ev(p);
         p[0] = (int)_ZTV15daObjTatefuda_c;
         _ZN7dCcAc_cC1Ev((char *)p + 0x320);
-        _ZN11ShadowModelC1Ev((char *)p + 0x358);
+        _ZN17dExtShadowModel_cC1Ev((char *)p + 0x358);
         _ZN10dBgCh_ActrC1Ev((char *)p + 0x3c8);
     }
     return p;

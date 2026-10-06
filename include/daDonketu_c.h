@@ -6,7 +6,7 @@
 
 /* daDonketu_c in the ROM's RTTI. Derives from daOts_c, which owns every member this
  * header used to restate -- the ModelAnim, the dBgCh_Actr, the file table, the
- * dCcAc_c and the ShadowModel are all the base's, and daDonketu_c_classInit proves
+ * dCcAc_c and the dExtShadowModel_c are all the base's, and daDonketu_c_classInit proves
  * it by constructing them between the two vtable stores.
  *
  * SIZE 0x400, which is the literal in daDonketu_c_classInit's fBase_c::operator new. The base

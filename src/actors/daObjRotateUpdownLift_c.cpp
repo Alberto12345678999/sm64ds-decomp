@@ -134,7 +134,7 @@ void func_ov091_02131340(daObjRotateUpdownLift_c *lift);
 void *_ZN8Particle6System9NewSimpleEj5Fix12IiES2_S2_(unsigned int id, int x, int y, int z);
 void _ZN8dActor_c9SetRangesE5Fix12IiES1_S1_S1_(void *self, int a, int b, int c, int d);
 int _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(void *self, int a, int b);
-int _ZN8dActor_c18DropShadowScaleXYZER11ShadowModelR9Matrix4x35Fix12IiES5_S5_j(
+int _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
     void *self, void *shadow, void *mat, int sx, int sy, int sz, unsigned int opacity);
 void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
     dBgW_KcMbg *self, KCL_File *file, const Matrix4x3 *mat,
@@ -258,7 +258,7 @@ extern "C" int func_ov091_02131160(daObjRotateUpdownLift_c *lift)
     int fac = 0xa0000 - shr;
     if (cosine < 0)
         cosine = -cosine;
-    return _ZN8dActor_c18DropShadowScaleXYZER11ShadowModelR9Matrix4x35Fix12IiES5_S5_j(
+    return _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
         c, c + 0x320, c + 0x348, sx, h,
         shadowSizeZ.v[variantC] + (int)(((long long)fac * cosine + 0x800) >> 12), 0xf);
 }
