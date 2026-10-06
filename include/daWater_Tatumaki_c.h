@@ -14,7 +14,7 @@
  *     0x178 TextureTransformer         0x14   -> 0x18c
  *
  * Typing them absorbed these markers, which were a member's insides:
- *   - 0x184 unk_184      = mTextureTransformer.speed (Animation +0x0c)
+ *   - 0x184 unk_184      = mTextureTransformer.speed (dExtFrameCtrl_c +0x0c)
  *
  * Member NAMES are the ones this header already used -- a rebase should not
  * also rename things its callers spell.

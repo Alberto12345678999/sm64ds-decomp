@@ -2,10 +2,10 @@
 #define MATERIALCHANGER_H
 
 #include "types.h"
-#include "Animation.h"
+#include "dExtFrameCtrl_c.h"
 #include "math/Fix12.h"
 
-/* Animation child that drives BMA-file playback, vtable _ZTV15MaterialChanger at 0x0208e7f4:
+/* dExtFrameCtrl_c child that drives BMA-file playback, vtable _ZTV15MaterialChanger at 0x0208e7f4:
  * two slots, the destructor pair, nothing else. Update is a plain method;
  * Prepare is static, for the reason set out below.
  *
@@ -35,7 +35,7 @@
 struct ModelComponents;
 struct BMD_File;
 struct BMA_File { u16 numFrames; };
-struct MaterialChanger : Animation {
+struct MaterialChanger : dExtFrameCtrl_c {
     BMA_File *file;           /* 0x10 */
 
     /* --- vtable: the destructor pair only. --- */

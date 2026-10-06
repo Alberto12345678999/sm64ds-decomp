@@ -2077,14 +2077,6 @@
         "param:#1 const void *",
         "param:#3 unsigned int"
       ],
-      "src/_ZN3GXS13LoadBGExtPlttEPKvjj.cpp": [
-        "param:#1 const void *",
-        "param:#3 unsigned int"
-      ],
-      "src/_ZN3GXS14LoadOBJExtPlttEPKvjj.cpp": [
-        "param:#1 const void *",
-        "param:#3 unsigned int"
-      ],
       "src/func_0202f2c4.c": [
         "param:#3 unsigned int"
       ],
@@ -7051,12 +7043,12 @@
       ]
     },
     "_ZN2GX22SetBankForSubBGExtPlttEt": {
-      "src/_ZN3GXS16EndLoadBGExtPlttEv.cpp": [
+      "src/engine/gx/GXS.cpp": [
         "param:#1 unsigned int"
       ]
     },
     "_ZN2GX23SetBankForSubOBJExtPlttEt": {
-      "src/_ZN3GXS17EndLoadOBJExtPlttEv.cpp": [
+      "src/engine/gx/GXS.cpp": [
         "param:#1 unsigned int"
       ]
     },
@@ -7164,9 +7156,6 @@
       "src/minigames/d_s_mg_slot1.cpp": [
         "return:char *"
       ],
-      "src/_ZN9BootScene8BehaviorEv.cpp": [
-        "return:void *"
-      ],
       "src/actors/dScGameOver_c.cpp": [
         "return:unsigned short *"
       ],
@@ -7208,9 +7197,6 @@
     "_ZN3G2S12GetBG2ScrPtrEv": {
       "src/minigames/d_s_mg_slot1.cpp": [
         "return:char *"
-      ],
-      "src/_ZN9BootScene13InitResourcesEv.cpp": [
-        "return:void *"
       ],
       "src/actors/dScGameOver_c.cpp": [
         "return:void *"
@@ -12183,7 +12169,7 @@
         "param:#3 int"
       ]
     },
-    "_ZN9Animation17UpdateFileOffsetsER8BCA_File": {
+    "_ZN15dExtFrameCtrl_c17UpdateFileOffsetsER8BCA_File": {
       "include/decl_Animation.h": [
         "param:#1 char *"
       ],
@@ -12191,12 +12177,12 @@
         "param:#1 void *"
       ]
     },
-    "_ZN9Animation4CopyERKS_": {
+    "_ZN15dExtFrameCtrl_c4CopyERKS_": {
       "include/decl_Animation.h": [
         "param:#2 const void *"
       ]
     },
-    "_ZN9Animation7AdvanceEv": {
+    "_ZN15dExtFrameCtrl_c7AdvanceEv": {
       "src/actors/unit020bfec0.cpp": [
         "return:int"
       ],
@@ -12207,7 +12193,7 @@
         "return:int"
       ]
     },
-    "_ZN9Animation8LoadFileER13SharedFilePtr": {
+    "_ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr": {
       "src/actors/Eyerok.cpp": [
         "param:#1 void *",
         "return:void"
@@ -12935,7 +12921,7 @@
         "return:System *"
       ]
     },
-    "_ZNK9Animation12WillHitFrameEi": {
+    "_ZNK15dExtFrameCtrl_c12WillHitFrameEi": {
       "include/decl_Animation.h": [
         "return:int"
       ],
@@ -12973,7 +12959,7 @@
         "return:int"
       ]
     },
-    "_ZNK9Animation13GetFrameCountEv": {
+    "_ZNK15dExtFrameCtrl_c13GetFrameCountEv": {
       "include/decl_Animation.h": [
         "return:int"
       ],
@@ -13497,6 +13483,12 @@
       "src/actors/dEntObj_c.cpp": [
         "return:void *"
       ],
+      "src/actors/dScDSMT_c.cpp": [
+        "return:int []"
+      ],
+      "src/actors/dScMB_c.cpp": [
+        "return:int []"
+      ],
       "src/d_s_entry_entry.cpp": [
         "return:char []"
       ],
@@ -13561,9 +13553,6 @@
       ]
     },
     "data_0208ee44": {
-      "src/_ZN9BootScene13InitResourcesEv.cpp": [
-        "return:char"
-      ],
       "src/actors/dScTitle_c.cpp": [
         "return:unsigned char []"
       ],
@@ -15464,9 +15453,6 @@
       "src/ProcessKuppaScript.cpp": [
         "return:UnkVis *"
       ],
-      "src/_ZN9BootScene8BehaviorEv.cpp": [
-        "return:unsigned char []"
-      ],
       "src/actors/dMap_c.cpp": [
         "return:VtblOwner *"
       ],
@@ -15502,6 +15488,9 @@
       ],
       "src/_ZN10dScStage_c8BehaviorEv.cpp": [
         "return:UnkVis *"
+      ],
+      "src/actors/dScBoot_c.cpp": [
+        "return:FaderBrightness *"
       ]
     },
     "data_0209f5c0": {
@@ -15526,9 +15515,6 @@
       ],
       "src/_ZN12dScStarSel_c8BehaviorEv.cpp": [
         "return:unsigned short []"
-      ],
-      "src/_ZN9BootScene13InitResourcesEv.cpp": [
-        "return:char"
       ],
       "src/__sinit_02074edc.c": [
         "return:FaderNode"
@@ -16642,16 +16628,6 @@
       ],
       "src/func_02054430.c": [
         "return:unsigned short"
-      ]
-    },
-    "data_020a60a4": {
-      "src/_ZN3GXS18BeginLoadBGExtPlttEv.cpp": [
-        "return:void *"
-      ]
-    },
-    "data_020a60a8": {
-      "src/_ZN3GXS19BeginLoadOBJExtPlttEv.cpp": [
-        "return:void *"
       ]
     },
     "data_020a60c4": {
@@ -23928,10 +23904,6 @@
         "param:#1 int",
         "return:void"
       ],
-      "src/_ZN9BootScene8BehaviorEv.cpp": [
-        "param:#1 int",
-        "return:void"
-      ],
       "src/actors/dMeter_c.cpp": [
         "param:#1 int",
         "return:void"
@@ -24208,12 +24180,6 @@
         "param:#1 unsigned int",
         "param:#2 unsigned int",
         "return:int"
-      ]
-    },
-    "func_020165c4": {
-      "src/_ZN14BlendModelAnim9DoSetFileEPcii.cpp": [
-        "param:#1 BlendModelAnim *",
-        "param:#2 char *"
       ]
     },
     "func_020167a4": {
@@ -26349,9 +26315,6 @@
       ]
     },
     "func_0201a244": {
-      "src/_ZN9BootScene13InitResourcesEv.cpp": [
-        "param:#1 void *"
-      ],
       "src/func_ov075_02118a84.c": [
         "param:#1 void *",
         "return:void"
@@ -27903,10 +27866,7 @@
       "include/decl_common.h": [
         "return:int"
       ],
-      "src/_ZN14BlendModelAnim11UpdateVertsEv.cpp": [
-        "param:#1 ModelComponents *"
-      ],
-      "src/_ZN14BlendModelAnim9Virtual10ER9Matrix4x3.cpp": [
+      "src/engine/model/BlendModelAnim.cpp": [
         "param:#1 ModelComponents *"
       ],
       "src/actors/daMoray_c.cpp": [
@@ -27984,8 +27944,7 @@
       ]
     },
     "func_020462bc": {
-      "src/func_020165c4.c": [
-        "param:#1 int",
+      "src/engine/model/BlendModelAnim.cpp": [
         "return:unsigned int"
       ],
       "src/func_ov007_020bc6d4.c": [
@@ -28976,16 +28935,6 @@
         "return:void"
       ]
     },
-    "func_020540f0": {
-      "src/_ZN3GXS19BeginLoadOBJExtPlttEv.cpp": [
-        "return:void *"
-      ]
-    },
-    "func_02054118": {
-      "src/_ZN3GXS18BeginLoadBGExtPlttEv.cpp": [
-        "return:void *"
-      ]
-    },
     "func_02054140": {
       "src/actors/dScMgD3DBase_c.cpp": [
         "return:void"
@@ -29461,30 +29410,6 @@
       ],
       "src/func_02069038.c": [
         "param:#1 void *"
-      ]
-    },
-    "func_02059fa8": {
-      "src/_ZN3GXS16EndLoadBGExtPlttEv.cpp": [
-        "param:#1 unsigned int"
-      ],
-      "src/_ZN3GXS17EndLoadOBJExtPlttEv.cpp": [
-        "param:#1 unsigned int"
-      ]
-    },
-    "func_02059fd0": {
-      "src/_ZN3GXS13LoadBGExtPlttEPKvjj.cpp": [
-        "param:#1 unsigned int",
-        "param:#2 const void *",
-        "param:#3 void *",
-        "param:#5 unsigned int",
-        "param:#6 unsigned int"
-      ],
-      "src/_ZN3GXS14LoadOBJExtPlttEPKvjj.cpp": [
-        "param:#1 unsigned int",
-        "param:#2 const void *",
-        "param:#3 void *",
-        "param:#5 unsigned int",
-        "param:#6 unsigned int"
       ]
     },
     "func_0205a358": {

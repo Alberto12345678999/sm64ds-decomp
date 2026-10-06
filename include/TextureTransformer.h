@@ -2,10 +2,10 @@
 #define TEXTURETRANSFORMER_H
 
 #include "types.h"
-#include "Animation.h"
+#include "dExtFrameCtrl_c.h"
 #include "math/Fix12.h"
 
-/* Animation child that drives BTA-file playback, vtable _ZTV18TextureTransformer at 0x0208e7c4:
+/* dExtFrameCtrl_c child that drives BTA-file playback, vtable _ZTV18TextureTransformer at 0x0208e7c4:
  * two slots, the destructor pair, nothing else. Update and Prepare are
  * plain methods.
  *
@@ -33,7 +33,7 @@
 struct ModelComponents;
 struct BMD_File;
 struct BTA_File { u16 numFrames; };
-struct TextureTransformer : Animation {
+struct TextureTransformer : dExtFrameCtrl_c {
     BTA_File *file;           /* 0x10 */
 
     /* --- vtable: the destructor pair only. --- */

@@ -19,11 +19,15 @@ WHAT IS DERIVED, AND FROM WHAT
 already_promoted   every named class has a config/tu_manifest.d entry whose
                    status is exactly `promoted`.
 shard_count        distinct src/ files covering the TU's ROM run, where the run
-                   is tu_map.py's unit EXTENDED over zero-gap neighbours named
-                   <Class>_classInit / <Class>_Spawn. tu_map cuts on symbol
-                   NAME, so those factories fall outside a run they physically
-                   abut; absorbing them adds a member to about 50 rows. It is
-                   still a FLOOR -- any other unlabelled neighbour is uncounted.
+                   is tu_map.py's unit EXTENDED over zero-gap neighbours that
+                   are the row's factory under either spelling:
+                   <row class>_classInit / _Spawn, or the ROM RTTI name of that
+                   class. The two names are one class when they share a vtable
+                   address (`_ZTV` symbol joined to the build/rtti.json record).
+                   tu_map cuts on symbol NAME, and srcpath.class_of only matches
+                   `_Spawn` (`^(\\w+)_Spawn$`), so `*_classInit` is never labelled
+                   and falls outside a run it physically abuts. Still a FLOOR --
+                   any other unlabelled neighbour is uncounted.
 unmatched:N        delink entries in the run with no `complete` marker.
                    The NAME MISLEADS: it is a link condition, not a matching
                    one. Measured on ov066/Eyerok, all six `unmatched` shards
@@ -87,6 +91,137 @@ BASE_RE = re.compile(
 # looser form would retire a real blocker, which is the expensive direction.
 DEFN_RE = re.compile(r"^\s*(?:class|struct)\s+([A-Za-z_]\w*)\s*(?::[^;{]*)?\{")
 NO_HEADER_RE = re.compile(r"classif:no-header:([A-Za-z_]\w*)$")
+# A plain class vtable, `_ZTV<length><name>`, with the length consuming the name.
+# Nested `_ZTVN...` and abi/std vtables are not a class spelling.
+VT_RE = re.compile(r"^(_ZTV\S+)\s+kind:\S+\s+addr:(0x[0-9a-fA-F]+)")
+VT_CLASS_RE = re.compile(r"^_ZTV(\d+)(.+)$")
+
+
+def vtable_class(symbol):
+    """Class a `_ZTV<len><Name>` symbol names, or None."""
+    m = VT_CLASS_RE.match(symbol)
+    if not m:
+        return None
+    n = int(m.group(1))
+    rest = m.group(2)
+    return rest if len(rest) == n else None
+
+
+def rtti_vtable_names(path=None):
+    """{(module, vtable addr): {ROM class name}} from build/rtti.json.
+
+    An address the ROM assigns to more than one record is left as a set of
+    that size so the caller can refuse it. Overlays reuse virtual addresses;
+    the module keeps those apart.
+    """
+    path = RTTI if path is None else path
+    out = collections.defaultdict(set)
+    if not path.is_file():
+        return out
+    data = json.loads(path.read_text(encoding="utf-8"))
+    for rec in data.get("records", {}).values():
+        vt, mod, name = rec.get("vtable"), rec.get("vtable_module"), rec.get("name")
+        if not vt or not mod or not name:
+            continue
+        try:
+            addr = int(vt, 16)
+        except ValueError:
+            continue
+        out[(mod, addr)].add(name)
+    return out
+
+
+def class_aliases(vt_names, rom_names):
+    """{spelling: frozenset of every spelling of that class}.
+
+    `vt_names` and `rom_names` are `{(module, vtable addr): {names}}`. A coined
+    `_ZTV` and the ROM record are the same class when they share that address.
+    Two ROM names on one address are a collision, not an alias, and are not
+    joined. Classes with a single spelling are absent: the caller compares the
+    factory stem to the row directly.
+    """
+    parent = {}
+
+    def find(x):
+        parent.setdefault(x, x)
+        while parent[x] != x:
+            parent[x] = parent[parent[x]]
+            x = parent[x]
+        return x
+
+    def union(a, b):
+        ra, rb = find(a), find(b)
+        if ra != rb:
+            parent[rb] = ra
+
+    for key in set(vt_names) | set(rom_names):
+        group = set(vt_names.get(key, ()))
+        roms = rom_names.get(key, ())
+        if len(roms) == 1:
+            group.update(roms)
+        if len(group) < 2:
+            continue
+        names = sorted(group)
+        for n in names[1:]:
+            union(names[0], n)
+    groups = collections.defaultdict(set)
+    for n in list(parent):
+        groups[find(n)].add(n)
+    out = {}
+    for g in groups.values():
+        frozen = frozenset(g)
+        for n in g:
+            out[n] = frozen
+    return out
+
+
+def factory_stem(name):
+    """Class spelling of a `<Class>_classInit[_ID]` or `<Class>_Spawn` symbol.
+
+    None when `name` is not one of those. `srcpath.class_of` cannot answer
+    this: its spawn pattern is `^(\\w+)_Spawn$`, so a `_classInit` factory,
+    including one with a profile suffix, returns None.
+    """
+    stem = name.rsplit("_classInit", 1)[0].rsplit("_Spawn", 1)[0]
+    return None if stem == name else stem
+
+
+def same_class(stem, classes, aliases):
+    """True when `stem` is a row class, or the other spelling of one."""
+    if stem in classes:
+        return True
+    group = aliases.get(stem)
+    return group is not None and not group.isdisjoint(classes)
+
+
+def extend_over_factories(symbols, classes, start, end, aliases=None):
+    """Widen `[start, end)` across zero-gap factories of `classes`.
+
+    The factory may be spelled with the row's class or with the ROM RTTI name
+    (`aliases`). A neighbour that does not abut, or that names some other
+    class, stays outside: the zero gap is the linker's contiguity rule, and
+    the name is what says the gap is this TU's factory rather than the next
+    TU's. Returns `(start, end, absorbed names)`.
+    """
+    aliases = aliases or {}
+    wanted = set(classes)
+    absorbed = []
+    changed = True
+    while changed:
+        changed = False
+        for addr, size, name in symbols:
+            stem = factory_stem(name)
+            if stem is None or not same_class(stem, wanted, aliases) or start <= addr < end:
+                continue
+            if addr == end:
+                end = addr + size
+            elif addr + size == start:
+                start = addr
+            else:
+                continue
+            changed = True
+            absorbed.append(name)
+    return start, end, absorbed
 
 
 def split_blockers(s):
@@ -194,18 +329,26 @@ class Graph:
 class Tree:
     def __init__(self):
         self.sym = collections.defaultdict(list)
+        vt_names = collections.defaultdict(set)
         for f in glob.glob(str(REPO / "config" / "arm9" / "overlays" / "*" / "symbols.txt")) \
                 + [str(REPO / "config" / "arm9" / "symbols.txt")]:
             if not os.path.exists(f):
                 continue
             mod = os.path.basename(os.path.dirname(f))
             for line in open(f, encoding="utf-8", errors="replace"):
-                m = SYM_RE.match(line.strip())
-                if not m:
+                stripped = line.strip()
+                m = SYM_RE.match(stripped)
+                if m:
+                    sz = re.search(r"size=(0x[0-9a-fA-F]+)", m.group(2))
+                    self.sym[mod].append(
+                        (int(m.group(3), 16), int(sz.group(1), 16) if sz else 4, m.group(1)))
                     continue
-                sz = re.search(r"size=(0x[0-9a-fA-F]+)", m.group(2))
-                self.sym[mod].append(
-                    (int(m.group(3), 16), int(sz.group(1), 16) if sz else 4, m.group(1)))
+                vm = VT_RE.match(stripped)
+                if not vm:
+                    continue
+                cls = vtable_class(vm.group(1))
+                if cls:
+                    vt_names[(mod, int(vm.group(2), 16))].add(cls)
         for k in self.sym:
             self.sym[k].sort()
 
@@ -255,6 +398,10 @@ class Tree:
                 if d.get("status") == "promoted":
                     self.promoted.add(c)
 
+        # Coined row name and ROM RTTI name of one class. Built from the vtable
+        # symbols just read plus build/rtti.json, which Graph already requires.
+        self.aliases = class_aliases(vt_names, rtti_vtable_names())
+
     def cover(self, mod, addr):
         for a, b, path, complete in self.delink.get(mod, []):
             if a <= addr < b:
@@ -267,27 +414,14 @@ class Tree:
         if not u or len(u) != 1:
             return None
         mod, unit = u[0]
-        a, b = int(unit["start"], 16), int(unit["end"], 16)
-
-        # tu_map labels on symbol NAME, so a factory spelled <Class>_classInit
-        # rather than _ZN<len><Class>... is never labelled and never lands in
-        # the run -- even when it abuts it with a zero-byte gap. Absorb exactly
-        # those: the name ties it to a class the row already names, and the
-        # zero gap is what the linker's contiguity rule needs.
-        absorbed, changed = [], True
-        while changed:
-            changed = False
-            for addr, size, name in self.sym.get(mod, []):
-                stem = name.rsplit("_classInit", 1)[0].rsplit("_Spawn", 1)[0]
-                if stem == name or stem not in classes or a <= addr < b:
-                    continue
-                if addr == b:
-                    b, changed = addr + size, True
-                elif addr + size == a:
-                    a, changed = addr, True
-                else:
-                    continue
-                absorbed.append(name)
+        a0, b0 = int(unit["start"], 16), int(unit["end"], 16)
+        # tu_map labels on symbol NAME. A factory spelled <Class>_classInit is
+        # not a mangled method, and class_of does not recognise `_classInit`,
+        # so it never lands in the run -- even when it abuts it with a zero-byte
+        # gap. The row may use the coined spelling while the symbol uses the ROM
+        # one, or the reverse; either is this class when the vtables coincide.
+        a, b, absorbed = extend_over_factories(
+            self.sym.get(mod, []), classes, a0, b0, self.aliases)
 
         srcs, incomplete, sourceless, orphan = set(), set(), [], []
         for addr, _size, name in self.sym.get(mod, []):
@@ -352,9 +486,11 @@ NOTES = [
     "# runner can check them. A green CI run says nothing about shard_count or any blocker.",
     "#",
     "# shard_count is a FLOOR, not a figure. It counts distinct src/ files covering the TU's",
-    "# ROM run as tools/tu_map.py cuts it, extended over zero-gap <Class>_classInit factories",
-    "# tu_map cannot label because it cuts on symbol NAME. Any OTHER unlabelled neighbour is",
-    "# still uncounted. Trust `tubuild.py inspect` over this column.",
+    "# ROM run as tools/tu_map.py cuts it, extended over zero-gap factories spelled either",
+    "# <Class>_classInit or the class's ROM RTTI name (the two share a vtable address).",
+    "# tu_map cannot label those: it cuts on symbol NAME, and class_of only matches _Spawn.",
+    "# Any OTHER unlabelled neighbour is still uncounted. Trust `tubuild.py inspect` over",
+    "# this column.",
     "#",
     "# compiler-only:>=N is DERIVED from the row's own ancestor chain, not copied from",
     "# sibling_oracle -- that copy had no depth check and was wrong in both directions.",

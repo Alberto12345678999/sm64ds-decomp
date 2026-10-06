@@ -21,9 +21,9 @@ extern "C" void func_02046e28(ModelComponents *model, BMA_File *file, int frame)
    wall 6az (notes/mwccarm-codegen.md) homes class-typed by-value
    parameters that a body reads, and the real signature carries
    Fix12<int> -- passing one to the member declaration homes it to the
-   caller's stack. The declarations in MaterialChanger.h and Animation.h
+   caller's stack. The declarations in MaterialChanger.h and dExtFrameCtrl_c.h
    are the real ones. */
-extern "C" void _ZN9Animation12SetAnimationEti5Fix12IiEt(Animation *self, u16 numFrames, s32 flags, s32 speed, u16 startFrame);
+extern "C" void _ZN15dExtFrameCtrl_c12SetAnimationEti5Fix12IiEt(dExtFrameCtrl_c *self, u16 numFrames, s32 flags, s32 speed, u16 startFrame);
 
 // @symbol _ZN15MaterialChangerC1Ev
 MaterialChanger::MaterialChanger()
@@ -44,7 +44,7 @@ extern "C" void _ZN15MaterialChanger7SetFileER8BMA_Filei5Fix12IiEj(MaterialChang
         self->speed = speed;
     } else {
         self->file = file;
-        _ZN9Animation12SetAnimationEti5Fix12IiEt(self, file->numFrames, flags, speed, startFrame);
+        _ZN15dExtFrameCtrl_c12SetAnimationEti5Fix12IiEt(self, file->numFrames, flags, speed, startFrame);
     }
 }
 
