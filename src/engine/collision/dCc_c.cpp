@@ -112,7 +112,6 @@ void dCc_c::Unlink()
    collider node the whole way through: Process passes a dCc_c, which the
    player notifier reads as its Arg (the flags word at +0x18 and the m2()
    position). */
-// @symbol func_02014f5c
 struct dActor_c {
     void* vtable;
     u32 uniqueID;
@@ -125,6 +124,7 @@ extern struct dActor_c* _ZN8dActor_c10FindWithIDEj(u32 id);
 #define PLAYER_ACTOR_ID 0xbf
 
 /* find the hitting owner by actor ID and, when it is the player, notify him */
+// @symbol func_02014f5c
 void func_02014f5c(struct dCc_c* self, u32 id) {
     struct dActor_c* player;
     u32 isPlayer;
