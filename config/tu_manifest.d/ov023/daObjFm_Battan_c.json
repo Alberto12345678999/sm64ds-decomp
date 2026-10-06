@@ -799,14 +799,32 @@
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",
     "toolchain": "tools/mwccarm/2004/b56/mwccarm.exe",
     "flags": "-O4,p -enum int -lang c++ -char signed -interworking -proc arm946e -gccext,on -msgstyle gcc -Cpp_exceptions off",
-    "object": "build/tu/ov023-daObjFm_Battan_c/daObjFm_Battan_c.o (gitignored)",
+    "object": "build/tu/ov023-daObjFm_Battan_c/d_a_obj_fm_battan.o (gitignored)",
     "comparison": "tools/match.py extract_func+compare (bytes/relocs) AND tools/objisolate.py plan() (relocation type/addend) AND tools/reloc_audit.py check_destinations() (relocation target identity)",
     "functions_matched": 9,
     "functions_declared": 9,
     "compilerOnlyOutput": {
-      "requested": [],
-      "unhandled": [
-        "__sinit_d_a_obj_fm_battan.cpp"
+      "requested": [
+        "_ZN10dBgActor_cD2Ev"
+      ],
+      "deadstripped": [
+        "_ZN10dBgActor_cD2Ev"
+      ],
+      "droppedSections": [
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        22,
+        45,
+        46
       ],
       "data": [
         "_ZTI7fBase_c",
@@ -816,11 +834,17 @@
         "_ZTI7dBase_c",
         "_ZTI10dBgActor_c",
         "_ZTS10dBgActor_c",
+        "_ZTI8dActor_c"
+      ],
+      "dataExternalized": [
+        "_ZTI10dBgActor_c",
+        "_ZTI7dBase_c",
+        "_ZTI7fBase_c",
         "_ZTI8dActor_c",
-        "_ZTI16daObjFm_Battan_c",
-        "_ZTS16daObjFm_Battan_c",
-        "g_profile_FM_BATTAN",
-        "_ZTV16daObjFm_Battan_c"
+        "_ZTS10dBgActor_c",
+        "_ZTS7dBase_c",
+        "_ZTS7fBase_c",
+        "_ZTS8dActor_c"
       ]
     },
     "criteria": {
