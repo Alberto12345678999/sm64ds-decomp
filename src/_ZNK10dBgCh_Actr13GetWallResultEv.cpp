@@ -1,5 +1,5 @@
 //cpp
-extern "C" int func_020378dc(const void* p);
+#include "dBgCh_SphCrr.h"
 
 struct dBgCh_Actr
 {
@@ -9,5 +9,5 @@ struct dBgCh_Actr
 
 int dBgCh_Actr::GetWallResult() const
 {
-    return func_020378dc((const char*)this + 0x20);
+    return (int)((dBgCh_SphCrr*)((const char*)this + 0x20))->GetWallResult();
 }

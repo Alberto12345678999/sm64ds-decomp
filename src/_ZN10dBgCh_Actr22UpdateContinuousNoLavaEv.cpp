@@ -18,14 +18,12 @@ typedef struct dBgPiLoc { char pad[0x28]; } dBgPiLoc;
    compare as wildcards -- so only check_references would ever see it. */
 extern "C" {
 extern void *_ZN5dBgPiC1Ev(dBgPiLoc* r);
-extern void _ZN9dBgCh_Lin13SetObjAndLineERK7Vector3S2_P8dActor_c(void* self, Vec3* a, Vec3* b, void* actor);
-extern void _ZN9dBgCh_Lin10GetClsnPosEv(Vec3* out, void* self);
-extern void _ZNK11SurfaceInfo12CopyNormalToER7Vector3(void* self, Vec3* out);
-extern void _ZNK5dBgPi6CopyToERS_(void* self, dBgPiLoc* dst);
+extern void _ZN9dBgCh_Lin13SetObjAndLineERK7Vector3S2_P8dActor_c(void* self, Vec3* a, Vec3* b, void* actor); /* local extern: call sites pass shadow-typed receivers/args (void*, Vec3, dBgPiLoc); the member decl the header carries is the typed form */
+extern void _ZN9dBgCh_Lin10GetClsnPosEv(Vec3* out, void* self); /* local extern: call sites pass shadow-typed receivers/args (void*, Vec3, dBgPiLoc); the member decl the header carries is the typed form */
+extern void _ZNK11SurfaceInfo12CopyNormalToER7Vector3(void* self, Vec3* out); /* local extern: call sites pass shadow-typed receivers/args (void*, Vec3, dBgPiLoc); the member decl the header carries is the typed form */
+extern void _ZNK5dBgPi6CopyToERS_(void* self, dBgPiLoc* dst); /* local extern: call sites pass shadow-typed receivers/args (void*, Vec3, dBgPiLoc); the member decl the header carries is the typed form */
 extern void _ZN12dBgCh_SphCrr15SetObjAndSphereERK7Vector35Fix12IiEP8dActor_c(void* self, Vec3* v, int rad, void* actor);
-extern void _ZN12dBgCh_SphCrr14SetFloorResultERK5dBgPi(void* self, dBgPiLoc* r);
 extern void _ZN5dBgPiaSERKS_(void* self, dBgPiLoc* r);
-extern void func_02037888(void* dst, dBgPiLoc* src);
 extern void func_020356d4(void* self);
 extern void _ZN5dBgPiD1Ev(dBgPiLoc* r);
 }
@@ -127,7 +125,7 @@ void dBgCh_Actr::UpdateContinuousNoLava()
         *(u8*)AT(((char*)this), 0x90) |= 0x20;
     if (floorFlag != 0) {
         *(u8*)AT(((char*)this), 0x90) |= 4;
-        _ZN12dBgCh_SphCrr14SetFloorResultERK5dBgPi(((char*)this) + 0x20, &res0);
+        mSphereClsn.SetFloorResult(*(dBgPi *)&res0);
         *(u8*)AT(((char*)this), 0x90) |= 1;
         _ZN5dBgPiaSERKS_(((char*)this) + 0x30, &res0);
         func_020371b0(((char*)this), onGround);
@@ -135,11 +133,11 @@ void dBgCh_Actr::UpdateContinuousNoLava()
     }
     if (wallFlag != 0) {
         *(u8*)AT(((char*)this), 0x90) |= 8;
-        func_02037888(((char*)this) + 0x20, &res1);
+        mSphereClsn.SetWallResult(*(dBgPi *)&res1);
         *(u8*)AT(((char*)this), 0x90) |= 1;
         _ZN5dBgPiaSERKS_(((char*)this) + 0x30, &res1);
     }
-    if (func_02038a38((char*)&mSphereClsn)) {
+    if (mSphereClsn.func_02038a38()) {
         prev = (int*)((char*)&mSphereClsn.disp);
         if ((mSphereClsn.flags & 4) && handled == 0)
             func_020371b0(((char*)this), onGround);

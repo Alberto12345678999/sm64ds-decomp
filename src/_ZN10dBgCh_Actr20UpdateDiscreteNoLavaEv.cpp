@@ -9,8 +9,7 @@
 extern "C" {
 
 
-extern int _ZNK10dBgCh_Actr10IsOnGroundEv(void *self);
-extern int func_02037938(int p);
+extern int _ZNK10dBgCh_Actr10IsOnGroundEv(void *self); /* local extern: call sites pass shadow-typed receivers/args (void*, Vec3, dBgPiLoc); the member decl the header carries is the typed form */
 extern void func_02038324(void *arg, int b, int c, int d);
 extern void _ZN12dBgCh_SphCrr15SetObjAndSphereERK7Vector35Fix12IiEP8dActor_c(void *self, struct Vector3 *v, int fix, void *actor);
 extern void func_020356d4(char *self);
@@ -28,7 +27,7 @@ void dBgCh_Actr::UpdateDiscreteNoLava()
 
     if (_ZNK10dBgCh_Actr10IsOnGroundEv(((char *)this)) && func_020355a0(((char *)this))
         && _ZNK10dBgCh_Actr15ShouldUpdatePosEv(((char *)this))) {
-        func_02038324((void *)func_02037938((int)((char *)&mSphereClsn)), (int)src,
+        func_02038324((void *)mSphereClsn.GetFloorResult(), (int)src,
                       mSphereClsn.unk_10c, unk_130);
     }
     onGround = _ZNK10dBgCh_Actr10IsOnGroundEv(((char *)this));
@@ -44,7 +43,7 @@ void dBgCh_Actr::UpdateDiscreteNoLava()
     if (src->y - p68->y > 0) {
         *(unsigned char *)((char *)&mSphereClsn.flags) |= 0x20;
     }
-    if (_ZN12dBgCh_SphCrr10DetectClsnEv((char *)&mSphereClsn)) {
+    if (mSphereClsn.DetectClsn()) {
         p6c = (struct Vector3 *)((char *)&mSphereClsn.disp);
         if (mSphereClsn.flags & 4) {
             func_020371b0(((char *)this), onGround);

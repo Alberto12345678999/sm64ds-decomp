@@ -52,18 +52,13 @@
 #include "dBgPi.h"
 #include "SurfaceInfo.h"   /* for the real CopyNormalTo call below */
 
-extern "C" void func_02037a6c(dBgCh_SphCrr *self, s32 loX, s32 loY, s32 loZ,
-                              s32 hiX, s32 hiY, s32 hiZ);
 extern "C" s32 DotVec3(const s32 *a, const Vector3 *b);
 extern "C" s16 func_020396dc(dBgW_Kc *self, KCL_Tri *tri);
 /* SurfaceInfo::CopyNormalTo is declared in include/SurfaceInfo.h. */
 extern "C" s32 func_02039794(s32 normalY);
 extern SurfaceInfo data_020a0cec;
 extern "C" void func_02037fd4(dBgPi *res, s16 triID, SurfaceInfo *info);
-extern "C" void func_020379f4(dBgCh_SphCrr *self, s16 triID, SurfaceInfo *info);
-extern "C" void func_020379c0(dBgCh_SphCrr *self, s16 triID, SurfaceInfo *info);
-extern "C" void func_0203798c(dBgCh_SphCrr *self, s16 triID, SurfaceInfo *info);
-extern "C" void func_0203794c(dBgCh_SphCrr *self, const Vector3 *n);
+/* local extern: call site passes a void* receiver and an int flag; include/dBgCh.h declares the typed member form */
 extern "C" int _ZN5dBgCh21ShouldPassThroughImplEPvRK4CLPSRKS_b(void *self, SurfaceInfo *info,
                                                               dBgCh_SphCrr *q, int flag);
 extern "C" int func_020397dc(int x);
@@ -768,17 +763,17 @@ s32 dBgW_Kc::DetectClsn(dBgCh_SphCrr &sphere)
 
                         if (cls == 0) {
                             if (!(sphere.flags & 4)) {
-                                func_020379f4(&sphere, triID, &data_020a0cec);
+                                sphere.func_020379f4(triID, &data_020a0cec);
                                 hitFlags |= 1;
                             }
                             hitFlags2 = k1;
                             sphere.flags |= 4;
                             v = (s32)(((s64)depth * sn.y) >> 14) >> 2;
                             if (v > hiPY) hiPY = v; else if (v < loPY) loPY = v;
-                            if (sn.y > sphere.unk_100) func_0203794c(&sphere, &sn);
+                            if (sn.y > sphere.unk_100) sphere.func_0203794c((const s32 *)&sn);
                         } else if (cls == 1) {
                             sphere.flags |= 8;
-                            func_020379c0(&sphere, triID, &data_020a0cec);
+                            sphere.func_020379c0(triID, &data_020a0cec);
                             hitFlags |= 2;
                             if (contactKind == 1) {
                                 v = (s32)(((s64)depth * sn.x) >> 14) >> 2;
@@ -795,7 +790,7 @@ s32 dBgW_Kc::DetectClsn(dBgCh_SphCrr &sphere)
                             }
                         } else {
                             sphere.flags |= 0x10;
-                            func_0203798c(&sphere, triID, &data_020a0cec);
+                            sphere.func_0203798c(triID, &data_020a0cec);
                             hitFlags |= 4;
                             v = (s32)(((s64)depth * sn.x) >> 14) >> 2;
                             if (v > hiPX) hiPX = v; else if (v < loPX) loPX = v;
@@ -816,9 +811,9 @@ s32 dBgW_Kc::DetectClsn(dBgCh_SphCrr &sphere)
     } while (z <= hiZ);
 
     /* The accumulated extent goes back as two corners; the flags word is the
-       return value. func_02037a6c (0x02037a6c, 0xb0) is still unnamed. */
+       return value. */
     if (!hitFlags && !hitFlags2) goto ret0;
-    func_02037a6c(&sphere, loPX, loPY, loPZ, hiPX, hiPY, hiPZ);
+    sphere.func_02037a6c(loPX, loPY, loPZ, hiPX, hiPY, hiPZ);
     return hitFlags;
 ret0:
     return 0;

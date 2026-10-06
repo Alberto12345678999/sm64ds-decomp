@@ -1,5 +1,5 @@
 //cpp
-extern "C" void func_02037b5c(void* p);
+#include "dBgCh_SphCrr.h"
 
 struct dBgCh_Actr
 {
@@ -9,5 +9,5 @@ struct dBgCh_Actr
 
 void dBgCh_Actr::Unk_0203589c()
 {
-    func_02037b5c((char*)this + 0x20);
+    ((dBgCh_SphCrr*)((char*)this + 0x20))->func_02037b5c();
 }

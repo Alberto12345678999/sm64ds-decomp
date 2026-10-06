@@ -31,28 +31,22 @@ extern u32 data_02099368[];
 #define V3C(v, p) { s32 _x, _y, _z; _z = (p)->z; _y = (p)->y; _x = (p)->x; (v).x = _x; (v).y = _y; (v).z = _z; }
 
 int  func_020355a0(void *);
-void *func_02037938(void *);
 void func_02038324(void *, Vector3 *, void *, void *);
 void *_ZN5dBgPiC1Ev(dBgPiLoc *);
 void _ZN5dBgPiD1Ev(dBgPiLoc *);
-void _ZN9dBgCh_Lin13SetObjAndLineERK7Vector3S2_P8dActor_c(void *, const Vector3 *, const Vector3 *, void *);
+void _ZN9dBgCh_Lin13SetObjAndLineERK7Vector3S2_P8dActor_c(void *, const Vector3 *, const Vector3 *, void *); /* local extern: call sites pass shadow-typed receivers/args (void*, Vec3, dBgPiLoc); the member decl the header carries is the typed form */
 int  func_0203859c(void *);
-void _ZN9dBgCh_Lin10GetClsnPosEv(Vector3 *, void *);
-void _ZNK11SurfaceInfo12CopyNormalToER7Vector3(SurfaceInfo *, Vector3 *);
-int  _ZN9dBgCh_Lin10DetectClsnEv(void *);
+void _ZN9dBgCh_Lin10GetClsnPosEv(Vector3 *, void *); /* local extern: call sites pass shadow-typed receivers/args (void*, Vec3, dBgPiLoc); the member decl the header carries is the typed form */
+void _ZNK11SurfaceInfo12CopyNormalToER7Vector3(SurfaceInfo *, Vector3 *); /* local extern: call sites pass shadow-typed receivers/args (void*, Vec3, dBgPiLoc); the member decl the header carries is the typed form */
+int  _ZN9dBgCh_Lin10DetectClsnEv(void *); /* local extern: call sites pass shadow-typed receivers/args (void*, Vec3, dBgPiLoc); the member decl the header carries is the typed form */
 int  func_02039794(s32);
-void _ZNK5dBgPi6CopyToERS_(const dBgPiLoc *, dBgPiLoc *);
+void _ZNK5dBgPi6CopyToERS_(const dBgPiLoc *, dBgPiLoc *); /* local extern: call sites pass shadow-typed receivers/args (void*, Vec3, dBgPiLoc); the member decl the header carries is the typed form */
 Vector3 *func_02037dc4(SurfaceInfo *);
-void _ZN12dBgCh_SphCrr15SetObjAndSphereERK7Vector35Fix12IiEP8dActor_c(void *, const Vector3 *, s32, void *);
+void _ZN12dBgCh_SphCrr15SetObjAndSphereERK7Vector35Fix12IiEP8dActor_c(void *, const Vector3 *, s32, void *); /* local extern: Fix12 wall -- the member takes Fix12i by value and Fix12 has no s32 ctor */
 int  func_02035764(void *);
-void _ZN12dBgCh_SphCrr14SetFloorResultERK5dBgPi(void *, const dBgPiLoc *);
 void _ZN5dBgPiaSERKS_(dBgPiLoc *, const dBgPiLoc *);
 void func_020371b0(void *, s32);
-void func_02037888(void *, const dBgPiLoc *);
-void func_0203782c(void *, const dBgPiLoc *);
-int  _ZN12dBgCh_SphCrr10DetectClsnEv(void *);
 int  func_020355dc(void *);
-dBgPiLoc *func_020378dc(void *);
 void func_020356d4(void *);
 
 }  /* end extern "C" -- the definition below is a member, not a C symbol */
@@ -69,7 +63,7 @@ void dBgCh_Actr::UpdateExtraContinous()
     prev = (Vector3 *)(ac + 0x68);
 
     if (IsOnGround() && func_020355a0(t))
-        func_02038324(func_02037938(t + 0x20), pos,
+        func_02038324(((dBgCh_SphCrr *)(t + 0x20))->GetFloorResult(), pos,
                       *(void **)(t + 0x12c), *(void **)(t + 0x130));
 
     {
@@ -224,7 +218,7 @@ void dBgCh_Actr::UpdateExtraContinous()
         if (f0)
         {
             FLAGP |= 4;
-            _ZN12dBgCh_SphCrr14SetFloorResultERK5dBgPi(t + 0x20, &res0);
+            ((dBgCh_SphCrr *)(t + 0x20))->SetFloorResult(*(dBgPi *)&res0);
             FLAGQ |= 1;
             _ZN5dBgPiaSERKS_((dBgPiLoc *)(t + 0x30), &res0);
             func_020371b0(t, wasOnGround);
@@ -233,19 +227,19 @@ void dBgCh_Actr::UpdateExtraContinous()
         if (f1)
         {
             FLAGP |= 8;
-            func_02037888(t + 0x20, &res1);
+            ((dBgCh_SphCrr *)(t + 0x20))->SetWallResult(*(dBgPi *)&res1);
             FLAGQ |= 1;
             _ZN5dBgPiaSERKS_((dBgPiLoc *)(t + 0x30), &res1);
         }
         if (f2)
         {
             FLAGP |= 0x10;
-            func_0203782c(t + 0x20, &res2);
+            ((dBgCh_SphCrr *)(t + 0x20))->SetUnderResult(*(dBgPi *)&res2);
             FLAGQ |= 1;
             _ZN5dBgPiaSERKS_((dBgPiLoc *)(t + 0x30), &res2);
         }
 
-        if (_ZN12dBgCh_SphCrr10DetectClsnEv(t + 0x20))
+        if (((dBgCh_SphCrr *)(t + 0x20))->DetectClsn())
         {
             Vector3 *pb = (Vector3 *)(t + 0x6c);
             if ((*(u8 *)(t + 0x90) & 4) && didHit == 0)
@@ -281,7 +275,7 @@ void dBgCh_Actr::UpdateExtraContinous()
             if (!(fl & 4) && (fl & 8))
             {
                 dBgPiLoc tmp;
-                dBgPiLoc *src = func_020378dc(t + 0x20);
+                dBgPiLoc *src = (dBgPiLoc *)((dBgCh_SphCrr *)(t + 0x20))->GetWallResult();
                 SurfaceInfo *dsi = &tmp.si;
                 {
                     s32 c0, c1;
@@ -321,7 +315,7 @@ void dBgCh_Actr::UpdateExtraContinous()
                         {
                             dBgPiLoc *lr = (dBgPiLoc *)(t + 0x144);
                             FLAGP |= 8;
-                            func_02037888(t + 0x20, lr);
+                            ((dBgCh_SphCrr *)(t + 0x20))->SetWallResult(*(dBgPi *)lr);
                             FLAGQ |= 1;
                             _ZN5dBgPiaSERKS_((dBgPiLoc *)(t + 0x30), lr);
                         }
@@ -329,7 +323,7 @@ void dBgCh_Actr::UpdateExtraContinous()
                         {
                             dBgPiLoc *lr = (dBgPiLoc *)(t + 0x144);
                             FLAGP |= 4;
-                            _ZN12dBgCh_SphCrr14SetFloorResultERK5dBgPi(t + 0x20, lr);
+                            ((dBgCh_SphCrr *)(t + 0x20))->SetFloorResult(*(dBgPi *)lr);
                             FLAGQ |= 1;
                             _ZN5dBgPiaSERKS_((dBgPiLoc *)(t + 0x30), lr);
                             if (didHit == 0)
@@ -339,7 +333,7 @@ void dBgCh_Actr::UpdateExtraContinous()
                         {
                             dBgPiLoc *lr = (dBgPiLoc *)(t + 0x144);
                             FLAGP |= 0x10;
-                            func_0203782c(t + 0x20, lr);
+                            ((dBgCh_SphCrr *)(t + 0x20))->SetUnderResult(*(dBgPi *)lr);
                             FLAGQ |= 1;
                             _ZN5dBgPiaSERKS_((dBgPiLoc *)(t + 0x30), lr);
                         }

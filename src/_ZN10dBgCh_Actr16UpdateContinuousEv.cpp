@@ -17,18 +17,16 @@ typedef struct dBgPiLoc { char pad[0x28]; } dBgPiLoc;
    something that exists nowhere. Relocations compare as wildcards, so the
    file would byte-match regardless -- only check_references sees it. */
 extern "C" {
-extern int func_02037938(void* p);
 extern void func_02038324(int a, int* b, int c, int d);
 extern void *_ZN5dBgPiC1Ev(dBgPiLoc* r);
-extern void _ZN9dBgCh_Lin13SetObjAndLineERK7Vector3S2_P8dActor_c(void* self, Vec3* a, Vec3* b, void* actor);
-extern int _ZN9dBgCh_Lin10DetectClsnEv(void* self);
-extern void _ZN9dBgCh_Lin10GetClsnPosEv(Vec3* out, void* self);
-extern void _ZNK11SurfaceInfo12CopyNormalToER7Vector3(void* self, Vec3* out);
-extern void _ZNK5dBgPi6CopyToERS_(void* self, dBgPiLoc* dst);
+extern void _ZN9dBgCh_Lin13SetObjAndLineERK7Vector3S2_P8dActor_c(void* self, Vec3* a, Vec3* b, void* actor); /* local extern: call sites pass shadow-typed receivers/args (void*, Vec3, dBgPiLoc); the member decl the header carries is the typed form */
+extern int _ZN9dBgCh_Lin10DetectClsnEv(void* self); /* local extern: call sites pass shadow-typed receivers/args (void*, Vec3, dBgPiLoc); the member decl the header carries is the typed form */
+extern void _ZN9dBgCh_Lin10GetClsnPosEv(Vec3* out, void* self); /* local extern: call sites pass shadow-typed receivers/args (void*, Vec3, dBgPiLoc); the member decl the header carries is the typed form */
+extern void _ZNK11SurfaceInfo12CopyNormalToER7Vector3(void* self, Vec3* out); /* local extern: call sites pass shadow-typed receivers/args (void*, Vec3, dBgPiLoc); the member decl the header carries is the typed form */
+extern void _ZNK5dBgPi6CopyToERS_(void* self, dBgPiLoc* dst); /* local extern: call sites pass shadow-typed receivers/args (void*, Vec3, dBgPiLoc); the member decl the header carries is the typed form */
 extern void _ZN12dBgCh_SphCrr15SetObjAndSphereERK7Vector35Fix12IiEP8dActor_c(void* self, Vec3* v, int rad, void* actor);
-extern void _ZN12dBgCh_SphCrr14SetFloorResultERK5dBgPi(void* self, dBgPiLoc* r);
+extern void _ZN12dBgCh_SphCrr14SetFloorResultERK5dBgPi(void* self, dBgPiLoc* r); /* local extern: call sites pass shadow-typed receivers/args (void*, Vec3, dBgPiLoc); the member decl the header carries is the typed form */
 extern void _ZN5dBgPiaSERKS_(void* self, dBgPiLoc* r);
-extern void func_02037888(void* dst, dBgPiLoc* src);
 extern void func_020356d4(void* self);
 extern void _ZN5dBgPiD1Ev(dBgPiLoc* r);
 }
@@ -58,7 +56,7 @@ void dBgCh_Actr::UpdateContinuous()
     prev = (int*)(a + 0x68);
 
     if (IsOnGround() && func_020355a0(((char*)this)) && ShouldUpdatePos())
-        func_02038324(func_02037938((char*)&mSphereClsn), pos, mSphereClsn.unk_10c, unk_130);
+        func_02038324((int)mSphereClsn.GetFloorResult(), pos, mSphereClsn.unk_10c, unk_130);
 
     floorFlag = 0;
     _ZN5dBgPiC1Ev(&res0);
@@ -145,7 +143,7 @@ void dBgCh_Actr::UpdateContinuous()
     }
     if (wallFlag != 0) {
         *(u8*)AT(((char*)this), 0x90) |= 8;
-        func_02037888(((char*)this) + 0x20, &res1);
+        mSphereClsn.SetWallResult(*(dBgPi *)&res1);
         *(u8*)AT(((char*)this), 0x90) |= 1;
         _ZN5dBgPiaSERKS_(((char*)this) + 0x30, &res1);
     }

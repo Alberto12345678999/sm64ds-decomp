@@ -8,7 +8,7 @@
 extern "C" {
 
 
-extern int _ZNK10dBgCh_Actr10IsOnGroundEv(void *self);
+extern int _ZNK10dBgCh_Actr10IsOnGroundEv(void *self); /* local extern: call sites pass shadow-typed receivers/args (void*, Vec3, dBgPiLoc); the member decl the header carries is the typed form */
 extern void _ZN12dBgCh_SphCrr15SetObjAndSphereERK7Vector35Fix12IiEP8dActor_c(void *self, struct Vector3 *v, int fix, void *actor);
 extern void func_020356d4(char *self);
 }
@@ -35,7 +35,7 @@ void dBgCh_Actr::UpdateDiscreteNoLava_2()
     if (src->y - *(int *)(obj + 0x6c) > 0) {
         *(unsigned char *)((char *)&mSphereClsn.flags) |= 0x20;
     }
-    if (func_02038a38((char *)&mSphereClsn)) {
+    if (mSphereClsn.func_02038a38()) {
         p6c = (struct Vector3 *)((char *)&mSphereClsn.disp);
         if (mSphereClsn.flags & 4) {
             func_020371b0(((char *)this), onGround);

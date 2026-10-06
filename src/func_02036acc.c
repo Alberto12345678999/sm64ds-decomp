@@ -7,7 +7,7 @@ typedef struct dBgPi { char pad[0x28]; } dBgPi;
 extern int _ZNK10dBgCh_Actr10IsOnGroundEv(void* self);
 extern int func_020355a0(void* p);
 extern int _ZNK10dBgCh_Actr15ShouldUpdatePosEv(void* p);
-extern int func_02037938(void* p);
+extern dBgPi* _ZN12dBgCh_SphCrr14GetFloorResultEv(void* p);
 extern void func_02038324(int a, int* b, int c, int d);
 extern void *_ZN5dBgPiC1Ev(dBgPi* r);
 extern void _ZN9dBgCh_Lin13SetObjAndLineERK7Vector3S2_P8dActor_c(void* self, Vec3* a, Vec3* b, void* actor);
@@ -22,8 +22,8 @@ extern int func_0203553c(void* p);
 extern void _ZN12dBgCh_SphCrr14SetFloorResultERK5dBgPi(void* self, dBgPi* r);
 extern void _ZN5dBgPiaSERKS_(void* self, dBgPi* r);
 extern void func_020371b0(void* clsn, int justHit);
-extern void func_02037888(void* dst, dBgPi* src);
-extern int func_02038824(void* self);
+extern void _ZN12dBgCh_SphCrr13SetWallResultERK5dBgPi(void* dst, dBgPi* src);
+extern int _ZN12dBgCh_SphCrr13func_02038824Ev(void* self);
 extern int _ZNK10dBgCh_Actr16ShouldUpdatePosYEv(void* p);
 extern void func_020356d4(void* self);
 extern void _ZN5dBgPiD1Ev(dBgPi* r);
@@ -53,7 +53,7 @@ void func_02036acc(char* c)
     prev = (int*)(a + 0x68);
 
     if (_ZNK10dBgCh_Actr10IsOnGroundEv(c) && func_020355a0(c) && _ZNK10dBgCh_Actr15ShouldUpdatePosEv(c))
-        func_02038324(func_02037938(c + 0x20), pos, *(int*)(c + 0x12c), *(int*)(c + 0x130));
+        func_02038324((int)_ZN12dBgCh_SphCrr14GetFloorResultEv(c + 0x20), pos, *(int*)(c + 0x12c), *(int*)(c + 0x130));
 
     floorFlag = 0;
     _ZN5dBgPiC1Ev(&res0);
@@ -140,11 +140,11 @@ void func_02036acc(char* c)
     }
     if (wallFlag != 0) {
         *(u8*)AT(c, 0x90) |= 8;
-        func_02037888(c + 0x20, &res1);
+        _ZN12dBgCh_SphCrr13SetWallResultERK5dBgPi(c + 0x20, &res1);
         *(u8*)AT(c, 0x90) |= 1;
         _ZN5dBgPiaSERKS_(c + 0x30, &res1);
     }
-    if (func_02038824(c + 0x20)) {
+    if (_ZN12dBgCh_SphCrr13func_02038824Ev(c + 0x20)) {
         prev = (int*)(c + 0x6c);
         if ((*(u8*)(c + 0x90) & 4) && handled == 0)
             func_020371b0(c, onGround);
