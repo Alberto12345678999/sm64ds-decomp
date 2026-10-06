@@ -9,17 +9,18 @@
  * ROM-descending.
  *
  * Vtable _ZTV17dExtShadowModel_c at 0x0208e868: [0] D1 0x02015ff8, [1] D0
- * 0x02015f80, [2] DoSetFile 0x02015ef4. The cartridge carries no
- * _ZTS17dExtShadowModel_c/_ZTI17dExtShadowModel_c records at all, so this TU compiles
- * with RTTI off, and no enrolled D2 or C2; those variants are licensed
- * compiler-only in the manifest.
+ * 0x02015f80, [2] DoSetFile 0x02015ef4. The cartridge does carry _ZTI17dExtShadowModel_c/_ZTS17dExtShadowModel_c
+ * (0x0208e770/0x0208e888), but no data section is enrolled for this TU to
+ * own them, so this TU compiles with RTTI off (see below), and no enrolled D2 or C2;
+ * those variants are licensed compiler-only in the manifest.
  */
 
 #include "dExtShadowModel_c.h"
 
-/* No _ZTS/_ZTI for dExtShadowModel_c or ModelBase anywhere in the cartridge: the
- * class was compiled without RTTI, so the vtable preamble's typeinfo word
- * is 0. */
+/* The cartridge's _ZTI/_ZTS records for dExtShadowModel_c (0x0208e770/0x0208e888)
+ * sit in data this TU does not own, so records emitted here would have no
+ * configured home. Compiling with RTTI off emits none; the vtable preamble's
+ * typeinfo word deadstrips with the rest of the data sections. */
 #pragma RTTI off
 
 extern "C" {
