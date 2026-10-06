@@ -35348,7 +35348,7 @@
       ]
     },
     "_ZN3G3X6SetFogEbiii": {
-      "src/_ZN5Stage9RenderFogEv.cpp": [
+      "src/_ZN10dScStage_c9RenderFogEv.cpp": [
         "param:#1 int"
       ],
       "src/actors/dMg3DEspAnimSet_c.cpp": [
