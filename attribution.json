@@ -8280,6 +8280,10 @@
     "src/engine/model/TextureSequence.cpp#_ZN15TextureSequence7SetFileER8BTP_Filei5Fix12IiEj": "tangosdev",
     "src/engine/model/TextureSequence.cpp#_ZN15TextureSequenceD0Ev": "tangosdev",
     "src/engine/model/TextureSequence.cpp#_ZN15TextureSequenceD1Ev": "tangosdev",
-    "src/engine/model/TextureSequence.cpp#_ZN15TextureSequenceC1Ev": "tangosdev"
+    "src/engine/model/TextureSequence.cpp#_ZN15TextureSequenceC1Ev": "tangosdev",
+    "src/engine/collision/dBgPc.cpp#_ZN5dBgPcD2Ev": "tangosdev",
+    "src/engine/collision/dBgPc.cpp#_ZN5dBgPcD1Ev": "tangosdev",
+    "src/engine/collision/dBgPc.cpp#_ZN5dBgPcC1Ev": "tangosdev",
+    "src/engine/collision/dBgPc.cpp#_ZN5dBgPcC2Ev": "andrewboudreau"
   }
 }
