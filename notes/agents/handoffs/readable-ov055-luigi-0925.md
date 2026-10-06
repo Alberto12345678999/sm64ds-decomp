@@ -50,7 +50,7 @@ This document describes this commit. The queue records its immutable output SHA.
   - The remaining bridges are the three Fix12 by-value mangled calls, the unnamed arm9 helpers (`func_02016acc`, `func_02016b24`, `func_0201277c`, `func_0203c178`) and the ov002 helpers `func_ov002_020e496c` and `func_ov002_020e4374`.
 - Recovered layout/fields; remaining shadow structs/raw offsets:
   - Render is now typed through `Player`, `Model`, `ModelComponents`, `BMD_File` and `Matrix4x3::t`.
-  - Still raw: `FileOf` (the SharedFilePtr word at +4), the `Mtx` word copy, and Behavior's store to `data_0209f318` + 0x114 (the camera, inside `Camera::pad_114`).
+  - Still raw: `FileOf` (the SharedFilePtr word at +4), the `Mtx` word copy, and Behavior's store to `data_0209f318` + 0x114 (the camera, inside `dCamera_c::pad_114`).
   - `pad_0d0` stays, because nothing in the TU touches it.
 - Lifecycle, vtable/RTTI, initializer and data ownership: unchanged. The inline empty destructor still gives D1 and D0 with no D2, and InitResources is still the key function.
 - Attribution preserved through each move/rename: the three `attribution.json` keys follow the symbol renames with the same credit. `prepush_attribution` reports 0 changed and 0 lost.
@@ -65,7 +65,7 @@ This document describes this commit. The queue records its immutable output SHA.
 | R3 PMF bridge through the coined daLuigiStateHost | fixed | The states are daLuigi_c members, and the table holds `int (daLuigi_c::*)(Player *)`. The three ov055 symbol rows were renamed in place. The object is byte and relocation identical. |
 | R4 FileOf SharedFilePtr accessor | still deferred | `include/SharedFilePtr.h` leaves the handle's layout unrecovered. It is a shared header that this task does not hold. |
 | R5 local Mtx copy struct | still deferred | `Matrix4x3` assignment was re-measured and DIFFs in both InitResources and Render. The comment now names both. |
-| R6 unnamed globals, raw +0x114 store | still deferred | `data_ov055_02111a90`, `data_ov055_02111b60`, `data_ov055_02111b64`, `data_ov055_02111b68`, `data_ov055_02111b6c` and `data_ov055_02111b70` are also declared in `include/decl_common.h` (off limits), `src/func_ov002_020e3e00.cpp` and `src/__sinit_ov055_021118d4.c`, and this task holds neither file. A comment records their observed roles, but that is prose only. +0x114 falls inside `Camera::pad_114` in `include/Camera.h`, which is not held. |
+| R6 unnamed globals, raw +0x114 store | still deferred | `data_ov055_02111a90`, `data_ov055_02111b60`, `data_ov055_02111b64`, `data_ov055_02111b68`, `data_ov055_02111b6c` and `data_ov055_02111b70` are also declared in `include/decl_common.h` (off limits), `src/func_ov002_020e3e00.cpp` and `src/__sinit_ov055_021118d4.c`, and this task holds neither file. A comment records their observed roles, but that is prose only. +0x114 falls inside `dCamera_c::pad_114` in `include/dCamera_c.h`, which is not held. |
 | R7 pad_0d0 | still deferred | Nothing in the TU reads or writes 0x0d0, so there is no evidence for a name. |
 | R8 two declaration-baseline keys against decl_common placeholders | still deferred | `include/decl_common.h` is held by `jump-contract-repair-0918`. Its line `extern int func_ov055_021112c4(void*, void*, int);` now names a symbol that nothing defines. The banked key `func_ov055_021112c4` no longer fires (`--symbol` reports 0 disagreements), and it was left in place. |
 | R9 factory's mangled constructor calls and raw vtable store | still deferred | They are in `src/d_a_luigi.cpp`, which is outside this reservation. |

@@ -47,7 +47,7 @@ struct daObjHatenaBlock_c : dBgActor_c {
     u8 mHitterParam;                  /* 0x3f2 */
     u8 mContentType;                  /* 0x3f3 -- Content */
     /* A SECRET_COIN that registered itself with this block: daSCoin_c::
-       func_ov002_020f051c stores itself here when it is within 200 units of
+       LinkToBlock stores itself here when it is within 200 units of
        an actor 20 / 21 block. Bounce-end (func_ov102_021498e0) collects it
        (actorID 0x149, SECRET_COIN) and clears this. Not written by this
        class. */

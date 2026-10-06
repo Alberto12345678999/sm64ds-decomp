@@ -2016,6 +2016,13 @@ ov064	0x02119a18	func_ov064_02119a18	JetStream_Spawn	spawnfunc
 ov064	0x02119a18	JetStream_Spawn	daWater_Hakidasi_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov064	0x02119a58	func_ov064_02119a58	_ZN14daWater_Ring_cD1Ev	vtable slot 16
 ov064	0x02119aa0	func_ov064_02119aa0	_ZN14daWater_Ring_cD0Ev	vtable slot 17
+ov064	0x02119afc	func_ov064_02119afc	_ZN14daWater_Ring_c19func_ov064_02119afcEv	daWater_Ring_c method. The first argument is the ring actor, so the function is a member and the parameter is this. The address is kept as the method name. State execute calls it each frame.
+ov064	0x02119c60	func_ov064_02119c60	_ZN14daWater_Ring_c19func_ov064_02119c60Ev	daWater_Ring_c method. The first argument is the ring actor, so the function is a member and the parameter is this. The address is kept as the method name. Passed-state execute; reached through the State member-function-pointer table.
+ov064	0x02119ce4	func_ov064_02119ce4	_ZN14daWater_Ring_c19func_ov064_02119ce4Ev	daWater_Ring_c method. The first argument is the ring actor, so the function is a member and the parameter is this. The address is kept as the method name. Passed-state init; reached through the State member-function-pointer table.
+ov064	0x02119d28	func_ov064_02119d28	_ZN14daWater_Ring_c19func_ov064_02119d28Ev	daWater_Ring_c method. The first argument is the ring actor, so the function is a member and the parameter is this. The address is kept as the method name. Active-state execute; reached through the State member-function-pointer table.
+ov064	0x02119ea0	func_ov064_02119ea0	_ZN14daWater_Ring_c19func_ov064_02119ea0Ev	daWater_Ring_c method. The first argument is the ring actor, so the function is a member and the parameter is this. The address is kept as the method name. Active-state init; reached through the State member-function-pointer table.
+ov064	0x02119ecc	func_ov064_02119ecc	_ZN14daWater_Ring_c19func_ov064_02119eccEPKNS_5StateE	daWater_Ring_c method. The first argument is the ring actor, so the function is a member and the parameter is this. The address is kept as the method name. Installs a State and runs its init through the member-function pointer.
+ov064	0x02119f1c	func_ov064_02119f1c	_ZN14daWater_Ring_c19func_ov064_02119f1cEv	daWater_Ring_c method. The first argument is the ring actor, so the function is a member and the parameter is this. The address is kept as the method name. Pose update; called from Behavior.
 ov064	0x02119fa0	func_ov064_02119fa0	_ZN14daWater_Ring_c16CleanupResourcesEv	vtable slot 3
 ov064	0x02119fc4	func_ov064_02119fc4	_ZN14daWater_Ring_c16OnPendingDestroyEv	vtable slot 12
 ov064	0x02119fc8	func_ov064_02119fc8	_ZN14daWater_Ring_c6RenderEv	vtable slot 9
@@ -2042,6 +2049,7 @@ ov064	0x0211a8f0	func_ov064_0211a8f0	TreasureChest_Spawn	spawnfunc
 ov064	0x0211a8f0	TreasureChest_Spawn	daObjTbox_c_classInit	reconstructed classInit; ROM RTTI+factory shape+unique class factory+later EAD lineage; exact SM64DS spelling not preserved
 ov064	0x0211a930	func_ov064_0211a930	_ZN12daObjShell_cD1Ev	vtable slot 16
 ov064	0x0211a968	func_ov064_0211a968	_ZN12daObjShell_cD0Ev	vtable slot 17
+ov064	0x0211a9b4	func_ov064_0211a9b4	_ZN12daObjShell_c19func_ov064_0211a9b4Ev	daObjShell_c method. The first argument is the clam actor, so the function is a member and the parameter is this. The address is kept as the method name. Called once from InitResources.
 ov064	0x0211a9f4	func_ov064_0211a9f4	_ZN12daObjShell_c16CleanupResourcesEv	vtable slot 3
 ov064	0x0211aa30	func_ov064_0211aa30	_ZN12daObjShell_c6RenderEv	vtable slot 9
 ov064	0x0211aa58	func_ov064_0211aa58	_ZN12daObjShell_c8BehaviorEv	vtable slot 6
@@ -4067,6 +4075,9 @@ ov002	0x020bc990	func_ov002_020bc990	_ZN20daObjCannonShutter_c19func_ov002_020bc
 ov002	0x020f0438	func_ov002_020f0438	_ZN9daSCoin_c19func_ov002_020f0438Ev	daSCoin_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
 ov002	0x020f051c	func_ov002_020f051c	_ZN9daSCoin_c19func_ov002_020f051cEv	daSCoin_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
 ov002	0x020f05f4	func_ov002_020f05f4	_ZN9daSCoin_c19func_ov002_020f05f4Ev	daSCoin_c method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
+ov002	0x020f0438	_ZN9daSCoin_c19func_ov002_020f0438Ev	_ZN9daSCoin_c7CollectEv	daSCoin_c member; touch handler in Behavior, and called by daObjHatenaBlock_c/daObjPushblock_c on a held coin
+ov002	0x020f051c	_ZN9daSCoin_c19func_ov002_020f051cEv	_ZN9daSCoin_c11LinkToBlockEv	daSCoin_c member; one-shot scan that registers the coin in a nearby hatena/item/push block
+ov002	0x020f05f4	_ZN9daSCoin_c19func_ov002_020f05f4Ev	_ZN9daSCoin_c9SpawnStarEv	daSCoin_c member; spawns POWER_STAR at the matching STARBASE marker
 ov002	0x020bda48	func_ov002_020bda48	_ZN6Player19func_ov002_020bda48Ev	Player method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
 ov002	0x020bdd9c	func_ov002_020bdd9c	_ZN6Player19func_ov002_020bdd9cEv	Player method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
 ov002	0x020bdef0	func_ov002_020bdef0	_ZN6Player19func_ov002_020bdef0Ev	Player method. The first argument is the object, so the function is a member and the parameter is this. The address is kept as the method name.
