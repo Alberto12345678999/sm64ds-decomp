@@ -38,7 +38,7 @@ void MultiStore_Int(int val, int *dst, int len)
 #pragma comment(linker, "/alternatename:?_ZN6Memory25isRootHeapIterInitializedE@@3HA=__ZN6Memory25isRootHeapIterInitializedE")
 #pragma comment(linker, "/alternatename:?data_020a4d34@@3HA=__ZN6Memory25isRootHeapIterInitializedE")
 #pragma comment(linker, "/alternatename:?data_020a4d38@@3DA=__ZN6Memory16rootHeapIteratorE")
-// ...and the same storage under the TYPED spelling. src/func_0204df54.cpp now
+// ...and the same storage under the TYPED spelling. src/engine/heap/NestedHeapIterator.cpp
 // declares `extern NestedHeapIterator data_020a4d38', so MSVC decorates the
 // reference with the struct name (@@3U...@@A) rather than as the char array
 // (@@3DA) the line above covers. Both are references to one address on the NDS.
@@ -117,7 +117,8 @@ void _ZN18NestedHeapIterator4InitEP13HeapAllocator(
 // Itanium ABI VARIANT tag, and MSVC has no syntax that emits or references one.
 // So a TU that says `extern "C" _ZN22ExpandingHeapAllocatorC1EPvj(...)' and calls
 // it -- which is what src/_ZN4Heap28CreateExpandingHeapAllocatorEPvjj.cpp and
-// src/func_0204df54.cpp do, because on the NDS that string IS the symbol -- can
+// src/engine/heap/NestedHeapIterator.cpp do, because on the NDS that string IS
+// the symbol -- can
 // only be satisfied by a hand-written function of that name. Placement new is
 // the body: it runs the migrated constructor from src/ in place and, like the
 // ROM's C1, hands back the object.
@@ -125,7 +126,7 @@ void _ZN18NestedHeapIterator4InitEP13HeapAllocator(
 // _ZN18NestedHeapIteratorC1Ej USED TO BE AN /alternatename HERE and the alias is
 // removed with this change. It pointed the MSVC-mangled reference at the C
 // spelling __ZN18NestedHeapIteratorC1Ej, which was a definition back when
-// src/_ZN18NestedHeapIteratorC1Ej.cpp was C. That file is C++ now and defines a
+// the standalone C1 shard was C. The definition is C++ now and emits a
 // real __thiscall constructor, so the alias aimed at nothing: it named neither a
 // symbol anyone referenced nor one anything defined, and the target linked only
 // because no gate built it. This is the shape the file's own comment above warns

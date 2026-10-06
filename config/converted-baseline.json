@@ -626,14 +626,6 @@
     "src/_ZN17daObjFloatBoard_cD1Ev.cpp",
     "src/_ZN17daObjKurumajiku_cD0Ev.cpp",
     "src/_ZN17daObjKurumajiku_cD1Ev.cpp",
-    "src/_ZN18NestedHeapIterator4InitEP13HeapAllocator.cpp",
-    "src/_ZN18NestedHeapIterator4NextEP13HeapAllocator.cpp",
-    "src/_ZN18NestedHeapIterator5AddAtEP13HeapAllocatorS1_.cpp",
-    "src/_ZN18NestedHeapIterator6RemoveEP13HeapAllocator.cpp",
-    "src/_ZN18NestedHeapIterator7AddLastEP13HeapAllocator.cpp",
-    "src/_ZN18NestedHeapIterator8AddFirstEP13HeapAllocator.cpp",
-    "src/_ZN18NestedHeapIterator8PreviousEP13HeapAllocator.cpp",
-    "src/_ZN18NestedHeapIteratorC1Ej.cpp",
     "src/engine/heap/SolidHeapAllocator.cpp#_ZN18SolidHeapAllocator5ResetEj",
     "src/_ZN18TextureTransformer6UpdateER15ModelComponents.cpp",
     "src/_ZN18TextureTransformer7PrepareER8BMD_FileR8BTA_File.cpp",
@@ -3112,7 +3104,15 @@
     "src/actors/daObjPile_c.cpp#daObjPile_c_classInit",
     "src/actors/daIbl_c.cpp#daIbl_c_classInit",
     "src/actors/daDoor_c.cpp#daDoor_c_classInit",
-    "src/actors/dScMgAmida_c.cpp#_ZN12dScMgAmida_cD1Ev"
+    "src/actors/dScMgAmida_c.cpp#_ZN12dScMgAmida_cD1Ev",
+    "src/engine/heap/NestedHeapIterator.cpp#_ZN18NestedHeapIterator4InitEP13HeapAllocator",
+    "src/engine/heap/NestedHeapIterator.cpp#_ZN18NestedHeapIterator4NextEP13HeapAllocator",
+    "src/engine/heap/NestedHeapIterator.cpp#_ZN18NestedHeapIterator5AddAtEP13HeapAllocatorS1_",
+    "src/engine/heap/NestedHeapIterator.cpp#_ZN18NestedHeapIterator6RemoveEP13HeapAllocator",
+    "src/engine/heap/NestedHeapIterator.cpp#_ZN18NestedHeapIterator7AddLastEP13HeapAllocator",
+    "src/engine/heap/NestedHeapIterator.cpp#_ZN18NestedHeapIterator8AddFirstEP13HeapAllocator",
+    "src/engine/heap/NestedHeapIterator.cpp#_ZN18NestedHeapIterator8PreviousEP13HeapAllocator",
+    "src/engine/heap/NestedHeapIterator.cpp#_ZN18NestedHeapIteratorC1Ej"
   ],
   "count": 3105
 }
