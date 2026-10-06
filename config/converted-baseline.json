@@ -3510,11 +3510,12 @@
     "src/_ZN15dExtFrameCtrl_cD0Ev.cpp",
     "src/_ZN15dExtFrameCtrl_cD1Ev.cpp",
     "src/_ZN15dExtFrameCtrl_cD2Ev.cpp",
+    "src/actors/daObjFl_Seesaw_c.cpp#daObjFl_Seesaw_c_classInit",
     "src/actors/daC_Jugem_c.cpp#_ZN11daC_Jugem_c16CleanupResourcesEv",
     "src/actors/daC_Jugem_c.cpp#_ZN11daC_Jugem_c16OnPendingDestroyEv",
     "src/actors/daC_Jugem_c.cpp#_ZN11daC_Jugem_cD0Ev",
     "src/actors/daC_Jugem_c.cpp#_ZN11daC_Jugem_cD1Ev",
     "src/actors/daC_Jugem_c.cpp#daC_Jugem_c_classInit"
   ],
-  "count": 3507
+  "count": 3508
 }

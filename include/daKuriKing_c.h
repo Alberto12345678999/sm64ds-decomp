@@ -118,6 +118,51 @@ struct daKuriKing_c : dEnemyBase_c {
        function -- and with it _ZTV12daKuriKing_c -- stays where it already was. */
     virtual s32 InitResources();
     virtual s32 Render();
+
+    /* The class's ordinary methods, under the ROM's only surviving spellings:
+       their addresses. The state handlers are the records __sinit copies into
+       data_ov074_021230f8; func_ov074_021203e4 runs the enter side. */
+    void func_ov074_0211f154();
+    void func_ov074_0211f244();
+    void func_ov074_0211f344(u8 value);
+    int  func_ov074_0211f38c();
+    void func_ov074_0211f5b8();
+    void func_ov074_0211fa08();
+    void func_ov074_0211fa74();
+    void func_ov074_0211fb84();
+    int  func_ov074_0211fbd0();
+    void func_ov074_0211fc34();
+    void func_ov074_0211fc38();
+    void func_ov074_0211fd48();
+    void func_ov074_0211fd74();
+    void func_ov074_0211ffac();
+    void func_ov074_0211ffcc();
+    void func_ov074_02120080();
+    void func_ov074_0212016c();
+    void func_ov074_0212018c();
+    void func_ov074_021201f0();
+    int  func_ov074_021203e4(int i);
+    void func_ov074_0212042c();
+    int  func_ov074_02120474();
+    int  func_ov074_021204c0();
+    int  func_ov074_021206c8();
+    int  func_ov074_021207b8();
+    void func_ov074_02120808();
+    int  func_ov074_02120b24();
+    void func_ov074_02120b90();
+    void func_ov074_02120bb8(dActor_c *other, dCcAcPos_c *clsn, int mode);
+    void func_ov074_02120d74();
+    void func_ov074_02121300();
+    void func_ov074_02121380();
+    int  func_ov074_021216f4();
+    void func_ov074_02121800();
+    void func_ov074_0212195c();
+    void func_ov074_0212199c();
+    int  func_ov074_02121a20(int idx);
+    int  func_ov074_0212229c();
+    int  func_ov074_021222e0();
+    int  func_ov074_021223bc();
+    int  func_ov074_02122634();
 };
 
 #ifndef SM64DS_PLATFORM_PC
