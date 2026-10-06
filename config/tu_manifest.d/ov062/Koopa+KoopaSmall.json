@@ -34,189 +34,189 @@
       "ordinal": 1
     },
     {
-      "symbol": "func_ov062_02117570",
+      "symbol": "_ZN8daNknk_c19func_ov062_02117570Ev",
       "address": "0x02117570",
       "size": "0x00000050",
       "legacy_source": "src/func_ov062_02117570.cpp",
       "ordinal": 2
     },
     {
-      "symbol": "func_ov062_021175c0",
+      "symbol": "_ZN8daNknk_c19func_ov062_021175c0Ev",
       "address": "0x021175c0",
       "size": "0x00000164",
       "legacy_source": "src/func_ov062_021175c0.c",
       "ordinal": 3
     },
     {
-      "symbol": "func_ov062_02117724",
+      "symbol": "_ZN8daNknk_c19func_ov062_02117724Ejjjt",
       "address": "0x02117724",
       "size": "0x00000270",
       "legacy_source": "src/func_ov062_02117724.c",
       "ordinal": 4
     },
     {
-      "symbol": "func_ov062_02117994",
+      "symbol": "_ZN8daNknk_c19func_ov062_02117994Ei",
       "address": "0x02117994",
       "size": "0x00000050",
       "legacy_source": "src/func_ov062_02117994.c",
       "ordinal": 5
     },
     {
-      "symbol": "func_ov062_021179e4",
+      "symbol": "_ZN8daNknk_c19func_ov062_021179e4Ev",
       "address": "0x021179e4",
       "size": "0x00000058",
       "legacy_source": "src/func_ov062_021179e4.cpp",
       "ordinal": 6
     },
     {
-      "symbol": "func_ov062_02117a3c",
+      "symbol": "_ZN8daNknk_c19func_ov062_02117a3cEv",
       "address": "0x02117a3c",
       "size": "0x00000090",
       "legacy_source": "src/func_ov062_02117a3c.cpp",
       "ordinal": 7
     },
     {
-      "symbol": "func_ov062_02117acc",
+      "symbol": "_ZN8daNknk_c19func_ov062_02117accEv",
       "address": "0x02117acc",
       "size": "0x0000007c",
       "legacy_source": "src/func_ov062_02117acc.c",
       "ordinal": 8
     },
     {
-      "symbol": "func_ov062_02117b48",
+      "symbol": "_ZN8daNknk_c19func_ov062_02117b48Ev",
       "address": "0x02117b48",
       "size": "0x00000018",
       "legacy_source": "src/func_ov062_02117b48.c",
       "ordinal": 9
     },
     {
-      "symbol": "func_ov062_02117b60",
+      "symbol": "_ZN8daNknk_c19func_ov062_02117b60Ev",
       "address": "0x02117b60",
       "size": "0x0000003c",
       "legacy_source": "src/func_ov062_02117b60.c",
       "ordinal": 10
     },
     {
-      "symbol": "func_ov062_02117b9c",
+      "symbol": "_ZN8daNknk_c19func_ov062_02117b9cEv",
       "address": "0x02117b9c",
       "size": "0x00000058",
       "legacy_source": "src/func_ov062_02117b9c.c",
       "ordinal": 11
     },
     {
-      "symbol": "func_ov062_02117bf4",
+      "symbol": "_ZN8daNknk_c19func_ov062_02117bf4Ev",
       "address": "0x02117bf4",
       "size": "0x000000a4",
       "legacy_source": "src/func_ov062_02117bf4.cpp",
       "ordinal": 12
     },
     {
-      "symbol": "func_ov062_02117c98",
+      "symbol": "_ZN8daNknk_c19func_ov062_02117c98Ev",
       "address": "0x02117c98",
       "size": "0x0000036c",
       "legacy_source": "src/func_ov062_02117c98.c",
       "ordinal": 13
     },
     {
-      "symbol": "func_ov062_02118004",
+      "symbol": "_ZN8daNknk_c19func_ov062_02118004Ei",
       "address": "0x02118004",
       "size": "0x00000054",
       "legacy_source": "src/func_ov062_02118004.cpp",
       "ordinal": 14
     },
     {
-      "symbol": "func_ov062_02118058",
+      "symbol": "_ZN8daNknk_c19func_ov062_02118058Ev",
       "address": "0x02118058",
       "size": "0x0000007c",
       "legacy_source": "src/func_ov062_02118058.c",
       "ordinal": 15
     },
     {
-      "symbol": "func_ov062_021180d4",
+      "symbol": "_ZN8daNknk_c19func_ov062_021180d4Ev",
       "address": "0x021180d4",
       "size": "0x00000048",
       "legacy_source": "src/func_ov062_021180d4.c",
       "ordinal": 16
     },
     {
-      "symbol": "func_ov062_0211811c",
+      "symbol": "_ZN8daNknk_c19func_ov062_0211811cEv",
       "address": "0x0211811c",
       "size": "0x00000084",
       "legacy_source": "src/func_ov062_0211811c.c",
       "ordinal": 17
     },
     {
-      "symbol": "func_ov062_021181a0",
+      "symbol": "_ZN8daNknk_c19func_ov062_021181a0Ev",
       "address": "0x021181a0",
       "size": "0x000000b8",
       "legacy_source": "src/func_ov062_021181a0.c",
       "ordinal": 18
     },
     {
-      "symbol": "func_ov062_02118258",
+      "symbol": "_ZN8daNknk_c19func_ov062_02118258Ei",
       "address": "0x02118258",
       "size": "0x000000dc",
       "legacy_source": "src/func_ov062_02118258.c",
       "ordinal": 19
     },
     {
-      "symbol": "func_ov062_02118334",
+      "symbol": "_ZN8daNknk_c19func_ov062_02118334Ev",
       "address": "0x02118334",
       "size": "0x000000ac",
       "legacy_source": "src/func_ov062_02118334.c",
       "ordinal": 20
     },
     {
-      "symbol": "func_ov062_021183e0",
+      "symbol": "_ZN8daNknk_c19func_ov062_021183e0Ev",
       "address": "0x021183e0",
       "size": "0x000001a8",
       "legacy_source": "src/func_ov062_021183e0.c",
       "ordinal": 21
     },
     {
-      "symbol": "func_ov062_02118588",
+      "symbol": "_ZN8daNknk_c19func_ov062_02118588Ev",
       "address": "0x02118588",
       "size": "0x00000190",
       "legacy_source": "src/func_ov062_02118588.c",
       "ordinal": 22
     },
     {
-      "symbol": "func_ov062_02118718",
+      "symbol": "_ZN8daNknk_c19func_ov062_02118718Ev",
       "address": "0x02118718",
       "size": "0x000002e8",
       "legacy_source": "src/func_ov062_02118718.c",
       "ordinal": 23
     },
     {
-      "symbol": "func_ov062_02118a00",
+      "symbol": "_ZN8daNknk_c19func_ov062_02118a00Ev",
       "address": "0x02118a00",
       "size": "0x00000050",
       "legacy_source": "src/func_ov062_02118a00.cpp",
       "ordinal": 24
     },
     {
-      "symbol": "func_ov062_02118a50",
+      "symbol": "_ZN8daNknk_c19func_ov062_02118a50Ev",
       "address": "0x02118a50",
       "size": "0x000000fc",
       "legacy_source": "src/func_ov062_02118a50.c",
       "ordinal": 25
     },
     {
-      "symbol": "func_ov062_02118b4c",
+      "symbol": "_ZN8daNknk_c19func_ov062_02118b4cEv",
       "address": "0x02118b4c",
       "size": "0x00000190",
       "legacy_source": "src/func_ov062_02118b4c.c",
       "ordinal": 26
     },
     {
-      "symbol": "func_ov062_02118cdc",
+      "symbol": "_ZN8daNknk_c19func_ov062_02118cdcEv",
       "address": "0x02118cdc",
       "size": "0x0000010c",
       "legacy_source": "src/func_ov062_02118cdc.c",
       "ordinal": 27
     },
     {
-      "symbol": "func_ov062_02118de8",
+      "symbol": "_ZN8daNknk_c19func_ov062_02118de8Ev",
       "address": "0x02118de8",
       "size": "0x0000011c",
       "legacy_source": "src/func_ov062_02118de8.cpp",
@@ -351,7 +351,9 @@
     "tubuild create warning (RESOLVED): CONFLICT: local declaration ('struct', 'dBgCh_Actr') differs between the legacy file that used to hold func_ov062_02118004 and the one that held func_ov062_02118a00; kept the first, the other is commented out for review",
     "Retail identity evidence: type-name 8daNknk_c at ov062:0x0211da5c, typeinfo at0x0211da68, vtable storage0x0211daac/public point0x0211dab4. Ten method identities change only the compiler class component; existing member names/signatures (including OnTurnIntoEgg reference spelling) remain inferred project names.",
     "Text-only output policy: direct full-byte canonical comparisons cover eleven naturally emitted metadata objects, including all ten type-name bytes and the complete132-byte leaf vtable/preamble; the weak Vector3 destructor matches arm9:0x020072c0. Profiles between RTTI and vtable remain retail-owned. No data/BSS storage or initializer ownership is inferred from module-wide sinit counts.",
-    "The historical conflict records resolved here are individually tied to corrected void animation/transition helpers, unsigned sound ID/Vector3 argument, Animation return contracts, genuine FindWithID, and signed Particle::System::New result. Remaining open markers stay visible and issue2871 tracks reconstruction debt."
+    "The historical conflict records resolved here are individually tied to corrected void animation/transition helpers, unsigned sound ID/Vector3 argument, Animation return contracts, genuine FindWithID, and signed Particle::System::New result. Remaining open markers stay visible and issue2871 tracks reconstruction debt.",
+    "2026-10-04 S33 pass: the 27 func_ov062_* helpers are daNknk_c methods (first argument is the Koopa). No vtable, sinit, or state-table word names any of them, so the rename touches only this TU spellings: manifest function symbols, ov062 symbols.txt and attribution.json re-keyed, ten dead decl_common.h externs dropped, the duplicate _ZTV5Koopa alias row removed (same 0x0211dab4 address as _ZTV8daNknk_c). 39/39 TEXT-VERIFIED; all four Koopa.h consumer TUs re-verified.",
+    "2026-10-04 gates: `tubuild.py linkcheck ov062/Koopa+KoopaSmall` refuses 'intact production requires one .text claim and at least one non-text claim' -- the pre-existing tu_production gap for text-only intact TUs documented in ov091/daObjSimpleLift_c (15 landed manifests carry the identical refusal; the same run refuses the untouched ov036/daObjRcCarpet_c and ov070/daPropeller_Heyho_c controls). Full-ROM proof instead: `rombuild.py -j16` PASS -- baseline control rebuilt clean (matchesStockRom true, ROM sha256 ddab9300b24aeae254192c2a30d812b07ece3adff83230e75c865ed915c9de40, byte-identical to main's pre-change baseline output; the build/sm64ds.nds reference had gone missing from the tree and was restored from main's verified baseline output), intact TU gates dsd modules PASS / zero new symbol errors / storage aliases exact, dsd check symbols reports the same 9 pre-existing ITCM/ARM9-main errors as always (0 new), module fidelity 106/106 exact, 0 mismatching functions, ROM-build analysis PASS."
   ],
   "verification": {
     "round": "tools/tubuild.py verify -- text-only, whole shadow TU compiled once",

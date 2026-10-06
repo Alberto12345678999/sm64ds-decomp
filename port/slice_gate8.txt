@@ -15,14 +15,14 @@ src/engine/collision/dBgPc.cpp
 src/engine/collision/dBgPi.cpp
 src/func_020375ec.c
 src/func_02039624.c
-src/_ZN13CLPS_BlockRefaSER10CLPS_Block.cpp
+src/engine/collision/CLPS_BlockRef.cpp
 src/func_020381cc.c
 src/func_02037eb0.c
 src/Vec3_Dist.c
 src/_ZN5dBgCh21ShouldPassThroughImplEPvRK4CLPSRKS_b.cpp
 src/_ZNK11SurfaceInfo12CopyNormalToER7Vector3.cpp
 src/_ZN4dBgWC2Ev.cpp
-src/_ZN13CLPS_BlockRefC1Ev.cpp
+src/engine/collision/CLPS_BlockRef.cpp
 src/SurfaceInfo_TestFlag0x20.c
 src/func_020353d4.c
 src/func_02035408.c
