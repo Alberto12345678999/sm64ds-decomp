@@ -23,7 +23,9 @@ src/func_0203b438.c
 # hook virtuals and the helper at 0x02043810 this slice used to name
 # separately all live in it.
 src/actors/ActorBase.cpp
-src/_ZN11ShadowModelC1Ev.cpp
+# dExtShadowModel_c is one production translation unit; the constructor this slice
+# used to name separately lives in it with the rest of the class.
+src/engine/model/dExtShadowModel_c.cpp
 # dBgW_KcMbg is one production translation unit; the constructor, SetFile,
 # the func_02039e* transform helpers and Transform this slice used to name
 # separately all live in it.

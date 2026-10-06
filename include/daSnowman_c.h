@@ -24,7 +24,7 @@
 #include "dEnemyBase_c.h"
 #include "ModelAnim.h"
 #include "dCcAcPos_c.h"
-#include "ShadowModel.h"
+#include "dExtShadowModel_c.h"
 #include "dBgCh_Actr.h"
 
 struct daSnowman_c : dEnemyBase_c {
@@ -41,7 +41,7 @@ struct daSnowman_c : dEnemyBase_c {
     dCcAcPos_c mdCcAcPos_c;           /* 0x110 */
     dBgCh_Actr mWithMeshClsn;         /* 0x150 */
     ModelAnim mModelAnim;             /* 0x30c */
-    ShadowModel mShadowModel;         /* 0x370 */
+    dExtShadowModel_c mShadowModel;         /* 0x370 */
     Matrix4x3 mShadowMatrix;          /* 0x398 -- coined; handed to DropShadowRadHeight */
     /* Coined. The render step builds it from bone 5 of mModelAnim and hands
        its address to the cap actor at +0xc8, which rides on it. */

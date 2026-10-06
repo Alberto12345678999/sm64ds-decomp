@@ -143,7 +143,7 @@ void *_ZN7fBase_cC2Ev(char *self)
 
 // ---- gate-9 storage and bridges -------------------------------------------
 extern "C" {
-void *_ZTV11ShadowModel[8];
+void *_ZTV17dExtShadowModel_c[8];
 
 // ov098's SharedFilePtr entry table for the arrow signs: three-pointer
 // entries {model, kcl, ?}. The smoke seeds the pointers with its own

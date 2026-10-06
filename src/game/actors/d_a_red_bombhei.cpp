@@ -158,7 +158,7 @@ void _ZN6Camera9SetFlag_3Ev(Camera *cam);
 
 void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(ModelAnim *thiz, BCA_File *file, int flags, int speed, unsigned short startFrame);
 void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(dCcAc_c *self, dActor_c *actor, int radius, int height, unsigned int flags, unsigned int vulnFlags);
-void _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(dActor_c *self, ShadowModel *shadow, Matrix4x3 *mtx, int radius, int depth, unsigned char opacity);
+void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(dActor_c *self, dExtShadowModel_c *shadow, Matrix4x3 *mtx, int radius, int depth, unsigned char opacity);
 
 }
 
@@ -262,7 +262,7 @@ extern "C" void func_ov084_0212ce50(daRedBombhei_c *self)
     self->mShadowMat.t.x = self->mPosX >> 3;
     self->mShadowMat.t.y = (self->mPosY - 0x8000) >> 3;
     self->mShadowMat.t.z = self->mPosZ >> 3;
-    _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(self, &self->mShadowModel, &self->mShadowMat, 0x64000, 0x32000, 0xf);
+    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(self, &self->mShadowModel, &self->mShadowMat, 0x64000, 0x32000, 0xf);
 }
 
 // @symbol func_ov084_0212cda0

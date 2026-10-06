@@ -15,12 +15,12 @@ typed-subobject constructor (dBgCh_Actr).
 |---|---|---|
 | `src/_ZN9ModelBaseC2Ev.cpp` | `ModelBase::ModelBase()` | 0x02017150, 0x18 |
 | `src/_ZN5ModelC1Ev.cpp` | `Model::Model()` | 0x02016d58, 0x50 |
-| `src/engine/model/CommonModel.cpp` | `CommonModel::CommonModel()` | 0x02016204, 0x50 |
-| `src/_ZN11ShadowModelC1Ev.cpp` | `ShadowModel::ShadowModel()` | 0x02016068, 0x34 |
+| `src/engine/model/dExtCommonModel_c.cpp` | `dExtCommonModel_c::dExtCommonModel_c()` | 0x02016204, 0x50 |
+| `src/engine/model/dExtShadowModel_c.cpp` | `dExtShadowModel_c::dExtShadowModel_c()` | 0x02016068, 0x34 |
 | `src/engine/path/PathPtr.cpp` | `PathPtr::PathPtr()` | 0x0203ad74, 0x10 |
 | `src/engine/collision/dM3dGSph.cpp` | `dM3dGSph::dM3dGSph()` | 0x0203ac60, 0x10 |
 | `src/engine/collision/dBgCh_Lin.cpp` | `dBgCh_Lin::dBgCh_Lin()` | 0x020377b0, 0x5c |
-| `src/engine/collision/dBgCh_SphCrr.cpp` | `dBgCh_SphCrr::dBgCh_SphCrr()` | 0x02037d18, 0x6c |
+| `src/_ZN12dBgCh_SphCrrC1Ev.cpp` | `dBgCh_SphCrr::dBgCh_SphCrr()` | 0x02037d18, 0x6c |
 | `src/engine/collision/dBgCh_Gnd.cpp` | `dBgCh_Gnd::dBgCh_Gnd()` | 0x02037570, 0x40 |
 
 The seventh is the tree's **first multiple-inheritance constructor**: its
@@ -158,7 +158,7 @@ appears and the candidate lands tens of bytes short. Declared-but-not-defined
 in the class body is what makes every derived constructor emit
 `bl _ZN…C…Ev`. This is already how `Model()` was declared in
 `include/Model.h`; this wave added the same declaration to `ModelBase`,
-`CommonModel`, and `ShadowModel`.
+`dExtCommonModel_c`, and `dExtShadowModel_c`.
 
 Risk to check when adding one: every TU that value-constructs the class or a
 derived class changes codegen. In this family every derived constructor was
@@ -188,7 +188,7 @@ hand-spelled externs. It is a **C2**. The evidence, all four callers:
 
 | caller | what it is |
 |---|---|
-| `_ZN11ShadowModelC1Ev` | derived ctor, base-subobject step |
+| `_ZN17dExtShadowModel_cC1Ev` | derived ctor, base-subobject step |
 | `_ZN11CommonModelC1Ev` | derived ctor, base-subobject step |
 | `_ZN5ModelC1Ev` (+8) | derived ctor, base-subobject step |
 | `_ZN5ModelC2Ev` (+8) | derived ctor, base-subobject step |

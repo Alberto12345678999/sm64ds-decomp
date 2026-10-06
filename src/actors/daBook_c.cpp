@@ -122,7 +122,7 @@ void _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(ModelAnim *, BCA_File *, int, i
 void dBgCh_Actr_UpdateContinuous_Veneer(void *c_);
 void *_ZNK10dBgCh_Actr13GetWallResultEv(void *self);
 void Matrix4x3_FromRotationZXYExt(void *m, int x, int y, int z);
-void _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(dActor_c *thiz, ShadowModel *sm, Matrix4x3 *mtx, int radius, int depth, u8 opacity);
+void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(dActor_c *thiz, dExtShadowModel_c *sm, Matrix4x3 *mtx, int radius, int depth, u8 opacity);
 void UnloadBlueCoinModel(void *);
 void LoadBlueCoinModel(void *c);
 void func_0200f760(void *a, void *b);
@@ -723,7 +723,7 @@ void daBook_c::func_ov020_0211216c()
     mShadowMat.m[9] = mPosX >> 3;
     mShadowMat.m[10] = mHomePosY >> 3;
     mShadowMat.m[11] = mPosZ >> 3;
-    _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
+    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
         this, &mShadowModel, &mShadowMat, mScaleX * 0x64, 0x12c000, 0xf);
 }
 

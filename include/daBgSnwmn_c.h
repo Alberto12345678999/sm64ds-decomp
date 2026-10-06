@@ -3,7 +3,7 @@
 #include "dActor_c.h"
 #include "Model.h"
 #include "TextureSequence.h"
-#include "ShadowModel.h"
+#include "dExtShadowModel_c.h"
 #include "dCcAcPos_c.h"
 
 extern "C" void *_ZN7fBase_cnwEj(unsigned size);
@@ -27,7 +27,7 @@ extern "C" void *_ZN7fBase_cnwEj(unsigned size);
  *     Model           0x0d4  sizeof 0x50
  *     Model           0x124  sizeof 0x50
  *     TextureSequence 0x174  sizeof 0x14
- *     ShadowModel     0x188  sizeof 0x28
+ *     dExtShadowModel_c     0x188  sizeof 0x28
  *     dCcAcPos_c      0x1b0  sizeof 0x40
  * 0x1b0 + 0x40 = 0x1f0. The destructor pair tears the same five down in
  * reverse order.
@@ -46,7 +46,7 @@ struct daBgSnwmn_c : dActor_c {
     Model mModel1;                 /* 0x0d4 */
     Model mModel2;                 /* 0x124 */
     TextureSequence mTexSeq;       /* 0x174 */
-    ShadowModel mShadow;           /* 0x188 */
+    dExtShadowModel_c mShadow;           /* 0x188 */
     dCcAcPos_c mCylClsn;           /* 0x1b0 */
 
     /* --- overrides, in dActor_c's own vtable order. --- */

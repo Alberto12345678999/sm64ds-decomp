@@ -1461,33 +1461,9 @@ src/_ZN9AnimationC2Ev.cpp:
     complete
     .text start:0x02015d18 end:0x02015d38
 
-src/_ZN11ShadowModel9RenderAllEv.cpp:
+src/engine/model/dExtShadowModel_c.cpp:
     complete
-    .text start:0x02015d38 end:0x02015e14
-
-src/_ZN11ShadowModel8CleanAllEv.cpp:
-    complete
-    .text start:0x02015e14 end:0x02015e64
-
-src/_ZN11ShadowModel9InitModelEP9Matrix4x35Fix12IiES3_S3_j.c:
-    complete
-    .text start:0x02015e64 end:0x02015ebc
-
-src/_ZN11ShadowModel9DoSetFileEPcii.cpp:
-    complete
-    .text start:0x02015ef4 end:0x02015f80
-
-src/_ZN11ShadowModelD0Ev.cpp:
-    complete
-    .text start:0x02015f80 end:0x02015ff8
-
-src/_ZN11ShadowModelD1Ev.cpp:
-    complete
-    .text start:0x02015ff8 end:0x02016068
-
-src/_ZN11ShadowModelC1Ev.cpp:
-    complete
-    .text start:0x02016068 end:0x0201609c
+    .text start:0x02015d38 end:0x0201609c
 
 src/engine/model/dExtCommonModel_c.cpp:
     complete
@@ -1521,41 +1497,17 @@ src/_ZN10ModelAnim2C1Ev.cpp:
     complete
     .text start:0x020163a0 end:0x020163e0
 
-src/_ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt.cpp:
+src/engine/model/BlendModelAnim.cpp:
     complete
-    .text start:0x020163e0 end:0x0201647c
-
-src/_ZN14BlendModelAnim7AdvanceEv.cpp:
-    complete
-    .text start:0x0201647c end:0x020164b0
-
-src/_ZN14BlendModelAnim9Virtual18EjPK7Vector3.cpp:
-    complete
-    .text start:0x020164b0 end:0x020164e4
-
-src/_ZN14BlendModelAnim6RenderEPK7Vector3.cpp:
-    complete
-    .text start:0x020164e4 end:0x02016518
-
-src/_ZN14BlendModelAnim9Virtual10ER9Matrix4x3.cpp:
-    complete
-    .text start:0x02016518 end:0x02016578
-
-src/_ZN14BlendModelAnim11UpdateVertsEv.cpp:
-    complete
-    .text start:0x02016578 end:0x020165c4
-
-src/func_020165c4.c:
-    complete
-    .text start:0x020165c4 end:0x02016604
-
-src/_ZN14BlendModelAnim9DoSetFileEPcii.cpp:
-    complete
-    .text start:0x02016604 end:0x02016644
+    .text start:0x020163e0 end:0x02016644
 
 src/_ZN14BlendModelAnimD0Ev.cpp:
     complete
     .text start:0x02016644 end:0x02016690
+
+src/_ZN14BlendModelAnimD1Ev.cpp:
+    complete
+    .text start:0x02016690 end:0x020166d4
 
 src/_ZN14BlendModelAnimC1Ev.cpp:
     complete
@@ -6987,29 +6939,9 @@ src/engine/gx/G3i.cpp:
     complete
     .text start:0x02055a64 end:0x02055dec
 
-src/_ZN3GXS17EndLoadOBJExtPlttEv.cpp:
+src/engine/gx/GXS.cpp:
     complete
-    .text start:0x02055dec end:0x02055e38
-
-src/_ZN3GXS14LoadOBJExtPlttEPKvjj.cpp:
-    complete
-    .text start:0x02055e38 end:0x02055eac
-
-src/_ZN3GXS19BeginLoadOBJExtPlttEv.cpp:
-    complete
-    .text start:0x02055eac end:0x02055ed0
-
-src/_ZN3GXS16EndLoadBGExtPlttEv.cpp:
-    complete
-    .text start:0x02055ed0 end:0x02055f1c
-
-src/_ZN3GXS13LoadBGExtPlttEPKvjj.cpp:
-    complete
-    .text start:0x02055f1c end:0x02055f90
-
-src/_ZN3GXS18BeginLoadBGExtPlttEv.cpp:
-    complete
-    .text start:0x02055f90 end:0x02055fb4
+    .text start:0x02055dec end:0x02055fb4
 
 src/func_02055fb4.c:
     complete

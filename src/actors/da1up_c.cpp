@@ -195,7 +195,7 @@ void func_ov002_020af924(da1up_c *c);
 // @symbol _ZN7da1up_cD0Ev
 /* ONE definition, both variants. The complete-object destructor (D1) tears the
    four members down in exact reverse of the factories' construction order --
-   ShadowModel at 0x350, Model at 0x300, dBgCh_Actr at 0x144, dCcAc_c at 0x110,
+   dExtShadowModel_c at 0x350, Model at 0x300, dBgCh_Actr at 0x144, dCcAc_c at 0x110,
    then ~dEnemyBase_c -- and every one of those is a typed member of this class,
    so the body is empty and the compiler writes the chain. The deleting
    destructor (D0) inlines that same teardown and then calls
@@ -581,7 +581,7 @@ void func_ov002_020af4ec(void* raw)
     extern void Matrix4x3_FromRotationY(void* m, int angle);
     extern void Vec3_Asr(struct Vector3* d, struct Vector3* s, int sh);
     extern void Matrix4x3_FromTranslation(void* m, int x, int y, int z);
-    extern void _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(void* thiz, void* shadow, void* mtx, int radius, int depth, unsigned int x);
+    extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void* thiz, void* shadow, void* mtx, int radius, int depth, unsigned int x);
 
     int depth;
     int radius;
@@ -628,7 +628,7 @@ void func_ov002_020af4ec(void* raw)
         radius = (self->mdCcAc_c.radius - 0xa000) * 2;
     }
 
-    _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(self, &self->mShadowModel, &self->mModel.mat4x3, radius, depth, 0xf);
+    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(self, &self->mShadowModel, &self->mModel.mat4x3, radius, depth, 0xf);
 }
 }
 

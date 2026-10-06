@@ -299,7 +299,7 @@ extern void _ZN8Particle20RunningSlidingDustAtE5Fix12IiES1_S1_(int a, int b, int
 extern void Vec3_Asr(Vec3* d, Vec3* s, int sh);
 extern void Matrix4x3_FromTranslation(struct Matrix4x3 *m, int x, int y, int z);
 extern void Matrix4x3_ApplyInPlaceToRotationXYZExt(void* m, int x, int y, int z);
-extern void _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(void* thiz, void* sm, void* m, int rad, int h, unsigned int u);
+extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(void* thiz, void* sm, void* m, int rad, int h, unsigned int u);
 extern void UnloadKeyModels(int i);
 extern void _ZN8dActor_c9UpdatePosEP5dCc_c(void *self, void *clsn);
 extern void _ZN8dActor_c22UpdatePosWithOnlySpeedEP5dCc_c(void *self, void *clsn);
@@ -314,7 +314,7 @@ extern void *_ZN12dEnemyBase_cC2Ev(void *self);
 extern void *_ZN10dCcAcPos_cC1Ev(void *self);
 extern void *_ZN10dBgCh_ActrC1Ev(void *self);
 extern void *_ZN14BlendModelAnimC1Ev(void *self);
-extern void *_ZN11ShadowModelC1Ev(void *self);
+extern void *_ZN17dExtShadowModel_cC1Ev(void *self);
 extern void *_ZN7Vector3D1Ev(void *self);
 extern void func_0203d384(void);
 /* The array runtime discards lifecycle receiver results. */
@@ -1833,7 +1833,7 @@ void daKing_Donketu_c::func_ov073_021215cc()
 
     Matrix4x3_FromTranslation(&data_020a0e68, c->mPosX >> 3, (c->mPosY - 0xa000) >> 3, c->mPosZ >> 3);
     c->mShadowMtx = data_020a0e68;
-    _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
+    _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
         c, &c->mShadowModel, &c->mShadowMtx, 0x12c000, 0x3e8000, 0xf);
 }
 
@@ -2035,7 +2035,6 @@ extern "C" {
 extern void LoadKeyModels(int idx);
 extern struct BMD_File* _ZN5Model8LoadFileER13SharedFilePtr(SharedFilePtr* f);
 extern void _ZN9ModelBase7SetFileEP8BMD_Fileii(void* self, struct BMD_File* f, int a, int b);
-extern void _ZN11ShadowModel12InitCylinderEv(void* self);
 extern void* _ZN9Animation8LoadFileER13SharedFilePtr(SharedFilePtr* f);
 extern void _ZN10dCcAcPos_c4InitEP8dActor_cRK7Vector35Fix12IiES6_jj(void* self, dActor_c* a, Vector3* v, Fix12i r, Fix12i h, unsigned int e, unsigned int g);
 extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void* self, dActor_c* a, Fix12i r, Fix12i h, Vector3_16* p, Vector3_16* q);
@@ -2060,7 +2059,7 @@ int daKing_Donketu_c::InitResources()
     _ZN5Model8LoadFileER13SharedFilePtr((SharedFilePtr *)data_ov002_0210da30);
     f = _ZN5Model8LoadFileER13SharedFilePtr((SharedFilePtr *)data_ov073_02123298);
     _ZN9ModelBase7SetFileEP8BMD_Fileii(&mBlendModelAnim, f, 1, -1);
-    _ZN11ShadowModel12InitCylinderEv(&mShadowModel);
+    mShadowModel.InitCylinder();
     mVertAccel = -0x3000;
     mTerminalVelocity = -0x3c000;
     v.x = data_ov073_02123040.x;
@@ -2117,7 +2116,7 @@ extern "C" daKing_Donketu_c *daKing_Donketu_c_classInit()
         _ZN10dCcAcPos_cC1Ev(&p->mdCcAcPos_c);
         _ZN10dBgCh_ActrC1Ev(&p->mWithMeshClsn);
         _ZN14BlendModelAnimC1Ev(&p->mBlendModelAnim);
-        _ZN11ShadowModelC1Ev(&p->mShadowModel);
+        _ZN17dExtShadowModel_cC1Ev(&p->mShadowModel);
         __cxa_vec_ctor(p->mWaypointsA, 8, 0xc, (void (*)(void *))func_0203d384, (void (*)(void *))_ZN7Vector3D1Ev);
         __cxa_vec_ctor(p->mWaypointsB, 8, 0xc, (void (*)(void *))func_0203d384, (void (*)(void *))_ZN7Vector3D1Ev);
         __cxa_vec_ctor(p->unk_4d4, 2, 0xc, (void (*)(void *))func_0203d384, (void (*)(void *))_ZN7Vector3D1Ev);

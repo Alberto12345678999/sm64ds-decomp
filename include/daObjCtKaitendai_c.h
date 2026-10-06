@@ -5,7 +5,7 @@
  * triangle, not the conveyor (mecha04) or the moving bar (mecha05).
  *
  * Derives from dBgActor_c directly: _ZTI/_ZTS18daObjCtKaitendai_c give the
- * class name, and both factories construct dBgActor_c then ShadowModel at
+ * class name, and both factories construct dBgActor_c then dExtShadowModel_c at
  * 0x324. The allocation literal is 0x37c. */
 #ifndef DAOBJCTKAITENDAI_C_H
 #define DAOBJCTKAITENDAI_C_H
@@ -13,7 +13,7 @@
 
 #ifdef __cplusplus
 #include "dBgActor_c.h"
-#include "ShadowModel.h"
+#include "dExtShadowModel_c.h"
 
 struct daObjCtKaitendai_c : dBgActor_c {
     /* InitResources sets 0 for actorID 0x72 (CT_MECHA06) and 1 for 0x73
@@ -23,7 +23,7 @@ struct daObjCtKaitendai_c : dBgActor_c {
     u8  mVariant;                     /* 0x31e */
     u8  pad_31f[0x1];
     s32 mGroundY;                     /* 0x320 -- probe Y, then dBgCh_Gnd::clsnY on a hit */
-    ShadowModel mShadowModel;         /* 0x324 */
+    dExtShadowModel_c mShadowModel;         /* 0x324 */
     /* func_ov065_0211b40c copies mModel.mat4x3 here, then writes
      * (mGroundY + 0x32000) >> 3 into the translation Y before
      * DropShadowRadHeight. */

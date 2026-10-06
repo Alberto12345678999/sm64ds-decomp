@@ -295,7 +295,7 @@
     "corrected": [
       "Render now uses mFlags and virtual Model::Render through a Model pointer; RenderView, RenderModel and RenderArg are removed.",
       "mMatrix is a real Matrix4x3; previous/next segment links and state dispatch use the real daSanbo_c type. N and C shadow layouts are removed.",
-      "Previous-link and unk_3a8 reader descriptions now agree with the helpers. Existing ShadowModel and actor methods replace four mangled-call declarations.",
+      "Previous-link and unk_3a8 reader descriptions now agree with the helpers. Existing dExtShadowModel_c and actor methods replace four mangled-call declarations.",
       "func_ov096_02135e2c and its local declaration return void; the sole source call discards the result and all 36 TU functions remain exact.",
       "OnTurnIntoEgg follows the composed main void contract; the retired Pokey shard remains removed.",
       "Three Model::LoadFile calls and two mModel.SetFile calls replace the corresponding raw ABI spellings; complete TU proof remains required.",

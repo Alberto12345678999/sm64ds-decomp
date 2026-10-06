@@ -44,7 +44,7 @@ bool ApproachLinear(short &value, short target, short step);
 /* cstd::atan2 and dBgActor_c::IsClsnInRangeOnScreen take Fix12<int> BY VALUE,
  * which hits the documented mwccarm stack-homing wall when they are spelled
  * as real members, so they stay mangled free functions and only the call site
- * changes. See include/ShadowModel.h. Everything else here is an ordinary
+ * changes. See include/dExtShadowModel_c.h. Everything else here is an ordinary
  * unmangled ROM symbol. */
 extern "C" {
 extern s8    data_0209f2f8;      /* current stage id */

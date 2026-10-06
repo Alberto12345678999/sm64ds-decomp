@@ -24,7 +24,7 @@
  *     0x150 dBgCh_Actr               0x1bc   -> 0x30c
  *     0x30c ModelAnim                  0x64    -> 0x370
  *     0x370 ModelAnim                  0x64    -> 0x3d4
- *     0x3d4 ShadowModel                0x28    -> 0x3fc
+ *     0x3d4 dExtShadowModel_c                0x28    -> 0x3fc
  *
  * SIZE IS THE ROM'S OWN: `daStar_c_classInit_STAR` calls
  * `fBase_c::operator new(1220)` -- 0x4c4 -- and stores this class's
@@ -34,7 +34,7 @@
 #include "dEnemyBase_c.h"
 #include "ModelAnim.h"
 #include "dCcAcPos_c.h"
-#include "ShadowModel.h"
+#include "dExtShadowModel_c.h"
 #include "dBgCh_Actr.h"
 
 struct daStar_c : dEnemyBase_c {
@@ -42,7 +42,7 @@ struct daStar_c : dEnemyBase_c {
     dBgCh_Actr                 mWithMeshClsn;         /* 0x150 */
     ModelAnim                    mModelAnim1;           /* 0x30c */
     ModelAnim                    mModelAnim2;           /* 0x370 */
-    ShadowModel                  mShadowModel;          /* 0x3d4 */
+    dExtShadowModel_c                  mShadowModel;          /* 0x3d4 */
     u8  pad_3fc[0x40];
     s32                          unk_43c;               /* 0x43c */
     s32                          unk_440;               /* 0x440 */

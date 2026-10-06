@@ -104,7 +104,7 @@ extern int SurfaceInfo_TestFlag0x20(void* p);
 extern void _ZN5Sound9PlayBank3EjRK7Vector3(unsigned int id, const Vector3 &pos);
 extern void _ZN8Particle6System12NewBigSplashE5Fix12IiES2_S2_(int a, int b, int c);
 extern short _ZN8dActor_c12ReflectAngleE5Fix12IiES1_s(void*, int, int, short);
-extern void _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
+extern void _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
     void *c, void *sm, void *mtx, int a, int b, unsigned char u);
 extern void *_ZN9dBgCh_LinC1Ev(dBgCh_Lin* self);
 extern dBgCh_Lin *_ZN9dBgCh_LinD1Ev(void* self);
@@ -358,7 +358,7 @@ void daCoin_c::func_ov002_020b14d8()
 
     floorState = ((CoinFlagBits*)&mCoinFlags)->floorState;
     if (floorState == FLOOR_DYNAMIC) {
-        _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
+        _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
             this, &mShadowModel, &mShadowMat, 0x50000, 0x1f4000, 0xf);
         mClipRadius = 0x3e800;
         return;
@@ -368,7 +368,7 @@ void daCoin_c::func_ov002_020b14d8()
     {
         int depth = mPosY - mFloorPosY;
         mClipRadius = (depth + 0x50000) >> 3;
-        _ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j(
+        _ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j(
             this, &mShadowModel, &mShadowMat, 0x50000, depth + 0x28000, 0xf);
     }
 }
@@ -896,7 +896,6 @@ extern "C" {
 extern int SublevelToLevel(int i);
 extern void SetStarMarker(int i, void* actor, int v2);
 extern int _ZN9ModelBase7SetFileEP8BMD_Fileii(void* thiz, void* bmd, int a, int b);
-extern int _ZN11ShadowModel12InitCylinderEv(void* thiz);
 extern void _ZN7dCcAc_c4InitEP8dActor_c5Fix12IiES3_jj(void* thiz, void* actor, s32 f1, s32 f2, u32 a, u32 b);
 extern void _ZN10dBgCh_Actr4InitEP8dActor_c5Fix12IiES3_P10Vector3_16S5_(void* thiz, void* actor, s32 f1, s32 f2, void* v, s32 f3);
 extern void _ZN10dBgCh_Actr13SetLimMovFlagEv(void* thiz);
@@ -1051,7 +1050,7 @@ common:;
         }
     }
 
-    if (_ZN11ShadowModel12InitCylinderEv(&mShadowModel) == 0) {
+    if (mShadowModel.InitCylinder() == 0) {
         return 0;
     }
 

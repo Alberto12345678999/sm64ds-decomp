@@ -162,8 +162,6 @@
     "src/_ZN11RickshawBdw16CleanupResourcesEv.c": "lunavyqo",
     "src/_ZN11RickshawBdw16CleanupResourcesEv.cpp": "lunavyqo",
     "src/_ZN11RickshawBdwD0Ev.cpp": "tangosdev",
-    "src/_ZN11ShadowModelC1Ev.c": "tangosdev",
-    "src/_ZN11ShadowModelC1Ev.cpp": "tangosdev",
     "src/_ZN11SoundObjectD0Ev.cpp": "tangosdev",
     "src/_ZN11VolcanoRing13InitResourcesEv.cpp": "tangosdev",
     "src/_ZN11VolcanoRing16CleanupResourcesEv.cpp": "tangosdev",
@@ -8507,8 +8505,6 @@
     "src/actors/dActor_c.cpp#_ZN8dActor_c13DistToCPlayerEv": "tangosdev",
     "src/actors/dActor_c.cpp#_ZN8dActor_c22ClosestNonVanishPlayerEv": "tangosdev",
     "src/actors/dActor_c.cpp#_ZN8dActor_c13ClosestPlayerEv": "tangosdev",
-    "src/actors/dActor_c.cpp#_ZN8dActor_c18DropShadowScaleXYZER11ShadowModelR9Matrix4x35Fix12IiES5_S5_j": "tangosdev",
-    "src/actors/dActor_c.cpp#_ZN8dActor_c19DropShadowRadHeightER11ShadowModelR9Matrix4x35Fix12IiES5_j": "tangosdev",
     "src/actors/dActor_c.cpp#_ZN8dActor_c9UpdatePosEP5dCc_c": "tangosdev",
     "src/actors/dActor_c.cpp#_ZN8dActor_c28UpdatePosWithHorzSpeedAndAngEv": "tangosdev",
     "src/actors/dActor_c.cpp#_ZN8dActor_c22UpdatePosWithOnlySpeedEP5dCc_c": "ruspecial",
@@ -8684,6 +8680,19 @@
     "src/actors/dScDSMT_c.cpp#func_ov007_020cca80": "tangosdev",
     "src/actors/dScDSMT_c.cpp#func_ov007_020cca98": "ruspecial",
     "src/actors/dScDSMT_c.cpp#func_ov007_020ccab4": "ruspecial",
-    "src/actors/dScDSMT_c.cpp#dScDSMT_c_classInit": "ruspecial"
+    "src/actors/dScDSMT_c.cpp#dScDSMT_c_classInit": "ruspecial",
+    "src/_ZN17dExtShadowModel_cC1Ev.c": "tangosdev",
+    "src/_ZN17dExtShadowModel_cC1Ev.cpp": "tangosdev",
+    "src/engine/model/dExtShadowModel_c.cpp#_ZN17dExtShadowModel_c10InitCuboidEv": "ruspecial",
+    "src/engine/model/dExtShadowModel_c.cpp#_ZN17dExtShadowModel_c12InitCylinderEv": "ruspecial",
+    "src/engine/model/dExtShadowModel_c.cpp#_ZN17dExtShadowModel_c8CleanAllEv": "tangosdev",
+    "src/engine/model/dExtShadowModel_c.cpp#_ZN17dExtShadowModel_c9DoSetFileEPcii": "lplaat",
+    "src/engine/model/dExtShadowModel_c.cpp#_ZN17dExtShadowModel_c9InitModelEP9Matrix4x35Fix12IiES3_S3_j": "tangosdev",
+    "src/engine/model/dExtShadowModel_c.cpp#_ZN17dExtShadowModel_c9RenderAllEv": "tangosdev",
+    "src/engine/model/dExtShadowModel_c.cpp#_ZN17dExtShadowModel_cC1Ev": "tangosdev",
+    "src/engine/model/dExtShadowModel_c.cpp#_ZN17dExtShadowModel_cD0Ev": "andrewboudreau",
+    "src/engine/model/dExtShadowModel_c.cpp#_ZN17dExtShadowModel_cD1Ev": "tangosdev",
+    "src/actors/dActor_c.cpp#_ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j": "tangosdev",
+    "src/actors/dActor_c.cpp#_ZN8dActor_c19DropShadowRadHeightER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_j": "tangosdev"
   }
 }

@@ -24,7 +24,7 @@
  * TtcRotatingPrism_Spawn) and daObjCtRotateBlock_c_classInit_CT_MECHA01
  * (0x02119efc, historical alias TtcRotatingCube_Spawn). Each is operator
  * new(0x3d8), the dBgActor_c constructor, the vtable store and the Model and
- * ShadowModel constructors, which is exactly `new daObjCtRotateBlock_c()`.
+ * dExtShadowModel_c constructors, which is exactly `new daObjCtRotateBlock_c()`.
  * Their names are reconstructed from the profiles; retail does not store
  * them. The new-expression also emits dBgActor_c's base-object destructor,
  * which has no ROM home (manifest: deadstrip).
@@ -49,7 +49,7 @@ extern void AddVec3(void *a, void *b, void *c);
 extern u16 DecIfAbove0_Short(u16 *p);
 extern int RandomIntInternal(int *seed);
 extern int _ZN10dBgActor_c13IsClsnInRangeE5Fix12IiES1_(void *self, int a, int b);
-extern int _ZN8dActor_c18DropShadowScaleXYZER11ShadowModelR9Matrix4x35Fix12IiES5_S5_j(
+extern int _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
     void *self, void *sm, void *mtx, int a, int b, int d, unsigned int e);
 extern void _ZN10dBgW_KcMbg7SetFileEP8KCL_FileRK9Matrix4x35Fix12IiEsR10CLPS_Block(
     void *mc, void *kcl, void *mtx, int fix, s16 s, void *clps);
@@ -91,7 +91,7 @@ int daObjCtRotateBlock_c::UpdateShadow()
         int s = data_02082214[idx << 1];
         int sa = s < 0 ? -s : s;
         int r3 = (int)(((long long)sa * 0x64000 + 0x800) >> 12);
-        return _ZN8dActor_c18DropShadowScaleXYZER11ShadowModelR9Matrix4x35Fix12IiES5_S5_j(
+        return _ZN8dActor_c18DropShadowScaleXYZER17dExtShadowModel_cR9Matrix4x35Fix12IiES5_S5_j(
             this, &mShadowModel, &mShadowMat, d + r3, b, d, 0xf);
     }
 }

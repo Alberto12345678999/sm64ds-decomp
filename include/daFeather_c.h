@@ -11,7 +11,7 @@
 #include "types.h"
 #include "dActor_c.h"
 #include "Model.h"
-#include "ShadowModel.h"
+#include "dExtShadowModel_c.h"
 #include "dCcAc_c.h"
 #include "dBgCh_Actr.h"
 
@@ -24,7 +24,7 @@ extern "C" void *_ZN7fBase_cnwEj(unsigned size);
  *   Model        0x0d4
  *   dCcAc_c      0x124
  *   dBgCh_Actr   0x158
- *   ShadowModel  0x314..0x33c
+ *   dExtShadowModel_c  0x314..0x33c
  *   (own fields) 0x33c..0x388
  *
  * The vtable at ov002 0x021088a8 overrides slots 0, 3, 6, 9 and the
@@ -35,7 +35,7 @@ struct daFeather_c : dActor_c {
     Model mModel;                 /* 0x0d4 */
     dCcAc_c mdCcAc_c;              /* 0x124 */
     dBgCh_Actr mWithMeshClsn;      /* 0x158 */
-    ShadowModel mShadowModel;      /* 0x314 */
+    dExtShadowModel_c mShadowModel;      /* 0x314 */
     /* The shadow matrix, rebuilt every frame by func_ov002_020b2c44 out of
        mAngleY and the position and handed to DropShadowRadHeight.
        Only this TU includes this header, and it includes common.h first, so
@@ -64,7 +64,7 @@ struct daFeather_c : dActor_c {
     /* INLINE, AND DECLARED FIRST. Out of line, mwcc emits D0 ahead of D1
        and the cartridge has D1 first, plus a homeless D2; inline, this TU
        emits retail D1 then D0 and no D2. The empty body owns the
-       ShadowModel, dBgCh_Actr, dCcAc_c and Model teardowns and the chain
+       dExtShadowModel_c, dBgCh_Actr, dCcAc_c and Model teardowns and the chain
        into dActor_c. With the destructor inline, InitResources becomes the
        first out-of-line virtual -- the key function -- so the vtable and
        the RTTI group land in the translation unit that defines it. */
