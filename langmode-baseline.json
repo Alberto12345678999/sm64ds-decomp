@@ -3,11 +3,11 @@
   "codegen_hacks": {
     "cv_launder": 3,
     "cv_launder_sites": 6,
-    "extern_vtable": 60,
+    "extern_vtable": 58,
     "extern_vtable_classes": 75,
     "inline_asm": 13,
-    "launder_or_forced": 140,
-    "launder_sites": 369
+    "launder_or_forced": 129,
+    "launder_sites": 365
   },
   "exclusions": {
     "by_value_class_param": 55
@@ -41,27 +41,27 @@
       },
       "method": {
         "draft": 5,
-        "migrated": 3605,
-        "unmigrated": 63
+        "migrated": 3881,
+        "unmigrated": 65
       }
     },
-    "cpp_still_handspelled": 47,
-    "mangled_c": 26,
-    "mangled_cpp": 4551,
-    "mangled_total": 4577,
+    "cpp_still_handspelled": 60,
+    "mangled_c": 15,
+    "mangled_cpp": 4840,
+    "mangled_total": 4855,
     "nonmatching_drafts": 5,
-    "unmigrated_total": 73
+    "unmigrated_total": 75
   },
   "shadow_decls": {
-    "local_body_no_include": 503,
-    "local_body_no_include_cpp": 91,
-    "local_struct_body": 1015,
-    "local_struct_body_cpp": 434,
-    "pad_layout": 239
+    "local_body_no_include": 468,
+    "local_body_no_include_cpp": 66,
+    "local_struct_body": 937,
+    "local_struct_body_cpp": 388,
+    "pad_layout": 215
   },
   "totals": {
-    "c_extension": 3319,
-    "cpp_extension": 1757,
-    "src_files": 5076
+    "c_extension": 3117,
+    "cpp_extension": 1303,
+    "src_files": 4420
   }
 }
