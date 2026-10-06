@@ -16,7 +16,7 @@
  *     0x1a8 dCcAcPos_c  0x40   -> 0x1e8
  *
  * Typing them absorbed these markers, which were a member's insides:
- *   - 0x160 mAnimation   = the Animation base of mModelAnim
+ *   - 0x160 mAnimation   = the dExtFrameCtrl_c base of mModelAnim
  *   - 0x178 unk_178      = mdCcAc_c.radius (+0x04)
  *   - 0x17c unk_17c      = mdCcAc_c.height (+0x08)
  *   - 0x1ac unk_1ac      = mdCcAcPos_c.radius (+0x04)

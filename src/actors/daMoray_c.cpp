@@ -96,7 +96,7 @@
 #include "daMoray_c.h"
 #include "SharedFilePtr.h"
 #include "PathPtr.h"
-#include "Animation.h"
+#include "dExtFrameCtrl_c.h"
 #include "Model.h"
 #include "Player.h"
 
@@ -817,9 +817,9 @@ s32 daMoray_c::InitResources()
 
     file = Model::LoadFile(data_ov016_02114d38);
     mBlendModelAnim.SetFile((BMD_File *)file, 1, -1);
-    Animation::LoadFile(data_ov016_02114d20);
-    Animation::LoadFile(data_ov016_02114d30);
-    Animation::LoadFile(data_ov016_02114d28);
+    dExtFrameCtrl_c::LoadFile(data_ov016_02114d20);
+    dExtFrameCtrl_c::LoadFile(data_ov016_02114d30);
+    dExtFrameCtrl_c::LoadFile(data_ov016_02114d28);
 
     mPathID = param1 & 0xff;
     mVariant = (param1 >> 8) & 0xf;

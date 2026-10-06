@@ -34,14 +34,14 @@ void *_ZN6Memory13operator_new2Ej(u32 size);
    wall 6az (notes/mwccarm-codegen.md) homes class-typed by-value
    parameters that a body reads, and the real signature carries
    Fix12<int> -- passing one to the member declaration homes it to the
-   caller's stack. The declarations in BlendModelAnim.h and Animation.h
+   caller's stack. The declarations in BlendModelAnim.h and dExtFrameCtrl_c.h
    are the real ones. */
-void _ZN9Animation12SetAnimationEti5Fix12IiEt(Animation *self, u16 numFrames, s32 flags, s32 speed, u16 startFrame);
+void _ZN15dExtFrameCtrl_c12SetAnimationEti5Fix12IiEt(dExtFrameCtrl_c *self, u16 numFrames, s32 flags, s32 speed, u16 startFrame);
 }
 
 namespace cstd { int fdiv(int a, int b); }
 
-/* Only the header word SetAnim reads; Animation::UpdateFileOffsets' shard
+/* Only the header word SetAnim reads; dExtFrameCtrl_c::UpdateFileOffsets' shard
    spells the pointer fields instead. */
 struct BCA_File {
     u16 unk_00;
@@ -112,7 +112,7 @@ void BlendModelAnim::Virtual18(u32 mat, const Vector3 *scale)
 // @symbol _ZN14BlendModelAnim7AdvanceEv
 void BlendModelAnim::Advance()
 {
-    Animation::Advance();
+    dExtFrameCtrl_c::Advance();
     if (blendWeight < 0x1000) {
         /* launder: keep the RMW aliasing the member so the compiler
            re-reads it the way the ROM does */
@@ -133,8 +133,8 @@ extern "C" void _ZN14BlendModelAnim7SetAnimER8BCA_Fileii5Fix12IiEt(
     else
     {
         thiz->file = &file;
-        _ZN9Animation12SetAnimationEti5Fix12IiEt(
-            &static_cast<Animation &>(*thiz), file.numFrames, flags, speed,
+        _ZN15dExtFrameCtrl_c12SetAnimationEti5Fix12IiEt(
+            &static_cast<dExtFrameCtrl_c &>(*thiz), file.numFrames, flags, speed,
             startFrame);
         if (numBlendFrames <= 0)
         {

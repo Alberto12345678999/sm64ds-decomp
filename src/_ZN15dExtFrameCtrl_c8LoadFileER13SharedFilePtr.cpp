@@ -1,6 +1,6 @@
 //cpp
-// @symbol _ZN9Animation8LoadFileER13SharedFilePtr
-#include "Animation.h"
+// @symbol _ZN15dExtFrameCtrl_c8LoadFileER13SharedFilePtr
+#include "dExtFrameCtrl_c.h"
 
 struct SharedFilePtr {
     u16 fileID;      /* 0x00 */
@@ -11,7 +11,7 @@ struct SharedFilePtr {
     void LoadFile();
 };
 
-char *Animation::LoadFile(SharedFilePtr &ptr)
+char *dExtFrameCtrl_c::LoadFile(SharedFilePtr &ptr)
 {
     u8 refs;
     char *file;

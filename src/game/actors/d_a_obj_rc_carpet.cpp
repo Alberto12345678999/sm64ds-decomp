@@ -136,7 +136,7 @@ int daObjRcCarpet_c::InitResources()
     Model::LoadFile(data_ov002_0210d9f0);
     void *modelFile = Model::LoadFile(*data_ov036_02113f58.model);
     mModelAnim.SetFile((BMD_File *)modelFile, 1, -1);
-    Animation::LoadFile(data_ov036_0211419c);
+    dExtFrameCtrl_c::LoadFile(data_ov036_0211419c);
     _ZN9ModelAnim7SetAnimEP8BCA_Filei5Fix12IiEj(
         &mModelAnim, (BCA_File *)((int *)&data_ov036_0211419c)[1],
         0, 0x1000, 0);

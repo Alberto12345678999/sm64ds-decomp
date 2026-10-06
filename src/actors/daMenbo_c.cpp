@@ -63,7 +63,7 @@
 #include "dBgCh_Lin.h"
 #include "SharedFilePtr.h"
 #include "Player.h"
-#include "Animation.h"
+#include "dExtFrameCtrl_c.h"
 
 bool ApproachLinear(short &value, short target, short step);
 
@@ -409,7 +409,7 @@ int func_ov090_02131584(daMenbo_c *c)
 {
     unsigned int v;
     c->mHorzSpeed = 0;
-    v = ((unsigned int)static_cast<Animation &>(c->mModelAnim).currFrame << 4) >> 0x10;
+    v = ((unsigned int)static_cast<dExtFrameCtrl_c &>(c->mModelAnim).currFrame << 4) >> 0x10;
     if (v >= 0x3b)
         *(int *)((int)c + 0x390) += 1;
     if (MENBO_RIPPLES(c)->loops > 2 || func_ov090_021314a0(c) == 1)
@@ -451,7 +451,7 @@ int func_ov090_02131648(MenboState *c)
     rnd = (u32)RandomIntInternal(&data_0209e650) >> 8;
     dist = Vec3_Dist((Vector3 *)&self->mPosX, (Vector3 *)&self->unk_374);
 
-    if (((((u32)static_cast<Animation &>(self->mModelAnim).currFrame) << 4) >> 0x10 & 0xf) == 0) {
+    if (((((u32)static_cast<dExtFrameCtrl_c &>(self->mModelAnim).currFrame) << 4) >> 0x10 & 0xf) == 0) {
         func_02012694(0xfc, (const Vector3 *)&self->mCamSpacePosX);
     }
 
@@ -559,7 +559,7 @@ int func_ov090_02131648(MenboState *c)
         }
     }
 
-    if (((u32)(((u32)static_cast<Animation &>(self->mModelAnim).currFrame) << 4) >> 0x10) >= 0x10) {
+    if (((u32)(((u32)static_cast<dExtFrameCtrl_c &>(self->mModelAnim).currFrame) << 4) >> 0x10) >= 0x10) {
         p390 = (s32 *)((int)self + 0x390);
         *p390 = *p390 + 1;
     }
@@ -635,10 +635,10 @@ int func_ov090_02131b94(daMenbo_c *c)
  * enough, go back to water rest. Off the water, drop the anchor and idle. */
 int func_ov090_02131c48(daMenbo_c *c)
 {
-    if ((((unsigned)static_cast<Animation &>(c->mModelAnim).currFrame) << 4) >> 16 >= 4)
+    if ((((unsigned)static_cast<dExtFrameCtrl_c &>(c->mModelAnim).currFrame) << 4) >> 16 >= 4)
         c->mHorzSpeed = 0x19000;
 
-    if ((((unsigned)static_cast<Animation &>(c->mModelAnim).currFrame) << 4) >> 16 == 4)
+    if ((((unsigned)static_cast<dExtFrameCtrl_c &>(c->mModelAnim).currFrame) << 4) >> 16 == 4)
         func_02012694(0xfd, (const Vector3 *)&c->mCamSpacePosX);
 
     if (c->unk_394 == 0
@@ -652,7 +652,7 @@ int func_ov090_02131c48(daMenbo_c *c)
     if (c->unk_394 != 0) {
         ApproachAngle(&c->mPrevAngleY, (s16)c->unk_39a, 1, 0x1000, 0x1000);
     } else {
-        if (static_cast<Animation &>(c->mModelAnim).Finished()) {
+        if (static_cast<dExtFrameCtrl_c &>(c->mModelAnim).Finished()) {
             s32 *q = (s32 *)((int)c + 0x390);
             *q = *q + 1;
             if (MENBO_RIPPLES(c)->loops > 0x14)
@@ -833,8 +833,8 @@ int daMenbo_c::Behavior()
             (((MenboSelf *)c)->*(n->mRun))();
     }
     mAngleY = mPrevAngleY;
-    static_cast<Animation &>(mModelAnim).speed = unk_3a4;
-    static_cast<Animation &>(mModelAnim).Advance();
+    static_cast<dExtFrameCtrl_c &>(mModelAnim).speed = unk_3a4;
+    static_cast<dExtFrameCtrl_c &>(mModelAnim).Advance();
     func_ov090_02131e50(this);
     func_ov090_021310b4(this);
     mdCcAcPos_c.Clear();
@@ -862,10 +862,10 @@ int daMenbo_c::InitResources()
 
     f = (BMD_File *)Model::LoadFile(data_ov090_021344a0);
     mModelAnim.SetFile(f, 1, -1);
-    Animation::LoadFile(data_ov090_02134488);
-    Animation::LoadFile(data_ov090_02134480);
-    Animation::LoadFile(data_ov090_02134490);
-    Animation::LoadFile(data_ov090_02134498);
+    dExtFrameCtrl_c::LoadFile(data_ov090_02134488);
+    dExtFrameCtrl_c::LoadFile(data_ov090_02134480);
+    dExtFrameCtrl_c::LoadFile(data_ov090_02134490);
+    dExtFrameCtrl_c::LoadFile(data_ov090_02134498);
 
     mTerminalVelocity = -0x3c000;
 

@@ -107,7 +107,7 @@ struct daPgMthr_c {
     /* ModelAnim member, named by _ZN9ModelAnimD1Ev at +0xd4 -- a relocation the ROM build
        checks. D1 and not D2, so it is this type and not an inlined base. The marker's pad
        stopped short of the object, so the member also takes over unk_0dc (+0x8 = data),
-       mAnimation (+0x50 = the Animation base), which the header declared separately inside
+       mAnimation (+0x50 = the dExtFrameCtrl_c base), which the header declared separately inside
        it. */
     ModelAnim mModelAnim;            /* 0x0d4 */
     /* TextureSequence member, named by the class's own destructor calling
